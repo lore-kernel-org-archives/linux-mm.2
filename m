@@ -4,139 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3109F45A19
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 09:31:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F409F3ED42
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 10:34:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB8506B0089; Sat, 11 Apr 2026 05:31:15 -0400 (EDT)
+	id E26456B0089; Sat, 11 Apr 2026 06:34:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C69706B008A; Sat, 11 Apr 2026 05:31:15 -0400 (EDT)
+	id DD72D6B008A; Sat, 11 Apr 2026 06:34:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B58276B0092; Sat, 11 Apr 2026 05:31:15 -0400 (EDT)
+	id CC60F6B0092; Sat, 11 Apr 2026 06:34:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A615F6B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 05:31:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 01103BB201
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 09:31:14 +0000 (UTC)
-X-FDA: 84645756510.08.5F7EAA0
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9D16240008
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 09:31:12 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kGS7zkSa;
-	spf=pass (imf01.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B78C66B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 06:34:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D2F2C1A02DA
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 10:34:28 +0000 (UTC)
+X-FDA: 84645915816.16.AA62F0B
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DFD1116000C
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 10:34:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gHcLUsh0;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775899872;
+	s=arc-20220608; t=1775903666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9G+pDRpTep5hohlw1RQ3G2oELAA0/tYq61fSBJHTJzs=;
-	b=Bips8rdsDt/MoCFNDtw1MRpdqqIRkLo98E0HR7FzgwHBsTzJV+jx94rb7VQTp7rJxG++2E
-	WdZP9Zp+PC4VDY078Usyl413KB5Mb3roAZzb8OCO3Htdg5SgrU4lOV+KUB4ZU2zOzcmUYU
-	9MXWsNOn4++bIj2VOxLoDDAxgUTu5Qo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=kGS7zkSa;
-	spf=pass (imf01.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775899872; a=rsa-sha256;
+	bh=PJUQLGxJ95p9p1MXGUCU28iVTSAmAXYgCpnJJoxDPPg=;
+	b=jDe77xQohFBnwYVozOPg0vjV3ERamSAXJ7bhIYSAFYmGQfnrfC889j+fKxt4bpWdq46BFO
+	DIcb7DskJBLf7Gq9+b4OMd2qBUW1l6lOZVT3kFfAS1vYD8TAJwLH8Y9TrQcHaBpPFI+r3W
+	AfewSPli5W7/EOoXtxHz9f+vDfh5LU0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775903666; a=rsa-sha256;
 	cv=none;
-	b=mIW5eOvSY8j+oJoAuId8vUkwgYQ847R/etJNq6xfiLPl2ApwRyx08HALmpSCsLoHUE4sBX
-	Z8I56SP5u4Xc4nNIStQrylfnMTYXRd5L7zGJH9KYHG8cP33d8BWm7f8ttO4BeP00i3hl++
-	+gcHY5YdqBQFw0/w6KArQk6SthK9jdI=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63B0O5Hg2272213;
-	Sat, 11 Apr 2026 09:31:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=9G+pDRpTep5hohlw1RQ3G2oELAA0/t
-	Yq61fSBJHTJzs=; b=kGS7zkSacYLmsLvFUysSFGicCBlyAlKL6HMymldPK6w75G
-	VcCjRmM4uewiyfHKAMNmPCEazXh5fTUiYwrQdSDYg+TwNoCNr09NsMyD0AM2DUQ4
-	LOgiHaUFTxSRrZoqpggKzqxS/r9zKNgCKaSWQJNY32x6WH2MPc/G+qJdH3lIvkE2
-	JfcUe8KLLE85S0C9Ek0Ho7m7/klN2k0UTSVUegwqxvvCmqKbT27YeqbzugYsXQkx
-	WKAjcOetA6NmYn62/rSOnMAOynieiS6rBqD+GMn16N5nXQOgVyBsh7gzN5R4KoB5
-	L0NYtX9MpaMOUZg0RmS4y1eZmjSVsmbMRobYWvgw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfbqk90h2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 11 Apr 2026 09:31:07 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63B6XKvY014352;
-	Sat, 11 Apr 2026 09:31:06 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dcmg54069-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 11 Apr 2026 09:31:06 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63B9V25q7471396
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 11 Apr 2026 09:31:02 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 692F720043;
-	Sat, 11 Apr 2026 09:31:02 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BDF742004B;
-	Sat, 11 Apr 2026 09:31:01 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.145.235])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Sat, 11 Apr 2026 09:31:01 +0000 (GMT)
-Date: Sat, 11 Apr 2026 11:31:00 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
-Message-ID: <630ce949-2f9c-43ce-9641-b9a4dc729323-agordeev@linux.ibm.com>
-References: <cover.1774420056.git.agordeev@linux.ibm.com>
- <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
- <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
- <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
- <c27cad07-bba4-472d-8853-fc6fc55e951f@arm.com>
+	b=3dT4Bv4D/OeLsMgbMGrCiIcHrUn/9urBZuhXvXS9utU+ftchNWSu0UtYtQN8AMQgfhaftH
+	ICP4Jx5BCBEVmSwZdDYGhvrtgrrs8eek9EylMKJwYZBZk5jTK0p4FlxBszTjU5s9NDOlhb
+	oVfGFlECyD/sv9j+LjIbZpdW32fhYco=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gHcLUsh0;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1775903666; x=1807439666;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=m5XmxqXJ66qVQmeGINtfVWwDdfovdoiv8v618XHKpII=;
+  b=gHcLUsh0S5MJLZPWL5IvjS0l+ndPr9CY5ESNoswtI2XC7nfvtD/1ZIMF
+   eFbsDtNMy466Vlp46ayOcA/vArfsxCrAIfbSpBP8zR9qJoGEDyq2XI8QS
+   C3mk6Cnq90GTOeYKueZTEjGH9mu1BurVX83ao/t2nbmu40yUlANjyzLB7
+   sPHVGXRYEvH1ILMNANZj0pCsqpLqSg4S0+EqFxtYBIi0XHN+MZyKPmDIK
+   bUWpPIky0AzhVPpa6ueaBMf1s1mqTp7+gMQPrCj3fu15xh0mot7R0RrTf
+   t7MptDgIN40uH/ef1PCuesYbYOs+D1G+pbMmA4cvJipILrasUfUNodWzI
+   Q==;
+X-CSE-ConnectionGUID: z+FyeqcnShCY2FLwjNQCzw==
+X-CSE-MsgGUID: u8FhJvwuSkGjuJc9AV846Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11755"; a="76869302"
+X-IronPort-AV: E=Sophos;i="6.23,173,1770624000"; 
+   d="scan'208";a="76869302"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2026 03:34:24 -0700
+X-CSE-ConnectionGUID: LtQqSnvjQ3+RQSqj3Z41mA==
+X-CSE-MsgGUID: kQVFAggJQX2G8dJF+hS+Hg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,173,1770624000"; 
+   d="scan'208";a="229589670"
+Received: from lkp-server01.sh.intel.com (HELO 3eaaf1a74b89) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 11 Apr 2026 03:34:21 -0700
+Received: from kbuild by 3eaaf1a74b89 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wBVfO-0000000014b-1MJu;
+	Sat, 11 Apr 2026 10:34:18 +0000
+Date: Sat, 11 Apr 2026 18:34:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Cao Ruichuang <create0818@163.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+	Cao Ruichuang <create0818@163.com>
+Subject: Re: [PATCH] mm/vmstat: reject invalid stat_interval values
+Message-ID: <202604111811.THSgZ1ry-lkp@intel.com>
+References: <20260410112554.23165-1-create0818@163.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c27cad07-bba4-472d-8853-fc6fc55e951f@arm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=I+9Vgtgg c=1 sm=1 tr=0 ts=69da14db cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=yduxpkpoCOskwDA0OgQA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: IpQDT1z9kXrFLsUX7rBCljXm228ZAGrk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDExMDA3MyBTYWx0ZWRfXxR1CxwqzwPcr
- aZDOICop81ytS8lVHRni5D3pfDTevXM07MQHpoT0etrTHGeNCpVvGOAori/j9bWeExaGIjmvVjj
- +byeKj3m97zAAHwHPR7oAyp0kc8VotW+aNEn/aaMrsnZSNJIOxjNYoPuEs30TjDxW5jvfvSo4y/
- JRaTa6D3jeeUBrLlAefULj/lYoAu+kbprJe5YJBKhnUaPz+L3ZVTe7mX+7Am1bVw4WDBkh5kdXD
- UDmTyO2AgZ7A91iiwqDhY9JbkGzmSRIBMfBY2sH5UtFojid4awog5X5Gi5vcYe6o4FfSx0WgyBf
- q8dYcMl1YZyxYrrkPaN3oklKx1j3fqOOfNrFSWydF52GhHe2i5Y4wS+CVnfcWwy4Mzz3CwLPQb5
- p8GFfPvoc3xrV+BMKWRdKxY9jtdcb6fi0CvO3/XDVePQDvKSA9osZ9UtSDe4UuVN75yT4BeZO9R
- UMxMp2vwMmOGDexwMHg==
-X-Proofpoint-ORIG-GUID: IpQDT1z9kXrFLsUX7rBCljXm228ZAGrk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-11_02,2026-04-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604110073
+In-Reply-To: <20260410112554.23165-1-create0818@163.com>
+X-Rspamd-Queue-Id: DFD1116000C
+X-Stat-Signature: xxx5rshkj15ap5s1ww5uoodrt7985ag5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9D16240008
-X-Stat-Signature: wi3ai6ju18oszob13b8xrjh6xwq43hx5
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775899872-854937
-X-HE-Meta: U2FsdGVkX19crYACmC2G8K4CBk6uLtH3lUI+i9rcUsZ/qgoKAzUU+aKyUZErXFHd6aebewoFd0SFALpLit2iWqBj299HZLO+3b1u8NYSAbYNZR8vQ/TC1Vw4dV3u+zDj+dBsWFOYkfJKJCvMaJ2u0o4cWGL/dbPcWWbruZnBnPIwjUXT77WaHSFtXDTjrkEopDrN/WFQ5o95O4QeffaEvgJc6MaEFuFippNijEWYFB7DQ20uhNMWf2SUbd3nPrXjBK582QmWDvGxiDPGtQ1NMTP953bRjIzzqYlh0aUnANGOVYxZAKFqZH+Beg6rLcO2djZzV8skgGy50m112Gx9vcGJFt1+LCoWYjp0xlMF6xBA6oHG007buDl8QeJBXlT6IT85q4EA8zKbOXJS8/sKg1kw1jw3mPLtiOi0/wY+pnBT6AttA56yIhVbgznjyhiCkNUpXdtTd+WogqwdkMH6rZZnRTzxWaR8149fQO28kGdfnfMG6u33Z8aFXOyNcsJR9TcpT3U8gv3NzOGh35CrPQsP52WLElRce4AInYXiewUXgoR3j+VYa1Hwy1NBn3JiSEKhSzmpFPLa1L4oA3D/+G3iF3uSVT4v5m8XBgj6IA6f3WNo5ay/+ba+izw8hzptKGya0FggGzgovRvCl/dQLv0VVAg22mTjFBKOQWkRLily57jCdQNeqFJDASvaNqKw+wZLAdCX/KuuVuffAMMwfv9lRMR8BMEVEWi1QrBsNed9RLZcjvgCZqbKtFLQFgTOW6qi9O9gFE6doQ0EG6hRtVUErGpM0GhBA/iWU+R8pBU2DkjGqjmwNFEOUMem7mr0TrLFriviyHHc6WdzagCVd/BSshYLwkSPmUV7chWm38sD2zHCVH9+I6nqoc1ZiQuNBzXzUz9nYngt2iHGHf/XoVFIQ3Zk5JtUiHN/E0VXDXcBvLlYH6T1TQ8bJPrOCHAfg2N7o64fjalpAG/XqHp
- 0b8iAlG9
- R+UtPoSZiOOQd1DVhenxsC22E8Q3eytHgq5BgUQ1GJwYSfaXNSV83fbpmyCKqZoWvyfTLBqFFfFJt+kWSKpoMmKK2HETvS+pIgz46qX7udsNzeOclV0ySlcqa1V03Pwg2JK2i27SwwEY4CyE/xMBvj+Fiyg8MvXT2IsNjADNEmkCw23ZE/cmHcWvWexW4D4fe+7k1AsNJbmvd8wug48LcS9vxTZPr2angejObgjzjqtLLoQqZvSVnXP4b1mgEvGJR6SSglSeQjWtV1u1VOYO+m87DjhQidsgasg2RPb/dgmICske5ZkDKcEI60Q==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775903665-263621
+X-HE-Meta: U2FsdGVkX18gDTMtllb9iVt1IgY3f+VRNDTnJznDTsnnV+jKWMmd2xtSSVe4M5asHpQ5fUgJd7M2l6YgHEMSlrDoAfZDs+4n4HWD4K/1NdgDvK8K33SSBN/YB82ubilvAQ+vNlLr7HcEDgCXLg4IJ0SHVP14QxOchfgFre/Ja/zBtwMtMQ68vd3dc8HCh/d86bryUTI340/TpJTlzIrMvgJHvc56vUYtG+EVKNVfLumRwN71MnhMGooMkqorhdVLv0sdDV71anMbQ4UxlWMW0MPXCKZvi+MtZdJzj+U3j611jobK7bNqDOfbSWYPhaFcLXmjW3JgJ3pkEObBRP/h1ADw+HEjXJO6uR2aVPHVFzgVrnBr+N6543KmbuM9qUcicWK9ZEYWsy3dZIXb0chvR50lDz06lV3PS/w/vxgzFurdZzO44AqXDZs2NOdSObJY5jmJCv9KwUOXXZmVv2PvQBMO9c+dGkOCVaLzIv8s7l6YZhxgOXC2zq4rt6BGO2S0SkCSB9+N8vjqEjMe6k7b4MWYpcnZdu97faVnTnZOQMKpbVYNDV0HPFWcNmQ4IUiGWLfZ4AQigMDx/IdHtYweuAh9jzIUiaUZGK5zSSTWtU1ZQW8rhpZxPTGgzIyBShIOKuQ6hXMTzDi/a4xcPKv2rVZrAPQnY+TdWicKYk8rkWtaFhsm0zZX3vyXDtPK1AULdJXAPxwWp0ifzqqESWCA7zyu4l/1N4F92AfTdX2IZbx9z95v+FNvmoKAPfpgpaOJkOVB3t3nS8bBscYRGOFptDmYmI+wc2DUHd7tb/yBsHC8qdug0QP/FA7F1a7ZI4UmgBG1ZV3XjXGRCaEmLn06bWtTYGuzBSFCIkxFUaXNgVe8bq9xbygHcB9qWCFeavQcDIUe54DPB4rQtmxZVfFDMyFU0GHtKqdEyKQ856WbOogCTWR1UtUreqLzaxxLevrRjN7Ae11+3hTtmQ0GfJ4
+ vjyLR/m3
+ 2VzuS1XrqAN2Ruww0wAmQV83j/451NxIz9W84AfV6vP9An1tJNZsZl9msmxw4wlfYiXTnQyBoVipHUlL7N5hW0CMMWQBBBoL3w/J055+O/eKLphBdmFmmT6RUanTBiqExiLYmYK32jUiaNrWeMB6rMS0XOQGZkGjWtFpMN4MEEFlsfXIeEr+xNz76HBM1KTSwfXriMBKzhFQSOqIgbs18Hv3uq1OZot7T8bwmtVLOhkfFmVqCV/+ZE/dOUWO8wesFJfJD/cK4DOpJOqEE5tE/SuImTWofOMggJgs9dQeCSdkrmr1ldYAzv+pWt9eeuDw6lRfDVYgpVrD+5D4nt2j1YQJUINqBEvjOR31bTV0hP3AGQzJH+oXxAnEHXZSJCuR+wIRUwCLwLEiqC5g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,55 +115,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 31, 2026 at 04:15:23PM +0200, Kevin Brodsky wrote:
-> On 25/03/2026 17:20, Alexander Gordeev wrote:
-> > On Wed, Mar 25, 2026 at 10:55:23AM +0100, David Hildenbrand (Arm) wrote:
-> >
-> > Hi David,
-> >
-> >>> +/**
-> >>> + * lazy_mmu_mode_enable_pte() - Enable the lazy MMU mode with parameters
-> >> You have to be a lot clearer about implications. For example, what
-> >> happens if we would bail out and not process all ptes? What are the
-> >> exact semantics.
-> > The only implication is "only this address/PTE range could be updated
-> > and that range may span one page table at most".
-> >
-> > Whether all or portion of PTEs were actually updated is not defined,
-> > just like in case of lazy_mmu_mode_enable_pte().
-> >
-> > Makes sense?
-> 
-> I also feel that the comment needs to be much more specific. From a
-> brief glance at patch 2, it seems that __ipte_batch_set_pte() assumes
-> that all PTEs processed after this function is called are contiguous.
+Hi Cao,
 
-No, this is actually not the case. __ipte_batch_set_pte() just sets
-ceilings for later processing. The PTEs within the range could be
-updated in any order and not necessarily all of them.
+kernel test robot noticed the following build warnings:
 
-> This should be documented.
+[auto build test WARNING on akpm-mm/mm-everything]
 
-Will do.
+url:    https://github.com/intel-lab-lkp/linux/commits/Cao-Ruichuang/mm-vmstat-reject-invalid-stat_interval-values/20260411-085547
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260410112554.23165-1-create0818%40163.com
+patch subject: [PATCH] mm/vmstat: reject invalid stat_interval values
+config: s390-randconfig-001-20260411 (https://download.01.org/0day-ci/archive/20260411/202604111811.THSgZ1ry-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260411/202604111811.THSgZ1ry-lkp@intel.com/reproduce)
 
-> > I will also change arch_enter_lazy_mmu_mode_pte() to
-> > arch_enter_lazy_mmu_mode_for_pte_range() then.
-> 
-> Makes sense. The interface looks reasonable to me with this new name.
-> 
-> One more comment though: in previous discussions you mentioned the need
-> for arch_{pause,resume} hooks, is that no longer necessary simply
-> because {pause,resume} are not used on the paths where you make use of
-> the new enable function?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604111811.THSgZ1ry-lkp@intel.com/
 
-Yes. I did implement arch_pause|resume_lazy_mmu_mode() for a custom
-KASAN sanitizer to catch direct PTE dereferences - ones that bypass
-ptep_get()/set_pte() in lazy mode.
+All warnings (new ones prefixed by >>):
 
-But that code is not upstreamed and therefore there is no need to
-introduce the hooks just right now.
+>> mm/vmstat.c:1968:18: warning: 'sysctl_stat_interval_max' defined but not used [-Wunused-const-variable=]
+    static const int sysctl_stat_interval_max = INT_MAX / HZ;
+                     ^~~~~~~~~~~~~~~~~~~~~~~~
 
-> - Kevin
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for OF_GPIO
+   Depends on [n]: GPIOLIB [=y] && OF [=y] && HAS_IOMEM [=n]
+   Selected by [y]:
+   - REGULATOR_RT5133 [=y] && REGULATOR [=y] && I2C [=y] && GPIOLIB [=y] && OF [=y]
 
-Thanks for the review, Kevin!
+
+vim +/sysctl_stat_interval_max +1968 mm/vmstat.c
+
+  1964	
+  1965	#ifdef CONFIG_SMP
+  1966	static DEFINE_PER_CPU(struct delayed_work, vmstat_work);
+  1967	static int sysctl_stat_interval __read_mostly = HZ;
+> 1968	static const int sysctl_stat_interval_max = INT_MAX / HZ;
+  1969	static int vmstat_late_init_done;
+  1970	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
