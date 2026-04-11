@@ -4,88 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87845F45A12
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 04:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21C04F45A12
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 04:28:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 746186B0089; Sat, 11 Apr 2026 00:00:44 -0400 (EDT)
+	id 1CA416B0089; Sat, 11 Apr 2026 00:28:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F6D26B008A; Sat, 11 Apr 2026 00:00:44 -0400 (EDT)
+	id 17ACC6B008A; Sat, 11 Apr 2026 00:28:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60CC16B0092; Sat, 11 Apr 2026 00:00:44 -0400 (EDT)
+	id 090C56B0092; Sat, 11 Apr 2026 00:28:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 51FE46B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:00:44 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E12EE8B953
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:00:43 +0000 (UTC)
-X-FDA: 84644923566.08.8EE4604
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CF5A81C0003
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:00:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PhUoAwrU;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB19F6B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:28:03 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B3B2B94FC
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:28:03 +0000 (UTC)
+X-FDA: 84644992446.15.F99B592
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 550F41A0005
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:28:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YE6ctGjk;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775880042;
+	s=arc-20220608; t=1775881681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EK+tj6IXoU9NqDFl67wx0QrRHyI4Qa1XXPET3QHX/dM=;
-	b=OVj1XE/sTU+v4dYD0DksQaSJlAwSzn/4ayFoLGr5pS5EGO6WjgA9f9RHSgwQGtIl3mZiu9
-	1mBsk/p51QBxTzvA17xleWXfO2qLiV7/WTQvN3gwPnL3V1HjCcPXP5gwkcPBIGiUlDbvwp
-	r5jejb46cqoyj/jb4WzshxiY980XPmY=
+	bh=GqAmLsVFwoO5aaDcC6VlHof++kpfICsT5n0C6N43ypk=;
+	b=ijlrxuyLLPHb1BimVFh4Z65+wf5pOtLlv4ScdlkbR6bGE0qz3AsZIDNCrETmppM5Zk/bJs
+	u2OlxOjmZ/Uh4gIQXjMsyXYyQNSA/clUucx7cDIcU5/fVDDoEIVO4+/GKb8WAyImKpgWo4
+	jSLlchEORDfYJqcDh8rWPg0Wz+yO/0Y=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PhUoAwrU;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775880042; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YE6ctGjk;
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775881681; a=rsa-sha256;
 	cv=none;
-	b=4OHpxlN+tVCylIz9ekyseenBUX6mNIDPgNEYNfYe44M4p5l/8jxnjc3/vL1cP8x4fgyXAf
-	Fsgp+evMP7v1WDft6IYnouUVewBsvAk5v2BbhHIdD1lBniDNllIVVulNCyYVNeMuCUl58s
-	ICm793iZfCfSCjktxqGr5T9s9z3gzkI=
-Message-ID: <c9444f86-3370-4d2f-bb84-30640e18cdf6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1775880039;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EK+tj6IXoU9NqDFl67wx0QrRHyI4Qa1XXPET3QHX/dM=;
-	b=PhUoAwrURUEhd79eWEeMZzWool747Xc7qWTtIKl+xSN5Bl/pwAUlWHqlVwpITIj0GCVDHo
-	q9hOt4bOszfYsB03DynzaoHgEADtI6RtkGx7kNtktjRiv+tpBK3e4e16YjbxHQU9C8O/MR
-	0GOEhfKRtFmwTiiZJiRKy3fqeJ+W2eI=
-Date: Sat, 11 Apr 2026 12:00:31 +0800
+	b=HbxE9y9ggDPjoxdmJwVx3a1vdQRsxD3iMWQiZ3A+dA2OmPtwhkhoxWcldXvDR4pmmUIFyC
+	SZ7lEmFjwmqetdqzKs/Ht3k1BpPzytbxASfHkcUnPBb/s2/pCUsAYy1ESlPK+G+2b+SbuA
+	KTXOUelcfBlsODb7KQXXWcjoNFOtYdM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id F1ED74457F
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:27:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC259C2BCFA
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 04:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775881679;
+	bh=GqAmLsVFwoO5aaDcC6VlHof++kpfICsT5n0C6N43ypk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YE6ctGjk60A16nqMj4ZQTpZCv3rxMI9gcWW2ZFS+SI23HDp4cwUIee8O4ssFAd56C
+	 dkXGJAu7OtbjCzjeO3a72WySCr2mQ8jK1n7tm0iXUHHs4rRYocFe1cYJV9y1+z8LEK
+	 I+fBAFxLC5ooKmLgns6NYhi/bElLIkMv/SmwSt3R13VJoH/0ED367vK8Wi2O7C/Hh2
+	 WJd7CLAY6xd3N/UKvYQDoYWCuOxZ08ZEQeJmMFBSksxlZR/GlyUm4LV9RjmM7DWWNS
+	 butYXIzFo9kgsU9eLgotKptkn5Mx6OE0D0PVY3vVoTkqjNeDwhhpwVZKIVru6sfZyR
+	 423NRwzmXnaHA==
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-89f68634786so29644576d6.1
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 21:27:59 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyRMspBbEU/UX+p+v/wkckfu7Yo/ejDykl99VydMeFZW6/i+uCg
+	KoWbbjhq8tfPIZrWLS6RgNuxpWR2fCeIgsvl8nupYRe412ZO74pf+mAf/O4CU62ii0FnAG5ntq4
+	JFlw5xBG2ojCQumbeb3CLuBlxoTBZk+w=
+X-Received: by 2002:a05:6214:8094:b0:89c:c3ac:e5b5 with SMTP id
+ 6a1803df08f44-8ac86117d50mr83071306d6.23.1775881678974; Fri, 10 Apr 2026
+ 21:27:58 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 06/10] mm: shmem: drop has_transparent_hugepage() usage
-Content-Language: en-US
-To: luizcap@redhat.com
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
- akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
- Liam.Howlett@oracle.com, npache@redhat.com, dev.jain@arm.com,
- baohua@kernel.org
-References: <020a4fe05e8ac52ca47c27b0fbb6a07c163a118f.1775679721.git.luizcap@redhat.com>
- <20260410155949.61736-1-lance.yang@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260410155949.61736-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com> <20260407-mglru-reclaim-v4-6-98cf3dc69519@tencent.com>
+In-Reply-To: <20260407-mglru-reclaim-v4-6-98cf3dc69519@tencent.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 11 Apr 2026 12:27:47 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xnqJdL+D8-nWtr5xadNO=fJWaJirvnTcq+8dpeXqWbSQ@mail.gmail.com>
+X-Gm-Features: AQROBzCbyUMQ_wk1cLbKsMRH_Ouly_Mk_U9woSOGUbEbbH4l4y_r6rO_ttqDBQc
+Message-ID: <CAGsJ_4xnqJdL+D8-nWtr5xadNO=fJWaJirvnTcq+8dpeXqWbSQ@mail.gmail.com>
+Subject: Re: [PATCH v4 06/14] mm/mglru: use a smaller batch for reclaim
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CF5A81C0003
-X-Stat-Signature: mkj3t4wj5jt73fzx55ehcsq9got7cugr
+X-Rspamd-Queue-Id: 550F41A0005
+X-Stat-Signature: km6z1a4qiuxszojyh1a1rm4nktpg71hy
 X-Rspam-User: 
-X-HE-Tag: 1775880041-500665
-X-HE-Meta: U2FsdGVkX18Ql/5H7OKAfpnDseMiziDBwdnFglhKiV08D6nDFt0d/jzA6RFDKtekCxGVZfL+Kl6ai+HGW1trZzd/2OzIejsbzSB1d2ffxNHixkNoBjKkddagSUrAfn7OU+Bgcvpji7QkZoX5HVwOZ3crCQF0AfTGuzxrNwMk1lV/wHtw6az5j+30V2hpQBgGU9NzxAmorl2rTKc5ZJ1DZY9jxS1rLoi6KT2CbKngHiQDmjVvGR514jqlFQ0e8spO68qLCKloagKwLRoqnZdQ1vNLZybl1LFHwH2yF2rtu0ritxKkyQHHKAzwxdV1/Fwpf/tq3cWmulfjBg0E5AXot+P105Nd9UbrZ91AAt1LTQF89ZHxe2WY/S3Fp8ksGipVejJ7k38xNjyO+DkLLZ4wxcFmf+mpn3Sxjt2yoNsxvGo6yH5OatswI6JIuVX39Gr6eluLbD7uhT1wX92yupMovur+YwdXRPSxjw0D3QTu1DniAiOEGcDQ10l7GeH8gRwKrETw5hYRxnQiUn9vSpcQ4QH1iWffqxf6+EVNPjyVMzkYPGQyTHWoGzXDP6opK1HnvBlTW80rimrprV0Zc1gs6B2atU9CnmjkOPebLv1WAb3pzJZ7dARmiI5iSEIZc2D1cPYwyk0g93enCQWnv5RSE6/xIQFwJQ2flwH7ERdLapr3Zm3XoEOl/HSxZx/ejTSE575mutvH3qJOsP0iTUcdNJGozCvaVT2Cx0Rvhds3NkNqolWnMb4gW2/S+uQavFQXF6mvLHODOnwTAOZqd54ROZ30EMFm5b1OzXCWamT31rSpaOT2zkALE9BSZWliMNzFOwyUhpyzIC5TXHOspOOHZg8AHFEEwvqjZiXUgZaXgnN9QwawWJowZpdsYVp6QwQBk6cHI9JE3gCYYhSFjXuEYFaVpZ59YhuCqxd1JeXibhoDvMpskSktcCbkwWS2uAivEWGgrLTKpbhIW67Pj8l
- 7jZVPKRI
- C2CcQLDeyUWgFyDyo8U1ZE4FDn0x4c91/cGuRxIeC8+/2dRRH6+F2qucGe/bDYyYB5+KJ7nuNfGnkZwXen2nwwyILfohKfTgn6NR7lmKpnXWUxAeaAB/Tkr9OfeC3TyNB2Axig7xnic63H8Yq9hVvZaK4dgEdjMfICwVK5VIg7m7ohiwnI4HtUFr/XQtXmVNP0CR2732ToXqNvD+rlQKe3OQfgbNO4YPql+RVhojQfTgIItX7bYnoWlhulDmXDqteNKWNeb+zJT07svOAY+31M7gW8A==
+X-HE-Tag: 1775881681-856338
+X-HE-Meta: U2FsdGVkX19cNm/3IwuEhqwdn6CpZ3g2PQzjHAc9/vpd7Tv7zBKtBFqfMTqVYJuCPyHS+yxBs/n1qc6U/pcMbVAhnTosSQbwgcHk4FQRC/ka5L79vwG64r1cTPsIHvy/gKZOEUl19zyQqglw8M/7T2GWcDnPHCr86TSeBGgxc9dCQe+coJRTY/wGrTryMG/fcmh7Agvzodl1TCAfIWJwqmNDf5ekYDv+ynz0dpk40W6hAhRY+ut8o3ejgTRb4+IPOwa92Ld48lcM5o38S4ooTFvlA5ZKLVrvAdOYs0ulIqw9OMGt2RlO3oZKaEu6ipOuDprCWSjqU08Yt/XfMi2sqhjeFfoJKBmWww7HSwpaU6lW6o+a79aJPVJgFCP3ytBh2zRoPE7l+GSiZTuX2+X5L45jPBQR1LSAMYKHKhkVsSs2leEANnKdauS8MgOo7L5BDevCGdxXfk8vq982yPfeSpfD6ZxqUR3D69pq5BsCy7e10S5BuZsOUWQVbQeTrfCsnVNRtc5alt/7DavktvrEZ7LW5X38cLGeoSBq+YAcZNHzdgaMriH5LZ75HTc7oM0BxzS7f6yRA6WgG3VD4TSfzkM4GLzIjigtIVKT8JZxbBtjfFPsVHNtQSg/ZAeaaf+wrf3s1fftRpqML1wOTIdH9afw5hLhMzrpymfMkN96C9TyrLeQRc3jESbm8RhvWu8CYlgwFmgOCh19OJTPNu/vpT5dgLv2fEPPM563kUcUTd0tCADc0Io8/pBHJwSG2Dh4gEUSHqjqvurpS8QyFyHQD2vboGAVP/+sCf9Ls2M+lLbdgtugd+ovENc1LP9G1OQZU55Lsb5iPnLvkt8fWFC96NlYbVbw+Fg7dPxDtCB8BWwZ1N9b7nKtvVp8IlBLRdwmyxtDl7pW5jmpj8m/9cJEpzvRe2el4X7+KQGDQyAbU0d7xLCBiKKgRAXWiuberWLfy7HTvFwXtjlhgmIEPsr
+ j7eoNkzf
+ VLGRI6DJzuJwQLAHKYJobvkDCtulZR4fMACxsX+tDelo5KQs/yzSbXeLvfoAAdL3hFItPia7jdh+A6kBfUkWpOGIY54V8KBTcQeZi3tz+9rVUIMVmC+4vQzcqwOeQJy2AkFEJD8wWg21NS0Rs2tWc8ZpY0/RjNtR3ddi/UDp8x2p4R7jl4zMAz7v225WP7mieWMEMdr0XBYUJZlc/KJOmBmMsViol5MOmlnwWDa46Mu3y9Hz6E3m9hJ4MEmDrPz4+O7zF8o7Egc0LrpIEMLZtpH4n6OVzCbnYT1DlTy0pdesDYlkZRNtipDwFRJa65U/hgt/ylcnbl7hUD+L/PTLy+Pmw5HcG1KYRpZ4cmsX2EmNDE84KTtaPP825GUH4BekeVftj0XLtlCxy+VT8mM/6isig/iKZVXJXuYaJRzy/t4dDBWoScSQJbPBxJYYwza7GJgBj1p6vwsYXbIMGnGHuldAB75BMEjcevMfhtwUZeJX6Oo4rC/5JzHceoA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,92 +111,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 7, 2026 at 8:05=E2=80=AFPM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> With a fixed number to reclaim calculated at the beginning, making each
+> following step smaller should reduce the lock contention and avoid
+> over-aggressive reclaim of folios, as it will abort earlier when the
+> number of folios to be reclaimed is reached.
+>
+> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
+LGTM,
 
-On 2026/4/10 23:59, Lance Yang wrote:
-> 
-> On Wed, Apr 08, 2026 at 04:23:01PM -0400, Luiz Capitulino wrote:
->> Shmem uses has_transparent_hugepage() in the following ways:
->>
->> - shmem_parse_one() and shmem_parse_huge(): Check if THP is built-in and
->>   if the CPU supports PMD-sized pages
->>
->> - shmem_init(): Since the CONFIG_TRANSPARENT_HUGEPAGE guard is outside
->>   the code block calling has_transparent_hugepage(), the
->>   has_transparent_hugepage() call is exclusively checking if the CPU
->>   supports PMD-sized pages
->>
->> While it's necessary to check if CONFIG_TRANSPARENT_HUGEPAGE is enabled
->> in all cases, shmem can determine mTHP size support at folio allocation
->> time. Therefore, drop has_transparent_hugepage() usage while keeping the
->> CONFIG_TRANSPARENT_HUGEPAGE checks.
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->> mm/shmem.c | 7 +++----
->> 1 file changed, 3 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index b40f3cd48961..6f8b20d77e07 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -689,7 +689,7 @@ static int shmem_parse_huge(const char *str)
->> 	else
->> 		return -EINVAL;
->>
->> -	if (!has_transparent_hugepage() &&
->> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->> 	    huge != SHMEM_HUGE_NEVER && huge != SHMEM_HUGE_DENY)
->> 		return -EINVAL;
->>
->> @@ -4664,8 +4664,7 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
->> 	case Opt_huge:
->> 		ctx->huge = result.uint_32;
->> 		if (ctx->huge != SHMEM_HUGE_NEVER &&
->> -		    !(IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->> -		      has_transparent_hugepage()))
->> +		    !IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
->> 			goto unsupported_parameter;
->> 		ctx->seen |= SHMEM_SEEN_HUGE;
->> 		break;
->> @@ -5451,7 +5450,7 @@ void __init shmem_init(void)
->> #endif
->>
->> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> -	if (has_transparent_hugepage() && shmem_huge > SHMEM_HUGE_DENY)
->> +	if (shmem_huge > SHMEM_HUGE_DENY)
->> 		SHMEM_SB(shm_mnt->mnt_sb)->huge = shmem_huge;
->> 	else
->> 		shmem_huge = SHMEM_HUGE_NEVER; /* just in case it was patched */
->> -- 
-> 
-> Although this patch simply drops the early has_transparent_hugepage()
-> checks from the shmem parse/init paths, shmem_allowable_huge_orders()
-> still returns 0 when thp_disabled_by_hw() is set.
-> 
-> So on hardware without PMD THP support:
-> 
-> unsigned long shmem_allowable_huge_orders(struct inode *inode,
-> 				struct vm_area_struct *vma, pgoff_t index,
-> 				loff_t write_end, bool shmem_huge_force)
-> {
-> ...
-> 	if (thp_disabled_by_hw() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
-> 		return 0;
-> ...
-> }
-> 
-> 1) the fault path still falls back to order-0 allocation
-> 2) do_set_pmd() still falls back
-> 3) khugepaged won't collapse it either
-
-Forgot to add:
-
-4) the buffered write path also falls back for tmpfs mounts
-
-> 
-> Nothing jumped out at me, thanks!
-> 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
