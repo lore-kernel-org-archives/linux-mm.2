@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28202F3ED59
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 18:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C66F3ED50
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 18:06:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41BDC6B0089; Sat, 11 Apr 2026 14:03:39 -0400 (EDT)
+	id 4BCC56B0089; Sat, 11 Apr 2026 14:06:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CCB36B008A; Sat, 11 Apr 2026 14:03:39 -0400 (EDT)
+	id 41F4A6B008A; Sat, 11 Apr 2026 14:06:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E23B6B0092; Sat, 11 Apr 2026 14:03:39 -0400 (EDT)
+	id 2C0326B0092; Sat, 11 Apr 2026 14:06:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2178C6B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 14:03:39 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8977B6058
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:03:38 +0000 (UTC)
-X-FDA: 84647047716.22.6FC6CAD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F409E14000C
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:03:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KGHlTDeB;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 177C46B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 14:06:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDA2F1B8C2F
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:06:04 +0000 (UTC)
+X-FDA: 84647053848.30.4F89DCC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5277AA0006
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:06:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qvAePOSa;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775930617;
+	s=arc-20220608; t=1775930763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jXrzARzFMasYeWBVFe2wOQoT8fUHBXJT5xXbD1rsTho=;
-	b=rVKxhkR/TMGdrgKfOBHM15n3jONOlq+iXyjIxoZRZmo2XNUTWXAU1UyIM6UPk5aF8GhpOA
-	HOsuxOsD4w6DgeEKFJGEotxnl/B8WFxO3PyNCeY43gbdktItnN5hwO0ppxTShgT3k75GNt
-	xA7yKwvHv5TwfHoZA03SR9l6k3rhCfo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775930617; a=rsa-sha256;
-	cv=none;
-	b=aN5+gueUTSjMi3U2JeRxtNRT3AZ0ee27UQmjzoRabOwEDH/LKAvzPMXp/J1FsrtdcchEbh
-	+FzfG25EKnR8YdNRkfDAcdeN2zzMB9IFZ9cdBm3KtpmUlQGGKH2fdh+yEkL51+3hDLwZSC
-	keR7cRw3hf8gnX5RkqBc/Fo5/Qzu1+A=
+	bh=76jT0Av/PppohLY9e8uNu08CNJdiWrt9ObBqE/Z0s84=;
+	b=5e49jc+ya/0Wnbzd2SGfRbeS4fzBycqMswITuBUmYcdiIWF33Z4/5tGqVNgsLBrLXbiplX
+	gjnQMVUimaSjWnxuqfmeyuvh9pwzb0EsTLbs69IS5lNhuga90NmPSoN8GXtDPN9rzp0wKH
+	fu17gqziLI4QjyGmYDYN7b2UdUdDGLM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KGHlTDeB;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qvAePOSa;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775930763; a=rsa-sha256;
+	cv=none;
+	b=EkcxS4kPsBsXj5GiWIG1NYqK9FAHg5XSnrMOkN8JG/udS3cbDZqdOgw/XpDu3C7eWg3GfT
+	grq4xhCcAPcLyoYOnzqV+4vLIaobK3TdO+5crvdNzIKPpBYOs2wUJQwLobkadmyQiSGBsZ
+	P58GKmEnvYtgA4AfzR6dR48X4g45rJ0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A671941A21
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:03:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52866C2BCAF;
-	Sat, 11 Apr 2026 18:03:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AB9C06015B
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEF0C2BCAF;
+	Sat, 11 Apr 2026 18:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775930615;
-	bh=DBCgDKz+lnsk8HdK5nYVKKWSxqPwPqoy8Cf/9pXeUhc=;
+	s=k20201202; t=1775930762;
+	bh=FT5470fpgMWYmiUdJN7K/tRS99P7K/kQlx5yLr3uiUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGHlTDeBJv8aIl5PRXUvhhoIvAfsZz0o1q/g7s8Tokd7fdo6E4hZhA5GTXNulfIOt
-	 addZt98NFQ/M93/VMLKgvVRujpQTkDJHYnteW5eg3583RLJHaHSWv8vCBVERpHeIXP
-	 IACPZ9UXa/VrxQb0O6PlIzZDKoQVPLwb5HsdJomszqlCPFak7WPFjfFd4R9meec29m
-	 FFYTbZw1Han3B6t4FTpPa7d10rN2vI20G8G9dg6QgLcouTuGOIdOZMa6kd3KecBEqG
-	 p7Ieti/WjikUiPEuJuGDqd0pT6nhpOo0G3pexqAH/IvAueN+bJdvBCHuG0xy8MYtRp
-	 oaELcSv906k6Q==
+	b=qvAePOSajJF1TiS2/hX5RCRKWZ3UQj7Krxe/PiLtBGhgTSYX8dGLuHkqd/EaFuDsr
+	 7cdgBrGkU2ATWj23WrZlvBE1nPrrZD4BYHoMPtmMopRPeKO/Bt0vF/Q5Bmu7jizQ1Q
+	 zfgQmNuORckDYMJFS8FTCG4CC08xHBh+Ek8nqb3DsJxsKWEfJhmzcNA574CyhWLSw1
+	 Rx+7p54UNIrejfHuz6c+U+WG2me8TbfRkIVlOMRQ8pew4MUMmJ/5XszM1shtOP5Mng
+	 6u6VRGscPpNODROlrA/ZgQUqosex25eo0av9z4jAz/1Dhs8eJKZ/T0n7/hpkbuHK4X
+	 68iHa0ia7kPpg==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH v5.1 02/11] mm/damon/core: merge regions after applying DAMOS schemes
-Date: Sat, 11 Apr 2026 11:03:32 -0700
-Message-ID: <20260411180333.79709-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH v5.1 03/11] mm/damon/core: introduce failed region quota charge ratio
+Date: Sat, 11 Apr 2026 11:05:49 -0700
+Message-ID: <20260411180549.79857-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260411164908.77189-3-sj@kernel.org>
+In-Reply-To: <20260411164908.77189-4-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F409E14000C
-X-Stat-Signature: tm6wu4qzdnpebikc4j89mrxizcunz7pz
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5277AA0006
+X-Stat-Signature: qmyjrhz56nutaquqr764dz38jo3dff5t
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775930616-338126
-X-HE-Meta: U2FsdGVkX18xAIyhd1ciE7QM/CUlMmiVJWnx4/x9CZ8ouMhDXeSfi1gEY8Uh1FGJwq1QDd+bxl9Mtdyjf+YtUkRz2cwbMYujENgIO9Iu9KrtjFXbK9lCMWLQ1Xc9pzTu+FoKqhqQGHUcj9degjSl/zX6lhI3fyGSwUhtgJFnXBIkRvP133DDBnhwc/udSJo1DI/5Et/IeK6PYkyzBik1TDJbwuld7xLMVTbTd3zWNMr6L1Tx9/I0BGt0GPGDZaKzxbs9ItVpYdTrRpuW0zrMxs+SaY91+cuQO94uVOOGWDTf7xM+QmeKvvjB03RV0QQjpn8nI5UYg5fgtf+PVSb3dsV91zuZUsahMmQmzcp+Tw0A3NYE5DtQJVmJVzIYWoMlCJnN2W57XukRWLybooeM1rXKjcrSgeAL65tfDkS54h9IMAj6Zif/Dl6LRARmMZxu7CxrSplprCSzkbolo45JbsF2W81Qj8Ae1kqf6HNhm7mPGZ5hLxtQQMZd8s8dcRIPPMkjIXR12ztAIshMWputHI7dmzjVwVZy1rYnk9E7aE9hI7Q3lX0dTAZawvtTU9GPAjanzbo7Z1xCPRriy3w+UKuLrKmiUDkdkondECqFf+wXgFQfHISSaV69INU8rtFLcn/oMIoHCeTGEemgO2RXrp40DMKJ3rb248GNimrN3+s9pqPOwMYFjbcgwlDnHJXdihEZsQbO8Fu9izyoP8mv64zGnhGp1ioViNePElCSmq3GgToY7EXr9mCU+8afdUiINa4a+M921RY0iYOiEB1XhkLueinP13wdDQ838e9djDcgB7uEoG0v76/uUWYWavB7G0eZC6dEk+CWXMKfAa5rRyyXq7tFJCpAYGdmju0TjrZg6Ay6JC2pUxe5GgYAwF9SjkJ0ovcEOZj7xILuuGmtS0qjdjXMfI1iC777AQTG533eNiTTvkk78FRe+RVBoD/FT/YBZWSE2znTj0ojRLQ
- fIPyCJu+
- 1zRV7jFZWeu5B8GYjcBpLjGsxFdsTY9U6Jt2e0QzGfDdX1hohNi+7kIaH4bY13Ad47qiWi5Vd5NhPq5p+fstU3PuZFNR8w0tDKXocULOz60hc43ghNECY18N7KHWpr9Oh+0f2ZAtkIeUaSCijsmf261hZy8sePrtqZvmwvet+nujRnyk5/IS4pcQwWXIXNDn4kOpMIQF/pSLGMVTpCcl0gpmbnAYJ9CY7eYg4uqrmjTidoTu6qBPmyzqj/7WhWpiaOzSVt6JhVyB79aSQpyusOBW6fOFCtpt9yczhd0InWQ55Bdg//1L16fN3Y8U4Y/PQfVnrbA6QjboCh3WHLIbaebdgbU+p36v2Ujh99fEElPmAU5U=
+X-HE-Tag: 1775930763-144944
+X-HE-Meta: U2FsdGVkX196bJb7ofoR5pwgnz50PS+nkyDIwMoLNvRnGn+r/NrUaZFMMlAOyQ1GZABoMWvd+a9SI2OMBlkwFC6pkpaT5QVpGALT06wN96UcdktBRHQn9gE0HvtaSHn5kPR51lqbecUFbHN/FkY4nNE7X/arnDd/EsWvP80ZRi8hYcDA6ggHp83LdIQ2ktJ6LrNqwdFWd/XOPzw5TQhu3N++uDqbtSWzUkzXTrM/PjUJ3EiaNl++oVKr3kpvekFrTNfsZw66lmTnb+WRZ6j/MaJ3xJoMZSmbFR9Z1Vjx8bCGDAsNPp5vQsKHjbZXTkhtAbYSZKXjg1Lruz2Gyi4V459n5PpkRHC+h1BouXp+RZgumDsZi0N+nkcImhGpmoiMKX5SkyohQ0xUmLUxOyRp5IYuWJ3qhLdDCvuGeyD5rt9jh11coH6qEzJnaBC+6W4/WlrpaBJEt6OLGAAi1Ar+NEGjYqw9RAOLd9o45dMHUon6/3Wkl8C2o1Csj8+rCGC6zRGBdT6h9p6Lz8p0aCe2qAMBq1Zn36UmPI9vLl+YKlxveASm6RJ8v0vBcBXC3whVassXaCVWKsLb+ZeTzV+xT3I5h4ffLGxxh+cl2N3Bs0x6vDeD7yMIVp2D2Ga7a71VpA9Y+GW+trBKIB55AUUQP0hoG7kvd13eZDxn8a9HjdmUhpGr44efXRPFGW8XftRQXk0Zxw+o2LEHRTDGQZSFubohDJCe0jb0T/SvgkxLoJhmw4XiGHhSB17jivq198RXgM2QBn2nZ9TwKz9qQ+TniOpzqypS1+HlNCCbYDVFuH2NwTYFBr4xmWbb3WhTa5xmuF4ODBBaJDKwqej/iNzI5/Kd/aw6Am6fO4f9uIUzp2rFFatXTi+yDkisbGnoxIoz6LoKTnboJljkdDAB94JJrvyumxueRmBaKrzs5qIEjIlknxJbB602NJjhu5gY97lvdmHskNhCaOPvM8tUk2R
+ FfoAYKTh
+ bajKvvq/S6rIFbBLvAdsnlUthgThWwSiT1zo4dNy1GIqq+MZwqlzHnbvjg8XuZwGErgsJvKwca9Bhouz+qckszbZCpxrTnv3CCEik1Vf3bR6pXJI+PtwqcPGRuCIhmVBDciGdyUDuEB1MlCECAtYB5m5dNqizGTMOUd2qcCU+Fq+eYn4gEyPSIQWbKlI1hR6AyiuQfHSmZFCNxWxapafc3E5FgTYigvv1ZIDITr9oMNt7xi/ETIIgO9Y+cDugVC7r7xUBL7B++pHdwXgIIUqPPnwdCYhCZMJPH2SPPwVVpzxb6Lhcf8CqJZlXisSwp6R+Edem/x8o5gBwDZVCCGxcbfH0cA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,119 +91,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL; DR: sashiko found a typo and a fact that I forgot adding a fixup that I
-promised on the previous version.  I will fix those in the next spin.
+TL; DR: sashiko found no blocker for this patch.
 
-Forwarding full sashiko review in a reply format with my 
-inline comments below, for sharing details of my view and
-doing followup discussions via mails if needed.
+Forwarding full sashiko review in a reply format with my inline comments below,
+for sharing details of my view and doing followup discussions via mails if
+needed.
 
-> # review url: https://sashiko.dev/#/patchset/20260411164908.77189-3-sj@kernel.org
+> # review url: https://sashiko.dev/#/patchset/20260411164908.77189-4-sj@kernel.org
 > # start of sashiko.dev inline review
-> commit 1a56d6af604a3fc86a23180a9619447641294a2f
+> commit cb228850cc3bb33cac86cdc674c79e2557af28a8
 > Author: SeongJae Park <sj@kernel.org>
 > 
-> mm/damon/core: merge regions after applying DAMOS schemes
+> mm/damon/core: introduce failed region quota charge ratio
 > 
-> This commit introduces a mechanism to merge regions after applying schemes
-> to avoid overhead from regions split during quota-limited scheme application.
+> This commit introduces a DAMON core API to set the charge ratio for
+> action-failed memory. It allows API callers to specify the ratio flexibly
+> using a numerator and denominator to avoid charging failed memory the same
+> as successfully applied memory.
 > 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index d04a107df7cfa..3398faeaa4350 100644
 > > --- a/mm/damon/core.c
 > > +++ b/mm/damon/core.c
+> 
 > [ ... ]
-> > +static void damos_apply_target(struct damon_ctx *c, struct damon_target *t)
+> 
+> > @@ -2041,6 +2043,23 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+> >  	mutex_unlock(&ctx->walk_control_lock);
+> >  }
+> >  
+> > +static void damos_charge_quota(struct damos_quota *quota,
+> > +		unsigned long sz_region, unsigned long sz_applied)
 > > +{
-> > +	struct damon_region *r;
-> > +
-> > +	damon_for_each_region(r, t) {
+> > +	/*
+> > +	 * sz_applied could be bigger than sz_region, depending on ops
+> > +	 * implementation of the action, e.g., damos_pa_pageout().  Charge only
+> > +	 * the region size in the case.
+> > +	 */
+> > +	if (!quota->fail_charge_denom || sz_applied > sz_region)
+> > +		quota->charged_sz += sz_region;
+> > +	else
+> > +		quota->charged_sz += sz_applied + mult_frac(
+> > +				(sz_region - sz_applied),
+> > +				quota->fail_charge_num,
+> > +				quota->fail_charge_denom);
 > 
-> Is this list iteration pattern safe for long-term maintenance? 
+> Could the mult_frac() calculation silently overflow here?
 > 
-> This loop uses damon_for_each_region(), which is an unsafe list iterator,
-> but destroys r inside the loop and reassigns r = prev_r to safely continue.
+> The fail_charge_num and fail_charge_denom variables are user-controlled
+> unsigned int parameters without bounds checking. The mult_frac(x, numer, denom)
+> macro evaluates as quot * numer + (rem * numer) / denom, using the type of x,
+> which is unsigned long in this case.
 > 
-> While this works by relying on internal macro expansion mechanics, if a future
-> developer converts this to use damon_for_each_region_safe(), the cached
-> next pointer would be evaluated before damon_do_apply_schemes() potentially
-> splits the region.
+> On a 32-bit architecture, if a user configures a fine-grained ratio like
+> 1000000 / 1000000, the remainder could be up to 999999. The intermediate
+> calculation for rem * numer would evaluate to nearly 10^12, which overflows
+> the 32-bit limit.
 > 
-> Could this cause the loop to silently skip the newly inserted slices entirely?
+> Similarly, on 64-bit architectures, setting fail_charge_num to a very
+> large value like UINT_MAX could cause the quot * numer operation to exceed
+> the 64-bit limit for large memory regions.
+> 
+> If an overflow occurs, it would severely under-account the charged size,
+> breaking the quota enforcement in damos_quota_is_full() and allowing the
+> scheme to silently bypass its configured action limits.
+> 
+> Does this code need bounds checking for the numerator and denominator, or
+> should it use a safer math helper to prevent the quota bypass?
 
-Yes, such mistake could happen in future, and this code could be better written
-for long term maitenance.  But that seems better to be revisited as a future
-cleanup work.
+Same sashiko question to the previous patch.  My answer is also same.  I will
+keep this as is in favor of simplicity.
 
 > 
-> > +		struct damon_region *prev_r;
-> > +
-> > +		damon_do_apply_schemes(c, t, r);
-> > +		/*
-> > +		 * damon_do_apply_scheems() could split the region for the
-> 
-> This isn't a bug, but there is a typo in the comment (scheems).
-
-Good eyes!  I will fix this in the next spin.
-
-> 
-> > +		 * quota.  Keeping the new slices is an overhead.  Merge back
-> > +		 * the slices into the previous region if it doesn't lose any
-> > +		 * information.
-> > +		 */
-> > +		if (damon_first_region(t) == r)
-> > +			continue;
-> > +		prev_r = damon_prev_region(r);
-> > +		if (prev_r->ar.end != r->ar.start)
-> > +			continue;
-> > +		if (prev_r->age != r->age)
-> > +			continue;
-> > +		if (prev_r->last_nr_accesses != r->last_nr_accesses)
-> > +			continue;
-> > +		if (prev_r->nr_accesses != r->nr_accesses)
-> > +			continue;
-> > +		prev_r->ar.end = r->ar.end;
-> > +		damon_destroy_region(r, t);
-> > +		r = prev_r;
-> > +	}
 > > +}
-> 
-> The commit message explicitly states the merge operation is made only if it
-> keeps the min_nr_regions constraint. Does this inline merge logic bypass
-> that constraint?
-
-Argh, I forgot adding the fixup [1] to this patch.  I will add that in the next
-version.
-
-> 
-> Earlier in the execution, damon_apply_min_nr_regions() enforces the limit by
-> calculating a size limit and splitting any region larger than this limit into
-> smaller sub-regions. These newly created sub-regions naturally inherit
-> identical age and nr_accesses values from their parent.
-> 
-> When kdamond_apply_schemes() subsequently calls damos_apply_target(), this
-> logic will immediately merge those freshly split regions back together
-> because their age and nr_accesses match, entirely omitting the size limit
-> check. 
-> 
-> Does this unintentionally destroy the spatial monitoring granularity every
-> sample interval?
-> 
-> Additionally, when merging the regions, this code expands prev_r->ar.end and
-> destroys r without accounting for r->nr_accesses_bp.
-> 
-> Since standard functions like damon_merge_two_regions() re-average metrics
-> including nr_accesses_bp, could this inline discard of the fractional
-> nr_accesses_bp tracking result in a slight precision loss, contrary to the
-> commit message's goal of not losing monitoring information?
-
-Yes, that's valid.
 > 
 > 
 > # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260411164908.77189-3-sj@kernel.org
-
-[1] https://lore.kernel.org/20260411163340.46397-1-sj@kernel.org
+> # review url: https://sashiko.dev/#/patchset/20260411164908.77189-4-sj@kernel.org
 
 
 Thanks,
 SJ
+
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260411164908.77189-4-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
