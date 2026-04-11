@@ -4,104 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3241DF45A12
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B175F45A15
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 01:02:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91B116B0089; Fri, 10 Apr 2026 20:34:32 -0400 (EDT)
+	id 82F696B0089; Fri, 10 Apr 2026 21:02:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CB606B008A; Fri, 10 Apr 2026 20:34:32 -0400 (EDT)
+	id 7DF106B008A; Fri, 10 Apr 2026 21:02:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B9D46B0092; Fri, 10 Apr 2026 20:34:32 -0400 (EDT)
+	id 6F69C6B0092; Fri, 10 Apr 2026 21:02:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 661D56B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:34:32 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1530B160671
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:34:32 +0000 (UTC)
-X-FDA: 84644403984.10.4813A78
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 601BA6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 21:02:48 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 003AEE3581
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 01:02:47 +0000 (UTC)
+X-FDA: 84644475174.03.AA92623
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 16A44C000D
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:34:29 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XZJ2Bd8q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id F32DE40012
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 01:02:45 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mfc/iL/4";
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775869366; a=rsa-sha256;
+	cv=none;
+	b=WPmHEtzOB9Pzy4SGF/f/WLKLnAf8nzbeR2lETHEvWQh1w7QuKxd5PYlyEqZt2cLBpN53sy
+	uc31MG520Fw0jEGcaAGCXQQxR2jN8PALoD/9tbIvAivFP50CKzgkCfF83qHhx1EMFEwHou
+	tHYfgWHTZb44C9NbuwhzNfvKYH4aF1I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775867670;
+	s=arc-20220608; t=1775869366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xIEz4rF1j8JpIYdjyvbkQ+33mKAMpyIpO5NlOVfqQRU=;
-	b=dxQKZuAwpCRoR5pjGh2vNO4/Rio+iwgsgCBXARPVoKmZ1HKLnycCIHimS9gxxNkePgfFP7
-	nTZPMFUUJNV7a36UAhdnZFBDDUDzE84BkMXdJT8G5WodqOUe2KFO8Kps/qNxHKUGbRsU5Y
-	6vm/pCjSEGidvMJ9v+fDvrsyMCQnHXQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775867670; a=rsa-sha256;
-	cv=none;
-	b=cJV1q3rUIxjMAnNUi2HNslrs0Opp4uvWCH2TQGRjhAIDV8iVjD9grx0lW5jmhsADp8r1ov
-	JUXRni8+bCIV4Jn0CKrKWlxf0aouXXWvScK7LfwAzOVnAiIEyJhQ7fCyc7Daft0UaJH78z
-	+PQ/cI5IDh89vTeAXT4VbTvEpSAhkvo=
+	bh=dJAI4uBjM3NK5AkUVYuA3IjJ2co8UkAPxCPAsZ5wXrU=;
+	b=aBeLRYZmM4S4DAlmlzXEuwErZpRCDoIBI+WmLuDHozi52DMCxC4CN4Nd/01cNR0lvGNhSV
+	v/aZ/Rd4WE5UJWn0u0z0rU8nJaY+OsXcumRm4AiC9s1HscYLeU6jsH1iWjgL5/p5VRXbSh
+	H9CoILvTgJqRVpk3TSQSvSqCTMw0dKY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XZJ2Bd8q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mfc/iL/4";
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE5424455F
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6BAC2BCB9
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:34:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C903B4455F
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 01:02:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671C1C2BCC6
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 01:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775867668;
-	bh=aMaxyM9DAkGN7TpTqVyxxpJ5lbyTiW9bNKnlaUTAsTs=;
+	s=k20201202; t=1775869364;
+	bh=5tPIoFmVJ07KOPIR71GnzxoVDBapjkfgu8eIbgUDQms=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XZJ2Bd8qPVI/y4dtDVyzxHXr4b74Krm2kIeqXFmeYQ0x9f+MDyPYrhhvX/rxuedkd
-	 P0s7bR97+bmq/SY6BLSikkAJVcKnbm+W0wc0qm6LvLXLBZtpwvAs+J6+w5BFoSvY8U
-	 /cfBc2KBEQqt6ECghoA88vEsJuzvvUbuzz1mrao1LVVBSvoMzMX4I71fqmCGx3UnKO
-	 2vOybVglzMIRNrBFmJh5TcpLFc0GTGSvrMfWg/dN855HPiFm1DElKhr9GSOJt3UCRa
-	 dMHLV9rIxQ9CpHsaXJXBZ/Cf5EMAAfNhM2r1ZpbAVEbdxk6nuORGCQ88VOg0gzRHDc
-	 fuozjg0AIk6Ug==
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8d68f702851so415173185a.0
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:34:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXXPcynstxGALbeoABUOqj/fBwwfoJTWYS9rh50eHyB+zspxIDIXyczKLNikmeP0XiSCHG7gu3JkA==@kvack.org
-X-Gm-Message-State: AOJu0YyWTSavz8TWOm3cHqppxKAzslx5SjcD/HmyRvgxMsACKV0FCUBM
-	T7EXnYU0B6f9OimfDBt7nJTYGl0kKAAUtId07RJW9BxNcUgtDMgtalOZXM1Uko/KqAimGzuBPx+
-	8Jzm8OdOUyF3WIrStYin8d7IMeW1hDjs=
-X-Received: by 2002:a05:620a:4688:b0:8da:dc5d:acf5 with SMTP id
- af79cd13be357-8ddcd022c95mr752874885a.12.1775867667820; Fri, 10 Apr 2026
- 17:34:27 -0700 (PDT)
+	b=mfc/iL/4eBNq9QTWduXtb72hX8hQvf7tSgV0bvKyYxP6mwwYNbkPXY2bjOSLcEuTJ
+	 3khOkyWi9W6JYGbNtSfozE8Ua4k9tjBCr+GZbHW2v4d6Rg8K2uVKZbaguggqrnyn7Q
+	 oyqD5cbaX+u7xhOcE67DmkN8wiab2G5KZjRxP+N/YtUlwgdijWDnGPXsvmPgUVMRMf
+	 wZjOe53OWrfVohgY0OLN5i46ajg2Ef5ImLmLWMjHui7xl10296HBH4qvAOVdoqYIWy
+	 bq+VXHqu8+Dodh3oS6nQ2yZnr6pKm0mRHlSfn2YQV9vDQlvCoibGCQrVjl8Yook+Um
+	 u0t74YB7OW5mw==
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8cfd44fa075so314352485a.0
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 18:02:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWxoU7orzdgKBNwwsnvTs6ttyZds6gIGN9ghpL7sjWgJVIEBh9FEQznKVI6Yg/OoW91fYDVHBHDBA==@kvack.org
+X-Gm-Message-State: AOJu0YypBrbQoJKwfL/n4y0cS+iUGZv5jq3hbW8GjkigFcCVXHIvllg4
+	V87Rlfebk+jKqviHcBMo8jRfcs3vfu9zeqQcR1ycYW+cAfQCl+gRht0jeynziM4CbCrxUcNA469
+	CQDahRxyLWx1aGLi3nnSLm4GO2TXvIts=
+X-Received: by 2002:a05:620a:298e:b0:8cd:92e7:718a with SMTP id
+ af79cd13be357-8ddcecbd120mr774599285a.38.1775869363502; Fri, 10 Apr 2026
+ 18:02:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260410-batch-tlb-flush-v3-0-ff0b9d3a351a@icloud.com> <20260410-batch-tlb-flush-v3-5-ff0b9d3a351a@icloud.com>
-In-Reply-To: <20260410-batch-tlb-flush-v3-5-ff0b9d3a351a@icloud.com>
+References: <20260410103204.120409-1-dev.jain@arm.com> <20260410103204.120409-2-dev.jain@arm.com>
+In-Reply-To: <20260410103204.120409-2-dev.jain@arm.com>
 From: Barry Song <baohua@kernel.org>
-Date: Sat, 11 Apr 2026 08:34:16 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wqFhVALC-AxFo2v7yanTL+tsL0OCVYv_gRwdh8ds+7YQ@mail.gmail.com>
-X-Gm-Features: AQROBzC5fBeIxMPrjkqKy2brcpvcoT6Fd58zwoWklkcj-YVyph3-AAt7Y71TUu0
-Message-ID: <CAGsJ_4wqFhVALC-AxFo2v7yanTL+tsL0OCVYv_gRwdh8ds+7YQ@mail.gmail.com>
-Subject: Re: [PATCH v3 5/5] mm/vmscan: flush TLB for every 31 folios evictions
-To: Zhang Peng <zippermonkey@icloud.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
+Date: Sat, 11 Apr 2026 09:02:30 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zKG0M0W_PZp=nn80vnvVARbXpJ6EMVuqmoSLWM_2CQFQ@mail.gmail.com>
+X-Gm-Features: AQROBzCISKu3Tqhprujvjz4T0jYfosHQeXGTjr5U2WWHZh6UoLqEZUydMAAURZw
+Message-ID: <CAGsJ_4zKG0M0W_PZp=nn80vnvVARbXpJ6EMVuqmoSLWM_2CQFQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/9] mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, hughd@google.com, 
+	chrisl@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, kasong@tencent.com, 
+	qi.zheng@linux.dev, shakeel.butt@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, riel@surriel.com, harry@kernel.org, 
+	jannh@google.com, pfalcato@suse.de, baolin.wang@linux.alibaba.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
+	youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	ryan.roberts@arm.com, anshuman.khandual@arm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 16A44C000D
-X-Stat-Signature: fe44j51ew391aqqocruojyurtwomfd3p
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1775867669-534836
-X-HE-Meta: U2FsdGVkX19jWZbePxL97FRyIMYwhjQItxV1uHoRBzwMxqFzXWKFQKW1j5aSqp6AU0gDVgGBRnL/dtr85l/CcrNMcA6RWMe05hW+jDfvIK+Xpfm6hpSLkeQbMe/c8xaZIGsxUEAbK5Hlal7cl41r38lv0cwEszuejeYlnPVvXDKXyS1npV86k4Whmcpy/bo7Xyto+fMTl2BAdRVa8i56LWi/YtUMSTam97As+VG61ip3qnEwtAAA/YuMXTeh2FA2lh0YbEg+WlR58vN6kiAXYAoN9yiJeBzukp3MPZ8ty7LfSlBl6dqX119zoPHix5bYMArfohqEKI/ua/j+DSRqHPEHkn67uzazHV2JEEZbenYfKBa/lDzKjTcPkdZ4DvymiLkrg80tg0X0gHHmR/AiNxCQuq8XyDGWLlgBz6naqh8Q6KZ+gmMvw1Lbg8MRzUwoSJ27dHvzxArTKvqojMjh0JEou1VmU7YuHjBHiRZhA7lTNTK/rpMFKtJjSPgFu+de0tcz07hwuUK2/EoQ9zj2LqMRRSH+Z6cTSxvlsBd0/kdBL95taXhAx31pWQj19z2KoOcKHVBBYSKKWdx73Z8SrYBx8WImsBxjPoV+Ej01n6VkCC9105y5UsLfJWMNu5WpsBhxxI8nmoh3Z+T8+gmPGKEZ5bx5AbN8QubXzY/hlMu/M+iVEQxewpjSVtK9xxuY2AxOfXSfK1KvU1XqQie5R6NDFUNJOJKYorhAuTapG1Dhs1QRVVEcRF4+9MCkw33L9Srmf6KI2tzD8off+84RGa3rtyMUMFLxxHNjmx9BFow+npOkyr8Wcbw1/ttlAesLSKP5cesuzSyQ7eiz4kXB5EUzp17nhaqCglqdpCWTn0GW3GgB48vPg5K+A4g34bWFVkZ1CsXp8fmvyouSPVBdRo77jjaXkk/9qD3wYVBymfsi7o7URPGoSgYo3MkFQCbCN7nId75IGV1Z13A+pQu
- YEjxQFIa
- GhX8S/v+isWwc6/TfGvrBv23QrXAmzvynZiG+CPCXeUNtR51kgGBaBeHHUSFfbautxzeTQQoA48DuWmm0KBVsWfC5hjgAkUYuerpyokJpLL5Go1wCbMo3WWO7bIFPSkRDYxX9YN6o6I/CjIo2y91Pr7p1/EzmdyRR0YSq+oNu3gmB2W+qB0JgA5+gtx64sVxgFyoOyESco3FdidrSpyo49dh5HyaEPy/7NdVHHFHQX9FaK2z9NZe7DFxjHT+YTFB25XjuK0T9GeLi93nRQFAHhC1iEGIIfErroRnDFW91DkStTOLHNfkvzZ52ajM8jQvCIh9xG6b5FSMsoqE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F32DE40012
+X-Stat-Signature: f4qeq9asu81edwcw79bq4xhx3brgeq44
+X-HE-Tag: 1775869365-222417
+X-HE-Meta: U2FsdGVkX1/p5BWHcUy0v6H7ttdd01ZjUB7svo5PNso+QlSgFD7nyxYWeNARrXkEDuYs50utLJIWrpM6bmGZvkjWi3Bny0aim/DqcPSfGdJwqJFAkdztnwghwKW9ciru1Sgbweo3ZeHdtmRwLeqHpvRrhuDiq7TCxmPTT2EyM1hSGpEG8t+HYQb/SBOOMbZDF0ij3TySQCbA3LPG7AgJwWNXGvP2ZfR9QXFt0IzAH9ifNws/LeeoKFQmSQpiBBKt2opcI7jKpBG5OSj1R1ZyCIZd6NiONHO3jj/5MJsI1Z6qh0Cb+u+ODjKRVTKtGYy8OyiBzDALPRhOjMzRj1AnJvTakdiqNyO4e1T3vCr8cGPdxUbd4WW7SkgsiXWeliMkcAxGurpHNj408uv0lAaBkdMPs5VhRMIX/lWrLfLN8Iv9BQKXX0yujZyK5a5wV331Sikuici8epKRPDXLU/+1ht/j9rYnIL1mmBqddhku3vMl+lnzdRQ0END6hhbT5g/XuBxtl70cRmQuetJ16ZAZUb5I++bakeRX/2hMrcNgafcDmQhdKef8zeAq2Wm2GkZxan7ds6zX2FEhklW4oRo5V0LsY8PdobTPqJh/UiT1snI/8W2iLVIQd9rr8uYnWlVHN50cWOGbTOMoDtWQJjJQzM7CQbQhPxVI7LXsa6e6Fpyy4odobxeMgtY/GwXri5LxTHHRHQrgp8mbSkbjFifTsR1MZEPJxuYvAni8SQ9vQEpgHtGwh4cQxzI8xSD/+3ALYbcUD94q0vxpAZE1YW6mu9eJWDwoILkyl8rsDk4Y4Uk/53XLRzA53v7WYFRzdn+Jl1lPsxKA2iSDo9Jj1RkYqTML89HhGdd1XIy8BsJas/5DIt8DreyvNIL7RCwuZpwQBuYPiS++i7QMo90BGARhyPy/Eq9v7BOoAlhNZcd4884MzbLj7ypN1gBwkcQwp80ydrTbjqjxbqiALdFguU7
+ 4QFX0j6N
+ BZCsfL2JHrobDuazkIF22KW9R2jnOfWNxZ+yb7toHO3YJtvhsTh6urWQsRxp+rrrgBVfAbB10eo2wALTHkCYisRqlo89lrtxexo5wm2L+93H9seKfa3iiNM8XCeKoiQOkX8V06N+YmA7Sk5ol/zE/8XPXFbWpsvTA83RURiu+JWSnJStwsdSrYJ0HUJaFElxvedBw5R8aNxeGQowBALueqiH1qqLtLZ3rtZxjLVrYUq1I6TD7s056sjIe5mbtDHqftKPqKfB0V34/s+n7RZ9ZQHXmemQ6qI8ovaCaQrzud3cT6xu4ebV69ll/nDPPr/khqepykujc3GspIGMcC4ym6tsGLu/dtl1p/CU5k7rclp0ULj8gKmCcZmJurvOODlPf3q3uSdVd3wBmGLf7mmnqk8giYEkQPVfxIxCU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,30 +109,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 8:48=E2=80=AFPM Zhang Peng <zippermonkey@icloud.com=
-> wrote:
+On Fri, Apr 10, 2026 at 6:32=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
 >
-> From: Zhang Peng <bruzzhang@tencent.com>
+> Initialize nr_pages to 1 at the start of each loop iteration, like
+> folio_referenced_one() does.
 >
-> Currently we flush TLB for every dirty folio, which is a bottleneck for
-> systems with many cores as this causes heavy IPI usage.
+> Without this, nr_pages computed by a previous folio_unmap_pte_batch() cal=
+l
+> can be reused on a later iteration that does not run
+> folio_unmap_pte_batch() again.
 >
-> So instead, batch the folios, and flush once for every 31 folios (one
-> folio_batch). These folios will be held in a folio_batch releasing their
-> lock, then when folio_batch is full, do following steps:
+> I don=E2=80=99t think this is causing a bug today, but it is fragile.
 >
-> - For each folio: lock - check still evictable (writeback, mapped,
->   dma_pinned)
->   - If no longer evictable, put back to LRU
-> - Flush TLB once for the batch
-> - Pageout the folios
+> A real bug would require this sequence within the same try_to_unmap_one()
+> call:
 >
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
+> 1. Hit the pte_present(pteval) branch and set nr_pages > 1.
+> 2. Later hit the else branch and do pte_clear() for device-exclusive PTE,
+>    and execute rest of the code with nr_pages > 1.
+>
+> Executing the above would imply a lazyfree folio is mapped by a mix of
+> present PTEs and device-exclusive PTEs.
+>
+> In practice, device-exclusive PTEs imply a GUP pin on the folio, and
+> lazyfree unmapping aborts try_to_unmap_one() when it detects that
+> condition. So today this likely does not manifest, but initializing
+> nr_pages per-iteration is still the correct and safer behavior.
+>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-This sounds like a pretty good idea, but let=E2=80=99s revisit it
-after you clean up 1=E2=80=934.
-
-Best Regards
-Barry
+Acked-by: Barry Song <baohua@kernel.org>
 
