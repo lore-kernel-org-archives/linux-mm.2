@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA545F45A0D
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90B1FF45A0D
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:24:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02F0F6B0089; Fri, 10 Apr 2026 20:22:07 -0400 (EDT)
+	id F27AD6B0089; Fri, 10 Apr 2026 20:24:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006A96B008A; Fri, 10 Apr 2026 20:22:06 -0400 (EDT)
+	id EFF296B008A; Fri, 10 Apr 2026 20:24:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E867F6B0092; Fri, 10 Apr 2026 20:22:06 -0400 (EDT)
+	id E14B16B0092; Fri, 10 Apr 2026 20:24:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D767D6B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:22:06 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67D8559FB9
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:22:06 +0000 (UTC)
-X-FDA: 84644372652.22.28BFCF6
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CF94A6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:24:42 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 732721406A4
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:24:42 +0000 (UTC)
+X-FDA: 84644379204.11.1D2AE6B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8E1DB1A000C
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:22:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=avzeDsWb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5962E4000D
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:24:40 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="aV0OuPL/";
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775867080; a=rsa-sha256;
+	cv=none;
+	b=jhkvpZGceJSgBFnst/J5xxN+Acv3XCA9VCYTDkzwlP8gRZPA3vjnWFi6qUtb2c1/6ExYkN
+	NimRLDOBdM92YLZjfDBPkpiTM108XB2hMJ8EvZIpwMyefylpKKfyyvllnJPuh4wrYxYpEK
+	/yPrL2KItxFxHJ4pxgBYIRUPW2a0MHc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775866924;
+	s=arc-20220608; t=1775867080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8uj4Ku8iqZBXLBbomGBblIihtnK4GeGD/2NUPbWgs0Y=;
-	b=42Zimteyv1oVHoFi4NLpmx6udLvUXp6jxRbVzgfRJSUYi9ujcCRXpiKbsYIlLOgdKzN/JO
-	2dJBhFP/wOc7SUe3cBLe2QOghGeUh+aRW8Q+9iSUCWP7564fjiSp0NNZnXyOSTQa8jUlqf
-	rgaVwXB3GjSIGN42kQvJ+aTzXLjTzpQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775866924; a=rsa-sha256;
-	cv=none;
-	b=k7406/XUnwDSuNSuUVClo3NgkAF1oTDYPEoIa7puOrLU7cpMXQMgiVZb7XBgA4M9Ln455k
-	Egh2G/BHIV3e6Y6RYBuWeXaaZ5u/cMb6QgvfwULrzoZROI1qlobp1/kKl+Ew4jp8+6BMfo
-	hSWeUIH30XjXf3nnsIyVcDktgM1fXSg=
+	bh=A9E9SILDGWVlj9W/Mi5ACa4j0pegdKos8v/oASm09ho=;
+	b=avtk+jEjRI/t9UmTSikuoWsfiz+3HPubN2NYaMVKMXxnq07RcQUCcNnDQG7Aau0WQvrs1i
+	cS36tKuUAjkP/BgDJNLPsqX1A+2sQ6BVoEYAYmKBeSMPAVkqi1ubZ2PEaBVoOylenKK2s6
+	bYeiTc5aukkkRriXWvSiTo2HJy8DuGg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=avzeDsWb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="aV0OuPL/";
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57DF841925;
-	Sat, 11 Apr 2026 00:22:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDBCC19421;
-	Sat, 11 Apr 2026 00:22:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 324C8440B8
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:24:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05706C2BCB2
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775866923;
-	bh=kBiuAJsRleCAE2nQwc802BH6Pka0Eyd4qplz/R/dloQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avzeDsWbKMIlIj8DvJuHnH9XjqAKJtIGdak9Bn+h27yxmse4cmnu1tTqEIXxq7wYb
-	 dpKuiX/5HPam4Jb2FJu1TqPCpJito4as02is2S82+4AQjk78N/hwU/ApcG3t4cUifQ
-	 loo9ZEqIT5MLmNGhGcbcygvWYZRiYESEKHgbYndk1TCB3JmuJoZQh7Xe2BJIYGr1CK
-	 nO+zMw+5D+pcGWP2Ffm3yTjBq1Ek4GJgtFMqOkA1IKn8MjeFpwlqMUjTzo/R4heqEU
-	 5Z7JUVE6PrNcEa9ts+1/lrwGlN/kk/QVshfvzlX2WVYxWferX33d8lvBIis1grNpO7
-	 yRbAdr7SadxCg==
-From: SeongJae Park <sj@kernel.org>
-To: Cao Ruichuang <create0818@163.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests: mm: skip charge_reserved_hugetlb without killall
-Date: Fri, 10 Apr 2026 17:21:55 -0700
-Message-ID: <20260411002155.91521-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260410044139.67480-1-create0818@163.com>
-References: 
+	s=k20201202; t=1775867079;
+	bh=Vp5dtVrPnlTekmrSK+oFMs0RH9FoAF0Kb+EgrrShMCI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aV0OuPL/Lyv3dHDUxwcemlWEMYo3vOlicxoq2S9cLeyOntPYpdFvBWy34l8ReMb5R
+	 HpS9PV/1x9FgfY4gNirLOer9z9LXK/0OfluLq2wRFnII4VSYRNC5/qxfTcgR2280Wg
+	 xA/znOaHbitRI43e0hPIsliGD+JKBlWgYheHiJHFDvpLZV3tQkaWp+63fdRzNK0Mua
+	 o3yAGoMneFQaGdMFpZ93iKP7lGQs2dDI4MTQ8Il5PlvodcQ2/XCvNzKHIcWviMJ9Pv
+	 arPz8S602Tr34ZTyRVpwIYz6FiT5dVElP8eVG3EN2GkkzdM7zLbgfD1fOhxRSw16Qk
+	 z1zxiu308POYQ==
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-89fc4147f2eso30603526d6.3
+        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:24:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWosLTv9nwYvMxw/GsmBeHzI+DYR2fammOKt/qrV8veb5hUI2uT2KFX8Z58AVpmG4CoQw6fz/vn1w==@kvack.org
+X-Gm-Message-State: AOJu0YyfYV5M2qACkammv1VqBcXi8cwx+PwFHG6/WkceYrahMPkj0guE
+	kwldiZ4IeSO+ZqXj/cV2Vmnb1Z5QGh/tZFaGuKFhUvfWB0/chpSXt7aJDDnngwgbhxpf4LeZBRJ
+	HJnt3pUja8TZT+G8sp+V5F+sYRk+DfT4=
+X-Received: by 2002:a05:6214:4119:b0:89c:e4c3:dc1a with SMTP id
+ 6a1803df08f44-8ac86160004mr79807276d6.1.1775867078143; Fri, 10 Apr 2026
+ 17:24:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8E1DB1A000C
-X-Stat-Signature: eb1bfr9gn1arcqm1apag1jqzwwjq1aio
+References: <20260410-batch-tlb-flush-v3-0-ff0b9d3a351a@icloud.com> <20260410-batch-tlb-flush-v3-3-ff0b9d3a351a@icloud.com>
+In-Reply-To: <20260410-batch-tlb-flush-v3-3-ff0b9d3a351a@icloud.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 11 Apr 2026 08:24:27 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xvnBSRyi9OkRwfRDDM6QcxUfhdrf32R45+GMJ=ZpEerQ@mail.gmail.com>
+X-Gm-Features: AQROBzBMP6XFzrMTkpmMPWppaighw-MFIJicxGc9XFWJpKcctFB-YaMeg8mwyrQ
+Message-ID: <CAGsJ_4xvnBSRyi9OkRwfRDDM6QcxUfhdrf32R45+GMJ=ZpEerQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] mm/vmscan: extract folio_free() and pageout_one()
+To: Zhang Peng <zippermonkey@icloud.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1775866924-94030
-X-HE-Meta: U2FsdGVkX1/Gw1PCU3izvx8l9k0IMhjOlDj1laJdjI6VK9v4yVKenclZwiV9bBTTQkXmZqT8LP8rgMQZKKohnfZgtBI4Xnma1gswLkZqq8B0aVMdq4g5V9wQ64JjMTg3IWLt8xLF0y5v9ylsYBYCdjJz1FCviVVOptZEjYf7Lf2kpbHUzCXjHZSKamHjzo/mDa3FUEnmQFZ5EY9Vf+l5rTdukwolLmMyll3xk2jFHsH3xG9jNA1RTv8D9OUBSv4aCaFSimzYadTHnnAY8yroIm8GN/rNIRdCkvjHBmsQQDM/eHHUd+NLLIQgxWgBxC6UsPh02Et4Dn1kW1Bpa+kK/tXBSDgZDaUjAoI6IhQyrV1TOtgQbETwymNeJb0fjfF4d4ijCihtHfZSx/d/mIgU0nEezqWmvqUq7L7ecmPCo+NS0Q+q2wmTT2hR8h2q8BVasn13cs7DMwOwOWBPJreRCYxVfHWYj+kA8xWk02Wixiv3lmZDK88aTWkmQLqwGNnPD3iHaa87Dn9uQ/7O4VO9cI08eFOJdxnnzrmxH+Inqm+hP3Y9PtIrcF7Yx9rFaIkFhvWiKDoe9WhVlcWtIY0FXThRfEI4LHqpEcNxrsMxfuI91hvu9Fsrj/4KpNjhz7qARzQ6OhSrpkUXdAGTVHRlYMCrXpczqwtce5I7PED9X9/7bOz1e4GcRLjYQ7n5eTwkkBuz+poKT3QmF1OUJ8u8KmfXoNUmyuC9BmmGtJnWLoD0C4CgNIiqXn/0oUWMa7uNj8TMR7Zu3CP14ozNOTDLAdR8sW06n3wVnrlmvQq4el/hnB6viOl5929KoETTMnZr8kkZ7ebSaJl2OaLa+vBPmb/EShkZoGPs5WBNqW0GxT2rfnD5AdW6PvEkur+WIh9B+jGinCvIa3MDoANqwuK8A4EzRAdbH+OKRiQhZi2Rw9BnySuWdijrLXCCwhTMk6jc4mT23W6Y8VLjFMeZ0MI
- tKtgrVbu
- 4MvGu9NDxE2VOOHXnyOkfG3VivhQsU8Ts2PjUN0yU/jQkqka6v2pzp3L+yb/rnKGN2hsEQiwg3VwebiT63GvDj88qyg/MEKBPH44cz68GBVM1uH0pP1MKvHZ9lCACpYGPfV5REosUNeHO8wgPLg2ndw0mRxaish/n7claBuLZ5e7AzhYJUCX3YPtR/wS2zTL9dXlr39AVoOoUKEOGlEEa+RQ86JSPcST2a3Ii2Bl3V74244+9LSPHzKhnRLxusYs9Q1dtvEFHBnsjJdeuv5xqMIJOCWA2DAjtdGTQGzRS7fdZB0mk42OzOicEYl5XuGFdWDtxP0xlm4tTSuk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5962E4000D
+X-Stat-Signature: cg8zmo8ejez41fg5oadc4w4xbgdehmji
+X-HE-Tag: 1775867080-556526
+X-HE-Meta: U2FsdGVkX19M6ZHtzJb7ufjIgURlNzOeHYqqEG7yr3rup4Eoaz4+uBb7xF22nWwgbOtLckQA1KJFgb/WNOI9Iu/GCNnrCH8XwdU1G+QeIZXVWu0rk/8WtXFQuVLvrDl10NUFuLbVCor8k3FEK2dk8gDPw5793ii1GqissdRYDeGZMWGkOqP3ABmuT8v6nOewi1ZXQmqCExhRBZyizmKAPVyX+/4HvCssI5bL4UaS3/s5NHqJ5rrJ3kkGjmPVsJ10fRVPW6oYhKrSW9pHA44ITeJQ2CzwA/DPEnqH0MKu9Y67i7mKgScG1fD4TwIBDk/ZC9IFUNLwrwo215q4q7Gfpe9vD2RDOtP6jr16AbC6a58D81eCHVBdxvaoH2ecW1FnnwUY+d5bDKLcx7a5Cf7i+8F9ACR1IB02OMdG87AJbKv0JKE6Yyy8muUQHlEFxlsV0H21YzQYFK9FS/WnlqAq1EiNYKlfeaHIJYOoA1SPAzJAkh3VJ+YrRkcwqqrNtfKOlNWjmEX6pFByaGqciwz7OB/BlGcGNLhKCNKdAGbQBApLrNYmcmcqhAfaq6uXTVC6tlZR//TZc/InGWJLPbQfYNep5oRCIW05uqTAGjDwbIXDDdn/ubB6U1mgU/kFCcgGPAQ1aOhoc5nK/+xAvlxyjQX+H+K6MCVCi5MWLwZpnEaXhLUP33s3ao4FM+jRRh1LPPY6obX0yy/85H4TEnD2dCamYMxegdUxatJFolm5wpw373KLlMJ3N1OQpgjPxtPrlDQlOsefQ3Ju2YjtEfHyLPqbmJv05nN9z/fVmLPLx5VAq5AgABr3MO87ctEU7iJxr0otTqpWtUFf1KcKbYE9Mug8dvdkaMSVmtZo2TgrAxbrrAgEW5AFmu/W04pqXXoe/Lp1urODew+AByr/qFl7N2wPsSvweLQKDD6hEHvi18LL27GAbk8U5TXUJdfBMyWvYEvtzrRSuTVLXw0yCSe
+ fVnXYLV9
+ LLzNd1h5QIZYEy+ppYZ/skj7bDzuIGaPmqkTm53IMmDS5YuVmPjBsjZJoaz8sqf5DL3z8lHaqR6wgo54iksGPU/K8Oe21WdWdPywHUZF/WOOknMqZbE70J1d9fljiKSd58hP4wMfFMDoIwzUd/RD+Wx0KFiod16dBsuCGdC7l9WhEirax7Er0ljTgDI/FQLvv5edPe4ZRlnn85Z7VevE2k0r4IaZmWaSQ3qMGEmEadhtHpeM2qX8MfSlzoARw/GsUMxkLWX+TPw23qL5smbBJ8WOnucMKZDLifPtoX/cJ/+C5GrUH+B3OfLoSAAPnvUMmdqdc5Wn4fzeRnBSaAV0EMx7pk2N06Vpzlwq1AS7vQJxtxwspBHI5OSnIb6SjZ4RXeLdb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,37 +109,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Apr 2026 12:41:39 +0800 Cao Ruichuang <create0818@163.com> wrote:
+On Fri, Apr 10, 2026 at 8:47=E2=80=AFPM Zhang Peng <zippermonkey@icloud.com=
+> wrote:
+>
+> From: Zhang Peng <bruzzhang@tencent.com>
+>
+> shrink_folio_list() contains two large self-contained sections:
+> the pageout() dispatch state machine and the folio-freeing path
+> (buffer release, lazyfree, __remove_mapping, folio_batch). Extract
+> them into pageout_one() and folio_free() respectively to reduce the
+> size of shrink_folio_list() and make each step independently readable.
 
-> charge_reserved_hugetlb.sh tears down background writers with
-> killall from psmisc. Minimal Ubuntu images do not always provide
-> that tool, so the selftest fails in cleanup for an environment reason
-> rather than for the hugetlb behavior it is trying to cover.
-> 
-> Skip the test when killall is unavailable, similar to the existing
-> root check, so these environments report the dependency clearly
-> instead of failing the test.
-> 
-> Signed-off-by: Cao Ruichuang <create0818@163.com>
+This one looks good, but:
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
+>
+> No functional change
+>
+> Suggested-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
 > ---
-> v2:
-> - replace the PID tracking approach with a simple skip when killall is
->   unavailable
-> - follow Mike Rapoport's review suggestion
+>  mm/vmscan.c | 270 ++++++++++++++++++++++++++++++++++--------------------=
+------
+>  1 file changed, 155 insertions(+), 115 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 0860a48d5bf3..c8ff742ed891 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1070,6 +1070,153 @@ static void folio_active_bounce(struct folio *fol=
+io, struct reclaim_stat *stat,
+>         }
+>  }
+>
+> +static bool folio_free(struct folio *folio, struct folio_batch *free_fol=
+ios,
+> +               struct scan_control *sc, struct reclaim_stat *stat)
+> +{
+> +       unsigned int nr_pages =3D folio_nr_pages(folio);
+> +       struct address_space *mapping =3D folio_mapping(folio);
+> +
+> +       /*
+> +        * If the folio has buffers, try to free the buffer
+> +        * mappings associated with this folio. If we succeed
+> +        * we try to free the folio as well.
+> +        *
+> +        * We do this even if the folio is dirty.
+> +        * filemap_release_folio() does not perform I/O, but it
+> +        * is possible for a folio to have the dirty flag set,
+> +        * but it is actually clean (all its buffers are clean).
+> +        * This happens if the buffers were written out directly,
+> +        * with submit_bh(). ext3 will do this, as well as
+> +        * the blockdev mapping.  filemap_release_folio() will
+> +        * discover that cleanness and will drop the buffers
+> +        * and mark the folio clean - it can be freed.
+> +        *
+> +        * Rarely, folios can have buffers and no ->mapping.
+> +        * These are the folios which were not successfully
+> +        * invalidated in truncate_cleanup_folio().  We try to
+> +        * drop those buffers here and if that worked, and the
+> +        * folio is no longer mapped into process address space
+> +        * (refcount =3D=3D 1) it can be freed.  Otherwise, leave
+> +        * the folio on the LRU so it is swappable.
+> +        */
+> +       if (folio_needs_release(folio)) {
+> +               if (!filemap_release_folio(folio, sc->gfp_mask)) {
+> +                       folio_active_bounce(folio, stat, nr_pages);
+> +                       return false;
+> +               }
+> +
+> +               if (!mapping && folio_ref_count(folio) =3D=3D 1) {
+> +                       folio_unlock(folio);
+> +                       if (folio_put_testzero(folio))
+> +                               goto free_it;
+> +                       else {
+> +                               /*
+> +                                * rare race with speculative reference.
+> +                                * the speculative reference will free
+> +                                * this folio shortly, so we may
+> +                                * increment nr_reclaimed here (and
+> +                                * leave it off the LRU).
+> +                                */
+> +                               stat->nr_reclaimed +=3D nr_pages;
+> +                               return true;
+> +                       }
+> +               }
+> +       }
+> +
+> +       if (folio_test_lazyfree(folio)) {
+> +               /* follow __remove_mapping for reference */
+> +               if (!folio_ref_freeze(folio, 1))
+> +                       return false;
+> +               /*
+> +                * The folio has only one reference left, which is
+> +                * from the isolation. After the caller puts the
+> +                * folio back on the lru and drops the reference, the
+> +                * folio will be freed anyway. It doesn't matter
+> +                * which lru it goes on. So we don't bother checking
+> +                * the dirty flag here.
+> +                */
+> +               count_vm_events(PGLAZYFREED, nr_pages);
+> +               count_memcg_folio_events(folio, PGLAZYFREED, nr_pages);
+> +       } else if (!mapping || !__remove_mapping(mapping, folio, true,
+> +                                                       sc->target_mem_cg=
+roup))
+> +               return false;
+> +
+> +       folio_unlock(folio);
+> +free_it:
+> +       /*
+> +        * Folio may get swapped out as a whole, need to account
+> +        * all pages in it.
+> +        */
+> +       stat->nr_reclaimed +=3D nr_pages;
+> +
+> +       folio_unqueue_deferred_split(folio);
+> +       if (folio_batch_add(free_folios, folio) =3D=3D 0) {
+> +               mem_cgroup_uncharge_folios(free_folios);
+> +               try_to_unmap_flush();
+> +               free_unref_folios(free_folios);
+> +       }
+> +       return true;
+> +}
+> +
+> +static void pageout_one(struct folio *folio, struct list_head *ret_folio=
+s,
+> +                       struct folio_batch *free_folios,
+> +                       struct scan_control *sc, struct reclaim_stat *sta=
+t,
+> +                       struct swap_iocb **plug, struct list_head *folio_=
+list)
+> +{
+> +       struct address_space *mapping =3D folio_mapping(folio);
+> +       unsigned int nr_pages =3D folio_nr_pages(folio);
+> +
+> +       switch (pageout(folio, mapping, plug, folio_list)) {
+> +       case PAGE_ACTIVATE:
+> +               /*
+> +                * If shmem folio is split when writeback to swap,
+> +                * the tail pages will make their own pass through
+> +                * this function and be accounted then.
+> +                */
+> +               if (nr_pages > 1 && !folio_test_large(folio)) {
+> +                       sc->nr_scanned -=3D (nr_pages - 1);
+> +                       nr_pages =3D 1;
+> +               }
+> +               folio_active_bounce(folio, stat, nr_pages);
+> +               fallthrough;
+> +       case PAGE_KEEP:
+> +               goto locked_keepit;
+> +       case PAGE_SUCCESS:
+> +               if (nr_pages > 1 && !folio_test_large(folio)) {
+> +                       sc->nr_scanned -=3D (nr_pages - 1);
+> +                       nr_pages =3D 1;
+> +               }
+> +               stat->nr_pageout +=3D nr_pages;
+> +
+> +               if (folio_test_writeback(folio))
+> +                       goto keepit;
+> +               if (folio_test_dirty(folio))
+> +                       goto keepit;
+> +
+> +               /*
+> +                * A synchronous write - probably a ramdisk.  Go
+> +                * ahead and try to reclaim the folio.
+> +                */
+> +               if (!folio_trylock(folio))
+> +                       goto keepit;
+> +               if (folio_test_dirty(folio) ||
+> +                       folio_test_writeback(folio))
+> +                       goto locked_keepit;
+> +               mapping =3D folio_mapping(folio);
+> +               fallthrough;
+> +       case PAGE_CLEAN:
+> +               ; /* try to free the folio below */
+> +       }
+> +       if (folio_free(folio, free_folios, sc, stat))
+> +               return;
+> +locked_keepit:
+> +       folio_unlock(folio);
+> +keepit:
+> +       list_add(&folio->lru, ret_folios);
+> +       VM_BUG_ON_FOLIO(folio_test_lru(folio) ||
+> +                       folio_test_unevictable(folio), folio);
+> +}
 
-I was actually thinking if PID tracking approach is better reading this
-chagelog.  But simple skipping also makes sense to me.
+Can we at least move the =E2=80=9Cresult=E2=80=9D out of the function=E2=80=
+=94
+whether to =E2=80=9Ckeep=E2=80=9D it or not?
 
-Btw, adding a link to the previous version [1] would be nice.
+Can we have pageout() report its result to shrink_folio_list()?
+If everything is hidden inside, it=E2=80=99s hard to tell what
+happened to the folio.
 
-[1] https://docs.kernel.org/process/submitting-patches.html#commentary
+This hides too many details that should be exposed to
+shrink_folio_list(), making the reclamation flow harder
+to understand.
 
-
-Thanks,
-SJ
-
-[...]
+Thanks
+Barry
 
