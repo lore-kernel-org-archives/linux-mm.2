@@ -4,86 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94ACF3ED40
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 15:38:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2D4AF3ED40
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 16:06:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC0356B0089; Sat, 11 Apr 2026 11:38:29 -0400 (EDT)
+	id B84F56B0089; Sat, 11 Apr 2026 12:06:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A71776B008A; Sat, 11 Apr 2026 11:38:29 -0400 (EDT)
+	id B5C016B008A; Sat, 11 Apr 2026 12:06:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 986376B0092; Sat, 11 Apr 2026 11:38:29 -0400 (EDT)
+	id A4AB36B0092; Sat, 11 Apr 2026 12:06:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8808D6B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 11:38:29 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 956846B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 12:06:02 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 034C2140298
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 15:38:28 +0000 (UTC)
-X-FDA: 84646681938.27.CE6B6E0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5B1194000A
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 15:38:27 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D0kW5Ny2;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 240B98C2F1
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 16:06:02 +0000 (UTC)
+X-FDA: 84646751364.27.E1BB382
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 92D8AC000D
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 16:05:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="l81/NQEP";
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775921907;
+	s=arc-20220608; t=1775923560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=teB7nJjcZulmF+QqCRVlmL0vmT+6iIsw4Nm7u+ggIro=;
-	b=nHw3+gkc2Gbo0hESJPCa4NV4JTQtSSs9NUZ9ZSxNoLC5WxRngsFf0dQiY8Bpx9xYon0nop
-	1y7wbGyf/OL0PegNnMHL43n5i3hSPMt9+tb32mW7bRPvIca/8xXorjp8u5XnkOS6pyprNN
-	lhvjsGqRwL08R9axEVL0emiIqHGYeGc=
+	bh=5ndwDV3JX9+bxxGWaRghScUGc0HTBLPLRolB2DRAuhQ=;
+	b=X7rOSnT7zbznVX4+7XmBToIcIPXq9y2iH8DAduJp5rxlJ1Ixsyp/cDQivSc+lb2f3B/69+
+	/5Lqf6sgYk42ufGUQ1DOtG5dc7gj12en4lTb91D76Ss8CIuGn4EgtyEURR3rrTuXP/Szch
+	KxmcwEoiN06pCy1pRpumUkhq7/x8hig=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D0kW5Ny2;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775921907; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="l81/NQEP";
+	spf=pass (imf28.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775923560; a=rsa-sha256;
 	cv=none;
-	b=Al/Z8wDq2HTNUt8Hm3ZLt0SJYG7l8XgXG4xn7TMhpS4eNKPaC5z1TT0eiK/vkUKDNtcVfo
-	Nh48WQZiW7GcsgodmWdWwVzV2dwOFoOowofC1ziuJLnld8DuY6lx/fnG2Zhremn/HIDNUH
-	Jy6zRoi95IuRwa5jQ+WYNJbS+mPbSZs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AF4366015B;
-	Sat, 11 Apr 2026 15:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A34C4CEF7;
-	Sat, 11 Apr 2026 15:38:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775921906;
-	bh=LTVxwT3Pm0EEvV5xqJRIkOmNdAWttHKTUm2Zvmwi/Kk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D0kW5Ny2rEzuJC7NB9F436LQ3+nYyQ6M4KCJ+Mk3OGeedqiwuwdS39NUsi3gUSr/e
-	 2CXz/w35j+x+NyeRdRagrrJSGuA4JXZdE06q+6r6KwsZWmGZQkNKgJLoFJy0ij+PO8
-	 2smKxske3Muqjzw5mF7RdbHEfbaPdUR7yng/2CqoJG56d4fRUA+zQJEsT7VmMH2Vqk
-	 lE0xoYGFg+RwqqE1JzVYOoTNmoKI9WWsz/jtLieMFCEeqdahqCUZzTS+fiL1hzdd5l
-	 iRPEdUe9NWbMHiP+BMSPLABhwKmhmC1WH+cuCtc3FbPNO4kPgoqk0Q/Cci2wXi6tUx
-	 kLH8PPaWHWIxw==
-From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH v4 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Sat, 11 Apr 2026 08:38:21 -0700
-Message-ID: <20260411153821.95491-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260411000458.11479-1-aethernet65535@gmail.com>
-References: 
+	b=ew9sAHIQ6qouOhinPoF4fgdXZHGjjUNiGaOq/bx2yBcwB6TiOp3ejbRoT5aCBhHbPzAw00
+	dZTZs5ANwBY7l5QpVGvXi6PJw/lPH1KiboZIk/1qKIyOu4SxLkyFCo27FcStj4M/sPq6nG
+	PzTWMNiT4OCQhH3UsfWbAnF7CLtJPsU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F8DC1AED;
+	Sat, 11 Apr 2026 09:05:52 -0700 (PDT)
+Received: from [10.163.141.179] (unknown [10.163.141.179])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E860A3F641;
+	Sat, 11 Apr 2026 09:05:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1775923557; bh=YgGoVGTSUFJQ2wjFuJc6O6sq01Ubnj51Q2u2XY0BNqM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=l81/NQEP3YyzwME1xAv3gfRk3cZAmVh8Z3BO7/U06YFd+LFGAzZ828zTKUqISKPQc
+	 Z/QLwB5+otpl5v3ME0lGnnBF+Z2cLZeahS58c5qJ1x2AvPPgvAgI8NtF2jB9jA2byl
+	 1HGDDBsJbjAED6Wo5Fhv/vKC+J5b32N6aBu4mOvU=
+Message-ID: <caa7c455-7472-48eb-a5dc-145e587d67ba@arm.com>
+Date: Sat, 11 Apr 2026 21:35:41 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/9] mm/rmap: refactor hugetlb pte clearing in
+ try_to_unmap_one
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, hughd@google.com,
+ chrisl@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ riel@surriel.com, harry@kernel.org, jannh@google.com, pfalcato@suse.de,
+ baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260410103204.120409-1-dev.jain@arm.com>
+ <20260410103204.120409-3-dev.jain@arm.com>
+ <CAGsJ_4zK1W71iSP14gi=8yWSg80EjgYiBXqLChB2i+X+RSTWcw@mail.gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <CAGsJ_4zK1W71iSP14gi=8yWSg80EjgYiBXqLChB2i+X+RSTWcw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 92D8AC000D
+X-Stat-Signature: tkszfjz7m447rjwdekjmhmijrczmre5r
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5B1194000A
-X-Stat-Signature: hsr8786rxk1kp8zq8e6frga1jknz3ypp
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1775921907-348726
-X-HE-Meta: U2FsdGVkX19KJUiTGzuzbafVoRTVghQoKHcC+qzdMyfHoI6NNCE27VfmFiSxUZP+iB+iBnqJYjr6BzucB2eOjZ1y649MU2T3SU+50ozIyuX3ikSfHOGX6D1TsoSPDdtyoyM47gJCA/msHxZ74Aw1Zoj/ZDeWmToQXpLJB6VZMr1q1Z5hzOLRe1e8o7cdEIVIy847dTs649jainNndFiUhWLBCjqkf/rKRK+W47KptZi8s76KCqsi6oarCO6UUkBU69D5UrGdYC6RzoW+Y0D6BRG6vDp1BXIP7qbEgwjYQXuq6s/prAUDTHIbC0lJ3VdnziF3Xt4pvyC6CZ8M0nFaQv8NG2Am2iDxELTC+VU+KoK5k8T8tIWI5poaAMUEIdwOVMpBNTOsx0PFqR5Z2q+roKP1gRCWZf/qoK63RIUx2Wuh2hncCsjEQy6gVZdRLat6DRrgznTGKTDFKfdSqB3MnB2pIQ7eAeGqEIFVDpufzz+I1KbG8ELcs3VSbYOOW+nvbLBWITmbfXFlDAE7R88f+B17XoYMjP7ii/NRmCYyW4zM9pNVLuLKAPiBb6tz9zqQLIFmReV6ShbXOvTrzlvj6wqxJl5xewuoeNhYoXwCBv0Hc1yl14ldIS/wKi9DOhpK1MJsz0GqOYShK+jaP0zKeOhcp6g59a0MAtEoVGRzkCbsrVgmtJwd7ejXQbnrXYsvGCi3G7CCwH0ZZ8stG7O+53Jb30TejHCGgw5FBIH69r4P9u6a9nbdwVw+l+3OwNKipc9KHYfqScxNigSof6LIFSV5DMUtEUprmcSVzZsJvEiImXSrwKD6DJd312MTfjfQnHXvFSoqCyQNaDQDxOYSkdG377/O7Ej01qnrRktwSGh1krIRjwfRCgMvUJVF4flsG/5hRYt7qqIoSVF9+pm4w5XJHIKYN+WlCPOiBtvnilhUwcBjpH2GPnrD3UsgLoKboSs6ce9FV4yHuu4J6WV
- FIG6eaMM
- Pv+mUHhK2eLgbqCo3/3Vkc7OvYpH22dVFsmbHR9fKbLjPSocp3Rf82wVL817CmpoJlcLx0XVUgpLXulltkyOc7epLH4cOgI9K0dZgXKmJD1WlnKOwdfEopFLfyv7ogTUxx8Tg9kBK1fdZx+Lzc89cUXr89tEAgzDHEat0qMANH/reau8A3guoOqnC6o05rML9Ob1sBDTH5V+ZJrhY0BNq4aspWB38wOJFa6M53U5s0vT1xF6hdKAJMLdGoR3QfqgVqyWWI2TMlYTJY2sFsu+8YmTmVhRE5RoQBojOBVEu0/SNTX4=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1775923559-31858
+X-HE-Meta: U2FsdGVkX186cKy8AnlakBTg/CckK7i15ZTAKpnKLcLH9lUPQwXmoxytnQAIxRU8jiwwqLxG2CZ6WwHtrQsLmx2njLf2XotClzd52cC0NyzU3Qdb7MfzcWqHG5pU4b2o6U346JQQmDVD1J7hyCHqtG2LCMV6CPKqKh905Z6iw+Ptd2Fo+58zKrtAjjTMjc8Otwwmeusk72OtU76hGaRQ3g361dtAbU77vz8Uk58hapt2RggiAs/mwhyfhVS5r6RnAfKmVJtxWVSOJp+Z2EjiHb4NEfxrrgZV9nlaAMonMy8Y1sY/yZnCeYGc62adOjzZrbf4d0ApcjcIbPfeH7ksQczffKQ3Km1GRM68kIygrKw7xMuApSrcn3/72Xfi2QwmKeopvcAG+x2mkZ5fxtu5nC3jZarQFfQV5oZsoF4MhJZD0/+ANcLov259fXfgelU98vpOUGsEGn80wO/G0092y+z2vRDmIgt6Q0Trt4WNY7roxMGch6Kmj69unMU1/NcPHu7et7+IZ4Lf4fkxhEQ5/wO0LuI4vAUGXVePvW5fD9u3vmKwDxpvvkpHoQaxBgvRzzfErYi5XqsWhuzO1BmfXXbRPDyNXMwN52U5lhTC0cEcSlv5AAQb4cp1RaYOsvGonyCODmseqxXZ12ABvkjj408fF9hVLJ07QrApyw1+liTMSbNIlc9BB0FB9NN+lIRS/SiCx7NCSsh9P+3omimQ8jnvx9nZKgY3u/Yo5fFBaNGHVqgqQvYiWDovjgsAF9tANebL6+fwuS4VUrUYySkcjjUZ9FLa9VCWAHbw+jTYJv7MHvUZlJZmgu1CcCUt1hMGTo0uPKGsjh6Y1t44nlNXaQakujQnE0nhLqItxkVPHmyOqYwOvboa3lkg66RJssxC324xHVEil+ytH+4VHn/obecuaNeEEFI7hLGJrT+Oiucxs0/klU8gt45eWyn33oE3cSicsew+4CniiwpRrlf
+ NFh3k6h1
+ R/9d2L59N/GL33DD8H8JWqoDiHN8HGBiWeB8zP6A4o481Mg/48M8GO1WaOEODuV5adYFFMh+vnlqcmElhxvetuyRQalLf+I73Ufw5KS7h9hbQm8tbsPlUDd/7D7YqE0hab9kCXA4IkvLt7BO3GdIwhL5RcTSHpfOadGj9CJI7paRdMk8F7wfBYVHiM7F8QQwGozJdpWeHgGEnTOzF3fKlf1XEiA90iQmS7W6J7RF6bgzmsaQn+N8DUY7xMC3JkoMPlvfB4FEfxzfYi3p8MyNimRsrBMxzML/dbwCn1rNHxhHsWLQoBDySeaEjUV8BXnl3jI+ccVIpiuS8Bidb+7xzLsU89zL4HjfOJKbF9adFXUXY0Ib4ZWyO5S0JxSNWOjpRJKmrTrJ0cCwPBMWS+W1NvWVxaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,184 +100,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 11 Apr 2026 08:04:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 
-> On Fri, 10 Apr 2026 10:00:50 -0700 SeongJae Park <sj@kernel.org> wrote:
+
+On 11/04/26 2:25 pm, Barry Song wrote:
+> On Fri, Apr 10, 2026 at 6:32 PM Dev Jain <dev.jain@arm.com> wrote:
+>>
+>> Simplify the code by refactoring the folio_test_hugetlb() branch into
+>> a new function.
+>>
+>> No functional change is intended.
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>  mm/rmap.c | 116 +++++++++++++++++++++++++++++++-----------------------
+>>  1 file changed, 67 insertions(+), 49 deletions(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index 62a8c912fd788..a9c43e2f6e695 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -1978,6 +1978,67 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>                                      FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>>  }
+>>
+>> +static inline bool unmap_hugetlb_folio(struct vm_area_struct *vma,
+>> +               struct folio *folio, struct page_vma_mapped_walk *pvmw,
+>> +               struct page *page, enum ttu_flags flags, pte_t *pteval,
+>> +               struct mmu_notifier_range *range, bool *walk_done)
+>> +{
 > 
-> > On Sat, 11 Apr 2026 00:46:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > On Fri, 10 Apr 2026 06:55:00 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > > 
-> > > > On Fri, 10 Apr 2026 17:40:04 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > > 
-> > > > [...]
-> > > > 
-> > > > Agreed.  This was unclear to me in previous disucssions, though.  I still agree
-> > > > it is out of the scope of this patch.  But now I think we need to let users
-> > > > force-restart.  Adding this to my todo list.
-> > > 
-> > > Just to make sure - is this the same issue that my recent RFC patch [1]
-> > > aims to address? I want to make sure we're not duplicating efforts.
-> > 
-> > Hmm, this makes me confused about how we ended up working on this series, then.
-> > 
-> > > 
-> > > I'm still actively working on that patch, and I plan to send the next
-> > > version next week. I've been holding off because I didn't want to send
-> > > multiple patches in parallel.
-> > 
-> > Ok, seems I dropped a ball.  I was working like AI bot that only works with
-> > limited and nearly fresh context for each mail that on my inbox.  I will work
-> > on making another thing for tracking this kind of parallel works with good
-> > context.  But since I already dropped the ball for this, I'd like to make sure
-> > we are on the same page.  So I'd suggest below.
-> > 
-> > 1. Let's hold this patch series.  Andrew, please don't merge this for now until
-> >    this discussion is completed.
-> > 2. Please summarize your parallel works in progress with the context about how
-> >    you decided to do that in the way, with summaries of our previous
-> >    discussions.
-> > 
-> > Could you please do those, Liew?
+> Can we add a comment before the function explaining what
+> the return value means?
+
+Yes I can add that.
+
+
 > 
-> TL;DR - There is no dependency between my parallel (2) works. I never
-> intended to merge these two works into a single series because they
-> address the problem at different level.
+>> +       /*
+>> +        * The try_to_unmap() is only passed a hugetlb page
+>> +        * in the case where the hugetlb page is poisoned.
+>> +        */
+>> +       VM_WARN_ON_PAGE(!PageHWPoison(page), page);
+>> +       /*
+>> +        * huge_pmd_unshare may unmap an entire PMD page.
+>> +        * There is no way of knowing exactly which PMDs may
+>> +        * be cached for this mm, so we must flush them all.
+>> +        * start/end were already adjusted above to cover this
+>> +        * range.
+>> +        */
+>> +       flush_cache_range(vma, range->start, range->end);
+>> +
+>> +       /*
+>> +        * To call huge_pmd_unshare, i_mmap_rwsem must be
+>> +        * held in write mode.  Caller needs to explicitly
+>> +        * do this outside rmap routines.
+>> +        *
+>> +        * We also must hold hugetlb vma_lock in write mode.
+>> +        * Lock order dictates acquiring vma_lock BEFORE
+>> +        * i_mmap_rwsem.  We can only try lock here and fail
+>> +        * if unsuccessful.
+>> +        */
+>> +       if (!folio_test_anon(folio)) {
+>> +               struct mmu_gather tlb;
+>> +
+>> +               VM_WARN_ON(!(flags & TTU_RMAP_LOCKED));
+>> +               if (!hugetlb_vma_trylock_write(vma)) {
+>> +                       *walk_done = true;
+>> +                       return false;
+>> +               }
+>> +
 > 
-> Yes, here is the summary of my parallel works and how I decided to
-> structure them.
+> Sometimes I feel walk_done is misleading, since walk_done with
+> ret = false actually means walk_abort.
+
+I'll rename this to exit_walk, so it doesn't collide with
+the label names.
+
 > 
-> My current parallel works
-> =========================
-> Series A - min_region_sz power-of-2 validation (this patch)
-> - Status: You gave Reviewed-by, asked Andrew to merge.
-> - Scope: Small, standalone fix for specific issue.
-> - Dependency: None
+> So another option is to make this function return a tristate:
+> WALK_DONE, WALK_ABORT, WALK_CONT. Then we could drop the
+> walk_done argument entirely.
+
+I thought a lot about how to refactor try_to_unmap_one() as
+a whole, and couldn't come up with a good solution.
+
+There are these conditions:
+
+1. ret = false => page_vma_mapped_walk_done(), break
+2. ret not decided, "continue"
+3. ret = true
+   a) exit the while loop naturally
+   b) exit prematurely -> page_vma_mapped_walk_done(), break
+
+I had thought about the refactoring method to have an enum for
+all conditions. So we can refactor bits of code, return an
+enum, but we will still retain ugliness like
+
+if (ret == WALK_DONE)
+	goto walk_done;
+if (ret == WALK_ABORT)
+	goto walk_abort;
+if (ret == WALK_CONTINUE)
+	continue;
+
+This seemed more of a forced-refactoring to me, IMHO doesn't
+reduce the complexity of the function at all.
+
+I don't have a clever solution to get rid of all the label
+jumping, so I refactored what I could.
+
 > 
-> Series B - reset parameters (enabled/kdamond_pid) on unexpected
-> termination (RFC [1])
-> - Status: Preparing V2.
-> - Scope: Reset 'enabled' and 'kdamond_pid' when kdamond terminated
->   unexpectedly.
-> - Dependency: None
-> 
-> Summary of Series B
-> ===================
-> The design evolved through our discussion:
-> 1. Extended 'struct damon_ctx' with 'thread_status' pointers
->    - SJ pointed out: "This feels too much extension of core API for a
->      problem that can more simply be fixed."
-> 
-> 2. Alternative proposals discussed:
->    - Option 1: Termination callback in core API (Too heavy for backport)
->    - Option 2: Override '.get' operator for parameters (code duplication)
->    - Option 3: On-demamd correction in enabled_store() (passive)
-> 
-> 3. Final direction comfirmed:
->    - SJ suggested: "Can't we catch damon_commit_ctx() failure from the
->      calling place?"
->    - We agreed: Simple, backportable fix is the priority.
->    - Decision: Reset 'enabled' and 'kdamond_pid' immediately when
->      damon_commit_ctx() fails, add a fallback in the damon_turn() 'N'
->      path.
-> 
-> [1] https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com
+> Thanks
+> Barry
 
-Thank you for sharing these.  But seems even this context is incomplete from my
-perspective...
-
-The Real Context
-----------------
-
-The real start of the context is probably the question [1] that you asked on
-2026-03-18.  At that time, we found committing wrong parameters stops DAMON
-without an user-visible error.  We agreed DAMON being killed is no problem but
-the absence of user-visible error is a minor user experience problem that
-better to be improved.  So you planned to make the user experience improvement.
-
-Apparently series A is the followup of that.  The first version was posted on
-2026-03-26, according to the changelog of this patch series.  I can show I was
-saying the patch was confusing on the thread.
-
-While the review of the confusing series A was ongoing, you posted [3] the RFC
-of series B on 2026-03-31.  This patch reported one important finding: the
-silent DAMON stop is not just a minor user experience issue but a serious bug
-because it cannot be started again.
-
-And this made things much more confusing. There are multiple ways to trigger
-the issue.  Wrong addr_unit commit is just one of the ways.  We discussed the
-way to fix the real issue.  So, by looking back this, I think you should
-prioritized series B from the point, or make suer series A is only for the
-minor user experience improvement.  Or asked me what to prioritize.  You didn't
-and I missed the fact that you are also working on series A.
-
-But you just continued posting new versions of series A.  I was wrongly
-thinking that is still the minor user experience improvement.  I still think
-the patches were implicitly saying so.  I'm not sure if it was intentional or
-not.  But definitely it was confusing me.  On 2026-04-02, I started feeling I'm
-missing some of the contexts, and asked you more clarification of user impacts
-[4] and full history [5].  You posted v3 [6] right after I asked the question,
-even without answering the question.  Only from this point it became clear
-sereis A is not just a minor user experience improvement but a critical bug
-fix.  Now I think you should clarify this can also fix one trigger point of the
-critical bug but the real fix is work in progress, and this is till only a
-minor user experience improvement.  But because you didn't, and my poor memory
-is volatile, at this point I was thinking this all the work you are doing for
-the series B-exposed bug.
-
-In the response to the sashiko review on this thread, therefore, I was thinking
-you are thinking the wrong addr_unit commit is the only way to trigger the bug.
-I didn't want to ask you to work from the beginning to fix the entire bug, so I
-was saying fixing the real bug for all exploit points is out of the scope of
-this bug.
-
-But now it is turned out that you were aware of the other ways to trigger the
-bug, and didn't transparentl and explicitly exposing that.
-
-So I withdraw what I told on the reply to the sashiko review.  And appreciate
-sashiko developers again for giving us a chance to finding this.
-
-Next Steps
-----------
-
-So, what to do?  Please prioritize series B, if you still willing to do.  It is
-ok to keep doing series A, but only as the minor user experience improvement.
-Clearly explain the whole context you are aware of.  Don't Cc stable@ for
-series A, as it is only an incomplete fix of it.  The fix of the one trigger
-point is just a side effect.
-
-And For Future Contributions
-----------------------------
-
-Liew, I really appreciate your contributions.  You found and shared important
-DAMON bugs.  But apparently your communication has many rooms to improve, at
-least for poort DAMON maintainer who have to work with only limited resources
-including the poort and volatile memory.  I find I was asking clarifications to
-your mails multiple times.  I have to say it was even frustrating sometimes and
-definitely took quite amount of my resource.  Meanwhile, from my uncautiously
-biased perspective, you were only adding more traffic and confusions.
-
-This makes me disappointed and even suspect your intention...  I really hate
-myself suspecting someone.  But we are in the world of bad actors that now
-gained the power of AI.  We actually had a suspicious case from DAMON
-contributors recently, do you remember?
-
-I want to still believe you, so I will do so.  Please feel free to keep
-contributing to DAMON as long as that's what you want to do.  But, please aware
-of the fact that DAMON maintainer has poor volatile memory and working with
-limited resource, and try to make every conversation super clear and
-transparent, from next time.
-
-[1] https://lore.kernel.org/20260318153731.97470-1-aethernet65535@gmail.com
-[2] https://lore.kernel.org/20260327062627.66426-1-aethernet65535@gmail.com
-[3] https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com
-[4] https://lore.kernel.org/20260402140314.74600-1-sj@kernel.org
-[5] https://lore.kernel.org/20260402152915.75294-1-sj@kernel.org
-[6] https://lore.kernel.org/20260403052837.58063-1-aethernet65535@gmail.com
-
-
-Thanks,
-SJ
-
-[...]
 
