@@ -4,113 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07737F45A13
-	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:04:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32745F45A13
+	for <linux-mm@archiver.kernel.org>; Sat, 11 Apr 2026 00:15:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 545736B0089; Fri, 10 Apr 2026 20:04:58 -0400 (EDT)
+	id 469C96B0089; Fri, 10 Apr 2026 20:15:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F5966B008A; Fri, 10 Apr 2026 20:04:58 -0400 (EDT)
+	id 420AD6B008A; Fri, 10 Apr 2026 20:15:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40B436B0092; Fri, 10 Apr 2026 20:04:58 -0400 (EDT)
+	id 3307F6B0092; Fri, 10 Apr 2026 20:15:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E41C6B0089
-	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:04:58 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD92B8C16B
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:04:57 +0000 (UTC)
-X-FDA: 84644329434.09.AB231E6
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EA6F580002
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:04:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ETlC9l9L;
-	spf=pass (imf30.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2628E6B0089
+	for <linux-mm@kvack.org>; Fri, 10 Apr 2026 20:15:13 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5B6901406C6
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:15:12 +0000 (UTC)
+X-FDA: 84644355264.17.47A3F36
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BDD994000E
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 00:15:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B3duJlPn;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B3duJlPn;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775866510; a=rsa-sha256;
+	cv=none;
+	b=RLM3Twlgx4CvCpj/HK/+bTGPSZnLDL6glS5LSrt7RifFiY/n4U496Scf2wXrUP7xoIl2DN
+	Z/xJvXzEMwkCwxTOo7zDh5DInJGdnGYUmTf4B9u8bjRMOq3DX2dnOu9A55YTGFWyGWkiUZ
+	ksoEFw7kjonZK3FOaIH3Rbwmuh3KE6Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775865896;
+	s=arc-20220608; t=1775866510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XSfSExwzC5aExbWCOmuuVkACJaQn7xM5T6CtW6BGQtE=;
-	b=LgY7dN+nFYtxBCiuMURDZPptJc7SPDSgKx+vtWPdQgM6AR7TcIzynIZATOxf8S4mlIjGIX
-	tBEbsHIZzum8yVgielhyLvY5ynsFE0PiZVfZyGT/udBJdBmXNSEfQbOr8hkoUNyBU7yHbh
-	vhSrmvop16AGA3wKbNtlzB76l57TQG4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775865896; a=rsa-sha256;
-	cv=none;
-	b=b8lpVv4bOCT2ohlZ1+lv47wyL0gaVfNp1HmR/qjrXFG185cTeeQ9fQL2kKtwVMu9NL6FUm
-	/NpICUGATobA/KvZOy5UlMId2R9wJoTckRs3ptdibcIltTuEdY/lRUPm3At4ZfyMch6JHn
-	AWf4m1aEhh9ueAy2IBc0EwzBfbUHrRw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ETlC9l9L;
-	spf=pass (imf30.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c76b95e652bso1107551a12.3
-        for <linux-mm@kvack.org>; Fri, 10 Apr 2026 17:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775865895; x=1776470695; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XSfSExwzC5aExbWCOmuuVkACJaQn7xM5T6CtW6BGQtE=;
-        b=ETlC9l9LasA6bbLlafjaa+XycYCc1Oga+unl+buVtw5IeE+qMR1hY2oUI/nSD7JIyT
-         qrx4eal9V8SdvjAfKeF7vRW+QoTqV07onrXxVawDS5SteesnDRWvk49CrdNaL+lvm9lw
-         kv0SKk82UpYzrs6DeERbTEax0lYdyP6iBL0LNvsTQHHeqO2AmNAIdxL8KvuZKKOIPE/S
-         dCfL6j1AB+vPaK3+yj99tFAHuIXUWolNhXruNbkIEZsl7cF5AseooBMg5/oMiAf8xdDp
-         Kt4idMuNjOdNcKErrsbOVmM1ZBzGlpm4OV60hH1Vlh+nqrDf/ob3rptnNJbJTCwsG8AG
-         yTbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775865895; x=1776470695;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XSfSExwzC5aExbWCOmuuVkACJaQn7xM5T6CtW6BGQtE=;
-        b=QFMupnpxZ6Hn+M0jOUmHWPlwli+crJ9CHG4F0lANCLYSQYEHlxCtelleMTiccrrXY7
-         q81qZKSQyeKmdWqsDXFznyq6JUCBhN8ZEU0sbwGEzZkWvTA1Vyoh2P2RAW2kOJX+FR2c
-         2/OSJEKKlSvWs5lG8Ct/ZQP5X9Ri4Q5AFvtT316HiWnTFjCdmdfdjjWlJgyRjoT1863l
-         n2SmCJ9Z06xHZekw60yeaiwhW84w+P7KRXOPfZ/TA3VIMx3i9ChOPDX3yESO5xQ2SwJa
-         ksHDUy33VQE7HyvMeWUoxveiXC8VD3u5ftFfNxindYv0fcdVMwZKWkXJbPt9wMw619Qo
-         bCeA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDhFnPgqgLt2B79IcNnGXCNAH0K15SXr5ifnzl6FngIV32H7xuEJzZl68KaTRIflBITE5Ig2iw1Q==@kvack.org
-X-Gm-Message-State: AOJu0YxV8456yS+bG83qWfmu++4lwIPH8rTQNPqBg7citZJkkW2OagrR
-	8jOuTxbnLE63kxjsz9cnZ9Y84xLBT2pKilneTcgqNbzGDWQaYhocmLnn4312Sg==
-X-Gm-Gg: AeBDievy+SI6qEH9prEvQEq6Ui41rGsusHrHz/hcFlfWbJyb8N9FV+AEbj9bM/SvDjA
-	okFoG+GbLtkWFEzTWLs1B7fm4p+XtgLrBs6rFXfqNFnflgcc5tHjpMKgltVV3GaT6q6B2agRJvo
-	D/UQUaMVcEnazOxCgKvOB07XGzDlt9EmrJlOPkujbAf6zFbDe9QokCY6zJCdYOiS+Rq9aLFqKHx
-	hcoCE3fA7uHVpXZLETSApf5DNlFZZl1PGoiFa8sQOvW9mTVHgJ6QEVqIC0Npw4VcOd3TKpa+i/f
-	pMVcGu/Sval+DgUm0YevcM2R2iVmfhYbiyiu3cdlk0i1A4ZUilDxULt4LsMVVTsrlEDnwoHgm6W
-	KUL3cf7dI+GXdCgCJjlDMfu+fVoGz+JcLHbqaUGeg4Ry9QciFJW3BrT1uf8RfLb7o524umMsd5z
-	V7q0//xnjS5Xy6qYQpv47528Yd2aVIz4c9gjK/A7m+jCrsYYro2A==
-X-Received: by 2002:a17:903:350b:b0:2b0:5694:7b62 with SMTP id d9443c01a7336-2b2d5a78d4fmr59281715ad.44.1775865894667;
-        Fri, 10 Apr 2026 17:04:54 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2001:f40:906:1c06:7a81:226b:e033:d971])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dd610esm41422265ad.20.2026.04.10.17.04.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 17:04:54 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: (sashiko review) [PATCH v4 1/2] mm/damon/lru_sort: validate min_region_size to be power of 2
-Date: Sat, 11 Apr 2026 08:04:58 +0800
-Message-ID: <20260411000458.11479-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260410170051.51008-1-sj@kernel.org>
-References: <20260410170051.51008-1-sj@kernel.org>
+	bh=tQgACKAfSw9jIQU5TLlRar7J1DmtZzIkk0GiO/TXius=;
+	b=lcKvgFkM1zhs+OPDmhPwnQWNBxgUsQsv7VDk3P6KJo6nNdJlTOGCjBuYMy2+Y79doOgr7G
+	mF+FCk83qrz0ww32+nAJ+TxoxtEUSydCWW+XXrRmZqUs5nFau+WzUv1vkn+ymx2xmS1pI0
+	NoNeSM94lvs5BUHIGqjGESFfJP/4dkw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2DFA3600AE;
+	Sat, 11 Apr 2026 00:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B020C19421;
+	Sat, 11 Apr 2026 00:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775866509;
+	bh=/hprKzsu8I0mZLzmAZMS3rOujZINE1lzd39CC+PfBz8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B3duJlPndaO91FZfI0JFxTgOr91H9HHnX80tNiPWTE8XXqJ6VmW9oZlYGS6lI93EO
+	 xrvxSICogGlIJxu1fFzT8BvPDsLrX53QtNeRpgYiF01/IpIgLk151UfYhbWPsSjskK
+	 amuGtilHZwidifjw3z8+GkpsPM5nbvFY/AcecFk9PKGRsyjvZwTL34o+zkvMSHt6s0
+	 bFKX2m6fzfqo6w8WnoBNsEkIjsme5v1XVOMBozW8h9xav117ALv9A9bU0gczhzpRGW
+	 y7SfTDsc5nc08DLZ/tX9Xoq9zFxgPhyPSFqpdSgB1G8nbO+Gsk3LW1yyVKzcUoc0WT
+	 ViQ48w0S7b2cQ==
+From: SeongJae Park <sj@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ye Liu <liuye@kylinos.cn>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/memory-failure: use bool for forcekill state
+Date: Fri, 10 Apr 2026 17:15:05 -0700
+Message-ID: <20260411001506.91334-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260410074740.2524718-1-ye.liu@linux.dev>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fx81mwfhsung5efei3a8egxfwtgnhwyw
-X-Rspamd-Queue-Id: EA6F580002
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BDD994000E
+X-Stat-Signature: 3pneena5nhpwtg96mft5zpza4uqfpyr7
 X-Rspam-User: 
-X-HE-Tag: 1775865895-733279
-X-HE-Meta: U2FsdGVkX18d4SROcqVr8uXxMUzL7RoNQHGEqI9I8KftdE9isF2cPGXhPsiUokkq/7XFvuDLaSClYd8Knf1zl8BYS2iavdV1CiYdMIr0jdqSsxfmMjtzn4LdP20yFfHUfhjngbvKpbxnXnX8TcujNDuPZIUuCQPaWExBQ38LaQ0yOctTmYS9zOmLW2SEQgolvuuRUDhRfybSneQkEk42wefXhC8KVAjggisATSlXcqzmTsmqz16NZY6ePuiuMXzJDA0BtRjAjMbnu5sJrgqqbPhf+oqDNYgp709DK9zGs7s/ckVtKn073EOvp1Z0SPByPoovuZy/11IQs2zKgofT88sJ/SYWZnl9bYE86d6VQsqsLAMxYd3nm5lpdjz7AzL0rhZlvd0bGGETZP+rIW8OOp+A/sVEJaCxkvr/bWc81u4yUZxMo2MVTvN17v1gdVeBKhjkKqPtIeJ4hS0JhiEZERNhSShrokw+gz8iBzZvtwfdPVlCTQlFMyGU8wa6esAs08+kACpoX2yY+5iWs9/eMukMO26mTiGmwiwbL0HBYLf+z/U38oNqfeIkAaSvZj8wPblDsZ96/5HLJh5ocnjJqmlTcbV4dVzD1wVzwna/hbtUTFWwXX3Ra0jWxTMGoVYPZasTOlhMqyZLiijKhwjv+BpXc37SlkLmExq2vpsjSGhdmKyJhwRKUityONapb/t/9iSWXVpCOiwZvmlkCEFpciCRYPz//pvS6ZbygprkOLuv/9FiFBzmRe9BhB1r7M4LZjMiXq94ZtyYWZEHZmHPJ6yHgyuuNY8/S7z2D2HY59IfB10ls86+CX7GtDPpamLSsd57dqUzOFSh5pzyxFStXA2XzFnlx4D3fzCUJxCSebx38Z4OoDY1WEUGt7uH6ji0kLWrLJ2FYIDJ8LGDOgUQtlkWvgwIuliDqcu9B+STMXfcz7n6JuQqkV0/0yiBomsZ5b60O8OPAhYDzMWRGNw
- jJgnDnGb
- wyBSfSGLz6x7TdiDno/+4K2eNdU54MmmkNyWf7SPFXS5SURY30mx5zZjK3BvWcBU/PaGO0tg9/5N0xhSrCCWcXIqS3Kth6CLqyfj6Lrd62YPh0WGOflk6Phy9n0hW5FgiXm2hHQxARNiCGUHe1Y7bKuZpTrnQlRGOvvKNFL15muhZp43VeHfp3i2qLgeFO5rcyH/yISTjeowRdtIqFWXcwLv0pZNIKIgsI9+deffyi425dONgbkanisLnVpAO+GHxRgQ3PpuenHTEN/OyWQphCZI+L80RF2B+5Kn2y0ITtPVs44v0s5DyzcmFETfXyHt+5m43LlvLULOSG5i4V7VgYC21f7nYeGxBp96TsCd7qYZIVzWcP0j/43aGLYRg1fQDfEMVhJgWBOBNr0vCguZ/F8P0zxqDd8/M9KRWWRGGtFuc17uqcuSUIChYsyb3lxuY3tHwUc81K9hw6Yw6A1NVGheADKFn3Y2H613RQCqo12xlskM=
+X-HE-Tag: 1775866510-36570
+X-HE-Meta: U2FsdGVkX1/AqU4qarvDBWEBqbHnomdwn8ZDYO+6XVbmwk0OGcjwUCIMEUlFvpbLYa0JUMGUNsSNOEOAqKC1MlXVsMAjRVUWyzoLYuor1cl4yFqxYy+v4rhCPkjpKWmaCeZWAB4R2RXTCc9pZu9csw6w1zWf14JQ8Qc2uU3kscziqfn0rA27jzxlTbJD3JRvMsz4ZXGUCrUD0OpTy5zm6+Wq43ZHYf4uuaQ1deFGqI9naM6R+nfUkD2Xn8/uYOlvM+G+R3eaDuE1HWWBCLEI9tLMDznQQEvoLFuXEBcwUfmDqh2sKinxdk8N9D0fn7/iNkE+evodZobcCs58YFBEjN1ZJUthwq27MkNJJ0ODktrTCjc/BmUXNnDF7oyhfzjn5DXZajYZNMFVQzujalUyMAIGFcZ8XbulrBFaU7Bb7e7UpM6xgtqXrK0jRsGOrU6mI9Aby8WGUdYnBxKDP/wiFZ7YQv/sur3EJaeZFREdmWtQjqGLnoPMVKY7hpHf1qvTUzGondDblOpK1NKHJHJz4bGULVhYg1HVWTZcQHR9tGlTd+Y7ZvXr/6JQM5XXAdzu3rG/0xvai82QaRD+sKG2NwOJLXi37vlK9R1P94afBDjpp8rl4P25ysEga2tRwa802BQEMWmkIeTSn0DcV53yUu7pKFlsicaMa0GUqBuuRqmvkkKrmK4KvqxKUyzJc1y+qQSgShEoddLULK9V6rXaezFPp9wLO96/guDhqFJXnS3VvmzZ+VwBiWzT+9y9U18uoXkyr8nRVPKzdEc+56RpvSVJqpyRJT5lT1i1gpfHtnMNffO5v88i9ptbgEev8TNqh04RM4z2RJni27pDMHzKmWMdspSkE+IVhGrsERr9F/AgAr8xAMXNGO+oJC0b2c45Br+h5gErdtXd4cF7C4PKXAhDkdBLh9OWqtAP5tz1w9brMMid9iXyp3sOc44WhUh4/jJXLGhQu/HFLA/R7iN
+ /a4dfprB
+ N31Wm3sPJWWpmuvqmSTHPU1QRBR29wUI8rEF3jpTzD8ypH1anOXGbJdjM01DreoJECWicnEFfGZOWqXmk/fIiBjXabhcukknuNeXK+ir3qse2tyG9TzjMUSb7GhRSppw3ZdgAleD9tmlCUPe16/zI9Hz4VdSyc7lVfuaGciMEJDAQFoqPOQ5Y9qFmTGhFOtEuWyJvmKnKUNZnczqKiyB7uDSbEDnCrR8FAyo145u6hGyBaFbB9/eWW3wi7EmTAAqHPGvMspRuZzprTvQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,87 +95,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Apr 2026 10:00:50 -0700 SeongJae Park <sj@kernel.org> wrote:
+On Fri, 10 Apr 2026 15:47:39 +0800 Ye Liu <ye.liu@linux.dev> wrote:
 
-> On Sat, 11 Apr 2026 00:46:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 > 
-> > On Fri, 10 Apr 2026 06:55:00 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > 
-> > > On Fri, 10 Apr 2026 17:40:04 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > 
-> > > [...]
-> > > 
-> > > Agreed.  This was unclear to me in previous disucssions, though.  I still agree
-> > > it is out of the scope of this patch.  But now I think we need to let users
-> > > force-restart.  Adding this to my todo list.
-> > 
-> > Just to make sure - is this the same issue that my recent RFC patch [1]
-> > aims to address? I want to make sure we're not duplicating efforts.
+> 'forcekill' is used as a boolean flag to control whether
+> processes should be forcibly killed. It is only assigned
+> from boolean expressions and never used in arithmetic or
+> bitmask operations.
 > 
-> Hmm, this makes me confused about how we ended up working on this series, then.
+> Convert it from int to bool.
 > 
-> > 
-> > I'm still actively working on that patch, and I plan to send the next
-> > version next week. I've been holding off because I didn't want to send
-> > multiple patches in parallel.
+> No functional change intended.
 > 
-> Ok, seems I dropped a ball.  I was working like AI bot that only works with
-> limited and nearly fresh context for each mail that on my inbox.  I will work
-> on making another thing for tracking this kind of parallel works with good
-> context.  But since I already dropped the ball for this, I'd like to make sure
-> we are on the same page.  So I'd suggest below.
-> 
-> 1. Let's hold this patch series.  Andrew, please don't merge this for now until
->    this discussion is completed.
-> 2. Please summarize your parallel works in progress with the context about how
->    you decided to do that in the way, with summaries of our previous
->    discussions.
-> 
-> Could you please do those, Liew?
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
 
-TL;DR - There is no dependency between my parallel (2) works. I never
-intended to merge these two works into a single series because they
-address the problem at different level.
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-Yes, here is the summary of my parallel works and how I decided to
-structure them.
 
-My current parallel works
-=========================
-Series A - min_region_sz power-of-2 validation (this patch)
-- Status: You gave Reviewed-by, asked Andrew to merge.
-- Scope: Small, standalone fix for specific issue.
-- Dependency: None
+Thanks,
+SJ
 
-Series B - reset parameters (enabled/kdamond_pid) on unexpected
-termination (RFC [1])
-- Status: Preparing V2.
-- Scope: Reset 'enabled' and 'kdamond_pid' when kdamond terminated
-  unexpectedly.
-- Dependency: None
-
-Summary of Series B
-===================
-The design evolved through our discussion:
-1. Extended 'struct damon_ctx' with 'thread_status' pointers
-   - SJ pointed out: "This feels too much extension of core API for a
-     problem that can more simply be fixed."
-
-2. Alternative proposals discussed:
-   - Option 1: Termination callback in core API (Too heavy for backport)
-   - Option 2: Override '.get' operator for parameters (code duplication)
-   - Option 3: On-demamd correction in enabled_store() (passive)
-
-3. Final direction comfirmed:
-   - SJ suggested: "Can't we catch damon_commit_ctx() failure from the
-     calling place?"
-   - We agreed: Simple, backportable fix is the priority.
-   - Decision: Reset 'enabled' and 'kdamond_pid' immediately when
-     damon_commit_ctx() fails, add a fallback in the damon_turn() 'N'
-     path.
-
-[1] https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com
-
-Best regards,
-Rui Yan
+[...]
 
