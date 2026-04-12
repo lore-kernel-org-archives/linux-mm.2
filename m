@@ -4,116 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7194CE937E3
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 11:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A14E937E4
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 13:23:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DF3D6B0089; Sun, 12 Apr 2026 07:48:59 -0400 (EDT)
+	id 25F1A6B0089; Sun, 12 Apr 2026 09:23:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48F956B008A; Sun, 12 Apr 2026 07:48:59 -0400 (EDT)
+	id 210006B008A; Sun, 12 Apr 2026 09:23:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37EF36B0092; Sun, 12 Apr 2026 07:48:59 -0400 (EDT)
+	id 0FF4E6B0092; Sun, 12 Apr 2026 09:23:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 275DB6B0089
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 07:48:59 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD26E1B918C
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 11:48:58 +0000 (UTC)
-X-FDA: 84649732356.25.BA0EAC4
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EADE840002
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 11:48:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nvugoXYN;
-	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nvugoXYN;
-	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775994537; a=rsa-sha256;
-	cv=none;
-	b=kgQSEmomhAjRNRrcWcJWWUhaKh/JqWxVyoeF2vQDXnl9K9ncvyyRubXmif0hn5DLim8qUS
-	f1UFU7fSG8Jw3gQfLcaOCvskGcD+itqDc2yduJt548KJJtlbsjKL02fveFJRfjoiMovJUQ
-	EtsMdVoLMdXCjLC4mWHGVhMTBAMEow0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775994537;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id ED3D36B0089
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 09:23:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8ACB7E3F6D
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 13:23:07 +0000 (UTC)
+X-FDA: 84649969614.01.CC45604
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3135740003
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 13:23:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nNCYPfq7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of linmag7@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=linmag7@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776000185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZK+9H0h/ffIWkub4XEdg6OwjOH1xxZYH9X5x/fllBLE=;
-	b=hUsG+6z4RTCU2Zj4Uhg1eeMZOCIsyOulCWv/te4nb70TDER0xWv9F/Gcs7GCrC/XbOIpC3
-	cbosG+fOMqDElA4EB4UoGOrNoN/YAz8Odym8Yb7sA/fQd/V1d4/bWfojk2r2OAzR8JYj3W
-	rN4ro0mU90BBGZ7n7YdW05BCztpMJes=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cfbfdabf3fso301151885a.3
-        for <linux-mm@kvack.org>; Sun, 12 Apr 2026 04:48:56 -0700 (PDT)
+	bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
+	b=4PVrIvrb/VAycFX33sdmgXMU1Ec6UAq7Nx/oyPL4MqHjWLJh4yaVKVwAfBpD2/Nv19Nm10
+	E8uI5xg91ykkJoW6gaEGCclvx+Dr52ek3FdIJzj2JoqNSJK9H9ey6nBCTOnZms4L9As8L4
+	rcSxt069bY+CcUNAUdq1iiNuR1hb6yw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776000185; a=rsa-sha256;
+	cv=pass;
+	b=zXpxaYlnxSCrtuZqGuofb+RbYKl3tyaBiokfPR6eLwMRHFmTHs7J6mI6+UGwJJeVinb5y7
+	fdA+KX1997SDwYkj+uVjQRHNEk8m//F+De5QaLm5RbTtoH+QxzEtC7gMKTx9+rRmHfy+UU
+	6kDyylHbkKfdDmSGBoKBl4wqAViI+SY=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nNCYPfq7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of linmag7@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=linmag7@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-671802026c3so74746a12.1
+        for <linux-mm@kvack.org>; Sun, 12 Apr 2026 06:23:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776000183; cv=none;
+        d=google.com; s=arc-20240605;
+        b=K1RhDjw+FynTFaPNm9deJXZKAR4akLs9ZrIcO/6ItNwDpIMlZ07CRp3B0Bq5KmpxuF
+         TkY+P8vu/6XiCVNHuafkzCnGgNbpHFnCNcpOwr/xFhL4WY6KbjfCKg3eAyrtAJsn58e+
+         MjcSsf76chrJ6dz7lMcgr3u37hHT/qRwvIcKxByVgHUi3VZ+XeqS6FDqzB9WuzbOXElu
+         EO3vUnx08fNpedC2Pl2cHgAiulKY2MBEk1zOPVrygL887dV6n+PRonW/xlels21YQrQr
+         BkkWBEGq/xseA5aJZe5JrcukfB5Gft2o/RkWeE7gyMClL/Kbii3/LczdEOI9J8vAQAHx
+         9Fhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
+        fh=kuFJ+LR1c8tobI5Yz5/lEw+Uz8CqonzIhbbxhw3Lr0g=;
+        b=hcJopz4gPQ7OrD5Rn41fm+5Wv6JACMb4yvrTW7emerwydnaBvjf2gaUnsyuDGlpMB2
+         32Ww1/FQ1ozv5wEbFJTtyTqddk2y4X0O8elhRvuegt27jPiIrgJlVygjY8Uw4ccVJNMv
+         P48RacyPayvr7XIL1wGDMuqg5gQstzh0Ou2Y1oOGzHyBtGlLrf/W6YwcTdUARWsw4uaU
+         EOcMGcZZqXfOiuwxpu9FeSGW+wPDBZudFDh23wYN8Uil4VoUM5CjLMW2DMlDdfTyWxkL
+         kpPHDagJaweuusNY6wy6IKqlqBws8M3yhc22kAq4jyYZmO9zMRri+8F3wGkyMzVORw8Y
+         6hQw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775994536; x=1776599336; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZK+9H0h/ffIWkub4XEdg6OwjOH1xxZYH9X5x/fllBLE=;
-        b=nvugoXYNS+8aJ1yRi/4ejUGeloJoV85F+Fp2ol5eRP9VrF+kjLiC7MmXPRtzZuSjFS
-         yKT4MKhKVMYkEd3GjxjEsGpYYcY7jQC0ghvJ3BtrXa7Mt71zXfsIEiuXobj5AVS9xjio
-         pOkdu94h90RxqyafhLyY+bGUVtBS/drrMdm3KmC7S1UnpgxH83s8aioMIxHNLcdt/fGV
-         lKwnCLr4NcBI421L0xW2uVaIXtFo/KvSVUCdB+vuHc5WCqM8Cr/xGHvJUDzbhc3ejh0g
-         36F3zKooYoGMFeUTDCOdH5+BLr/9I0TNDIRdi7Ydy1Y9YteSrR9L1pssDg63SWQGaC+A
-         Q8fQ==
+        d=gmail.com; s=20251104; t=1776000183; x=1776604983; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
+        b=nNCYPfq7HR3SaSe9XKu3fQ2gl3ICnxPdUuqwGAfTdTpDQyW4YI4GPMA2pjJQupvNu+
+         xMJogJBohLQMsELPIZcEAZbEMCDSHsEyEUj5aAuAwHOunGBKFX19YlfwvZ8jHIKn/Y/D
+         r5T8q9KMrEokXlgvmPvg96iQmroFmZ9OuGYbNxX6YBiXiyMJlNBalPzR4TEDg3Tffh3B
+         lL5ExggEFosxUb/hUfB9YWgL0/nZ3WNUXQZsQq7replMICVjMDjhWCTZt1ckWgl7i19B
+         U/tWRVqMEPsJ4LKfxYlQSS9IgzGBOZDHewKU7Bzh+E0Ur6aPqSWaECXQQJAwi00d+F49
+         qO/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775994536; x=1776599336;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZK+9H0h/ffIWkub4XEdg6OwjOH1xxZYH9X5x/fllBLE=;
-        b=jS0MpNDTv7ahd6ynKU3fBTsWAIhiOmXedt3RMY9Dse3aHWbJfQf2O2pxgKLUL9HG3h
-         VpfChfkNzLj7ARDKLLyHPNAOY8Ztne0r1o9mtJG0rcvh/b0qMOEUQia6yDM1KcMM5yoX
-         wsTo1tZHiJMAPd/RWgpg2yYNSGCGQKDOzu2UFybnEIsvdlaYQlLSRhEK+CewV5HOgG6T
-         UV7LLXy+PXw2weXAmGuMvap8JUIG5niKR56w3s1EHf1ItJkFNpmiMq7sfDf2URFlABJz
-         Wg2UQI3m31/qN3Sjt3UqlbeCDYKoVEWlQC774Os64Lhipqf6j9kblIyK14ziVsEfbASf
-         ACuA==
-X-Forwarded-Encrypted: i=1; AJvYcCX68tyjdwOZWdIsP2C28WVfq+JzcdorR91JBTgHLKea4E97rTDYdCOVLFE+D3gqzxKTDEK5HY1YOQ==@kvack.org
-X-Gm-Message-State: AOJu0YyvSb/TAzllufFxmS96MzhaURYxy4AzxYOPYjIw6h6IO2TQt0Pc
-	2bMUUgvu/P1YJi4cNB6vTUbOHPL+eCxLSAGttGRaqGPWlmmbPW+8aAoR
-X-Gm-Gg: AeBDievU0HOcHMOfapXLpMuUMhVIw6yKJpYmcQqSPZOJp0vuBZRW4dbqfA0Hl9rZc+5
-	zfXYNM6r266LOZraGdamo6HHDOTXQQ0SrFDND2c/Cqus9+PBDXp88Kl7yxlvjxUJ6JnkOSfreCZ
-	AN8vYo9l7hCEW2ZWTEdyBKT1ElH4KA7qgF75uuMhbj4eWOpp/xEP5qMu41aVC0GgMrwtQaEFplU
-	12Si2WzNXdCjQ9C2U8n4/ABoBaCL4p8RsWPLNqdECImGAOqkeHK6z4JZ+/VptmLZb5IyKei/sNJ
-	d5Tzd1ns3nDlX7X5c5H03hJgg3pyYGHpAniAQflxg/Oeogmh9c+oSqGPjkhnR0ZF0gkF1Zc6rIp
-	SIJf5pkh+ELVYF62zSLy1AGOkM0fQg8v7Zq3uRPS5Owi/jwymoaSuWQiUmLP2uFzFb/ATKzZiM+
-	FG0ER3M7BTbcJrP92RNQ5eTWbCzcml7g11tYFI3x6xx8EM36cJxRtOUhT8yB0=
-X-Received: by 2002:a05:620a:1990:b0:8cb:baea:89cd with SMTP id af79cd13be357-8ddccb294ffmr1411096585a.8.1775994535808;
-        Sun, 12 Apr 2026 04:48:55 -0700 (PDT)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb66587e4sm647529685a.19.2026.04.12.04.48.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 04:48:55 -0700 (PDT)
-Date: Sun, 12 Apr 2026 19:48:48 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: minchan@kernel.org, senozhatsky@chromium.org, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, axboe@kernel.dk, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kasong@tencent.com, chrisl@kernel.org, justinjiang@vivo.com, 
-	liulei.rjpt@vivo.com, Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: Re: [RFC PATCH] zram: support asynchronous GC for lazy slot freeing
-Message-ID: <adt3Q_SRToF6fb3W@KASONG-MC4>
-References: <20260412060450.15813-1-baohua@kernel.org>
+        d=1e100.net; s=20251104; t=1776000183; x=1776604983;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gDdA9vu4Fz00bgurrj0mXlyC2hJ8rRfiuCUxuR8xwe8=;
+        b=HIjYeN8LnchO8oyf2SGU4I4LZUnLNUIx4OdqwPz4ZPkgiubZRIxQ1j3r8OYTXevMJt
+         L0FGO7VEaMW3QviBzlgDWfx2mg0EpfTPZpG2sEei01nYce5ypAXpOosvsgkDdXh/f6wq
+         aMUrBfj6I/D9A8bghfs28KF81KkMcAkjL1TcyXOy8ObtQs493iNi88O5GbiedQHi0xwO
+         4XIoxFa7SO5gamzCSwAx1+HKwiL+gvQoyRdFdQeSOhns0jORdst52vD4O3Es1OrNcTJF
+         Jv9cH+sCnPAmkCMIFx7bSriEkiR0hNKu7bxAqLxqCOlP+re9P6kKXtZDZlG7TRtqta+s
+         W4MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrXIGZgPJt1AdUbMUBJyBzW/KOGyV5qYb1rwsTR9ScdNREB2aG1VqAB2ObqyJtYLn428f8l0Ef+g==@kvack.org
+X-Gm-Message-State: AOJu0Yxdeltm8Ffcuux4jHZvgqy2Ea67eat7RSzo3ZHHMjzPoclDSg4/
+	No5NMkXNUgtcNPIkaq8jl9YkuQTVuMROPvBkUY8SqUj2Uz46jlQMiQXYQAbtlRtXXF/bMljMPUV
+	sXRVYPcS8MD52zdACj75eS3zueTwzkDI=
+X-Gm-Gg: AeBDiesgCIsy6uP9OJyCy5eO8C21xOEk/TaQsbzt/OAg203nJYAf73vWHBBIK48M5vJ
+	e3qUXlIKHrYWFpnlrnuUE5eIstgbFoQ/anPqeWVq3jwII71MVK0/F/Edf1H7GWpvVSNgdnbFwj/
+	7AXLTpVZ3+Dkm1x87oajgf0gU/wUxfITmkax5gZSnE+PvMX+WTGbYk82Pl04t4hh4M/NukzN3WX
+	4j4Wmb3ZJM/MeG8HQL3wXR78xaBrllVLe0tQ1kfxkRKjvjslFm6/8fGT4l4EvedLqCw0XBeOemI
+	uYQ7uviDRer7UYdxu6JuWnfMVoJK+sw6PeG4F48G
+X-Received: by 2002:a17:907:e113:b0:b9c:6ef1:ed18 with SMTP id
+ a640c23a62f3a-b9d727aa4fdmr352963766b.25.1776000183133; Sun, 12 Apr 2026
+ 06:23:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260412060450.15813-1-baohua@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EADE840002
-X-Stat-Signature: j3s8ngc5zu3xcid6eipp1u6j8gxqm4wn
+References: <20260410120044.031381086@kernel.org> <20260410120319.131582521@kernel.org>
+In-Reply-To: <20260410120319.131582521@kernel.org>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Sun, 12 Apr 2026 15:22:51 +0200
+X-Gm-Features: AQROBzAeMsaeSVePCJ__tEd4f2rWAY6MixXzp_fii2b8vyUpLt4xjSbtYzENFaw
+Message-ID: <CA+=Fv5S68wZQapeaYTspOfsuGk=nBj60sx-ojHBSqrxV59Q+ZA@mail.gmail.com>
+Subject: Re: [patch 23/38] alpha: Select ARCH_HAS_RANDOM_ENTROPY
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
+	Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, 
+	iommu@lists.linux.dev, Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
+	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
+	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
+	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	loongarch@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>, 
+	Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org, 
+	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 3135740003
+X-Stat-Signature: 59okf6wrt8a1cnbqpemxp9d4xsjjior3
 X-Rspam-User: 
-X-HE-Tag: 1775994536-164108
-X-HE-Meta: U2FsdGVkX18+o1tSffTABdVzaxDQrhdUZh/6TLNEn5AGK/a9NIvMWnlVYb38LjNIC/DgBlnFGSiZKdF1M1GQeqc6rwYB2t16RrISSX9fj22dPYSri1Rc9Aojit8YJKSeVOSQzRyl8Apb3EmBk+kxdXul75/7WvdPyL2tSaotz4vbrmXljYuDMR8BpNAz1vWQWs5QC6P9tB1BwGEk07pCKdeP0a+RlfW7l0GCmSRHlA6BLAZljQ3X8dIk0SbzZXe8BWPN9MfsdgLk1qfCc2WNzX2F8d6zuKcAB1xIcPQy4VR3ctsw+c62iPXKpPxd0R4hI0g6oLKjSAvAH10G3P9P7w8/EcbQJIYpp1mEPBa5oaJnb8C0rQdp4LIAtC1VeniBU6AsWN6hoHG44TFPT5MHeHVbGMO4VgosGvvOWCG2OAZC5V0xuJLZpOfAuVFt2OtvcTxsqho8D73HLZqMcZi07RD37D3TG0x7TMuLnEiRPte+QJJTaXIlb9Hx+TjBDug8OmOEtB/YoGpqgiP5mbXeGjDOAx/ZpimQbrmfTncSClfXPPYyi0bOUStvVBH/GVp701XBOUtOcIka+PcVQwFRBFBEKSIwWPiq75zUzB+CY7VKWjxSxFfO/d4+PwJbdbN9eYIA383+fquzOYEjIDPgRiAer00FuYJ8r+JDIYgcuisIO+AZtebRaoxxd0oWWTutjXecnYsajXs03HYGksgjCDFasmKXArqz4Zi/uFp7eUvVQ4OgF4WV4ii6+kdBSTD9OgPunr5IH0ZJ+V6VwOfLMnVOj+uYmwDLghH+Dox5tbWpeiK2xuAWVQQVZ5LAKLho1XBZ26bOqR7EkAbqr5ZHge61+9yEoR8feXoXO4C6Q/qK0xHrpyJLD7EL14QwO35MlEnwKqme7TOJiheB0IXVyhH/SG+u0YUeOklgM+ECFlLslGtz/7W6zVWOh3g8z1pCoc+MgPXYjfLahq2hkcS
- ZuAPqnCw
- F+YYqWZ8eep2x1cZWnYWYOl9SPHZS9+35GlTvGWl12Sfpc5jvA2EPUoV4+UCXR7HsMl3H5J6DWtSzdie6QTKaovOpqBorM9efdYv9CvuwCKp8upi3jwQVA/QX2f2JKJJ5e3cKSb+2b5/ncB4U6nFDmjyATKufY6/ceomybGz7ECsnAmrNMSoHkYBsgSb77uzqApMqO873xVsRAisH7lJu+QX+zU68CGOddHfrgyhKNnYQ8m8v10TgmFiVXb7DcxntDVMHwpv4PYkcT7sgMVpm2kYSk1yGZ0JSwfrNYa5qGr5fBa0QAmRN5XIDi+NxDJB7ibi6IB6PblpXVT2+aGR4rLCtT2th6JGR29Jyroyx6OxVdsR2LzZmcf2rqUrangPuWRxDGJGc6nTXsYpZ+mc8ppq76QeGU8mMtDSIZ4BN8U8IiuPkyvkjVqhX4PzH/txYxHQeFoaeD4byOAJ4ceaxg6kCCVEmH3FwrPq/98xZH+iZsikTbv8Gd4iIYEzx31bvo6ac6Vwjha2aT7bQuLnAIfAsGfoiXUJuksbjFN+Y0iGWrRx+q+2fYP8r87/zg9BQTZY/OH5c8070lYUmo3LOfZnpn/C1o6ADOcek
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776000184-944458
+X-HE-Meta: U2FsdGVkX18G4vGQYyt0tCA3nr/VP6JTsTfPTpC/VUnzChzOSMbg773/6LVL2+NGP2YLL3ZppYXxvlCHckafm5ARSPUpcqT487SXcSrhWnc4axei76ic/kis+XCm8+kHioAuOyDhm1DSjVV6qxBSm4aXwPWCtXotsle4qpMeZnZnXRZYIh096lVs9P0VAUxrFxi3gvtfVV47xX1LNKQpo0DUCrqqRz6BbZjdVRumoU6uM85cl9d28sCwmL5yZMdlusBNnM5jFfvSu+/M0USS1WXespHgcTJpknm3KIfWhRJoYYls0M8bZjwWbopugIPEjcrGAccv+7JbBsLCMy5cuhq5W4T2kR06c8dPBUeDEIk4kJVTTkgmxmeWzPVDcoQP5Jsi9gQr/WMhrOAuDwO5yGIjSfo+k5OUnVPzHDqvbdPsoTveTFIouy5LwPn6snpT+0D80NFq35t/Gl8Rszbpb3Nu15cFW70EbzrLGTPrjpZSkoqIaNnUnIVGfMzzxlE9+4JSjLrSxxRBpVvFAO95VYH/1B/pxXnbhTeX3l+ayx/YHM6LpvHuY7GF3VlLFXHS85GBQItD1ukoMpeF69XbSkiiCKqtE8Tr3FeASJOIANekzQJCwiC4CrBQFyaeC/+tRMXomOWaQPOpIeYsZ5IFX6xpj7/Sk8eB7UcQd37QgHL1oZ1HeolDGgoTHz6jMra8XxPDdEc5GAu+PrzOxlOL4+HxFkqkWM1fkjiUfjC+2rQ1BsfGCMK+gsaqlw4/Z0VAtQMhJy6PiKfY71dTx4mTg3lZlUsnXFE2R6H+AmBLql4tYUMoSbcRQBEWogU3jRcz/NKXucsW7CQe0t3F7Dpu7lutTwHXhE/UvMlMaYqdNFVpNRIeK2wjPOslJOzizHCh2ptUbLY5GOemPZqkSCVmqHhkGzsrYVg+tNdN6TlmeZZXjkhnfsJrlxvW2M0qdrEFmRTSsVJ0gwNLKhQy+ex
+ tMA7L0eL
+ aRFhkWLwCpMUZincnLd7AV/cjTjkckdsiHtG9zYUZRICwasoD5Qhxm+nk5T5AlrqmTiS0Y181slXiLjKzIrtLpVPbHwB/pAY17ZG3ZqEx0u5OWcc6+/5f8n+6ZXQ3gYYaC8i4pbby7i9UIJXbCefofE4ZAcyD9l7kqBKAllWhj1xUIra3/WEJZdAUgDFtWw7PZBcf/Qgtt594JpR1Xw9mhU20AB2nMm+o2oRQf5iz4xO/If78KFr1U08g4VonY/gc6Q48wI9qXe/Nvjygwg13g2ovcFQxtpAVCpa9WreJHKtECvo6G/AcDRlmpX2qHLfWcAE/ZS9nV3dXlFgqK9OFTCRq4eqBVOKr5/penJvGTMltHFXAjVzw9RQbkbiW5XhRgmA88e9oFl3uS2u10VsQym4P0WsryyZCkmZR7JW1nLqo9BK4HfVM8rIMpeLayzBbSadT8DT64QQcb3Q4l7/F8NrpnEk8vRzFE8MIsehWcAbsCDi51azAWLgrEYurMD2M/Cy16pkIA93yPH885CcaD4rltaTWtfVeG11+mSF8jnbAlFy05zhJk87QI27XAyRkqdwORH03KibTxzCCPqp3ZstjkaqFm7EjKWDx72WCuKeccONE26AfKvs2Ug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,134 +158,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 12, 2026 at 02:04:50PM +0800, Barry Song (Xiaomi) wrote:
-> Swap freeing can be expensive when unmapping a VMA containing
-> many swap entries. This has been reported to significantly
-> delay memory reclamation during Android’s low-memory killing,
-> especially when multiple processes are terminated to free
-> memory, with slot_free() accounting for more than 80% of
-> the total cost of freeing swap entries.
-> 
-> Two earlier attempts by Lei and Zhiguo added a new thread in the mm core
-> to asynchronously collect and free swap entries [1][2], but the
-> design itself is fairly complex.
-> 
-> When anon folios and swap entries are mixed within a
-> process, reclaiming anon folios from killed processes
-> helps return memory to the system as quickly as possible,
-> so that newly launched applications can satisfy their
-> memory demands. It is not ideal for swap freeing to block
-> anon folio freeing. On the other hand, swap freeing can
-> still return memory to the system, although at a slower
-> rate due to memory compression.
-> 
-> Therefore, in zram, we introduce a GC worker to allow anon
-> folio freeing and slot_free to run in parallel, since
-> slot_free is performed asynchronously, maximizing the rate at
-> which memory is returned to the system.
-> 
-> Xueyuan’s test on RK3588 shows that unmapping a 256MB swap-filled
-> VMA becomes 3.4× faster when pinning tasks to CPU2, reducing the
-> execution time from 63,102,982 ns to 18,570,726 ns.
-> 
-> A positive side effect is that async GC also slightly improves
-> do_swap_page() performance, as it no longer has to wait for
-> slot_free() to complete.
-> 
-> Xueyuan’s test shows that swapping in 256MB of data (each page
-> filled with repeating patterns such as “1024 one”, “1024 two”,
-> “1024 three”, and “1024 four”) reduces execution time from
-> 1,358,133,886 ns to 1,104,315,986 ns, achieving a 1.22× speedup.
-> 
-> [1] https://lore.kernel.org/all/20240805153639.1057-1-justinjiang@vivo.com/
-> [2] https://lore.kernel.org/all/20250909065349.574894-1-liulei.rjpt@vivo.com/
-> 
-> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-
-Hi Barry
-
-This looks an interesting idea to me.
-
+On Fri, Apr 10, 2026 at 2:36=E2=80=AFPM Thomas Gleixner <tglx@kernel.org> w=
+rote:
+>
+> The only remaining usage of get_cycles() is to provide
+> random_get_entropy().
+>
+> Switch alpha over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+> and providing random_get_entropy() in asm/random.h.
+>
+> Remove asm/timex.h as it has no functionality anymore.
+>
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: linux-alpha@vger.kernel.org
 > ---
->  drivers/block/zram/zram_drv.c | 56 ++++++++++++++++++++++++++++++++++-
->  drivers/block/zram/zram_drv.h |  3 ++
->  2 files changed, 58 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index c2afd1c34f4a..f5c07eb997a8 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -1958,6 +1958,23 @@ static ssize_t debug_stat_show(struct device *dev,
->  	return ret;
->  }
->  
-> +static void gc_slots_free(struct zram *zram)
-> +{
-> +	size_t num_pages = zram->disksize >> PAGE_SHIFT;
-> +	unsigned long index;
-> +
-> +	index = find_next_bit(zram->gc_map, num_pages, 0);
-> +	while (index < num_pages) {
-> +		if (slot_trylock(zram, index)) {
-> +			if (test_bit(index, zram->gc_map))
-> +				slot_free(zram, index);
-> +			slot_unlock(zram, index);
-> +			cond_resched();
-> +		}
-> +		index = find_next_bit(zram->gc_map, num_pages, index + 1);
-> +	}
-> +}
-> +
+>  arch/alpha/Kconfig              |    1 +
+>  arch/alpha/include/asm/random.h |   14 ++++++++++++++
+>  arch/alpha/include/asm/timex.h  |   26 --------------------------
+>  3 files changed, 15 insertions(+), 26 deletions(-)
 
-The ideas looks interesting but the implementation looks not that
-optimal to me. find_next_bit does a O(n) looks up for every gc call
-looks really expensive if the pending slot is at tail.
+Hi,
 
-Perhaps a percpu stack can be used, something like the folio batch?
+The Alpha side looks fine to me.
 
-> -	slot_free(zram, index);
-> +	if (!try_slot_lazy_free(zram, index))
-> +		slot_free(zram, index);
+I've applied this patch on top of v7.0-rc7, built a kernel successfully,
+boot-tested it on an Alpha UP2000+ (SMP) without issues.
 
-What is making this slot_free so costly? zs_free?
-
->  	slot_unlock(zram, index);
->  }
->  
-> diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
-> index 08d1774c15db..1f3ffd79fcb1 100644
-> --- a/drivers/block/zram/zram_drv.h
-> +++ b/drivers/block/zram/zram_drv.h
-> @@ -88,6 +88,7 @@ struct zram_stats {
->  	atomic64_t pages_stored;	/* no. of pages currently stored */
->  	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
->  	atomic64_t miss_free;		/* no. of missed free */
-> +	atomic64_t gc_slots;		/* no. of queued for lazy free by gc */
-
-Maybe we want to track the size of content being delayed instead
-of slots number? I saw there is a 30000 hard limit for that.
-
-Perhaps it will make more sense if we have a "buffer size"
-(e.g. 64M), seems more intuitive to me. e.g. the ZRAM module can occupy
-at most 64M of memory, so the delayed free won't cause a significant
-global pressure.
-
-Also I think this patch is batching the memory free operations, so the
-workqueue or design can also be further optimized for batching, for
-example if the zs_free is the expensive part then maybe we shall just
-clear the handler for the freeing slot and leave the handler in a
-percpu stack, then batch free these handlers. zsmalloc might make
-use some batch optimization based on that too, something like
-kmem_cache_free_bulk but for zsmalloc?
-
-if zs_free is not all the expensive part, I took a look at slot_free
-maybe a lot of read / write of slot data can be merged.
-
-This patch currently doesn't reduce the total amount of work, but
-if above idea works, a lot of redundant operations might be be dropped,
-result in better performance in every case.
-
-Just my two cents and ideas, not sure if I got everything correct.
-Looking forward for more disscussion on this :)
+Acked-by: Magnus Lindholm <linmag7@gmail.com>
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
 
