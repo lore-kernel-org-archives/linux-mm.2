@@ -4,116 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE64FF3ED67
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 00:14:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C160EF3ED4A
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 01:03:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFCFE6B0089; Sat, 11 Apr 2026 20:14:27 -0400 (EDT)
+	id 83DD66B0089; Sat, 11 Apr 2026 21:03:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5ECF6B008A; Sat, 11 Apr 2026 20:14:27 -0400 (EDT)
+	id 816466B008A; Sat, 11 Apr 2026 21:03:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B26716B0092; Sat, 11 Apr 2026 20:14:27 -0400 (EDT)
+	id 72AED6B0092; Sat, 11 Apr 2026 21:03:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AD516B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 20:14:27 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3107E13BB3D
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 00:14:27 +0000 (UTC)
-X-FDA: 84647982174.20.ED31A5B
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7FA304000A
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 00:14:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ovn6JymF;
-	spf=pass (imf01.hostedemail.com: domain of rientjes@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775952865;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 612AA6B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 21:03:21 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A56EF1A097F
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:03:20 +0000 (UTC)
+X-FDA: 84648105360.14.54CE8CF
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7CD53140004
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:03:18 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IlT7v4vy;
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775955798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lmunf8hKp3UcnRXrvQgVK828HP0WXdYhEtCShztRC04=;
-	b=X4fdHecbeGalJUsOFqvsK61RKv8zd+0XWdXteP+H6+AUmS+UHke7lnggVNG1kYL74V6SAg
-	dII1jYd/CXm1AGRm41wmlj7OJ6qvopqf4zMZa2vy+Pqa2r/MhQvBQoM9qSDp0ytaMxvFwP
-	yVYkp5saFAuyQNeIYlgtzr/FVlEUXV4=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ovn6JymF;
-	spf=pass (imf01.hostedemail.com: domain of rientjes@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775952865; a=rsa-sha256;
-	cv=none;
-	b=S8vMATF9b6cz2YdXCqkvNtiLtK9Hc2uxkWgAZWmX5E90zwJ/66d8L+NltQ/qdTLd+FewSe
-	WkCsJKU+5S6PXXAA1DbKfXC6jPWr1V2nlvJGAe/d0zTb4SYKth4cb7Y8hNuFaJ+BQigEaQ
-	JsDwCIE4JuSgLKEjArLvA9FUULPmSLQ=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso21575ad.0
-        for <linux-mm@kvack.org>; Sat, 11 Apr 2026 17:14:25 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=O/lCR/Upuk85s1KKtsj70aAhwIocyaRuQRg4fGGyx+k=;
+	b=YHrWYel5BdyG6aAbnk28p3AKENhibxqxxm2Oh3zze4dKNP42tgOuUZsECJSNgicQobHRxl
+	4Qq5RS7v19WRSuJKvi5sgZ6PuRahHz6cwWyOBBAk5qpa8fMnnT8t2EgjuJKPtOAoYxogsQ
+	1gJQCHxMYStVRSmvbUiCZStYQiXn8TU=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IlT7v4vy;
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775955798; a=rsa-sha256;
+	cv=pass;
+	b=5CBLbX/oSrL3JmdLiBJknjYOJ3XyZt/bitbQlgGyBMO+5yfw0kyW6OIR8P6W/i7O/tdjWZ
+	yEuwK0cZEeP+deH5FayWPqgpD7MdRZUsZoNAKSv5STTptCTIYA0Njv1cftL8xRsfalT4nz
+	SZhsC2/QfSjNGpNyRwFL95phYZI8UV0=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43cf5ad500fso2733919f8f.0
+        for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:03:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775955797; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IZIygg5KFx3eyGsybdzZMCzD8skzo8TIqZtUYuG+aefo3acyYeUXouIoHDCP4pYsp4
+         YM59/LNTT6fCy0lLGogJL3aEBsPMu5khCVDx84xeQN6bgze27kBSpY8zK76Ci1IKGz3r
+         hjgDLdpddSAQFTp+P+GK14PmuW03j8aDPt8KqkTrgGLwYQ9F7LJIQ3N5LEXXWff7kjM4
+         q+vIveLXKRXb5WKkRsSOdK/nDZyBQGEl8ynjAl/nXTRmC0CWqodn8Po1zhkXF+tEe+8X
+         9BPzemgbhAfXRZrozP2xwMcRX2rE+u8ZQQWjK8oVW6BJk+58rYh4HTv516aRdbAenEGE
+         xOnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O/lCR/Upuk85s1KKtsj70aAhwIocyaRuQRg4fGGyx+k=;
+        fh=Q6xwf3EpJ8G/AWmD7a+XYpitSPO75zla/pck3epX+YQ=;
+        b=KxJa+VNb0Y3QwY7af2F6K87wuUT2di+UJQqwMjiaFdrJh/idWaUxSXMhhnaQ8Xk+TF
+         K5OTzk1HPQ+WkQquYC3vUhpeMjkVPEXcvEtuX6UBrNFjQqeHeIw1tq01YxIE7IqTiax4
+         2palTWqRHWXQHWGRUu11p5ztFzfe+0KymHgoqy1rsRQvGCQFMPC7L4pEqUDwWhDvxJI5
+         JHZEWxqbPI3L10ztSgdY2VABcN/Cag0Hh42jqFRiIfI73z6ceDcJJluw1rxprP6Fe9Z/
+         /7qWTffRJXImxgdzFcpWh0XbjiXmIQRHNKx3CYYuiA3TXMshvCdRjbkOcMWukfqmHlvo
+         0V7w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1775952864; x=1776557664; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lmunf8hKp3UcnRXrvQgVK828HP0WXdYhEtCShztRC04=;
-        b=Ovn6JymF7wVVnZICN2U+QXXDqbTEEJxa9nqPPdEnM/lUj+xLfcp7WXszpbCPzYhiGf
-         HnULfI0wX4y3dxy32QuT3d+/bId8eBuY8JagwtrKRp004IgVu2JzUvswqT4ndhygCwJX
-         6TCEJpah3/IK8jiNtVWL0dyNPdVEi1MzslXHnyXLJfgqhrlz7UlqBjiYgW8hL1vWD+r3
-         wgvcgywLGYpgSgJbs9T/fqVtjcvw10gI7yA+srOGnoIrg/IXaekm23fh9xMNR1/qwbxv
-         UUlnFqw8nsxh/SjA6szu6S+WcICPQ45ynMgK+1K7/4gcAnNcgXY6fZQvAguroMHm8mJO
-         LcYQ==
+        d=gmail.com; s=20251104; t=1775955797; x=1776560597; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O/lCR/Upuk85s1KKtsj70aAhwIocyaRuQRg4fGGyx+k=;
+        b=IlT7v4vyr3+4qZ4nh/fY45SwMuidktyk+RlK6Flqwo2acoM6ow7Bqt3FDmuE5iEYo1
+         0AiYY2OmVefosvrruirVgg7ZH2UHy3C8E8QnCuvtLDPdaIN6zxItPVltxtC4xcsYlgQJ
+         FoudBqi3i6ire52j3qpgvCZMGQqWR0/jEAiatRAXrZqI6P0jZZR0JyIB1kanIiBaO/tI
+         va+hL0gKzZBNXmpm7KBSxnuDQi596pJPBCbKjACvtJ62XMzRzL3n4Yg0Vxf8Y/KI+Ryl
+         fPDOZdjolLoKQc+hdxCA83zerSIL2RChw6WiwoR9SO1iQNvP90FmNrWjg8Tu1ynUvfxE
+         rmHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775952864; x=1776557664;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lmunf8hKp3UcnRXrvQgVK828HP0WXdYhEtCShztRC04=;
-        b=FmNCIcbs/AopGGcW6f+PH8kZ1niCvEnLsXDRUBLOfLDfo6iDUWm9CS2OXL33UwdECq
-         fc2Hzq4Ebn09XVCj0P3VpBcJem/g6uYy4WgyCUfHW5462Vy6gSIeWqPlOpNhydgqWMhl
-         4tZ5ub5E0gMfIf5UaVFtYKfZ63d2H3Qq1hv60x5ZjVTI1dXERbQLWfDAHD06uplTpd8a
-         f9GRCRFVx+wqz+kSHJla7F45uGAbwPBbO+pKtw4nAyx56T4E8kw4FJy3sfHRS/dZUkQV
-         3tJ7nu1jwM1YEGO8WDNvlvenF+YQGp8EPixnipa/ioRk1bxQ9z2b9PVVBBJIOSInlA0F
-         orRA==
-X-Gm-Message-State: AOJu0YzGuxfm54fhQll5aMEO5Dc83+iGAgaIPRg7nPpvgYDcWqcqVcz+
-	CfS/R0h/A09R4E9wofj9JHBvqcDT7RVvnqpd+UynsNGqAOlhgjpLZ56xazUJvxwLmQ==
-X-Gm-Gg: AeBDiesbhEO028YPs53Z7bmRRRt+w1A0luGqktP1Rhp9DnK0pwsUpLkDx4i0lx6rojo
-	Vv+9V83mlms9C/e+DUdaOIJ/5NVfDofSdH6BbgDUkACpW6op/WT/ybxq22Oxxz9b2vUBTz6tNIJ
-	LSjloX3dLFvulAQHbagb4Go8kufC+Ta0UI9GJdswHgmLz+5Hjjqa677I4IDzsoR2zuLOzkN4mbu
-	EN/7v6aIhaH0QTJcqoqvANJYCTx7lHmQ+qOFD89k92g4EfCF5RLRxdL94GXdFq0bu9Lo14r3eUk
-	rwFA1oer8Hb0h6VR3GAVaNNTVUqCMXWd80NQekP2lgRHusITuaQSd4pa1BtODRu4kJBoy4gVkT3
-	U+duIB7K6yD5i4r7wqojzNge2v6AEudxeHofVaq3+H3D02TZ/9V4scIZVWqqANc5UPmzvvoBmPb
-	2ZgwSfOj5NZdnjdkMD7ACqKX0H1GEZp1kuOMMhNQzFWHTGT5pSrfHi9YQnttVYumOjuggOgWk81
-	QpiQJ95mQAB1EjSo9FeQGnFJMipJph3mo957x0Ry8RQMeCF5OVfGrC02hk7dpT8J8aGbUlI
-X-Received: by 2002:a17:902:e785:b0:2a7:6c4e:5914 with SMTP id d9443c01a7336-2b2c79eaf87mr10814865ad.6.1775952863560;
-        Sat, 11 Apr 2026 17:14:23 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:3927:c82:6a08:f01a] ([2a00:79e0:2eb0:8:3927:c82:6a08:f01a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dd7faasm70316735ad.26.2026.04.11.17.14.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2026 17:14:22 -0700 (PDT)
-Date: Sat, 11 Apr 2026 17:14:21 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Alexander Graf <graf@amazon.com>, 
-    "Andersen, Tycho" <Tycho.Andersen@amd.com>, 
-    Anthony Yznaga <anthony.yznaga@oracle.com>, 
-    Baolu Lu <baolu.lu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
-    David Matlack <dmatlack@google.com>, 
-    "Heyne, Maximillian" <mheyne@amazon.de>, James Gowans <jgowans@amazon.com>, 
-    Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-    Vishal Annapurve <vannapurve@google.com>, 
-    "Woodhouse, David" <dwmw@amazon.co.uk>
-cc: linux-mm@kvack.org, kexec@lists.infradead.org
-Subject: [Hypervisor Live Update] Notes from April 6, 2026
-Message-ID: <82db97e1-791b-770a-ebea-0e364dbd08d7@google.com>
+        d=1e100.net; s=20251104; t=1775955797; x=1776560597;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O/lCR/Upuk85s1KKtsj70aAhwIocyaRuQRg4fGGyx+k=;
+        b=MeHKdNz9n+GD8cdfchKxYvhNI7TBMaF47NLka0ZK7ZWS0lI+30gm1GXImwD+g+5UFB
+         KRMu2Ja3LHPxvrrj3wwFRKlSxCuy4oHiVIevmiBjiqbY9z1GqdKIeFYFxtRN0UxI9JSq
+         0nhPRvtoX5oDue4yYFO++/cuOHC8Zti51p3JUMMAVljr9muvhUbL19bV3E8AhDRBB3ba
+         PZcT9/0j5qKhS+nBvu41H1Hg8ejj5+hlYhEhpasaMGyjYv8M9wmKR5nUmXX2DgTrABiO
+         EJYwZz+83Bci0RVk9/S8+X8Lr7w+3Lc9ZUQJTO+TXhPUX/absa/8NnJ7XqoLZNl1PY5m
+         xXgg==
+X-Forwarded-Encrypted: i=1; AFNElJ+3fDFrairZJ/78IE7wJtp9PYGxA9ralQAoTvtwTzd49MV374cV3P4LpAzq7zP0FFLBOCGq7HeJKQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy4wcb2RGMxi111aWVqUpzbej7wPQgmeH03SF8U2f7Zm1fXMlFG
+	sBEh1QrW3W76JnCa5nCN4ah/2GnjYJ4T/cUNtWwCtuBJAhlRx9v/IVRhD+APVwVm4JrR0XBxf/H
+	c4PN4sFxeMvatx/cIU0n5fskDzKLWjIw=
+X-Gm-Gg: AeBDiesa0XsWCjqoUjGkY/+zpVpC99iqO/1J89uP+tu0vtyrc/922nxW2L2YUGmPSpl
+	7xUiyhZIuezcqfSc5gfiieFrbP1ox9jAbUfDKicbVKoJ9zOuGm+WmBxyvUhrGihbvAgUvgOy/3g
+	r91Fvr2osR8kRBugrbaABY32aCC6I54FwPKTKkyh65fYxH7TT79lrOBewm/dXvRI1C4G4XNeK4F
+	0n1C3hRk5TIv1zZlsHUnW6DlyWmVqgNd7JfHDmyn3ouCh/kt1RRWyAAdYFldNwhIL2mc83Aq+RH
+	hME27eqy9Gd0+MCqrVO08kFbJdNwbpOGV6e2zQ==
+X-Received: by 2002:a05:6000:2dc7:b0:43d:2581:3053 with SMTP id
+ ffacd0b85a97d-43d642d9d6fmr11425935f8f.45.1775955796453; Sat, 11 Apr 2026
+ 18:03:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20260320192735.748051-1-nphamcs@gmail.com> <CAMgjq7AiUr_Ntj51qoqvV+=XbEATjr7S4MH+rgD32T5pHfF7mg@mail.gmail.com>
+ <CAKEwX=PBjMVfMvKkNfqbgiw7o10NFyZBSB62ODzsqogv-WDYKQ@mail.gmail.com> <acQvNRLpHwnHt7i+@yjaykim-PowerEdge-T330>
+In-Reply-To: <acQvNRLpHwnHt7i+@yjaykim-PowerEdge-T330>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Sat, 11 Apr 2026 18:03:04 -0700
+X-Gm-Features: AQROBzD_Pt7K9MF5OX7eBfMwphwrIpDFPvFIpxySkOPErMwdGQw3LLfvFpdgRuc
+Message-ID: <CAKEwX=Pt04pYfhYOwmtXJKU5OqcxBC14SAf1wpBxBo1D7rPpGw@mail.gmail.com>
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: Kairui Song <ryncsn@gmail.com>, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com, 
+	cgroups@vger.kernel.org, chengming.zhou@linux.dev, chrisl@kernel.org, 
+	corbet@lwn.net, david@kernel.org, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jannh@google.com, 
+	joshua.hahnjy@gmail.com, lance.yang@linux.dev, lenb@kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
+	mhocko@suse.com, muchun.song@linux.dev, npache@redhat.com, pavel@kernel.org, 
+	peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de, rafael@kernel.org, 
+	rakie.kim@sk.com, roman.gushchin@linux.dev, rppt@kernel.org, 
+	ryan.roberts@arm.com, shakeel.butt@linux.dev, shikemeng@huaweicloud.com, 
+	surenb@google.com, tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
+	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
+	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
+	riel@surriel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 1fg8fu33ooc9dm5jfehcnoj8p7bcad64
-X-Rspamd-Queue-Id: 7FA304000A
+X-Stat-Signature: bxc9ho7rtbo4mi63bi4xtztifaruom9g
+X-Rspamd-Queue-Id: 7CD53140004
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1775952865-29994
-X-HE-Meta: U2FsdGVkX1+Zb2MhIMeUrqYQuEq/ksS24fyjJf9GfYJ3+PXmB2aTKVDP/QA97/oChKbhMDuZBXpMcjc7EH3OIE0dB4a4/8dogry0HPlvpV2RjNGPlhXFVEn37W4ucV+Ugl8hYChVs8/QnXEB8uZm1sH3sgk0yEXxRSeBkbC6qUvD0B7efb0pVyxpg6t9AsuPjR1FiHEYuPHpVXsvDYOP2fE7TyxGJsMZFctVBQjN6lvJWeL5b8gnfqayh7+xPSd8AHNdyESYSVtrzOEWZOIXuonNd4Yl794A/dptnD1/WyJElZmpttIGTy144WVqo0z7NbWrTNt+8Koh1h1+CfdVfe4x7IKE+555PzCsICukVx+LNOBSqZKb/Bg9/6JGZtnPA0YURdyDGnz5VNChcJKIjPv6am+cKptJ9IIbHqtgQ3HX4oTh373CMOeA4FbF4m99CPmMS2Aea4ZjpDqiFhMtGV9wUyj7EeoHlFv662AoE66vLlyaTtd8SclHoY3Zw2mpXS30MsXYwcRTYJe9g6xS+wqnJTbB3DBVtZnmnqGKg/Wof4exsatMqd2lQ501XxlaD48MI71DVpQz4rFEPwWy72fPPNRxmeoZ8jGHn22JnHzoycubEsujjrtTZHOp7UoxQKu3vp+meDnofQAbrRzK3g7L8cb/TQ0ffdZZ+ztKA0JUMq05hpynaOD2stDvLrPCn2lhzrwPA3rob+PiUoRiIem4HEPuOEeYPEmZt2UxB4UbfJFpZhni79PuxyX+ABXaf5wu5boBYf/R+k81NDHsDkuP/x7ByFefTmb4PV99FimYWm6AJKbmChkL/H8ZU/Eh9onopx9QmJE1BJ7xZ2JNgLL3/ImIlPfnJqQGR0OsJhNzMobcAlSw0OSZd2evMDlutB5LqTZwLEwQPvWBjUgvghyss436fS4IF2YWz4jZXy6B4WeSlnDKGcLH0kxWcHnj/tCwtRwgyJrLQk3Ty1C
- w8jVeGT1
- bxVElKvKzIYev0hS0Eo/oodAxtl3zARXu+SOXHui5d19cFe4xTgIj5YCwOctW8pXi4Sx6x5FigC7V24NTw/JpDy43dA1t/8H9OQXbBi7e1IxXM3YgGHWq/DcsbfUwf2KnBJDBWyxsCRVkopbapdcirA7y7V+yB/zSDG+KVreG8qhWsDy4jtEk08xtxY2ZBx+pxjHJComWmxk3lR0GCMqPxWXmyM8Nm01OThJrhSCQBkOvXkZYfpRta8ol272LovnL3OX6g80fU1SFuElCXL9PvLC4zlhbmbyAR4FS+A4WR2NaMb31Dbb8GDMKyW6Xx5j6f3/4mLC94N8sWkbZJDqRIaAjpsYKQwSwFNt8Dbm1rSGPynrM1J67N+sbtw0DFdsk6IOtyGFknXryY5MhAa/dQTBIdqkL66fn4zQRMLdJoj+9tn+vlgFi+bYe7Q==
+X-HE-Tag: 1775955798-96849
+X-HE-Meta: U2FsdGVkX1/keDwNnlK8E7ZnyD6PbmjuAPrRLzopw2sIot8jas95NBZL03VQDwisypeiEZ9eNwfQeKbRjQ0b6jcMBQZ4n+8u69lAurmB28IvaENzGb0tfGxvIRPp4L9iq79QHJwv+r1IqIY+0+AguNesXfOyTBN3bHPBuKQanpKJ18Qw3vGZAj29OzdXrRQtB3+/ovN2cSUw7rhojHEG7XJ8X+8ltPGVInqNfjHwARWGqxt771i3fU3C9IHQYCx1IJPIz9MkdF/9ur6HWCXsAyHOkaevnkSmdP4aqTKr1UVROoxc4dgQUKJd8QEPbHq5AECiJoIW780w6dzKEFGYnqztc/mnVeZR219TiGAKUi3FsZUOXrwg8cC30agaJ9viCkz/TgbdloYTT1DwPFmPlIharTFkEUbhJOma83lOlVpd6l9goTvUDPEfGl0NCUpk+n2Si4gnB7yK42WspmhdFQwz8uLOvnfZ4M8e6jjkXa2mKaET2VoM6303Xu41Tk/frUfBSuAW+bBELnGRusNHwLYDgK9sT7udMzWGH9ZqrEwGvj/bIZudnZDPjrf1HOZO8hECqbJ72eENF2NxLsLC+vegd1XrtrLHJ94ZYw6rEFt6bZdk3gzm3LHhKLkWhVtfIV1MPZXKJ/6XhQEFrkWzHVh+DyPFmxOcztdV5NuC19voi2/TMoF6gMeU/bu/mVQ+oM+yPXgOEz5+3ZanBjbDnZUzaljgT62FtuP8aRHBJAGRS2dHI2VMrjmmuA8uikq6JoWUPQtFKRlWNQTDgXQp7EbCYwwQcBzsG+hSkvfc+Z6kwkQ9LNd4mhiQ6SZlj8nK50CCSvPqdqCU1TNStKyAQgtijImRBBkHAk1/yyNxIdx4oswhBA/itGvZPD3n+Q+Z/CywMDlMFMQ4rImtKGRRbPrcrrlOovsnWg+oLUO3vza1SCy6HPZKnHTh3q9cvKiO+g/UeyMoryxL8RYtmKx
+ kYirbj+g
+ WMzdCr067NZGHVjfWYRsp9IT9quT9n3QwF7WLkxqbxalHUgw5FqHLmGWHM29mXPQMeGpP5N0BeNHOXkuwPnxkdfAQny353AAjG+YOBhPxjoRKre+cdV2tWPENxRJZzm+GHgYBMexCFAqcrW1aGxgzmc8h7oh19xhh/GVG/bAT8BmgfZ7BKCEwhpLNLgHdSpIxaBBt58ATmlML1cXygTB1kZahJ4B4fVCrr2a/Tjr4z8V9gS4j99XrSBb6CKfn/e1ui1U2cGKWPfU6MibPl7NBvaadDrKp3q++cRHJji+PPLC7ogKWtpwcaZqdL53PNEh8EGwksF5jwsfFZyoD86fmvCsUtA297vg7UtXD4M3jC84wXJ1FOIDvveUFClonIbQ5EOQhU8o9M6HR9mc+CBHHg7QcZwdrwi9LkYeIkx8U7fyHBELTOaSQe7wB28Ngl2qvhJP+AlWd60hmSLySTQ/Okrq69YoJkovO/J8xe48PYtp6b9VsAuUsiYG5iR+1I22u+/PU/gpnhrMCBfOdlvLVP1jKM9Nkk+C+seY+bGi9oxJikSUm4PpWXc4hIeX1DPnIW29sQzP2/pKEPStPvXimCpKwSIq5n7hF+i3pwfeAD00L4vzViPtH+pwAJxwd24MWAcTwIyzsCBfPjHhqhNHU1jA2wLl4REQohqQxdKa1rUonvhCo7Mtbj15UxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,115 +154,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On Wed, Mar 25, 2026 at 11:53=E2=80=AFAM YoungJun Park <youngjun.park@lge.c=
+om> wrote:
+>
+> On Mon, Mar 23, 2026 at 11:32:57AM -0400, Nhat Pham wrote:
+>
+> > Interesting. Normally "lots of zero-filled page" is a very beneficial
+> > case for vswap. You don't need a swapfile, or any zram/zswap metadata
+> > overhead - it's a native swap backend. If production workload has this
+> > many zero-filled pages, I think the numbers of vswap would be much
+> > less alarming - perhaps even matching memory overhead because you
+> > don't need to maintain a zram entry metadata (it's at least 2 words
+> > per zram entry right?), while there's no reverse map overhead induced
+> > (so it's 24 bytes on both side), and no need to do zram-side locking
+> > :)
+> >
+> > So I was surprised to see that it's not working out very well here. I
+> > checked the implementation of memhog - let me know if this is wrong
+> > place to look:
+> >
+> > https://man7.org/linux/man-pages/man8/memhog.8.html
+> > https://github.com/numactl/numactl/blob/master/memhog.c#L52
+> >
+> > I think this is what happened here: memhog was populating the memory
+> > 0xff, which triggers the full overhead of a swapfile-backed swap entry
+> > because even though it's "same-filled" it's not zero-filled! I was
+> > following Usama's observation - "less than 1% of the same-filled pages
+> > were non-zero" - and so I only handled the zero-filled case here:
+> >
+> > https://lore.kernel.org/all/20240530102126.357438-1-usamaarif642@gmail.=
+com/
+> >
+> > This sounds a bit artificial IMHO - as Usama pointed out above, I
+> > think most samefilled pages are zero pages, in real production
+> > workloads. However, if you think there are real use cases with a lot
+> > of non-zero samefilled pages, please let me know I can fix this real
+> > quick. We can support this in vswap with zero extra metadata overhead
+> > - change the VSWAP_ZERO swap entry type to VSWAP_SAME_FILLED, then use
+> > the backend field to store that value. I can send you a patch if
+> > you're interested.
+>
+> This brings back memories -- I'm pretty sure we talked about
+> exactly this at LPC. Our custom swap device already handles both
+> zero-filled and same-filled pages on its own, so what we really
+> wanted was a way to tell the swap layer "just skip the detection
+> and let it through."
+>
+> I looked at two approaches back then but never submitted either:
+>
+>   - A per-swap_info flag to opt out of zero/same-filled handling.
+>     But this felt wrong from vswap's perspective -- if even one
+>     device opts out of the zeromap, the model gets messy.
+>
+>   - Revisiting Usama's patch 2 approach.
+>     Sounded good in theory, but as you said,
+>     it's not as simple to verify in practice. And it is more clean design
+>     swapout time zero check as I see. So,  I gave up on it.
+>
+> Seeing this come up again is actually kind of nice :)
+>
+> One thought -- maybe a compile-time CONFIG or a boot param to
+> control the scope? e.g. zero-only, same-filled, or disabled.
+> That way vendors like us just turn it off, and setups like
+> Kairui's can opt into broader detection. Just an idea though --
+> open to other approaches if you have something in mind.
 
-Here are the notes from the last Hypervisor Live Update call that happened 
-on Monday, April 6.  Thanks to everybody who was involved!
+Yeah for vswap it's probably going to be a CONFIG or boot param.
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+But in the status quo, we can always add a swapfile flag. That one
+should work already, right?
 
------>o-----
-Pasha noted that discussions happened between Luca, Jork, and Pratyush for 
-LUO integration into systemd.  Luca had written a first attempt at 
-integration and it required some changes for LUO.  It was also discussed 
-that unit files that start the VMMs will include the session name in the 
-unit file itself so at shutdown, systemd will know the sessions that are 
-created.  There was no update on the timeline for this work, however, the 
-next step was to start discussions with other systemd maintainers.
+Thanks for thinking about it :) FWIW I think zero check is really
+cheap, but yeah it's just wasted work.
 
-There was no update on the status of boot time performance optimizations 
-like deferred struct page initialization.
+(ZRAM folks - do you feel the overhead here?)
 
------>o-----
-Pratyush had no updates for HugeTLB preservation after being out of 
-office; he thinks that the memfd selftest series is close to landing 
-upstream, however.  He also updated offline that KHO patches to lift the 
-limit on the maximum preservation order from folios has been in the mm 
-tree for a while and should ideally land in the next merge window.  This 
-work is a prerequisite for the HugeTLB preservation extension.
-
-Pratyush is also working on a fallback allocation strategy for KHO when 
-scratch runs out.  When walking the preservation bit maps, the goal is to 
-find a big gap to fulfill the allocation; he had an initial patch series 
-that works and is still iterating on it internally.  This is also going to 
-be a prerequisite for HugeTLB preservation.
-
-I provided the link to the Linux MM Alignment Session that was had on 
-these HugeTLB topics if people were interested in watching the video.  
-Pasha noted that the biggest takeaway from that session was the CMA 
-limitation and supporting early boot HVO because KHO requires a struct 
-page for every page that is being preserved early in boot, and this turns 
-out to be incompatible with HVO.  These would need to be resolved to be 
-fully compatible with upstream support.
-
------>o-----
-David Matlack updated on VFIO v3 which was getting feedback upstream 
-especially on PCI.  v4 will split this series into two with David posting 
-the first series (PCI) and Vipin Sharma posting the second series (VFIO 
-and selftests).  This will allow for faster iteration.
-
-Pasha asked if the PCI changes are likely to be able to stay within the 
-PCI subsystem itself or will it have broader scope.  David did not think 
-we would need to change anything in struct device.  Pasha asked about the 
-scenario where a host driver needs to be preserved, David said this would 
-still be the struct for PCI device on top of the struct device driver; he 
-was optimistic we would be able to come up with changes in PCI core 
-without becoming overly broad.  The group wanted to fork off a separate 
-discussion on non-FD related PCI drivers and how to support them in a 
-generic way.
-
------>o-----
-Samiullah updated on the status of the IOMMU persistence patch series, he 
-was planning on the next series to be posted over the next week or week 
-and a half.
-
------>o-----
-Ackerley also updated on the status of guest_memfd HugeTLB support and 
-indicated he was still working on the conversion support.  He suggested 
-there will be an update over the next two weeks and was targeting final 
-reviews by the end of April.
-
-Pasha asked about current limitations in Ackerley's series, what features 
-are needed as follow-up after his work is going to be done.  Vishal noted 
-that there may be some memory error handling that would need to be 
-extended.  Other than that, it was targeting full parity with HugeTLB.  
-Vishal noted that direct map removal was under discussion upstream to 
-support CVM use cases.
-
------>o-----
-Vishal noted that Sagi was starting to look at KHO support for CVMs.  
-Vishal asked about KVM page tables and the memory donated to the TDX 
-module and, in the future, will also be used for ARM CC.  He asked for 
-example of preservation of kernel owned memory.  David Matlack noted that 
-IOMMU preserves page tables so we could look at Samiullah's patches.  
-Pasha noted that if memory is going to be preserved then it has to be 
-pinned.  The consensus of the group was to get started with guest_memfd 
-preservation and then to add support for CVM use cases on top of that.
-
------>o-----
-Next meeting will be on Monday, April 20 at 8am PDT (UTC-7), everybody is
-welcome: https://meet.google.com/rjn-dmzu-hgq
-
-Topics for the next meeting:
-
- - systemd integration for LUO, socializing the design ideas with other
-   systemd maintainers
- - any progress for KHO optimizations for boot time performance including
-   initialization of memblock list and deferred struct page initialization
- - HugeTLB preservation support including selftests and fallback
-   allocation strategy
- - VFIO v4 patch series status, separated between PCI and VFIO+selftests
- - IOMMU persistence patch series status
- - Maximillian: supporting CRIU with KHO by using memfd to store the
-   state of a process, moving mmemory from a process to memfd
- - guest_memfd HugeTLB enlightenment: conversion support, HugeTLB support
-   without restructuring, and HugeTLB support with restructuring
- - KHO support for Confidential VMs including page table preservation and
-   pinning
- - later: versioning support for luod to negotiate
- - later: KHO enlightenment for ASI
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
+>
+> Thanks,
+> Youngjun Park
+>
 
