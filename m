@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1E0BE937EE
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CFD4E937F2
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D79CF6B0099; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
+	id 64BAE6B009F; Sun, 12 Apr 2026 12:48:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D03086B009F; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
+	id 513366B00A4; Sun, 12 Apr 2026 12:48:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF3016B00A0; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
+	id 429166B00A3; Sun, 12 Apr 2026 12:48:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9522B6B009F
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64AA1160B9F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B55D6B009F
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:48:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCC881B91F5
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:48:24 +0000 (UTC)
-X-FDA: 84650486928.09.AD23C05
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5B28F40002
+X-FDA: 84650486928.30.04FFA64
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EC60D14000F
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:48:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WuR1xmq6;
-	spf=pass (imf11.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tJ1SD7T6;
+	spf=pass (imf23.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WuR1xmq6;
-	spf=pass (imf11.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776012502; a=rsa-sha256;
-	cv=none;
-	b=RLR04PeLZr7z7etIvcqT4wwNdeD7FOIBJSSQSCeTBGJvq+W259ErscdehsBiOU+8wBSrw6
-	Yba6Nto9OeYV0CoNRXt8Um7cT6vSuLzcx9gTd0pGLa5HB+rGzzSSrZA23fXlVpNbtIP6Dj
-	XyixQHpO5YHfpnNlW8o9BRluAmPriOs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776012502;
+	s=arc-20220608; t=1776012503;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=odKZ+5pg/Rroupu3xpAeBiHKuJo6sz4ziDly9UlZHtM=;
-	b=gpIp5CokbWnDo4UaHVqxzgWD8FGwXsMtVRj8Jw/G2iVIwPNUg8PdD3/Rhdyg7OK48iZyP5
-	mXcCWueWuYEkGJCUcR4IXWdYb8aHv5RQlwCnMgZHSqHH0MqFI5hyV/KHRzV6hHuH1kaV6W
-	kqeCkqRKIop4R6HRUJ3SPpKosaHf/Vs=
+	bh=KiVP2bP79VgczXdbJZ1barnyPYw7E2m0JzwZehgqZJg=;
+	b=CbuPUPW7zVdp4Mx3HbpOBqNo4lf5j8C5XxqZKDbt+p29ZO99w6skDYBQCCJ0CJPf6wIICN
+	rzIw59aPHXcrqLZJCkefl1fBJqlh13Mi3Cn9wobT+plThf1zbc6o9IJcPU45WlPLwzri9E
+	UvNDUzxg3vJj7bU9kOKC8RqyzNobLrU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tJ1SD7T6;
+	spf=pass (imf23.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776012503; a=rsa-sha256;
+	cv=none;
+	b=SxXLS6UDHLnddQIC659ZlSE9Iux0r9Xxwu9jjGk6QeNKJ2A5HNJEwGHZeF81KpE0/yVa9p
+	993LFcDK46DwaK+SkPX3HbELFRFQKKyGIQkGIDlEI/GBPzU/JUnPiqWplRxcdJhbG6MbcU
+	1xXggMChZQigIoJMa3badmgzVEG/xVk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8DBB7446A8;
+	by tor.source.kernel.org (Postfix) with ESMTP id AC92061344;
 	Sun, 12 Apr 2026 16:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3B81EC4AF18;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1CC60C2BD00;
 	Sun, 12 Apr 2026 16:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776012500;
-	bh=3RE8cIiuwEqnweS2KmT3lOO/ndLGSLdeBknMMEpJdGU=;
+	bh=dA6z1QpGlnN4t7Dr9dhJIinRiuAH8kuko+RPRulPJfA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WuR1xmq69ig1SziU0qHbhRF88CtGLsmJdyPEC7m4dEPXIS0/Lkwfmx7fL+aMqhehV
-	 o4kRNCFs1CtNx4Vo1HjbMXignQt+p7WAjGTkcDEiT4JEh3uqEvjjVHoYuRco1sZA6l
-	 PE2yK4IgsOz5GJSrNuXwHUBHzfUQFi67dzGzf5Hcj/mAv0M+CiP7XKaP6sOY+cK81s
-	 kdrw3lBTFkSMIywfMfNjDNQtTKXNfJCC+i+Z4Vz45f9VE611A83rjeduiAZgQ1mZ7q
-	 Fh7rJJG5htuOGHHF9Xyek+p6jGjHmZsIR1h8Dpn64+hYjWioPTlkbZR4T7+6EvMN5q
-	 vTG0KEZzcwI4w==
+	b=tJ1SD7T6OvB+ndRzlzLogjl2YR8a3FpkeP5dXARSV3QUtYRK2+pt74WYHCdONIQ6j
+	 Pkq4v916u/Gi2hEigWAxbshDAZc3XdIgUIWGM2RPrO4LDfM3wmSbaJo/CbtfNCN/TZ
+	 LR007nO/IRDDgt5YwqQI/C3rrYOJ7tFVXflf9p/u54KAereCACJqW/Jy2zRGypaNnd
+	 eDGU9SvssVIAiAWyFVgGLKK3E+nu5d44TLUTccFoloJrnX3AAE3l6S0bFnI6fHZP3x
+	 fvog4OkNcV2nnRNHZdVKwC5FJy2G8MriCVYpKDNyA9qdPcgU+r78Vq5JWucllqVCWc
+	 sVXUFDH8n9Szg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 332A5E937F6;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1344AE937EE;
 	Sun, 12 Apr 2026 16:48:20 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Mon, 13 Apr 2026 00:48:23 +0800
-Subject: [PATCH v5 09/14] mm/mglru: use the common routine for
- dirty/writeback reactivation
+Date: Mon, 13 Apr 2026 00:48:21 +0800
+Subject: [PATCH v5 07/14] mm/mglru: don't abort scan immediately right
+ after aging
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-mglru-reclaim-v5-9-8eaeacbddc44@tencent.com>
+Message-Id: <20260413-mglru-reclaim-v5-7-8eaeacbddc44@tencent.com>
 References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
 In-Reply-To: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
 To: linux-mm@kvack.org
@@ -93,25 +93,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776012497; l=3145;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776012497; l=3560;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=/X4tLveOy+BYFW/Zy6+R0vMXPcNqV+3IgOLhWgyGVaY=;
- b=O73Zv+vYMZOn0sSZ+5JRY/iW+5z8qjEomyZSYRa7iYd8d7HTuSFm3QlJFJHOQUPFzgVCGADc0
- z3J0NZSLEgLA93OaJZwauHtgqcKd97qysgKlk/iHPlY2ttyQqx8TKZE
+ bh=eyt/3rbFbCzIlzaC3Pqb1f8uETg5r3owZ/Vsdk0rmM4=;
+ b=gL76/idDwn3TVYTnnU90LhS9xqDoJjdRmG8OzvLF9RvRZlwosZiWHI8FvIJjTp73sFfpebQOr
+ SpneHHQ1n0WAM0qSM4L5x9xfhNHzWWdLXHoGbpsVbclp17uapXjDIDV
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5B28F40002
-X-Stat-Signature: mopgxi8u1rg9nadt9bgca7w86kadr9yb
 X-Rspam-User: 
-X-HE-Tag: 1776012502-594817
-X-HE-Meta: U2FsdGVkX1+50xEaCmci9EuFgfuHcsx1XAX1mTylhMlgBSSeN91ArNWn2KL+qVcdWEUhx7v365pjDcQsaGy1spo1zQnmGUVaDdpwdMZBPFSWaZaYwLJe6wf7zEuotUM8JfM8+51JfUZjbj2ZEnXHRpBUNVkytp9M9SpdvWukAITDFZq+OsDA5HKPGba+9nyGARTnvRl5ieY46nRdABbYg3QI7Z1r7554SBAd9wsaUzVqZpl5dslsFZ4cGJS8LNQEP/1Uz5Ha7mRbg4IrRgNCrgeby+knFrh91DZQQYwSavskglj1TJjCFKG608Ffw96uKvIs8tuvpKqYSr7gQ9/EVX91MDvkuXLCaRctg78YCaljey10h8mZpVIwBMNuFEoHdauBLgzd9h/IBO+hVmIFn+YSdxCKq/LvxTD9ulXh+ItwHFnca4haVsiVbb+9Jncm9ZgmotoO0OavdIF9JYvN7Gi0vJh1+TWRZRVFc25pv1YRhsmyovZ4OPYWv17wnmjACCpIgPtdiT3QMlSOfg1sHrqO/CDryvu2coMcw58AesWd/jbwevsplA7g5iMV97BnfO3pyesbjf+AqnD1BeTi7ZTtXC/RrtmVxtGz+HxxAYxGOe4gGBAH067rA/JEC2fkGgZ3Pv1k3wxIaugJeL9XixlaZJNCaO6WkqDFnWpXgHNl7Iv6EvizL8v/E40dJHSvN//ONCdHt+aojSOphNPyNEGCF0hJjLT4MxNLZQ6SuqIW+Z/Uu5ZBBq1oQWVSnxcHzd7j1CNr7qQ4Mm2PIvXN3uqz2JLOcZsaX2WnrboO84eg+K6ABciZmomSn38hpBHaUBvsz2kmtGz1JUznANrMHN1gw3WLLEkQR2TgOeQAe3mN7ExAeIqj2DYypma9ByEWWDzCAteclks1YZ9YPTrc2wVveHmxAmE8t1ywYNhIqaNaBJSn4I6QjrRixRC7zX+/lRZMa4SzosDwJKrKUmI
- iPNM0ZNL
- EwWcafKOJfLeA8ZccIf730yAOdIc2AYS2MXLq8EcgeC3PXubELPM774UgLqzEwmxxPboD7eR1ZUfAWu88kAEAxx1+nGhIcMEYdTQx6leclW1Z05geFU3u9HCF+KXCEere8pLI1BUgWfXnXNgNFQfL9MuwpBUKriRGEwY3WJbq6bmvJWLmkdkb+7dqdVIMN6G3Brydboen5SfkYafnr3SouQFMO/8Lyt5oi49rACUCNDrrYwOzNK93ixKBFPpKxNAdGJSNBcF1AGQVhAo4HkweaxT6ylTnrDkj5Gm8ivbBNk4NM3LH9sKlFtdAMYscoghaTf9LVPGzUhYBytwLb6CfeUxF/P3PMeX8TOD0coupYzdxFN4LWPV794TBZz5me6PpNWu6VRD9VOg7AWQcQWaRmO1PQmPqdPP8jRsu07rXZrVJahIKzXxTIJdzRFOksZ5IxfrW8206HlAxFlYqVSY0Ry5NOw==
+X-Stat-Signature: dngaimipzxsya9o33xga3uchbkgdw165
+X-Rspamd-Queue-Id: EC60D14000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776012502-476326
+X-HE-Meta: U2FsdGVkX18zmj6JREIh9kofLWgv1qQVr0d1RQ76xDwPl5V+1yyYei3Vyzoaugv2XA79fJJE6vxzzevQx3gF07/9zPBeWI7T5isM2AOGUsiW0X0SJLRDQuFUqTsZVSE2kY47ChNreYRQPFHDSQw5t9ZHUdKrGPK6EIBLrdkERgus+WRpWujYxqCoQwDcPNM00alDdsraec7+9oLfd6JAG+52+fsZY1BS/GpB6J+GmZLna5C22L0fV/9CeOeXRmhjHmTHxew37eu1ePcNvOUrtwlp2bSnjHAJhlCUb4n5jpoieIRocRYidnXCztdfh1VvBGixHBp5TXYRuNKGFUi4pvkr+r2tQwJs3zZv/MXEd+pwvcMY/rzS7ZuvlnzEqwy/25/Ar4uZYHXhQfor5LylYg/V9H7Oq82E0Voc/ZFOEGDdc8iD++rHSPEoR8yLkTvyRrPeDbInOPuWocUz/pCCByYwE2f2YH9cckEwKcIzUEglE1y/ZZatyGuV3NDtLdZ+WzIoIN1NEdjCSnrMuhHfDL37wRxihpn9WJ5epgdwn1ihvS0eSSEaTU4nyP+HYl0F9c44QyYbxhfdn30wPcfpbM6naGlOc7FoFHTGp5RB3dSEwtWAyR/iVkAHVekQFBZnUN6hSmkZk1YeB8lolc/oLlAGzVtwIie21YIlkQIySA6FuEdRAD/Iw5Q2fQqaGS8zQzPtCMTpf/uWl9DxpYxzxA6omh9TDxou7CtC+OdsHiuFgL1uMdSzoyILNDl6f3SCSpeXM814D3cSFS3ZQyjfKBZTr/xpve3SjpI5qwWad2VTQj1wGnPI7lHaAXAmNsGLOEgAVu2NTXCz+xGSsNC6rxcGV5RyEJxYjuz8z0xu0w94TSJvgYvhA0zAmQVK2perYuxtIeUgxRfD4yNKvf2aBMRQozl3Qhl2b/c40dXAkQ7nmgIpPoFErd1FQu5aLBOWicuczf7yFXOj+YtDWkU
+ FC6Hpq8U
+ tmIfGFUa/at1UcCJQfKg+U15IPCVDwGnjeX4iUY9fYBxu10Rf0Vr3WhTf9X/XXCLYQUdX/0NDGDAC4C5vx0/hYsXo1Qo5QkIKAVPoDdVYYeTj/Mr2cylpVKPAzMplgVLKXHSl+HIm1MbDWteAsQ9AIAxNxnPo07mD/ai8oOWhPewTUPzl/vrjAO2/+KNxTU1QwHqTXstRXxvIrtXb5K4nhICJKo3Cim2WtQdn4AU8eGxvOf4ctODhFkd5TwUajQHVfxQjwpHDO05sMGd4p01LSPxpVpel0YceCeRjPGDZRfO/52wULr3IXmKaQTNmu8yOOW/2maPC6+WyNfyL3OXCEq5tQYcpnRzmrB32BDrMg9McZV8QMoYHJwzx90AP1GejbrvfHFtk+s1H4xmiAcV9Rv3k/Lc058i7lBiiNghBeZBcRurpT52odJHyfcQGQdva//ktOBggGYeW5DpBeaP/wtOO236cMjcHRqQrVgrwUS4PrsE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,88 +121,85 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Currently MGLRU will move the dirty writeback folios to the second
-oldest gen instead of reactivate them like the classical LRU. This
-might help to reduce the LRU contention as it skipped the isolation.
-But as a result we will see these folios at the LRU tail more frequently
-leading to inefficient reclaim.
+Right now, if eviction triggers aging, the reclaimer will abort. This is
+not the optimal strategy for several reasons.
 
-Besides, the dirty / writeback check after isolation in
-shrink_folio_list is more accurate and covers more cases. So instead,
-just drop the special handling for dirty writeback, use the common
-routine and re-activate it like the classical LRU.
+Aborting the reclaim early wastes a reclaim cycle when under pressure,
+and for concurrent reclaim, if the LRU is under aging, all concurrent
+reclaimers might fail. And if the age has just finished, new cold folios
+exposed by the aging are not reclaimed until the next reclaim iteration.
 
-This should in theory improve the scan efficiency. These folios will be
-rotated back to LRU tail once writeback is done so there is no risk of
-hotness inversion. And now each reclaim loop will have a higher
-success rate. This also prepares for unifying the writeback and
-throttling mechanism with classical LRU, we keep these folios far from
-tail so detecting the tail batch will have a similar pattern with
-classical LRU.
+What's more, the current aging trigger is quite lenient, having 3 gens
+with a reclaim priority lower than default will trigger aging, and
+blocks reclaiming from one memcg. This wastes reclaim retry cycles
+easily. And in the worst case, if the reclaim is making slower progress
+and all following attempts fail due to being blocked by aging, it
+triggers unexpected early OOM.
 
-The micro optimization that avoids LRU contention by skipping the
-isolation is gone, which should be fine. Compared to IO and writeback
-cost, the isolation overhead is trivial.
+And if a lruvec requires aging, it doesn't mean it's hot. Instead, the
+lruvec could be idle for quite a while, and hence it might contain lots
+of cold folios to be reclaimed.
 
-And using the common routine also keeps the folio's referenced bits
-(tier bits), which could improve metrics in the long term. Also no
-more need to clean reclaim bit as the common routine will make use
-of it.
+While it's helpful to rotate memcg LRU after aging for global reclaim,
+as global reclaim fairness is coupled with the rotation in shrink_many,
+memcg fairness is instead handled by cgroup iteration in
+shrink_node_memcgs. So, for memcg level pressure, this abort is not the
+key part for keeping the fairness. And in most cases, there is no need
+to age, and fairness must be achieved by upper-level reclaim control.
 
-Note the common routine updates a few throttling and writeback counters,
-which are not used, and never have been for the MGLRU case. We will
-start making use of these in later commits.
+So instead, just keep the scanning going unless one whole batch of
+folios failed to be isolated or enough folios have been scanned, which
+is triggered by evict_folios returning 0. And only abort for global
+reclaim after one batch, so when there are fewer memcgs, progress is
+still made, and the fairness mechanism described above still works fine.
+
+And in most cases, the one more batch attempt for global reclaim might
+just be enough to satisfy what the reclaimer needs, hence improving
+global reclaim performance by reducing reclaim retry cycles.
+
+Rotation is still there after the reclaim is done, which still follows
+the comment in mmzone.h. And fairness still looking good.
 
 Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/vmscan.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+ mm/vmscan.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 965d8905a4fe..d63ac03a7266 100644
+index cfb10052e350..5ae6bd967b17 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4578,7 +4578,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
- 		       int tier_idx)
+@@ -4984,7 +4984,7 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+  */
+ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
  {
- 	bool success;
--	bool dirty, writeback;
- 	int gen = folio_lru_gen(folio);
- 	int type = folio_is_file_lru(folio);
- 	int zone = folio_zonenum(folio);
-@@ -4628,21 +4627,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
- 		return true;
+-	bool need_rotate = false;
++	bool need_rotate = false, should_age = false;
+ 	long nr_batch, nr_to_scan;
+ 	int swappiness = get_swappiness(lruvec, sc);
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+@@ -5005,7 +5005,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
+ 			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
+ 				need_rotate = true;
+-			break;
++			should_age = true;
+ 		}
+ 
+ 		nr_batch = min(nr_to_scan, MIN_LRU_BATCH);
+@@ -5016,6 +5016,10 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 		if (should_abort_scan(lruvec, sc))
+ 			break;
+ 
++		/* For cgroup reclaim, fairness is handled by iterator, not rotation */
++		if (root_reclaim(sc) && should_age)
++			break;
++
+ 		nr_to_scan -= delta;
+ 		cond_resched();
  	}
- 
--	dirty = folio_test_dirty(folio);
--	writeback = folio_test_writeback(folio);
--	if (type == LRU_GEN_FILE && dirty) {
--		sc->nr.file_taken += delta;
--		if (!writeback)
--			sc->nr.unqueued_dirty += delta;
--	}
--
--	/* waiting for writeback */
--	if (writeback || (type == LRU_GEN_FILE && dirty)) {
--		gen = folio_inc_gen(lruvec, folio, true);
--		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
--		return true;
--	}
--
- 	return false;
- }
- 
-@@ -4664,9 +4648,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
- 	if (!folio_test_referenced(folio))
- 		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, 0);
- 
--	/* for shrink_folio_list() */
--	folio_clear_reclaim(folio);
--
- 	success = lru_gen_del_folio(lruvec, folio, true);
- 	VM_WARN_ON_ONCE_FOLIO(!success, folio);
- 
 
 -- 
 2.53.0
