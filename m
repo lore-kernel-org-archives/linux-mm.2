@@ -4,94 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F5EBF3ED6D
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 06:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07A5CE64001
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 08:56:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23C7A6B0089; Sun, 12 Apr 2026 02:05:03 -0400 (EDT)
+	id 319376B0089; Sun, 12 Apr 2026 04:56:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ED226B008A; Sun, 12 Apr 2026 02:05:03 -0400 (EDT)
+	id 2C9236B008A; Sun, 12 Apr 2026 04:56:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 102C86B0092; Sun, 12 Apr 2026 02:05:03 -0400 (EDT)
+	id 1B7D86B0092; Sun, 12 Apr 2026 04:56:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00B966B0089
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 02:05:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E8715C240
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 06:05:02 +0000 (UTC)
-X-FDA: 84648865644.06.271BB15
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 705B720008
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 06:05:00 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u8t+hu4n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775973900; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 090836B0089
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 04:56:40 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 655F4160B31
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 08:56:39 +0000 (UTC)
+X-FDA: 84649298118.15.00653F7
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7BC5A120007
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 08:56:37 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CGAhWdvu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of shorne@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=shorne@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775984197; a=rsa-sha256;
 	cv=none;
-	b=E1MObMtkxQ3s7buHSsby/CkvlUpP1VoBJZZz78ii5rTAEIGB19pU9fVSnhLh9+wSKB/E81
-	JdM34RbZ66/lrDD/FwLyzTNBOMOiAGpI6ZLcJhgTeixsSuthKtSYtVk3H5kLt7MC1C0kQJ
-	RYItLFM+gXs1kx7P1Z0yObhapy6cjXI=
+	b=hUHbqOmZk+eDy5UvPi4Rapz0LsEy8UfLmEaGnZvTMPmyWoRUdRmoH9JJiiZwk0IurXx+Il
+	fBluO+rgjyeMz5LXm/xVGwALqPk8HPrlj0XFzzU3tor+92ldMkRXh6PNC6OuZf8G1V9TUf
+	dBgMxPovPoEPIXQFPsRqp1opyIBU3Fg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u8t+hu4n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CGAhWdvu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of shorne@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=shorne@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775973900;
+	s=arc-20220608; t=1775984197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xchAm7qJtuVYU/toyqO2WkCM6PUpAgYKYl/x/R6dL0s=;
-	b=3ntlMoG2aj+34sjS4qCRQgoRKgkphInCbelL/eaGTJ+pPIUISfvtKVAkSTDWUmA4J0CtEy
-	Je4kBYzidK1rrpP8hHF78UNFOS6etBUN9k1K+bZwVykCxWnvJoqgTu2ig15OOmoQkN7EM7
-	rVTl3f3t686IYwIcNbwXUBDmXb5D6oM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3491D4384E;
-	Sun, 12 Apr 2026 06:04:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B2CC19424;
-	Sun, 12 Apr 2026 06:04:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775973899;
-	bh=Dz2ZpyaJE5N3ivs/LNJoNNsR0t6ba3qDLDroFxRApMI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=u8t+hu4nKnIVEFMZRYk5CARvGYJWlNavZHWE009R+aAX4CiWkGrDKne7MHgA65VbX
-	 LsIx/AnKdtxM0Ki/3LWXdSBACeNmRI2NlW6NDmgjX4gt+4yAlk4KY2zspyVA9ooEyn
-	 vGg9g89ifYmiyYPAFWFgmSEdfnmBmFXUbxaSuJEnb2rs0GxHPcEFsgF0JezxKjg+6K
-	 lB4CmvzJJGzUCCSCzedqIb07hrnXIJd9ENdd5sThzCCcy1S9SNJFF1YCw7jxsE4bDa
-	 f7MAErGU71/sySW72+qa74IVES2fORh7ME2QuwAy7yynzBi9eVzln0/siaclSfz/D0
-	 EgIzBZPnM3V/w==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: minchan@kernel.org,
-	senozhatsky@chromium.org,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: axboe@kernel.dk,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kasong@tencent.com,
-	chrisl@kernel.org,
-	justinjiang@vivo.com,
-	liulei.rjpt@vivo.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>
-Subject: [RFC PATCH] zram: support asynchronous GC for lazy slot freeing
-Date: Sun, 12 Apr 2026 14:04:50 +0800
-Message-Id: <20260412060450.15813-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EbDgrbrkQIZIzHMqS4zyFwb8jbE/7QCDRz8zhtNheE4=;
+	b=EDy0TgFIgoypQ6fqE+weDGdeYkmmD635pT191f84zg4YbaZH99nO3WNEHILrgvD4PWLy9w
+	7HQAxiUv5CkpZYHfX6v65lgw4RtAIRh09YeatPF8vQVaYlFgBdO6L4W8wUpbyl0EXqZIFJ
+	21n0kubl7gioXChTj6shR1OfWcHy35M=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso37509555e9.1
+        for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:56:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775984196; x=1776588996; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EbDgrbrkQIZIzHMqS4zyFwb8jbE/7QCDRz8zhtNheE4=;
+        b=CGAhWdvuI4TWvUTUqiyw/aCzEXlOP3F8GRgK7lGYOSPsdFqRleStoJ6D+tNH+vcAdB
+         76d6ZySaSBLe3vT87Fj2e5v5M4YzTXfM56HZpqqHRHuFqZ9N7gXnpk/OxssUOi/gB7a5
+         1XnDDR4s30xQIJ1kr7/ZF5bOy/6w4MGZKYSdzdggZteJnfNxg6Va9VdrTtj9oMFOceUY
+         qZwf2340HSsC8+yS0odwlZSJQ1PN+admuClnFZkwMyaoj58prwzxVcmjMMagjQ4uC0p+
+         UxXSen0QLuvKH40u2dx4RLU4apYTsCDf6WbmtvAxHa2eZ/cFccdccmSYKVKS8r0lAy52
+         uPuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775984196; x=1776588996;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EbDgrbrkQIZIzHMqS4zyFwb8jbE/7QCDRz8zhtNheE4=;
+        b=e7NdmP80m/lACkkRrENPzmyScCfFUrp1eJaup3m1Ud8WxiK06Y4fnpqB+6QAzGpHLJ
+         M3UCSvoBGhWgzlwqH+GGgaVki5VmTCw3zoFeZWmloU33NGd5yHewzU3SnIuEOjI0lZvQ
+         QCet0x34j+xt/bHMKZXNTI2027AKSbWnXhZi4GSdP1CWIPky+eyZIS7o04oNCWwt9anR
+         KT+OiQ4f6F6WhBJ61+TVAVS2+kn/nniS+6H/DC40PWTS/kWpZovj6P5UxK4/fuzOyZcp
+         TntQdzAN1hpR3Q+um+80g18ZfbniKjakUhTpwuUR7/m2texhpjz5vkPI0D5ZGqlT4F4g
+         f0pQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWB+MT1FFKsypu6JAOUF94W4gOvDZelE4cSgCE67dnYTJgRtN7yqcWiNyuwFJJz5g4VTnmke2YIQw==@kvack.org
+X-Gm-Message-State: AOJu0YyY24gyIqe9pATh7d4vDvPsrqEO9e9V+S/9rAaQ0oyDMIgDgi9L
+	scUE3IePq6cOu/ZpJvfzT0AXibYiKw+jIpkKUeiPsjBs7Uf6Is2HPZhf
+X-Gm-Gg: AeBDieuztKJiIlhi6Q6x0LkLhSjZ948g+BqPWHc7u/Wnq2mU35h+F9V7mtO1jeO5px3
+	cVycK6OlVzs12btH/hv461q96Iz+M2H/56iba717ecQmwhJV/85FjaqW3JY8K1IazmiYEP5gzIV
+	KgqwSXx6LcNw7Itd9OA+mXWQRy7loRrCJyuY8F2p/dNwPMbmU0JdNBTjnuGRpplpBXceTR7bBD9
+	gXQldMoOAkMb0mp+Bikd0cW8kUaxI4TyNniPTHkVfx/2/47S7dWnn1cYDHwZHXcoZKHwvNNlRex
+	l22UUzSRzihv9fD8c/4/PmiacTaJIc5jSNEfIlGMizvWwCyU5El4XqlXWfIbbp9kcnVRSm1qmWX
+	Y+yPzAIQOfi5Edw0jueDLY1tUPLpsFNxDyopw1izl2hWqbQH78FdzQbiWWNsnT9mh8oM4HobBTI
+	2w/ffWoLhvnfZ+FiEOnWYc9PAbt8KbzromNdpOMVsyD35uv45Uh6sJ8cZPwwkMAvmcCdf51W3D3
+	zzmxA==
+X-Received: by 2002:a05:600c:698d:b0:487:22ad:403e with SMTP id 5b1f17b1804b1-488d6ac9ce5mr126951995e9.14.1775984195334;
+        Sun, 12 Apr 2026 01:56:35 -0700 (PDT)
+Received: from localhost (brnt-04-b2-v4wan-170138-cust2432.vm7.cable.virginm.net. [94.175.9.129])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d532ed4dsm197923925e9.4.2026.04.12.01.56.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Apr 2026 01:56:34 -0700 (PDT)
+Date: Sun, 12 Apr 2026 09:56:33 +0100
+From: Stafford Horne <shorne@gmail.com>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Jonas Bonn <jonas@southpole.se>,
+	linux-openrisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>,
+	iommu@lists.linux.dev,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
+	linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>,
+	Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
+	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>,
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
+	linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+	linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	sparclinux@vger.kernel.org
+Subject: Re: [patch 30/38] openrisc: Select ARCH_HAS_RANDOM_ENTROPY
+Message-ID: <adteQSw8c65MtX5l@antec>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120319.593798781@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 705B720008
-X-Stat-Signature: eqbacxyjr8b3cfbmmy8jukibdkrrboxx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260410120319.593798781@kernel.org>
+X-Rspamd-Queue-Id: 7BC5A120007
+X-Stat-Signature: 69384axr7zgjw4qg53tyhbwf3ua5jg1h
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1775973900-362472
-X-HE-Meta: U2FsdGVkX195ZhXVu59yz9pwEpdlGmU3/BeL1Law5njqyRa9rAGuWgAYgTMAej4hllM1z62NzqZ6prvSGDDuiODRnCScPjftac+Z4cy1rhAtBYXyX1U+pxu0NRJdlPdj1xsYleVe9N5JBNnhMidMwHozd4nOn45NIfDG0o228+WIeW7K6ShwxaX5xSrRIKBdY6LH6z5zjC7CFlJTopFDZMnRHrkEkQ1ULsLZAc2e6ohrOcSMbA6WCMlmU/4AdgzIyCHp6hGp0VdR8+oynXlPZEsS5+mNd0MEKNqfhYnQuoFTYu3p0A8QEJ4XpvOvb9xe3SsYSJm03DhSbbPRnoUqZT051SXPxXqm3JQXa+3H6fBptKhH3kmKG5A9KsF6joXX7o2hmPrnuVo8oYtCIW+mwAbBxq/A4o6j6OmnJNQZe6Gfgmb/V9N5PpPkS8ISCN87rYkOoJ9aIHQ3lFbwWYzB8MPQQS/VgNo6L03wu5wqewP8tgRWmJj9LCo3QTTj7NlEm/WFFL/BB7jq0DpLhXzVpY8cBcQpNtIwxInyAH78ph1Lrjh85m+gD4vhfA4UeRmKTdoozhdGnbmNokkCWP6aWHC7L4WEI+zb+GdDhhOvJdt2KeoTW8oDzScRJLMtySC7CHpdKtv8XL1+Vc17OQP0xxILBWI5jBMQDq3EV6/mcWOKmKsDXuscGoj3oHwTHcFhrCaXq6vdGLY0ZWzY5Qaa8g7Nsxsf+V9c7Vhro1FRLNcUSCx0hnjZChe5OsR8Xv/K2AMQX9TMNtNMOWeYC+uWwSnnyxiOJ3guvHqXiUKUAVA0dQ1Y79olOhzxbCTI84myw+64dRKsipeZ5UxBQZOec7mu94xyp2Sk3nH8WbSQ0GXabudJDhEgiN3RSzOIKzTdaNmdw2f8FX/jqja4NXM195ru7JsOtBvuFThCWC7zAlxpb3D8TpQsGkvMYFtPNQXA8/Efa5BNsQKc0LLAbYL
- H5AxYIgT
- 7ut031kE9JPqLEmCLtAm7JWLKaGr3pxUa83UDm7qfztat47DbF6RgptJaZKAEu1uWBgRvLcdnz0JsSFzk4k721JeopEFE1QSGSX5rY+/1WlJ0P3Jln/DF3U6Bzp6riNKv9564K+NkNpVHJ2Ld99irX2y5xllg4m9mYXN03vfI29rvyKLIaKuNauer+T8xieGVgcYaZrs2JaEXO5XFQfDfybVSSIbLC5aUr5mBYQ56FPow7sXAKDMhkl+q3fyaZ5YTs9X095Pqy7sxhoTSp+mmYeVEZmlTkB9KdBSo+bwleN9U5qByJ6uMRj0ZkoG2Wsjw+o3IJyJyYqbaJAg0o70n87IatsRPqunlmVCbVcV5EYb9+ltkQo+eQjOxC46awDcimJmq
+X-HE-Tag: 1775984197-613558
+X-HE-Meta: U2FsdGVkX18h03r1mCaIu2imfqGLdPDei2zrYzV0VxC2XdXV6oFvtRqf4dP5ACYZhkSyIF4zP5dHevQmLJiXmnbElL6yu37JPpIGnzjtn+0mLhRaA70XAOnwLQgl4Q+RODk5i1KSxTSVPn/clQlDmDeg5fDDenlAGfMEC9hcvmvBVYjDZpu8AgY36psu85jCFBgd01NxshLFZAKD72GLbY8HbQFHGnH4PSpt6TLV8RqbUKW/TqqQT8S4djFKRCTkD44ESjayYB3BgQg88LGyn2HmsmUooLQBF9lUq1zLBk3QfzHlgFGA8HJx9j930GAcwpXj8MwaytesRWcGUrJiDA7hCV0hbc37ExzOcpJjhA5yAPbbcVJCLZ9DzDMMJHPewZ5C9rvVU8s34GVi/VCQAC+4n5zFRQMMpDHvSf4ZgvwO7dxATmBjvzX44D+GQp/67G2VGR3HxqdsBwsUBwZK21wr3OT+9/PcPYzJ8v9jypDLDSI53Rn5xx0wgC4xH+InmUfnOeSNF7tQc+urqJhbFXSbH4Vc02lDnvb7YqtX/mT0cTKNmZfqLKHWlJ9DRlLmXBywo20ZpxDw27APzievmUwngN+Ai26TznZV/CoHTwmgoOWkpY6o0SGrPA3xrxcB/EGv5TEFUb+8u1QMToapvAmGR13BBPNtx5+KsYPP+9oHHJ5E4MIjKKC1PBxqiKOBo6i1g0NOI1a+tRVpD+5YHyPzgy4RrqFbp/AxhFp/fgd9Y9VOVSrl1lZGHW8fP6v3P/FOr/D0LcIRHH6R+gozRu9uoEDgqt2vn0ZlrN7lJ+YeVyUu5ZPrx+NgNUG0uuJ5bWqhZr0nmfhSqETerFNBJjeEgSX1bQWg7EgUyquMWp1vmQGrT7do+VqqN7r+CTFfj00fz3LxR7inoAB4AsOctz7bjGLci2zSPye8txEntof5pwMyl4ssHmA6pJxZSW1DNdWtzNVYzVjWGtpKKOj
+ Lv6p0MCY
+ SEJH/2mGwqOamsCynTzA0vZKYwzIwT4Eohw8TSSF1M8vxUqGo2fUHBIR4biK2Fy+m/Co69e/UoOeYK+WrEgkwssL37+JcRCgPOgE2o4AUeFBCblqShfTh+8pt0/Yqx79h8WIVVgYixBviXyWa12y4a0floHhcxF6/aV5GogyN/h1ZuWI723nb+gdsUQe5EiU9GvC+niJaKnnwWKF842LIYhc2OhNa0RidFActvKn2rc6T2vaUslYkcZr9Y9777/MO0pKPHB0RMOx+XNqKKwtCAjnlEmkKaX72Vo3d09mGfT11NOI8rIrHCknHMvP1UyZwWZYS5ZYWosNrkI0Wn3BVZiORXWGkyvrG5yeMBc7Vj1jQuPK9ObB+3QMKAsH1k0DyOx8oLZcsFrT0Ttse6aA5s8r0kDjEj8veV+8cVlPGfBA90dUEcz8y5F3XK6DQIAmSSLMGFuaAn24KbQA98rOqW3QVz82b/72vthkehH2yal+KW0Wkpq2mVfObIIENUyf0yPjZSzidGCb2UvqqfujkTDOHSEgRBR39TeNo3zMKoU4r19cNIpCsIX9txXpV8Es2rs9UX/2AbwWfn7rd0czpvm4OQQQPQbPDr+rfYBnmkPXsjeOha/+cSJ1J/EsnHdRM4KukiE+81yOfSgA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,190 +146,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Swap freeing can be expensive when unmapping a VMA containing
-many swap entries. This has been reported to significantly
-delay memory reclamation during Android’s low-memory killing,
-especially when multiple processes are terminated to free
-memory, with slot_free() accounting for more than 80% of
-the total cost of freeing swap entries.
+On Fri, Apr 10, 2026 at 02:20:55PM +0200, Thomas Gleixner wrote:
+> The only remaining non-architecture usage of get_cycles() is to provide
+> random_get_entropy().
+> 
+> Switch openrisc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
+> and providing random_get_entropy() in asm/random.h.
+> 
+> Add 'asm/timex.h' includes to the relevant files, so the global include can
+> be removed once all architectures are converted over.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Jonas Bonn <jonas@southpole.se>
+> Cc: linux-openrisc@vger.kernel.org
 
-Two earlier attempts by Lei and Zhiguo added a new thread in the mm core
-to asynchronously collect and free swap entries [1][2], but the
-design itself is fairly complex.
+This looks good to me.
 
-When anon folios and swap entries are mixed within a
-process, reclaiming anon folios from killed processes
-helps return memory to the system as quickly as possible,
-so that newly launched applications can satisfy their
-memory demands. It is not ideal for swap freeing to block
-anon folio freeing. On the other hand, swap freeing can
-still return memory to the system, although at a slower
-rate due to memory compression.
+Acked-by: Stafford Horne <shorne@gmail.com>
 
-Therefore, in zram, we introduce a GC worker to allow anon
-folio freeing and slot_free to run in parallel, since
-slot_free is performed asynchronously, maximizing the rate at
-which memory is returned to the system.
-
-Xueyuan’s test on RK3588 shows that unmapping a 256MB swap-filled
-VMA becomes 3.4× faster when pinning tasks to CPU2, reducing the
-execution time from 63,102,982 ns to 18,570,726 ns.
-
-A positive side effect is that async GC also slightly improves
-do_swap_page() performance, as it no longer has to wait for
-slot_free() to complete.
-
-Xueyuan’s test shows that swapping in 256MB of data (each page
-filled with repeating patterns such as “1024 one”, “1024 two”,
-“1024 three”, and “1024 four”) reduces execution time from
-1,358,133,886 ns to 1,104,315,986 ns, achieving a 1.22× speedup.
-
-[1] https://lore.kernel.org/all/20240805153639.1057-1-justinjiang@vivo.com/
-[2] https://lore.kernel.org/all/20250909065349.574894-1-liulei.rjpt@vivo.com/
-
-Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- drivers/block/zram/zram_drv.c | 56 ++++++++++++++++++++++++++++++++++-
- drivers/block/zram/zram_drv.h |  3 ++
- 2 files changed, 58 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index c2afd1c34f4a..f5c07eb997a8 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1958,6 +1958,23 @@ static ssize_t debug_stat_show(struct device *dev,
- 	return ret;
- }
- 
-+static void gc_slots_free(struct zram *zram)
-+{
-+	size_t num_pages = zram->disksize >> PAGE_SHIFT;
-+	unsigned long index;
-+
-+	index = find_next_bit(zram->gc_map, num_pages, 0);
-+	while (index < num_pages) {
-+		if (slot_trylock(zram, index)) {
-+			if (test_bit(index, zram->gc_map))
-+				slot_free(zram, index);
-+			slot_unlock(zram, index);
-+			cond_resched();
-+		}
-+		index = find_next_bit(zram->gc_map, num_pages, index + 1);
-+	}
-+}
-+
- static void zram_meta_free(struct zram *zram, u64 disksize)
- {
- 	size_t num_pages = disksize >> PAGE_SHIFT;
-@@ -1966,6 +1983,9 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
- 	if (!zram->table)
- 		return;
- 
-+	flush_work(&zram->gc_work);
-+	gc_slots_free(zram);
-+
- 	/* Free all pages that are still in this zram device */
- 	for (index = 0; index < num_pages; index++)
- 		slot_free(zram, index);
-@@ -1973,6 +1993,14 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
- 	zs_destroy_pool(zram->mem_pool);
- 	vfree(zram->table);
- 	zram->table = NULL;
-+	bitmap_free(zram->gc_map);
-+}
-+
-+static void zram_gc_work(struct work_struct *work)
-+{
-+	struct zram *zram = container_of(work, struct zram, gc_work);
-+
-+	gc_slots_free(zram);
- }
- 
- static bool zram_meta_alloc(struct zram *zram, u64 disksize)
-@@ -1991,12 +2019,22 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
- 		return false;
- 	}
- 
-+	zram->gc_map = bitmap_zalloc(num_pages, GFP_KERNEL);
-+	if (!zram->gc_map) {
-+		zs_destroy_pool(zram->mem_pool);
-+		vfree(zram->table);
-+		zram->table = NULL;
-+		return false;
-+	}
-+
- 	if (!huge_class_size)
- 		huge_class_size = zs_huge_class_size(zram->mem_pool);
- 
- 	for (index = 0; index < num_pages; index++)
- 		slot_lock_init(zram, index);
- 
-+	INIT_WORK(&zram->gc_work, zram_gc_work);
-+
- 	return true;
- }
- 
-@@ -2008,6 +2046,8 @@ static void slot_free(struct zram *zram, u32 index)
- 	zram->table[index].attr.ac_time = 0;
- #endif
- 
-+	if (test_and_clear_bit(index, zram->gc_map))
-+		atomic64_dec(&zram->stats.gc_slots);
- 	clear_slot_flag(zram, index, ZRAM_IDLE);
- 	clear_slot_flag(zram, index, ZRAM_INCOMPRESSIBLE);
- 	clear_slot_flag(zram, index, ZRAM_PP_SLOT);
-@@ -2781,6 +2821,19 @@ static void zram_submit_bio(struct bio *bio)
- 	}
- }
- 
-+static bool try_slot_lazy_free(struct zram *zram, unsigned long index)
-+{
-+	/* too many lazy-free slots, perform direct free */
-+	if (atomic64_read(&zram->stats.gc_slots) > 30000)
-+		return false;
-+	if (test_and_set_bit(index, zram->gc_map))
-+		return false;
-+	/* accumulated lazy-free slots, wake up GC worker */
-+	if (atomic64_inc_return(&zram->stats.gc_slots) > 200)
-+		queue_work(system_dfl_wq, &zram->gc_work);
-+	return true;
-+}
-+
- static void zram_slot_free_notify(struct block_device *bdev,
- 				unsigned long index)
- {
-@@ -2794,7 +2847,8 @@ static void zram_slot_free_notify(struct block_device *bdev,
- 		return;
- 	}
- 
--	slot_free(zram, index);
-+	if (!try_slot_lazy_free(zram, index))
-+		slot_free(zram, index);
- 	slot_unlock(zram, index);
- }
- 
-diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
-index 08d1774c15db..1f3ffd79fcb1 100644
---- a/drivers/block/zram/zram_drv.h
-+++ b/drivers/block/zram/zram_drv.h
-@@ -88,6 +88,7 @@ struct zram_stats {
- 	atomic64_t pages_stored;	/* no. of pages currently stored */
- 	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
- 	atomic64_t miss_free;		/* no. of missed free */
-+	atomic64_t gc_slots;		/* no. of queued for lazy free by gc */
- #ifdef	CONFIG_ZRAM_WRITEBACK
- 	atomic64_t bd_count;		/* no. of pages in backing device */
- 	atomic64_t bd_reads;		/* no. of reads from backing device */
-@@ -142,5 +143,7 @@ struct zram {
- #ifdef CONFIG_ZRAM_MEMORY_TRACKING
- 	struct dentry *debugfs_dir;
- #endif
-+	unsigned long *gc_map;
-+	struct work_struct gc_work;
- };
- #endif
--- 
-2.39.3 (Apple Git-146)
-
+> ---
+>  arch/openrisc/Kconfig              |    1 +
+>  arch/openrisc/include/asm/random.h |   12 ++++++++++++
+>  arch/openrisc/include/asm/timex.h  |    5 -----
+>  arch/openrisc/lib/delay.c          |    1 +
+>  4 files changed, 14 insertions(+), 5 deletions(-)
+> 
+> --- a/arch/openrisc/Kconfig
+> +++ b/arch/openrisc/Kconfig
+> @@ -10,6 +10,7 @@ config OPENRISC
+>  	select ARCH_HAS_DELAY_TIMER
+>  	select ARCH_HAS_DMA_SET_UNCACHED
+>  	select ARCH_HAS_DMA_CLEAR_UNCACHED
+> +	select ARCH_HAS_RANDOM_ENTROPY
+>  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+>  	select GENERIC_BUILTIN_DTB
+>  	select COMMON_CLK
+> --- /dev/null
+> +++ b/arch/openrisc/include/asm/random.h
+> @@ -0,0 +1,12 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +#ifndef __ASM_OPENRISC_RANDOM_H
+> +#define __ASM_OPENRISC_RANDOM_H
+> +
+> +#include <asm/timex.h>
+> +
+> +static inline unsigned long random_get_entropy(void)
+> +{
+> +	return get_cycles();
+> +}
+> +
+> +#endif
+> --- a/arch/openrisc/include/asm/timex.h
+> +++ b/arch/openrisc/include/asm/timex.h
+> @@ -9,13 +9,9 @@
+>   * OpenRISC implementation:
+>   * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
+>   */
+> -
+>  #ifndef __ASM_OPENRISC_TIMEX_H
+>  #define __ASM_OPENRISC_TIMEX_H
+>  
+> -#define get_cycles get_cycles
+> -
+> -#include <asm-generic/timex.h>
+>  #include <asm/spr.h>
+>  #include <asm/spr_defs.h>
+>  
+> @@ -23,6 +19,5 @@ static inline cycles_t get_cycles(void)
+>  {
+>  	return mfspr(SPR_TTCR);
+>  }
+> -#define get_cycles get_cycles
+>  
+>  #endif
+> --- a/arch/openrisc/lib/delay.c
+> +++ b/arch/openrisc/lib/delay.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/init.h>
+>  
+>  #include <asm/param.h>
+> +#include <asm/timex.h>
+>  #include <asm/processor.h>
+>  
+>  bool delay_read_timer(unsigned long *timer_value)
+> 
+> 
 
