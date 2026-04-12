@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 648C7E937EF
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 17:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4587E937F6
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 18:08:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B70C76B00A2; Sun, 12 Apr 2026 13:59:44 -0400 (EDT)
+	id 429C06B0089; Sun, 12 Apr 2026 14:08:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B210E6B00A4; Sun, 12 Apr 2026 13:59:44 -0400 (EDT)
+	id 3DBBB6B0092; Sun, 12 Apr 2026 14:08:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A37156B00A6; Sun, 12 Apr 2026 13:59:44 -0400 (EDT)
+	id 318026B0096; Sun, 12 Apr 2026 14:08:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 944396B00A2
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 13:59:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 387CB1601D6
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 17:59:44 +0000 (UTC)
-X-FDA: 84650666688.24.D69A03F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BEA46B0089
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 14:08:05 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9A8EBA44B
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:08:04 +0000 (UTC)
+X-FDA: 84650687688.10.9927F72
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 67CC12000A
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 17:59:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vX5UrLSP;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776016782; a=rsa-sha256;
-	cv=none;
-	b=nIB6BPGk1zNLHjuBnLO0WDkPzJvsUPlzTEwYbrWrGfBfd0UXjjiQmG2v25dX7EDKJ/Qf4L
-	cIQIeXQqRPM3/7bZXq3UepEO3mAzm1CUsZaf8IA+BfRxRvRkZztMPaZ7QhuE9L7ieMXwTy
-	qTvKcN0hgFZmES0TWfO2hcQb8CuTE5k=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vX5UrLSP;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id EB7C9100003
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:08:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ryq/R4sz";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776016782;
+	s=arc-20220608; t=1776017283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K1MPRWzkT95WpXQC1Lc5RKfgzZLFOTFAC6n/9Ffw4/0=;
-	b=idlcJUBMsxFwvpm3gwI5iJQ8+rXoqAyU45LdCjLWHepLV9Kyy+zL1ZBZjMNwvazYYEjhDo
-	yn+PzEqqTOD9MMI8VSNqk7SzsFETa9R8gdGGeSTdVDwnphfcMGZ2gbKNxWqktUNC1ioH6K
-	rTVrb6/RPRxIQPJmKTillZxh8glQzOw=
+	bh=fbhRfphS9nGrhDPH4YeRn8fVWV2MwWL9a7GHRSyuFvc=;
+	b=JtLB76dbkyubAZEoGMgQH00cBEmzUAPcAm5QpqBeprs2VgsqI16vfRS7ARJEr1PeYlZiGG
+	92VU33iwaI8Hyn1k/qv5iJzkI37+vL9MDloKw4fv7ly8uzgNsQmfQnHRoUmgCqEwmDFJGg
+	9cPdWRTo9XmZBEd08IC6d+4QL5+9zJ4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776017283; a=rsa-sha256;
+	cv=none;
+	b=E1pc4RHQA7ofJb8Bethr7S5o8g1KWayffSNmYi1+j4qfybcKqMzJdmhKoON6qcoYk8iCvT
+	0C5cOaXfCVLOTBFdNsPSMWXlhwU9gZzKcXmjT9GzWYAPqQR9cYViiHe4HfGY/O09W2vwm9
+	nF8KLPk6HnDJDgLR7jjxfg0+5VQIges=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ryq/R4sz";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02A7B44114;
-	Sun, 12 Apr 2026 17:59:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AA4C19424;
-	Sun, 12 Apr 2026 17:59:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776016780;
-	bh=exVNphoftEq/DGXatpQR/6gB/O9CtE8L96Kx+D2XufI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vX5UrLSPnARMXIX/mQM4uvVK8eB3MjSMjjqX7C0qIf7l5+GlOdecSGatxLiVysej4
-	 UiFvVcaKGLgtzPXekd868HrxInxdfvChWUWJ1uQg7G5aBmNOCYUAFTKXj5RpDsQiCC
-	 HXWEYedmXBXK+9QGKMUNHwqteybGaznIrdeox5kI=
-Date: Sun, 12 Apr 2026 10:59:34 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Lance Yang <lance.yang@linux.dev>, lgs201920130244@gmail.com,
- david@kernel.org, lorenzo.stoakes@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error
- path
-Message-Id: <20260412105934.50892a9988df0403c209c886@linux-foundation.org>
-In-Reply-To: <75F536FE-6710-4AE7-B6DB-2997D846237E@nvidia.com>
-References: <20260411062152.2092967-1-lgs201920130244@gmail.com>
-	<20260411142858.85496-1-lance.yang@linux.dev>
-	<848180C7-F98C-44B2-AB1F-579BF9EEA28E@nvidia.com>
-	<3e688ea1-05ba-4e75-9d92-2751ff6f3b7b@linux.dev>
-	<75F536FE-6710-4AE7-B6DB-2997D846237E@nvidia.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 67CC12000A
-X-Stat-Signature: pb51wedcd4b5jhywbsta9xydmm7mpn8y
+	by sea.source.kernel.org (Postfix) with ESMTP id B1A2643827
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:08:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D782C19424;
+	Sun, 12 Apr 2026 18:08:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776017281;
+	bh=j9bCpUOAdgji1Ws6v3/WY+Lm96551bwnQK0kjzDhHR8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ryq/R4szgV+5ALXTSVljN9yRPh/6sm8i28Xk+omd9JFIq6uriFlNzNbNnY694jDEL
+	 r+ZZYGdmE4iAtn6PJo+gOt27mXt1xbiq7OpvSQhxn+DU5xJ5F8vJrjVaVE905jjCLx
+	 NIUBFhTW9zmaCg+974bNluzu5vqbLTK+8CU9TMXxarX73HVQfjhaZd15XcMJeGuDsL
+	 JydkGXKQ7fyxZJBESfJxMjRIsJSzZ5O8+4hEAuHRPtyUT/AsMu/3YP3scX77ajjS8h
+	 xqLTHXcsA+R69QRD9et3YUF2jx91gX+xVIgQwPHlnIvz3d5yUOUeRKM0xlFhL4LPAw
+	 RFL/PUYLVzFqA==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: (sashiko review) [RFC PATCH v5.2 03/11] mm/damon/core: introduce failed region quota charge ratio
+Date: Sun, 12 Apr 2026 11:07:53 -0700
+Message-ID: <20260412180754.84182-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260412161957.82835-4-sj@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: iuzuetpyc8whmwa77bdkb3a5jax4prmi
+X-Rspamd-Queue-Id: EB7C9100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776016782-29007
-X-HE-Meta: U2FsdGVkX1+9xmwBb5q0YCtNEbq1ylEySEN7fd1MBK+od83xGhZw+ThfIfydbe1zpOg66dimoSce3ie0Q7tzrnU6pasNE+AtPO5p27V58Byu/bFb4PgnZJAcGvmV/nY0klJShh2DzCdn4D3bjl7Wbg/8Zyl0G5EjfZzmCEt9wz5ZkMB02g7u7r/7X4soCjJQe/f/hFcwNndP9YLb/QvzLKcgRD83NaFAK42ZKwt9Jhr4PCyisb1E+6alm0frrqgqfOFfxBAACtwQUF+cd3GAJHlxzCnWzqFTLfODBNXIVZ3Ceu6PhJ0TEFM59/JbkG43vWg+1JnkmipRbMbBwZM225PAqcYZQDxD/idmDgSFRRTBCc9k/Anl+ydUd7vbxRhiZZT9EF6EiMpC7P8wB2QjIFctISf8neEUttcrr5QihtbLj/Wer08W2aVce2CDGhWXIDu2S+JXNbJmOTuHe7nCYmRUtlMzRT8IfW+BG7p7bsMMGwIOXtG5epjpKtXjDnLjvZL2OB3f3PTw+LaMpkla9xMi5hNRhvJsd37FZl0OCgax23TnpJ4PCozNGTO5gWqMvlwSG6tXClJNlU5WfVS0OW6kmKSwW5ZdEXySsOQdhtrCFqC2Bx59UlhCg3LLgjXB1Au1s9kAM2abnbbSdEI8qO91H7jeJnQjFe7Yn6//Kaji3xwg3Q6SynoiNYHhGhTvb//DBQhUoKBizJj/okc3eRmzmVxhopRu6J6pULZbSr+rh1x1rmY8+S2zFSMAUA4yEWNfoS3GLr5jD7rhnicfMuUo30Ql/LKd4fqSJYQXIDtdyuYPQXiTrPaiJUBc96/+wG+S9mWl8Y21hTyJBzh93Yjh7OfCcXb7dEAYNbjtrX8TBXOVbhzxoI90xCVSrlOi5WKKPtKvFMPRYwFtvHOdK/jdD9JfPPR6sU0JzcUVIhAEamrMrB7xGfIiuO1isbiE7wIIjXWEMRE5xp/roQ+
- bhDUViga
- GJROwqjtgAndhkkeUBP6+S7GkmtCIJU/Rpez/HUmj2qA8oBeRi25B2AzQjk+1uAa5Z/OaMMILPQy3Y89w4vEpqJiAnbIZ67+k7n0tc/gurE6jBZYD/M2lD8UN706lloWVcfTV5o2XIPW389OuaQ4dbvvala78Q/rNUxfKcnZHF9iG0SeuE7LZuAOS/Nrd9B5IX/4rjPmezYc9meGhNPHP9RzbU6/WEfIcx9Icf8iVMwTLtjXecx/vOBQ22OeI7T+P0kEQH7RR7lJs7MuidCPjB+OA2nj6jSCxDk+YEBF6pxVuOAt3O7MrwIgLYRaBMmdK8kjK
+X-HE-Tag: 1776017282-278302
+X-HE-Meta: U2FsdGVkX1+tYT92db9T1KQVjSi6MmrPWmM7pWWQq5loFe8aJnquhGvmKMBSfH3M6EW4ihxgthu87wI/Cjt9xwj1NHepUqM62JYrxUPBoZpkDHycaRkPaM2sg7N/cyoCBIzI0E5hHSPe98hiagxVpSr1OI0jA8Z0PkdwZ1ix63bW6uQ9liRSzLXhy/bsauF6NXWLsF8fx2x897tPUKdlJ7T4CRCuOfa4GwmzM0ZlCxLhek7m18XriJx/Jr8dNbFIGfgiky1rXcwl6BblNE1l4Eglj1NlSz6r49ehB/WKNb/sMsguvQaXbqqfzAXAMt9m5rQfDBn/bVSWGcXNkpMAg8mSThjwpULlYbSRvnDHwrxty1P9jwH4LU90vCPdT+hgixWmn03yZ6ZLuzsz75mR9Hw+EbkhdZWD1DBcSpH1wUG5hkhSt0yWWQvuzIdnb7AvP2pXyJTBUVWtJeBqiKrO48gvgs6JmGia/OCjr61ipijiACrCXUPCUNtkcfY9FzwNBy66ETdSNJGJZ5jN+ycuYDrRsGDofD5I4kqTZf4STaTvfahSzfuFvaIWYHpoy8xgMpuVv1maul6eT5bQ83u4uqKrn+bWsftzV099Y1uFqjyCRBx7jMNkDNpP57zEsiRSm2QYCu9H9YXSWqclUF+w+7ERbYoFh6/FdIKoRbdHUgweQvpuYLM/oHOUzWx7ysGwy+Jwxnql50e1DRcRbgnhPL3OdoZLIQLdlcBpSdNs7/5Ks66COYzZGW6yZXPgCuMo/MevLqDEedXxx3ejrysKAHSVRcLeAcQqDieFe4MbBOaRTCqOQSwveiMYj6nxayV4Hv4cXuwhqkcFfoK7lF9J7+Khf0gzVHmWqv12pXGuzme7y9zNyYeVQcisccq4jPz7I7Sw4Irpt82ztY1dzbLYBR4QG+pLBWGSonV4vVXfRp++X6dba3AowGZlOOJlv5uFDlpIKcSGwt2rTdaKCds
+ 4k/YF7YC
+ UQ4wrc6PRNcYbLEkNaFZbWw9/gypZApf2m1XrDsUpvdPEgh+gXzEVY7eCcxJdwAH5IbjFT9ep81KNL0o9JkqtM44STod1bKy+Y+4ZnntM8HG2nNH9d8n3wHCEkTfBrwnlIDmakJNS7U6i1VjpcYPNh7i54CS8/MEaQLacXaqiMGoNgjv7gFvgHWXVwXxe4YqaEBl4UavYuBU5T7J5G8U6mK+7CFVRvuImmyMg94c6GvhZAcuVkeJDZnHaEIPdS4j/eDgCmBC3UU4zsq/SS//AaTk5gSdw0dAVy1MlOm65a+cwNE1axGUa/50HI88wNKgo6apw7ZViAhFalHBGyq82gsHS2tMUysaEKh8THHtNuKpVXo6OEkCK3QSBeGxtJg2o03y2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,20 +91,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 12 Apr 2026 09:33:29 -0400 Zi Yan <ziy@nvidia.com> wrote:
+TL; DR: Sashiko found no blocker for this patch.  It is just asking a same
+question that I decided to ignore.
 
-> > wording, especially:
-> >
-> > "resulting in a refcount leak and potentially leading to a use-after-free"
-> >
-> > The old code does skip the required kobject cleanup path, but is
-> > a UAF actually possible there?
+Forwarding full sashiko review in a reply format with my inline comments below,
+for sharing details of my view and doing followup discussions via mails if
+needed.
+
+> # review url: https://sashiko.dev/#/patchset/20260412161957.82835-4-sj@kernel.org
+> # start of sashiko.dev inline review
+> commit 45b2671ba02d19f0991caa536696cde623c0c081
+> Author: SeongJae Park <sj@kernel.org>
 > 
-> That is my question too. The original code might not cause any real issue.
+> mm/damon/core: introduce failed region quota charge ratio
 > 
-> Guangshuo, let us know if we get it wrong. Thanks.
+> This commit introduces a new DAMON core API for setting the charge ratio
+> for action-failed memory. It allows specifying the ratio using a numerator
+> and denominator to make charging fairer for successful vs failed actions.
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> > @@ -2041,6 +2043,23 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+> >  	mutex_unlock(&ctx->walk_control_lock);
+> >  }
+> >  
+> > +static void damos_charge_quota(struct damos_quota *quota,
+> > +		unsigned long sz_region, unsigned long sz_applied)
+> > +{
+> > +	/*
+> > +	 * sz_applied could be bigger than sz_region, depending on ops
+> > +	 * implementation of the action, e.g., damos_pa_pageout().  Charge only
+> > +	 * the region size in the case.
+> > +	 */
+> > +	if (!quota->fail_charge_denom || sz_applied > sz_region)
+> > +		quota->charged_sz += sz_region;
+> > +	else
+> > +		quota->charged_sz += sz_applied + mult_frac(
+> > +				(sz_region - sz_applied),
+> > +				quota->fail_charge_num,
+> > +				quota->fail_charge_denom);
+> 
+> Can this calculation overflow during the mult_frac() expansion?
+> 
+> The mult_frac(x, numer, denom) macro evaluates to:
+> (x / denom * numer) + ((x % denom * numer) / denom)
+> 
+> Since both sz_region and sz_applied are unsigned long, on 32-bit systems this
+> is a 32-bit type. If fail_charge_num is large, couldn't the remainder
+> multiplication (or even the quotient multiplication) overflow unsigned long
+> and truncate the size added to quota->charged_sz?
 
-Thanks, all.  I queued this for testing and added a note that a
-changlog update is expected.
+A question that same to what raised previously.  I decided to keep this as is
+in favor of code simplicity, unless other humans make some voices.
 
+> 
+> > +}
+> > +
+> 
+> 
+> # end of sashiko.dev inline review
+> # review url: https://sashiko.dev/#/patchset/20260412161957.82835-4-sj@kernel.org
+
+Thanks,
+SJ
+
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260412161957.82835-4-sj@kernel.org
+#
+# [1] https://github.com/sjp38/hackermail
 
