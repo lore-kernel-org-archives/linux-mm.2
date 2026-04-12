@@ -4,108 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44578E937EF
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 17:43:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0856DE937EE
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 17:43:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABBD46B009E; Sun, 12 Apr 2026 13:43:14 -0400 (EDT)
+	id 406A36B00A1; Sun, 12 Apr 2026 13:43:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6D3B6B00A1; Sun, 12 Apr 2026 13:43:14 -0400 (EDT)
+	id 3DE916B00A3; Sun, 12 Apr 2026 13:43:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95C4F6B00A2; Sun, 12 Apr 2026 13:43:14 -0400 (EDT)
+	id 2F3526B00A4; Sun, 12 Apr 2026 13:43:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 869D06B009E
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 13:43:14 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 279C65BAAE
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D4AB6B00A1
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 13:43:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E254D160A12
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 17:43:16 +0000 (UTC)
+X-FDA: 84650625192.20.602626A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CA7C240002
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 17:43:14 +0000 (UTC)
-X-FDA: 84650625108.21.DC654B6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id EA0132000A
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 17:43:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dgU1NRMv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6hljExyn;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dgU1NRMv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6hljExyn;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776015792; a=rsa-sha256;
-	cv=none;
-	b=wCKileA5dHoocuNNVB7z2zgJsWv2T4rdfT8UZSmME/MzDouOg9BS2fO68j0Zt7xbpiNKhz
-	J4lKN0zRoxgiJ7wX3JeeLRtKOvthaF8vTaja61NWUTmjO0pOTorLFMYG8fWcXQwcHq/J4i
-	SZMtBlD9XeGT/06+zGyhU9ZDdZjEx/Q=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dgU1NRMv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6hljExyn;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dgU1NRMv;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6hljExyn;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf13.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AuJPD9CS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u45SU55D;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AuJPD9CS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u45SU55D;
+	spf=pass (imf04.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776015792;
+	s=arc-20220608; t=1776015795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0M6XziQ2IXEafjsL1pugEtyiZe4RP/OzEyf3hhTlfvw=;
-	b=r8WlaQTPSiJiDEUSVFeM0XDe52WpMtIWn+2W9NSh5SQyAaVQEbA56NSeYllX/hvknS30l5
-	X9rLXrDfiYLJA0z5MYUDHfIPX/JMmFYYTvSynneksnx0lH4JypHn3oaWc8h8koUogMwJG8
-	FWqV48F96VghN8rnwAS28QkIBP9UAL4=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=bdCTR0tCpwfzVsn5q0RVh1DnLiRFbAD92h9WzaCJKOs=;
+	b=kbh0t2SgiEKAHomfprt0daZktJjiDnLR78Ir9079D7Ipkg5xlOudPdZuWrVTwA9jpK+C3K
+	OLDGgAwD8mOFkGQFLso8XVmKA/ULcg8gq+oOR3lgXLSIyNVaKJMAHFXzP2mjLhHBDjCzAq
+	gXBUHewrd9ntJ1OyFRJoZAp40AzjlO4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776015795; a=rsa-sha256;
+	cv=none;
+	b=3fV6txLcsNW488OGzmoAJM7rjKmoog4Bh+oAjjxb8XXS3XjPCjNKm6/N9RmBpxLhpY2V6f
+	welwaxQqtx9rCBco6JjiZJq2VoVF/Y34fcSRaAjGFSe6JuMWAjhfxrWRbeMyIt594DIPcu
+	4bGaNAT7/pJ0g7jAOFFpzNK5g2kY3eA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AuJPD9CS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u45SU55D;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AuJPD9CS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=u45SU55D;
+	spf=pass (imf04.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 689BC6A86F;
-	Sun, 12 Apr 2026 17:43:04 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2801C5BD83;
+	Sun, 12 Apr 2026 17:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776015784; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1776015782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0M6XziQ2IXEafjsL1pugEtyiZe4RP/OzEyf3hhTlfvw=;
-	b=dgU1NRMvEc63f/Bc89kah5Wzjf0TVlp4Orq4tR2lDDIA5j6UKBuH2WJeu73Nx4WSwGq8sy
-	QIRAiKDBuqn/+OH54GaIYH+YDbcvgzbaf9w9TBWeIURhiDgm4oKiFVfVRLkPAjaEFzsACu
-	8vVEYUFHLdWE9Jp2SUCoAmogNwIUcxM=
+	bh=bdCTR0tCpwfzVsn5q0RVh1DnLiRFbAD92h9WzaCJKOs=;
+	b=AuJPD9CSFTtu9WM+XaKpk2j0S0KF74+Ghh+JguxmJ8jMocklMU5tZH41YDzhA4/WpzMIsJ
+	lHhPKbMwXSVr9JZ9ALm8Dv5My10g+p4HR3uYdlkOOFRiOPbsfO4RgpdW/6XDnJ3CRYftFd
+	OcIcQ8pw4uWfaY53Huukxd4eEL51kqU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776015784;
+	s=susede2_ed25519; t=1776015782;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0M6XziQ2IXEafjsL1pugEtyiZe4RP/OzEyf3hhTlfvw=;
-	b=6hljExynyYqJN6CMan72X4pFgo78XwzTtblhO8UTu2wLkwG/Y0xvlv/CjZ4HRK1SqJ6qiD
-	3e+rCuO8kDVQ0pAA==
+	bh=bdCTR0tCpwfzVsn5q0RVh1DnLiRFbAD92h9WzaCJKOs=;
+	b=u45SU55D/mS/OVH6cBFwsQVgMBlY/UZZVshfmjx/jDoSoWpVcOsRw/EhFbbjcq5ns/iXER
+	4UJxH74uH0OqgvBg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776015784; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1776015782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0M6XziQ2IXEafjsL1pugEtyiZe4RP/OzEyf3hhTlfvw=;
-	b=dgU1NRMvEc63f/Bc89kah5Wzjf0TVlp4Orq4tR2lDDIA5j6UKBuH2WJeu73Nx4WSwGq8sy
-	QIRAiKDBuqn/+OH54GaIYH+YDbcvgzbaf9w9TBWeIURhiDgm4oKiFVfVRLkPAjaEFzsACu
-	8vVEYUFHLdWE9Jp2SUCoAmogNwIUcxM=
+	bh=bdCTR0tCpwfzVsn5q0RVh1DnLiRFbAD92h9WzaCJKOs=;
+	b=AuJPD9CSFTtu9WM+XaKpk2j0S0KF74+Ghh+JguxmJ8jMocklMU5tZH41YDzhA4/WpzMIsJ
+	lHhPKbMwXSVr9JZ9ALm8Dv5My10g+p4HR3uYdlkOOFRiOPbsfO4RgpdW/6XDnJ3CRYftFd
+	OcIcQ8pw4uWfaY53Huukxd4eEL51kqU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776015784;
+	s=susede2_ed25519; t=1776015782;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0M6XziQ2IXEafjsL1pugEtyiZe4RP/OzEyf3hhTlfvw=;
-	b=6hljExynyYqJN6CMan72X4pFgo78XwzTtblhO8UTu2wLkwG/Y0xvlv/CjZ4HRK1SqJ6qiD
-	3e+rCuO8kDVQ0pAA==
+	bh=bdCTR0tCpwfzVsn5q0RVh1DnLiRFbAD92h9WzaCJKOs=;
+	b=u45SU55D/mS/OVH6cBFwsQVgMBlY/UZZVshfmjx/jDoSoWpVcOsRw/EhFbbjcq5ns/iXER
+	4UJxH74uH0OqgvBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E66624AA48;
-	Sun, 12 Apr 2026 17:43:03 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A3E984AA48;
+	Sun, 12 Apr 2026 17:43:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0PW4NafZ22miRQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sun, 12 Apr 2026 17:43:03 +0000
+	id 4PBPJaXZ22miRQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sun, 12 Apr 2026 17:43:01 +0000
 From: Oscar Salvador <osalvador@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -116,23 +116,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH 6/7] mm: Make /proc/pid/numa_maps use the new generic pagewalk API
-Date: Sun, 12 Apr 2026 19:42:43 +0200
-Message-ID: <20260412174244.133715-7-osalvador@suse.de>
+Subject: [RFC PATCH 2/7] mm: Add {pmd,pud}_huge_lock helper
+Date: Sun, 12 Apr 2026 19:42:39 +0200
+Message-ID: <20260412174244.133715-3-osalvador@suse.de>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260412174244.133715-1-osalvador@suse.de>
 References: <20260412174244.133715-1-osalvador@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Stat-Signature: bxtjko5ucq7q7do1mimx1qqund7wchxw
-X-Rspamd-Queue-Id: EA0132000A
+X-Rspamd-Queue-Id: CA7C240002
+X-Stat-Signature: dk7zms6wkqh5pzohtnea5jtrhpz6bwx9
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776015791-657682
-X-HE-Meta: U2FsdGVkX18flYXn++miSajD8G6rTHjYUB+3FgVQKGe3biF24WMf0xy7ihQjnrFuvKz9ed+YK5tHXNndPGtPQTpmDuTkee4mioWMNA9OgnSBW5XMH2FlxCTKixrgJAn2lfFpsJ+P0eSqqw9ho+JbgM1JsSasxdaSzZ/MZpTVxNO4IPLoXtUvamqkGzNCQyCdXOnCrZWV0sryviWbNzr2XS4B9Pl6zbm3T8G1dDDC5g5NWbBtwjmizhP62idek0LQEH5FiVSDPJ5dL+7FOt/4vnIPnbLQThXMIVdZHoKF65rm5rLC9Oioec43hUZfCxmch3yHwqhZMvqquGuZ8wSl5bMjZNb3G50gcR4eJoeiEGuyIosHdq/6hSqlcCkzaApGdApmreqg9z6Tc4eYijkbr59e+fUuFG11tlsFO8yh4+tO6QBNZ8RWXp1+9KX+RXkwyc3/HwUIvT217yN8QUfhDRATcqc8G7DTJLkH6QOd97udtizSuwFovXzdYuDDc7u/QUS8vf8B4yCoSvI2mQhzK+geli1LWKVYfdrTXW7T2zkFEfP6LOfdOnQagmLDPriDP8nj3PTjyBi07P4PIT7djeXA4XJK8ae+Ma2Kc5r5PA1wL5v3N5qDaPsCiha+D7xn97MmPzFcqrT7yNEvUT9cyAI6Ds/hynyC0sdmFrFfDVVr3CzXLN9y4pYzeGFLzfIErGnFMe1amc5W6emN82Hroo9RY2lpPeitiXWnaiJFHIu8yVwt1axe9L3CzaZAx/eIQy4y1IP/zRB59q/RkCtrYFSSPuWhyugMFzPopNqFP5nEhTkyaMQF+w0t4ee/ujvStnezrymwhfiplWzU9vEXaXFDXMtrb21fDQMs+6YBc2JvhZbjw1nylNuPAWQ6geAAVCoE15mp0dqViTz4ImG//gQWN01irMP88hkwBfPfUz7o6jdXRjr/2FjAthNxpuLQr/aS7nZgWUjamprWOQI
- q4R/5DrT
- P0ZLNqn0xzgcGUiblyVS5HGr+JbJqOSAIlQ5V84hJaDjFaroUmlbstGikaKKAl5Bw6Yk4EASisBbL8xef+eV9EUaoT1sQWbP2fSzdgk9Ant5vACj4weHrMxJKQ2BTz+V7vyqRU5pZnAOSsyUx6mWLhKFz9GzwkFwnl6vd23a0M3V3xI39C1cZBs/S5GRf+oPl6x8Go/+TI4/ZTYBmZdT91txvfsHCoFB3zxc61FaQVnO2Qp4U/g2A13XkOjKNJ+EwCP1hlJP/3hDxiyk26Cm4UxVf6hk8UvldTI/KXCjOnIepZnajwAX+twbjjA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776015794-65543
+X-HE-Meta: U2FsdGVkX1+v5YMoYoWZ0yjv13Qp1E21GbDCJVBxC3UVaHmAKqAj4Ood37NV5zj/dsEu9Sininktcp4+wWAxtr3vXbMjHTqcoDJhNw23bZMt6N0PeLnMkzL07RJsYX6XIpJJKXjPqhJhNn/qCd+XVFhkHG/jA3brCOzV3IH2oMTCJaX4XCnegC6ElSV1EThgWhA69sPJYu8FGV5QanqJAzTi7YyuVgPfYFLwU63cZt0So4H4l8UVCUC3F0jHanL9A77c//ZzfN0S64WNX23jtmaj0bXFB//zsjiGtCMDYgQi3oG4kphB7VwZP7/SJ6gY+52sKhDdZMAImv4CyJPnjXFxSB6xCky8J98D6SM3aTzXOzT0kY5SXoEBe5o7viIQWHGSBdE9ka3dxMXkPMflcjvH/OVnls5JdkkjjYT5fj6X4pOBCDDDyCQQiWvoRZpd01tdtjUVufSivDlk+qLwd/lB3TlWkspX5E1Op0rTc6XjgQNRnkvJAT6wI6DJHThDmKTNnVxGr1kbuH94JpWWAjBsQcl7+8QZuo2XVgktHNsMC+zIASwBI8TINl2UceuO5WpcwiW5WUstsnAZfkgguOuGX0BcJ+KZGxiZsL72MAUDMvKLtFuKb3nrWyV6PgUxpV1ZBoMCKM+sUHbxPCcjWx773pdAFSKfb3f1Bsf3CY5Jz9c2W1O3A4Ylbh6Vtx6TE45SzHmOwcpyIAFn7vUkeIu8FYFK3Ke07csUcjdrQ7Kq9nXp+9bOVvIADzNXB1VtHTkK7aFdXtgVqx1QncpzFiNWKDbE3rdaf+nhsbD/v9tLFa1wDdhzpaWzQe8UClrN47t1cI8szNLOjmJyQAVpU8gYZI0qIz/UTz5Uu9jO44853/WAhhqSCcL5UXpG2h95luC/ESukGsDRbkjhvO4wcGih+bRq6vQvqfHImMauHA4fNJMIkWuc0e5xJj74+1+RRFl+N2qZaCuH4rHi3LJ
+ uRDH5Rmt
+ qpG+yGHp0mveIxh5oWRmvLGqSvxdTG7eShijG/wiWmIeX5QU8I7O0UClhRc/LRp9eP7XZ2SFhiYSDrV6pm5TlFkNIKOmicnAaHy/zF8WNiV8cCslBDgKaORJEURnu2ELWL9Somxzmk3gWk8Qi4ZWkPKpOAAY/2ZxRPI7PXDcMgB35izDNvsk64JxxQ522lNjXxn1QbKGNh9htEWYDQy2UebgpD1Tzb4uIms3AAm3Ma5gOOA+pqHda5S1PTsiu+13GrfCcAAdrDBh1LaH1JJW+1nYu1AIQcsJXnvOk+QP0V5nlKOMW4UZf1ZVi+aPWLI7RSSCaT227SxdXBAlgePwXr/DqmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,178 +139,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Have /proc/pid/numa_maps make use of the new generic API, and remove
-the code which was using the old one
+HugeTLB and THP use the same lock for pud and pmd,
+so create two helpers that can be directly used by both of them,
+as they will be used in the generic pagewalkers.
 
 Signed-off-by: Oscar Salvador <osalvador@suse.de>
 ---
- fs/proc/task_mmu.c | 136 +++++++++++----------------------------------
- 1 file changed, 32 insertions(+), 104 deletions(-)
+ include/linux/mm_inline.h | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index afbcdb11ad80..776e7a6baf00 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -3048,108 +3048,6 @@ static struct page *can_gather_numa_stats(pte_t pte, struct vm_area_struct *vma,
- 	return page;
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index fa2d6ba811b5..3ac77b50e91f 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -655,4 +655,36 @@ static inline size_t num_pages_contiguous(struct page **pages, size_t nr_pages)
+ 	return i;
  }
  
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--static struct page *can_gather_numa_stats_pmd(pmd_t pmd,
--					      struct vm_area_struct *vma,
--					      unsigned long addr)
--{
--	struct page *page;
--	int nid;
--
--	if (!pmd_present(pmd))
--		return NULL;
--
--	page = vm_normal_page_pmd(vma, addr, pmd);
--	if (!page)
--		return NULL;
--
--	if (PageReserved(page))
--		return NULL;
--
--	nid = page_to_nid(page);
--	if (!node_isset(nid, node_states[N_MEMORY]))
--		return NULL;
--
--	return page;
--}
--#endif
--
--static int gather_pte_stats(pmd_t *pmd, unsigned long addr,
--		unsigned long end, struct mm_walk *walk)
--{
--	struct numa_maps *md = walk->private;
--	struct vm_area_struct *vma = walk->vma;
--	spinlock_t *ptl;
--	pte_t *orig_pte;
--	pte_t *pte;
--
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	ptl = pmd_trans_huge_lock(pmd, vma);
--	if (ptl) {
--		struct page *page;
--
--		page = can_gather_numa_stats_pmd(*pmd, vma, addr);
--		if (page)
--			gather_stats(page, md, pmd_dirty(*pmd),
--				     HPAGE_PMD_SIZE/PAGE_SIZE);
--		spin_unlock(ptl);
--		return 0;
--	}
--#endif
--	orig_pte = pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
--	if (!pte) {
--		walk->action = ACTION_AGAIN;
--		return 0;
--	}
--	do {
--		pte_t ptent = ptep_get(pte);
--		struct page *page = can_gather_numa_stats(ptent, vma, addr);
--		if (!page)
--			continue;
--		gather_stats(page, md, pte_dirty(ptent), 1);
--
--	} while (pte++, addr += PAGE_SIZE, addr != end);
--	pte_unmap_unlock(orig_pte, ptl);
--	cond_resched();
--	return 0;
--}
--#ifdef CONFIG_HUGETLB_PAGE
--static int gather_hugetlb_stats(pte_t *pte, unsigned long hmask,
--		unsigned long addr, unsigned long end, struct mm_walk *walk)
--{
--	pte_t huge_pte;
--	struct numa_maps *md;
--	struct page *page;
--	spinlock_t *ptl;
--
--	ptl = huge_pte_lock(hstate_vma(walk->vma), walk->mm, pte);
--	huge_pte = huge_ptep_get(walk->mm, addr, pte);
--	if (!pte_present(huge_pte))
--		goto out;
--
--	page = pte_page(huge_pte);
--
--	md = walk->private;
--	gather_stats(page, md, pte_dirty(huge_pte), 1);
--out:
--	spin_unlock(ptl);
--	return 0;
--}
--
--#else
--static int gather_hugetlb_stats(pte_t *pte, unsigned long hmask,
--		unsigned long addr, unsigned long end, struct mm_walk *walk)
--{
--	return 0;
--}
--#endif
--
--static const struct mm_walk_ops show_numa_ops = {
--	.hugetlb_entry = gather_hugetlb_stats,
--	.pmd_entry = gather_pte_stats,
--	.walk_lock = PGWALK_RDLOCK,
--};
--
- /*
-  * Display pages allocated per node and memory policy via /proc.
-  */
-@@ -3161,9 +3059,15 @@ static int show_numa_map(struct seq_file *m, void *v)
- 	struct numa_maps *md = &numa_priv->md;
- 	struct file *file = vma->vm_file;
- 	struct mm_struct *mm = vma->vm_mm;
-+	struct pt_range_walk ptw = {
-+		.mm = mm
-+	};
-+	enum pt_range_walk_type type;
-+	pt_type_flags_t flags;
- 	char buffer[64];
- 	struct mempolicy *pol;
- 	pgoff_t ilx;
-+	int nr_pages;
- 	int nid;
- 
- 	if (!mm)
-@@ -3194,8 +3098,32 @@ static int show_numa_map(struct seq_file *m, void *v)
- 	if (is_vm_hugetlb_page(vma))
- 		seq_puts(m, " huge");
- 
--	/* mmap_lock is held by m_start */
--	walk_page_vma(vma, &show_numa_ops, md);
-+	flags = PT_TYPE_FOLIO;
-+	type = pt_range_walk_start(&ptw, vma, vma->vm_start, vma->vm_end, flags);
-+	while (type != PTW_DONE) {
++static inline spinlock_t *pmd_huge_lock(pmd_t *pmd, struct vm_area_struct *vma)
++{
++	spinlock_t *ptl;
 +
-+		if (!ptw.folio || !ptw.page || PageReserved(ptw.page))
-+			goto not_found;
-+
-+		nid = page_to_nid(ptw.page);
-+		if (!node_isset(nid, node_states[N_MEMORY]))
-+			goto not_found;
-+
-+		if (is_vm_hugetlb_page(vma))
-+			/*
-+			 * As opposed to THP, HugeTLB counts the entire huge
-+			 * page as one unit size.
-+			 */
-+			nr_pages = ptw.nr_entries;
-+		else
-+			nr_pages = ptw.size / PAGE_SIZE;
-+
-+		gather_stats(ptw.page, md, ptw.dirty, nr_pages);
-+not_found:
-+		type = pt_range_walk_next(&ptw, vma, vma->vm_start, vma->vm_end, flags);
-+
++	if (pmd_present(*pmd) || !pmd_none(*pmd)) {
++		ptl = pmd_lock(vma->vm_mm, pmd);
++		if (pmd_present(*pmd) && pmd_leaf(*pmd))
++			return ptl;
++		else if (!pmd_present(*pmd) && !pmd_none(*pmd))
++			return ptl;
++		spin_unlock(ptl);
 +	}
-+	pt_range_walk_done(&ptw);
- 
- 	if (!md->pages)
- 		goto out;
++
++	return NULL;
++}
++
++static inline spinlock_t *pud_huge_lock(pud_t *pud, struct vm_area_struct *vma)
++{
++	spinlock_t *ptl;
++
++	if (pud_present(*pud) || !pud_none(*pud)) {
++		ptl = pud_lock(vma->vm_mm, pud);
++		if (pud_present(*pud) && pud_leaf(*pud))
++			return ptl;
++		else if (!pud_present(*pud) && !pud_none(*pud))
++			return ptl;
++		spin_unlock(ptl);
++	}
++
++	return NULL;
++}
++
+ #endif
 -- 
 2.35.3
 
