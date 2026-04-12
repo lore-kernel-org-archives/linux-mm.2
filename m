@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E803E937F6
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 18:35:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C8AE937FC
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 19:00:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 897B36B0088; Sun, 12 Apr 2026 14:35:28 -0400 (EDT)
+	id DF37B6B0088; Sun, 12 Apr 2026 15:00:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 848D56B0089; Sun, 12 Apr 2026 14:35:28 -0400 (EDT)
+	id D9DB26B0089; Sun, 12 Apr 2026 15:00:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75E836B0092; Sun, 12 Apr 2026 14:35:28 -0400 (EDT)
+	id C65746B0092; Sun, 12 Apr 2026 15:00:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 680566B0088
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 14:35:28 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF811E3CC6
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:35:27 +0000 (UTC)
-X-FDA: 84650756694.27.88CF651
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF7376B0088
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 15:00:00 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D73B6C317E
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:59:59 +0000 (UTC)
+X-FDA: 84650818518.29.6C5F4B5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6134BA0015
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:35:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=H8c866ev;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776018926; a=rsa-sha256;
-	cv=none;
-	b=e53xPZU1ZpQooDuqWXB+TI/cNpiQzOsZUjQRWF16xqNN4ZFcBJKK26dYVD8LHMsAiqdP3G
-	JQZIq9DN83WlP8+FsvWE1HoPnLnPPR8Hyk5NojSTQXN612yntmnsEhPVv4YWbfK/LzZBqk
-	S6QjevYq4PljQum66q2hh9VJexICO9Q=
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3742F180003
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:59:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lxfu5tG4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776018926;
+	s=arc-20220608; t=1776020398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XoVnTwC7HXWJwY87QdqZmPoSnrvy+FHS+UHSZGtHS5s=;
-	b=w53h6GLSDVZLVhLmAhaNHhre05SdJcZQuajhObfjasfq1VdNYu81+sclH/vg0z+Q8CPqcy
-	iDyxzIhINHeAKz6sUWlx1d1yv0oYv9XYEPNkwiVwYuPEuVboony50zCYYyFjrBDzgXKKCU
-	E9QJ5lr9PCO86eGbK9iL9VIZTofPLgM=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=IcnPyotG+8CfvO+mVMuRVajJ+k/64wr9vnsl9Lcsecs=;
+	b=W7XDzudB39cqXO+xZyRf+ziMn5eCdPL/mzJ0onzK9NMYF+glAiDHUFIKhpjtafM+3A5810
+	lbO1p6MPTNtrtHTH0dlABz3huKurBodTlGC+2VmqW0/KhTcMjndohDEcIAceot+I54Rt6X
+	61FFptz+3OkI3h0ug2Ao50758y/v9zc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776020398; a=rsa-sha256;
+	cv=none;
+	b=Nz6PMVkNHgRXj+JfnEUSGYqXr/nL8FfcsqGYe5BSxHXLgmQOFiuLnQAHLnj/an6SWH/8Yo
+	oo0orlQQL+94GpJYAPf6B+9/BnRBsd16sHLtvcCmfrdBDVoAP4M1kU+Zrax38HNS3DhoMa
+	HsEdR/DxiaVtLhwRQkIbNkTYsTVHzvA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=H8c866ev;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lxfu5tG4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B742860172;
-	Sun, 12 Apr 2026 18:35:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A684C19424;
-	Sun, 12 Apr 2026 18:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776018925;
-	bh=So/3lxgYie/RFC6n3vqqdr/LETFNhsSstDNNMcIkf3Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H8c866evefI92Se05d+uNHgaZ0YwhuRVksrZmupUBpRLIui9yH3GbIJ4hhcQu5nYr
-	 mPvFcAkyOhJSzNKEfb2lopgLsXI1BmMtU8sOHGQFmzRy39y2oXRUzU+uyQ1QKKtCJN
-	 tSg4Ux6bB0v29wmUwTQ/DP97TArKYuh8sW1f/6/k=
-Date: Sun, 12 Apr 2026 11:35:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm: thp: Fix refcount leak in thpsize_create() error
- path
-Message-Id: <20260412113518.af50cc58b0ac8635f7e9e086@linux-foundation.org>
-In-Reply-To: <20260412175428.2613383-1-lgs201920130244@gmail.com>
-References: <20260412175428.2613383-1-lgs201920130244@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	by tor.source.kernel.org (Postfix) with ESMTP id 6AB8B60142;
+	Sun, 12 Apr 2026 18:59:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BE5C19424;
+	Sun, 12 Apr 2026 18:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776020397;
+	bh=c5nX17VEd6pfb8YBjWIDLaDupaE+dxyisObEf1BO9qU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=lxfu5tG4r1oBXYBsWqkORgXMFdEEWDR1s2ofUH+NE9ImdK8k4lw9lqbaSRhOUoQ2Q
+	 99CzxakPFcjKWNYyVZcbfwyAiIQe+KcTS5G0jWUfyz7f1XqXd/RoE+LOVV7N1wzZYb
+	 bXna0M/w7a7Xc3ZmXjwGtk5UiMyabygE/pFLUWjhkm4Qy+//1yGoLPjNS8TAox4t8a
+	 +a2TU2+kx+Mp+kiv+EEPK6Fb8rXXk2Dd+S/w+0YM/gh4WcrXt8NLxIjCxiaoVt6/Qt
+	 cc341LiNqvQpTQyqp1QU8uT1SkuxMXtGBb7JTL8bGZTvcn17/Vo6k8FGz32GNT42K6
+	 rAoDjru9ItEOg==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH RFC 00/13] mm/rmap: support arbitrary folio mappings
+Date: Sun, 12 Apr 2026 20:59:31 +0200
+Message-Id: <20260412-mapcount-v1-0-05e8dfab52e0@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJPr22kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDY2MD3dzEguT80rwSXWMjAzOzZDMLcwNDAyWg8oKi1LTMCrBR0UpBbs5
+ KsbW1AN0GLIlfAAAA
+To: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Brendan Jackman <jackmanb@google.com>, 
+ Zi Yan <ziy@nvidia.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Matthew Wilcox <willy@infradead.org>
+Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-fsdevel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.13.0
+X-Rspamd-Queue-Id: 3742F180003
+X-Stat-Signature: krzzhfyfyio8rf1bzyq58xk4q3cbxiak
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6134BA0015
-X-Stat-Signature: hssxmzq3cyu5g8j1bn3o96pofgnter8q
-X-HE-Tag: 1776018926-2553
-X-HE-Meta: U2FsdGVkX18wXulldYJbz7AW6iJe1xOeahw/EEfY4HITj0zDMZHA8jzJVRU+76dhyQD1jGy76Kk9i+pfyuYvTGNO0F6kM+h93tl0U4J0NLy03PtAsBxQ7bVAfgdnSnY8rTYRQCReegnP7iGhT5G1ktFQDI0mNN2m3lMf3OoYGEWwWKB7IouLsUS+7C4jTsAcVvA2j8oxg0Mkteh3XYTCIaxYeA9n/Ko1AWn7Wcu5xaWLw3gnkL4bhyTwdgXs5ZbpSxU5IdeyM+2njBbw2gI8U9Oc6zndIiq9GnF5jScXOT/Wdp+a702txIH4V+JxsIQWKU94ILbdl0mmgCOlavz8+h4NiZ3DrYpuT76z7rL2M6uvFQ1vgtcEYPPR2iibFxrDeIA/VbgMTVR0zhqerutGQTeG6+nfRhI14Y+IMza3n4+HXR4ltd5pbZR7EnfFODvdcYVHW2VxLbl1DIpZ3o9XOVxBjHclTsfNuHZ1s6KvS13OpfoO2NEUOfWXjxd9qN9nrQIsQvpVT+KuxT0T7+IWB9hCyT/scJvOnue+LPDNWzbmCJrFa/1QwjdK0qmN8kqv5V41WVs3p91fNH5pPghPKcOVVYtBBWaXTeXs87FCx9fTnpN0WoowcSkPvzBsM6cswRlFOryFy6G1Ax9rMNnp+/AvmpNUnPQ7kA5nrf/L8fY31vCX3HpzjmjrGX96c4pwbzlxfy7C5rw81W9a3J+U02SjiCCTBuRZJovmdm5/IB3fk3Ea9C8umRmlY/pLfYrtjdsPlMZDAVCL/01DfwbSY4PkVj1zEBKlPKQXOeRcH/2lIw9V2wp67Z5JOfp7SCdx3vht8dOQ7RxNTYA7qzfZ4MwRNydgyrgGLtKuN4MAvJboAHi4UavhCMwIjjNJs47OvQkd6QACvJJgppjYvFd5CBT0r5Jf0pnlOvSOl4ZctvSxW6BS4T2KXhKHLixHDw8a4rH2EGsoqJgKknEK9Er
- wypd0Ja5
- R+ZvUxxN6C3HV/k3zoUXJpS5vq+MiIT4YKRDfo2ccniIdH3cWLYdJfAX4rxD4PtRMeMiAmMLhDDqSw6AWNf2a4TCwpb2xjDSJG0pDhFRr0sXT4pkeu+7tJrjbAQcrKxjfY7QtKpxkqnDsOPKrwUHSkz89saoMCztv2cSnXHsssXLqwPvuhLx74QiZ5yrjS2sNGPnzA6Bj0xfbZYKGFc4ncH0ogIQrznBcD3KkzuW8BeA2EjynNPuQWEBxNdzP428LeBCYQjX4bu7AsFWeIf2E/yVwPYlwFblGJiLZE6NeaSY3FxEBbf2H90YSZCYIuGRXnocQ
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1776020398-41310
+X-HE-Meta: U2FsdGVkX1+idK2zJDk/AxzNC2dwxoKsLCm1LpEZpoAW+NZA5AcI202nSOQc9FkDsmbt72L8EEcxWqFxs4ccpZdJmVBreJ6mllJBUSXIgBHZb52VaD4k0nvWKh4eZgPmDij+N/LbAUKz/0NyrBYQW203NCmvZD1spNxy4H9Ik9SyvfsevPhowyXy/L1FeXBKyFmX2DXknK/1n+F0cV1huURhSHWd2N6p+dO5JyUv6lt0ADCaU7i/qAAoMwJCOPhggL/PdPLtZn1Dk03g8Jce6MOXgjRTCD4DydUtSM8Higia2sTADvWUDGhfzl3lPN4S2qhWtkhsX1h9xn/shERBu8yyRVRX777FVcEPpNH68XjquNO9I8nKpdJelmzzgh2AjGDBczcon/E/vpGhbugILDsN0k7ASobebZo9RPVX1soCLE7YwLwbLFeryTsmOxi1PXYLJ5YM1wbwqytnPR8CW9faSQWmerXG8E2SaJY7snkBuLc1/6qOs5AN/nq9J7mJiJp+Au0uZWfUFJRh98DxbhrXdxlgxIu+tit4pshQM0KdUgJxEVhhQ2viygCVKHmP7gOMlcfHiNRrThHGXJAQod5jOwDQdvEZ1JWABXfSj9PxG/q9yweMCBR8jfIRNoCzhRcFlXF2BKL8M9M7+/J/oq0gokJZ/+ADgQfok3zOjQtapRR+1OwvuPLwqxeWcDAulXHew4agSTL5CIJQbWlqxTJpnp6aI59zu32exnkMFtrdEn8Tb3tfcPLeRDGf2hHD/Un0+8lXn8gQZc7neciUxTNl2kzoG0T7+mNg6ldXR2yEWdBQ/mcv7Hl6bwokfVmQ4GjJ3dc1L5P+UZ2OSt17ffWhIu/qrjPgGo7PD03unu7GCj2526apuqSKA33hLPUD/Rp/ZtY2nSXm4nsuvWvUvLPeI6LdZUAYnWCKa1H8FNAQ/VUwewo1V0goDbJ42SgZLHGY90NwDmTgU+exSVj
+ 5Ki1ftkW
+ fRAG9cnQk8V6hcOR+CvvB1nsTJlAdA9ZlhIh5d+bNITw0Ob7z0qwwal8Izq0hkpgWbaAsaNbtgqZfaGnjGpGjlbTLryRgwgMvWWlx1DqmQ1VjOe7hDZF5c1ZVlhraIlQq+5YN8kYR9fOutf/mqnzzoXv42shTtg3avNLan4G5LGxQ/2QAMrb9ZWNgxKvBu3HhRhPTZIEnWRrPYyUeEG9rVSxGuUx9IO9iLkj1YhkzrWzU4srKv8OAhR62bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,42 +103,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Apr 2026 01:54:28 +0800 Guangshuo Li <lgs201920130244@gmail.com> wrote:
+This series is related to my LSF/MM/BPF topic:
 
-> After kobject_init_and_add(), the lifetime of the embedded struct
-> kobject is expected to be managed through the kobject core reference
-> counting.
-> 
-> In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
-> directly with kfree() rather than releasing the kobject reference with
-> kobject_put(). This may leave the reference count of the embedded struct
-> kobject unbalanced, resulting in a refcount leak.
-> 
-> Fix this by using kobject_put(&thpsize->kobj) in the failure path and
-> letting thpsize_release() handle the final cleanup.
+	[LSF/MM/BPF TOPIC] Towards removing CONFIG_PAGE_MAPCOUNT [1]
 
-OK...
+And does the following things:
 
-> 
-> ...
->
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -726,10 +726,8 @@ static struct thpsize *thpsize_create(int order, struct kobject *parent)
->  
->  	ret = kobject_init_and_add(&thpsize->kobj, &thpsize_ktype, parent,
->  				   "hugepages-%lukB", size);
-> -	if (ret) {
-> -		kfree(thpsize);
-> +	if (ret)
->  		goto err;
+(a) Gets rid of CONFIG_PAGE_MAPCOUNT, stopping rmap-related code to no
+    longer use page->_mapcount.
 
-So this should be goto err_put?
+(b) Converts the entire mapcount to a "total mapped pages" counter, that
+    can trivially be used to calculate the per-page average mapcount in
+    a folio.
 
-> -	}
->  
->  
->  	ret = sysfs_add_group(&thpsize->kobj, &any_ctrl_attr_grp);
-> -- 
-> 2.43.0
+(c) Cleans up the code heavily,
+
+(d) Teaches RMAP code to support arbitrary folio mappings: For example,
+    supporting PMD-mapping of folios that span multiple PMDs.
+
+Initially, I wanted to use a PMD + PUD mapcount, but once I realized that
+we can do the same thing much easier with a "total mapped pages" counters,
+I tried that. And was surprised how clean it looks.
+
+More details in the last patch.
+
+Functional Changes
+------------------
+
+The kernel now always behaves like CONFIG_PAGE_NO_MAPCOUNT currently
+does, in particular:
+
+(1) System/node/memcg stats account large folios as fully mapped as soon
+    as a single page is mapped, instead of the precise number of pages
+    a partially-mapped folio has mapped. For example, this affects
+    "AnonPages:", "Mapped:" and "Shmem" in /proc/meminfo.
+
+(2) "mapmax" part of /proc/$PID/numa_maps uses the average page mapcount
+    in a folio instead of the effective page mapcount.
+
+(3) Determining the PM_MMAP_EXCLUSIVE flag for /proc/$PID/pagemap is based on
+    folio_maybe_mapped_shared() instead of the effective page mapcount.
+
+(4) /proc/kpagecount exposes the average page mapcount in a folio
+    instead of the effective page mapcount.
+
+(5) Calculating the Pss for /proc/$PID/smaps and /proc/$PID/smaps_rollup
+    uses the average page mapcount in a folio instead of the effective
+    page mapcount.
+
+(6) Calculating the Uss for /proc/$PID/smaps and /proc/$PID/smaps_rollup
+    uses folio_maybe_mapped_shared() instead of the effective page
+    mapcount.
+
+(7) Detecting partially-mapped anonymous folios uses the average
+    page-page mapcount. This implies that we cannot detect partial
+    mappings of shared anonymous folios in all cases.
+
+TODOs
+-----
+
+Partially-mapped folios:
+
+If deemed relevant, we could detect more partially-mapped shared
+anonymous folios on the memory reclaim path (e.g., during access-bit
+harvesting) and flag them accordingly, so they can get deferred-split.
+We might also just let the deferred splitting logic perform more such
+scanning of possible candidates.
+
+Mapcount overflows:
+
+It may already be possible to overflow a large folio's mapcount
+(+refcount). With this series, it may be possible to overflow
+"total mapped pages" on 32bit; and I'd like to avoid making it an
+unsigned long long on 32bit.
+
+In a distant future, we may want a 64bit mapcountv value, but for
+the time being (no relevant use cases), we should likely reject new
+folio mappings if there is the possibility for mapcount +
+"total mapped pages" overflows early. I assume doing some basic checks
+during fork() + file folio mapping should be good enough (e.g., stop
+once it would turn negative).
+
+This series saw only very basic testing on 64bit and no performance
+fine-tuning yet.
+
+[1] https://lore.kernel.org/all/fe6afcc3-7539-4650-863b-04d971e89cfb@kernel.org/
+
+---
+David Hildenbrand (Arm) (13):
+      mm/rmap: remove folio->_nr_pages_mapped
+      fs/proc/task_mmu: remove CONFIG_PAGE_MAPCOUNT handling for "mapmax"
+      fs/proc/page: remove CONFIG_PAGE_MAPCOUNT handling for kpagecount
+      fs/proc/task_mmu: remove CONFIG_PAGE_MAPCOUNT handling for PM_MMAP_EXCLUSIVE
+      fs/proc/task_mmu: remove mapcount comment in smaps_account()
+      fs/proc/task_mmu: remove CONFIG_PAGE_MAPCOUNT handling in smaps_account()
+      mm/rmap: remove CONFIG_PAGE_MAPCOUNT
+      mm: re-consolidate folio->_entire_mapcount
+      mm: move _large_mapcount to _mapcount in page[1] of a large folio
+      mm: re-consolidate folio->_pincount
+      mm/rmap: stop using the entire mapcount for hugetlb folios
+      mm/rmap: large mapcount interface cleanups
+      mm/rmap: support arbitrary folio mappings
+
+ Documentation/admin-guide/cgroup-v1/memory.rst |   6 +-
+ Documentation/admin-guide/cgroup-v2.rst        |  13 +-
+ Documentation/admin-guide/mm/pagemap.rst       |  30 ++-
+ Documentation/filesystems/proc.rst             |  41 ++--
+ Documentation/mm/transhuge.rst                 |  29 +--
+ fs/proc/internal.h                             |  58 +----
+ fs/proc/page.c                                 |  10 +-
+ fs/proc/task_mmu.c                             |  69 ++----
+ include/linux/mm.h                             |  37 +--
+ include/linux/mm_types.h                       |  22 +-
+ include/linux/pgtable.h                        |  22 ++
+ include/linux/rmap.h                           | 221 ++++++++----------
+ mm/Kconfig                                     |  17 --
+ mm/debug.c                                     |  10 +-
+ mm/internal.h                                  |  30 +--
+ mm/memory.c                                    |   3 +-
+ mm/page_alloc.c                                |  31 +--
+ mm/rmap.c                                      | 302 ++++++++-----------------
+ 18 files changed, 325 insertions(+), 626 deletions(-)
+---
+base-commit: 196ab4af58d724f24335fed3da62920c3cea945f
+change-id: 20260330-mapcount-32066c687010
+
+Best regards,
+-- 
+David Hildenbrand (Arm) <david@kernel.org>
+
 
