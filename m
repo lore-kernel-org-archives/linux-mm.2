@@ -4,30 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B84CAE937F2
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1E0BE937EE
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E30C6B0096; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
+	id D79CF6B0099; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B2B76B0099; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
+	id D03086B009F; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 514216B009E; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
+	id BF3016B00A0; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D3096B00A0
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9522B6B009F
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:48:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4813160B71
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:48:23 +0000 (UTC)
-X-FDA: 84650486886.01.73FB026
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64AA1160B9F
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:48:24 +0000 (UTC)
+X-FDA: 84650486928.09.AD23C05
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C29B5140002
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:48:21 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nbWSRgn5;
-	spf=pass (imf23.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5B28F40002
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:48:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WuR1xmq6;
+	spf=pass (imf11.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WuR1xmq6;
+	spf=pass (imf11.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776012502; a=rsa-sha256;
+	cv=none;
+	b=RLR04PeLZr7z7etIvcqT4wwNdeD7FOIBJSSQSCeTBGJvq+W259ErscdehsBiOU+8wBSrw6
+	Yba6Nto9OeYV0CoNRXt8Um7cT6vSuLzcx9gTd0pGLa5HB+rGzzSSrZA23fXlVpNbtIP6Dj
+	XyixQHpO5YHfpnNlW8o9BRluAmPriOs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776012502;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,45 +45,36 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/egHrvieRg3L+PC1mt8hwkHzg1VNguih5/UMw24UVus=;
-	b=146EUUUylJiHQEeTHewNUG04FVR7OCZkbfWJxmHflaizHMiekLiS8Q3ktX0TP6d9kLjtr+
-	pUvT7I0WdmbxBAlNcU9UUK9ersZp+pyxmV1JwFvZo2fxR5y3gZMnrloupUlqYzbKMbIDqt
-	Epb+GJ6aafNabflTulwLE3nyWjPxBaI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776012502; a=rsa-sha256;
-	cv=none;
-	b=flfuV9nxhtHJWS6tjd/DjN39MTtzYqU7aR3pWsl1c5agXRCg758+i/SsCLiMVV8rUcp/IZ
-	NlKcHUWDJ79q2xn8vBCODz6/uc5LDswXT0GXSHuP3wMH4RDWTyVIRA9hW0VppzbAWHIMUI
-	S1z08jcSN00B4CbtgsugPMyLCVQG+GE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nbWSRgn5;
-	spf=pass (imf23.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=odKZ+5pg/Rroupu3xpAeBiHKuJo6sz4ziDly9UlZHtM=;
+	b=gpIp5CokbWnDo4UaHVqxzgWD8FGwXsMtVRj8Jw/G2iVIwPNUg8PdD3/Rhdyg7OK48iZyP5
+	mXcCWueWuYEkGJCUcR4IXWdYb8aHv5RQlwCnMgZHSqHH0MqFI5hyV/KHRzV6hHuH1kaV6W
+	kqeCkqRKIop4R6HRUJ3SPpKosaHf/Vs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 550ED44582;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8DBB7446A8;
 	Sun, 12 Apr 2026 16:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DE248C2BCC7;
-	Sun, 12 Apr 2026 16:48:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3B81EC4AF18;
+	Sun, 12 Apr 2026 16:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776012500;
-	bh=ZqiSG/dFaxT5Oke0XohOS08i2hQITeY46Sc9nlsZp3Q=;
+	bh=3RE8cIiuwEqnweS2KmT3lOO/ndLGSLdeBknMMEpJdGU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=nbWSRgn52hS0p/e3xA/vpCjVn3ERWz0K4S6kdTVMS0FiTayAcCvMjqyQ/BXRSmSRa
-	 FyHRt9VWvVImDyq/nNz+bNSzfhiKUTZVoG3hEvuRF4rjrPmO0jC7iJLTyABWsvmdG6
-	 aVOrOFfSbQeKrLvLqAG7+at95Y1QAVMsnJZvpn4+aTJUG0dWS2xAWuef9YuulS8GtX
-	 eQ7wDAnQIBbfdD+aG+mOtLiuTyaezrNMTzbTNsNoVL6ShXsnXcWIvRSj08R0oiOugj
-	 hEx/lQEAg6wxvN+65eosHSXlkrgpCrKbVxTiwDAhOsfyy8oy4lLThgBPWXOS0kdwHp
-	 d49nNh6Q9xBZg==
+	b=WuR1xmq69ig1SziU0qHbhRF88CtGLsmJdyPEC7m4dEPXIS0/Lkwfmx7fL+aMqhehV
+	 o4kRNCFs1CtNx4Vo1HjbMXignQt+p7WAjGTkcDEiT4JEh3uqEvjjVHoYuRco1sZA6l
+	 PE2yK4IgsOz5GJSrNuXwHUBHzfUQFi67dzGzf5Hcj/mAv0M+CiP7XKaP6sOY+cK81s
+	 kdrw3lBTFkSMIywfMfNjDNQtTKXNfJCC+i+Z4Vz45f9VE611A83rjeduiAZgQ1mZ7q
+	 Fh7rJJG5htuOGHHF9Xyek+p6jGjHmZsIR1h8Dpn64+hYjWioPTlkbZR4T7+6EvMN5q
+	 vTG0KEZzcwI4w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D52D3E937EF;
-	Sun, 12 Apr 2026 16:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 332A5E937F6;
+	Sun, 12 Apr 2026 16:48:20 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Mon, 13 Apr 2026 00:48:18 +0800
-Subject: [PATCH v5 04/14] mm/mglru: restructure the reclaim loop
+Date: Mon, 13 Apr 2026 00:48:23 +0800
+Subject: [PATCH v5 09/14] mm/mglru: use the common routine for
+ dirty/writeback reactivation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-mglru-reclaim-v5-4-8eaeacbddc44@tencent.com>
+Message-Id: <20260413-mglru-reclaim-v5-9-8eaeacbddc44@tencent.com>
 References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
 In-Reply-To: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
 To: linux-mm@kvack.org
@@ -92,25 +93,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776012497; l=6467;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776012497; l=3145;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=IOjfs+eM5SwXYK7QI7na78x/g82TQo2VWPiMfWlsmRI=;
- b=fenmnPRtbv8GO4DGCvEzdmnmnC/HdGGj7ugg3b5IHXZSYRJ0qivw3G0Paj4SyCYgB+Isfudm6
- nDxeL3LBm6wD4+rJWHNsGFacY7W+pfORdJGWtNc3PiT1evq7ih+9mbK
+ bh=/X4tLveOy+BYFW/Zy6+R0vMXPcNqV+3IgOLhWgyGVaY=;
+ b=O73Zv+vYMZOn0sSZ+5JRY/iW+5z8qjEomyZSYRa7iYd8d7HTuSFm3QlJFJHOQUPFzgVCGADc0
+ z3J0NZSLEgLA93OaJZwauHtgqcKd97qysgKlk/iHPlY2ttyQqx8TKZE
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam12
-X-Stat-Signature: z9nwz16sso9t1sbi619cwyhug94pau4i
-X-Rspamd-Queue-Id: C29B5140002
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5B28F40002
+X-Stat-Signature: mopgxi8u1rg9nadt9bgca7w86kadr9yb
 X-Rspam-User: 
-X-HE-Tag: 1776012501-94348
-X-HE-Meta: U2FsdGVkX18xybdgYFlNOYX0FtUHOdRvV6V2z8yIA64OYInUlfTm+JOGCMnG2E8LVKoFWSOnhOBs+MwEIDuOq4Xtunb4DMoLrhTZ6oXsdu2JnhGm6o9xhZ/27F9OyWanpPD9Vg0/GCV6dEj6mXT3/BAY6Flkp2WoK6sE/g8jNJXJcqkCVWTmhAQaomegufI7t3ARzzROsGoQ5NgltAFlrtWy8THt+MsNsb0usN5OLYOlO1jv9iconK/eXqFq5mGnePOUkQyZvWj1+tihKqkkuqd6dGENU9ehMOuoLtAQG0QMfD9/MA90RsgPZcQBXxzbJHeNm/2t+PyUioFx68Eo7UZLFEa+tmkde6z889uL7dsp0eBwYzFe95l6j0I3kvlMGEpY2ISaI91XIm/+ed0W8d4tJNiYjphPX4Haly54jeL9dHFr2+ZC4uGox1x8YqhI3MdK1cg64tketfQWQYwXQXEg0zn/U7beFkUkHnEkDXob//K12k4WTkl30tT1HVlsGXSoCmfWxNNxPLCqRdlB4lMc9UrTUqgT9id3OHbDua4Odt0BKGD5WFwGTAPG0FrC8fVFNzDNzw4PzOyUFtlG9fnIw3pQOnwVam00nKFT65LNM6M3D1pciXy0WG1osmgefOS8HpyrTDGH/LCvyjEjMgTvENFARwLvfuTmgSUhfSZgDtb9YRvztVmfXh3PzvH226xYAhL9eFwUdhaCgcym35lbXfBVTyEg1O/bhxnJHV0zTbTNd5H+dItFJR+oxSdvjdoY+buHrjLRuBfPzR5tW4Zh6KUVtcx0pEc86Xi0bEUFacbjuv0/zZzUzgzjHzTTqLwWZfjQQvfJesuxXX1p+J+g3NNxxQr8+BYc1+XpzVG1pcbme2cx2kiqHlZsIxC1qNgeYtKk1rI7UddHBhaBjZcexYibYoweXALaP0cT63Izi17bgQWt+1QRpjAkbcjRK/4gied8E99WY9H4Xyl
- i+RFM1Dm
- p1MVkUrfvfwMfiNzhObIaoOTwMk4o+cgU3Zv/s8ZWDeZ0Ebfus07a95abQ5ph4TEp1+M2ZIUGE/iZEGGY9XMdAoe/cO0T2QEGRjpiZAi2YBT+o23PETdLnxwj5XPy+jrSg2jNmqjEIo9tEWQosC9WRI4zBmkYVnOHtcRwenWT7VaAl5f/6WYUtvav2KijisC5bkzE/cozASKxojDs/omeIWgXAooVEOenJYiAEL78uABNezGyhH+D+dE9UQg2FiJ7MShCjS04LUzAWTqx1dEbiz7HqD78FjPgRhzc0un2cnOQTX7N6Kp5jBYD+idU4Pm1whrw7tsF/FDJfU1WwXuU9iWxshlfPLn6RsqlQJQQ3QgOQdlNvSMiY8bX/+IMgKbzYRoxs5DkEKwqtq8uFE3Y1MPTiBdP7CsmiaeTxLLF81EkKQmNWJ8HTe+tXedSTObdi3J4nvKuw8AlwNPNuia65Spwcg==
+X-HE-Tag: 1776012502-594817
+X-HE-Meta: U2FsdGVkX1+50xEaCmci9EuFgfuHcsx1XAX1mTylhMlgBSSeN91ArNWn2KL+qVcdWEUhx7v365pjDcQsaGy1spo1zQnmGUVaDdpwdMZBPFSWaZaYwLJe6wf7zEuotUM8JfM8+51JfUZjbj2ZEnXHRpBUNVkytp9M9SpdvWukAITDFZq+OsDA5HKPGba+9nyGARTnvRl5ieY46nRdABbYg3QI7Z1r7554SBAd9wsaUzVqZpl5dslsFZ4cGJS8LNQEP/1Uz5Ha7mRbg4IrRgNCrgeby+knFrh91DZQQYwSavskglj1TJjCFKG608Ffw96uKvIs8tuvpKqYSr7gQ9/EVX91MDvkuXLCaRctg78YCaljey10h8mZpVIwBMNuFEoHdauBLgzd9h/IBO+hVmIFn+YSdxCKq/LvxTD9ulXh+ItwHFnca4haVsiVbb+9Jncm9ZgmotoO0OavdIF9JYvN7Gi0vJh1+TWRZRVFc25pv1YRhsmyovZ4OPYWv17wnmjACCpIgPtdiT3QMlSOfg1sHrqO/CDryvu2coMcw58AesWd/jbwevsplA7g5iMV97BnfO3pyesbjf+AqnD1BeTi7ZTtXC/RrtmVxtGz+HxxAYxGOe4gGBAH067rA/JEC2fkGgZ3Pv1k3wxIaugJeL9XixlaZJNCaO6WkqDFnWpXgHNl7Iv6EvizL8v/E40dJHSvN//ONCdHt+aojSOphNPyNEGCF0hJjLT4MxNLZQ6SuqIW+Z/Uu5ZBBq1oQWVSnxcHzd7j1CNr7qQ4Mm2PIvXN3uqz2JLOcZsaX2WnrboO84eg+K6ABciZmomSn38hpBHaUBvsz2kmtGz1JUznANrMHN1gw3WLLEkQR2TgOeQAe3mN7ExAeIqj2DYypma9ByEWWDzCAteclks1YZ9YPTrc2wVveHmxAmE8t1ywYNhIqaNaBJSn4I6QjrRixRC7zX+/lRZMa4SzosDwJKrKUmI
+ iPNM0ZNL
+ EwWcafKOJfLeA8ZccIf730yAOdIc2AYS2MXLq8EcgeC3PXubELPM774UgLqzEwmxxPboD7eR1ZUfAWu88kAEAxx1+nGhIcMEYdTQx6leclW1Z05geFU3u9HCF+KXCEere8pLI1BUgWfXnXNgNFQfL9MuwpBUKriRGEwY3WJbq6bmvJWLmkdkb+7dqdVIMN6G3Brydboen5SfkYafnr3SouQFMO/8Lyt5oi49rACUCNDrrYwOzNK93ixKBFPpKxNAdGJSNBcF1AGQVhAo4HkweaxT6ylTnrDkj5Gm8ivbBNk4NM3LH9sKlFtdAMYscoghaTf9LVPGzUhYBytwLb6CfeUxF/P3PMeX8TOD0coupYzdxFN4LWPV794TBZz5me6PpNWu6VRD9VOg7AWQcQWaRmO1PQmPqdPP8jRsu07rXZrVJahIKzXxTIJdzRFOksZ5IxfrW8206HlAxFlYqVSY0Ry5NOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,182 +121,88 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-The current loop will calculate the scan number on each iteration. The
-number of folios to scan is based on the LRU length, with some unclear
-behaviors, eg, the scan number is only shifted by reclaim priority when
-aging is not needed or when at the default priority, and it couples
-the number calculation with aging and rotation.
+Currently MGLRU will move the dirty writeback folios to the second
+oldest gen instead of reactivate them like the classical LRU. This
+might help to reduce the LRU contention as it skipped the isolation.
+But as a result we will see these folios at the LRU tail more frequently
+leading to inefficient reclaim.
 
-Adjust, simplify it, and decouple aging and rotation. Just calculate the
-scan number for once at the beginning of the reclaim, always respect the
-reclaim priority, and make the aging and rotation more explicit.
+Besides, the dirty / writeback check after isolation in
+shrink_folio_list is more accurate and covers more cases. So instead,
+just drop the special handling for dirty writeback, use the common
+routine and re-activate it like the classical LRU.
 
-This slightly changes how aging and offline memcg reclaim works:
-Previously, aging was always skipped at DEF_PRIORITY even when
-eviction was impossible. Now, aging is always triggered when it
-is necessary to make progress. The old behavior may waste a reclaim
-iteration only to escalate priority, potentially causing over-reclaim
-of slab and breaking reclaim balance in multi-cgroup setups.
+This should in theory improve the scan efficiency. These folios will be
+rotated back to LRU tail once writeback is done so there is no risk of
+hotness inversion. And now each reclaim loop will have a higher
+success rate. This also prepares for unifying the writeback and
+throttling mechanism with classical LRU, we keep these folios far from
+tail so detecting the tail batch will have a similar pattern with
+classical LRU.
 
-Similar for offline memcg. Previously, offline memcg wouldn't be
-aged unless it didn't have any evictable folios. Now, we might age
-it if it has only 3 generations and the reclaim priority is less
-than DEF_PRIORITY, which should be fine. On one hand, offline memcg
-might still hold long-term folios, and in fact, a long-existing offline
-memcg must be pinned by some long-term folios like shmem. These folios
-might be used by other memcg, so aging them as ordinary memcg seems
-correct. Besides, aging enables further reclaim of an offlined memcg,
-which will certainly happen if we keep shrinking it. And offline
-memcg might soon be no longer an issue with reparenting.
+The micro optimization that avoids LRU contention by skipping the
+isolation is gone, which should be fine. Compared to IO and writeback
+cost, the isolation overhead is trivial.
 
-And while at it, make it clear that unevictable memcg will get rotated
-so following reclaim will more likely to skip them, as a optimization.
-And apply a minimal batch factor when reclaim is running with higher
-priority.
+And using the common routine also keeps the folio's referenced bits
+(tier bits), which could improve metrics in the long term. Also no
+more need to clean reclaim bit as the common routine will make use
+of it.
 
-Overall, the memcg LRU rotation, as described in mmzone.h,
-remains the same.
+Note the common routine updates a few throttling and writeback counters,
+which are not used, and never have been for the MGLRU case. We will
+start making use of these in later commits.
 
 Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/vmscan.c | 72 +++++++++++++++++++++++++++++++++----------------------------
- 1 file changed, 39 insertions(+), 33 deletions(-)
+ mm/vmscan.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 963362523782..d4aaaa62056d 100644
+index 965d8905a4fe..d63ac03a7266 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4913,49 +4913,41 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- }
- 
- static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
--			     int swappiness, unsigned long *nr_to_scan)
-+			     struct scan_control *sc, int swappiness)
+@@ -4578,7 +4578,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
+ 		       int tier_idx)
  {
- 	DEFINE_MIN_SEQ(lruvec);
- 
--	*nr_to_scan = 0;
- 	/* have to run aging, since eviction is not possible anymore */
- 	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
+ 	bool success;
+-	bool dirty, writeback;
+ 	int gen = folio_lru_gen(folio);
+ 	int type = folio_is_file_lru(folio);
+ 	int zone = folio_zonenum(folio);
+@@ -4628,21 +4627,6 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_c
  		return true;
- 
--	*nr_to_scan = lruvec_evictable_size(lruvec, swappiness);
-+	/* try to get away with not aging at the default priority */
-+	if (sc->priority == DEF_PRIORITY)
-+		return false;
-+
- 	/* better to run aging even though eviction is still possible */
- 	return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS == max_seq;
- }
- 
--/*
-- * For future optimizations:
-- * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memcg
-- *    reclaim.
-- */
--static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, int swappiness)
-+static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
-+			   struct mem_cgroup *memcg, int swappiness)
- {
--	bool need_aging;
--	unsigned long nr_to_scan;
--	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
--	DEFINE_MAX_SEQ(lruvec);
-+	unsigned long nr_to_scan, evictable;
- 
--	if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg))
--		return -1;
--
--	need_aging = should_run_aging(lruvec, max_seq, swappiness, &nr_to_scan);
-+	evictable = lruvec_evictable_size(lruvec, swappiness);
-+	nr_to_scan = evictable;
- 
- 	/* try to scrape all its memory if this memcg was deleted */
--	if (nr_to_scan && !mem_cgroup_online(memcg))
-+	if (!mem_cgroup_online(memcg))
- 		return nr_to_scan;
- 
- 	nr_to_scan = apply_proportional_protection(memcg, sc, nr_to_scan);
-+	nr_to_scan >>= sc->priority;
- 
--	/* try to get away with not aging at the default priority */
--	if (!need_aging || sc->priority == DEF_PRIORITY)
--		return nr_to_scan >> sc->priority;
-+	if (!nr_to_scan && sc->priority < DEF_PRIORITY)
-+		nr_to_scan = min(evictable, SWAP_CLUSTER_MAX);
- 
--	/* stop scanning this lruvec as it's low on cold folios */
--	return try_to_inc_max_seq(lruvec, max_seq, swappiness, false) ? -1 : 0;
-+	return nr_to_scan;
- }
- 
- static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
-@@ -4985,31 +4977,46 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
- 	return true;
- }
- 
-+/*
-+ * For future optimizations:
-+ * 1. Defer try_to_inc_max_seq() to workqueues to reduce latency for memcg
-+ *    reclaim.
-+ */
- static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- {
-+	bool need_rotate = false;
- 	long nr_batch, nr_to_scan;
--	unsigned long scanned = 0;
- 	int swappiness = get_swappiness(lruvec, sc);
-+	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-+
-+	nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, swappiness);
-+	if (!nr_to_scan)
-+		need_rotate = true;
- 
--	while (true) {
-+	while (nr_to_scan > 0) {
- 		int delta;
-+		DEFINE_MAX_SEQ(lruvec);
- 
--		nr_to_scan = get_nr_to_scan(lruvec, sc, swappiness);
--		if (nr_to_scan <= 0)
-+		if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg)) {
-+			need_rotate = true;
- 			break;
-+		}
-+
-+		if (should_run_aging(lruvec, max_seq, sc, swappiness)) {
-+			if (try_to_inc_max_seq(lruvec, max_seq, swappiness, false))
-+				need_rotate = true;
-+			break;
-+		}
- 
- 		nr_batch = min(nr_to_scan, MAX_LRU_BATCH);
- 		delta = evict_folios(nr_batch, lruvec, sc, swappiness);
- 		if (!delta)
- 			break;
- 
--		scanned += delta;
--		if (scanned >= nr_to_scan)
--			break;
--
- 		if (should_abort_scan(lruvec, sc))
- 			break;
- 
-+		nr_to_scan -= delta;
- 		cond_resched();
  	}
  
-@@ -5035,8 +5042,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 			reclaim_throttle(pgdat, VMSCAN_THROTTLE_WRITEBACK);
- 	}
- 
--	/* whether this lruvec should be rotated */
--	return nr_to_scan < 0;
-+	return need_rotate;
+-	dirty = folio_test_dirty(folio);
+-	writeback = folio_test_writeback(folio);
+-	if (type == LRU_GEN_FILE && dirty) {
+-		sc->nr.file_taken += delta;
+-		if (!writeback)
+-			sc->nr.unqueued_dirty += delta;
+-	}
+-
+-	/* waiting for writeback */
+-	if (writeback || (type == LRU_GEN_FILE && dirty)) {
+-		gen = folio_inc_gen(lruvec, folio, true);
+-		list_move(&folio->lru, &lrugen->folios[gen][type][zone]);
+-		return true;
+-	}
+-
+ 	return false;
  }
  
- static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+@@ -4664,9 +4648,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+ 	if (!folio_test_referenced(folio))
+ 		set_mask_bits(&folio->flags.f, LRU_REFS_MASK, 0);
+ 
+-	/* for shrink_folio_list() */
+-	folio_clear_reclaim(folio);
+-
+ 	success = lru_gen_del_folio(lruvec, folio, true);
+ 	VM_WARN_ON_ONCE_FOLIO(!success, folio);
+ 
 
 -- 
 2.53.0
