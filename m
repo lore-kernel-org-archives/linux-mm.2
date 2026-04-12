@@ -4,100 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62614E937EE
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 17:43:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81308E937F6
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 17:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 898E26B0093; Sun, 12 Apr 2026 13:43:05 -0400 (EDT)
+	id D2D9C6B0095; Sun, 12 Apr 2026 13:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84A5E6B0095; Sun, 12 Apr 2026 13:43:05 -0400 (EDT)
+	id D04D46B009B; Sun, 12 Apr 2026 13:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 738876B0098; Sun, 12 Apr 2026 13:43:05 -0400 (EDT)
+	id C1AD06B009D; Sun, 12 Apr 2026 13:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6183A6B0093
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 13:43:05 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 100C0160A06
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AB0886B0095
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 13:43:07 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A0A2E3A0B
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 17:43:07 +0000 (UTC)
+X-FDA: 84650624814.20.0438C82
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4DED440008
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 17:43:05 +0000 (UTC)
-X-FDA: 84650624730.07.3986D30
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DDD6E160003
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 17:43:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MfAxFacC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qFcephQM;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MfAxFacC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qFcephQM;
-	spf=pass (imf08.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wuvo7ilM;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OHh8wmKt;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wuvo7ilM;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OHh8wmKt;
+	spf=pass (imf01.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776015783;
+	s=arc-20220608; t=1776015785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=j1Pyf/mINB3oNud+B/5lyHbf7GLWtERFciMG2d7vOUk=;
-	b=a/WxPFOGhbk6gT6yq/1nKD4W8xz8etjLKXNqAIeB3elQECLUIf5PsgyOuatxnA9F+kk6hn
-	S0i0McHwZ00TgBJKrUOPw7ZVHETDphfcc+tG09ZtG1+ONbYFn4hDNHCeDGcXpLmhaa774S
-	SQ5mFWynMmyNfXK9SW8HrGX4n9W/6JQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lBbANHRonp7Gey8phh5lpLom/zoIGcl2OxsXcSKEgng=;
+	b=mRmvb3wIPXo4lrenIqFQeEgKtGv68iU/2J7EzjTrnBwp90JUWt9Y7+yJl5YogrqdemNLbn
+	6l1H8qL9AA95ko0zlKcT3IzJusTQiBjoeqMFjmVEX4zp/TMZWHuE66CV7XfDJWqxU605IQ
+	aOA639NEbjSSzJu5JhTKLuP6fTfC26U=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MfAxFacC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qFcephQM;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MfAxFacC;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qFcephQM;
-	spf=pass (imf08.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wuvo7ilM;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OHh8wmKt;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wuvo7ilM;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OHh8wmKt;
+	spf=pass (imf01.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776015783; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776015785; a=rsa-sha256;
 	cv=none;
-	b=zqEMw7Vx6y7ZV40c7v/mwjFDi0vKGj/otZWyynFhDRq7t9oXhjvtni8smOf+zHp6IfoY2K
-	f/OWBcaSs+JHVx+iAbKhI2V+4hIHNJ2V8WdG0Tu7XIrP/bd2gNPyKBF5kfJwTQ1kRdhMz6
-	XOYqQivl+TKlX2kxdA0D0cP5VNheEio=
+	b=lyb9Ib+VnEVdF4HSj6rXsBP4SF+dgHzKY1RlDobx6SSOS92Qi7vc0OSfsc9OyTyqB+CNYc
+	XGZiMrmOrUx+z1R95g58Qdxzebci4mKoap44w1IaR81/0lxje4WWkahIh/jwvAm69Ww2cU
+	wRmsLigyXTR5gz20rm5zvUy/Id7+qro=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0BB195BD7A;
-	Sun, 12 Apr 2026 17:43:01 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D65036A851;
+	Sun, 12 Apr 2026 17:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776015781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=j1Pyf/mINB3oNud+B/5lyHbf7GLWtERFciMG2d7vOUk=;
-	b=MfAxFacC9cM450UKgCkudBXTRMBvDvYDVk1IZyDaofT5MvpMhAqL+boP/Xs+x89ZehIzNF
-	eNQgLc8puFB3q6TFGH7vwZ9TDMUOr6tH1h1GdtuaDCk6yTu3ZCBWan+myFlqAbr6er+yNT
-	3KqsJkbZ/Sp7/CeH+w98gyHww8i6xhY=
+	t=1776015783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lBbANHRonp7Gey8phh5lpLom/zoIGcl2OxsXcSKEgng=;
+	b=wuvo7ilM/mAIP444FSEDE9Lq9V6cvn43YPU1/eEsHkYF9e4hVwqqA5mPwBlH3DMywAouOS
+	4w1yyt4biDf3atzwZTJUn0ljlYjnG5DUkHXulfLD7M/MK33VCQgvDVPoTtzGvX8obPCI1+
+	+SOYnroavRBCHA8f/xIhiWBZk0NGDmA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776015781;
+	s=susede2_ed25519; t=1776015783;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=j1Pyf/mINB3oNud+B/5lyHbf7GLWtERFciMG2d7vOUk=;
-	b=qFcephQMH1WvLC2JQ72QVfjIg+r9R7GWNkpxESAQDyU+9E+HlPhNRGGTjZNap3k1Qj20Qg
-	+6EA0clXcg/eblDQ==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lBbANHRonp7Gey8phh5lpLom/zoIGcl2OxsXcSKEgng=;
+	b=OHh8wmKtuaEOmva08p2CCnWEuCU/BiE0rP5xmFoYMdPknJc+DbwBpRM179KMCxpakRFVv9
+	LLjkd0HhBuM5/ABA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776015781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=j1Pyf/mINB3oNud+B/5lyHbf7GLWtERFciMG2d7vOUk=;
-	b=MfAxFacC9cM450UKgCkudBXTRMBvDvYDVk1IZyDaofT5MvpMhAqL+boP/Xs+x89ZehIzNF
-	eNQgLc8puFB3q6TFGH7vwZ9TDMUOr6tH1h1GdtuaDCk6yTu3ZCBWan+myFlqAbr6er+yNT
-	3KqsJkbZ/Sp7/CeH+w98gyHww8i6xhY=
+	t=1776015783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lBbANHRonp7Gey8phh5lpLom/zoIGcl2OxsXcSKEgng=;
+	b=wuvo7ilM/mAIP444FSEDE9Lq9V6cvn43YPU1/eEsHkYF9e4hVwqqA5mPwBlH3DMywAouOS
+	4w1yyt4biDf3atzwZTJUn0ljlYjnG5DUkHXulfLD7M/MK33VCQgvDVPoTtzGvX8obPCI1+
+	+SOYnroavRBCHA8f/xIhiWBZk0NGDmA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776015781;
+	s=susede2_ed25519; t=1776015783;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=j1Pyf/mINB3oNud+B/5lyHbf7GLWtERFciMG2d7vOUk=;
-	b=qFcephQMH1WvLC2JQ72QVfjIg+r9R7GWNkpxESAQDyU+9E+HlPhNRGGTjZNap3k1Qj20Qg
-	+6EA0clXcg/eblDQ==
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lBbANHRonp7Gey8phh5lpLom/zoIGcl2OxsXcSKEgng=;
+	b=OHh8wmKtuaEOmva08p2CCnWEuCU/BiE0rP5xmFoYMdPknJc+DbwBpRM179KMCxpakRFVv9
+	LLjkd0HhBuM5/ABA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7DF474AA48;
-	Sun, 12 Apr 2026 17:43:00 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5E2964AA4A;
+	Sun, 12 Apr 2026 17:43:03 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YzavG6TZ22miRQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Sun, 12 Apr 2026 17:43:00 +0000
+	id cDt8FKfZ22miRQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Sun, 12 Apr 2026 17:43:03 +0000
 From: Oscar Salvador <osalvador@suse.de>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -108,21 +116,23 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [RFC PATCH 0/7] Implement a new generic pagewalk API
-Date: Sun, 12 Apr 2026 19:42:37 +0200
-Message-ID: <20260412174244.133715-1-osalvador@suse.de>
+Subject: [RFC PATCH 5/7] mm: Make /proc/pid/smaps use the new generic pagewalk API
+Date: Sun, 12 Apr 2026 19:42:42 +0200
+Message-ID: <20260412174244.133715-6-osalvador@suse.de>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260412174244.133715-1-osalvador@suse.de>
+References: <20260412174244.133715-1-osalvador@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DDD6E160003
-X-Stat-Signature: ef4c373tbt4nico7u6e9typxp4rjahya
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776015782-876357
-X-HE-Meta: U2FsdGVkX1+eJMu6l3adSMGJnM3+7CrQyuGkAiv83Cs7hCHTod/knjzotgpZ+6xm3S82/6LiCOPvGxNfOYRKyjgS+R9NWYoiVwh7zTt4VhQ8qCbKXqhq3ylFJ+egh8/OE6Gt3/ZmSOiuRp1O42lMokaQ69oYt/1Gjm7dkxfVUiUQmb0hPxM6a9JN6lRbsodGeeom4UHN7OH6lg9MLLb4faXz6vrCxD5dsZfFq8AZJElPWGXMGG7B69VD1BJyngvN0/uYM0Km9pKSoiPC1EyFP+L5ClAhaxK9OrwJ2t2Ir3kZR1ywGf11r9Xab6j1TeBml+OUY0HZ6qdCho03Hjk9u0FXoOoeif5WP2Aq2WRtFHglhAh3KXcwlUdC2TkqOv/JxYX/S55jTVfOR5V9xVFZLht0+0RLKVIURcbdlqtLGFj3olMCumwzIVwry7pfJtseKLfnm6bdotZa5K5Npsm51MggQ5v4gLIo7Arrof8uIUTADAtHv0ZZkpDg91vBru5U2KInZiQKDhQG4i/kfTbAZop1LbKUoqZWRGG+sWTKFnWNbENUccVPogeWSUFiJlqzveLJ+XlHg4V1Ol7Fduxmm62kPWo6aZXFntwdbDnvPsbX12mZIGJ5JUSSY9XAJFCl7cZcWkD2hCqObCyV8G/YPJ5jId6V2pakNCmr6t6+4ttFeJTCaZ885yYaBnF6SS9rgN0/uCd5MLvPBv5MNrtczXhzG4CS+DhLfOak27xmuV3dT1J9frvezo52TTO3JA7lMmzYkIKmEo2CWNHfZ55HLwCFNF7LqsAKEbg/0F4fH8x6zIInHW8vx6utqugfFLFKe4YfbLOdx5DFvf7HybNzvkDqMn+IC7V2Vy08r9OrWw8dJflemDN1HMD1Hb2wzaNnniaGWDjelfLZKPtNcJyxC+AYsZKhyTU9BejRfxgjM2n9VBdGRSgS7plMsekcDgrbqBU+fonFeKRHx3G8y5p
- fQRaCe7m
- jDZTvSAsXXesRi0vqGRVGxD1iwKM5jXHqKZUsMEIJK0PJdHl6v83RFK2Y0OghIjBLXj38Xq9J9Hu/bCkMV79JAYNh6fFxatxZLCCgTujxmtdyg33bhEN5pr2mXB5mitLW9dzk3/WFrqaZJr9mnBR2rNcWq/vbhRHlHv5qMmzyFvtAeFaaCJPp381Wy0sDVSYmppH7w1vYTk/NnDqZ3g6NK+C4Z+9aGouXQ5tsRRkyi9gNXUGdoyBttlUFw+Fty9s+CS8X
+X-Stat-Signature: y1cue6iwff8afmb9pnnjq3x1kgqm55ok
+X-Rspamd-Queue-Id: 4DED440008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776015785-545100
+X-HE-Meta: U2FsdGVkX18lZ5/dww8Q6Tmi0caTVK22Bh/4piLahVUQmrcksM/8M4/VUZcVJI/RIgZxZjquLZJwpfzuI8P3521rlcxF2qCSpd0riQ5TpUUZmXNPW/pb7Qn95Q1VOmZVogUIl3uhmFO1Rlk9APYujsAcCpqSa/06G/UujT9zslAAy7YH4jbU+pP5M0nNeWgzzStep9mN4q87uS9hSHjv4duL+XuOZnTEHEz9YqlZwWyFMlxRzDJyU9d3zqc2GCGv7fdG0LHEAijFck3p0hXCuqWWOKL9FgKEy+hs/9clEJXsCskEi+EdgDpimG70speMRN9Rp+txriX8rEtfqMFruChCpgVoDgD8SH4VI2IL8Q2GZfXgN2uKOypNH/jQkmnw65fa1xVJ5xaDiyFuGDGcPLDhga67N/WqIGEAQ7RvFiq5Y3wVKgvUoyCIp9yuux8QJ2CIFv+efqVMNYR5ikK3HdYLRHRDcrQKzTmm2p9/+Bt7CMmU9n1EhiJXEVFTXugRDMmYDansr+lVtq62Q0MM22ebLjwoTYU87M3g5sYD6l0heuAb2XibLFAhKhMWTtz4TKXZWwQ05rnbgiAfsRNepTfvcoK/MUtDE3MFP0NlOqJYUeBo4AVvqBVI/ReHOapLKooEpeUa5Xii5IIiuFzuC4sH20DFztKt/d4p/QtbQh54WCCUfNUmRmVZtc8usfuX0yWq1MIlge60Vf428tVWefAUg7VUvOIzGiYsOzkAeYMahIwfKja4aSH0wjUNXJX1TUQoFfHgzHe6Kvr3QCPC2cFe3Y7IQEOjbXD4KhCFCgUzpHWXXg9J9A2d1Ld026hmcbw3Zp1OkybewcT1nl/kfXZe/J34wvNIWayq8iWiMhsS7QSZDKxuayPpReC843sE8gRa7y+7rWByRFqhwB8g7KFjziZZPNmyDeadglxso0kFpcAVXmmUbFg65+JCyveeXQH8LH2MjtKAxaCe4m+
+ x4A30wTI
+ a8Tb0JrSN2rZ/OthxmfpJqqi8A31MfOW6xDW66PME3nmO0Ovv6b3Np1AsSSq7hyOE3uAQPH0snL+zJC5pO76J8duyhvRots8hIUtUwKhgl/bQbMTcUqXeriozxNdw17HtizQpi/9kWSZzXIlecHn1qbHYmEKB5ehYTnlGp6QA8XdTKpJLclYMK2qn2wfXKrCwwnAM/8RPTXwE7dcZPblU9I67eKg473+o3T9xP3QNvVVk4Vd4KoHwUrYGZXhXyma167XQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,103 +140,368 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[WARNING]
+Have /proc/pid/smaps make use of the new generic API, and remove
+the code which was using the old one.
 
-This is not yet fully complete, but before investing more time into it I would like
-to know whether 1) this is heading into the right direction and 2) this is something
-we are still interested in.
+Signed-off-by: Oscar Salvador <osalvador@suse.de>
+---
+ fs/proc/task_mmu.c | 309 ++++++++++++---------------------------------
+ 1 file changed, 84 insertions(+), 225 deletions(-)
 
-Kudos go to David, who was the person suggesting the interface and
-he gave me some ideas where to begin, besides providing feedback
-on early stages (in case there is something stupid don't blame him, blame me)
-
-Also, I would like to thank Vlastimil, who helped me running this
-patchset quite a few times through Claude, to catch some fixes.
-
-But nevertheless, it still has bugs, and lacks some functionality, but I
-think it is good enough as RFC to see what people think of it.
-
-[/WARNING]
-
-In the LSFMM/BFP 2025, there was a general agreement that we 1) would like to have
-a generic pagewalk API 2) that replaces the existing one with callbacks if possible
-and 3) that HugeTLB can use without the need to special case it (e.g: not having to
-depend on .hugetlb_entry callbacks)., which means having a lot of duplicated
-code and also having a lot of special casing just because hugetlb lore.
-
-pt_range_walk API tries to do that and replaces the old behaviour of "in
-HugeTLB world everything reads as a PTE" and starts reading HugeTLB entries
-the way they really are, that means interpreting them as PMD/PUD entries and
-contiguous-PMD/PTE entries.
-
-In order to achieve that, we need some infrastructure we did not really need until
-know, in order to be able to read HugeTLB pages as PUD/PMD entries.
-E.g: softleaf_from_pud had to be added and some other pud_* functions.
-
-In a few words, this API goes through an address range and returns
-whatever it is in there (swap/hwpoison/migration/marker entries, folios,
-pfn and device entries, or nothing).
-
-These are the internal return types the API uses:
-
- PT_TYPE_NONE
- PT_TYPE_FOLIO
- PT_TYPE_MARKER
- PT_TYPE_PFN
- PT_TYPE_SWAP
- PT_TYPE_MIGRATION
- PT_TYPE_DEVICE
- PT_TYPE_HWPOISON
-
-
-The API also handles locking and batching itself, so the caller
-does not really need to bother with that.
-
-In order to handle contiguous-PMD mapped hugetlb pages, folio_pmd_batch,
-which is an analogous of folio_pte_batch, has been implemented.
-
-More information about the API can be found in patch #4.
-
-This was tested on x86_64 and arm64, but as I said, it is still
-incomplete, it has bugs and it still lacks some things (e.g: pte_hole functionality,
-test_walk functionality),
-therefore the RFC, to gather some initial feedback before investing more
-time into this.
-
-For now, only the /proc/pid/(smaps|numa_maps|pagemap) have been replaced
-to use this new API.
-
-Thanks in advance
-
-Oscar Salvador (7):
-  mm: Add softleaf_from_pud
-  mm: Add {pmd,pud}_huge_lock helper
-  mm: Implement folio_pmd_batch
-  mm: Implement pt_range_walk
-  mm: Make /proc/pid/smaps use the new generic pagewalk API
-  mm: Make /proc/pid/numa_maps use the new generic pagewalk API
-  mm: Make /proc/pid/pagemap use the new generic pagewalk API
-
- arch/arm64/include/asm/pgtable.h             |   32 +
- arch/loongarch/include/asm/pgtable.h         |    1 +
- arch/powerpc/include/asm/book3s/64/pgtable.h |    7 +
- arch/s390/include/asm/pgtable.h              |   38 +
- arch/x86/include/asm/pgtable.h               |   52 +
- arch/x86/include/asm/pgtable_64.h            |    2 +
- arch/x86/mm/pgtable.c                        |   18 +-
- fs/proc/task_mmu.c                           | 1369 +++++++-----------
- include/asm-generic/pgtable_uffd.h           |   15 +
- include/linux/leafops.h                      |   46 +
- include/linux/mm.h                           |    2 +
- include/linux/mm_inline.h                    |   32 +
- include/linux/pagewalk.h                     |  104 ++
- include/linux/pgtable.h                      |   97 ++
- mm/internal.h                                |   75 +-
- mm/memory.c                                  |   22 +
- mm/pagewalk.c                                |  400 +++++
- mm/pgtable-generic.c                         |   10 +
- 18 files changed, 1483 insertions(+), 839 deletions(-)
-
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index e091931d7ca1..afbcdb11ad80 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -915,7 +915,7 @@ static void smaps_page_accumulate(struct mem_size_stats *mss,
+ 
+ static void smaps_account(struct mem_size_stats *mss, struct page *page,
+ 		bool compound, bool young, bool dirty, bool locked,
+-		bool present)
++		bool present, int ssize)
+ {
+ 	struct folio *folio = page_folio(page);
+ 	int i, nr = compound ? compound_nr(page) : 1;
+@@ -923,6 +923,11 @@ static void smaps_account(struct mem_size_stats *mss, struct page *page,
+ 	bool exclusive;
+ 	int mapcount;
+ 
++	if (ssize) {
++		nr = ssize / PAGE_SIZE;
++		size = ssize;
++	}
++
+ 	/*
+ 	 * First accumulate quantities that depend only on |size| and the type
+ 	 * of the compound page.
+@@ -988,150 +993,6 @@ static void smaps_account(struct mem_size_stats *mss, struct page *page,
+ 	}
+ }
+ 
+-#ifdef CONFIG_SHMEM
+-static int smaps_pte_hole(unsigned long addr, unsigned long end,
+-			  __always_unused int depth, struct mm_walk *walk)
+-{
+-	struct mem_size_stats *mss = walk->private;
+-	struct vm_area_struct *vma = walk->vma;
+-
+-	mss->swap += shmem_partial_swap_usage(walk->vma->vm_file->f_mapping,
+-					      linear_page_index(vma, addr),
+-					      linear_page_index(vma, end));
+-
+-	return 0;
+-}
+-#else
+-#define smaps_pte_hole		NULL
+-#endif /* CONFIG_SHMEM */
+-
+-static void smaps_pte_hole_lookup(unsigned long addr, struct mm_walk *walk)
+-{
+-#ifdef CONFIG_SHMEM
+-	if (walk->ops->pte_hole) {
+-		/* depth is not used */
+-		smaps_pte_hole(addr, addr + PAGE_SIZE, 0, walk);
+-	}
+-#endif
+-}
+-
+-static void smaps_pte_entry(pte_t *pte, unsigned long addr,
+-		struct mm_walk *walk)
+-{
+-	struct mem_size_stats *mss = walk->private;
+-	struct vm_area_struct *vma = walk->vma;
+-	bool locked = !!(vma->vm_flags & VM_LOCKED);
+-	struct page *page = NULL;
+-	bool present = false, young = false, dirty = false;
+-	pte_t ptent = ptep_get(pte);
+-
+-	if (pte_present(ptent)) {
+-		page = vm_normal_page(vma, addr, ptent);
+-		young = pte_young(ptent);
+-		dirty = pte_dirty(ptent);
+-		present = true;
+-	} else if (pte_none(ptent)) {
+-		smaps_pte_hole_lookup(addr, walk);
+-	} else {
+-		const softleaf_t entry = softleaf_from_pte(ptent);
+-
+-		if (softleaf_is_swap(entry)) {
+-			int mapcount;
+-
+-			mss->swap += PAGE_SIZE;
+-			mapcount = swp_swapcount(entry);
+-			if (mapcount >= 2) {
+-				u64 pss_delta = (u64)PAGE_SIZE << PSS_SHIFT;
+-
+-				do_div(pss_delta, mapcount);
+-				mss->swap_pss += pss_delta;
+-			} else {
+-				mss->swap_pss += (u64)PAGE_SIZE << PSS_SHIFT;
+-			}
+-		} else if (softleaf_has_pfn(entry)) {
+-			if (softleaf_is_device_private(entry))
+-				present = true;
+-			page = softleaf_to_page(entry);
+-		}
+-	}
+-
+-	if (!page)
+-		return;
+-
+-	smaps_account(mss, page, false, young, dirty, locked, present);
+-}
+-
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+-		struct mm_walk *walk)
+-{
+-	struct mem_size_stats *mss = walk->private;
+-	struct vm_area_struct *vma = walk->vma;
+-	bool locked = !!(vma->vm_flags & VM_LOCKED);
+-	struct page *page = NULL;
+-	bool present = false;
+-	struct folio *folio;
+-
+-	if (pmd_none(*pmd))
+-		return;
+-	if (pmd_present(*pmd)) {
+-		page = vm_normal_page_pmd(vma, addr, *pmd);
+-		present = true;
+-	} else if (unlikely(thp_migration_supported())) {
+-		const softleaf_t entry = softleaf_from_pmd(*pmd);
+-
+-		if (softleaf_has_pfn(entry))
+-			page = softleaf_to_page(entry);
+-	}
+-	if (IS_ERR_OR_NULL(page))
+-		return;
+-	folio = page_folio(page);
+-	if (folio_test_anon(folio))
+-		mss->anonymous_thp += HPAGE_PMD_SIZE;
+-	else if (folio_test_swapbacked(folio))
+-		mss->shmem_thp += HPAGE_PMD_SIZE;
+-	else if (folio_is_zone_device(folio))
+-		/* pass */;
+-	else
+-		mss->file_thp += HPAGE_PMD_SIZE;
+-
+-	smaps_account(mss, page, true, pmd_young(*pmd), pmd_dirty(*pmd),
+-		      locked, present);
+-}
+-#else
+-static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+-		struct mm_walk *walk)
+-{
+-}
+-#endif
+-
+-static int smaps_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+-			   struct mm_walk *walk)
+-{
+-	struct vm_area_struct *vma = walk->vma;
+-	pte_t *pte;
+-	spinlock_t *ptl;
+-
+-	ptl = pmd_trans_huge_lock(pmd, vma);
+-	if (ptl) {
+-		smaps_pmd_entry(pmd, addr, walk);
+-		spin_unlock(ptl);
+-		goto out;
+-	}
+-
+-	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
+-	if (!pte) {
+-		walk->action = ACTION_AGAIN;
+-		return 0;
+-	}
+-	for (; addr != end; pte++, addr += PAGE_SIZE)
+-		smaps_pte_entry(pte, addr, walk);
+-	pte_unmap_unlock(pte - 1, ptl);
+-out:
+-	cond_resched();
+-	return 0;
+-}
+-
+ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+ {
+ 	/*
+@@ -1228,58 +1089,6 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+ 	seq_putc(m, '\n');
+ }
+ 
+-#ifdef CONFIG_HUGETLB_PAGE
+-static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
+-				 unsigned long addr, unsigned long end,
+-				 struct mm_walk *walk)
+-{
+-	struct mem_size_stats *mss = walk->private;
+-	struct vm_area_struct *vma = walk->vma;
+-	struct folio *folio = NULL;
+-	bool present = false;
+-	spinlock_t *ptl;
+-	pte_t ptent;
+-
+-	ptl = huge_pte_lock(hstate_vma(vma), walk->mm, pte);
+-	ptent = huge_ptep_get(walk->mm, addr, pte);
+-	if (pte_present(ptent)) {
+-		folio = page_folio(pte_page(ptent));
+-		present = true;
+-	} else {
+-		const softleaf_t entry = softleaf_from_pte(ptent);
+-
+-		if (softleaf_has_pfn(entry))
+-			folio = softleaf_to_folio(entry);
+-	}
+-
+-	if (folio) {
+-		/* We treat non-present entries as "maybe shared". */
+-		if (!present || folio_maybe_mapped_shared(folio) ||
+-		    hugetlb_pmd_shared(pte))
+-			mss->shared_hugetlb += huge_page_size(hstate_vma(vma));
+-		else
+-			mss->private_hugetlb += huge_page_size(hstate_vma(vma));
+-	}
+-	spin_unlock(ptl);
+-	return 0;
+-}
+-#else
+-#define smaps_hugetlb_range	NULL
+-#endif /* HUGETLB_PAGE */
+-
+-static const struct mm_walk_ops smaps_walk_ops = {
+-	.pmd_entry		= smaps_pte_range,
+-	.hugetlb_entry		= smaps_hugetlb_range,
+-	.walk_lock		= PGWALK_RDLOCK,
+-};
+-
+-static const struct mm_walk_ops smaps_shmem_walk_ops = {
+-	.pmd_entry		= smaps_pte_range,
+-	.hugetlb_entry		= smaps_hugetlb_range,
+-	.pte_hole		= smaps_pte_hole,
+-	.walk_lock		= PGWALK_RDLOCK,
+-};
+-
+ /*
+  * Gather mem stats from @vma with the indicated beginning
+  * address @start, and keep them in @mss.
+@@ -1287,40 +1096,90 @@ static const struct mm_walk_ops smaps_shmem_walk_ops = {
+  * Use vm_start of @vma as the beginning address if @start is 0.
+  */
+ static void smap_gather_stats(struct vm_area_struct *vma,
+-		struct mem_size_stats *mss, unsigned long start)
++				  struct mem_size_stats *mss,
++				  unsigned long start)
+ {
+-	const struct mm_walk_ops *ops = &smaps_walk_ops;
+-
+-	/* Invalid start */
+-	if (start >= vma->vm_end)
+-		return;
++	struct pt_range_walk ptw = {
++		.mm = vma->vm_mm
++	};
++	enum pt_range_walk_type type;
++	pt_type_flags_t flags = PT_TYPE_ALL;
+ 
+-	if (vma->vm_file && shmem_mapping(vma->vm_file->f_mapping)) {
+-		/*
+-		 * For shared or readonly shmem mappings we know that all
+-		 * swapped out pages belong to the shmem object, and we can
+-		 * obtain the swap value much more efficiently. For private
+-		 * writable mappings, we might have COW pages that are
+-		 * not affected by the parent swapped out pages of the shmem
+-		 * object, so we have to distinguish them during the page walk.
+-		 * Unless we know that the shmem object (or the part mapped by
+-		 * our VMA) has no swapped out pages at all.
+-		 */
+-		unsigned long shmem_swapped = shmem_swap_usage(vma);
++	if (!start)
++		start = vma->vm_start;
++
++	flags &= ~(PT_TYPE_NONE|PT_TYPE_PFN);
++
++	type = pt_range_walk_start(&ptw, vma, start, vma->vm_end, flags);
++	while (type != PTW_DONE) {
++		bool locked = !!(vma->vm_flags & VM_LOCKED);
++		bool compound = false, account = false;
++		unsigned long swap_size;
++		int mapcount;
++
++		switch (type) {
++		case PTW_FOLIO:
++		case PTW_MIGRATION:
++		case PTW_HWPOISON:
++		case PTW_DEVICE:
++			/*
++			 * We either have a folio because vm_normal_folio was
++			 * successful, or because we had a special swap entry
++			 * and could retrieve it with softleaf_to_page.
++			 */
++			if (is_vm_hugetlb_page(vma)) {
++				/* HugeTLB */
++				unsigned long size = huge_page_size(hstate_vma(ptw.vma));
++
++				if (!ptw.present || folio_maybe_mapped_shared(ptw.folio) ||
++				    ptw.pmd_shared)
++					mss->shared_hugetlb += size;
++				else
++					mss->private_hugetlb += size;
++			} else {
++				account = true;
++				if (ptw.level == PTW_PMD_LEVEL) {
++					/* THP */
++					compound = true;
++					if (folio_test_anon(ptw.folio))
++						mss->anonymous_thp += ptw.size;
++					else if (folio_test_swapbacked(ptw.folio))
++						mss->shmem_thp += ptw.size;
++					else if (folio_is_zone_device(ptw.folio))
++						/* pass */;
++					else
++						mss->file_thp += ptw.size;
++				} else if (ptw.level == PTW_PTE_LEVEL && ptw.nr_entries > 1) {
++					compound = true;
++				}
++			}
++			break;
++		case PTW_SWAP:
++			account = true;
++			swap_size = PAGE_SIZE * ptw.nr_entries;
++			mss->swap += swap_size;
++			mapcount = swp_swapcount(ptw.softleaf_entry);
++			if (mapcount >= 2) {
++				u64 pss_delta = (u64)swap_size << PSS_SHIFT;
+ 
+-		if (!start && (!shmem_swapped || (vma->vm_flags & VM_SHARED) ||
+-					!(vma->vm_flags & VM_WRITE))) {
+-			mss->swap += shmem_swapped;
+-		} else {
+-			ops = &smaps_shmem_walk_ops;
++				do_div(pss_delta, mapcount);
++				mss->swap_pss += pss_delta;
++			} else {
++				mss->swap_pss += (u64)swap_size << PSS_SHIFT;
++			}
++			break;
++		default:
++			/* Ooops */
++			break;
+ 		}
++
++		if (account && ptw.folio)
++			smaps_account(mss, ptw.page, compound, ptw.young,
++				      ptw.dirty, locked, ptw.present, ptw.size);
++		type = pt_range_walk_next(&ptw, vma, start, vma->vm_end, flags);
+ 	}
+ 
+-	/* mmap_lock is held in m_start */
+-	if (!start)
+-		walk_page_vma(vma, ops, mss);
+-	else
+-		walk_page_range(vma->vm_mm, start, vma->vm_end, ops, mss);
++	pt_range_walk_done(&ptw);
+ }
+ 
+ #define SEQ_PUT_DEC(str, val) \
 -- 
 2.35.3
 
