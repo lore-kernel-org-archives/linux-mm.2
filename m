@@ -4,93 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F22B5E937EA
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A473FE937EE
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:48:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E2E46B008A; Sun, 12 Apr 2026 12:26:18 -0400 (EDT)
+	id 69BFE6B0089; Sun, 12 Apr 2026 12:48:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BA976B009B; Sun, 12 Apr 2026 12:26:18 -0400 (EDT)
+	id 673386B008A; Sun, 12 Apr 2026 12:48:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F72A6B009F; Sun, 12 Apr 2026 12:26:18 -0400 (EDT)
+	id 5616F6B0093; Sun, 12 Apr 2026 12:48:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D77C6B008A
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:26:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BA04D14098C
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:26:17 +0000 (UTC)
-X-FDA: 84650431194.19.65F6321
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4271F6B008A
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:48:23 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D33B81B91E8
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:48:22 +0000 (UTC)
+X-FDA: 84650486844.27.3755246
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 24CF880008
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:26:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lc8tEg37;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id EE62440002
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:48:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ouOCkUpg;
+	spf=pass (imf27.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776011176;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gw6yFFg2aFSe6cpj4BZjaZBAe/4elCWA4qFxhDO+SUs=;
-	b=XyB+I48f2XNmSj99UQISE3S+hroBnu7KSW2Qm72rmpvx+JSUyU42FiuURpB2QG4gHh2tWX
-	lobfL8rOs8KC0WicaYy4lWAfdrKDf9bOjLAWBnV3Z84d1OStn2NbxgKdV6mND7e5jZmNMB
-	5bkOACv0eTf62lZefeVlG2qNjOnskzQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776011176; a=rsa-sha256;
-	cv=none;
-	b=FUFeR5A3GzCxdbplT8Jr4mPee71J8zsIvkKrzEYSHgPbCfjnhVf0GmTQEomJD8s9mI6wO6
-	EEf/NyrSzTacuinyOXROlY76ySwKy6qiechbA5FIIaZlKjkWmkqkgEZM5tIyhiFPZJqJkF
-	ok8UoKp0y/W21UBTMVsCvwjoi/xCMMU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lc8tEg37;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ouOCkUpg;
+	spf=pass (imf27.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776012500; a=rsa-sha256;
+	cv=none;
+	b=2JaS/kqyF64avZ5DpaGlDmQEU1kcMlbvgUB0wM+MU3UpE1Rts8WtqSbPk6/OJXCnYfklwG
+	vJOM3eG/9wxQ8m8Dw9x4Gg7vK0xHfxxViVl02/cb1ByuC/LirABqvm+QOCZ1/AiYELp6+K
+	a9gfA58fQwUly3bUUNlvbuoAWOhrupU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776012500;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=80l7G9HqcO9QO1QwVtrY38+Qx4dX+Um/VFNib5/fNWQ=;
+	b=gFUFwhaGkeiS+vef1XCJxQmyUxAiRQmNEvHhlW5nCA9Hc7H3hn3LPpPZ/K8Rw/Glqm6djf
+	LLJWzoOddkyDU7RiSrUCy4zsRYcE9SHoq1CtOphg87QE4KwIiEqNYc04y0flY08r+gCPjS
+	gVgRg5zfphm4okuxL0uIlXC4RQda0YE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8118360142;
-	Sun, 12 Apr 2026 16:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AF8C19424;
-	Sun, 12 Apr 2026 16:26:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2BB186111B;
+	Sun, 12 Apr 2026 16:48:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B629CC19425;
+	Sun, 12 Apr 2026 16:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776011175;
-	bh=rSNfWtN34FXwz/x7Q0w3Dbdq63xMPEFfeV8QcmfmuMI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lc8tEg373b347asxMiEAb+5P7Gl/BzIbH8S0kE8/0HfFAZcBxRp1EVPBsUbG0ot6N
-	 EfyL0CXmAxf/LYrkdtO0ZvuP5tiE1R3gm7Mf+BO1eP8QDfqsoou9OjetNkbn7ykfrO
-	 e5NmkH0n7mXVhpwXXpsAf14fnnuFxAb2mvmszyG+eNZmVSUpXZTT5PUPzDVk0Yn91M
-	 eKZqfOgUrittoVlisSOrib7AXw48gNYw0v2EZSWNbrLaN6ieCV+mbD2mF/72uNhciI
-	 PXU4C5RWkYmkjj2Yhub5VwofX7uma+Qkz0WHwQxSlx246LbZcbvlj8EfJavL36BeGT
-	 NFPO/sHhq+bIw==
-Date: Sun, 12 Apr 2026 19:26:07 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/sparse: Remove sparse buffer pre-allocation
- mechanism
-Message-ID: <advHn0m0iaQ7d32t@kernel.org>
-References: <20260410092419.2446420-1-songmuchun@bytedance.com>
+	s=k20201202; t=1776012499;
+	bh=pu/4aSrd7KSa0bxFp6wbeBj72fjrUtTNvGBmWMpcIZ0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ouOCkUpgJEZ8yDu5iiO4dONOFGA2rLUNyCloKovqHeNmXeKZ+dsagd8g4gDYc9rtU
+	 WUOPJWUQU1R/ITq20WeYQkIUYZf8wIkdey6qMhlsQFUSRm+YmbReqYdhkZm5d9d9eQ
+	 Dq2XQhhn4W2wlrl/j0iZDHduewjBC7ZuH0xXa4IhD7FTgZ8qPif3wsLafAyUnFlH2x
+	 L6VjIZUbpgk8pJ6ssLBpxDDnxSXUzldaVG0Xz0AKg9PHQVfFYx9CCXXUBpK+lAhhdd
+	 SuIfbgagAgeUM/JVjS14y46+I2SS1kOg2jF7D/dHxx1uFKbH3FTGgBO9xH7viJYV4Y
+	 X4Mru0iTBgnug==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3806E937EF;
+	Sun, 12 Apr 2026 16:48:19 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Date: Mon, 13 Apr 2026 00:48:15 +0800
+Subject: [PATCH v5 01/14] mm/mglru: consolidate common code for retrieving
+ evictable size
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260410092419.2446420-1-songmuchun@bytedance.com>
-X-Rspamd-Queue-Id: 24CF880008
-X-Stat-Signature: 9n3nakiecd6xjb953cy3pu6xak4gwhte
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260413-mglru-reclaim-v5-1-8eaeacbddc44@tencent.com>
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
+In-Reply-To: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <zhengqi.arch@bytedance.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, 
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
+ Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776012497; l=3179;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=lovGNHm1LZYPq5LXk6kp/WVa26J2TdTx/242vg8RH/A=;
+ b=mm1ALcPtxy72WxszOQTYS6hmftpu2D3p4pu7xLjkN7rS/KWxHwNJRH6AABRR63NWn1FpC9rmK
+ NNXnEKZrk8/DyyBWhy8g+W8dHUQqU+VTYWXsLGdCmkvDAL4NTqVIQJz
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EE62440002
+X-Stat-Signature: 86pg4845ow1dniygshyt3wy5w1h1y8yp
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776011175-217086
-X-HE-Meta: U2FsdGVkX19eca+H82vp7HgBj6ZZROOE6d4M9g6DuMg7Hy6vo99mHfNSo65hD8sL0TAjW6Z9ZM6yWfCx9GaehfLNKklB1/sS7XwWC6tJfcpuqzk/K25xf/UAsVTWzczydHe71cpcjaaiHki3LRtUAgKPntdSh2q+0GWLT4AxOJ9VgJ0vXVOlrhVvFHhCPjnJDaHLEJ4HisGkK69C9BqvJui+GxnCV+w7NOjs4724/B9DyfytQHS8+1IOxuKYmSk+5VetcB0AYG/iiLnXHH7g9tBX1z5YZbJNSdyrkvdG8QD2DrkQ3qOFAMsMijGwbixTbDZgpkW9P1ZK+icC5BxEuM/UEuoFiCloA5zNNivLlR5e0hPnOTxoZHecbTOMczf8Nfn7z3UUXneV6gCZU6HawjbFUFhfMuqeQxbnlxWQIgfvy0vClqbp+EvkC/UZvvImlZarUq/2HzgqymUfNbOrw7MbFLHSNMIOzeKgqtqDxXskmh55vQW+wqHBbjwOUlU/9ALv1y2b4eNWOTW/MNW6jO0z4FXDADQdPVpALa8ldDC/yxj+f7q28g+9Gyc7Hq/u30h2V3bLIWe71cIt/wEsAt7Z8TEsj1zW/Qzf5x/+IWe1gdn8c2/RkD6cUyde/R9mBQ2wn0KUhiWqZIk4TSKZEn5RjG/fsX5uf3sl4971i8TVREH0hoHxW/aH7OKT1DDFKMKqsMElTsnUUybFBXAtry6/O/TdKrmlLzncx6wOcsYxjTK4TGycDlJfMAj220iJTtvV3R4GLmaKg9OevpCezZVy6mxpFaIztMb17bPPhxjkFQrzDb1gpyq4xI8lDfyH3aSTB3/TgbMIYrlJHVt8f+ML/MKQNaJ6pxtcrqIaAGnWJ5UJJfrBp8uMUjQhHvvDK3ALlsHik5Ly9ATk6rZLDzGysjxnhgrRiBQGvJbfdGUa7UTJ3cggoQr3z6qVfoXB4oVB6iz/4gHruIV830w
- 1LCfsqgu
- TtzLBcNctTePY50LEboWvGODOuh+Xp0j7x2qbG7Ka3LhhsN34+Whvh5SIxgt17j0qN6+UhsBEKFmudWx2kxJZ6gk12UJBao1kVPEtQAo0Qvt9BLGwFC6johnth7p4TfIMitDueyBvjE2PfGCYarR4vUH60Oh1P8+7rW2rgBhxtTG33koJiqEhi39CvBRGd+7VgyuZY2Em1VUE5OugpYGnW7DTDRm4+VbAgMVwQPlb0Q8fU9GCYOUNXNiUjuXrmG89834QSrC8d2cJhaIchSoonhh+ZDwFB2VF06ov5ahL/2EFh+o=
+X-HE-Tag: 1776012500-282491
+X-HE-Meta: U2FsdGVkX18We+XWs49QA9dzRMu536EfLJBis3VUjfZ6UwK96crYQdSvggqqYWPgqQCES8IvmlTMTNA5WV9kz1b0mHLDhx3M/CBCU7hNdq8XYoQx9XOxs7a501QNFYK9E1VvAOKLlhZ0QZgeQuEXdW/ZQHH5Je1RyT3GnWtL3vEWcLcqoqI6aOZjwNfawdidNwBFUJDOcmG9Fpv1tv0+9sL2IB/AW2EHXc0YA5axTPAkYriWRIYJRp2JCQvWSuhTH1iN22nfg2VSRwC3frrnliMpR8rfjZwuH8kDb7O8Tzn4KJqSytImzd1wllc1kiZiasIC8MHmf3t9UQpK/t1SH5Xg128pKjB8XMPAcI4G/EaWx24MSvLrHQc9WgMoan8kVMAWec9E5AT8veoqseAAMczh+1QgnKE/F2T5atCvReXIfZ29cl6/gr1aJKUgwL7F0b7rhI9SR7nFQeFQTRFW6iSNj0k4PIvEnmPmRXdnMhzfMJ7vLxaoZnW9XzrJATunI85GZFMsFLUvo/yYL7VZtibDxTHkNWz+buUv5WNua8lO2WR7ZxxGgcRthtaZlOEz2PgL03m8/gHqz4gfwrQY0H/8qNIckgxZPFhgmKsq983+to3hblOS/TTw0TAMC6u+OcomN4XHJ2hM6qpdWQBrPcbjbQOMBfQtRDyK72IjFRkGFgyOjDCSGBoKJrOosiPf6hy+ErFunaz3mCL0kSglqibBQFb8hNOIjkz/Yh2u8qVVyDmxoYFfIid7fvwA0JNiV0FrRwI84i4SqYWrzEpBKTTP7JVByCRP8yiQ093oThoIxFG/M47k1LOjA1fTh/tunfJ1FSoatMECbbsxs3CPATUfiKXUMx8jnHvoOB1RzClljxbKyflfW2pdrRDG0aog9gU2DHeJW+WCzFozLJ55ob+Ptk+YpvAvHT2AhIAvJ39DbdUqnvmgmceNaXQmbyvzIKS+L05m65u156yQQvZ
+ z43Yl2Uv
+ 19O5uDkOIk52tauonKpbn2ehJ+4i20nG+mW7ol9Zir/xCScLnEyOzIP1AtF9TqST/VVKnNJukC40tkywySqWbMi2bMephEvc/yEYXTW57Kils24zfSgZcUu8t3GPhmN5Iz+lPDN4qASRZXQ44OuJGem0YVPQifys/P8t0i32SHOebs0bYgi/KmBKXLHE7mRQSsb79UBnUDPHedQDA99yOslpPoAavx2z1rOPlHF0tyqUlBN7rLYVy4xlvBvqGrlyjnX39mESQ0ctGzaJKoDKdRpIqhbVoHiGSFTQXuvn8F4FihFE90n/6SYa18T8Z1SskRR9+VQOVQs6ywfADL9DA5HSWbOZy3o1IktIdi7NO9b41FklmKN3H62B+aEWlOlzwYkf16Vlz8bABKDsMpL6yA+DTSuulJlIfbNTRgiGix67bL/lGoZYm6SLFwHs0DFXBOVmo/9tIm4g/dT/Cbball9Uh8G3qe9DwmYYd3W7WYRJU6MpST+/fu5gQ3IL3E4Av6TSOoEgxSvyt5Qp2ewszYV5bog==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,56 +119,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 05:24:19PM +0800, Muchun Song wrote:
-> Commit 9bdac9142407 ("sparsemem: Put mem map for one node together.")
-> introduced a mechanism to pre-allocate a large memory block to hold all
-> memmaps for a NUMA node upfront.
-> 
-> However, the original commit message did not clearly state the actual
-> benefits or the necessity of explicitly pre-allocating a single chunk
-> for all memmap areas of a given node.
-> 
-> One of the concerns about removing this pre-allocation is that the
-> subsequent per-section memmap allocations could become scattered around,
-> and might turn too many memory blocks/sections into an "un-offlinable"
-> state. However, tests show that even without the explicit node-wide
-> pre-allocation, memblock still allocates memory closely and
-> back-to-back. When tracing vmemmap_set_pmd allocations, the physical
-> chunks allocated by memblock are strictly adjacent to each other in a
-> single contiguous physical range (mapped top-down). Because they are
-> packed tightly together naturally, they will at most consume or pollute
-> the exact same number of memory blocks as the explicit pre-allocation
-> did.
-> 
-> Another concern is the boot performance impact of calling memmap_alloc()
-> multiple times compared to one large node-wide allocation. Tests on a
-> 256GB VM showed that memmap allocation time increased from 199,555 ns
-> to 741,292 ns. Even though it is 3.7x slower, on a 1TB machine, the
-> entire memory allocation time would only take a few milliseconds. This
-> boot performance difference is completely negligible.
-> 
-> Since no negative impact on memory offlining behavior or noticeable
-> boot performance regression was found, this patch proposes removing
-> the explicit node-wide memmap pre-allocation mechanism to reduce the
-> maintenance burden.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+From: Kairui Song <kasong@tencent.com>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Merge commonly used code for counting evictable folios in a lruvec.
 
-> ---
-> Changes in v2:
->  - Addressed David Hildenbrand's and Mike Rapoport's concerns from the
->    v1 discussion by incorporating the detailed memblock contiguous
->    allocation analysis and the boot performance measurements directly
->    into the commit message.
-> ---
->  include/linux/mm.h  |  1 -
->  mm/sparse-vmemmap.c |  7 +-----
->  mm/sparse.c         | 58 +--------------------------------------------
->  3 files changed, 2 insertions(+), 64 deletions(-)
+No behavior change.
+
+Return unsigned long instead of long as suggested [ Axel Rasmussen ]
+
+Acked-by: Yuanchu Xie <yuanchu@google.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/vmscan.c | 36 ++++++++++++++----------------------
+ 1 file changed, 14 insertions(+), 22 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 5a8c8fcccbfc..adc07501a137 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4084,27 +4084,33 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
+ 	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
+ }
+ 
+-static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
++static unsigned long lruvec_evictable_size(struct lruvec *lruvec, int swappiness)
+ {
+ 	int gen, type, zone;
+-	unsigned long total = 0;
+-	int swappiness = get_swappiness(lruvec, sc);
++	unsigned long seq, total = 0;
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+-	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	DEFINE_MAX_SEQ(lruvec);
+ 	DEFINE_MIN_SEQ(lruvec);
+ 
+ 	for_each_evictable_type(type, swappiness) {
+-		unsigned long seq;
+-
+ 		for (seq = min_seq[type]; seq <= max_seq; seq++) {
+ 			gen = lru_gen_from_seq(seq);
+-
+ 			for (zone = 0; zone < MAX_NR_ZONES; zone++)
+ 				total += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
+ 		}
+ 	}
+ 
++	return total;
++}
++
++static bool lruvec_is_sizable(struct lruvec *lruvec, struct scan_control *sc)
++{
++	unsigned long total;
++	int swappiness = get_swappiness(lruvec, sc);
++	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
++
++	total = lruvec_evictable_size(lruvec, swappiness);
++
+ 	/* whether the size is big enough to be helpful */
+ 	return mem_cgroup_online(memcg) ? (total >> sc->priority) : total;
+ }
+@@ -4909,9 +4915,6 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+ 			     int swappiness, unsigned long *nr_to_scan)
+ {
+-	int gen, type, zone;
+-	unsigned long size = 0;
+-	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 	DEFINE_MIN_SEQ(lruvec);
+ 
+ 	*nr_to_scan = 0;
+@@ -4919,18 +4922,7 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
+ 	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
+ 		return true;
+ 
+-	for_each_evictable_type(type, swappiness) {
+-		unsigned long seq;
+-
+-		for (seq = min_seq[type]; seq <= max_seq; seq++) {
+-			gen = lru_gen_from_seq(seq);
+-
+-			for (zone = 0; zone < MAX_NR_ZONES; zone++)
+-				size += max(READ_ONCE(lrugen->nr_pages[gen][type][zone]), 0L);
+-		}
+-	}
+-
+-	*nr_to_scan = size;
++	*nr_to_scan = lruvec_evictable_size(lruvec, swappiness);
+ 	/* better to run aging even though eviction is still possible */
+ 	return evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS == max_seq;
+ }
 
 -- 
-Sincerely yours,
-Mike.
+2.53.0
+
+
 
