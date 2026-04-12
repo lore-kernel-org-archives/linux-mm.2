@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A3BE937E9
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:20:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A3CE937E9
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:20:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCB126B0089; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
+	id 0A64F6B0092; Sun, 12 Apr 2026 12:20:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B05736B0095; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
+	id 02EC56B0095; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97EDA6B0092; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
+	id DC53E6B0098; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FF5D6B0093
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B0C416B0092
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4AAE4E3EF7
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B2FDC36D2
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:05 +0000 (UTC)
-X-FDA: 84650415570.08.77AD6CA
+X-FDA: 84650415570.21.78726B0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 87145C0012
+	by imf27.hostedemail.com (Postfix) with ESMTP id AB48C40002
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gTuuOB1g;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FO14dbmL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776010803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7tmfrJm9vHLLOGfa+kYQxdCNz1vjPk0aHwwsE4fAZxw=;
-	b=oTU2Asf6veNcNezSQAqIcDH3FNsgO3Vg89RDb5ZCtJjemEI2CygltgTIVlADJFkmHxe33s
-	GABPp/dmVgnLhpYzqsLWY4MH8bWwa8nFikqBTEQYZumwHAaIzCRCZqezJaTBTTXwSjJ2aF
-	Kam5G+qy9IKL7vgI+uRYxCTGIdRC6zk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gTuuOB1g;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=2P8fv+TiIHsRwxYhhIPAni9KIHLJCogSsbG2zUdfP/Y=;
+	b=fDWDn5CZ1XprERvBlnxXNXuHm0UrYOktNqiETc3NSTl5hmP+rzn4wOVXuMTEFwNlEpXVvT
+	CBjDXDaI2l38y1THJMB2VJA0Q5tTovGPMqjH9S+l2ZvGFuTSpNRWi3+bFqEBF65xCpjTbl
+	QFQKvaYehBpqHSCgeNXU6knTkN5ewFU=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776010803; a=rsa-sha256;
 	cv=none;
-	b=Qv7+WOvCOWFgholxrGjcjf0ANscdp9DzoWLQXVAe1HiU28AisnfjZ5K47oMjl163YwZUQQ
-	p8K8fb47Ca2G+4pw/GFdpgHQGNXDCOx6H27sHpoeFTasgLyKk59QE7zkHfJlYeLI4Hgq9C
-	voB1m7wlhEoXtMZ7zOskpbiLHTSU+Pc=
+	b=mUFdfaXGa1qtI7ZpepFyVvfcshCAN/okLz8S9CckWqWNP/dTZLegZQsk+zaWuoBgfKzXWq
+	3lrt0sj0MTe37BPDZAM9OtZp6zXaNEBd61vHMul1sCqlqEik9EFFJNT+Ur7XIxm702CCRe
+	oQgS9rHulAo7+kWjS5jtYegCnpXqaGA=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FO14dbmL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E14044570;
+	by sea.source.kernel.org (Postfix) with ESMTP id D7C4E445A0;
 	Sun, 12 Apr 2026 16:20:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D60BC19425;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915C9C2BCB1;
 	Sun, 12 Apr 2026 16:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776010802;
-	bh=LcC/dBv1K2/wmpl6p05Sv2infjL4OMvObv2PYe9dyWs=;
+	bh=lVvvJyXXUULYKYNrOl6GeL91WhrIsl7oASNCEnlmdDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gTuuOB1g1wJBd2pe5soYlA4/PXz6I6DWXTU7ZPyQcPBxu83TuYXXVHu4AY5NNqHKI
-	 vxH+ynQUr8JqSylEF6Joij/tsv5Pts/HV+gX4BwQ57CIszLJ9hhzabqLigh3NXoqVP
-	 uDUYsHOo0TkskgWui3/3jN+4h/lWnlmW1JjoGC7BF7Xn4f0HIAt+0gZwVNOfn4yp/y
-	 n0r7U3Ee+zCB1BOUWy1NEGYEFeiaL1gTWcb2r9Nz5r6qVqtnUDOgNXTeLJPcIUhhOh
-	 0x2nJ0YSqI6DuQH7eFbhmZJ5KoVNXeQso6h1ESo6sMVTdchiZKZDvcpIIlu3tPawTY
-	 0Ei2oMreIB/yw==
+	b=FO14dbmLsSeIyks0o1fyBOx0o6ED0i+x/tg7Dv/bLqHGRpVQXmHnigqT572YdYGqR
+	 u/jsRXM3ZcRziNURVJb4yzmEcXAELby6RsT8/y0f/8lBYJLmGrObZVp5fLxrOduOKk
+	 c1dWf317Foejk2icmKjgb0BBB6iNZWPuJV9SagzZhDhZ3NjQ94tdZcLp9/vLq6M/A5
+	 EdzWESLSBa3e5kZgcHLsFdcjmUFM++iPhHBGiW+kmEUh3M/Wuc/0dRB//qU5cssSuP
+	 4L6ZsbOcXBjwN44Oi4tmkXs+EINs2mn3K91o7CnTX1dAyOwHG4gRIYuYW1SuLeMvGM
+	 FW24Mmg6QOt1w==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v5.2 02/11] mm/damon/core: merge regions after applying DAMOS schemes
-Date: Sun, 12 Apr 2026 09:19:45 -0700
-Message-ID: <20260412161957.82835-3-sj@kernel.org>
+Subject: [RFC PATCH v5.2 03/11] mm/damon/core: introduce failed region quota charge ratio
+Date: Sun, 12 Apr 2026 09:19:46 -0700
+Message-ID: <20260412161957.82835-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260412161957.82835-1-sj@kernel.org>
 References: <20260412161957.82835-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AB48C40002
+X-Stat-Signature: hco7o89s17y9ay7tb9fzcr47sgcm6qup
 X-Rspam-User: 
-X-Stat-Signature: qq6e16unq6boe93q584oiq5b5tfzpaou
-X-Rspamd-Queue-Id: 87145C0012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776010803-654678
-X-HE-Meta: U2FsdGVkX1/R0h//SzjFMqL29oz2mH6dH3i7RhhZ8E5BfsSH0OByPPZIxBtdX6upl1k2BtXlYt9cBIhhyPaez7YfvHnsiFCMPUJvBtvOyi1Zmv8uV3276v4mLiXQ46tmIUaVoPoCt+x/WEVGi6ZVLX4Ts4NVztBpDbQ+XgB9inddiaqnWMCdSWEGvl0xAdCW7OOD/73HWcG9Aceb+IpC5sQTTHDJFa3uXfsCk9riXlwY9ESazKi9/axO7HIA/O3XxuwYUXRCquh2zTEFQscV26TPJLb8gLojQXjRDdBpHilEbv+UpBibUvSeJzbYwmsDMVwatrE5vfMp917qRN7gEE69TTz7QggTH2K0eipm1e8VcUJjBShz9VicJNhsmSL4a5pEVPjQ7GHKkSmXusPqIo1y5U5qKN016Xg27cauy3CqcU0KAzSz2DWtFQOKukBf7zkk2uerdtONKEaKmXddznhJkd1kh9ig2A6Fd1PUIFsUC6mgf57XG0Y9GLKXviPTDHCVoKilSmKW/LJCghiMT81/Rp513yzmCAHUI3DgSM1uv1UnMISDfZfQPQQY6ONnFAA9r6zEYFGykcFfJMJp0J9dk8e8UElti2gkM0nGWznfFfVzC9hGrNXY6lCVqrhyiksT77r87uUcAqlJ0Px8t0rA2/RKCqe2WvntjHAcy9JsRLHDmL0yvmUWnqF52cqSH+PSwS6pAQNCB6fmbLGRpe3iz0bgWF2SUh2mQl5xc2R3p58EkgPl2DGp4USKHCsiCw6O8U9eign3pD7r+S6nbaYfHgGpj4JE+76JtiPSz3LYZgmkCgMw8yUTcK7KJnlsAaLGEB3Hf+wbPsIPjq3tI0GOyD+31OXIEINixLyM7hxhj/EUauPyjpvqBHytmZQbq318+fLiyurp20V9Ck4EaIk7WgOG2abtdsJH8qdqY9Jid9q9EZMkEIHNejvjvDth9gQ5argz1kvwox2tD+f
- S+m5uj7q
- N0r2S0JKJojWiMTdIKyAZCsQKlSULRWZQoiWMgh6tUttzBD1qTMnMQXQdNhNVQ1ar6h7SeePemtSs5K6M1DIvI93PzMUMFD5PG+d6CgVi1rA0/jyrKr+NHgPEzNCPyCsGicV7v7X2As/sgmWkGaMhRERRwlTf+naQxBjconNWz1fx6+/OJkkQ8kewpGOIpt13QhWbkGNiYMADuQQw9BC4Q/qzmCH+/MNTylJZ5p+QUeBOThI=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776010803-667499
+X-HE-Meta: U2FsdGVkX197pvcwsUE/5/8ZpmbEQvD4L3YLIVtp7A3GkSMzV6DSb5rQJh+1AnEdXmzUIlDD2ydKG+0Ey/YROvgITm6jE8PMQr5ivP8NIqQhpGO5OSxP9dqcBTj0ms5J7Wh+bjk1ez+BxkyiwaHiwZrCfW5Qjx0MJy1nRlqcxA/okJuFg6baW1ZNoiaa92HwIo7DE6tWjdMLEaPdbmVUBtmEgzBI7ojBTY4Nh2s/Knt/FTD8MdFYFrDR3UrXh198b2Ade76QCJyYVwMpi/WHtZTkZ7qixDvahxWvZMR8bdRxVMBlDqydhFvISzXfCYjrtOxKRfB8BYwk/her6OnT3KLGqUNSIZEI/71LTt3Fy9+kJ74SOJoP57KR1eMN7zN5nBuTzYfXxFTlee/23LmOk8BKQNm/f6yR0HBiT5mZF0Dh8CfZca5CSS2nHWSnz/6knD/ghBZPjV5nRc30H/aIOTd1PrmZCNOXZxIdqtXbuwsKOZ7fb1fu/z41s5XweB7aZKOTR3GbfhPjn+bBLHZMpwRoLPHscQK1jql1BOGmWH97uLV84W0bncINIR7idmf4YRr6rx+P3yS6v4Xg2cAQdFMe3fMJLXz5cjGLyJF8JSkpS/8wlQ8CqX7MqWuMdag9SwytpO4ZfJGnWJJaLOKoKaKyAVkdEhNwBh5AdXbajRXWdt5lqOrr6fXkHuUa61grosgEuSrNWc9cyO4InE/HbH0QXUbv9almXjOXoANKMYBmIaNPmkrKbdRn9SPa8XoDxnFRJs/5dAc7ttHBkWD+h4CRG6oJSNf/5khI0Z5m+jVtX1yV7wuH4CfdacSPywCGOIZ/m7oP9rkqweDchizV7AeYmoeB0+mevY16PTnvWU43V1ktR4KTLLnUQl+WdxotkxpBYFfchqfY4egWGak7DKppsM/TPopi5GCl4AQBQWIB3EHl0eNlG2KiAPGL6xzc4swuVw1vfAjokk283RS
+ QT1s1j1D
+ ovJobNG32bmOuyRyKjemZo3csHaQKtuobCbFn0IXPxJRqmC0Md9HKWUOB7cc1kHqBnVp/t62rt2QSXVNK4YUhFphvKl3fNbHPUtV0NE2WKDePpgPhaD/WSQrpqUwbymA9jHqb3RY21mRQ7xbNI5XDJp1ODDqr07HeMqOtH2F2H5oZtfdlJsS2PsC9gxWR41qKBaxGFqNNUm/B7p5cphvFCu98HJkLn56BwFKg1aXXWm8KWSA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,121 +93,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damos_apply_scheme() could split the given region if applying the
-scheme's action to the entire region can result in violating the
-quota-set upper limit.  Keeping regions that are created by such split
-operations is unnecessary overhead.
+DAMOS quota is charged to all DAMOS action application attempted memory,
+regardless of how much of the memory the action was successful and
+failed.  This makes understanding quota behavior without DAMOS stat but
+only with end level metrics (e.g., increased amount of free memory for
+DAMOS_PAGEOUT action) difficult.  Also, charging action-failed memory
+same as action-successful memory is somewhat unfair, as successful
+action application will induce more overhead in most cases.
 
-The overhead would be negligible in the common case because such split
-operations could happen only up to the number of installed schemes per
-scheme apply interval.  The following commit could make the impact
-larger, though.  The following commit will allow the action-failed
-region to be charged in a different ratio.  If both the ratio and the
-remaining quota is quite small while the region to apply the scheme is
-quite large and the action is nearly always failing, a high number of
-split operations could happen.
-
-Remove the unnecessary overhead by merging regions after applying
-schemes is done for each region.  The merge operation is made only if it
-will not lose monitoring information and keep min_nr_regions constraint.
-In the worst case, the max_nr_regions could still be violated until the
-next per-aggregation interval merge operation is made.
+Introduce DAMON core API for setting the charge ratio for such
+action-failed memory.  It allows API callers to specify the ratio in a
+flexible way, by setting the numerator and the denominator.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 59 +++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 55 insertions(+), 4 deletions(-)
+ include/linux/damon.h |  9 +++++++++
+ mm/damon/core.c       | 21 ++++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 1 deletion(-)
 
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index d3054af1d964f..5fb1dc585658b 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -235,6 +235,8 @@ enum damos_quota_goal_tuner {
+  * @goals:		Head of quota tuning goals (&damos_quota_goal) list.
+  * @goal_tuner:		Goal-based @esz tuning algorithm to use.
+  * @esz:		Effective size quota in bytes.
++ * @fail_charge_num:	Failed regions charge rate numerator.
++ * @fail_charge_denom:	Failed regions charge rate denominator.
+  *
+  * @weight_sz:		Weight of the region's size for prioritization.
+  * @weight_nr_accesses:	Weight of the region's nr_accesses for prioritization.
+@@ -264,6 +266,10 @@ enum damos_quota_goal_tuner {
+  *
+  * The resulting effective size quota in bytes is set to @esz.
+  *
++ * For DAMOS action applying failed amount of regions, charging those same to
++ * those that the action has successfully applied may be unfair.  For the
++ * reason, 'the size * @fail_charge_num / @fail_charge_denom' is charged.
++ *
+  * For selecting regions within the quota, DAMON prioritizes current scheme's
+  * target memory regions using the &struct damon_operations->get_scheme_score.
+  * You could customize the prioritization logic by setting &weight_sz,
+@@ -278,6 +284,9 @@ struct damos_quota {
+ 	enum damos_quota_goal_tuner goal_tuner;
+ 	unsigned long esz;
+ 
++	unsigned int fail_charge_num;
++	unsigned int fail_charge_denom;
++
+ 	unsigned int weight_sz;
+ 	unsigned int weight_nr_accesses;
+ 	unsigned int weight_age;
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index e6add38e10910..0654caa904c8c 100644
+index 0654caa904c8c..48633da449104 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2164,6 +2164,58 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 	}
+@@ -918,6 +918,8 @@ static int damos_commit_quota(struct damos_quota *dst, struct damos_quota *src)
+ 	if (err)
+ 		return err;
+ 	dst->goal_tuner = src->goal_tuner;
++	dst->fail_charge_num = src->fail_charge_num;
++	dst->fail_charge_denom = src->fail_charge_denom;
+ 	dst->weight_sz = src->weight_sz;
+ 	dst->weight_nr_accesses = src->weight_nr_accesses;
+ 	dst->weight_age = src->weight_age;
+@@ -2047,6 +2049,23 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
+ 	mutex_unlock(&ctx->walk_control_lock);
  }
  
-+/*
-+ * damos_apply_target() - Apply DAMOS schemes to a given target.
-+ * @c:			monitoring context to apply its DAMOS schemes to..
-+ * @t:			monitoring target to apply the schemes to.
-+ * @max_region_sz:	maximum region size for @c.
-+ *
-+ * This function could split regions for keeping the quota.  To minimize
-+ * overhead from the split operations increased number of regions, this
-+ * function will also merge regions after the schemes applying attempt is done,
-+ * for each region.  The merge operation is made only when it doesn't lose the
-+ * monitoring information and not violating @max_region_sz.
-+ *
-+ * Hence, after this function is called, the total number of regions could
-+ * be increased or reduced.  The increase could make max_nr_regions temporarily
-+ * be violated, until the next per-aggregation interval regions merge operation
-+ * is executed.  The decrease will not violate min_nr_regions though, since it
-+ * keeps @max_region_sz.
-+ */
-+static void damos_apply_target(struct damon_ctx *c, struct damon_target *t,
-+		unsigned long max_region_sz)
++static void damos_charge_quota(struct damos_quota *quota,
++		unsigned long sz_region, unsigned long sz_applied)
 +{
-+	struct damon_region *r;
-+
-+	damon_for_each_region(r, t) {
-+		struct damon_region *prev_r;
-+
-+		damon_do_apply_schemes(c, t, r);
-+		/*
-+		 * damon_do_apply_scheems() could split the region for the
-+		 * quota.  Keeping the new slices is an overhead.  Merge back
-+		 * the slices into the previous region if it doesn't lose any
-+		 * information and not violating the max_region_sz.
-+		 */
-+		if (damon_first_region(t) == r)
-+			continue;
-+		prev_r = damon_prev_region(r);
-+		if (prev_r->ar.end != r->ar.start)
-+			continue;
-+		if (prev_r->age != r->age)
-+			continue;
-+		if (prev_r->last_nr_accesses != r->last_nr_accesses)
-+			continue;
-+		if (prev_r->nr_accesses != r->nr_accesses)
-+			continue;
-+		if (r->ar.end - prev_r->ar.start > max_region_sz)
-+			continue;
-+		prev_r->ar.end = r->ar.end;
-+		damon_destroy_region(r, t);
-+		r = prev_r;
-+	}
++	/*
++	 * sz_applied could be bigger than sz_region, depending on ops
++	 * implementation of the action, e.g., damos_pa_pageout().  Charge only
++	 * the region size in the case.
++	 */
++	if (!quota->fail_charge_denom || sz_applied > sz_region)
++		quota->charged_sz += sz_region;
++	else
++		quota->charged_sz += sz_applied + mult_frac(
++				(sz_region - sz_applied),
++				quota->fail_charge_num,
++				quota->fail_charge_denom);
 +}
 +
- /*
-  * damon_feed_loop_next_input() - get next input to achieve a target score.
-  * @last_input	The last input.
-@@ -2533,9 +2585,9 @@ static void damos_trace_stat(struct damon_ctx *c, struct damos *s)
- static void kdamond_apply_schemes(struct damon_ctx *c)
+ static bool damos_quota_is_full(struct damos_quota *quota,
+ 		unsigned long min_region_sz)
  {
- 	struct damon_target *t;
--	struct damon_region *r;
- 	struct damos *s;
- 	bool has_schemes_to_apply = false;
-+	unsigned long max_region_sz;
- 
- 	damon_for_each_scheme(s, c) {
- 		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
-@@ -2552,13 +2604,12 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
- 	if (!has_schemes_to_apply)
- 		return;
- 
-+	max_region_sz = damon_region_sz_limit(c);
- 	mutex_lock(&c->walk_control_lock);
- 	damon_for_each_target(t, c) {
- 		if (c->ops.target_valid && c->ops.target_valid(t) == false)
- 			continue;
--
--		damon_for_each_region(r, t)
--			damon_do_apply_schemes(c, t, r);
-+		damos_apply_target(c, t, max_region_sz);
- 	}
- 
- 	damon_for_each_scheme(s, c) {
+@@ -2117,7 +2136,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 		ktime_get_coarse_ts64(&end);
+ 		quota->total_charged_ns += timespec64_to_ns(&end) -
+ 			timespec64_to_ns(&begin);
+-		quota->charged_sz += sz;
++		damos_charge_quota(quota, sz, sz_applied);
+ 		if (damos_quota_is_full(quota, c->min_region_sz)) {
+ 			quota->charge_target_from = t;
+ 			quota->charge_addr_from = r->ar.end + 1;
 -- 
 2.47.3
 
