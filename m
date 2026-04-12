@@ -4,100 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C47CE937E9
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:20:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CEE6E937EA
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:20:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 316776B0099; Sun, 12 Apr 2026 12:20:08 -0400 (EDT)
+	id 50EF66B009B; Sun, 12 Apr 2026 12:20:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A1346B009E; Sun, 12 Apr 2026 12:20:08 -0400 (EDT)
+	id 427396B009F; Sun, 12 Apr 2026 12:20:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02F686B0099; Sun, 12 Apr 2026 12:20:07 -0400 (EDT)
+	id 141406B009B; Sun, 12 Apr 2026 12:20:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C591E6B0098
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E80686B009D
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:20:07 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 937731B923D
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B37CABD0DB
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:07 +0000 (UTC)
-X-FDA: 84650415654.10.2403F4A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BB39780008
+X-FDA: 84650415654.26.302E976
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 21DD2C000D
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZaD/suMf";
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u+QPsNov;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776010806; a=rsa-sha256;
-	cv=none;
-	b=MEaYDYz6IITdwYtthUcD8G0Kkv6+wi67xZDbOxYtnsGOEIE58RYxbqgqjT5IPaoLbQKjbm
-	xOHa3+CzZw4iXSx7NO4QjTqotgh9w7IG7qiprTCRlydSB/JgW4GW2fdhqwbD8sHn80LXou
-	cXdTLXblCWCAMM3iBA0qcEQKVF+uKjE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ZaD/suMf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776010806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=21sdvKbt5sXQeuruY4QQjY84kL9SegytBsvmB53RIu8=;
-	b=aQBYJruSbuRQomXyg/Ycx2v8PGM03V3KUOrTSwk3Zd7V+3adtCQJ4DE2kENFysx0oxO4fY
-	+nWdrIq0wNAbkBkzLR3An8BOTSXuF1XqwMYYpXykn+ZcYc9eabxqKaPifEGigIslxbnX3z
-	i3gNC2555FW3udNEcCgmx5pHg+dO5J8=
+	bh=4rdaam9BwVxK+HQPMM/xSyzd71ZxUQuLXDJfRzSuG9c=;
+	b=rI4bcSpG8eCJAdiKYXTVRb5eMbZdbG+GJAdfSWOkmJZkiYm1s+FzEZP4AFmjab7mu6Inuc
+	kpeCE+9pHhVfX/KqEDDOv+9fA7TDRU/1Buw6qBCGjzEtaGITaQnm2mBOct77I8xbjva/TK
+	X9iHag+YzefU/+FzD608xsXRyH0Adtk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776010806; a=rsa-sha256;
+	cv=none;
+	b=AnJZgMztn+xAF9r6eTTJsFeYwTvMeBux0ipehWzQHaSV8/KhL6WvtmnPdH/eYL9bD1QPQ9
+	unkwFVZLbWzggAc++FjgSsBGFB8YbCd+KFpzxsaBoyLuGe0Y8AbPpo+xUUIQl6/j8TjK3/
+	6y8K0JskcgNOjr9emb65Ymtwu9sDSGs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u+QPsNov;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9ACCE403EB;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8EA3E60180;
+	Sun, 12 Apr 2026 16:20:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E965BC19425;
 	Sun, 12 Apr 2026 16:20:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE19C2BCB1;
-	Sun, 12 Apr 2026 16:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776010804;
-	bh=fJkIAWWlo48QPdeJ9YXUoXHCIlYHiM9shoj6TYfrLSQ=;
+	s=k20201202; t=1776010805;
+	bh=oBXW5uIN8lzshHczxlHFHeX8VLmiX/5T2Hz8N+WZ/sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZaD/suMfgoxLCiyEiqO1QSCibvHvDaViwrivuYx68xc/u4fMM8AOReY6rs6EK6yuS
-	 EBZ9xtd1ddpYxDHJ8IcDuHGoRr8XptCuIugwnetWeryPu680IC/7xkhVR0x7nbPkdh
-	 FSuzjIdXWjQHOmbaZX1NmevXBQq8u5qqBGGI6fTBogrnxkToNLXs7+XEZzHkFZcdDc
-	 wyPq0fgstYPZRtQ1UR+2+eeocXrSGBnI/TASn7MzVhpYENg7xug7w0cG9YJG1bJMEn
-	 Quo+RRX/B4zNBbLMP8Exvg0F2+fUQjIqcIqPdBCkumMLH2bpa1cQQMjKp6Jex5ogNB
-	 hFAgDSHkVb0YA==
+	b=u+QPsNovzlK80YmtrwBP4U05y1zDbVdemsKIeAZvBdz36NnKp96zp7tz+KKjgCQdP
+	 0Dbr7t2hfCgueYz5486y6/b4cbMniEXNHve/xCkeU/TjsAU8ObFZHz8yY/aDiHWfmx
+	 4aXSC9Dt4aMja6nKF+NfoG7zs1UkgoNLYvYXy6izvGo++BniCHZ/sg/+JR9y6xukxB
+	 yous8y810ey7XqMqTY9i1sTbQ+aH/vka/AEL5yY9J66KB5EXDZNXx1LWe2/FmBcDaE
+	 /Bf4EAtmgPIWMrKsCXv/AUYSHHNX1oOxz3V3LU+wbc0SpfCdP3VWH8FJatMwZyeeIV
+	 VhtisjV33f96Q==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v5.2 06/11] Docs/admin-guide/mm/damon/usage: document fail_charge_{num,denom} files
-Date: Sun, 12 Apr 2026 09:19:49 -0700
-Message-ID: <20260412161957.82835-7-sj@kernel.org>
+Subject: [RFC PATCH v5.2 08/11] mm/damon/tests/core-kunit: test fail_charge_{num,denom} committing
+Date: Sun, 12 Apr 2026 09:19:51 -0700
+Message-ID: <20260412161957.82835-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260412161957.82835-1-sj@kernel.org>
 References: <20260412161957.82835-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB39780008
-X-Stat-Signature: futhomazi5csirdqmhm84gd9m9owkxko
+X-Rspamd-Queue-Id: 21DD2C000D
+X-Stat-Signature: np9uk8aaags3itzjz973yh9usf1bgp6s
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776010805-386818
-X-HE-Meta: U2FsdGVkX1/t17Jx2e0dXvuf7vezpooa/jezApc4U8/DA3pC0lfbse8nBMmnW4sQVdwYDm8qUar7O+739LcKb1p7Y9Xfv4kjvFWRPXg2CTUJXgIo6BimGqxtcp8jRuzrnR0GoS2pEeGij9vDDRn9Xq2c8cu+kB4pNJlgjT6LobJfHa8tx8q4HqAyRO9CY22l51J8WFdHhgB958tv2R5PKUrGum6U9NCslCsKDd4W37VaXl0rizzbH68u08rvZn7Xd7KhGI2n5HKlGv685ioqJxjJjHms6KEKqfjqiDylL5TzYzRXkjQkL9MlwCocbFUmdfHs8OMJsOZ36cuqh7l46PScMFlga87ub+Vu3GwKzVxSQH+BHWmNbw7MTWDZmXor2DyvUCuKhO8sn2En1SlWelsKrRASkhIF3KA85h3+2XYWDXHtTy1Wyq5tf+4GQSRJpnyRvfWNvcHLxKdih6N11JnLyWpLrIpAdCzFEkO05EdvNOE9WZNS+MaUN05SFkbik70uN4iBwPQjVsnO99gE3fP68Waze1heKgWGd1SbV0Wx9cSSoQPyAewP/SnDVD0upWih1etNkQHshHA6sSG3RiweeS24GJS9UeDUrs06wO0SnmcTrjOxHOP44eFFhMIDMpXBAVkKHSeQPI74C3gtQ9szcP1VEc1fyRxGvoNEEB7styFXu6iHqJr/emiWeteOMQDAe0wqzRpD4lWg2F8ubfmbP9Ihjr7tztgbpBfIsh3JJnsVqvP1w4ctyc9Denrk22OYtS5XxDG7jddZJNW+s3uf3MeQYLTPcKis94oSji08af8Ptg9UqCq3qpym6qcgADDSgA5a8vWO/Z7NmArfEgF3lIc1sjYfCTYT1QY80YIO/+Psflej+EZCPqeL/3OOQP0ESyxSC8OpIBEqHLwO5lFa4utwGERWMcVxc7Nkf4Crk1ZNGUSG7WQ/dJZFoitIHxnSEh2UyprdGBHoRwj
- /iLEqMbi
- fUbayn/zWwIYphJk7x1stryZP2PWd0ky8MpoUxNns0CJzEinx4rflxlAShg6gKaVxru9mtDw3jOGiH5lEyGd815gRiNBotXe2GbEn2X+iBi0oxM2t/lkDGHu/C4p30YFU6/mfDp4kgca+jp7mx2Q/q3Nz17abkM3WpgCi1am5Pb5nceEVGDMV2IkAOlSpB1FShSrxjwTxwQ574G05nzVrSHfms/stkMNS2bhgYamyED7JpAjPLw74SyPwZa1uzvK6VEafMgCJppRhR9ReapMuNy3so6/l5NL06tNZj7DCnnqgcNVln81dWBNsZjs7DLVDtDOtX0ob/9/QJxGRnmlByzalby9/WSGeYtk2cYvk6XWFBUcMOjRkuMVqgw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776010805-90222
+X-HE-Meta: U2FsdGVkX1/famUQpWcuMM+NrP65nGAhsTs/x+4/jlNrNdyW5v6/On5nxZAPx3wwEZ0Hpm9xVd5l6uITId4cp5N7yS+0YdASf3CX8ZkJr27JlPbFhqLM51nLIHPWiXiOxPgWH5tJKxVDgCioi7qMJKcWkWFxUyK9wrPhvELM/iXUQFEJ+ofohV9BOlzsvVJeWPFUdsMjbuN9+Hmy13ycl0krtbbwFwla1fUT6iOvJSV6Lh2PCPyMOHeoaYpqWy1o8yZjNSyy8dYzN4SovGLXrDrjZvBuYaeGk9uQw5Og2RxGt806QYCNZCeFkGntudTeGbFAbNQbydSAWvedm9xJeGwG1GS9bqYCY/Fn5405pHpS1tF4NSWTsoXQppLs820lIJNkfwQCWYCus6z16HPpyoYd4+Tb2idY5svQFyCEXqzkNM2ms4tDN3hcP+5ms+SJO+dvAOuKRJ7RlLzNWW5N+tTXOcUq0MeW10EDwRErSWRA/bXA+DcXg/RwTFtrt6+HS+nshYWsklSOSwwn4Sqa5FnwfP70bPjGB+Hi9D6aWwBZC/Bpt9P9SyFune4kJHjmbJfjRLAFIqoJcfJWYtz96ELmUOiu9rwUFuQvygsrAcw3WVA9OVFzLm2BhcBxCoS0NeyvP5H+FVces/vdpnu/TPnGT/T4VLhx3CMNVVzEXFXPViKbeZj9dOfJnbpYZNPR1w7QYejOrcqb6nbzdntILA7qMBk5CFeD9gq7SIHMuX8aoopek3QgqZPF7rLcSfXzmAVLvaN4RbaHoaYNxhML/12rAIWdWUcZoA6KQK6zEfzmqaztjEixC1wEFU8VImSiQAn5yfoNyY1tWNZCAuklnq0b9wzCBQ8wgrUqEhvEw/WmP6WlS0idlKnmAg+fD7PiSAS4fEPPbokhwv71K/y3gjyvdTrAbkomQq/2ixST62GpGeCarFmuAvaWu6s68VeCGIqpVh04BIIVJyl6WvS
+ IYFKx5vM
+ 7wt/WJhE4T+oFoKu0yWBfq2z0S5Dl0S8Y6Vj1mFLH0oBJcVNziBpEVVFnpyCMjmOs6KoKcXyM2rW4vCYKJRrsE4TD9kbA8zONZpbTZLt/zhLCVGNS6YeTucg7sLomGjGB9fE+uvyl0VP4HZZa0Vxn9+LwWFxjwrMDhQdyVmno2qn3vJ51agdHz2UIUkbrmIXzP6xRYJ92YJXoD5X2JgmQ0evA28bIP5Myd0CKpa6cHzom+C+lgha5cIiL5mpsvHgNwssVy6Pig4UoVe2RbKclgUmCzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,57 +97,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON usage document for the DAMOS action failed regions quota
-charge ratio control sysfs files.
+Extend damos_test_commit_quotas() kunit test to ensure
+damos_commit_quota() handles fail_charge_{num,denom} parameters.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ mm/damon/tests/core-kunit.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index bfdb717441f05..d5548e460857c 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -84,7 +84,9 @@ comma (",").
-     │ │ │ │ │ │ │ │ sz/min,max
-     │ │ │ │ │ │ │ │ nr_accesses/min,max
-     │ │ │ │ │ │ │ │ age/min,max
--    │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,effective_bytes,goal_tuner
-+    │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,
-+    │ │ │ │ │ │ │     effective_bytes,goal_tuner,
-+    │ │ │ │ │ │ │     fail_charge_num,fail_charge_denom
-     │ │ │ │ │ │ │ │ weights/sz_permil,nr_accesses_permil,age_permil
-     │ │ │ │ │ │ │ │ :ref:`goals <sysfs_schemes_quota_goals>`/nr_goals
-     │ │ │ │ │ │ │ │ │ 0/target_metric,target_value,current_value,nid,path
-@@ -381,9 +383,10 @@ schemes/<N>/quotas/
- The directory for the :ref:`quotas <damon_design_damos_quotas>` of the given
- DAMON-based operation scheme.
- 
--Under ``quotas`` directory, five files (``ms``, ``bytes``,
--``reset_interval_ms``, ``effective_bytes`` and ``goal_tuner``) and two
--directories (``weights`` and ``goals``) exist.
-+Under ``quotas`` directory, seven files (``ms``, ``bytes``,
-+``reset_interval_ms``, ``effective_bytes``, ``goal_tuner``, ``fail_charge_num``
-+and ``fail_charge_denom``) and two directories (``weights`` and ``goals``)
-+exist.
- 
- You can set the ``time quota`` in milliseconds, ``size quota`` in bytes, and
- ``reset interval`` in milliseconds by writing the values to the three files,
-@@ -402,6 +405,13 @@ the background design of the feature and the name of the selectable algorithms.
- Refer to :ref:`goals directory <sysfs_schemes_quota_goals>` for the goals
- setup.
- 
-+You can set the action-failed memory quota charging ratio by writing the
-+numerator and the denominator for the ratio to ``fail_charge_num`` and
-+``fail_charge_denom`` files, respectively.  Reading those files will return the
-+current set values.  Refer to :ref:`design
-+<damon_design_damos_quotas_failed_memory_charging_ratio>` for more details of
-+the ratio feature.
-+
- The time quota is internally transformed to a size quota.  Between the
- transformed size quota and user-specified size quota, smaller one is applied.
- Based on the user-specified :ref:`goal <sysfs_schemes_quota_goals>`, the
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 0030f682b23b7..1b23a22ac04c4 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -694,6 +694,8 @@ static void damos_test_commit_quota(struct kunit *test)
+ 		.ms = 2,
+ 		.sz = 3,
+ 		.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_CONSIST,
++		.fail_charge_num = 2,
++		.fail_charge_denom = 3,
+ 		.weight_sz = 4,
+ 		.weight_nr_accesses = 5,
+ 		.weight_age = 6,
+@@ -703,6 +705,8 @@ static void damos_test_commit_quota(struct kunit *test)
+ 		.ms = 8,
+ 		.sz = 9,
+ 		.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_TEMPORAL,
++		.fail_charge_num = 1,
++		.fail_charge_denom = 1024,
+ 		.weight_sz = 10,
+ 		.weight_nr_accesses = 11,
+ 		.weight_age = 12,
+@@ -717,6 +721,8 @@ static void damos_test_commit_quota(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, dst.ms, src.ms);
+ 	KUNIT_EXPECT_EQ(test, dst.sz, src.sz);
+ 	KUNIT_EXPECT_EQ(test, dst.goal_tuner, src.goal_tuner);
++	KUNIT_EXPECT_EQ(test, dst.fail_charge_num, src.fail_charge_num);
++	KUNIT_EXPECT_EQ(test, dst.fail_charge_denom, src.fail_charge_denom);
+ 	KUNIT_EXPECT_EQ(test, dst.weight_sz, src.weight_sz);
+ 	KUNIT_EXPECT_EQ(test, dst.weight_nr_accesses, src.weight_nr_accesses);
+ 	KUNIT_EXPECT_EQ(test, dst.weight_age, src.weight_age);
 -- 
 2.47.3
 
