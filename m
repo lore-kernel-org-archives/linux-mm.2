@@ -4,155 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D7CF3ED6B
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 01:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E905F3ED6F
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 03:25:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7B0D6B0089; Sat, 11 Apr 2026 21:49:18 -0400 (EDT)
+	id 061BA6B0089; Sat, 11 Apr 2026 23:25:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2BA66B008A; Sat, 11 Apr 2026 21:49:18 -0400 (EDT)
+	id 012876B008A; Sat, 11 Apr 2026 23:25:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1AC96B0092; Sat, 11 Apr 2026 21:49:18 -0400 (EDT)
+	id E6AA46B0092; Sat, 11 Apr 2026 23:25:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A0F2D6B0089
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 21:49:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3E5231609D6
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:49:18 +0000 (UTC)
-X-FDA: 84648221196.17.B32CAF7
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013056.outbound.protection.outlook.com [40.93.201.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 563A040004
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:49:15 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="hRsqTl/G";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.56 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775958555;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D8C2A6B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 23:25:06 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2896D1A0A5F
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 03:25:06 +0000 (UTC)
+X-FDA: 84648462612.03.6FECBD7
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 26CD240004
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 03:25:03 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZgMuV62l;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1775964304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oO/rLQtYSN7jhq3wMLXrZEevzd7E30nZCaare0ODyL0=;
-	b=G1IWS0XlI8XCdIjkzzwECJ4oF1NgZq03EkteOR/SlczGLsZBd3SQp0CFR4QWg7iZVUc8U6
-	OsPRhKJnskCKOFAsv9GDGG21328aqwmZp1SB1q+KaK/+tWPo1T3f/x9sAUCxDedSAb5/ku
-	xCxsxNW/D8s6LZw3s7xovEdBagpIlLA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775958555; a=rsa-sha256;
-	cv=pass;
-	b=fgKhWX3bmrfT5A3mRoZ1mxZZoSwJogOUlzdnGT9J2JqG47LyFftQ46SCO1rK0L8YBNLy3/
-	6UnbWnTR0HM5F76LDNRj8mFdRpGHNjCTV8XKfanhFSOsRclpm3W7WDlMbS9vMtENNBajfR
-	bvNN6YOWcT7l8QCvla49MhIk1bybQ1M=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="hRsqTl/G";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.56 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mhwqSdZYeGkvtcf1soPu2uo7ks4sQOLjMz2/EtU+Ucl6JJMAd3KtpBC7Nj44e7BiqXQ2tDdvE5SsUoLFLUZk0XjgIB+IW0WuAcSaRAlaPTuLK4PrBgUB2Rm17C3460cLFUP34ScThEYQw5yE0gjWx/9yOwPfEtH6e8sCbuKMYJW3VpXBqFasbySrNmt9uqh9hhAuEUH0990h/8MsFxs1VcnSAtYfIOf+xzrg8sAS/6+nk9sgHnIRL/8tR7sHUOQ+yKXPzWNfmHmjJp1OER3Nk5R5TQ8ac1HkOhvBCv3YDX5mc1L7V4ntxg98I+oWi+5cONR6TDwHsS0iQHIjX8HBvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oO/rLQtYSN7jhq3wMLXrZEevzd7E30nZCaare0ODyL0=;
- b=uWwc5T4XJa0icVJeYiAiwxD7KyeF/oLW7OaLWkUgJWNJuSVq8FibCZmXdxv60U4XKMxjmJVXWLJLvrUHAoZwRCZpK5AZxHWB/SSB5jqn1tAHdFmfa5tzeJyc32vwWhemHh+PUElFjR8+Epcj24zl6kcnMWpX2m4xhChTTyNU+R8PwGekaqt7GpQnpJa8mJiqK+9WeFctjfoWcKTOQg+dECAVgZe/arjYI6ZcoRZpnCuY7o0rqaTnoDlWa7kS0DIuDi6tILZ7QQcOrIWWSLao/2HQeLeBtm/74lWy7iElLhtJPfrqYYtWiyIrRVkHdDjnnDiDJuQoqsmt6xOarLW4IQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oO/rLQtYSN7jhq3wMLXrZEevzd7E30nZCaare0ODyL0=;
- b=hRsqTl/Gk/O1FrB/D4Tw0upGsPcsF1np9i6RgMKqSPB6YRqscnVlOKcPt70lkObgiX2SIymA0IdzICZ+Dwo9dUtnZvds/nE6w/UdzvrBiFymmiFY4R8V0SsTLZi/Wr7ofiVH7oQn2Jjf4yJrqIC5Ag2GIkU/UyXTHwTcGUyt8Ix3wVAzuP/id9x6OBMV55dBYFNJxuPEEITAKx7j3D0ZyWdUkMgY4Mt/CRp7yWyyYgZS/vEzJOKCvD4ENd8Nfk6W2PelmEn9bz+cFiMGuCdVxC9PvIENXDDy75ZqPL7bels3b8p36GELwGOR+ZK20zWBqj8G+XNR0D7IDF5L2hAgwQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- PH0PR12MB5679.namprd12.prod.outlook.com (2603:10b6:510:14f::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9818.17; Sun, 12 Apr 2026 01:49:10 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.044; Sun, 12 Apr 2026
- 01:49:10 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Lance Yang <lance.yang@linux.dev>
+	bh=P7F6ExSq2zsiYKOQxY6wgG6WKAhk4DvCSTWfDleLB2Y=;
+	b=Del/FzM36KcG4xaUeKIv+6UVI79ATwojEbv0OG5fgUn83q2vc/nc7pvl9W0iLSwx5OHKI/
+	yJ1kmCDgs5Dka5emsQ8YDtcEUqgyLo4FHYBUh4PWutd5CjAjX4sFuL83Bp5n8NTHrM1qYy
+	63Cq5Y//IAtyCCqe4/o2yYXwfkwpd1U=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZgMuV62l;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775964304; a=rsa-sha256;
+	cv=none;
+	b=1vKn/VDFC8I5x1UCMjLjX7e0sSjhP+Tu/ppneWfLJUVY7VsOKlLYtafB7lE1mOf9JvENVU
+	j5EEZGfoIsS+erbg8wZ0yeCbYt0p+e5CUt7147TVBPC+R/zdtFm5unDT7VVGWLiO2tK6vF
+	V/HwoedvDxbGKViJz48EyM4HFu//GmM=
+Message-ID: <3e688ea1-05ba-4e75-9d92-2751ff6f3b7b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1775964301;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P7F6ExSq2zsiYKOQxY6wgG6WKAhk4DvCSTWfDleLB2Y=;
+	b=ZgMuV62lY8nfvrhh5RSEipLHno6dZ7PcK6Aduun7TThkr7wr8/4Wo+FK+uadqLJmEPPwDm
+	/jk/E3QAMoEs6mZc7ViZUSXUVArA6w3AtTPhcp13XBglkOqPtHd7/4exmgI3DE70o7tSXt
+	ed14obd+deDrohCEwy/u61pg3hAPDNQ=
+Date: Sun, 12 Apr 2026 11:24:53 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error path
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>
 Cc: lgs201920130244@gmail.com, akpm@linux-foundation.org, david@kernel.org,
  lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
  Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
  dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error path
-Date: Sat, 11 Apr 2026 21:49:08 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <848180C7-F98C-44B2-AB1F-579BF9EEA28E@nvidia.com>
-In-Reply-To: <20260411142858.85496-1-lance.yang@linux.dev>
 References: <20260411062152.2092967-1-lgs201920130244@gmail.com>
  <20260411142858.85496-1-lance.yang@linux.dev>
-Content-Type: text/plain
-X-ClientProxiedBy: IA1P220CA0017.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:464::16) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH0PR12MB5679:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d20eea0-092b-41a0-fe0b-08de9835b100
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	7oTuzmpqBfmiIt0hyzMFoHsJOPMxhqp3keLyGdCsKg/yGJyo9tAikTLpmC60ew6kgxRrAghVmoQNDz0AQbIPNZWnnOaJALRPDUAYSMIWEPGl0bpPCWXwnSDfGQBtDnFmE768pydsQ1AawIhLI0kKYGfOgr2OCa0+20143jn7zgGvtzVrWdpjIDz5hfOPV9SfdFg99pE99UYeayBWlFLg6VPwUuM3273LXeWFFuFt3+ASHfjRxsgF6scElqVtC7Q6E9Zo5q+LEg3ALtaJdEy1LPM3BJlxScXS7uzMyY9Qu2F62xJ8BOjjhsq2tBkRAqaWczOZ8aL2EdMFaBc8G6D21ac7eVNv93nlqHo/Yv9Bj88itJcGjU86Xfu41+xVW5V2R4y9gDKUP5yC2BVJGj7U7tHdGYtQLMFTaQiFalgv9KvYI3CCiWGL/ygJ6OASYipCZ+NNyG9FpLYztHnmX7VAnfpDXTSfyhmx6r4MQmBCh0TLv6/EBOoOZnNsF4CbI08ep3GG79BswBpdJXkywTeAvTeLPT8U3J7/iQpIjWOZtHHwL35yhFASQAkfPrD4P/MT7T4USyrY8kHOFH71PhNc9JJHWUI4UVAYnXEJOp8jHiqP7Rd4s4LSM6u5MtDbEXxHvZBI9KdbTjdZF4QD1egKzjZF9LuWXXSk2cJ/DdTwlfMWf2+HBid6o7gQ4eTvObdISJMhB8NX1TZNP3krgGgZAVuxVhgFYLbENLNjt0FYnX4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?d+9Vau6X/x2ObzfKxpw/2bqu6FywVqr7MqKX8ZRNTIjsJYc5EmCu757FL7rk?=
- =?us-ascii?Q?KaJtRx1Ijbz8I4lLWu6aUNTZTtzjnFU2v+KJtiOz7bzg/cDw5OrZyS9V6zhk?=
- =?us-ascii?Q?YzrTtcmHYPFwBVWN5Wf3X35OnUImBJ1aC/oYmU/26P0oLHIpl2nhRCFWglZo?=
- =?us-ascii?Q?bMZ96me339bNIqjqH9f6JJCUXko571GyO0DE2gt+nWrrznmq3npilIp+ughu?=
- =?us-ascii?Q?1LfDkaoR06HJHlJewxMCVzDuL6R+ziEFFTBsSv2ALeDBFiCcuPF2vUHNXIUC?=
- =?us-ascii?Q?awQdkBnnGuLN4HhIRQUaGvkwmauvD3G++l5f2LQr8qUVhSJUG6OPRBp2HNdY?=
- =?us-ascii?Q?0kzjx8hqnbyv4U8Sboq6TEg7ZcMWRxHFKiHCiq6pIvjcWWH+NPG9athtmGMY?=
- =?us-ascii?Q?4FAGm3cT5R2Qhs8zCalxgea0AqdEgv6TDkPWrrfaQ65AQp6nH71gK7zY0Uml?=
- =?us-ascii?Q?3s68WDIIaM7LF2ARkRwbxT0cSB5GOw+DondIcrcXcTtdnbe2QzbWAi1KLSYy?=
- =?us-ascii?Q?pPaDVQlfgGIpfNlIrxhWR0hAwkZsc4Bs/dJ5G/t7wiNSFH9YicEuVWR7mGAd?=
- =?us-ascii?Q?HoTnLA0sT48qUY/jZ2jBslEjdz46BojnopFCYW0mBwjCU8aBZ/rxx/D3YMul?=
- =?us-ascii?Q?VY5Wi9/KJ8Q5nYArAD7a3bU9xXQMG8KrNyDtxkBHBMglJEVFhy44z8Fg5/SI?=
- =?us-ascii?Q?Obk8Vaoj10w9VIwV2H8USSnQBjsMH5kG3qqZYzcTwE0Kb7CrbZR3Jhr7SHp5?=
- =?us-ascii?Q?Z99H/LeNwmtDmWak7DsUqbTvOfRGyf2ERmHfpPER1tbmR+nbD1YI5N8ntQQz?=
- =?us-ascii?Q?fRsJusx/PZ4KbaMwWAfVABiNG7LaRmjWFGYTQdNPX0Go+64Kou0do/vzxLZW?=
- =?us-ascii?Q?81VfmwZxEsRwgll+CY/gRbdNUQABZ8c7xI0sI+6idrB0ldkghiQtJjgsL+L5?=
- =?us-ascii?Q?7mH6a4sLRbyI+RERsK7Vz4KXfQn76AXEXcTwHbKYfW+8TjLlJudf6LpToZHJ?=
- =?us-ascii?Q?hW5g5uA61LCHtuoRpxLoiPt1aLL6TM6XSXd/og58ySFWUFEeblmRUVBf2YLH?=
- =?us-ascii?Q?HVRZymeBR61R45nZqVRi2qJxpoTQNE2RJeOcZSu6AgeQPZKINwrBIkNepu5T?=
- =?us-ascii?Q?uIDwkWq4tHUrTK+Zk/TbU1yHBln6zmsgsbHrGsi2S6Beb7K0on+R5YOvviH6?=
- =?us-ascii?Q?GgBmRvRph7rCyf6zu4nwZi9IPbBbTYbbnkE3QQ7KZW9Uh5/e8fc6MwhlmZKd?=
- =?us-ascii?Q?rlAcG9Y2JQn5Mv00bNCToGlV/X9cvkyYBQNMLpezAhyzTfRPW2rQhaJ+eZOK?=
- =?us-ascii?Q?o/av+xbZ5bRo4iaWjrs7Q5XvLpiyVqdQ0AQNNCUZpnfMjMgE3/IwQ6zhQcOh?=
- =?us-ascii?Q?AehJyhvFz0wTI5elqwS82/JE/oQsCdsVxVHPiXX1zmyk53SsIVEyeLKCrEKI?=
- =?us-ascii?Q?nvefrllS8WBI9gqf0pv3Zvo2DbUOc9co0SlFA8ARzE4ACh1z67NRK9F7aybq?=
- =?us-ascii?Q?izAtLeALyIb+qrogrHJAQNfdL0+AiBHOxq8udS2YzbBAMW3ccWqDxqSYs+pu?=
- =?us-ascii?Q?j9NYJ5oP9qOs4JzzEWPlM8QEh49/64D7lezvttwcrqKqNXF3jXhXw1R4YpcW?=
- =?us-ascii?Q?jMaOdtL6eQF47kncFTNhV4y1JP1dTASoUaJ1MlBbwOZtYgITSY4ZmGoIU72S?=
- =?us-ascii?Q?Kxt+CBJyfSjhsWzi51Q7kxuA1rl9c2Abu6FBlGhmBo9qaLO5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d20eea0-092b-41a0-fe0b-08de9835b100
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2026 01:49:10.4511
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oPdWkFin5FxsvPx72r3lGC5cmV5DThoivI96nZN5qki29puo3GkOaGN4cbTTPrXo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5679
-X-Rspamd-Queue-Id: 563A040004
-X-Stat-Signature: 5c1qfp36753pnf7ua9yi958jphddcieu
+ <848180C7-F98C-44B2-AB1F-579BF9EEA28E@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <848180C7-F98C-44B2-AB1F-579BF9EEA28E@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 26CD240004
+X-Stat-Signature: yjhnmdha1fkams1z5ywcrdsdtn94dt43
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1775958555-765183
-X-HE-Meta: U2FsdGVkX1/9iZq0BEh2QX5ELcFJqR7+agvT7X8NNkWZSr7zv92OB3hegS+9mKf1jmmZl68jl1sGL+D3qYbq6dSJnDNppIfX9gZ8j2JnMh35e59NcVECDs7zSrwLm+r3fDZqhncc/2t4+sRaI/y6gKUItsEHwp+eWJ7BSzajlv2ImwiQzGrJeMFrKJ4gTtCb9HXmW74mMc/qWTY/8FfTtjoTrVgaSeJSef2S1x4EfQzsrTR5DnMmqB7juvoKffvThrnWcOUk5ZOOiUkdZQfg2fWSbnrwNUqL2lUl5P82YKNTCo4LybwAvw4l8ExuuGUeEC6GOvzddy3C1yq1616zKISXFk3R69MXOjeWKf+N3ciGGW9/q1rpuWR45lzH9eyfYQ+cn3t5eWdipvNpuNXG/Jhl1aJKbZOFmwK1YJ6MSrwFdPcyaK9VFLIOl9g/6O7FFWPiY6WdANIgWJRz48GQqYtc2WnDxEb0l9zaPnKrmBLHs45NVCDWMnv8VL/YdsHcK8+cu6vcB5TObaWlxTyxAAN2+GsOwBZsE0obZcMT2x7cVK6k6y1OYTcU+SEo8JiJMHUdv5ehKxFvsZorKC7IjYPKPcsVUlfV+rS9pYlGwBIAgckwmfWkwN2DAjQ4hjOHwNV4NxGGVWFEbsD1C/i32yLmVqNZvp0wwnV/lBq8DlF0q9r/yr/f8NNAXdUEyNPJICOhK9frm+yumOLk794UK742WQNdQvQEAZA0giyLjub3umSziITScuzJSItHzQPzGsoDYtvKZJVemoH7IDrA8wUZejRyflBOmhWoCx15AX1QuD2xNjavol1SyPtvd7nxEtoSoeSIP6gRmq4LZHknx3jMobuyT5xYd+GQ0L9xvrI8pc842B9Mblii9CYWot+mQJf3UZXvX/c1fzIoK5C+8ZZmNGXEPcSMrgCL0qjxoBzd4iwTJbaWAJsqoL1+00tiShYh4RmJBmPuNXWPWeF
- zgnViGD8
- vvKJZ1hO186Cw80le5S5ubF9wvia93Y8DjoTkreYgVqZ7DmH+ScD3ENZ0HiSNzpfZjL9kn4FoCm4PLD22iqJ399ZaH3sVf2JlhovKIxq/+iJ4nF6FCciAFl/EC5bTJuE5EtQRYY0BL+WCaPBiBwx+Q8UC8FHLuAQh8UMPB/i3oqm8Gcapw1u89eEeMZTNEYSK656P4tM/VdpbdErtAboyC+V+gcZe/pq4LCBJ7fIxhrkA++DsJf2VSmYolq0tZjwnEDZfPAGuprhrqhFHQlEAGgPGxNybzo16xU7j0ZBwqfSEuqsh82niGVWdhZEJwDXCRMsstd2vR8Zdy4axCQMRvzPwQYh+m8H6ZvYQE3ArbE8O7ep6yxn3y3rrzlpAxLJI6vIOgrpu2zmkqF0QjTFxrWQus1PfgBWy8EUF
+X-HE-Tag: 1775964303-195914
+X-HE-Meta: U2FsdGVkX18f+pmOY0Z+ICfHY4L3nvyymCPeeqCr5hfcGC89618BGYRv+naCKBCWnbaVqGDJhWY12Lb52u/CUUhvAKvVFq9Bamc4PApw/ToqXsaSG0lB8+EYF5/o+zn6c+oT5V/ZmD6FrHx7WXYcN3uxJEwIN9YsL6yl5NW7nK4bOtljlyOQlEg+fTRjzPwJbrEbGcmBdGIWZF8StwMFwJJHdJgR5yQ2uGHzThumjncsvEsZkjjnV0gNRpYYD1AAGPufgYcj91zbOf4BJFMrrDwyR+KARH6EKAO5h0g6XG+Kj/cHNHr6LlQX+xx7CMMd1CRBd8pqQ+I7tPabD90DcpZ0vNWKApdMLqoPL5T9W17kxejN+VNYLZexmsdKwUbT4s+M1+h5KdBXWz85a2te9xe6HfQpgHpaqfSC5+keNhtUOudsLHW+G/FdsRi0mg+MYTDDaO+3dUSyzXU9jkaUlnORVpnY+J2cDhRRA85R9QV/Vklp0QI7u3yrGGfDtQwdSJwX67vjEkwbkurc9SFEmuO6b5se5p/M13kgumHeBiBfXS4Vd3oTpl1T0iKaLZeoNCMkWykzxr7Toe52iOy/B7WbY02VnSLrEZALqnJ654ljRFKKL0MuMmGxvZvkTJWC124Xy/HuwRrnb6sdigAdiUDnShGPu37nMoe5z/QQA/+lJPJNxRV9rnNEmdyO9v0PXf+v+Oe5Ga/MPVJmni6WSCMvQEgYOFyNwAqNrKwCVM48B1r03/pTx1vrdCwby1DGLaijwFWKot7CbLynnqJAlSeDwwjIsZBlMJrf+OaBnuAWNDtEdItwCf/OMUsMIs/huWkTa7t2YA9d/Mpmcxs4i/3yM4OAHd7LU92HURZex2raYx19V23XawQWI7yO3yoWb7dMTFCCV8PC6sU8uepPWaef/zzDNwiPUhcNYYhj+6p0/vu6qZInVcYiZbJpgGT1l5uaAg1PVOUkshDJs5M
+ zUkdXQYs
+ OP6hciH8TPy35gEFlftx5/LvWYzv1uR+VGpZEXAG8vMxbBaqYPP2knNe4Xd7UwwWX4gqCAENbtBd5u9vlMEqtPzHkIAHBMrsw8JD7dUw/09841GUT7FUrMrZojWVlwa9g/sKj8vkp1PeTE+JZe8j0nLWttv9/ca3t32E6myAcxWnp6nVvW8EEzBXhTTK0jChIoupbcCPcq9Z2lxwHFFToMiGrCEFYeh2vxOruS12S7I9gfS2IT4tw5aMs5F2rG99WJvhb10BgdBXqLe5TjDZgo6Krjo/tf3FrSRv6b0O/pns2Fok=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,58 +94,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11 Apr 2026, at 10:28, Lance Yang wrote:
 
-> On Sat, Apr 11, 2026 at 02:21:52PM +0800, Guangshuo Li wrote:
->> After kobject_init_and_add(), the lifetime of the embedded struct
->> kobject is expected to be managed through the kobject core reference
->> counting.
+
+On 2026/4/12 09:49, Zi Yan wrote:
+> On 11 Apr 2026, at 10:28, Lance Yang wrote:
+> 
+>> On Sat, Apr 11, 2026 at 02:21:52PM +0800, Guangshuo Li wrote:
+>>> After kobject_init_and_add(), the lifetime of the embedded struct
+>>> kobject is expected to be managed through the kobject core reference
+>>> counting.
+>>>
+>>> In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
+>>> directly with kfree() rather than releasing the kobject reference with
+>>> kobject_put(). This may leave the reference count of the embedded struct
 >>
->> In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
->> directly with kfree() rather than releasing the kobject reference with
->> kobject_put(). This may leave the reference count of the embedded struct
->
-> Right. As documented for kobject_init_and_add(), once it has been
-> called, the error path should go through kobject_put():
->
-> /**
->  * kobject_init_and_add() - Initialize a kobject structure and add it to
->  *                          the kobject hierarchy.
-> ...
->  *
->  * This function combines the call to kobject_init() and kobject_add().
->  *
->  * If this function returns an error, kobject_put() must be called to
->  * properly clean up the memory associated with the object.  This is the
-> ...
->  */
-> int kobject_init_and_add(struct kobject *kobj, const struct kobj_type *ktype,
-> 			 struct kobject *parent, const char *fmt, ...)
->
->> kobject unbalanced, resulting in a refcount leak and potentially leading
->> to a use-after-free.
->
-> IIUC, this looks more like wrong kobject lifetime handling and likely a
-> leak, not a clear UAF :)
-
-kobject_put() ends up with calling kobj_type->release(), which is just
-kfree(to_thpsize(kobj)), equivalent to kfree(thpsize) in the old code.
-IIUC, there is no leak. Let me know if I miss anything.
-
->
->> Fix this by using kobject_put(&thpsize->kobj) in the failure path and
->> letting thpsize_release() handle the final cleanup.
+>> Right. As documented for kobject_init_and_add(), once it has been
+>> called, the error path should go through kobject_put():
 >>
->> Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
->> ---
->
-> Apart from that, LGTM.
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>> /**
+>>   * kobject_init_and_add() - Initialize a kobject structure and add it to
+>>   *                          the kobject hierarchy.
+>> ...
+>>   *
+>>   * This function combines the call to kobject_init() and kobject_add().
+>>   *
+>>   * If this function returns an error, kobject_put() must be called to
+>>   * properly clean up the memory associated with the object.  This is the
+>> ...
+>>   */
+>> int kobject_init_and_add(struct kobject *kobj, const struct kobj_type *ktype,
+>> 			 struct kobject *parent, const char *fmt, ...)
+>>
+>>> kobject unbalanced, resulting in a refcount leak and potentially leading
+>>> to a use-after-free.
+>>
+>> IIUC, this looks more like wrong kobject lifetime handling and likely a
+>> leak, not a clear UAF :)
+> 
+> kobject_put() ends up with calling kobj_type->release(), which is just
+> kfree(to_thpsize(kobj)), equivalent to kfree(thpsize) in the old code.
+> IIUC, there is no leak. Let me know if I miss anything.
 
+Right, the fix is correct. I was only commenting on the changelog
+wording, especially:
 
---
-Best Regards,
-Yan, Zi
+"resulting in a refcount leak and potentially leading to a use-after-free"
+
+The old code does skip the required kobject cleanup path, but is
+a UAF actually possible there?
+
+Just a wording nit.
 
