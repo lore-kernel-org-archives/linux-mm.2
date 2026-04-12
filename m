@@ -4,116 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6AB4F3ED6D
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 04:39:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F5EBF3ED6D
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 06:05:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF4CF6B0089; Sun, 12 Apr 2026 00:39:52 -0400 (EDT)
+	id 23C7A6B0089; Sun, 12 Apr 2026 02:05:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA5D86B008A; Sun, 12 Apr 2026 00:39:52 -0400 (EDT)
+	id 1ED226B008A; Sun, 12 Apr 2026 02:05:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6EA86B0092; Sun, 12 Apr 2026 00:39:52 -0400 (EDT)
+	id 102C86B0092; Sun, 12 Apr 2026 02:05:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 930356B0089
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 00:39:52 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E98EB1A09BB
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 04:39:51 +0000 (UTC)
-X-FDA: 84648650982.19.00FDC67
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 20D8580008
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 04:39:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OK1lYJpb;
-	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 00B966B0089
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 02:05:02 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E8715C240
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 06:05:02 +0000 (UTC)
+X-FDA: 84648865644.06.271BB15
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 705B720008
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 06:05:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u8t+hu4n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775973900; a=rsa-sha256;
+	cv=none;
+	b=E1MObMtkxQ3s7buHSsby/CkvlUpP1VoBJZZz78ii5rTAEIGB19pU9fVSnhLh9+wSKB/E81
+	JdM34RbZ66/lrDD/FwLyzTNBOMOiAGpI6ZLcJhgTeixsSuthKtSYtVk3H5kLt7MC1C0kQJ
+	RYItLFM+gXs1kx7P1Z0yObhapy6cjXI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u8t+hu4n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775968790;
+	s=arc-20220608; t=1775973900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kRdR1dc5/UfNuJsTk7iiKeGwmqYxW3GpWumyMvQ9lak=;
-	b=eMATxeCegxu9lV/gg8raS/jiSM/a/PzMqaxRLTZzi5Or6jKGGbc8lHQupu/xsSmV+/0oUt
-	9XLW6rXcRPggNYgng6LC6yCwTyOT5Y5MRfyJ8/e7KteGekuFY7zkmo0Iga+B26pEVJztdb
-	SX1IqxrCjYSBsn1L/l0Zu8hY67I7Ass=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OK1lYJpb;
-	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775968790; a=rsa-sha256;
-	cv=none;
-	b=LgXoIrboyG+w/jwXCYPw6TzKx8Bgo0UzTxSizY5Q8cvO/t1N2cB7N++93DnJHnqZHy+O+8
-	vlLdEp5UtTOk5H3AxrnUGeSOP5wg5S0qMW9/d2nqPmzWdddHg2tVBwE9woz9uCS2XFcfha
-	lXErHxFW4QTtrLKF3YchXM3qvYce2vE=
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2c156c4a9efso4673784eec.1
-        for <linux-mm@kvack.org>; Sat, 11 Apr 2026 21:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775968789; x=1776573589; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kRdR1dc5/UfNuJsTk7iiKeGwmqYxW3GpWumyMvQ9lak=;
-        b=OK1lYJpbSKz5h0rsx4A08G+LfW+XQldcCMLa3kpQFo6uQPvsG7swPgNuYh0NhvHBT/
-         y9oWk3HRpxiJyVgh4ZuGp+Z7/aCNmmeSLriJNTRezs5LphE3JmnJhnDbhoZClGvQ1Zwb
-         dbfFia6/VSAq7XSp9ccxe55E4iXwvsXS9L0JHJZrn4LWANTdDiB0ohTPYqbSwKK4amza
-         YFU/8OcbyLhTFP/Z6i6n4euHl/Y2BcARWwo0MkIn6piwdLjrQpMEdfCDhS99R8q413rk
-         1LOnEOr35leImufnQbYFeG9FPz8P/7891tQrfv2h7o3VJ691GGkzeOH/eMnHk/H/ZtNt
-         pmzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775968789; x=1776573589;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kRdR1dc5/UfNuJsTk7iiKeGwmqYxW3GpWumyMvQ9lak=;
-        b=jh8+zJ8bK0JZNX0Onw6277S9dW0YErE9zExcA1Z3442bJg8jn+8V23e/x4xGikJVyY
-         Tgru2F0pFXQ2A3r7R4Kv9b/DeIZg2eIDjZ7IAC2Bo4ZPi327rCImfsK26ahfDCeL/OyC
-         opjTFh9gsWpYkyez1Fp/yEIH/NYUx7W+UAL0nh8+94VsKRbvn2RbTTo11L27xIo6fdZo
-         2ntz1CP50aYN9tiV3OK1Cbn/aJNFS7K0+PndA0nKNh17JoNehY6LcesHSlC3k7tlHwaJ
-         tJboGVvZl+MpR73s6GSsSnlyAznhEL02xe9d9to96cgnQ+oKqpwYMhtKNjeE7Ib/gu/6
-         EIHA==
-X-Forwarded-Encrypted: i=1; AJvYcCX7x4afxz2LB6zXhWCnEXIwDEEb6XjE7uEwrHQQZjNWu64NOgcZ2ww6jIqG8bxMz0bzL1Fuf09MXg==@kvack.org
-X-Gm-Message-State: AOJu0YxzcoFsDfrbB4Nt+gBHJEAKztvF4DVfYcEqWTFYbXP6pKS0Usc/
-	NjZULgoyyBNJWAo5weTjGCABS736H39N5quMjaGw9DoVmhGsfC8f4me+
-X-Gm-Gg: AeBDiesV/phKP65okRQ5HibjRRAL7jO3OF1aPS1+CeXwo7x/zFjisdOKvBNYBt6ch/d
-	49zWISsxjMnWneiI/thNsrFzrT3g1WA2c2imBSMZSdIlwR+b2/SL1g4TSeL/uI7CII2CrAT/KHK
-	87C/YngHuku3r9XElwqdQ2Rog+acmQ/st0AnMDRYFv6pxiuWo+OrEirdY7OJIZNU/wlyNhdqLVr
-	/JsDauajJxa45cnkr3ZbaxzguNMCY7LEKFzbXD/Et63S6cQOfB4wA6fJy69ixgQtI2p0JDnuW4r
-	WqcejjQyIatl9dcGRdzPcfEzYJPoVhltlKrqRmfxF6xAzwww2sxugLQnnJ80DqlmIkljoDTQsx7
-	w2hyZHCgxig3Z0XxxbMIuy85QYgrmdOVO6u3l0tybYc6L/i4/tuSgU9X2p66cH6v7G6RpkGEGBP
-	YZwKDmqFctFTCaWZvVyIUEGrfXmsP9Rfs2p9de
-X-Received: by 2002:a05:7022:517:b0:128:dab3:f528 with SMTP id a92af1059eb24-12c34e892c2mr5118834c88.8.1775968788704;
-        Sat, 11 Apr 2026 21:39:48 -0700 (PDT)
-Received: from fedora ([2601:644:937c:6c90::f8b0])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2d561bde70csm13449412eec.15.2026.04.11.21.39.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2026 21:39:48 -0700 (PDT)
-Date: Sat, 11 Apr 2026 21:39:45 -0700
-From: Vishal Moola <vishal.moola@gmail.com>
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/zone_device: Do not touch device folio after calling
- ->folio_free()
-Message-ID: <adsiEY671D8mFZao@fedora>
-References: <20260410230346.4009855-1-matthew.brost@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xchAm7qJtuVYU/toyqO2WkCM6PUpAgYKYl/x/R6dL0s=;
+	b=3ntlMoG2aj+34sjS4qCRQgoRKgkphInCbelL/eaGTJ+pPIUISfvtKVAkSTDWUmA4J0CtEy
+	Je4kBYzidK1rrpP8hHF78UNFOS6etBUN9k1K+bZwVykCxWnvJoqgTu2ig15OOmoQkN7EM7
+	rVTl3f3t686IYwIcNbwXUBDmXb5D6oM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3491D4384E;
+	Sun, 12 Apr 2026 06:04:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B2CC19424;
+	Sun, 12 Apr 2026 06:04:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775973899;
+	bh=Dz2ZpyaJE5N3ivs/LNJoNNsR0t6ba3qDLDroFxRApMI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=u8t+hu4nKnIVEFMZRYk5CARvGYJWlNavZHWE009R+aAX4CiWkGrDKne7MHgA65VbX
+	 LsIx/AnKdtxM0Ki/3LWXdSBACeNmRI2NlW6NDmgjX4gt+4yAlk4KY2zspyVA9ooEyn
+	 vGg9g89ifYmiyYPAFWFgmSEdfnmBmFXUbxaSuJEnb2rs0GxHPcEFsgF0JezxKjg+6K
+	 lB4CmvzJJGzUCCSCzedqIb07hrnXIJd9ENdd5sThzCCcy1S9SNJFF1YCw7jxsE4bDa
+	 f7MAErGU71/sySW72+qa74IVES2fORh7ME2QuwAy7yynzBi9eVzln0/siaclSfz/D0
+	 EgIzBZPnM3V/w==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: minchan@kernel.org,
+	senozhatsky@chromium.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: axboe@kernel.dk,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kasong@tencent.com,
+	chrisl@kernel.org,
+	justinjiang@vivo.com,
+	liulei.rjpt@vivo.com,
+	"Barry Song (Xiaomi)" <baohua@kernel.org>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [RFC PATCH] zram: support asynchronous GC for lazy slot freeing
+Date: Sun, 12 Apr 2026 14:04:50 +0800
+Message-Id: <20260412060450.15813-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260410230346.4009855-1-matthew.brost@intel.com>
-X-Rspamd-Queue-Id: 20D8580008
-X-Stat-Signature: wzah565otg8ia9ixwtr5zisop7hs96h9
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 705B720008
+X-Stat-Signature: eqbacxyjr8b3cfbmmy8jukibdkrrboxx
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1775968789-518007
-X-HE-Meta: U2FsdGVkX1/zy9O6ZAVMc8+7uDoNCMyJLwnQBLLTxWfjqDaTfh1byPYs8d6NopnyHE+dOeIdJaBpgzOhqIhg3rZVUKMcmauD9PDwPWADFNDk4pXwS4SgHeqlJ5+33FchC2DLHpgHOC0WUcXJNBp4dTAgpkGQBPcKIU6G/OQgHZ3VBz1OH63mhe5aU8zvL+1i2Nwdl9QNMMM/DthYHCCjNXOqVVjnDynn6FAnefHmhrri5fFBhbpK+u/Yy49CBOPZdCEyE8olJ/VPf6Vt63LWMWyuzwpgtTUW5070ILiipMJ35HDwh9+sMzT1h8WXvnKruPjw49SZxNbBneDcabllZ0p346ZQoH0glOC/vpmX0izn2HjmF2+bYNyHghhNbN7IAjuYZNSMflAwsAMOOsiZS38FtXVoogfcDe3kcYnzng72T53XbM1dqByuKSI/q5QUs/z9KcEtTRWdWCvh3dSPyoVSzs5S2nxH77Waqf6UdS1l1ptnQpHKmUSLgjckR1AcOhbypSuz2xUmDysPwts8nHSXxgjYCGgDRf5GlmXN+XsCdd/wxLHd/wIRoPdN5FooU/YXPLlGA4TDd2EvRBSP0T1Q55OGnlD2RcnkMybgKBVazO9c8I9ObOcRbPkmilRG0yjjB0+q1SA1s3P2f0Jy4nIhd/7BJDrwFucVSu+ERwLc9VAl1lKpXydHW5qZAGGb19DOTwuGu4m81+EiEefbEjQTs4Crw5wjn8oZ1tcw8k1qlKpkm34JCCZeexsznugaWdlGl6WIBDb3j6v3UGspgNuvLeVpBZzim/zCCpUWQ2vjP220QH60FnKtasfw9/k6M1/W3Q/R+fL3WRnDKRdfOZcuu9dKkRoIPWogE3Durch0zejQAugEeeV1UOCW74FRDoAdCvwCTC/nuWqt4bpQ8dknXW59i6vTrmIX1Nzp//WMzd+dEX7fVNEwlksNgQma0QAV5admqiW7J9HYBcp
- W44ychAk
- ANdRzrAZiXAxaejELvs80aOQpebCP1lDahpZGudzdF8XJsuOhb0SoNClqHtVle+x1o2VN/Rl5O1Cam6Rw/fATEGrkJSCzGFfukIqaSXaNi3j229EPFEBAwU7FLET6rmMCaZwEVDFOMEcILbA1AKJkJxxwOMkMxCFvzfK4B0UF9RqTvIWeYFBOh5glkz+cAKoJ6VoFjPF6JfnCNthd+axY2PGI7mmDfcaxuOl6Etb9pqQtYn7jWd0Fn9pBT2M+E6WyMKLcMx+0QRH6Q8mS/jb34PnWTIiSpx0IVPdp1mv89LvyW+XrWXGczHyv623VOyhrKPwvCb5c/KXCMYmOrUkPlJjWHyRtvLyP41TE8pHectjYHuvmxVC2SHVgPj4J9aViv9+MY/8/hbhIejah2tcbc5WV2OsaxMa5wCY+/elD9hFbC2cRoQJ2yTxRG2dBEMiN84xD5sYpuUsgmaKn2JE2ALWSPnvoCz7MvjFxnLo88hM/F9fzszFNr7fcyIi386Shhyj00/Mak2WSJg784ouqaplzXcIvpwGJXLORzHO7yFtyqRw+e8W49sHHzZfN6ncbsTaHuF4QtNdSOGhN2BYebK+pkGD1YONEQDzdcoVwMhFCT3Zno/dhu5XL4+hYqivj1g42UBPE810VExcKYgt5zEQAZYnikN6IWaxPB4IMaEbld2SSrHea11EQtrptDT/KorUkOzQ0wUzCOF5/7kKzWTRKw5ArsAop9bCN
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1775973900-362472
+X-HE-Meta: U2FsdGVkX195ZhXVu59yz9pwEpdlGmU3/BeL1Law5njqyRa9rAGuWgAYgTMAej4hllM1z62NzqZ6prvSGDDuiODRnCScPjftac+Z4cy1rhAtBYXyX1U+pxu0NRJdlPdj1xsYleVe9N5JBNnhMidMwHozd4nOn45NIfDG0o228+WIeW7K6ShwxaX5xSrRIKBdY6LH6z5zjC7CFlJTopFDZMnRHrkEkQ1ULsLZAc2e6ohrOcSMbA6WCMlmU/4AdgzIyCHp6hGp0VdR8+oynXlPZEsS5+mNd0MEKNqfhYnQuoFTYu3p0A8QEJ4XpvOvb9xe3SsYSJm03DhSbbPRnoUqZT051SXPxXqm3JQXa+3H6fBptKhH3kmKG5A9KsF6joXX7o2hmPrnuVo8oYtCIW+mwAbBxq/A4o6j6OmnJNQZe6Gfgmb/V9N5PpPkS8ISCN87rYkOoJ9aIHQ3lFbwWYzB8MPQQS/VgNo6L03wu5wqewP8tgRWmJj9LCo3QTTj7NlEm/WFFL/BB7jq0DpLhXzVpY8cBcQpNtIwxInyAH78ph1Lrjh85m+gD4vhfA4UeRmKTdoozhdGnbmNokkCWP6aWHC7L4WEI+zb+GdDhhOvJdt2KeoTW8oDzScRJLMtySC7CHpdKtv8XL1+Vc17OQP0xxILBWI5jBMQDq3EV6/mcWOKmKsDXuscGoj3oHwTHcFhrCaXq6vdGLY0ZWzY5Qaa8g7Nsxsf+V9c7Vhro1FRLNcUSCx0hnjZChe5OsR8Xv/K2AMQX9TMNtNMOWeYC+uWwSnnyxiOJ3guvHqXiUKUAVA0dQ1Y79olOhzxbCTI84myw+64dRKsipeZ5UxBQZOec7mu94xyp2Sk3nH8WbSQ0GXabudJDhEgiN3RSzOIKzTdaNmdw2f8FX/jqja4NXM195ru7JsOtBvuFThCWC7zAlxpb3D8TpQsGkvMYFtPNQXA8/Efa5BNsQKc0LLAbYL
+ H5AxYIgT
+ 7ut031kE9JPqLEmCLtAm7JWLKaGr3pxUa83UDm7qfztat47DbF6RgptJaZKAEu1uWBgRvLcdnz0JsSFzk4k721JeopEFE1QSGSX5rY+/1WlJ0P3Jln/DF3U6Bzp6riNKv9564K+NkNpVHJ2Ld99irX2y5xllg4m9mYXN03vfI29rvyKLIaKuNauer+T8xieGVgcYaZrs2JaEXO5XFQfDfybVSSIbLC5aUr5mBYQ56FPow7sXAKDMhkl+q3fyaZ5YTs9X095Pqy7sxhoTSp+mmYeVEZmlTkB9KdBSo+bwleN9U5qByJ6uMRj0ZkoG2Wsjw+o3IJyJyYqbaJAg0o70n87IatsRPqunlmVCbVcV5EYb9+ltkQo+eQjOxC46awDcimJmq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,79 +99,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 04:03:46PM -0700, Matthew Brost wrote:
-> The contents of a device folio can immediately change after calling
-> ->folio_free(), as the folio may be reallocated by a driver with a
-> different order. Instead of touching the folio again to extract the
-> pgmap, use the local stack variable when calling percpu_ref_put_many().
-> 
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-cxl@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Swap freeing can be expensive when unmapping a VMA containing
+many swap entries. This has been reported to significantly
+delay memory reclamation during Android’s low-memory killing,
+especially when multiple processes are terminated to free
+memory, with slot_free() accounting for more than 80% of
+the total cost of freeing swap entries.
 
-With the cc-stable:
+Two earlier attempts by Lei and Zhiguo added a new thread in the mm core
+to asynchronously collect and free swap entries [1][2], but the
+design itself is fairly complex.
 
-Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
+When anon folios and swap entries are mixed within a
+process, reclaiming anon folios from killed processes
+helps return memory to the system as quickly as possible,
+so that newly launched applications can satisfy their
+memory demands. It is not ideal for swap freeing to block
+anon folio freeing. On the other hand, swap freeing can
+still return memory to the system, although at a slower
+rate due to memory compression.
 
-> ---
-> Stack trace:
-> 
-> [  631.875165] [IGT] xe_exec_system_allocator: starting subtest threads-many-new-prefetch
-> [  632.282992] Oops: general protection fault, probably for non-canonical address 0x900000000000000: 0000 [#1] SMP NOPTI
-> [  632.293469] CPU: 8 UID: 0 PID: 59267 Comm: xe_exec_system_ Not tainted 7.0.0-rc7-xe+ #281 PREEMPT(full)
-> [  632.316023] RIP: 0010:free_zone_device_folio+0x149/0x240
-> [  632.339782] RSP: 0000:ffffc90023d1fd00 EFLAGS: 00010206
-> [  632.344947] RAX: 0900000000000000 RBX: 0000000000000001 RCX: 0000000094472d4d
-> [  632.351991] RDX: ffffffff8155c76f RSI: 000000006f2213bf RDI: 000000008e84943a
-> [  632.359042] RBP: ffffea0ff4030001 R08: 0000000000000000 R09: 0000000000000001
-> [  632.366094] R10: 0000000000000028 R11: 0000000000000000 R12: ffff88811828e400
-> [  632.373145] R13: 0000000000000000 R14: 000fffffc0000000 R15: 0000000000100073
-> [  632.380194] FS:  00007f2f0fdfe6c0(0000) GS:ffff88890a7e7000(0000) knlGS:0000000000000000
-> [  632.388186] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  632.393870] CR2: 00007f2f002e90f8 CR3: 0000000106708002 CR4: 0000000000f70ef0
-> [  632.400919] PKRU: 55555554
-> [  632.403605] Call Trace:
-> [  632.406039]  <TASK>
-> [  632.408131]  do_swap_page+0x146d/0x18c0
-> [  632.411938]  ? __pte_offset_map+0x3e/0x190
-> [  632.415994]  __handle_mm_fault+0x6e8/0x8d0
-> [  632.420053]  handle_mm_fault+0xbf/0x250
-> [  632.423855]  ? lock_mm_and_find_vma+0x41/0x6f0
-> [  632.428256]  do_user_addr_fault+0x168/0x690
-> [  632.432399]  exc_page_fault+0x74/0x200
-> [  632.436117]  asm_exc_page_fault+0x26/0x30
-> [  632.440092] RIP: 0033:0x5587554ff70d
-> [  632.462142] RSP: 002b:00007f2f0fdfc970 EFLAGS: 00010246
-> [  632.467308] RAX: 0000000000003fc0 RBX: 00007f2f082e1fc0 RCX: 00007f2f12b3287d
-> [  632.474355] RDX: 0000000000000000 RSI: 00000000c048644a RDI: 0000000000000003
-> [  632.481404] RBP: 00007f2f082e1fc0 R08: 00007f2f0fdfc958 R09: 0000000000000066
-> [  632.488450] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-> [  632.495495] R13: 00007f2f082de000 R14: 0000000000c00002 R15: 00007f2f1319e000
-> [  632.502547]  </TASK>
-> ---
->  mm/memremap.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index ac7be07e3361..053842d45cb1 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -454,7 +454,7 @@ void free_zone_device_folio(struct folio *folio)
->  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
->  			break;
->  		pgmap->ops->folio_free(folio);
-> -		percpu_ref_put_many(&folio->pgmap->ref, nr);
-> +		percpu_ref_put_many(&pgmap->ref, nr);
->  		break;
->  
->  	case MEMORY_DEVICE_GENERIC:
-> -- 
-> 2.34.1
-> 
+Therefore, in zram, we introduce a GC worker to allow anon
+folio freeing and slot_free to run in parallel, since
+slot_free is performed asynchronously, maximizing the rate at
+which memory is returned to the system.
+
+Xueyuan’s test on RK3588 shows that unmapping a 256MB swap-filled
+VMA becomes 3.4× faster when pinning tasks to CPU2, reducing the
+execution time from 63,102,982 ns to 18,570,726 ns.
+
+A positive side effect is that async GC also slightly improves
+do_swap_page() performance, as it no longer has to wait for
+slot_free() to complete.
+
+Xueyuan’s test shows that swapping in 256MB of data (each page
+filled with repeating patterns such as “1024 one”, “1024 two”,
+“1024 three”, and “1024 four”) reduces execution time from
+1,358,133,886 ns to 1,104,315,986 ns, achieving a 1.22× speedup.
+
+[1] https://lore.kernel.org/all/20240805153639.1057-1-justinjiang@vivo.com/
+[2] https://lore.kernel.org/all/20250909065349.574894-1-liulei.rjpt@vivo.com/
+
+Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+---
+ drivers/block/zram/zram_drv.c | 56 ++++++++++++++++++++++++++++++++++-
+ drivers/block/zram/zram_drv.h |  3 ++
+ 2 files changed, 58 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index c2afd1c34f4a..f5c07eb997a8 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1958,6 +1958,23 @@ static ssize_t debug_stat_show(struct device *dev,
+ 	return ret;
+ }
+ 
++static void gc_slots_free(struct zram *zram)
++{
++	size_t num_pages = zram->disksize >> PAGE_SHIFT;
++	unsigned long index;
++
++	index = find_next_bit(zram->gc_map, num_pages, 0);
++	while (index < num_pages) {
++		if (slot_trylock(zram, index)) {
++			if (test_bit(index, zram->gc_map))
++				slot_free(zram, index);
++			slot_unlock(zram, index);
++			cond_resched();
++		}
++		index = find_next_bit(zram->gc_map, num_pages, index + 1);
++	}
++}
++
+ static void zram_meta_free(struct zram *zram, u64 disksize)
+ {
+ 	size_t num_pages = disksize >> PAGE_SHIFT;
+@@ -1966,6 +1983,9 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
+ 	if (!zram->table)
+ 		return;
+ 
++	flush_work(&zram->gc_work);
++	gc_slots_free(zram);
++
+ 	/* Free all pages that are still in this zram device */
+ 	for (index = 0; index < num_pages; index++)
+ 		slot_free(zram, index);
+@@ -1973,6 +1993,14 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
+ 	zs_destroy_pool(zram->mem_pool);
+ 	vfree(zram->table);
+ 	zram->table = NULL;
++	bitmap_free(zram->gc_map);
++}
++
++static void zram_gc_work(struct work_struct *work)
++{
++	struct zram *zram = container_of(work, struct zram, gc_work);
++
++	gc_slots_free(zram);
+ }
+ 
+ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+@@ -1991,12 +2019,22 @@ static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+ 		return false;
+ 	}
+ 
++	zram->gc_map = bitmap_zalloc(num_pages, GFP_KERNEL);
++	if (!zram->gc_map) {
++		zs_destroy_pool(zram->mem_pool);
++		vfree(zram->table);
++		zram->table = NULL;
++		return false;
++	}
++
+ 	if (!huge_class_size)
+ 		huge_class_size = zs_huge_class_size(zram->mem_pool);
+ 
+ 	for (index = 0; index < num_pages; index++)
+ 		slot_lock_init(zram, index);
+ 
++	INIT_WORK(&zram->gc_work, zram_gc_work);
++
+ 	return true;
+ }
+ 
+@@ -2008,6 +2046,8 @@ static void slot_free(struct zram *zram, u32 index)
+ 	zram->table[index].attr.ac_time = 0;
+ #endif
+ 
++	if (test_and_clear_bit(index, zram->gc_map))
++		atomic64_dec(&zram->stats.gc_slots);
+ 	clear_slot_flag(zram, index, ZRAM_IDLE);
+ 	clear_slot_flag(zram, index, ZRAM_INCOMPRESSIBLE);
+ 	clear_slot_flag(zram, index, ZRAM_PP_SLOT);
+@@ -2781,6 +2821,19 @@ static void zram_submit_bio(struct bio *bio)
+ 	}
+ }
+ 
++static bool try_slot_lazy_free(struct zram *zram, unsigned long index)
++{
++	/* too many lazy-free slots, perform direct free */
++	if (atomic64_read(&zram->stats.gc_slots) > 30000)
++		return false;
++	if (test_and_set_bit(index, zram->gc_map))
++		return false;
++	/* accumulated lazy-free slots, wake up GC worker */
++	if (atomic64_inc_return(&zram->stats.gc_slots) > 200)
++		queue_work(system_dfl_wq, &zram->gc_work);
++	return true;
++}
++
+ static void zram_slot_free_notify(struct block_device *bdev,
+ 				unsigned long index)
+ {
+@@ -2794,7 +2847,8 @@ static void zram_slot_free_notify(struct block_device *bdev,
+ 		return;
+ 	}
+ 
+-	slot_free(zram, index);
++	if (!try_slot_lazy_free(zram, index))
++		slot_free(zram, index);
+ 	slot_unlock(zram, index);
+ }
+ 
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index 08d1774c15db..1f3ffd79fcb1 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -88,6 +88,7 @@ struct zram_stats {
+ 	atomic64_t pages_stored;	/* no. of pages currently stored */
+ 	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
+ 	atomic64_t miss_free;		/* no. of missed free */
++	atomic64_t gc_slots;		/* no. of queued for lazy free by gc */
+ #ifdef	CONFIG_ZRAM_WRITEBACK
+ 	atomic64_t bd_count;		/* no. of pages in backing device */
+ 	atomic64_t bd_reads;		/* no. of reads from backing device */
+@@ -142,5 +143,7 @@ struct zram {
+ #ifdef CONFIG_ZRAM_MEMORY_TRACKING
+ 	struct dentry *debugfs_dir;
+ #endif
++	unsigned long *gc_map;
++	struct work_struct gc_work;
+ };
+ #endif
+-- 
+2.39.3 (Apple Git-146)
+
 
