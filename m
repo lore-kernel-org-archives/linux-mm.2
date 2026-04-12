@@ -4,141 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07A5CE64001
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 08:56:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A495BF45A0F
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 10:42:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 319376B0089; Sun, 12 Apr 2026 04:56:40 -0400 (EDT)
+	id 7D6D16B0089; Sun, 12 Apr 2026 06:42:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C9236B008A; Sun, 12 Apr 2026 04:56:40 -0400 (EDT)
+	id 7877B6B008A; Sun, 12 Apr 2026 06:42:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B7D86B0092; Sun, 12 Apr 2026 04:56:40 -0400 (EDT)
+	id 69CD26B0092; Sun, 12 Apr 2026 06:42:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 090836B0089
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 04:56:40 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 655F4160B31
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 08:56:39 +0000 (UTC)
-X-FDA: 84649298118.15.00653F7
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7BC5A120007
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 08:56:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CGAhWdvu;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A78E6B0089
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 06:42:17 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6A11E3B07
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 10:42:16 +0000 (UTC)
+X-FDA: 84649564272.18.36DFABD
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E3FD31C0005
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 10:42:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dmOnOnmu;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of shorne@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=shorne@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775984197; a=rsa-sha256;
-	cv=none;
-	b=hUHbqOmZk+eDy5UvPi4Rapz0LsEy8UfLmEaGnZvTMPmyWoRUdRmoH9JJiiZwk0IurXx+Il
-	fBluO+rgjyeMz5LXm/xVGwALqPk8HPrlj0XFzzU3tor+92ldMkRXh6PNC6OuZf8G1V9TUf
-	dBgMxPovPoEPIXQFPsRqp1opyIBU3Fg=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CGAhWdvu;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of shorne@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=shorne@gmail.com
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775984197;
+	s=arc-20220608; t=1775990535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EbDgrbrkQIZIzHMqS4zyFwb8jbE/7QCDRz8zhtNheE4=;
-	b=EDy0TgFIgoypQ6fqE+weDGdeYkmmD635pT191f84zg4YbaZH99nO3WNEHILrgvD4PWLy9w
-	7HQAxiUv5CkpZYHfX6v65lgw4RtAIRh09YeatPF8vQVaYlFgBdO6L4W8wUpbyl0EXqZIFJ
-	21n0kubl7gioXChTj6shR1OfWcHy35M=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso37509555e9.1
-        for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:56:37 -0700 (PDT)
+	bh=Nhr4iizw0k0+++Lyk5+s6oL67qDlXiTMljjiFK1kX3s=;
+	b=nCjhB3PRIV7c6dxs3wiYPuqr948iI4RibOHyUDiGi+SG2bFQ6engXhFDDw+I/fDnGFFpMk
+	LJta36YhokdAr3NsI5ocWB68WQ1KlJoO2sSt+pTKhMTYwe1bM5OmBEglYiX6r/UJcuBb0E
+	DHB9FqdiKdv2ugKVcgPS9mFNj4wjyPI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1775990535; a=rsa-sha256;
+	cv=none;
+	b=N/CP9A+KUj5TOm8gDzPWzkHVD42LdwGu+CyEquZRPhuDKgkBN2nyeQYPMLvSmmtaah7Lte
+	eDW+wuovtTGamtT5pvLpQ5RU2V/JAl8oU+PQYNHmSQ+t74ZuJpKDOO5Adp1oM5jc1bl9Eo
+	VRaIh8kS0QD5AkZ/vq5rOPjwNYkR0aU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dmOnOnmu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.178 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-82a7ebc729dso1611651b3a.3
+        for <linux-mm@kvack.org>; Sun, 12 Apr 2026 03:42:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775984196; x=1776588996; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EbDgrbrkQIZIzHMqS4zyFwb8jbE/7QCDRz8zhtNheE4=;
-        b=CGAhWdvuI4TWvUTUqiyw/aCzEXlOP3F8GRgK7lGYOSPsdFqRleStoJ6D+tNH+vcAdB
-         76d6ZySaSBLe3vT87Fj2e5v5M4YzTXfM56HZpqqHRHuFqZ9N7gXnpk/OxssUOi/gB7a5
-         1XnDDR4s30xQIJ1kr7/ZF5bOy/6w4MGZKYSdzdggZteJnfNxg6Va9VdrTtj9oMFOceUY
-         qZwf2340HSsC8+yS0odwlZSJQ1PN+admuClnFZkwMyaoj58prwzxVcmjMMagjQ4uC0p+
-         UxXSen0QLuvKH40u2dx4RLU4apYTsCDf6WbmtvAxHa2eZ/cFccdccmSYKVKS8r0lAy52
-         uPuA==
+        d=gmail.com; s=20251104; t=1775990534; x=1776595334; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Nhr4iizw0k0+++Lyk5+s6oL67qDlXiTMljjiFK1kX3s=;
+        b=dmOnOnmuBum8WFDhuHJr4wr4sZz8KjAZRHMIbr/YR+p2Tqg9VDrm0GxoHMHaGP79kE
+         We03//0NP9BMxFb8URHaY73VEqXx67ygNtWM1PYRDPH3MglQ2NrNEMbnj1Fd7wh1z3IV
+         P+bUffGcQzV5GjEDfDYDv3NIEbBYf7LGTpeCB5PVgkkYD7zmWH6E5i2W7EKsgDidJMMQ
+         GgpTYeWERN3dzuNr6nwnnYHyVKT5Zugj/CFM0mlNBqPsvd28g9Sgiz/Hllnq0MS0ziaS
+         +Rmne921cXqPdp0kAQz72fuy7OBaiBQblj7wM9w1tEQPfl5EYDf3oAVA/kfw37c64ah4
+         WVTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775984196; x=1776588996;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EbDgrbrkQIZIzHMqS4zyFwb8jbE/7QCDRz8zhtNheE4=;
-        b=e7NdmP80m/lACkkRrENPzmyScCfFUrp1eJaup3m1Ud8WxiK06Y4fnpqB+6QAzGpHLJ
-         M3UCSvoBGhWgzlwqH+GGgaVki5VmTCw3zoFeZWmloU33NGd5yHewzU3SnIuEOjI0lZvQ
-         QCet0x34j+xt/bHMKZXNTI2027AKSbWnXhZi4GSdP1CWIPky+eyZIS7o04oNCWwt9anR
-         KT+OiQ4f6F6WhBJ61+TVAVS2+kn/nniS+6H/DC40PWTS/kWpZovj6P5UxK4/fuzOyZcp
-         TntQdzAN1hpR3Q+um+80g18ZfbniKjakUhTpwuUR7/m2texhpjz5vkPI0D5ZGqlT4F4g
-         f0pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWB+MT1FFKsypu6JAOUF94W4gOvDZelE4cSgCE67dnYTJgRtN7yqcWiNyuwFJJz5g4VTnmke2YIQw==@kvack.org
-X-Gm-Message-State: AOJu0YyY24gyIqe9pATh7d4vDvPsrqEO9e9V+S/9rAaQ0oyDMIgDgi9L
-	scUE3IePq6cOu/ZpJvfzT0AXibYiKw+jIpkKUeiPsjBs7Uf6Is2HPZhf
-X-Gm-Gg: AeBDieuztKJiIlhi6Q6x0LkLhSjZ948g+BqPWHc7u/Wnq2mU35h+F9V7mtO1jeO5px3
-	cVycK6OlVzs12btH/hv461q96Iz+M2H/56iba717ecQmwhJV/85FjaqW3JY8K1IazmiYEP5gzIV
-	KgqwSXx6LcNw7Itd9OA+mXWQRy7loRrCJyuY8F2p/dNwPMbmU0JdNBTjnuGRpplpBXceTR7bBD9
-	gXQldMoOAkMb0mp+Bikd0cW8kUaxI4TyNniPTHkVfx/2/47S7dWnn1cYDHwZHXcoZKHwvNNlRex
-	l22UUzSRzihv9fD8c/4/PmiacTaJIc5jSNEfIlGMizvWwCyU5El4XqlXWfIbbp9kcnVRSm1qmWX
-	Y+yPzAIQOfi5Edw0jueDLY1tUPLpsFNxDyopw1izl2hWqbQH78FdzQbiWWNsnT9mh8oM4HobBTI
-	2w/ffWoLhvnfZ+FiEOnWYc9PAbt8KbzromNdpOMVsyD35uv45Uh6sJ8cZPwwkMAvmcCdf51W3D3
-	zzmxA==
-X-Received: by 2002:a05:600c:698d:b0:487:22ad:403e with SMTP id 5b1f17b1804b1-488d6ac9ce5mr126951995e9.14.1775984195334;
-        Sun, 12 Apr 2026 01:56:35 -0700 (PDT)
-Received: from localhost (brnt-04-b2-v4wan-170138-cust2432.vm7.cable.virginm.net. [94.175.9.129])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d532ed4dsm197923925e9.4.2026.04.12.01.56.33
+        d=1e100.net; s=20251104; t=1775990534; x=1776595334;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nhr4iizw0k0+++Lyk5+s6oL67qDlXiTMljjiFK1kX3s=;
+        b=DECBrv2KBYloub6DqbmJRGRjgJpx2CwMEuDWOsCxEw5oypJwjiDcWeyKHpZkMHVmSn
+         MC8/OyUJnDoB8t0yz9YnVtfHWCoH05JOT69iUZ8tXamKkpy1dZJLdFw+29FEiGY1HKz1
+         s6tuP5EPvEbIMgr3vJMGzfcZn0qqHyA682BA9a9SZlm1+BH3qk/T/OkRTUrL0974SXwK
+         4UbtXKd3QuPNtoahOHJnUDyYI1BVfBqEL8na/RATQXfnZBY8lXBfJAGtUJWmLW1T1Yka
+         T1rEwr6u3lIhHn4oh741Om1tMMExb+3WHem9ReRc3J6wFvYE+24JcPEcwhfSyifsQpqx
+         DBgg==
+X-Forwarded-Encrypted: i=1; AFNElJ/V+U4Nc9w6cEK0hWsj01qQdA9d90u2eEPYmp2zlQhy6bkmQqa2bUCJcSY3+900H3x7nbi4Z1eEUw==@kvack.org
+X-Gm-Message-State: AOJu0YwvuUaYrfWFXIQtxU9bsIWp3FCQqVPUGy2V7w03+AHC6h3u7G4G
+	T6u/xT0UN3JTjjGrv187FbNSnR/687KIwrp9gdyJS/mIdov0AP0t+28F
+X-Gm-Gg: AeBDietM7B/FVdTX8EHC7Zibxs3P/YKyc+AJgDnuTHxSTDORfwaMaWEqPtj2te15qyl
+	m9IM4a+AYHeB+5Q9PfyzYLh3Zuf3nZ1F4f2BETTI0kRY5v4YrBQhbh5NuXCyGFgm/t4GHtpoqDU
+	xUu/OMB55PRLv0jNR5ZFOpPSNFrAQf2OsB4+3aska1UtY21jPU8ohsuoYJt0n7W0GfwXuyoQhy0
+	Ho+pgfO/RpM5Xzj54b+Dag+orc/89a/MBp9j6Dh8GrNW4tQ6MXcwuPZVnP3iphTfYQzzSei7/MY
+	A0gPDACEEvN9/+uH9O3fQkiPsL80/AI2wcCqpjvfjBjQVq1DUGEbUobOY1TH0Z6BKpP3yMQnjXY
+	4skibmcEdxaRCPNlgAOMSSiar62dxki/ZjCiNXoY6Xaq5TCPOFWcsiQUUDfs9mcU1ZNawzMZ9sl
+	vbPfA8ufP2EKmPBTIzM7xQMLXYRWnc7NUMnZJOy4FHY9/u32hFDSNp/0d2DtI=
+X-Received: by 2002:a05:6a00:ab0d:b0:82d:24f:2509 with SMTP id d2e1a72fcca58-82f0c131fd6mr10276431b3a.1.1775990533717;
+        Sun, 12 Apr 2026 03:42:13 -0700 (PDT)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c52cf05sm8070937b3a.61.2026.04.12.03.42.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Apr 2026 01:56:34 -0700 (PDT)
-Date: Sun, 12 Apr 2026 09:56:33 +0100
-From: Stafford Horne <shorne@gmail.com>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Jonas Bonn <jonas@southpole.se>,
-	linux-openrisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>,
-	iommu@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
-	linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>,
-	Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
-	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>,
-	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
-	linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
-	linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	sparclinux@vger.kernel.org
-Subject: Re: [patch 30/38] openrisc: Select ARCH_HAS_RANDOM_ENTROPY
-Message-ID: <adteQSw8c65MtX5l@antec>
-References: <20260410120044.031381086@kernel.org>
- <20260410120319.593798781@kernel.org>
+        Sun, 12 Apr 2026 03:42:12 -0700 (PDT)
+Date: Sun, 12 Apr 2026 18:42:03 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Barry Song <baohua@kernel.org>
+Cc: kasong@tencent.com, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	David Stevens <stevensd@google.com>, Chen Ridong <chenridong@huaweicloud.com>, 
+	Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v4 12/14] mm/vmscan: remove sc->file_taken
+Message-ID: <adt1lU5ta_IAC3lO@KASONG-MC4>
+References: <20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com>
+ <20260407-mglru-reclaim-v4-12-98cf3dc69519@tencent.com>
+ <CAGsJ_4zpNLtx6rFFF7fG83TKZ2PpX3JyevZw0KJOL0=cv-ke1g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260410120319.593798781@kernel.org>
-X-Rspamd-Queue-Id: 7BC5A120007
-X-Stat-Signature: 69384axr7zgjw4qg53tyhbwf3ua5jg1h
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4zpNLtx6rFFF7fG83TKZ2PpX3JyevZw0KJOL0=cv-ke1g@mail.gmail.com>
+X-Rspamd-Queue-Id: E3FD31C0005
+X-Stat-Signature: abxysjibre98f97kczw4rcxkojcrcy5e
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1775984197-613558
-X-HE-Meta: U2FsdGVkX18h03r1mCaIu2imfqGLdPDei2zrYzV0VxC2XdXV6oFvtRqf4dP5ACYZhkSyIF4zP5dHevQmLJiXmnbElL6yu37JPpIGnzjtn+0mLhRaA70XAOnwLQgl4Q+RODk5i1KSxTSVPn/clQlDmDeg5fDDenlAGfMEC9hcvmvBVYjDZpu8AgY36psu85jCFBgd01NxshLFZAKD72GLbY8HbQFHGnH4PSpt6TLV8RqbUKW/TqqQT8S4djFKRCTkD44ESjayYB3BgQg88LGyn2HmsmUooLQBF9lUq1zLBk3QfzHlgFGA8HJx9j930GAcwpXj8MwaytesRWcGUrJiDA7hCV0hbc37ExzOcpJjhA5yAPbbcVJCLZ9DzDMMJHPewZ5C9rvVU8s34GVi/VCQAC+4n5zFRQMMpDHvSf4ZgvwO7dxATmBjvzX44D+GQp/67G2VGR3HxqdsBwsUBwZK21wr3OT+9/PcPYzJ8v9jypDLDSI53Rn5xx0wgC4xH+InmUfnOeSNF7tQc+urqJhbFXSbH4Vc02lDnvb7YqtX/mT0cTKNmZfqLKHWlJ9DRlLmXBywo20ZpxDw27APzievmUwngN+Ai26TznZV/CoHTwmgoOWkpY6o0SGrPA3xrxcB/EGv5TEFUb+8u1QMToapvAmGR13BBPNtx5+KsYPP+9oHHJ5E4MIjKKC1PBxqiKOBo6i1g0NOI1a+tRVpD+5YHyPzgy4RrqFbp/AxhFp/fgd9Y9VOVSrl1lZGHW8fP6v3P/FOr/D0LcIRHH6R+gozRu9uoEDgqt2vn0ZlrN7lJ+YeVyUu5ZPrx+NgNUG0uuJ5bWqhZr0nmfhSqETerFNBJjeEgSX1bQWg7EgUyquMWp1vmQGrT7do+VqqN7r+CTFfj00fz3LxR7inoAB4AsOctz7bjGLci2zSPye8txEntof5pwMyl4ssHmA6pJxZSW1DNdWtzNVYzVjWGtpKKOj
- Lv6p0MCY
- SEJH/2mGwqOamsCynTzA0vZKYwzIwT4Eohw8TSSF1M8vxUqGo2fUHBIR4biK2Fy+m/Co69e/UoOeYK+WrEgkwssL37+JcRCgPOgE2o4AUeFBCblqShfTh+8pt0/Yqx79h8WIVVgYixBviXyWa12y4a0floHhcxF6/aV5GogyN/h1ZuWI723nb+gdsUQe5EiU9GvC+niJaKnnwWKF842LIYhc2OhNa0RidFActvKn2rc6T2vaUslYkcZr9Y9777/MO0pKPHB0RMOx+XNqKKwtCAjnlEmkKaX72Vo3d09mGfT11NOI8rIrHCknHMvP1UyZwWZYS5ZYWosNrkI0Wn3BVZiORXWGkyvrG5yeMBc7Vj1jQuPK9ObB+3QMKAsH1k0DyOx8oLZcsFrT0Ttse6aA5s8r0kDjEj8veV+8cVlPGfBA90dUEcz8y5F3XK6DQIAmSSLMGFuaAn24KbQA98rOqW3QVz82b/72vthkehH2yal+KW0Wkpq2mVfObIIENUyf0yPjZSzidGCb2UvqqfujkTDOHSEgRBR39TeNo3zMKoU4r19cNIpCsIX9txXpV8Es2rs9UX/2AbwWfn7rd0czpvm4OQQQPQbPDr+rfYBnmkPXsjeOha/+cSJ1J/EsnHdRM4KukiE+81yOfSgA=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1775990534-97315
+X-HE-Meta: U2FsdGVkX185zGsf2k8Dnr8wSGpROup1trKK0eyfLJolS5sj8pZotFmJWQ61amwxlGzuNiRkCmMMpFLuLwEKlhj2KSwxiklK0OerAkFo2u7bDrfg2eRKvmOckrUkBQisYM+VE0lWwtRPJhuCMhd3XFw508bWnIulQmjebSgXnstyqHXtVV18fTPfRFuPX9BWTTHaEcZW6QJd7UFEcUcv5fhO6pAmK0UmPlesM2ueWa2W3QgRACK5dh1bAaKgS5kYkr5SIy88GF1yHNxdCSZn1aLbvDd1c3d85F1nhhZ72OpDQNF3CNPYOBEmaOpSqQc4Eb3dOyRAL9cICc96JXynuq6EQKMkATb7BqPOufv/kQY+vLHWVqOIbqF52u5zFNPyvn8NeHPn3QUxVBzorir9c1duco4IVcm4tnoca93rR+Aj8sq+Ra8XxqmS1btWouBsKHK9rp1INN199upr994Z2oLqyUMBwMH6I37+2FWxrC/daVALevJNXtrRqyCovdAVLcvVa0XfGU31+s+C36yCvStj1NaQQER++ZSoe1bju2zadkogbSuxG2TO0G68uJBR0oi+X/IaN06xhhTpoOny5Ctdb30Z/deTh4Y/lqXPp36HfEGggXkrQFDqIdpkkv/LThuj/k88TV7miTLZVrsNUkusLEf4XSQEKtLpWcr11nvu2lwC0oAUe0gFLFso1J+oJzNpK7nV9mgCjB+rw30mZ8lCQp9+WUy8qZO++oX0MAYdG4SObLhAYASGRdvwBp8RK/4gH+xun9tdaNWOyoJCqxQyVz/RtyfQiIad27vBRBdoPMc5R6jDUAbj/31yfyaJ+jVLs/HC7Io4CW5gsAY1Q0KIRkd7/4GUOIU2mvhTWI0mg8uOkr45+pSE5qTm7XPNjiish1feH8wXAH8Tp4UrzlfekswpV1r3GPw7tgx0a6ujrFGe0rmONc98B1ZD2Anfpf3qp4ZCkxpYCjvLAcd
+ mMGyI3Au
+ qYlWHXZHHG200O5lPiCT9ZA7irVRgSQ5bjrhwkuk7a8b73gcJeS9Cspq3xjvaFid0tWFnY1rDqz9QnKhFIMPcncS9ILICm8/EOvdbMr5n43ILrrptwNSASVeP8b/YyqpnLHFyBuPLKtwq203xDCXU/1BsPccMi/0/woBxaqjjLt2ROaySdETSTuZz7vcBtpUV33385HP8F/q6z2VuOAWzqFxx26GhwHoohVSAI25i9Ewzaoob4l3rw+4Es8vjpNTFwQRAhEbwNgbIxQTmQRdP9uJh57AMR5QyEcONWC0Ged6R69ZcP4Ys+y/rmqXWXM7MI1aYTQetRXxG16+lXWJ2uw0l7iQdyOxLu7lghUK4+88uSCGaBnAendH8E2xlceu2gSSyRo89Kfo9CmI/iRInWHt8/oA/xrIcFzVDjH3Y79ABA9cvvrsGKNE96yfuJe21UjZNptHDnMbH/miK0kro+j6lryq7PyvsdllwFiTp1e9iHrohWsU1zQPseUFQLi7MYoQhbRnDh7FUW9CAdbfCAdO/tWhPCORHbRjlP8IVWU2/oR05MKaYqV0oqXLIixQc+HbQ7DNb9F4NfYsdp5yDkbcIonb48XjvMFvtYOBC7AJTZe/+FOjac8XlqsGQaHNJgt6STy+5+fwywlqkZjMmZASBGw4JugcXalm7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,89 +131,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 02:20:55PM +0200, Thomas Gleixner wrote:
-> The only remaining non-architecture usage of get_cycles() is to provide
-> random_get_entropy().
+On Sat, Apr 11, 2026 at 12:43:00PM +0800, Barry Song wrote:
+> On Tue, Apr 7, 2026 at 8:04 PM Kairui Song via B4 Relay
+> <devnull+kasong.tencent.com@kernel.org> wrote:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > No one is using it now, just remove it.
+> >
+> > Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
 > 
-> Switch openrisc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
-> and providing random_get_entropy() in asm/random.h.
-> 
-> Add 'asm/timex.h' includes to the relevant files, so the global include can
-> be removed once all architectures are converted over.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: Jonas Bonn <jonas@southpole.se>
-> Cc: linux-openrisc@vger.kernel.org
+> Can we squash this into patch 10/14, where the user of
+> file_taken is removed?
+> The same applies to patch 13 as well :-)
 
-This looks good to me.
-
-Acked-by: Stafford Horne <shorne@gmail.com>
-
-> ---
->  arch/openrisc/Kconfig              |    1 +
->  arch/openrisc/include/asm/random.h |   12 ++++++++++++
->  arch/openrisc/include/asm/timex.h  |    5 -----
->  arch/openrisc/lib/delay.c          |    1 +
->  4 files changed, 14 insertions(+), 5 deletions(-)
-> 
-> --- a/arch/openrisc/Kconfig
-> +++ b/arch/openrisc/Kconfig
-> @@ -10,6 +10,7 @@ config OPENRISC
->  	select ARCH_HAS_DELAY_TIMER
->  	select ARCH_HAS_DMA_SET_UNCACHED
->  	select ARCH_HAS_DMA_CLEAR_UNCACHED
-> +	select ARCH_HAS_RANDOM_ENTROPY
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
->  	select GENERIC_BUILTIN_DTB
->  	select COMMON_CLK
-> --- /dev/null
-> +++ b/arch/openrisc/include/asm/random.h
-> @@ -0,0 +1,12 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +#ifndef __ASM_OPENRISC_RANDOM_H
-> +#define __ASM_OPENRISC_RANDOM_H
-> +
-> +#include <asm/timex.h>
-> +
-> +static inline unsigned long random_get_entropy(void)
-> +{
-> +	return get_cycles();
-> +}
-> +
-> +#endif
-> --- a/arch/openrisc/include/asm/timex.h
-> +++ b/arch/openrisc/include/asm/timex.h
-> @@ -9,13 +9,9 @@
->   * OpenRISC implementation:
->   * Copyright (C) 2010-2011 Jonas Bonn <jonas@southpole.se>
->   */
-> -
->  #ifndef __ASM_OPENRISC_TIMEX_H
->  #define __ASM_OPENRISC_TIMEX_H
->  
-> -#define get_cycles get_cycles
-> -
-> -#include <asm-generic/timex.h>
->  #include <asm/spr.h>
->  #include <asm/spr_defs.h>
->  
-> @@ -23,6 +19,5 @@ static inline cycles_t get_cycles(void)
->  {
->  	return mfspr(SPR_TTCR);
->  }
-> -#define get_cycles get_cycles
->  
->  #endif
-> --- a/arch/openrisc/lib/delay.c
-> +++ b/arch/openrisc/lib/delay.c
-> @@ -18,6 +18,7 @@
->  #include <linux/init.h>
->  
->  #include <asm/param.h>
-> +#include <asm/timex.h>
->  #include <asm/processor.h>
->  
->  bool delay_read_timer(unsigned long *timer_value)
-> 
-> 
+Thanks for the suggestion! They currently have different reviewed-by
+and suggested-by tags and I hoped to keep the credits for other
+people. Seems trivial.
 
