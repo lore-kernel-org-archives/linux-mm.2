@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3562E937FC
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 19:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7F7DE937EE
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 19:01:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38E316B00A7; Sun, 12 Apr 2026 15:01:13 -0400 (EDT)
+	id 1E0D76B00A9; Sun, 12 Apr 2026 15:01:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 340366B00A9; Sun, 12 Apr 2026 15:01:13 -0400 (EDT)
+	id 1B8856B00AB; Sun, 12 Apr 2026 15:01:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 255E16B00AA; Sun, 12 Apr 2026 15:01:13 -0400 (EDT)
+	id 0CE936B00AC; Sun, 12 Apr 2026 15:01:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10ABB6B00A7
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 15:01:13 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3F93A8CB44
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 19:01:12 +0000 (UTC)
-X-FDA: 84650821584.12.F810AFA
+	by kanga.kvack.org (Postfix) with ESMTP id E939F6B00A9
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 15:01:18 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AFE821B8F47
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 19:01:18 +0000 (UTC)
+X-FDA: 84650821836.03.604F301
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7CB3D180009
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 19:01:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iRr9aHWa;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id D221CA000F
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 19:01:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BKqWaEcJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776020470;
+	s=arc-20220608; t=1776020477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JdOZ8YTyKF+rLP+kL4O2mcLUo041KypUkSbmo8fdz1s=;
-	b=qpCo/zwan2Ja0joiP6t/h5LmkGKtqSn4szITQRymDSWCJ51jDf26lXlFdu8HtjOuh00Cla
-	PCQerGRGX0MotkHp6UyzU9XtKlhSSx1h17v0UFKVpx0zuHJ7+bHJXAwNOKtW5E6r86Mfvt
-	pQds8D02W4abaJr0Mdg8yueYS6+alNM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iRr9aHWa;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776020470; a=rsa-sha256;
+	bh=pfP4XnZDsnDT810wJI1lXar2Fs2sH3hmNjKuIvWox04=;
+	b=2Q3S0S9NX6dW84PepTtc0DEK+ZbW9Y+c3tY2k84v8pEqEv9wVi4EwrQ3Q+J5HhMuWabOWd
+	T6EVFI0ID0wj0o9FtVzif/zgjuZ4ksl2RUw76ZDzat+0+4i8f3oJ3ccWOLtZOvbB7+Xkwm
+	FoI1HEumWh4S8+jmyJgBKp9EgHR+iW8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776020477; a=rsa-sha256;
 	cv=none;
-	b=QaDkTP3FzTQNClfkNR+XB87xuRMF9/XcJR8zuNGYOdyMmPn8Fjsegs2wBRfPtqz8O9qJ2O
-	qLQou1XBQxorTcuS5iRsYkRg71rdLRCuh104S/Ye9S63FxuL5ZTyO5OfRQDv0XknYKnQbz
-	ZrSWNzkcjTeftY65vIS9fg/5C8OtzME=
+	b=MaXY4MioIVZ6+bQSuZxPogZXQAJhlAl5wkM/x+0wLKk6An7jsvAkESJWkjEdK1p+aIxYRJ
+	gu/QFlLVS8Z2ZKaBiyT8nVOI9dqqJQboQouCJxs2vblSFOASoSSFv4OlfHqeiDdW+VmD5A
+	6WeAJwjuG9xVf7a5jeBVoOrJ7pCIE8E=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BKqWaEcJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BD3F42A5D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 059A94064B;
+	Sun, 12 Apr 2026 19:01:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F8AC19425;
 	Sun, 12 Apr 2026 19:01:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC77C19424;
-	Sun, 12 Apr 2026 19:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776020469;
-	bh=JZvLJcjv2gHfduMXKfq+mJwAx6s5YsFTAkgnQcxaWZ8=;
+	s=k20201202; t=1776020475;
+	bh=75B3Sn7MVipkRyt3ca6vBN0Fy65OWdrpROiMT2it6RU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=iRr9aHWahhYBJDnSK4lcL93nbxXeh1H0DOCfQ3M9PZ2xMgUj97NCkumGeDCiyxP9v
-	 oT+3kt1T/dyrZHEOIZlECOMCBIEiJUpdkMSemjLbuzq7qAOpEch/qupOm6M0JiD1Dt
-	 rW3TF8KL0nFUKarTNHNLta0ujwL5itdjcrL+Pj3K7cwzRmKfDQx3xiZaxYTmxD7yMr
-	 FPgIb7KZk9/riNdA0ehd6LerPOaFiwbPf7y3cVArZX5v4QAwYMsisneU9NxeHwzu/G
-	 Ug24HXsQ3mPwPnftLqoO+iy071bG7XdjEOopTktpsA28fJyxFeHYZmfd0cCSXr5zAW
-	 kYbKmvc9lQqdQ==
+	b=BKqWaEcJ+ZORRiArbkuZkg8xbXuXikiCRf0z1gsWnrRW3aTdA5Cl9LCAVkUrEVf7H
+	 LrpkE2RhqWvU4XhQxq3sfsOfxpF8DjYFlOlBTZqWLcco/EwF4+LS2uhcMjBA60Lstq
+	 XXUkYUi+z1JQ6IclXGlZtzdWaPB7g2GMV2zmssLvnpCOTGWCdGVmKQqs5E7KCTZlag
+	 4M2rT9q26kl6qhuiBzhZUwHEwmSGXMJfw0kTKUyGtj74WKZ2hyPyOuHYw4gn+O1c9I
+	 EJdjEcpRHat1Uwh/DHSRj8IeQEKOORylIVHfK6Py1xb7eOkbsT6mzx8+ur1G/8G4nd
+	 srNY+Zm28Otwg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sun, 12 Apr 2026 20:59:42 +0200
-Subject: [PATCH RFC 11/13] mm/rmap: stop using the entire mapcount for
- hugetlb folios
+Date: Sun, 12 Apr 2026 20:59:43 +0200
+Subject: [PATCH RFC 12/13] mm/rmap: large mapcount interface cleanups
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260412-mapcount-v1-11-05e8dfab52e0@kernel.org>
+Message-Id: <20260412-mapcount-v1-12-05e8dfab52e0@kernel.org>
 References: <20260412-mapcount-v1-0-05e8dfab52e0@kernel.org>
 In-Reply-To: <20260412-mapcount-v1-0-05e8dfab52e0@kernel.org>
 To: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
@@ -89,14 +88,14 @@ Cc: cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  linux-fsdevel@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: 7CB3D180009
-X-Stat-Signature: 69k73dq7sunk467e67entfn93zsu1pb7
+X-Rspamd-Queue-Id: D221CA000F
+X-Stat-Signature: futwao83qhqraz4uo3ghx1s7q73eautg
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776020470-425951
-X-HE-Meta: U2FsdGVkX19O6xi2flqecNBl7EFyX/1eZcEXO0/AQLTnqL6BQHs9Mzn+5mIz06G7oqP55QUKEroXY10t/xjVypiVnf8qUHelykwX2WtPD/vBf8tjCjX/ayNEoAJFhlB+I+aHBq8I62V4tCBcQXTdgZlOmvqCaV5/Ls4maXuvd4cyllJqLYEi4Bg2mle1NOvY7UcvrwJ3yfwS0ULusSy2ZS07yf0m9+poQwsPnv/sUJeVmc4MqzSg4SW187wU2gecFuFGIWLfFrJOC3WBeev4aTovJ6rsNV3EO7CMBRE7xJidLr5akZWR4k+eF5Ghtqm9SxTrU25tq2QWQOP5lHgQ3rnwCNWuME8AIlJMDeSXbyO3T0BErDqHJqEbazfLw6vNauVA8kVpiseGq/l6xkoB+3jIlXTlKd3rfSldxH4BsVB2uBjAfLwKI4e+Gj6tyabe7tMu430obHBnqECQiyROd6N2P2t8EE3tMUqZSHXYTOslHeSsO4t+FFhGBeRm+xfBGUvX276Asv3aoZFU+7nr7lcOOQFBFA9rX2t1gkdD400TW3UamnhweFMeS5ol9hvRNGifQDoYcs2or0R7YfopPLT1YbgC1ULmBjNXgV8FObUaW3z5Yqbr17CWjYxoTSOWBQOFqO3ZapyZ8u7x53prprw8ggYvaQrVxFNTotXCyONV0Szr0jGmw/QOxlGmatbsTePhAvTxZEFYnL+CYrTC4/DKlqaR+mHpJZyeB1obYNFAgsJMDPNHISiZGgmrXmdDirUOOhtPbfqN0iI7z5w+ngx5qtNDUUZ8E00X0Kgtc+ZPE/lye+grDHo6vrvoDrdfjtiJUebZEPMSiYcHtydfYcG21QRy1AHYoFC2rpqQATryC9ncMT8myqg+3JtaOZWaZMgE2HMybr1zVW/8WEQtk4+BLcgyChBG4sts/8+J3vH5wGbQJbYcamDdwekqJ/h8sLbwYypor+jB/dr6EmZ
- 6gxkcFhw
- WrKD7NUoCz3/zUAC3md1WTmCYRtV4LSVvzBIZetH3i3nKtaWu+zCLj+m99yzWJLXYa7fnMhPm+iZscvGFBPPRSsEkKz8ZUhDP6zc2c3/PrI4lcjxceCfHEK1yjxXsVjEoCpF2b2gQHK5T0zA36CaLcsRYU4AV7P29+9GNQEjoghCGUakeuGGG6PSYiMYHeVgMp4n8J4/utOTbhCN2FLT6kui9mKHahYfzY4j96nKrRuefEscbnjTO41+WAAhim3MFGKzC6CjFhRgjm5fgaObPvNymzA==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776020476-195112
+X-HE-Meta: U2FsdGVkX18cFlSDmyIg6QMfnTpRNCUh4mx2wnhdbe+oiaZayb5qQAzaoWs4FShu2CpLRKVwHX9AT7j3rkOrVSat3dKJOGhJskUjMtYUNR1xnj9fIGxrNw/q6kJu4JNxivSwRdjkYnIfnrexHzvo66OavOx0DDnmFZBAbv6Dy4hTpzMZKrLyhFCuXQulpKlp7ssFvl2jL15YpcZLMvFVfObZpzQMpqReO6PSkiW/tdG8avB+hWaQ9e2bZbPXqBidM1oRpL4yz4D4p0jcIsKVXxNt0sH4ghN9hCfRtmzNwCrFRQ6M3ptb2vs6LthV6gyA/1GQK/X1Cjm2NQ86bmvdxZZ2o/iMcGCGcn8sabm7Vz0jqiT08jI2ceqVyJO8qsSt805M2DELw2adauC+lu8je7go6+eGSFSl2eSQkNmd/oW3SK4X+SOjqh/oOtDgBVjCL4pRAWb/oo5qR6BIUvxsaFgofD1ov1Ysd2ZD+nedGf2LFx/JAYtEanTvOy3DbpPXtvObAmS1rv6lvzGyMHFsHE1t7zcdtK/Ku0Y6vvRbVaHblAPCD24ZN1guYLzufejjrVLr9xe0USU5stwuBVODo6GMHMIMGELtatgmW3xD7t8goPp0FO+GSsDSYidOQkjK9t4NblG1pew0IyAdWOxebim9ShRj+tzAwz12Z8WvbhB8/2h8z1nEEjHlohqk7klc6vIondTiAeXIJsnGL1r4BVKFakelWqgdyhhFFUdo66DI2wQoC2c1Am2LxE9x7BDAvj98MDj2S3Tmj67rQ4kKMIVBGe8zYZMZtlP02iZdcBz5y8qyKfilKZMZv39uEiyVbdbNw8Pqegosxnl6Ir/cyrMJx7Kxz5vPlm5tXzK5GzHnv6axRUpWa8h8wdCN7vFSPdFXj4zAhdEy/4Kbftv/eptYGXkCn+X165yHTeAq7IbdLHaQLAwKSbQcYfwSc4EzgpxVsHUaEXTV7T95iOx
+ dNT5ogFw
+ zKbo5z7saFKi4dTWeXc3sd57xk81bbTH1k5FagOvMfPV94sv2mKOZWvDzHX+aybdXiaaCEX6Ejik8AHs2b57ziNMlXocwgqX6rCHK8NzfE1gVDGtP7seDUnjwNBvGHwgSsHmYt5oa2qguK4UkJg0dPnaZGrhWpss2PnURNDVFauYJHfRJO4ovi2bkh0/+9TM2N3mQXihWiwyYXgY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,117 +103,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There is no real reason why hugetlb still updates the entire mapcount:
-the value always corresponds to folio_mapcount().
-
-As we want to change the semantics of the entire mapcount in a way
-incompatible with hugetlb, let's just stop using the entire mapcount
-for hugetlb folios entirely.
-
-We only have to teach folio_average_page_mapcount() about the change.
+Let's prepare for passing another counter by renaming diff/mapcount to
+"nr_mappings" and just using an "unsigned int".
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- fs/proc/internal.h   | 3 +++
- include/linux/mm.h   | 2 ++
- include/linux/rmap.h | 3 ---
- mm/debug.c           | 2 +-
- mm/rmap.c            | 4 +---
- 5 files changed, 7 insertions(+), 7 deletions(-)
+ include/linux/rmap.h | 61 ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 31 insertions(+), 30 deletions(-)
 
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index a5908167ce2d..1dd46e55c850 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -186,6 +186,9 @@ static inline int folio_average_page_mapcount(struct folio *folio)
- 	mapcount = folio_large_mapcount(folio);
- 	if (unlikely(mapcount <= 0))
- 		return 0;
-+	if (folio_test_hugetlb(folio))
-+		return mapcount;
-+
- 	entire_mapcount = folio_entire_mapcount(folio);
- 	if (mapcount <= entire_mapcount)
- 		return entire_mapcount;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6dd906585420..3092db64a009 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1829,6 +1829,8 @@ static inline int is_vmalloc_or_module_addr(const void *x)
-  * How many times the entire folio is mapped as a single unit (eg by a
-  * PMD or PUD entry).  This is probably not what you want, except for
-  * debugging purposes or implementation of other core folio_*() primitives.
-+ *
-+ * Always 0 for hugetlb folios.
-  */
- static inline int folio_entire_mapcount(const struct folio *folio)
- {
 diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 4894e43e5f52..b81b1d9e1eaa 100644
+index b81b1d9e1eaa..5a02ffd3744a 100644
 --- a/include/linux/rmap.h
 +++ b/include/linux/rmap.h
-@@ -443,7 +443,6 @@ static inline int hugetlb_try_dup_anon_rmap(struct folio *folio,
- 			return -EBUSY;
- 		ClearPageAnonExclusive(&folio->page);
- 	}
--	atomic_inc(&folio->_entire_mapcount);
- 	atomic_inc(&folio->_large_mapcount);
- 	return 0;
- }
-@@ -477,7 +476,6 @@ static inline void hugetlb_add_file_rmap(struct folio *folio)
- 	VM_WARN_ON_FOLIO(!folio_test_hugetlb(folio), folio);
- 	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
- 
--	atomic_inc(&folio->_entire_mapcount);
- 	atomic_inc(&folio->_large_mapcount);
+@@ -133,10 +133,10 @@ static inline void folio_set_mm_id(struct folio *folio, int idx, mm_id_t id)
  }
  
-@@ -485,7 +483,6 @@ static inline void hugetlb_remove_rmap(struct folio *folio)
+ static inline void __folio_large_mapcount_sanity_checks(const struct folio *folio,
+-		int diff, mm_id_t mm_id)
++		unsigned int nr_mappings, mm_id_t mm_id)
  {
- 	VM_WARN_ON_FOLIO(!folio_test_hugetlb(folio), folio);
+ 	VM_WARN_ON_ONCE(!folio_test_large(folio) || folio_test_hugetlb(folio));
+-	VM_WARN_ON_ONCE(diff <= 0);
++	VM_WARN_ON_ONCE(nr_mappings == 0);
+ 	VM_WARN_ON_ONCE(mm_id < MM_ID_MIN || mm_id > MM_ID_MAX);
  
--	atomic_dec(&folio->_entire_mapcount);
- 	atomic_dec(&folio->_large_mapcount);
+ 	/*
+@@ -145,7 +145,7 @@ static inline void __folio_large_mapcount_sanity_checks(const struct folio *foli
+ 	 * a check on 32bit, where we currently reduce the size of the per-MM
+ 	 * mapcount to a short.
+ 	 */
+-	VM_WARN_ON_ONCE(diff > folio_large_nr_pages(folio));
++	VM_WARN_ON_ONCE(nr_mappings > folio_large_nr_pages(folio));
+ 	VM_WARN_ON_ONCE(folio_large_nr_pages(folio) - 1 > MM_ID_MAPCOUNT_MAX);
+ 
+ 	VM_WARN_ON_ONCE(folio_mm_id(folio, 0) == MM_ID_DUMMY &&
+@@ -161,29 +161,29 @@ static inline void __folio_large_mapcount_sanity_checks(const struct folio *foli
  }
  
-diff --git a/mm/debug.c b/mm/debug.c
-index 80e050bf29ba..82baaf87ef3d 100644
---- a/mm/debug.c
-+++ b/mm/debug.c
-@@ -86,7 +86,7 @@ static void __dump_folio(const struct folio *folio, const struct page *page,
- 		pr_warn("head: order:%u mapcount:%d entire_mapcount:%d pincount:%d\n",
- 				folio_order(folio),
- 				folio_mapcount(folio),
--				folio_entire_mapcount(folio),
-+				folio_entire_mapcount(folio);
- 				pincount);
+ static __always_inline void folio_set_large_mapcount(struct folio *folio,
+-		int mapcount, struct vm_area_struct *vma)
++		unsigned int nr_mappings, struct vm_area_struct *vma)
+ {
+-	__folio_large_mapcount_sanity_checks(folio, mapcount, vma->vm_mm->mm_id);
++	__folio_large_mapcount_sanity_checks(folio, nr_mappings, vma->vm_mm->mm_id);
+ 
+ 	VM_WARN_ON_ONCE(folio_mm_id(folio, 0) != MM_ID_DUMMY);
+ 	VM_WARN_ON_ONCE(folio_mm_id(folio, 1) != MM_ID_DUMMY);
+ 
+ 	/* Note: mapcounts start at -1. */
+-	atomic_set(&folio->_large_mapcount, mapcount - 1);
+-	folio->_mm_id_mapcount[0] = mapcount - 1;
++	atomic_set(&folio->_large_mapcount, nr_mappings - 1);
++	folio->_mm_id_mapcount[0] = nr_mappings - 1;
+ 	folio_set_mm_id(folio, 0, vma->vm_mm->mm_id);
+ }
+ 
+ static __always_inline int folio_add_return_large_mapcount(struct folio *folio,
+-		int diff, struct vm_area_struct *vma)
++		unsigned int nr_mappings, struct vm_area_struct *vma)
+ {
+ 	const mm_id_t mm_id = vma->vm_mm->mm_id;
+ 	int new_mapcount_val;
+ 
+ 	folio_lock_large_mapcount(folio);
+-	__folio_large_mapcount_sanity_checks(folio, diff, mm_id);
++	__folio_large_mapcount_sanity_checks(folio, nr_mappings, mm_id);
+ 
+-	new_mapcount_val = atomic_read(&folio->_large_mapcount) + diff;
++	new_mapcount_val = atomic_read(&folio->_large_mapcount) + nr_mappings;
+ 	atomic_set(&folio->_large_mapcount, new_mapcount_val);
+ 
+ 	/*
+@@ -194,14 +194,14 @@ static __always_inline int folio_add_return_large_mapcount(struct folio *folio,
+ 	 * we might be in trouble when unmapping pages later.
+ 	 */
+ 	if (folio_mm_id(folio, 0) == mm_id) {
+-		folio->_mm_id_mapcount[0] += diff;
++		folio->_mm_id_mapcount[0] += nr_mappings;
+ 		if (!IS_ENABLED(CONFIG_64BIT) && unlikely(folio->_mm_id_mapcount[0] < 0)) {
+ 			folio->_mm_id_mapcount[0] = -1;
+ 			folio_set_mm_id(folio, 0, MM_ID_DUMMY);
+ 			folio->_mm_ids |= FOLIO_MM_IDS_SHARED_BIT;
+ 		}
+ 	} else if (folio_mm_id(folio, 1) == mm_id) {
+-		folio->_mm_id_mapcount[1] += diff;
++		folio->_mm_id_mapcount[1] += nr_mappings;
+ 		if (!IS_ENABLED(CONFIG_64BIT) && unlikely(folio->_mm_id_mapcount[1] < 0)) {
+ 			folio->_mm_id_mapcount[1] = -1;
+ 			folio_set_mm_id(folio, 1, MM_ID_DUMMY);
+@@ -209,13 +209,13 @@ static __always_inline int folio_add_return_large_mapcount(struct folio *folio,
+ 		}
+ 	} else if (folio_mm_id(folio, 0) == MM_ID_DUMMY) {
+ 		folio_set_mm_id(folio, 0, mm_id);
+-		folio->_mm_id_mapcount[0] = diff - 1;
++		folio->_mm_id_mapcount[0] = nr_mappings - 1;
+ 		/* We might have other mappings already. */
+-		if (new_mapcount_val != diff - 1)
++		if (new_mapcount_val != nr_mappings - 1)
+ 			folio->_mm_ids |= FOLIO_MM_IDS_SHARED_BIT;
+ 	} else if (folio_mm_id(folio, 1) == MM_ID_DUMMY) {
+ 		folio_set_mm_id(folio, 1, mm_id);
+-		folio->_mm_id_mapcount[1] = diff - 1;
++		folio->_mm_id_mapcount[1] = nr_mappings - 1;
+ 		/* Slot 0 certainly has mappings as well. */
+ 		folio->_mm_ids |= FOLIO_MM_IDS_SHARED_BIT;
  	}
+@@ -225,15 +225,15 @@ static __always_inline int folio_add_return_large_mapcount(struct folio *folio,
+ #define folio_add_large_mapcount folio_add_return_large_mapcount
  
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 27488183448b..d08927949284 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -3042,11 +3042,10 @@ void hugetlb_add_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
- 	VM_WARN_ON_FOLIO(!folio_test_hugetlb(folio), folio);
- 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+ static __always_inline int folio_sub_return_large_mapcount(struct folio *folio,
+-		int diff, struct vm_area_struct *vma)
++		unsigned int nr_mappings, struct vm_area_struct *vma)
+ {
+ 	const mm_id_t mm_id = vma->vm_mm->mm_id;
+ 	int new_mapcount_val;
  
--	atomic_inc(&folio->_entire_mapcount);
- 	atomic_inc(&folio->_large_mapcount);
- 	if (flags & RMAP_EXCLUSIVE)
- 		SetPageAnonExclusive(&folio->page);
--	VM_WARN_ON_FOLIO(folio_entire_mapcount(folio) > 1 &&
-+	VM_WARN_ON_FOLIO(folio_large_mapcount(folio) > 1 &&
- 			 PageAnonExclusive(&folio->page), folio);
+ 	folio_lock_large_mapcount(folio);
+-	__folio_large_mapcount_sanity_checks(folio, diff, mm_id);
++	__folio_large_mapcount_sanity_checks(folio, nr_mappings, mm_id);
+ 
+-	new_mapcount_val = atomic_read(&folio->_large_mapcount) - diff;
++	new_mapcount_val = atomic_read(&folio->_large_mapcount) - nr_mappings;
+ 	atomic_set(&folio->_large_mapcount, new_mapcount_val);
+ 
+ 	/*
+@@ -243,13 +243,13 @@ static __always_inline int folio_sub_return_large_mapcount(struct folio *folio,
+ 	 * negative.
+ 	 */
+ 	if (folio_mm_id(folio, 0) == mm_id) {
+-		folio->_mm_id_mapcount[0] -= diff;
++		folio->_mm_id_mapcount[0] -= nr_mappings;
+ 		if (folio->_mm_id_mapcount[0] >= 0)
+ 			goto out;
+ 		folio->_mm_id_mapcount[0] = -1;
+ 		folio_set_mm_id(folio, 0, MM_ID_DUMMY);
+ 	} else if (folio_mm_id(folio, 1) == mm_id) {
+-		folio->_mm_id_mapcount[1] -= diff;
++		folio->_mm_id_mapcount[1] -= nr_mappings;
+ 		if (folio->_mm_id_mapcount[1] >= 0)
+ 			goto out;
+ 		folio->_mm_id_mapcount[1] = -1;
+@@ -275,35 +275,36 @@ static __always_inline int folio_sub_return_large_mapcount(struct folio *folio,
+  * See __folio_rmap_sanity_checks(), we might map large folios even without
+  * CONFIG_TRANSPARENT_HUGEPAGE. We'll keep that working for now.
+  */
+-static inline void folio_set_large_mapcount(struct folio *folio, int mapcount,
++static inline void folio_set_large_mapcount(struct folio *folio,
++		unsigned int nr_mappings,
+ 		struct vm_area_struct *vma)
+ {
+ 	/* Note: mapcounts start at -1. */
+-	atomic_set(&folio->_large_mapcount, mapcount - 1);
++	atomic_set(&folio->_large_mapcount, nr_mappings - 1);
  }
  
-@@ -3057,7 +3056,6 @@ void hugetlb_add_new_anon_rmap(struct folio *folio,
+ static inline void folio_add_large_mapcount(struct folio *folio,
+-		int diff, struct vm_area_struct *vma)
++		unsigned int nr_mappings, struct vm_area_struct *vma)
+ {
+-	atomic_add(diff, &folio->_large_mapcount);
++	atomic_add(nr_mappings, &folio->_large_mapcount);
+ }
  
- 	BUG_ON(address < vma->vm_start || address >= vma->vm_end);
- 	/* increment count (starts at -1) */
--	atomic_set(&folio->_entire_mapcount, 0);
- 	atomic_set(&folio->_large_mapcount, 0);
- 	folio_clear_hugetlb_restore_reserve(folio);
- 	__folio_set_anon(folio, vma, address, true);
+ static inline int folio_add_return_large_mapcount(struct folio *folio,
+-		int diff, struct vm_area_struct *vma)
++		unsigned int nr_mappings, struct vm_area_struct *vma)
+ {
+-	return atomic_add_return(diff, &folio->_large_mapcount) + 1;
++	return atomic_add_return(nr_mappings, &folio->_large_mapcount) + 1;
+ }
+ 
+ static inline void folio_sub_large_mapcount(struct folio *folio,
+-		int diff, struct vm_area_struct *vma)
++		unsigned int nr_mappings, struct vm_area_struct *vma)
+ {
+-	atomic_sub(diff, &folio->_large_mapcount);
++	atomic_sub(nr_mappings, &folio->_large_mapcount);
+ }
+ 
+ static inline int folio_sub_return_large_mapcount(struct folio *folio,
+-		int diff, struct vm_area_struct *vma)
++		unsigned int nr_mappings, struct vm_area_struct *vma)
+ {
+-	return atomic_sub_return(diff, &folio->_large_mapcount) + 1;
++	return atomic_sub_return(nr_mappings, &folio->_large_mapcount) + 1;
+ }
+ #endif /* CONFIG_MM_ID */
+ 
 
 -- 
 2.43.0
