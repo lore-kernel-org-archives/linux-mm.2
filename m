@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A3CE937E9
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A37F8E937EA
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:20:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A64F6B0092; Sun, 12 Apr 2026 12:20:06 -0400 (EDT)
+	id 624536B0095; Sun, 12 Apr 2026 12:20:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02EC56B0095; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
+	id 5AACB6B0096; Sun, 12 Apr 2026 12:20:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC53E6B0098; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
+	id 3B2296B0098; Sun, 12 Apr 2026 12:20:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B0C416B0092
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:20:05 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B2FDC36D2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FC346B0096
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:20:06 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9C435C666
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:05 +0000 (UTC)
-X-FDA: 84650415570.21.78726B0
+X-FDA: 84650415570.14.C6A3B40
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AB48C40002
+	by imf13.hostedemail.com (Postfix) with ESMTP id 03EBE20015
 	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FO14dbmL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c+zSVCZl;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776010803;
+	s=arc-20220608; t=1776010804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2P8fv+TiIHsRwxYhhIPAni9KIHLJCogSsbG2zUdfP/Y=;
-	b=fDWDn5CZ1XprERvBlnxXNXuHm0UrYOktNqiETc3NSTl5hmP+rzn4wOVXuMTEFwNlEpXVvT
-	CBjDXDaI2l38y1THJMB2VJA0Q5tTovGPMqjH9S+l2ZvGFuTSpNRWi3+bFqEBF65xCpjTbl
-	QFQKvaYehBpqHSCgeNXU6knTkN5ewFU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776010803; a=rsa-sha256;
-	cv=none;
-	b=mUFdfaXGa1qtI7ZpepFyVvfcshCAN/okLz8S9CckWqWNP/dTZLegZQsk+zaWuoBgfKzXWq
-	3lrt0sj0MTe37BPDZAM9OtZp6zXaNEBd61vHMul1sCqlqEik9EFFJNT+Ur7XIxm702CCRe
-	oQgS9rHulAo7+kWjS5jtYegCnpXqaGA=
+	bh=jKJoLhYZxKzLgCjk7k8+gdgr2mR+SAqaMIjO2eK13RY=;
+	b=04QXTn9zxXNp8n+u0AIq/ABerdLpRTvneTnsaLl0kcMd81GC6CDR7B7SLA8dIiaCWmMA7P
+	ebFBOSKJU3X0ekl8moxaVl9bvClkdEkQGqLP7pZ84yYgrLQrpuskRah129qpP6VvTPM+rK
+	mLf6qElLaZckeOFVpN3V9m4El7hWtWw=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FO14dbmL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c+zSVCZl;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776010804; a=rsa-sha256;
+	cv=none;
+	b=DknxYVuYEVu79nYWlYmcknlC1vYPzIM+eq0rPog+AKxVwgLlKOFZzfqyPdDUuJBK6kNk3o
+	/wywx2vx+GMAcmzVyCPI9fhkQ/7N+PETQdGRU6/YAlbfi+JRx6R7EmEKyTM+kpx71rback
+	rugQUsFIpCK4nHD282UczVVrto20onY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D7C4E445A0;
-	Sun, 12 Apr 2026 16:20:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915C9C2BCB1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 318974457D;
+	Sun, 12 Apr 2026 16:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2385C19425;
 	Sun, 12 Apr 2026 16:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776010802;
-	bh=lVvvJyXXUULYKYNrOl6GeL91WhrIsl7oASNCEnlmdDA=;
+	s=k20201202; t=1776010803;
+	bh=sGB3rlU6Wo00dN98XUbINMBktp7aAzb0KnYDPk0v+Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FO14dbmLsSeIyks0o1fyBOx0o6ED0i+x/tg7Dv/bLqHGRpVQXmHnigqT572YdYGqR
-	 u/jsRXM3ZcRziNURVJb4yzmEcXAELby6RsT8/y0f/8lBYJLmGrObZVp5fLxrOduOKk
-	 c1dWf317Foejk2icmKjgb0BBB6iNZWPuJV9SagzZhDhZ3NjQ94tdZcLp9/vLq6M/A5
-	 EdzWESLSBa3e5kZgcHLsFdcjmUFM++iPhHBGiW+kmEUh3M/Wuc/0dRB//qU5cssSuP
-	 4L6ZsbOcXBjwN44Oi4tmkXs+EINs2mn3K91o7CnTX1dAyOwHG4gRIYuYW1SuLeMvGM
-	 FW24Mmg6QOt1w==
+	b=c+zSVCZlLReom3ZJxDoS2UT18i0y5x4+T8XOYWnWJPU8WtHC5aMsDmE9csTaM7VsF
+	 A6hrTlbRzJiUrjavNolZlRgxNa7Zj2me+fxLcABRaQ5HbuN2KPwUSTa756mCcSAAxa
+	 k5Wm5wDl6ErTr9sLVJK3213vlQjizxiO3m4ouYBOfZkTzpZtWT6MigJRuQbc6d+PWg
+	 wWEGraxCrxTd47NbGdpLjxow1WAMmHPYIAT7rAh70kcZbvgkpQrgBtYx8ICnf3kGy/
+	 4mUaxdX5zvYoonWpSC6CKwaYmIov5y83CEu3KrP7Ihqm7u0xuRNfLfxDu73ImeDqr5
+	 acKXuTiSvnXtA==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v5.2 03/11] mm/damon/core: introduce failed region quota charge ratio
-Date: Sun, 12 Apr 2026 09:19:46 -0700
-Message-ID: <20260412161957.82835-4-sj@kernel.org>
+Subject: [RFC PATCH v5.2 04/11] mm/damon/sysfs-schemes: implement fail_charge_{num,denom} files
+Date: Sun, 12 Apr 2026 09:19:47 -0700
+Message-ID: <20260412161957.82835-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260412161957.82835-1-sj@kernel.org>
 References: <20260412161957.82835-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AB48C40002
-X-Stat-Signature: hco7o89s17y9ay7tb9fzcr47sgcm6qup
+X-Rspamd-Queue-Id: 03EBE20015
+X-Stat-Signature: w5g6ds5h5kcothc9pk87f9u7mo3bqs6k
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776010803-667499
-X-HE-Meta: U2FsdGVkX197pvcwsUE/5/8ZpmbEQvD4L3YLIVtp7A3GkSMzV6DSb5rQJh+1AnEdXmzUIlDD2ydKG+0Ey/YROvgITm6jE8PMQr5ivP8NIqQhpGO5OSxP9dqcBTj0ms5J7Wh+bjk1ez+BxkyiwaHiwZrCfW5Qjx0MJy1nRlqcxA/okJuFg6baW1ZNoiaa92HwIo7DE6tWjdMLEaPdbmVUBtmEgzBI7ojBTY4Nh2s/Knt/FTD8MdFYFrDR3UrXh198b2Ade76QCJyYVwMpi/WHtZTkZ7qixDvahxWvZMR8bdRxVMBlDqydhFvISzXfCYjrtOxKRfB8BYwk/her6OnT3KLGqUNSIZEI/71LTt3Fy9+kJ74SOJoP57KR1eMN7zN5nBuTzYfXxFTlee/23LmOk8BKQNm/f6yR0HBiT5mZF0Dh8CfZca5CSS2nHWSnz/6knD/ghBZPjV5nRc30H/aIOTd1PrmZCNOXZxIdqtXbuwsKOZ7fb1fu/z41s5XweB7aZKOTR3GbfhPjn+bBLHZMpwRoLPHscQK1jql1BOGmWH97uLV84W0bncINIR7idmf4YRr6rx+P3yS6v4Xg2cAQdFMe3fMJLXz5cjGLyJF8JSkpS/8wlQ8CqX7MqWuMdag9SwytpO4ZfJGnWJJaLOKoKaKyAVkdEhNwBh5AdXbajRXWdt5lqOrr6fXkHuUa61grosgEuSrNWc9cyO4InE/HbH0QXUbv9almXjOXoANKMYBmIaNPmkrKbdRn9SPa8XoDxnFRJs/5dAc7ttHBkWD+h4CRG6oJSNf/5khI0Z5m+jVtX1yV7wuH4CfdacSPywCGOIZ/m7oP9rkqweDchizV7AeYmoeB0+mevY16PTnvWU43V1ktR4KTLLnUQl+WdxotkxpBYFfchqfY4egWGak7DKppsM/TPopi5GCl4AQBQWIB3EHl0eNlG2KiAPGL6xzc4swuVw1vfAjokk283RS
- QT1s1j1D
- ovJobNG32bmOuyRyKjemZo3csHaQKtuobCbFn0IXPxJRqmC0Md9HKWUOB7cc1kHqBnVp/t62rt2QSXVNK4YUhFphvKl3fNbHPUtV0NE2WKDePpgPhaD/WSQrpqUwbymA9jHqb3RY21mRQ7xbNI5XDJp1ODDqr07HeMqOtH2F2H5oZtfdlJsS2PsC9gxWR41qKBaxGFqNNUm/B7p5cphvFCu98HJkLn56BwFKg1aXXWm8KWSA=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776010803-366417
+X-HE-Meta: U2FsdGVkX1+MM3EKivX7ODM6SzeMxGMcZfEeBf43VBaahI4pCwE3RA46qRw9/OnVQBItYntnGJO5I0KiTwHNTwy4Y5hJDbbRCyaCOD+6q8v6kR2XTuEgsyByxTKMUTXViUSQpZKCThZLZk4HD/E9PNTdDRlDZBs3nE30dTGoL9ujJ2IM3JMonKFBuheO+EfEtQnN62kqZMuAZWHGdWOkWfbDirBuAjIIIJ0uo+HsAoMyiM/QcCSHFiJDdzM1zG0aCa4iHFRkapBL6zhQ8oI/TcFgpL40nAPI6+xFmRNsG2d3pddYmCQ4OGDXw80BgvjVBgBB+v6qq1bzHcAghGo7kbhBvJZrd1p0Su7krAmgdLLvyDFSqCiWF078TapVTQmXPogUBlrXI9KC3b+D+KW0H7+ghNj+vU+No/ePb5i9C3dktgze6/YobyBmXu0hIHeNK5RmNiKVbBOPjQJf3tMWzys7GEicYwz4MtZiN141T7DlO4L2y5F6gz5WKXefvfNKmG3cpL4R7LoLNV2C1E4a8fElZLokePjCV+raXwibSw9nNje3I/Kr8YwPUpWK1cc2UxJHgieGZOGpAGOJCavy03zjlcn6twORDTuFjJLdakTR+IRddQX5JVFmR/42/K70zlvX73jtg3PSCVhM/VISpo4Wzpuq70QO/lKAMLOXw4A7GQj+7JsQ1ie1Qkc7jBopYGCSU0oI73MLhyMYWl9s8XJILYVjQBfVDMfp+RrYUmKg9HaHPkG4pB2cAjY0UCfCVCQETRsWO967tSt0/WJyDtaHMmQ0fQ7O9SK2jNXnmoJAjSycimtoXNLGZoMXqEnia+F7dfFvhKTp+dA6OWvraVIzSJsqZIncjfbHgKeWA3s4S9+jrT46HueMACd6AUnrDjxTef4r6MKFFezSCO/svxB/YCF1p78+CRGvXDDBsP+Le75hQG+FtHdAx2gwD5YlUmUIYKX2DLAYWVTJQLJ
+ e978l7oz
+ E7KB7sTl79CNbLEoqPDJL9BAhGRpbwwNm+EQFUQEUpUIZpIXF2f7YDmxuKPPFTTvPz7RdsuUZ/iZbgODMgCSkfZcN/qDjgKD7AzklUUfFu7uH6tB++xzKxw1LioaMMaKL2zkcI/Zei8U1vsf3ebwwsqvWAzkk3skBnvHVlOyCKJprm9vkqJWzrc2PQbmrmXWWGYoVwiknwB7mH9b+BbH0GoDBwQ6b2COPQ8NUwd3JX9+bqey2jO0NOPw57KvRlPT0J/OElvOLy8yG+ZzVKulZBKEG9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,104 +93,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMOS quota is charged to all DAMOS action application attempted memory,
-regardless of how much of the memory the action was successful and
-failed.  This makes understanding quota behavior without DAMOS stat but
-only with end level metrics (e.g., increased amount of free memory for
-DAMOS_PAGEOUT action) difficult.  Also, charging action-failed memory
-same as action-successful memory is somewhat unfair, as successful
-action application will induce more overhead in most cases.
-
-Introduce DAMON core API for setting the charge ratio for such
-action-failed memory.  It allows API callers to specify the ratio in a
-flexible way, by setting the numerator and the denominator.
+Implement the user-space ABI for the DAMOS action failed region
+quota-charge ratio setup.  For this, add two new sysfs files under the
+DAMON sysfs interface for DAMOS quotas.  Names of the files are
+fail_charge_num and fail_charge_denom, and work for reading and setting
+the numerator and denominator of the failed regions charge ratio.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h |  9 +++++++++
- mm/damon/core.c       | 21 ++++++++++++++++++++-
- 2 files changed, 29 insertions(+), 1 deletion(-)
+ mm/damon/sysfs-schemes.c | 54 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index d3054af1d964f..5fb1dc585658b 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -235,6 +235,8 @@ enum damos_quota_goal_tuner {
-  * @goals:		Head of quota tuning goals (&damos_quota_goal) list.
-  * @goal_tuner:		Goal-based @esz tuning algorithm to use.
-  * @esz:		Effective size quota in bytes.
-+ * @fail_charge_num:	Failed regions charge rate numerator.
-+ * @fail_charge_denom:	Failed regions charge rate denominator.
-  *
-  * @weight_sz:		Weight of the region's size for prioritization.
-  * @weight_nr_accesses:	Weight of the region's nr_accesses for prioritization.
-@@ -264,6 +266,10 @@ enum damos_quota_goal_tuner {
-  *
-  * The resulting effective size quota in bytes is set to @esz.
-  *
-+ * For DAMOS action applying failed amount of regions, charging those same to
-+ * those that the action has successfully applied may be unfair.  For the
-+ * reason, 'the size * @fail_charge_num / @fail_charge_denom' is charged.
-+ *
-  * For selecting regions within the quota, DAMON prioritizes current scheme's
-  * target memory regions using the &struct damon_operations->get_scheme_score.
-  * You could customize the prioritization logic by setting &weight_sz,
-@@ -278,6 +284,9 @@ struct damos_quota {
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index aa08a8f885fb0..edec3566bcd11 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -1489,6 +1489,8 @@ struct damon_sysfs_quotas {
+ 	unsigned long reset_interval_ms;
+ 	unsigned long effective_sz;	/* Effective size quota in bytes */
  	enum damos_quota_goal_tuner goal_tuner;
- 	unsigned long esz;
- 
 +	unsigned int fail_charge_num;
 +	unsigned int fail_charge_denom;
-+
- 	unsigned int weight_sz;
- 	unsigned int weight_nr_accesses;
- 	unsigned int weight_age;
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 0654caa904c8c..48633da449104 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -918,6 +918,8 @@ static int damos_commit_quota(struct damos_quota *dst, struct damos_quota *src)
- 	if (err)
- 		return err;
- 	dst->goal_tuner = src->goal_tuner;
-+	dst->fail_charge_num = src->fail_charge_num;
-+	dst->fail_charge_denom = src->fail_charge_denom;
- 	dst->weight_sz = src->weight_sz;
- 	dst->weight_nr_accesses = src->weight_nr_accesses;
- 	dst->weight_age = src->weight_age;
-@@ -2047,6 +2049,23 @@ static void damos_walk_cancel(struct damon_ctx *ctx)
- 	mutex_unlock(&ctx->walk_control_lock);
+ };
+ 
+ static struct damon_sysfs_quotas *damon_sysfs_quotas_alloc(void)
+@@ -1663,6 +1665,48 @@ static ssize_t goal_tuner_store(struct kobject *kobj,
+ 	return -EINVAL;
  }
  
-+static void damos_charge_quota(struct damos_quota *quota,
-+		unsigned long sz_region, unsigned long sz_applied)
++static ssize_t fail_charge_num_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
 +{
-+	/*
-+	 * sz_applied could be bigger than sz_region, depending on ops
-+	 * implementation of the action, e.g., damos_pa_pageout().  Charge only
-+	 * the region size in the case.
-+	 */
-+	if (!quota->fail_charge_denom || sz_applied > sz_region)
-+		quota->charged_sz += sz_region;
-+	else
-+		quota->charged_sz += sz_applied + mult_frac(
-+				(sz_region - sz_applied),
-+				quota->fail_charge_num,
-+				quota->fail_charge_denom);
++	struct damon_sysfs_quotas *quotas = container_of(kobj,
++			struct damon_sysfs_quotas, kobj);
++
++	return sysfs_emit(buf, "%u\n", quotas->fail_charge_num);
 +}
 +
- static bool damos_quota_is_full(struct damos_quota *quota,
- 		unsigned long min_region_sz)
++static ssize_t fail_charge_num_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_quotas *quotas = container_of(kobj,
++			struct damon_sysfs_quotas, kobj);
++	int err = kstrtouint(buf, 0, &quotas->fail_charge_num);
++
++	if (err)
++		return -EINVAL;
++	return count;
++}
++
++static ssize_t fail_charge_denom_show(struct kobject *kobj,
++		struct kobj_attribute *attr, char *buf)
++{
++	struct damon_sysfs_quotas *quotas = container_of(kobj,
++			struct damon_sysfs_quotas, kobj);
++
++	return sysfs_emit(buf, "%u\n", quotas->fail_charge_denom);
++}
++
++static ssize_t fail_charge_denom_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_quotas *quotas = container_of(kobj,
++			struct damon_sysfs_quotas, kobj);
++	int err = kstrtouint(buf, 0, &quotas->fail_charge_denom);
++
++	if (err)
++		return -EINVAL;
++	return count;
++}
++
+ static void damon_sysfs_quotas_release(struct kobject *kobj)
  {
-@@ -2117,7 +2136,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 		ktime_get_coarse_ts64(&end);
- 		quota->total_charged_ns += timespec64_to_ns(&end) -
- 			timespec64_to_ns(&begin);
--		quota->charged_sz += sz;
-+		damos_charge_quota(quota, sz, sz_applied);
- 		if (damos_quota_is_full(quota, c->min_region_sz)) {
- 			quota->charge_target_from = t;
- 			quota->charge_addr_from = r->ar.end + 1;
+ 	kfree(container_of(kobj, struct damon_sysfs_quotas, kobj));
+@@ -1683,12 +1727,20 @@ static struct kobj_attribute damon_sysfs_quotas_effective_bytes_attr =
+ static struct kobj_attribute damon_sysfs_quotas_goal_tuner_attr =
+ 		__ATTR_RW_MODE(goal_tuner, 0600);
+ 
++static struct kobj_attribute damon_sysfs_quotas_fail_charge_num_attr =
++		__ATTR_RW_MODE(fail_charge_num, 0600);
++
++static struct kobj_attribute damon_sysfs_quotas_fail_charge_denom_attr =
++		__ATTR_RW_MODE(fail_charge_denom, 0600);
++
+ static struct attribute *damon_sysfs_quotas_attrs[] = {
+ 	&damon_sysfs_quotas_ms_attr.attr,
+ 	&damon_sysfs_quotas_sz_attr.attr,
+ 	&damon_sysfs_quotas_reset_interval_ms_attr.attr,
+ 	&damon_sysfs_quotas_effective_bytes_attr.attr,
+ 	&damon_sysfs_quotas_goal_tuner_attr.attr,
++	&damon_sysfs_quotas_fail_charge_num_attr.attr,
++	&damon_sysfs_quotas_fail_charge_denom_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(damon_sysfs_quotas);
+@@ -2780,6 +2832,8 @@ static struct damos *damon_sysfs_mk_scheme(
+ 		.weight_nr_accesses = sysfs_weights->nr_accesses,
+ 		.weight_age = sysfs_weights->age,
+ 		.goal_tuner = sysfs_quotas->goal_tuner,
++		.fail_charge_num = sysfs_quotas->fail_charge_num,
++		.fail_charge_denom = sysfs_quotas->fail_charge_denom,
+ 	};
+ 	struct damos_watermarks wmarks = {
+ 		.metric = sysfs_wmarks->metric,
 -- 
 2.47.3
 
