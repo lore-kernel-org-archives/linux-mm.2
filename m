@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10FE9E937E9
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:20:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F22B5E937EA
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 16:26:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C651C6B009F; Sun, 12 Apr 2026 12:20:09 -0400 (EDT)
+	id 3E2E46B008A; Sun, 12 Apr 2026 12:26:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEEAF6B00A0; Sun, 12 Apr 2026 12:20:09 -0400 (EDT)
+	id 3BA976B009B; Sun, 12 Apr 2026 12:26:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F3286B00A1; Sun, 12 Apr 2026 12:20:09 -0400 (EDT)
+	id 2F72A6B009F; Sun, 12 Apr 2026 12:26:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 874116B009F
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:20:09 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C1698CD01
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:09 +0000 (UTC)
-X-FDA: 84650415738.03.B0DCF72
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9312240002
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TgIR1Wnq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D77C6B008A
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 12:26:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BA04D14098C
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:26:17 +0000 (UTC)
+X-FDA: 84650431194.19.65F6321
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 24CF880008
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:26:15 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lc8tEg37;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776010807;
+	s=arc-20220608; t=1776011176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A+++C4FbPvLuI+LhwloavFM8OGN025XzDv0RO8kBiFY=;
-	b=4DXdRO4TpOzbhDQDXX2+N53iOkHHFj0uZGIXpD/UH/BoGwJhqWqB+FVhFMtxHa+MCPOBvk
-	SZCLsphJ7fpdcdgjZcMhoJ9u6/0yE4vwJw4cUMOeasCv4jeeJx/dTK/jaP/y0G8pN1tA6I
-	cT7Hjzvu0K/NqFw+InGfGr5tbpWMlqY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776010807; a=rsa-sha256;
+	bh=gw6yFFg2aFSe6cpj4BZjaZBAe/4elCWA4qFxhDO+SUs=;
+	b=XyB+I48f2XNmSj99UQISE3S+hroBnu7KSW2Qm72rmpvx+JSUyU42FiuURpB2QG4gHh2tWX
+	lobfL8rOs8KC0WicaYy4lWAfdrKDf9bOjLAWBnV3Z84d1OStn2NbxgKdV6mND7e5jZmNMB
+	5bkOACv0eTf62lZefeVlG2qNjOnskzQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776011176; a=rsa-sha256;
 	cv=none;
-	b=PqOEQ+IML7x6ChEPdWaer8If8FxOnKnQQysfQZ15SNmkNPNuBIa4EQSDnVPl/51QHcgOv+
-	UAj9mgXL0NxwLLm2mP8Uu+0cHN47fH/wNxCS4e2DjuXmbg6wKGNCY4lO7OkndOw2B0ddWX
-	lrBZ4fV0K/6T6W9Yy8/0kv766kUnnA0=
+	b=FUFeR5A3GzCxdbplT8Jr4mPee71J8zsIvkKrzEYSHgPbCfjnhVf0GmTQEomJD8s9mI6wO6
+	EEf/NyrSzTacuinyOXROlY76ySwKy6qiechbA5FIIaZlKjkWmkqkgEZM5tIyhiFPZJqJkF
+	ok8UoKp0y/W21UBTMVsCvwjoi/xCMMU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TgIR1Wnq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Lc8tEg37;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91158446C7
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 16:20:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4177AC19425;
-	Sun, 12 Apr 2026 16:20:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8118360142;
+	Sun, 12 Apr 2026 16:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AF8C19424;
+	Sun, 12 Apr 2026 16:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776010806;
-	bh=t5zJdXrSXfUqeg8E0cFC/+8XELPbXvEetq+3G/tXFao=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TgIR1WnqGlS/2JgAAt4SyAiI6Mz6Y24ftLG/3lSrscUXV/UXc4lXwh0b3GVFWZx0d
-	 PV6spn2SBCkf8mWpGADK9YnpY5LQLfvjx1gt0qD2qyirArEICcyWADdmKGqyX3phFX
-	 bWQldELArzcWTUlyUpJayPkdy7p/0aNzNYP+KonViexTh0ZtwfQ+W52mshdEzf2o6j
-	 JD6GlmQ72pJhXaST5RvDdqee0Virrk4YUmsxnqXBcGfN/sggfuKfwx0oxRqDm3sFmh
-	 G8koSn6IO8GNVq956ZzMpPMglmZr55ZoJHdGBcXEh7KwiV7drYA+N3pGi13AF0XjMk
-	 vrCnbIgJ0E0ig==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v5.2 11/11] selftests/damon/sysfs.py: test failed region quota charge ratio
-Date: Sun, 12 Apr 2026 09:19:54 -0700
-Message-ID: <20260412161957.82835-12-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260412161957.82835-1-sj@kernel.org>
-References: <20260412161957.82835-1-sj@kernel.org>
+	s=k20201202; t=1776011175;
+	bh=rSNfWtN34FXwz/x7Q0w3Dbdq63xMPEFfeV8QcmfmuMI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lc8tEg373b347asxMiEAb+5P7Gl/BzIbH8S0kE8/0HfFAZcBxRp1EVPBsUbG0ot6N
+	 EfyL0CXmAxf/LYrkdtO0ZvuP5tiE1R3gm7Mf+BO1eP8QDfqsoou9OjetNkbn7ykfrO
+	 e5NmkH0n7mXVhpwXXpsAf14fnnuFxAb2mvmszyG+eNZmVSUpXZTT5PUPzDVk0Yn91M
+	 eKZqfOgUrittoVlisSOrib7AXw48gNYw0v2EZSWNbrLaN6ieCV+mbD2mF/72uNhciI
+	 PXU4C5RWkYmkjj2Yhub5VwofX7uma+Qkz0WHwQxSlx246LbZcbvlj8EfJavL36BeGT
+	 NFPO/sHhq+bIw==
+Date: Sun, 12 Apr 2026 19:26:07 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/sparse: Remove sparse buffer pre-allocation
+ mechanism
+Message-ID: <advHn0m0iaQ7d32t@kernel.org>
+References: <20260410092419.2446420-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9312240002
-X-Stat-Signature: zejx4nawm9kt3ystep7bb6f1dxhbg8da
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260410092419.2446420-1-songmuchun@bytedance.com>
+X-Rspamd-Queue-Id: 24CF880008
+X-Stat-Signature: 9n3nakiecd6xjb953cy3pu6xak4gwhte
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776010807-949887
-X-HE-Meta: U2FsdGVkX1/WOwqX8+Zd0VyWr40ZXYYzsKzYNALKGm89B6LYQZ1s4uMRfD29KRmU3wy9/OGnnyfb7pc2eLeTJkt7Xfnrj9BAGh5PBMd3pX9zpLk83QNY0UrTFPXz6b66zmCGxtcplXGllrQBUA6VTOT2iPKnVVU3BUzmEm+4XQ1uXClj24diCL5rho7XjxpuMEvTFfy7UbIQb+6npS7DIWKjpmbx3IQsYBSK6wjs/1/ZjRWj+Zbufi3OP1DdmmtiyPtj1okDHqnaDQqvDC6Fh/jOtzbe6aEeQ79Z7bS0f/46erjMDxuXkFOza8m3zz3YMu+hQyg12hpUBULALdf/52UoVTqBLGkcn2A+9wncnH48veiDWtDc+iJDqHq0xL7gzTy3dO5d2sJppDkj/dymIKX6FK01HorBFwrgMfUP/Yk3qw3/xP+hweoMXRPAt1sn3URFf+Yqcl1cGrs0h66qQtTnG8YrUPFCh3vpA1LbMA1RiAyIRTBvpdfTPGmwohA9NHO+/nwPjYQJ5rph7o2mgxqtQl4Q97TF6XJ8KtkEvZx+GQuNGJmsXz4ALXTCpn9G+0OV2OqbdUSst+9QfNm+XSJ7hYk8qFeDUeRxmgJ3Nj5WOppQcUi7XYM0rRBgB+U0T0gqbyum4biP6uhm9goqq0e0L7Krp0AHHJYBFm/QVFiOOB7eKPnKYLJH/Cah4QKliNcetP2VlvK4V/o08row7JmguDfy/SB4O3KaxRblOA7vySUC5cwC6AWiRxc/hL1/aXntPKMRa1yNWbVViD8BNxNhVcX/HRS7b7EZAnqu/Qr3GIqp75ppjcTakkY4KK5A1n5xlE1KirWc2mX+7Y3dVusuSwNYU60wVtcptua2AV5/HG+Q1XlOPyAoiDiyOnnrNfg9O5CsSCRq6jeheua1eXSFXEcM1Lh31t9HgADWVeDnodcQhcKfAQHL/SuhnRK8dOAUswnuWxvN1uf3vet
- NwABrxZp
- yjIOXihBTUAinjM7XWJTx3q228G4E/x/fu04HRlfcnF9s38NN6uqSDZ2NwpwB9Bna8tHP8o1RDFrJPZ/ckGZ8hbyLGihkesPKMAhFjgzaempyffSKAT+OL6ltewCFbu4OZ3VSQJ+CW4ijDL2Hl/J3HLxqJh+b+FDTCZiVzWQOh/5fLKiwhsUjjq9DbnZGDZXQuYHQNs+Bcis/2kbTU9Me/YTH8cGxjrWq74ja0Wh5Hy8cipocN3Tlb8QtB/+qEPVli4YW4F3IrPnvB5g0zdx6hOzcWE02PWJGU+eD+g0vJlUGmzo=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776011175-217086
+X-HE-Meta: U2FsdGVkX19eca+H82vp7HgBj6ZZROOE6d4M9g6DuMg7Hy6vo99mHfNSo65hD8sL0TAjW6Z9ZM6yWfCx9GaehfLNKklB1/sS7XwWC6tJfcpuqzk/K25xf/UAsVTWzczydHe71cpcjaaiHki3LRtUAgKPntdSh2q+0GWLT4AxOJ9VgJ0vXVOlrhVvFHhCPjnJDaHLEJ4HisGkK69C9BqvJui+GxnCV+w7NOjs4724/B9DyfytQHS8+1IOxuKYmSk+5VetcB0AYG/iiLnXHH7g9tBX1z5YZbJNSdyrkvdG8QD2DrkQ3qOFAMsMijGwbixTbDZgpkW9P1ZK+icC5BxEuM/UEuoFiCloA5zNNivLlR5e0hPnOTxoZHecbTOMczf8Nfn7z3UUXneV6gCZU6HawjbFUFhfMuqeQxbnlxWQIgfvy0vClqbp+EvkC/UZvvImlZarUq/2HzgqymUfNbOrw7MbFLHSNMIOzeKgqtqDxXskmh55vQW+wqHBbjwOUlU/9ALv1y2b4eNWOTW/MNW6jO0z4FXDADQdPVpALa8ldDC/yxj+f7q28g+9Gyc7Hq/u30h2V3bLIWe71cIt/wEsAt7Z8TEsj1zW/Qzf5x/+IWe1gdn8c2/RkD6cUyde/R9mBQ2wn0KUhiWqZIk4TSKZEn5RjG/fsX5uf3sl4971i8TVREH0hoHxW/aH7OKT1DDFKMKqsMElTsnUUybFBXAtry6/O/TdKrmlLzncx6wOcsYxjTK4TGycDlJfMAj220iJTtvV3R4GLmaKg9OevpCezZVy6mxpFaIztMb17bPPhxjkFQrzDb1gpyq4xI8lDfyH3aSTB3/TgbMIYrlJHVt8f+ML/MKQNaJ6pxtcrqIaAGnWJ5UJJfrBp8uMUjQhHvvDK3ALlsHik5Ly9ATk6rZLDzGysjxnhgrRiBQGvJbfdGUa7UTJ3cggoQr3z6qVfoXB4oVB6iz/4gHruIV830w
+ 1LCfsqgu
+ TtzLBcNctTePY50LEboWvGODOuh+Xp0j7x2qbG7Ka3LhhsN34+Whvh5SIxgt17j0qN6+UhsBEKFmudWx2kxJZ6gk12UJBao1kVPEtQAo0Qvt9BLGwFC6johnth7p4TfIMitDueyBvjE2PfGCYarR4vUH60Oh1P8+7rW2rgBhxtTG33koJiqEhi39CvBRGd+7VgyuZY2Em1VUE5OugpYGnW7DTDRm4+VbAgMVwQPlb0Q8fU9GCYOUNXNiUjuXrmG89834QSrC8d2cJhaIchSoonhh+ZDwFB2VF06ov5ahL/2EFh+o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,38 +98,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend sysfs.py DAMON selftest to setup DAMOS action failed region quota
-charge ratio and assert the setup is made into DAMON internal state.
+On Fri, Apr 10, 2026 at 05:24:19PM +0800, Muchun Song wrote:
+> Commit 9bdac9142407 ("sparsemem: Put mem map for one node together.")
+> introduced a mechanism to pre-allocate a large memory block to hold all
+> memmaps for a NUMA node upfront.
+> 
+> However, the original commit message did not clearly state the actual
+> benefits or the necessity of explicitly pre-allocating a single chunk
+> for all memmap areas of a given node.
+> 
+> One of the concerns about removing this pre-allocation is that the
+> subsequent per-section memmap allocations could become scattered around,
+> and might turn too many memory blocks/sections into an "un-offlinable"
+> state. However, tests show that even without the explicit node-wide
+> pre-allocation, memblock still allocates memory closely and
+> back-to-back. When tracing vmemmap_set_pmd allocations, the physical
+> chunks allocated by memblock are strictly adjacent to each other in a
+> single contiguous physical range (mapped top-down). Because they are
+> packed tightly together naturally, they will at most consume or pollute
+> the exact same number of memory blocks as the explicit pre-allocation
+> did.
+> 
+> Another concern is the boot performance impact of calling memmap_alloc()
+> multiple times compared to one large node-wide allocation. Tests on a
+> 256GB VM showed that memmap allocation time increased from 199,555 ns
+> to 741,292 ns. Even though it is 3.7x slower, on a 1TB machine, the
+> entire memory allocation time would only take a few milliseconds. This
+> boot performance difference is completely negligible.
+> 
+> Since no negative impact on memory offlining behavior or noticeable
+> boot performance regression was found, this patch proposes removing
+> the explicit node-wide memmap pre-allocation mechanism to reduce the
+> maintenance burden.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.py | 6 ++++++
- 1 file changed, 6 insertions(+)
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 387286dc449d5..cd4d82c852113 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -73,6 +73,10 @@ def assert_quota_committed(quota, dump):
-             }
-     assert_true(dump['goal_tuner'] == tuner_val[quota.goal_tuner],
-                 'goal_tuner', dump)
-+    assert_true(dump['fail_charge_num'] == quota.fail_charge_num,
-+                'fail_charge_num', dump)
-+    assert_true(dump['fail_charge_denom'] == quota.fail_charge_denom,
-+                'fail_charge_denom', dump)
-     assert_true(dump['weight_sz'] == quota.weight_sz_permil, 'weight_sz', dump)
-     assert_true(dump['weight_nr_accesses'] == quota.weight_nr_accesses_permil,
-                 'weight_nr_accesses', dump)
-@@ -278,6 +282,8 @@ def main():
-                         nid=1)],
-                     goal_tuner='temporal',
-                     reset_interval_ms=1500,
-+                    fail_charge_num=1,
-+                    fail_charge_denom=4096,
-                     weight_sz_permil=20,
-                     weight_nr_accesses_permil=200,
-                     weight_age_permil=1000),
+> ---
+> Changes in v2:
+>  - Addressed David Hildenbrand's and Mike Rapoport's concerns from the
+>    v1 discussion by incorporating the detailed memblock contiguous
+>    allocation analysis and the boot performance measurements directly
+>    into the commit message.
+> ---
+>  include/linux/mm.h  |  1 -
+>  mm/sparse-vmemmap.c |  7 +-----
+>  mm/sparse.c         | 58 +--------------------------------------------
+>  3 files changed, 2 insertions(+), 64 deletions(-)
+
 -- 
-2.47.3
+Sincerely yours,
+Mike.
 
