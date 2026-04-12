@@ -4,148 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9921F3ED67
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 01:41:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67D7CF3ED6B
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 01:49:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56A6B6B008A; Sat, 11 Apr 2026 21:41:00 -0400 (EDT)
+	id C7B0D6B0089; Sat, 11 Apr 2026 21:49:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 541F66B0092; Sat, 11 Apr 2026 21:41:00 -0400 (EDT)
+	id C2BA66B008A; Sat, 11 Apr 2026 21:49:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 457B06B0093; Sat, 11 Apr 2026 21:41:00 -0400 (EDT)
+	id B1AC96B0092; Sat, 11 Apr 2026 21:49:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3439F6B008A
-	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 21:41:00 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0F1EC2F27
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:40:59 +0000 (UTC)
-X-FDA: 84648200238.30.22C8104
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A0CD1120009
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:40:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lUrONXqF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775958057; a=rsa-sha256;
-	cv=pass;
-	b=UcrhOkOesyOYr/tyIOXToxVAH92mKskw6ahWPqzjmFSf+TxaEOzBbxMyVwC7YWkWejrYCm
-	cnDsjqDSWp+J4tfKrcdMTljOOkCfz2ngkFMsyEVzwme2WFmjPo5Q8PEBizr2KPoef/317p
-	ZCpP3mEps9dpDScr/mn9s6m7uLH9DNs=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lUrONXqF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A0F2D6B0089
+	for <linux-mm@kvack.org>; Sat, 11 Apr 2026 21:49:18 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3E5231609D6
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:49:18 +0000 (UTC)
+X-FDA: 84648221196.17.B32CAF7
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013056.outbound.protection.outlook.com [40.93.201.56])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 563A040004
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 01:49:15 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="hRsqTl/G";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.56 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1775958057;
+	s=arc-20220608; t=1775958555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rNNOEzC050HR38tQUwt60z/EV+azgbNAgyZ323Y4lY4=;
-	b=X09gKtQsOpKtIeR9GfiQ0yjXZm2Vg7qkJxUfvhA73yiy8TeQNPrZCzQjqREElfotocTK7r
-	TzaC1/OxMpiPreW8k21FW7qoN+8fTnaWvKv3BPp1dFAIGAvq5CXs+scJ0dKwPISYG3C82p
-	s+3x28LRq1XErdPN4RswwGk4Kjawo6A=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43d572f7437so2137099f8f.1
-        for <linux-mm@kvack.org>; Sat, 11 Apr 2026 18:40:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775958056; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PVPHCoH30QWelbWQwPog8AXAHLRn4PBePllqvR8QF8at2PCEkm01E620nNah6SwGFW
-         0jqNS65DqWler/SFxtnPBXTd25K+zEhxNCPqX+khSpTlKrB20djAAOWeo8pZVMOOTn/e
-         i3MHXDbsuk2lAillLwVb3OQmZ/Ymmkzl2TxlzHQ6zbnPZKNSPyY81RwC12Z6m2VbbTk2
-         F+bqfncQB+1y8SlWU2ymKYfZC+5gcrECk4vHckM5ksUF3freETGXG4qH6KsMC7i8PRb6
-         ocLto3XL0SwaGHt35EkSjJWLcDGmjGqjdOtLjg3Fq83Ph23VTvR2YBYlVM3Dz91ecEAn
-         nQFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rNNOEzC050HR38tQUwt60z/EV+azgbNAgyZ323Y4lY4=;
-        fh=cgEM/BxkXf/0U0qAQ+319PU1KfvYJWHUDQwXaSg8WCw=;
-        b=MRaOAwl4yFiH5mkfmBLyUTVb1Jh5lNffqTBPWSm0uGbzHhrspBupPJNdMeX0/Ytx6f
-         Zx/Oq5CAFPhP1haZwPb35GKMG+iRY/aCSnGrZEnNMrHduElm25HgIvJsgur+HqYVD7Ge
-         CQrriLVvyOzjWbWXG5EpdkQEKxi+I9Al0wvTNu7Ix3oyeMHCaC8NcUPT3xHiya44/G1I
-         0WfYUamr8eHHhm4r4uxAZfeLOMn0zWNjKqZjxB3Unp5w1cG0UOYzh9Zq8Zrr+YD6FqUf
-         FWP2m4g5/zoJhZWHcdZPhVfp2H5K0hXxp0/BDRa/BVF2QOrcUSaXphGLUA7YoRxk1DlU
-         JHWQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775958056; x=1776562856; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rNNOEzC050HR38tQUwt60z/EV+azgbNAgyZ323Y4lY4=;
-        b=lUrONXqFwrHch3I+ZPrcg56po+lYkCOTuqLpqUCZHPOpQSapTOO7WiNb1dOiPqmT/7
-         Cx/rxhrdJiRgrrZheVy/GqRyvyncD+mcWQ2Knn+Gox+J/7ym21BlKXzGJI6njC054xvD
-         Fj/snsSucyZgQKpUmWrOFGOu6ETsr9WasbVqmQjHUO2sO/faJ7njI887kWA0u2kPFlSf
-         kRB2eF/CV3resBSCRv0UibTkXYAwlu8cJfaz7hc/7MY16Wl5r42ZsFLLgXJe+Y9yNwoo
-         n7m2yHl1gKRB9ta9jExvDYlCVZ61pXXD8L8yn/HiQzebd2LnI8uQhpYGJ14ns7SLexa4
-         AdSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775958056; x=1776562856;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rNNOEzC050HR38tQUwt60z/EV+azgbNAgyZ323Y4lY4=;
-        b=QG4k9nLMHuAjJ7xTjcRCXmJscPZn33tgu62hTJH9AHHSrXVXSAD20pTBSJ0bJ4QT86
-         Pn3xxhEvUqj+pg4tC0SBPpGCQhMhODYGFO4a2+yOMqWXArgofHkRXmf2ad4f0UKPN1uo
-         5V58z4EFjZ1SzW7DlAaIU5N5OdmV2PXV51JXr/yReXG2SNlam+dbJMIGcRqvGEMa7llW
-         GouZnMO+NMmdc0HKu35E46/OZaojQ0MVSBY4sWJzZm9i7pC6jdNps4Ly8v2voKDhKWuH
-         FoLfAL6GfPgy4tM05U2kOJXj5RMnVRiEIFG0jEo1zNofVcfe1u+2Weki9yITmtN5oZtZ
-         1jWA==
-X-Forwarded-Encrypted: i=1; AFNElJ//A0PO5PkiFDGMmSgnJWes9+5kjQ9V8kM8cz0U5V6mWL8pQ66Al7IXdrd/zswOKXQQrdO5q0vXXA==@kvack.org
-X-Gm-Message-State: AOJu0YwZ7R0DbZ4WFqT8aZLE0sbHfA6tbaqbTmL8velTZBtxB6CLjJuQ
-	uhCRJswC0XcC0dQX78NwuMheQKrquQIWXICNGfTghRQedvhvCHkvnj5Lfl2jmljLPK/RHb5K7ZX
-	a3M/AJ22CginQ3y6RZuv9WkgnvPulk/I=
-X-Gm-Gg: AeBDiev0Xxtq8bkjo9QkRDMiNnTfltgPRPia7gCzkCsJ7D1gW3EIN+hOKG8iRpe3D7Q
-	fM0RKxL1ZRkDUVy3bpY/oqoF5Fp7x9Rro4dkXhqcF55uAdO5Rc8cObVnsFBZq24rRV5b3kqsoMd
-	1AjrpvMzJpUuYV+B2GnIVLUT9r1WuZyeera/5oyvsPypWO2rQ3hdhKCxbf+O0z93vsIXbqvl2Uv
-	MwiHadwGpofhtNEXA0UHAuOPXujhibwBN9PgEYw+L7b2nJSGxnEMEGCPtaB+8HM4dAjNNgkNaJv
-	tHOSAHvo3omylUFuZfwm3BTMW7ZqNMAQZdmnIQ==
-X-Received: by 2002:a05:6000:1847:b0:43d:3004:5fef with SMTP id
- ffacd0b85a97d-43d64274a7fmr12585642f8f.7.1775958055842; Sat, 11 Apr 2026
- 18:40:55 -0700 (PDT)
+	bh=oO/rLQtYSN7jhq3wMLXrZEevzd7E30nZCaare0ODyL0=;
+	b=G1IWS0XlI8XCdIjkzzwECJ4oF1NgZq03EkteOR/SlczGLsZBd3SQp0CFR4QWg7iZVUc8U6
+	OsPRhKJnskCKOFAsv9GDGG21328aqwmZp1SB1q+KaK/+tWPo1T3f/x9sAUCxDedSAb5/ku
+	xCxsxNW/D8s6LZw3s7xovEdBagpIlLA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1775958555; a=rsa-sha256;
+	cv=pass;
+	b=fgKhWX3bmrfT5A3mRoZ1mxZZoSwJogOUlzdnGT9J2JqG47LyFftQ46SCO1rK0L8YBNLy3/
+	6UnbWnTR0HM5F76LDNRj8mFdRpGHNjCTV8XKfanhFSOsRclpm3W7WDlMbS9vMtENNBajfR
+	bvNN6YOWcT7l8QCvla49MhIk1bybQ1M=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="hRsqTl/G";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf12.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.56 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mhwqSdZYeGkvtcf1soPu2uo7ks4sQOLjMz2/EtU+Ucl6JJMAd3KtpBC7Nj44e7BiqXQ2tDdvE5SsUoLFLUZk0XjgIB+IW0WuAcSaRAlaPTuLK4PrBgUB2Rm17C3460cLFUP34ScThEYQw5yE0gjWx/9yOwPfEtH6e8sCbuKMYJW3VpXBqFasbySrNmt9uqh9hhAuEUH0990h/8MsFxs1VcnSAtYfIOf+xzrg8sAS/6+nk9sgHnIRL/8tR7sHUOQ+yKXPzWNfmHmjJp1OER3Nk5R5TQ8ac1HkOhvBCv3YDX5mc1L7V4ntxg98I+oWi+5cONR6TDwHsS0iQHIjX8HBvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oO/rLQtYSN7jhq3wMLXrZEevzd7E30nZCaare0ODyL0=;
+ b=uWwc5T4XJa0icVJeYiAiwxD7KyeF/oLW7OaLWkUgJWNJuSVq8FibCZmXdxv60U4XKMxjmJVXWLJLvrUHAoZwRCZpK5AZxHWB/SSB5jqn1tAHdFmfa5tzeJyc32vwWhemHh+PUElFjR8+Epcj24zl6kcnMWpX2m4xhChTTyNU+R8PwGekaqt7GpQnpJa8mJiqK+9WeFctjfoWcKTOQg+dECAVgZe/arjYI6ZcoRZpnCuY7o0rqaTnoDlWa7kS0DIuDi6tILZ7QQcOrIWWSLao/2HQeLeBtm/74lWy7iElLhtJPfrqYYtWiyIrRVkHdDjnnDiDJuQoqsmt6xOarLW4IQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oO/rLQtYSN7jhq3wMLXrZEevzd7E30nZCaare0ODyL0=;
+ b=hRsqTl/Gk/O1FrB/D4Tw0upGsPcsF1np9i6RgMKqSPB6YRqscnVlOKcPt70lkObgiX2SIymA0IdzICZ+Dwo9dUtnZvds/nE6w/UdzvrBiFymmiFY4R8V0SsTLZi/Wr7ofiVH7oQn2Jjf4yJrqIC5Ag2GIkU/UyXTHwTcGUyt8Ix3wVAzuP/id9x6OBMV55dBYFNJxuPEEITAKx7j3D0ZyWdUkMgY4Mt/CRp7yWyyYgZS/vEzJOKCvD4ENd8Nfk6W2PelmEn9bz+cFiMGuCdVxC9PvIENXDDy75ZqPL7bels3b8p36GELwGOR+ZK20zWBqj8G+XNR0D7IDF5L2hAgwQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH0PR12MB5679.namprd12.prod.outlook.com (2603:10b6:510:14f::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9818.17; Sun, 12 Apr 2026 01:49:10 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.044; Sun, 12 Apr 2026
+ 01:49:10 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: lgs201920130244@gmail.com, akpm@linux-foundation.org, david@kernel.org,
+ lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: thp: Fix refcount leak in thpsize_create() error path
+Date: Sat, 11 Apr 2026 21:49:08 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <848180C7-F98C-44B2-AB1F-579BF9EEA28E@nvidia.com>
+In-Reply-To: <20260411142858.85496-1-lance.yang@linux.dev>
+References: <20260411062152.2092967-1-lgs201920130244@gmail.com>
+ <20260411142858.85496-1-lance.yang@linux.dev>
+Content-Type: text/plain
+X-ClientProxiedBy: IA1P220CA0017.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:464::16) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-References: <20260320192735.748051-1-nphamcs@gmail.com> <acQrQYHJgqof0yx4@yjaykim-PowerEdge-T330>
-In-Reply-To: <acQrQYHJgqof0yx4@yjaykim-PowerEdge-T330>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Sat, 11 Apr 2026 18:40:44 -0700
-X-Gm-Features: AQROBzDroNuERyKabe8GygVxq5Z0i9E7OcIym5VR0h4i9PyTzTJ9gMs3fd__1QA
-Message-ID: <CAKEwX=NnHxpQKp9qBg2=r_euyjgxw2nHXjbgof3MymHTgJmRAQ@mail.gmail.com>
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: kasong@tencent.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com, 
-	cgroups@vger.kernel.org, chengming.zhou@linux.dev, chrisl@kernel.org, 
-	corbet@lwn.net, david@kernel.org, dev.jain@arm.com, gourry@gourry.net, 
-	hannes@cmpxchg.org, hughd@google.com, jannh@google.com, 
-	joshua.hahnjy@gmail.com, lance.yang@linux.dev, lenb@kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
-	mhocko@suse.com, muchun.song@linux.dev, npache@redhat.com, pavel@kernel.org, 
-	peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de, rafael@kernel.org, 
-	rakie.kim@sk.com, roman.gushchin@linux.dev, rppt@kernel.org, 
-	ryan.roberts@arm.com, shakeel.butt@linux.dev, shikemeng@huaweicloud.com, 
-	surenb@google.com, tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
-	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
-	riel@surriel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: m1h8ts8n1rrbimu45i5k1ztjqpgnk9pm
-X-Rspamd-Queue-Id: A0CD1120009
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH0PR12MB5679:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d20eea0-092b-41a0-fe0b-08de9835b100
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	7oTuzmpqBfmiIt0hyzMFoHsJOPMxhqp3keLyGdCsKg/yGJyo9tAikTLpmC60ew6kgxRrAghVmoQNDz0AQbIPNZWnnOaJALRPDUAYSMIWEPGl0bpPCWXwnSDfGQBtDnFmE768pydsQ1AawIhLI0kKYGfOgr2OCa0+20143jn7zgGvtzVrWdpjIDz5hfOPV9SfdFg99pE99UYeayBWlFLg6VPwUuM3273LXeWFFuFt3+ASHfjRxsgF6scElqVtC7Q6E9Zo5q+LEg3ALtaJdEy1LPM3BJlxScXS7uzMyY9Qu2F62xJ8BOjjhsq2tBkRAqaWczOZ8aL2EdMFaBc8G6D21ac7eVNv93nlqHo/Yv9Bj88itJcGjU86Xfu41+xVW5V2R4y9gDKUP5yC2BVJGj7U7tHdGYtQLMFTaQiFalgv9KvYI3CCiWGL/ygJ6OASYipCZ+NNyG9FpLYztHnmX7VAnfpDXTSfyhmx6r4MQmBCh0TLv6/EBOoOZnNsF4CbI08ep3GG79BswBpdJXkywTeAvTeLPT8U3J7/iQpIjWOZtHHwL35yhFASQAkfPrD4P/MT7T4USyrY8kHOFH71PhNc9JJHWUI4UVAYnXEJOp8jHiqP7Rd4s4LSM6u5MtDbEXxHvZBI9KdbTjdZF4QD1egKzjZF9LuWXXSk2cJ/DdTwlfMWf2+HBid6o7gQ4eTvObdISJMhB8NX1TZNP3krgGgZAVuxVhgFYLbENLNjt0FYnX4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?d+9Vau6X/x2ObzfKxpw/2bqu6FywVqr7MqKX8ZRNTIjsJYc5EmCu757FL7rk?=
+ =?us-ascii?Q?KaJtRx1Ijbz8I4lLWu6aUNTZTtzjnFU2v+KJtiOz7bzg/cDw5OrZyS9V6zhk?=
+ =?us-ascii?Q?YzrTtcmHYPFwBVWN5Wf3X35OnUImBJ1aC/oYmU/26P0oLHIpl2nhRCFWglZo?=
+ =?us-ascii?Q?bMZ96me339bNIqjqH9f6JJCUXko571GyO0DE2gt+nWrrznmq3npilIp+ughu?=
+ =?us-ascii?Q?1LfDkaoR06HJHlJewxMCVzDuL6R+ziEFFTBsSv2ALeDBFiCcuPF2vUHNXIUC?=
+ =?us-ascii?Q?awQdkBnnGuLN4HhIRQUaGvkwmauvD3G++l5f2LQr8qUVhSJUG6OPRBp2HNdY?=
+ =?us-ascii?Q?0kzjx8hqnbyv4U8Sboq6TEg7ZcMWRxHFKiHCiq6pIvjcWWH+NPG9athtmGMY?=
+ =?us-ascii?Q?4FAGm3cT5R2Qhs8zCalxgea0AqdEgv6TDkPWrrfaQ65AQp6nH71gK7zY0Uml?=
+ =?us-ascii?Q?3s68WDIIaM7LF2ARkRwbxT0cSB5GOw+DondIcrcXcTtdnbe2QzbWAi1KLSYy?=
+ =?us-ascii?Q?pPaDVQlfgGIpfNlIrxhWR0hAwkZsc4Bs/dJ5G/t7wiNSFH9YicEuVWR7mGAd?=
+ =?us-ascii?Q?HoTnLA0sT48qUY/jZ2jBslEjdz46BojnopFCYW0mBwjCU8aBZ/rxx/D3YMul?=
+ =?us-ascii?Q?VY5Wi9/KJ8Q5nYArAD7a3bU9xXQMG8KrNyDtxkBHBMglJEVFhy44z8Fg5/SI?=
+ =?us-ascii?Q?Obk8Vaoj10w9VIwV2H8USSnQBjsMH5kG3qqZYzcTwE0Kb7CrbZR3Jhr7SHp5?=
+ =?us-ascii?Q?Z99H/LeNwmtDmWak7DsUqbTvOfRGyf2ERmHfpPER1tbmR+nbD1YI5N8ntQQz?=
+ =?us-ascii?Q?fRsJusx/PZ4KbaMwWAfVABiNG7LaRmjWFGYTQdNPX0Go+64Kou0do/vzxLZW?=
+ =?us-ascii?Q?81VfmwZxEsRwgll+CY/gRbdNUQABZ8c7xI0sI+6idrB0ldkghiQtJjgsL+L5?=
+ =?us-ascii?Q?7mH6a4sLRbyI+RERsK7Vz4KXfQn76AXEXcTwHbKYfW+8TjLlJudf6LpToZHJ?=
+ =?us-ascii?Q?hW5g5uA61LCHtuoRpxLoiPt1aLL6TM6XSXd/og58ySFWUFEeblmRUVBf2YLH?=
+ =?us-ascii?Q?HVRZymeBR61R45nZqVRi2qJxpoTQNE2RJeOcZSu6AgeQPZKINwrBIkNepu5T?=
+ =?us-ascii?Q?uIDwkWq4tHUrTK+Zk/TbU1yHBln6zmsgsbHrGsi2S6Beb7K0on+R5YOvviH6?=
+ =?us-ascii?Q?GgBmRvRph7rCyf6zu4nwZi9IPbBbTYbbnkE3QQ7KZW9Uh5/e8fc6MwhlmZKd?=
+ =?us-ascii?Q?rlAcG9Y2JQn5Mv00bNCToGlV/X9cvkyYBQNMLpezAhyzTfRPW2rQhaJ+eZOK?=
+ =?us-ascii?Q?o/av+xbZ5bRo4iaWjrs7Q5XvLpiyVqdQ0AQNNCUZpnfMjMgE3/IwQ6zhQcOh?=
+ =?us-ascii?Q?AehJyhvFz0wTI5elqwS82/JE/oQsCdsVxVHPiXX1zmyk53SsIVEyeLKCrEKI?=
+ =?us-ascii?Q?nvefrllS8WBI9gqf0pv3Zvo2DbUOc9co0SlFA8ARzE4ACh1z67NRK9F7aybq?=
+ =?us-ascii?Q?izAtLeALyIb+qrogrHJAQNfdL0+AiBHOxq8udS2YzbBAMW3ccWqDxqSYs+pu?=
+ =?us-ascii?Q?j9NYJ5oP9qOs4JzzEWPlM8QEh49/64D7lezvttwcrqKqNXF3jXhXw1R4YpcW?=
+ =?us-ascii?Q?jMaOdtL6eQF47kncFTNhV4y1JP1dTASoUaJ1MlBbwOZtYgITSY4ZmGoIU72S?=
+ =?us-ascii?Q?Kxt+CBJyfSjhsWzi51Q7kxuA1rl9c2Abu6FBlGhmBo9qaLO5?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d20eea0-092b-41a0-fe0b-08de9835b100
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Apr 2026 01:49:10.4511
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oPdWkFin5FxsvPx72r3lGC5cmV5DThoivI96nZN5qki29puo3GkOaGN4cbTTPrXo
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5679
+X-Rspamd-Queue-Id: 563A040004
+X-Stat-Signature: 5c1qfp36753pnf7ua9yi958jphddcieu
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1775958057-395453
-X-HE-Meta: U2FsdGVkX18ZnEEDc8c0kZ9UsUMIWaphb87Nz8rlNnDc2SQN9DKqkLUn9MCgj25oURygtyeq5Woaz8481z6kl2OF7me9XuLvjQN9r02+FRKMcRQ7itETm9WHiz6rLCaHuuxYHuVlx79uBWoLUHDhsEl0pJy/WzO3aouat7KrVZSNNNIMzGK0DCLXAvjdKd23cMzJ45pqyBMl5hkoKDvho6FUHkO7sTIRjuhviWzzCKuTvj42iJASNwPhBfyuI9ThJNl5GJwkD3nQSNGeilAdVmw5v/LB47ftKjLyyjPP7MPnw1k9qPXZnskvU8Je0MZMFGko+qPK6YJaTtybpdmraKDjs/C+aJ4Q8B4toPpxguxP1QZNtbKeiieGaWJWG9E9K/odMrcBKKFhu8N3TRXArWC5lOYf3lScfLjl67its+Qti9KYKt/PDr/hQSANqUrgUuGETcFQxBNpDZsvTSmqdGTHTcovWRyHEDNrWdmT0ptyNGBe77cXrdmd0qqdpdkLLIIrHPPvUOnA0MiT23tN6e8Mk85dFJ8nNDW2sMLVIlJK38Zl8Y4vhV5pinLMW+JoKLcY3ci5As0VRWPX7w2Nv3X1G6cEEk02NUNvAVxeZFJvyHp6HpOqO+uRJ30BZO3AQi8H3V4VC/U/HlEvtbvn8tY89A6E0x8zwKXc+Yos1owd9hL8BLFWZxA5KrNXNxzkeYPlO1YMINSOzEqeNrvGh/Ra6rDlUoYbgvTPO4yWvyNBcO3T+wbNjS0D1dbKazZ1BcWTT0jc4ZODPjO3aOw5Gsqo5Y2jLo307grIeLld4rBBTGyUKUsICkPr9jT1vgRbVE8L0PCCKw5f0OHhzszwTD+rIGZuT9tOGjIEoxaAgomG0bKD/Fovm4QmLkQfPwH325ar+rVnkITQj4SrlYaq0icoZqGJ8enx3rS5bRMHzjaasUw3fI/B6RD/tnQDBilRBCzUtmY1aPhXFAPsy7u
- VjzNlVKS
- 4mogvt/uYogx8KuGJC4oZzQEbrZLiZpmYrcIczl8NOSbEuKfsaXDbvdIl0qRnlhY3CNgA6w55PjECFfDMjr6c722EUVBRfgDx8VCRBk4/mXVaR+KvBdg9N0qcfniOQ1lAVO/IXFyt7P+H9zhAiv4mnC5cQU8UgYlUTESqC2H33CJNWpc3GYCFQ+TdhCif2PCk2vtcoHQaS6hsoYtT15jHT41HOFIkCqcTXOdrjW/9Wf6YiM2BfYqYHEUY+1TEwfK+z4K2I7NsZDBKhkGANk54+oX0qAnJbvRG/LsbERlugUsoLn5hMsp8hBpYr39gs5Q0VfBzvBPbQOlDZXdd4ht3udxKcj7afqMdqtt9/haTT59cTRLuZqDVtfNr9A8x4ohIoQ9DlI+yTqIm01o1Hn9rPA0cZr9t+Z3chp0Me2rMhoNXks/hgYM1DTFv6pZlpVzJUrJU/BGVW8nrtB9s9nTOtyIzkjw8fjJiM5LnG3uBSmx2PcpQ0GGH3rUC9HRbW0wopFu0bC7yxsPoCdMZpLyP5JV6th/2J7ZCfr/4ZmcUbGjVU3lTeLF2tGsYYrEuG1MZEgiXGd2KNW8F7gzscLQUQXtfrA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1775958555-765183
+X-HE-Meta: U2FsdGVkX1/9iZq0BEh2QX5ELcFJqR7+agvT7X8NNkWZSr7zv92OB3hegS+9mKf1jmmZl68jl1sGL+D3qYbq6dSJnDNppIfX9gZ8j2JnMh35e59NcVECDs7zSrwLm+r3fDZqhncc/2t4+sRaI/y6gKUItsEHwp+eWJ7BSzajlv2ImwiQzGrJeMFrKJ4gTtCb9HXmW74mMc/qWTY/8FfTtjoTrVgaSeJSef2S1x4EfQzsrTR5DnMmqB7juvoKffvThrnWcOUk5ZOOiUkdZQfg2fWSbnrwNUqL2lUl5P82YKNTCo4LybwAvw4l8ExuuGUeEC6GOvzddy3C1yq1616zKISXFk3R69MXOjeWKf+N3ciGGW9/q1rpuWR45lzH9eyfYQ+cn3t5eWdipvNpuNXG/Jhl1aJKbZOFmwK1YJ6MSrwFdPcyaK9VFLIOl9g/6O7FFWPiY6WdANIgWJRz48GQqYtc2WnDxEb0l9zaPnKrmBLHs45NVCDWMnv8VL/YdsHcK8+cu6vcB5TObaWlxTyxAAN2+GsOwBZsE0obZcMT2x7cVK6k6y1OYTcU+SEo8JiJMHUdv5ehKxFvsZorKC7IjYPKPcsVUlfV+rS9pYlGwBIAgckwmfWkwN2DAjQ4hjOHwNV4NxGGVWFEbsD1C/i32yLmVqNZvp0wwnV/lBq8DlF0q9r/yr/f8NNAXdUEyNPJICOhK9frm+yumOLk794UK742WQNdQvQEAZA0giyLjub3umSziITScuzJSItHzQPzGsoDYtvKZJVemoH7IDrA8wUZejRyflBOmhWoCx15AX1QuD2xNjavol1SyPtvd7nxEtoSoeSIP6gRmq4LZHknx3jMobuyT5xYd+GQ0L9xvrI8pc842B9Mblii9CYWot+mQJf3UZXvX/c1fzIoK5C+8ZZmNGXEPcSMrgCL0qjxoBzd4iwTJbaWAJsqoL1+00tiShYh4RmJBmPuNXWPWeF
+ zgnViGD8
+ vvKJZ1hO186Cw80le5S5ubF9wvia93Y8DjoTkreYgVqZ7DmH+ScD3ENZ0HiSNzpfZjL9kn4FoCm4PLD22iqJ399ZaH3sVf2JlhovKIxq/+iJ4nF6FCciAFl/EC5bTJuE5EtQRYY0BL+WCaPBiBwx+Q8UC8FHLuAQh8UMPB/i3oqm8Gcapw1u89eEeMZTNEYSK656P4tM/VdpbdErtAboyC+V+gcZe/pq4LCBJ7fIxhrkA++DsJf2VSmYolq0tZjwnEDZfPAGuprhrqhFHQlEAGgPGxNybzo16xU7j0ZBwqfSEuqsh82niGVWdhZEJwDXCRMsstd2vR8Zdy4axCQMRvzPwQYh+m8H6ZvYQE3ArbE8O7ep6yxn3y3rrzlpAxLJI6vIOgrpu2zmkqF0QjTFxrWQus1PfgBWy8EUF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,185 +160,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-n Wed, Mar 25, 2026 at 11:36=E2=80=AFAM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> On Fri, Mar 20, 2026 at 12:27:14PM -0700, Nhat Pham wrote:
-> >
-> > This patch series is based on 6.19. There are a couple more
-> > swap-related changes in mainline that I would need to coordinate
-> > with, but I still want to send this out as an update for the
-> > regressions reported by Kairui Song in [15]. It's probably easier
-> > to just build this thing rather than dig through that series of
-> > emails to get the fix patch :)
->
-> Hi Nhat,
->
-> I wanted to fully understand the patches before asking questions,
-> but reviewing everything takes time, and I didn't want to miss the
-> timing. So let me share some thoughts and ask about your direction.
->
-> These are the perspectives I'm coming from:
->
-> Pros:
-> - The architecture is very clean.
-> - Zero entries currently consume swap space, which can prevent
->   actual swap usage in some cases.
+On 11 Apr 2026, at 10:28, Lance Yang wrote:
 
-Yeah not just zero entries. Compressed entries consuming a static
-space also makes no sense to me.
-
-> - It resolves zswap's dependency on swap device size.
-> - And so on.
+> On Sat, Apr 11, 2026 at 02:21:52PM +0800, Guangshuo Li wrote:
+>> After kobject_init_and_add(), the lifetime of the embedded struct
+>> kobject is expected to be managed through the kobject core reference
+>> counting.
+>>
+>> In thpsize_create(), if kobject_init_and_add() fails, thpsize is freed
+>> directly with kfree() rather than releasing the kobject reference with
+>> kobject_put(). This may leave the reference count of the embedded struct
 >
-> Cons:
-> - An additional virtual allocation step is introduced per every swap.
-> - not easy to merge (change swap infrastructure totally?)
+> Right. As documented for kobject_init_and_add(), once it has been
+> called, the error path should go through kobject_put():
 >
-> To address the cons, I think if we can demonstrate that the
-> benefits always outweigh the costs, it could fully replace the
-> existing mechanism. However, if this can be applied selectively,
-> we get only the pros without the cons.
+> /**
+>  * kobject_init_and_add() - Initialize a kobject structure and add it to
+>  *                          the kobject hierarchy.
+> ...
+>  *
+>  * This function combines the call to kobject_init() and kobject_add().
+>  *
+>  * If this function returns an error, kobject_put() must be called to
+>  * properly clean up the memory associated with the object.  This is the
+> ...
+>  */
+> int kobject_init_and_add(struct kobject *kobj, const struct kobj_type *ktype,
+> 			 struct kobject *parent, const char *fmt, ...)
 >
-> 1. Modularization
+>> kobject unbalanced, resulting in a refcount leak and potentially leading
+>> to a use-after-free.
 >
-> You removed CONFIG_* and went with a unified approach. I recall
-> you were also considering a module-based structure at some point.
-> What are your thoughts on that direction?
->
+> IIUC, this looks more like wrong kobject lifetime handling and likely a
+> leak, not a clear UAF :)
 
-The CONFIG-based approach was a huge mess. It makes me not want to
-look at the code, and I'm the author :)
-
-> If we take that approach, we could extend the recent swap ops
-> patchset (https://lore.kernel.org/linux-mm/20260302104016.163542-1-bhe@re=
-dhat.com/)
-> as follows:
-> - Make vswap a swap module
-> - Have cluster allocation functions reside in swapops
-> - Enable vswap through swapon
-
-Hmmmmm.
-
+kobject_put() ends up with calling kobj_type->release(), which is just
+kfree(to_thpsize(kobj)), equivalent to kfree(thpsize) in the old code.
+IIUC, there is no leak. Let me know if I miss anything.
 
 >
-> I think this could result in a similar structure. An additional
-> benefit would be that it enables various configurations:
+>> Fix this by using kobject_put(&thpsize->kobj) in the failure path and
+>> letting thpsize_release() handle the final cleanup.
+>>
+>> Fixes: 3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+>> ---
 >
-> - vswap + regular swap together
-> - vswap only
-> - And other combinations
->
-> And merge is not that hard. it is not the total change of swap infra stru=
-cture.
->
-> But, swapoff fastness might disappear? it is not that critical as I think=
-.
+> Apart from that, LGTM.
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-Yeah that's not critical. It's a cool beans optimization but nobody
-does swapoff and expect fast ;)
 
-(It is a lot cleaner tho but again not my first priority).
-
->
-> 2. Flash-friendly swap integration (for my use case)
->
-> I've been thinking about the flash-friendly swap concept that
-> I mentioned before and recently proposed:
-> (https://lore.kernel.org/linux-mm/aZW0voL4MmnMQlaR@yjaykim-PowerEdge-T330=
-/)
->
-> One of its core functions requires buffering RAM-swapped pages
-> and writing them sequentially at an appropriate time -- not
-> immediately, but in proper block-sized units, sequentially.
->
-> This means allocated offsets must essentially be virtual, and
-> physical offsets need to be managed separately at the actual
-> write time.
->
-> If we integrate this into the current vswap, we would either
-> need vswap itself to handle the sequential writes (bypassing
-> the physical device and receiving pages directly), or swapon
-> a swap device and have vswap obtain physical offsets from it.
-> But since those offsets cannot be used directly (due to
-> buffering and sequential write requirements), they become
-> virtual too, resulting in:
->
->   virtual -> virtual -> physical
->
-> This triple indirection is not ideal.
->
-> However, if the modularization from point 1 is achieved and
-> vswap acts as a swap device itself, then we can cleanly
-> establish a:
->
->   virtual -> physical
-
-I read that thread sometimes ago. Some remarks:
-
-1. I think Christoph has a point. Seems like some of your ideas ( are
-broadly applicable to swap in general. Maybe fixing swap infra
-generally would make a lot of sense?
-
-2. Why do we need to do two virtual layers here? For example, If you
-want to buffer multiple swap outs and turn them into a sequential
-request, you can:
-
-a. Allocate virtual swap space for them as you wish. They don't even
-need to be sequential.
-
-b. At swap_writeout() time, don't allocate physical swap space for
-them right away. Instead, accumulate them into a buffer. You can add a
-new virtual swap entry type to flag it if necessary.
-
-c. Once that buffer reaches a certain size, you can now allocate
-contiguous physical swap space for them. Then flush etc. You can flush
-at swap_writeout() time, or use a dedicated threads etc.
-
-Deduplication sounds like something that should live at a lower layer
-- I was thinking about it for zswap/zsmalloc back then. I mean, I
-assume you don't want content sharing across different swap media? :)
-Something along the line of:
-
-1. Maintain an content index for swapped out pages.
-
-2. For the swap media that support deduplication, you'll need to add
-some sort of reference count (more overhead ew).
-
-3. Each time we swapped out, we can content-check to see if the same
-piece of conent has been swapped out before. If so, set the vswap
-backend to the physical location of the data, increment some sort of
-reference count (perhaps we can use swap count) of the older entry,
-and have the swap type point to it.
-
-But have you considered the implications of sharing swap data like
-this? I need to read the paper you cite - seems like a potential fun
-read. But what happen when these two pages that share the content
-belong to two different cgroups? How does the
-charging/uncharging/charge transferring story work? That's one of the
-things that made me pause when I wanted to implement deduplication for
-zswap/zsmalloc. Zram does not charge memory towards cgroup, but zswap
-does, so we'll need to handle this somehow, and at that point all the
-complexity might no longer be worth it.
-
->
-> relationship within it.
->
-> I noticed you seem to be exploring collaboration with Kairui
-> as well. I'm curious whether you have a compromise direction
-> in mind, or if you plan to stick with the current approach.
-
-I do have some ideas while discussing with Kairui. I'm still figuring
-that part out though.
-
-What I'm working on right now is tracing all the inherent overhead of
-swap virtualization, regardless of the method we use.
-
->
-> P.S. I definitely want to review the vswap code in detail
-> when I get the time. great work and code.
->
-> Thanks,
-> Youngjun Park
->
+--
+Best Regards,
+Yan, Zi
 
