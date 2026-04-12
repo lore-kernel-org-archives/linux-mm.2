@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BF88E937EE
-	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 18:14:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2639EE937EE
+	for <linux-mm@archiver.kernel.org>; Sun, 12 Apr 2026 18:18:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5444E6B009E; Sun, 12 Apr 2026 14:14:21 -0400 (EDT)
+	id 8A5646B009F; Sun, 12 Apr 2026 14:18:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F58D6B009F; Sun, 12 Apr 2026 14:14:21 -0400 (EDT)
+	id 87D626B00A2; Sun, 12 Apr 2026 14:18:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40BDD6B00A2; Sun, 12 Apr 2026 14:14:21 -0400 (EDT)
+	id 792FC6B00A3; Sun, 12 Apr 2026 14:18:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F18F6B009E
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 14:14:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4FB01B6F18
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:14:20 +0000 (UTC)
-X-FDA: 84650703480.20.C0F085C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 14F60A0006
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:14:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PAskbK8U;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A0FD6B009F
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 14:18:16 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0DDF513BAD8
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:18:16 +0000 (UTC)
+X-FDA: 84650713392.12.7E1BFEE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5C34914000A
+	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 18:18:14 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Nk+5ppuS;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776017894; a=rsa-sha256;
+	cv=none;
+	b=wGk6LZOVn1GLcdYgJ8TUgLupyMOcn2bwYvax6gRvRiMVKqdSh2q2K2bTKv55obGtsoCAAY
+	brQiHYsPC7rkv1KXR5R48VQ1X15xBPa8hmbBcqYtVOdAhHGChEtNdLztjFepLnJ+zt3nDU
+	/SToNWjQ6+GyL7NH3vhtOy36/+x0+is=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Nk+5ppuS;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776017659;
+	s=arc-20220608; t=1776017894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=odCuR4OPY1DGDGwGb1d1EW4B0dOpY7i9azhYVMlCJEo=;
-	b=fK6xRtB+QQlkoT4zGsr4srw2cURbzgM7eekpHxvkuCjuYUHt3cromZ0eii9DewIF21dfJx
-	ljFkScG8cHLbWSdqzSY178A0zTrYpzMqHkde+tsvrfn00TK90SQ2wlKfF3G/tG6iiHtW+1
-	U7zxioz7uZAqFMHOJoER0gPVLnYBL9Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776017659; a=rsa-sha256;
-	cv=none;
-	b=OaNN5xixBzFr/fhi+FNxT1KGQy92aci8X3IVfwCVvaaw0Y7+5D70lzouyFWRgRLMDAvP3v
-	6wnWDPQnlWC2obp09EKviJAQzJB4J3/HT8IpBcuwgkycrN5LYB+sGFKcO8dXyXNf5KmyVH
-	DvLtYAWJd3B/f2vNOoQ/78LFy6Fnr4Q=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PAskbK8U;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=xhUcROqYVrhOp0c7BPI3Mr2nJ+x4p3JfQhJngMhnVr0=;
+	b=aEgLJYqlRKwaUJ7jCt+hdhzizJ4odF6xCAYMZ29k2Dqj0/CocNSiXkoHdcmFMgwrudAvyU
+	/06P4ptlUqfpCrfNTE33Top4V1RybqnuvhsOasb89Gls86KownOYQ1gsVnuneyq7GMt5+b
+	DdHgt/usrdLZIYCJ5FukJiKMkUECPh4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 078354175F;
-	Sun, 12 Apr 2026 18:14:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A148EC19424;
-	Sun, 12 Apr 2026 18:14:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776017657;
-	bh=ScWjFfjjpM9jn/WjFwtS9xJ95budLw+WQgu9N2i0yr4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PAskbK8U63j7K2gYgh7JPEvRyPtpkqPh3JB5rKqMB8MZPYFL8RinP/tRLYZXW16uN
-	 V0FbIjCqRcoPGj1KzTUTYV7UlWk1+t2ckM/jWKfsB9G42Ch6zxcC+qvQ/9ezf2Tj8e
-	 1/Dp559TCBynLYestO13T/2x+IK3xuYguT2bPuMz6/a/HkSczEiGEhDaKoXT6H2OGl
-	 YrOphXq6Zx2vdI9p+YUAin65/pPDdhCz45nLhMfJnzEP44rmn3GhQ++uM9UFAO/UH4
-	 5mhfq0oLiGQht+RUCnwUr/E07RMhlJ1zHeu5ZTwusynQVITzDXcmloyHDzqlWxbbOR
-	 1B/4ZhI6mKw5Q==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: (sashiko status) [RFC PATCH v5.2 00/11] mm/damon: introduce DAMOS failed region quota charge ratio
-Date: Sun, 12 Apr 2026 11:14:14 -0700
-Message-ID: <20260412181414.84422-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260412161957.82835-1-sj@kernel.org>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: y7kgdzhwzekayqntp1pwe3tjbax8ifcw
-X-Rspamd-Queue-Id: 14F60A0006
+	by tor.source.kernel.org (Postfix) with ESMTP id A723860142;
+	Sun, 12 Apr 2026 18:18:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258D1C19424;
+	Sun, 12 Apr 2026 18:18:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776017893;
+	bh=m1HogzxVR1Ef4cOOJK5L0Qa1mWVjgFEef8ioM1/IH7M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Nk+5ppuSiTQeOq2FwCiWUDwzwb6fS2FZt8aspI2LcvNSvaBff1TbkFAbLbyo87Ij0
+	 D9NvS+5xY6CReMsm/7eZmA5kqhh8ogR4ISpfEG2oA4RmZyi/wE4L2lBdhzkaRNd0N6
+	 2zpiR/sjIb4YnbRapqjHmXNpLVonvjQOFORS5VUg=
+Date: Sun, 12 Apr 2026 11:18:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ rppt@kernel.org, peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] userfaultfd: preserve write protection across
+ UFFDIO_MOVE
+Message-Id: <20260412111807.42c3edf86d19528d7cb1bb7b@linux-foundation.org>
+In-Reply-To: <20260409152822.1073083-1-gourry@gourry.net>
+References: <20260409152822.1073083-1-gourry@gourry.net>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nhqh3e9qfjd9e1j9n64bqo1jgoe6bjjm
+X-Rspamd-Queue-Id: 5C34914000A
 X-Rspam-User: 
-X-HE-Tag: 1776017658-23895
-X-HE-Meta: U2FsdGVkX19pkhz3e1bi0m1OqLSb7v5dGYpc+pdmWHgVD1A9cl/MnODD1E+yubrvhapapNv42ubicAFqVkqfQmFevzMI/aESGfKWhEsOn96y446lGAHcwU6Ui/4A9eDly2Xfytc0OhqnQxdvcJsVjzA0snRtiluT6QhQLzQzWD0C18oOaHHeqmwL/r3/ktNMhvGRR+Rl9MqHOO9n0oI0vBMzA3Zrd0jf1QDNwrd3vdzoMuDSLYekAux8t7eceHSx41S5kc1Ykqt1Y3TBiNaJDp/+9VR/xPIChb0MdfIzuCTyETqExVHa/VujL0ZbM8dBWzJupwniIU7zuOtnFrQVxXa9SAo00SWNi7tm4wEKtBo1usEQwX426ydBzOvDQlesFI1/W56uSiKWPmZUfhqpflmkMkroSgq3fP975basdoyy5EmuvTreX7/BoUKodgnO6hXYyi4yH9/tNPg0q1k5R1lpGNC5Ap910i+/EWmdacen0jKz8SGvoQqGxnlPmkCw5nfdR+I4iRYuVUFtQvcBdKtHBgTGXN8ax/PBIBDOLFXv9BtGMRn5PaZ3qfQXXagjuvSV/+HnmzgYVu4WXi44zBKGJ4GJIypRNvWDlD3OMsnQNM+zzww0DMTEuwtjPLXG8aCOoWFUWxAwrPMJwR+cpKY1QtMNTIZ/EnXzDzsnLtcAnOpDYxKp9uNlxYxVSA//d8WddT0krJZ/boZUADTWgY8lKCyXoCmgU+6lIHOQEz0EyNRuqWxxIODEqbdcO85aad9yq+jXGYFgcFTmbbaFFBLyiPHdZER0R1kaotSGr0T1PsBK5lHeogoz0Tz//pVmFfeIcz27Yq27WU02nOeqdEatplOFJEyt4CItctcjmSOMWvUalaJRiS5YE9/hzQAHlcbIteGIBdzCAsxc8l9XR3RkzCxmuOLmlPN5Ph68mVPPg/986J8R6QrSBotdlkgQ9zOH+4Sp7Pyt89Z7Gxu
- NoF4iKBo
- Gw8iNbItyNKmntDuo84vcx3e4zsDjXIFTcbK1ZO7LnfUE4Ww6X9BcpftPM01SQk8OtvR7pvoL2oaVhlroo1OTnFB83EvlE1soTHtW9dUP3YJCVa0cKDDFMv6iSGPU6guH8fAc73AdvSwgDN7hpFmVfH3nNFjR4uamwjEU8C4g6ymqsbNcsQBKVSQQMCumcI7kOC12PGS7mE3CQbHwyeY5MUIYihg91nHXFhHRVnVOPQh/nXfbccSnGr1KtUn7M8YlLds5d+C61LXpzr7Eke0fDBeUqE0epvHKVLKM2IabXWiBaRiohJrbrWIAxw==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1776017894-559833
+X-HE-Meta: U2FsdGVkX1+/UDWhTIrC0JI72XurMPMRx8DZNTNBLA+mvRBCgT+2J3sjW2Iv/2lPXLNPjjLsvYTnGcGqFdT1TG+UZW0YjzzUKzX4XW9W/QFRcEt2xHzA5x+JcBmr+KTbFZKjr7BT+m9QxjeOGsdIcOJHEJEdLK6je92i5oVae3JgXf6WBv7Wq5ohou+wq54irnVLRmflRHuIURIAptTylIQxGBBM81EqcrMB91ObLJCelmX4gnuVIa7oie+43Ayfsn6C2IqVbC1OxuBb7m+KtcJYwifcFKtlBSw6M37laBLrheXOxMHcSslp0u4FR57QSFbjxAl18HqVK9jHd9rtmnZvi0Y6iTIOqL91gdaX19IcFl4zzpmqP1Uv5DernafmFSLqKWURy0K95JjeJaeIEhN9apNrVzliyic60+yjKEzRylcswN+e/dzKQun9m664xnRGVP9hHL0es93K1oICqumA26hTCVJ1AKGTmDnLTkWARycBm/Y/1t4eA7ZaP0Xw8jO7Io01GRgl6+LksjpfA2MCOBC9+Ir+z5cFGTxMF/IMyorhBr55lArwdzi/Jhcs/MpY0xQIeImNU9mitIbQbxCny4DOZjjfgGHizl+yXQDmC8+9mecjDMwh5v76gFf3bAVbl+v2gGsbx0t1XqrcWtwpmNrTke2vttZSr9FbzzeVjO0k40iXPA539PQCYGg8YBIIoyQRdZQi92ZpU6JkkG+ZaBGVybSZ7Nz1DNYIEL9f8xeylL4dREePctqyf1ODuCZmSprvotyv+tsfYA/VEB+QdR4bLpi+3E2y+dHMvP4zoNmjwNCD9VI9HAYzhRF6dFitRBK9WsDO9QjPNRHv59sj5ZuU9sfvORoWyLIGOvDTTB8+LmOFjbBfvS5vrKtFTnOS/qAQempADNj7jB6uZ0pB2kKVRED6DdjoA1P8X4KgFuh0IMmRXuKgYSeQxDfx2BsB6rYLpxJvvVARk27
+ Pm7aHvwT
+ BKjV2KteC/LMUHjby6e/5Gqi7h6N2nczqTfEK5vLNnsJ1Qf78XcNPBlvCtNHS3LQCMHbR1ofuA/pKi1PVPZrTWsVsbUq3Z3bSmK3CX/EG9ZBeKhYs+3L598a3WDYomGeGCdiSdUAPJ3LFqtYvPsFdLS9kMSIwBKPmVyXoubU7OjPm5ol1A+d4MGbLudjq9ODirElRv9RI3C5OsBC5CEn0gkF6zgJTlf/FMEeXdWr83HY1ZBh01JLp4vl8fVMkNWxtTVKeAYq1/uIkuUIYd/x5wqpp3al6efBgwD3yF7x7frwcyhBITLdvGHHwQ5BR13Ibvoq/zexYPhKvSo8TwiV9osLFY+zBYG1XI94uIeRc2i8N5w3fWwG5r+3RDNkL7hjYtaY4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,63 +91,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL; DR: Seems Sashiko is finally convinced.  I will drop RFC tag from the next
-spin.
+On Thu,  9 Apr 2026 11:28:22 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-Forwarding sashiko.dev review status for this thread, with my short comments
-for issues-may-found reviews.
+> move_present_ptes() unconditionally makes the destination PTE writable,
+> dropping uffd-wp write-protection from the source PTE.
+> 
+> The original intent was to follow mremap() behavior, but mremap()'s
+> move_ptes() preserves the source write state unconditionally.
+> 
+> Modify uffd to preserve the source write state and check the uffd-wp
+> condition of the source before setting writable on the destination.
 
-# review url: https://sashiko.dev/#/patchset/20260412161957.82835-1-sj@kernel.org
+Please can we have a description of the userspace-visible impact of the
+bug.
 
-- [RFC PATCH v5.2 01/11] mm/damon/core: handle <min_region_sz remaining quota as empty
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v5.2 02/11] mm/damon/core: merge regions after applying DAMOS schemes
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v5.2 03/11] mm/damon/core: introduce failed region quota charge ratio
-  - status: Reviewed
-  - review: ISSUES MAY FOUND
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Cc: stable@vger.kernel.org
 
-Sashiko is asking a same question that I already decided to ignore.
+especially when cc:stable, thanks.
 
-- [RFC PATCH v5.2 04/11] mm/damon/sysfs-schemes: implement fail_charge_{num,denom} files
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v5.2 05/11] Docs/mm/damon/design: document fail_charge_{num,denom}
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v5.2 06/11] Docs/admin-guide/mm/damon/usage: document fail_charge_{num,denom} files
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v5.2 07/11] Docs/ABI/damon: document fail_charge_{num,denom}
-  - status: Reviewed
-  - review: ISSUES MAY FOUND
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+>
+> ...
+>
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1123,7 +1123,10 @@ static long move_present_ptes(struct mm_struct *mm,
+>  			orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
+>  		if (pte_dirty(orig_src_pte))
+>  			orig_dst_pte = pte_mkdirty(orig_dst_pte);
+> -		orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
+> +		if (pte_write(orig_src_pte))
+> +			orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
+> +		if (pte_uffd_wp(orig_src_pte))
+> +			orig_dst_pte = pte_mkuffd_wp(orig_dst_pte);
+>  		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+>  
 
-For this review, Sashiko seems just hallucinated.
-
-- [RFC PATCH v5.2 08/11] mm/damon/tests/core-kunit: test fail_charge_{num,denom} committing
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v5.2 09/11] selftests/damon/_damon_sysfs: support failed region quota charge ratio
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v5.2 10/11] selftests/damon/drgn_dump_damon_status: support failed region quota charge ratio
-  - status: Reviewed
-  - review: No issues found.
-- [RFC PATCH v5.2 11/11] selftests/damon/sysfs.py: test failed region quota charge ratio
-  - status: Reviewed
-  - review: No issues found.
-
-
-Thanks,
-SJ
-
-# hkml [1] generated a draft of this mail.  It can be regenerated
-# using below command:
-#
-#     hkml patch sashiko_dev --thread_status --for_forwarding \
-#             20260412161957.82835-1-sj@kernel.org
-#
-# [1] https://github.com/sjp38/hackermail
+(presently wondering if this is backward compatible)
 
