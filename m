@@ -4,103 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44F51EBFD35
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E346DEBFD2F
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:10:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AEA06B0089; Mon, 13 Apr 2026 06:08:30 -0400 (EDT)
+	id 3DC416B0089; Mon, 13 Apr 2026 06:10:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5872B6B008A; Mon, 13 Apr 2026 06:08:30 -0400 (EDT)
+	id 38D6E6B008A; Mon, 13 Apr 2026 06:10:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C3D46B0092; Mon, 13 Apr 2026 06:08:30 -0400 (EDT)
+	id 27CC56B0092; Mon, 13 Apr 2026 06:10:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 408456B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:08:30 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E60BD1A00E0
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:08:29 +0000 (UTC)
-X-FDA: 84653107938.11.275D2D3
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 88C094000A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:08:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WLiyyOCr;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 11C986B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:10:02 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A99F8E0215
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:10:01 +0000 (UTC)
+X-FDA: 84653111802.30.6FC67FC
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B3B8B40008
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:09:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=VCv21jxm
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776075000; a=rsa-sha256;
+	cv=none;
+	b=Z/9LhoTyWch1ERlkfjIVC26D/cxaQpktdkLGbUjKDbChjfhtkPJGp9a5t3G+ipdSVTB9kk
+	yH1dnKfTGrDP0txX3wtopC6bU8joxmgEErjYNjgnVBPvER85JelyKY2PPr7kbyec+uxWaZ
+	oKnhyN6nGIG+8I0yFYOTNEZ/VmlPMBA=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=VCv21jxm;
+	dmarc=none;
+	spf=none (imf04.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776074908;
+	s=arc-20220608; t=1776075000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sps84VvkM9WL1pZA/XR4z7lJiIfi6BTmHDf8JsPgXUg=;
-	b=K8QF7Ze27oUElBm7wD7Hg9c/pj7hXM/nDdrLxTOkspj9Lo58JgwEXJg5izemk/CKLD/auu
-	v9Yuxc3bR1uAlU3qvTUgdk9hQgAFm2AQd3U+iphDspOeRalKL8tvtslonCEApP/qxMFNC2
-	EzIOD4RJ+gaWZSQPOmqQci5hZNYjIfQ=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WLiyyOCr;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776074908; a=rsa-sha256;
-	cv=none;
-	b=aSVoPlDtwWVfQVuRDTg/AVXTI9SxWD1i2MOIFwn4vf6YXYx3NRMiM/8Y8gytZMJU9HSZlf
-	dPymaFiHn0ZND2oy04gfkAtH0npluJZ1Bjs2a/qldgKJN4RtbF7zHwhOs11M2ZL0SodgEd
-	WckXUJCXjcuI9z/dFAgq9EEzNYXrNh8=
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776074903;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Sps84VvkM9WL1pZA/XR4z7lJiIfi6BTmHDf8JsPgXUg=;
-	b=WLiyyOCrQpSqlbf5UlYg0hO4AvDZM7uLPrY9tN+xx3bzTm461ZlsVNwtJ7ZMOa1fUZjx8d
-	HK9WKtvgaGuxhxHBe+aUoDbvaQkHBZDJKQK6zfA8TVEk51y6TF+9wIyya+RmrY/kG6bzAz
-	qufQTDe3llLJJmWr78ZKyTufEHL3yoY=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH 06/49] mm/mm_init: fix uninitialized pageblock migratetype
- for ZONE_DEVICE compound pages
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <ady4LBppz-na5lM5@kernel.org>
-Date: Mon, 13 Apr 2026 18:07:44 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5910791C-9893-4710-9002-76534DBFBFBD@linux.dev>
-References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-7-songmuchun@bytedance.com>
- <ady4LBppz-na5lM5@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vSWC/GeLWhifKgmfiRwq3q8ElZnUZcjI/gPacHzC0aw=;
+	b=2RWuL9QN1GPGV898+i7uzB4s4fgOvHJNt4LXDtv52NlB3tBKr5juGK9i5n1mnBaFGsdPXW
+	nll2ghy8CkccfbvDzaqdmdnH9pM/Py6s0GVdXU/yYL8SyDbekprotWp+r1w0l/AEKEh3z8
+	/WX/AmeDen3/X3zkf5wAB4n9Xvw7Lig=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=vSWC/GeLWhifKgmfiRwq3q8ElZnUZcjI/gPacHzC0aw=; b=VCv21jxmLcVGvOwA60MIs8XkT1
+	WIQ/aymkI4asw9Itbt1KuONFmXxqnFq5Q19qhNW7pH1MlG8fzasxLCoyKITXqgDxr7TmoB1KR3kWE
+	3e78k8SOoJkmiciE9yGKlMcdPMG1gnkqXdVCsbm1OPie4cutNiKHS2ZoJWS9ThTU8qSm0sg2POly1
+	cuh8FgnNeeUbM9z1NuN3DZscZsU32GoXEBnv1q6z8jWWUDCRIo9L3DrRCknpG8EyxruHviSgHE4pj
+	Llu0752ONDGMe6spjFXtS6/pEf2U+m+2Fg4p0XxvzK0EcX4jbI0bhQIXFTz7pqPfsbYvzz0rbOZMz
+	+cnSn3Cg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wCEEX-00CDUJ-2x;
+	Mon, 13 Apr 2026 10:09:34 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 13 Apr 2026 03:09:19 -0700
+Subject: [PATCH] mm: blk-cgroup: fix use-after-free in
+ cgwb_release_workfn()
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260413-blkcg-v1-1-35b72622d16c@debian.org>
+X-B4-Tracking: v=1; b=H4sIAM/A3GkC/6tWKk4tykwtVrJSqFYqSi3LLM7Mz1OyUjDUUVBKz
+ kjMS0/VzUxRslJQMjIwMjMwMTTWTcrJTk7XtUyyMDI3MzIxNkgzUdJRUCooSk3LrACbEx0L4Re
+ XJmWlJpeANCvV1gIA3XeHQWkAAAA=
+X-Change-ID: 20260413-blkcg-9b82762430f4
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Tejun Heo <tj@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+ shakeel.butt@linux.dev, inwardvessel@gmail.com, hannes@cmpxchg.org, 
+ josef@toxicpanda.com, "Dennis Zhou (Facebook)" <dennisszhou@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ cgroups@vger.kernel.org, martin.lau@linux.dev, usama.arif@linux.dev, 
+ kernel-team@meta.com, stable@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-453a6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3105; i=leitao@debian.org;
+ h=from:subject:message-id; bh=mM7zBvgBx42iFC8b3TBI95XMtmZTg8a5yacqwUJ3qe8=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp3MDXbEz+UX3X1wznCg47+bMMLUhJuXtNNGS+G
+ UDV2+dls6eJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadzA1wAKCRA1o5Of/Hh3
+ bV0QD/sE4UyxgXl5apSWceLym9lfJpaUKx/CuJT54NBvmiXhJsfK0YCrX6agjJv+/FSQnXQrIEH
+ gyXtFTRw3Wy6Odt9GG1Pgn7N5ugE5aiA2GXwSC92IVUzYJSyHik7d59F7dzMe6ZLeLN70L852G5
+ 5eFrewoy5uRVHaFMZmPzSMhpOXw3609WV7NP9cZrrOwEvSQ3xfKmjPKtYuHNWviWsS6HG7N4F+L
+ 26oqRoGhH75UmRESMoQ5bF20/x5btY0PBZQl/v1WptA4o35ZSpOVbfOG2jlzFFZELMfTEcACUmc
+ au5t7C9xbrmM5pTCb4DN2hgRk/+/da8nYE45M6d7ahcRiGb+w+90s8rOogszs3yiR56RSN2fYyA
+ bCJ7b0WYuGZUjmHykfim0w2UUzIM6PZeXEwdXy3IUSXQuyEmYdKY+V6BiaYvrEkcAkwOf4xHIA5
+ L1g1UH5Fbzbg2ZJywnTyMfsAimsw9FHHMJrE6Hx7uf/ZWlQgWbjI/LHLrR7cx2Gq8op7mGnbfrA
+ 8VPlUWaND6J0TDH0kQH96ZbbrLtjVJ73kJXDqW6HtOBreFBtYzuYziHtTy02i3lWKNU4NGOs22i
+ 0jPsw6NlfFLnJriIbYYqzzSxzMszKidANrHwWFIPr34u8PZyyC581LB8bpsS+HJvXOH7+J1ZSb9
+ Gu9VbGs88iYZfpQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Stat-Signature: i8p75oj5s7tsbsk3m7fg99nwn4ax7i4x
+X-Rspamd-Queue-Id: B3B8B40008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 88C094000A
-X-Stat-Signature: o5kuiyyr4m3zkhtu9ieqaxwi13ezeb1p
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776074906-153453
-X-HE-Meta: U2FsdGVkX18//YZZx1XflCRQeaRM6mombP4i06BxxFCdVFrzEYDd8sEmrW6pNQrOeb/sa6LNMIsBo+lbCANTT7hUirMLhfxm2tI62RPpXcHyvwiW06v9KAx0Ns2V3hYTb74Ri3Xk2mtzFnXayDQMvEkXG1rEkxE+Tdrzw7XYP9FHgT6eAWlHh9JlK02TmM5pjBnff6Y5n1uVW+Vz+m1zDk0aFvQ5PkbaebZbblP3Xq19/0cBA6IUvvU+HIavARIRVZ3Y+5YAIZEzo3090q2NCsZN0Akm5kSJgK3n8gc410jC6ksaaLot0/fL+NribB6GUZ/olnRJzbVGYfLrZApvauBw3mgmVwhIhpg9ZPWP35ZuXohdEGKfV/mBLU9ZJObkqIgsCfZ/F++jbtgr+vZXnYWcuvl/y6uDUybh3+OYcs2ZRORvnhft59lzYCYPG9WZMEfLTP95sEaQWN8b/OVy59Hg23Zh0aHfOuzwEYBcUGlNUiMr9fyTnJeSxQ5gdQd7sWyvTVosKX9YUZTnvoSxK9BgYit001g/dIvCsKRkbu9XQ6bG9yBQufVnn7DPWtsXtMEc+cd836pk+/+y0E/NaNmuSIxB9QWsZBnwsR+NUuobpEnO4QIt0K6yKm0d2fiUzDCBegziVtV4mQF3VTpcHvb009oW7qD/Mf+8Flf9u74jcGRuWG49zHdh15gK3vKhTY9QcyDzvIeECFU9OqaYX/3VukoF0eQqrT9g5Q/JX2eAoVQbKyHHmaLLFPhGsfwsuu6NTylcHNqp6fg1/Qc5XDr6+vkjQNIZdQ/QBgfbylfj7lTaa4zh1sJxS9osnrTqPi7nmIqFuck6YAnkJtF02myf9F0D4WcPf0M0odL8dN85xV43sAbKcWTtYztaA7vHF+eSc9u/FnVQz3uFsLLaPaYypNvfWfcC5Ib311yISzEJFlGUnSpRVxnjNIIpJLG6j2S6Gz8bQaTOKgZ2Pkv
- WXaTzT3I
- GV6QicaOJi/T8yObiicbKlSnlCY0duSe8DJwf4iAJ6bo76Kh+VoFnLzMLzNf1Bi50KpNPUF+luC7zfThoUM1vQGtCkZJbUonEOXa5v2XyzYwPMN+9t5GRDBjAqUBR7+K3WfyaPG9bfo82XknVTM9Eo8ghIwbN8PWOkfnhjHYk9qpGXgNt2s+L3vJMd8Wnw2O7m1UJsX0VHjoXpHAERQjLc6GjFWaveKfnT2MfjNVjzxK5vGdReGvN+TI+C7nU/R2UKaz/Wp1+c/nwMfswvc03fjIBgfmntoQEvk8eexA+rsUJJd7YiyZ/ElUpb71LeJIYmFrZxrJ5NR4hbiU=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1776074999-204939
+X-HE-Meta: U2FsdGVkX1+re2GKuPQZro97ZxwnGVvkcUrOWitsvQC1gAx2uywHGVz8h1l+AsbXEfsN9BjK21mr3d7Zwewq1b46glIYnUj+dYjhisk9p0RczBwoELt0DzCNYUfifVBnEs9kix0UasqzDHVt73AhNzQpWYkPp6cbKSUx7HaA0tDgw6g1E1ibJkZF+j+b83f4gl0441+t8XOz50gOHowH31SYuvTuRRVWlKmgO0DESwa2TvELLnUEllO6NptvUUcbcNEeLRYBlA9h6jCyxL3Rk4prB8nzt9NmogaPePqduo/qGONAwHZFbzLJs9yyAmpG1yIbdY0CvrutRHcrM+EcYphvZbYZBygce03uD6kK2ARiqAS0KmukUNdsbvCMFy8bDuZtz5mP3qTWBLh72BvBQ1Aq6xnJNxj9yrw+4CCK2mhieifHDhyVLMYiU+7qT+NZWDaAzEN9rIPWdfeI9mkIccC/fbiVBQSCYCaeDed2yRus9jQbQxjKwHc8JdhyFJDyr//hF7F9Gl8/NEExEdPxIXDMYCWwRS75LEMSZGZRA7fY+OvrCDdz+2Jx8npirfSgoeSaKJ60dtG8RXd4hH8LPTySOAR18Xy40QZlP39CaqMStdPo9ME1baqCGMwQDKA5hcBa05/CE8La7rwzhBeWxabnz/HVaCIooUfkLyoqt45CtFXQfvG8SnbRHsQiRhmw7MmnPRep7prwkrXUZum6tu4aZDtgGX4jvWcoh2oULjZiNMJKckT63a7dZWpwdzf1SLclBGBWfOX4HCF0q3bWaKDyJTcmFD5llx/G9XgNIg0tmQjUyXSc3dBRu0pAZyLkC4hrkZcG2FqoXkABLYmSWUBXXCTxMRO4g1XeEyJgBkUpt/oZfzRt2gYJwovrOwYHxOJeiE9mRGriI8EtjcEZp0zxiWaJz7dojExjFnF1WRtiRgd1RwEMiz25K4qK+4LVOmcA9l10rX6cblMqfX5
+ 8gucuZoO
+ S1YPXzAkvDZWiFBqUEMwFRHEc/3weEuygFMxYSeml/ZlzEX6ZtQLgSqhS8Hmh1LA1beeQIPuRKduieCKE1OmqoPDRWMcDpb2IWtAbFILD7JoKCdcKn6zY3HBAta9gYU/2+BVnfNp3fFx9/OuUV9x5ASG1RGfWgcq9lKaj2AYsTwFqpA0vgZve8jDF+iWau1GIFQ2x6TNjWhbzQ2OU873wxQ3ZxfCWrQFEUYic31GLoBREhOdHhuonIBWI+Z5stnxEo2YRLXqRjlAmEiw48Om7XDzwbh9FojMrL5O+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,156 +119,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later
+accesses wb->blkcg_css again via blkcg_unpin_online(). If css_put()
+drops the last reference, the blkcg can be freed asynchronously
+(css_free_rwork_fn -> blkcg_css_free -> kfree) before blkcg_unpin_online()
+dereferences the pointer to access blkcg->online_pin, resulting in a
+use-after-free:
 
+  BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+  Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
+   Workqueue: cgwb_release cgwb_release_workfn
+   Call Trace:
+    <TASK>
+     blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+     cgwb_release_workfn (mm/backing-dev.c:629)
+     process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
 
-> On Apr 13, 2026, at 17:32, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> On Sun, Apr 05, 2026 at 08:51:57PM +0800, Muchun Song wrote:
->> Previously, memmap_init_zone_device() only initialized the =
-migratetype
->> of the first pageblock of a compound page. If the compound page size
->> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
->> subsequent pageblocks in the compound page would remain =
-uninitialized.
->>=20
->> This patch moves the migratetype initialization out of
->> __init_zone_device_page() and into a separate function
->> pageblock_migratetype_init_range(). This function iterates over the
->> entire PFN range of the memory, ensuring that all pageblocks are =
-correctly
->> initialized.
->>=20
->> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for =
-compound pages")
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> mm/mm_init.c | 41 ++++++++++++++++++++++++++---------------
->> 1 file changed, 26 insertions(+), 15 deletions(-)
->>=20
->> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index 9a44e8458fed..4936ca78966c 100644
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -674,6 +674,18 @@ static inline void fixup_hashdist(void)
->> static inline void fixup_hashdist(void) {}
->> #endif /* CONFIG_NUMA */
->>=20
->> +static __meminit void pageblock_migratetype_init_range(unsigned long =
-pfn,
->> +        unsigned long nr_pages,
->> +        int migratetype)
->> +{
->> + unsigned long end =3D pfn + nr_pages;
->> +
->> + for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D =
-pageblock_nr_pages) {
->> + init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
->> + cond_resched();
->=20
-> Do we need to call cond_resched() every iteration here?
+   Freed by task 1016:
+    kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
+    css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
+    process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
 
-Of course not.
+** Stack based on commit 66672af7a095 ("Add linux-next specific files
+for 20260410")
 
->=20
->> + }
->> +}
->> +
->> /*
->>  * Initialize a reserved page unconditionally, finding its zone =
-first.
->>  */
->> @@ -1011,21 +1023,6 @@ static void __ref =
-__init_zone_device_page(struct page *page, unsigned long pfn,
->> page_folio(page)->pgmap =3D pgmap;
->> page->zone_device_data =3D NULL;
->>=20
->> - /*
->> -  * Mark the block movable so that blocks are reserved for
->> -  * movable at startup. This will force kernel allocations
->> -  * to reserve their blocks rather than leaking throughout
->> -  * the address space during boot when many long-lived
->> -  * kernel allocations are made.
->> -  *
->> -  * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
->> -  * because this is done early in section_activate()
->> -  */
->> - if (pageblock_aligned(pfn)) {
->> - init_pageblock_migratetype(page, MIGRATE_MOVABLE, false);
->> - cond_resched();
->> - }
->> -
->> /*
->>  * ZONE_DEVICE pages other than MEMORY_TYPE_GENERIC are released
->>  * directly to the driver page allocator which will set the page =
-count
->> @@ -1122,6 +1119,8 @@ void __ref memmap_init_zone_device(struct zone =
-*zone,
->>=20
->> __init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
->>=20
->> + cond_resched();
->=20
-> Originally we called cond_resched() once per pageblock, now it's =
-called
-> once per page plus for every pageblock in the tight loop that sets the
-> migrate type. Isn't it too much?
+I am seeing this crash sporadically in Meta fleet across multiple
+kernel versions. A full reproducer is available at:
+https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
 
-There are indeed many more cond_resched() than before, but I don=E2=80=99t=
- have a
-concise way to write it, so I took the easy way out.
+(The race window is narrow. To make it easily reproducible, inject
+a msleep(100) between css_put() and blkcg_unpin_online() in
+cgwb_release_workfn(). With that delay and a KASAN-enabled kernel, the
+reproducer triggers the splat reliably in less than a second.)
 
-How about:
+Fix this by moving blkcg_unpin_online() before css_put(), so the
+cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
+accesses it.
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 2d680636b67a..d13a2577c4c3 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -683,7 +683,8 @@ static __meminit void =
-pageblock_migratetype_init_range(unsigned long pfn,
+Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
+Cc: stable@vger.kernel.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/backing-dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-        for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D =
-pageblock_nr_pages) {
-                init_pageblock_migratetype(pfn_to_page(pfn), =
-migratetype, isolate);
--               cond_resched();
-+               if ((pfn & (pageblock_nr_pages * 512 - 1)) =3D=3D 0)
-+                       cond_resched();
-        }
- }
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index 7a18fa6c72725..cecbcf9060a65 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -618,12 +618,13 @@ static void cgwb_release_workfn(struct work_struct *work)
+ 	wb_shutdown(wb);
+ 
+ 	css_put(wb->memcg_css);
+-	css_put(wb->blkcg_css);
+-	mutex_unlock(&wb->bdi->cgwb_release_mutex);
+ 
+ 	/* triggers blkg destruction if no online users left */
+ 	blkcg_unpin_online(wb->blkcg_css);
+ 
++	css_put(wb->blkcg_css);
++	mutex_unlock(&wb->bdi->cgwb_release_mutex);
++
+ 	fprop_local_destroy_percpu(&wb->memcg_completions);
+ 
+ 	spin_lock_irq(&cgwb_lock);
 
->=20
->> +
->> if (pfns_per_compound =3D=3D 1)
->> continue;
->>=20
->> @@ -1129,6 +1128,18 @@ void __ref memmap_init_zone_device(struct zone =
-*zone,
->>      compound_nr_pages(altmap, pgmap));
->> }
->>=20
->> + /*
->> +  * Mark the block movable so that blocks are reserved for
->> +  * movable at startup. This will force kernel allocations
->> +  * to reserve their blocks rather than leaking throughout
->> +  * the address space during boot when many long-lived
->> +  * kernel allocations are made.
->> +  *
->> +  * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
->> +  * because this is done early in section_activate()
->> +  */
->> + pageblock_migratetype_init_range(start_pfn, nr_pages, =
-MIGRATE_MOVABLE);
->> +
->> pr_debug("%s initialised %lu pages in %ums\n", __func__,
->> nr_pages, jiffies_to_msecs(jiffies - start));
->> }
->> --=20
->> 2.20.1
->>=20
->=20
-> --=20
-> Sincerely yours,
-> Mike.
+---
+base-commit: 66672af7a095d89f082c5327f3b15bc2f93d558e
+change-id: 20260413-blkcg-9b82762430f4
 
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
