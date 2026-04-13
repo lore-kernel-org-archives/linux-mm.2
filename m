@@ -4,113 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E30F531CB
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:54:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8564FF531CA
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:56:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 643C76B00B9; Mon, 13 Apr 2026 15:54:50 -0400 (EDT)
+	id EAB696B00B8; Mon, 13 Apr 2026 15:56:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61BB76B00BC; Mon, 13 Apr 2026 15:54:50 -0400 (EDT)
+	id E82BC6B00B9; Mon, 13 Apr 2026 15:56:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5315D6B00BE; Mon, 13 Apr 2026 15:54:50 -0400 (EDT)
+	id DBFAF6B00BC; Mon, 13 Apr 2026 15:56:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FF7A6B00B9
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:54:50 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4CB31B7406
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:54:49 +0000 (UTC)
-X-FDA: 84654585498.04.D3B34EF
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 063C68000B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:54:47 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=c6paX1bm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C95D26B00B8
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:56:26 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7308413A0C5
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:56:26 +0000 (UTC)
+X-FDA: 84654589572.12.5C323D0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A170510000A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:56:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndjJELwQ;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776110088;
+	s=arc-20220608; t=1776110184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4LBTdm0r6/3UpNGKJqwUrmmrep6dE2YfGJg+Y3TeQvI=;
-	b=sxnF3XLOoN/cNL02prqc//bbEvd8fYGOCb58+9EbML0uETuCqR39TDasoemrLNd/GWt/uK
-	MwPadHQPc+z+IFtCXouvAak/KzCgzslcKPQpcMTprIK8fWpyxmGcnZOEva37Hm7HIzNbze
-	H1mQZ+/s5w5DYS+pvO7EtPW92sRiRB4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776110088; a=rsa-sha256;
+	bh=jObOnXozybWQ3WR8NjHaugETmwef5C6VjxGvGmeLlEc=;
+	b=lm9KPd3FAiYhgPDhJaIoq7Iijp7fcVEdIOPwLr3K/46SrudhnGIZtRSK0FmkQXFUvEWwu+
+	tz+VKMEtIGgvajVaYov7JDeXGcLFaLN0sVhwyWd3YZqebqmjy6OUsbX6IdhahkIi8iyPLq
+	zrS8kjfNEy7A8xWJn0JkSh7Rw2rqFXE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776110184; a=rsa-sha256;
 	cv=none;
-	b=3bGQXrqjAd93yhK+hvyDHijGcMmC2SxXGsENy1YpEUmlQsnNTl5QiV9R8zpl8BDf0toegF
-	qknq79qpM9m3DVK360O1IufZW11OUvn3bmH6aSx3dYAekr1G525KqvxrY+Pvz/gr5PsSmP
-	43MQIFnV+QSHpWMTgE+wlTl4FoBNkBw=
+	b=mQIYCs1vZ6mUnXfZR2fOQxcKD07vcDIGzIaCMuiVTYFmQoarfKQt5G6Vn1LLGFdkYR0ADB
+	YUbSD3NpN6vmPXhhmQ/nTgavurd8iWDKGDXel43h19uNv6+VTAoRryG2uRyRoJN+cnp3yo
+	kw6mBxC0RWgnXlmYrIUQCaYGy1M9PY0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=c6paX1bm;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35e576110adso1129853a91.0
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:54:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776110087; x=1776714887; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4LBTdm0r6/3UpNGKJqwUrmmrep6dE2YfGJg+Y3TeQvI=;
-        b=c6paX1bm1kFhdyyGYGjZX3jPFAGQEuamDz066X8qR3ge0OciFzIrOKMtKsBswWAnsz
-         ei/qaqXqXYMaBfkgTjtm0wXgxyj2JOtbDiRg8qPnSKGxXQwC1xla1Qx4AKtY/QD1VV43
-         JHpqifyolID0si0XF9H4k+uNVsgVtODGnr+1YSgKO2+ZcxJOIrPPvbzl0BVUpv75p0cl
-         OfyWJIpfkjWItvnV70c6NTnBzUMsNeOfbK/b+mQarhH0nzDYqCWzjQc7HyDH4Rs5WBsx
-         zk2B+3Y14FZVRo/hKtRV9hXrAAF3xfZttTZws5SuB1DHUNnrPN7CJs7YoF9P9xUzNxqp
-         +fFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776110087; x=1776714887;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4LBTdm0r6/3UpNGKJqwUrmmrep6dE2YfGJg+Y3TeQvI=;
-        b=XWCbYiSpsn+dhfEJCUQIOCIdP35pnpPUo3YTHVj59K2ocU+ltH2hXTB9yeh4rcKb0J
-         xwzkB5KDnrAqv95b+7FhdX+4aXqHhgTmONjao5272Ygm5PQThoxWcIKdGY5v31HjQoic
-         jAipjAamBNFvH2bgHZbfZX4LurvZYdiBCF9KlK/3GERslBifWN+qKfwsWFlByzQtEn2Y
-         LJ7M5eOlDyTpw+KoUHnHBgMR3Stl5fj5dgHKMY44hRhl/rkhawkPI6uloA/Xu2R6zPC4
-         Ott9xumVlTf6YSRwsj6qXWOL9OCiyGchRN3ICHTVxtMAY3QE5I6tRniqMhyRasXi8YN9
-         pB/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ87IKXWLpOGJFNMMwc1wBeAkQiiUr0wq44o9BghxTMVQwIZbcRQnAl5QSE1t63yY5NiwWN8ByDYbA==@kvack.org
-X-Gm-Message-State: AOJu0YwWl+vCmF8HfIgl6/8Ll4wTqa65T4rCgMMMKuPbkGYweEPzMnzu
-	h6i4YXXn2sDHxtocz8NoCw3yOQagOXE7y59LghCzrSsoTfRfXbj1+Mjo
-X-Gm-Gg: AeBDiesHyq9+ZNpIUBjY7q/xKkySnW0FrX9GfdlxtXXPcIeSRHkHQ8OrXf+Lw5RK/j5
-	ppMUG+co99WzbPJOcOiTCuyr0UpTT6/cdxmZWFX9jjcnCcH/KW195Kgq5yaIpwMoTxIDaKI0h9v
-	Wzexyf2t3gHiYQN+KYlu23Ne3NQZzN1hQRl1dxDd/8zenAMwJXLPL/GClOadybAFwPOrSrAVXq+
-	W3TFDq6KCIXseVj73XGS2hgI8IMEXE9G3aC02v6iBTt/lI1nUw0A79ad5TUj3Vye8p4k8L0sZLf
-	fEoRhWvfhROKJkIbkOwAUu0HEjlF9JxnKlXzxQD2AGaChFbredajLToI2aivws1dg4VC//FYi/Y
-	s2pn3OokOHw26t/Y5i4TdNXbuN8fHCwH1OHtjDB0BgHPH3Q8ImYg6EUZnHAvjY8q0PZ8W3Isofu
-	MSN8r306XWrcDbLlwjYQ0QbvnAeLL5+EYIRK2CEa/oUEAfZNDKmQY=
-X-Received: by 2002:a17:90b:4cca:b0:35b:9e53:e2df with SMTP id 98e67ed59e1d1-35e35335015mr16924314a91.2.1776110086652;
-        Mon, 13 Apr 2026 12:54:46 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e35155829sm16717956a91.13.2026.04.13.12.54.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 12:54:46 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: aethernet65535@gmail.com
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	sj@kernel.org
-Subject: Re: (sashiko review) [PATCH v2 1/2] mm/damon/lru_sort: reset thread status parameters upon kdamond termination
-Date: Tue, 14 Apr 2026 03:54:51 +0800
-Message-ID: <20260413195451.17184-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413185249.5921-2-aethernet65535@gmail.com>
-References: <20260413185249.5921-2-aethernet65535@gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndjJELwQ;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A69C6183B
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C256AC2BCAF
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:56:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776110183;
+	bh=jObOnXozybWQ3WR8NjHaugETmwef5C6VjxGvGmeLlEc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ndjJELwQ00jfUUu4QE3U7V/TbuRaLlN9kEjgdJZDUuCcEISM/NnLTyLrzcs+K9BJ1
+	 fI8nv3O6Mpfy/cpFrC9D/0QZ7ciR8i0hz7mlaGQszBwWozyQ7r5V1HXV/xSCT0Sw7s
+	 hkXSuekC19dp6LI0q1XVF/AdBon2kMgJps4F3hdM581LZnENOmhla88LMlNLxWGY8X
+	 nkKbtoPr+5s1J64i+d6/sVQWUdflVO8s8AvOf0B4Z+X3isOjwrDjd0ZprEZOpRMD0h
+	 5KeGku2mxlOJHfdTerlNkDdw7qCjO5jAK3r2DJYE12+Sa7QkEVZL7nemm4kWTo3oxV
+	 NADvmXqffDfUw==
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8a48deebe95so39972396d6.0
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:56:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9grbokNl9NOinRXX+U1SrLTMGCZ5Zj8ys+vMAOjSdtOFG92lz9Hj+X+S22bWLHHbAipYL1+sleLw==@kvack.org
+X-Gm-Message-State: AOJu0YxpxpQFYc3feXpY6G0MbpOLKLQkiqozZr1fkXGUYDRIEUizQXSc
+	LNp0StwtIxCWaCIh69PWEQCP00Z8lHJ6j9rFG3EWs/YmbJKbevakVM4NfPybumYbDOyrzy1++ED
+	7kgo1y3UgP5xM4J1UK2WwoBkl4y8EDS8=
+X-Received: by 2002:a0c:f089:0:b0:89c:3f22:c89e with SMTP id
+ 6a1803df08f44-8ac861fd45amr198886606d6.24.1776110183171; Mon, 13 Apr 2026
+ 12:56:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 063C68000B
-X-Stat-Signature: ikjuqr4tosyeydexgkyazchds3hs6y86
+References: <20260408025115.27368-1-baohua@kernel.org> <20260408025115.27368-6-baohua@kernel.org>
+ <c54e12b0-1a35-48e1-b243-991de246a8ca@arm.com> <CAGsJ_4yL3Y1Sr0MjTd6=ROC0jKf4JkCqNPODMh-m155rUFcS9g@mail.gmail.com>
+ <add9XGTYL9sYilqO@milan> <CAGsJ_4xcCjDdFXrbhh1bJW2xT0_mx8T43yNHWCahZ3fBBqU5CQ@mail.gmail.com>
+ <1ed24e47-538a-493d-bf37-af76a789ce76@kernel.org>
+In-Reply-To: <1ed24e47-538a-493d-bf37-af76a789ce76@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 14 Apr 2026 03:56:11 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wCBeVfyFraj_dRdsUrSNqDG5a8SO9C3=PFRSt04dRvGw@mail.gmail.com>
+X-Gm-Features: AQROBzDWhDQICY-Pnn48ck6WscmI_XxZpwQTOCJY4g88d1Mu5VWOkHuK1ofhJd8
+Message-ID: <CAGsJ_4wCBeVfyFraj_dRdsUrSNqDG5a8SO9C3=PFRSt04dRvGw@mail.gmail.com>
+Subject: Re: [RFC PATCH 5/8] mm/vmalloc: map contiguous pages in batches for
+ vmap() if possible
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, 
+	linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com, 
+	will@kernel.org, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	anshuman.khandual@arm.com, ryan.roberts@arm.com, ajd@linux.ibm.com, 
+	rppt@kernel.org, Xueyuan.chen21@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A170510000A
+X-Stat-Signature: wghtyraaymbr1ngrn1p3b1eukuawiqzz
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776110087-719400
-X-HE-Meta: U2FsdGVkX18wLC9xIhkHWWKym08QiKVRgys1g5FG+xU39I1aNdeXyhHd6dUTLJuxX6aGZxJsNMXFrhqz7xbBdCkX3XzRUOXEzryGZTDQvxBcRNNT+P8rUQrdpkwoo9Rz1XYdTaMnlHIlS6scDT9fBBnBO3DcLZcvx1UNj2MnLIWkhKUYRnxtSgL9Ai3tM2UBP4FZIy+RHzD2hp0jy15h8phBJB37nv3CHDwxEeCd6suLEM5Iyo/xOI9TWj+aeuazi45dxIir3IDokaNFP93ZcGu4QUO6jvKkDMl0bckpmy/yPLZGKyFTzHkg9MindI6ylCrCM9lHijLACKtK/E9zUiXUw9biCJAbl+Q/vWvuqIzgr5KXhXZXjjp1yqRNjmCcjTKqZ0kPU4B8WV4lvrBsHaAqF8Ok6Yg/T4lylJZK9FqOi30m/K1M5oPi/fFlxdkOghTO4PDhbFCGvNcftKirHp+AN4yXBw0FpvRZemzoKski27nhjDq0G+E3SZn6ppDw519qmOeMwnX5OQJqRq6OxuBs6Z6cAb8fYnJDjV2pWznG9wUBZgT6ukE5rHc1mAEE1cLJysAj5aBK7J0R3wtn6FtAQYhYSGMj4RuClOW5gjJX90F9XrCA9q5kBdOZMLQ7qqWCpJaZ5KAIZC1s2ZonntqBslaJjgexITYpboySuGpn1Qhm5nz+XEXhB0SuYvm0JgQLAk6WnYnG+6DBXSAoHVgS7ge0qpDJnPLJrSAZ9VEwZOC7h3jXJEiys26AE8IxtEXszDHAomYI+vzv0PpYwvm9d8vfA6AoEyweUbN8UXcibOWuEPoYAEAMhap0kgUhSnHA6pVs7BuMve6OXFKPmZu22Jw7zh8Gf1FoFwVN3rEEd+TbyIV+YzoWJddO5ycFBPyVbFmDQDDjQufiFQLIJXyidu3VaDeTzY/rKC60Hp6QnP67JZUOSUtG0YvjloBEaY0/4/iXeU/POABHF8o
- NDPYpQG2
- PFuNYZxjIEMSQzEvYsaFpDD0ohCkxR5qdX/yiWhBTtGRertJl+NWgjEmahoPumVEbDgpBe1ROY4xKpOoCqujJCUzKpoW3vlOWzVCLx+3knVb5OtN68hla93fs486Xc8BMWWvlxCWAuxjAkN5J5+7DdutY2q4V8EmomsM4wSKit43cUT8DBlhb/L+Ivzs9HZ4P0kBKvCXX5+IsZz56bHsNBOw2423hg3MAywY+xsCLvoedcUm3XY5mmVE2VqCfpcsajS29SrCz5FCXbcgK0KQHJ5Nf5M0tThXrkOnrUTDkQtkV0P/S7v8gYikHqjBkZErnKfwObZbWepeQ/NEomnr5e8F4zMjKhZ9UqMDgWZObKD8e7FiuBiD8xVUSrbCeekXc6sC2OKxbFRghRWiSon/NzFi4fB7NOelae2sitszjgFgoEX9QO2mc8d0teor18Za4YZtZvA/wY5pDkxG5yDrdUPkZE0mtSzufSo0+LdpgErCJOcqlX8kduiB1buZieLgNCgSSHcx+3A5Jirq0hVheEJcX1rMWf6mRHUtAhMFJJ/4uwKI=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776110184-116076
+X-HE-Meta: U2FsdGVkX1+wGNngjT9hNVEXvtuzI0Dmxc76wEUWqZKzQqiVndqGi/cW2mXPMrsuECW8SLQRRk9i5dq+uXGyyV9dXa6okW7B31i739MeA32AacDaRF7+Uz00g5nqkpFjwZ5FvK2BUyVgFEJvu5SQWJVkrzSpQe9JLc1rW/KQ307lzPLV8zTWuupuw6tvV/haYOcImB2phVF4BNuI9atJignb4LeDnshOD7aJ6NVtj2F134cFxnbf+hgQhNt5rEqmlAC+M7khwhZ1KN2m+e10nng67zQ+eG1STysY9Ex44CYsPGjnBK2Q0esp+qY5AxG8HkJakkq4bt4lrmlC1SG+eOIFucB0vtU4PaRq8dHc9pVbp0O2F2lChU3QAT+hH9rvwEjSrnT0cfI1kBQP2hQ+0DFL5LRYqmvjLunt8dQuijW22K+nhRef8JgkkbHT7ktu8d1e1mZnsQXpiP7HLYK/OZCSnYnJSV6R550jTufJdWDqe5D2kF4aQTdoVspjcjIbc7eEart+gwkiMfCAjMyFHjLzka0I2jGVADeI46+FQdf6J3+5HA8hWMJQm5iT11UxTsGdOxCL1aqnqclJGqTENp1QC8uF8CkTcvCw3mGSCvdUs9GqI0StlzEDy9BD0o+BhibxgtphAi8yBsfYa5KjiwAEhKb+8JK9z0X9pMn3nlD+grsnJaZkOG39/1PxCM6+NjBqDGRkOnjVoDRz8g6iGGxQm5M6WZDrDHnhhZXgPCy2njsDwZ0siB+bIvfynNSWtF36tGgtudRao/Z+1LJDvvbLq1BDCLB+uaWlUkaaxFzyEr4bD0RxQD22EaIyHYdBdr9nv5EytBXqCIE7BqKmF8RRkTvDO/WUvVrl6sNGv21DS7NjRQkzwzF5uU1iSxGj38iz2i08iNuWQ1mX6i7f583euO6tYQjdDhBfP2Z/A19ocqLkVbma2Y06mmv8YWpP/quzFQ4XLa2fmLT+Aji
+ jbp2L3q4
+ 7lMl3lpSBXdrN2c4sAAZqgnvy26Tnt8WhyUffHrgeOoJmKLZFr5wG8/ukNI2mY30qdAxplakDyOYrqS//yTyYbHoixKx9wleGnS2nBRHPDEA/EpiIfEWpqgBGwH84wfGfcPpw5VEZI500VRIKd8fSIu36CWwO+r71gqW/vd+XMuXm9ftmTfjz/6Y+EwryGxCNkUJKpqpCb5dPfWhzE/T3f/re0UqOL0FDfwxlX55x7DEcODVDBPoEaKcWqfoTSFkQc0ieTP2+DlgAOOlkCr2rBjmPa42EoFEO1KrEO7U4GPaCyOSJjl0fuI0WqKoSHirIU+N9o+mfWUJ59n+ksOZstgMyfaDK6AlN46xzMraeV3voTc6RQ7nj/kMjr+mDxLsTYK3LC/P+WZdjLnhUGR73WbRigw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,63 +109,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sashiko found some issues, so I will send my comment for it soon.
+On Tue, Apr 14, 2026 at 3:24=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 4/10/26 03:02, Barry Song wrote:
+> > On Thu, Apr 9, 2026 at 6:20=E2=80=AFPM Uladzislau Rezki <urezki@gmail.c=
+om> wrote:
+> > [...]
+> >>>
+> >> It would be good if you could combine the work together with Jain.
+> >>
+> >
+> > Sure, thanks! After discussing with Dev Jain, we=E2=80=99ll also
+> > support non-compound pages in the next version.
+>
+> Will there be a v3 or should I review v2?
+>
+> https://lore.kernel.org/r/20260404084333.55984-1-baohua@kernel.org
 
-Forwarding sashiko review for doing discussions via mails.
+Hi David, sorry for the confusion. During development, I
+found many more opportunities across vmalloc, ioremap, and
+vmap, so I dropped the original approach that only targeted
+vmap.
+Let me reply there and say that it has been withdrawn.
 
-# review url: https://sashiko.dev/#/patchset/20260413185249.5921-2-aethernet65535@gmail.com
-# start of sashiko.dev inline review
-commit a943fcfe60e73956b72cad5a625120222653bdda
-Author: Liew Rui Yan <aethernet65535@gmail.com>
-
-mm/damon/lru_sort: reset thread status parameters upon kdamond termination
-
-This commit adds logic to reset thread status parameters when kdamond
-terminates unexpectedly or when context commit fails. This ensures the
-module does not get stuck in a state where it cannot be restarted via sysfs.
-
-> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-> index 554559d729760..96c8d0dfcafd2 100644
-> --- a/mm/damon/lru_sort.c
-> +++ b/mm/damon/lru_sort.c
-> @@ -344,6 +344,10 @@ static int damon_lru_sort_apply_parameters(void)
->  	if (err)
->  		goto out;
->  	err = damon_commit_ctx(ctx, param_ctx);
-> +	if (err) {
-> +		enabled = false;
-> +		kdamond_pid = -1;
-> +	}
-
-Does updating the module parameters here require holding kernel_param_lock?
-
-Since damon_lru_sort_apply_parameters() can be executed asynchronously by the
-kdamond thread when a user writes to the commit_inputs parameter, changing
-these variables locklessly might introduce a race condition.
-
-If enabled is set to false here while kdamond is still preparing to terminate,
-could a concurrent sysfs write (echo Y > enabled) read the false state and
-proceed to call damon_lru_sort_turn(true) because it incorrectly assumes the
-worker has completely stopped?
-
-If so, damon_lru_sort_turn(true) would call damon_commit_ctx(ctx, ...) and
-modify the shared ctx structures while the exiting kdamond worker thread is
-concurrently executing its cleanup block, such as damon_destroy_targets(ctx).
-
-Can this concurrent modification of the context lists lead to use-after-free
-issues or list corruption?
-
-[ ... ]
-
-
-# end of sashiko.dev inline review
-# review url: https://sashiko.dev/#/patchset/20260413185249.5921-2-aethernet65535@gmail.com
-
-# hkml [1] generated a draft of this mail.  You can regenerate
-# this using below command:
-#
-#     hkml patch sashiko_dev --for_forwarding \
-#             20260413185249.5921-2-aethernet65535@gmail.com
-#
-# [1] https://github.com/sjp38/hackermail
+>
+> --
+> Cheers,
+>
+> David
 
