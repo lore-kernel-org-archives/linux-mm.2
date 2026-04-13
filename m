@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A47F9F531C4
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:52:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D210F531C4
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:52:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C01F6B00B7; Mon, 13 Apr 2026 14:52:51 -0400 (EDT)
+	id B83F56B00B9; Mon, 13 Apr 2026 14:52:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1975B6B00B9; Mon, 13 Apr 2026 14:52:51 -0400 (EDT)
+	id B34A56B00BC; Mon, 13 Apr 2026 14:52:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D50A6B00BA; Mon, 13 Apr 2026 14:52:51 -0400 (EDT)
+	id A6E946B00B9; Mon, 13 Apr 2026 14:52:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F204E6B00B7
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:52:50 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A7E1213A0C5
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:52:50 +0000 (UTC)
-X-FDA: 84654429300.19.AF7C1B6
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9540B6B00B9
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:52:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 501BC1401DD
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:52:53 +0000 (UTC)
+X-FDA: 84654429426.14.A308709
 Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id AD880C0012
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:52:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fMoTM8nA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7189D40006
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:52:51 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mtaRKtLZ;
+	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776106368;
+	s=arc-20220608; t=1776106371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oEitzkayqqpN7xkxJtZIQKvaOlaMuUzOnVvJxJq+UQo=;
-	b=GdhsDGB7MKHDBInXl4XhANLBtdGocv9r1SIPg9YO0c1424nKmBNOJQe54d9MuZLC64EfYs
-	VwqBdorKtW8Q5XaBmjuYIDZobMdV5NgINHviwDAVnF8vzIKznzOa7VtSyI4qcdOfOQakGC
-	OR/dS5Zjbd6vbzSiAv+0VvTzUqlQZK4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776106368; a=rsa-sha256;
-	cv=none;
-	b=OoxwhAoZT/EtwH3/juHRIYralvFkEWstzuXxiVVV64mtlUh15pqc5MbrzmscPWp6CIsaMt
-	EWQ/PCvT2mB+v+uKeBGsAv0k0oMTWTTdC6rHAnvoNTwRlIAsjA/KEQM6G5PKgpgcq2DUgv
-	BbpqZUs7fBgVa0bdQ8zPxEXWTWRW7L0=
+	bh=irVM8cutLTY8eeIFuQG4pJxfVBZ0vjFm1lARbRd9vcM=;
+	b=KvSebBo8vdBarAeHLEd1w2P7DzCf2tgYdWaTIJV0cdM772XNYYZKfrw/2ftSK3z4QqKYJS
+	Ak6Nr4jb4anzqzwQIA3yBmKMruQMlGDmbHxxX5DAuFZ/22usC3SxH3lkU3DnaDi9d4mpIn
+	Yz0tVKH1bXnh6FkX7DB2Nsh+NMah3qs=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fMoTM8nA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35d971fb6f1so3991511a91.0
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:52:48 -0700 (PDT)
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mtaRKtLZ;
+	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776106371; a=rsa-sha256;
+	cv=none;
+	b=i8pRgSCT+jf3f2tncovncWzwVi/W5W3KK2HcfBvpCdeOohHizsGoCpczfe7oiEVAUoXWyO
+	EyXQs4Wv5BvdvCLu73EnUgw7pIFrybK2jHZIjUpeBaCv5eLACkfGoX0fiBBLwXpSfatFiB
+	NzbrTEgqJ7s/VWp228ri/j2OMqq6dM4=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35da8d037a5so2284797a91.0
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:52:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776106367; x=1776711167; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776106370; x=1776711170; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oEitzkayqqpN7xkxJtZIQKvaOlaMuUzOnVvJxJq+UQo=;
-        b=fMoTM8nA+3HE5OHCmWRuiL6KS2rVORJXFngoEPi6pH1K2YoeS7TJbAEdthbKrdVL/3
-         xTvfdbTOyDEymK4HHbedKWf0aeqKlojBrjCpY/y6qI+yLy2QydcgWKY91SJnkiaXvAB/
-         PkUNl0Sa5pnukN810/i7CP2N3+PJgLGVRmWTMPc1WA32RVBvOfBekgN6EuHF45nZSzWD
-         FZSQ9ONrNZiB8Px7w3JVExxDtFThy22t8ipgKsAHdj8e8l6QS6zmEv9MIQIbJm4f3vL6
-         zEesCJ3OCw1p27LUmtsvUvddcZlS1z1AIBQloFPsCa/b0F5xb8sv9LY+N2xSkgHardV+
-         ZshQ==
+        bh=irVM8cutLTY8eeIFuQG4pJxfVBZ0vjFm1lARbRd9vcM=;
+        b=mtaRKtLZskDWDYeJdp8CV9SP9ETRCJt43jkgdVc0tx1TsKi+uPvvPjqaUtgDAr/Isa
+         CG7zB6jnzlkqzbV9kZHPLxWty77O45vkx6uQqL2zdu+jrFETn45kR6kSFUgRVg9k5bqs
+         3vq9alTwlOPmDxGOReYDTOnFtOqr8rkpHFWuewmmzlw4f1qhmuqnIEWynHpbLRqeVBMq
+         zPhuAU3HXf3Vwo0iOcGPizTCOSnJFiy062OaMaZL7zAp1ccTrAigbrFYVzvmYwC9Ubho
+         KKzVwxSbUdOyzdJ0chqkiIgGa+VEQqVX3MVk4KaK25R7m8vp7h3zgmXQOeQvc2S6UB+e
+         sOFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776106367; x=1776711167;
+        d=1e100.net; s=20251104; t=1776106370; x=1776711170;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=oEitzkayqqpN7xkxJtZIQKvaOlaMuUzOnVvJxJq+UQo=;
-        b=sN+2F/OmvihZpj4DjKf1Rfx9fgrqfdPm29h6V+yR+H6JiEcKCUZxQSpILsCWDRdgC2
-         v/lypS8BRnv+iJVx0Wq2vkBfV0ToKVuGgDA+x0nQ6+e8x4TKaDIKF21o9x1yp7uGHn0w
-         NYTOy/HPr9HYc0lalE+kxgz32lCGeUzV0erFFwG4PJ2PvzVlRuUwvKz1CKFfvaTWZg8m
-         ygd6hncaRza8PH/BbaLHeXRl4JiLMwhtrJofPBfeAHYG3VpZwXhthmlQmoI4L5jscrmM
-         JkGzsAEn6pYKy2n8Cp82isPS6lfwbrziEDIN45U1aj/3TsYWmSwSMnOxh4+l6iGd6QIv
-         wW+A==
-X-Forwarded-Encrypted: i=1; AFNElJ8SKOE8w2zgfTNFczbl5RxIyc2m/f2NHP5YPJJ/o3mZW/ovmAWPFjkY+U2cVs5F0GhskNpEehSNkg==@kvack.org
-X-Gm-Message-State: AOJu0YwUM5oT7Tzc8sf1Dh1/X/9ubvT1l9AuxPwDFNghJ2AQj2/v2YC8
-	BtJda3kSu3YQJb1BdxW0o0h10+RJeFhYvcLOp6hWYbjI/S+Opdh1TJh8
-X-Gm-Gg: AeBDiet8U6PH8nfWfe803xL7ep8OFgteb2ETckMWUfjmHPDZ6agF5WwMgqjy7KrXuQT
-	1LjVh+KD7zUF4WLeSTUfyadoFQm+qtFQWHGJVvKBSlqPfOxUbJRtu4cYBWS+MnsQ6p4GC+RVt0C
-	MtvoektigLdfHi1K2wnAs9BvHGiwbsDf0IKNGeM9gBLncFG8n6KLRCYShPI6RZWSMlHNU6ToaaS
-	Gf5WL8MdnsO0sDGrChPYrC/ECXlXveo0I/F4TsZI+LJEhTPTuzhP2v8Yua4hioDF6VRJubF8xYk
-	9p0gaUz5MdBg29J9k87Jn84Gtjr3S8Ld0zvrzYJhNMKVqS8lM1C3at/hHGF6Bhqbz/lJPIzPORr
-	t5k0KB4/K2lBaDQ9BjDQdspteezAWias8VyRG1MmN4yO3aOWglDQv9eV/BZlnaj4LNk7KmoQE9l
-	75USi3U1Y6pw+WE7b4kXKJcsczGFcYfpARsYXxsnDBLn/ScsFN2tfkVA5yzM5AQw==
-X-Received: by 2002:a17:90b:3d48:b0:35d:93ff:284f with SMTP id 98e67ed59e1d1-35e4282bdabmr14803992a91.15.1776106367321;
-        Mon, 13 Apr 2026 11:52:47 -0700 (PDT)
+        bh=irVM8cutLTY8eeIFuQG4pJxfVBZ0vjFm1lARbRd9vcM=;
+        b=ciA7IQzzBRuE5LudVjJxob/G57xY6AwWJAvECniwfsTdqpZ6vnEHsmXKkaDlW78OC+
+         46OAvZ7TX71IxH/1tMYaRX2AqYpoK2XVbxQypGVrF5/VvLZKY8OkmginKod5ouO57r/A
+         jSrCiN3ZosMlj/H6kcAuY7T2lMCmrc96wzStIOdbEYpqEW4Ed29lZkUWcSVBXZkwKJeJ
+         9HxkI5KMeL/RHr/1qLz/F6YgTSjLywBPOSzbfegy6rNDOIiTHVE3HuhUbh+ARlO0lLCi
+         qXe438TMWZfCWLbXGWeOHvLw4EAWyU8iGtLPniXsgP2MlIbRg2jhg3aEMQqEgObQSUBM
+         +wRA==
+X-Forwarded-Encrypted: i=1; AFNElJ8DuB8mYf8mmG5HJlhh36n333oSEUzLWmfEDoZC/NrBD1ou5D3jMsUGDvsd2f9IAOftKx4ehpdQaw==@kvack.org
+X-Gm-Message-State: AOJu0Yzatw+suj9dvqxUmIULp+CmRvpxS1QbPnTPk2iPn6ukqYAYwrYl
+	Ff4DIsdjgkX6fBJsZ7qAoMiitc5FUr2TfednsVvkBYSdvihUld8SvtNO
+X-Gm-Gg: AeBDievAHiHzlys54+fAEjMoU+GtFBI9HB1ULCL7K9ShXKlwVCGfiC8iolerL6m1ZCQ
+	Cj+qizj3JgFTS3K8Gg3m7yb6ONYfmbHXjh2+umjRCabCaPFihqe3HDLpwoYWYhbN2XGCuNi15qD
+	c9qeuAu5a+OapPRhprLybNQU3evE+d/xJVZNgVg4XzHYnlOirdSQl8sn1RxLQq2a/uDoGZCGZQS
+	7llqyLhetKK6ThJbPMd50CeF3znJCvXtsbI9G/i/OercQuJAh1VYxZ1lIr+k5d1zBoMKgKXkWp+
+	OapWcU8E1gDgSo2K8d4BlKoSZIjRDj1wL+BZHJEdtnGsFbZOM9eHCulkItpC0cZK2PwNqxW1z6f
+	GKqSyz48EftYpjchWjWa/kJv8Qk0hH1JmZxYQ+UtGshIRNjbCR0NQb5N6U3BXBp76xwZwKNniCP
+	xjE2Je2iBX0NrHDeejzMGzgHDd8LcRlQ4wkeBW9uEOFhZZobIx4Hs=
+X-Received: by 2002:a17:90b:3fc5:b0:356:22ef:57ba with SMTP id 98e67ed59e1d1-35e42759e2amr12885903a91.7.1776106370251;
+        Mon, 13 Apr 2026 11:52:50 -0700 (PDT)
 Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fc2adae0dsm1225435a91.3.2026.04.13.11.52.45
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fc2adae0dsm1225435a91.3.2026.04.13.11.52.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 11:52:47 -0700 (PDT)
+        Mon, 13 Apr 2026 11:52:49 -0700 (PDT)
 From: Liew Rui Yan <aethernet65535@gmail.com>
 To: SeongJae Park <sj@kernel.org>
 Cc: damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH v2 1/2] mm/damon/lru_sort: reset thread status parameters upon kdamond termination
-Date: Tue, 14 Apr 2026 02:52:48 +0800
-Message-ID: <20260413185249.5921-2-aethernet65535@gmail.com>
+Subject: [PATCH v2 2/2] mm/damon/reclaim: reset thread status parameters upon kdamond termination
+Date: Tue, 14 Apr 2026 02:52:49 +0800
+Message-ID: <20260413185249.5921-3-aethernet65535@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413185249.5921-1-aethernet65535@gmail.com>
 References: <20260413185249.5921-1-aethernet65535@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AD880C0012
-X-Stat-Signature: 799dap6fgrc1mwksygu8wdk1xzbtj3na
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776106368-964650
-X-HE-Meta: U2FsdGVkX1/H03BhSONwU5SsiZ1IQATb4Njby2khV/o2MPq4SvgNNGDYjkUyRe/qbEz3c9mVnuv6sIEsWffMpJ+qWDQKjetBBqsgrKbX4//UtgtuSVei9V/jPA8jgstl5lWMU1nB4p3r1Vf/X5MqgZ1R40vyWI48T2MPB4EwInzvt9uUSbbJachI2jNGeB3ljpgTiBumhubr6csIxpztqLID8rsJz9mCafqIMpV7+wMaXpY9GmwlSHOG/clP5xxo75fdDcNh58MovBXWKFhehKrsti4z2hHji36o3d29WOJqgYm2qHDpROTAAPgaQu9aXgSE4oCN2SuJFsZVxuyF6Xb+aPUhGRbZd4YpPNK0GndG/9v5XGr5Wz2siTc//irQTC6K9aaywjD7FSPf17VG7VGGa0BJJdKDlELBv0bhKVCvymKsNMHb67hZUfdf7WySblE/HHKIP2MO/LqcNrHc8vN5r72GHNT23UNF/lT3vhiO+JYq3Gyq5iOaFfV2kbhMiHuuEHIvi59ZtWe5ku89ViH5zvTH07zHbJ2jgelf3b65vrtB0v+xPdZ0JlwEs9wVbXK3Q0WUVeGVmCei4LVQSU+5EcYPmPjmOu5X/6xjiHcjaY7czncDD4OxXFkPTJ1V1B0UErC9Sgts8bYAwOnZCQ28LmUgjHwgz6oiCPLEOdSc+jIQi4UEYPpQvZTJd7QBq6AGYTz1bq5B4YT0UuhEqLxwgalJE9bNniJrgNfQhRLsAbLgNgLtWI0tTBs9eOgGLU7Fr0ARgU4d4/bqeB3Q70ojH5UTsV/b4Fw4GD/rtZb17UpVc5x/BV9FmCYrCsAO+iO3yi0sSSji+YP0K9VU4iCPT0m2TS/+TNeux8ZjX43EnBjtvqq6j7UC+4kuDKKTfPFpsQEPBa2DAlRXHmwVkeUyIy6LHtLWKxErgTdNCMtBy1z11P/+1R3LKunssHqsThCnhueT+pLW729Qldr
- ESamTs2U
- 7EzaOhJeKlQcVRQV9n/eLAuxctqvs8Yq5gFtmHjn1tvRGn/GnpfyRPXNmCQ+x63JAyawKttuRTpfPu13p1cKG2xSWR2lkerV8J7p6IuzA883FfEoUwVAAyo7nuVQrh15ZnusXuq0mxxNWL9qyp2onzQynZ7YQqoVihQkyGb8KsqFRlJ5UBgctq+1FJyErdz5P8FEgVJMFp5OSu7fzftcng90y3vP4CvM4JFsIjG+NzjOxwC4yImX2Lmi7sv3dVT/egbNE7D17w6IQnJzg7vhtyJCxSM3DT9fuKzLjGuMcllcKfLTKoaH9VCM6GJQHAw61CvXPjxL2HYTu06iGiltFTaw0isTRKr3Ny3arqsvtBgw340jYaEOEYqlufAfRoEvsq8AOmuv3Uz4OreXPvmy4cqzU/gpTnMXvCE2mypIZSx2cBmsuEnQTJfEoswS/QBn2uaBP+5S6ygtRoCmupPckx6jlWg==
+X-Rspamd-Queue-Id: 7189D40006
+X-Stat-Signature: qzxiqdaiufjnpi19pqr49r78w5iejhie
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776106371-227606
+X-HE-Meta: U2FsdGVkX1+F7WilufK+qJ5Bz42vq3qAsZghLN5tTQmFm+5BM8tcg6kOVUP5x/OTjYEe/IT737kRDqFtipxYCGSQfMRC9kmOF4D3ddXWcp5GDKyb/1UarLf/wTerkkpKFht80vCE/zW7Q2S1sIdujJ1tNyWh+AgQe9+3M67pvqqxDwWa9btuWmPPHKVzuiN/vfx/S4cW6Wz1PkxSU98Kwz+5TxagvQhbQsAaphgi35lrRK+/ynueuPbuaiMZmDUf+IPGlKt2J2IU9MGG4SDB0N09j91yP0J2OW1GSCxCvX+C9R4v7GRYqhHnMtbEnMC2BSdWMLQ54fF0ifInb4VBLH4XWT1A4VN6fsaEig1EpHZb6eFXrerhgSpBsXCNHBYLW9Az2dSsnu+A1a73tFvUqtY7Rx0HO7xll35Z1dHFwXVyLC0ByM2ZZvBVyyUm+T0Puz6IksHrOUmNziMpS4QuOHHezlXtNv8ptCRn/FYRX5d8X53D1EaVmH85Jfa4QUvzlAHGmADC1YDiA9b6BYcAF+phHLWVQzbKqb3nj96MBqRgRaSq24xu6/0I+LavOCrUO5S0RiM2wjXjmA0cDrHQBr1fRdDOFWt1FrGVwDyD87Y2jkY7+SyUhO1g21NR4QCSMF35UosKCL6yEJNIjnu/IVrGPr2cAeXHv1GOWv43B0gv2X6EoJ0lzvjkalGGcYKVa/5tRoiVrL3QHXhXKfFMr2KWIqUhbckEcKLsBuQYxMb0QJawvA0kPLJPHytyJfpxGcLRM6O8enea1eMDSUI24oQ3NksbTyZrXtzVAqj7klG+/4jMIxxLKReVLj6b8mpsEa2kd8/pcW7xNEvtpRJSFKgwN1RV0dfHvqFVeMwlRLzAsH4SiMuhbodZX8QEIHxes2p5EWFx5Px8V0ZlQbi5vcp4vYavz6dizujCJ1+M6rJw8afmLz3wbOW+V9H3fbffkxByHSXjOSJILRg2hLW
+ OkNcINGm
+ lbKq3UQzuXa9i3fhvLblmDZscrJb51VD9FcJd8hD4gyPJ1llHReSpBtMBcOjZb8lnS/rxQqTIorm6CRz5vgejpSzfli83HWK3E3MaptK56hP/y8G//qR/OZ6qY9o8dpKrR0aD8xg2ToKDWERmog7IsO3gx3arLz4ZN1qCeSiHd4b3mPc9qvEvJ24EgX+WnL56s2TtcJ5wxXVZGXc/vG+REOIwF7Lv1Ul//3reP0SfDe6gOPBvwFAq3+los42Ci3KFrQ+V+pfgIa7hLGn68OMXLmB7aN6+/uS36B7hWTyR2X4iIufEDfZ+fMz7lkLKZSr37SMIsqZpa06R3/frAyZhxVX2qORvik5Ub4b0QgQt7hwg21nkhq8aUiK/WAtW7aYeGcAeo2qHAEqNCIBu9z9mBvaPr9dLSbsXqece
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,7 +132,7 @@ User Impact
 Once kdamond terminates this way, it cannot be restarted via sysfs
 because:
 
-1. DAMON_LRU_SORT is built into the kernel, so it cannot be unloaded and
+1. DAMON_RECLAIM is built into the kernel, so it cannot be unloaded and
    reloaded at runtime.
 2. Writing 'N' to 'enabled' fails because kdamond no longer exists;
    Writing 'Y' does nothing, as 'enabled' is already Y.
@@ -147,22 +147,22 @@ sets it to false upon successful completion. When 'maybe_corrupted'
 remains true, kdamond will terminate eventually.
 
 Therefore:
-1. In damon_lru_sort_turn(): Add fallback logic to reset
-   parameters when damon_stop() fails but kdamond is not running.
-2. In damon_lru_sort_apply_parameters(): Reset parameters
-   when damon_commit_ctx() fails, as kdamond will terminate due to
+1. In damon_reclaim_turn(): Add fallback logic to reset parameters when
+   damon_stop() fails but kdamond is not running.
+2. In damon_reclaim_apply_parameters(): Reset parameters when
+   damon_commit_ctx() fails, as kdamond will terminate due to
    maybe_corrupted mechanism.
 
 Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 ---
- mm/damon/lru_sort.c | 13 +++++++++++--
+ mm/damon/reclaim.c | 13 +++++++++++--
  1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 554559d72976..96c8d0dfcafd 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -344,6 +344,10 @@ static int damon_lru_sort_apply_parameters(void)
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 86da14778658..e3e148fd80f9 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -250,6 +250,10 @@ static int damon_reclaim_apply_parameters(void)
  	if (err)
  		goto out;
  	err = damon_commit_ctx(ctx, param_ctx);
@@ -173,7 +173,7 @@ index 554559d72976..96c8d0dfcafd 100644
  out:
  	damon_destroy_ctx(param_ctx);
  	return err;
-@@ -388,8 +392,13 @@ static int damon_lru_sort_turn(bool on)
+@@ -290,8 +294,13 @@ static int damon_reclaim_turn(bool on)
  
  	if (!on) {
  		err = damon_stop(&ctx, 1);
