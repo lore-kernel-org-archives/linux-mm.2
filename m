@@ -4,112 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E552EBFD16
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 09:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17810EBFD21
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 09:15:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFEC86B0089; Mon, 13 Apr 2026 05:15:14 -0400 (EDT)
+	id 844976B0089; Mon, 13 Apr 2026 05:15:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB01E6B008A; Mon, 13 Apr 2026 05:15:14 -0400 (EDT)
+	id 7F5B16B008A; Mon, 13 Apr 2026 05:15:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC6056B0092; Mon, 13 Apr 2026 05:15:14 -0400 (EDT)
+	id 6E4E86B0092; Mon, 13 Apr 2026 05:15:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AB94D6B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 05:15:14 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 459405D273
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:15:14 +0000 (UTC)
-X-FDA: 84652973748.16.19D1FDF
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 78E2520009
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:15:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jpY99P6n;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of priyanshukumarpu@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=priyanshukumarpu@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776071712; a=rsa-sha256;
-	cv=none;
-	b=V4SNcv22eQxFJAU4WSOhISP7h/YzfNj0AuhUgKPnp9J8yJ+KXDSMAiNhQ2QalIqbK/UVS2
-	iVrNMFTA0AifkED+UAfLfj5zJG/nOT+IcOE0GcIUrGv04Z3CmoyBCPWQa4JwCXhp7LXk1/
-	zL8aV9b6HB9GIDMbbZOj11LrAWgVSgM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jpY99P6n;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of priyanshukumarpu@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=priyanshukumarpu@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 636976B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 05:15:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 20DBA1A0D44
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:15:54 +0000 (UTC)
+X-FDA: 84652975428.13.CDFCC8B
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 36E66120007
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:15:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oY+vEH1n;
+	spf=pass (imf29.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776071712;
+	s=arc-20220608; t=1776071751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=sVvly2PF4cqASTSkfAPhOU0sngUvFWG9o3pu6vpsY/k=;
-	b=ZL+ieWNGKTzcLsK4Jpktp2jktRkWd2BtQ7FCqwrfJmHbBs/ZBWWhON9xp3I3Z/HGEckbd9
-	fEPnN3JveXPko9STD1rQsB1Vljl3bRoLOtYFDqTuuB3ws4TWSE7KKW61g+vU6N0yO7GbAb
-	XDxKRIPBKfcwJ+wsH/zd4lpt3g2Xd0w=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8296d553142so2082568b3a.3
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 02:15:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776071711; x=1776676511; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sVvly2PF4cqASTSkfAPhOU0sngUvFWG9o3pu6vpsY/k=;
-        b=jpY99P6nBFQx0teN8qsqxT+EpPUAUz21XYFVPm/ChhLJjSoY0bQcda2I10QNZcvgf3
-         ADo/uKlTfaOTKzY8aZtokHj9j9ZxvA9I+z5GbsNqUyB4VNtPZEqXECheN6YZ1otX/Dd8
-         u3l9gyf7XaIHLy/XIn2YP2+dns6/ORTo6LAiJg70GBKYgVGTJtCuBhZWJaDKoiQ7oBHT
-         SKyjAFhOuzVvuDVljJEnuuw3woxzHD/dTRIf/s6WbI7rmtTvtOAd+EpSNUoDZLqGzM1g
-         mb83zPUCJkU86qzWpSCS3WsHqCZTUOpAAx2U1cAfEr7CjzRbYmBaRsVDR1zj/fYAzsIC
-         oaGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776071711; x=1776676511;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sVvly2PF4cqASTSkfAPhOU0sngUvFWG9o3pu6vpsY/k=;
-        b=iwp27RJMI3VhfMDyy4KdEffdOsHt+RAbTuyAdu2uIGjIbVsPewk+jAHQAyu8U+cSe0
-         Vzd7K59wYl3VRUgKr9DfY1bP7YZpqw5wIElxyQeWuwdq2xxXiQCYhhtPn5kk6Ry526DL
-         sRMfy67ZP3GXeAk4QFspLe+FufPbpbA3ckdzTpRNypY9iGwpeaiPKgpPot4TlVPs3xoJ
-         5uMcowXMzgGAlVQJjcg8/ikBJhFAIRLsT1KMzRzBdgQF2/YNqX7rjomze39bG5Qo48sg
-         iB4pNm4R/WqYTEX40yHPwOOXuTpmQQ7IP7f2/hRjLehwbJa6x875B3y3300/6GrEmjnr
-         PVbA==
-X-Forwarded-Encrypted: i=1; AFNElJ9J8J54W/AmtI6DM+Vx9uxaEYTuwjF3S76Ex/pU9eTIsg0WM7bGUBR4shUT0meMnRU5iYNTsblZFA==@kvack.org
-X-Gm-Message-State: AOJu0YyxmeSRP1Rdn2hPXsR/fE2d2PZ4j8lapYI1Q+vdnj6d6YmAMmJ9
-	Nn24Dhb41O8LfQrNgS/wxvoS3Y7RqWfm0zgINxaWrbWy2o0fmKHapLVg
-X-Gm-Gg: AeBDietsZB4NeFWuGZLvIfelQI4J0sKPDiPog4P0P/Oefi9KbQuKpJnHF5mcnFp3HCX
-	XOtUWs22rS0Aat7u/HDXp7XqNuhtVrFuNc1WssN5JniOW4OSh2za8uEoIEtpd/TLMnvDAnW1Fsn
-	k4H+OUi0nbUMJk9L3Fd9V+dFCKZbBP9krtaXVJuQSxbpV+N+7zyQ/ZHomj5z6utOF6xvvair6vI
-	jlQ2vxg2uv0I+TLwBYnDHuwtPXCbEsAgd63lN3DWj/1nvAZNaLiVqZwUFpmWKAPImIakOeoifYE
-	+ppv1jCe7bkBZq53amK53sq42lBfzLyTn9X4T+tQhA3hvRzqUtw6jShUvXBfi1S6Yxa2Mq2b/IN
-	Fsx/eF/edt/5zbOB8SAaz8zHVsYURf17klHzmVq09PuEdGQt/nEs7hvH6UNOhgLGHXRAVnEhts8
-	m1WGab+pvke0zHsKVbkd4L2WSlL50=
-X-Received: by 2002:a05:6a20:748b:b0:39b:9644:6ea4 with SMTP id adf61e73a8af0-39fe3cf20c5mr13988935637.16.1776071711131;
-        Mon, 13 Apr 2026 02:15:11 -0700 (PDT)
-Received: from potato.. ([192.19.252.250])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c79216fedfdsm10138849a12.4.2026.04.13.02.15.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 02:15:10 -0700 (PDT)
-From: priyanshukumarpu@gmail.com
-To: rppt@kernel.org
-Cc: akpm@linux-foundation.org,
-	changyuanl@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Priyanshu Kumar <priyanshukumarpu@gmail.com>
-Subject: [PATCH] tools/testing/memblock: fix stale NUMA reservation tests
-Date: Mon, 13 Apr 2026 09:14:58 +0000
-Message-ID: <20260413091458.774770-1-priyanshukumarpu@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3hYK9Ei+d9kVH0VV/CR68CUDnV5UVCrS18XI/2Q3GjY=;
+	b=moiA/zoyWObeNLGJCGjyscGYuoJFfLaQRSxzaBSocrEtwQuIvjZBgj0Wfewg5P/2oFvrjV
+	71yY4nkSTY9Qg9bHhHcn1voW9/iw01wn22yTo0C1W7aUyb5wmM7HJurrnMi1keRWcdJBLi
+	JWiMlo5MvyUjgg6oFA9XfiaR4j3TbuE=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=oY+vEH1n;
+	spf=pass (imf29.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776071751; a=rsa-sha256;
+	cv=none;
+	b=ktq8xMwC1izOkY8Oi3vsuix4Q7h6NFqTAT5I4nxAK+x/4DZK0j2mKb4MsdaEQoneFjOYCj
+	uxEf5ioNkzLT6wOiPq4QcgPUHHuJAAhwQR1KZRi6oSae+M6uuTz+ANxLUYXuJ+6zQiXSm+
+	lUNujOHRDOBgG8A71cb/MC6wUgkgI/8=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63CNQ6Rp3649347;
+	Mon, 13 Apr 2026 09:15:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=3hYK9Ei+d9kVH0VV/CR68CUDnV5UVC
+	rS18XI/2Q3GjY=; b=oY+vEH1nHYm21zR7dKdG+rMVbiAs+2M4pSYJYH25H3Q/WQ
+	S5pbibNxKHXRtCU5RA4BZpoAC/CsLV14kYSk9HD7BI83gpVLqIVXm+N3/UD3mtFb
+	VGL3bfwkoS+MFSXp/7ksAXz/d/43BdzYyNe+WU94qMB7+oTAY5jMdy/aC1rg5QU1
+	UhBzNrX2r1ZHEsamBr6j/bYRaaLxasa1WWuLDHkVDfa2K6RkMY6wizvw26f4v3Pw
+	kdUQa11kKa0O4lHqHX35TBGaxo9cfSk8h/UtwhMbDVaUgMt8SMltIpECwIrRGVKB
+	KeirN6PqfMTEor0kXcjWPcrhlHvR883P23ApPmxw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfdt3px1j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 09:15:17 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63D80WMC015153;
+	Mon, 13 Apr 2026 09:15:16 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0mscku7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 09:15:16 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63D9FEC727328866
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Apr 2026 09:15:14 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 70F6620043;
+	Mon, 13 Apr 2026 09:15:14 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B712A2004F;
+	Mon, 13 Apr 2026 09:15:04 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.123.13.2])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 13 Apr 2026 09:15:04 +0000 (GMT)
+Date: Mon, 13 Apr 2026 14:45:02 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>,
+        iommu@lists.linux.dev, Michael Grzeschik <m.grzeschik@pengutronix.de>,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
+        Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
+        Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-m68k@lists.linux-m68k.org, Dinh Nguyen <dinguyen@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+        Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org,
+        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: Re: [patch 07/38] treewide: Consolidate cycles_t
+Message-ID: <ady0Ft_tDrbGlu2o@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120318.045532623@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 78E2520009
-X-Stat-Signature: cb5ad6nhrgpujbnjd93epqma86ooxw7m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260410120318.045532623@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: r6KN03kK1HZaoam71kVl5aHZm9BfgAQ4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDA4NSBTYWx0ZWRfX+Gwbo0yddZP/
+ ED3CWrVQNFFw/TECS1M9+tSS57FYBZnMmG79KmJVnAwBWc3o5BgyeadFZ9maSHI4Tv+/+VHQiXF
+ uu6/EAbMsVnRYIXugjj6TyQBBqRyeSoPbLxIVX8tqr0goumkz0lPJ9Y4Y3a3ECfM9WbzUtOSm5u
+ eNbyrRMw+nuwi0Afz/QuxwA0FuazktkFPrSziYKfNEV92tR6ksCbhLbdKwZfOQ6IaUNAK3mHh04
+ Z9ZuJvFG4+5R/DIJQ8v5H1fE5bYExgqIL1hC1HoekBef4/UHL3Jav5jU5Ty8ib2gAESLlopFcCb
+ VttV6mxWXomhvrcFDBgGSdweqIiLio3UyKWRaxfdCdf1K3UdP0nDdx3LiWp/XKSUCxaso/02xav
+ PADy/jEsrag0vsgcCLG1/jcBcJ3bFL3cNcYlDCC6JXFySGCPKTcpDMOtfvLh9vv4Vg7VR02ItSs
+ a0USozVz3do3GTBrHkA==
+X-Proofpoint-GUID: iwEVNX-0n_YmGG6iAARt9TRRoEhRuwqE
+X-Authority-Analysis: v=2.4 cv=WpEb99fv c=1 sm=1 tr=0 ts=69dcb426 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=9Pz4rRoAHiK5H5RfW9YA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-13_02,2026-04-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
+ malwarescore=0 clxscore=1011 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604010000
+ definitions=main-2604130085
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 36E66120007
+X-Stat-Signature: fcf87d3tr3xuuddunxzbk19nmmakboip
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776071712-415201
-X-HE-Meta: U2FsdGVkX1+oHPkrZWkJIFWPkqZ6mZVsR10KVb5QiKgDawwYw4J8ZDYzdgGIrb6391mmmcovkbWwForJ0KAMPPKzTn7b+so58MkPtC67/vY+/cnLcbf9WA/Qhsx4Hwk4ByKlGfEGYyuzpNjuVcVY4aUFnuJQeUG5DaRIvwWWezmc/ErAvig4H0RCQ7xBP3UqyHXLILHYESbnraYVTBbtlwsdT1kj4W5kvdkCO0qeqlswhs84UwXuggDe2jtpltXHHqE6cJLwZg91ioYm5VpBkeK3zr7svj/nG9vJOVaTfTKiuVv/eTBhuWd5yMLtfcI6W1r3/xTbkpF10dUAbNbh4l9N9u5cSsSJRHxyFcamqUUUQIHW+DYnlo/5pW+KJx8b/BEFCyO8XGG7SoTbSjGZNQyrBW6zZRZ6cq5e/DTMGnddZehBPzJ/sfcbYauh1MBNFupSoTRoMkFZ+I0WGxgtRcHuwdyaVOhW86jsUvzPUkS8I50hYP461e7q0Vi5NWuaV/u9rqF5GjGpA4IKXHVsgRrDxfZF6qoy5RS9+jWOxOj0Bu5p8hDlDTdenXLlRj6GKweZt5eXkbFuQYeTAvIdS2uvqgF98l6BCQ3yBJp0i1mn8opAXi9+k2/zj4lBB1sIcflOIOV7jtlQUS5h/wrYxGHKbdRD1lfsxF8GAmQhAxBvDaxXdthvMylD+dvOZmabOC3VTUYD/Bw+icWI051nGC5NJy+gy2manItn9BcETRJdreCvmycO/2EOCJrOqyMEK9/oLe1UhMdkpR1JYqaToqNC4UHexE4FaN+oDFaJ64KicxRlWlyP8oYCxcXdEI12AeS5h+k+bJki0mRu0dm6dKpkkNSt3rl9r8tJ6l0zIkLA/l5qraZuAbUGP5zBZSIxpe4y1dqdCnMHja4J0SRkKIQcfHKmWYODSuPqUkBHkSQJVULh92W/DpFofKGF90TyZRZg7zC9OKbiESg0keH
- rQpSzpDG
- G43iTmZawhfbOAbxMoOF0MWlC3FJ1t2odvXRKHOHRTQuXO9RBU7j7jyyMK/mW/B5xGjw6piWFTaZ697Dh9aWVTe3TSnp1TxoBcvfUoebl802hdMsFZdJBlsaWUVle2pq3vXeC3WvLqDGqXbz5tuUvlkBsM3FrBizpgt/S3A2RO4gThPmAulfVWdy4Nck/q9nDZvLR6picFH64K9sNix0MZlQsUZ983j1hIczaTRVOfadDkilKmFRrlts6ryp+wkBJq3xI5aOyKkS9YP5jxUbUy+vbdbUqzyvJdcnlGzT5T9mI17aiQ3PZ7le2EKv2NBgbSt8unPzZKUQ7S/oLxjsKiZQRAJjRPMK74bYqawBDNGaJ1cTCa5CKI7TnbtPYUK7WAswu/gXmi9jYbuN4RvzB2UXlTg==
+X-HE-Tag: 1776071751-3274
+X-HE-Meta: U2FsdGVkX18JpiKC2EuO6iKVb7VaYn5xpJfPths6WPxfyI09FCBjdA3uyW6upgx5SvoR1GNgM0Sf8nlWxI4JJKm0Dkf6rDadz+cs9cVKoQCDiY9s8dBEjwxF25oaL7I23uqemgPC2hZtBR/PS52L1nZPyujC2K/0d90OhEYzPidbGk17bCmgmUhPDIWi5EBym8Xz/gaZPb2w+YUM/yOKtNhcR5tNv63g7e+plBd5Izx9o70bE4Mp03i80da/Tvu1nWQuiIqJO3lp+vQ1woKDykXaPnP5JkHhBqyoQzwf92LU/3vJRKIso6VAhUulY7l21l9KWGY57LynMEL6e8SDj9W5rxxdNBX0OlfE7Eaqdf/xBZq50x+Sy21j34zK1Mh9seOMf+xf4kNtAlC1xjsYEt7aufdMQeVqRS/lXv7fDohKAhfGhT4kB650AM+noCeZw9DHLfK9tlE0EfWGnQsxDVCijKrGLdqd3Eeym1VaGjlKGpGQJztOLWVyN7I462OGGYLi81KBnOnfhBB4wPLJkxFw9J1ScNN4djeFECzHcWMWN+wu2LQmRH2noB9SYHo3dQd0Ea0GEcqp6UQBOgYC7Tw89L0d5KU7dqoML8fvMyZdFj5+72p6ZpzgdW9S8+rj3fh909PcY40WaYsR6CBVXPHBNFfCPFhEQdYUBOrhEBz1+TowoR0LjNiNXJ8oa4Ia0DJmvfgySizlA48c8R9f/qX7qRcn6KOegexbEYNp49j//FHfJYEMoDHVQyRQz7FiXyftr/H69MF3LVSMGN3q34LjT11EOi5r90awqAq5XMqSqafVZ+IXTOm2nTzZegJu52/cA49RJu1vwV4pT/a3o9klsyLF+hqTjCPqvldHD7m5yiu4gF3D8cw8ONKsZGhBlNO1I4x6/CgXHflcCDCjg+qyI4U3RsAjEY2jGO340yP60AqlIl+PH8a4hCzCtMlI2oWzIXSaTcnyWzxKiHR
+ ARyl/To/
+ TSEfyPfZyICpLBLT28gAMfeoDUo2tEWbVzlaCoGihrbpXk+W9pdf7OngXF68nc57p9JfR2OKtthbJmflf4HsCtqtoHNyLfcL647tQywu4tskaGNiyNT/2eutN1QdA2LfQb7kmI5G8v071f0Ji0lQT4JKJRewTvO/QgpgcFQnkN2QK7bLXVKZMkjwF1SeCifO9WET5Nlir0zGFyAPENaLNzcgdKf1SfqfcW9I4GhH++g1l8rbKfATLSHmT18gUj2o3EG0+daI0nqitlRO2RnEYxZDg2YeqoCiFpf3XI/XBZR2t3rmrrSwR6WF0VVGmmJUCFd39MIQBF/4VyyiZPxTk2BE4kZlWisAHwYOoWmj0tRzxpJ+pl2UCfAgd10/6b65vZN6LNh6M075ik1Km1Y24MLAfxFiFDdmJSNk2LuicyXSzI9oj3IBb5uvtqIA+58etzirdNhPLIfe2i+g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,221 +164,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Priyanshu Kumar <priyanshukumarpu@gmail.com>
+On Fri, Apr 10, 2026 at 02:19:03PM +0200, Thomas Gleixner wrote:
+> Most architectures define cycles_t as unsigned long execpt:
+> 
+>  - x86 requires it to be 64-bit independent of the 32-bit/64-bit build.
+> 
+>  - parisc and mips define it as unsigned int
+> 
+>    parisc has no real reason to do so as there are only a few usage sites
+>    which either expand it to a 64-bit value or utilize only the lower
+>    32bits.
+> 
+>    mips has no real requirement either.
+> 
+> Move the typedef to types.h and provide a config switch to enforce the
+> 64-bit type for x86.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> ---
+>  arch/Kconfig                       |    4 ++++
+>  arch/alpha/include/asm/timex.h     |    3 ---
+>  arch/arm/include/asm/timex.h       |    1 -
+>  arch/loongarch/include/asm/timex.h |    2 --
+>  arch/m68k/include/asm/timex.h      |    2 --
+>  arch/mips/include/asm/timex.h      |    2 --
+>  arch/nios2/include/asm/timex.h     |    2 --
+>  arch/parisc/include/asm/timex.h    |    2 --
+>  arch/powerpc/include/asm/timex.h   |    4 +---
+>  arch/riscv/include/asm/timex.h     |    2 --
+>  arch/s390/include/asm/timex.h      |    2 --
+>  arch/sparc/include/asm/timex_64.h  |    1 -
+>  arch/x86/Kconfig                   |    1 +
+>  arch/x86/include/asm/tsc.h         |    2 --
+>  include/asm-generic/timex.h        |    1 -
+>  include/linux/types.h              |    6 ++++++
+>  16 files changed, 12 insertions(+), 25 deletions(-)
+> 
+<...>
 
-memblock allocations now reserve memory with MEMBLOCK_RSRV_KERN and,
-on NUMA configurations, record the requested node on the reserved
-region. Several memblock simulator NUMA tests still expected merges
-that only worked before those reservation semantics changed, so the
-suite aborted even though the allocator behavior was correct.
+> --- a/arch/powerpc/include/asm/timex.h
+> +++ b/arch/powerpc/include/asm/timex.h
+> @@ -11,9 +11,7 @@
+>  #include <asm/cputable.h>
+>  #include <asm/vdso/timebase.h>
+>  
+> -typedef unsigned long cycles_t;
+> -
+> -static inline cycles_t get_cycles(void)
+> +ostatic inline cycles_t get_cycles(void)
 
-Update the NUMA merge expectations in the memblock_alloc_try_nid()
-and memblock_alloc_exact_nid_raw() tests to match the current reserved
-region metadata rules. For cases that should still merge, create the
-pre-existing reservation with matching nid and MEMBLOCK_RSRV_KERN
-metadata. Also strengthen the memblock_alloc_node() coverage by
-checking the newly created reserved region directly instead of
-re-reading the source memory node descriptor.
+Hi Thomas, I'm in middle of testing this series on powerpc. In the meantime I
+noticed that there's probably a small typo here (althrough this is fixed
+later)
 
-Finally, drop the stale README/TODO notes that still claimed
-memblock_alloc_node() could not be tested.
-
-The memblock simulator passes again with NUMA enabled after these
-updates.
-
-Signed-off-by: Priyanshu Kumar <priyanshukumarpu@gmail.com>
----
- tools/testing/memblock/README                 |  5 +--
- tools/testing/memblock/TODO                   |  4 +-
- .../memblock/tests/alloc_exact_nid_api.c      | 29 +++++++-----
- tools/testing/memblock/tests/alloc_nid_api.c  | 44 +++++++++++++------
- 4 files changed, 53 insertions(+), 29 deletions(-)
-
-diff --git a/tools/testing/memblock/README b/tools/testing/memblock/README
-index 7ca437d81806..b435f48d8a70 100644
---- a/tools/testing/memblock/README
-+++ b/tools/testing/memblock/README
-@@ -104,10 +104,7 @@ called at the beginning of each test.
- Known issues
- ============
- 
--1. Requesting a specific NUMA node via memblock_alloc_node() does not work as
--   intended. Once the fix is in place, tests for this function can be added.
--
--2. Tests for memblock_alloc_low() can't be easily implemented. The function uses
-+1. Tests for memblock_alloc_low() can't be easily implemented. The function uses
-    ARCH_LOW_ADDRESS_LIMIT marco, which can't be changed to point at the low
-    memory of the memory_block.
- 
-diff --git a/tools/testing/memblock/TODO b/tools/testing/memblock/TODO
-index e306c90c535f..c13ad0dae776 100644
---- a/tools/testing/memblock/TODO
-+++ b/tools/testing/memblock/TODO
-@@ -1,5 +1,5 @@
- TODO
- =====
- 
--1. Add tests for memblock_alloc_node() to check if the correct NUMA node is set
--   for the new region
-+1. Add tests for memblock_alloc_low() once the simulator can model
-+   ARCH_LOW_ADDRESS_LIMIT against the low memory in memory_block
-diff --git a/tools/testing/memblock/tests/alloc_exact_nid_api.c b/tools/testing/memblock/tests/alloc_exact_nid_api.c
-index 6e14447da6e1..3f5ab994f63a 100644
---- a/tools/testing/memblock/tests/alloc_exact_nid_api.c
-+++ b/tools/testing/memblock/tests/alloc_exact_nid_api.c
-@@ -368,7 +368,8 @@ static int alloc_exact_nid_bottom_up_numa_part_reserved_check(void)
- 	max_addr = memblock_end_of_DRAM();
- 	total_size = size + r1.size;
- 
--	memblock_reserve(r1.base, r1.size);
-+	ASSERT_EQ(0, __memblock_reserve(r1.base, r1.size, nid_req,
-+					MEMBLOCK_RSRV_KERN));
- 	allocated_ptr = memblock_alloc_exact_nid_raw(size, SMP_CACHE_BYTES,
- 						     min_addr, max_addr,
- 						     nid_req);
-@@ -831,14 +832,17 @@ static int alloc_exact_nid_numa_large_region_generic_check(void)
-  *  |             | r2 |          new          | r1 |                  |
-  *  +-------------+----+-----------------------+----+------------------+
-  *
-- * Expect to merge all of the regions into one. The region counter and total
-- * size fields get updated.
-+ * Expect to allocate the requested node as a separate kernel-reserved region.
-+ * The neighboring reservations remain distinct because the new region records
-+ * the requested NUMA node and MEMBLOCK_RSRV_KERN flag.
-  */
- static int alloc_exact_nid_numa_reserved_full_merge_generic_check(void)
- {
- 	int nid_req = 6;
- 	int nid_next = nid_req + 1;
--	struct memblock_region *new_rgn = &memblock.reserved.regions[0];
-+	struct memblock_region *left_rgn = &memblock.reserved.regions[0];
-+	struct memblock_region *new_rgn = &memblock.reserved.regions[1];
-+	struct memblock_region *right_rgn = &memblock.reserved.regions[2];
- 	struct memblock_region *req_node = &memblock.memory.regions[nid_req];
- 	struct memblock_region *next_node = &memblock.memory.regions[nid_next];
- 	void *allocated_ptr = NULL;
-@@ -871,13 +875,18 @@ static int alloc_exact_nid_numa_reserved_full_merge_generic_check(void)
- 	ASSERT_NE(allocated_ptr, NULL);
- 	ASSERT_MEM_NE(allocated_ptr, 0, size);
- 
--	ASSERT_EQ(new_rgn->size, total_size);
--	ASSERT_EQ(new_rgn->base, r2.base);
--
--	ASSERT_LE(new_rgn->base, req_node->base);
--	ASSERT_LE(region_end(req_node), region_end(new_rgn));
-+	ASSERT_EQ(left_rgn->base, r2.base);
-+	ASSERT_EQ(left_rgn->size, r2.size);
-+	ASSERT_EQ(right_rgn->base, r1.base);
-+	ASSERT_EQ(right_rgn->size, r1.size);
-+	ASSERT_EQ(new_rgn->base, req_node->base);
-+	ASSERT_EQ(new_rgn->size, size);
-+	ASSERT_EQ(new_rgn->flags, MEMBLOCK_RSRV_KERN);
-+	ASSERT_EQ(memblock_get_region_node(new_rgn), nid_req);
-+	ASSERT_LE(req_node->base, new_rgn->base);
-+	ASSERT_LE(region_end(new_rgn), region_end(req_node));
- 
--	ASSERT_EQ(memblock.reserved.cnt, 1);
-+	ASSERT_EQ(memblock.reserved.cnt, 3);
- 	ASSERT_EQ(memblock.reserved.total_size, total_size);
- 
- 	test_pass_pop();
-diff --git a/tools/testing/memblock/tests/alloc_nid_api.c b/tools/testing/memblock/tests/alloc_nid_api.c
-index 562e4701b0e0..3d7a8c370844 100644
---- a/tools/testing/memblock/tests/alloc_nid_api.c
-+++ b/tools/testing/memblock/tests/alloc_nid_api.c
-@@ -1965,7 +1965,8 @@ static int alloc_nid_bottom_up_numa_part_reserved_check(void)
- 	max_addr = memblock_end_of_DRAM();
- 	total_size = size + r1.size;
- 
--	memblock_reserve(r1.base, r1.size);
-+	ASSERT_EQ(0, __memblock_reserve(r1.base, r1.size, nid_req,
-+					MEMBLOCK_RSRV_KERN));
- 	allocated_ptr = run_memblock_alloc_nid(size, SMP_CACHE_BYTES,
- 					       min_addr, max_addr, nid_req);
- 
-@@ -2382,14 +2383,17 @@ static int alloc_nid_numa_large_region_generic_check(void)
-  *  |             | r2 |          new          | r1 |                  |
-  *  +-------------+----+-----------------------+----+------------------+
-  *
-- * Expect to merge all of the regions into one. The region counter and total
-- * size fields get updated.
-+ * Expect to allocate the requested node as a separate kernel-reserved region.
-+ * The neighboring reservations remain distinct because the new region records
-+ * the requested NUMA node and MEMBLOCK_RSRV_KERN flag.
-  */
- static int alloc_nid_numa_reserved_full_merge_generic_check(void)
- {
- 	int nid_req = 6;
- 	int nid_next = nid_req + 1;
--	struct memblock_region *new_rgn = &memblock.reserved.regions[0];
-+	struct memblock_region *left_rgn = &memblock.reserved.regions[0];
-+	struct memblock_region *new_rgn = &memblock.reserved.regions[1];
-+	struct memblock_region *right_rgn = &memblock.reserved.regions[2];
- 	struct memblock_region *req_node = &memblock.memory.regions[nid_req];
- 	struct memblock_region *next_node = &memblock.memory.regions[nid_next];
- 	void *allocated_ptr = NULL;
-@@ -2421,13 +2425,18 @@ static int alloc_nid_numa_reserved_full_merge_generic_check(void)
- 	ASSERT_NE(allocated_ptr, NULL);
- 	assert_mem_content(allocated_ptr, size, alloc_nid_test_flags);
- 
--	ASSERT_EQ(new_rgn->size, total_size);
--	ASSERT_EQ(new_rgn->base, r2.base);
--
--	ASSERT_LE(new_rgn->base, req_node->base);
--	ASSERT_LE(region_end(req_node), region_end(new_rgn));
-+	ASSERT_EQ(left_rgn->base, r2.base);
-+	ASSERT_EQ(left_rgn->size, r2.size);
-+	ASSERT_EQ(right_rgn->base, r1.base);
-+	ASSERT_EQ(right_rgn->size, r1.size);
-+	ASSERT_EQ(new_rgn->base, req_node->base);
-+	ASSERT_EQ(new_rgn->size, size);
-+	ASSERT_EQ(new_rgn->flags, MEMBLOCK_RSRV_KERN);
-+	ASSERT_EQ(memblock_get_region_node(new_rgn), nid_req);
-+	ASSERT_LE(req_node->base, new_rgn->base);
-+	ASSERT_LE(region_end(new_rgn), region_end(req_node));
- 
--	ASSERT_EQ(memblock.reserved.cnt, 1);
-+	ASSERT_EQ(memblock.reserved.cnt, 3);
- 	ASSERT_EQ(memblock.reserved.total_size, total_size);
- 
- 	test_pass_pop();
-@@ -2496,15 +2505,18 @@ static int alloc_nid_numa_split_all_reserved_generic_check(void)
- 
- /*
-  * A simple test that tries to allocate a memory region through the
-- * memblock_alloc_node() on a NUMA node with id `nid`. Expected to have the
-- * correct NUMA node set for the new region.
-+ * memblock_alloc_node() on a NUMA node with id `nid`. Expected to allocate
-+ * the region within the requested node and mark the new reservation with the
-+ * correct NUMA node.
-  */
- static int alloc_node_on_correct_nid(void)
- {
- 	int nid_req = 2;
- 	void *allocated_ptr = NULL;
- #ifdef CONFIG_NUMA
-+	struct memblock_region *new_rgn = &memblock.reserved.regions[0];
- 	struct memblock_region *req_node = &memblock.memory.regions[nid_req];
-+	phys_addr_t req_node_end = region_end(req_node);
- #endif
- 	phys_addr_t size = SZ_512;
- 
-@@ -2515,7 +2527,13 @@ static int alloc_node_on_correct_nid(void)
- 
- 	ASSERT_NE(allocated_ptr, NULL);
- #ifdef CONFIG_NUMA
--	ASSERT_EQ(nid_req, req_node->nid);
-+	ASSERT_EQ(memblock.reserved.cnt, 1);
-+	ASSERT_EQ(new_rgn->size, size);
-+	ASSERT_EQ(new_rgn->base, (phys_addr_t)allocated_ptr);
-+	ASSERT_EQ(new_rgn->flags, MEMBLOCK_RSRV_KERN);
-+	ASSERT_EQ(nid_req, memblock_get_region_node(new_rgn));
-+	ASSERT_LE(req_node->base, new_rgn->base);
-+	ASSERT_LE(region_end(new_rgn), req_node_end);
- #endif
- 
- 	test_pass_pop();
--- 
-2.43.0
-
+Regards,
+ojaswin
+>  {
+>  	return mftb();
+>  }
 
