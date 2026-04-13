@@ -4,101 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 074EDF34C4E
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9854BF34C4E
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:43:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49BFA6B008A; Mon, 13 Apr 2026 09:36:01 -0400 (EDT)
+	id BD4816B0089; Mon, 13 Apr 2026 09:43:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 473696B0092; Mon, 13 Apr 2026 09:36:01 -0400 (EDT)
+	id BAAE76B008A; Mon, 13 Apr 2026 09:43:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AFC16B0093; Mon, 13 Apr 2026 09:36:01 -0400 (EDT)
+	id AC0AC6B0092; Mon, 13 Apr 2026 09:43:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 28E986B008A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:36:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B7A09B42C8
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:36:00 +0000 (UTC)
-X-FDA: 84653630880.09.BFD2B40
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BC4DD1A0004
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:35:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O2V2Ka6m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776087358; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BFCD6B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:43:37 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 554EAE01E8
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:43:37 +0000 (UTC)
+X-FDA: 84653650074.13.0B7124A
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F307B40012
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:43:34 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=mnIW1wS1;
+	spf=pass (imf11.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776087815; a=rsa-sha256;
 	cv=none;
-	b=2LUo91iAIBpc6jST3554mptSyLj/bLPPYY3Na5Lv7fHNWJtetsI6M4iWB+q/p0SMSI72RR
-	QDH4aG/2tMIw7M4xfzhycQ3CJYVh8PluA1bMU1d88SjMq/5UKSN7eQrrFbz50NdaVlareO
-	LZlHyviOBhfyOaBKoJqJwhZrvwp2TIw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O2V2Ka6m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	b=7BBCkLyM5v3gfUcQsNi4X2XnmJNGKA/VYdIfkSFREiAtKj+OUBGzZfAf6ty/omaw8V0Ovz
+	my5iFf1bmRQk+zIpin1ScicD4x853v1yrlHlfHJLme29daiAwWwhEj17gTe/fS2FH4yQI1
+	/feO2EThu3PaZRWshWsdGysWSra/Ae4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776087358;
+	s=arc-20220608; t=1776087815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SrjpwvB83N2giVKGPFKhc5pvsj2/HjIz0wMXzQQvs+0=;
-	b=VpWsMLlUMZo7qU6remXFvaT/cr520y6xYEBXcxj5JBHHsNMe93Rhp3yRdNqoCM736kS1ef
-	hXkDVEI6j/VnltfncqW63vqsRiq97XMRDiBzDTBOunoTS4rTbUA3roSYOZZeZcsmBmFXfc
-	EzLMQa/liF1xC2F6XJa6jkCobLdNCBs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B5F6B437A4;
-	Mon, 13 Apr 2026 13:35:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C5AC2BCAF;
-	Mon, 13 Apr 2026 13:35:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776087357;
-	bh=xRUAWLrLgzwCdGi7KEt4++j4ZklzOjG8GAiY3yBRcWY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O2V2Ka6m8t7FhRSXO3t1Sodi7if2bOG/BstBJVrdrfAs77AHjkdBsdh1wcEstujtW
-	 Pcv7UdqWAunyHp5xXBxNMQs9y3ZS1HBnJVMlWhs2SvQufE4uoI+Z5jzyqROACi9P5X
-	 lx++2pz+0BMA4WBx7xBvVjRH9VAoWX+31ym0QCr7BSAWjYzt7FsN1Z0cXHpY+1FoKx
-	 m2wGoVRnNcyNhZOoWASweYAR0GWveSxc0LiIsAHiSBZGyv3EkHwkJYrT6PMTSRyZTI
-	 n7uFaRdKk6ZmwtE+nRnDTtrFJQh39d6c8O1NVYd/EON9R+VMcZpuOay6ljEbqe4Ebq
-	 Fvdzgcgm2+j6A==
-Date: Mon, 13 Apr 2026 16:35:48 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Liam R Howlett <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/49] mm/sparse: fix vmemmap accounting imbalance on
- memory hotplug error
-Message-ID: <adzxNAa7RnUDrykW@kernel.org>
-References: <adzb5o9aWxFWphRK@kernel.org>
- <8AEA6BCE-570F-4095-ADCF-9699BDE0DD64@linux.dev>
+	bh=saf5SXp3wlvOnOLzLMjfVdHAFSBVv9+8L7w7kLpMC/8=;
+	b=rQyiS8zsin2Jdk5ehnxzLb3RtqDynVuax8LMqpFI0xzEhc5cVMObg1zofMhe9yZUx8SiQM
+	EfnnIxxUK9AnjmrOsIWg5Fa/TwoCVN5Bpe7Rr4BVYU17H0LahgWRwNw658TQE3rmztDRus
+	EajTaZKXSj2H1oJwl3qDpiK0hQO4m1c=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=mnIW1wS1;
+	spf=pass (imf11.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63CKECrY3021224;
+	Mon, 13 Apr 2026 13:43:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=saf5SXp3wlvOnOLzLMjfVdHAFSBVv9
+	+8L7w7kLpMC/8=; b=mnIW1wS1tMvmc/4IdmfuUvRlSHB9Nn6BjP6lB47IZD5use
+	LIBd47QC5BwPpinJbYEGM5Izkas6xM2/lz89P6OL6A6GVZ5fTvIuKviJ+LeLFb4+
+	VYFH12S9Q2RysppFnJVbEWmNK+IutW4e3RIA8Q8bHEF81PBtmHTkD51Y5ZwEremI
+	Ip4CpQjq7L0IAtqz7fN4pvKVajk+gZP5PqVr4xwKQyCZJQ6CXbMi0mMopmmcOhvY
+	IQjoP3SP6qhydFbGAe/SDpxup0dS4fn0BrOpeW8pKOa5JXvct2ULXdikDHo7tKy6
+	hacASYLAJhtDAqPEDi1xZZZM9XToiGidp/aojFlQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dfbqkfskv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 13:43:28 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63DA4meW025781;
+	Mon, 13 Apr 2026 13:43:28 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg3b1d3wy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Apr 2026 13:43:27 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63DDhOt553019082
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Apr 2026 13:43:24 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2CF512004D;
+	Mon, 13 Apr 2026 13:43:24 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EE32D20043;
+	Mon, 13 Apr 2026 13:43:23 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.52.215.75])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 13 Apr 2026 13:43:23 +0000 (GMT)
+Date: Mon, 13 Apr 2026 15:43:22 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
+Message-ID: <896b3d93-8e60-42e2-b8bb-d3d4e8c99927-agordeev@linux.ibm.com>
+References: <cover.1774420056.git.agordeev@linux.ibm.com>
+ <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
+ <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
+ <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
+ <665a19a0-47c2-404c-bd2b-482ab51b8f64@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8AEA6BCE-570F-4095-ADCF-9699BDE0DD64@linux.dev>
-X-Rspamd-Queue-Id: BC4DD1A0004
-X-Stat-Signature: 4ys376xxmtko37mkk4a768d79i1b18za
+In-Reply-To: <665a19a0-47c2-404c-bd2b-482ab51b8f64@kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=I+9Vgtgg c=1 sm=1 tr=0 ts=69dcf300 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=yNaC3uHPhY_xAc1mEpIA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: l9a5izobHhmuJWMjreMWf-1yG0SVJluB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDEzMDEzMSBTYWx0ZWRfX/NimbRRhGaFD
+ Jjy+q0LVUcC6dU1MpAjKESCfvT9kNOxcc47zp9DjfkwDYbHX8DktSB55qnzUjOXpCa6g3uJTaZW
+ teNGQCyWRLriO7ZYrqSlogIsW1PwGItZYXRtyvU2UxgDsdGwnMNtT63jhIDAkZQ9J4KQjPwwbx/
+ 7wwNp57YRbVNQqvkO6Vce9Bde61f5KWspkNHqi/5Ka9JC7+zaXsyg4B73fPT6/rQM2K6LZhZn/E
+ P3jxkXLDqDLQKWXJQKk5n4q2nHBNGT1tJoWhPMBKlZtxuulPZlbUA8nTNDdARp2Q13OpUu+wpdV
+ PefhH1KrSmLrsC8mN96/50r+T8xuA9btJq6pgpTajcpb+iAo9iVQRbWMtIO10qprKvEyCs/RPK8
+ cMiQHhFxggwVIyxbUSJayKt99zfeu+Wouc+Zp9ytxVPdJLGb3LOZTpEVLcaFiX0I2+cYPopRovr
+ Arq1RcgMd+aksQbMS3Q==
+X-Proofpoint-ORIG-GUID: l9a5izobHhmuJWMjreMWf-1yG0SVJluB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-13_03,2026-04-13_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604010000 definitions=main-2604130131
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776087358-766479
-X-HE-Meta: U2FsdGVkX19TjRa9Scx88z271xvA/CdoDwN3uyUhjloGmQhao0RzOYf3YInV0sNFwuG874CXi3r72iQD6pECpJNWtitqHy3bTYQUnLpldgSHcz25yyItC380tCKxHqmfr9FqkZyjojm2ePbfI8S3YXJDfYkE98Y/bId1rEMpfUIU+rSBzQfE4NXMY4BWEdKCr1aR46+EsTekhnNBYq71Lfa4E3f6Faa4XA2SoLoLjP6NzGe4cBnpfuDJm4PO4UXeQ0Ww3VkQSoO9dd9YrfpheLHeZ0Z62feuiTk3bC55/VBIbcR+OMnx/1jbIJuAgL8iN+i6Sab+rIQ2t3yAjPeB5NGlmbUvH9v9JBxHrzzBA3H6Q6eOOCHDnODAbiw5mSz8lJojuzlEFiJ6dFpVZPEfVWBwKo56hGZPS9h8j2uGAD2FfuQ4dDztnVQ66PwYJQWxp2dCwc8kUmRPWSZI9SlL1J/tM7pjmX9k8nnF7dbZZCMPc6GFBFLSNBuBUCaxoxnkKLrW2ylZk0DDWaRiQcWVsHM+r99JYNemU6zeP9Rkos9XdgCPK9vsrkrV714N9uThA3um7mefwRFiYP1QzjzYA0LQULypUcrZTMXD0SBI6MhvmFcRcWVDgzxaaJmDplRi4Y9yn/Eb7dUmlH5B+qJsMxtXkHngeseT5cJajE/LnHa9R8j0T6Tzsgi08y++tuL57ghr8x054e0AW7GLuEMDGWG8TtRZnM3RSRfjjFvgrtVvc4blouuZ2TcQWm6ge7PsMz3CzLPT9oEloLo7n3oJEl/dQKBBiy+zUXVLbkREeZE6f23fUeOPy50EvfPAb/0JSXrt04jMkWaR/quIBrVB2IfO4U+mgEGTGlAvF0pRvfccXcdWrYzhS4ot7+/MBLhq6jUaZVbBKu9Gv4fntKvYEmP7zKhMsmpowiS/pRmWc2IqMVEF2+ZXZBktRLnu5HBWFbH0R3E4dx2gsKKyn8M
- EH2SrkG7
- XdmdtNWYpxIuMDxFTvQFvF0gEcKetiG61VzhjixepqsXO9QQhHP1Xb3EJYtA0BHDIDEKYd5H7vdpMWbVroLYEOE/tjPzfqPHWnYYMRW+K1egtwzbrTDsdW9V1HQwezwPkwaP1Tx1mdNeMwpfS06gtZIRmPXj1JvwERhzYTt4QaL8T30BmRtXDBZoYD2XIqC9Y18vruNSUe9TbTcYvOHsabz4RcLUNbcfAEIYdFJlgKWusRF7EEw2qY0pWWMgqFE3hC3x6taoMA+FDOINJ8BzRs9c7AzxCc4+TA4GQ2hH7Qh/lneg=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F307B40012
+X-Stat-Signature: qfserrcsjam5gre4ukfswfwdpp1afsro
+X-HE-Tag: 1776087814-360407
+X-HE-Meta: U2FsdGVkX1+2Pklh2MFeDgG+NYgtXK0g0GMPb/YIak0kec4tZdJswfjOnezheRiocp0Es/JL+1IryBJHPPWNki9X7jmTW47usUHSU80uqVF5rMbKbVR7uShsSg4nq6FkhLYd3bk2hFLvluIxdEVrZqrTUTdiGkrBzkloAS3yWjumpMXJBv5AnJLllPXQRfBfPOHeT239zEpYMQ5MP4xME0WZ2roblLGeKj6Iosr355Ew13LtHIIsv7BvYKjLBqENtymf34ZASJk0X1Lv4tCwYsx8zvJ8HBd4bvu9T8cO2wllNxEriCqrya1isK/rkcT4Ac6aYTM5Ao30zOrf/eDvL4PU3hE9s4x1nq2HJ+YmpY6EBK5ZKNhUT2SYcuHYNtCaSJZ3UxlYDyInH3pfFl2x5FinbuEr2AJbKSE5yLoHiCrYuwXAMJkctBknB52qhu5oL2c0wf0Q9ozepq5AzuP+VJzC8BXeaVFuw22rpgP7LnBf1e8qmeK1Dpe42E/+jF4bvFUc5LDEjz2+msMz5xbHXHI0kPgc05zrP6Yh4J2AXQv1HU79TfYEldh0ZOTPayvJhe2wdRAhrqKTdFzJDP8xblJAvuK8Aleq9lUCtHreZc55lbMAuHiyPnIQl+OPdbiMJXC03HrO0r6olCcLhsvgesdZCFjYhOEyc70AiIeDEKlQavu9gze9rAlgZHJubFAUeceTj9xJmPjPcSS9R2QspefPpqMw3HicgBTQARl9DI7bstaHIYD1FOuEgxtHVleH1TzwvvYD608i7i1TG+L5rITiDVhuX4xW+AsKo1X88mHNT07pYSWRlvroGZ/G8UXZnlUtKe4jFhvyAOo8V9h5CF/fH0IyMb8/AxumvBdPVEXNmqFdjudvwlWbknyeyCHlbERHUwfc4lD8c1gCm3E1KPPAKh2xYnFptk18mVjlckE0xwaDuAj/9aoKbQW/UuVoVz5O+UZxEmeARmu5s9/
+ OlPeoLUo
+ gtvx30alnnZfZBpgxWEJaE8GxYIwuE/2RZ5VRJdHjBsck0QjWG/B9xF+MBJOAg7n3HMv+hpim7WloGALisql/hezOhcVjKSJ1RtjtBWI3t/guBwmFvA+eM7tU88k9Igu50U+xXLT4/Q8p13NCENpw+Hb9VMKscf26rVyZGfJ2sNtRCTb1wl+oLakxcsr4zKjNFt/NROrvPhN5ljW52kgv9rs+wEw9jf+x2ERXGRrg6XclOYezytP7QTgQWv7sYuz27vEtbppAceyWygePk6VLEjbi+JRu/KY8WOxiNEqAoVBhAtsZySWEFRTNGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,90 +144,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Muchun,
-
-On Mon, Apr 13, 2026 at 08:47:45PM +0800, Muchun Song wrote:
-> > On Apr 13, 2026, at 20:05, Mike Rapoport <rppt@kernel.org> wrote:
-> >>>>> 
-> >>>>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> >>>>> index 6eadb9d116e4..ee27d0c0efe2 100644
-> >>>>> --- a/mm/sparse-vmemmap.c
-> >>>>> +++ b/mm/sparse-vmemmap.c
-> >>>>> @@ -822,11 +822,11 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
-> >>>>> return pfn_to_page(pfn);
-> >>>>> 
-> >>>>> memmap = populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
-> >>>>> + memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
-> >>>> 
-> >>>> This logically belongs to success path in populate_section_memmap(). If we
-> >>>> update the counter there, we won't need to temporarily increase it at all.
-> >>> 
-> >>> Not strictly related to this patchset, but it seems, we can have a single
-> >>> memmap_boot_pages_add() in memmap_alloc() rather than to update the counter
-> >>> in memmap_alloc() callers.
-> >> 
-> >> It will indeed become simpler and is a good cleanup direction, but there
-> >> is a slight change in semantics: the page tables used for vmemmap page
-> >> mapping will also be counted in memmap_boot_pages_add(). This might not
-> >> be an issue (after all, the size of the page tables is very small compared
-> >> to struct pages, right?).
-> >> 
-> >> Additionally, I still lean toward making no changes to this patch, because
-> >> this is a pure bugfix patch — of course, it is meant to facilitate backporting
-> >> for those who need it. The cleanup would involve many more changes, so I
-> >> prefer to do that in a separate patch. What do you think?
+On Tue, Mar 31, 2026 at 11:11:22PM +0200, David Hildenbrand (Arm) wrote:
+> >>> + * lazy_mmu_mode_enable_pte() - Enable the lazy MMU mode with
+> >>> parameters
+> >>
+> >> You have to be a lot clearer about implications. For example, what
+> >> happens if we would bail out and not process all ptes? What are the
+> >> exact semantics.
 > > 
-> > For this patch and easy backporting I still think that cleaner to have the
-> > counter incremented in populate_section_memmap() rather immediately after
-> > it.
+> > The only implication is "only this address/PTE range could be updated
+> > and that range may span one page table at most".
 > 
-> Hi Mike,
-> 
-> Alright, let’s revisit your solution. After we’ve moved the counter into the 
-> populate_section_memmap(), we still need to increase the counter temporarily
-> (but in populate_section_memmap()) even if we fail to populate. That’s
-> because section_deactivate() reduces the counter without exception, isn’t it?
-> Just want to make sure we are on the same page on the meaning of “temporarily
-> increase”.  Maybe you do not mean “temporarily” in this case.
+> Probably phrase it stronger. "No ptes outside of this range must be
+> updated" etc.
 
-I suggest to increase the counter only if we succeeded to populate:
+That turns out to be bit more complicated. The below cases do not fit
+such a strong requirement:
 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 6eadb9d116e4..247fd54f1003 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -656,7 +656,13 @@ static struct page * __meminit populate_section_memmap(unsigned long pfn,
- 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
- 		struct dev_pagemap *pgmap)
- {
--	return __populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
-+	struct page *p = __populate_section_memmap(pfn, nr_pages, nid, altmap,
-+						   pgmap);
-+
-+	if (p)
-+		memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
-+
-+	return p;
- }
- 
- static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
-@@ -826,7 +832,6 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
- 		section_deactivate(pfn, nr_pages, altmap);
- 		return ERR_PTR(-ENOMEM);
- 	}
--	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
- 
- 	return memmap;
- }
- 
+1. copy_pte_range() operates on two ranges: source and destination.
+Though lazy_mmu_mode_enable_for_pte_range() applies to the source one,
+updates to the destination are still happen while in tha lazy mode.
+(Although the lazy mode is not actually needed for the destination
+unattached MM).
 
-Then we'll better follow "all or nothing" principle and won't have
-exceptional cases in section_deactivate().
+2. move_ptes() also operates on a source and destination ranges, but
+unlike copy_pte_range() the destination range is also attached to the
+currently active task.
 
-> Thanks,
-> Muchun.
+3. Though theoretical, nesting sections with interleaving calls to
+lazy_mmu_mode_enable() and lazy_mmu_mode_enable_for_pte_range() make
+it difficult to define (let alone to implement) which range is currently
+active, if any.
 
--- 
-Sincerely yours,
-Mike.
+All of these goes away if we switch from for_pte_range() to fast_pte_range()
+semantics:
+
+/**
+ * lazy_mmu_mode_enable_fast_pte_range() - Enable the lazy MMU mode with fast updates.
+ * @mm: Address space the ptes represent.
+ * @addr: Address of the first pte.
+ * @end: End address of the range.
+ * @ptep: Page table pointer for the first entry.
+ *
+ * Enters a new lazy MMU mode section and allows fast updates for PTEs
+ * within the specified range, while PTEs outside of the range are
+ * updated in the normal way - as if lazy_mmu_mode_enable() was called;
+ * if lazy MMU mode was not already enabled, enables it and calls
+ * arch_enter_lazy_mmu_mode_fast_pte_range(); if the mode was already
+ * enabled, the provided PTE range is ignored.
+ *
+ * The PTE range must belong to the provided memory space and must
+ * not cross a page table boundary.
+ *
+ * There are no requirements on the order or range completeness of PTE updates.
+ *
+ * Must be paired with a call to lazy_mmu_mode_disable().
+ *
+ * Has no effect if called:
+ * - while paused (see lazy_mmu_mode_pause())
+ * - in interrupt context
+ */
+
+Thoughts?
+
+Thanks!
 
