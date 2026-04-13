@@ -4,110 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0D7CF34C47
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 11:58:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E497F34C4B
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 12:05:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1714B6B008A; Mon, 13 Apr 2026 07:58:05 -0400 (EDT)
+	id A06AF6B0089; Mon, 13 Apr 2026 08:05:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 147556B0092; Mon, 13 Apr 2026 07:58:05 -0400 (EDT)
+	id 9E30D6B008A; Mon, 13 Apr 2026 08:05:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 037106B0093; Mon, 13 Apr 2026 07:58:04 -0400 (EDT)
+	id 91B1E6B0092; Mon, 13 Apr 2026 08:05:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E8E056B008A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:58:04 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9C6BC16017B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:58:04 +0000 (UTC)
-X-FDA: 84653384088.09.F5FA324
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C3B2E4000F
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:58:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cLISFnuC;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D9AC6B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:05:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2F3B6C05E0
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:05:06 +0000 (UTC)
+X-FDA: 84653401812.17.4EB5749
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 811BA1C0019
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:05:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=at+QCcd8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776081904; a=rsa-sha256;
+	cv=none;
+	b=aWk1Yw61SWDu7Uz3f4N8WrrMqU3aC7RMz/bnIzP6yXd6kyy6B9j1CKjFEUkfWqYG23O25p
+	CRGgfAZsLLc2eJru2QfSRhkWe+3cv0ifBT2b7gQwsmh92NrhX5FuTqlJiwQRVJ6ds9QBFv
+	DwZWzfufg947yJVkGKVXvQbnh6s4icM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=at+QCcd8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776081482;
+	s=arc-20220608; t=1776081904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+bad71lwt55pbEushAAY3am/8JVpJ937KnhdbjHPvM=;
-	b=WNpCu4D4QVMFGvu25ZnKQw50ljgC27SYyK6i5iLcnpdg/hG55Dw5BuGAU7VgusGTLCJ0Vo
-	Klx84FhJxlnapOMoa7ASv4xgQMnVnyoqR4ptGrEkEtqx8eaMOikXrq2RtqId85UtPyxvQ6
-	s5gRF2fcOZyzjs2soLviBmrRK7zZmn4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776081482; a=rsa-sha256;
-	cv=none;
-	b=C0gcXwx2DdcSNAu3pfNyLHHIIs1KSJUGc2DM6nPyXnzrZ+QIqqiMY441BazlisnJo58iw9
-	1X9+QBJoUz9bcrq78T4bN2uPneV8iSj9XvQKHuS1jHQgELpxI/7LjjM2H7MrsgFtvzh2en
-	FpuycjoMFGrEqRJFinD06G5opCi7TUM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cLISFnuC;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf01.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=t+bad71lwt55pbEushAAY3am/8JVpJ937KnhdbjHPvM=;
-	b=cLISFnuCWUTjZvk4SBtq7ODsuprDgjfmxkCpvb7LxeAXAmgzF2kau5DX00qeLLRo9PxIsNXuE
-	K2S9p1PD091doJlRCQU0GJHUK+rCSWnCpL38RVUhSXswBHze8XJbVXo5aE580yrfuoZ/NPXQF3T
-	MibccXLXF5nqQrFqy3KVlYg=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fvQjn2GXmz1cyQc;
-	Mon, 13 Apr 2026 19:51:41 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id B01BC4055B;
-	Mon, 13 Apr 2026 19:57:57 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 13 Apr 2026 19:57:57 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 13 Apr 2026 19:57:56 +0800
-Subject: Re: [PATCH RFC v3 5/7] mm: selftests: Add shmem into memory failure
- test
-To: Lisa Wang <wyihan@google.com>
-CC: <rientjes@google.com>, <seanjc@google.com>, <ackerleytng@google.com>,
-	<vannapurve@google.com>, <michael.roth@amd.com>, <jiaqiyan@google.com>,
-	<tabba@google.com>, <dave.hansen@linux.intel.com>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins
-	<hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "David
- Hildenbrand" <david@kernel.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, <linux-kselftest@vger.kernel.org>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>
-References: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
- <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-5-718f45eb7c75@google.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <9effbeca-3453-f0fe-571f-85f8923e1385@huawei.com>
-Date: Mon, 13 Apr 2026 19:57:55 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=NH2W+2csUqWt6/5/R4OcEjsSkmHjk2BuSHBIUQjDBks=;
+	b=tO7AZ3WpOGz4IntWlG/cMHSDjfD5CZUGVPPRr3tvRl6feq71NQ2sCPCUE0dIXTlK4ldQgU
+	X8JZZdt35AG1qrAFC219wLRRe/7ckaRHkCH+uOsHdeDCfyrDViihzVTgBZSv/0RVT8Da4f
+	kscR0ySIbaMV3nIrAb4gPDYrSrjmPUQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EAF2060180;
+	Mon, 13 Apr 2026 12:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0EFDC19421;
+	Mon, 13 Apr 2026 12:04:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776081903;
+	bh=cSo4sEdsNwlz/Iqs10U18EHsNdWWL3XI+9TPegcabV8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=at+QCcd8hldAMXHMewcQlTRTSnPiYtb+AMBMRvJ2S3KRydAkuWOSAT5L5UCYcSoX/
+	 ROa9bELImeOFvQzvTvpDpcl4kesvAFWZEWDTyLABjzRsnNsdUqSTmHo8oGoko42yP1
+	 ySfzT1F5fS+ieBGBLG+LF/vt9HIB747aetWSZlmf5ZsXJNo8GFsCT2SCUVjsNcF0+D
+	 Y6DQqlHoXOTwKiulifQcVyMaqFKxVh70yge0I5RxWAyvSyVsOM3ft5xcsQIebGm+6U
+	 4yi40VjDnwrKe0gqOTVZYA/w2Lw0t9gyBbQ8clbAsFDUDIHE47hCCod4Zw1isILUZB
+	 tqQdQ9IAZeV3Q==
+Date: Mon, 13 Apr 2026 15:04:54 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/49] mm/sparse: fix vmemmap accounting imbalance on
+ memory hotplug error
+Message-ID: <adzb5o9aWxFWphRK@kernel.org>
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-2-songmuchun@bytedance.com>
+ <ady1LQMN1xhPGcuT@kernel.org>
+ <ady40BWw5WgQHf3z@kernel.org>
+ <35454ADD-C983-4577-997E-884266C56FB6@linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-5-718f45eb7c75@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: C3B2E4000F
-X-Stat-Signature: yz8ftcdtf1hbadgpbadueygqaxkxswqx
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <35454ADD-C983-4577-997E-884266C56FB6@linux.dev>
+X-Rspamd-Queue-Id: 811BA1C0019
+X-Stat-Signature: nfge3mcew1imskphrz8oghqjycj54x97
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776081481-785431
-X-HE-Meta: U2FsdGVkX18dy0/DoY++LXkvVobTx8jYh8bInmL+pq2KXRSM7+UteX/G0bmAG+oP+Cg3lVsDAr33GuDayB+IbIZ5CvJoXZvAHkbB23O9S1GPhmo8jtLLfp/n7PdQKtOrSeUK4nim/jmZFcsCHds8u1i1i+KBOygYqk/+oIixf0hBPjunqLUjo6TSYFn1P6MED4kSn3QwmdbDB85rHFTo1U6+ZK0mp0XocexIy0itYo4gRT4Acs4wuVfnaQdfE8cgEjJeL+w52tcI2JPKR8FrOlm1qsU3pQrUAqtARg4OYzrhbNgU99hdi9wHds4WIFZVlCXX37NTJ/lvhI6kWMEUgWJtVLS2mZEyrAHj9JDCsUAc/4N46jy5RhM9bf5GO2VHJ2wqGa5TG8pbuuwExa0Wpm7NHv4wDQS49FimdJZVZAIKPcKijt9NXsvo5WwwPgDqNYuonRlkA+K3nTmGBHshofUZtijWmic6NpXu3PDm6iVNkPYQpcgE59ArGkxUXDBwZXEwjvXA+e9yA6bC+XPGm8h4+e5t9OI3DtRvPjotGpzaVIrXbrUNimc5mB42pDxXJkzo7/TFkDLkmyalnLUcg9WYO/kLzXI3peHSVXowU8QdpstKhPADUH/F6l9DASA9Nc0QvKjPnPpEJIRQJAwcxh2jKyEcO1fe9WuPz99+8bG8n47Me/mR7xgLE8nTD5xe5WRsUU5nFkXVW4yiAmThrfjCalu6n9UqRWZEyjjdbC3I6ij8v4GOvDC7hOssnkfGhUKAYFWnC7jkOdqv5v10l7uzYfitkfjrCe/OV/Ic6RC/GOq1TKdLA/rz3mTg6aBcEVrCfOJ0rOPSiZxbOGcgM3ZNlAJ8OeonVc7kBh36ePzqUx8CvBA/eM7VpV7Uq1YKy7rPDqZ8KbnQG8bCu8wTm2KGaND7qqT+ZU1KiTn/odCVagb94nXnAiKP+gPliaDPAfLzNVLESn6lUDqjUbf
- 8RD+CmcF
- V+mMBl0qR+W2EkxxZtt9i3BvTmyEgFV11odg8Lu9C0r2dBTcIIzfled7BHrh+JKrBuHjNiAt+GB43yKVKzG5eW3p/1gA8t289y+Wy2brQFglWZPyd54ud4Zm9SXPMiGVIqaeLbqkyIA0TxAqsTSVGG9XDzD5t1gyTaHloW3z4dRCCCM7fbji7B5gDO3RQOuU3EeVO0xhLSY4FY3et4ECX1GJRdsVb0UtpYr+4YnjOYp7QQ7QTR7Lc5zeOYblpTal2m/Ealvd+dQbHn9/ET06NAo9RBRIxSZrOMSfkVa2N1kqeUN5r2naNIE7EQEipiwmVzQ5E5i4X1tUOmLT7PtW75N1Tld8KCWr+f/UZeSaH9rmPTvwBv29urKmg3A==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776081904-11570
+X-HE-Meta: U2FsdGVkX1+njro/uMTYHtDZfZ3dcXwxBXQGMMZdQYBYG7CdSRHcEsTUD+dcaAGbtAI/4Kn7dCLlFJH9InoRkxW3sMAtCGR1b4IOkVXy9tma/RxZqFiJ61ZLnEbd87lnAGEA1vWM6puFysP64ce25OV18pZKxqfF1ZwsY4WR7JGvzKrBElUeykweJo068btYDiWO5tgZm5OBH+179ixohBkoW6x0sBNOyPLYwl9REzz0OBuB7UjLgKWV9hBKhllAeHU7ACN4yMyWhYxqM0JqshCJ0rzCVTJzeV/IwA3UKpcTGIGEUmqBaS5XvfQaz+vyAncrTm/mNB91WRAOI5gs9P8qaG5kMB33LqU3UArFLg689Ch75FMSy/0v3NsfN+8Rr3IBob4UaxfrhuKszlqiZjHBguL/X3goKcRLg/G3s0ZtY3FuetxBxR+JjoLgk2DS1w343ip5PNGYMFOxQ9UTMTn3fI4bGit+XvK+VpuizuW9hZFhjgeDg+tIrq+eaye7orU4+kPrTLX+Xp98qCJgvgIgeT8X67C3VOXnXvjaafn0BCbZuH+MsTrfj33ZYIOIVdKcW83JHLuUIo1Eo4knDNA6yDsNwdECIjL10FLuG3LUuLv8VkAu3h5TXF7WDiQG4y8Tqm4wOjJfDR+1XwioFd6pk70ah/Em+M0Z2IYtA7+3V3Wi8hv0qwD66OM8/VyVXFvF9RODx3HZ9a+ITD6jgRsMX8ZJM3H6r3eXd7ZnUUzmRmVT4xC1NLVkisNpBPmp6LRbUt67WX7mN7J09tgY4wqXT4rUNCne95yc1KRjiH7DilD62ef3VpOmbV3SJ3rPLkzuMH4ubj/nKwTT4sXAGDNJIbHKx/jjcFiogwBt50Hn+EuYaZX3CLES1zGxn7zzBL6d/FI69P2uG7oVwmKSWXoQ+JzrsUM7Ld9ytzqVND1nWK4UZuBKOjy9JVo+16cMDpLOBfRDVfYMRSm/Pux
+ o7qXsGFH
+ BgBuGqDAqWzcfX/YBlG2dl01mUeBJroAF8o8RAbcaIrB/+UB12OjGPFx2GhsQ1pWRyBRzJ0QsNpbNbxUHmIThIbpaRezqMOcChXB760xwnMtisBc5NG+VoD6hXC4wFhi7xfzUxuCe2WXCHXiCO9RbVeusteEkP+M8R79OVgZGkNxiv/2fqymTCDvBDPzgmC90rewUbNnZfBK4ctEthgTorT/gcpnusHJ31YsmqYxBq7uGvlO3G7k6CUPcTTNBTgFRherxbWIZpjAKz67OjM9SBc2YvNDid6gxzDqn+rvg7HgGxkSIuPqmgyYu6DieMOReuU9QnBa8WZ8BHcg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,182 +109,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/4/9 1:24, Lisa Wang wrote:
-> Add a shmem memory failure selftest to test the shmem memory failure is
-> correct after modifying shmem return value.
+On Mon, Apr 13, 2026 at 05:49:17PM +0800, Muchun Song wrote:
 > 
-> Test that
-> + madvise() call returns 0 when the poisoned shmem page is clean
-> + trigger a SIGBUS when the poisoned shmem page is dirty
-> + trigger another SIGBUS when the poisoned shmem page is fault-in again.
 > 
-> Signed-off-by: Lisa Wang <wyihan@google.com>
-
-Thanks for your patch. Two questions below.
-
-> ---
->  tools/testing/selftests/mm/memory-failure.c | 109 +++++++++++++++++++++++++++-
->  1 file changed, 106 insertions(+), 3 deletions(-)
+> > On Apr 13, 2026, at 17:35, Mike Rapoport <rppt@kernel.org> wrote:
+> > 
+> > On Mon, Apr 13, 2026 at 12:19:50PM +0300, Mike Rapoport wrote:
+> >> On Sun, Apr 05, 2026 at 08:51:52PM +0800, Muchun Song wrote:
+> >>> In section_activate(), if populate_section_memmap() fails, the error
+> >>> handling path calls section_deactivate() to roll back the state. This
+> >>> approach introduces an accounting imbalance.
+> >>> 
+> >>> Since the commit c3576889d87b ("mm: fix accounting of memmap pages"),
+> >>> memmap pages are accounted for only after populate_section_memmap()
+> >>> succeeds. However, section_deactivate() unconditionally decrements the
+> >>> vmemmap account. Consequently, a failure in populate_section_memmap()
+> >>> leads to a negative offset (underflow) in the system's vmemmap tracking.
+> >>> 
+> >>> We can fix this by ensuring that the vmemmap accounting is incremented
+> >>> immediately before checking for the success of populate_section_memmap().
+> >>> If populate_section_memmap() fails, the subsequent call to
+> >>> section_deactivate() will decrement the accounting, perfectly offsetting
+> >>> the increment and maintaining balance.
+> >>> 
+> >>> Fixes: c3576889d87b ("mm: fix accounting of memmap pages")
+> >>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> >>> ---
+> >>> mm/sparse-vmemmap.c | 2 +-
+> >>> 1 file changed, 1 insertion(+), 1 deletion(-)
+> >>> 
+> >>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> >>> index 6eadb9d116e4..ee27d0c0efe2 100644
+> >>> --- a/mm/sparse-vmemmap.c
+> >>> +++ b/mm/sparse-vmemmap.c
+> >>> @@ -822,11 +822,11 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
+> >>> return pfn_to_page(pfn);
+> >>> 
+> >>> memmap = populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
+> >>> + memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
+> >> 
+> >> This logically belongs to success path in populate_section_memmap(). If we
+> >> update the counter there, we won't need to temporarily increase it at all.
+> > 
+> > Not strictly related to this patchset, but it seems, we can have a single
+> > memmap_boot_pages_add() in memmap_alloc() rather than to update the counter
+> > in memmap_alloc() callers.
 > 
-> diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-> index 3d9e0b9ffb41..eb3f8d98f6c9 100644
-> --- a/tools/testing/selftests/mm/memory-failure.c
-> +++ b/tools/testing/selftests/mm/memory-failure.c
-> @@ -30,9 +30,14 @@ enum result_type {
->  	MADV_HARD_ANON,
->  	MADV_HARD_CLEAN_PAGECACHE,
->  	MADV_HARD_DIRTY_PAGECACHE,
-> +	MADV_HARD_CLEAN_SHMEM,
-> +	MADV_HARD_DIRTY_SHMEM,
->  	MADV_SOFT_ANON,
->  	MADV_SOFT_CLEAN_PAGECACHE,
->  	MADV_SOFT_DIRTY_PAGECACHE,
-> +	MADV_SOFT_CLEAN_SHMEM,
-> +	MADV_SOFT_DIRTY_SHMEM,
-> +	READ_ERROR,
->  };
->  
->  static jmp_buf signal_jmp_buf;
-> @@ -165,17 +170,21 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
->  	case MADV_HARD_CLEAN_PAGECACHE:
->  	case MADV_SOFT_CLEAN_PAGECACHE:
->  	case MADV_SOFT_DIRTY_PAGECACHE:
-> -		/* It is not expected to receive a SIGBUS signal. */
-> -		ASSERT_EQ(setjmp, 0);
-> -
-> +	case MADV_SOFT_DIRTY_SHMEM:
->  		/* The page content should remain unchanged. */
->  		ASSERT_TRUE(check_memory(vaddr, self->page_size));
+> It will indeed become simpler and is a good cleanup direction, but there
+> is a slight change in semantics: the page tables used for vmemmap page
+> mapping will also be counted in memmap_boot_pages_add(). This might not
+> be an issue (after all, the size of the page tables is very small compared
+> to struct pages, right?).
+> 
+> Additionally, I still lean toward making no changes to this patch, because
+> this is a pure bugfix patch — of course, it is meant to facilitate backporting
+> for those who need it. The cleanup would involve many more changes, so I
+> prefer to do that in a separate patch. What do you think?
 
-Why we skip check_memory() for case MADV_SOFT_CLEAN_SHMEM?
-
-> +	case MADV_HARD_CLEAN_SHMEM:
-> +	case MADV_SOFT_CLEAN_SHMEM:
-> +		/* It is not expected to receive a SIGBUS signal. */
-> +		ASSERT_EQ(setjmp, 0);
->  
->  		/* The backing pfn of addr should have changed. */
->  		ASSERT_NE(pagemap_get_pfn(self->pagemap_fd, vaddr), self->pfn);
->  		break;
->  	case MADV_HARD_ANON:
->  	case MADV_HARD_DIRTY_PAGECACHE:
-> +	case MADV_HARD_DIRTY_SHMEM:
-> +	case READ_ERROR:
->  		/* The SIGBUS signal should have been received. */
->  		ASSERT_EQ(setjmp, 1);
->  
-> @@ -260,6 +269,20 @@ static int prepare_file(const char *fname, unsigned long size)
->  	return fd;
->  }
->  
-> +static int prepare_shmem(const char *fname, unsigned long size)
-> +{
-> +	int fd;
-> +
-> +	fd = memfd_create(fname, 0);
-> +	if (fd < 0)
-> +		return -1;
-> +	if (ftruncate(fd, size) < 0) {
-> +		close(fd);
-> +		return -1;
-> +	}
-> +	return fd;
-> +}
-> +
->  /* Borrowed from mm/gup_longterm.c. */
->  static int get_fs_type(int fd)
->  {
-> @@ -356,4 +379,84 @@ TEST_F(memory_failure, dirty_pagecache)
->  	ASSERT_EQ(close(fd), 0);
->  }
->  
-> +TEST_F(memory_failure, dirty_shmem)
-> +{
-> +	int fd;
-> +	char *addr;
-> +	int ret;
-> +
-> +	fd = prepare_shmem("shmem-file", self->page_size);
-> +	if (fd < 0)
-> +		SKIP(return, "failed to open test shmem-file.\n");
-> +
-> +	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
-> +		    MAP_SHARED, fd, 0);
-> +	if (addr == MAP_FAILED) {
-> +		close(fd);
-> +		SKIP(return, "mmap failed, not enough memory.\n");
-> +	}
-> +	memset(addr, 0xce, self->page_size);
-> +
-> +	prepare(_metadata, self, addr);
-> +
-> +	ret = sigsetjmp(signal_jmp_buf, 1);
-> +	if (ret == 0)
-> +		ASSERT_EQ(variant->inject(self, addr), 0);
-> +
-> +	if (variant->type == MADV_HARD) {
-> +		check(_metadata, self, addr, MADV_HARD_DIRTY_SHMEM, ret);
-> +		ret = sigsetjmp(signal_jmp_buf, 1);
-> +		if (ret == 0)
-> +			FORCE_READ(*addr);
-> +		check(_metadata, self, addr, READ_ERROR, ret);
-> +	} else {
-
-Should we always add a FORCE_READ() just after variant->inject to verify the accessibility
-to the addr for soft-offline case ?
-
-Thanks.
-.
-
-> +		check(_metadata, self, addr, MADV_SOFT_DIRTY_SHMEM, ret);> +	}
-> +
-> +	ASSERT_EQ(munmap(addr, self->page_size), 0);
-> +
-> +	ASSERT_EQ(close(fd), 0);
-> +	cleanup(_metadata, self, addr);
-> +}
-> +
-> +TEST_F(memory_failure, clean_shmem)
-> +{
-> +	int fd;
-> +	char *addr;
-> +	int ret;
-> +
-> +	fd = prepare_shmem("shmem-file", self->page_size);
-> +	if (fd < 0)
-> +		SKIP(return, "failed to open test shmem-file.\n");
-> +
-> +	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
-> +		    MAP_SHARED, fd, 0);
-> +	if (addr == MAP_FAILED) {
-> +		close(fd);
-> +		SKIP(return, "mmap failed, not enough memory.\n");
-> +	}
-> +	FORCE_READ(*addr);
-> +
-> +	prepare(_metadata, self, addr);
-> +
-> +	ret = sigsetjmp(signal_jmp_buf, 1);
-> +	if (ret == 0)
-> +		ASSERT_EQ(variant->inject(self, addr), 0);
-> +
-> +	if (variant->type == MADV_HARD) {
-> +		check(_metadata, self, addr, MADV_HARD_CLEAN_SHMEM, ret);
-> +		ret = sigsetjmp(signal_jmp_buf, 1);
-> +		if (ret == 0)
-> +			FORCE_READ(*addr);
-> +		check(_metadata, self, addr, READ_ERROR, ret);
-> +	} else {
-> +		check(_metadata, self, addr, MADV_SOFT_CLEAN_SHMEM, ret);
-> +	}
-> +
-> +	ASSERT_EQ(munmap(addr, self->page_size), 0);
-> +
-> +	ASSERT_EQ(close(fd), 0);
-> +	cleanup(_metadata, self, addr);
-> +}
-> +
->  TEST_HARNESS_MAIN
+For this patch and easy backporting I still think that cleaner to have the
+counter incremented in populate_section_memmap() rather immediately after
+it.
+ 
+> Thanks,
+> Muchun.
+> 
+> > 
+> >>> if (!memmap) {
+> >>> section_deactivate(pfn, nr_pages, altmap);
+> >>> return ERR_PTR(-ENOMEM);
+> >>> }
+> >>> - memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
+> >>> 
+> >>> return memmap;
+> >>> }
+> >>> -- 
+> >>> 2.20.1
+> >>> 
+> >> 
+> >> -- 
+> >> Sincerely yours,
+> >> Mike.
+> > 
+> > -- 
+> > Sincerely yours,
+> > Mike.
+> 
+> 
 > 
 
+-- 
+Sincerely yours,
+Mike.
 
