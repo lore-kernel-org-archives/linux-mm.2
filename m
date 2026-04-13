@@ -4,115 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45972F531C2
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:29:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF418F531C1
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE7E16B009D; Mon, 13 Apr 2026 14:29:35 -0400 (EDT)
+	id 212106B0089; Mon, 13 Apr 2026 14:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABF9F6B009E; Mon, 13 Apr 2026 14:29:35 -0400 (EDT)
+	id 1C2696B008A; Mon, 13 Apr 2026 14:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D5706B009F; Mon, 13 Apr 2026 14:29:35 -0400 (EDT)
+	id 0B1CD6B009E; Mon, 13 Apr 2026 14:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 861396B009D
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:29:35 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A01A57AE5
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:35 +0000 (UTC)
-X-FDA: 84654370710.26.2A0DE45
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 433ED120006
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=l+QWbYiW;
-	spf=pass (imf29.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.171.202.116 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EEE4B6B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:32:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC76DB75F3
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:32:21 +0000 (UTC)
+X-FDA: 84654377682.15.90D5136
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 01008180007
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:32:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IVNfHTbB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105140; a=rsa-sha256;
+	cv=none;
+	b=v/xwVyyR/SDgmfBJBUBnDbYZGV+W00aDndsFbezgf6hJAQLZ8AYQGib9Dn9/65D0atZHI+
+	1TNSK77xA3h4exPQBMdYXbiQT9laJC9mWzUVu6h7ZTJ1SFoARMr1/A5Jye325pUGW10hch
+	SLXEeR+PV5gsQwKFFs3/dPJdLQbNxEo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IVNfHTbB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776104973;
+	s=arc-20220608; t=1776105140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=15vke5PQWZFrVkgnnIyubbncfs+/GAw/Iqj1wymNY98=;
-	b=pvEX49oIUyIYp7Wzm3yidIWKgL34MH0bbec+QEv7ZNc1IZFsIaHvAazImjQlZ3x12eADGj
-	MchK6gyrd3UfMyX2INdx4YpOgDaxxYjHTAKaFB/aDGj9GTTKcF3Qk6Th8dKNtnT6ixk24Q
-	8RCZoAhXkoarmFzf8edPBc0YXbc+10s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776104973; a=rsa-sha256;
-	cv=none;
-	b=0QqNfmVdq9Wjh4Vk2nNivv2MCpiSrpFRG6crT2RzgI8EVLOVN0BA5xdDj3Z3B8I53QFLqF
-	HBYu76EcJ9Lchx+t7lQJRh1OIpUTFK82VQLPpF6CfwMuxMFvBB8aP/hTeAdJvJdxTfg/ZV
-	lvcTd2xKIqyZBs7vHjMspiVR/YYa6ZI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=l+QWbYiW;
-	spf=pass (imf29.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.171.202.116 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 66BDBC5B1AD;
-	Mon, 13 Apr 2026 18:30:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B31185FFB9;
-	Mon, 13 Apr 2026 18:29:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB7DD104504B7;
-	Mon, 13 Apr 2026 20:29:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776104969; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=15vke5PQWZFrVkgnnIyubbncfs+/GAw/Iqj1wymNY98=;
-	b=l+QWbYiWMGIz4qwFLYvxVvMGDaqNYLxl8K1kxh6kptb7szLGWRQXA8zBqpP99PBjYfp8qF
-	hoA1ZbpPykPq9PL8Qqxin+5v7f2di/xPCQjqjFU6MHvnHnb7DzKKp7Kxr2TzD0HFALS1qP
-	5ngtttZu6iq7pgtx9fYP2GUHSigLJA/zant3mcWAwXJWO57o7EYixDOPIMLE+oxnKesxjF
-	k+Q6hecUSaC5jbC0cNStpOirpqlYFEaQFckGdH4/SvkvwlJl/Ra4Hd/e9I1L+OYr5wYV4c
-	pl4AOaTC3FiTflrqPJAOjxm2TiiwfD3O7esj3A9Z/06x97gRP2S9RRjFwaQYsA==
-From: =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
-Date: Mon, 13 Apr 2026 20:28:48 +0200
-Subject: [PATCH RFC bpf-next 8/8] selftests/bpf: add tests to validate
- KASAN on JIT programs
+	bh=NgP/Vv2MjQyTGsgzRJ/wBBPGSakZERPOlh0wWLdcVZ4=;
+	b=t/YuLy6jaVv8KYj7INLeRYTRYhpE6kzXyV/A3E6OfGL1XnuXjSYLtSWWR3UFxYqJfnNGxX
+	rRKKbURUj+unLk7SP8xiiZ627Df9Kl40Y6dRo/V39y0ht4gOqXNkziUGDWAptNWeZ+1A+n
+	Wwwd7f7E66K1jkmK/v0otoEM8npOz6E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 320116183B;
+	Mon, 13 Apr 2026 18:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C82CC2BCAF;
+	Mon, 13 Apr 2026 18:32:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776105138;
+	bh=EvxSafiBWABrGah99HN0FwITRI/21BtvzrpeZ2gtImA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IVNfHTbBPdeNKO6fGf9PMgz2JYDGmEN40iDFS9drIkBgKY/BjyJU8cx3jqAgXJi1s
+	 phtWvNieJ6dW5qnOZgFUFFr8cgCA1BwCpd5Q54iUf/H60Nftae+WbZzb52hmRwblG5
+	 z44DNFBsSSzxraEOk/qn7aPM4gBm/+e5Q4DrlrBzzt8qwN/RVWuQSG+ABIRafe6Rcm
+	 Wpj5R3ZFqXgTWhUsFNP56EMv06Jhbu6LETT4xFDyomkTzRswQK3kLiwKq52Ru8bfhN
+	 Ry+6mMtYAjkMC+yfBfr7r7KsmLfKbfG9v4S81QebzTH0IEL9k/WzpZbWf0vTb+V9a7
+	 1gU3BIO3J0ADQ==
+Message-ID: <534ed892-a6ab-454e-831b-e207930c35cc@kernel.org>
+Date: Mon, 13 Apr 2026 20:32:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260413-kasan-v1-8-1a5831230821@bootlin.com>
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
-In-Reply-To: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Shuah Khan <shuah@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
- Alexander Potapenko <glider@google.com>, 
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: ebpf@linuxfoundation.org, 
- Bastien Curutchet <bastien.curutchet@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Xu Kuohai <xukuohai@huawei.com>, bpf@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, kasan-dev@googlegroups.com, 
- linux-mm@kvack.org, 
- =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
-X-Mailer: b4 0.15.1
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 433ED120006
-X-Stat-Signature: snbt58epq9wr9mtccyouksuezn4ygmjo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1774420056.git.agordeev@linux.ibm.com>
+ <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
+ <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
+ <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
+ <665a19a0-47c2-404c-bd2b-482ab51b8f64@kernel.org>
+ <896b3d93-8e60-42e2-b8bb-d3d4e8c99927-agordeev@linux.ibm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <896b3d93-8e60-42e2-b8bb-d3d4e8c99927-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 01008180007
+X-Stat-Signature: 6a7ffzmgb6cfdbbw43c38ihkt4et1wss
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776104972-632538
-X-HE-Meta: U2FsdGVkX196vHTr7+olKm3302CPfiqVboUDGDZnTt2w+UhvexwVOA3ua6BpvQ7CysUvV1Gssf7IbV0e9s88T+QJ/M/gQVHiEWeAO0KiXSP6BC43YSuhLxne+S5eyL7OacHyWPg3J9neA5ai1YxPYzRk0Hi8vimOgEtRPu0QzM5TvnSBiWVSURIz1MMo2uTIbc6F7DcEEqELhH4HjRVA7eIFvvxQw22KZVYRrZW1puK3JMbazbyStDeMIEvcGf/vdyIR4PvyrjGzNsJvqU68VtauO3+AoDhEdBTOCO/pXU20cJsP0PUCbUS+yM0BVkQMiBhcqhCBK+4N/PmPlkgOOvxX+5ggL2OG648Bz7w1hycUnmBahJCe0i8SAoNbzhJ9aPNadJrgvNukQzgSDvt1xkxBa5W9AW7lt1jb2cBUl8MRbOQYQTDpuDBmciXs7Y3a2xAWzFrsUFZc7F9FP5oxmAkBYQX86nXgS3w5Jsawvy3lXZhBspwQ+9xwfL0P7Pn+oglGep6cQtz8SCPYbRS/SHh0XwEbHU3iNhEd2kKrFiKYuGj+O7czO45qJqa7VgT6cl/8whN/0Ra9BbDLnPjXYaCpN++LB1E27zDFxpVwulq6JXejSHAJutiheFwoQmbrRtdr0lxUHpwKXCwfQzmOUvtaE2XWnc1Cdjt/+/fpzyCd07tS+TXKYQgdKd8DnvmanHP1ejSmCaghE9z+hFT4PfNTJDYCtGs1PWCGIRBx+Q7AB1AN+tvWneDfWSW77LqNK05RQ3fCaOdvdHgEZh0YKuEodSc90nxvH0jMpS+DHr+oYtwhxk2GPLgBQbrIJixFMwSZCXRGYPupmr7+gA2xI2mZplmUwAJr/3xICea8yjpn52tDpwiHvTKnjKEFvL8Imfb3mBKVaRX8GB9Vti8NIvwHkhVt0+aUE1pkDczmBVUA0t4I9fP/cQGeU2OFCOkM/EDhUPWFS+NVTjiklIk
- HSLFh8iQ
- jNHzW1uFszq2PpQWC6OVw+GfkPCvop6lhy5V1aH8jijNDoo1X04hDZNWzm4w/djHugrV13g9orlxWCnRhsg68CvDqna46Y0LlTYtV6U+l43FgX7c+I15pEY02+WTMDiKHDcPl83OT03SUV0cTAOGXPeiB1vvl1pSBvgLpflM1nYmhq+RSzQMEuEAQC/M+hp5Mk8u5upKlt0J/HmNgpzvAAuZei2aed6ha3DEEyUM7C/5/4FUB9DZd5AJG6pNUoOzayoEL/uLY0Wk2ppjpaxqQtQuCToENBlMijLtj68W8WhJc8x0L98pHPvJr+tLCE6+ifxIOpQJJIAC3oMv20lYkXfN+kIJz9nd9jUl2z9r7NDF9xIaQHqgUOzM/Imq/ZyqcDS8WfEXrslor4n+elTmi8nRB6bzH9I5tooUyZrLonwgFSRQyDMSV1hiO/K/Bf+LspMOU
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776105139-882729
+X-HE-Meta: U2FsdGVkX1+NCogKQBTcC34bu1bEoW1owrdeyBmlzHjLu5zDyFiQuI9YXYFYvjanUoA7RhatPKQoSIC2xlGUYMCiVwPiMa8FSWqGRHHxoZoPUoRNzq3JVSsGMboEJQBCFukdb2/VKyGTHfeAioMlQ78Hfl1IJDILbY/9lXOa3vyoU8E9Niky0PJj9A21GhOpgnRULW/EIFd7ZYnlF32Cns4WkpHyA+tukVM1sIHBnAehehnLboF+EFGj68owpW6aODZGSOFCLHxdT3I1yS6cchevVLZv/cX5CoUbC1XmYkoB0QzWcKCmE5xl31+cej1zzr9GN1rTylwiYcy3VU7AupOIIFVWh7HiXKZ821ChkfwqHoa0ihL+OQu3wQOKMOjW/JG4ph8n4giN463yywUZeXvE9S4V8XLdYySmsr0ByeTScCOIYyxEfs6MLxTRjUN+vTJCOeiLAbrxDQabebE1fc4BR8vMdOnedAOq1dxJVb35izE7MhYqiGzWC5E0mILSko4IA6bVKhIgUjoWvxulrBuNKD88PPNO6wOC3krFufC6ICn5MKkrH/WbLJQC6sUeIw3x2ClINA7r5YDLz7kRv/EXxNgK8/DchBIkKbFsahMK+G0IFn3/zfT9uo0ji72dTbpxSboNDpOmy78QivtY1X2QRmOD3a1h0MH0MAkZSWliUoKXSYI+4EdE87mqJSZP2k3T5Zks7QHO/Cd9dX47+dDOpbzgyHwb+rIci0WX5HeglnKVPMYiQsTmA4V1CS799eemylZuGtG192wuv/IBhRU5gx96kXNerUhBQq0/4ImWIfNDV8BsMNMeWDp99e5uK0AI3VQ0ngGcsCMkf2SoXGlgJYkteR2+FoT8V91xn7uQ3paD/Q7ZEaz3KIB11P/Y2FRm9lPwbydptzKtkAT+tDzZdpzAfUlkoErFWaTkUNxE7sDRWUrQNBNX7jlVQXVHD/phKItY0GsOZ4fozJj
+ K2hzuzFE
+ WNhd6R5d8RJAgpyPWcMMJkioUnVODB+GVY21+bn7NSA7dlwtrA08YvuJeAF+oY2lselYxFKz+OyYV2EZXaqyC49cxLNANdEMOuu2yVNboA1im/xqMCK/lzVqI7gQRa7Yo1/mXgRwh7sYQf6ujSG4YvXh3SaJH8G4RB8Zr+sbldBuI0PAkRZxApBOXn70/MXnKWyZ94xaOhF4PQPZ6J+UoNseRnCjwBCx09vwPFePjZUKKPGAMCC0el6q5I+hjUSJFpEQ2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,460 +147,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a basic KASAN test runner that loads and test-run programs that can
-trigger memory management bugs. The test captures kernel logs and ensure
-that the expected KASAN splat is emitted by searching for the
-corresponding first lines in the report.
+On 4/13/26 15:43, Alexander Gordeev wrote:
+> On Tue, Mar 31, 2026 at 11:11:22PM +0200, David Hildenbrand (Arm) wrote:
+>>>
+>>> The only implication is "only this address/PTE range could be updated
+>>> and that range may span one page table at most".
+>>
+>> Probably phrase it stronger. "No ptes outside of this range must be
+>> updated" etc.
+> 
+> That turns out to be bit more complicated. The below cases do not fit
+> such a strong requirement:
+> 
+> 1. copy_pte_range() operates on two ranges: source and destination.
+> Though lazy_mmu_mode_enable_for_pte_range() applies to the source one,
+> updates to the destination are still happen while in tha lazy mode.
+> (Although the lazy mode is not actually needed for the destination
+> unattached MM).
 
-This version implements two faulty programs triggering either a
-user-after-free, or an out-of-bounds memory usage. The bugs are
-triggered thanks to some dedicated kfuncs in bpf_testmod.c, but two
-different techniques are used, as some cases can be quite hard to
-trigger in a pure "black box" approach:
-- for reads, we can make the used kfuncs return some faulty pointers
-  that ebpf programs will manipulate, they will generate legitimate
-  kasan reports as a consequence
-- applying the same trick for faulty writes is harder, as ebpf programs
-  can't write kernel data freely. So ebpf programs can call another
-  specific testing kfunc that will alter the shadow memory matching the
-  passed memory (eg: a map). When the program will try to write to the
-  corresponding memory, it will trigger a report as well.
+So, here a
 
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
----
-The way of bringing kasan_poison into bpf_testmod is definitely not
-ideal.  But I would like to validate the testing approach (triggering
-real faulty accesses, which is hard on some cases, VS manually poisoning
-BPF-manipulated memory) before eventually making clean bridges between
-KASAN APIs and bpf_testmod.c, if the latter approach is the valid one.
----
- tools/testing/selftests/bpf/prog_tests/kasan.c     | 165 +++++++++++++++++++++
- tools/testing/selftests/bpf/progs/kasan.c          | 146 ++++++++++++++++++
- .../testing/selftests/bpf/test_kmods/bpf_testmod.c |  79 ++++++++++
- 3 files changed, 390 insertions(+)
+  "No ptes outside of this range in the provided @mm must be updated."
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/kasan.c b/tools/testing/selftests/bpf/prog_tests/kasan.c
-new file mode 100644
-index 000000000000..fd628aaa8005
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/kasan.c
-@@ -0,0 +1,165 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+#include <bpf/bpf.h>
-+#include <fcntl.h>
-+#include <linux/if_ether.h>
-+#include <sys/klog.h>
-+#include <test_progs.h>
-+#include <unpriv_helpers.h>
-+#include "kasan.skel.h"
-+
-+#define SUBTEST_NAME_MAX_LEN	64
-+#define SYSLOG_ACTION_READ_ALL	3
-+#define SYSLOG_ACTION_CLEAR	5
-+
-+#define MAX_LOG_SIZE		(8*1024)
-+#define READ_CHUNK_SIZE		128
-+
-+#define KASAN_PATTERN_SLAB_UAF "BUG: KASAN: slab-use-after-free in bpf_prog_"
-+#define KASAN_PATTERN_GLOBAL_OOB "BUG: KASAN: global-out-of-bounds in bpf_prog_"
-+
-+static char klog_buffer[MAX_LOG_SIZE];
-+
-+static int read_kernel_logs(char *buf, size_t max_len)
-+{
-+	return klogctl(SYSLOG_ACTION_READ_ALL, buf, max_len);
-+}
-+
-+static int clear_kernel_logs(void)
-+{
-+	return klogctl(SYSLOG_ACTION_CLEAR, NULL, 0);
-+}
-+
-+static int kernel_logs_have_matching_kasan_report(char *buf, char *pattern,
-+						  bool is_write, int size)
-+{
-+	char *access_desc_start, *access_desc_end, *tmp;
-+	char access_log[READ_CHUNK_SIZE];
-+	char *kasan_report_start;
-+	int hsize, nsize;
-+	/* Searched kasan report is valid if
-+	 * - it contains the expected kasan pattern
-+	 * - the next line is the description of the faulty access
-+	 * - faulty access properties match the tested type and size
-+	 */
-+	kasan_report_start = strstr(buf, pattern);
-+
-+	if (!kasan_report_start)
-+		return 1;
-+
-+	/* Find next line */
-+	access_desc_start = strchr(kasan_report_start, '\n');
-+	if (!access_desc_start)
-+		return 1;
-+	access_desc_start++;
-+
-+	access_desc_end = strchr(access_desc_start, '\n');
-+	if (!access_desc_end)
-+		return 1;
-+
-+	nsize = snprintf(access_log, READ_CHUNK_SIZE, "%s of size %d at addr",
-+		 is_write ? "Write" : "Read", size);
-+
-+	hsize = access_desc_end - access_desc_start;
-+	tmp = memmem(access_desc_start, hsize, access_log, nsize);
-+
-+	if (!tmp)
-+		return 1;
-+
-+	return 0;
-+}
-+
-+struct test_spec {
-+	char *prog_name;
-+	char *expected_report_pattern;
-+};
-+
-+static struct test_spec tests[] = {
-+	{
-+		.prog_name = "bpf_kasan_uaf",
-+		.expected_report_pattern = KASAN_PATTERN_SLAB_UAF
-+	},
-+	{
-+		.prog_name = "bpf_kasan_oob",
-+		.expected_report_pattern = KASAN_PATTERN_GLOBAL_OOB
-+	}
-+};
-+
-+static void run_test_with_type_and_size(struct kasan *skel,
-+					struct test_spec *test, bool is_write,
-+					int access_size)
-+{
-+	char subtest_name[SUBTEST_NAME_MAX_LEN];
-+	struct bpf_program *prog;
-+	uint8_t buf[ETH_HLEN];
-+	int ret;
-+
-+	prog = bpf_object__find_program_by_name(skel->obj, test->prog_name);
-+	if (!ASSERT_OK_PTR(prog, "find test prog"))
-+		return;
-+
-+	snprintf(subtest_name, SUBTEST_NAME_MAX_LEN, "%s_%s_%d",
-+		 test->prog_name, is_write ? "write" : "read", access_size);
-+
-+	if (!test__start_subtest(subtest_name))
-+		return;
-+
-+	ret = clear_kernel_logs();
-+	if (!ASSERT_OK(ret, "reset log buffer"))
-+		return;
-+
-+	LIBBPF_OPTS(bpf_test_run_opts, topts);
-+	topts.sz = sizeof(struct bpf_test_run_opts);
-+	topts.data_size_in = ETH_HLEN;
-+	topts.data_in = buf;
-+	skel->bss->is_write = is_write;
-+	skel->bss->access_size = access_size;
-+	ret = bpf_prog_test_run_opts(bpf_program__fd(prog), &topts);
-+	if (!ASSERT_OK(ret, "run prog"))
-+		return;
-+
-+	ret = read_kernel_logs(klog_buffer, MAX_LOG_SIZE);
-+	if (ASSERT_GE(ret, 0, "read kernel logs"))
-+		ASSERT_OK(kernel_logs_have_matching_kasan_report(
-+				  klog_buffer, test->expected_report_pattern,
-+				  is_write, access_size),
-+			  test->prog_name);
-+}
-+
-+static void run_test_with_type(struct kasan *skel, struct test_spec *test,
-+			       bool is_write)
-+{
-+	run_test_with_type_and_size(skel, test, is_write, 1);
-+	run_test_with_type_and_size(skel, test, is_write, 2);
-+	run_test_with_type_and_size(skel, test, is_write, 4);
-+	run_test_with_type_and_size(skel, test, is_write, 8);
-+}
-+
-+static void run_test(struct kasan *skel, struct test_spec *test)
-+{
-+	run_test_with_type(skel, test, false);
-+	run_test_with_type(skel, test, true);
-+}
-+
-+void test_kasan(void)
-+{
-+	struct test_spec *test;
-+	struct kasan *skel;
-+	int i;
-+
-+	if (!is_jit_enabled() || !get_kasan_jit_enabled()) {
-+		test__skip();
-+		return;
-+	}
-+
-+	skel = kasan__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open and load prog"))
-+		return;
-+
-+	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+		test = &tests[i];
-+
-+		run_test(skel, test);
-+	}
-+
-+	kasan__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/kasan.c b/tools/testing/selftests/bpf/progs/kasan.c
-new file mode 100644
-index 000000000000..f713c9b7c9ce
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/kasan.c
-@@ -0,0 +1,146 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+
-+#include <linux/bpf.h>
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+#define KASAN_SLAB_FREE 0xFB
-+#define KASAN_GLOBAL_REDZONE 0xF9
-+
-+extern __u8 *bpf_kfunc_kasan_uaf_1(void) __ksym;
-+extern __u16 *bpf_kfunc_kasan_uaf_2(void) __ksym;
-+extern __u32 *bpf_kfunc_kasan_uaf_4(void) __ksym;
-+extern __u64 *bpf_kfunc_kasan_uaf_8(void) __ksym;
-+extern __u8 *bpf_kfunc_kasan_oob_1(void) __ksym;
-+extern __u16 *bpf_kfunc_kasan_oob_2(void) __ksym;
-+extern __u32 *bpf_kfunc_kasan_oob_4(void) __ksym;
-+extern __u64 *bpf_kfunc_kasan_oob_8(void) __ksym;
-+extern void bpf_kfunc_kasan_poison(void *mem, __u32 mem__sz, __u8 byte) __ksym;
-+
-+int access_size;
-+int is_write;
-+
-+struct kasan_write_val {
-+	__u8 data_1;
-+	__u16 data_2;
-+	__u32 data_4;
-+	__u64 data_8;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_ARRAY);
-+	__uint(max_entries, 1);
-+	__type(key, __u32);
-+	__type(value, struct kasan_write_val);
-+} test_map SEC(".maps");
-+
-+static void bpf_kasan_faulty_write(int size, __u8 poison_byte)
-+{
-+	struct kasan_write_val *val;
-+	__u32 key = 0;
-+
-+	val = bpf_map_lookup_elem(&test_map, &key);
-+	if (!val)
-+		return;
-+
-+	bpf_kfunc_kasan_poison(val, sizeof(struct kasan_write_val),
-+			       poison_byte);
-+	switch (size) {
-+	case 1:
-+		val->data_1 = 0xAA;
-+		break;
-+	case 2:
-+		val->data_2 = 0xAA;
-+		break;
-+	case 4:
-+		val->data_4 = 0xAA;
-+		break;
-+	case 8:
-+		val->data_8 = 0xAA;
-+		break;
-+	}
-+	bpf_kfunc_kasan_poison(val, sizeof(struct kasan_write_val), 0x00);
-+}
-+
-+
-+static int bpf_kasan_uaf_read(int size)
-+{
-+	__u8 *result_1;
-+	__u16 *result_2;
-+	__u32 *result_4;
-+	__u64 *result_8;
-+	int ret = 0;
-+
-+	switch (size) {
-+	case 1:
-+		result_1 = bpf_kfunc_kasan_uaf_1();
-+		ret = result_1[0] ? 1 : 0;
-+		break;
-+	case 2:
-+		result_2 = bpf_kfunc_kasan_uaf_2();
-+		ret = result_2[0] ? 1 : 0;
-+		break;
-+	case 4:
-+		result_4 = bpf_kfunc_kasan_uaf_4();
-+		ret = result_4[0] ? 1 : 0;
-+		break;
-+	case 8:
-+		result_8 = bpf_kfunc_kasan_uaf_8();
-+		ret = result_8[0] ? 1 : 0;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+SEC("tcx/ingress")
-+int bpf_kasan_uaf(struct __sk_buff *skb)
-+{
-+	if (is_write) {
-+		bpf_kasan_faulty_write(access_size, KASAN_SLAB_FREE);
-+		return 0;
-+	}
-+
-+	return bpf_kasan_uaf_read(access_size);
-+}
-+
-+static int bpf_kasan_oob_read(int size)
-+{
-+	__u8 *result_1;
-+	__u16 *result_2;
-+	__u32 *result_4;
-+	__u64 *result_8;
-+	int ret = 0;
-+
-+	switch (size) {
-+	case 1:
-+		result_1 = bpf_kfunc_kasan_oob_1();
-+		ret = result_1[0] ? 1 : 0;
-+		break;
-+	case 2:
-+		result_2 = bpf_kfunc_kasan_oob_2();
-+		ret = result_2[0] ? 1 : 0;
-+		break;
-+	case 4:
-+		result_4 = bpf_kfunc_kasan_oob_4();
-+		ret = result_4[0] ? 1 : 0;
-+		break;
-+	case 8:
-+		result_8 = bpf_kfunc_kasan_oob_8();
-+		ret = result_8[0] ? 1 : 0;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+SEC("tcx/ingress")
-+int bpf_kasan_oob(struct __sk_buff *skb)
-+{
-+	if (is_write) {
-+		bpf_kasan_faulty_write(access_size, KASAN_GLOBAL_REDZONE);
-+		return 0;
-+	}
-+
-+	return bpf_kasan_oob_read(access_size);
-+}
-+
-+char LICENSE[] SEC("license") = "GPL";
-diff --git a/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c b/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-index d876314a4d67..01554bcbbbb0 100644
---- a/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-+++ b/tools/testing/selftests/bpf/test_kmods/bpf_testmod.c
-@@ -271,6 +271,76 @@ __bpf_kfunc void bpf_kfunc_put_default_trusted_ptr_test(struct prog_test_member
- 	 */
- }
- 
-+static void *kasan_uaf(void)
-+{
-+	void *p = kmalloc(64, GFP_ATOMIC);
-+
-+	if (!p)
-+		return NULL;
-+	memset(p, 0xAA, 64);
-+	kfree(p);
-+
-+	return p;
-+}
-+
-+#ifdef CONFIG_KASAN_GENERIC
-+extern void kasan_poison(const void *addr, size_t size, u8 value, bool init);
-+
-+__bpf_kfunc void bpf_kfunc_kasan_poison(void *mem, u32 mem__sz, u8 byte)
-+{
-+	kasan_poison(mem, mem__sz, byte, false);
-+}
-+#else
-+__bpf_kfunc void bpf_kfunc_kasan_poison(void *mem, u32 mem__sz, u8 byte) { }
-+#endif
-+
-+__bpf_kfunc u8 *bpf_kfunc_kasan_uaf_1(void)
-+{
-+	return kasan_uaf();
-+}
-+
-+__bpf_kfunc u16 *bpf_kfunc_kasan_uaf_2(void)
-+{
-+	return kasan_uaf();
-+}
-+
-+__bpf_kfunc u32 *bpf_kfunc_kasan_uaf_4(void)
-+{
-+	return kasan_uaf();
-+}
-+
-+__bpf_kfunc u64 *bpf_kfunc_kasan_uaf_8(void)
-+{
-+	return kasan_uaf();
-+}
-+
-+static u8 test_oob_buffer[64];
-+
-+static void *bpf_kfunc_kasan_oob(void)
-+{
-+	return test_oob_buffer+64;
-+}
-+
-+__bpf_kfunc u8 *bpf_kfunc_kasan_oob_1(void)
-+{
-+	return bpf_kfunc_kasan_oob();
-+}
-+
-+__bpf_kfunc u16 *bpf_kfunc_kasan_oob_2(void)
-+{
-+	return bpf_kfunc_kasan_oob();
-+}
-+
-+__bpf_kfunc u32 *bpf_kfunc_kasan_oob_4(void)
-+{
-+	return bpf_kfunc_kasan_oob();
-+}
-+
-+__bpf_kfunc u64 *bpf_kfunc_kasan_oob_8(void)
-+{
-+	return bpf_kfunc_kasan_oob();
-+}
-+
- __bpf_kfunc struct bpf_testmod_ctx *
- bpf_testmod_ctx_create(int *err)
- {
-@@ -740,6 +810,15 @@ BTF_ID_FLAGS(func, bpf_testmod_ops3_call_test_1)
- BTF_ID_FLAGS(func, bpf_testmod_ops3_call_test_2)
- BTF_ID_FLAGS(func, bpf_kfunc_get_default_trusted_ptr_test);
- BTF_ID_FLAGS(func, bpf_kfunc_put_default_trusted_ptr_test);
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_poison)
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_uaf_1)
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_uaf_2)
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_uaf_4)
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_uaf_8)
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_oob_1)
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_oob_2)
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_oob_4)
-+BTF_ID_FLAGS(func, bpf_kfunc_kasan_oob_8)
- BTF_KFUNCS_END(bpf_testmod_common_kfunc_ids)
- 
- BTF_ID_LIST(bpf_testmod_dtor_ids)
+could be used.
+
+> 
+> 2. move_ptes() also operates on a source and destination ranges, but
+> unlike copy_pte_range() the destination range is also attached to the
+> currently active task.
+
+But not here.
+
+> 
+> 3. Though theoretical, nesting sections with interleaving calls to
+> lazy_mmu_mode_enable() and lazy_mmu_mode_enable_for_pte_range() make
+> it difficult to define (let alone to implement) which range is currently
+> active, if any.
+
+Right. I assume you would specify the source here as well, or which one
+would it be in your case to speed it up?
+
+> 
+> All of these goes away if we switch from for_pte_range() to fast_pte_range()
+> semantics:
+
+I don't quite like the "fast" in there. I think you can keep the old
+name, but clarifying that it is merely a hint, and only ptes that fall
+into the hint might observe a speedup.
+
+Could performance benefit from multiple ranges? (like in mremap, for
+example)?
+
+In that case, an explicit hint interface could be reconsidered.
 
 -- 
-2.53.0
+Cheers,
 
+David
 
