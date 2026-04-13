@@ -4,102 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13E25F531CC
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 20:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B727AF531CC
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 20:34:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78DBE6B0089; Mon, 13 Apr 2026 16:34:08 -0400 (EDT)
+	id 2D1E76B0093; Mon, 13 Apr 2026 16:34:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7647E6B0093; Mon, 13 Apr 2026 16:34:08 -0400 (EDT)
+	id 2A9F96B0095; Mon, 13 Apr 2026 16:34:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A1236B0095; Mon, 13 Apr 2026 16:34:08 -0400 (EDT)
+	id 1E6A96B0099; Mon, 13 Apr 2026 16:34:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 59A036B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:34:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ED03B1A031F
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:34:07 +0000 (UTC)
-X-FDA: 84654684534.21.D69FD0C
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 5110DA0011
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:34:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nndHwHFa;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DE176B0093
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:34:18 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ADB0D1402DC
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:34:17 +0000 (UTC)
+X-FDA: 84654684954.24.FEA9E19
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id F05BF140004
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:34:15 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ueKp/Tc3";
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776112446;
+	s=arc-20220608; t=1776112456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w905OpVwDJNK2AclWlr7lRjsU2T+d2Nuu2dnfXPIdOc=;
-	b=oubPkr8zduUXKk8eyPeQo2JBNGQKBAqET4VrABaVjqWyoHs04snCpyByzkvH7ygZRXIGvE
-	ub5W/bzIg7wbFPImeSEf1QNgR086ZKHjOXzqAm7sE7dg0iv7g6y04zhplsdN8sIbfr/1Jq
-	4MX3q5S9bI4gIIPQPNNQWraBzIf8/RE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776112446; a=rsa-sha256;
-	cv=none;
-	b=Goj0O5t+dQDSqGnSKiHmbTNSSWtjK5Nmw5k15xXDpHWk7oYg/4R5rXQSqmhfo0JlAdtFcW
-	hLwgs0X2rZAlPXaZ2FvpGrhD/csyqA/n9SKdWCF6oeSSIzZKXthBgLuRA/5bpum9T1Oqci
-	rwIoUiVCx+wBZQ0nohe0FWUZRMMv4aY=
+	bh=NEQCuzSCb2vBeHd2l1EaS2ZwBTQQOQ2fqQBY6ZxseMM=;
+	b=fnCyE/eja9TtEk8LHj3u22xHbDRK2ZqhJNrXVTHOFnYb27qWds+p/m892SIukF6P9bI6GD
+	BdGAcayqSn16PDmwdk5QHGY/lJ6bXyD8i6SP/YsK0p0reF6p7VIknJ33O/iufH2RwZmW12
+	LLhKvHRSs2FNQGlqr8mtnLZL/yiU9wc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nndHwHFa;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=w905OpVwDJNK2AclWlr7lRjsU2T+d2Nuu2dnfXPIdOc=; b=nndHwHFar4XXsb4K79GwTmv8aW
-	WAhaU28xU7z1SQx418EOM3NLDQ/WHDY2UjqSPtX5YClQeBVF/0Moiq+LM8FkzN1ZIsZTt72hbTTKn
-	8v6APgVYC/9DUkK/NpmZUbTTKWxMM4lPCfFy8lfKfrB1+MtWNRq4NjMOS0zpu7IkE983w5VwSC7iU
-	5FgYRSjt+/zwmhwRcPLFdr/T19HBOSq0IN92qtFwWMc/nLUIhUIpRThsDRPvTkRxhoVdbruPffLwb
-	+xNS0tUdM9WDp84+Uu0Dq0AsjWPap0AlzTBebyCm80gN5M7YQzYDzLTPVk6BcZ6hYSg5CApG14Id7
-	+9ozj1Aw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCNyk-0000000EUGp-31Lo;
-	Mon, 13 Apr 2026 20:33:54 +0000
-Date: Mon, 13 Apr 2026 21:33:54 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v2 05/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check in hugepage_pmd_enabled()
-Message-ID: <ad1TMjF1L3usYIC5@casper.infradead.org>
-References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-6-ziy@nvidia.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ueKp/Tc3";
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776112456; a=rsa-sha256;
+	cv=none;
+	b=K4fbl7CVBrOF0uKna9YHnSYAhWajMqgyDRuSdtDguckgYSqnn73Ybc5pkU4xxwbxRN2F80
+	9ZFX2xVm+o2SnMABuwx116wDyBIV9kYjELC3xGdX3bIJOKaCI6FbGMznzkGtyZiHwgrHWZ
+	/p2DccNo5NQt2nf6GW9nNK7fDzjn6kQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 614A961339;
+	Mon, 13 Apr 2026 20:34:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5340C2BCAF;
+	Mon, 13 Apr 2026 20:34:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776112455;
+	bh=udQmhbHAYKfxARhnBiFmlPPjAm5aIDxgX6FrYs49XaU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ueKp/Tc3D2T4mj9KONopLzkmpEcHbY3/kRGZG8SfqhL0L/aWP1ghxhxSVO03Ua5mE
+	 yLXwsiAenxD64ayJqoXfs8iBRWzAhqWZx+giUMaZ1iF2Bnx4m6ALNtlTwi0A7newGd
+	 I11xXRhvr1Geih5+J41lYDYfvA0fjuE85t2jSJk+D6EnfQjbLvYgHW+RmvM/XyhtCQ
+	 Ohh6PQSqRU31ugGUgxooghMNNshX6qSmQgpWHwIUAmCOeY4p4GXXuK1cXFHrr8XVCg
+	 usqs8p7pLJ9h0/rJVkm72u93GV5OUM7b5FdOEjl/B+MV+OFBfEttg7HY+3kR12WxY7
+	 9HLpsZUfy2QdA==
+From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+To: david@kernel.org,
+	urezki@gmail.com
+Cc: baohua@kernel.org,
+	21cnbao@gmail.com,
+	akpm@linux-foundation.org,
+	dri-devel@lists.freedesktop.org,
+	jstultz@google.com,
+	linaro-mm-sig@lists.linaro.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org,
+	mripard@kernel.org,
+	sumit.semwal@linaro.org,
+	xueyuan.chen21@gmail.com
+Subject: Re: [PATCH] mm/vmalloc: map contiguous pages in batches for vmap() whenever possible
+Date: Tue, 14 Apr 2026 04:34:10 +0800
+Message-Id: <20260413203410.13079-1-baohua@kernel.org>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260403092028.61257-1-baohua@kernel.org>
+References: <20260403092028.61257-1-baohua@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413192030.3275825-6-ziy@nvidia.com>
-X-Rspamd-Queue-Id: 5110DA0011
-X-Stat-Signature: rjx3go1x7w8efc8anhfg3dd65hnioafj
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F05BF140004
+X-Stat-Signature: sus3sb5yphwirb9oqxgo5xrynkr951od
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776112446-504288
-X-HE-Meta: U2FsdGVkX1/YnR++7z27lMNAwg9Vuy/WKB8p5pICjaQutMbb/YRwvxKnYQD29hYq/0OT1Ic0BnFlm3mcNEthcX1JycIEkbUFWVwj9RZagTbTK3X9LL6pz5vQg/KssZVo8NzSyGWxhigHve83manXBWskadkAQ6qOW0cQ+T2fR7JeoZZFLqaZdZjbZh+aOCtjQ/epp905f7zDVtrg1a1loXKo9RYKyRNz8pPVU4k9yR5FHm1JoQzVde4rKZ77Vi1Q/zflml911S8SU2iFE0kZnkZhEfrdh9Bs1asLI4hdVx9PaG8SYPg1Q/JFck+6hmUx2DEYeu0hk74dVkuFTIzh0Nci+CQ9vhRswwl/6p56EV9wrKPhBCpPhHfjrwnbUxNgYQn+7rvHnc6WDczjnxxZNv6Z1sO0TpuFZ7YltfrSKz6p+7Mr7/S6RLKhLWAwvlgVJTv7h2gersyoXfTdYVRJEFT+5bFHykmxRVh4/ZXtEd3aztmgIx+aG30y3Z+QbUy6B9hok22WmuhedLlIKXWTEhO15P7b/lptMTpVP1+8FAcgiOsn4CUQtHhsxSKQ5GfQgrPfCmKMignMBOQ27pVI5/ZfEtHgzJGYlarjK1LKtaryPLDL37ynMebuDVSeq1wxg7EK/VLNdCpN+Msz0A5bJSoyv7ZkoIIqsdqPE+HSCG6hYF/Q6J+19IFw0TBJgWPvi9wn4PyOkuDUzNIcszKBoyely3JatAbcqx+Hqa8hgiRfZptY52vFJQYwAOX10u1paoSrcYvzecJ49MP+sAj+ukw5W0Ha3M4iPIQoyHrxlhw/lPpERhKoPAHQQmNgRkaIsS8wyzywQvL5AAvLkW62wQjKb0cOsGMRNo6BC9pk0NghStMcpn+Ol71fKFIsRoefMrt5MS2i7WQWCXwHZ/iZYrpKuF3A0NMxBbGZT1D10WmyTj9pIp+47X5LpBV5Dvg9PNua+apnKVBp0B3gQMC
- qRl/Zlox
- cfun3Fpf6fA80AeYT1XaXCbksyjkdES8mo7eWVSXmpbh2DD41m/1fVhGlESCThOM86yUjsypNcn8Afo9WErjRYZT+hTmkS6CCnxBdxTjujfVvuciGp3pI4Bi/jO63M6T9dn0ZP6yko/eyNnJcGfUOOlLkRmVLkhtGw9DE0tDqiqParQlagVpX6I57sbwtWmt/lwDUQ50d6PrFdT6ha182Vhc8GP4xpNdlms8ieRVUZIE452vQ7qbZ+QpNomHBlm4VV6gFZH2EAWJzAPZEU+fMeqrxszAfdfjyMKy5E2NMXwfnrRg=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776112455-986688
+X-HE-Meta: U2FsdGVkX1+gVwkoXsWcFybrRMYUfQ32twFR5sW865Y7hXZv3fYT9U/TgpfE4Pfi1Fe9kVbUl3hz5kJpj4MlRtivV8JfovNhf3gGi6O37sUzguckJiqd66+PQMkQpBArwCOsQiTMaH6ztY+e3KEMUdGzGeXNERPGhrxE3ZeHDHOkPcXbsOEwNef6l6f2L+8fv0h47eJUSnJYdeAxPyHDE65o3lqYDN1IKSrzcDl9vn1064i4fEicpfeYrPIYRm9B2NaKzwFXV+HcaSvJTeqeFc9yINO90bq+V+tyzBpw2ygIC2c5M2Rvem25d5CLf2Nt6LBx0EAmpfAjZTmOfOQkqdAtkmSCKczk3y4h4SpeneuZnn/Gn+CeYSEifLo+zS98468X25qy9jUjTeAQWgbTX6PZ+Yyrmq6hW931P4Bwxh7QDodRRZl/gjR9CXVg1IS4zFy5sUpDnRu+HeA4wSyXWYdP2qfW+AIwFUW7/58035dIIKIc7IVExEhn5QDerInYylr7LsgkjADtCNUCfiFnr5u6R4RF2pV3dt6M7VsZgTCuwdwzBLvEeftDn7pX71u1CLHVCWQ+/4pg14MqvSvHb1y85wwtjP0FEDkKnMNrgiIBmLhuMBjCxNn+Y8AAf52OX9GlGaIjqN983QB1GPxqLjInFi+p6cAVEYF8guIOCqgNjfS7FFAi9bN2KTsqSMeSZTQM0+451PLeB0uaEGqW2rOP7F82Fjf1lZ7VeAVBN/C6xzegKFgfW0eB+gUNxXGB+7mH2EaDy8FHHrMTeBF83Dh+1/+hkM0xXbC5FPZ2wQ3RX9wFRTxvqTtXrI3EsIB7FTO048NiipHGkNOTAeUuiDklSwvQEW+icJvo+KrqmQzl3jQD6mAbWS6W8eUAFINEOfyXe87haLv9XDTUWFVBdUqA7PkOUMLKiCfmQcWgQMwWXoEid01ZKLQ0na+kOkcnHi4iJ3TlnkQOzIOpFss
+ 7RCyM/lz
+ 7eVfrranS90H7k4MQklFRjS5OcQgn+aVjtydrU6V7zH05hT9BNp9WrrZitaZ3tCcVYdThd891doiwOTUdZCUtlDX8LwQYyrbO8H7uC/L3zuTF8Yz+IxQAG0SpiIRLGPW5rHFpMBAGoTwWW5vN9EyeDivqBWAcYgBKMkvjrNT5bIvfsDs3Un2Z5X3ePKKeV14Isj1R9zcL4mceptkqs+5afJdKIaqFyPDQHFQDLG0vw45iEDQKFuHbiHZacULvk6Z+6YYio1WHvFueFpqfHrnAqiUUQwimBSrrlJOp5u+j+HOhFNGsgVg28NZb8ULmZxFTfThm81pCDMlTVLRdIviU8ctorob4S7xoNG4veV3ZYne3Z3E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,27 +103,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 03:20:23PM -0400, Zi Yan wrote:
-> After READ_ONLY_THP_FOR_FS Kconfig is removed, this check becomes dead
-> code.
+>> vmap_page_range() does flushing and it has instrumented KMSAN inside.
+>> We should follow same semantic. Also it uses ioremap_max_page_shift as
+>> maximum page shift policy.
 > 
-> This changes hugepage_pmd_enabled() semantics. Previously, with
-> READ_ONLY_THP_FOR_FS enabled, hugepage_pmd_enabled() returned true whenever
-> /sys/kernel/mm/transparent_hugepage/enabled was set to "always" or
-> "madvise".
+> Not quite sure if vmap() should follow ioremap()’s
+> ioremap_max_page_shift. If needed, it shouldn’t be
+> difficult to do so.
 > 
-> After this change, hugepage_pmd_enabled() is governed only by the anon and
-> shmem PMD THP controls. As a result, khugepaged collapse for file-backed
-> folios no longer runs unconditionally under the top-level THP setting, and
-> now depends on the anon/shmem PMD configuration.
+> I have a version queued for testing (Xueyuan is working
+> hard on it). Meanwhile, if you have any comments, please
+> feel free to share.
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 57eae99d9909..8d449e78a07a 100644
 
-This seems like it'll turn off khugepaged too easily.  I would have
-thought we'd want:
+Hi Uladzislau, David,
 
--	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
--	    hugepage_global_enabled())
-+	if (hugepage_global_enabled())
- 		return true;
+As explained there [1], this standalone patch is withdrawn,
+as I have moved to a series that addresses a broader set of
+issues.
+Sorry for any confusion this may have caused.
 
-... or maybe this whole thing could be simplified?
+[1] https://lore.kernel.org/all/CAGsJ_4wCBeVfyFraj_dRdsUrSNqDG5a8SO9C3=PFRSt04dRvGw@mail.gmail.com/
+
+Best Regards
+Barry
 
