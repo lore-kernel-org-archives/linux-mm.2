@@ -4,115 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57BC8F34C51
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:03:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 454BAF34C49
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:06:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 505CD6B0089; Mon, 13 Apr 2026 09:03:08 -0400 (EDT)
+	id 818066B0089; Mon, 13 Apr 2026 09:06:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DD9C6B008A; Mon, 13 Apr 2026 09:03:08 -0400 (EDT)
+	id 7A1CE6B008A; Mon, 13 Apr 2026 09:06:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41A986B0092; Mon, 13 Apr 2026 09:03:08 -0400 (EDT)
+	id 669B96B0092; Mon, 13 Apr 2026 09:06:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 317286B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:03:08 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE7035643C
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:03:07 +0000 (UTC)
-X-FDA: 84653548014.23.D0A4F43
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C6C8240017
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:03:04 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 50F606B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:06:39 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 03C671A0177
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:06:38 +0000 (UTC)
+X-FDA: 84653556918.10.51703E9
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EC41F100015
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:06:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Giawkkl2;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776085597; a=rsa-sha256;
+	cv=none;
+	b=0ymmeO+4m5jZMwM4JEwqoluyZzVwXumvJPEpUCwXZAwTDYq0JlpnusKB2NivAxpa2DFgA1
+	zVwnKdG/EH7IHyS+y2bW0YErimlmqzjYaiK87aleARBfbQnmbEkk9pZO3uqpBcyDcNnmsH
+	ZiOH0wH9lZD1C6mE+taj2L9LQkDcRwU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776085385;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776085597;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Q6hbO5VXAAEYtqFBS/tjKRelFU1z4l+PdprfQ8isB4=;
-	b=WTWQA3U+F8GhAjT9CIqYfsVO2+BcxrbaRbwondAlYKQiDeJfiC85sWT7N3c/VOOhmOAu3j
-	PwJofUBT7y2ZBvpseIS4jW1pTzzL6TBo7qsFSFQgIryN9kbw/7qoN3RjTLD4Ub12WAevpE
-	Gj7bNCiMRrlWR0+UOlgw/QGQBm+9two=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gsK1P1os6YsOme6bbZbfr2u9YSSoYPTr268tXuAFbNY=;
+	b=Xx8w2p0+aM0+4QQd2pcu11nUD66VSJwn6PEvfzL0YiEvLr/WQmZPdEMUrhClzrM95EommO
+	6kdwfKhJ74dciYl/FSXxY6VUafJl6NJ1LAVGs9+dW8wNXDP5JXl7OdZZB79mlMfJkqshv4
+	Qa8y46SAFfoBiZpOG4lH8NIeCk3HwXs=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776085385; a=rsa-sha256;
-	cv=none;
-	b=1u3Ss/lpsVd8Ly+p7HNqtN0J12axT3cU9O5JgUs2o783rZSAO42AWNWkXwI5jzAXadROdX
-	JYqzGTz7MQCXdeg0Peg5s9Z3dr1f1AzT3cHMV5vX3WAEYRO9TAxcKAK/DwKAUzAwo9CYHO
-	ljUSCBOO1fLXq0HRvX+RCwASjxhV/ao=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fvSJ26Vzyz8Xs70;
-	Mon, 13 Apr 2026 21:02:58 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl2.zte.com.cn with SMTP id 63DD2n3P010875;
-	Mon, 13 Apr 2026 21:02:49 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Mon, 13 Apr 2026 21:02:52 +0800 (CST)
-X-Zmail-TransId: 2af969dce97c49e-2c715
-X-Mailer: Zmail v1.0
-Message-ID: <20260413210252672ZfdcegJLJtyvlYdFAUBlr@zte.com.cn>
-In-Reply-To: <adyyNeVTkXQlnh_2@hyeyoo>
-References: 20260410120044.031381086@kernel.org,20260410120318.525653921@kernel.org,adyyNeVTkXQlnh_2@hyeyoo
-Date: Mon, 13 Apr 2026 21:02:52 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <harry@kernel.org>
-Cc: <tglx@kernel.org>, <linux-kernel@vger.kernel.org>, <vbabka@kernel.org>,
-        <linux-mm@kvack.org>, <arnd@arndb.de>, <x86@kernel.org>,
-        <baolu.lu@linux.intel.com>, <iommu@lists.linux.dev>,
-        <m.grzeschik@pengutronix.de>, <netdev@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <herbert@gondor.apana.org.au>,
-        <linux-crypto@vger.kernel.org>, <dwmw2@infradead.org>,
-        <bernie@plugable.com>, <linux-fbdev@vger.kernel.org>, <tytso@mit.edu>,
-        <linux-ext4@vger.kernel.org>, <akpm@linux-foundation.org>,
-        <urezki@gmail.com>, <elver@google.com>, <dvyukov@google.com>,
-        <kasan-dev@googlegroups.com>, <ryabinin.a.a@gmail.com>,
-        <t.sailer@alumni.ethz.ch>, <linux-hams@vger.kernel.org>,
-        <Jason@zx2c4.com>, <richard.henderson@linaro.org>,
-        <linux-alpha@vger.kernel.org>, <linux@armlinux.org.uk>,
-        <linux-arm-kernel@lists.infradead.org>, <catalin.marinas@arm.com>,
-        <chenhuacai@kernel.org>, <loongarch@lists.linux.dev>,
-        <geert@linux-m68k.org>, <linux-m68k@lists.linux-m68k.org>,
-        <dinguyen@kernel.org>, <jonas@southpole.se>,
-        <linux-openrisc@vger.kernel.org>, <deller@gmx.de>,
-        <linux-parisc@vger.kernel.org>, <mpe@ellerman.id.au>,
-        <linuxppc-dev@lists.ozlabs.org>, <pjw@kernel.org>,
-        <linux-riscv@lists.infradead.org>, <hca@linux.ibm.com>,
-        <linux-s390@vger.kernel.org>, <davem@davemloft.net>,
-        <sparclinux@vger.kernel.org>, <hao.li@linux.dev>, <cl@gentwo.org>,
-        <rientjes@google.com>, <roman.gushchin@linux.dev>
-Subject: =?UTF-8?B?UmU6IFtwYXRjaCAxNC8zOF0gc2x1YjogVXNlIHByYW5kb20gaW5zdGVhZCBvZiBnZXRfY3ljbGVzKCk=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 63DD2n3P010875
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 13 Apr 2026 21:02:58 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69DCE982.001/4fvSJ26Vzyz8Xs70
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Giawkkl2;
+	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b936331786dso500152566b.3
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:06:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776085595; x=1776690395; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gsK1P1os6YsOme6bbZbfr2u9YSSoYPTr268tXuAFbNY=;
+        b=Giawkkl23qTMoW6zsofwnRJkIBSVH04jM8Rqho4u9OyuU2b2NNk33kzr1rgy+awGUC
+         cEKaYL4FqsUGdZLQAeu83TqfsdKjMOmI2aWWfsDdWLX2uXyJtxnXYWtf90ZJeIPxoQ5y
+         KfVEWhJG5ektbVF+8mtrYMl6x4eZoJLhpHUTV6HGHvUygvbV/o2tnClQrHAmSlz126wE
+         b7NIqnVvnVnuj2Bsb6GVUfkgqZx5s3inB6BlSFIba1CUKipVh5mCFophMfWYQZrYtRlg
+         VhYHHeqaG5cnmJJIeChs0n1DiEw8ULSyzQeaXI01B+XIF/baGaL+KdNE/sjoFBkYEjV/
+         VnYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776085595; x=1776690395;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gsK1P1os6YsOme6bbZbfr2u9YSSoYPTr268tXuAFbNY=;
+        b=dwZ7XS2rcCZMMzcTF32HEmFb5Uiw0JlkhZa/pvZwGkPyOJ4NyKj7UBf4IxQSUmCtaY
+         ObykZodquTgUeHSDx2HAjxa0Pd+GzWcfMsC58msZxKPRh9i0n6+lJ+lqs7PylgBWmnO7
+         GDWPB5uL6RtEbB0/qZEFLR7kOW33REXcIR1Tx0hMDi/viaiFrBr4rCwOGo27opiMurP2
+         yhvtOAsgQFPqe8lCB6AP3Cpo1sxFFRnlRCVfdOxfq9WPZMpjTg9qcMwEMDX6n7/pOFxW
+         ghL7Fnu30t2emnPnP/NXjLxFU5RtybsPb81WAtGO+58dXmrdtH+bbrZ0+/9SEx6vxn5S
+         wnqw==
+X-Forwarded-Encrypted: i=1; AFNElJ+w/B//vn3/zlzU2mC95aSPkSbcAwEMCXa/Mdm1HWLUvgE4Yerw6HsvvjX4hucUHaZVelWdmvjyng==@kvack.org
+X-Gm-Message-State: AOJu0Yw+hU7Gc2iJ7hQxkRWt0MnKfPcjGBEzZG9/4yOte/0OvMU3lpBJ
+	VqfZSy914k7zBo4HtPsLwslsKzmDA4yILoiCamrG3MBfsOp3n96VXb7T
+X-Gm-Gg: AeBDievM7exrZZZY1yiN5tEKoNsgK4q/99/TzJvTZNV09oE3PPz/rpM5e09Zel+TEr3
+	FF/uYzuyBuaZ+JrHRTziSRkQ2jNiSoCj3m1onRca9d6yxJG4RFg4D7vsIG70ZPiyFmr1VlP2IuV
+	7um9vLlezLHlkeCWUrUSyfDWg389FNsdXRkEzjJnnH+jnHjrrfqxFYIszlFRiK4XmVbueIYoZiW
+	cGgCGCvDDC2pMcGT9Wq2bOuBmOJDc02QgPROXB7ivu60CelZIlJSRN0cAUtXupGwsq/+cVf72K+
+	UgQs25wfVTmPKQNZHKdXQLUBewE3VqUmvk4dTkOgjF0YdIPoqJt/RXlVynz5XCSS3ERBXO0ROv7
+	SUuH1yix80srJBTWqQ0dYe/T0swGkFEzVcobAZrWP7S4VK7ZRp+I5qV+JpG0R0gp12EVHF7WbST
+	xxTXBUmZWzbxJbIdXwFaol4g==
+X-Received: by 2002:a17:906:6a2a:b0:b9d:75d7:fb74 with SMTP id a640c23a62f3a-b9d75d83c4fmr647758966b.20.1776085594797;
+        Mon, 13 Apr 2026 06:06:34 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9d6de97e93sm305240866b.9.2026.04.13.06.06.33
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 13 Apr 2026 06:06:33 -0700 (PDT)
+Date: Mon, 13 Apr 2026 13:06:33 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+Message-ID: <20260413130633.knzkliyqvjhuz2kd@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260408031615.1831922-1-yuan1.liu@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408031615.1831922-1-yuan1.liu@intel.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Stat-Signature: pdeiuzj86k4twxoxpznyaqerd5qci4hr
-X-Rspamd-Queue-Id: C6C8240017
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776085384-281516
-X-HE-Meta: U2FsdGVkX18ugmCChENvgxROyqJqcGRDRxJJxnnejxz11HqEEWt4WcLxyxSdIq17D1s8b/BucvAO+wLOR81MQbz8nWql64NURBJRitzgywl6mKXcI8A7dk9z3jL2AoXG0RIZvdlBluF17EkwhCsYvt9CdhqR4DHeTNG2McEy8v5ZU1Sk+EcWrTqxtz8f3fd5TWg5mJj9TXOGIiMFWb68N+JaPeVoJlppk5tS3oHslek+XyvIvAfXJcXBASo9JI3PGEVVYrrvl0AuflZx3jKWYenyXub4xcImzNdi2cvHE6RoVUH2e4rwiWUgH/KRJaZHYH+uHq8mkNRY099bUEKPmamGAG6wHEWQImXJsMRWna00l9H1QegPIfgFL1angt+1T63rkXMI7C5yWCByJV+us3Z61ZsLnAYTrSjyz7uVkdK/MhPwf9do2P2PxmiG1trpoQtRUiTKOIOqsM6sQlhNswqAZ0GBkHFZObUKXgg3TKvnb86qzj4NYOs93YYbp86+NpR4nm6lamVVOw4KOLCloELOUpgkPKTcsbOzlf1Z2MTilGS2iY4R7ofXMzp2qRll3p+M7sIykChYAycP3bkB0PstsQy7pWuW2LGu45LKHCim5J5PPOElHfr0jhdHCPf4eQyB4un9/WsU/++KlFfTu9PzBWFlZoaGwzu+L/zM6k0x89Oq9vwcHfvw/8/Xtta12+CBMa8pU94UYeYzPPo2YJibyAvrUAQDPnCT3IBttJ91w0FfccYGat2JhmtaKpwhDQ/90cEoYAxFcOpev+xfrM/K4ydz/3XwvTYPFEoBCHTh/VhM82GbmNHlBHZRTLuVyrT6fIx81uv3PpzxXvW4UWge/J7pl7lN0xENxWBwZIjPBXjWzBFCQH/c0yB3sOD0FBN89P5jwzXv/bpgbkWpj9g1gybRKmMUdx8YivPwftBMVn24Rdevk9Vh2a0Rk9Kr7AMFo5j9DZv4Xou6DEh
- hpDGTi2n
- HV+ShZyxeX+zx35rPHQgb7Hir5hPt0B9+jUfERS9saEPw4tuDBjWnCAcXyQK1IHoecBaD2Jo4OdUwrkROI8+RKnoKLKNMHXFd9gNUjxtoS3zA4QLgGujTv56naMeWlKCNLPUVPOmtRKxTyAoS4BiRhwMTypbtf0xhDMhq8RCs8RPXVs5B6c+RQnXlMXo7k0HbBv1FEjBdUWmNVu6wNqmy9tiqKMi1/YmDIaRB7P/HYQUQEH9QRrKHya4f5iewEUUnurYv/7ec4gNldL4iIXuz5rXfmw5O1kNBhRXNlEGQRwrp9nkullLyDawlACK0IEoQM2RzOvCKDY+rgpJVOU2sTTxe6z/VY+QqHNhkq+OLFdQ41l7y1575+Ukp1yngNoObbUwDTELw+XgdmAO7VcKTiEzoS0fLZbePbKC3
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EC41F100015
+X-Stat-Signature: as1nnizj5g6h8dqh5phgpm89b3i3sbwy
+X-HE-Tag: 1776085596-201972
+X-HE-Meta: U2FsdGVkX19KZvPa2FNmuwOBC5ulXFaPpYIB9rJSbLrzPKiAdfMaq4pCFzCPA42x5EeHC+EwpuhOZvsS8lqtmrz3pL4Fwg/YehVTe0KXG6cMa8EndDQtGci1lU76Ddq2uHmsKmnE9a4gCXXSoAeqFJF3Q2Pu8QRXdM8DS6h85vaJFxbSBHVnf9h986avFWz1dKYQtrdqjz8gD2U6Qh2vw5Gpd3+EhbxK8ycnzTGIlga9XZEqDHfePs7cCKf0nvFFeRIN6q91YAPY+oI9HJlglLzdzLBHHie8/+jecpGNrSvRdjaBHWDIvDQQNzPKlyYJQd7z5WAWbqhNsXEnPuQ7C875R7BTsmxtB1tRz3ZaNssPUk5bKojf1rEgA0aKftcPCiqwBPl1taPv1N8Pg75XO35giW943mqRONd/vyhHZzm0574jR8OSpUJqgKJSodeNW/PqA6tMomfWRYEQMOjdSL0fJdhMbXc5rkwNTn8KoyAfge3zwjYDnxvilERKuPqlkPSbU3J0/TnE1t56nk+Nw3lTTRk4pmjKvXhg1sRoLQ9Ng9AWvcqkWZnUcu9ETez2NGZwx5Po26JS+7zlfrpxFIEP6G9Srsf7ekqVvYycZ4NIcQQZbBz8gOtN//fWp//1oXNJkhziqTWHi5soiXRMxcKKusCu2DAqL/KRDd2L3M9HJFhKwfzkQtm9mmqWzoJjxxpaF3ZKCchv0fJEbkBmYadzpuwm6jlbvwEBuY8weQjY8V10OidUyE1XRyxvikf74hlc6TH3bseGJRvQ1pgE79VK9xO9r0WrGsCrrrrsNGBjDMiZKxGCjOYh71cIG+3wKMVeCuXSm+YZF56iD098EYXWVDOb+kl4bl70UNMYYgkIyXUU04+6TTW5t7RAXs58+8802xWqj6W6lSYYJB9kpUbnouNwsICoXapUzNGd/f1iJPCXYMLW01ULYHqvmET6yV4EzT5C7RB/bbe/26u
+ Yj3Wke+J
+ MskPtNYCKbWC7htiKDVJXDaAG3eqNRLs/WLSmp5NO6W9C44+5DI3Su+9HCaDv1UPC3FJ8TpEnFvPYWWBcjTqHv4abt27DAEJLegENSC5QauP4KmrZVJBL7pZq+zQ144orM6YX6UNdT+zOXprYsJYaEU+TwWTbo30yisX7fyzhFf53ZIWleQqW1r7ZI/0fg5AJJ/iqXMUExZOnsQDDybfhx7XqNy7kGhjgdyHK19dFoiRjljSFOcS0b9PXXBtWcszFABPUVOFUPrRGWiNNGGLTHLgsHPw3p7f6HR6xvOHe2ECXjhpd9oxlOjRDJ4ObqYR7MiZ6OP82IBoW18hnHk/mV95jbLopIpmGLRNHBO6m+YCTZTp3kNBCdT7Z+amLHK8VXhstkpsgN9svNc6+qHFJN2W6El1bTKcfbR8jD1NKxhXx83f+uB5OEevcE+/Fhf4qsyQFViYSuwVIRRVV84cGUvr+5BHMAVSJuv6oZIUwYy1KMdE5ypHl78BkR4SI6C6KhXxy9u3aiJKylzqWXusSs56vtWQXxTNe5NlpagRguJcEJWpebDJIbfFWIT6CBmpTX861h9fLxxg01PclDiXHuyJTSU0T58VKcZduwp3/zqVutl8pW4OpBnzGeLJvv48316luF9e9gM/2PWqD8fvHTEJ8Hybrptq3Ghp6Z20wDK9+S/KZ5nTMd4no1gLz3Ctu5qHeiTINGmovMnU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,131 +126,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry wrote:
-> [Resending after fixing broken email headers]
+On Tue, Apr 07, 2026 at 11:16:15PM -0400, Yuan Liu wrote:
+[...]
 > 
-> On Fri, Apr 10, 2026 at 02:19:37PM +0200, Thomas Gleixner wrote:
-> > The decision whether to scan remote nodes is based on a 'random' number
-> > retrieved via get_cycles(). get_cycles() is about to be removed.
-> > 
-> > There is already prandom state in the code, so use that instead.
-> > 
-> > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > Cc: linux-mm@kvack.org
-> > ---
-> 
-> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-> 
-> Is this for this merge window?
-> 
-> This may conflict with upcoming changes on freelist shuffling [1]
-> (not queued for slab/for-next yet though), but it should be easy to
-> resolve.
-> 
+>-void set_zone_contiguous(struct zone *zone)
+>-{
+>-	unsigned long block_start_pfn = zone->zone_start_pfn;
+>-	unsigned long block_end_pfn;
+>-
+>-	block_end_pfn = pageblock_end_pfn(block_start_pfn);
+>-	for (; block_start_pfn < zone_end_pfn(zone);
+>-			block_start_pfn = block_end_pfn,
+>-			 block_end_pfn += pageblock_nr_pages) {
+>-
+>-		block_end_pfn = min(block_end_pfn, zone_end_pfn(zone));
+>-
+>-		if (!__pageblock_pfn_to_page(block_start_pfn,
+>-					     block_end_pfn, zone))
+>-			return;
+>-		cond_resched();
+>-	}
+>-
+>-	/* We confirm that there is no hole */
+>-	zone->contiguous = true;
+>-}
+>-
 
-Hi Harry,
+Hi, 
 
-Would you like me to wait for this patch to land linux-next and then
-rebase and send v6 on top?
+I may see a behavioral change after this patch.
 
-Thanks,
+  * An originally non-contiguous zone would be detected as contiguous after this patch.
 
---
-With Best Regards,
-Shengming
+My test setup:
 
-> [Cc'ing Shengming and SLAB ALLOCATOR folks]
-> [1] https://lore.kernel.org/linux-mm/20260409204352095kKWVYKtZImN59ybO6iRNj@zte.com.cn
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
-> 
-> >  mm/slub.c |   37 +++++++++++++++++++++++--------------
-> >  1 file changed, 23 insertions(+), 14 deletions(-)
-> > 
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -3302,6 +3302,25 @@ static inline struct slab *alloc_slab_pa
-> >      return slab;
-> >  }
-> >  
-> > +#if defined(CONFIG_SLAB_FREELIST_RANDOM) || defined(CONFIG_NUMA)
-> > +static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
-> > +
-> > +static unsigned int slab_get_prandom_state(unsigned int limit)
-> > +{
-> > +    struct rnd_state *state;
-> > +    unsigned int res;
-> > +
-> > +    /*
-> > +     * An interrupt or NMI handler might interrupt and change
-> > +     * the state in the middle, but that's safe.
-> > +     */
-> > +    state = &get_cpu_var(slab_rnd_state);
-> > +    res = prandom_u32_state(state) % limit;
-> > +    put_cpu_var(slab_rnd_state);
-> > +    return res;
-> > +}
-> > +#endif
-> > +
-> >  #ifdef CONFIG_SLAB_FREELIST_RANDOM
-> >  /* Pre-initialize the random sequence cache */
-> >  static int init_cache_random_seq(struct kmem_cache *s)
-> > @@ -3365,8 +3384,6 @@ static void *next_freelist_entry(struct
-> >      return (char *)start + idx;
-> >  }
-> >  
-> > -static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
-> > -
-> >  /* Shuffle the single linked freelist based on a random pre-computed sequence */
-> >  static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
-> >                   bool allow_spin)
-> > @@ -3383,15 +3400,7 @@ static bool shuffle_freelist(struct kmem
-> >      if (allow_spin) {
-> >          pos = get_random_u32_below(freelist_count);
-> >      } else {
-> > -        struct rnd_state *state;
-> > -
-> > -        /*
-> > -         * An interrupt or NMI handler might interrupt and change
-> > -         * the state in the middle, but that's safe.
-> > -         */
-> > -        state = &get_cpu_var(slab_rnd_state);
-> > -        pos = prandom_u32_state(state) % freelist_count;
-> > -        put_cpu_var(slab_rnd_state);
-> > +        pos = slab_get_prandom_state(freelist_count);
-> >      }
-> >  
-> >      page_limit = slab->objects * s->size;
-> > @@ -3882,7 +3891,7 @@ static void *get_from_any_partial(struct
-> >       * with available objects.
-> >       */
-> >      if (!s->remote_node_defrag_ratio ||
-> > -            get_cycles() % 1024 > s->remote_node_defrag_ratio)
-> > +        slab_get_prandom_state(1024) > s->remote_node_defrag_ratio)
-> >          return NULL;
-> >  
-> >      do {
-> > @@ -7102,7 +7111,7 @@ static unsigned int
-> >  
-> >      /* see get_from_any_partial() for the defrag ratio description */
-> >      if (!s->remote_node_defrag_ratio ||
-> > -            get_cycles() % 1024 > s->remote_node_defrag_ratio)
-> > +        slab_get_prandom_state(1024) > s->remote_node_defrag_ratio)
-> >          return 0;
-> >  
-> >      do {
-> > @@ -8421,7 +8430,7 @@ void __init kmem_cache_init_late(void)
-> >      flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
-> >                    0);
-> >      WARN_ON(!flushwq);
-> > -#ifdef CONFIG_SLAB_FREELIST_RANDOM
-> > +#if defined(CONFIG_SLAB_FREELIST_RANDOM) || defined(CONFIG_NUMA)
-> >      prandom_init_once(&slab_rnd_state);
-> >  #endif
-> >  }
-> > 
-> >
+  Did test in a qemu with 6G memory with memblock_debug enabled.
+  And adjust the /proc/zoneinfo to display zone->contiguous field.
+
+  Originally, memblock_dump shows:
+
+     MEMBLOCK configuration:
+      memory size = 0x000000017ff7dc00 reserved size = 0x0000000005a9d9c2
+      memory.cnt  = 0x3
+      memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x0
+      memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x0
+  +-  memory[0x2]     [0x0000000100000000-0x00000001bfffffff], 0x00000000c0000000 bytes on node 1 flags: 0x0
+    
+  And zone range shows:
+
+     Zone ranges:
+       DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+       DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
+       Normal   [mem 0x0000000100000000-0x00000001bfffffff]     <--- entire last memblock region
+
+  With the last memblock region fits in Node 1 Zone Normal. 
+
+  Then I punch a hole in this region with 2M(subsection) size with following
+  change, to mimic there is a hole in memory range:
+
+    @@ -1372,5 +1372,8 @@ __init void e820__memblock_setup(void)
+            /* Throw away partial pages: */
+            memblock_trim_memory(PAGE_SIZE);
+     
+    +       memblock_remove(0x140000000, 0x200000);
+    +
+            memblock_dump_all();
+     }
+    
+  Then the memblock dump shows:
+
+     MEMBLOCK configuration:
+      memory size = 0x000000017fd7dc00 reserved size = 0x0000000005a97 9c2
+      memory.cnt  = 0x4
+      memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x0
+      memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x0
+  +-  memory[0x2]     [0x0000000100000000-0x000000013fffffff], 0x0000000040000000 bytes on node 1 flags: 0x0
+  +-  memory[0x3]     [0x0000000140200000-0x00000001bfffffff], 0x000000007fe00000 bytes on node 1 flags: 0x0
+
+  We can see the original one memblock region is divided into two, with a hole
+  of 2M in the middle.
+
+  Not sure this is a reasonable mimic of memory hole. Also I tried to
+  punch a larger hole, e.g. 10M, still see the behavioral change.
+
+The /proc/zoneinfo result:
+
+    w/o patch
+
+    Node 1, zone   Normal
+      pages free     469271
+            boost    0
+            min      8567
+            low      10708
+            high     12849
+            promo    14990
+            spanned  786432
+            present  785920
+            contigu  0           <--- zone is non-contiguous
+            managed  766024
+            cma      0
+    
+    with patch
+
+    Node 1, zone   Normal
+      pages free     121098
+            boost    0
+            min      8665
+            low      10831
+            high     12997
+            promo    15163
+            spanned  786432
+            present  785920
+            contigu  1           <--- zone is contiguous
+            managed  773041
+            cma      0
+
+  This shows we treat Node 1 Zone Normal as non-contiguous before, but treat
+  it a contiguous zone after this patch.
+
+Reason:
+
+  set_zone_contiguous()
+      __pageblock_pfn_to_page()
+          pfn_to_online_page()
+	      pfn_section_valid() <--- check subsection
+
+  When SPARSEMEM_VMEMMEP is set, pfn_section_valid() checks subsection bit to
+  decide if it is valid. For a hole, the corresponding bit is not set. So it
+  is non-contiguous before the patch.
+
+  After this patch, the memory map in this hole also contributes to
+  pages_with_online_memmap, so it is treated as contiguous.
+
+Some question:
+
+  I suspect with !SPARSEMEM_VMEMMEP, we always treat Zone Normal as
+  contiguous, because we don't set subsection. So it looks the behavior is
+  different from SPARSEMEM_VMEMMEP. But I didn't manage to build kernel with
+  !SPARSEMEM_VMEMMEP to verify.
+
+  I see the discussion on defining zone->contiguous as safe to use
+  pfn_to_page() for the whole zone. For this purpose, current change looks
+  good to me. Since we do allocate and init memory map for holes.
+
+  But pageblock_pfn_to_page() is used for compaction and other. A pfn with
+  memory map but no actual memory seems not guarantee to be a usable page. So
+  the correct usage of pageblock_pfn_to_page() is after
+  pageblock_pfn_to_page() return a page, we should validate each page in the
+  range before using? I am a little lost here.
+
+
+> /*
+>  * Check if a PFN range intersects multiple zones on one or more
+>  * NUMA nodes. Specify the @nid argument if it is known that this
+>-- 
+>2.47.3
+
+-- 
+Wei Yang
+Help you, Help me
 
