@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3D21F531C1
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:39:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 836F9F531C1
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 245966B0098; Mon, 13 Apr 2026 14:39:50 -0400 (EDT)
+	id AD3C06B00A2; Mon, 13 Apr 2026 14:41:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CFAC6B009B; Mon, 13 Apr 2026 14:39:50 -0400 (EDT)
+	id A83DA6B00A3; Mon, 13 Apr 2026 14:41:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 096D16B009D; Mon, 13 Apr 2026 14:39:50 -0400 (EDT)
+	id 974016B00A4; Mon, 13 Apr 2026 14:41:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E77AB6B0098
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:39:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3C83E01F9
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:39:49 +0000 (UTC)
-X-FDA: 84654396498.02.330110F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EC78E1C0007
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:39:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEDQuqIW;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 839516B00A2
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:41:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3BFD9B7497
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:41:29 +0000 (UTC)
+X-FDA: 84654400698.04.260E579
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4E0E9180008
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:41:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RYUiTIEB;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105587; a=rsa-sha256;
-	cv=none;
-	b=gautWlPiVXBCzijzOKLS1X+bnIaSSEwbcfI0qxYc0P6NDlWB4gu7DqqA+9d78CbSc2gW7H
-	9gDE7hznL4SEn0MBKJXJYkxJhKmYPQ1c6l/TCOhl1JsMsVcj3A/DvvnPRsypXMk0tNPre7
-	YGc1jZndx9I+LT2l3D3Yw5K2USr1g5A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776105587;
+	s=arc-20220608; t=1776105687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O/hrFqndwJtN2pq3357Wgsw7hOLsXaP6RS7BTWcmses=;
-	b=O8O/sYs5HTL2hnpoKd/sAwdj5mWiy4tX9mFnqpKwIKgxpC2NT1gWZEEv09i8UoHL4NN3kG
-	xfDvwP4QYZhDs3h3JZ8iPqJmH1HO8xLPS7+Zzbj+H2Pudedhqd3ciVKQteOQTofRZSDbE/
-	mgpJRd2w9aW2RztFrmf+c/8/SceWOus=
+	bh=JiEX8vjXSz/sh85xNdxBgd8SRdc3RYTujnGNxoxRGJs=;
+	b=qxxY5AoGdinGM1xvPYi5wL47VYaBi4QypDlz5HDQNQJTzgypUHJWPz0SPwfxCYQwu/gGNE
+	zBHOmi0knc77A5ihplTLlAJzN/bH8QYVvXjT6K1fU2I50oW0r7ccfNUQ69Pem2iCY599kX
+	afLVhBJHBfsVWC7JtUGGfWGAk+hkVaA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105687; a=rsa-sha256;
+	cv=none;
+	b=vOKCUrBrnpk3behbL12r80g2gJOuPgM5SPxiDkaYcj1K3rNrhdr1elMR5Zh4UWvbVkt1oP
+	8WmwzgCFtawkxaJpNb2BiJ1FakpDWqt0m7e+oarB5mCV1D3dFYbpBk7TFd/wI8NVzlm7+P
+	nie9EJ0cS1GomsY9M7d1i0HqavdfEfU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEDQuqIW;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RYUiTIEB;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 393256183B;
-	Mon, 13 Apr 2026 18:39:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5133C2BCAF;
-	Mon, 13 Apr 2026 18:39:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2B7A54017D;
+	Mon, 13 Apr 2026 18:41:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52627C2BCAF;
+	Mon, 13 Apr 2026 18:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776105586;
-	bh=RLos5eu/k4OkgzYUfoZ0rIuWLWwHtGR4/FZoPNAg1WQ=;
+	s=k20201202; t=1776105686;
+	bh=Ag34EiRSRProjSszPBmIGU7K92Xfr0e+QDVz287fZs8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AEDQuqIWbNe2wApXlo2hjS3KG2iI6BUI+d43CmYsPxHWaB0Xp8Q1CmWRyCuOn8AOR
-	 W80aa/DJ0JML556anny4PaJf9/qzUrMUVKV9x0G1GtM/65FxhvZ0/Tbzegg01cq40G
-	 Tt9HzrLP+eNfs6t5Z6lhSxABkcKSOAV1G7nUqN2Us5kpYLAonYwjinOGRledZE+tMI
-	 bncp1C6Hpjq3PX0gSCkdiWcgJ1HKr+CKtiDQG6H3UhpmJCLRXy5NOGIPXNUVq2sxcY
-	 eSp629TYMGMXrJJ9oEibCVRH3n47w9cuFeSL7xNReoqqr2qoGyLd7/tbatyAz2KaDd
-	 3RJ8Gg4R8bbsA==
-Message-ID: <d44ff75a-a1bd-4a28-8e8b-0b008d24d41b@kernel.org>
-Date: Mon, 13 Apr 2026 20:39:37 +0200
+	b=RYUiTIEBiWUn3y/EkLaQ+B6or6WPDAJLf1CGVxYVwTegeS8M6EoDmczfXWKz0ZXOz
+	 0+9etjUpPxVxm6h1D6hH6ELi0BENK6eMTe+EfabF0ADKvKCW9kJIwUAjXqMsEv/K1m
+	 o589wnQnYobBXyMAFP4ggd9Xoa1oeu6Bm2Di8fpJQCKBQcvyZ/gKGIwtidfpEQA17O
+	 3zXGd2OlwjNvDVYdCbwlRlVWXcWTPStWTQnnpDld2QBNtqFDSk7x+JetUtJL/wwPVZ
+	 y3i5WrOphiKj9EZ/Ag3DqRTX/GyJaTBe+tkAp/xIQ//2KXChkz1ph2H3wZRDkubPFS
+	 1HIUjTKc95cwQ==
+Message-ID: <2b51659e-5527-4e15-a0a8-41f30f589d07@kernel.org>
+Date: Mon, 13 Apr 2026 20:41:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 03/49] mm/sparse: fix vmemmap page accounting for HVOed
@@ -133,14 +133,14 @@ Autocrypt: addr=david@kernel.org; keydata=
 In-Reply-To: <20260405125240.2558577-4-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4E0E9180008
+X-Stat-Signature: 8wrktt79buttgsyt9sygdbxduo9kgf9o
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EC78E1C0007
-X-Stat-Signature: a338jwccntobrm79pbr8wqbhszh46x4n
-X-HE-Tag: 1776105587-27980
-X-HE-Meta: U2FsdGVkX1/wo9QrcnbcBrM6AZ6wBPyqbBDbwNPB4p2D+XNvZuzpRrVNx/1SP8Fye90A/ckbMN6RTgweOjSBG5iQTZV9shqKqhVg1Gzx3rwx8vJo+NtkHR5sF6bcK4W1lHzKqPp2c2rgsu8MRyhlp0T1aFgIGVkJ4Vsh0t7CVlH6PMzzKBPLbsA8xqZAhCZOzCRRyXdx0PQfx7HjxgsmOPShpcJ2VxwrOhkSnNPDGaJ5A2Hi7cb4ssre5Pd63aEHutdEmFtVxqXLK7Xg8t6PsWILkZq7O7sgR/4EoB5H96MjmdM9OpIdhhr8Ljy5XQhLWXKCI3D0QhZz3K3nWtXwKyMv44RfdrIQgfyo1fZuZr+Hhvkl8LkURvQAEAcg7jHM41ADJe3sX9M7+nxbtHmAPzcdH5iF+34h4wMFPIadTwQEzHxMQ9hIQ8nLmJTaaw00vTS1o8S0cFrzGBiaJO3Np/Obvi4k3123DzbvnUNp4Z3aVHN23zhaldeQ6toUa5ITWQ+XKYom71G8L7imGSi2XKxbeFC1Ry6/MJS+SRZ8VAicoHm6kQGOO4/k/U/jFSacGmznqD6q5QjNLSwt/s1n/Jf1oMPHNk85jLLM5+/qZeDc+EfCbSRKBPNYsLEhi/mphhEXk/SEi8wiB3SMWcqPa9RLBLo3U/K/cO1P4ANZdrunzv3JVNfFBK00Vy+a2haTPxNBGkZpCAutmbHV+wLzalzET0DX49+QPBPVgEuv5TzZiD1/7d3jeLS1kBnzw+acG8X4WflZZLD8r682vPIdAXQTtsLaaOs+vngDeUuzLscVbGBmJEdoJ00H3Veb3DFWrd/HfPmbtO7nJWEJclEeIPqgrRGbmi/y80mQZ3ugLQScZu6UO0HpwW1amDpkyi7TM77XcLJXtafL4j+BLrSDMgP1RrcTcqC8XH1Q8+xGzCtyDyM7M+ySHfR5rhVq9O+P1N7TWKtmjL8TJKYH5h5
- /jUaSd1I
- 16ETcor8vdcP0bXIcgzUY/dJ31H6910mWM+D3gx98IXNoZNuO8V3yv5f5pLfMfzqQAWW/XWV33t3M6MoMmuP8Cs9Cj0tBvnwhY/J6EP1/5sr/usUJp+s4LEH4kvywly3UJYvZWpJO/hQM0yMvTAa9EmgGpi5GWPyIaGBKXh63+v8uBhACDSN1J8WJwG7ID8kkoSSIE1MtSFem/vsySDi4HbrxV4YDaqwIDYhEJ9BuOvxWCZKCugPQ6fo5uw1XVhHKMbrVzlrRGR7EwStp2tNU+ILuXQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776105687-801125
+X-HE-Meta: U2FsdGVkX1+7jX3e8uf4iXYSORfyW9XU1cx2ZzxuDbm4JcbER95+fikynjF7b6ViF+K6HYCwBHxti97FAAGIt6bVk2VuxQHzcKcw3SVFFFKZM9araO2QeaWq+U+YGT6eiWnz84boj41HYuKGr4FtEPgJHskHH7KI2o4+kbqzqPIDoKvIJVyeGxkNc0UappvpoNwTQf19HsuZQYbiS0nqbYCdOZVjkLy8ZYw7inj0HlNC/9QyRYEVYalA8dHYlZ35mDXioU9tqyRwzQmb0pArkQIo/anfQNDA1tsfMOtPbbO9pF5P6p2YorlOX3DnLIAriiDSb5i/r0GybROKkwcNBSNk/qqXdIOXCmbTBCWkT0OtxZ+Im9Jcr/O4IhOy7yS4L0yjDXex2st9fxO5QKaAXqOzQ6jSUMWIH3k4NkMl5LoMLHyRbgA6kYz6LZ4x3yzWJLY26sf8Or0UZoar4ECz4ygOlwJFWWcuAO7inO/AeEnAwaiTjlzd07qNVnbCeoONLmvH29mLzPMeXoE4XzT0CFzM/oEVClxK3UJubREb11AHnQ/53N08pwl/XKbJTJTndb5OC2pl8CciUb3VWBWNvzU9eo5k3l+m/f0z0C68fkdAof2Sg9N1DNNsCaP2SQwzvdZ+7AVPOayZTICiepz0dpkRT9ih8bPAF9Yomr1cX34hThiBkb2mLXGBhI5IhQPdDQUQhYW33y73viPbt9r30DyxV8JHHSzraXCOIxeV/ffS3gGa4rv8t2rH+qaCKO7XyvD8d2aAC/LRLOQZZcpywYlMt9BQh1VPD1J6G2dVi1shXkSkgmvj0I/eSVaaC6UJS92Pwuof3SjhGPFPMO+GeLEA2XU56Jfd0dsk4FJN6VOtRnzTgn9tmOWivt3gg01SNqDacQ6HPsvxXrbb1ZrWYrfJcGI98Zn0WduMUsgOzuxZPT88jTBwS3NJqYK34jjRZH3kxIolPzXHOJ9Kv8x
+ U/9UrMTH
+ x1YbsynofFPR9mBH2Yxhutno/sVM5q+1Tx8x2zUswMFa5XUv9OjLnt3/cE4Y46oPULqbmOu0EGzFc7lIoHgHkEwrZ7vB3mdsdQ6MFle8xocvI/g8bl5H7G/eAbI6l8zA4fSZ1EXsG54BJyvqJvDs+MSQX/+jkGQnlAj73im+UQYc4wa/i/UwJ48Zwr9KSuhmnr2WoELJueDv0kCBhwELQR6eSFcDkCDpmYzqoJhttMRZIKPBAiwgGu11/ZVmX0Sm+Fkv5MexM+QHQBY4OQrViaKPgk6uczhGvrCWA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,14 +154,8 @@ On 4/5/26 14:51, Muchun Song wrote:
 > 
 > Fix the accounting by introducing section_vmemmap_pages() that returns
 > the exact number of vmemmap pages needed for the given pfn range.
-
-I guess only the accounting in /proc/meminfo is messed up, correct?
-
 > 
 > Fixes: 15995a352474 ("mm: report per-page metadata information")
-
-Similarly, please send all fixes out separately.
-
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
 >  mm/sparse-vmemmap.c | 30 ++++++++++++++++++++++++++----
@@ -183,11 +177,6 @@ Similarly, please send all fixes out separately.
 > +
 > +	VM_BUG_ON(!IS_ALIGNED(pfn | nr_pages, min(pages_per_compound, PAGES_PER_SECTION)));
 > +	VM_BUG_ON(pfn_to_section_nr(pfn) != pfn_to_section_nr(pfn + nr_pages - 1));
-
-No new VM_BUG_ON. Ever. :)
-
-VM_WARN_ON_ONCE() is your friend.
-
 > +
 > +	if (!vmemmap_can_optimize(altmap, pgmap))
 > +		return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
@@ -197,20 +186,10 @@ VM_WARN_ON_ONCE() is your friend.
 > +
 > +	if (IS_ALIGNED(pfn, pages_per_compound))
 > +		return VMEMMAP_RESERVE_NR;
-> +
-> +	return 0;
-> +}
-> +
->  /*
->   * To deactivate a memory region, there are 3 cases to handle:
->   *
-> @@ -775,11 +796,12 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
->  	 * section_activate() and pfn_valid() .
->  	 */
->  	if (!section_is_early) {
-> -		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
 
-That's nice to be factored out in any case.
+This makes me wonder whether that is really the right place to update
+the counter. Can't we update the counter where we actually allocate/free
+the pages, so we don't have to re-calculate that?
 
 -- 
 Cheers,
