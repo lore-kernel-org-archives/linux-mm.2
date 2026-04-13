@@ -4,133 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA39DEBFD38
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 11:15:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E5AEEBFD3B
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 11:16:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEC1B6B0092; Mon, 13 Apr 2026 07:15:33 -0400 (EDT)
+	id 9BE686B0093; Mon, 13 Apr 2026 07:16:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9D436B0093; Mon, 13 Apr 2026 07:15:33 -0400 (EDT)
+	id 995B76B0098; Mon, 13 Apr 2026 07:16:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8C006B0096; Mon, 13 Apr 2026 07:15:33 -0400 (EDT)
+	id 8D33B6B009B; Mon, 13 Apr 2026 07:16:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA9556B0092
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:15:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7499C14014B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:15:33 +0000 (UTC)
-X-FDA: 84653276946.03.681A8B6
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5C77212000D
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:15:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=BetPAMrh;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="Y OXcQKc";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf29.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.155 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F00C6B0093
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:16:53 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 08B1187813
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:16:53 +0000 (UTC)
+X-FDA: 84653280306.25.E8C8A31
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 47FFF40004
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:16:51 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZzKtNdJD;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776078931;
+	s=arc-20220608; t=1776079011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eTmL49YPBteRUcWblilZINYX2pjzGZzY0ltnNRpdVYU=;
-	b=tkGcuFZJhdEVlDDvn965pdoaKBKlKSv3ysTVdYs0dnrwsVbeGdwnDWR9r2SXtgYF+Ns2JF
-	vSSqC41209DEZxgKJyGgLw8gsKtPxOdvM5olXFi3Y8otLZf75OMHusWk7yUMq0WV2zR4Uf
-	r3HvTaH6jBEZEvqtpRmo4NmGqrixywI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776078931; a=rsa-sha256;
-	cv=none;
-	b=CrfS2RkBEZx5HCdNtpTPeg/XqSqiwdFMqVfxh52aRn4j1T9xDK64Hd/sjjnL5D9RxWjJw4
-	kntrtbwCxI2xuLVDu6A8e8vLw4xcgg2HmHcQ6qVc+sy63VIXc4ztfSDG0VPqcyu5OhqWp3
-	3MMSoatziKuK8qtz/UCCYy7oxQSIYWI=
+	bh=FLikPFq1e0W/Y2Ci88LOqUlSKBOJue4Gg85MyiPf9n4=;
+	b=z682UVPgdIOIjcNVQlUCsLmk+bfw9LAY0l6alK21qhEJzyjudBwlJGuor35JqRyOpdIyvm
+	q4JE4aS+6Pn3FpP2L9hm+MWaHvB/e4SEEZe0StdN3/rJnK+3UemYqjJc1wiVlodwG+aWl6
+	qPA0FcWDHjsRSyechuUemGnyQRVO9u4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=BetPAMrh;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="Y OXcQKc";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf29.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.155 as permitted sender) smtp.mailfrom=arnd@arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id ABC14140017B;
-	Mon, 13 Apr 2026 07:15:30 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 07:15:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776078930;
-	 x=1776165330; bh=eTmL49YPBteRUcWblilZINYX2pjzGZzY0ltnNRpdVYU=; b=
-	BetPAMrh3TokbMEGjLXdAbvoda+xYNVb7jptloq6qf3qRxz85vzdHcORtEe8TXuP
-	dOV1MuYz9F4OX1S+K2yf80a9wZuLzFf7+e5jUjjNBoB33TIZmS/VyTipvbHlPQSz
-	5tVPVNwxOR7A52NoSBqrhSxqWSV05bpZC0NGdqEpInk63dWvXViCn06/JOQP36p7
-	4x7IHw7PQwleI52ytJcWug2sXxrp8h9qalAWX3JQ5GxNlGanUzjEBFfuseuJEVn7
-	OjW/9WWlfUdYC2iRFumbKaYZkfjjnrS34dNf9/R9AoAKJ6kcIx+7j/aERfxMqz2F
-	kx8bcLPnV0Dks0mv0amp3A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776078930; x=
-	1776165330; bh=eTmL49YPBteRUcWblilZINYX2pjzGZzY0ltnNRpdVYU=; b=Y
-	OXcQKcEX5tEk/wZEX8dbk21JFtetmgNCSyO5WlxHSRND3TtCzAkJ4ZsSonf2/HcA
-	KfGMWqi1kJWsWR+4Z5yQL52U3+kpbgOrfjiD/Vtk2kFccDPY+j5BCEHXxSnc9FAR
-	JZ2nqhKSREwSFyHvBcjfk7nfqzulatPjJp/lAACgl2ryiGrYoo544XKnYipG4uAE
-	mpXz9ZDevpUZnhOzveJSqEa3YzpkAiTZTdIpfBN1M9bdyRYTtvVpX/rkU2gGJAd7
-	99zQtiPydzQMu5APaYTAoWom4vXuhDo9pbsCIGREtmQAQfsdW9KfIdBRHDpfxfd5
-	GA7dV1rSy11emnqRAZSZg==
-X-ME-Sender: <xms:UtDcaYZ9Lj7eUioEjYGAs_F4D-XDMonTm9KEwN29pS75MLp2k0fztw>
-    <xme:UtDcaeOpqAWqWH5l9iimHatP93rKoI6x2GWYVl3svuNrZebzA5kBemlq7fKZKa029
-    P5PhPdtxFAJ4QqpFg04wSEk6pJIC-veFe5QSJSMQh4Qw_-4ZiZJLf0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkedtkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdp
-    rhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
-    dqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohepuggrlhhirghssehlihgstgdrohhr
-    ghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpd
-    hrtghpthhtohepghhlrghusghithiisehphhihshhikhdrfhhuqdgsvghrlhhinhdruggv
-    pdhrtghpthhtohephihsrghtohesuhhsvghrshdrshhouhhrtggvfhhorhhgvgdrjhhppd
-    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheplhhinhhugidqshhhsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:UtDcaTVhNnohniEpWSmvnWRVT09fC4MbQYw3OKQQKbx5Gkbst2Xo4A>
-    <xmx:UtDcaQi35YRxdd-eBug821sMGAnmxA88IjiZgna8jp7APSUWbAL0iw>
-    <xmx:UtDcaTpOICXGGe_7nFcnIuqavX2tXVzmrsTHz_qaGl9462ioCB6FHA>
-    <xmx:UtDcaeEgI1CA0ozWy8pYv6A3rwt8FqUQLFIqW94AzMx98eegKhAoOw>
-    <xmx:UtDcaV160YJtqTh9toAPDrp88_47LlPOCEB-oJpt0rD1QzX6hJHfAxMf>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 9C449700069; Mon, 13 Apr 2026 07:15:29 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZzKtNdJD;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776079011; a=rsa-sha256;
+	cv=none;
+	b=dmRNokUwVZ5Atlh83zMs9Q7FsdlefkSw1W0YP5lr3bA0S6xLJXXB+91l9h6hbpCCeiHhF+
+	43SB8sxbJBruSV8ufzFTCQukU7QpD5ByhJkoUhurjZ6IU0YypIHrDuzbLatbZguH+tfWab
+	XCrTrXuw4I82niiu6vYjs3nb9AtJP1E=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 665B06091C;
+	Mon, 13 Apr 2026 11:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78796C116C6;
+	Mon, 13 Apr 2026 11:16:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776079010;
+	bh=ju44g2f6nitaqzcqt3MrF4XfBN5G0lGaHkRMYsfWfiY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZzKtNdJDBre26quVvPblkzY5izZDtEfqSiY46VIL1ePjpEBoozWvxlbyj09smAWdN
+	 /COz2RDPaoVdUhZdIbTGIZTNWtaOOg638KVKySwc0MocYQ0wNA7WjtUDpoYtai8QZp
+	 ut7BH3GoaZ9u+Ztv2gntRvMxhdE40OTND0hpmcaIf87IwbEhO+QFaSu1I3DXtS1iLg
+	 vv6SIyCcLFyspET1gpvg5GM08CNpBnm+Zm9MxVx2Yhrahm5M+CldogHZs/prBl9LZi
+	 C4MkCRzU9PU4DVJno7GJlo8l8gmKca9d/vV1VrLK8X0OP+YB5PFW0+UbFwB8yqiPOA
+	 dH2iCvRIQzPEA==
+Message-ID: <f33b1c76-52fd-416a-882f-316dfed69017@kernel.org>
+Date: Mon, 13 Apr 2026 13:16:45 +0200
 MIME-Version: 1.0
-X-ThreadId: Ax9AE_gslVNw
-Date: Mon, 13 Apr 2026 13:14:49 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Mike Rapoport" <rppt@kernel.org>, linux-sh@vger.kernel.org
-Cc: "Andrew Morton" <akpm@linux-foundation.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "Rich Felker" <dalias@libc.org>,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Message-Id: <42a4c6c1-762f-449f-9d14-3eb0fa02b94f@app.fastmail.com>
-In-Reply-To: <20260413104649.852228-1-rppt@kernel.org>
-References: <20260413104649.852228-1-rppt@kernel.org>
-Subject: Re: [PATCH 00/10] sh: remove NUMA and SPARSEMEM support
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-hotfixes] mm/vma: remove __vma_check_mmap_hook()
+Content-Language: en-US
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+References: <20260413105713.92625-1-ljs@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260413105713.92625-1-ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5C77212000D
-X-Stat-Signature: m7fdnnk3bb6yer9kc3hxrhydu8ugumfm
+X-Rspamd-Queue-Id: 47FFF40004
+X-Stat-Signature: udci6qqn3pc9eaiaem16ci3ktmafzg4u
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776078931-653036
-X-HE-Meta: U2FsdGVkX1+vC1Gp83JC9CvfUrN5r8AilF9OLnnEYt5bmHPW/TuMs+Ft57ICCeAdFjpvcu1ib/fB9VSYa6mYPLTUpixUp+aUco2LxJb5oZ64XBzKM+L+pdyASgs1VeqS8A1A6pSR5/CmytmvPW5TWrLfakNth4sT5Sr25wc8Hj1+uplXavkXl+BaZAUEzxix3n65LUtC/TbFfnU12fGuPMsWXRftbYnM6ZizidJaN3Sq6yjXYKAT2LLq7n3I/LEoy6fzFw1R+R6Ki/MsaB4OT/A6VxDwNzkhjz5mPP4w8wVo5B7GPLPqavPWlgWxHSIyjzipnarxFFrhV5aNJnhD5FLKKzcX2RHnvY89d7fsm2E3m2q46V4Mof5x83OxQA7eudMeSr5sm9yHnz3QYXl7YT5HXkz/k+uXPvGAAN9uYaUM6WfOZdI4OrIbdU/09XXozS4SYyOnFbd4Uq29Ocl5FarwJ9kEgCE3HclqmRvu2ksaFmDx0jmHWNf0qNAmo9HAekSsL+uSiWyRD0oiUeoST+u+M9H5UXpGUgjEYMOeAcqWxnjrpNozoRNw1Jea0FeierQED1hWZsHXwMUQV3zU5KLLqd40LkAuLimwiPT1SK/UsVJa7crnYhYlb2+3IzGnnopzSWngZ6CaSnPhL/oIUE2BGrie4gZl4haolQ+rbIA0W+sj/bKh+s8aztkt0IJ5Rhz8JFk+giDcyIChpOkAlaSJ0lAKZmy92VNW5V378aN4W1mqKnP6V8FQd4ookuVrNWmxjzxQGmAuWZ18w5NsdVETMcdt94lwg7Qwc5L8B2N6gsZyesoN8XOAojvBQ0CZZl0Qmhk6HUDsEOuhFweTeISJNA18c81tbJLyDRkCYd9xFApGJ6MRT6Y/R4C9nhRhfzeyqEwun4ynTx0BQIH0UNISWnSoykFyMHHRGITNLdI+vWTxfO89yjkfCdSnr5J87Xr2I3CMjTcUV6M6ks8
- gORVEKMh
- X2LU80DUJFLWE/bHhOrM0nvUO5kJwoZ4uLYNTad2Q2v7iVstUqjp0A//TVvp26OxeYkH0/3BrTuY/tuUw9SqFT2JlNI55ohAHDw2pHG0MRXsIFnVstJs6umrDV0IaBFb6b8j13aJR9qoGmBIvJcvJB4394QR31c22ymUceno/QMRFqB9TLEt0aJ3WgpmILLu/FwvTZaeLoy0sn6X3oDEs9XtEtfEFXtzV0vY4
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776079011-127307
+X-HE-Meta: U2FsdGVkX1+X6tXVm9nJ6uy0E4lVTuu2luLaMYkieoIo2mAOXvLQSWg8WWgWGx9Nzi5NbE5soBJ5vCKf2pwXSR2jsJfBu/XIixKM8UEJbFHzwZTT2xlGDAAArvpcrdZ3hjfDy/+REK2MkOB55kJKzTqj/nPbLKYxiYRdJCr0FvuTNfGUxx49aMxQcck7u6LvGbXNHd8LRZtSDXJpj3tfvfWe58eBN15Pv/IKLKrnPKU8kN8CI3Hr4xS3ZLzWRrGXzTHESo97DHpzvO31wCVPNE23xkJB9TSendhiM3WIFssgEP0mowj1Qk6ei+186UQUKWz9R00Rf2I+wVYD8Wk5z6ThkuPX/jFxqqapMxDFWQdKgxVnFS5yiRNRJCw71sXU6vi5kmxsoU4kxkae+F18eGPTfDPHWFTVJJiXCw+HhjJYyOcBcwjzOCgiv0FPc6/6EMUkEKuVo9eglTHr7AiXQtXhfqye1e1y0nSm0OJAoEfky6c1qUURm1Zi3vOEErv3ZwOEREbRDDvAhEZtNYqRd5qiWQQ0fGoDzDytcW0pOatUyvDG37ruVL5PajhWaTjOOPGOITSP5d6M23gK8gZwcd+5UBatPGzhUovwNvcdG+28VUPF0yILONu5rS4vevBijhm4YL1wIYCeCKv6w6IXVW+qiTrmW0DltI1vBabu8zQNxTciEqeQ/M4NWrjEOiQHjD9kokTKprR6D4VHHWE6NjzKvQeepd9x5E4pIcgBD3IlQtRkuhDlwCj7XSW5MXG77qr1yu2YBN1mOZS8u/yqEf+h5lIfNUf2nJ8EOxZBxh7tDAE8ToPOM0OT81/1J0RC//s3ft0lsln4lNDNWk4v24P8QHYhpbaep+Pts+AXMMbMg3Z/0ot/t0TnwwgZxgihAMbr75ww+IcckcQdBnp5Me3K9upZ32c9QNWmPLz8Atrl69zz8BJafVimDpoaqCmw9CQSFDvYVEB7ekNLhnw
+ s/wiCgjA
+ yJ2jPgPNIrhTRw9v6PFVzx0MAM1Dy0bMPbNfmyK46HYOb5tk1Rk/2QTCWnhVB4yKpjlXW4WDdumQOATUxzcu8LHwJpYfPN+DD9nj02LJP7Ji3wforT9UWEzx/4ADyNjgONXmaPO3KMQSMM0Dhw1HuQS0RW5St9957khPZgSL3gQis100cuW45OBo17/uJQWOiS1P9Kjt8Ve+f2JD54PMrR6efddj0AB1avs3RYjF4r4bxLqnWsONXTwI6OMqEYR6TRVk+0CUUkhQv1BrZ9d894G8cOEwAgM3Je14DNDY1B65F3UEoj+h3bNv8fBXQipLGTaY5C/Mg8vOl/sMp7rI07K/eJh6YdQfNW3JAmlMw8hCsDdVjJV6n5yBk7f3XLwwHX4sza79EQJvIkTk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,49 +100,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026, at 12:46, Mike Rapoport wrote:
->
-> NUMA support for SuperH was introduced a long time ago by commit
-> b241cb0c885e ("sh: Support for multiple nodes.")
->
-> 	"... for boards with many different memory blocks that are
-> 	 otherwise unused (SH7722/SH7785 URAM and so forth)"
->
-> In reality, this added 128K of memory on sh7722 and sh7785 and 256K on
-> shx3 at the expense of all the NUMA related code in the kernel.
->
-> For build of v7.0-rc7 with defconfig and the same configuration with
-> CONFIG_NUMA disabled, bloat-o-meter reports difference of ~76k. Disabling
-> CONFIG_SPARSMEM on top increases the difference to ~94k. And that's only
-> overhead in code and static data that does not take into the account data
-> structures allocated at run time.
->
-> And all this overhead has been there for nothing for almost 8 years
-> because since commit ac21fc2dcb40 ("sh: switch to NO_BOOTMEM")
-> those additional "nodes" could not be used by the core MM because the
-> maximal pfn for ZONE_NORMAL was cut out at the end of the normal memory.
+On 4/13/26 12:57, Lorenzo Stoakes wrote:
+> Commit c50ca15dd496 ("mm: add vm_ops->mapped hook") introduced
+> __vma_check_mmap_hook() in order to assert that a driver doesn't
+> incorrectly implement both an f_op->mmap() and a vm_ops->mapped hook, the
+> latter of which would not ultimately get invoked.
+> 
+> However, this did not correctly account for stacked drivers (or drivers
+> that otherwise use the compatibility layer) which might recursively call
+> an mmap_prepare hook via the compatibility layer.
+> 
+> Thus the nested mmap_prepare() invocation might result in a VMA which has
+> vm_ops->mapped set with an overlaying mmap() hook, causing the
+> __vma_check_mmap_hook() to fail in vfs_mmap(), wrongly failing the
+> operation.
+> 
+> This patch resolves this by simply removing the check, as we can't be
+> certain that an mmap() hook doesn't at some point invoke the compatibility
+> layer, and it's not worth trying to track it.
+> 
+> Fixes: c50ca15dd496 ("mm: add vm_ops->mapped hook")
+> Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+> Closes: https://lore.kernel.org/all/adx2ws5z0NMIe5Yj@shinmob/
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-I had looked at it when you asked me about it last year, and I can
-confirm that agree with all your findings and the resulting patches.
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Whole series
+> ---
+> 
+> Andrew -
+> 
+> c50ca15dd496 is in mm-stable, so thought best to do as fix-patch? Will
+> leave a small bisection hazard (unfortunately) so putting this as close as
+> possible to the patch it fixes would be ideal.
+> 
+> Thanks!
+> 
+>  include/linux/fs.h |  9 +--------
+>  mm/util.c          | 10 ----------
+>  2 files changed, 1 insertion(+), 18 deletions(-)
+> 
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index 0bdccfa70b44..f3ca9b841892 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -2062,20 +2062,13 @@ void compat_set_desc_from_vma(struct vm_area_desc *desc, const struct file *file
+>  			      const struct vm_area_struct *vma);
+>  int __compat_vma_mmap(struct vm_area_desc *desc, struct vm_area_struct *vma);
+>  int compat_vma_mmap(struct file *file, struct vm_area_struct *vma);
+> -int __vma_check_mmap_hook(struct vm_area_struct *vma);
+> 
+>  static inline int vfs_mmap(struct file *file, struct vm_area_struct *vma)
+>  {
+> -	int err;
+> -
+>  	if (file->f_op->mmap_prepare)
+>  		return compat_vma_mmap(file, vma);
+> 
+> -	err = file->f_op->mmap(file, vma);
+> -	if (err)
+> -		return err;
+> -
+> -	return __vma_check_mmap_hook(vma);
+> +	return file->f_op->mmap(file, vma);
+>  }
+> 
+>  static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
+> diff --git a/mm/util.c b/mm/util.c
+> index f063fd4de1e8..232c3930a662 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1281,16 +1281,6 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+>  }
+>  EXPORT_SYMBOL(compat_vma_mmap);
+> 
+> -int __vma_check_mmap_hook(struct vm_area_struct *vma)
+> -{
+> -	/* vm_ops->mapped is not valid if mmap() is specified. */
+> -	if (vma->vm_ops && WARN_ON_ONCE(vma->vm_ops->mapped))
+> -		return -EINVAL;
+> -
+> -	return 0;
+> -}
+> -EXPORT_SYMBOL(__vma_check_mmap_hook);
+> -
+>  static void set_ps_flags(struct page_snapshot *ps, const struct folio *folio,
+>  			 const struct page *page)
+>  {
+> --
+> 2.53.0
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-
-Two very minor points:
-
-* It looks like you left the 'config SYS_SUPPORTS_NUMA' symbol
-  in Kconfig, which no longer does anything, so this should probably
-  be removed in patch 9 along with the lines that select it.
-
-* It appears that after your series, RISC-V is the only remaining
-  architecture that supports NUMA in 32-bit mode, which I think
-  we should not allow as a configuration, given that this would
-  run into untested code and no hardware exists for it.
-  Apparently commit 4f0e8eef772e ("riscv: Add numa support for
-  riscv64 platform") intended this to only be for 64-bit targets
-  but did not add a Kconfig dependency for CONFIG_64BIT (or
-  CONFIG_SMP, which was added later).
-
-        Arnd
 
