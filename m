@@ -4,101 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 759A8F34C74
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 17:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1405DF34C6B
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 17:43:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0B9B6B0088; Mon, 13 Apr 2026 13:20:20 -0400 (EDT)
+	id 489516B0088; Mon, 13 Apr 2026 13:43:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E3056B008A; Mon, 13 Apr 2026 13:20:20 -0400 (EDT)
+	id 467A96B008A; Mon, 13 Apr 2026 13:43:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91F4C6B0092; Mon, 13 Apr 2026 13:20:20 -0400 (EDT)
+	id 3798F6B0092; Mon, 13 Apr 2026 13:43:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E7406B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:20:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0D30A1402A7
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:20:20 +0000 (UTC)
-X-FDA: 84654196200.24.C18C64C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6F66C20011
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:20:18 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EF338F78;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2934C6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:43:55 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C18751A02D0
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:43:54 +0000 (UTC)
+X-FDA: 84654255588.18.559E257
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 73589C0009
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:43:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cKwV1QYz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rQe3Mkfb;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cKwV1QYz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rQe3Mkfb;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf28.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776102232; a=rsa-sha256;
+	cv=none;
+	b=7VaaD8hWX2tWRHd95ru9FhdH+EutsqX56CdC449BIynS+PV6u0cgw6KWhoHolbuo0ut8am
+	/P5rYhdmEeRr9ZcNfzd0MVhKCJ8F8An1Ivb7b85AM9VDqjJrU+k8Bw8GLg/mu9xzbCM5Td
+	RdHJsxFQSzZydHGMdfSirJB0yOHxthU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cKwV1QYz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rQe3Mkfb;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cKwV1QYz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rQe3Mkfb;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf28.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776100818;
+	s=arc-20220608; t=1776102232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6xzqNTZU5rW5X/KJ7dZ0k/+iqwPV8kTHwUdRhXs2I3w=;
-	b=knhJUPgKt9EWhAb1npGxeTxIbfTMPSj1789RIpW0IOvi8i+TIpR+CK3GfJLofB6j7F6ARB
-	esV3rIpcc6G6bvFSOHqllkNcBxrxE8Y5bLOn12UgeZePhDFyRACERYIjXzE7+uaX8XwyXt
-	uvsuz6VZ+NdQ26brHcr1QVzcRnOGWXo=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EF338F78;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776100818; a=rsa-sha256;
-	cv=none;
-	b=k5pfu5/1sY5oCRW4JskNPa3kg/eBTGyc6+NW8nFtjV0bJ1mi22Rdb8XadEIYu8V8nbYMdG
-	nB7MSXUZ+iZSnRV6w7xFvfJyIb8ZXTtPLQPuOP+/ZjktEJLBnfFKDMgAQzuLos2slk02Nz
-	BRoxXKCqZ2nMJvUHAkhoPUUGmSaGvQI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 726016183B;
-	Mon, 13 Apr 2026 17:20:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD74C2BCB0;
-	Mon, 13 Apr 2026 17:20:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776100817;
-	bh=8c7V38SjK4hMjN4VLoVwMlqjL2MnquDxEbG/Q9cUQfE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EF338F78QTuHgoJy8BYFIqHIHuMOS7IvI+KpVJdIq5DJt08ZKKW5ojcKBSqziV0LO
-	 7odSFMS3yPcPUZpqvCVxvWTxuKuOs8q1B+/yCUbOl+HGWkNiJEITAtyK57z+sDLxIa
-	 2HS5VaBo0FO/vMGzM7ipr7diKa0CG9ei7DVD/mCwPaEBTknm0NPA3gpUe91TY02eUH
-	 fet15Ow7PqmtN0VT6hQ04ed0RK8KfT+U7BikPEX9ivE8Q1QwQdGkx+Qf5cwpwi4Ng/
-	 xK/1oCPstSEbYi/NOFu+HI+lMho0VU3/YQnYwzBPoal+G1JXSlEQbv+0u8Dc1JkYE7
-	 S8n1mTyfgsBtA==
-Date: Mon, 13 Apr 2026 20:20:07 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Liam R Howlett <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/49] mm/sparse: fix vmemmap accounting imbalance on
- memory hotplug error
-Message-ID: <ad0lx4jI0E2OZoAX@kernel.org>
-References: <9642F4D9-8F1B-47A4-90BE-C72BB8DE9A11@linux.dev>
- <48CF5603-D8E1-4C86-8554-E8BA03D195FB@linux.dev>
+	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
+	b=21hBwU+BE5DtaimTBJLsc8vdXBgL7FjYh8BifqiaFnFx7Vh65Y9djLJeeBtdtCr2rg0AaY
+	2h3btOo0cYKrX6HIm1T/sa0IjrldTAK3Qi45tB+81dcBeLkmVp9iLsdA7Tq/vrQKAPT+aL
+	xhL3/gnIu93uPRvpKTMQ4psmomCROvM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B60BD5BD3E;
+	Mon, 13 Apr 2026 17:43:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776102230; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
+	b=cKwV1QYz1GSOpXcoJnqcN01IEtlRs793+honbozuKFEC8VyeP3SkJtPP6t/oQgHWclBGM0
+	FUCX939RJ7zw0DgJeXe+G+xkHhqvaWcJ7pEWBC3PYuOGlO7XKwHIyofmhEImtDJUEcALkL
+	Sad0YRziyKt2CAt8eSsneiA9W1NChSM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776102230;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
+	b=rQe3Mkfb+UKAwYCDfjjuovY8Tr3CSJ19JO19jRWk3nIYkSYZoNgvHRHHWscAB3C3xgCGxG
+	aedN/zUVhwMAMDBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776102230; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
+	b=cKwV1QYz1GSOpXcoJnqcN01IEtlRs793+honbozuKFEC8VyeP3SkJtPP6t/oQgHWclBGM0
+	FUCX939RJ7zw0DgJeXe+G+xkHhqvaWcJ7pEWBC3PYuOGlO7XKwHIyofmhEImtDJUEcALkL
+	Sad0YRziyKt2CAt8eSsneiA9W1NChSM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776102230;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
+	b=rQe3Mkfb+UKAwYCDfjjuovY8Tr3CSJ19JO19jRWk3nIYkSYZoNgvHRHHWscAB3C3xgCGxG
+	aedN/zUVhwMAMDBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EEFE14AFE5;
+	Mon, 13 Apr 2026 17:43:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DCwUOFUr3Wm0QAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 13 Apr 2026 17:43:49 +0000
+Date: Mon, 13 Apr 2026 19:43:44 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Jane Chu <jane.chu@oracle.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
+	hughd@google.com, baolin.wang@linux.alibaba.com, peterx@redhat.com,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/6] hugetlb: make hugetlb_fault_mutex_hash() take
+ PAGE_SIZE index
+Message-ID: <ad0rUB4FuNUOJ1pN@localhost.localdomain>
+References: <20260409234158.837786-1-jane.chu@oracle.com>
+ <20260409234158.837786-4-jane.chu@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <48CF5603-D8E1-4C86-8554-E8BA03D195FB@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6F66C20011
-X-Stat-Signature: iwcywjwp6mm1iwyo8r14mi71dyx4ag35
+In-Reply-To: <20260409234158.837786-4-jane.chu@oracle.com>
+X-Stat-Signature: 8fognxh1qpgoxm9ng5mobm3z45u5xk1k
+X-Rspamd-Queue-Id: 73589C0009
 X-Rspam-User: 
-X-HE-Tag: 1776100818-162547
-X-HE-Meta: U2FsdGVkX18+lHtkgv2yQIC2karZamExYXEQi+VTMmPFmEJH0KKErJbhRNzKVL1hK/eqpJen6ovVSR71w8h3TpOUeZ6j8vJm7rm+fy2TrD7mF9Azx1+cGp9OcsH2tRjArGpyAMpfdsAbDSl3DYQajxAblPAJ7aPcxyZNvYQVorKdhkH//Qzk4L6DF0DpbEo0Ge9aRVJMaln3APYjjFr7nuzlIWrozxLAU/C8M3XisOGzgKHWtHJX4pYd9FVd2foALZ5EEdCsFHBujaf/j9foWVnY3a2xcoWH5nUzgWVX6J3V8TbMhFtyZP+klXZ/NHzzp5yNUClJNKKnsaWVx/heX1r4KcaZ9X9QiDphm7PP2Sd6CGH0IWSIiBP1f4+9x4ZstolagvIkEhnks0YGpZarJrUMCRsPIMS4Dj+L+vR889pWbKCkSzY08RfDk8R1MiPX74FaSoapIUis7gfrh8dadtqsZ4IECC0aOsHfIoCulhmY3Pc3ZdRCTAUD+MOeyzw9hJxGyvLSU/bJ5bqhFCOplkNU9GeexqdQvZmjLlRY7HMJr/nZ990sX532egfxB7koizEAJE0fg6IHfi5X+WEqQ/psCic+itBHfoDh/oa3tMryXSUKosCGBuTLbDSIkUvqT7eQ0wKdmIV3jzZzJ2sEEc3NMDMiYI//c9kyj8Z56hKNjit2op0lqwG7teKZd/2OEpzUu4nfOw+Q2UdAgx8Rtq4010cAa2EhaT/MDtjlfZFd9uz0ndfMei+LqN2IzZ7j7RGoiY4C20BgdCvwxkQJ0JDlH6ynpsSCfbvXQJZVu74YS2zPy34wWDrY/CPsEfydz2geBNqmE+uTRLKsM7NsxLCbhHLGQC7yu69fd8m/KJyVADhop1LEUtLgKI//5Y1dSyh+1KHLYljhTwylaImyrdA/EtXK3FkiyLbtOMBoflc1BYkvlTLraB9dMrem8WA6dhwjRgSTqWi4Tjzgfvn
- r7eNZx9s
- jQL+91mWiVi8ea/9j0V8vTScIgEW5SvxjrvSFZ97Ao6skwYDhiPnT6bY3q6jDoMZzUI9IO0C59L1f25eQMFaNKEVPD4A4fi1GJl/XrxLm4XHZfsWRqY9AhvFwGQxE534tlT+e7zLl3X2CgQ6LyRkFhnlTRLdO3rqhFJ1TJTxmzlXMurX850EC3VvTNIbpBr8ppAtiWxog0sRWp2cP8e9Esj+8JcL2tgk//spiNbgfhv6eKyg8k617jwi1S8EuSZfltQ/Z32OpzW6VJhyzlgLtZtgmog==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1776102232-954877
+X-HE-Meta: U2FsdGVkX19umfJ1ftezAl4UkbpOusdX+NCYNhau5FwPaAQ54bTedIHgsodmyqGJTx8DzbFEbv9Oupl0uNL8jxG5eRIK5YshF+c5p83yrpAGgH2TCrAjWHPZl3fWEOoQKoq0DH1+5+9baE4p4ET3avWflh8LD2NMzkqiuwJafu6stbE1phWyDk+ak6cyRi4kJ8ZQIGj/B5IlHJHIKAFKQqXybteegAcZUEHBRiN+0/poxu1lbnl5WbohtkAUalqhDLKU3KC1KUUZEgA7YDl4v8dxcdULm4vNAPDcsIcMb696KDcajB1KqRe6eUuFMomh4NkOqlk0NGXcEBTUsfU/ZL2BCLTkyYOqGLUvxZQ6geTJbtZ5H7fjjAGcIKMThsh3J4qCeZbDiB41DvSZUXkNRG39oufVKiN23fa1RDww3h7vdXsmI+ZVCJnDvPmNhvK8xnrGczcPJQLYYJIkw8rRM2XyKzsAnHK1ZZU9K7s6sDru1n2x8gpXAKdCncXU0J/LzJ3jx695WPAcrRzIjDQtwEUfNxdxjULUPxiFdv4lrperMG+Xl3+Ef9PYhtldJi9Yi31etC6mLtSxAbJdSSYj26nv9JkhGqN/3kmSSBOzy910nWplL5FuOmgQ/Z73SB3jzcat+ykOomgFnDCf0VnxPMXZdQ0z9bz+u6unwM/zCUFoFdG9b8LjiBcMzK7v0xg6U6UHtL9MhpDDfrf4Y/FBDXjpUxpGK5XewoVCdjtUzrrVpWVSlwbDvqvkrmPJFf4+NLWyka8skIGNrZESPjJWfPpVr3Zcf7wrbF94SXTb9H1+JKFen7G6zTfMZ9AFXXW5GlR9ShQwrbe4yGdnY5uV90FqOTOMjLmGbgPSiyoonpowSlL/SbLR7Mk845HHZWUQh5bXvUk4775v33y4Lw6caCPTjKrOJvvpNDHouNc8zdld9a+lP4IgmvC8gKrO5liB4Po2BnEKjr7nvZt/zGR
+ HsRjEp1B
+ nidhAchjTE1jH/H6P3fjRK/ILYJ87Q9QLGpBTTmdl/jHlmdxzcSXcAHjCc7+UZDaXhIeP6a1Cr3iKc0YcItSLEr3lgxH+Zwwyb5SW/C9yX9f+ribyK41z5W3SZYbgqWBo8a7ZrElFKDPeFGaX/LjFWjPlKAFtn+iNNMkA0E/PmVgpqitT4E6Yc3UiGQhZoQUqLfFI1/1oRVQhCPx2uBhQBia6u1Ek7Ugpu12IJTdAsst4i7EoEiHBr7umb6mtCt2rOPnhCMoRfsIaCn6DCUAcAyZ4mVgwCg/smYFA0l6DzHsfEm5kdqGHsbtDajxjgW19+2joO1KEzgijpBc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,57 +136,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 10:16:20PM +0800, Muchun Song wrote:
-> >> +++ b/mm/sparse-vmemmap.c
-> >> @@ -656,7 +656,13 @@ static struct page * __meminit populate_section_memmap(unsigned long pfn,
-> >>       unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
-> >>       struct dev_pagemap *pgmap)
-> >> {
-> >> -    return __populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
-> >> +    struct page *p = __populate_section_memmap(pfn, nr_pages, nid, altmap,
-> >> +                           pgmap);
-> >> +
-> >> +    if (p)
-> >> +        memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
-> > 
-> > We don’t increase the counter on failure, then
-> > 
-> >> +
-> >> +    return p;
-> >> }
-> >> 
-> >> static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
-> >> @@ -826,7 +832,6 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
-> >>       section_deactivate(pfn, nr_pages, altmap);
-> > 
-> > here section_deactivate() is called, which decrease the counter unconditionally,
-> > the issue still exists. We didn't fix anything.
-
-You are right, I missed it :/
-
-> >>       return ERR_PTR(-ENOMEM);
-> >>   }
-> >> -    memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
-> >> 
-> >>   return memmap;
-> >> }
-> >> 
-> >> 
-> >> Then we'll better follow "all or nothing" principle and won't have
-> >> exceptional cases in section_deactivate().
+On Thu, Apr 09, 2026 at 05:41:54PM -0600, Jane Chu wrote:
+> hugetlb_fault_mutex_hash() is used to serialize faults and page cache
+> operations on the same hugetlb file offset. The helper currently expects
+> its index argument in hugetlb page granularity, so callers have to
+> open-code conversions from the PAGE_SIZE-based indices commonly used
+> in the rest of MM helpers.
 > 
-> To follow  "all or nothing" principle here, I think we should not call
-> section_deactivate() to do the cleanup in section_activate().
+> Change hugetlb_fault_mutex_hash() to take a PAGE_SIZE-based index
+> instead, and perform the hugetlb-granularity conversion inside the helper.
+> Update all callers accordingly.
 > 
-> After all, if section_activate() didn't succeed, how can we use
-> section_deactivate() to release the resources? What do you think?
+> This makes the helper interface consistent with filemap_get_folio(),
+> and linear_page_index(), while preserving the same lock selection for
+> a given hugetlb file offset.
+> 
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> ---
+>  fs/hugetlbfs/inode.c | 19 ++++++++++---------
+>  mm/hugetlb.c         | 28 +++++++++++++++++++---------
+>  mm/memfd.c           | 11 ++++++-----
+>  mm/userfaultfd.c     |  7 +++----
+>  4 files changed, 38 insertions(+), 27 deletions(-)
+> 
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index cf79fb830377..e24e9bf54e14 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -575,7 +575,7 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+>  	struct address_space *mapping = &inode->i_data;
+>  	const pgoff_t end = lend >> PAGE_SHIFT;
+>  	struct folio_batch fbatch;
+> -	pgoff_t next, index;
+> +	pgoff_t next, idx;
+>  	int i, freed = 0;
+>  	bool truncate_op = (lend == LLONG_MAX);
+>  
+> @@ -586,15 +586,15 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
+>  			struct folio *folio = fbatch.folios[i];
+>  			u32 hash = 0;
+>  
+> -			index = folio->index >> huge_page_order(h);
+> -			hash = hugetlb_fault_mutex_hash(mapping, index);
+> +			hash = hugetlb_fault_mutex_hash(mapping, folio->index);
+>  			mutex_lock(&hugetlb_fault_mutex_table[hash]);
+>  
+>  			/*
+>  			 * Remove folio that was part of folio_batch.
+>  			 */
+> +			idx = folio->index >> huge_page_order(h);
+>  			remove_inode_single_folio(h, inode, mapping, folio,
+> -						  index, truncate_op);
+> +						  idx, truncate_op);
 
-Yeah, if we could pull "upopulate" from section_deactivate() that would be
-great.
- 
-> Thanks.
+Since this is the only place we call remove_inode_single_folio(), and that we do not
+the index (at least index >> huge_page_order()) directly in this function, would it not be
+better to make remove_inode_single_folio do the conversion itself? 
+
+Also, I am thinking out loud here but we do have a few places where we
+go: idx = index >> huge_page_order() to convert it into hugepage units, but the casual
+reader might be a bit puzzled about that.
+So, would it be worth to have implement an inline helper with an accurate name
+to do that? It might help whoever reads that?
+
 
 -- 
-Sincerely yours,
-Mike.
+Oscar Salvador
+SUSE Labs
 
