@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC648EBFD10
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B3F4EBFD10
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:44:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23C566B0089; Mon, 13 Apr 2026 03:43:58 -0400 (EDT)
+	id F355F6B0093; Mon, 13 Apr 2026 03:44:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 213B06B0092; Mon, 13 Apr 2026 03:43:58 -0400 (EDT)
+	id F0D536B0095; Mon, 13 Apr 2026 03:44:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A0D6B0093; Mon, 13 Apr 2026 03:43:58 -0400 (EDT)
+	id E229F6B0096; Mon, 13 Apr 2026 03:44:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 04D226B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:43:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ACD7CBDB85
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:43:57 +0000 (UTC)
-X-FDA: 84652743714.23.A093E21
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C42DA100012
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:43:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N8ruRDyl;
-	spf=pass (imf14.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D26F36B0093
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:44:08 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 80EA2E416F
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:44:08 +0000 (UTC)
+X-FDA: 84652744176.02.CE9B39B
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8F85D18000E
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:44:06 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QBpEFrdz;
+	spf=pass (imf06.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776066235;
+	s=arc-20220608; t=1776066246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2dq7A9F2uS9NBzcitrHUera4fwiqvquYPVtGYt+ZQHw=;
-	b=cyUwBfYeRtYDynJaf4G9dewfybaGRS9cRo/kY7wCCSG30fbK5k0DFWCvE9/xMh1G15Yhpc
-	3uPcvCOHTadaJixNpdOGHPhsSB5v/8kLHNB5m6m/siEyZlY4BruYojWStfaja6T3fieFyJ
-	dgouiMPPi14YdXRTFl18gKeEXUlSp3k=
+	bh=oFe08Ts/hypKtbjTki6Zi9pd0qwjzgX8Ya0BzZ0CJRU=;
+	b=HYZPpb6+ujM1SheEiWbRXTELv4LpYY8+DeMfKe4cy0y6wWr4Uq4RAqBJuZEMrlUQh0LF6i
+	jDxtgZzwiDfyAA5F3615EroG8YEMccHnr7DzNG0vBulzN8H5PlSBYn6cHeXmAMa3HdMUIf
+	M3iW7YHH2YSYTFX+fv1wsdCVZ2ee8FE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N8ruRDyl;
-	spf=pass (imf14.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QBpEFrdz;
+	spf=pass (imf06.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066235; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066246; a=rsa-sha256;
 	cv=none;
-	b=RtbcLdnLPpZ3ouIsSK5y/abD8R7n6TsW9fb7fgXOYbEqGW6ea3XPa4/FyWq3NUKlRteq47
-	gpsr0VXVDCdYHXJPAJseriefL3r5FFCtOz5TgQTWsktQkQXDpoLeO3EVrn7Tr6w8noTbpv
-	u52XAn/J5Nk4kFzD2rAYT0nyeMPsIhg=
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-12c20010f10so10473803c88.0
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:43:55 -0700 (PDT)
+	b=dHi2hxErWb3dM7WOUcKRDQxwr+GdauTtAasDsgAqcfiPo+d8ABeKv0sJxmaV6H1pR5Z24L
+	OvD09ZwZL4LrNJogLZ+xAPSX1P31sPd9Xn596MxWmDlb9Nn+Ze0cV/xIUL0jwrnQifyQq6
+	Kmt/E1NIji4qn9BZPu6yu0eYy6b5CCM=
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12c1a170a50so3667415c88.0
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:44:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776066234; x=1776671034; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776066245; x=1776671045; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2dq7A9F2uS9NBzcitrHUera4fwiqvquYPVtGYt+ZQHw=;
-        b=N8ruRDyljyhjmk+CutD4ey/dd3atXsi5nqw5pr/DJ4Ngi1ViLf696QxVJ3u6KHhpE/
-         wV1cUPV2Ac/CT4RdOxcUXuvfwYxI25EMPQsJcCjCU9Jx2hVMJLbeKHeIEPQNXVee2E1y
-         nHRGa0Jz++m3O34GG+yQg8+CaxUTKFG5K26eGeJ2trVkdzmNz1hdtqZUlyMrNWOer/S8
-         PLjeXIFRSZk/OO+X8jp6rZJ7oMYunlu0O5fxWPXwMn0zl4U/b/D+mWvhVZz2Lz3zMW0R
-         9maJ8LJiBqT/v11nvD/psx8ubER4UvXs5qvpnAd5rjeE0WYViKtMJhgsdwkkqSMmbVn0
-         cESg==
+        bh=oFe08Ts/hypKtbjTki6Zi9pd0qwjzgX8Ya0BzZ0CJRU=;
+        b=QBpEFrdz47UuUR7qL/XuMCckHFJNHT3/J9lFpPFTOjHyCZog6jEMaXG3y2UMp86270
+         VVHmrpxPnWJjGuJ9Cgs92Fp5Xad9mhNUCjklJH+c+nvpyH77hgHbWy2nygrJFcCau/bj
+         4CcJtzOADPB3px/FiDSXpNVOn8zHVYF7dKwKyaBLWXnRn84A++iVkEDUosErDmhXVzq4
+         g0V/6vxzyl/zibxUl08OdozWqhDiTij5mvfgh17+9WlYibcGw9M+5uD4M8JbFf8psjvn
+         vBPDX+o4LNVrV3zK2gRsU/T1WiCTuF7JMEAolLsJcD120dlUUoNxBsF8LpdA+lBbMbay
+         Z6rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776066234; x=1776671034;
+        d=1e100.net; s=20251104; t=1776066245; x=1776671045;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=2dq7A9F2uS9NBzcitrHUera4fwiqvquYPVtGYt+ZQHw=;
-        b=Ts+QAbOUBXcXBCwWY2IwoAt+45XiqEnv8M9Wdii6BlyHWQ8Pb3kroCyeUiCQf82kcQ
-         Ou5UusGceurGQeY2ciDOKy5AZJKCDG5ChW5YyNk/GZ3w92O1j6LN6xetVQUfZ1wERF8N
-         2V0+7BAn9G+UKtXjmfibqv2eNzzjAHo9bCB59DXHPKY3kqXT+bSyF2zZAbY73d5gzN7a
-         +MqUnv1ZYmZW3wKl6J7C95PYcr5Bfu6zAHSHIPM3a98L2hwBfKUEpVUgdmjx9ek8ryUj
-         7aBiQoYN2xgQ46n4pJyW1FDx9T+lQNggp0ORFFYLaTEPm8B8z+VCIDYx4XkuxUlSCVw6
-         JQ9g==
-X-Forwarded-Encrypted: i=1; AFNElJ+O+LVTPSwEzNaLRDXN60/Getww2AH/L8WvQP5BqGSYU0f//bRelfTjCYooJcftyFKip4YWuNSeAg==@kvack.org
-X-Gm-Message-State: AOJu0YzqrahLaMgDuCIoBzZj0bTzStJKOQNBlmnVeZe2IjPi0JedNNr7
-	wrD7r6uvw9jy+ALgiOZyZRP8l41gSm0aIwf1mG5rUb66p0Br5Vy+Q5uO+qocj8XM
-X-Gm-Gg: AeBDievYUPN/qbCwWo++I7NiZ3Qd6FkNmvgoKuM7WxTDM+8a4sKSq5RTKO8hvE7fVZD
-	xaUp/LvN+xMojglqayy1zo6o2ja+Wh5cyhHsmRZHyx1XFe1chuS+2jzJnR72YpnONMf7DKVH7ND
-	BHrRektT2Jtbc66UrxpDcq/KRzw7sd6a9cmgyPXWOQd7Cy9ofDFjx4nTlciQ2GgpWqWDehioHxZ
-	aTW0GA0CDkVk5nd9TB4CX2+05/FdJy85fhfQbPR0W4uLWY7xS3JxDvcKo1P85e1UoJCtDgQHkcp
-	mR0ogu22q9hc5+dR9Jn832UavisHpeeFcXtjBViuqfS2T1u1s0wxS3znaHepnUr4dzBxg808vbv
-	xkKJaTdhD9J4lrROIlxTUdDlwRb4KcZNa1unXCnBnvjnHxrLX5YUCJWacrOfyyqr6FbvOsTLlhJ
-	C7BBr0VzFkL32UZ6r+
-X-Received: by 2002:a05:7022:439f:b0:128:d5f1:d594 with SMTP id a92af1059eb24-12c34e7b83amr6713439c88.10.1776066234304;
-        Mon, 13 Apr 2026 00:43:54 -0700 (PDT)
+        bh=oFe08Ts/hypKtbjTki6Zi9pd0qwjzgX8Ya0BzZ0CJRU=;
+        b=MxQW4pY9yvurcWqF6DFHEbAKAUBxCozZmzwL3wEm11Svlw4sSaIu4y4/JfjW5bX5eB
+         c8rtGHniChb6TG6dHU+CVD7g86PIdzsjTRvXX7fn1BlbBs7+Ag0O5+F16pOxV8BW3rGN
+         9+T4gTQEFlmY6+iQY3TjUJ5uibNDqC9jkWanfjKw4iETBflcM0rG5/qltRwgCjc1Dygx
+         7Q7kNbzKU1D4KP4YRpVOI9LbbgylB3TUOuVpnAVpJJGoXJnaB7W0ARWCuJxt3b5kdhCR
+         X0MKfCgbepIwTcLIl+HsCz7XZC1K9thC0LHXdK1TcIddS75I3TkKMCj+V/PELnOKJBMo
+         x5/A==
+X-Forwarded-Encrypted: i=1; AFNElJ8prfJNWYg5Q7w0rFTzeZEvC/+iP6c1R/L9JSsHWqu4544eWhhbQBQUw+DAGWctEIo+csiUPBR+YQ==@kvack.org
+X-Gm-Message-State: AOJu0YwusDJzsyUxpBXfsAC1x6SquKSPlQLWQCKUX3avKobjWfKuDZVR
+	wdXyW0RVnJYb4/8Gstqh3aum9nAd/4r3Y/tyVjUyD1aKPZU+HruFuJpXIN/nKqTj
+X-Gm-Gg: AeBDievUOQ3e3ABLyPzVOF36+YTg1E0O0Ks5q5J7cwftDnewjnWD+dDd8RNyJ2+uQwV
+	jFi9H4opdt8jySYZqqQKyUkJWMRo4LnIG/FFL4sr0y3FY0FvhdrCys412Rsu5kvYnU43wxrBLlf
+	R5Z1Ho5gMhVjOkj/hY1Ncxli1NEDY0Sg0gCkuE19Bgqs6LK0fmDhw2hmJnY1bMuJ7y+EUj6MMej
+	l7KnLifL4/fsfqLCyIrBEWWZF3fU2lfR7TAulCuT7JlHssJAwbCGqxG2Nmno4M4GVffgOdsw3Zz
+	xHWQ6CfhSan2u53OpEGtmR8NmKJoSygG5fBF6ekf1PbbyNzo6EElyI9KHkC74U/1elhXL5F4/A4
+	K4WmfHcuCXyPyh3A0uNzo/aJdL+gDNbDd4Mccp4i/UILX7I/uKmKzikH1Vb4RofcKR6HB7sNe74
+	WlfvTa2mABIy66I4Le
+X-Received: by 2002:a05:7022:ec1:b0:127:5cd6:fa45 with SMTP id a92af1059eb24-12c34ea2415mr6243136c88.14.1776066245003;
+        Mon, 13 Apr 2026 00:44:05 -0700 (PDT)
 Received: from wujing. ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.43.45
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.43.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 00:43:54 -0700 (PDT)
+        Mon, 13 Apr 2026 00:44:04 -0700 (PDT)
 From: Qiliang Yuan <realwujing@gmail.com>
-Date: Mon, 13 Apr 2026 15:43:09 +0800
-Subject: [PATCH v2 03/12] rcu: Support runtime NOCB initialization and
- dynamic offloading
+Date: Mon, 13 Apr 2026 15:43:10 +0800
+Subject: [PATCH v2 04/12] tick/nohz: Transition to dynamic full dynticks
+ state management
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-wujing-dhm-v2-3-06df21caba5d@gmail.com>
+Message-Id: <20260413-wujing-dhm-v2-4-06df21caba5d@gmail.com>
 References: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
 In-Reply-To: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -129,14 +129,14 @@ Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>
 X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: C42DA100012
-X-Stat-Signature: oie66hjrt7tdhgszby71t7k6o4tba5jn
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8F85D18000E
+X-Stat-Signature: oihaf7gx9tkd1zxpsykhpsas4e7s3sto
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776066235-339909
-X-HE-Meta: U2FsdGVkX19t8/gEdO3j3on2GzfVx27dadIfPcp/oWTpezwUUbqvm+8gJkQW9MUD84bboCGQ4it17em6ozbsdZlXGOsszX5ESjSMiNx2iQSQ3W5BjKImU/0bfZ24MYRDTTHq0Cf/pLb0gyppcvxE20SLEpIwZ7i1TwndVTX9SyQb5gr8xgRr+jkpimVD3K65sqCp2lQq11hd9V9zw7cBlno+rBa4T6qBBTk68cNk7koPN0bIE10vtb4sB4JUztxZNi8mmMIz2vvdVJRwunz+oAl7NBat/b3L91qqy+0nqSAdMkprinp6a+eM0AUlWwobHbzhjBZETAUWM5L72RZ9iT021wXCo+Nu7NdkqrDB4OtcnT7+8jWueGm93+ZwRT82FNX4VmyNyeePAJX1nFz9C7fAgzZoUPi+5BdlSkcm/SPmuYPrb6KPZmXXWVYQivIslyPCMWjn27xZUxgx6bujWdd1fnxmoDx9EZg2LP4KIZ/XLre4gjgg0KD/4cOZTTPEZ9pQImaIvfzGHHAcvuKNK5GrWaEs40/t0DaU4v07xG6q+MQWYNTgZiSnkQ7zVW8rcaItblNcU1pH0yfGysROMT9EB8IzSNgYOyhL0epylsp0M+F2qdyGP+rDtoZbi76jy1qgdcTeumHmg1ijH1ylqcwW0wT30+rCxHx+JM4V0rfgnrvIba2hQ8S3Zixy35PBSHL1reSAkeL+EvSnCnNyS0f9tkzJ236yJXrf8l6CMg90jBDHX6Aug9NLjHuD8FkhdEpP0gAp5yG5wJSwWOlUGDBlhOJ0LEog/qgMPE+zwRbzztLeiDT6pN0PgOeSnHxwtknXxesC7UPR+4PRfdC9LJOWZXR440IvGz4uP3ksasrN/32+zfOk9BBNDPYNGBnsT2R5cvNs7XmY5CwxWf8hzVjsKE4wLt42MEsQp4+ebKc158ljo4rpkG6CugPNNscvUN+/5vgyFM6qBezBYxV
- Aqu7CEg6
- j9hWbALyeve9oEgW9Xtp1YSd5F0Lbyu+fD3QaRr5zR3Mxe+YA73XTdr4KP9Ace0ukVQkof7wBHReFSDW6Nq3ffvAlR2tuiYC3QAP3Du2Lm2VAa6+orpfs2oEw/q+HqghG9WNoGoubOkhXlkiA+x9xK1WzvxePPYxb9hrsyhZftW5TKw5nLcvAHeH/2rvkQFoT3ZmnrGc3lu9a8ZkueYY7LmRV33v4diMc+wB6UH87kmrSJuN6ubr/ksHGIYP6ozfGrBERjo5cmJsOsklwT7v+oVHNG0xeSoWtzUJrfHrDcrEAXVqA1+H1Psj9iCxrv+ctkLwBtErBxF99dbz1T1+rmTr4+/FSS1IxEa2pMh7jh21uNBKqbFkUkL3BFnlWUkiP5BmGWbXuRRbL0f2OSQF1c1P5LCUWokp+8CNo/XwzAX8/td/TzE6YB90Lfw1+mD0nJAi7wOauPOTwIdATbozq1D/o8EOMnNRS63YtmPjcBXN99C+1x7w5CL7kdWNY3DPEuhqj
+X-HE-Tag: 1776066246-762855
+X-HE-Meta: U2FsdGVkX1/asQ70goCIPzJFwLbpm1VHvHiohxvmgEsEH8pXlTs8I+JUpE+PAFP9GwquZyv/JBjtF6PdOYCqYA1ipWbcQ9A3FHVBzOOHKyFE4UvjW5gYLgm8LbWkIT9u3a4uzFCcCR9AKplEjV9xVIPsn0ExGJ2Fd6Log1rrrMYRsFAjEm0JWfWLyNpqgvkR+bq1RrisHIP/DbeVUicFuzsb15NEZ3KKooTteArNyZGDovVQC/oVwaa7elgEL4bz1uUlbedpfnpch7omLlKkpjtNSCxNlt93HNSdzU7+fWhqT/5bE4jkNPEErBpF+tNYEo4bw8kyKIly0OYVV5xfZtVmd/5q64QlgoFQXukhUcn1KjzvCXuVqjH5MPs115sr5ku/A4zN+TNnZPwcwL5EWpm7Niz2LkYOY2uJ1cdSzbJG87ubVCggYedLaryneccw6kvNnmMP6N0ermtd2EekMG0BkGBABXw7kqTGP6kHxtNASx5bIn5KFBjrA7U+T0MyZupFRd1+IOsWK/d97MD0+cqAQnsQAyLAS0nzozD0ZPhaTpD3Ylq02UfSt5dtx+zZ0ZbE+gmMGpkx3NN6YfgLHNwCyyIuWg81RaPsqpApo4S6pEDNE/eklv2obl1wmpIawtLk8Tgl63OREhwRuTSV0X2UhqAmqNAX0fm9hswy0FV+34WMRQ88gnj/1mss1zqaKAWlLT+Wixa1GLNj3WKW1iMgGOSlBdx0wyGhxOIGFvaS+XcjNHIzfWVfxay/cCm9lnUzGXJl3fLSY/YihQj3SGVd/yV2WHusRc3tTs9pBCbPchrk8A94w3YHvr6EixEPWsVgEpMJ/cgvSe0HO4uRegUO9+uolz5IuXYpThTMYe52t5tfw6fdbcLLoDydsf4VmPFfV5fkEq0TOUpl5+yDtD4CaaSQDeGXxl/K8lNfmxUvAaXo3SiqqD8h10UMUGgfxxUcIms8gA4kNUTtYMR
+ P/Kh0afR
+ 8wiHbC839u0iuN8PwE0U/J6C0l9RZWfLmQn9mQenVSSlVLoTpLPqMMKJab5Ml9o2ONEdAenuKyZRq97nlJOqObrSWD7DFBoUJs/Js7uaeW+N5zzG7zCDvrk6DeVvOacF8EjaaWbHeZEawPj/IXdq9LCs6qecEx/vWgGY4nTHq2QdqHMwbp5Ywc7Ekf09QTs3Xt1QBQUW5edg3UXgwDnoQDI3TdpNDcgqlgyDbtoL+leYPMGDT5CVAhyoNvTNphHQOCFmrNv9im5nEhiGOpD0rsyhknMChTvg0RutUBTebTUJ+JOfXc3VVceyh9XFqONmKkr2w5LWMS2fR9Z6N44F/DOdOnkGzyPDKYw7PmmOK2thW2FFy5gGwcPq4mGhLiubuZ2RvKJ29VJX0D7Iza4ZaeR/KTsfhR2XRuogVfJEdOJOvBNMMU9j+W3mVfuX+WShqRgCM9MyROL5yqYo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,224 +145,218 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Context:
-The RCU Non-Callback (NOCB) infrastructure traditionally requires
-boot-time parameters (e.g., rcu_nocbs) to allocate masks and spawn
-management kthreads (rcuog/rcuo). This prevents systems from activating
-offloading on-demand without a reboot.
+Full dynticks (NOHZ_FULL) is typically a static configuration determined
+at boot time. DHEI extends this to support runtime activation.
 
 Problem:
-Dynamic Housekeeping Management requires CPUs to transition to
-NOCB mode at runtime when they are newly isolated. Without boot-time
-setup, the NOCB masks are unallocated, and critical kthreads are missing,
-preventing effective tick suppression and isolation.
+Switching to NOHZ_FULL at runtime requires careful synchronization
+of context tracking and housekeeping states. Re-invoking setup logic
+multiple times could lead to inconsistencies or warnings, and RCU
+dependency checks often prevented tick suppression in Zero-Conf setups.
 
 Solution:
-Refactor RCU initialization to support dynamic on-demand setup.
-- Introduce rcu_init_nocb_dynamic() to allocate masks and organize
-  kthreads if the system wasn't initially configured for NOCB.
-- Introduce rcu_housekeeping_reconfigure() to iterate over CPUs and
-  perform safe offload/deoffload transitions via hotplug sequences
-  (cpu_down -> offload -> cpu_up) when a housekeeping cpuset triggers
-  a notifier event.
-- Remove __init from rcu_organize_nocb_kthreads to allow runtime
-  reconfiguration of the callback management hierarchy.
+- Replace the static tick_nohz_full_enabled() checks with a dynamic
+  tick_nohz_full_running state variable.
+- Refactor tick_nohz_full_setup to be safe for runtime invocation,
+  adding guards against re-initialization and ensuring IRQ work
+  interrupt support.
+- Implement boot-time pre-activation of context tracking (shadow
+  init) for all possible CPUs to avoid instruction flow issues during
+  dynamic transitions.
+- Hook into housekeeping_notifier_list to update NO_HZ states dynamically.
 
-This enables a true "Zero-Conf" isolation experience where any CPU
-can be fully isolated at runtime regardless of boot parameters.
+This provides the core state machine for reliable, on-demand tick
+suppression and high-performance isolation.
 
 Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
 ---
- kernel/rcu/rcu.h       |  4 +++
- kernel/rcu/tree.c      | 75 ++++++++++++++++++++++++++++++++++++++++++++++++++
- kernel/rcu/tree.h      |  2 +-
- kernel/rcu/tree_nocb.h | 31 +++++++++++++--------
- 4 files changed, 100 insertions(+), 12 deletions(-)
+ kernel/time/tick-sched.c | 130 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 105 insertions(+), 25 deletions(-)
 
-diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
-index 9b10b57b79ada..282874443c96b 100644
---- a/kernel/rcu/rcu.h
-+++ b/kernel/rcu/rcu.h
-@@ -663,8 +663,12 @@ unsigned long srcu_batches_completed(struct srcu_struct *sp);
- #endif // #else // #ifdef CONFIG_TINY_SRCU
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index f7907fadd63f2..23d69d7d44538 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -27,6 +27,7 @@
+ #include <linux/posix-timers.h>
+ #include <linux/context_tracking.h>
+ #include <linux/mm.h>
++#include <linux/sched/isolation.h>
  
- #ifdef CONFIG_RCU_NOCB_CPU
-+void rcu_init_nocb_dynamic(void);
-+void rcu_spawn_cpu_nocb_kthread(int cpu);
- void rcu_bind_current_to_nocb(void);
- #else
-+static inline void rcu_init_nocb_dynamic(void) { }
-+static inline void rcu_spawn_cpu_nocb_kthread(int cpu) { }
- static inline void rcu_bind_current_to_nocb(void) { }
- #endif
+ #include <asm/irq_regs.h>
  
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 55df6d37145e8..84c8388cf89a1 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -4928,4 +4928,79 @@ void __init rcu_init(void)
- #include "tree_stall.h"
- #include "tree_exp.h"
- #include "tree_nocb.h"
+@@ -624,13 +625,25 @@ void __tick_nohz_task_switch(void)
+ /* Get the boot-time nohz CPU list from the kernel parameters. */
+ void __init tick_nohz_full_setup(cpumask_var_t cpumask)
+ {
+-	alloc_bootmem_cpumask_var(&tick_nohz_full_mask);
++	if (!tick_nohz_full_mask) {
++		if (!slab_is_available())
++			alloc_bootmem_cpumask_var(&tick_nohz_full_mask);
++		else
++			zalloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL);
++	}
+ 	cpumask_copy(tick_nohz_full_mask, cpumask);
+ 	tick_nohz_full_running = true;
+ }
+ 
+ bool tick_nohz_cpu_hotpluggable(unsigned int cpu)
+ {
++	/*
++	 * Allow all CPUs to go down during shutdown/reboot to avoid
++	 * interfering with the final power-off sequence.
++	 */
++	if (system_state > SYSTEM_RUNNING)
++		return true;
 +
-+#ifdef CONFIG_SMP
-+static int rcu_housekeeping_reconfigure(struct notifier_block *nb,
-+					unsigned long action, void *data)
+ 	/*
+ 	 * The 'tick_do_timer_cpu' CPU handles housekeeping duty (unbound
+ 	 * timers, workqueues, timekeeping, ...) on behalf of full dynticks
+@@ -646,45 +659,112 @@ static int tick_nohz_cpu_down(unsigned int cpu)
+ 	return tick_nohz_cpu_hotpluggable(cpu) ? 0 : -EBUSY;
+ }
+ 
++static int tick_nohz_housekeeping_reconfigure(struct notifier_block *nb,
++					     unsigned long action, void *data)
 +{
 +	struct housekeeping_update *upd = data;
-+	struct task_struct *t;
 +	int cpu;
 +
-+	if (action != HK_UPDATE_MASK || upd->type != HK_TYPE_RCU)
-+		return NOTIFY_OK;
++	if (action == HK_UPDATE_MASK && upd->type == HK_TYPE_TICK) {
++		cpumask_var_t non_housekeeping_mask;
 +
-+	rcu_init_nocb_dynamic();
++		if (!alloc_cpumask_var(&non_housekeeping_mask, GFP_KERNEL))
++			return NOTIFY_BAD;
 +
-+	for_each_possible_cpu(cpu) {
-+		struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
-+		bool isolated = !cpumask_test_cpu(cpu, upd->new_mask);
-+		bool offloaded = rcu_rdp_is_offloaded(rdp);
++		cpumask_andnot(non_housekeeping_mask, cpu_possible_mask, upd->new_mask);
 +
-+		if (isolated && !offloaded) {
-+			/* Transition to NOCB */
-+			pr_info("rcu: CPU %d transitioning to NOCB mode\n", cpu);
-+			if (cpu_online(cpu)) {
-+				remove_cpu(cpu);
-+				rcu_spawn_cpu_nocb_kthread(cpu);
-+				rcu_nocb_cpu_offload(cpu);
-+				add_cpu(cpu);
-+			} else {
-+				rcu_spawn_cpu_nocb_kthread(cpu);
-+				rcu_nocb_cpu_offload(cpu);
-+			}
-+		} else if (!isolated && offloaded) {
-+			/* Transition to CB */
-+			pr_info("rcu: CPU %d transitioning to CB mode\n", cpu);
-+			if (cpu_online(cpu)) {
-+				remove_cpu(cpu);
-+				rcu_nocb_cpu_deoffload(cpu);
-+				add_cpu(cpu);
-+			} else {
-+				rcu_nocb_cpu_deoffload(cpu);
++		if (!tick_nohz_full_mask) {
++			if (!zalloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL)) {
++				free_cpumask_var(non_housekeeping_mask);
++				return NOTIFY_BAD;
 +			}
 +		}
++
++		/* Kick all CPUs to re-evaluate tick dependency before change */
++		for_each_online_cpu(cpu)
++			tick_nohz_full_kick_cpu(cpu);
++
++		cpumask_copy(tick_nohz_full_mask, non_housekeeping_mask);
++		tick_nohz_full_running = !cpumask_empty(tick_nohz_full_mask);
++
++		/*
++		 * If nohz_full is running, the timer duty must be on a housekeeper.
++		 * If the current timer CPU is not a housekeeper, or no duty is assigned,
++		 * pick the first housekeeper and assign it.
++		 */
++		if (tick_nohz_full_running) {
++			int timer_cpu = READ_ONCE(tick_do_timer_cpu);
++			if (timer_cpu == TICK_DO_TIMER_NONE ||
++			    !cpumask_test_cpu(timer_cpu, upd->new_mask)) {
++				int next_timer = cpumask_first(upd->new_mask);
++				if (next_timer < nr_cpu_ids)
++					WRITE_ONCE(tick_do_timer_cpu, next_timer);
++			}
++		}
++
++		/* Kick all CPUs again to apply new nohz full state */
++		for_each_online_cpu(cpu)
++			tick_nohz_full_kick_cpu(cpu);
++
++		free_cpumask_var(non_housekeeping_mask);
 +	}
-+
-+	t = READ_ONCE(rcu_state.gp_kthread);
-+	if (t)
-+		housekeeping_affine(t, HK_TYPE_RCU);
-+
-+#ifdef CONFIG_TASKS_RCU
-+	t = get_rcu_tasks_gp_kthread();
-+	if (t)
-+		housekeeping_affine(t, HK_TYPE_RCU);
-+#endif
-+
-+#ifdef CONFIG_TASKS_RUDE_RCU
-+	t = get_rcu_tasks_rude_gp_kthread();
-+	if (t)
-+		housekeeping_affine(t, HK_TYPE_RCU);
-+#endif
 +
 +	return NOTIFY_OK;
 +}
 +
-+static struct notifier_block rcu_housekeeping_nb = {
-+	.notifier_call = rcu_housekeeping_reconfigure,
++static struct notifier_block tick_nohz_housekeeping_nb = {
++	.notifier_call = tick_nohz_housekeeping_reconfigure,
 +};
 +
-+static int __init rcu_init_housekeeping_notifier(void)
-+{
-+	housekeeping_register_notifier(&rcu_housekeeping_nb);
-+	return 0;
-+}
-+late_initcall(rcu_init_housekeeping_notifier);
-+#endif
-+
- #include "tree_plugin.h"
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index 7dfc57e9adb18..f3d31918ea322 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -517,7 +517,7 @@ static void rcu_nocb_unlock_irqrestore(struct rcu_data *rdp,
- 				       unsigned long flags);
- static void rcu_lockdep_assert_cblist_protected(struct rcu_data *rdp);
- #ifdef CONFIG_RCU_NOCB_CPU
--static void __init rcu_organize_nocb_kthreads(void);
-+static void rcu_organize_nocb_kthreads(void);
- 
- /*
-  * Disable IRQs before checking offloaded state so that local
-diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
-index b3337c7231ccb..36f6c9be937aa 100644
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -1259,6 +1259,22 @@ lazy_rcu_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
- }
- #endif // #ifdef CONFIG_RCU_LAZY
- 
-+void rcu_init_nocb_dynamic(void)
-+{
-+	if (rcu_state.nocb_is_setup)
-+		return;
-+
-+	if (!cpumask_available(rcu_nocb_mask)) {
-+		if (!zalloc_cpumask_var(&rcu_nocb_mask, GFP_KERNEL)) {
-+			pr_info("rcu_nocb_mask allocation failed, dynamic offloading disabled.\n");
-+			return;
-+		}
-+	}
-+
-+	rcu_state.nocb_is_setup = true;
-+	rcu_organize_nocb_kthreads();
-+}
-+
- void __init rcu_init_nohz(void)
+ void __init tick_nohz_init(void)
  {
- 	int cpu;
-@@ -1276,15 +1292,8 @@ void __init rcu_init_nohz(void)
- 		cpumask = cpu_possible_mask;
+ 	int cpu, ret;
  
- 	if (cpumask) {
--		if (!cpumask_available(rcu_nocb_mask)) {
--			if (!zalloc_cpumask_var(&rcu_nocb_mask, GFP_KERNEL)) {
--				pr_info("rcu_nocb_mask allocation failed, callback offloading disabled.\n");
--				return;
--			}
--		}
+-	if (!tick_nohz_full_running)
+-		return;
 -
-+		rcu_init_nocb_dynamic();
- 		cpumask_or(rcu_nocb_mask, rcu_nocb_mask, cpumask);
--		rcu_state.nocb_is_setup = true;
+-	/*
+-	 * Full dynticks uses IRQ work to drive the tick rescheduling on safe
+-	 * locking contexts. But then we need IRQ work to raise its own
+-	 * interrupts to avoid circular dependency on the tick.
+-	 */
+-	if (!arch_irq_work_has_interrupt()) {
+-		pr_warn("NO_HZ: Can't run full dynticks because arch doesn't support IRQ work self-IPIs\n");
+-		cpumask_clear(tick_nohz_full_mask);
+-		tick_nohz_full_running = false;
+-		return;
++	if (!tick_nohz_full_mask) {
++		if (!slab_is_available())
++			alloc_bootmem_cpumask_var(&tick_nohz_full_mask);
++		else
++			zalloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL);
  	}
  
- 	if (!rcu_state.nocb_is_setup)
-@@ -1344,7 +1353,7 @@ static void __init rcu_boot_init_nocb_percpu_data(struct rcu_data *rdp)
-  * rcuo CB kthread, spawn it.  Additionally, if the rcuo GP kthread
-  * for this CPU's group has not yet been created, spawn it as well.
-  */
--static void rcu_spawn_cpu_nocb_kthread(int cpu)
-+void rcu_spawn_cpu_nocb_kthread(int cpu)
- {
- 	struct rcu_data *rdp = per_cpu_ptr(&rcu_data, cpu);
- 	struct rcu_data *rdp_gp;
-@@ -1416,7 +1425,7 @@ module_param(rcu_nocb_gp_stride, int, 0444);
- /*
-  * Initialize GP-CB relationships for all no-CBs CPU.
-  */
--static void __init rcu_organize_nocb_kthreads(void)
-+static void rcu_organize_nocb_kthreads(void)
- {
- 	int cpu;
- 	bool firsttime = true;
-@@ -1668,7 +1677,7 @@ static bool do_nocb_deferred_wakeup(struct rcu_data *rdp)
- 	return false;
- }
+-	if (IS_ENABLED(CONFIG_PM_SLEEP_SMP) &&
+-			!IS_ENABLED(CONFIG_PM_SLEEP_SMP_NONZERO_CPU)) {
+-		cpu = smp_processor_id();
++	housekeeping_register_notifier(&tick_nohz_housekeeping_nb);
  
--static void rcu_spawn_cpu_nocb_kthread(int cpu)
-+void rcu_spawn_cpu_nocb_kthread(int cpu)
- {
- }
+-		if (cpumask_test_cpu(cpu, tick_nohz_full_mask)) {
+-			pr_warn("NO_HZ: Clearing %d from nohz_full range "
+-				"for timekeeping\n", cpu);
+-			cpumask_clear_cpu(cpu, tick_nohz_full_mask);
++	if (tick_nohz_full_running) {
++		/*
++		 * Full dynticks uses IRQ work to drive the tick rescheduling on safe
++		 * locking contexts. But then we need IRQ work to raise its own
++		 * interrupts to avoid circular dependency on the tick.
++		 */
++		if (!arch_irq_work_has_interrupt()) {
++			pr_warn("NO_HZ: Can't run full dynticks because arch doesn't support IRQ work self-IPIs\n");
++			cpumask_clear(tick_nohz_full_mask);
++			tick_nohz_full_running = false;
++			goto out;
+ 		}
++
++		if (IS_ENABLED(CONFIG_PM_SLEEP_SMP) &&
++				!IS_ENABLED(CONFIG_PM_SLEEP_SMP_NONZERO_CPU)) {
++			cpu = smp_processor_id();
++
++			if (cpumask_test_cpu(cpu, tick_nohz_full_mask)) {
++				pr_warn("NO_HZ: Clearing %d from nohz_full range "
++					"for timekeeping\n", cpu);
++				cpumask_clear_cpu(cpu, tick_nohz_full_mask);
++			}
++		}
++
++		pr_info("NO_HZ: Full dynticks CPUs: %*pbl.\n",
++			cpumask_pr_args(tick_nohz_full_mask));
+ 	}
  
+-	for_each_cpu(cpu, tick_nohz_full_mask)
++out:
++	for_each_possible_cpu(cpu)
+ 		ct_cpu_track_user(cpu);
+ 
+ 	ret = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
+ 					"kernel/nohz:predown", NULL,
+ 					tick_nohz_cpu_down);
+ 	WARN_ON(ret < 0);
+-	pr_info("NO_HZ: Full dynticks CPUs: %*pbl.\n",
+-		cpumask_pr_args(tick_nohz_full_mask));
+ }
+ #endif /* #ifdef CONFIG_NO_HZ_FULL */
+ 
+@@ -1209,7 +1289,7 @@ static bool can_stop_idle_tick(int cpu, struct tick_sched *ts)
+ 	if (unlikely(report_idle_softirq()))
+ 		return false;
+ 
+-	if (tick_nohz_full_enabled()) {
++	if (tick_nohz_full_running) {
+ 		int tick_cpu = READ_ONCE(tick_do_timer_cpu);
+ 
+ 		/*
 
 -- 
 2.43.0
