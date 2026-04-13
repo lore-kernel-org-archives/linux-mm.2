@@ -4,132 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F209F34C63
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 16:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F167F34C65
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 16:29:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B14966B0088; Mon, 13 Apr 2026 12:22:59 -0400 (EDT)
+	id AD0D56B0088; Mon, 13 Apr 2026 12:29:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC5766B008A; Mon, 13 Apr 2026 12:22:59 -0400 (EDT)
+	id A816C6B008A; Mon, 13 Apr 2026 12:29:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B4886B0092; Mon, 13 Apr 2026 12:22:59 -0400 (EDT)
+	id 997846B0092; Mon, 13 Apr 2026 12:29:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 872566B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:22:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2AA508A89E
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:22:59 +0000 (UTC)
-X-FDA: 84654051678.18.4F7B0CF
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C2C981C0003
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:22:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=A28NYyPd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2QuI98n4;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bRSHlpkZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qNcDcJav;
-	spf=pass (imf21.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8672B6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:29:40 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 15372576DE
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:29:40 +0000 (UTC)
+X-FDA: 84654068520.10.386AFA2
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 33A7B4000B
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:29:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dPYLrY9m;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of charsyam@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=charsyam@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776097778; a=rsa-sha256;
+	cv=none;
+	b=AL47Jz67m9L2wqqmTLYOFchyfh7AFOiNCqq2ngw/Z/I77C3Srxq0DRmBhow1ZXzyNKHp6f
+	0MvaY9hPvg4vQBBQNvW+pazeav47wGug4mFsa3BTFHlN/TYSmCsghnQt6bpKGomHmBbYP+
+	cbDGp7GLsRI0/3V1Cc0mFrSXO7DRAMU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dPYLrY9m;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of charsyam@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=charsyam@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776097377;
+	s=arc-20220608; t=1776097778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vJywZqPScSCeelbGKYRa8WdXsgW84f3OfB827znek/w=;
-	b=IojjbwptFPdzj5VHTQadUK5oHzcstkpFVc4AUOODPktz/q0F7Mms2fDSDenFp17yeHGiY1
-	RlaNH4ri2YKkXTKFf6MH06NvbqoWv058AGTMecNReG2ROn4N9wkAKaCF1P5lC9B+XVcYtT
-	zRtCLYhPUljcq4NsqzUxHtZpcZbpSrI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776097377; a=rsa-sha256;
-	cv=none;
-	b=0PkYEvchDOglZkhOioMxzlXPYU4trcVWADmcv5W4skZYM+j0r6itpBqnExXAn4//9BAMD4
-	5D6CUX344/Xf1c5HRit7ccTxAHW8ZU12onel8W7LdkbFc87a9C0Ka50lO8ecdZAfRTzT5B
-	xiXn/5Xo9NsPuyARfp1NxN1c177/CIE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=A28NYyPd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2QuI98n4;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bRSHlpkZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qNcDcJav;
-	spf=pass (imf21.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DBD035BD3E;
-	Mon, 13 Apr 2026 16:22:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776097375; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vJywZqPScSCeelbGKYRa8WdXsgW84f3OfB827znek/w=;
-	b=A28NYyPdZr59mvSUZVD7dcI9kCxwBBuqVJgGyDSWIVuCbpojmvQRbuf3yuQIT9SmDVvxsh
-	R3FRCM/SEDnCcUilk6UymEWIycCdcr3U3BOk+45+4UGYNEToHnHv7vclxDis2aOm40J+qI
-	xClATTVu0T9CVu6Ttlqkf3UK917EB5w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776097375;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vJywZqPScSCeelbGKYRa8WdXsgW84f3OfB827znek/w=;
-	b=2QuI98n4tBOsbq597cJ7xOmEnecZU8M67S1CiDHlV4baDyS6xwoA9kl85GcRgDsbmthdIk
-	m5YYeFy4dyzyvqCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776097374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vJywZqPScSCeelbGKYRa8WdXsgW84f3OfB827znek/w=;
-	b=bRSHlpkZ9MJwpPz7DgnKDNJg3c9pMB7TckUNA/AKDnnZUqydX6lwJfnjLD8CG9ayyEUFm7
-	iPmjZvUZfl7lRhzYwdJ+2pTa1gOcyrJze9M70VK/UqrkHuCSMV1xwvoJ9gi/9w1rdsPyqz
-	DjIAVJ5WN4RyVEBJvPS7B+DXyboGYyY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776097374;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vJywZqPScSCeelbGKYRa8WdXsgW84f3OfB827znek/w=;
-	b=qNcDcJav7F5nEiAdg7Iy/+nFIdLbNeO+F8B9br4AUyJq2SMYzLt61zpt6eWWNyIv9EnrDr
-	hCBHWBqZjuS9FCDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 209FA4AF94;
-	Mon, 13 Apr 2026 16:22:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id D8LOBV4Y3WlqcQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 13 Apr 2026 16:22:54 +0000
-Date: Mon, 13 Apr 2026 18:22:44 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Jane Chu <jane.chu@oracle.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
-	hughd@google.com, baolin.wang@linux.alibaba.com, peterx@redhat.com,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/6] hugetlb: open-code hugetlb folio lookup index
- conversion
-Message-ID: <ad0YVH4EVzi62yML@localhost.localdomain>
-References: <20260409234158.837786-1-jane.chu@oracle.com>
- <20260409234158.837786-2-jane.chu@oracle.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=GxOI/4URINQL23ceJIk4nIIA53W3WmBZxkLhHAUmWr4=;
+	b=PQ//n2BKKQgoiIaFJ5IEP9vDwNm8VS07x7oAjBIFIevCBZmcCI/hDKPhUhZMHZtCAdPKby
+	0L2YbOJv9YHbZ4QlvEtDEoROzWw9Fr2cJgsxobnKSTmq9jWMzag/jyXX0TEM4XNJWSR4Ut
+	s5uWFCpy92szwjtmrczLu7UNQl+SBAw=
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c6e85f76efeso263254a12.1
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:29:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776097777; x=1776702577; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GxOI/4URINQL23ceJIk4nIIA53W3WmBZxkLhHAUmWr4=;
+        b=dPYLrY9mVJ3YsAYAQYg/iHvBMlQVzuHsUwNAFcw1JY3v2AC24w+RiIb1TVJze0kMb2
+         a1Zgc08jHDxdxvQGFlNlTiLSBbI8yIJqfoQ3AL/iEHBgltpAcnlmrt4vg0+Id1CONGPM
+         pVzpL/giNDJXjnHngI58NXg/ZqJJCZpD/OvtoUqyPIyZ+Bpj3l5fOgVUuvR+/iT4mqKX
+         eyVCrvndSXET15CMw7a2kosKYhIdlErJa18DME7SqZG9o9F2csi1mB4X+hGPQW70fFfz
+         cjTP5BFWQZGaFADjaeJ0VnRvVQyFADvCL6W2yXbQRAXAK8EnrQvj7g6rlbsXU7msuB6a
+         og+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776097777; x=1776702577;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GxOI/4URINQL23ceJIk4nIIA53W3WmBZxkLhHAUmWr4=;
+        b=hk6UXZSMwIDQK54PKyhlavyW/UoVAxw/OzpFIBVgeaahKbuh+jSFVAq+DFGVoljH53
+         Wow554WGueVGSVJHjiwa5Qe86djzmQ3V2kYqDgGgLGa5I+/TwFuFU+B7WLrD1bqeX8IW
+         ybXb8r3CX7l3GUa4xeCVmnQXcyZeDpuM9+oiQ9dP0XFsVBnXArn8RfIRq0mXBHfCl70s
+         ecFWJdaqIymxKJvyB+e8IZ/oU3D7+0JC+/ZRdVO5CiMRz9Goa/MUxVni5dVZOyv+HwW6
+         7SSPwWBrbjvrRXVwayTDI8c2HNoRE52Nu9/qxlA98D2lJISZGIGZl/HMx+zaRsGuD3Fh
+         UW5Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/R4l1/Tujjd4Dd3X9J0VRK+Y50Y/yeRQy6dNVlYlf2Dgvb//kS/aa+CQOj5270uTaCTIBa+LR5mQ==@kvack.org
+X-Gm-Message-State: AOJu0YytpjviEkKeXSQPkkY3wKMkr0PCjmGL8LBVkW2Z0eEedvZXwCq/
+	GuT240QwOm0zL05EmXtW8Q3F0TWoKAW7PUOI1xf8FEncMfYbXUtlF3nB
+X-Gm-Gg: AeBDieuXFG8JLncJC9rJ3u/1UcUA0ZXbmRgsE7NmxGUx/hPNBVB4Hck+iwac+I4U2FY
+	XeTPhGnrR5oYo5Pry5t9a+GWZ9q7QkGkgylg/H76PGmnRJVIGLMFjIgVvK/AOzleoXMPulEHrhH
+	M1bCr6LtQgwPIbfV+H9RwXxpbUkL7JKMfop/0cpB1/aSyemNj1QEGVVbkxsL7nQqCF+7N1t1Zrl
+	WrQ2PtQwB0F54piwFC8kIVo5EgDFSFiBKDJl3DUe/BLYO8ZYC8HLRgh8u67bA4Cv9R+0D5jBQ1+
+	8Ksrr29BdUAFUIAk5Hr4H5yEnbgVtgpqZcyUcfTgfBajLaeSIfNZZKmS+kAfzE1CU04Sfx1q9C8
+	Pl/AtR8OGOfoxzO55BB4E3+aFEXPOhoOkxi7T5m77C2hEJxBk8IpR3fMqc83sB1vGHPtr4YwGEh
+	3yduro63J9+OSHWNvjQKzgXckEg0w=
+X-Received: by 2002:a05:6a20:93a1:b0:343:c095:c4d6 with SMTP id adf61e73a8af0-39fe3f7747amr8600509637.3.1776097776855;
+        Mon, 13 Apr 2026 09:29:36 -0700 (PDT)
+Received: from ser8.. ([221.156.231.192])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c338dafsm12905368b3a.17.2026.04.13.09.29.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 09:29:36 -0700 (PDT)
+From: DaeMyung Kang <charsyam@gmail.com>
+To: pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	akpm@linux-foundation.org
+Cc: pratyush@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	DaeMyung Kang <charsyam@gmail.com>
+Subject: [PATCH] mm: memfd_luo: fix PFN conversion in retrieve cleanup
+Date: Tue, 14 Apr 2026 01:29:29 +0900
+Message-ID: <20260413162929.156163-1-charsyam@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409234158.837786-2-jane.chu@oracle.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: C2C981C0003
-X-Stat-Signature: 7wnxcxxzyzq3cdeje5wbjqopip8kikn9
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 33A7B4000B
+X-Stat-Signature: mguwhu1ur7c1w9x5rosbp5t5z468dtc7
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776097376-56253
-X-HE-Meta: U2FsdGVkX19ztWbu1999F8dKpQVObPRp17exf+PaLFku64sbeGzrT8JOE16nziEigkeD8ODYDayNWTdvhJG+TDl+gas2w7g9oMA6Jvr1YMJYwP5CC2iubBoALwleDUd0f0AQBv0SorvR4PwRcHNSyS0dh93BPgLbKVTbWjvfGTnvQAkCmA+Ld4pgNU2NAE3JMQrrJ3uDQVRcnJQ5VxpKybiE7D1EESFuaS6f3BljByz7xF5WULANYW2JfH0CjpSoBX3kCban2WuEjPZg+BTx+d2H2/ca13TosGbI6NwdnAQF84+s6mUloxnWQ/s+jxBBWkh6H8NGw5qmh17B0Js4vUqfFRQzmykg/xfFK1tZ6b9crmUPCWhddoOrD3v2DYFz+nBeiy7/K08UUey+ym/3QnJ0dx2G/NuId4w8uTaW5xcvf4zZZCqBGYINshIwX+szDl1eB2XAn++8ZBuwqtJJPNfPJEWXnCWjIaNORLzx8pMbMyvLyUiqIrPMIbqcXGk8/7LBi4seAZwxO4DN6a+aoFQ+Q9O/z0uCIPK+CKsucp1Lvmyehf6WaNBZpjsHMxTa0w3dwQmp2hdOU2ydDoe8zMNrHavMQxQe4+Pn3bFBPUUy08zYMYdl89CYOzNhCF2NA2ZCRUG48/w/D28FdQIMkckn442+GIogtF37W9feGY+stEXnMkakM/+weq4NSOiDVDMA06ABdjyY6BneupPazOlzDa5C3Zo9GzxLJx/X7AO0xUrYRM2bUDP+jqM2IWf8dfuustVTmVWFrf3z9M07IGhc7Annrelf5n0DPMtOHWDmFaAVTPq2pOjNMeCeOE7l7H9IKNDInp2q+w8VNi6zvtJgSiEv6MFbF39XGdZj2ewPZlVcvTOjIHUtK4s8m42P0yN2tbV2IltGOY3+ZlpSAJ38lTAQsRk83fOtne0XROU7QPGFcBvF73+0f7VVOYaoUU2hQF7ywVNqeGPXhhk
- /6gd24uz
- Tl6MnBzLo9N0Q27S5SQ9NrxWI8Msv2wqWj1aE2iHm0Snz74RF06FXKy1VjlzdoKW6kSJQF0/5vbwuMwQKr3jdCSPE/n6ZFqY86KeUElYA1h9p9o7XBHbk3ufW+9JYR6+CIuPik6tlNEBV8n2ZRy/u3jfQUfGTgZfseeJnouDgPijvIU3Yshe12mOHuQldFkFYfK8lXXRJnAwoyFfAkbqqqiI2wF6PQrncYSOSiBAOpLCgHbntnGVsNeBp0hvi8ye4mpFgVxF0V1nJzebKbxlS/MDqpj+Cj/CtJTAG084hU05o+lDRn4HqoHFDEg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776097778-208117
+X-HE-Meta: U2FsdGVkX1/yQ6PQ8IEk/cgdwjzTXn9vNAF+rAVqBCAISAtMtbYISO5n5Dz57QsNfDSNz5/5NSayGlGSqJBUDXIV8NBjlLcvvuPpvFHpBJi2xcLw1QvltQsmmpDMOjP6qj/js2vXnAuiPNX7LeGJfk7ssBE5Bmo2BqcA2zbmv1GIWsChRtxIvvVTnONtQFGOEsUrAyAmmXEQ3/mE8XTUlJ8ASSsbPAOpWPEhJyYFFH7vvLwv7pm3MGQDEEPi0o6JZhRcDbdHjcsIE9YQZ7jhV1vYkZ92nYGOlAqt/HBY1ociC5Gs8tUZuuzeQy/ZZdiDAKMm/LolWXQp+ozcBWDM7FvjeEu0Peyy26fW+gN5q/RzGIIDTirAvmqHkXKnyI5q1ucQ4oGAWuuoSEIY3GTbTMiWaTPoSbcYXsFlnhRBNEniGMyQ844oxTxvhWVpqWODCnVMZoYEgg0y9yABc6F71X+o43IrX2lpzXHCTa6uE0M6bS521Qzq4mxjAIYepVYy0MNhRS7YVWEM7SJ07H+TMN8i7+4nfCZg0HLvO7VwJDbD6hs3Mf6f5IauK+BSvMOKlo8+skCbPHdYXgXSdbV+JRnm01VX3sBvIqPijHqX5CXWsEM5mWEh7fjSyDu2PhXQSTT3Si7cDh2RNVItU8oX2gJ19mw4nLEY0z0r666FD9yC+ujTBtznNx89yBNJz3xmKWs5kiNNVR6zexLMmWaLMOrQsuwcpWnDZmzB6x4dzHF0tIvoaMJE0BJ2vHMT+0SpQdPC7piCzjdteqgzToXFuiqmtBdvGEW6myI+klZubBTZerE9gl0Z4gFZY7yg9nrLiS027GavaGAQb8sFz1UWZXEnMNz/23NRo5JbA1Yzap2B+II8pxWVflRoP8BsalxeMcdjqsP45/bl6kLRnMQW2xCSD6iudp59Bs51eOSZhYj9dbuUKA0hwSmyukYSYp6doy90NL1i9ANaF0slQCE
+ iREJMK69
+ 5OaF25aikR8sKGU12XwQs7rbKxMmGhrHzal4YC78hdXr+NXdT4BThiuG+l1HsoEAskJtW0uBzGPp29H8c+gW/VPfJxH2DETQ5aIdhSCvlczS/FA0js6r+IFk0X1myr/RKn5cZccoisi6bA8MP2XjCJXpUncCXGRLUpWc0YlOd7Fnhd3Gr9xyYt3x9TDzENpAH2hHPR0+LMhVQyhqEhmqHcW73Rg3CbW9un5hQP2GXrdPLyt1MWI3/zOnJa5rr825sCWxfCpma3CV7fgIawxLn2SHK3rkzUAQGtsG8VA3nAItVoPuy8eDJkbQN19HEs1AZeBchMj2fKjOHfKTSOtAaYEwGFDeEJwonNY2zH3ay5itBLNaoPt03dt2T2kyP51S/jtKs7Yjx8eKlvPhETdF0QgCupHmwpdwaVj5EZQ1FtrBWZa+j0iuGBqLAFa/2CrRWHTxL1NsotUlb2oMcsdpXtTQX2dCsZOf4VHqnZ3fnczTLwNxtYj3uoGv76g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,154 +118,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 05:41:52PM -0600, Jane Chu wrote:
-> This patch removes `filemap_lock_hugetlb_folio()` and open-codes
-> the index conversion at each call site, making it explicit when
-> hugetlb code is translating a hugepage index into the base-page index
-> expected by `filemap_lock_folio()`.  As part of that cleanup,
-> it also uses a base-page index directly in `hugetlbfs_zero_partial_page()`,
-> where the byte offset is already page-granular. Overall, the change
-> makes the indexing model more obvious at the call sites and avoids
-> hiding the huge-index to base-index conversion inside a helper.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+memfd_luo_retrieve_folios()'s error-path cleanup loop passes the raw
+PFN to kho_restore_folio(), but the function expects a physical
+address. The two other call sites in the same file (the discard path
+and the main retrieve loop) correctly convert with PFN_PHYS() before
+calling. Without the conversion the cleanup operates on the wrong
+address and fails to release the folios that were preserved but not
+yet inserted into the address space, leaking them across the live
+update.
 
-It kind of funny that most of the patch is s/index/idx noise.
-Checking mm/hugetlb* and fs/hugetlb/* we do have a mix of index/idx but
-I would say that idx predominates, so I am ok with going with that one.
+Apply PFN_PHYS() to match the other call sites.
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+---
+ mm/memfd_luo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-> ---
->  fs/hugetlbfs/inode.c    | 20 ++++++++++----------
->  include/linux/hugetlb.h | 12 ------------
->  mm/hugetlb.c            |  4 ++--
->  3 files changed, 12 insertions(+), 24 deletions(-)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index cd6b22f6e2b1..cf79fb830377 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -242,9 +242,9 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
->  	struct hstate *h = hstate_file(file);
->  	struct address_space *mapping = file->f_mapping;
->  	struct inode *inode = mapping->host;
-> -	unsigned long index = iocb->ki_pos >> huge_page_shift(h);
-> +	unsigned long idx = iocb->ki_pos >> huge_page_shift(h);
->  	unsigned long offset = iocb->ki_pos & ~huge_page_mask(h);
-> -	unsigned long end_index;
-> +	unsigned long end_idx;
->  	loff_t isize;
->  	ssize_t retval = 0;
->  
-> @@ -257,10 +257,10 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
->  		isize = i_size_read(inode);
->  		if (!isize)
->  			break;
-> -		end_index = (isize - 1) >> huge_page_shift(h);
-> -		if (index > end_index)
-> +		end_idx = (isize - 1) >> huge_page_shift(h);
-> +		if (idx > end_idx)
->  			break;
-> -		if (index == end_index) {
-> +		if (idx == end_idx) {
->  			nr = ((isize - 1) & ~huge_page_mask(h)) + 1;
->  			if (nr <= offset)
->  				break;
-> @@ -268,7 +268,7 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
->  		nr = nr - offset;
->  
->  		/* Find the folio */
-> -		folio = filemap_lock_hugetlb_folio(h, mapping, index);
-> +		folio = filemap_lock_folio(mapping, idx << huge_page_order(h));
->  		if (IS_ERR(folio)) {
->  			/*
->  			 * We have a HOLE, zero out the user-buffer for the
-> @@ -307,10 +307,10 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
->  				retval = -EFAULT;
->  			break;
->  		}
-> -		index += offset >> huge_page_shift(h);
-> +		idx += offset >> huge_page_shift(h);
->  		offset &= ~huge_page_mask(h);
->  	}
-> -	iocb->ki_pos = ((loff_t)index << huge_page_shift(h)) + offset;
-> +	iocb->ki_pos = ((loff_t)idx << huge_page_shift(h)) + offset;
->  	return retval;
->  }
->  
-> @@ -652,10 +652,10 @@ static void hugetlbfs_zero_partial_page(struct hstate *h,
->  					loff_t start,
->  					loff_t end)
->  {
-> -	pgoff_t idx = start >> huge_page_shift(h);
-> +	pgoff_t index = start >> PAGE_SHIFT; 
->  	struct folio *folio;
->  
-> -	folio = filemap_lock_hugetlb_folio(h, mapping, idx);
-> +	folio = filemap_lock_folio(mapping, index);
->  	if (IS_ERR(folio))
->  		return;
->  
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 9c098a02a09e..c64c6e5e50f5 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -829,12 +829,6 @@ static inline unsigned int blocks_per_huge_page(struct hstate *h)
->  	return huge_page_size(h) / 512;
->  }
->  
-> -static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
-> -				struct address_space *mapping, pgoff_t idx)
-> -{
-> -	return filemap_lock_folio(mapping, idx << huge_page_order(h));
-> -}
-> -
->  #include <asm/hugetlb.h>
->  
->  #ifndef is_hugepage_only_range
-> @@ -1106,12 +1100,6 @@ static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio
->  	return NULL;
->  }
->  
-> -static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
-> -				struct address_space *mapping, pgoff_t idx)
-> -{
-> -	return NULL;
-> -}
-> -
->  static inline int isolate_or_dissolve_huge_folio(struct folio *folio,
->  						struct list_head *list)
->  {
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index a786034ac95c..38b39eaf46cc 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5724,7 +5724,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
->  	 * before we get page_table_lock.
->  	 */
->  	new_folio = false;
-> -	folio = filemap_lock_hugetlb_folio(h, mapping, vmf->pgoff);
-> +	folio = filemap_lock_folio(mapping, vmf->pgoff << huge_page_order(h));
->  	if (IS_ERR(folio)) {
->  		size = i_size_read(mapping->host) >> huge_page_shift(h);
->  		if (vmf->pgoff >= size)
-> @@ -6208,7 +6208,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
->  
->  	if (is_continue) {
->  		ret = -EFAULT;
-> -		folio = filemap_lock_hugetlb_folio(h, mapping, idx);
-> +		folio = filemap_lock_folio(mapping, idx << huge_page_order(h));
->  		if (IS_ERR(folio))
->  			goto out;
->  		folio_in_pagecache = true;
-> -- 
-> 2.43.5
-> 
-
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index b8edb9f981d7..6d8aa429f553 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -467,7 +467,7 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 	for (long j = i + 1; j < nr_folios; j++) {
+ 		const struct memfd_luo_folio_ser *pfolio = &folios_ser[j];
+ 
+-		folio = kho_restore_folio(pfolio->pfn);
++		folio = kho_restore_folio(PFN_PHYS(pfolio->pfn));
+ 		if (folio)
+ 			folio_put(folio);
+ 	}
 -- 
-Oscar Salvador
-SUSE Labs
+2.43.0
+
 
