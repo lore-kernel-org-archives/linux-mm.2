@@ -4,124 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4C36F34C5E
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:28:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B5BDF34C62
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:30:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 524316B0088; Mon, 13 Apr 2026 11:28:41 -0400 (EDT)
+	id C4CC16B008A; Mon, 13 Apr 2026 11:30:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BEA16B0095; Mon, 13 Apr 2026 11:28:41 -0400 (EDT)
+	id BFC896B0092; Mon, 13 Apr 2026 11:30:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 348816B0092; Mon, 13 Apr 2026 11:28:41 -0400 (EDT)
+	id B132B6B0093; Mon, 13 Apr 2026 11:30:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 24E6D6B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:28:41 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0A321B70E1
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:28:40 +0000 (UTC)
-X-FDA: 84653914800.13.99DDBA4
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B7BF8C000E
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:28:38 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OWvjARud;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9E0E26B008A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:30:12 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 48C09C12BE
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:30:12 +0000 (UTC)
+X-FDA: 84653918664.24.1DFF911
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3D22B4001A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:30:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=bfhbd2sL;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf07.hostedemail.com: domain of BATV+feefc7fe6e280d16f9a0+8268+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+feefc7fe6e280d16f9a0+8268+infradead.org+dwmw2@desiato.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776094119;
+	s=arc-20220608; t=1776094210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wet7hLRLN2GT7pig65ujdZ2ffuA5bew4whWaQBopYTA=;
-	b=a1vE8yqI77Vzngzxhsm+AHhYzkMzhQwlmATFYoJdsHr6QfCgrpWMe1/65Lfo3cvdy0MRDm
-	rw9R7scX2FS0ryO43zF72C0gDjvSZK9Rmt1QBYNT3EcBwmLMVu4jTls2Elwp0hsQQlk4wC
-	BvtSLNSK9Q+//T0+hdc5+dHfxD+ZHQU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776094119; a=rsa-sha256;
+	bh=A/tyFuZQFYTYsk5yepZic+9iJmMgnVldp43vNUqBGF8=;
+	b=2fc5RojcuVcfQL2GId6OoBHuQCUp8VumznyqxwCN7KKpdrKlHTp8MnhwqmP43w5zOx1ivF
+	vhauxAEyh8RvwbyABQtvjh9aSCs8OrX1QL5IPyW6O7/w1uyGc//IBwg4i1ogdogWNc3hsV
+	ZItTi/wweJBFFSoETH1rn8kN1+vz188=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776094210; a=rsa-sha256;
 	cv=none;
-	b=6nUYGPPlkLLN381pK7vSNFhJPG4HKf1hq8HZ5q0P0131q+2ARWtqhDxVxOUAM8LVb0GdIV
-	NgWp1R6R/S4vd/9ExCa/1o/WH6Sv3fxqqC0S6E13PfD9IyuKLJzfa2/aoty/2SCQG0UOlh
-	DXlkyvMI6uyzDN4/1KrUg3wY6sqE69E=
+	b=ZsaBkq62n4LMsU78g9PL0T4njLnW3JgDLvTG6ljeLtr0RzuUhd8XIPucaULtL2yorNj8ff
+	hFOZSEeNMjb8YdaR7QaIhQVPU+4ip9VgOs81hD8VKLoJ9OhBbENiNuYMOA8sQiPLb/s1KG
+	GyCjF7ynV3zDbrykvCAj/LY8a5+v1JA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OWvjARud;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488b8efed61so43857825e9.1
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776094117; x=1776698917; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wet7hLRLN2GT7pig65ujdZ2ffuA5bew4whWaQBopYTA=;
-        b=OWvjARud+D8QaZMuJ93APMlYh8DFOL84V2aGcg1wxRcSx0XxfAuVjTpYEGpdsZ0u5i
-         4yy/OQb/X27bLvkL/7fq3yWFcnIDu+3dtSAadpmQThNfP7Tl7LmIz5kbw0BkkJZTr7YG
-         fKhJLxmJ51PsJvDPiWu6KyX3jjQbYs3At9sHlvJ+OQanpV28PF4Z48Zrvu+KkHVZlY/R
-         0Jb0kqm3FkapvyFbYV3AYHFMpoT03J917tRz51TiosKLGMUjVTEqJRrQLoGw5gHYlo0G
-         v7poh3oKlczAILBdpiAkFbz5Ykf8kbh1I+/GGFTAIMhiTiE2h4AV8tIabCBkzC4OuG0l
-         2Hsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776094117; x=1776698917;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wet7hLRLN2GT7pig65ujdZ2ffuA5bew4whWaQBopYTA=;
-        b=PzWsoZ2JpFqPHwv8NG5J9ADqAe3xxWDyyfzfmDA9x9pURbIffqR/P19QF8nK7G7a5M
-         Jhat66i4kBNNqhcslyVUYBDyRIFlx2ba2VxoxtC85i0nQXOlhk8nKOtU9vIFghVqwro8
-         0ZGG7qR51zNMFP+TU0+2wlkA1IF+jGMCcVL+FnQ0G5o3BGJhyBhe1/IcksFuDp0Zti/s
-         PCSWJMM1+9j2xh0geh8uzLVxkYAywsrxwhnJzoy3guKyTL+ZeXd70NbFY2KJN04OuTaC
-         GBy/MRQ1+zHKa0nvaghSpRWwrFEBfHDR/PyNy3UdNXGH60a54wHWnOxK3Mbl8r9F3rPb
-         iKiA==
-X-Forwarded-Encrypted: i=1; AFNElJ9GMYxnmLONZFv4TyHfdDcgMTJkVha0oIr14Nq55xAXY+AuhCgpG7QnwqXLM2L/B2/cCylM4vFgCQ==@kvack.org
-X-Gm-Message-State: AOJu0YxFdk08kj91dEDPfBVboTvtZFU3DIVEnRRo9CfnUuERJXxfVPDI
-	3bli1hsoufT0lvK00H4M+d+0wSKtGQ7Fo42LSTUO8RvxnkfKs/nPTKelypul0V9EyKM=
-X-Gm-Gg: AeBDiesVr9Ub0akqQgEXInGCukRAYb4LPQS1WjkFNG8rYzDVpHDuSicZaL5BTzjhU8Z
-	6Y2VSSQpdEp6txm+8wHKsPQSHSnBRiR6ClQMid6mQrhllF32nCNJdjg65dgD6z/WNG/hpWpswv1
-	9tg/W1ostPBRp1SvsmWQTTl1ObIIhe6WgEsYf1V+Yna+TsaE3gwf6uGQw7y8fnBC2IBzU83766S
-	AsFqZTulGkdHMcQ5Vj5liZtAtoQoVlEMv45A3NcR5DpYcCWXVQlkJuiToWRrJk2NHpaaFKBVr9t
-	BczhLrzTkJWM1NG2AWbAuZ3z7Ld22PxOboxvxEDsSNNHA0nHcXk4KVVyjAmQtRGa16hTx78Uaiv
-	lZdDv5ZaaGX075qgYxuPrlqKjhS1dW6284eChE4kbAkpIUEPkTjuLYGw2VTtmdeUxu1oPz2VHZ/
-	fqo7hMRXUO7hvcZj6kEzxWRZj34HXmWa/b0dIUBUKMtYLK
-X-Received: by 2002:a05:600c:154d:b0:485:3989:b3e4 with SMTP id 5b1f17b1804b1-488d685b6ddmr183708165e9.6.1776094116989;
-        Mon, 13 Apr 2026 08:28:36 -0700 (PDT)
-Received: from localhost (109-81-29-22.rct.o2.cz. [109.81.29.22])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67b4903sm128558245e9.5.2026.04.13.08.28.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 08:28:36 -0700 (PDT)
-Date: Mon, 13 Apr 2026 17:28:35 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/8 RFC] mm/memcontrol, page_counter: move stock from
- mem_cgroup to page_counter
-Message-ID: <ad0LoxXjP49PZBwR@tiehlicka>
-References: <adyZ-t4fiKFv_X5p@tiehlicka>
- <20260413142958.2037913-1-joshua.hahnjy@gmail.com>
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=bfhbd2sL;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf07.hostedemail.com: domain of BATV+feefc7fe6e280d16f9a0+8268+infradead.org+dwmw2@desiato.srs.infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=BATV+feefc7fe6e280d16f9a0+8268+infradead.org+dwmw2@desiato.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=A/tyFuZQFYTYsk5yepZic+9iJmMgnVldp43vNUqBGF8=; b=bfhbd2sL8t75c5rug3uBwuxg5P
+	LuWR8p2uSlhmLvoC75s7TYMX1lfdHXhQNJF2OG0QXGhVA74ED4L05Ui2YgH9chIQJTBVRJcaDXkdQ
+	PoO6uYPpDnqy8MenOCTFbkRMKQS78wCprJ3tkgPda8HAMffpT54zL852bGYOCnflkc2nDFvdBn0cR
+	8vP+E7+2CaxiOsjddnC2m+sVdQvAC0f34xjQErQU8sm5+txqnL/HeNOtCoI1QzVGmD8hBCUOicCZO
+	Sdtu+YLC1PADFf5yRRMpMGrKPzY0Wz8LlL1valPv8PoqQKRDiHRNlNkJrhES2TYrKiZoLqunJos/G
+	lcviTgFA==;
+Received: from [213.122.4.78] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wCJEX-0000000H2ae-13Uv;
+	Mon, 13 Apr 2026 15:29:53 +0000
+Message-ID: <aa07b2a812255473ca6f1ca0c872a983ee24728e.camel@infradead.org>
+Subject: Re: [patch 10/38] arcnet: Remove function timing code
+From: David Woodhouse <dwmw2@infradead.org>
+To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
+ Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, Lu Baolu
+ <baolu.lu@linux.intel.com>,  iommu@lists.linux.dev,
+ linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
+ linux-mm@kvack.org, Bernie Thompson <bernie@plugable.com>, 
+ linux-fbdev@vger.kernel.org, Theodore Tso <tytso@mit.edu>, 
+ linux-ext4@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, Dmitry
+ Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, Andrey Ryabinin
+ <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
+ linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, Richard
+ Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen
+ <chenhuacai@kernel.org>,  loongarch@lists.linux.dev, Geert Uytterhoeven
+ <geert@linux-m68k.org>,  linux-m68k@lists.linux-m68k.org, Dinh Nguyen
+ <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+ linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>, 
+ linux-parisc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+ linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>, 
+ linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, 
+ linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+ sparclinux@vger.kernel.org
+Date: Mon, 13 Apr 2026 16:29:51 +0100
+In-Reply-To: <20260410120318.253872322@kernel.org>
+References: <20260410120044.031381086@kernel.org>
+	 <20260410120318.253872322@kernel.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-kGTl9uf920QcQo+U2JVg"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413142958.2037913-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Queue-Id: B7BF8C000E
-X-Stat-Signature: jwijfnq1xhwf37ysiusg717zgx1dhrgj
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: 3D22B4001A
+X-Stat-Signature: y3ko4mrnmtqfz9jszb17sxuquyu9q3xq
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1776094118-882807
-X-HE-Meta: U2FsdGVkX18U5DpWTDa4FaITA+45prJ3cIiZT6cvgIVsAc4cD8pixnBAfRaK6R5CDvm4fkWWomGbs+kcHsbGMGk91ZQhOG+QFnwJevK93y5NFYgXyKM86nHVm5ovFJFYtGj6EzatA4JRbuLCB+sybFyCA7vFRoacW4VMyUmfLtLN5J6D/1wtMAaaCf5LuhHw2AZsO38s5LDZ1c3Ryty6RpAKqBSUWdUjFS8ZNjCXEK/VQHpVUa41XAczY5n6Or1qTt6SzFQkM62Cv+EoifJ+IMuxw7QtBn8NxOMNIY15MWVwVFI2q6XE52QIRNDo4yh2ydOVJlqdn04BF3foMqc59OdHnv01nZsMyHPNJItL0bkIZcJvMLe+FzknfR/VEYWyxChHYJR+bPwAs5wQRhXk/CFM8PVa/6vS8WzQM3E7XwbLD38kmqasCvnP/jRU4p1cz3jLjHsF2TYacXGunWBgnvNJlC2uisI36pHbzz4RPMbcSbgyRoskxajrpS9sEBtzC/thMHkrEWxQ0hTjK4HU6bOl0LEWpJdSvBYNJd1W8AgbFd191PusLIfhi91YDnFaiptCPFFMcgPOUXiHMLvxK114KszqzBO8jrFLO7HiV1dVBur4x77YnU5E9X0uCmeDCgLEU/CbhRQnc1cW8ht51GJTKySjfjS0jIc5ZmNsGtiMmAdgKB+JZu2E0EB5WqwsRIo5doAZ9cDcP6MOofGwJ8OoHyIcghchkMVCFSoA2RIs3wvZa4pZMEDpO6iWpFY8+VPvzuqls0Xukqh884XIRdq70VrU7kV2Rw9Ki/v3yWbUywIvKinan2zNgxNLCsiZOxp446uqGFqVJUPQRrMoQtDhegTPM8R4iDj9brtKWOvW86lBknZRmbxh+SclusCQWWNLguIi223vj5PJfYzqT4MemgGtckgLC412KDFVmmlWPqdJeNu7/UkdrMZVaCMkgtBxQLUMDKGK4U0Wf+X
- XcW5e8/j
- 26qwrK/s4WiPnoWQ/B3cLaPVZW23xecL4b7CR1Osk+oXV9LrbqXX5onHXXgHjd84FApuGgoMGBgG7PRED0e/A3k8w/J1kM+N/F5LC/BZ0O0CgfcRIQL8fsRbK6tGXJg6/k8gtNyEZRlvty+J2xBTQ0nXNMgTfzhx8ZY1gQrZdynRfFSJaQ9PTupzTdlFHsUsG0Zjs5UtTvNJI9YPOJfzjRkNFZFVMWhH2PWSvpnWiMtdopnjXj2F6w9ZjiH9JhuRXLTWRPcQV5/K/il2KvH4QoKcimDjhHhYKktfD9QfJelv5OeVaQv/Mtign4FnrRr5Nmf+Y99aRZpWjZUtONwGrvqc7Y6UxAkRIgh2TiL+8qHxw2nxnZQBZPxRT3O60f1XIClHp4PDqxZVA8skFuZnQYtfewNGWI5zcJ6synMLIPtucg6F06YDKnMUibfRLdDUG8CPEYDAxRSQuuC4cgQKaCt6dDwtkrQ+wVaHnOD6FNk+MXUHqWy7aLadfDSJpjsEomKPSkGBPnrZcqX/1w/5XJCXYTwjVid8qU1FElMM+Dua8J0bWxZvv2GAigN13QRSuE9rEvSzX8Ua/5KRp0oUNylhBfZKnke64j+hQqz9VAUOBEmP8UQAdVaqHDQ==
+X-HE-Tag: 1776094208-318894
+X-HE-Meta: U2FsdGVkX19m3rNtc/NFA4T64blaxciAZfd1B9udqWOVlVbGiV2NiFrCIxDGkai+QLxwScwK7AyLEB5Aa8fy5kP8rrUfKNIjMQyP6VJY3XLWEujkDEUUaQDVFsHCCB5muL1fjbF7DtVFKLUTxlPp3vHnP8oz7bpQ9OUFr+gMLHnRRcASf2Si4pv4MWiAWU4X9JIvuQZ3PpOpPKzCDDb7uZ0qBzRkGVkP/WqOr+YAVfymYHEk4f39YKCwV4Fl4MakODPRG3C7nJhUhBBuKQlKgqeq7bu4ZXJN+a53js+DrPJ6nSrjQuKVEOUM7DMljMHPfBhgOQ3/I64Pu8GNxma7X/AYouGCJfozZXOIU2NMQMU9Ho4ZIO5XnQPbEjg6aNuzxCWc2rP/ejDhAtDMAAgH+I7koIzEMeuPc4n/KvoAhEcIK4TYDzCsWMuux47Tyhu/8IS2AfLNVRedHNtlmfq7KCYyVCKwQ9DwwD84FK3taUpjAobfIv8jmli01fnh8ct929nGbMGr/xGU0Q8YafECIiHYE6SJqj8sc2MRHspAXIRKZYFJtFc+VwlgPZbu6tXBPd0qaTdKPLIo0gKDlVvf09nM/4qByIUjzUbkMtO/FH8qdbxlxh8F3ReNJnLuyqp9n7PsvZ1f6L/L2EL1K840o3m6ig/uWF6iO77l2QQoxIxFEXldhppTnlw3FhYbt5XwFFxYp+BGHpAtX6SIC0bW1yC4MEjiNOhkTEDAJPUmAXg01lINN4K0t5xZJmWt5ss6h5vQWazIgF27lxZUVOrOBsA0Sr/27aTIAzvIT4YoM8w1N4bvErpnPuSMvZBYQ5f1NSPD9Q4SFA3uUzwVsvpoXbvTAVZDSeYrFNwIGlOjKG61TPhzmVnpDgG55v4jyFJxH6gAFF/b4wNjU6110/rTIc0YvlajZXsQaxZK0hFw2mekZvz9tK3I/6Mms0RZqZmmkmZpKum4R258/Nuqb93
+ epOwYRjQ
+ HTuwXsZNV3yGIa7Q061Ih5TvjyNUQTOToRryFX0qHO2XLH2hQCXWxe/NizxaDvDV9NWzNPtNVS9EA0wr7XfLI0Ox4iyIdFnFy4jqgFYsTbOn/Sav4etdqk5jNpXzdj0ZFLx6/2ESTn4TLEdo/+R9yJZKGFqRhwyhdvNvgaJpFSHqflAPgehtHspAeVlCZ/kDwlkDAgM+j8vrnzBQRXvYPf7cTPwsG5/yQjB65JqOYV6PXA2UH1JlEqpRgw2UoHYjyU8uLHSKDaQZiUKoo7uFX0wvYYjZLLrE8IpoC9lMbck7czi1YaIAwqUy2o405k1Ef8zvoeCkAms9Htofbpvy72DrWOE7NnbFxerHHneMbhjv9ZKcVBpIUBH44nLXgXy2aPgcM8h8sTjUkAD3PgAHFZCkNCsP9sXPF2ICiojdvBmfuzNaxHy6hNje4V1U0n/mUCXLT4xR6ZbVminiYgUQL40BvAHHzRg2ii2xivDNxGUPCTqB5yyUDgouc9j6c8571OVJ6nL+ckMOPl04XRXw/QhiHEsKV6leh6rtClk36I9DKcJ6MM8DNoBeH1y6sETbf4/mKduiBvgSgtITsdsbnI24EQzBCiK8kLoVNlBUkZ17SoTNkWUwu96YNVJxK+THqtTf7GMLerzkLWvFlAAy7A/y4QvfVxWWG6h5gPXkLs8loJtEzHrHtKJOAslEyPtUZqCcITI/SkREOnHsF++A7P9fzKkz2VFJ97h8bRtkgnWGqSQbW1SdOqGT6M58QidiCNi00UKqeRPV12+PS6K/okoUzPzoQOyB/haKGdZX4Ewt0827J1iEZhdpyApskIxY2BEOV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,127 +114,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 13-04-26 07:29:58, Joshua Hahn wrote:
-> On Mon, 13 Apr 2026 09:23:38 +0200 Michal Hocko <mhocko@suse.com> wrote:
-> 
-> Hello Michal,
-> 
-> Thank you for your review as always!
-> 
-> > On Fri 10-04-26 14:06:54, Joshua Hahn wrote:
-> > > Memcg currently keeps a "stock" of 64 pages per-cpu to cache pre-charged
-> > > allocations, allowing small allocations and frees to avoid walking the
-> > > expensive mem_cgroup hierarchy traversal on each charge. This design
-> > > introduces a fastpath to charge/uncharge, but has several limitations:
-> > > 
-> > > 1. Each CPU can track up to 7 (NR_MEMCG_STOCK) mem_cgroups. When more
-> > >    than 7 mem_cgroups are actively charging on a single CPU, a random
-> > >    victim is evicted, and its associated stock is drained, which
-> > >    triggers unnecessary hierarchy walks.
-> > > 
-> > >    Note that previously there used to be a 1-1 mapping between CPU and
-> > >    memcg stock; it was bumped up to 7 in f735eebe55f8f ("multi-memcg
-> > >    percpu charge cache") because it was observed that stock would
-> > >    frequently get flushed and refilled.
-> > 
-> > All true but it is quite important to note that this all is bounded to
-> > nr_online_cpus*NR_MEMCG_STOCK*MEMCG_CHARGE_BATCH. You are proposing to
-> > increase this to s@NR_MEMCG_STOCK@nr_leaf_cgroups@. In invornments with
-> > many cpus and and directly charged cgroups this can be considerable
-> > hidden overcharge. Have you considered that and evaluated potential
-> > impact?
-> 
-> This is a great point. I would like to note though, that for systems running
-> less than 7 leaf cgroups (I'm not sure what systems typically look like outside
-> of Meta, so I cannot say whether this is likely or not!) this change would
-> be an optimization since we allocate only for the leaf cgroups we need ; -)
-> 
-> But let's do the math for the worst-case scenario:
-> Because we initialize the stock to be 0 and only refill on a charge / 
-> uncharge, the worst-case scenario involves a workload that charges
-> to all CPUs just once, so that it is not enough to benefit from the
-> cacheing. On a very large system, say 300 CPUs, with 4k pages, that's
-> 300 * 64 * 4kb = 75 mb of overcharging per leaf-cgroup.
->
-> This is definitely a serious amount of overcharging. With that said, I
-> would like to note that this seems like quite a rare scenario; what
-> would cause a workload to jump across 300 CPUs? 
 
-A typical situation I would expect this to be more visible is a large
-machine hosting a lot of smaller containers. Not an untypical situation.
+--=-kGTl9uf920QcQo+U2JVg
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Without an external pressure those caches could accumulate a lot. On the
-other hand a large machine the overall overcharging shouldn't cause the
-memory depletion even if we are talking about 1000s of memcgs. The
-behavior will change though and this is something you should explain
-in your changelog. There will certainly be cons that we need to weigh
-against pros. There are many good points below that you can use.
-[...]
+On Fri, 2026-04-10 at 14:19 +0200, Thomas Gleixner wrote:
+> ARCNET is a museums piece and the function timing can be done with
+> ftrace. Remove the cruft.
+>=20
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> Cc: netdev@vger.kernel.org
+> ---
+> =C2=A0drivers/net/arcnet/arc-rimi.c=C2=A0 |=C2=A0=C2=A0=C2=A0 4 ++--
+> =C2=A0drivers/net/arcnet/arcdevice.h |=C2=A0=C2=A0 20 +------------------=
+-
+> =C2=A0drivers/net/arcnet/com20020.c=C2=A0 |=C2=A0=C2=A0=C2=A0 6 ++----
+> =C2=A0drivers/net/arcnet/com90io.c=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 6 ++--=
+--
+> =C2=A0drivers/net/arcnet/com90xx.c=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 4 ++--
+> =C2=A05 files changed, 9 insertions(+), 31 deletions(-)
 
-> > > 2. Stock management is tightly coupled to struct mem_cgroup, which
-> > >    makes it difficult to add a new page_counter to struct mem_cgroup
-> > >    and do its own stock management, since each operation has to be
-> > >    duplicated.
-> > 
-> > Could you expand why this is a problem we need to address?
-> 
-> Yes of course. So to give some context, I realized that stock was a bit
-> uncomfortable to work with at a memcg granularity when I tried to introduce
-> a new page counter for toptier memory tracking (in order to enforce strict
-> limits. I didn't explicitly note this in the cover letter because I thought
-> that there was a lot of good motivation aside from the specific use case
-> I was thinking of, so decided to leave it out. What do you think? : -)
+Acked-by: David Woodhouse <dwmw2@infradead.org>
 
-Yes, if there are future plans that might benefit from this then this is
-worth mentioning. Because just based on 1 I cannot really tell whether
-going this way is better then tune NR_MEMCG_STOCK. As I've said I like
-the resulting code better but there are some practical cons as well.
+By coincidence, I took the last of my ARCNET cards to the tip just this
+morning...
 
-> I'm not a memcgv1 user so I cannot tell from experience whether this is a
-> pain point or not, but I also did find it awkward that one stock gated the
-> charges for two page_counters memsw and memory, which made the slowpath
-> incur double the hierarchy walks on a single stock failing, instead of keeping
-> them separate so that it is less likely for both the page hierarchy walks
-> to happen on a single charge attempt.
+--=-kGTl9uf920QcQo+U2JVg
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-v1 is legacy and we have decided to not invest into new
-optimizations/feature long ago.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQxMzE1Mjk1
+MVowLwYJKoZIhvcNAQkEMSIEICWq9Tw93kgoeMQ9F5qJ+YhMr6w729C1ImFtgihFCjxfMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAF2v1t0NNvA9R
+Y/eA55NxK3TZMe94oxYBqcXF6qRUkayrUgndnrU8aJ75/Bj1TvINyOboZfKk/49c2w/wZOyOUE0L
+wvFeYUHN7taPRGCYmiRRxay6cRI7P01GTAg4BTI9mhaxjDMwqRmzK6U7kMbVk6ZZpUOcQDAhZqME
+RRSEeosxUsKBXWhUcKwwISnwfMCHpG0VrrcywSvheGipfYrl0r/+SUFpCDbktajsPhO8lPbtMKAX
+XExpwh88BCI+A1+hevVUd276InlzNOYd2CawQelqvMX2Ym/VGcG+AoSKWBSH5fhczq4rbBBsqmFD
+cbEGxUY96DOmPLHR1qNvcYvY6itLYE8H7kdovxHZ1P6pqX2EiflVkHBNz2aMu5WOHoFEitdFuO/K
+aTXwJFmhjaEvv6DOL4pVkHSJPfyUxqbqXgDlRFts5KF18nX4+QZklgshL936nLvpUz5asDSFoMQs
+UVUSfGa0oL6jPEimso9TAX0xs2+CDPcBXpUXhVtFd2mQ6OlRr4Fr7vgOS+9CCv3t0qrMAo45K9qa
+dYdET4QgaVe3hthkoRcSHu0A8r3bt7d3+ZmaIko2iRbuZL1r6dhNFgJ36vhGv0/1ErQoPUaNaQuC
+g/fGaJ5ARXfMWiOfXQPMQ9V/v8woxotz8SbH1TtMDXr4BJhlw5Va4uX0SpA0+fwAAAAAAAA=
 
-> 
-> > > 3. Each stock slot requires a css reference, as well as a traversal
-> > >    overhead on every stock operation to check which cpu-memcg we are
-> > >    trying to consume stock for.
-> > 
-> > Why is this a problem?
-> 
-> I don't think this is really that big of a problem, but just something that
-> I wanted to note as a benefit of these changes. I remember being a bit
-> confused by the memcg slot scanning & traversal when reading the stock
-> code, personally I think being able to directly be able to attribute stock
-> to the page_cache it comes from, as well as not randomly evicting stock
-> could be helpful.
 
-OK so this boils down to code clarity.
-
-> > Please also be more explicit what kind of workloads are going to benefit
-> > from this change. The existing caching scheme is simple and ineffective
-> > but is it worth improving (likely your points 2 and 3 could clarify that)?
-> 
-> I think that the biggest strength for this series is actually not with
-> performance gains but rather with more interpretable semantics for stock
-> management and transparent charging in try_charge_memcg.
-> 
-> But to break it down, any systems using less than 7 cgroups will get
-> reduced memory overhead (from the percpu structs) and comparable performance.
-> Any systems using more than 7 leaf cgroups will benefit because stock is
-> no longer randomly evicted and needed to refill.
-> 
-> >From my limited benchmark tests, these didn't seem too visible from a
-> wall time perspective. But I can trace for how often we refill the stock
-> in the next version, and I hope that it can show more tangible results.
-
-Another points for the changelog.
--- 
-Michal Hocko
-SUSE Labs
+--=-kGTl9uf920QcQo+U2JVg--
 
