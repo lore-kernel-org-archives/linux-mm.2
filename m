@@ -4,111 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0937F531CA
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 21:08:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95775F531D1
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 21:16:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFEFC6B00AC; Mon, 13 Apr 2026 17:08:46 -0400 (EDT)
+	id C5CD86B0089; Mon, 13 Apr 2026 17:16:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB0116B00AE; Mon, 13 Apr 2026 17:08:46 -0400 (EDT)
+	id BC0096B0093; Mon, 13 Apr 2026 17:16:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC6876B00B0; Mon, 13 Apr 2026 17:08:46 -0400 (EDT)
+	id A86EE6B0095; Mon, 13 Apr 2026 17:16:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BBD2D6B00AC
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:08:46 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 606258A9CC
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 21:08:46 +0000 (UTC)
-X-FDA: 84654771852.12.33F3C2F
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9E1C516000C
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 21:08:44 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SWPUnu5R;
-	spf=pass (imf08.hostedemail.com: domain of 3WlvdaQYKCNsPB7KG9DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3WlvdaQYKCNsPB7KG9DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 931306B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:16:13 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A74F8AFE9
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 21:16:13 +0000 (UTC)
+X-FDA: 84654790626.02.364C748
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 71173140003
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 21:16:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rHacAEFF;
+	spf=pass (imf23.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776114524;
+	s=arc-20220608; t=1776114971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kdsNO9c2Q5NZsN7hZZ5BDljOzEMaKqWGBnMOCrBmEmM=;
-	b=loZKJjUH+Cn5681V57BT5u7H2yeakShyqEgDg9XW/sRZDzP6y8uoBgLFK2rzKdceBww3UA
-	CYsJ++qBT9lohlAQxCL3fnpjAOGz+YKrLeOTao1WCfchcox3kWOhg00v9j51/p0Ml4v+9G
-	OqLsT5BVlzjg/zozW289OQMxgFVi9gs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776114524; a=rsa-sha256;
-	cv=none;
-	b=2+B9c08EgM0ltVJXQTZLZ8TAghxPt5ReZ+cI2kTCoWGu/IlvS+C2OsV5PoF38gz0i+6/WO
-	ZF8ODf2McsVJOYxQyXG495EmPm7EsmNZcx8zwm06YtxRJYBg8g39GJcnRkeiiq1HRweWef
-	8TCfl7vkCUTqTdZjitjIYL/Wv/rVHec=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=J6XYsoy0hgti9UjRylPOMBsVgDXd9AkuOGfbur3GU+c=;
+	b=6MW96dEo8anIo9+s1vYv86HtwVx2kF3ok/y40MWvuUnzoSjWxUu6/Yh7B3w0LqTGlqpOAE
+	+CmS33ihlDZsFD/P3c+ui4r+TM/Qp+O9TI8bZcaurudK4zbVGj/efK1dtXA4gqa6GTFmia
+	26JW8j8kekRK18ZvoRWJlkbwUQN10Fc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=SWPUnu5R;
-	spf=pass (imf08.hostedemail.com: domain of 3WlvdaQYKCNsPB7KG9DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3WlvdaQYKCNsPB7KG9DLLDIB.9LJIFKRU-JJHS79H.LOD@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b465bf993cso9681205ad.1
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:08:44 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rHacAEFF;
+	spf=pass (imf23.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776114971; a=rsa-sha256;
+	cv=none;
+	b=U4vw8HnNv7WmzKWacfb87vfGbLVqDXhUr5uSEWHXX/GcjUL+TmTYeQXMe01F6DPDtGu83t
+	pLG0xGoCwdtjs9fahr3bmWVEmd+bqCGAj3BbN+2bsil1zgtQILrBM30wfY57w8+9Tf6w4a
+	QArYSpREjehi179rfy6C7Xu0FFNsvGA=
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82f1dcd5886so1659298b3a.2
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:16:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776114523; x=1776719323; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kdsNO9c2Q5NZsN7hZZ5BDljOzEMaKqWGBnMOCrBmEmM=;
-        b=SWPUnu5RIdQlqioYR8SRd2uRvOP6itaoLs21gEXFmaLLqffkLrpj2BfEDiOHBk2200
-         freTmFur1tDcFTdB0uVHDVfZbVhZf4plLu/e5wz488O7jmrW1+6nIj7sHSbMq/jBK8ZT
-         832s8rvCAvfz8FXJF2qcWAvHSZP0EaD7dm4a8t8NyFmxg35zyU5e+9I3bFnUtaf9E12J
-         OtbUoGxMrydSspXlCDG/XQtmzIUjaUrNGymW3hsHoTep9Gl+HomkaVsJ2reG0dUrJ4zV
-         RmmSI5hqkjB5I1SIsLdmS12sIRP30fmcmrFVAwnBY77sbcn3vJFMU/a6mC1ZAg3evsqi
-         mzRA==
+        d=gmail.com; s=20251104; t=1776114970; x=1776719770; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J6XYsoy0hgti9UjRylPOMBsVgDXd9AkuOGfbur3GU+c=;
+        b=rHacAEFFQUq9FxrgYOsHSrZKFxwdUOQrhCET4ZgoGg2mfCdURxHuH41FiHj5dY5RzL
+         nGPtIGyt4ihLpNpULB6N9FrXVPhPf9xk9Bg9Jo+MV1xMFIogQr9WnVy3uy0CErw25vsE
+         3iWzA1/jDu+ZrO0yLWtnttMTy+GATAB7rYc+IwJI+RThfynUTp46dF120qBo+Rrgy7ru
+         bqTpmSJNpbl4vQfzG4qmsKZxzfR0BiFdzMt9njpQaXIy577UB/Joigxl0cC0/GNOPH6S
+         kgaIgDFncyGgxB966OJoFA69/J8nqe7aMjMqWRFAdVRsUnP+BA2gzTO5mB9zS1hy89Hk
+         4Jig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776114523; x=1776719323;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kdsNO9c2Q5NZsN7hZZ5BDljOzEMaKqWGBnMOCrBmEmM=;
-        b=d+9yIpTemG1YzGbcq87D+m/sOAcpfZ9pX0jUt0wjARBE3Xw4kF6AOdPQhFUDHInWuj
-         V9SlW7jAGDCldTLfkUenlad1fx3wIk6g0xNl9iPBnDykoyj9V462NcXckN/2szEjVz65
-         C0Oi6n6BUSYVlSAZPN62BKQQcZRvZkoL3u1YQc/7xyR+4Wd8Hesy3f4WkWFz72mV4OxZ
-         vrGC0Dv0jcYupghIV3iJFXB8r13Lhs0tqWSBzHdNpH4CTxGRDcuLU4hVpitYqfbYRbHv
-         Y2PZhzaFLIOW9vdqXUkRx54GGAAOdKHh+CsUkV4WgytmPZWxwOoNJ2G1TirDxWH6/O7e
-         ZyKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+TReXkZOvwrZweY2WnAPpCCFxjOEcnPLulZ9nrpsp+sY9UaPPAfjSMLDwjUk5TWki/zLFIvAjBww==@kvack.org
-X-Gm-Message-State: AOJu0Yx59kIpPO1GCpPaj49RFYl+wjdlWlffYhTtxfnI9e3wpewkRITK
-	GOwZ8NPhEA6ud4F39Wr0FxtKzculLMTwdx8/Ld8StSAJj4ExAe12/if4bFpKXvvaxD/pZXKFnaO
-	rkwIaPg==
-X-Received: from pfwz16.prod.google.com ([2002:a05:6a00:1d90:b0:824:a65c:adf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3384:b0:398:aea8:a9bc
- with SMTP id adf61e73a8af0-39fe3d0e025mr17171043637.18.1776114522737; Mon, 13
- Apr 2026 14:08:42 -0700 (PDT)
-Date: Mon, 13 Apr 2026 14:08:41 -0700
-In-Reply-To: <CAEvNRgGz6CHgCtR-PpyiRDy4tMioTGgYDFrzuWCmAodMcg5EWA@mail.gmail.com>
-Mime-Version: 1.0
-References: <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-0-718f45eb7c75@google.com>
- <20260408-memory-failure-mf-delayed-fix-rfc-v3-v3-6-718f45eb7c75@google.com> <CAEvNRgGz6CHgCtR-PpyiRDy4tMioTGgYDFrzuWCmAodMcg5EWA@mail.gmail.com>
-Message-ID: <ad1bWceUiQCtnDfF@google.com>
-Subject: Re: [PATCH RFC v3 6/7] KVM: selftests: Add memory failure tests in guest_memfd_test
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, rientjes@google.com, vannapurve@google.com, 
-	michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com, 
-	dave.hansen@linux.intel.com
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: 9E1C516000C
-X-Stat-Signature: r9fjjouifr9epxy538qire9hsxsj3xzm
+        d=1e100.net; s=20251104; t=1776114970; x=1776719770;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J6XYsoy0hgti9UjRylPOMBsVgDXd9AkuOGfbur3GU+c=;
+        b=It669IzfjJnPWnBR+dRJvkw+70PToEVJjbFTv1uEekhP9JcJK5cQTGeNkPWt1NkSgx
+         /x5nYvgdO6kB+QHRvEvlxYdryOltZdTzWiqCp61pUsbBMw0ePT858oiYUCULF9lX6v5U
+         /1Y7xFh0P3z5fmA2juSqtx1GIZ2JHHowzXN827BnNygygLRzOEN1bpsAX8H2ZvmGDpdg
+         qTRYinJyWADf/9bqY3Gi+d9e8NDRlEnq6RC0/UsXP2NKFjGzGw0lui86wA9mITFb2AJ8
+         HSeshjqcE63I3Zq4SqytUOydbdnnOfGEAVhkhtjHP4q927AODnM1b/TnJlGcPPvXvTXa
+         fNFA==
+X-Forwarded-Encrypted: i=1; AFNElJ+Ja4l/dDIzyUn/s/HoU/TrKtPv1TubNv4aKdhwb2qtdL1X7JcVZ0awzHd2Ix1of1g/9lyaIALiJg==@kvack.org
+X-Gm-Message-State: AOJu0Yzsty3c/ktb5pHS3tzEVwJmetdtJkOxjKiE6To+gRXOqhbUBT2Z
+	m/PK5egQJNkwn7ej2KplP1KZay6AVaK1qtq5E5srW6aq9xaC6xsCS1MU
+X-Gm-Gg: AeBDietLloSPseeDYNZbOfsGTsAibaVjSE/TsFyS3mX1TyaA5KW5+kCqEQ0jAXXB5og
+	JE+42v0xQZQr5OFPkB1HyF3lp3zpgxzn3ChJnsQoeR5OBE+MV74LIUyRjLujqZ0VRdnO/aNLZ1y
+	tkCcT7iQ/GfuljwjrKy14kTTfp38IQAuLzD6h/7sjorMSzWZTcojoE92+ikBFBJWYSscFesNrt1
+	i1MqWKzxPXgOecBt/eMxGqghy0lguKEAo9xscUWcrYK7vlQaeYAVt52hUQvvn2KDO+vFtJVG6s0
+	TLAg50HnCmmfsvaBdsYfPbpE6bZnHSvxWhT6Yf+0rO1lCuhGibOMK0opUbg+vwdek4vMgQ31FAR
+	2EW4pBAinKhWyzhFv0gFYVefOrC9CMESBraX3wu2KvccS6Er7i1R8fnOQKx++jrijCeQFoXeidY
+	yDpaqSf71BmvqgOQxZZJDi4Si9ETDRBDtkt22+m6/Z8ruO
+X-Received: by 2002:a05:6a00:278d:b0:82f:250b:9f1b with SMTP id d2e1a72fcca58-82f250ba2bcmr8529329b3a.23.1776114970028;
+        Mon, 13 Apr 2026 14:16:10 -0700 (PDT)
+Received: from tech-Alienware-m15-R6.. ([122.171.18.84])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c30ee32sm12822124b3a.7.2026.04.13.14.16.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 14:16:09 -0700 (PDT)
+From: Sunny Patel <nueralspacetech@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sunny Patel <nueralspacetech@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/migrate_device: fix double unlock
+Date: Tue, 14 Apr 2026 02:45:49 +0530
+Message-ID: <20260413211559.20969-1-nueralspacetech@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776114524-104881
-X-HE-Meta: U2FsdGVkX1+TrDkU2PyxYRBxUIUt8XGd3rTfLPn1APkcr8DMD2IhisBP4IeyRz6f+5ZQi5xgy+VkJNwFLFCxYyaGttoEtyMTwtYDmvc/jb2T/yLOb+SB5QAUoCf+NyXMf8sF4lJd6sGSiAHlPFYNvNWMsB9yPi3unnT1cH8Ik69ntdjaW5bFBOiLBMCWL6DboynhO289ewQut6YHQhT+Uaoy9MEY86ggG22J+yIUHlELLMY+w2pMWIJGuy9C4ZNXkXfniws22g2HQEx8rPiTW0OMUMbzJMaZfihbzhVrwBTQnKoN0tpxRlrI5BiiH46RoW3lrfyRpyl2QbOmmNPcB31rDDd7jDoq9kQlB0HNNQDy/4myBd/gBwDowd9HlYxZjUNX2fLrKbtCUk0ZJ8J3iQjGo2/amYPZKDzRASU1HQTTpjpIm7TMPatTHzmBHssLaPh73uDsV+823fTUViv4bG4yA3OpGXbE/3HjUSkqCGe9cHuqR0RNBLiSXs5tGjzh/aC4WaxX0m09e6c066PfPR5NI89i9jmebTv2BFD2fKrf0VcyjKmYOAdkrMfarhsXCHrdWUsw1Bhcuw6KmZc0qKZ+7M/LGorbcmInBT9dZ7akGCvVZYxiOyXoFIfB0qUU08G1gF1aWb1wapWK9mU6ZsqO2BbtkjMsQTBBoQsxCeGhx6jv/kWonsXa6PJtuUMZlJ0A5Iafqn5ZquGZgJLwfDQeYHu20HNnvKsi0vw67fZ0xtyd1hOTJD/FWaq6ugM6fjMFxwbkII6URUJON+M1qsOpAl+pBMn/PByoaFjij9ASiQt+YTMC+yc/Vki1YsCertARoRUW27MmEkPAFZiJyXEg2EHXTi+q5a1VTKsgonCQ06Bir0BABrPPtySqrkoJNImXUN72jpmSDBAj1WRf7p7RHi924GjEO9Tzf7MIDE74zN4HAyB+ZrsvyxBxHtV2lsnyjALVxxg1bkoO6nI
- I0V2Up6F
- l5v1Brurdfe8GlsSoeBqAbW5mtAmZUKwsFxKGX//ibH3n23uFWk1KnOuD5f7wzluk6LrLqNFjXHNKxWiueTCUyo68qbNl2gXFiHNAiReIl9pDcjmefn3VWwZSe9Jt0rU6rv75NgnfF253rkIhIQF17j5O791QVYbVzjvaqW3HRdRzIABSDIxametiTPc9HY7EfnP4xSxPo3uO9K6fGlS101obbiNGJZbfc+MqGzfDNgAwdQK44YDVFgRKhVionWXIFBwkJOfpQj/5uevlMvq/Ao/tGbskbnrqPmicQq8kOYuZaCWU0MyqUZ4VK5SedVbWFAMLScXJcD0xnCxis7oJaQ1mFxksg5to0ZDpgW/a/JhdX9ho4xNRgQL28e0tn88N3/Cwz10gaLuiYsnCS0P9HVxqzAHF11O+xmK2JJWZKo96kEihb5WhkFooqYTt/+F+ywZ0g4oEKFn4iqE1B1pqfAphwYbpuv8ODwRxZpm3PHLFGZLaTFNAOhro9i019wFktgNIl3eW+e9MkW/qKO8fKeAs/QyyRbDa6yndc5CFBYzjcU4CXp1cJ0LLnyGlgvEYzeQrv690V2rLelrh3TKFpajFnOg5D94p5u2ma7Sl5/9zsRc5Qt73pFq7TlgMEl1Vyia9obtYvHXYnTgPaT0QDHITEjAmu4wsNA812RjLFumS0gFsPWLBSSSDwT1yt2vI04UpjkcYCGs62Yg8Ow+W/MnX9MHvOBAbsvY87DrHG13OmbI+TQmwQOBoRh4BR66aNwVBFPpECy9MM34/v3EJymA1QA==
+X-Rspamd-Queue-Id: 71173140003
+X-Stat-Signature: kao6w9apxfhcgy1we3mfdozzi444e5hp
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776114971-518134
+X-HE-Meta: U2FsdGVkX18JctcxOnyFIMn1hAUPdJKIu7vrhVxIu9nQZtMpUIzBkj60ezmYZgAik6SOZwmjQmmU1+kMvLno4OnnEzVA5O1MsJaN1IhD7Dz4vb2o39gFfuwYcDJK3rs2yDljxgMx9EY1nH48j6lTcY0a9FTPaYnM1whJel8N3OKKWfperf1fqREv27mg8zDb+PqxJJua69gSgTiU2m7pPxYeilfF93VppegkeZHqT+9Ir6AhtId+Uzr1nL32i52WXdYKF9+0QJ64E0Y7xLsKp0njaDytl8fC27PvponJceeqLoHdRh4hjifbQ9VfwTuiCyTcz7LUjxlLVYrEKjHkRHuoeieeBpnghcl4/R1gY0gU+Hurq9y+UnCpeUrSZAH7gOUr8EJlbYud4nFVN8gEbG6TjEY5pBwOe/qWoLBt39ab1/8LNTK7H9QOAhEYEKRDqS9e2MJdL3bC6pAwKuR8Bc0PkXdFXFbMQXdodpCK5ZIBd+42VNarhyvw6w3H6ETyp3lfrDk1IRnXfKusLkEDLz1/X05bC0m2LkxjTYmk3CkllS9RZ4Y6MPhs+Xttj7uFLebqQBsVA/RUwQFb5/Cj3LUcA+Y3rpWppbVEak6cerg1pPFk0/OpBkdcD6qaKKi1qtjys+uYwNJmjB5ZE3UN6hM8pTRxbnG+IkGZxsVZWycf+STUW2/GKadRYoJIPAQ67odTalcLeGir+CdGWFpuQRRk3TaqgagBsjWdm2QZgrfcu2Ty6hhaa6eZsbj9jOkw3vah3fvX8d9S8QoGQWCzVglioL5RTVkT6/K68SnhiWR0MD6GZQQUZ30GnMNxC9hZZx8urz65Uon9nArRGoODeGRU3KazrziV/LhgeHZO/7ghZPVRzcsNpAEnzHJ8FCMRTghclUMt2Fe9Xif7ER28rmpsOQrhqkgBwRN4ykJMaWjEcRPWfBl9PN2wVtGgmQ/h3QrH5ivD/U44ipFwyK5
+ Zk2JlbEe
+ zI/qeCag3FbW/4hgCWXVpCn4arkbK0bWhdtFKAfxBuurlaZq1Tq1w5N6ntR2MFNYwmKk3FEgcSRW9EvnzRl0Rcli+0tRCzNkUOR05gk16VEhMen8rgQAPdDpTjdaMu0h+nk4bd/LsbAjEDLll34IKB7ZMsOhpVfRVlBV8To69TNqupYYPUMk/VkrIXFuxXKVrccKATZ2AFittcoF9q5JEq1kxdqQHcXVKCLjr4sc5nsPEFxzxoGcwVde0Ll3N0WbKAWIErYVXvbxkuAWBr8uPj2lSt6PiBSgiFC9T77cEH7Jb5OuWAPpOW4P8kJwfbyf2pGwhqMH2nWknTHevCLRG4bjXVJBa266yVZ8Scm9JvITyGZNiE5hJMk8rgmpwKkDdhPkRya3Rkeeas0JuxKDMI2RPfF7yGtqHErS+k8S2qd1eTO1hsnEIh3dcWsuywa5E9MiroNN9SljjrPuTt+lEkoAuWniE7fSZc+5AUKsB2DpdTyRDNDUEHIWU4J1lOkxX/Tpo2qo0dYkJwVzZ3o3JWzqzBpfBhrWdKLn+R5f8qH7zBBU9m3RUJX9tQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,26 +126,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026, Ackerley Tng wrote:
-> Lisa Wang <wyihan@google.com> writes:
-> 
-> >
-> > [...snip...]
-> >
-> >  tools/testing/selftests/kvm/guest_memfd_test.c | 168 +++++++++++++++++++++++++
-> >  1 file changed, 168 insertions(+)
-> >
-> 
-> Hey Sean, what do you think of adding even more tests to
-> guest_memfd_test.c? Would you prefer adding memory failure tests
-> somewhere else? I recall you mentioning something about there being too
-> many tests in guest_memfd_test.c already.
+migrate_vma_collect_huge_pmd() calls spin_unlock(ptl) after
+softleaf_entry_wait_on_locked(), which already releases the ptl.
 
-Hmm, we're definitely accumulating a lot of individual testcases, but up until
-this one, they're all quite small and so there hasn't been much motiviation to
-split up guest_memfd_test.
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
 
-But this one's quite the chonker, so I'd say yeah, put the memory failure stuff
-in it's own test, especially since testing the debugfs path will require elevated
-permissions for many environments.
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
+---
+ mm/migrate_device.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 8079676c8f1f..7eb2f87ea39d 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -177,7 +177,6 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+ 
+ 		if (softleaf_is_migration(entry)) {
+ 			softleaf_entry_wait_on_locked(entry, ptl);
+-			spin_unlock(ptl);
+ 			return -EAGAIN;
+ 		}
+ 
+-- 
+2.43.0
+
 
