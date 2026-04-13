@@ -4,139 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 736D6EBFD0A
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:45:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42098EBFD0A
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:46:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB15E6B00A7; Mon, 13 Apr 2026 03:45:37 -0400 (EDT)
+	id ACAA16B00A9; Mon, 13 Apr 2026 03:46:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D888A6B00A9; Mon, 13 Apr 2026 03:45:37 -0400 (EDT)
+	id A7BF26B00AB; Mon, 13 Apr 2026 03:46:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9EE66B00AA; Mon, 13 Apr 2026 03:45:37 -0400 (EDT)
+	id 991A06B00AC; Mon, 13 Apr 2026 03:46:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B934B6B00A7
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:45:37 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 772BD140CCC
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:37 +0000 (UTC)
-X-FDA: 84652747914.02.1170D99
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 88F13C0008
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:35 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pCwbIV2E;
-	spf=pass (imf22.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 864A36B00A9
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:46:00 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E255BDBA8
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:46:00 +0000 (UTC)
+X-FDA: 84652748880.21.F39E351
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B9E651C0003
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FcmbC42P;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QuemtuqU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AafFgXzZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9Q4A865R;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066358; a=rsa-sha256;
+	cv=none;
+	b=ApgViksVtFqPhL3irPpNVaxfEwjBmg/Vaamgg+Pj6LvqfMhvQOWlnDnEQYJiQelA6Jk5UK
+	3GjTRQbfn6K78lnQxxE71pOIPSs3Dy0rG4gicNTzHHRV09pZu/YA0F7O+Jv0PbS8bK3LL3
+	PTktZ4od+UCAtYLTTgmxlSqaUdmXdqI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FcmbC42P;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QuemtuqU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AafFgXzZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9Q4A865R;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776066335;
+	s=arc-20220608; t=1776066358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5M3+b2z7keZbGNN1L4pc5gbCusIv4rK3WbERlRAtRw=;
-	b=0Hx55TfpVuDY5hU4NEL/NUtUz7353eoXQSAIUBWI1gn49e0sWB7RBVIw1rcw8iQlFRUvsX
-	+/wsmV0yEG/496jVNfNdnxxzVLVA25Z/XrnkKtYfeT+gHn5NUNC7QkG1X5D79ErQd6SVFU
-	trb3ImcVy/uqWNZgnQbK6rc+8Pf0NHQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066335; a=rsa-sha256;
-	cv=none;
-	b=QbqH5MWPWmkGVahRPPy1mMbKqcVo7MvUu8ol3uqQadnhV6wL+I4rqlQAvzR0ZIkpEiy+Rs
-	7QVETi+P5Ous3VKPFwUEvXan2OgFC3Vq/Zolsh6sBjQz644H/zdm8E7K+Hawu45Oc//N4I
-	APzpi6goJGUphr4FGzgYr1b5thKCbKk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pCwbIV2E;
-	spf=pass (imf22.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1271195d2a7so5345359c88.0
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:45:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776066334; x=1776671134; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I5M3+b2z7keZbGNN1L4pc5gbCusIv4rK3WbERlRAtRw=;
-        b=pCwbIV2EhjkIUbPmNf0NZuazrjGptUtvg+/1+kGiKtWaD1mdMl/gco30TGb2JdH9tR
-         WuHyp6kjqQAnh04Z6b23jVY6Npm5wxil/FsSYegnV9c458F/TtP1dF+/yrb1O9u22Naj
-         0WKq+koWvr9qzWGd63LNUVoe/8dcaOT/13CwUt9ICzcjqlbX+5e3h7Xjm2BJ8oiUtAzn
-         Mc/HQ6lZ1ZJwsgZbIpde5xRU2G/zsV13m3n9Sw+xhtHF/T59R2POM7Y79KWQFaNQ/OaY
-         4LitilBq9b/gunHR93GNo9PWOT1oj4uIHeHuSlrwg6yxgMTeH/Bw8IpTCLfFoMukCVOL
-         p6aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776066334; x=1776671134;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=I5M3+b2z7keZbGNN1L4pc5gbCusIv4rK3WbERlRAtRw=;
-        b=LlMpYlYbO2WUGtynqwUqknCwddV71ziVw1hXkTUNzSe47xkJHJ/imi/GBmVBL0P/ia
-         p4uK5y049fkUjdaHUg7ZSRRFpoDCJ12BkRAiQbJToOeShsUKGA80z/P0uPVU8NABg5Vb
-         kW7sX7MMOzci6T8nd1+MdZpLcmx5Y3Pp3/R3sOCwdvSlCInjK+4C/YK5C+adiP2X+GyS
-         yEQJX5x/MUUrIUyhkzBx4kVdo66k0+4i80doa8h+fvyxrJ0EK5fPIeGRgUrkfZe/PySf
-         ws9G3FzyvElt0xsPVq+F17PPpv98iPCURS9EvdoojmJjLxU04l9/CFWVbTbtLHBGZeVT
-         t4AQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/RXIE0OMlXL2ia9npp29ywCXGvle8k87QRquICrE0CLwAgIbHYUedTGopLgq2XCLutvUxDVQPCpQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw3JLuFc8QCO/Mo2Wcb7ufSRN5ZlF0ACUwN5ZAtYx4J3ZmqveGC
-	xvGACqiqA1lqK8ZaUIwDNIqly+ehJXgHjJ1BEjT/9FZ2AnChaoVLbsgcxpOpZjL0
-X-Gm-Gg: AeBDietkjZTTZgrtIsvxrJsEtI/RpptwaogRpNGLT8r8v9vIv18o4T3sZHBZWO2BT/b
-	KC4S5+Oh7u5tjbckbmBDIZNlutVqQXX/v68pB9PmBSkpCYE8DEbCbH85+hyV8F6Dp6RvfJr6W2Q
-	dpKYZmgrB4yK/uuq9SmCR20htUReOJrhY3C/GCmQdnf75FZk70d189z+Va0ItehtbkJyxrCWQTM
-	YSmhqAZv2OtBZEJWAvl1/J9kP/xvnZiPVpkDgKldmXLvZm39FloE3PCQ6lWZahS1n4s9qnkunk4
-	tCTZFULyvxnp9SSaRZmvSEOIpRe+ZCWOQzwxAW18/B6oDgTGZb0KI4XCg8CcirQzKRzeWr4y9N2
-	EWnyX97PG7uJ3vjQuFUnqEcdQPNILsZ6S1MY5UtmOGeBbjULfbgyHa/46l0VzbRu/uc7ZUbYkXz
-	WRSYv9aa/ZoH95nELK
-X-Received: by 2002:a05:7022:e1b:b0:128:d107:da0f with SMTP id a92af1059eb24-12c34ea9471mr6689826c88.10.1776066333988;
-        Mon, 13 Apr 2026 00:45:33 -0700 (PDT)
-Received: from wujing. ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.45.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 00:45:33 -0700 (PDT)
-From: Qiliang Yuan <realwujing@gmail.com>
-Date: Mon, 13 Apr 2026 15:43:18 +0800
-Subject: [PATCH v2 12/12] selftests: cgroup: Add functional tests for
- dynamic housekeeping
+	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
+	b=8pNpZsu7F3sFzRScEJgmkVg5E1owMThg1vBLtH6IfjENxdT93ZokU3jxAtUL7nPWL0WyRO
+	BV4Rrx2d+WfVyi76XlFG1ZQIlrH59XuDL7MwOmPTdbJBARlZA+9kG3zidG+9kOfoy6eI0m
+	lo2yH+ar2iKILrIAw+Geagp8bT3e1ww=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DD1B86A88E;
+	Mon, 13 Apr 2026 07:45:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1776066356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
+	b=FcmbC42PtXmV/QCTrR7n9FZMc5dhwhf3bW4y0wNO4KrZKnl6AVLYpAUexJcAxPYSgiVkVZ
+	FgOPYVMYt6qtYQ+wk9VAeOc0ynMpbUeVp/1JgDwbRCqhhOKVgLILfezjbrOj4khuQjI/Rr
+	eVq3buWfszl+KiEiE9s3B/R2Blo/M7k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1776066356;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
+	b=QuemtuqUjON2NvTiai8i5mv6ew7exoZKaKqM/dEsGRq7DMWmpkae9Lc2Yn4RShdz2JCh6k
+	Mtbf10X36H7xFiCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1776066355; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
+	b=AafFgXzZmiBooGmUG8a+Cprt8/0H1IfXfIU7KBMYF38pvXjqZWjJAPyTh0L2JlAMGbxb7a
+	4P4k8jb/QiAK23sL0jh+GP5AbXrzdJaS26iAG2he75gQZFDWttMBPbYcQVQYPHomQTMpUe
+	Lz7F7fgWR0KHzq5Fj4+A+t12q9/fJy8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1776066355;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
+	b=9Q4A865RlSf2Oy6CcPW6jj4fkYj+ilJPE3iLP+zVrzwzsCo+CHrdTceUL/GDTcWa94REzq
+	6IP6BXuWr7l3V/Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D2F164AD8F;
+	Mon, 13 Apr 2026 07:45:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Pbp1MzOf3GmqYgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 13 Apr 2026 07:45:55 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 84265A0AFF; Mon, 13 Apr 2026 09:45:51 +0200 (CEST)
+Date: Mon, 13 Apr 2026 09:45:51 +0200
+From: Jan Kara <jack@suse.cz>
+To: Andreas Dilger <adilger@dilger.ca>
+Cc: Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>, 
+	lsf-pc@lists.linux-foundation.org
+Subject: Re: [LSF/MM/BPF TOPIC] Filesystem inode reclaim
+Message-ID: <sbypvp2rwe6m6ip5jzjser3ebyrj2233cjpflpmxzpbb5ib6do@gfb7eddxi3ul>
+References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
+ <adikj3y6OXgSyObW@infradead.org>
+ <4q7d2bi2qjg6crznvr55yfnv2gcomfqdt5j2dgkrwp5hh3ynqo@cfgy5o53zjwr>
+ <1BDB4B6F-D8B8-4FCA-8B3C-FA0672108C75@dilger.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-wujing-dhm-v2-12-06df21caba5d@gmail.com>
-References: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
-In-Reply-To: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, 
- "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
- Joel Fernandes <joelagnelf@nvidia.com>, 
- Josh Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
- Waiman Long <longman@redhat.com>, Chen Ridong <chenridong@huaweicloud.com>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org, 
- cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>
-X-Mailer: b4 0.13.0
-X-Rspamd-Server: rspam12
-X-Stat-Signature: bqt5j5mew56fkab51pm878666mh9ur7t
-X-Rspamd-Queue-Id: 88F13C0008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1BDB4B6F-D8B8-4FCA-8B3C-FA0672108C75@dilger.ca>
+X-Rspamd-Action: no action
+X-Stat-Signature: o4mj69dxh6u3q5yumns9qi3fqu4xhw4f
+X-Rspamd-Queue-Id: B9E651C0003
 X-Rspam-User: 
-X-HE-Tag: 1776066335-966089
-X-HE-Meta: U2FsdGVkX1+THQBbojoOjTMj3ZCR43+1/mmwrtbF9K+3OErIGvOMzNJM98qm0HS2tckCDSXHWVwf4oX+iLeXpvhiebhuX+uLeOaDO2In0JMU/1QfQ14ic7J/RrPZ5ge+3ZcwMRoqadEEYFWObS1s1cbiMBsTj4/eSkGhfH9lZqWHqGAqBgw7CB6k9Ep06G7J2dc/bi2N7u5JhGrfN3jaKatGjfTS3tZ3tZLPzD0g/I4jHwGOWS6Asr1csZZuNrzIPRXOi2uS4Tyg7g3ubZvzBWw3Z2lcOiiopJwgYSObGvydND4qCG2j5LXYURO2r5Y9bC45P1FTdim18afNeQONGPPbAIP3CmvKdxBNIjA4xb4iolvaApxaEdflbuwr8taM2d3uXriwwXbtPhHTM8i8V5PlX3lTXo/tI9gvMp9DctwIEJwYH5YdqRzyot/fSvF0XOV1JqcAgQnt6it1rDsR1gBnrBVvOEBSZt9WBqTGlpBeRhdTyDgTtzJcS960MUP7mZh9nBtpR4kn2LacLJ3aCoFelTcfajhOuvy/4WityRQijbEnQRZBBdBjFw810CI3EwXwZKGEBGcUp2jLqhFyCQiax+DOof1W1/PFP4j/f1M/JNPeL1q4ci7GLT2zsf/7ppYiR0MVG5JLRvEDHOwHd7T0g4ihNECvi5JDxtjZSPJcdjSm5o8Ze3d+ET/SdH2csh8FRvTrYJwK+HeGTqOxSUqQDguBkBfkwPzBnzI3E8trkABnsPonded5yccr3hq6LKRitL1Q6m1HoYhTUVlHxrfXAATgEt1crL/aWFOlpxcCx+vsKrjXtSF7oKKfpnQJboXuwR6QdsgA3+TIp/jehzgeEKi/wuqeONGP5NCxg2SZ2yOfUQrhzb5UZ9plbZir46KCtOydf8rsbKukYVg+Kj9EG0aj007yADT9kTonRcjG2IkZWbB0n9Qiqv1UKXEJiXVyhFzsTSFh9SDm7pZ
- QLFmFyB7
- Tf1x/jiz8V73NuzwiICLYlQUc5e/tDSpcROr1+g2cdcb1fZ84gR0RF4XSOOBqEJZihCcgwA65GQEXCZKtsv/xA8wfjlQHxazNVhY0p6w03fJPHsTAKoLyc6GrHxUg9qpEyduIdNwfxxuzZ0GHU2eOWxr5cAPMCrVhSXSRjE7K1dqmmcw30TXUmxIjQPy4Jg+k7k8EhQRv1Y1F3QpUp4iC1UvmHSUEPYmIirIyG3q+JmZMFC4gqUm0efz+WBfEA1f5IRtIGeS6F7AQAjDXDYHKq4JtCGczr2TpF6yvWyNV3rZJm5gdRCYpIni9kzWMKBK6nlvxYBIi0itYBHBgEVQ2nPSPjFoyQ0vFwGWFkZQ2EwQLRPmqt6ZCGB6qsOyQ2MUGczdF12q86HYVPXZYlOMHCNuvZv3OAppx2MWyBpX3pjkLzbc=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1776066357-562736
+X-HE-Meta: U2FsdGVkX1+QW28zF2Z0M3VBtAOGORVP52+/2xmamcggn422DF96VVbyQWaNr5O9FNmG1lw7NeK73Qs7p2Q3sQHr2oi7TCfP3TEWn8nJkWHI0DWL5sbDHCveKUpVywFauEO9M4dauuOEF1kDSv1zoMNsNliQao03BORW9nZs8nCzGvmWoWjGWkDPZ8KCudyv0nr0j0j0dso8w8p6Vfdjq6mC9YLwo4bxpm4cIhUnWZX6dBEpcmeFPMleiffrN/xDhFJvaiuNIS2lINEBbnaw+wrNZYA86b/GZz4eicI+QtZ2giNg0aYlodFUpp5l5n0zcFOPYflx8LYJ6QulfP1pRFBE3yipESz9n+xs0DsE2VqKbsJsZgW5roTvYZZc5WKnTlzVOem+HDfgMCXHezRelVPWCvW2fUgoBpk/cxeqTvLmXJsL19h1OUvdYLrIWPvqtlmRAT7htuLgVcqy1HYBjBhIePhfykS7D9mRJwYeuUG7nRZamttV4jbSPHWDaDfXJ+seN1JESlMxdxmBGu6ODOYNNsi8Zo+/QpxJN/vx/qiyeXWSAObjdRAOLghhViNTZ2fuwDkAfqZi6KAQLVh9BUxkg1M+4tNamNQzB+ey2pIhdmz4MTAGzitW7WqMgjn7+oJ/rnO7Mmu8jHtb3iWqVsFe/JKMjH5lKNoG9vQYpePcN2GenDlKnbXaYYPqETblOpqnIIwBQtBZXmobmXLW8/QbCtzmTtMKYRYvc74HHq7TliTDfRfm/STBg7j8aEJ4YT4zgR0UVtNU/T7S4+pq0xZGNEKx0RKYFV6viDUxI08AId667x/o636f99Sh8RidIBKBiaGjlepoF1bWByeaGfyTnTKSzAVM/lLQKpFSpW2dR3aq9aaXizxn2xr3+Ez95Q/yfqeBPw0qMVgZYYHNujxZ6VWZzp4hlcSVPAr5RE8fV9fMuYEfy/vq1fcQnEbJIaMsDoigDACyPCLGGT1
+ g/2ih0hx
+ Y4sM0//Vqv7WE7s4nhwRHSWBa60i+gefLJme5157nz70mJpeNKf81WFWu02sY6DGE5lGOICT7rPSgA31xjq3miSSK1h3fbVpqax+iIzKYs/xiC1Ef69VdHqWBZGM1jhTjamt8riSXBUcNcQu13UjSMDAAOpejS3DnbDyIPtKA9dwjsAtMrQC2pqeAvrrSTFswdUMEsP7oYa7xUygYg6P6zW6Zf1MOfKZoqxcY0ltp3rUacVguWJrTjshrgksnxXg5vtKE3CmeWK5Ct6vkrqZK0jMnD6r1saSUrL8JOzCfDQ4nMxlS8gF8aXQShHztx5vYmHhCnZYZ1Z/hyphp6PBx6/Fwzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,79 +136,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This extends the cgroup v2 testing framework in selftests to validate the
-newly added Dynamic Housekeeping Management (DHM) cpuset interface:
-`cpuset.housekeeping.cpus` and `cpuset.housekeeping.smt_aware`.
+On Fri 10-04-26 15:14:04, Andreas Dilger wrote:
+> > On Apr 10, 2026, at 14:56, Jan Kara <jack@suse.cz> wrote:
+> > 
+> > On Fri 10-04-26 00:19:43, Christoph Hellwig wrote:
+> >> I think a patch is more useful than a discussion here, that idea has been
+> >> voiced multiple times, and effecticely implemented in XFS.
+> > 
+> > I know but after thinking for some time I wanted to get some feedback
+> > before I start coding.
+> > 
+> >> Trying to lift the XFS logic into the VFS and finding other consumers
+> >> for it would be very helpful.
+> > 
+> > I hope not to get all the complexity of XFS but we'll see :)
+> > 
+> >>> 1) Filesystems will be required to mark inodes that have non-trivial
+> >>> cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
+> >>> whatever :)). Usually I expect this to happen on first inode modification
+> >>> or so. This will require some per-fs work but it shouldn't be that
+> >>> difficult and filesystems can be adapted one-by-one as they decide to
+> >>> address these warnings from reclaim.
+> >> 
+> >> I think otherwise we call this dirty :)
+> > 
+> > Yup :) I was considering for a while to use another kind of dirty flag for
+> > this and then clean it from flush worker but in the end I decided against
+> > it as it would be IMHO confusing.
+> > 
+> >>> There's also a simpler approach to this problem but with more radical
+> >>> changes to behavior. For example getting rid of inode LRU completely -
+> >>> inodes without dentries referencing them anymore should be rare and it
+> >>> isn't very useful to cache them. So we can always drop inodes on last
+> >>> iput() (as we currently do for example for unlinked inodes). But I have a
+> >>> nagging feeling that somebody is depending on inode LRU somewhere - I'd
+> >>> like poll the collective knowledge of what could possibly go wrong here :)
+> >> 
+> >> I've heard this theory multiple times, but we really need to valide that
+> >> we don't need the LRU.  It also doesn't really solve the above problem,
+> >> as we still would not want to perform the expensive inode inactivation
+> >> work inline with the last dput.
+> >> 
+> >> So while this might be worth investigating, please keept it separate.
+> > 
+> > Ack. With the point Jeff made about NFS revalidations I agree it won't be
+> > straightforward.
+> 
+> Can this be opt-in to flag an inode with `I_KEEP_UNREFERENCED` so that it
+> is not reaped immediately when NFS does iput() on an inode (or even set
+> it on iget() by NFS for that matter, in case there are multiple users?
+> And a sysfs parameter that makes this optional for other filesystems
+> (defaults to off)?
+> 
+> That way you could float a trial balloon of an LRU-less kernel, but leave
+> an escape hatch/debug mechanism if this turns out to kill some workloads.
+> It would take some time (a few years) to get feedback, but this and the
+> negative dcache growth have also been discussed for that long without
+> forward progress.  Having a runtime parameter with the intent to make it
+> permanent in the future at least moves the needle.
 
-The `test_cpuset_housekeeping` functional test verifies:
-- Validation of DHM's SMT safety guard (`cpuset.housekeeping.smt_aware`)
-  by ensuring writing to it behaves as expected.
-- Basic read and write capabilities of `cpuset.housekeeping.cpus` using
-  the base CPU mask.
+Thanks for an interesting idea! But from VFS point of view this won't bring
+much as we'll have to keep the complexity of inode LRU and the associated
+inode cleanup woes anyway. It still could be interesting from MM point of
+view as in most cases FS caches would be faster to reclaim on memory
+pressure. Anyway this is sufficiently complex that I don't want to
+complicate the "let's fix inode reclaim warnings" series with this...
 
-If the DHM functionality is not present in the kernel, the selftest skips gracefully.
-
-Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
----
- tools/testing/selftests/cgroup/test_cpuset.c | 36 ++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-diff --git a/tools/testing/selftests/cgroup/test_cpuset.c b/tools/testing/selftests/cgroup/test_cpuset.c
-index c5cf8b56ceb8f..b2a032be4407a 100644
---- a/tools/testing/selftests/cgroup/test_cpuset.c
-+++ b/tools/testing/selftests/cgroup/test_cpuset.c
-@@ -232,6 +232,41 @@ static int test_cpuset_perms_subtree(const char *root)
- 	return ret;
- }
- 
-+static int test_cpuset_housekeeping(const char *root)
-+{
-+	char buf[PAGE_SIZE];
-+	int ret = KSFT_FAIL;
-+
-+	/* If the kernel doesn't have DHM patch, skip */
-+	if (cg_read(root, "cpuset.housekeeping.cpus", buf, sizeof(buf)))
-+		return KSFT_SKIP;
-+
-+	/* Test writing 1 and 0 to smt_aware */
-+	if (cg_write(root, "cpuset.housekeeping.smt_aware", "1"))
-+		goto cleanup;
-+
-+	if (cg_read_strstr(root, "cpuset.housekeeping.smt_aware", "1"))
-+		goto cleanup;
-+
-+	if (cg_write(root, "cpuset.housekeeping.smt_aware", "0"))
-+		goto cleanup;
-+
-+	if (cg_read_strstr(root, "cpuset.housekeeping.smt_aware", "0"))
-+		goto cleanup;
-+
-+	/* Read root cpuset.cpus.effective */
-+	if (cg_read(root, "cpuset.cpus.effective", buf, sizeof(buf)))
-+		goto cleanup;
-+	
-+	/* Write it back to housekeeping.cpus */
-+	if (cg_write(root, "cpuset.housekeeping.cpus", buf))
-+		goto cleanup;
-+
-+	ret = KSFT_PASS;
-+
-+cleanup:
-+	return ret;
-+}
- 
- #define T(x) { x, #x }
- struct cpuset_test {
-@@ -241,6 +276,7 @@ struct cpuset_test {
- 	T(test_cpuset_perms_object_allow),
- 	T(test_cpuset_perms_object_deny),
- 	T(test_cpuset_perms_subtree),
-+	T(test_cpuset_housekeeping),
- };
- #undef T
- 
-
+								Honza
 -- 
-2.43.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
