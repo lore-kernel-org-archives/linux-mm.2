@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C31CDF34C5C
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B26F34C60
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:12:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61396B0089; Mon, 13 Apr 2026 11:06:47 -0400 (EDT)
+	id 4B7036B0089; Mon, 13 Apr 2026 11:12:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D395B6B008A; Mon, 13 Apr 2026 11:06:47 -0400 (EDT)
+	id 468586B008A; Mon, 13 Apr 2026 11:12:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4F6A6B0092; Mon, 13 Apr 2026 11:06:47 -0400 (EDT)
+	id 357036B0092; Mon, 13 Apr 2026 11:12:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B543A6B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:06:47 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 62548C123D
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:06:47 +0000 (UTC)
-X-FDA: 84653859654.26.11C082F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 707F420018
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:06:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ebbqxqc+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2110C6B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:12:18 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C5F991601E1
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:12:17 +0000 (UTC)
+X-FDA: 84653873514.27.750F971
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 07E06C0007
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:12:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oYSebltY;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776092805;
+	s=arc-20220608; t=1776093136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h1f0AX+m7umKjiV/9Jhxy5W1gpxY8jklxS/rJTj2XVY=;
-	b=5CytdE/X68yEdGIte7EI/8NBRiVOuLMgQc7l1zZFtFeGyBMgg2omfC6pVoh1E0S6PFB70t
-	XFwBiqAQeo6y+l1FX/qJSz7Y9p9oq/x0AbD0qc0e4kUYuI4/usAmLpS4ZEpt3I7me4oTIm
-	sipfO9IMra9wDtBeBJn2RAsJA3T3IzU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776092805; a=rsa-sha256;
-	cv=none;
-	b=GEcC1m2NeX1RNE6rgPLMy0OO7UKhlIyygImvmNTjDtWtP3ApIAARCbdcZzGLqEXkRg1uew
-	BY8j8XszBjOtktwnUK/VLDp3LG0tDB+LHoluRNiP2MdVMHjQsfxfDGPwjDZzSEhZNaImZC
-	Lzga1PxJSKi3C1T5wtsxotSloWkjm4g=
+	bh=kw1J9tQzvYhHyVklHcJ5THVz2nolaxEsZ7r+PvGkuxc=;
+	b=ICLfM4q8Rjc5CAsIDTwQVnmLM0UTVNWvZf5U+5s9uMWavtlPwd4J3h9sKdu2CxmnligMQj
+	rHzFRWlFFZzT8MwEbLjctiefQnCk/GxGpKpiFaIf/r7FSjJLpvoIvIoU6Zzl6CMsrM0ITI
+	SjDm4lafgDx8MQH10ycZ4dtXyRxpJhs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ebbqxqc+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oYSebltY;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776093136; a=rsa-sha256;
+	cv=none;
+	b=wKtoJobtvWeA8NOpsQEQagYKFY+NTojB/LYXHF3zRx5/23xtkIXXZ3xWxf0xo13aCl8fKH
+	pm2+NmPioSYEnb9/RNmulv6WFJjtKuCmEkZx+MiIN7Ktes9G4j4KKCnDW7KDfJmRdVOLu4
+	010+7SD/CiUjVHa0NDjS0pKn39EOv9I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 41A0C42A8F;
-	Mon, 13 Apr 2026 15:06:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB59C2BCAF;
-	Mon, 13 Apr 2026 15:06:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6D28060172;
+	Mon, 13 Apr 2026 15:12:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8D3C2BCAF;
+	Mon, 13 Apr 2026 15:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776092804;
-	bh=TD6ShOQz4Nkn+ZNt66HT4jCoXRRW5WRA+BumLhrc8fM=;
+	s=k20201202; t=1776093135;
+	bh=Y8Yi/bJJbstcHgVRPIN0sGskUtriLPw0DVHCE6fghxQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ebbqxqc+R4FIvsVY6sm40MMaHyoodjWD7ZsSW6ZHQqtYugUNdo141vEnDcGjNugPf
-	 Sw5bl1dKACwqFkek6obR6tmWue/gxRiDQ341vVyINQ6PkH+7ARRJFhPHRo7NlERTtQ
-	 6MRhcQ0lvpYCbgO3hlxSGT9rpGZ6EnQjftMhg0i07Heoz9g+OvfTohhOFMU8E1ZaRG
-	 OTjlgEqLz0GPEo9XxCDJ+IoAHbWPlO253CT0hn+1Rdg7rDWk26tnBGzOMt2/EBrAB5
-	 DRLF+wISJ5zC+4Ar/jKZ22o9LiCBmUuWlr6s9fxYPcLkl2hG40/GpqyTx+ZXBg0peX
-	 HIhSalvQ8M4Rw==
-Message-ID: <e0e48659-8ce1-496d-8b5a-f6d4416f2ea0@kernel.org>
-Date: Mon, 13 Apr 2026 17:06:35 +0200
+	b=oYSebltYV0b0EJR6dW6OS1C59FdwWEL0aUqpQwzm8jHn5lsb+YABFdEMCOFcq4tSF
+	 A6BBaOi5a70XQuE0vh2VSgN67Ws99/tI4izKQOq60CU0LxmibeeHwfDUX3ocow81iX
+	 JItqbbJPgGOcVoRDMN2rFfZS1hkdPG1mcylnjKvRMOwdhrfhdmFbHhNwBDvoKDlyAh
+	 zNDe766gk3gCO5CqFQvroV7drCSpwxPcBOl99JwWyB3G0iW79yNh16RS7JPfOR9cHL
+	 4kAwDDy/koHfBtThWk8F23shMRn8rk2YOOvPbGjGiKZ17kQ1ksmSy+VOIvPjGzvNtE
+	 YyOfny1iDh0Fw==
+Message-ID: <ec284a03-755b-4110-b8f3-c924f3dcb839@kernel.org>
+Date: Mon, 13 Apr 2026 17:12:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] mm/memory-tiers: consolidate memory type dedup into
- mt_get_memory_type()
+Subject: Re: [PATCH 2/8] mm/memory: add memory_block_align_range() helper
 To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
  vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
  osalvador@suse.de
@@ -78,7 +77,7 @@ Cc: dan.j.williams@intel.com, ljs@kernel.org, Liam.Howlett@oracle.com,
  linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
  linux-cxl@vger.kernel.org, kernel-team@meta.com
 References: <20260321150404.3288786-1-gourry@gourry.net>
- <20260321150404.3288786-2-gourry@gourry.net>
+ <20260321150404.3288786-3-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260321150404.3288786-2-gourry@gourry.net>
+In-Reply-To: <20260321150404.3288786-3-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 707F420018
-X-Stat-Signature: os3pw8ynb5u6b9ap5f6b5z3qyie7i1r6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776092805-31192
-X-HE-Meta: U2FsdGVkX1+WFeDwPnHSq8i16Fy862eEiSeDS252jl4kzk7A/vaz7RfsdEX7Tvm3XZul/GkF7igXabcQIr1+ZdZBnnwccXPJEnhDnZddjKj8UTBgk4U2SbDWQ2StYQWSmerQAoRlf+H/BQP2cm9Qh/0G8pJVE2iIhBtT4PT/CNwPan/vuiJaYFQEoXEPVQllUkRt44F3fUFKKVtAZAeg2y8EofsLsDGOef1OyJOLPrs9QqYBKpiag7E5bGHmALQc8x+/AtjXvzdsQ65cLEe1Zf0VlihBvN28pVlPrms6adAJDgLZ2qQAvsRil2Bo2oAiq3JyytXJ233dlvMtlXesn64V0L888QXhb7Ci+YNioPx5r7v7wItv9enn9RCgU57YZ8Vm+oAWARML2Z8gQQe5xeB/ujeOxgulsMzKryhTa/CrbzSJUodOjCpIL8WMlI4Ovgf4GbNeyH/tNLMsj9dmKXKsAlc6zsYZCNEXYUTzpAaZWC3/coCOPF4JbE7+W1hoqPdglPH3+Ij3lnE4vkB0qOVWqmmudHHGmf8oYz1pgsfTmgGtMSxOf+jyQqkERNT7SNukW8MEhH1lbUOFAVH3o6Lq6bZvgSKUMTV4WshRdgB+rmDaDLOPBhCoalQyitluzwVW3VYSkpyxDh7qn2AkJXeb8j0VnpClC1iOSOqU+/6zGn3rYlUVIyqy8Sg+TCK2bsdRGr6m8ZkqCpNaFLYmPQl58zVMDM12YYgg9HCQROo3cqsoCa+fmz4Zd+Ndvt97AkX9O51Ih21pVz0Jw2DaC0I4lkVinJ/lc5ZQACC+HujA6Ss3K8wgSPUOuLMAQ2XZSZ+SNHjIxVGOcR+JjstJs5BgrrKHvmRYsEhjinOfafGpJmwCVhHLnLvxVPVHbgkEFZiDcggCo/Iamlf77SR4iCD7LrS0EwRaj3H5sJU7rVEK/1pn+1jA1FVTf1M0GuFZZ4we/ow9yhRtrZk8v8j
- QFs2nbSU
- JfriVUBgRNHPGwAeQETO0HbKwT7bzvmD3/7BOW7J0pNYpq/YK0agiacPJ+mBOPXJxPdp4DlWYsNS7iXXEfm+g9Uub1qaXJS9jTTNv2qQvZzJ+bd3UDCqHiAuq4KJmEjftWrDqNHsjNq/5uTGO+QO4MQFix8Dj1CnKbF/nbm4mMPuk52/IC0SbUwBtjgpq/1ner0aIciBgE/M4/fV2h+siin/NQbIa6UJ28D1kzBtOXkuMN+iNJVunhT3N7MWuv3lTzrBIfTXHxwIBlrad1hpNfKcY74oCGCwlE38gF9ig1cxMkb+n50A6NRx8cg==
+X-Rspamd-Queue-Id: 07E06C0007
+X-Stat-Signature: jegihc6isfb8po17ztxxyftnm55zwts3
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776093135-805038
+X-HE-Meta: U2FsdGVkX18QKpL23lgp4hxV8wptCkt/gjZ47W8Kxsw2yyxiTruxOITP1AMjaXNYX1c/82VAtC9ySNHe7HPzVgyQ4/JMM4mjsQyyNvFx4fd7AvJ9d34Y4y+rPEPIzsNdVj1uR2ja1/5Lh3VVwSUYieid2pD3PDcgpNZuorz0K5jMvAt+XZ0dN7qbB7prlwJhrj1WYXOZiNfAPCpJP1WgaoD0X3ufkKWTEjzLj0xLUEqNNTxLUQAsqfpsjgZ0JptUmTHNm3aNFLETuoF8Tc3w9AqNart2rZcgzc8Gq70HjQiEv5JQMnoaiZyMvZbGoUDEuZ9F2EAd7X1XoCrPXWsiTBpPLKW4C0eOJgdg2HqNqUcHHttPjVFhJU9gRODsg20KrQlqybGTCNuHR+wEhqzF9rSBCaQ/phq8FG2hMg44+qhynHICf9Ip8OHgWxIWGGg+GdcbKyPoK/aOZQAvOaVDuoaoTMEiCjcexZNlnwGojm+gXIf/DZLvXeSy4iOfyjGwHnH+lG2+DTglhROSvhXYelKkgbFsvCIGgZOQULyyTfK1qqlSve7TKYQ7v5QzW9PF9RP9k0N6R452nURudD8pxoffQKQDOcola4laU1S/6r/zgSxjd/THf0vjFy/DyyLbc9BoUtyCNfRx21axialt3SaFK8PgnSKfDenRCyuNz1Qy6iIDE/O17ld4gO2SgTJwAaJshnfpKtKycjvoPZRvrAhC6OYrfXRXyQFcp9Ogcoq6961xHur090BBvh95jZVRvOpo4A5/D6jJrqOBQA/6JzWqJweUoPVUV5HN0Xs3grM7a2uS51XFzkvWmsrdyVAeEdvslz5yx9uaZB+RQj2LpntfHEbUnLW+qCoEbyhsw1nlp/WKiZTYGG1EXdk8Sd4EmBcPpAzXQaixV2B53KXWppA0orRFYGuXl8I8bkWvJ9j0OpPLAJmS1hGh1vDRkY4g9AVvEW0DFIs4nPSIbNt
+ GxlPlUZN
+ TWlmG3BYsuGdyX4Lv5hIJC3z1JGCFc71CMKkirOVcWv7gxo3yiaht01WCBKe7hdsB/sIEf5Bt+/PM6KdZHYojUirtuqntvP9toEr/rsTYPdAEB/w8itLiubcmFetJRCslu16dtifYDPoAOXgcvZtZ53nBDhnJ9P8dE27OrVOSi2X44/lM0/fMQHEfxukQn06v+2AoajhT2x0GRHfQIV5qGo+hp5HZ6THPrPXF5U5f6FLeywNSXXCJf3NOkXgKqyQQ9Udv1rIU/rtMuHoIMaKrdmq/ql/0VpHwR22QY8C/W8ygKi8LXSonm/qaq6QE33rOZLzIvC1TsMXDEktBUDk+TG8uPgA5fNUWrALsE9YKolYNLvM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,67 +143,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/21/26 16:03, Gregory Price wrote:
-> Replace per-driver memory type list infrastructure with a single
-> mt_get_memory_type(adist) that deduplicates against the global
-> default_memory_types list under memory_tier_lock.
+> Memory hotplug operations require ranges aligned to memory block
+> boundaries.  This is a generic operation for hotplug.
 > 
-> The per-driver lists (mutex + list_head + find/put wrappers) provided
-> dedup within a single driver, but not across drivers or with the core.
-> Since the number of distinct adist values is bounded and types on
-> default_memory_types are never freed anyway, the per-driver cleanup
-> on module unload was not useful.
+> Add memory_block_align_range() as a common helper in <linux/memory.h>
+> that aligns the start address up and end address down to memory block
+> boundaries.
 > 
-> Add MEMTIER_DEFAULT_LOWTIER_ADISTANCE to replace the default DAX
-> adistance, since it was really used as a standin for all kmem hotplugged
-> memory.  This at least makes the default tier relationship clearer to
-> other drivers and they can see where to put their memory in relation to
-> the default lower tier.
-
-Very confusing code.
-
-What's the purpose of kref_get/kref_put if "the types on
-default_memory_types are never freed anyway" ?
-
-IIUC, init_node_memory_type() is always called with one of the types
-obtained through mt_get_memory_type(). And that one always gives us one
-from the default_memory_types list, no?
-
-Why does mt_find_alloc_memory_type() now even consume a list, if there
-really only is &default_memory_types?
-
-
-Is there even a need to expose the "struct memory_dev_type" to kmem,
-when all it does is effectively passing a reference to
-init_node_memory_type() / clear_node_memory_type().
-
-IOW, couldn't init_node_memory_type()/clear_node_memory_type() just
-consume the "adist", and lookup the memory type itself?
-
-All you'd need is some way in the driver to verify that there is a
-memory type for the given adist, as some kind of prepare step.
-
-Alternatively, let init_node_memory_type() return an error to get a
-clean interface? :)
-
-[...]
-
->  		mapped++;
->  	}
-> +	data->mtype = mtype;
+> Update dax/kmem to use this helper.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
+>  drivers/dax/kmem.c     |  4 +---
+>  include/linux/memory.h | 22 ++++++++++++++++++++++
+>  2 files changed, 23 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+> index eb693a581961..798f389df992 100644
+> --- a/drivers/dax/kmem.c
+> +++ b/drivers/dax/kmem.c
+> @@ -26,9 +26,7 @@ static int dax_kmem_range(struct dev_dax *dev_dax, int i, struct range *r)
+>  	struct dev_dax_range *dax_range = &dev_dax->ranges[i];
+>  	struct range *range = &dax_range->range;
 >  
->  	dev_set_drvdata(dev, data);
+> -	/* memory-block align the hotplug range */
+> -	r->start = ALIGN(range->start, memory_block_size_bytes());
+> -	r->end = ALIGN_DOWN(range->end + 1, memory_block_size_bytes()) - 1;
+> +	*r = memory_block_align_range(range);
+>  	if (r->start >= r->end) {
+>  		r->start = range->start;
+>  		r->end = range->end;
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index 5bb5599c6b2b..17cdf6ba3823 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -20,6 +20,7 @@
+>  #include <linux/compiler.h>
+>  #include <linux/mutex.h>
+>  #include <linux/memory_hotplug.h>
+> +#include <linux/range.h>
 >  
-> @@ -253,7 +233,7 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
->  		 * for that. This implies this reference will be around
->  		 * till next reboot.
->  		 */
-> -		clear_node_memory_type(node, NULL);
-> +		clear_node_memory_type(node, data->mtype);
->  	}
+>  #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
+>  
+> @@ -100,6 +101,27 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
+>  unsigned long memory_block_size_bytes(void);
+>  int set_memory_block_size_order(unsigned int order);
+>  
+> +/**
+> + * memory_block_align_range - align a physical address range to memory blocks
+> + * @range: the input range to align
+> + *
+> + * Aligns the start address up and the end address down to memory block
+> + * boundaries. This is required for memory hotplug operations which must
+> + * operate on memory-block aligned ranges.
+> + *
+> + * Returns the aligned range. Callers should check that the returned
+> + * range is valid (aligned.start < aligned.end) before using it.
+> + */
+> +static inline struct range memory_block_align_range(const struct range *range)
 
-Likely clear_node_memory_type() can now be taught to not handle
-"!memtype" anymore?
+Reads as if you would be passing in a memory block.
 
+Maybe
+
+ "align_range_to_memory_blocks()"
+
+ "range_align_to_memory_blocks()"
+
+Maybe what also works:
+
+ "memory_block_aligned_range()"
+
+In general, LGTM.
 
 -- 
 Cheers,
