@@ -4,131 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42098EBFD0A
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:46:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0525EBFD0F
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 08:01:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACAA16B00A9; Mon, 13 Apr 2026 03:46:00 -0400 (EDT)
+	id 0F4176B009B; Mon, 13 Apr 2026 04:01:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7BF26B00AB; Mon, 13 Apr 2026 03:46:00 -0400 (EDT)
+	id 0A5356B009F; Mon, 13 Apr 2026 04:01:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 991A06B00AC; Mon, 13 Apr 2026 03:46:00 -0400 (EDT)
+	id EFD126B00A1; Mon, 13 Apr 2026 04:01:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 864A36B00A9
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:46:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E255BDBA8
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:46:00 +0000 (UTC)
-X-FDA: 84652748880.21.F39E351
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B9E651C0003
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:57 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FcmbC42P;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QuemtuqU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AafFgXzZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9Q4A865R;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066358; a=rsa-sha256;
-	cv=none;
-	b=ApgViksVtFqPhL3irPpNVaxfEwjBmg/Vaamgg+Pj6LvqfMhvQOWlnDnEQYJiQelA6Jk5UK
-	3GjTRQbfn6K78lnQxxE71pOIPSs3Dy0rG4gicNTzHHRV09pZu/YA0F7O+Jv0PbS8bK3LL3
-	PTktZ4od+UCAtYLTTgmxlSqaUdmXdqI=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FcmbC42P;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QuemtuqU;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AafFgXzZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9Q4A865R;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DDEF96B009B
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 04:01:07 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A76BF5CFEF
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:01:07 +0000 (UTC)
+X-FDA: 84652786974.17.114CA12
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id F16F81C000E
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:01:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="SLi6fXK/";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776066358;
+	s=arc-20220608; t=1776067266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
-	b=8pNpZsu7F3sFzRScEJgmkVg5E1owMThg1vBLtH6IfjENxdT93ZokU3jxAtUL7nPWL0WyRO
-	BV4Rrx2d+WfVyi76XlFG1ZQIlrH59XuDL7MwOmPTdbJBARlZA+9kG3zidG+9kOfoy6eI0m
-	lo2yH+ar2iKILrIAw+Geagp8bT3e1ww=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DD1B86A88E;
-	Mon, 13 Apr 2026 07:45:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776066356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
-	b=FcmbC42PtXmV/QCTrR7n9FZMc5dhwhf3bW4y0wNO4KrZKnl6AVLYpAUexJcAxPYSgiVkVZ
-	FgOPYVMYt6qtYQ+wk9VAeOc0ynMpbUeVp/1JgDwbRCqhhOKVgLILfezjbrOj4khuQjI/Rr
-	eVq3buWfszl+KiEiE9s3B/R2Blo/M7k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776066356;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
-	b=QuemtuqUjON2NvTiai8i5mv6ew7exoZKaKqM/dEsGRq7DMWmpkae9Lc2Yn4RShdz2JCh6k
-	Mtbf10X36H7xFiCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776066355; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
-	b=AafFgXzZmiBooGmUG8a+Cprt8/0H1IfXfIU7KBMYF38pvXjqZWjJAPyTh0L2JlAMGbxb7a
-	4P4k8jb/QiAK23sL0jh+GP5AbXrzdJaS26iAG2he75gQZFDWttMBPbYcQVQYPHomQTMpUe
-	Lz7F7fgWR0KHzq5Fj4+A+t12q9/fJy8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776066355;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YTJMZK9JNHrBNpULFH39psQsEEIXluaKja8inHYGWDg=;
-	b=9Q4A865RlSf2Oy6CcPW6jj4fkYj+ilJPE3iLP+zVrzwzsCo+CHrdTceUL/GDTcWa94REzq
-	6IP6BXuWr7l3V/Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D2F164AD8F;
-	Mon, 13 Apr 2026 07:45:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Pbp1MzOf3GmqYgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 13 Apr 2026 07:45:55 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 84265A0AFF; Mon, 13 Apr 2026 09:45:51 +0200 (CEST)
-Date: Mon, 13 Apr 2026 09:45:51 +0200
-From: Jan Kara <jack@suse.cz>
-To: Andreas Dilger <adilger@dilger.ca>
-Cc: Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, Matthew Wilcox <willy@infradead.org>, 
-	lsf-pc@lists.linux-foundation.org
-Subject: Re: [LSF/MM/BPF TOPIC] Filesystem inode reclaim
-Message-ID: <sbypvp2rwe6m6ip5jzjser3ebyrj2233cjpflpmxzpbb5ib6do@gfb7eddxi3ul>
-References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
- <adikj3y6OXgSyObW@infradead.org>
- <4q7d2bi2qjg6crznvr55yfnv2gcomfqdt5j2dgkrwp5hh3ynqo@cfgy5o53zjwr>
- <1BDB4B6F-D8B8-4FCA-8B3C-FA0672108C75@dilger.ca>
+	bh=jy5+btJ7W8rFHo3DKN19z9ayTcQuvvqmOyojQm20bp4=;
+	b=V3YAYcAG9ZWwDHv76p68A6AFkSqGRXvmwmwZvMk+fbxZzHjFXB+i00iUsW+Ytoa948lLX1
+	LNQ5eh5ayMcaSdhCvHW1rnGn/CvL/mzAWvLLFYVAbJUSsqd3vNd2acwRGJdAv9PkpzXPC3
+	2arSAO8IIzbWYQIUafPbA9YNggGhDJc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="SLi6fXK/";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776067266; a=rsa-sha256;
+	cv=none;
+	b=mMqZEq8RwIg1jD30llYxy629vLevd7haC2xtJG+enTiZ28eywQwvHp68siCjttMUQQ+VNz
+	O10soujXhzAD8c4V0+1A2Vxa5sxAin04QrtWBVrFtvdQ3uOTlwGdfnDi1vcCMzNViFAyYV
+	WM/+n/XBNjGQBF5WWj+6lIs5yI4SleI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2870F60172;
+	Mon, 13 Apr 2026 08:01:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71EBC116C6;
+	Mon, 13 Apr 2026 08:01:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776067264;
+	bh=Dv7rLgRxaQyaXKOhIrU9lBrg6emFdyTCNfKJQnzziRE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SLi6fXK/84wyujeUHZY6lqwyBwzqkfbzveBT2343+SH7OI4D3tVRv9VPjdLXbTmPL
+	 mJvfJKna2E7lpCtWszw4jYS1FPMJSLrY3y05xfLE5FkvtwofhmIQfKWx1/b///ht9U
+	 TL4P+7auOiqCmnDhy255YWGWvKcwpH2c3RSUyaz3506/WZZDJ46y4PTttAKZUHn6k1
+	 bxqFSzqsUFpucssvV1a+yXNUJBYbDmOSja/WAUD7CjMq5cnKqzI16hjSaZ0vcj+7dy
+	 OLOFEyzRTFPBzAH7exsVIn/acrZTaXTj3mTB3EAwcklO5i4RFTa/xo9ryTzUngvUIb
+	 Q3VC4cphQRNUg==
+Message-ID: <2155527a-e077-4b71-80ee-d735f9984f60@kernel.org>
+Date: Mon, 13 Apr 2026 10:00:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1BDB4B6F-D8B8-4FCA-8B3C-FA0672108C75@dilger.ca>
-X-Rspamd-Action: no action
-X-Stat-Signature: o4mj69dxh6u3q5yumns9qi3fqu4xhw4f
-X-Rspamd-Queue-Id: B9E651C0003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/9] mm: page_reporting: skip redundant zeroing of
+ host-zeroed reported pages
+To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-mm@kvack.org, virtualization@lists.linux.dev,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>
+References: <cover.1776033471.git.mst@redhat.com>
+ <ea67e39bc3aea1b0b491908f851ffce25154cd26.1776033771.git.mst@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ea67e39bc3aea1b0b491908f851ffce25154cd26.1776033771.git.mst@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776066357-562736
-X-HE-Meta: U2FsdGVkX1+QW28zF2Z0M3VBtAOGORVP52+/2xmamcggn422DF96VVbyQWaNr5O9FNmG1lw7NeK73Qs7p2Q3sQHr2oi7TCfP3TEWn8nJkWHI0DWL5sbDHCveKUpVywFauEO9M4dauuOEF1kDSv1zoMNsNliQao03BORW9nZs8nCzGvmWoWjGWkDPZ8KCudyv0nr0j0j0dso8w8p6Vfdjq6mC9YLwo4bxpm4cIhUnWZX6dBEpcmeFPMleiffrN/xDhFJvaiuNIS2lINEBbnaw+wrNZYA86b/GZz4eicI+QtZ2giNg0aYlodFUpp5l5n0zcFOPYflx8LYJ6QulfP1pRFBE3yipESz9n+xs0DsE2VqKbsJsZgW5roTvYZZc5WKnTlzVOem+HDfgMCXHezRelVPWCvW2fUgoBpk/cxeqTvLmXJsL19h1OUvdYLrIWPvqtlmRAT7htuLgVcqy1HYBjBhIePhfykS7D9mRJwYeuUG7nRZamttV4jbSPHWDaDfXJ+seN1JESlMxdxmBGu6ODOYNNsi8Zo+/QpxJN/vx/qiyeXWSAObjdRAOLghhViNTZ2fuwDkAfqZi6KAQLVh9BUxkg1M+4tNamNQzB+ey2pIhdmz4MTAGzitW7WqMgjn7+oJ/rnO7Mmu8jHtb3iWqVsFe/JKMjH5lKNoG9vQYpePcN2GenDlKnbXaYYPqETblOpqnIIwBQtBZXmobmXLW8/QbCtzmTtMKYRYvc74HHq7TliTDfRfm/STBg7j8aEJ4YT4zgR0UVtNU/T7S4+pq0xZGNEKx0RKYFV6viDUxI08AId667x/o636f99Sh8RidIBKBiaGjlepoF1bWByeaGfyTnTKSzAVM/lLQKpFSpW2dR3aq9aaXizxn2xr3+Ez95Q/yfqeBPw0qMVgZYYHNujxZ6VWZzp4hlcSVPAr5RE8fV9fMuYEfy/vq1fcQnEbJIaMsDoigDACyPCLGGT1
- g/2ih0hx
- Y4sM0//Vqv7WE7s4nhwRHSWBa60i+gefLJme5157nz70mJpeNKf81WFWu02sY6DGE5lGOICT7rPSgA31xjq3miSSK1h3fbVpqax+iIzKYs/xiC1Ef69VdHqWBZGM1jhTjamt8riSXBUcNcQu13UjSMDAAOpejS3DnbDyIPtKA9dwjsAtMrQC2pqeAvrrSTFswdUMEsP7oYa7xUygYg6P6zW6Zf1MOfKZoqxcY0ltp3rUacVguWJrTjshrgksnxXg5vtKE3CmeWK5Ct6vkrqZK0jMnD6r1saSUrL8JOzCfDQ4nMxlS8gF8aXQShHztx5vYmHhCnZYZ1Z/hyphp6PBx6/Fwzg==
+X-Rspamd-Queue-Id: F16F81C000E
+X-Stat-Signature: sxs889hkxa885abuurasphunt8g55hrb
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776067265-913650
+X-HE-Meta: U2FsdGVkX19FXlfxppEdh+lKcDYhodGzfbQV5KKtRUA2sb/qbmdwDr2rNaNw5YI2JRfySNX6IuJF/pv35uqqKv76NZ56j2DPARUY+lNz3kVwXR792O18VdfUowF1YowZbTs1udm6CL3T1gX/oCz1LBVeGJLvi4dsuDkwLw6rPXwJRFBoPvR9R0J3FLyhiQ+T2HzlIly9Biz7VQA+f7tnmNzam4ObyKcqNAV0dtyPSQiLNHK2hGdtsSh/ViUGGJOYhC6kvK8ExQwW6wb8D9Wvon7adznTpsBKqLVDBTfustw/+zPO4zpdjfLUpoIZQKHHAd8z54bWMpaVHVQ8PQuqkeOEG5CEFFjaN0GSXVJ5FeyKEziCY81J4TAckMCZbMzrxqBiydlPz19DZqMmFNUAbB6+K1w5QSy8kby8vJ/BTAMK+0BZc9PDTgcnOBzfirdOsE14eMV92Ajap3fy/Gw2DEkWv9QOkP9lcJueIIDxJfZtaF07+oxNEkEBSrX7bEuc3rAuVL285aQkPCjFrpz/M0mw/NHaBpmJ7JWJEzwv2mrmIuKpvkyTrs32UeWQ4VZXkDG+YdUJigDThimaFXRo/jc8gXaqETi54LE0FCIkUl3XHF+6enIKa0SkbBEJTivDWZRPUKsTDL9D8uV1NwR5ljlKt+t5f4xj94+KPRxJGsb3o/APDl17Sk/i54JQ/Sdkb6X70Cnb+HmJPP5tVaCnrPr0gS8vJhed4ikU1k3Fxg6yzor3cQOhOnl+PcHI4KWbQvjPybSys6M9BbrX+9W3kkGRhh2NtZbryQzcJvS0kDPtvZCSIDT9IcLJR2nd1/8zkQvd0R0sso8Q/qZ5oqDjumC2MLk6bTHoxGCVXx5/BcZVVZnKdUXI4XCqJHaQP+nA5NMZ64/+2ca0ly3r0rFV00M4D/fVSWrPLOeeQEMqW5TxV7lAjk1E5rk+JOsZnzDHjKyfJrLGDYZeJ2hfc9O
+ Jl4lC39M
+ S1ytSE6pbe/Yzqp1tcUMRC5ow2OwlYwo3nr4nFvOJS28TJgpaVxe09Kws+CK23RhGufiXUr5tWan7BE8DVn0RYH0JRko+wOcgZ4AtGWlxsxAvpH2zcSQS3lAydX/lCuUS8dFsuhv9A7jfDKBU2tokTeVeYhtYzlgPydjU1ZXsoySWC2PUgYbPGnAae8Nev4niM96m7hPbPnBNPROXMVwn5kvfs+ePVe6ubJGaWkUXsLdpkBPCewwzX9RJWEp5kBVKRAd04UBWXUwIXhZXDcH73kIMy6HcIRF5FboGdgxGw+6SZI21lgwkjF82SchiaGrLn2YY9F2VNIFuZE0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,74 +146,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 10-04-26 15:14:04, Andreas Dilger wrote:
-> > On Apr 10, 2026, at 14:56, Jan Kara <jack@suse.cz> wrote:
-> > 
-> > On Fri 10-04-26 00:19:43, Christoph Hellwig wrote:
-> >> I think a patch is more useful than a discussion here, that idea has been
-> >> voiced multiple times, and effecticely implemented in XFS.
-> > 
-> > I know but after thinking for some time I wanted to get some feedback
-> > before I start coding.
-> > 
-> >> Trying to lift the XFS logic into the VFS and finding other consumers
-> >> for it would be very helpful.
-> > 
-> > I hope not to get all the complexity of XFS but we'll see :)
-> > 
-> >>> 1) Filesystems will be required to mark inodes that have non-trivial
-> >>> cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
-> >>> whatever :)). Usually I expect this to happen on first inode modification
-> >>> or so. This will require some per-fs work but it shouldn't be that
-> >>> difficult and filesystems can be adapted one-by-one as they decide to
-> >>> address these warnings from reclaim.
-> >> 
-> >> I think otherwise we call this dirty :)
-> > 
-> > Yup :) I was considering for a while to use another kind of dirty flag for
-> > this and then clean it from flush worker but in the end I decided against
-> > it as it would be IMHO confusing.
-> > 
-> >>> There's also a simpler approach to this problem but with more radical
-> >>> changes to behavior. For example getting rid of inode LRU completely -
-> >>> inodes without dentries referencing them anymore should be rare and it
-> >>> isn't very useful to cache them. So we can always drop inodes on last
-> >>> iput() (as we currently do for example for unlinked inodes). But I have a
-> >>> nagging feeling that somebody is depending on inode LRU somewhere - I'd
-> >>> like poll the collective knowledge of what could possibly go wrong here :)
-> >> 
-> >> I've heard this theory multiple times, but we really need to valide that
-> >> we don't need the LRU.  It also doesn't really solve the above problem,
-> >> as we still would not want to perform the expensive inode inactivation
-> >> work inline with the last dput.
-> >> 
-> >> So while this might be worth investigating, please keept it separate.
-> > 
-> > Ack. With the point Jeff made about NFS revalidations I agree it won't be
-> > straightforward.
+On 4/13/26 00:50, Michael S. Tsirkin wrote:
+> When a guest reports free pages to the hypervisor via the page reporting
+> framework (used by virtio-balloon and hv_balloon), the host typically
+> zeros those pages when reclaiming their backing memory.  However, when
+> those pages are later allocated in the guest, post_alloc_hook()
+> unconditionally zeros them again if __GFP_ZERO is set.  This
+> double-zeroing is wasteful, especially for large pages.
 > 
-> Can this be opt-in to flag an inode with `I_KEEP_UNREFERENCED` so that it
-> is not reaped immediately when NFS does iput() on an inode (or even set
-> it on iget() by NFS for that matter, in case there are multiple users?
-> And a sysfs parameter that makes this optional for other filesystems
-> (defaults to off)?
+> Avoid redundant zeroing by propagating the "host already zeroed this"
+> information through the allocation path:
 > 
-> That way you could float a trial balloon of an LRU-less kernel, but leave
-> an escape hatch/debug mechanism if this turns out to kill some workloads.
-> It would take some time (a few years) to get feedback, but this and the
-> negative dcache growth have also been discussed for that long without
-> forward progress.  Having a runtime parameter with the intent to make it
-> permanent in the future at least moves the needle.
+> 1. Add a host_zeroes_pages flag to page_reporting_dev_info, allowing
+>    drivers to declare that their host zeros reported pages on reclaim.
+>    A static key (page_reporting_host_zeroes) gates the fast path.
+> 
+> 2. In page_del_and_expand(), when the page was reported and the
+>    static key is enabled, stash a sentinel value (MAGIC_PAGE_ZEROED)
+>    in page->private.
+> 
+> 3. In post_alloc_hook(), check page->private for the sentinel.  If
+>    present and zeroing was requested (but not tag zeroing), skip
+>    kernel_init_pages().
+> 
+> In particular, __GFP_ZERO is used by the x86 arch override of
+> vma_alloc_zeroed_movable_folio.
+> 
+> No driver sets host_zeroes_pages yet; a follow-up patch to
+> virtio_balloon is needed to opt in.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> ---
+>  include/linux/mm.h             |  6 ++++++
+>  include/linux/page_reporting.h |  3 +++
+>  mm/page_alloc.c                | 21 +++++++++++++++++++++
+>  mm/page_reporting.c            |  9 +++++++++
+>  mm/page_reporting.h            |  2 ++
+>  5 files changed, 41 insertions(+)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 5be3d8a8f806..59fc77c4c90e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4814,6 +4814,12 @@ static inline bool user_alloc_needs_zeroing(void)
+>  				   &init_on_alloc);
+>  }
+>  
+> +/*
+> + * Sentinel stored in page->private to indicate the page was pre-zeroed
+> + * by the hypervisor (via free page reporting).
+> + */
+> +#define MAGIC_PAGE_ZEROED	0x5A45524FU	/* ZERO */
 
-Thanks for an interesting idea! But from VFS point of view this won't bring
-much as we'll have to keep the complexity of inode LRU and the associated
-inode cleanup woes anyway. It still could be interesting from MM point of
-view as in most cases FS caches would be faster to reclaim on memory
-pressure. Anyway this is sufficiently complex that I don't want to
-complicate the "let's fix inode reclaim warnings" series with this...
+Why are we not using another page flag that is yet unused for buddy pages?
 
-								Honza
+Using page->private for that, and exposing it to buddy users with the
+__GFP_PREZEROED flag (I hope we can avoid that) does not sound
+particularly elegant.
+
+Also, if we're going to remember that some pages in the buddy are
+pre-zeroed, it should better not be free-page-reporting specific.
+
+I'd assume ordinary inflating+deflating of the balloon would also end up
+with pre-zeroed pages. We'd just need a (mm/balloon.c -specific)
+interface to tell the buddy that the pages are zeroed.
+
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers,
+
+David
 
