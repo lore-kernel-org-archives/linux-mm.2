@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44945E64007
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 06:21:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C9E4EBFD03
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 06:49:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78E136B008A; Mon, 13 Apr 2026 02:21:32 -0400 (EDT)
+	id A00C06B0089; Mon, 13 Apr 2026 02:49:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 716976B0095; Mon, 13 Apr 2026 02:21:32 -0400 (EDT)
+	id 9B1856B008A; Mon, 13 Apr 2026 02:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DEA06B0096; Mon, 13 Apr 2026 02:21:32 -0400 (EDT)
+	id 8C78A6B0092; Mon, 13 Apr 2026 02:49:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 342116B008A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 02:21:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F3C65E418C
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:21:31 +0000 (UTC)
-X-FDA: 84652535982.24.4A685EF
-Received: from mailgw2.hygon.cn (unknown [101.204.27.37])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7994F100007
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:21:26 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf14.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A3B76B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 02:49:19 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BAC7E31CD
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:49:19 +0000 (UTC)
+X-FDA: 84652606038.27.18AF015
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 391AB40006
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:49:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=GGVCDxLE;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf17.hostedemail.com: domain of create0818@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=create0818@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776061290;
+	s=arc-20220608; t=1776062957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yn5K1m99JbcQw7lxjWw8YO/TrjnvCxV97BJMDuIHBOg=;
-	b=HHe25VVEiqa+kvS0bHasF1CTkjMZAapPqT+AZNq09vANSnNqPAD/Qq9Xnt1VRXu/DToqnd
-	n0mygbTSu64usA1YnX2PpTnMOssNImdTC5fHlqxzYqmCPx/CCm4pHMcgIlXevgV+L9XGEJ
-	Nq1TLsOO1U2WvxVokFn5MHgqLAwUIGY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776061290; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=zfduVNm09jkIhQ0je1BjJHQXUBdHMcI7s4tD6ILgtWg=;
+	b=3YCbHs4qUWHZAOlmXh78nYjEVCBbuatztlNCo30X07U5JPBf4z2msETIPdWFYGbRiHNz/T
+	PLFRQsYeeLeLGSwlqBo349yOerU9/RvXANqDdBxU3rfzJ4O3MOK/iURAXhiMz/H/j9Dbw5
+	/p9wZtj5swZ4kbEluNuUxLvotTx+Jzs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776062957; a=rsa-sha256;
 	cv=none;
-	b=FE/pnxYI/saA5Q9rEr3LXTDsjjVEArPEX5b3f4oNtmiDA3XZ2HltI35t4AjImrb/bfqq/r
-	m1iG88J8RpBUQYjaYkbo59TxFjWtsBaIT56fl3okEuiVZ1BrsgVRtZJQrAOGw1/25RQbLO
-	TCDntkfZuSUcvIhaqfXY7Pca6AgYrYg=
+	b=cJRSKD9Q7uFiImdyhxhHXotGLz7kUtn9yeRP7d6KOd/xUfZTc4W9A8xd8f6dtSJO9hwaey
+	T9n/m82NfqQBIAJ4evC0rrDfFHuZYo91DwiRZEny57ZDK5QHqksJV7ZTbpgZDA802M1R9F
+	40kECq3yEtBtsrLJBM7mEBRD5VkKzH4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf14.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw2.hygon.cn (Postfix) with ESMTP id 4fvHNf68dvz1YQpmG;
-	Mon, 13 Apr 2026 14:21:22 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw2.hygon.cn (Postfix) with ESMTP id 4fvHNd3nCLz1YQpmG;
-	Mon, 13 Apr 2026 14:21:21 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 1A3AD7892;
-	Mon, 13 Apr 2026 14:21:19 +0800 (CST)
-Received: from SH-HV00110.Hygon.cn (172.19.26.208) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 13 Apr
- 2026 14:21:20 +0800
-From: Huang Shijie <huangsj@hygon.cn>
-To: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
-	<brauner@kernel.org>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
-	<muchun.song@linux.dev>, <osalvador@suse.de>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
-	<linux-parisc@vger.kernel.org>, <nvdimm@lists.linux.dev>,
-	<zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>, <yingzhiwei@hygon.cn>, Huang
- Shijie <huangsj@hygon.cn>
-Subject: [PATCH 3/3] mm: split the file's i_mmap tree for NUMA
-Date: Mon, 13 Apr 2026 14:20:42 +0800
-Message-ID: <20260413062042.804-4-huangsj@hygon.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260413062042.804-1-huangsj@hygon.cn>
-References: <20260413062042.804-1-huangsj@hygon.cn>
+	imf17.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=GGVCDxLE;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf17.hostedemail.com: domain of create0818@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=create0818@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=zf
+	duVNm09jkIhQ0je1BjJHQXUBdHMcI7s4tD6ILgtWg=; b=GGVCDxLE1P+Yqxfwm0
+	FIWfflqakXtJXGvBj5M29AMd6A4wyG0laUlAIqT1BMsEbBAMSb/fftCbrEHJfjc6
+	Ydr1Ma6Y7jXFibeb6nMLZKmx4V1sZMWotyiGtzDVINCgr83aITaNHvvalup6G6lk
+	LJwZV+XFVS3hssr2Dtm3TABk4=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgC3oOrOkdxp7MvIUw--.32984S2;
+	Mon, 13 Apr 2026 14:48:52 +0800 (CST)
+From: Cao Ruichuang <create0818@163.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Cao Ruichuang <create0818@163.com>,
+	syzbot+1a3353a77896e73a8f53@syzkaller.appspotmail.com
+Subject: [PATCH] mm/memcontrol: restore irq wrapper for lruvec_stat_mod_folio()
+Date: Mon, 13 Apr 2026 14:48:33 +0800
+Message-Id: <20260413064833.964-1-create0818@163.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.19.26.208]
-X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
- (172.23.18.114)
-X-Rspamd-Queue-Id: 7994F100007
-X-Stat-Signature: cyaqm79b65zzzm9tajwu48f1s38mu66k
+X-CM-TRANSID:PCgvCgC3oOrOkdxp7MvIUw--.32984S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXF45XF4UCw13ur4fKw1UGFg_yoWrAFWkpF
+	4DKrs5C397JFyagF17Xw4qy345Z34IqrW5ZFWxWr4fZF9Iq343Kw1DKay7WFyUuFy8ZF4f
+	X34jyrn3Xa1jvFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zio5dtUUUUU=
+X-Originating-IP: [39.156.194.234]
+X-CM-SenderInfo: pfuht3jhqyimi6rwjhhfrp/xtbC5xQrZGnckdRsXgAA3+
+X-Rspamd-Queue-Id: 391AB40006
+X-Stat-Signature: jtznmakreumfhmaf9s3abxd9nmszguu3
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776061286-877899
-X-HE-Meta: U2FsdGVkX19gc+iXmYIaKo7PqdlfZILnAdIn48G+/6pPt/e4udnCfIpwMJID2FdngQfTV684Z9FsYFm0yjR2qeFPK9V7HbEH2Rz9JGtUuSSdUkgFOP76DgcN/t4GG0n4AkHdfQJJOwzVeikbmyAaeouTebKfGmp2SwxPKvOtby6ZeWK4NGt6SaC8Mu5SdrMtuaioFSFlKkyOtfsUA5eS23c34FEz8slXOYXmbNe9geW2P3HpKtKZuMEw4VRvMYIEsufhDBpQN6bahWK+G8wdjYV+yrAnZqopl3HglC0Su5DkC+0Jl7lXEnQgWhOM19+2XqTa6A+/YmCq49ZC7piW8SRRH/D+Tz+imZfdMfclKE1KLxt7cX2HUgBMxvMLQnY4bcDUsDI7VFVpGOwESCAB8QUWEOrsHlabqBZ4+R9oKuLk20SFVmZW0HJ+SSsOtP4uRf7X/ZfuXf9dIyorIxqwVvUROSEdwywPCwnMons3hJLiLSnnSKJkJxXziv/cEirjclxAzExFt9xId7NA6KvAcOZ6bp8qFrfUx8uliWjXq9JsJ1PS90+AXjfWSey1+6fEIIp0+rvjlD0K+zhwoWM/Wd9ZJe5d8febqUE09laQR8CUX9G0K+ARKayPcFC+RHc7oulcXZlN1RMrZVqFgrsEsM/eiTGGikm++nu0x+8nUKA4jSZ9rxR8S8277OsQjMcdofTvY9gmiMKX/k5/4jLonOVyvxgM7hrEDTLaCxtPTd1KkpbdjUZtKfDu7rRu4N6hYHANoNjaqcX7v1S+/+dkZm2aw+fBBNdBc6RK4ZaxcBYG1pUcQjVMd1wSbkx0QM70U3ZChg9ryxynUnMRM8tRFQwLYlG5UdXiNyqwO0T5tf2GuQm2asLYnDy1/reYLYeXAFmgAzUzJwf0HOaSXX28YtJ8qb9pQ6r89q7OVGAcnIAYZuw2S/AAA7CllVu6GjdNsP+Xrq5UZpguyPKjA5Q
- s3y5ZGBM
- e0IXJEJrhivoVsu5flMZLyE5XEbcTFqLK5gl8xgj6iXvO2ql0/Y6IVs7F3tmZHUQeMcCxvJb9Sw3E/cAl+odWuM7G2r2QvdlX7YnE+Lnst9dcO1oVA+wT8ORHlDnl/XkGon5FV4/kCC6PsMhh7clXqeYowvAh2Bb1jQabdPbidLAUuOJnSyZLzWt1GkEMH2LKiRYnVQmkD1XioV8qrxb9ta/t1KLxZLDrp1UqAMvHdhMVtLH///4p1qM9pGQ2y47vmIjzf7LpPdqOxrDLvyR2fbdMwAwSwjob8CROY1NA5lWm1y7PnLwfDEw5yDuk8ATkwA4nKQgGgFNpCzHFb9RlIAPb0hMIHThIpW8Nl9VUhvKCCkHXADZr/YMgiQ==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776062955-152016
+X-HE-Meta: U2FsdGVkX18ZNJfYbW6uQLoOeGhQJDkcoDgi2SzmzeLZGw6NxZBkE6u+gDqlTb/Tb6NeMzH+KMHDie2XE8QTFEhe30l0pTHH2S/20P+tpi/FkOj7QjuBTVg3qpr/B+emA57AQggxSXa255SOd1blDRDsC0XmWysgcO1pSJDWnjM10b/mvh/23PTtLH1PL0xnOioBLl635QRinTSwxTKDBJMRbPL2DTZ3YwrjR332Odvslh7RZ1tnvvld+kUqTMpxDrpuDhqf0x0UpmvLD+EfF761hbQRr/RMPKRHya2wfogzoBEQ43iNWcTTKMl5H4KzkhlsURuxsX9jStTyiOcfTZD4k0O8Qlep9Zqpqg1h0gpxJa80kmxyaKlM3xq8d/R0QeG1A3kLMQfW+sOEBS9E2WFwVxy0PVKthhFFaiCiWyEeqaYKKyOUPRAEF9/Ch+i6BuVYykM7H0GIEnU2V/9d8ODFB9tCcaXGxBbFripxSoMmw6hsI45jNks3ApiT/j+fJ73sAG0Fjo3zVh6ABM9EgpHCHNANlvoMkdf6TDB1TXMCYLFVy/Lz8pkQ/Qxdd9Sb8fjJs/w7Oj+JFnjQkXtJNFhjpwuzOcq+aBOwOwU16P4mOu0tiS4waPU7+00lAdbiHdcHWHz0PjfkgXa8+S1efjdPdiODRTHow8F1UDZoDIZ+Kyem7mrChfpn04eix+/yOgIjIddm8qfX/qpsyYdWyjcgG4QtscvOa+St30KEopaRJb/SU1U8yl1D5qwXmx4fi6WSXEx5o2eUBZNwib9Ebc4EeggbVLhmCJSZBQs8JMBvyOsz8xd5zV3uX2B1CmK5B87RG8iPDo/wbr7pWQLaBruPK+GPTArrhcJi3WZd2Y88+vti6z7WUTwWixs4newT5ynbldge6EGKmMng4ACItlG4byoKmcC1vQ8ysPgM09xmzF0TQGM7cXFSnk1M/K7cErmygkEANKV3aIEmYIa
+ W0YQm6w7
+ F+Gwf6SmZzXxs0S8SCzLPZ002l3hxRv0qqCUDIr3yt2eb6eDFWkR4gp4SFAs1FGBM20eHt9KosNTGHLkRZdrmejiYRYiZZQZkR0IKNTPiT0u1oV4J6X1F4hc40ZrPwZJmofS4OahPu9VFf/RuqgvRkSD5dF/JeuOyu+vs7ML2udhI2A+QOQRCN5j0ZMk5Wi54QHeHkB3wuRKRwfHCEAkKFAvPQNqqrFTn4sozcDAUBj7kR5UXQwhTxpIiaqxvBZoyjohla2t03a/hIK8Yn7gM5L9cQexGxh1iQoV+kKBEa240cHcIDgWlPodHVP2B+mCGOiAxTR5D0GYGEuHXHjAONR5bfnR5txNMg7mhs8z1ix3RPxRmWQm498Ha4YF0Ve23a5941jq4hSNuJSwRQfaAz1fxcBujbiRcdeoJMftLEB+lB6N3umZaKRa6aMTkqFCgGIMx1gQ32cGitTaiJPbz0Sckih2gWBtv0E5j4B0RGSQ7+d+pn0/iCh/t5DyJHZkMEAPBrNTg72Z1TrbSUmMGvBShT+7fDicFlLBNHzWyT3IVDnYfjo4VTsJRLLigs79gCELyfqrOgfqz+iiiR+eRYCMoTprptwKj9aRQ3nO5omIMbj7DDFJQKv4LvIkFXWpnH3mq/esij6FTzhonOV13epAzKIfCIF9cETaG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,400 +103,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-  In NUMA, there are maybe many NUMA nodes and many CPUs.
-For example, a Hygon's server has 12 NUMA nodes, and 384 CPUs.
-In the UnixBench tests, there is a test "execl" which tests
-the execve system call.
+Commit c1bd09994c4d ("memcg: remove __lruvec_stat_mod_folio") removed
+the local_irq_save/restore wrapper around lruvec_stat_mod_folio(), based
+on the assumption that the underlying stat update path was already
+IRQ-safe.
 
-  When we test our server with "./Run -c 384 execl",
-the test result is not good enough. The i_mmap locks contended heavily on
-"libc.so" and "ld.so". For example, the i_mmap tree for "libc.so" can have 
-over 6000 VMAs, all the VMAs can be in different NUMA mode.
-The insert/remove operations do not run quickly enough.
+That assumption is too broad for lruvec_stat_mod_folio() callers.
+This helper is not just a thin stat primitive.  It also resolves
+folio -> memcg -> lruvec under a helper-managed RCU read-side section.
 
- In order to reduce the competition of the i_mmap lock, this patch does
-following:
-   1.) Split the single i_mmap tree into several sibling trees:
-       Each NUMA node has a tree.
-   2.) Introduce a new field "tree_idx" for vm_area_struct to save the
-       sibling tree index for this VMA.
-   3.) Introduce a new field "vma_count" for address_space.
-       The new mapping_mapped() will use it.
-   4.) Rewrite the vma_interval_tree_foreach() for NUMA.
+syzbot now reports a PREEMPT_RT warning from:
 
- After this patch, the VMA insert/remove operations will work faster,
-and we can get 77% (10 times average) performance improvement
-with the above test.
+  __filemap_add_folio()
+    -> lruvec_stat_mod_folio()
+       -> __rcu_read_unlock()
 
-Signed-off-by: Huang Shijie <huangsj@hygon.cn>
+ending in bad unlock balance / negative RCU nesting.
+
+The PREEMPT_RT detail matters here.  The affected filemap path calls
+lruvec_stat_mod_folio() under xas_lock_irq(), but on PREEMPT_RT
+xas_lock_irq() maps to spin_lock_irq(), and spin_lock_irq() does not
+disable hard IRQs.  Before c1bd09994c4d, lruvec_stat_mod_folio() still
+provided explicit hard-IRQ masking around the folio-based memcg/lruvec
+lookup path.  After that commit, those callers no longer get real
+hard-IRQ masking from either the xarray lock or the helper itself.
+
+Direct mod_lruvec_state() callers do not have the same problem surface:
+they already operate on a stable lruvec under caller-provided locking or
+caller-provided RCU coverage.  The narrower regression boundary is the
+folio-based helper that combines ownership lookup with helper-managed
+RCU.  Restore only that helper's irq wrapper instead of reverting the
+lower-level lruvec state update cleanups.
+
+This restores the previous calling contract for lruvec_stat_mod_folio()
+without changing the lower-level lruvec state interfaces.
+
+Fixes: c1bd09994c4d ("memcg: remove __lruvec_stat_mod_folio")
+Link: https://syzkaller.appspot.com/bug?extid=1a3353a77896e73a8f53
+Reported-by: syzbot+1a3353a77896e73a8f53@syzkaller.appspotmail.com
+Signed-off-by: Cao Ruichuang <create0818@163.com>
 ---
- fs/inode.c               | 55 +++++++++++++++++++++++++++++++++++++++-
- include/linux/fs.h       | 35 +++++++++++++++++++++++++
- include/linux/mm.h       | 32 +++++++++++++++++++++++
- include/linux/mm_types.h |  1 +
- mm/mmap.c                |  3 ++-
- mm/nommu.c               |  6 +++--
- mm/vma.c                 | 34 +++++++++++++++++++------
- mm/vma_init.c            |  1 +
- 8 files changed, 155 insertions(+), 12 deletions(-)
+ include/linux/vmstat.h | 18 +++++++++++++++++-
+ mm/memcontrol.c        |  4 ++--
+ 2 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index cc12b68e021b..3067cb2558da 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -215,6 +215,56 @@ static int no_open(struct inode *inode, struct file *file)
- 	return -ENXIO;
- }
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf78..59cf2676649 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -519,9 +519,19 @@ static inline const char *vm_event_name(enum vm_event_item item)
+ void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
+ 			int val);
  
-+#ifdef CONFIG_NUMA
-+static void free_mapping_i_mmap(struct address_space *mapping)
-+{
-+	int i;
-+
-+	if (!mapping->i_mmap)
-+		return;
-+
-+	for (i = 0; i < nr_node_ids; i++)
-+		kfree(mapping->i_mmap[i]);
-+
-+	kfree(mapping->i_mmap);
-+	mapping->i_mmap = NULL;
-+}
-+
-+static int init_mapping_i_mmap(struct address_space *mapping)
-+{
-+	struct rb_root_cached *root;
-+	int i;
-+
-+	/* The extra one is used as terminator in vma_interval_tree_foreach() */
-+	mapping->i_mmap = kzalloc(sizeof(root) * (nr_node_ids + 1), GFP_KERNEL);
-+	if (!mapping->i_mmap)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < nr_node_ids; i++) {
-+		root = kzalloc_node(sizeof(*root), GFP_KERNEL, i);
-+		if (!root)
-+			goto no_mem;
-+
-+		*root = RB_ROOT_CACHED;
-+		mapping->i_mmap[i] = root;
-+	}
-+	return 0;
-+
-+no_mem:
-+	free_mapping_i_mmap(mapping);
-+	return -ENOMEM;
-+}
-+#else
-+static int init_mapping_i_mmap(struct address_space *mapping)
-+{
-+	mapping->i_mmap = RB_ROOT_CACHED;
-+	return 0;
-+}
-+static void free_mapping_i_mmap(struct address_space *mapping)
-+{
-+}
-+#endif
-+
- /**
-  * inode_init_always_gfp - perform inode structure initialisation
-  * @sb: superblock inode belongs to
-@@ -307,6 +357,9 @@ int inode_init_always_gfp(struct super_block *sb, struct inode *inode, gfp_t gfp
- 	if (unlikely(security_inode_alloc(inode, gfp)))
- 		return -ENOMEM;
+-void lruvec_stat_mod_folio(struct folio *folio,
++void __lruvec_stat_mod_folio(struct folio *folio,
+ 			     enum node_stat_item idx, int val);
  
-+	if (init_mapping_i_mmap(mapping))
-+		return -ENOMEM;
-+
- 	this_cpu_inc(nr_inodes);
- 
- 	return 0;
-@@ -383,6 +436,7 @@ void __destroy_inode(struct inode *inode)
- 	if (inode->i_default_acl && !is_uncached_acl(inode->i_default_acl))
- 		posix_acl_release(inode->i_default_acl);
- #endif
-+	free_mapping_i_mmap(&inode->i_data);
- 	this_cpu_dec(nr_inodes);
- }
- EXPORT_SYMBOL(__destroy_inode);
-@@ -486,7 +540,6 @@ static void __address_space_init_once(struct address_space *mapping)
- 	init_rwsem(&mapping->i_mmap_rwsem);
- 	INIT_LIST_HEAD(&mapping->i_private_list);
- 	spin_lock_init(&mapping->i_private_lock);
--	mapping->i_mmap = RB_ROOT_CACHED;
- }
- 
- void address_space_init_once(struct address_space *mapping)
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index a6a99e044265..34064c1cbd10 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -477,7 +477,12 @@ struct address_space {
- 	/* number of thp, only for non-shmem files */
- 	atomic_t		nr_thps;
- #endif
-+#ifdef CONFIG_NUMA
-+	struct rb_root_cached	**i_mmap;
-+	unsigned long		vma_count;
-+#else
- 	struct rb_root_cached	i_mmap;
-+#endif
- 	unsigned long		nrpages;
- 	pgoff_t			writeback_index;
- 	const struct address_space_operations *a_ops;
-@@ -547,6 +552,27 @@ static inline void i_mmap_assert_write_locked(struct address_space *mapping)
- 	lockdep_assert_held_write(&mapping->i_mmap_rwsem);
- }
- 
-+#ifdef CONFIG_NUMA
-+static inline int mapping_mapped(const struct address_space *mapping)
++static inline void lruvec_stat_mod_folio(struct folio *folio,
++					 enum node_stat_item idx, int val)
 +{
-+	return	READ_ONCE(mapping->vma_count);
++	unsigned long flags;
++
++	local_irq_save(flags);
++	__lruvec_stat_mod_folio(folio, idx, val);
++	local_irq_restore(flags);
 +}
 +
-+static inline void inc_mapping_vma(struct address_space *mapping)
-+{
-+	mapping->vma_count++;
-+}
-+
-+static inline void dec_mapping_vma(struct address_space *mapping)
-+{
-+	mapping->vma_count--;
-+}
-+
-+static inline struct rb_root_cached *get_i_mmap_root(struct address_space *mapping)
-+{
-+	return (struct rb_root_cached *)mapping->i_mmap;
-+}
-+#else
- /*
-  * Might pages of this file be mapped into userspace?
-  */
-@@ -555,10 +581,19 @@ static inline int mapping_mapped(const struct address_space *mapping)
- 	return	!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root);
- }
- 
-+static inline void inc_mapping_vma(struct address_space *mapping)
-+{
-+}
-+
-+static inline void dec_mapping_vma(struct address_space *mapping)
-+{
-+}
-+
- static inline struct rb_root_cached *get_i_mmap_root(struct address_space *mapping)
+ static inline void mod_lruvec_page_state(struct page *page,
+ 					 enum node_stat_item idx, int val)
  {
- 	return &mapping->i_mmap;
- }
-+#endif
- 
- /*
-  * Might pages of this file have been modified in userspace?
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 15cb1da43eb2..c7f26eb34322 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -913,6 +913,9 @@ static inline void vma_init(struct vm_area_struct *vma, struct mm_struct *mm)
- 	vma->vm_ops = &vma_dummy_vm_ops;
- 	INIT_LIST_HEAD(&vma->anon_vma_chain);
- 	vma_lock_init(vma, false);
-+#ifdef CONFIG_NUMA
-+	vma->tree_idx = numa_node_id();
-+#endif
+@@ -536,6 +546,12 @@ static inline void mod_lruvec_state(struct lruvec *lruvec,
+ 	mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
  }
  
- /* Use when VMA is not part of the VMA tree and needs no locking */
-@@ -3783,6 +3786,8 @@ extern atomic_long_t mmap_pages_allocated;
- extern int nommu_shrink_inode_mappings(struct inode *, size_t, size_t);
- 
- /* interval_tree.c */
-+struct rb_root_cached *get_rb_root(struct vm_area_struct *vma,
-+					struct address_space *mapping);
- void vma_interval_tree_insert(struct vm_area_struct *node,
- 			      struct rb_root_cached *root);
- void vma_interval_tree_insert_after(struct vm_area_struct *node,
-@@ -3798,9 +3803,36 @@ struct vm_area_struct *vma_interval_tree_iter_next(struct vm_area_struct *node,
- 				unsigned long start, unsigned long last);
- 
- /* Please use get_i_mmap_root() to get the @root */
-+#ifdef CONFIG_NUMA
-+/* Find the first valid VMA in the sibling trees */
-+static inline struct vm_area_struct *first_vma(struct rb_root_cached ***__r,
-+				unsigned long start, unsigned long last)
++static inline void __lruvec_stat_mod_folio(struct folio *folio,
++					 enum node_stat_item idx, int val)
 +{
-+	struct vm_area_struct *vma = NULL;
-+	struct rb_root_cached **tree = *__r;
-+
-+	while (*tree) {
-+		vma = vma_interval_tree_iter_first(*tree++, start, last);
-+		if (vma)
-+			break;
-+	}
-+
-+	/* Save for the next loop */
-+	*__r = tree;
-+	return vma;
++	mod_node_page_state(folio_pgdat(folio), idx, val);
 +}
 +
-+/* @_tmp is referenced to avoid unused variable warning. */
-+#define vma_interval_tree_foreach(vma, root, start, last)		\
-+	for (struct rb_root_cached **_r = (void *)(root),		\
-+		**_tmp = (vma = first_vma(&_r, start, last)) ? _r : NULL;\
-+	     ((_tmp && vma) || (vma = first_vma(&_r, start, last)));	\
-+		vma = vma_interval_tree_iter_next(vma, start, last))
-+#else
- #define vma_interval_tree_foreach(vma, root, start, last)		\
- 	for (vma = vma_interval_tree_iter_first(root, start, last);	\
- 	     vma; vma = vma_interval_tree_iter_next(vma, start, last))
-+#endif
- 
- void anon_vma_interval_tree_insert(struct anon_vma_chain *node,
- 				   struct rb_root_cached *root);
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 3cc8ae722886..4982e20ce27c 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -984,6 +984,7 @@ struct vm_area_struct {
- #endif
- #ifdef CONFIG_NUMA
- 	struct mempolicy *vm_policy;	/* NUMA policy for the VMA */
-+	int tree_idx;			/* The sibling tree index for the VMA */
- #endif
- #ifdef CONFIG_NUMA_BALANCING
- 	struct vma_numab_state *numab_state;	/* NUMA Balancing state */
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 5b0671dff019..81a2f4932ca8 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1832,8 +1832,9 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 			flush_dcache_mmap_lock(mapping);
- 			/* insert tmp into the share list, just after mpnt */
- 			vma_interval_tree_insert_after(tmp, mpnt,
--					get_i_mmap_root(mapping));
-+					get_rb_root(mpnt, mapping));
- 			flush_dcache_mmap_unlock(mapping);
-+			inc_mapping_vma(mapping);
- 			i_mmap_unlock_write(mapping);
- 		}
- 
-diff --git a/mm/nommu.c b/mm/nommu.c
-index 2e64b6c4c539..6553cfcb6683 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -569,8 +569,9 @@ static void setup_vma_to_mm(struct vm_area_struct *vma, struct mm_struct *mm)
- 
- 		i_mmap_lock_write(mapping);
- 		flush_dcache_mmap_lock(mapping);
--		vma_interval_tree_insert(vma, get_i_mmap_root(mapping));
-+		vma_interval_tree_insert(vma, get_rb_root(vma, mapping));
- 		flush_dcache_mmap_unlock(mapping);
-+		inc_mapping_vma(mapping);
- 		i_mmap_unlock_write(mapping);
- 	}
- }
-@@ -585,8 +586,9 @@ static void cleanup_vma_from_mm(struct vm_area_struct *vma)
- 
- 		i_mmap_lock_write(mapping);
- 		flush_dcache_mmap_lock(mapping);
--		vma_interval_tree_remove(vma, get_i_mmap_root(mapping));
-+		vma_interval_tree_remove(vma, get_rb_root(vma, mapping));
- 		flush_dcache_mmap_unlock(mapping);
-+		dec_mapping_vma(mapping);
- 		i_mmap_unlock_write(mapping);
- 	}
- }
-diff --git a/mm/vma.c b/mm/vma.c
-index 1768e4355a13..5aa3915d183b 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -224,6 +224,16 @@ static bool can_vma_merge_after(struct vma_merge_struct *vmg)
- 	return false;
- }
- 
-+struct rb_root_cached *get_rb_root(struct vm_area_struct *vma,
-+					struct address_space *mapping)
-+{
-+#ifdef CONFIG_NUMA
-+	return mapping->i_mmap[vma->tree_idx];
-+#else
-+	return &mapping->i_mmap;
-+#endif
-+}
-+
- static void __vma_link_file(struct vm_area_struct *vma,
- 			    struct address_space *mapping)
+ static inline void lruvec_stat_mod_folio(struct folio *folio,
+ 					 enum node_stat_item idx, int val)
  {
-@@ -231,8 +241,9 @@ static void __vma_link_file(struct vm_area_struct *vma,
- 		mapping_allow_writable(mapping);
- 
- 	flush_dcache_mmap_lock(mapping);
--	vma_interval_tree_insert(vma, get_i_mmap_root(mapping));
-+	vma_interval_tree_insert(vma, get_rb_root(vma, mapping));
- 	flush_dcache_mmap_unlock(mapping);
-+	inc_mapping_vma(mapping);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 772bac21d15..ffe6ae885f5 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -787,7 +787,7 @@ void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
+ 		mod_memcg_lruvec_state(lruvec, idx, val);
  }
  
- /*
-@@ -245,8 +256,9 @@ static void __remove_shared_vm_struct(struct vm_area_struct *vma,
- 		mapping_unmap_writable(mapping);
- 
- 	flush_dcache_mmap_lock(mapping);
--	vma_interval_tree_remove(vma, get_i_mmap_root(mapping));
-+	vma_interval_tree_remove(vma, get_rb_root(vma, mapping));
- 	flush_dcache_mmap_unlock(mapping);
-+	dec_mapping_vma(mapping);
- }
- 
- /*
-@@ -317,10 +329,13 @@ static void vma_prepare(struct vma_prepare *vp)
- 	if (vp->file) {
- 		flush_dcache_mmap_lock(vp->mapping);
- 		vma_interval_tree_remove(vp->vma,
--					get_i_mmap_root(vp->mapping));
--		if (vp->adj_next)
-+					get_rb_root(vp->vma, vp->mapping));
-+		dec_mapping_vma(vp->mapping);
-+		if (vp->adj_next) {
- 			vma_interval_tree_remove(vp->adj_next,
--					get_i_mmap_root(vp->mapping));
-+					get_rb_root(vp->adj_next, vp->mapping));
-+			dec_mapping_vma(vp->mapping);
-+		}
- 	}
- 
- }
-@@ -337,11 +352,14 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
- 			 struct mm_struct *mm)
+-void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
++void __lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+ 			     int val)
  {
- 	if (vp->file) {
--		if (vp->adj_next)
-+		if (vp->adj_next) {
- 			vma_interval_tree_insert(vp->adj_next,
--					get_i_mmap_root(vp->mapping));
-+					get_rb_root(vp->adj_next, vp->mapping));
-+			inc_mapping_vma(vp->mapping);
-+		}
- 		vma_interval_tree_insert(vp->vma,
--					get_i_mmap_root(vp->mapping));
-+					get_rb_root(vp->vma, vp->mapping));
-+		inc_mapping_vma(vp->mapping);
- 		flush_dcache_mmap_unlock(vp->mapping);
- 	}
+ 	struct mem_cgroup *memcg;
+@@ -807,7 +807,7 @@ void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
+ 	mod_lruvec_state(lruvec, idx, val);
+ 	rcu_read_unlock();
+ }
+-EXPORT_SYMBOL(lruvec_stat_mod_folio);
++EXPORT_SYMBOL(__lruvec_stat_mod_folio);
  
-diff --git a/mm/vma_init.c b/mm/vma_init.c
-index 3c0b65950510..5735868b1ad4 100644
---- a/mm/vma_init.c
-+++ b/mm/vma_init.c
-@@ -71,6 +71,7 @@ static void vm_area_init_from(const struct vm_area_struct *src,
- #endif
- #ifdef CONFIG_NUMA
- 	dest->vm_policy = src->vm_policy;
-+	dest->tree_idx = src->tree_idx;
- #endif
- #ifdef __HAVE_PFNMAP_TRACKING
- 	dest->pfnmap_track_ctx = NULL;
+ void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
+ {
 -- 
-2.43.0
-
+2.39.5 (Apple Git-154)
 
 
