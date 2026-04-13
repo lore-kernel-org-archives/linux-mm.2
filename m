@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B897BEBFD10
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:44:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C5F5EBFD0A
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:45:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B2FB6B00A0; Mon, 13 Apr 2026 03:44:50 -0400 (EDT)
+	id E72BB6B00A1; Mon, 13 Apr 2026 03:45:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28AA26B00A1; Mon, 13 Apr 2026 03:44:50 -0400 (EDT)
+	id E4B1F6B00A3; Mon, 13 Apr 2026 03:45:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A0EB6B00A2; Mon, 13 Apr 2026 03:44:50 -0400 (EDT)
+	id D61096B00A4; Mon, 13 Apr 2026 03:45:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 084B66B00A0
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:44:50 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C497D5CE75
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:44:49 +0000 (UTC)
-X-FDA: 84652745898.04.CD61E38
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D0BF9100006
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:44:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n9+UHMgp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=realwujing@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066287; a=rsa-sha256;
-	cv=none;
-	b=vkcviFteH/7ICJ5lH9LLArSdUvnXs3XUigkzGtpUMx/pF0dJVP2P7fs+q3O6HUgor5aped
-	gJ85k21W+S39hnrgf6BW/qjsgbnOOelNfrWrisiFLmncRMfNMpoSRPEJW6g83+Y7d0N/Lx
-	FV3J4Ujh1y5dflqUs8ZVvpmHu14odrs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n9+UHMgp;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=realwujing@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C2D7E6B00A1
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:45:02 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 870B8C3A8D
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:02 +0000 (UTC)
+X-FDA: 84652746444.02.FA06576
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 92B9D1C0003
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=I0gkdrkm;
+	spf=pass (imf18.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776066287;
+	s=arc-20220608; t=1776066300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CyDvJikQxepnDoa9At7D55yqji9L3lHPWXvHJrxbFWg=;
-	b=KuQpTP30sfgY+F6bwg9LqdtUWLD6aw21Fk4CE6wulOVI/eqVdoHuE4v/G6eyvMplmknn91
-	V2812MPVYaXXqrQxwc2Tj3yZng6hYqzVuebwYG5RM+gP/hILm5kQbK+Y+kMgthQIJEDFAr
-	kuRcQOeRmorUK5xzPCB+G1vVQMnw9XQ=
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-12c42a23c8eso1497807c88.1
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:44:47 -0700 (PDT)
+	bh=3n2Y5xzqBT13fCT8NafM8IZJKMHdw2LLWT217qys08w=;
+	b=2Xmgh0IDzW5yE7o17MbvRJMMLPYnrhiJjdsUY7aGt0jZWU4hQDEF/6M8bKi6/uwXP/FY/b
+	eKvOvF8eFyZnSQfLVDhzqcx8wUneI/TvHRzesIfZCMYVknzG9eONt2xA9r9uCojOrZ1wBV
+	YAHBAikBkXQvuIUoEKThIRJsYPkjERs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=I0gkdrkm;
+	spf=pass (imf18.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066300; a=rsa-sha256;
+	cv=none;
+	b=ThVlZ9aaupB4X79hJE/LPeKQLGAffDO/4fZTukWDs6ABHi6ndW1uVh5+i7c5crRlTIPB6i
+	b2ccRD065fvEPOO8TQt/ccSlgkF+pWZWy2DFdkw4R7dgkgbnkQMuK0K5N2KQrpotfJJ8u1
+	nVoMMm5yz5MnCR1NwPbK85ryM3RL/jc=
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12c15414820so2798711c88.0
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:45:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776066286; x=1776671086; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776066299; x=1776671099; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CyDvJikQxepnDoa9At7D55yqji9L3lHPWXvHJrxbFWg=;
-        b=n9+UHMgptjxM/wq8/TwUbJo+zWjbTMXaIbG4I/gWVdrxlMFTxeuURHsBVFPb0nCV7K
-         XGfofFQGXERTsDYDVebyOPcaPXUBSEl6FTvztDRYlny0Nnn5M5ysAmVdsKjhQSje1ote
-         8Mw+kJsvGtN315waWPIpGysZGdf8NscDb8j0SvNE82JwMYMhHxPHtb6Tlo54a4l+J8WW
-         7gSbsbnGrnwYikgwzUR9AOIpSaO03kyHEV7eVc71uUE/pR/w0Z2fLbT4X8xqPKi634/d
-         SwC/T8jcRtU5GkalDDGirZSGY2vYnVkiV96gCdkgKk9oGD73q2lqEukeLqnt49AKwWdF
-         51NA==
+        bh=3n2Y5xzqBT13fCT8NafM8IZJKMHdw2LLWT217qys08w=;
+        b=I0gkdrkmwKQsEjY8IZer3OEUKKvk2sOfHfd0Eimfj5y+yi7sho2vfdDry8IdYU7/KI
+         OvldPMcgxFFxlMyAFl+LfD0FrG9pmlkJAfPZfys8fnmfPd8b5/JUe38NP4XCkCbXe1dJ
+         A8MAlcfsSC00jenQUScpOP3pFuRl5lk/etsK55bmmm0KWtjOjFGq5IUqSmIs00mpASPm
+         8Lw1wAyUA2YI6xRiK227pTP54t1M5ynFio2HT8W/Z4BfFk9hOHtX6vXoL2SXpEFuIdq+
+         Mq/8rcF4vzyq8+XZC4XseSBL6l/typIRt5PX0lXeY9wnG+FCskpGC1LehfNkVpkGj50t
+         oYWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776066286; x=1776671086;
+        d=1e100.net; s=20251104; t=1776066299; x=1776671099;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=CyDvJikQxepnDoa9At7D55yqji9L3lHPWXvHJrxbFWg=;
-        b=Tk66zU0PxJSImGez42BsicuAZ1OiS5w7dIZWZv1HvwgtOMKLSaheofdqyvEqzUMxMO
-         YCH+sUYuBh/TpY1hcOL8nbFGWRXSUHbrUM/5BvZqcmtlqcZjz9zN1FQcZXM3z+ebRgPD
-         0Xa+QXIuE7aF7RqhrDm2i10gW5hAw8JJ8YV2uFT6lgiQApGOedptWesgz3FNZlKKHlCI
-         K+m44pD6nwfkfDS7RdY0UWz0X4XAi6zipkSyJy+N7sBRadUE/Ukg6K5tLysW9SbbBxFF
-         ez2gFUnwonyDH0bXF3iYIRUJ0iQvdLAEbCKxg95ETBHFlI4zTPK6nZOc6KUGxQjqL+L/
-         VVhA==
-X-Forwarded-Encrypted: i=1; AFNElJ+D1JbuGD/t3BQt2+67yLp9Z2MzFCvXcPI/RsNRAjgW2T3RPfNcU2GurjVqVOA+2rdHKqY0RcFLaA==@kvack.org
-X-Gm-Message-State: AOJu0YyCJ43g/jtD2/dlbN1iOw92Wdqr0s485T+6C/nICksnTt8nf7Xp
-	UMaqacmkhA90QdtGXkvl28wwtB8Js0rsDoHl8DbKOA0n7cf9od4WZlC59BgUx7l6
-X-Gm-Gg: AeBDieuxF/FeJ0iFnKh0zDb32kPDqGB/ECCrNWhlExPvpw/v/7lWGuQIRUJcx3Oo535
-	8AEsaEnRnnjcIaydOojZrchuk99bMwdNgtYk+bkICd0MNTGkHOaLkznGRLKt9axfbAVHfBBKFqp
-	jgNdw6UZGy1wr+ogOdp1FAZjA7spqSD5ThgM/kS5iwZORsh21lowOfsqeAD7AuPq9PKhcJyXKHK
-	h9/Kcz7lCP7js1msw7dSHzT15ofBKnVwBqhYP0w4ht8dW3SJw4XUI4dGWC4whva4Sa6kJ5T9wB2
-	0mWnXpCZGvzigOTLRHq8vYjtePD1lKVVRmJ5fj4LTpGg9uubcbtWGzG8yREuzItxkKCAikj4A9Y
-	XMllysc+qCbeIqioqMqYDXVwRFZJSw2+AE7m7iHtRPhib2Wy0sp5iqnXN1Bqv+Briy5Lpy/+0mo
-	FakY5OICFtQRNgjkZ7
-X-Received: by 2002:a05:7022:61a2:b0:128:d51a:5157 with SMTP id a92af1059eb24-12c34f1449emr6389794c88.33.1776066286323;
-        Mon, 13 Apr 2026 00:44:46 -0700 (PDT)
+        bh=3n2Y5xzqBT13fCT8NafM8IZJKMHdw2LLWT217qys08w=;
+        b=aQPVdy1aC4n9LkofJ/r0Kwqs/3bPrjV6CpIB7ItptL1hsFJJJf+UOF/4XKTcPqroSQ
+         zDqYuqO2hG5PPt+j6JZXNbuKYHpMw9gPIWucBnWMi8hMHjAiTYs1Q3SaQ615mgS1fz7G
+         pNnWRgb0Mm1eh3OD1xGPYdbyn+uTnR9/R57ifJ2+y4Bt75CKMSG6YQqwSayFajdI5JGm
+         pHb7+vUgYEKCt4U5WWb2BarLrt2rVvpGySLXXLvlQDOEZwzPJ6ehHNeZbtuhstPiiJf9
+         QEpMNv+/hYA5rwjg9LTixrA5c4tsK9HrwXCOE04UpdFIqRfxCXdAhxp/J42iNiv46q7K
+         9TUA==
+X-Forwarded-Encrypted: i=1; AFNElJ8P4vSuhg1LX3wE5SzPXx0fLNeOkRc/IGFEH8psvgSrbCwhpUal56tN65bRU6dSk9KV+sljUoCh2w==@kvack.org
+X-Gm-Message-State: AOJu0YwsUhliK+Ar8QHuQ5Yz3Nz7+g5CTl4KiQQFyhakE3/7wL0RjOG1
+	EEChhyZK2at10uSKC3xT+wrZX0zxHC+92tyHyKGUQUnOr6jYM8oVGvmSJjLIZ+hU
+X-Gm-Gg: AeBDievk/9BcHH5ZxSE8hCj2dbZEXdDSFZPh/+zVt1exdnv/50FKFrG2ZpAIsKPaNAp
+	FbJewW7PGKoiU6grvZT04h+8+VZ9WFYBLiVa8ce3WQVxgt0/7XrzvzSC8KHZdHQ9LA4V3nWV892
+	1jtcuM5Lq8Kv189YjVQDzgCoGw53lVhmnSMdh7+HK81OvFI0e3CSBYP7GXtBzQeLDFXKaNY+XYT
+	+DYUec6oGnGysrTzDMPrKfN9hqhBDmUwrUo30dY7M4CAWT1mscA+I2b9st+y4syHuq9xjOWKHBm
+	ODutp6oquwvmhNzOaXc5khFXHE0Wi0CKip//dqIebDx6hYqHuK2eYrHi6rLIAFyHcqUWkOu4TVg
+	S41TwPmWkijpH4G1AZ/N9adDYpUrJM+k6Sr8mre+2OnUXBGHcIFB9rvbUuCso2ZMsEXeiGu90Hw
+	IgOkXI9pBKoxVvBXQD
+X-Received: by 2002:a05:7022:e1d:b0:119:e569:f874 with SMTP id a92af1059eb24-12c35300841mr5317906c88.17.1776066298973;
+        Mon, 13 Apr 2026 00:44:58 -0700 (PDT)
 Received: from wujing. ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.44.36
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.44.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 00:44:46 -0700 (PDT)
+        Mon, 13 Apr 2026 00:44:58 -0700 (PDT)
 From: Qiliang Yuan <realwujing@gmail.com>
-Date: Mon, 13 Apr 2026 15:43:14 +0800
-Subject: [PATCH v2 08/12] workqueue, mm: Support dynamic housekeeping mask
- updates
+Date: Mon, 13 Apr 2026 15:43:15 +0800
+Subject: [PATCH v2 09/12] cgroup/cpuset: Introduce CPUSet-driven dynamic
+ housekeeping (DHM)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-wujing-dhm-v2-8-06df21caba5d@gmail.com>
+Message-Id: <20260413-wujing-dhm-v2-9-06df21caba5d@gmail.com>
 References: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
 In-Reply-To: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -129,14 +129,14 @@ Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>
 X-Mailer: b4 0.13.0
-X-Stat-Signature: sbbchg9bce4jci635o5d4knt954majwq
-X-Rspamd-Queue-Id: D0BF9100006
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 92B9D1C0003
+X-Stat-Signature: 16atzr4etr3g5bm5pbw4jhkmb8ef48k9
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776066287-925376
-X-HE-Meta: U2FsdGVkX19y++qtp939t/rpWxUQ1ZppeALsJD35iYxlxbLkcZECqTb33HaFXeW/eSYshBZaUe8ludO6wycx5nuvnEZI2e9bs/GB9hLyV8uzLQ4qOWuSQ/LKhaAWjbGURnniWn0z1Z0zvf5VWh+HdUDaHK1uIN6XneyXFdLoq+9Vrf3QpHdqT80jThxLS/7b3GgEq0cQWI0qcYs0p3AtOcQ+nZc2Z0Wk2+BlsjAtdHDs4HNDXQJ8DkD3RAjKdT0NY9vZdcIAV0x4c6OFb2tjw2xdO9e22Aw8O9Uj5DGRxg8graqmLE7AsDkCWglsi3Dpo5DTltjVTbEUTOYJHrmahERrdjGFceJBZ4anxOqFvFQjW5KZR2Pgt39r/0aOb5Puq/RlDTJj24j3JDdU7lnd8J5r7JSQIdb8h6+SMaHvD/32I0OIM31LleLcFrizD7ftcxZi0KtaY06U/zJt+E20mcgIXBSB1tfDg/hWOifbQBcHJZK5Q2UEz5+PQd5UyEX+XY9wLweZOGs+lkjr3c8TDjGu2YfTWPdR155N+gSsBwqhSvw+QFI1/Do0g8QAlOAtxcdPu8LHFkE1W1PbCa6Ruj3+k6AAdDk5uNKcm/B5N1+El5qmfuJ789rElQ44m9Vgy7UodZAoLs6t2CyWRZSVn0RCIkFTLPG65qOPVYuACwIicYFkfb5MMoQ8Nm5sAkJFbpxKUg1adyDrLTvZq0XHtySaq6H8xvgB1chFvsbz3PNTPVS/NCMUgFJVoQ4vYYTSEwLiOfkxltmBqzzf8j6PvYeJyDl4Nv2hEVpLuMnHrcIeKtpdtc6IcygyI0dc5tqQDoWPxSrCoLI4p7ZI2afHpJ5wwC1XlkSbrpHIWYbZhW9TLJtQmCv7mizVOcul6ggsC3N7NFGuYaCi+ZxGVOe615VX+/EUBIMYPVxqdRuNcOofDdwkrJ/20TsaKNUUr49yOZWjcpgUJa2Ftwv4W10
- Ynveqbof
- EDdTu6MJfzFYvNFKhOl5gWh2mHphHQdGcmEwses9s6MvgAY2aGowu8BmYuW7GV1VsZ5xfNPz6Ay9hWycmQmEYPbD0f8fILBpaR6ybmntJhhCV1Z2zULKZ6HIGzxUTeAwSpdtAjsiIuL7YpnTZHbzK1mhPISl5OIkK+tveKpSezWH6/l6DuOAqUl5YgZwPKwQ18GB18dJ1x02JgHA2TzFfxmVfb6vYdJfXLKzZVJKq+4UDLKYhAtfH2QbiELOCv+3qYGMaoYAShOH60c4avCCM3w1EV8/kGSJ0PbqAP1uI0H/MsLgza3gbPweElrbyILhNF2vA39zD+GNXd3Rv49ZtsYtEVOaT2HjXYDSH87xOnqHUQh+O3dYzVmP1kOzNTEk5qnJ6AAy9Rh8dmhvDBwY2K37JL0Y3V8att9NaXylxK2NbWjH1PrFFubqx7B8LSjw71XsUkwMWuOPhxpi3h7hg8UIG4YxwaoYFZKP74i8yBt1J5yb5TQ4glQHM5esXw2Zwh/1ToeavZcv5Clk+70agiIA9wJWg6KccZRGh
+X-HE-Tag: 1776066300-152895
+X-HE-Meta: U2FsdGVkX1/Ru7SZbjpxsVcjJJz1/F+IHdQT/Zl7MlptCLAghuBuOE5LNnt8A4rJ5MDW0RpSDSaAILXcC5aPJ/VZ7tjhBLYjzcxpMayHYttjlasVfine64IHStoPm6rA4imErdAxxONAJHSi1884t1rHEKZMR8AUBVznEUdpco++m5IFWc1iXt2RPXlKoHklQvIamhZUYKdOcaz7PJZvPrzv4UO19IJH9XV/bJItxYVAJ0K1yHSZJwfe7RfW5nR3ooNiTi6UBjEuZP2j/47nLPoRqXssRMxwmo3Jq+dYPxzyghuh8f1SQM6PN4ZeoyhA+iCNLZ3TRSeJk9unOiGKe+BYXzfOFFRBBIdvE5QZ0QL3MLbiJFVV/F+sjUiCdMBSDs2P9FrvI97EOKBBDlyF0epXjcok1l22ezaZjQLEwVdURY/j4Fr3+/Q4HO93Us24e4lg/SH8Qkt1hKOB88u0gDcgNCT6gP3M9R0rZvkf3bTfyYSLQFx1EW6fv1HUHTJu++9Db3dBpbHBrCCFEyVHNbT5jviN1J6G4AUTRv2CDBuXE/4yOXmepMCoGliHMqCfWgMgbnn1uZsMPclb1j1Ozc2LOFOs4NSDVIMhOnZzTAp1HLX5UHfYzSGk9ZHduGYT5U/AQMcRcfkHnfNWsPeH8ys4dc4GG0C5wiuH9QldkXIkL7c9SPwxdkUiY9sa67+/SjvRZNA4dAa9hrBoBlRmtgEQaUj/mS3XzpOrlWq0kv3AZ8FJb0N5WtZRzTuiu9PVau9pm05qR9jkuzIy8gJkh6/OPNsyp2G8Xm9uumLyZQtaUoCFoq+bvimpM6UWeIKNY5QtlwkELuJl3/YobxQn+ESH/S3wdZciDkQNfuqKbVIKPhVW5t85hjtqmY74iXer6WQ9GJkzaqN5LhlMjtTk3HBkwePdWws0sWit408sN6UGMenHb3X7suNolWfKiX6JwKPQYS4Db62iV+W84me
+ UrXIMMiY
+ yXmEJBihr5qA11ByAmkKXerncVJTJfdp62buHZb4PsN4JjSpOtIAjyyC4GGAz4uFOzUyE4ucb3YPLx8lC4Z0BNgSUwwFnfsYRWl3u/DD+GOC9S2cx/IctqzFE7dzeW4EHn7d35a5krjgL528yjl4DtPWNI9XDVc5klf8IfhtZEOhSeFlLsrgaVzLL6TTsO0mJi0iNlZcyRS829OGBpr9mWcxqu49VCZkJ9SLKgGMDlRqjn3dq97q3e2rWEbhmJQBBcAiiB1apcRJd7iYowFYyG4j6R/Hb/Agre6XlM1Yb+fbEHE0OfML/rDrNx/RxeuoPorYP1s50iE/T7Jr+3bzEVy7cMnUoTt9US0T/jJ/zT6PKSIALU3lZp5C6aqMiCVM7hgn8NFXJd5UoQ3/ShxdiP0Qvgl8FcZGlAC76sW3OwXTPRKT0Yp3PhHQJLrhTDwMu8exOgMGjv+xRLrg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,142 +144,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Unbound workqueues and kcompactd threads determine their default CPU
-affinity from housekeeping masks (HK_TYPE_WQ, HK_TYPE_DOMAIN, and
-HK_TYPE_KTHREAD) at boot. Currently, these boundaries are static and
-are not updated if housekeeping is reconfigured at runtime.
+Currently, subsystem housekeeping masks are generally static and can
+only be configured via boot-time parameters (e.g., isolcpus, nohz_full).
+This inflexible approach forces a system reboot whenever an orchestrator
+needs to change workload isolation boundaries.
 
-Implement housekeeping notifiers for both workqueue and mm compaction.
+This patch introduces CPUSet-driven Dynamic Housekeeping Management (DHM)
+by exposing the `cpuset.housekeeping.cpus` control file on the root cgroup.
+Writing a new cpumask to this file dynamically updates the housekeeping
+masks of all registered subsystems (scheduler, RCU, timers, tick, workqueues,
+and managed IRQs) simultaneously, without restarting the node.
 
-This ensures that unbound workqueue tasks and background compaction
-threads honor dynamic isolation boundaries configured via sysfs or
-cpuset at runtime.
+At the cpuset and isolation core level, this change implements:
+1. `housekeeping_update_all_types(const struct cpumask *new_mask)` API inside
+   `isolation.c` to safely allocate, update, and replace all enabled hk_type masks.
+2. The `cpuset.housekeeping.cpus` attribute in `dfl_files` for the root cpuset.
+3. Hooking the write operation to iterate over enabled housekeeping types
+   and invoke `housekeeping_update_notify()` (the DHM notifier chain) to
+   push these configuration changes live into individual kernel subsystems.
 
 Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
 ---
- kernel/workqueue.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- mm/compaction.c    | 27 +++++++++++++++++++++++++++
- 2 files changed, 69 insertions(+)
+ include/linux/sched/isolation.h | 12 ++++++++++++
+ kernel/cgroup/cpuset-internal.h |  1 +
+ kernel/cgroup/cpuset.c          | 36 ++++++++++++++++++++++++++++++++++++
+ kernel/sched/isolation.c        | 38 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 87 insertions(+)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index eda756556341a..354e788004b48 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -8008,6 +8008,47 @@ static void __init wq_cpu_intensive_thresh_init(void)
- 	wq_cpu_intensive_thresh_us = thresh;
- }
+diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+index aea1dbc4d7486..299167f627895 100644
+--- a/include/linux/sched/isolation.h
++++ b/include/linux/sched/isolation.h
+@@ -48,6 +48,8 @@ extern void __init housekeeping_init(void);
  
-+static int wq_housekeeping_reconfigure(struct notifier_block *nb,
-+				     unsigned long action, void *data)
-+{
-+	if (action == HK_UPDATE_MASK) {
-+		struct housekeeping_update *upd = data;
-+		unsigned int type = upd->type;
-+
-+		if (type == HK_TYPE_WQ || type == HK_TYPE_DOMAIN) {
-+			cpumask_var_t cpumask;
-+
-+			if (!alloc_cpumask_var(&cpumask, GFP_KERNEL)) {
-+				pr_warn("workqueue: failed to allocate cpumask for housekeeping update\n");
-+				return NOTIFY_BAD;
-+			}
-+
-+			cpumask_copy(cpumask, cpu_possible_mask);
-+			if (!cpumask_empty(housekeeping_cpumask(HK_TYPE_WQ)))
-+				cpumask_and(cpumask, cpumask, housekeeping_cpumask(HK_TYPE_WQ));
-+			if (!cpumask_empty(housekeeping_cpumask(HK_TYPE_DOMAIN)))
-+				cpumask_and(cpumask, cpumask, housekeeping_cpumask(HK_TYPE_DOMAIN));
-+
-+			workqueue_set_unbound_cpumask(cpumask);
-+
-+			if (type == HK_TYPE_DOMAIN) {
-+				apply_wqattrs_lock();
-+				cpumask_andnot(wq_isolated_cpumask, cpu_possible_mask,
-+						housekeeping_cpumask(HK_TYPE_DOMAIN));
-+				apply_wqattrs_unlock();
-+			}
-+
-+			free_cpumask_var(cpumask);
-+		}
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block wq_housekeeping_nb = {
-+	.notifier_call = wq_housekeeping_reconfigure,
-+};
-+
- /**
-  * workqueue_init - bring workqueue subsystem fully online
-  *
-@@ -8068,6 +8109,7 @@ void __init workqueue_init(void)
+ extern int housekeeping_register_notifier(struct notifier_block *nb);
+ extern int housekeeping_unregister_notifier(struct notifier_block *nb);
++extern int housekeeping_update_notify(enum hk_type type, const struct cpumask *new_mask);
++extern int housekeeping_update_all_types(const struct cpumask *new_mask);
  
- 	wq_online = true;
- 	wq_watchdog_init();
-+	housekeeping_register_notifier(&wq_housekeeping_nb);
- }
+ #else
  
- /*
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 1e8f8eca318c6..574ee3c6dc942 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -24,6 +24,7 @@
- #include <linux/page_owner.h>
- #include <linux/psi.h>
- #include <linux/cpuset.h>
-+#include <linux/sched/isolation.h>
- #include "internal.h"
- 
- #ifdef CONFIG_COMPACTION
-@@ -3246,6 +3247,7 @@ void __meminit kcompactd_run(int nid)
- 		pr_err("Failed to start kcompactd on node %d\n", nid);
- 		pgdat->kcompactd = NULL;
- 	} else {
-+		housekeeping_affine(pgdat->kcompactd, HK_TYPE_KTHREAD);
- 		wake_up_process(pgdat->kcompactd);
- 	}
- }
-@@ -3320,6 +3322,30 @@ static const struct ctl_table vm_compaction[] = {
- 	},
- };
- 
-+static int kcompactd_housekeeping_reconfigure(struct notifier_block *nb,
-+					      unsigned long action, void *data)
-+{
-+	struct housekeeping_update *upd = data;
-+	unsigned int type = upd->type;
-+
-+	if (action == HK_UPDATE_MASK && type == HK_TYPE_KTHREAD) {
-+		int nid;
-+
-+		for_each_node_state(nid, N_MEMORY) {
-+			pg_data_t *pgdat = NODE_DATA(nid);
-+
-+			if (pgdat->kcompactd)
-+				housekeeping_affine(pgdat->kcompactd, HK_TYPE_KTHREAD);
-+		}
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block kcompactd_housekeeping_nb = {
-+	.notifier_call = kcompactd_housekeeping_reconfigure,
-+};
-+
- static int __init kcompactd_init(void)
+@@ -86,6 +88,16 @@ static inline int housekeeping_unregister_notifier(struct notifier_block *nb)
  {
- 	int nid;
-@@ -3327,6 +3353,7 @@ static int __init kcompactd_init(void)
- 	for_each_node_state(nid, N_MEMORY)
- 		kcompactd_run(nid);
- 	register_sysctl_init("vm", vm_compaction);
-+	housekeeping_register_notifier(&kcompactd_housekeeping_nb);
  	return 0;
  }
- subsys_initcall(kcompactd_init)
++
++static inline int housekeeping_update_notify(enum hk_type type, const struct cpumask *new_mask)
++{
++	return 0;
++}
++
++static inline int housekeeping_update_all_types(const struct cpumask *new_mask)
++{
++	return 0;
++}
+ #endif /* CONFIG_CPU_ISOLATION */
+ 
+ static inline bool housekeeping_cpu(int cpu, enum hk_type type)
+diff --git a/kernel/cgroup/cpuset-internal.h b/kernel/cgroup/cpuset-internal.h
+index fd7d19842ded7..3ab437f54ecdf 100644
+--- a/kernel/cgroup/cpuset-internal.h
++++ b/kernel/cgroup/cpuset-internal.h
+@@ -60,6 +60,7 @@ typedef enum {
+ 	FILE_EXCLUSIVE_CPULIST,
+ 	FILE_EFFECTIVE_XCPULIST,
+ 	FILE_ISOLATED_CPULIST,
++	FILE_HOUSEKEEPING_CPULIST,
+ 	FILE_CPU_EXCLUSIVE,
+ 	FILE_MEM_EXCLUSIVE,
+ 	FILE_MEM_HARDWALL,
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 1335e437098e8..5df19dc9bfa89 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -3201,6 +3201,30 @@ static void cpuset_attach(struct cgroup_taskset *tset)
+ 	mutex_unlock(&cpuset_mutex);
+ }
+ 
++/*
++ * DHM interface: root cpuset allows updating global housekeeping cpumask.
++ */
++static ssize_t cpuset_write_housekeeping_cpus(struct kernfs_open_file *of,
++					      char *buf, size_t nbytes, loff_t off)
++{
++	cpumask_var_t new_mask;
++	int retval;
++
++	if (!alloc_cpumask_var(&new_mask, GFP_KERNEL))
++		return -ENOMEM;
++
++	buf = strstrip(buf);
++	retval = cpulist_parse(buf, new_mask);
++	if (retval)
++		goto out_free;
++
++	retval = housekeeping_update_all_types(new_mask);
++
++out_free:
++	free_cpumask_var(new_mask);
++	return retval ?: nbytes;
++}
++
+ /*
+  * Common handling for a write to a "cpus" or "mems" file.
+  */
+@@ -3290,6 +3314,9 @@ int cpuset_common_seq_show(struct seq_file *sf, void *v)
+ 	case FILE_ISOLATED_CPULIST:
+ 		seq_printf(sf, "%*pbl\n", cpumask_pr_args(isolated_cpus));
+ 		break;
++	case FILE_HOUSEKEEPING_CPULIST:
++		seq_printf(sf, "%*pbl\n", cpumask_pr_args(housekeeping_cpumask(HK_TYPE_DOMAIN)));
++		break;
+ 	default:
+ 		ret = -EINVAL;
+ 	}
+@@ -3428,6 +3455,15 @@ static struct cftype dfl_files[] = {
+ 		.flags = CFTYPE_ONLY_ON_ROOT,
+ 	},
+ 
++	{
++		.name = "housekeeping.cpus",
++		.seq_show = cpuset_common_seq_show,
++		.write = cpuset_write_housekeeping_cpus,
++		.max_write_len = (100U + 6 * NR_CPUS),
++		.private = FILE_HOUSEKEEPING_CPULIST,
++		.flags = CFTYPE_ONLY_ON_ROOT,
++	},
++
+ 	{ }	/* terminate */
+ };
+ 
+diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+index 0462b41807161..a92b0bb41de3a 100644
+--- a/kernel/sched/isolation.c
++++ b/kernel/sched/isolation.c
+@@ -27,6 +27,7 @@ enum hk_flags {
+ #define HK_FLAG_KERNEL_NOISE (HK_FLAG_TICK | HK_FLAG_TIMER | HK_FLAG_RCU | \
+ 			      HK_FLAG_MISC | HK_FLAG_WQ | HK_FLAG_KTHREAD)
+ 
++static DEFINE_MUTEX(housekeeping_mutex);
+ static BLOCKING_NOTIFIER_HEAD(housekeeping_notifier_list);
+ 
+ DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
+@@ -196,6 +197,43 @@ int housekeeping_update_notify(enum hk_type type, const struct cpumask *new_mask
+ }
+ EXPORT_SYMBOL_GPL(housekeeping_update_notify);
+ 
++int housekeeping_update_all_types(const struct cpumask *new_mask)
++{
++	enum hk_type type;
++	struct cpumask *old_masks[HK_TYPE_MAX] = { NULL };
++
++	if (cpumask_empty(new_mask) || !cpumask_intersects(new_mask, cpu_online_mask))
++		return -EINVAL;
++
++	if (!housekeeping.flags)
++		static_branch_enable(&housekeeping_overridden);
++
++	mutex_lock(&housekeeping_mutex);
++	for_each_set_bit(type, &housekeeping.flags, HK_TYPE_MAX) {
++		struct cpumask *nmask = kmalloc(cpumask_size(), GFP_KERNEL);
++
++		if (!nmask) {
++			mutex_unlock(&housekeeping_mutex);
++			return -ENOMEM;
++		}
++
++		cpumask_copy(nmask, new_mask);
++		old_masks[type] = housekeeping_cpumask_dereference(type);
++		rcu_assign_pointer(housekeeping.cpumasks[type], nmask);
++	}
++	mutex_unlock(&housekeeping_mutex);
++
++	synchronize_rcu();
++
++	for_each_set_bit(type, &housekeeping.flags, HK_TYPE_MAX) {
++		housekeeping_update_notify(type, new_mask);
++		kfree(old_masks[type]);
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(housekeeping_update_all_types);
++
+ void __init housekeeping_init(void)
+ {
+ 	enum hk_type type;
 
 -- 
 2.43.0
