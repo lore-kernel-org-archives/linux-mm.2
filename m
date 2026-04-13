@@ -4,94 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC91FEBFD38
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:57:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C5B8EBFD38
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:57:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAA3B6B00A0; Mon, 13 Apr 2026 06:57:33 -0400 (EDT)
+	id E84026B00A0; Mon, 13 Apr 2026 06:57:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5AF06B00A1; Mon, 13 Apr 2026 06:57:33 -0400 (EDT)
+	id E35586B00A1; Mon, 13 Apr 2026 06:57:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D710E6B00A2; Mon, 13 Apr 2026 06:57:33 -0400 (EDT)
+	id D4B246B00A2; Mon, 13 Apr 2026 06:57:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C535D6B00A0
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:57:33 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89AB4160143
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:57:33 +0000 (UTC)
-X-FDA: 84653231586.18.A2111A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 069B8C000F
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:57:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gwc68Fjj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776077852; a=rsa-sha256;
-	cv=none;
-	b=FdO7tCmNKr0a14c6xQqawT9AlpukpePQBB8cdyJDzKZzMvu2uMXM/GiO/dvqp04LHqWacI
-	YHlBkvR2S1gsiFsMR1nMOPHrNewM3FpZtO3LCBRCaBkkhxZCHMenKjIolgyYSfF6IzQslE
-	+VZGf59f69mMaYcL5+wxIwrN31iVcqQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gwc68Fjj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C34FF6B00A0
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:57:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6CD19C0284
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:57:58 +0000 (UTC)
+X-FDA: 84653232636.16.038E6FF
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5779440013
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:57:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=nmmX5epE;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf01.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776077852;
+	s=arc-20220608; t=1776077876;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pSRKkVSc3p5BWyCAFI/NRqylj/6O0xQw4U3MKbH1fK0=;
-	b=BGFjjH67lZETFImQ2LBBNhidyeHHMY9TomTB5ogNNSyLLiOuelw1TdczTf8BNzMFfpK4WJ
-	toC+s6+MEQ0VImCWTUlY90Y9ROzdvB0Bx2968fkXBKXa/LXJp85GI1ET/Azyyd9Q132hGd
-	kYDsy6IAHhn13+Y+5ruwJyHzlG3GXGU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5CEE360172;
-	Mon, 13 Apr 2026 10:57:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B885C116C6;
-	Mon, 13 Apr 2026 10:57:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776077851;
-	bh=u2egHWP8ia1Dy/ziREu/MdzfbhY6Dr9OLTDesW4wdTY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=gwc68Fjjz4TqVV2ei+WyJ8tm6LOzzvJuxi59ZnqAs4rR0Nn3bWImiM6zmbLobe7Gm
-	 /Mx7LL2GIq+0Msj8O8/i2oLP7X88QTVg0TT3S+ezfbLYui3DrY7/oh+c+1t+ijcKhB
-	 7qE1Znty+OVzWGS3c6txkIDOvNs8t8z51U42DftG3j47UkbHjbzxSjqrgCkbOHkARh
-	 JqFMkdcB+VyqkVb41W4CF9tTkFgr3H9docg2P5JeABDyCWrfW11fu6Kw7Xh5XUPJTN
-	 wzyXsWa8fYLIHNc4WvtuTECD+AZdCdXV3A26aWI7Xw35/L4CiKBQDD8qW781gwNV8Q
-	 6en4yaBDPV2MQ==
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Subject: [PATCH mm-hotfixes] mm/vma: remove __vma_check_mmap_hook()
-Date: Mon, 13 Apr 2026 11:57:13 +0100
-Message-ID: <20260413105713.92625-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6yOlosg+cVYV8+u47sLzjplPhc3Rbe3BWWgSNY8/iuQ=;
+	b=xB6mfZncjvtOYmBx78SFwDL6ezgkiP2DC7w/ET1mdWgK5gPW27HdvAL1wPq8sJvCEpyvDo
+	nBJWjqy6YJ/QYTWKKkh0MDFaz0xahzX7LJ5zHoWYLLjEbNDb0RAAZmHe1fNPpe+R2EzFKA
+	mFq6qOTZUOPaljFkpa06K4t9Z+dC1k0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776077876; a=rsa-sha256;
+	cv=none;
+	b=tCvUb8+Qw0aivBt2zuSZU4ArSx56VruMQhFMrIV9RVJLo8jl8VFjzVKIsLZFX8w7EWgWho
+	/BvTuOon50NLiPpZWTuc93g8JCD7pYY8+cnso6aCHKmsX3DvtMOCuslYUqu7WsnLtPh4VZ
+	JvnLvUKXi7FJ/qJKrAB51AisR27VtAU=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b=nmmX5epE;
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf01.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=6yOlosg+cVYV8+u47sLzjplPhc3Rbe3BWWgSNY8/iuQ=; t=1776077876;
+	x=1776682676; b=nmmX5epEd9gUhdgDJoWWB8uI+77Bv0t1j/MDdgIOLgjHxlFCAT9+4uW8M0eS1
+	IFjn4pJsLCh9bfxWyptrOLZ9/iheHVhd25dWGwJKVJ/GpxUvjx2IUp+1d0HGy+d4K7M+oOYCYP6j8
+	fzGqgDVwJl/iu66k4SlTM09CEohUK0JfSv0UgwucQvucnqRSnxahfRfZzPpQKX16wJQMaO7Hop2vl
+	1t7ninXDYhvUODrAXvabGAyVaQ06nk2GFYw6v4eibdRrzQfNmAbKds3Mnf31rd1OIDUHWdMsrRv2T
+	7KWq6UgZJ8g6Oc/B5e/hG7cjWVQwtQzs2b351iawUTD52oso9Q==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.99)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1wCEzG-00000002T6c-1k78; Mon, 13 Apr 2026 12:57:50 +0200
+Received: from dynamic-093-128-043-080.93.128.pool.telefonica.de ([93.128.43.80] helo=[192.168.178.50])
+          by inpost2.zedat.fu-berlin.de (Exim 4.99)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1wCEzG-000000023DI-0ooC; Mon, 13 Apr 2026 12:57:50 +0200
+Message-ID: <44fcae62f14a4020483b8a2f867c94045155fdb9.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH 00/10] sh: remove NUMA and SPARSEMEM support
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Mike Rapoport <rppt@kernel.org>, linux-sh@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann
+ <arnd@arndb.de>,  Rich Felker <dalias@libc.org>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Date: Mon, 13 Apr 2026 12:57:49 +0200
+In-Reply-To: <20260413104649.852228-1-rppt@kernel.org>
+References: <20260413104649.852228-1-rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.0 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1gsiyhxn36x9neqm9etd1ux5qdruez6g
-X-Rspamd-Queue-Id: 069B8C000F
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 93.128.43.80
+X-ZEDAT-Hint: PO
+X-Rspamd-Queue-Id: 5779440013
+X-Stat-Signature: juquzogxx3iceb8nbs6osujhpmiuwejz
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776077851-576451
-X-HE-Meta: U2FsdGVkX184AQ5ssInR81iPLJy/VFCj6LFxAV6WCpUO/EQ0/tU/N9ph58aVmuQX+vhbgQqKa++xN93CvonDwKrC0oiBxzyoQD1hje6fxP3DlqYC027ddHM1MFcgpT1hWcLHHz/k0kH21ADLxnaRTU8K+5Qv+1At3LR9zRsZoKRaKUqOjPCDolztbEP3XGGRlYD1aXndF3ulPTpXXag9PygqR/eBotL+RYvqy+4rVIzYpNVbGtIrZA/oiFRERskmjSbvTX+3bQQAKGYP9jNKIbD5Yn9173bxiGRQKkQPyFFhgVfLtQpdonFwp1jz/WHsLXamIhWDiuh2QUAabNzjpidwj/hzHfQWd5T7HBP3DvJ1CXe8wpQos97I6cvCYc7uZxdzwZPFyP5i6SuHMiZ2vefy1fMmnznJ6YTsEZyWFIc6U01KaJi33+/f7CurAyPxsXFTxIWCALG9BZl8DvHpIB4EdYDP+rBsbywVBJhrNYW7cHJBrccT3yc9HeHEy5JAzYWF6+ZdLXuE/1JU1DSlIqckf+WJc1VqdNkv6af0rrRK53zrK4R8oOOD3ac3qWeg53V+DmXnsqBxDCMfpPU8iFkaLrOydjTBDL69hEiCiW0caWPVY++3WtVZOhpJGg4LpeO5d/ZRugigOq8dcm5vKb8hR+UD7j+ne4zR/UdrUl1ZxjnT1nRYeITjM9j39i76dWvVjWxWMkdti7JyZGDnztffU4i6zBizQBqvye4JpYWKmn1sYeJcWceD7dor8tEUlixOLSPU72m8/7O3rfzvXsW55Z+idzADdXbAm/VKMOGNlRxF1XoNJcxCbBQSA6G7DRGcNK9uR+kOB+7MSJ7nDhBxicVOKgjifo/iTX5RIQwkMsRgXDpKZjJ4V0wCKDfgzRB+jT9an38TophlRmTa+gdaQleUtwNUqyAY28gjVZ97IOrQeqA2uRho7EnZA+atD5+MvgjaTd9TzgpeScN
- phK9h1jG
- iT2rEjCxMUfFoGqxo1BRDDGXisOvRHskThRXalK64eEfRLLuOnUzJyS4cq0x5U+E4m1AqGoSPlB6dFgNlTu3M2651c13yv0hxBmfH54B+BE3CAEEinRAEdLxi6Bw4wfvyAHxF39N0nDDFnVHjh1Q45rczngZJ0wXSruhbzYrccAGK0fCzccBCh1gml6q5yyKMm+uU81j++MaaLZuyZoCpaqbnb00tln4TPoQ8xAzqnkQVcQ7tiSMmmjPR1gu9HjmZ44Z4T0XanT5Qe9OOXU5B0+AzcPFfaQOnF3lJFjEewYsAK36JALnIN78p/Dw8pDQXFP+psKlYL6PYHNFdTEtU4j6J0Q==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1776077876-308048
+X-HE-Meta: U2FsdGVkX19H3UcCHyzeszylP3R3MhkM8F2wD6/K4pLwNgYcVFv8rWwBeTGAe1CQKjs9yOEMn57lEw1NuAb11ADepdqsKZqHe+LgfTevYXTHNrvDQF8CTht4uPCzjAhQJfxyf1aXJnyw53mLggWNYMRom2z57APZlVi6RMwAWVTB301tdMY7YqaMjWPB6Iuod2Nxd4ty12ZgBzi6TB6l+WdQHfc/he9esXZ+GzGSwNWLsjmvZT4xbBNSbci/hbYQSFvEJrl2rIOTDMi/fBp4n+RJjTLxxwdmrCca5MSzBoG6VZKeGCzupBKa6Fhc9kwxXKqZErGj3Tm4E3s3eBwijk80/GZMlGc4qJAp+IuuFL0J2uBIac1K2iSDMJUSDX2fGcYfBBemg2b7im7/1q/JLYw+WJFDHekefKP55fW/Wthy3EoCDipVhD3lQnhP5upBHonavooFomuWMrtJP+iOhpoXvwqT0akoAcVINJ2qtkUhBCc5IgBHP0sxjj+oSl4hlZ62b4quaD06hUndCyA5efW+U3UAishR7SdnNb+qzDogXC5EzKkUVRD+97t3V3NT5Nsb7SWQGGZP+NybGWl6Je5FrLgJgrFTpEVp34YPjkNeU+Ua1JSVT0L1tpb7STJ7qY5hlUw1bBO5kFNksX4GUSlK5YxFLxcYrO9xqXASPpunmeWvZ8Yyzr1bu+1w5Ml45eYmBLTahRMALsecRlqGtO7iDuAEBcm4eIZg6cmZdvsFg4UjrrTD59+La7Vuqd9idPBF3/0noot68XblzFY6lfOyd2ENYZbCbS7QyN6djfuxHeX+yxsuPdAgdb/GzUST8/wlhbeOHNwSHAeX+XGF70FVXhJgtgA0ikoRWSgIGUHZnVCb7eYGf0K5VT/xNOhLyAyLRB+kP3XIv5pFPmHA0xtUUAA7RgRmHsmoY6Cm0KvK9zUxHfPNz5KG2gLYtIhOlj078P3TyirV/8SXRMU
+ qNOXknBT
+ 2nf0FUx8evc2EHK0Bd7LykxaZ7JTeD1S+rp/XpkRLOlt8unOW3O9FX1qJH7KVNjg2po12bBGQ6Pdc5C4Txx3P/5wavtcbPIVbtaoTMb+xW8IshzIEMw12sEORqG6I94mL56QFG3fywrGhFe7WRgST1v/crIbTPl704uqhYt7e3hiG4TR4+Ymg9GeePFUvmBAMilLhL0VabQskNmdNUQP5zpWmXf5SnfthkldHQ0zM5lhHse3Qi3GN+wwjNoN+X2A3cjvZXSkVlV8FWqpU/BbckHSTKRIjZxKWLYbZ2uyv31Im55+Dr2ymPeCJXoIbRaGUIdCX6VKP2eDThtZPqtaWX/dqF0jSO1PKngInrgMTLf9DVQup5j77HHBMPsp62Z5MTla/L6I+MejyzBkqW+8U0hH5QLUOe4KFY0HHuIvWXWT3Z301mdI884Hq3zCmVqvcz9xfGQMS5sBXrHTd5//Flk32bZ4hjFPxB0EY5bCUVhzf1RjW9ihQ1S7pqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,89 +105,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit c50ca15dd496 ("mm: add vm_ops->mapped hook") introduced
-__vma_check_mmap_hook() in order to assert that a driver doesn't
-incorrectly implement both an f_op->mmap() and a vm_ops->mapped hook, the
-latter of which would not ultimately get invoked.
+Hi Mike,
 
-However, this did not correctly account for stacked drivers (or drivers
-that otherwise use the compatibility layer) which might recursively call
-an mmap_prepare hook via the compatibility layer.
+On Mon, 2026-04-13 at 13:46 +0300, Mike Rapoport wrote:
+> NUMA support for SuperH was introduced a long time ago by commit
+> b241cb0c885e ("sh: Support for multiple nodes.")
+>=20
+> 	"... for boards with many different memory blocks that are
+> 	 otherwise unused (SH7722/SH7785 URAM and so forth)"
+>=20
+> In reality, this added 128K of memory on sh7722 and sh7785 and 256K on
+> shx3 at the expense of all the NUMA related code in the kernel.
+>=20
+> For build of v7.0-rc7 with defconfig and the same configuration with
+> CONFIG_NUMA disabled, bloat-o-meter reports difference of ~76k. Disabling
+> CONFIG_SPARSMEM on top increases the difference to ~94k. And that's only
+> overhead in code and static data that does not take into the account data
+> structures allocated at run time.
+>=20
+> And all this overhead has been there for nothing for almost 8 years
+> because since commit ac21fc2dcb40 ("sh: switch to NO_BOOTMEM")
+> those additional "nodes" could not be used by the core MM because the
+> maximal pfn for ZONE_NORMAL was cut out at the end of the normal memory.
+>=20
+> Mike Rapoport (Microsoft) (10):
+>   sh: remove CONFIG_NUMA and realted configuration options
+>   sh: mm: remove numa.c
+>   sh: mm: drop allocate_pgdat()
+>   sh: remove setup_bootmem_node() and plat_mem_setup()
+>   sh: drop dead code guarded by #ifdef CONFIG_NUMA
+>   sh: drop include/asm/mmzone.h
+>   init/Kconfig: drop ARCH_WANT_NUMA_VARIABLE_LOCALITY
+>   sh: init: remove call the memblock_set_node()
+>   sh: remove SPARSEMEM related entries from Kconfig
+>   sh: drop include/asm/sparsemem.h
 
-Thus the nested mmap_prepare() invocation might result in a VMA which has
-vm_ops->mapped set with an overlaying mmap() hook, causing the
-__vma_check_mmap_hook() to fail in vfs_mmap(), wrongly failing the
-operation.
+Thanks a lot for the series. It will take me some time to review and I expe=
+ct
+it to be taken for v7.2. FWIW, I actually own several boards using the SH-7=
+785LCR
+CPU and I issues booting kernels newer than 6.5 on these so I'm wondering w=
+hether
+this broken feature might be to blame?
 
-This patch resolves this by simply removing the check, as we can't be
-certain that an mmap() hook doesn't at some point invoke the compatibility
-layer, and it's not worth trying to track it.
+Adrian
 
-Fixes: c50ca15dd496 ("mm: add vm_ops->mapped hook")
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Closes: https://lore.kernel.org/all/adx2ws5z0NMIe5Yj@shinmob/
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
----
-
-Andrew -
-
-c50ca15dd496 is in mm-stable, so thought best to do as fix-patch? Will
-leave a small bisection hazard (unfortunately) so putting this as close as
-possible to the patch it fixes would be ideal.
-
-Thanks!
-
- include/linux/fs.h |  9 +--------
- mm/util.c          | 10 ----------
- 2 files changed, 1 insertion(+), 18 deletions(-)
-
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 0bdccfa70b44..f3ca9b841892 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2062,20 +2062,13 @@ void compat_set_desc_from_vma(struct vm_area_desc *desc, const struct file *file
- 			      const struct vm_area_struct *vma);
- int __compat_vma_mmap(struct vm_area_desc *desc, struct vm_area_struct *vma);
- int compat_vma_mmap(struct file *file, struct vm_area_struct *vma);
--int __vma_check_mmap_hook(struct vm_area_struct *vma);
-
- static inline int vfs_mmap(struct file *file, struct vm_area_struct *vma)
- {
--	int err;
--
- 	if (file->f_op->mmap_prepare)
- 		return compat_vma_mmap(file, vma);
-
--	err = file->f_op->mmap(file, vma);
--	if (err)
--		return err;
--
--	return __vma_check_mmap_hook(vma);
-+	return file->f_op->mmap(file, vma);
- }
-
- static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
-diff --git a/mm/util.c b/mm/util.c
-index f063fd4de1e8..232c3930a662 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1281,16 +1281,6 @@ int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
- }
- EXPORT_SYMBOL(compat_vma_mmap);
-
--int __vma_check_mmap_hook(struct vm_area_struct *vma)
--{
--	/* vm_ops->mapped is not valid if mmap() is specified. */
--	if (vma->vm_ops && WARN_ON_ONCE(vma->vm_ops->mapped))
--		return -EINVAL;
--
--	return 0;
--}
--EXPORT_SYMBOL(__vma_check_mmap_hook);
--
- static void set_ps_flags(struct page_snapshot *ps, const struct folio *folio,
- 			 const struct page *page)
- {
---
-2.53.0
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
