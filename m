@@ -4,89 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 736BDF34C78
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 17:44:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A4B9F531C1
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:07:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC7176B0088; Mon, 13 Apr 2026 13:44:50 -0400 (EDT)
+	id A29726B0088; Mon, 13 Apr 2026 14:07:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C77D16B008A; Mon, 13 Apr 2026 13:44:50 -0400 (EDT)
+	id 9DAAB6B008A; Mon, 13 Apr 2026 14:07:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB59D6B0092; Mon, 13 Apr 2026 13:44:50 -0400 (EDT)
+	id 8C93B6B0092; Mon, 13 Apr 2026 14:07:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF4276B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:44:50 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F706C144B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:44:50 +0000 (UTC)
-X-FDA: 84654257940.06.713FA0D
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 868C440003
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:44:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kF82xfwR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776102288; a=rsa-sha256;
-	cv=none;
-	b=RXy09BfoQv3k8UEcUfCJPqmmH7Ejd4PtylGIjKlAQy3o+IvUKvGG++dLN+Fud0WZZlHWnY
-	cOqwBdWt0io8pqJx54jwE5I9+CsVrlLg3l2sfowTbLp8mK+iQpsA/7Gz0e8TBHZIhDYncI
-	tEcf859J0WJrBUXB4VTAVBv2V9LZWCo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kF82xfwR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776102288;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 77BC26B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:07:22 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EAD8DC151F
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:07:21 +0000 (UTC)
+X-FDA: 84654314682.15.1CFF58F
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6070B160009
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:07:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=E6kAE1AD;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=E6kAE1AD;
+	spf=pass (imf08.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776103640; a=rsa-sha256;
+	cv=pass;
+	b=Tdt/a6zdEkr4AIh8ZthRuxtUMKglHQwYOL7OfTUADl3jjNU+yGcjAcG5FatUkjXCDj67MH
+	yKX36naX/jxMhjV0+NSWASs21sLVcJVqwCCLgn5G7WSVEsQeca9zyVupBkZGaSMgDTMJJN
+	RfYLQ2Xk2YXa8lVNacTLwY/hZXP0htI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776103640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b0j9S/oeWv9cGrOnlEmdvesYiWMQozAk+6ZeIzA0Owc=;
-	b=M5mzBi5oemFdTxeNysw4z3XAC/udaXLlKb0MpgtYw+sDmKMXw2nZoIMSNv7WZtg5W3UTaY
-	BzKFXVCqoYh1KLN7WT6j05jtmEHC0R2RP6j18q7Kf5mNmj8calyIqm6JW2Nr1gI9X+1HG/
-	vcjT5LiIC4RF8eDFcgWx1bkFnv91brQ=
-Date: Mon, 13 Apr 2026 10:44:36 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776102286;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b0j9S/oeWv9cGrOnlEmdvesYiWMQozAk+6ZeIzA0Owc=;
-	b=kF82xfwRKUDeEAuXqOchwk9JzjnHGoGfLr6ipXkTHA8Y9gDscmQu3i/dgmUx3cPA8uIVZb
-	a4vMT/H+Owd+AsXn3B5FTclx+2LzDPYcGlTlnvfjefVUU4SzorZ631Fwoh1XzU06KX+uM+
-	TEyj96yOsj7dLckLcRg5oq87cs83K3A=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Tejun Heo <tj@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	inwardvessel@gmail.com, hannes@cmpxchg.org, josef@toxicpanda.com, 
-	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, martin.lau@linux.dev, usama.arif@linux.dev, kernel-team@meta.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: blk-cgroup: fix use-after-free in
- cgwb_release_workfn()
-Message-ID: <ad0rbPUaeGJozbSe@linux.dev>
-References: <20260413-blkcg-v1-1-35b72622d16c@debian.org>
+	bh=Q0HVfEElE8T2sVeoLvHHdJl3de5adQ+rg6PPxuJ5QdI=;
+	b=1o9MSBeHll7hmnGCN85wzx+0+H5vG6obvXcVspdx+u+DYHKC5pqoY4Nzh8vVmEP2r7EuZv
+	WLqul+846D1hOELeQV8uCCfJ3nOOgCe/ia0Rbh+KsQDDY8jghEYqRs54Gby3LqW8gxTyRw
+	/EB3hcY2nw4DemdCVm9TBLztpc5oGbU=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6719e2372a0so1469317a12.0
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:07:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776103638; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UghVG7/CqViS3VbUnIiXCnv3Cfhw++LMjh/mgftynVgaxG/XfzZUTqXOh4ANqLzCce
+         5Lk6YFbbSfxZJXuKBU9XUEy8AXnW1zkQ55e5T0vOVwmGAbPyl8VHPT5n2n1zfA0I7USY
+         pIEsaIK03IVUuVQmFu5xzMeuqxwsHuBQIuhLLx9f3gO3r9DSVlU8zRPPUdKvTMyVR/Ui
+         pRv8nzm6kqwEK9wkf30l+yFw7PwiwlxYW1hsO9pOftRKviWn1mHR64EnBu6KK8sIEoDJ
+         1hjqE3EgJsEo6hb/u7ESMs1+CyMx1lFc3isUdGApopssQnTbSMeqO5h3Hu/XlK9bT+D0
+         qbCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Q0HVfEElE8T2sVeoLvHHdJl3de5adQ+rg6PPxuJ5QdI=;
+        fh=umFgxacB8iYRVeGIbWfaomqPzKxwe28I8+9d2Xoyb+w=;
+        b=hsVcStU0U05LUB5Lap/WaSbyRqADr3Zx/f9ZTuh+W/YNuTxfV9cTTbmSKR0LZvJU63
+         fPTG7w9p+tuEfdNimy6Og7wp4iiFsNDaWom68K9+oR6wLGorb8aTBrdugI99SI1dyjGn
+         lUm05NvwYDHb0K+VRnJJDIAL9qkp3vhcHh4r01bmWQsW1cv32P0vPio/p+facRgJ9JVA
+         qHbbfEp9MhC5OeMyy9zUSPF31+bUzPicZKPa8xxFZJ8lSgId+hWpDNHkOHGcuSliC8KV
+         HVfViYl3y9fiCtt4NfxfZPmhAwoC7NuVgf+gQEzkkYBjlHsBgE8sY2BeJM/jo2D4Hs5T
+         0bKQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1776103638; x=1776708438; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q0HVfEElE8T2sVeoLvHHdJl3de5adQ+rg6PPxuJ5QdI=;
+        b=E6kAE1ADK8E8OKNPlw0KDV89YDp+DgYgQVQhtf+Cmj4LUqhaxID5GeFwZTjMA2r/ST
+         84gjzTpQ6LXkTqQKKIW5oVmz3f3AK3VfhBgodnd3N2flqBcGV1VT8Y0HuteXzXIgv3B5
+         7GC+NI/Ddm/kbnoRBko9l7fwU2l60sLHZ1dVAu2CQtnUGw3gnHkxsT/BIITLkA4ac0VA
+         st2OdET1Po0lcWhiQ3yBGhFHlyq0P4t0/0FlB+IQNWzzHLQ3dTXnGTeql/tTJOlIDh3P
+         BYeBtJTac2lnxig/0d6wPP4cG40toFvL/946i8ukukmsH3Vu/gk01F9XkRYYbTF3Z8jF
+         LHOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776103638; x=1776708438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Q0HVfEElE8T2sVeoLvHHdJl3de5adQ+rg6PPxuJ5QdI=;
+        b=j/X/s32W0fM23hDYNc9kg9X/NIxdwMkMqfErx6FgYoRYFRjLRKTXzDTfkPNNkKBVfh
+         LRoY1I7Lra7D72FWEGkvmJZ3U/xe+3jfxLAuGJEowFvHwDg7/p1jby6QFu1fDP+iXyqe
+         KHwI8tvcsYpSE/MjvDd2LN+vsMbJ192ZMtoPFd2o+/QnYaGzuHa1PGLkAfKUVMCy5d0L
+         mOjrbusJwvluhGd6IJN4I485Aiar3vLs18rsZT61sWU8rPUeCis1LOXWUK5+fAs371Q+
+         S5wKvrTJuED/fzN071ln9VVF+mOJOYPpmgwkyMMd+lT63nDN/L6bsgtvcIpyvVtYdVgx
+         0T7Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9cw+ReCpN7hhmfIx7m4YHFfD0dRtpYUZGnkraAKOaWN3wFj+6h9o9JnSFUEyCeAPXpuhEvjDbPBg==@kvack.org
+X-Gm-Message-State: AOJu0YzmKNMVOQTbyVegYNhPv1PBqw11AVeeFSdtqConauNAmGkoWTjt
+	GdxapwQz2NWwDEeCaPyyo4V2PdikNy66F4UEG3DZZ3JYnhdaIbdWneZeppPpL7mb8eSMmF4Bo0d
+	o1ITJgEcaLe9qSWWuwejrQ7KHCKgrN8C8SBeZI5CzEw==
+X-Gm-Gg: AeBDieum3Ghddo1MvfnD7/D6EZznjH4iesB89Xomhzdcxw2ouYpIX1Y44+AdJ50GWy5
+	VBvPZoWCVIQXUmqlH/MKIw6KP2gf4ZG6u/fsHc94K73jbenplBdxxbrT3o+FNcwb9zLqQFwF8ol
+	OPHx575VmqsdwlAvFH0gAZugNvbHoVScZeBRsHX1jAEMCQQZ/PtJbXxyr9o85aQG+fjv1Vk2SJs
+	3bRGAZtU5qbAuY30tJcsfGoNjT8KNzTbp5TxSNl1Vbh6U9OyQ0WjfL0+bAJi45vJjpYQIWnEcnl
+	QFTzt21vbu09wk5vhNpnboCpYdgXUwDUsCNCfQtT8yUk2rFh
+X-Received: by 2002:a05:6402:46d9:b0:66b:3cb7:f638 with SMTP id
+ 4fb4d7f45d1cf-67079508262mr5777846a12.10.1776103637515; Mon, 13 Apr 2026
+ 11:07:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413-blkcg-v1-1-35b72622d16c@debian.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 868C440003
-X-Stat-Signature: p5sfhtwmzz15wcm9ojrk96nmdsbehsui
+References: <20260327033335.696621-1-pasha.tatashin@soleen.com>
+ <20260327033335.696621-8-pasha.tatashin@soleen.com> <2vxzika8e4b9.fsf@kernel.org>
+In-Reply-To: <2vxzika8e4b9.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Mon, 13 Apr 2026 14:06:41 -0400
+X-Gm-Features: AQROBzB52iWeNQz-4lr3HRveWwgXmnyK1n-oXtMiOda6eKIXmX6zne1YunZoE1Y
+Message-ID: <CA+CK2bAHAdQnq0Q8DTE021BjMVOZizOvGE-DeNs-TVnhRe1KoA@mail.gmail.com>
+Subject: Re: [PATCH v3 07/10] liveupdate: Auto unregister FLBs on file handler unregistration
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: rppt@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, dmatlack@google.com, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6070B160009
+X-Stat-Signature: ep7is9p7ukjk7gebqg5d9rkkpb7kaet3
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776102288-513036
-X-HE-Meta: U2FsdGVkX1/j/r13IOVI708dAntcmYKFNNMyVHIQu2/SS9qZZ8d/GJeGgV5GDXw8Nd75R3Iagafr/1GMdv7gd18YLp0AkdvUuoGGq8VzBisJo9TrLrvmto471va9UJMr1RFS/aW53mjMfsJGbXi4tCDn4HehnQJoNMTA4HQzrEztig6aYoTLsDTkZXjFCD5uBue9nY7mG7Zj/YhmSHfEPgZUeAhy4H0qpzVTAhjyr3LVA4e0a9s0gIsJ4e35g11T1N9XIEuUu2dF0qgCzQxIOlAQdcvDQyZiSwnwHgw4fYNQ/GgmvsadYWuXvuoQSdLbXUp1ffqn3OeSYNZQ/iSgkFah0m1ySUkHFDDpbJqeU0Z6fem0Wv9W2l7ChCdr8fF2aiWw8/tEZJNmuz7/Aux8canyEccTKWulWPBXxPu/iyGEeFCmH+8dFLCCvc++/pnbS7+j7RGBheoAzA1196FYHgUgIG8cnuRLBl/yhYIk4K02ouPrNzIbejrFnHmXd8i9q/d/R8XGK4+o0ABX0Z0liDRUHni2m/qD4+tVzoN7qWOzZrhKYiQ5Om0N7Ybfbc7mIc1B0XK9NvNdk1wMpPNUDYGq07S+5frI9RMkT87WLXlis4W2sIRuNCglNGrtXmZeZfBonEUDfFyvHccsjYb2aFWMmbKmFFBx4ZM2nX2ivvd0mIrVwvOxwz6cVF5GIEgf45sqhSsbWuZS9P1khNLRFikBD9PLguPoPgJC0PS1I2HLpOuNyIWe1wBlRx7g9oEHzOncB1wD6jp1GVvlGYri0jIOb7/GAJ0a6zJyEdg4eG/0znlbgNn9lcBIjsxVfDY/1T9h6bpXCBveupR2+oC7GjcvSz4JkNL7z0MI6N3TCo5+MFxZ3qcx3gvRrmTCq6O/lFrDhqmJ8THow9krl4d0ZNxgFKl3d/QwB2a2DmfKAzpAN98N/bz+EyLsAi4w8swE/BXECnflBVlM63X8bLX
- lIOZLLVS
- vIpA1QzVAiuHKjD7nheDuOlaLt0HSizQXUUB/xZaVByi1YhkLt36iLm485Qr5Q+pL6lL+M4jbWnoZFIX11s04jDy9htmg2jugp7kanDZQ/1k7odhwywvgVfVOMEOQlaC12Nnht1bRVqACti1UfO73da4kokycJ5H71Aa8hBJeRyJMej/2lkplyE4lkbnKmJDsSy4H2C//jceuEBzb6lKbimYkqpYYghdJuN/MwMayClluUwFdNpr92yLnKLSDiKaictlUG+4vmKYTxhYvKRO42hm78jD5E8BUnXUnl+vWP468Dfbiv4AX1h2N/TDsoCiwchR4Ppb3k726CyXxpExRvKiHAkPuG8fiWbBjMeZ8sR38Ans=
+X-HE-Tag: 1776103639-284074
+X-HE-Meta: U2FsdGVkX18umollEeBwHlv8Vp9SGuaRxcKUg6oJ6jVatDhZftERs0bT3KXgFx3ChYojKGcxhsH4KOpyaNg/wQ3S2PCGvLBLI3EVxEGhTfoQbJ4Jgu9Lm8OKTdgvsXZlNzraBQZzRDeE0zmVLSEh49MtpAwOFtWduBtOpgnLA527GEcXQiP1D7XRGdSoWeczEWhivQrA0H+AdDxuf6da8j9qctXtDXiExpHoWd7Auh7bjUecjH1xdRpuEHC6SrUPxE9p5wHKzoEdCC5XHf8krT/54n//D3QgTdP12bwXXrDRxsaOl04rr3NOZc30HwxtfdLJ/3DnjxuhDaT/6CAn/AkplL5x/c5AVvXicRl8+gtTKe7cWbEtlCKfDDDnjYG1Ki91i/GSC3gHL3Ygf1Lzcp8+akysjosnET2OIIM7EEecXaTuaEQDHXAgxuewPFPgDe1Vt5H6ZELr4VNZDHDbmgwZCaWtKt5IyxGtxorfAdVPckFojJ5ss1UeBxXCVGkhJuv5mhF3AhaTmymda75cfY3FRfP5BE2XGYDyJJIcfJ6yDwAYHV1VEGJpey8HmMCeULOgnFsOnhaLJN37P55Jqo5KsqUg6oncAFz8rzirqrByO54jEr146GDAgR9FUeGCrPXhLJmyvceWwG8Ff0Blm4wi8e9kC8WCuuwa55gYw9LJf5Qxx1BI2JSgzmuTunhoBQARmPfQqWwEdajxb6N8clwfQ98slGQqDPRqe8v0cKOf0Tr9wEneR1IxwSkptKztkuq+91Ldb7ox/hT6GLadfxWm/X5rDNbjzS4dCsPs9PBKshFONZEe8aJDqVDQa9ry1IE2qBBRm0GZaXfymsn2eZz5QsQrU8AdHyyPF7O4WcGmcLInpCkm2sHCIMyoeHbPlMNaUo7m94TD83jt0b7kebB0ZXTZ7CmYUkeYNaDo7MrmmvehACOf4394vctU+Ilo16qvI4pzpWSJBaqXpbY
+ /msc+ZnF
+ cE2W2S0IXyZVvEZF19wDxFIAFu3avMdqsae2YVdyflfCdwlRNIzEDgv/NDZn1ZA3m9m9JAZrUwMtOPuDujuP6zJXpGJT/YlShD3CzoeX0V9A2GEHn0Yk9CY8LosDDSaB1twR5GpDNW3tgDzAR6MGT9/qdHk8yM8UTfajn8Bv32x9dRIq8yjjSXl9pBBnU/HgP9aIs78nxvd0NXRm6kDlD5Ls3LZ8LYAxpJ9Idgn/7FRCzTvgf2N52r7VTIS1blpZlDcmo8sz8FsrkxdAnycNL1xIV0g6SjFry7ENVatVJX2KO6G0sALpw0bwfItpbH+NnlhPW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,47 +139,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 03:09:19AM -0700, Breno Leitao wrote:
-> cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later
-> accesses wb->blkcg_css again via blkcg_unpin_online(). If css_put()
-> drops the last reference, the blkcg can be freed asynchronously
-> (css_free_rwork_fn -> blkcg_css_free -> kfree) before blkcg_unpin_online()
-> dereferences the pointer to access blkcg->online_pin, resulting in a
-> use-after-free:
-> 
->   BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
->   Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
->    Workqueue: cgwb_release cgwb_release_workfn
->    Call Trace:
->     <TASK>
->      blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
->      cgwb_release_workfn (mm/backing-dev.c:629)
->      process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
-> 
->    Freed by task 1016:
->     kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
->     css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
->     process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
-> 
-> ** Stack based on commit 66672af7a095 ("Add linux-next specific files
-> for 20260410")
-> 
-> I am seeing this crash sporadically in Meta fleet across multiple
-> kernel versions. A full reproducer is available at:
-> https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
-> 
-> (The race window is narrow. To make it easily reproducible, inject
-> a msleep(100) between css_put() and blkcg_unpin_online() in
-> cgwb_release_workfn(). With that delay and a KASAN-enabled kernel, the
-> reproducer triggers the splat reliably in less than a second.)
-> 
-> Fix this by moving blkcg_unpin_online() before css_put(), so the
-> cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
-> accesses it.
-> 
-> Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Fri, Apr 3, 2026 at 6:17=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org>=
+ wrote:
+>
+> On Fri, Mar 27 2026, Pasha Tatashin wrote:
+>
+> > To ensure that unregistration is always successful and doesn't leave
+> > dangling resources, introduce auto-unregistration of FLBs: when a file
+> > handler is unregistered, all FLBs associated with it are automatically
+> > unregistered.
+> >
+> > Introduce a new helper luo_flb_unregister_all() which unregisters all
+> > FLBs linked to the given file handler.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  kernel/liveupdate/luo_file.c     | 14 +-----
+> >  kernel/liveupdate/luo_flb.c      | 84 ++++++++++++++++++++++----------
+> >  kernel/liveupdate/luo_internal.h |  1 +
+> >  3 files changed, 60 insertions(+), 39 deletions(-)
+> >
+> > diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.=
+c
+> > index 439177c10723..80f4e3b796a6 100644
+> > --- a/kernel/liveupdate/luo_file.c
+> > +++ b/kernel/liveupdate/luo_file.c
+> > @@ -895,26 +895,16 @@ int liveupdate_register_file_handler(struct liveu=
+pdate_file_handler *fh)
+> >   */
+> >  int liveupdate_unregister_file_handler(struct liveupdate_file_handler =
+*fh)
+> >  {
+> > -     int err =3D -EBUSY;
+> > -
+> >       if (!liveupdate_enabled())
+> >               return -EOPNOTSUPP;
+> >
+> >       liveupdate_test_unregister(fh);
+> >
+> > -     down_write(&luo_register_rwlock);
+> > -     if (!list_empty(&ACCESS_PRIVATE(fh, flb_list)))
+> > -             goto err_unlock;
+> > -
+> > +     guard(rwsem_write)(&luo_register_rwlock);
+> > +     luo_flb_unregister_all(fh);
+> >       list_del(&ACCESS_PRIVATE(fh, list));
+> > -     up_write(&luo_register_rwlock);
+> >
+> >       module_put(fh->ops->owner);
+> >
+> >       return 0;
+> > -
+> > -err_unlock:
+> > -     up_write(&luo_register_rwlock);
+> > -     liveupdate_test_register(fh);
+> > -     return err;
+> >  }
+> > diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+> > index ac6fa5b34b43..f8348138de70 100644
+> > --- a/kernel/liveupdate/luo_flb.c
+> > +++ b/kernel/liveupdate/luo_flb.c
+> > @@ -335,6 +335,62 @@ void luo_flb_file_finish(struct liveupdate_file_ha=
+ndler *fh)
+> >               luo_flb_file_finish_one(iter->flb);
+> >  }
+> >
+> > +static void luo_flb_unregister_one(struct liveupdate_file_handler *fh,
+> > +                                struct liveupdate_flb *flb)
+> > +{
+> > +     struct luo_flb_private *private =3D luo_flb_get_private(flb);
+> > +     struct list_head *flb_list =3D &ACCESS_PRIVATE(fh, flb_list);
+> > +     struct luo_flb_link *iter;
+> > +     bool found =3D false;
+> > +
+> > +     /* Find and remove the link from the file handler's list */
+>
+> Nit: it would be nice to have a lockdep_assert_held_write() here to
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Done
+
+> clearly show that the luo_register_rwlock must be held when modifying
+> the list. I know that luo_flb_unregister_all() already has one, but in
+> case we refactor later or add another caller.
+>
+> Other than this,
+>
+> Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+
+Thank you.
+
+Pasha
+
+>
+> > +     list_for_each_entry(iter, flb_list, list) {
+> > +             if (iter->flb =3D=3D flb) {
+> > +                     list_del(&iter->list);
+> > +                     kfree(iter);
+> > +                     found =3D true;
+> > +                     break;
+> > +             }
+> > +     }
+> > +
+> [...]
+>
+> --
+> Regards,
+> Pratyush Yadav
 
