@@ -4,96 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75D9BE64007
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 06:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D880E64007
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 06:21:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5806B0089; Mon, 13 Apr 2026 02:20:28 -0400 (EDT)
+	id E48B76B0092; Mon, 13 Apr 2026 02:21:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 456916B008A; Mon, 13 Apr 2026 02:20:28 -0400 (EDT)
+	id DCDCA6B0096; Mon, 13 Apr 2026 02:21:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36BD46B0092; Mon, 13 Apr 2026 02:20:28 -0400 (EDT)
+	id C95BB6B0095; Mon, 13 Apr 2026 02:21:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 280A76B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 02:20:28 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F8B21B9347
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:20:27 +0000 (UTC)
-X-FDA: 84652533294.29.D05398F
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A98A94000E
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:20:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B35AB6B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 02:21:31 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77DD7C3A1E
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:21:31 +0000 (UTC)
+X-FDA: 84652535982.24.2D28029
+Received: from mailgw2.hygon.cn (unknown [101.204.27.37])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 08ECD1C0002
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:21:27 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
 	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+	spf=pass (imf18.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776061225;
+	s=arc-20220608; t=1776061289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v106t4GvlM4YFD6m5WLnS72LnPu/65YjIbCtc5W2Qig=;
-	b=GcAtjJF940klYdytI+qchYx4hjA4OVZXF4WkrTrWusqQ0XHwd0yVy5eaJLf0qoaigbJX+7
-	+EESetvxvf6VA/fhvOdI40f3wM31nZVbgcykRJpiRcOX1uZahPMXG1/1n8NzgqyFkENpGg
-	EaMpKX8cWjb/fQTAze7GXlqI7O4QQSQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=8i8mPauj/f/nJuhyMXnVTFcajYsPl5NLDtfrWoT0Kbc=;
+	b=RQ1iZiiOLua+vJwtF+UHW/XB5GtI/Ie2syVYKWZWCQdMLlLluReGSMgNSLGCtRlb31RcFc
+	PBvEgMPv0Du5iJFkwTy6tRTFvqXRt4eqWGzm6e4GZw7zXZ7DDjY0bdqSbdGU47PQUXlr1W
+	nnvJrvZbYhJvxMc0s3MBAOWmqE9dzIE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
+	imf18.hostedemail.com;
 	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776061225; a=rsa-sha256;
+	spf=pass (imf18.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776061289; a=rsa-sha256;
 	cv=none;
-	b=WcV5s+OKPTSexsZtBHcK2IhGQh9hRaoDIhpMjWLYO+mg+lr9g2740e+ZDE8EBXJPypvYri
-	uTuTNiM/ieJPfcXuHKP6uv1V5LSckujHPn+UHtfDXvZxyMvBkvM1nCBlH2P60evnAaKoJU
-	4KB/c6ISXOqC8w5UBOjrs4WgQvAzp4A=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fvHMR4m1sz7QYS1;
-	Mon, 13 Apr 2026 14:20:19 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.99.176])
-	by mse-fl2.zte.com.cn with SMTP id 63D6K80N002563;
-	Mon, 13 Apr 2026 14:20:08 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Mon, 13 Apr 2026 14:20:09 +0800 (CST)
-X-Zmail-TransId: 2afa69dc8b19fd6-934e4
-X-Mailer: Zmail v1.0
-Message-ID: <20260413142009771oJn6KdfOwqg6hop17-6bF@zte.com.cn>
-In-Reply-To: <adx-2p09xEKz5Zdb@hyeyoo>
-References: adxm5az9EfHr2aYg@hyeyoo,20260413131423382u868NVr2RkcvDe0Ii3ERj@zte.com.cn,adx-2p09xEKz5Zdb@hyeyoo
-Date: Mon, 13 Apr 2026 14:20:09 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <harry@kernel.org>
-Cc: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <zhang.run@zte.com.cn>, <xu.xin16@zte.com.cn>,
-        <yang.tao172@zte.com.cn>, <yang.yang29@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2NV0gbW0vc2x1YjogZGVmZXIgZnJlZWxpc3QgY29uc3RydWN0aW9uIHVudGlsIGFmdGVyIGJ1bGsgYWxsb2NhdGlvbiBmcm9tIGEgbmV3IHNsYWI=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 63D6K80N002563
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 13 Apr 2026 14:20:19 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69DC8B23.000/4fvHMR4m1sz7QYS1
+	b=g4+mNb+bnBNTpAKG1wPn15o9amY3S1xp/7HEyeP8vVKJX6I6G66AVCnsKHKbYEjfnV5WzN
+	9oPlMcO3sQfGjxE6g9dxGLFDblt89yXd2q+Hgfu/tIo9RPVcvRbMGr+mL/ABHtVcmCu6nd
+	UJGXwa4LPIhnUDr9auvzXo3H0YZyamY=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw2.hygon.cn (Postfix) with ESMTP id 4fvHNX68Ypz1YQpmD;
+	Mon, 13 Apr 2026 14:21:16 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw2.hygon.cn (Postfix) with ESMTP id 4fvHNW0JZ7z1YQpmD;
+	Mon, 13 Apr 2026 14:21:15 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id F402830004D3;
+	Mon, 13 Apr 2026 14:19:21 +0800 (CST)
+Received: from SH-HV00110.Hygon.cn (172.19.26.208) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 13 Apr
+ 2026 14:21:13 +0800
+From: Huang Shijie <huangsj@hygon.cn>
+To: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
+	<brauner@kernel.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
+	<muchun.song@linux.dev>, <osalvador@suse.de>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
+	<linux-parisc@vger.kernel.org>, <nvdimm@lists.linux.dev>,
+	<zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>, <yingzhiwei@hygon.cn>, Huang
+ Shijie <huangsj@hygon.cn>
+Subject: [PATCH 0/3] mm: split the file's i_mmap tree for NUMA
+Date: Mon, 13 Apr 2026 14:20:39 +0800
+Message-ID: <20260413062042.804-1-huangsj@hygon.cn>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [172.19.26.208]
+X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
+ (172.23.18.114)
+X-Rspamd-Queue-Id: 08ECD1C0002
+X-Stat-Signature: 5pq5w9xeymyrd7ytpteuc5k67kk9aaea
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A98A94000E
-X-Stat-Signature: gdzxegm3sdiy8x3ihrrhejda5uh7mu5f
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776061224-748559
-X-HE-Meta: U2FsdGVkX18uuNhJtKqEykflnU9qyrKv4yiecTu7VESxLKgYfGwxCiyBVRn3xhtLpqBFw8nDIXU5wbtSnnd0dQjEP+OYVm5za7/fs+HoUkWVSDMLXUqjVg6reEh8nb2/8qSo4wuS/THtpPgDCyyfvsuOBVKqJOiOhDPOykEe0/K7MRXe5YjJcOgtGBclvk31mA/5V4YMTKiT2pArO2QiUsRzVcQu8b3wRis/5e0pr/i/BDZmW0TIceWx9WNX2Y2lCVLiod4q0cBlim0MWliSho0d7prhk7HQUR5h8mGztvpfBcz1Xosgq6v/hFvsntOMBfbUHCQ11m7tBCu0B7AdnYo9LYwd18llODKCYDGjTj5+cjCqIi/QPZajQ4XBMkjJOwrzk9XSquF/8BbJYj8zDwbZXIHPIlEAue8HXtU7GPv9aTjkpvyvVxQq7Ptm/Ezz1we8d6EllPIECnM0CQF9tAB1aPHlBigsKkH8PvsV/M4lctjzQu406F1JM75PxRmbJFdU679wSGThhvz4n95ID36hZLD0KKlnW92DjqqUwevRUJsDpyU/SsbyiijS03+y229/MlnYNamOyNJkdQOXDMg+J1uicbONGSJqmBTSi3n4IKa2BzfmTu4LpwuXWFwltL0CZ18IAmf/a+xN5p5nWufj0OOP7khG7VnEg0GUDxZiqQA5LChjwZ1nXltl0e6/59oQdsXSiixvKLzgvLgtv4fq4/hJXS0patYPADKmPPo6GVdMkCDtusmMvIw6rqB6CUlbLpWUvsH2r8HL4v+HW/YssukkBgK+Ap9xAvFpwHaTc/di/OvJMfc0PwiWEHOdmZocNzSElqJ0dSnIkHoIPsXzkCnwpMACJNersQsV1a7/q1eIm4eUiXaQaSg5xK4fZqfwWhu0nbK9AMa+w0l6dRqSUxPxMfbE6gQiivOFUE01SSW6ng4Asd99sStHqFowKno7Dd2V+Sfd4D+WXfu
- /sLwJqMT
- /MoyrVq3FGewkkdVllTLM04MNdfEDIXuDf12Nwo9EqtpaxXYg+wqXwWqHeIAxfjJOJU581CNBQZbxUaS3ux0XJI6O5GBfyfpA0RWkXEEc3Gl3ftKtkfnWyNvgmHifllvkaVUxqHGuRrndlJvQ/oEz7Xd4XKXpl9OH3pAgcDMyXBYJEXq6eF+/HfuK1MkdGXuqjuRI1OK077vLIjYFwvD9YGtC+ks2c4H4VCBI7/UGvlFWF5jAciqgnBEheA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776061287-45796
+X-HE-Meta: U2FsdGVkX1+8+eekBeEr+Hs+t94saCow6Y2gocXtuIO9u3eI5i2J5ml0MFBWaWP8KokoTeHn0+6DvnJSI616fCYgBR9AwaCxBbVSkBZnddz+Iwd6xNIWvlA1asUAmHqd+ilfLV5f++DActWOsBet1d6UOXuaUQisZD2svLNwjMy4ZQAno6R0+z/43FdmTJtqB81r6HSMDTKnG8xq2Pp6cOPK91Iq3n0xs7QH7fZosufHGz611me4y+AbwjobM8fRSwWnfdT3MunPZP/JCDj/0sHeryEO7RwLJyLuMUZkSc3HTvyBr4iF4ZKTFsq8eRBkPbYIQ2Oj0afqkPTZd/zXEL2RA9ks49uydv6YohNz8Ma7n0YJOFtsBPG4B+sKt0j3CNdICXZNn+Dkb40t7IBCfzGjvtRpNGQ0bkqgmWh3lRu+Ip38ahJnMTucejI38qjZ9h6DQqw7GkuYnzKmCW8l41oep8dnpwB7fHTO3+RnelGg1rYkVrWAawQPvgjtWQ/q+0rukr0GJrwr9uHLwYPzHlYP0/zhhnzT/FbLU1UXRBEjnVUBHQhRQ7vqFulJW1m5SvwAeh1n48wj3HemRoQg6EaKudwTxS39g9b4TxCsIEKrxKHx+DOFYZIP9mnFUMwB/DH9gWqT0FqwPH/p5vCLThrUBuWatycGx3H7sCek8XpJHyZAY12FxSdQxnGWhuVixq9yHYSJqAOD2sfpnSq9GsAvisAy6dBUFUyOcuKlwq4/5xPirClTIW4toSKqlb12ayX+bSaBnq2DCKrcTv14KCj4cFy1zyjOrwa7j+7w0uAGz7qW008Jru1pE7uowbD8ghPvn7QkzESe8yaV5Fz04SbwTyKJ8DdLAgMZPPF8lztHkQUoLxzKZzwztmZhFhdVWeLuvn/y1ghWL0U9nn/r3zar8YnaGDDLjR0MOOZxcr+g7hBbc/w87crGzskLccWvKtE+xbbkuTGpP8AsgqG
+ DYsSd+xz
+ Jh027Tcyv2OaCr5Q99soaNoMS3qHgFsMrdanv81NZaSqFhf5se9/EG9BntfN8zl0CKhjRtC5D+KQCYJpohGywFuQ4To1NA6B7Lw5bmuh6DjYkstT2ifqygNBV8tfh43MDejgBNONAOtpRbV6SN7HGmDq9NeCYsFlE6Oj92AKeyTlctsjKv7hkEy0lujvAslYUTDU/bFVW6VRzKiCRHXXiZfiwgqNgwDaLG7SCJLcHTpylmDGpbjUvWt1hPf0LAYH76WGzc80OMZ+3snTtDbf8mRPLEeYOnk6UUR31iiYr6gZWuCr9dshIi9WzgtDKM2R3VOzcQ53I1RiL/u+QDXzi9MqWYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,63 +96,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry wrote:
-> On Mon, Apr 13, 2026 at 01:14:23PM +0800, hu.shengming@zte.com.cn wrote:
-> > Harry wrote:
-> > > On Thu, Apr 09, 2026 at 08:43:52PM +0800, hu.shengming@zte.com.cn wrote:
-> > > > From: Shengming Hu <hu.shengming@zte.com.cn>
-> > > > [...]
-> > > > -    inc_slabs_node(s, nid, slab->objects);
-> > > >      spin_unlock_irqrestore(&n->list_lock, flags);
-> > > >  
-> > > > +    inc_slabs_node(s, slab_nid(slab), slab->objects);
-> > > 
-> > > Ouch, I didn't catch this when it was added in v4. When slab debugging
-> > > feature is enabled for the cache, inc_slabs_node() should be done within
-> > > the spinlock to avoid race conditions with slab validation.
-> > > 
-> > > Perhaps it's worth adding a comment mentioning this :)
-> > > 
-> > > See commit c7323a5ad078 ("mm/slub: restrict sysfs validation to debug
-> > > caches and make it safe") for more details.
-> > > 
-> > > With this fixed, please feel free to add:
-> > > Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-> > > 
-> > 
-> > You are right about the inc_slabs_node() placement. I missed that change when
-> > it was introduced in v4. Thank you very much for catching it.
-> > 
-> > After reading commit c7323a5ad078 ("mm/slub: restrict sysfs validation to debug
-> > caches and make it safe"), my understanding is that inc_slabs_node() should
-> > remain under n->list_lock for debug caches, so that validation cannot observe
-> > inconsistent state during list transitions. I will fix that in the next revision
-> > and add a comment along these lines.
-> > 
-> > Would a comment like the following look good? :-)
-> > 
-> > /*
-> >  * Debug caches require nr_slabs updates under n->list_lock so validation
-> >  * cannot race with list transitions and observe inconsistent state.
-> >  */
-> 
-> Mostly LGTM, but perhaps it's better to say
-> "validation cannot race with slab (de)allocations"
-> because it's not about transitions between lists,
-> but rather about slabs being added to or removed from the node while
-> validation code is iterating over partial and full lists.
-> 
-> Thanks!
-> 
+  In NUMA, there are maybe many NUMA nodes and many CPUs.
+For example, a Hygon's server has 12 NUMA nodes, and 384 CPUs.
+In the UnixBench tests, there is a test "execl" which tests
+the execve system call.
 
-Thanks, that makes sense.
+  When we test our server with "./Run -c 384 execl",
+the test result is not good enough. The i_mmap locks contended heavily on
+"libc.so" and "ld.so". For example, the i_mmap tree for "libc.so" can have 
+over 6000 VMAs, all the VMAs can be in different NUMA mode.
+The insert/remove operations do not run quickly enough.
 
-You're right that the issue is better described in terms of slab
-(de)allocations rather than list transitions.
+patch 1 & patch 2 are try to hide the direct access of i_mmap.
+patch 3 splits the i_mmap into sibling trees, and we can get better 
+performance with this patch set:
+    we can get 77% performance improvement(10 times average)
 
-I'll update the comment.
 
---
-Cheers,
-Shengming
+Huang Shijie (3):
+  mm: use mapping_mapped to simplify the code
+  mm: use get_i_mmap_root to access the file's i_mmap
+  mm: split the file's i_mmap tree for NUMA
+
+ arch/arm/mm/fault-armv.c   |  3 ++-
+ arch/arm/mm/flush.c        |  3 ++-
+ arch/nios2/mm/cacheflush.c |  3 ++-
+ arch/parisc/kernel/cache.c |  4 ++-
+ fs/dax.c                   |  3 ++-
+ fs/hugetlbfs/inode.c       | 10 +++----
+ fs/inode.c                 | 55 +++++++++++++++++++++++++++++++++++++-
+ include/linux/fs.h         | 40 +++++++++++++++++++++++++++
+ include/linux/mm.h         | 33 +++++++++++++++++++++++
+ include/linux/mm_types.h   |  1 +
+ kernel/events/uprobes.c    |  3 ++-
+ mm/hugetlb.c               |  7 +++--
+ mm/khugepaged.c            |  6 +++--
+ mm/memory-failure.c        |  8 +++---
+ mm/memory.c                |  8 +++---
+ mm/mmap.c                  |  3 ++-
+ mm/nommu.c                 | 11 +++++---
+ mm/pagewalk.c              |  2 +-
+ mm/rmap.c                  |  2 +-
+ mm/vma.c                   | 36 +++++++++++++++++++------
+ mm/vma_init.c              |  1 +
+ 21 files changed, 204 insertions(+), 38 deletions(-)
+
+-- 
+2.43.0
+
+
 
