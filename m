@@ -4,89 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C5BDE93812
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 03:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5344EE93814
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 04:06:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 803406B0089; Sun, 12 Apr 2026 23:45:46 -0400 (EDT)
+	id 4522E6B0089; Mon, 13 Apr 2026 00:06:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78D106B008A; Sun, 12 Apr 2026 23:45:46 -0400 (EDT)
+	id 42A1C6B008A; Mon, 13 Apr 2026 00:06:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6551E6B0092; Sun, 12 Apr 2026 23:45:46 -0400 (EDT)
+	id 318AA6B0092; Mon, 13 Apr 2026 00:06:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F0A76B0089
-	for <linux-mm@kvack.org>; Sun, 12 Apr 2026 23:45:46 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1465D1A046F
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:45:46 +0000 (UTC)
-X-FDA: 84652143492.24.34B07E4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 84D741A000C
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:45:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YPID9g2P;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776051944; a=rsa-sha256;
-	cv=none;
-	b=zB7lBCjBGgYG64dUjdnHBEl/frfla899TG4B2tXFWdgOtgGoDwqq+XzoA77AR07aNQs5L5
-	3cZWI5ziBCcYioXnAOn1v3dSUvkRub+fFPXPo/unL+9jgFn9naEIGivjae04PR3pAfgF4c
-	s/L0A4bZTer9hYkur8JuPHZvzcKB7cE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776051944;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 214C56B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:06:44 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 613DDBB7A4
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 04:06:43 +0000 (UTC)
+X-FDA: 84652196286.21.7107EE4
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011054.outbound.protection.outlook.com [52.101.57.54])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 883E2C0007
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 04:06:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=puRghlxr;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf28.hostedemail.com: domain of apopple@nvidia.com designates 52.101.57.54 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776053200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rKGHluccV6hdIndjeKQTc25URc1NPrvg1tOhEBzSqF4=;
-	b=hOTYyDzDJ42m2+/xkwxfvFBKNQQ5ovvXnlLbDqNSkyJzX6T82Yv6wj76D+H1KW+2Y8mGPB
-	ZjOMfmvs6V0SKS44LFmX3TfJAKfJSh4QoBDTlXYVVsUZzi4Us+nzp74AvceaSciIFyXrRq
-	LsXSR2viRd8NaiC/EFN6B5U00whWIzs=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YPID9g2P;
-	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CCF9960142;
-	Mon, 13 Apr 2026 03:45:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C97C116C6;
-	Mon, 13 Apr 2026 03:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776051943;
-	bh=eQ+MIjMGR6SoMDn4ZvvIdIn6reDcSKKuhb8N0UFgxfw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YPID9g2PN783aoD/kungoRq1iUm3FsxsLVelbD9yQtAZmdYgFdIFwLQqfLerX+qJy
-	 Gn5xygdUfiHOGydx3XKwJ9A1N+JlI6YATHMgVVtwDp/1jMLs7lq4rVpfBCrqEaJuTe
-	 5l+1g8RGXWD7Qgf/Ods96W+EpC/P4nzexFjldfWQMRswMXfYsbjEvo9UH8mXkb8y2E
-	 083ydvdAIUukuO/Iiq+nPKPbHgJHUED5X4GNmsAwIgxp8fGkMcLD9TesxWrAHZfeUL
-	 ErXFLS/gZRlqmSPZIzi484w7eh4tf8e7zsj0PAA/fYg3wfJI1b1AXJV8nArBACnIrE
-	 VsrjIk+8cCnrg==
-Date: Mon, 13 Apr 2026 12:45:41 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: hu.shengming@zte.com.cn
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, hao.li@linux.dev,
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	zhang.run@zte.com.cn, xu.xin16@zte.com.cn, yang.tao172@zte.com.cn,
-	yang.yang29@zte.com.cn
-Subject: Re: [PATCH v5] mm/slub: defer freelist construction until after bulk
- allocation from a new slab
-Message-ID: <adxm5az9EfHr2aYg@hyeyoo>
-References: <20260409204352095kKWVYKtZImN59ybO6iRNj@zte.com.cn>
-MIME-Version: 1.0
+	bh=IJIDPtvfNal+zRkdTb/po8DsleFJ0qvyBuO3zwp5r30=;
+	b=xz4L/zja8ngXXje7gq/oetigkMo1P48xD0jOmmkW+nLcNHueD/f84HhKKVgjZUAXlDO8GD
+	nsQWvDfKYYakwdHA1ZgwJWXGxgI+hjpoiViLgTrTNFZj040LcC9HV1tEDIpaSOxyKnkMPP
+	+VUwOhMg0A0h8xjZx95i9xdmqKMd1KE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776053200; a=rsa-sha256;
+	cv=pass;
+	b=Fdv1W6q4UapGYm80Ic4rDKV7jcJTjvfcwh9AZ+Hd8GQGv4HZs+OQ5V8OEi82NYJDsAZUAu
+	M0mLPxLmEBx7DaAbXb6M57wum+NHcxP0CRsohk0dlm/+byRsMsWWvUeF6w8tUU10do2i/h
+	+jmiTkQbBmFI8vnyUwMN3jR5gBos38s=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=puRghlxr;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf28.hostedemail.com: domain of apopple@nvidia.com designates 52.101.57.54 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ek4QhPADZlHrvF1evmLxg891DmWEoF1yBK6WTV7iHyo7RArG28emDVSz1v/7lrq/RtoqG1FJjnTuP0eexydqIFExQ7AHCuWKo6VjyVGW4sMqKte1tYLUiwPu27LonK5nEAku9ClusWVMS8cC/fW9/m4WMQh/UwKpevnlZMi5SVQuVqjaf2zXxGB/IGe66lravR9EPsp/fVek0b0Ws9SkMVT6Sd7/ILXr4bsz88G099RtMDzopjfp1VjJ2xwJRYl9m1vR2NsDW99rLDVwCcnn82TW7gBzWwegplP/akBd6NurgxGPREo9pVoeJJzRl+FCWjA8Qndylc8ixUHW3NCkBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IJIDPtvfNal+zRkdTb/po8DsleFJ0qvyBuO3zwp5r30=;
+ b=PvZaJMFBvc0KM8QfhUGcv8bgoipV37LUvW9dRZyD18Z5h3BO3fSho7etb6D35TktrbpaOAVwqU09ijX3+FYYqtDa0OpEx6B5AUtTfaPYH2SSm9QLrdM++t9nTuPPLcAKnwELTlI6NTSIXDpjmLO9c9Sf7Tn8mxhZO4AOwnIwxHsYvH12O5DCrQpgVkrM5Pz7i+fCf8QA37heI/KSTfalHJFxFtjCNPrclrkfvqco/dzzuSLXPNDNFfdtGw2Bt5rhFRZrDXo4C63EPBSx2W47Zy92ne+YtfX95WePMD0saYJVNhEaTwFyE2c0F2QQYID6AQCr4o63B98/K94zyCq7ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IJIDPtvfNal+zRkdTb/po8DsleFJ0qvyBuO3zwp5r30=;
+ b=puRghlxr/9tnp6NLrWzrcrzj447yO2CtE9x1TmAF1k9xPElNb5Oth7xqjGu8WPV5qqjvFBMuGotbBixusTMUxe4FxNwsoi6c+6qplrsoIr3lt0F8245scTcJgY8Miteh5JxnySLQQAPU0mEO6W5ebZjDzJVR62Lpn0QizUgjof3RoEN9qmUIPnUe9luTrz8KpjejaLf16HEufUREGdeeoGwdEiDGOOsuwy0+ckCNPlHrN2/mAJmSuK6YTjS67jJpX5tBItQ3Mh2JssAf2+aXNCArf/6vo7hmwuyDpnY8nigkwSexvGetG8s6WcwvOiwUrMdlDiLqn7upHVRFDTECNw==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ PH7PR12MB5620.namprd12.prod.outlook.com (2603:10b6:510:137::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9818.20; Mon, 13 Apr 2026 04:06:36 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.20.9818.017; Mon, 13 Apr 2026
+ 04:06:35 +0000
+Date: Mon, 13 Apr 2026 14:06:29 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Balbir Singh <balbirs@nvidia.com>, linux-mm@kvack.org, 
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/zone_device: Do not touch device folio after calling
+ ->folio_free()
+Message-ID: <adxnwZMn-BHD5bAA@nvdebian.thelocal>
+References: <20260410230346.4009855-1-matthew.brost@intel.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260409204352095kKWVYKtZImN59ybO6iRNj@zte.com.cn>
+In-Reply-To: <20260410230346.4009855-1-matthew.brost@intel.com>
+X-ClientProxiedBy: SY6PR01CA0030.ausprd01.prod.outlook.com
+ (2603:10c6:10:eb::17) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|PH7PR12MB5620:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7dd28a6-1939-4ec0-dd1e-08de99120dc4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	cFgSRt9d+Q5asGXoBZI/yweHOzf+lRTJdiSTVjYx1LJpmjcMOpnEL6LkjB3iLafzdxL6UMqLr3XUObQwlAZ5EwSgNGo191kEr6+f6hdRYcTPJ3iTOFNubFmYLZYhlLUpykbCVbDm3U8Y38CJfnz3nVvhcashcQ9dAJkYXtBm2x8ucRu3HXh5lmB9h1U8eY7mi0eN8vtpqivsBDeE8gcQVFWLJHGBUcKb3t7XU20i1VS4ZjUwDNPsNf48YcwwGmC7L3MHqBvbiYlSujTxny80qHc03LYpXXqx3D2dqFaSKAsqKZFBjLmlAs4gpvS3e1lCNWWgZSuBi7gmc9jdFuu7OBxDKho2FJfekC9QwG129uArXvBwEpQsTNxC4d62cV5/73lj42pT3AVikexvNyVcQUy4guEgSw4c2EMd3IJwoXlGE7JwEfRenKM2Tp4daDEJs6+GjBbDM88L9TqH5NG5nak2+CvFR/2/Pm0FMSumK95rX7AQj6a04hi7HPBIhz7QQ1I0uKjbSs2oz+KtlUHg/llnHNPw1PnB1br1p5xVMGH6GOg6uxfmCGAx/eKkK8kAoVBroPUxyWBxa/ElZjaXjvp6oWSBZNmgfyZ52krtQbTI1tkYxEvEt84a7NjWELyFZRcX8uhhQousFwBORY/XgtO/HuR4QtXG7LqSEAGVYST9AW86PZ2+ql/cYiyMENXTmOGz76NVH9O7eCn2DU/xnede3xpOsBaAjGLbeKAtBzo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+Aa5dTfGkwJoGzwjPY1cxkh14HEOlZl7/XliOgxKsqSfUxXbuSSXJdRp4MO0?=
+ =?us-ascii?Q?KJG/TmuvoGBnt+285GYsLzX0cNt7zqnfpb5/8shnHEM6X2rzDd4NYu/ANOHq?=
+ =?us-ascii?Q?D2F+cfjwiYz0ORS9KU3Je2osuAhZtXrDLr2rWYwYomV9d8/hSmogWWjJzUDV?=
+ =?us-ascii?Q?IXsOLvQnvugQz3Z8MfXrq1tsX00Zog+iOjtWFK5qYcgDjqAzkGMztZDiw74z?=
+ =?us-ascii?Q?FTFiOSahUxFhJaQOeaS2vY5xwyoUMX0GLohltsuYXofXrjYGx+ZzBPzYQvpx?=
+ =?us-ascii?Q?1OEXgsY9FydiFsDRZ7I7OhMC1zIrdBr5Q7FUB7vAHC8zk+14KZZXPy+uZMHu?=
+ =?us-ascii?Q?saRQFUoPybh5MVzS7ANGCpGlHWANHLtq9kOQPY+l2psDfchjo1DhWaSAsjCM?=
+ =?us-ascii?Q?Ygh3qWZvg6bjAibh+eG4SdzapuffPOR38salbI98W3eAefz5qe9cV9YIBvWA?=
+ =?us-ascii?Q?w0/MgJTuG8DqtzPYUKKdxBzCMzVbF8t/sIbBb3/p0vbUjbplWb+IjaKvmZdH?=
+ =?us-ascii?Q?Bcefsrth++XCdh2/UuoezXj+2GCt8W9eUS6UG3MFrSa6hz/eGiS6cGEnvQfv?=
+ =?us-ascii?Q?gFFkAwrRm2syovgVf9uzQNGzDDL6mVaLpgSAVK+49gkYHr8LIl/HgwpO8uVg?=
+ =?us-ascii?Q?NSUvHC50FrnQpGKmGEUq+/kR2Rm+4xWI6sazUAniHoqG7n0zkAopVj99QcbG?=
+ =?us-ascii?Q?ND/LfWavQc7kc/Uh7xLRDKEhHhCsGSL26R9OhEhnRnNeyyLuGjDzVtEY6fFc?=
+ =?us-ascii?Q?Th4lpt98JPf4LE8YBUCDbY4lN+evL5kOBBIrX8vme6kRLBF1CGX26fEcn7gT?=
+ =?us-ascii?Q?B4ETBed1p1BK71mdJ2LrazfIofuStXtMf7hRkOA4HSMnZh1tcXjHD1++D/cF?=
+ =?us-ascii?Q?vNAcGqh/ADwaQjoMrsoQR40j7wgVCDUdBigZQEe3vo0QCVnbCXrULm3Wumr9?=
+ =?us-ascii?Q?vtMfXx6TdwLOLJpGeQEWJMwPmNSHCmjnsTVg9W+CH9b5pWfhXPUGlgEw4dSJ?=
+ =?us-ascii?Q?mt6FXRsDxOJY9/TN13pyytAVha4eXki1qUvsYmnjUdnnKt0QANtX08ogfvaw?=
+ =?us-ascii?Q?+1hf/63g8YQTEVbVI8CMpOPZEnVbl9APdA6tOWSzd9QCmIsrBdt8RwE7X8X0?=
+ =?us-ascii?Q?uizUmrmUnrNIRs8Tj/lOCihcwzGzdPB9CK5VcV13bU9uzdtrFfkC/GAOqESK?=
+ =?us-ascii?Q?iswBTuWxDX7EhRPum918WcIngsykLi3MaSNQ4PNs2Ivcjvd1oALzT/0O5WlM?=
+ =?us-ascii?Q?3R4IEJEsj9UfqTmzU/Ldsm5hLBGfVTOosxhWP2428Mrv4rA0Ag2uOWCZIjs9?=
+ =?us-ascii?Q?BWXlxULmmLyd2l50K8nlS5lvt+822dhOo+xKH1rgmPztRa29r9Zt3Ado5Gz3?=
+ =?us-ascii?Q?b6z7gwpWeqHTIrNpn6HmeBUjZsgcF8bru2oQiIaBTa7OuSPAaic/17AIs/rz?=
+ =?us-ascii?Q?yvWP+g4nOwkLWJbTalHvay03SCoDWPAXbaldASZXJYnuRmYZg/elHEGnLRrg?=
+ =?us-ascii?Q?Mmb19T0nLuVaZ0+J3cNXeOC10kFLfCXzLQGBkfyPJhxUJsKrjBnEQEo6Nwyf?=
+ =?us-ascii?Q?hBr7TzoK4W9wqAsCgJIU/7SM0zNnbxKqCAHDZBsdp3lazIGjNP833zkizHcD?=
+ =?us-ascii?Q?MBgCQFEmjzUVrKZArAZt2B1YoDfK3URj3eNL5c5h1f8A4atO2CvDSgFfe7hj?=
+ =?us-ascii?Q?DMcB76YxBbMJVwdTVkQpU/aNPLYqRtih2sgcgWIQuv2pHjIjSqHF/5fQlj54?=
+ =?us-ascii?Q?h/JkXa18KA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7dd28a6-1939-4ec0-dd1e-08de99120dc4
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2026 04:06:35.7522
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fuuNS+stkb9e8jh/S8zW8t5x7MScyc7Zdnd6nOgjCSJU0xtbbgsi28TZoVE7lfrwpH6/Pma0N/uNRbb1bUIxfA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5620
+X-Rspamd-Queue-Id: 883E2C0007
+X-Stat-Signature: 8wbyffbgrywgquk14ijbad6ztqa3o9uj
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 84D741A000C
-X-Stat-Signature: xa3bexxsawsx9b9sbsckgp5a6yahz1g5
-X-HE-Tag: 1776051944-534575
-X-HE-Meta: U2FsdGVkX1+wSFYMKyBMFrbGwur9Z3QbHYPF7rvPRTYqfNVPhoyYPwo+IOQAe2vmnT6jH55bPh3J379kFLbdZq4vHJtouiS7uahCcti/pL3VUz5P94LbZmsZer7+f4bLABLj2G4S5ZRrBR3zY3o23g/8mpNdi662MMTC9bzJkpnheDlTFwzCM/5BqeeowVjoO9tt1M1/swpiq52UMjLCZeg37ZIBTX++TgF3wSQv3MaWGv8q82vxnMeiDh/YDM9d4B49udNedkPTYMxaPEkpS/hQjXo+5eNwBufi6QQyrqdiQePi3W2c6bChr7/pLEgchAKxBojXjoBXmE6d/2qHT//ROoOfRvDcy9zumvCkO12NnUBmb6Zp4+AXWbVlypaOvSnrZDmNLC5m/z0Q2MEATEO/3jTRloZbdAj4NDAIy6e4uhdC1Ft4JT7FspYMnW2ZMzzxBzMQId0fLsQi2+ehm/aQSomYOYc7hmsYW/PUsD5OVvm0EoLeN2GceW4ZhZtIvqvs0mSge12G9ekh2JqEadRdjwQvIAo0giM8ZY/AVEDN3+Xq1oOad+pLey+nxYEbt24y58DkO7AFsf47goeilsS/ksUNHoMZ6oFWIFbmp9V8nowF6YnPd6hS9Y7MsGnMOyvvCMzDaWzbo9bhpdDz1ae4S8q9u9nsTZz7nn2nZG7EjwRhrHwyUDF9Gtl3+OoWTsIwOyWCgZ9ZizME9TF5mJYgsTqJ1lEvDGDo94m67bUW7Dj0piAua3f0ICSwT2mliuu+gHk03CoF9ourfnD7rIC9aMKCV7y7BcixWOQ9Z3+waZ5AI8fdJLmCn43MxYRGy/eYbPLgO66sMlVyey9Nl/TEKRAf5Hqv2Y+ZHdu9qi0A6juFr2NcZWbS2rJp39KdpVKzvyY1JazbR9wH+l4FXUUVSRJDU4ql8WKl6sxnLEwhMskIKXrE9IuZ2bChULhUCXevyge4rg5QshqM+7d
- 4sQrUnHJ
- uSs4gc0OosLxvRXNWYeRvQRJ5zaHqC21zX7ZB2nvoKzOhCSOfLoNwj/fJSaSc6fXt3+x0WkspmWmye0FbvhP0xLeXCo66yLdLxlAF1npxGzs+mW1XjO2zSI7yaJ0vVyXCfjO59xaoR1XeT1rnbkJZ6JUZad/dh/viUp+x8Cl4kT276FSa+g7fYNIhN6GONgVaiRCrrR+49P6CxwCMJbvGLN5dQ15vAUHNHUTVq+ZlIjjXTleu6LpamqAuErpe9b9u2O9XmmF16zhAi0QBMOlxivRE7l/YNcdSRbgBqFmC0QTDebjJI1F14VGat/SXNv/Co603ZYSEHDlBwaclm2yxP0EVg+a3heocfEFpLJEMSYrfJuKdSSGhXQKt03MTNagw0NAQytCbZgPeL9JM9sPpEtzScSA2hXGiiN6K
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1776053200-195063
+X-HE-Meta: U2FsdGVkX1+XkVdGRcjiVvDhRa/6Psmu4vU7NIty36uG3Pn8nyDHMWFqP+mz77d58+5atQmWfSrKFcDwbYBRCyb1UQxeByd+2k0y8l5xu2WAvXnNmm0A/GA6ZO+ug4TM/ZGtRydb9EFV/766J0WXX2RDvU81xYAT98pUk7C2B8GaHXOA3WdSdH/F6a4yPW4d/s1XMKSNc2UD3Hyr6GZYWx6tNQowMVMKVhD3tcRzyDCySGpszLXK/7h4um/MX8iU/NEGjnmaepIc6outCjhB9siq6quScu8pOIbg7WSX5fVT9oyZdRqOR4XfmMUzIsQK0F9ncZxOBHwbZEBZLmgwMIuHAACw/T05DSmin1LaZ3XoUMJJW4u2/goMzFyLVFhRqG4cwnnL51teat76V3km2sMVm4XqcFA4EdkG4jmQTkRyO4Yu802om0RrrAvCP3k7bU/dQkZcQDZHEsi2270gn9dVU3XPxOXYeP2+FQ6+eAf/TgGkwj5mwYoMMOtj8dBKgvbWhZk8KcM0z0pRO9zfjDJmyw8s0w7DccRtYhR4eERJeOKsdBP2NBMZXLZYsi38gdKjaX9SVSiWknfQ6AB5lqxpIMXIC2gR1bajkdK9JyMCOJyp72riIkL65oKru8kSk8rqDebRJf/eYsMeUsixqOcNKGW/xgNJvi2/+uQjyoZDmsJEzmdWHcksSOwZ2ZUXxygFi4oRrLl2XO4QpPtt5F0nRXpA+sKrSPQJ8EeG168RWOQXOVOI/GQIcJymU0CSNmbdJCUxqlxSW74DTRg98y4q5TNLC/9NkoDRmdlF9v1b0o7q5NfdDHPk/fXgYrX5OIKVa8G6N69szn4COv/U7FjAQU3FONekPIDx+biMd58Upl4j6orAERQIGnyMxaPLJ1O1YleoiqBUc5zIJNkhsS6KB6Woq1IYUAk/GRixi39Eq2nNiG7R45VX+isIIzdbrtBOOmEuvqk8LrnUyJQ
+ 7OqZLWZy
+ THnQozGBFycJ/Lp6C7arF3oY87pA1ZRwgTg6UpXm/9lTJWPoSwbaGeD0Cdco/gHtMr8D0b6yNEkHg9FFCbddnu+wh4MiN18U2gaca0jt6fkIgxOo95Tv0Qn8/s32teBlSzlw7sTYfpgs6lzekzHNt1fwqC+K4n2/wWoOEix8xzJ9AXiF7TkZdXL4BuCCAydEtu7dnJX9FJbvI2FLY45xDIDyzGbdzf3XOpefsyZ8MAOAP7U+RIq+SrGx58KwLisgREtZUN7uCJefz8Vrt7NpFMgeUjickMDrGWK9QGsWs+LPEaY1IxFzRUD5FfxQSSQb5eSToXcPdC/92CygAWvjnLYWBKtEiPY2AqIvWnNUpgWYQMfhQwD3ehDApqNvfbEBPSqEDiekX/xtZJYlXTRuen41so8gRf5CIlgpSo30cVS+AuxF5E4WxSseaVRcDdIuZgFFOCTmwTFF1cLRxc8V3ixNuIbxQXYqR0zPEHFLczHdP9fJ4PT4y2lvjav9Ruqw7o80TjewrcFfBS+L/mOPlz0Nt7KbpdCnKz6XB2MBeMo+HvNtC/CekAcMMtvilkIa2pd9LMARgjL4XDjgObl2QSEKs6YeQNu0SUqfH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,150 +160,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 08:43:52PM +0800, hu.shengming@zte.com.cn wrote:
-> From: Shengming Hu <hu.shengming@zte.com.cn>
+On 2026-04-11 at 09:03 +1000, Matthew Brost <matthew.brost@intel.com> wrote...
+> The contents of a device folio can immediately change after calling
+> ->folio_free(), as the folio may be reallocated by a driver with a
+> different order. Instead of touching the folio again to extract the
+> pgmap, use the local stack variable when calling percpu_ref_put_many().
 > 
-> Allocations from a fresh slab can consume all of its objects, and the
-> freelist built during slab allocation is discarded immediately as a result.
-> 
-> Instead of special-casing the whole-slab bulk refill case, defer freelist
-> construction until after objects are emitted from a fresh slab.
-> new_slab() now only allocates the slab and initializes its metadata.
-> refill_objects() then obtains a fresh slab and lets alloc_from_new_slab()
-> emit objects directly, building a freelist only for the objects left
-> unallocated; the same change is applied to alloc_single_from_new_slab().
-> 
-> To keep CONFIG_SLAB_FREELIST_RANDOM=y/n on the same path, introduce a
-> small iterator abstraction for walking free objects in allocation order.
-> The iterator is used both for filling the sheaf and for building the
-> freelist of the remaining objects.
-> 
-> Also mark setup_object() inline. After this optimization, the compiler no
-> longer consistently inlines this helper in the hot path, which can hurt
-> performance. Explicitly marking it inline restores the expected code
-> generation.
-> 
-> This reduces per-object overhead when allocating from a fresh slab.
-> The most direct benefit is in the paths that allocate objects first and
-> only build a freelist for the remainder afterward: bulk allocation from
-> a new slab in refill_objects(), single-object allocation from a new slab
-> in ___slab_alloc(), and the corresponding early-boot paths that now use
-> the same deferred-freelist scheme. Since refill_objects() is also used to
-> refill sheaves, the optimization is not limited to the small set of
-> kmem_cache_alloc_bulk()/kmem_cache_free_bulk() users; regular allocation
-> workloads may benefit as well when they refill from a fresh slab.
-> 
-> In slub_bulk_bench, the time per object drops by about 32% to 71% with
-> CONFIG_SLAB_FREELIST_RANDOM=n, and by about 52% to 70% with
-> CONFIG_SLAB_FREELIST_RANDOM=y. This benchmark is intended to isolate the
-> cost removed by this change: each iteration allocates exactly
-> slab->objects from a fresh slab. That makes it a near best-case scenario
-> for deferred freelist construction, because the old path still built a
-> full freelist even when no objects remained, while the new path avoids
-> that work. Realistic workloads may see smaller end-to-end gains depending
-> on how often allocations reach this fresh-slab refill path.
-> 
-> Benchmark results (slub_bulk_bench):
-> Machine: qemu-system-x86 -m 1024M -smp 8 -enable-kvm -cpu host
-> Kernel: Linux 7.0.0-rc7-next-20260407
-> Config: x86_64_defconfig
-> Cpu: 0
-> Rounds: 20
-> Total: 256MB
-
-[...]
-
-Hi Shengming, it's been great to see how this patch has been improved
-since v1 to where it is now. Thanks for taking the feedback and steadily
-improving things along the way.
-
-I think this is getting pretty close to being ready for mainline,
-with just one little thing to fix in the code.
-
-Other reviewers/maintainers may also take a look and leave comments
-when they get a chance.
-
-> Link: https://github.com/HSM6236/slub_bulk_test.git
-> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> ---
-
-If you think it's appropriate, please feel free to add:
-Suggested-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-In case this was assisted by AI or other tools, please disclose that
-according to the process document:
-
-  https://docs.kernel.org/process/generated-content.html
-  https://docs.kernel.org/process/coding-assistants.html
-
-Not that I think this was assisted by AI, just mentioning because
-sometimes people using tools to develop the kernel are not aware that
-they need to disclose the fact. It wouldn't hurt to remind people :-)
-
-> Changes in v5:
-> - Call build_slab_freelist() unconditionally, and remove the redundant "slab->freelist = NULL" initialization in allocate_slab().
-> - Check the return value of alloc_from_new_slab() to prevent a potential use-after-free bug.
-> - Refine the commit message with more precise test coverage descriptions.
-> - Link to v4: https://lore.kernel.org/all/2026040823281824773ybHpC3kgUhR9OE1rGTl@zte.com.cn/
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-cxl@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 > 
 > ---
->  mm/slab.h |  10 ++
->  mm/slub.c | 279 +++++++++++++++++++++++++++---------------------------
->  2 files changed, 147 insertions(+), 142 deletions(-)
+> Stack trace:
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 4927407c9699..9ff8af8c2f73 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -3696,22 +3686,30 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
->  		 * corruption in theory could cause that.
->  		 * Leak memory of allocated slab.
->  		 */
-> -		if (!allow_spin)
-> -			spin_unlock_irqrestore(&n->list_lock, flags);
->  		return NULL;
->  	}
+> [  631.875165] [IGT] xe_exec_system_allocator: starting subtest threads-many-new-prefetch
+> [  632.282992] Oops: general protection fault, probably for non-canonical address 0x900000000000000: 0000 [#1] SMP NOPTI
+> [  632.293469] CPU: 8 UID: 0 PID: 59267 Comm: xe_exec_system_ Not tainted 7.0.0-rc7-xe+ #281 PREEMPT(full)
+> [  632.316023] RIP: 0010:free_zone_device_folio+0x149/0x240
+> [  632.339782] RSP: 0000:ffffc90023d1fd00 EFLAGS: 00010206
+> [  632.344947] RAX: 0900000000000000 RBX: 0000000000000001 RCX: 0000000094472d4d
+> [  632.351991] RDX: ffffffff8155c76f RSI: 000000006f2213bf RDI: 000000008e84943a
+> [  632.359042] RBP: ffffea0ff4030001 R08: 0000000000000000 R09: 0000000000000001
+> [  632.366094] R10: 0000000000000028 R11: 0000000000000000 R12: ffff88811828e400
+> [  632.373145] R13: 0000000000000000 R14: 000fffffc0000000 R15: 0000000000100073
+> [  632.380194] FS:  00007f2f0fdfe6c0(0000) GS:ffff88890a7e7000(0000) knlGS:0000000000000000
+> [  632.388186] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  632.393870] CR2: 00007f2f002e90f8 CR3: 0000000106708002 CR4: 0000000000f70ef0
+> [  632.400919] PKRU: 55555554
+> [  632.403605] Call Trace:
+> [  632.406039]  <TASK>
+> [  632.408131]  do_swap_page+0x146d/0x18c0
+> [  632.411938]  ? __pte_offset_map+0x3e/0x190
+> [  632.415994]  __handle_mm_fault+0x6e8/0x8d0
+> [  632.420053]  handle_mm_fault+0xbf/0x250
+> [  632.423855]  ? lock_mm_and_find_vma+0x41/0x6f0
+> [  632.428256]  do_user_addr_fault+0x168/0x690
+> [  632.432399]  exc_page_fault+0x74/0x200
+> [  632.436117]  asm_exc_page_fault+0x26/0x30
+> [  632.440092] RIP: 0033:0x5587554ff70d
+> [  632.462142] RSP: 002b:00007f2f0fdfc970 EFLAGS: 00010246
+> [  632.467308] RAX: 0000000000003fc0 RBX: 00007f2f082e1fc0 RCX: 00007f2f12b3287d
+> [  632.474355] RDX: 0000000000000000 RSI: 00000000c048644a RDI: 0000000000000003
+> [  632.481404] RBP: 00007f2f082e1fc0 R08: 00007f2f0fdfc958 R09: 0000000000000066
+> [  632.488450] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+> [  632.495495] R13: 00007f2f082de000 R14: 0000000000c00002 R15: 00007f2f1319e000
+> [  632.502547]  </TASK>
+
+I'm not sure, but I think Andrew likes the stack traces included in the actual
+commit messages. I've certainly found it helpful when debugging traces reported
+from the field so would prefer it there.
+
+> ---
+>  mm/memremap.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index ac7be07e3361..053842d45cb1 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -454,7 +454,7 @@ void free_zone_device_folio(struct folio *folio)
+>  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
+>  			break;
+>  		pgmap->ops->folio_free(folio);
+> -		percpu_ref_put_many(&folio->pgmap->ref, nr);
+> +		percpu_ref_put_many(&pgmap->ref, nr);
+
+It's a pity this was open-coded rather than implementing put_dev_pagemap_many()
+which makes it clearer what this is doing, but that's unrelated to this issue
+and on me for not catching it when reviewing. So for this fix:
+
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+
+>  		break;
 >  
-> -	if (allow_spin)
-> +	n = get_node(s, slab_nid(slab));
-> +	if (allow_spin) {
->  		spin_lock_irqsave(&n->list_lock, flags);
-> +	} else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
-> +		/*
-> +		 * Unlucky, discard newly allocated slab.
-> +		 * The slab is not fully free, but it's fine as
-> +		 * objects are not allocated to users.
-> +		 */
-> +		free_new_slab_nolock(s, slab);
-> +		return NULL;
-> +	}
->  
-> -	if (slab->inuse == slab->objects)
-> -		add_full(s, n, slab);
-> -	else
-> +	if (needs_add_partial)
->  		add_partial(n, slab, ADD_TO_HEAD);
-> +	else
-> +		add_full(s, n, slab);
->  
-> -	inc_slabs_node(s, nid, slab->objects);
->  	spin_unlock_irqrestore(&n->list_lock, flags);
->  
-> +	inc_slabs_node(s, slab_nid(slab), slab->objects);
-
-Ouch, I didn't catch this when it was added in v4. When slab debugging
-feature is enabled for the cache, inc_slabs_node() should be done within
-the spinlock to avoid race conditions with slab validation.
-
-Perhaps it's worth adding a comment mentioning this :)
-
-See commit c7323a5ad078 ("mm/slub: restrict sysfs validation to debug
-caches and make it safe") for more details.
-
-With this fixed, please feel free to add:
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-
--- 
-Cheers,
-Harry / Hyeonggon
+>  	case MEMORY_DEVICE_GENERIC:
+> -- 
+> 2.34.1
+> 
+> 
 
