@@ -4,111 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF4E4F34C64
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:45:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9FA4F34C64
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:45:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 510A06B0088; Mon, 13 Apr 2026 11:45:13 -0400 (EDT)
+	id 1B5016B008A; Mon, 13 Apr 2026 11:45:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E74D6B0089; Mon, 13 Apr 2026 11:45:13 -0400 (EDT)
+	id 1655A6B0093; Mon, 13 Apr 2026 11:45:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D5F56B008A; Mon, 13 Apr 2026 11:45:13 -0400 (EDT)
+	id 0542B6B0095; Mon, 13 Apr 2026 11:45:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 28B586B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:45:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7B3556EB4
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:45:12 +0000 (UTC)
-X-FDA: 84653956464.17.DF81D5F
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A6686C0011
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:45:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iamIiVAH;
-	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E45B66B008A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:45:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8A360E2B3A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:45:22 +0000 (UTC)
+X-FDA: 84653956884.02.36CA13C
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BF14F40013
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:45:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lDzW3BDf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776095120; a=rsa-sha256;
+	cv=none;
+	b=68g8KmOend/54r0bqnitIy9iNhUpeum8YT2SlvxqwMgYbiYh6RfjUkCxlakVsY+Moj0nrk
+	FfJZu6FedoEcAMmoZ807rZK/SfOegxkCLdenpuyASItURBi4NwHigzi1SHSMmxzAwklIKI
+	aJzlAshL6TC1bSijy2J7grlLPjDLfrc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lDzW3BDf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776095110;
+	s=arc-20220608; t=1776095120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=j4HA8S9Jgb0f+hoqoPOXN8eIo8iSqnJJj363IEDCdRk=;
-	b=a667OJJMxWuS7irfEKUipSKbxMAqMoNeDUJOISBXW8l4kzYxpT8De1oLBr0IhbGhh/hGzo
-	dwn6Qn8RfuoUgccVuAWUf5fgjZnX/cTl8RWPWp9sQPAswQQopaMqishRRgZeTMdYO0KpQ1
-	lDrCVwC7X568gcaFJ9wn4hQ9Cuu60No=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776095110; a=rsa-sha256;
-	cv=none;
-	b=Ay2HWmuMwlfX4i+qV90xQjWjc2dtwMBPhJIhzhbscQh0o2Txp5MB+3RztpuKYayGH5ZHXZ
-	j19M2AluX+j04KxBpbunQNOqDfUbX27xrixGg9MHjLak8zEdjAsMbHvhiRyPVWzmr5Ontn
-	1G+V4usxWFWUORqtWXejAHCpvLopLYo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iamIiVAH;
-	spf=pass (imf10.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35e576110adso976432a91.0
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:45:10 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=htsoCPI+ofgHrjo4de/zPWGfBmVrF9y41y6UhCLZPHY=;
+	b=qDLC/E/SR+WgFdsbaNg7c/cMWfoaXrNYdUax7PAZ1kO11z4nkj1O9yBlu6bubpiXQ8641Y
+	bBJdsi3s/AUMEFvnnfIagMw8XU9RHVmlZRdqAPb7EzvOcHTFzZmnMrki+r+tCU3HNI9+ll
+	jUKalgXZ+Q589iXd8iXzaqLmJJUEZhU=
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35691a231a7so2991819a91.3
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:45:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776095109; x=1776699909; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j4HA8S9Jgb0f+hoqoPOXN8eIo8iSqnJJj363IEDCdRk=;
-        b=iamIiVAHnGXUgkqQxXDwvi7WdkKI0QEhJfcH2suf88C3t6A1JQRLI45lH2MS1FEJpm
-         VpISCvxGN4gLxVjcCrX8uLkjKIxX2l/Bmh7g1UiLdCES7+xQbvGzz3LFUjXhwImBlFn7
-         kXecUhkupUAdmq/cbZqAm8XH25DF5Ippogjq0j+4GTuIS4NZZz3MwyZ8EwBe41ZPJhlX
-         xOWAcvCnpO4lqaDMZOT6LrE76ENN8zPpSNPb4HRZV9MIhxuIG2MdWohZ3sSnk4KEIpa5
-         KHxj5P28A+8zn98eM/Bd1LCXhhvrlXUBoT3htBp0BvS5SfT4C39MnybrGusV17zeM09o
-         UjVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776095109; x=1776699909;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776095119; x=1776699919; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j4HA8S9Jgb0f+hoqoPOXN8eIo8iSqnJJj363IEDCdRk=;
-        b=W/DW3Kd/5fbl9sUSe2tfs3l6U5dsg23phhFQVrHrXPp9dsM2ylEyNx4PoE75+fo1Yl
-         He10S31XeHgcwFFZPDvFNy40tcdcI0o3PCyyFK/Yc293J2Ld35iw1e7q8ibO1QGafTiY
-         2VkA3cJk5pOmYOnvKGhF/I+bDBnoUyfqjD3ieoJsve4R43goaXliYjLjN1XJ9JmjTU3v
-         jEZvyws1iizp4AnYFMYiStvJhz1jr4yBf3dLbFan9nhjzGLGA0v8hOcGwIHUqCivkfEg
-         fwOBg/L2r+P9c/bA86+RT0TyiIoCcojGz+MpP77SqCidNdiGDVaP28ye7hFKrxMwuIjr
-         qmkg==
-X-Gm-Message-State: AOJu0YwLoBqILF47bIwsjB1KkXHJfAgVihRauvViomL5M6m3XW3eTKPF
-	PQ3J3cFdbeG4fcqsqjaoLiRnCA9Yxhc8KOv/9r/PZNKtjMnlQwwjQGfk
-X-Gm-Gg: AeBDieu2sRisJwEJ0CGfq3AGWkhYMSKEbdd4OB+HEA45qOApsCOX9vSpZvM3ix+FRmu
-	OhK5sHUPJ5ZaNvTK7wXIwAwQuODlHBoOMgnbXdvJ8m4wvlFl+xzfSlLGOR1xU0JxgGgo593f6wi
-	iQ3MCbA22Tly2PFa3qXOhK2t8BcDa5Y5Lppjo1JactBgBWH80+jUWQ1pd7vv9rfmIPQlU4jC39F
-	ZGohRPxTzWc+8lsjjSL7n9yjWvxY5H49Q3zLxckPqp7T2K53Ae9y5RhEum2nzOKC0qPIIwtenqh
-	ujLRE5DYwzFuLy9IJEDqV73w25DuArrbkn14TKzpdGmwUYkESDfVlYI0z/1fE2zMm7ZNM5vIxj5
-	KTJWPHa+HK38H73lOIEzacYG47DvEnX6LHB5ZzPs8lMNC7ZafsglEmLj5DpsC4ScUKH8t1HNshG
-	tze7gRiREwe0dvInTzR+swEFpL8hSNAQmz9n559oI=
-X-Received: by 2002:a17:90b:3c4c:b0:35b:e4f0:f9b4 with SMTP id 98e67ed59e1d1-35e430a7fc4mr10623392a91.10.1776095109336;
-        Mon, 13 Apr 2026 08:45:09 -0700 (PDT)
+        bh=htsoCPI+ofgHrjo4de/zPWGfBmVrF9y41y6UhCLZPHY=;
+        b=lDzW3BDfm76E7RlSUhn7hIJUOXeSswzSPDqwXcLG5DY5kSycC7XzQ9ypNVHtYEzs96
+         eb76PVbh2yzfqLC+JzjeD/dXFCi3TYBisaZDrphCe8DXQnMZIoY0RJ1R6Wt8U/fSpYUk
+         TcI1kpR/L6XZ3iuVjAdDbvVxJmF2wYvPkNJCcSc9AgY2ldFg/o4qQdrtX9lVrXmyAUcY
+         RMa5QBqmdjVYimg86NgBW5qIHoshcufgunAO47C6NJNhucfpLgyxVQhCfnf2yVtK6Lfj
+         NdLdlYgwwNnqZvAIdci0l/vjxjAHv7P5+U/8AGQ4bTSWEnNQbdXKS1iO+Yw1IsswvLdS
+         J5VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776095119; x=1776699919;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=htsoCPI+ofgHrjo4de/zPWGfBmVrF9y41y6UhCLZPHY=;
+        b=A4Q5JSNmPqJp+JkbYRcuacLVtQS/F8ikdMmt6yUXcLgdOpJoMAkB0sL2e1v7+Ne9zK
+         wAtznJ6Pp+DnK/LmBmMXy+SS8eXpUM54EOTrlw/6GY2sMyivB+D8rCOetUA5QF15/mS6
+         QidL68LdgtSxoyQKjKKb/cslqpkiL+Cu+DYnSu1rdnvr1713dG5ELyxH5WILaC1hBw0c
+         7O9GN60OOiRNvPjZhPa/+QF/b5pYIM5WzP+R8dNDBEP6lvx5sXaTfiObEbNl3z9WaMCE
+         qai9qZYNI9co9l15oeVICQoQLoPejF8pLKbJ2Z9/qO4U0lM71/3QYHpqYMfRWIozm+Xq
+         6d8w==
+X-Gm-Message-State: AOJu0YwjZ3tVL68QapxpPi9KTiDGrwAOVj/CRIqnPeyYC4z0Zdba7qQb
+	zzG94VFhYIITC3LW31UVWX7icU5+XDIznQeQnDOLqbENFbO5GGPxo5kC
+X-Gm-Gg: AeBDievm7YhuTMb2fqreFPHNE/ChmcOeni9vtFkaYT+JIz8aqf9IrlsQBQ6zXkJL9G5
+	KTzl+wj7dvLcFXFzcF7aRGTHJ3tpeA6o6Qt1cNXsIfj16rdfiwSQOsLW1PZgtZLMnDOI25n/mfg
+	uoPYPX4Wfw0yhayClIolqZB4Y1bcBRwmkHbCdeBRuBgmlAlDvN1nVqRJ0a1Osiur5CuLv3DzGxU
+	ES27iml4PEau9hfQu1nqgTaiACJyanmd85azbK+9I4sw4ZK+l2EXZYe5A0poJT5gqCwbQ6FZ25u
+	a4tWG61HxeuE38vXKOq7m8uWDNfWojWahbQmgch7HwsYdNCdm4nZ8yjtHWVM1O4loirePBDjpkR
+	aO1/SvbRHLDOQ8t0pctUwtScMQgQECl9AJ5H1R+gF74n0kwcQf5HKDHwBqQ8Tmn0NG4TaxQUHzq
+	lBgQOnFOUJAJw7JTPhDwx3wpHi1ocn
+X-Received: by 2002:a17:90a:d403:b0:354:a57c:65db with SMTP id 98e67ed59e1d1-35e428287ddmr12153944a91.20.1776095119534;
+        Mon, 13 Apr 2026 08:45:19 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e41355470sm12786052a91.17.2026.04.13.08.45.05
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e41355470sm12786052a91.17.2026.04.13.08.45.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 08:45:07 -0700 (PDT)
+        Mon, 13 Apr 2026 08:45:18 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
 	djbw@kernel.org,
 	mingo@kernel.org
 Cc: linux-mm@kvack.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>
-Subject: [RFC PATCH 0/2] mm/fake-numa: fix under-allocation detection logic in uniform split
-Date: Tue, 14 Apr 2026 00:44:36 +0900
-Message-ID: <20260413154438.396031-1-ekffu200098@gmail.com>
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Donghyeon Lee <asd142513@gmail.com>,
+	Munhui Chae <mochae@student.42seoul.kr>
+Subject: [RFC PATCH 1/2] mm/fake-numa: fix under-allocation detection logic in uniform split
+Date: Tue, 14 Apr 2026 00:44:37 +0900
+Message-ID: <20260413154438.396031-2-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260413154438.396031-1-ekffu200098@gmail.com>
+References: <20260413154438.396031-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: n6secmfkoub9rs8da9sf3bnghwxr3yof
-X-Rspamd-Queue-Id: A6686C0011
+X-Rspamd-Queue-Id: BF14F40013
+X-Stat-Signature: nznpoj378iy6mjs1ociy53bsnqdznaj9
 X-Rspam-User: 
-X-HE-Tag: 1776095110-416781
-X-HE-Meta: U2FsdGVkX1/ETfyaq9pobwwXB74wmMZur5iuuXNgH1SsYxAO0JFGeQkMmePJ1Ys2FkzyaI17KalNT1kYgK++f4gU61XGTxyqQuVaaw1cYrMgcLbxSUJPKghXwi3Udb5eh5KYdc8KGYrplQD02KCZMbCB6FZ+2f/oC4H25LuMbjoZ8DXIjsm1J+N6v9cEKTUKChuxRK5Fi8VXfQ0i4Ja11Ee0DKkULpMIFaZKeoZHyf+axAV88bRZthkl25uUv6PPUCB9+mQ1Dtn1wV9qIrX+gJReTperAWXQmCWH4Vh1Ae4kcfWZqnxLTz9URR106sjkI/eZPQnCH14NhCvqlPM3kUyEloZIflottwUo2QlPGhn//ADobrOJtbA2fR4UUxi7MiqEdHg0dqIxX1UCl4a88VjhwOaIN7lCDmyWxfGY02PwO8vuIYyUwa9mCwT8aGo6suUWi6MpJYIG8HrbDo5vggW5LAUDhRm7WOp8RRR4lr0nsj1vvTtewcK4mu2NBgXwdPsMU0654/zxpPE/zXukrWzE/LizOW1JmGdcmFThfmyyK4yumfs3kzxHgd7kvpBawixsHnbBcxFLEO40pOQ5nz+OgWfufZ33YD0Xs36nj2fjHBLwuHr2qyc1a3a9bE1UeChwdw8cWvy6sBPxuzrvZoRcOsCbPehHf45De8QKMorZN8fGgJA1w7ckEkmd00TvMjKiIPdWMcyMlBw4ZCkgDHIOeZaS86LsYN7fTLLm1XTdSCoVkgm5hiu1fp0v8x24KJqFYXBtY/WK+g1NApj2xj/xeu5cIs8ZKCCoo6MKlas5LXuiTJnF53ce+z5Z4IpjFvErZ1oLQq8YYvYOaRNk3GwurhPYXsBisfsujaW0GvOGqI/4v8Sxkh+/AXEm0lfIshzxZiwS5/nm1BXM9XJCnBXXULl+RZ9ER9H/JK7Q4t8W5ef/te3/694gFSD+o1t/EtYJlbWrRn77X/5nhZw
- 5bLyaw/O
- Rw/KOhK6twPmLYlgAlWZ3H8UjQxEfiA03YZTYTMpFq50RKy2Z9NHQ65S2bMFGeaO1Htif1+y4OhDX6EwP9VbKDuqjSKjNeK3UXGO+Ck4NQMJekJP7zfj6DfXPL6quvsxAnQF9JVC53xifDbD/gGi5f+IeBlA/yLuP16iOPiUSD6xaUWyXEDUKkK+/UhXQrPFiWU/fQTCgIWsZ/XTj/c3SzZmw8voh7yW7T2yfgJbaczqdzfzPyq+YztquojYxv8M9CNpmG/Zs2kgF+BOa2NlkPeaL9050Y/RChTVJWEapCXxhHvTrO/9B+imMNpEFOAm2i5OZ/3X39zbaJ8X8501h/XfeI4kWzwWN2ujR
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776095120-505457
+X-HE-Meta: U2FsdGVkX18M/ZxFwZbET4FX4PSdKYtptE0kiWxwseR066loG5umtD3QgXcEoM+IUBFHDtT6D7iiSnoVOs084NJ915XpIZ3PYfVn1+OQToxwCm0XEFu0q9O4qNELtcp+x7KDur98M4qOPBVbeWgZdge5kzKdtFJzqPkqKLuArL9MvMJHjTzfRRb/lHYqkVyRqpTTBG6+yLJfAjOZRAL5ZTjEjVYVUCskHDcq27oOTIVxe8srJ29Bak5yn2pPa7coJuZtGcCmckhu0K40mvOWsHvWBFd3JdztUEFJSokavRJX/WkS3x/zA2r0c+JTIAOwZdN510OI0oegWcw2vvU6CfpiciGTGJu0jZBTMObY+uq7YUDivLBvC3cQf/NLC0o/dAmHMMBinf//ZtvDUhabbemQQ6oiDZOHmKC3mWgmu0aeHh5PLy+4I6b1Hjt/rksKWK1WkxdTmhjvKvKJmauNbah4UWCA1T/pO3FINJr/uQxViGnSVLGWkYyPZs1KjmXNxJqYQIQTTzhiZJZmc1Ju4fWFprqtn1W40JTVMp2TuA4TZHK7hNd5JkbWgwI6effUQaZurWAogQEADPgNbrWwFWHUeHCqLpiYfltBHcVLKrROodSD53p520gzyrg88/uCOTynpiFZ/DcABHIQxV2/1xSvQvbTgWNbSgNA60lgZgMgjsAv+i5RQUfBG8AVYA9+eJ2coyZlH5CtqcFendQa32y5TYr2e8CzNfHBFdKKTmtqvbQ4ijh8JFwg18+nycGnt2T3PTgUEbImktvxNmUTA2CG5KHtoTpm3p+4Wcp9xLhmflfKbhKBfCPYMSDLhcYYvM1T8hAAFSw2GLRwz0MMUH3LXKbNMG/HXC2zv3sLY6YNh9KiVRLo4IBTYNiYm9PwMqrSL4U2/6VOIxlKfCIdYePMpJ47KuHLTzXukbFH5IE7NTppwiqNXao54zZS5h2okrCYuHDSi7F7I5Wa+ys
+ JRdnAgf7
+ vQSQ8IqW4eN2o5hJ+4oIB2JuDg5XhuKxNL1QFDntMD24y5k4Xm7B9cOOoiPpCq+LlFs7GdwFZ2aZd8Tyl3pm1tFdCTfcCP0SI6R+JuY+1CcSBskvmSa9+iAjmbzsKXdQRHzy61Qk0xN7/TaABVy89dL22jNLpnUA75uWCJ7atm8excayUNzTzI2dpYCiFmpSzALWpgbdnhXv8qR6BtQhvSzoGuf87K0HM0rC80YgPvkkkxcm+6PC2je2Wpr+JX6LpNt6cVIsN/A5l7TtfPlUJs2ww95X/B+rZC99bt1jh0RNMrovdsd3PEDpDHpsvsSH/3azpBtxSdXydZPz2Cj66oRRp0XVNsDY3SJac8ZGZ8hKbGzcMeGEnOlns00Cv154FWvTDKMbeiOFWv+4XLEZ5g006tbu90wKPUm3l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,26 +121,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+When split NUMA node uniformly, split_nodes_size_interleave_uniform()
+returns the next absolute node ID, not the number of nodes created.
 
-This series fixes under-allocation detection logic and an outdated
-comment in uniform NUMA node splitting.
+The previous under-allocation detection logic compares next absolute node
+ID (ret) and request count (n), which only works when nid starts at 0.
 
-I found this while going through NUMA enulation codes. If I
-misunderstood, feel free to tell me about it.
+Fix under-allocation detection logic to compare the number of actually
+created nodes (ret - nid) against the request count (n).
 
-Thank you for taking your valuable time to review this work.
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reported-by: Donghyeon Lee <asd142513@gmail.com>
+Reported-by: Munhui Chae <mochae@student.42seoul.kr>
+Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capability") # 4.19
+---
+ mm/numa_emulation.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best Regards,
-Sang-Heon Jeon
-
-Sang-Heon Jeon (2):
-  mm/fake-numa: fix under-allocation detection in uniform split
-  mm/fake-numa: fix outdated return value comment
-
- mm/numa_emulation.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
+diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
+index 703c8fa05048..e7f856c8f2a1 100644
+--- a/mm/numa_emulation.c
++++ b/mm/numa_emulation.c
+@@ -416,7 +416,7 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
+ 					n, &pi.blk[0], nid);
+ 			if (ret < 0)
+ 				break;
+-			if (ret < n) {
++			if (ret - nid < n) {
+ 				pr_info("%s: phys: %d only got %d of %ld nodes, failing\n",
+ 						__func__, i, ret, n);
+ 				ret = -1;
 -- 
 2.43.0
 
