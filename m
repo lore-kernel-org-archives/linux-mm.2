@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0703F531CB
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 20:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DE72F531CC
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 20:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 224096B00B3; Mon, 13 Apr 2026 16:20:29 -0400 (EDT)
+	id 758A36B00B0; Mon, 13 Apr 2026 16:23:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FBAB6B00B4; Mon, 13 Apr 2026 16:20:29 -0400 (EDT)
+	id 709796B00B1; Mon, 13 Apr 2026 16:23:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 138986B00B5; Mon, 13 Apr 2026 16:20:29 -0400 (EDT)
+	id 5F7C56B00B2; Mon, 13 Apr 2026 16:23:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 077396B00B3
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:20:29 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADA2BB72F4
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:20:28 +0000 (UTC)
-X-FDA: 84654650136.28.80D183F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AF416B00B0
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:23:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA758B7A19
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:23:54 +0000 (UTC)
+X-FDA: 84654658788.09.746290E
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 392AB140008
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:20:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dMUgBK9h;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5724F20009
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:23:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SzIDPrSX;
+	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776111626;
+	s=arc-20220608; t=1776111833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NLcVHcvKWmcbrgR33gHCYc9nnRDShPHrweRag0w3Rss=;
-	b=wB95OxWa45Y065nVJy7vPQI7uzCiY9lJeeLL8wXGV1MU3voSBp614wU0tDLtSnTtM9UgIl
-	3yrmPHJiDLDIFzUpFV8qhnW6OLSrYuVW5Qoa4sVp3K3WqOLUBzETHHvFYDasOv61XeTPZo
-	RG5kppQzcmN16QI3UfOsw3UbWIt2WXg=
+	bh=Go3KR/GxnDhS1WvRjFzC5JY4mv9JDOpGHOi+xw7ZijQ=;
+	b=3065+VrLnHTbgQTYJOODgzYTOd/HMGTRy2olYwp5qAI9wLlfzL2sQnWf1JsMf+eF19FfzV
+	Atq5F2IwIYJ6vh/xODxStFBw5cMyy4OzvIvVg2icfsTOc6/Ns1JPanXfpXP6iWO0Xv1Y/G
+	Rue5UZPEh7WgMG0aaR+sEIV8gKQ/J0s=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dMUgBK9h;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SzIDPrSX;
+	spf=none (imf03.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776111626; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776111833; a=rsa-sha256;
 	cv=none;
-	b=cUKcjW5JzPKjqlG/x0XdkKMgsh6I7dHOxTO5PcGQMjgZZWEIPZPqT1BKPxfqHBr+0LHfVC
-	j9j4D63/Iw/qlg9TsQO0y28+8eWpPO1CpQ5kdrx0798OVHSDBAnE7Dzk++FDh/xttZmrnK
-	E2NKFwl0FHZFDdVXyMfJYy9Es7fV8Kw=
+	b=q2VTIJBlq4wIuxZpuUGX6ju9R7HthmUdn2n7QicNALL0Er66cqakEsTb6/9RsFCLI19wbK
+	mVov7DhEZy7U7T9gkr/ceyi5Fi7JKcYs2RVIe1TFaiTWdkU7ZyG+TPaN3AJiqTuxN/jNou
+	paJ5nzXTl4T5ZERmRGueIZohb/Qx1oA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NLcVHcvKWmcbrgR33gHCYc9nnRDShPHrweRag0w3Rss=; b=dMUgBK9hVQVcXUT4U24DGS3kiz
-	GhjKY37BWh7Jb4Fks9Pd0D3clCeD40QWA0HpurHvoHRsXZJ/IpWmvPCaV2Vboww0FQBL71Abpbgrr
-	2ED5tKDObX9PFme+mVM5dtHPtBv/pKL3xOJ627FzQX/g0qkGh+PUIFb/Fx6/hkNnU42atx9J1Ftdn
-	qmXI4eBd+pvfs2sXUBVj/geCsEOHcWCYydHRwRfgOPyiw0NgRAInjizITUXcz9Bt7Fn5ypTEQ6l7o
-	YPsqJImx66NhuiVlkCjO16+WE70N5plOdZNpfq9oeLmoOdiJQ6/JKILn4JvRyLefnMDODtAcnbJIm
-	qg5fHBaA==;
+	bh=Go3KR/GxnDhS1WvRjFzC5JY4mv9JDOpGHOi+xw7ZijQ=; b=SzIDPrSXF57/cO6VKzxPi/iAs3
+	cYuprt6Bgod9wvN6JE4aFQK1TxBqvZaNiOGYtVpaIFL1sblvslueuM0+CvnSqokGtHVgvoy7ZVtZl
+	gPCoVPyYfw/eB8bIgp1ZXUpjqosuYmdEh6nMYrFemmGDTgWsdHg5bZ8iy08NNk4fIA3QJ6BmiI/zr
+	QcKn45zWo5LwySVJgr0WDxbxUcoI7t1czaYn7ha94qec/l8T4so9413TPJefem8L5o6Fy9mPGMqtn
+	jqd0Q8gTAdnstA0crwWESqCc5k/ZYbQk1Dak79V2UGMtIHjK0fnN53VjTR6AOLrXtcnaShJxY4ZuZ
+	GUfF/fhA==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCNlS-0000000ETMo-0see;
-	Mon, 13 Apr 2026 20:20:10 +0000
-Date: Mon, 13 Apr 2026 21:20:09 +0100
+	id 1wCNot-0000000ETYR-2MUu;
+	Mon, 13 Apr 2026 20:23:43 +0000
+Date: Mon, 13 Apr 2026 21:23:43 +0100
 From: Matthew Wilcox <willy@infradead.org>
 To: Zi Yan <ziy@nvidia.com>
 Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
@@ -83,23 +83,23 @@ Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
 	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v2 01/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check
-Message-ID: <ad1P-bfr_Vp6VdKf@casper.infradead.org>
+Subject: Re: [PATCH 7.2 v2 02/12] mm/khugepaged: add folio dirty check after
+ try_to_unmap_flush()
+Message-ID: <ad1Qz7SClkF1CqWs@casper.infradead.org>
 References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-2-ziy@nvidia.com>
+ <20260413192030.3275825-3-ziy@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260413192030.3275825-2-ziy@nvidia.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 392AB140008
-X-Stat-Signature: mptcyrqx7qfzgnksw9ntn4s51q6c8t6o
+In-Reply-To: <20260413192030.3275825-3-ziy@nvidia.com>
 X-Rspam-User: 
-X-HE-Tag: 1776111625-326108
-X-HE-Meta: U2FsdGVkX19yH9K586vR6xJYqywmsGzTsc9olAmzi1+ARwl+NHHopVLanM7YRAgpFmHP4G54zvXxPt4WiT7ruV9wTmZ5j/n1bwG1OCb6cWKW2TacExFGdVolJ6l8RBrHd0cN3am6vv7RD3jNY+S52wv4gAN9QiYQ3uBIHefzS03BQ11ZrXCI4m23YBNsyU+cLGyZHPNj35IwOhlo5PW8/qoZ/MEg7eagv8cYIlv7J+mtG31FYIL6ByuYq3I7WUavJ7BQIMAdG/piBiMGcM6qOkgG21faKKNjwAUCuflcQdWQ5tWILX0YXBGQOMIXzb2TJ3gvv6ntT7xcDwZWnaB9Fyy6mXIy7JhW35TuxuNJml3BaZBdfwXjWd12CEfEU8ZwzSrMssuxH7QQBISbsMu/gbla+8OCkKirIqOc+yuNTcIVnYWLs8pBg1H+mCC0KIt+xetLEtBGEg+dva7txgSqWT1uHedq6dmuTzSF51E6UMUQpun09iedXlKbOM+Itfkwc7vicCiPYhX9zTJdSQCFbh2ZOHemtccUUEwEjtjFmZ5CIt0+XV7hsEvwBHSria7XM/UHpZz+t1AM5CUbpRK8koO/NadPUafQ5rR51c2kQH89ZToUUzv8H5sqDTDIX9sZR9wBczL3hINf40sliMeTZaCCdsqd05dRUhMN7isvvG9osY7fs8WYk1syT277edI/MZ5jiAc7uiQU5WQxO6NSw6bnjmDV1lo8Nz5BpSQuxFDHuonj9UFUpCU/4MPi4kvogApB9gzjDm6yXeOgSQf44vIc/olCiOcEPLED4+M/7NwEoeiWYf0QzM37mhJ8XApVtDtHAwgNP1HCG7x63IPpVI7XP4q2dl0OxxwWTla7fGVYT8fOPbLWWWA0XQsBjqptkZDwqkOYblCL1nfOlmyQOCm7JT0mA8VANgtT9cK5MJ5tafSbWr8mp2AJ9N+iQNaD0D6/yiRrQZOfGMSYR4g
- d0k6KyBB
- KiFVhrV4h45Ubcf3QiiLhpKfpf4PheG8wgLifGSR+mMf1eSg2yEwloRHZ2MqhoCsFfgPpiCp8LYQUPVw5aBHX6HMKrOjSP5i/P333JsvWLdhIj1I+qKz3JTBwtzQGdkrGnF7OyFEw1Oc1WmmmCoStzSbFYFgCFdV91/4mZBKDTWxUQE6dfQFi62/cNfs9tuzznNHmcrfQ582648625ko+jT5PzCYchAO8EautAlQYd/ZoP4wau/muSCRu2UnINehJXdj5E0dXXI3dxFk/MNkMCc0IF5Y896VZcv+v3gI9cEjRcMo=
+X-Rspamd-Queue-Id: 5724F20009
+X-Stat-Signature: jqi8f71ikfkbc5cwwaz6xkewr447ckre
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776111833-598188
+X-HE-Meta: U2FsdGVkX1/qsMJd4bKueZQedpzPHwUIXr1F33nEHZreaSsKqSXRyTx+A2RDKOISIDX7jeMLJEhpk7U79zB15+12Ou/q8MElJ4TLnjMk96lrG0U/Ub3iRyqAKOZ6HM1nPAEfnGrxWM196cu5al9fbDKcv8iXYTWbIHfyPHi6f72CrJsPmFDxwDNkXPSa4gI6AWvDK3po6Zo37ZUtz25827vKMDMGoT9Pcsvp3yuQ3Wo55mlYUTsQOBluPtVTpxLC6tF+xZ4lxriGOwsmUTPTU5w5yA0pPkUjsbZVNjpxqTrdVgUyMqg+uCTDm9BDlM4BTK6ekYcggunYAIWBDSTi1CjyKXeLzxbfd9zpVDdH2ILfS9sIGPMCkLzqnPFYOZlVToSJztvYx2XujKL/TffiYyyU6hkLRgM3u4Kxfts1XoPpB5R/SrTNRNsTkuVH8y9//3D6Vc2W+mTV13WOjxQnFH68TbSTqAv05H+K67PFyA2+S66Dau8Pfvmuo7SvvzXLkLOjG1otHR9XRah47WROEyymZ1XMOUS7FDRQtmgnPFzePdVCxPa/8aAJL8L544CiG0Pza+XR4hXXAaFVxmPtHTwepHoyQuv/y6uh6jn9SnF+pCWUENzXsF09sYDG24qHDcbmFmDqKiQ3x4tCMnqsNO3w/prCu6nJs+dXsElwSh3GvqK0OQHFvdziLzIDoGtyCly5vvhQXLL1I2tAxh3u95X/cQABZA08lwBLTu9J/x93oS+AFj2aCymj+9gTfJzaen4ajhxhV/DaqlQ5Ht2iUp7OIzjGKLeFHMyr+5N4she8/7dKaqORBrfGL0NJUnmLEny8p2LRxwsPCh5ub7yXUPsAmOpD20bMJXPVxdm0RtW5RlhhewnRGfTSMGO+sc+dyQy89vCJ7E+PDzERxvldKS6hI3dHKriam+GOf6ujU3+HDJfwXdsT3SKMCIawgsUiDgev2pr61uVggTOAYpD
+ B8nOGi0e
+ VgXwYGsafjBsyYKLxSR0f3jpLs1qbTy8c++AVWtNQnCgAM3cQe7sEG+4hC5AaJZyuovLhsirXHcGNaVZuMV0oQfXuWpSBKdxhV+rlwiOx3RGIt4keIcduYSnF0D1t7tsZTj0NZbL4ckeUumEpDbr0TmKkwa5gqSmslJcBRhnx6XM+m8K5p4buo8YPjd8g7KnrYl6chnEGQnkyWO8Uf8iH770Y104GGQbnhEN8voe22ltsaxQZMwtJ6h+osHdkcrS9v9qMAaC4rJ5sNlSJ0M7ytv2d6N0kvU0YbvXwutVFDmCGzSs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,38 +107,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 03:20:19PM -0400, Zi Yan wrote:
-> collapse_file() requires FSes supporting large folio with at least
-> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
-> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
-> 
-> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
+On Mon, Apr 13, 2026 at 03:20:20PM -0400, Zi Yan wrote:
+> +		if (!is_shmem && (folio_test_dirty(folio))) {
 
-Why?  These are bugs.  I don't think we gain anything from continuing.
+seems like a spurious pair of brackets?
 
-> +	/*
-> +	 * skip files without PMD-order folio support
-> +	 * do not check shmem, since MADV_COLLAPSE ignores shmem huge config
-> +	 */
-> +	if (!shmem_file(file) && mapping_max_folio_order(mapping) < PMD_ORDER)
-> +		return SCAN_FAIL;
+		if (!is_shmem && folio_test_dirty(folio)) {
 
-I wonder if it should.  If the commit message to 5a90c155defa is
-to be believed,
+should be fine
 
-    Since 'deny' is for emergencies and 'force' is for testing, performance
-    issues should not be a problem in real production environments, so don't
-    call mapping_set_large_folios() in __shmem_get_inode() when large folio is
-    disabled with mount huge=never option (default policy).
-
-so maybe MADV_COLLAPSE should honour huge=never?
-Documentation/filesystems/tmpfs.rst implies that we do!
-
-huge=never       Do not allocate huge pages.  This is the default.
-huge=always      Attempt to allocate huge page every time a new page is needed.
-huge=within_size Only allocate huge page if it will be fully within i_size.
-                 Also respect madvise(2) hints.
-huge=advise      Only allocate huge page if requested with madvise(2).
-
-so what's the difference between huge=never and huge=madvise?
 
