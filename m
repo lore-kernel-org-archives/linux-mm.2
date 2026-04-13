@@ -4,143 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 836F9F531C1
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 267CCF531C1
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:43:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD3C06B00A2; Mon, 13 Apr 2026 14:41:29 -0400 (EDT)
+	id 8657D6B0098; Mon, 13 Apr 2026 14:43:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A83DA6B00A3; Mon, 13 Apr 2026 14:41:29 -0400 (EDT)
+	id 8161E6B009E; Mon, 13 Apr 2026 14:43:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 974016B00A4; Mon, 13 Apr 2026 14:41:29 -0400 (EDT)
+	id 7532B6B00A3; Mon, 13 Apr 2026 14:43:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 839516B00A2
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:41:29 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3BFD9B7497
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:41:29 +0000 (UTC)
-X-FDA: 84654400698.04.260E579
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4E0E9180008
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:41:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RYUiTIEB;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FABB6B0098
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:43:24 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 09F54E2F8A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:43:24 +0000 (UTC)
+X-FDA: 84654405528.10.A637117
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5F446100008
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:43:21 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Mhxaednr;
+	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105802; a=rsa-sha256;
+	cv=none;
+	b=AvjaMqNyPjBQiQkdDTXG1BnKXva/4ow28OR0AiF4LuSryFSTeS2UfxkHPMaWwZXp5J3GRI
+	ZtRHBzgP9IpK3IKJUJnY3p/iJckmJEPGFjXMWyBvAscY+myMAYynWEa0eqt0P98TSpstqe
+	nWzLiwFIMt5MoPu/hFh4VRMV3W3HfX8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776105687;
+	s=arc-20220608; t=1776105802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JiEX8vjXSz/sh85xNdxBgd8SRdc3RYTujnGNxoxRGJs=;
-	b=qxxY5AoGdinGM1xvPYi5wL47VYaBi4QypDlz5HDQNQJTzgypUHJWPz0SPwfxCYQwu/gGNE
-	zBHOmi0knc77A5ihplTLlAJzN/bH8QYVvXjT6K1fU2I50oW0r7ccfNUQ69Pem2iCY599kX
-	afLVhBJHBfsVWC7JtUGGfWGAk+hkVaA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105687; a=rsa-sha256;
-	cv=none;
-	b=vOKCUrBrnpk3behbL12r80g2gJOuPgM5SPxiDkaYcj1K3rNrhdr1elMR5Zh4UWvbVkt1oP
-	8WmwzgCFtawkxaJpNb2BiJ1FakpDWqt0m7e+oarB5mCV1D3dFYbpBk7TFd/wI8NVzlm7+P
-	nie9EJ0cS1GomsY9M7d1i0HqavdfEfU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7+dnmsOeh6AHqg2BhNW2UdgF8EdFnZSC7APgeVGJlpg=;
+	b=wveTdj0bjBRtT7yYps/57lPrcyOPfCRl8kHAOS9NQ+P88JyDVhKAKuvyobfxBjkUg4pSKY
+	XFAmqQYIJRwri9gQnLTKgz2J3i+i5OTZfBSxfhF3JY3pH8TANRI97hbHNyz+MnZbxGtOsd
+	2Wql4S5qhcPheLXlgnRAt4Q1lLCt6vo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RYUiTIEB;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B7A54017D;
-	Mon, 13 Apr 2026 18:41:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52627C2BCAF;
-	Mon, 13 Apr 2026 18:41:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776105686;
-	bh=Ag34EiRSRProjSszPBmIGU7K92Xfr0e+QDVz287fZs8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RYUiTIEBiWUn3y/EkLaQ+B6or6WPDAJLf1CGVxYVwTegeS8M6EoDmczfXWKz0ZXOz
-	 0+9etjUpPxVxm6h1D6hH6ELi0BENK6eMTe+EfabF0ADKvKCW9kJIwUAjXqMsEv/K1m
-	 o589wnQnYobBXyMAFP4ggd9Xoa1oeu6Bm2Di8fpJQCKBQcvyZ/gKGIwtidfpEQA17O
-	 3zXGd2OlwjNvDVYdCbwlRlVWXcWTPStWTQnnpDld2QBNtqFDSk7x+JetUtJL/wwPVZ
-	 y3i5WrOphiKj9EZ/Ag3DqRTX/GyJaTBe+tkAp/xIQ//2KXChkz1ph2H3wZRDkubPFS
-	 1HIUjTKc95cwQ==
-Message-ID: <2b51659e-5527-4e15-a0a8-41f30f589d07@kernel.org>
-Date: Mon, 13 Apr 2026 20:41:16 +0200
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Mhxaednr;
+	spf=none (imf05.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=7+dnmsOeh6AHqg2BhNW2UdgF8EdFnZSC7APgeVGJlpg=; b=MhxaednrwdG+RPq61MKq1e/UmW
+	FV41IdAWLXwizrThta5K0oncE8BD/J8z4GvuPpbmGK9Pv1muKA+VQuUrbOtCQeEuihMNChHI4EW5H
+	1t5jGMSUGGYnkizBuCKlXETLVRH64DWCVwUpLX9/fHLxjNL6lGoC84kqnVa+0rfuTiutbkgFNSEkg
+	2coY2kgJbXER1qJKaP8XcWaXAKO0TIXw4TsLNN3/GqezimYRKZltRjSsDSEXBMnkP9IjPS28pal+F
+	KWd3s1SQGi7Pk635NRfHlmo1IeQPUeg5wIYiC5LfLPsyAugUytIVw62lhkFrknUjUeuodaoCHf7M0
+	TyVNN0ew==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wCMFj-0000000ELgf-0Jru;
+	Mon, 13 Apr 2026 18:43:19 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Jens Axboe <axboe@kernel.dk>,
+	stable@vger.kernel.org,
+	Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>
+Subject: [PATCH] mm: Call ->free_folio() directly in folio_unmap_invalidate()
+Date: Mon, 13 Apr 2026 19:43:11 +0100
+Message-ID: <20260413184314.3419945-1-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/49] mm/sparse: fix vmemmap page accounting for HVOed
- DAX
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-4-songmuchun@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260405125240.2558577-4-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4E0E9180008
-X-Stat-Signature: 8wrktt79buttgsyt9sygdbxduo9kgf9o
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776105687-801125
-X-HE-Meta: U2FsdGVkX1+7jX3e8uf4iXYSORfyW9XU1cx2ZzxuDbm4JcbER95+fikynjF7b6ViF+K6HYCwBHxti97FAAGIt6bVk2VuxQHzcKcw3SVFFFKZM9araO2QeaWq+U+YGT6eiWnz84boj41HYuKGr4FtEPgJHskHH7KI2o4+kbqzqPIDoKvIJVyeGxkNc0UappvpoNwTQf19HsuZQYbiS0nqbYCdOZVjkLy8ZYw7inj0HlNC/9QyRYEVYalA8dHYlZ35mDXioU9tqyRwzQmb0pArkQIo/anfQNDA1tsfMOtPbbO9pF5P6p2YorlOX3DnLIAriiDSb5i/r0GybROKkwcNBSNk/qqXdIOXCmbTBCWkT0OtxZ+Im9Jcr/O4IhOy7yS4L0yjDXex2st9fxO5QKaAXqOzQ6jSUMWIH3k4NkMl5LoMLHyRbgA6kYz6LZ4x3yzWJLY26sf8Or0UZoar4ECz4ygOlwJFWWcuAO7inO/AeEnAwaiTjlzd07qNVnbCeoONLmvH29mLzPMeXoE4XzT0CFzM/oEVClxK3UJubREb11AHnQ/53N08pwl/XKbJTJTndb5OC2pl8CciUb3VWBWNvzU9eo5k3l+m/f0z0C68fkdAof2Sg9N1DNNsCaP2SQwzvdZ+7AVPOayZTICiepz0dpkRT9ih8bPAF9Yomr1cX34hThiBkb2mLXGBhI5IhQPdDQUQhYW33y73viPbt9r30DyxV8JHHSzraXCOIxeV/ffS3gGa4rv8t2rH+qaCKO7XyvD8d2aAC/LRLOQZZcpywYlMt9BQh1VPD1J6G2dVi1shXkSkgmvj0I/eSVaaC6UJS92Pwuof3SjhGPFPMO+GeLEA2XU56Jfd0dsk4FJN6VOtRnzTgn9tmOWivt3gg01SNqDacQ6HPsvxXrbb1ZrWYrfJcGI98Zn0WduMUsgOzuxZPT88jTBwS3NJqYK34jjRZH3kxIolPzXHOJ9Kv8x
- U/9UrMTH
- x1YbsynofFPR9mBH2Yxhutno/sVM5q+1Tx8x2zUswMFa5XUv9OjLnt3/cE4Y46oPULqbmOu0EGzFc7lIoHgHkEwrZ7vB3mdsdQ6MFle8xocvI/g8bl5H7G/eAbI6l8zA4fSZ1EXsG54BJyvqJvDs+MSQX/+jkGQnlAj73im+UQYc4wa/i/UwJ48Zwr9KSuhmnr2WoELJueDv0kCBhwELQR6eSFcDkCDpmYzqoJhttMRZIKPBAiwgGu11/ZVmX0Sm+Fkv5MexM+QHQBY4OQrViaKPgk6uczhGvrCWA
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5F446100008
+X-Stat-Signature: 98sd4q7z8ek3dp38cfm43746j8upcu1b
+X-HE-Tag: 1776105801-301872
+X-HE-Meta: U2FsdGVkX188RmSv6txL3w1vUJfVr0/QcWshghfjSdrvVmKNExmXdsB+h5Vjvqd1D7LDxZ9LXV5f5whKfbN9AgD9NHQh/dhCn2LdGvPUSxLlcLV6vLv5SZD/W8WrQSqofXcT2oFItCn6HbNaCBiPNn9o28NmOkhaB46hbcml8FoVhsQ4JJUwqhnw+RLL6LWE5wuNTzZ0Y5Tascc1cugJ0D2uXjixa5gbzvVq2lHxgnCzRi+h8QIH7PuTUpr1kKccxr9Em0AsrdzPjkQ4rMCqxGy0q8bmh8xCZl+xQdNeo7NvoQlwnkG+tHv+kSSvsUtX1r83AH4/pZRCbPfL+/up/QCvE0T6g58ZIoQkz5wHBupvtufHOqOPxR7ZaW0AUuOSRLSiJZaQpADYWW5bIx2lkdwUguJ/gbiao3PfSeGQRbXj2JAjDq07CUPuz2wZ+GWeSUNJfTHWQ9Bi5B6GRsLKiR6FGXvNdBdLoNZ9Mqfr/MD5wT5S9tnJaaC/z0ZnKRy+1r8slXb3tHBYEdgwh9dizSdbGaR+6f8iGyDQSF4S8h3He5rpS2I/0AsKpe1TYRd0WlpsbhpjjNyC+mfFQyCeARdStwHS/vWyjpqlMIrog08dXAOWxAyWDR7stR3jh2eWa+AhdKgb64/HYTv+rUbaxXroNvXiuuoLPcybAtfGpJzjTSRKSM33v+oW9+MVMKR6WczYu3euGz1kOqMBcO+UbNGiFeELNozutg6qEs7DZYxKPWslyuPVjz269Nt1RHzZuaiJSCrQ8JoPBH3cmdy29vBbxwpYfd1SJbCPNC1HE8oQ37YmYidYuN2AcSOHIG6TkHH+/QiGU8xq88kfCUIA7gZSz1lTHUv/oe8JVFTdLSud75vQ/USwVzW0tHxLRUlVu4tqWKD7wWALLV1wiqWkWdT1Dv7M6jioBxFOnymSgrEfNI7KjWI7iqsdZSVwvF+VG4YrAuKbItnbKuMpadM
+ mp5c0Sxj
+ aatw10W3FraYS8rWDrzSbGUsNR7KNNW+1WDNA0BuC6/t89SejnuuI7s+O00gv9K0AsUvCqGY/jAYDymu/xR2246GYg9EdFFS61HD9ZLFPnoBr1vtMUjPYxCxdqkoYoXFg7kTLHsi6w6khZj+vjmb1zaVjeI5JYglMyoYFX9bRFaVM+ZQka0OUAU62u+e8LK4ckqMHiFEiAXPyl57ViJTB5ymrXcvE+mkdqEegGHE30zLCcVKVpuSG/v99V1NvnlvrYVuofpWMfMiq/dTJ1jdTC6gVEk66o+Lvu80COO0bGW/FP4BSvz/g3hWKNKgZYFs6+jewxf9wRymQHuP6T9gKhqmiwjsD5WYF0O2thlHbbOyChrHNzOTAZvJi+dC+Xr8F5MFJH+hWgebalStedKkdGbkmzgo76X65kWGzldj+uWUoQLjJQ80/OTl22br3Mj2khMPN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,51 +91,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/5/26 14:51, Muchun Song wrote:
-> When HVO is enabled for DAX, the vmemmap page accounting is wrong since
-> it only accounts for non-HVO case.
-> 
-> Fix the accounting by introducing section_vmemmap_pages() that returns
-> the exact number of vmemmap pages needed for the given pfn range.
-> 
-> Fixes: 15995a352474 ("mm: report per-page metadata information")
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->  mm/sparse-vmemmap.c | 30 ++++++++++++++++++++++++++----
->  1 file changed, 26 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 7aa9a97498eb..0ef96b1afbcc 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -724,6 +724,27 @@ static int fill_subsection_map(unsigned long pfn, unsigned long nr_pages)
->  	return rc;
->  }
->  
-> +static int __meminit section_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
-> +					   struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
-> +{
-> +	unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
-> +	unsigned long pages_per_compound = 1L << order;
-> +
-> +	VM_BUG_ON(!IS_ALIGNED(pfn | nr_pages, min(pages_per_compound, PAGES_PER_SECTION)));
-> +	VM_BUG_ON(pfn_to_section_nr(pfn) != pfn_to_section_nr(pfn + nr_pages - 1));
-> +
-> +	if (!vmemmap_can_optimize(altmap, pgmap))
-> +		return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
-> +
-> +	if (order < PFN_SECTION_SHIFT)
-> +		return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
-> +
-> +	if (IS_ALIGNED(pfn, pages_per_compound))
-> +		return VMEMMAP_RESERVE_NR;
+We can only call filemap_free_folio() if we have a reference to (or hold a
+lock on) the mapping.  Otherwise, we've already removed the folio from the
+mapping so it no longer pins the mapping and the mapping can be removed,
+causing a use-after-free when accessing mapping->a_ops.
 
-This makes me wonder whether that is really the right place to update
-the counter. Can't we update the counter where we actually allocate/free
-the pages, so we don't have to re-calculate that?
+Follow the same pattern as __remove_mapping() and load the free_folio
+function pointer before dropping the lock on the mapping.  That lets
+us make filemap_free_folio() static as this was the only caller outside
+filemap.c.
 
+Fixes: 4a9e23159fd3 (mm/truncate: add folio_unmap_invalidate() helper)
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Reported-by: Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ mm/filemap.c  | 3 ++-
+ mm/internal.h | 1 -
+ mm/truncate.c | 6 +++++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 406cef06b684..5a4fecb24257 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -228,7 +228,8 @@ void __filemap_remove_folio(struct folio *folio, void *shadow)
+ 	page_cache_delete(mapping, folio, shadow);
+ }
+ 
+-void filemap_free_folio(struct address_space *mapping, struct folio *folio)
++static void filemap_free_folio(const struct address_space *mapping,
++		struct folio *folio)
+ {
+ 	void (*free_folio)(struct folio *);
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index cb0af847d7d9..546114d3ee44 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -540,7 +540,6 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
+ 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
+ unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
+ 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
+-void filemap_free_folio(struct address_space *mapping, struct folio *folio);
+ int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
+ bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
+ 		loff_t end);
+diff --git a/mm/truncate.c b/mm/truncate.c
+index 12467c1bd711..8617a12cb169 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -622,6 +622,7 @@ static int folio_launder(struct address_space *mapping, struct folio *folio)
+ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
+ 			   gfp_t gfp)
+ {
++	void (*free_folio)(struct folio *);
+ 	int ret;
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -648,9 +649,12 @@ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
+ 	xa_unlock_irq(&mapping->i_pages);
+ 	if (mapping_shrinkable(mapping))
+ 		inode_lru_list_add(mapping->host);
++	free_folio = mapping->a_ops->free_folio;
+ 	spin_unlock(&mapping->host->i_lock);
+ 
+-	filemap_free_folio(mapping, folio);
++	if (free_folio)
++		free_folio(folio);
++	folio_put_refs(folio, folio_nr_pages(folio));
+ 	return 1;
+ failed:
+ 	xa_unlock_irq(&mapping->i_pages);
 -- 
-Cheers,
+2.47.3
 
-David
 
