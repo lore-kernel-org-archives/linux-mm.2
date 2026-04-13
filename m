@@ -4,131 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1405DF34C6B
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 17:43:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 736BDF34C78
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 17:44:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 489516B0088; Mon, 13 Apr 2026 13:43:55 -0400 (EDT)
+	id CC7176B0088; Mon, 13 Apr 2026 13:44:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 467A96B008A; Mon, 13 Apr 2026 13:43:55 -0400 (EDT)
+	id C77D16B008A; Mon, 13 Apr 2026 13:44:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3798F6B0092; Mon, 13 Apr 2026 13:43:55 -0400 (EDT)
+	id BB59D6B0092; Mon, 13 Apr 2026 13:44:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2934C6B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:43:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C18751A02D0
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:43:54 +0000 (UTC)
-X-FDA: 84654255588.18.559E257
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 73589C0009
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:43:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cKwV1QYz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rQe3Mkfb;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cKwV1QYz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rQe3Mkfb;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776102232; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id AF4276B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:44:50 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F706C144B
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:44:50 +0000 (UTC)
+X-FDA: 84654257940.06.713FA0D
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 868C440003
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 17:44:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kF82xfwR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776102288; a=rsa-sha256;
 	cv=none;
-	b=7VaaD8hWX2tWRHd95ru9FhdH+EutsqX56CdC449BIynS+PV6u0cgw6KWhoHolbuo0ut8am
-	/P5rYhdmEeRr9ZcNfzd0MVhKCJ8F8An1Ivb7b85AM9VDqjJrU+k8Bw8GLg/mu9xzbCM5Td
-	RdHJsxFQSzZydHGMdfSirJB0yOHxthU=
+	b=RXy09BfoQv3k8UEcUfCJPqmmH7Ejd4PtylGIjKlAQy3o+IvUKvGG++dLN+Fud0WZZlHWnY
+	cOqwBdWt0io8pqJx54jwE5I9+CsVrlLg3l2sfowTbLp8mK+iQpsA/7Gz0e8TBHZIhDYncI
+	tEcf859J0WJrBUXB4VTAVBv2V9LZWCo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cKwV1QYz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rQe3Mkfb;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cKwV1QYz;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rQe3Mkfb;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kF82xfwR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776102232;
+	s=arc-20220608; t=1776102288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
-	b=21hBwU+BE5DtaimTBJLsc8vdXBgL7FjYh8BifqiaFnFx7Vh65Y9djLJeeBtdtCr2rg0AaY
-	2h3btOo0cYKrX6HIm1T/sa0IjrldTAK3Qi45tB+81dcBeLkmVp9iLsdA7Tq/vrQKAPT+aL
-	xhL3/gnIu93uPRvpKTMQ4psmomCROvM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B60BD5BD3E;
-	Mon, 13 Apr 2026 17:43:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776102230; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=b0j9S/oeWv9cGrOnlEmdvesYiWMQozAk+6ZeIzA0Owc=;
+	b=M5mzBi5oemFdTxeNysw4z3XAC/udaXLlKb0MpgtYw+sDmKMXw2nZoIMSNv7WZtg5W3UTaY
+	BzKFXVCqoYh1KLN7WT6j05jtmEHC0R2RP6j18q7Kf5mNmj8calyIqm6JW2Nr1gI9X+1HG/
+	vcjT5LiIC4RF8eDFcgWx1bkFnv91brQ=
+Date: Mon, 13 Apr 2026 10:44:36 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776102286;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
-	b=cKwV1QYz1GSOpXcoJnqcN01IEtlRs793+honbozuKFEC8VyeP3SkJtPP6t/oQgHWclBGM0
-	FUCX939RJ7zw0DgJeXe+G+xkHhqvaWcJ7pEWBC3PYuOGlO7XKwHIyofmhEImtDJUEcALkL
-	Sad0YRziyKt2CAt8eSsneiA9W1NChSM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776102230;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
-	b=rQe3Mkfb+UKAwYCDfjjuovY8Tr3CSJ19JO19jRWk3nIYkSYZoNgvHRHHWscAB3C3xgCGxG
-	aedN/zUVhwMAMDBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776102230; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
-	b=cKwV1QYz1GSOpXcoJnqcN01IEtlRs793+honbozuKFEC8VyeP3SkJtPP6t/oQgHWclBGM0
-	FUCX939RJ7zw0DgJeXe+G+xkHhqvaWcJ7pEWBC3PYuOGlO7XKwHIyofmhEImtDJUEcALkL
-	Sad0YRziyKt2CAt8eSsneiA9W1NChSM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776102230;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W6FuKmcXLR07Fw6pjG6z+dAgssBozguHf37YZWpjsEQ=;
-	b=rQe3Mkfb+UKAwYCDfjjuovY8Tr3CSJ19JO19jRWk3nIYkSYZoNgvHRHHWscAB3C3xgCGxG
-	aedN/zUVhwMAMDBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EEFE14AFE5;
-	Mon, 13 Apr 2026 17:43:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DCwUOFUr3Wm0QAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 13 Apr 2026 17:43:49 +0000
-Date: Mon, 13 Apr 2026 19:43:44 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Jane Chu <jane.chu@oracle.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
-	hughd@google.com, baolin.wang@linux.alibaba.com, peterx@redhat.com,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/6] hugetlb: make hugetlb_fault_mutex_hash() take
- PAGE_SIZE index
-Message-ID: <ad0rUB4FuNUOJ1pN@localhost.localdomain>
-References: <20260409234158.837786-1-jane.chu@oracle.com>
- <20260409234158.837786-4-jane.chu@oracle.com>
+	bh=b0j9S/oeWv9cGrOnlEmdvesYiWMQozAk+6ZeIzA0Owc=;
+	b=kF82xfwRKUDeEAuXqOchwk9JzjnHGoGfLr6ipXkTHA8Y9gDscmQu3i/dgmUx3cPA8uIVZb
+	a4vMT/H+Owd+AsXn3B5FTclx+2LzDPYcGlTlnvfjefVUU4SzorZ631Fwoh1XzU06KX+uM+
+	TEyj96yOsj7dLckLcRg5oq87cs83K3A=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Tejun Heo <tj@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	inwardvessel@gmail.com, hannes@cmpxchg.org, josef@toxicpanda.com, 
+	"Dennis Zhou (Facebook)" <dennisszhou@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, martin.lau@linux.dev, usama.arif@linux.dev, kernel-team@meta.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm: blk-cgroup: fix use-after-free in
+ cgwb_release_workfn()
+Message-ID: <ad0rbPUaeGJozbSe@linux.dev>
+References: <20260413-blkcg-v1-1-35b72622d16c@debian.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260409234158.837786-4-jane.chu@oracle.com>
-X-Stat-Signature: 8fognxh1qpgoxm9ng5mobm3z45u5xk1k
-X-Rspamd-Queue-Id: 73589C0009
+In-Reply-To: <20260413-blkcg-v1-1-35b72622d16c@debian.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 868C440003
+X-Stat-Signature: p5sfhtwmzz15wcm9ojrk96nmdsbehsui
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776102232-954877
-X-HE-Meta: U2FsdGVkX19umfJ1ftezAl4UkbpOusdX+NCYNhau5FwPaAQ54bTedIHgsodmyqGJTx8DzbFEbv9Oupl0uNL8jxG5eRIK5YshF+c5p83yrpAGgH2TCrAjWHPZl3fWEOoQKoq0DH1+5+9baE4p4ET3avWflh8LD2NMzkqiuwJafu6stbE1phWyDk+ak6cyRi4kJ8ZQIGj/B5IlHJHIKAFKQqXybteegAcZUEHBRiN+0/poxu1lbnl5WbohtkAUalqhDLKU3KC1KUUZEgA7YDl4v8dxcdULm4vNAPDcsIcMb696KDcajB1KqRe6eUuFMomh4NkOqlk0NGXcEBTUsfU/ZL2BCLTkyYOqGLUvxZQ6geTJbtZ5H7fjjAGcIKMThsh3J4qCeZbDiB41DvSZUXkNRG39oufVKiN23fa1RDww3h7vdXsmI+ZVCJnDvPmNhvK8xnrGczcPJQLYYJIkw8rRM2XyKzsAnHK1ZZU9K7s6sDru1n2x8gpXAKdCncXU0J/LzJ3jx695WPAcrRzIjDQtwEUfNxdxjULUPxiFdv4lrperMG+Xl3+Ef9PYhtldJi9Yi31etC6mLtSxAbJdSSYj26nv9JkhGqN/3kmSSBOzy910nWplL5FuOmgQ/Z73SB3jzcat+ykOomgFnDCf0VnxPMXZdQ0z9bz+u6unwM/zCUFoFdG9b8LjiBcMzK7v0xg6U6UHtL9MhpDDfrf4Y/FBDXjpUxpGK5XewoVCdjtUzrrVpWVSlwbDvqvkrmPJFf4+NLWyka8skIGNrZESPjJWfPpVr3Zcf7wrbF94SXTb9H1+JKFen7G6zTfMZ9AFXXW5GlR9ShQwrbe4yGdnY5uV90FqOTOMjLmGbgPSiyoonpowSlL/SbLR7Mk845HHZWUQh5bXvUk4775v33y4Lw6caCPTjKrOJvvpNDHouNc8zdld9a+lP4IgmvC8gKrO5liB4Po2BnEKjr7nvZt/zGR
- HsRjEp1B
- nidhAchjTE1jH/H6P3fjRK/ILYJ87Q9QLGpBTTmdl/jHlmdxzcSXcAHjCc7+UZDaXhIeP6a1Cr3iKc0YcItSLEr3lgxH+Zwwyb5SW/C9yX9f+ribyK41z5W3SZYbgqWBo8a7ZrElFKDPeFGaX/LjFWjPlKAFtn+iNNMkA0E/PmVgpqitT4E6Yc3UiGQhZoQUqLfFI1/1oRVQhCPx2uBhQBia6u1Ek7Ugpu12IJTdAsst4i7EoEiHBr7umb6mtCt2rOPnhCMoRfsIaCn6DCUAcAyZ4mVgwCg/smYFA0l6DzHsfEm5kdqGHsbtDajxjgW19+2joO1KEzgijpBc=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776102288-513036
+X-HE-Meta: U2FsdGVkX1/j/r13IOVI708dAntcmYKFNNMyVHIQu2/SS9qZZ8d/GJeGgV5GDXw8Nd75R3Iagafr/1GMdv7gd18YLp0AkdvUuoGGq8VzBisJo9TrLrvmto471va9UJMr1RFS/aW53mjMfsJGbXi4tCDn4HehnQJoNMTA4HQzrEztig6aYoTLsDTkZXjFCD5uBue9nY7mG7Zj/YhmSHfEPgZUeAhy4H0qpzVTAhjyr3LVA4e0a9s0gIsJ4e35g11T1N9XIEuUu2dF0qgCzQxIOlAQdcvDQyZiSwnwHgw4fYNQ/GgmvsadYWuXvuoQSdLbXUp1ffqn3OeSYNZQ/iSgkFah0m1ySUkHFDDpbJqeU0Z6fem0Wv9W2l7ChCdr8fF2aiWw8/tEZJNmuz7/Aux8canyEccTKWulWPBXxPu/iyGEeFCmH+8dFLCCvc++/pnbS7+j7RGBheoAzA1196FYHgUgIG8cnuRLBl/yhYIk4K02ouPrNzIbejrFnHmXd8i9q/d/R8XGK4+o0ABX0Z0liDRUHni2m/qD4+tVzoN7qWOzZrhKYiQ5Om0N7Ybfbc7mIc1B0XK9NvNdk1wMpPNUDYGq07S+5frI9RMkT87WLXlis4W2sIRuNCglNGrtXmZeZfBonEUDfFyvHccsjYb2aFWMmbKmFFBx4ZM2nX2ivvd0mIrVwvOxwz6cVF5GIEgf45sqhSsbWuZS9P1khNLRFikBD9PLguPoPgJC0PS1I2HLpOuNyIWe1wBlRx7g9oEHzOncB1wD6jp1GVvlGYri0jIOb7/GAJ0a6zJyEdg4eG/0znlbgNn9lcBIjsxVfDY/1T9h6bpXCBveupR2+oC7GjcvSz4JkNL7z0MI6N3TCo5+MFxZ3qcx3gvRrmTCq6O/lFrDhqmJ8THow9krl4d0ZNxgFKl3d/QwB2a2DmfKAzpAN98N/bz+EyLsAi4w8swE/BXECnflBVlM63X8bLX
+ lIOZLLVS
+ vIpA1QzVAiuHKjD7nheDuOlaLt0HSizQXUUB/xZaVByi1YhkLt36iLm485Qr5Q+pL6lL+M4jbWnoZFIX11s04jDy9htmg2jugp7kanDZQ/1k7odhwywvgVfVOMEOQlaC12Nnht1bRVqACti1UfO73da4kokycJ5H71Aa8hBJeRyJMej/2lkplyE4lkbnKmJDsSy4H2C//jceuEBzb6lKbimYkqpYYghdJuN/MwMayClluUwFdNpr92yLnKLSDiKaictlUG+4vmKYTxhYvKRO42hm78jD5E8BUnXUnl+vWP468Dfbiv4AX1h2N/TDsoCiwchR4Ppb3k726CyXxpExRvKiHAkPuG8fiWbBjMeZ8sR38Ans=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,71 +94,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 05:41:54PM -0600, Jane Chu wrote:
-> hugetlb_fault_mutex_hash() is used to serialize faults and page cache
-> operations on the same hugetlb file offset. The helper currently expects
-> its index argument in hugetlb page granularity, so callers have to
-> open-code conversions from the PAGE_SIZE-based indices commonly used
-> in the rest of MM helpers.
+On Mon, Apr 13, 2026 at 03:09:19AM -0700, Breno Leitao wrote:
+> cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later
+> accesses wb->blkcg_css again via blkcg_unpin_online(). If css_put()
+> drops the last reference, the blkcg can be freed asynchronously
+> (css_free_rwork_fn -> blkcg_css_free -> kfree) before blkcg_unpin_online()
+> dereferences the pointer to access blkcg->online_pin, resulting in a
+> use-after-free:
 > 
-> Change hugetlb_fault_mutex_hash() to take a PAGE_SIZE-based index
-> instead, and perform the hugetlb-granularity conversion inside the helper.
-> Update all callers accordingly.
+>   BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+>   Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
+>    Workqueue: cgwb_release cgwb_release_workfn
+>    Call Trace:
+>     <TASK>
+>      blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+>      cgwb_release_workfn (mm/backing-dev.c:629)
+>      process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
 > 
-> This makes the helper interface consistent with filemap_get_folio(),
-> and linear_page_index(), while preserving the same lock selection for
-> a given hugetlb file offset.
+>    Freed by task 1016:
+>     kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
+>     css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
+>     process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
 > 
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-> ---
->  fs/hugetlbfs/inode.c | 19 ++++++++++---------
->  mm/hugetlb.c         | 28 +++++++++++++++++++---------
->  mm/memfd.c           | 11 ++++++-----
->  mm/userfaultfd.c     |  7 +++----
->  4 files changed, 38 insertions(+), 27 deletions(-)
+> ** Stack based on commit 66672af7a095 ("Add linux-next specific files
+> for 20260410")
 > 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index cf79fb830377..e24e9bf54e14 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -575,7 +575,7 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
->  	struct address_space *mapping = &inode->i_data;
->  	const pgoff_t end = lend >> PAGE_SHIFT;
->  	struct folio_batch fbatch;
-> -	pgoff_t next, index;
-> +	pgoff_t next, idx;
->  	int i, freed = 0;
->  	bool truncate_op = (lend == LLONG_MAX);
->  
-> @@ -586,15 +586,15 @@ static void remove_inode_hugepages(struct inode *inode, loff_t lstart,
->  			struct folio *folio = fbatch.folios[i];
->  			u32 hash = 0;
->  
-> -			index = folio->index >> huge_page_order(h);
-> -			hash = hugetlb_fault_mutex_hash(mapping, index);
-> +			hash = hugetlb_fault_mutex_hash(mapping, folio->index);
->  			mutex_lock(&hugetlb_fault_mutex_table[hash]);
->  
->  			/*
->  			 * Remove folio that was part of folio_batch.
->  			 */
-> +			idx = folio->index >> huge_page_order(h);
->  			remove_inode_single_folio(h, inode, mapping, folio,
-> -						  index, truncate_op);
-> +						  idx, truncate_op);
+> I am seeing this crash sporadically in Meta fleet across multiple
+> kernel versions. A full reproducer is available at:
+> https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
+> 
+> (The race window is narrow. To make it easily reproducible, inject
+> a msleep(100) between css_put() and blkcg_unpin_online() in
+> cgwb_release_workfn(). With that delay and a KASAN-enabled kernel, the
+> reproducer triggers the splat reliably in less than a second.)
+> 
+> Fix this by moving blkcg_unpin_online() before css_put(), so the
+> cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
+> accesses it.
+> 
+> Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-Since this is the only place we call remove_inode_single_folio(), and that we do not
-the index (at least index >> huge_page_order()) directly in this function, would it not be
-better to make remove_inode_single_folio do the conversion itself? 
-
-Also, I am thinking out loud here but we do have a few places where we
-go: idx = index >> huge_page_order() to convert it into hugepage units, but the casual
-reader might be a bit puzzled about that.
-So, would it be worth to have implement an inline helper with an accurate name
-to do that? It might help whoever reads that?
-
-
--- 
-Oscar Salvador
-SUSE Labs
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
 
