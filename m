@@ -4,101 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BD2CF531CB
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 20:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0703F531CB
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 20:20:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B2726B00B2; Mon, 13 Apr 2026 16:16:26 -0400 (EDT)
+	id 224096B00B3; Mon, 13 Apr 2026 16:20:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 663306B00B3; Mon, 13 Apr 2026 16:16:26 -0400 (EDT)
+	id 1FBAB6B00B4; Mon, 13 Apr 2026 16:20:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 578D16B00B4; Mon, 13 Apr 2026 16:16:26 -0400 (EDT)
+	id 138986B00B5; Mon, 13 Apr 2026 16:20:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 45ADF6B00B2
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:16:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 077396B00B3
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:20:29 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD24F8AE85
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:16:25 +0000 (UTC)
-X-FDA: 84654639930.28.8A8DA57
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E18B72000F
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:16:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uWF/artp";
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADA2BB72F4
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:20:28 +0000 (UTC)
+X-FDA: 84654650136.28.80D183F
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 392AB140008
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:20:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dMUgBK9h;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776111383;
+	s=arc-20220608; t=1776111626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ii618WCY4OPiNL7FtmIZQQ8wHuTxpWru2GswJI1aP9c=;
-	b=MwPgisBozhz0oLvsfCFchcLjm9FHCL1otKl2vwE12tQ7Q77luZ5t/XtVoe3MUlPOcUEj3Z
-	t2crxkBjBhdxku4Qll7XLJ5ZwXF2RtFbbk4YIvcwm7ub3cYVX2jFX8jYEaVPQUvdtFrhV1
-	8Y5mKTOJ/GoVqaglpch/cTQGj33cntE=
+	bh=NLcVHcvKWmcbrgR33gHCYc9nnRDShPHrweRag0w3Rss=;
+	b=wB95OxWa45Y065nVJy7vPQI7uzCiY9lJeeLL8wXGV1MU3voSBp614wU0tDLtSnTtM9UgIl
+	3yrmPHJiDLDIFzUpFV8qhnW6OLSrYuVW5Qoa4sVp3K3WqOLUBzETHHvFYDasOv61XeTPZo
+	RG5kppQzcmN16QI3UfOsw3UbWIt2WXg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uWF/artp";
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776111383; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dMUgBK9h;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776111626; a=rsa-sha256;
 	cv=none;
-	b=bQD2P7to6D+r7jq7wN4MhyVfQLwslId0YN+S5GX9r/xAFJ5fjh9ZSFtZ+IIN0XpHQpmi/P
-	ykksGn9tfGvVN2eZcpogJkxLhg6F5XXRxoP7IzcE4zyhlde64MS1wz9vol0qvRbQNddCOL
-	3IOCqEzcW68vnxv+n4GGVVzQoFRyEgM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 143AC6183B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:16:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7BCC2BCB3
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:16:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776111382;
-	bh=j114EYxMPzWh3j8156US6so/8rc9cDU/wlHx2kr7Y4s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uWF/artpWbuUnSooqdOaYbgdDRAeFll3VhcPUYZa5vgqoQ7IhHEQlKE0KYTCM5l9t
-	 ekRnDW2zc4gzX6D94EXcQ+tUAhrImnJ5HrNgbS+bQstwEXTsjiyKq/ecFsOA15fvu6
-	 TRCCKvnMTxBWHA9zuYX5Fjzi0n2zC/gdP2HCCztGqwSf3v+nFjSnt9UKvgM+ZU5hNO
-	 a8edlJASLhuAaPWYWK7F0H+tQC2HKmJwQUqJwT79FonWVculVyU4ssABo8CZzn+TUU
-	 MS+uf6K4edg+MQdynF4XJfkqCG56ScCMxT8ITH+KR1XvpPyCjPVEtm28D7NhyH2rvg
-	 FX64rcF/wpSTw==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8d67a483d3eso515351885a.1
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:16:22 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyM+6tGa9jFquDWHc/CKvLVbN4y7gRzkfFoP8lpHMrgP9SlG+pZ
-	KNRcMiuQNvRMPq2w6RWBDmE+9VM2AIE+evA4J10VthV5KuUBwBaKxu8/Wsp6rTMJYlPZaRv2nQu
-	dDXMagafHocWDM/JCxge5c9ojvFCmN6E=
-X-Received: by 2002:a05:6214:4e85:b0:89c:806c:8c with SMTP id
- 6a1803df08f44-8ac8628f246mr220911296d6.28.1776111382042; Mon, 13 Apr 2026
- 13:16:22 -0700 (PDT)
+	b=cUKcjW5JzPKjqlG/x0XdkKMgsh6I7dHOxTO5PcGQMjgZZWEIPZPqT1BKPxfqHBr+0LHfVC
+	j9j4D63/Iw/qlg9TsQO0y28+8eWpPO1CpQ5kdrx0798OVHSDBAnE7Dzk++FDh/xttZmrnK
+	E2NKFwl0FHZFDdVXyMfJYy9Es7fV8Kw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NLcVHcvKWmcbrgR33gHCYc9nnRDShPHrweRag0w3Rss=; b=dMUgBK9hVQVcXUT4U24DGS3kiz
+	GhjKY37BWh7Jb4Fks9Pd0D3clCeD40QWA0HpurHvoHRsXZJ/IpWmvPCaV2Vboww0FQBL71Abpbgrr
+	2ED5tKDObX9PFme+mVM5dtHPtBv/pKL3xOJ627FzQX/g0qkGh+PUIFb/Fx6/hkNnU42atx9J1Ftdn
+	qmXI4eBd+pvfs2sXUBVj/geCsEOHcWCYydHRwRfgOPyiw0NgRAInjizITUXcz9Bt7Fn5ypTEQ6l7o
+	YPsqJImx66NhuiVlkCjO16+WE70N5plOdZNpfq9oeLmoOdiJQ6/JKILn4JvRyLefnMDODtAcnbJIm
+	qg5fHBaA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wCNlS-0000000ETMo-0see;
+	Mon, 13 Apr 2026 20:20:10 +0000
+Date: Mon, 13 Apr 2026 21:20:09 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 7.2 v2 01/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
+ check
+Message-ID: <ad1P-bfr_Vp6VdKf@casper.infradead.org>
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-2-ziy@nvidia.com>
 MIME-Version: 1.0
-References: <20260408025115.27368-1-baohua@kernel.org> <20260408025115.27368-4-baohua@kernel.org>
- <ad0U-IEvZkFwpBsg@kernel.org>
-In-Reply-To: <ad0U-IEvZkFwpBsg@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 14 Apr 2026 04:16:10 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wnUvknCzM=jpDEDrdUKcrAR5MA2EW6eqCfGKgQWF53YA@mail.gmail.com>
-X-Gm-Features: AQROBzBvu5KJKBkdHpOmlCQrUcrzTZlrSvZUBKKBwmAj4xBiS0yTsNJwhuzfp74
-Message-ID: <CAGsJ_4wnUvknCzM=jpDEDrdUKcrAR5MA2EW6eqCfGKgQWF53YA@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/8] mm/vmalloc: Extend vmap_small_pages_range_noflush()
- to support larger page_shift sizes
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
-	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
-	ryan.roberts@arm.com, ajd@linux.ibm.com, david@kernel.org, 
-	Xueyuan.chen21@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413192030.3275825-2-ziy@nvidia.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 392AB140008
+X-Stat-Signature: mptcyrqx7qfzgnksw9ntn4s51q6c8t6o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E18B72000F
-X-Stat-Signature: oxe4g7eakzqouaap4cyuco4ph7z6mjn5
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776111383-782210
-X-HE-Meta: U2FsdGVkX195N+WCMQ8KMq0ElUanO6SMYdQ7077pkWwv7qmppiILxeBYjJXHxSBYTBAU7RWy2Q1C66TuCKR6ZqIrxbu3rrD5hS9X+FlnzOJ60dcKJ1bldQxJyoRC4IF7cjf8Myt4hGnW/5Nh7nUUwYZU2uqUCA0WKud1RE80+Aajj6dDd9kBasn7ojMfmSiSHzu+JuhFoWHWP5l0/GrINSM+EKpxMcuJr2SzM8dgSVE7o8YI1RtWNXNrSoUvsCs3nNV6oNxd1zhX2kbiS8iHXaJheyz9/fqXFGhVdj+wwiMU63gS8Zu7BmClF1HXnTAnJO925Ouf/m5usBrehzPHrzXSICT8pG+Uq1GoH80TsSYxVvffMfxUm7OeJ7xTWWHwuIJwLGHj4Nv7CPYRubutYPhP10AJEBGxh7ZXp9BULansfiOuRCE4uId+V1/7jM5HQo/tncMcfXIGWNctzZA5ZtqGhbRJeWCl8RLjNv32LDU/1KMKdBfrqkq9w6DVO++www2giv3dq4JOv6kPdqciLf85kz3z3OalEFxRUnDSMDCpmkp2YZpGKFDGKd9IdT6FlOA2sUQdpqb3vux5NH2z1Rr43B2LqfRpf5BfoFeLSwaSNqtNbrPQKhU4M/EOLOkvqhjuEj/3mVhOpBAn3Efl8v6kGHa+0fRduRlDIxP1SBf+5i39jZOP2U49yVGsXyVoDLAKPlEGtkOnLCqV4sLPLUkyhj7FlH9grCrIqUZGXNaOR/VLNeezjPCA6+G6eZxfM5ir5TA8yh03Dr1RhjZNVhILFWqnPQZ1gCWqRWlBjnyjgKv+GpaxNFgkHr5HU20NjxDG6CYNVurUCxQnttdQZ9NP64wsw6MbVwCbUjB8aq9CEjXhMEHBqkJi+ipXGPLEBWuCqGwE7EhN0cYgHIOC8Fu6sEb/dfY/H/WqUXBlgHaz2yMz2zf5q7+IYlYu9c9g+oi8I04q8hJLhWx7H6j
- bvaXtG0e
- FNloB+WoyPv3L3z/bPaO/96sOtzo7KBiH7mGy7b+TdETIrJ6Cqi9bYtRsilWGgU0tSPXsv9vTY+OQ3t8q563v5qxGo3UjILNiAFTY+P31d9+qKz7fnQIQ4X5ky+q+Xc6mIV/QyboJyVpliHz8IzT+vWy3H9sE/ryaUkJYjIV1zRUokSYnNyCf4HS1sSj88sBK4+UEaBgBr08iA3zg35m0B/oYH9y71MCQNWFOM5rycTFpqLkZxHlyJ6oep6KJ+BBunWuWhw0NPgbSm+sG6SD4pvHzqmNq/j/S+zCUVYyGZ7rAVW2Cz0AmwriQEEi5Z7awh8aFOzg3Zs8T2OW+XRuvxcdIEwF65CEGBW0T+Hf6MovoTsX5zP1+Z6La1nGrk+4/IW0K1XttAL9UAGdGKQrA9T7o6TB5yGuc7Ws22jfOdktqRKQ=
+X-HE-Tag: 1776111625-326108
+X-HE-Meta: U2FsdGVkX19yH9K586vR6xJYqywmsGzTsc9olAmzi1+ARwl+NHHopVLanM7YRAgpFmHP4G54zvXxPt4WiT7ruV9wTmZ5j/n1bwG1OCb6cWKW2TacExFGdVolJ6l8RBrHd0cN3am6vv7RD3jNY+S52wv4gAN9QiYQ3uBIHefzS03BQ11ZrXCI4m23YBNsyU+cLGyZHPNj35IwOhlo5PW8/qoZ/MEg7eagv8cYIlv7J+mtG31FYIL6ByuYq3I7WUavJ7BQIMAdG/piBiMGcM6qOkgG21faKKNjwAUCuflcQdWQ5tWILX0YXBGQOMIXzb2TJ3gvv6ntT7xcDwZWnaB9Fyy6mXIy7JhW35TuxuNJml3BaZBdfwXjWd12CEfEU8ZwzSrMssuxH7QQBISbsMu/gbla+8OCkKirIqOc+yuNTcIVnYWLs8pBg1H+mCC0KIt+xetLEtBGEg+dva7txgSqWT1uHedq6dmuTzSF51E6UMUQpun09iedXlKbOM+Itfkwc7vicCiPYhX9zTJdSQCFbh2ZOHemtccUUEwEjtjFmZ5CIt0+XV7hsEvwBHSria7XM/UHpZz+t1AM5CUbpRK8koO/NadPUafQ5rR51c2kQH89ZToUUzv8H5sqDTDIX9sZR9wBczL3hINf40sliMeTZaCCdsqd05dRUhMN7isvvG9osY7fs8WYk1syT277edI/MZ5jiAc7uiQU5WQxO6NSw6bnjmDV1lo8Nz5BpSQuxFDHuonj9UFUpCU/4MPi4kvogApB9gzjDm6yXeOgSQf44vIc/olCiOcEPLED4+M/7NwEoeiWYf0QzM37mhJ8XApVtDtHAwgNP1HCG7x63IPpVI7XP4q2dl0OxxwWTla7fGVYT8fOPbLWWWA0XQsBjqptkZDwqkOYblCL1nfOlmyQOCm7JT0mA8VANgtT9cK5MJ5tafSbWr8mp2AJ9N+iQNaD0D6/yiRrQZOfGMSYR4g
+ d0k6KyBB
+ KiFVhrV4h45Ubcf3QiiLhpKfpf4PheG8wgLifGSR+mMf1eSg2yEwloRHZ2MqhoCsFfgPpiCp8LYQUPVw5aBHX6HMKrOjSP5i/P333JsvWLdhIj1I+qKz3JTBwtzQGdkrGnF7OyFEw1Oc1WmmmCoStzSbFYFgCFdV91/4mZBKDTWxUQE6dfQFi62/cNfs9tuzznNHmcrfQ582648625ko+jT5PzCYchAO8EautAlQYd/ZoP4wau/muSCRu2UnINehJXdj5E0dXXI3dxFk/MNkMCc0IF5Y896VZcv+v3gI9cEjRcMo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,145 +107,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 12:08=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
-ote:
->
-> Hi Barry,
+On Mon, Apr 13, 2026 at 03:20:19PM -0400, Zi Yan wrote:
+> collapse_file() requires FSes supporting large folio with at least
+> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
+> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
+> 
+> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
 
-Thanks for reviewing, Mike!
+Why?  These are bugs.  I don't think we gain anything from continuing.
 
->
-> On Wed, Apr 08, 2026 at 10:51:10AM +0800, Barry Song (Xiaomi) wrote:
-> > vmap_small_pages_range_noflush() provides a clean interface by taking
-> > struct page **pages and mapping them via direct PTE iteration. This
-> > avoids the page table zigzag seen when using
-> > vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
-> >
-> > Extend it to support larger page_shift values, and add PMD- and
-> > contiguous-PTE mappings as well.
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  mm/vmalloc.c | 54 ++++++++++++++++++++++++++++++++++++++++------------
-> >  1 file changed, 42 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 57eae99d9909..5bf072297536 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -524,8 +524,9 @@ void vunmap_range(unsigned long addr, unsigned long=
- end)
-> >
-> >  static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
-> >               unsigned long end, pgprot_t prot, struct page **pages, in=
-t *nr,
-> > -             pgtbl_mod_mask *mask)
-> > +             pgtbl_mod_mask *mask, unsigned int shift)
-> >  {
-> > +     unsigned int steps =3D 1;
-> >       int err =3D 0;
-> >       pte_t *pte;
-> >
-> > @@ -543,6 +544,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigne=
-d long addr,
-> >       do {
-> >               struct page *page =3D pages[*nr];
-> >
-> > +             steps =3D 1;
-> >               if (WARN_ON(!pte_none(ptep_get(pte)))) {
-> >                       err =3D -EBUSY;
-> >                       break;
-> > @@ -556,9 +558,24 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsign=
-ed long addr,
-> >                       break;
-> >               }
-> >
-> > +#ifdef CONFIG_HUGETLB_PAGE
->
-> Why is this related to HUGETLB_PAGE?
+> +	/*
+> +	 * skip files without PMD-order folio support
+> +	 * do not check shmem, since MADV_COLLAPSE ignores shmem huge config
+> +	 */
+> +	if (!shmem_file(file) && mapping_max_folio_order(mapping) < PMD_ORDER)
+> +		return SCAN_FAIL;
 
-This is also a question I asked myself during development.
-Currently, huge mappings in mm/vmalloc have an ugly
-dependency on HUGETLB, as hugetlb provides the APIs for
-mapping multiple PTEs. Right now, set_ptes() is mainly used
-for large folios in userspace; if it can fully support kernel
-page tables, I would be very happy to remove this dependency
-on HUGETLB entirely, including in the ioremap case in
-vmap_pte_range().
+I wonder if it should.  If the commit message to 5a90c155defa is
+to be believed,
 
-I recall Ryan once mentioned some issues with using set_ptes()
-for kernel mappings?
+    Since 'deny' is for emergencies and 'force' is for testing, performance
+    issues should not be a problem in real production environments, so don't
+    call mapping_set_large_folios() in __shmem_get_inode() when large folio is
+    disabled with mount huge=never option (default policy).
 
-Once that issue is resolved, we can entirely remove the
-HUGETLB dependency in mm/vmalloc.c.
+so maybe MADV_COLLAPSE should honour huge=never?
+Documentation/filesystems/tmpfs.rst implies that we do!
 
->
-> > +             if (shift !=3D PAGE_SHIFT) {
-> > +                     unsigned long pfn =3D page_to_pfn(page), size;
-> > +
-> > +                     size =3D arch_vmap_pte_range_map_size(addr, end, =
-pfn, shift);
-> > +                     if (size !=3D PAGE_SIZE) {
-> > +                             steps =3D size >> PAGE_SHIFT;
-> > +                             pte_t entry =3D pfn_pte(pfn, prot);
-> > +
-> > +                             entry =3D arch_make_huge_pte(entry, ilog2=
-(size), 0);
-> > +                             set_huge_pte_at(&init_mm, addr, pte, entr=
-y, size);
-> > +                             continue;
-> > +                     }
-> > +             }
-> > +#endif
-> > +
-> >               set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
-> > -             (*nr)++;
-> > -     } while (pte++, addr +=3D PAGE_SIZE, addr !=3D end);
-> > +     } while (pte +=3D steps, *nr +=3D steps, addr +=3D PAGE_SIZE * st=
-eps, addr !=3D end);
-> >
-> >       lazy_mmu_mode_disable();
-> >       *mask |=3D PGTBL_PTE_MODIFIED;
-> > @@ -568,7 +585,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigne=
-d long addr,
-> >
-> >  static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
-> >               unsigned long end, pgprot_t prot, struct page **pages, in=
-t *nr,
-> > -             pgtbl_mod_mask *mask)
-> > +             pgtbl_mod_mask *mask, unsigned int shift)
-> >  {
-> >       pmd_t *pmd;
-> >       unsigned long next;
-> > @@ -578,7 +595,20 @@ static int vmap_pages_pmd_range(pud_t *pud, unsign=
-ed long addr,
-> >               return -ENOMEM;
-> >       do {
-> >               next =3D pmd_addr_end(addr, end);
-> > -             if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr=
-, mask))
-> > +
-> > +             if (shift =3D=3D PMD_SHIFT) {
-> > +                     struct page *page =3D pages[*nr];
-> > +                     phys_addr_t phys_addr =3D page_to_phys(page);
-> > +
-> > +                     if (vmap_try_huge_pmd(pmd, addr, next, phys_addr,=
- prot,
-> > +                                             shift)) {
-> > +                             *mask |=3D PGTBL_PMD_MODIFIED;
-> > +                             *nr +=3D 1 << (shift - PAGE_SHIFT);
-> > +                             continue;
-> > +                     }
->
-> With this vmap_pages_pmd_range() looks quite similar to vmap_pmd_range().
-> Any changes we can consolidate the two?
+huge=never       Do not allocate huge pages.  This is the default.
+huge=always      Attempt to allocate huge page every time a new page is needed.
+huge=within_size Only allocate huge page if it will be fully within i_size.
+                 Also respect madvise(2) hints.
+huge=advise      Only allocate huge page if requested with madvise(2).
 
-vmap_pmd_range() is for the ioremap case where we may have
-8MB of contiguous memory. This is the case where we have
-8MB total, but it is composed of 2MB chunks plus some
-remainder. We might be able to extract some common code
-though.
-
-Thanks
-Barry
+so what's the difference between huge=never and huge=madvise?
 
