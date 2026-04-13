@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABCB3F34C5D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 14:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93169F34C5D
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 14:45:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D40166B0089; Mon, 13 Apr 2026 10:43:44 -0400 (EDT)
+	id DDE746B0089; Mon, 13 Apr 2026 10:45:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF1046B008A; Mon, 13 Apr 2026 10:43:44 -0400 (EDT)
+	id D8F306B008A; Mon, 13 Apr 2026 10:45:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDF426B0092; Mon, 13 Apr 2026 10:43:44 -0400 (EDT)
+	id C7E556B0092; Mon, 13 Apr 2026 10:45:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AA1446B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:43:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5091D56BE6
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:43:44 +0000 (UTC)
-X-FDA: 84653801568.18.BCA69BA
+	by kanga.kvack.org (Postfix) with ESMTP id B8C976B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:45:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7806C56F4C
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:45:27 +0000 (UTC)
+X-FDA: 84653805894.13.252B98A
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 33D241A0004
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:43:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=dThTVDJR;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="m KaUdPc";
-	spf=pass (imf19.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4DFF420016
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:45:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=VAzPN0Q8;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="q ocQPWN";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776091525; a=rsa-sha256;
+	cv=none;
+	b=t0YkFXnRt33TMkqy5QhbURIuM3RxqSdyUrhN7gzgHEgx62RI9or6VlRi39d/66RvbIkbKx
+	Ba0WrOqpJCnCbXPe4d35OtNURRXREYfFhTd4gxfOVVIM+aPsZGbuZ0vumib46pjGP6xlVD
+	Cxy+SVW1/MGRsKRqxhnEccELgP2LCvk=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=VAzPN0Q8;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="q ocQPWN";
+	dmarc=pass (policy=none) header.from=arndb.de;
+	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776091422;
+	s=arc-20220608; t=1776091525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CPqrtdPK1fzOFd0Y9/MDHGVDApYeKMdzUWsDXpmbjTE=;
-	b=sROMQQXgdmt8d/Ooe3A/uvqu4z9JVEJvslcsT89ac79SZpi3jGUDLI1OTnvZcrmS0rvq84
-	w5VYqg9IBn+6G+f4TRNpoSgko29oMHa15uINd3BznwwUrKBlkPUb/FFp/3juDUGm8TViwE
-	pxcqo38mmUz2WrwGyvIuNANL57/LO64=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=dThTVDJR;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="m KaUdPc";
-	spf=pass (imf19.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776091422; a=rsa-sha256;
-	cv=none;
-	b=r6DwyRgdG/NS4MMFuS+1j1VGJMqs0WmkaLN57JDsylYgDppWm2BJi4Xyl9+Fjmbiq2rV3Z
-	LyGdaM90LNktyH0U/z1i215LPSUsJn4L0k9cwKdsbYErvWIcvbsi5hJ8TBxB3FJGD++xQ4
-	TOacTHGYzR0Hh1QEU2wVljmGfeRXZJo=
+	bh=I+t/kQciCWPYQ9TuTtwE8ePqtDE4emYgbGk8M0JrxkM=;
+	b=lLWCYezMczvCnLDEIoo6UTy+PXQeI0r1tvxI6zcefEzbupr0i7W+f3PDIzywsv4TWOHKUS
+	IxRg8C1/iO7JPKpeeWVBG63q6fU1uT4Dgt49m9Ecw4pfPOFEoeXfpUY4Qxk552IP1kxOco
+	ziYf5hqAX5gMACEXH1SLp3bS11PzXOI=
 Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 580C613004A2;
-	Mon, 13 Apr 2026 10:43:39 -0400 (EDT)
+	by mailflow.stl.internal (Postfix) with ESMTP id 63FD713004A2;
+	Mon, 13 Apr 2026 10:45:23 -0400 (EDT)
 Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 10:43:41 -0400
+  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 10:45:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776091419;
-	 x=1776098619; bh=CPqrtdPK1fzOFd0Y9/MDHGVDApYeKMdzUWsDXpmbjTE=; b=
-	dThTVDJRrT61VUkRS+cdt7Y0Z5RRsLEBjlt5LbUT/Wkj3XuC1dVyKWZPgLth6rHI
-	xbXnXmRzoJxvLeN5K5KTS4bLI9JTPMUMZHJQi9mq2+Mm0O8HtxzN6gdwi5dKMGzS
-	o1z8qIdRudVgAnBmJYPys1vSE6iXXFJKhXBunGcqiXTQxSIZPwExbixipylrVyN9
-	4kf4i5YSOQ5TyiEguuaQMFY1bjfsEzY4T5yjV+i49k3OFs/Vmf2QAO7EvG9pkkWh
-	N8bT6ZPczJACaYt7v0DdNhd+Jcw1QSr4sfdnPLEq3qIenfqRfJd23mvz1BSPAcJy
-	t7jf+cR2gTZwsPDeAUjd8w==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776091523;
+	 x=1776098723; bh=I+t/kQciCWPYQ9TuTtwE8ePqtDE4emYgbGk8M0JrxkM=; b=
+	VAzPN0Q8M06ZrISBiijyTlSN7zZjXii1iyjsU0Nd55Go1hDvnVgLbRCBducupWL/
+	I7xPJiEoPevkjLJ80mYbEW/a8BVGP+DZJqRCjUfrjm3tX4hey3YtL6Qx00JZuF8v
+	WjI3i2GDGrKOX6lfMDr3NkI8PTwxLuJCiP0sOV4NGpZgf3fzkLLYGy+I5Zeauesx
+	Pa7bVz5nZwM+gS/NQ9njvgK3O3s/OSp/mqYNiLR905iGGN0vAev7wD2BsAy/ZN5n
+	HSi20BHM/ZKZ23MgIDcWnPLPjukDeFEfSjoTKa2sxYcORDHf2CMGKzIaSruFiqz+
+	oZNoQZjdZwrcCPF2MdR51w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776091419; x=
-	1776098619; bh=CPqrtdPK1fzOFd0Y9/MDHGVDApYeKMdzUWsDXpmbjTE=; b=m
-	KaUdPcERkC+zzfJk9o14B4ADxV7hBFIrlwDzvbBZEzHm0PKs68AEHjccunfdwCIR
-	xandwmc3ligmxNR3yrYrjDSRktpJmwg0D7TTzo3rAlmWy0gSHQXh1wFw4+NYGyVg
-	zDlM8PgR4QH15XnDMMXbSfnGvjJh/j4eK/GlCalmtgkTknPnFph+dfWco8cTlWse
-	WFEPDTU+OA38Yo/f8OVtqBAERl/dqEvgrfDqnngro8UiU3Du4URjogCH7u9C6eP/
-	RYqA02k02M2VwiJpdNWH8HG6r4KmynyPDoJYdxTNeNoiAqYyt88JcV7BBjOLulpB
-	DJUQhLG59C0zm2Z5pxrQg==
-X-ME-Sender: <xms:GAHdaVYGCaKUPjfNsUorzxAck0ngCpZdPLdqJKjZEoxtd6QEkfV5yg>
-    <xme:GAHdaXPKX2B9tilU84LfHthnj4XuzUMENgXV2EBsOOdx9XMImcZUEPIIzoIwFqvOh
-    pcGkwnRvUUR4OUGZGU3iYkbbpFp25Dx9wq8LoeuFKlAv-Ydx1YT>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776091523; x=
+	1776098723; bh=I+t/kQciCWPYQ9TuTtwE8ePqtDE4emYgbGk8M0JrxkM=; b=q
+	ocQPWN5vz5eOrV7RW4YLt61EpInPDUzfRCh54wFp6y2Qkmlnv6ZW6xi1Aoq7RlzZ
+	r6AxqNsae7V2QoCSPbuAl0ssOCnVNF+Nwe1zzee6gqmSKirEjbwPzN/lznn6IgkI
+	jFNhpABUlOOZaUVrUhHeH/vSP+NehNFWpty8kiiS8k4XWDW1V04VNj0ojxWNDsG/
+	IfeL1IDdAfa9wVDrNQg30BEe1ROTtYd65N72SkxvxptAHs7jfN3985PGHUPTFvJI
+	wKmIau3hzR296XeSLQyJhwIMCCxcc2mnbgbKz8VUFGlqAJo5mE6KGja1OZI6dhmy
+	PrqiKmwzjhsEhLvP09Hgg==
+X-ME-Sender: <xms:ggHdaTXgJGelzz_lzrVxB1-qyO567-GVmNc01ydITgap5FTeQTDzsg>
+    <xme:ggHdaWbojY5ZlN23wxAxRcQ_6Dhj9KvjWf-KNsyKBcK8W8C_Dp62np5kJfJ8b515H
+    9E3UwX-YmVDxTygAoDQVAtNvx28yeQKuUCb0K1tX4I6jWCY1o3q>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeehtdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
     uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
     hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    ucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
     esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhht
     pdhrtghpthhtohepthdrshgrihhlvghrsegrlhhumhhnihdrvghthhiirdgthhdprhgtph
     htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
@@ -99,22 +99,21 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeehtdcutefuodetgg
     hrtghpthhtohepuhhrvgiikhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhl
     vghrsehgmhigrdguvgdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
     hnrgdrohhrghdrrghu
-X-ME-Proxy: <xmx:GAHdadx3OaLmpgnQ-qR09fFSyphBizIiykQxx2Qr5HCiMADvCUw5LA>
-    <xmx:GAHdabzajIhZOwZQz55Cqp-WmIPvMJl0Qeu3WJrRVrqO07JZC9K3bQ>
-    <xmx:GAHdaSIxPmEuEecG1TMTc2ieeRuLkqK7w1Mgwy5a1Wj0e-ew_hD6MQ>
-    <xmx:GAHdaVsDbvRI-p-Ezq237oUrDyOkdrmimmA3aH1JiaBrwsVneKVMbQ>
-    <xmx:GwHdaelj14NT6xOHjmTv_huVndzlY2JM81Rr0b3-wFbundNAWyZ-7jZM>
+X-ME-Proxy: <xmx:ggHdaWvF06daWzpSpjs739v0aJtN6iuik26sDQBaw3w5gAf8SR2C_A>
+    <xmx:ggHdaZ9awg7nUXhN5OpyKRMUZCbM9osYFN5RNP6GaSqeakIU3Racag>
+    <xmx:ggHdacmWL1YHAZe8ol6oPFOZFwQU0SOjOVhuke7wt-o0cNx1zs0O2w>
+    <xmx:ggHdaXZVfqhFVoJvGmfQg_vToEFHdnDFmb_H9i_ab2aUXdlRPO64dg>
+    <xmx:gwHdabAQPN9OqlO9_5-GhrI_SeY-FYfEJ9AFMKsVeX_HsRytcY0IapPu>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E9F8A700065; Mon, 13 Apr 2026 10:43:35 -0400 (EDT)
+	id 88869700065; Mon, 13 Apr 2026 10:45:22 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-X-ThreadId: AaL_vZcj0OrJ
-Date: Mon, 13 Apr 2026 16:43:14 +0200
+X-ThreadId: APG-r6FMkt-Z
+Date: Mon, 13 Apr 2026 16:45:01 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
 To: "Thomas Gleixner" <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Cc: "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
+Cc: x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev, "Michael Grzeschik" <m.grzeschik@pengutronix.de>,
  Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
  "Herbert Xu" <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
@@ -138,24 +137,25 @@ Cc: "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
  "Jonas Bonn" <jonas@southpole.se>,
  "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
  "Helge Deller" <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
  "Paul Walmsley" <pjw@kernel.org>, linux-riscv@lists.infradead.org,
  "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
  "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Message-Id: <3d7c3433-2325-4bb2-a8f6-ddd11c82f71d@app.fastmail.com>
-In-Reply-To: <20260410120319.723429844@kernel.org>
+Message-Id: <0166c8e1-b19a-44f8-aab6-f8f161c8542b@app.fastmail.com>
+In-Reply-To: <20260410120320.163559629@kernel.org>
 References: <20260410120044.031381086@kernel.org>
- <20260410120319.723429844@kernel.org>
-Subject: Re: [patch 32/38] powerpc/spufs: Use mftb() directly
+ <20260410120320.163559629@kernel.org>
+Subject: Re: [patch 38/38] treewide: Remove asm/timex.h includes from generic code
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 33D241A0004
-X-Stat-Signature: 86bphmsnbhgijjhdx7mhz9obfim3c7jz
+X-Stat-Signature: 6zfzbgbko634yaa699xtdwbjaq977cks
+X-Rspamd-Queue-Id: 4DFF420016
 X-Rspam-User: 
-X-HE-Tag: 1776091422-324040
-X-HE-Meta: U2FsdGVkX196pO/l/fPuYr5rqmXXjYIVG6vKtgsXQQxsF47W1fSiu85dHFv/YQoPp9nhqYZTr5HncBKVrxuZtuvh2b7GWL8vFUAGglM3yV6BkfC2eg+F6F23vRDR/P/xzawJ7euttZlUVJ2H+b6PcsBfR/Rp9p0o4YqjwS+inVgSLu/LLRmeU0iBaMVDV5zmY9rzqZsCO7cjjyCltJKJWQZuHA1mCHpFOoeShj+07238qLap+9LDi7AjZjLBxe8fNamxQnrANY9UOQHaHXbEhUGI620yLmRiU5xYL6O+Y70sV2o3AO/jIdeSAIhqhH2eQTPy1+ijlmiaL83qs3GpTSqpPxqMpJ3wq7VYQIe21wkIKRGFkHUDqOa90CNT4H7Vu3ewGfRQ2IquRJQrE8vA5Z7E5sVlkqjducYdO1daWqDP0TCvv96ocEg/4bOzBYCSE6ouvtYaBl1xRk2HoMBym+RaYCA1TNkOt1SlSYUZX8Sd1mQtlwfIgSX1i5isTmG3B6fbzaK0FGtjLUzws0mxcxfgsCJukoIW1KsxSYELgno/6FXJdawZZSKkjK2zVbaO8U04aElL/E2xWEWmRitcWF9xAjKMSEv2yRCIdOrkAHrWDictE1y8HAlljDKNIFqAHB9SdC7NADl0n+f4x0+drKZcbj+53ADRMVwAVBlveQ8dXocCSVyvdLfCg0eeZ3mywTZg+xg8nPWVP19pywEHV8GIuCtFDLS7seV/q+LvWgwcO9nJ5eanGMvbcDsmdZ1WFBBezcHwE5CHwDnj8t6Rh9eXBpmoCmT2aF8ztJPVrm1kIAJRVSWSzgC28WqSOA7d1k9ZvQCEuxQZ4GUXyQp51SNVu9+SOltaBwK377qJVe4akOB/Yv6/FjiLMMwWQvfTIGHWZDpwEG/aHB1vajErU0b6fV8z8THg/CyC9JBdy1x4kt+LEL/u0L0w46YwhqCSfnj2i9PRs5WX3I9vaAu
- usWnjXwu
- GybkZJ2Uq2PPs7HG65fft1tM687D4ZzPTRzFT9CFq2mU48X+Tqr1hTM5xYawuK3JOCbRyBXfvkyJORgrOJFFMTJ8uUV/bB9F4VUblKE8d2Pxdf67BS2HFevhkkNYHO4SMQYOWpwG27Fm17L1OqHhKCbNItDGHpI4Kag3bRlLu1By9be5oemLceUokvfEDlTI7Xu0tUMB+GKtSeCB8DAjUYNiPmJye8jIH8P/5jFakQo9BqVI9OoLI2DxPnNruy92MHKnNZiy56EZWFItLTc6HAVcq0kmyBxBbzMBux5YYKLF28ALCLRnEF12R2qta8iVXAnuZg98lr8pJksRotfT9waPCtI2uuVbUtPXBbLGGXy2mRUT1Xqln8UQrVjyO5c9PBQxC+Tgw53IEQv56AuSVzd5pWCbEaPbUmqyIXXfHXNVVIjl0W3s41IQucmz8RNc9RWcKNLL+NOYH7AkNooKusS7SUozPHTFFVrnfEVSoArmYeWg=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1776091525-350593
+X-HE-Meta: U2FsdGVkX1+G+XdT2anv2qT3kXtHn3Lk3ZJ+fFfTWVbqHXpuo/JkBDjKbkcx5+E4GLumrF9L+ryio17BKQ0u09T4P4gyHHgLQQLcHnnVkcR9T5InfNqC11eezLP7Yzs9eKRS/BhROjFltz4YjrL87Wv7JjKmoRKrzoEfCkKoHJlaj7XcXyeutDaYY9azI9xty0bi2sn43Zz+W+zaLdEpUgtSBT1AGghFowZ1/QezueTmApA21D0Ui7tB3XiqbUrdeVDtajIcAn3PnH6h0RABtVt/4Wl193QaD3rLltBzzfRElA/uS53LsJaPgw1sl6bns1aKCqsZf57TuyawRtDWidfw08bSJhIdO7JC68dKzn9QB1SMOFAC7fLUMHYCPXrMe4xLYLoiejbrFaImkOSSTPWgsEE21qJVIdGzGfD8tRTFBoKUukIm+ABx0BXzlGReYdEV1s0nAv3juw49100jz6N0WbLlnMSQj3FnPz3ZT0YKltTtzpbUNJc6p8GLBNxsJ0sunSsVGTI/lYGZGuAd6zj933T4CrGQ3eyF47sC0iP0Oj9ttV3WVf3ab/9XkVjqjM/i5c6n8Eo1po0ww/2/ie0QD12jNi4Bkpe+uQoTzpGXG5UQNsvTA5aTmdaJ86sIY/O/9R2K8E1zM8LpnD0vMkXWOcK/pci/tPINC5onUgIbRiuwE4CK2ENBSol83emvWdkgU/sdu86MfMxTArJPZnah+sCmPiBBzilTvK2NHcwOJKNImKPuA/vgWtPpS01SIQXPZIdkXPWktFNnFDhJRCQTB9Ox/sZWtfVLAp05lR0nyz1+vdzR3EmIQXQpfvz+7QABpuWkZoppj9S4D8EFxVXRMTkBQal1ofp2p5NIPEoRJdYXSPGddgkWZiw9zhg7RM6OiwAqRfGwIt2WJCpfRvZz+58LrGYUOmhrYHaxTzvTQesIjdCc/1OsgY/JJ5/owgkVVvq+t89xvRpiJwB
+ NsURSwBL
+ dKo9KAErsGV6rm+StZMw87oSjGiKzwOvJZ2BntMPmjTd25wtnVGFclu9qd/Vk+AxmGFWT4Y5xImFCVbUJcysaN6zx4oFTAzTfoPNzYCMYYY4iiRx7iXepQAuBfgVQx2uvW3cbvyWD4rcsfygJFVI1OuBOrB0V9vAEGxEqeJKPSGIHSZFMBMNdLIe2Id+QUJU6t8fJN/cu6tyiEDL5mF7GRYbrK4oD9k2Cpvc9kFaBU9ZNxPg/DS29WfEj8QzVK0ZLZuObQY/Bz3wtYIWD7i64gNMCewJBjTVVZqlWbw75P8oe3c94YE3V+fEXo+YNvlHXD58DBT3bvRbrsl2do6zXkHWmFHoT2a1mhKFZSV5KiDu6kpw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,14 +164,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, Apr 10, 2026, at 14:21, Thomas Gleixner wrote:
-> There is no reason to indirect via get_cycles(), which is about to be
-> removed.
+> asm/timex.h does not provide any functionality for non-architecture code
+> anymore.
 >
-> Use mftb() directly.
+> Remove the asm-generic fallback and all references in include and source
+> files along with the random_get_entropy() #ifdeffery in timex.h.
 >
 > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linuxppc-dev@lists.ozlabs.org
+> ---
+>  include/asm-generic/Kbuild  |    1 -
+>  include/asm-generic/timex.h |   15 ---------------
+>  include/linux/random.h      |    3 +++
+>  include/linux/timex.h       |   26 --------------------------
 
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 
