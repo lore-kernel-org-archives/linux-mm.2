@@ -4,103 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BEB9EBFD2C
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 09:50:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 567D8EBFD30
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:01:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAD906B0089; Mon, 13 Apr 2026 05:50:18 -0400 (EDT)
+	id 7ED606B0089; Mon, 13 Apr 2026 06:01:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5E7B6B008A; Mon, 13 Apr 2026 05:50:18 -0400 (EDT)
+	id 79E856B008A; Mon, 13 Apr 2026 06:01:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A74916B0092; Mon, 13 Apr 2026 05:50:18 -0400 (EDT)
+	id 6DBA36B0092; Mon, 13 Apr 2026 06:01:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A90D6B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 05:50:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 45091E028F
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:50:18 +0000 (UTC)
-X-FDA: 84653062116.19.F842F49
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4ED40140002
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:50:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gpzednZO;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776073816; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EF216B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:01:20 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD6A086125
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:01:19 +0000 (UTC)
+X-FDA: 84653089878.18.D95A6AF
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 911651C000A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:01:17 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="Jf/daWju";
+	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776074478; a=rsa-sha256;
 	cv=none;
-	b=LpJf8aercITkr8eSHPmQi42GU+ANNdzR0PXvLpTKOpL7m0qExV+dRzCFNYXR9NCyrObuXJ
-	GsRZMxBA5fdnqwGBIq7GBCDQk6z6rC9AOOSkC+xfu6tiI7htPvvIv8TksoVmogvMhrWI2w
-	y95XVMzrKCcJNRlgSyltNk2gSSuIUO0=
+	b=gAh8/sSy8rMQnSsrDs1LK0JE6L0w/Cfy09ylHAuAgZo414AvMsSuFDDZNE7p3YmfdxHToX
+	lzsYLJ7rtMAB7+hsExcpvKrgzhRsoJkvkS7Ze6mGMHS8pL3wobezgvbbwFyea2fznwf7LN
+	JGXnJRaMKlqx+i0z4IsLHdAnFiEKsTA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776073816;
+	s=arc-20220608; t=1776074478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QPYOp4SQxJnwqDa7dtThbAGyQONRoG1+/Tuu6VpyDD4=;
-	b=q97WLqc1mzMMagTZyjYQdmI9GT/0E2XoQkzK8gtjn5A1uHlq1XTD5wpekI5XHwZuVpVa8W
-	9HE89IgQSK8JwJC4nLvpzidl6f8QhWj9Zf8K8PpuFSCZMGz9qeUmlUW+l3sc/N2c8J2axq
-	OCF3B65U5zZipXuUaT/Sil5Wu63gT4Q=
+	bh=VfA8RhsAOysYjLUfYem1mhkUwG7Eg8LbTrkQ0B9ZA5I=;
+	b=idBHB4BiichZ2tY9t+7MSQ3d0Lcml9tJx4Mqt54B4kj14RvXQ+zTC+Y7/A/H90vQm/uyMV
+	roN6uK1LgrM9VSR74rjxw+AW8/b+cOyexs09NHDqiQXaySYT0HLzdEcApeWiNy42lmRQlD
+	vulWYmHoNPacEogtM+Ur8fVAF288DHE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gpzednZO;
-	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776073813;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QPYOp4SQxJnwqDa7dtThbAGyQONRoG1+/Tuu6VpyDD4=;
-	b=gpzednZOE7T4VRbmaNwl/0LR5EKOY7DV6qB8eeeTSzNFlQ8kEWHKOXH1Ftf8s64zXzdrEW
-	GG1v4unDi5PvSisJIE+sPNXmm7uXoyv7CY5HGJ5qRQYR0917YaeGHqzhFRFwHqRWrNXpWL
-	J7ZXICa5XaP1N13mEBFAZZS+be30RtE=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH 01/49] mm/sparse: fix vmemmap accounting imbalance on
- memory hotplug error
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <ady40BWw5WgQHf3z@kernel.org>
-Date: Mon, 13 Apr 2026 17:49:17 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="Jf/daWju";
+	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D15DD2BC3;
+	Mon, 13 Apr 2026 03:01:10 -0700 (PDT)
+Received: from [10.57.62.88] (unknown [10.57.62.88])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 437D63F93E;
+	Mon, 13 Apr 2026 03:01:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776074476; bh=VfA8RhsAOysYjLUfYem1mhkUwG7Eg8LbTrkQ0B9ZA5I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Jf/daWjupLaPbtHP/9QPzRRQx2LsU2h0EnB1m1NdswrK+Tj1s1zcYjBVTmPki3tdM
+	 7gY2Gvut4emf1ojyvOanZa1i2jfuUo7ky4CBaE6ouf8gmcuLIGCZjQ2pU3LyrFgzxD
+	 XG+KcXKif5eeNFnVo6KqtPcCuD7ql63VM3m8z5HY=
+Message-ID: <4ac1d020-9aec-4584-a75c-225c6166c253@arm.com>
+Date: Mon, 13 Apr 2026 12:01:11 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <35454ADD-C983-4577-997E-884266C56FB6@linux.dev>
-References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-2-songmuchun@bytedance.com>
- <ady1LQMN1xhPGcuT@kernel.org> <ady40BWw5WgQHf3z@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1774420056.git.agordeev@linux.ibm.com>
+ <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
+ <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
+ <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
+ <c27cad07-bba4-472d-8853-fc6fc55e951f@arm.com>
+ <630ce949-2f9c-43ce-9641-b9a4dc729323-agordeev@linux.ibm.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <630ce949-2f9c-43ce-9641-b9a4dc729323-agordeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4ED40140002
-X-Stat-Signature: mo9qhpnddqszqdcc3urizj8exgispkay
-X-HE-Tag: 1776073816-345925
-X-HE-Meta: U2FsdGVkX189ZnF/E3qCQmgIIifpM8DBkrQINGkA9erQoovawfQw7kiY43ZPqHDhyyt+R8Aacn7eQ5xlMhBy4LDMbpMDO4I5Flude9VGSlZab6K521ZPgMPOb1PL/MSdXgZ6R+sCkoSCwuLJdUGm6GMgQqpBjWdXt1JqAM7dEj50W01htfdmptSBMsd81o16STmT33TFQvTPrI3V3Ag234io1EapLdo0CAO3XmXm2sA/plffZyz3rTzMFpWuTzKiGu7zAFvgLMT5Oj2hoqZR2xQcR5Uynm0xaK/m72cbi5hKtose+I7XFjO5EYlY4uBvO/MzTSHnc40YYkPcy57iUGeviKzI5DSaXLcPTCb7rGLaALt1zCIwMLEbaYe4IVqz4cdRruFw6tBegAAcYtTKKO/1KGVDM4EyOtq1egyMn6//9qf19+aPx/kViR3er0hG5zbrTHLf3v2dYdXZAZvnirspvb+V5sWzsuClNC4k6R1OTXspEnMMOqQTvCVRzrO+4+VJ5ibz3blophnH/EeMVixmoKxwvrr04CCWMcHDjpdjZWIdN/sfj3q7pKwK3sghC800P9l+hxiv0GYDlYtBdMFWxRNFL16yVF+sFqRvhnJtwtxAIX7wuoc31cGrHXWfxMlwMC/NcYK3AhGHLTtxTNsPyRNe6FeLC4Fkm94eplPnkTLO1Pxjbz1Q52+6Afc39thY9sYb0hDqjCrBHrhHUKP5eeYY7NFYVLjdszBMPLpJ9W2QrvXWldNcA1TuN4e4eRb0Z1QaxdqegLtKolaGogtSpT2ZGletCo7YmmRUPjb9Ow19af+tIOFV/B18bn3MQLpkbDiXhWt0mIi0cvnC5Vbj/oL0nHUfWi2k54Wsim1k810oh236+nFRk1HVrNvNTOuK9IouBBIzGmT1H2Ll6N/lPMns4aFt0EfKH0aMIH6AQc9BCkH3pcYOy2aUHYiA8ktaM27rxJP37/JGIpu
- vBlZgGsc
- 3LiizdyLMDG4ZbwNcJkErlLBNMILs3VzaC1Ju2aPfdI+zKIQtHMbqu7pULIOhh8W7Y2UtNiFu4Mx6kJ8vEKd0X9cdLJedDW66DFhjpG5CJXEc1ReFOo6VdSkTEogJV1eClKtYBZH0aH3rzzxrYjhDNZL0PfGeXFIUEDGuN5x383prn5iqzuDbZd60r76n/1snSwZTDEbdeEvnot0tuwYk0XHnCtzHwtpljAwO7X0mKMWXnRBcSLR/425czy6vcVXE6LFe5hNX/yUWR3LG2a6VFTieEw==
+X-Rspamd-Queue-Id: 911651C000A
+X-Stat-Signature: qku7bxo7tqwabftfaee9b95wpdymqidh
+X-HE-Tag: 1776074477-139961
+X-HE-Meta: U2FsdGVkX18KyLqOyVlpJe+ABxh4DHnyIdtr8e/gVz/XHY5a7fVvHuxL1tNZ0bqgrdh18SRX7iV3+1BsMrJhDOAt/e0VO11TdNkVichV1CgqTUudRmTB7vuIocfQNFlAJIjxxZU5C/SZmy2UFcGA0QeQeKLRk77XXbAfC7DrtL1SSzWZ/s4MmBGJfO9ow6Rpb9dZobP6P/JH7DgViRE3BLy0zHjytBgNRiZvQdvuscDMe/eqv3ljMdMM8EohisQGd/9rgsmc3fv98S1vsoX35tiDXH/p7G1FZdvbhueZHcvmY2+IPRPcVnzxTdZY5+XdGOi9LMYvMvQ/rs4pwBud+Ykv13xmyfG4H4zT/2GMQnPrxJhQGi6yYxa82DcBE06j/YKER/+8Bzeyk5mIQvMzpvRuLn51ul1YrcFhXs+a4lneZbEGpyoqBPQw+EKVxgDsRk/Lnb+a1NwA+YnH40jYTWZ/lbVi22OSGIREbzB0IjqvQRof9aDG/OEIOw09aMwN8k6lw7EaD/COK2Rv2P0FTmPNVlt2EHyygA0XI+L4dvr0EXAp10HhOAZnIHhh9hvj1HH9J7ZpPwjL4M0/sUfDvC/l8HFbo2S/MliV8K5daO/6BBNwrVS/QmweqLmQfxCSM1k9OQQttoJGCWT51wu+CpAtKke5fq0FfJkAgk7d3m7U7y37ZiNJPj6YnddpSa5tSODioI7NVrRfv7o7GEZGN2G7qT1/avDm+efaJjTOIJ/ZXmHsg+vrETWGlx0SDllJW8kw2k/tH6tfP6MrQ/6YtoD2WPnomJUL57UhycaQpqW3Yatn0T+edAHz7n0n4TtyGLIOAa6efu5CZEdcq1ZXIJou5V+rllzU1AoV5gcaOgRR1+YGV9GzjMFQPuxERVp48+OfelpKSmZoR7y+hCLMr1Ze4b4s5CF7AIoTvnTKl/+cH/kG31mo5Lcvcq4dEc6ALemZKIWQEYkC48B0Oaf
+ +b+S4cI1
+ IMnOVOVuepcBITc7mciaWtkGfY6XdUBYnPvhiFAnOdtnIfBDOjSvY7nJQ+VoQjkQEnK5zZZ7vkLlvXTdWAO1JxRAvXkZta+DUWPNavfWs+xNwexMNxAuM6LQtYqdjluozJrXM5/PfCSCgTGDRcXsvSCKwkTRStPSkTT5zaKGF/39sSsJqSsLPg3Jx+UGBL24XuNw4X9n0vjJNRvQWzFfRqV+zPD2TXoLFKm3y/bw8LL8rDTs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,104 +100,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 11/04/2026 11:31, Alexander Gordeev wrote:
+> On Tue, Mar 31, 2026 at 04:15:23PM +0200, Kevin Brodsky wrote:
+>> On 25/03/2026 17:20, Alexander Gordeev wrote:
+>>> On Wed, Mar 25, 2026 at 10:55:23AM +0100, David Hildenbrand (Arm) wrote:
+>>>
+>>> Hi David,
+>>>
+>>>>> +/**
+>>>>> + * lazy_mmu_mode_enable_pte() - Enable the lazy MMU mode with parameters
+>>>> You have to be a lot clearer about implications. For example, what
+>>>> happens if we would bail out and not process all ptes? What are the
+>>>> exact semantics.
+>>> The only implication is "only this address/PTE range could be updated
+>>> and that range may span one page table at most".
+>>>
+>>> Whether all or portion of PTEs were actually updated is not defined,
+>>> just like in case of lazy_mmu_mode_enable_pte().
+>>>
+>>> Makes sense?
+>> I also feel that the comment needs to be much more specific. From a
+>> brief glance at patch 2, it seems that __ipte_batch_set_pte() assumes
+>> that all PTEs processed after this function is called are contiguous.
+> No, this is actually not the case. __ipte_batch_set_pte() just sets
+> ceilings for later processing. The PTEs within the range could be
+> updated in any order and not necessarily all of them.
 
+Fair enough, I suppose what I tried to say is that all PTEs must be in a
+certain range :)
 
-> On Apr 13, 2026, at 17:35, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> On Mon, Apr 13, 2026 at 12:19:50PM +0300, Mike Rapoport wrote:
->> On Sun, Apr 05, 2026 at 08:51:52PM +0800, Muchun Song wrote:
->>> In section_activate(), if populate_section_memmap() fails, the error
->>> handling path calls section_deactivate() to roll back the state. =
-This
->>> approach introduces an accounting imbalance.
->>>=20
->>> Since the commit c3576889d87b ("mm: fix accounting of memmap =
-pages"),
->>> memmap pages are accounted for only after populate_section_memmap()
->>> succeeds. However, section_deactivate() unconditionally decrements =
-the
->>> vmemmap account. Consequently, a failure in =
-populate_section_memmap()
->>> leads to a negative offset (underflow) in the system's vmemmap =
-tracking.
->>>=20
->>> We can fix this by ensuring that the vmemmap accounting is =
-incremented
->>> immediately before checking for the success of =
-populate_section_memmap().
->>> If populate_section_memmap() fails, the subsequent call to
->>> section_deactivate() will decrement the accounting, perfectly =
-offsetting
->>> the increment and maintaining balance.
->>>=20
->>> Fixes: c3576889d87b ("mm: fix accounting of memmap pages")
->>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>> ---
->>> mm/sparse-vmemmap.c | 2 +-
->>> 1 file changed, 1 insertion(+), 1 deletion(-)
->>>=20
->>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->>> index 6eadb9d116e4..ee27d0c0efe2 100644
->>> --- a/mm/sparse-vmemmap.c
->>> +++ b/mm/sparse-vmemmap.c
->>> @@ -822,11 +822,11 @@ static struct page * __meminit =
-section_activate(int nid, unsigned long pfn,
->>> return pfn_to_page(pfn);
->>>=20
->>> memmap =3D populate_section_memmap(pfn, nr_pages, nid, altmap, =
-pgmap);
->>> + memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), =
-PAGE_SIZE));
->>=20
->> This logically belongs to success path in populate_section_memmap(). =
-If we
->> update the counter there, we won't need to temporarily increase it at =
-all.
->=20
-> Not strictly related to this patchset, but it seems, we can have a =
-single
-> memmap_boot_pages_add() in memmap_alloc() rather than to update the =
-counter
-> in memmap_alloc() callers.
+>> This should be documented.
+> Will do.
+>
+>>> I will also change arch_enter_lazy_mmu_mode_pte() to
+>>> arch_enter_lazy_mmu_mode_for_pte_range() then.
+>> Makes sense. The interface looks reasonable to me with this new name.
+>>
+>> One more comment though: in previous discussions you mentioned the need
+>> for arch_{pause,resume} hooks, is that no longer necessary simply
+>> because {pause,resume} are not used on the paths where you make use of
+>> the new enable function?
+> Yes. I did implement arch_pause|resume_lazy_mmu_mode() for a custom
+> KASAN sanitizer to catch direct PTE dereferences - ones that bypass
+> ptep_get()/set_pte() in lazy mode.
 
-It will indeed become simpler and is a good cleanup direction, but there
-is a slight change in semantics: the page tables used for vmemmap page
-mapping will also be counted in memmap_boot_pages_add(). This might not
-be an issue (after all, the size of the page tables is very small =
-compared
-to struct pages, right?).
+That sounds pretty useful!
 
-Additionally, I still lean toward making no changes to this patch, =
-because
-this is a pure bugfix patch =E2=80=94 of course, it is meant to =
-facilitate backporting
-for those who need it. The cleanup would involve many more changes, so I
-prefer to do that in a separate patch. What do you think?
+> But that code is not upstreamed and therefore there is no need to
+> introduce the hooks just right now.
 
-Thanks,
-Muchun.
+Ack that makes sense.
 
->=20
->>> if (!memmap) {
->>> section_deactivate(pfn, nr_pages, altmap);
->>> return ERR_PTR(-ENOMEM);
->>> }
->>> - memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), =
-PAGE_SIZE));
->>>=20
->>> return memmap;
->>> }
->>> --=20
->>> 2.20.1
->>>=20
->>=20
->> --=20
->> Sincerely yours,
->> Mike.
->=20
-> --=20
-> Sincerely yours,
-> Mike.
+>> - Kevin
+> Thanks for the review, Kevin!
 
+No problem :)
 
+- Kevin
 
