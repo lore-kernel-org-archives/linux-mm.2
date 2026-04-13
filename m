@@ -4,66 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36CB6EBFD26
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:19:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 575F4EBFD2F
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:22:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F3416B0089; Mon, 13 Apr 2026 06:19:07 -0400 (EDT)
+	id 946AF6B0089; Mon, 13 Apr 2026 06:21:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CB1E6B008A; Mon, 13 Apr 2026 06:19:07 -0400 (EDT)
+	id 91DDC6B008A; Mon, 13 Apr 2026 06:21:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 807AC6B0092; Mon, 13 Apr 2026 06:19:07 -0400 (EDT)
+	id 85A896B0092; Mon, 13 Apr 2026 06:21:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BD0D6B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:19:07 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 124E01B5248
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:19:07 +0000 (UTC)
-X-FDA: 84653134734.29.49C0A25
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6435C40003
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:19:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RZjt1T1k;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 77FF56B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:21:59 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21EAB1B5D07
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:21:59 +0000 (UTC)
+X-FDA: 84653141958.06.61C22DD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 809201A0006
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:21:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=stEoYb+n;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776075545; a=rsa-sha256;
-	cv=none;
-	b=eqmHkQ5O9T/M3RojKsuB+bPmISWU4dtqVspVWF+vXa7lVDXuigA0wT7oCHvpPkCYKaPuLO
-	IHjOEaMOOCz63/aIGfZInPKlNR+cb9D+673dQuEtOvP6YLFegRG2gjHoUiFci1xX0BJXZo
-	7sumNL9R0Wga6rhJs2sTKtjvoZQWgDk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776075545;
+	s=arc-20220608; t=1776075717;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hjnIqVm2L01lbFxcE0NNWqMouKri+s7fTQbka8x8kdU=;
-	b=Lxmltp+PCpEMdmwCKAPvV2Lsz9AChZA9S2GqBgSarTOvxwAul5CJE6URXMB6sYIrzMHq2t
-	ZBlSTqLopUmJyHDTonbzD/ZFsW2DZDxngQx3vhKxqUt2LbTt6XjW7uXrd3D1Ow1Co+MgWy
-	tsyqrezM/C6huJH9dlr/x4xbyHHEIYs=
+	bh=VREiXEs7J61psqgKlH8svbUoA6MxSMPQI4hSNms/WbA=;
+	b=qpO8SSMVrIGGmmWBXGkIZXoLiEmTcmozIR1+ygzauAFTgdgDK709xDOyfVkw7RuzoJXcXg
+	LIpWaz3pm+dXAPvQBMSMdMKfYgmHwcI/+h2Ofz7INMzoRaG9j7ZVEHGCGQhM8RwP/mnY7X
+	97Bb8wFYncx9WTo+BDdjGI7zneU2VQY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776075717; a=rsa-sha256;
+	cv=none;
+	b=faRL1uCxJuZmksgnmCU0DrqUBNRT5C6AVVHJASiv7zAA0FX6AMwY7QQmOQPUB49D9aVHv3
+	wBxKAMEkO6r+p/J5dd/ibHJKZmpfK9i8cF50//Hou40+viTM3oQ8TeG0NIodkLEk7ZzoBT
+	UVdWrZDzvY1uAcld5oJV+6aKpxcfNzw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RZjt1T1k;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=stEoYb+n;
+	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1AB7341908;
-	Mon, 13 Apr 2026 10:19:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0C2C116C6;
-	Mon, 13 Apr 2026 10:18:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DC03E6132E;
+	Mon, 13 Apr 2026 10:21:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E54CC116C6;
+	Mon, 13 Apr 2026 10:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776075544;
-	bh=BWbYD3cLb+vBXi+E7k34tpbxGLI+DgWOQtcD0coM1VQ=;
+	s=k20201202; t=1776075716;
+	bh=t+dMFyBnXAkPlXEggFipn30qdiXeTcuiAqliSpvpdMs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RZjt1T1krDt5iioNTVtJGx4LmUIpyTNvmoYHiFixtdCjPwa3UPk7DDZDSmDYnKuqr
-	 cJQC1acBh7in32jRT4qAQ06pQE+10fdLYc6VF2eefckvu7fzC0lkArVBanSBgbUj1+
-	 c4IDPI4uzNb1U+mzJvEMdWpvjzYS9gnVlvcNy0ZVF4Oe+KMfnaDxKORrA4ntlbeb0d
-	 UXXNbuPbDhauWFRyYv1e/4gSVJwagVZzoc/dPBmCee7ayt90KKPOyYCLupWy048Tgy
-	 eh6HbdG8ZqJC0lGKH3I6S4/3Bhu5g4mT2OhkxLVh1h54+eT4r1GYVndetFJwargjny
-	 KDoz7zWhRPr7w==
-Date: Mon, 13 Apr 2026 13:18:53 +0300
+	b=stEoYb+ns0AufBnsVRibEZHRF1EpC6N/W7KCj9Z7vEZGK6qTm1KeoNA9LroQFrLwL
+	 eZXvB8UGLYyyKvwZRqWEWZO7I39CuclOa+F2Z3ZZb62XMpRjdQKiOGdgr2I+aQ+8Tz
+	 PtzdVrZC3ACBktoVFrbwfurITtplb/YaoiRbLujic6xsOTI6RRzpEVg3BW6xoU+qEw
+	 JaA5CvnTU5i5MB/q8ytuYxeDa9JDwrazcefDQZY7u7vrssw8+4B9IFBuWw3Y71bGc9
+	 8fGwKB+2BosXWU5bieq0x2PyRd8HsyGxGBw0iVkt17aSMzJatUWQOjY0ySFHr1Eazr
+	 cEny9gWhmS2AQ==
+Date: Mon, 13 Apr 2026 13:21:45 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Donet Tom <donettom@linux.ibm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -81,23 +82,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 07/53] selftests/mm: hugetlb-shm: use kselftest framework
-Message-ID: <adzDDS1C3Dc81sk0@kernel.org>
+Subject: Re: [PATCH 05/53] selftests/mm: merge map_hugetlb into hugepage-mmap
+Message-ID: <adzDuePx9lNthity@kernel.org>
 References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-8-rppt@kernel.org>
- <eb94ebf2-cc19-4a1b-962a-98346d7b7b6c@linux.ibm.com>
+ <20260406141735.2179309-6-rppt@kernel.org>
+ <4e364241-aec6-4d28-a878-4fe25f5fcf44@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <eb94ebf2-cc19-4a1b-962a-98346d7b7b6c@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4e364241-aec6-4d28-a878-4fe25f5fcf44@linux.ibm.com>
+X-Rspamd-Queue-Id: 809201A0006
+X-Stat-Signature: a3q8driawro56dsboi4og71cq97ncqyd
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6435C40003
-X-Stat-Signature: juia7x1j5onqi4kjqrqrtsrojqaz8tci
-X-HE-Tag: 1776075545-855839
-X-HE-Meta: U2FsdGVkX18mmn6/3maxxG+m0ojLb0LVas6REPsv9cxprzqHhD7f4wr88OnY3VIvUKE5Ln3DmrawPf/21wnRjcVYgYlit7BRtAZjHf6pl+iA5dz31p1sX9rfcT05xp8fRYA8R+CgLhJ3g97BQth10MNvkl0NAOpE93viF+sgddHn3Mq7S/e2avHu7bjsE1To3eNJjTd5OuSyp3O9rkeX03mi+PzPEMFqtKCBtfXzNUlUag/rGME3940I6i9O2kIRcEPQ0JcfiJAuwyJhGw26Or6s+k7JpxBEl0scZa7vbh98sblysyc+ayiVqn36lP5F8fZjJAOaJk6MheCHsK4vuSbHZj2MFKTBcGBX17sxLaYOUJrc7atdxLVREZ76r/RVu559e/KD/m8dFPzej0xUyLChsy839FO7+gWackt9XCfJsuV+r9JqDvLdCxP81LQgAqc029zZIqIuO08gzbIZvIyQbiq8bbiGTG9m9CKVYTWE1Zc28Ji5GgCr0h/RXES8K/BHt2M0NCWaFdt5bH+11hOdGtdjF55ac+j+m53wJykZoXvOCZ+fdwNa0cXKEuODDyiGG3pzCO+ic/SWpHh0B7RHD17eOaHefdySapM/6d2yTRswt5IP4ZO0206qlpbFV0ZAoDp8DwD6SV74taCtFrjAAOJT3nxb237xDxXnuTPWi0J/kZpYQdZGyX1nD5/iHALmJDBV230sY/+xIMBfD/yoUOVTWAM+lDxFrt3NqJt4bNREi5PVOsh1tnOnKORs5dnaEQhcLEvEDxt9e1AeBv+BnSEo7oX4be20i0w1tSyjQBQUdYVnX93kihORhWMvejxDZIcMLPlIe3HYwHnSXSH89vn6FaRvgDr6o7hINYiGmTvsSUYsOK9GgL+vDLvLoQEAn3iKZpZPxHA79o0g1hFnEHNnns3fwsix586AHE/UGfQd8YbbP+VKC2xEkK3v26PXFBAr+Ek4z+RoBWJ
- Z3BY/Dtl
- o02Vonc17bw3L2TZVJIhmnd00nB37Iu2lloSnoyM/YkJlECMy9P3to+3iY6tMq6Hr1A5p/F24wp22xLwjJCN+E0Tusv75cph7UiVGsxBVeDNQrlq025EH++blIcu9vRcVYe6Cd8FxeBE6Qu6gVNb9AM3tCgmEvm2QxfLPh/eXAqwPiPW+aw8e1uflxPYAY9/OeWYoPkh4BYAjNtA+EASklFk78yQusnFOHSj2+wvml/oDfcq5O3I06E/Do+l0Hh4+cZ3l00Ywa2dbN3Q9rlNI5zqaE69QjuD8wyBZ5XS6lHefbQQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776075717-649668
+X-HE-Meta: U2FsdGVkX184WUMg7nrCsxSevvkep8/+WxOa+Wi2ljQ7g1PubPllrjgtu30UOjRrGeycEa2M4xWQh6Ya29OKqVO2BqSv3E/h4UZO492AhRShHuNtUtburIv6+hKL0JwJDwmK0edX4CEXFhYKHSTJZijkahoRuiSfp3VYMnnTieD+blsOeePE0LRemMExFNZyhdnmkGTjAsuL2EZLqTi0mUMr4kODdYcmsUvCkdwtcANKAUZRu47jWxlVlIaIyFtC7OCXCSvV3HmJSAwaTRMkZxM3xIxZugXN7+yiuf+xtPh9I/Obo8tJKZ0U6GptEgr7Tvru1vg1x5Wjwc8ZAPjvbWxi7yeAcZXpk8uLCLlDWit1gNM3hvDCc886kmr0MHTvTMimnaMjUG5LyQA4Rs9fWpzIlT3NJzCpY5bV7o1G+Zxa42grY7KH2kzLCUdh6j6FhAw+fgLgDBciHJznDmE9ry56JwJw4CfRrlTsL0B8/Z9qaQBtXzjDTw6EfKJaYK4vEVcEOcsS8zanp/4A2TJsZaogjB0BmKrhLfOxqH7mwvsWR1PAwVvJlPFlTqnJCt+ZMSD6JF82sgMXy3VDImwfx0X2MsDqGYBrkToTJ0jv7atmkfOPR2iPjPvkMBQLawdnmzAmHY6i5ltJSetXL6bIzvSNQvrDFPqe5LogR1IcBMyMoObw/EiW2wBPxv17KPVKrU65O+74xaSGVjrvvmFTkxYXS1Z84Z6TCquHaBk6uxJ04VbCMOny4lsYSbQckOVu86dJQxtlQsRqlW7rZcXmHWjItDjJ7hP7H+cnGQyKlFnKG7H8UAEaiwaZpDydzH5czAOrw03t7jNnGboC0myeTmUrQ/fuvxbrPHolKRHUD+5zLHeTPLw5RA7KmekPKFr4WsGa90Z05LHugnW7nmvGiM0O5fIusRlppZRmdINgPw1EDUi13v8bWHlNjW2T3b9mym69sgOieRaQua7ls3E
+ 67It0TDv
+ YZlXliXS87EWDV3UcLxE6ZH3zYQlsg+SqbwubljtU0c7TLV0Pg1qQGbGLzTXUu5WvZh95neRl2BBqazozo11XeeVCcw/pq6uOhpOfp5uULYh41QIYmpjHezHsI2VBQKgL0JY1+GxhaA+idylxyqdPsZ0MSbx/Nt3VxmM0mpnmdGCKH/HyuHDHu2SGbw1GUyyTPQ83rhDCAZEwzbyeO/IdjKpYAmEFdxxx7vzOQn0sUvh0YSBRoWAAVQQFRxS6hZACH3ZyjiOzOEl6O719abAz3PvGXysWyK9a8vNUZ7hqYRWi9h8M+Tm9fKzBRjyjI4c9N4Qb/6C6dnYsh6TFUT/5HE9d7pdh1TkkC+bu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,51 +109,45 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi,
 
-On Thu, Apr 09, 2026 at 03:19:45PM +0530, Donet Tom wrote:
+On Thu, Apr 09, 2026 at 09:35:39PM +0530, Donet Tom wrote:
 > Hi Mike
 > 
 > On 4/6/26 7:46 PM, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > Convert hugetlb-shm test to use kselftest framework for reporting and
-> > tracking successful and failing runs.
-> > 
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >   tools/testing/selftests/mm/hugetlb-shm.c | 46 ++++++++++++------------
-> >   1 file changed, 23 insertions(+), 23 deletions(-)
+> 
+>     From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+>     Both tests create a hugettlb mapping, fill it with data and verify the
+>     data, the only difference is that one uses file-backed memory and another
+>     one uses anonymous memory.
+> 
+>     Merge both tests into a single file.
+> 
+>     Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>     ---
+>      tools/testing/selftests/mm/Makefile        |   1 -
+>      tools/testing/selftests/mm/hugepage-mmap.c | 113 ++++++++++++++++-----
+>      tools/testing/selftests/mm/map_hugetlb.c   |  88 ----------------
+>      tools/testing/selftests/mm/run_vmtests.sh  |   1 -
+>      4 files changed, 86 insertions(+), 117 deletions(-)
+>      delete mode 100644 tools/testing/selftests/mm/map_hugetlb.c
 
 ...
- 
-> > -	dprintf("\n");
-> > -	dprintf("Starting the Check...");
-> > +	ksft_print_msg("Starting the Check...");
-> 
-> 
-> Do we need to add a newline (\n) here? The output is currently printed as:
-> # Starting the Check...# Done.
-> If this is intentional, please ignore this comment. Otherwise, it looks good
-> to me.
- 
-The original would print
 
-# Starting the Check...Done
-
-I don't think the extra # is important enough to change something here.
+> It looks like mmap_flags and fd are not used in this function.
+> 
+>     +                     const char *test_name)
+>      {
+>     +       int flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB;
+> 
+> 
+> The same flags are being used for both file  and anonymous tests . It seems
+> that test_file_mmap may be broken.
  
-> ./hugetlb-shm
-> TAP version 13
-> 1..1
-> # shmid: 0x1
-> # shmaddr: 0x7ffface00000
-> # Starting the writes:
-> # Starting the Check...# Done.
-> ok 1 hugepage using SysV shmget/shmat
-> # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+Thanks for catching this. Will fix in the next version.  
+ 
+>             void *addr;
+>     -       int fd, ret;
 > 
-> Reviewed by: Donet Tom <donettom@linux.ibm.com>
-> 
-> -Donet
 
 -- 
 Sincerely yours,
