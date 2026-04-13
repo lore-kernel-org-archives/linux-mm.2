@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B26F34C60
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 832A0F34C5E
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:18:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B7036B0089; Mon, 13 Apr 2026 11:12:18 -0400 (EDT)
+	id A3F636B0089; Mon, 13 Apr 2026 11:18:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 468586B008A; Mon, 13 Apr 2026 11:12:18 -0400 (EDT)
+	id A162E6B008A; Mon, 13 Apr 2026 11:18:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 357036B0092; Mon, 13 Apr 2026 11:12:18 -0400 (EDT)
+	id 92CBC6B0092; Mon, 13 Apr 2026 11:18:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2110C6B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:12:18 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C5F991601E1
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:12:17 +0000 (UTC)
-X-FDA: 84653873514.27.750F971
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 806606B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:18:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 315BF1B6D12
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:18:32 +0000 (UTC)
+X-FDA: 84653889264.22.8896727
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 07E06C0007
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:12:15 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oYSebltY;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 70E5BC0015
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:18:30 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K1qPaqfk;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776093136;
+	s=arc-20220608; t=1776093510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kw1J9tQzvYhHyVklHcJ5THVz2nolaxEsZ7r+PvGkuxc=;
-	b=ICLfM4q8Rjc5CAsIDTwQVnmLM0UTVNWvZf5U+5s9uMWavtlPwd4J3h9sKdu2CxmnligMQj
-	rHzFRWlFFZzT8MwEbLjctiefQnCk/GxGpKpiFaIf/r7FSjJLpvoIvIoU6Zzl6CMsrM0ITI
-	SjDm4lafgDx8MQH10ycZ4dtXyRxpJhs=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oYSebltY;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776093136; a=rsa-sha256;
+	bh=sfeqFBkr2AFRdtcWRkVRRQgW4G9APabfJPXfurb8amI=;
+	b=pCsTXvhBXF8L2d12ZyxGFa8MyZM0iljgmHCQLFOS0a+C/sKFfeWaeFOemKUvTPRyarEE9J
+	bWCaOQump/7+9p+SIngBVQvv4iUoGdhcXE7Dsma9Xf2EwlBTa2VadJZsJ1RLuN2EJUIU8T
+	2TR19r1L/4EPmDeoaw5c8WsfNnlr1Rg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776093510; a=rsa-sha256;
 	cv=none;
-	b=wKtoJobtvWeA8NOpsQEQagYKFY+NTojB/LYXHF3zRx5/23xtkIXXZ3xWxf0xo13aCl8fKH
-	pm2+NmPioSYEnb9/RNmulv6WFJjtKuCmEkZx+MiIN7Ktes9G4j4KKCnDW7KDfJmRdVOLu4
-	010+7SD/CiUjVHa0NDjS0pKn39EOv9I=
+	b=YNeEjnlFnN3tVpTZdxY7IgxXq5kNXa/UXaanMYZALFE1VamE6cZmGvzzd1WQjb0T6kqbIh
+	dMA80Eciimj0+5eouUt6BEtTU/GTKtlqwEwOVyhbTRJM9VBeFPA+kK7/KcVHcRzXaqOSq2
+	jHLQzfgfGAL6XroDHE5l0xkpUfAOnvw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K1qPaqfk;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6D28060172;
-	Mon, 13 Apr 2026 15:12:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8D3C2BCAF;
-	Mon, 13 Apr 2026 15:12:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C761B60172;
+	Mon, 13 Apr 2026 15:18:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5EBC2BCAF;
+	Mon, 13 Apr 2026 15:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776093135;
-	bh=Y8Yi/bJJbstcHgVRPIN0sGskUtriLPw0DVHCE6fghxQ=;
+	s=k20201202; t=1776093509;
+	bh=qPosjHYLo9Hq2FhDXbwq7orePQ+n+tSloJdBUSsczt4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oYSebltYV0b0EJR6dW6OS1C59FdwWEL0aUqpQwzm8jHn5lsb+YABFdEMCOFcq4tSF
-	 A6BBaOi5a70XQuE0vh2VSgN67Ws99/tI4izKQOq60CU0LxmibeeHwfDUX3ocow81iX
-	 JItqbbJPgGOcVoRDMN2rFfZS1hkdPG1mcylnjKvRMOwdhrfhdmFbHhNwBDvoKDlyAh
-	 zNDe766gk3gCO5CqFQvroV7drCSpwxPcBOl99JwWyB3G0iW79yNh16RS7JPfOR9cHL
-	 4kAwDDy/koHfBtThWk8F23shMRn8rk2YOOvPbGjGiKZ17kQ1ksmSy+VOIvPjGzvNtE
-	 YyOfny1iDh0Fw==
-Message-ID: <ec284a03-755b-4110-b8f3-c924f3dcb839@kernel.org>
-Date: Mon, 13 Apr 2026 17:12:07 +0200
+	b=K1qPaqfk+ihx13XKNsQtlioArqeIhdxNB/ZKZGPCr6BuEy0pAb37wqz+bxBWwCwZQ
+	 puErCwlnV4880p5ybrQn8UsJ2WNY3igCfrpxP0vBcjBWLJqI4bJmiLLnxFpcet+9ns
+	 6uPvatoSXrx0fV6+RfVyexaB+pUmlewcZxOQUP5G3nGgXsxyZeWyR+ARea7hcF03RZ
+	 9ohD2GC7sAb2KiA92vTjxhp3pKBlFPXZpbTtzRkzRuuXnR1TmkZUOPIrLrRi70tW5u
+	 An52ysAqhKZGFyG9fFc+O1wXT2BfkoUIDdpcr2j0Rk8qOfQU0teS/bYto9YFii3R75
+	 /TMvL44Xg9m6g==
+Message-ID: <f4436f23-3af5-4b07-a582-69ff704dc17c@kernel.org>
+Date: Mon, 13 Apr 2026 17:18:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] mm/memory: add memory_block_align_range() helper
+Subject: Re: [PATCH 4/8] mm/memory_hotplug: export mhp_get_default_online_type
 To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
  vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
  osalvador@suse.de
@@ -77,7 +77,7 @@ Cc: dan.j.williams@intel.com, ljs@kernel.org, Liam.Howlett@oracle.com,
  linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
  linux-cxl@vger.kernel.org, kernel-team@meta.com
 References: <20260321150404.3288786-1-gourry@gourry.net>
- <20260321150404.3288786-3-gourry@gourry.net>
+ <20260321150404.3288786-5-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260321150404.3288786-3-gourry@gourry.net>
+In-Reply-To: <20260321150404.3288786-5-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 70E5BC0015
+X-Stat-Signature: ehskq1gmdzh8jjig5mx8mgm319ugghfx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 07E06C0007
-X-Stat-Signature: jegihc6isfb8po17ztxxyftnm55zwts3
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776093135-805038
-X-HE-Meta: U2FsdGVkX18QKpL23lgp4hxV8wptCkt/gjZ47W8Kxsw2yyxiTruxOITP1AMjaXNYX1c/82VAtC9ySNHe7HPzVgyQ4/JMM4mjsQyyNvFx4fd7AvJ9d34Y4y+rPEPIzsNdVj1uR2ja1/5Lh3VVwSUYieid2pD3PDcgpNZuorz0K5jMvAt+XZ0dN7qbB7prlwJhrj1WYXOZiNfAPCpJP1WgaoD0X3ufkKWTEjzLj0xLUEqNNTxLUQAsqfpsjgZ0JptUmTHNm3aNFLETuoF8Tc3w9AqNart2rZcgzc8Gq70HjQiEv5JQMnoaiZyMvZbGoUDEuZ9F2EAd7X1XoCrPXWsiTBpPLKW4C0eOJgdg2HqNqUcHHttPjVFhJU9gRODsg20KrQlqybGTCNuHR+wEhqzF9rSBCaQ/phq8FG2hMg44+qhynHICf9Ip8OHgWxIWGGg+GdcbKyPoK/aOZQAvOaVDuoaoTMEiCjcexZNlnwGojm+gXIf/DZLvXeSy4iOfyjGwHnH+lG2+DTglhROSvhXYelKkgbFsvCIGgZOQULyyTfK1qqlSve7TKYQ7v5QzW9PF9RP9k0N6R452nURudD8pxoffQKQDOcola4laU1S/6r/zgSxjd/THf0vjFy/DyyLbc9BoUtyCNfRx21axialt3SaFK8PgnSKfDenRCyuNz1Qy6iIDE/O17ld4gO2SgTJwAaJshnfpKtKycjvoPZRvrAhC6OYrfXRXyQFcp9Ogcoq6961xHur090BBvh95jZVRvOpo4A5/D6jJrqOBQA/6JzWqJweUoPVUV5HN0Xs3grM7a2uS51XFzkvWmsrdyVAeEdvslz5yx9uaZB+RQj2LpntfHEbUnLW+qCoEbyhsw1nlp/WKiZTYGG1EXdk8Sd4EmBcPpAzXQaixV2B53KXWppA0orRFYGuXl8I8bkWvJ9j0OpPLAJmS1hGh1vDRkY4g9AVvEW0DFIs4nPSIbNt
- GxlPlUZN
- TWlmG3BYsuGdyX4Lv5hIJC3z1JGCFc71CMKkirOVcWv7gxo3yiaht01WCBKe7hdsB/sIEf5Bt+/PM6KdZHYojUirtuqntvP9toEr/rsTYPdAEB/w8itLiubcmFetJRCslu16dtifYDPoAOXgcvZtZ53nBDhnJ9P8dE27OrVOSi2X44/lM0/fMQHEfxukQn06v+2AoajhT2x0GRHfQIV5qGo+hp5HZ6THPrPXF5U5f6FLeywNSXXCJf3NOkXgKqyQQ9Udv1rIU/rtMuHoIMaKrdmq/ql/0VpHwR22QY8C/W8ygKi8LXSonm/qaq6QE33rOZLzIvC1TsMXDEktBUDk+TG8uPgA5fNUWrALsE9YKolYNLvM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776093510-320483
+X-HE-Meta: U2FsdGVkX1+ulb7yu2yIjHMofPbplMV/Yib8HtaXhlEB98SpYZF15NtkBj9APIe/E1aOatxhaRc1bB7Zbz1IqhGuRygikbBYpfZ5sXdAZk/+R97rySO32D70usuam+Yl/sS91KXOt3175Kpx+80pMnE51o2e6VLL+1nSPQMq+fCGEmxZR3Zgx3K4kaYsUwuID/NTtnn8B+pjPD3MVoAhsvNrTFYNPhbjv3nqha5CBSSslXDOmTLvLWvqXj3MdwX9Du+p5kflSSxzEJGDjoFDCQDV9KmpH+UM96wYOXC0hcHnbgfwNjoNOhsmmElH3Uur4QhPdwwAzcgZ9Z1vueTsA6a6MYjLzpsaJyc2E77cmjlhJ2/DlabXqhk/laDDGT1uE2mPsJ8CwllXL4HszSDEc5ykx9hVMfoDpg6h8dc6rdz1E5BPoBZVe75lAP3ANC00HOZdoL9fx786LrtfTT6CquY8t6RtcxRSovRJ/De09ddL/+q4cc2pxOFAINPBadSMGXwo6iwnhlXQCih/Ax1xNh/x62KfdoCF3eCQ5VT4J3AGr08u5V2qar/b47tgg5VpJTaT8/yRp5QTkrn6x0nT7ul7w1Aox2IPHnxl6aPfs0CkdpxE6HO2uiax2sC9FUfBwk19oumDN8ANF8tYpNxs2Vri9esnXKbVXJm6C3tiJiRHMCjGlaxzDQb83EhVSPIZhyf0aSKHv1pyZ4DHGGOSTJg32QqJKcuPN6642+joF2Lo6TtQtRpPR29+zLzzy2gITRgqmdvtnshHkeKXrrjeWfB6vMcBLUrQ1YDawVwhegUvwDoR9Pm8POZQFgkb6vQraB0FCLyM0gDnljUe7IcmkOmXRSlO0wxTf1xzBCk24Q+QnppD8CwJbKv5gvIeMHGQmF6AHGOldpu1Y6XDkhVeN/78qC+OaGCs0CVSw6XXYO6NOPuq9ffaI+h/SXAyJa+ZDBh88sK7T+JPBysPmBM
+ M6Kx716v
+ dB5WWmn1J/sFNw7K6v7n+T9ow99Iw09HdYSpJhyFm9O0VPdQe6qXa1CiWW38gGmrhd5mY8SHQJj2qb/Q9juGcyDSd/R9LC3mvcvyO2pidasTmfY9nEbfzVCsTFA1zXTuNJZG1/9FjgDZoaUebylpbeO+xbQ10f+dsrZXD7ZGXCRzxaRu7HvXot8BebrgZQfUK6Gv1ak4E7hxrxYB62D0DoByzUZ9PAcg0DAVvf71uBGaxuIF/4ZeH4awziUqMm86KdYKeYE5+QoKM3zEtjLjqo5VvRrKdZRkLo4VEfRP55i/M1HF2QaOc/t1NC7kqQSqmARekdQfVYQN8Ve6Um0y6qS2Ih/ThfbfDVpJBz4++SjwGFg0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,79 +142,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/21/26 16:03, Gregory Price wrote:
-> Memory hotplug operations require ranges aligned to memory block
-> boundaries.  This is a generic operation for hotplug.
+On 3/21/26 16:04, Gregory Price wrote:
+> Drivers which may pass hotplug policy down to DAX need MMOP_ symbols
+> and the mhp_get_default_online_type function for hotplug use cases.
 > 
-> Add memory_block_align_range() as a common helper in <linux/memory.h>
-> that aligns the start address up and end address down to memory block
-> boundaries.
+> Some drivers (cxl) co-mingle their hotplug and devdax use-cases into
+> the same driver code, and chose the dax_kmem path as the default driver
+> path - making it difficult to require hotplug as a predicate to building
+> the overall driver (it may break other non-hotplug use-cases).
 > 
-> Update dax/kmem to use this helper.
+> Export mhp_get_default_online_type function to allow these drivers to
+> build when hotplug is disabled and still use the DAX use case.
+> 
+> In the built-out case we simply return MMOP_OFFLINE as it's
+> non-destructive.  The internal function can never return -1 either,
+> so we choose this to allow for defining the function with 'enum mmop'.
 > 
 > Signed-off-by: Gregory Price <gourry@gourry.net>
 > ---
->  drivers/dax/kmem.c     |  4 +---
->  include/linux/memory.h | 22 ++++++++++++++++++++++
->  2 files changed, 23 insertions(+), 3 deletions(-)
+>  include/linux/memory_hotplug.h | 29 +++++++++++++++++++++++++++++
+>  mm/memory_hotplug.c            |  1 +
+>  2 files changed, 30 insertions(+)
 > 
-> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> index eb693a581961..798f389df992 100644
-> --- a/drivers/dax/kmem.c
-> +++ b/drivers/dax/kmem.c
-> @@ -26,9 +26,7 @@ static int dax_kmem_range(struct dev_dax *dev_dax, int i, struct range *r)
->  	struct dev_dax_range *dax_range = &dev_dax->ranges[i];
->  	struct range *range = &dax_range->range;
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index e77ef3d7ff73..a8bcb36f93b8 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -6,6 +6,7 @@
+>  #include <linux/spinlock.h>
+>  #include <linux/notifier.h>
+>  #include <linux/bug.h>
+> +#include <linux/errno.h>
 >  
-> -	/* memory-block align the hotplug range */
-> -	r->start = ALIGN(range->start, memory_block_size_bytes());
-> -	r->end = ALIGN_DOWN(range->end + 1, memory_block_size_bytes()) - 1;
-> +	*r = memory_block_align_range(range);
->  	if (r->start >= r->end) {
->  		r->start = range->start;
->  		r->end = range->end;
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index 5bb5599c6b2b..17cdf6ba3823 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -20,6 +20,7 @@
->  #include <linux/compiler.h>
->  #include <linux/mutex.h>
->  #include <linux/memory_hotplug.h>
-> +#include <linux/range.h>
->  
->  #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
->  
-> @@ -100,6 +101,27 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
->  unsigned long memory_block_size_bytes(void);
->  int set_memory_block_size_order(unsigned int order);
+>  struct page;
+>  struct zone;
+> @@ -28,6 +29,27 @@ enum mmop {
+>  	MMOP_ONLINE_MOVABLE,
+>  };
 >  
 > +/**
-> + * memory_block_align_range - align a physical address range to memory blocks
-> + * @range: the input range to align
+> + * mmop_to_str - convert memory online type to string
+> + * @online_type: the MMOP_* value to convert
 > + *
-> + * Aligns the start address up and the end address down to memory block
-> + * boundaries. This is required for memory hotplug operations which must
-> + * operate on memory-block aligned ranges.
-> + *
-> + * Returns the aligned range. Callers should check that the returned
-> + * range is valid (aligned.start < aligned.end) before using it.
+> + * Returns a string representation of the memory online type,
+> + * suitable for sysfs output (includes trailing newline).
 > + */
-> +static inline struct range memory_block_align_range(const struct range *range)
+> +static inline const char *mmop_to_str(enum mmop online_type)
+> +{
+> +	switch (online_type) {
+> +	case MMOP_ONLINE:
+> +		return "online\n";
+> +	case MMOP_ONLINE_KERNEL:
+> +		return "online_kernel\n";
+> +	case MMOP_ONLINE_MOVABLE:
+> +		return "online_movable\n";
+> +	default:
+> +		return "offline\n";
+> +	}
+> +}
 
-Reads as if you would be passing in a memory block.
+In drivers/base/memory.c we have online_type_to_str[]. Likely you should
+build upon that, and locate the code in there as well (or move all of
+that to the same header). And call the function something matching like
+mhp_online_type_to_str().
 
-Maybe
+But, the patch description only spells out exporting
+mhp_get_default_online_type(), so something is missing here why these
+changes are even included in this patch.
 
- "align_range_to_memory_blocks()"
-
- "range_align_to_memory_blocks()"
-
-Maybe what also works:
-
- "memory_block_aligned_range()"
-
-In general, LGTM.
 
 -- 
 Cheers,
