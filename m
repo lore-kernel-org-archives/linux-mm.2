@@ -4,153 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3076EBFD10
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:38:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F310EBFD0F
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:38:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5410C6B0092; Mon, 13 Apr 2026 03:38:14 -0400 (EDT)
+	id A24116B0089; Mon, 13 Apr 2026 03:38:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F1B56B0093; Mon, 13 Apr 2026 03:38:14 -0400 (EDT)
+	id 9FBAF6B008A; Mon, 13 Apr 2026 03:38:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E1136B0095; Mon, 13 Apr 2026 03:38:14 -0400 (EDT)
+	id 938806B0095; Mon, 13 Apr 2026 03:38:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C8A56B0092
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:38:14 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BFD6013C1F4
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:38:13 +0000 (UTC)
-X-FDA: 84652729266.20.FFB8A19
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DF98B180004
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:38:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sQDH5ZEM;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 84EC26B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:38:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 316AAC3A90
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:38:44 +0000 (UTC)
+X-FDA: 84652730568.15.EB7E2CA
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 71CFD100010
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:38:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of 3gZ3caQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3gZ3caQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776065892;
+	s=arc-20220608; t=1776065922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WxOKvmzfsSLk7IzJLUMe/GY6jGxgSCgPMGNOI8A132A=;
-	b=xM3kOec5mUIm+FiAIVhXdCYAQZAGm/cwvU+/RwYJSXyp3NV/tVD4SoTQENVdpvjWjfKxyr
-	BgWdV+z/Z4kSpwFjbg8oCbSpISIwMama0jqndqrehE9j9oapOm7y9C0KO5DhzagFghUcE1
-	ZXNxjQlSWOyCz8S/X7jOFO+HAtKYihk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776065892; a=rsa-sha256;
-	cv=none;
-	b=3By44eJ9KmcDhcUzNXa5L+yBmJpEUBZLmmrlsU3lLOVhO2yB2twM5w3Bvtrz63t9FCel/H
-	5i5BqFagAYb0maWvhcRWsoS0lLSyYrZkhtDy9OMNFb+9Xx0TXQTfgx8zEGYyK3+qPFk8Vq
-	wiQielE4m/YXBkZ8zUf2aKGdYBxo/Ec=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=to68LlIkxkw+05Fou43elQ/Y+Uv6KL/gY+hMLBJGpG0=;
+	b=L0eksWv0wXVBfCNyJA0ECFZWUsXvZL8vU+gNnZkczISIYUvKRrcHuKzaEgjSUJF0Jdfi5z
+	SiQJqueSr3PFRI6MWtxsMdNGn3g46X+6HSnVXxgTN693ZocPE+LlISUr1dE7dM8izN9KiB
+	VrzOZoVhu8sbxAFwTIC/cIBzSorGrjU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sQDH5ZEM;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 73FC044175;
-	Mon, 13 Apr 2026 07:38:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40598C116C6;
-	Mon, 13 Apr 2026 07:37:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776065890;
-	bh=kfHbKcE+7O56hLMmTCV+tl21Hg7z0932/rDESON9yEQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sQDH5ZEMeaGsZ0xpIfLrJWKdCEwlD0IZWgIRRwmZ0UiFIbCzhilp4pEkhdjc91qX9
-	 jhhby5L/HIWRcvHXT9EhsKiKEtLGzkhsL2tkDwrlOEsgAA7OS11fKOzj0o9SXkURLJ
-	 DUEoKIubJbc+/swSeSpYh4K0gmkW1lp5yzYPn50xpOQHadIEt7V8i1udQfX5yfOkYh
-	 B18Rfo3vQWi+oFrw/0Teh47Db16fllaRKeXIdrqJk6Oq2ApCXdGdNzZhS2g9qORLpm
-	 borhS0eUSee0GLZ13N7XyNAs74TXnV56mjc0ZzUP/1Kj8QnCRk8eCkW+maTH7yZnx0
-	 NSubKZWlk6xfQ==
-Message-ID: <11e01f34-d042-4938-b7c5-328e08f17192@kernel.org>
-Date: Mon, 13 Apr 2026 09:37:54 +0200
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of 3gZ3caQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.71 as permitted sender) smtp.mailfrom=3gZ3caQkbAIQ067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776065922; a=rsa-sha256;
+	cv=none;
+	b=CylptFLtiud8w/6tcS0M45IyRuxJ5v2pK6ih57n3j/9vudfyAYKprf4MjoH8UYcAnbMJKU
+	sWfGuFPosssZGj7SPd+H/2+uBX8ktfPYdEbOVp3PRqnEe+f0rdyuSvLOd0Ym8ZRNSKG0cn
+	iMkAJp88NmEJhntYDqNfy4+0cdp6CA4=
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-68e924f632bso1751026eaf.0
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:38:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776065921; x=1776670721;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=to68LlIkxkw+05Fou43elQ/Y+Uv6KL/gY+hMLBJGpG0=;
+        b=UgSO2rkZkO9PEdp5SiA60u/b66ycsBXv85m5Q4DVss5+Yhp5o5SgdbVku7+oN6ta+B
+         QAcgdM5ABpONOohHL/jfrJdR4XYa7iLPWKxSvtSJBqXz+jbkCgePBW4SGDGbxKRUPjYU
+         9AXuRxjj5TnXHYNaJMa0ytv7nPd7WnIMBtTMX1eUcQVU/9sMeF+j/TIyHUf5SBnc4L/E
+         4Q5NhdZUT5fjk7cslbx28xsXFL7SyZ7it1mbawujdQp/HWW2akxVL6Z5fA8BPk56kdAs
+         CYnWq5pZoBwiIOuvR/xKGKXOloDpCvjOfj8AvQPt/ABuqMMsPwUHxTU98bQTHA80x7be
+         08Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCXG/8/+a3esacqcDik+sLdxorcSwMpHGi1fJ7O7tp2QxHMd5GbiV7zPbyT0QT8SVBdlR2lyM28W+A==@kvack.org
+X-Gm-Message-State: AOJu0YxzI9+oreNCAKuw+GlLdv4rJFdTCdWpexr2nnxMMnXqQ/FvO0hs
+	wXaZDCHw7Y79wLD/Tvk4MpDdEUoI/OiRjsJhLmC1qNvu+ZVnBLt3LeZ0vNaOTL1jC0G8xKRyCuY
+	Lrn6zTt467vMQoRSeiXGIMOEApG4iBuDkA5NZZHY43CA6sZetGn73231Ik7U=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v15 06/13] mm/khugepaged: skip collapsing mTHP
- to smaller orders
-To: Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, aarcange@redhat.com,
- akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
- catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
- dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
- hannes@cmpxchg.org, hughd@google.com, jack@suse.cz, jackmanb@google.com,
- jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
- kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com,
- lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
- peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
- rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
- rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
- shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
- thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
- vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
- will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-References: <20260226031741.230674-1-npache@redhat.com>
- <20260226032445.233437-1-npache@redhat.com>
- <94290ad5-f63d-4fa7-a898-dcfe6cd9998b@kernel.org>
- <CAA1CXcDnz_7+16sDVbGJ2ZZPWxs7ta_Z0YU6x1dUe7yiSJ3OKg@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAA1CXcDnz_7+16sDVbGJ2ZZPWxs7ta_Z0YU6x1dUe7yiSJ3OKg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 4ot6y3s84erukr33qusf7uxtiapefxox
-X-Rspamd-Queue-Id: DF98B180004
+X-Received: by 2002:a05:6820:4c14:b0:689:da1a:3ac5 with SMTP id
+ 006d021491bc7-68be86e4616mr6161594eaf.42.1776065921546; Mon, 13 Apr 2026
+ 00:38:41 -0700 (PDT)
+Date: Mon, 13 Apr 2026 00:38:41 -0700
+In-Reply-To: <20260412174244.133715-1-osalvador@suse.de>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69dc9d81.050a0220.3030df.0047.GAE@google.com>
+Subject: [syzbot ci] Re: Implement a new generic pagewalk API
+From: syzbot ci <syzbot+ci8e8b776487075354@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@kernel.org, david@redhat.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	mhocko@suse.com, muchun.song@linux.dev, osalvador@suse.de, vbabka@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1776065891-442057
-X-HE-Meta: U2FsdGVkX1+2Dlo/ifhnWMqJmGOanZgweC3Nb4o/g8wpjMUGeWyinaS4fqdjuEi+9E9aCzjRHFAFhFi7cfgOhQb3PMB7QfM3x1h73WkIuo7PlknMlJEM7VIDOGqcyanB+luL7I2C40D90DATvu81pLi32OwIs7KAV/XtsL03N3WFPsIFRcKGkfp49Y+xZCquHfy7uyMYWTBLoOU8mXjL9GeOC2tqh0YgY6/wVDU9LAw7tOxiTD5ZiLo6BbhJPG9q2JmYoezOPodGNse3USM2MdJVwUwOd+JjVESjVsjWBmPSFtjd4xu9Bz2M4jEE6wsgO7TNsg3Cb5xqfrvzRl9kk8O0Z70RQeIv/JnsCvNWf6B/XB7iAaBw6bRRceiAkxxKqYy3NG90aGCr3qdTZMms5ZI9JXTAcZ83D8ONj3wIvL/a+xwj18Qbit8OtX52/K58asq5cN2wAaOFbKC+vPWVvWRdAB1bH4kFh9PFU5Akfz4TKQH/adIFYpC0izd0Q/OQaTsTF8f3WfoEJ5xowUR+xfHXTMZCEm9JcFfHyPzAXXzwov1GKAiG4ofPKFKWhsgNVyJyuGo0ombDajjRB5ohMzjdkmFbt6/xD4BhmtMpmdaqEmviB8BD3s59ul2l3o2bIOxoHKuaXPn+xuwtbCld5vR7X2F1CvfBgy9Z0ThDkHVq76dBS02/eoYTJepUm+vkrQ1c1d9Eb1Vurp4eVPmp+uv1ht0wuMAJDdQ2BxBi/sm4+XvygFsOrs9Ax19nytR4ELDopd7UdeD/uKfMzyKmsiPfBgM0na3ET+1WHlE3zzdyi8mCr/nDEiu4+3MfA+QopdDnM8NJ92kjhpI3ho1IcMzcjV7iqc4/MCaLccEnA4MWRVHYqtOz4BmL7MgwdZGyex6mnHSEumaJi5isFCB8bXrPMjur0xk9+O3TW1rM9g1WDdPmzS46WHtSepVBSYSpJNgVzMqczLOqWohJUdv
- OW/MHDUP
- Dfy5ebPIuVndaslrfLgwEFTCr8VEtHlrwMCTY28Kg8FMQIKT47tlUGu21suK+boeHL7AIgi0J4wxVralTyVNIcO4OxkVLYzGd2D5cK3n4OqMqGCP973UFAVSpFPgPG+25dGYu6VbVfMmnMITVPIJh/LQP6yZU0COaae6p/KgWeSjqoR+VtndnGRLIowj3cMDQss3PgebUJKLQ+ZwjxN8Vp6qdlXWZEOrewOm/3bYTig4GyYsSyeShx1sVxAAIqLbuNLMl4WA7kInk0W6LKdTgS+SoEYGV+xaLQsE4cdDxRoyLh1xC8Srk08Q32wbuxARy5/5YMAAQQ42xKOTvp4rPEEBd9NcETVb8k6L8hjK0734CmL3UtaGNrk2XQ8j61sujvLXEeLdx/n0xNxpW1ffHIztBvI4n+sqMWK9FCnQTD5OVu9nZZV34D8Ma0ijWXaXnqrwPzr6brKQkZ8+mcXOQEswlxw==
+X-Stat-Signature: pmz1bhjgoxedj8rhn1njscighjiphx84
+X-Rspamd-Queue-Id: 71CFD100010
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776065922-220889
+X-HE-Meta: U2FsdGVkX18EtFyvM2r998oJyVZ8u7oIQSUJ6raw3FJyAUOEsw8BeoA3FxlJWE5cj1hY57b37S4WbYzzyOliomLTFF7CAb4EfmpLR9ltSpZQamHrBvjnTH6sCguv9x2q2FBHrPvxIwgZwiTfnETrJv2k63xjEwLkPgVT2+4bU1pjEnV0cnhqQUGHPcSm7PB2IBmHD8eXa1LagHJcSN2cvqI+7vr+iZ6Y/QQd5YCoVssMbuWz8Vmi6nP75PYJA1IwfMacB6irF5kh/s54zoEDwI7RLTO+sU/I9h/o73k1l38EMZ6fRKSOpq3tXPM654zQSSRmMTk4nIqZqqpcaCmVx6QxTq0O5kcnGq8ypY58HxoPU5fBWRj++3DgXpLiqxO0XiVCGJX7cGt6QJNIbcNMZY+DfIxqBZzb2zA0/YppohHJ/CXdHxByNPX1ncqQNubLbIyQZDnh9+IUv2icin1mn/Hg84ytfH5aFggXWNpoE4zN4xnBp0tpQbZJdkfjwGsxp85t7xz7dZbAcfws8SiqupIMlDTg5fZ4ApOLC4jxKumdcb4tVmfmeTEM44L0A269LeHPiuxdmwVPe1TKrLnhqqoOcsg2oqfp11jkVcj7MEJoKFfGYtzRMCVr0cPAbiXCpF9iCqZ/SjVxhciR6UdQbKMpVIBrooP9sZjBrPudYdMtHw8kJqzSlBYfo+kCDkllPkE4jQ0jJKQiwWM620nzOHs1SFIKvO0QPNgT//cUVkrLxksRacOhKy3REaA/zEgBtf4zoO4bxmc2WpFQ6g9qj+f4QXmBnqxHvuMzByk59Hkb7U9HbomX7tYviQZFwAE2an7/3/9oLK34+4k0Bh5fR7pXuxA1qX00l2MVD2l3XArAwldhfHGWRG6SSLlOi1RdK3ArNC4H/ddfN1aFMwGS+5UCcQA/zcqhw24S7xwkXtu4hi6sjl/snwfFcz8ZIo3pEFrAlQ7PXtVRDnGk0yC
+ yFlGRshA
+ h5GIrRLxGWjqhMip5usdQfCB3oHyjvlkmDzlbT1oxEgE3vL3W3rufGR07L6G4M0mJP3dUEPaxHgqf28eN+sdLbDJIztLg1/ooLOJ6gDyDl4Xz8gKnMqD0n53p/LLqAE+7/1r63y/0qZZVn5MoV/XaECS9Ehu2FrBw/nJqYtoUrNw20/pEytwIO1M2+shPfJfmPj8objn4ftDfPFJk2NsSoAlW/B0+bCeJek3zL0rhcPt+sCew76e8xR3ehqLAI7hwKFuexc5gScJ7YTSF1cVyuYIxK7v+Q1iXJh3jkqbntCX2TrDu2rb2hTFaGdmnZY7golTBLnnN2vWwjpFrAhMtbICzCtaYY+EDsFyJ5sKeQb+Nu1ELssndF+X0U3//SQUEwxv8oW8peyscJZ0xcObfvkyVFAIH+WpmrNn/uly/hO9FchBHPbRBTsfy63GRIyIbEqZ6zrKKdfSBrdR9+dRX/8VJ36bKjA1igY9jBFZW+HD3tVydbeOmFBmygp14DbbhcnqBkqHqFqvoqFcXE2druPdcXAKsSHMmYCMBUAHZhwG9m2W8rkmHSFtlEQUXvWbN6Eq5UzQ2gXpwScNo17Jmjc2pT9hx+KnpQbGE5hngPhtt4gKBSG03utkgafSB0+Vx2erkzZHo/XmHJ515/sSQ8xwMMRH/7SnoROnt8pZ60MsZ0bZtfZYob6UO8Suz6VcXsr5VlC3Fp0AetY8B7sDAwwTJ7vep8yfBq7pT6jLOt2BV7ILsLO8a+IlOr3ZN9Px+9l9yvBCqQoYIBpER9JCWB3QL9lBlzv3wn6ZFL/9m+5k6Tb9EhBpG17S51Me9oXKrSQIsq6kxqvPiGeJgywKXfRtzy0yPDOMRa25x5gXbZx/cn5yNkajUkH8185FOUWbPvI361CxMWdhRJy7MS3Q+tp0C4lljZ5qBKEKKtkf2q3Z5jLVyDz9V0UZ5IBViIpJhL8VvpWGW39dxc0GC7mnbLAdU67ru
+ O5wTfHTX
+ 1F1IJ9Uw0X8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,59 +98,222 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/13/26 03:38, Nico Pache wrote:
-> On Thu, Mar 12, 2026 at 3:00 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 2/26/26 04:24, Nico Pache wrote:
->>> khugepaged may try to collapse a mTHP to a smaller mTHP, resulting in
->>> some pages being unmapped. Skip these cases until we have a way to check
->>> if its ok to collapse to a smaller mTHP size (like in the case of a
->>> partially mapped folio).
->>>
->>> This patch is inspired by Dev Jain's work on khugepaged mTHP support [1].
->>>
->>> [1] https://lore.kernel.org/lkml/20241216165105.56185-11-dev.jain@arm.com/
->>>
->>> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> Co-developed-by: Dev Jain <dev.jain@arm.com>
->>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>> Signed-off-by: Nico Pache <npache@redhat.com>
->>> ---
->>>  mm/khugepaged.c | 8 ++++++++
->>>  1 file changed, 8 insertions(+)
->>>
->>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>> index fb3ba8fe5a6c..c739f26dd61e 100644
->>> --- a/mm/khugepaged.c
->>> +++ b/mm/khugepaged.c
->>> @@ -638,6 +638,14 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
->>>                               goto out;
->>>                       }
->>>               }
->>> +             /*
->>> +              * TODO: In some cases of partially-mapped folios, we'd actually
->>> +              * want to collapse.
->>> +              */
->>> +             if (!is_pmd_order(order) && folio_order(folio) >= order) {
->>> +                     result = SCAN_PTE_MAPPED_HUGEPAGE;
->>> +                     goto out;
->>> +             }
->>>
->>>               if (folio_test_large(folio)) {
->>>                       struct folio *f;
->>
->> Why aren't we doing the same in hpage_collapse_scan_pmd() ?
-> 
-> We can't do this in the scan phase because we are not yet aware of the
-> order we want to collapse to.
+syzbot ci has tested the following series
 
-Yes, realized that myself later. It's confusing, try documenting that in
-the patch description.
+[v1] Implement a new generic pagewalk API
+https://lore.kernel.org/all/20260412174244.133715-1-osalvador@suse.de
+* [RFC PATCH 1/7] mm: Add softleaf_from_pud
+* [RFC PATCH 2/7] mm: Add {pmd,pud}_huge_lock helper
+* [RFC PATCH 3/7] mm: Implement folio_pmd_batch
+* [RFC PATCH 4/7] mm: Implement pt_range_walk
+* [RFC PATCH 5/7] mm: Make /proc/pid/smaps use the new generic pagewalk API
+* [RFC PATCH 6/7] mm: Make /proc/pid/numa_maps use the new generic pagewalk API
+* [RFC PATCH 7/7] mm: Make /proc/pid/pagemap use the new generic pagewalk API
 
--- 
-Cheers,
+and found the following issues:
+* KASAN: slab-out-of-bounds Write in pagemap_read
+* WARNING in pt_range_walk
 
-David
+Full report is available here:
+https://ci.syzbot.org/series/1f85248a-1ac0-48e8-8ce3-edb89a6b9ee5
+
+***
+
+KASAN: slab-out-of-bounds Write in pagemap_read
+
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      857fa8f2a5b184c206c703a3d9ce05cea683cfed
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/932ed80d-9fb1-4c99-8096-4b7a9324bb7c/config
+syz repro: https://ci.syzbot.org/findings/1083a63d-0470-4ce7-8943-0a60046b9269/syz_repro
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in add_to_pagemap fs/proc/task_mmu.c:1740 [inline]
+BUG: KASAN: slab-out-of-bounds in pagemap_read_walk_range fs/proc/task_mmu.c:2736 [inline]
+BUG: KASAN: slab-out-of-bounds in pagemap_read+0x19bc/0x21a0 fs/proc/task_mmu.c:2829
+Write of size 8 at addr ffff88816d32b000 by task syz.0.17/5958
+
+CPU: 0 UID: 0 PID: 5958 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xba/0x230 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ add_to_pagemap fs/proc/task_mmu.c:1740 [inline]
+ pagemap_read_walk_range fs/proc/task_mmu.c:2736 [inline]
+ pagemap_read+0x19bc/0x21a0 fs/proc/task_mmu.c:2829
+ vfs_read+0x20c/0xa70 fs/read_write.c:572
+ ksys_pread64 fs/read_write.c:765 [inline]
+ __do_sys_pread64 fs/read_write.c:773 [inline]
+ __se_sys_pread64 fs/read_write.c:770 [inline]
+ __x64_sys_pread64+0x199/0x230 fs/read_write.c:770
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fd47239c819
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fd473284028 EFLAGS: 00000246 ORIG_RAX: 0000000000000011
+RAX: ffffffffffffffda RBX: 00007fd472615fa0 RCX: 00007fd47239c819
+RDX: 0000000000019000 RSI: 0000200000000200 RDI: 0000000000000003
+RBP: 00007fd472432c91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000001000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fd472616038 R14: 00007fd472615fa0 R15: 00007ffe3c81aa88
+ </TASK>
+
+Allocated by task 5958:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __kmalloc_cache_noprof+0x31c/0x660 mm/slub.c:5339
+ kmalloc_noprof include/linux/slab.h:962 [inline]
+ kmalloc_array_noprof include/linux/slab.h:1109 [inline]
+ pagemap_read+0x287/0x21a0 fs/proc/task_mmu.c:2781
+ vfs_read+0x20c/0xa70 fs/read_write.c:572
+ ksys_pread64 fs/read_write.c:765 [inline]
+ __do_sys_pread64 fs/read_write.c:773 [inline]
+ __se_sys_pread64 fs/read_write.c:770 [inline]
+ __x64_sys_pread64+0x199/0x230 fs/read_write.c:770
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff88816d32a000
+ which belongs to the cache kmalloc-4k of size 4096
+The buggy address is located 0 bytes to the right of
+ allocated 4096-byte region [ffff88816d32a000, ffff88816d32b000)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x16d328
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0x57ff00000000040(head|node=1|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 057ff00000000040 ffff888100042140 dead000000000100 dead000000000122
+raw: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
+head: 057ff00000000040 ffff888100042140 dead000000000100 dead000000000122
+head: 0000000000000000 0000000000040004 00000000f5000000 0000000000000000
+head: 057ff00000000003 ffffea0005b4ca01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 1, tgid 1 (swapper/0), ts 20801987900, free_ts 13278585415
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x231/0x280 mm/page_alloc.c:1889
+ prep_new_page mm/page_alloc.c:1897 [inline]
+ get_page_from_freelist+0x24dc/0x2580 mm/page_alloc.c:3962
+ __alloc_frozen_pages_noprof+0x18d/0x380 mm/page_alloc.c:5250
+ alloc_slab_page mm/slub.c:3255 [inline]
+ allocate_slab+0x77/0x660 mm/slub.c:3444
+ new_slab mm/slub.c:3502 [inline]
+ refill_objects+0x331/0x3c0 mm/slub.c:7134
+ refill_sheaf mm/slub.c:2804 [inline]
+ __pcs_replace_empty_main+0x2b9/0x620 mm/slub.c:4578
+ alloc_from_pcs mm/slub.c:4681 [inline]
+ slab_alloc_node mm/slub.c:4815 [inline]
+ __kmalloc_cache_noprof+0x392/0x660 mm/slub.c:5334
+ kmalloc_noprof include/linux/slab.h:962 [inline]
+ kzalloc_noprof include/linux/slab.h:1200 [inline]
+ kobject_uevent_env+0x28c/0x9e0 lib/kobject_uevent.c:540
+ driver_register+0x2d4/0x320 drivers/base/driver.c:257
+ usb_register_driver+0x1e4/0x390 drivers/usb/core/driver.c:1078
+ hid_init+0x39/0x70 drivers/hid/usbhid/hid-core.c:1710
+ do_one_initcall+0x250/0x8d0 init/main.c:1382
+ do_initcall_level+0x104/0x190 init/main.c:1444
+ do_initcalls+0x59/0xa0 init/main.c:1460
+ kernel_init_freeable+0x2a6/0x3e0 init/main.c:1692
+ kernel_init+0x1d/0x1d0 init/main.c:1582
+page last free pid 10 tgid 10 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ __free_pages_prepare mm/page_alloc.c:1433 [inline]
+ __free_frozen_pages+0xc2b/0xdb0 mm/page_alloc.c:2978
+ vfree+0x25a/0x400 mm/vmalloc.c:3479
+ delayed_vfree_work+0x55/0x80 mm/vmalloc.c:3398
+ process_one_work kernel/workqueue.c:3275 [inline]
+ process_scheduled_works+0xb02/0x1830 kernel/workqueue.c:3358
+ worker_thread+0xa50/0xfc0 kernel/workqueue.c:3439
+ kthread+0x388/0x470 kernel/kthread.c:467
+ ret_from_fork+0x51e/0xb90 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Memory state around the buggy address:
+ ffff88816d32af00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff88816d32af80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff88816d32b000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                   ^
+ ffff88816d32b080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88816d32b100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+
+***
+
+WARNING in pt_range_walk
+
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      857fa8f2a5b184c206c703a3d9ce05cea683cfed
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/932ed80d-9fb1-4c99-8096-4b7a9324bb7c/config
+syz repro: https://ci.syzbot.org/findings/e7c203a3-133f-4435-b9ed-ee292b6685fe/syz_repro
+
+------------[ cut here ]------------
+next_addr < vma->vm_start || next_addr >= vma->vm_end
+WARNING: mm/pagewalk.c:1052 at pt_range_walk+0x145/0x35f0 mm/pagewalk.c:1052, CPU#1: syz.1.18/6005
+Modules linked in:
+CPU: 1 UID: 0 PID: 6005 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:pt_range_walk+0x145/0x35f0 mm/pagewalk.c:1052
+Code: df e8 9f 1a 15 00 49 89 dc 48 8b 1b 4c 89 ff 48 89 de e8 7e a5 aa ff 49 39 df 4c 89 b4 24 38 01 00 00 73 14 e8 0c a3 aa ff 90 <0f> 0b 90 41 be 01 00 00 00 e9 e5 21 00 00 49 8d 5c 24 08 48 89 d8
+RSP: 0018:ffffc90003a279a0 EFLAGS: 00010293
+RAX: ffffffff821b140c RBX: 0000200001000000 RCX: ffff8881027a5700
+RDX: 0000000000000000 RSI: 0000200001000000 RDI: 0000200001000000
+RBP: ffffc90003a27bb0 R08: 00000000000000ff R09: 0000000000000003
+R10: 0000000000000002 R11: 0000000000000000 R12: ffff888105317380
+R13: dffffc0000000000 R14: 1ffff92000744f60 R15: 0000200001000000
+FS:  00007f0ccbd736c0(0000) GS:ffff8882a9467000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f0ccb04edd5 CR3: 0000000115dba000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ pagemap_scan_walk fs/proc/task_mmu.c:2479 [inline]
+ do_pagemap_scan fs/proc/task_mmu.c:2573 [inline]
+ do_pagemap_cmd+0xfd5/0x2600 fs/proc/task_mmu.c:2869
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0ccaf9c819
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f0ccbd73028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f0ccb215fa0 RCX: 00007f0ccaf9c819
+RDX: 0000200000000100 RSI: 00000000c0606610 RDI: 0000000000000003
+RBP: 00007f0ccb032c91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f0ccb216038 R14: 00007f0ccb215fa0 R15: 00007ffd9c7ebb48
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
 
