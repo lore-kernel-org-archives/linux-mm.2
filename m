@@ -4,112 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6462AF34C49
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:27:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E75FF34C49
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:28:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA2766B0095; Mon, 13 Apr 2026 09:27:11 -0400 (EDT)
+	id 83A216B0099; Mon, 13 Apr 2026 09:28:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C558F6B0096; Mon, 13 Apr 2026 09:27:11 -0400 (EDT)
+	id 811E66B009B; Mon, 13 Apr 2026 09:28:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6BFC6B0098; Mon, 13 Apr 2026 09:27:11 -0400 (EDT)
+	id 700906B009D; Mon, 13 Apr 2026 09:28:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 96BF96B0095
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:27:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B3F1C08E9
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:27:11 +0000 (UTC)
-X-FDA: 84653608662.09.7196400
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5A9C712000D
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:27:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QBzc305O
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776086829; a=rsa-sha256;
-	cv=none;
-	b=yIyT9WNiTAgDU/g3yvAdJKSVM9C7L/F4qWVamIFvOOZiO0R6EHPJPBk2Rb6Afhg1vezrpJ
-	yO2KIyIWOzy63w7mxtvUOgyStFs7bFyVPzaV54nyPiZ5oX3shb0NrVBRZKeh5x62TuztIp
-	saaMHs+TlIgWo0Ug79arcj2XvBuy/+Q=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QBzc305O;
-	dmarc=none;
-	spf=none (imf29.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5D0776B0099
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:28:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 27D571A0198
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:28:33 +0000 (UTC)
+X-FDA: 84653612106.25.2719750
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4F00780008
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:28:31 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mQZFa8uj;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776086829;
+	s=arc-20220608; t=1776086911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nbtwqqP04/XwB92jTwUHTtIQvE/SEZDBq3VRc3N6Y6I=;
-	b=XwqskHUdCT4PqsFIfHkUh2KjNRQHzNAbYDZLyodFR02USTJRkM4e0HclsJNaR3MiPGOOQ6
-	fnpH2p4te2EuIFXBpVrQV+VRWZv2HToGFLS8UbNm3PnA5Qs8+kzWh81Ecu/Y79Oz/z5wHv
-	t4A0tYmEh12LFo/qrwo1JTbhrGMsiR8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=nbtwqqP04/XwB92jTwUHTtIQvE/SEZDBq3VRc3N6Y6I=; b=QBzc305OGUU3CKBmxPvJpBa4Oi
-	I+/4n5il8SogHtoZ9MYMe5yABscVp4Uwgzh7udwzt87tchgUBR60wrkk3013QEZGquOerBE/DLD6y
-	I+rFCji1nIzcCUrJJ++zbGDBJANL6pQRdpdDLuinvsc9TNjaujyOLdviEwyNIbBayln7o509HIBre
-	Wic1Em1XHS3+OKmfW9u9rOJ1B2ipR/UxyfAneocY+8yVQKj51+KYTOvC4M2+068/5Nc0unBm+gz+2
-	6yfunAVklS9x8MwaYjqT5W9Tu0FsVhUTnxel7+gKsAbEs3NZc9MtgWZazik+Kr8QK9RHHvsfede3r
-	voQFxuVA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wCHJa-00CKEj-03;
-	Mon, 13 Apr 2026 13:26:58 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 13 Apr 2026 06:26:35 -0700
-Subject: [PATCH v3 3/3] Documentation: document
- panic_on_unrecoverable_memory_failure sysctl
+	bh=MCOqS5Qt7DUErLD1sGM2NitPZa1Tc1bVbjZ/Obd/mdo=;
+	b=I6BWV2bdeoZlklkmn1L9BWRacBKjy/psVM0tQCANj7jDqHtjDVCSkqZhc33nWJNBb4d0Mk
+	GweOCIKKlL8jCyRymqmALckwo9C6AF7oOq5W0o5/BakGMhOUDrngjo+ecZI4+RZdV4eqOY
+	OxzLzmv/MBvfSVSoBHFQYZM9gELdaUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776086911; a=rsa-sha256;
+	cv=none;
+	b=Moeq6OFoxPhM49ZUX9dunjUFEP9IYqHtyy5j7/wq9G1KKp8yBJnFgW9W3wYE/TRufGQMUe
+	AXb4RVjubx5npBSyynsiq+m5onUHgpgojw20WrN4y/1QofHdYO5h+xzhXczKMInCKJqdwS
+	L6zY/QfGV7jflb5SWgheqbI8Tm8+35o=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mQZFa8uj;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 24FA5435E2;
+	Mon, 13 Apr 2026 13:28:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF49C2BCAF;
+	Mon, 13 Apr 2026 13:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776086910;
+	bh=7VByJTwrbtmSQuR7FvCes1Iak+N/IKd4uFjkgcO39ug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mQZFa8ujuVe81yE8vcLgLxhVVWJzt+swKGWZ2ofKQXeOaAczk3K7ksXwrVlaJ+hYw
+	 yVXg5XiKV2rDDSHGmZ1cHQ+6AGEE+yBrBY8Yi+AJDfc5p1i4llszFa2XXvV01sTTec
+	 G5SA0gcFv2AQ1usMg1UopmrqtMVJnc6aLQ9KCriHB4Wjq3rdjlaeimKxzpGP4Tcub0
+	 Hpe1GUFInfON7xos/qUF6Ek0JOQtQ+M2Mm8BtjbuE4GPPPko8pTQjSqAPoaHfBPtIj
+	 Zk8VEGEOVMkuyQZ4NDKGfZm/7c5eMmPrWTp1byTgwQsPAwlXcKcEJE+KRr1I5UgG+L
+	 OZ747izg6AIcw==
+Date: Mon, 13 Apr 2026 16:28:21 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 06/49] mm/mm_init: fix uninitialized pageblock
+ migratetype for ZONE_DEVICE compound pages
+Message-ID: <adzvdRPrK55TutT6@kernel.org>
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-7-songmuchun@bytedance.com>
+ <ady4LBppz-na5lM5@kernel.org>
+ <5910791C-9893-4710-9002-76534DBFBFBD@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-ecc_panic-v3-3-1dcbb2f12bc4@debian.org>
-References: <20260413-ecc_panic-v3-0-1dcbb2f12bc4@debian.org>
-In-Reply-To: <20260413-ecc_panic-v3-0-1dcbb2f12bc4@debian.org>
-To: Miaohe Lin <linmiaohe@huawei.com>, 
- Naoya Horiguchi <nao.horiguchi@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3210; i=leitao@debian.org;
- h=from:subject:message-id; bh=Mp1Qv6rhhs0jzy9DwGJSWL5EM4TqsDFHcgB+US1rhmY=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp3O8OOxyyLmnEVBgYOxqnlJRNzEM32jMwRHuJl
- lp++LJaOeOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadzvDgAKCRA1o5Of/Hh3
- bbCzD/9leaOJbS39F2fvv+N0M66/TmFRtRCcOvuRaKUAiQBKdSD1YSoEQj/XTjfciF6P5hnM7xz
- z+aS5nQ1qmxSLt/HRHr7rxoCfaSg0I+P0ltripbJMdGICH4kW1rvmfUcGQT8wRwz/4lipjlOFec
- jFublJBDLwhJmN9e2X3x4uXgJu4D4w8QWlXAW/ScqPcOYARBsjIsbWn44+1JoehOLSovAcWL/Pp
- LT+uIQxpkclyud2f+JDVRHE+vZDjl+PIgNWUBQBLCHWUmTCmxgh8jkkpMgVblybwg6t2113OfPw
- fHUQy5kQesNq2FKEU7QUESbLK0nXapRElS1AFOJvPhm7hkXbtTsa+k+39jLu4/zxFv8ToGhG6i/
- PQWe2A/8s9edOQR1dEQ6MVbsrzZE1gduOsoMmFv2REu4gqWiEyFdDynidGUS6evfEBTgOV72gSd
- nfFItHI9Iha6SBepQQB0W2IGVk587944kax9CtNXIWL5JOyt88lDUXkZy7h/L0R8rP2jlRPWjWm
- bpiDU2XojNGjjJeOJiQHh20p54N+ghvu63JKOZeeNlw6/dKxYqUFTPznWPwtm4NGxsO8+V10KmE
- 3WopOzwuVW+t8nmq3ORD19ijF9bZwM8FQsKnklTlw19aTltDK+/URDsNvwZFEfveAYI0aJArQeU
- m2XO1b/mwZvaQ6A==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: 5A9C712000D
-X-Stat-Signature: s74k6zj5jjc81rujgjxmnm6t95f41oen
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5910791C-9893-4710-9002-76534DBFBFBD@linux.dev>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8xdopu3aomi938ea68ritb9341gjy1ar
+X-Rspamd-Queue-Id: 4F00780008
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776086829-299053
-X-HE-Meta: U2FsdGVkX1+lfBmroe1ORi20rydj8zBiTrj9lkubEmKAz1OZd+G8v967dHpBm9fiNATIYbKj2+mFVgoATJ+4GduK0ErV/r+Z+oA/sSTt43Typdzw4jI2Je0/IGMzDG0uliU6EZBSZ+Q3CJ4dm821UpPhorfXc6pYrcRhwc1hInQZYLmqLhNRwvKHovxCBDSORS9EtlnJEMTGZaRR8DyQonF8LYaThbqZ5BR4B10wm0JzB4kM7kZ1d6kWK+ujA1DhhLhh8xo7f6lQRS/rAoeXyrrhIVMoeVMayP6MUSMiAg3NC4AH0HU+l7g52rFabJYLTq689aQ9Vjo+efhI08Cb/A0dsjtCIrqGc1/lely4XyhbqDQNAcIU40+f6LZwfMKalEJ0N1A6bOm+PGlKqQYbInmaqtlgvmLu6M++xdUGJ02fF0UZrXCWhWuwrTazhOk/04n6gsbDfd8ogom8bsl4a1OfOHRPEPP9HRlvFu+6AYkL4Yaag5UOKLhZlIgFlSyaBkzxpoRlVQSMmpnVsYQZ6E0DqhFVHum2A+VLFsHvJQPA3NwzuMig13aMAgXv8la1DL60to1zep0a+QzISO17veS7KgB1hJmM1YzyTYznmuI81awLA3RFrgBS+QelE7YdOwzsSAxowjizczWcC3S1Z9IkSPHGVeVDFmyN0RF83YuoEmU8g/SxhFd7tZHnF86auyfk0fGJOYHpbQDP0dVNirjf/D8M6BUKQ3yvPKPkTLf0s6K2QZ2IgeqRBQPFXuXhv4TtzvJkhbSFVCEQ4ppFStc0+AIIo0ol+ZSAj/kgGdqrHEAnUDKKqM8+AkiruwX3diLdkAezCjt4LK4PDYgTLek2buhMTm48zt7T8/+C37ZbbdPrTXd81Tv0U0R0AvUqbwl+kUujVfefIu/VOi9HmBWUDgFUo2joJiYRzCoE6DZ2YfcBZkG91nNKVhbq/OYne08ipGZec5tD1+8YbLy
- DKClLdGN
- 7TSGvDFpi1g451AfhWeYgJTSJ9dnRRLit97mKwYPwsC5OqZikpmFtgbLylpvIC5mG2dUopovZbPANB7b811LvADCa7swq0DrEtW7G0D2/YtE+fBmhLEjXSk6yrTcDevthlt05YnsQhCUvcVGruQas4WJ4DAmlHcC5sHCGHDBz0aR5y0WaN8fzsJdqCd3ji/MW7q4XRPB1qfWBDKIDGA4heUTi+ATIa4puZbxlWR0E5BdMaLy4XlTv43gt9cR+8Mprlusw/seWev9sQy/zMOJ+N1L9Xw==
+X-HE-Tag: 1776086911-196790
+X-HE-Meta: U2FsdGVkX1+mn79YzqdZdmwKK8/6XrMwBZqy6ACU0uj4/4WDT4CDgthj82LDbNPgdISO7Wfrpew8yB9j2hu8iN1na6TGIcdWfxWCQns3J2ufgyv9iw2UvogKgjh9A9+hDKyc+xc4VEau1Dx8Qemja6bYpZ4KxTTxHFiv5K0aD3wU892AhhK/IHPx0HegXJjEHZnOr1AuktrhuzPYpRcoXu5D6ZcgXAoOmX80gSgamwzC1Lle37A37BgdUYt+ONf2jM+Gaky691ipFySTgxzT9YPb0y/s9ezeb/1cTJmkZbNbdw0uRPkoLhZ7NoKyQOw1BGV+nX9MTnXzpghQ3XiSKm9614rmmDkkbD7feEq9UhWTtUUGZOxkW9swA/8Kw0uNEaNtk88IoJesxO23SiQkYOPbhQp/d8PKcf/3BkFaOmiY80f8Lxs4h8pNuJficXQ0ug3lESzB93DqzsGWD0lYSExQXWqcUtimfyVCMOsl0mpaHh9iku6QNIp+s6AHWgPAmtAx+MY6nZW1HRHPlZWLo2y99MQuNm/HuWqESkiQe1niZbzn4TRZU3axN4sOxNaxo4nwTidV9gzttodDz5roa0yqM7jakqcT1eVmDa7PJAp6cImLUZTDDFQszOacjzWBgSufcqsv5PGb8A6FekJOqSf1joJPFFYqg3RTxVQwVlgBl3VdwRVEveDPlShEraHFm5/GoRrdPJHQ5twmVKf/ubSdje1adltqYhXCmtwPRtjZoW83zXUi4xu+ZT8DGJFaIX/rKWnfPghDDFlXMgCgYtjJbJGcEvTZXU8VSqL+/Au686ENvAdiDm8w/52XdXJIQoWX9p8FdcaMMZJwkCG8NtlERSS3wbOlCb5cOsOT2PJV7L0YIAULD9b6EF14hDcilBYuxsGi2z/+8h4ykHfaW24mW9aMplyNH6grJAJ0YMIt1zHv//5nXgtDYHeJTD7J6xMcwtTI+D4QQ0kOn/6
+ +BUqc6hr
+ 9K8L6u4eyedihW83euJlnd5Nn3emKAzUKF0fLJiPsl+3piFYuuF9Y8X3udeMHwkOTe9JTIxA2P8zBXfrkIu8rW/bVU28B9obclhF7IV8tWD5en4dYGhYr32gcksTUEMPPrctlm8tOgKjN3guige+mpBI2xa/aLBG94ogbdqHz/EJgKaA6YLXqDaE+Docxgai1v6ia5IsW/znak7wPRllRsFd3UjSwqV4dN79/Cp9JM4aKR5SZmbWsWPgJnZKJlzVDmUUHQ0fonpdlObcLLdEJJ2Zz/oIFIZPcHHsJKffPQIAuGtEDYQIca9gXpWQuHMkUM86X6D/+NGYcwJk4xnZdnZIpjjaerzhkQIRbH90BhnRqc58Fcl2OXuX8+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,87 +108,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document the vm.panic_on_unrecoverable_memory_failure sysctl in the
-admin guide, including the CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC kernel
-configuration option that allows enabling this behavior at build time.
+On Mon, Apr 13, 2026 at 06:07:44PM +0800, Muchun Song wrote:
+> 
+> 
+> > On Apr 13, 2026, at 17:32, Mike Rapoport <rppt@kernel.org> wrote:
+> > 
+> > On Sun, Apr 05, 2026 at 08:51:57PM +0800, Muchun Song wrote:
+> >> Previously, memmap_init_zone_device() only initialized the migratetype
+> >> of the first pageblock of a compound page. If the compound page size
+> >> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
+> >> subsequent pageblocks in the compound page would remain uninitialized.
+> >> 
+> >> This patch moves the migratetype initialization out of
+> >> __init_zone_device_page() and into a separate function
+> >> pageblock_migratetype_init_range(). This function iterates over the
+> >> entire PFN range of the memory, ensuring that all pageblocks are correctly
+> >> initialized.
+> >> 
+> >> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound pages")
+> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> >> ---
+> >> mm/mm_init.c | 41 ++++++++++++++++++++++++++---------------
+> >> 1 file changed, 26 insertions(+), 15 deletions(-)
+> >> 
+> >> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> >> index 9a44e8458fed..4936ca78966c 100644
+> >> --- a/mm/mm_init.c
+> >> +++ b/mm/mm_init.c
+> >> @@ -674,6 +674,18 @@ static inline void fixup_hashdist(void)
+> >> static inline void fixup_hashdist(void) {}
+> >> #endif /* CONFIG_NUMA */
+> >> 
+> >> +static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
+> >> +        unsigned long nr_pages,
+> >> +        int migratetype)
+> >> +{
+> >> + unsigned long end = pfn + nr_pages;
+> >> +
+> >> + for (pfn = pageblock_align(pfn); pfn < end; pfn += pageblock_nr_pages) {
+> >> + init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
+> >> + cond_resched();
+> > 
+> > Do we need to call cond_resched() every iteration here?
+> 
+> Of course not.
+> 
+> > 
+> >> + }
+> >> +}
+> >> +
+> >> /*
+> >>  * Initialize a reserved page unconditionally, finding its zone first.
+> >>  */
+> >> @@ -1011,21 +1023,6 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+> >> page_folio(page)->pgmap = pgmap;
+> >> page->zone_device_data = NULL;
+> >> 
+> >> - /*
+> >> -  * Mark the block movable so that blocks are reserved for
+> >> -  * movable at startup. This will force kernel allocations
+> >> -  * to reserve their blocks rather than leaking throughout
+> >> -  * the address space during boot when many long-lived
+> >> -  * kernel allocations are made.
+> >> -  *
+> >> -  * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
+> >> -  * because this is done early in section_activate()
+> >> -  */
+> >> - if (pageblock_aligned(pfn)) {
+> >> - init_pageblock_migratetype(page, MIGRATE_MOVABLE, false);
+> >> - cond_resched();
+> >> - }
+> >> -
+> >> /*
+> >>  * ZONE_DEVICE pages other than MEMORY_TYPE_GENERIC are released
+> >>  * directly to the driver page allocator which will set the page count
+> >> @@ -1122,6 +1119,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
+> >> 
+> >> __init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+> >> 
+> >> + cond_resched();
+> > 
+> > Originally we called cond_resched() once per pageblock, now it's called
+> > once per page plus for every pageblock in the tight loop that sets the
+> > migrate type. Isn't it too much?
+> 
+> There are indeed many more cond_resched() than before, but I don’t have a
+> concise way to write it, so I took the easy way out.
+> 
+> How about:
+> 
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 2d680636b67a..d13a2577c4c3 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -683,7 +683,8 @@ static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
+> 
+>         for (pfn = pageblock_align(pfn); pfn < end; pfn += pageblock_nr_pages) {
+>                 init_pageblock_migratetype(pfn_to_page(pfn), migratetype, isolate);
+> -               cond_resched();
+> +               if ((pfn & (pageblock_nr_pages * 512 - 1)) == 0)
+> +                       cond_resched();
 
-This follows the same format as panic_on_unrecovered_nmi and other
-panic-on-error documentation, providing clear examples of:
- - Enabling panic at build time via CONFIG option
- - Disabling at runtime via sysctl
- - Enabling at runtime via sysctl
+TBH, I don't know if 512 is the right number :)
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- Documentation/admin-guide/sysctl/vm.rst | 46 +++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+pageblock boundary was a convenient point to have cond_resched() along with
+setting the migrate type.
 
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 97e12359775c9..af545869bc1b4 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -67,6 +67,7 @@ Currently, these files are in /proc/sys/vm:
- - page-cluster
- - page_lock_unfairness
- - panic_on_oom
-+- panic_on_unrecoverable_memory_failure
- - percpu_pagelist_high_fraction
- - stat_interval
- - stat_refresh
-@@ -925,6 +926,51 @@ panic_on_oom=2+kdump gives you very strong tool to investigate
- why oom happens. You can get snapshot.
- 
- 
-+panic_on_unrecoverable_memory_failure
-+======================================
-+
-+When a hardware memory error (e.g. multi-bit ECC) hits an in-use kernel
-+page that cannot be recovered by the memory failure handler, the default
-+behaviour is to ignore the error and continue operation.  This is
-+dangerous because the corrupted data remains accessible to the kernel,
-+risking silent data corruption or a delayed crash when the poisoned
-+memory is next accessed.
-+
-+Pages that reach this path include slab objects (dentry cache, inode
-+cache, etc.), page tables, kernel stacks, and other kernel allocations
-+that lack the reverse mapping needed to isolate all references.
-+
-+For many environments it is preferable to panic immediately with a clean
-+crash dump that captures the original error context, rather than to
-+continue and face a random crash later whose cause is difficult to
-+diagnose.
-+
-+= =====================================================================
-+0 Try to continue operation (default).
-+1 Panic immediately.  If the ``panic`` sysctl is also non-zero then the
-+  machine will be rebooted.
-+= =====================================================================
-+
-+This sysctl can be set to 1 at boot time by enabling the
-+``CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC`` kernel configuration option.
-+This provides systems with the ability to enforce panic-on-error behavior
-+from the kernel build, without requiring runtime sysctl configuration.
-+
-+Examples:
-+
-+1. Enable panic on unrecoverable memory failure at kernel build time::
-+
-+     CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC=y
-+
-+2. Disable at runtime even when compiled in::
-+
-+     echo 0 > /proc/sys/vm/panic_on_unrecoverable_memory_failure
-+
-+3. Enable at runtime when not enabled at build time::
-+
-+     echo 1 > /proc/sys/vm/panic_on_unrecoverable_memory_failure
-+
-+
- percpu_pagelist_high_fraction
- =============================
- 
+Here we might be able to squeeze more iterations between subsequent
+cond_resched() calls.
 
 -- 
-2.52.0
-
+Sincerely yours,
+Mike.
 
