@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B6CEF34C49
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:57:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9387BF34C54
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 14:02:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0FEA6B0092; Mon, 13 Apr 2026 09:57:32 -0400 (EDT)
+	id CDB6B6B0089; Mon, 13 Apr 2026 10:02:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B73216B0093; Mon, 13 Apr 2026 09:57:32 -0400 (EDT)
+	id CB3146B008A; Mon, 13 Apr 2026 10:02:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3B126B0095; Mon, 13 Apr 2026 09:57:32 -0400 (EDT)
+	id BEF606B0093; Mon, 13 Apr 2026 10:02:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B28B6B0092
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:57:32 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 146D386BDA
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:57:32 +0000 (UTC)
-X-FDA: 84653685144.19.16A3F2D
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E41D14000B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:57:29 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AA58B6B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:02:21 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E8F256EDA
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:02:21 +0000 (UTC)
+X-FDA: 84653697282.11.6A908A1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AD15640020
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:02:19 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DmYoUD9o;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776088650;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WB6X/KB4lcgoxaXTVldx7yfC+K++jG31ztfaBdye/0o=;
-	b=8gdZgZLetHpenhcrP4ZKxaSDjJsTb+FfIKCGdiq31Mr7NzTAtXnjXniBt8SghAWnhXjPfj
-	huJ14NU1QwPwgK1brpN82A8zJeSlcCmUJJe5ug7IsZvbU35rKouUvNAr72ui5Ukpu/HVVA
-	Bh9imIK8/C2Wqt7+kJfZe7pAlhWLuCk=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEan9QiV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776088939; a=rsa-sha256;
+	cv=none;
+	b=PwrqPM0OjFKyQMJo3ESIHo3I6MgdKYutQvMoVZAErSid7lLcQAHWG7OIxxJjjKt6lmv5GL
+	7dcjGY5zgpw3ALFWMepVXHfbGAXdJTIT8BFdm/DqNup35VCi4IT+Tn+XxD8mzFgM9bEV9o
+	9ehHxLm/lpXCyYxTc+tt5ipAAWsfuB8=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DmYoUD9o;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776088650; a=rsa-sha256;
-	cv=none;
-	b=UC3P74ey9EYNZJkZCsLN+GMp/9k+hslVTp7JVDAS6pSG+VaWBaXWY58OPcuHnhv0EhrFyi
-	rOylMgiBS9YfrsjDrsamnisW/1/gGlYuFDmVXHau8/lJ9Te1mdGut2b4jFY/hheqHMgqzC
-	PyRiKDSyAXACRm6hI3jWSYnLNJPumVU=
-Content-Type: text/plain; charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776088647;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WB6X/KB4lcgoxaXTVldx7yfC+K++jG31ztfaBdye/0o=;
-	b=DmYoUD9oKqdfKivm9z9TwfbKLHD13LH/gu6nFBQGBPzDBoPrHIIJnqbsGdaBjyp/HzmHN5
-	mVQMvqextCEEWtEWK81D/y4Sja1/VSwcgDqDjhNY8hYIm10O6g8QQmcjc0z05CcPpQLLRS
-	8dTHIkivv52rRR/NBQD14jzk00a+lW0=
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH 06/49] mm/mm_init: fix uninitialized pageblock migratetype for ZONE_DEVICE compound pages
-Date: Mon, 13 Apr 2026 21:57:00 +0800
-Message-Id: <ADC5EFE8-454D-4B9D-8BB0-39FF671290F0@linux.dev>
-References: <adzvdRPrK55TutT6@kernel.org>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Liam R Howlett <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-In-Reply-To: <adzvdRPrK55TutT6@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEan9QiV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776088939;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=J8T6Dw9NftUnSxGcHO5ibrBAJE+CebJPNtYC8nRk5pk=;
+	b=pqcXMDri3tqay+B3dGS4jLkN6T+1Z2nJ8iK8GlDdRy8T3DRFsBiqmlRKOHxyZI8w4YzHIN
+	9gimDg2rKT+R01NrIPIVMDZ+XBGS/gGcRZwXSFb4vHUPoIyw4gwlCpc1ZIGiI3hTH+dfus
+	HI/92+nSW0TLlQuwy/ese8Zq4nRWoko=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 20AC161334;
+	Mon, 13 Apr 2026 14:02:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E55C2BCAF;
+	Mon, 13 Apr 2026 14:02:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776088938;
+	bh=J8T6Dw9NftUnSxGcHO5ibrBAJE+CebJPNtYC8nRk5pk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AEan9QiVkF11/pica1V//uavUJAxHURk/fNrhf3UJDdRX9JPHIySKLThL6kSQhGZ3
+	 trvibNDdlVNJIksx0OS+AKn1EjpwXRdjWcoi4b6yN36RlD4pQ7bGMFzHDBgpavKd+D
+	 1hamjYOUtE6h52r+6PvngIsmIWpf59C+AmQb8TpJn1xV3n2To5sTtK/OiEeRNX8oGr
+	 GMRryoclRICNbN7OuW1Ioav8jzY6/GjnKXN3Fjg6r2wD8SNPpnXVEn+f4OVXnxx8sB
+	 HvHi9yKQnO0LOSowMStisrHJcv5OHF4Enok3jCl2dXUgdLdR45CVLDuFDMIAJnx70d
+	 n6ZDuCnEUS23A==
+Date: Mon, 13 Apr 2026 15:02:12 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: Re: [PATCH mm-hotfixes] mm/vma: remove __vma_check_mmap_hook()
+Message-ID: <adz3XI5vimbxDghN@lucifer>
+References: <20260413105713.92625-1-ljs@kernel.org>
+ <adzg2DWDWDR3DFJh@shinmob>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adzg2DWDWDR3DFJh@shinmob>
+X-Stat-Signature: jgoef7usg5skc1zejy5yiasrqjwexjde
+X-Rspamd-Queue-Id: AD15640020
 X-Rspam-User: 
-X-Stat-Signature: uyqqj1qf9sin4gmdqmg4x5ep6rp3nmdb
-X-Rspamd-Queue-Id: E41D14000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776088649-851875
-X-HE-Meta: U2FsdGVkX184T+9GhREQkc19zNxIGCArd+iV/5Pg27wYArHmAq2TRPWX0FtbyPRiS1C+Ni4ZNHCxP1gpMN9oLkl9ppyU2lFhoOdVjrI4rwG/mVQrHQ2aoUuim/JLFnM+p/dVxgUdmJ8orSzkRJpXi8FgSLhZVFjypAE8ZDvx2cHrnR6b4b9oTE7z5cNaLWZpD6EX+9PBwKKPLO+y8P7uYaPDxbRp0L+Pantp0etHPUK0u6DD2qKaxvIqJD/8+iCYayNgn5Z8+gm/Oe4Fb7A/zXzaYQFb7RkPfsXyPC3QPTCMj6UorHYtgXPfDL3sEf0pVen7gYt3feO0wEnJkBpLVglhfBo4cJ47d1Ob4cb8ddoruo2oxD2X3Qo8M3kypqt07eA4/DojJCVY60d3hPWKBiqVpWEGFZcpoIjTIDhE+ycs9YtTJW+3yMy965C8r2Fe8w/qUYbqWhXpzxtj1vD+jw3JUwY+i7ogX+1jvcAfzbL1RmpqrVdJAmWpt54/mHmO7TYuF+FY2dwuyaft5Wiy5aIkkksOOsSZ07ceyTyQSqTjh6v9eghHzXbQQC+GJE5Yh5rUQqjUL+VL1IIObAlw5RKLmphiuYu4efYVus0sFOg+wmxhpauo/pWeCd01ykI6mB/yphe8/tXjzW10MRd9NJpnX4kg6iNh67RaRKR4sfZnL9dayRahnzD5b3GUMmeCukK1ppH8taAAED1fFQEUHPl+f7OR/dtb9EZQZd7OpTlaGqM8ZEffeX8MuHlJni4YTq7TvGwg+1nXZPiCkNXxk7af272ghj3fQDjxf7QF+xwcWG+8rD1fNfLIbtjW5zrUtdEkWCofq0gJx8H6YjRB84LJsRV4pH2VNxrUXGcA5fYnY1uywvHx8vCkMcvqWcKn9DVqxRoEiUfjKIdMvEWjOwIU2dpDHKKLnnKBNMsAOwlVUCL2CH4uSFa8WMi7xywLqzxae1GTH9FrMsuXWid
- YSlSbYnp
- E5JzgbfnH4sRnb1nXq+RvfL7VgnkJmCdTsS6kmIElvdNEFwSf4Um4LSDdD45Tzm1X9OmPCfM6p3o9/HSmHy/61duBMTomUbCOVwKdFanB7uDUVgiyx17OKptsoh0trGCd1evznDHfuOAx33khAE8rxqwyrMIudnH4Vme+alr5Q8cRWfY/+2FGTmoJ/MTIX83o6FD96FV1B0vL2ZxHlriTgOn6RkHimKX/ZgOoBE26n4XN7uP8bnDTQVsnS65Js0jkgAQ15YnlgjPgHDPyN2AZWRQowwDQOoKBOGZ2od4Evub2opIQpDiuc+k+2lWGY2UGjVKBpozzX3dp1jE=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1776088939-803680
+X-HE-Meta: U2FsdGVkX1/teHpKt6II3Zgenkg4NHD5QovT4PH6CtYKXfh3LglxUwdCdaPt0d+8kAAhPQIzE9v99WUpGQDimcBVDUePZa8GmnUSjqg4WkTxqQgb0pwXZAbaDqaHdSaYEZiC7MP2EnP0v8PJd7xvKfvXQLsoWYbjBSvEIlxYeD/QokguxeQiO2RlWWqqycQiZblbdz6u/NgQIqxE85KX4/3cjOWH7utX2a9V5UUB3PT4XwmxhTtyN5Gk2B1MU1POD3nCTMegjOg502YOTSLFS+ksXiM0FaTaKo59BU5cExeBQbcYpNXU/3gOCz0RTL7/64c2MAdWOAm8jnUS5APDUPxTMfTlh7N1VKJv91fFTR0hXIBEJc0YDLIhQOMJV/PDR4labJgmA5c+NZp2Q+XjvSNn8+dTLOmAoi1yZT+g3TMkfj4rJMJLSRyhH2FWrxWdm2pE8CYslQAbFJGzyZ1KiijRdo24ybS+MBXsVPBcWmUgIe/k9w2yCqKo4HEDYytVygzMcKAzFGz90PkxJHYz15UrvqK1D3AnKjLWXpcPO2J2SdBLk/ocoZpPNstFCY0lfXZfNRzeRl8R7sw6o19KLwWp7l5TAN4kUbJQ3Qel1zBEXL83NCvkuYGPghR8Qhn0xmcuj+Tx1VYjQgAP63Vjn89JS1j9Y4J7lqx34elbLHTS3yu+FitzCJSRBX855SnqXnwWiklCRc94RdOpUheY17Ii4V5uXRfhmIa/ucZ9pEy7rW7tepzonWJ9psu+tY0Ig89ksY8wcg1XZdV4CHapYMy3tekImFQRCPp2WmVWoMi9l2wylXqT5/6oxS54bM6yVIiaI0oBcX5ttX+Ea++EJmudLF6yVKNzs4xW+NuNaAjXOcNIkQbrp3dtRtsl+5j4XZCct9rxHuTgszwvIsF2NhCu6fjHgM5LetkjK1wluT0gZm/FaPhqVV2t1QZfydx2aNiTSVZztBo/2+c8VuF
+ oVpTNyFY
+ r0GAIX1Upv2iF3KRPp/IsVAo43jYq8bJq0VzrdXnzhSbaQk3DrwZdxg9jt3CJwoQ1oQZ6IT/q0VDnUwETYZTsT+BnWYKsSjaRb8GKPhCe4/HhSTa2LB8Z+54woZSCRkeL6piWFILNnaWvPcIZ0bpss2svuJDh2AA8ofed+V0CV1DM6EV16RzA/od0sKNSPEItaq5xPkYYp3ja4G714TimyJ/Ekfi8MWVUglqnPCT2uH85DTxWjUIDRjwmeiPNqCV4j3CYxDdbPJUjOuUPCU8cbK3j4leES7hYj0BnsKEWbwJiagE4pTznx4h8qKYMuhejPjHQADXuB8tYljHeKd6X4sXYwaGenY9cPnKgmJuQDwOEUslwtF7sDBOmxkYZo4XaUbfEu9Q7m/ZAeDQVnYOlC6ZMTWnsCRJg5Jbt9Dqz1dTw5yM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,147 +96,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Apr 13, 2026 at 12:28:46PM +0000, Shinichiro Kawasaki wrote:
+> On Apr 13, 2026 / 11:57, Lorenzo Stoakes wrote:
+> > Commit c50ca15dd496 ("mm: add vm_ops->mapped hook") introduced
+> > __vma_check_mmap_hook() in order to assert that a driver doesn't
+> > incorrectly implement both an f_op->mmap() and a vm_ops->mapped hook, the
+> > latter of which would not ultimately get invoked.
+> >
+> > However, this did not correctly account for stacked drivers (or drivers
+> > that otherwise use the compatibility layer) which might recursively call
+> > an mmap_prepare hook via the compatibility layer.
+> >
+> > Thus the nested mmap_prepare() invocation might result in a VMA which has
+> > vm_ops->mapped set with an overlaying mmap() hook, causing the
+> > __vma_check_mmap_hook() to fail in vfs_mmap(), wrongly failing the
+> > operation.
+> >
+> > This patch resolves this by simply removing the check, as we can't be
+> > certain that an mmap() hook doesn't at some point invoke the compatibility
+> > layer, and it's not worth trying to track it.
+> >
+> > Fixes: c50ca15dd496 ("mm: add vm_ops->mapped hook")
+> > Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+> > Closes: https://lore.kernel.org/all/adx2ws5z0NMIe5Yj@shinmob/
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>
+> Lorenzo, thank you for the swift fix. I applied this patch on top of the
+> next-20260410 kernel, and confirmed the failure disappeared. Good.
+>
+> Tested-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
+Thanks! :)
 
-> On Apr 13, 2026, at 21:28, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> =EF=BB=BFOn Mon, Apr 13, 2026 at 06:07:44PM +0800, Muchun Song wrote:
->>=20
->>=20
->>>> On Apr 13, 2026, at 17:32, Mike Rapoport <rppt@kernel.org> wrote:
->>>=20
->>> On Sun, Apr 05, 2026 at 08:51:57PM +0800, Muchun Song wrote:
->>>> Previously, memmap_init_zone_device() only initialized the migratetype
->>>> of the first pageblock of a compound page. If the compound page size
->>>> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
->>>> subsequent pageblocks in the compound page would remain uninitialized.
->>>>=20
->>>> This patch moves the migratetype initialization out of
->>>> __init_zone_device_page() and into a separate function
->>>> pageblock_migratetype_init_range(). This function iterates over the
->>>> entire PFN range of the memory, ensuring that all pageblocks are correc=
-tly
->>>> initialized.
->>>>=20
->>>> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound=
- pages")
->>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>>> ---
->>>> mm/mm_init.c | 41 ++++++++++++++++++++++++++---------------
->>>> 1 file changed, 26 insertions(+), 15 deletions(-)
->>>>=20
->>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
->>>> index 9a44e8458fed..4936ca78966c 100644
->>>> --- a/mm/mm_init.c
->>>> +++ b/mm/mm_init.c
->>>> @@ -674,6 +674,18 @@ static inline void fixup_hashdist(void)
->>>> static inline void fixup_hashdist(void) {}
->>>> #endif /* CONFIG_NUMA */
->>>>=20
->>>> +static __meminit void pageblock_migratetype_init_range(unsigned long p=
-fn,
->>>> +        unsigned long nr_pages,
->>>> +        int migratetype)
->>>> +{
->>>> + unsigned long end =3D pfn + nr_pages;
->>>> +
->>>> + for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D pageblock_nr_p=
-ages) {
->>>> + init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
->>>> + cond_resched();
->>>=20
->>> Do we need to call cond_resched() every iteration here?
->>=20
->> Of course not.
->>=20
->>>=20
->>>> + }
->>>> +}
->>>> +
->>>> /*
->>>> * Initialize a reserved page unconditionally, finding its zone first.
->>>> */
->>>> @@ -1011,21 +1023,6 @@ static void __ref __init_zone_device_page(struct=
- page *page, unsigned long pfn,
->>>> page_folio(page)->pgmap =3D pgmap;
->>>> page->zone_device_data =3D NULL;
->>>>=20
->>>> - /*
->>>> -  * Mark the block movable so that blocks are reserved for
->>>> -  * movable at startup. This will force kernel allocations
->>>> -  * to reserve their blocks rather than leaking throughout
->>>> -  * the address space during boot when many long-lived
->>>> -  * kernel allocations are made.
->>>> -  *
->>>> -  * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
->>>> -  * because this is done early in section_activate()
->>>> -  */
->>>> - if (pageblock_aligned(pfn)) {
->>>> - init_pageblock_migratetype(page, MIGRATE_MOVABLE, false);
->>>> - cond_resched();
->>>> - }
->>>> -
->>>> /*
->>>> * ZONE_DEVICE pages other than MEMORY_TYPE_GENERIC are released
->>>> * directly to the driver page allocator which will set the page count
->>>> @@ -1122,6 +1119,8 @@ void __ref memmap_init_zone_device(struct zone *z=
-one,
->>>>=20
->>>> __init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
->>>>=20
->>>> + cond_resched();
->>>=20
->>> Originally we called cond_resched() once per pageblock, now it's called
->>> once per page plus for every pageblock in the tight loop that sets the
->>> migrate type. Isn't it too much?
->>=20
->> There are indeed many more cond_resched() than before, but I don=E2=80=99=
-t have a
->> concise way to write it, so I took the easy way out.
->>=20
->> How about:
->>=20
->> diff --git a/mm/mm_init.c b/mm/mm_init.c
->> index 2d680636b67a..d13a2577c4c3 100644
->> --- a/mm/mm_init.c
->> +++ b/mm/mm_init.c
->> @@ -683,7 +683,8 @@ static __meminit void pageblock_migratetype_init_rang=
-e(unsigned long pfn,
->>=20
->>        for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D pageblock_n=
-r_pages) {
->>                init_pageblock_migratetype(pfn_to_page(pfn), migratetype, i=
-solate);
->> -               cond_resched();
->> +               if ((pfn & (pageblock_nr_pages * 512 - 1)) =3D=3D 0)
->> +                       cond_resched();
->=20
-> TBH, I don't know if 512 is the right number :)
-
-I picked this number out of thin air. I=E2=80=99m not sure as well.
-
->=20
-> pageblock boundary was a convenient point to have cond_resched() along wit=
-h
-> setting the migrate type.
->=20
-> Here we might be able to squeeze more iterations between subsequent
-> cond_resched() calls.
-
-Choosing an appropriate number is indeed difficult. We need to consider
-both unnecessary cond_resched() calls and scheduling latency, and the
-specific value also depends on the current CPU performance. At the very leas=
-t,
-I find it hard to choose a correct value. Since we all agree it should be la=
-rger
-than 512, why not just pick 1024? I can't think of a good evaluation criteri=
-on
-or selection method either.
-
-Thanks.
-
->=20
-> --
-> Sincerely yours,
-> Mike.
+Cheers, Lorenzo
 
