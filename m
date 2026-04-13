@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDFF0F531C1
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 083D9F531C1
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:29:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2821E6B0093; Mon, 13 Apr 2026 14:29:09 -0400 (EDT)
+	id 716586B0095; Mon, 13 Apr 2026 14:29:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 232A36B0095; Mon, 13 Apr 2026 14:29:09 -0400 (EDT)
+	id 6EDAC6B0096; Mon, 13 Apr 2026 14:29:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 148B86B0096; Mon, 13 Apr 2026 14:29:09 -0400 (EDT)
+	id 603EE6B0098; Mon, 13 Apr 2026 14:29:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 009066B0093
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:29:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB0BF160289
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:08 +0000 (UTC)
-X-FDA: 84654369576.28.F264CD9
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A62E2A000D
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=KLIXIQrj;
-	dmarc=pass (policy=reject) header.from=bootlin.com;
-	spf=pass (imf25.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.171.202.116 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776104946; a=rsa-sha256;
-	cv=none;
-	b=gn3qwYWWV8Rg99OYmugGt4kLMCUMWuLyph73bM27Co75rCS/m/Jt1xpSYB1RUt5qp9K0Gw
-	K+NiIlgyOViJbhyLf/NEtEdKpCoJgfMwFDh6hsT4W2O0xSIXpXFjvtzfBJmMw/1Rv972QD
-	peaVB1cgLoitqUW3syCPED0RFbEFP/o=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=KLIXIQrj;
-	dmarc=pass (policy=reject) header.from=bootlin.com;
-	spf=pass (imf25.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.171.202.116 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 50B4F6B0095
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:29:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E53D58AF15
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:12 +0000 (UTC)
+X-FDA: 84654369744.22.B132B8C
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	by imf26.hostedemail.com (Postfix) with ESMTP id F0B61140013
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=o44sVXLe;
+	spf=pass (imf26.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776104946;
+	s=arc-20220608; t=1776104951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SIbaQ9mg0ZbtaBPZTfhJW0y4Oug6knq3Mk42IMQtkEk=;
-	b=wAAv9cincAPJ9VpMufIWMDjoX8PVM+GJn7BhfgB8cyYv7z/qnrLBxKIbA/qWsqvA7lFmUK
-	pyEn9HqTmq0NZIcb24ZDwC/g9gTvgh9Q0BlEnImc0fQyqH/FSO20/bdhz5M5ZERQlLGl2x
-	JNoifdsPJAuLER0lB9ATPf0zPFYzqBg=
+	bh=Y5yh+jPLjYdbpM+lAMSIEbKZx9jBkdUNIqhhBJUSD7U=;
+	b=Q9cUQAYhbVA3eviug2INRtbDExHurJXtBgaq3sBdoY0MnM/0as6hO34CY6boxv0YhpUU7K
+	1qld6I4aL/PPmA2lXTy93V0feYnSzyHnSHNGe2atrHhnU9xaFNmntR2udVLru0WfmiFDT2
+	7n4BYOmEErDuJPKk2pr0xmWQz1sNBC4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776104951; a=rsa-sha256;
+	cv=none;
+	b=paOy49X1FXqstnvWCLbsWYJr82lw63g33ikoPTDnjHw9pUG+CDEDoZojxV1xTJ8NfqBPFL
+	H3TAzVZMka55z7n3EYFEzxBGessNl2LP6vaZLoE9M2FD1JJKSIoFgLlbrg/VDFLMHZrJkB
+	StOCsQmeAHnpQoQ170vKkQPuE7/gXl8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=o44sVXLe;
+	spf=pass (imf26.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A43C0C5B1AD;
-	Mon, 13 Apr 2026 18:29:41 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 6BD0C1A3203;
+	Mon, 13 Apr 2026 18:29:09 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F191C5FFB9;
-	Mon, 13 Apr 2026 18:29:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C7044104504B7;
-	Mon, 13 Apr 2026 20:28:59 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 40C755FFB9;
+	Mon, 13 Apr 2026 18:29:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D5D4104504DF;
+	Mon, 13 Apr 2026 20:29:03 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776104943; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1776104947; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=SIbaQ9mg0ZbtaBPZTfhJW0y4Oug6knq3Mk42IMQtkEk=;
-	b=KLIXIQrj/Dt6o6ylVSJmfcaGlqn8TQDRCQGBXVjGupGskDl9p5aoxmau6a5GMRftUxpFpP
-	XXob2LzYqw709cOvxQ5a6hZGYrx/bejjqgSFQM7M3yCVGCevkepZRsrW22JHoJF1sJdmYj
-	i+d3PdzlC1LjCfqZTgrnQ66Lzt9Q7VBJLIq352bEOs30qOllcgBqkwoZ+xBRxoIMSjdmbG
-	2XqEp8UhjW1u3aJYbkCV4oPPq+JzqKyxPU/N6g+sv8PuS6VSbWtBmO71EcZ3QVymVhCtlo
-	qjIaEb+/iC68dcXGm9wEQ/ZTOVEQ204pR+3wpucVloW80kqFyZL8TKyYRm8oKQ==
+	bh=Y5yh+jPLjYdbpM+lAMSIEbKZx9jBkdUNIqhhBJUSD7U=;
+	b=o44sVXLepMBqSnOEDpzehWYEkyLJ277S4ZD0mX5x0/hGbON8nbocYIKweTKmZgSaODHeop
+	Gk1QZ0KlMKDF6U1D/i7rG0MsPoJurHcz2wDn/C9O4mxht3VdU9u8za91gWE95CrtwzSa2w
+	o2xxrib2bvulpRAYCkWrLZAtfAw9kTqQn74z1/EQj7LuL/TVuTGJM10yXYkNFUqAiZGL5L
+	CMOT2PZnOSIQuXQLtFWLrdTzAkeZuuzxsF2HCU5UG2JVuExsPqUjNkFb/FdLta7lUaCx8Y
+	XLZbAmvi9zcDbQVvjBohG/kgnUmIxAsfWXAYZsXwpmK2NQb3P7FKaD7qaDJQrQ==
 From: =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
-Date: Mon, 13 Apr 2026 20:28:42 +0200
-Subject: [PATCH RFC bpf-next 2/8] bpf: mark instructions accessing program
- stack
+Date: Mon, 13 Apr 2026 20:28:43 +0200
+Subject: [PATCH RFC bpf-next 3/8] bpf: add BPF_JIT_KASAN for KASAN
+ instrumentation of JITed programs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260413-kasan-v1-2-1a5831230821@bootlin.com>
+Message-Id: <20260413-kasan-v1-3-1a5831230821@bootlin.com>
 References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
 In-Reply-To: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
 To: Alexei Starovoitov <ast@kernel.org>, 
@@ -105,14 +105,14 @@ Cc: ebpf@linuxfoundation.org,
  =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
 X-Mailer: b4 0.15.1
 X-Last-TLS-Session-Version: TLSv1.3
-X-Stat-Signature: bqirbi6wgkhoxtbnbqkr9y3y4smxezea
-X-Rspamd-Queue-Id: A62E2A000D
+X-Rspamd-Queue-Id: F0B61140013
+X-Stat-Signature: n8ppsbcs39o1yhz7k57yhxmdiomb4ke7
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776104946-869837
-X-HE-Meta: U2FsdGVkX1/5di6Jmy5SqSm516Ec3igM8C4q0wpTr/NmvpsXrcfV2rAWiOQTH1go3Bwomijzg09LkFQonsRvjCtmcpWG+vgfRZCQPTTLOovnZhdLm+fDiTW9mc7f32yGEPg0UTThmFkoSHV9lCm6icXOBFqRlSH1K2o8H2MNHBlmlfyyAz/3xog5xzpQaZy7WwdIDEJtHHfl+J9b9d0U2+ArhBpnBbBYqcyj4MfLPCg9MmLONr29ZWOwdfoTMHRXXHeq0XXYDWWSandLxLrq/d70MqV3DF0U+V4e0UPnh0x0YZyCexGh2TkhKqIICvmlmhf+uOYnjIqvfat8YAJWQgsI1j4vFQIhk47iAALM+rysLPGAIsbEgEPYJlYrpVhKw8PhIxpvKa4tp5MpsPH/SIZ0BMxhSYzE19larojt20O+AzT1frWT2JsDsG6kAqI/+7vVuQtDZ1qU+0NrjJtOHYzogQg7bm49rPP9KiMGimLc/0Q8Y6GG09hofms+BEx8r3TUSjESdzbiZaciu9dgeyXbW+gcldoG7S9vzWKEYLHmXSkbw8Cj/IF0dvhl7PEP5O/0STx9c2/0Wa6sAAe5mEWnArcZFsCT3ooWbi1s7TwuRZY+oacAp0g9AmrPnazjjPsSOltZEnNaw2JPhLVozkzuJYWTkJ9t09L35BohWeAe8qLcNdP+A1/rLVD2FMaDe5vatt7tnxK6T1j72TYyTWLZ5GYcTk2xXHKKsuAZTquw5x6mA3uAhXnhw4gKBgHyoOnCqFQMtWd+gxeP0mLM4bsOi6gTPrth8gp9F8FAHu4saYiIkVAOZJLE88zJ9kbdFrsdeTdgNE2vxo3+dXMIUf5UsmCL88hsIEuj5mYAaopmLzh57Y+ph7z7uQMc3vRfBFb5vT+66jkWzSIpdlwsaFlhTMh4hPv5fo09aEufIFHOtf0ndBzfL1U24qFYFyfQ7AWvK7yaTRTihx3tQb8
- Im3XBj9G
- vXVLViKZGlsz2WwCEQm9IOw6cGZT4F3/Q4sObad5u3tiQW5pDJNpXMkTKK+9L98V/e9eOajFO8B6Y/Gch+4+cWmNfrfVGMnPirZsCe3nEFl4qIHdlWpj9I1xyoarOe6FdalzmmkA9d6Zo1QVXQ3fVihzjA2UJ4i0dtxY3PuYhlyacSwyKTwcGxjRVk44jmcpwvj0xkahS9dzZwaVGzc3Ek+i/dbMy6hF4CySNrLw+nlm0dqZZOGlCP+2buCHQF0vrwr3GMnpA76VR9bqEbtfS9VQoogG+pq1polRvuvaDddVg9zY6O2vzKAO9JcCVjaSL5g3XJEIfCPeXVSYQoS5EujmQP9KYhCcyuFzoIeY73BoyruLStV/evNf0bf3BxFvKfFgBlQdqyIC5OfCZY3msQ3atJsm1d+y08M4yLa+yGtOSr44nmbiXHrIsMl940kvmJUy1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776104950-924143
+X-HE-Meta: U2FsdGVkX18Njsla94CPArrh0O/h9uIb3ABpvNh44jnznKEWKUGDpyC80cf5xaMk14cT2QpIqhmUH/WJhDx3I9luXG4GTDpvaPg65hUTEoYYFNKVe7QUjrcjz0QZNzAC5HxF88xU3HPIU5QppIcPgvslwcQyOgw2O7OdeBmofQhoxsCDI8rCCPGvVnlF3LbwmmItx7X0ijaC4ONtfH27v1G6McHSbICZN+tEO0DFfyatxKO0e9AVfcZDDMfYYNxW3mITEpoO3pCeYUe1jesR5SZSbIHGNJf16Ike/SuIDBzzf31o8awmtNm6fpsjpmOC54rFnGG4DO+WbZ+EthDTwMTnNiEJBz927abG5ai5vJl/4H41QTqgsaDhCh3p/qPm54FpC/DQOHmX34nB4mjjgSl4r6ZdgqY9H/AfctdP3ZDQtup/7AjflaKx63/iwPPFD3IB54cv6ArORrg7PyZVcel+plK9iB95xaqPxoOaJ9+c154dZy6B2EsxKRz7ZX8ncBhc2o/PQagDIdl5wQBVxOfHnv2TLaFDsVsmoHno5STr1eke5SpnNteEYGiSaFl3tskYbZCy1mWKs6PldkBP4ITNmW1SrN9FCxvajDMmoLEyBq/DcafI4v3SF1WUlhSs12J581SHS7qy/LOTU1w7zg2SYPqzQzf1F902Pwv3BCqZTcYaPkGmlb5ZkwjETruupWRFIpovr8opo4gloA2sxmwX3pIh0A9ASTp4fZX2gMsgTyUIYGB/jqXHXlyPAMlneKi4WsaaiOUNdNm5dH94gvT7GIMdjDcdyoFe241uYRINg6/EUgYV7kp2RZyrKUmbATCozqIiGYjGxmJHk8zUVgciKbogFagu8UDFRf4Tv0frZAgqPV5pAc61fmiM4qcOv1COHcEE0K3du6X6k9uDSgOLLHLtP4GWoA9JgUYb1y7f6Ws3QLcslsAZ+WboOXKyld/Pe9rVg8D4Beg2uOO
+ 2ua20Bg0
+ 0H8wVhIqEH6Nzmtln7NnPsg+Kn8e/9LCwFJLW2QQMOqq7lBFmJ39eyZq1wHPkBEbSBP9Sj2BwOIcyTt4jf/NbZEZnCJGCpDkIJqftavj/6rKH1G90GkwNXXM9nSUi6Y2iXR/sD3ogCQ58PO9ZjaCKMgVRq3rPKpXHoU6tSG0FUMd1g8P9W8bn0fl6Sj/18P17RhItyAQX+zUn34wlftARFIogU5pJFw1LO+hANiKS2FQ+VJ8ndGF8VE7Et3tgEKfNz5WEv1Xf5IiQvfeKkhhkHTxqpPQHSHz4rTsMBM6o2muiWLWOi+HNTXwBJ14BtObThIrk2X8PI/H57jeHGZBqpAEWyNaKVCYUkwT4ian8VgGYwcjttn1u114c1x55dw5VuwJ/HsJmAPTNIrlacazFbN0S3tqNRqtglK4zTUlqQlFw0y/Av8I5MSGAiB7igHK2fUzeE8SbGaawyfjKXdYQyYsTrMdhvjP3mm68j+W+ezMzWXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,99 +120,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to prepare to emit KASAN checks in JITed programs, JIT
-compilers need to be aware about whether some load/store instructions
-are targeting the bpf program stack, as those should not be monitored
-(we already have guard pages for that, and it is difficult anyway to
-correctly monitor any kind of data passed on stack).
-
-To support this need, make the BPF verifier mark the instructions that
-access program stack:
-- add a setter that allows the verifier to mark instructions accessing
-  the program stack
-- add a getter that allows JIT compilers to check whether instructions
-  being JITed are accessing the stack
+Add a new Kconfig option CONFIG_BPF_JIT_KASAN that automatically enables
+KASAN (Kernel Address Sanitizer) memory access checks for JIT-compiled
+BPF programs, when both KASAN and JIT compiler are enabled. When
+enabled, the JIT compiler will emit shadow memory checks before memory
+loads and stores to detect use-after-free, out-of-bounds, and other
+memory safety bugs at runtime. The option is gated behind
+HAVE_EBPF_JIT_KASAN, as it needs proper arch-specific implementation.
 
 Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 ---
- include/linux/bpf.h          |  2 ++
- include/linux/bpf_verifier.h |  2 ++
- kernel/bpf/core.c            | 10 ++++++++++
- kernel/bpf/verifier.c        |  7 +++++++
- 4 files changed, 21 insertions(+)
+ kernel/bpf/Kconfig | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index b4b703c90ca9..774a0395c498 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1543,6 +1543,8 @@ void bpf_jit_uncharge_modmem(u32 size);
- bool bpf_prog_has_trampoline(const struct bpf_prog *prog);
- bool bpf_insn_is_indirect_target(const struct bpf_verifier_env *env, const struct bpf_prog *prog,
- 				 int insn_idx);
-+bool bpf_insn_accesses_stack(const struct bpf_verifier_env *env,
-+			     const struct bpf_prog *prog, int insn_idx);
- #else
- static inline int bpf_trampoline_link_prog(struct bpf_tramp_link *link,
- 					   struct bpf_trampoline *tr,
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index b148f816f25b..ab99ed4c4227 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -660,6 +660,8 @@ struct bpf_insn_aux_data {
- 	u16 const_reg_map_mask;
- 	u16 const_reg_subprog_mask;
- 	u32 const_reg_vals[10];
-+	/* instruction accesses stack */
-+	bool accesses_stack;
- };
+diff --git a/kernel/bpf/Kconfig b/kernel/bpf/Kconfig
+index eb3de35734f0..28392adb3d7e 100644
+--- a/kernel/bpf/Kconfig
++++ b/kernel/bpf/Kconfig
+@@ -17,6 +17,10 @@ config HAVE_CBPF_JIT
+ config HAVE_EBPF_JIT
+ 	bool
  
- #define MAX_USED_MAPS 64 /* max number of maps accessed by one eBPF program */
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 8b018ff48875..340abfdadbed 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1582,6 +1582,16 @@ bool bpf_insn_is_indirect_target(const struct bpf_verifier_env *env, const struc
- 	insn_idx += prog->aux->subprog_start;
- 	return env->insn_aux_data[insn_idx].indirect_target;
- }
++# KASAN support for JIT compiler
++config HAVE_EBPF_JIT_KASAN
++	bool
 +
-+bool bpf_insn_accesses_stack(const struct bpf_verifier_env *env,
-+			     const struct bpf_prog *prog, int insn_idx)
-+{
-+	if (!env)
-+		return false;
-+	insn_idx += prog->aux->subprog_start;
-+	return env->insn_aux_data[insn_idx].accesses_stack;
-+}
-+
- #endif /* CONFIG_BPF_JIT */
+ # Used by archs to tell that they want the BPF JIT compiler enabled by
+ # default for kernels that were compiled with BPF JIT support.
+ config ARCH_WANT_DEFAULT_BPF_JIT
+@@ -101,4 +105,9 @@ config BPF_LSM
  
- /* Base function for offset calculation. Needs to go into .text section,
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 1e36b9e91277..7bce4fb4e540 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3502,6 +3502,11 @@ static void mark_indirect_target(struct bpf_verifier_env *env, int idx)
- 	env->insn_aux_data[idx].indirect_target = true;
- }
+ 	  If you are unsure how to answer this question, answer N.
  
-+static void mark_insn_accesses_stack(struct bpf_verifier_env *env, int idx)
-+{
-+	env->insn_aux_data[idx].accesses_stack = true;
-+}
++config BPF_JIT_KASAN
++	bool
++	depends on HAVE_EBPF_JIT_KASAN
++	default y if BPF_JIT && KASAN_GENERIC
 +
- #define LR_FRAMENO_BITS	3
- #define LR_SPI_BITS	6
- #define LR_ENTRY_BITS	(LR_SPI_BITS + LR_FRAMENO_BITS + 1)
-@@ -6490,6 +6495,8 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
- 		else
- 			err = check_stack_write(env, regno, off, size,
- 						value_regno, insn_idx);
-+
-+		mark_insn_accesses_stack(env, insn_idx);
- 	} else if (reg_is_pkt_pointer(reg)) {
- 		if (t == BPF_WRITE && !may_access_direct_pkt_data(env, NULL, t)) {
- 			verbose(env, "cannot write into packet\n");
+ endmenu # "BPF subsystem"
 
 -- 
 2.53.0
