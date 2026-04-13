@@ -4,131 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E2ECF34C58
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 14:31:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABCB3F34C5D
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 14:43:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A95636B0092; Mon, 13 Apr 2026 10:31:52 -0400 (EDT)
+	id D40166B0089; Mon, 13 Apr 2026 10:43:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A46776B0093; Mon, 13 Apr 2026 10:31:52 -0400 (EDT)
+	id CF1046B008A; Mon, 13 Apr 2026 10:43:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 984006B0095; Mon, 13 Apr 2026 10:31:52 -0400 (EDT)
+	id BDF426B0092; Mon, 13 Apr 2026 10:43:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BC076B0092
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:31:52 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 411271401EE
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:31:52 +0000 (UTC)
-X-FDA: 84653771664.28.AA62701
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A887540015
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:31:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gRsqUZF2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=txhMkBUn;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gRsqUZF2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=txhMkBUn;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf07.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776090710; a=rsa-sha256;
-	cv=none;
-	b=8YUi4vQYWguvTfeAPps31KWXkLDT2sHxhgdFIMjZGjV7T4Sao5FeCO8cJQT3pkBixz3+E6
-	F7SnmpmnRC+xCN0M9L1OTUOf2QUxCp988hTWMpoCdp4HsfwqZJ8CoulkLqa3mXYHcU/B4M
-	PQFCxsTe1zkEOlZP/elNVyYm6I+3jvE=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gRsqUZF2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=txhMkBUn;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gRsqUZF2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=txhMkBUn;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf07.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AA1446B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:43:44 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5091D56BE6
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:43:44 +0000 (UTC)
+X-FDA: 84653801568.18.BCA69BA
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 33D241A0004
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:43:42 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=dThTVDJR;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="m KaUdPc";
+	spf=pass (imf19.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776090710;
+	s=arc-20220608; t=1776091422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oFbE6qgRyi3Tx/DuCsdhUHkiE4vb+Obr7lf3ABpgj0s=;
-	b=HFHSkH9yvBupn5jy7XpoBN3CWZj2AiLbfVkJFrSHGpkShJuctz66WZ44cKHGNV3okfRs/D
-	dK2rn455CbavAqLTnDl7ofL2aQ5b16dCMSKI4d2cx8uBvHW9Py1Sjfs3M54tRNRGpZ8LWp
-	O7H10z0eHwlhiTSXpoiuie3oxuKK7rQ=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E7BC36A8A9;
-	Mon, 13 Apr 2026 14:31:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776090708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oFbE6qgRyi3Tx/DuCsdhUHkiE4vb+Obr7lf3ABpgj0s=;
-	b=gRsqUZF2IJ8u/97AMVKL87wEa/JJ8cUvu4Soh44pE2wdx1IFOF6Sa4WsHBGoyEmPVO7BSC
-	il61Th2+jyG4R6XD2DuRLdnVONQ9JZXCDbzaD90tKUghbN7AVMQxK0mn+qWWa4nOU6mTRM
-	SYs1DOmqvMMpvV84KdBAX4TVRbKofd0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776090708;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oFbE6qgRyi3Tx/DuCsdhUHkiE4vb+Obr7lf3ABpgj0s=;
-	b=txhMkBUnJckYbNjRfjogV4sfoTnHQLesPlqKuImNzhqPCZGYy2AceXxP8HH8nE55TlXYTQ
-	7Jj3znT9gRwhVICw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776090708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oFbE6qgRyi3Tx/DuCsdhUHkiE4vb+Obr7lf3ABpgj0s=;
-	b=gRsqUZF2IJ8u/97AMVKL87wEa/JJ8cUvu4Soh44pE2wdx1IFOF6Sa4WsHBGoyEmPVO7BSC
-	il61Th2+jyG4R6XD2DuRLdnVONQ9JZXCDbzaD90tKUghbN7AVMQxK0mn+qWWa4nOU6mTRM
-	SYs1DOmqvMMpvV84KdBAX4TVRbKofd0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776090708;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oFbE6qgRyi3Tx/DuCsdhUHkiE4vb+Obr7lf3ABpgj0s=;
-	b=txhMkBUnJckYbNjRfjogV4sfoTnHQLesPlqKuImNzhqPCZGYy2AceXxP8HH8nE55TlXYTQ
-	7Jj3znT9gRwhVICw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 798024AF25;
-	Mon, 13 Apr 2026 14:31:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9tGRG1P+3Gl3BAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 13 Apr 2026 14:31:47 +0000
-Date: Mon, 13 Apr 2026 16:31:37 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Vlastimil Babka <vbabka@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH 5/7] mm: Make /proc/pid/smaps use the new generic
- pagewalk API
-Message-ID: <adz-SRhS7H50fWXY@localhost.localdomain>
-References: <20260412174244.133715-6-osalvador@suse.de>
- <20260413141801.1465873-1-usama.arif@linux.dev>
+	bh=CPqrtdPK1fzOFd0Y9/MDHGVDApYeKMdzUWsDXpmbjTE=;
+	b=sROMQQXgdmt8d/Ooe3A/uvqu4z9JVEJvslcsT89ac79SZpi3jGUDLI1OTnvZcrmS0rvq84
+	w5VYqg9IBn+6G+f4TRNpoSgko29oMHa15uINd3BznwwUrKBlkPUb/FFp/3juDUGm8TViwE
+	pxcqo38mmUz2WrwGyvIuNANL57/LO64=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=dThTVDJR;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="m KaUdPc";
+	spf=pass (imf19.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776091422; a=rsa-sha256;
+	cv=none;
+	b=r6DwyRgdG/NS4MMFuS+1j1VGJMqs0WmkaLN57JDsylYgDppWm2BJi4Xyl9+Fjmbiq2rV3Z
+	LyGdaM90LNktyH0U/z1i215LPSUsJn4L0k9cwKdsbYErvWIcvbsi5hJ8TBxB3FJGD++xQ4
+	TOacTHGYzR0Hh1QEU2wVljmGfeRXZJo=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 580C613004A2;
+	Mon, 13 Apr 2026 10:43:39 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 10:43:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776091419;
+	 x=1776098619; bh=CPqrtdPK1fzOFd0Y9/MDHGVDApYeKMdzUWsDXpmbjTE=; b=
+	dThTVDJRrT61VUkRS+cdt7Y0Z5RRsLEBjlt5LbUT/Wkj3XuC1dVyKWZPgLth6rHI
+	xbXnXmRzoJxvLeN5K5KTS4bLI9JTPMUMZHJQi9mq2+Mm0O8HtxzN6gdwi5dKMGzS
+	o1z8qIdRudVgAnBmJYPys1vSE6iXXFJKhXBunGcqiXTQxSIZPwExbixipylrVyN9
+	4kf4i5YSOQ5TyiEguuaQMFY1bjfsEzY4T5yjV+i49k3OFs/Vmf2QAO7EvG9pkkWh
+	N8bT6ZPczJACaYt7v0DdNhd+Jcw1QSr4sfdnPLEq3qIenfqRfJd23mvz1BSPAcJy
+	t7jf+cR2gTZwsPDeAUjd8w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776091419; x=
+	1776098619; bh=CPqrtdPK1fzOFd0Y9/MDHGVDApYeKMdzUWsDXpmbjTE=; b=m
+	KaUdPcERkC+zzfJk9o14B4ADxV7hBFIrlwDzvbBZEzHm0PKs68AEHjccunfdwCIR
+	xandwmc3ligmxNR3yrYrjDSRktpJmwg0D7TTzo3rAlmWy0gSHQXh1wFw4+NYGyVg
+	zDlM8PgR4QH15XnDMMXbSfnGvjJh/j4eK/GlCalmtgkTknPnFph+dfWco8cTlWse
+	WFEPDTU+OA38Yo/f8OVtqBAERl/dqEvgrfDqnngro8UiU3Du4URjogCH7u9C6eP/
+	RYqA02k02M2VwiJpdNWH8HG6r4KmynyPDoJYdxTNeNoiAqYyt88JcV7BBjOLulpB
+	DJUQhLG59C0zm2Z5pxrQg==
+X-ME-Sender: <xms:GAHdaVYGCaKUPjfNsUorzxAck0ngCpZdPLdqJKjZEoxtd6QEkfV5yg>
+    <xme:GAHdaXPKX2B9tilU84LfHthnj4XuzUMENgXV2EBsOOdx9XMImcZUEPIIzoIwFqvOh
+    pcGkwnRvUUR4OUGZGU3iYkbbpFp25Dx9wq8LoeuFKlAv-Ydx1YT>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeehtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtohepthdrshgrihhlvghrsegrlhhumhhnihdrvghthhiirdgthhdprhgtph
+    htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
+    lhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmse
+    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhi
+    ugdrrghupdhrtghpthhtoheprhihrggsihhnihhnrdgrrdgrsehgmhgrihhlrdgtohhmpd
+    hrtghpthhtohepuhhrvgiikhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhl
+    vghrsehgmhigrdguvgdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
+    hnrgdrohhrghdrrghu
+X-ME-Proxy: <xmx:GAHdadx3OaLmpgnQ-qR09fFSyphBizIiykQxx2Qr5HCiMADvCUw5LA>
+    <xmx:GAHdabzajIhZOwZQz55Cqp-WmIPvMJl0Qeu3WJrRVrqO07JZC9K3bQ>
+    <xmx:GAHdaSIxPmEuEecG1TMTc2ieeRuLkqK7w1Mgwy5a1Wj0e-ew_hD6MQ>
+    <xmx:GAHdaVsDbvRI-p-Ezq237oUrDyOkdrmimmA3aH1JiaBrwsVneKVMbQ>
+    <xmx:GwHdaelj14NT6xOHjmTv_huVndzlY2JM81Rr0b3-wFbundNAWyZ-7jZM>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E9F8A700065; Mon, 13 Apr 2026 10:43:35 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413141801.1465873-1-usama.arif@linux.dev>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: A887540015
-X-Stat-Signature: kznup3g5ynhu8k7kohcm18zmhs5xqqxf
+X-ThreadId: AaL_vZcj0OrJ
+Date: Mon, 13 Apr 2026 16:43:14 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Thomas Gleixner" <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Cc: "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
+ iommu@lists.linux.dev, "Michael Grzeschik" <m.grzeschik@pengutronix.de>,
+ Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
+ "Herbert Xu" <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Bernie Thompson" <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
+ "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+ "Marco Elver" <elver@google.com>, "Dmitry Vyukov" <dvyukov@google.com>,
+ kasan-dev@googlegroups.com, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
+ "Thomas Sailer" <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
+ "Jason A . Donenfeld" <Jason@zx2c4.com>,
+ "Richard Henderson" <richard.henderson@linaro.org>,
+ linux-alpha@vger.kernel.org, "Russell King" <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Huacai Chen" <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ linux-m68k@lists.linux-m68k.org, "Dinh Nguyen" <dinguyen@kernel.org>,
+ "Jonas Bonn" <jonas@southpole.se>,
+ "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
+ "Helge Deller" <deller@gmx.de>, linux-parisc@vger.kernel.org,
+ "Paul Walmsley" <pjw@kernel.org>, linux-riscv@lists.infradead.org,
+ "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Message-Id: <3d7c3433-2325-4bb2-a8f6-ddd11c82f71d@app.fastmail.com>
+In-Reply-To: <20260410120319.723429844@kernel.org>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120319.723429844@kernel.org>
+Subject: Re: [patch 32/38] powerpc/spufs: Use mftb() directly
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 33D241A0004
+X-Stat-Signature: 86bphmsnbhgijjhdx7mhz9obfim3c7jz
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776090709-126120
-X-HE-Meta: U2FsdGVkX1+TsAEix8NguIOSzjNyqFjJgd9lXTyBt/H1yNbPzgIJGLCa7axX+4DJGG5REdiJH3jtx/VN1LIpIudxLiRea+vbpZUeoWwpxRgsNUENH7NrQwh6PynR0PtMFKOChf/r6Y4WG8Cyelg4wsLbchc41biehbOEwUEZpPqTIWqBvlMf3FgTuLBoMl22ihk5ICikEuQAIsF2OZWqJdL0fnmesc7hzfM6ZdueOhHcPcCxP5NNVuk+y0lH9E80GzaKDdxF52LetRccWFSDieoU+HWWf7Qn50wQ4AlStAxXjo5Te1+BKAPaQmcgYrvJwJjqRbyZJ9eCHyQy7Aocc5TQa6TrEe0Yu/5/e9zwvHGsoe8mc0V/jTAS/c5sn7EoDs37B1JPwB5ZD4lQfEitBwPy/I8GRDZF+oh1iNveUWLfhW+Ufy2vFiInAYRml1SwJ93fadThNITQjOhbfgMJcO2GhocyYeUlb2jV11Tdpvp+caeHmX4mEjVxLFcy/ZdleeyS2Y0soC+GAZRo81V8oZmp1x4BUtE1QzXnRtmHyfaGmF1ubh/F69H8MnAByIqzp9PzR3QyF10F3sWnPuaen7LIhc0En3BxKi9I+Vn9SHYPrP5x+xaQdO7vnLwZVo2xw9CJ+y3YO7yYZYNjcmUQBgos0IUnUM36IwW+Eok3WMLFjZ5qPNYabdTe1pGF2Ke5E3WhauUfQ0vVhrsu28p1rgtrKnAnG32THBePBgDxbmdIOKF9ZB6mfRgY2s+hB1mpX58Y7duzG0IeE39n2Wl3+hQ4+O/cMOpdgFa5YkBq7rgrQ27ruwlDJ0TYcdLb61T7TeeksXOrU7mJKqg3IUQcce5qT0qLIGmH7xw2q6ZQWCp3yAx2wsueJug+5VXgRzBs2IgZJQZfJPcBxhsUX52Tr5aM4fFRYLZCh0VVfe5HKx1VH/kYH0qJ+vrgXgf30P/V9E8a6xoy7rppA7w/AWY
- 12caqKUe
- SH1A69Ry5yQYHdyfloeoCyNV5avosN1Ik8KdiXF1OjgqfVtW0lXgcSG3kIdvhfe59v+ZXPeCcKYdZRyb76RH8oBWYx98qkZ+k+XhkcBzW/1lwj/Jxda4/C6MtyZT+EZcUl2GlENWMng+nrKcAxhhJkebaDbEfjxD7fvPn3nboMsdaeEtO16FZHTcuqadEesX49LwGIVCEayMTFNPeqcUWTFGNJsea0INjVWgfSFcgWXGSUOQG3SmKjNwsIb746Kh6H0GGtwK04j7G4OX851bSjvazOuKAxeVVF7J0
+X-HE-Tag: 1776091422-324040
+X-HE-Meta: U2FsdGVkX196pO/l/fPuYr5rqmXXjYIVG6vKtgsXQQxsF47W1fSiu85dHFv/YQoPp9nhqYZTr5HncBKVrxuZtuvh2b7GWL8vFUAGglM3yV6BkfC2eg+F6F23vRDR/P/xzawJ7euttZlUVJ2H+b6PcsBfR/Rp9p0o4YqjwS+inVgSLu/LLRmeU0iBaMVDV5zmY9rzqZsCO7cjjyCltJKJWQZuHA1mCHpFOoeShj+07238qLap+9LDi7AjZjLBxe8fNamxQnrANY9UOQHaHXbEhUGI620yLmRiU5xYL6O+Y70sV2o3AO/jIdeSAIhqhH2eQTPy1+ijlmiaL83qs3GpTSqpPxqMpJ3wq7VYQIe21wkIKRGFkHUDqOa90CNT4H7Vu3ewGfRQ2IquRJQrE8vA5Z7E5sVlkqjducYdO1daWqDP0TCvv96ocEg/4bOzBYCSE6ouvtYaBl1xRk2HoMBym+RaYCA1TNkOt1SlSYUZX8Sd1mQtlwfIgSX1i5isTmG3B6fbzaK0FGtjLUzws0mxcxfgsCJukoIW1KsxSYELgno/6FXJdawZZSKkjK2zVbaO8U04aElL/E2xWEWmRitcWF9xAjKMSEv2yRCIdOrkAHrWDictE1y8HAlljDKNIFqAHB9SdC7NADl0n+f4x0+drKZcbj+53ADRMVwAVBlveQ8dXocCSVyvdLfCg0eeZ3mywTZg+xg8nPWVP19pywEHV8GIuCtFDLS7seV/q+LvWgwcO9nJ5eanGMvbcDsmdZ1WFBBezcHwE5CHwDnj8t6Rh9eXBpmoCmT2aF8ztJPVrm1kIAJRVSWSzgC28WqSOA7d1k9ZvQCEuxQZ4GUXyQp51SNVu9+SOltaBwK377qJVe4akOB/Yv6/FjiLMMwWQvfTIGHWZDpwEG/aHB1vajErU0b6fV8z8THg/CyC9JBdy1x4kt+LEL/u0L0w46YwhqCSfnj2i9PRs5WX3I9vaAu
+ usWnjXwu
+ GybkZJ2Uq2PPs7HG65fft1tM687D4ZzPTRzFT9CFq2mU48X+Tqr1hTM5xYawuK3JOCbRyBXfvkyJORgrOJFFMTJ8uUV/bB9F4VUblKE8d2Pxdf67BS2HFevhkkNYHO4SMQYOWpwG27Fm17L1OqHhKCbNItDGHpI4Kag3bRlLu1By9be5oemLceUokvfEDlTI7Xu0tUMB+GKtSeCB8DAjUYNiPmJye8jIH8P/5jFakQo9BqVI9OoLI2DxPnNruy92MHKnNZiy56EZWFItLTc6HAVcq0kmyBxBbzMBux5YYKLF28ALCLRnEF12R2qta8iVXAnuZg98lr8pJksRotfT9waPCtI2uuVbUtPXBbLGGXy2mRUT1Xqln8UQrVjyO5c9PBQxC+Tgw53IEQv56AuSVzd5pWCbEaPbUmqyIXXfHXNVVIjl0W3s41IQucmz8RNc9RWcKNLL+NOYH7AkNooKusS7SUozPHTFFVrnfEVSoArmYeWg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,25 +163,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 07:18:00AM -0700, Usama Arif wrote:
- 
-> The old smap_gather_stats had special handling for shmem swap
-> accounting.  For shared or readonly shmem mappings it used
-> shmem_swap_usage() to efficiently account swapped-out shmem pages.
-> For private writable shmem mappings it used smaps_pte_hole() via
-> smaps_shmem_walk_ops to call shmem_partial_swap_usage() for each
-> PTE hole.
-> 
-> The new code removes all of this.  The pt_range_walk API does not
-> have pte_hole callbacks, so shmem pages that are swapped out (and
-> thus have no PTE) would not be counted in the Swap field of smaps?
+On Fri, Apr 10, 2026, at 14:21, Thomas Gleixner wrote:
+> There is no reason to indirect via get_cycles(), which is about to be
+> removed.
+>
+> Use mftb() directly.
+>
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
 
-Yes, sorry, that is one of those parts which is incomplete.
-I am already working on that offline, but did not have the time to
-prepare it for this one.
-
-
--- 
-Oscar Salvador
-SUSE Labs
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
