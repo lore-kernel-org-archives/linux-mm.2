@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CC01F34C49
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:27:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6462AF34C49
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:27:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C1516B008A; Mon, 13 Apr 2026 09:27:06 -0400 (EDT)
+	id CA2766B0095; Mon, 13 Apr 2026 09:27:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48C9A6B0095; Mon, 13 Apr 2026 09:27:06 -0400 (EDT)
+	id C558F6B0096; Mon, 13 Apr 2026 09:27:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 306FD6B0096; Mon, 13 Apr 2026 09:27:06 -0400 (EDT)
+	id B6BFC6B0098; Mon, 13 Apr 2026 09:27:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F2036B0092
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:27:06 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ACABF56241
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:27:05 +0000 (UTC)
-X-FDA: 84653608410.16.1FFF39C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 96BF96B0095
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:27:11 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B3F1C08E9
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:27:11 +0000 (UTC)
+X-FDA: 84653608662.09.7196400
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D77551C0007
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:27:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=SegWXM+3
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5A9C712000D
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:27:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QBzc305O
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776086829; a=rsa-sha256;
+	cv=none;
+	b=yIyT9WNiTAgDU/g3yvAdJKSVM9C7L/F4qWVamIFvOOZiO0R6EHPJPBk2Rb6Afhg1vezrpJ
+	yO2KIyIWOzy63w7mxtvUOgyStFs7bFyVPzaV54nyPiZ5oX3shb0NrVBRZKeh5x62TuztIp
+	saaMHs+TlIgWo0Ug79arcj2XvBuy/+Q=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QBzc305O;
+	dmarc=none;
+	spf=none (imf29.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776086824;
+	s=arc-20220608; t=1776086829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ts5NH0xUvZdmVlkgq9z2yi5cSaxNAbH4JcbwnyOwfPI=;
-	b=qjtlQWzhHXM+3iZRqCEG0/ARZfkkgih8WZU0Yfntc2UuIK1p09XJAyVe54ea8Zh7hBes6y
-	Lr6vztYY0gsiE7/X0+WFdLJ8KpzhdR6GKm29Wy4p1IC8/FfppjxB1NeHJAI5YKbAg+i2Xl
-	g9x1QGse55eXUO3sT3/Y44fubE1qNxo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=SegWXM+3;
-	spf=none (imf18.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776086824; a=rsa-sha256;
-	cv=none;
-	b=JuzvETOWYEpGjjpQjkTrwMo4S5G9DYO2uinK5C/XM7VLNB5OKJ8vsm+HPMRoQY7jTotPwt
-	JKmT2Sne5xcaS//sISSNMGJxK8ccs46RZfnQh8+Aw3OWxw8atfikZMkxSTXFCdLHcbyG7o
-	NRb1lkfLPeYZCJRTJV3iP7vbLXPGETg=
+	bh=nbtwqqP04/XwB92jTwUHTtIQvE/SEZDBq3VRc3N6Y6I=;
+	b=XwqskHUdCT4PqsFIfHkUh2KjNRQHzNAbYDZLyodFR02USTJRkM4e0HclsJNaR3MiPGOOQ6
+	fnpH2p4te2EuIFXBpVrQV+VRWZv2HToGFLS8UbNm3PnA5Qs8+kzWh81Ecu/Y79Oz/z5wHv
+	t4A0tYmEh12LFo/qrwo1JTbhrGMsiR8=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=Ts5NH0xUvZdmVlkgq9z2yi5cSaxNAbH4JcbwnyOwfPI=; b=SegWXM+33+iQB4lzbciiQtJfqE
-	y9zWi3WdYV5DpEeTro/sk84OUYQNQVXiNyWsbRLqt2/N/CcK9paVcPJMRqKbsthaKoz/3+sb9beNI
-	32BB5VuwvDNg5IYdhiB8D4GkP6b0PVIVf9kgcd6j2pdv3fhtNe2llJUC/6GN7RNCqkimqw2o/+OeO
-	NKNCv7SIBZFbG4myyCZ+8dlwRID4SOHvnyI/s6P5IIpZ5dIjaQ6vtfYmLu3p/zCz8QvhgJkLoeZ26
-	KAkWfydAemXmFix9QXWrfWTCDPRnQZPYlEXq2vOUFVXsCPo8VrviOsUf/V66pCLP6SgF1rjhYamtx
-	Gh5qEKDQ==;
+	bh=nbtwqqP04/XwB92jTwUHTtIQvE/SEZDBq3VRc3N6Y6I=; b=QBzc305OGUU3CKBmxPvJpBa4Oi
+	I+/4n5il8SogHtoZ9MYMe5yABscVp4Uwgzh7udwzt87tchgUBR60wrkk3013QEZGquOerBE/DLD6y
+	I+rFCji1nIzcCUrJJ++zbGDBJANL6pQRdpdDLuinvsc9TNjaujyOLdviEwyNIbBayln7o509HIBre
+	Wic1Em1XHS3+OKmfW9u9rOJ1B2ipR/UxyfAneocY+8yVQKj51+KYTOvC4M2+068/5Nc0unBm+gz+2
+	6yfunAVklS9x8MwaYjqT5W9Tu0FsVhUTnxel7+gKsAbEs3NZc9MtgWZazik+Kr8QK9RHHvsfede3r
+	voQFxuVA==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wCHJQ-00CKEQ-2C;
-	Mon, 13 Apr 2026 13:26:48 +0000
+	id 1wCHJa-00CKEj-03;
+	Mon, 13 Apr 2026 13:26:58 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Mon, 13 Apr 2026 06:26:33 -0700
-Subject: [PATCH v3 1/3] mm/memory-failure: report MF_MSG_KERNEL for
- reserved pages
+Date: Mon, 13 Apr 2026 06:26:35 -0700
+Subject: [PATCH v3 3/3] Documentation: document
+ panic_on_unrecoverable_memory_failure sysctl
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-ecc_panic-v3-1-1dcbb2f12bc4@debian.org>
+Message-Id: <20260413-ecc_panic-v3-3-1dcbb2f12bc4@debian.org>
 References: <20260413-ecc_panic-v3-0-1dcbb2f12bc4@debian.org>
 In-Reply-To: <20260413-ecc_panic-v3-0-1dcbb2f12bc4@debian.org>
 To: Miaohe Lin <linmiaohe@huawei.com>, 
@@ -85,31 +85,31 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3839; i=leitao@debian.org;
- h=from:subject:message-id; bh=5kticVozScC6u8qmLk9+hhZd71yiocm3BKCHqXfpTvc=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp3O8OGjMhJ00sPwi1tkdTGacpr0NdoWmXFCwqB
- fETGcica/uJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadzvDgAKCRA1o5Of/Hh3
- bTMOEACDVZS/51etxbpUL7Fkz6ajXdmMgOGgxmuNv7buSOZbViDuCi1ds2F/1rXwxwpxHG83XA3
- KYdFSDzqS9bqK17+lFSC4W7hfOXqLUID2NYoVCuvKScI1sk6JL9UHn8Q8mQFh7ohtfQgnYRJd/p
- VSDvW4wpIgX8+UavBQCvtRr5QIaH2zAhJD6DD6OUBQyn8/l4LSFOfVZHtEiCkOJO2xB8HrHDtM1
- UHQMlsndcKtDtErSj1OJlbqmy19xM/jD2HOf9zWN4RsGGOgz97uhbFYRHzb1ZgKdPagi+4Wm3v1
- R4SYPz6OHHtb+orElndz4KXEwwozJA5N8Msh+7efgPPho7Jpxxl789+XZVNVEiXfpOzqMSRVZD3
- DdnbIlV4hNrspnEz4iBuzVy9p5xJxn4yPSi4fmudxWGxon8iLyvzYdwGDhXi8kW5xzRvAh03Gry
- pttT2Vl7BcM81su4p1IOFRkj/WrBpcdWJOXhy4yzxkbHIEwYIHNldDBO5QRiRvm7zcGmY0R024/
- 70ETzBG98+7b2FHdnFxlg7HzcOw9SRPCfF+ODwTOYVoEn0twZKFTT1GOqqLlvVKEcPVAlloxV/G
- OJfI0egBuyqFiBQIx8+pdyhjLqBKL/oY3hldDPmapM2IONXLZpO1kjwarMk4T8KCFQKbhTf58Sv
- ET1F4s/x9fIsJGg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3210; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Mp1Qv6rhhs0jzy9DwGJSWL5EM4TqsDFHcgB+US1rhmY=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp3O8OOxyyLmnEVBgYOxqnlJRNzEM32jMwRHuJl
+ lp++LJaOeOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadzvDgAKCRA1o5Of/Hh3
+ bbCzD/9leaOJbS39F2fvv+N0M66/TmFRtRCcOvuRaKUAiQBKdSD1YSoEQj/XTjfciF6P5hnM7xz
+ z+aS5nQ1qmxSLt/HRHr7rxoCfaSg0I+P0ltripbJMdGICH4kW1rvmfUcGQT8wRwz/4lipjlOFec
+ jFublJBDLwhJmN9e2X3x4uXgJu4D4w8QWlXAW/ScqPcOYARBsjIsbWn44+1JoehOLSovAcWL/Pp
+ LT+uIQxpkclyud2f+JDVRHE+vZDjl+PIgNWUBQBLCHWUmTCmxgh8jkkpMgVblybwg6t2113OfPw
+ fHUQy5kQesNq2FKEU7QUESbLK0nXapRElS1AFOJvPhm7hkXbtTsa+k+39jLu4/zxFv8ToGhG6i/
+ PQWe2A/8s9edOQR1dEQ6MVbsrzZE1gduOsoMmFv2REu4gqWiEyFdDynidGUS6evfEBTgOV72gSd
+ nfFItHI9Iha6SBepQQB0W2IGVk587944kax9CtNXIWL5JOyt88lDUXkZy7h/L0R8rP2jlRPWjWm
+ bpiDU2XojNGjjJeOJiQHh20p54N+ghvu63JKOZeeNlw6/dKxYqUFTPznWPwtm4NGxsO8+V10KmE
+ 3WopOzwuVW+t8nmq3ORD19ijF9bZwM8FQsKnklTlw19aTltDK+/URDsNvwZFEfveAYI0aJArQeU
+ m2XO1b/mwZvaQ6A==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
+X-Rspamd-Queue-Id: 5A9C712000D
+X-Stat-Signature: s74k6zj5jjc81rujgjxmnm6t95f41oen
 X-Rspam-User: 
-X-Stat-Signature: qhh9urkunao1bd61beiaj5h1r48fogts
-X-Rspamd-Queue-Id: D77551C0007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776086823-351862
-X-HE-Meta: U2FsdGVkX19BiPTQJc3DEPFyHl5UuOc9SaUjgp4NIlIR+yuprmo6BrDyjesrp5Eks/je6ZU06lao2xcrcEqcJktGqjzDl/3c0ynQkj+zoHAlihh8SO4PoXB7FbpogZ2smhF7EbIwv/0M/Io7gCmSjZ+1O6Ln6YvkLJZqoS3jgXo2oNi8sqo1XnMhX4vGhtNg72It8/ubHbyN+WoUJNIIjyor+DIE36+9Jfiq9OPA9xqmQgdV4chRHFvMiOpG66gcRnJwbTJPYg9gk9DKDu79ayCe6qNpZ5bGeqR/18rK/aXwmGYOLa/QJhu6WYEZzBlddItO3+ztqe0RtrhKTkDDvnJYjmWmgiWkinc5zuWVAO45GNS/58EB/m8vjA0/kpJ6jIxoRtQ0xJLC5PlpmVhRBbxiQFc8pqEbcQ9/PsxJvoYQ/Y/pabIQQeL1LyzMD85vvpCzKTR7Awb90Tx8Nlov4f33CGHIWT/rOaKhnWSc4yOulqlnt1jRTL05hvIHuip1kTZ6ozosY36X1gYgvE+pGkCZg1HaAB9YugpqGeLDSslQkjcUxVZDeXEBs1WFqN/DlvZsrPgnRpctFltypRJ27x/8PLGEGr7Ag6lyb1sgbjyjoBlgBGNJRuN0oZDx48crkot+1+yvNKU8Xl8zcR0bJ+cU/74NucIo5T0r7fxwSM4YnvjyonOFV2ttHp//FUeD9YJdgTNGm083AF1LxEL0sGqWc95KDpcB/YxtcBaPbIc+Jh+aw++WpW6+8aSBrsBNZlbkFXeergZPlczSxsbeqrTB75VT1gwqv3HLg8jOyLrjMJDdgER+6+hpNUW7TanVZSaXZH7KEbz4ETRZT2/mdsHDFwsqWxBqUwWFkgA6mprYLXrM+uI0mqb6o89pwPhMCPHveiCbvbmqSWNFVplFTLN4aTEhOk2HJL8AhYLr3Z95ll5we8VqbtZdny2uaD64NeG3M2sT2FKT1PXUzz0
- Zan6xhiO
- cEybyu7EWUF0BP8aJXAOczA4MP2UNN5n2a6L2mXxOsnYVbNt5wmqSDBADoijtSTlEKiuBeSc6mqZhz5YP7+K32ogKXgwTNmqQSgn/GUSWgHDKlbTJKTun0vY6yiJbC5bJvRgQsisPaHqHkdu6pC46uyEeTCqvVJBzRlmVS72ZSSadyIYBdfDeDtCs+MYrjkC0VqbAPvVS0Usq1SVDtCm3Mxh9+yyr6nxbhn6a+ZSg8/20VoA73Gyztd89dVUQMMh7krVOLd0hqud0uUpDvjDRdTBVGg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776086829-299053
+X-HE-Meta: U2FsdGVkX1+lfBmroe1ORi20rydj8zBiTrj9lkubEmKAz1OZd+G8v967dHpBm9fiNATIYbKj2+mFVgoATJ+4GduK0ErV/r+Z+oA/sSTt43Typdzw4jI2Je0/IGMzDG0uliU6EZBSZ+Q3CJ4dm821UpPhorfXc6pYrcRhwc1hInQZYLmqLhNRwvKHovxCBDSORS9EtlnJEMTGZaRR8DyQonF8LYaThbqZ5BR4B10wm0JzB4kM7kZ1d6kWK+ujA1DhhLhh8xo7f6lQRS/rAoeXyrrhIVMoeVMayP6MUSMiAg3NC4AH0HU+l7g52rFabJYLTq689aQ9Vjo+efhI08Cb/A0dsjtCIrqGc1/lely4XyhbqDQNAcIU40+f6LZwfMKalEJ0N1A6bOm+PGlKqQYbInmaqtlgvmLu6M++xdUGJ02fF0UZrXCWhWuwrTazhOk/04n6gsbDfd8ogom8bsl4a1OfOHRPEPP9HRlvFu+6AYkL4Yaag5UOKLhZlIgFlSyaBkzxpoRlVQSMmpnVsYQZ6E0DqhFVHum2A+VLFsHvJQPA3NwzuMig13aMAgXv8la1DL60to1zep0a+QzISO17veS7KgB1hJmM1YzyTYznmuI81awLA3RFrgBS+QelE7YdOwzsSAxowjizczWcC3S1Z9IkSPHGVeVDFmyN0RF83YuoEmU8g/SxhFd7tZHnF86auyfk0fGJOYHpbQDP0dVNirjf/D8M6BUKQ3yvPKPkTLf0s6K2QZ2IgeqRBQPFXuXhv4TtzvJkhbSFVCEQ4ppFStc0+AIIo0ol+ZSAj/kgGdqrHEAnUDKKqM8+AkiruwX3diLdkAezCjt4LK4PDYgTLek2buhMTm48zt7T8/+C37ZbbdPrTXd81Tv0U0R0AvUqbwl+kUujVfefIu/VOi9HmBWUDgFUo2joJiYRzCoE6DZ2YfcBZkG91nNKVhbq/OYne08ipGZec5tD1+8YbLy
+ DKClLdGN
+ 7TSGvDFpi1g451AfhWeYgJTSJ9dnRRLit97mKwYPwsC5OqZikpmFtgbLylpvIC5mG2dUopovZbPANB7b811LvADCa7swq0DrEtW7G0D2/YtE+fBmhLEjXSk6yrTcDevthlt05YnsQhCUvcVGruQas4WJ4DAmlHcC5sHCGHDBz0aR5y0WaN8fzsJdqCd3ji/MW7q4XRPB1qfWBDKIDGA4heUTi+ATIa4puZbxlWR0E5BdMaLy4XlTv43gt9cR+8Mprlusw/seWev9sQy/zMOJ+N1L9Xw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,104 +117,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When get_hwpoison_page() returns a negative value, distinguish
-reserved pages from other failure cases by reporting MF_MSG_KERNEL
-instead of MF_MSG_GET_HWPOISON. Reserved pages belong to the kernel
-and should be classified accordingly for proper handling by the
-panic_on_unrecoverable_memory_failure mechanism.
+Document the vm.panic_on_unrecoverable_memory_failure sysctl in the
+admin guide, including the CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC kernel
+configuration option that allows enabling this behavior at build time.
+
+This follows the same format as panic_on_unrecovered_nmi and other
+panic-on-error documentation, providing clear examples of:
+ - Enabling panic at build time via CONFIG option
+ - Disabling at runtime via sysctl
+ - Enabling at runtime via sysctl
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- mm/memory-failure.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 48 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/sysctl/vm.rst | 46 +++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index ee42d43613097..852c595aff108 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -74,6 +74,8 @@ static int sysctl_memory_failure_recovery __read_mostly = 1;
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 97e12359775c9..af545869bc1b4 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -67,6 +67,7 @@ Currently, these files are in /proc/sys/vm:
+ - page-cluster
+ - page_lock_unfairness
+ - panic_on_oom
++- panic_on_unrecoverable_memory_failure
+ - percpu_pagelist_high_fraction
+ - stat_interval
+ - stat_refresh
+@@ -925,6 +926,51 @@ panic_on_oom=2+kdump gives you very strong tool to investigate
+ why oom happens. You can get snapshot.
  
- static int sysctl_enable_soft_offline __read_mostly = 1;
  
-+static int sysctl_panic_on_unrecoverable_mf __read_mostly;
++panic_on_unrecoverable_memory_failure
++======================================
 +
- atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
- 
- static bool hw_memory_failure __read_mostly = false;
-@@ -155,6 +157,15 @@ static const struct ctl_table memory_failure_table[] = {
- 		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_ONE,
-+	},
-+	{
-+		.procname	= "panic_on_unrecoverable_memory_failure",
-+		.data		= &sysctl_panic_on_unrecoverable_mf,
-+		.maxlen		= sizeof(sysctl_panic_on_unrecoverable_mf),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_ONE,
- 	}
- };
- 
-@@ -1281,6 +1292,35 @@ static void update_per_node_mf_stats(unsigned long pfn,
- 	++mf_stats->total;
- }
- 
-+/*
-+ * Determine whether to panic on an unrecoverable memory failure.
-+ *
-+ * Design rationale: This design opts for immediate panic on kernel memory
-+ * failures, capturing clean crashes other than random crashes on MF_IGNORED pages
-+ *
-+ * This panics on three categories of failures:
-+ * - MF_MSG_KERNEL: Reserved pages that cannot be recovered
-+ * - MF_MSG_KERNEL_HIGH_ORDER: High-order kernel pages that cannot be recovered
-+ * - MF_MSG_UNKNOWN: Pages with unknown state that cannot be classified as recoverable
-+ * - and the page is not being recovered (result = MF_IGNORED)
-+ *
-+ * Note: Transient races are mitigated by memory_failure()'s retry mechanism.
-+ * When a buddy allocator race is detected (take_page_off_buddy() fails), the
-+ * code clears PageHWPoison and retries the entire memory_failure() flow,
-+ * allowing pages to be properly reclassified with updated flags. This ensures
-+ * that false posiotives are not misclassified as unrecoverable.
-+ *
-+ */
-+static bool panic_on_unrecoverable_mf(enum mf_action_page_type type,
-+				       enum mf_result result)
-+{
-+	return sysctl_panic_on_unrecoverable_mf &&
-+	       result == MF_IGNORED &&
-+	       (type == MF_MSG_KERNEL ||
-+		type == MF_MSG_KERNEL_HIGH_ORDER ||
-+		type == MF_MSG_UNKNOWN);
-+}
++When a hardware memory error (e.g. multi-bit ECC) hits an in-use kernel
++page that cannot be recovered by the memory failure handler, the default
++behaviour is to ignore the error and continue operation.  This is
++dangerous because the corrupted data remains accessible to the kernel,
++risking silent data corruption or a delayed crash when the poisoned
++memory is next accessed.
 +
- /*
-  * "Dirty/Clean" indication is not 100% accurate due to the possibility of
-  * setting PG_dirty outside page lock. See also comment above set_page_dirty().
-@@ -1298,6 +1338,9 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
- 	pr_err("%#lx: recovery action for %s: %s\n",
- 		pfn, action_page_types[type], action_name[result]);
- 
-+	if (panic_on_unrecoverable_mf(type, result))
-+		panic("Memory failure: %#lx: unrecoverable page", pfn);
++Pages that reach this path include slab objects (dentry cache, inode
++cache, etc.), page tables, kernel stacks, and other kernel allocations
++that lack the reverse mapping needed to isolate all references.
 +
- 	return (result == MF_RECOVERED || result == MF_DELAYED) ? 0 : -EBUSY;
- }
- 
-@@ -2432,7 +2475,11 @@ int memory_failure(unsigned long pfn, int flags)
- 		}
- 		goto unlock_mutex;
- 	} else if (res < 0) {
--		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-+		if (PageReserved(p))
-+			res = action_result(pfn, MF_MSG_KERNEL, MF_IGNORED);
-+		else
-+			res = action_result(pfn, MF_MSG_GET_HWPOISON,
-+					    MF_IGNORED);
- 		goto unlock_mutex;
- 	}
++For many environments it is preferable to panic immediately with a clean
++crash dump that captures the original error context, rather than to
++continue and face a random crash later whose cause is difficult to
++diagnose.
++
++= =====================================================================
++0 Try to continue operation (default).
++1 Panic immediately.  If the ``panic`` sysctl is also non-zero then the
++  machine will be rebooted.
++= =====================================================================
++
++This sysctl can be set to 1 at boot time by enabling the
++``CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC`` kernel configuration option.
++This provides systems with the ability to enforce panic-on-error behavior
++from the kernel build, without requiring runtime sysctl configuration.
++
++Examples:
++
++1. Enable panic on unrecoverable memory failure at kernel build time::
++
++     CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC=y
++
++2. Disable at runtime even when compiled in::
++
++     echo 0 > /proc/sys/vm/panic_on_unrecoverable_memory_failure
++
++3. Enable at runtime when not enabled at build time::
++
++     echo 1 > /proc/sys/vm/panic_on_unrecoverable_memory_failure
++
++
+ percpu_pagelist_high_fraction
+ =============================
  
 
 -- 
