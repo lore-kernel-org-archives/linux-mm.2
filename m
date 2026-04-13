@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD5FAEBFD10
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:45:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 736D6EBFD0A
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:45:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EC226B00A5; Mon, 13 Apr 2026 03:45:26 -0400 (EDT)
+	id DB15E6B00A7; Mon, 13 Apr 2026 03:45:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C4026B00A7; Mon, 13 Apr 2026 03:45:26 -0400 (EDT)
+	id D888A6B00A9; Mon, 13 Apr 2026 03:45:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D9A16B00A8; Mon, 13 Apr 2026 03:45:26 -0400 (EDT)
+	id C9EE66B00AA; Mon, 13 Apr 2026 03:45:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C7A76B00A5
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:45:26 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E7178E3FE8
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:25 +0000 (UTC)
-X-FDA: 84652747410.08.382A5CC
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 00D631C0004
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:23 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mRvgv2yC;
-	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B934B6B00A7
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:45:37 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 772BD140CCC
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:37 +0000 (UTC)
+X-FDA: 84652747914.02.1170D99
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 88F13C0008
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:45:35 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pCwbIV2E;
+	spf=pass (imf22.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776066324;
+	s=arc-20220608; t=1776066335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eNYrrMihyJ/UopuSP8NsPFIh0brjDU9y6jBpikXxsOI=;
-	b=iWfZ1hlYHYHULpvvgU2eHsPo9Ianje6iqxvuxCcpPoRtbf12wGmM6Xtrldybj6QbOkDLm4
-	QI8jfAkDCUqhou0fw1ndRoduSm40wsn8kSI9cMjopkzytM4+x+KbTR4jymnEuOngB28Het
-	4ZgHUaPGcpEHPmqpqKTdV+sGPzaAxLQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066324; a=rsa-sha256;
+	bh=I5M3+b2z7keZbGNN1L4pc5gbCusIv4rK3WbERlRAtRw=;
+	b=0Hx55TfpVuDY5hU4NEL/NUtUz7353eoXQSAIUBWI1gn49e0sWB7RBVIw1rcw8iQlFRUvsX
+	+/wsmV0yEG/496jVNfNdnxxzVLVA25Z/XrnkKtYfeT+gHn5NUNC7QkG1X5D79ErQd6SVFU
+	trb3ImcVy/uqWNZgnQbK6rc+8Pf0NHQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066335; a=rsa-sha256;
 	cv=none;
-	b=G69rALosFSAn6fNITjlee1WUOBr6LSwDKuIAhoH96GIAYnKodphp0UFSalQy4xmgWGeqVP
-	8Bmpy2BiwqdMvr9Q/YR5D7OJ5atViLkTuGvhwQjn/DMCexN4EdWIDc/on4rYers0l+XzTC
-	WDd8CmZW08Xc7x2jrMUh0ax7mo/Q3XI=
+	b=QbqH5MWPWmkGVahRPPy1mMbKqcVo7MvUu8ol3uqQadnhV6wL+I4rqlQAvzR0ZIkpEiy+Rs
+	7QVETi+P5Ous3VKPFwUEvXan2OgFC3Vq/Zolsh6sBjQz644H/zdm8E7K+Hawu45Oc//N4I
+	APzpi6goJGUphr4FGzgYr1b5thKCbKk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mRvgv2yC;
-	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pCwbIV2E;
+	spf=pass (imf22.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-12c45281a06so1611496c88.1
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:45:23 -0700 (PDT)
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1271195d2a7so5345359c88.0
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:45:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776066323; x=1776671123; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776066334; x=1776671134; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eNYrrMihyJ/UopuSP8NsPFIh0brjDU9y6jBpikXxsOI=;
-        b=mRvgv2yCSGCFq90mhWYqI8nLaEDl3pPRmTLvP5KbgfnmiZsMGZ/nV74njucUXMsx3v
-         J3PXuEhmC5CauZu8GZ9/NIUFBJN7oE+/GzQ9fe/Z2hTAaKP+ohC3rpgrwV1gv+7uewSf
-         YZ8gVG2XIkP4t7vTmss+UVS8iMWYZn0NPCtCDdHdunzUBkKEs5c1NpQJh2RTvkQPp+wP
-         4rBciJruGIZYHEjuxn+107B/xcO54FD7JQAoJZAb/MropoorW9GWZ7t8tsp9uT9ql22E
-         XwbjVlY/e2ytWV5bNqhkjf1wemwPQk6cqkWxsEVeAuUuJkD6FX9zxPOG7zaj5wM+psOo
-         k9Kg==
+        bh=I5M3+b2z7keZbGNN1L4pc5gbCusIv4rK3WbERlRAtRw=;
+        b=pCwbIV2EhjkIUbPmNf0NZuazrjGptUtvg+/1+kGiKtWaD1mdMl/gco30TGb2JdH9tR
+         WuHyp6kjqQAnh04Z6b23jVY6Npm5wxil/FsSYegnV9c458F/TtP1dF+/yrb1O9u22Naj
+         0WKq+koWvr9qzWGd63LNUVoe/8dcaOT/13CwUt9ICzcjqlbX+5e3h7Xjm2BJ8oiUtAzn
+         Mc/HQ6lZ1ZJwsgZbIpde5xRU2G/zsV13m3n9Sw+xhtHF/T59R2POM7Y79KWQFaNQ/OaY
+         4LitilBq9b/gunHR93GNo9PWOT1oj4uIHeHuSlrwg6yxgMTeH/Bw8IpTCLfFoMukCVOL
+         p6aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776066323; x=1776671123;
+        d=1e100.net; s=20251104; t=1776066334; x=1776671134;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=eNYrrMihyJ/UopuSP8NsPFIh0brjDU9y6jBpikXxsOI=;
-        b=iDREB7OyBVPZsG/IVj2pjbokRNCOvLqSyN7cGCOuQBqFzHPhtvmyrOQEMqcli/Q8ue
-         yNdar2qihww6r6zAp8tPJWb1h1PougONP2jvjmQ/61iuky7X3V/NzUKtg8307sIvwGI+
-         k70jLe6c1aQ6Z8qN6O8/U5hKDBdsU+jAmqiXikPFXpfNB58LrC01BqJZiOfwIy+q0rHb
-         AF3LT3eCu2iYJnuaSjwnT+J4ZKFsUAlHI2fa/RGwRPpwUOW7R0/3Im5SyZ8SahB2Agze
-         vHCQNMGvDuV0SFPBunQo20UuMiHtliPFrij8AglN6ZdZa6krhfZlF9XT1QmaCAq7ca5P
-         C9WQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9ThJoJ+HFKntyRYol8eWk+GHfqqZLI26rdKOUC3vegGfuLwWZJucFN5g7Kj3GrbESEnXYm/BvSFA==@kvack.org
-X-Gm-Message-State: AOJu0YzNC1jqztbhfr6NdBgoy5z/08KsDU6llmANUa7X1az93oqvNHG3
-	Iy5xnp/eezoviFZv5RUtU52xeNv4S4zoLQatRUUozpU+vcNk9b/M2sCkuAwsxVq4
-X-Gm-Gg: AeBDievrV6OYOnEkP/tl37jqEdIvHoYci2hQgMBiaNsZ7ZiNn+x2Od/JDYNxBQdLyct
-	qgXXGwkBoqv0pvOyUFs72UdHUZb0xuMt1GufWjJR4W4YfkgsGioPsXDMJ8lnaDMkTMLXfjk451l
-	aydUWIaY15QnDkTBSLdSs+z9xbE+VqccdT/KxaHrowXbMTyY0h+PqCKa79EfUUUuRnFnX5y6Ox4
-	9wwLtW9ogPrNfCFnz9iEGSKiUZFQpeiNSzk11/d+BoYMpXC5WY0UnJUG2iXBfjW/BC3LUVcJVfM
-	TudobQjvtJvdp+LJlqWg2iCFpMAdkMQm9Q/P+0Fisvc36EGXrvyhg7cuCaqJfNz0JM6euGKjYAY
-	oMIkc0U56m4F95TInTpHwbOZLvCw5fDFS8Hm+nISvJXdS3xxGReMhqBZxXmJxvocPovbhhAXvxx
-	6CHPEmkd4BPDjZ1YpA
-X-Received: by 2002:a05:7022:69a2:b0:12c:8b9:7208 with SMTP id a92af1059eb24-12c34eeb95cmr7021315c88.26.1776066322024;
-        Mon, 13 Apr 2026 00:45:22 -0700 (PDT)
+        bh=I5M3+b2z7keZbGNN1L4pc5gbCusIv4rK3WbERlRAtRw=;
+        b=LlMpYlYbO2WUGtynqwUqknCwddV71ziVw1hXkTUNzSe47xkJHJ/imi/GBmVBL0P/ia
+         p4uK5y049fkUjdaHUg7ZSRRFpoDCJ12BkRAiQbJToOeShsUKGA80z/P0uPVU8NABg5Vb
+         kW7sX7MMOzci6T8nd1+MdZpLcmx5Y3Pp3/R3sOCwdvSlCInjK+4C/YK5C+adiP2X+GyS
+         yEQJX5x/MUUrIUyhkzBx4kVdo66k0+4i80doa8h+fvyxrJ0EK5fPIeGRgUrkfZe/PySf
+         ws9G3FzyvElt0xsPVq+F17PPpv98iPCURS9EvdoojmJjLxU04l9/CFWVbTbtLHBGZeVT
+         t4AQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/RXIE0OMlXL2ia9npp29ywCXGvle8k87QRquICrE0CLwAgIbHYUedTGopLgq2XCLutvUxDVQPCpQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw3JLuFc8QCO/Mo2Wcb7ufSRN5ZlF0ACUwN5ZAtYx4J3ZmqveGC
+	xvGACqiqA1lqK8ZaUIwDNIqly+ehJXgHjJ1BEjT/9FZ2AnChaoVLbsgcxpOpZjL0
+X-Gm-Gg: AeBDietkjZTTZgrtIsvxrJsEtI/RpptwaogRpNGLT8r8v9vIv18o4T3sZHBZWO2BT/b
+	KC4S5+Oh7u5tjbckbmBDIZNlutVqQXX/v68pB9PmBSkpCYE8DEbCbH85+hyV8F6Dp6RvfJr6W2Q
+	dpKYZmgrB4yK/uuq9SmCR20htUReOJrhY3C/GCmQdnf75FZk70d189z+Va0ItehtbkJyxrCWQTM
+	YSmhqAZv2OtBZEJWAvl1/J9kP/xvnZiPVpkDgKldmXLvZm39FloE3PCQ6lWZahS1n4s9qnkunk4
+	tCTZFULyvxnp9SSaRZmvSEOIpRe+ZCWOQzwxAW18/B6oDgTGZb0KI4XCg8CcirQzKRzeWr4y9N2
+	EWnyX97PG7uJ3vjQuFUnqEcdQPNILsZ6S1MY5UtmOGeBbjULfbgyHa/46l0VzbRu/uc7ZUbYkXz
+	WRSYv9aa/ZoH95nELK
+X-Received: by 2002:a05:7022:e1b:b0:128:d107:da0f with SMTP id a92af1059eb24-12c34ea9471mr6689826c88.10.1776066333988;
+        Mon, 13 Apr 2026 00:45:33 -0700 (PDT)
 Received: from wujing. ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.45.10
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.45.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 00:45:21 -0700 (PDT)
+        Mon, 13 Apr 2026 00:45:33 -0700 (PDT)
 From: Qiliang Yuan <realwujing@gmail.com>
-Date: Mon, 13 Apr 2026 15:43:17 +0800
-Subject: [PATCH v2 11/12] Documentation: cgroup-v2: Document dynamic
- housekeeping (DHM)
+Date: Mon, 13 Apr 2026 15:43:18 +0800
+Subject: [PATCH v2 12/12] selftests: cgroup: Add functional tests for
+ dynamic housekeeping
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-wujing-dhm-v2-11-06df21caba5d@gmail.com>
+Message-Id: <20260413-wujing-dhm-v2-12-06df21caba5d@gmail.com>
 References: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
 In-Reply-To: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -129,14 +129,14 @@ Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org,
  cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>
 X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: 00D631C0004
-X-Stat-Signature: 4kfbewy9mgeey4iugubftgt8xfdikwsx
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bqt5j5mew56fkab51pm878666mh9ur7t
+X-Rspamd-Queue-Id: 88F13C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776066323-803541
-X-HE-Meta: U2FsdGVkX1+WTZUeH2BvoWsnVIVBdHhy+NrnwvYYrzoxFNlidaYAhYXOXoj4QXHoy1rdIysWdMEIvbZPxafCyRsi+9/M7Y64EWy1tECZ2/eacsAww6X9ZBzJw7FKhC3pUI4Ixu1SoYq1Ej/uu9NofNYVhC5IUQyS7SUedFVTTrAupmPUrleyxS+WtbFXFoXDokW1+jfcZTLWmrLxVTx9DCGceZnLu9E8G9mLRcR/B9dgKv2xmg/NBhzMaqWyptTvRlNkzPjTjjatl+LIxbUF250Ck03x0QtLD0y+OAC4lCR9r7gjzEhNK040cWkinUFni15JPAN7dDNiw3mx1wxV0lkiWZ0wPYVjjwC/TFmaMyyueAv5Tm1zZt/DkkcsIySdsMuR6IfZfaoimcgwVB3xiJH+0e5w6tx1a1MEt7ePJSb1ATIH+/YNkOn8VUUi+qgrwUDvdwCAAFOa2+AwQGgADo1ZevdLgTsM1qCmbxUKh8fUoQIlqO8X71tFRdxBqaw5Yg/sbCa7KVqFeAuELfPu60wNLiGUn0Pc1WBPM1HtTcP8N8UfEcyQANt0jyCwbgMSuQ1ra91JfhLQnqnwibArcz/4+2feQ2GZelM4O8idmFjeS7J48TA8tFDJEy21zP0LYOkRIbMLRruE+Qjf02O9CLoOF+0nb33js0kLYh2z48/Ia2cxJeA54p4vb/U0YQgLgjxkERI4mHhkfSwp+twmhLRHEletWqsXts6sV7OwDNIVIEQ1h1szqOKuBQlCIC048R2ZNf+NFY/7bLyW2w20GD2e1WUuctTLMok+RaKpC2F0pK2boyDj66om7ONn9y3/mESeo6nrfrEzTQGVPm3lQlYRppA+GMBSX8n7G24M80NqacWKaNY47eOUh0HZkc7fai4ih9n5rohU8isljFnbCMMkUoxEQlcKSrJfztqnhv2o7LyA0rAv8WkCu5ySi1Lrpxxnwpai2YTdjczPLLu
- T8JhXBM5
- tWV8SXjeUA+2cv3tj68sHAHvYGJxHapPGGXzXCY590oW9FKndeOB4UcNU2Y8ciBVXGtp6ST5qgSshN04NWoqjLWl/db7cTLelGrZVnov4+qFRrEyI65D3vlgk+lNRPjsQGiBt3tL0RlUqJEQ5j9eoCYapy9MOz5diH1Jd4qvY8BK9TUFjSE3yedMZlxjutaUxFbRlw5LhXWqpiVoKiP9DeQx3yByhHDjTAPSHN8qAdulVuviO3PmRMOLc0NjeSevtTvtRm8wkZGLDlg6osbqDPDUQmEAvxwFLd0u8sz1G7qMwbIL/LZwYIvSIQ7lQSl0dpY8CxhpRvkKNkTiedgmlmAuQf2RBy460p+e++nDRMj96aBwU/XPXkDocNUq/YCVguBzwCe8yTOGL+gjqSAbTjLhwySrQQGN2SISfgxQEVPoDxcf5aSAGDgZo7kgUceHJlC1YkSxW57lVGkpO3sQ2KX4BaatEAK92dQ3rJA1uvmAALohNDshzY+yo4+a/WjSJI0xq
+X-HE-Tag: 1776066335-966089
+X-HE-Meta: U2FsdGVkX1+THQBbojoOjTMj3ZCR43+1/mmwrtbF9K+3OErIGvOMzNJM98qm0HS2tckCDSXHWVwf4oX+iLeXpvhiebhuX+uLeOaDO2In0JMU/1QfQ14ic7J/RrPZ5ge+3ZcwMRoqadEEYFWObS1s1cbiMBsTj4/eSkGhfH9lZqWHqGAqBgw7CB6k9Ep06G7J2dc/bi2N7u5JhGrfN3jaKatGjfTS3tZ3tZLPzD0g/I4jHwGOWS6Asr1csZZuNrzIPRXOi2uS4Tyg7g3ubZvzBWw3Z2lcOiiopJwgYSObGvydND4qCG2j5LXYURO2r5Y9bC45P1FTdim18afNeQONGPPbAIP3CmvKdxBNIjA4xb4iolvaApxaEdflbuwr8taM2d3uXriwwXbtPhHTM8i8V5PlX3lTXo/tI9gvMp9DctwIEJwYH5YdqRzyot/fSvF0XOV1JqcAgQnt6it1rDsR1gBnrBVvOEBSZt9WBqTGlpBeRhdTyDgTtzJcS960MUP7mZh9nBtpR4kn2LacLJ3aCoFelTcfajhOuvy/4WityRQijbEnQRZBBdBjFw810CI3EwXwZKGEBGcUp2jLqhFyCQiax+DOof1W1/PFP4j/f1M/JNPeL1q4ci7GLT2zsf/7ppYiR0MVG5JLRvEDHOwHd7T0g4ihNECvi5JDxtjZSPJcdjSm5o8Ze3d+ET/SdH2csh8FRvTrYJwK+HeGTqOxSUqQDguBkBfkwPzBnzI3E8trkABnsPonded5yccr3hq6LKRitL1Q6m1HoYhTUVlHxrfXAATgEt1crL/aWFOlpxcCx+vsKrjXtSF7oKKfpnQJboXuwR6QdsgA3+TIp/jehzgeEKi/wuqeONGP5NCxg2SZ2yOfUQrhzb5UZ9plbZir46KCtOydf8rsbKukYVg+Kj9EG0aj007yADT9kTonRcjG2IkZWbB0n9Qiqv1UKXEJiXVyhFzsTSFh9SDm7pZ
+ QLFmFyB7
+ Tf1x/jiz8V73NuzwiICLYlQUc5e/tDSpcROr1+g2cdcb1fZ84gR0RF4XSOOBqEJZihCcgwA65GQEXCZKtsv/xA8wfjlQHxazNVhY0p6w03fJPHsTAKoLyc6GrHxUg9qpEyduIdNwfxxuzZ0GHU2eOWxr5cAPMCrVhSXSRjE7K1dqmmcw30TXUmxIjQPy4Jg+k7k8EhQRv1Y1F3QpUp4iC1UvmHSUEPYmIirIyG3q+JmZMFC4gqUm0efz+WBfEA1f5IRtIGeS6F7AQAjDXDYHKq4JtCGczr2TpF6yvWyNV3rZJm5gdRCYpIni9kzWMKBK6nlvxYBIi0itYBHBgEVQ2nPSPjFoyQ0vFwGWFkZQ2EwQLRPmqt6ZCGB6qsOyQ2MUGczdF12q86HYVPXZYlOMHCNuvZv3OAppx2MWyBpX3pjkLzbc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,54 +144,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the admin-guide for cgroup-v2 to explicitly document the newly introduced
-cpuset.housekeeping.cpus and cpuset.housekeeping.smt_aware files.
+This extends the cgroup v2 testing framework in selftests to validate the
+newly added Dynamic Housekeeping Management (DHM) cpuset interface:
+`cpuset.housekeeping.cpus` and `cpuset.housekeeping.smt_aware`.
 
-The documentation explains the use of the DHM framework for reconfiguring
-kernel subsystem isolation masks natively through the root cpuset without
-incurring system reboots, and describes the functional restrictions of
-SMT grouping safety constraints.
+The `test_cpuset_housekeeping` functional test verifies:
+- Validation of DHM's SMT safety guard (`cpuset.housekeeping.smt_aware`)
+  by ensuring writing to it behaves as expected.
+- Basic read and write capabilities of `cpuset.housekeeping.cpus` using
+  the base CPU mask.
+
+If the DHM functionality is not present in the kernel, the selftest skips gracefully.
 
 Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
 ---
- Documentation/admin-guide/cgroup-v2.rst | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ tools/testing/selftests/cgroup/test_cpuset.c | 36 ++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 91beaa6798ce0..deb644b88509f 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -2592,6 +2592,30 @@ Cpuset Interface Files
- 	isolated partitions. It will be empty if no isolated partition
- 	is created.
+diff --git a/tools/testing/selftests/cgroup/test_cpuset.c b/tools/testing/selftests/cgroup/test_cpuset.c
+index c5cf8b56ceb8f..b2a032be4407a 100644
+--- a/tools/testing/selftests/cgroup/test_cpuset.c
++++ b/tools/testing/selftests/cgroup/test_cpuset.c
+@@ -232,6 +232,41 @@ static int test_cpuset_perms_subtree(const char *root)
+ 	return ret;
+ }
  
-+  cpuset.housekeeping.cpus
-+	A read-write multiple values file that exists only on the root cgroup.
++static int test_cpuset_housekeeping(const char *root)
++{
++	char buf[PAGE_SIZE];
++	int ret = KSFT_FAIL;
 +
-+	This file is part of the Dynamic Housekeeping Management (DHM)
-+	framework. It allows dynamic reconfiguration of the global
-+	kernel housekeeping CPU mask without a system reboot.
++	/* If the kernel doesn't have DHM patch, skip */
++	if (cg_read(root, "cpuset.housekeeping.cpus", buf, sizeof(buf)))
++		return KSFT_SKIP;
 +
-+	By writing a mask of CPUs (e.g. "0-3,8"), DHM will update all internal
-+	housekeeping subsystem masks (scheduler domains, RCU NOCB, tick offload,
-+	timers, unbound workqueues, and managed IRQs) in real time.
++	/* Test writing 1 and 0 to smt_aware */
++	if (cg_write(root, "cpuset.housekeeping.smt_aware", "1"))
++		goto cleanup;
 +
-+	The new mask must have at least one online CPU. The value stays constant
-+	until changed or affected by CPU hot-unplug.
++	if (cg_read_strstr(root, "cpuset.housekeeping.smt_aware", "1"))
++		goto cleanup;
 +
-+  cpuset.housekeeping.smt_aware
-+	A read-write single value file that exists only on the root cgroup.
-+	It accepts "0" or "1". The default value is "0" (false).
++	if (cg_write(root, "cpuset.housekeeping.smt_aware", "0"))
++		goto cleanup;
 +
-+	This file enables the SMT-aware pipeline logic for DHM. When enabled (1),
-+	any update to "cpuset.housekeeping.cpus" is strictly validated to ensure
-+	Hardware Threads (SMT siblings) are kept together. If an SMT sibling pair
-+	is split across the housekeeping boundary, the mask update is rejected
-+	with an error to avoid severe cache and pipeline contention penalties.
++	if (cg_read_strstr(root, "cpuset.housekeeping.smt_aware", "0"))
++		goto cleanup;
 +
-   cpuset.cpus.partition
- 	A read-write single value file which exists on non-root
- 	cpuset-enabled cgroups.  This flag is owned by the parent cgroup
++	/* Read root cpuset.cpus.effective */
++	if (cg_read(root, "cpuset.cpus.effective", buf, sizeof(buf)))
++		goto cleanup;
++	
++	/* Write it back to housekeeping.cpus */
++	if (cg_write(root, "cpuset.housekeeping.cpus", buf))
++		goto cleanup;
++
++	ret = KSFT_PASS;
++
++cleanup:
++	return ret;
++}
+ 
+ #define T(x) { x, #x }
+ struct cpuset_test {
+@@ -241,6 +276,7 @@ struct cpuset_test {
+ 	T(test_cpuset_perms_object_allow),
+ 	T(test_cpuset_perms_object_deny),
+ 	T(test_cpuset_perms_subtree),
++	T(test_cpuset_housekeeping),
+ };
+ #undef T
+ 
 
 -- 
 2.43.0
