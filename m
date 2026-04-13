@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F32BF531C1
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5920F531C2
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:29:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A723C6B0088; Mon, 13 Apr 2026 14:29:22 -0400 (EDT)
+	id E69C26B0098; Mon, 13 Apr 2026 14:29:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A49856B0098; Mon, 13 Apr 2026 14:29:22 -0400 (EDT)
+	id E41886B0099; Mon, 13 Apr 2026 14:29:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EA2E6B0099; Mon, 13 Apr 2026 14:29:22 -0400 (EDT)
+	id D30746B009B; Mon, 13 Apr 2026 14:29:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D5DF6B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:29:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B3231B72F5
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:22 +0000 (UTC)
-X-FDA: 84654370164.07.122F3E0
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 244B8180008
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=plX1wAia;
-	spf=pass (imf16.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C2AAC6B0098
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:29:26 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C019139CB2
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:25 +0000 (UTC)
+X-FDA: 84654370332.23.A26C050
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 04577A0018
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=Qm0jaSwT;
+	spf=pass (imf25.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.171.202.116 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
 	dmarc=pass (policy=reject) header.from=bootlin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776104960; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776104964; a=rsa-sha256;
 	cv=none;
-	b=iQGk+sLFd8aGoqZvMOeDm4Il9URU+Gjld3qrIN92ukT4R+ux/N9bYcURRoWvOQtsHNylTY
-	JlYATmtdnwNgSl69OMAwzZnCWwCNQRkC5v5WjFyAy9yW+VS5ckkaMZavi67EaLHdS3k5hx
-	pUPoal77HLU7NEcSiMP5P1iuv/Oseh0=
+	b=cfS3/57e+TleNF+QgWRy1MyAPMfFm2cIwhGiRLYQFKt4qMcMHitfOdtMwQi2Jlrzyxyhoi
+	GpZZTxVuJenfPZGtV1SQ8Lj6ZzuiCxprS7l3X9g7Vy8zFYtNxILPBikHPHPprSSF7ypJHS
+	bKVXkeunVtM+nzAaR3gjnfg8Pit9uzQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776104960;
+	s=arc-20220608; t=1776104964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lEqpkfSG4bvQgxtPI4x8t4f5ElxNEGTXzPOFRzqjwCY=;
-	b=IfAvA/zVxXjEroC6yI5bJAlZnNAHytibSQQfnwd3PkP5t4fbixz5J1ZlgUdB6zER2JeGN9
-	5UuN+6GRCwy0n0enF0QMLCRscId7ONGWl19MU2GOGC8nrQue9pvMyk0638H35tlHVJZYhq
-	5bIWnMOaLFXMmNYM+X2SU7EOaN3GxC8=
+	bh=nPa2ZZONaBOGLFMfEfBDzaDZgsD31jakJQraeqbgRCw=;
+	b=isD2Rl4nrZ2/xV5IsXzdS5gItlg8skJdnYfGrtio+WQiXlpsf/s65ErA8DQyl6L8SMz2So
+	qsY30KOkZee+3CXWgvQCZkpel3k2vwJtgVQZsBCwTXzXWPMWhcFm2gJOVHAeSUaaf5H8zN
+	UlyrlCmotV++9DTLKcON4K2rnarWycI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=plX1wAia;
-	spf=pass (imf16.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=Qm0jaSwT;
+	spf=pass (imf25.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.171.202.116 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
 	dmarc=pass (policy=reject) header.from=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B63791A3212;
-	Mon, 13 Apr 2026 18:29:18 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 792FDC5B1AD;
+	Mon, 13 Apr 2026 18:29:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8A00C5FFB9;
-	Mon, 13 Apr 2026 18:29:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9615210450503;
-	Mon, 13 Apr 2026 20:29:12 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C3B5B5FFB9;
+	Mon, 13 Apr 2026 18:29:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 001941045055E;
+	Mon, 13 Apr 2026 20:29:16 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776104956; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1776104960; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lEqpkfSG4bvQgxtPI4x8t4f5ElxNEGTXzPOFRzqjwCY=;
-	b=plX1wAiahNNvYLrmKHyngjgbUZTsjXMi0XkNrQqatZIZfwi5y+MpfMYnpaPSrFPPIx5z1o
-	DjTmJalfQiDo3KOvAbGJ1qE8SiwJJI0z30hz7Hh1mg2vocPtrjUgfmRmqgaiTA1AVxu05f
-	TSmPLflLKUoX/QhZnH3X4nY86J0jvLHmL8Prsn2b5oH9X82bb0dFnuzoVhoZEXNtsuu8LG
-	RYUj2X6gdbavH0vUvSLXR3PcQcqHbq/u/pQ6CScqPoDPnGCm0BxblVPKU5DjB93iCZrcYO
-	uXojuVumNxIojmUJCrrBnPbAjhBsiAlqNEnuhQUM5TcX823OQvFjhzlelwNoqg==
+	bh=nPa2ZZONaBOGLFMfEfBDzaDZgsD31jakJQraeqbgRCw=;
+	b=Qm0jaSwT24/GdK/EsyzadjCMRmdSwzojdFiBoEhz9mF9mr7uXKqUeMuFzrXmwZ8OzPseYj
+	rTiosoU1qw/9rhsO2QAeObwHnb3U0BdA/GKu2X7zqF4XwbXU+sdENJYYJMHV+epMpE+WAE
+	5wXX4mFLdnQpzrapducllk94LpMksGi5QQSsfjn+ECbIMOEFADC7qab70hxaKQz0r/EyiW
+	+qT+y9jj+fwS4YIkWHcExGPabkcLddCDpfG8oxYqSCHg5OjMFegpaJ+esDIoGjiCGVX++x
+	o1cerD3IbFhwDzv5lAIPNVJ37KUVFvTRPwtdsH6wD3ffqjvZudD30QIMdhw1KQ==
 From: =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
-Date: Mon, 13 Apr 2026 20:28:45 +0200
-Subject: [PATCH RFC bpf-next 5/8] bpf, x86: emit KASAN checks into x86
- JITed programs
+Date: Mon, 13 Apr 2026 20:28:46 +0200
+Subject: [PATCH RFC bpf-next 6/8] selftests/bpf: do not run verifier JIT
+ tests when BPF_JIT_KASAN is enabled
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260413-kasan-v1-5-1a5831230821@bootlin.com>
+Message-Id: <20260413-kasan-v1-6-1a5831230821@bootlin.com>
 References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
 In-Reply-To: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
 To: Alexei Starovoitov <ast@kernel.org>, 
@@ -107,12 +107,12 @@ X-Mailer: b4 0.15.1
 X-Last-TLS-Session-Version: TLSv1.3
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 244B8180008
-X-Stat-Signature: d7w53ipuhcfwtyq7z8f7sx1zfkjzrby4
-X-HE-Tag: 1776104959-144867
-X-HE-Meta: U2FsdGVkX1/cj5FnAjOinIkUhPMutu3I4hUYTJz2l/2x+91kUMupv2CLpEuUNVOo7SjRA2Fu3inNGyBxpiIC5hIeu2Xf+9VRZgY1uHyxo6hHEmi16lZmZxPgJ7nG2dUE2poewpwPQkt/QtFFfn7uQFwqKpj/OtF6Y4z6C9agEfucQytSCYNb/yFVqYZ4liCA6ViKOdyhaFl0Fhdkm28pXP6o7UirWGapnN88aq+lf0Jqe3OIP0kSEkl8rX28Py0fpRqxyqvWeWs9OD4CdviBlBUTTXbr0eFsGAzEI9LdoCUSsbpX2Q8pVWrJHZlDXmCLNzO0Y6FTBBWPYJHRZTx61K/b5xjvV1h6KPncjEx/cBZZzhkDDxkNH3xkRMIgkJhUHuTdH9qWrFJew3Q+nacdbKQ2lqYBcRcFM20HHfmWFEf2qcSaTUhu+Yk/pk5AWdgtDK4Qi/5OBTB8jxawtwmyfmoPhyemCGyjERnLBp/oozQYbH4QmMITBd++bdDlWgMgw3Qn4l3+5arDCOkMEq9qHhnILOe3r4uBDdqsgXy5SrgrkytufkaBFhznhznYZ+aNhFYbnBow/9fIczfR4oZtpQLNb7XgqvNNYS1T/PJbufdDCd91TGv6OOE0K9BE0jBfBzhpoP3jQpKJ4Nh17bCWq9Sdd3t51QotCWdVWBMybXml6sFccfY5knMqRcShtwGAENWFiRH0tivW/VRhSFv0JgsSC4uBK8NWgt3Ho+KMxEyUHcT5C8yRgPU2pMtjMGNtUiJYMFFsOEcxQOhGVIFw8dMaTPHHgqLfdTlAhqPMZ2CQE8Xy54XIkFb4aNAv4sTGjansrz/BbiDrc/btKmr4cHGUB5jCFAZLTRlJA30uhVBI5CZSiKYoCXyT8medp4WyW9hbLtD6+Ns4laHGGJk9j1sLjsEZHMueX1SxCCrYYx5AZGT6ltHUIe7UK9JlcAopceqAMbXhEBiQKcWkPPG
- ifDKbu9l
- EJRR+c0d66IgRT7pRv/yygI2NkYPt52HpY1ddjPtRdyorho0RpDRwsMZJ5d/MTOQaZsYO2bo3+QUC5nbHJzUGZnY1Cqq55YCKBmTkV2TpX52oGR4lqbwp+MrvJHp9aIlkwWypthVmHuJiGS9jHpRatnhDWcxTetc0AjrGU9Xb0JJJLTvIVhxhYOHXdm3ULEFcrGgSlCke3rN9KppOw+2nmMBOG7E9d9xgTy1dGd/kMHw2ns/kvBKjDsjPxQ3Iu6WPMO2l/yXa2QqJJW/JlDWqtqPSjJ7Leoun6ySkTI5xirNO7BChiQFLGbvVFvN/piI/IAt34MmZNJ4er9I369id6FSVSSjgEFbhsrHFnDrOEHgPezp4u/IfnjOpyhECT6inKAr+zHDVzjuEkg2w2es8K80kXEorMN9KDp1chl917LeU9BF7U1v3RNKrPvBjBt0OkaoZ
+X-Rspamd-Queue-Id: 04577A0018
+X-Stat-Signature: jg7zm7sfsw3e69b8afksf4pdk9fizpy7
+X-HE-Tag: 1776104963-453024
+X-HE-Meta: U2FsdGVkX1/mBTWcFYtu8rPeL3ugVT9Rc3XPXGWYkMvm0Jdu01nE9oPH94vXrkpJwIOWWuPTLOkno13D9Pve6tl4c6yKWhSIdDQueUeb3h75NfbQjbB/KIsYH75nLZM9bYH/7UHaOgslu62s56CSjM0xerGETVZbPzcrk40gfNHiH173tfZZeCLKOgdDFVXoE4tJU2sVh3mXvHrGDr3uFWHZAesb/rb2BO4F29h/exopTtnMJQjnATj7JzblUds6VbLGW6VR1llcEbwwvMLnURnE7ILCkAh1zEqH1c28mfUBJq8tibLVM4Mq6u3JrB/IqXSbN4JAWK1IfN25g8xxS6NF4GHJM8tR3fEUIige/Xsv9z0VrzWqnceyUsoRDft6Vrtx7oddy6Qq2YoEX2sGkiVIhEC7apN5Hpr8SZvRhk/bV8vE6/UT6sb+PvAueWds8XL5bqdw5eEa2h5TOzWDpaJQvcq604YdhtDorNWiJA+VhFweNUxu+aFSs9pKuG9w5xe5HC9n8NhM/xg51YFD6l9F9mhUe+s56Ajylti19hWvhQboXgxB8zO1++SySLfvk8hjc6dGtrtS4uZ5r/eoPFPXSS3dJh+iiZn6fiCd4aYmAj6HP52t7cmBMrbKcVX4y6t92mJFPk7nWmWZWTWGjgY7JDSj7VNgtmghd75I4NM9BWdQv0CI3YOZ5ypwhWU5s/xH8vICFLZlFHYMLup4ameXSJXiYp333xUIrL7ZmXMyiwsfkx/4/vAK2BXBYeGkypEySakEZrLmFBvMbYMaBEfFdfDbMUmAQQ66+A5QEyM81QSkpoxWKozgYmvR5Lg2ZSTfWdlXkOXRuPHfG3o4X4qDqjAUxJoG7yIlPoZyWTXD6h9+nt1uGcrgCZGQFRS0cWhVxdDmlObankdEOtTgj308jSwqhuH1VqI/svy1RFY6b13lNJQt4EC0jGM0+ADi7s2zyE2PMp8ff40HQYm
+ jroFSU0X
+ mtvqwVRR0ROHCkAIJ8pMBhzJSO6SEt3YuIYPbclgTcJLFo8jBnitRon6UjUU2Q2XYoyUyvtPGOtfTqDXGKDMnkuXjgmJu2Rz7bdqw+taIlkrx9Sj/d62B4is6nCqHu3+wNRJN+i2jg3rwsGi8AWYmMDccmwVZmvBLo2ZsP18ebAAU+KWIe+VhP+tjmlsGkJ4TetEh7l+asQWiskZLvhSfRC46psrb/UPZKJhRAfO8eYoaTyxDzzxn/BPLhxBQb4JcubqiqjjlfcOfhqGo9d31wp03q6EImbAgycmUK4hofTQ7sDPaIAhIJvnmZWryXgtRh1SwgeHS7QNyh8GgNVtlRePoB7ht94PSnXXqsCSrvQcr5VF9b1ao/9zAqjGU/mQaRIkqle/fdzSV7xompTrrAv2VfLvvLChkOc43Hmrq2oRUedR1h3Zvg4Ujqcqisd6bTrQsbkkdDJ4CSvi0R+c5JqCbLyfE1YXPL+bx8Jo3sYhtGeB9/Ev5XRlljg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,77 +120,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Insert KASAN shadow memory checks before memory load and store
-operations in JIT-compiled BPF programs. This helps detect memory safety
-bugs such as use-after-free and out-of-bounds accesses at runtime.
+Multiple verifier tests validate the exact list of JITed instructions.
+Even if the test offers some flexibility in its checks (eg: not
+enforcing the first instruction to be verified right at the beginning of
+jited code, but rather searching where the expected JIT instructions
+could be located), it is confused by the new KASAN instrumentation JITed
+in programs: this instrumentation can be inserted anywhere in-between
+searched instructions, leading to test failures despite the correct
+instructions being generated.
 
-The main instructions being targeted are BPF_LDX and BPF_STX, but not
-all of them are being instrumented:
-- if the load/store instruction is in fact accessing the program stack,
-  emit_kasan_check silently skips the instrumentation, as we already
-  have page guards to monitor stack accesses. Stack accesses _could_ be
-  monitored more finely by adding kasan checks, but it would need JIT
-  compiler to insert red zones around any variable on stack, and we likely
-  do not have enough info in JIT compiler to do so.
-- if the load/store instruction is a BPF_PROBE_MEM or a BPF_PROBE_ATOMIC
-  instruction, we do not instrument it, as the passed address can fault
-  (hence the custom fault management with BPF_PROBE_XXX instructions),
-  and so the corresponding kasan check could fault as well.
+Prevent those failures by skipping tests involving JITed instructions
+checks when kernel is built with KASAN _and_ JIT is enabled, as those
+two conditions lead the JITed code to contains KASAN checks.
 
 Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 ---
-This RFC also ignores for now atomic operations, because I am not
-perfectly clear yet about how they are JITed and so how much kasan
-instrumentation is legitimate here.
----
- arch/x86/net/bpf_jit_comp.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tools/testing/selftests/bpf/test_loader.c    | 5 +++++
+ tools/testing/selftests/bpf/unpriv_helpers.c | 5 +++++
+ tools/testing/selftests/bpf/unpriv_helpers.h | 1 +
+ 3 files changed, 11 insertions(+)
 
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index b90103bd0080..111fe1d55121 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -1811,6 +1811,7 @@ static int do_jit(struct bpf_verifier_env *env, struct bpf_prog *bpf_prog, int *
- 		const s32 imm32 = insn->imm;
- 		u32 dst_reg = insn->dst_reg;
- 		u32 src_reg = insn->src_reg;
-+		bool accesses_stack;
- 		u8 b2 = 0, b3 = 0;
- 		u8 *start_of_ldx;
- 		s64 jmp_offset;
-@@ -1831,6 +1832,7 @@ static int do_jit(struct bpf_verifier_env *env, struct bpf_prog *bpf_prog, int *
- 			EMIT_ENDBR();
+diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
+index c4c34cae6102..d2c0062ef31a 100644
+--- a/tools/testing/selftests/bpf/test_loader.c
++++ b/tools/testing/selftests/bpf/test_loader.c
+@@ -1175,6 +1175,11 @@ void run_subtest(struct test_loader *tester,
+ 		return;
+ 	}
  
- 		ip = image + addrs[i - 1] + (prog - temp);
-+		accesses_stack = bpf_insn_accesses_stack(env, bpf_prog, i - 1);
++	if (is_jit_enabled() && subspec->jited.cnt && get_kasan_jit_enabled()) {
++		test__skip();
++		return;
++	}
++
+ 	if (unpriv) {
+ 		if (!can_execute_unpriv(tester, spec)) {
+ 			test__skip();
+diff --git a/tools/testing/selftests/bpf/unpriv_helpers.c b/tools/testing/selftests/bpf/unpriv_helpers.c
+index f997d7ec8fd0..25bd08648f5f 100644
+--- a/tools/testing/selftests/bpf/unpriv_helpers.c
++++ b/tools/testing/selftests/bpf/unpriv_helpers.c
+@@ -142,3 +142,8 @@ bool get_unpriv_disabled(void)
+ 	}
+ 	return mitigations_off;
+ }
++
++bool get_kasan_jit_enabled(void)
++{
++	return config_contains("CONFIG_BPF_JIT_KASAN=y");
++}
+diff --git a/tools/testing/selftests/bpf/unpriv_helpers.h b/tools/testing/selftests/bpf/unpriv_helpers.h
+index 151f67329665..bc5f4c953c9d 100644
+--- a/tools/testing/selftests/bpf/unpriv_helpers.h
++++ b/tools/testing/selftests/bpf/unpriv_helpers.h
+@@ -5,3 +5,4 @@
+ #define UNPRIV_SYSCTL "kernel/unprivileged_bpf_disabled"
  
- 		switch (insn->code) {
- 			/* ALU */
-@@ -2242,6 +2244,11 @@ st:			if (is_imm8(insn->off))
- 		case BPF_STX | BPF_MEM | BPF_H:
- 		case BPF_STX | BPF_MEM | BPF_W:
- 		case BPF_STX | BPF_MEM | BPF_DW:
-+			err = emit_kasan_check(&prog, dst_reg, insn,
-+					       image + addrs[i - 1],
-+					       accesses_stack);
-+			if (err)
-+				return err;
- 			emit_stx(&prog, BPF_SIZE(insn->code), dst_reg, src_reg, insn->off);
- 			break;
- 
-@@ -2390,6 +2397,12 @@ st:			if (is_imm8(insn->off))
- 				/* populate jmp_offset for JAE above to jump to start_of_ldx */
- 				start_of_ldx = prog;
- 				end_of_jmp[-1] = start_of_ldx - end_of_jmp;
-+			} else {
-+				err = emit_kasan_check(&prog, src_reg, insn,
-+						       image + addrs[i - 1],
-+						       accesses_stack);
-+				if (err)
-+					return err;
- 			}
- 			if (BPF_MODE(insn->code) == BPF_PROBE_MEMSX ||
- 			    BPF_MODE(insn->code) == BPF_MEMSX)
+ bool get_unpriv_disabled(void);
++bool get_kasan_jit_enabled(void);
 
 -- 
 2.53.0
