@@ -4,84 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC07F531DB
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 22:29:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3FE1F531DB
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 22:29:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C68C6B0088; Mon, 13 Apr 2026 18:29:02 -0400 (EDT)
+	id 2E34F6B0092; Mon, 13 Apr 2026 18:29:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7769F6B008A; Mon, 13 Apr 2026 18:29:02 -0400 (EDT)
+	id 26CEC6B0095; Mon, 13 Apr 2026 18:29:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 666A56B0092; Mon, 13 Apr 2026 18:29:02 -0400 (EDT)
+	id 1615A6B0092; Mon, 13 Apr 2026 18:29:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E66F6B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:02 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D74EE139CFA
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:29:01 +0000 (UTC)
-X-FDA: 84654974082.05.81C2BFC
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5B78214000B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:28:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Acn3ot68;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 006FE6B0092
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:15 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 805D31B6F65
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:29:15 +0000 (UTC)
+X-FDA: 84654974670.02.720780D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5A2EE140008
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:29:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ZmWg/RE7";
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776119340;
+	s=arc-20220608; t=1776119353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R0C0oTbgMZYbhrAvkMy0ApjkIhijnhBgwg9sMmLsR0w=;
-	b=ajw1fK1SaHvyp15ntokJoQy+NqTQDKE7zaroSF6fjyZIv3p/kxDUayCfs40xbpyj37okBH
-	hRL+owwrtajhbaD3Y+kjy/EWZmD0PSlcjQiQOaeLVQf4Oe10dd2OZFIuYpSbeW3KbYXdTc
-	13KH4GE6EbWeoDXg4zWN767pK7V7lss=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776119340; a=rsa-sha256;
-	cv=none;
-	b=WuHuaPlI5v8U7y9ivZYYglg4BEpXQfZO12V3hgGdR17f+cqd8xSkmYrE2YXN2BwiV4BXFK
-	wsLXXncjaAuR+7Jyq83Vw/de5TAcIy6F1c1cLtZId1GTtstMk4oWEJzeUBjxAu9DRjWFDT
-	dURHCZK3GafYVWScTc8VXJ4rl05yETk=
+	bh=NTwBXrFpNi4Fseaq8Sky7pLzRp0mlA1ksSlPEqI0JKk=;
+	b=2ZsvzGnls7I0V9Wz/s1lf0RvQT6tdTwXauop03Do6Ou2igPyFcB7Dsqxc2UjpRjHfKF+H4
+	UZH4KU8Ka8wpx02FQoSEy9XVwL3odkzOy0n3cf6ufVRMKt9rCxEuLBq/oHBWJgEuk7wG9E
+	kmpQ7FjpTugQymXQHp2erFSXesPWIKI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Acn3ot68;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-Date: Mon, 13 Apr 2026 15:28:52 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776119337;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R0C0oTbgMZYbhrAvkMy0ApjkIhijnhBgwg9sMmLsR0w=;
-	b=Acn3ot68zMGKTsDYvK5Aa4s1RXOMEuYQGZqR09u3VG6a016vJp8EKZeK2gFbESKUvWoT0Q
-	0SarXFhI/s/uQHW9HYZOEIS6bKHCakE8/CMF4YrhNIlAFdkEoKqBkFrIOdowTV4y4HWI3M
-	mOVL5DjirDprGIsRuX9t3ZRr2Rhp5gk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: syzbot <syzbot+1a3353a77896e73a8f53@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com, 
-	yosry@kernel.org
-Subject: Re: [syzbot] [mm?] [cgroups?] WARNING: bad unlock balance in
- lruvec_stat_mod_folio
-Message-ID: <ad1tV5WpFhxbQ86N@linux.dev>
-References: <69d54494.050a0220.3030df.0002.GAE@google.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ZmWg/RE7";
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776119353; a=rsa-sha256;
+	cv=none;
+	b=ijC5Kj2bb63aXXlf05wEJymJ6LW+URr1NkEB3wAnoluG06vk5EJgcqtWeTJEMW4AT7xOfg
+	5CRcCeijEK3OhDoNURrPuUUmyDh+qs0U7mt9Hp8dQXete9VrH/XPG9caFqJx5ZEr0sg9CJ
+	4uf92zf30Rtee6A8uxRJzB77xaQ8htE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=NTwBXrFpNi4Fseaq8Sky7pLzRp0mlA1ksSlPEqI0JKk=; b=ZmWg/RE7pdRpXKI55S8cbSa8gw
+	Wjv5sTE0WbQzhn8CDWWUinuH2sjpRwR/arldGQVvp9Ra7GtijGUvaSE3/iP/y4vXKYlxAfLog97NV
+	LbRjs5e/P3yEPbFYnAC+qP4JFhZves3bYyPL+lSIlhsI6Z/fEIUPloZDi6gsheeUIfbr/snXATm9m
+	2D1Ykc9DMdIJE9vnCflifaF7szT4YN+e2+8cwyWUsWvGylUHJTs3Gvn7SUY7kQuMOBsISsJ+KID92
+	sxg648RqlrvaJKmdhjNXNXUaNVNc4TyMjhrvxYBO2uKgWDH6LjtI8A9dkQXWsdLJ7N+NdYnV0ltXA
+	7nIexsqA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wCPm8-0000000Ecwc-0D5J;
+	Mon, 13 Apr 2026 22:29:00 +0000
+Date: Mon, 13 Apr 2026 23:28:59 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 7.2 v2 12/12] selftests/mm: remove READ_ONLY_THP_FOR_FS
+ from comments in guard-regions
+Message-ID: <ad1uK11f_J8sFN0e@casper.infradead.org>
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-13-ziy@nvidia.com>
+ <ad1WTCR5Kld-tiL8@casper.infradead.org>
+ <E3268570-18E4-40AF-92E5-931A8ED1C9B5@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69d54494.050a0220.3030df.0002.GAE@google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 5B78214000B
-X-Stat-Signature: cr5wkrm8asenor7zaw15wx5s3wp3pxy3
+In-Reply-To: <E3268570-18E4-40AF-92E5-931A8ED1C9B5@nvidia.com>
+X-Rspamd-Queue-Id: 5A2EE140008
+X-Stat-Signature: h7y3ezh3xmy868mwpn9i5axu6dxc8tsh
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776119339-848534
-X-HE-Meta: U2FsdGVkX19Xfx4l5HQk5upVOwIfLs13SFAMI7w/epp1Kx/iwQGRdzx55rW4sYVa8wUCaHYtKr9fiVPuT5omHZY6VqUJfT6pGQNEuf4mF6b2LkiNnsft3FPQ0BEsiCCaDmtGCXLIYgSpxusJLBinCQGNQS6nOtTeJ47nffBf1s9Xzi1kvKuvU2lHPDyjJDOTvkC3Y1dmue3Et9y3W+/atJ8urTD5e+JE0trFm0e4AvYYEQIaIAU9xh4YDANT1ECnoSsbRPFP3Pp1T5YPSUTp28obYsAKtFUq/BQnUQVkQiGsbKcxgDBezFzndnuY7YBLv1qVrbA0kxZzmtKKP6bnYKtDR501iYzRMB3FXc891SXT8KHf/gFD1ATlyUMNXDqf0j8R39G/Oc0lUkfy0f87WPAu6DGSzas7uQlo3mfA8EzXh6WxiHGGIM1Ev6PmcZDhgpFX4qMwrY73OFaE+Mt7EKJUkIeZCckQRIKfw3dEBWnVsTjPDb5T1zuqSLFO8ywcs6uV4uG6aDKfIRwwJhe8Fep5Q27QqNvv13oxchTT9zbW3Wk1pjySE0GFH9hQ4MCKR55JW8nlO2Vuj4tNAGvI4xk1VxtjYpoiuVML0aiQN48UHz51O4YczAPcRZIKNj5zTU393IE531ysnFUsIMol9esAC0yOCkYut3phMA2vuBzlvWfQGydgYxcaRgm1qBRWVSrlxjuwDbJoHSnoXv1w+JvgKm6fCoEMYpG4u3ursrMv3vLLiFAlHVkYbalROYib2W2uvG2HA7ynpINVGNcU7OJvybhJ4Ze4EtZ9aLS0xA17wEX7XbrZNARg5z0Z2TePWcrSmz+z2HrUyFlkUTxo/YsXvWECLDH02xMbuY25DoYr8vpuIh4qcmpEbIT2aFL0FJh2RdtWqfeVytTtrUO1DjpBIIj42UAnNRhfvXrW4cT5DLtJuo0Pv+X1JOo6jqUMBbqW7hIKnNBLKEcWPID
- bZ7x8Jgy
- Urq6So9cVxA7QPUpe6Gsjna151t4FxjyN8jXb/HorjqzSs19JbP+uSTsQro0cMmAF0Ay9Gbdl2wapWgsfjhqoh8o3vmKueBvuScn/sKbSSKOsKhgV5/EUyCyJVCM8TKyca5zhSioP5gpJohWmzQ5An1NKRPqmV9pBz1YdQArfqkbyWHW9TLxRNvAFb9OnK7w1j3yu8/wv2D9SS+sv2wiKmMEvYg8sf1sIoOH8oe86mEAgF7hNd0+MpGanCFS81+wyp7/yY1+injJGEc8VzCYKjabKrr0c2oesXC1U1JLXm+R45SfOpOESWhc6FyduMwsVHmzCaHxvUGpaclCg3v6leaI3/4XXbcZ5IX1x8PFoIGbIfHBTGDa+XXCPKwqDkOz2C2haUJwl0pshV135iGhx9DS7J8AyUylXQStZu5uYU4tjNkel7sKXLURXQe0MNZcl0uxJSurxwNihcJ3BLJyPXoSfLSbGuuM2Xf81AD54yrK35AmR2X/0DZNFPmAFAWsfceuIVO5NJjI9oaz6ooVJ0kuGiPP3mW1p1t+HeWFgpouVTJ0odLc0qpIN2eGOHT3OEfow
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776119353-761898
+X-HE-Meta: U2FsdGVkX19sn4zak3/6BFicnlkAeVZdW5al8IAu43RSmnI41BTqQoQz8itsSgtFWWSHIGF090R35catSnL7z5dtrvAFABF6KOTxcAAnUWflRKXgxu1pCyXIHx2E1ICU5h3NIYv2CuUCu+J736lHdeMHxp7FAiV+Xth3ZcCesGrUALe9WylgEcKt8cWoeHhK99mmYtPR4lKIHB2SNqBDPz/nUe3kHK6r5Pl6GD+9rlePxhtdz7+eeQ95ReNxjivlBICBnwunElKexnv+quwRwjAH3aUBIFzRXOEghdgsKtKoY7b/mE3ClN7VkdgMqD2qtlBRu15eBOr+nC2bacMk/+y3O9VTa6CusJgg8Bt2Lnj/6L8xMdAhJWp0mos26LNa9K2gsfd0X5XF9MmdZjaesWlHINVch3uzJGr8Oy5HZCfKiOnqrxu35n6VBg6vnO7PuMfPbA8yopLY4KKnFPUKo6T/U4Tbewzh7Iau/XyqMCsudjaG4qZit54VkSzsBlDKUlPTCWKCdZcnl+SHL2w/gDhp/EAn2IXgtsIRVSzReWXJkicybr+ATVxlyKmMYsBvdO4vTKeqvchCnqKFn6V0teOYGIG2/ihFSuEljyqGPYRDXfQRpUeziLVX5QqvmETiU1e/Rfkrh8beGmTAmiEvuSMdj6iwZUE1EB1uEcbnC7d41V85e5lHjqkkTUhl6ju12+QdlKmM1OAXKHOek2EKQZdB5FZZCvizlKeg8ac1ZYhHyiwlH0vCEjrW1XkVGX9aD88ZBhq4h/jHxE95s9l3kPGoFJtOea4N6NyiSfyjSN+5v9Q9LJkKvtORhMC961P1x3USQqHqSDLRNsKME+bDb4ZoaufS9QuM7AItM/ma0bcpnhg9ZkKBw9b2iewKbclYmo8Bh/1zNg2GOcKEbiqf+svM4RFpCD+r6neYpRCOV+9YRCCZvbykFKEwtI++7OKBv/nIM+Q5Kn+bhUlz2gL
+ OXoAOTWv
+ +foorH4qOPcGRCMxupVPwwvcVFjdx0iGc1xyE5IxJKo05aQC+uYP27/ux1FoOIi7Odsp72KaIjCeXiRjgNd5VvjIrg7Oblb73ythvEL/0wNzWWnYRtRdfTrnNZ9btyy33nqdTrzhd5ym5NztELpSOKEHKG1p/A9cXJgNcnbowbFl9shgT6E/wJO4Cjlq+izOZnC7CP6+9YKkTdP+FRjfV3WyTAOB0J6JzJ5GYmPZY6mL67ptagSIropJIuKkBs3jXgsQjIeh6eRSw7WwAme5t3lHMenGxIrpRAuPk9wA7xPkG0Fw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,25 +109,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Qi & Yosry
-
-On Tue, Apr 07, 2026 at 10:53:24AM -0700, syzbot wrote:
-> Hello,
+On Mon, Apr 13, 2026 at 04:51:28PM -0400, Zi Yan wrote:
+> On 13 Apr 2026, at 16:47, Matthew Wilcox wrote:
 > 
-> syzbot found the following issue on:
+> > On Mon, Apr 13, 2026 at 03:20:30PM -0400, Zi Yan wrote:
+> >> +++ b/tools/testing/selftests/mm/guard-regions.c
+> >> @@ -2205,7 +2205,7 @@ TEST_F(guard_regions, collapse)
+> >>
+> >>  	/*
+> >>  	 * We must close and re-open local-file backed as read-only for
+> >> -	 * CONFIG_READ_ONLY_THP_FOR_FS to work.
+> >> +	 * MADV_COLLAPSE to work.
+> >
+> > Is this true?  Does MADV_COLLAPSE refuse to work on writable files?
+> > Should we delete some code here as well as fix the comment?  ;-)
 > 
-> HEAD commit:    cc13002a9f98 Add linux-next specific files for 20260402
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=10d8946a580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=4e6c8be618ab359
-> dashboard link: https://syzkaller.appspot.com/bug?extid=1a3353a77896e73a8f53
-> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> 
-> Unfortunately, I don't have any reproducer for this issue yet.
+> file_thp_enabled() used by __thp_vma_allowable_orders() refuses
+> writable files with inode_is_open_for_write(). That should prevent
+> MADV_COLLAPSE from working on writable files.
 
-Let's wait for the reproducer. I can only think of cgroup_subsys_on_dfl() check
-returning different value in get_non_dying_memcg_start() and
-get_non_dying_memcg_end() to cause this uneven rcu unlock. However I can't think
-why and how that can happen.
-
+That sounds like more code that was added for RO_THP and should be
+deleted?  See commit e6be37b2e7bd
 
