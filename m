@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B48CEBFD0F
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:44:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 545DDEBFD10
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 07:44:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E6D36B0098; Mon, 13 Apr 2026 03:44:29 -0400 (EDT)
+	id BDA626B0099; Mon, 13 Apr 2026 03:44:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BE326B0099; Mon, 13 Apr 2026 03:44:29 -0400 (EDT)
+	id BB2A16B00A0; Mon, 13 Apr 2026 03:44:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D3DE6B009B; Mon, 13 Apr 2026 03:44:29 -0400 (EDT)
+	id A79BF6B009E; Mon, 13 Apr 2026 03:44:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B52D6B0098
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:44:29 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F09AE140CE1
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:44:28 +0000 (UTC)
-X-FDA: 84652745016.21.511A765
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F019B1C0004
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:44:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 98DAE6B0099
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 03:44:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F6C4E3D80
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:44:39 +0000 (UTC)
+X-FDA: 84652745478.29.207D2A8
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 83CD81C0002
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:44:37 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="FWl44/XK";
-	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=buUScY3Y;
+	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066267; a=rsa-sha256;
-	cv=none;
-	b=FShtKtwPV9qhE/x9fhmR3lmObbI1K0wLH3J/QLSKcgrDZElLcRKlC8/qhZoehgB8kOg72v
-	hx7GSQUkMqczT7F6Z9AHVVytW0/CLtF71lE/qLt2sR921kfm9cBlRNOrzUzruZtFxEh2LY
-	VYUlQr3y+M3y/IAbInT8cPMpE2T0yV0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776066267;
+	s=arc-20220608; t=1776066277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0z+BpAj/vLJ0rBDjEb9ZBDVSgQZI0DaLWhxEyOZ7nyg=;
-	b=SCUt+JKNwRwzeVOZVbVXQKU9RjI4wCXw9MLgkBZgyi8V8Hfnfx8Q12evMeYpqlvq1z7xEn
-	4UnsAAiYPUGlIfyYlzinVaXCgI+Ex9m/rlzf29uq6+qRe9ei0vrvJcO2/933rl6P85Uz+e
-	3uqmy+8qFvK6wz+WSx4BUPS83YGhdmQ=
+	bh=gWLi6Bh6Nz5J4yZhvIk8yyG7xG2dO9eEtzSyvnHXfpA=;
+	b=PDMa4vlbszTxKYgJ3Q3YSuakHj+ulYoW6z6yEKQpX+de4FzdnbcydjIoskDWTWbI1mvM0P
+	iH7OZI75m0EO0LjN8ixrEdA9VTbj/h28GavN6kkjLNpiZQHrBHUiKNNiZQnJ/niW7htcrO
+	+dEpYjgUCjPUX8AU4G3txjVJa5NhhtA=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="FWl44/XK";
-	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=buUScY3Y;
+	spf=pass (imf21.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1274204434bso2277984c88.1
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:44:26 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776066277; a=rsa-sha256;
+	cv=none;
+	b=M0P6A//HE8vSCbsaWBFofMUAzjFvkB+VGlVBO3XY4xZsq3mmp7+FFk1CO7qSsVGOEqgfxs
+	3isVHJvL0LByo/dmAxsIuPU2G4bPgg9v8lWA04+0GHA3VCMGJfh8gAkGKJM02u1mlhmJvR
+	R9T6udsmK0I7H7Pf2hJDnUCl2AB326w=
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1271257ae53so11458168c88.1
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 00:44:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776066266; x=1776671066; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776066276; x=1776671076; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0z+BpAj/vLJ0rBDjEb9ZBDVSgQZI0DaLWhxEyOZ7nyg=;
-        b=FWl44/XKuwfIurev/vaz163Xverdzx0aH9rROC21X87ksSOK6TJCGsDUMDJe4CPZlK
-         wcLoWfVCM5lNQQc7fcOsWpxX4GwX049kyZBoxyvEWm+xh9zOkkHQhl2Xci6WPX3tXorg
-         w8dOmmB3f1TOACFmsIlvtRre56KJ9sqTlb+YVF+Kkh27Z4d+2KRkWkW62bLxlYSibyr4
-         arb4rdFx72EORi/VeUkncExiC93qRMbbm0aQd6Mvuuyg7zK348X7YDx5Bl/o6fRtN2vb
-         CJpr6XqaE23bM95f81w6jaP/HM5oF73BzsCpZ6HwFKXJgpGxEcD/x5lw26mo42YrYO3b
-         DpSQ==
+        bh=gWLi6Bh6Nz5J4yZhvIk8yyG7xG2dO9eEtzSyvnHXfpA=;
+        b=buUScY3YnvnI0zw83XItlKYdX7hhbEI2tP6x9ZNm/iX9zvsRpfT5vrD4lbMvqysfne
+         Y27iEpKwf4u3VpXQbaQTDEHx4P3LxdF3utAYDPf6PLJJpFGKrtI4wiyZqnYYjQUV8O7l
+         Dfba4AMsK3jntJKf7c+u3eQbakNszMu4u+Gup9AmG9hA5NYcyBXJmFO+xpi+DFn5DqqZ
+         R4QGmq8IsIAHTYTu2lGunqXNS+gCiz5VjfnRQIc9GoKrLA/c4JlJFSs6GwyzRIMgDWwT
+         j5/TftCp5zlHXwUhL1n8Jw/hhHAPx+cHB3mOf4mxTxK0rUt034QXEb8zZ1j/tNv4Emgb
+         9e3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776066266; x=1776671066;
+        d=1e100.net; s=20251104; t=1776066276; x=1776671076;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=0z+BpAj/vLJ0rBDjEb9ZBDVSgQZI0DaLWhxEyOZ7nyg=;
-        b=eY1zfd/k5R3EhWwiYVjdL5plyGTxnSqmUDcJdtOm4vkPufefLicPlLWUOnjYGNbrvx
-         DUUL9ipoayUVdQPMyPXDkCID1xM2UQ3/bw0tlb1K1M3wUDgPN+Yg8S7v10eymyU8RfIS
-         So9yyXDIvwZhcOhMAEXOjaCuD8vbBshGwbk2qjrd6thm6VcUn/o3Cn3Of9Trxh0nJGyC
-         T212KcyLVopBNCSa5uh/u08nQcREsTjm4muk1jPH9x9X7gfDLNaQeKVzymRwN5aLRi5F
-         lI3gTNj4vwHICLuXOTeVnQf6pG5cQCqZawdtrgtDR+OqAAeE4d7lcAQzWM/nod9MHrEf
-         dFOg==
-X-Forwarded-Encrypted: i=1; AFNElJ9INiiQhZM+ZT8Mp2e3slL5TD6kOnCaV6V2QrObNXKDKuz3eKFif5EVYhUOxIFpyNqzACAcWvUXUg==@kvack.org
-X-Gm-Message-State: AOJu0Yy8BACoSffZ2R6McqG4JdemAI6NAkrBxNTztHUB4w8zAPLX2IgQ
-	PF6kK+w3JYqrb4E82JPh4/E0ZFQRS4WlAdPTaqDu36sMsdyHZWfJCombVYe8M8uI
-X-Gm-Gg: AeBDieuqSf8FXTjsBH6gu9YvDxlRLP4AtTsuZ7PIDGGj+4V2vSpVvXJtdcRdCsQNbI7
-	swdc2stvvYHTUBY/a2x6XY42y7eU5Ks/mBEMtw91jRAFeCefC4Y6kuiwaKf5yvoRViB2glpKaPe
-	Qxj/iiJSM/W14/I3jifEjoC3W6oDW5WAym6JzqQZXNRqMzHGPjtXrEPmZIZUtHauBDJ5l48eSui
-	4ViL52witKvVg6VsaWQyUYVJy/Nvctxi0UcWlauKzq8BU9MDhQLeRKxjbw6Iednb+xYNPnp+JGq
-	y3vXU+WZFh6jqew4Grm0sMVHWl7vrQY2lGysIZ6WyjccbLplCSUgBRGvvt/wx3ZzJvM4HZTIV3C
-	rBCN61hJrMahtHJds72P4a2Csq4xrB5AhJewAI/fNFNNflG9psILHdJlCFlzonXYG+wn2Kd5zaS
-	IGdukWHFE/ZskHWKuT
-X-Received: by 2002:a05:7022:4a2:b0:123:3c24:b15 with SMTP id a92af1059eb24-12c28c31ef4mr6458629c88.19.1776066265460;
-        Mon, 13 Apr 2026 00:44:25 -0700 (PDT)
+        bh=gWLi6Bh6Nz5J4yZhvIk8yyG7xG2dO9eEtzSyvnHXfpA=;
+        b=ZjtPXNB5H+PimLsTaD98a2WfDOcYw0GxY7zYieD50ULg6iIrW3GTL6NVsvkBzGSSgu
+         aM2hUC2tAJ7Un/sJFzbrvH71VFNzNH0YrbOm3F8yjGZiQw8kbynRoMWO4t78CqTr8dBA
+         0MKKIoJt0FtqTBNAu3Epo5dlcWlfZsl8k4/Ul9H+JRdzGUmkSJNlMiWaTv8DcbOubm+v
+         ssLeQsbC+x7iRQJhsSWV6yAnp6vmL3bA3km3e48R+DhU1sY9YJSUszPtVa1EjgYlt9kq
+         w1RotcGhVztWRFUBGcX3Q8QuEBU5vShQTuAheymTi40jyAhc4lV0wKi6rATGu2gLoMqY
+         wEzQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+Q+XnOTErRuGTI0tZ3hpuYpqrAVRvK3O0W0zhvmRx5vVy/f+RV95O+/z4tCn4nYqMtnww9rFGBLQ==@kvack.org
+X-Gm-Message-State: AOJu0YyNLyWRNrjZz0zsbdTcPrJuoyinXbDAB9jPba563uPYw1ondIZ+
+	B0r7TnsmAANlnqgrDVQgarVbVI5zR04M+TyKkfJYOWroSxh28EtnBdmZvZxcgICC
+X-Gm-Gg: AeBDietokfmTzZrgb0cfUqSsdh3tAGXv8LNBLeItRFmUoGi/eJM3E1XYBHzoo7IIQ9G
+	rfTrY7A+SmOI2mvMFVE9E6GASupJ0diP+B1U9w+R/hG+RoGbhkEIH+zGoUgGKdcMSJKJ+FlDbaR
+	R6GmSEQo5zWv6mMqPmZrARBeG4WDNUJ0iSVKz2dKtzATnomwQgfRT1p3ff6nzgNUrAOH4gOodaX
+	8zOK8HqaONh1plmeZYHilSYbq6TjPwrn46zRvCSNNwgS2T1GYtQJEU9/pR3zmSOp8N4dRMPozic
+	LSkCrXFxjKt+TXVazR2I5wMK1tx/r6OmwYdGJDEJ36qiZQ9JGD+DXC0duhHOaIarwF1eBTItTI1
+	wbDfqBz/5u1Q/mz2Smh8Y2b7bzeaBixtHFbueqhsSZ0gXxfAlXn+ykUA2O+9PBXB30saDhR1Py0
+	plVlpf9444ABOz+avj
+X-Received: by 2002:a05:7022:6725:b0:128:d23d:81a7 with SMTP id a92af1059eb24-12c34e68fe3mr6219069c88.6.1776066276106;
+        Mon, 13 Apr 2026 00:44:36 -0700 (PDT)
 Received: from wujing. ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.44.15
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c347fa2c9sm12884610c88.15.2026.04.13.00.44.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 00:44:25 -0700 (PDT)
+        Mon, 13 Apr 2026 00:44:35 -0700 (PDT)
 From: Qiliang Yuan <realwujing@gmail.com>
-Date: Mon, 13 Apr 2026 15:43:12 +0800
-Subject: [PATCH v2 06/12] watchdog: Allow runtime toggle of lockup detector
- affinity
+Date: Mon, 13 Apr 2026 15:43:13 +0800
+Subject: [PATCH v2 07/12] sched/core: Dynamically update scheduler domain
+ housekeeping mask
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260413-wujing-dhm-v2-6-06df21caba5d@gmail.com>
+Message-Id: <20260413-wujing-dhm-v2-7-06df21caba5d@gmail.com>
 References: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
 In-Reply-To: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -130,13 +130,13 @@ Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org,
  linux-kselftest@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>
 X-Mailer: b4 0.13.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F019B1C0004
-X-Stat-Signature: pne7yofa4nh4qh3gi1eh6zfyijswkq6m
-X-HE-Tag: 1776066266-595458
-X-HE-Meta: U2FsdGVkX19WZPSPEhfGuaAFuLndzNlGa9AP0T7/CsJFhaf2UbQVXUT7gQKZFrdmN2r9XBIbd8aDuSEky6fxIPqsy0WhKnC+4Qo4KR3bhK3p5UZ8PE3ajKP0R7xhDkbnpnK5eCfEmyWKqlfwfT64BNzN8OFizJpPBiZm8eGAwqNoXoXRRLlabmut+c/+2f0x4wbaSZVom6jOzp3Vl198+pl+j3ewi6Nrmm5XQRDKUsSz7Lv8C15LfubB/RzYqN/o7VlICZJl6R91OrE3Lq36DHeJvdKVEs0KYU04zPEJV61obQnom48A0A/bJjwPoveR1PoN+KZ1f621a8ng+zOuvIc+t0wY2V+VuNbEEPp9tX5tkGoGtWbkMst+T0XMVi6UGFh6OnAtdEwnorLKMRk21kXGPF8S/v0aa227pYLbcrLOnhisbBOTdfraxIvpO1zWK6NRay2O3zhnGQD+DA3iQhDeN32069oTx/U7ii6mCsulTu/xOYNFWJc85znSL1RJXamspOWGrwWbOjdJIqZmATnBwFuqd78yV5YW7qSQ1gARR7pBP5ZbxaNIAiX1Z2g0Qn4mImaI2YAaVMpk5fBHYvjbezBxn1/8LUvIdOmYz2m007PNSyO6kAq/kPdifMfphdvkeDyWF/0ADdpRTjtF5u0FGZ2KG3tuJu70MiBqUWs/BGz1thBjWoiEPFaDZsTPYfxGQKVhf8J5i4IPPs1yBoT+LH6nfmkOKK3zC+GHzz/pudve+oYivkH37vJxkOvG9QVWaSqxa6jW3EMH/rZMnEtLcZof1zjhcjfWtPvSauX2OxAARATDx2SYJDNxB6TioKXbQFy7vdcLNGmrKsYAgO9b8qPJQcqZVUp45l3jXNiYo+yytxAbP5BmmfNsGXvR/TLoFxH+6In3UwrEa39PsueWfUCLsM3b0pxyvFCav0kSUCsfpPDbF57Wop9CCXACfRMTtgGpG+zZJOk8Eo3
- CpusyAQ8
- 98slqEH/1wmoyDqKjgJ338z3Cr4jQhMIyCCxglBsdqRKpgOY+v6mpN7NWz6fvgypTOuKHB30SmrqxyHUGxp4F5c8S2wl85lztp6BTkxt4PFKiwUoI9rQSA25otrvET/ndwc8Vd6i6L8qTINuuXaJFvBiBK8UI0PQ0buOqOM1fnvB74jOSCuAodmjTGy1lOYCg+4IDGfRmVnMCXlAFe753GN+MZ2qRBZmRrkaoWcMSKg3bE2Ysz5YFZVSGXTe/vwuhRt16/v1AJ5aMP3tBRIQFVICGmn1Pp+VGRfAlTsF/+6SuZ4FFUHPNpc5vX/KAPCRieFuIoCpCM02T1Rr4cYep+diYfrjglG0nrJs0jTE8oz1kgaIorUc0WgLiL/zdaaFEpuKkpKi35FAFKWRRlHNtLXBRuOzga8lVeoWD560Qem+lK0Cj7dDAUHQhGgt7/g41ytsUfsqIIV1EPHzug922rZzudbcb7dpmw0kLAeNBfLnKkEDg58UOMhnjxAjWiALtmh7t9aMM5991LuT8JeKw5mXe4kpST7re8y/G
+X-Rspamd-Queue-Id: 83CD81C0002
+X-Stat-Signature: 17p7j5fexemn9upceook4sdy5urrupc9
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776066277-371691
+X-HE-Meta: U2FsdGVkX1+BP38uj3ntCEHhtfPezWh75zEGIyFAFp1nsFYuWMJGz62PQA6bZ8/L50zCeglZF8i/82I2qwMEoSaUwrM93b9XF/KbEoc5Z3f/9e2im85Jjku07zKdBCzKcYWCsBiSZtdkV4fxa+MW1Ay0KwG+DBjZhfJZKfVBSBbh8RhL3YISTY1Gttmn3EQDizOuvOOrE317JtQMwXbgPyfixHFy/C85QqBc+gu1+GHzemzXCc9zPOHeW4l0gTxi70MDOFOkWvzzZfqlP3sBy19HYFSuxpMmgx4xb31jSKZGNg3WvmrG5zMaYWE+QzD/hGG+IqwZ8SY/byn/qJxDHifYkm2ER7OT1lOjrPP1kNdMhX3LwQsO3taCbT1kF8WDwVSJ6XqR1WZdksFWnP1UwK4QRS3DEnU2FxH/qi7FE1usOyPADJzQKtgGSobE3r/xZW/rp2w/LBd7bkmxgXsMM/JeUtUY778ucuQpKprpYfWirAsG/+FWS4fhlXgOoKI7VZEF2Qb5jt7T8BEJ9CUDjwtCF+HTSTT+ScHgq7vfaK7qvhP7lNgUqDiqttgrq85ZIOvFiXl1erVEo6UXcJrhxHt5KWYZpmMj0cx/Xok/PvU7ZTyeh/pnpaimbTi+HR16UFq2QEYqLClv6u22R+Mkov0zmX11KFtZuQ00XdkntEsGq3OdJpV5frEauX3hnI5pS/iwRAQv2mmCg5Swld4mVH9LAaXDRg9g8A1hMG+fruWH0i4D7rvsFJAjn18Z/l45sNSGrclVy6idrVDWDMsvBLro1rvEB1ditAkSk4c69E8NzfAbdw8hyxasMeZxvOT22OaIcVFSwsMme2U+9is8q6M3Visv+J+tR8Ps71wo5/ui9m4F76bIFCiV41nykuJSFYCCboQCXJqa/SdukmmmtP76br6Ym0lBT4tJW0wv0+yo67qIBg6GpVVBeDCSph1NwE1bMGbqr06poh1u/jG
+ 1dCXA/Vj
+ k5RREzqgEb/J+2Nz6VaAEgczKGO8gs6XDmcUEDiF4J6HJ0tBEFK6ZFmmacFMDmS9YvvZI6a6XdLQrtJvKAFJ8FhxZSlPbzSnxRFu6q12b0Zte2M4f7EihQAmkI2ASYX/o4t47w9UiCtrChQ429z1HUFFpDGMgQ+LaFcw6PSyYOB4kojXE47jUySHwqp5II4dYM/jX9jPomDq3X/iu9PDLjMFxTHu4Yopt/cJ0tXXUiETW0JDyL82M4rzvBM4zCvg1oBN9P7scE0NMTN1+XCl3/zVSRu6FswM+7SDJ299LNMKBPLHn+QPixoPBxvRdjCO76In/IIlrZfewTcGWnJSi1AH35FE+PWM6HNI1MbFw4ifbPnwSoJK+oyYM3iFD3FyA9kcjK+X1Ji1U0B/pnCM1Kw8nM/ry+T8DfxLvUJG+FJUPhSYcF2PtTSP6pQoEN5wCxMXLySups0Oi2tgIA1sP0ssdG8oS7eK9Tk8IuhptLzdrSf4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,70 +144,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The hardlockup detector threads are affined to CPUs based on the
-HK_TYPE_TIMER housekeeping mask at boot. If this mask is updated at
-runtime, these threads remain on their original CPUs, potentially
-running on isolated cores.
+Scheduler domains rely on HK_TYPE_DOMAIN to identify which CPUs are
+isolated from general load balancing. Currently, these boundaries are
+static and determined only during boot-time domain initialization.
 
-Synchronize watchdog thread affinity with HK_TYPE_TIMER updates.
+Trigger a scheduler domain rebuild when the HK_TYPE_DOMAIN mask changes.
 
-This ensures that hardlockup detector threads correctly follow the
-dynamic housekeeping boundaries for timers.
+This ensures that scheduler isolation boundaries can be reconfigured
+at runtime via the DHEI sysfs or cpuset interface.
 
 Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
 ---
- kernel/watchdog.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ kernel/sched/core.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 7d675781bc917..bcd8373038126 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -26,6 +26,7 @@
- #include <linux/sysctl.h>
- #include <linux/tick.h>
- #include <linux/sys_info.h>
-+#include <linux/sched/isolation.h>
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 496dff740dcaf..b71c433bbc420 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -39,6 +39,7 @@
+ #include <linux/sched/nohz.h>
+ #include <linux/sched/rseq_api.h>
+ #include <linux/sched/rt.h>
++#include <linux/sched/topology.h>
  
- #include <linux/sched/clock.h>
- #include <linux/sched/debug.h>
-@@ -1361,6 +1362,30 @@ static int __init lockup_detector_check(void)
+ #include <linux/blkdev.h>
+ #include <linux/context_tracking.h>
+@@ -10959,3 +10960,25 @@ void sched_change_end(struct sched_change_ctx *ctx)
+ 		p->sched_class->prio_changed(rq, p, ctx->prio);
+ 	}
  }
- late_initcall_sync(lockup_detector_check);
- 
-+static int watchdog_housekeeping_reconfigure(struct notifier_block *nb,
-+					    unsigned long action, void *data)
-+{
-+	if (action == HK_UPDATE_MASK) {
-+		struct housekeeping_update *upd = data;
-+		unsigned int type = upd->type;
 +
-+		if (type == HK_TYPE_TIMER) {
-+			mutex_lock(&watchdog_mutex);
-+			cpumask_copy(&watchdog_cpumask,
-+				     housekeeping_cpumask(HK_TYPE_TIMER));
-+			cpumask_and(&watchdog_cpumask, &watchdog_cpumask, cpu_possible_mask);
-+			__lockup_detector_reconfigure(false);
-+			mutex_unlock(&watchdog_mutex);
-+		}
-+	}
++static int sched_housekeeping_update(struct notifier_block *nb,
++				     unsigned long action, void *data)
++{
++	struct housekeeping_update *update = data;
++
++	if (action == HK_UPDATE_MASK && update->type == HK_TYPE_DOMAIN)
++		rebuild_sched_domains();
 +
 +	return NOTIFY_OK;
 +}
 +
-+static struct notifier_block watchdog_housekeeping_nb = {
-+	.notifier_call = watchdog_housekeeping_reconfigure,
++static struct notifier_block sched_housekeeping_nb = {
++	.notifier_call = sched_housekeeping_update,
 +};
 +
- void __init lockup_detector_init(void)
- {
- 	if (tick_nohz_full_enabled())
-@@ -1375,4 +1400,5 @@ void __init lockup_detector_init(void)
- 		allow_lockup_detector_init_retry = true;
- 
- 	lockup_detector_setup();
-+	housekeeping_register_notifier(&watchdog_housekeeping_nb);
- }
++static int __init sched_housekeeping_init(void)
++{
++	housekeeping_register_notifier(&sched_housekeeping_nb);
++	return 0;
++}
++late_initcall(sched_housekeeping_init);
 
 -- 
 2.43.0
