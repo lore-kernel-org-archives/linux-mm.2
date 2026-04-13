@@ -4,81 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59BEFF531C9
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87E2EF531C7
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:18:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 674486B00B0; Mon, 13 Apr 2026 15:12:03 -0400 (EDT)
+	id BD3536B00AC; Mon, 13 Apr 2026 15:18:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64AE46B00B1; Mon, 13 Apr 2026 15:12:03 -0400 (EDT)
+	id BAB836B00AD; Mon, 13 Apr 2026 15:18:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 587CE6B00B2; Mon, 13 Apr 2026 15:12:03 -0400 (EDT)
+	id AC0FE6B00AE; Mon, 13 Apr 2026 15:18:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A3066B00B0
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:12:03 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CDCAD1396D6
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:12:02 +0000 (UTC)
-X-FDA: 84654477684.26.977C2E9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1F1F42000D
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:12:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lN2KnZxk;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 99B7A6B00AC
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:18:28 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45F8D1A02F5
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:18:28 +0000 (UTC)
+X-FDA: 84654493896.13.1028CBE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1489D180003
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:18:25 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y51oSv5F;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776107521;
+	s=arc-20220608; t=1776107906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/mFwsYgeV0j6bToLjRgaH326Ie8WJHBAAHs77SnHqnk=;
-	b=IX8MTuqPNdRMwzQlJUPTq92Hx6OqeEoF9qWBRKsdX7G2QW0ECOxNoXWc5TmEhu6D8pqn8/
-	TDdZp56qcUpafGEKti1V56SvjUA5qEXiYe4aROsKPz7YSpNBe8KOzAH2i/f70fTWfeMLfd
-	6RSC4gpAs8FDHKQ12qNGKgTI2dAXf08=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776107521; a=rsa-sha256;
-	cv=none;
-	b=60TCJqP6iOwsUvhm/xqhzL+B0fl5fX1XRTsKsOK189nckqToF1PCwgG10wjrxeEnl2Ctv0
-	PR9c5JuW7reuSzCRZc28y0Tafipk47yicxQ5Rem2v7dejlLXrMpeJq6HIsjg1F4voOUUVb
-	J6XhoMlCwCCzB6sfABbNYnevwPppNWA=
+	bh=d2ei49Kgx3/2Bj7NnLhtwQP7EJaCX+0nqfXStEQ5oNE=;
+	b=3y3qPIdeBst/ZH4xFlq4PeMWANW5cRxrKweNkHvd5+eQvaKNOzJqzYkpo1tc8x5GTK/d0G
+	15ixO8OvWRQlDvjmcMOARbYT8LVQ09ek7fipGNM8rzMp6hjLeIyFbaiFZG5dGb64MTeVpm
+	vvyGthbKkbQl0b4XYUefMDp4x6r5tv0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lN2KnZxk;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y51oSv5F;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776107906; a=rsa-sha256;
+	cv=none;
+	b=ho41uWVbXGX+V+Pn4hrDoqh30lyXm8cLm0I1bNByLvBJHCKthnyrN7MRdqC1PEE2nfwWSw
+	9mtzm4F2oscAeCWw071tgMQgWKsrnquT2AYiuZ93vu7JpRAptESmt0Ppaja2M1Y+0CPq9A
+	/VtRX+KWm0QswzRX34w6zcUV3EWcB+Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6CCA96183B;
-	Mon, 13 Apr 2026 19:12:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE510C2BCAF;
-	Mon, 13 Apr 2026 19:11:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E6CFF403D0;
+	Mon, 13 Apr 2026 19:18:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E51C2BCAF;
+	Mon, 13 Apr 2026 19:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776107520;
-	bh=MxX8wt+PtDGl8J/2Seud1f/icOdBa7LsiBhLxw5jILY=;
+	s=k20201202; t=1776107904;
+	bh=cDopfrHKIY5CWvgWtMsDFhixhLYI1yjKSO6ar8V8IMk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lN2KnZxkDamOr6ulzzzsOtuWkA9vGRCPVx1F7hCKAlborqdv6Y7xznBREeJUgcwif
-	 LfCfPa0d2oFzzrcr5dwMggI6fAmOxdMUL/B21wWunAD9fBqJJpu3xw4uGyvbfBfkxo
-	 T+EoaympWixmlhFmF6R8v+zQfFavbTfsTcqf4SMRSsp82C7P9aL5tQSygcgP6gMg9f
-	 2DuMDBo7RVVBNlzMnOr0u9YOieF5MWFWZxw5aBrttOe9dyY/pqfq3rSWn1df/I6eiC
-	 zNWbe4m5zoZSZ0afgU3Emk1FffKHWsjQosY7C8iczzqPr2cHKw6ygl0MSNTapi6gFM
-	 +m+h/e9LvGQ5w==
-Message-ID: <b330143f-f3aa-4f4c-8467-d91102094e8d@kernel.org>
-Date: Mon, 13 Apr 2026 21:11:51 +0200
+	b=Y51oSv5Fn7/3bMuNcw5NT9B7MhAPp346CPj5F1js+nM9h9lbdObXV/AlLREPX3ZZa
+	 x3SVN6+cIYe1wuEIY1o+CFKY44d9u/2/qfgsfEDE8BM0VHZRnae3DdLqV6azMsbGox
+	 3GHMMz1nZW6mCQhQylwiNWZVSrjaDTx8s/wrDbWUoAHtYHYTshaDFxHQD9vMH3ct9W
+	 3E+Awc/K0L+Br8emV94yXJopfPXn7RdF8wmJaxpBbPYdKeJF1Rpsph8oX7nb+0Y4Bv
+	 xRtZE6TJ79pVP7u7ACNQ+2xHFY6yaW/MPzybwyKRELPR62hLrEVr4kg4w4DLhqCSoS
+	 NF8Kh2ThS9X3Q==
+Message-ID: <4d38d333-d446-40a3-b6f4-c4890bfd24cf@kernel.org>
+Date: Mon, 13 Apr 2026 21:18:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 1/9] mm: page_alloc: propagate PageReported flag
- across buddy splits
-To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-mm@kvack.org, virtualization@lists.linux.dev,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-References: <cover.1776033471.git.mst@redhat.com>
- <a74ad3652d9bd68c78fbb5360fa7adfd0606689f.1776033771.git.mst@redhat.com>
+Subject: Re: [PATCH RFC v2 2/7] mm: memory_failure: Allow truncate_error_folio
+ to return MF_DELAYED
+To: Miaohe Lin <linmiaohe@huawei.com>, Lisa Wang <wyihan@google.com>
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
+ vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
+ tabba@google.com, dave.hansen@linux.intel.com,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
+ <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-2-92c596402a7a@google.com>
+ <2f177e0f-2eb0-48d0-b48c-7a0a340caf5d@huawei.com>
+ <adA_1zXLUBqmSHFl@google.com>
+ <5c5dfa85-baab-5c0f-6f6d-b71abbe10ed8@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <a74ad3652d9bd68c78fbb5360fa7adfd0606689f.1776033771.git.mst@redhat.com>
+In-Reply-To: <5c5dfa85-baab-5c0f-6f6d-b71abbe10ed8@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zqhbe5n8zuot87i4pi97prm7xobzfwkw
-X-Rspamd-Queue-Id: 1F1F42000D
+X-Rspamd-Queue-Id: 1489D180003
+X-Stat-Signature: mjr1jo3itffj5bxsg7h7i5fpyge37u9j
 X-Rspam-User: 
-X-HE-Tag: 1776107520-218498
-X-HE-Meta: U2FsdGVkX18yt6TE8RJa6eA7BF3zE/Hh+bWKG8ouFgYl00bOe/GPEGIxWg6dRq4cDyv04x02vQIGGgN7UUQeNmoHQMAaW1JT2qLVnDa3FfrCwk32GNtA85rzsvPCK3bRJ0eKJqNJu9BjtDRPwHEn5s8CUqZi79meityQC+tCz8NsnevuyZ5YC0IEscaDUnxeeCNRvsg0TWD5fNS45g0ZKj0A9VFNk6lQlc60aZ8PH7MllyL4jI1FgdauMrJkUv9vIrJLNtmUIa+AUwBnw1ZMjd9cAuQoaX3+a1ZmIv9FahyxLQ4UaaiovWppQ5jRGP7Kbx2/DAjfFlJ/RG/PyIBdenvQ2OF5gNzF2FTK2EtcAgwvuBHeNAgrJxc3hHH+dV9n0Z++KGZqUI0ey32aI39fJuAYp3PeC0Qr6uppiuZCowWFi1nGrQ4chSOyLm1dHM7RUAFeYjvx6u/2Vju0clKPnOBCjnjQUi7Hc7jLCVkt5moEB4WaSw8grcpFRNjx0uciK7rB6v7EO3NfAXDtuTeROLBRLwoL1Z5lzP2OA71TXbqJKFZqrKd3CbrZza/qIfcXO4kYj9Wvxd+MV78Sv+ZtC+bzUYGTJzPJeGrBzsN5o5GJ0hpLCb8h8pAjeMvtjxlz7tUQnhDgBBssvdxoJ6QOuTlJU/0KqShdzZJK69IY1iCapAqKDpEBoFAQWuwcc2ejjE3Ct3iljbgdxv1FqQslEtahXEZDlfbyo9hYELGRxo8+lm55Av1Z0Y7iz051V3ESdEUUvTIcr9/T7QYHN9tAJ0+O4Dw5ZNRcP6B6SDHEfFGmD6w0MLgl7KfL14umbaJA9REoVD1ReFQoICTM7yL2d89mQVRZ8VseM8df9TMaheR7El65YqUmdLzhXGnRw6CoscksE3spmZjyEkCfNHc1q7X6dA79eCxPCxj4HCHfvbaarIcz+FcfIkLzmDLw/9w28I98bIWwApt+VY+8ULA
- pKg/cXaF
- zvm9P1aD3uyC98LSSVSw9PoxW0iJmKBPaitUfh1DX9sCw6b6Z8M+Kvz1Yl39qw6WU+0nSRd7AG99hAjW1O75uKJdG61f1zZjIl5o+gPyzlr+6OCQG1Owpu/gbaFbvb0h+ZAL/AqXwS8DcnHKeeC2V8Ismn15WoW19KnKBsrIErIadI5O5utngNfCM+fjonN0bHyjje/1W6z8NgqE0hZ3tS5Wff/bCD28VR/eneFTqmMNDrzRFUEhAWhTuYjBl9hEHczZ7KUfobbWD6HCnvOzQJc5YGtUJH8j5gfNmkaGNvUdIi1u0ow/5pDxiTeioj9W5fLV8djk5MN8tYxc=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776107905-775978
+X-HE-Meta: U2FsdGVkX1+RYpsDWjIhc03oTmL+ekA7MgI1Z/ZLFMVcFSOQtwFEpigQ2WpDLj383lfqBV/KjPadhvhHLyHo7cP0TkQl4swN+wGt+5OrhMo+TnI8a22SF09OfA9GjhwHBMNDN409mEAWO3rkkaelucF05z/8L6p9a0iVrGixjEgaVo/oi9LIPAZBxsnIK76EPhyT8p8JRAuXauYpXAp0QCQTAbEhh2FffpsjsrTFD/ovjhOz42WQOAAnguCkH3M/8p00HYxBVpPCkBuomjvVo/5ofeg+3xwpEnFZEimCdRTrsCTINkNsy2Ptoej3dZChAPNlsRhxWZz+51vWPBMUuSIEFdwBCvLILzAsbujlWFrxV+2PpmNPiOfdkXLwaJfdbN21YBCNFERaONifNdEti8eGMPao2ULzhVUAgiE5J6mUl29zk85A6JVKLNBd/ufO/WQz0R9TlhCl2q+VB458DFjZ+HROoSgt2RTDSb/n32zS7niE1YUqSCgCBb2Ka33SwOoWNT7bBKPFAd0mpm2SkMlYo2voDCuaq7yhSLXYEBbiPaWUsKweDjUkHbgqBPYkGfSGDoI0HMWWfXb2xe6qisjbPvBNymArGqrWZUU2DKoMPKGkwcoQnh9NVHZX5olLQQ1uS5HX4FftFGW/iYGAeNfS9zHaM+9xTWDGpkW3746GHFxeEbd5uiT2ax54J9RbI9SaqoDX0ns2AAB1bGHoPbpm+eQQiM0klKOAN2KSs0BcYlKnI4ynt36MB/SXvy2LX3pDLcFuQ+8qFqheUHpg+faDvomApvHUKqMUvrdfmMFAps40ouqpTPcG/rX4ofZzAVNMKjysGk8y5tJZrhZuIP0/MgenwpsP4/rLjNc2Rz99clGoj1NQKuNyyHUSoih6d0ZmdggqhoQsvJrVMoJ1KP0CBz5nmpJqYt8NvmBVG7gYNYyp9lAlw83/fiGXJ/M96M5RiCkSKSRTC2nQGbO
+ N0YZi0Gn
+ k3tcxWg9q8Kd55vB0HxMoLrq/cqy57fClLH5dHGeiAJmZAsTV7Xu4kPzP4kbomVLxzoecDZWDHBxWTLXz2EE/fI9GOFpQij9DQ8JJamildla7BB62VQ+azhrIs0MTnfGNeHA/5Eb32fz8wZuOUCeFp2s1PRDKGTJLXzs6scH1cz5WxEVSufR0vmteYzLs7tnNp2SAZowVKjXNYhPtHfQVfjL/TIbVO37yc7SFzcF559iUWu5KjWAcbzqtar7B2+s0mMdQ2DnUW2Na7Cfzg1ar38d0kkhi9SmfPD+TVGYbWmnFgy8ZgryyAhnI+Dd8OrKcJFIzFvqVfmAJZ2JSPeC0eJuoOO8xNwdpFnGwLsJqFRHDvedQXFjhsP7uF2A/kM7Q9QK+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,81 +153,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/13/26 00:50, Michael S. Tsirkin wrote:
-> When a reported free page is split via expand() to satisfy a
-> smaller allocation, the sub-pages placed back on the free lists
-> lose the PageReported flag.  This means they will be unnecessarily
-> re-reported to the hypervisor in the next reporting cycle, wasting
-> work.
+On 4/7/26 05:55, Miaohe Lin wrote:
+> On 2026/4/4 6:31, Lisa Wang wrote:
+>> [...snip...]
+>>>
+>>> Will it be better to add a pr_info here to provide some information for users?
+>>>
+>>> Thanks.
+>>> .
+>> I think we don't need to add pr_info here; truncate_error_folio() always
+>> leads to action_result, which already logs the recovery status.
 > 
-> Propagate the PageReported flag to sub-pages during expand() so
-> that they are recognized as already-reported.
+> No strong opinion but I want to make code style more consistent with sth. like below:
 > 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> Assisted-by: Claude:claude-opus-4-6
-> ---
->  mm/page_alloc.c | 17 ++++++++++++++---
->  1 file changed, 14 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2d4b6f1a554e..edbb1edf463d 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1730,7 +1730,7 @@ struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
->   * -- nyc
->   */
->  static inline unsigned int expand(struct zone *zone, struct page *page, int low,
-> -				  int high, int migratetype)
-> +				  int high, int migratetype, bool reported)
->  {
->  	unsigned int size = 1 << high;
->  	unsigned int nr_added = 0;
-> @@ -1752,6 +1752,15 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
->  		__add_to_free_list(&page[size], zone, high, migratetype, false);
->  		set_buddy_order(&page[size], high);
->  		nr_added += size;
-> +
-> +		/*
-> +		 * The parent page has been reported to the host.  The
-> +		 * sub-pages are part of the same reported block, so mark
-> +		 * them reported too.  This avoids re-reporting pages that
-> +		 * the host already knows about.
-> +		 */
 
-The comment is a bit excessive. I'd say you can drop it completely.
+Yeah, would be cleaner.
 
-> +		if (reported)
-> +			__SetPageReported(&page[size]);
->  	}
->  
->  	return nr_added;
-> @@ -1762,9 +1771,10 @@ static __always_inline void page_del_and_expand(struct zone *zone,
->  						int high, int migratetype)
->  {
->  	int nr_pages = 1 << high;
-> +	bool was_reported = page_reported(page);
->  
->  	__del_page_from_free_list(page, zone, high, migratetype);
-> -	nr_pages -= expand(zone, page, low, high, migratetype);
-> +	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
->  	account_freepages(zone, -nr_pages, migratetype);
->  }
->  
-> @@ -2322,7 +2332,8 @@ try_to_claim_block(struct zone *zone, struct page *page,
->  
->  		del_page_from_free_list(page, zone, current_order, block_type);
->  		change_pageblock_range(page, current_order, start_type);
-> -		nr_added = expand(zone, page, order, current_order, start_type);
-> +		nr_added = expand(zone, page, order, current_order, start_type,
-> +				  false);
+> if (err == MF_DELAYED)
+> 	pr_info xxx
+> else if (err != 0)
+> 	pr_info("%#lx: Failed to punch page: %d\n", pfn, err);
+> else if (!filemap_release_folio(folio, GFP_NOIO))
+> 	pr_info("%#lx: failed to release buffers\n", pfn);
 
-In MM land we started doing
-
-/* reported= */false
-
-
-This raises a good question: how does buddy merging handle the reported
-flag?
+Maybe we can even make the failed here a "Failed" ;)
 
 -- 
 Cheers,
