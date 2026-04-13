@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 567D8EBFD30
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:01:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44F51EBFD35
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:08:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ED606B0089; Mon, 13 Apr 2026 06:01:20 -0400 (EDT)
+	id 5AEA06B0089; Mon, 13 Apr 2026 06:08:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79E856B008A; Mon, 13 Apr 2026 06:01:20 -0400 (EDT)
+	id 5872B6B008A; Mon, 13 Apr 2026 06:08:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DBA36B0092; Mon, 13 Apr 2026 06:01:20 -0400 (EDT)
+	id 4C3D46B0092; Mon, 13 Apr 2026 06:08:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EF216B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:01:20 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD6A086125
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:01:19 +0000 (UTC)
-X-FDA: 84653089878.18.D95A6AF
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 911651C000A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:01:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Jf/daWju";
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776074478; a=rsa-sha256;
-	cv=none;
-	b=gAh8/sSy8rMQnSsrDs1LK0JE6L0w/Cfy09ylHAuAgZo414AvMsSuFDDZNE7p3YmfdxHToX
-	lzsYLJ7rtMAB7+hsExcpvKrgzhRsoJkvkS7Ze6mGMHS8pL3wobezgvbbwFyea2fznwf7LN
-	JGXnJRaMKlqx+i0z4IsLHdAnFiEKsTA=
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 408456B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:08:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E60BD1A00E0
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:08:29 +0000 (UTC)
+X-FDA: 84653107938.11.275D2D3
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 88C094000A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:08:26 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WLiyyOCr;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776074478;
+	s=arc-20220608; t=1776074908;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VfA8RhsAOysYjLUfYem1mhkUwG7Eg8LbTrkQ0B9ZA5I=;
-	b=idBHB4BiichZ2tY9t+7MSQ3d0Lcml9tJx4Mqt54B4kj14RvXQ+zTC+Y7/A/H90vQm/uyMV
-	roN6uK1LgrM9VSR74rjxw+AW8/b+cOyexs09NHDqiQXaySYT0HLzdEcApeWiNy42lmRQlD
-	vulWYmHoNPacEogtM+Ur8fVAF288DHE=
+	bh=Sps84VvkM9WL1pZA/XR4z7lJiIfi6BTmHDf8JsPgXUg=;
+	b=K8QF7Ze27oUElBm7wD7Hg9c/pj7hXM/nDdrLxTOkspj9Lo58JgwEXJg5izemk/CKLD/auu
+	v9Yuxc3bR1uAlU3qvTUgdk9hQgAFm2AQd3U+iphDspOeRalKL8tvtslonCEApP/qxMFNC2
+	EzIOD4RJ+gaWZSQPOmqQci5hZNYjIfQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Jf/daWju";
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D15DD2BC3;
-	Mon, 13 Apr 2026 03:01:10 -0700 (PDT)
-Received: from [10.57.62.88] (unknown [10.57.62.88])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 437D63F93E;
-	Mon, 13 Apr 2026 03:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776074476; bh=VfA8RhsAOysYjLUfYem1mhkUwG7Eg8LbTrkQ0B9ZA5I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Jf/daWjupLaPbtHP/9QPzRRQx2LsU2h0EnB1m1NdswrK+Tj1s1zcYjBVTmPki3tdM
-	 7gY2Gvut4emf1ojyvOanZa1i2jfuUo7ky4CBaE6ouf8gmcuLIGCZjQ2pU3LyrFgzxD
-	 XG+KcXKif5eeNFnVo6KqtPcCuD7ql63VM3m8z5HY=
-Message-ID: <4ac1d020-9aec-4584-a75c-225c6166c253@arm.com>
-Date: Mon, 13 Apr 2026 12:01:11 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WLiyyOCr;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776074908; a=rsa-sha256;
+	cv=none;
+	b=aSVoPlDtwWVfQVuRDTg/AVXTI9SxWD1i2MOIFwn4vf6YXYx3NRMiM/8Y8gytZMJU9HSZlf
+	dPymaFiHn0ZND2oy04gfkAtH0npluJZ1Bjs2a/qldgKJN4RtbF7zHwhOs11M2ZL0SodgEd
+	WckXUJCXjcuI9z/dFAgq9EEzNYXrNh8=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776074903;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Sps84VvkM9WL1pZA/XR4z7lJiIfi6BTmHDf8JsPgXUg=;
+	b=WLiyyOCrQpSqlbf5UlYg0hO4AvDZM7uLPrY9tN+xx3bzTm461ZlsVNwtJ7ZMOa1fUZjx8d
+	HK9WKtvgaGuxhxHBe+aUoDbvaQkHBZDJKQK6zfA8TVEk51y6TF+9wIyya+RmrY/kG6bzAz
+	qufQTDe3llLJJmWr78ZKyTufEHL3yoY=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH 06/49] mm/mm_init: fix uninitialized pageblock migratetype
+ for ZONE_DEVICE compound pages
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <ady4LBppz-na5lM5@kernel.org>
+Date: Mon, 13 Apr 2026 18:07:44 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1774420056.git.agordeev@linux.ibm.com>
- <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
- <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
- <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
- <c27cad07-bba4-472d-8853-fc6fc55e951f@arm.com>
- <630ce949-2f9c-43ce-9641-b9a4dc729323-agordeev@linux.ibm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <630ce949-2f9c-43ce-9641-b9a4dc729323-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5910791C-9893-4710-9002-76534DBFBFBD@linux.dev>
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-7-songmuchun@bytedance.com>
+ <ady4LBppz-na5lM5@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 911651C000A
-X-Stat-Signature: qku7bxo7tqwabftfaee9b95wpdymqidh
-X-HE-Tag: 1776074477-139961
-X-HE-Meta: U2FsdGVkX18KyLqOyVlpJe+ABxh4DHnyIdtr8e/gVz/XHY5a7fVvHuxL1tNZ0bqgrdh18SRX7iV3+1BsMrJhDOAt/e0VO11TdNkVichV1CgqTUudRmTB7vuIocfQNFlAJIjxxZU5C/SZmy2UFcGA0QeQeKLRk77XXbAfC7DrtL1SSzWZ/s4MmBGJfO9ow6Rpb9dZobP6P/JH7DgViRE3BLy0zHjytBgNRiZvQdvuscDMe/eqv3ljMdMM8EohisQGd/9rgsmc3fv98S1vsoX35tiDXH/p7G1FZdvbhueZHcvmY2+IPRPcVnzxTdZY5+XdGOi9LMYvMvQ/rs4pwBud+Ykv13xmyfG4H4zT/2GMQnPrxJhQGi6yYxa82DcBE06j/YKER/+8Bzeyk5mIQvMzpvRuLn51ul1YrcFhXs+a4lneZbEGpyoqBPQw+EKVxgDsRk/Lnb+a1NwA+YnH40jYTWZ/lbVi22OSGIREbzB0IjqvQRof9aDG/OEIOw09aMwN8k6lw7EaD/COK2Rv2P0FTmPNVlt2EHyygA0XI+L4dvr0EXAp10HhOAZnIHhh9hvj1HH9J7ZpPwjL4M0/sUfDvC/l8HFbo2S/MliV8K5daO/6BBNwrVS/QmweqLmQfxCSM1k9OQQttoJGCWT51wu+CpAtKke5fq0FfJkAgk7d3m7U7y37ZiNJPj6YnddpSa5tSODioI7NVrRfv7o7GEZGN2G7qT1/avDm+efaJjTOIJ/ZXmHsg+vrETWGlx0SDllJW8kw2k/tH6tfP6MrQ/6YtoD2WPnomJUL57UhycaQpqW3Yatn0T+edAHz7n0n4TtyGLIOAa6efu5CZEdcq1ZXIJou5V+rllzU1AoV5gcaOgRR1+YGV9GzjMFQPuxERVp48+OfelpKSmZoR7y+hCLMr1Ze4b4s5CF7AIoTvnTKl/+cH/kG31mo5Lcvcq4dEc6ALemZKIWQEYkC48B0Oaf
- +b+S4cI1
- IMnOVOVuepcBITc7mciaWtkGfY6XdUBYnPvhiFAnOdtnIfBDOjSvY7nJQ+VoQjkQEnK5zZZ7vkLlvXTdWAO1JxRAvXkZta+DUWPNavfWs+xNwexMNxAuM6LQtYqdjluozJrXM5/PfCSCgTGDRcXsvSCKwkTRStPSkTT5zaKGF/39sSsJqSsLPg3Jx+UGBL24XuNw4X9n0vjJNRvQWzFfRqV+zPD2TXoLFKm3y/bw8LL8rDTs=
+X-Rspamd-Queue-Id: 88C094000A
+X-Stat-Signature: o5kuiyyr4m3zkhtu9ieqaxwi13ezeb1p
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776074906-153453
+X-HE-Meta: U2FsdGVkX18//YZZx1XflCRQeaRM6mombP4i06BxxFCdVFrzEYDd8sEmrW6pNQrOeb/sa6LNMIsBo+lbCANTT7hUirMLhfxm2tI62RPpXcHyvwiW06v9KAx0Ns2V3hYTb74Ri3Xk2mtzFnXayDQMvEkXG1rEkxE+Tdrzw7XYP9FHgT6eAWlHh9JlK02TmM5pjBnff6Y5n1uVW+Vz+m1zDk0aFvQ5PkbaebZbblP3Xq19/0cBA6IUvvU+HIavARIRVZ3Y+5YAIZEzo3090q2NCsZN0Akm5kSJgK3n8gc410jC6ksaaLot0/fL+NribB6GUZ/olnRJzbVGYfLrZApvauBw3mgmVwhIhpg9ZPWP35ZuXohdEGKfV/mBLU9ZJObkqIgsCfZ/F++jbtgr+vZXnYWcuvl/y6uDUybh3+OYcs2ZRORvnhft59lzYCYPG9WZMEfLTP95sEaQWN8b/OVy59Hg23Zh0aHfOuzwEYBcUGlNUiMr9fyTnJeSxQ5gdQd7sWyvTVosKX9YUZTnvoSxK9BgYit001g/dIvCsKRkbu9XQ6bG9yBQufVnn7DPWtsXtMEc+cd836pk+/+y0E/NaNmuSIxB9QWsZBnwsR+NUuobpEnO4QIt0K6yKm0d2fiUzDCBegziVtV4mQF3VTpcHvb009oW7qD/Mf+8Flf9u74jcGRuWG49zHdh15gK3vKhTY9QcyDzvIeECFU9OqaYX/3VukoF0eQqrT9g5Q/JX2eAoVQbKyHHmaLLFPhGsfwsuu6NTylcHNqp6fg1/Qc5XDr6+vkjQNIZdQ/QBgfbylfj7lTaa4zh1sJxS9osnrTqPi7nmIqFuck6YAnkJtF02myf9F0D4WcPf0M0odL8dN85xV43sAbKcWTtYztaA7vHF+eSc9u/FnVQz3uFsLLaPaYypNvfWfcC5Ib311yISzEJFlGUnSpRVxnjNIIpJLG6j2S6Gz8bQaTOKgZ2Pkv
+ WXaTzT3I
+ GV6QicaOJi/T8yObiicbKlSnlCY0duSe8DJwf4iAJ6bo76Kh+VoFnLzMLzNf1Bi50KpNPUF+luC7zfThoUM1vQGtCkZJbUonEOXa5v2XyzYwPMN+9t5GRDBjAqUBR7+K3WfyaPG9bfo82XknVTM9Eo8ghIwbN8PWOkfnhjHYk9qpGXgNt2s+L3vJMd8Wnw2O7m1UJsX0VHjoXpHAERQjLc6GjFWaveKfnT2MfjNVjzxK5vGdReGvN+TI+C7nU/R2UKaz/Wp1+c/nwMfswvc03fjIBgfmntoQEvk8eexA+rsUJJd7YiyZ/ElUpb71LeJIYmFrZxrJ5NR4hbiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,61 +108,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/04/2026 11:31, Alexander Gordeev wrote:
-> On Tue, Mar 31, 2026 at 04:15:23PM +0200, Kevin Brodsky wrote:
->> On 25/03/2026 17:20, Alexander Gordeev wrote:
->>> On Wed, Mar 25, 2026 at 10:55:23AM +0100, David Hildenbrand (Arm) wrote:
->>>
->>> Hi David,
->>>
->>>>> +/**
->>>>> + * lazy_mmu_mode_enable_pte() - Enable the lazy MMU mode with parameters
->>>> You have to be a lot clearer about implications. For example, what
->>>> happens if we would bail out and not process all ptes? What are the
->>>> exact semantics.
->>> The only implication is "only this address/PTE range could be updated
->>> and that range may span one page table at most".
->>>
->>> Whether all or portion of PTEs were actually updated is not defined,
->>> just like in case of lazy_mmu_mode_enable_pte().
->>>
->>> Makes sense?
->> I also feel that the comment needs to be much more specific. From a
->> brief glance at patch 2, it seems that __ipte_batch_set_pte() assumes
->> that all PTEs processed after this function is called are contiguous.
-> No, this is actually not the case. __ipte_batch_set_pte() just sets
-> ceilings for later processing. The PTEs within the range could be
-> updated in any order and not necessarily all of them.
 
-Fair enough, I suppose what I tried to say is that all PTEs must be in a
-certain range :)
 
->> This should be documented.
-> Will do.
->
->>> I will also change arch_enter_lazy_mmu_mode_pte() to
->>> arch_enter_lazy_mmu_mode_for_pte_range() then.
->> Makes sense. The interface looks reasonable to me with this new name.
->>
->> One more comment though: in previous discussions you mentioned the need
->> for arch_{pause,resume} hooks, is that no longer necessary simply
->> because {pause,resume} are not used on the paths where you make use of
->> the new enable function?
-> Yes. I did implement arch_pause|resume_lazy_mmu_mode() for a custom
-> KASAN sanitizer to catch direct PTE dereferences - ones that bypass
-> ptep_get()/set_pte() in lazy mode.
+> On Apr 13, 2026, at 17:32, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> On Sun, Apr 05, 2026 at 08:51:57PM +0800, Muchun Song wrote:
+>> Previously, memmap_init_zone_device() only initialized the =
+migratetype
+>> of the first pageblock of a compound page. If the compound page size
+>> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
+>> subsequent pageblocks in the compound page would remain =
+uninitialized.
+>>=20
+>> This patch moves the migratetype initialization out of
+>> __init_zone_device_page() and into a separate function
+>> pageblock_migratetype_init_range(). This function iterates over the
+>> entire PFN range of the memory, ensuring that all pageblocks are =
+correctly
+>> initialized.
+>>=20
+>> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for =
+compound pages")
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> mm/mm_init.c | 41 ++++++++++++++++++++++++++---------------
+>> 1 file changed, 26 insertions(+), 15 deletions(-)
+>>=20
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index 9a44e8458fed..4936ca78966c 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -674,6 +674,18 @@ static inline void fixup_hashdist(void)
+>> static inline void fixup_hashdist(void) {}
+>> #endif /* CONFIG_NUMA */
+>>=20
+>> +static __meminit void pageblock_migratetype_init_range(unsigned long =
+pfn,
+>> +        unsigned long nr_pages,
+>> +        int migratetype)
+>> +{
+>> + unsigned long end =3D pfn + nr_pages;
+>> +
+>> + for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D =
+pageblock_nr_pages) {
+>> + init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
+>> + cond_resched();
+>=20
+> Do we need to call cond_resched() every iteration here?
 
-That sounds pretty useful!
+Of course not.
 
-> But that code is not upstreamed and therefore there is no need to
-> introduce the hooks just right now.
+>=20
+>> + }
+>> +}
+>> +
+>> /*
+>>  * Initialize a reserved page unconditionally, finding its zone =
+first.
+>>  */
+>> @@ -1011,21 +1023,6 @@ static void __ref =
+__init_zone_device_page(struct page *page, unsigned long pfn,
+>> page_folio(page)->pgmap =3D pgmap;
+>> page->zone_device_data =3D NULL;
+>>=20
+>> - /*
+>> -  * Mark the block movable so that blocks are reserved for
+>> -  * movable at startup. This will force kernel allocations
+>> -  * to reserve their blocks rather than leaking throughout
+>> -  * the address space during boot when many long-lived
+>> -  * kernel allocations are made.
+>> -  *
+>> -  * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
+>> -  * because this is done early in section_activate()
+>> -  */
+>> - if (pageblock_aligned(pfn)) {
+>> - init_pageblock_migratetype(page, MIGRATE_MOVABLE, false);
+>> - cond_resched();
+>> - }
+>> -
+>> /*
+>>  * ZONE_DEVICE pages other than MEMORY_TYPE_GENERIC are released
+>>  * directly to the driver page allocator which will set the page =
+count
+>> @@ -1122,6 +1119,8 @@ void __ref memmap_init_zone_device(struct zone =
+*zone,
+>>=20
+>> __init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+>>=20
+>> + cond_resched();
+>=20
+> Originally we called cond_resched() once per pageblock, now it's =
+called
+> once per page plus for every pageblock in the tight loop that sets the
+> migrate type. Isn't it too much?
 
-Ack that makes sense.
+There are indeed many more cond_resched() than before, but I don=E2=80=99t=
+ have a
+concise way to write it, so I took the easy way out.
 
->> - Kevin
-> Thanks for the review, Kevin!
+How about:
 
-No problem :)
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 2d680636b67a..d13a2577c4c3 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -683,7 +683,8 @@ static __meminit void =
+pageblock_migratetype_init_range(unsigned long pfn,
 
-- Kevin
+        for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D =
+pageblock_nr_pages) {
+                init_pageblock_migratetype(pfn_to_page(pfn), =
+migratetype, isolate);
+-               cond_resched();
++               if ((pfn & (pageblock_nr_pages * 512 - 1)) =3D=3D 0)
++                       cond_resched();
+        }
+ }
+
+>=20
+>> +
+>> if (pfns_per_compound =3D=3D 1)
+>> continue;
+>>=20
+>> @@ -1129,6 +1128,18 @@ void __ref memmap_init_zone_device(struct zone =
+*zone,
+>>      compound_nr_pages(altmap, pgmap));
+>> }
+>>=20
+>> + /*
+>> +  * Mark the block movable so that blocks are reserved for
+>> +  * movable at startup. This will force kernel allocations
+>> +  * to reserve their blocks rather than leaking throughout
+>> +  * the address space during boot when many long-lived
+>> +  * kernel allocations are made.
+>> +  *
+>> +  * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
+>> +  * because this is done early in section_activate()
+>> +  */
+>> + pageblock_migratetype_init_range(start_pfn, nr_pages, =
+MIGRATE_MOVABLE);
+>> +
+>> pr_debug("%s initialised %lu pages in %ums\n", __func__,
+>> nr_pages, jiffies_to_msecs(jiffies - start));
+>> }
+>> --=20
+>> 2.20.1
+>>=20
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
+
+
 
