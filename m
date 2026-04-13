@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93169F34C5D
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 14:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B89F34C59
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 14:47:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDE746B0089; Mon, 13 Apr 2026 10:45:27 -0400 (EDT)
+	id 185BA6B0089; Mon, 13 Apr 2026 10:47:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8F306B008A; Mon, 13 Apr 2026 10:45:27 -0400 (EDT)
+	id 15C0F6B008A; Mon, 13 Apr 2026 10:47:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7E556B0092; Mon, 13 Apr 2026 10:45:27 -0400 (EDT)
+	id 04B2D6B0092; Mon, 13 Apr 2026 10:47:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B8C976B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:45:27 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E8DAF6B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:47:16 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7806C56F4C
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:45:27 +0000 (UTC)
-X-FDA: 84653805894.13.252B98A
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 97945140187
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:47:16 +0000 (UTC)
+X-FDA: 84653810472.13.74B27F4
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4DFF420016
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:45:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=VAzPN0Q8;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="q ocQPWN";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776091525; a=rsa-sha256;
-	cv=none;
-	b=t0YkFXnRt33TMkqy5QhbURIuM3RxqSdyUrhN7gzgHEgx62RI9or6VlRi39d/66RvbIkbKx
-	Ba0WrOqpJCnCbXPe4d35OtNURRXREYfFhTd4gxfOVVIM+aPsZGbuZ0vumib46pjGP6xlVD
-	Cxy+SVW1/MGRsKRqxhnEccELgP2LCvk=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=VAzPN0Q8;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="q ocQPWN";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf03.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8ABDB4000A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:47:14 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=LmjozJUZ;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="P 0Pt1Fm";
+	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776091525;
+	s=arc-20220608; t=1776091634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I+t/kQciCWPYQ9TuTtwE8ePqtDE4emYgbGk8M0JrxkM=;
-	b=lLWCYezMczvCnLDEIoo6UTy+PXQeI0r1tvxI6zcefEzbupr0i7W+f3PDIzywsv4TWOHKUS
-	IxRg8C1/iO7JPKpeeWVBG63q6fU1uT4Dgt49m9Ecw4pfPOFEoeXfpUY4Qxk552IP1kxOco
-	ziYf5hqAX5gMACEXH1SLp3bS11PzXOI=
+	bh=W8U2X4bSWSk5VTnZUgN69eu5y1WQZmUIaZ0lY5fFNYs=;
+	b=PEGOY9zUEDuASiikU1oTtV9yVmOTruIVGsl6+WnxwZ2PkxuamT8hzhI3NAOzzG35OIAZKG
+	aPLbSXTnrQjfGBjQ0mNc7kuledbrc5kvIr4TGVSM/gogqoT9UWCc0jP25FB1bAHsg6UIQ7
+	mx03FiZ+gDXP1FuAzjGve6cR39NuABI=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm1 header.b=LmjozJUZ;
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="P 0Pt1Fm";
+	spf=pass (imf17.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.137 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776091634; a=rsa-sha256;
+	cv=none;
+	b=mPwstOLnie+2ctnesChCCX7xbAs0U51CfPlAoDNUGkeK9Ymlxd0IEJ7jMwvOsmrD0fzn3V
+	DbLGgFv6dixGqX3/ltX2hIBi2UNum7Qi7o2v/a1coJf6BeznUZD+Cm/Er9iblpUZ07MJrm
+	6aynM7kEjzKHJ6lokC/WX3YUzLf+jNw=
 Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 63FD713004A2;
-	Mon, 13 Apr 2026 10:45:23 -0400 (EDT)
+	by mailflow.stl.internal (Postfix) with ESMTP id 9D38D1300479;
+	Mon, 13 Apr 2026 10:47:12 -0400 (EDT)
 Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 10:45:24 -0400
+  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 10:47:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776091523;
-	 x=1776098723; bh=I+t/kQciCWPYQ9TuTtwE8ePqtDE4emYgbGk8M0JrxkM=; b=
-	VAzPN0Q8M06ZrISBiijyTlSN7zZjXii1iyjsU0Nd55Go1hDvnVgLbRCBducupWL/
-	I7xPJiEoPevkjLJ80mYbEW/a8BVGP+DZJqRCjUfrjm3tX4hey3YtL6Qx00JZuF8v
-	WjI3i2GDGrKOX6lfMDr3NkI8PTwxLuJCiP0sOV4NGpZgf3fzkLLYGy+I5Zeauesx
-	Pa7bVz5nZwM+gS/NQ9njvgK3O3s/OSp/mqYNiLR905iGGN0vAev7wD2BsAy/ZN5n
-	HSi20BHM/ZKZ23MgIDcWnPLPjukDeFEfSjoTKa2sxYcORDHf2CMGKzIaSruFiqz+
-	oZNoQZjdZwrcCPF2MdR51w==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776091632;
+	 x=1776098832; bh=W8U2X4bSWSk5VTnZUgN69eu5y1WQZmUIaZ0lY5fFNYs=; b=
+	LmjozJUZ3Jo4aDvRnxjNH6xr8327RRDJ6AyS2k2jkDl2R8fkH9iYi8hT1huSnuvC
+	fDXAO9TCtk28z5Z0YRzjvQVLbECztWiZU5NNtbQMRNzTIEQrOcdJnQGPD479uwHR
+	1Q8ok3Usz/sph0Zc33WNDHZ2vRiLAUdkasmWlryN5Yu1+0d+T5ZkgPdaZcIJ9UoD
+	LUtaK6rfdZx/q8xdekwLUdfJgdU2tYY2BZBNb9nIAqnbcU5rOmuWMelD9Mi0vAHq
+	QCAxCp3Z9MPSmP03naZuWjoQXnxN4zfhCwznV9CiO4R52VmIdP6Rcnf+zUDjPDtN
+	UXIkYMXlY1W1R8FqtfdOMw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776091523; x=
-	1776098723; bh=I+t/kQciCWPYQ9TuTtwE8ePqtDE4emYgbGk8M0JrxkM=; b=q
-	ocQPWN5vz5eOrV7RW4YLt61EpInPDUzfRCh54wFp6y2Qkmlnv6ZW6xi1Aoq7RlzZ
-	r6AxqNsae7V2QoCSPbuAl0ssOCnVNF+Nwe1zzee6gqmSKirEjbwPzN/lznn6IgkI
-	jFNhpABUlOOZaUVrUhHeH/vSP+NehNFWpty8kiiS8k4XWDW1V04VNj0ojxWNDsG/
-	IfeL1IDdAfa9wVDrNQg30BEe1ROTtYd65N72SkxvxptAHs7jfN3985PGHUPTFvJI
-	wKmIau3hzR296XeSLQyJhwIMCCxcc2mnbgbKz8VUFGlqAJo5mE6KGja1OZI6dhmy
-	PrqiKmwzjhsEhLvP09Hgg==
-X-ME-Sender: <xms:ggHdaTXgJGelzz_lzrVxB1-qyO567-GVmNc01ydITgap5FTeQTDzsg>
-    <xme:ggHdaWbojY5ZlN23wxAxRcQ_6Dhj9KvjWf-KNsyKBcK8W8C_Dp62np5kJfJ8b515H
-    9E3UwX-YmVDxTygAoDQVAtNvx28yeQKuUCb0K1tX4I6jWCY1o3q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeehtdcutefuodetggdotefrod
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776091632; x=
+	1776098832; bh=W8U2X4bSWSk5VTnZUgN69eu5y1WQZmUIaZ0lY5fFNYs=; b=P
+	0Pt1FmZA3nT0gW/fGFJhGWUXdXBIcnOnTz8lnGNEggRDBNRkkIRZZ0rbNBev1XVe
+	zzRDGJ8xdI8n86dT020680Fi59i8OYpo55O8jaokE2rcHortABYU2ULGblyCdcE3
+	N7NLqkhP0h69s0MdHh8xGt/qaV3yIfjS2nWfiqQJrucaxHGogEVfeVOAY1wEf+xi
+	uch3DjI8PEGZovPDIghE3cw7CjHIO63YZV2H2BcC52PGMn1wht6rI8JJJxiiCxXU
+	UkCntruu9nNGBjU41kcYr9A+IW1YiAyNflF4aBilp4WdS700qNhK6R4AGl4ZTHZ/
+	zTr464QHWbqiGWfEZOjQw==
+X-ME-Sender: <xms:8AHdaV4EBY4AfwcF1maxWFQ-UReN_owOou9m4dD7NbRoLveor065LQ>
+    <xme:8AHdadsjRmCe9WprTyyNQkCK8SO45WF8KHRoafxkQdvsEV90LRX-MaXp0aVyJYDZ6
+    EmCfA1Y7H0u_e3mR0Jcw_jjFYyaDaWXBKlPB5CHolc71f6zGRLy>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeehudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
     uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
     hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
     esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhht
     pdhrtghpthhtohepthdrshgrihhlvghrsegrlhhumhhnihdrvghthhiirdgthhdprhgtph
     htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
@@ -99,28 +99,28 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefkeehtdcutefuodetgg
     hrtghpthhtohepuhhrvgiikhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhl
     vghrsehgmhigrdguvgdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
     hnrgdrohhrghdrrghu
-X-ME-Proxy: <xmx:ggHdaWvF06daWzpSpjs739v0aJtN6iuik26sDQBaw3w5gAf8SR2C_A>
-    <xmx:ggHdaZ9awg7nUXhN5OpyKRMUZCbM9osYFN5RNP6GaSqeakIU3Racag>
-    <xmx:ggHdacmWL1YHAZe8ol6oPFOZFwQU0SOjOVhuke7wt-o0cNx1zs0O2w>
-    <xmx:ggHdaXZVfqhFVoJvGmfQg_vToEFHdnDFmb_H9i_ab2aUXdlRPO64dg>
-    <xmx:gwHdabAQPN9OqlO9_5-GhrI_SeY-FYfEJ9AFMKsVeX_HsRytcY0IapPu>
+X-ME-Proxy: <xmx:8AHdaaT0cMKbTafw58cG7wQ0Qv82m8qZTRYyny1dj-38kCZwa83j9Q>
+    <xmx:8AHdaeqogwjtF2ldxXkdqczEsPcfDM_1nEYFfwCk0UufLkJUoruyNA>
+    <xmx:8AHdaYOz_3J7HsqPIEODLkY5cvhuJsZCBlh7QMGV8E4tu7K29uhBUw>
+    <xmx:8AHdabApMPQo1X_BPzpLf70mTWvAAr9UgFJYBxC3fw_K7vhbYwNivw>
+    <xmx:8AHdaZoXgvLSsnx7srnkGqW8Du6l-JaiK78sBGKrQgfs5kgyjB9M2EbT>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 88869700065; Mon, 13 Apr 2026 10:45:22 -0400 (EDT)
+	id E812C700065; Mon, 13 Apr 2026 10:47:11 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-X-ThreadId: APG-r6FMkt-Z
-Date: Mon, 13 Apr 2026 16:45:01 +0200
+X-ThreadId: A4mZ2Su1YSkV
+Date: Mon, 13 Apr 2026 16:46:30 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
 To: "Thomas Gleixner" <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Cc: x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
+Cc: "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+ x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
  iommu@lists.linux.dev, "Michael Grzeschik" <m.grzeschik@pengutronix.de>,
  Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
  "Herbert Xu" <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
  "David Woodhouse" <dwmw2@infradead.org>,
  "Bernie Thompson" <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
- "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
  "Andrew Morton" <akpm@linux-foundation.org>,
  "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
  "Marco Elver" <elver@google.com>, "Dmitry Vyukov" <dvyukov@google.com>,
@@ -141,21 +141,21 @@ Cc: x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
  "Paul Walmsley" <pjw@kernel.org>, linux-riscv@lists.infradead.org,
  "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
  "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Message-Id: <0166c8e1-b19a-44f8-aab6-f8f161c8542b@app.fastmail.com>
-In-Reply-To: <20260410120320.163559629@kernel.org>
+Message-Id: <90a889aa-f204-4ea8-8642-6752aa1955d8@app.fastmail.com>
+In-Reply-To: <20260410120318.727211419@kernel.org>
 References: <20260410120044.031381086@kernel.org>
- <20260410120320.163559629@kernel.org>
-Subject: Re: [patch 38/38] treewide: Remove asm/timex.h includes from generic code
+ <20260410120318.727211419@kernel.org>
+Subject: Re: [patch 17/38] ext4: Replace get_cycles() usage with ktime_get()
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6zfzbgbko634yaa699xtdwbjaq977cks
-X-Rspamd-Queue-Id: 4DFF420016
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776091525-350593
-X-HE-Meta: U2FsdGVkX1+G+XdT2anv2qT3kXtHn3Lk3ZJ+fFfTWVbqHXpuo/JkBDjKbkcx5+E4GLumrF9L+ryio17BKQ0u09T4P4gyHHgLQQLcHnnVkcR9T5InfNqC11eezLP7Yzs9eKRS/BhROjFltz4YjrL87Wv7JjKmoRKrzoEfCkKoHJlaj7XcXyeutDaYY9azI9xty0bi2sn43Zz+W+zaLdEpUgtSBT1AGghFowZ1/QezueTmApA21D0Ui7tB3XiqbUrdeVDtajIcAn3PnH6h0RABtVt/4Wl193QaD3rLltBzzfRElA/uS53LsJaPgw1sl6bns1aKCqsZf57TuyawRtDWidfw08bSJhIdO7JC68dKzn9QB1SMOFAC7fLUMHYCPXrMe4xLYLoiejbrFaImkOSSTPWgsEE21qJVIdGzGfD8tRTFBoKUukIm+ABx0BXzlGReYdEV1s0nAv3juw49100jz6N0WbLlnMSQj3FnPz3ZT0YKltTtzpbUNJc6p8GLBNxsJ0sunSsVGTI/lYGZGuAd6zj933T4CrGQ3eyF47sC0iP0Oj9ttV3WVf3ab/9XkVjqjM/i5c6n8Eo1po0ww/2/ie0QD12jNi4Bkpe+uQoTzpGXG5UQNsvTA5aTmdaJ86sIY/O/9R2K8E1zM8LpnD0vMkXWOcK/pci/tPINC5onUgIbRiuwE4CK2ENBSol83emvWdkgU/sdu86MfMxTArJPZnah+sCmPiBBzilTvK2NHcwOJKNImKPuA/vgWtPpS01SIQXPZIdkXPWktFNnFDhJRCQTB9Ox/sZWtfVLAp05lR0nyz1+vdzR3EmIQXQpfvz+7QABpuWkZoppj9S4D8EFxVXRMTkBQal1ofp2p5NIPEoRJdYXSPGddgkWZiw9zhg7RM6OiwAqRfGwIt2WJCpfRvZz+58LrGYUOmhrYHaxTzvTQesIjdCc/1OsgY/JJ5/owgkVVvq+t89xvRpiJwB
- NsURSwBL
- dKo9KAErsGV6rm+StZMw87oSjGiKzwOvJZ2BntMPmjTd25wtnVGFclu9qd/Vk+AxmGFWT4Y5xImFCVbUJcysaN6zx4oFTAzTfoPNzYCMYYY4iiRx7iXepQAuBfgVQx2uvW3cbvyWD4rcsfygJFVI1OuBOrB0V9vAEGxEqeJKPSGIHSZFMBMNdLIe2Id+QUJU6t8fJN/cu6tyiEDL5mF7GRYbrK4oD9k2Cpvc9kFaBU9ZNxPg/DS29WfEj8QzVK0ZLZuObQY/Bz3wtYIWD7i64gNMCewJBjTVVZqlWbw75P8oe3c94YE3V+fEXo+YNvlHXD58DBT3bvRbrsl2do6zXkHWmFHoT2a1mhKFZSV5KiDu6kpw=
+X-Stat-Signature: 67ibzuajjgkyxug5npx89m93wggg9ptu
+X-Rspamd-Queue-Id: 8ABDB4000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776091634-877297
+X-HE-Meta: U2FsdGVkX1+h/k6YTtuQOsczSL7J00JRgwRNdWPxXK74T0a+x1W0no6rOXxWKnWX+tvBr/oPKKN1gWMPlFgJME8PrsT63/7sCYVSgPy4yP77NEZZrL8D3WrEWY8wpFgZptAgZRESBV1PWSUA2jkGP1nLwn0RDbc0lduI2LIbicSsAtdswYoWzKt6VaxtLleFcrxjQBDOlgAe+6TcZM4905ES0SflcDlPq7+S59ZoHeGQNNSmjlJwFk45YC1440BIqIkkxFjWPPXXX5iibEBNfKW6FLwLdhWgGght4seQB7EEOPzYMDia6hUnwE8B3ayFI0+bjzlIXYBZ3Hm92deGQ1X2CwkkNN6XVoZOTP0DySnUI1ELp7AeHMyCBI0sydxjMF+VmIwbceeEiH46eRWx2cArhal2z9+Sg9YxaRbXjataEZANONo14unVJqHR70YFo08V9SBH7Nl1Hi0IK20p/3vrRyLXuOi0lurmo89/+hSgSBzd/IUKjM9ibeIm4BTp8ZH/zMFLXtYvciGKZFIcnXIjWdrW+ooDWHxXwNhS096+3i1AAJMz2nF0QPc9g2pbV5ZJl/jPAb+VDjwGW5q37hfWFu2DQZneTSlwg8zx7S33HfIn3VzAQUy7khS0rU9Ka8lRm6rj84nY89yQIUdvAWTNvSpijE9oIjOG+X/xQCVD58W+P6aRtYfvJBjxbs/fiZGF2RKQZypZSlP8Vw78prJpbjFz3CZWzfbEUkPqNOwEhssggJZH4oS5dFPXNsZNDaMYqQqEPjXYJwKXYXzq3iaQp5Lf5qvJcMSQrWNx6FIKlFKhsZ45WL7jHgcW7/c1MGGeYMm6t6vvmHVBSi/Xq5Pqwl+t4IrLwm0x0/5fANfNPnU+BSRUOhydFNikfr89SSDd3O0u95asWhqE3raf8G+yv4h+3xRPfzroPIT82JYCaCF3kEmiHKhjqP+P6aqhIQrX/BSolRs9GOg4vMi
+ JvJ2+GQi
+ ybUFZ7/EfZwkqUjnZPfmhTQOFwF8oCcXXGp+Fl4SrN6Bq5OPWsFKzM9avMCRvXQ5SCJPYmiZKrES3Y0EJ2uHDU8UsXyYmWr/Cu7SruVvvA4XGq0MPi7Izrr8qH2U4eJWb0BlZLI6XeK2aZmvuPhmG7DMUu0KzkNvp0gIN/n7m5eKNXXvAppxsTSEicl5hLIlRY/5ITF6OXHT5aLC5IhyBb66BlbwJ+64msTh+JURWXuyr3d8cPQQsEE5nzpq1PowrasAwP4oTZoEBIuQJleS6FOhptQehZWOUz6t4Q5Dhmbe3h78fRPHtrij6HKvnlQJZfxeiYeY/r1dsHJ2YkZx6/S9QXo0NjCR9LPj4E6fSH7ANb+I1U62VHqBNh9ax4Cem2PA+OUMCuET/RSs4zCCC3qNVXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,19 +163,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026, at 14:21, Thomas Gleixner wrote:
-> asm/timex.h does not provide any functionality for non-architecture code
-> anymore.
+On Fri, Apr 10, 2026, at 14:19, Thomas Gleixner wrote:
+> get_cycles() is not guaranteed to be functional on all systems/platforms
+> and the values returned are unitless and not easy to map to something
+> useful.
 >
-> Remove the asm-generic fallback and all references in include and source
-> files along with the random_get_entropy() #ifdeffery in timex.h.
+> Use ktime_get() instead, which provides nanosecond timestamps and is
+> functional everywhere.
+>
+> This is part of a larger effort to limit get_cycles() usage to low level
+> architecture code.
 >
 > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> ---
->  include/asm-generic/Kbuild  |    1 -
->  include/asm-generic/timex.h |   15 ---------------
->  include/linux/random.h      |    3 +++
->  include/linux/timex.h       |   26 --------------------------
+> Cc: "Theodore Ts'o" <tytso@mit.edu>
+> Cc: linux-ext4@vger.kernel.org
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+I think this is technically an ABI chance, since the time
+difference gets exported through procfs, but the new version
+is clearly the right thing to do since it replaces a hardware
+specific value with a portable one.
+
+       Arnd
 
