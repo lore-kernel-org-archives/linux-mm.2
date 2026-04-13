@@ -4,101 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FCA2F531CA
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:50:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E30F531CB
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:54:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 070C86B00BE; Mon, 13 Apr 2026 15:50:11 -0400 (EDT)
+	id 643C76B00B9; Mon, 13 Apr 2026 15:54:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 020BC6B00C0; Mon, 13 Apr 2026 15:50:10 -0400 (EDT)
+	id 61BB76B00BC; Mon, 13 Apr 2026 15:54:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E51F36B00C2; Mon, 13 Apr 2026 15:50:10 -0400 (EDT)
+	id 5315D6B00BE; Mon, 13 Apr 2026 15:54:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D1D1D6B00BE
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:50:10 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 93B9F1B7082
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:50:10 +0000 (UTC)
-X-FDA: 84654573780.08.DCA9E60
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7FE1B40003
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:50:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XIQI+3Df;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776109808; a=rsa-sha256;
-	cv=none;
-	b=iiKSIcJT5q7T28s3xB/hknbk5k7Yfpe7W7jblJOkBC7iDrCmHrhA2mWGQijDNbOYDMzyPB
-	PU9vN/ZqM/9tziYY4ajBitJD180PludDOdde4hcT3fGfAPo7qZfR0/GFpqHfJ7Pdx68PuD
-	pypKv4m9a4U2sOg7/2egEYZ+Aw4Uhqo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XIQI+3Df;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FF7A6B00B9
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:54:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4CB31B7406
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:54:49 +0000 (UTC)
+X-FDA: 84654585498.04.D3B34EF
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 063C68000B
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:54:47 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=c6paX1bm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776109808;
+	s=arc-20220608; t=1776110088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xFQYviYu5IERsK9WZ4rZwOi+7n5BFxSsKXE2pfOu77M=;
-	b=mnHsxcWaNqO7I+4dNNaSKgdW/53MTjev7SJrMo94niH9g1/vC9YZdLIZmbNIErzvtTsUFM
-	S93xlG4kczm66E+xeTG8n2QvcfzhMmYZFOTVOKxVv2HFqOAN/azFS/1/Nq/PuKepvLoF0Z
-	NFy3u1042pMbbU2CD2VGxnhJW5hc5Pc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6FE6C44508
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:50:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B653C2BCC7
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:50:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776109807;
-	bh=oJxljyVFYnJlQ71cjOxsdi4l3kBeDgjEaeIU1wDEovQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XIQI+3Dfu1tgIlOd7I9GwqUKy/UHOa+d6+MTpZjl59E8NqsIHW2EmcRPPonI8lMe8
-	 sIOIlYsx+sEBhXkKpnAXxSWNep6CkxYmGwJ3rjCuI7l4zWhke1LU+/fxOI5PTLAYEz
-	 lhnJZmxwArId51Z8KA/e/gf2lZ/ksGe/+1epkfXkvgt3JLMmgCSnGmDOpCnREiO83a
-	 1UoPHwUHw0vZrWO8GgUTfB4Yjx1PpBtea7pv7IWEvQhDzfIQtPLHP2i0YuLrnRurle
-	 p+xuDMMxw0joJd9Ig08+k5XaPOhh1KTTAqaDIjO4DC1HyIKLWPp9ya9PAN+xGgq0UV
-	 nZSWf0JDuSZcg==
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8a4b8c3a30bso54266026d6.3
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:50:07 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzoL0yIelEBIM3HXmIhtvEa+0Hv2p6oqguc/KwmBd7qc1iFlfQj
-	v/vZ/cke0y2ts5WCz2yw9C9O6Ch/nSlLm2ZORJi4fm4HcPurld/5k2H7eW92qRXV0ZnozGqcO2Q
-	cHz+DDX60vocaNf55DlkUO0c+3il+BnY=
-X-Received: by 2002:a05:6214:c6d:b0:8ac:a57e:ec1f with SMTP id
- 6a1803df08f44-8aca57f19a6mr113901546d6.29.1776109806510; Mon, 13 Apr 2026
- 12:50:06 -0700 (PDT)
+	bh=4LBTdm0r6/3UpNGKJqwUrmmrep6dE2YfGJg+Y3TeQvI=;
+	b=sxnF3XLOoN/cNL02prqc//bbEvd8fYGOCb58+9EbML0uETuCqR39TDasoemrLNd/GWt/uK
+	MwPadHQPc+z+IFtCXouvAak/KzCgzslcKPQpcMTprIK8fWpyxmGcnZOEva37Hm7HIzNbze
+	H1mQZ+/s5w5DYS+pvO7EtPW92sRiRB4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776110088; a=rsa-sha256;
+	cv=none;
+	b=3bGQXrqjAd93yhK+hvyDHijGcMmC2SxXGsENy1YpEUmlQsnNTl5QiV9R8zpl8BDf0toegF
+	qknq79qpM9m3DVK360O1IufZW11OUvn3bmH6aSx3dYAekr1G525KqvxrY+Pvz/gr5PsSmP
+	43MQIFnV+QSHpWMTgE+wlTl4FoBNkBw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=c6paX1bm;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35e576110adso1129853a91.0
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:54:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776110087; x=1776714887; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4LBTdm0r6/3UpNGKJqwUrmmrep6dE2YfGJg+Y3TeQvI=;
+        b=c6paX1bm1kFhdyyGYGjZX3jPFAGQEuamDz066X8qR3ge0OciFzIrOKMtKsBswWAnsz
+         ei/qaqXqXYMaBfkgTjtm0wXgxyj2JOtbDiRg8qPnSKGxXQwC1xla1Qx4AKtY/QD1VV43
+         JHpqifyolID0si0XF9H4k+uNVsgVtODGnr+1YSgKO2+ZcxJOIrPPvbzl0BVUpv75p0cl
+         OfyWJIpfkjWItvnV70c6NTnBzUMsNeOfbK/b+mQarhH0nzDYqCWzjQc7HyDH4Rs5WBsx
+         zk2B+3Y14FZVRo/hKtRV9hXrAAF3xfZttTZws5SuB1DHUNnrPN7CJs7YoF9P9xUzNxqp
+         +fFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776110087; x=1776714887;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4LBTdm0r6/3UpNGKJqwUrmmrep6dE2YfGJg+Y3TeQvI=;
+        b=XWCbYiSpsn+dhfEJCUQIOCIdP35pnpPUo3YTHVj59K2ocU+ltH2hXTB9yeh4rcKb0J
+         xwzkB5KDnrAqv95b+7FhdX+4aXqHhgTmONjao5272Ygm5PQThoxWcIKdGY5v31HjQoic
+         jAipjAamBNFvH2bgHZbfZX4LurvZYdiBCF9KlK/3GERslBifWN+qKfwsWFlByzQtEn2Y
+         LJ7M5eOlDyTpw+KoUHnHBgMR3Stl5fj5dgHKMY44hRhl/rkhawkPI6uloA/Xu2R6zPC4
+         Ott9xumVlTf6YSRwsj6qXWOL9OCiyGchRN3ICHTVxtMAY3QE5I6tRniqMhyRasXi8YN9
+         pB/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ87IKXWLpOGJFNMMwc1wBeAkQiiUr0wq44o9BghxTMVQwIZbcRQnAl5QSE1t63yY5NiwWN8ByDYbA==@kvack.org
+X-Gm-Message-State: AOJu0YwWl+vCmF8HfIgl6/8Ll4wTqa65T4rCgMMMKuPbkGYweEPzMnzu
+	h6i4YXXn2sDHxtocz8NoCw3yOQagOXE7y59LghCzrSsoTfRfXbj1+Mjo
+X-Gm-Gg: AeBDiesHyq9+ZNpIUBjY7q/xKkySnW0FrX9GfdlxtXXPcIeSRHkHQ8OrXf+Lw5RK/j5
+	ppMUG+co99WzbPJOcOiTCuyr0UpTT6/cdxmZWFX9jjcnCcH/KW195Kgq5yaIpwMoTxIDaKI0h9v
+	Wzexyf2t3gHiYQN+KYlu23Ne3NQZzN1hQRl1dxDd/8zenAMwJXLPL/GClOadybAFwPOrSrAVXq+
+	W3TFDq6KCIXseVj73XGS2hgI8IMEXE9G3aC02v6iBTt/lI1nUw0A79ad5TUj3Vye8p4k8L0sZLf
+	fEoRhWvfhROKJkIbkOwAUu0HEjlF9JxnKlXzxQD2AGaChFbredajLToI2aivws1dg4VC//FYi/Y
+	s2pn3OokOHw26t/Y5i4TdNXbuN8fHCwH1OHtjDB0BgHPH3Q8ImYg6EUZnHAvjY8q0PZ8W3Isofu
+	MSN8r306XWrcDbLlwjYQ0QbvnAeLL5+EYIRK2CEa/oUEAfZNDKmQY=
+X-Received: by 2002:a17:90b:4cca:b0:35b:9e53:e2df with SMTP id 98e67ed59e1d1-35e35335015mr16924314a91.2.1776110086652;
+        Mon, 13 Apr 2026 12:54:46 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35e35155829sm16717956a91.13.2026.04.13.12.54.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 12:54:46 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: aethernet65535@gmail.com
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	sj@kernel.org
+Subject: Re: (sashiko review) [PATCH v2 1/2] mm/damon/lru_sort: reset thread status parameters upon kdamond termination
+Date: Tue, 14 Apr 2026 03:54:51 +0800
+Message-ID: <20260413195451.17184-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260413185249.5921-2-aethernet65535@gmail.com>
+References: <20260413185249.5921-2-aethernet65535@gmail.com>
 MIME-Version: 1.0
-References: <20260408025115.27368-1-baohua@kernel.org> <20260408025115.27368-5-baohua@kernel.org>
- <ad0Wyq5--L0SeIqr@kernel.org>
-In-Reply-To: <ad0Wyq5--L0SeIqr@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 14 Apr 2026 03:49:55 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zuBXjm45w3h=x=iK8weVEajW_yaksXa35w0eBK6eoyxQ@mail.gmail.com>
-X-Gm-Features: AQROBzA1k3Am_KfJGvo_jQMK1NqwlYnHYsaB7gQDCvz7fR6iifxM7skZxpHGLhk
-Message-ID: <CAGsJ_4zuBXjm45w3h=x=iK8weVEajW_yaksXa35w0eBK6eoyxQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/8] mm/vmalloc: Eliminate page table zigzag for huge
- vmalloc mappings
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
-	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org, 
-	urezki@gmail.com, linux-kernel@vger.kernel.org, anshuman.khandual@arm.com, 
-	ryan.roberts@arm.com, ajd@linux.ibm.com, david@kernel.org, 
-	Xueyuan.chen21@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: jgq9k84c5f46i34h7ewyhgo6mieckmok
-X-Rspamd-Queue-Id: 7FE1B40003
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 063C68000B
+X-Stat-Signature: ikjuqr4tosyeydexgkyazchds3hs6y86
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776109808-951404
-X-HE-Meta: U2FsdGVkX19aCC3Iu8mQKUkPhDGSvV62c1ijbE589tGUNNpdJJ0WF0Zkau7+jMDoQ7SDlTOuxsz1/UGrWt+zU7D/6YXcBWRVJn8NBiv+YzH3FRZ5hz3lwW1Vuv5mJExXxNEhcA9YL/W3LLrt1xJmY1f3NFTHPMcQnhwNGUPugMn8bBdcD+NiSwgNiwXmRflpwK6RNPRKTxF0f1TBelaFnNHIQNElq0huRDHJCUCgbcK0uw8RwALXCTZE3ezFDPQQ5m+ojF7Ziery/KlZH1nPmU3Wpe419q+oSqNMUr+YfCSw3agOJ2uyUTEwl3Hxu4cNNXyT/1zfjtRpeYr5q8bIdFFT599hj4zBkHgwJJJKAq++eZR3Y3N3vcFRb5RN91cwLeHaM52/f0P+Nu8GxwzIPHzJBRZmv+154W//zJTwUssWYgBXyhNh5RxFzNPgrNbrhpExRWqCjxEBF/lTFAq3AfY2Lm7LyDl9GLw7xgn0KPAVbkthxSmubaBtSw8cvTGKJK4tkPpJERsLYwD4lMUjy7WB3cWnS9oJn7GgmKNYUNgpXJ6AKrWJHLVrRsnwGV4pVOzxXn9WJD/mLeUSRX/L2HIB6j8coyE0YLgBZ4lJgiFOdnJqXiDqJEkyTixdrSjpQm/cCo+sXxBwi6CwKujuvc0HEeVfcB4VeiFomzOgfAMydK7yoytrlgP3ssJycC8vLVqLonNUPrZ986ihVAlSXST3fQ/0zlQVv/uLc5ijaunaueUwUklIliTa6/62wUYtXmvEHG9izTU/OzzwOZG00F8ad3ONnQ1h3U1eAl8ewnRVE/+18DpJq6d4P0TsA57IcokTDxcyrMOV6z0I/0KAkjcXU+HrKi7ethaEwcz+OonPawSmg+Bb1tp6Nypk1CQvUcdlN1cpZoQm4I5cK4pRvARWM43otAz8Qm0DhT8nYkzcfSkjm8Xcs7Kseo2FvyVBT4UUk9nVF7e4O9AsL62
- tpvyxxwT
- YULeU1YwnCn+NqVQa6DehCT0y1ltMtBJLGrcc7cLGG5YlPbqJQJt8LKZkKO8SUDoCS56YqgClLQrvEnF+oU5zWlA9T10Lj3Votr5YaHjefQDPg2DLHxmjHrlEKyeneaoLxvo8j7LiFSNCpOKjGbwnuAfKmCFwzarkjUvZtC+kRqE3c+zg5gVzMXDlCVZBogld/lJ9n9kv7zjbcm6m1f5O1XY0VxXCAvFR1LMiC8D7fYy9k1WcwD6uo3MctVTJHaOvt1XRjUWIWnK2rG6cAGaa5h+6TGKHeNxj9N3LgB5Nt4ZrXCa9d/VXs1OWg6ams8G8Q9b3voN8YHUI1EUC6CPRY5t306If64VDLIet881UCfZDK+w1K4lShYsVmYXT/Y2hfJAJ
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1776110087-719400
+X-HE-Meta: U2FsdGVkX18wLC9xIhkHWWKym08QiKVRgys1g5FG+xU39I1aNdeXyhHd6dUTLJuxX6aGZxJsNMXFrhqz7xbBdCkX3XzRUOXEzryGZTDQvxBcRNNT+P8rUQrdpkwoo9Rz1XYdTaMnlHIlS6scDT9fBBnBO3DcLZcvx1UNj2MnLIWkhKUYRnxtSgL9Ai3tM2UBP4FZIy+RHzD2hp0jy15h8phBJB37nv3CHDwxEeCd6suLEM5Iyo/xOI9TWj+aeuazi45dxIir3IDokaNFP93ZcGu4QUO6jvKkDMl0bckpmy/yPLZGKyFTzHkg9MindI6ylCrCM9lHijLACKtK/E9zUiXUw9biCJAbl+Q/vWvuqIzgr5KXhXZXjjp1yqRNjmCcjTKqZ0kPU4B8WV4lvrBsHaAqF8Ok6Yg/T4lylJZK9FqOi30m/K1M5oPi/fFlxdkOghTO4PDhbFCGvNcftKirHp+AN4yXBw0FpvRZemzoKski27nhjDq0G+E3SZn6ppDw519qmOeMwnX5OQJqRq6OxuBs6Z6cAb8fYnJDjV2pWznG9wUBZgT6ukE5rHc1mAEE1cLJysAj5aBK7J0R3wtn6FtAQYhYSGMj4RuClOW5gjJX90F9XrCA9q5kBdOZMLQ7qqWCpJaZ5KAIZC1s2ZonntqBslaJjgexITYpboySuGpn1Qhm5nz+XEXhB0SuYvm0JgQLAk6WnYnG+6DBXSAoHVgS7ge0qpDJnPLJrSAZ9VEwZOC7h3jXJEiys26AE8IxtEXszDHAomYI+vzv0PpYwvm9d8vfA6AoEyweUbN8UXcibOWuEPoYAEAMhap0kgUhSnHA6pVs7BuMve6OXFKPmZu22Jw7zh8Gf1FoFwVN3rEEd+TbyIV+YzoWJddO5ycFBPyVbFmDQDDjQufiFQLIJXyidu3VaDeTzY/rKC60Hp6QnP67JZUOSUtG0YvjloBEaY0/4/iXeU/POABHF8o
+ NDPYpQG2
+ PFuNYZxjIEMSQzEvYsaFpDD0ohCkxR5qdX/yiWhBTtGRertJl+NWgjEmahoPumVEbDgpBe1ROY4xKpOoCqujJCUzKpoW3vlOWzVCLx+3knVb5OtN68hla93fs486Xc8BMWWvlxCWAuxjAkN5J5+7DdutY2q4V8EmomsM4wSKit43cUT8DBlhb/L+Ivzs9HZ4P0kBKvCXX5+IsZz56bHsNBOw2423hg3MAywY+xsCLvoedcUm3XY5mmVE2VqCfpcsajS29SrCz5FCXbcgK0KQHJ5Nf5M0tThXrkOnrUTDkQtkV0P/S7v8gYikHqjBkZErnKfwObZbWepeQ/NEomnr5e8F4zMjKhZ9UqMDgWZObKD8e7FiuBiD8xVUSrbCeekXc6sC2OKxbFRghRWiSon/NzFi4fB7NOelae2sitszjgFgoEX9QO2mc8d0teor18Za4YZtZvA/wY5pDkxG5yDrdUPkZE0mtSzufSo0+LdpgErCJOcqlX8kduiB1buZieLgNCgSSHcx+3A5Jirq0hVheEJcX1rMWf6mRHUtAhMFJJ/4uwKI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,77 +118,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 12:16=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
-ote:
->
-> On Wed, Apr 08, 2026 at 10:51:11AM +0800, Barry Song (Xiaomi) wrote:
-> > For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer
-> > need to iterate over pages one by one, which would otherwise lead to
-> > zigzag page table mappings.
-> >
-> > The code is now unified with the PAGE_SHIFT case by simply
-> > calling vmap_small_pages_range_noflush().
-> >
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  mm/vmalloc.c | 22 ++++------------------
-> >  1 file changed, 4 insertions(+), 18 deletions(-)
-> >
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 5bf072297536..eba436386929 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -689,27 +689,13 @@ static int vmap_small_pages_range_noflush(unsigne=
-d long addr, unsigned long end,
-> >  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-> >               pgprot_t prot, struct page **pages, unsigned int page_shi=
-ft)
-> >  {
-> > -     unsigned int i, nr =3D (end - addr) >> PAGE_SHIFT;
-> > -
-> >       WARN_ON(page_shift < PAGE_SHIFT);
-> >
-> > -     if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
-> > -                     page_shift =3D=3D PAGE_SHIFT)
-> > -             return vmap_small_pages_range_noflush(addr, end, prot, pa=
-ges, PAGE_SHIFT);
-> > -
-> > -     for (i =3D 0; i < nr; i +=3D 1U << (page_shift - PAGE_SHIFT)) {
-> > -             int err;
-> > -
-> > -             err =3D vmap_range_noflush(addr, addr + (1UL << page_shif=
-t),
-> > -                                     page_to_phys(pages[i]), prot,
-> > -                                     page_shift);
-> > -             if (err)
-> > -                     return err;
-> > +     if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC))
-> > +             page_shift =3D PAGE_SHIFT;
-> >
-> > -             addr +=3D 1UL << page_shift;
-> > -     }
-> > -
-> > -     return 0;
-> > +     return vmap_small_pages_range_noflush(addr, end, prot, pages,
-> > +                     min(page_shift, PMD_SHIFT));
->
-> Wouldn't vmap_range_noflush() already "do the right thing" even without
-> changes to vmap_small_pages_range_noflush()?
+Sashiko found some issues, so I will send my comment for it soon.
 
-vmap_range_noflush does the right thing for the contiguous physical
-address - ioremap case where we map contiguous physical addresses
-for iomem etc.
+Forwarding sashiko review for doing discussions via mails.
 
-for pages array, they are not contiguous physical addresses. they might be
-multiple contiguous physical addresses, but they are not contiguous as
-a whole.
+# review url: https://sashiko.dev/#/patchset/20260413185249.5921-2-aethernet65535@gmail.com
+# start of sashiko.dev inline review
+commit a943fcfe60e73956b72cad5a625120222653bdda
+Author: Liew Rui Yan <aethernet65535@gmail.com>
 
->
-> >  }
-> >
-> >  int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
-> > --
+mm/damon/lru_sort: reset thread status parameters upon kdamond termination
 
-Thanks
-Barry
+This commit adds logic to reset thread status parameters when kdamond
+terminates unexpectedly or when context commit fails. This ensures the
+module does not get stuck in a state where it cannot be restarted via sysfs.
+
+> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+> index 554559d729760..96c8d0dfcafd2 100644
+> --- a/mm/damon/lru_sort.c
+> +++ b/mm/damon/lru_sort.c
+> @@ -344,6 +344,10 @@ static int damon_lru_sort_apply_parameters(void)
+>  	if (err)
+>  		goto out;
+>  	err = damon_commit_ctx(ctx, param_ctx);
+> +	if (err) {
+> +		enabled = false;
+> +		kdamond_pid = -1;
+> +	}
+
+Does updating the module parameters here require holding kernel_param_lock?
+
+Since damon_lru_sort_apply_parameters() can be executed asynchronously by the
+kdamond thread when a user writes to the commit_inputs parameter, changing
+these variables locklessly might introduce a race condition.
+
+If enabled is set to false here while kdamond is still preparing to terminate,
+could a concurrent sysfs write (echo Y > enabled) read the false state and
+proceed to call damon_lru_sort_turn(true) because it incorrectly assumes the
+worker has completely stopped?
+
+If so, damon_lru_sort_turn(true) would call damon_commit_ctx(ctx, ...) and
+modify the shared ctx structures while the exiting kdamond worker thread is
+concurrently executing its cleanup block, such as damon_destroy_targets(ctx).
+
+Can this concurrent modification of the context lists lead to use-after-free
+issues or list corruption?
+
+[ ... ]
+
+
+# end of sashiko.dev inline review
+# review url: https://sashiko.dev/#/patchset/20260413185249.5921-2-aethernet65535@gmail.com
+
+# hkml [1] generated a draft of this mail.  You can regenerate
+# this using below command:
+#
+#     hkml patch sashiko_dev --for_forwarding \
+#             20260413185249.5921-2-aethernet65535@gmail.com
+#
+# [1] https://github.com/sjp38/hackermail
 
