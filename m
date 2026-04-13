@@ -4,99 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D914F34C43
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 11:48:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 445FDF34C47
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 11:57:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61D026B008A; Mon, 13 Apr 2026 07:48:59 -0400 (EDT)
+	id 89B496B0089; Mon, 13 Apr 2026 07:57:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F8A96B0092; Mon, 13 Apr 2026 07:48:59 -0400 (EDT)
+	id 84C706B008A; Mon, 13 Apr 2026 07:57:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5325C6B0093; Mon, 13 Apr 2026 07:48:59 -0400 (EDT)
+	id 73AA86B0092; Mon, 13 Apr 2026 07:57:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 449A06B008A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:48:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB69B878BB
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:48:58 +0000 (UTC)
-X-FDA: 84653361156.11.DE22FBD
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D3B461C0005
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:48:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uNsNyeBw;
-	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C8806B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 07:57:48 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDB338725F
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:57:47 +0000 (UTC)
+X-FDA: 84653383374.05.417E832
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf05.hostedemail.com (Postfix) with ESMTP id DFB06100007
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:57:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=rrxT3npE;
+	spf=pass (imf05.hostedemail.com: domain of yangyingliang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=yangyingliang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776080937;
+	s=arc-20220608; t=1776081466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4IjyGsFE0RAc+jCgnm01ouXsvsI/sEbPMxALfKo5KqA=;
-	b=si6I3gBFokUuWe30Z7ycEffTCE+zfFL8c3WZC2xFlr83DahrWZdcZv4qe4IJC/v4xP63XE
-	h8sRd7bDEVt5N9o1TcxNg4wctmPj6LG9cOImmCopPS5CafGLctNwk6tT3G62fJ9hXPa57F
-	xTR5VKJ9Wc9WCp3pVKmRPFGuOQFUGh8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=N2hsu1XgGKKp0f7imiVwOnA9Wx7XWP12pLWakH4tpxE=;
+	b=mY/qsQXHm+YyvcMp3yRshG6wr4tg8Y5NO/KV2cx/6yOpozZrMMGmd4BywmpP5qlXzmbCHq
+	xyYb5X4sXYjN+jMX1aqkS2yrRAUjHv+mTWNn2zazG1Wz9dcueCDTwmPqWIDnb721GjW3WP
+	gRcPVXbJRd0Hrg0eaZQQ+FVdyqV/nQ0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uNsNyeBw;
-	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776080937; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=rrxT3npE;
+	spf=pass (imf05.hostedemail.com: domain of yangyingliang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=yangyingliang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776081466; a=rsa-sha256;
 	cv=none;
-	b=ag1FZfWPbkSrPAJwfP+2v/8KQtcK5Y/rtOI+SVN03KT5gYfHFigyFWMnuXTsj/3LQm/gp5
-	l7j3ua5dMOFAM2IG2PxM2wGPMffvsC9tcKHn+9IHARlY98hI5sP2r0zYpl8aJHo0qV5Gs5
-	uGPlr0sZKLg0D0T7io4sr0S2sSzUaFA=
-Message-ID: <a598cd04-9db6-43bf-a3d5-9320bdf395bd@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776080934;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4IjyGsFE0RAc+jCgnm01ouXsvsI/sEbPMxALfKo5KqA=;
-	b=uNsNyeBwjHPn6FGcHCAZ0gkvp9Rf069Jfz4KJaa1ShSN3nv64PsSgYgIJx+mLck2JyaZ7B
-	MAnIwjK2Ll9hNcQ/2scX+lSDzwcjnW3/I3ypkn5N0btau4+Yxsd+IHFbQzENNKzjkapYMI
-	oyZa1Dsf9k0v5bGaLhFv4bO5NHcIOVY=
-Date: Mon, 13 Apr 2026 12:48:42 +0100
+	b=fa3oFZJRlxCr/nfC5/MpJ0KkZZZwaW2I+C5ogjTZrCxsU598iY+E4P7uNM1eh+5LfzaZsc
+	u/9whXjInpVJ6JEQURs5ZH34ph6xYbSyK2MFugMP5fLA8WXK9Uc/9RRshZd5jdSnnce5Xl
+	HnXlJfdojKo2DFO/sOCjVOwfeTe/Pf4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=N2hsu1XgGKKp0f7imiVwOnA9Wx7XWP12pLWakH4tpxE=;
+	b=rrxT3npEG1rPDv9YwYxhNHGSCkp5W+BolP72RSDTvHNtHP8f1Lw4Ui6IaeXBbVrk/e73AbkyG
+	T0YLingRqKo0FmPyy+uJeBYMDjImUoB0pwVGSypcLzQ1YG3hCZhIQv4pe3AusyMVaaCH//qxDFb
+	Bp3ASnlcd8s3y6dvcYd9naY=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4fvQjN5rpmz1prLd;
+	Mon, 13 Apr 2026 19:51:20 +0800 (CST)
+Received: from dggpemf200002.china.huawei.com (unknown [7.185.36.244])
+	by mail.maildlp.com (Postfix) with ESMTPS id CC81E40574;
+	Mon, 13 Apr 2026 19:57:40 +0800 (CST)
+Received: from huawei.com (10.50.87.109) by dggpemf200002.china.huawei.com
+ (7.185.36.244) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 13 Apr
+ 2026 19:57:40 +0800
+From: Yang Yingliang <yangyingliang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<yangyingliang@huawei.com>, <hucool.lihua@huawei.com>
+Subject: [PATCH -next] mm: make sure freeram is smaller than totalram
+Date: Mon, 13 Apr 2026 19:57:36 +0800
+Message-ID: <20260413115736.1237680-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 2/4] mm: use tiered folio allocation for VM_EXEC
- readahead
-Content-Language: en-GB
-To: Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
-	willy@infradead.org, ryan.roberts@arm.com, linux-mm@kvack.org,
-	r@hev.cc, ajd@linux.ibm.com, apopple@nvidia.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, brauner@kernel.org,
-	catalin.marinas@arm.com, dev.jain@arm.com, kees@kernel.org,
-	kevin.brodsky@arm.com, lance.yang@linux.dev, Liam.Howlett@oracle.com,
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
-	mhocko@suse.com, npache@redhat.com, pasha.tatashin@soleen.com,
-	rmclure@linux.ibm.com, rppt@kernel.org, surenb@google.com,
-	vbabka@kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-	wilts.infradead.org@quack3.kvack.org, ziy@nvidia.com,
-	hannes@cmpxchg.org, kas@kernel.org, shakeel.butt@linux.dev,
-	leitao@debian.org, kernel-team@meta.com
-References: <20260402181326.3107102-1-usama.arif@linux.dev>
- <20260402181326.3107102-3-usama.arif@linux.dev>
- <aji7zs42th272khtxesk6dfcrgf7ddr5r5n62wgzeqooyexgxf@5ns3i47f5nlg>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <aji7zs42th272khtxesk6dfcrgf7ddr5r5n62wgzeqooyexgxf@5ns3i47f5nlg>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.109]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf200002.china.huawei.com (7.185.36.244)
+X-Rspamd-Queue-Id: DFB06100007
+X-Stat-Signature: 7pf1pequmjun7fuh8bwuab4wupb1rhf1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D3B461C0005
-X-Stat-Signature: 6xhs6er83sgsrzaq333xejoi3ky6hwkk
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776080936-857303
-X-HE-Meta: U2FsdGVkX1+E2PVeEM+02MHaFszSn9O0uhiYFqfSGEccoSfONqAIKjEfxuWF8/+9gStZyXyP7nWiaR0zhtoo70SCSwH9+Bws58d+O5Z6gBoGQJFo4Irh7TFewhR8C7Jf5vhZBw2h9xjtZLBwIkpHs9jTxp+2ckx0yoQxjxIF2hxpcWbc/stWZtrvafjzsO31hYzgs3FVyvNxTkI1HSYW/+0kgi6mR1Ml7+xKk8NMUQGE3EObOksBGfgdvMVzU+6a6q35vtdbj8IN9LdA7l7s3cyVrSOhDrc65stCpqcgJHcdUIukTTKwuGVeHj0UaArVAvVn5VDaqlieibRK6OeZp6EpfQHMuNw7aP+ISdb3fluMMFm3ty9e8UnxbAGZR5S3nFfcw5kGafuelxWNvFI8p9f7DQsQ9DUfHtvyvMIWZwIF5q/ZH7GJVDonB/IL3tl+V+TNWuM0v0pHHAyVtEuWsJrT65jRT4AcaIE4h49sW+1QwK7lF5HfEJd10vfdtrGBrQAGmzZVlmGzOHPVf+4HRxbuHCdMRbW3EMhEUs1f5r2vcGmFxnm5r8e0dzjki7YWqKa7wTBJGyDmzKQ0w1EWFT2uNe6mLMK0hLf1PIFytJ7aGBJJAhYlJsJsQ8lgXu3RVdKsw9oPVDCbL8eEZWlRGkKLzjpxTFVUj4HHoHcJThzG8F6xCCoGZAJ96fuqthklJruR9Z/gCAOqWTX8Hs3yo1PEGzpZzMy0OGpGkT/Zhysb0SxTMKm5W2QixsczgMXzQ5uksZLCyBcjl6BS0/rtOZfT9J7jp1Tz8SudkpxvmUNtP99DLAmOVUcqCmm14LGrIsvLJK30dpf+GWxr5G6GGLxvC64K4fZ6CDoDOtrtPQ5EnJ7IofNS8gBflcuQdpLieuCgLFMOn71tm9ZdNGgOcqSWoqCu5IDhENiA3Tq3x9brNUGTZeQuOcFLTtiuDu5sTAjDDtu5uYaAy23XXWy
- AgBJYlKk
- VogCZ7h14YAXddQGrBfDcaPJmqt3ptWR49dJavCeFlnQUrZeLkQUq/rWFpkWR6Oi2JS2AkLlRGhBMNc755fToXlIRvW+CjNaeR+jWHqddiF9JlSWmRD645GWvDWe6G214uKui+YUFjUfJLp5FPMRrXpsUP+NVZUK3IpBpan8pldsk+lanoOPcASLd63aA1Xs5SYSNN2+I94UaRU/KZJJg193QmW1kzHnaJ/Uar9B81tjNp/gO6ATfYdaWbG6zCR+Zy60sSS0iMn+aoBXvjQLzFB2/doGf9FLG7Q2UBbspHLMkwUZFY8vigN4KcA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776081464-172333
+X-HE-Meta: U2FsdGVkX19MLBCiKlgNuaRlKVjVNqx71b5lEBLF+9WAnkcmZOoQZIZLvcMaUQRZDHRzrczcTIS8IFNjLVvMGQmHs0v9plWT6LoHLrIa+12nvrvr6o6Ykj/GASgUJTrGxQ8fOfhbxuSWl687Pj0Vvv0sU70RsC5VSYeg9HWXVXpTcms6khdd5aefUH9eHSmqtXu518ZHWdXm7bYAAnAS/aBCvpgwHHV19y/zvSLdNt8X4sRAzS9o76LT1/SSONrdkf2zvoA9LgbniMY7KDNpDc45Tnn06b328DWpM82BOn9By7pWVHaBPHmiz9+6l+IlfGFlZbyrGAdxXu4t/jfb2yHOpKZ6RVvBA24LWB73ev6cGgZ7jlOBTF85gchvXr0/ekbpLdn6It5WMqkbGl9sv1asKFZTvV9beKfE8Q5ptbdAZFls+WEM9TuqCCyG7yEiJ6oJhnZt+uaBYbn1pSNX6LmNqyLPSIR+XmX05MeJCUKS0LG+Y8DqjUpAhwrv2mw2WQ5hteaDE2ccxRkdYIsBq1ROvAOTFZykUy6JvMqEvh5vZiIJtrPkQuY9qLGwe/+cpRttuFzW/gF8CRUy4yThEINyn/qJ+6V13coYXsypK4Rd/fNNKcBGU88TM5eHROa1PXAtK+IVQuIzZ1xDK1l64DLiqHgbKjov3NwrXykFydyJYo88fSM0oBBjLCS44GXZ+tKDNwvz8qAMk54Uq+xvJOQVeBcH0CLnKkVcCdZDVOd9UbY0eJfixtXv5E3VJnyf4y4f1U+/rPwJs5SPB53BKrf4DgyC+P1My4yO/obcKUzKo93ECz7RilfTuUlvpkvvX87SZbjfR11YYOkUWG/zbGunrI8t1MZqYvFQd47+nh0rxKI+aklYEa0/aFBRlssIlBU7MuRz4efvKdJWtoB1dfgjOhJIfdhMYWD2p1Y0UYIu4GZ4Ygjl0ujgfR6C+6mr1Nvj9my48ZLiwacGSkR
+ SsciOFAE
+ vddp41b5ND/B/n34I2xQoIvVng62kMWPW1DJ/zS3CJyLSRqs8mjR30ib+CcbFzVjmUNnPn3e6kNRCKg9kHJRXcWOK09X2b20zrclrdbYBuFCQmxjI5XpRNPGhQz1KMMMH8BSZJslV4IGa7LqJlNvE6qm8biqA4c+To6zvKyhU93NMGz+cm0YiUKQp9hg4nlAbKfea4gXfBNgTVD+WHZrjCmRFXJN8v/Kgc7yXn3j5SXsMbNtS8j3B1sh6W0mmTYY2dhTZmiZ3yMCnnInZPbEaRiB4OmU7e8KVh0zt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,232 +96,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The memory stat is not done in real time, it have some gap with
+real value. In CPU-less NUMA node, the values of MemTotal and
+MemFree can be nearly equal, the gap may cause MemFree bigger
+than MemTotal, it leads MemUsed is negative which print as a large
+positive number.
 
+cat /sys/devices/system/node/node17/meminfo
+Node 17 MemTotal:        4194304 kB
+Node 17 MemFree:         4195552 kB
+Node 17 MemUsed:        18446744073709550368 kB
+Node 17 Active:               52 kB
+Node 17 Inactive:            320 kB
+Node 17 Active(anon):          0 kB
+Node 17 Inactive(anon):        0 kB
+Node 17 Active(file):         52 kB
+Node 17 Inactive(file):      320 kB
+Node 17 Unevictable:           0 kB
+Node 17 Mlocked:               0 kB
+Node 17 Dirty:                 0 kB
+Node 17 Writeback:             0 kB
+Node 17 FilePages:           372 kB
+Node 17 Mapped:              320 kB
+Node 17 AnonPages:             0 kB
+Node 17 Shmem:                 0 kB
+Node 17 KernelStack:           0 kB
+Node 17 PageTables:            0 kB
+Node 17 NFS_Unstable:          0 kB
+Node 17 Bounce:                0 kB
+Node 17 WritebackTmp:          0 kB
+Node 17 KReclaimable:          0 kB
+Node 17 Slab:                  0 kB
+Node 17 SReclaimable:          0 kB
+Node 17 SUnreclaim:            0 kB
+Node 17 AnonHugePages:     79872 kB
+Node 17 ShmemHugePages:        0 kB
+Node 17 ShmemPmdMapped:        0 kB
+Node 17 FileHugePages:        0 kB
+Node 17 FilePmdMapped:        0 kB
+Node 17 HugePages_Total:     0
+Node 17 HugePages_Free:      0
+Node 17 HugePages_Surp:      0
 
-On 13/04/2026 12:03, Jan Kara wrote:
-> On Thu 02-04-26 11:08:23, Usama Arif wrote:
->> When executable pages are faulted via do_sync_mmap_readahead(), request
->> a folio order that enables the best hardware TLB coalescing available:
->>
->> - If the VMA is large enough to contain a full PMD, request
->>   HPAGE_PMD_ORDER so the folio can be PMD-mapped. This benefits
->>   architectures where PMD_SIZE is reasonable (e.g. 2M on x86-64
->>   and arm64 with 4K pages). VM_EXEC VMAs are very unlikely to be
->>   large enough for 512M pages on ARM to take into affect.
-> 
-> I'm not sure relying on PMD_SIZE will be too much for a VMA is a great
-> strategy. With 16k PAGE_SIZE the PMD would be 32MB large which would fit in
-> the .text size but already looks a bit too much? Mapping with PMD sized
-> folios brings some benefits but at the same time it costs because now parts
-> of VMA that would be never paged in are pulled into memory and also LRU
-> tracking now happens with this very large granularity making it fairly
-> inefficient (big folios have much higher chances of getting accessed
-> similarly often making LRU order mostly random). We are already getting
-> reports of people with small machines (phones etc.) where the memory
-> overhead of large folios (in the page cache) is simply too much. So I'd
-> have a bigger peace of mind if we capped folio size at 2MB for now until we
-> come with a more sophisticated heuristic of picking sensible folio order
-> given the machine size. Now I'm not really an MM person so my feeling here
-> may be just wrong but I wanted to voice this concern from what I can see...
-> 
-> 								Honza
-> 
-> 
+To avoid this exception by refreshing vm_stat, when MemFree
+is bigger than MemTotal.
 
-Thanks for the feedback! I agree, it makes sense. I did that in the previous
-revision [1]. I will reinistante that in the next one.
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ include/linux/vmstat.h |  1 +
+ mm/show_mem.c          | 10 ++++++++++
+ mm/vmstat.c            | 15 ++++++++++-----
+ 3 files changed, 21 insertions(+), 5 deletions(-)
 
-[1] https://lore.kernel.org/all/20260320140315.979307-3-usama.arif@linux.dev/
-
->> - Otherwise, fall back to exec_folio_order(), which returns the
->>   minimum order for hardware PTE coalescing for arm64:
->>   - arm64 4K:  order 4 (64K) for contpte (16 PTEs → 1 iTLB entry)
->>   - arm64 16K: order 2 (64K) for HPA (4 pages → 1 TLB entry)
->>   - arm64 64K: order 5 (2M) for contpte (32 PTEs → 1 iTLB entry)
->>   - generic:   order 0 (no coalescing)
->>
->> Update the arm64 exec_folio_order() to return ilog2(SZ_2M >>
->> PAGE_SHIFT) on 64K page configurations, where the previous SZ_64K
->> value collapsed to order 0 (a single page) and provided no coalescing
->> benefit.
->>
->> Use ~__GFP_RECLAIM so the allocation is opportunistic: if a large
->> folio is readily available, use it, otherwise fall back to smaller
->> folios without stalling on reclaim or compaction. The existing fallback
->> in page_cache_ra_order() handles this naturally.
->>
->> The readahead window is already clamped to the VMA boundaries, so
->> ra->size naturally caps the folio order via ilog2(ra->size) in
->> page_cache_ra_order().
->>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> ---
->>  arch/arm64/include/asm/pgtable.h | 16 +++++++++----
->>  mm/filemap.c                     | 40 +++++++++++++++++++++++---------
->>  mm/internal.h                    |  3 ++-
->>  mm/readahead.c                   |  7 +++---
->>  4 files changed, 45 insertions(+), 21 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index 52bafe79c10a..9ce9f73a6f35 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -1591,12 +1591,18 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
->>  #define arch_wants_old_prefaulted_pte	cpu_has_hw_af
->>  
->>  /*
->> - * Request exec memory is read into pagecache in at least 64K folios. This size
->> - * can be contpte-mapped when 4K base pages are in use (16 pages into 1 iTLB
->> - * entry), and HPA can coalesce it (4 pages into 1 TLB entry) when 16K base
->> - * pages are in use.
->> + * Request exec memory is read into pagecache in folios large enough for
->> + * hardware TLB coalescing. On 4K and 16K page configs this is 64K, which
->> + * enables contpte mapping (16 × 4K) and HPA coalescing (4 × 16K). On
->> + * 64K page configs, contpte requires 2M (32 × 64K).
->>   */
->> -#define exec_folio_order() ilog2(SZ_64K >> PAGE_SHIFT)
->> +#define exec_folio_order exec_folio_order
->> +static inline unsigned int exec_folio_order(void)
->> +{
->> +	if (PAGE_SIZE == SZ_64K)
->> +		return ilog2(SZ_2M >> PAGE_SHIFT);
->> +	return ilog2(SZ_64K >> PAGE_SHIFT);
->> +}
->>  
->>  static inline bool pud_sect_supported(void)
->>  {
->> diff --git a/mm/filemap.c b/mm/filemap.c
->> index a4ea869b2ca1..7ffea986b3b4 100644
->> --- a/mm/filemap.c
->> +++ b/mm/filemap.c
->> @@ -3311,6 +3311,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->>  	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
->>  	struct file *fpin = NULL;
->>  	vm_flags_t vm_flags = vmf->vma->vm_flags;
->> +	gfp_t gfp = readahead_gfp_mask(mapping);
->>  	bool force_thp_readahead = false;
->>  	unsigned short mmap_miss;
->>  
->> @@ -3363,28 +3364,45 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->>  			ra->size *= 2;
->>  		ra->async_size = HPAGE_PMD_NR;
->>  		ra->order = HPAGE_PMD_ORDER;
->> -		page_cache_ra_order(&ractl, ra);
->> +		page_cache_ra_order(&ractl, ra, gfp);
->>  		return fpin;
->>  	}
->>  
->>  	if (vm_flags & VM_EXEC) {
->>  		/*
->> -		 * Allow arch to request a preferred minimum folio order for
->> -		 * executable memory. This can often be beneficial to
->> -		 * performance if (e.g.) arm64 can contpte-map the folio.
->> -		 * Executable memory rarely benefits from readahead, due to its
->> -		 * random access nature, so set async_size to 0.
->> +		 * Request large folios for executable memory to enable
->> +		 * hardware PTE coalescing and PMD mappings:
->>  		 *
->> -		 * Limit to the boundaries of the VMA to avoid reading in any
->> -		 * pad that might exist between sections, which would be a waste
->> -		 * of memory.
->> +		 *  - If the VMA is large enough for a PMD, request
->> +		 *    HPAGE_PMD_ORDER so the folio can be PMD-mapped.
->> +		 *  - Otherwise, use exec_folio_order() which returns
->> +		 *    the minimum order for hardware TLB coalescing
->> +		 *    (e.g. arm64 contpte/HPA).
->> +		 *
->> +		 * Use ~__GFP_RECLAIM so large folio allocation is
->> +		 * opportunistic — if memory isn't readily available,
->> +		 * fall back to smaller folios rather than stalling on
->> +		 * reclaim or compaction.
->> +		 *
->> +		 * Executable memory rarely benefits from speculative
->> +		 * readahead due to its random access nature, so set
->> +		 * async_size to 0.
->> +		 *
->> +		 * Limit to the boundaries of the VMA to avoid reading
->> +		 * in any pad that might exist between sections, which
->> +		 * would be a waste of memory.
->>  		 */
->> +		gfp &= ~__GFP_RECLAIM;
->>  		struct vm_area_struct *vma = vmf->vma;
->>  		unsigned long start = vma->vm_pgoff;
->>  		unsigned long end = start + vma_pages(vma);
->>  		unsigned long ra_end;
->>  
->> -		ra->order = exec_folio_order();
->> +		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->> +		    vma_pages(vma) >= HPAGE_PMD_NR)
->> +			ra->order = HPAGE_PMD_ORDER;
->> +		else
->> +			ra->order = exec_folio_order();
->>  		ra->start = round_down(vmf->pgoff, 1UL << ra->order);
->>  		ra->start = max(ra->start, start);
->>  		ra_end = round_up(ra->start + ra->ra_pages, 1UL << ra->order);
->> @@ -3403,7 +3421,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->>  
->>  	fpin = maybe_unlock_mmap_for_io(vmf, fpin);
->>  	ractl._index = ra->start;
->> -	page_cache_ra_order(&ractl, ra);
->> +	page_cache_ra_order(&ractl, ra, gfp);
->>  	return fpin;
->>  }
->>  
->> diff --git a/mm/internal.h b/mm/internal.h
->> index 475bd281a10d..e624cb619057 100644
->> --- a/mm/internal.h
->> +++ b/mm/internal.h
->> @@ -545,7 +545,8 @@ int zap_vma_for_reaping(struct vm_area_struct *vma);
->>  int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
->>  			   gfp_t gfp);
->>  
->> -void page_cache_ra_order(struct readahead_control *, struct file_ra_state *);
->> +void page_cache_ra_order(struct readahead_control *, struct file_ra_state *,
->> +			 gfp_t gfp);
->>  void force_page_cache_ra(struct readahead_control *, unsigned long nr);
->>  static inline void force_page_cache_readahead(struct address_space *mapping,
->>  		struct file *file, pgoff_t index, unsigned long nr_to_read)
->> diff --git a/mm/readahead.c b/mm/readahead.c
->> index 7b05082c89ea..b3dc08cf180c 100644
->> --- a/mm/readahead.c
->> +++ b/mm/readahead.c
->> @@ -465,7 +465,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
->>  }
->>  
->>  void page_cache_ra_order(struct readahead_control *ractl,
->> -		struct file_ra_state *ra)
->> +		struct file_ra_state *ra, gfp_t gfp)
->>  {
->>  	struct address_space *mapping = ractl->mapping;
->>  	pgoff_t start = readahead_index(ractl);
->> @@ -475,7 +475,6 @@ void page_cache_ra_order(struct readahead_control *ractl,
->>  	pgoff_t mark = index + ra->size - ra->async_size;
->>  	unsigned int nofs;
->>  	int err = 0;
->> -	gfp_t gfp = readahead_gfp_mask(mapping);
->>  	unsigned int new_order = ra->order;
->>  
->>  	trace_page_cache_ra_order(mapping->host, start, ra);
->> @@ -626,7 +625,7 @@ void page_cache_sync_ra(struct readahead_control *ractl,
->>  readit:
->>  	ra->order = 0;
->>  	ractl->_index = ra->start;
->> -	page_cache_ra_order(ractl, ra);
->> +	page_cache_ra_order(ractl, ra, readahead_gfp_mask(ractl->mapping));
->>  }
->>  EXPORT_SYMBOL_GPL(page_cache_sync_ra);
->>  
->> @@ -697,7 +696,7 @@ void page_cache_async_ra(struct readahead_control *ractl,
->>  		ra->size -= end - aligned_end;
->>  	ra->async_size = ra->size;
->>  	ractl->_index = ra->start;
->> -	page_cache_ra_order(ractl, ra);
->> +	page_cache_ra_order(ractl, ra, readahead_gfp_mask(ractl->mapping));
->>  }
->>  EXPORT_SYMBOL_GPL(page_cache_async_ra);
->>  
->> -- 
->> 2.52.0
->>
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..6a7d2f3757b0 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -259,6 +259,7 @@ extern unsigned long node_page_state(struct pglist_data *pgdat,
+ 						enum node_stat_item item);
+ extern unsigned long node_page_state_pages(struct pglist_data *pgdat,
+ 					   enum node_stat_item item);
++extern int refresh_node_page_state(void);
+ extern void fold_vm_numa_events(void);
+ #else
+ #define sum_zone_node_page_state(node, item) global_zone_page_state(item)
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index 43aca5a2ac99..dc8d2b6056d3 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -106,6 +106,16 @@ void si_meminfo_node(struct sysinfo *val, int nid)
+ 	val->totalram = managed_pages;
+ 	val->sharedram = node_page_state(pgdat, NR_SHMEM);
+ 	val->freeram = sum_zone_node_page_state(nid, NR_FREE_PAGES);
++	if (val->freeram > val->totalram) {
++		int err = refresh_node_page_state();
++		if (err)
++			val->freeram = val->totalram;
++		else
++			val->freeram = sum_zone_node_page_state(nid, NR_FREE_PAGES);
++
++		if (val->freeram > val->totalram)
++			val->freeram = val->totalram;
++	}
+ 	val->totalhigh = managed_highpages;
+ 	val->freehigh = free_highpages;
+ 	val->mem_unit = PAGE_SIZE;
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index f534972f517d..96a2e03ec83e 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -881,6 +881,11 @@ static bool refresh_cpu_vm_stats(bool do_pagesets)
+ 	return changed;
+ }
+ 
++static void refresh_vm_stats(struct work_struct *work)
++{
++	refresh_cpu_vm_stats(true);
++}
++
+ /*
+  * Fold the data for an offline cpu into the global array.
+  * There cannot be any access by the offline cpu and therefore
+@@ -1024,6 +1029,11 @@ unsigned long node_page_state(struct pglist_data *pgdat,
+ 
+ 	return node_page_state_pages(pgdat, item);
+ }
++
++int refresh_node_page_state(void)
++{
++	return schedule_on_each_cpu(refresh_vm_stats);
++}
+ #endif
+ 
+ /*
+@@ -1970,11 +1980,6 @@ static int sysctl_stat_interval __read_mostly = HZ;
+ static int vmstat_late_init_done;
+ 
+ #ifdef CONFIG_PROC_FS
+-static void refresh_vm_stats(struct work_struct *work)
+-{
+-	refresh_cpu_vm_stats(true);
+-}
+-
+ static int vmstat_refresh(const struct ctl_table *table, int write,
+ 		   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-- 
+2.25.1
 
 
