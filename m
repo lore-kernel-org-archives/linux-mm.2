@@ -4,76 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87E2EF531C7
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:18:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D9DF531C3
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:18:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD3536B00AC; Mon, 13 Apr 2026 15:18:28 -0400 (EDT)
+	id 4F67A6B00AD; Mon, 13 Apr 2026 15:18:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAB836B00AD; Mon, 13 Apr 2026 15:18:28 -0400 (EDT)
+	id 4A70D6B00AF; Mon, 13 Apr 2026 15:18:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC0FE6B00AE; Mon, 13 Apr 2026 15:18:28 -0400 (EDT)
+	id 3BDAA6B00B0; Mon, 13 Apr 2026 15:18:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 99B7A6B00AC
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:18:28 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45F8D1A02F5
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:18:28 +0000 (UTC)
-X-FDA: 84654493896.13.1028CBE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1489D180003
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:18:25 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y51oSv5F;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ABEC6B00AD
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:18:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB05613A364
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:18:50 +0000 (UTC)
+X-FDA: 84654494820.18.7B772F0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 04F0220013
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:18:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g37SLZ0d;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776107906;
+	s=arc-20220608; t=1776107929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d2ei49Kgx3/2Bj7NnLhtwQP7EJaCX+0nqfXStEQ5oNE=;
-	b=3y3qPIdeBst/ZH4xFlq4PeMWANW5cRxrKweNkHvd5+eQvaKNOzJqzYkpo1tc8x5GTK/d0G
-	15ixO8OvWRQlDvjmcMOARbYT8LVQ09ek7fipGNM8rzMp6hjLeIyFbaiFZG5dGb64MTeVpm
-	vvyGthbKkbQl0b4XYUefMDp4x6r5tv0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y51oSv5F;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776107906; a=rsa-sha256;
+	bh=zIokbzTNtWp8GkRHFZOrDuV7xF8pvhxSyEf5O1Ygezw=;
+	b=FPXBmal2chM0GPziin2erfGR2Plv63N1I+Iqwr2mDoFp9YABwuck0R4TUYRSMF1P8ZYQF4
+	a5zxGJvTF/j/18I9TLeLZjr7iIkf5MI2U19wou4SRTOkJ2j7fkkxMzxbIPxLDmzWx5dBa3
+	6tcbe2rCBxBzDmJVAMTIr7meCe42XQE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776107929; a=rsa-sha256;
 	cv=none;
-	b=ho41uWVbXGX+V+Pn4hrDoqh30lyXm8cLm0I1bNByLvBJHCKthnyrN7MRdqC1PEE2nfwWSw
-	9mtzm4F2oscAeCWw071tgMQgWKsrnquT2AYiuZ93vu7JpRAptESmt0Ppaja2M1Y+0CPq9A
-	/VtRX+KWm0QswzRX34w6zcUV3EWcB+Q=
+	b=I2EeIciuxmmrRsqwdu7U8pSBlWVBO7YHYUDH9gF+dPvJgHIYUJf9AdGIsoyDeavyVyTpq1
+	hBnF7H4rb1qFPwHmzibhDseAHNDnDRVSx8G6d7CqpIH46soqu6FBQTJTNx9WYtzkwjVsRC
+	0CthQjuKgHbIn9XZjICB4gM/IoPZX3o=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g37SLZ0d;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6CFF403D0;
-	Mon, 13 Apr 2026 19:18:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E51C2BCAF;
-	Mon, 13 Apr 2026 19:18:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 497976183C;
+	Mon, 13 Apr 2026 19:18:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A59C2BCB0;
+	Mon, 13 Apr 2026 19:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776107904;
-	bh=cDopfrHKIY5CWvgWtMsDFhixhLYI1yjKSO6ar8V8IMk=;
+	s=k20201202; t=1776107928;
+	bh=AcZH5y/sksxfUnjFv2/7/AY+KkFJTJM+xr4WzntFVR4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y51oSv5Fn7/3bMuNcw5NT9B7MhAPp346CPj5F1js+nM9h9lbdObXV/AlLREPX3ZZa
-	 x3SVN6+cIYe1wuEIY1o+CFKY44d9u/2/qfgsfEDE8BM0VHZRnae3DdLqV6azMsbGox
-	 3GHMMz1nZW6mCQhQylwiNWZVSrjaDTx8s/wrDbWUoAHtYHYTshaDFxHQD9vMH3ct9W
-	 3E+Awc/K0L+Br8emV94yXJopfPXn7RdF8wmJaxpBbPYdKeJF1Rpsph8oX7nb+0Y4Bv
-	 xRtZE6TJ79pVP7u7ACNQ+2xHFY6yaW/MPzybwyKRELPR62hLrEVr4kg4w4DLhqCSoS
-	 NF8Kh2ThS9X3Q==
-Message-ID: <4d38d333-d446-40a3-b6f4-c4890bfd24cf@kernel.org>
-Date: Mon, 13 Apr 2026 21:18:13 +0200
+	b=g37SLZ0dd5wJ9W9WB+ULAMRBgiYRuHKKy5ZZHMO2KlCtIfk9/PlL+95LjkW6D4YWb
+	 SFOM9wikoNG78Z9IgQ7FF3sxX/REtFYNeVKHulN9mslS8BIDPAvQgF43JlxefN9HdX
+	 YMwozu+vWdYGX7IK8soLAOjKAooqLKTll4laE/seKTvNKvSIuGlEALCwQt3t0C/zy1
+	 AGIOD3SkQLT9WujGNEWD5rTHsax/Uf6o6g9nOur+EQSEMPy5wwmBhG2t1UzabFV8dU
+	 Hkyd8ixDo67Osd9c3J7g8biTLeAJauSkWTL0vsImyTnaXI0yfZ19h+Rimd+u6/VxJr
+	 4dUEAzVvLkrSw==
+Message-ID: <4ecb45e4-0501-4e12-9a1d-ad1218f5910b@kernel.org>
+Date: Mon, 13 Apr 2026 21:18:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 2/7] mm: memory_failure: Allow truncate_error_folio
- to return MF_DELAYED
-To: Miaohe Lin <linmiaohe@huawei.com>, Lisa Wang <wyihan@google.com>
-Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
- vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
- tabba@google.com, dave.hansen@linux.intel.com,
+Subject: Re: [PATCH RFC v2 0/7] mm: Fix MF_DELAYED handling on memory failure
+To: Lisa Wang <wyihan@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
@@ -84,11 +80,10 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-kselftest@vger.kernel.org
+Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
+ vannapurve@google.com, michael.roth@amd.com, jiaqiyan@google.com,
+ tabba@google.com, dave.hansen@linux.intel.com
 References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
- <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-2-92c596402a7a@google.com>
- <2f177e0f-2eb0-48d0-b48c-7a0a340caf5d@huawei.com>
- <adA_1zXLUBqmSHFl@google.com>
- <5c5dfa85-baab-5c0f-6f6d-b71abbe10ed8@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5c5dfa85-baab-5c0f-6f6d-b71abbe10ed8@huawei.com>
+In-Reply-To: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1489D180003
-X-Stat-Signature: mjr1jo3itffj5bxsg7h7i5fpyge37u9j
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 04F0220013
+X-Stat-Signature: whnixo1hhu4oe9yohbfgsb7z6cgxox45
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776107905-775978
-X-HE-Meta: U2FsdGVkX1+RYpsDWjIhc03oTmL+ekA7MgI1Z/ZLFMVcFSOQtwFEpigQ2WpDLj383lfqBV/KjPadhvhHLyHo7cP0TkQl4swN+wGt+5OrhMo+TnI8a22SF09OfA9GjhwHBMNDN409mEAWO3rkkaelucF05z/8L6p9a0iVrGixjEgaVo/oi9LIPAZBxsnIK76EPhyT8p8JRAuXauYpXAp0QCQTAbEhh2FffpsjsrTFD/ovjhOz42WQOAAnguCkH3M/8p00HYxBVpPCkBuomjvVo/5ofeg+3xwpEnFZEimCdRTrsCTINkNsy2Ptoej3dZChAPNlsRhxWZz+51vWPBMUuSIEFdwBCvLILzAsbujlWFrxV+2PpmNPiOfdkXLwaJfdbN21YBCNFERaONifNdEti8eGMPao2ULzhVUAgiE5J6mUl29zk85A6JVKLNBd/ufO/WQz0R9TlhCl2q+VB458DFjZ+HROoSgt2RTDSb/n32zS7niE1YUqSCgCBb2Ka33SwOoWNT7bBKPFAd0mpm2SkMlYo2voDCuaq7yhSLXYEBbiPaWUsKweDjUkHbgqBPYkGfSGDoI0HMWWfXb2xe6qisjbPvBNymArGqrWZUU2DKoMPKGkwcoQnh9NVHZX5olLQQ1uS5HX4FftFGW/iYGAeNfS9zHaM+9xTWDGpkW3746GHFxeEbd5uiT2ax54J9RbI9SaqoDX0ns2AAB1bGHoPbpm+eQQiM0klKOAN2KSs0BcYlKnI4ynt36MB/SXvy2LX3pDLcFuQ+8qFqheUHpg+faDvomApvHUKqMUvrdfmMFAps40ouqpTPcG/rX4ofZzAVNMKjysGk8y5tJZrhZuIP0/MgenwpsP4/rLjNc2Rz99clGoj1NQKuNyyHUSoih6d0ZmdggqhoQsvJrVMoJ1KP0CBz5nmpJqYt8NvmBVG7gYNYyp9lAlw83/fiGXJ/M96M5RiCkSKSRTC2nQGbO
- N0YZi0Gn
- k3tcxWg9q8Kd55vB0HxMoLrq/cqy57fClLH5dHGeiAJmZAsTV7Xu4kPzP4kbomVLxzoecDZWDHBxWTLXz2EE/fI9GOFpQij9DQ8JJamildla7BB62VQ+azhrIs0MTnfGNeHA/5Eb32fz8wZuOUCeFp2s1PRDKGTJLXzs6scH1cz5WxEVSufR0vmteYzLs7tnNp2SAZowVKjXNYhPtHfQVfjL/TIbVO37yc7SFzcF559iUWu5KjWAcbzqtar7B2+s0mMdQ2DnUW2Na7Cfzg1ar38d0kkhi9SmfPD+TVGYbWmnFgy8ZgryyAhnI+Dd8OrKcJFIzFvqVfmAJZ2JSPeC0eJuoOO8xNwdpFnGwLsJqFRHDvedQXFjhsP7uF2A/kM7Q9QK+
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776107928-663967
+X-HE-Meta: U2FsdGVkX1+eoBNfQpF3TRxKl2UUCCAk5c2oD07ycyR2otM1xuGB8MhGnK+5s0cFReXxYkkkKWt7bTDnE7tT87byUJB4ius0i3r+UO46ZY8rJEPzDnFIL/x2FfUGaAmMAjx0RZo2e6tlNGITzlnEMW4HH3OXHJ3674q3R1aUCREbOeYZXs7lgwhY+CK/cwcBneSe/BcNFeHXRLSb3UmHYJ+mm2IME/FFB0F0b/rXQdklpL2vDrPXFpObOhU385LPOp0+eJiWAdbNRWg971SH4fiwZgeq2yW1HNb0tJFOMBhHBpu8tJdWN6cAiJtDECeczzs6FLKof5FQ2/XECxNdBe+7KdrDKUAC8vDnA/4nVJZZ2Cdw7YrMrysAo8nWmza7+upQ3IfsGl1T3fWQ2TuTkTuwZAoab7ZaFGdzxEFtZHp6NZ1WnlUkdSysVZFpv+nRCVsms0sG7jDFyaKAYZpIlrsvNwR/vVANLmfRt6HvFLCptpuwApf/sPWFbAlA4nBkcwCb3MTdqfJsv5V+kN15AANN1mb/+ljeUl6z5C1fVh5E5oaPQeHD2/P8VCktGUZx65cIE8mAgIhK3Z7ys4fBKgNdC7wM+LI66hwGYx3eSyI1VXxEkYLXlCqzO1xPdsCCFflbFJddK772XXNP8Em84Dz1/aDvSpl+ViGDzu7tg3V8E1EWFKdYwkTFwThsggNrNas32mCWkT38afmatDBVi7Cdq9+E2AQ/0jQNa1vP+PgIBRUd2ItC/FaZNW6nLndR8qEHY1qqN7jyTDaLwBKkazZXm/Pw8fQ+3cARYzfm3b7hPhe6TTC5tMP+18viXzsJ9Cr7dE6nthQufVZOSwYslSTDaV5NoM2J3nKp1jNA7ieIc4EHJdnHSBjgTOvW3jxr9q1e2oZxUUt1hjz2u2+5MPIdYoriVzu+jYXdJwuKEF6sq/YyH4GYW9I0UNsOPav4paoJMH3RQLmpPtkm+od
+ qoXaJXwt
+ ytK4dTzgTkVl+r4KN+W65ggJ+3R8kgGt1h4RZUPoJ7YhmrtrjMZC/IluArxIstGkkWgxs1zAxAJsgyKWxdD9f4vHykw/pRDf4srfBOeQseY3QgGuERhlAt55hQwLI6jt5YZvfx3OLVUq3Ybga2AR+xgaZenkgEvXHAMOVxay0qzLlpXvYqAK9E0gYsbN2PiQ8PAJOCM+CTc6L5QtsHjnIKnC1KFBfP6lVkoUdxU0mtWUP3Zhb3q3MLvS27QokdE4RwUC+fAd6jrQ7gxPFyD2vQRpVb/E3Kp3qlogt0oGYyPPJ0rG4T0mzNSbEDB9TB6bB6s1fB5eE/T14EIbj+cw6JNwzYZvz7n4jstswntRT7jBPKW6QILC8MEI6Sdh80hEHntipHRBw64pkOUWR1HTVbxQc5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,30 +148,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/7/26 05:55, Miaohe Lin wrote:
-> On 2026/4/4 6:31, Lisa Wang wrote:
->> [...snip...]
->>>
->>> Will it be better to add a pr_info here to provide some information for users?
->>>
->>> Thanks.
->>> .
->> I think we don't need to add pr_info here; truncate_error_folio() always
->> leads to action_result, which already logs the recovery status.
+On 3/20/26 00:30, Lisa Wang wrote:
+> Here's a second revision to fix MF_DELAYED handling on memory failure.
 > 
-> No strong opinion but I want to make code style more consistent with sth. like below:
+> This patch series addresses an issue in the memory failure handling path
+> where MF_DELAYED is incorrectly treated as an error. This issue was
+> discovered while testing memory failure handling for guest_memfd.
 > 
+> The proposed solution involves -
+> 1. Clarifying the definition of MF_DELAYED to mean that memory failure
+>    handling is only partially completed, and that the metadata for the
+>    memory that failed (as in struct page/folio) is still referenced.
+> 2. Updating shmem’s handling to align with the clarified definition.
+> 3. Updating how the result of .error_remove_folio() is interpreted.
+> 
+> RFC v2 is a more complete solution that includes parts 1 and 2 above to
+> address David’s comment [1]. Selftests are included for all the above.
 
-Yeah, would be cleaner.
-
-> if (err == MF_DELAYED)
-> 	pr_info xxx
-> else if (err != 0)
-> 	pr_info("%#lx: Failed to punch page: %d\n", pfn, err);
-> else if (!filemap_release_folio(folio, GFP_NOIO))
-> 	pr_info("%#lx: failed to release buffers\n", pfn);
-
-Maybe we can even make the failed here a "Failed" ;)
+Skimmed over 2 -> 4 and they LGTM.
 
 -- 
 Cheers,
