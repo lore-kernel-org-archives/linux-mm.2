@@ -4,101 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A098BEBFD34
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62AFCEBFD37
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:46:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15ABB6B0092; Mon, 13 Apr 2026 06:25:21 -0400 (EDT)
+	id 720296B0089; Mon, 13 Apr 2026 06:46:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10C4A6B0093; Mon, 13 Apr 2026 06:25:21 -0400 (EDT)
+	id 6D1606B008A; Mon, 13 Apr 2026 06:46:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 021406B0095; Mon, 13 Apr 2026 06:25:20 -0400 (EDT)
+	id 5E77E6B0092; Mon, 13 Apr 2026 06:46:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E8A526B0092
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:25:20 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 96076E0356
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:25:20 +0000 (UTC)
-X-FDA: 84653150400.17.C197897
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B3096B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:46:58 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB28D1A0134
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:46:57 +0000 (UTC)
+X-FDA: 84653204874.26.F5E8431
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E5B1440002
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:25:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hB2dbYyN;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3B4FD1C0009
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:46:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mGjnUYAV;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776075919;
+	s=arc-20220608; t=1776077216;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sOUsGz+ASU0qyLoYtkqkk2m6Hu8u3STTKxu7/l3GzVU=;
-	b=3k0MaIzJdv46uzDCAZCuJAf7uJHfQ4UkUjNp5LxEbxzGB8X+oamLc75POyqADmKIRUPg0Q
-	BAjzml/22IY/1xSEdLhBLuNMQKCcQAjYZVTc/ipkerUR/vQJvi8NF5mGcWWDRoKBaWRjj/
-	vPJkiQZUfr49ArfpvZfDtf1wEH5FwKQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hB2dbYyN;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776075919; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=55OlgZ/JG9ccYKSxYHh+Mm4gCr9DtOqU2HrBxBlg9aM=;
+	b=QEs7r3Wv5AElsLhFw6j7RnGcHE0B9gOXpnMOo2E2Z/afGYi93vMLGPNPRdazoZi/6ns0Yq
+	Ot72Y8hQHG6zJzUJnFNfwRIii2NvjkYM1Snuzp+G5Wm8BTuUz4wjI3h2ugrONwqiz9kEHL
+	XLFjT9vbtrrzUFP7Ze5ubj0yu8H/QF0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776077216; a=rsa-sha256;
 	cv=none;
-	b=YbGCklhGRwrwJ36QUtuPAtHLbWuefB/Z2rqo1a4kQDxOw5rJ0DRDyhRileZtJcXyWIjRnm
-	OaeA/IpBuU/mxXGmdM2mnfLkj51jIU4dYJgHOLGd3hVVQ7dfJBu5/Sz+Ezre/lx0K1RdP5
-	0o3TIZ/qrninzttEp/pK8I0peYF86Xk=
+	b=ZQIqGqcTjeopsMrXjNaev4KRsSzGWONmlb1u8PwwDNzyaDyefIIBYHVLV0dFy3Yf9ejOLv
+	1ecvVVSGAL0batcMCs2OgrFTXyxrr/+wyajYz7un+82zhW58ttr6D76jm7Cvcw7sX0Io/m
+	q+3n7/fduRXPg9tyTfZJk4/bWnN9s2U=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mGjnUYAV;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B406E44058;
-	Mon, 13 Apr 2026 10:25:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CB0C19421;
-	Mon, 13 Apr 2026 10:25:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 32D4B44549;
+	Mon, 13 Apr 2026 10:46:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7825C19421;
+	Mon, 13 Apr 2026 10:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776075917;
-	bh=OpCtMA+VLXoHJ1J0xclfeufGCMuVGef7e420W0OMdkI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hB2dbYyNWlMxCeUtmO/7H3w7A3dMhmviL0UrOcV4LLRj6AfNbZE870kw+HAqD03PW
-	 sc5kSybQSC+cDpIu294MegfONjVOcCit3vFr8BiJebMKdFT7ju+gZ1RV3OoTO98NwM
-	 wv1anMpNA+t9HBkSNp4vURIg7mlq6s/6t1bJ2sJk3NcESyvscMBPH3u3XjTw4ryceq
-	 V57GHefaDJIax79/kKQpSD30AvFWIQsZuBPFHQO7G32VEylQIn74c+SZbFeB46NCn1
-	 VbRToJWPUfe6HjfMzrqU7r1kS7vNKBr++nFimvX6qlM9XmAIg1PxELvMJJHP3xARK+
-	 E/uLbn1wFADNA==
-Date: Mon, 13 Apr 2026 13:25:07 +0300
+	s=k20201202; t=1776077215;
+	bh=EV5PQN4ZcY4YowILqRqfScomjrS3S5Dkp7GHlFqTkl8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mGjnUYAVdAklmN+5BaaD9L66bnb0uI92gprtqyMm6V45B8YNGskuFNitZQLvqIGEV
+	 UMPapzH0LPv14vwdNpEtEHVw0QbFTf+s13E6ON062rKaHF2SBOGhtf+YJgz9OVjztD
+	 xtO4riwaKnxs8Bv7M1l+8Ykb4FsZi+dSFeANT1ygnFw7p+VyhVXwUxigQnV/4ZrL+V
+	 LtHvgwG/voxJs4qSTHor9TuydqmsOrbZMmBKTUpdf2ZNU8bSgRC5cdDbyPsfjQxy+I
+	 +ldlTC+idJ41ttw8V18RmJyjFkyP2vULUDw85Jn009X7k9jqEv8bNZBpu/K6Q4Oxi+
+	 aCHflwUP54brA==
 From: Mike Rapoport <rppt@kernel.org>
-To: Donet Tom <donettom@linux.ibm.com>
+To: linux-sh@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Rich Felker <dalias@libc.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 10/53] selftests/mm: hugetlb_madv_vs_map: use kselftest
- framework
-Message-ID: <adzEg1JM-OO0yzqd@kernel.org>
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-11-rppt@kernel.org>
- <c1ff61ca-89a2-4d13-b376-03cbe7719366@linux.ibm.com>
+Subject: [PATCH 00/10] sh: remove NUMA and SPARSEMEM support
+Date: Mon, 13 Apr 2026 13:46:38 +0300
+Message-ID: <20260413104649.852228-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c1ff61ca-89a2-4d13-b376-03cbe7719366@linux.ibm.com>
-X-Rspamd-Queue-Id: E5B1440002
-X-Stat-Signature: hobywhrqocduonp985yht6c1jf8emro6
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 3B4FD1C0009
+X-Stat-Signature: cxkes91wr9qogdkpis5xqjjm6nujni85
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776075918-739111
-X-HE-Meta: U2FsdGVkX1/LwrpI9wixSZoBwyX0zPdtijnPNDu3boGQais/E7O1E+F6pjrHH2bpBSgt7ab4MXdkYYtUjTV/He5ORnHKWRZ6BRYDApa03at8XnO8zCP2QqgofAMjty6GHtYftPTrKxzXoleMJQf2/QmmzTdlblVanWkTIYAY6SCoXFjhhyOFg4xBrzKPS1+0T1zOGG6TwnJo5Wy8dleX3tulQ17ij3tLlxR9GGo9Vmc6OGsUd58LpxtMBvyFQyWGq58odV7tzYDWrfmIpwRs7UFsCd9F1J4gIihDBciZjYLhSXBFIu++dpmhM8OWENQrboiq6D3zFChc8WPJCCsBMJc90Bb0sXfKWBCcZH3o1hgfKoAjlpmeBW9422+PEnRaDKZkqatlHeq2CGGjqwoxnxSZLo1VE2M0gO/10dvXqZ6wZD5QypUyxhu4QaHYCy8Tc2QxJR988SLPZW59DqMr7UmlpFDWezde+rZv7upgVFoqwUQdZX44NaCXgX/chs/Z0l/qJ0Dg3zAyBDjbLur6eEjpxTeQStGInYt610AHXpv1sVmr0AHwUQZ9xGadnx8BEtIQxlWty2EmjuNgtj7vGSZ3HOL6m9yO415bC4R+kZQLhloKSg1jPoG2E69SdkIBZ4TTbNNL3Cc7WJNDXYsS9BGsSL2Tl5nXKCRM0fXMTdv1bra5rbSdGNzYQsktnaIwP3UDwVmAi/2qGq3SRS6eV+akc1/oejXdmfN+uPCBv08UPubVQM0cUyGe0KS/F8bxwMjDycoSTKU1K3SC+7MaE7v+5hLVE8//AH2gAqQlH69TsmiY9CKgsyFB1Q5A2A96YGYEgC8qQTExnZoKAlyt0DuJeu4OHp9eOxSFYKY3jMn8iu7zlBzXKxUh8iI+ejhrzJ30P+M9JQNVav5fv9k3EZU+8RegDt64DekeGHZUgX6twGREEH3ehbQo1fCzN/JO0fsTB2SkiJBGILNyEoo
- BKT9UyxA
- oDMkT9JgA/0H96EnlNeflXibfjxXgKybEmGFRc2HpQNUyIJRJyxEfwOf9Nf0oOI6S2K+P1dbid5YjYjPtx6o5h0lQYGHJn8Mm0MDY2L+gatT/YtiXJ8CxDX/qoJdxdNAONXiJNwByUe37EYOCAyQjup17SGGaHBbJrZZM6kAcFQEKYdyy8M61uiCLMQdKPloCgaFAON3UMbsnAmizob3Hd9eR88uuaCzWIb0st6yfjWdehwiU7bpKLSKl7EtEa9S1KrbZeaNbX4r06C4NzmwlzK0t6C12aPHLBAZvXmbwHaklgZ3i9NXQ97jw7gzMd65CclLzSQVBD9dn9FE=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776077216-759378
+X-HE-Meta: U2FsdGVkX19QdcgCU0X/OqRiUdw5za7VOf1XPJpOof7auSamkovrct3uUKoReMcb+SlzIIYdijtBetTTV5JUZYbVD6DLc4aLiPjAVWt8mq0Gq8H77OasUrwjl5amiArbAR4IhJCyBgYffaeaB2j1JD2VIvHZYWWBft4YhM6m0Kdt+5Fuf/Jn2Wt8Hj3sNzfikLSjOB90jkIvwlV4OXwO5S9F5PQ8uBYiBKxRGS9bWlR38ow6MPpAmqiU8kLNEho9d3q4eBmyjSgmeT8LIdfnuyO5UwT34mfagWFpqjQ8E/4WT08VnAoPlgC9AhR4tD18ArWlgSoxFdVNI//JsRy6ggAAhApKDFqvYnG8evQiAq4RinNJ8TngG1OpikLIHs4CzkUCQjJfpgFDC0J7U/PT9cy6Xn3FPP9e/dOWV/pwvmFYXjnNGl+ss9LSUval/wRTiuqLYCqrzKx27l3bEsTIassxiBlZXPSGEbKHHv5wOltAz4ydLIDu0RfJJujw1M8tJ0KGnV62Q5wtYnH0yCYCreGw/jZQnzVneQ4R7fZhFZxgtfzJI573ZbfDpe/4Uv/Sh92I4F/OeNkX8N52UUPIQD0ZTUdM5QsbQfgeSE8lfVkZtvzCjgpAwh9FGGcYX4R7kA6OOF5oHnwoebNjiFU71NAJo2ymJFd0pvOdsDYUEljiso6Vy6cPW9Md6mMTYBsHhTt6N7HtysnUQ32zb/h9oAnH/mOAPWCnQ4cDwr97VyL5xysdR0+rcpwJsnVWh2iuRtB7R4lL8VDbbOKk0lcI9QqjyqQxs/qFnRl+RosuwPM2XOWojD6qJUte4wsoOZvYmKSQHnq3PY4z9GET1pDwbWszFqqy3f3OIDF0XntEZp7QsVG65MA3xFkUjwWYN/FbD26y446JWoTdDquo2tPRet7jf7sfwThy4o4tT+OjBmxJHlE8rvOzpJpixzGDHuysi+SNA0U0J+bOWoB8tLc
+ Ju/IDr2s
+ 8kf6S6SQxF55Rq97Rfg0XRQjbjPBTdxg94o4ki6rVOXt4MuLRXJebX2bbEAPDtL8un13pJdIY3cSz9LEe1GKcl5qHeUvfIzaIqj+1XRexzxZP4oAnI7HThUwqWYR+m8LDjMtpmhUWRlm2SS0IpmERxqD77oaki0dCmWwiNGKLSDTt8r+Y9brb2tMmhToa2yAXkURtsZIcsNEDgOtJwR54DqCJ0cmEXa5enYHWptfoYL21ewk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,48 +94,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+
 Hi,
 
-On Thu, Apr 09, 2026 at 10:44:28PM +0530, Donet Tom wrote:
-> Hi Mike
-> 
-> On 4/6/26 7:46 PM, Mike Rapoport wrote:
-> 
->     From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
->     Convert hugetlb_madv_vs_map test to use kselftest framework for
->     reporting and tracking successful and failing runs.
-> 
->     Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->     ---
->      .../testing/selftests/mm/hugetlb_madv_vs_map.c | 18 +++++++++---------
->      1 file changed, 9 insertions(+), 9 deletions(-)
-> 
->     @@ -115,12 +114,13 @@ int main(void)
-> 
->                     if (ret) {
->                             ksft_test_result_fail("Unexpected huge page allocation\n");
->     -                       return KSFT_FAIL;
->     +                       ksft_finished();
-> 
-> 
-> Should we call munmap() before exiting?
- 
-We could, not that it really matters.
- 
->                     }
-> 
->                     /* Unmap and restart */
->                     munmap(huge_ptr, mmap_size);
->             }
-> 
->     -       return KSFT_PASS;
->     +       ksft_test_result_pass("No unexpected huge page allocations\n");
->     +       ksft_finished();
->      }
-> 
+NUMA support for SuperH was introduced a long time ago by commit
+b241cb0c885e ("sh: Support for multiple nodes.")
 
--- 
-Sincerely yours,
-Mike.
+	"... for boards with many different memory blocks that are
+	 otherwise unused (SH7722/SH7785 URAM and so forth)"
+
+In reality, this added 128K of memory on sh7722 and sh7785 and 256K on
+shx3 at the expense of all the NUMA related code in the kernel.
+
+For build of v7.0-rc7 with defconfig and the same configuration with
+CONFIG_NUMA disabled, bloat-o-meter reports difference of ~76k. Disabling
+CONFIG_SPARSMEM on top increases the difference to ~94k. And that's only
+overhead in code and static data that does not take into the account data
+structures allocated at run time.
+
+And all this overhead has been there for nothing for almost 8 years
+because since commit ac21fc2dcb40 ("sh: switch to NO_BOOTMEM")
+those additional "nodes" could not be used by the core MM because the
+maximal pfn for ZONE_NORMAL was cut out at the end of the normal memory.
+
+Mike Rapoport (Microsoft) (10):
+  sh: remove CONFIG_NUMA and realted configuration options
+  sh: mm: remove numa.c
+  sh: mm: drop allocate_pgdat()
+  sh: remove setup_bootmem_node() and plat_mem_setup()
+  sh: drop dead code guarded by #ifdef CONFIG_NUMA
+  sh: drop include/asm/mmzone.h
+  init/Kconfig: drop ARCH_WANT_NUMA_VARIABLE_LOCALITY
+  sh: init: remove call the memblock_set_node()
+  sh: remove SPARSEMEM related entries from Kconfig
+  sh: drop include/asm/sparsemem.h
+
+ arch/sh/Kconfig                        |  8 ----
+ arch/sh/configs/migor_defconfig        |  1 -
+ arch/sh/configs/sdk7786_defconfig      |  1 -
+ arch/sh/configs/se7722_defconfig       |  1 -
+ arch/sh/configs/shx3_defconfig         |  1 -
+ arch/sh/configs/ul2_defconfig          |  1 -
+ arch/sh/include/asm/mmu.h              |  2 +
+ arch/sh/include/asm/mmzone.h           | 42 --------------------
+ arch/sh/include/asm/setup.h            |  3 ++
+ arch/sh/include/asm/sparsemem.h        | 12 ------
+ arch/sh/include/asm/topology.h         | 13 -------
+ arch/sh/kernel/cpu/sh4a/setup-sh7366.c |  5 ---
+ arch/sh/kernel/cpu/sh4a/setup-sh7722.c |  7 ----
+ arch/sh/kernel/cpu/sh4a/setup-sh7723.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7724.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7757.c |  5 ---
+ arch/sh/kernel/cpu/sh4a/setup-sh7785.c |  7 ----
+ arch/sh/kernel/cpu/sh4a/setup-sh7786.c |  5 ---
+ arch/sh/kernel/cpu/sh4a/setup-shx3.c   | 18 ---------
+ arch/sh/kernel/setup.c                 |  7 ----
+ arch/sh/kernel/topology.c              | 12 ------
+ arch/sh/kernel/vmcore_info.c           |  4 --
+ arch/sh/mm/Kconfig                     | 29 --------------
+ arch/sh/mm/Makefile                    |  1 -
+ arch/sh/mm/init.c                      | 24 ------------
+ arch/sh/mm/numa.c                      | 53 --------------------------
+ arch/sh/mm/sram.c                      |  3 +-
+ init/Kconfig                           |  7 ----
+ 28 files changed, 6 insertions(+), 268 deletions(-)
+ delete mode 100644 arch/sh/include/asm/mmzone.h
+ delete mode 100644 arch/sh/include/asm/sparsemem.h
+ delete mode 100644 arch/sh/mm/numa.c
+
+
+base-commit: 591cd656a1bf5ea94a222af5ef2ee76df029c1d2
+--
+2.53.0
 
