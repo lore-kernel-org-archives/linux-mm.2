@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF418F531C1
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007A4F531C0
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:35:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 212106B0089; Mon, 13 Apr 2026 14:32:22 -0400 (EDT)
+	id 2DA226B0089; Mon, 13 Apr 2026 14:35:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C2696B008A; Mon, 13 Apr 2026 14:32:22 -0400 (EDT)
+	id 28ACC6B00A3; Mon, 13 Apr 2026 14:35:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B1CD6B009E; Mon, 13 Apr 2026 14:32:22 -0400 (EDT)
+	id 1799D6B00A4; Mon, 13 Apr 2026 14:35:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EEE4B6B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:32:21 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 06B946B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:35:15 -0400 (EDT)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BC76DB75F3
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:32:21 +0000 (UTC)
-X-FDA: 84654377682.15.90D5136
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B5B2257AC7
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:35:14 +0000 (UTC)
+X-FDA: 84654384948.15.156197A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 01008180007
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:32:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IVNfHTbB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105140; a=rsa-sha256;
-	cv=none;
-	b=v/xwVyyR/SDgmfBJBUBnDbYZGV+W00aDndsFbezgf6hJAQLZ8AYQGib9Dn9/65D0atZHI+
-	1TNSK77xA3h4exPQBMdYXbiQT9laJC9mWzUVu6h7ZTJ1SFoARMr1/A5Jye325pUGW10hch
-	SLXEeR+PV5gsQwKFFs3/dPJdLQbNxEo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IVNfHTbB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0424240002
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:35:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hSqxz1wq;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776105140;
+	s=arc-20220608; t=1776105313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NgP/Vv2MjQyTGsgzRJ/wBBPGSakZERPOlh0wWLdcVZ4=;
-	b=t/YuLy6jaVv8KYj7INLeRYTRYhpE6kzXyV/A3E6OfGL1XnuXjSYLtSWWR3UFxYqJfnNGxX
-	rRKKbURUj+unLk7SP8xiiZ627Df9Kl40Y6dRo/V39y0ht4gOqXNkziUGDWAptNWeZ+1A+n
-	Wwwd7f7E66K1jkmK/v0otoEM8npOz6E=
+	bh=emS9h9SsHUsj8hR6Z4Z7761tXh2GMkn98Pw5sqBFMdk=;
+	b=UWJXLiv/sSH6LehUxH6XBt2aCISmVZrlH2RJkSKbqxX/gxdsct/iELUv20KUjhdlxN4OCI
+	0cOjgyJuN7UwYi0Soc2EneXWEOYo9HTv7oueG/djeG410ZnmErmtrjw6qlaDkJDGq6tsej
+	t0fe9G180e2eVdY/X813nNmJdAHfEGI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105313; a=rsa-sha256;
+	cv=none;
+	b=8Z3OHSPozEPH77pGwUWkb020sCF/b65Y2WOKSNdmoWjHrl49LDoQm3ebbuBi4sdwwK65Bb
+	Srx/uq/BZDliOfgxnuNtTzkuQpNG+H940Ws5syjJzWhsSJmQtaXX28CeDEMIRNW7G3SQ9K
+	EnzqOTuvWiST33LY7p7amwOLaPfCdF8=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hSqxz1wq;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 320116183B;
-	Mon, 13 Apr 2026 18:32:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C82CC2BCAF;
-	Mon, 13 Apr 2026 18:32:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6562B6183C;
+	Mon, 13 Apr 2026 18:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90406C2BCAF;
+	Mon, 13 Apr 2026 18:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776105138;
-	bh=EvxSafiBWABrGah99HN0FwITRI/21BtvzrpeZ2gtImA=;
+	s=k20201202; t=1776105312;
+	bh=QlkC+Nb3eufRhvEx7dHbKvueJitX1g7CjlX7z9V2ABs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IVNfHTbBPdeNKO6fGf9PMgz2JYDGmEN40iDFS9drIkBgKY/BjyJU8cx3jqAgXJi1s
-	 phtWvNieJ6dW5qnOZgFUFFr8cgCA1BwCpd5Q54iUf/H60Nftae+WbZzb52hmRwblG5
-	 z44DNFBsSSzxraEOk/qn7aPM4gBm/+e5Q4DrlrBzzt8qwN/RVWuQSG+ABIRafe6Rcm
-	 Wpj5R3ZFqXgTWhUsFNP56EMv06Jhbu6LETT4xFDyomkTzRswQK3kLiwKq52Ru8bfhN
-	 Ry+6mMtYAjkMC+yfBfr7r7KsmLfKbfG9v4S81QebzTH0IEL9k/WzpZbWf0vTb+V9a7
-	 1gU3BIO3J0ADQ==
-Message-ID: <534ed892-a6ab-454e-831b-e207930c35cc@kernel.org>
-Date: Mon, 13 Apr 2026 20:32:11 +0200
+	b=hSqxz1wqjzil05kMy/UZtG69pcoMl5JhqTFqv2BL6HlY42Gopl08qfZLvt7OIHZT5
+	 jxGGq5iDz7HgHk4T4ssMVg6C4tlCDyWu9Q/fTjmfpXdGiXXkxkkDG8Rwnpzu92rEW/
+	 wsIL4kt3XSvaMABjYTlARUO3gWB40dTSk7vyYoq05XMXg5WgJjgYgEDMVAo6Eizw/O
+	 1TqrpsbRExmEIJP1Oi97IRLvGOsqoTo9BnJeLZZOYFbVx5I0s/0ra4112T34uzOnom
+	 5ocYASrGBqDefYJy2Z293syYv5sVu9wyEXJWId5VPR2+i/igTHfY04gWAnDyqayqTJ
+	 tWerozM0ER2Gw==
+Message-ID: <2f092c37-95b3-4206-9866-f844273ed1bd@kernel.org>
+Date: Mon, 13 Apr 2026 20:35:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+Subject: Re: [PATCH 01/49] mm/sparse: fix vmemmap accounting imbalance on
+ memory hotplug error
+To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1774420056.git.agordeev@linux.ibm.com>
- <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
- <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
- <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
- <665a19a0-47c2-404c-bd2b-482ab51b8f64@kernel.org>
- <896b3d93-8e60-42e2-b8bb-d3d4e8c99927-agordeev@linux.ibm.com>
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-2-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <896b3d93-8e60-42e2-b8bb-d3d4e8c99927-agordeev@linux.ibm.com>
+In-Reply-To: <20260405125240.2558577-2-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 01008180007
-X-Stat-Signature: 6a7ffzmgb6cfdbbw43c38ihkt4et1wss
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ikj39ewc9wwp6mt4io5ppmmtjsik1ajt
+X-Rspamd-Queue-Id: 0424240002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776105139-882729
-X-HE-Meta: U2FsdGVkX1+NCogKQBTcC34bu1bEoW1owrdeyBmlzHjLu5zDyFiQuI9YXYFYvjanUoA7RhatPKQoSIC2xlGUYMCiVwPiMa8FSWqGRHHxoZoPUoRNzq3JVSsGMboEJQBCFukdb2/VKyGTHfeAioMlQ78Hfl1IJDILbY/9lXOa3vyoU8E9Niky0PJj9A21GhOpgnRULW/EIFd7ZYnlF32Cns4WkpHyA+tukVM1sIHBnAehehnLboF+EFGj68owpW6aODZGSOFCLHxdT3I1yS6cchevVLZv/cX5CoUbC1XmYkoB0QzWcKCmE5xl31+cej1zzr9GN1rTylwiYcy3VU7AupOIIFVWh7HiXKZ821ChkfwqHoa0ihL+OQu3wQOKMOjW/JG4ph8n4giN463yywUZeXvE9S4V8XLdYySmsr0ByeTScCOIYyxEfs6MLxTRjUN+vTJCOeiLAbrxDQabebE1fc4BR8vMdOnedAOq1dxJVb35izE7MhYqiGzWC5E0mILSko4IA6bVKhIgUjoWvxulrBuNKD88PPNO6wOC3krFufC6ICn5MKkrH/WbLJQC6sUeIw3x2ClINA7r5YDLz7kRv/EXxNgK8/DchBIkKbFsahMK+G0IFn3/zfT9uo0ji72dTbpxSboNDpOmy78QivtY1X2QRmOD3a1h0MH0MAkZSWliUoKXSYI+4EdE87mqJSZP2k3T5Zks7QHO/Cd9dX47+dDOpbzgyHwb+rIci0WX5HeglnKVPMYiQsTmA4V1CS799eemylZuGtG192wuv/IBhRU5gx96kXNerUhBQq0/4ImWIfNDV8BsMNMeWDp99e5uK0AI3VQ0ngGcsCMkf2SoXGlgJYkteR2+FoT8V91xn7uQ3paD/Q7ZEaz3KIB11P/Y2FRm9lPwbydptzKtkAT+tDzZdpzAfUlkoErFWaTkUNxE7sDRWUrQNBNX7jlVQXVHD/phKItY0GsOZ4fozJj
- K2hzuzFE
- WNhd6R5d8RJAgpyPWcMMJkioUnVODB+GVY21+bn7NSA7dlwtrA08YvuJeAF+oY2lselYxFKz+OyYV2EZXaqyC49cxLNANdEMOuu2yVNboA1im/xqMCK/lzVqI7gQRa7Yo1/mXgRwh7sYQf6ujSG4YvXh3SaJH8G4RB8Zr+sbldBuI0PAkRZxApBOXn70/MXnKWyZ94xaOhF4PQPZ6J+UoNseRnCjwBCx09vwPFePjZUKKPGAMCC0el6q5I+hjUSJFpEQ2
+X-HE-Tag: 1776105312-618886
+X-HE-Meta: U2FsdGVkX19EftobRnYjBBM5vVZWfKozxepz63UlAEx7PdvUldM2tdnjwbHHQz1VGeYLtmpIDqt8VAQV99xdsuSFuWiNsNpOSHlkOR8qpBxdegek0H4jBL1rRSIif9RHZoCk7iRE6j5FqjD+REiVWi++JwyWFGUwNSIotDbx4ostfVMtHItiZAe5H+5LvhHodcBL/MyXtoHvQetcNP3RrGBDx8qyUJqbN+ND3Q2BBqKpN6qjsxEkNLxNXnlCd+RoRV68vvmBgaejR8OKZ5UJhmYV7yeeNyVHZ557FkRPO7oVUs7SIXzs1hriTe46uG3nAMjEm7X/w05mtdqW7eaLdSJYlJogertkdYWb9hTLTbP+ZqnJlR9FkJNqnfTaG9pTzO5pXcYGCO3o1BxupcLKGID8hqJjW3uXbwuk/VRRUSJyn8ycqMOEPHec0i9/yVRBCBZcbk2xAUB9fG9TkySoSwYEHEOnX7PqfNYtYpQxQx+/dZv4nVfR4UvAXcAZNfCVQnxWoOND1yWdMT7CJQsywGef1RYI81//lhUVChkQWFLbJP5lJXCUOdEeQDgABDVsu71lw+S80qFEaqw4kqaNhj8ZhsmXLgmepxcjEIpsYrG8YPGJU63AWIwQiog89YVmRCIOS4514X541FIt3A1Ac4sVzCDARqEHBg4l0XNRG1TrHpofTg3vy7rnSpkzWw/YBVJZmfMN+bvGuG0eFLlAH950Qw613KAQ7FxKiK4YsHJSieCLyyxQIcpGc0yftRmIquFN4+icISnZzje2yCsH7uyCUHgUXWn7nFOEv8ceI3BzXjxWI3tl6xBW+A7nmj4wqLo/Eqa89193fOscemdhrPsPC36gv3q44+8QnHsGny07jhAdp60Q0x5SWdHOextztbmHle1WkuB4FFBoHiaOZA0iaHu31/+HS9qxi/zCJlkMmExTbYz/PYETaiQylaZ7FkCOs7YstP81P79PTVu
+ La1b1iOk
+ ZogUBxkK5dRCr7lDVMMXdodGy7ZLSL71QEUStxp2Rv9Z4oKpdDBG+hyLlQYZZ6a9wQ201wDo0MPDgF3bQNlZWel5+RviyfLt899vDCFfEHo8ok01o0qzhv7Zij1zAxRrRLQrV0hhQHzl5UeLWat7+uQDDvq2RdcZ2yYfpskB9pTBPTxHDpkbsJyVLVMYJkCD0Py3xSRnEchJzvS+vwmyzpdbxvdWSvk/xvErofPVy2LiCjMnnurFvmoZf9OpmLdKOvURjzDpBqwKZwbA3bASWujo93g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,58 +148,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/13/26 15:43, Alexander Gordeev wrote:
-> On Tue, Mar 31, 2026 at 11:11:22PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> The only implication is "only this address/PTE range could be updated
->>> and that range may span one page table at most".
->>
->> Probably phrase it stronger. "No ptes outside of this range must be
->> updated" etc.
+On 4/5/26 14:51, Muchun Song wrote:
+> In section_activate(), if populate_section_memmap() fails, the error
+> handling path calls section_deactivate() to roll back the state. This
+> approach introduces an accounting imbalance.
 > 
-> That turns out to be bit more complicated. The below cases do not fit
-> such a strong requirement:
+> Since the commit c3576889d87b ("mm: fix accounting of memmap pages"),
+> memmap pages are accounted for only after populate_section_memmap()
+> succeeds. However, section_deactivate() unconditionally decrements the
+> vmemmap account. Consequently, a failure in populate_section_memmap()
+> leads to a negative offset (underflow) in the system's vmemmap tracking.
 > 
-> 1. copy_pte_range() operates on two ranges: source and destination.
-> Though lazy_mmu_mode_enable_for_pte_range() applies to the source one,
-> updates to the destination are still happen while in tha lazy mode.
-> (Although the lazy mode is not actually needed for the destination
-> unattached MM).
-
-So, here a
-
-  "No ptes outside of this range in the provided @mm must be updated."
-
-could be used.
-
+> We can fix this by ensuring that the vmemmap accounting is incremented
+> immediately before checking for the success of populate_section_memmap().
+> If populate_section_memmap() fails, the subsequent call to
+> section_deactivate() will decrement the accounting, perfectly offsetting
+> the increment and maintaining balance.
 > 
-> 2. move_ptes() also operates on a source and destination ranges, but
-> unlike copy_pte_range() the destination range is also attached to the
-> currently active task.
+> Fixes: c3576889d87b ("mm: fix accounting of memmap pages")
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
 
-But not here.
+Can you send the revised fix separately, please?
 
-> 
-> 3. Though theoretical, nesting sections with interleaving calls to
-> lazy_mmu_mode_enable() and lazy_mmu_mode_enable_for_pte_range() make
-> it difficult to define (let alone to implement) which range is currently
-> active, if any.
-
-Right. I assume you would specify the source here as well, or which one
-would it be in your case to speed it up?
-
-> 
-> All of these goes away if we switch from for_pte_range() to fast_pte_range()
-> semantics:
-
-I don't quite like the "fast" in there. I think you can keep the old
-name, but clarifying that it is merely a hint, and only ptes that fall
-into the hint might observe a speedup.
-
-Could performance benefit from multiple ranges? (like in mremap, for
-example)?
-
-In that case, an explicit hint interface could be reconsidered.
+AI review flagged that recently on one of my series that touched the
+code, thanks for taking it off my todo list :)
 
 -- 
 Cheers,
