@@ -4,159 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EACD8F531C7
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:31:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4B8DF531C7
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:38:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18B6F6B008A; Mon, 13 Apr 2026 15:31:42 -0400 (EDT)
+	id 258DD6B00C3; Mon, 13 Apr 2026 15:38:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13C786B009B; Mon, 13 Apr 2026 15:31:42 -0400 (EDT)
+	id 230626B00C4; Mon, 13 Apr 2026 15:38:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 003D76B00A6; Mon, 13 Apr 2026 15:31:41 -0400 (EDT)
+	id 146B16B00C6; Mon, 13 Apr 2026 15:38:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2D016B008A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:31:41 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 90A7813A3E4
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:31:41 +0000 (UTC)
-X-FDA: 84654527202.12.7CE000C
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 69A9E1C0013
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:31:39 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=eBEb3+z4;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="f K2XbJ9";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf21.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=arnd@arndb.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BEDDD6B00C3
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:38:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5C9AC1602ED
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:38:19 +0000 (UTC)
+X-FDA: 84654543918.17.FB2B6F7
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3068AC0018
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:38:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=YmPtrkq8;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776108699;
+	s=arc-20220608; t=1776109097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oF7+4SGRAImH9WMGSId2dJm+4RdrBt2YGrt25aFUZUA=;
-	b=zZRgYOUjXAAULGk35HR5HTDYC36+AFaGpSzr5J+Cg6sbpKmNdwD3WC0VpVtyH0dQnleD/G
-	NDc8qAjdAK3ag9lSvm8xioN5SiUa30i4Q6cASIkqflhII3EQsP9bVe8x1as2Wj1jjXkRrB
-	S/zVmxkwyPwxxcOcO/5bNDVMqpa32TA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776108699; a=rsa-sha256;
-	cv=none;
-	b=AkH5quSLWOYrSxfZFJ3AI6LqR1nJxgvJrh9xxDBeYTxlj/RXtf+A96Ws7/RiRLN80mxFqK
-	C8RVGjZR/6jEXMjOjWBbGzTnLHspMeFdjdYUdgcd6XxhioAFZ0SBdRUcxZB4pniQjMaBki
-	Bf2TPe2H/7yGdw0SJBCfBGSGusioQJE=
+	bh=Y+Cg30G7JazeOMCJRrNEUInL5xwrDgCPHzG/fcerzOo=;
+	b=UXHyZ+6gLCojRgFem7WDcEu3/JCaMEvvQ1Vp2vS8lQgpLZmQY3IEXFccw+M2wihhYS+stU
+	yaklnO9IUJlurx3S5pVM/oYF4jk76bX2z/xHuYC8oTigDl+zJZQGkVk1SsXabS7OiLYuC0
+	7fzE8PFV22oLsw4U68VpDgMyj9EF5HU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm1 header.b=eBEb3+z4;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b="f K2XbJ9";
-	dmarc=pass (policy=none) header.from=arndb.de;
-	spf=pass (imf21.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.139 as permitted sender) smtp.mailfrom=arnd@arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 9BAA81380415;
-	Mon, 13 Apr 2026 15:31:38 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Mon, 13 Apr 2026 15:31:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776108698;
-	 x=1776115898; bh=oF7+4SGRAImH9WMGSId2dJm+4RdrBt2YGrt25aFUZUA=; b=
-	eBEb3+z4uCJ5XpVJfmMDtd+Hz4pTmn4rIKoszU8vf+435LUmCEc3EJdi4K0/oVv8
-	C+yjXVYuraejFdA/rcQOSN6Zfi5pNlS43GslApllsudgHnK44npvkIwaUHWVTtuh
-	Dw/4I/j/UNeqyr1LQlKmH5vdXZciz/2GPqFtFHFDNoaInKEsvm7hwh9DYdVnGoah
-	lMAIbVhEjH95sryDmrUzci3AfaiCDHHYDZH3oXJ/R4+VlvsfKJPopXWx0JE7CxaE
-	ognvTjwa06PAMT31z/DBGKMGBcoGUsjb6Y3k+6cm618rMbyQ7yCpT6T6pE5XH3Hf
-	w2SGXNdq7Abx7TrcOF+CrA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776108698; x=
-	1776115898; bh=oF7+4SGRAImH9WMGSId2dJm+4RdrBt2YGrt25aFUZUA=; b=f
-	K2XbJ97Y0jsbU1s6LswXOEcaT2AuIJQsZKTCiqB2bsDjsavXFxXjXN24HUjqmHPV
-	30lUfZzPVJ0GZrRSLZsyTrPlhAwj+oOp7rzHIcW4Q+ggBxcGWjNT+roTWJQkS80p
-	muhmPfZao8pyrAslQS6xE9YgbnnrpBmxpEViK0VuBn5kyHZfCSLFSApLiy8hZEkj
-	X3o7U4xt3roWjYEf/0QsKGiNqeP3myXk/e3+BEa4KYIE59wmYsrhudiDwV46CB5d
-	E8K4OFv0fHuOdK14nnUUxfff3rCPKj8vJw3X7p6M4i0BpN1E8RSwySIEaUf5sCqK
-	alHtK1Rc5jgsKIF8k3s0A==
-X-ME-Sender: <xms:l0TdaRMQ1ovC5UjXw9wB_riUJbJZBZQ47VcEC4ozPMlWVwTWyL-hPg>
-    <xme:l0Tdaey9qAPkMkkSsq5ZowyLiVSaVZg3Aabqq1QUbhdAX-Y8VC29U600TE9HTIGWj
-    W-h6ka_l-N0bKYGG_W-3bzXlHGY0ZcjcSbZR_zuoL-6Ds0X7Q55CQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdefledtkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegkedpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtohepthdrshgrihhlvghrsegrlhhumhhnihdrvghthhiirdgthhdprhgtph
-    htthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohep
-    lhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmse
-    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhi
-    ugdrrghupdhrtghpthhtoheprhihrggsihhnihhnrdgrrdgrsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepuhhrvgiikhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhl
-    vghrsehgmhigrdguvgdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprg
-    hnrgdrohhrghdrrghu
-X-ME-Proxy: <xmx:l0TdaTelOssYXt15-FK9p6saYLM_nmrvIO6c-_F3ZyF6_xfZywmCYA>
-    <xmx:l0TdaUxOkh6ozfKMIVT4v_qdW_i5Tss0CLMqkf2F01TBmahdCnZo_w>
-    <xmx:l0TdaUWn-LdWx2_7oUHRu6zzNshE3wCLw-aFKzbUUXN26D6Q-_6vLw>
-    <xmx:l0TdacTwYVtUWJnf_Fdh14nt-sYvlNq7AaQbOTvOw2Uu221fQyzEjQ>
-    <xmx:mkTdaTH5uGiAlbaAI17-uSN6CKxYeQsdeWCm3ruscf_j0l2LK_Chakad>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 04818700069; Mon, 13 Apr 2026 15:31:35 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=YmPtrkq8;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776109097; a=rsa-sha256;
+	cv=none;
+	b=5nPVwgaLgBK7aQKHD3QiFjgM55eRisDEL/lhJMgaYJ7PPfIVT/v5aiFilLM+R4ehYbR0Ue
+	rNLvwzRtOIWTpZpGcggtgFenScDDzcyaryeSgEBq2outzFcNLvlBE6Dw9b+GRTOqikCXh7
+	4U0ZnTdcT14Ytwry8gOgSwUD+8mRy8A=
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-50d6144877aso50987451cf.3
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:38:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1776109096; x=1776713896; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y+Cg30G7JazeOMCJRrNEUInL5xwrDgCPHzG/fcerzOo=;
+        b=YmPtrkq85IIL8+g6J/jN1/BmhxsDvSN3r4qSp8r+9eGEwDnr/IP9gDaRfV3y0m0uTd
+         Byav6ia8X8P0/u6mgCO9KHyXWWjmtqZF6La0mycV0RayFP/vFEH78zAWtj9OrK7vCIS/
+         u0U0N1L1/E3P4q9SbxOSwgWeU0OCCvkj+A4Iazjfm9FQlHLSHoUDbGPkSoy+hihPfl7I
+         KHRIe+PEVES59OoPthQ3br9JAuAAP0WZ3ExYzBv3U0AosTanw6Ux9EUr9/2tV4LOdfDd
+         ZEcgcXzsKw16AE6uqlQIS9M73b6Aqo50SejAWDFGFOaivL069yP4jcjUd7gcofBcsF3q
+         Sc0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776109096; x=1776713896;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y+Cg30G7JazeOMCJRrNEUInL5xwrDgCPHzG/fcerzOo=;
+        b=ZMAdtOL0Qqaiszth6kCiNuvBEZ/B5RGVzQtSfZyCKADrtR9f6AvP/BvdEqIMe4Fz17
+         1+JANWb687FFWb6BmySfzYvqY5rsFYROwnIUJX4CdKhAey+8wzNpttmLrcIQocO4+lkh
+         5qWM5bUoxJKUMZ8yU843bUrQnNwytftObBcir1tR9FKyc2RXeONdiIrO4W+X9fb3ScqZ
+         tX65q2GISON9JFxLUQ/u8NnU9emSDFhHUJvZu/6ytll5IY8ZzKToXrUJLS+DtqV9J0CU
+         71ptBUx8TbIiaG+cDpXkp+X1bgoZsLmxKxjD5vwtrv9e1ccRkPLKMW6lzJGEpq9GnVHp
+         Zkkw==
+X-Forwarded-Encrypted: i=1; AFNElJ9OO6nf068Pp4YQKBJq0gbmZVxTQ6rr2YLp9Ph2Ivj1JBZv6HJvziiT+Ktr3A2jxWYspNKHXcFBbg==@kvack.org
+X-Gm-Message-State: AOJu0YzHH9VXHhSta8QIv3LmtumKeyJGjpduAZrYUFOF89RurUbdrbnw
+	8Xejt43w31RkgalRIfFtkwyByLPdl4sNoaR7xfmwn1CVIVvxPkqsvWLDaEOPPlh2xNE=
+X-Gm-Gg: AeBDievdK3KBdJhuuR7xCAsSwAamDx5OI5Y9RgSQc/35rE9koQcR9GbvlrCXSrP0pPY
+	EHe2uGbyK/+G4mgss0O+yrx7OkHg8DFoFrfuv27j6rCq04l5G9EELjypsChxAvgvKnZ1xaCjzHU
+	8GoKZBW3vNH6hLCil7BbSvb8QqXHiOMbC9q0+DG/5tAYcurckgoqdPyXcLO8Ij06hSnHj8KIngU
+	207eaJH1V4xJHwwNNEnkuCMDLFf0BsoR0b6xZkmKXDdtf8NYS66A5t87/s3mfPsiQX2mEmk28+f
+	QrtTHr7P7fgiskOGHHWkjKB8iP5QyEdnjbwtlPVeDMvvdKbsACHk95fzdUqQV3eSZo9Rt7qBMBC
+	7npNessZaEGXovYg86lxSOUcgmRL9mQAD5YmeXHgVxlS7hF2hdGAT1xLzECk/ofg71EYXk5vssD
+	gSvUC9vmHywcwhGkPfc/SppU6m3i/uSDWQnyNUutPNQi4cpBR8g6x49OPyx/h2pExaYusrokbj4
+	//i2qY5AmoteD8/ExYi7X9BGkH49AUr4g==
+X-Received: by 2002:a05:622a:82:b0:50d:8210:eea6 with SMTP id d75a77b69052e-50dd5a97fddmr224412971cf.1.1776109095971;
+        Mon, 13 Apr 2026 12:38:15 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50dd564c160sm95841161cf.30.2026.04.13.12.38.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 12:38:15 -0700 (PDT)
+Date: Mon, 13 Apr 2026 15:38:13 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	vishal.l.verma@intel.com, dave.jiang@intel.com, osalvador@suse.de,
+	dan.j.williams@intel.com, ljs@kernel.org, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, linux-kernel@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 0/8] dax/kmem: atomic whole-device hotplug via sysfs
+Message-ID: <ad1GJRyAfIAhj1iz@gourry-fedora-PF4VCD3F>
+References: <20260321150404.3288786-1-gourry@gourry.net>
+ <20260321104021.4a6074330131a2058e8706bd@linux-foundation.org>
+ <ab7_AVLgzLaDRcv5@gourry-fedora-PF4VCD3F>
+ <a4be48f2-ab0a-4808-a7db-2532ec65ad0b@kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AMdy4yCH1GcR
-Date: Mon, 13 Apr 2026 21:30:11 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "David Woodhouse" <dwmw2@infradead.org>,
- "Thomas Gleixner" <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Cc: x86@kernel.org, "Baolu Lu" <baolu.lu@linux.intel.com>,
- iommu@lists.linux.dev, "Michael Grzeschik" <m.grzeschik@pengutronix.de>,
- Netdev <netdev@vger.kernel.org>, linux-wireless@vger.kernel.org,
- "Herbert Xu" <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, linux-mm@kvack.org,
- "Bernie Thompson" <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
- "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
- "Marco Elver" <elver@google.com>, "Dmitry Vyukov" <dvyukov@google.com>,
- kasan-dev@googlegroups.com, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>,
- "Thomas Sailer" <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
- "Jason A . Donenfeld" <Jason@zx2c4.com>,
- "Richard Henderson" <richard.henderson@linaro.org>,
- linux-alpha@vger.kernel.org, "Russell King" <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Huacai Chen" <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- linux-m68k@lists.linux-m68k.org, "Dinh Nguyen" <dinguyen@kernel.org>,
- "Jonas Bonn" <jonas@southpole.se>,
- "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
- "Helge Deller" <deller@gmx.de>, linux-parisc@vger.kernel.org,
- "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- "Paul Walmsley" <pjw@kernel.org>, linux-riscv@lists.infradead.org,
- "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
- "David S . Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
-Message-Id: <07df88e5-208d-4aac-9668-a3b0c65ae529@app.fastmail.com>
-In-Reply-To: <7a48b636cb3146f4f7134c6d4fe42070ac2edb43.camel@infradead.org>
-References: <20260410120044.031381086@kernel.org>
- <20260410120318.592237447@kernel.org>
- <7a48b636cb3146f4f7134c6d4fe42070ac2edb43.camel@infradead.org>
-Subject: Re: [patch 15/38] ptp: ptp_vmclock: Replace get_cycles() usage
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 69A9E1C0013
-X-Stat-Signature: ospqdty3cjbmtybipfyi5t64kmxxhscu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a4be48f2-ab0a-4808-a7db-2532ec65ad0b@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3068AC0018
+X-Stat-Signature: untwx954mank4sj88inrkz3h3zqueyyu
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776108699-707474
-X-HE-Meta: U2FsdGVkX1/aLq8MKJvdDmyZGD7MddlpvwRXcxeCdDrcPTmiHnf30CCKEfHKqEo+Z8BEQo6zGwRwugIIHADzVeMvjxOXCn+WZdGg6PCLag3z+pMv390YktrF9vasxMew2kFmFp+zhm2EcdJO4eSM6FgfbXYLshOX8dBtLMWdvn38ch9Jux0yrdKYqiyxCZIszhLPp+ku7BsGG0J+FDj73adTg6j3lfGBu5tMUNwbfvv51+pMiM1FKeg+yUnYn5IQ82gumc8iHGiH808xzxIl6bE7LepIFTtjmdFIc0vf1VYRG/96gi+AQDwQg4Zqeb8j9Rp73Vm65O+SlYNffUisGBYJOu7qkWVNxBwbqGQlmSLACM3Sw8+T6JpQHCVAXgeppjyWl9Z2Fu3SjAgsRQeMeGLQcTzI2o4MoSlISP03FnhK5vl7Xir330Yt/5SD3I7SSOaldMP4wAdnMXbTlKCcP2mqtuYhVV8u9CTaG3iyH9zcpjZU/+DJajeEynx+5JdDozdvNd9h7KpFFnxBOq6FgTuD4Vsjk5ZctmSu/JuVz1TjxLSEN+0jDUh2wNhzLN5r/4ibHGS4ACb++GmjkR/gpQiogVAjEhDT9bZyPyuUkdG4qYBPXCqSDPrGKvxhOYTOPJ98tcHcv7vDD32jFn+yi6/O7o8hP0T1iMQx641hx/KwSHRvgSzfCTs9i9o2jgFSCLFlkYl6N46M+wkbUAdOlffCs+SjInA/4BtOKTH1BJMcaCrVUtLrfU4iICSUkR4w6ZTq+MB6F5WkVb+9qht1EDXiNL7K6RX2d8qQ/btVmect7WCjWg17NMgMGSx71S8g0Jzrm95BbhkmoxqqwBXMqGUc+xvNobLkDP5yGSZqs/RqS2/skxMyUnT8EAsfhxpwosqykR6oCI6momBYl1NgCFEryF6ItkoKgmUA9sJXsT+bOHGUAr2TtbgZbomkBENW8v6hrZSvCpiENIxKw5q
- 5iFtRIRD
- 4YFOLIrTd8mDMd26JLTMONnUQ6Ap+BHlfGLjnb19mWbMAsGokFyLrb3rO3Ou7QSYHt9G32+6+1u8ddwProbaDOYu6ss0YU0Ys/VczF/peflFuO2s5PuERdG47+A5xHfJGnpQMb72Bt57ic0D+xh+TT1NRaubtUkFG4Cg/LLmjWr8vxKni0+Iv7/lB8VPIVWH2K9hiKqv9x5Qd77RWOG+YzxMHPoyxSk/zpVju2+aiAWwIsppZq1rrtlRYjrgR2e/q6qoBdREr9vMHtvY1S93qEhbWDLRrGp6zysJcsO3n9GndRUM2GvCIvtPVmsAgN2S+EZkXtaqPnSYI2C3sO1++jGCZi0UUCfCh+BSX0F+FgiKtaTjzAyZgTLzxIV82h765Sr56kreqJM0hh6iZ0GsFezOKUIseVkUxX+1XCpB5TTk2mI8f84ltzonIMA==
+X-HE-Tag: 1776109096-298071
+X-HE-Meta: U2FsdGVkX18uicKeLvm4YeJ6YGwOj1gquxk/Aa1CF1ZMC9ozphYChkRPtlM2sF8315gOGEzlYrPJBJwa9d6zoGzvqAzXYQRy9FXPaeA+rx0LqbnBRLcpsOaHAP+T5IDcXeADQrMouiIUnnuNtkBU9uuljY3OlhsKxlZjFtXarIRJAwb8AXqPx6NGFKG/HD98dJ8jTajc+8zNerTRVTsslQVm1Hdsl3+Skh3MMl00F4z5uXctA9Epa687s2wz/dzOgtJjQk+33XO37jVxIJRxyc7v+mIe9NvrmEyjM9AAXArQCgt+1P1AbPR351PZXYSgqmOdl/SyJap4Tdhc5Bfz71cwnukc3Jma3UEfuo9+cNR5MYXJfeM0lcY2WOfo0nvYZCNeeJHT5T5b8dE5+RijHTDg7Yj61AqO2cKBMWH0ly83tRIKE1mdBjp3k9CJ8k/YE8TyEbGim6uVlBW8ft7l883zxVOTxml1KFqdx5iAFP8YDVKq4yI+AtujBRTTrYDZVQl9sW7wTDzTM6CaToF/n+a29O5JgtU6K0Y22AO0lQSelBwstpPVUJnnPg9xTTs1qAgARjzUmMMcwzfKdGPUSAwDFlHd7A+jr0BAsG5luvE0ebk09qcdc5C26+iNWXA0AFUkJDzAgdElfH+lmZyIhrGaDzCn3Frm2Kyv/mx9MXxIA1kGvJQSLbke+kJ8/Ke9QVXIRXPhrQgmVgpXTwzQMIMjNjPOXF3hDenIZwHX3lnVFvRrRBalMmRkUh+DywYFcK6KsBV3Xm9gtaN2dn7AZnv/aTBuiTUv4wLe+ME6eZYKowcfjgwYe82dW30gJRduMQ7FMl3zw7f366NaoZ4L/u4bROERq0DNk/1Ewbm8R7KlbLPm96M9M7Nr7d6uLWc9iAKUdswRSj803zmtidzm7A2/bRjH4+4zX/5HUXCJQPAGTnAFkndolrxRJlAxgGlxSv9st6zPQoeDDOStkZ2
+ atj3qXoK
+ XWLGvz40L+MD58oYeIUsI8ngiKXd1QfRg/UwzifMbP7H72Flozxwg4fn30eG6VGK+AGRSv3M2UW0iAAoMLfGEuE+NpHt1UDt+5DMExTAM8t4CXlv5XeOi9xCEk8fwd+cK19VPLLW0pIp3317tM9E4Wk397ez7MGAD2nYMgM3g3zwBnY3VkjxK9uLVu0AOZ9zYzRgxiE1PBPQ6RmNqyTTumVKBWmkmnfgSgt8/h130MWlmqedizZDhRPpZXwgmcFk6bhMRCGmGU+ZeM2v/FSS00H9pEbVpZtES6saV+bTp3jwTiYQ63ALEuGPjHTv6hmsgEtEBX+URhe+S7tA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,41 +125,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026, at 17:33, David Woodhouse wrote:
-> On Fri, 2026-04-10 at 14:19 +0200, Thomas Gleixner wrote:
->
-> ... depend on TSC_RELIABLE=C2=B9, since if the guest doesn't believe t=
-hat it
-> is, then the guest shouldn't be trying to use it as the basis for
-> precise timing.
->
-> =C2=B9 (Or... one of the other zoo of TSC flags for the gradually redu=
-cing
-> brokenness over the years...)
+On Mon, Apr 13, 2026 at 05:47:01PM +0200, David Hildenbrand (Arm) wrote:
+> 
+> So, really only user space can try offlining the memory after requested
+> onlining succeeded.
+> 
+> I don't think any udev rules do that? The usually only request to
+> online, which should be fine.
+> 
 
-It looks like this is sufficiently handled in the caller:
+In the offline case the block will cease to exist after offlin/remove
+returns, so what should happen is the race on offline just fails and
+the stale object cleans itself up on the way out after failure.
 
-static int vmclock_get_crosststamp(struct vmclock_state *st,
-                                   struct ptp_system_timestamp *sts,
-                                   struct system_counterval_t *system_co=
-unter,
-                                   struct timespec64 *tspec)
-{
-....
-#ifdef CONFIG_X86
-        /*
-         * We'd expect the hypervisor to know this and to report the clo=
-ck
-         * status as VMCLOCK_STATUS_UNRELIABLE. But be paranoid.
-         */
-        if (check_tsc_unstable())
-                return -EINVAL;
-#endif
+Userland temporarily sees a stale memory block but can't do anything
+with it because sync'd on hotplug lock.
 
-With 486 and ELAN out of the way, Winchip6 seems to be the only
-one without X86_FEATURE_TSC, so I think the next logical step would
-be to turn off Winchip6 as well and remove all X86_FEATURE_TSC
-and CONFIG_X86_TSC checks.
+> So if a user does that manually, good for him. We just have to make sure
+> that stuff keeps working as expected.
+> 
 
-      Arnd
+Yeah the only catch is if a user does something dumb like
+
+    cat block/state -> online_movable
+    echo offline > block/state
+    echo online > block/state
+
+But like... don't do that :]
+
+Udev won't ever offline-online-race like this, so it's not a real issue.
+
+> Or am I missing a case?
+> 
+
+So yeah, I'm fairly confident this just works.
+
+> 
+> I'll note that offline_and_remove_memory() can take a long time/forever
+> to succeed. User space can abort it by sending a critical signal.
+> 
+> For example, if you do
+> 
+> $ echo "unplugged" > magic_device_file
+> 
+> And it hangs, user space can kill the "echo" command, sending a fatal
+> signal and making offline_and_remove_memory() fail.
+> 
+> The question is, if you want to do your best to revert the other offline
+> operations and try re-adding/onlining what you already offlined.
+> 
+> offline_and_remove_memory() handles that much nicer internally, as it
+> tries to revert offlining, and only removes once everything was offlined.
+> 
+> I think I raised it previously, but you could add a
+> offline_and_remove_memory_ranges() that consumes multiple ranges, and
+> would do this for you under a single lock_device_hotplug().
+> 
+
+I don't think this is a very large lift, just a slightly larger hotplug
+locking scope.  But then - the per-range thing in this set should just
+work, so let me know if it's worth the extra churn.
+
+~Gregory
 
