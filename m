@@ -4,102 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41255F531CC
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 20:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1303EF531CD
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 20:37:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1596B00B5; Mon, 13 Apr 2026 16:35:38 -0400 (EDT)
+	id 595406B0089; Mon, 13 Apr 2026 16:37:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9620E6B00B7; Mon, 13 Apr 2026 16:35:38 -0400 (EDT)
+	id 56CED6B00B1; Mon, 13 Apr 2026 16:37:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89EAD6B00B8; Mon, 13 Apr 2026 16:35:38 -0400 (EDT)
+	id 4825D6B00B2; Mon, 13 Apr 2026 16:37:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7827B6B00B5
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:35:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 44E1B8B2B0
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:35:38 +0000 (UTC)
-X-FDA: 84654688356.03.E8CF628
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A1BF640006
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:35:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jf7uu1hT;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776112536;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 31D196B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 16:37:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B4C5957D3A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:37:25 +0000 (UTC)
+X-FDA: 84654692850.11.7D59F1B
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B3FB11C0006
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:37:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ba43TYua;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf20.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776112643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HtYokny6y9/Dl1p1xfnv9fH4Sv6CkK/mGZxE/olmdzE=;
-	b=JrhRtmsWGJfgO0ifAzNKEQz2p/7iJ2AHukv6tdxqXhCpqVtGaRqxesefmvR/jMwmFgt7b3
-	PWH/LAYTzmQVOpT+nvkF7v76NXUdaMWnuxHs5i6reRKWdtV53tEoReUlCgNIsmLQfM5AJ4
-	HIFYaKJEGXh2hRmlNi1bGvoF1C6nMSU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776112536; a=rsa-sha256;
-	cv=none;
-	b=O5HjtPsG5iKuMVhcrDVmYYGs8QjL3zf0goYG4YDJhcesIteRKszBz2IWWuxNJENQeLTWTg
-	fYy+FXWTNwASyC4UUPtrlEhqCUwsgK+bfzqc2vVFS6PQmlOfIoVdESZAL23Y8VlRNwI0t3
-	JZM+GfJepaYfCtEGDaEnlcs70kElo2Q=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jf7uu1hT;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HtYokny6y9/Dl1p1xfnv9fH4Sv6CkK/mGZxE/olmdzE=; b=jf7uu1hTkK2Zwo8KKL/jpCnllm
-	SGc4Da5qY8GmfJl5cU3V0+CgwLIZbm9GlRAVavYLD9l2XG7QmnAQ6BblK7KRgDhDVhh5TP3hWkN0P
-	ThoJDJaT8ngjJZJ5U4jJxKCcX8XvhzGnRDe9hq1OzGE6buVl5zwgfk47IKk3bfIaaSplcJctRSkDP
-	XDc7z14zpX01OvUOxGOQxXNhCDbQuDlJeWDE1iR1eociaVwO6flHBQErkKXTPwghs5XeoQt4gbxK7
-	Nq+2fhrFzwMOvKha4JhePdOLj5m6F/RyKNjANmNDJ0BqBn8/KpUdcRFaS0bFTDwAumZyyarpLs5PE
-	wvJ4xH+Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCO0G-0000000EUTe-3j3B;
-	Mon, 13 Apr 2026 20:35:29 +0000
-Date: Mon, 13 Apr 2026 21:35:28 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v2 06/12] mm: fs: remove filemap_nr_thps*() functions
- and their users
-Message-ID: <ad1TkEKQ9cyzBDWp@casper.infradead.org>
-References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-7-ziy@nvidia.com>
+	bh=27N5lR3KmoShUN2IsYTq303g4RifjWELwDNgjz4lxoY=;
+	b=0q+1ADuB8+EmgJwxEqujqfKUUC16ms+a8vlJ6OHaOaZpFE8j+UnLIbIetwNKqXfv3qwVfY
+	i9mxXhw1r24gF5rERfunTYaRpb4lveIMHmB8jW4TI5vG4n92ZpzVo3mdQ/cVlNGXrC0bMV
+	kbQpHrx48VVm0VcfynPDiiY3ezXNSi8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776112643; a=rsa-sha256;
+	cv=pass;
+	b=4Oz94iPUmiQyoZKFUHeliR+zcJ2y19cLrElkV1FvCx3yR6L9EF6f2uz0X7q+n0yWRSSGTw
+	WO6pbjBeHhodm2ltDpbksdUnsYzRxwFiMtLka1cJ6/T1oZ5ICmhLj3Hdjkq26mfb3bbhE0
+	IB9WXzPX9j3D8N8wq0jxyXYzFnRebC4=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ba43TYua;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf20.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.181 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2d7bdb5ffffso5113300eec.1
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:37:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776112642; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fmngljk33+DTOQUdTurUaM4kGViuH/DZQ7FgFMvmroaxknZZCaaIaDrIayclSds1ab
+         p4gyyBDbIvaih9QZrBoaO7jmEZS67445ufwCoqf2QU25bU8jLKli2hkSBYFE537ZFDSj
+         1x+svrMn6esbCVAUXihpV41U4LXXNDBCkPW5VVhZJkBkBe2KA1F8DvvX/zFVfCN8Y9Tx
+         1yM93cXOD1907NzoetwUgTRJHvuATMWTFfnGMKE3w/BiVwedFd8drCAg3lZczsnrXZE5
+         NixR3bjrSCoq2Rb4hkjMoqAL8/abvhPvZ7LWEcjj46sD7Iq+ONW+ZRTT3WPNItnpw2l4
+         SmDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=27N5lR3KmoShUN2IsYTq303g4RifjWELwDNgjz4lxoY=;
+        fh=To2bgvWqZ8cmCtvrzOWxMhu9QAMSU8n5XKQHLi3/iVM=;
+        b=QE6wI6dcrpu9bQhvoo/79twnLp2OYVCBJefZU42dLELWI1375JvqLzKuun2oR4YF+y
+         x5+gAGuUat0VeC+QpwPQrBWmfHYQNgvIuf8MUVrCA4TPCv5N2pUNFN+aPD9qLuTfrv11
+         JGxPFTsWh2ytnICsnYZ4QtDyXKw/7hmUeM0PmFrgRYsPSzRL2rRk2XF7qsv41KyqwxOt
+         BQfPTflrCQPIhm2x5kitanxOlgSiS1sEYcjH8dfokQkhLhSrO445r5k1WjzKL6OUG6mN
+         JWDhmXOOaSvd7f02QPlBmo+/SdT57hchYmqIrWNbTvme+GCrUSfV3XwfLLr17U17+f6C
+         JE2Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776112642; x=1776717442; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=27N5lR3KmoShUN2IsYTq303g4RifjWELwDNgjz4lxoY=;
+        b=ba43TYuaYzXdIT/cCqPq/44LkhD3TiMJFMJ80ZIi+AeZRKStSvTpqaQntqiXiFy0Iu
+         ZU3/Ha3s5N0rPc3Nw4A8P6mm0jJTvx307mwtxjuVvxcH/X6fvHjbHR54V3uRmqYLYMS4
+         bHBBzl4sSlQnRIAW/FhTDj967kFkB/nlTyhCfHyN94TrlLR3X2IBcImLJz/CuPLCI5vR
+         +VTsaOUPIDCQjybz2+My6oYDWu9rSOiZ1GRnGYYRr7eQgW4osXXqv495yFeWHFcY77Ua
+         b1hqvh9WXFl5TL1+zhB5T9pYd8C9rpIDihxiumlWk2ojKa5jCub9HmeteXIjSfKRI3dU
+         U6Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776112642; x=1776717442;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=27N5lR3KmoShUN2IsYTq303g4RifjWELwDNgjz4lxoY=;
+        b=NIoVS/F3kiUhsDNhvhY3j/w+xLy6eL8SfASC3rF8RDvrXin2KzJbIVsuB8TEPfXYpL
+         Hcvoj7gDNhWeUW2k2RcOdblMWHFS+AT9w/kffHbJTuTEXsOvJWiACCcr+HdE6Hp0oEAz
+         gNjBUyrMxFTFYYNNXIrjzg/tvt+j1wzmlzJxI/MGDuLKNnaOXtshKqsIZR8d7mFrbf9R
+         xYDzIWQgRtFTepJ9goUvNbIj/KmWI/yKETfuyOcDG2j7GnFgeSQYCA3/O90nLA/MBG0k
+         TcgIOONr/lcli9PQu50atWUxXUQSHuHi+ADDwvgvqKHI+YxWaJy9amZBln+tjDs0ws+j
+         DEHA==
+X-Forwarded-Encrypted: i=1; AFNElJ+W2+pUMIiaUTKbb2eOvWPdN0xqPp2R1Eou2aUym2rtHE0NqEwJqAneJ17ZSRa8pO/fmineP0zfdg==@kvack.org
+X-Gm-Message-State: AOJu0YxPEu8tcAQJSLEIQ8rrK/LpRvJlRo15dwkezOC3/r5+EPjSZGCK
+	Hkqtnu1qWEWAk0XucxpmgbtZ+wW5UTE5S1NLb3GCkobhmi1l6Cja+jF24M3mhlALAXPATthBJLX
+	WWr8ZO99IxyaZ5By4RTX42LxhMIH8vJk=
+X-Gm-Gg: AeBDiesiH3BFZ5Y0wLWV+As60pSwFnf87GEwIjUzAjVOtUmF7oAVqTWVlEGICB+Fqcf
+	+3Lh1BEbfKT3msJ4padw7e9IqyVwgOpC12rFDLIfq8WDO66+cVidcg7oM+FEMQGzBvdE9kiI5q8
+	Zc7XJHuI8pBKos1cv3y7kd0Jt5lnEJMEcTdKl5HhAVDo+2y6lsRzWbOYhkrDrlBrYntKQxsqTvk
+	ZHO+3QPH7xVWdQrRceDfunOmOyIjN3I6J51IN6vGYk19C7ijIXp7xix3vtpAjHDGGIk5Af9Gg91
+	Ab5ybmc3k85yJrL6
+X-Received: by 2002:a05:7301:1e83:b0:2c6:1557:9997 with SMTP id
+ 5a478bee46e88-2d58965fa5cmr8485135eec.14.1776112642351; Mon, 13 Apr 2026
+ 13:37:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413192030.3275825-7-ziy@nvidia.com>
-X-Rspamd-Queue-Id: A1BF640006
-X-Stat-Signature: 34qtmwujh6acspzcxat56pqiqz3z8ice
+References: <20260331183351.29844-1-kanchanapsridhar2026@gmail.com>
+ <20260331183351.29844-3-kanchanapsridhar2026@gmail.com> <CAKEwX=PMbbuMeo9Ppk=cW_hAthZ-cf0rMjALsETpDZzDj6oYJQ@mail.gmail.com>
+In-Reply-To: <CAKEwX=PMbbuMeo9Ppk=cW_hAthZ-cf0rMjALsETpDZzDj6oYJQ@mail.gmail.com>
+From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Date: Mon, 13 Apr 2026 10:37:10 -1000
+X-Gm-Features: AQROBzDz4taWpQoAeTGAg5PNNxwzGdOcRaQguloBFmBrSegVi7p8AwF4X2KkvxY
+Message-ID: <CACpmpoesdy3QyTD9rOPz9cucGuPzgSzhJwQnTF-3wpjQJUgg4w@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	herbert@gondor.apana.org.au, senozhatsky@chromium.org, 
+	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: B3FB11C0006
+X-Stat-Signature: rgh67t1wf4q7c9tj9pgynj4bpkkknn9c
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776112536-786691
-X-HE-Meta: U2FsdGVkX1/XMAX7WTgnfBtRLXjFdUjIXEdxTZzZ5KyXvgv9S/WuDjuFbr9kx/Xh0ji7RMwRvhWFKERI1TErKZDRW2m5bMMT5elDgHV4CyjX0KUSjrd7ldYZ4nmJJqYDFN8rjUNfTTPoSSg1IfNqCt0TS9kUmuuUP++D4YeQfD+OZkRXDhMuuuHf3fdNewLYtOHjf/R2hJ5e/PEsktj9Nvj9PGXswpXihOvNixV/o9ofbj757XNlyoz6dxpva9KNcNdkQKOw55OjzRIf/gfcIjk0Zn34jvbiQ+D2WeIDZ0pLAk5s7hrjc1wVldUMO81jRwE8HJiotfXkl63MH39W5kaoE3VHN/HELoxlgmamYuihMGaO+ZU/hq0OFz7tsg6R6VP/e5anpJIrmVS23y98yTUDLeqiBaSYJGNjtdpUry8dcEtig86EbqCgZw9fC5vfeA25IO8djITRwwkOa2/5W6aJT6Ft1BsNFwP8qJrVb7rqTn6Ve6HY0tDcQZwp/Wgn0kpK3DBsDbeepBV+Wv9DqEZMlYe+dKpGYbzcQvVp9GtEmRAA7yVrqevEUd+z+Rn7C1637ys757My7vYcoo6Qx9yAznfht58w0pAJcuxGkTUNb0dh79LgjQgWQC3n/eZii0WiexgE5TYre+JPqCnqXdxSVYHc9C4bdtp6d43QtUqEC0vzVhSxu9AF2DEuy8yW2ov4gdCyJz/VAxjHm5hLKbuls5y1VnGIH9bMeoa9DkfPlkdW+83bKAKtIMa3amYScrHT0llHxhPIapmlwJxwvSN9rv0yAAhSWKfUIqHWLmMmWMkk6kIpRjDUM0fIAGLC5S1Ibx8VgGGT/qYrbhHIMPJcwMUkQw5l8wmwbFrcIu/BIdI9kJvUzx9CxZNujhNjdFCiCc5mEG7G3IV1ztj9cwUsvJcOY0xZM722NOouLU13LG8WTAewmZcAj4S3gRclvVvUQq8M+ZeyCXLa9jP
- +17A4yDn
- fSzaIdkeQDD8xk+IDL6uSXsIRU/oz3Tuj9GEF1bVDXA9+rUuMpOBw1w7DDGBM9K+K3OvKojee9kNskbo+WiXM6yZTHycI8G2vKtln+H5cm0YlnqGceF0Q7Rh99upEtFcnQnM5k891K3VXCnAoBxwFCu7rEGveFwvc60Mv0KdbtcBMQUmZWkfiYNUnpxVbGayPShPDOEq4y+YbB27LYBstfg91xz3gw/Xn/uE15RZURR9omcHGMxkMFCe+cvwEabXOZekzTgBFtnG1wlaOsZBPIgIKp8FslxZRpmBBy5gYzTxIAXF1Yz+KWRznfhkYcG5Jaa8z0LoGgZcALZiaw/iRhqWmWQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776112643-79
+X-HE-Meta: U2FsdGVkX1+nsEeInXC40LP/dMjAI5wfLdofmRcR1ft0ODJ5xny5gRQSDAxqFafo8VIfPnz6D6F0lLgoaTrfGLwA8WhOMG6ZTqKvCPaA58bJDGY5qdahf4WHsXlwuWKL6iw6ur04INV8XuLiQ0XOdIbrHB+DtcNb9GmSAc41A/dkNi1c13NfCXIt/zrna2+sTzJjBM3Dsn0EvjufxvzKbH9Bb+SJLHJedHPQKQ/o+dT7m8xzkV6iGFoHunVZb6ruArVYUr0bsMtqnFOBwGYyFipo8yvuY9QGRW/T+JMa+ol0+nKTLyq9tTBJiHhV4gk/zTslOao0xpiLS7lsvmnjwJY5Rxhdcqy1nNwMp2TPk9xeg2Bfx4i7hcaOBB8DK0t7ySHPa51rKQZKduwrCxuvVxYwnAk5Qt/Ei174BsaJYPyTtD1NsokUM44ipSqKQDxTFT6zvGUXzRcNrgZu3v8KI9AeO+uC02M4qzlfWC14RZTm6y0NUTeJQebE0ObIWRgWWc+ZURekEYr55AoDNuu+jsOHVs4bcipEItn6VMojwGRwYh230EUpSHvgLA1guqQytQAVrq3JP1XqIIEnAdzaSfbtuUyaDkBHZREWwimBVlWsbBfOrJkMuQlw/UR/LItVSgi1oXgSW77MpYZ1kjY94Lg/jm6p/xzGyyyhLjD9wGtBLh34T86q4HjcR43OL6grVPfa68fnunXAE0qm0zVYr/rHgbYjaf8a2/9LdEwZ7jN/ltwz/oJiX6MdCzZb3WjsHhAohWzRVcMpUFHrLY59h7EeAGSXNFCUHbn3Os6he6i+cmOOdCCddx4cixdnQavSBaHFNgOZS2A5Yknar4jhsPLIMuxevqi8f7Z/OGIpN4zsVWCB5aIQQyUwqlhbgXJruUAmpvHGyC+vgw3uymLJJFckTmq80/batN/BXTw7qoZ83m8M+g46gKVuE3i2jMaZQjIWwZ6VsZTUBIvuRpI
+ f80IplLH
+ Y2AMQoZZu5M7OyzF1uEyrl9eCsyutIBBMzH4YaI2zuQR2PFuP7K9JyGYZadK13LGuL1iZH06cZlXGfCdPAlYBxPYUAuugBF1L8+Kt+x5eOeDbwrFOjuLcaqVDX5ZatNIpPzlnkyKRWkm/0BBGr+8wAfuunTtmFwBimeoIBBTWGvDb/ZSIdJ9oCdhoxwJn98owlA5KmaUtaycZxm5MF6RGXdKdSCvS+gsZ7iE2qyyl+FfpZFyfUO928aKHnY3QQ6XHn5BPzQ3DPljqH6GWZLKWq/Dsge6T0CWJjFcFuIDiF33YhtYJQt0Wn0m4MoPUXY05bQXTPsr7a+zWGjN29jf139/SwfwyqwybzsKOfYFvv5vmF81PhjpwaAiKdsZF36s29qbfRysq+7RPj/nxjZWtp+UKZtVYbEDjeLzggK4lnZC96PLrhUcr3hv/gtQGPrGskzAwyskvz/cjzlWNvHmcnEtfsxSCafYY9UnPvtOUyIkzOBCcHlEOYWJQ3fYkiS2it1rDFqljfTz7hJpQhopI9Vjtb42f3xlDtVyqQrGzudjZ/awxs3sQXpCnREOnFeCUd4TIZ63Vohx2HQ7nuQ5LmQMTLKBBNCH/cpyy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,35 +141,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 03:20:24PM -0400, Zi Yan wrote:
-> They are used by READ_ONLY_THP_FOR_FS to handle writes to FSes without
-> large folio support, so that read-only THPs created in these FSes are not
-> seen by the FSes when the underlying fd becomes writable. Now read-only PMD
-> THPs only appear in a FS with large folio support and the supported orders
-> include PMD_ORDRE.
-> 
-> READ_ONLY_THP_FOR_FS was using mapping->nr_thps, inode->i_writecount, and
-> smp_mb() to prevent writes to a read-only THP and collapsing writable
-> folios into a THP. In collapse_file(), mapping->nr_thps is increased, then
-> smp_mb(), and if inode->i_writecount > 0, collapse is stopped, while
-> do_dentry_open() first increases inode->i_writecount, then a full memory
-> fence, and if mapping->nr_thps > 0, all read-only THPs are truncated.
-> 
-> Now this mechanism can be removed along with READ_ONLY_THP_FOR_FS code,
-> since a dirty folio check has been added after try_to_unmap() and
-> try_to_unmap_flush() in collapse_file() to make sure no writable folio can
-> be collapsed.
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  fs/open.c               | 27 ---------------------------
->  include/linux/pagemap.h | 29 -----------------------------
->  mm/filemap.c            |  1 -
->  mm/huge_memory.c        |  1 -
->  mm/khugepaged.c         | 28 ----------------------------
->  5 files changed, 86 deletions(-)
+On Sun, Apr 12, 2026 at 2:42=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Tue, Mar 31, 2026 at 11:34=E2=80=AFAM Kanchana P. Sridhar
+> <kanchanapsridhar2026@gmail.com> wrote:
+> >
+> > Currently, per-CPU acomp_ctx are allocated on pool creation and/or CPU
+> > hotplug, and destroyed on pool destruction or CPU hotunplug. This
+> > complicates the lifetime management to save memory while a CPU is
+> > offlined, which is not very common.
+> >
+> > Simplify lifetime management by allocating per-CPU acomp_ctx once on
+> > pool creation (or CPU hotplug for CPUs onlined later), and keeping them
+> > allocated until the pool is destroyed.
+> >
+> > Refactor cleanup code from zswap_cpu_comp_dead() into
+> > acomp_ctx_free() to be used elsewhere.
+> >
+> > The main benefit of using the CPU hotplug multi state instance startup
+> > callback to allocate the acomp_ctx resources is that it prevents the
+> > cores from being offlined until the multi state instance addition call
+> > returns.
+> >
+> >   From Documentation/core-api/cpu_hotplug.rst:
+> >
+> >     "The node list add/remove operations and the callback invocations a=
+re
+> >      serialized against CPU hotplug operations."
+> >
+> > Furthermore, zswap_[de]compress() cannot contend with
+> > zswap_cpu_comp_prepare() because:
+> >
+> >   - During pool creation/deletion, the pool is not in the zswap_pools
+> >     list.
+> >
+> >   - During CPU hot[un]plug, the CPU is not yet online, as Yosry pointed
+> >     out. zswap_cpu_comp_prepare() will be run on a control CPU,
+> >     since CPUHP_MM_ZSWP_POOL_PREPARE is in the PREPARE section of "enum
+> >     cpuhp_state".
+> >
+> >   In both these cases, any recursions into zswap reclaim from
+> >   zswap_cpu_comp_prepare() will be handled by the old pool.
+> >
+> > The above two observations enable the following simplifications:
+> >
+> >  1) zswap_cpu_comp_prepare():
+> >
+> >     a) acomp_ctx mutex locking:
+> >
+> >        If the process gets migrated while zswap_cpu_comp_prepare() is
+> >        running, it will complete on the new CPU. In case of failures, w=
+e
+> >        pass the acomp_ctx pointer obtained at the start of
+> >        zswap_cpu_comp_prepare() to acomp_ctx_free(), which again, can
+> >        only undergo migration. There appear to be no contention
+> >        scenarios that might cause inconsistent values of acomp_ctx's
+> >        members. Hence, it seems there is no need for
+> >        mutex_lock(&acomp_ctx->mutex) in zswap_cpu_comp_prepare().
+> >
+> >     b) acomp_ctx mutex initialization:
+> >
+> >        Since the pool is not yet on zswap_pools list, we don't need to
+> >        initialize the per-CPU acomp_ctx mutex in
+> >        zswap_pool_create(). This has been restored to occur in
+> >        zswap_cpu_comp_prepare().
+> >
+> >     c) Subsequent CPU offline-online transitions:
+> >
+> >        zswap_cpu_comp_prepare() checks upfront if acomp_ctx->acomp is
+> >        valid. If so, it returns success. This should handle any CPU
+> >        hotplug online-offline transitions after pool creation is done.
+> >
+> >  2) CPU offline vis-a-vis zswap ops:
+> >
+> >     Let's suppose the process is migrated to another CPU before the
+> >     current CPU is dysfunctional. If zswap_[de]compress() holds the
+> >     acomp_ctx->mutex lock of the offlined CPU, that mutex will be
+> >     released once it completes on the new CPU. Since there is no
+> >     teardown callback, there is no possibility of UAF.
+> >
+> >  3) Pool creation/deletion and process migration to another CPU:
+> >
+> >     During pool creation/deletion, the pool is not in the zswap_pools
+> >     list. Hence it cannot contend with zswap ops on that CPU. However,
+> >     the process can get migrated.
+> >
+> >     a) Pool creation --> zswap_cpu_comp_prepare()
+> >                                 --> process migrated:
+> >                                     * Old CPU offline: no-op.
+> >                                     * zswap_cpu_comp_prepare() continue=
+s
+> >                                       to run on the new CPU to finish
+> >                                       allocating acomp_ctx resources fo=
+r
+> >                                       the offlined CPU.
+> >
+> >     b) Pool deletion --> acomp_ctx_free()
+> >                                 --> process migrated:
+> >                                     * Old CPU offline: no-op.
+> >                                     * acomp_ctx_free() continues
+> >                                       to run on the new CPU to finish
+> >                                       de-allocating acomp_ctx resources
+> >                                       for the offlined CPU.
+> >
+> >  4) Pool deletion vis-a-vis CPU onlining:
+> >
+> >     The call to cpuhp_state_remove_instance() cannot race with
+> >     zswap_cpu_comp_prepare() because of hotplug synchronization.
+> >
+> > The current acomp_ctx_get_cpu_lock()/acomp_ctx_put_unlock() are
+> > deleted. Instead, zswap_[de]compress() directly call
+> > mutex_[un]lock(&acomp_ctx->mutex).
+> >
+> > The per-CPU memory cost of not deleting the acomp_ctx resources upon CP=
+U
+> > offlining, and only deleting them when the pool is destroyed, is 8.28 K=
+B
+> > on x86_64. This cost is only paid when a CPU is offlined, until it is
+> > onlined again.
+> >
+> > Co-developed-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+> > Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
+> > Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+>
+> Lol.
+>
+> > Acked-by: Yosry Ahmed <yosry@kernel.org>
+>
+> Thanks for simplifying this :) My brain always hurts when I have to
+> handle CPU offlining for per-cpu structures. I had to deal with this
+> because I added per-CPU caching for a structure (with reference
+> counting) in another patch series of mine :)
+>
+> Acked-by: Nhat Pham <nphamcs@gmail.com>
 
-This is great.
+Good to know, Nhat! And thanks for the Acked-by :)
 
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Best regards,
+Kanchana
 
