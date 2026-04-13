@@ -4,129 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C94ABF34C5E
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4C36F34C5E
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:28:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F29306B0093; Mon, 13 Apr 2026 11:24:39 -0400 (EDT)
+	id 524316B0088; Mon, 13 Apr 2026 11:28:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDA1C6B0095; Mon, 13 Apr 2026 11:24:39 -0400 (EDT)
+	id 4BEA16B0095; Mon, 13 Apr 2026 11:28:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E17DC6B0096; Mon, 13 Apr 2026 11:24:39 -0400 (EDT)
+	id 348816B0092; Mon, 13 Apr 2026 11:28:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D71096B0093
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:24:39 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A0977E2737
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:24:39 +0000 (UTC)
-X-FDA: 84653904678.29.34EF8CC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E2CFEC0008
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:24:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qp2a+nMu;
-	spf=pass (imf28.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 24E6D6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:28:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0A321B70E1
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:28:40 +0000 (UTC)
+X-FDA: 84653914800.13.99DDBA4
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B7BF8C000E
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:28:38 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=OWvjARud;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776093877;
+	s=arc-20220608; t=1776094119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cVHJe17/u6liWxMgvXz72tZZejZFlOq9P/lSV2E+0Uw=;
-	b=DHhm8USV1y7av4NXaWLBSTYPa1gwxjRh2nk8Qs7UeiYA8hgE/U8wEgu2YDbmiKP7IX651i
-	RCxFoTaRRjQrf9aFIqwWe/yx2UH6bJEQjdsc3xv0BZFuum7zIh8KYM4Tu3Doqtbctgr9Aw
-	2t32ap7ZVdt45e+ZJyQY3YrJcFNmS94=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Qp2a+nMu;
-	spf=pass (imf28.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776093877; a=rsa-sha256;
+	bh=wet7hLRLN2GT7pig65ujdZ2ffuA5bew4whWaQBopYTA=;
+	b=a1vE8yqI77Vzngzxhsm+AHhYzkMzhQwlmATFYoJdsHr6QfCgrpWMe1/65Lfo3cvdy0MRDm
+	rw9R7scX2FS0ryO43zF72C0gDjvSZK9Rmt1QBYNT3EcBwmLMVu4jTls2Elwp0hsQQlk4wC
+	BvtSLNSK9Q+//T0+hdc5+dHfxD+ZHQU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776094119; a=rsa-sha256;
 	cv=none;
-	b=XiA5pCniVpQIF/M0Pt0KR84FgzsmSlZO68Ip3DMgqD6yMExUqhIfJXvzz9kmb8783MEvTK
-	SXbsPFZxDvAacrybYRG0V7lDSOhcOfLKBqp6kRNJ5gc+OdHecp4BPeEFjxqcxSX9n1Kvib
-	UROJ1QcTyN51qGm8fr4wsZZukbcFpCA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776093876;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cVHJe17/u6liWxMgvXz72tZZejZFlOq9P/lSV2E+0Uw=;
-	b=Qp2a+nMuLgGIPc0wsmkHNNaXiNLRnMYDXSBqO9Fym7Seko/Jrfd2FYDBSdQCUJaWzvQX0g
-	peuN3X60xVYJR9Dt2svFlQXUma+2y0qnhMw+jaiCUM7OkmzcGZEoK80VEljx8RU2hlU/MZ
-	lAGoIkLz003pR/Fpe1c3VcKQNR4CoDo=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-251-dBVBRduGMEGW594GviBorA-1; Mon, 13 Apr 2026 11:24:34 -0400
-X-MC-Unique: dBVBRduGMEGW594GviBorA-1
-X-Mimecast-MFC-AGG-ID: dBVBRduGMEGW594GviBorA_1776093874
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-50d84b5f73bso56507051cf.0
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:24:34 -0700 (PDT)
+	b=6nUYGPPlkLLN381pK7vSNFhJPG4HKf1hq8HZ5q0P0131q+2ARWtqhDxVxOUAM8LVb0GdIV
+	NgWp1R6R/S4vd/9ExCa/1o/WH6Sv3fxqqC0S6E13PfD9IyuKLJzfa2/aoty/2SCQG0UOlh
+	DXlkyvMI6uyzDN4/1KrUg3wY6sqE69E=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=OWvjARud;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488b8efed61so43857825e9.1
+        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:28:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1776094117; x=1776698917; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wet7hLRLN2GT7pig65ujdZ2ffuA5bew4whWaQBopYTA=;
+        b=OWvjARud+D8QaZMuJ93APMlYh8DFOL84V2aGcg1wxRcSx0XxfAuVjTpYEGpdsZ0u5i
+         4yy/OQb/X27bLvkL/7fq3yWFcnIDu+3dtSAadpmQThNfP7Tl7LmIz5kbw0BkkJZTr7YG
+         fKhJLxmJ51PsJvDPiWu6KyX3jjQbYs3At9sHlvJ+OQanpV28PF4Z48Zrvu+KkHVZlY/R
+         0Jb0kqm3FkapvyFbYV3AYHFMpoT03J917tRz51TiosKLGMUjVTEqJRrQLoGw5gHYlo0G
+         v7poh3oKlczAILBdpiAkFbz5Ykf8kbh1I+/GGFTAIMhiTiE2h4AV8tIabCBkzC4OuG0l
+         2Hsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776093874; x=1776698674;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cVHJe17/u6liWxMgvXz72tZZejZFlOq9P/lSV2E+0Uw=;
-        b=d/n4RLNqsCV3gONtv+tkal4GyRS99d7r6z6jpXrVtBiNL985EecGYJTkTDaB/wa8YJ
-         OEFwMqEwKjJULmgVknFAokXg2Su3LnWjDWBNmTQwEvxE0LnJ3gys7VbUAUEDWULa3B7D
-         87OPqwBjF6OiZIXUxv028qQ46RsCFHT6KGnELq43u19lRfhAv/kTWDp17cQy+bx9KXXw
-         FVWp1euH0iLKzW+z6MBcLqp1PZr0glmzCgiVJnMKDsikuOP7KeM6PV7BhiuDsIKybTmS
-         yu+aUfNoKgTbKKyjs2F4dbOt7hpKJYJAcIrS313eLAWuCkb19npd5TeZqbdvt43t3aQY
-         IX4g==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ac8dfOJcWKi2Z7cwrao2eZPjfTIUEgFmkGXd1ksxUQ3uz8OuAW2YKNRpF8Rp9IPZp8293rCIe7Q==@kvack.org
-X-Gm-Message-State: AOJu0YxmHK2WBkey4/bWmZQcZromlBuELEDV5tN728nX2BOpUzcR44UE
-	wNL70/+crZQlIpUQDp9I4HGBXGXGtHqulTdNpuJXvZVDLsNwZWAHogsva6CN6szqCTevLDbbi32
-	ghlj8dJix79K5MLzEUUT9E7E0X9lR7iBaOmaUtUvfIx83pgFJVsTmCNdBqZF8
-X-Gm-Gg: AeBDieuB5DlFrNyCcOjlMZXBOiIVuFvDUYjo4dYazurqnzfMkylFtcWOwN7nd3jUTrv
-	Z38xN1mkQbDRWrzno+3xZXxPT485R3g97U4e9v5EtIrjrNRlidSloEBXFFQ3rF8XcwKj4gW0zEE
-	Evr1VyBffy0f8gfYDCSwDHKPKVbHIYaFdbPu8U9Sa/xnpYS/pTUjolXmfU19frr53c9oei//Pjo
-	vXpgvgrZKUbrQg0/K4noudlO7+T8bNy5M0TEOfJ7a/LOa1ZxMOrlr8QqfajwbsXleQclJhzrFqi
-	9Y+zv+q2h0LsMHW7729whZiM5r0QxF0nce+jT4IBlST2jCJJ71P+8igs+KHZKrDNP2jxADTJmDG
-	goy4luN4/dplr4zpopiSyIsNIrw==
-X-Received: by 2002:a05:620a:4041:b0:8cd:bfd9:e2a2 with SMTP id af79cd13be357-8ddcfbad95amr1957599585a.43.1776093873955;
-        Mon, 13 Apr 2026 08:24:33 -0700 (PDT)
-X-Received: by 2002:a05:620a:4041:b0:8cd:bfd9:e2a2 with SMTP id af79cd13be357-8ddcfbad95amr1957593785a.43.1776093873451;
-        Mon, 13 Apr 2026 08:24:33 -0700 (PDT)
-Received: from [192.168.2.110] ([69.159.169.238])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb9351afasm864689985a.36.2026.04.13.08.24.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Apr 2026 08:24:33 -0700 (PDT)
-Message-ID: <119dfe3d-4cfd-46e3-a539-8ac9af90f940@redhat.com>
-Date: Mon, 13 Apr 2026 11:24:22 -0400
+        d=1e100.net; s=20251104; t=1776094117; x=1776698917;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wet7hLRLN2GT7pig65ujdZ2ffuA5bew4whWaQBopYTA=;
+        b=PzWsoZ2JpFqPHwv8NG5J9ADqAe3xxWDyyfzfmDA9x9pURbIffqR/P19QF8nK7G7a5M
+         Jhat66i4kBNNqhcslyVUYBDyRIFlx2ba2VxoxtC85i0nQXOlhk8nKOtU9vIFghVqwro8
+         0ZGG7qR51zNMFP+TU0+2wlkA1IF+jGMCcVL+FnQ0G5o3BGJhyBhe1/IcksFuDp0Zti/s
+         PCSWJMM1+9j2xh0geh8uzLVxkYAywsrxwhnJzoy3guKyTL+ZeXd70NbFY2KJN04OuTaC
+         GBy/MRQ1+zHKa0nvaghSpRWwrFEBfHDR/PyNy3UdNXGH60a54wHWnOxK3Mbl8r9F3rPb
+         iKiA==
+X-Forwarded-Encrypted: i=1; AFNElJ9GMYxnmLONZFv4TyHfdDcgMTJkVha0oIr14Nq55xAXY+AuhCgpG7QnwqXLM2L/B2/cCylM4vFgCQ==@kvack.org
+X-Gm-Message-State: AOJu0YxFdk08kj91dEDPfBVboTvtZFU3DIVEnRRo9CfnUuERJXxfVPDI
+	3bli1hsoufT0lvK00H4M+d+0wSKtGQ7Fo42LSTUO8RvxnkfKs/nPTKelypul0V9EyKM=
+X-Gm-Gg: AeBDiesVr9Ub0akqQgEXInGCukRAYb4LPQS1WjkFNG8rYzDVpHDuSicZaL5BTzjhU8Z
+	6Y2VSSQpdEp6txm+8wHKsPQSHSnBRiR6ClQMid6mQrhllF32nCNJdjg65dgD6z/WNG/hpWpswv1
+	9tg/W1ostPBRp1SvsmWQTTl1ObIIhe6WgEsYf1V+Yna+TsaE3gwf6uGQw7y8fnBC2IBzU83766S
+	AsFqZTulGkdHMcQ5Vj5liZtAtoQoVlEMv45A3NcR5DpYcCWXVQlkJuiToWRrJk2NHpaaFKBVr9t
+	BczhLrzTkJWM1NG2AWbAuZ3z7Ld22PxOboxvxEDsSNNHA0nHcXk4KVVyjAmQtRGa16hTx78Uaiv
+	lZdDv5ZaaGX075qgYxuPrlqKjhS1dW6284eChE4kbAkpIUEPkTjuLYGw2VTtmdeUxu1oPz2VHZ/
+	fqo7hMRXUO7hvcZj6kEzxWRZj34HXmWa/b0dIUBUKMtYLK
+X-Received: by 2002:a05:600c:154d:b0:485:3989:b3e4 with SMTP id 5b1f17b1804b1-488d685b6ddmr183708165e9.6.1776094116989;
+        Mon, 13 Apr 2026 08:28:36 -0700 (PDT)
+Received: from localhost (109-81-29-22.rct.o2.cz. [109.81.29.22])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67b4903sm128558245e9.5.2026.04.13.08.28.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 08:28:36 -0700 (PDT)
+Date: Mon, 13 Apr 2026 17:28:35 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 0/8 RFC] mm/memcontrol, page_counter: move stock from
+ mem_cgroup to page_counter
+Message-ID: <ad0LoxXjP49PZBwR@tiehlicka>
+References: <adyZ-t4fiKFv_X5p@tiehlicka>
+ <20260413142958.2037913-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/10] mm: introduce pgtable_has_pmd_leaves()
-To: Lance Yang <lance.yang@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
- akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
- Liam.Howlett@oracle.com, npache@redhat.com, dev.jain@arm.com,
- baohua@kernel.org
-References: <b65d560458b2488f715b5afc1603d786e786ccf7.1775679721.git.luizcap@redhat.com>
- <20260410081938.51302-1-lance.yang@linux.dev>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260410081938.51302-1-lance.yang@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KoFwVVwa0a74GfVThvTySUtLnnQgjQwPnPYsxOgooK4_1776093874
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E2CFEC0008
-X-Stat-Signature: ix5oigd7c17i9n4rd6uqx833swgpip9u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413142958.2037913-1-joshua.hahnjy@gmail.com>
+X-Rspamd-Queue-Id: B7BF8C000E
+X-Stat-Signature: jwijfnq1xhwf37ysiusg717zgx1dhrgj
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776093876-345668
-X-HE-Meta: U2FsdGVkX18i+1zTgWUBG3XyMWVFrTUSkAqPyXEWRuunjpHehCzaeVUkVVptF58sKyduI2puban4JR9CARvvDdqgbEJ3X0TdlrqDZIbqNvAJHumhgdwDMbAiFPQiKQJAAMf/zWhwfXUA+5eoE3ptBnVktbHAZeXHu7BgVJkSjaaxhoTm9g63sohRL7GuZBY/PgJt5JSf3tHLgrfMY5QBn2bpeEyBXZYguIxR6Vaf6DK8nQSFxO1D/Mi13eHTp4guVx3hjGFCINhLFH02lkwjWVpIf7snJLbcIvIeWOeuXs9oDWAY7vf8W+/HI7a+uEooMxZIo+5RSSBgUzWjW9FeNmAaAuQXoFSl/lCjTdt718SxnBbR0vO0YrQgw4mZpdRHgPzRV61MNtwzUWtXPTtvReMuonEYZI2OUWCyqgz9ksZquRI5aMKoWqRQpN74WN3OhTIwv++vEBwilQoS6y7GwxRaSVkPqBV7/HT7XUUFGyB37yUvHUNT7YBCE1oawAnUUxCR3Xu3LUCCFXo9sMtuoKxQ+9TVGuJSlugJYKVUWaDMjs8PYMqIm5OE6aB2NaNM2MhssfFgmCPRZFRVFIZ2j8A8pwE1Pw0uOJ8+uStAPEEiUJFc+A1s5vJMBb5KMHPeFOgHT60CRAqy3SBSuNAchgTyqXNhgl6zIY/OxvHtPzyVNP651i9+3DcxasD8Y706DE4iBQY4SyJRoP6PTP6dKxBjcAUUTrmlgwknyrs9WtjWHQ/9YUFrqCjH7IwRHtq/v4si2/Fa8Rim6zADUz/I0AOPby7NLQPmMz0lBKdqx6c0rsZI0qXP09yoqlYiaDKRDKTlMbyrLVdFL8CjmPpVPq9MbpYsyIR52OPaUXbZGjufYoVjyE9TAivwZQ7E2wLIKV/SIPaYHAMo/xfgtgRGWqtJtHJcMHTxSUNy3AzLmRzabxPfbiUbr5IgFqbZ6HeGcXKDyx1Xf42zxWY+zvV
- 3rJGtb79
- 156+VAp+MWix7gtroyJtEAsY+71D9SDYpdW2wV/aYX4EkKLDSeLqGpE3f/z7RI8Mv9rUKcoaJkYsZIOenUf9b9DZDqhJlRthJqzxFmCoGIEBXRNnJP2QipXR3I2/9SPTjed/v1rFE5LmBSUXSWJmpOFft/F64H7Amshck5IytcvQAz41SSi0GCcm42M0F0PoHve9TzZ+qRO0tRLxcNK4STljcLioDlJi3gghqeNScZCDsC3W3cXfMnLd+LKH8PEcA1UHlGpTxbGhB2XBM2L6f24JdxcjYWIP6rLl+XqN+w2+dKSpdEkp9OcsexLKl8fzODhg0udTaCTIj6G01oLS4Or0tR7DmQuj1TxbS8FwVAuVNU/x8ihRJ5EJMoCsl3iPt0d4KqKTXVDvYO2XsycZKgLKaM5+8xYErFQ6cKk5inhQxWTzDFaVx/uMi+wAv8CRosuK8I1X3L1kFvaBYkjc7uHTdPg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1776094118-882807
+X-HE-Meta: U2FsdGVkX18U5DpWTDa4FaITA+45prJ3cIiZT6cvgIVsAc4cD8pixnBAfRaK6R5CDvm4fkWWomGbs+kcHsbGMGk91ZQhOG+QFnwJevK93y5NFYgXyKM86nHVm5ovFJFYtGj6EzatA4JRbuLCB+sybFyCA7vFRoacW4VMyUmfLtLN5J6D/1wtMAaaCf5LuhHw2AZsO38s5LDZ1c3Ryty6RpAKqBSUWdUjFS8ZNjCXEK/VQHpVUa41XAczY5n6Or1qTt6SzFQkM62Cv+EoifJ+IMuxw7QtBn8NxOMNIY15MWVwVFI2q6XE52QIRNDo4yh2ydOVJlqdn04BF3foMqc59OdHnv01nZsMyHPNJItL0bkIZcJvMLe+FzknfR/VEYWyxChHYJR+bPwAs5wQRhXk/CFM8PVa/6vS8WzQM3E7XwbLD38kmqasCvnP/jRU4p1cz3jLjHsF2TYacXGunWBgnvNJlC2uisI36pHbzz4RPMbcSbgyRoskxajrpS9sEBtzC/thMHkrEWxQ0hTjK4HU6bOl0LEWpJdSvBYNJd1W8AgbFd191PusLIfhi91YDnFaiptCPFFMcgPOUXiHMLvxK114KszqzBO8jrFLO7HiV1dVBur4x77YnU5E9X0uCmeDCgLEU/CbhRQnc1cW8ht51GJTKySjfjS0jIc5ZmNsGtiMmAdgKB+JZu2E0EB5WqwsRIo5doAZ9cDcP6MOofGwJ8OoHyIcghchkMVCFSoA2RIs3wvZa4pZMEDpO6iWpFY8+VPvzuqls0Xukqh884XIRdq70VrU7kV2Rw9Ki/v3yWbUywIvKinan2zNgxNLCsiZOxp446uqGFqVJUPQRrMoQtDhegTPM8R4iDj9brtKWOvW86lBknZRmbxh+SclusCQWWNLguIi223vj5PJfYzqT4MemgGtckgLC412KDFVmmlWPqdJeNu7/UkdrMZVaCMkgtBxQLUMDKGK4U0Wf+X
+ XcW5e8/j
+ 26qwrK/s4WiPnoWQ/B3cLaPVZW23xecL4b7CR1Osk+oXV9LrbqXX5onHXXgHjd84FApuGgoMGBgG7PRED0e/A3k8w/J1kM+N/F5LC/BZ0O0CgfcRIQL8fsRbK6tGXJg6/k8gtNyEZRlvty+J2xBTQ0nXNMgTfzhx8ZY1gQrZdynRfFSJaQ9PTupzTdlFHsUsG0Zjs5UtTvNJI9YPOJfzjRkNFZFVMWhH2PWSvpnWiMtdopnjXj2F6w9ZjiH9JhuRXLTWRPcQV5/K/il2KvH4QoKcimDjhHhYKktfD9QfJelv5OeVaQv/Mtign4FnrRr5Nmf+Y99aRZpWjZUtONwGrvqc7Y6UxAkRIgh2TiL+8qHxw2nxnZQBZPxRT3O60f1XIClHp4PDqxZVA8skFuZnQYtfewNGWI5zcJ6synMLIPtucg6F06YDKnMUibfRLdDUG8CPEYDAxRSQuuC4cgQKaCt6dDwtkrQ+wVaHnOD6FNk+MXUHqWy7aLadfDSJpjsEomKPSkGBPnrZcqX/1w/5XJCXYTwjVid8qU1FElMM+Dua8J0bWxZvv2GAigN13QRSuE9rEvSzX8Ua/5KRp0oUNylhBfZKnke64j+hQqz9VAUOBEmP8UQAdVaqHDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,134 +129,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-10 04:19, Lance Yang wrote:
+On Mon 13-04-26 07:29:58, Joshua Hahn wrote:
+> On Mon, 13 Apr 2026 09:23:38 +0200 Michal Hocko <mhocko@suse.com> wrote:
 > 
-> On Wed, Apr 08, 2026 at 04:22:57PM -0400, Luiz Capitulino wrote:
->> Currently, we have two helpers that check for PMD-sized pages but have
->> different names and slightly different semantics:
->>
->> - has_transparent_hugepage(): the name suggests it checks if THP is
->>   enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
->>   implements this helper, it actually checks if the CPU supports
->>   PMD-sized pages
->>
->> - thp_disabled_by_hw(): the name suggests it checks if THP is disabled
->>   by the hardware, but it just returns a cached value acquired with
->>   has_transparent_hugepage(). This helper is used in fast paths
->>
->> This commit introduces a new helper called pgtable_has_pmd_leaves()
->> which is intended to replace both has_transparent_hugepage() and
->> thp_disabled_by_hw(). pgtable_has_pmd_leaves() has very clear semantics:
->> it returns true if the CPU supports PMD-sized pages and false otherwise.
->> It always returns a cached value, so it can be used in fast paths.
->>
->> The new helper requires an initialization step which is performed by
->> init_arch_has_pmd_leaves(). We call init_arch_has_pmd_leaves() early
->> during boot in start_kernel() right after parse_early_param() but before
->> parse_args(). This allows early_param() handlers to change CPU flags if
->> needed (eg. parse_memopt() in x86-32) while also allowing users to use
->> the API from __setup() handlers.
->>
->> The next commits will convert users of both has_transparent_hugepage()
->> and thp_disabled_by_hw() to pgtable_has_pmd_leaves().
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->> include/linux/pgtable.h | 15 +++++++++++++++
->> init/main.c             |  1 +
->> mm/memory.c             |  8 ++++++++
->> 3 files changed, 24 insertions(+)
->>
->> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index a50df42a893f..c4c5282f795c 100644
->> --- a/include/linux/pgtable.h
->> +++ b/include/linux/pgtable.h
->> @@ -2192,6 +2192,21 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
->> 	}
->> }
->>
->> +#ifdef CONFIG_MMU
->> +extern bool __arch_has_pmd_leaves;
->> +static inline bool pgtable_has_pmd_leaves(void)
->> +{
->> +	return __arch_has_pmd_leaves;
->> +}
->> +void __init init_arch_has_pmd_leaves(void);
->> +#else
->> +static inline bool pgtable_has_pmd_leaves(void)
->> +{
->> +	return false;
->> +}
->> +static inline void __init init_arch_has_pmd_leaves(void) { }
->> +#endif
->> +
->> #endif /* !__ASSEMBLY__ */
->>
->> #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
->> diff --git a/init/main.c b/init/main.c
->> index 1cb395dd94e4..07f2ddbf9677 100644
->> --- a/init/main.c
->> +++ b/init/main.c
->> @@ -1044,6 +1044,7 @@ void start_kernel(void)
->> 	print_kernel_cmdline(saved_command_line);
->> 	/* parameters may set static keys */
->> 	parse_early_param();
->> +	init_arch_has_pmd_leaves();
+> Hello Michal,
 > 
-> One more thought here: I don't see why we need boot-time caching.
+> Thank you for your review as always!
 > 
-> has_transparent_hugepage() does *not* look expensive on the common
-> archs. On x86, it is just a CPU feature check. MIPS is different, yes,
-> only the first call there is more involved ...
+> > On Fri 10-04-26 14:06:54, Joshua Hahn wrote:
+> > > Memcg currently keeps a "stock" of 64 pages per-cpu to cache pre-charged
+> > > allocations, allowing small allocations and frees to avoid walking the
+> > > expensive mem_cgroup hierarchy traversal on each charge. This design
+> > > introduces a fastpath to charge/uncharge, but has several limitations:
+> > > 
+> > > 1. Each CPU can track up to 7 (NR_MEMCG_STOCK) mem_cgroups. When more
+> > >    than 7 mem_cgroups are actively charging on a single CPU, a random
+> > >    victim is evicted, and its associated stock is drained, which
+> > >    triggers unnecessary hierarchy walks.
+> > > 
+> > >    Note that previously there used to be a 1-1 mapping between CPU and
+> > >    memcg stock; it was bumped up to 7 in f735eebe55f8f ("multi-memcg
+> > >    percpu charge cache") because it was observed that stock would
+> > >    frequently get flushed and refilled.
+> > 
+> > All true but it is quite important to note that this all is bounded to
+> > nr_online_cpus*NR_MEMCG_STOCK*MEMCG_CHARGE_BATCH. You are proposing to
+> > increase this to s@NR_MEMCG_STOCK@nr_leaf_cgroups@. In invornments with
+> > many cpus and and directly charged cgroups this can be considerable
+> > hidden overcharge. Have you considered that and evaluated potential
+> > impact?
+> 
+> This is a great point. I would like to note though, that for systems running
+> less than 7 leaf cgroups (I'm not sure what systems typically look like outside
+> of Meta, so I cannot say whether this is likely or not!) this change would
+> be an optimization since we allocate only for the leaf cgroups we need ; -)
+> 
+> But let's do the math for the worst-case scenario:
+> Because we initialize the stock to be 0 and only refill on a charge / 
+> uncharge, the worst-case scenario involves a workload that charges
+> to all CPUs just once, so that it is not enough to benefit from the
+> cacheing. On a very large system, say 300 CPUs, with 4k pages, that's
+> 300 * 64 * 4kb = 75 mb of overcharging per leaf-cgroup.
+>
+> This is definitely a serious amount of overcharging. With that said, I
+> would like to note that this seems like quite a rare scenario; what
+> would cause a workload to jump across 300 CPUs? 
 
-The caching is not being introduced by this series. thp_disabled_by_hw()
-(which is used in hot paths) is checking a cached value too and this
-cached value is also set at boot-time by hugepage_init(). So, we keep
-the same behavior while extending the use of the cached value in the API
-(which makes sense for consistency).
+A typical situation I would expect this to be more visible is a large
+machine hosting a lot of smaller containers. Not an untypical situation.
 
-> But if we *really* want caching, couldn't we just do it lazily instead
-> of adding another early boot init step?
+Without an external pressure those caches could accumulate a lot. On the
+other hand a large machine the overall overcharging shouldn't cause the
+memory depletion even if we are talking about 1000s of memcgs. The
+behavior will change though and this is something you should explain
+in your changelog. There will certainly be cons that we need to weigh
+against pros. There are many good points below that you can use.
+[...]
+
+> > > 2. Stock management is tightly coupled to struct mem_cgroup, which
+> > >    makes it difficult to add a new page_counter to struct mem_cgroup
+> > >    and do its own stock management, since each operation has to be
+> > >    duplicated.
+> > 
+> > Could you expand why this is a problem we need to address?
 > 
-> Something like:
+> Yes of course. So to give some context, I realized that stock was a bit
+> uncomfortable to work with at a memcg granularity when I tried to introduce
+> a new page counter for toptier memory tracking (in order to enforce strict
+> limits. I didn't explicitly note this in the cover letter because I thought
+> that there was a lot of good motivation aside from the specific use case
+> I was thinking of, so decided to leave it out. What do you think? : -)
+
+Yes, if there are future plans that might benefit from this then this is
+worth mentioning. Because just based on 1 I cannot really tell whether
+going this way is better then tune NR_MEMCG_STOCK. As I've said I like
+the resulting code better but there are some practical cons as well.
+
+> I'm not a memcgv1 user so I cannot tell from experience whether this is a
+> pain point or not, but I also did find it awkward that one stock gated the
+> charges for two page_counters memsw and memory, which made the slowpath
+> incur double the hierarchy walks on a single stock failing, instead of keeping
+> them separate so that it is less likely for both the page hierarchy walks
+> to happen on a single charge attempt.
+
+v1 is legacy and we have decided to not invest into new
+optimizations/feature long ago.
+
 > 
-> bool pgtable_has_pmd_leaves(void)
-> {
-> 	static int __arch_has_pmd_leaves = -1;
+> > > 3. Each stock slot requires a css reference, as well as a traversal
+> > >    overhead on every stock operation to check which cpu-memcg we are
+> > >    trying to consume stock for.
+> > 
+> > Why is this a problem?
 > 
-> 	if (READ_ONCE(__arch_has_pmd_leaves) < 0)
-> 		WRITE_ONCE(__arch_has_pmd_leaves, has_transparent_hugepage());
+> I don't think this is really that big of a problem, but just something that
+> I wanted to note as a benefit of these changes. I remember being a bit
+> confused by the memcg slot scanning & traversal when reading the stock
+> code, personally I think being able to directly be able to attribute stock
+> to the page_cache it comes from, as well as not randomly evicting stock
+> could be helpful.
+
+OK so this boils down to code clarity.
+
+> > Please also be more explicit what kind of workloads are going to benefit
+> > from this change. The existing caching scheme is simple and ineffective
+> > but is it worth improving (likely your points 2 and 3 could clarify that)?
 > 
-> 	return READ_ONCE(__arch_has_pmd_leaves);
-> }
+> I think that the biggest strength for this series is actually not with
+> performance gains but rather with more interpretable semantics for stock
+> management and transparent charging in try_charge_memcg.
 > 
-> That would avoid depending on parse_early_param() / parse_args()
-> ordering, and it seems much simpler too :)
+> But to break it down, any systems using less than 7 cgroups will get
+> reduced memory overhead (from the percpu structs) and comparable performance.
+> Any systems using more than 7 leaf cgroups will benefit because stock is
+> no longer randomly evicted and needed to refill.
 > 
-> The boot-time init step looks a bit shaky to me ...
+> >From my limited benchmark tests, these didn't seem too visible from a
+> wall time perspective. But I can trace for how often we refill the stock
+> in the next version, and I hope that it can show more tangible results.
 
-I understand that caching on first access as you suggest above is an
-alternative way of doing this, but having to properly order
-initialization is very common in start_kernel(). So, unless we identify
-a case where the ordering is tricky or undoable, I don't see an issue
-with it. Also, note that this ordering exists today but it's implicity:
-thp_disabled_by_hw() can only be called after hugepage_init() runs.
-
-In terms of simplicity, look at how the resulting code (using an
-untested version of your static key suggestion) looks in comparison to
-caching at first use:
-
-DEFINE_STATIC_KEY_TRUE(__arch_has_pmd_leaves_key);
-
-static inline bool pgtable_has_pmd_leaves(void)
-{
-	return static_branch_likely(&__arch_has_pmd_leaves_key);
-}
-
-void __init init_arch_has_pmd_leaves(void)
-{
-	if (!arch_has_pmd_leaves())
-		static_branch_disable(&__arch_has_pmd_leaves_key);
-}
-
+Another points for the changelog.
+-- 
+Michal Hocko
+SUSE Labs
 
