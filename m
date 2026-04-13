@@ -4,86 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55ECEF531C3
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:54:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0FFBF531C7
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:02:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1F36B008A; Mon, 13 Apr 2026 14:54:35 -0400 (EDT)
+	id 3F1C86B00B4; Mon, 13 Apr 2026 15:02:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9897D6B009B; Mon, 13 Apr 2026 14:54:35 -0400 (EDT)
+	id 3A2826B00B5; Mon, 13 Apr 2026 15:02:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89F686B00A7; Mon, 13 Apr 2026 14:54:35 -0400 (EDT)
+	id 291466B00B6; Mon, 13 Apr 2026 15:02:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B61C6B008A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:54:35 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2FA8EE28FF
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:54:35 +0000 (UTC)
-X-FDA: 84654433710.05.490E02F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 17BC66B00B4
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:02:54 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB313C117C
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:02:53 +0000 (UTC)
+X-FDA: 84654454626.03.8526481
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 64811C0013
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:54:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bkvzGnUP;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id C4F592000D
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:02:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q0Uy+TE1;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776106473;
+	s=arc-20220608; t=1776106971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AVk5ADEd74aPQL4pfRXJB+KLfJewXL4p7iOkcl9BAII=;
-	b=gxgm02EIHYed1DRLTUnIpoNDb6fw9xMqmYOi5RO0lajtGoI5z/KwvvFnLp7aDG+6uJdnNB
-	px/KUxWGTKkjN6Prw4mgE6MPPJiKTm7csqrG+LkJlKzLSzDQVsl5PPYgCw6Q9MXnyxxmrs
-	4W3cd5z9y7bA6mWJNob3SDSRwg1GmhI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bkvzGnUP;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776106473; a=rsa-sha256;
+	bh=oEBfum0bKXiznTAk0g8P42qHrlYKgCqdBexTHt4VLZI=;
+	b=5isdPDIKc3Z18p3vZZLqsoHi9VX6wNKW91PvyyjJEZpXmGcl1pAqfly9xF1gSqcZZNwRAy
+	ln1tmydkqkl++DKo7sUZ8s98rlSWuJRvd/ldqXFaTYofCpeMKoskEA9OpAWse1GqAaQuoG
+	uHKncVYJJfwTj08E/bwSSrO8lRyCV6A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776106971; a=rsa-sha256;
 	cv=none;
-	b=YwMZeb9GMynfv+9zQf6ecJ7k0CQsfEDt4DH7QZ9GWMrPe4Ficw1UGm1dZuMQ2BNINAa1xn
-	dGkiiB2jCenFAAwnxDG8chfBMAt2yAnhcM+0LxtpOqPmXSUR/TTaCwGyKawsEzTH915dRb
-	CQxHxU0LXY8gNWMxKrIa1nQgu98KEfw=
+	b=IjsLQ8QO7R83eiz4pUHXf6JW+5W3uepFdtvXSIfgKjF8aqHTgfaxPRJz8rwlip2HsvcXv7
+	BNOyrQ0sDIJOmeZP6aI4SDzGRT/VsPWaG3gwriWyBNEswuHU11dBl9R50K0qfxpe7RuyGR
+	y3MjZqonzufmwWj+daO76OEDaw93+zY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q0Uy+TE1;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C4DA16183B;
-	Mon, 13 Apr 2026 18:54:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3060EC2BCAF;
-	Mon, 13 Apr 2026 18:54:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 27FBB61843;
+	Mon, 13 Apr 2026 19:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B062C2BCAF;
+	Mon, 13 Apr 2026 19:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776106472;
-	bh=cjxZitnjPb4Jy1WAV60ZHvr8PJFLvJxr+yiMh2G9OpQ=;
+	s=k20201202; t=1776106970;
+	bh=WsR40pigzFq6GWzHCWRSHQyzJlg9+sJIw+B0bABU0rc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bkvzGnUPVHwddEiVTSj7OIwi/5Xi6mvV8RZ0xburxFKi6g4MGU0hSJXNNTFmgQU4R
-	 8Vmr4eTl5/70eRUeQ/PX5Eny0X70xWzqVk7ZTGTASCiUD1gfF1tnjD04FI/jobAd1A
-	 2wQZ/dErxGL3W212VtYOi9AbEVpKlZBe6r8H7GmGs+JwTPg5TCcnaaKvQlboanq8Ai
-	 UNMpJwK24W63xz8bFH/0cyOZLML1Ff9V4asquDshXZ83Os7mNYARZdm+NZwhg+z5He
-	 QFfggLllVa2PQ6ddSv3ZN7VWMaWDjMLC7JAlApW3bJWfup8CbZST/JOUsY+FujRHM3
-	 Bxc95neEkcLxQ==
-Message-ID: <08a82aa4-f556-4e0f-9e50-b9fe0a5fb4c1@kernel.org>
-Date: Mon, 13 Apr 2026 20:54:23 +0200
+	b=q0Uy+TE19FMihJ5vEEm5ylp6G0PB1tMBLiJfDZRykW3cWi9Q8hfneAE6LlM9NdP1+
+	 JXYnd3GpCZQo9KsZZwKXLEo4gzl7nBVFHBAWY7xFGkPwsb5H2u/3r6UPMihkBDT4MW
+	 tRz+uYeHDSRxGxiLKwXBvk2J0EscKzTxiQO0yi4C+NBhsV/fYwEVPXf/8QSitFBMrH
+	 N/w/2BCR8sAtr8YI8fuhNrPIBK6jTZtEYOn/vpjAtwZVRER5bS+Zg77GqVvN54EK/t
+	 FeBPQTdbRj3C5LjCC3IHuM/g1t/djrVmym42tSKjKsr9/izjONDF/D8YlNS/FAFVfW
+	 HhIA6sky7KAHg==
+Message-ID: <abf05960-87e7-4f2d-9a10-d6ec419eb2f6@kernel.org>
+Date: Mon, 13 Apr 2026 21:02:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/49] mm/mm_init: use pageblock_migratetype_init_range()
- in deferred_free_pages()
+Subject: Re: [PATCH v2] mm/sparse: Remove sparse buffer pre-allocation
+ mechanism
 To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-8-songmuchun@bytedance.com>
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260410092419.2446420-1-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260405125240.2558577-8-songmuchun@bytedance.com>
+In-Reply-To: <20260410092419.2446420-1-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 64811C0013
-X-Stat-Signature: 8shjkbp7rfqnz6ppr98nry1xn5tfcqn6
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ea3r9o9zknat4zzmke3qptexm94xec7x
+X-Rspamd-Queue-Id: C4F592000D
 X-Rspam-User: 
-X-HE-Tag: 1776106473-636356
-X-HE-Meta: U2FsdGVkX19KsuXWr6xrBtjzMu5XKB3vHn/uEm5nDhgP0N5TDIjZCTXBJKUSPKGoxWlPd+JqsYAKhnYwTt1s+4zog+Hwv5Sn7VL19CT0xrNLwwC7VkntnuDVxVSHRzxvSGwx4nJnfQ6WCfWrSnarlsfszlVgcY6A6y/B1ITS35WhdloDzaJBEXH9MG8ZdE0jkfpWnPDVgNegZt/HVvgKm90qyf48DJ5SzO1vrdCa8rmeIQyS8Bdt3ZAVjvJqYNN5L7Qygm+WKVNzduxbb9br+TrTHU+1oO0mlKktZFR1sz40H9DZARFyZyx+4w08uUUnwFsOnkgC5INupUq/zlrBsWnsLHv2mVINBGtOFdHgMKNoIxKLX/tU31IRIFoGTNrGvZGtkiyAePyzIVmf/Q+Lz2sJ7F/W1J1+rIINREiAMWd2NKIupwr42BL50AuWySwHtacMr3Ctt8wp9exYePkjfpJYAcSgmeq36WgReblHg0ybPiu+qIAF36ThRcAV94d/8bZWVl2NWVeYTcZfrJE+lBnq7cc2rJ4SOMqL/mD+pjQa29IkDePfGwOeIVjD3bngF8Tu+nVjJ6HjeIHAdTDuVpaDuBCncWeIxYksapf0UvcHcjo3Tkv26jRdr2PRXVPf6i4xpAcWoS52zkJrvnnP2ZuckQLPOjoGxIHUMN6lx4xclLze7a+T9eB88R4cq7P0B+e3eko/pwTq/NKq7ESB6aFhK3kLybylmpmp++5GUyFpYOJFjEwrRr4KWxK2vsKmTJ+NBvB+2rDbP8u2hXibxF+MZ6GB6fDGu2sGGuJ5ZI9fnaqfz4qysDAJ81gLnAs9h3Y6cugo2wKBGx+zvDG6tbVYZZ71Buc/O1Ad73COImaTghnV1W2WwCSk4uFMbj/GJUcCe8TMokGkiybyi26WdnFBOnsfJSpvayMceZlrRh/qChtK7efrMWLHrHtFQmbU7WA7miIiM0KyK+48I7c
- lCmgJKKA
- OTGa5UENQUis0jTEHGbtjhbwR1pW4GgQsSoSo6XbUTKHTyGpgbPa5Qz0yHhVU5jmrGpHBVNbYjf/fKNId5OQUNFc9PwKtlVEoNbYLAjG/tziqG8aLGaXEjin1OcMhlodXndv6Gi9usmpWEuO2utMx8xnfn/KhZDoWIe7FwrCwV/q5bq9SLlvIUFB6VATn3n1JH3+Fiy1/hP03GTrKlOexfV0WmL/X7TbaV7ThltPrL/KEuFLCdB14dWO73WThhHDY552EEPkSZtGZrHA46oYCJWk6ZwjVIaDJs8ZEXGqSlODhQvk4lAbAjTXj6LvsXsJXyBbt3Sd1jyJ8Aag=
+X-HE-Tag: 1776106971-695811
+X-HE-Meta: U2FsdGVkX18jylEII6oPL4Z7GR9DSwfWUMUPK4d61IzQvOuuk7dze4WOkH2VqGiN3k0Qr+vI8xZqIuGHxIz4KVJLsuHyv7wB9KxgV0p4YOFdiM8gF9DEPudd1xRNqUyO1lT4vxMz/KLYLUKNA7fnRSXvHLtYgYYswcGTh6JxPv4LGjbcPtiAz9H8D4QkFzKWjAesBsKFdwnedsOIDE/sXxllghHDBjeAnsYc24r8YGIzvLY3BOItAlmueBpLbE3f+YwLI3+ivKyz/IkzX1hVFdb4jSntH1ZSTLTPYMJomR2Q0Ru5CGoGADSyDt/PSoIwy5ntbqKkcemIx60amCWLkLVOTfFet32nm7g61CoC7shaTJM8UnoGbkEFX8BwehQ1z0kCL8WI6fkyiRgVVykzh+yjwkjHMGZiuISZKmGXtCmRHIV6cwS0l4r4IY8w9BzE7XoEFjG1lZHJEupPYUysA3AkoP1N/BNFDMud57r385UL4/kEwykwWJKYrYph9eQr7V3bftmdwpCDDSimNy6d79AjbVZKXJH3eAfkPqOlMgPPHM7bD2jsMai2lfd4OD/iK986j+fFnTan3kfZ//u9FREmW/jSNT+I3k5fTxITzK+0iCtvumbXxM1fkV7tj5IGxXqKllgv/3wOZtRN2t3Q3JZETHM2XdKYpMsqs/hrKE4as1MRZ2A7mcHjDa0Qlb9X/xmlB2HPP8SCA9Dk71Pe2MIm6zwKteABw5IwmJNd25qQUHOtiQML+RMQPpRM7n9fKelALBXBvC92xwszkhF3TnuhFwg011PJMNJ0p7FzugUlHxCtImEzB41+jPUX+UBlhJsLBWC16uuiJFRlgDKAZSpumD2Te7DQ01xwX/LwmaAa6ebdfULZHwXPTSumNuQoTZJObZbPgwXXmGGGNI5nVDh68Zvo6wDGGKehNEBMC0rEq0Ygv5WTvpV5APTqRG2wsu5QLusZii2y9dBzIHH
+ /y3uqSMC
+ ctCeeubTc6Dz4I2hqnM6PH25KpIzcrcNOykfs3kxjtpdkZzZ6/G5lOmYpfkiNcJaxsXul13ZymLpPfJPwmiwdKgNjItnK9dGcddHQswOwK/WPMJaYOw0azhVtJytXOJGza2fIZXAaZ5BGRpJJ/dTm/ueaiplHPiZMuHryhbmoPdoMBLemYyE0PaSQ3gQ0y5vPJGs6/VMTi/EH7f7FaOhDDrT8tnK5kZFRyxmyyYpsBU1oDqLQyKrFd6qsgQmmFDZusiN7Zrz7wWTSiZ79G4G8felc1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,37 +142,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/5/26 14:51, Muchun Song wrote:
-> Simplify deferred_free_pages by replacing the duplicate loops for
-> initializing pageblock migratetype with a call to
-> pageblock_migratetype_init_range to simplify the code.
+> -
+> -void * __meminit sparse_buffer_alloc(unsigned long size)
+> -{
+> -	void *ptr = NULL;
+> -
+> -	if (sparsemap_buf) {
+> -		ptr = (void *) roundup((unsigned long)sparsemap_buf, size);
+> -		if (ptr + size > sparsemap_buf_end)
+> -			ptr = NULL;
+> -		else {
+> -			/* Free redundant aligned space */
+> -			if ((unsigned long)(ptr - sparsemap_buf) > 0)
+> -				sparse_buffer_free((unsigned long)(ptr - sparsemap_buf));
+> -			sparsemap_buf = ptr + size;
 
-"Simplify ... to simplify the code."
+This code implied, that we would usually get contiguous memory sections
+(on the same node) to have contiguous PFNs in the SPARSE !VMEMMAP case.
+That will no longer be the case (reliably).
 
-Likely you can drop the last part.
+The code must be prepared to handle that, so I guess that is fine. And
+we don't care that much about SPARSE !VMEMMAP.
 
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->  mm/mm_init.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 4936ca78966c..a92c5053f63d 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1974,13 +1974,12 @@ static void __init deferred_free_pages(unsigned long pfn,
->  	if (!nr_pages)
->  		return;
->  
-> +	pageblock_migratetype_init_range(pfn, nr_pages, MIGRATE_MOVABLE);
-
-
-pageblock_migratetype_init_range() will align the PFN up to the next
-pageblock.
-
-Are we sure the range we are getting called with is always aligned to
-pageblocks, such that we won't miss to initialize the first pageblock?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
