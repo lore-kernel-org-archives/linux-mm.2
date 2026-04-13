@@ -4,113 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D210F531C4
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:52:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55ECEF531C3
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B83F56B00B9; Mon, 13 Apr 2026 14:52:53 -0400 (EDT)
+	id 9B1F36B008A; Mon, 13 Apr 2026 14:54:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B34A56B00BC; Mon, 13 Apr 2026 14:52:53 -0400 (EDT)
+	id 9897D6B009B; Mon, 13 Apr 2026 14:54:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6E946B00B9; Mon, 13 Apr 2026 14:52:53 -0400 (EDT)
+	id 89F686B00A7; Mon, 13 Apr 2026 14:54:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9540B6B00B9
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:52:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 501BC1401DD
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:52:53 +0000 (UTC)
-X-FDA: 84654429426.14.A308709
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7189D40006
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:52:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mtaRKtLZ;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B61C6B008A
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:54:35 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2FA8EE28FF
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:54:35 +0000 (UTC)
+X-FDA: 84654433710.05.490E02F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 64811C0013
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:54:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bkvzGnUP;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776106371;
+	s=arc-20220608; t=1776106473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=irVM8cutLTY8eeIFuQG4pJxfVBZ0vjFm1lARbRd9vcM=;
-	b=KvSebBo8vdBarAeHLEd1w2P7DzCf2tgYdWaTIJV0cdM772XNYYZKfrw/2ftSK3z4QqKYJS
-	Ak6Nr4jb4anzqzwQIA3yBmKMruQMlGDmbHxxX5DAuFZ/22usC3SxH3lkU3DnaDi9d4mpIn
-	Yz0tVKH1bXnh6FkX7DB2Nsh+NMah3qs=
+	bh=AVk5ADEd74aPQL4pfRXJB+KLfJewXL4p7iOkcl9BAII=;
+	b=gxgm02EIHYed1DRLTUnIpoNDb6fw9xMqmYOi5RO0lajtGoI5z/KwvvFnLp7aDG+6uJdnNB
+	px/KUxWGTKkjN6Prw4mgE6MPPJiKTm7csqrG+LkJlKzLSzDQVsl5PPYgCw6Q9MXnyxxmrs
+	4W3cd5z9y7bA6mWJNob3SDSRwg1GmhI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mtaRKtLZ;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776106371; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bkvzGnUP;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776106473; a=rsa-sha256;
 	cv=none;
-	b=i8pRgSCT+jf3f2tncovncWzwVi/W5W3KK2HcfBvpCdeOohHizsGoCpczfe7oiEVAUoXWyO
-	EyXQs4Wv5BvdvCLu73EnUgw7pIFrybK2jHZIjUpeBaCv5eLACkfGoX0fiBBLwXpSfatFiB
-	NzbrTEgqJ7s/VWp228ri/j2OMqq6dM4=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35da8d037a5so2284797a91.0
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:52:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776106370; x=1776711170; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=irVM8cutLTY8eeIFuQG4pJxfVBZ0vjFm1lARbRd9vcM=;
-        b=mtaRKtLZskDWDYeJdp8CV9SP9ETRCJt43jkgdVc0tx1TsKi+uPvvPjqaUtgDAr/Isa
-         CG7zB6jnzlkqzbV9kZHPLxWty77O45vkx6uQqL2zdu+jrFETn45kR6kSFUgRVg9k5bqs
-         3vq9alTwlOPmDxGOReYDTOnFtOqr8rkpHFWuewmmzlw4f1qhmuqnIEWynHpbLRqeVBMq
-         zPhuAU3HXf3Vwo0iOcGPizTCOSnJFiy062OaMaZL7zAp1ccTrAigbrFYVzvmYwC9Ubho
-         KKzVwxSbUdOyzdJ0chqkiIgGa+VEQqVX3MVk4KaK25R7m8vp7h3zgmXQOeQvc2S6UB+e
-         sOFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776106370; x=1776711170;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=irVM8cutLTY8eeIFuQG4pJxfVBZ0vjFm1lARbRd9vcM=;
-        b=ciA7IQzzBRuE5LudVjJxob/G57xY6AwWJAvECniwfsTdqpZ6vnEHsmXKkaDlW78OC+
-         46OAvZ7TX71IxH/1tMYaRX2AqYpoK2XVbxQypGVrF5/VvLZKY8OkmginKod5ouO57r/A
-         jSrCiN3ZosMlj/H6kcAuY7T2lMCmrc96wzStIOdbEYpqEW4Ed29lZkUWcSVBXZkwKJeJ
-         9HxkI5KMeL/RHr/1qLz/F6YgTSjLywBPOSzbfegy6rNDOIiTHVE3HuhUbh+ARlO0lLCi
-         qXe438TMWZfCWLbXGWeOHvLw4EAWyU8iGtLPniXsgP2MlIbRg2jhg3aEMQqEgObQSUBM
-         +wRA==
-X-Forwarded-Encrypted: i=1; AFNElJ8DuB8mYf8mmG5HJlhh36n333oSEUzLWmfEDoZC/NrBD1ou5D3jMsUGDvsd2f9IAOftKx4ehpdQaw==@kvack.org
-X-Gm-Message-State: AOJu0Yzatw+suj9dvqxUmIULp+CmRvpxS1QbPnTPk2iPn6ukqYAYwrYl
-	Ff4DIsdjgkX6fBJsZ7qAoMiitc5FUr2TfednsVvkBYSdvihUld8SvtNO
-X-Gm-Gg: AeBDievAHiHzlys54+fAEjMoU+GtFBI9HB1ULCL7K9ShXKlwVCGfiC8iolerL6m1ZCQ
-	Cj+qizj3JgFTS3K8Gg3m7yb6ONYfmbHXjh2+umjRCabCaPFihqe3HDLpwoYWYhbN2XGCuNi15qD
-	c9qeuAu5a+OapPRhprLybNQU3evE+d/xJVZNgVg4XzHYnlOirdSQl8sn1RxLQq2a/uDoGZCGZQS
-	7llqyLhetKK6ThJbPMd50CeF3znJCvXtsbI9G/i/OercQuJAh1VYxZ1lIr+k5d1zBoMKgKXkWp+
-	OapWcU8E1gDgSo2K8d4BlKoSZIjRDj1wL+BZHJEdtnGsFbZOM9eHCulkItpC0cZK2PwNqxW1z6f
-	GKqSyz48EftYpjchWjWa/kJv8Qk0hH1JmZxYQ+UtGshIRNjbCR0NQb5N6U3BXBp76xwZwKNniCP
-	xjE2Je2iBX0NrHDeejzMGzgHDd8LcRlQ4wkeBW9uEOFhZZobIx4Hs=
-X-Received: by 2002:a17:90b:3fc5:b0:356:22ef:57ba with SMTP id 98e67ed59e1d1-35e42759e2amr12885903a91.7.1776106370251;
-        Mon, 13 Apr 2026 11:52:50 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fc2adae0dsm1225435a91.3.2026.04.13.11.52.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 11:52:49 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: SeongJae Park <sj@kernel.org>
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH v2 2/2] mm/damon/reclaim: reset thread status parameters upon kdamond termination
-Date: Tue, 14 Apr 2026 02:52:49 +0800
-Message-ID: <20260413185249.5921-3-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260413185249.5921-1-aethernet65535@gmail.com>
-References: <20260413185249.5921-1-aethernet65535@gmail.com>
+	b=YwMZeb9GMynfv+9zQf6ecJ7k0CQsfEDt4DH7QZ9GWMrPe4Ficw1UGm1dZuMQ2BNINAa1xn
+	dGkiiB2jCenFAAwnxDG8chfBMAt2yAnhcM+0LxtpOqPmXSUR/TTaCwGyKawsEzTH915dRb
+	CQxHxU0LXY8gNWMxKrIa1nQgu98KEfw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C4DA16183B;
+	Mon, 13 Apr 2026 18:54:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3060EC2BCAF;
+	Mon, 13 Apr 2026 18:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776106472;
+	bh=cjxZitnjPb4Jy1WAV60ZHvr8PJFLvJxr+yiMh2G9OpQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bkvzGnUPVHwddEiVTSj7OIwi/5Xi6mvV8RZ0xburxFKi6g4MGU0hSJXNNTFmgQU4R
+	 8Vmr4eTl5/70eRUeQ/PX5Eny0X70xWzqVk7ZTGTASCiUD1gfF1tnjD04FI/jobAd1A
+	 2wQZ/dErxGL3W212VtYOi9AbEVpKlZBe6r8H7GmGs+JwTPg5TCcnaaKvQlboanq8Ai
+	 UNMpJwK24W63xz8bFH/0cyOZLML1Ff9V4asquDshXZ83Os7mNYARZdm+NZwhg+z5He
+	 QFfggLllVa2PQ6ddSv3ZN7VWMaWDjMLC7JAlApW3bJWfup8CbZST/JOUsY+FujRHM3
+	 Bxc95neEkcLxQ==
+Message-ID: <08a82aa4-f556-4e0f-9e50-b9fe0a5fb4c1@kernel.org>
+Date: Mon, 13 Apr 2026 20:54:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/49] mm/mm_init: use pageblock_migratetype_init_range()
+ in deferred_free_pages()
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-8-songmuchun@bytedance.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260405125240.2558577-8-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 64811C0013
+X-Stat-Signature: 8shjkbp7rfqnz6ppr98nry1xn5tfcqn6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7189D40006
-X-Stat-Signature: qzxiqdaiufjnpi19pqr49r78w5iejhie
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776106371-227606
-X-HE-Meta: U2FsdGVkX1+F7WilufK+qJ5Bz42vq3qAsZghLN5tTQmFm+5BM8tcg6kOVUP5x/OTjYEe/IT737kRDqFtipxYCGSQfMRC9kmOF4D3ddXWcp5GDKyb/1UarLf/wTerkkpKFht80vCE/zW7Q2S1sIdujJ1tNyWh+AgQe9+3M67pvqqxDwWa9btuWmPPHKVzuiN/vfx/S4cW6Wz1PkxSU98Kwz+5TxagvQhbQsAaphgi35lrRK+/ynueuPbuaiMZmDUf+IPGlKt2J2IU9MGG4SDB0N09j91yP0J2OW1GSCxCvX+C9R4v7GRYqhHnMtbEnMC2BSdWMLQ54fF0ifInb4VBLH4XWT1A4VN6fsaEig1EpHZb6eFXrerhgSpBsXCNHBYLW9Az2dSsnu+A1a73tFvUqtY7Rx0HO7xll35Z1dHFwXVyLC0ByM2ZZvBVyyUm+T0Puz6IksHrOUmNziMpS4QuOHHezlXtNv8ptCRn/FYRX5d8X53D1EaVmH85Jfa4QUvzlAHGmADC1YDiA9b6BYcAF+phHLWVQzbKqb3nj96MBqRgRaSq24xu6/0I+LavOCrUO5S0RiM2wjXjmA0cDrHQBr1fRdDOFWt1FrGVwDyD87Y2jkY7+SyUhO1g21NR4QCSMF35UosKCL6yEJNIjnu/IVrGPr2cAeXHv1GOWv43B0gv2X6EoJ0lzvjkalGGcYKVa/5tRoiVrL3QHXhXKfFMr2KWIqUhbckEcKLsBuQYxMb0QJawvA0kPLJPHytyJfpxGcLRM6O8enea1eMDSUI24oQ3NksbTyZrXtzVAqj7klG+/4jMIxxLKReVLj6b8mpsEa2kd8/pcW7xNEvtpRJSFKgwN1RV0dfHvqFVeMwlRLzAsH4SiMuhbodZX8QEIHxes2p5EWFx5Px8V0ZlQbi5vcp4vYavz6dizujCJ1+M6rJw8afmLz3wbOW+V9H3fbffkxByHSXjOSJILRg2hLW
- OkNcINGm
- lbKq3UQzuXa9i3fhvLblmDZscrJb51VD9FcJd8hD4gyPJ1llHReSpBtMBcOjZb8lnS/rxQqTIorm6CRz5vgejpSzfli83HWK3E3MaptK56hP/y8G//qR/OZ6qY9o8dpKrR0aD8xg2ToKDWERmog7IsO3gx3arLz4ZN1qCeSiHd4b3mPc9qvEvJ24EgX+WnL56s2TtcJ5wxXVZGXc/vG+REOIwF7Lv1Ul//3reP0SfDe6gOPBvwFAq3+los42Ci3KFrQ+V+pfgIa7hLGn68OMXLmB7aN6+/uS36B7hWTyR2X4iIufEDfZ+fMz7lkLKZSr37SMIsqZpa06R3/frAyZhxVX2qORvik5Ub4b0QgQt7hwg21nkhq8aUiK/WAtW7aYeGcAeo2qHAEqNCIBu9z9mBvaPr9dLSbsXqece
+X-HE-Tag: 1776106473-636356
+X-HE-Meta: U2FsdGVkX19KsuXWr6xrBtjzMu5XKB3vHn/uEm5nDhgP0N5TDIjZCTXBJKUSPKGoxWlPd+JqsYAKhnYwTt1s+4zog+Hwv5Sn7VL19CT0xrNLwwC7VkntnuDVxVSHRzxvSGwx4nJnfQ6WCfWrSnarlsfszlVgcY6A6y/B1ITS35WhdloDzaJBEXH9MG8ZdE0jkfpWnPDVgNegZt/HVvgKm90qyf48DJ5SzO1vrdCa8rmeIQyS8Bdt3ZAVjvJqYNN5L7Qygm+WKVNzduxbb9br+TrTHU+1oO0mlKktZFR1sz40H9DZARFyZyx+4w08uUUnwFsOnkgC5INupUq/zlrBsWnsLHv2mVINBGtOFdHgMKNoIxKLX/tU31IRIFoGTNrGvZGtkiyAePyzIVmf/Q+Lz2sJ7F/W1J1+rIINREiAMWd2NKIupwr42BL50AuWySwHtacMr3Ctt8wp9exYePkjfpJYAcSgmeq36WgReblHg0ybPiu+qIAF36ThRcAV94d/8bZWVl2NWVeYTcZfrJE+lBnq7cc2rJ4SOMqL/mD+pjQa29IkDePfGwOeIVjD3bngF8Tu+nVjJ6HjeIHAdTDuVpaDuBCncWeIxYksapf0UvcHcjo3Tkv26jRdr2PRXVPf6i4xpAcWoS52zkJrvnnP2ZuckQLPOjoGxIHUMN6lx4xclLze7a+T9eB88R4cq7P0B+e3eko/pwTq/NKq7ESB6aFhK3kLybylmpmp++5GUyFpYOJFjEwrRr4KWxK2vsKmTJ+NBvB+2rDbP8u2hXibxF+MZ6GB6fDGu2sGGuJ5ZI9fnaqfz4qysDAJ81gLnAs9h3Y6cugo2wKBGx+zvDG6tbVYZZ71Buc/O1Ad73COImaTghnV1W2WwCSk4uFMbj/GJUcCe8TMokGkiybyi26WdnFBOnsfJSpvayMceZlrRh/qChtK7efrMWLHrHtFQmbU7WA7miIiM0KyK+48I7c
+ lCmgJKKA
+ OTGa5UENQUis0jTEHGbtjhbwR1pW4GgQsSoSo6XbUTKHTyGpgbPa5Qz0yHhVU5jmrGpHBVNbYjf/fKNId5OQUNFc9PwKtlVEoNbYLAjG/tziqG8aLGaXEjin1OcMhlodXndv6Gi9usmpWEuO2utMx8xnfn/KhZDoWIe7FwrCwV/q5bq9SLlvIUFB6VATn3n1JH3+Fiy1/hP03GTrKlOexfV0WmL/X7TbaV7ThltPrL/KEuFLCdB14dWO73WThhHDY552EEPkSZtGZrHA46oYCJWk6ZwjVIaDJs8ZEXGqSlODhQvk4lAbAjTXj6LvsXsJXyBbt3Sd1jyJ8Aag=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,78 +148,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Problem
-========
-When kdamond terminates unexpectedly, 'enabled' remains 'Y' and
-'kdamond_pid' remains stale. This prevents user from restarting DAMON
-because both writing 'Y' and 'N' to 'enabled' will fail.
+On 4/5/26 14:51, Muchun Song wrote:
+> Simplify deferred_free_pages by replacing the duplicate loops for
+> initializing pageblock migratetype with a call to
+> pageblock_migratetype_init_range to simplify the code.
 
-"Unexpected termination" here means the kdamond exits without any user
-request (e.g., not by writing 'N' to 'enabled').
+"Simplify ... to simplify the code."
 
-User Impact
-===========
-Once kdamond terminates this way, it cannot be restarted via sysfs
-because:
+Likely you can drop the last part.
 
-1. DAMON_RECLAIM is built into the kernel, so it cannot be unloaded and
-   reloaded at runtime.
-2. Writing 'N' to 'enabled' fails because kdamond no longer exists;
-   Writing 'Y' does nothing, as 'enabled' is already Y.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>  mm/mm_init.c | 13 ++++---------
+>  1 file changed, 4 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 4936ca78966c..a92c5053f63d 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1974,13 +1974,12 @@ static void __init deferred_free_pages(unsigned long pfn,
+>  	if (!nr_pages)
+>  		return;
+>  
+> +	pageblock_migratetype_init_range(pfn, nr_pages, MIGRATE_MOVABLE);
 
-As a result, the only way to restore DAMON functionality is a full
-system reboot.
 
-Solution
-========
-damon_commit_ctx() sets 'maybe_corrupted=true' at the beginning and only
-sets it to false upon successful completion. When 'maybe_corrupted'
-remains true, kdamond will terminate eventually.
+pageblock_migratetype_init_range() will align the PFN up to the next
+pageblock.
 
-Therefore:
-1. In damon_reclaim_turn(): Add fallback logic to reset parameters when
-   damon_stop() fails but kdamond is not running.
-2. In damon_reclaim_apply_parameters(): Reset parameters when
-   damon_commit_ctx() fails, as kdamond will terminate due to
-   maybe_corrupted mechanism.
+Are we sure the range we are getting called with is always aligned to
+pageblocks, such that we won't miss to initialize the first pageblock?
 
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
----
- mm/damon/reclaim.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 86da14778658..e3e148fd80f9 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -250,6 +250,10 @@ static int damon_reclaim_apply_parameters(void)
- 	if (err)
- 		goto out;
- 	err = damon_commit_ctx(ctx, param_ctx);
-+	if (err) {
-+		enabled = false;
-+		kdamond_pid = -1;
-+	}
- out:
- 	damon_destroy_ctx(param_ctx);
- 	return err;
-@@ -290,8 +294,13 @@ static int damon_reclaim_turn(bool on)
- 
- 	if (!on) {
- 		err = damon_stop(&ctx, 1);
--		if (!err)
--			kdamond_pid = -1;
-+		if (err) {
-+			if (!damon_is_running(ctx))
-+				err = 0;
-+			else
-+				return err;
-+		}
-+		kdamond_pid = -1;
- 		return err;
- 	}
- 
 -- 
-2.53.0
+Cheers,
 
+David
 
