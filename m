@@ -4,122 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00D77F531DB
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 22:21:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC07F531DB
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 22:29:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A90A6B0098; Mon, 13 Apr 2026 18:21:55 -0400 (EDT)
+	id 7C68C6B0088; Mon, 13 Apr 2026 18:29:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659846B0099; Mon, 13 Apr 2026 18:21:55 -0400 (EDT)
+	id 7769F6B008A; Mon, 13 Apr 2026 18:29:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56F6A6B009B; Mon, 13 Apr 2026 18:21:55 -0400 (EDT)
+	id 666A56B0092; Mon, 13 Apr 2026 18:29:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 486366B0098
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:21:55 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB23F140302
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:21:54 +0000 (UTC)
-X-FDA: 84654956148.23.54916EF
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DFE4140005
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:21:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mYg60nY6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776118912; a=rsa-sha256;
-	cv=none;
-	b=gr8WtO5zr9sBQ97YcYDVHrCp0Tc5gvKdY9HSFD2izmo443X9ELsumx8m/KbHR7nWNcQ9eR
-	i7ZYwiLCoHTebQJnRv09q2z9j2C8vbg5gf7rYv8FvOsOKSWWRTVGacboJVifTxHnL6+l94
-	M7ZbNzlrJHJbTChc2AISOQvWwWAA8D0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mYg60nY6;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E66F6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:29:02 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D74EE139CFA
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:29:01 +0000 (UTC)
+X-FDA: 84654974082.05.81C2BFC
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5B78214000B
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:28:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Acn3ot68;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776118912;
+	s=arc-20220608; t=1776119340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DwLpBaCZIwWb6cQdHpW7oJ819o8OWj5rIFCXB94lyHs=;
-	b=hy7i/AANYfWuOhN6V0reO1WRR2ijUgsFuWICJaMgB59Y1ONdpgCtIrs/XnNDOWS3tRCWZk
-	5pEzPEJnHAGA3QIY/DRMZF0MgKMN8BGrFTHk6qwENMin9MYbHBn6cXkFsbA9VUNtb+d0HM
-	QrDhc8wMi4TOUxy5k3/IpleP7KIT1Nk=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-82f4a53ae20so711424b3a.3
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:21:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776118912; x=1776723712; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DwLpBaCZIwWb6cQdHpW7oJ819o8OWj5rIFCXB94lyHs=;
-        b=mYg60nY647ujB/K1JpL8P4w+UaQZM+AZNRnsDoREfqy36oBZGcYd+OwU4Aa/SpqlZr
-         aUEx2/MOoDOO2aW4DjEZSnIT+Qg7rj4AHLmADNwXl+mXqnLdBN2XH7ZrOzyhq0msnqin
-         X0pwYbIhU9nehwvnwQOMICbCXOmkSVXcVDvTSoOgK/XnOZrkXYpqHgAn+ykNUI4ijXlz
-         HHo0He5KSBQ8Ajw/tz1PgNOCKRGiyY3GsHKEco7AQXdbtgV5xaUNuU7dhUfHjQff6zqI
-         Pz/6r6Z6UGkxhytMtzPtSVWT6eZHirotk53mhu+FDHBrWgsZ31sqZvy7Fu1z0UeMZgpX
-         6+Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776118912; x=1776723712;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DwLpBaCZIwWb6cQdHpW7oJ819o8OWj5rIFCXB94lyHs=;
-        b=EomKTOFelZ4ffQz0saIGpAJGEHbpcNhE2p1DwdwiCyrq8CoxEwzPmwoVawvOrLyyzS
-         /tGf+Ym3ZP2sccVe0ohEiwkiFJB+k4XO+g6UhG8GB1xpDb+HusBn7LSsUJ6sCIDRUoB2
-         CTxhQH8ctk4k1HeQwnj/wVSEnhpcCZamZBSWaR9RvYIldNzjDW1GyURpRrKU5dCMzeZ1
-         YPPkgtoQxJljtB7PNMWPDxLHGddIjEc4SfDBlGqEbZ6ZgA77dCmcONFO1ksXFoRVULnz
-         pcf1+nCjHsJkoN/znFV7K2xAqYf69zrN89NqXIUMykb68apZgJT5Ix1ZthUX1ci4KJP3
-         Tk9A==
-X-Forwarded-Encrypted: i=1; AFNElJ8sVkE04VO3AbsNreCWIMKc+tKY2IXY6+qQaqBh8ABtkyHfVcO2Bvp7xzCpgsSGQn7mt8GTOD/MKA==@kvack.org
-X-Gm-Message-State: AOJu0YziW1CV43cr30ED+zKBH2ir0pyuyCIgln0HuE17+A4GyAJZRUPN
-	gSs1VLVuzHmUnF6U72/ypxZPF20ujds01dyChNLmel9jhWA57zhYuT/I
-X-Gm-Gg: AeBDieuxLd1r9nJ13V74UHlOcwmBAjyklbNUoni0ZZkw4ba5lRCW0juUaAe56KtHqUk
-	pEVdXsYWHNst28ZA9Vlce6Cr6Q3Utj8FX2MCb673pB1xfRPy3edrbRBWsOGPp+pEti5/MfWH/ft
-	zMA0ZxxZobv67LyO4cQ5n76/5toPoHRrFhgflONzbvdTmVFu0rHF+B+XJ4A1u4y30SEhoKHVXK0
-	33n0GwR0gAF7yvxSOhHksWQO1kiDIcqXJcQc1JOYpf2iQWIuU8ooUmNDgmxhdXRbbccHbNn7Ecz
-	d7EzZ3Z4BG0nAOSCoU2od+NVDJFZe+FPqh1IF0LpmVT2zx7Ow9bP03uujs5mlLXR0CfM3eUdARp
-	wQupMVJapufwqjEVrPQg0OFSbnM208V8cvDrLoe1koLFW72GFL/BGD7bppUxvONIzpUG2qDPWS4
-	Av81+7MdrPjx36VIXjEGXGK4r527IHNQuHoiURIFfjzBTz
-X-Received: by 2002:a05:6a00:4b43:b0:81f:3f03:6838 with SMTP id d2e1a72fcca58-82f0c219501mr15642444b3a.15.1776118911684;
-        Mon, 13 Apr 2026 15:21:51 -0700 (PDT)
-Received: from tech-Alienware-m15-R6.. ([122.171.18.84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4e1a2dsm12737206b3a.44.2026.04.13.15.21.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 15:21:51 -0700 (PDT)
-From: Sunny Patel <nueralspacetech@gmail.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] mm/migrate_device: fix double unlock and remove dead code
-Date: Tue, 14 Apr 2026 03:51:43 +0530
-Message-ID: <20260413222143.39312-1-nueralspacetech@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <7579105a-1261-45db-90ba-5e660d202b80@kernel.org>
-References: <7579105a-1261-45db-90ba-5e660d202b80@kernel.org>
+	bh=R0C0oTbgMZYbhrAvkMy0ApjkIhijnhBgwg9sMmLsR0w=;
+	b=ajw1fK1SaHvyp15ntokJoQy+NqTQDKE7zaroSF6fjyZIv3p/kxDUayCfs40xbpyj37okBH
+	hRL+owwrtajhbaD3Y+kjy/EWZmD0PSlcjQiQOaeLVQf4Oe10dd2OZFIuYpSbeW3KbYXdTc
+	13KH4GE6EbWeoDXg4zWN767pK7V7lss=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776119340; a=rsa-sha256;
+	cv=none;
+	b=WuHuaPlI5v8U7y9ivZYYglg4BEpXQfZO12V3hgGdR17f+cqd8xSkmYrE2YXN2BwiV4BXFK
+	wsLXXncjaAuR+7Jyq83Vw/de5TAcIy6F1c1cLtZId1GTtstMk4oWEJzeUBjxAu9DRjWFDT
+	dURHCZK3GafYVWScTc8VXJ4rl05yETk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Acn3ot68;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Date: Mon, 13 Apr 2026 15:28:52 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776119337;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R0C0oTbgMZYbhrAvkMy0ApjkIhijnhBgwg9sMmLsR0w=;
+	b=Acn3ot68zMGKTsDYvK5Aa4s1RXOMEuYQGZqR09u3VG6a016vJp8EKZeK2gFbESKUvWoT0Q
+	0SarXFhI/s/uQHW9HYZOEIS6bKHCakE8/CMF4YrhNIlAFdkEoKqBkFrIOdowTV4y4HWI3M
+	mOVL5DjirDprGIsRuX9t3ZRr2Rhp5gk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: syzbot <syzbot+1a3353a77896e73a8f53@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com, 
+	yosry@kernel.org
+Subject: Re: [syzbot] [mm?] [cgroups?] WARNING: bad unlock balance in
+ lruvec_stat_mod_folio
+Message-ID: <ad1tV5WpFhxbQ86N@linux.dev>
+References: <69d54494.050a0220.3030df.0002.GAE@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DFE4140005
-X-Stat-Signature: jb1uu1fw1nmw1hnydrm6sbaxpgdi7rnh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69d54494.050a0220.3030df.0002.GAE@google.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 5B78214000B
+X-Stat-Signature: cr5wkrm8asenor7zaw15wx5s3wp3pxy3
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776118912-79419
-X-HE-Meta: U2FsdGVkX19a4KTMvroEgj0EG/BjAHPzMH/NJ3AHp3RhUwNo7jTfQUYBzKSEbnlUH7ZRzY5TnwbSEbpjLyaTVUOezS1Z0w078RxyykKS7gvaHc/sxTcVzSH1s0zzkfD8aVq3jBHLtAvkBk46brFyhvJ/YqoOqqBdg1zOezEofAHQmqcgU+7vpswxNr20UXmht8tUmPC4dAOQb5dPwnxt3l1GT7SmK/NyYnAgUylu7aUahAKaloO5hO727akRc6k8fRX+8XhOSxcDah+gqmOjGYIO2szLxdr9ZvTX8LjeZqtwJEuR2AmuEoNmZKfQ/axUOekKf5M9LAePLr1Wlat7604OatBCSpexzTPWTfmTCLWUqZtUa2afno78vlMQAlOavfFwEWo4uwqk+WS7hl7/WY+wH2YBEnUsdVhOiInEI4tsGUpivbNy7JP9BSDfF8FH6Pp5gmgoa2dVANXXA2OUw2wHFP78t+e4RuFjOxiL2EJ2CkmgemNZakQk4l3tllW8LgMV65dVstvjPnJteJ22ltoblBKVqX0h5nVcdmYsNJsuD/FWlWY77Ptx5T8bL6MODAjeMIow1bq0hLFo+eAzXqy6GnDW92P0KQLR2M9+OdICZyaPEZ9ogwWYNEBfC5g6tSnmGcUJbYtyCvfeATQsGx5FOBxO6hhuFu2uXDY8kChYvtyvyDMJhIeYA69lKSMe7JpXWlOCnNRwFC81E3dZw5NtJjQICMtLHQyXaC/sFAIotKb5Wj1aVEPCAtdvHpp5Oqksb4SdUreTClkg2izyzQpQn8iHmsaQEmnKlGJdoovrv80UFtF5Cr7fph1SHpZTC021ytLm0e8kj2MaSd+J02hZ8B4A9PIcfiTklgew7ubTJrXWDixLEAm3xZkFPBkaTRDgt861wpYTHa007HXdLg6lh/yQPXENlPU48UbHsJel8KbET8EamEKorrT1aEME14B4+OT8A9xKULmnND3
- TdB3wWVV
- wnjNJ72YBvpE6n/KBy24AJ0yTc6j2m1a0f7U5rfz94ps9qmt/rkGZ91PNJV4Av6wMQlXmvLPo8hqnApsys3/l2w/aToGn0pgoPwTmt6C9P8lf0Ei6ZBc5vw9XqQAvyJlLp4SVY3Hh5jjfzBEbid/SsuYHC7vl9aki3e/iznU4CTUqHUG1KsYPZ3zMhz1XkwWNIZWeRjWy2P3linq7cSxGUZGayKDyrr7PJV9vnfumzj544ALUVcwrc3pac8uvSnpjCFy0BCE0Pe1GHJQRp8BCobkUm8Z1CiB/TjBe9AkiJr7bX+bSCeqd5A5wgGbaR+ADBKRnZ6uWm6QxrxW9hqiuR1r41CiYQRNfDz2TCFGW5RIIXLelgQUOwmPVH3iTAwvQj5F1AmzU33DqCfIoOZ3R1nDok2DlWrkgvj0HFoaMxrBMT4wxFFydp2HcVfSRHhobBxzKZhPuM1/CPMFmbWcWQxZU+0FICycAOHsfeIToXWr8NLZT8yFuME/jnq2VMxBzDr4jANPGrUAXr0BmCJ4dBKVifDUeA3exxtKPVd4o4SWz9EE2IIifN86b3w==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776119339-848534
+X-HE-Meta: U2FsdGVkX19Xfx4l5HQk5upVOwIfLs13SFAMI7w/epp1Kx/iwQGRdzx55rW4sYVa8wUCaHYtKr9fiVPuT5omHZY6VqUJfT6pGQNEuf4mF6b2LkiNnsft3FPQ0BEsiCCaDmtGCXLIYgSpxusJLBinCQGNQS6nOtTeJ47nffBf1s9Xzi1kvKuvU2lHPDyjJDOTvkC3Y1dmue3Et9y3W+/atJ8urTD5e+JE0trFm0e4AvYYEQIaIAU9xh4YDANT1ECnoSsbRPFP3Pp1T5YPSUTp28obYsAKtFUq/BQnUQVkQiGsbKcxgDBezFzndnuY7YBLv1qVrbA0kxZzmtKKP6bnYKtDR501iYzRMB3FXc891SXT8KHf/gFD1ATlyUMNXDqf0j8R39G/Oc0lUkfy0f87WPAu6DGSzas7uQlo3mfA8EzXh6WxiHGGIM1Ev6PmcZDhgpFX4qMwrY73OFaE+Mt7EKJUkIeZCckQRIKfw3dEBWnVsTjPDb5T1zuqSLFO8ywcs6uV4uG6aDKfIRwwJhe8Fep5Q27QqNvv13oxchTT9zbW3Wk1pjySE0GFH9hQ4MCKR55JW8nlO2Vuj4tNAGvI4xk1VxtjYpoiuVML0aiQN48UHz51O4YczAPcRZIKNj5zTU393IE531ysnFUsIMol9esAC0yOCkYut3phMA2vuBzlvWfQGydgYxcaRgm1qBRWVSrlxjuwDbJoHSnoXv1w+JvgKm6fCoEMYpG4u3ursrMv3vLLiFAlHVkYbalROYib2W2uvG2HA7ynpINVGNcU7OJvybhJ4Ze4EtZ9aLS0xA17wEX7XbrZNARg5z0Z2TePWcrSmz+z2HrUyFlkUTxo/YsXvWECLDH02xMbuY25DoYr8vpuIh4qcmpEbIT2aFL0FJh2RdtWqfeVytTtrUO1DjpBIIj42UAnNRhfvXrW4cT5DLtJuo0Pv+X1JOo6jqUMBbqW7hIKnNBLKEcWPID
+ bZ7x8Jgy
+ Urq6So9cVxA7QPUpe6Gsjna151t4FxjyN8jXb/HorjqzSs19JbP+uSTsQro0cMmAF0Ay9Gbdl2wapWgsfjhqoh8o3vmKueBvuScn/sKbSSKOsKhgV5/EUyCyJVCM8TKyca5zhSioP5gpJohWmzQ5An1NKRPqmV9pBz1YdQArfqkbyWHW9TLxRNvAFb9OnK7w1j3yu8/wv2D9SS+sv2wiKmMEvYg8sf1sIoOH8oe86mEAgF7hNd0+MpGanCFS81+wyp7/yY1+injJGEc8VzCYKjabKrr0c2oesXC1U1JLXm+R45SfOpOESWhc6FyduMwsVHmzCaHxvUGpaclCg3v6leaI3/4XXbcZ5IX1x8PFoIGbIfHBTGDa+XXCPKwqDkOz2C2haUJwl0pshV135iGhx9DS7J8AyUylXQStZu5uYU4tjNkel7sKXLURXQe0MNZcl0uxJSurxwNihcJ3BLJyPXoSfLSbGuuM2Xf81AD54yrK35AmR2X/0DZNFPmAFAWsfceuIVO5NJjI9oaz6ooVJ0kuGiPP3mW1p1t+HeWFgpouVTJ0odLc0qpIN2eGOHT3OEfow
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,19 +89,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Apr 2026 15:09:00 +0000, David Hildenbrand wrote:
-> Can you move 1) into a separate patch, add a Fixes: tag and CC stable?
-> I think it is
-> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of
-> zone device pages")
++Qi & Yosry
 
-Agreed, and please refer below link for new patch
-https://lore.kernel.org/linux-mm/20260413211559.20969-1-nueralspacetech@gmail.com/T/#u
+On Tue, Apr 07, 2026 at 10:53:24AM -0700, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    cc13002a9f98 Add linux-next specific files for 20260402
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=10d8946a580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=4e6c8be618ab359
+> dashboard link: https://syzkaller.appspot.com/bug?extid=1a3353a77896e73a8f53
+> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+> 
+> Unfortunately, I don't have any reproducer for this issue yet.
 
-> 2) will then be a pure cleanup patch.
+Let's wait for the reproducer. I can only think of cgroup_subsys_on_dfl() check
+returning different value in get_non_dying_memcg_start() and
+get_non_dying_memcg_end() to cause this uneven rcu unlock. However I can't think
+why and how that can happen.
 
-Will send cleanup patch shortly.
-
-Thanks,
-Sunny Patel
 
