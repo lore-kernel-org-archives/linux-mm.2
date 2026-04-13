@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68EC2EBFD36
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7114EBFD38
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 10:47:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3C306B0096; Mon, 13 Apr 2026 06:47:11 -0400 (EDT)
+	id 2DBAF6B0098; Mon, 13 Apr 2026 06:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC5536B0098; Mon, 13 Apr 2026 06:47:11 -0400 (EDT)
+	id 2648C6B0099; Mon, 13 Apr 2026 06:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8D316B0099; Mon, 13 Apr 2026 06:47:11 -0400 (EDT)
+	id 107566B009B; Mon, 13 Apr 2026 06:47:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A3C496B0096
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:47:11 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72AF0B3BF3
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:47:11 +0000 (UTC)
-X-FDA: 84653205462.26.3FEE510
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B1D6C140004
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:47:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HbANjlCY;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DFF376B0098
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 06:47:13 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE1D6135DD0
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:47:13 +0000 (UTC)
+X-FDA: 84653205546.04.84590E0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 273FCC000E
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 10:47:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=av3a0AwT;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776077232; a=rsa-sha256;
+	cv=none;
+	b=XWsi1hoeKcvP064CXR3SpP7Wix0Uvlwvg6954Hqb0gZ35bgHC1UarHlB8sZoOOKdoEcY7n
+	Ed+YKpVY2E7SBveQLWDt2bPezp8ZCvRG+vSYWwntQVp7U5kt/pl6BiQs06VO+5UvbLJwjv
+	Zd+zIvEBOfzt2RYnENTIfuWn79V2Dk8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776077229;
+	s=arc-20220608; t=1776077232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=roSFcth0MVdyhAOreEG3imiqRCawxMqxK27HS8tvlp8=;
-	b=VyiaKg1vKd9wGo9o484E5q25x9CBAuoCdB4N08P/1QWuMDakXfmnsOXiFZgFN2zqHY1PPV
-	qj1XUisItcBh11g1FYuIqUPTQ26mYBsWk4/vxf4FtTYrKbHYeVvUJNn3RU+UFXh+2H3KnM
-	Dx1/5B2BoNPkfJwQ+CXN+gu97wrciNo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776077229; a=rsa-sha256;
-	cv=none;
-	b=1L6+iDdnuR0GvwkSXmyytPHU6AhRciYgA6nuDxzfwGyX+KF6J64wL/YkGTbKIs9S/IQw0q
-	Q8ad7/3dcsOm4quP1b7ZG0pqJTrcjanIfN50QSOjvu4mVw7XHp0X+dEh/l6bxuJ/SRRXlM
-	T/J2iKiZqeyDOuAbR0Jn2KNbIVvMti0=
+	bh=8VLiFPxKhjqHd9u7sKt6ElFWbiKez4j+Ij69kKykAVo=;
+	b=Y584bvvkuCFyAk5tfB4sAhhJAykKhEaWDQZ9p6AIbNgTTLMgq9JLKU8XdlQpWfSvzqVJTQ
+	8wr29MQrOzO3vM/H+0m84K5iIxMH5RGw4vOhl7O49arPYnutwkKvNkzVJszWuXQGrnnqm4
+	6Oe6gp5Pyy5RQbJzjPHM9ckf6mGQ/Ek=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HbANjlCY;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=av3a0AwT;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA5FC4408D;
-	Mon, 13 Apr 2026 10:47:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB19C116C6;
-	Mon, 13 Apr 2026 10:47:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A7A8C61338;
+	Mon, 13 Apr 2026 10:47:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407D2C2BCB5;
+	Mon, 13 Apr 2026 10:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776077228;
-	bh=s7r2AbNfz/44Y9KLQIIK4MPue07uMssbFF3qS8Ac9vE=;
+	s=k20201202; t=1776077231;
+	bh=1RIWNqZfuQSQXtyXYZxxAcYIBhO8O9EvGLJSM+pH4vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HbANjlCYWuaIObr2nBGm6gDpN+vTZPeEExjqyHfjgVMPVN7tXqxCXqz4mAxYN51jy
-	 ZwW+iLCrUHnh353cS1F+l9IgskuTGHPX/xzJNPx5oWGA6Q0OkfMcGq2h021w7AztXy
-	 h22iJijQmy3M8IZUKeuHMhYQzr38OtSDfABJA+yBREVg6Z8TxFx3tAAh6CXyE7QN16
-	 b3cPY9mufVGAtjEAiQYW8iwJ68UwQri99kd9kFSbUGpeVDYllSFvT1e46P1aCnuCKF
-	 PfZ5PoD/DsthEJkNVqYzQoT6tN2Bz3UDWNQagAgyFK0+2JajO+4+IDJbCAPW4Ao9p5
-	 9VBTeUnueySpw==
+	b=av3a0AwTAc1okI6NtwTkrdgGqCjSuoBbOktZ9AJaCxUTYMwEDlvm9jSNqQUlUT9OU
+	 q4dkfuyRkJCul5wkqOGIkpdt/+wGQR5A68XMYLVWUBY40HY0RRgaNFRlPeY0l4/iC3
+	 BzlDDPYQYtEJsaGekSDmuAsOdgDfK29jfitzaGoPmAzjQcfVA7CLBIKPFGMKEQMD8v
+	 knmdanNZdsgd1aGw6PtWjWZQN8q9HdhpbFqIFHJNvRWfNa6V0hOJ1kvc1BMsYviKo8
+	 B6hFIbqwxSFIIUPxg6qNfgpam0eot1Vl8NFHYqAw+uu7FfX/zHlWC+1NW2MFuvbT95
+	 bKgfHX9ebdsIg==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-sh@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -73,22 +73,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 05/10] sh: drop dead code guarded by #ifdef CONFIG_NUMA
-Date: Mon, 13 Apr 2026 13:46:43 +0300
-Message-ID: <20260413104649.852228-6-rppt@kernel.org>
+Subject: [PATCH 06/10] sh: drop include/asm/mmzone.h
+Date: Mon, 13 Apr 2026 13:46:44 +0300
+Message-ID: <20260413104649.852228-7-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260413104649.852228-1-rppt@kernel.org>
 References: <20260413104649.852228-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: mbp9yz4c78iwdezcp5nbf9i7zajhxubf
-X-Rspamd-Queue-Id: B1D6C140004
 X-Rspam-User: 
-X-HE-Tag: 1776077229-817288
-X-HE-Meta: U2FsdGVkX1/domR01+HlUTBjxF3EEoCCxiuYxxvGPbGuIdtBZJ8c0Fy50WZlA4E33Jk/AAo20AVaGL2/gpzb+v+9wjI+Yfxhl2b2Yy526nSgEYko8qiqsVdAoUvgz4KKyvqzM+HHfUahYxL3op/1Ql+d98zB5gaTnuQTVvF/Fhk850GixCsEhOMcp1GN9MewYGSnP/udvs4yK/Z7aL2OITeaM6wcsdvXxPzUAuDq592ZONBrWXJKxAjzf/O4WCsc+TdNfT0K1yQBB8xnz7UrWPX8x2lK7YslLjxr44vWi/WemIj3gadK/bKz6aOipNvI8LCjH+b705aw5QG/Aq4mpBaTsxNL4eecd2Kqm3vqHi25sejEsrvxw3Muj7LZTUCWVlZVGTGw+ndadCd9zu9k48gRU/KW+scQoW8E+qoR9UJ/ry00vNxToVFz3EFkzADH2NbVLENV5v+a8ADde60lbPToh+qmNAPXN+6smD3veFPTCXZ0t6yXz2DaTUOsE1YsbY+4tuziQGtAg2unb7R8Cbs4bBIl2062DOGLth+NM72GIKb4KKm1x09jaA6NFt2W/WlVQRqWnvABhrSCpbVo3xt/dEdD8yW950YQ1p9Xbx6ZQwDZFEgA10sCWi3F7B02jj+rBpkqyE6T2AsFsrmTbVJC4lUTSri+nqiKIYa7jUc/z/ePJkHmk2uQXFJ6kPS7fK182dTN7fjWE800qWnkhPZEG4vpYVtgRXGizDwVyCHJGQXC92P/skYJvgKePwfLlRJ6jukRWlYY5SCerj7ufn6uULQvpVQN0+HDInO+b/9+wUbW7fR9y3vtTLZQpWx2fPJIqkwnL9hh+h5qXnZqwLFcYN0C9c0C3CFtcB2epLyYYpLae6oaxWPNwRXSGhaGFEiobMC/llXpNZmhRWfJGVIwMCEV5E6VwzFP/yxtLbbT2JN78nPP+8y1TYEks4PJ9e4rUfb9wpA2Kv5EWGu
- kEeGMknA
- SILhYzg1lvRuWAVFW02iXcQmOmATCa3iBdygjZtHT/p3MeGLqaUZf5B14CAcKm9RhqY6EuhyYacn8lJNCXFSVmODr7UgslbAuUD6AXUOE63EuRG6j6SBHOF/ToURpkFveMkWpqt/qye0579SJyBSwkedzu0F+qDuuW3KoDXE5Lpira40YOApqDpRCM36pYowVUJx34sQrn6IsMyUsWoqykrorXi00tjKDVZB2WUo/aKoHXgCaQmfAUEJ3INVObG7dBACDr2Io96mZKo6Jf6sw4ftm/A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 273FCC000E
+X-Stat-Signature: ebmu9knt3kex9n7kr8ootkxyb6j57kfb
+X-HE-Tag: 1776077232-998631
+X-HE-Meta: U2FsdGVkX18C57YprVZXuVJiBPYuwbbWVnIBptZybcWuy+fqdB7ZwVQLzVFrpLnKgVRge9WbodgOfmcMa9tTFot7P1ZrjwGXdslGKmuVtz2cEIFAffc1GS39MOEQL/VMEHx+n752ZpEwD65fMGyM70ilZYFsTUWKC9Ee519VXhAM5BPut5U/exdVQGrBYxRndW60XYb/B1nJA5RjfD0z80eKip9xDqe93byCTKr9Fj1puIuBNtc/gaN2jBXI8CEVc+yejKkjDMztHCPISDXL6F7h4NGkxHF+5udNjjQ08m3qG4QPpq8hnmrgP08uaWKvHP4xqIbySEMdxtSgZWm6T4kHMjLsi1LYH2FA0ZuXE7wdbyCGQAwFjafCjaITFYgshozkPVclYmLwzEwPTJnbKs5/UTNCp7NJ6/freBdLV0jcki2woRc8t6gXG+h4wQi7c2V0uoW/tsPCL6obi1LZW1vW56Hcv/YApUlGmKEZ3HOYc3xrdaIGy2WzvKIcWq7orRUkyV3x4CFPyaTTiWWHM4V59LLC0AJ+s9LVJLgIfsLbd2XhhjFVR11kWq6R18xm05ZnSDYH+gsHavg3obvxud7fmD47qfzbJsJAEuYQ3zlQHzE9QVnpolo3l/ghR1UTQNGlXr4z6ftts0ZUxtWwwPod6UKOCvRnPphpgElebrlNpSVoaAZkLj/PJsmsAVnZFddxEplBudPgm2X13ZdEt5sscdsF8qWySoJxiFpYqWSnclWPzeI/Bs+B6P+AUE/xcmk0vhvO2vREb9TOVNI3Qu/kvwRtORi57HM0PDLX/Tw6U0v9jROKmb79m5+SvKtcrAdFBaZT6vvgojGHzJeUmhaA/LFBU5Fn6OH62Dn+CnSwA6MnVAKnpSPB19DGRhsD72a4zl1nuvJllbnI5UlTujVc93EkC1rTomBTw1WGIxCzo66zCXj/qYpL2De3TIuZFNSKlfep50JTeYtLowf
+ RbvzhBJK
+ 9zWg++pkkdQB70eice7WcbufnpZetLlKn2l/PLFKKW7ivERIlyZbu4u4dEu5JF/xWut1RmVtaPHqqxeFVV6+Veq/hL+UfI1Qm206bYq7UeexKUvpSzGEU1Pff1p1UfsL42skYpftqBNRzC+y/5kyzw5OUQOkgvH8TaUvo5MaI/EWeu0H1k/ljC3wx4xrKHPdYWozjW6Mv6WfrLotdTJDY4HipJccu0bSm882NC+wSBLqGTW8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,105 +98,207 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-and NUMA-related comments.
+include/asm/mmzone.h was required for declarations of NUMA related
+functionality.
+
+The only function declared there that's not related to NUMA is
+__add_active_range().
+
+Move __add_active_range() declaration to include/asm/setup.h and drop
+include/asm/mmzone.h
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/sh/include/asm/topology.h | 13 -------------
- arch/sh/kernel/setup.c         |  1 -
- arch/sh/kernel/topology.c      | 12 ------------
- arch/sh/kernel/vmcore_info.c   |  4 ----
- arch/sh/mm/sram.c              |  3 +--
- 5 files changed, 1 insertion(+), 32 deletions(-)
+ arch/sh/include/asm/mmzone.h           | 42 --------------------------
+ arch/sh/include/asm/setup.h            |  3 ++
+ arch/sh/kernel/cpu/sh4a/setup-sh7722.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7723.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7724.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7757.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7785.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-sh7786.c |  1 -
+ arch/sh/kernel/cpu/sh4a/setup-shx3.c   |  1 -
+ arch/sh/kernel/setup.c                 |  2 --
+ arch/sh/mm/init.c                      |  1 -
+ 11 files changed, 3 insertions(+), 52 deletions(-)
+ delete mode 100644 arch/sh/include/asm/mmzone.h
 
-diff --git a/arch/sh/include/asm/topology.h b/arch/sh/include/asm/topology.h
-index 1db470e02456..a3c31754ba5f 100644
---- a/arch/sh/include/asm/topology.h
-+++ b/arch/sh/include/asm/topology.h
-@@ -2,19 +2,6 @@
- #ifndef _ASM_SH_TOPOLOGY_H
- #define _ASM_SH_TOPOLOGY_H
- 
+diff --git a/arch/sh/include/asm/mmzone.h b/arch/sh/include/asm/mmzone.h
+deleted file mode 100644
+index 63f88b465e39..000000000000
+--- a/arch/sh/include/asm/mmzone.h
++++ /dev/null
+@@ -1,42 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __ASM_SH_MMZONE_H
+-#define __ASM_SH_MMZONE_H
+-
 -#ifdef CONFIG_NUMA
+-#include <linux/numa.h>
 -
--#define cpu_to_node(cpu)	((void)(cpu),0)
+-static inline int pfn_to_nid(unsigned long pfn)
+-{
+-	int nid;
 -
--#define cpumask_of_node(node)	((void)node, cpu_online_mask)
+-	for (nid = 0; nid < MAX_NUMNODES; nid++)
+-		if (pfn >= node_start_pfn(nid) && pfn <= node_end_pfn(nid))
+-			break;
 -
--#define pcibus_to_node(bus)	((void)(bus), -1)
--#define cpumask_of_pcibus(bus)	(pcibus_to_node(bus) == -1 ? \
--					cpu_all_mask : \
--					cpumask_of_node(pcibus_to_node(bus)))
+-	return nid;
+-}
 -
--#endif
+-static inline struct pglist_data *pfn_to_pgdat(unsigned long pfn)
+-{
+-	return NODE_DATA(pfn_to_nid(pfn));
+-}
 -
- #define mc_capable()    (1)
+-/* arch/sh/mm/numa.c */
+-void __init setup_bootmem_node(int nid, unsigned long start, unsigned long end);
+-#else
+-static inline void
+-setup_bootmem_node(int nid, unsigned long start, unsigned long end)
+-{
+-}
+-#endif /* CONFIG_NUMA */
+-
+-/* Platform specific mem init */
+-void __init plat_mem_setup(void);
+-
+-/* arch/sh/kernel/setup.c */
+-void __init __add_active_range(unsigned int nid, unsigned long start_pfn,
+-			       unsigned long end_pfn);
+-/* arch/sh/mm/init.c */
+-void __init allocate_pgdat(unsigned int nid);
+-
+-#endif /* __ASM_SH_MMZONE_H */
+diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
+index 84bb23a771f3..6bd5b0d87abe 100644
+--- a/arch/sh/include/asm/setup.h
++++ b/arch/sh/include/asm/setup.h
+@@ -23,4 +23,7 @@ void check_for_initrd(void);
+ void per_cpu_trap_init(void);
+ void sh_fdt_init(phys_addr_t dt_phys);
  
- const struct cpumask *cpu_coregroup_mask(int cpu);
++void __add_active_range(unsigned int nid, unsigned long start_pfn,
++			unsigned long end_pfn);
++
+ #endif /* _SH_SETUP_H */
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7722.c b/arch/sh/kernel/cpu/sh4a/setup-sh7722.c
+index 2180819a1455..5e2c24c518b4 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-sh7722.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-sh7722.c
+@@ -16,7 +16,6 @@
+ #include <linux/usb/m66592.h>
+ 
+ #include <asm/clock.h>
+-#include <asm/mmzone.h>
+ #include <asm/siu.h>
+ #include <asm/platform_early.h>
+ 
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7723.c b/arch/sh/kernel/cpu/sh4a/setup-sh7723.c
+index d64d28c4f059..5c24ff407c89 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-sh7723.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-sh7723.c
+@@ -17,7 +17,6 @@
+ 
+ #include <asm/cacheflush.h>
+ #include <asm/clock.h>
+-#include <asm/mmzone.h>
+ #include <asm/platform_early.h>
+ 
+ #include <cpu/sh7723.h>
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7724.c b/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
+index ef4b26a4b3d6..9441e4a0f402 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
+@@ -24,7 +24,6 @@
+ #include <asm/cacheflush.h>
+ #include <asm/suspend.h>
+ #include <asm/clock.h>
+-#include <asm/mmzone.h>
+ #include <asm/platform_early.h>
+ 
+ #include <cpu/dma-register.h>
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7757.c b/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
+index 1f4396da00e5..3750b598d6bd 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-sh7757.c
+@@ -21,7 +21,6 @@
+ #include <cpu/dma-register.h>
+ #include <cpu/sh7757.h>
+ 
+-#include <asm/mmzone.h>
+ #include <asm/platform_early.h>
+ 
+ static struct plat_sci_port scif2_platform_data = {
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7785.c b/arch/sh/kernel/cpu/sh4a/setup-sh7785.c
+index 95c3cc15a443..13f08c44fb02 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-sh7785.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-sh7785.c
+@@ -13,7 +13,6 @@
+ #include <linux/sh_dma.h>
+ #include <linux/sh_timer.h>
+ #include <linux/sh_intc.h>
+-#include <asm/mmzone.h>
+ #include <asm/platform_early.h>
+ #include <cpu/dma-register.h>
+ 
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7786.c b/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
+index a46d6c3241a9..79484c598b83 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-sh7786.c
+@@ -22,7 +22,6 @@
+ #include <linux/sh_intc.h>
+ #include <linux/usb/ohci_pdriver.h>
+ #include <cpu/dma-register.h>
+-#include <asm/mmzone.h>
+ #include <asm/platform_early.h>
+ 
+ static struct plat_sci_port scif0_platform_data = {
+diff --git a/arch/sh/kernel/cpu/sh4a/setup-shx3.c b/arch/sh/kernel/cpu/sh4a/setup-shx3.c
+index 3197ec2a65cd..93cdd1ee888d 100644
+--- a/arch/sh/kernel/cpu/sh4a/setup-shx3.c
++++ b/arch/sh/kernel/cpu/sh4a/setup-shx3.c
+@@ -13,7 +13,6 @@
+ #include <linux/sh_timer.h>
+ #include <linux/sh_intc.h>
+ #include <cpu/shx3.h>
+-#include <asm/mmzone.h>
+ #include <asm/platform_early.h>
+ 
+ /*
 diff --git a/arch/sh/kernel/setup.c b/arch/sh/kernel/setup.c
-index 039a51291002..5e25c1db4d61 100644
+index 5e25c1db4d61..2f2764061003 100644
 --- a/arch/sh/kernel/setup.c
 +++ b/arch/sh/kernel/setup.c
-@@ -227,7 +227,6 @@ void __init __add_active_range(unsigned int nid, unsigned long start_pfn,
- 	/*
- 	 * Also make sure that there is a PMB mapping that covers this
- 	 * range before we attempt to activate it, to avoid reset by MMU.
--	 * We can hit this path with NUMA or memory hot-add.
- 	 */
- 	pmb_bolt_mapping((unsigned long)__va(start), start, end - start,
- 			 PAGE_KERNEL);
-diff --git a/arch/sh/kernel/topology.c b/arch/sh/kernel/topology.c
-index 2d2a7509b565..906b7b1d5443 100644
---- a/arch/sh/kernel/topology.c
-+++ b/arch/sh/kernel/topology.c
-@@ -57,18 +57,6 @@ static int __init topology_init(void)
- 			       __func__, i, ret);
- 	}
- 
--#if defined(CONFIG_NUMA) && !defined(CONFIG_SMP)
--	/*
--	 * In the UP case, make sure the CPU association is still
--	 * registered under each node. Without this, sysfs fails
--	 * to make the connection between nodes other than node0
--	 * and cpu0.
--	 */
--	for_each_online_node(i)
--		if (i != numa_node_id())
--			register_cpu_under_node(raw_smp_processor_id(), i);
--#endif
--
- 	return 0;
- }
- subsys_initcall(topology_init);
-diff --git a/arch/sh/kernel/vmcore_info.c b/arch/sh/kernel/vmcore_info.c
-index a244a204a1b1..9f029b4a7e63 100644
---- a/arch/sh/kernel/vmcore_info.c
-+++ b/arch/sh/kernel/vmcore_info.c
-@@ -5,10 +5,6 @@
- 
- void arch_crash_save_vmcoreinfo(void)
- {
--#ifdef CONFIG_NUMA
--	VMCOREINFO_SYMBOL(node_data);
--	VMCOREINFO_LENGTH(node_data, MAX_NUMNODES);
--#endif
- #ifdef CONFIG_X2TLB
- 	VMCOREINFO_CONFIG(X2TLB);
- #endif
-diff --git a/arch/sh/mm/sram.c b/arch/sh/mm/sram.c
-index 2d8fa718d55e..208080f072df 100644
---- a/arch/sh/mm/sram.c
-+++ b/arch/sh/mm/sram.c
-@@ -16,8 +16,7 @@
-  * This provides a standard SRAM pool for tiny memories that can be
-  * added either by the CPU or the platform code. Typical SRAM sizes
-  * to be inserted in to the pool will generally be less than the page
-- * size, with anything more reasonably sized handled as a NUMA memory
-- * node.
-+ * size.
-  */
- struct gen_pool *sram_pool;
- 
+@@ -23,7 +23,6 @@
+ #include <linux/smp.h>
+ #include <linux/err.h>
+ #include <linux/crash_dump.h>
+-#include <linux/mmzone.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/platform_device.h>
+@@ -41,7 +40,6 @@
+ #include <asm/clock.h>
+ #include <asm/smp.h>
+ #include <asm/mmu_context.h>
+-#include <asm/mmzone.h>
+ #include <asm/processor.h>
+ #include <asm/sparsemem.h>
+ #include <asm/platform_early.h>
+diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
+index b34ba42d1e18..31a9676efbe3 100644
+--- a/arch/sh/mm/init.c
++++ b/arch/sh/mm/init.c
+@@ -20,7 +20,6 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/export.h>
+ #include <asm/mmu_context.h>
+-#include <asm/mmzone.h>
+ #include <asm/kexec.h>
+ #include <asm/tlb.h>
+ #include <asm/cacheflush.h>
 -- 
 2.53.0
 
