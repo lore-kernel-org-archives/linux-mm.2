@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ED3CF34C49
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 12:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EB96F34C49
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 12:12:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 835E46B008A; Mon, 13 Apr 2026 08:08:06 -0400 (EDT)
+	id 925D86B0089; Mon, 13 Apr 2026 08:12:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80D6F6B0092; Mon, 13 Apr 2026 08:08:06 -0400 (EDT)
+	id 8FD3B6B008A; Mon, 13 Apr 2026 08:12:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A5B6B0093; Mon, 13 Apr 2026 08:08:06 -0400 (EDT)
+	id 83AC36B0092; Mon, 13 Apr 2026 08:12:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 665A36B008A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:08:06 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DBB6755D16
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:08:05 +0000 (UTC)
-X-FDA: 84653409330.24.775B818
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 13F7240011
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:08:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LJOkfgOT;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 74D096B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:12:00 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1EFB1C05B8
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:12:00 +0000 (UTC)
+X-FDA: 84653419200.22.4AA608C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 47A6440003
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:11:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S0yAr08U;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776082084;
+	s=arc-20220608; t=1776082318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Is2KXjxOlWlFMdiKgVP+mDitijxmzGG2jEtm60EOepM=;
-	b=zwt80vYgBHjRMBEB57SLYIwjJPBnjzSsqAFIxgJ65GSWKVInDorDnRlWRM9cYQK0yzvNyf
-	DLZ+10lKeEXlLkOyp0Hglc1mjCztx9ZuxnZuG6DScyMvqj6JS8dVxsHFuXmjqa3ZirXzvm
-	cN7hydwujga7heZBpeUf9HD2zHV8LU0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776082084; a=rsa-sha256;
-	cv=none;
-	b=MLWrhlq3Ro2A+I+CsXedTWYMR5c373RlDa1VScFkZZYS+VD4X0yYCFgGJPPlizlT/i7EKf
-	q5qRu4qE8kl33p364TKRKBde/Z6mpnp5knHruzddqJ/so8nP63lZubQUto6q1s7ZPghys3
-	spb8/lpALnmfm7Hj/D9anid1+Xa4On0=
+	bh=aEEQkaH/BtSN7lthjV2TiLZ+ApswIvgniCPlOrEcRM4=;
+	b=tefEVYCykNdfrJ6hOoMCC5wFBqrCOwno/SuEXmvAD8gwOjj74IQjDJHxmBi8YRQPPpvAWr
+	P7RqR0OA4Gc1TGgRyy8VBT7/G91+IbmyRkcX1ENJEYQ4+tbJgLG1mBcWLSevv3enWlCl3j
+	SyNBVP5VUIkrbxJWA/YvmhLmBou67CA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LJOkfgOT;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S0yAr08U;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776082318; a=rsa-sha256;
+	cv=none;
+	b=DIF6Dz3YsrDZ7mTWMUgRSr/UtDzZa92W8AEfomLGy0k83gMalO+fK7jNqbDJB8Jl6sKluI
+	v+uRiTynWGBiJ+1L+YCJVq8j3zT8bw7XdjWe+e40XRzAt6dsruVXrr6oFA9W1I0XH2xPhW
+	yhRAcANUgB4lbbzPOYD3wXExNEMKqig=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 704C460172;
-	Mon, 13 Apr 2026 12:08:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FA4C116C6;
-	Mon, 13 Apr 2026 12:08:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0428740863;
+	Mon, 13 Apr 2026 12:11:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43CDC116C6;
+	Mon, 13 Apr 2026 12:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776082083;
-	bh=CzuqnndQaPPPqjUDcHDOFEdKl+Mhkbc3sMJIr2VoIz4=;
+	s=k20201202; t=1776082316;
+	bh=cPdjbkwgMbN+VgL2rPaXpYq7s7kGzAbIz9UpEqUzzOo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LJOkfgOTVXrByY/YCoNU6lu20MscwD0d2ytYtsb2/Bx8O3lglxw9ocp+MCjOUI8SA
-	 aNET5mN7fRkzdWMeMtQ8XNNRzw86YA117Zh2sNgDQqjsYxVWwag/+ZTLcs0CaXBP9+
-	 royIUr8We6OGDaiHGedLn8kpKo7cY+MBFSad0NRPh584IBJoVDCqBVmhz2TAW4urLp
-	 xTqIV+Psi5JFa2+MbdOh6qHfTkk8nMJ0pS2pcLOV8JV7IFy/VEBWOsN+b2L2Kny255
-	 WpRbus1Rh+UnC9UePIJRzB+HcOlS/VAxE+Q5sfi4jzhI5l88JecKsT9VgkVGm9Gzn+
-	 f1yEVSquZdx1A==
-Message-ID: <80db81dc-99a5-487c-99d8-3ff5a687714a@kernel.org>
-Date: Mon, 13 Apr 2026 14:07:59 +0200
+	b=S0yAr08UViSRm2TYvimSu0pT2PUTswB7jZHWxAVTH2aGoZKOA5MLddB2to0FjYK7h
+	 UeV7+4VuvgrXi2LXqIQeT45FD7WpLHBP7tyOxUJUxBBvMHo8jqR9P+GvkeK5AKUCxJ
+	 ts/eDEpSuy/TdvX+a7BxJL53TjlShuDPj7v/pyjXe4I9MCn3jUzvO5zMpXadsSYe0g
+	 c/UZKQ5GicYWhNI6MdCiEeg6m/o00+tZQgdvIwXf5kFY5vZZTnA81d8CwBSRbj7C58
+	 0crIq7DUnL0fdgfNy7Id3/27v6B/7Oi3Elx7EAkbxnARbTnNcSWry6fyrPeU3ZbM/x
+	 4rpucJ+0EA62w==
+Message-ID: <918239a4-a759-409e-a9c7-1d8d11912f56@kernel.org>
+Date: Mon, 13 Apr 2026 14:11:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] slab: decouple pointer to barn from kmem_cache_node
+Subject: Re: [PATCH 0/3] slab: support memoryless nodes with sheaves
 Content-Language: en-US
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>,
- Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- David Rientjes <rientjes@google.com>,
+To: Jon Hunter <jonathanh@nvidia.com>, Ming Lei <ming.lei@redhat.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+ linux-kernel@vger.kernel.org,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
 References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
- <20260311-b4-slab-memoryless-barns-v1-1-70ab850be4ce@kernel.org>
- <f29c0348-0250-b34b-59df-9dd59e4985ee@gentwo.org>
+ <abE6uqdzMUv8k0mU@fedora> <8ab58ecb-1fc1-42a1-b67a-c3107de2ece4@kernel.org>
+ <e7e4ea66-49cc-4996-a638-25f6cb08a42d@nvidia.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <f29c0348-0250-b34b-59df-9dd59e4985ee@gentwo.org>
+In-Reply-To: <e7e4ea66-49cc-4996-a638-25f6cb08a42d@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 13F7240011
-X-Stat-Signature: d8p3xh414h33i73wxtpz983ny3ukxdug
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776082083-96596
-X-HE-Meta: U2FsdGVkX1+gq3iZmRGxDdMZUERVgLLPG4yhVkaC96w26h68MWsJiVh0Ow03sN+RxjU+6S7OH24BvWhunPXD9rKQrzUL2k1lveYSLi+zulFtYFRGk3ZAKzoiEJhua4TJ55R5s7Oye4/0yrC/0X7AWSxMtRMmeLWaeHzXZ8BXSpwiw+jSZA8AdE1iQU5jJani9I2L4TkOCOxuyPPdALgBfZbCU8bzRJROy+WkVdbK1jpMeTe3EOD/e7jzY/BVAVkkUkGTDA3/W3PYKitdgk/HL0P7Dh0v6Tj7SJmqWH+ItbTQiQjEr0xS99J+2DhFYDUuCX4AcPE3ns1XkSRHFQdJJi8sEwMASsMIIVfzLuNh8rXaGI7apKfXT3E6AQ6SXdfZuega5VM5Jc6ySe/6Lpex8x5A5qhjBPXlVeXPcK3CkjqbEjgJNkDkL3OjYAtR9Y4aTq8FYbphAPBZScijbl6mUbfpRLG2RpTZw1At77jGtob6yYQTbAMVyHMVWd8uMdNt419FfU2eTICDmoU67kstbhrSpX8gfFQ9I/kyu/4Up3exRmn/GHAy1u/nGdO9twvRzvIEk/2p1e/wT7t8ilVof1sY1YQK/U5K+mpwhMDvVpw4S1g1GdhfNZ+Jigyt9CcX42zV2jfPVwrw599CyFxL4jbqBHYVtfWXO+v8Mb5nVQt2IHi29rm9T0Jemh55PZHhriTAb5ZBdfIKTxq06apbO9AA0FK9qUoVFgBT+47ky4tn1UHYFcuKaWSjyaokFMXBjtGPOR9sth4NSRZgyB3CmgQd4cjRKSVPJVVewtuOdoJ3x8oYJd1qvoEtmOJV9NC4Gp4rktyQPAkMr7+5FhHNGrpeJhmHYzsI0S0BK9UF8XMRlq+i47fbJY6lkFnR0Z1ksz4eJgzEZ8i+Mtp3uinIeXoo+ZQZ9SARh7NIz3QNpIhv5+sP6+R/sPIUImE+nhrl8swJ+fRdWwBAsRTIJZd
- 3PR5MEqN
- 5Tqs/Trjjzs5v4PfiglSpcZ7m+BOq+GQ4OYbLLZt+x0Unt80SgjXEVrVFfULlWIBxK0kbnKAafwkZsrzzCSkTI7MzE7EJHSs636vrUnjfY7T5NoGsf8qVH6PFVNuI2dVT5Fz1Z+abK7xQuCMBPSV7oc2+x7ka+30Xi5U7ZX2JRnBYfpYn9plCbRwoDE2WeklkWOnXkhGGdBLJ0GRisjI1WleQuXxDf0+Lup6fCgWWJVVq72nRIa2fEciOI7VfbiiAeN/FNpzTrnjmad33vyHyKuok4419jXbybtghmMsf30Itc1U=
+X-Rspamd-Queue-Id: 47A6440003
+X-Stat-Signature: wk6qm9c5xq61hz45rn5j6bw8uc1cpkcr
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776082318-707960
+X-HE-Meta: U2FsdGVkX1/wB8yGEQ9htNXNV87ulpga4lyXLNVag5bsviogHvWh6OcPoKIXtDtrHICwdHHccDEwDgKvJ2iOtaevn6+vojrHRoy598o4QEDMn7HGGvXot+sQoxoMZaqkWXJSlP1kKicbI1ZzDELN77nPEUEdyv4K1Md/6UC1JvxRPfqLl8EhSkrNfBzRL7zS6ZOoF0hX8EW9n73rIvXaXwbkQZKbaB3swQLhaslYAdwarO4Zq24S7MG4F/Dioad0/bp6sjtRR9nGLx2gahwf/51LhWzDC9zjwK0+++8PsqynixJKhHRrAnIU+eLtQVClAKfj9dZ8EXyBlyRcIGrmkCxg5at2ytfzQdpWNcpSBXiFe0GWwZn+QEXp/MBuhTScV7ZLCgNAaL0EYiFvT0U8lAHi1Ny4evKg4P+BjteqUuVR012nizWTmvQac1BDo6rur68QH45rK5wyD5IZ9wqRW/naY1QIMBO81Db9RHJcu+EKqUW7Pl77HwBNuBr7NP8Hdf57aUF5MAlZStjCMqsqPatGYt6XsPeV5AmRSUyimI+NTifn4ipAjachAf/zJgxWp7SdQ/GtK/qUbLF4SxgYMQzFMOY4A7OQWijv9eGgoIyfmd5vuKUlrgh1QnfaiQAJF7TRXxndUKbs5Mz7vHiZmG1qalpyqA5I+uHY3v9ijSYXlxdEYpQCxNJilj/kyyrOOdaK/AthsBUKljshDWqHguRChgJ+/7pR6ziEHBrF2Vz1K/f84Uy8XF0lHoir6DInn7lwgjm0fRtPy/XUSCH0RmaZRB2cQixWJb8Mf34zAiUgqRry9JCbb3cm8oc995ILNCLoVln2G9OnnG7YcMDJXig7utE/nrohhqd9gmD4UfYafvkLBdzsT3YYdKNksF1UPGpvAhuBJ8Bbo5OA4+sq1zKXl/vDUgleySpsBbmPxUMzYHWaGrvef1n/Jb1YV99yA6foxl7xuk54uEQ7EMX
+ 1LYy85fS
+ ix7ZEs81HyeRZEBGdoBF5A1cpGQBeFIvvWfpzmsbzWNsH4Y7ChzxZPZKezuolbsEzut7/pv0Z6A5phzt3YnuyYJCmnAeZZqN3IRi/xzeGz3Ezc5k77/MnWWharyHGacwBJP5MU2lP0ZHVuBFnIN40vGvFpTokWryCcGLMVuuz63fjm5QrNfDkyuNhp5SBoJbveIZSLzu0DaAyw2VFsABTaljT/P1Yrsoj0FsGwvLPUDvIrg0sRazAKgwzT1apruTJGYOeOENmsGgIjUO/2fgiLQCfNvGLx7G9ktsQTNVP4v2ro6w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,37 +99,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/10/26 12:12, Christoph Lameter (Ampere) wrote:
-> On Wed, 11 Mar 2026, Vlastimil Babka (SUSE) wrote:
+On 4/8/26 15:04, Jon Hunter wrote:
+> Hi Vlastimil,
 > 
->> The pointer to barn currently exists in struct kmem_cache_node. That
->> struct is instantiated for every NUMA node with memory, but we want to
->> have a barn for every online node (including memoryless).
+> On 11/03/2026 17:22, Vlastimil Babka (SUSE) wrote:
 > 
-> Is this breaking the 1-1 association of kmem_cache to numa
-> nodes?
-
-Assuming you mean association of kmem_cache_node to NUMA non-memoryless nodes?
-
-Indeed if we didn't separate pointer to barn from kmem_cache_node and
-started instantiating kmem_cache_node on memoryless NUMA nodes, it would
-break this 1-1 association. But with the separation, it shouldn't.
-
-> I would think you needd local per cpu queues on a memoryless node
-> for performance but not fake node structures.
-
-"barn" is only for handling per cpu queues (sheaves), not the other per-node
-structures. On memoryless node the sheaves will hold remote objects (as
-there are no local objects) so it's fine that there's also barn for sheaves
-with remote objects (and empty sheaves).
-
-> Per node access is already
-> serialized via locks and therefore slow.
 > 
-> If you break the association of per cpu queues to cpu and kmem_cache_node
-> to numa_nodes then the code may get complicated.
-The sheaves "empty on alloc"/"full on free" handling code would be more
-complicated if the barns didn't exist for memoryless nodes, so it's better
-if it does. The kmem_cache_node with partial (and other) slab lists keeps
-not existing on memoryless nodes.
+> I have also observed a performance regresssion for Linux v7.0-rc for 
+> some graphics related tests we run. I bisected to ...
+> 
+> # first bad commit: [e47c897a29491ade20b27612fdd3107c39a07357] slab: add 
+> sheaves to most caches
+> 
+> I came across Ming's report and hence, found this series. I have also 
+> tested the 3 patches in this series and it did appear to help with one 
+> test, but overall I am still seeing a ~25% performance regression (the 
+
+Hm with the numactl output you posted, such configuration shouldn't be
+affected by this series at all, so wonder if it's just noise.
+
+> tests are taking about 25% longer to run). I am not the owner or author 
+> of these specific tests and I have not dived into see exactly what is 
+> taking longer, but I just know they are taking longer to run.
+
+Are the tests available somewhere you can point us to?
+
+Thanks,
+Vlastimil
+
+> Anyway, I have not seen any recent updates on this, and so I am not sure 
+> if there are any other updates or what the current status of this is?
+> 
+> If there are any more patches available I will be happy to test.
+> 
+> Thanks!
+> Jon
+> 
+
 
