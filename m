@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007A4F531C0
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3D21F531C1
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 18:39:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DA226B0089; Mon, 13 Apr 2026 14:35:15 -0400 (EDT)
+	id 245966B0098; Mon, 13 Apr 2026 14:39:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28ACC6B00A3; Mon, 13 Apr 2026 14:35:15 -0400 (EDT)
+	id 1CFAC6B009B; Mon, 13 Apr 2026 14:39:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1799D6B00A4; Mon, 13 Apr 2026 14:35:15 -0400 (EDT)
+	id 096D16B009D; Mon, 13 Apr 2026 14:39:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 06B946B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:35:15 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B5B2257AC7
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:35:14 +0000 (UTC)
-X-FDA: 84654384948.15.156197A
+	by kanga.kvack.org (Postfix) with ESMTP id E77AB6B0098
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 14:39:49 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B3C83E01F9
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:39:49 +0000 (UTC)
+X-FDA: 84654396498.02.330110F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0424240002
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:35:12 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hSqxz1wq;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id EC78E1C0007
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 18:39:47 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEDQuqIW;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105587; a=rsa-sha256;
+	cv=none;
+	b=gautWlPiVXBCzijzOKLS1X+bnIaSSEwbcfI0qxYc0P6NDlWB4gu7DqqA+9d78CbSc2gW7H
+	9gDE7hznL4SEn0MBKJXJYkxJhKmYPQ1c6l/TCOhl1JsMsVcj3A/DvvnPRsypXMk0tNPre7
+	YGc1jZndx9I+LT2l3D3Yw5K2USr1g5A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776105313;
+	s=arc-20220608; t=1776105587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=emS9h9SsHUsj8hR6Z4Z7761tXh2GMkn98Pw5sqBFMdk=;
-	b=UWJXLiv/sSH6LehUxH6XBt2aCISmVZrlH2RJkSKbqxX/gxdsct/iELUv20KUjhdlxN4OCI
-	0cOjgyJuN7UwYi0Soc2EneXWEOYo9HTv7oueG/djeG410ZnmErmtrjw6qlaDkJDGq6tsej
-	t0fe9G180e2eVdY/X813nNmJdAHfEGI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776105313; a=rsa-sha256;
-	cv=none;
-	b=8Z3OHSPozEPH77pGwUWkb020sCF/b65Y2WOKSNdmoWjHrl49LDoQm3ebbuBi4sdwwK65Bb
-	Srx/uq/BZDliOfgxnuNtTzkuQpNG+H940Ws5syjJzWhsSJmQtaXX28CeDEMIRNW7G3SQ9K
-	EnzqOTuvWiST33LY7p7amwOLaPfCdF8=
+	bh=O/hrFqndwJtN2pq3357Wgsw7hOLsXaP6RS7BTWcmses=;
+	b=O8O/sYs5HTL2hnpoKd/sAwdj5mWiy4tX9mFnqpKwIKgxpC2NT1gWZEEv09i8UoHL4NN3kG
+	xfDvwP4QYZhDs3h3JZ8iPqJmH1HO8xLPS7+Zzbj+H2Pudedhqd3ciVKQteOQTofRZSDbE/
+	mgpJRd2w9aW2RztFrmf+c/8/SceWOus=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hSqxz1wq;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEDQuqIW;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6562B6183C;
-	Mon, 13 Apr 2026 18:35:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90406C2BCAF;
-	Mon, 13 Apr 2026 18:35:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 393256183B;
+	Mon, 13 Apr 2026 18:39:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5133C2BCAF;
+	Mon, 13 Apr 2026 18:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776105312;
-	bh=QlkC+Nb3eufRhvEx7dHbKvueJitX1g7CjlX7z9V2ABs=;
+	s=k20201202; t=1776105586;
+	bh=RLos5eu/k4OkgzYUfoZ0rIuWLWwHtGR4/FZoPNAg1WQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hSqxz1wqjzil05kMy/UZtG69pcoMl5JhqTFqv2BL6HlY42Gopl08qfZLvt7OIHZT5
-	 jxGGq5iDz7HgHk4T4ssMVg6C4tlCDyWu9Q/fTjmfpXdGiXXkxkkDG8Rwnpzu92rEW/
-	 wsIL4kt3XSvaMABjYTlARUO3gWB40dTSk7vyYoq05XMXg5WgJjgYgEDMVAo6Eizw/O
-	 1TqrpsbRExmEIJP1Oi97IRLvGOsqoTo9BnJeLZZOYFbVx5I0s/0ra4112T34uzOnom
-	 5ocYASrGBqDefYJy2Z293syYv5sVu9wyEXJWId5VPR2+i/igTHfY04gWAnDyqayqTJ
-	 tWerozM0ER2Gw==
-Message-ID: <2f092c37-95b3-4206-9866-f844273ed1bd@kernel.org>
-Date: Mon, 13 Apr 2026 20:35:02 +0200
+	b=AEDQuqIWbNe2wApXlo2hjS3KG2iI6BUI+d43CmYsPxHWaB0Xp8Q1CmWRyCuOn8AOR
+	 W80aa/DJ0JML556anny4PaJf9/qzUrMUVKV9x0G1GtM/65FxhvZ0/Tbzegg01cq40G
+	 Tt9HzrLP+eNfs6t5Z6lhSxABkcKSOAV1G7nUqN2Us5kpYLAonYwjinOGRledZE+tMI
+	 bncp1C6Hpjq3PX0gSCkdiWcgJ1HKr+CKtiDQG6H3UhpmJCLRXy5NOGIPXNUVq2sxcY
+	 eSp629TYMGMXrJJ9oEibCVRH3n47w9cuFeSL7xNReoqqr2qoGyLd7/tbatyAz2KaDd
+	 3RJ8Gg4R8bbsA==
+Message-ID: <d44ff75a-a1bd-4a28-8e8b-0b008d24d41b@kernel.org>
+Date: Mon, 13 Apr 2026 20:39:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/49] mm/sparse: fix vmemmap accounting imbalance on
- memory hotplug error
+Subject: Re: [PATCH 03/49] mm/sparse: fix vmemmap page accounting for HVOed
+ DAX
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
@@ -83,7 +83,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
  aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 References: <20260405125240.2558577-1-songmuchun@bytedance.com>
- <20260405125240.2558577-2-songmuchun@bytedance.com>
+ <20260405125240.2558577-4-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260405125240.2558577-2-songmuchun@bytedance.com>
+In-Reply-To: <20260405125240.2558577-4-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ikj39ewc9wwp6mt4io5ppmmtjsik1ajt
-X-Rspamd-Queue-Id: 0424240002
 X-Rspam-User: 
-X-HE-Tag: 1776105312-618886
-X-HE-Meta: U2FsdGVkX19EftobRnYjBBM5vVZWfKozxepz63UlAEx7PdvUldM2tdnjwbHHQz1VGeYLtmpIDqt8VAQV99xdsuSFuWiNsNpOSHlkOR8qpBxdegek0H4jBL1rRSIif9RHZoCk7iRE6j5FqjD+REiVWi++JwyWFGUwNSIotDbx4ostfVMtHItiZAe5H+5LvhHodcBL/MyXtoHvQetcNP3RrGBDx8qyUJqbN+ND3Q2BBqKpN6qjsxEkNLxNXnlCd+RoRV68vvmBgaejR8OKZ5UJhmYV7yeeNyVHZ557FkRPO7oVUs7SIXzs1hriTe46uG3nAMjEm7X/w05mtdqW7eaLdSJYlJogertkdYWb9hTLTbP+ZqnJlR9FkJNqnfTaG9pTzO5pXcYGCO3o1BxupcLKGID8hqJjW3uXbwuk/VRRUSJyn8ycqMOEPHec0i9/yVRBCBZcbk2xAUB9fG9TkySoSwYEHEOnX7PqfNYtYpQxQx+/dZv4nVfR4UvAXcAZNfCVQnxWoOND1yWdMT7CJQsywGef1RYI81//lhUVChkQWFLbJP5lJXCUOdEeQDgABDVsu71lw+S80qFEaqw4kqaNhj8ZhsmXLgmepxcjEIpsYrG8YPGJU63AWIwQiog89YVmRCIOS4514X541FIt3A1Ac4sVzCDARqEHBg4l0XNRG1TrHpofTg3vy7rnSpkzWw/YBVJZmfMN+bvGuG0eFLlAH950Qw613KAQ7FxKiK4YsHJSieCLyyxQIcpGc0yftRmIquFN4+icISnZzje2yCsH7uyCUHgUXWn7nFOEv8ceI3BzXjxWI3tl6xBW+A7nmj4wqLo/Eqa89193fOscemdhrPsPC36gv3q44+8QnHsGny07jhAdp60Q0x5SWdHOextztbmHle1WkuB4FFBoHiaOZA0iaHu31/+HS9qxi/zCJlkMmExTbYz/PYETaiQylaZ7FkCOs7YstP81P79PTVu
- La1b1iOk
- ZogUBxkK5dRCr7lDVMMXdodGy7ZLSL71QEUStxp2Rv9Z4oKpdDBG+hyLlQYZZ6a9wQ201wDo0MPDgF3bQNlZWel5+RviyfLt899vDCFfEHo8ok01o0qzhv7Zij1zAxRrRLQrV0hhQHzl5UeLWat7+uQDDvq2RdcZ2yYfpskB9pTBPTxHDpkbsJyVLVMYJkCD0Py3xSRnEchJzvS+vwmyzpdbxvdWSvk/xvErofPVy2LiCjMnnurFvmoZf9OpmLdKOvURjzDpBqwKZwbA3bASWujo93g==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EC78E1C0007
+X-Stat-Signature: a338jwccntobrm79pbr8wqbhszh46x4n
+X-HE-Tag: 1776105587-27980
+X-HE-Meta: U2FsdGVkX1/wo9QrcnbcBrM6AZ6wBPyqbBDbwNPB4p2D+XNvZuzpRrVNx/1SP8Fye90A/ckbMN6RTgweOjSBG5iQTZV9shqKqhVg1Gzx3rwx8vJo+NtkHR5sF6bcK4W1lHzKqPp2c2rgsu8MRyhlp0T1aFgIGVkJ4Vsh0t7CVlH6PMzzKBPLbsA8xqZAhCZOzCRRyXdx0PQfx7HjxgsmOPShpcJ2VxwrOhkSnNPDGaJ5A2Hi7cb4ssre5Pd63aEHutdEmFtVxqXLK7Xg8t6PsWILkZq7O7sgR/4EoB5H96MjmdM9OpIdhhr8Ljy5XQhLWXKCI3D0QhZz3K3nWtXwKyMv44RfdrIQgfyo1fZuZr+Hhvkl8LkURvQAEAcg7jHM41ADJe3sX9M7+nxbtHmAPzcdH5iF+34h4wMFPIadTwQEzHxMQ9hIQ8nLmJTaaw00vTS1o8S0cFrzGBiaJO3Np/Obvi4k3123DzbvnUNp4Z3aVHN23zhaldeQ6toUa5ITWQ+XKYom71G8L7imGSi2XKxbeFC1Ry6/MJS+SRZ8VAicoHm6kQGOO4/k/U/jFSacGmznqD6q5QjNLSwt/s1n/Jf1oMPHNk85jLLM5+/qZeDc+EfCbSRKBPNYsLEhi/mphhEXk/SEi8wiB3SMWcqPa9RLBLo3U/K/cO1P4ANZdrunzv3JVNfFBK00Vy+a2haTPxNBGkZpCAutmbHV+wLzalzET0DX49+QPBPVgEuv5TzZiD1/7d3jeLS1kBnzw+acG8X4WflZZLD8r682vPIdAXQTtsLaaOs+vngDeUuzLscVbGBmJEdoJ00H3Veb3DFWrd/HfPmbtO7nJWEJclEeIPqgrRGbmi/y80mQZ3ugLQScZu6UO0HpwW1amDpkyi7TM77XcLJXtafL4j+BLrSDMgP1RrcTcqC8XH1Q8+xGzCtyDyM7M+ySHfR5rhVq9O+P1N7TWKtmjL8TJKYH5h5
+ /jUaSd1I
+ 16ETcor8vdcP0bXIcgzUY/dJ31H6910mWM+D3gx98IXNoZNuO8V3yv5f5pLfMfzqQAWW/XWV33t3M6MoMmuP8Cs9Cj0tBvnwhY/J6EP1/5sr/usUJp+s4LEH4kvywly3UJYvZWpJO/hQM0yMvTAa9EmgGpi5GWPyIaGBKXh63+v8uBhACDSN1J8WJwG7ID8kkoSSIE1MtSFem/vsySDi4HbrxV4YDaqwIDYhEJ9BuOvxWCZKCugPQ6fo5uw1XVhHKMbrVzlrRGR7EwStp2tNU+ILuXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,30 +149,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/5/26 14:51, Muchun Song wrote:
-> In section_activate(), if populate_section_memmap() fails, the error
-> handling path calls section_deactivate() to roll back the state. This
-> approach introduces an accounting imbalance.
+> When HVO is enabled for DAX, the vmemmap page accounting is wrong since
+> it only accounts for non-HVO case.
 > 
-> Since the commit c3576889d87b ("mm: fix accounting of memmap pages"),
-> memmap pages are accounted for only after populate_section_memmap()
-> succeeds. However, section_deactivate() unconditionally decrements the
-> vmemmap account. Consequently, a failure in populate_section_memmap()
-> leads to a negative offset (underflow) in the system's vmemmap tracking.
+> Fix the accounting by introducing section_vmemmap_pages() that returns
+> the exact number of vmemmap pages needed for the given pfn range.
+
+I guess only the accounting in /proc/meminfo is messed up, correct?
+
 > 
-> We can fix this by ensuring that the vmemmap accounting is incremented
-> immediately before checking for the success of populate_section_memmap().
-> If populate_section_memmap() fails, the subsequent call to
-> section_deactivate() will decrement the accounting, perfectly offsetting
-> the increment and maintaining balance.
-> 
-> Fixes: c3576889d87b ("mm: fix accounting of memmap pages")
+> Fixes: 15995a352474 ("mm: report per-page metadata information")
+
+Similarly, please send all fixes out separately.
+
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
+>  mm/sparse-vmemmap.c | 30 ++++++++++++++++++++++++++----
+>  1 file changed, 26 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index 7aa9a97498eb..0ef96b1afbcc 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -724,6 +724,27 @@ static int fill_subsection_map(unsigned long pfn, unsigned long nr_pages)
+>  	return rc;
+>  }
+>  
+> +static int __meminit section_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
+> +					   struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+> +{
+> +	unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
+> +	unsigned long pages_per_compound = 1L << order;
+> +
+> +	VM_BUG_ON(!IS_ALIGNED(pfn | nr_pages, min(pages_per_compound, PAGES_PER_SECTION)));
+> +	VM_BUG_ON(pfn_to_section_nr(pfn) != pfn_to_section_nr(pfn + nr_pages - 1));
 
-Can you send the revised fix separately, please?
+No new VM_BUG_ON. Ever. :)
 
-AI review flagged that recently on one of my series that touched the
-code, thanks for taking it off my todo list :)
+VM_WARN_ON_ONCE() is your friend.
+
+> +
+> +	if (!vmemmap_can_optimize(altmap, pgmap))
+> +		return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
+> +
+> +	if (order < PFN_SECTION_SHIFT)
+> +		return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
+> +
+> +	if (IS_ALIGNED(pfn, pages_per_compound))
+> +		return VMEMMAP_RESERVE_NR;
+> +
+> +	return 0;
+> +}
+> +
+>  /*
+>   * To deactivate a memory region, there are 3 cases to handle:
+>   *
+> @@ -775,11 +796,12 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+>  	 * section_activate() and pfn_valid() .
+>  	 */
+>  	if (!section_is_early) {
+> -		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
+
+That's nice to be factored out in any case.
 
 -- 
 Cheers,
