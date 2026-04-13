@@ -4,80 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C113F531CB
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:38:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD6AEF531C7
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 19:41:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 147AA6B00C4; Mon, 13 Apr 2026 15:38:56 -0400 (EDT)
+	id 0AF2B6B00C1; Mon, 13 Apr 2026 15:41:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F8EF6B00C6; Mon, 13 Apr 2026 15:38:56 -0400 (EDT)
+	id 086B56B00C2; Mon, 13 Apr 2026 15:41:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00ED96B00C8; Mon, 13 Apr 2026 15:38:55 -0400 (EDT)
+	id EDEBD6B00C3; Mon, 13 Apr 2026 15:41:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E41BE6B00C4
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:38:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7B3308AF92
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:38:55 +0000 (UTC)
-X-FDA: 84654545430.30.9CA60F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 997ED10000B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:38:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VQMuTTPo;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id DD7D96B00C1
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:41:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8E8DB76CF
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:41:01 +0000 (UTC)
+X-FDA: 84654550722.20.194A49F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id F12C7A0006
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 19:40:59 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JgZtJK/6";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JgZtJK/6";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776109260; a=rsa-sha256;
+	cv=none;
+	b=mbKW9rZdbhiPReEf4xeIy7+uf7oLtJcoxjpn6zhQvvhufyrgYyW0R+UfDhcLpKE2WYrq7v
+	3VNI0XT3w4I9MepdQX7MH4OQEANhLj3tr9BsX/qKxyQ44jzGGlrvx0Z2ztrqA7Tgo1BgXp
+	2PqHAUYwmLcz4l3y5eHVoSxUgo3lRGY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776109133;
+	s=arc-20220608; t=1776109260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BVO2Rv7/ifg72H/Nr7NpF03qmSr6b7R5vF/PKCUAp48=;
-	b=BnSzSVvyiB11azFq2dQpp+zcl+cBAMGd9aaRx30gwps9jlPU35xYZGKAlLCQn50JipGDWF
-	1+cdOUz+QRj83As0+kX7e/X6wQEPQ849xh12Kd++0MT5AMzlo3/+y72AdeJZdAtTMCSKPb
-	Q6YemgtKH7SgnBWnkEsijE9HejuaA2o=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VQMuTTPo;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776109133; a=rsa-sha256;
-	cv=none;
-	b=ZzC5ZbTgRYjNphiNs7Q9Rd//2zKHTaNkc05P3zpVzVmEx+e1Hnz998KlsBNeJxIhtAx0Qv
-	HDEeEBLlGIZqgA6wllAb6ZBjeDegGZk0+9KiPfgZtQDkR6/aj8K+nYa1Bg6fiq3mJQc9RM
-	h0WQmPxZcHy10+wFOKqIcrVgY/o8fOc=
+	bh=jHRWQYnFd4CJ6VibBfAr8l4jBh6oH0ZcbP86hq1Zndg=;
+	b=8Sv9kLG75igZaLMFsk5H/xWBsUCpo+qTWpctmoowp2Qphk0TZ3s1VMhgbLG3YflCWvj1Lg
+	2VBte1yxj2xe47ftRbuFq8g3rNZVUDhUxrGtyMVbtbXZ2s3UeG99Ti8j7iJIW6vMz77nia
+	FgnkDf0e1fofOWzBKJA2w2fW3rptlA8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BC7A414FB;
-	Mon, 13 Apr 2026 19:38:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7727CC2BCAF;
-	Mon, 13 Apr 2026 19:38:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4FD3961843;
+	Mon, 13 Apr 2026 19:40:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08830C2BCAF;
+	Mon, 13 Apr 2026 19:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776109132;
-	bh=o8g/L+0xgEdrskzM96LvzxyWU1Rf3MN0LrlDrQWLx78=;
+	s=k20201202; t=1776109259;
+	bh=3n/Uu2a1dKK5ibn+zUIP0gw654NIOknL9hOGX53p6nk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VQMuTTPohxSVmuhRCi/EeaBlKZFhvEgU9EwF7GPknIN12kh0nnhwbe31DL8mQ7XNq
-	 cYFirXhN4UDxP8VTLRIc6fu/a7iJ4ujgHkpVEm/1mKBK0lY99iKQXI8zeqL8Ku5Jy4
-	 3x7NC7EulcNPYYcl+h2XMxa6RGSFkjgP0Rd0H+uktSmvtD8y8hzgy4M7fo7Kq7IYt8
-	 UR4EDTfBvWHYrgSYKwc5bFVmyADSJi70x73ABc5gJFRtK3skDPfCkPQMn002GucMz9
-	 1SbX2rmm8+P0sbfsslONspReAMy4WdwwswOZQK9FEtq7IOxEU3jZ5hlOLSSUYTNb8w
-	 3ovkuRIRmOrEg==
-Message-ID: <7579105a-1261-45db-90ba-5e660d202b80@kernel.org>
-Date: Mon, 13 Apr 2026 21:38:44 +0200
+	b=JgZtJK/6tu56BCfWrlRneew2guuh2eizHFp4Rfv23WjcuVKaTM6hJMBiXUp40FI3T
+	 I7/Rf7QAkINChRQF+GmJZClTXjCLp42W88u9189PbN0l9Y90h08IMkAkqlBY6Vc/Bb
+	 VaVEW2LslBew4Zsnfs/MHbn8C8oq6dqyjC3EOPYgszHug2EIzuEOex2/xo3a8yb22o
+	 5CbtoZWKoHB6b8UGqZlcrvkK2OfkOynlnwm9dIPzNgXLU08/SdEjP0GmUuCAW/tb6e
+	 WwrJLNL1gehBHi+IDDIJ/EsykzS3ounIQiI/FH3vyHp/M+FWSmjqlKLmK1yXuRjwh9
+	 C73lJeO701WhQ==
+Message-ID: <478c5700-8bf5-42b9-ad71-bbc618b36c9c@kernel.org>
+Date: Mon, 13 Apr 2026 21:40:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: fix double unlock and remove dead code
-To: Sunny Patel <nueralspacetech@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Balbir Singh <balbirs@nvidia.com>
-References: <20260413130927.13263-1-nueralspacetech@gmail.com>
+Subject: Re: [PATCH 0/8] dax/kmem: atomic whole-device hotplug via sysfs
+To: Gregory Price <gourry@gourry.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ vishal.l.verma@intel.com, dave.jiang@intel.com, osalvador@suse.de,
+ dan.j.williams@intel.com, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, kernel-team@meta.com
+References: <20260321150404.3288786-1-gourry@gourry.net>
+ <20260321104021.4a6074330131a2058e8706bd@linux-foundation.org>
+ <ab7_AVLgzLaDRcv5@gourry-fedora-PF4VCD3F>
+ <a4be48f2-ab0a-4808-a7db-2532ec65ad0b@kernel.org>
+ <ad1GJRyAfIAhj1iz@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260413130927.13263-1-nueralspacetech@gmail.com>
+In-Reply-To: <ad1GJRyAfIAhj1iz@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 997ED10000B
-X-Stat-Signature: cj44e8tfxgozjt7i8sdaspayh1auz9dm
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: F12C7A0006
+X-Stat-Signature: dkbiwmg41jipxbjok5nckund6x8w6g91
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776109133-580377
-X-HE-Meta: U2FsdGVkX180bP8D6NpGu2MBPn+EpmUVnPK56nBirxmpItLpJFH5U1lWOdCZOABnZzY+Gj2UXc/yJYnh+h9b/E4uUPvM6/QN39LMot7jH0dsd9UvEo78w6imhE9DcH6XpFueQVMEhkjmteu332BE+lKxgvUTSnF135r9YkvGSoJzLanW9Nu5RCQcI4g7sLpc222buwtU9LSgICW8xF6YptB9DAOqxzWaEecc4Q6tlWLuZ9UpdbxuoGsuy7Ewj/gEp3Jrpw8wcBVPpGHD2xcTy4w77WJshTdBAJVWfR8GPkWaF9A3j1BW0BWfGnCcZQEaYBaus+3x4/JHtWP5Z++qvH/4q1GsSMH11GZ83dn8xdEbJ1YJHt4uACk3WUitNBXU5nVzejZT4uG/QEbZGDa8EYwaNfQKucB7j0Zum7M1l5PHOOjAlgKfeYN3p6kdCoupFTZdFZ27t1j0qLpk5CdowjsQKch2vDXWE4chzz90BLiplclmHobNUuFo3JfcicXnsqr8WyqBYWiWBQXWMAWroI0DskSv/7KB79yDCqANqY9Bzf3SXgdlKXm3Eu1T9nsugBcv0Q000IkFvvj6ENQpla6qW8MR3ealMhgbko82J6jX6bqcGMt5G1Hey+PB6Hdom1OteJv2TAwJ2OqGKhMH2GPhmUzJtvr9/6v5aEsvptqrxTeX2m3cnKoQ3nlO5aABGF7dsxs+AJXhpR/6d7cLHxFd8JWFArieZqb3A/Vr2JzoYD7l46B9/SRO4oqGUV59hU7sjY1ElBI6xxEJWG+o18NrN/+2eozUllOVbpVm2G7J4KX0qE6hjG9bCdY6qBJ6GQZ79Q5990Dkm37cNiNcBf/BwbKr0NU6sG0DDtAC8nR/cteZsFRMZInBsYDhii6g9dQKH8xcshgaH1cx8gTxyMBxXOJc69DK22U3kGebS9ZS96LsxO11ITwnN2eTswWAwaIeKZdv7hchsBEK3wn
- BRMyiDx1
- oD1dvQdne36PB7K/YQFp0+lB/HGh8RW71uDoSBqbJAteQnIGW5V+pfglCi0KEAohvGZao+BUbbbd6/8v9iYMI4/gUKqYW3mPMzJKG8bOgk5z0sh5vjuEhcsUKQ5BIYLx7FjvDlr+aS/rhN/m5EIC6lcbuK8GCxto4p0UCPqf8OJgoaRli76HPFQnKHF3lly/Twbew5Aan2PkNIacu6aa2UIj9irKD7wWeN7NnUHRK2JhzcZpTWspAtnayw/fTFwipDS2qfXWamf1SsQunkeQZ97BWutSPy8nYMG9T30Md2GzaqwYOAGyYsos5bdFtNgPW0ZYK9iyxXBlp87QltdkTSyJKH7Xpkg+KVKUkqdkMBLsdN4KLUvy8/KKYEViN6cuVAdYFhh9j9JM5HXzQFOd7ZvyyiA==
+X-HE-Tag: 1776109259-657382
+X-HE-Meta: U2FsdGVkX1/mFJJW3BhlZua6t51FvPHE6DLDIKS7p6Rh9vmfmdYzPC9OQGnxs4OCPVpwV6gh20TLZk73DYMTM+oAteD+4P0E3KDS6g0vsuNDHCOn4k3ziw3bki/HBg1TTau5pemkOzhZ2Ct3xm78t/mzvZy91VP/OwxQhNpdf2W6fBBrS6HCapFaSnXI0tXqqOFy798godjwRBgAOUqhKoN5ryNEjKYpccpkFWzzxqhZcliswuL8RuQgG7PxwTez61BajlcREOU/RGBBj9q7AzTz3Iv6pcvzisqgkA1CvT/LjBDrPc1Wy4z/unIpP5wz8iZRJd+WmiNoLk8Paj+pyY8ESS7IpzDD3vacgYiUtpiCpZZGAOCvzwPMEd/3KCKdqLb6DjyCBk1n3vsKOaUdiohe8RwQec4lt4rZ/sSMJWvDb+JTD1kNP5Jjf7cSBTdzjTAUG/n9gjmOyXuey6EsUPtjOeji84nsBI96h07eedrVumMDHUjOd4DTX02/RKTcM58L13T8aZK2DFurEOACG5/ewi1e8yux7aMBM6P5gNeAHQTaK+QqAn57/wZwd31yqSF1vuaW+lmZeOBacpePZjy3/DWX0gK6vE6oGO4el6214DjTxRG4uNYa286ihRDnn0lCOc3OjIb3nVQduLrnn3Ep1Am5T47hO9g1vLjMMej8356oGPZfcVe6lkE3OMzIg8sITXaqLBxJddg88zQB5zHpcO6mkEO0UMI84N4XBFwK4t+1nQ/2ADGnB3x5mEAbYB7cftC4AksS7Wt/mXCiWwiHP4DrbNJEuEBdP+QTQPgEuapkuoMA2n2eo5moBwUqpXX60Xw7oO3SVpfz/eDbdjP/B9nZO3tD/Kr4rWzjzPHv3uwKYc+gCP4CaOP/QqJ9oAjO4AFjwU8yeI2IRkwTS3JYuwuIADSTbWyHSyUQGepaw6TercW9KhlFczbaCU32SAZrDPEDvDwXHJ3q40F
+ euMtPEXs
+ Gb+xhMImcGJ/caGANY0NNBEOosf4h7lFczRcLLrKQ2xnaq1shz36CM2yOYN0/VS7zNF8XxsbuATZMiAhB+/3hXyAFOx0D3+/mrZBi6revMg1Z9aA+iFnLmBS0WHnbNXiCaLpNUU/xLu6b0U8ZPgCNyn9hKEW74lAcLwuA1Ag8IKaOu2dPEkDzNaisSHrq1i2iv++BWvUfriJOYHPgf/z4W5Ct3cQ0F0rGxuzu/l/au3BtF0MHnNdgo6dvHd8h0t6BnCB/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,58 +145,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/13/26 15:09, Sunny Patel wrote:
-> Fix two bugs in device migration paths:
+On 4/13/26 21:38, Gregory Price wrote:
+> On Mon, Apr 13, 2026 at 05:47:01PM +0200, David Hildenbrand (Arm) wrote:
+>>
+>> So, really only user space can try offlining the memory after requested
+>> onlining succeeded.
+>>
+>> I don't think any udev rules do that? The usually only request to
+>> online, which should be fine.
+>>
 > 
-> 1) migrate_vma_collect_huge_pmd() calls spin_unlock after
->    softleaf_entry_wait_on_locked(), which already releases the ptl.
+> In the offline case the block will cease to exist after offlin/remove
+> returns, so what should happen is the race on offline just fails and
+> the stale object cleans itself up on the way out after failure.
 > 
-> 2) migrate_vma_insert_huge_pmd_page() has a dead else-if branch and this
->    branch is always unreachable.
+> Userland temporarily sees a stale memory block but can't do anything
+> with it because sync'd on hotplug lock.
+
+Exactly.
+
 > 
-
-Can you move 1) into a separate patch, add a Fixes: tag an CC stable?
-
-I think it is
-
-Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone
-device pages")
-
-2) will then be a pure cleanup patch.
-
-Thanks!
-
-> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
-> ---
->  mm/migrate_device.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>> So if a user does that manually, good for him. We just have to make sure
+>> that stuff keeps working as expected.
+>>
 > 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 8079676c8f1f..0e005c26ee88 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -177,7 +177,6 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
->  
->  		if (softleaf_is_migration(entry)) {
->  			softleaf_entry_wait_on_locked(entry, ptl);
-> -			spin_unlock(ptl);
+> Yeah the only catch is if a user does something dumb like
+> 
+>     cat block/state -> online_movable
+>     echo offline > block/state
+>     echo online > block/state
+> 
+> But like... don't do that :]
 
+Yes :)
 
-Yes, that looks correct to me.
+> 
+> Udev won't ever offline-online-race like this, so it's not a real issue.
+> 
+>> Or am I missing a case?
+>>
+> 
+> So yeah, I'm fairly confident this just works.
+> 
+>>
+>> I'll note that offline_and_remove_memory() can take a long time/forever
+>> to succeed. User space can abort it by sending a critical signal.
+>>
+>> For example, if you do
+>>
+>> $ echo "unplugged" > magic_device_file
+>>
+>> And it hangs, user space can kill the "echo" command, sending a fatal
+>> signal and making offline_and_remove_memory() fail.
+>>
+>> The question is, if you want to do your best to revert the other offline
+>> operations and try re-adding/onlining what you already offlined.
+>>
+>> offline_and_remove_memory() handles that much nicer internally, as it
+>> tries to revert offlining, and only removes once everything was offlined.
+>>
+>> I think I raised it previously, but you could add a
+>> offline_and_remove_memory_ranges() that consumes multiple ranges, and
+>> would do this for you under a single lock_device_hotplug().
+>>
+> 
+> I don't think this is a very large lift, just a slightly larger hotplug
+> locking scope.  But then - the per-range thing in this set should just
+> work, so let me know if it's worth the extra churn.
 
->  			return -EAGAIN;
->  		}
->  
-> @@ -869,8 +868,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->  		if (!is_huge_zero_pmd(*pmdp))
->  			goto unlock_abort;
->  		flush = true;
-> -	} else if (!pmd_none(*pmdp))
-> -		goto unlock_abort;
-> +	}
-
-Huh, how did that happen. I hope that it's not a typo and we wanted to
-check for something else.
+Well, you can rather cleanly undo the operation if any offlining fails.
+If that's not a requirement, then no need to change it!
 
 -- 
 Cheers,
