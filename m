@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 832A0F34C5E
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:18:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87815F34C5C
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 15:21:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3F636B0089; Mon, 13 Apr 2026 11:18:32 -0400 (EDT)
+	id EB07C6B0088; Mon, 13 Apr 2026 11:21:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A162E6B008A; Mon, 13 Apr 2026 11:18:32 -0400 (EDT)
+	id E87696B008A; Mon, 13 Apr 2026 11:21:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92CBC6B0092; Mon, 13 Apr 2026 11:18:32 -0400 (EDT)
+	id D9D3C6B0092; Mon, 13 Apr 2026 11:21:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 806606B0089
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:18:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 315BF1B6D12
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:18:32 +0000 (UTC)
-X-FDA: 84653889264.22.8896727
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CC69A6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 11:21:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 677F2A5427
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:21:21 +0000 (UTC)
+X-FDA: 84653896362.26.A75ECBF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 70E5BC0015
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:18:30 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K1qPaqfk;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9DC9240002
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 15:21:19 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M6z5tz8k;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776093510;
+	s=arc-20220608; t=1776093679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sfeqFBkr2AFRdtcWRkVRRQgW4G9APabfJPXfurb8amI=;
-	b=pCsTXvhBXF8L2d12ZyxGFa8MyZM0iljgmHCQLFOS0a+C/sKFfeWaeFOemKUvTPRyarEE9J
-	bWCaOQump/7+9p+SIngBVQvv4iUoGdhcXE7Dsma9Xf2EwlBTa2VadJZsJ1RLuN2EJUIU8T
-	2TR19r1L/4EPmDeoaw5c8WsfNnlr1Rg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776093510; a=rsa-sha256;
-	cv=none;
-	b=YNeEjnlFnN3tVpTZdxY7IgxXq5kNXa/UXaanMYZALFE1VamE6cZmGvzzd1WQjb0T6kqbIh
-	dMA80Eciimj0+5eouUt6BEtTU/GTKtlqwEwOVyhbTRJM9VBeFPA+kK7/KcVHcRzXaqOSq2
-	jHLQzfgfGAL6XroDHE5l0xkpUfAOnvw=
+	bh=nZzuA0LtNPAg9xJHIemLOoyExiaAtI1G+8BkVeR5f48=;
+	b=v1PZeqidWFHWVn+e83aONKtPqdPxhwDBOC33Wa5SdRawi8CXRkLrHeVPxiyT/QEnWxEGxF
+	nrV8TjCWSAU6Xk5DJcu9EORHk161hYfSNLP6+NcUbF5uMMWG40Uv/h60HEg/U81teEhomI
+	iKUlJIm2GMKv8kbEezNjinrr/c+IGrM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K1qPaqfk;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M6z5tz8k;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776093679; a=rsa-sha256;
+	cv=none;
+	b=OVh+QkRwj85DP5PGimab1JxT5Gv85iDFokgBKCPwELPHCP2Tzk393csNp1ld1EGnAloK46
+	PaXaYZph32KngoMGr8U4lgKIeY6p00PzJ2BrWx6YTY50fixjKIqKuod1hbWxY7PV6qTvKH
+	xcea/YHut+TBnRHF0SxuZrNhU3pdpwE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C761B60172;
-	Mon, 13 Apr 2026 15:18:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5EBC2BCAF;
-	Mon, 13 Apr 2026 15:18:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 168D760180;
+	Mon, 13 Apr 2026 15:21:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EFBC2BCAF;
+	Mon, 13 Apr 2026 15:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776093509;
-	bh=qPosjHYLo9Hq2FhDXbwq7orePQ+n+tSloJdBUSsczt4=;
+	s=k20201202; t=1776093678;
+	bh=0tDU+gJ0igRYGEMqvw+y8S5RV0mbZpxGXNcPCdzGa7M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=K1qPaqfk+ihx13XKNsQtlioArqeIhdxNB/ZKZGPCr6BuEy0pAb37wqz+bxBWwCwZQ
-	 puErCwlnV4880p5ybrQn8UsJ2WNY3igCfrpxP0vBcjBWLJqI4bJmiLLnxFpcet+9ns
-	 6uPvatoSXrx0fV6+RfVyexaB+pUmlewcZxOQUP5G3nGgXsxyZeWyR+ARea7hcF03RZ
-	 9ohD2GC7sAb2KiA92vTjxhp3pKBlFPXZpbTtzRkzRuuXnR1TmkZUOPIrLrRi70tW5u
-	 An52ysAqhKZGFyG9fFc+O1wXT2BfkoUIDdpcr2j0Rk8qOfQU0teS/bYto9YFii3R75
-	 /TMvL44Xg9m6g==
-Message-ID: <f4436f23-3af5-4b07-a582-69ff704dc17c@kernel.org>
-Date: Mon, 13 Apr 2026 17:18:21 +0200
+	b=M6z5tz8kY/PU01R6WlDxuIBLJ/bJKpoQAnN5/1qbP5spDN/iPHFfPzBLX8mkV9DDA
+	 G3DkT5bVzg5U94Px2HUhWXhaFgUi7LQGLGjQ1MGNP2Hg7lQ00dASwHNXXyav63gc+O
+	 QJw4wroV76SWun3igUHrJLnRhHd5ncUMOZRcUV7H57gEbsMQRAPHz0ozkufzm0xY7j
+	 GLOQM9DkBLKmLeoBhWTfOczfcajffXg2kORKsS/ddCSJDfF4e+5gR9FvsqS1/3omX0
+	 fLaDhmGnEfXD2Oms09iM24cDcFoNNVmfzLMASw49qqzsjfZ+0MssJoXaRE3ZQseoyK
+	 oYUbhyfDTuhEA==
+Message-ID: <dfb42983-e5b7-49cc-bfa3-7cd3d32c4a6d@kernel.org>
+Date: Mon, 13 Apr 2026 17:21:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] mm/memory_hotplug: export mhp_get_default_online_type
+Subject: Re: [PATCH 5/8] mm/memory_hotplug: add __add_memory_driver_managed()
+ with online_type arg
 To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
  vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
  osalvador@suse.de
@@ -77,7 +78,7 @@ Cc: dan.j.williams@intel.com, ljs@kernel.org, Liam.Howlett@oracle.com,
  linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
  linux-cxl@vger.kernel.org, kernel-team@meta.com
 References: <20260321150404.3288786-1-gourry@gourry.net>
- <20260321150404.3288786-5-gourry@gourry.net>
+ <20260321150404.3288786-6-gourry@gourry.net>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260321150404.3288786-5-gourry@gourry.net>
+In-Reply-To: <20260321150404.3288786-6-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 70E5BC0015
-X-Stat-Signature: ehskq1gmdzh8jjig5mx8mgm319ugghfx
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776093510-320483
-X-HE-Meta: U2FsdGVkX1+ulb7yu2yIjHMofPbplMV/Yib8HtaXhlEB98SpYZF15NtkBj9APIe/E1aOatxhaRc1bB7Zbz1IqhGuRygikbBYpfZ5sXdAZk/+R97rySO32D70usuam+Yl/sS91KXOt3175Kpx+80pMnE51o2e6VLL+1nSPQMq+fCGEmxZR3Zgx3K4kaYsUwuID/NTtnn8B+pjPD3MVoAhsvNrTFYNPhbjv3nqha5CBSSslXDOmTLvLWvqXj3MdwX9Du+p5kflSSxzEJGDjoFDCQDV9KmpH+UM96wYOXC0hcHnbgfwNjoNOhsmmElH3Uur4QhPdwwAzcgZ9Z1vueTsA6a6MYjLzpsaJyc2E77cmjlhJ2/DlabXqhk/laDDGT1uE2mPsJ8CwllXL4HszSDEc5ykx9hVMfoDpg6h8dc6rdz1E5BPoBZVe75lAP3ANC00HOZdoL9fx786LrtfTT6CquY8t6RtcxRSovRJ/De09ddL/+q4cc2pxOFAINPBadSMGXwo6iwnhlXQCih/Ax1xNh/x62KfdoCF3eCQ5VT4J3AGr08u5V2qar/b47tgg5VpJTaT8/yRp5QTkrn6x0nT7ul7w1Aox2IPHnxl6aPfs0CkdpxE6HO2uiax2sC9FUfBwk19oumDN8ANF8tYpNxs2Vri9esnXKbVXJm6C3tiJiRHMCjGlaxzDQb83EhVSPIZhyf0aSKHv1pyZ4DHGGOSTJg32QqJKcuPN6642+joF2Lo6TtQtRpPR29+zLzzy2gITRgqmdvtnshHkeKXrrjeWfB6vMcBLUrQ1YDawVwhegUvwDoR9Pm8POZQFgkb6vQraB0FCLyM0gDnljUe7IcmkOmXRSlO0wxTf1xzBCk24Q+QnppD8CwJbKv5gvIeMHGQmF6AHGOldpu1Y6XDkhVeN/78qC+OaGCs0CVSw6XXYO6NOPuq9ffaI+h/SXAyJa+ZDBh88sK7T+JPBysPmBM
- M6Kx716v
- dB5WWmn1J/sFNw7K6v7n+T9ow99Iw09HdYSpJhyFm9O0VPdQe6qXa1CiWW38gGmrhd5mY8SHQJj2qb/Q9juGcyDSd/R9LC3mvcvyO2pidasTmfY9nEbfzVCsTFA1zXTuNJZG1/9FjgDZoaUebylpbeO+xbQ10f+dsrZXD7ZGXCRzxaRu7HvXot8BebrgZQfUK6Gv1ak4E7hxrxYB62D0DoByzUZ9PAcg0DAVvf71uBGaxuIF/4ZeH4awziUqMm86KdYKeYE5+QoKM3zEtjLjqo5VvRrKdZRkLo4VEfRP55i/M1HF2QaOc/t1NC7kqQSqmARekdQfVYQN8Ve6Um0y6qS2Ih/ThfbfDVpJBz4++SjwGFg0=
+X-Rspamd-Queue-Id: 9DC9240002
+X-Stat-Signature: 5hp4rcsfure1hhiqk4jsofktbb4jsbt6
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776093679-186604
+X-HE-Meta: U2FsdGVkX1+w3FA19mZlIejWjtMp7q7qb7t5TUEcya8wSI4vT0g1OnbThO65SuIs1NKJwWvY3XldM87FEIJ04o9iLiQ4l/yY63+rWIZwCN6jKSx9O+DjW0sJ0GxSBPp+Al4NWdZ7AeNZAiT5pPH+Yp8zQq+BVaLReUfEF0yp7jr/ZoeDhVzJV6T8aKiGz5YgG/fVVsPxDlmOgnRUMdcz2q8+UhwDAnJeHjkzb4wawSBLiFPYxj6Gup1fBx75wBPg+xBjvuELaamD1GjwZ6qo272+CHjcVoMisNGbN5nkmoxU+MC6OKjFwliaNp6Qf1WU3ocZmydzP3wkaNs340uxkwDEYODuAGA0TIQNJE2FYkAhuvGBDauNDRFbJTxrqinEuGg5ZEdZ7F79DC/fY3/GVgKX/F73zbs8Qy52mRXfiAXNReQ5UIIQmo2KJggX77qKfTxcYn4Y1RddMs6laSdh/s159ABIN49/L0DMsctxuamzT0cKKDnzxSL7dAORDHhg/2E9JK5J8WLLBX9XLvX30vy83QJTVPous/1kyaao4LqxexJd7Y8apc2hNLGUJtiW3rNpypl5j6cr9PPzLiAYgg7DVXNbWCzNxenbkvS8hn09B48yRcv3Nnm9W1hV4JqDKFCOSZohlxyH5l9C805eLO4u0/pH08nH2/cg0+aLx4PD/alH+XcEFWaCA7f+wq5BGCGeNatxJcRsd/TtaWLuxDoorK5oDQfBGXNM3yRojDOgd3M/coH4jD5N6Pdnaooxdrk8pqtWy6iLnAgXueFFHHtff3hnlwB8Z+E0jkVcXK8hogJzueTVGwSNtu4VG1VQs6+W6JbDtrRltXnzZ7s2jh2HUIQSZNXtxYado+15FYPTi7CeLVZCv57Max2VcKc9jq9qoFm6jeUcQz0zVKEFZFS8MYs9l5KZDg/M0Ogku108VXyNawlXqGNmZYV5cM/3Jx3aAfAaBIBQq7qpMRQ
+ hQnQeyGx
+ fIBsRLLI50DPjaurWyttXV5w2oXRSekxALDGdgae/EsQzDagW9jVsMGwpbamNCRGaVpu1KNf4a0PXqwm9yd+GrPvTVlMSEFVPVqG5TC8EL+CSaC6YbJKEKNZG5QJtfRxHkJLe6Xb4OJOOW5BmLNXAPUr+qgkYnSSxLhwQ9hWl/PTJTbbsPcY37Hul9CdP7x5JFssnrfCuNHJJWwf2dBAARSYwo0WAuUlcHfgU523jEAtY8dzLh68yndAWnUsZukOOtJgCz04NpU3Lxd2NfIlvUXKCBbzTwY2hmfNOYoB31yIWTvZ6pkQhFOryDNB3r0JkIv4h/E67o9sDFZ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,73 +144,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/21/26 16:04, Gregory Price wrote:
-> Drivers which may pass hotplug policy down to DAX need MMOP_ symbols
-> and the mhp_get_default_online_type function for hotplug use cases.
+> Existing callers of add_memory_driver_managed cannot select the
+> preferred online type (ZONE_NORMAL vs ZONE_MOVABLE), requiring it to
+> hot-add memory as offline blocks, and then follow up by onlining each
+> memory block individually.
 > 
-> Some drivers (cxl) co-mingle their hotplug and devdax use-cases into
-> the same driver code, and chose the dax_kmem path as the default driver
-> path - making it difficult to require hotplug as a predicate to building
-> the overall driver (it may break other non-hotplug use-cases).
+> Most drivers prefer the system default, but the CXL driver wants to
+> plumb a preferred policy through the dax kmem driver.
 > 
-> Export mhp_get_default_online_type function to allow these drivers to
-> build when hotplug is disabled and still use the DAX use case.
+> Refactor APIs to add a new interface which allows the dax kmem and
+> cxl_core modules to select a preferred policy.  Only expose this
+> interface to those modules to avoid confusion among existing API users
+> and to limit usage in out-of-tree modules.
 > 
-> In the built-out case we simply return MMOP_OFFLINE as it's
-> non-destructive.  The internal function can never return -1 either,
-> so we choose this to allow for defining the function with 'enum mmop'.
+> Refactor add_memory_driver_managed, extract __add_memory_driver_managed
+> - Add proper kernel-doc for add_memory_driver_managed while refactoring
+> - New helper accepts an explicit online_type.
+> - New help validates online_type is between OFFLINE and ONLINE_MOVABLE
 > 
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  include/linux/memory_hotplug.h | 29 +++++++++++++++++++++++++++++
->  mm/memory_hotplug.c            |  1 +
->  2 files changed, 30 insertions(+)
+> Refactor: add_memory_resource, extract __add_memory_resource
+> - new helper accepts an explicit online_type
 > 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index e77ef3d7ff73..a8bcb36f93b8 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -6,6 +6,7 @@
->  #include <linux/spinlock.h>
->  #include <linux/notifier.h>
->  #include <linux/bug.h>
-> +#include <linux/errno.h>
->  
->  struct page;
->  struct zone;
-> @@ -28,6 +29,27 @@ enum mmop {
->  	MMOP_ONLINE_MOVABLE,
->  };
->  
-> +/**
-> + * mmop_to_str - convert memory online type to string
-> + * @online_type: the MMOP_* value to convert
-> + *
-> + * Returns a string representation of the memory online type,
-> + * suitable for sysfs output (includes trailing newline).
-> + */
-> +static inline const char *mmop_to_str(enum mmop online_type)
-> +{
-> +	switch (online_type) {
-> +	case MMOP_ONLINE:
-> +		return "online\n";
-> +	case MMOP_ONLINE_KERNEL:
-> +		return "online_kernel\n";
-> +	case MMOP_ONLINE_MOVABLE:
-> +		return "online_movable\n";
-> +	default:
-> +		return "offline\n";
-> +	}
-> +}
+> Original APIs now explicitly pass the system-default to new helpers.
+> 
+> No functional change for existing users.
+> 
 
-In drivers/base/memory.c we have online_type_to_str[]. Likely you should
-build upon that, and locate the code in there as well (or move all of
-that to the same header). And call the function something matching like
-mhp_online_type_to_str().
+You should add here, that we only allow known in-tree modules to
+overwrite the onlining policy (where we know that it's a different
+user-requested policy), as we don't want arbitrary OOT drivers to
+overwrite the configured system policy.
 
-But, the patch description only spells out exporting
-mhp_get_default_online_type(), so something is missing here why these
-changes are even included in this patch.
+Therefore EXPORT_SYMBOL_FOR_MODULES().
 
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
