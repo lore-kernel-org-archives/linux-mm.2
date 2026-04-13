@@ -4,133 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27FDBF34C49
-	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 12:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57BC8F34C51
+	for <linux-mm@archiver.kernel.org>; Mon, 13 Apr 2026 13:03:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EEAA6B008A; Mon, 13 Apr 2026 08:53:12 -0400 (EDT)
+	id 505CD6B0089; Mon, 13 Apr 2026 09:03:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89F406B0092; Mon, 13 Apr 2026 08:53:12 -0400 (EDT)
+	id 4DD9C6B008A; Mon, 13 Apr 2026 09:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78D2D6B0093; Mon, 13 Apr 2026 08:53:12 -0400 (EDT)
+	id 41A986B0092; Mon, 13 Apr 2026 09:03:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6683E6B008A
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 08:53:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE6AEE0D9B
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:53:11 +0000 (UTC)
-X-FDA: 84653522982.29.F838011
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 823E9140005
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 12:53:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AibREVVx;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 317286B0089
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 09:03:08 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE7035643C
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:03:07 +0000 (UTC)
+X-FDA: 84653548014.23.D0A4F43
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C6C8240017
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 13:03:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776084789;
+	s=arc-20220608; t=1776085385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KMCu5pbyxAUFkOL001PQr0awj8BCaZ0FmQ5uDJ5p4j8=;
-	b=8T6WYfyuzzdACIcTuI40eQvUV3hSArrWKzUy7zIRfFpR3ErhW4B0KsbiQF4ThXVrZ9/1jP
-	ZRviWtmqPYKdn2b76DMIaMvJK1YSJ94dqK8kqEUHw5qCgCMt8yLejLidSufYqo/oBvFLxB
-	l7rvwwRliTiwxBQSdm78jTO+94tEXMM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776084789; a=rsa-sha256;
-	cv=none;
-	b=XYrcf+WAmLl4RGQT+TYgzmTJiafL7JrcSJG5ksxOccqq5MZJs18BYtOiRDBr4qdz6VBsR3
-	x+fxmsgSv6/dNETcC9jnvgGjZLXosC1mjEBtrI+1BMnMgrjPDuRLcDwRC7emCfANzL1YSC
-	8ZnuVNSoMl+TeYgXFZWK/P6cB0qZ9m8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AibREVVx;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776084788;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KMCu5pbyxAUFkOL001PQr0awj8BCaZ0FmQ5uDJ5p4j8=;
-	b=AibREVVxdyBeoXI5oJNtP2H01olnE/2ffRr5wI1oGaQ5eu7Rc0Sp6rJrPUPHUyOjPvsR4U
-	152RkruyBQIouqcxZ7+EG9Y/NDyuXXUpI0WWD917+U8Q3V3wICxqSDlyC3j7lB2K47tWao
-	ONSWKSlQukktffgydqnNt8J0Wm/JT0o=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-301-3jRHYeizOGSreIdDD7IqiA-1; Mon, 13 Apr 2026 08:53:07 -0400
-X-MC-Unique: 3jRHYeizOGSreIdDD7IqiA-1
-X-Mimecast-MFC-AGG-ID: 3jRHYeizOGSreIdDD7IqiA_1776084787
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8cfcf23c0e1so841789785a.2
-        for <linux-mm@kvack.org>; Mon, 13 Apr 2026 05:53:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776084787; x=1776689587;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KMCu5pbyxAUFkOL001PQr0awj8BCaZ0FmQ5uDJ5p4j8=;
-        b=Jhfwm4pYsoONc9n52uGiYXVPzB2zvAHPvYAD6JsckHQGJ5YbnlPUgkkeVC1PyQUB/x
-         FObww3xlX1uwIZht9CdPPE/JZ/DH9MJk3p5rQRieXFubNcVY0OlKH6jW7bXEw5+stqsh
-         cloJrOacUdDK277QwXTbgIm/len9QYjsqv3iHF+lfiG3Bu7P0ke+le0CVX4/MK4OVt6X
-         nC6DHVGO46Vcjmoj/RZVzr2Pxc9wdQf2Fl4xY0LeiUWRI+xz8pzPp8PWv7MQCb5Yhu0X
-         DrIN3Yj380gQZ1v7u0u9HCwjTGtsUXOs+RWhsmoXPLDQOtMV8rrNOvaTuojhze2TpaF+
-         OARw==
-X-Forwarded-Encrypted: i=1; AFNElJ/Jxm3h1NpVG6mKcx/arhkDfk4IXexSH1UpESfD4372xzT6itV9VtZmvaFMlAtl1EfUAgiimWlr0w==@kvack.org
-X-Gm-Message-State: AOJu0Yxqf7PwM73lwFCei9Ay6Kk6dvhhden0JrJoQR52WOf+6ABxgO6m
-	KBBjW6bgqeuBG50ZjgGUH+02v35280CegKQQ96A/BLz+qqpo2KmDGzlKf7TAMxC7zDm8EykAmNG
-	jO4//+0/dIkGDc0i3aTbi4rE5cS2MYkD3eeXtDsR1DnUFsZVeSmPPL5+9ZXGX
-X-Gm-Gg: AeBDiet+v8ufrcuEFxvkB7uzR/XYM0ByC/7Z00KR7FJkR6VAQPXPhe+rzPZXdf3vZPs
-	m0q0iyA21tWtliZs9nlWzmmc/3fqq9bW+PuDuNFv3+aNMX7HqjyL5xa+HGn/XARJWU9ft4rAeuS
-	BIdVr09LmswND8I6kNbZtm63AW5JZdL03yA54YoWihWVmOZ/PL0Hw0mBhTk0inYPuSXc7OVAmHQ
-	mX6KTaryvz3SOWhKAxnmOS/R+bYLk3XwxjjnNbLEjebIMlrbt0QQIFtMDAtrJQYwXUoCHIa7Qq0
-	zFCDM6DvtKykhr0OBEP/d9qTSkY7jHMrN2FicOX9HZSKxtPOnLa6KJbJpPiRo7T3W7qIF5R/xLt
-	tox3Jjkk8rSX9/6+0g8gj4Pn2RckU9Ms0oYBSk5HspRGUZgg=
-X-Received: by 2002:a05:620a:4082:b0:8d3:a311:927b with SMTP id af79cd13be357-8ddcecbd791mr1802658485a.31.1776084786701;
-        Mon, 13 Apr 2026 05:53:06 -0700 (PDT)
-X-Received: by 2002:a05:620a:4082:b0:8d3:a311:927b with SMTP id af79cd13be357-8ddcecbd791mr1802651285a.31.1776084785872;
-        Mon, 13 Apr 2026 05:53:05 -0700 (PDT)
-Received: from x1.local ([142.189.10.167])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb8d6dd41sm864313685a.25.2026.04.13.05.53.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Apr 2026 05:53:04 -0700 (PDT)
-Date: Mon, 13 Apr 2026 08:53:03 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: David CARLIER <devnexen@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v4] mm/userfaultfd: detect VMA replacement after copy
- retry in mfill_copy_folio_retry()
-Message-ID: <adznL0B3vCSBoL7h@x1.local>
-References: <20260331134158.622084-1-devnexen@gmail.com>
- <20260331200148.cc0c95deaf070579a68af041@linux-foundation.org>
- <aczOCqrCx7Xd5HIF@kernel.org>
- <CA+XhMqzdQLZD4YWzyZfTwd_+sDnLqj24APqBRgum97_=8EcM2Q@mail.gmail.com>
- <ac3paYh6sPHr3EJd@kernel.org>
- <ac5yKatsMxNp4G2g@x1.local>
- <adeOIvNXFLTCXMcv@kernel.org>
- <adkWv9xdsyLMn9qd@x1.local>
- <adu-ScPEF5saZekk@kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <adu-ScPEF5saZekk@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EpiTneu66U9vaWhknmmXL8JrmQOEjipwYzfiKNr1B9o_1776084787
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 823E9140005
-X-Stat-Signature: frxb8yz9p15drqc4fbzxy6u53o711ypz
+	bh=4Q6hbO5VXAAEYtqFBS/tjKRelFU1z4l+PdprfQ8isB4=;
+	b=WTWQA3U+F8GhAjT9CIqYfsVO2+BcxrbaRbwondAlYKQiDeJfiC85sWT7N3c/VOOhmOAu3j
+	PwJofUBT7y2ZBvpseIS4jW1pTzzL6TBo7qsFSFQgIryN9kbw/7qoN3RjTLD4Ub12WAevpE
+	Gj7bNCiMRrlWR0+UOlgw/QGQBm+9two=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776085385; a=rsa-sha256;
+	cv=none;
+	b=1u3Ss/lpsVd8Ly+p7HNqtN0J12axT3cU9O5JgUs2o783rZSAO42AWNWkXwI5jzAXadROdX
+	JYqzGTz7MQCXdeg0Peg5s9Z3dr1f1AzT3cHMV5vX3WAEYRO9TAxcKAK/DwKAUzAwo9CYHO
+	ljUSCBOO1fLXq0HRvX+RCwASjxhV/ao=
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fvSJ26Vzyz8Xs70;
+	Mon, 13 Apr 2026 21:02:58 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl2.zte.com.cn with SMTP id 63DD2n3P010875;
+	Mon, 13 Apr 2026 21:02:49 +0800 (+08)
+	(envelope-from hu.shengming@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Mon, 13 Apr 2026 21:02:52 +0800 (CST)
+X-Zmail-TransId: 2af969dce97c49e-2c715
+X-Mailer: Zmail v1.0
+Message-ID: <20260413210252672ZfdcegJLJtyvlYdFAUBlr@zte.com.cn>
+In-Reply-To: <adyyNeVTkXQlnh_2@hyeyoo>
+References: 20260410120044.031381086@kernel.org,20260410120318.525653921@kernel.org,adyyNeVTkXQlnh_2@hyeyoo
+Date: Mon, 13 Apr 2026 21:02:52 +0800 (CST)
+Mime-Version: 1.0
+From: <hu.shengming@zte.com.cn>
+To: <harry@kernel.org>
+Cc: <tglx@kernel.org>, <linux-kernel@vger.kernel.org>, <vbabka@kernel.org>,
+        <linux-mm@kvack.org>, <arnd@arndb.de>, <x86@kernel.org>,
+        <baolu.lu@linux.intel.com>, <iommu@lists.linux.dev>,
+        <m.grzeschik@pengutronix.de>, <netdev@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <herbert@gondor.apana.org.au>,
+        <linux-crypto@vger.kernel.org>, <dwmw2@infradead.org>,
+        <bernie@plugable.com>, <linux-fbdev@vger.kernel.org>, <tytso@mit.edu>,
+        <linux-ext4@vger.kernel.org>, <akpm@linux-foundation.org>,
+        <urezki@gmail.com>, <elver@google.com>, <dvyukov@google.com>,
+        <kasan-dev@googlegroups.com>, <ryabinin.a.a@gmail.com>,
+        <t.sailer@alumni.ethz.ch>, <linux-hams@vger.kernel.org>,
+        <Jason@zx2c4.com>, <richard.henderson@linaro.org>,
+        <linux-alpha@vger.kernel.org>, <linux@armlinux.org.uk>,
+        <linux-arm-kernel@lists.infradead.org>, <catalin.marinas@arm.com>,
+        <chenhuacai@kernel.org>, <loongarch@lists.linux.dev>,
+        <geert@linux-m68k.org>, <linux-m68k@lists.linux-m68k.org>,
+        <dinguyen@kernel.org>, <jonas@southpole.se>,
+        <linux-openrisc@vger.kernel.org>, <deller@gmx.de>,
+        <linux-parisc@vger.kernel.org>, <mpe@ellerman.id.au>,
+        <linuxppc-dev@lists.ozlabs.org>, <pjw@kernel.org>,
+        <linux-riscv@lists.infradead.org>, <hca@linux.ibm.com>,
+        <linux-s390@vger.kernel.org>, <davem@davemloft.net>,
+        <sparclinux@vger.kernel.org>, <hao.li@linux.dev>, <cl@gentwo.org>,
+        <rientjes@google.com>, <roman.gushchin@linux.dev>
+Subject: =?UTF-8?B?UmU6IFtwYXRjaCAxNC8zOF0gc2x1YjogVXNlIHByYW5kb20gaW5zdGVhZCBvZiBnZXRfY3ljbGVzKCk=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 63DD2n3P010875
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.133 unknown Mon, 13 Apr 2026 21:02:58 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69DCE982.001/4fvSJ26Vzyz8Xs70
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776084789-22019
-X-HE-Meta: U2FsdGVkX189vUaaswaYG3RVTE5u6e/E4p+Fo2x+rT5SkYxCTrBql6q71UwefssEiLnMIrjsHWS0qIpDbXBbZx6Y84rPe4U40W1BlqaABuHmOQLqP0IXM1HeDxWgTwX4cakyS2fJ5O9KtSO+A8bl2PD3QbaYIJ5Rk9e9a10Luw2FsXpNNJRyZVyDGoOu5nz0Ms/FBitxt9FBweIDbvtLm82+96jB0ts8et35Qi6jmTGgZnb41QGY0eRKNWkrxQ1FCgK03V/pWY8lSn5zaenApc2+olDBVGUbmnFwe7++MbW9+aXklKXylNp1agoXOpb4RIjkUoxvucsh+W0d74vBjO7ZHwtDsLss24sxqgB4ojPG92pkj3g6XzaKHuM1Bmwikb5q2S2SpXRjwfChwia49f5VOLX/qsq3TQpxzHI/WlZ2A/NEddznSXKypqxcIg63fE+eSQVjUeVzj69pnbTEskoEzpnblikAPgs9WM+AjUjPj/jX4KCMmm/csUP6hDrlpstzMhWQv+9ns/a+eMf8S/1PQshB6SeImL0IOCtGNHCiAfBTE1K6iFqgrQcPkwLfRqExXeTiuxkWk/0wA/FvulFskM0ujH+/Qf4BJAzH0PEofOJwX6F9rY1H0BhmqA2v9RbtwGHspV0AMSefMpUexbnt4aDfi5LpSeNPmtWS0BrdOhKhGOzyp0O+To8hjztCd+YO4H6d7dJOlOgS/Qmv8n+38WJIdx70vWw0D4icutonAUjVvlAxumI3igMaVW2ycimY48eD4RHK508ktgSgEx+yRJKsR9aRZFgQQI58YyOFBRSZmR2Kf2zGBkmkM5WhQyPUmHpGKEQAdpPWCkiyI85iqutDYwg2km55F1vHANoRQDsvulE6OCC1CvjZFAkGovwvpcd69PQNysfjgQ3nez/abnJx/lK26cxP2ZpqsbAQ/r2OD+8W6XNEgKK1LrFpBVIBtsknVrtoeT/psbZ
- XRI8lxYg
- hxeJvq2jGB/EyTvno8q+CtaIw6TBcCp+80PhyN1BEfM+K1bB6NaRan69PFzajc6JcJ+H7eCGiq1+1By0ebv/kcxlVfkSTck+5ZQGuSE/lqIMtL262+SBrsNxUIE1CaUz73LyJBmguiUWDdF5XVObTMDA8I+f5Vw5q47TCD+JJU9Q821dyEBO/82lVRQUf0A03xZcsxN8iA6djA7CEOYBd3kY4w9AX1k7QdcE+Z3bV9mVFeFQS6VAnQHMBveyZK6loBvTUsmCEQ+7tJd/dH8qccJeyXY0V7hPQ6GNz33Ur41vRs0nVPRQ8WzbnwXOPLxYScDfJN9rbmqvjMBzafoPlqyTIB47UYxkf//3tDE1Iaqn2+exzFxjHqGV7D4aYm8oFAKJMCHIsuwd4scq+bLy24qDKextU0LXvzxXAOA6NnXctFu/neoo5a0djRw==
+X-Stat-Signature: pdeiuzj86k4twxoxpznyaqerd5qci4hr
+X-Rspamd-Queue-Id: C6C8240017
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776085384-281516
+X-HE-Meta: U2FsdGVkX18ugmCChENvgxROyqJqcGRDRxJJxnnejxz11HqEEWt4WcLxyxSdIq17D1s8b/BucvAO+wLOR81MQbz8nWql64NURBJRitzgywl6mKXcI8A7dk9z3jL2AoXG0RIZvdlBluF17EkwhCsYvt9CdhqR4DHeTNG2McEy8v5ZU1Sk+EcWrTqxtz8f3fd5TWg5mJj9TXOGIiMFWb68N+JaPeVoJlppk5tS3oHslek+XyvIvAfXJcXBASo9JI3PGEVVYrrvl0AuflZx3jKWYenyXub4xcImzNdi2cvHE6RoVUH2e4rwiWUgH/KRJaZHYH+uHq8mkNRY099bUEKPmamGAG6wHEWQImXJsMRWna00l9H1QegPIfgFL1angt+1T63rkXMI7C5yWCByJV+us3Z61ZsLnAYTrSjyz7uVkdK/MhPwf9do2P2PxmiG1trpoQtRUiTKOIOqsM6sQlhNswqAZ0GBkHFZObUKXgg3TKvnb86qzj4NYOs93YYbp86+NpR4nm6lamVVOw4KOLCloELOUpgkPKTcsbOzlf1Z2MTilGS2iY4R7ofXMzp2qRll3p+M7sIykChYAycP3bkB0PstsQy7pWuW2LGu45LKHCim5J5PPOElHfr0jhdHCPf4eQyB4un9/WsU/++KlFfTu9PzBWFlZoaGwzu+L/zM6k0x89Oq9vwcHfvw/8/Xtta12+CBMa8pU94UYeYzPPo2YJibyAvrUAQDPnCT3IBttJ91w0FfccYGat2JhmtaKpwhDQ/90cEoYAxFcOpev+xfrM/K4ydz/3XwvTYPFEoBCHTh/VhM82GbmNHlBHZRTLuVyrT6fIx81uv3PpzxXvW4UWge/J7pl7lN0xENxWBwZIjPBXjWzBFCQH/c0yB3sOD0FBN89P5jwzXv/bpgbkWpj9g1gybRKmMUdx8YivPwftBMVn24Rdevk9Vh2a0Rk9Kr7AMFo5j9DZv4Xou6DEh
+ hpDGTi2n
+ HV+ShZyxeX+zx35rPHQgb7Hir5hPt0B9+jUfERS9saEPw4tuDBjWnCAcXyQK1IHoecBaD2Jo4OdUwrkROI8+RKnoKLKNMHXFd9gNUjxtoS3zA4QLgGujTv56naMeWlKCNLPUVPOmtRKxTyAoS4BiRhwMTypbtf0xhDMhq8RCs8RPXVs5B6c+RQnXlMXo7k0HbBv1FEjBdUWmNVu6wNqmy9tiqKMi1/YmDIaRB7P/HYQUQEH9QRrKHya4f5iewEUUnurYv/7ec4gNldL4iIXuz5rXfmw5O1kNBhRXNlEGQRwrp9nkullLyDawlACK0IEoQM2RzOvCKDY+rgpJVOU2sTTxe6z/VY+QqHNhkq+OLFdQ41l7y1575+Ukp1yngNoObbUwDTELw+XgdmAO7VcKTiEzoS0fLZbePbKC3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,36 +120,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Apr 12, 2026 at 06:46:17PM +0300, Mike Rapoport wrote:
-> > Personally this is least of a concern to me. Hugetlbfs is so specially
-> > managed in userapps, so it is even less likely to trigger the same bug with
-> > VM_SOFTDIRTY changes or other ways.
->  
-> I'm not sure I follow you here. How changes of VM_SOFTDIRTY can crash the
-> kernel in UFFDIO_COPY?
-
-It was confusing indeed that I used as example, sorry. SOFTDIRTY only case
-isn't a bug, even if it'll also be captured by "vma changes" when we detect
-that.
-
-I just wanted to say I concerned much less on arbitrary hugetlbfs vmas
-appearing than most of the rest, where it can crash the kernel even after
-the change (e.g. mapped one shmem inode, remapped to another different
-shmem inode, or SHARED->PRIVATE, as others pointed out elsewhere).
-
+Harry wrote:
+> [Resending after fixing broken email headers]
 > 
-> > Again, I'm open to any suggestion on replacing the vma snapshot logic as
-> > long as all possible issues got reported will be properly fixed, especially
-> > in the latest mainline. I don't worry much on backporting yet; if this bug
-> > existed for 10 years and nobody yet reported, to me we can always evaluate
-> > the effort to backport or skip.  However, a proper fix in mainline is IMHO
-> > more important.
+> On Fri, Apr 10, 2026 at 02:19:37PM +0200, Thomas Gleixner wrote:
+> > The decision whether to scan remote nodes is based on a 'random' number
+> > retrieved via get_cycles(). get_cycles() is about to be removed.
+> > 
+> > There is already prandom state in the code, so use that instead.
+> > 
+> > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> > Cc: Vlastimil Babka <vbabka@kernel.org>
+> > Cc: linux-mm@kvack.org
+> > ---
 > 
-> Totally agree, a fix in mainline is much more important than backporting.
+> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+> 
+> Is this for this merge window?
+> 
+> This may conflict with upcoming changes on freelist shuffling [1]
+> (not queued for slab/for-next yet though), but it should be easy to
+> resolve.
+> 
+
+Hi Harry,
+
+Would you like me to wait for this patch to land linux-next and then
+rebase and send v6 on top?
 
 Thanks,
 
--- 
-Peter Xu
+--
+With Best Regards,
+Shengming
 
+> [Cc'ing Shengming and SLAB ALLOCATOR folks]
+> [1] https://lore.kernel.org/linux-mm/20260409204352095kKWVYKtZImN59ybO6iRNj@zte.com.cn
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
+> 
+> >  mm/slub.c |   37 +++++++++++++++++++++++--------------
+> >  1 file changed, 23 insertions(+), 14 deletions(-)
+> > 
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -3302,6 +3302,25 @@ static inline struct slab *alloc_slab_pa
+> >      return slab;
+> >  }
+> >  
+> > +#if defined(CONFIG_SLAB_FREELIST_RANDOM) || defined(CONFIG_NUMA)
+> > +static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
+> > +
+> > +static unsigned int slab_get_prandom_state(unsigned int limit)
+> > +{
+> > +    struct rnd_state *state;
+> > +    unsigned int res;
+> > +
+> > +    /*
+> > +     * An interrupt or NMI handler might interrupt and change
+> > +     * the state in the middle, but that's safe.
+> > +     */
+> > +    state = &get_cpu_var(slab_rnd_state);
+> > +    res = prandom_u32_state(state) % limit;
+> > +    put_cpu_var(slab_rnd_state);
+> > +    return res;
+> > +}
+> > +#endif
+> > +
+> >  #ifdef CONFIG_SLAB_FREELIST_RANDOM
+> >  /* Pre-initialize the random sequence cache */
+> >  static int init_cache_random_seq(struct kmem_cache *s)
+> > @@ -3365,8 +3384,6 @@ static void *next_freelist_entry(struct
+> >      return (char *)start + idx;
+> >  }
+> >  
+> > -static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
+> > -
+> >  /* Shuffle the single linked freelist based on a random pre-computed sequence */
+> >  static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
+> >                   bool allow_spin)
+> > @@ -3383,15 +3400,7 @@ static bool shuffle_freelist(struct kmem
+> >      if (allow_spin) {
+> >          pos = get_random_u32_below(freelist_count);
+> >      } else {
+> > -        struct rnd_state *state;
+> > -
+> > -        /*
+> > -         * An interrupt or NMI handler might interrupt and change
+> > -         * the state in the middle, but that's safe.
+> > -         */
+> > -        state = &get_cpu_var(slab_rnd_state);
+> > -        pos = prandom_u32_state(state) % freelist_count;
+> > -        put_cpu_var(slab_rnd_state);
+> > +        pos = slab_get_prandom_state(freelist_count);
+> >      }
+> >  
+> >      page_limit = slab->objects * s->size;
+> > @@ -3882,7 +3891,7 @@ static void *get_from_any_partial(struct
+> >       * with available objects.
+> >       */
+> >      if (!s->remote_node_defrag_ratio ||
+> > -            get_cycles() % 1024 > s->remote_node_defrag_ratio)
+> > +        slab_get_prandom_state(1024) > s->remote_node_defrag_ratio)
+> >          return NULL;
+> >  
+> >      do {
+> > @@ -7102,7 +7111,7 @@ static unsigned int
+> >  
+> >      /* see get_from_any_partial() for the defrag ratio description */
+> >      if (!s->remote_node_defrag_ratio ||
+> > -            get_cycles() % 1024 > s->remote_node_defrag_ratio)
+> > +        slab_get_prandom_state(1024) > s->remote_node_defrag_ratio)
+> >          return 0;
+> >  
+> >      do {
+> > @@ -8421,7 +8430,7 @@ void __init kmem_cache_init_late(void)
+> >      flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM | WQ_PERCPU,
+> >                    0);
+> >      WARN_ON(!flushwq);
+> > -#ifdef CONFIG_SLAB_FREELIST_RANDOM
+> > +#if defined(CONFIG_SLAB_FREELIST_RANDOM) || defined(CONFIG_NUMA)
+> >      prandom_init_once(&slab_rnd_state);
+> >  #endif
+> >  }
+> > 
+> >
 
