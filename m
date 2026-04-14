@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ED06ED7B8B
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51524ED7B8B
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:16:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C73076B0093; Tue, 14 Apr 2026 05:16:21 -0400 (EDT)
+	id B88776B0096; Tue, 14 Apr 2026 05:16:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD5796B0096; Tue, 14 Apr 2026 05:16:21 -0400 (EDT)
+	id B11AE6B0099; Tue, 14 Apr 2026 05:16:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC45B6B0099; Tue, 14 Apr 2026 05:16:21 -0400 (EDT)
+	id A00D26B009B; Tue, 14 Apr 2026 05:16:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B8886B0093
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:16:21 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C54D81B7F56
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:16:20 +0000 (UTC)
-X-FDA: 84656605320.19.6BFA038
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 148A71C000E
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:16:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TX2kBkfH;
-	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776158179; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 8F4706B0096
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:16:27 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 554B01A04E9
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:16:27 +0000 (UTC)
+X-FDA: 84656605614.01.0192A33
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 88D5E2000A
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:16:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=buF2bIC9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776158185; a=rsa-sha256;
 	cv=none;
-	b=1TkQFnd8uwNVTLK41YsivToTdH/+Tl4MpPC7jCXtBd0IK1W9WTkmGhETjNcFcHmXiMEmho
-	kZR9zpgjo/orjosR5+9wSSHj32qUvVVkysB5LZOLV2Da0gHt5HjuOD8XoRmRqA0eI4XOfZ
-	104VE/aK7EdAP/rARhBFOCPqyFkMpmY=
+	b=WjxFzKxQyjP1s7x6cRKF/TYFW13iAodTftKSbswZlJdC80C0kJrdRNgAa59KnsiRfwTk4W
+	a8YJ4DNBFTsPqbLlldRaN7HJBkMnL3uC/Bza1TmrQrb0jll6MkLSQg3Tlgs1FM2Jy73nl6
+	tHyZW7lYhRXvfAnxtAPZywMixyCLnyY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=buF2bIC9;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776158179;
+	s=arc-20220608; t=1776158185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Im9++lg/lpHN74Nk2FRmzX3snVH1LvwzoX73u95S3I=;
-	b=R1otkNWuojNXJhjqcmVlprqrFSBAbCSbo+cj4sIlb1K7waWLJQDOcoaRsNhwDluu8G4sQq
-	mc8U8P9iFJhkCcJ6pWKBwDEAhxXAx4knJptZzGvm58wnElJwMMlbU03cWAxS3yijGhyMee
-	THvqQi2nUD8FG3kpTG396TFxKbAeKaw=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TX2kBkfH;
-	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=cl11sG7u/+NHktUdM96cUoh+7Wg6iuNjhJ6suVzR84k=;
+	b=1451UOUAuZ0HGXp17PwK+YJPLdyWFwBEpDMud+CxvR+74rANT8lOkJ7bhPTVdxUwfWlQ+f
+	w9vdSUZtZbhz+PJq0FSJSuzVb+XslJ9xxVp/jcqQhgBYhciZJgZXtn2q5WZHc2Ctx9PMF+
+	whpvrCbvRSlCDY8Osu3pFA6bIrol2x8=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776158177;
+	t=1776158184;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9Im9++lg/lpHN74Nk2FRmzX3snVH1LvwzoX73u95S3I=;
-	b=TX2kBkfHAXl/AoJvsdawQlVCbbtFUOqmbqWwxcLAtHnvy8fCkD5glCD6qJF9rHwnYhySDH
-	kjm51JNBzG2pEhhpUtjzdZZUioipbKBvZxZMy/tuFt3LOcA/Ykb9namQ677T6BvWiQ6goN
-	2w1Wvh0FSYcZSJt1i/keRIly3WOEgbE=
+	bh=cl11sG7u/+NHktUdM96cUoh+7Wg6iuNjhJ6suVzR84k=;
+	b=buF2bIC9KmRd4kn31/Rusxq2pS4W/UeA2oA4o3ZAcUXos0LYlUrzpsYxwtDnmudQT50ba5
+	59iTe9p7v/FvolvAKJV66cbFhFktzN3bnXnbLv+bl1tgWVVyyd/HUkkn20vie8g7RIKo04
+	xFd4cDpi6wgUFlos4LqRyj+2SluPsLU=
 From: Ye Liu <ye.liu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>
+	David Hildenbrand <david@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>
 Cc: Ye Liu <liuye@kylinos.cn>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 2/4] mm/vmstat: use zone_stat_add_folio/sub_folio for folio_nr_pages operations
-Date: Tue, 14 Apr 2026 17:15:19 +0800
-Message-ID: <20260414091527.2970844-3-ye.liu@linux.dev>
+Subject: [PATCH 3/4] mm/vmstat: remove unused __node_stat_* wrappers
+Date: Tue, 14 Apr 2026 17:15:20 +0800
+Message-ID: <20260414091527.2970844-4-ye.liu@linux.dev>
 In-Reply-To: <20260414091527.2970844-1-ye.liu@linux.dev>
 References: <20260414091527.2970844-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 88D5E2000A
+X-Stat-Signature: pyu7co33oqt1mdfa6cy1hpzkdfqtqqhq
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 148A71C000E
-X-Stat-Signature: qgbkusbgcg9ex4nrrghz8uaj898qs7y1
-X-HE-Tag: 1776158178-936241
-X-HE-Meta: U2FsdGVkX1+0AXeNCknMSmc9I/xaOkbXY9m/pZu/f63O2NV/Pc7he54Y9blnQt9wR5qoFrCu6ViwOG4OoVtRdX5APSyLWmGjgpN+M3nFppKcxW86rs830jyZBphZncJfyzV01YHvXvHHE6xPanWU90L6EXLD/fLPL5cPMmupFx8fksAeoJ0BhUkWCQS+F92QZpXKczFy8Ss4HhlC+Q7aCqEPUJ/hXOwh5qZXuGEhNf7QJX9KjnaSkq62eqG0PFtB9sXzWFZgMarrGxZ6vqVmJuVPx3DOqvLyxXslZcu8MVPhHAztT1yV9OlW0vu0DjbqJUghjx+rXcbnACrHhV4aY07mkzYvcJUkNx1LrfoYTm/P1CzezGjaApfeXVk8sWnkkwEeIw/tbf2YpnzxApOIit6YZxLHh79zNcAY2iHRKMxoyYUbR5hSW6TcLa15ZmxlPDdtB68H66PfKDZyC2ijJG62ljtWHXpRBgjBmSTcc3GlrRJKmy61f+yk/wcjCG2BhuwcNIOWkmYT0oFNqkSkwIeOgqL4Tb3GRRm9Xsq0/NOyBI25IhrHzObBdGwWiz9FTXjK5nH50ilalwxM72f2KhOmY61IXA5gTNalYb9AnX4ZNfTjR3IzGd09ME7+wRor+kVwdRhV5hWZjaE0SvmhIiEYqdehuzrdVkd02JhAkJxuFU0WL8LvT/cSFS7kgV2RuSSQ4fuo+TWIdFwOCJgXdTNxmsUfFHAdIFQ3FRimdarrwpkU9HIPY+r4hu5I66lPAWiXRQZpxY0nbqnTIG5Ou3XXYBucgO4cCK7KUAe03CjPdwU/5MZR6C5/cxvsg9M/QpOLMBiWDHuM9HRNBvMTjSLByxpT1kVtcqltnP4qgsf1aZLZHwdvfo09VtJ3HEfZyFoqwfXGfKLRLA7IRStlFjRrYVIg8R+88GbkPs4WjJfZbDdOUEgiEuYfvA9Zoz1w2LxB5MgjQxhFU1XZMSh
- icwwX9uf
- zt8pMP4Xsy6WygLFwe9TOJiHPHV8oz7XqPspAAvc5idkeqUrtSLWB9205dMVh2IY/VmjTufMpQtSN0IBrC1qbiqoCPvgcDaL/h6wgU6gshvGdEVoPanTX+elrWKLcc1BcnVuUoYPQkyciNsE7q2RKUGhxkCXrNxunomJA01qTqTqqiC4hT+oXFBPn8ifICc7tgvZsKThJqFnFaNI=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776158185-395388
+X-HE-Meta: U2FsdGVkX1/tN0m32pkB+DM6yHYm0aVahSHS7KX/BKNUjxmli3GN+8gxirEPw0ZNfgld+iDmd/KU/HDlMNwHVMrXW4HFMYI2uxHKW/zqHb0AP01XXIQbY7x4k+ZMzvv1FphjiOxMBfNLxuFiWisvhx2Vu0AH88oaeaqobISzU0L82wWxKKoFe7DhYfs4vR0Ij6jbR89tqEyC4hlrXOpf6avRlYpEGQ1uekHgXE9wlR5HCbVEHwPZY0aBC6BdjKfgNu+kZpXd5qFeqXVdv1QKWq7tfZLHgFsWbiXtvSuQj2O7P8NcNsMrzyR8lPQ/RgaSAaHqcxEJbj+5hTF6R9KHYUJOCfj1Mujtx98iGb6y5r6d+PDwO34RORuBYkAXRbWW8PuDi3MVA4ldZKV2HIIN2hPqeTQwwJGQ49uyc3+06KL2mibzC77VB5hQJ5QM+CapwoJHVtERwxZGuCi/FNLtzCw0rF7GsrOnpFWF6R0c5ot2SmFfo+e67ZAo+PZxSX2xpLWW09zyKtBzjexND25cWdB39i1Sr2d95NYWbWL7M3cWsOtlFSImYYcXYp7VWqSDrGqZ1lofyUQDSEk7uLMmdZRXdHPAPmZvbMRwY7AifTumYab54K7RSscNyp72UESsgqXEzgnjHalXcFTpzFUGNudpmPEqVFM7fvchabcBDdfNWg9lM2aeGA18JEPz1lI5qI7sz22l8jCVgqpXbf9K72WaSwzMJRtHl8qDwbdQHwVrPR/ejVVBWtRI1xldcw2De25nvrn2Lcl5Y4G3PR+5UYgf39C5A+3up2XYfYzIiwL6XTXIya7A4Vv1Fe1WV+577vSCa/9ATml6iCm5uAK6f1Sao5jPolKdY/xMAefsSWHs05TXCfT8YLHtISelkIj5vF2tg+ZqPRU5wDtYhO/X0J2cvP/6C6233VlyuNxxY++zx2N/F1u9UEhiCxX8PvKYCt4m1LFgmmGEtGb5aeB
+ nFWwaG0d
+ O8Kif3qEp9u7XHg5nRr/XQfjnOf7aOBxKjeZYBa9o8lEkJB4OF8zGSXsjNxrwgHzU+SQUsSAZCtR6BFhZedG4Jdlyu0fnLWnGsqLSsB/Q1JXTgpOorCXl9BqizcIZIhgJj2TZ91neZOJziLz8s6eSLZGLY8T2GQ6MZ/lXGxkvx98Y/DXizEGSI3xEJyx4L2HlB4Y3KTO67KJqmmYS30bXd2MiC6gCPIxhd3ysk7EJsIiO6HlXR42HUmCRB04+7tWZKihSEHgAEf0SMVSxM3es7vLi7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,95 +98,58 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ye Liu <liuye@kylinos.cn>
 
-Replace zone_stat_mod_folio() calls that pass folio_nr_pages(folio) or
--folio_nr_pages(folio) as the third argument with the more concise
-zone_stat_add_folio() and zone_stat_sub_folio() functions respectively.
-
-This makes the code more readable and reduces the number of arguments
-passed to these functions.
+Replace the single call to __node_stat_mod_folio()
+with node_stat_mod_folio(), and remove the dead inline __node_stat_*
+wrapper definitions from include/linux/vmstat.h.
 
 Signed-off-by: Ye Liu <liuye@kylinos.cn>
 ---
- mm/mlock.c          | 4 ++--
- mm/page-writeback.c | 8 ++++----
- mm/page_alloc.c     | 2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ include/linux/vmstat.h | 18 ------------------
+ mm/page-writeback.c    |  2 +-
+ 2 files changed, 1 insertion(+), 19 deletions(-)
 
-diff --git a/mm/mlock.c b/mm/mlock.c
-index 8c227fefa2df..0cafcb2f4e8d 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -249,7 +249,7 @@ void mlock_folio(struct folio *folio)
- 	if (!folio_test_set_mlocked(folio)) {
- 		int nr_pages = folio_nr_pages(folio);
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..54da7d820f78 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -440,24 +440,6 @@ static inline void zone_stat_sub_folio(struct folio *folio,
+ 	mod_zone_page_state(folio_zone(folio), item, -folio_nr_pages(folio));
+ }
  
--		zone_stat_mod_folio(folio, NR_MLOCK, nr_pages);
-+		zone_stat_add_folio(folio, NR_MLOCK);
- 		__count_vm_events(UNEVICTABLE_PGMLOCKED, nr_pages);
- 	}
- 
-@@ -273,7 +273,7 @@ void mlock_new_folio(struct folio *folio)
- 	fbatch = this_cpu_ptr(&mlock_fbatch.fbatch);
- 	folio_set_mlocked(folio);
- 
--	zone_stat_mod_folio(folio, NR_MLOCK, nr_pages);
-+	zone_stat_add_folio(folio, NR_MLOCK);
- 	__count_vm_events(UNEVICTABLE_PGMLOCKED, nr_pages);
- 
- 	folio_get(folio);
+-static inline void __node_stat_mod_folio(struct folio *folio,
+-		enum node_stat_item item, long nr)
+-{
+-	__mod_node_page_state(folio_pgdat(folio), item, nr);
+-}
+-
+-static inline void __node_stat_add_folio(struct folio *folio,
+-		enum node_stat_item item)
+-{
+-	__mod_node_page_state(folio_pgdat(folio), item, folio_nr_pages(folio));
+-}
+-
+-static inline void __node_stat_sub_folio(struct folio *folio,
+-		enum node_stat_item item)
+-{
+-	__mod_node_page_state(folio_pgdat(folio), item, -folio_nr_pages(folio));
+-}
+-
+ static inline void node_stat_mod_folio(struct folio *folio,
+ 		enum node_stat_item item, long nr)
+ {
 diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index 87e9ea41313a..6f9b7b081ab7 100644
+index 6f9b7b081ab7..ed3301753e89 100644
 --- a/mm/page-writeback.c
 +++ b/mm/page-writeback.c
-@@ -2647,7 +2647,7 @@ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb)
- 	long nr = folio_nr_pages(folio);
+@@ -2627,7 +2627,7 @@ static void folio_account_dirtied(struct folio *folio,
  
- 	lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
--	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
-+	zone_stat_sub_folio(folio, NR_ZONE_WRITE_PENDING);
- 	wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
- 	task_io_account_cancelled_write(nr * PAGE_SIZE);
- }
-@@ -2916,7 +2916,7 @@ bool folio_clear_dirty_for_io(struct folio *folio)
- 		if (folio_test_clear_dirty(folio)) {
- 			long nr = folio_nr_pages(folio);
- 			lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, -nr);
--			zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
-+			zone_stat_sub_folio(folio, NR_ZONE_WRITE_PENDING);
- 			wb_stat_mod(wb, WB_RECLAIMABLE, -nr);
- 			ret = true;
- 		}
-@@ -2980,7 +2980,7 @@ bool __folio_end_writeback(struct folio *folio)
- 	}
- 
- 	lruvec_stat_mod_folio(folio, NR_WRITEBACK, -nr);
--	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
-+	zone_stat_sub_folio(folio, NR_ZONE_WRITE_PENDING);
- 	node_stat_add_folio(folio, NR_WRITTEN);
- 
- 	return ret;
-@@ -3032,7 +3032,7 @@ void __folio_start_writeback(struct folio *folio, bool keep_write)
- 	}
- 
- 	lruvec_stat_mod_folio(folio, NR_WRITEBACK, nr);
--	zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
-+	zone_stat_add_folio(folio, NR_ZONE_WRITE_PENDING);
- 
- 	access_ret = arch_make_folio_accessible(folio);
- 	/*
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 65e205111553..a81ceb4181ea 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1327,7 +1327,7 @@ __always_inline bool __free_pages_prepare(struct page *page,
- 		long nr_pages = folio_nr_pages(folio);
- 
- 		__folio_clear_mlocked(folio);
--		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
-+		zone_stat_sub_folio(folio, NR_MLOCK);
- 		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
- 	}
- 
+ 		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
+ 		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
+-		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
++		node_stat_mod_folio(folio, NR_DIRTIED, nr);
+ 		wb_stat_mod(wb, WB_RECLAIMABLE, nr);
+ 		wb_stat_mod(wb, WB_DIRTIED, nr);
+ 		task_io_account_write(nr * PAGE_SIZE);
 -- 
 2.43.0
 
