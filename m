@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD35BF45A1C
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 05:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B56F531EA
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 05:37:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F12496B0088; Tue, 14 Apr 2026 01:29:08 -0400 (EDT)
+	id 0A0776B0088; Tue, 14 Apr 2026 01:37:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9C036B008A; Tue, 14 Apr 2026 01:29:08 -0400 (EDT)
+	id 051756B008A; Tue, 14 Apr 2026 01:37:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8B2B6B0092; Tue, 14 Apr 2026 01:29:08 -0400 (EDT)
+	id ED10A6B0092; Tue, 14 Apr 2026 01:37:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C396E6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 01:29:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4E54A160439
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:29:08 +0000 (UTC)
-X-FDA: 84656032776.28.8A4A1F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 914611C0003
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:29:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TPLzKPR3;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DADC96B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 01:37:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 737E21A0435
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:37:52 +0000 (UTC)
+X-FDA: 84656054784.29.38D4D72
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E17B4C0006
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:37:50 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cb3Dh9r+;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776144546; a=rsa-sha256;
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cb3Dh9r+;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776145070; a=rsa-sha256;
 	cv=none;
-	b=QbOdXuUwZGPB/UenU0C1D3zj+6FsJJ91Y+ogjiUS7bNCepCW5W3fY0VmifrpzsbnYOj+GI
-	e0pAMETkbtagOt+ZIx1K8n59O/ddu0XhBmDE/vmKjOxhGVGd4aMwpUnr8t2aj1096rGyPY
-	PFLVmB8AIoMkuXCJNVxs37sUmlUyBcY=
+	b=5BhPrLfGmC/KWYP7P2OC7VxtYoArNK0EuMKFJXc8rlCQ0A2w/6MMC9xupWAa/2gZCJANyO
+	QFzTiA3KXaJeejqtZcW7Q+HeqGfdMSA2J31DQQGu/HEkK4H9Q18qbz3XyDU/TzU44j/FQy
+	yKclyPNDuasYvcoT8j3H4Ei8EF27dhs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776144546;
+	s=arc-20220608; t=1776145070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hn/Sg6v8Kl2xA+HZ3mHAijYI0QvVXvQ+lXetR8Dzs4M=;
-	b=JVdqm0IJrAgF2uINhzBtsEtqfR+EzMaQ9TG1upUXuPaGOuRjQta5xt/b5BtyyT9EHDcbEa
-	/i5cfTo/yO//Jfe/P8evGPVYhGdmfwFGznxGCSH1WM/+/CGWj9qvnWpips/X7eT4aoG+CF
-	b3DxtFaBUBn014D/kRXfRwQ+w9n97Cg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TPLzKPR3;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=0G+5+QgflCG+TqPtaclFd5JaNVwgwTdyYqSgOfeTC0A=;
+	b=mJaRlBxc9Gxt8eLTt094+VUYyl7H5Pecro6Th6xKYN+hfMbcb26lOjJGeHCeOIRAKnMPqd
+	sngEcCla560bUashgfhi8ym0bPkA0JPnRANuiv6XdqpOpQ1/ahgkUzbg6PUHGTyZvrg31d
+	NF7ySiImVr303GmaiJoA8rT75hV/o0s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E0FB42D84
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:29:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C477C19425;
-	Tue, 14 Apr 2026 05:29:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2938B60018
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C36C19425;
+	Tue, 14 Apr 2026 05:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776144545;
-	bh=fYQyd2tPH0/IQiAZSr2cOX1SyNm+C7ey9+gqAGkZppQ=;
+	s=k20201202; t=1776145069;
+	bh=g/+F/QbX1zjCLTtq9nQIK2PoeggWzfTxbvqrEl/rsxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPLzKPR3YXny9DBobkzoOscb/OyNgAsL+SXhLBLOxtrAdxfxMzXxgQVZ1u0WrimyR
-	 xUDVCTWus0gUZNKPmo+RKGbRt1KyRRjiy95Sk3U+MkS4bj14YnzowDMTZ1s/0Nna7U
-	 NskjCK0CfWxoo50yhfdbUEMswBUNGHezsXTlt2X3vHQl8b4PjcpLvquhuCed+8S+tO
-	 t+q+GzMP6jMpgUvikS0rY2OhiJoL5kB0QWKzTcVDw1bJfcOUkV9lmoNmk5EYxI8Fye
-	 pr/m4VFG2y/KH56S8FCy2V6r+BbEtyPFx/cvJcE7ctlFyVJzkQkW30v3UzZWL09QlS
-	 bxiJVVnGxFVpg==
+	b=Cb3Dh9r+W+uy0GWfhQUrZrxaP/wXOX1wnE0xZ45BDJcg4E1jKkj5qtaBlLK0/aFrJ
+	 HGafWySSJgu97/7EOWiCQmOKY/d2VSNA1cWk+F5bYINUr60tFtepu6/xKHpPR9cvEb
+	 Ce2lzgr5mileqPUNU/KS/zR+mwFIHiwvaw2JLTuOVroMhsQCTEi+PJlMo2RH7UXmFn
+	 YcB7uP1dxZzLno6nuAUuNHSOuL/xfn2OdFAt5YUyZVgLNLPHdsu+YdoTGHoT27cEeq
+	 SWNBmjxQk2xwWrNjbzYceRL4UvnFSumWeLI8hXfxfwvVQ/jY1wTfz+l3QRsEdi/mQ+
+	 wOBuWqOPt1gww==
 From: SeongJae Park <sj@kernel.org>
 To: SeongJae Park <sj@kernel.org>
 Cc: damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: (sashiko review) [RFC PATCH 1/2] mm/damon/reclaim: add autotune_monitoring_intervals parameter
-Date: Mon, 13 Apr 2026 22:28:55 -0700
-Message-ID: <20260414052855.90123-1-sj@kernel.org>
+Subject: Re: (sashiko review) [RFC PATCH 1/2] mm/damon/stat: add a parameter for reading kdamond pid
+Date: Mon, 13 Apr 2026 22:37:41 -0700
+Message-ID: <20260414053742.90296-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260414045253.88529-2-sj@kernel.org>
+In-Reply-To: <20260414045002.88110-2-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E17B4C0006
+X-Stat-Signature: zidwmqiyq783133wekhdtx5d8esjzthi
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 914611C0003
-X-Stat-Signature: kmj114ih8ndpp3ygxyzafxhp1ht4yp1e
-X-HE-Tag: 1776144546-672659
-X-HE-Meta: U2FsdGVkX1+48tTRZP0iBSqNXSUEzbYUqdfdRaTJkgBijz3RgIIiAIWaYMclmtwn95SHvqa2lArrgU8jhhedrNWhqLiBs+vEIy2aIqQ2NsT+06JDsYcZrSXZQFgD6VoenDXmgGcrCV3qKST1HGfm8AnzEQ1bL1zX0/shJtfy4Kdr7qgwGF8TqcCzj9c+oABNKLSWtTNUVvfeu7pxhvs2GMc4Fa16QuQu6WAWWJJ2XyGlpHzqV3QRaKWyDLmln7Z0WzlPjkdVdHu85jAuKbDakRO6X3FdQwY/kwpiVbv/fjf34E+vdiMQ2KQiMO15KzkTCCla10pNGNsRU/yccMfTh2jP1XvPVy9LIAyT9Hsep2TgTodaV22xbRbnudMwi/yH1YZ1apW2Dz0ITa42soh/Ft9k1vtxNSxsJjVPydNQPJvoOW6jkkO1dwWDD3SxCnfBekyZH/CXH/oyjsjZ3tncskTKuXlksgF9VEyLdcM0AXrkLPnFfl9Q8mQowRONxgoZdNYTPnCg5x8HjjFjgnO7pDp7FF/CfZcor0ubgvSCM3Al+MQKDXSFBHtkZOVY/RYeH36EGFWy9RfeWRTWaDRdbDPtf/sU4EFfi3SQud/KP2/cxoYxTRJPnjzuypLkNkkYnQi4awSt4GsepyiWloHNXoN1ooSfw7DE3JtnCwVX3rkxNa3t56kl7urCc4SMIRvdgssoNCube1Z7ugnUh2YLJmrJCDUCdtCTnMnYWS+fbGRLowwPIweFG1iT5Kwo7ezAuJyDV0asraMf121rFBRyrrZNu9imHZra7/fGYePu/FTv1qezeVHYklDi9+3rjCMaVHfx8cRcpz6Z7jPw0UuTS9ndyTuckgrzi9YxTWX4n4rmbKZUjgAt3lnyiEXuKJw39LOiGn/FMlD0o4AJibCosTaqZz0S/D1jaerhZo8EfNy5GN45PfcSpKsz5x5Otkq8nyprIKWcOmSBHjlSBb1
- xY2676qU
- WU6I4DAJTbQ50JkLJ9oNgQa6z+QColk/gOxxx/WcrCI6JOn+mQ/6FDhpchQkTXohcPUOXOOIkD6GYpkXhRPbRmiSqk4bJaM92iXdSIPZq3QrlNf09Z+kUwX/3q/fnGkMKRD+6xudMj+UAym2zl+FZjXmZvOuNG6RMNM3P6jB0xt7sA5ZYOTEOtNW4hQuwNjUsK3LnuwFF2fcMcN8/ubDMMAAzaDWcAfvVT3W1gwhPD+TfY1Zz3l6HN63B1gFy+xJ3b1qobdELwAN5Nf6k3znAaI2uRc8P0FCc6fFZ6twNymEN3/s1Qg/be+XyeEcp9Lm8cP4kP5sfTvOBrI5T0UlAYDUlfXEOqo8rDqYemzwAoKB2aKBzmW4bD8byTjHtq5k5Ow610I1tG1PMlzcxeKXNXCJ9f3A7cFXDs41MdEYtxuq7va4=
+X-HE-Tag: 1776145070-895843
+X-HE-Meta: U2FsdGVkX1/Ow3NI1rOK52zN7ROyGcyQ5/1Pdy36yNpOgWxL7eelVSBIop6GSEJMYKudOSNUSFK9xhDGhOxL04OL9v66hbk4m7KdIHp2Up2LY0+hyZLxubW3TEltNug2Pp+ekZrhjMf+Qf5Q5sZZIVWjX4SybfrYlwb9b9VvIdKml1PiTfoouX6FJOHtk4/A/CxNbvqmgN6Hir9WGugbq4i3Y8lnkh2jN//jWypQFU1G2oN1cAp3nxMitGpt5/Ot0XN/RNU60xuGD3yZxe4xkrhLunoS4dHZkceg3tCy1/j/4erx/H/S7bCKsjWYU1oo19IlL9ZPXGdB4+jG/duF+Enn8MX9Wkhe1ALI82yqOuvY7ubHV9TmWQrG5FxaxozgstiamxsTvg+BRqxw43g1PFPB6uQO0xCfuFenpTReT6Lv9fxtKJihDXtDFrJ1gSSzqqKRaVx8Sa5li+auswJhV4CoPfaFlEG1a/4i3XTNG7pz4hj7ngRZhiZxV43OkLhNdaIKLs73N4fjdqVhfu3pnvr9SC2bFjEvLpQxaWnhTBaF0FKleoyPfuXsHbMHQhoh1VcmJdMP0SVvxC6E0bbHclpd1ZzNmsHoHQr0/g8KWUEQ4/1Mr6HlyQOtzWRa9Fg5tWxSkB55DvQwThSXx5GP0ORE9aH7XLlEr9ONICCpFUm6W+tRrPqvcxgFzGOoTkaBcXtgh7JZ5b4FizcLwTKvdijamKCuxVdW7ALWAzzsRTmyPS8gl5oF3BiXH568tc7dd29PIGQ5rTOM6RAJbWBVMGBq8XdkuX3zmcVb5o9kjPbbBHDomYHg5Kb8nepttiSsUOJIjX2qOStQmPYZGEIEFuVjnT6fQmB1S9z9MHfvwQgFLPjTaVJdBs3DvYu6mq0b4WV6YocxVCeSJoYxO8BLWB7ayQU0++1TL5zmDdnGuXPX65X6Du8qYDsDNJOEogBJav4AdWFk6jkwuXTWdzm
+ 3Rb9n1H5
+ NZFU693aiWroX9Da9VLvaqnUfG8TL8gje6GX/4A6UJ+VoVwSI7U+n7IV3xlf0gt9mm2TiaHg+ocOg0dzuh8WzTlUhDL8pKRKayyPjd/xOvGfi3VhcZzYx6iL0tvKpEoLYzv2cZzXA/fpBPXrukTRLwftuaCtTlwICgB7k0OlflzEtOsCbK9GipV4tCgzP8wrThLnof3q107DoqgtiGRf3Kx44yCU1d9NPXk+otC0eSG9Ov+2c1Rxr925PmKHiI8VE3pl3mMy4aMhodixR9DGqbjmwacK7+iGf2hKz1FHIcfa5ONq6/kq/rr27K9tnFFvkiB5fZmEXmzdKceYq1ZrwuT9Y9UwWkXWEvqhKGMKEoeewsjUk/Zo3ibGixhcbQgdMki4M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,109 +91,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TL; DR: Sashiko found not clearly documented behaviors.  I will make those
-clearly documented in the commit message in the next revision.
+TL; DR: Sashiko found a bug of this patch; I will fix it in the next revision.
+Sashiko also found one issue in the existing code; I will work on it
+separately.
 
 Forwarding full sashiko review in a reply format with my inline comments below,
 for sharing details of my view and doing followup discussions via mails if
 needed.
 
-> # review url: https://sashiko.dev/#/patchset/20260414045253.88529-2-sj@kernel.org
+> # review url: https://sashiko.dev/#/patchset/20260414045002.88110-2-sj@kernel.org
 > # start of sashiko.dev inline review
-> commit 7929f87e52de2f1dff34abf2ede4e58298280466
+> commit fc6c9ec12df0df57fcce5c90c7a0604cddb1cc78
 > Author: SeongJae Park <sj@kernel.org>
 > 
-> mm/damon/reclaim: add autotune_monitoring_intervals parameter
+> mm/damon/stat: add a parameter for reading kdamond pid
 > 
-> This commit adds a new module parameter, autotune_monitoring_intervals, to
-> DAMON_RECLAIM. It enables the auto-tuning feature for sampling and
-> aggregation intervals with suggested default values.
+> This commit exposes the PID of the DAMON_STAT kdamond via a new read-only
+> module parameter, kdamond_pid. It intends to set this to -1 when DAMON_STAT
+> is disabled.
 > 
-> > diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> > index 86da147786583..bcba2f719898d 100644
-> > --- a/mm/damon/reclaim.c
-> > +++ b/mm/damon/reclaim.c
-> 
+> > diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+> > index 99ba346f9e325..21fa04d95eeac 100644
+> > --- a/mm/damon/stat.c
+> > +++ b/mm/damon/stat.c
 > [ ... ]
-> 
-> > @@ -160,7 +174,7 @@ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
-> >  static struct damon_ctx *ctx;
-> >  static struct damon_target *target;
-> >  
-> > -static struct damos *damon_reclaim_new_scheme(void)
-> > +static struct damos *damon_reclaim_new_scheme(unsigned long aggr_interval)
-> >  {
-> >  	struct damos_access_pattern pattern = {
-> >  		/* Find regions having PAGE_SIZE or larger size */
-> > @@ -170,8 +184,7 @@ static struct damos *damon_reclaim_new_scheme(void)
-> >  		.min_nr_accesses = 0,
-> >  		.max_nr_accesses = 0,
-> >  		/* for min_age or more micro-seconds */
-> > -		.min_age_region = min_age /
-> > -			damon_reclaim_mon_attrs.aggr_interval,
-> > +		.min_age_region = min_age / aggr_interval,
-> 
-> How does time-based page reclaim behave when the aggregation interval changes
-> dynamically?
-> 
-> The min_age_region value is calculated statically once at scheme creation. If
-> autotune_monitoring_intervals is enabled, the DAMON core dynamically modifies
-> ctx->attrs.aggr_interval at runtime.
-> 
-> While the core scales existing regions' age counters via
-> damon_age_for_new_attrs() so absolute time is preserved in the new units,
-> the scheme's min_age_region threshold remains static and is not updated.
-> 
-> If the auto-tuner increases aggr_interval, the age counter grows slower,
-> but it still needs to reach the exact same static min_age_region value.
-> Does this cause the effective absolute time required for a page to be
-> reclaimed to become much longer than the user originally configured?
-
-Yes, and this is the intended behavior.  Modern users are expected to be less
-depend on the static age threshold and use the aim-oriented quota tuning using
-quota_mem_pressure_us like parameter.
-
-Nonetheless, I think this is better to be more clearly documented.  I will
-clarify this in the commit message in the next revision.
-
-> 
-> >  		.max_age_region = UINT_MAX,
-> >  	};
-> 
-> [ ... ]
-> 
-> > @@ -209,12 +223,21 @@ static int damon_reclaim_apply_parameters(void)
-> >  		goto out;
+> > @@ -260,6 +269,9 @@ static int damon_stat_start(void)
+> >  		damon_stat_context = NULL;
+> >  		return err;
 > >  	}
+> > +	kdamond_pid = damon_kdamond_pid(damon_stat_context);
+> > +	if (kdamond_pid < 0)
+> > +		return kdamond_pid;
+> 
+> If damon_kdamond_pid() returns an error code, doesn't this leave the global
+> kdamond_pid set to that negative error code instead of -1?
+> 
+> Also, if we take this early return path, does this code leak the
+> damon_stat_context allocation? The error path just above it correctly
+> calls damon_destroy_ctx(damon_stat_context) and sets it to NULL.
+
+Nice catch.  I will fix this like below in the next revision.
+
+'''
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -223,8 +223,12 @@ static int damon_stat_start(void)
+                return err;
+        }
+        kdamond_pid = damon_kdamond_pid(damon_stat_context);
+-       if (kdamond_pid < 0)
+-               return kdamond_pid;
++       if (kdamond_pid < 0) {
++               err = kdamond_pid;
++               kdamond_pid = -1;
++               damon_destroy_ctx(damon_stat_context);
++               damon_stat_context = NULL;
++               return err;
+
+        damon_stat_last_refresh_jiffies = jiffies;
+        call_control.data = damon_stat_context;
+'''
+
+> 
 > >  
-> > -	err = damon_set_attrs(param_ctx, &damon_reclaim_mon_attrs);
-> > +	attrs = damon_reclaim_mon_attrs;
-> > +	if (autotune_monitoring_intervals) {
-> > +		attrs.sample_interval = 5000;
-> > +		attrs.aggr_interval = 100000;
+> >  	damon_stat_last_refresh_jiffies = jiffies;
+> >  	call_control.data = damon_stat_context;
+> >  	return damon_call(damon_stat_context, &call_control);
+> >  }
 > 
-> Does this silently discard user-configured module parameters?
-> 
-> If an administrator explicitly tuned sample_interval or aggr_interval via
-> module parameters or sysfs prior to enabling the autotune feature, it
-> appears their configured values are overwritten here without warning.
+> If damon_call() fails here and returns an error, the caller will handle it
+> by setting enabled to false. Does this leave kdamond_pid holding a stale
+> positive PID instead of being reset to -1?
 
-Yes, and this is an intended behavior.
-
-Nonetheless, I think this is better to be more clearly documented.  I will
-clarify this in the commit message in the next revision.
+Nice catch, but not this patch's fault.  I will separately work on it.
 
 > 
-> > +		attrs.intervals_goal.access_bp = 40;
-> > +		attrs.intervals_goal.aggrs = 3;
-> > +		attrs.intervals_goal.min_sample_us = 5000;
-> > +		attrs.intervals_goal.max_sample_us = 10 * 1000 * 1000;
-> > +	}
-> > +	err = damon_set_attrs(param_ctx, &attrs);
+> > @@ -269,6 +281,7 @@ static int damon_stat_start(void)
+> >  static void damon_stat_stop(void)
+> >  {
+> >  	damon_stop(&damon_stat_context, 1);
+> > +	kdamond_pid = -1;
+> >  	damon_destroy_ctx(damon_stat_context);
+> >  	damon_stat_context = NULL;
+> >  }
 > 
 > 
 > # end of sashiko.dev inline review
-> # review url: https://sashiko.dev/#/patchset/20260414045253.88529-2-sj@kernel.org
+> # review url: https://sashiko.dev/#/patchset/20260414045002.88110-2-sj@kernel.org
 
 
 Thanks,
@@ -203,7 +187,7 @@ SJ
 # this using below command:
 #
 #     hkml patch sashiko_dev --for_forwarding \
-#             20260414045253.88529-2-sj@kernel.org
+#             20260414045002.88110-2-sj@kernel.org
 #
 # [1] https://github.com/sjp38/hackermail
 
