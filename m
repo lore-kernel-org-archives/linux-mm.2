@@ -4,143 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24BE2F9D0DA
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 16:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63AB6F9D0E2
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 16:18:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B5616B0088; Tue, 14 Apr 2026 12:09:04 -0400 (EDT)
+	id 6D59D6B0088; Tue, 14 Apr 2026 12:18:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58D4A6B0089; Tue, 14 Apr 2026 12:09:04 -0400 (EDT)
+	id 685EC6B0089; Tue, 14 Apr 2026 12:18:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A2E16B0092; Tue, 14 Apr 2026 12:09:04 -0400 (EDT)
+	id 59C956B0092; Tue, 14 Apr 2026 12:18:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 37BE26B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:09:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DB9B713862C
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:09:03 +0000 (UTC)
-X-FDA: 84657645366.17.2AF8123
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9796DA0012
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:09:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=UQCEAFeQ;
-	spf=pass (imf15.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 491D56B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:18:38 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DC74F1A013F
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:18:37 +0000 (UTC)
+X-FDA: 84657669474.23.3503A73
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EB96D4000A
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:18:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776183516; a=rsa-sha256;
+	cv=none;
+	b=HlsS2don8zixiLovVKZMEaVCMQjA4Mpfh+snICFpTH6opaBVFxACXR2eGwsYQxJhB/Umjp
+	BS1gP+9g2x3YsPHJKXTC8kSp7mWkeh/UZYKJvksNYfnJ82gjc9AfDuMMG/TUrN5QNn+gab
+	H3+PySLeQHFVyX6hp0Hq4djrjSJSrrg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776182941;
+	s=arc-20220608; t=1776183516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NOEH4v9NjjhJAHew/mjaIu3pWf52+D6D4Qn2ZEwR+XM=;
-	b=ZUhe3exsl2td4yG2HPrW6ZBjELFTLbjzJuqa94GsIJ09+xRqSzmWdjVqQKoXU4mH4JiQSy
-	q0VI8/5gFLQx9RrcalagyJc3Vmuaej1KyTUfkcLqFQudovbZ+Nq6qDxlvlpWo15HrTwYww
-	YtPXlySf9zVAx3aNtHwl+SHTkBCzZzU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=UQCEAFeQ;
-	spf=pass (imf15.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776182941; a=rsa-sha256;
-	cv=none;
-	b=X6uev4CpmURxO3G1vUkHu5nBtNrW4vCEi5dIRU4p7eRSPShCnlQVynGz4LLqLMp8Il/pdv
-	I56kuTrlqvkAHn0HWcFDwV2B60dhuoj+f0eQHQL7YhcG8fvNsWl5+NOyOYvd7fbAgsbAqi
-	qxPpxTKeDTUAaM4M09aKEWDovoPNxrM=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63EDUuh91805230;
-	Tue, 14 Apr 2026 16:08:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=NOEH4v9NjjhJAHew/mjaIu3pWf52+D
-	6D4Qn2ZEwR+XM=; b=UQCEAFeQ2d4X7BC/ko1mVwtXwDvozgQazLJmrwwu6B+E1h
-	lEvfMLfmltxkp2wHUsE9cX+c06sI4E0JnJcPQZh1DGaOF+rD60/gZ8pF1sI4a8n8
-	A5w/zRL4avtCc976GsqaZiTUbNe0crwMTfr55jitBKfpk+LZcmrlTe0QEf2iqKQp
-	AaU6xGPgfXUY/D8hhDaJ5JyPrtgXB3m0JWScnyvF7l3xxlhhQMWxKtcc30CQi1Gu
-	AsRf7JQf8KybzdxW1ZuUXGwxpv9mBXfvb7HjsSg4erL3WyG3rG36RkfubggNjaOU
-	JbT8yHkf/qxpCPpMn+AVNnWokmrV49lfeIsMt2Sg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89k3j5y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Apr 2026 16:08:55 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63EF0UMh025621;
-	Tue, 14 Apr 2026 16:08:55 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg2ujj4a3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Apr 2026 16:08:55 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63EG8pFH13238622
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Apr 2026 16:08:51 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9FDBD20043;
-	Tue, 14 Apr 2026 16:08:51 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 21FCB20040;
-	Tue, 14 Apr 2026 16:08:51 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.149.241])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 14 Apr 2026 16:08:51 +0000 (GMT)
-Date: Tue, 14 Apr 2026 18:08:49 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
-Message-ID: <384c5b93-7939-4a9e-9298-66397cc6fa28-agordeev@linux.ibm.com>
-References: <cover.1774420056.git.agordeev@linux.ibm.com>
- <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
- <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
- <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
- <665a19a0-47c2-404c-bd2b-482ab51b8f64@kernel.org>
- <896b3d93-8e60-42e2-b8bb-d3d4e8c99927-agordeev@linux.ibm.com>
- <534ed892-a6ab-454e-831b-e207930c35cc@kernel.org>
- <584f0f88-aef9-4a70-b0bb-abc797f741ed-agordeev@linux.ibm.com>
- <17505ac4-c5e5-4046-b362-830369b8d401@arm.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gs8Cc3nh8hsYbUOOkw1g5KV8i/zPS2ncWdssY75tBXk=;
+	b=ICkDoCPgmVoRIUOC2BlHwIvuRvnphSTTZD7xD5oSDs7piahMGdYfZfmV/oKR6pawYRpEEF
+	1EpvP9iZdPHCi6n0IUvA+UL3wWlnta80nO2G70eqZGoJjHA91wCNVJLxPZxGtpb/MoTUQ3
+	fZqMe9fsBZb015Q/U+FtNx/DiL6Rpqk=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 15 Apr 2026 01:18:31 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Wed, 15 Apr 2026 01:18:31 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: DaeMyung Kang <charsyam@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Kairui Song <kasong@tencent.com>, Chris Li <chrisl@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>, Len Brown <lenb@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, linux-mm@kvack.org,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] PM: hibernate: preserve uswsusp swap pin across
+ SNAPSHOT_SET_SWAP_AREA re-set failures
+Message-ID: <ad5o1z1hSzLtUxMo@yjaykim-PowerEdge-T330>
+References: <20260414143200.1267932-1-charsyam@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <17505ac4-c5e5-4046-b362-830369b8d401@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: l2htD7g09NdhV0U8xiO60AfRpB2sQ9Gb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDE0OCBTYWx0ZWRfX904Pf16kaZjA
- w57meJEwlyDesUl2y3OtaTkvqTum3P0R+CQhP2OqDmGmMoOm+C6Y/6D+ZP5CHib/7eDkcxVwDJ0
- 6f5lCa7SnJv3ZvvJhmoz6L7qA5+4tcIm0lNQ8BAF6bRaIG2d+JfmmJlGybHeDaFagdr5GEVXbOA
- KSIc0u0S5HPNqUm3CrUKYSsxLDBOauBX2k0koCLMmxknuegAIh2IhzLODuPMK8PyZwTOJ4KvP9z
- qU4Zogqpv80oDt/DXWk0Bc3igU6xXPWvYcCblP0EhGxSo0a48Dts7lnTkXTMm1UmuUJY074MD0y
- yIEuiyA9RAP534p1DrKIzBx2X0aCUk1cD1QmgoCZ39Ta30CN0s00KZFXscdGbtf2mm0M6Sdcze4
- 29Lpxc8x35SOvDlV0OcId4GErqcnIYsUW87yrJ7QnoyqLSPpLSRyA+xbEqJQ3dvghvP1QAjlAYo
- qZ23SQkY2a8rjO9fC+Q==
-X-Proofpoint-ORIG-GUID: l2htD7g09NdhV0U8xiO60AfRpB2sQ9Gb
-X-Authority-Analysis: v=2.4 cv=W60IkxWk c=1 sm=1 tr=0 ts=69de6698 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=MNWzyCX_VJYSxvCe8oMA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-14_03,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140148
+In-Reply-To: <20260414143200.1267932-1-charsyam@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: dyjwobnwrd8mqmesq8mmq8jts9u7gxjk
-X-Rspamd-Queue-Id: 9796DA0012
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776182941-173787
-X-HE-Meta: U2FsdGVkX1+IOmyr0g56Yg2Jbsa3GVigVpvZGqZfyIzkRXayyd9iUrEbB65eFqMXdYzSX+CDJN/NbqxlZKSD4KWE9wpwmuMI6cm2gmTTaRx/j1l9sZzN4K5XMD6wVFYnrsfP43va8A8+hsmqPSI4BfMUQ823Lb/bjlEDEZsQg2mFWd7/tnWUNaQzJQXc4sNchVXVI3MzK+I9+zX5hGoez2N1X2eVv67YuSlIz2b+Tcv/Dk6LFEcf6L2EKe8CrzHhXJL5cd8/vDY3oUYJ78UNNhBg1mi4+UIPnQFyL6xHT6ivs+RyJuNLjHKwXhpv0zcM12D2RyI5ZGR9SYLdHtsou7z7PBMllZL0VB1ZhFmZVoqJ1i8oAr/Ki+CLipqzadxuCqeevPGZNa3SKBZHbSBsLN3oFC8C51T7bhSu7p/Bi3LffElrxGXQ+O/s8tRyNjdGJ2d3PZsltVSJ8qNBgE7AgwsBBUvur3W5YpDluu/b4+WvFViYoFXB/mcYX3W4CfkMQ2e/+d4z4y9WMBD2iRrH2EY25KRxXv5vnc8YXzBYkiUvvkJR3HsR8BrYaSj0eyKhNtnEQdNqEfa8qXfCD2KLk5SGRl2GJR8wDUueer3s9ta9EIu/e/Hj5z7PstFosrG3gRSo79U68n9rGJ4yztNe8zb3GXLH8z4vacBDDLuSTok8iunHJniW/4oDLS/DEwz8fjecVrJtGmVBRIDB0pRi8DTxPEpAWluY4YIC2l0jOhgvLZGywkRb46lmB+sOnNgmhWChjgZIQKDWA/M16l9jMpHDJAYuHkEaj9wY6hSpyG9YlwlF/CWDOiAlyk7iwPidJgAOuRo47A0lzKGoai+CmSli9V8G3QZfvHgAzvFK2oRcsbdiURf1y65rv74dNgN+k3IxeHWNGMSlUaA6xq5rQjkZ2PS2l9I5TsxGo/Ic6OPfbpxrCOSPCV8UhR/jRGYfdhaD9dTyb42zJn1TOwn
- ww8ik+uc
- qCcdVH9mLLHiGa9IHRh+0/dCfaW5rjF6nMvHm6XRZZBJkJS2NZZKjBtUV5WIsmj1uMicx26tOmeCVE46j1e1f6Su7Zm9oNX9Rx0m7ZXIpN88AFxJy1UC0as6mtcGpY6uf8L4b6E5J9r8RTD5HpOGM+/zwFyIk1MQ3PrQwH51JMBl3HTNeU+rgPJpdKJKU33Vz3MpnRc4AA4IYjDPUbhNV4rcfqYHH7yZOOHZ9sDioOdw0hV16DSJN+x1I8cESRzlK0dzYDHRtaxmTx+m42Aai087xV6YGjAQCixekmoZscdV5yh/1laUEkS9apg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EB96D4000A
+X-Stat-Signature: digzibn5wzo6etw53itnpyq86i4kn5zy
+X-HE-Tag: 1776183514-973639
+X-HE-Meta: U2FsdGVkX18nquq2FZFiu6X4vCthDAM4laipGSBfyeOvSMdlsIMjjQ7CcXSzlc2fuxwnTY4r8YdbIXce56XkJEkk5zKXoE/KIDNBAPqqlZZ+nYqq2+BwFdKmMjZzi1aIooINiQ/fAzQlJ0nPv0kCgktFDmrC8gEmNyxpkQ8mPUmFeDFehOGbYDjsOCp4TkQYJFgQZiQp4ctRfjc3oV61IT65SYqECEQDAjCP+l2EtjHRrZzHvzpdncGPQlT+Gz2kjpdEFnpsJJZznu+UGYmydRlENwTN1K/nUg4Nqo8aXIQsjOQP9WClI1KD/eNz6HMnWsfL50mbZO+u1Bar/+PbgIVjwTCX4T0nx5p6NJHPoDz4Ri6p2S905fzPocSmG21DcXMRr5ywAd4S/xWNdg59g3TfnoUxLnVVzuPnt5Qrz7c68X/KdtxNgmBn3J524dSv3HpZVIx8dVJwRQPdPHChI3AywWBKk9Qzbaqeh/mxRbamLuZXTOKv0arAXFPd0nffijdq9ovEbJ4ZweINjNxNcETCHl2mNTHJmMMvxKGeHRvkycbuBq41mWbj+4I4MZhra2Wck7v1joDHN9ohE1wMk12Cu9T/iC7voSFNgVfnXgG63EoL/+dmbwAIUVXa8M4MWZ4IuK7C27LsGv7SjpPN6CwwcTI4FIhDWmNuUnoeWrJMLWUDSLfYUwoU34G/t7mmv1o5g7WQMAAy39h573D5db+0ui4Jrv1hRBt6nAtMHg3+etTJnnAWdLvBz4B/kJc5oDieAYE9269H7d17okKpKUBI+kdt9G64ad034pwSM8fnOaBXVcLrunGBvTEsvEdnll++tsWlgyNRIHWBf1FX2Vz+THXx8jVt6WDt7ZFTN7P2qmeIG7U8fs8GZXbMyweWF+kpsD6TBwsGg0XPUv/nIXmMKxETZ3bQQQjtGHgHdDKcyH5cPPwtkcdE5J5OU3d9dII7b2iJTxMgL9zmPpP
+ F5Dbc2cR
+ u9hccI/H1HMe9Fvxm4UpLTd1kfFxB7hFlJ2vwRbXobtq9jWbJ/KUu4SU1hXsKCxHQSzBshJAMfvsiS/enhre3Sy7I0SgWjbUzhQzpE6TaQnL1obksWUrwFQnoBel/GY69RTHPn4srqKVcFFuk6mnzYUvVe/jrH/rZrwrBmhhM991xGGm6CKE44SdXsGDhuVhAKl/BHieX/Y9A7mSwmxXNsCctds9cb2Nn7pk0YSuTu/jLXVzYraeiFUeb0vzYDnefnZ8nBtrIfCrwIwM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,28 +87,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 04:30:10PM +0200, Kevin Brodsky wrote:
-> >  * @mm: Address space the ptes represent.
-> 
-> Not sure that makes sense, maybe something like "Address space the PTEs
-> belong to"?
-> 
-> >  * @addr: Address of the first pte.
-> 
-> Isn't it the address of the underlying memory rather?
+On Tue, Apr 14, 2026 at 11:32:00PM +0900, DaeMyung Kang wrote:
 
-Will update both and also the clear_not_present_full_ptes()
-comment, where I copied it from.
+Hi Daemyung :)
 
-...
-> >  * PTEs that fall within the specified range might observe update speedups.         
-> >  * The PTE range must belong to the specified memory space and do not cross         
-> 
-> s/do not/not/
-...
-> Looks reasonable to me otherwise.
+> Commit 5b2b0c6e4577 ("mm/swap, PM: hibernate: fix swapoff
+> race in uswsusp by pinning swap device") introduced
+> SWP_HIBERNATION so that the swap device chosen via
+> /dev/snapshot is held against swapoff for the entire uswsusp
+> session. The intended invariant is: from the first successful
+> SNAPSHOT_SET_SWAP_AREA until the /dev/snapshot fd is closed,
+> exactly one swap device is pinned.
+>
+> snapshot_set_swap_area() breaks that invariant on the re-set
+> path:
+>
+>       unpin_hibernation_swap_type(data->swap);
+>       data->swap = pin_hibernation_swap_type(swdev, offset);
+>       if (data->swap < 0)
+>               return swdev ? -ENODEV : -EINVAL;
+>
+> The unpin happens unconditionally before the new pin is
+> attempted. If the new pin fails (e.g. user space supplies an
+> offset/device that is not an active swap area), the session
+> continues with no swap device pinned, reopening exactly the
+> swapoff race the original commit was meant to close. A
+> subsequent swapoff on the previously selected device now
+> succeeds where it would have been blocked with EBUSY.
 
-Thanks!
+Hmm.. This was actually intentional.  The API semantic
+is that a second SNAPSHOT_SET_SWAP_AREA abandons the
+previous pin.  If the new pin fails, the ioctl returns
+an error and userspace is responsible for aborting the
+session -- proceeding without a pinned device makes no
+sense.
 
-> - Kevin
+The only benefit of preserving the old pin on failure
+would be protecting against userspace that ignores the
+error.  But even in that case, the session has no valid
+swap target, so the hibernation image write itself
+would fail before swapoff becomes a concern.  I think
+this is an edge case rather than a bug.
+
+IOW, Looking at your test case, I think this part is
+userspace's responsibility:
+
+>       ret = snapshot_set_swap_area(fd, bogus_dev, 0);
+>       if (!ret) {
+>               fprintf(stderr,
+>                       "step6: bogus SNAPSHOT_SET_SWAP_AREA unexpectedly succeeded\n");
+>               close(fd);
+>               return 2;
+>       }
+
+The ioctl has already returned an error here.  Userspace
+should close /dev/snapshot and stop, not continue and
+expect the old pin to still be in place.
+
+(BTW, the tests are well written and easy to follow.
+Thanks!)
+
+For this patch to have real value, there should be
+something that concretely breaks after the swapoff
+succeeds.  But since the session has no valid swap
+target at that point, is there any actual broken
+behavior that follows?
+
+>       if (!buggy) {
+>               if (swapoff(swap_path_2) < 0) {
+>                       fprintf(stderr,
+>                               "step8: swapoff(%s) after close failed: %s\n",
+>                               swap_path_2, strerror(errno));
+>                       return 2;
+>               }
+>               printf("step8: swapoff succeeded after closing /dev/snapshot\n");
+>       }
+
+If you still see concrete value, I would be happy to
+take this as an improvement (without Fixes: and
+Cc: stable) -- see my suggestion below for a lighter
+approach.
+
+> Reordering pin/unpin in the caller cannot fix this
+> cleanly. Each of pin_hibernation_swap_type() /
+> unpin_hibernation_swap_type() acquires swap_lock
+> independently, so any two-call sequence leaves a window
+> in which swapoff can observe an inconsistent pin state.
+> The same-area re-set case (type == old_type) also cannot
+> be expressed with pin+unpin without either toggling the
+> bit (racy) or returning EBUSY (a false error).
+>
+> Introduce repin_hibernation_swap_type(), which performs
+> the transition atomically under a single swap_lock
+> acquisition:
+
+I understand the intent.  If you still see enough value
+in preserving the pin on failure, I would suggest a
+lighter approach -- see below.
+
+> -     unpin_hibernation_swap_type(data->swap);
+> -
+> -     data->swap = pin_hibernation_swap_type(swdev, offset);
+> -     if (data->swap < 0)
+> +     swap = repin_hibernation_swap_type(data->swap, swdev,
+> +                                        offset);
+> +     if (swap < 0)
+>               return swdev ? -ENODEV : -EINVAL;
+> +     data->swap = swap;
+
+Would it be simpler to use find_hibernation_swap_type()
+to look up the new type first, and if it differs from
+data->swap, call pin_hibernation_swap_type() on the new
+one?  If pin succeeds, unpin the old one.  If it returns
+-EBUSY, just keep the existing pin.
+
+If swapoff sneaks in between find and pin, pin will
+simply fail -- I don't think the kernel needs to
+guarantee atomicity for that window.  This does acquire
+swap_lock multiple times, but SNAPSHOT_SET_SWAP_AREA is
+an extremely rare operation, so the extra lock
+round-trips should be negligible.
+
+Reusing the existing helpers seems preferable to adding
+a new function with this much code for a single call
+site.
+
+How do you think?
+
+Thanks again!
+Youngjun Park
 
