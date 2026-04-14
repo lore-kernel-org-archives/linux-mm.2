@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03F16ED7B9A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:38:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4803ED7BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:40:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ADD36B0088; Tue, 14 Apr 2026 06:38:53 -0400 (EDT)
+	id 5C4D36B008A; Tue, 14 Apr 2026 06:40:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65DFE6B008A; Tue, 14 Apr 2026 06:38:53 -0400 (EDT)
+	id 59C7E6B0092; Tue, 14 Apr 2026 06:40:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54D1A6B0092; Tue, 14 Apr 2026 06:38:53 -0400 (EDT)
+	id 4B2A46B0093; Tue, 14 Apr 2026 06:40:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 446746B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:38:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD4ED590CF
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:38:52 +0000 (UTC)
-X-FDA: 84656813304.26.CDCE976
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D5536B008A
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:40:19 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E560F160550
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:40:18 +0000 (UTC)
+X-FDA: 84656816916.15.50DA0DD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0BFEA4000B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:38:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pAWzK//L";
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 18B2920008
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:40:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J8NQ/KTD";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776163217; a=rsa-sha256;
+	cv=none;
+	b=rSsqd/Lsy2XVswLEKaUhUFYmXhaBhhT6brnzJ+hzMgaOtOMlCV1UIHEp1HFdYBmG6m2xQM
+	XgbGYp5Ybqb7RFz8qMiTtvSgDEuRcDMGF7ZdtrbvmuAt1T9BRZZJzRWd92VMdnIWVvQU9M
+	MmaVHi0Jpozn74fr2UPJxR8iTDAzF9E=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J8NQ/KTD";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776163131;
+	s=arc-20220608; t=1776163217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jHwbOBOXnguaVxRpGye2HEunn3csDrVfEXzFjIWEqQg=;
-	b=K2wtiMT7Z6jwdumQ8F4XYllEUCp9JoL5Gpar/ot5eNtxC2FeL3o0A9R2QOBdFaW65DgvUE
-	9SfdoCfaJphR/LyG+M9dNOVplUNTua0orsEUfxpref9L6/kWf4p9y04MdSapBkxkQrduh4
-	8xMmQK9BJ8cRWoXGzizCSbCMmMGv78E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776163131; a=rsa-sha256;
-	cv=none;
-	b=WUAibHu8TCbEmk3lVCpPlYEsFOB9Ir5s/jZ0+lmbpLg0OXPNmRxaluTBPS4tQUTEg01pQu
-	L1mHWtsF1bZDN0Sq3Mn41tHCgTV/zQNtL3e3bOqP5wI1+PfsYv+X92bAXByW9cAhlW0Tix
-	uCXW4rtZ6+6CDGt228YXqL/FuwcX/HM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pAWzK//L";
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=vxjMhuerY3oBvkIBtTy8Bsd47A2fMfanLmWrn9gqnBQ=;
+	b=Jte5xqTOz+ilOZbOhdsZ9JQ5rassHwWGu0TgMrApy7F8PxqHne5M6Sp4ja+ilHA1KNX1WK
+	7J5TPIT96gVt+HA6NuH3nVoEZxvd7DAjv3RhGQXuahvmN0RkHr1c+hlmwD9UL2HTyc5t22
+	QCReY1C6shwv2lnONyLpvjm2MbmpquU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF57F429EB;
-	Tue, 14 Apr 2026 10:38:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770FEC19425;
-	Tue, 14 Apr 2026 10:38:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 109E043684;
+	Tue, 14 Apr 2026 10:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EACC2BCB6;
+	Tue, 14 Apr 2026 10:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776163129;
-	bh=Fpa0Zfgr+E7SENPxMZuDK0p/58ygV0eXyPaZzP6kQGQ=;
+	s=k20201202; t=1776163215;
+	bh=uKJLbd7pobvSRa/otRYj8X+Wzu6HrAb79wzj4niEGrE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pAWzK//L9cM5Om4kXfUxOJPX6jJBWQrIiRX860Pmdh2vrJRv1GERL6Ipg05z7qq8e
-	 sGqWqeleqN5i6FSasfB7ZB+ugGAcsjLY44ymAKvEHtz3gbRysqihqaYhmYg3c/sftj
-	 63/n8L+AyKcZakDZxDJCXkcFtGlVQRX5gM6pyE608gN+nKV+Bi4onlR2BDj68+jBEq
-	 2QGokokdGa7wCcsYzjcRN+RrjczDP6+CfOWRLUjSWIa2FxiLieYDQhfW7eeMn0ZAyj
-	 JCQq7i+UZHjZxOgiHeT2IiL7PB/ykEZ53RID7zjOGHzpGkQsrD9JkZHGZqTs/YjSem
-	 zuCzXRtzOUpqg==
-Message-ID: <10aadfeb-86c6-47b2-b6ab-b86657aafb88@kernel.org>
-Date: Tue, 14 Apr 2026 12:38:39 +0200
+	b=J8NQ/KTD15PF30aYKZFqDJqw7jj3j0LYTvjQREa+tZC8LeENek7izk/BO4zMr2Gm5
+	 7oltj6BgbyyikIKcEFSrg/u2Cd1iHwJpQjvCi9gQ3wri7wzHY3t+5sDYG7Lbhv1hJV
+	 i7MUvcHrbrpjtHgP0sy303n5I4fLPAxeFTb9jeQaihype8YcB/zDllGv6hj/gytaTH
+	 W9BY3tJoBTlqTMteefrigEcn2MHoN1MguBCAVNwanOiWYFD31RSxqm86gzmHEVuoiy
+	 g+JQwp/Ik/NT78JpX6ZjIv60RMgQi5OeAD5h1EKCttVxsbmy4YBG7GPr2IE98tsLlH
+	 O4xJD+2UynarA==
+Message-ID: <47012a6e-f1ee-47c4-b614-3ca16bfc9e6f@kernel.org>
+Date: Tue, 14 Apr 2026 12:40:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v2 02/12] mm/khugepaged: add folio dirty check after
- try_to_unmap_flush()
+Subject: Re: [PATCH 7.2 v2 03/12] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
+ from file_thp_enabled()
 To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Song Liu <songliubraving@fb.com>
 Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
@@ -86,7 +86,7 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-3-ziy@nvidia.com>
+ <20260413192030.3275825-4-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260413192030.3275825-3-ziy@nvidia.com>
+In-Reply-To: <20260413192030.3275825-4-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0BFEA4000B
-X-Stat-Signature: qt8to3orfpgerg787dirpwf3k94nayd8
+X-Stat-Signature: am6t3r78qh7eip4j76ushkzy1p4ydocr
+X-Rspamd-Queue-Id: 18B2920008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776163130-301119
-X-HE-Meta: U2FsdGVkX19ru4Yj/NI4Wam+U8SL7oYfq8xlg4A9z5GITYX96cE7tta1GXjyDjoKXMqbEfLIVnCys83rTHHPGpRwaG9+YdMfne1fnl6O8gEaB2gWtYUmr6BB52R95LNSPDrqOoVLyd9JBSTYXI95Zyht1MS06IQtQ+Wf5i8ouuUrDGiDz5G8cTIVhJ50Wm/AcFYvzjXhVaU9Wnj4d04o5YodLtQ7OUPjMLw0a6ZD8/VcDWL/hykeZHXEpa+nPimrYxByGR+Frq3gM0LVpXQXuHLeQEnqvIGFd01voOIFd0PsWhPhfsmcvDX5tG561WO84pAMVG81GdpI6a8bk4NydlswC2UC4/9fA9rXhMfDwsYJEITLZDxN79VptwpsHo36F7BYrxAZcOsx6KyqzSCE9/Zt+wU9bwqBRMHxB6IA9x1RXZrT0hhPuGuYuvXKOpgYeH4gtAB/HO3SsxMNGaXuqsYxaIz05pxrGG+ppiSk0SWnzMAgoYH6TMYIJ8j3Wt5c2Fbpx4VfI4eRyqiC1lpLD2/gDo7w7FUfdGOMw+vk0MxatW+baHs7aPd0KtYp2CNWUcqDyOT4u0vIA1jdvx9xGLLs2o8omlAOTwxzA+ezVeJIJhqbDDWxRfFYiGnzyEaFNVVUN8HVaJcyN87aJfBJwiqmCXKfiKq6GZ7hU9ZlfYEP4Dd18RJFX+p0WEKlKAIlBPRSJCJlznLkfylWOjXkKeXJaj787QMnlfeIZD9ewANgn9i6e4hqBLyf1lTDkFrWIa/5KE9Xdzh23406zpBHdKjd0qgO/dBDJi5EhPX+JQpYOwh+dy62rWk5CLA8rhgh/hbOko8gMVbhNDLyi5cZJjBG6vgNEn8VYKTLzM5YP9Kw9hig+1EOUaCdPM/++oICsFMTHCZXcxOe2LJzzQ4yfULaYpJIQMQujIamsk3KzF5j8G+QsubMAMQUlcqxSECyyqNOJPio6SvCMHliuTv
- 343dhZyc
- zCiYuUOqSk4Z/31p63mQ+2KhKhF2n/q1KG2DamNT+q1myZAXC1/ass6YzQyBqT1ZleilmV+bZGjzCuBZUCrpODRlv1KJHX2hptaESeJTnB4McDGSEGfWam5sQgkVj5ccIK/UiaR7gzafIHAEW8iB8SmCcCykz1ntQdclY3PGK1DAwY1Yz2wItV3gM0dVkmjU7mJhXanxRvI7CC37BkN8NFNLfHLSjuVLObuWbhkLteoXrhScVbTNZd7P6LHpMQ/dAXFGw9imyT725i1OD8M8c3atqNXzOTeT83hnynNaPbNi5ysmdsNijKWSJ9qvQ7fOMv9Gn/KHas9UC8PM=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1776163216-93404
+X-HE-Meta: U2FsdGVkX19yXjNpY323rhcRCYExH+qyLElAIIOHAN8Kn+tZLROUt+A5NavUgYwfmpNyYKo0qskWnxfQA+/oPIE/wz+joi+bUuFaJ9PN3em3DYiHSRO4LA1uJm51B4AUCAhnvr6RnXHG4ZVdWd6WPjJGEsUwGyM2u7KYWaCGJyHUCxpgtDdPB5sIPx4l1KWBuQQtsXElE+FmyV5eH7Ooxtu8rdmnup+7mi/FhBiYLv3+/ObO+WSxblcviLDTCv5dC5/+SMeJehsSWyUfkaarO6blg5hNHnGn4IsvXMDCGo845a/JfVc5E0wRXwrb/hpDhjaspAMJT26e1+d65cUssOGTJpMzcsYzi4vtL2UjlGX/IBk+YzwIDx1UtOpHpU/xegcnvUldrbYchNdS4Bol/veZovE0Vr3niYlJ8ONtu+j+4/oZQzcGi+UZnejmT8/dJxQCtxxe2Mghy92yDNZpfR1yt8W0OSv4fbqxZ6OKWzWT8Pe28no1bqOe4ELuSKQabn2MzHudzxsiNqbocq1002nmy5hGax6paxHHzKwrbPopFPxj9rKHUg8J7xh/H4XRzhrY/VXEwNs4Jm4ELP9xrq4G5KAGamtucHQsViuN3IvfAXAqqGug0GVE0dfqzwPbhWaOxD5rqtDx9Ulz4F1o7I+tiF78nO1vYf9R36AAGIWwg+/jkzDaiiODB5M7htRK/nPaKZQi5NIlkgf0D3Ehz7me7fUcH45vRV0zhQZai9LNrI32u2r1v+SvG/9U9zK0fDjHz2jbf+X6TDgi6QVzB/6OoQHWVwrupiJavpArn5v64wHnC2apeCxF9vbRTwPfRQSyId5SeRpWlZgjw8ov9KsW7VlQODd8OMm0KJB/KwVTy8IXH69dt8Fhkbbl+pVS00G/Gndw1lC+pXsW+Q0oiHQZBxBdktoRIaAG6ePzpixjDEEZoTKe280Om/NmeaCvxVkFniEBKr23Hy87df4
+ z95FVWzL
+ lJvvzgvHbu5M9YvozxXsfIHS9Ho9PlH79W4nbMyL0JqxxRn86JZcTyOEi16dSROWXhL1jTQdIBrvJoErhevyxC/Nax4WsROkLYzYgW+T6CsKvZ6MhI5NesoxkY0KvCvLnAClenGawh2SguDn/iB7k19NjPcbSAPI2Cr+B5IKtx2WdwMpKn1VoMpmNYK4DEVj5cU9aPBlyECHYpNJcvh5JXuvOxe8/3pTcS+U28e8QblxnCF0x0GWLi4QtaazhsamUr7iQ7klq9qPxKsgs7bdZ1cqc/Q77r+FEc0E7iYokGYgU/feXo8zNiBgoFdYjr3uzZyCk4VG4LyA9GkA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,79 +152,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/13/26 21:20, Zi Yan wrote:
-> This check ensures the correctness of collapse read-only THPs for FSes
-> after READ_ONLY_THP_FOR_FS is enabled by default for all FSes supporting
-> PMD THP pagecache.
-> 
-> READ_ONLY_THP_FOR_FS only supports read-only fd and uses mapping->nr_thps
-> and inode->i_writecount to prevent any write to read-only to-be-collapsed
-> folios. In upcoming commits, READ_ONLY_THP_FOR_FS will be removed and the
-> aforementioned mechanism will go away too. To ensure khugepaged functions
-> as expected after the changes, rollback if any folio is dirty after
-> try_to_unmap_flush() to , since a dirty folio means this read-only folio
-> got some writes via mmap can happen between try_to_unmap() and
-> try_to_unmap_flush() via cached TLB entries and khugepaged does not support
-> collapse writable pagecache folios.
+> Replace it with a check on the max folio order of the file's address space
+> mapping, making sure PMD_ORDER is supported.
 > 
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
->  mm/khugepaged.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  mm/huge_memory.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index d2f0acd2dac2..ec609e53082e 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2121,6 +2121,24 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  	 */
->  	try_to_unmap_flush();
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 970e077019b7..a22bb2364bdc 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -86,9 +86,6 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+>  {
+>  	struct inode *inode;
 >  
-> +	/*
-> +	 * At this point, all folios are locked, unmapped, and all cached
-> +	 * mappings in TLBs are flushed. No one else is able to write to these
-> +	 * folios, since
-> +	 * 1. writes via FS ops require folio locks (see write_begin_get_folio());
-> +	 * 2. writes via mmap require taking a fault and locking folio locks.
-> +	 *
+> -	if (!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS))
+> -		return false;
+> -
+>  	if (!vma->vm_file)
+>  		return false;
+>  
+> @@ -97,6 +94,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
+>  	if (IS_ANON_FILE(inode))
+>  		return false;
+>  
+> +	if (mapping_max_folio_order(inode->i_mapping) < PMD_ORDER)
+> +		return false;
+> +
+>  	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
+>  }
+>  
 
-maybe simplify to "folios, since that would require taking the folio lock first."
-
-> +	 * khugepaged only works for read-only fd, make sure all folios are
-> +	 * clean, since writes via mmap can happen between try_to_unmap() and
-> +	 * try_to_unmap_flush() via cached TLB entries.
-
-
-IIRC, after successful try_to_unmap() the PTE dirty bit would be synced to the 
-folio. That's what you care about, not about any stale TLB entries.
-
-The important part is that the 
-
-So can't we simply test for dirty folios after the refcount check (where
-we made sure the folio is no longer mapped)?
-
-
-
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index b2ac28ddd480..920e16067134 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2089,6 +2089,14 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-                        goto out_unlock;
-                }
- 
-+               /* ... */
-+               if (!is_shmem && folio_test_dirty(folio)) {
-+                       result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
-+                       xas_unlock_irq(&xas);
-+                       folio_putback_lru(folio);
-+                       goto out_unlock;
-+               }
-+
-                /*
-                 * Accumulate the folios that are being collapsed.
-
-
-I guess we don't have to recheck folio_test_writeback() ?
+I assume this change itself should be sufficient and the SCAN_FAIL check
+in patch #1 is not required?
 
 -- 
 Cheers,
