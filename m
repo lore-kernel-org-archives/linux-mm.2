@@ -4,153 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A0D4F9D0D5
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 15:10:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4990EF9D0D3
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 15:14:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CB946B0088; Tue, 14 Apr 2026 11:10:25 -0400 (EDT)
+	id 9825D6B0089; Tue, 14 Apr 2026 11:14:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97B916B008A; Tue, 14 Apr 2026 11:10:25 -0400 (EDT)
+	id 9593E6B0092; Tue, 14 Apr 2026 11:14:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 842CD6B0092; Tue, 14 Apr 2026 11:10:25 -0400 (EDT)
+	id 895F26B0093; Tue, 14 Apr 2026 11:14:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 72DBB6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:10:25 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 026D6E0AEE
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:10:24 +0000 (UTC)
-X-FDA: 84657497610.10.46ADE9E
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D8BC7160014
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:10:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXqpFC8a;
-	spf=pass (imf08.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776179423;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 78B5A6B0089
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:14:13 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 208B916015F
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:14:13 +0000 (UTC)
+X-FDA: 84657507186.23.767888A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6E77B140014
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:14:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mEymB5dr;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776179651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A7c7tKPqaKq3NgFiv2DNK8q/BvKoh1wbxDHgCCrA1+c=;
-	b=uNfJQXAC2pTJkaO5wndyayMp3hQ52XF+p85ZlTIVSlVNYtl2n+ah48b+1qYFWX3yWfqCkN
-	4y1k0P+I2I27BMP7SFaa560Rpxl4fDKUYJyfYEIJg2Dp9D/rsiTxbqvYeKQrCMyZs1kxa5
-	5DD07A42qNpxDr75qc+vYs0ZbH6nu/g=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXqpFC8a;
-	spf=pass (imf08.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776179423; a=rsa-sha256;
-	cv=pass;
-	b=di9Awjs2hsUhrlbPT7rx3mImQ+8Z79MnjflpoYo+A42zIOQjlVP7B+wggxAMd81AxRnq3F
-	CwawTfZY5jUGS3gH59HVBfp2zJhJaRO8y7J/SNND2y+tQF5CW2kgUb002IygmGIZpowh60
-	rzFd3ZQ1tlQLrSq+cBCUVf5YV32bicg=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43d734223e4so1665837f8f.0
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:10:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776179421; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FIuEPaVPMz0UJj/NwbQboalXRJl4/YGdTFwC+lgjvtkwqDlaBkudC9I3w2FlisOJI2
-         52XdHhrJazrc5IQkZ9tBg66ZZBAUgL8xGsvfjb0OgOELiL8ZQWDq+g1TWh/qIBQDQ9xg
-         UkNBQz0P6+bDFrf+E96kqmaYZ8zlCDTqCnFiAwCFV3P9MzRYijXy0HZ4hF5jV4atQq3P
-         /+NhqkALp2Ud24keI7Ijlpl46ESN3IcrKs8NhHZVU9RC8y0MuyEu8CsLBNEnEin4W2Wl
-         B0onR1vz7NEXSBk/4ZtGir2vqiAxKhGTVKWcuHSfdNlUHD1wHeXQBdyBgmCuPalCLLXH
-         nhBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=A7c7tKPqaKq3NgFiv2DNK8q/BvKoh1wbxDHgCCrA1+c=;
-        fh=eqrWCDeJuqd/RespjtXK2hMd3yOmrO03s5JWUsRGL9k=;
-        b=CaZEZeAjiOoypOdB4KfPQaVGCxCwQcyHIG8QBzRmvzFJY5lENvT8PMmaJOEpUgW/Zl
-         dQQXwpqB0C9p3l8a143mEvDwM0btDvKcaBftH9GTJvnMC1LTiAwME/h0dgMuCLgPyizg
-         DDGHUxGptpl0+ricdXn+qeg6tg/lM76zcNW8sG3A9+gfY8JkyMdMkpRJZ2hzlyrvJs7M
-         RqZKNxNBSpgiu8dsOxWegiG1wqQuxAAmpNszEwEbmzb/PGcDdH47OSSENAfx277rGEb4
-         4uOV+hjbBgx0XLU525R86FonaNBoVcTR6NXHqmeSyo7T1qp5Q/t9cmMsdG2GyVYxJLiv
-         NPfQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776179421; x=1776784221; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A7c7tKPqaKq3NgFiv2DNK8q/BvKoh1wbxDHgCCrA1+c=;
-        b=TXqpFC8a/BD/A18gZ0RJ1KZQbtCszjFBDu8oi5458/uXpycmaYom0WXXSzlT+KmF/O
-         J/Y5JzZEgE/fr+UneAQvPOStNtPWGYNCf6Wu7+6u23398WEl1P1+B5Cw75dHYmOyXRVO
-         Yq1/ma8M0A1OqPKoNP3s/IeeEA7yQxlqXQZorIhbziuxsFp7DNMhA6M3w+i2XU4NZYE1
-         Hr01PNpvjvx4NjXNu3kLZkZ57dEYInK6brAuodudMx0ABHjE1PnjkowFGgL8dDm7vQfM
-         4hlAuV0dGQsAPUNpxejsaBncXyv74QNIVpD5x49Y1JRqbZEOyj5NoZZVK7NtqGMUlaWo
-         1Dlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776179421; x=1776784221;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=A7c7tKPqaKq3NgFiv2DNK8q/BvKoh1wbxDHgCCrA1+c=;
-        b=fk2ehDGMD1uXGLQxNDZjw9RcAKTDp8dPWcVkiQf180eV9Pb+/k0KccZylcAbzIwqq3
-         RI5ImGoQbcJpwJqPCvaBrkeRnLn9Fmm1nDiCq0FekCXDCV3MWWUTaoL1UZdaH9/dgJ+V
-         bT2vtnxh8yWkLFe/NdUN3CkjZCiGmhW61F4RNTWwRqqqopVv/r54FGguq0e37nbZEjZ6
-         l0wQaVKwlrPJZPT6cJ03XpRkTf7RZ+Q9EIpIFA21lJGEskzWkdq/67AcaoN7vU/lS3CV
-         7tmlp/65UYELsuI1hi6PZJeyl3OryudjYWBy7fSdECzZ4wtUROWRENgIUCwmgPraM2Me
-         9Emg==
-X-Forwarded-Encrypted: i=1; AFNElJ+6/scYBRRTfVi7WgEjj9D9nmG+nIO3ifJQvfuk6LYLrw8O8Ot6OxW1xGry0T7LDvp4Z6iaUdciBQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzbze8/+qE5Iw4ms0F+4CvdnVP2TxRdT/K0LPmtoYoVPXxzEjS1
-	BeTf/6Sql/jcOJTYHleOze1B7LfwyNaQuI6a9EwEMgkowBa9wAfEy79kHK/uOyDnraLQFRBUWs5
-	GoSPjwdWpQvTBr3DRo52qNyG2BSw2Rrs=
-X-Gm-Gg: AeBDies0GBRvMrJZ5AI6DUZrl+CjTmUD9wrbQFcR/28elEhP/yY8pYIizxbv1Riv9ee
-	veBESlo3yyoKr3HWjoyhoFNriVWaldIDcmBDJSYOVo74sSYenoY5Ob+tFZi/Ce9r37pL+W5tsb0
-	mr//A7wV7yC/vHkNKABvKj3aI05327Xp3qMAWnpg6ZyLG1abUBPeqv3mSKgFXdU5IK9VBIOPCFK
-	pcLq5B7d/lj+Om0dyZBXuidtLxFwwM6y1ed/RYISBCNrMysRm4D2QBOBhDTi4ApObzldondwgh3
-	ZyAidsy8WBe8D4HYEzQ3idaOxQZi/oJHDUUWWusd
-X-Received: by 2002:a05:6000:4110:b0:43e:a8cc:89b7 with SMTP id
- ffacd0b85a97d-43ea8cc8c24mr1517128f8f.3.1776179420992; Tue, 14 Apr 2026
- 08:10:20 -0700 (PDT)
+	bh=V010CmGkw8TaI5ao8y4FPUL4nvCOlZ3bvIIlfl+uzPY=;
+	b=8kDEYncoKw15JOzoazknYhR8lsKpVgx0otrvT0WRx2kz+Wa5jwMDctDYSzTr0kWm9aLbJ/
+	e8el8MMfrwckf014tEyGCMREwDUY5qoVY9NvRslW83uKlc0OHtsiWTmHCdDsNHFcpjGtF+
+	8oFwfW67jtLINThjPaRyMAumIspZO+k=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mEymB5dr;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776179651; a=rsa-sha256;
+	cv=none;
+	b=h0aJyWbOuuC+t8u/yqnPO2wDlQc3U8yI341NlzUQa94EvQFGwaWItdmG3aWY40j1/+P+3I
+	zYcfEU6KYZHNYRlLRZpkkTLBoAXPallvKS3c5W+MqI7Uxp5tpfQs71gUjnblhg/Uv/7FoZ
+	XHOS2U6fB05JifukT8yxfmHqHeHApQg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 953E9600AE;
+	Tue, 14 Apr 2026 15:14:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64988C19425;
+	Tue, 14 Apr 2026 15:14:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776179650;
+	bh=0ob26VwLXMWHWDk+TZoajRbCcn/0UQ7s8UqtxLBZuJQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mEymB5dr63U0EbprW0BwqEHA0dNm9M/HMCIegREI7w0BoCfXtLg9q013mcIPXQM8l
+	 l2GtF4L0FVgpCJ5Ek4LRq1vxjWnypK8yC2LIPQ6qE56u8Ayqg6l15PP33//IcTIUVC
+	 UnWIATP4zf1t1tfGAgC2UpJ279ZXLCrCBvePaDZa2tpOlJrwF/q1vKxE2W1JYa3IhD
+	 cqYKh2/SyqwvYoqS5wD4BxPVud9d1NWMfECvFKvc/tBwtX1SGExe2Paw+O4TQ5dkfY
+	 1ONtuyAsXmajUGl0P1SwGf/Hd96iOTJgdOI6qR5GsAIOQszM4YXCc52amdZnc2EiXh
+	 Oa8F+s4oO4Wow==
+Date: Tue, 14 Apr 2026 18:14:05 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: priyanshukumarpu@gmail.com
+Cc: akpm@linux-foundation.org, changyuanl@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tools/testing/memblock: fix stale NUMA reservation tests
+Message-ID: <ad5ZvYLyC--CXPZY@kernel.org>
+References: <20260413091458.774770-1-priyanshukumarpu@gmail.com>
 MIME-Version: 1.0
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com> <20260413-kasan-v1-1-1a5831230821@bootlin.com>
- <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
- <DHSWK17EZUDP.GIJ6BX2NFR6U@bootlin.com> <CAADnVQLJ=fJ7t1i2+_RYqU1gqYqiLP9Zrwo4vdZsgzjK_yzJTQ@mail.gmail.com>
-In-Reply-To: <CAADnVQLJ=fJ7t1i2+_RYqU1gqYqiLP9Zrwo4vdZsgzjK_yzJTQ@mail.gmail.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Tue, 14 Apr 2026 17:10:08 +0200
-X-Gm-Features: AQROBzAtXSFwPeCMpZ2dGca-DBLsSXREgEyBZSQFf7Waht1WxQ2QIbb8WTtAIYs
-Message-ID: <CA+fCnZd31GzdpEqR8VhfK4JtUKyyRMgbBoAbeGACJgm7WvB6Vw@mail.gmail.com>
-Subject: Re: [PATCH RFC bpf-next 1/8] kasan: expose generic kasan helpers
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, ebpf@linuxfoundation.org, 
-	Bastien Curutchet <bastien.curutchet@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xu Kuohai <xukuohai@huawei.com>, 
-	bpf <bpf@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Network Development <netdev@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	kasan-dev <kasan-dev@googlegroups.com>, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D8BC7160014
-X-Stat-Signature: qesaa6t3ctyy7z3f81m4yn8udoabonrh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413091458.774770-1-priyanshukumarpu@gmail.com>
+X-Rspamd-Queue-Id: 6E77B140014
+X-Stat-Signature: 81t1xsxjh96wkxro8f6dxizaazse9aoo
 X-Rspam-User: 
-X-HE-Tag: 1776179422-385269
-X-HE-Meta: U2FsdGVkX18LG/vmP+lSNsA0wMkp7g5ueAz0DUtsnrYYprGWedDWgkZmmpx/jA9XRSMQv3RmTLT7ACVL8PNRNKHhNBVQxJ4pcj8++Wl1Mx6iyBgp7odz7TRODXtloTDy5L3GJHNxEn8pC61jFpAyhifPAwvTSA+Qd8jNukmZVkMDYBdNTW/8E1qK1FCMEmZ5e3fLVd0FFwXI8Q58bI5QPr8qQvTbaWm+UgN2B8IqOFFk26Aj1zKtyOXUoJqoJ2FXGYhckMK3frdykaTAVzum2mCyJklak0qKEMRKWgSAbLVbqn572NVC+o+zdyZi1qkPAhfdYgbAiVq6S8aHqV2iaFt5eEHYVk97ub21XmpktnqJVigU7CfR3xfjS3PmV1j2hjQ6nCSYmxCc+JqwNDwQkrw5Fxp8P9fhoSONzxdluj7jcVjPUbRSap0ji1khKwXml+NQUfTjEDldrSE3+W1q/wOmRFW0Hg+EY1bTBa9BSNSUd9JpL77PzqmUxHDFvJjiiYTzwD5teZ6iIOCXqzvN1zXAuo9rNT4an81O2iOqiE3eDPdTMJduBZWHkqkzPm9+wpCcVZjy/RGOgVWCHimiHkj6T27Y8RPK2PgthvUwMWjy5xM2r+4q2Y6GJIFLgKyXjhVXHipfw3QMpwf5OksUzeHgDYiXwBH6tDjKkS0noyQgSy8Sz2s4bVdRhf+hER9Uv11aHTWuKtoPWtKfEs//iSve9j+xLSm+h4wlNWjZNPT+MbkOmd2qc+wrXqh45WKGBhebndwv22K2JxNUsY+aQP0f62DqsfxeW0S7klJqGCdE8S+qmMXi49vzgrBWUgxDTVHUF9dBc52jvFHRRuiDRj027E/rwqv70ue2ww6jFbOlJyKzmuiIf9FqsSUPOu+sstXTaI8zpgBwVSdow8w9nu2ESbgAeacEdbw3V0jQfbRH2bRUMpMziW3POTR90gAHw4gkzH2AqFBcU2S5p5K
- z+/TASf+
- ZoS4YIZR+15L3Key5C+PSqQSVYU/cNsyablyfeoM6VilB2vsKj9h9htOej7BTEQDBpZWpzW7pbg/TuVCUaZtxfFO/szTxCR3MrIO89X3+kCWB1DEqV+XFUl7PvMThzKgKrRw25d7fwEj7WjH/fiKOhgMjXBE0fqEox/FPsZkVSGfT9C33951oKBWrVRZlDG+gZ4ghy99Roi9PGSkURsmCFX+L0rStZWSn0uFWTxcBWaHwsekjYTCvzflz13KxS1XxMvy+QkNY8JSZSCWF3kVcKOI09fCHdRw3VO+ZgOWXnjfTimRaWWaAZLrMr8eEuv3rIaKs+R2pOKEdxZogAAv+2A2OFE2RQ3Uh31/qWercPnOGUEGbprhCbYwIkRpUsHHQtkhBwuOuX55ljMerjU0SmelTLeljmye9IYtsXqTXU3ydO9/mKO4cO7SalUMhnKbskeRTT7biLWW3Wvm6pywaWvOI3zwR0uzDN0i7cjsQTxVz//4SkiHghT0UaA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776179651-684294
+X-HE-Meta: U2FsdGVkX1/uAnFfBo8Th1NN77z0AEM3RlHtxPgIbM42QS3qTH1E63urSs19tDSVyo7KTGPuwXSuxl++E9CBv5YAID78tfBdfQ5Zio4QoQ5Nm6iVFugIhXS2rMWu4YDt5BkAl2WS3fhOH9ZUydXedM9aZJcpoEogMBRYkqJto2FwbCEXY6VtXPOrEQyaV2LbC79bJ6OuheBbEQG3SyvJu5LB8sBR7alYiYJDfivK4Invfc6ijnLlwPUTTm1Y7QAMSfMzSSf4Mj2XyfEmj4V0RgshlE7JC/hF6sOihBVvSUM7QfWuvoSxcwmRTGE6yB5Sf/QhzrRwx4iNEcJAdlGKIwoOEX2y/ea1U9Gcm5ipZSeDgnwZd1nw3GSp1XRed7aKJsHyDZdPvx8xoOJJMBgg9peAaFflYf1MX+x1h+ePhXGYY95BQDSEL4FJYDk0SB/+mx5hfwoNXPU5kusC3zIRS1e3wDUH/LSMg+cR1yKTz1UD1S2qTBgAHbyq3FV5og29CphavtqUiyZIejP10uSF1y293Ak/73wUgUvvImHNqBjpDMXRyCdGLe7PXFqU+zomiHs4hSE49xh3m7uhGnPC0Wws7YUQ+gMNxxpTc0MSqUgn5FQ+6t7yMaqpKj3u5909aOPrTYgLs1z1uzYbntLHSIz6Xpc3kcTsBOQKucOJpMjPx8dwSVF9b7drEGg4JzFBFY5vw4saOvIxUG+A4L4oPC5pwOp2wP6g/abcbARzIX4FgyRCnlx2VavkZghIDhXhpy4cMe9NuQZo45lGB5z5tfrD2xrGK9F7VZ/huq0NkDv7tEaFHHL9obVDGVu7NCOZqDCdwjhivlVKPb7rxePD6Aq0WrN61s5cb0s83dvtJEArM1m+8STtgW8BSb4Cs3ljIBNZviCyCh7fneU2ThNCJwnAJBmPsL0AsESstXTzeN0VYXJ4lEiXnI2z59GYqGS7eknSMDZmIyOz0spZGTT
+ TrxzrjMF
+ 5MPaCD7xk6DG7NEqP0tShJItA7mmtrwWv6woAfirci+HyVymy6ZMq0aPBpTZdLEp6vuBcpk/hO7+oUDVujToGNrUKPm0n/qvfp+bdF8E8xWJtk92la0PqZN/lBH/n6TzC229Jwml88f4sr7jjSGhC2n+1/cXX/NTLEn7HMU/3DyQlBIBf5dfhTIJ6E1Sfkd/ESslzxCpw5ZqGTDItUP3JfGRiso6r/sMJp47BLvO6sZ7WhlaTTejD0wI2KKKUvVPEgHiFWml+zzDu1h6Bq8rqjI0zpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,50 +90,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 4:36=E2=80=AFPM Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
->
-> > ACK, I'll try to use those kasan_check_read and kasan_check_write rathe=
-r
-> > than __asan_{load,store}X.
->
-> No. The performance penalty will be too high.
+Hi,
 
-With using __asan_load/storeX(), it will be one function call to get
-to check_region_inline(): __asan_load/storeX->check_region_inline.
+On Mon, Apr 13, 2026 at 09:14:58AM +0000, priyanshukumarpu@gmail.com wrote:
+> From: Priyanshu Kumar <priyanshukumarpu@gmail.com>
+> 
+> memblock allocations now reserve memory with MEMBLOCK_RSRV_KERN and,
+> on NUMA configurations, record the requested node on the reserved
+> region. Several memblock simulator NUMA tests still expected merges
+> that only worked before those reservation semantics changed, so the
+> suite aborted even though the allocator behavior was correct.
+> 
+> Update the NUMA merge expectations in the memblock_alloc_try_nid()
+> and memblock_alloc_exact_nid_raw() tests to match the current reserved
+> region metadata rules. For cases that should still merge, create the
+> pre-existing reservation with matching nid and MEMBLOCK_RSRV_KERN
+> metadata. Also strengthen the memblock_alloc_node() coverage by
+> checking the newly created reserved region directly instead of
+> re-reading the source memory node descriptor.
+> 
+> Finally, drop the stale README/TODO notes that still claimed
+> memblock_alloc_node() could not be tested.
+> 
+> The memblock simulator passes again with NUMA enabled after these
+> updates.
+> 
+> Signed-off-by: Priyanshu Kumar <priyanshukumarpu@gmail.com>
+> ---
+>  tools/testing/memblock/README                 |  5 +--
+>  tools/testing/memblock/TODO                   |  4 +-
+>  .../memblock/tests/alloc_exact_nid_api.c      | 29 +++++++-----
+>  tools/testing/memblock/tests/alloc_nid_api.c  | 44 +++++++++++++------
+>  4 files changed, 53 insertions(+), 29 deletions(-)
+> 
+> diff --git a/tools/testing/memblock/README b/tools/testing/memblock/README
+> index 7ca437d81806..b435f48d8a70 100644
+> --- a/tools/testing/memblock/README
+> +++ b/tools/testing/memblock/README
+> @@ -104,10 +104,7 @@ called at the beginning of each test.
+>  Known issues
+>  ============
+>  
+> -1. Requesting a specific NUMA node via memblock_alloc_node() does not work as
+> -   intended. Once the fix is in place, tests for this function can be added.
+> -
+> -2. Tests for memblock_alloc_low() can't be easily implemented. The function uses
+> +1. Tests for memblock_alloc_low() can't be easily implemented. The function uses
+>     ARCH_LOW_ADDRESS_LIMIT marco, which can't be changed to point at the low
+>     memory of the memory_block.
+>  
+> diff --git a/tools/testing/memblock/TODO b/tools/testing/memblock/TODO
+> index e306c90c535f..c13ad0dae776 100644
+> --- a/tools/testing/memblock/TODO
+> +++ b/tools/testing/memblock/TODO
+> @@ -1,5 +1,5 @@
+>  TODO
+>  =====
+>  
+> -1. Add tests for memblock_alloc_node() to check if the correct NUMA node is set
+> -   for the new region
+> +1. Add tests for memblock_alloc_low() once the simulator can model
+> +   ARCH_LOW_ADDRESS_LIMIT against the low memory in memory_block
+> diff --git a/tools/testing/memblock/tests/alloc_exact_nid_api.c b/tools/testing/memblock/tests/alloc_exact_nid_api.c
+> index 6e14447da6e1..3f5ab994f63a 100644
+> --- a/tools/testing/memblock/tests/alloc_exact_nid_api.c
+> +++ b/tools/testing/memblock/tests/alloc_exact_nid_api.c
+> @@ -368,7 +368,8 @@ static int alloc_exact_nid_bottom_up_numa_part_reserved_check(void)
+>  	max_addr = memblock_end_of_DRAM();
+>  	total_size = size + r1.size;
+>  
+> -	memblock_reserve(r1.base, r1.size);
+> +	ASSERT_EQ(0, __memblock_reserve(r1.base, r1.size, nid_req,
+> +					MEMBLOCK_RSRV_KERN));
 
-With kasan_check_read/write(), right now, it would be two function
-calls: __kasan_check_read->kasan_check_range->check_region_inline.
+No need to check the return value here. 
 
-I doubt an extra function call would make a difference in terms of
-performance: the shadow checking itself is also expensive.
+>  	allocated_ptr = memblock_alloc_exact_nid_raw(size, SMP_CACHE_BYTES,
+>  						     min_addr, max_addr,
+>  						     nid_req);
+> @@ -831,14 +832,17 @@ static int alloc_exact_nid_numa_large_region_generic_check(void)
+>   *  |             | r2 |          new          | r1 |                  |
+>   *  +-------------+----+-----------------------+----+------------------+
+>   *
+> - * Expect to merge all of the regions into one. The region counter and total
+> - * size fields get updated.
+> + * Expect to allocate the requested node as a separate kernel-reserved region.
+> + * The neighboring reservations remain distinct because the new region records
+> + * the requested NUMA node and MEMBLOCK_RSRV_KERN flag.
 
-But if the second call is a concern, we can move kasan_check_range()
-and lower-level functions into mm/kasan/generic.h and include it into
-shadow.c, and then it will be just one function call.
+Please don't change the test. Just use MEMBLOCK_RSRV_KERN for the first
+reserved region.
 
-To improve performance further, the JIT compiler could emit inlined
-shadow checking instructions, same as the C compiler does with
-KASAN_INLINE=3Dy.
+The same comment applies to other changes as well.
 
-> hw_tags won't work without corresponding JIT work.
+>   */
+>  static int alloc_exact_nid_numa_reserved_full_merge_generic_check(void)
+>  {
+>  	int nid_req = 6;
+>  	int nid_next = nid_req + 1;
+> -	struct memblock_region *new_rgn = &memblock.reserved.regions[0];
+> +	struct memblock_region *left_rgn = &memblock.reserved.regions[0];
+> +	struct memblock_region *new_rgn = &memblock.reserved.regions[1];
+> +	struct memblock_region *right_rgn = &memblock.reserved.regions[2];
 
-You probably meant SW_TAGS here.
-
-HW_TAGS will likely just work without any JIT changes (even the
-kasan_check_byte() thing I mentioned should not be required), assuming
-JIT'ed BPF code just accesses kernel-returned pointers as is.
-
-> I see no point sacrificing performance for aesthetics.
-
-With the change I suggested above, there would be no performance
-difference. And the code stays cleaner.
-
-> __asan_load/storeX is what compilers emit.
-
-For Generic mode. For SW_TAGS, the function names are different.
-Keeping this detail within the KASAN code is cleaner.
-
-
-> In that sense JIT is a compiler it should emit exactly the same.
+-- 
+Sincerely yours,
+Mike.
 
