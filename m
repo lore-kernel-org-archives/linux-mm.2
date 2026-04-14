@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3FD3F9D0EB
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 17:54:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37AA5F9D0EB
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 17:54:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 283FA6B0089; Tue, 14 Apr 2026 13:54:28 -0400 (EDT)
+	id A25506B0093; Tue, 14 Apr 2026 13:54:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25AF66B0093; Tue, 14 Apr 2026 13:54:28 -0400 (EDT)
+	id 9D5506B0095; Tue, 14 Apr 2026 13:54:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 171666B0095; Tue, 14 Apr 2026 13:54:28 -0400 (EDT)
+	id 8EAFD6B0096; Tue, 14 Apr 2026 13:54:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 050416B0089
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:54:28 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AEAB3E0BB5
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:54:27 +0000 (UTC)
-X-FDA: 84657910974.09.A1288CD
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 806786B0093
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:54:42 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F0241B703F
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:54:42 +0000 (UTC)
+X-FDA: 84657911604.30.3B82462
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CF40240010
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:54:25 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p9UsAxCC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776189266; a=rsa-sha256;
-	cv=none;
-	b=B9KcHoTjra9bbC6lLcK6eIKhs5CJyr10FbDpJXC7hq0w7Ur5YIjJmatpCbY78o5rP17OFQ
-	zEC4XIHhgi618skt1FTI2GnpU/IMxWGaUuJ9D/6l4WHPMjnXbac5I6vytUGFzTh2se/LC8
-	DHGvLvLeqzfSqDg0HyQ81D21axDsQrI=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p9UsAxCC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6A18A140011
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:54:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VSw8oHqB;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776189266;
+	s=arc-20220608; t=1776189280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o0oitkRaPlhxEvrLUvQee5Y375xtYhMjN9dXeQ5U3AQ=;
-	b=X2rcaFoK0qVF+CbUJSHKvo3/+hwdXG5w5JTybfQ2c2KBAy98qcb5k82be/xQbF/8NNys+d
-	DqS4hnkpldHpx1jrIN0uhb/k72155oTyyvp9mXfMt7k3EIrV8P1ErbXh8lUnKs+YvcK2fD
-	T210+zZQEAvTNfFVM4Ro846z0xxTlHM=
+	bh=UVTInWR2aHl59QuYgge7RukF8qLFnBFE4Shx6Ep0t0w=;
+	b=kZaqey5qhclyxbdgQpnyIPO7DWmsjwuJQ5antFr0SlyunUUjHqLTQ+VETs7WTgmzBcqTir
+	Ow8xI/uIGE8ULnfTCNhpNRBissn3MRMWaUHt9GH8jJ2y67Mhuv9wXPHLGNq0+soobZlK6p
+	OB79WAcYGio0IS7hcC14WI6ZYRlr7SM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VSw8oHqB;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776189280; a=rsa-sha256;
+	cv=none;
+	b=r7vfrY2CinMTrjeJw0F2vEyoT1o1kyIPfyf0oqfcekelhVcelDUjOrFpMgVcPXT8exjsBG
+	B75IdoMPg8bYBH0VG9NAQ5d+LjdggncrL+YhR++VCS+WPLfwwnK7Z0FGZEOZDpsg5Y+kQO
+	OI2dHBstkHBAXjfxYEtiSdpSvs4pf0E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2BDA41A29;
-	Tue, 14 Apr 2026 17:54:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C40C19425;
-	Tue, 14 Apr 2026 17:54:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9104343B85;
+	Tue, 14 Apr 2026 17:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F30C19425;
+	Tue, 14 Apr 2026 17:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776189264;
-	bh=jDAi4hxOBuKCdZsMTGr0ClpmAouBxMWURvjoq8hDpcI=;
+	s=k20201202; t=1776189279;
+	bh=Jr2B3lt3xXa4bQQKpEY82S/EjHBlc1NaMLGr1CILpA8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=p9UsAxCC0f3S7z2S+/ETxVZHJlHzFEZrxRXdOohy1WfdoZuR8Vze96U0stZl28euq
-	 wrlQSxUSUpzdHMXt+XcdskPrSEtT0wF+yTPEs5+bSING+vJPbkhLmGBvzaN6IayrdZ
-	 J7hL8wkSC8aLR2nlAiY4FDYHiq091w+2YdYKDXgaSoN6x1lBBa9dpHStqlAin3qUb5
-	 YXpeQGbwKFMvVFE1u/smyCTLSQCCI4u/B3hcuoK9fGxAQGCNwJqwXDhYmsK3dv2RWd
-	 Wz/tUfJVOz8CezhJ4KUkdHEKXbUWi4lPBjtiKW6hO8Yto+pr5DltFf0ogfKsHDf3UM
-	 /zpfCAnJO5o1g==
-Message-ID: <5b906d22-50bc-474c-ab12-4253781cbadd@kernel.org>
-Date: Tue, 14 Apr 2026 19:54:18 +0200
+	b=VSw8oHqB/VwrtwyDmI2U2CbPZdE0lVA8lEknsFFI0fMzklbjVtpVkFFyM6C8Oodsy
+	 l/UfDajM3Y0Z5Kli7JlF2jJykBaRws2Ok3jZiHxV2VJGd9oSjUZq0x38m6y+K0xH5M
+	 RmzNqux2UVGy5fEX+TJOrgBJqiU8DgQDetPY3tpVyXdvYhwU1JCl7GU8gkdHxxK/Nm
+	 KzdYixz1Hg4jSOW5HMRta5xx8+OtnhEiH9TTDpezucl2Fp7RCARPDckmwul93ZBpx0
+	 Jd75qMQUbW3+FCwZd+SNlr+IOeMO1w4+Kgds6y1r9kzqQJ1t8eSLZaSvLeM2WJmLeP
+	 kEY2KSZcTpf7w==
+Message-ID: <ce988601-6b5e-4557-8f37-068f35469207@kernel.org>
+Date: Tue, 14 Apr 2026 19:54:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] MAINTAINERS: drop include/linux/liveupdate from LIVE
- UPDATE
+Subject: Re: [PATCH 1/3] MAINTAINERS: update KHO and LIVE UPDATE maintainers
 To: Pratyush Yadav <pratyush@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
  Pasha Tatashin <pasha.tatashin@soleen.com>, Alexander Graf
@@ -77,7 +76,7 @@ To: Pratyush Yadav <pratyush@kernel.org>,
 Cc: kexec@lists.infradead.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260414121752.1912847-1-pratyush@kernel.org>
- <20260414121752.1912847-4-pratyush@kernel.org>
+ <20260414121752.1912847-2-pratyush@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260414121752.1912847-4-pratyush@kernel.org>
+In-Reply-To: <20260414121752.1912847-2-pratyush@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6A18A140011
+X-Stat-Signature: x8fokgkt3d9grxp5zcucwe7qed34ceur
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CF40240010
-X-Stat-Signature: 8qmn1gozsat9mttjqwoc9gnbzypn3wiq
-X-HE-Tag: 1776189265-578454
-X-HE-Meta: U2FsdGVkX1+Sjk6QZDQSz2pAWfPdmpESUQ5zoHyvolx2sVpsXfTAm4Un1ukQuRjuOFpXVkzy8XLkynStSIYBTfg6RXyfqHgK7Ph7IycOSTOrievs+Gge0LLW7685D4RFDrDhiA6enjAb108SnkM8M2Pssr/WLFRuT0vjxYn8gFDaFbMHnaSbyscoB/A0Sh1p/a9Uit5tmw2FMMBmjts+vDRNCOQBfm3lCA41rBYiKofg7KS0l2Vn2m0nnn3PTk42oJMrvTcOX+amwPzOSZ8tngX5h2ve/cE9mvjWw1SfkPi2x0Ijk4SsAwp2+VzXKCu6/B9SQARWXDuud1QfR6EMDcbCujV9wraccCBnVXUcibDSsE+QQbQgpsF2y6zsSIMUogvbyhqkpMLrZU+/2MF3Wlxftv8/RezfaAYeIO4gl+Lmoyy4fRJgTGb9wq/Xw8Yk4B/pT63DOHxUkF78pVI3beDS8pjFHkWNos/E2/gUdgtwL+6Um2pxjSSiizo/lxVMCXmGkwiJLmEWIDbOOzxnJTvNq53CtQbGfjRPCUDUX3HxZFKrq11BZlN76YqEVSM8bTGRhlB0ijtVOrmld/WqoAb2erSqyil55EmWSPac7Ysq6roeGfsorw2Nnwalfb5QqQSC7UyY9exof2QEwqG3qI8ZK8RsGSRnaMiCcf6uvrxAUHyFG51sysjtSs9xmuZL6aF5Ajyx/C9mc5/yJWiq7dyy9+wXVUh/VxyxQJWLE1ewJFHafO61yxigySaeUQ7vWyX/nfJ3VW3rKS17XZP7qtVAO6bNwDJcUB/iwJs6fZM7o9GPjpYzD3ubpjmfNuylvFzdgzhkqlyvmgoCE15e/Y53X8DbCcwwpsLx7GyGYglllYJLKyeS38lZuyLJnnfePic2YVZH4xMQCcPQwmu/2l5Pg0FdYROw1rnzR9sTGQFaogViKZFswctEynFOo8WeikD9vi8ockwO39H9hzd
- owG9batg
- Lko8/q293ofOcDCFpFpJK9udnDiOKlQab0dvgdt8npWoQNJhsjhgi7BOOWHwiu7o3nPDT/l84qpOCpDXH/NGAs1R+vSmNIFw+7zSKiMC3q5hRxoN8Bn9sefx0ch+wlWFqJ6cFfBhD49wto62h6sRPAKKWtvVM9zC4664v0Nf+7qQp0fu615MFkJ2aJiO15J+E6XvQXrNIpjAgo77batEhsnzNZU0T++S6ojiQFoxTHKCvc1/WQzlWlDNYdFw7l4iuJc+Kov74aS20wqeKh+euDfWvaA==
+X-HE-Tag: 1776189280-645324
+X-HE-Meta: U2FsdGVkX18PgiNTvchZOmar2/8btBZgizliQfKNmYtfmN+eteHbz/3/vyAzdbn+5/vtwzjgL+A+auogTtObEeAJSFkqBkAs1cp24htluX6ixg/IK//3gaffas/LlBHSYWZHlNckl17lQl0s8BnTgddM4TQUz/eVnVnEQ/aiW7obTGpuwWFGVkam8FFFPq5MDK2t8zokTNNknCPp/WxUf/4uTEnHx6XKcVFBvlGumaFvgdh2qp7eUzyaiJImwvbur+O3EhkQfEbTGUdfXH1/gTbzovgp9KWe9301T+7zkwVr5/cnIu0wGVzq0gdP1/zsl2rHwYQl7fQjoXQepXH5kzOyM4kWF5jqWhVQAp30C/Z1pq9zOiTmamOwEhvaa0CP8ZI1V/tzJoVUCSmfzJoOMNnSlWRSlAO1jRFCYR9Kzs25ZRRmWyFln5cbtPrwGt8pAJKYX2YVBvGoHKNQd6Xsmu5wThal3ELtgtz75IyQTD5Xlk/ri43AlnndFSOpxyiilPnaUJZ1KwNs++2j6bEu/0R0UQgtJ2OtIkqyRCLAgZXOMacRcLTRvAfhVv81TJD8Yt7FXxoPcOvfsfbiXzFs7+KQKOPgNRoTzivZ6RWvzpnx4foiF77a+1BfdenKukHYq0PwwT+SfaM+j5jJDVvgQAXWN85twp+LmqlXXICoFaV5QJL+yZQJzBe6Oy9F5WTEzehxW4NeA8oeaBlK/MhcnafXmV+pt6PyH4d7ruE1et6Gr+5gQsZ9UbkVNHcr0162m9mMhtIMRwWaxQrx/UCOLdaM+7h56kaBVw8UgvNlBTRIMJ1tzziWdPpsqB2w0cT1/3fkcMnpoA+BMuRpotRYpl56cvisXGd1w79eElXQXgIR1KamatsgnuWGBLCfK6Fs9zQ4u/DaEcW3cWx6d79ndi+jxzn9qOiFhZZi3bq6SpSg2qgiRboC6jImpDI4EPTHHRkXxdSBW2jsXy7CqWh
+ PjtQtP0U
+ 1f42hY8DQdEtDLu12ohsJi6SZAZKbeD9yGx+VoFhYiY0yIZpOD18pNKVZg/Hj6VFaS5kHZUchgrlS2T/5t5tBzbXe20uF2xWsjoVYWzfA0gPJj+tfmcjTezryHtyb4o0BOcBxyKzn8FKIVx+SfoCT6eAlvE8gwwxNYyvEOj9VCOmPBjPgfLpV8GdzVakIL0RXFZV8XAcTYt6poYZDTDYkUdTc3ngJdQcVBA6iJy+x+M3wk2BvmUuNJuLGQrxg2fYW+J3BoRYe21cM/NWMnsHJ9HI9Ete3VETj0XUH22u2iyMttMUiq/hPrYi+LQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,27 +144,17 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 4/14/26 14:17, Pratyush Yadav wrote:
 > From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 > 
-> The directory does not exist any more.
+> I have been helping out with reviewing and developing KHO. I would also
+> like to help maintain it. Change my entry from R to M for KHO and live
+> update. Alex has been inactive for a while, so to avoid over-crowding
+> the KHO entry and to keep the information up-to-date, move his entry
+> from M to R.
 > 
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c1e2cefb4493..bb588928533f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14811,7 +14811,6 @@ F:	Documentation/mm/memfd_preservation.rst
->  F:	Documentation/userspace-api/liveupdate.rst
->  F:	include/linux/kho/abi/
->  F:	include/linux/liveupdate.h
-> -F:	include/linux/liveupdate/
->  F:	include/uapi/linux/liveupdate.h
->  F:	kernel/liveupdate/
->  F:	lib/tests/liveupdate.c
+> We also now have a tree for KHO and live update at liveupdate/linux.git
+> where we plan to start maintaining those subsystems and start queuing
+> the patches. List that in the entries as well.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Good idea!
 
 -- 
 Cheers,
