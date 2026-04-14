@@ -4,155 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA287F9D0DA
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 15:58:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 559E9F9D0DA
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 15:59:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C837B6B0092; Tue, 14 Apr 2026 11:58:31 -0400 (EDT)
+	id BC2286B0095; Tue, 14 Apr 2026 11:59:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C33DC6B0093; Tue, 14 Apr 2026 11:58:31 -0400 (EDT)
+	id B4BA06B0096; Tue, 14 Apr 2026 11:59:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B22B96B0095; Tue, 14 Apr 2026 11:58:31 -0400 (EDT)
+	id A3B186B0098; Tue, 14 Apr 2026 11:59:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A303A6B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:58:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 561E3C0232
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:58:31 +0000 (UTC)
-X-FDA: 84657618822.06.551A44B
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 556F680004
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:58:29 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 8F9076B0095
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:59:38 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 589DF160156
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:59:38 +0000 (UTC)
+X-FDA: 84657621636.20.54D506C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B1D788000C
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:59:36 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iQc9QDgx;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf02.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776182309; a=rsa-sha256;
-	cv=pass;
-	b=z3Lw03uuZQ3YiL/M6MZQ/C/LzufjtZEfvuDwczR+y0InOXcf0oETR/firgADCu+YqC1UxQ
-	UjpzNx7HPgFe2YPT4xsyTqdqnVQON33u9NREi6be7OAYkEG+8WTtJJq714AihJ8wKHKMWG
-	pgero/m3c/5OX14XIHGm/KdgwnVrR7g=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776182309;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O6hJTblw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776182376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3mMVtHum7zPwks+XDXBRlehlKpwvf1Ihn9S56ZO2pRY=;
-	b=6YgFzPYXPuWfQIbvxqDz5rb/B7ktrd/YaN5oM2mij6o4oleNp5t+fjBnyQlsvWRcORRGb1
-	H+h64wKgE5Lwq3DTzNJV9+l/RO95dhdfyqfk2MKI+9u19ttD4GOE55VNGXuHlEUrGsUc0f
-	fGXDZ/zvc7IiWRVgsJE+frXiYasSJK8=
-ARC-Authentication-Results: i=2;
+	bh=p7dQ2sY0+Cgcg8ERbF3Uqu25eLsPzXjlUxjT5Sisy6c=;
+	b=VW1b6UiD5VdR2iiOdbSMEjal9u+7ShEtc6Mln+EWNxSxEsHOT626QxjhGat4D7tGmJTl/b
+	bgAIQQLY6YZAq4WnQlu4uOVN33YDUiR//JCWHHduaJcY9czzcWv/d3z207d3JCt0SYjlL5
+	JzZNb3lwUKzl26s8pMCmbPxRJhL3MVE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776182376; a=rsa-sha256;
+	cv=none;
+	b=ioadACzQw/l5eD7dzMSzdq1ql4EIjnkjhY4o/JX9Yoo4GwIN8bshBu+s7oug0WHJh4HmJW
+	3v1YoRke+WUD5X5JGMa6GodgQS2dqbCvKD5zEyeunjoF39dULN5aKcmBLaiK83yKE6yNzQ
+	fvXV5Ip9RPz4Zz/6C5nxgCoXbHHEf/0=
+ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iQc9QDgx;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf02.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-43d7650202fso1932998f8f.2
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:58:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776182308; cv=none;
-        d=google.com; s=arc-20240605;
-        b=V9lwA7FP0nk//b87kzUulkgGCEigRB2INMZxgEHAs64/isve2ILC2dUyTMhImwGJFS
-         fKAOfXe+k+QHiHb1Z5nshzMqgzXgolyo9XcmOcBF1ps5L5duvd4SRV16S+k00d6obNKN
-         4CLThG6Tuu9F+7ozvkd194d0b86D8U7uf+7sElKP44+gfqg7Au4DmqgIQTNbkc+6JQ8M
-         svOAJd36Pd4wN77DD7o2AQ9dL7DxqnBmM+Z3sxEX0JRSN9567/t6i+/k4o9KHyS5qclC
-         tboe/75NBoSIlWKa9Jsy/8s2GJ4ipdgXhaVxaWY94voy13bboWkDC2iXfIY8QEnjm4Dk
-         Iq6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3mMVtHum7zPwks+XDXBRlehlKpwvf1Ihn9S56ZO2pRY=;
-        fh=dNwqz0vbgMqiqrlSGMAkEJu5UqIUm3D59TjH3c5/Wv0=;
-        b=hmxQkJdLZ2+dFZA2pMo9R/vTeiAeSG1I9yqH+uPnneWhMH3mgI2oQLW+RNqzXLLY6Y
-         7us1BA5sAm/ubmnRZ3+Ih7IQqzOhrZ5bqaQOhidD+k0f0DRTCkJU0v/RPSaQIsmVc6Tc
-         wIlpscvdwSR+qlH3B/DMJqbAv29FUWk4cRMIhype8Zl0/NpQzWI1U7pe7Wdhy2RxuMca
-         Zp0ilIU9LnwlFk1yTWOniLkjbHErjAiPwhqYd9XUxRp1hbzYhhh5O1DbRy9t2w3CXu+f
-         MDgRND+ZFtKVD4F0kyNgtkgiDrzP2f5uFE63b/zGuTtESasudqASnQGH6qz+15/OMFhm
-         E6vg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776182307; x=1776787107; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3mMVtHum7zPwks+XDXBRlehlKpwvf1Ihn9S56ZO2pRY=;
-        b=iQc9QDgxOqLpoI68zFlfTttTM4xpLlWJ8wV4bqKyJ/OCmMaHyQj6Z3o9miDkKMqFHP
-         NCKMktjfbxwwQogb0sCBNzI0tWxhO8uIE0Dp+/Rrl3XD5gycuEZNAxgRm6/RfRqM7Zka
-         EPaXPepdOzK3llfxNDLYkQBZw/GDIByhtmEaMuPEfxmWDjMvmOx3EF7Leczs/PYBepxK
-         rcMh6Llnn2fvmskD3E5GOZtXtGkiyyPRCBmsdL7PcOHxTVIVorwp7mRf2yLpNRYSr4ue
-         n5aUCj/DnCO2O5zEZe7QYG+XXZczBcAHMJ1QNTpiXE/ft8a88enrQQNhSsY+1ho1ROct
-         YzvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776182308; x=1776787108;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3mMVtHum7zPwks+XDXBRlehlKpwvf1Ihn9S56ZO2pRY=;
-        b=B80KpPRTL4VQrngk+/0kFiyexwHnkLlqMwuE8LtrQt3nrhYfQj70dm2gtXg9MrQnAi
-         mn2n1ucPWgowikIQZH+sLASl9YciGC9miIuB6cLL4wNp2VTS8E1yZzQNo3R9zQ6JXF8z
-         YpNVGrULsr6YxttQXf0k9PUN0fk35LuHooMqUvAQfqYzXe/KgRHoczZ2lwOmrs635Jtr
-         6I3SWCdMqujQL0O89BwwJh9skmQwdit/rNilMxqKnfeVhq1V7O1lBLEprUaLLVW/5YBu
-         rm6GdthDj78byx+aeD3iXU8/sOuWIl0PtAJqmwVaN/I+Ha/Y9ph/ir3kF5svKvUzxwmx
-         jCBw==
-X-Forwarded-Encrypted: i=1; AFNElJ8+4SIkAaJcbOiyUsDYUMIVg0zQvY8otSpS/hjyi3PqFyLSNUWzklYNjxtxFULZiMjzMtIh3PQzgA==@kvack.org
-X-Gm-Message-State: AOJu0YybKhpXp39oJvBApDWtJYRQrCiKSZHZZRhUt9GZxYt9YNMbFKpw
-	czmaXnZacXiyz2Zb2UCOcJtFAtwyn1FBaFMZaLXzUWJosRTmQ/Qf2u0iZS66aqi1ijsAB+Z7eKm
-	21ywZ4pwoIdWLAheGlQ4jcbTjkKgDtzE=
-X-Gm-Gg: AeBDiet19XH147JXZWk8nsfdJmiLFEWwnB50Iq21lPX1Ba29Rt8onOV25pWC/ZWuXaO
-	eA/iiOsEgJ9Lsq0J7UwYNLJZHdwdiXYQi5FvQkGeEsrmI8iB1vHQE/ANb7fdRrlgUnXmm/DX6vl
-	GZ5an2RDnwjhLm9ivpq4uI7EMRKdHXanh1XFIK+8Hzq4TVFbS2WTyecZcpyxlfEEt94wAJus0+T
-	EuLrAa0x9ai8iDcjhkKi+PVnEgG3ktJAwzeA4ZKvWx7e6+Fi3tad+H+K5ND4c+jL2v14nIyLEnv
-	dYHa/+NC/FI6A/FBeGE5l3218GDj5akcNyPZhs+1pOcOzdftFJFruINfqzAVuuqOw3OHHKSAfKP
-	Plnv84/FZY/k+LqMX134mYkv32jALyhUFTT52
-X-Received: by 2002:a05:6000:290b:b0:43e:a703:3665 with SMTP id
- ffacd0b85a97d-43ea7033872mr4250710f8f.25.1776182307210; Tue, 14 Apr 2026
- 08:58:27 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O6hJTblw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 06E6460120;
+	Tue, 14 Apr 2026 15:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45174C19425;
+	Tue, 14 Apr 2026 15:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776182375;
+	bh=aITV/bfMgGy7U+vXDq1yQ40U3Qf6rGvHxss7gbOty50=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O6hJTblwwImBWinV4rrS0Rq2sW0tatKUsI/BBl35P2SFrQVGQ1Q3kcLnqd9zpNd4W
+	 BFFXsAfzVazpyNReR/Kqin+KcIIPb58+oK5HmBXDETUthYMcPBISlla5PDu7o0AzOl
+	 q15GhqbEM4kzho4a0UkxfEmasilmf9N7h5GuxwDQaLzfRX2girh0yP5hFaapnSKWuz
+	 RjJydrSpmGIIA64+thIZaim1mSpS+lyhi1QEGgK+KxNJuMcotXD53Pkmdxqmn/mN8N
+	 XXZX3tvZvF6T87Ai5kTV08E9H4MIB3zu6AF9Y5VnixXiw7yEnWO5pwTGZJrI79e0xq
+	 ZT6H8ksG+WJOg==
+Date: Tue, 14 Apr 2026 18:59:24 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 12/53] selftests/mm: khugepaged: group tests in an array
+Message-ID: <ad5kXC-F_YyWD590@kernel.org>
+References: <20260406141735.2179309-1-rppt@kernel.org>
+ <20260406141735.2179309-13-rppt@kernel.org>
+ <1524b172-a5f7-4fe0-9bb4-29287762dbff@linux.ibm.com>
 MIME-Version: 1.0
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com> <20260413-kasan-v1-1-1a5831230821@bootlin.com>
- <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
- <DHSWK17EZUDP.GIJ6BX2NFR6U@bootlin.com> <CAADnVQLJ=fJ7t1i2+_RYqU1gqYqiLP9Zrwo4vdZsgzjK_yzJTQ@mail.gmail.com>
- <CA+fCnZd31GzdpEqR8VhfK4JtUKyyRMgbBoAbeGACJgm7WvB6Vw@mail.gmail.com>
-In-Reply-To: <CA+fCnZd31GzdpEqR8VhfK4JtUKyyRMgbBoAbeGACJgm7WvB6Vw@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 14 Apr 2026 08:58:15 -0700
-X-Gm-Features: AQROBzCLeOrIcZKaiQb6Cd-OuEC8rfDXHtXvBFTPGfyaVO0Jqt2FWke0BxyjjQs
-Message-ID: <CAADnVQKv5y+gq=TnOAEXSqgBRpmHNjwqCfxpLaw5XkcbQ+23bg@mail.gmail.com>
-Subject: Re: [PATCH RFC bpf-next 1/8] kasan: expose generic kasan helpers
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, ebpf@linuxfoundation.org, 
-	Bastien Curutchet <bastien.curutchet@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xu Kuohai <xukuohai@huawei.com>, 
-	bpf <bpf@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Network Development <netdev@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	kasan-dev <kasan-dev@googlegroups.com>, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1524b172-a5f7-4fe0-9bb4-29287762dbff@linux.ibm.com>
+X-Rspamd-Queue-Id: B1D788000C
+X-Stat-Signature: e9bkexsmmmfqgdm1z5romyrppwikoags
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 556F680004
-X-Stat-Signature: y9dfhu95oppktpwxbkn63jug1857nkge
-X-HE-Tag: 1776182309-973133
-X-HE-Meta: U2FsdGVkX19DuWXTOlblBvg1+okW58y5ac1wOEylo8NGeLNci3wq8EEshed9AXcDYDBlA7vHlbV+IATsOXMRLQdYLUY/UXx/goHsX2xx2WLy33ctlJe1tTweJmc3aBjGQLFGNWqS4BLp+KXhl/ti7jMNkEI3k80cC7qPKKtnywRciqOR4nU8cOhCviqlh4+eT44kOqt2ennPsUz53mOo88nwEqYRf0DC3sZbQ67rOxCViN0Qx+Q/ha1VrXIhLtSwptS9vZIUv3IEGrXjkYDVHfFKHF8kiAXs/zWmambDZq+3Po0Lh4pDnmUuAEie2ZMtXx+5/SHU9/3gnjlpiV7je9niOhNfXWfl3/353To9lSL6n54jHUjqrrss4shTPAnybD1Oo8+nnNqQOeM1mGyCxn0LQ7xaDvz7oVUiAF8rY0sujtGSqB9IjudGz4faP/hUjKd7CWwlXQz+wkg1Na4nI83EyL0ZrOHX/We0Ar4Xe7jiDNXAx94pGsWtAFbdA3xEdXNTMMVOAQLTUdQYkQ3WzBoF30JWO1KZOPMe7T5Cvaqt7TQt93eItJJtWD9XwGr9ImJtc0zO2glFn0p22fL6N7S4/Gf+JnZd0aXqAqGg9J2iErSKClJi9k0UzskH8Pd+HpmE4A4uxFXZFZmSTzD6r9xZ4ojqfJ2y6ipyaA2C/n5PW6XTeohsLHJYeRzsSXWuukjF5/LgTtu5+QVu0V2NGsHr3szanYCSfPa5qZy+qantULP7Ox6rSJJVSIz8GzJ/kEqXkrUpfOIrghPQ6W8I2WEYcQCFTwKa5H+VaepJZJtRnX+XeqSM63I5oy0UegQrUz4f2DgsXMTylRDj9fO8QsOfAqNMfCBktzWDdyAx+XNoXyQ08l1kFj+Yz8GNYC4GG4XykpJTIdpeDrsrdnFnhYEz6lm/lNPOJ+tVr649iuY2VayvaCenAEkCTxxjQravGkCVqIgbMnDjE6qKEsB
- k+HKJXmU
- L791+crcGqf/svNCN+87ZOORbpimwBfmJnATovVfaFKfPxkJlDhkJa+5826guTg4qwQ+7KjbJYlppsqRXmxBVq15M4jmYtqy1mkWv1Q/MXiR0rRmYC3OUwHkE957YqHCQKonnAEZvZP7VPH86cEHZ8X7TbW/koN50cuRojvnx8IP54XQL0xUaDtiSXlPaclizyR9LkTwQeQX8115nFEHbsq7C848AVNC9XSih+c8ZJM2a4Eyhk7pwHfwyeqhBwxQkBfJmeWRBeDo8VkQtvuSf3D/EpPNTW61CmnzJb+YDz5TnALdZYsZJ6F2mXR7MVSD6x8KBqw4SVybdOc6Ne0RqbERe/GemTy447y0TOao9MQxU/z56dIy0ZRODhVxglyb0M6Nby3lWMPSPhLmzi7uRpdtfrJIJm5wMbnvRl1keJtMDC0pLUkFn2436f790ftZyn3VPFMxE/6KjRfRLhfliF0rAO9IZ4T/+UK97DZyif6Kr8+8ZBnSV+42mngml1aoqCWrH4jKdV37I0wucAY+DSrIVtw==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776182376-787312
+X-HE-Meta: U2FsdGVkX1/oaUEGQG0jFLcVY69mhpnfwS0JO4YqZdu3VKcXxNnz++gQo0QrYiuYGVsDzMybPntxtUUpPEEU4QZdkoYycQXJD8ZcDjfq5P8s6Kt5xHZ3giteG5dHsArCcdNfT2CQoI0EqlvgzXG5iAkQ1LlxP9VUhAIZyu8t/wyR0klDPWMKtAN5b9mdbgy3CAPyZ/Ig5BJ6VoEfVAkdUdSN7U3b9hdcjg9RCClezQ/BvmUbRDb7ilA3Aium3CAgMMPeWvVeJQFiewddq/p1VO9pBcqNYXADtz0lgp29vIWP3BCF5zwISRy+i1oIUT64dIkXx7ggm/ekWiF4aX4336zyjvfTb9i5/+BWdqBp7U3kYNgM0aJdlzuK/Fk9fPdA2PDKwUhaoX+GMe6gqzeqfdu8iN/BjwmN36/KtV2KjePREEkfRnrQt6yuOa3cwnGM1kzllxgCnK92zqCaovWuUqJF52Ybf+6NT3GOKmzIB0Hxf30YLMkshDRq5wcx/f6XKQZVosYOeRdqFskw8+RX15s0iRQwDlrds1IuZJVRa3bxEGepZg+fRK3uu7mG1+z1Id3jggCfTxBVIH1oyKIRAWfX56ZCeSDIURnqD8LqooG7cUt3bUiRMPvyEwerX9Z6QgzuzHKw6k8O5XgD+n+xjmlDj5ptzqmIponhR8DHxtR4Vqx7ltqIYK3LVDyIQegTpWwTvJX3xFl8Y7QQ69LJZ48/UCwpLT4y8ZKl1pItLl4fR8y/WgRblE3CDHOMGCKCKKa030Wb5sKGpIrYv30xkmLZHu3868nKZ2UikSKqWzIZJx5yVdu3+X+CTQbN1TznIW0s6SurEGJiuTBYKODVeIf7rC7VAzxetoRrs5h5vPSk7TmvSV8vsIJgq/bz8cEruY+M0OPQYBMDo7DxNNGdG+/Ozx/hpc/tNCyW2KZmk86mgnEJMAyltFz2r2KFQCDfnRJs9zjnJ5p/3KWAyqK
+ JYcFbBwn
+ YQXaaiNXPb9f3q6+glbwJCdtm+G2Ee+fhriJgXKcMtvLZkfMroErgiR4aI97sm2AeJTs4fMx+E6A8bZiMhC/E6C/a29dso50HqJ/PvJkXlMC1/5TEdSl81AaONUx7WsMShF07WKnct63v4EVBlujiFiRlmfzAWQ0x7IiFKnkNTOeeaYuOr8OYdLHeyH/f+jbG0QhkSW+5NXW8vitCpKuXfUWQHlHdPbF9SKq7VTu+Z/ig6lHQyV6h/N80U7AC3OYM6uxRZKTEhVGqgd8m0S7X8wbZXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,63 +107,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 8:10=E2=80=AFAM Andrey Konovalov <andreyknvl@gmail.=
-com> wrote:
->
-> On Tue, Apr 14, 2026 at 4:36=E2=80=AFPM Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
-> >
-> > > ACK, I'll try to use those kasan_check_read and kasan_check_write rat=
-her
-> > > than __asan_{load,store}X.
-> >
-> > No. The performance penalty will be too high.
->
-> With using __asan_load/storeX(), it will be one function call to get
-> to check_region_inline(): __asan_load/storeX->check_region_inline.
->
-> With kasan_check_read/write(), right now, it would be two function
-> calls: __kasan_check_read->kasan_check_range->check_region_inline.
->
-> I doubt an extra function call would make a difference in terms of
-> performance: the shadow checking itself is also expensive.
->
-> But if the second call is a concern, we can move kasan_check_range()
-> and lower-level functions into mm/kasan/generic.h and include it into
-> shadow.c, and then it will be just one function call.
->
-> To improve performance further, the JIT compiler could emit inlined
-> shadow checking instructions, same as the C compiler does with
-> KASAN_INLINE=3Dy.
->
-> > hw_tags won't work without corresponding JIT work.
->
-> You probably meant SW_TAGS here.
->
-> HW_TAGS will likely just work without any JIT changes (even the
-> kasan_check_byte() thing I mentioned should not be required), assuming
-> JIT'ed BPF code just accesses kernel-returned pointers as is.
->
-> > I see no point sacrificing performance for aesthetics.
->
-> With the change I suggested above, there would be no performance
-> difference. And the code stays cleaner.
->
-> > __asan_load/storeX is what compilers emit.
->
-> For Generic mode. For SW_TAGS, the function names are different.
-> Keeping this detail within the KASAN code is cleaner.
+Hi Donet,
 
-I think we're talking past each other.
-We're not interested in KASAN_SW_TAGS or KASAN_HW_TAGS.
-We're not going to modify arm64 JIT at all.
+On Tue, Apr 14, 2026 at 12:32:48PM +0530, Donet Tom wrote:
+> Hi Mike
+> 
+> On 4/6/26 7:46 PM, Mike Rapoport wrote:
+>             get_finfo(argv[1]);
+>      }
+> 
+>     +typedef void (*test_fn)(struct collapse_context *c, struct mem_ops *ops);
+>     +
+>     +struct test_case {
+>     +       struct collapse_context *ctx;
+>     +       struct mem_ops *ops;
+>     +       const char *desc;
+>     +       test_fn fn;
+>     +};
+>     +
+>     +#define MAX_TEST_CASES 45
+> 
+> I see 48 tests in khugepaged.c, and running khugepaged all:all results in the
+> error below. Should MAX_TEST_CASES be updated to 48 instead?
 
-This is purely KASAN_GENRIC and only on x86-64.
-JIT will emit exactly what compilers emit for generic
-which is __asan_load/store. This is as stable ABI as it can get
-and we don't want to deviate from it.
+I'm going to bump it to 64 to accommodate potential future tests.
+ 
+> ./khugepaged all:all .
+> TAP version 13
+> # Save THP and khugepaged settings... OK
+> Bail out! MAX_ADD_CASES is too small
+> # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+> # Restore THP and khugepaged settings... OK
+> # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+> 
+> 
+>     +static struct test_case test_cases[MAX_TEST_CASES];
+>     +static int nr_test_cases;
+>     +
+>     +#define TEST(t, c, o) do {                                             \
+>     +       if (c && o) {                                                   \
+>     +               if (nr_test_cases >= MAX_TEST_CASES) {                  \
+> 
+> 
+> I had a small question—since the number of tests is fixed, would this check
+> still be necessary?
+ 
+If we add too much tests without updating the maximum we get a nice "Bail
+out" rather than SIGSEGV :) 
+ 
+>     +                       printf("MAX_ADD_CASES is too small\n");         \
+>     +                       exit(EXIT_FAILURE);                             \
+>     +               }                                                       \
+>     +               test_cases[nr_test_cases++] = (struct test_case){       \
+>     +                       .ctx    = c,                                    \
+>     +                       .ops    = o,                                    \
+>     +                       .desc   = #t,                                   \
+>     +                       .fn     = t,                                    \
+>     +               };                                                      \
+>     +       }                                                               \
+>     +       } while (0)
+>     +
+>      int main(int argc, char **argv)
+>      {
+>             int hpage_pmd_order;
+>     @@ -1216,13 +1244,6 @@ int main(int argc, char **argv)
+> 
+>             alloc_at_fault();
+> 
+>     -#define TEST(t, c, o) do { \
+>     -       if (c && o) { \
+>     -               printf("\nRun test: " #t " (%s:%s)\n", c->name, o->name); \
+>     -               t(c, o); \
+>     -       } \
+>     -       } while (0)
+>     -
+>             TEST(collapse_full, khugepaged_context, anon_ops);
+>             TEST(collapse_full, khugepaged_context, file_ops);
+>             TEST(collapse_full, khugepaged_context, shmem_ops);
+>     @@ -1284,5 +1305,13 @@ int main(int argc, char **argv)
+>             TEST(madvise_retracted_page_tables, madvise_context, file_ops);
+>             TEST(madvise_retracted_page_tables, madvise_context, shmem_ops);
+> 
+>     +       for (int i = 0; i < nr_test_cases; i++) {
+>     +               struct test_case *t = &test_cases[i];
+>     +
+>     +               exit_status = KSFT_PASS;
+>     +               printf("\nRun test: %s: (%s:%s)\n", t->desc, t->ctx->name, t->ops->name);
+>     +               t->fn(t->ctx, t->ops);
+>     +       }
+>     +
+>             restore_settings(0);
+>      }
+> 
+> 
+> -Donet
+> 
 
-The goal here is to find bugs in the verifier.
-If something got past it, that shouldn't have,
-kasan generic on x86-64 is enough.
+-- 
+Sincerely yours,
+Mike.
 
