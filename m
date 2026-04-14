@@ -4,100 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 299D1F9D0E8
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 17:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3433DF9D0E8
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 17:40:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B0FE6B0088; Tue, 14 Apr 2026 13:38:23 -0400 (EDT)
+	id 924BC6B0088; Tue, 14 Apr 2026 13:40:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 662056B0089; Tue, 14 Apr 2026 13:38:23 -0400 (EDT)
+	id 8FCB56B0089; Tue, 14 Apr 2026 13:40:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 577AD6B0092; Tue, 14 Apr 2026 13:38:23 -0400 (EDT)
+	id 839926B0092; Tue, 14 Apr 2026 13:40:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 48CDC6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:38:23 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DDB52E06AB
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:38:22 +0000 (UTC)
-X-FDA: 84657870444.21.E9521C6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8782F180005
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:38:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=A9nIZdW1;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776188301; a=rsa-sha256;
-	cv=none;
-	b=rp8tMAxjoCHrMEo8azlIuREX9EYrPUecvKsuOfbpq9h4LynEULfxIjMfFf+sK9VilfKtLC
-	nZZ4/AYboAbPd6Z7nUD/DK9PfFCEGECVKcFfOSB1inMXZ4B3Hu3k5EchcKo9KGI8NaON8b
-	Kyz3xgrKSREZLoIdn4h7FgKWm7mU5D8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=A9nIZdW1;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7557C6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:40:30 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3EEE51601D8
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:40:30 +0000 (UTC)
+X-FDA: 84657875820.04.96F392C
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7B81820019
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:40:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pkBwYtIk;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776188301;
+	s=arc-20220608; t=1776188428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X/J3zUOAklaUiPzrVFhNqCwOL13lCLa+Ofl5oUQRx/U=;
-	b=xzDtbriTyVxGesb5JrzzBj7Wk731V6m3x7ayCKF2nOSVaZjghd0a1WkVQXUSm4G0qUi++l
-	E7G6stjQOzprNUKcbysQLefZtvxbkIkSeFr9w3ZgKIqNjP0hDkd63icnJV2oy4cFOHnnsx
-	7nMK8Wj/XKnsTqe+njOpeR3pLfMDd+Y=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7D76125E0;
-	Tue, 14 Apr 2026 10:38:13 -0700 (PDT)
-Received: from [10.57.33.35] (unknown [10.57.33.35])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 017FC3F641;
-	Tue, 14 Apr 2026 10:38:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776188299; bh=LuhkQ/zv/OtvVCg3FzLN+SqhZeScV2Hzlr/g41O5F2I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=A9nIZdW1PiOaBm9npx6eosy3cJwTTO9WMk80QCCJdMFI37tgu7+eEUusEWBJ8DuiX
-	 0OA9eo6hscO+Lb5nKIkXqEtAokwo8VgY3OsiH4y0IxTeOb31din/AMaCbjFOKYEcD8
-	 Go6mFNzgpnA519rMBd9CmQkN9yd0gtPFW1bRhXok=
-Message-ID: <d5a39861-0f5f-4aee-84e3-f4d956f83461@arm.com>
-Date: Tue, 14 Apr 2026 19:38:13 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] mm: make lazy MMU mode context-aware
-To: Alexander Gordeev <agordeev@linux.ibm.com>
+	bh=H34Qz4t0dOFSEu57O5bBR0ByBGobQOtvzsKeF/dJkS0=;
+	b=CagFasnVx3EZxIvbdYH1wdT40sqA41dmMKEGEXwWBDM08s1h7DTD1RoyQQD/6lQl/9pQAF
+	JHxlFzU3gfMfmg0KXrxTNiwyrFbqRfHiaK6zGpOBihn9f3pIArwCU6mbUJTfaxslnJ86xp
+	F4AwVrHfHLa8Ud2e7nsljUMrdkbvIGE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=pkBwYtIk;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776188428; a=rsa-sha256;
+	cv=none;
+	b=ecMTC5FIsC1G4Nufy2Ff7DIvlqOgZ97IVMVEunAw5MMNatrE8XMGqSGUzApmhD/eTMWi3r
+	gCF0bIGlxxGblX/IqL3S7GHO3gHdS3CgnDSrdru0XYt9oYQ1fNvbi+6okLdJs0WQiJ42Tt
+	85ov/gKiIKAchbrDLwV0bRrrFpZszhk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=H34Qz4t0dOFSEu57O5bBR0ByBGobQOtvzsKeF/dJkS0=; b=pkBwYtIkbRZIjLyneuTW65xL3+
+	eeAj/0ArP5i6IeX/Ddqr97HyFgDMUMMcWqEHKrLByJp2q7cqu90awbUiiTzZZp3rdJ3hXqQRCVqKR
+	dkixxZmQtAf3p2l2osR32cyGWHqiNOzxR6VmSYO+/DXvCVVE6f7F8w8+SZ6MY8Vt5KYC/O715zIPo
+	SpTK10LNJfcI2FuMEV2tetR8QC9MgCRMgwP2GMMs/Q97jyDLvDrO1jkFzAvENmYFzxSmNXjp/ZJMz
+	oq9V1ZY6x/wRTEO+CRbUWXCetmHbtZWyLTL0aYGk6OdTIEXc9/94uDh8nARgFwfpGmMzmHaNO1D/0
+	4fXCHStA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wChkB-0000000FzXu-1gMl;
+	Tue, 14 Apr 2026 17:40:11 +0000
+Date: Tue, 14 Apr 2026 18:40:11 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Zi Yan <ziy@nvidia.com>
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Ryan Roberts <ryan.roberts@arm.com>
-References: <cover.1774420056.git.agordeev@linux.ibm.com>
- <de89fd353a8dcd5e3bef4d91e9b6682d132ed9a0.1774420057.git.agordeev@linux.ibm.com>
- <44dd86c0-1845-4dd9-b4b4-2cef6d1c6357@kernel.org>
- <e096e88b-f1fe-44a1-bfa6-451eef028203-agordeev@linux.ibm.com>
- <665a19a0-47c2-404c-bd2b-482ab51b8f64@kernel.org>
- <896b3d93-8e60-42e2-b8bb-d3d4e8c99927-agordeev@linux.ibm.com>
- <534ed892-a6ab-454e-831b-e207930c35cc@kernel.org>
- <584f0f88-aef9-4a70-b0bb-abc797f741ed-agordeev@linux.ibm.com>
- <17505ac4-c5e5-4046-b362-830369b8d401@arm.com>
- <384c5b93-7939-4a9e-9298-66397cc6fa28-agordeev@linux.ibm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <384c5b93-7939-4a9e-9298-66397cc6fa28-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+	Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 7.2 v2 12/12] selftests/mm: remove READ_ONLY_THP_FOR_FS
+ from comments in guard-regions
+Message-ID: <ad57-5Nqd5cci8HQ@casper.infradead.org>
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-13-ziy@nvidia.com>
+ <ad1WTCR5Kld-tiL8@casper.infradead.org>
+ <E3268570-18E4-40AF-92E5-931A8ED1C9B5@nvidia.com>
+ <ad1uK11f_J8sFN0e@casper.infradead.org>
+ <c696705c-4c0a-4e3c-996c-358d2f0b7074@kernel.org>
+ <1EBEBA57-E519-4004-899A-CBF21A77ED53@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1EBEBA57-E519-4004-899A-CBF21A77ED53@nvidia.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8782F180005
-X-Stat-Signature: moip15uo797mm5qrb9tmn8fn5sq13ad5
-X-HE-Tag: 1776188300-835876
-X-HE-Meta: U2FsdGVkX1/WNxjHINX4Ay9KuOH/WU8Turmzw0WTyaRladmplvFfiAej5qBykxfaN89ONsep23sf5fa9++Zf0Zx2Qviimb++RMbYD0m9XuBSDbIORx5e4JImdxRVac/fQlugHurDU8NZk1+pByu83DzAlGnxb8o9styzHp0rCRD+ib6HC86vK9G8W1Q2kqTP5LmmPll4s/jW2nVjKOjTizQ6wU2WO7uBT54lqYMeVjTdZgbBUOc1p58pOqfIfHdGymsQWXL9iC6L2ov0cJ1xo2iD5Ud6qoevx1EuTcDa/MM+ow8jezS5GtLlrTthErQI9JmBct7jncGPv5uUW3GQGPljWTb8mtruuh+cvFoHIHOMZ/RlLizafH4aVSJvlVEjI16L+gcj7LrQNtESnotlsN5GfREOcrnin4bW7cg0IQweV2EUg4k+VaLGhYImJA39m7TF3hEm0rAP29yUdelGUrLZsWsjcJGckyityiJ8PmCQKtCOCsYbLZgZd18FK7v6mI9gSpr0XdjgPYTOR4wW5UyQnhpsEEhRB8QeZovWCVkbuvhhRPgQoTCFCcyNuWYHBpFwMrfdym89CgwYF3oD5vzSbSg3ryhuZ5/gD7XjXzz4sio+7Bp9+0oe0mGqAOl6/cFoc6zN2A+bXctJPxSaqGQORsxc6yDh4KU9nBmrDWFSEOS7ar6SwXjPjv0Uz1PEZsdMckKCzQJFWiWk3z6U5vFsvgxpjNiZivh4ZlSJx+ipAua0KQ1hGLST69tJzzOqJ9ekxpPJZdA+UV3Q0kwt7aYCazekg8G4Ws3TjGVCA9HUaKV38PPUNwq1r+V/f9qgolLVWRNN2Q8q38bxq5WgeqYViqFl1G3Lzk0D+wTkSQL57YfqQFmARKliRBFxqV1bN/cqeATksd6ii2RoLJnctkoJxE3PU5UY8PT4mhpJpk9qWj+rgoEwB1otOc6pQ1BQkyfLbjqRwjXbu1DIeeD
- Pt7jbWvP
- ArqkmenmlWCxoWxzl7hQyJLTYoZlHIgkUnumz9d8uyUqAioB1czWNjAivDosSPvRDDwhwapu3i7sEkpf+mDah7z+6FfZC2BE47V+imG3vv22SwR8AB/y9UVq1VQxjU/BU38On2sKS7cZGO8qBDAKTSMP8Ul7ECb5g16cpE6VQryDv912AuZ0S7Iq52BuwF0+9Zk3c9uSM7QkhzgE29ICMuXE/7AZ2faDqwLw84ertTz7xVqY=
+X-Stat-Signature: kq1rahrpug8f15t1trhtfaz9rimxrcsw
+X-Rspamd-Queue-Id: 7B81820019
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776188427-570340
+X-HE-Meta: U2FsdGVkX19ykTXQqi0tjmo84KYh7TahfcRFhdrniEzXmFXzFkzpx+5AjvIhfl39vYgBUQMK5SLeH3oHa47GWvgbgTuJfLx0bvF+GXtLQZWR9XnZknWgDGLLLHZ7NhayVDEfuUHB0pSU6LIWuLgHj+Izl5IBeL8UAz5n+aKkxvXtttoidosiJp6qOR3UVHa5A5Jyvz07V7SSBQ9WWxba8T8Je6FSY/BzSpmvEH0qYL7N/wQf7K5DCAwSUyEfIgbPD55t5fb8687PWMBoLmrbw+qFU5RAlXBweJz4rk12vCQN4Q4szSc0fmlAp6P5HGpDmg78WyEsRmyWdghQTvu+0E9HfkZgiQS+3TMnStJ7wMIitYzz5D4GAPXOWgd+98p2BoPEjjnZj4Gve34RsU0+nUr1iDvtKrdXLmNTFp7YATMi9IMkujxaY1s8yWgPulJTw7oXv/pa13Mu5PBK4LT+Sxq6NDP2CKQhpnLxW4yajNTv80p/HUsRIccNSm3GOoDSKEtYq3ktUUM9F4UNku/jnufvP5FHogVZI/Dqx5LelUpamPvDI7vaJmEAMsRsE2s7iCWRxENUJULromp6FVbHO1NNYegN98tChmr5Wm6zBAO6PVTs9PpnBZlHQ6Fpm0vm5rVLNU/78ml8g3oacNihjIOfuVPZC3cUnoKINbViR24kzgpDaqqqxJ+odedSw+CArEZuG8RetOhW7HiLn8ptLiWjvdWKSWN7A2bF3ZkJhENB6tgeDZhkRCK5OWQ5SkOXKZMjHDO7QvFG7F8Sdy66+L5lGr7wVmrb5Cxgm3lXlRyoQK9RvQlqnuwGbtDR6XdlO+Tc4VomJUJbkIZ7vTuhONdFmVwVheShX39jX8IQLADOktmFnLqj+pDz75v6b98697i4+1ddV14GqGJEp2d+KMTcR+wXNi53k7x2AVRdcCOwacgMfNuZGss7ONTiY7syzJD5mqfEIOCTpXImz3w
+ xXMMxQKa
+ KS/LsyeMV17T4NUHmEa9BztWArfFX9gC51zTT1TE/I0+v8q6Z0QWOwmzbZL0oQ7yZrxwIhjqVrouK7NNh89dMOL/BBcDfaEMiMjTL35FoEuKiH/9SqDcja1wp+YmdqPuahl2iMBTFWHpemNoWCyoV4NdkmY0sBAgjpuRfeWqs2opV/XaODiyhPbbS7BeAGzy2Uixb8EBwa3Lpzg+CdpnThJJcyg+nLZJQK68J7N35bQffIAEon2QfZCQvxYOguXodgYgHQ0TGtB57ElKsCGToI9ZQ41SALRLdO9O1t77JDp8WBuE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,22 +112,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14/04/2026 18:08, Alexander Gordeev wrote:
-> On Tue, Apr 14, 2026 at 04:30:10PM +0200, Kevin Brodsky wrote:
->>>  * @mm: Address space the ptes represent.
->> Not sure that makes sense, maybe something like "Address space the PTEs
->> belong to"?
->>
->>>  * @addr: Address of the first pte.
->> Isn't it the address of the underlying memory rather?
-> Will update both and also the clear_not_present_full_ptes()
-> comment, where I copied it from.
+On Tue, Apr 14, 2026 at 12:45:18PM -0400, Zi Yan wrote:
+> On 14 Apr 2026, at 7:09, David Hildenbrand (Arm) wrote:
+> > On 4/14/26 00:28, Matthew Wilcox wrote:
+> >> That sounds like more code that was added for RO_THP and should be
+> >> deleted?  See commit e6be37b2e7bd
+> >
+> > Sounds like something to implement on top of this patch set?
+> >
+> > But with the added dirty checks in patch #2, maybe it's trivial to do it
+> > in this patchset already.
+> 
+> Can you two elaborate? The code from commit e6be37b2e7bd is moved around
+> and replaced by functions like __thp_vma_allowable_orders().
 
-Oh I hadn't realised those comments came from there, that would be nice,
-thanks. A better reference might be a function like clear_ptes(), which
-was probably the inspiration for clear_not_present_full_ptes() (but
-wording adjustments were needed for the latter since the PTEs don't
-point to any memory).
-
-- Kevin
+What I was trying to say is that this restriction was added because
+of ROTHP.  Since we're getting rid of ROTHP, we can remove this
+restriction.  No matter where the code has now migrated to.
 
