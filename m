@@ -4,88 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6B07ED7B82
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 08:02:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD8F5ED7B82
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 08:07:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B8BA6B008A; Tue, 14 Apr 2026 04:02:16 -0400 (EDT)
+	id 09AE06B0092; Tue, 14 Apr 2026 04:07:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0902C6B0093; Tue, 14 Apr 2026 04:02:16 -0400 (EDT)
+	id 04A7D6B0093; Tue, 14 Apr 2026 04:07:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE89E6B0095; Tue, 14 Apr 2026 04:02:15 -0400 (EDT)
+	id E7B946B0095; Tue, 14 Apr 2026 04:07:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DE3A46B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:02:15 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72C76C1C2F
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:02:15 +0000 (UTC)
-X-FDA: 84656418630.22.4C63BBE
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B53AA140002
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:02:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=BKODt+GP;
-	spf=none (imf26.hostedemail.com: domain of BATV+c83a8b98330cc0662794+8269+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+c83a8b98330cc0662794+8269+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D871A6B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:07:24 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 838B713AB40
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:07:24 +0000 (UTC)
+X-FDA: 84656431608.18.350E8F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id CA2D0C0013
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:07:22 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fh+FFf7a;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776153733;
+	s=arc-20220608; t=1776154042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jZB6wvifj9UkY04zogY2eepEJ7vJgc4ipMPW1svIE5s=;
-	b=w1I9M7O95y0/udX2ZWO79QMoLagxf84szca+gY+Bg3HXH7Upc+cY1/eiky36Aqw8nWkdv9
-	cVFzudvfX7p71CiCQ1SN2vwT4lLRAbhMSYv8jgkzxMKtrkSU/gJ0r9VbT2ylPYvZsgk8rq
-	QNdvTFRct4b0JCWG5Z78Ja0KbeyW9pQ=
+	bh=OKd4Mksok7AI1dGnhfmbsFm5gm5hZfd39fPbnK6btts=;
+	b=y/MS2Pmu5yIjnTd60J660QjKqahnVB3mpVG1WNAod4Y5txXhk2axmofifz4bb9DRtCCHaT
+	U2lZM3XVjPw9WXNxhqkPJlrZFNMzzMNRyMTTHi4Jbx8fNbAIxumCJlSq8wQPoW2YnxG6F5
+	BeTOAk2SojGuant5xRV/p4FeLAoDTjw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=BKODt+GP;
-	spf=none (imf26.hostedemail.com: domain of BATV+c83a8b98330cc0662794+8269+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+c83a8b98330cc0662794+8269+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776153733; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fh+FFf7a;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776154042; a=rsa-sha256;
 	cv=none;
-	b=zAKOqWU/WE0f72J7/uinqPqALrjgaOmS+WzmMoBoRvr8plGCCcr1DQtmZj9v7IY+Hmx9sH
-	+OUzDNXAl75yP18daEk6DbD5oLIg9ZVwWhLpUJGDehTa7zUMwGTwkwBRfofLFIhbmewGix
-	lSt6g+4yInt6PdnSR/qgRSyI1cPt1WY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=jZB6wvifj9UkY04zogY2eepEJ7vJgc4ipMPW1svIE5s=; b=BKODt+GPW9p8gckvhmEzBDeovM
-	wqjOZdWiQpjfsdFwasDJbeSyV1AqWAVoYN270d7OovdVHqprwb3rELyb7GvKxKNXlDqjz1hV4PBgB
-	F+vRjsj82DftHnjaDVxXt0XGXbKctogIuMnooOIyN5lzMMQovFl9VpWNQKxCw1TcksVHmfW34k7sU
-	Bm0B1Z3xqzZ5uDCP7h/j5A7XeApCCBPMpffhyRteG12gbaMxhZ87v73y+lxwrt1CYoO+V/H2VDZ5m
-	cDxRO5goNOHIKuBlt63dySKrgwNXRwoLD6FMw77xH5FrUH3FStfna+P9q6fWUm354zueWv83Wdf+j
-	3QzoY9Wg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCYip-0000000Gw6B-0Hmo;
-	Tue, 14 Apr 2026 08:02:11 +0000
-Date: Tue, 14 Apr 2026 01:02:11 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	Akilesh Kailash <akailash@google.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-api@vger.kernel.org
-Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
- inode number
-Message-ID: <ad30g9xMs9wNJhFb@infradead.org>
-References: <20260409134538.3692605-1-jaegeuk@kernel.org>
- <adhPZxtbZxgU-37v@google.com>
+	b=jtBxt1/l0tZUcHjL3S1EGyxEpiw7l4kenubRtSgKaexLZMBO0M9gWdpgfL9LVMl4eHA0cq
+	pIaDMP3iID3MmgilKcfSUN0+eE9vcGoasoahN6C3k/iHLGSlnlLo1IikyJdE/uAMl84Y3S
+	x38pLQ+F4dpnB1gekhEWUjy5u+8eziA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2181260128;
+	Tue, 14 Apr 2026 08:07:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C07C19425;
+	Tue, 14 Apr 2026 08:07:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776154041;
+	bh=EEMFOy0vJOWp38dmssJV2v68HZUGRwouFVNvtMsIAeg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fh+FFf7aTtBW3HLDQPM/Z31aMG/zwVJqCGSrggC0sHVtwFqW5EyKzFVrxCylgySZx
+	 7kbaXpr0lPywd4svkLcFf7otbi2RLLJ/hWUIomN9UYGlzzEMBMSNpnByjCmqW5SxmE
+	 zIvRsjbuInGsk1u6lzyetoJ8y9flRVCpBf5VxJ7HBwsQQTO9kZlnHZARkZLrvyyaC5
+	 NY++nLjZs3x32kd0O9unk82mePtmw5V778hNAUpWRIXNj3yrXG41DZoI78sf3HkpK4
+	 GgVmeQayQcKnQPvXhOka9SfD8AwxCZy3ux61gQ15KBR3zAM6uOGoB1neRZ/63B7T5K
+	 OFSSBCNR/vCoA==
+Message-ID: <c9a6acdb-f77e-49c4-9e70-e38dea34544c@kernel.org>
+Date: Tue, 14 Apr 2026 10:07:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adhPZxtbZxgU-37v@google.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/pagewalk: honor action in pgd_entry and p4d_entry
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Cao Ruichuang <create0818@163.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260414051854.18487-1-create0818@163.com>
+ <453f7de1-1ed7-4785-ab95-5d63dd4a3499@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <453f7de1-1ed7-4785-ab95-5d63dd4a3499@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CA2D0C0013
+X-Stat-Signature: f4rjgofz6t7pxy5376gurnzi8t5n8ewm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B53AA140002
-X-Stat-Signature: s6rbt6x9njsetemwkjece1i7uaqasmd3
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776153733-4475
-X-HE-Meta: U2FsdGVkX198Uh/l63qARYEUS3l+mgyJp5BfV6HX9ACQq/7iqvrGsoLjkjg9MqjTXh81SUfnq0OC44dWczgGMRGQ3jJFGljzcO40SPcsD8JUA1GFUkU28b6sx67hzeKTDvr96ZXZ6wavpCzHKhQ1FPNx+mk0khlVzvxDsmfdV7C1phmM4iSkYI/0XzkTcwTq7aDurBHhakBrTEFfFo8xxVL4L1vSGjY4QPScro6C5sDbHt6f+gkE49Dp9Y9ip+iWwlaGjuxfCPAApVxpsqY5uJPDBz2Ni0ogOcU86WLgR8R0iHpvVqIBSO0wrWLSjYY3ytpVPQcHwTdljc64INOxtEedIADGKZlvF+/dws/qeZNMxMMzAVZsEmBakkTh5eG0Polq0MjQ5+RKsPH7U7Gm4uPqMT/XmiZ/HDn6nzAH7PqXlzk9xK8hPNfl02tnYoNN0EHFYPosPkhQJN+AdmvA7/MEevQFyatr95wlc++c6TffRNfNjwH3S+TrgMd+e/uLkEng3nOu0uUylsRd2zMhVYu80/DFZa4vuDXqVlkQHT7n5Uly1tTsDbzGAm7dBMH8aa8jsebGyofKX0k0ZUN+UKswh0nTmpGKYYtXHoR7xsZgRItiyFlZ83YHf9LiH9sDOLdn6r+F99X72LzFJQGdOqq6w4VXidq/p+sg07JmZNkWkt2UH+DEpDVq5MZNh4WQI6NnX2lGo8oEYuxwiJSFPkOZMQjbfFoCsrjOqbP05gNXdkEY/VDcTc8sBU/WaCypF0+ooLv+FYUI/R50+UkJYeU83Fr0+CTh9d3MT3VVIqFNh1lY8Uq3jXwtO4OYv/yxO7Aap3kKPSLLX88UFkDlwnplNHUbxrE/PwNg4+ivXjTJswOmbJamq1hxR93C+pLq5NSpOVZ9uBhSowfN2S0nk6p+Bh3GVVlTvSBKVVgGuRRV/BOfMNDVw2lMXlVC9f7JXr3hLgz89uS+zJcmYfZ
- mwaZO+6M
- +RMh3g/dxrgIHxEQY4Uc6YV/cImUlk+PSkhrYQdTRMR4OQ9O+/ZQNesQ7BnELA2ChjCcivlNgMsfDAhLl+fuhdP47XPw26LLfwcURfqScazsav5yjbR0UzgrRM6pHuFWb0rfKrVOnoFEU+soK758yFB7opWFTqxLWf/OfJPCpP6XP8sPDU8IOQWlhLoSddz4YOjsvuNcQAOhAypAFX3RcBlR2Z7h7vgSW06syW9g2hUv3qtiCLTfObBbi/8QaQyHxxINCPVNP/mwEUn8N42owFNG2Ot66dTnozDPxMCedQr3vtmW7HzvqRflwzrPsRqZXDfl/nkeX8bKViB9omLMAHThVt/XkA8cHVF+Y/bY9GqP93JtauRXp+baDTLMqzUowun5FFpgzrNRu/p5CNUrCKBuj7cuIBe0qdDtuLoXJr/9WNmW0Rq8QL0mb8QJp4OMWFMVpJrdp68JDFwI4ZUInRwZxh4cjY4t648djkqJwrSUPVoikHc36Fc6sLupye2gr1FJC+gmBWKyGXEaZ2Gatlkrzqh/aoy7WW+uM
+X-HE-Tag: 1776154042-339790
+X-HE-Meta: U2FsdGVkX1/k9guwYaFMXpGCaIkA4ZViEHvqRx+gcE4q85eu2xrLUDpgLisznbZAPdzAvxsnslVRoc5sEuz4Ksm2I6ti6DK/n5xyrXkXXIxwwop1fEKf5jhArzb8NTopzuLCfJlDDbzgnUSJpzOXdbEdIZfEZCIERTRRZSbBZVe66rsNx3AHVMuaqEyZrMjWvW0Zz7tX9cb7qVtefylXz2r2sq5zwpjwf0+vdLDNm3VtLv3CHEgf5fYMt5YbbRfOadCjkM4xIDxQIZv9Anq3uASQxWYvgp2utAJXkWwxFWD2D+hIRK+MkYXm445qvy68tJYlDqj4JzHAd7U/ED/u9gKcOmx2O4lVb6N8VaIvH8mleCbwKk0bwJETSV0W/Ft4PT0URp3KUfRRRFZmFdzV3/mxzsHw6hPBtquHzVfya5eQXspd7xGnMrDItCxfh3xOt59BCowuBsdNZ9A7gYxUmrRQkFfpejQP2cJJjTDGb8B3Ii4GPlfTEWkQ93/BYHa6eB/i3Og4gDyGKNueRgEgqFr4e4e0rHamHOQlwVOpLnY8GIQAT4WIBqPxNA5KlDMdKI7mUpQ/MtmvAJUduKPRuB8ufS/AjU1n4ALnFULkVE2E9wb4+tpv/FHjuMSPSfErH6G3gNkgwCw88BCrrnlcxwXWGXCo81fM2w3iMfu0R0fTzAlUjBXOnyGbBFcqsb3VZ+ERkVxWNwKhBvGa+8Uj6op2h9UkIIfGbM1FFqTBq/cPMrz8O39360vkmNSYr2ddwr40Tv1zyqgPjZw/X7aMn4iBDNWiGRklrzzddO9okx2rDv1NjzHXWRInrEmOZHb+cVyfyzAH4oFisHHURELKB/kt6uc7kiSBMgn1foO7YElk+B+YAnT3G/WkHzTuODCPVGuH+j70Fco4yEZz7beM4ZlWzKkSOpsIru1kDfBVzavMcM0JRJHoutMIftfUv8vF+468WkvK2T12RJ0xJ1p
+ YxduPnvq
+ 98uch86JJImjEEMpyJ1x5dMrw6HCA5SkIVTQfXx3FbpGWq67DBe/peloYCbecDHZ02+FxbRkm4nIWudiXHElxAEzJ1R0U3VU94axpxgJK+dAsMFv3YWJzBdqtwYNF2ry7pF+GswDTjKuoIDviA0hMxoUTwwpYMZe2AMiPq5yob/U/UrWZ6qIsM+Did3Sw5s1NfD9hjgEykM5MQGInhDcxv3MxHdsNWvpAFm8N1zGggEOn+tbPVSLFlXD+AmAHe6/8nNX72vIBj9ixuF0Y+sp9hWTHHEFt4wZZxOc0XfKA48kGrW2lcTK29xhpzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,325 +140,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Please add the relevant mailing lists when adding new user interfaces.
+On 4/14/26 09:57, Vlastimil Babka (SUSE) wrote:
+> On 4/14/26 07:18, Cao Ruichuang wrote:
+>> walk_pud_range() and walk_pmd_range() reset walk->action to ACTION_SUBTREE and honor ACTION_CONTINUE/ACTION_AGAIN after invoking their callbacks, but walk_pgd_range() and walk_p4d_range() do not.
+>>
+>> That leaves the top levels with inconsistent callback semantics. In particular, ptdump sets ACTION_CONTINUE from pgd_entry() and p4d_entry() for leaf entries, but the generic walker still descends into lower levels instead of skipping the subtree.
+>>
+>> Initialize walk->action before calling pgd_entry() and p4d_entry(), and handle ACTION_CONTINUE and ACTION_AGAIN afterwards just like the lower page-table levels do. Also update the action comment to reflect that it applies to pgd_entry() and p4d_entry() as well.
+> 
+> Your LLM has broken line wrapping. But it's ok, we're not interested in
+> patches produced by LLM reviewing code, with no human oversight and
+> understanding. NAK.
 
-And I'm not sure hacks working around the proper large folio
-implementation are something that should be merged upstream.
+Agreed. The educated reader would know that we never end up with p4d/pgd
+leaves in non-hugetlb VMAs.
 
-On Fri, Apr 10, 2026 at 01:16:23AM +0000, Jaegeuk Kim wrote:
-> enum {
->        F2FS_XATTR_FADV_LARGEFOLIO,
-> };
-> 
-> unsigned int value = BIT(F2FS_XATTR_FADV_LARGEFOLIO);
-> 
-> 1. setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
->  -> register the inode number for large folio
-> 2. chmod(0400, file)
->  -> make Read-Only
-> 3. fsync() && close() && open(READ)
->  -> f2fs_iget() with large folio
-> 4. open(WRITE), mkwrite on mmap, chmod(WRITE)
->  -> return error
-> 5. close() and open()
->  -> goto #3
-> 6. unlink
->  -> deregister the inode number
-> 
-> Suggested-by: Akilesh Kailash <akailash@google.com>
-> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-> ---
->  
->   Log from v1:
->    - add a condition in f2fs_drop_inode
->    - add Doc
-> 
->  Documentation/filesystems/f2fs.rst | 41 ++++++++++++++++++++++++++----
->  fs/f2fs/checkpoint.c               |  2 +-
->  fs/f2fs/data.c                     |  2 +-
->  fs/f2fs/f2fs.h                     |  1 +
->  fs/f2fs/file.c                     | 11 ++++++--
->  fs/f2fs/inode.c                    | 19 +++++++++++---
->  fs/f2fs/super.c                    |  7 +++++
->  fs/f2fs/xattr.c                    | 35 ++++++++++++++++++++++++-
->  fs/f2fs/xattr.h                    |  6 +++++
->  9 files changed, 111 insertions(+), 13 deletions(-)
-> 
-> diff --git a/Documentation/filesystems/f2fs.rst b/Documentation/filesystems/f2fs.rst
-> index 7e4031631286..de899d0d3088 100644
-> --- a/Documentation/filesystems/f2fs.rst
-> +++ b/Documentation/filesystems/f2fs.rst
-> @@ -1044,11 +1044,14 @@ page allocation for significant performance gains. To minimize code complexity,
->  this support is currently excluded from the write path, which requires handling
->  complex optimizations such as compression and block allocation modes.
->  
-> -This optional feature is triggered only when a file's immutable bit is set.
-> -Consequently, F2FS will return EOPNOTSUPP if a user attempts to open a cached
-> -file with write permissions, even immediately after clearing the bit. Write
-> -access is only restored once the cached inode is dropped. The usage flow is
-> -demonstrated below:
-> +This optional feature is triggered by two mechanisms: the file's immutable bit
-> +or a specific xattr flag. In both cases, F2FS ensures data integrity by
-> +restricting the file to a read-only state while large folios are active.
-> +
-> +1. Immutable Bit Approach:
-> +Triggered when the FS_IMMUTABLE_FL is set. This is a strict enforcement
-> +where the file cannot be modified at all until the bit is cleared and
-> +the cached inode is dropped.
->  
->  .. code-block::
->  
-> @@ -1078,3 +1081,31 @@ demonstrated below:
->     Written 4096 bytes with pattern = zero, total_time = 29 us, max_latency = 28 us
->  
->     # rm /data/testfile_read_seq
-> +
-> +2. XATTR fadvise Approach:
-> +A more flexible registration via extended attributes.
-> +
-> +.. code-block::
-> +
-> +    enum {
-> +        F2FS_XATTR_FADV_LARGEFOLIO,
-> +    };
-> +    unsigned int value = BIT(F2FS_XATTR_FADV_LARGEFOLIO);
-> +
-> +    /* Registers the inode number for large folio support in the subsystem.*/
-> +    # setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
-> +
-> +    /* The file must be made Read-Only to transition into the large folio path. */
-> +    # fchmod(0400, fd)
-> +
-> +    /* clean up dirty inode state. */
-> +    # fsync(fd)
-> +
-> +    /* Drop the inode cache.
-> +    # close(fd)
-> +
-> +    /* f2fs_iget() instantiates the inode with large folio support.*/
-> +    # open()
-> +
-> +    /* Returns -EOPNOTSUPP or error to protect the large folio cache.*/
-> +    # open(WRITE), mkwrite on mmap, or chmod(WRITE)
-> diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
-> index 01e1ba77263e..fdd62ddc3ed6 100644
-> --- a/fs/f2fs/checkpoint.c
-> +++ b/fs/f2fs/checkpoint.c
-> @@ -778,7 +778,7 @@ void f2fs_remove_ino_entry(struct f2fs_sb_info *sbi, nid_t ino, int type)
->  	__remove_ino_entry(sbi, ino, type);
->  }
->  
-> -/* mode should be APPEND_INO, UPDATE_INO or TRANS_DIR_INO */
-> +/* mode should be APPEND_INO, UPDATE_INO, LARGE_FOLIO_IO, or TRANS_DIR_INO */
->  bool f2fs_exist_written_data(struct f2fs_sb_info *sbi, nid_t ino, int mode)
->  {
->  	struct inode_management *im = &sbi->im[mode];
-> diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-> index 965d4e6443c6..5e46230398d7 100644
-> --- a/fs/f2fs/data.c
-> +++ b/fs/f2fs/data.c
-> @@ -2494,7 +2494,7 @@ static int f2fs_read_data_large_folio(struct inode *inode,
->  	int ret = 0;
->  	bool folio_in_bio;
->  
-> -	if (!IS_IMMUTABLE(inode) || f2fs_compressed_file(inode)) {
-> +	if (f2fs_compressed_file(inode)) {
->  		if (folio)
->  			folio_unlock(folio);
->  		return -EOPNOTSUPP;
-> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-> index e40b6b2784ee..02bc6eb96a59 100644
-> --- a/fs/f2fs/f2fs.h
-> +++ b/fs/f2fs/f2fs.h
-> @@ -381,6 +381,7 @@ enum {
->  /* for the list of ino */
->  enum {
->  	ORPHAN_INO,		/* for orphan ino list */
-> +	LARGE_FOLIO_INO,	/* for large folio case */
->  	APPEND_INO,		/* for append ino list */
->  	UPDATE_INO,		/* for update ino list */
->  	TRANS_DIR_INO,		/* for transactions dir ino list */
-> diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-> index c0220cd7b332..64ba900410fc 100644
-> --- a/fs/f2fs/file.c
-> +++ b/fs/f2fs/file.c
-> @@ -2068,9 +2068,16 @@ static long f2fs_fallocate(struct file *file, int mode,
->  
->  static int f2fs_release_file(struct inode *inode, struct file *filp)
->  {
-> -	if (atomic_dec_and_test(&F2FS_I(inode)->open_count))
-> +	if (atomic_dec_and_test(&F2FS_I(inode)->open_count)) {
->  		f2fs_remove_donate_inode(inode);
-> -
-> +		/*
-> +		 * In order to get large folio as soon as possible, let's drop
-> +		 * inode cache asap. See also f2fs_drop_inode.
-> +		 */
-> +		if (f2fs_exist_written_data(F2FS_I_SB(inode),
-> +					    inode->i_ino, LARGE_FOLIO_INO))
-> +                       d_drop(filp->f_path.dentry);
-> +	}
->  	/*
->  	 * f2fs_release_file is called at every close calls. So we should
->  	 * not drop any inmemory pages by close called by other process.
-> diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-> index 89240be8cc59..e100bc5a378c 100644
-> --- a/fs/f2fs/inode.c
-> +++ b/fs/f2fs/inode.c
-> @@ -565,6 +565,20 @@ static bool is_meta_ino(struct f2fs_sb_info *sbi, unsigned int ino)
->  		ino == F2FS_COMPRESS_INO(sbi);
->  }
->  
-> +static void f2fs_mapping_set_large_folio(struct inode *inode)
-> +{
-> +	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-> +
-> +	if (f2fs_compressed_file(inode))
-> +		return;
-> +	if (f2fs_quota_file(sbi, inode->i_ino))
-> +		return;
-> +	if (IS_IMMUTABLE(inode) ||
-> +	    (f2fs_exist_written_data(sbi, inode->i_ino, LARGE_FOLIO_INO) &&
-> +	     !(inode->i_mode & S_IWUGO)))
-> +	    mapping_set_folio_min_order(inode->i_mapping, 0);
-> +}
-> +
->  struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
->  {
->  	struct f2fs_sb_info *sbi = F2FS_SB(sb);
-> @@ -620,9 +634,7 @@ struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
->  		inode->i_op = &f2fs_file_inode_operations;
->  		inode->i_fop = &f2fs_file_operations;
->  		inode->i_mapping->a_ops = &f2fs_dblock_aops;
-> -		if (IS_IMMUTABLE(inode) && !f2fs_compressed_file(inode) &&
-> -		    !f2fs_quota_file(sbi, inode->i_ino))
-> -			mapping_set_folio_min_order(inode->i_mapping, 0);
-> +		f2fs_mapping_set_large_folio(inode);
->  	} else if (S_ISDIR(inode->i_mode)) {
->  		inode->i_op = &f2fs_dir_inode_operations;
->  		inode->i_fop = &f2fs_dir_operations;
-> @@ -895,6 +907,7 @@ void f2fs_evict_inode(struct inode *inode)
->  	f2fs_remove_ino_entry(sbi, inode->i_ino, APPEND_INO);
->  	f2fs_remove_ino_entry(sbi, inode->i_ino, UPDATE_INO);
->  	f2fs_remove_ino_entry(sbi, inode->i_ino, FLUSH_INO);
-> +	f2fs_remove_ino_entry(sbi, inode->i_ino, LARGE_FOLIO_INO);
->  
->  	if (!is_sbi_flag_set(sbi, SBI_IS_FREEZING)) {
->  		sb_start_intwrite(inode->i_sb);
-> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-> index ccf806b676f5..11d1e0c99ac1 100644
-> --- a/fs/f2fs/super.c
-> +++ b/fs/f2fs/super.c
-> @@ -1844,6 +1844,13 @@ static int f2fs_drop_inode(struct inode *inode)
->  			return 1;
->  		}
->  	}
-> +	/*
-> +	 * In order to get large folio as soon as possible, let's drop
-> +	 * inode cache asap. See also f2fs_release_file.
-> +	 */
-> +	if (f2fs_exist_written_data(sbi, inode->i_ino, LARGE_FOLIO_INO) &&
-> +	    !is_inode_flag_set(inode, FI_DIRTY_INODE))
-> +		return 1;
->  
->  	/*
->  	 * This is to avoid a deadlock condition like below.
-> diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-> index 941dc62a6d6f..0c0e44c2dcdd 100644
-> --- a/fs/f2fs/xattr.c
-> +++ b/fs/f2fs/xattr.c
-> @@ -44,6 +44,16 @@ static void xattr_free(struct f2fs_sb_info *sbi, void *xattr_addr,
->  		kfree(xattr_addr);
->  }
->  
-> +static int f2fs_xattr_fadvise_get(struct inode *inode, void *buffer)
-> +{
-> +	if (!buffer)
-> +		goto out;
-> +	if (mapping_large_folio_support(inode->i_mapping))
-> +		*((unsigned int *)buffer) |= BIT(F2FS_XATTR_FADV_LARGEFOLIO);
-> +out:
-> +	return sizeof(unsigned int);
-> +}
-> +
->  static int f2fs_xattr_generic_get(const struct xattr_handler *handler,
->  		struct dentry *unused, struct inode *inode,
->  		const char *name, void *buffer, size_t size)
-> @@ -61,10 +71,29 @@ static int f2fs_xattr_generic_get(const struct xattr_handler *handler,
->  	default:
->  		return -EINVAL;
->  	}
-> +	if (handler->flags == F2FS_XATTR_INDEX_USER &&
-> +	    !strcmp(name, "fadvise"))
-> +		return f2fs_xattr_fadvise_get(inode, buffer);
-> +
->  	return f2fs_getxattr(inode, handler->flags, name,
->  			     buffer, size, NULL);
->  }
->  
-> +static int f2fs_xattr_fadvise_set(struct inode *inode, const void *value)
-> +{
-> +	unsigned int new_fadvise;
-> +
-> +	new_fadvise = *(unsigned int *)value;
-> +
-> +	if (new_fadvise & BIT(F2FS_XATTR_FADV_LARGEFOLIO))
-> +		f2fs_add_ino_entry(F2FS_I_SB(inode),
-> +				inode->i_ino, LARGE_FOLIO_INO);
-> +	else
-> +		f2fs_remove_ino_entry(F2FS_I_SB(inode),
-> +				inode->i_ino, LARGE_FOLIO_INO);
-> +	return 0;
-> +}
-> +
->  static int f2fs_xattr_generic_set(const struct xattr_handler *handler,
->  		struct mnt_idmap *idmap,
->  		struct dentry *unused, struct inode *inode,
-> @@ -84,6 +113,10 @@ static int f2fs_xattr_generic_set(const struct xattr_handler *handler,
->  	default:
->  		return -EINVAL;
->  	}
-> +	if (handler->flags == F2FS_XATTR_INDEX_USER &&
-> +	    !strcmp(name, "fadvise"))
-> +		return f2fs_xattr_fadvise_set(inode, value);
-> +
->  	return f2fs_setxattr(inode, handler->flags, name,
->  					value, size, NULL, flags);
->  }
-> @@ -842,4 +875,4 @@ int __init f2fs_init_xattr_cache(void)
->  void f2fs_destroy_xattr_cache(void)
->  {
->  	kmem_cache_destroy(inline_xattr_slab);
-> -}
-> \ No newline at end of file
-> +}
-> diff --git a/fs/f2fs/xattr.h b/fs/f2fs/xattr.h
-> index bce3d93e4755..455f460d014e 100644
-> --- a/fs/f2fs/xattr.h
-> +++ b/fs/f2fs/xattr.h
-> @@ -24,6 +24,7 @@
->  #define F2FS_XATTR_REFCOUNT_MAX         1024
->  
->  /* Name indexes */
-> +#define F2FS_USER_FADVISE_NAME			"user.fadvise"
->  #define F2FS_SYSTEM_ADVISE_NAME			"system.advise"
->  #define F2FS_XATTR_INDEX_USER			1
->  #define F2FS_XATTR_INDEX_POSIX_ACL_ACCESS	2
-> @@ -39,6 +40,11 @@
->  #define F2FS_XATTR_NAME_ENCRYPTION_CONTEXT	"c"
->  #define F2FS_XATTR_NAME_VERITY			"v"
->  
-> +/* used for F2FS_USER_FADVISE_NAME */
-> +enum {
-> +	F2FS_XATTR_FADV_LARGEFOLIO,
-> +};
-> +
->  struct f2fs_xattr_header {
->  	__le32  h_magic;        /* magic number for identification */
->  	__le32  h_refcount;     /* reference count */
-> -- 
-> 2.53.0.1213.gd9a14994de-goog
-> 
-> 
----end quoted text---
+The ptdump code is overly cautious ;)
+
+-- 
+Cheers,
+
+David
 
