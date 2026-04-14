@@ -4,177 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D72D8F9D0D8
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 21:38:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA0EAF9D0FB
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 21:58:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF9166B0088; Tue, 14 Apr 2026 17:38:07 -0400 (EDT)
+	id C7D476B0088; Tue, 14 Apr 2026 17:57:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED00E6B0089; Tue, 14 Apr 2026 17:38:07 -0400 (EDT)
+	id C2E7B6B0089; Tue, 14 Apr 2026 17:57:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBF046B0092; Tue, 14 Apr 2026 17:38:07 -0400 (EDT)
+	id B1D7F6B0092; Tue, 14 Apr 2026 17:57:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB7FF6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:38:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7E01B140221
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:38:07 +0000 (UTC)
-X-FDA: 84658474614.02.5A690CD
-Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0B17E40007
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:38:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=UenZrEk4;
-	spf=pass (imf12.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A18A86B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:57:59 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 455B81A0287
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:57:59 +0000 (UTC)
+X-FDA: 84658524678.25.0969D8D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5212740016
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:57:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bpO0O54J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776203877; a=rsa-sha256;
+	cv=none;
+	b=xK7KhPp25DPGfenkTQji2GyZ3g4MMB99wYx0b4gyMBRULyDDFwbGIFtaBDRXnEODOZCFGC
+	jWRDtzFCExQc2nMk04K04RHzyvR8vb2GH6JmwuBCTcZM7xUVpIaBORiUU9n+q7w5jJzyTV
+	xtqW3eWCUR9OQXY69KLhxkuw2s+oeMg=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bpO0O54J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776202685;
+	s=arc-20220608; t=1776203877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OB6pidPOLogYNyD7EEIfdqKqbTJQgvZ9at6gZ/qm2j0=;
-	b=ygec+wFsn6nUtW6z9VwC05jPUqcqvr54ZkjXRmMOV8YB+IGiABGeAf5HCOF8mUGR9KwZfm
-	uVVfWVktSE1bbAIPjrhZAfMfRw5exk5uCcXZJvN127RQ9AOsP4NrIL/2OIXWw/EV+TQn4E
-	bov6Rt75KAeIjQKXS5IIhvgaV0eUGJY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776202685; a=rsa-sha256;
-	cv=none;
-	b=hCG2QgjVUamL3h/T8NflZjY/+lOAQvJVoIox49UQgzzlGM7bADKdv0BjMwU0Wcqoumow7U
-	MosKIMonfbOR7qlOWdH+8G98YnO2rcgzh8qaEOQUft517obV/R7U/mbfh4LCNdSMwtZRc2
-	IrEhKYSh6FuJkuUs0ELHr5JX+GPMs3s=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=UenZrEk4;
-	spf=pass (imf12.hostedemail.com: domain of tz2294@columbia.edu designates 148.163.139.74 as permitted sender) smtp.mailfrom=tz2294@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
-Received: from pps.filterd (m0167076.ppops.net [127.0.0.1])
-	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63ELR0Iv2202154
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:38:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=OB6p
-	idPOLogYNyD7EEIfdqKqbTJQgvZ9at6gZ/qm2j0=; b=UenZrEk46SZcHtFJ+Nb/
-	fAr5m0bGK1fniVV7xmiFAY040zcT8vaHuwvuxVxJrMYbQ/zsRlyiKAxBEhoVHg0o
-	6qwwUwYgH1AfiKYfzAnxuDCVaYVjtRtWW70Z+A4DcgesmW1x7yjUeBzDwCG+PlnN
-	CwvWMCtVMNCc4LTK/Nr7dsBDSjiv43QXfAn+lmv02jmXdearK6k9/eFjW5J2slFu
-	H4AwoG6CxV0JL4H8uDkYl61V+5TT1hbMUaz2d2SMV96nL7O9UVaQXJGGDrwa8eHw
-	wQoPgrbOctjF9NwG/8osy/tOG/ldJv+/bMH0NL+ep2pzoH0QgHPCwIbWMMGZVtDY
-	0A==
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
-	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4dh8588k09-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:38:03 -0400 (EDT)
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8acaea1ffe7so81677956d6.2
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:38:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776202683; x=1776807483;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OB6pidPOLogYNyD7EEIfdqKqbTJQgvZ9at6gZ/qm2j0=;
-        b=Ul7VSjQudNfGkuGEAmnDUAI6Fn1RZNq87E09C9HyxyOAmJ1u+UmFWADgFeTqzoAPQm
-         q2mL9Lce2QSraOB/r5G+oIIJO4wH00P7xRY1yGRJwC9pGySncmzJ1+n11hr5jNSG/VR3
-         XZs9YAWfAv4FhzIjqF9h5adAFe6Ha8xhSlPV7IK5hX9iHcShF/GLF4tpj5v/9wOj/gjY
-         OvbPCsrzj0IynJc8zpBtQl4zxCW5i8n32zAd+nGFxzAm9f5dJe/QKw4UoIf8udyM2mXR
-         bEdhKEOzrYVHbUzWYpF2jALiVjLhK21h0iLk9LrHHPpBeL6a6+nlWg4gj0spPwvJC5Wb
-         3RPw==
-X-Forwarded-Encrypted: i=1; AFNElJ/vU5B8WKcJcG+10l3CBShwvLovMyfZpz1kmTtFGcOIlUq0AK00EQN9Pc389hlmJ1IxAw7sJrbYMg==@kvack.org
-X-Gm-Message-State: AOJu0Yzmqp9bH5Hg4CBHtxSZPbvhZ2tBlqLA0dBNWQyLteFtlhD+VX9S
-	RVwfqASmryhYNOb3mybxUK6bLAlWxkdZVk6C8If4S6KeQ7BxH4wDu1EOYrjrWNRYBTN6Z75JK+Z
-	cHoaAnLAiL1JTZW5W6ULVV0l8enkUYmUpqj7n0nRl9FO+4woa
-X-Gm-Gg: AeBDieuYZl3tpmWBLYDXjI4xc9VcIubtPL7iWwIRy7Hn4rpMKQexm1NK7Lov5LPD73s
-	YlPJqo4Ovk0wo1uK3mPmwFsd8BeJZKKpUdUJzzcScJuhZbJl1mTaFYJ9ZsX2sypyJS2M68hjfpd
-	ZfceoZkzH9CPtLd3u0CVxcqqFo008qwOjjWBG8dyejargCIXRrQpaYYGq1DyqBGhP2Ss/+VyM5Q
-	7iYJ9yYAHSVsh3mvT10GxcLrkCRxLjdLNac/fS6233IKJFpOIJELXg17Bl4TCONIir684zuipRR
-	XTT5GXvFMoOfSIoiSC7WjkE48wmkmSBK/pI//N9XkrQMLtBiGIpai5Ffm8RXM0r72AzEkC6KZxh
-	6Z51fLT4woLi6uRoIh1fuYDPnxfuKF7ma6KsqHLCUT3pQoNL06rwwLO92Cym7Ba6HN05FzDI=
-X-Received: by 2002:a05:6214:4905:b0:89a:1364:1027 with SMTP id 6a1803df08f44-8ac8617efafmr306359306d6.14.1776202683044;
-        Tue, 14 Apr 2026 14:38:03 -0700 (PDT)
-X-Received: by 2002:a05:6214:4905:b0:89a:1364:1027 with SMTP id 6a1803df08f44-8ac8617efafmr306358966d6.14.1776202682633;
-        Tue, 14 Apr 2026 14:38:02 -0700 (PDT)
-Received: from [192.168.1.62] (dyn-160-39-33-242.dyn.columbia.edu. [160.39.33.242])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ac84cb0474sm132012676d6.40.2026.04.14.14.38.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Apr 2026 14:38:02 -0700 (PDT)
-Message-ID: <5c1205ec-cbcc-4976-85d3-0643083bfbba@columbia.edu>
-Date: Tue, 14 Apr 2026 17:38:00 -0400
+	bh=dcnAPqU0em6JyH9R/MSpb7uUF5Scb9Lqe9O4cMftCn0=;
+	b=4va5L4RS+oCSaof230LHTCd3jF14VwlNmiNjLpkhdyx8mkEpFPJM4d8wZlaGgYbaBujEuT
+	z2bh4ICgGds1weN1SiJrCHhoE/PhWpTcFlHe43U7Jz1vt9PFp+1CRdYp56SVA/KTsHhJiE
+	1lHW8kNB1dPPoHyxOVeRFyNveh80YNM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0598444307;
+	Tue, 14 Apr 2026 21:57:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA95EC19425;
+	Tue, 14 Apr 2026 21:57:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776203875;
+	bh=ZUNzTicQgDcyFP5w0RI4Nrc7tmhjfuPP2YRMHTfeXHw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=bpO0O54J2tayfMK4LNj+PnNzYYE4jpf3X6/mDcNY+6rk5Iu3nuFLpco5R5ZzI0cqE
+	 1FS2FTQ1hTF/HrWbhVai0pCIBDQh9x//cPwtiInWdpQwVH/0QW0vOVeXgnwFA27D+d
+	 dWjnEJxD2jYfv0nRE7nM+UtQRYf+vR7EtCW2+fmlAGhtdC4+c+wLWqn3Skmb+M7S01
+	 6qa3LyUdW91baafo8JAYu2iOSg2Dwsf0At3W/2Te4M3Jz+C6o7zoKelMpO3E8Hhy4O
+	 vR5+74ONopnl8+XXC7oUb31d3nocIMR2Otp5hCvt3O/crKmRHOK2/WshfIcZ+gApy1
+	 AkdHVnGu+8dDw==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Qiliang Yuan <realwujing@gmail.com>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben
+ Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin
+ Schneider <vschneid@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Zqiang <qiang.zhang@linux.dev>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, Ingo Molnar <mingo@kernel.org>, Tejun Heo
+ <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes
+ Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Waiman Long
+ <longman@redhat.com>, Chen Ridong <chenridong@huaweicloud.com>, Michal
+ =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet
+ <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Qiliang Yuan <realwujing@gmail.com>
+Subject: Re: [PATCH v2 04/12] tick/nohz: Transition to dynamic full dynticks
+ state management
+In-Reply-To: <20260413-wujing-dhm-v2-4-06df21caba5d@gmail.com>
+References: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
+ <20260413-wujing-dhm-v2-4-06df21caba5d@gmail.com>
+Date: Tue, 14 Apr 2026 23:57:52 +0200
+Message-ID: <87tstddx27.ffs@tglx>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Towards Unified and Extensible Memory Reclaim
- (reclaim_ext)
-To: Lorenzo Stoakes <ljs@kernel.org>, John Hubbard <jhubbard@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Gregory Price
- <gourry@gourry.net>, Michal Hocko <mhocko@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        lsf-pc@lists.linux-foundation.org,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        David Hildenbrand <david@kernel.org>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Chen Ridong <chenridong@huaweicloud.com>,
-        Emil Tsalapatis <emil@etsalapatis.com>,
-        Alexei Starovoitov <ast@kernel.org>, Yuanchu Xie <yuanchu@google.com>,
-        Wei Xu <weixugc@google.com>, Kairui Song <ryncsn@gmail.com>,
-        Nhat Pham <nphamcs@gmail.com>, Barry Song <21cnbao@gmail.com>,
-        David Stevens <stevensd@google.com>, Vernon Yang <vernon2gm@gmail.com>,
-        David Rientjes <rientjes@google.com>,
-        Kalesh Singh <kaleshsingh@google.com>,
-        wangzicheng <wangzicheng@honor.com>,
-        "T . J . Mercier" <tjmercier@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Meta kernel team <kernel-team@meta.com>, bpf@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260325210637.3704220-1-shakeel.butt@linux.dev>
- <20260325190547.abb7309fb63473b57b7a90a0@linux-foundation.org>
- <acTaRgusrxfCoKqe@tiehlicka>
- <ac05d923-7871-4691-8d26-eff41b3a3db0@lucifer.local>
- <CAJHvVchSfGDubPhir0SgZfr_BcpN5oq_7AY4AZ587_ucgY4Apw@mail.gmail.com>
- <acWXdvHx9mYqvT2w@gourry-fedora-PF4VCD3F>
- <CAJHvVciAmX9OFLBSahwvXL=E+3xnDsL2aE4WKfDBFqaT1Gu+Qg@mail.gmail.com>
- <acX8_XMQYA0-NGUW@casper.infradead.org>
- <6f40c513-af3e-45b6-9000-c61494a23bd3@columbia.edu>
- <70fd648a-efa1-465a-8e6a-51411dfd50b8@nvidia.com> <adddpxFfWIO9a2Ih@lucifer>
-Content-Language: en-US
-From: Tal Zussman <tz2294@columbia.edu>
-In-Reply-To: <adddpxFfWIO9a2Ih@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=NtfhtcdJ c=1 sm=1 tr=0 ts=69deb3bb cx=c_pps
- a=7E5Bxpl4vBhpaufnMqZlrw==:117 a=GaPK54s0Se3oFqK5NkZy0g==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=x7bEGLp0ZPQA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=Qm0qsxP7aFY2tkT6R2MF:22
- a=eZBIlsz9hca5io5qbP0A:9 a=QEXdDO2ut3YA:10 a=pJ04lnu7RYOZP9TFuWaZ:22
-X-Proofpoint-GUID: 4seeixibze56momM7QExCewJ0nAwl3O5
-X-Proofpoint-ORIG-GUID: 4seeixibze56momM7QExCewJ0nAwl3O5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDIwMiBTYWx0ZWRfX5ysfjp4vA0pI
- jxS4EhlPsnocJ6HT6+bfGTT4tsYaxoUE7uOtcIyW/ULlGJYVki5NNBTTVE9AbEez9JnqdG/pSco
- PgN2O1CDmfqeRbXWIRB7vjCgpeO1GW8vPGRRwl/XeiDtNjfft/X9a5tT2W4zUSy9oCOT3dHbtIG
- UcqtWUtHSA17S4TKWfO6EZthginQggYB9TNcam7WEfKlWSG7Q8dmuOFA/5xzDIikgd5nxcnl/uU
- akOkOCOFwnf/6f+2IchXnBB9JV0yBukCoTIEMKx03RkRB1ZCZ6Q6sbG6iFCeUsRTMLV/cF6cOy/
- hLc5RbMoApMKX6QJcZ9zQvqPEDx/7YewUJAzcrdmBxeBnt39I+xZfp+Tu9VcptdjymKYUJBqtdS
- EHOGorVull3MX5I7M3RAY4UWmVR867EEraE3/w3TtXhtf/wsDSb4XeZX2JuEmcLE0WPMYQPbh0d
- +w0isowyCBy+v6ZdirQ==
-X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11759
- signatures=596818
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=10 spamscore=0 adultscore=0 malwarescore=0
- clxscore=1015 impostorscore=10 priorityscore=1501 bulkscore=10 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140202
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 7koufb1g4zo5qt89zc9tenac9qn86wou
-X-Rspamd-Queue-Id: 0B17E40007
+Content-Type: text/plain
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5212740016
+X-Stat-Signature: xw6fpp5weypohqn4m7we9wp7cuneiwkg
 X-Rspam-User: 
-X-HE-Tag: 1776202684-91898
-X-HE-Meta: U2FsdGVkX1+Y3rTDgm3sSTA8LjEwD08F5Fk3KQS9B2itV2hst2y049nr2hvjY1fwxwOS0uxnZ6c1oMFJof+vC2KMNc8jL0lqO3BJXlUErJ2Goc9A6GrqXp6fLTdD6mBRU0kTtL7z0acEMNAmNCmyUX/KPsKNPl9qTxXAeO7b14mqw1av7THX22esGizSnjkjtvuvj34op7wYZoXMkML0fOnwVv8/xu72kEaXD+uJcmdNSirRPi6PDx+u6qGDheWs2ywO71MlOKqEZ5Kr1UvPaVmsSxLblOgozXR5RazS6WmRQgvwjx7L1MghAN/RZ5AGI8d2dEAA+ZJGVu6Y/YPHJrBkPkj/LJ6K/bGY+lt+Bsl7N6ic5wqiHUZXYHoRhfR6yp4IuxuO7dDr9a+d0dc5LTUCflsSCU6unnyphIfRSoOIoOt0R+GpF4+s9KNnGtK+bwWCxfJRJAyICvNrWlk2VUiQ+4jHubSOiN2VNK0vgWu4/X+IjiSzKxIBCG4WgBWhszfV4+3HZUc+GkSzyV2o0NVOkRvbtP9u//J6minLR1ZBEWWHfeps2Lr9BeD4RTMc94jez6Dw8c/5oiXjnfudOHKb3VuOgAgTfhc0WjtygBabDW/DblkfFu01xWOWeCx43O0ajMd3oCkysQunT+AVFP4jJLmir7MmD4957J7cvnM+Gjk/65qXoW8Txk0b+mvLuzrHRDDQQBHsSYF/mFSGLHXT62nx6KstvEP6M/nDSUB6TtICTVgY+cbYE4PecIU5/8wn4YYyRkD7LdJ61r4r087Nc0qAt4nAwMSUMk+wPvT2hErpWsRfBp49bbARyZexSO8r8Xe8tG4pw18nNw4y3U+4JJ8MLvDDgGUDoPAcJOVF3wUv+kfic0hQa6WUOehRinIpRJbk5c4xmfQsBgRvV01RAEddUXh6lldEYEbT+LihWcXKvbnRiTp8SgzF5RFG/Wxv9G6Vrm/h9BeYNEu
- rpQczCw5
- WPqCvlNdvGvI+i+3lYxVDQ6t/adxLE3zU/i52HD1ilVdnaIkKwhxJMSuAZApEwfh5+uJBoaD8wB5LR26sl75RMJCmIo00Eu9K0O7GXHwQFFyt0lFpCgMUEecsMFWVMnfo0Key4EwJ4vjYDBlI/3ulUkCiUzF05NJ9JIi0FfO+GZknfzy4FEWpv2I0KJ0K78IZgAZYv7zuep9J++Opnbvh0Vcrp9lniRhflU0CTQyvJNYcWazNEPLZnNB9CVofimVrY2sw+qh7Tds0BFXlcMWR9SK43WR3GyjJzSPWvE8Zt71lCFjEL1nczAOfOUnbv9/HeWwiUHN1fYdHfO043k7nUuD3WU3i180xVRbMEWXomrBrhAW4W7smLglfJOxxeDDLcmB42jyCO4PapE6RbBsE+1C1OqFRC4AtBTBauyYwUnxwWijeSkxgCxceWOb5q+qdtLInNJ2a0smMiUdhpVDUwci1Nq/mIPwO+w9yz7Zk0m+AxjSf2xjSEbwFt10ZhOyQzSkbltXmprs5EEg=
+X-HE-Tag: 1776203877-41913
+X-HE-Meta: U2FsdGVkX1/4DkiRVXJRgiv7tJyFrnpCu56CVjSZ72hJaPChxdXbWE5w3G5zX8o9ak2Dl1M6+xMwAIS1LktAy5KykJI/eTKH+h6GVKDj1BvuBaOspcAxAsjSLgSUI9VntYMopdIyBtC4pX+DSLKJliY9ZjlS6ywAWbzSbb1Jr1qwX71KfxGc6ONOPAMy4AoA2EOmwsYhbb8KpDP5Daq0kqKJJ3n08eZE9Rebei58j60WMwvx7+J4Wis6ISBXUipoGcs/2zqKOCndjtvP1wsKpIesSSNv8KwLcwNC0mk+/jNl3G0nITWmsA4dPNBYwAqBKdzMEI6HXPuLlUs55625KMmffIzI8YljoYa++KOtvATc1xZE1+dCtwiY3+Z0aN2TY3G+6oi1t5k9rRB/Af1pYIVYbhIN0cAeueIYYdDLLTkeqjmMfpNe4HDe23p19GcTiQPGcDdEA9g0Pi20lBKmzhvNHfgpHLRdtbr1ONx2etqPObT4vFOJufA8L9yR4PAlPxp9C9gM3/ckAADgHcUZ3CyUL3Bfu3iOCcVz6p+TPH7W3IutTCftvaWfnnzE4h1PKSvMX2gpc5IU9dyMuVKXHvPY7BsygZXWcQtlgc2+xb9txustIujGWQpE9+x/2K9ll9lNX2IOT1RSzdmB89TRC78gpd30A3wcgJmOXNU9BX+wrfRuKwSv8dkibWJyWXxXteY8v3SelQMWiPNIwrXKqpcEthIQtq6WQt61YKGg4t8imKWkXftmHioRFTAAvw/Z9uOsepXkDh1gRzR0mN91LHpA42mStaeken8JZiQOOSp46ojIkpN7C/NNHyZFLMzgdAJikbDi+6N8+hOvaA9M+rLnjJe+lb5AVUns64vLpoYmSPnap/Ick5vdnqmymFceU1SNPR1GwwLQhVDJwx4R9gLbIAo673l7SFTzDmRSQ1onh454nHZM81xcIEsogI9qyDsS3kLg4uBHrv0nptq
+ pjC2EZyI
+ Hsba14EXb3kU5JK2pE+HD5ZVWOZa3sARFV16SAJ9+X2QS4ONRjaO+/SgtLlEc+p78pZvdd6buLVo5c5d27hGCGvi7cvTceKQ4fMlzPLzLETo3ocxCu6XzvBqKMcH7ExAFi1kpHJroaBjHAkvFfQe9ThQTVeRS6/ku//OOe4jjxSIRsGii0hAHeQ2K+U+9Q8NJ296jz3GUaqMukOafc0Lcg/q1KSW9V/fqnczDxXw1Ng+Sk8MwrPdatJ78tgA46Carutd3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,54 +112,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/9/26 4:22 AM, Lorenzo Stoakes wrote:
-> Yes, thanks for that, it's interesting!
-> 
-> But I would say for now we need to defer any consideration of bpf being a
-> thing until we actually get things into shape in terms of improving and
-> modularising the existing reclaim mechanisms.
-> 
-> mm has been far too keen to take features without paying down technical
-> debt first and it's been very costly, so before anything else, we must
-> ensure that reclaim is both long-term maintainable and maintained.
->
+On Mon, Apr 13 2026 at 15:43, Qiliang Yuan wrote:
 
-Completely agreed that cleanup is necessary and modularization is a big step
-towards that. I do think it makes sense to think about what eBPF would look
-like as part of that future though. It would be a shame to do all of that
-modularization work, then decide to integrate eBPF later on and realize that
-we need major changes to make that happen (but, given a well-designed
-interface, I think that's unlikely to be a significant issue).
+> Context:
+> Full dynticks (NOHZ_FULL) is typically a static configuration determined
+> at boot time. DHEI extends this to support runtime activation.
 
-> In terms of reclaim bpf as a concept in general - reclaim is so very
-> sensitive to even minor changes, and I fear that people might find
-> something that appears to dramatically improve matters in one scenario, but
-> end up with an unusable system in another.
+I have no idea what DHEI is. Provide proper information and not magic
+acronyms.
 
-That concern is precisely why we implemented per-cgroup policies. We found
-that running each application with a policy that works best for it yielded
-greater overall performance. System-wide policies may need something more
-generic, but if you can make them more granular, you can specialize more
-without running into such issues. This was simple enough to do given that
-the LRU lists are already per-memcg, and eBPF (is about to) support
-per-cgroup struct_ops programs.
+> Problem:
+> Switching to NOHZ_FULL at runtime requires careful synchronization
+> of context tracking and housekeeping states. Re-invoking setup logic
+> multiple times could lead to inconsistencies or warnings, and RCU
+> dependency checks often prevented tick suppression in Zero-Conf setups.
 
-> A bad sched_ext implementation might result in poor responsiveness, but a
-> bad reclaim_ext implementation might result in a soft-locked system, and I
-> fear that it might be quite easy to do that.
+And that careful synchronization is best achieved with an opaque
+notifier callchain which relies on build time ordering. Impressive.
 
-Anecdotally, having implemented about a dozen policies across dozens of
-workloads, we never ran into a soft-lockup. That's not a guarantee that it
-can't happen, but with a properly implemented fallback/watchdog to ensure
-that pages actually get reclaimed as necessary, this should be manageable.
-sched_ext actually implements such a watchdog to kick out misbehaving eBPF
-schedulers.
+> Solution:
+> - Replace the static tick_nohz_full_enabled() checks with a dynamic
+>   tick_nohz_full_running state variable.
 
-> In any case, we can look at all that once we are in a better place with
-> reclaim, which Shakeel's proposal focuses on and I'm very much in favour
-> of! :)
->
-> Cheers, Lorenzo
-> 
+That variable existed before and you are telling the what and not why
+this is required and how that is correct vs. the other checks in
+tick_nohz_full_enabled(). Also what's static about that function aside
+of being marked static inline?
 
+> - Refactor tick_nohz_full_setup to be safe for runtime invocation,
+>   adding guards against re-initialization and ensuring IRQ work
+>   interrupt support.
+
+Refactoring has to be done in a preparatory patch and not 
+
+> - Implement boot-time pre-activation of context tracking (shadow
+>   init) for all possible CPUs to avoid instruction flow issues during
+>   dynamic transitions.
+
+Again lot's of hand waving without a proper explanation.
+
+> - Hook into housekeeping_notifier_list to update NO_HZ states dynamically.
+
+See above.
+
+> This provides the core state machine for reliable, on-demand tick
+> suppression and high-performance isolation.
+
+I can find a lot of hacks, but definitely not the slightest notion of a
+state machine. Don't throw random buzzwords into a changelog if there is
+no evidence for their existance.
+
+> +static int tick_nohz_housekeeping_reconfigure(struct notifier_block *nb,
+> +					     unsigned long action, void *data)
+> +{
+> +	struct housekeeping_update *upd = data;
+> +	int cpu;
+> +
+> +	if (action == HK_UPDATE_MASK && upd->type == HK_TYPE_TICK) {
+> +		cpumask_var_t non_housekeeping_mask;
+> +
+> +		if (!alloc_cpumask_var(&non_housekeeping_mask, GFP_KERNEL))
+> +			return NOTIFY_BAD;
+> +
+> +		cpumask_andnot(non_housekeeping_mask, cpu_possible_mask, upd->new_mask);
+> +
+> +		if (!tick_nohz_full_mask) {
+> +			if (!zalloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL)) {
+> +				free_cpumask_var(non_housekeeping_mask);
+> +				return NOTIFY_BAD;
+> +			}
+> +		}
+> +
+> +		/* Kick all CPUs to re-evaluate tick dependency before change */
+> +		for_each_online_cpu(cpu)
+> +			tick_nohz_full_kick_cpu(cpu);
+
+That solves what?
+
+> +		cpumask_copy(tick_nohz_full_mask, non_housekeeping_mask);
+
+What's the exact point of this non_housekeeping_mask?
+
+Why can't you simply do:
+
+		cpumask_andnot(tick_nohz_full_mask, cpu_possible_mask, upd->new_mask);
+
+That'd be too simple and comprehensible, right?
+
+> +		tick_nohz_full_running = !cpumask_empty(tick_nohz_full_mask);
+> +
+> +		/*
+> +		 * If nohz_full is running, the timer duty must be on a housekeeper.
+> +		 * If the current timer CPU is not a housekeeper, or no duty is assigned,
+> +		 * pick the first housekeeper and assign it.
+> +		 */
+> +		if (tick_nohz_full_running) {
+> +			int timer_cpu = READ_ONCE(tick_do_timer_cpu);
+
+New line between declaration and code.
+
+> +			if (timer_cpu == TICK_DO_TIMER_NONE ||
+> +			    !cpumask_test_cpu(timer_cpu, upd->new_mask)) {
+
+No line break required. You have 100 characters
+
+> +				int next_timer = cpumask_first(upd->new_mask);
+
+next_timer? Please pick variable names which are comprehensible and self
+explaining. Also why can't you re-use timer_cpu, which would be actually useful?
+
+
+> +				if (next_timer < nr_cpu_ids)
+
+How can upd->new_mask be empty? That'd be a bug, no?
+
+> +					WRITE_ONCE(tick_do_timer_cpu, next_timer);
+> +			}
+> +		}
+> +
+> +		/* Kick all CPUs again to apply new nohz full state */
+> +		for_each_online_cpu(cpu)
+> +			tick_nohz_full_kick_cpu(cpu);
+
+This whole thing lacks an explanation why it is even remotely correct.
+
+> void __init tick_nohz_init(void)
+...
+> +	if (!tick_nohz_full_mask) {
+> +		if (!slab_is_available())
+> +			alloc_bootmem_cpumask_var(&tick_nohz_full_mask);
+> +		else
+> +			zalloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL);
+>  	}
+
+I've seen the same code sequence before. Copy & paste is simpler than
+providing helper functions.....
+  
+> -	if (IS_ENABLED(CONFIG_PM_SLEEP_SMP) &&
+> -			!IS_ENABLED(CONFIG_PM_SLEEP_SMP_NONZERO_CPU)) {
+> -		cpu = smp_processor_id();
+> +	housekeeping_register_notifier(&tick_nohz_housekeeping_nb);
+>  
+> -		if (cpumask_test_cpu(cpu, tick_nohz_full_mask)) {
+> -			pr_warn("NO_HZ: Clearing %d from nohz_full range "
+> -				"for timekeeping\n", cpu);
+> -			cpumask_clear_cpu(cpu, tick_nohz_full_mask);
+> +	if (tick_nohz_full_running) {
+
+This indentation and the resulting goto mess can be completely avoided
+if you actually refactor the code and not just claim to do so.
+
+Again, this does too many things at once and then explains them badly,
+which makes it unreviewable.
+
+Thanks,
+
+        tglx
 
