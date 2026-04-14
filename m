@@ -4,132 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79D11ED7B95
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:53:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 750E8ED7B96
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B72656B008A; Tue, 14 Apr 2026 05:53:17 -0400 (EDT)
+	id B55866B0088; Tue, 14 Apr 2026 06:00:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFB936B0092; Tue, 14 Apr 2026 05:53:17 -0400 (EDT)
+	id B066C6B008A; Tue, 14 Apr 2026 06:00:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94E2F6B0093; Tue, 14 Apr 2026 05:53:17 -0400 (EDT)
+	id A1BD56B0092; Tue, 14 Apr 2026 06:00:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A5576B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:53:17 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3755013B062
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:53:17 +0000 (UTC)
-X-FDA: 84656698434.19.2101D60
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E6FA4C000A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:53:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="QK/ZOkL6";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XyCOi7I8;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ldW0heS5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eDY9yA7I;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf22.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 912BC6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:00:29 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4A7411404B6
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:00:29 +0000 (UTC)
+X-FDA: 84656716578.12.B627CCE
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5A920140016
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:00:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fXCL30p1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776160827; a=rsa-sha256;
+	cv=none;
+	b=vXFo9YYALx9JdQ4O0AbL/KS3lgc8WzhX405CbK6urgC8uTZ0oWPjTyAqj9qVg5UulTBOg9
+	ccZiSwOISSUgiLmTNBHpSjS+ioKzy/Y+/mG2Og0Yi5Hw2hpj9VsgHlBvHwJS/1J7tsH2Zh
+	Mgb7/AV47siFYggZV2+JhqMgbJ9jB1s=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fXCL30p1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776160395;
+	s=arc-20220608; t=1776160827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pPD5JZWXLOXJK2CA5dw/48scjaOqjpDP5gnVdaxSMmU=;
-	b=VSyGMdo0PUwNcDBLgTpHYRKjzht+HAQUPgZYXYaVfb4tRClIUcpoNRANq/iSICEx5822fc
-	KF+2pQA30LUJ/sWRGw/URNUGjDmir6wquULGiVxLFcrTuLPuZHwiTTxuBCQwXWy6T9gvGF
-	iHpKRYivbEBBC2LZTJQAVFTpRkm7PjI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776160395; a=rsa-sha256;
-	cv=none;
-	b=gET8RRIf3I468RhrCRm96eEENxWPSlI5EiN8SU8mOfN18oHGVkPPXecb6auJ8rDOEOLhpQ
-	LPvgKZORqyUaZiofYux9JtGe9IAr1JqHBEVJ0ot+jy8RAR8Lm6Juh6qTtjWVlMz0EnMoK1
-	QeOBAQ0fSyLTzQ7k4mZUxkJKMSmjkzQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="QK/ZOkL6";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XyCOi7I8;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ldW0heS5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eDY9yA7I;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf22.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=osalvador@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E84EE6A7FD;
-	Tue, 14 Apr 2026 09:53:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776160393; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=aS0c1n45wXQTaxQSe6C+loc9iFSRt6diMHIuKTsYOOo=;
+	b=iG1a3UC0jnFBW/oy0LkkVFLM5CWlwdpOb4b4pmbjjUkkcUXnkS7okQA/vod5fTIu/XoHiE
+	uo6FU/3N+PWVuhtmVM/vhWSSE9SCFlcQwaK2nS9nstprkOCGFK/gDVtyJCyNduYiwLe+Lf
+	7xaV9IvFz/PHPIOVdTYhVELLVXjnVEk=
+Date: Tue, 14 Apr 2026 17:59:48 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776160825;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pPD5JZWXLOXJK2CA5dw/48scjaOqjpDP5gnVdaxSMmU=;
-	b=QK/ZOkL6r4fU6O+gor08Pai79piFrmp2r4Fam2U2BYrzwYs6gOTcpRKXDpTKM34ncUruQz
-	t6aSl/vdi+lj42pK36OyyuQpbsxwcE0VUpqEk2z3fo+0CWOirQ7YIoIUWzVIVUWiACWNtX
-	VNpw/1oCwWSQFpNDPO2h0noh66hGIsA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776160393;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pPD5JZWXLOXJK2CA5dw/48scjaOqjpDP5gnVdaxSMmU=;
-	b=XyCOi7I81m/DD+MuTT92PsbyWhkBhhMM6ItWy1qpDZnhj8No6VoiqYPSuXXYeIUz4rYALX
-	K377bQZ/WAhA75BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776160392; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pPD5JZWXLOXJK2CA5dw/48scjaOqjpDP5gnVdaxSMmU=;
-	b=ldW0heS57tSYJqsYHBM+df1+cAWOzkw3dseiwFDNU//v/FNXRZFbl+bhNR3IornHJeaGGo
-	9qzlmQ1bpLN/kBfJNp7GwUmpVnLNpSzmpTOx+91+LSd0pCFHUUZzTRuYY5af96c590RBnS
-	bA6Lqm8iYWEJjoaHZF7xf9h0yAdncSc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776160392;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pPD5JZWXLOXJK2CA5dw/48scjaOqjpDP5gnVdaxSMmU=;
-	b=eDY9yA7INydVASNMf8xbIpzO178bIet8WbflFAfM6KSNUwqJfNNyhujCbTxgNK7Nt2oSMS
-	pwWoDfgN+Zkm8aCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2FC574B3A7;
-	Tue, 14 Apr 2026 09:53:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1bCGCYgO3mlLZwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 14 Apr 2026 09:53:12 +0000
-Date: Tue, 14 Apr 2026 11:53:07 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Jane Chu <jane.chu@oracle.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
-	hughd@google.com, baolin.wang@linux.alibaba.com, peterx@redhat.com,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] hugetlb: drop vma_hugecache_offset() in favor of
- linear_page_index()
-Message-ID: <ad4Og_719Yq4yshf@localhost.localdomain>
-References: <20260409234158.837786-1-jane.chu@oracle.com>
- <20260409234158.837786-5-jane.chu@oracle.com>
+	bh=aS0c1n45wXQTaxQSe6C+loc9iFSRt6diMHIuKTsYOOo=;
+	b=fXCL30p1yYk2a/TLz/1nhGr41Ce9pu9rh6GaebUwquuQlgZSLDBk3EYMoJAP+KngDsZZvU
+	N4i+NwKQfl7e3cPOBl7OygyOntu1MQQARRJsjlFJ/V12GBSLMGNLgzWwOUSqW0nLiAqbqW
+	OqhQYEEE7mrcLgfHg8HWbJ97I5C+2wY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [RFC PATCH] slub: spill refill leftover objects into percpu
+ sheaves
+Message-ID: <bbtmo4fffalhjglohnazrxvplzfxelmuivbonnbfi3gzsm7qj3@bvh42p47dsqa>
+References: <20260410112202.142597-1-hao.li@linux.dev>
+ <ad39TJZYLItrEnIM@hyeyoo>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260409234158.837786-5-jane.chu@oracle.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: E6FA4C000A
-X-Stat-Signature: rjo6bjk9trbyicpn4dfi94rhjo6wxjo4
+In-Reply-To: <ad39TJZYLItrEnIM@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: qp99ppd649b7fbif89yxtxb1rwr466aw
+X-Rspamd-Queue-Id: 5A920140016
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776160394-876286
-X-HE-Meta: U2FsdGVkX1/rkC5ZPstEV+vgh7Ikf9C8Gda1IZrmONNVaNtWkZ1KXWRat6daNhoWTgfpEOHbJokJ+72758sJXAeeFbRrDoPeSOnt1h9vUN8lwelKquvZcp6w9DSjRfF3D1sMDQE13nHw90smngaTZs3WmC3mFbfgpRP6l91cLMuFb9mCjpbLZesWS0nWvxcH/Y0o7Ykh1NFin/w2ETF72OLv/eAZGo12Q5pibFh7dEVf0zkdlnhm6MqzE8iFg2Eo+GXtmU2uyuKekuFRHh3GQ++ErJrLVxSWKpuLJsS8ufa2oPLxEJHmo8E6Cczxic7vjKWQcXyzN5kwxm9fO+gAyRsCg0bUIheocBCZ8uoKwIcwD+wq/BlmF//NfUTmrDu/ZFNe+9e0W0yljOVAoMWlkPklecaqRg5zMwqN5FMVeiZ9L6qaevb44JoWzbFuhnT79wNH/h4Y3Zxy77auNyW0enSgTrropfgGFQlYTrHjlCxbcFyYLkz8CUJELn9YZXFDFrzTQVW4W63uK2eI5F4AGDpVIK8dvdaD9yN9m+QaPclCrohF9A5SxLKrPU28qKwtTFUPdyOs7jxXlbcFYy4shBBIKw5pGOdLcgxHxVIKDumrN9wDgYcTinxcxOyAtKAWJ2Aw/r17eN3wLQHHTiF3YeQO47FSIR/kLasRf8G1yvjaGQp/HLyycIebga3jOnwmao+FdkL6g9deAkxOMr3rzQvK0BlF2MuHluTYGj/bgknY3z//8GKuQiXJxn5mW2p96iJ9yJTf+MWEf1toikh4epzoaTbX+n6QzjOU2ofggmM8AWQp0/EHQDqlbtRy33ozW9TWsOdvaKSUffcEda41bhi8fRwQZykEl0ORaxYQLsHPrJk1iDM7myM40Dhg7//AOlUgSXiUW0mPXaVnl38PrEFUhcYgU06MACLsZB/n4ixXxCs1io8/uHh8CdX6ylKruFy7en87C1hWhrLtnGN
- o+DSTRlh
- Zm54b7QbnsAJO+XY++Hbf/Q2eruSpKb1DDxTdoDsjtVg9glPYRmIKZL/2w87e2sJFoxXnmINwREuEjMkuGl1xfJWyUtyRwiCKbLvrlE88otFjXxLQFwKC7yb5QZWOp17Rjt1Vw/+javUzRaAPLcvuvbQgC2noYY4RLwxn73CuJYOMh0wUVTAmfemCDdGfgbU6kV1ST95XpDlp6Q8fGUaTfY/3XTg3DcVBo6xyQi0E5rT+6Z8SlLCmGfthE5fCwQHOHileboaha8Eq6z7XrImFOHP2h66UHdKBc+ri38yzO3mDT8KKkRX16LdO211wtWw4KHEpFA9CXsno7L4=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1776160827-124468
+X-HE-Meta: U2FsdGVkX19KXDAU9BItlq1PQDdnhrvb+MTeKRrSy5BZoaRGpms5wLQk17A8MNLaPKjgE/LqUcgOhZAY/xAyFG1kaWe5DNSux6CCu7VDSyFRA42NUATZel06oKfhsjZ5oPgxvR0MKIkC/Bwpv5Q6qnJncLt3hEXFa3Ha5ZSc8FOE6u9mlmLjzen9ewMbZ2T/m+jXnAmj3xvzuIdp5Aua8tuNLx/aaVMKIhZzT5UjEtrhNMutygGgXE3pWrEbfDJG+2aXDuzYCIjIeP9bz34fLaZadO6VoLpQsjO9s8isB5UNXxHv/lS3UH6Qbu228sM8MoppkmDDbf1yOVSEGKv0chNN7nzC/o1E1lMbHqJu/t3IekJa+o0Ge5WNyiwLbGHLvtJ+qnUtUsL4FuJ/a2cVOsygxS8sCDCWZnMer0teESBWB/dOl4+0uwlDt4LE25i55bR1QCFiJGXSdscbL2jRrvzVhVjSAO4viWAHgybAD8PqALXl+ATBATHkCd/pAP8KjcbWITpSve5IjV+P3TgRWjYMUqz7ayADX6LLLna5Pk0Hj1xUwPQ0OY5AIrWIfNBj0Q3EBXJOnUCHPg8eafz1tlazY4eItgbTUrybV/z1jXh4pvCufDJSnMb2z2K7lDA6YINiKZXxluVa3CuLXIaw/MjRqXJalA+Vlf4mkOzU0iFxqoW32yZ/4Jp7m8pWelxVYv1iHeAjVRNX8XVNSF+LT9fb0SWW81ICHq7Db0oEW8Ie3FYkLS8f1a/S6LJB8B9Knx/1+m2HcwAoJcv+uNL/AqHVtG523PYfprnkzVj5sz2kPecHD933EUENb/gMqkU6YiLosAZRDmBzM0KWyL6L/x+4mxsvHSLWiulVOCsfQe5bakAA2AuxYuYJsKs7sVfzLMcbxlUvtshAnnaXE7ksynKvCSkKBX1tobsz8NbiRlysetcyCMRl7Dola0zgLMTChBc9B3juXaEx9DIX0ey
+ kH7zOJXb
+ GLyZRONeWAndWXgSO3gt9mMstl2iUvmI8tF51Rr1nY+HYdhm7pcihniwvVXc5oSovkLeYptKfn3FexNWcC+QLDBcPujey5GwtVGFvvBcgAwdTHfB18pzQTof7a8TksliHFqlITx+yeomWHY0NnnOlF8VMahiBDX8eCIsM3/3Ds/VF9FTGhnni8AyUtNolsfBdGKjXFj9R1+3oGok=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,29 +89,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 05:41:55PM -0600, Jane Chu wrote:
-> vma_hugecache_offset() converts a hugetlb VMA address into a mapping
-> offset in hugepage units. While the helper is small, its name is not very
-> clear, and the resulting code is harder to follow than using the common MM
-> helper directly.
+On Tue, Apr 14, 2026 at 05:39:40PM +0900, Harry Yoo (Oracle) wrote:
+> On Fri, Apr 10, 2026 at 07:16:57PM +0800, Hao Li wrote:
+> > When performing objects refill, we tend to optimistically assume that
+> > there will be more allocation requests coming next; this is the
+> > fundamental assumption behind this optimization.
 > 
-> Use linear_page_index() instead, with an explicit conversion from
-> PAGE_SIZE units to hugepage units at each call site, and remove
-> vma_hugecache_offset().
+> I think the reason why currently we have two sheaves per CPU instead of
+> one bigger sheaf is to avoid unfairly pessimizing when the alloc/free
+> pattern frequently changes.
+
+Yes.
+
 > 
-> This makes the code a bit more direct and avoids a hugetlb-specific helper
-> whose behavior is already expressible with existing MM primitives.
+> By refilling more objects, frees are more likely to hit the slowpath.
+> How can it be argued that this optimization is beneficial to have
+> in general, not just for caches with specific alloc/free patterns?
+
+Yes, that's a very valid concern. My thinking here is that the leftover objects
+have to be kept somewhere after all, so in this current experimental
+implementation I'm trading off future free-path performance for better
+allocation performance. It's a pretty tough trade-off either way :/
+
 > 
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> > When __refill_objects_node() isolates a partial slab and satisfies a
+> > bulk allocation from its freelist, the slab can still have a small tail
+> > of free objects left over. Today those objects are freed back to the
+> > slab immediately.
+> > 
+> > If the leftover tail is local and small enough to fit, keep it in the
+> > current CPU's sheaves instead. This avoids pushing those objects back
+> > through the __slab_free slowpath.
+> 
+> So there are two different paths:
+> 
+> 1. When refilling prefilled sheaves, spill objects into ->main and
+>    ->spare. 
+> 2. When refilling ->main sheaf, spill objects into ->spare.
+
+the current experimental code is biased toward spilling into the spare sheaf
+when possible.
+for kernels without kernel preemption enabled or !RT, the spare sheaf is
+generally NULL at that point, so the main sheaf may still end up being the
+primary place to absorb the spill...
+
+>  
+> > Add a helper to obtain both the freelist and its free-object count, and
+> > then spill the remaining objects into a percpu sheaf when:
+> > - the tail fits in a sheaf
+> > - the slab is local to the current CPU
+> > - the slab is not pfmemalloc
+> > - the target sheaf has enough free space
+> > 
+> > Otherwise keep the existing fallback and free the tail back to the slab.
+> > 
+> > Also add a SHEAF_SPILL stat so the new path can be observed in SLUB
+> > stats.
+> > 
+> > On the mmap2 case in the will-it-scale benchmark suite,
+> 
+> > this patch can improve performance by about 2~5%.
+> 
+> Where do you think the improvement comes from? (hopefully w/ some data)
+
+Yes, this is necessary.
+
+> 
+> e.g.:
+>   1. the benefit is from largely or partly from
+>      reduced contention on n->list_lock.
+
+Before this patch is applied, the mmap benchmark shows the following hot path:
+
+- 7.85% native_queued_spin_lock_slowpath
+    -7.85% _raw_spin_lock_irqsave
+        - 3.69% __slab_free
+            + 1.84% __refill_objects_node
+            + 1.77% __kmem_cache_free_bulk
+        + 3.27% __refill_objects_node
+
+With the patch applied, the __refill_objects_node -> __slab_free hotspot goes
+away, and the native_queued_spin_lock_slowpath drops to roughly 3.5%. The
+remaining lock contention is mostly between __refill_objects_node ->
+add_partial and __kmem_cache_free_bulk -> __slab_free.
+
+> 
+>   2. this change reduces # of alloc slowpath at the cost of increased
+>      of free slowpath hits, but that's better because the slowpath frees
+>      are mostly lockless.
+
+The alloc slowpath remains at 0 both w/ or w/o the patch, whereas the
+free slowpath increases by 2x after applying the patch.
+
+> 
+>   3. the alloc/free pattern of the workload is benefiting from
+>      spilling objects to the CPU's sheaves.
+> 
+> or something else?
+
+The 2-5% throughput improvement does seem to come with some trade-offs.
+The main one is that leftover objects get hidden in the percpu sheaves now,
+which reduces the objects on the node partial list and thus indirectly
+increases slab alloc/free frequency to about 4x of the baseline.
+
+This is a drawback of the current approach. :/
+
+I experimented with several alternative ideas, and the pattern seems fairly
+consistent: as soon as leftover objects are hidden at the percpu level, slab
+alloc/free churn tends to go up.
+
+> 
+> > Signed-off-by: Hao Li <hao.li@linux.dev>
+> > ---
+> > 
+> > This patch is an exploratory attempt to address the leftover objects and
+> > partial slab issues in the refill path, and it is marked as RFC to warmly
+> > welcome any feedback, suggestions, and discussion!
+> 
+> Yeah, let's discuss!
+
+Sure! Thanks for the discussion!
+
+> 
+> By the way, have you also been considering having min-max capacity
+> for sheaves? (that I think Vlastimil suggested somewhere)
+
+Yes, I also tried it.
+
+I experimented with using a manually chosen threshold to allow refill to leave
+the sheaf in a partially filled state. However, since concurrent frees are
+inherently unpredictable, this seems can only reduce the probability of
+generating leftover objects, while at the same time affecting alloc-side
+throughput. In my testing, the results were not very encouraging: it seems hard
+to observe improvement, and in most cases it ended up causing a performance
+regression.
+
+my impression is that it could be difficult to prevent leftovers proactively.
+It may be easier to deal with them after they appear.
 
 
-Looks good to me, the only thing is the conversion to hugepage units
-which may not be very clear to the casual reader, but you already
-mentioned that you will add a helper, so all good.
 
- 
+Besides, I also tried another idea: maintaining a dedicated spill sheaf in the
+barn, protected by the barn lock, and placing leftover objects there. Then,
+during refill, barn_replace_empty_sheaf() would first try the spill sheaf, and
+if it contained objects, it would swap spill and main, avoiding consumption
+from barn->full_list.
+
+With this approach, I still couldn't observe meaningful performance
+change. Slab alloc/free churn still present, although the increase was
+relatively small, at around 1.x
+
+My guess is that while this approach pulls leftovers up to the barn level and
+avoids the cost of pushing them back down to the node partial list level, the
+serialized nature of the barn lock means leftovers cannot be deposited into the
+spill sheaf with high concurrency. As a result, the placement is not fast
+enough, and the performance gain remains limited.
 
 -- 
-Oscar Salvador
-SUSE Labs
+Thanks,
+Hao
 
