@@ -4,83 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8630ED7B95
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:51:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AEBFED7B93
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:53:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A6156B0088; Tue, 14 Apr 2026 05:51:14 -0400 (EDT)
+	id 6DDED6B0088; Tue, 14 Apr 2026 05:53:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32FEF6B008A; Tue, 14 Apr 2026 05:51:14 -0400 (EDT)
+	id 669BA6B008A; Tue, 14 Apr 2026 05:53:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F77D6B0092; Tue, 14 Apr 2026 05:51:14 -0400 (EDT)
+	id 5300F6B0092; Tue, 14 Apr 2026 05:53:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A6346B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:51:14 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAB6A1A04DD
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:51:13 +0000 (UTC)
-X-FDA: 84656693226.13.471D80B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E0886B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:53:16 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D9CE71B7F7B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:53:15 +0000 (UTC)
+X-FDA: 84656698350.01.B0C02C7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E5050180005
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:51:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRrQy0Mm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776160271; a=rsa-sha256;
-	cv=none;
-	b=LgQDrlE6CAq1ZT4lWVJN+tQfOzIB44Ec0nSVU3WZNvQzBZ4pqghmLdsAOyTKVy/4xIIMbx
-	85F02Rre7gWFBtKiJDvPLPvUjFLviioeD508HCv2E4xgu1sQEzpnCH0Vc7zQqbWEv54oWM
-	sueU16HagMF3F0LWl1CDMuXu9rDLEbA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nRrQy0Mm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 24D3C10000C
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:53:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S/HbgSJC";
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776160271;
+	s=arc-20220608; t=1776160394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VhOifuXw5RbcJbG/j+f6jSu+EwnwEvgJH4NurYsFARI=;
-	b=L1gKXoeHii5SbvnGim2iXaMBpBSuav+7RL9/dVRWEow1oboklU3fUjLWSC/cdm3Gs/luVW
-	xIVE445ND/+z7j86l0SltkaP22ROrF+AspXaKoMw879gyltY1vn8c271BdjCS8WtmuoTmF
-	3p4xaKjVPuI3zm0sOJROOmUJZdR9Tds=
+	bh=mijJ7hpVk4NtXMwHeb5jGPomT6KuoLjW4OjQVt4T894=;
+	b=Qq8mJzmuNVw08TaaYJ2FLXV7f7LKcBAfJAKkeAfh9YbHoH1mpLVW5BSBUZ33lk68FSPYe5
+	6Gnt63XsDhZyOxNvwClGrnAgOleAyYQDPkfRBpcC/lo7qpiudXuEnxdiRonZM6c2TK0PfT
+	1qHXS83QQKemJf6sto/MiqNnEwEvweA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776160394; a=rsa-sha256;
+	cv=none;
+	b=lAYfqUxvV3TuWV+tJerHGpeNvKdWvPhpnkfibiPsC0MGFn4POPNIvCqpLnWdY2+Z5h98zY
+	lMkBqaezo8HmJ5DYzvQdNrh8zivT4lasNPznkKMGTRjGaW78AbtpjhyygRU07fY9K8GH51
+	Wym6sslq/riKoOC/OOngVSiYN2jhrIw=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S/HbgSJC";
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4996360018;
-	Tue, 14 Apr 2026 09:51:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE048C2BCB5;
-	Tue, 14 Apr 2026 09:51:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 77C0460018;
+	Tue, 14 Apr 2026 09:53:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF65FC19425;
+	Tue, 14 Apr 2026 09:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776160271;
-	bh=50boV389vtA1+fAhY6j7k57/eNUILSasLReQVNKDYe4=;
+	s=k20201202; t=1776160393;
+	bh=6XvkeH7K6YpHjPzJU8T0S8ZEsUF/REJjGBBC4+bnBk0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nRrQy0Mme0Zu5CmHdzP0kUS4hRX/b17AcEx5OY8UEXG+t6/Lv/c5bBDJCjZ3XOutK
-	 WUGiIJJZ9rEgXUikzo18NL0l4sqDdvC4iHxGFC+LILjeFo6+SGbnn29Gwbd8VCVlDL
-	 zjmWudHYcVd0j2qG9oi82PfgptpnLdO5ek6Jf4qvdTZOC++n0SVHLzNAetbhaws2pb
-	 DE7V1nzK+8FJjhHH03Qxjoo4TFWGxPTOE4ieYMvcBHZ06A1J7iAJuVejSGioFSCPA5
-	 3D4jbnpPvh7Jq/PSVB1wHKknH0V4Qnc+KNM/P1Tj37q1RGAZpXaQxnSLCcv/SUG4a2
-	 QnXLODj/wCIfg==
-Message-ID: <5914d296-934a-4662-b1cf-d0f23757df5b@kernel.org>
-Date: Tue, 14 Apr 2026 11:51:04 +0200
+	b=S/HbgSJC1xisLbIYZkprBmKPEYPOE0dxloBxvt31ueSU+JPdxbtWoSJHPtVgj83GT
+	 tK5sgFOB7Clofff1zo9lHBhTRO38sShtitPzt5GnFWpASA2qVrgXgrFXzOEfI6nnvf
+	 pMfnrw6koYXVRqNyff0/vnmwfq+4Q6lNvpAMZhvOiFSH+Qihyf8/Pn+TK8pQ+pbnuN
+	 lWAzRO4MX6p7UibBs6HKuXxet3KSDXMkWnVj3t70SdvPue/1lztATxNJ9jxHmI5p4G
+	 9RfNAeN1Ht1V9OG+03MjybKC3Hw09EddWTx+SdCl6fj1xKq3nZLuAHVhUNANeIBbXh
+	 G6eWOj87sujhA==
+Message-ID: <c44d5afc-2936-486c-9806-01c942a73f70@kernel.org>
+Date: Tue, 14 Apr 2026 11:53:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: fix double unlock and remove dead code
-To: Zi Yan <ziy@nvidia.com>
-Cc: Sunny Patel <nueralspacetech@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Balbir Singh <balbirs@nvidia.com>
-References: <20260413130927.13263-1-nueralspacetech@gmail.com>
- <7579105a-1261-45db-90ba-5e660d202b80@kernel.org>
- <6073CBA5-2762-4FE4-98F5-27BC92482531@nvidia.com>
+Subject: Re: [PATCH] selftests/mm: Simplify byte pattern checking in
+ mremap_test
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, shuah@kernel.org,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com,
+ Sarthak Sharma <sarthak.sharma@arm.com>
+References: <20260410143031.148173-1-dev.jain@arm.com>
+ <5297e0da-d8ec-49df-9b32-0d9f907588d6@kernel.org>
+ <8b5544eb-5ec0-4c85-a2da-7a454fa606dc@arm.com>
+ <134c372e-5c9e-493d-b954-d9954546beaf@kernel.org>
+ <20260414104712.2b634741@pumpkin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <6073CBA5-2762-4FE4-98F5-27BC92482531@nvidia.com>
+In-Reply-To: <20260414104712.2b634741@pumpkin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E5050180005
-X-Stat-Signature: otiojjdcrtb4r4z573bjez1brybuwdrr
+X-Rspamd-Queue-Id: 24D3C10000C
+X-Stat-Signature: pmwrmzjarxidsctbjuor77gszngnzrc1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776160271-6227
-X-HE-Meta: U2FsdGVkX18XzpFtBs/8qdDa+S0d2iMtcAkifbHrEUeynEj3ZmoEVNWGBG0gRCh4iRoX+LsdS/6caheeRTfeAZMUwE+pSeYCg17Z9bRtYoqe2vQ8yvJCU91UPBQCanJnbfeMsbCTP3kdvncqpsywZmLEQG23UukUPQbr2zf5GafX7V50Cqzf68L5KQKxaRIMffvwBGx5n9YFciZkjnkYGfUE9e1/QNhZr0bOx+fDczA8LzHKssQqkHm1s9N2AFoTetCQgyJ0uSnwEtOymkzIQxIZxVprgBme7vACAkBz5UMheYd/GY/kGNRi/N2nbZ/A5XodSsLLbHsXTvLh1lJXKORo29w2SQcc0KKTyEPm0y9UAn8d3FX7Zmi4mPMf/nGOgfI/dK9p+27G2++WFd86Xfe4MtC8IlihxlsqABkvd6VX5QS9sFWGkjuc2zKe+L43lCkbFcybRkCLTTyOmaMd19CfK302M4QTe4vkYzReURHohdj29VN1dCn4Q5GwLHTT2MoZyB39L6w74ETM6pXf3+RP0lCfap4S+J6m1fnbwAOrPrsGVRQ06p9EXEDV9fSERW8kBI/1rsHZcTpMP8E6jB9rGZDT2ii4dE3nBU77z4uCl9+uqNBaLIqRXkZJT2sqiH4/MQAElWS8wsvh73hjStPViEQe0CX/W0h5iNfKbduWqFqCUbVfe/o4AaihlELgrDcF9j4TC6jw0cRXD43hqilkRbhFhQ0NEUhHyw9VVNkec28G+gXpqfrHifeomnQGsDqJdiS4pTTKHRjeiIwoeqgq88+W4PWKwopTtv79gOPfAFFBXPONh56CQaKZO/aIBbiIKTh4nxByZAcXFDdzH99G93+qhSetQBLU+bDmc5RbKjzfvO4F8soA+zMXmvvwSjfTyoK+NX5QVhQbnH02DlRRJ3FU9JCQVvlL8YlHbN70PrAbkOGc+SjLDbIejBOhxa5uJ5Hv5FahB+dsdTe
- y0BJd8HW
- dEmhpYukwAetCI/PnpkL+qRYBjWxm5yn0yteqUb8AaFIjUwrgmoVG/owT3YigTgqRUVRmaQS+1hiQLgWspJm1rAEAfQ1basOuCF/U5l4narjT0g+5EfHcDWf2bi05spcYUj3xx4PbRRVdBUaYrdNAuibwZ8SgAXERA2ire6yj6PGegYyL7DSXBta2uNKlM/B5RQxNHZlGIJoh5484Cc+KJr8IbRP9xGPuoN1uUd5fqKL0CEcGCkz5HB99jtpXqxqhEtsh8e7NgTZaGftfmyK5gbT4uw1YZy0H8SUpGi4bIip3Ua4HWwt+fuWS4j1EothYCEPdjoYZ3BWrTXIjXLdNX7ZbhrIDgAe5faJA4q0DTBhMhVo6s86UTxqIrgNCsdImVSKDw+OuvYmoza5gdQlvYdDqnQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776160393-38810
+X-HE-Meta: U2FsdGVkX18/oxxAJLccixX4o8wkkv15oTFHJQxf7mnDvBRy+aGX0IOMVLzWcEw9H7GiBNW6LF+YCc7r7eM5GODL19FtJtSa269/JWQNt907Re2tJunzJs56hq5ngRwcJw73bE9eWgiFl+j2qhqTNAUh8bhtbl87XA36Xe5/skmWURpkfK4JFXQlwqiFoRhplOoqoZ3/k0z40jaSekFHTdWCz2ne0jitlULgyVenCrohwGz2z7FRmD1EGNbJY320laOLBCgGClk9ioR3xqz1VAhNgmf1pmC+YV3Z9CaN9jeDdBrODjootw6cEEw3QmMnxF0kPS2STYNEJRUxwqDcjcXIkWLVO7bwdhhROjOQpEOfINBqqyR+Jn0dIUJggBUq1XSSZ4E+IkzaqkUzwK/cNPInjxQMT+JXOYEwGVkcVzNoNVyNhscInt1c3+dcZljC6pl+8JNkS/IbWN0w4hRnFqz17SS9uY9iXy0CjSF+ZreXatoGGqlg0wRtn7uTw60AH3J8jSWs97Y2gzA1vq2R5j2CmrYxn4Rn4QX5G8NUpZhq1Vz56zBzN2XkATld4k7DfScT8R6kQ+6Nwr2QkZ4uyGRGAkh7TFPSOxX1s/6Y3QkPk8IM5m/qRMI2CKOLteNsvsL+O3xBkJeCqN2vJbpz42mmM7//oDOKjbAi1P8H08k1WpoMhwPTXusd4O22hBXONMOz7RRpMw5SujKlVQhXLEhM+WVXiI04fIlT4TPo9S1EGoMTJTzLXX0Yx8pPzKMT+j9AVQYeKgnhd6ne8SPr9IUKgiyRp/enVb1xLZ+jsalSbS98Nj0aWAB8VbWraoA1PSwbCADY7GoJokKfVQU0LF5ePPDMXnEK7rBaJQkSbp4ftt6XgreICrLq/bhzt8naCrL0woFEbJlFPnsgOs/BosoWkPZFNNxAuSoybw88LrXun7+YVkclibQ1zpluy/I6O2er40o8qg7L3oP4o5Z
+ 4I/gWRbH
+ G9wSHzc5pxT5lA7EYybZcF4T4+z4n9P+tQzk0bj27nZt3dQ6ikWpu6HZrDkSJm+rgjOlD4+leOs+JoAzZt4OnJVP0MIrq643LwyJgFq9wGtiUN5uEBBJRtDE2YZo9BlI7cQJjUn6g8Jp3vQcAJZc9+e56tJxNUYbpQaFMvQsNZwVqHgRzCHJ+p2z5uIb1ko1zup1oOM8htG5nNUY47eOU7K4QYL4N7yc/ntpcbK/UnwuV1OjHoI4Dju+ZA9lFiLTUvn2vtn7KvbVNmKS1cyE7RNT/eztuxRipGZjZLiq/mcxCkjtkl9iSIGdu46XhVn9615yrkgLdUhm6cBm8O7GjiUcAurSAsItPzdBLGm9CdVscoytWMgJv2cBrZKRJJzTzfn0N6HgmL9UONfRVZfeEuisjWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,112 +146,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/13/26 22:03, Zi Yan wrote:
-> On 13 Apr 2026, at 15:38, David Hildenbrand (Arm) wrote:
+On 4/14/26 11:47, David Laight wrote:
+> On Tue, 14 Apr 2026 10:01:57 +0200
+> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 > 
->> On 4/13/26 15:09, Sunny Patel wrote:
->>> Fix two bugs in device migration paths:
+>> On 4/14/26 07:09, Dev Jain wrote:
 >>>
->>> 1) migrate_vma_collect_huge_pmd() calls spin_unlock after
->>>    softleaf_entry_wait_on_locked(), which already releases the ptl.
 >>>
->>> 2) migrate_vma_insert_huge_pmd_page() has a dead else-if branch and this
->>>    branch is always unreachable.
 >>>
->>
->> Can you move 1) into a separate patch, add a Fixes: tag an CC stable?
->>
->> I think it is
->>
->> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone
->> device pages")
->>
->> 2) will then be a pure cleanup patch.
->>
->> Thanks!
->>
->>> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
->>> ---
->>>  mm/migrate_device.c | 4 +---
->>>  1 file changed, 1 insertion(+), 3 deletions(-)
+>>> Yes.
 >>>
->>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->>> index 8079676c8f1f..0e005c26ee88 100644
->>> --- a/mm/migrate_device.c
->>> +++ b/mm/migrate_device.c
->>> @@ -177,7 +177,6 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+>>> I'll explain the algorithm in 7033c6cc9620.
 >>>
->>>  		if (softleaf_is_migration(entry)) {
->>>  			softleaf_entry_wait_on_locked(entry, ptl);
->>> -			spin_unlock(ptl);
->>
->>
->> Yes, that looks correct to me.
->>
->>>  			return -EAGAIN;
->>>  		}
+>>> The problem statement is: given two buffers of equal length n, find the
+>>> first mismatch index.
 >>>
->>> @@ -869,8 +868,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->>>  		if (!is_huge_zero_pmd(*pmdp))
->>>  			goto unlock_abort;
->>>  		flush = true;
->>> -	} else if (!pmd_none(*pmdp))
->>> -		goto unlock_abort;
->>> +	}
+>>> Algorithm: Divide the buffers into sqrt(n) chunks. Do a memcmp() over
+>>> each chunk. If all of them succeed, the buffers are equal, giving the
+>>> result in O(sqrt(n)) * t, where t = time taken by memcmp().
+>>>
+>>> Otherwise, worst case is that we find the mismatch in the last chunk.
+>>> Now brute-force iterate this chunk to find the mismatch. Since chunk
+>>> size is sqrt(n), complexity is again
+>>> sqrt(n) * t + sqrt(n) = O(sqrt(n)) * t.
+>>>
+>>> So if get_sqrt() computes a wrong square root, we lose this time
+>>> complexity.  
 >>
->> Huh, how did that happen. I hope that it's not a typo and we wanted to
->> check for something else.
+>> Ah, thanks for clarifying.
 >>
+>>>
+>>> Maybe there is an optimal value of x = #number of chunks of the buffer,
+>>> which may not be sqrt(n).
+>>>
+>>> But given the information we have, a CS course on algorithms will
+>>> say this is one of the optimal ways to do it.
+>>>   
+>>>
+>>> I just checked with ./mremap_test -t 0, the variance is very high on my
+>>> system.
+>>>
+>>> In the common case of the test passing:
+>>>
+>>> before patch, there are multiple sub-length calls to memcmp.
+>>> after patch, there is a single full-length call to memcmp.
+>>>
+>>> So the time should reduce but may not be very distinguishable.  
+>>
+>> Okay, so doesn't matter. I agree that we should simplify all that.
+>>
+>> The exact index is irrelevant. Whoever wants to debug the test failure
+>> could modify the test to find that out. It's one of the tests we don't
+>> really expect to fail (often).
+>>
+>>>   
+>>>
+>>> Not needed. 7033c6cc9620 does not create any incorrectness in the checking
+>>> of mismatch index.  
+>>
+>> Yes, agreed.
+>>
+>>
+>> I would suggest to rewrite/simplify/clarify the patch description, not
+>> talking about "buggy" etc, focusing on the simplification.
+>>
+>> "
+>> The original version of mremap_test (7df666253f26: "kselftests: vm: add
+>> mremap tests") validated remapped contents byte-by-byte and printed a
+>> mismatch index in case the bytes streams didn't match. That was rather
+>> inefficient, especially also if the test passed.
+>>
+>> Later, commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
+>> execution time from minutes to seconds using chunkwise memcmp") used
+>> memcmp() on bigger chunks, to fallback to byte-wise scanning to detect
+>> the problematic index only if it discovered a problem.
+>>
+>> However, the implementation is overly complicated (e.g., get_sqrt() is
+>> currently not optimal) and we don't really have to report the exact
+>> index: whoever debugs the failing test can figure that out.
+>>
+>> Let's simplify by just comparing both byte streams with memcmp() and not
+>> detecting the exact failed index.
+>> "
 > 
-> 
-> Looking at the function and trying to figure this out, but find
-> VM_WARN_ON_FOLIO(!folio, folio) at the top, where folio is from page_folio(page).
-> It is either a nop or a zero dereferencing. It should be removed.
+> ISTM that if you get a failure it doesn't really matter how long a
+> second scan takes.
+> So a simple byte loop that reports the offset and data of the first
+> error and counts the number of errors is more than enough.
 
-Heh, VM_WARN_ON_FOLIO(!folio, folio) itself is completely odd. Dump NULL
-if NULL.
-
-Agreed that this should be removed. Or replaced by a
-
-VM_WARN_ON_ONCE(page);
-
-> 
-> VM_WARN_ON_ONCE(!pmd_none(*pmdp) && !is_huge_zero_pmd(*pmdp)) can be removed
-> too, since the above ifs takes !pmd_none(*pmdp) && !is_huge_zero_pmd(*pmdp)
-> to unlock_abort.
-
-Right, and if that's an unexpected case, we should warn on that path
-instead. Like
-
-	if (WARN_ON_ONCE(!is_huge_zero_pmd(*pmdp)))
-		goto unlock_abort;
-
-> 
-> Back to the above code:
-> 
->         if (!pmd_none(*pmdp)) {
->                 if (!is_huge_zero_pmd(*pmdp))
->                         goto unlock_abort;
->                 flush = true;
->         } else if (!pmd_none(*pmdp))
->                 goto unlock_abort;
-> 
-> It seems to me that the first if should be removed, since if pmdp is
-> not pmd_none(), others filled pmd entry before us, so no further
-> action should be taken, otherwise, the function will overwrite
-> some valid pmd entry.
-> 
-> OK, look at migrate_vma_insert_page(), which does PTE level work,
-> the above code might be intended to do:
-> 
->         if (pmd_present(*pmdp)) {
->                 if (!is_huge_zero_pmd(*pmdp))
->                         goto unlock_abort;
->                 flush = true;
->         } else if (!pmd_none(*pmdp))
->                 goto unlock_abort;
-
-Agreed, that makes more sense. Thanks!
+That could also be done. But if the stars align and the test actually
+fails, I am not even sure if the exact index is really helpful. So I'd
+just drop that index reporting entirely.
 
 -- 
 Cheers,
