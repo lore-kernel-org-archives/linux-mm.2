@@ -4,89 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58F28F531DE
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 11:08:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E93B6F531DE
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 11:09:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C087F6B0096; Tue, 14 Apr 2026 07:08:30 -0400 (EDT)
+	id 5C9686B0092; Tue, 14 Apr 2026 07:09:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB9816B0098; Tue, 14 Apr 2026 07:08:30 -0400 (EDT)
+	id 5A0C06B0093; Tue, 14 Apr 2026 07:09:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF71F6B0099; Tue, 14 Apr 2026 07:08:30 -0400 (EDT)
+	id 4B78B6B0098; Tue, 14 Apr 2026 07:09:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EDF86B0096
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:08:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 613F9160575
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:08:30 +0000 (UTC)
-X-FDA: 84656887980.07.B226B3E
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BBA1B1C0009
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:08:27 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A2AD6B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:09:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7AC15918D
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:09:32 +0000 (UTC)
+X-FDA: 84656890584.13.2F7F3A3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id F365C180007
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:09:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hZLMAdoI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776164908;
+	s=arc-20220608; t=1776164971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+2wk77Ll2Cgdf1/iF+XmSnox2oYS5cT/x/ZKhsL5Pjs=;
-	b=QSMDE8FasBQ5Q/g7XswrP58b71fFSUNzggjTJituCBm1VGpbYcMkOzQczbFxWj5oVoxm1m
-	5YKJJXt20NdfllDFpme+shU03Qxl295AAJPoEn1GlpUcokM8aCo3ElZG0lLW7Yl2Q8diWP
-	v7z3qBKs1JbrnKm4oJebCvxpn680xJE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776164908; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vDqEbpjkVyOGpJ9FMacQhTv0F52HnH5epaTip3QvP9U=;
+	b=Ddzznozw1SHnMwEeF33r+jvi5iTpMzG3gdZgwffM+dUph0ng+GvkKOPLjfa8hDe8UvKKEM
+	WA31NOsTneMOfd0o984D/cmFSRD9yXf7SDMOEYwkHMW0ZaATPWJ7hbJlplESOKGGYIliKM
+	xmewbNfFgshvxfXScubwKp7j2HiS96g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776164971; a=rsa-sha256;
 	cv=none;
-	b=wHZ6DnW1lCTrvmvaku0Q/QQxTzSFR3BGLGvCCLj8nh6ti3cpb5xeO2aO6/kgd5jpKn+ih2
-	RV1hO56wy5yP6pEbXKOvVjIfMCE3bpnBE8Sjo0Xp2GGiuUMKTOATqYk4SK1fuEPGKTwmRL
-	Jumne0neZRzvpRUmCAf7EkfOr3xH61A=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fw1j46KR5zHnGgW;
-	Tue, 14 Apr 2026 19:08:08 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id CF6ED40569;
-	Tue, 14 Apr 2026 19:08:22 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 14 Apr 2026 14:08:22 +0300
-Message-ID: <90f923fd-a521-44d8-9d7d-d137b0119002@huawei-partners.com>
-Date: Tue, 14 Apr 2026 14:08:21 +0300
+	b=yFMsVnvcPqCbjNC2j5MTm20pUBCcidK02VKijql7qQM0J88yla7AZqxhfggUA75MAqHPLU
+	jKwAfUNqikAoq8E6cw82ngPA2A9qLdr0mETJ/Cb357vF52XdQTcerfCzcQ39gluhpjSARZ
+	9UHYQYiyO+2RHtGYNVYuCK4rsA7vFhI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hZLMAdoI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0188B42A3C;
+	Tue, 14 Apr 2026 11:09:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47A7C19425;
+	Tue, 14 Apr 2026 11:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776164969;
+	bh=Igrdgqjd1mSlqPVTKCYHYfCc2YqtKV+qD/MgEpVL3fs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hZLMAdoIcuwxCt4ZaPjDyUxjQGYQ6QzclOsD+DMOX9kSSwpSYyK9cABZl+5inW9+3
+	 hEv1hvV052o4UTpCwnYEIRgLg4uUm7P02gACkmu/zrBAt+T4tozNkraNTjJz0GOg+Y
+	 kMwt28gdnlWVu+KthcNd2V6NN3O9fCCTzd2km/5w2GDKYiRnhow8uuCi17RS0e1KHU
+	 Iu3USVaYspHKQ1g6QRgcwicIsHNWtAflwe3m7Th80vs1SdvSYaLohm09z/AQmgl41/
+	 oXtEEy0N6QXAZPL6xEd1CFw6BrtGTHUQyodT3hU813wXm2/JHnEe8KhAL2TCHIf7Su
+	 /y9IpduDCZpyg==
+Message-ID: <c696705c-4c0a-4e3c-996c-358d2f0b7074@kernel.org>
+Date: Tue, 14 Apr 2026 13:09:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 1/1] mm/damon: generalize ctx_target creation for
- damon_ops_id and add vaddr support
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260414004739.83961-1-sj@kernel.org>
+Subject: Re: [PATCH 7.2 v2 12/12] selftests/mm: remove READ_ONLY_THP_FOR_FS
+ from comments in guard-regions
+To: Matthew Wilcox <willy@infradead.org>, Zi Yan <ziy@nvidia.com>
+Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-13-ziy@nvidia.com>
+ <ad1WTCR5Kld-tiL8@casper.infradead.org>
+ <E3268570-18E4-40AF-92E5-931A8ED1C9B5@nvidia.com>
+ <ad1uK11f_J8sFN0e@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260414004739.83961-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ad1uK11f_J8sFN0e@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BBA1B1C0009
-X-Stat-Signature: w6qyj6h1n1fthuj85miiqpt7ck9prw3a
+X-Rspamd-Queue-Id: F365C180007
+X-Stat-Signature: 57nt3a49dr4nnz9w4gpf87xcw3x6krnw
 X-Rspam-User: 
-X-HE-Tag: 1776164907-960036
-X-HE-Meta: U2FsdGVkX1/iVQh9opWPHwZWBgsy6SlzLSdKrMKmmaP+TvHvkk6s69W/f+RMgXcamEZRbw4itdthjoB22Mn295fHaaDfpjUFqtoN62zcIDGRfn67W011D+dQMeBxNnpJy6HRV7aQYtXu/B2V3E+wYxQO1PnTiRBnkusNMrx6vkSVZMoSBuxIFE8qtdr4SfyJRrIBY5phEHprO2DUos0HoYHJ1XAJ0Tpp3mvxBPADdWS2i8r/LRX/VV6OtnIRVVX17BAcct73m3TsQCwYli4h/F8PIkiCLheSFCVzS4SFGkZJHxBlyNiJoKGtnWH1+EHJbTNbQl6g4q9BRRswkdLBaSHCtNf5ZFJzHklgNykNTH2PuIOODpFgDBilANwVsJPPlz3OB9SgFAp4TCrU5BQIoHVGWgjVrgVzkd9zkA/k9+B12HnZTNpjYZQDm3tDZ650i2tk2cUulOb0bwESFPErvMe+F2tfqW2SksOP6rvCHOVuaUcDZi8nEV9dBSiouQmdNnwsEZuOlEPFl5Z1fjtiQjtnCnM+LDPsOn2HIGlheBx4vRUMGfzCMnWve/u5/fNQ2tUgclU1WT7C4uiIlr52LrzagzcrWIU6IGTM1AWV4cO0Khyi4YJfsCUOA7lH2J2K0mwK0WQ+tPPDuzO39daGTcpqKweYsteXIgF+VsDiKayDfqTIQQRCTsjBHuhPTqOZOtr1mAz1S2/wYCQWJ2PDyGMFxVMbiX8TDrmLk39dr0y9HzrBzbvQl9Iv0SXc5C54WBagmjwDY2yLCmS0RBDbWdCk9JPw1IniM0pyv2ediNKYDJiEGl4qz8kulJ1xE7706pDhSs8HmNoS7ta77/pDM7KUXOHB+ljqrk0IbTIorCk3Q6/QegLqvJ2e1U1lJP5yiwfcpgJndPLlLuuOHfWRmHxVyGv5fIDZZulortIRMzmkk9FC/cOuRZO+RnAFRVmPfl6rqvIeP63boxgpauu
- BFdDabOO
- eSFUkHGzlg5x4BsOT4DQ9HSqIc1rku/qCgdLEzhthR9EWF90aF7WUkMQTTgUyDkVHBS3MsZNC9+0K7VCu4mHO7nYAJIps6np0QsGWqc+h8HQ+KHafO0EJCbyFxt09nPvR6hDz9NlbZFyZvHMrKGfaN4J+XblZLWxUd2NNm7oJuWNvtWS2JyZF8REHqP9WREpAcPCMaOgWtesob7kQlnkGpE0Vjgunwnkhn5Wsv5O4leEa9nlGObeypTZgVAS9b44r9YektEq/D4Wr0I0sZVuujLctISeiPrN+iTR/RfLG3iN753iurf9DIuTWiGF/91db6b08XzIXy0J1IMDhnbbqEEKfzeevkXywpDxc
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776164970-619141
+X-HE-Meta: U2FsdGVkX1+z71PYj2gL08sOtVX4O4Vxu19e7rqH3OxjORwpTHNXmqkaYwtjuOetlCX81mY9knHasMyHNWPBtivIWQGNWnhJP1bo44yJh222rDsw+wVFJqG15UuxqJ8xQw0qHryGxWuk+wn4D94r9pI36fGPhp4oCy4Sim0ybV2sS7HwYYldOnsM0I2N0a4jt+WEpwIcsYyAq3wU33vgMxKTpqguCn6HxOgA7jKCJXlOv+iVsDImqKRwt+0rpjU12PUZSsyktlve7kE0NEnzX6Of/qswubChPE96+6Dkadz0HsrUxopgqk9g93DEBtsAXGDjuZFrX6K8A5+Wzyrk48evPqM1nfK4waPR46AfwJ+W7JVg3zBYGk0wasRR/h8o9/znJ/L0a+1r+o0vDW7TxA2qs8PT1OGamryGOaa1+pSnZfDknzxJj3ZSvvvrq1l80UyfvJiXdUXq3Lkue/I+D7zPW4wMVjFS9t+Jd/1jknD500zvYTz1jyxGn8hRavkrU8tVYyZYApkYuKd5NkQW6hnYMdsLvVNKJCttCQI9t+wno5XiRBUgQv55g/EvywdZAbzOERTLEGbjzo4Bi0lInOdudt5lkjywAKSjwfIQed356MLeU2UFbwUHCbgupG0pjx37ocZUniqp2Bclw0sQTbjq3w2ZmcfDjXF2NR+rW7GERwcwUpgGX1RmfgMyW29U9K0ni/hF7Zi/vvdl/gvg1BRD6WxAmRv6Gw41K8Qc6EJzKWViJh+XYL6MbHea7u9f7SyiicACDV0VguI0I5fhnYaMQeh6VyFRWREc8AolxNXaA6mSjajzDUIOiNs2i24k5379G+VZRabIw9Mlnrvpx4k3m3btD02xY1iK8TIAS5RMk3c8RkAfLhdEmpBIzkXSNDTMk+cgiGBzkdwuh/4batBotCDK9q/jdWKuB1AKbRmXjl6AG/nTkgOTS7e3YJkhdKcgEDGcsNlR2440Iqh
+ mACRoqzC
+ 79DaApUbiNYB3jYzuaGEfACuD+PVQT2RHv4RAo0iwVCFIVliIcrcJg14ogLEdHcXOCF0w+PDzwSa4/PlIwl15TfvaACFtUyu/CsL8LJrcF1WiT+JJHRT5I1iLGkj92kbaIat4jZS3h6Y3A+HR6fTaAOVK1jblyNyFkvexS1RwrG+wOs2Md431jEMEpXVW/Mj0sp1+3IeAVLsCdwTsNukWZjU44a22Oae2D+HDop9nws3Sch5aOoKCxUaVHXAD0Y/QxAAsZVVLH8IM/0+H62WRd6zuvcKnB94NtkmePdLwqz/uQiUxxu2ItPLoIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,45 +153,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
-
-On 4/14/2026 3:47 AM, SeongJae Park wrote:
-> On Mon, 13 Apr 2026 14:59:43 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+On 4/14/26 00:28, Matthew Wilcox wrote:
+> On Mon, Apr 13, 2026 at 04:51:28PM -0400, Zi Yan wrote:
+>> On 13 Apr 2026, at 16:47, Matthew Wilcox wrote:
 >>
->> This patch adds a new function damon_modules_new_vaddr_ctx_target.
->> Since ctx_target creation for vaddr and paddr is almost identical,
->> the logic is extracted to a new function,
->> damon_modules_new_ctx_target, and vaddr and paddr functions are left
->> just as interfaces.
+>>>
+>>> Is this true?  Does MADV_COLLAPSE refuse to work on writable files?
+>>> Should we delete some code here as well as fix the comment?  ;-)
 >>
->> This change was suggested earlier[1] and it is needed to allow
->> developers to create DAMON modules that use DAMON_OPS_PADDR targets.
+>> file_thp_enabled() used by __thp_vma_allowable_orders() refuses
+>> writable files with inode_is_open_for_write(). That should prevent
+>> MADV_COLLAPSE from working on writable files.
 > 
-> You mean DAMON_OPS_VADDR?
+> That sounds like more code that was added for RO_THP and should be
+> deleted?  See commit e6be37b2e7bd
 
-Right, I missed that.
- 
-> And I agree this can be useful if we will make a DAMON module that runs for
-> virtual address spaces.  But we don't add new functions without their callers.
-> So this patch should be submitted only together with the caller of the
-> function.
+Sounds like something to implement on top of this patch set?
 
-Fair enough. I will carry on working on the module for hugepages autotuning,
-which will use this function. I will resubmit this along with the caller.
-
->>
->> [1]: https://lore.kernel.org/damon/20260311005759.90440-1-sj@kernel.org/
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
+But with the added dirty checks in patch #2, maybe it's trivial to do it
+in this patchset already.
 
 -- 
-Asier Gutierrez
-Huawei
+Cheers,
 
+David
 
