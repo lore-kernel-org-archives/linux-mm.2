@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B5AAED7B96
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:02:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10676ED7B93
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:04:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84BEB6B0088; Tue, 14 Apr 2026 06:02:06 -0400 (EDT)
+	id 762F86B0088; Tue, 14 Apr 2026 06:03:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 823456B008A; Tue, 14 Apr 2026 06:02:06 -0400 (EDT)
+	id 713A76B008A; Tue, 14 Apr 2026 06:03:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 737C76B0092; Tue, 14 Apr 2026 06:02:06 -0400 (EDT)
+	id 602B16B0092; Tue, 14 Apr 2026 06:03:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 620A86B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:02:06 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 20420E3871
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:02:06 +0000 (UTC)
-X-FDA: 84656720652.08.BEDD529
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4812D4000A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:02:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cTkwm5Ak;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 507426B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:03:59 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF176E396A
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:03:58 +0000 (UTC)
+X-FDA: 84656725356.29.5314B22
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 113091C000A
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:03:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rthLquy6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776160924;
+	s=arc-20220608; t=1776161037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=30LCvQz0sz4GC0ta6lANaxX7E73TEk9I11XK5FIwcWI=;
-	b=4WbYLOlsMiAUenpX9UhKZyqsUNH1LXJ3UEx3I3e1L5sfopR22w5NykXc54Cia1dqdMR8SQ
-	pGGB5WXitKza3VGgC5NkCp9CXi5Mr6a+VtBs3H6Od1aa7q1OgaM0JtVTSmdD8YlqWIZfcK
-	Cb/lIgpO2gefeaU8RMg1Rh/k9zTHUZE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776160924; a=rsa-sha256;
+	bh=+Ln567bhFpCAbkP2sLpyoq+fMICZKkzC5Fs4cdsaf4o=;
+	b=D9Ilv8InWM0CizMc1Ybp4kXeWMn3swJ5OFle41nMgtMsEu2Jsq4wksG0/RQ9h3NI1w/5Ie
+	jr8i/D8IRFnljPdHA9FPJvHdEj0u7ulIzjLnV0orQpkWx5RTXuNDoTA4zMRx+7HnxOyciE
+	Hna1a3kvp6uxU08fVASBKUaejpGSbfw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776161037; a=rsa-sha256;
 	cv=none;
-	b=4I8FhHcPy5X8B78w+FAIFsnPFi663hnZT7n795iVLUMqNIwHfcSX4HdX8U8QdLGVEPwuaR
-	tWJreJmdHoQRRrNzjK9s/U6hMrMhqdcnFlKi7fMacg2hOtuMNzmxYT+iFIOX/xK84y4vg0
-	kDW6HlAeOCqzOuqqP/OCq9HFDeRPGNc=
+	b=PgfVL0uJy9C4raqgh1BnBewj0y2wy1gM2aPMeQtGVXN178XFKrus7ChXUP6xfir4Z06BwU
+	k84jj4W75z86NI/kBa1yySwMIQgtIzEYLSvin5ZN+tBo+o8+ARvF4xM7BqoayWSvEhIkxz
+	7CAgbaGrSsSAqqwP3VwTCMo7jsvna+8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cTkwm5Ak;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rthLquy6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A711160018;
-	Tue, 14 Apr 2026 10:02:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B43BC19425;
-	Tue, 14 Apr 2026 10:01:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0F3A043C0B;
+	Tue, 14 Apr 2026 10:03:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73F6C19425;
+	Tue, 14 Apr 2026 10:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776160923;
-	bh=hEMZcMIZS6WzhX6ssC5Ou6uax693W51NviYWtwo2rRA=;
+	s=k20201202; t=1776161035;
+	bh=d7Ka3ZwFK5TaT/G34YVREMh7Kh+Pq8BGRtgE7VObM7g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cTkwm5AkJiR1Kcxa/iRawXT6asz/JNVsLox7hbLmD9WpHY7NrEJd0Np2KuvxhcZDz
-	 sMaAP+k4X0urnbfFoLZQpcaU4aNgNC0XwfdcCQD+ESiBBIxU+ZvoszTRtcjUI65D8S
-	 yrFLpaZnwOKgbWmUofGYDgDBEW2J63ChT28SH9ICE6sUVeQgJ/y3qlXLYHwUIYsiAQ
-	 E7TWJseSLHDOHWVwq7qHeySCAlKpIVrSmgG4vBwSHFoD8R6Q67XHPHvoUmZVbL7UCb
-	 +kcIQBbMgItyBP0yzr0beiuX9rKIeGi7QmP4ON+0eabVuxDAiL0MuLwp5JsV/gvthf
-	 nGppsJGfgIE0w==
-Message-ID: <f1cfb1c4-9b7b-40db-9105-570936b61203@kernel.org>
-Date: Tue, 14 Apr 2026 12:01:56 +0200
+	b=rthLquy6W53yHNuN+7q251v/1l3BpGX8+ooM+J87fE6F/2U/akcUF5t4rjtORXFrZ
+	 DKPMipf2EzngqgemkhGuBy3Y6RM+mqf0Ic3LI6F9XIMLL4BpnvGwDCJBZBJayqxQSa
+	 jga+QaOC1AOb3IVj9B39Vt5yDe+1oW/d4EYqw2oAl55C32ia/DicbvzE+FbAvY3Ud1
+	 xCu6dH0d6aDE/4X7BEI4b2TcUtKbqPmYx/6a46hBeQDt9kpLGth+D1P8s729tCl9ey
+	 +CArWDiBpPVZV5In/nuaYU1JxYYp12wk97GGwyOjKteNdsXQi70YOH4lkb8PXrvQsU
+	 FWlRam0asLlPQ==
+Message-ID: <2c0c00aa-7fb2-4d7b-90b3-0309c13468ce@kernel.org>
+Date: Tue, 14 Apr 2026 12:03:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] selftests/mm: verify droppable mappings cannot be
- locked
-To: anthony.yznaga@oracle.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
-References: <20260409234915.11723-1-anthony.yznaga@oracle.com>
- <20260409234915.11723-3-anthony.yznaga@oracle.com>
- <7a318c3c-7ccb-4f95-a416-19d09f42c97f@kernel.org>
- <38fd3d86-f080-4b3a-a931-8ddae1a420ae@oracle.com>
- <b579517c-e739-4db5-ab0b-4db3d579807c@kernel.org>
- <ae78cbdd-e9b3-4586-b492-89ecffae30fc@oracle.com>
+Subject: Re: [PATCH] mm/migrate_device: fix double unlock
+To: Sunny Patel <nueralspacetech@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260413211559.20969-1-nueralspacetech@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ae78cbdd-e9b3-4586-b492-89ecffae30fc@oracle.com>
+In-Reply-To: <20260413211559.20969-1-nueralspacetech@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dqgagwz7chnpbzxoqskuknxkxhp11zte
-X-Rspamd-Queue-Id: 4812D4000A
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 113091C000A
+X-Stat-Signature: 858cw3ajpw3m7cfhyruifx6i1z5k7saj
 X-Rspam-User: 
-X-HE-Tag: 1776160924-988338
-X-HE-Meta: U2FsdGVkX18uKFe/WjUxXPV+WjBjcQz4291amOBRMS8iKqeAVKCrkPqxvqTwo7Yr7XGu7B5GxxM3BfYaagcYRTwNnQh8lNhAJ1+SLZ2K/ma+shgOfn1SqUieAA5fBVajC8BigpQUVtUOaANooLhpY13lSAx7BoFns89i5yjTmtbetoORKMCF/Q/Azfnbb7zwqDGePxyeuW+87gptvVZcjpijNSsx0hMQInXLlTohAXrvUhsopoz8ctQ7DHYGlyCdNvzFSA9rRJNLhwQQqbbco39W0IyrcOAsyXyKVL2e/tQmYRUrSkEYo1xENnrAp4YIRbSyWHPA5/U2yWjOl1i4bAtgvGd6qTPbk0Ls07XV5/LF2wBnsOynWF/BGMZaIu8Pq5glmes9cHG5f3APyIsCQyXJC7Pj6EjC0gKMOWoT+hQC53xShEOk1M6EB11OU3bkJiIwE28Z5184cnohQ22+zT3OdzUxAQc5ocgbf/crO/Sd7EchdDcnpl2pfCEaFibKVIqPg0WGzJAH2w3cFSaOUPb/C9VkIdT7NNUKh2KY6vaDEeMQJ1SD96AAkm0uIa/B0Wcsi3ezQtqU6v70BwvQOtF1pWVnVWVInKizjzZ19Zmh18VLJzOrDKkf8Qx40yxsY1vYGqrqB6YiYzTKSFxh/viBh0lq/tKsDWbmyvudNC150tDw2Q5uUmo5CcOjrVnnjq3igv3aoaNLfjZOL/v06E+cFitRtWyqWmSvRik1UbUbvGAEBZS+DyvNil1ttbRZtnPEeqw19OHV/6GuqUSu32VtSGZ8HRM9nAPXVr5ZkHjmpzLqGbcDqvzocFMXzXENViGlP4KEVPiPA08WWmdvxYMqXMhPF9hr0NztlILohRYMA2plgZ+6psyiFqJNEs1U/D1BIkuwq0Da2wSIZzy56cdqaLCN/+Z6A1XZpYqgqee9+bYD8bWI+RfgJ/pfZEsNfD227BBKehkIc0KM8Wz
- piY1nWG2
- O/ZPBYpU/0AzCbz/tQ8qg/SygbL63Bf7EwuzYBhyLuOSnkPy4QIN34xd1N2TDAW/XsOn1ACcTWse1sAiXEyexaIYo7Hn6OPxtbX6EukrhuDDkjJnEm0Ovtzh/XjXXEDuDDtnyTs0d/G56pkrCzylljls74z4gzXAsgKeaazlRIEG2CAGUajy1qE235MdPYcETVa0UCjPXebkRjr2oAC3b73lUaYUxdzGg114K0H+YyM/MaPmZTFlZmHloGKqTAVCmg8mdniGaH8vJlzaTxRvnkWroaE+9kLUcG2vVDp66Utgj3J80NCpsbsQCOOxMMtZtehjtPASARfslDrg=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776161036-608064
+X-HE-Meta: U2FsdGVkX1+JAxvnFZxrOwiUgwY38H/ynS0FHCWxIlHARgGT1QzRMWf8CXV8h09D9Vcji1scVz350dQDemQ+WV1B0iwU3/2ujSuagouCNQikbcnqdfbHJS9UM03laS+30PzlLHg91DOIQFofmtV244oAga2d6fxl6GGYtOM3AgK30bY1jT4JTthWJFmEhcAg3xPpb779XAhm9dH68BhNJF6MyRGN/IP2L/x2xe1GNW/ew9VutLCFCvgwvUBNKSO/4P5Bi3qU5TCRi8vgYwV9RmYFeJIQ+nTsQ/7iE5rkGqOCw/H7+8fhZSDbvkX+yKFm6mj4ArVbyJIpCV0c06scJxubxsYf4Cfj8rGurjgKPBu8yu6easC0LrpsUb63rGP+ktGdczridpA8PCaj2wGn+JN4gS2gBq7omn9cmu6+bjDYqf0oF5Sv81IiwgITLdG6PjRFdju0R+M+mbFk4/Flb9TZFRAK/J/Y6Do9tc75HfkeDUHqBmLfefGYxsYblUoN4Iv00cyJmzkxyoOuafvL+D5Up8xAqaV7rs6CmZ/y/iNxPhuJivcJMoJAOzaRySxecJCE7pFSAA6p4Ftk02yWRXHt52ZINFpDsi0QpH2fdD88elk1WlRrzRhRmCVAdI1VcxK0ZJoIuYnYJhzfjZDtwm4YGnwuolcrQr3Ai1vNkVT1LdARBzyXp0U8tkm1jDtMmYajwT+N23Zdar9J1leYmaJDxwGPznPDtfibH+MRpgMgBryBQfxYogqTpSRzqJGlQRKxH3srLUpW7rbwAvEhPN6c5Bxp6ELCOYn9WxKt75wBAK2gySTYvE11Bxfu4TJxBUmMEzWkPLWbGEqoBw8yPXvLz18jaFLm/jv0bwtKIgCp4qzGwX/Hj7S/k5Rb+K3XQPuH7g4k28bvvw6lDgvVkteFVhL3xAJRn0X5ADYO1agRMlo2rVBhY1tSyCCsusA7VoyGiTCFvgNFnJTdxAC
+ ANnuvT3k
+ XS9qmEHJzAqrBFxWSCT38RHkknRmw2k0I5hpP+tKqCeH/gce6NDrN3W+eWLtMUO29XDJNz5pWovp6D6LiapNfj6Ov3QddHtNErOkX2ucwVEgqMf7OlXL7/L8WjYoAMHDjY6h+GpJ0ls0zvL0oxPGaj/o4/Da54t2OmzmQFtRmAYdAPzZcOcocysBjaGC8OgoFbXBJRGcIyUeFDzIKlY78/TcchNU6JFSv1UpfiSNmnDU3eyXjU3rkWlOcRZzXp3PYXFbZxNOcGh+w9fQYkE+b/WmytKozBEnQypqQ6pHeBc4c/8yWEopx0uYkPM0QoVhmF0CJC5Vz09pPpL/9YPOk7O/AAaYk0R7Hx3mosw/PwtqYhNddAQ2TNpTayY2RpCpwsYFgJoHK8Rkf+NjOECNkRe+oDv+vdXTTd3cQQPELa3EfgVUMieozDzFoWDQ6vbWQyeW3llF0x086dZMRKxrpCF5Wg2XeY0bhg85ZD2uVlfwnAz0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,61 +142,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/13/26 23:54, anthony.yznaga@oracle.com wrote:
+On 4/13/26 23:15, Sunny Patel wrote:
+> migrate_vma_collect_huge_pmd() calls spin_unlock(ptl) after
+> softleaf_entry_wait_on_locked(), which already releases the ptl.
 > 
-> On 4/13/26 12:46 PM, David Hildenbrand (Arm) wrote:
->>> It's correct though mlock2 would also work since it's been in glibc for
->>> several years now. I just matched the existing tests. mlock2_ is a
->>> simple wrapper around syscall in tools/testing/selftests/mm/mlock2.h,
->>> and it was introduced when the mlock2 syscall was introduced. A trailing
->>> rather than a preceding underscore is...unfortunate.
->> Interesting ... and confusing :)
->>
->>>
->>> The intent was to skip the tests if compiled with headers where
->>> MAP_DROPPABLE isn't defined rather than force the value and get EINVAL
->>> because the kernel doesn't know about it. This way EINVAL can be flagged
->>> as a test failure and not skipped since it would likely indicate a test
->>> or kernel bug.
->> Note that the kernel headers you are compiling against don't imply
->> anything about the kernel that is actually running! So the argument
->> regarding EINVAL doesn't really hold.
+> Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
 > 
-> Yes, I see that now.
+> Cc: stable@vger.kernel.org
 > 
+> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
+> ---
+>  mm/migrate_device.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
->>
->> But note that we, in general, try to compile against the in-tree headers.
->>
->> See
->>
->> commit 75d60eb30daafb966db0e45f38e4cdeb5e5ed79c
->> Author: Lorenzo Stoakes <ljs@kernel.org>
->> Date:   Mon Oct 28 14:13:30 2024 +0000
->>
->>      tools: testing: update tools UAPI header for mman-common.h
->>
->>      Import the new MADV_GUARD_INSTALL/REMOVE madvise flags.
->>
->> And looking into it, I already see MAP_DROPPABLE there as well, so is
->> any special handling here even needed?
->>
-> I'd say no special handling is needed.
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 8079676c8f1f..7eb2f87ea39d 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -177,7 +177,6 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+>  
+>  		if (softleaf_is_migration(entry)) {
+>  			softleaf_entry_wait_on_locked(entry, ptl);
+> -			spin_unlock(ptl);
+>  			return -EAGAIN;
+>  		}
+>  
 
-Right, so the #ifdef is not required at all.
+As raised by Matthew, the entire code block is dead code:
 
-> If this test is compiled on with
-> a kernel that has MAP_DROPPABLE but run on an older kernel without
-> MAP_DROPPABLE, should it fail? Or should it interpret the EINVAL as a
-> sufficient reason to assume MAP_DROPPABLE is not supported and to skip
-> the result? My current thinking is it should fail because the EINVAL
-> could have another cause.
-Ah, you want to sense for MAP_DROPPABLE support in older kernels.
+https://lore.kernel.org/linux-mm/20260212014611.416695-1-dave@stgolabs.net/
 
-I guess treating -EINVAL as "not supported on old kernel" is good enough.
+And I even Ack'ed it /facepalm
 
-Looking at tools/testing/selftests/mm/droppable.c, we seem to not
-perform any such checks ... unfortunately.
+So we should take that (cleanup) patch instead. Thanks!
 
 -- 
 Cheers,
