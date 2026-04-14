@@ -4,108 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94B1EF9D0D5
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 15:37:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B018DF9D0D3
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 15:38:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07DBC6B0095; Tue, 14 Apr 2026 11:37:40 -0400 (EDT)
+	id 27A706B0096; Tue, 14 Apr 2026 11:38:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 054FB6B0096; Tue, 14 Apr 2026 11:37:40 -0400 (EDT)
+	id 251136B0098; Tue, 14 Apr 2026 11:38:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED4156B0098; Tue, 14 Apr 2026 11:37:39 -0400 (EDT)
+	id 1675B6B0099; Tue, 14 Apr 2026 11:38:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF9736B0095
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:37:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAE2C1A011B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:37:39 +0000 (UTC)
-X-FDA: 84657566238.15.1E8BDDF
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B7D87180008
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:37:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lAGKQfzg;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776181058; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 03DF46B0096
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:38:01 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D2432E0279
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:38:00 +0000 (UTC)
+X-FDA: 84657567120.04.E2CC8A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EFF331C000A
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:37:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NjdxK0h2;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776181079; a=rsa-sha256;
 	cv=none;
-	b=adLMaDmewQwwRi1Kj2Md7r8m3HC4sFnYyxWgdwGRoyMrJjEamo2HnMuweTF5KqUhQfpM+N
-	QQzwHhWXE1s/FZhDvYXy1dp3JwS9LNjrAwi2o2BZO8b64q09NjUhEjJyOOyW1WLcX9FHLz
-	2mwJkVsgyCQLu0Bxuelqzn0gcXaONAY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lAGKQfzg;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	b=Kfbwpb+4oscuCg20Wh2t9JTKfQN1gcoQYKUPsqVkowXIX459Ykv5V6SEEfGovREZgMnG6+
+	kbcM8gdgLLdXyAaId6/2N/bA1hXPXo0sfAnYPtKlwTv1jUYouYcruJGUoB29a4cxyujoGj
+	scA2XxaeZtDJr4qFP6QytUi2T6dL/dY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776181058;
+	s=arc-20220608; t=1776181079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m1TDAGgzmOk8H25UKOcIJUxhIEuJydpP4AYeIgjDbV4=;
-	b=vHfF4lstkQdYLgzrpw64X7/x/4o65hu3ae6w7IgqDzDio6gYhq15E7U7KfaeUcZYXak7h/
-	633deMsUjAAadFYJgrcTJmxfnUva3M70tbb3rudADvrB7SayD20jz4BweLWv0+Sf65xj9w
-	jctf2Szm8wH3fZzeXowl9ckJMY0P95E=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776181055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m1TDAGgzmOk8H25UKOcIJUxhIEuJydpP4AYeIgjDbV4=;
-	b=lAGKQfzgeioiew63mH3E5n+R9eC1bKNYhY1BlrajddJgdTLtmQ+SiAx0mv0jnamulB/1aj
-	fBWttHSarXPes6jFjVQVGNOlcwl6F2y26bDpQGPgdg4yq9BE7BsqWIynXleZNk8qemiG46
-	L1j3NTnooylL4ejFk0HNXT7EkZrFaAU=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org,
-	ziy@nvidia.com
-Cc: willy@infradead.org,
-	songliubraving@fb.com,
-	clm@fb.com,
-	dsterba@suse.com,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v2 01/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
-Date: Tue, 14 Apr 2026 23:37:24 +0800
-Message-Id: <20260414153724.35950-1-lance.yang@linux.dev>
-In-Reply-To: <a2632ace-1ffd-4e9c-8fcb-803b9835d8d4@kernel.org>
-References: <a2632ace-1ffd-4e9c-8fcb-803b9835d8d4@kernel.org>
+	bh=ANrqflZwQDfczuzqrIcfJ0PCScTyhm32PWssrqXSJBQ=;
+	b=0kc/N4UsCnSOWtqPVlnCnYbi3zZdnD73H9oauTnyX1h2zxnGEUDHMizlcOQiXeMKZWultD
+	je2GLJfQetOPqtWriHw/Sfj6GUxq8hU7G0pTwl7hBZsRHS/ehtI3zM4yVpiuwRymvZFEZM
+	Bl3mhVUp1TGselmieUSV+Vw1pZEZHfE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NjdxK0h2;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C2DBD41841;
+	Tue, 14 Apr 2026 15:37:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E91AC19425;
+	Tue, 14 Apr 2026 15:37:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776181077;
+	bh=vLt1zIsK1rIcZO3TGQDorDFsNmmezc0A83+t9iQrN+k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NjdxK0h2GlaLeB2t7hArNWCRSqIDWcr2FCJVvMvkYdIxeOUoHWUm6aU7MhJs3gNKJ
+	 FypuwAHi2hMrXIc+l1an1CDDfivVpNt3PY4pT08Q3K6e54kreCwdbViRtNdtlQ0Efl
+	 HhJ7XbrsOkzRKkr11b1F0kC/SM4p+8VNc49XaTj12yQFL8rdupj0JBa2P+C8Jvt6Qv
+	 rvkA6/+pPJvk1QsfcB2eOgjvWNzL1PMJqkn4K95cb8JxYMxdfD/mdkgqzoKAGljVae
+	 pkA6KH1CRimrpkUlpvNirlN9XHIyNfbtgr4zdhbyFhwE17ncHUFz5dMqwLNcvOaZg7
+	 +0KeKpVCjDscA==
+Message-ID: <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
+Date: Tue, 14 Apr 2026 17:37:50 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
+ memory
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org
+References: <20260414142354.1465950-1-kas@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260414142354.1465950-1-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kr7ctczmi4pzez1zqjjhqohskh5xtjey
-X-Rspamd-Queue-Id: B7D87180008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776181057-718348
-X-HE-Meta: U2FsdGVkX1+CnjXb3pXa7un4U+Buld24NAzPlai0ZC8L/dE/TAV0Idh6i2vYN1/3pg03b/kL3V/7RO7ogqNfQ1F4dVrKnPA88cO1fHFDCGa6R3oRIRfz605kCV2iSBHCzEZ+izDnUuS2GkW4fepUNjDHhzXfCbFBtMySdsgZuoomRxTVD90TTHoHGTL9CcX4uWrAP3PjcMX+eReEmrbsAAaYrzs0BTaHGVTJeGAXZPuek7s2Ddt0zoravj/gP/jcE05IO5Pka+jshI7v1vTBBmW5xhj6lpbPabj/MaCBliNQczUTSdnKzZlwjZjmUpjhnR8x6xNGfE9vLTmhXDgGLcYDLCSItcy/isFcT0IcSaditdUciEZnyQzHv2ANVaM0irKRxf08JrtSw52w15BpudeG8AeTrv5xszralG++uToT4F4PDjnJX3BHoSEPHW1vj58wQ8ZxsWsSmBNR1lc50NEaiJ4xQHDJJsf3XjxL9HbNSh4sVtXvPvnycg7TcoM1tqEP6bSAurz96uer4sPVq0fLwnSqQ0NGu5Adu6cZu/XKlFLeuisZhF6F+OEfcZEYulJK/HFuHjEcMhohO4OTDkSw+YOPa8OjQ+j2MvfgIZXcEh2Wya4Iec8UqnzwSIHYNL6K5ZZDI8mWZJJCHHwWSGt8fFITlmRNr26xX265VrBgm7xcDRSw10vrR99fLu0anUrcq+SBGUId/MEUa/oGMy2dJE206t6Ao7IOOXfjlrUY4cwdpSeP+9BDvcH8Gi80AjGzIVSCwkPqm0NafoNTJTLOkHkSO6dheIe8CFSlMTMzK9sVT9Qxg0SOoG9/6m67PAUvDY/qPanfhLxWshB4tL15R1zVSbiYFUufGY8c9lLYopVx44pwDN7cd920jVjvSf6jxiCUe8FDfEb3ylZzmwFB7gMJHlUcH2utvr3UJL/yF4kiXHoAfkqdNePC7vO4IND3rvphrsLSETMpMuc
- d8MLmQNG
- +pa5f4B9U7Mn20Vou0UVY4KJcNhsUZyElEq9XHip9SdyI5CdOCldfU1+PA8CuLxPbL/brl+18PIMaByWI6vKpxEKUCBLCIPsP2rue5k6aBsTpe1e0bGDuU/2cGM1Qho0+wTQsYnplCG4ImYx749kIb4vU4EF6mDjBKoSIoDkTeO0giSeFRHRc9nMoRvFTwkc05FJ9oWscRwP2S6mJnP58qL+GHlXLpmy/ulKIyruQug4cX8zYOkETiteOVZKSF+TtxJ8hcSQM8yBDaKFndX7Kth9gSdAxMlvnDglFkj/L7XJ3xyk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EFF331C000A
+X-Stat-Signature: uiyixa17az3ey3jza41ogi3yrqb1fu69
+X-HE-Tag: 1776181078-539892
+X-HE-Meta: U2FsdGVkX1+14TTHv0gXJ64l/pDt6E+4PKAnEc0x6cDfelPsWg4MKsnpN5jJWnHjotf7F8VjAfpm1Edp28qkl2cKDp/BGFYf+R2y1jyrLLWmvnA8EnAZzqHacgHeww8udLr5ZtzCYfq4MfSLDUlDYv6/xnAd9jLqr4l9rwlC/Hftv8qXjejDDuH4sAhuIAVTOkleRyo6mMHx9jb3sE7/eBFJQseueuEYdy4PTIW0ob0/yjpVgC4llQk5dk53zSveKnXqyTczhglEvhcLX6u4cNjkHx0P1402koibE9k19sIf5gLYCymehfYXQHLcKGshYiz7QF6/TlW8GadprwbInmCbvlOdJNFeOLNlAwMICut4soDBATyAGa6F8tmgtNANEHmFgevJ+7gxTZSz/H5vDWPa4bB5Y/uIL7Ky49nsuDGeu9eOWThiE6nDqaKSlVcQ+ryCPPIjXcKFhKKImteOfF404FeZ309FlnzAPc5ZHYhiiNX4ELUYI1YCgXRttpMB8CEfKXuA0ha9/mPxn6gwIfdiBUvt78kV9ibyMob8tNAFWPmjh4a/+6IbolkTI7/olAThR0Xd/kkFGyOehZNkLDcCUO/BJK6w4TnKG1nBub8n/mZrWMFCCBaf4LfWVRTBMiOTX6+OfU2LC/mrMLJEX+hOqrASztr1rF5LrgctGGgjtjd7Fxl4old1vrvQRmtZMQyOG2JTavCJszP2gDQLKb0iFJj4taBD5Ii5ipFh5rybK8bYvgiBN9BDQOcfwyLEA2QvrC1rKqJB7JI4nIk4S9+b/ehnzaaZRmXy8m7RmXMOg/E5xqbnrBOYQoeHry9hVE9tkZzABe5opOczdGOzqdwX8KmyMqM1851UXq5ewGTFRN+1wuceaV2iOllXS/mGAautvHFOBcQyLhyvg7p+zRupjRatkb68wX6D69qFboiSkBR+M2uQCx2Z+znvrf7ooUyru0/jUNnD+FWu/eI
+ SV/BAdnN
+ CBSHtcd8sKq+Iqg2rX7DbQaO9UGi/ab73ktPjLSmAMNjsKEKf+c6VTvT77z1SBPLsE+MPd0W7kE9gIlcHGj8Z4piMszvsa+WTpkLgKH+GV03Z7spRlMpVMQqIlry8Xw6C7xR+kaGlCkdf0q8/ZYf8d5sDsdG/p+s4e5fQHISHPkvPOXz7hc3c8xUi6Ze5dzCuiaEvifcW7eECmXdxa7fAGlQeEs9E2ywYodB5UTRNgK56Ffx/VnQlT3mhwMlItNepx19LDVV9gg302uK7XwaktpC0n+nMm6rP5JUK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,69 +146,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/14/26 16:23, Kiryl Shutsemau (Meta) wrote:
+> This series adds userfaultfd support for tracking the working set of
+> VM guest memory, enabling VMMs to identify cold pages and evict them
+> to tiered or remote storage.
+> 
+> == Problem ==
+> 
+> VMMs managing guest memory need to:
+> 1. Track which pages are actively used (working set detection)
+> 2. Safely evict cold pages to slower storage
+> 3. Fetch pages back on demand when accessed again
+> 
+> For shmem-backed guest memory, working set tracking partially works
+> today: MADV_DONTNEED zaps PTEs while pages stay in page cache, and
+> re-access auto-resolves from cache. But safe eviction still requires
+> synchronous fault interception to prevent data loss races.
+> 
+> For anonymous guest memory (needed for KSM cross-VM deduplication),
+> there is no mechanism at all — clearing a PTE loses the page.
+> 
+> == Solution ==
+> 
+> The series introduces a unified userfaultfd interface that works
+> across both anonymous and shmem-backed memory:
+> 
+> UFFD_FEATURE_MINOR_ANON: extends MODE_MINOR registration to anonymous
+> private memory. Uses the PROT_NONE hinting mechanism (same as NUMA
+> balancing) to make pages inaccessible without freeing them.
 
-On Tue, Apr 14, 2026 at 12:29:04PM +0200, David Hildenbrand (Arm) wrote:
->On 4/13/26 21:20, Zi Yan wrote:
->> collapse_file() requires FSes supporting large folio with at least
->> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
->> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
->> 
->> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
->> 
->> In collapse_scan_file(), add FS eligibility check to avoid redundant scans.
->> 
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> ---
->>  mm/khugepaged.c | 12 ++++++++++--
->>  1 file changed, 10 insertions(+), 2 deletions(-)
->> 
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index b8452dbdb043..d2f0acd2dac2 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -1892,8 +1892,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->>  	int nr_none = 0;
->>  	bool is_shmem = shmem_file(file);
->>  
->> -	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
->> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
->> +	/* MADV_COLLAPSE ignores shmem huge config, so do not check shmem */
->> +	VM_WARN_ON_ONCE(!is_shmem && mapping_max_folio_order(mapping) < PMD_ORDER);
->> +	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
->>  
->>  	result = alloc_charge_folio(&new_folio, mm, cc);
->>  	if (result != SCAN_SUCCEED)
->> @@ -2321,6 +2322,13 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
->>  	int node = NUMA_NO_NODE;
->>  	enum scan_result result = SCAN_SUCCEED;
->>  
->> +	/*
->> +	 * skip files without PMD-order folio support
->> +	 * do not check shmem, since MADV_COLLAPSE ignores shmem huge config
->> +	 */
->
->How is the !collapse path handled? Through thp_vma_allowable_order() in
->collapse_scan_mm_slot()?
->
->Wouldn't it be better to have that check exactly there?
+I would rather tackle this from the other direction: it's another form
+of protection (like WP), not really a "minor" mode.
 
-Right! Looks like patch #03[1] already does that, as David also pointed
-out there :)
+Could we add a UFFDIO_REGISTER_MODE_RWP (or however we would call it)
+and support it for anon+shmem, avoiding the zapping for shmem completely?
 
-With that in place, regular files should end up in file_thp_enabled(),
-which checks that mapping_max_folio_order() >= PMD_ORDER.
-
-For khugepaged, collapse_scan_mm_slot() calls thp_vma_allowable_order()
-before entering the per-PMD scan loop, so ineligible regular file VMAs
-should already get filtered there.
-
-madvise_collapse() also calls thp_vma_allowable_order() early, so it
-should get the same filtering before reaching collapse_scan_file().
-
-So the extra check here looks redundant :)
-
-[1] https://lore.kernel.org/linux-mm/20260413192030.3275825-4-ziy@nvidia.com/
-
+-- 
 Cheers,
-Lance
+
+David
 
