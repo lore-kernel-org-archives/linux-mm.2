@@ -4,123 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75F7FF9D0D3
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 15:00:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A0D4F9D0D5
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 15:10:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74A836B0088; Tue, 14 Apr 2026 11:00:09 -0400 (EDT)
+	id 9CB946B0088; Tue, 14 Apr 2026 11:10:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FA936B008A; Tue, 14 Apr 2026 11:00:09 -0400 (EDT)
+	id 97B916B008A; Tue, 14 Apr 2026 11:10:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E9596B0092; Tue, 14 Apr 2026 11:00:09 -0400 (EDT)
+	id 842CD6B0092; Tue, 14 Apr 2026 11:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E1216B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:00:09 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D0F251356BB
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:00:08 +0000 (UTC)
-X-FDA: 84657471696.06.529A1F3
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E822420008
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:00:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rbI0AMxy;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 72DBB6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:10:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 026D6E0AEE
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:10:24 +0000 (UTC)
+X-FDA: 84657497610.10.46ADE9E
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D8BC7160014
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:10:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXqpFC8a;
+	spf=pass (imf08.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776178807; a=rsa-sha256;
-	cv=none;
-	b=GHHCovjdZHpS5LkZLdXs0pX1oakcxGYKQnskfOuxd4z4u+wdK5ZDqC6RwoJvSeCZYhxpuc
-	/W964RAGmc0VI6NL5sO/K4e7Of2bvjxzK9pe4s9RDK6GadqsrBD20WPb/H0GMTOchm9rzH
-	O6Kpbot3n6GYPlFfC9OHn/QMTWEVd8Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rbI0AMxy;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.49 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776178806;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776179423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4HhNjSBI2VaOj0qFbdmW6uKns8Ks8XYfh0+PT8mKMJY=;
-	b=3ynw8lxhMOzR70uy0DZ3Tc4s4Ntxh4YRqwLTSHxMYExL1ASDSAiD/w0fe11JnNxqiqSe/2
-	EnHxO2FCvo6m3fyxrCVL9AE5K31Z1xLimeCPlirbBKP/ZwSIfolPVR4bMVp4I74kZJFy+F
-	GaYbCZaG58yqVndMaqAGYH2klNa52+Q=
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7dbcf927395so3328135a34.0
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:00:06 -0700 (PDT)
+	bh=A7c7tKPqaKq3NgFiv2DNK8q/BvKoh1wbxDHgCCrA1+c=;
+	b=uNfJQXAC2pTJkaO5wndyayMp3hQ52XF+p85ZlTIVSlVNYtl2n+ah48b+1qYFWX3yWfqCkN
+	4y1k0P+I2I27BMP7SFaa560Rpxl4fDKUYJyfYEIJg2Dp9D/rsiTxbqvYeKQrCMyZs1kxa5
+	5DD07A42qNpxDr75qc+vYs0ZbH6nu/g=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TXqpFC8a;
+	spf=pass (imf08.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776179423; a=rsa-sha256;
+	cv=pass;
+	b=di9Awjs2hsUhrlbPT7rx3mImQ+8Z79MnjflpoYo+A42zIOQjlVP7B+wggxAMd81AxRnq3F
+	CwawTfZY5jUGS3gH59HVBfp2zJhJaRO8y7J/SNND2y+tQF5CW2kgUb002IygmGIZpowh60
+	rzFd3ZQ1tlQLrSq+cBCUVf5YV32bicg=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43d734223e4so1665837f8f.0
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:10:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776179421; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FIuEPaVPMz0UJj/NwbQboalXRJl4/YGdTFwC+lgjvtkwqDlaBkudC9I3w2FlisOJI2
+         52XdHhrJazrc5IQkZ9tBg66ZZBAUgL8xGsvfjb0OgOELiL8ZQWDq+g1TWh/qIBQDQ9xg
+         UkNBQz0P6+bDFrf+E96kqmaYZ8zlCDTqCnFiAwCFV3P9MzRYijXy0HZ4hF5jV4atQq3P
+         /+NhqkALp2Ud24keI7Ijlpl46ESN3IcrKs8NhHZVU9RC8y0MuyEu8CsLBNEnEin4W2Wl
+         B0onR1vz7NEXSBk/4ZtGir2vqiAxKhGTVKWcuHSfdNlUHD1wHeXQBdyBgmCuPalCLLXH
+         nhBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=A7c7tKPqaKq3NgFiv2DNK8q/BvKoh1wbxDHgCCrA1+c=;
+        fh=eqrWCDeJuqd/RespjtXK2hMd3yOmrO03s5JWUsRGL9k=;
+        b=CaZEZeAjiOoypOdB4KfPQaVGCxCwQcyHIG8QBzRmvzFJY5lENvT8PMmaJOEpUgW/Zl
+         dQQXwpqB0C9p3l8a143mEvDwM0btDvKcaBftH9GTJvnMC1LTiAwME/h0dgMuCLgPyizg
+         DDGHUxGptpl0+ricdXn+qeg6tg/lM76zcNW8sG3A9+gfY8JkyMdMkpRJZ2hzlyrvJs7M
+         RqZKNxNBSpgiu8dsOxWegiG1wqQuxAAmpNszEwEbmzb/PGcDdH47OSSENAfx277rGEb4
+         4uOV+hjbBgx0XLU525R86FonaNBoVcTR6NXHqmeSyo7T1qp5Q/t9cmMsdG2GyVYxJLiv
+         NPfQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776178806; x=1776783606; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776179421; x=1776784221; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4HhNjSBI2VaOj0qFbdmW6uKns8Ks8XYfh0+PT8mKMJY=;
-        b=rbI0AMxy4ynJlIR7iXLKOozmeyOc/fqKv318hd4mzT0KAPwHLyExRfG0rClOF7H/ET
-         IkFpQHY0I28YAI2fIYLALDbY09p6h7njbrdz+KQMZcjxX0XUEnI6SLKBc7dhkV4hsNXe
-         ua6REMfqo7HbFnL+xBJruj4GkmMuRB5XetxTHDTsynt2y57J2aqmDiCKo8bD3fNSA5MK
-         p9eUuUIHlKdk77sOp+9pVNIWRhLX+2Ra+N3CEjZA7a7rKB453CxEUzC0WahE09npm3R0
-         c5+7hNEWZ5/FSOFOSPRaFUvF0x6HJ+oQpE3xBMsjI7Cjr3iHGqq+oL2rl8pD4L1cYFNy
-         RS7Q==
+        bh=A7c7tKPqaKq3NgFiv2DNK8q/BvKoh1wbxDHgCCrA1+c=;
+        b=TXqpFC8a/BD/A18gZ0RJ1KZQbtCszjFBDu8oi5458/uXpycmaYom0WXXSzlT+KmF/O
+         J/Y5JzZEgE/fr+UneAQvPOStNtPWGYNCf6Wu7+6u23398WEl1P1+B5Cw75dHYmOyXRVO
+         Yq1/ma8M0A1OqPKoNP3s/IeeEA7yQxlqXQZorIhbziuxsFp7DNMhA6M3w+i2XU4NZYE1
+         Hr01PNpvjvx4NjXNu3kLZkZ57dEYInK6brAuodudMx0ABHjE1PnjkowFGgL8dDm7vQfM
+         4hlAuV0dGQsAPUNpxejsaBncXyv74QNIVpD5x49Y1JRqbZEOyj5NoZZVK7NtqGMUlaWo
+         1Dlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776178806; x=1776783606;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1776179421; x=1776784221;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=4HhNjSBI2VaOj0qFbdmW6uKns8Ks8XYfh0+PT8mKMJY=;
-        b=Cz5eKL0hOrhpHkbcwqT+CuJy35sQ77+ByF6tP6GFSOyAiIHPQs81RGzT0n89NOzMsW
-         T3qxVIUPSQgzRqdCsrq1b0GOHDefN9eC346EfJjrXGTDvUCEt2YNGnVc9W42QxfxHano
-         yiKuVdgOPVzg0UbMl2IUuUmJmvLxnMHeHcFnwRb+EBbW7JZQQztp+EbLl3agCkgXdRCG
-         7ws2XyNeAN4hfbhBzTcKMQY57Tl6nBWyAMzjS/FswsIJDstZYoOiZvTjeNaO8GR9UHyw
-         HpZBZVhte6EJbvjwSkCyxJOq7tT1Or7V6CqWU3iLmLJrVNhJwhTeMWZ140uvOuZc6O5t
-         F8pw==
-X-Forwarded-Encrypted: i=1; AFNElJ+zZFDZiLok+vYSYd+6ynLf3h1y1yZtauE6XXBAY/ydG8B5/gJTnXTx1mjBSNOa5FrCrlc7MYTNiA==@kvack.org
-X-Gm-Message-State: AOJu0YyBUHp/+Y3gqIliyvx5biZAf022bYNcPoByH3KfPGQDgirhsRvD
-	RNIXH4DM5QNKAM9yElasn8L0nhUqMnvFYzDRWkSPOJpTXAiPGaY+lhgK
-X-Gm-Gg: AeBDieuDGmqE4qC1Wd6fUO1mvI3a7trAWaFvAqQsNrTNoCpNW9AiR9tEYMSke9NyZvM
-	2NZXzlOe0Yuw888/I6zZh4F042EozQmos0fExydi8DOiRgP5I0TOMNaWtcmTS8xTfNcPyCH8js0
-	ZCOuhB3KywXvXGhKORfYiO7vsH3v7X1WZqKt1M4SOuEWm9pvSRL4nQaV6a5HWu8+yf0dlvIR+p6
-	XX5U9w/O+nBB+Qg3djRaS8M7iqq0klp8uSehxBYTMyvBSeeW2p4XByMVhP61wFMYWOnbhS9eclO
-	o2TVlbuqfZiRi2/5gVB/9+nONmoDTrs/mVxPOxqUy80JXDGOu45r25qZQWYV+ZwrXQIvyLUKlay
-	teValZHSaoKHFOYf3on+YIoRmVd65hR+RU/imIT/w/yQcLcJvIYIGEn12EhgKRg0Nnj5it4waAN
-	jH/WxAalNYZ7BKDf34y3/48A==
-X-Received: by 2002:a05:6830:488e:b0:7d7:51af:4aa1 with SMTP id 46e09a7af769-7dc27db3792mr10373819a34.18.1776178805691;
-        Tue, 14 Apr 2026 08:00:05 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:54::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc265c2babsm10705351a34.7.2026.04.14.08.00.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 08:00:04 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ye Liu <liuye@kylinos.cn>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/4] mm/vmstat: remove unused __node_stat_* wrappers
-Date: Tue, 14 Apr 2026 07:59:58 -0700
-Message-ID: <20260414150001.3262806-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260414091527.2970844-4-ye.liu@linux.dev>
-References: 
+        bh=A7c7tKPqaKq3NgFiv2DNK8q/BvKoh1wbxDHgCCrA1+c=;
+        b=fk2ehDGMD1uXGLQxNDZjw9RcAKTDp8dPWcVkiQf180eV9Pb+/k0KccZylcAbzIwqq3
+         RI5ImGoQbcJpwJqPCvaBrkeRnLn9Fmm1nDiCq0FekCXDCV3MWWUTaoL1UZdaH9/dgJ+V
+         bT2vtnxh8yWkLFe/NdUN3CkjZCiGmhW61F4RNTWwRqqqopVv/r54FGguq0e37nbZEjZ6
+         l0wQaVKwlrPJZPT6cJ03XpRkTf7RZ+Q9EIpIFA21lJGEskzWkdq/67AcaoN7vU/lS3CV
+         7tmlp/65UYELsuI1hi6PZJeyl3OryudjYWBy7fSdECzZ4wtUROWRENgIUCwmgPraM2Me
+         9Emg==
+X-Forwarded-Encrypted: i=1; AFNElJ+6/scYBRRTfVi7WgEjj9D9nmG+nIO3ifJQvfuk6LYLrw8O8Ot6OxW1xGry0T7LDvp4Z6iaUdciBQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzbze8/+qE5Iw4ms0F+4CvdnVP2TxRdT/K0LPmtoYoVPXxzEjS1
+	BeTf/6Sql/jcOJTYHleOze1B7LfwyNaQuI6a9EwEMgkowBa9wAfEy79kHK/uOyDnraLQFRBUWs5
+	GoSPjwdWpQvTBr3DRo52qNyG2BSw2Rrs=
+X-Gm-Gg: AeBDies0GBRvMrJZ5AI6DUZrl+CjTmUD9wrbQFcR/28elEhP/yY8pYIizxbv1Riv9ee
+	veBESlo3yyoKr3HWjoyhoFNriVWaldIDcmBDJSYOVo74sSYenoY5Ob+tFZi/Ce9r37pL+W5tsb0
+	mr//A7wV7yC/vHkNKABvKj3aI05327Xp3qMAWnpg6ZyLG1abUBPeqv3mSKgFXdU5IK9VBIOPCFK
+	pcLq5B7d/lj+Om0dyZBXuidtLxFwwM6y1ed/RYISBCNrMysRm4D2QBOBhDTi4ApObzldondwgh3
+	ZyAidsy8WBe8D4HYEzQ3idaOxQZi/oJHDUUWWusd
+X-Received: by 2002:a05:6000:4110:b0:43e:a8cc:89b7 with SMTP id
+ ffacd0b85a97d-43ea8cc8c24mr1517128f8f.3.1776179420992; Tue, 14 Apr 2026
+ 08:10:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9z4mnh3m68z7hgoo765bk17femetyedp
-X-Rspamd-Queue-Id: E822420008
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com> <20260413-kasan-v1-1-1a5831230821@bootlin.com>
+ <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
+ <DHSWK17EZUDP.GIJ6BX2NFR6U@bootlin.com> <CAADnVQLJ=fJ7t1i2+_RYqU1gqYqiLP9Zrwo4vdZsgzjK_yzJTQ@mail.gmail.com>
+In-Reply-To: <CAADnVQLJ=fJ7t1i2+_RYqU1gqYqiLP9Zrwo4vdZsgzjK_yzJTQ@mail.gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Tue, 14 Apr 2026 17:10:08 +0200
+X-Gm-Features: AQROBzAtXSFwPeCMpZ2dGca-DBLsSXREgEyBZSQFf7Waht1WxQ2QIbb8WTtAIYs
+Message-ID: <CA+fCnZd31GzdpEqR8VhfK4JtUKyyRMgbBoAbeGACJgm7WvB6Vw@mail.gmail.com>
+Subject: Re: [PATCH RFC bpf-next 1/8] kasan: expose generic kasan helpers
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, ebpf@linuxfoundation.org, 
+	Bastien Curutchet <bastien.curutchet@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xu Kuohai <xukuohai@huawei.com>, 
+	bpf <bpf@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Network Development <netdev@vger.kernel.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	kasan-dev <kasan-dev@googlegroups.com>, linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D8BC7160014
+X-Stat-Signature: qesaa6t3ctyy7z3f81m4yn8udoabonrh
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776178806-33407
-X-HE-Meta: U2FsdGVkX185TeCRz0+eM5qXF5Jbrm45j8f5U74jdQ3NIkHH33RBtyg3XCx5upDYILWvuLuAUDjdugA4PONXnnsissy19icVpAfqxWi1SgDTjpxS/zEkq28jLQu1fMyIXG68WlI2ha6aXonVRd9wwydNBCEQkj42nyInibURnp7yJwyZA5ru0eI3QSv9YBeBYjAvTWdXznvGKpQxSA+CdqUxNTfhibKPzw4NH/25fRdnWYxozODhW/pXpfm/WaFdRQ5EDCNuqGvJGolrgKuLKqkXQf8HQkuhUH1bXVLnSLzkRhbv1soRBhZqmnMNliXPxIbJdLpj+PgDckt/kVV3swmOs9O75yh360EEHz9jFmuXegzqE50LQ3oV0ca0mQtDBRR+mweFhjR0y05aQrMHKlmtJVPFGvF9XkczZ1zLKwoboNPk2HxoS6YZMtHh6wMcFbadem/MkBw/oWZrQXNmiKYAXDHIdY3pdYkhECj0LgJVg/06sPAAsBQYgQGteZuKMTKCAjBerCoOhkkabbMfwzTFH1OYGUT5fO+N42HPCI7M7NkeAc/n8o1Wy5oB3hcZOjL4WIwZpYWWdE+nuzzriQJBqMDLNZtjY76LnPvDFgZu8OFC/qINrO6gBcxzOR4jHyJ6tA8IhmFkQJ4HQB4kn3Cgh6t2fpreE5KPnU+4gvaNSZt6hmZHQMnbr2/00PuNr92eRSyzu4lnLMzsrLTcDcig/kO5JtOcs7+9kYzZngaaVM2/MGjQDZH/AAwkljYD1p5aqagWugjziNvvkPiL4S7A2vVSvW3tEoJMcp3ZuFGi1qapKF+6V2z3UN74Iutqt/NTHGHTMIDgk7c24EoS436XeUbY0nfiV1oU/3uXupXanIep+EzsGlac20Vsb/aIqebnJPjMEdhCAKwNVmRumtnI4F+m1qMMAiZWudCRwFHnVMThukeiMKtWE94loP4tHC5bWgT6ofOB35gWwCE
- tXQ7UdU1
- BQOtbZXwKDlyNLty8uXckjnpP/bc+7h6e05dBGS3+UWvGQdzET0F6x3HIWFsaOLh4h1yM0Ehivw1PQwyLSt+AL2WVrVtwsv6Co/maxbv0ZQlX96OwgSF92LoaWHqlGJzkndjKfQ//3o8fhi3Mxq7cmJ3hxuZn306DknvefP9b7OMTAIOYdHjVkVdiy6xpZljUaOP15bgrKHFdPViTh5VgmgvUrISoaZukK7dQokHhggI9mjQoMM+ZqaxlzjWENTCOtDlzWoLkzWOqBLZKtnSdq/PobioBOvbDvrF4DFLpccohuYbG4xRrIaU1CL0KKYux9FUjUS3zMmDJ8Ns77WdLcz/ILCSJ5wTIsXUab0k/ljIzJksCoXjLxKVbrLgyYJJuUXW1q/d44RHd/J9l38PrCZwYzrh/i1kNxDLyJMB1JCGEbFRk8gmGhsw66hi2m0fFVhOTIZwuq3BLr1ByH7FcyFs8rVz27dbcyn5aRI8aEoqYzrEghhlLOe/ASHoYajv1HJM3dLzEgd3b9Pjr999weAAW9Uyg4HDJOk4XUfL7EIMpCjHUitQQqKnYRjoLf8681Vl+MsGYUBiLdyOL8bIxSYyUfw==
+X-HE-Tag: 1776179422-385269
+X-HE-Meta: U2FsdGVkX18LG/vmP+lSNsA0wMkp7g5ueAz0DUtsnrYYprGWedDWgkZmmpx/jA9XRSMQv3RmTLT7ACVL8PNRNKHhNBVQxJ4pcj8++Wl1Mx6iyBgp7odz7TRODXtloTDy5L3GJHNxEn8pC61jFpAyhifPAwvTSA+Qd8jNukmZVkMDYBdNTW/8E1qK1FCMEmZ5e3fLVd0FFwXI8Q58bI5QPr8qQvTbaWm+UgN2B8IqOFFk26Aj1zKtyOXUoJqoJ2FXGYhckMK3frdykaTAVzum2mCyJklak0qKEMRKWgSAbLVbqn572NVC+o+zdyZi1qkPAhfdYgbAiVq6S8aHqV2iaFt5eEHYVk97ub21XmpktnqJVigU7CfR3xfjS3PmV1j2hjQ6nCSYmxCc+JqwNDwQkrw5Fxp8P9fhoSONzxdluj7jcVjPUbRSap0ji1khKwXml+NQUfTjEDldrSE3+W1q/wOmRFW0Hg+EY1bTBa9BSNSUd9JpL77PzqmUxHDFvJjiiYTzwD5teZ6iIOCXqzvN1zXAuo9rNT4an81O2iOqiE3eDPdTMJduBZWHkqkzPm9+wpCcVZjy/RGOgVWCHimiHkj6T27Y8RPK2PgthvUwMWjy5xM2r+4q2Y6GJIFLgKyXjhVXHipfw3QMpwf5OksUzeHgDYiXwBH6tDjKkS0noyQgSy8Sz2s4bVdRhf+hER9Uv11aHTWuKtoPWtKfEs//iSve9j+xLSm+h4wlNWjZNPT+MbkOmd2qc+wrXqh45WKGBhebndwv22K2JxNUsY+aQP0f62DqsfxeW0S7klJqGCdE8S+qmMXi49vzgrBWUgxDTVHUF9dBc52jvFHRRuiDRj027E/rwqv70ue2ww6jFbOlJyKzmuiIf9FqsSUPOu+sstXTaI8zpgBwVSdow8w9nu2ESbgAeacEdbw3V0jQfbRH2bRUMpMziW3POTR90gAHw4gkzH2AqFBcU2S5p5K
+ z+/TASf+
+ ZoS4YIZR+15L3Key5C+PSqQSVYU/cNsyablyfeoM6VilB2vsKj9h9htOej7BTEQDBpZWpzW7pbg/TuVCUaZtxfFO/szTxCR3MrIO89X3+kCWB1DEqV+XFUl7PvMThzKgKrRw25d7fwEj7WjH/fiKOhgMjXBE0fqEox/FPsZkVSGfT9C33951oKBWrVRZlDG+gZ4ghy99Roi9PGSkURsmCFX+L0rStZWSn0uFWTxcBWaHwsekjYTCvzflz13KxS1XxMvy+QkNY8JSZSCWF3kVcKOI09fCHdRw3VO+ZgOWXnjfTimRaWWaAZLrMr8eEuv3rIaKs+R2pOKEdxZogAAv+2A2OFE2RQ3Uh31/qWercPnOGUEGbprhCbYwIkRpUsHHQtkhBwuOuX55ljMerjU0SmelTLeljmye9IYtsXqTXU3ydO9/mKO4cO7SalUMhnKbskeRTT7biLWW3Wvm6pywaWvOI3zwR0uzDN0i7cjsQTxVz//4SkiHghT0UaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,69 +158,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Apr 2026 17:15:20 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+On Tue, Apr 14, 2026 at 4:36=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+>
+> > ACK, I'll try to use those kasan_check_read and kasan_check_write rathe=
+r
+> > than __asan_{load,store}X.
+>
+> No. The performance penalty will be too high.
 
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> Replace the single call to __node_stat_mod_folio()
-> with node_stat_mod_folio(), and remove the dead inline __node_stat_*
-> wrapper definitions from include/linux/vmstat.h.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  include/linux/vmstat.h | 18 ------------------
->  mm/page-writeback.c    |  2 +-
->  2 files changed, 1 insertion(+), 19 deletions(-)
-> 
-> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-> index 3c9c266cf782..54da7d820f78 100644
-> --- a/include/linux/vmstat.h
-> +++ b/include/linux/vmstat.h
-> @@ -440,24 +440,6 @@ static inline void zone_stat_sub_folio(struct folio *folio,
->  	mod_zone_page_state(folio_zone(folio), item, -folio_nr_pages(folio));
->  }
->  
-> -static inline void __node_stat_mod_folio(struct folio *folio,
-> -		enum node_stat_item item, long nr)
-> -{
-> -	__mod_node_page_state(folio_pgdat(folio), item, nr);
-> -}
-> -
-> -static inline void __node_stat_add_folio(struct folio *folio,
-> -		enum node_stat_item item)
-> -{
-> -	__mod_node_page_state(folio_pgdat(folio), item, folio_nr_pages(folio));
-> -}
-> -
-> -static inline void __node_stat_sub_folio(struct folio *folio,
-> -		enum node_stat_item item)
-> -{
-> -	__mod_node_page_state(folio_pgdat(folio), item, -folio_nr_pages(folio));
-> -}
-> -
->  static inline void node_stat_mod_folio(struct folio *folio,
->  		enum node_stat_item item, long nr)
->  {
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index 6f9b7b081ab7..ed3301753e89 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -2627,7 +2627,7 @@ static void folio_account_dirtied(struct folio *folio,
->  
->  		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
->  		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
-> -		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
-> +		node_stat_mod_folio(folio, NR_DIRTIED, nr);
+With using __asan_load/storeX(), it will be one function call to get
+to check_region_inline(): __asan_load/storeX->check_region_inline.
 
-Hi Ye, thank you for the patch,
+With kasan_check_read/write(), right now, it would be two function
+calls: __kasan_check_read->kasan_check_range->check_region_inline.
 
-In addition to what Matthew has pointed out, I also wanted to note that this
-substitution isn't trivial; there are differences between the __ prefixed
-version of node_stat_mod_folio and the one without. Even though the correctness
-of the two versions might be the same, I think that a change like this should
-be supplemented by a description of what side effects this change has
-(i.e. introducing additional overhead from the cmpxchg loop).
+I doubt an extra function call would make a difference in terms of
+performance: the shadow checking itself is also expensive.
 
-Thank you, I hope you have a great day!
-Joshua
+But if the second call is a concern, we can move kasan_check_range()
+and lower-level functions into mm/kasan/generic.h and include it into
+shadow.c, and then it will be just one function call.
+
+To improve performance further, the JIT compiler could emit inlined
+shadow checking instructions, same as the C compiler does with
+KASAN_INLINE=3Dy.
+
+> hw_tags won't work without corresponding JIT work.
+
+You probably meant SW_TAGS here.
+
+HW_TAGS will likely just work without any JIT changes (even the
+kasan_check_byte() thing I mentioned should not be required), assuming
+JIT'ed BPF code just accesses kernel-returned pointers as is.
+
+> I see no point sacrificing performance for aesthetics.
+
+With the change I suggested above, there would be no performance
+difference. And the code stays cleaner.
+
+> __asan_load/storeX is what compilers emit.
+
+For Generic mode. For SW_TAGS, the function names are different.
+Keeping this detail within the KASAN code is cleaner.
+
+
+> In that sense JIT is a compiler it should emit exactly the same.
 
