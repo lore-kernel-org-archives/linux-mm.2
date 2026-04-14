@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B460AF34C7E
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 05:09:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3F7FF45A1C
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 05:17:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D96DA6B0088; Tue, 14 Apr 2026 01:09:34 -0400 (EDT)
+	id D7AED6B0088; Tue, 14 Apr 2026 01:17:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6E736B0092; Tue, 14 Apr 2026 01:09:34 -0400 (EDT)
+	id D2C546B008A; Tue, 14 Apr 2026 01:17:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAB1E6B0093; Tue, 14 Apr 2026 01:09:34 -0400 (EDT)
+	id C42B76B0092; Tue, 14 Apr 2026 01:17:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE6EF6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 01:09:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7280216041B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:09:34 +0000 (UTC)
-X-FDA: 84655983468.05.8C24F59
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 292D240005
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:09:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=h+zMivZa;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id B12716B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 01:17:34 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 632898B81D
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:17:34 +0000 (UTC)
+X-FDA: 84656003628.01.C790095
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A12F48000B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:17:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=12sUYr1m;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776143372;
+	s=arc-20220608; t=1776143852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pw//WfVzYCVqE8TravtJdFEvuG2akkia0sEb57oFa/E=;
-	b=QVJgfIuPjDHgNG93arSMLQNARqia7B8FY66o25xCs8kaAMLRDnof8CsR/wm1ciNd7Ebhy1
-	IV1Uz9eqLba9jLkbeq8/yF8t7RgejgNN0klwPp4x8jHS3OySq9SSuv29K716DFgZKWkdWd
-	bjEw+Jmbclo9wQ5RZuDMCRofNjE9TgM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776143372; a=rsa-sha256;
+	bh=4zcFpRvfg2gFpsyLn+GB/lXfcqVkmxO1BkkPIVAthpQ=;
+	b=Gq/fD8SsejLh02iYGlKz8WmIZtNOJ5hyHjw29yoHecT1fTOavkABua3NZNpU5k4vfWLLPa
+	/wQQkSR35yGccSrjQdiogMxjQilXuIs8XVyl6hEACOHCB/ma1PFBqf8mhJm7MjY6xLSYAT
+	+nbl27oXbLKlDpzHNMnakTOrWO/9bto=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776143852; a=rsa-sha256;
 	cv=none;
-	b=cxb9xUJwiiViUaAJWhkw3JNk0kwJ0PynKdDj6P4dPDkvkce2verOUFgHxY6/C4sNLrCEN2
-	t1iU4mGQ+ezkT3v/8eEEoxN0Fl51aBaJbkJ19V11sHOBxUw33mvKU47edhHBHe7PiXijPF
-	M1Ah82m+p6GkIT+GIesp+ZSZErVW3M8=
+	b=p4g6c2huEwsoIuQyJ5f9p1Q51OEdk0BLaMrRGVJD9a3d6C5+/KqB/CMqm2odR2xva9mER/
+	0VaJhHTB3TvmEspEFPicSZ+Wpli7X7T8AbbuOx3/CzoYn8K5uX1qZVn3BycdZ75RPb4Wqf
+	czoDaolEt3NuMdAYM2yWqTWDQXRtTjU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=h+zMivZa;
-	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 586194EE2;
-	Mon, 13 Apr 2026 22:09:25 -0700 (PDT)
-Received: from [10.164.148.48] (MacBook-Pro.blr.arm.com [10.164.148.48])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B9E93F7B4;
-	Mon, 13 Apr 2026 22:09:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776143371; bh=bMLXuh2nFkKLo/z+idXyRjTafBVLLyWtKePx463V+gE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=h+zMivZaaKvGn9QCaP2IWTEEDcneKP3DW5Vaq7DlEi38jyaZAxvN9sORQZx+VuClo
-	 J6XITjJLgPF77FcNi1VGrtbkinX3ZFcbDfDhbD3uabIwhtO6EcrjkrceIJBlEDpZ48
-	 t9m6Ii6td49dDnzBwpcTzMkqXgFCHRfs9Y3jV3WY=
-Message-ID: <8b5544eb-5ec0-4c85-a2da-7a454fa606dc@arm.com>
-Date: Tue, 14 Apr 2026 10:39:16 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Simplify byte pattern checking in
- mremap_test
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- shuah@kernel.org
-Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com,
- Sarthak Sharma <sarthak.sharma@arm.com>
-References: <20260410143031.148173-1-dev.jain@arm.com>
- <5297e0da-d8ec-49df-9b32-0d9f907588d6@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <5297e0da-d8ec-49df-9b32-0d9f907588d6@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=12sUYr1m;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8CA4D43DBC;
+	Tue, 14 Apr 2026 05:17:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742AEC19425;
+	Tue, 14 Apr 2026 05:17:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776143851;
+	bh=82K051Tep/JkEig50wE4zoQmsPmPeGZ44gpDUIO1KyY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=12sUYr1mFI8KyEGPtwEEyJm/H3SK5yWb3apghtC+Y6KWqtz+TlkuU3OLAq8gtd3nf
+	 f0YI29yQdVlArq7MbdKsJaf1aGsJMxxYe+u8ef+22H2bp7RnIhlPWEBcH+8FfuGoGC
+	 xn0vqs060EZnSWWKem3d1work+YJmIkWgmePZJ1M=
+Date: Mon, 13 Apr 2026 22:17:24 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>, David Hildenbrand
+ <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil
+ Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Subject: Re: [PATCH mm-hotfixes] mm/vma: remove __vma_check_mmap_hook()
+Message-Id: <20260413221724.c939e483e83304fb40e3d6da@linux-foundation.org>
+In-Reply-To: <20260413105713.92625-1-ljs@kernel.org>
+References: <20260413105713.92625-1-ljs@kernel.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zmxx94k643urqsjxgsg8sxqha4nzf6gj
-X-Rspamd-Queue-Id: 292D240005
+X-Rspamd-Queue-Id: A12F48000B
+X-Stat-Signature: he1wricf817m6a5rjc6td98fk98wjeh3
 X-Rspam-User: 
-X-HE-Tag: 1776143371-609449
-X-HE-Meta: U2FsdGVkX1/X0mngLIL6niWuQZjrfaV/ljhj1uXufEmTuEs7QjJJiU2Nrqc4BxkBaG4Vf2f8mRksEOYNHCxf8bkIA6n/ZB+3M1kCZiq2GmYnemB+CDGNArM0J/VKVjpp7MCXGKSoiLUkMiJYbRG/V4eMBflpnGwtO16NALK1aK2w+fL6+NhK+Cqw8flE9niz/CXQpUlrojWWG5jGpjqMPYGB5sLloornGJ11fyzqi/grPfHwYZhtp/k75O28zkqtb83RKuGoWals09q4hkiehqVFD121MMBMPu4sUeypFqSvHhY3DVlPJa2pAhsjC4CLfDazlIfnIuQoynCniyqiBpaI4Po69IFTEyMxVVbLZ2evFrMbR+Omws4Im3smQDo6hX0jpvlrs52vYHhJU7KtjJ9XQZM2Z7ej5qfsRjzG7uwqPMSLIWVrl6uBuo5pikqhnQkOOFbI80X+Z//xUngFl64H805cX8ymNPTFcoZA6wyfT6fkKDKcBxW2Z4KbE+o5FtpvHmQWDNcfdx0IuwqSK2BoQx/jcn2JffdzCM2RgfEQc7LytSXY/aQItnu7Qk/1GjCPbhHixWGFZ/os3UmmqlpeHBkxS90mQxnok1ZXTrIphbVWR7ddJq5N1NbKOLcfWmkgzlRhqbQreE5+nb+jIDNhWDxjGEPCrbjf5k1QTGjypoPw7aycIl67xqrONuiS4jqJW7lvbl44/0HjtOGD2om2oGIFAvAivT60okncZGW3xQbMmcihlD5L1FKaEO+r8CQVeA/JbRXOehV+h/xc1nvUJZaCoHG/l71pBkksihZrRHO7H5qmkQuIcHSegsZTL0mhKA+XRMBpXk91hOSxAQtxmIqBaB5Pf7q21ZipEBrlLl0u3w/+tchVKonf2J61hnRqdst4uxWETLGDAFiyZq5uAd31ZOQY/2WkJvGe94XoTGQH5hTlV3ZLprgAPGWIveVQ1t+kPleMONYPv0p
- OI6ux9LY
- z1Ocubi3bFOXW1+4GFIE+4207pMfJslCAHb5ZLW7tEHr69lAWEJjeLMYJbvjXDUuYlQczFyG591uw066cLHhruchFCZsMEQTfZZ/QQ8iZ6fa5cdWeYX3ttoOq7RubiCsN+VQ1APAE46+ff9+mpD8B69iCMvZVupOoAIYGkxzwtBbAtcsPPeGTD8Y22EMEEKvJNaBEBr0iyoDirsb8Ztb9IXh8NdkFmaZUQJWZ6hYxA6jpNrnt/C6dwuZRHShySCaCXhJF1X07s8+xDuuMzJAZu7pKnRProKB1mehsWjJPPoAzuzmTLseXIouZIWOapwVlX4N1R28G63l9YqoN95xQPjvMeg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776143852-829148
+X-HE-Meta: U2FsdGVkX18NBqJ74rZxGQerhZWKkDk4e+c8W/981GiayujN+YRvAXPhLZ4P6iLzvtVauprOiGGxfyNve59P9mH6vWYYm4KVsWZnpJeYMJA1s2sKMnB7NB4+vf073X/Hlq4qJMP674Q4JZkJtvkTMq5Bl9Vl1lj4lEvyo61L0+Lb/ZbJkqsis1qTcl7ZUz5IwTbnqRFVb/pO6n9nb/xFv01cQt80KdZGGQcQuLiy1IvYIyd0HKZypWcZRtYMfya1DZwGGGAbn91LINSV2DCUPOWD/CiufBkVX5VLU9LnmbdTX89R6owuYYytXRF9qXfjMRK7/Zzi7fYypZMhTQyDwqIm+I7TKBEaTKR8Ixo76OeGvk0rbDIk2CGbZuyLZo9uWP3gFH3GtFrW9TIi7D4BGGwJbl0F5+rBdC2/CH1wuAIYFXhkvj+iSZFYrpeWYQ734OMTWlbL9xAgfbEN7xMWhjrh6W7bjX0YfYPhAaDRR+SWqZKP3+pg29JSOE4S+a6U1my4VdYRCoZjv5UnNsoA8ai16O/WWDTk8AiOZNBcanl4N/KwIAPJawOYeA6tnCaIv6Uv+kTvtjJwL/jac+TDVl7ccfO2fEKSoT6ARwGsQulCYRXWh+fn6NxsbH52eH9mgF6XZn0JoRcMc1oe4G7520vhoI1n9CelxtKOSIQE0jNWJJO2GwccYRRGNAhatIKXEb7pFFMxl8ZcrDchHhB0gpiue590Fc7YHzLwtsaYAN2nsjvd8O5CUny89XbJdKwU8naS802tXiL+BDJYovPVeBxJhNiZ6ENNOJ3+HJIUw4swdcUoGFMAsV9jZnnFk8Vt2x44fO7r18qKX3oC14y3+d2L/h0Bd+Oca9YFfUmWheO8zrgGHvzqKBcXbrMUrAfbn6P8O/51PTmDwm9/y3eldvPC8ShWcwkCAx4T/NZoLmzdTJjTBQMUERW3uRdb/zanPaXgbJhWYVpCVAVGEvn
+ GvwShvTK
+ J7KGdCcBDZNsLRBlHvMIHnddRpGc9G1sywbIK6Q/HBfpBBgEZ2uZOHfYNzweyfiejcIxsSH47YgY3xmfSj1+zsSnrQYJd9Jq0DSkLM8JCKZgsqsZ8/OyrD+8BYYnk5XKmofpN5+Rf4+cJ1lFHjRLTqprfRGZHi3FEw4isPdQF+/cAT/iXbKV8GRldixY6EWPtXIjP11qV5frT/3DVOAbFyclxCglUuMvFeR4s9HO1nPUOuqizd/gJUajX0bW+wqAdb7UmHtYUET6X6/8pWOtF1eN7IC9H2k4TFwLax6/E/e9TANuhKMAZdRIlAtJdRztJABjS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,106 +94,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 13 Apr 2026 11:57:13 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
 
-
-On 14/04/26 12:57 am, David Hildenbrand (Arm) wrote:
-> On 4/10/26 16:30, Dev Jain wrote:
->> The original version of mremap_test (7df666253f26: "kselftests: vm: add
->> mremap tests") validated remapped contents byte-by-byte and printed a
->> mismatch index in case the bytes streams are not equal. That made
->> validation expensive in both cases: for "no mismatch" (the common case when
->> mremap is not buggy), it still walked all bytes in C; for "mismatch", it
->> broke out of the loop after printing the mismatch index.
->>
->> Later, my commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
->> execution time from minutes to seconds using chunkwise memcmp") tried to
->> optimize both cases by using chunk-wise memcmp() and only scanning bytes
->> within a range which has been determined by memcmp as mismatching.
->>
->> But get_sqrt() in that commit is buggy: `high = mid - 1` is applied
->> unconditionally. This makes the speed of checking the mismatch index
->> suboptimal.
+> Commit c50ca15dd496 ("mm: add vm_ops->mapped hook") introduced
+> __vma_check_mmap_hook() in order to assert that a driver doesn't
+> incorrectly implement both an f_op->mmap() and a vm_ops->mapped hook, the
+> latter of which would not ultimately get invoked.
 > 
-> So is that the only problem with 7033c6cc9620: the speed?
-
-Yes.
-
-I'll explain the algorithm in 7033c6cc9620.
-
-The problem statement is: given two buffers of equal length n, find the
-first mismatch index.
-
-Algorithm: Divide the buffers into sqrt(n) chunks. Do a memcmp() over
-each chunk. If all of them succeed, the buffers are equal, giving the
-result in O(sqrt(n)) * t, where t = time taken by memcmp().
-
-Otherwise, worst case is that we find the mismatch in the last chunk.
-Now brute-force iterate this chunk to find the mismatch. Since chunk
-size is sqrt(n), complexity is again
-sqrt(n) * t + sqrt(n) = O(sqrt(n)) * t.
-
-So if get_sqrt() computes a wrong square root, we lose this time
-complexity.
-
-Maybe there is an optimal value of x = #number of chunks of the buffer,
-which may not be sqrt(n).
-
-But given the information we have, a CS course on algorithms will
-say this is one of the optimal ways to do it.
-
+> However, this did not correctly account for stacked drivers (or drivers
+> that otherwise use the compatibility layer) which might recursively call
+> an mmap_prepare hook via the compatibility layer.
 > 
->>
->> The mismatch index does not provide useful debugging value here: if
->> validation fails, we know mremap behavior is wrong, and the specific byte
->> offset does not make root-causing easier.
+> Thus the nested mmap_prepare() invocation might result in a VMA which has
+> vm_ops->mapped set with an overlaying mmap() hook, causing the
+> __vma_check_mmap_hook() to fail in vfs_mmap(), wrongly failing the
+> operation.
 > 
-> Fully agreed.
-> 
->>
->> So instead of fixing get_sqrt(), bite the bullet, drop mismatch index
->> scanning and just compare the two byte streams with memcmp().
-> 
-> How does this affect the execution time of the test?
+> This patch resolves this by simply removing the check, as we can't be
+> certain that an mmap() hook doesn't at some point invoke the compatibility
+> layer, and it's not worth trying to track it.
 
-I just checked with ./mremap_test -t 0, the variance is very high on my
-system.
+Cool, thanks.
 
-In the common case of the test passing:
+> Fixes: c50ca15dd496 ("mm: add vm_ops->mapped hook")
 
-before patch, there are multiple sub-length calls to memcmp.
-after patch, there is a single full-length call to memcmp.
+That's presently in flight mm.git->Linus, So I'll include this fix in
+next week's second batch of MM updates into Linus.
 
-So the time should reduce but may not be very distinguishable.
 
-> 
->>
->> Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> 
-> Fixes: 7033c6cc9620 ("selftests/mm: mremap_test: optimize execution time
-> from minutes to seconds using chunkwise memcmp")
-> 
-> ?
+> c50ca15dd496 is in mm-stable, so thought best to do as fix-patch? Will
+> leave a small bisection hazard (unfortunately) so putting this as close as
+> possible to the patch it fixes would be ideal.
 
-Not needed. 7033c6cc9620 does not create any incorrectness in the checking
-of mismatch index.
+Yep, I did that.
 
-> 
->> ---
->> Sorry for sending two patchsets the same day - the problem was made known
->> to me today, and I couldn't help myself but fix it immediately, imagine
->> my embarrassment when I found out that I made a typo in the binary search
->> code which I had been writing consistently throughout college :)
-> 
-> :)
-> 
->>
->> Applies on mm-unstable.
->>
->>  tools/testing/selftests/mm/mremap_test.c | 109 +++--------------------
->>  1 file changed, 10 insertions(+), 99 deletions(-)
-> 
-> I mean, it certainly looks like a nice cleanup.
-> 
 
 
