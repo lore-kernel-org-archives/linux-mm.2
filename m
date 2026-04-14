@@ -4,135 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED10ED7B98
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B8E0ED7B9A
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:36:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8E6E6B008A; Tue, 14 Apr 2026 06:30:02 -0400 (EDT)
+	id 91A1B6B0088; Tue, 14 Apr 2026 06:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3FAF6B0092; Tue, 14 Apr 2026 06:30:02 -0400 (EDT)
+	id 8CB7D6B008A; Tue, 14 Apr 2026 06:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D55EF6B0093; Tue, 14 Apr 2026 06:30:02 -0400 (EDT)
+	id 7B9326B0092; Tue, 14 Apr 2026 06:36:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C3DBB6B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:30:02 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8600F590AC
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:30:02 +0000 (UTC)
-X-FDA: 84656791044.16.B041BCB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 132BE40008
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:29:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KHS0O4GE;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 69D746B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:36:06 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EABB913B0D7
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:36:05 +0000 (UTC)
+X-FDA: 84656806290.05.BC27F96
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 4DF82A0008
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:36:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=H5E2rrfS;
+	spf=pass (imf15.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776162600;
+	s=arc-20220608; t=1776162963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zCYL+ZoJzKHMQDin2IVxvP3VkJWBlHF10mQGVNRGJ/I=;
-	b=Z4xia48ugKiY4+0ljaePRKxSJwOvCmKZ6zz3/Dnpzwv6HyjJpdXqKVZH1PnyqjPY/Q2zwL
-	vvmu7mSa1vcx3r5J3xvZ90xt2zDpku5cP51+TFcG2JLW8EQIl/5VenuG/NeRnzFuAh6YrV
-	SawV7W9Y6R4uqPyXjU/6kA4oOnbDkY4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776162600; a=rsa-sha256;
-	cv=none;
-	b=FTOX+DvNahQFwzRNcRk5bSEb5mMH7l7vSWXhJwf4WuA2km/dOeXKZq1hb4vOrVTBa4S8nJ
-	IOY2IF/zt0ETO5H6ND+pMu7dgseIVFtvGS55xyKMOschhYgee0gPJZMeaelnHe5M5/uJEU
-	6PODBtmHbO/fSbzeZlFNW+sjT/Ob66s=
+	bh=cRw0Mj+uIAd+TbzCKr78WtBvzN09PLex0QRertW9J0M=;
+	b=DvfHOznUIbmh+33p+so9E6XZ+z5Of7klTC7KMvRUV/eGvaoXC8uvCbEkgO1lh8jk3vOBUv
+	5j9/29yivbP68We8PAZqg9Xfa01HOUlayJ2Ei+CXdohTX1NVUj5Lqsn088exerv7x4et7M
+	UBB7RUAzsWENgJBf3ZSofa53pPNqy0o=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KHS0O4GE;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf27.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776162599;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zCYL+ZoJzKHMQDin2IVxvP3VkJWBlHF10mQGVNRGJ/I=;
-	b=KHS0O4GENBFEl+SPOxgvL5nz5tPmIujy+gWVKE00SOrLAQX6qNWKvYhx7LGDNDlxo19Nld
-	adZ+GyqGaBIWA16buPk/gqZgETe7fu3VFS6Vt6vr87YOTB6u9gWxaTgfUIJjEKDAqBGIo5
-	C5Wn7IhXAWixl/1zEylCOAeNsRTHwvE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-Hbwtxbj5OCqAtPLMfs30RQ-1; Tue, 14 Apr 2026 06:29:58 -0400
-X-MC-Unique: Hbwtxbj5OCqAtPLMfs30RQ-1
-X-Mimecast-MFC-AGG-ID: Hbwtxbj5OCqAtPLMfs30RQ_1776162597
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d1ceb2ddfso5119123f8f.2
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:29:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776162597; x=1776767397;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zCYL+ZoJzKHMQDin2IVxvP3VkJWBlHF10mQGVNRGJ/I=;
-        b=Ik7ryfv7nCIiCqt9A0bJKUJSKfUDdszy8YkWcLa/LcRvObBR8ds1ZY7MVLXDLUhbv8
-         jZ7mnD9EZned/6wb4WkRnPgUBHIDUl0Jpt+wi037PE1Sn8UGyeksNXSMstuUPBEc8xxp
-         CSJK+rVxao03lixAyrUlVkLYJ4s39uODv7sFJQ9/3UTrFDyBElEcyQGDaTM4Qn50CyRB
-         Vfcr/5w9PIGV+ePQuTSZZ9+dtUdO/u4FoirCSSZ9G6rxXoeIM0p40NjEMsEVXaQUApv8
-         tY8Rq4Op+edu3bBB+DW9bVz5Ugd8WQlsf53UVa7y8mLE5cAAA5ZTD8zVfesfdCfXWz6G
-         hcvw==
-X-Forwarded-Encrypted: i=1; AFNElJ/SQ2FxdTxmUqMknrdHFZ68YdPdw4UDOK3WkPmMbndWKnoLuods/JtNp2ycPyoPpDxxCAN8gqf6DQ==@kvack.org
-X-Gm-Message-State: AOJu0YziL/yM3JiMe7yK4s7j9USR6JkPaA2xcPP5bQ+75E58X3NexXlZ
-	ejIl0frnlubStml4qGvvn4XhPcrrdiON0XGvxZQ9PIi6FVax9PGEo4Ngtj5HQxLOjW6Zzc6ew6F
-	oStOyTHOtXpDjTH2tNZSsP81X3e9G5p0hvKWK0E9/nuliNvp7XpZH
-X-Gm-Gg: AeBDievYAyHxXo2Zmwj8+S9S0M8kFl6vb3Wl+/rRUamJFgw79H3VMLSv/SPQvM5iUGG
-	DWdSuFMwRcb/c5o8bu5vF3Ro6YJsjrmr/fbOYlht1xc7NLnK3o5VY5gKFBbemBJIaqQeFTNcp+/
-	CohZJCSxEreRaQPy52BzHY0zx5IHqNL+kU3Ou8HRX67mLurWkqoEFdNL5xTcnUqrsrhj4BHEWpi
-	A41elkZI0rSoymUhReajRQoCS/2yZ9KLYafZKCj7B5myahMxylOH1CKWTVGSEqvCb4PVX9h/a9P
-	73K20XAKDpSWhKebk1jAMIRUNPKzk59vH8D1eDIThIA8EDyomf1zG0gzlZH792X34t/rIXO+VoG
-	mB4qsUbJGZ6lF2c9YSiXbJ+bZiZInhNHBveMKdgkWecc=
-X-Received: by 2002:a05:600c:34cc:b0:485:557d:9fe with SMTP id 5b1f17b1804b1-488d67e65e7mr221616815e9.12.1776162596764;
-        Tue, 14 Apr 2026 03:29:56 -0700 (PDT)
-X-Received: by 2002:a05:600c:34cc:b0:485:557d:9fe with SMTP id 5b1f17b1804b1-488d67e65e7mr221616355e9.12.1776162596244;
-        Tue, 14 Apr 2026 03:29:56 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-25-21.inter.net.il. [80.230.25.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d5dcf845sm118552305e9.11.2026.04.14.03.29.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 03:29:55 -0700 (PDT)
-Date: Tue, 14 Apr 2026 06:29:52 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
-	virtualization@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH RFC 3/9] mm: add __GFP_PREZEROED flag and
- folio_test_clear_prezeroed()
-Message-ID: <20260414062524-mutt-send-email-mst@kernel.org>
-References: <cover.1776033471.git.mst@redhat.com>
- <b21b0ba353330f24b9e10ee5bf01b60f32043327.1776033771.git.mst@redhat.com>
- <b258160c-5287-43dd-b56e-268c403b85ea@kernel.org>
- <20260413163644-mutt-send-email-mst@kernel.org>
- <da935245-9c75-4cf4-8a42-2c6328bd93f9@kernel.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=H5E2rrfS;
+	spf=pass (imf15.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776162963; a=rsa-sha256;
+	cv=none;
+	b=sSI8CEOedStNOBvS7MF8nOC99gI+M8i1sGhkUZqkvUlOiXZ8w2GjpUVW9Yi+BqfIuAtbeh
+	j2PnAI+DJ4qeDAXeiTmmsiOcQpihqS91U58W32iRKh86IAWbgRzBaMjqsWZ4pBf9QS9dcN
+	gVO5H2E1SGy4/IpHen3lP/fA6OqnKZ4=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DLIRq21832977;
+	Tue, 14 Apr 2026 10:35:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=cRw0Mj
+	+uIAd+TbzCKr78WtBvzN09PLex0QRertW9J0M=; b=H5E2rrfSzdSsXy6CDqTqwu
+	ZB2PCCLtRAumZohLhTZonPShT4NaFMC0/jxPscFoxhkKAO3VBgRFowZ8+F5eTUzd
+	aJzvHluwwS93h+5UDhryqD50y9W2YpjHZJG2INnlWZzmmI+al1IE7eielqZH+suP
+	eSrX/ZqIioZ5DVWDX9wzf5EqObivIlghlpV0Y9COBuFHnUCDjLfD0vvjvxgImRig
+	KCZx/sh3wBbwhWS/njxYZFjclb+Gw9OZ8S4r2nL5orTbBA5BwVyE60vZlpk8GLO6
+	glSOlSkkVj7TYawFOg+eWkYxWMlqpKT2Lekxvbvk49+lVWKRAvrtVo50ugvZSspw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89ra7x9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Apr 2026 10:35:56 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63EAVawT025831;
+	Tue, 14 Apr 2026 10:35:55 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg3b1gsqv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Apr 2026 10:35:55 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63EAZsA832244390
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Apr 2026 10:35:54 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B8C3658059;
+	Tue, 14 Apr 2026 10:35:54 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5572058043;
+	Tue, 14 Apr 2026 10:35:45 +0000 (GMT)
+Received: from [9.39.26.89] (unknown [9.39.26.89])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 14 Apr 2026 10:35:44 +0000 (GMT)
+Message-ID: <fab52975-b377-4171-9150-eeaf9677e753@linux.ibm.com>
+Date: Tue, 14 Apr 2026 16:05:43 +0530
 MIME-Version: 1.0
-In-Reply-To: <da935245-9c75-4cf4-8a42-2c6328bd93f9@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: WPWXOzb7f7nvCMMFOwHNBTYWqaBec146fsISt2b00iI_1776162597
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 132BE40008
-X-Stat-Signature: gkagjfjas6hr18gi69qnhfxdjdy3pqo3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 16/53] selftests/mm: protection_keys: use kselftest
+ framework
+To: Mike Rapoport <rppt@kernel.org>,
+        Andrew Morton
+ <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+        Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-mm@kvack.org
+References: <20260406141735.2179309-1-rppt@kernel.org>
+ <20260406141735.2179309-17-rppt@kernel.org>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260406141735.2179309-17-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDA5NiBTYWx0ZWRfX8/pF1nJ6I/vK
+ gxJBg8I5nHuwqpzF9N2U4HvlOzOmY1BrgvC2QR6WT1Nzn1idtVPNna/J1tSntHMmA3Wv9xhixZt
+ vOOlgiZNGAWbem4/qj+uTvwM+cNqbu7dOgj6cbfLIo86z8I8X6TpedTMIGiKmkH7D4PwJp/lDJ+
+ feM1qUP8D9tWJibK6XmctOK4rggEeY1JIxulX7gos81hrX1b5+V/9XRn6M8RQrZr2R7evLUZyCj
+ VlSj7WAKXo3ikyuU2v4IOkHthbR/fKiUYAbgf32YvO+MfGmiECYv59ffS+Pz4B1vCpvotC5ol9h
+ 2KHn7GqV5QHovYL41wj1TWf/ulaKH1mhqDeQh8OyUzTbUYEup5BH3cT1KF6PF0xQNQteuG8u4nB
+ nwgm4Ct9svgaL5EQQwJ/rfxmT9bvMZa8o2fnWWP05jrhJaGnzmn5L7bt2saIU/1RwTc3ZbIrqL3
+ 6aEHQGMCQY4VgRp6AuQ==
+X-Proofpoint-ORIG-GUID: JdJTr1HsuRWmXo_HZln53nTQ8Jcyfdb1
+X-Proofpoint-GUID: xojNtymjtNjO51RGGwKKZ2aAnCCZecFX
+X-Authority-Analysis: v=2.4 cv=fYidDUQF c=1 sm=1 tr=0 ts=69de188d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=4NaIcouCGBq_Vv9_7IwA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-14_02,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 spamscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140096
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776162599-914741
-X-HE-Meta: U2FsdGVkX1/W4TAn3bLwMWHtJtPyF4Z4zuAUvclzJPNIxOBNyrP1Lhtyfbx+dBImomhpDzrNABETt/441b2ccR0vBTAU/MLKI9LksODuDwAvR1zQl1wtTNkwWNbeVShaC9vTOz3CPHS3WROci4StwPzH6vOHMgqhBzPO0OLVOFy58UkO2J2cu7t172aINH+fKhf3Y6+vl7NAWP7EoJa6XAhcSs/LozKv/XwgL5HYB3aYPlXB73onPddHVkvg9F5xv+FunU5UsJMM6Y09Vxo8kKfASLf6d74jTOq0GPRiQiNlCDrSvxjVHwRQVYEEHPsHOB8jKIqmViLMPGYDNk8S7dXa96DfxaPxXuVdNtRlRufO5odm3C8O7TUT9bUrmucowBwWNlUrhnMPlvNSR/b8vvs1b5F9EOzIjEgJs7Ki/aysS6RMr2rkN8bVE7qyQbY8gWTUbTB6D8/E2l0l5MttGgB8DP1N5AXo4FQyRYtJ0B9lMLc5NodPkcZxxTEtcF37Xo/V0B/URMikP/M9exGJWrXNCuvGXwdt95qoue4eJjRt4RIgsUoub4MKX8pCGWeiNVxYVj7QiJMlHlVXWWHQOZZI8lgGU5hHI6bhqmp3L3wO9Q3neTeLfGLOlXnefUz8z4ImKcvBV3Mk435K/eZD/KXZezxVmWZHTdmGDeAiX1alBZkBeymqgUsDANa/ODo0mS6vjgJ4l89Ap9567F7NpCUiR50lTQBIRCE1DXIyUscwHxkcFc1slAAkla7rw/lRchftnnRv37GA9uDghUMyKSg0mgOSjsgBb0Xd21XU2tNYximZTZjp6CcXPy6ixB/AHZ52EMGpQf01vz0qo6AKI05+ar9dI0rFQfg9MJWInEA0vY5dGu80Hv0X0Htqpj31Qmsll27a0Y1h+ROKWw/scI/ZvpunCzdMXnhylbcMW1JJiHVvf8OIym4RkvJaX+zUS59OWdTDZT/XWMa+WSU
- yCxn/5bc
- Jv76sDX/6T/6JVbzVHyp9j4gfuUq0moIikJoR1L0gHgFpFl1AQ4rmpu+r4tzeJquZrocebX2/py+hFMzDZtTRy03Vk0BQSSz8qvdwrkbMFZBWCgTxMGl8JQoiu8yY6h4pzg1u5i/p3hNTVp8rjJ8nusWK0rLcN9wMfg0QfvRVmdwkOgbRkaiwwauJ0SKnlUpdo/S9nhE21wxD33Xa3PRCncKIYHvfs3tCHDHd6a0/ExH5pe/nUxiT47pIw+pTMSmxZn/t38dLxRqRKkHoaxr4g3ziYYTtIQT49+c9PSini5AWOY347djtNmux6cExDRLxjSfPKFQ0o+TyboUbSvIsUUaT/xip0+ShM3yzlED+HIoJJDa/axvDIlWVlnq/bSoOZlew
+X-Rspamd-Queue-Id: 4DF82A0008
+X-Stat-Signature: tccxpatywrdrrcrhpw3u6nqcjnt9jis7
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776162963-94087
+X-HE-Meta: U2FsdGVkX18ct7IwGUJOfmWz4D7FTBQzbcsN4oi1OZmxBAT+uCL75O8cBg4YyXLKYy8hrENvLlVO0Ra1niI4G3umTeDCYqsTnikg0zmn+jRTlrD4ZfU7l9+W2zb8Q5mXqNXyomVAP9BmEyBEXrEoCvv/LUMEuhkNEYRTOcG9jrzXOhpOVi8j9SIej+CUjyOOuTNQDUEp7T0p2Irnw+OT/G2pNhnuXkigpslA6STm1lsxoaaaOVE31qmEqEXKXnfG89U7jA1IAwLbAA/5cE5XnfUL36/Muya2YmtITvuBbZWFScy3jVsHzUuLGAXRRfuvqT0hUoEPikAZ3CwlQB+GACwougD1vOrvKdptWwGTh4TS5JqliKtAsUCs/gFrZA7LGjjybidOspoG26CnUDBYKMnHsXI5ku75cMwD75EryT8gruN64sPYsbv1PzgziDIC9esQtVUU4y6HnZuRwa2Gh+DSNAoYs5Tz1/zpfcCNcLiolhxIyLBvuzz76Utt6HXtI4kO+8oD6/TMGpydNjyXdSR93N0BEXEzNZDaiolEtfqIldK7Mim8p9+nb5zx14mrN4frjKPizwWvX4d+qx+Rc+RQCIANrva6+382ezGJdxL9sKOUeFE3WigDe9VnnpVB7huiEqTAxXTH1TwmdceDzZdCDIqk0rtTgoMbswSXJueCe05v/QQzsQhCtmUTqPmbDXQbuRim/FIWWrV7aB6u3U5ULbBuD6eeYoR4Nxd44zdqLxAxh7XccqzlAUpgPiu3Ht+4tyf/5s+CJWqRqTRWixPbIgsicLsM3sOUL2I1gej6sA8amEhbywLb70FUmuaHHLvmoTfcxzGLoSjcnZ2izApJjpIaC3jFyX4jE2YueUq754QTMituz14ywarZ6SWmuHG7S9Ib2T/2Xw0GKEZxlZYe83ymal/2ERgBiPu5UiApnlQvUVhLacjC0iM7Ua+sRT49oRnU5jOWLzKbs0h
+ lMxN9LG/
+ SfEm3RGtoLraN9c2d6NUUCCjxENf7C1NdF62aUZFkUqeY27nxLKjUsEQ+8OWxpAzBzXSS7TAv4W5sCOkdw26gz54yI2ihhPlgxvY7Jayw4CVsWR541CAd6KUKiLOsye48n3Y4ZRWQ7gnEFjNJv2FwAOT8iHw+hezO/V4li2PH6tlBMiY3Yl08zhkdcg8LELjx22aogK74Qjl/UFv+92yl6jqCjV6gSYTrj0ZxBdEXn7FXje8YtpOhIBLokvoJRv5gawsSbTDvX0yrfs3mK+CAYodZgxvAEXn19cN4g1ndy9HrXH8dGRUi4Yc+g5OYdF2bnBs4+AV7cXIxmSVhTlloQf5UfwmOEpCfsnL06oc5ZT2bXoPrAUSjNTUy6VEYd4I7Wu0HLBh/S8t7Wzo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,210 +155,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 11:04:04AM +0200, David Hildenbrand (Arm) wrote:
-> On 4/13/26 22:37, Michael S. Tsirkin wrote:
-> > On Mon, Apr 13, 2026 at 11:05:40AM +0200, David Hildenbrand (Arm) wrote:
-> >> On 4/13/26 00:50, Michael S. Tsirkin wrote:
-> >>> The previous patch skips zeroing in post_alloc_hook() when
-> >>> __GFP_ZERO is used.  However, several page allocation paths
-> >>> zero pages via folio_zero_user() or clear_user_highpage() after
-> >>> allocation, not via __GFP_ZERO.
-> >>>
-> >>> Add __GFP_PREZEROED gfp flag that tells post_alloc_hook() to
-> >>> preserve the MAGIC_PAGE_ZEROED sentinel in page->private so the
-> >>> caller can detect pre-zeroed pages and skip its own zeroing.
-> >>> Add folio_test_clear_prezeroed() helper to check and clear
-> >>> the sentinel.
-> >>
-> >> I really don't like __GFP_PREZEROED, and wonder how we can avoid it.
-> >>
-> >>
-> >> What you want is, allocate a folio (well, actually a page that becomes
-> >> a folio) and know whether zeroing for that folio (once we establish it
-> >> from a page) is still required.
-> >>
-> >> Or you just allocate a folio, specify GFP_ZERO, and let the folio
-> >> allocation code deal with that.
-> >>
-> >>
-> >> I think we have two options:
-> >>
-> >> (1) Use an indication that can be sticky for callers that do not care.
-> >>
-> >> Assuming we would use a page flag that is only ever used on folios, all
-> >> we'd have to do is make sure that we clear the flag once we convert
-> >> the to a folio.
-> >>
-> >> For example, PG_dropbehind is only ever set on folios in the pagecache. 
-> >>
-> >> Paths that allocate folios would have to clear the flag. For non-hugetlb
-> >> folios that happens through page_rmappable_folio().
-> >>
-> >> I'm not super-happy about that, but it would be doable.
-> >>
-> >>
-> >> (2) Use a dedicated allocation interface for user pages in the buddy.
-> >>
-> >> I hate the whole user_alloc_needs_zeroing()+folio_zero_user() handling.
-> >>
-> >> It shouldn't exist. We should just be passing GFP_ZERO and let the buddy handle
-> >> all that.
-> >>
-> >>
-> >> For example, vma_alloc_folio() already gets passed the address in.
-> >>
-> >> Pass the address from vma_alloc_folio_noprof()->folio_alloc_noprof(), and let
-> >> folio_alloc_noprof() use a buddy interface that can handle it.
-> >>
-> >> Imagine if we had a alloc_user_pages_noprof() that consumes an address. It could just
-> >> do what folio_zero_user() does, and only if really required.
-> >>
-> >> The whole user_alloc_needs_zeroing() could go away and you could just handle the
-> >> pre-zeroed optimization internally.
-> >>
-> >> -- 
-> >> Cheers,
-> >>
-> >> David
-> > 
-> > I admit I only vaguely understand the core mm refactoring you are suggesting.
-> > 
-> 
-> Oh, I was hoping claude would figure that out for you.
+Hi Mike
 
-We figured it out together)
+On 4/6/26 7:46 PM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Convert protection_keys test to use kselftest framework for reporting
+> and tracking successful and failing runs.
+>
+> Adjust dprintf0() printouts to use "#" in the beginning of the line for
+> TAP compatibility and add fflush(stdout) in the end of the test to
+> ensure all the ksft_print_*() messages are really output.
 
 
-> 
-> Essentially, we move the zeroing of folios back into the buddy, by using
-> GFP_ZERO.
-> 
-> user_alloc_needs_zeroing() logic would reside in the buddy and is no longer
-> required in callers.
-> 
-> E.g.,
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 631205a384e1..44576ba3def5 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5259,7 +5259,7 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
->         gfp = vma_thp_gfp_mask(vma);
->         while (orders) {
->                 addr = ALIGN_DOWN(vmf->address, PAGE_SIZE << order);
-> -               folio = vma_alloc_folio(gfp, order, vma, addr);
-> +               folio = vma_alloc_folio(gfp | GFP_ZERO, order, vma, addr);
->                 if (!folio)
->                         goto next;
->                 if (mem_cgroup_charge(folio, vma->vm_mm, gfp)) {
-> @@ -5272,15 +5272,6 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
->                         goto fallback;
->                 }
->                 folio_throttle_swaprate(folio, gfp);
-> -               /*
-> -                * When a folio is not zeroed during allocation
-> -                * (__GFP_ZERO not used) or user folios require special
-> -                * handling, folio_zero_user() is used to make sure
-> -                * that the page corresponding to the faulting address
-> -                * will be hot in the cache after zeroing.
-> -                */
-> -               if (user_alloc_needs_zeroing())
-> -                       folio_zero_user(folio, vmf->address);
->                 return folio;
->  next:
->                 count_mthp_stat(order, MTHP_STAT_ANON_FAULT_FALLBACK);
-> 
-> 
-> folio_zero_user(), from where we would extract a function that operates on a
-> page+order chunk, requires the address hint.
-> 
-> So we would have to pass that address. For example for the !CONFIG_NUMA case,
-> something like the following could be done.
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 51ef13ed756e..29771c3240be 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -234,6 +234,10 @@ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_
->                 nodemask_t *nodemask);
->  #define __folio_alloc(...)                     alloc_hooks(__folio_alloc_noprof(__VA_ARGS__))
->  
-> +struct folio *__folio_alloc_user_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
-> +               nodemask_t *nodemask, unsigned long addr);
-> +#define __folio_alloc_user(...)                        alloc_hooks(__folio_alloc_user_noprof(__VA_ARGS__))
+I noticed that this test uses perror() Would it be appropriate to 
+convert it to ksft_perror() for consistency?
+
+-Donet
+
+
+>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>   tools/testing/selftests/mm/pkey-helpers.h    |  6 +++--
+>   tools/testing/selftests/mm/protection_keys.c | 27 ++++++++++++--------
+>   2 files changed, 20 insertions(+), 13 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
+> index 7c29f075e40b..ae010b075417 100644
+> --- a/tools/testing/selftests/mm/pkey-helpers.h
+> +++ b/tools/testing/selftests/mm/pkey-helpers.h
+> @@ -71,10 +71,12 @@ static inline void sigsafe_printf(const char *format, ...)
+>   extern void abort_hooks(void);
+>   #define pkey_assert(condition) do {		\
+>   	if (!(condition)) {			\
+> -		dprintf0("assert() at %s::%d test_nr: %d iteration: %d\n", \
+> +		dprintf0("# assert() at %s::%d test_nr: %d iteration: %d\n", \
+>   				__FILE__, __LINE__,	\
+>   				test_nr, iteration_nr);	\
+> -		dprintf0("errno at assert: %d", errno);	\
+> +		dprintf0("# errno at assert: %d\n", errno);	\
+> +		ksft_test_result_fail("test %d (iteration %d)\n",	\
+> +				      test_nr, iteration_nr);		\
+>   		abort_hooks();			\
+>   		exit(__LINE__);			\
+>   	}					\
+> diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
+> index 80c6124e8378..c069250969f5 100644
+> --- a/tools/testing/selftests/mm/protection_keys.c
+> +++ b/tools/testing/selftests/mm/protection_keys.c
+> @@ -136,6 +136,7 @@ static void tracing_off(void)
+>   
+>   void abort_hooks(void)
+>   {
+> +	fflush(stdout);
+>   	fprintf(stderr, "running %s()...\n", __func__);
+>   	tracing_off();
+>   #ifdef SLEEP_ON_ABORT
+> @@ -370,8 +371,8 @@ static void signal_handler(int signum, siginfo_t *si, void *vucontext)
+>   	if ((si->si_code == SEGV_MAPERR) ||
+>   	    (si->si_code == SEGV_ACCERR) ||
+>   	    (si->si_code == SEGV_BNDERR)) {
+> -		printf("non-PK si_code, exiting...\n");
+> -		exit(4);
+> +		dprintf0("# non-PK si_code: %d, exiting...\n", si->si_code);
+> +		exit(1);
+>   	}
+>   
+>   	si_pkey_ptr = siginfo_get_pkey_ptr(si);
+> @@ -719,7 +720,7 @@ static void setup_hugetlbfs(void)
+>   	long hpagesz_mb;
+>   
+>   	if (geteuid() != 0) {
+> -		fprintf(stderr, "WARNING: not run as root, can not do hugetlb test\n");
+> +		ksft_print_msg("WARNING: not run as root, can not do hugetlb test\n");
+>   		return;
+>   	}
+>   
+> @@ -855,7 +856,7 @@ void expected_pkey_fault(int pkey)
+>   
+>   #define do_not_expect_pkey_fault(msg)	do {			\
+>   	if (last_pkey_faults != pkey_faults)			\
+> -		dprintf0("unexpected PKey fault: %s\n", msg);	\
+> +		dprintf0("# unexpected PKey fault: %s\n", msg);	\
+>   	pkey_assert(last_pkey_faults == pkey_faults);		\
+>   } while (0)
+>   
+> @@ -1753,7 +1754,7 @@ static void run_tests_once(void)
+>   		tracing_off();
+>   		close_test_fds();
+>   
+> -		printf("test %s PASSED (iteration %d)\n", pkey_tests[test_nr].name, iteration_nr);
+> +		ksft_test_result_pass("test %s (iteration %d)\n", pkey_tests[test_nr].name, iteration_nr);
+>   		dprintf1("======================\n\n");
+>   	}
+>   	iteration_nr++;
+> @@ -1773,27 +1774,31 @@ int main(void)
+>   
+>   	setup_handlers();
+>   
+> -	printf("has pkeys: %d\n", pkeys_supported);
+> +	ksft_print_header();
+>   
+>   	if (!pkeys_supported) {
+>   		int size = PAGE_SIZE;
+>   		int *ptr;
+>   
+> -		printf("running PKEY tests for unsupported CPU/OS\n");
+> +		ksft_set_plan(1);
+> +		ksft_print_msg("running PKEY tests for unsupported CPU/OS\n");
+>   
+>   		ptr  = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
+>   		assert(ptr != (void *)-1);
+>   		test_mprotect_pkey_on_unsupported_cpu(ptr, 1);
+> -		exit(0);
+> +		ksft_test_result_pass("pkey on unsupported CPU/OS\n");
+> +		ksft_finished();
+>   	}
+>   
+> +	ksft_set_plan(ARRAY_SIZE(pkey_tests) * nr_iterations);
 > +
->  unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
->                                 nodemask_t *nodemask, int nr_pages,
->                                 struct page **page_array);
-> @@ -291,6 +295,18 @@ __alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order)
->  
->  #define  __alloc_pages_node(...)               alloc_hooks(__alloc_pages_node_noprof(__VA_ARGS__))
->  
-> +static inline
-> +struct folio *__folio_alloc_user_node_noprof(gfp_t gfp, unsigned int order,
-> +               int nid, unsigned long addr)
-> +{
-> +       VM_BUG_ON(nid < 0 || nid >= MAX_NUMNODES);
-> +       warn_if_node_offline(nid, gfp);
-> +
-> +       return __folio_alloc_user_noprof(gfp, order, nid, NULL, addr);
-> +}
-> +
-> +#define  __folio_alloc_user_node(...)          alloc_hooks(__folio_alloc_user_node_noprof(__VA_ARGS__))
-> +
->  static inline
->  struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
->  {
-> @@ -342,7 +358,7 @@ static inline struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int orde
->  static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
->                 struct vm_area_struct *vma, unsigned long addr)
->  {
-> -       return folio_alloc_noprof(gfp, order);
-> +       return __folio_alloc_user_node_noprof(gfp, order, numa_node_id(), addr);
->  }
->  #endif
-
-> index ee81f5c67c18..28f448f40b75 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5260,6 +5260,13 @@ struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_
->  }
->  EXPORT_SYMBOL(__folio_alloc_noprof);
->  
-> +struct folio *__folio_alloc_user_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
-> +               nodemask_t *nodemask, unsigned long addr)
-> +{
-> +       /* TODO */
-> +}
-> +EXPORT_SYMBOL(__folio_alloc_noprof);
-> +
->  /*
->   * Common helper functions. Never use with __GFP_HIGHMEM because the returned
->   * address cannot represent highmem pages. Use alloc_pages and then kmap if
-> 
-> 
-> As alloc_user_pages() resides in the buddy, it can just honor any
-> buddy-internal "pre-zeroed" flag.
-> 
-> 
-> Once you are in page_alloc.c you can access internal allocation functions and
-> take care of that without GFP flags.
-> 
-> -- 
-> Cheers,
-> 
-> David
-
-
-Pretty much what I did, except I felt it is better to change the
-existing APIs. A bit more churn, but in return there's less of a chance
-we forget to pass the user address.
-
-Because, if we do, the result works fine on x86 but corrupts memory
-on other arches.
-
-
--- 
-MST
-
+>   	pkey_setup_shadow();
+> -	printf("startup pkey_reg: %016llx\n", read_pkey_reg());
+> +	ksft_print_msg("startup pkey_reg: %016llx\n", read_pkey_reg());
+>   	setup_hugetlbfs();
+>   
+>   	while (nr_iterations-- > 0)
+>   		run_tests_once();
+>   
+> -	printf("done (all tests OK)\n");
+> -	return 0;
+> +	ksft_finished();
+> +	fflush(stdout);
+>   }
 
