@@ -4,135 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48630F9D0C9
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 13:05:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E089F9D0CE
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 13:13:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A95B96B0092; Tue, 14 Apr 2026 09:05:35 -0400 (EDT)
+	id 5228B6B0092; Tue, 14 Apr 2026 09:13:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A46A56B0093; Tue, 14 Apr 2026 09:05:35 -0400 (EDT)
+	id 4FA3F6B0093; Tue, 14 Apr 2026 09:13:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 935456B0095; Tue, 14 Apr 2026 09:05:35 -0400 (EDT)
+	id 410506B0095; Tue, 14 Apr 2026 09:13:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A8D36B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:05:35 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13A245922B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:05:35 +0000 (UTC)
-X-FDA: 84657183030.24.F0A6A59
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0D28D100016
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:05:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XKGQrwyY;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776171933;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F4E26B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:13:06 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE2C81605DC
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:13:05 +0000 (UTC)
+X-FDA: 84657201930.01.A835FAD
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 891BDA0017
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:13:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=lhDeNvog;
+	spf=pass (imf15.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776172384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WJyMBBDw3QxsO3eB2s7y7REn56kC8A82/2aFbWMGYbQ=;
-	b=N+8cm++aXLixlAODJU7nR+W9yhA30dmctQWCKHXgPib1PenUkeI+xWNlYIo2WprYUIvi5o
-	SHaNbgZFFLeIdGGnb3peZRj7GPk3iyzhFq7OmC//8LTrYizB4xRcquLbXkWm16ImDOzbH7
-	RavVivtiMm6vtJjlAg/NEp4huzZ71bs=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776171933; a=rsa-sha256;
-	cv=pass;
-	b=Kh113eITyCuPU+hKebRoJMMGwBAXnPnBiSN/tVATinmp58J1AudYi00GsirNeOe549jGhk
-	x/vDZm4yeJGDN9gCnX/ST0O++gtVf82nvYnXMhGdIL+54BeN00NPema/4YqqpExvbuBIjG
-	cGcKdM6eUgJRghKOdBWQrbAJ0JB03Oo=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=XKGQrwyY;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6708cc2d6f6so6223126a12.0
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:05:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776171931; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Qa9UyWBPXwCms5DLlDehRhZqR8pHt6XuDx4zVIkcxSmckRFwFqa6BkJpsiJ+jCvRr1
-         thUJ68l9xEE0SB9rxzSW/QDfk40aiIDK6F2Cwp7vhNKRq0Wer2+t2BMe9628jLkv6s7T
-         K/b10Az/tgwzEGjes3Rg13jj/9s25LOzuv3YBeAX4f+AAKmPLyoGP3qkLSImTu7VFgzZ
-         /dpMEl//1pKTs+PUKuIGrcHpvcrw2bu3sID30X34Jv3xiwy6PDH4imGJA0abOVB80B7i
-         0Cpb93LuLN/AIJKgjnmTES3fTiCc8mvNw9BWdqv+4qFgqJY5JmCE2FfCvqh6deyVGbXI
-         +A0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WJyMBBDw3QxsO3eB2s7y7REn56kC8A82/2aFbWMGYbQ=;
-        fh=Td0I1BDxy7tqVwySR+GFwkyyDvLXV/a4w0HzVLc8iPA=;
-        b=WCFjYnrSRDM0lYRxRd1xnNpGyYHdscDqZnqPhVQA6g/tvURaC8Y5rqjKp1/QJFxjXP
-         HOEq9ZSBcNFGh6qMEIDdXLT20YfVLZIPVHQDdovEk63fo/S3SH18GL0mDU0VGsaVZwAG
-         f1nlvx97p0lL7CMlKkorRCYZcr7Mj7sk86okYZQhb9+0q8YysIH14cYtAfO+HAWMBkOE
-         sR8Y560tArSF47a4QjLdC4fyBhU1859NVlXaq6cphzpAojhmUPlPOFk+zFoekLbS1+oj
-         pkWY+1C3XUht03gmlGVu/B+E8u5vUR1/IhrOjUl06UPdmFOtaPXN0B2QPaMrLzrOLyZQ
-         Trmg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1776171931; x=1776776731; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WJyMBBDw3QxsO3eB2s7y7REn56kC8A82/2aFbWMGYbQ=;
-        b=XKGQrwyYSuHf8k9IE+ssjgKu77Phx1e1IO2mcSK5RRUjAGDV6aso+fYLCwwyHoCUBo
-         dChYm60/hnhOMSKwmGi99ccCpiQdRbXAzjDdqRJMxXCEp9/xANUFRpcQnpJzSb0PEUDQ
-         JqYQYctp7UN4fPkvnOYRiHuUXOd4GWCCfrgB5IkjVIzh++MhP3euW8WNAqYQcOFv9RG1
-         RMvEWsArdHoE0kttpOzGiL66XcHtkx/yszw6WBEf9C/XQ8p9JHKLYh1peTXI4Eb0UvG2
-         kp10oYL+D1Rtlh9a1aup3ey3zKzAnK9pDni8lpWq7+EZ9rWtWlfH1L8WwRnZnV5DTyHv
-         vKPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776171931; x=1776776731;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WJyMBBDw3QxsO3eB2s7y7REn56kC8A82/2aFbWMGYbQ=;
-        b=SypR5KpYZfE4qifS5oaWCbwouknaGjz1gW6aJeE+razvcfToakgR11xEV2CLF3RUKF
-         0ApMKWb9WnO18XoW7AwPLr3jDklpHhZPfqDzSEFi8/V49MazfrK7QliT5UnT82zXYbNN
-         sAxlp4Pbq9zXzD4c77mEdkF/9k59NEqJi2ZxFCM042UNmtJPAv/Y4J+4XGqe270hroAE
-         ShpUOMyyaRUGAfYg3syXAJuT1jao7gvNF22+90tYk0YgMF+wkh+eMxxFrdPw+RlHUB5a
-         KIuIaUt8z3RQnSxHuNJ47LMQa/V5CwvpYOrKlPzINULvUtpk2gEqye6X0VQL8fsJ2qW8
-         eCig==
-X-Forwarded-Encrypted: i=1; AFNElJ9IOOyJpnLuSSL7hiVNK3ViVekOLSjYfpchrmGV12JZIHhlmzzVKy6nVTN6xywOMdbgN6D2BNuKag==@kvack.org
-X-Gm-Message-State: AOJu0Yywhhu/V6I8D+Jstk/N7BZhXWdQt6tjTE93lPKnN/qrGvZRyIJT
-	Wrrhv7MPu6QZqWr6HJqaqCtrfOkqO7P6R/InDOtgcMjYFIL2cHuhXTzIfYhpdLMG5oTXMMjtKAT
-	DAvdh+gupoeBrZp2SqE90Bay0Pf6qBzdH8zE4tCsP5A==
-X-Gm-Gg: AeBDietw/87Sy8tAdC6Qb1ueu0K7mSufhY8kktbAW82zq5LZNJxQmF9xLghTpbwuoiS
-	1cqaqRotcbokGvl2B7MQ29d6ZkiQHEkKtUVVZNYq9fgZ5P4RiYVmRp4WSGuk9rPfjZ3Llz5k4Aj
-	Zl/ZL9hpw2QRbQMSxnMsiAGTUq2KFHmo5R5gddia5zLjcdJPuwGNrJEPb6TRm/9z7IJuy7ULH+c
-	c9VqyeTj8sO+ojYqyCXyi+t29TDu1IDdRP8ynnQ3KsDKl76ixdbnaqiA/GXwWcw8v4TjJLuN+ci
-	fj45xao6elKCzOQe3TWnWpXo57k/N6EvpWNVZQ==
-X-Received: by 2002:a17:907:94d3:b0:b9b:207c:f7b7 with SMTP id
- a640c23a62f3a-b9d7267af85mr950887466b.3.1776171931398; Tue, 14 Apr 2026
- 06:05:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260414121752.1912847-1-pratyush@kernel.org> <20260414121752.1912847-4-pratyush@kernel.org>
-In-Reply-To: <20260414121752.1912847-4-pratyush@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 14 Apr 2026 09:04:53 -0400
-X-Gm-Features: AQROBzBIJmRCcFUKFu6XCUoUK5JAm0Xcfc0lfBbPIbj0avBkGkF-wVt1ru4Jrgs
-Message-ID: <CA+CK2bDL9Pc1AyKE1DBc=FTBwCV5-p3A+-O_WrgB0CYOhF=GYQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] MAINTAINERS: drop include/linux/liveupdate from LIVE UPDATE
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+	bh=ljtr9WPSUnaAjZD/FtGwji3II/sbFJuzXTsBaHKsQSU=;
+	b=L4MmpBxbdGDpXo4hwjNwGFxWkfJtY5Yw+DIJ4yUGOC1VnotmhsSyelaw6r95wk1WVJIOOG
+	HM+uv/INNQAX5/GWUl98bIsgnQlnvcfl+2Ijo1RGzMMi12IF3fRFOjP4ZXvXkVbqVumajB
+	mxVNRaDhNtMB1iDLEu+JrxT71aGEUeA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=lhDeNvog;
+	spf=pass (imf15.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
+	dmarc=pass (policy=reject) header.from=bootlin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776172384; a=rsa-sha256;
+	cv=none;
+	b=Ys6w6F+y1HdtiIjXX4txuTU8XBVSg/xa2DAjgBoYPRenbT8mdAJwXNoJeiKxoe+qvRtPeA
+	l8XzaBePm2+bUqf/Z4sO3P8+r8lSEy7AQ1HOAt9+A607sL9Gh5C9syhAfi18pf76daGNMg
+	CORHc3qq+MDnjLiiwGBSGMVNjlDksd0=
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7FCA11A32A8;
+	Tue, 14 Apr 2026 13:13:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 46E3160410;
+	Tue, 14 Apr 2026 13:13:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 569A6104500A2;
+	Tue, 14 Apr 2026 15:12:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1776172379; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ljtr9WPSUnaAjZD/FtGwji3II/sbFJuzXTsBaHKsQSU=;
+	b=lhDeNvog7+cXfwfKejAzO+yVIre7KeKOh4nxhyYR84tw7Qhs4CDNLFYshF/sNo/ddcHeul
+	OAXDnRRPYFfdKmNFr6FNXLWBgkwR5bSerHfi1jG3QAuxmeyq9DKVn4ADpvD+k/LktKcxCV
+	Qo+C51KQYvBPk2tQWgzerrUX38wX8fl9mns5nowg6aBHUe0QUCDETlFcTsN3Vd+g6AhDW1
+	t0+PPdVn0VXoKLO/NdWsu8xr8pa5SfFsPWlNHjagwF2HUg4Jwz/bTTtoEDbu5jNS5UXcqe
+	/1a7m2ycQR5Rypiiam1nxF1Kid65dAD8mzMdsDqIpVAnb6rsDVnu+pzT2qXnlw==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Stat-Signature: tr6nnrn3qrubai9bswonsma7mtqgbe61
-X-Rspamd-Queue-Id: 0D28D100016
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 14 Apr 2026 15:12:47 +0200
+Message-Id: <DHSWK17EZUDP.GIJ6BX2NFR6U@bootlin.com>
+Subject: Re: [PATCH RFC bpf-next 1/8] kasan: expose generic kasan helpers
+Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, "David Ahern" <dsahern@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Shuah Khan"
+ <shuah@kernel.org>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Andrey Ryabinin"
+ <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
+ "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo Frascino"
+ <vincenzo.frascino@arm.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ <ebpf@linuxfoundation.org>, "Bastien Curutchet"
+ <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
+ <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
+ <linux-mm@kvack.org>
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+To: "Andrey Konovalov" <andreyknvl@gmail.com>,
+ =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
+ <alexis.lothore@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+ <20260413-kasan-v1-1-1a5831230821@bootlin.com>
+ <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
+In-Reply-To: <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 891BDA0017
+X-Stat-Signature: m5jbcunha7corsxxnsy7cu9kbskjkq1t
 X-Rspam-User: 
-X-HE-Tag: 1776171932-938849
-X-HE-Meta: U2FsdGVkX18GOxe2FkY3XlzuQGFMcx6jjDdFL/LVXl/3czojfhaEpQHidkbFG7Se2fZ40V2bkIv7r+ynxKtsau51LAUc2EH4dT935+afw1k42KocAOprM443T7YgWKWKlYohswwzXXWAxAbOBrypW/Z9bWTAK4A5p3wJPi2d7IjNUAjKytdn7UAGvIY/04jAX+aClyJE01Gcql/5ihmkRJuhKFqZiBZ6GCeUbLjr1t+s/s0ska6WGbM1d5bQCfAZPv1a+5nwC60DuYSRgGYK738e1UbbjekDEFxgOu0RRhmE03/urW76RbB6xSd07Jwh6B10sqpLGYkVmRExiOZqZQXqbfb23ARmr57s8qxnIyMMwYO9LZTEWnebBSeMj3j9F95yhIvgKAxGjtwuYdAAw15tWkfUWxKA4J4phs37urTIjXJJ6OjyJYkDtslFP59lOnMk8UlqvMrkXLVqRHvFoHevqNZe2/2D+Q2WQDpHL/gugcRJE5LUPsPyrUKg86G/mremtvm/hCUkn61NnZuu74jlj5SO94j277wnv/idnypzjL5XKjOcFIWFzZ/+nwbI4YzOPXLY8QflXSCotOIZGJSxFigfqoNr2x5YTMXFo2rZ2K7nt3HTyfBegekChpHU7yPTw187uKHWoSpaFB9curTa8g86Dx+iZYgwu7pH+CDZbANX6X9Nmuq+OgjnutH1/JF+EaQqTpjIGLnUH04ZSRNLJiN7G6tXv8VMwzx06HeeKnx1yFaeizfq4NzzI50taAWjgBFPXI2CRGKUTcR9Tyv/tULc4tEtQB3dEvuOSv6tUl0UjkDpTZUQ0KSxRQmWxjH8CwW+ONl9fyWcqKN4tFi86geSwKkYrOTqACYlcLztOrkJbxf777oiBqgSK5ObR+TFipwLAQh0QC+wrpVw8xODCGjLhX7ALjbyOLgSICrKkFnI3+s571Ek0NiQBax/Sx9/3uvLSMhSpC8xFKX
- NGgQtyeo
- uABp3KOPlsF7RlwKStIpwhopFH/WYlq8y/5FBJ8LKtFPsxQITNj/zxOPlX6LRM7oZNZ5OaFnPLATOTuqhckz/qQzjQvLzfhqorfpY2e1WAILY+bvvvYQUxm8qcTlYHWw+SXb12q03S3zZyZxbccBR/Zb1mYa+na9DwTk7OLvxosuStFc7Vpu9ijCa3f56qhFrhQTDi0Q1w9Ww+zm7OBwFygkaDU1E7Wvrt4+kOm3HCa+abcgm6PiN0OIuUtqi17UP2sfcHtLaC8LWLmAbySZyNlTrmD/qLcNNAJIJJZtOwVV0aBQegaSeb93aijo7qxIaIn2Zpw4Tk+WzKF3HfIqyqg+1axgiKOCWUyorDXixzKxNJirYeTYwyaDWmLEkNjXAcU0CWCUzQ8ky2KT3D+1El6PxHw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776172383-712314
+X-HE-Meta: U2FsdGVkX18hCZgqfWCZ/knZs6Gp1UV9XwZn/WC2ycX2tPlsvvh2BfRqr3ZbbavNnixkFSflL9T0GDTLL3q8xmlcQY67elY7n8DNUpMZTreFF05xHPVafGYanOSI3ylK//x+uOXImfk9/OReQQum+MCHRdBY1RBSpKTvgcNzF9mWevqVOrChkgW1lnJABm/SmlPDbED/aHulUZe8ziBYJtSqOgI1zOLcoW03L5/d0Kf7UcD4aJi+idwx3KBnylC6ddsGWGtKnuyn3VjDRMcy4K32JrkRz769TS4d4pJnozBi7B4V2kenZNoVaBTSwFJm1zCO5UJ9E/CcqKJU7n1yfw8rFQHXK7FjLCg7Q9YT6AV/GZ/MqJ8w5pl4OMFDusFJ2llbhiyYGev+5CfLSyA7PgzymITaoD0GUPXNzoDbFIvlx9bTpCBk+ROhnnJfZ4JCjdrj9JU3w4glQbh9USmwC9Cx4CneQE8mSnx9Kc7pxN2YvhjbfjEioo38pTB9MRG1x/tjaxgaZFrUKvh4ClLFssKkM7UCq+y0605tlAq7AdNMb+7NkcVCnV3t35fLE47w88VFMRGsZbMKjQuynC0/9kv9cp6Q7aLROCoZNt8csJ5quIAvT8niv7rou1TMtdIGwsBWf45DXIDSf4HmdWrJEA7XigY/EzSBp1d6qu2tUx696QhXsPIcBruzmrtaFMWm8kVrZbQL+u3bIYwVlYOw6MhpEzvV3/0R+CWXnKjVcRQgpCIdbQAH+xdsgz39Ue7Az+ZF3JHO+UKzomkF3kDOBxPzRCIzcR5tWwULCC0Y/0D6iTESoq3wStzGEYzdD2svJ2gIz4QZEF40nR/eZU/xkGuUHCIvJZ/14Rfbi/PxxH5g+7D2d/P670+3lIduCqi3Tmn262b0wlNlgbX+w//pq7Xzh3jXAvVziRvmLYYBWCikkxk590OMEl2Zaa/d8YoRR1wumPUtGt9j8RMHWcT
+ j8EptQwh
+ AmXoi2Ay3ASLWsoMrHriElR93Y+2Wb94FozG0a7Uab5fT/uPw9ixQPEbHpwfTVG70b+0T5oP7BJ613ABMufFHmyRKg2pOTi9pRp4Z0nbjJ8H5gbsR/Z+GNlCZfuV6FriPwT+m53hvz+gFv5vWceo5mVx08liGTczeEDFghz01QPmigu4zrX1dkAaJ8wp+jSw3R+H15Fvak+ztc1UnnZREsfAb30CL2P4Jj8DjX75CwCPRkLK0iyxuD31tMx2XpBoCNHYgJ5X88ofbJn9JhZu45xra7eIXz1IJ5deggRdwdMuQ1NyvpPNIn7B+EhOdU5bS+mBR1KD2JFw5E5/e5ejFBTgr+gqM11ECW6RahO1r6/VXM33nusFSDPBFC4F6pFx77YRZTgMTT4ohk+e3SFJXuKnqpEVRdrJ/ABZWCf9h0ZzDAPS9xTU8PJz5RbvILCHY5wa/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,33 +120,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 8:18=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
->
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->
-> The directory does not exist any more.
->
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c1e2cefb4493..bb588928533f 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14811,7 +14811,6 @@ F:      Documentation/mm/memfd_preservation.rst
->  F:     Documentation/userspace-api/liveupdate.rst
->  F:     include/linux/kho/abi/
->  F:     include/linux/liveupdate.h
-> -F:     include/linux/liveupdate/
->  F:     include/uapi/linux/liveupdate.h
->  F:     kernel/liveupdate/
->  F:     lib/tests/liveupdate.c
-> --
-> 2.54.0.rc0.605.g598a273b03-goog
->
+Hi Andrey, thanks for the prompt review !
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+On Tue Apr 14, 2026 at 12:19 AM CEST, Andrey Konovalov wrote:
+> On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF Foundat=
+ion)
+> <alexis.lothore@bootlin.com> wrote:
+>>
+
+[...]
+
+>> +#ifdef CONFIG_KASAN_GENERIC
+>> +void __asan_load1(void *p);
+>> +void __asan_store1(void *p);
+>> +void __asan_load2(void *p);
+>> +void __asan_store2(void *p);
+>> +void __asan_load4(void *p);
+>> +void __asan_store4(void *p);
+>> +void __asan_load8(void *p);
+>> +void __asan_store8(void *p);
+>> +void __asan_load16(void *p);
+>> +void __asan_store16(void *p);
+>> +#endif /* CONFIG_KASAN_GENERIC */
+>
+> This looks ugly, let's not do this unless it's really required.
+>
+> You can just use kasan_check_read/write() instead - these are public
+> wrappers around the same shadow memory checking functions. And they
+> also work with the SW_TAGS mode, in case the BPF would want to use
+> that mode at some point. (For HW_TAGS, we only have kasan_check_byte()
+> that checks a single byte, but it can be extended in the future if
+> required to be used by BPF.)
+
+ACK, I'll try to use those kasan_check_read and kasan_check_write rather
+than __asan_{load,store}X.
+
+Alexis
+
+--=20
+Alexis Lothor=C3=A9, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
