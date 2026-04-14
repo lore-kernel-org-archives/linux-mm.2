@@ -4,240 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F94EF9D0CD
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 12:42:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB376F9D0CA
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 12:50:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CA8F6B0088; Tue, 14 Apr 2026 08:42:53 -0400 (EDT)
+	id 59D936B0088; Tue, 14 Apr 2026 08:50:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2926B008A; Tue, 14 Apr 2026 08:42:53 -0400 (EDT)
+	id 54E416B008A; Tue, 14 Apr 2026 08:50:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5695A6B0095; Tue, 14 Apr 2026 08:42:53 -0400 (EDT)
+	id 43C7D6B0092; Tue, 14 Apr 2026 08:50:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 454666B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:42:53 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A2CED1B7F7B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:42:52 +0000 (UTC)
-X-FDA: 84657125784.23.930CBBB
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5249D4000B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:42:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmx.de header.s=s31663417 header.b=fAzpenIg;
-	dmarc=pass (policy=quarantine) header.from=gmx.de;
-	spf=pass (imf17.hostedemail.com: domain of deller@gmx.de designates 212.227.15.15 as permitted sender) smtp.mailfrom=deller@gmx.de
+	by kanga.kvack.org (Postfix) with ESMTP id 2D3ED6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:50:55 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B975B58651
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:50:54 +0000 (UTC)
+X-FDA: 84657146028.03.4C0B454
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1638B40012
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:50:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dNRwNfgx;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776170570;
+	s=arc-20220608; t=1776171053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+TkXeWEba/XrFX3yATqWZDjmT7vuDDsgvIBT65AAhc=;
-	b=nJCL35zPDGG5viX22boxrx8eWIKqB4TzxThOZx9NB29SP3+pNO43XG08wpW2P4VFWdu/3T
-	9If2Rk/7iNgbJoLMC1E8O3qY2E2UGNHz+TUfs70Fckvd7LtnR5OsXzOxs8WEl5QxvDV+ab
-	RPrYWW4dyf42s1aZY5je1d16MmZMqJM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776170570; a=rsa-sha256;
-	cv=none;
-	b=XvFeSLl0V6pEg0+Xs7vWI5Gl0uNolHfdnubPVv3FzUOBryVKAZbZI+MukdBA/Ln2qmnfQl
-	76Gpv6myTWOnwZe/eb+1lLKCKFfS4iUWs/rgnSzHu8EurLPS6YjbXCPBqqP1Tt1jHsdh50
-	ucKQC2qrqXG4sl+KJs260H9+xYyxFlA=
+	bh=lELMV2jyk63cpRVnXaJ4JWLlHAmoowBk4pR60tIOmdE=;
+	b=MIy76FhHebpj7aUr2UsKO5YYMCB0Pog+9MVHB95nGcFMDfs5b35hk97wwhBYUdO/vARU7t
+	LeO3k1YHACkDO4c9BzpWXIk5wj5maRtkah5+1PyN48kvp8aDlowNqoEFOooKRSQNAHLCmU
+	BXhHsEtSrYErO0qD0+BYPDbE+Xaal8k=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmx.de header.s=s31663417 header.b=fAzpenIg;
-	dmarc=pass (policy=quarantine) header.from=gmx.de;
-	spf=pass (imf17.hostedemail.com: domain of deller@gmx.de designates 212.227.15.15 as permitted sender) smtp.mailfrom=deller@gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1776170520; x=1776775320; i=deller@gmx.de;
-	bh=t+TkXeWEba/XrFX3yATqWZDjmT7vuDDsgvIBT65AAhc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=fAzpenIgpi3rVYugWOIkZZn0tIyFERuZsPfi46E8ZHN94Sc5kE/YMsjy3v3oWzr+
-	 Qfw6wzuSGlr8dS591fcpDsbv+ftgBEfYXTWA19Pu5Qr8kDzb6JoPyy5SFw0BW3RPU
-	 Bf7qFVm3pzevH2My1og5pLNoQKnQtHa91BakdZN1enkoxtKTBtqgakivdwpsPDDAH
-	 mipzWdckMOOoOphH0+XzAK0gdPQo9m+Bf7rF7/pA/F9Qf88DJFr/uTkTD1UBnV5aW
-	 RSF31i+XPMsy+XIHjnT28Gdk1G4bCiu1VG5V6QBFy2hV8AcN5VhDJvVPRgmTQV5Tl
-	 60IPWSvmUUbh0PWVvA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNKhs-1vnwIX2Vas-00YsyQ; Tue, 14
- Apr 2026 14:41:59 +0200
-Message-ID: <f0731727-fae7-4582-ad5b-a5d95b0d78ec@gmx.de>
-Date: Tue, 14 Apr 2026 14:41:52 +0200
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dNRwNfgx;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776171053; a=rsa-sha256;
+	cv=none;
+	b=0uC5s9FhK1wEoadc+Kb7c4zEhSdwz2XrV3oewMOkVTa4Ur5kYtrIkcXM8CWTPYMthhFlDy
+	y3JUFk0kCunZtSbvmdwGPx7mewXto2QO7AysJp20OMZ1jGe28E59RmDypm2SZC7bhKwsqz
+	8+56r6Y6yW8lviI6M3yJzwUYoH0u7wQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6BCCD60018;
+	Tue, 14 Apr 2026 12:50:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDC3C19425;
+	Tue, 14 Apr 2026 12:50:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776171052;
+	bh=a9iI19vCq4SRLsBnvUz/Jlni7gRkLa3PiZiap/Z+s4w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dNRwNfgxfZ2w23BOvDjQE6ZWJ1j+fQaepPfULlXE6qBiYa/xylTCgqSJ20BMxv7z8
+	 aSSBNULOSeJcxJS+uUtRO+Vv+RzUasUEk7gXFkpKpfXZBlRSCwR8ggVRvfoAQ3OaD0
+	 HIWHZtNNazWVCA9wiE0U1M8zfAeNGLujPtsoy2PuUv8wJunABZ2pStNN5hQpq0HUds
+	 W9recr76fXvpUnLGNTbSmYbDzHrHofu/RJ0IzXaava5TtpaKSvMa/NLlWepMKGZsOj
+	 Uep91RkkxkVBLq+6VajXAyK2AN9+UUzEx/7/KrqBD1ItHALAHQzKeNJvNbt6rh+Ues
+	 /PtEK+xu8mrZg==
+Message-ID: <411f9b29-9b1c-4e2f-a212-f583280a6788@kernel.org>
+Date: Tue, 14 Apr 2026 14:50:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [patch 31/38] parisc: Select ARCH_HAS_RANDOM_ENTROPY
-To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Cc: linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev,
- Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
- linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>,
- Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
- Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
- "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org,
- Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
- linux-openrisc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
- linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- sparclinux@vger.kernel.org
-References: <20260410120044.031381086@kernel.org>
- <20260410120319.658485572@kernel.org>
+Subject: Re: [PATCH v6] mm/slub: defer freelist construction until after bulk
+ allocation from a new slab
 Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20260410120319.658485572@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:YZqOPGpEpMYOOKnwdNEQ7I3XH33yrIj2uNRXsp2/NoY4YKTm37d
- cWruVun3i7Sk4GIlBSCYmCwwqcNjragvIKsBHFI3iLQKRhUmXElNimqdOrFj4qhSzGCrQz5
- 4Nl2leWKLE/WJTA3v6zYwlGFukOTRBLg+lyk/SmoPVxTH7cptbFjBFi4OyiaN9y5NYZwXCM
- E/BuuquGn8nLMTRaoFkig==
-UI-OutboundReport: notjunk:1;M01:P0:znJiATTqjr0=;C7ANzcgujBb/tqMadvALWw89Q6O
- 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
-X-Rspamd-Queue-Id: 5249D4000B
-X-Stat-Signature: dxzjhgjmn8ruqjpjsf7s1wihgss4ppj8
+To: hu.shengming@zte.com.cn, harry@kernel.org, akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, xu.xin16@zte.com.cn, yang.tao172@zte.com.cn,
+ yang.yang29@zte.com.cn
+References: <20260413230417835rnfiEWduEx44lc3u4uR9_@zte.com.cn>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260413230417835rnfiEWduEx44lc3u4uR9_@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776170570-284187
-X-HE-Meta: U2FsdGVkX1/cbYit8Rgo7/Ucll5nt5b8eKTdrCwXU7wv3DAbZidQDdxhduaO7gnrehj1hELABy5B5yjUTF7IPvXk+1iUXm9fVSzJxMF+JoO15tKafS+4jux8VNNof7Rg6lJ575NtD8QayKVamnDD/O3j00PW2PwlllDfqj3yFnEYl1oxI7SQKHxgEHPf71sDK8GatIma14O23UiAmP2v6Qce15GxFiJ/ryZ1LrXP5/iVjpZzlAqX/99dAhHHFQ8+t557KpE8U/Efy/j5BJMXRsyAkawz9XccjrbNw7mHZHEkkNv3IX86sncfUpMRoDvkjHNY/YoXMEr7mKmfzkGsKQkQdUmcT8HD4/7Ng/X6BnBozaBACSq7vFaGTHYOBYm6L+xf1r4rjkGwYSd0gyWBJwafdrEHCHBBLGc0I63q9+v0oiDQU2PKUFdmCXT4XafB8ch9jPCWAj3fUBYMNmkAiq8g1xVLWY9nuQ6i+b8dXdw3gNRNpqlPBivenD5ErbhdQYiBNcnIsMuSPrIxerug2ZjBQcB6ZFdDLXPhQMekLU3EfnbQGiPUQJTQTG04+K6DFJf0y2ehd8rgvgxX9mLhSSwrVio3P/ihiK7HCnJm1Diu+J8Z5c+P+++enzPJH5YXUpHEFPV+mx8Ndc5ZidW4BJdhKMzuRDdXGMuxOCXOAgL4H43h2rKouJT/riYk0JFh1FQCGtaqyeuFrQt6hF9nT+4Ceqzi8SoxX4ykaEhoA7XQ24fekntGedNBYWoVQMluRCKX0HjTf5UAWOmT57E5g29nsB9n4j0ETfh679szXbAa8NGTQDmqYOmU0SH9R2rnyqT0c/K/n6/hzWkcRhHsO+dqBupvRuY+xN7J/o/GBkktDeqo9DNHv2U8FeGQVqrYTydKHVYWk4YZimh3IFK55fEayowrOqwyZtMeldr4jVFA3X7GqOxBi15WD2WAeonmUSpUi6rPftcTbMyqEyQ
- wHr0OF4P
- 2IOfjwusUoRmzEGA2kII/X2Xp+fuWwzA+Gar7zBIFBvsiBjaTDVkb9fiVNJs9qRR8b+E1tg8rHeKYpAuPr9Vgl5OJFw0qnT3RrhOF5HmgDIf3U9Rd9mKnOYfZyLBvw2ul/bqJWKP2FbEToVe1LaYdGhG2G66BH0P5Y6FlIQBpcSBBO2Fog79LtKK8FhzR0IoVobM7pQE5NKkkZjwJSU2gzGeE9WPxn47ifpgEEALExrfqy1DwRNoYLtwlhrapBkhQwW8ctnWHgunl46b/i3WPugvZRMCy5dxgiGY3pnaUaQ19zXRS9EWyKRdzSNGgHMIxulsDm3iIt5pKiu5zJ36jlMy9XMVk+L0iGHKssEi98mcf9FunrufWDzmzhJ90NypApi1+GayHCEB9urWFsuWpc2OHITXl9nIzmma/hMyvOcsPgBu/yDuteB/leK5hJicPXA+sj6Fp7ICQoelqMSY/3eL4hBVWZliiGlh5fj70yraOZX8dtPUwIuSmImmIQBuPbEx9/q3EHl5JpFpZ8wcQODg5hG8OKoMBa02JBvjfoT4o5WE=
+X-Stat-Signature: 9tkggzodrcrb7c6rwq75o36tyqihyni9
+X-Rspamd-Queue-Id: 1638B40012
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776171052-885293
+X-HE-Meta: U2FsdGVkX1/I0EJeVcQxc2ijivKeZFHVZWMC0gAOq0LON2AFiNpI2ud1o+3fMS2zRRbXC2c0qk8PutbpmdM2kTra2XVxbZ0yMTUbnRK8y9sEV1Eo/q1GhRPM74ggM7YdiLk8vtzLA9u1yyAmgwleo6VQhAg0YHdLg6c6YlY+0VkpC1bJHYsm1Uos71kgBgd0PLuYnpmWA508piMyQFFm8Rs5jps64JsNMk3XZk+P678wRiXFUMVWAbFoxn7Q+nLaHdNZBrJ4WI8GKh+aWHiBPG9ZKE0pkr7BXU5hp75wYAVPQsyRLU/xKqlchYVxu+rwVCezqcOOyzicjSzfA2IMWRqCn1Se6NPAswmzoBIyEwbNRmMapbDa3U4KNCFJtYPdpozsdqyXE3MJlFscAsJesEX9Iao7b5u2mo9FZgBwwFU4byVErSSFpwbmao+30rHp81JnzoeYbCYuMRCJGUBNheUSmhqQ5AXdC92mF7YvXb4DWQEhWRJ17dqIiVGdFAiMPecXX9tzn4Kc9l0pkDiI+bQHfYdke+PHhhSReCdDsyPSF7p40iQeoqmIYK7t8kk7zi0k6xFZvlxtJnIqP7dBzUBxqQ0j/7nu69rObQxciEFH9CAuxvyPAYAQDVNZo8GBT+DvK5Z0MEEl2W+n6wstZ+hHXof54FkJY1UAYAShAbsTkkYhE0pbvG69vifh0ehcidkRF7vDhfOz/9bWC7AE+dHCW8oE641nY8G/FZJhGvpCYQCtA/3hXdTr0hfrJKF5R3Q06+/PJRy3+LTQelp2gGT2VU0Z3bNRVBNmiBGQW/0ufso8roivpEbpFS6atJx9bUCOY0FR0rSCc0o+RxucjIqdkUlXMIrOdY1pqNG24slxytEJPvtHAeqKz3N/idQidsAg0JpyozJ1k+u5co/Vk+kfFY5GklUPU0khUCE2EaEOaYTAZjLHNRPfjQQnHudIuWsFWRfGOuqZ2e9/1Kd
+ VqcS1snv
+ vHWOcaIJr3bd2uRp22tYGvwrEAYTPOj1daBiT4zDE+RrRqH6JlW7GTE1szvqvUuANkMjykiIg6LXK+w614uvnBnNEJeYLBp/2oXYv78bBiN5NfQ7b1NwnvHp+m3jtFpkEdZWgznKfZO9iAzg/HhSZPxCsXl7IKJMOPPscTESMYNbayWqDas1MaQc1c3KY1i/g0RVf2lfax6pih3H6dT8BymV2B6cmMvHZRs39pDIKz3eMRwxU97JmLpPhGQBXfOi2RzsSWIWRH8DRyYUlrP6yZBgkub2RVDCd6/uwL0yupvuKuqiYq4CD+RxhW7dBQrcrXnFnwFs9y3apG+LDcJUQvmG0tXI8auA5CFVlXUBBype5dzl9ZVXLLSe8bFVqHTh66o0hwrXBgiXrEQc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -245,34 +96,378 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/10/26 14:21, Thomas Gleixner wrote:
-> The only remaining non-architecture usage of get_cycles() is to provide
-> random_get_entropy().
->=20
-> Switch parisc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROP=
-Y
-> and providing random_get_entropy() in asm/random.h.
->=20
-> Add 'asm/timex.h' includes to the relevant files, so the global include =
-can
-> be removed once all architectures are converted over.
->=20
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: linux-parisc@vger.kernel.org
-> ---
->   arch/parisc/Kconfig              |    1 +
->   arch/parisc/include/asm/random.h |   12 ++++++++++++
->   arch/parisc/include/asm/timex.h  |    6 ------
->   arch/parisc/kernel/processor.c   |    1 +
->   arch/parisc/kernel/time.c        |    1 +
->   5 files changed, 15 insertions(+), 6 deletions(-)
+On 4/13/26 17:04, hu.shengming@zte.com.cn wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
+> 
+> Allocations from a fresh slab can consume all of its objects, and the
+> freelist built during slab allocation is discarded immediately as a result.
+> 
+> Instead of special-casing the whole-slab bulk refill case, defer freelist
+> construction until after objects are emitted from a fresh slab.
+> new_slab() now only allocates the slab and initializes its metadata.
+> refill_objects() then obtains a fresh slab and lets alloc_from_new_slab()
+> emit objects directly, building a freelist only for the objects left
+> unallocated; the same change is applied to alloc_single_from_new_slab().
+> 
+> To keep CONFIG_SLAB_FREELIST_RANDOM=y/n on the same path, introduce a
+> small iterator abstraction for walking free objects in allocation order.
+> The iterator is used both for filling the sheaf and for building the
+> freelist of the remaining objects.
+> 
+> Also mark setup_object() inline. After this optimization, the compiler no
+> longer consistently inlines this helper in the hot path, which can hurt
+> performance. Explicitly marking it inline restores the expected code
+> generation.
+> 
+> This reduces per-object overhead when allocating from a fresh slab.
+> The most direct benefit is in the paths that allocate objects first and
+> only build a freelist for the remainder afterward: bulk allocation from
+> a new slab in refill_objects(), single-object allocation from a new slab
+> in ___slab_alloc(), and the corresponding early-boot paths that now use
+> the same deferred-freelist scheme. Since refill_objects() is also used to
+> refill sheaves, the optimization is not limited to the small set of
+> kmem_cache_alloc_bulk()/kmem_cache_free_bulk() users; regular allocation
+> workloads may benefit as well when they refill from a fresh slab.
+> 
+> In slub_bulk_bench, the time per object drops by about 32% to 70% with
+> CONFIG_SLAB_FREELIST_RANDOM=n, and by about 50% to 67% with
+> CONFIG_SLAB_FREELIST_RANDOM=y. This benchmark is intended to isolate the
+> cost removed by this change: each iteration allocates exactly
+> slab->objects from a fresh slab. That makes it a near best-case scenario
+> for deferred freelist construction, because the old path still built a
+> full freelist even when no objects remained, while the new path avoids
+> that work. Realistic workloads may see smaller end-to-end gains depending
+> on how often allocations reach this fresh-slab refill path.
+> 
+> Benchmark results (slub_bulk_bench):
+> Machine: qemu-system-x86 -m 1024M -smp 8 -enable-kvm -cpu host
+> Kernel: Linux 7.0.0-rc7-next-20260407
+> Config: x86_64_defconfig
+> Cpu: 0
+> Rounds: 20
+> Total: 256MB
+> 
+> - CONFIG_SLAB_FREELIST_RANDOM=n -
+> 
+> obj_size=16, batch=256:
+> before: 4.91 +- 0.07 ns/object
+> after: 3.29 +- 0.03 ns/object
+> delta: -32.8%
+> 
+> obj_size=32, batch=128:
+> before: 6.96 +- 0.07 ns/object
+> after: 3.73 +- 0.05 ns/object
+> delta: -46.4%
+> 
+> obj_size=64, batch=64:
+> before: 10.77 +- 0.12 ns/object
+> after: 4.65 +- 0.06 ns/object
+> delta: -56.8%
+> 
+> obj_size=128, batch=32:
+> before: 19.04 +- 0.22 ns/object
+> after: 6.30 +- 0.07 ns/object
+> delta: -66.9%
+> 
+> obj_size=256, batch=32:
+> before: 22.20 +- 0.26 ns/object
+> after: 6.68 +- 0.06 ns/object
+> delta: -69.9%
+> 
+> obj_size=512, batch=32:
+> before: 20.03 +- 0.62 ns/object
+> after: 6.83 +- 0.09 ns/object
+> delta: -65.9%
+> 
+> - CONFIG_SLAB_FREELIST_RANDOM=y -
+> 
+> obj_size=16, batch=256:
+> before: 8.72 +- 0.06 ns/object
+> after: 4.31 +- 0.05 ns/object
+> delta: -50.5%
+> 
+> obj_size=32, batch=128:
+> before: 11.29 +- 0.13 ns/object
+> after: 4.93 +- 0.05 ns/object
+> delta: -56.3%
+> 
+> obj_size=64, batch=64:
+> before: 15.36 +- 0.24 ns/object
+> after: 5.95 +- 0.10 ns/object
+> delta: -61.3%
+> 
+> obj_size=128, batch=32:
+> before: 21.75 +- 0.26 ns/object
+> after: 8.10 +- 0.14 ns/object
+> delta: -62.8%
+> 
+> obj_size=256, batch=32:
+> before: 26.62 +- 0.26 ns/object
+> after: 8.58 +- 0.22 ns/object
+> delta: -67.8%
+> 
+> obj_size=512, batch=32:
+> before: 26.88 +- 0.36 ns/object
+> after: 8.81 +- 0.11 ns/object
+> delta: -67.2%
+> 
+> Link: https://github.com/HSM6236/slub_bulk_test.git
+> Suggested-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
 
-I tested this series on parisc.
-Works as expected.
+Nice!
 
-Tested-by: Helge Deller <deller@gmx.de>
+>  mm/slab.h |  10 ++
+>  mm/slub.c | 283 +++++++++++++++++++++++++++---------------------------
+>  2 files changed, 151 insertions(+), 142 deletions(-)
 
-Thanks!
-Helge
+And the delta is just 19 new lines of code, good!
+
+Just some nits.
+
+
+> diff --git a/mm/slab.h b/mm/slab.h
+> index bf2f87acf5e3..ada3f9c3909f 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -91,6 +91,16 @@ struct slab {
+>  #endif
+>  };
+> 
+> +struct slab_obj_iter {
+> +	unsigned long pos;
+> +	void *start;
+> +#ifdef CONFIG_SLAB_FREELIST_RANDOM
+> +	unsigned long freelist_count;
+> +	unsigned long page_limit;
+> +	bool random;
+> +#endif
+> +};
+
+I think this struct could live in slub.c as mothing else needs it?
+
+>  /*
+>   * Called only for kmem_cache_debug() caches to allocate from a freshly
+>   * allocated slab. Allocate a single object instead of whole freelist
+>   * and put the slab to the partial (or full) list.
+>   */
+>  static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+> -					int orig_size, gfp_t gfpflags)
+> +					int orig_size, bool allow_spin)
+>  {
+> -	bool allow_spin = gfpflags_allow_spinning(gfpflags);
+> -	int nid = slab_nid(slab);
+> -	struct kmem_cache_node *n = get_node(s, nid);
+> +	struct kmem_cache_node *n;
+> +	struct slab_obj_iter iter;
+> +	bool needs_add_partial;
+>  	unsigned long flags;
+>  	void *object;
+> 
+> -	if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
+> -		/* Unlucky, discard newly allocated slab. */
+> -		free_new_slab_nolock(s, slab);
+> -		return NULL;
+> -	}
+> -
+> -	object = slab->freelist;
+> -	slab->freelist = get_freepointer(s, object);
+> +	init_slab_obj_iter(s, slab, &iter, allow_spin);
+> +	object = next_slab_obj(s, &iter);
+>  	slab->inuse = 1;
+> 
+> +	needs_add_partial = (slab->objects > 1);
+> +	build_slab_freelist(s, slab, &iter);
+> +
+>  	if (!alloc_debug_processing(s, slab, object, orig_size)) {
+>  		/*
+>  		 * It's not really expected that this would fail on a
+> @@ -3696,20 +3686,32 @@ static void *alloc_single_from_new_slab(struct kmem_cache *s, struct slab *slab,
+>  		 * corruption in theory could cause that.
+>  		 * Leak memory of allocated slab.
+>  		 */
+> -		if (!allow_spin)
+> -			spin_unlock_irqrestore(&n->list_lock, flags);
+>  		return NULL;
+>  	}
+> 
+> -	if (allow_spin)
+> +	n = get_node(s, slab_nid(slab));
+> +	if (allow_spin) {
+>  		spin_lock_irqsave(&n->list_lock, flags);
+> +	} else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+> +		/*
+> +		 * Unlucky, discard newly allocated slab.
+> +		 * The slab is not fully free, but it's fine as
+> +		 * objects are not allocated to users.
+> +		 */
+> +		free_new_slab_nolock(s, slab);
+
+I was going to complain that we can leave alloc_debug_processing() without a
+corresponding free_debug_processing(). But it seems it can't have any bad
+effect. Only with SLAB_TRACE we would print alloc without corresponding
+free. But I doubt anyone uses it anyway.
+
+> +		return NULL;
+> +	}
+> 
+> -	if (slab->inuse == slab->objects)
+> -		add_full(s, n, slab);
+> -	else
+> +	if (needs_add_partial)
+>  		add_partial(n, slab, ADD_TO_HEAD);
+> +	else
+> +		add_full(s, n, slab);
+> 
+> -	inc_slabs_node(s, nid, slab->objects);
+> +	/*
+> +	 * Debug caches require nr_slabs updates under n->list_lock so validation
+> +	 * cannot race with slab (de)allocations and observe inconsistent state.
+> +	 */
+> +	inc_slabs_node(s, slab_nid(slab), slab->objects);
+>  	spin_unlock_irqrestore(&n->list_lock, flags);
+> 
+>  	return object;
+> @@ -4349,9 +4351,10 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
+>  {
+>  	unsigned int allocated = 0;
+>  	struct kmem_cache_node *n;
+> +	struct slab_obj_iter iter;
+>  	bool needs_add_partial;
+>  	unsigned long flags;
+> -	void *object;
+> +	unsigned int target_inuse;
+> 
+>  	/*
+>  	 * Are we going to put the slab on the partial list?
+> @@ -4359,33 +4362,30 @@ static unsigned int alloc_from_new_slab(struct kmem_cache *s, struct slab *slab,
+>  	 */
+>  	needs_add_partial = (slab->objects > count);
+
+How about
+
+	bool needs_add_partial = true;
+
+	...
+
+	if (count >= slab->objects) {
+		needs_add_partial = false;
+		count = slab->objects;
+	}
+
+Then we don't need target_inuse and can use count.
+
+> -	if (!allow_spin && needs_add_partial) {
+> +	/* Target inuse count after allocating from this new slab. */
+> +	target_inuse = needs_add_partial ? count : slab->objects;
+> 
+> -		n = get_node(s, slab_nid(slab));
+> +	init_slab_obj_iter(s, slab, &iter, allow_spin);
+> 
+> -		if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+> -			/* Unlucky, discard newly allocated slab */
+> -			free_new_slab_nolock(s, slab);
+> -			return 0;
+> -		}
+> -	}
+> -
+> -	object = slab->freelist;
+> -	while (object && allocated < count) {
+> -		p[allocated] = object;
+> -		object = get_freepointer(s, object);
+> -		maybe_wipe_obj_freeptr(s, p[allocated]);
+> -
+> -		slab->inuse++;
+> +	while (allocated < target_inuse) {
+> +		p[allocated] = next_slab_obj(s, &iter);
+>  		allocated++;
+>  	}
+> -	slab->freelist = object;
+> +	slab->inuse = target_inuse;
+> +	build_slab_freelist(s, slab, &iter);
+> 
+>  	if (needs_add_partial) {
+> -
+> +		n = get_node(s, slab_nid(slab));
+
+The declaration of 'n' could move here.
+
+>  		if (allow_spin) {
+> -			n = get_node(s, slab_nid(slab));
+>  			spin_lock_irqsave(&n->list_lock, flags);
+> +		} else if (!spin_trylock_irqsave(&n->list_lock, flags)) {
+> +			/*
+> +			 * Unlucky, discard newly allocated slab.
+> +			 * The slab is not fully free, but it's fine as
+> +			 * objects are not allocated to users.
+> +			 */
+> +			free_new_slab_nolock(s, slab);
+
+Yeah I think this is ok.
+
+> +			return 0;
+>  		}
+>  		add_partial(n, slab, ADD_TO_HEAD);
+>  		spin_unlock_irqrestore(&n->list_lock, flags);
+> @@ -4456,15 +4456,13 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>  	stat(s, ALLOC_SLAB);
+> 
+>  	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
+> -		object = alloc_single_from_new_slab(s, slab, orig_size, gfpflags);
+> +		object = alloc_single_from_new_slab(s, slab, orig_size, allow_spin);
+> 
+>  		if (likely(object))
+>  			goto success;
+>  	} else {
+> -		alloc_from_new_slab(s, slab, &object, 1, allow_spin);
+> -
+>  		/* we don't need to check SLAB_STORE_USER here */
+> -		if (likely(object))
+> +		if (alloc_from_new_slab(s, slab, &object, 1, allow_spin))
+>  			return object;
+>  	}
+> 
+> @@ -7251,10 +7249,6 @@ refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+> 
+>  	stat(s, ALLOC_SLAB);
+> 
+> -	/*
+> -	 * TODO: possible optimization - if we know we will consume the whole
+> -	 * slab we might skip creating the freelist?
+> -	 */
+>  	refilled += alloc_from_new_slab(s, slab, p + refilled, max - refilled,
+>  					/* allow_spin = */ true);
+> 
+> @@ -7585,6 +7579,7 @@ static void early_kmem_cache_node_alloc(int node)
+>  {
+>  	struct slab *slab;
+>  	struct kmem_cache_node *n;
+> +	struct slab_obj_iter iter;
+> 
+>  	BUG_ON(kmem_cache_node->size < sizeof(struct kmem_cache_node));
+> 
+> @@ -7596,14 +7591,18 @@ static void early_kmem_cache_node_alloc(int node)
+>  		pr_err("SLUB: Allocating a useless per node structure in order to be able to continue\n");
+>  	}
+> 
+> -	n = slab->freelist;
+> +	init_slab_obj_iter(kmem_cache_node, slab, &iter, true);
+> +
+> +	n = next_slab_obj(kmem_cache_node, &iter);
+>  	BUG_ON(!n);
+> +
+> +	slab->inuse = 1;
+> +	build_slab_freelist(kmem_cache_node, slab, &iter);
+> +
+>  #ifdef CONFIG_SLUB_DEBUG
+>  	init_object(kmem_cache_node, n, SLUB_RED_ACTIVE);
+>  #endif
+>  	n = kasan_slab_alloc(kmem_cache_node, n, GFP_KERNEL, false);
+> -	slab->freelist = get_freepointer(kmem_cache_node, n);
+> -	slab->inuse = 1;
+>  	kmem_cache_node->per_node[node].node = n;
+>  	init_kmem_cache_node(n);
+>  	inc_slabs_node(kmem_cache_node, node, slab->objects);
+
 
