@@ -4,85 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41A79ED7B91
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:24:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A65AED7B95
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 727376B0088; Tue, 14 Apr 2026 05:24:27 -0400 (EDT)
+	id D9BE26B0088; Tue, 14 Apr 2026 05:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DA826B008A; Tue, 14 Apr 2026 05:24:27 -0400 (EDT)
+	id D4CC06B008A; Tue, 14 Apr 2026 05:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F06D6B0092; Tue, 14 Apr 2026 05:24:27 -0400 (EDT)
+	id C3BB96B0092; Tue, 14 Apr 2026 05:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DA046B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:24:27 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F10558B8D5
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:24:26 +0000 (UTC)
-X-FDA: 84656625732.07.84C20B7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B6FFC6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:32:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5762FE3827
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:32:22 +0000 (UTC)
+X-FDA: 84656645724.17.38DEE44
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 13EFB80010
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:24:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKmY5FLy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7107A4000D
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:32:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tKSsMIMq;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776158665;
+	s=arc-20220608; t=1776159140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xvdDUBCGj6XuXQ9CtfaxjWMfYTY0EA+g6iJjiaF0qg0=;
-	b=bwi0EqJo6JJAH5Um1yQ0WCIR3HS3dmOQPgIn5pbHRyYF2aK5Aig5mS8Sy9UB97/eGWhyOO
-	u0y8WPQZVmhI/7fdROP9n2ivxSiO8m6d4vG2Iz53D2zEZj06X7UFvgFduOihJzWLH8IA52
-	OzL2lmkt6GDCcoXN1NkQ+NpQz+mY/eM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776158665; a=rsa-sha256;
+	bh=GbxVpZ7j2h2F+szRP5oZSoXIxH8XgFyrU3OmnHWUI/Q=;
+	b=lxdksHj4hX4t0dj2I9Pu962agRnlGy82ehWTdfGxgqkhn+VglgJIrt5MrflqpzFkRFqvW1
+	38jCds1Ipfe93orPAwS/WeuzX2eecpL/QbKB3iusWNUzapOeBXKUO4Zrh0JFsevk1+CTNU
+	iK8bR+b6pyzWPd4cTCF0EAZwcekF+Gg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776159140; a=rsa-sha256;
 	cv=none;
-	b=Hy2XKEApdnOt8nN5ehDTyZn7OxPMxmAYkRcJC7dyMC0FDfFhj2kftPxjMiGzxMwHDwlost
-	wG1M0VEh3+WRYG959zG5xpApq/bosjsPK1en0EJtu0ceWqhyMhxzAo8vxmSAIR6w/22SjM
-	JHRW0pT4CvumPQQZ+GbR8S1970OxWA4=
+	b=h/wpJArA2sRRfe8kEPuWiEDqvNzbcJDCKkNy8Jdo34Ux4dPRYr7KAelmlc34iW6Dxd7zpf
+	ALHQYgRTNHqBDYHIqY7t/KEIMogSTqUv+S8sIrLEfVi3CtXcUIzPBTvADga2CCLcH33H/y
+	5GhjzrZAheSyfz3aBO429tZupK57VpE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YKmY5FLy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tKSsMIMq;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B1DBE44183;
-	Tue, 14 Apr 2026 09:24:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A4EC19425;
-	Tue, 14 Apr 2026 09:24:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E60E4358D;
+	Tue, 14 Apr 2026 09:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0B7C19425;
+	Tue, 14 Apr 2026 09:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776158663;
-	bh=8DmHQNhpWGOp+HH6UU6CLgoA3IZAxo/XcUuDqTaH/10=;
+	s=k20201202; t=1776159139;
+	bh=0aFYz/aQnGGNmqnVT+C9VpFJTvxEuJJ9c4YGNPdk2b8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YKmY5FLyGD22/qTK22QYVkokEJ3M/JMZR6NJSI8sVU+uPu3UYAzN+jfgWHgjhW1fZ
-	 GtT+zwrhGFCDyxzs/lJ0uIpoOjdpVKZpvbTgZ9b8M9l4N5MdY0vbVriY69TktdjpPO
-	 QOSJ/fYiQNOBPRSRAXSm9WnCdgXLP5HdZYeineSu9MYfOdDgM3lPZ8JMVv5OWFEACF
-	 KXIpu+vgjL8WSD/lqGLxgh/WoYu0PlpKJqDJ5h6AX7yheInWslVACjmZgkl8hlDu4X
-	 QzwqavVXJUrQFvx7Xt+GFywTVHB9PmCMsVxNORAfKM98v0R4lwCqkbACA5F1hfzXMl
-	 NO0UrYVVIQslA==
-Message-ID: <12b8ba83-54b1-454e-b787-2d2e967c9b58@kernel.org>
-Date: Tue, 14 Apr 2026 11:24:17 +0200
+	b=tKSsMIMqq3z2iqeTKDSqKNNQnaQQmWHyLh4wAJ6J84EM9SwXlDmaioCOpNxXQ3Vd3
+	 q0kuUBLd6AEJ76ejXj0rMuhkEXKy1NgpAQYBPV22xRKpb657yyeWg08TRlHcGpZwlo
+	 ib8aVGXP00NyZOm0kcMytTtLTYKueQCublZaAGszOLho3e8KuSCZ8puQMoDbzqSXTV
+	 WCJ1DerrYLmSRoqr64rh7qvqJfQtRiy2RleWaYuo8zeQsdESTsDcZDVb+CEeR7Xw3j
+	 fE6dJIRkhBj0K5CbjzBrRw8ZHz/R7I0/Jw30AoaeMrmobYfrQ99SET39q7IGWlkMIr
+	 ai4Vo1PPxBkdQ==
+Message-ID: <fd59736d-a02a-4693-9e70-23c593c9dac7@kernel.org>
+Date: Tue, 14 Apr 2026 11:32:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
  check when changing pfn range
-To: "Liu, Yuan1" <yuan1.liu@intel.com>, Mike Rapoport <rppt@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "Hu, Yong" <yong.hu@intel.com>,
- "Zou, Nanhai" <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
- "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>,
- "Deng, Pan" <pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+ Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Tianyou Li <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ linux-kernel@vger.kernel.org
 References: <20260408031615.1831922-1-yuan1.liu@intel.com>
- <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
- <ade6RVeXxDt7ImP4@kernel.org>
- <e86fee84-08d8-4563-8596-e40d8e196799@kernel.org>
- <MW4PR11MB6936CA77BF02BF498BBEAB1CA3252@MW4PR11MB6936.namprd11.prod.outlook.com>
+ <20260413130633.knzkliyqvjhuz2kd@master>
+ <1928b6b0-2ec3-43ca-a41b-e880d974af04@kernel.org>
+ <20260414021219.wayysugpfbzirzh6@master>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <MW4PR11MB6936CA77BF02BF498BBEAB1CA3252@MW4PR11MB6936.namprd11.prod.outlook.com>
+In-Reply-To: <20260414021219.wayysugpfbzirzh6@master>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 13EFB80010
-X-Stat-Signature: 1eayjmtgx6jdxeq8kg87gw9iqurc6woe
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 5pfpo7qtkbcy95cih6ruatad9g4nsabm
+X-Rspamd-Queue-Id: 7107A4000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776158664-390189
-X-HE-Meta: U2FsdGVkX19s2S/lCeZkKjhmWlckvdqiV85okRP7nejalzYT7K2jlqJdETNajC2+aRHXv1PD+1YBz/U3MkzQ2PJBAMMLab9z3RFka4VYCcHY9GQU7flRfuwfssAX63DHMoLP+yLegU1HCI2oqLz4I73+FmkUytNzcWAkKxLNmxRpQssAjVESnvhvHif6htkc5QYePcR2VYkx3GymMp/MbuWTss6hNvJxhjjUW5Es0p/Hkx2KdzUb7rHyx6AwqCHz/ruDkft4y39YZcvZnPJF5sGkUJj3VPq1bVsJx0Whfkt9eWR/dbLUan6hUuU8K+VHfYlhttNTBfCt/Z9YHaOXaDLzUdmuUJIdNLT/PMVKtjtNs5+bQiPIjk7PGivmrlxrFRJyIixAP6XMPT1OFxkD9b5/OFWFYkd1qW9CEkYypwofFZ8jemC3cgnaKVkWFPhwKMzBBafL6hp99C2+w1HB/aO7TucozQK76P4+ugmOCGqbwXHpcfd1hsKEZYvRUSGojFLV5ICjSLrHzURalUv2//We83GeQyB6jvz8Q1IYx0yutnN8pDjv880qOdJU7JtStg/82tXU3yUHZqoaHX/ywxFZzoGJJus7w1qZ0fI6idFKM2COmaHy40uGOnfEdrIYQTzLQ52LLersvPVa901+1pc8gOV1ZtPZUFGIPEdTLmZP+Yy9PgXCix60WXrISRYv0Ut9TlkmbEHQkAkmxztp8ZhK5YA4lmLlbPPxhVqQ8BHnJ+IQXnI4y0M6DiXA4n0FMT4pUag3s3eJLU7RWtR7WVXL4fm2jKHBsqoVUFbCLHNSWHVIqvg4J/sKspK2LI8eB+wEjCJTIit4+c26FskVLCSjk3CZ3gPzxIzj649RQUOOk3G+rNUaH6kiiSaT0C4be/TIQVNM0ktguO+CxNkrLChgmSdIIuNuXBq11KedFMT/zJ+qWj7GQ/a7pwXQFAOXMxLQoYzoJA7Dv0I3pwt
- dCKgNk4N
- foiI/Gaxq7qHPii9ZXRg6x1itUagHagoRoisE1quCMpLeklp5Gq9DUIHt70XqFEhM3IU1TJhX17WBJI2NF4R3HdkeETk/GNDx9+zoVj6GNrRn3O1ufrfic7TUxbfvSRaqwOSu6XcOul6lJj2K2Decpigojkl7UFRVTcaZYBCKLAoiyXmTmKVRNkGahcHMdSuHMQgD2z+PIqqK1Kxy6zB+4wg92RYGnd+U/9qZu+wyqKznJDvinGtPD4ZOtkFwQ9fZEvMaeQM16pV/ZvK/7DV7nx0HXVpzcJuXKvvQyV7pIdxSvsQYhLbl06HoAiM+wV0M1wh60WPwNB/pAoGE5KNoiAhpdfl6eAC4y4TcujIu5FIKQP1lR8YYgzm6scepULbcImdWzrIEADSOCobqquJRSw31vk2v3IBTMkHN+1X2Vx45oy24WhSJmUDfgorvo8vPyBpwc067rhB2il1KIFdrH173Bm5Swm0fKk024Ug32VvR17kZA7Lo5z0KX5YQbs+iSlvcsIF67o3WpftU1VjJ6WA3kifrMTowGLR0/K4+/jYA8qCBpqkuh6gFO8kmPAinx1jqBU7ABchsDBVT5gdAS2+ijW1CFiYWM/te
+X-HE-Tag: 1776159140-742866
+X-HE-Meta: U2FsdGVkX1/gZQ0bqDdxjxqJb1ykdE7HqKOr6oVo9VXEfRRgyigDCwYyX846bGigSH4/enGP0s8+fpSwodmkIB6g5ZXWGWJShAMvyloa+HBgE8kbi99OXDz/IH06a4j3zv2QCMAl1dQC/Wc9A3nF3l2csMsGnmZ38TJoexmUaid9e6PrjlgTJP+Qst9Rastmq/S7eLk+WxrwgkN7l2nfZGspOzDfHq2TlRTm5q/GfSX/UxoxfSbakUKnpi4qBY0a7JYX1gpdmoFToQqHpFfEJsglHieq8cSNROOqjjBP1Zk1CsJOBc1m6JEtBKuuRSXUkfwKk5tdurl7tgJESC7kqFaAacz4EZvAtu1SdqG572+101yoghT5Er0XcEydkapi4UG7IEX7d5K8IqbNWT85C1BC7rLOeMnMS7jlq673y53oRNlSTcoXeAAOv0Mpq/KB1vWpaTvxOh/qGjWfgCoo+nB0E9BClKuOkbsBb2iQGUEKo0APSzZyjX89KUKV2xQzLBNt8u537IdI7vOTDzZWLe/SGi1iei3pTZKqKFb6DnBxwi9QmZSPjl42hLSohGz5A+bO7/ib8xazehTFxiBd+AS9tLHBdsg5LNfh4eIPOdHByAZEP6NlJnQhF9SJ/RWZCrWOE8Simaclb3j4u9TddPZZBOzYuALOXO4PZZjtLrdCbiQBOWrGuHBKdFTFE4le90VCKNbBs1ZKJZca2l1aBgq3mBnsWO89IGNVB+FMKqQj3Bap1GkfwqY1coqDEU1tbf/s85Z+KyXFHq5nRKKfqxVlCUj+VuEutugSvKMQ3INYm6n2h5T3E/i/F0+8F7PmfvcRnYPTqiPdgdcfP9VbQzn+Bq3GVob9jAUVqg7aEs8Y0/d8j9S3j71bjBI97A582bVLoCh9PuVLf1aLPLrqbDiWGbeQxk0PJcaEa1ebO1C6GsKYVUZ9zQiBk8mWIkUe9cQznJu8m2kUAmkyV2w
+ aTDdOtIF
+ dZxFYu4oL8nko5wqp7lfasmEPRkxGy68EjHA//b+fur2u6E2fMdU9QUamjDAJ27zkjp+nZztn50jDMt8tAtG+TpPLDXn50e9SaWJn+w8PKIfjYjJRfFiS6Gohp+U8dN0Ma0wli3ynA3YFb/LjcGQG/4k6r03kXp21FXiDD/XpgBvCYtkMXMqtNnkIacTli+IvaWLLZPZikyg+lP3tlryv+j2zJcuKJy8FwzXSqF/x0Si+TzIFhJ7rt0WGLalO92DFYMMaNkyito7HZNCwhNLjM4v/Ivb8gjyYBeFhfpuspylKRNWLRoav4tqGzu9OQokmdKViJ/hhcKHsnvE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,153 +146,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/14/26 09:06, Liu, Yuan1 wrote:
->> -----Original Message-----
->> From: David Hildenbrand (Arm) <david@kernel.org>
->> Sent: Thursday, April 9, 2026 11:08 PM
->> To: Mike Rapoport <rppt@kernel.org>
->> Cc: Liu, Yuan1 <yuan1.liu@intel.com>; Oscar Salvador <osalvador@suse.de>;
->> Wei Yang <richard.weiyang@gmail.com>; linux-mm@kvack.org; Hu, Yong
->> <yong.hu@intel.com>; Zou, Nanhai <nanhai.zou@intel.com>; Tim Chen
->> <tim.c.chen@linux.intel.com>; Zhuo, Qiuxu <qiuxu.zhuo@intel.com>; Chen, Yu
->> C <yu.c.chen@intel.com>; Deng, Pan <pan.deng@intel.com>; Li, Tianyou
->> <tianyou.li@intel.com>; Chen Zhang <zhangchen.kidd@jd.com>; linux-
->> kernel@vger.kernel.org
->> Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
->> check when changing pfn range
->>
->> On 4/9/26 16:40, Mike Rapoport wrote:
->> a
->> pageblock
->> cost
->> of
->> present
->> further
->> towards
->> prevents
->> the
->> --+
->> Reduction |
->> --+
->> |
->> --+
->> |
->> --+
->> --+
->> Reduction |
->> --+
->> |
->> --+
->> |
->> --+
->> \
->> of
->> hotplugged
->> long *pfn)
->> last
->> spfn,
->> long spfn,
->> ranges\n",
->> zone *zone,
+On 4/14/26 04:12, Wei Yang wrote:
+> On Mon, Apr 13, 2026 at 08:24:05PM +0200, David Hildenbrand (Arm) wrote:
+>>>   With the last memblock region fits in Node 1 Zone Normal. 
 >>>
->>> Yeah, this looks better :)
+>>>   Then I punch a hole in this region with 2M(subsection) size with following
+>>>   change, to mimic there is a hole in memory range:
 >>>
->>> sashiko had several comments
->>> https://sashiko.dev/#/patchset/20260408031615.1831922-1-
->> yuan1.liu%40intel.com
+>>>     @@ -1372,5 +1372,8 @@ __init void e820__memblock_setup(void)
+>>>             /* Throw away partial pages: */
+>>>             memblock_trim_memory(PAGE_SIZE);
+>>>      
+>>>     +       memblock_remove(0x140000000, 0x200000);
+>>>     +
+>>>             memblock_dump_all();
+>>>      }
+>>>     
+>>>   Then the memblock dump shows:
 >>>
->>> I skipped the ones related to hotplug, but in the mm_init part the
->> comment
->>> about zones that can have overlapping physical spans when mirrored
->>> kernelcore is enabled seems valid.
-> 
-> Hi David & Mike
-> 
-> I’ve spent some time working through these issues to better understand them.
-> For the overlapping physical spans(mirrored kernelcore), should I avoid counting 
-> overlap_memmap_init in memmap_init_range in the next version? 
-> For example, change it as follows: 
-> 
-> +unsigned long __meminit
-> +memmap_init_range(unsigned long size, int nid, unsigned long zone,
-> +               unsigned long start_pfn,
-> +               unsigned long zone_end_pfn,
->                 enum meminit_context context,
->                 struct vmem_altmap *altmap, int migratetype,
->                 bool isolate_pageblock)
->  {
->         unsigned long pfn, end_pfn = start_pfn + size;
-> +       unsigned long nr_init = 0;
->         struct page *page;
-> 
->         if (highest_memmap_pfn < end_pfn - 1)
-> @@ -893,7 +897,7 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
->         if (zone == ZONE_DEVICE) {
->                 if (!altmap)
-> -                       return;
-> +                       return 0;
-> 
->                 if (start_pfn == altmap->base_pfn)
->                         start_pfn += altmap->reserve;
-> @@ -911,6 +915,7 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
->                         if (defer_init(nid, pfn, zone_end_pfn)) {
->                                 deferred_struct_pages = true;
-> +                               nr_init += end_pfn - pfn;
-
-It's confusing. Could the remaining range also include overlapping inits?
-
-Maybe the whole "skip overlapping init" should actually be handled on a
-higher level?
-
-I guess we'd want to skip any memblock_is_mirror(r) regions entirely.
-
-@Mike?
-
->                                 break;
->                         }
->                 }
-> @@ -935,8 +940,10 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
->                         cond_resched();
->                 }
-> +               nr_init++;
->                 pfn++;
->         }
-> +       return nr_init;
-> }
-> 
-> @ -954,13 +962,21 @@ static void __init memmap_init_zone_range(struct zone *zone,
->         if (start_pfn >= end_pfn)
->                 return;
-> +       nr_pages = memmap_init_range(end_pfn - start_pfn, nid, zone_id,
-> +                                    start_pfn, zone_end_pfn, MEMINIT_EARLY,
-> +                                    NULL, MIGRATE_MOVABLE, false);
-> +       zone->pages_with_online_memmap += nr_pages;
-> +
-> 
->> The set_zone_contiguous/clear_zone_contiguous can be ignored I think.
+>>>      MEMBLOCK configuration:
+>>>       memory size = 0x000000017fd7dc00 reserved size = 0x0000000005a97 9c2
+>>>       memory.cnt  = 0x4
+>>>       memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x0
+>>>       memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x0
+>>>   +-  memory[0x2]     [0x0000000100000000-0x000000013fffffff], 0x0000000040000000 bytes on node 1 flags: 0x0
+>>>   +-  memory[0x3]     [0x0000000140200000-0x00000001bfffffff], 0x000000007fe00000 bytes on node 1 flags: 0x0
+>>>
+>>>   We can see the original one memblock region is divided into two, with a hole
+>>>   of 2M in the middle.
 >>
->> The comment about shrink_zone_span() is likely not realistic.
->> shrink_zone_span() would not shrink over boot holes.
+>> Yes, that makes sense.
 >>
->> Well, unless we have an odd case where the hole+memory starts in the
->> middle of a "PAGES_PER_SUBSECTION". That would already be problematic if
->> memory starts/ends in the middle of a PAGES_PER_SUBSECTION chunk. I
->> don't such a case exists.
+>>>
+>>>   Not sure this is a reasonable mimic of memory hole. Also I tried to
+>>>   punch a larger hole, e.g. 10M, still see the behavioral change.
+>>>
+>>> The /proc/zoneinfo result:
+>>>
+>>>     w/o patch
+>>>
+>>>     Node 1, zone   Normal
+>>>       pages free     469271
+>>>             boost    0
+>>>             min      8567
+>>>             low      10708
+>>>             high     12849
+>>>             promo    14990
+>>>             spanned  786432
+>>>             present  785920
+>>>             contigu  0           <--- zone is non-contiguous
+>>>             managed  766024
+>>>             cma      0
+>>>     
+>>>     with patch
+>>>
+>>>     Node 1, zone   Normal
+>>>       pages free     121098
+>>>             boost    0
+>>>             min      8665
+>>>             low      10831
+>>>             high     12997
+>>>             promo    15163
+>>>             spanned  786432
+>>>             present  785920
+>>>             contigu  1           <--- zone is contiguous
+>>>             managed  773041
+>>>             cma      0
+>>>
+>>>   This shows we treat Node 1 Zone Normal as non-contiguous before, but treat
+>>>   it a contiguous zone after this patch.
+>>>
+>>> Reason:
+>>>
+>>>   set_zone_contiguous()
+>>>       __pageblock_pfn_to_page()
+>>>           pfn_to_online_page()
+>>> 	      pfn_section_valid() <--- check subsection
+>>>
+>>>   When SPARSEMEM_VMEMMEP is set, pfn_section_valid() checks subsection bit to
+>>>   decide if it is valid. For a hole, the corresponding bit is not set. So it
+>>>   is non-contiguous before the patch.
+>>>
+>>>   After this patch, the memory map in this hole also contributes to
+>>>   pages_with_online_memmap, so it is treated as contiguous.
 >>
->> We could improve shrink_zone_span() to let
->> find_smallest_section_pfn/find_biggest_section_pfn test the pfn_to_nid()
->> and page_zone() not on;y on the smallest/highest pfn, but also on the
->> highest/smallest PFN in a PAGES_PER_SUBSECTION chunk.
+>> That means that mm init code actually initialized a memmap, so there is
+>> a memmap there that is properly initialized?
 >>
->> No need to test pfn_to_online_page() twice, as that is the same result
->> for all pages in a PAGES_PER_SUBSECTION chunk.
+>> So init_unavailable_range()->for_each_valid_pfn() processed these
+>> sub-section holes I guess.
+>>
 > 
-> Hi David
+> Yes, I think so.
 > 
-> I think I understand your point. 
-> Just to confirm, should the improvement to shrink_zone_span be included in this patch?
+> When memmap_init()->for_each_mem_pfn_range() iterate on the last memblock
+> region, init_unavailable_range() will init the hole.
+> 
+>> subsection_map_init() takes care of initializing the subsections. That
+>> happens before memmap_init() in free_area_init().
+>>
+> 
+> Yes. I guess you mean sparse_init_subsection_map().
+> 
+>> Is there a problem in for_each_valid_pfn()?
+>>
+>> And I think there is in first_valid_pfn:
+>>
+> 
+> You mean there is a problem in first_valid_pfn?
 
-I would do it in a separate patch that you move before this patch.
+That is my theory.
+
+> 
+>> 	if (valid_section(ms) &&
+>> 	    (early_section(ms) || pfn_section_first_valid(ms, &pfn))) {
+>> 		rcu_read_unlock_sched();
+>> 		return pfn;
+>> 	}
+>>
+>> The PFN is valid, but we actually care about whether it will be online.
+>> So likely, we should skip over sub-sections here also for early sections
+>> (even though the memmap exist, nobody should be looking at it, just like
+>> for an offline memory section).
+>>
+> 
+> And it should be like below?
+> 
+> 	if (valid_section(ms) &&
+> 	    pfn_section_first_valid(ms, &pfn)) {
+> 		rcu_read_unlock_sched();
+> 		return pfn;
+> 	}
+
+Probably, yes. We have to understand if other users would be negatively
+affected.
+
+> 
+> IIUC, this would skip hole and leave allocated memory map uninitialized. And
+> then those pages won't contribute to pages_with_online_memmap, which further
+> leave the zone non-contiguous.
+
+Yes.
+
+> 
+> But we want zone to be contiguous when we have a hole like this, right?
+
+Not if a subsection is marked invalid. That's why the existing scenario
+is that it will not be contiguous.
+
+Note that Wei reported that it was not contiguous but would now be
+contiguous.
+
+
+If you have a DAX device the plugs into that hole through
+memremap_pages()->pagemap_range(), I think this could cause problems. I
+doubt that this would happen in practice for such small holes, but if
+they would be bigger, or at the start/end of the range, it could be
+problematic.
 
 -- 
 Cheers,
