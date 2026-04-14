@@ -4,138 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C05A7ED7B82
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 08:02:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6B07ED7B82
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 08:02:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9BDC6B0088; Tue, 14 Apr 2026 04:02:06 -0400 (EDT)
+	id 0B8BA6B008A; Tue, 14 Apr 2026 04:02:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E72BC6B008A; Tue, 14 Apr 2026 04:02:06 -0400 (EDT)
+	id 0902C6B0093; Tue, 14 Apr 2026 04:02:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D88CF6B0093; Tue, 14 Apr 2026 04:02:06 -0400 (EDT)
+	id EE89E6B0095; Tue, 14 Apr 2026 04:02:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C7E6B6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:02:06 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75E12B9629
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:02:06 +0000 (UTC)
-X-FDA: 84656418252.20.B7931BF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BBD6D180004
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:02:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vDvA0e24;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DE3A46B008A
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:02:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72C76C1C2F
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:02:15 +0000 (UTC)
+X-FDA: 84656418630.22.4C63BBE
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B53AA140002
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:02:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=BKODt+GP;
+	spf=none (imf26.hostedemail.com: domain of BATV+c83a8b98330cc0662794+8269+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+c83a8b98330cc0662794+8269+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776153724;
+	s=arc-20220608; t=1776153733;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=urvgN/yMTuNv2BuuzZttwqyWHQHT9owBAejZd95LjtU=;
-	b=zBmt0cFd6YyE76MU62CktfaGAx1OGOit3j+L76Rug9FOICyusaA36TEYj8jsbZTvJkIHnf
-	yibejhhTZVbj8aAq46MnhXaqmTfMhVqpBqyrMUzcHfHffyhrc2342z+dhgZOLe+AFKHBh8
-	Xv+5kMK3RMJgMDu3ENMyi46QYIAQ0wE=
+	bh=jZB6wvifj9UkY04zogY2eepEJ7vJgc4ipMPW1svIE5s=;
+	b=w1I9M7O95y0/udX2ZWO79QMoLagxf84szca+gY+Bg3HXH7Upc+cY1/eiky36Aqw8nWkdv9
+	cVFzudvfX7p71CiCQ1SN2vwT4lLRAbhMSYv8jgkzxMKtrkSU/gJ0r9VbT2ylPYvZsgk8rq
+	QNdvTFRct4b0JCWG5Z78Ja0KbeyW9pQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vDvA0e24;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776153724; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=BKODt+GP;
+	spf=none (imf26.hostedemail.com: domain of BATV+c83a8b98330cc0662794+8269+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+c83a8b98330cc0662794+8269+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776153733; a=rsa-sha256;
 	cv=none;
-	b=4BPRQm6HtP9adYBXrBKGXcKD1EF3ZTuAQs164epoFZnsycZMsSzmVpjPzupIlat8YeYx/L
-	3SjQezXm09IdEZCaK73HG7Y/pH3us6i+4WdYlzngekmDooMRyPQHsigRvCphH6Z4LbXFos
-	dQOuy4OUsuIu/VnIrcYU4aWVeQmy1y0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2425D60018;
-	Tue, 14 Apr 2026 08:02:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51ADDC2BCB5;
-	Tue, 14 Apr 2026 08:02:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776153723;
-	bh=L8/Ms4z3Rfz0P3/99Pl/TB9+7FARk+jRgE/Haq9jXI4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vDvA0e24lF0uHA7W8Hr/ombykHCqFZVvXqNiiHT6/2EAeS9Gc2cqt57O7eJk1eUeQ
-	 5NPjTrjsEdn0i5lX+iaON5WqxPWI+bpVVe3fJheunC0OGoXhVjKKe1NYvPU1i301c/
-	 X5P2PRdHbYoKKgo88iWffT6rD0ruCFFR7IQ/rbBeS+FqngMNtyvBCmFql+26hkJZG0
-	 JF82EdrRYmQPutI/L1jzILn0LvumPO23JXzd7l+X4nrbTaC1Vlo2a8unfgDJssSqKB
-	 VUi17DQvGb0LIqssR9wDhV1QEAuj5wVVKU8QVTCusTF1B/43PY/jvlIzA1LOKQy2DF
-	 XTTzo1PHP9J8w==
-Message-ID: <134c372e-5c9e-493d-b954-d9954546beaf@kernel.org>
-Date: Tue, 14 Apr 2026 10:01:57 +0200
+	b=zAKOqWU/WE0f72J7/uinqPqALrjgaOmS+WzmMoBoRvr8plGCCcr1DQtmZj9v7IY+Hmx9sH
+	+OUzDNXAl75yP18daEk6DbD5oLIg9ZVwWhLpUJGDehTa7zUMwGTwkwBRfofLFIhbmewGix
+	lSt6g+4yInt6PdnSR/qgRSyI1cPt1WY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=jZB6wvifj9UkY04zogY2eepEJ7vJgc4ipMPW1svIE5s=; b=BKODt+GPW9p8gckvhmEzBDeovM
+	wqjOZdWiQpjfsdFwasDJbeSyV1AqWAVoYN270d7OovdVHqprwb3rELyb7GvKxKNXlDqjz1hV4PBgB
+	F+vRjsj82DftHnjaDVxXt0XGXbKctogIuMnooOIyN5lzMMQovFl9VpWNQKxCw1TcksVHmfW34k7sU
+	Bm0B1Z3xqzZ5uDCP7h/j5A7XeApCCBPMpffhyRteG12gbaMxhZ87v73y+lxwrt1CYoO+V/H2VDZ5m
+	cDxRO5goNOHIKuBlt63dySKrgwNXRwoLD6FMw77xH5FrUH3FStfna+P9q6fWUm354zueWv83Wdf+j
+	3QzoY9Wg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wCYip-0000000Gw6B-0Hmo;
+	Tue, 14 Apr 2026 08:02:11 +0000
+Date: Tue, 14 Apr 2026 01:02:11 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	Akilesh Kailash <akailash@google.com>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-api@vger.kernel.org
+Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
+ inode number
+Message-ID: <ad30g9xMs9wNJhFb@infradead.org>
+References: <20260409134538.3692605-1-jaegeuk@kernel.org>
+ <adhPZxtbZxgU-37v@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Simplify byte pattern checking in
- mremap_test
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, shuah@kernel.org
-Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com,
- Sarthak Sharma <sarthak.sharma@arm.com>
-References: <20260410143031.148173-1-dev.jain@arm.com>
- <5297e0da-d8ec-49df-9b32-0d9f907588d6@kernel.org>
- <8b5544eb-5ec0-4c85-a2da-7a454fa606dc@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <8b5544eb-5ec0-4c85-a2da-7a454fa606dc@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BBD6D180004
-X-Stat-Signature: xadm93goryf7mkma1ohhq7n6gyeg8ht9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adhPZxtbZxgU-37v@google.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776153724-155464
-X-HE-Meta: U2FsdGVkX19cdZfNBAGj4qsh/B+QO2KrIYGtn6Ch5pVkRb8eWIg9BDWh1Ucp+DAcjpCTP3gLYi6MxnS0GS/uNO9ewNM1QdD82w2MmZF0/Ev+BwM+tTyD00prphEvJgTFJSCy+Cm794vt7mRE6fpEnQeZsI8Ajc/qKDe5j+tln6OM2pv7q2RHLgSkJb1P3xEWNlBrv8qa5ZcCqoNDUfsPOfbAdiSy5Hz1cWXRpaH1TLu1VfcJr087CfBcI33w8+O2N0y/YHUoonbnHM1UesjPmhCdCIQQqjbqCN+4Y16gqqRIr3bqRNFLXq1TEyzj71/KQmt0a8gPrn5HxeCuMEEOpJPN6V+Ug6V3qTq4sZDPuR5iFQjxzezHEr0FcxE0pugupX5rSHk8SlmCNlUtIgDQecfERFyZYYM4BBWIcH0NK1NdbpVZOh3gGGrTX8EQpru9VKHqEaosSnbyju+9CHcK+GW2U5xegggzci8oSwpKLWjr3EEIj8t1Yh4MaPvW7CaE+LplkUtva0N19GBCv338tCJoxKmxCYSI2mtWWkhJkBq2g4XEMB8uTSkRjBJFd/lJZ9P4doufoRrK4HfH59jIxwZcw4CAJuTqYlJnxGdXi5tPloZxBtlRu9mhofahZn3ZnQbkO8HYjhUCyPmcdNwGKwmegWAEhUQ7atDcqosMDwbsjmYp0+GCNegt7zNLfHBPWg6loVYJV9hp8rb0yk1BdYpUEXfyqY/XZGiRbCXxjbhbdaK2ZnNFm3Qq5UnVdtzlkU4hR/1Evood47nAAGi0e7yf2iG1k5xj0DxSRuEHb76DP746yijw2AK9+nCgvMITzEa6KvdSaf2o3dwB9/Cge5iaNJj+hKcg+PwN61WxVYdea2DxzPzrFV2tDDjsp+zt2R+86EdNyVrLNs5C9XPKaC2gAMZX/Hp1gA5zJrAUnNOvIYGoOzs4zFuM2+bkhf3irJawfja9j9BMd56qeN1
- vd/ma4ZM
- SLV+LxxJT/cchxRqNIoCcawUKTfB3F7qjPUYgcUXe+ET8k9+3sVL5fvSO+OJ5dwlhdhpqqGgR8DLT1iTqc1xlpUZdodm+U37d5x+8sHFFJ3D9jaUuUz43ooudFmUPURrE2KblZ3qdBPeVQRCjaA8b2sFg5OPYe62thQhVgdqoj+3hqNmjLtnrwKX2V9aLb1SKF1gYfkjBVu0YZUzNgwBU+Ur4xuocoigXTJ+6D+OiRhz46wbzlhgKijCESvGbpFOgZv91GFccRrMMbWVBjjzGWH+LBeXArcrRyI9nd3I2qbaMxb7WshhPyP2fAuOMAjOFS7PuwcY7Gba7ej3lNkUQI+BgDCo0r/ghV9+QPBxOHCdzozg=
+X-Rspamd-Queue-Id: B53AA140002
+X-Stat-Signature: s6rbt6x9njsetemwkjece1i7uaqasmd3
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776153733-4475
+X-HE-Meta: U2FsdGVkX198Uh/l63qARYEUS3l+mgyJp5BfV6HX9ACQq/7iqvrGsoLjkjg9MqjTXh81SUfnq0OC44dWczgGMRGQ3jJFGljzcO40SPcsD8JUA1GFUkU28b6sx67hzeKTDvr96ZXZ6wavpCzHKhQ1FPNx+mk0khlVzvxDsmfdV7C1phmM4iSkYI/0XzkTcwTq7aDurBHhakBrTEFfFo8xxVL4L1vSGjY4QPScro6C5sDbHt6f+gkE49Dp9Y9ip+iWwlaGjuxfCPAApVxpsqY5uJPDBz2Ni0ogOcU86WLgR8R0iHpvVqIBSO0wrWLSjYY3ytpVPQcHwTdljc64INOxtEedIADGKZlvF+/dws/qeZNMxMMzAVZsEmBakkTh5eG0Polq0MjQ5+RKsPH7U7Gm4uPqMT/XmiZ/HDn6nzAH7PqXlzk9xK8hPNfl02tnYoNN0EHFYPosPkhQJN+AdmvA7/MEevQFyatr95wlc++c6TffRNfNjwH3S+TrgMd+e/uLkEng3nOu0uUylsRd2zMhVYu80/DFZa4vuDXqVlkQHT7n5Uly1tTsDbzGAm7dBMH8aa8jsebGyofKX0k0ZUN+UKswh0nTmpGKYYtXHoR7xsZgRItiyFlZ83YHf9LiH9sDOLdn6r+F99X72LzFJQGdOqq6w4VXidq/p+sg07JmZNkWkt2UH+DEpDVq5MZNh4WQI6NnX2lGo8oEYuxwiJSFPkOZMQjbfFoCsrjOqbP05gNXdkEY/VDcTc8sBU/WaCypF0+ooLv+FYUI/R50+UkJYeU83Fr0+CTh9d3MT3VVIqFNh1lY8Uq3jXwtO4OYv/yxO7Aap3kKPSLLX88UFkDlwnplNHUbxrE/PwNg4+ivXjTJswOmbJamq1hxR93C+pLq5NSpOVZ9uBhSowfN2S0nk6p+Bh3GVVlTvSBKVVgGuRRV/BOfMNDVw2lMXlVC9f7JXr3hLgz89uS+zJcmYfZ
+ mwaZO+6M
+ +RMh3g/dxrgIHxEQY4Uc6YV/cImUlk+PSkhrYQdTRMR4OQ9O+/ZQNesQ7BnELA2ChjCcivlNgMsfDAhLl+fuhdP47XPw26LLfwcURfqScazsav5yjbR0UzgrRM6pHuFWb0rfKrVOnoFEU+soK758yFB7opWFTqxLWf/OfJPCpP6XP8sPDU8IOQWlhLoSddz4YOjsvuNcQAOhAypAFX3RcBlR2Z7h7vgSW06syW9g2hUv3qtiCLTfObBbi/8QaQyHxxINCPVNP/mwEUn8N42owFNG2Ot66dTnozDPxMCedQr3vtmW7HzvqRflwzrPsRqZXDfl/nkeX8bKViB9omLMAHThVt/XkA8cHVF+Y/bY9GqP93JtauRXp+baDTLMqzUowun5FFpgzrNRu/p5CNUrCKBuj7cuIBe0qdDtuLoXJr/9WNmW0Rq8QL0mb8QJp4OMWFMVpJrdp68JDFwI4ZUInRwZxh4cjY4t648djkqJwrSUPVoikHc36Fc6sLupye2gr1FJC+gmBWKyGXEaZ2Gatlkrzqh/aoy7WW+uM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,129 +93,325 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/14/26 07:09, Dev Jain wrote:
-> 
-> 
-> On 14/04/26 12:57 am, David Hildenbrand (Arm) wrote:
->> On 4/10/26 16:30, Dev Jain wrote:
->>> The original version of mremap_test (7df666253f26: "kselftests: vm: add
->>> mremap tests") validated remapped contents byte-by-byte and printed a
->>> mismatch index in case the bytes streams are not equal. That made
->>> validation expensive in both cases: for "no mismatch" (the common case when
->>> mremap is not buggy), it still walked all bytes in C; for "mismatch", it
->>> broke out of the loop after printing the mismatch index.
->>>
->>> Later, my commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
->>> execution time from minutes to seconds using chunkwise memcmp") tried to
->>> optimize both cases by using chunk-wise memcmp() and only scanning bytes
->>> within a range which has been determined by memcmp as mismatching.
->>>
->>> But get_sqrt() in that commit is buggy: `high = mid - 1` is applied
->>> unconditionally. This makes the speed of checking the mismatch index
->>> suboptimal.
->>
->> So is that the only problem with 7033c6cc9620: the speed?
-> 
-> Yes.
-> 
-> I'll explain the algorithm in 7033c6cc9620.
-> 
-> The problem statement is: given two buffers of equal length n, find the
-> first mismatch index.
-> 
-> Algorithm: Divide the buffers into sqrt(n) chunks. Do a memcmp() over
-> each chunk. If all of them succeed, the buffers are equal, giving the
-> result in O(sqrt(n)) * t, where t = time taken by memcmp().
-> 
-> Otherwise, worst case is that we find the mismatch in the last chunk.
-> Now brute-force iterate this chunk to find the mismatch. Since chunk
-> size is sqrt(n), complexity is again
-> sqrt(n) * t + sqrt(n) = O(sqrt(n)) * t.
-> 
-> So if get_sqrt() computes a wrong square root, we lose this time
-> complexity.
+Please add the relevant mailing lists when adding new user interfaces.
 
-Ah, thanks for clarifying.
+And I'm not sure hacks working around the proper large folio
+implementation are something that should be merged upstream.
 
+On Fri, Apr 10, 2026 at 01:16:23AM +0000, Jaegeuk Kim wrote:
+> enum {
+>        F2FS_XATTR_FADV_LARGEFOLIO,
+> };
 > 
-> Maybe there is an optimal value of x = #number of chunks of the buffer,
-> which may not be sqrt(n).
+> unsigned int value = BIT(F2FS_XATTR_FADV_LARGEFOLIO);
 > 
-> But given the information we have, a CS course on algorithms will
-> say this is one of the optimal ways to do it.
+> 1. setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
+>  -> register the inode number for large folio
+> 2. chmod(0400, file)
+>  -> make Read-Only
+> 3. fsync() && close() && open(READ)
+>  -> f2fs_iget() with large folio
+> 4. open(WRITE), mkwrite on mmap, chmod(WRITE)
+>  -> return error
+> 5. close() and open()
+>  -> goto #3
+> 6. unlink
+>  -> deregister the inode number
 > 
->>
->>>
->>> The mismatch index does not provide useful debugging value here: if
->>> validation fails, we know mremap behavior is wrong, and the specific byte
->>> offset does not make root-causing easier.
->>
->> Fully agreed.
->>
->>>
->>> So instead of fixing get_sqrt(), bite the bullet, drop mismatch index
->>> scanning and just compare the two byte streams with memcmp().
->>
->> How does this affect the execution time of the test?
+> Suggested-by: Akilesh Kailash <akailash@google.com>
+> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+> ---
+>  
+>   Log from v1:
+>    - add a condition in f2fs_drop_inode
+>    - add Doc
 > 
-> I just checked with ./mremap_test -t 0, the variance is very high on my
-> system.
+>  Documentation/filesystems/f2fs.rst | 41 ++++++++++++++++++++++++++----
+>  fs/f2fs/checkpoint.c               |  2 +-
+>  fs/f2fs/data.c                     |  2 +-
+>  fs/f2fs/f2fs.h                     |  1 +
+>  fs/f2fs/file.c                     | 11 ++++++--
+>  fs/f2fs/inode.c                    | 19 +++++++++++---
+>  fs/f2fs/super.c                    |  7 +++++
+>  fs/f2fs/xattr.c                    | 35 ++++++++++++++++++++++++-
+>  fs/f2fs/xattr.h                    |  6 +++++
+>  9 files changed, 111 insertions(+), 13 deletions(-)
 > 
-> In the common case of the test passing:
+> diff --git a/Documentation/filesystems/f2fs.rst b/Documentation/filesystems/f2fs.rst
+> index 7e4031631286..de899d0d3088 100644
+> --- a/Documentation/filesystems/f2fs.rst
+> +++ b/Documentation/filesystems/f2fs.rst
+> @@ -1044,11 +1044,14 @@ page allocation for significant performance gains. To minimize code complexity,
+>  this support is currently excluded from the write path, which requires handling
+>  complex optimizations such as compression and block allocation modes.
+>  
+> -This optional feature is triggered only when a file's immutable bit is set.
+> -Consequently, F2FS will return EOPNOTSUPP if a user attempts to open a cached
+> -file with write permissions, even immediately after clearing the bit. Write
+> -access is only restored once the cached inode is dropped. The usage flow is
+> -demonstrated below:
+> +This optional feature is triggered by two mechanisms: the file's immutable bit
+> +or a specific xattr flag. In both cases, F2FS ensures data integrity by
+> +restricting the file to a read-only state while large folios are active.
+> +
+> +1. Immutable Bit Approach:
+> +Triggered when the FS_IMMUTABLE_FL is set. This is a strict enforcement
+> +where the file cannot be modified at all until the bit is cleared and
+> +the cached inode is dropped.
+>  
+>  .. code-block::
+>  
+> @@ -1078,3 +1081,31 @@ demonstrated below:
+>     Written 4096 bytes with pattern = zero, total_time = 29 us, max_latency = 28 us
+>  
+>     # rm /data/testfile_read_seq
+> +
+> +2. XATTR fadvise Approach:
+> +A more flexible registration via extended attributes.
+> +
+> +.. code-block::
+> +
+> +    enum {
+> +        F2FS_XATTR_FADV_LARGEFOLIO,
+> +    };
+> +    unsigned int value = BIT(F2FS_XATTR_FADV_LARGEFOLIO);
+> +
+> +    /* Registers the inode number for large folio support in the subsystem.*/
+> +    # setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
+> +
+> +    /* The file must be made Read-Only to transition into the large folio path. */
+> +    # fchmod(0400, fd)
+> +
+> +    /* clean up dirty inode state. */
+> +    # fsync(fd)
+> +
+> +    /* Drop the inode cache.
+> +    # close(fd)
+> +
+> +    /* f2fs_iget() instantiates the inode with large folio support.*/
+> +    # open()
+> +
+> +    /* Returns -EOPNOTSUPP or error to protect the large folio cache.*/
+> +    # open(WRITE), mkwrite on mmap, or chmod(WRITE)
+> diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+> index 01e1ba77263e..fdd62ddc3ed6 100644
+> --- a/fs/f2fs/checkpoint.c
+> +++ b/fs/f2fs/checkpoint.c
+> @@ -778,7 +778,7 @@ void f2fs_remove_ino_entry(struct f2fs_sb_info *sbi, nid_t ino, int type)
+>  	__remove_ino_entry(sbi, ino, type);
+>  }
+>  
+> -/* mode should be APPEND_INO, UPDATE_INO or TRANS_DIR_INO */
+> +/* mode should be APPEND_INO, UPDATE_INO, LARGE_FOLIO_IO, or TRANS_DIR_INO */
+>  bool f2fs_exist_written_data(struct f2fs_sb_info *sbi, nid_t ino, int mode)
+>  {
+>  	struct inode_management *im = &sbi->im[mode];
+> diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+> index 965d4e6443c6..5e46230398d7 100644
+> --- a/fs/f2fs/data.c
+> +++ b/fs/f2fs/data.c
+> @@ -2494,7 +2494,7 @@ static int f2fs_read_data_large_folio(struct inode *inode,
+>  	int ret = 0;
+>  	bool folio_in_bio;
+>  
+> -	if (!IS_IMMUTABLE(inode) || f2fs_compressed_file(inode)) {
+> +	if (f2fs_compressed_file(inode)) {
+>  		if (folio)
+>  			folio_unlock(folio);
+>  		return -EOPNOTSUPP;
+> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+> index e40b6b2784ee..02bc6eb96a59 100644
+> --- a/fs/f2fs/f2fs.h
+> +++ b/fs/f2fs/f2fs.h
+> @@ -381,6 +381,7 @@ enum {
+>  /* for the list of ino */
+>  enum {
+>  	ORPHAN_INO,		/* for orphan ino list */
+> +	LARGE_FOLIO_INO,	/* for large folio case */
+>  	APPEND_INO,		/* for append ino list */
+>  	UPDATE_INO,		/* for update ino list */
+>  	TRANS_DIR_INO,		/* for transactions dir ino list */
+> diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+> index c0220cd7b332..64ba900410fc 100644
+> --- a/fs/f2fs/file.c
+> +++ b/fs/f2fs/file.c
+> @@ -2068,9 +2068,16 @@ static long f2fs_fallocate(struct file *file, int mode,
+>  
+>  static int f2fs_release_file(struct inode *inode, struct file *filp)
+>  {
+> -	if (atomic_dec_and_test(&F2FS_I(inode)->open_count))
+> +	if (atomic_dec_and_test(&F2FS_I(inode)->open_count)) {
+>  		f2fs_remove_donate_inode(inode);
+> -
+> +		/*
+> +		 * In order to get large folio as soon as possible, let's drop
+> +		 * inode cache asap. See also f2fs_drop_inode.
+> +		 */
+> +		if (f2fs_exist_written_data(F2FS_I_SB(inode),
+> +					    inode->i_ino, LARGE_FOLIO_INO))
+> +                       d_drop(filp->f_path.dentry);
+> +	}
+>  	/*
+>  	 * f2fs_release_file is called at every close calls. So we should
+>  	 * not drop any inmemory pages by close called by other process.
+> diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+> index 89240be8cc59..e100bc5a378c 100644
+> --- a/fs/f2fs/inode.c
+> +++ b/fs/f2fs/inode.c
+> @@ -565,6 +565,20 @@ static bool is_meta_ino(struct f2fs_sb_info *sbi, unsigned int ino)
+>  		ino == F2FS_COMPRESS_INO(sbi);
+>  }
+>  
+> +static void f2fs_mapping_set_large_folio(struct inode *inode)
+> +{
+> +	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+> +
+> +	if (f2fs_compressed_file(inode))
+> +		return;
+> +	if (f2fs_quota_file(sbi, inode->i_ino))
+> +		return;
+> +	if (IS_IMMUTABLE(inode) ||
+> +	    (f2fs_exist_written_data(sbi, inode->i_ino, LARGE_FOLIO_INO) &&
+> +	     !(inode->i_mode & S_IWUGO)))
+> +	    mapping_set_folio_min_order(inode->i_mapping, 0);
+> +}
+> +
+>  struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
+>  {
+>  	struct f2fs_sb_info *sbi = F2FS_SB(sb);
+> @@ -620,9 +634,7 @@ struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
+>  		inode->i_op = &f2fs_file_inode_operations;
+>  		inode->i_fop = &f2fs_file_operations;
+>  		inode->i_mapping->a_ops = &f2fs_dblock_aops;
+> -		if (IS_IMMUTABLE(inode) && !f2fs_compressed_file(inode) &&
+> -		    !f2fs_quota_file(sbi, inode->i_ino))
+> -			mapping_set_folio_min_order(inode->i_mapping, 0);
+> +		f2fs_mapping_set_large_folio(inode);
+>  	} else if (S_ISDIR(inode->i_mode)) {
+>  		inode->i_op = &f2fs_dir_inode_operations;
+>  		inode->i_fop = &f2fs_dir_operations;
+> @@ -895,6 +907,7 @@ void f2fs_evict_inode(struct inode *inode)
+>  	f2fs_remove_ino_entry(sbi, inode->i_ino, APPEND_INO);
+>  	f2fs_remove_ino_entry(sbi, inode->i_ino, UPDATE_INO);
+>  	f2fs_remove_ino_entry(sbi, inode->i_ino, FLUSH_INO);
+> +	f2fs_remove_ino_entry(sbi, inode->i_ino, LARGE_FOLIO_INO);
+>  
+>  	if (!is_sbi_flag_set(sbi, SBI_IS_FREEZING)) {
+>  		sb_start_intwrite(inode->i_sb);
+> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+> index ccf806b676f5..11d1e0c99ac1 100644
+> --- a/fs/f2fs/super.c
+> +++ b/fs/f2fs/super.c
+> @@ -1844,6 +1844,13 @@ static int f2fs_drop_inode(struct inode *inode)
+>  			return 1;
+>  		}
+>  	}
+> +	/*
+> +	 * In order to get large folio as soon as possible, let's drop
+> +	 * inode cache asap. See also f2fs_release_file.
+> +	 */
+> +	if (f2fs_exist_written_data(sbi, inode->i_ino, LARGE_FOLIO_INO) &&
+> +	    !is_inode_flag_set(inode, FI_DIRTY_INODE))
+> +		return 1;
+>  
+>  	/*
+>  	 * This is to avoid a deadlock condition like below.
+> diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+> index 941dc62a6d6f..0c0e44c2dcdd 100644
+> --- a/fs/f2fs/xattr.c
+> +++ b/fs/f2fs/xattr.c
+> @@ -44,6 +44,16 @@ static void xattr_free(struct f2fs_sb_info *sbi, void *xattr_addr,
+>  		kfree(xattr_addr);
+>  }
+>  
+> +static int f2fs_xattr_fadvise_get(struct inode *inode, void *buffer)
+> +{
+> +	if (!buffer)
+> +		goto out;
+> +	if (mapping_large_folio_support(inode->i_mapping))
+> +		*((unsigned int *)buffer) |= BIT(F2FS_XATTR_FADV_LARGEFOLIO);
+> +out:
+> +	return sizeof(unsigned int);
+> +}
+> +
+>  static int f2fs_xattr_generic_get(const struct xattr_handler *handler,
+>  		struct dentry *unused, struct inode *inode,
+>  		const char *name, void *buffer, size_t size)
+> @@ -61,10 +71,29 @@ static int f2fs_xattr_generic_get(const struct xattr_handler *handler,
+>  	default:
+>  		return -EINVAL;
+>  	}
+> +	if (handler->flags == F2FS_XATTR_INDEX_USER &&
+> +	    !strcmp(name, "fadvise"))
+> +		return f2fs_xattr_fadvise_get(inode, buffer);
+> +
+>  	return f2fs_getxattr(inode, handler->flags, name,
+>  			     buffer, size, NULL);
+>  }
+>  
+> +static int f2fs_xattr_fadvise_set(struct inode *inode, const void *value)
+> +{
+> +	unsigned int new_fadvise;
+> +
+> +	new_fadvise = *(unsigned int *)value;
+> +
+> +	if (new_fadvise & BIT(F2FS_XATTR_FADV_LARGEFOLIO))
+> +		f2fs_add_ino_entry(F2FS_I_SB(inode),
+> +				inode->i_ino, LARGE_FOLIO_INO);
+> +	else
+> +		f2fs_remove_ino_entry(F2FS_I_SB(inode),
+> +				inode->i_ino, LARGE_FOLIO_INO);
+> +	return 0;
+> +}
+> +
+>  static int f2fs_xattr_generic_set(const struct xattr_handler *handler,
+>  		struct mnt_idmap *idmap,
+>  		struct dentry *unused, struct inode *inode,
+> @@ -84,6 +113,10 @@ static int f2fs_xattr_generic_set(const struct xattr_handler *handler,
+>  	default:
+>  		return -EINVAL;
+>  	}
+> +	if (handler->flags == F2FS_XATTR_INDEX_USER &&
+> +	    !strcmp(name, "fadvise"))
+> +		return f2fs_xattr_fadvise_set(inode, value);
+> +
+>  	return f2fs_setxattr(inode, handler->flags, name,
+>  					value, size, NULL, flags);
+>  }
+> @@ -842,4 +875,4 @@ int __init f2fs_init_xattr_cache(void)
+>  void f2fs_destroy_xattr_cache(void)
+>  {
+>  	kmem_cache_destroy(inline_xattr_slab);
+> -}
+> \ No newline at end of file
+> +}
+> diff --git a/fs/f2fs/xattr.h b/fs/f2fs/xattr.h
+> index bce3d93e4755..455f460d014e 100644
+> --- a/fs/f2fs/xattr.h
+> +++ b/fs/f2fs/xattr.h
+> @@ -24,6 +24,7 @@
+>  #define F2FS_XATTR_REFCOUNT_MAX         1024
+>  
+>  /* Name indexes */
+> +#define F2FS_USER_FADVISE_NAME			"user.fadvise"
+>  #define F2FS_SYSTEM_ADVISE_NAME			"system.advise"
+>  #define F2FS_XATTR_INDEX_USER			1
+>  #define F2FS_XATTR_INDEX_POSIX_ACL_ACCESS	2
+> @@ -39,6 +40,11 @@
+>  #define F2FS_XATTR_NAME_ENCRYPTION_CONTEXT	"c"
+>  #define F2FS_XATTR_NAME_VERITY			"v"
+>  
+> +/* used for F2FS_USER_FADVISE_NAME */
+> +enum {
+> +	F2FS_XATTR_FADV_LARGEFOLIO,
+> +};
+> +
+>  struct f2fs_xattr_header {
+>  	__le32  h_magic;        /* magic number for identification */
+>  	__le32  h_refcount;     /* reference count */
+> -- 
+> 2.53.0.1213.gd9a14994de-goog
 > 
-> before patch, there are multiple sub-length calls to memcmp.
-> after patch, there is a single full-length call to memcmp.
 > 
-> So the time should reduce but may not be very distinguishable.
-
-Okay, so doesn't matter. I agree that we should simplify all that.
-
-The exact index is irrelevant. Whoever wants to debug the test failure
-could modify the test to find that out. It's one of the tests we don't
-really expect to fail (often).
-
-> 
->>
->>>
->>> Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
->>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>
->> Fixes: 7033c6cc9620 ("selftests/mm: mremap_test: optimize execution time
->> from minutes to seconds using chunkwise memcmp")
->>
->> ?
-> 
-> Not needed. 7033c6cc9620 does not create any incorrectness in the checking
-> of mismatch index.
-
-Yes, agreed.
-
-
-I would suggest to rewrite/simplify/clarify the patch description, not
-talking about "buggy" etc, focusing on the simplification.
-
-"
-The original version of mremap_test (7df666253f26: "kselftests: vm: add
-mremap tests") validated remapped contents byte-by-byte and printed a
-mismatch index in case the bytes streams didn't match. That was rather
-inefficient, especially also if the test passed.
-
-Later, commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
-execution time from minutes to seconds using chunkwise memcmp") used
-memcmp() on bigger chunks, to fallback to byte-wise scanning to detect
-the problematic index only if it discovered a problem.
-
-However, the implementation is overly complicated (e.g., get_sqrt() is
-currently not optimal) and we don't really have to report the exact
-index: whoever debugs the failing test can figure that out.
-
-Let's simplify by just comparing both byte streams with memcmp() and not
-detecting the exact failed index.
-"
-
-
--- 
-Cheers,
-
-David
+---end quoted text---
 
