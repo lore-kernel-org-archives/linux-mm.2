@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3F7FF45A1C
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 05:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 410FAF45A1C
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 05:19:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7AED6B0088; Tue, 14 Apr 2026 01:17:34 -0400 (EDT)
+	id 874B36B0088; Tue, 14 Apr 2026 01:19:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2C546B008A; Tue, 14 Apr 2026 01:17:34 -0400 (EDT)
+	id 82B3C6B008A; Tue, 14 Apr 2026 01:19:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C42B76B0092; Tue, 14 Apr 2026 01:17:34 -0400 (EDT)
+	id 73C366B0092; Tue, 14 Apr 2026 01:19:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B12716B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 01:17:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 632898B81D
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:17:34 +0000 (UTC)
-X-FDA: 84656003628.01.C790095
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A12F48000B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:17:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=12sUYr1m;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 624426B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 01:19:36 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F27591B7D38
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:19:35 +0000 (UTC)
+X-FDA: 84656008710.11.F916A76
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AA594C0002
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:19:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=F1gFYKm6;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf10.hostedemail.com: domain of create0818@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=create0818@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776143852;
+	s=arc-20220608; t=1776143974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4zcFpRvfg2gFpsyLn+GB/lXfcqVkmxO1BkkPIVAthpQ=;
-	b=Gq/fD8SsejLh02iYGlKz8WmIZtNOJ5hyHjw29yoHecT1fTOavkABua3NZNpU5k4vfWLLPa
-	/wQQkSR35yGccSrjQdiogMxjQilXuIs8XVyl6hEACOHCB/ma1PFBqf8mhJm7MjY6xLSYAT
-	+nbl27oXbLKlDpzHNMnakTOrWO/9bto=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776143852; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=WouCWQZQw2wWCXfxw9TY2LZlejrYTTJjmaYv9acBuZw=;
+	b=ThLtflPUQeXu6hlazIvqK1UDkpS7UDaTLaRjgeu0Y6NSbdFX9NHOH1CGz74OF7el0umOVE
+	bEUkvQsJlLhnFXF8tCjFigTnE9rx1+dws2FWYvEhCnLLmvAdEliFdKitrQkwKbZ5gkitQ3
+	M+JbnTGh8LJptS8Dik32qK2eSMR28VA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776143974; a=rsa-sha256;
 	cv=none;
-	b=p4g6c2huEwsoIuQyJ5f9p1Q51OEdk0BLaMrRGVJD9a3d6C5+/KqB/CMqm2odR2xva9mER/
-	0VaJhHTB3TvmEspEFPicSZ+Wpli7X7T8AbbuOx3/CzoYn8K5uX1qZVn3BycdZ75RPb4Wqf
-	czoDaolEt3NuMdAYM2yWqTWDQXRtTjU=
+	b=U1rT2XjWMjgm2I31g9ubaI9J7t7FaDh9GI5G2ZoGnzC8qhPGg2Un90FQ8cGLLyE+cIaqOF
+	S6iLVmT6KwmOtT0zQtKen5G9VB1T/ihZz5VnRXNC/HZhn2ldtsKTClI2bT7F7e6tDfVr1m
+	Q6fRWr4clysJOZLNLyliCqgE/Wq8JK8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=12sUYr1m;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8CA4D43DBC;
-	Tue, 14 Apr 2026 05:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742AEC19425;
-	Tue, 14 Apr 2026 05:17:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776143851;
-	bh=82K051Tep/JkEig50wE4zoQmsPmPeGZ44gpDUIO1KyY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=12sUYr1mFI8KyEGPtwEEyJm/H3SK5yWb3apghtC+Y6KWqtz+TlkuU3OLAq8gtd3nf
-	 f0YI29yQdVlArq7MbdKsJaf1aGsJMxxYe+u8ef+22H2bp7RnIhlPWEBcH+8FfuGoGC
-	 xn0vqs060EZnSWWKem3d1work+YJmIkWgmePZJ1M=
-Date: Mon, 13 Apr 2026 22:17:24 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, David Hildenbrand
- <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Subject: Re: [PATCH mm-hotfixes] mm/vma: remove __vma_check_mmap_hook()
-Message-Id: <20260413221724.c939e483e83304fb40e3d6da@linux-foundation.org>
-In-Reply-To: <20260413105713.92625-1-ljs@kernel.org>
-References: <20260413105713.92625-1-ljs@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A12F48000B
-X-Stat-Signature: he1wricf817m6a5rjc6td98fk98wjeh3
+	imf10.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=F1gFYKm6;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf10.hostedemail.com: domain of create0818@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=create0818@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Wo
+	uCWQZQw2wWCXfxw9TY2LZlejrYTTJjmaYv9acBuZw=; b=F1gFYKm63ZQIZDYNl9
+	j9X7ip/O4JvHmcMbAf1dwvklOUcBaABPgmG9oXv5kvj6WpH+8m3vNAI/w2Ejxgkc
+	3y7tI6TFNFBEv5jqByyWdlYnNTK82Dtkw/FpdjVT4zp3XAtWx6nwK4Vy1OT28ldo
+	EMZwqPJg++vcfcMImhQx6qXzg=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgCnPNFDzt1pZ+E6VA--.2975S2;
+	Tue, 14 Apr 2026 13:19:03 +0800 (CST)
+From: Cao Ruichuang <create0818@163.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Cao Ruichuang <create0818@163.com>
+Subject: [PATCH] mm/pagewalk: honor action in pgd_entry and p4d_entry
+Date: Tue, 14 Apr 2026 13:18:54 +0800
+Message-Id: <20260414051854.18487-1-create0818@163.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgCnPNFDzt1pZ+E6VA--.2975S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZFy5uFW7KrWDuFWxuFW5GFg_yoW5AFyfpF
+	W3Cw18ta1DJFZIyFn3Z3W09r1Fvws7WFW8Ja9rKryvkw1Sq3Zaqa4DXr1akF1UCrW8XrW8
+	Way7Kr95CF4xZw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pizuWJUUUUU=
+X-Originating-IP: [39.156.194.234]
+X-CM-SenderInfo: pfuht3jhqyimi6rwjhhfrp/xtbCvweWz2ndzkcmHgAA3k
+X-Rspamd-Queue-Id: AA594C0002
+X-Stat-Signature: 9d7kmfm4hpwz4ssp6ueikpnpndpi6s5b
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776143852-829148
-X-HE-Meta: U2FsdGVkX18NBqJ74rZxGQerhZWKkDk4e+c8W/981GiayujN+YRvAXPhLZ4P6iLzvtVauprOiGGxfyNve59P9mH6vWYYm4KVsWZnpJeYMJA1s2sKMnB7NB4+vf073X/Hlq4qJMP674Q4JZkJtvkTMq5Bl9Vl1lj4lEvyo61L0+Lb/ZbJkqsis1qTcl7ZUz5IwTbnqRFVb/pO6n9nb/xFv01cQt80KdZGGQcQuLiy1IvYIyd0HKZypWcZRtYMfya1DZwGGGAbn91LINSV2DCUPOWD/CiufBkVX5VLU9LnmbdTX89R6owuYYytXRF9qXfjMRK7/Zzi7fYypZMhTQyDwqIm+I7TKBEaTKR8Ixo76OeGvk0rbDIk2CGbZuyLZo9uWP3gFH3GtFrW9TIi7D4BGGwJbl0F5+rBdC2/CH1wuAIYFXhkvj+iSZFYrpeWYQ734OMTWlbL9xAgfbEN7xMWhjrh6W7bjX0YfYPhAaDRR+SWqZKP3+pg29JSOE4S+a6U1my4VdYRCoZjv5UnNsoA8ai16O/WWDTk8AiOZNBcanl4N/KwIAPJawOYeA6tnCaIv6Uv+kTvtjJwL/jac+TDVl7ccfO2fEKSoT6ARwGsQulCYRXWh+fn6NxsbH52eH9mgF6XZn0JoRcMc1oe4G7520vhoI1n9CelxtKOSIQE0jNWJJO2GwccYRRGNAhatIKXEb7pFFMxl8ZcrDchHhB0gpiue590Fc7YHzLwtsaYAN2nsjvd8O5CUny89XbJdKwU8naS802tXiL+BDJYovPVeBxJhNiZ6ENNOJ3+HJIUw4swdcUoGFMAsV9jZnnFk8Vt2x44fO7r18qKX3oC14y3+d2L/h0Bd+Oca9YFfUmWheO8zrgGHvzqKBcXbrMUrAfbn6P8O/51PTmDwm9/y3eldvPC8ShWcwkCAx4T/NZoLmzdTJjTBQMUERW3uRdb/zanPaXgbJhWYVpCVAVGEvn
- GvwShvTK
- J7KGdCcBDZNsLRBlHvMIHnddRpGc9G1sywbIK6Q/HBfpBBgEZ2uZOHfYNzweyfiejcIxsSH47YgY3xmfSj1+zsSnrQYJd9Jq0DSkLM8JCKZgsqsZ8/OyrD+8BYYnk5XKmofpN5+Rf4+cJ1lFHjRLTqprfRGZHi3FEw4isPdQF+/cAT/iXbKV8GRldixY6EWPtXIjP11qV5frT/3DVOAbFyclxCglUuMvFeR4s9HO1nPUOuqizd/gJUajX0bW+wqAdb7UmHtYUET6X6/8pWOtF1eN7IC9H2k4TFwLax6/E/e9TANuhKMAZdRIlAtJdRztJABjS
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1776143971-178633
+X-HE-Meta: U2FsdGVkX1+9h9d8U2EwBAsjgco+oa0U/QpATjNOPTXAoPnwAJcUwX6u7xOtNpK6Sla5+UJsOZ1jThDPRdZvG7GcrloKCmvdC9wXNp4MFyKadLg3ZKMk/t2B/j5c1oE8aZblhfA9AGqrLuPoN9QyUnpBnKZFEvEwSrn7kTgnLryuyew+PhwU1jZrNO+Dil4D2WpXnAkNsixTsjUrmJfeZury5zb9F1j0v95l+fYzMgEnYqKcwE8FN6EOSHpr9uDFTqaXDHTiqMIPMuyWl6Yu4hKtCNQ1H06hGYH42XyzZqlD4oco5v7oToeRtMnT1xN4fpiETdcOo7ishs836B/SqtB3Rt9xvp1SnRxYFn2djBf6vOj4F8tn4IjUBvD70Oueq+gsjpszQGPSJQwk3uJh7lJGXj83QrCUpg+FdxCm9+ZVzLdxIeX4mGFiA3+Dfgbd9yZxbduo1nWf1gqd0CsRoZw86stiND6oBUv26mUe2uLgjy9ixqiPJO2HBEvAgWBt+ZZLDzcyQGmDWitcKY/l6tPajmhByWYppZDvY1ho+aQLmAvczEzkkuoEaWgRqxcAsEqaH68huggU+e8RD7BELkXNoq6q1KIwgoqq8A7kltgNbezMQJAxGKlUu6GyMjIJp5fb2FbE50f/htqz6vdS1QRNxSJutoc06ajoZonI25/hmNMNVpU12yz5Tv0KnfA28Kpe0wUeCZZFdzMTHE+b1lM7IvtUMF6LR4yhcHRUZtKQx7utbh/1oifOdk8XDuFlZaN7Hm4BZUVixWpxppf5ZsYPcMtHkWyaoSs5FO6uSxTzFyj2W4KzduvZBxORsXzm2UJIuiRYc+UaQB+cLH+ANznnHD8KcwffOS9jXY7oMO0bxnl8MziEgp+jCUmGh5ZfGHzv5ing22jzBUZZkz8XzmFu/ZFXM+QeK1DxxlkXw28cNkTo2/v2gEjDMcLcgKJ3uh4RigqYIiZeV9856BI
+ GoRh/v1U
+ op3V0WZrAzqMcKhaOykOu+ox7BqV3JEntOVJFTtlRs5h9Nnr1Lyhw8G0vS89SlLjB5zT+rUp0+wVq+4Pm+wSOA4OWXLIK+1XDZ7iFwoedYSQjejflrNWao9gbsTwuRxScPaN3yzTaHwy+2y5mZN/kM5Tn5PAZNMAiyJ5JptQhc4lMXEUGRPDa/6MYMePRSxz4jitDQhqyhHE3N4qOX9OqIqYHpDS9iFFI6NVTwMTmzxn/QOc9xZlsmovWlnX1C55Wfc+77wXUqQInQ9vEeGbPNOFv9c/0LoGoKCxyiBi3bSQTKC2XMkUSkFRGpn/kZf6LI/a55Cdp5b/1OnMFbAY9GrtPoyqdL10e2xAsFenGx9NWLFHltXRtRsA4t2aIKIvaJyfiw0FCEzWIP4c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,39 +97,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Apr 2026 11:57:13 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+walk_pud_range() and walk_pmd_range() reset walk->action to ACTION_SUBTREE and honor ACTION_CONTINUE/ACTION_AGAIN after invoking their callbacks, but walk_pgd_range() and walk_p4d_range() do not.
 
-> Commit c50ca15dd496 ("mm: add vm_ops->mapped hook") introduced
-> __vma_check_mmap_hook() in order to assert that a driver doesn't
-> incorrectly implement both an f_op->mmap() and a vm_ops->mapped hook, the
-> latter of which would not ultimately get invoked.
-> 
-> However, this did not correctly account for stacked drivers (or drivers
-> that otherwise use the compatibility layer) which might recursively call
-> an mmap_prepare hook via the compatibility layer.
-> 
-> Thus the nested mmap_prepare() invocation might result in a VMA which has
-> vm_ops->mapped set with an overlaying mmap() hook, causing the
-> __vma_check_mmap_hook() to fail in vfs_mmap(), wrongly failing the
-> operation.
-> 
-> This patch resolves this by simply removing the check, as we can't be
-> certain that an mmap() hook doesn't at some point invoke the compatibility
-> layer, and it's not worth trying to track it.
+That leaves the top levels with inconsistent callback semantics. In particular, ptdump sets ACTION_CONTINUE from pgd_entry() and p4d_entry() for leaf entries, but the generic walker still descends into lower levels instead of skipping the subtree.
 
-Cool, thanks.
+Initialize walk->action before calling pgd_entry() and p4d_entry(), and handle ACTION_CONTINUE and ACTION_AGAIN afterwards just like the lower page-table levels do. Also update the action comment to reflect that it applies to pgd_entry() and p4d_entry() as well.
+---
+ include/linux/pagewalk.h |  4 ++--
+ mm/pagewalk.c            | 20 ++++++++++++++++++++
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
-> Fixes: c50ca15dd496 ("mm: add vm_ops->mapped hook")
+diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+index 88e18615dd7..d3f84781792 100644
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -94,8 +94,8 @@ struct mm_walk_ops {
+ };
+ 
+ /*
+- * Action for pud_entry / pmd_entry callbacks.
+- * ACTION_SUBTREE is the default
++ * Action for pgd_entry / p4d_entry / pud_entry / pmd_entry callbacks.
++ * ACTION_SUBTREE is the default.
+  */
+ enum page_walk_action {
+ 	/* Descend to next level, splitting huge pages if needed and possible */
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index 4e7bcd975c5..4268e08eabb 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -261,6 +261,7 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+ 
+ 	p4d = p4d_offset(pgd, addr);
+ 	do {
++again:
+ 		next = p4d_addr_end(addr, end);
+ 		if (p4d_none_or_clear_bad(p4d)) {
+ 			if (has_install)
+@@ -272,11 +273,20 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
+ 			if (!has_install)
+ 				continue;
+ 		}
++
++		walk->action = ACTION_SUBTREE;
++
+ 		if (ops->p4d_entry) {
+ 			err = ops->p4d_entry(p4d, addr, next, walk);
+ 			if (err)
+ 				break;
+ 		}
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
++		if (walk->action == ACTION_CONTINUE)
++			continue;
++
+ 		if (has_handler || has_install)
+ 			err = walk_pud_range(p4d, addr, next, walk);
+ 		if (err)
+@@ -302,6 +312,7 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
+ 	else
+ 		pgd = pgd_offset(walk->mm, addr);
+ 	do {
++again:
+ 		next = pgd_addr_end(addr, end);
+ 		if (pgd_none_or_clear_bad(pgd)) {
+ 			if (has_install)
+@@ -313,11 +324,20 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
+ 			if (!has_install)
+ 				continue;
+ 		}
++
++		walk->action = ACTION_SUBTREE;
++
+ 		if (ops->pgd_entry) {
+ 			err = ops->pgd_entry(pgd, addr, next, walk);
+ 			if (err)
+ 				break;
+ 		}
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
++		if (walk->action == ACTION_CONTINUE)
++			continue;
++
+ 		if (has_handler || has_install)
+ 			err = walk_p4d_range(pgd, addr, next, walk);
+ 		if (err)
 
-That's presently in flight mm.git->Linus, So I'll include this fix in
-next week's second batch of MM updates into Linus.
-
-
-> c50ca15dd496 is in mm-stable, so thought best to do as fix-patch? Will
-> leave a small bisection hazard (unfortunately) so putting this as close as
-> possible to the patch it fixes would be ideal.
-
-Yep, I did that.
-
+base-commit: e39f5a33eec1a4ea03358d82e861d6bb0a426b17
+-- 
+2.39.5 (Apple Git-154)
 
 
