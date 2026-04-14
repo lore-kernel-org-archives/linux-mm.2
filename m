@@ -4,105 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA74FF9D0C0
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 11:25:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C096F9D0C4
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 11:40:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 396E76B0088; Tue, 14 Apr 2026 07:25:17 -0400 (EDT)
+	id A8A8A6B0088; Tue, 14 Apr 2026 07:40:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36E396B008A; Tue, 14 Apr 2026 07:25:17 -0400 (EDT)
+	id A626B6B008A; Tue, 14 Apr 2026 07:40:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25D966B0092; Tue, 14 Apr 2026 07:25:17 -0400 (EDT)
+	id 951716B0092; Tue, 14 Apr 2026 07:40:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 112056B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:25:17 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B5B1713B1C3
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:25:16 +0000 (UTC)
-X-FDA: 84656930232.15.184FA6F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E57F140014
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:25:14 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="j/2YaUq/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776165914; a=rsa-sha256;
-	cv=none;
-	b=iZXkCPREb5SC11myRN1vM3qyA3dPBT8axrW8iJv/NLnPwE45coIYaKUBOYefSWU6K42cjP
-	klMgPTNd/cBgm8jU+hj3haCGIe44kXuG6+OxMqsJXbZqlfXYkSu1fOyh6Qo72fG90rhgUf
-	t12UXZSkD6rAviOwOlfncLlm2d20pFQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="j/2YaUq/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776165914;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FBFD6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:40:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3666B1A055B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:40:19 +0000 (UTC)
+X-FDA: 84656968158.11.659E4A1
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013034.outbound.protection.outlook.com [40.107.159.34])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E026B160009
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:40:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=jRvtdIoT;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=jRvtdIoT;
+	spf=pass (imf08.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.159.34 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776166815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYgk7vIcL30k26hLKMBf0OdEDnzyVkWij25WGR/ZGAM=;
-	b=1PH6BUQIEmkHTMs9KJu0SUCSVgjaAmDeeK2UunxwmmWmc/dYsT8hkwauDwCXyHi3Wnx771
-	TlEHTwLnOh2P3L/tehuIVg5k0HGlu0fmbT2/T2C5rQjLjLnA3r+VCvP5ycvtuq3udgjOmT
-	T+TR1eJrcetL4Oh4UJmfayNjb19PzCE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D3DF360128;
-	Tue, 14 Apr 2026 11:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE91C19425;
-	Tue, 14 Apr 2026 11:25:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776165913;
-	bh=oPzvE48dNHObsDMFySKpxHp7VGZajxCOdUrsSaiKSX0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/2YaUq/JMCT7MVW32+pN90oAajergOdpP5UsbrOvnunH0m7C6/Iv/1oqplNBVJ4K
-	 oLbDThC7zAZvh4zZleStAAted6kpCqUZ4QFMCD8yCK9mVPeLnhaWkQdg3hG/I58q+f
-	 7r68nr/Yi3o60N1oaWox21qtXHLSdsJjWSOpZUu2g9G3Ov2nMMa5Ehqa2hblIxLWpX
-	 0/o05mrrnTrGOc6hx8N4ehNFDLHudxvN82jmEd0D+V0uOQD5CP/BYuV9l02yGNfvoe
-	 T75QMkQKKQDz1Kg16f6IJFPUEW+oE81oFia57IsC/vZz56P6AbsPS2EDyMJKDSrlzQ
-	 oLzY71TU3qrVg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	=?UTF-8?q?=EA=B9=80=EC=98=81=EB=AF=BC?= <osori@hspace.io>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	surenb@google.com,
-	Liam.Howlett@oracle.com,
-	ljs@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH AUTOSEL 6.19-6.18] x86: shadow stacks: proper error handling for mmap lock
-Date: Tue, 14 Apr 2026 07:24:58 -0400
-Message-ID: <20260414112509.410217-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260414112509.410217-1-sashal@kernel.org>
-References: <20260414112509.410217-1-sashal@kernel.org>
+	bh=xHxZNhldlLNXEJfGdhWMB8rtld38eJtIfX5ODfX6i44=;
+	b=Y7N2meY0BKR45Wavhqbg1LN+DNQnFU2cZ9WaRxPGMZG99Laz1FX7fTCQRudez73dT4cCnX
+	iLTSD71hn6XPh7fwRejVGAfpbwb9naE9xI8VJVoKtoxKrHFlVl4dPMEseUQrbzptCH5F8S
+	s3ylcO6KSK5iPzlBkHFzHaMVpaV4nHI=
+ARC-Authentication-Results: i=3;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=jRvtdIoT;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=jRvtdIoT;
+	spf=pass (imf08.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 40.107.159.34 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1776166815; a=rsa-sha256;
+	cv=pass;
+	b=RSjR2i0FOW2pC1acCRXIWya0X6yB9Kl0nc9gwgAD1jGK28+He24GiSoRIdiS+mw+uYiYQB
+	HUEELbK1p/Yomfaor4abJosA2Cj4ETr1xxzJTTBldTah0CWloG7S48xPYQSCMrK1/O3WCB
+	nIBAmakmm6I4XywgY3sTCFekQJWuH/Q=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=OR+lk6folnKS6ntvEwDNSAusYOeRHmlfbBsSGgSmE7k9RoMpMHMaHSA2X7SXPBpXqXHzqbHJc/yrUSWTLb4VUs3uZIeiIJ0vH+3Tv4nH1S73TgCN1OGaIR3AP7S+tVDsjGr6pXQWOvBsFMGzGyl+3suIk62kzUQIx1fgD1kG5OYBlKXbGGAOa+x5H3cox+sBWnXBQcnVD9kcq+MfHm21LpjTw2TVdYvjezKuIzjK/fRE16kUsdKn3wpYLcbzugwO+uGIEhcIdWGZrXRulHY3ZpjW//VaOozadnTYc0MkKeCjBWesWr3HafcsgqbfBR8vXjGNfVHOC3h530T3djMVmQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xHxZNhldlLNXEJfGdhWMB8rtld38eJtIfX5ODfX6i44=;
+ b=LmOENPPNXm9ykvfGEmUoYxm/mc9Eaw/De08aBzJz+28kQmKu6QpCImMhcyYIRaOpSKqZ8w8k+dZGz9kRQj7AmxEv4hEs00av9i/P1ykalLfHEZZnnaRhKpKSfp+gVAPS79CoMac0m4a90wnzaaJqa0UxW31pTvL3VwEVYJsyLDto6HLYzyXLrTEglXDiKS/9LbJkHRh6HioMeN0QGdQpW2XKz7YVOMA+09JpKOPftJiH02Af0W/XltxcBA1xjLGWGegQ3vApwhERLnfUO7eHkwweyqC2oZF/xLADDRL9jsEdYMeb6CnTqlH2APNTLpqJXCm9N0m6FXhBHNlkKYhXcQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xHxZNhldlLNXEJfGdhWMB8rtld38eJtIfX5ODfX6i44=;
+ b=jRvtdIoTYhkSXMQpCvl8K8e5q6GiYSnjbFeC5P+tECLRMoSeVDPsN4RNrO7xFeiCo0aOxonG29I0LoroZnLuVsh+j0Z1uXXmUQth7/0Fj5MpB1sL8HVxhVWmjJwiWWb0vZ0iN4LQmWxwl7NFhXHDLOWDhTysuoHb4uW4qzba3Go=
+Received: from CWLP123CA0044.GBRP123.PROD.OUTLOOK.COM (2603:10a6:401:58::32)
+ by PAXPR08MB6479.eurprd08.prod.outlook.com (2603:10a6:102:157::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Tue, 14 Apr
+ 2026 11:40:05 +0000
+Received: from AM2PEPF0001C710.eurprd05.prod.outlook.com
+ (2603:10a6:401:58:cafe::8e) by CWLP123CA0044.outlook.office365.com
+ (2603:10a6:401:58::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.48 via Frontend Transport; Tue,
+ 14 Apr 2026 11:40:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM2PEPF0001C710.mail.protection.outlook.com (10.167.16.180) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.17
+ via Frontend Transport; Tue, 14 Apr 2026 11:40:05 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pPt/Yv3wv8R2gUCAsnMpFT3bQX7OSRjU5rpjit/WHRSsI4osv7duV6+ThSbJ7Utz2I2lfglLdyQ8FGgMtV9pGL5FsxfAheq7XlEUxhyC2xKbThxDoWYeOcY4s8pgiqwKL0UjPAyYqCsSWhYsOK5a4+6FHYOlKswM0XzjTJZQKg5y3xgwOmjHjBsdhAX/47I2iq1xlo20xwnCT1UhnQltsqot3gMFFIaoqMEcXCR30hBp4Ziz+1TwxMewxqTK+MbG1epPDyqDH8WbzGvf2JqatSr9i8yyIRVpJzpgKjV9xrwycwidkPElIiJXv8seDxZeLn7V886GCsygVO6X7YLuZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xHxZNhldlLNXEJfGdhWMB8rtld38eJtIfX5ODfX6i44=;
+ b=Ebsc31H/3MsH1DM+QvI9OLCXc2W2ltTg/A7CM6YRXcoLG4xdvUgaP2OUOBZ5OAWZ3YdfjY6rN82QlTf7N70zQsbBx/dMSf5uB/FM1Y29bNDeKCpwcJ3NC8I36zGrAiuwIsIJzHhJz9aGOs5XG+5YX8OMDVH//MPvM4IvFTfZs86M0vGz4j0eXIxJRTb/WV6w6jTueBrpRq4a0YIwYlVBfrktWSvMYeLJyUKRApBhRhg9CgKGGIPV5dc8Hv7eKDIQL9413o+JYJZ04udPJMIotERquFifABeHjTi2x5BT8fKqnrxb876C9iI4GXl9a8FayEF/zyHzXQQ4uer3BPJt7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xHxZNhldlLNXEJfGdhWMB8rtld38eJtIfX5ODfX6i44=;
+ b=jRvtdIoTYhkSXMQpCvl8K8e5q6GiYSnjbFeC5P+tECLRMoSeVDPsN4RNrO7xFeiCo0aOxonG29I0LoroZnLuVsh+j0Z1uXXmUQth7/0Fj5MpB1sL8HVxhVWmjJwiWWb0vZ0iN4LQmWxwl7NFhXHDLOWDhTysuoHb4uW4qzba3Go=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by AM8PR08MB6356.eurprd08.prod.outlook.com (2603:10a6:20b:36b::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Tue, 14 Apr
+ 2026 11:38:59 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9769.046; Tue, 14 Apr 2026
+ 11:38:59 +0000
+Message-ID: <b6d95c9a-e12b-497f-9017-93b184d8622f@arm.com>
+Date: Tue, 14 Apr 2026 17:08:50 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: Simplify byte pattern checking in
+ mremap_test
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, david@kernel.org,
+ shuah@kernel.org
+Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260410143031.148173-1-dev.jain@arm.com>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <20260410143031.148173-1-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0110.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b5::10) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19.12
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E57F140014
-X-Stat-Signature: 5chcrq3o6r76cf336bdannrqnefn11x8
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|AM8PR08MB6356:EE_|AM2PEPF0001C710:EE_|PAXPR08MB6479:EE_
+X-MS-Office365-Filtering-Correlation-Id: c4293d47-1be0-441b-4cc4-08de9a1a92b3
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|376014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ Xcs2mY+nqNvtRZhA/3NpKSAO50QczOE1K1s1vD1Ar0xe0Wf5F0dbNBo7J0XmZR9bAuVd0+5kZlWXZ/QoCXoxHrMDZSSB4n6+CVnCS9DqVja+sReyrXO47Ek338dqlKwb/S9f3y+brUgSrrslCKt03ALaDVDgDPbLmR51boUBBFaEUP/sLWlpGEB/Bvo+kJOswTWkp+lBJVNBuhiZNi837aI72JT/+kbJKnQvuPF9FpZzlFrHpO4RMimXeQU3/CK367M0Dj48y2kFg2SHIOUPNjZ8gTBA82tHiqS9/GKLEBIYXrBWZcs98SIGw4pvHQScJE5K4kWgbZlt8yfVw4YUZANhyPYzcXQPuejYAwG3vQgl013+ZCemRYDI5Txsgi53xqUnJlNVroy1TmkdkYL14/SDfDqJX6Cu5EB/wSQt+6hkyDjQ/clHdKF23rJcj6yfYNRt4JU2fFEDwwq18f033mH8d17uhe8Ux2ED+/N39/0FGPTjeco6UZJPb3J1UNAWnzqmhRpR1k1NXHRxD33+Y1EwRIxLSwiiATCt2lfHn/NFwz1o8GdyYjA9v/YGgreikW90W4GHwAfTnwSjEtCrHftS9l6OwNuXKTe/hX6nbAccnayAU5+jjl+L5YWKQBeL/0QFunvFNbtZ6zcjBtm+psScSK1qY8q/0Dwmwg0nzcJ66QUw0XBz7DuH+PIBYJGVrx+JX9O8ZG9eskEigasN6J4S9B3tt5uTcyAfQtH8M2k=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ Gyzwp38j4IUPC7VACzdH7bH5Bvz/O/XKfDKJKZtJAqqsJsZ/xvqzgLaIgzgiYJ6ASb1mo6EB5spExCf3eMiAGPH30OsEftYtffVWN7SrxTSl3n/ikYvHtRpwxlosyER+xYdTGoaqPec2avJE3bMpFZ1bGPeAoAF+nFFeGcywP8+OPzgmpLqC3HcvtcMT6E9qfH5WEaSzIcs/6+OEbCzfaodBrMplI7dzMuLCRI1AWh8MpRxd3S0TfVCqVVz+7VSA4z0uwTfwcDS8014jZLzLacsnUyv0pA2k6m4lOsfA75vxTpaGeeQT/tGWhZy1/b5DR292DTv9qFlMKHrwSK+vUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB6356
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM2PEPF0001C710.eurprd05.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	c606fe89-b2d9-4ddd-4931-08de9a1a6ae9
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|36860700016|7416014|376014|1800799024|82310400026|35042699022|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	FgltFu2f+D00QbqXuVaIdPEa/MMNF9zfpSpvC4cLWIUndmn5DcQJ2EdrfEiQywUK6aHV+ZlMS5L30eIATLNPRMk2jUvPEITymkgzqe/XpSemScPH3xiNclJuPaPtg+8fPlAS3EVMi9WT4CudsBjo/0cW3Kx3ApcOCf6EqztqkkcFyu/74R3Qk70GLhJKkhRyEl/6Uwu7NNWdIGLUyDjuSRgAxQbCXDo4wirYExUu1Q1UEGBgJkduRk4cIRU5Lzj2q22g4gHBsz/9LCu9Fy+TopfmCcZ5u1N2OgLX40LDhkwWbqvUwPsK+32/oKl3KlScYo6ZEc65lD+1IvhoMprhXg+4PgSutX44R/UeVkkkrTjSFiqBaNT3nKcufseKcPb5/t5h/G5Y+W7auaGXXHMWtJ60M0iZOyplfZ0tZY4UttjmmCUpYwABmKbPT3kIGtQvp201DrSwbr1PJqLSuCRUMeouNMd7GkTasCFqwNtzHxfIDHbABRPMk2l4tG7x77aqH7ZR8xFAseGV+YTYIj+CUg15aTJvi1PfxkPpHNfgp7H/cMldWhqTqWgyYE852xzfDtiOLu5JTY38ggZM+e5QaAuoTDU4nY1UxclkuX9OjzUIYdp7d+1EdTupRU5NAw3NRjDMxV9/FXNRqGSFhlsQNAutYZZ9Sou7LlL4335eSCPs7Uhylnym8gr15wMjGNxLcS1GBQGJSJx+3QXkySgSxnPPqkicruYc6LKDozkxcA59NovwZoJeG8pJOpq+RTxpU8dWhq3hN5B/XuzABzmhMQ==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(36860700016)(7416014)(376014)(1800799024)(82310400026)(35042699022)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	qwMIVNytiOlRucSGIcv9ACtvsMKTK3yJopJjIdBz0XvqA/kprb7H7VPZFVmKnTh8kTdvTQauYxlJPHxFX4XnYaDSkXcrmMq1B+zgUV+NbpDcmTVyFjTblFYpSa1VzjDvlOVavIoraT+rUG4V0MgOQgtrnET1i6ed0D+lbJ+yiXrNhkm7N9U7O773or7IpAvEJuxiSKGLP/L7dLF1YvoahF6xw0p6DZsbXbML+Ag53eurlRCHjU6Y8Ntk1kbCFiqAJC9DZBWt3LM7ZyIlfEkftwzLhftZJmZ9m5Ulb/u8gWr/8XvxiMxV/aP/WK7I/3jNziziMzZEDJbBCY7MM6HwJJhISzKazHBoK1OOM1XRVXEi9GEivui62plMemR0lHuxCLLngUvAbz/3yZz12QTCgnrrv6aXC7wwKfx6UXy3iuBW6ZbkTJ5lTS4fHA7l3bpp
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 11:40:05.3243
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4293d47-1be0-441b-4cc4-08de9a1a92b3
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM2PEPF0001C710.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6479
+X-Rspamd-Queue-Id: E026B160009
+X-Stat-Signature: ybgu4y7zej4rnugc6i5zqyskbdchpo9z
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1776165914-987209
-X-HE-Meta: U2FsdGVkX18iK8qBzZcYHsrYxyK3c1knpNvHFZeFP/VXvF6A1W6jhDHprI1wAl1392U3dR27EJQzJYa1itAnUgh1+VKyy9/yL4GEVw8QCd5LqZ6QcPi8CIz/6uxapFQJrUjtFBEN9eIiHqHr6t8SMBF7IMgLmiiC9a4MxFxoHH2AsSWW9Dy6ghuGnhyull/lB7uRS6KsGcpxeJGmdv/Sm0v7oRumCzX8x2/4YTZqChuM3jN82KU5UKTCCuVdaqZL7LkCQhuF/Tox+Q3JNqvsau8MiDTPrFxgBsMMwqgHaWbtsnWFf5VZeu1A0oDXTurFaZVxeemnLL7Ei2kDK6dFCAgpR1lz4obLKWWcybwWTRwpIsvbwD53MV45uM2toCjPuBBQYx592dG3glvLmHURUAiqcH5+qz2PoX4QFA85WsRHT3giXsGGvKyUk0GxaFbGiUf0Qy8ml+QfEZ7q0fFron5ESH6HPih/H2a5RyoKtYuUyfouP2DiPiu0LNijUQcSHu9kUoj+azh398qXUwq4pA1ucxoRtOXdqtWYVTijtLic92mwAedo7OyvTw0ZwRxei+XnG2l7bcu25H163bspQvX9+oNS1jy/tYgFEQ7vIqjNgKrOTB1YEDknmjHnVBdR7MG1U7oYO+o3aC0pwiS7n4j+CEodxODb8rEXsu1XMKLVu/IFqB8s9Qr1oWC2KWRh4l7RRBoOmDf/dyiA/8vbO9ZinYfywvPM2QSmZZP6yG4QybHUr7cBrNViCiTggfPNEHZZJc5LEEgupvIb6ppCTYyHGheDHMfXT9pqlmNttF0EvTUnvZhaHnRPw+XA8wGZaMDoMCfQ0ThKCaXTsJ6WYwG0jp/TFMv775ldEvogLlPw8AJQrLh5nxaFpv9gjZ4Rwv0u4k24IIoOFGXDQGUcJtkw7cSx7DxHZGU9WcOa40mnoTSjfCZ0GyaH7FZ635LdD/gFrBCjyB999CJ1vdV
- CLwvPS7z
- WTEc8tX/aB24CAS0U+GIsK/ZoXMhJ7EB2WDUgyyoYRR1REYdbfd5oWjXlK0ltDHmzSn9oNzqO2JGjyu6k1pG27wJXbD+v2U3haSesjXfnf5jS1lr7idMBPyifFlALw24sRk/rqfk/8foo8u+hK5oq5zjyj8K+Ob0H37kw4GByBv1Kgbp+4YsLiVAP2lVMK9j29YRmti4P9hII74ryjOkazh7raNHaoMhteKWDixjQ+T2XOzq8kaq5YvDVMvmh8aSV7aY1q5SnrcKt3SiObAHYUcRLhCeWmdoxkicGwguWGS6ur26mHr4yBt68ipc2u+ArCumc2xPBduod2dNroXAwTZFZp62ySRNvOStN36cZKKPBJZpEU9dg6LsV0/DMaRLUNkhtz33x8n6EE5X6rXI6vKU4iw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776166814-560137
+X-HE-Meta: U2FsdGVkX1+18oVl67RYkCyg/qBxyg4TmTAb8WTNOZ0b3BtjCu8gK5VM6D/SiJyfXf7CWtp+bY04FUXQbkhCM0K5icjgp1GZ4CIpaxKdvKRFfBZFO74vtjks6wVycWKIEsx63ggAKZzYOujrh2Bhouy9maNe8lcP9XfyXdK4BYN9J2M+Lho2pjxyvCiwkQMdA4cJmqq02427RiKIehGNhqFpkF5T2o1/jGJ/v3vAgO5kdNhb3HJk3SUHx1IlaynPXcwhPobkQS3ssHXu9NlV4o4Mxth8eWls0CoXkWBr7S1lTkJimKihm8lWF8Yoa+T/7OIHyMpVTTSKmkDeySsuQOD4LH3c7gpH5RY1Tu5HOktC/SCZPZokWYyjpvG9Zc5D8CJxOx+5taVOf7/KtOPIcZiN2ipkULbkXiLSInWvz3R3tMTwznvZ354WUEJl7Uqs9Pw6H+/ldKvfuiCZjfjBpqM7gpZE/P9QIykG/TmhYQWS0SBv5Eh24HfXi9hnlc1WLzYnlmyhR2ou9XiLAvK/HIswRVItHlTlTbP97nDdp6uyqZDdEqmwsiHRlv0t+h22WNlfhfgnafzepoz+k7IO0FXM3didj3E2h5ZCDJ+ui3kSlWMUwwrbCeb+rJP6s8pHfN6N8nvHPlM8EFjwsNM1GUEtlZPntlSiI3Y/DqryG3M4JswzZzgh3Q48JUhihSF3+ohYthY89siAGxgltPzd/PcaDYWrmpJFSnHq5msgyTAIXZ1Jf9ivR/qDzOfxDUorZoWprNI7697VZEGQ1id9arw/yZOerYxBj91iHH3pa64D9F/VKWldm2z7Nd1ZI2ap/tSPnyrvXz3UX0DLHAFZ2ozMYBVdXW9B+cYtMdQ1xaZR3ZhbOg87cvpgjulW1LEM2gjJvcfa9/dQl99VZ0My8l28dMxFHcNsAKbFPIexd1c66pQUHtGyxzb3L0qGiyx+kh2SYcMhvFVsRKVk4oC
+ HsX8R/M/
+ kX720ojXMJCBVQIsIJ/FKb3bj7FRprjhyFaktOam8OHKF9RhR/BdZTKQWsrAc4KgdNvCG+PF7A+U1tRBfottwhUG6KeiyzyINISlnQW1XDQ4bHlcnBbQrcD2J7vpywtD7gdKAjBn9Xzd3eHo8iksdP+OJKPsDgdv4J9u7ppNMui6tBstAT/UspwqKsBt8+nv9Ni5ypQ4DqHYtnI+8BdFPMd54CB7Eudyxi1bh+czBRTct1sGWMucnw0cqC+1rj7e78c20MdexIiFP/+E0KXedTkDtpH3BJb6/ZC/BHiEuvQpiY9JbzJd8eP1JN7EcZGQaPVtkP46U09P0DHhWZMunm1xO//Xns8sZEXUlKx1OSI2mQJjU451tlGl0oxJViz5F9A0s4LBFtNKEJ1yRn1L94fbfV5JomnZW2hEqzcMhMlwRWVWybhNemuVidTZb7aZJTxYzCruknxqy+zbL1c9YPH7IKWWjB5rTtKff85MNurTQ7NwcVvmGfnvunXNYryFmNvNMjt5piFb2jPBRvdiCGGKp35oIlopu/CoHZmi8+QtR1AShPkAyhdqbbydUaQwGAiu2JpKtumoUQk4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,444 +193,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 52f657e34d7b21b47434d9d8b26fa7f6778b63a0 ]
+On 4/10/26 8:00 PM, Dev Jain wrote:
+> The original version of mremap_test (7df666253f26: "kselftests: vm: add
+> mremap tests") validated remapped contents byte-by-byte and printed a
+> mismatch index in case the bytes streams are not equal. That made
+> validation expensive in both cases: for "no mismatch" (the common case when
+> mremap is not buggy), it still walked all bytes in C; for "mismatch", it
+> broke out of the loop after printing the mismatch index.
+>
+> Later, my commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
+> execution time from minutes to seconds using chunkwise memcmp") tried to
+> optimize both cases by using chunk-wise memcmp() and only scanning bytes
+> within a range which has been determined by memcmp as mismatching.
+>
+> But get_sqrt() in that commit is buggy: `high = mid - 1` is applied
+> unconditionally. This makes the speed of checking the mismatch index
+> suboptimal.
+>
+> The mismatch index does not provide useful debugging value here: if
+> validation fails, we know mremap behavior is wrong, and the specific byte
+> offset does not make root-causing easier.
+>
+> So instead of fixing get_sqrt(), bite the bullet, drop mismatch index
+> scanning and just compare the two byte streams with memcmp().
+>
+> Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-김영민 reports that shstk_pop_sigframe() doesn't check for errors from
-mmap_read_lock_killable(), which is a silly oversight, and also shows
-that we haven't marked those functions with "__must_check", which would
-have immediately caught it.
+I have tested this patch with
 
-So let's fix both issues.
+./mremap_test -t 0
 
-Reported-by: 김영민 <osori@hspace.io>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+and the selftest results are unchanged.
+  
+I did not observe any significant change in execution time across
+multiple runs.
 
-LLM Generated explanations, may be completely bogus:
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
-The same bug exists in v6.6. Now I have all the information I need for a
-comprehensive analysis.
-
----
-
-## PHASE 1: COMMIT MESSAGE FORENSICS
-
-### Step 1.1: PARSE THE SUBJECT LINE
-- **Subsystem**: x86: shadow stacks
-- **Action verb**: "proper error handling" — implies fixing
-  improper/missing error handling
-- **Summary**: Adds missing error check for `mmap_read_lock_killable()`
-  return value in `shstk_pop_sigframe()`
-- Record: [x86/shstk] [fix/handle] [Add missing error check for
-  mmap_read_lock_killable return value]
-
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-- **Reported-by**: 김영민 <osori@hspace.io> — a security researcher who
-  found this issue
-- **Acked-by**: Oleg Nesterov <oleg@redhat.com> — kernel hacker, known
-  for signal/scheduling work
-- **Acked-by**: Dave Hansen <dave.hansen@intel.com> — x86 maintainer,
-  original committer of the buggy code
-- **Acked-by**: Rick Edgecombe <rick.p.edgecombe@intel.com> — author of
-  the original buggy commit
-- **Signed-off-by**: Linus Torvalds <torvalds@linux-foundation.org> —
-  author of this fix
-- No Fixes: tag, no Cc: stable tag, no Link: tag
-- Record: Authored by Linus Torvalds himself. Three Acks from relevant
-  domain experts (x86 maintainer, shadow stack developer, Red Hat kernel
-  developer). No mailing list thread (Linus committed directly).
-
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
-- **Bug**: `shstk_pop_sigframe()` calls `mmap_read_lock_killable()`
-  without checking the return value
-- **Symptom**: If the lock acquisition fails (process receives a fatal
-  signal), the code continues as if the lock was acquired. This means
-  `find_vma()` is called without the mmap lock held, and later
-  `mmap_read_unlock()` may be called on an unheld lock
-- **Root cause**: Missing return value check — "silly oversight"
-- **Second issue**: `mmap_write_lock_killable()`,
-  `mmap_read_lock_killable()`, and `mmap_read_trylock()` lack
-  `__must_check` annotations, which would have caught this at compile
-  time
-- Record: Missing error check on lock acquisition. Can lead to calling
-  find_vma() without lock and calling mmap_read_unlock() on unheld lock.
-  Both are correctness/safety bugs.
-
-### Step 1.4: DETECT HIDDEN BUG FIXES
-- This is explicitly a bug fix, not hidden. The missing return value
-  check is the primary fix, and the `__must_check` annotations are a
-  secondary preventive measure.
-- Record: This IS a direct bug fix, not disguised.
-
-## PHASE 2: DIFF ANALYSIS
-
-### Step 2.1: INVENTORY THE CHANGES
-- **arch/x86/kernel/shstk.c**: +2 lines, -1 line (changed 1 line into 2
-  lines with error check)
-- **include/linux/mmap_lock.h**: +3 lines, -3 lines (added
-  `__must_check` to 3 function declarations)
-- Functions modified: `shstk_pop_sigframe()` (code change),
-  `mmap_write_lock_killable()`, `mmap_read_lock_killable()`,
-  `mmap_read_trylock()` (annotation only)
-- Record: Very small, surgical fix. Net +2/-1 code lines. Scope: single-
-  file code fix + annotation additions.
-
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-**Hunk 1 (shstk.c):**
-- Before: `mmap_read_lock_killable(current->mm);` — return value
-  discarded
-- After: `if (mmap_read_lock_killable(current->mm)) return -EINTR;` —
-  return value checked, function returns error on failure
-- Affected path: Error path during signal frame restoration (sigreturn)
-
-**Hunks 2-4 (mmap_lock.h):**
-- Before: Function declarations without `__must_check`
-- After: Function declarations with `__must_check` annotation
-- These are compile-time annotations only, no runtime behavioral change
-
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-- **Category**: Missing return value check / logic error
-- **Mechanism**: When `mmap_read_lock_killable()` fails (returns non-
-  zero because the process received a fatal signal), the code proceeds
-  without holding the mmap lock. This leads to:
-  1. Calling `find_vma()` without the mmap read lock → race condition
-     with concurrent VMAs changes
-  2. Calling `mmap_read_unlock()` on a lock that wasn't acquired → lock
-     imbalance, potential lockdep warnings, and undefined rwsem behavior
-- Record: Missing error check on killable lock. Bug category: lock
-  acquisition without check, leading to unlocked VMA access and lock
-  imbalance.
-
-### Step 2.4: ASSESS THE FIX QUALITY
-- The fix is obviously correct — it's a standard pattern: check return
-  value, return error on failure
-- It's minimal and surgical — 1 line changed to 2 lines in the actual
-  code fix
-- Regression risk: extremely low — the only new behavior is returning
-  -EINTR when a fatal signal is pending, which is correct behavior
-- The `__must_check` annotations have zero runtime risk
-- Record: Fix quality: excellent. Obviously correct. No regression risk.
-
-## PHASE 3: GIT HISTORY INVESTIGATION
-
-### Step 3.1: BLAME THE CHANGED LINES
-- The buggy line (354) was introduced by commit `7fad2a432cd35b`
-  ("x86/shstk: Check that signal frame is shadow stack mem") by Rick
-  Edgecombe on 2023-06-12
-- This commit first appeared in v6.6-rc1
-- Record: Bug introduced in 7fad2a432cd35b (v6.6-rc1). Bug has been
-  present since v6.6.
-
-### Step 3.2: FOLLOW THE FIXES: TAG
-- No explicit Fixes: tag, but the implicit fix target is
-  `7fad2a432cd35b`
-- The buggy commit `7fad2a432cd35b` is present in stable trees v6.6+ and
-  v6.12+
-- It is NOT in v6.1 or v5.15 (shadow stacks were added in v6.6)
-- Record: Buggy code exists in v6.6.y and v6.12.y stable trees.
-
-### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-- Recent changes to shstk.c include vfork handling, double unmap
-  warnings, x32 support, etc.
-- None of these are prerequisites for this fix
-- The fix is standalone
-- Record: Standalone fix, no prerequisites.
-
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-- Author is Linus Torvalds — the kernel maintainer himself. Maximum
-  authority.
-- Record: Author is the kernel maintainer.
-
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-- The fix modifies `shstk_pop_sigframe()` which exists unchanged since
-  v6.6
-- The `mmap_read_lock_killable()` function signature exists in all
-  relevant stable trees
-- No dependencies
-- Record: No dependencies. Can apply standalone.
-
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-### Step 4.1-4.5: PATCH DISCUSSION
-- Per the agent investigation: this patch was committed directly by
-  Linus Torvalds without a mailing list thread
-- b4 dig found no matching lore thread
-- The commit has no Link: tag
-- Three domain experts provided Acked-by tags, suggesting private review
-- No stable nominations found in discussion (no discussion to find)
-- No NAKs or concerns
-- Record: Direct Torvalds commit. No public discussion. Three expert
-  Acks.
-
-## PHASE 5: CODE SEMANTIC ANALYSIS
-
-### Step 5.1: IDENTIFY KEY FUNCTIONS
-- Modified: `shstk_pop_sigframe()` (code fix)
-- Annotated: `mmap_write_lock_killable()`, `mmap_read_lock_killable()`,
-  `mmap_read_trylock()`
-
-### Step 5.2: TRACE CALLERS
-- `shstk_pop_sigframe()` is called from `restore_signal_shadow_stack()`
-  (shstk.c:434)
-- `restore_signal_shadow_stack()` is called from `sys_rt_sigreturn` and
-  compat sigreturn in signal_64.c:271 and signal_64.c:387
-- **This is the signal return path — called every time a signal handler
-  returns on a system with shadow stacks enabled**
-- Record: Called from sigreturn syscall — common path for signal-using
-  applications with shadow stacks.
-
-### Step 5.3-5.4: CALL CHAIN
-- User signal handler returns → sigreturn syscall →
-  `restore_signal_shadow_stack()` → `shstk_pop_sigframe()` → buggy
-  `mmap_read_lock_killable()` call
-- The bug is triggered when: SSP is page-aligned AND a fatal signal
-  arrives during lock acquisition
-- The code path is reachable from userspace via sigreturn
-- Record: Reachable from userspace sigreturn. Trigger requires page-
-  aligned SSP + fatal signal during lock wait.
-
-### Step 5.5: SEARCH FOR SIMILAR PATTERNS
-- Verified that all other callers of `mmap_read_lock_killable()` and
-  `mmap_write_lock_killable()` in the tree properly check the return
-  value
-- The shstk.c call is the ONLY instance where the return value is
-  discarded
-- Record: Only known instance of this bug pattern.
-
-## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
-
-### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
-- v6.6.y: YES — `7fad2a432cd35b` is in v6.6-rc1, and the buggy code at
-  line 314 of shstk.c is confirmed
-- v6.12.y: YES
-- v6.1.y: NO (shadow stacks not yet added)
-- v5.15.y: NO
-- Record: Bug exists in v6.6.y and v6.12.y stable trees.
-
-### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-- The shstk.c fix (2 lines) should apply cleanly to 6.6.y and 6.12.y —
-  the function has not changed structurally
-- The `mmap_lock.h` changes (annotations only) might need minor context
-  adjustments in 6.6.y due to different line numbers, but the function
-  signatures are identical
-- Note: In 6.6.y, the mmap_lock.h file is simpler (no VMA lock
-  complexity), but the three affected functions have the same signatures
-- One concern: `mmap_read_trylock` was later deleted in `cf95e337cb63c`
-  which is in v6.12 but the function still exists in current mainline as
-  `mmap_read_trylock`. Checking...
-
-Actually, looking at the grep results, `mmap_read_trylock` still exists
-at line 405 of the current mmap_lock.h. The deleted function was
-`mmap_write_trylock`, not `mmap_read_trylock`.
-
-- Record: Expected clean apply for shstk.c fix. Minor context adjustment
-  may be needed for mmap_lock.h. Overall: low backport difficulty.
-
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE
-- No related fixes found in stable trees for this specific issue
-- Record: No existing fix in stable.
-
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-
-### Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-- **Subsystem**: x86/shstk (shadow stacks) — security feature for x86
-- **Criticality**: IMPORTANT — shadow stacks are a hardware security
-  feature used on modern Intel/AMD CPUs. While not all users enable it,
-  it's increasingly common with CET (Control-flow Enforcement
-  Technology)
-- Record: x86 shadow stacks — IMPORTANT security subsystem.
-
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-- Active development — recent commits include vfork handling, x32
-  support, uprobe integration
-- Record: Actively developed subsystem.
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-### Step 8.1: DETERMINE WHO IS AFFECTED
-- Users of x86 systems with shadow stacks enabled
-  (CONFIG_X86_USER_SHADOW_STACK)
-- This includes modern Intel (12th gen+) and AMD CPUs with CET support
-- Increasingly common in enterprise and security-focused distributions
-- Record: Affected: x86 users with shadow stacks (CET) enabled. Growing
-  user base.
-
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-- **Trigger**: Process must use signals (common), SSP must be page-
-  aligned (periodic occurrence during normal use), AND a fatal signal
-  must arrive during `mmap_read_lock_killable()` wait
-- The page-aligned SSP condition happens naturally as the shadow stack
-  grows
-- Fatal signals during lock acquisition are uncommon but possible
-  (SIGKILL during signal handler return)
-- Record: Trigger requires specific alignment + fatal signal timing. Not
-  extremely common but plausible in production.
-
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-- When triggered: `find_vma()` called without mmap lock → concurrent
-  modification race → potential UAF or corruption
-- `mmap_read_unlock()` called on unheld lock → rwsem imbalance → lockdep
-  warning, potential undefined behavior
-- On the error path (out_err), `mmap_read_unlock()` is also called
-  without the lock being held → double unlock
-- Severity: **HIGH** — lock imbalance can cause kernel warnings, hangs,
-  or data corruption. UAF from unlocked VMA access is a security
-  concern.
-- Record: Failure mode: unlocked VMA access (race/UAF risk) + lock
-  imbalance (undefined behavior). Severity: HIGH.
-
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
-- **Benefit**: Fixes a real bug that can cause lock imbalance and
-  unlocked memory operations on a security-sensitive code path. Growing
-  user base.
-- **Risk**: The fix is 2 lines of actual code change + 3 annotation-only
-  changes. Obviously correct. Zero regression risk.
-- Record: HIGH benefit, VERY LOW risk. Excellent ratio.
-
-## PHASE 9: FINAL SYNTHESIS
-
-### Step 9.1: COMPILE THE EVIDENCE
-
-**Evidence FOR backporting:**
-- Fixes a real bug: unchecked return value of lock acquisition function
-- Bug leads to: unlocked VMA access (race condition, potential UAF) and
-  lock imbalance (undefined rwsem behavior)
-- Fix is extremely small (2 lines of code change)
-- Obviously correct — standard error checking pattern
-- Authored by Linus Torvalds
-- Acked by 3 domain experts (x86 maintainer, shadow stack developer,
-  kernel hacker)
-- Bug exists in stable trees v6.6.y and v6.12.y
-- No dependencies or prerequisites
-- Code path is reachable from userspace (sigreturn)
-- The `__must_check` annotations prevent future similar bugs (zero
-  runtime risk)
-
-**Evidence AGAINST backporting:**
-- No explicit Cc: stable or Fixes: tag (expected — that's why it's being
-  reviewed)
-- The trigger requires specific conditions (page-aligned SSP + fatal
-  signal timing)
-- The `__must_check` annotation changes touch a widely-included header
-  file (could theoretically cause new warnings if any caller doesn't
-  check return value — but verified all callers do)
-
-**Unresolved:**
-- None — all key questions answered
-
-### Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. **Obviously correct and tested?** YES — trivial error check addition,
-   acked by 3 experts
-2. **Fixes a real bug?** YES — unchecked lock return → unlocked access +
-   lock imbalance
-3. **Important issue?** YES — potential UAF, lock imbalance, undefined
-   rwsem behavior
-4. **Small and contained?** YES — 2 lines code change + 3 annotation
-   changes
-5. **No new features or APIs?** Correct — no new features
-6. **Can apply to stable trees?** YES — clean or near-clean apply
-   expected
-
-### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-- Not an exception category — this is a standard bug fix
-
-### Step 9.4: DECISION
-This is a clear YES. The fix is tiny, obviously correct, fixes a real
-bug (unchecked lock return value leading to unlocked VMA access and lock
-imbalance), has zero regression risk, was authored by Linus Torvalds
-himself, and was acked by three domain experts.
-
-## Verification
-
-- [Phase 1] Parsed tags: Reported-by: 김영민, Acked-by: Oleg Nesterov, Dave
-  Hansen, Rick Edgecombe. Signed-off-by: Linus Torvalds (author).
-- [Phase 2] Diff analysis: 2 lines changed in shstk_pop_sigframe() to
-  add error check for mmap_read_lock_killable(); 3 annotation-only
-  changes in mmap_lock.h adding __must_check.
-- [Phase 3] git blame: buggy code introduced in commit 7fad2a432cd35b
-  ("x86/shstk: Check that signal frame is shadow stack mem") by Rick
-  Edgecombe, first in v6.6-rc1.
-- [Phase 3] git merge-base: confirmed 7fad2a432cd35b is in v6.6 and
-  v6.12, NOT in v6.1 or v5.15.
-- [Phase 3] git show v6.6:arch/x86/kernel/shstk.c: confirmed buggy
-  `mmap_read_lock_killable(current->mm);` at line 314 without return
-  value check.
-- [Phase 3] git log --oneline -20 -- arch/x86/kernel/shstk.c: no
-  prerequisite commits needed.
-- [Phase 4] b4 dig: no mailing list thread found — Linus committed
-  directly. Confirmed by agent investigation.
-- [Phase 5] Grep for shstk_pop_sigframe: called from
-  restore_signal_shadow_stack() at line 434, which is called from
-  sigreturn paths in signal_64.c:271 and signal_64.c:387.
-- [Phase 5] Verified all other callers of mmap_read_lock_killable
-  properly check return value — shstk.c is the only unchecked instance.
-- [Phase 6] git show v6.6:include/linux/mmap_lock.h: confirmed same
-  function signatures, __must_check annotation would apply cleanly.
-- [Phase 6] Verified mmap_read_trylock still exists in current tree at
-  mmap_lock.h:405.
-- [Phase 8] Failure mode: unlocked find_vma() (race/UAF risk) and
-  mmap_read_unlock() on unheld lock (lock imbalance). Severity: HIGH.
-- [Phase 8] Risk: 2 lines of code change, obviously correct. Risk: VERY
-  LOW.
-
-**YES**
-
- arch/x86/kernel/shstk.c   | 3 ++-
- include/linux/mmap_lock.h | 6 +++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index 978232b6d48d7..ff8edea8511b4 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -351,7 +351,8 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
- 
- 	if (need_to_check_vma)
--		mmap_read_lock_killable(current->mm);
-+		if (mmap_read_lock_killable(current->mm))
-+			return -EINTR;
- 
- 	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
- 	if (unlikely(err))
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index d53f72dba7fee..81fcfde3563dd 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -345,7 +345,7 @@ static inline void mmap_write_lock_nested(struct mm_struct *mm, int subclass)
- 	__mmap_lock_trace_acquire_returned(mm, true, true);
- }
- 
--static inline int mmap_write_lock_killable(struct mm_struct *mm)
-+static inline int __must_check mmap_write_lock_killable(struct mm_struct *mm)
- {
- 	int ret;
- 
-@@ -392,7 +392,7 @@ static inline void mmap_read_lock(struct mm_struct *mm)
- 	__mmap_lock_trace_acquire_returned(mm, false, true);
- }
- 
--static inline int mmap_read_lock_killable(struct mm_struct *mm)
-+static inline int __must_check mmap_read_lock_killable(struct mm_struct *mm)
- {
- 	int ret;
- 
-@@ -402,7 +402,7 @@ static inline int mmap_read_lock_killable(struct mm_struct *mm)
- 	return ret;
- }
- 
--static inline bool mmap_read_trylock(struct mm_struct *mm)
-+static inline bool __must_check mmap_read_trylock(struct mm_struct *mm)
- {
- 	bool ret;
- 
--- 
-2.53.0
-
+> ---
+> Sorry for sending two patchsets the same day - the problem was made known
+> to me today, and I couldn't help myself but fix it immediately, imagine
+> my embarrassment when I found out that I made a typo in the binary search
+> code which I had been writing consistently throughout college :)
+>
+> Applies on mm-unstable.
+>
+>   tools/testing/selftests/mm/mremap_test.c | 109 +++--------------------
+>   1 file changed, 10 insertions(+), 99 deletions(-)
+>
+> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+> index 308576437228c..131d9d6db8679 100644
+> --- a/tools/testing/selftests/mm/mremap_test.c
+> +++ b/tools/testing/selftests/mm/mremap_test.c
+> @@ -76,27 +76,6 @@ enum {
+>   	.expect_failure = should_fail				\
+>   }
+>   
+> -/* compute square root using binary search */
+> -static unsigned long get_sqrt(unsigned long val)
+> -{
+> -	unsigned long low = 1;
+> -
+> -	/* assuming rand_size is less than 1TB */
+> -	unsigned long high = (1UL << 20);
+> -
+> -	while (low <= high) {
+> -		unsigned long mid = low + (high - low) / 2;
+> -		unsigned long temp = mid * mid;
+> -
+> -		if (temp == val)
+> -			return mid;
+> -		if (temp < val)
+> -			low = mid + 1;
+> -		high = mid - 1;
+> -	}
+> -	return low;
+> -}
+> -
+>   /*
+>    * Returns false if the requested remap region overlaps with an
+>    * existing mapping (e.g text, stack) else returns true.
+> @@ -995,11 +974,9 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+>   			      char *rand_addr)
+>   {
+>   	void *addr, *tmp_addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
+> -	unsigned long long t, d;
+>   	struct timespec t_start = {0, 0}, t_end = {0, 0};
+>   	long long  start_ns, end_ns, align_mask, ret, offset;
+>   	unsigned long long threshold;
+> -	unsigned long num_chunks;
+>   
+>   	if (threshold_mb == VALIDATION_NO_THRESHOLD)
+>   		threshold = c.region_size;
+> @@ -1068,87 +1045,21 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+>   		goto clean_up_dest_preamble;
+>   	}
+>   
+> -	/*
+> -	 * Verify byte pattern after remapping. Employ an algorithm with a
+> -	 * square root time complexity in threshold: divide the range into
+> -	 * chunks, if memcmp() returns non-zero, only then perform an
+> -	 * iteration in that chunk to find the mismatch index.
+> -	 */
+> -	num_chunks = get_sqrt(threshold);
+> -	for (unsigned long i = 0; i < num_chunks; ++i) {
+> -		size_t chunk_size = threshold / num_chunks;
+> -		unsigned long shift = i * chunk_size;
+> -
+> -		if (!memcmp(dest_addr + shift, rand_addr + shift, chunk_size))
+> -			continue;
+> -
+> -		/* brute force iteration only over mismatch segment */
+> -		for (t = shift; t < shift + chunk_size; ++t) {
+> -			if (((char *) dest_addr)[t] != rand_addr[t]) {
+> -				ksft_print_msg("Data after remap doesn't match at offset %llu\n",
+> -						t);
+> -				ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[t] & 0xff,
+> -						((char *) dest_addr)[t] & 0xff);
+> -				ret = -1;
+> -				goto clean_up_dest;
+> -			}
+> -		}
+> -	}
+> -
+> -	/*
+> -	 * if threshold is not divisible by num_chunks, then check the
+> -	 * last chunk
+> -	 */
+> -	for (t = num_chunks * (threshold / num_chunks); t < threshold; ++t) {
+> -		if (((char *) dest_addr)[t] != rand_addr[t]) {
+> -			ksft_print_msg("Data after remap doesn't match at offset %llu\n",
+> -					t);
+> -			ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[t] & 0xff,
+> -					((char *) dest_addr)[t] & 0xff);
+> -			ret = -1;
+> -			goto clean_up_dest;
+> -		}
+> +	/* Verify byte pattern after remapping */
+> +	if (memcmp(dest_addr, rand_addr, threshold)) {
+> +		ksft_print_msg("Data after remap doesn't match\n");
+> +		ret = -1;
+> +		goto clean_up_dest;
+>   	}
+>   
+>   	/* Verify the dest preamble byte pattern after remapping */
+> -	if (!c.dest_preamble_size)
+> -		goto no_preamble;
+> -
+> -	num_chunks = get_sqrt(c.dest_preamble_size);
+> -
+> -	for (unsigned long i = 0; i < num_chunks; ++i) {
+> -		size_t chunk_size = c.dest_preamble_size / num_chunks;
+> -		unsigned long shift = i * chunk_size;
+> -
+> -		if (!memcmp(dest_preamble_addr + shift, rand_addr + shift,
+> -			    chunk_size))
+> -			continue;
+> -
+> -		/* brute force iteration only over mismatched segment */
+> -		for (d = shift; d < shift + chunk_size; ++d) {
+> -			if (((char *) dest_preamble_addr)[d] != rand_addr[d]) {
+> -				ksft_print_msg("Preamble data after remap doesn't match at offset %llu\n",
+> -						d);
+> -				ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[d] & 0xff,
+> -						((char *) dest_preamble_addr)[d] & 0xff);
+> -				ret = -1;
+> -				goto clean_up_dest;
+> -			}
+> -		}
+> -	}
+> -
+> -	for (d = num_chunks * (c.dest_preamble_size / num_chunks); d < c.dest_preamble_size; ++d) {
+> -		if (((char *) dest_preamble_addr)[d] != rand_addr[d]) {
+> -			ksft_print_msg("Preamble data after remap doesn't match at offset %llu\n",
+> -					d);
+> -			ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[d] & 0xff,
+> -					((char *) dest_preamble_addr)[d] & 0xff);
+> -			ret = -1;
+> -			goto clean_up_dest;
+> -		}
+> +	if (c.dest_preamble_size &&
+> +	    memcmp(dest_preamble_addr, rand_addr, c.dest_preamble_size)) {
+> +		ksft_print_msg("Preamble data after remap doesn't match\n");
+> +		ret = -1;
+> +		goto clean_up_dest;
+>   	}
+>   
+> -no_preamble:
+>   	start_ns = t_start.tv_sec * NS_PER_SEC + t_start.tv_nsec;
+>   	end_ns = t_end.tv_sec * NS_PER_SEC + t_end.tv_nsec;
+>   	ret = end_ns - start_ns;
 
