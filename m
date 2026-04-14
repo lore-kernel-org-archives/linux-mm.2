@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4803ED7BB1
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0746ED7BB1
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:40:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C4D36B008A; Tue, 14 Apr 2026 06:40:19 -0400 (EDT)
+	id 613CB6B0092; Tue, 14 Apr 2026 06:40:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59C7E6B0092; Tue, 14 Apr 2026 06:40:19 -0400 (EDT)
+	id 5EB066B0093; Tue, 14 Apr 2026 06:40:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B2A46B0093; Tue, 14 Apr 2026 06:40:19 -0400 (EDT)
+	id 500BB6B0095; Tue, 14 Apr 2026 06:40:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D5536B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:40:19 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E560F160550
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:40:18 +0000 (UTC)
-X-FDA: 84656816916.15.50DA0DD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 18B2920008
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:40:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J8NQ/KTD";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776163217; a=rsa-sha256;
-	cv=none;
-	b=rSsqd/Lsy2XVswLEKaUhUFYmXhaBhhT6brnzJ+hzMgaOtOMlCV1UIHEp1HFdYBmG6m2xQM
-	XgbGYp5Ybqb7RFz8qMiTtvSgDEuRcDMGF7ZdtrbvmuAt1T9BRZZJzRWd92VMdnIWVvQU9M
-	MmaVHi0Jpozn74fr2UPJxR8iTDAzF9E=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J8NQ/KTD";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 44CA66B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:40:35 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13A6B1404F5
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:40:35 +0000 (UTC)
+X-FDA: 84656817630.07.32A6AFA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5B21140011
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:40:33 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=seAK4Xwk;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776163217;
+	s=arc-20220608; t=1776163233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vxjMhuerY3oBvkIBtTy8Bsd47A2fMfanLmWrn9gqnBQ=;
-	b=Jte5xqTOz+ilOZbOhdsZ9JQ5rassHwWGu0TgMrApy7F8PxqHne5M6Sp4ja+ilHA1KNX1WK
-	7J5TPIT96gVt+HA6NuH3nVoEZxvd7DAjv3RhGQXuahvmN0RkHr1c+hlmwD9UL2HTyc5t22
-	QCReY1C6shwv2lnONyLpvjm2MbmpquU=
+	bh=XSVNJt6KFdXNdXdsxo8eTCRixnf4cEay2dS2e1CzLB4=;
+	b=nRCyWQbvUx8H96j836JZ6tfNAMtUvEB3MO9Kdfl8pf1of9Msq8kOeEJuJXpSh8CBzOtlxN
+	XtdiCZoumEfizLxI0GHfUMjStfj+BjfKsSeOVWGVttqhgxueLL4m2jJN/0Qw5RD4PQOAXs
+	OLS1Vw2gd1gdpoMm0xpeI5cgexf83O8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=seAK4Xwk;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776163233; a=rsa-sha256;
+	cv=none;
+	b=bUbwWxG8OFVc5LCoPgk9+g7mvpGdOh+MI03yleJMJWpQ24U93cs8Yy/EN8adK9i0CU7vsS
+	VfRHlJs31S3ZVJKHa54DPBzrT2nkjKaSU5+bnPI1DTctPiWL3K08biT7T9Rw67L+mC5xor
+	7iIeAuEnmLKrEq2s0AB8xsVYlS3vNJY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 109E043684;
-	Tue, 14 Apr 2026 10:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EACC2BCB6;
-	Tue, 14 Apr 2026 10:40:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BC25A6012B;
+	Tue, 14 Apr 2026 10:40:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BE6C2BCB5;
+	Tue, 14 Apr 2026 10:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776163215;
-	bh=uKJLbd7pobvSRa/otRYj8X+Wzu6HrAb79wzj4niEGrE=;
+	s=k20201202; t=1776163232;
+	bh=1A3OVVqVgKxNYzk0Y9ubnCiqCKbONv2qMUdyjMlJpdA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=J8NQ/KTD15PF30aYKZFqDJqw7jj3j0LYTvjQREa+tZC8LeENek7izk/BO4zMr2Gm5
-	 7oltj6BgbyyikIKcEFSrg/u2Cd1iHwJpQjvCi9gQ3wri7wzHY3t+5sDYG7Lbhv1hJV
-	 i7MUvcHrbrpjtHgP0sy303n5I4fLPAxeFTb9jeQaihype8YcB/zDllGv6hj/gytaTH
-	 W9BY3tJoBTlqTMteefrigEcn2MHoN1MguBCAVNwanOiWYFD31RSxqm86gzmHEVuoiy
-	 g+JQwp/Ik/NT78JpX6ZjIv60RMgQi5OeAD5h1EKCttVxsbmy4YBG7GPr2IE98tsLlH
-	 O4xJD+2UynarA==
-Message-ID: <47012a6e-f1ee-47c4-b614-3ca16bfc9e6f@kernel.org>
-Date: Tue, 14 Apr 2026 12:40:06 +0200
+	b=seAK4XwkqGwhd9CT0GkHtPXQqqJqDPbYjpYhuHG6y8x1byekuJHpgPRi7hVq1KoYy
+	 eQC6b9qeUXUTFLJijkyTocXAZKKN7K+U9JU8FI3iPntBUcPI84Sfx+L1E6SbGdiyq/
+	 OuVtFPoIfkiop7bgZ+dxcjoh35KCAr/3PkQ6YyS0TdzVV3PPcek+POQL6WMXopaYAc
+	 TLtdxHz6RgBtKB0zaE0D1qJCc3pLLqy9wnm+ovh/SMk22lbEbtpOUgTjXU764V6CUs
+	 HMigvu6M4AUceyIXVArzdYI/O3sGEqa49fnJzgt/e+yZKoBxZffIMT2YNlF+aeFwEl
+	 KCY5DJQhLEUow==
+Message-ID: <77d4d591-5e70-4ba9-bd0f-9674c2a74d6d@kernel.org>
+Date: Tue, 14 Apr 2026 12:40:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v2 03/12] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
- from file_thp_enabled()
+Subject: Re: [PATCH 7.2 v2 04/12] mm: remove READ_ONLY_THP_FOR_FS Kconfig
+ option
 To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Song Liu <songliubraving@fb.com>
 Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
@@ -86,7 +86,7 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-4-ziy@nvidia.com>
+ <20260413192030.3275825-5-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260413192030.3275825-4-ziy@nvidia.com>
+In-Reply-To: <20260413192030.3275825-5-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: am6t3r78qh7eip4j76ushkzy1p4ydocr
-X-Rspamd-Queue-Id: 18B2920008
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776163216-93404
-X-HE-Meta: U2FsdGVkX19yXjNpY323rhcRCYExH+qyLElAIIOHAN8Kn+tZLROUt+A5NavUgYwfmpNyYKo0qskWnxfQA+/oPIE/wz+joi+bUuFaJ9PN3em3DYiHSRO4LA1uJm51B4AUCAhnvr6RnXHG4ZVdWd6WPjJGEsUwGyM2u7KYWaCGJyHUCxpgtDdPB5sIPx4l1KWBuQQtsXElE+FmyV5eH7Ooxtu8rdmnup+7mi/FhBiYLv3+/ObO+WSxblcviLDTCv5dC5/+SMeJehsSWyUfkaarO6blg5hNHnGn4IsvXMDCGo845a/JfVc5E0wRXwrb/hpDhjaspAMJT26e1+d65cUssOGTJpMzcsYzi4vtL2UjlGX/IBk+YzwIDx1UtOpHpU/xegcnvUldrbYchNdS4Bol/veZovE0Vr3niYlJ8ONtu+j+4/oZQzcGi+UZnejmT8/dJxQCtxxe2Mghy92yDNZpfR1yt8W0OSv4fbqxZ6OKWzWT8Pe28no1bqOe4ELuSKQabn2MzHudzxsiNqbocq1002nmy5hGax6paxHHzKwrbPopFPxj9rKHUg8J7xh/H4XRzhrY/VXEwNs4Jm4ELP9xrq4G5KAGamtucHQsViuN3IvfAXAqqGug0GVE0dfqzwPbhWaOxD5rqtDx9Ulz4F1o7I+tiF78nO1vYf9R36AAGIWwg+/jkzDaiiODB5M7htRK/nPaKZQi5NIlkgf0D3Ehz7me7fUcH45vRV0zhQZai9LNrI32u2r1v+SvG/9U9zK0fDjHz2jbf+X6TDgi6QVzB/6OoQHWVwrupiJavpArn5v64wHnC2apeCxF9vbRTwPfRQSyId5SeRpWlZgjw8ov9KsW7VlQODd8OMm0KJB/KwVTy8IXH69dt8Fhkbbl+pVS00G/Gndw1lC+pXsW+Q0oiHQZBxBdktoRIaAG6ePzpixjDEEZoTKe280Om/NmeaCvxVkFniEBKr23Hy87df4
- z95FVWzL
- lJvvzgvHbu5M9YvozxXsfIHS9Ho9PlH79W4nbMyL0JqxxRn86JZcTyOEi16dSROWXhL1jTQdIBrvJoErhevyxC/Nax4WsROkLYzYgW+T6CsKvZ6MhI5NesoxkY0KvCvLnAClenGawh2SguDn/iB7k19NjPcbSAPI2Cr+B5IKtx2WdwMpKn1VoMpmNYK4DEVj5cU9aPBlyECHYpNJcvh5JXuvOxe8/3pTcS+U28e8QblxnCF0x0GWLi4QtaazhsamUr7iQ7klq9qPxKsgs7bdZ1cqc/Q77r+FEc0E7iYokGYgU/feXo8zNiBgoFdYjr3uzZyCk4VG4LyA9GkA=
+X-Rspamd-Queue-Id: 5B21140011
+X-Stat-Signature: a3x77rtbh6tnbutuyohdu9ik9sjrk4ni
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776163233-332596
+X-HE-Meta: U2FsdGVkX188xAQbed74Yvy5WeWk5oVjTCgGDjxmZHNbmIDpZrRh7WSY1q0VYGkOa2kOVXu4KVudaQp4HDEavUNSclx7Z1tKTnGnQa7fmppmyQDzS3VPy11glPF0LWHmeh2sR6n3tZuhE+vkEdwK5uw48wPREXOGF7tjCdws4f+rG8BAsJjrf879IBTUgy6ZzjmF00s9STNKvh6exzJZv7pzIRpgl2e920RmShzWU7Q6PPdJyFu+Xh9ILMHMftsRuV8FTSNLn+gmDToUpmpwJqmqyiKMQ9joucXKE11is2Q9MlKjPhRGzarEhpbnZtp4CWNlq/Km/jMn6cVVvt+zIAXPEGs6immphSFAxMzBjT+/F0flKCheeQh31ENs1QhYSpeatGYKAyvLq1GzMdRmykKqQqTFJ/G2ri320NuCvFMIQ/Oc+5B/JpENIfdlQO7Mr7WCj1HVEyxq0eZBrcmW15uTlw0Lc5nCxGK7Cem72zzSlFc5pdrLgV9119k+hrQmE9ZCqhXZdprZmp7+v7adoML0zCztNfGa957AjVea3ivwlB+3ClvYb9NPgX0xGRj5ww1tFtu6uZmVm9OsfhfeUHqYNof6ShazyYXqsRZBDiet998htYNunNEKhpT7sxQ/XP/chv9omgWDn5/ZT+gbqGeqaP7zrZ2llUGOexks12sWLf3gObEIKDo/2mZDcjZvY7pc5x+YkHPv4P8fjgQsXF73i5b3V1ksZ+YQQYVXepezSuEA4vflk93a7vzpfyF4j2JtRDslEbgHG0iPtJd14kSfegYvDaUe3DGSmjcT4v6WRVVjRCwnocFSpcuVsq0+X76VO7uFZ2rsvDx4+RedX+KI4zaMPXjqn4E4+Aa0lrBYKh1NgtaQjvjwu3+mYrqtuB2y1NWwSxfsSTmAFhOxSQ2f7WGwgJDbaIFSQVSZnms6XtKJIQ0Lm/F+OVzPOJAKZlpWu5KPCDmU59IMH6o
+ P4iBOqU3
+ DWnKfOzmDKY26cWmESAMokZkffUZWYv91xStGJVImMyKhWBlj0UdrAkepu1VTA8saYIENz6rZ9eySLaVwlyfW+33Q8dxY9AFb2fWU0J3SYJSPDnW4QPaysSrj9wZLR2KHllQvw8zCY+vgjoINTvAhIneKZxctRTodqjY6w78iG1XImDc0L2N9Y/fH5hny4UCwjcTSAccg3ESDyRfDvA4yvxxN+K0WwPRgqNwaJuC06XKrF5PBRK9xO35zpYYz8uIcwVHMJ/toeMAkW8LRV+Pr49I+dfQGXJ23I7PYV2yEAYpmo1Mb+scf0MdjYRSVk9IlGuSA8fB695ImU5UNKkK09YcPvoDuJIWWtMn6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,41 +152,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/13/26 21:20, Zi Yan wrote:
-> Replace it with a check on the max folio order of the file's address space
-> mapping, making sure PMD_ORDER is supported.
+> After removing READ_ONLY_THP_FOR_FS check in file_thp_enabled(),
+> khugepaged and MADV_COLLAPSE can run on FSes with PMD THP pagecache
+> support even without READ_ONLY_THP_FOR_FS enabled. Remove the Kconfig first
+> so that no one can use READ_ONLY_THP_FOR_FS as upcoming commits remove
+> mapping->nr_thps, which its safe guard mechanism relies on.
 > 
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
->  mm/huge_memory.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 970e077019b7..a22bb2364bdc 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -86,9 +86,6 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
->  {
->  	struct inode *inode;
->  
-> -	if (!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS))
-> -		return false;
-> -
->  	if (!vma->vm_file)
->  		return false;
->  
-> @@ -97,6 +94,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
->  	if (IS_ANON_FILE(inode))
->  		return false;
->  
-> +	if (mapping_max_folio_order(inode->i_mapping) < PMD_ORDER)
-> +		return false;
-> +
->  	return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
->  }
->  
 
-I assume this change itself should be sufficient and the SCAN_FAIL check
-in patch #1 is not required?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
