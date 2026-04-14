@@ -4,89 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B89BF9D0D2
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 14:02:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4FEAF9D0D2
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 14:14:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 287696B0088; Tue, 14 Apr 2026 10:02:55 -0400 (EDT)
+	id CF9DE6B0088; Tue, 14 Apr 2026 10:14:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25EF26B008A; Tue, 14 Apr 2026 10:02:55 -0400 (EDT)
+	id CA8A06B008A; Tue, 14 Apr 2026 10:14:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A1F46B0092; Tue, 14 Apr 2026 10:02:55 -0400 (EDT)
+	id B97E26B0092; Tue, 14 Apr 2026 10:14:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 098426B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:02:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80AF5594BE
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:02:54 +0000 (UTC)
-X-FDA: 84657327468.29.4B75A2A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B91BDC0016
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:02:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nMGh5aJ9;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A80BB6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:14:00 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D6AD48BF87
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:13:59 +0000 (UTC)
+X-FDA: 84657355398.27.126FD89
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	by imf24.hostedemail.com (Postfix) with ESMTP id F4003180007
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:13:57 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lnAIY2aA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776176038; a=rsa-sha256;
+	cv=none;
+	b=LVTnietf6IZHeUA2ZQgnPXXZYRjgEf3ZmaxDitWjOHciigoGvpFPRFvRNu4Pul8+UeYgo/
+	D4TCxALsqSReyc/eUFndCnL7fHkomOI7bnF3vrjXcbkQw2BQW/8593EnSRpwEaXrDCeYxN
+	DBx+tAhe6O9AzIXujxgA2trkdD4/3r0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lnAIY2aA;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776175372;
+	s=arc-20220608; t=1776176038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4AqPy0AMwjqvqg+exYoaCnTjV/qg8szmXavLM1Vzh9U=;
-	b=2R2BT8AnxH3FhVa/8usDsba+6WWrRK6GCh1qjCadpmvgIdA0qGYHpk8YlJna5FL6fSQula
-	h6HwxOzz7plP4wUU6AnHq7wZS+bqm2ELuqN38v3xQPafjMlUQsI0BunDk4BMNo6oxGrgxr
-	8mQZp2klCTJ2usO34em/+tKboj5oZ34=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776175372; a=rsa-sha256;
-	cv=none;
-	b=Pp4LLIwLSqyYAr7mKX5Ydsr96wB4rK9ISqcHQnYVR05qPzFsfe9DHogzKLjdJ19tR32zsY
-	zz0na/P8csiFVFpJWyryb7dklkTpJLLeK8VerHortLg446STqR00FixBlsNQ7haUNOAWng
-	8elIKLsF6onsxOQ84SaCLQBvRdEyXdA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nMGh5aJ9;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB6E260018;
-	Tue, 14 Apr 2026 14:02:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C38C2BCB0;
-	Tue, 14 Apr 2026 14:02:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776175371;
-	bh=x7XJtLqXh17ZcImOlaVLyo5LTdL3i1fbBepv/qg5ZPk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nMGh5aJ9U11ND7fOu9C/bNwMLWIVbpAAaBVR/PGX4KZH7Fta8xBVgm9YdoX7tW+AH
-	 Smw23T2oFCr6Pk/Ad1UGEdyCfJKCbmJOba+z7+onL+UJzEvsZ1YeQe3KOn6J8cl1gv
-	 nGYMXhtpHtG06H000JrCqAvF55rTzyOZCwwyeUzIUnDrnfuG4s+p8Wd2XOzUMKuPWs
-	 TiTmdGrikAJd58xtG99dwzYxNH0FHBPVTHMS7BKclCHeSl3lS+i6K/VH9rwloDbi8R
-	 0I0GrIkHf2RQTohrjoPmULxhO4xT26PXX7syMEQMd5X7ohRx4/zVFjDha96OtAq6X4
-	 JH9ahcyxcN3lA==
-Date: Tue, 14 Apr 2026 17:02:45 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Alexander Graf <graf@amazon.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] MAINTAINERS: update KHO and LIVE UPDATE entries
-Message-ID: <ad5JBQ-hxej1FNl3@kernel.org>
-References: <20260414121752.1912847-1-pratyush@kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YvKLQdGF1hNgVUyBQbdy4v4/PC1QoXHGam0o2m/0ceA=;
+	b=teakXo+nmjmmarcRY9ash6Nwtww4mzicgGoH1ofKFZ68NPtqsGatTHYlNPPerI9OeNCFWL
+	ktMSpb3cAzXltXctbWczNX4qiPG+YcdeMIjC2tHmgX2zoxyDwKwugVg49B2W04VQK2qPgw
+	NJtxtmO36cillaMg6Vg3r6yYA269SLg=
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35691a231a7so3591379a91.3
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:13:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776176037; x=1776780837; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YvKLQdGF1hNgVUyBQbdy4v4/PC1QoXHGam0o2m/0ceA=;
+        b=lnAIY2aAhYztVV7JPPVZ4xVg4QHsIL4Z3h6p/e64gmSH2iNqgVaX/HXM4DPihC9iyh
+         nSP5+0cxdKmLTWuGZysosk1rUAmtApCfjCUxG9jVREePwywmZwbSZdhchl9LYyFkxCJO
+         fWJT3JtbRzdvtZwUJB7Ls9CVJrwC/juk01PlUnCslMRyLNGWq608P8aSN4nHYxcLA+fd
+         fjMpDYeSuag2xOZ0ZiEBsnO9rhUS85+9UNqSpTICjgnO8u4Td51UBzm2yOgMQtlOh90F
+         lyvmZqzNIEttNtkgfPTQgpX9F6gkW/2inHz+/sFTqUMyLdjHDhz1uD7Md0jyUiMdV+zN
+         Pnpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776176037; x=1776780837;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YvKLQdGF1hNgVUyBQbdy4v4/PC1QoXHGam0o2m/0ceA=;
+        b=b1MPO/eRz0QXe4m51SpsjzBRdrDIG58JjX2IOefkSpjllQPXxtbFO0SuYgOXs7AXPb
+         cm/xxDzOdjzXet2PsT0TZv5nWqQnglWI+h7ifrY2GTK70KnEz/e9UdydGtvaev8tcJpd
+         gZcLBzhP/8LPXNLHVBohpKuxleC/qOOlWCMwnHVU+j7gBafih9xzYld4+ruSZd1w4ckM
+         n3LnElSVMRxT/gUAYSHrLVq9vqmMPcjnJ8iDIx5UEyXtksS7yGkSsiendWjMo5zJN3Np
+         HWR9taob0nDs9gZfsnH847RtyiPSQEAG64xGa1rT9XfcRuX7BwiMbQmFx3Ax15A1+cuY
+         E93g==
+X-Forwarded-Encrypted: i=1; AFNElJ9gApQHyUMMPmRGRXgRWuOEnuRbxpQd/nzFYlJ3MYyyRegJbSo8ebYdqkrmZCXCyOT7gfHuwDCPsA==@kvack.org
+X-Gm-Message-State: AOJu0Ywn/u3fpaqMVlpXUKvOIGHOtWNs0PIHZKSAL/fZMFGPIFvAs7Oj
+	Fmyha8NH2wc/PymeswYHmcXUEyCNLekSXgF6t5Qt7nx44Gp4m1pu0apo
+X-Gm-Gg: AeBDietdYY6fggtPKd+qmG95zQ795Fed7YxSuffn9cIPGFNQrDvpYram/LJ2lXmyYOJ
+	TeoTCTs6nMkUmOlAZ9R0OMmAMlxsXfUJVovYgpA6aPZd65ygL358LOtnZZTr7gGrkyuXaoH4XNt
+	xIpRG7Q3OP61z0UKehZjG0YPjtFYpR6BFe028uG+nUqIA2Em5WP7xP5xGWPd+iorlBfsoMvEWen
+	ZgEm4DdYDOVt15cu/3V80uvdIMQeGnfClwD+lx8Se0wYvKaOAePnaRBskn8DK7munUqhWu1VpMw
+	1X2Z6ZjxYvWQQbgjxjTUmUJNBzIH/+U7vofnNbaG1qfeUAF7y3VXDPDWsi+Kc9qdcKKpd4BlulK
+	b9/olJNWXwJc6KlazmuZ+diwSED8rV09M7GOoqNdjzjuzRk80Tf+P4AS4dGTDPZ5kB4OFYEyssL
+	CjB1I9gD0DiiK35C0i7o4lsLzGwoBeYrgAB5lsU8UAZulO
+X-Received: by 2002:a17:90a:d610:b0:35a:24f3:2c8e with SMTP id 98e67ed59e1d1-35e4276eb1cmr16742780a91.9.1776176036806;
+        Tue, 14 Apr 2026 07:13:56 -0700 (PDT)
+Received: from tech-Alienware-m15-R6.. ([122.171.18.84])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fc6e8b09fsm2250063a91.4.2026.04.14.07.13.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 07:13:56 -0700 (PDT)
+From: Sunny Patel <nueralspacetech@gmail.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sunny Patel <nueralspacetech@gmail.com>
+Subject: [PATCH] mm/migrate_device: Cleanup up PMD Checks and warnings
+Date: Tue, 14 Apr 2026 19:43:38 +0530
+Message-ID: <20260414141344.29949-1-nueralspacetech@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414121752.1912847-1-pratyush@kernel.org>
-X-Rspamd-Queue-Id: B91BDC0016
-X-Stat-Signature: zzor99z7oqjgbfiy6fjptyxr8a1n8biu
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F4003180007
+X-Stat-Signature: hppwpgdb1fpmie1ypyuihkfg1wi4ydd4
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776175372-257686
-X-HE-Meta: U2FsdGVkX198bx+Bn5+Z7dhK5zzpaqZOWZ0AmGeiFwJxoTbFU0B4s81u8i6ALqJzVHYGxqNAbBFX0K/dOn7MspTNCH5rIU3sjEZ2Fcz2iujRokdzaf7lPqauBFdhPeDA43sPwqjcbVUyu+jLU1iEoGm19+mMAEhVt4CIHSo/NT/+TNvsnPY2rciYkNwQlnr3qemhT6zGgWvEIrsWEVgncK0zKCaJ+XqoO4/6EII7atPzgze3Px8ipJpJgBFlstUwRiMXKJov6jjlm7I8n/lbjPiR8ovwHlyjscB2Jy6PSiA1P0XEATraiQhQJDgdx55+UrvWsOARi6ANUopRyTImoHPBvg0ayujahqiQEpNnCfUS27jwAqskTHFYA1khHA2MPlBAdXYMdSp4Ie8UlgIj77cA1dZwmCz1o06kmf3uBePRpps9akMGgbUqmMC9ixJUV963r0FxFWj/KBpmiASTSnNdizxFezItVcjOa2EnUfujZI+xBziOSBJMxJVtL4kD/kCUPSdB+H8cyiQsjlVViTZjRiv5drFIgKMYd3YKSENNGTzPq7h6b+rJMI6uD/MThoRVPMTQp1Qo9stZ7ydo1PiKxum4pdQh5kQWcMcnatovk6N6QYeICLVihvzz7+CX/ZH15tginRXLzIn+6vrVgV0WJanNFti6PgWMDnFj1Cj/4dkibhT23Ve9wDysAJHe0d4ceQ+4Q58UZMToZxuy7smOHfmw4vBlbrRX8Qkch4bD4JizXsR10htPgMAu1qHEOGR/APGtAA+L/k3RYxnzFhX5ssnlvztRRWlKV/ZvtldHz2hHq5joIl6ob5fkBQKY4K6E4RiPtemfHbYyKql0yLJZ/dCjupNPYFCBeBLChvpqcF5j+fJukiXxx+9Hw/GBOv7ODzq8zrL8E1tCOeiYCjXBWrSYndnZ1boR2GsOuNNcrXi/oxRF94LYHvhctBvSBQDxciMqp0ajcpUMip4
- hWcsZxvw
- N93wQ9Vxgv7tkDn7qa7cIqqqoSN2koOhUYGlmVlyqOwwneT4HlRD9yRAkUh/uFOen0pakS7KZBsmZcNWge+lzM+u8qvpzRp/mgNRLFtR5vvVvMczxtF71fAk1IphCr/gzDa/GynzhJrf2/QxCx9HjJhz6iAeMb6h+RX7z+egMe7itV55IFC4dXZjgxz31UKXjGi0oa64ipeMBoAEhHLlIROes0iDH15M5cg+RQVmCA/EmjakvJZ0YRdpAukHp0a0GCqza7GRgS/JnfRanZ7ZoWImFbA==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776176037-286892
+X-HE-Meta: U2FsdGVkX1+hm8EgMuW8ObO/Xljzwg3p9/S6ASQa/XdJ4ILdPDAF1Lg3R2W335Yj22fA6V32e7tcuXRtzQvsrtuHH3WXTYd+oYPDZ6kbfB+V66NfE9GgzKlSIbC/IVk2W5TEnnzme2+TstKtjGqZfSBzwxj+JBe5MvrDJXIs0sVaUD7jVI67sMmVgxe3B8Tz8+HIRPH+ULoQcVQV6ovYSMiJCirchCtMSQBMxM+exHklktfXt3KL5f+CnboK5o0cZGTP9ShLVg4wa4onaK4a6cEcTZ2Gkmo1WwP8HxayTpsMV7ubbpUjZboHSMuhwo8q5CFJo3DAVZxUgP0CCMydZVd1uGWgaqz/v+wHVFjxPoX2VyBCMVcKiCXwQZjz17ozz/Rmb/6rjNp9bQhHK8iZLXlnMd+5A4S2jigtsxruQ2VaEbBJWDp9u3fGRgPlQSqsWPzuCqNZNviKl8AROfAcBj9YtWf3OQ8XvCWoj9vfuLK7osEalOn77ZSD0cxdoohdt5avp+j9Fb1mjA6yyT/wK/ebg6eddogWis1eRqE9ORdH62sCsoVchPc2TQqUjzhLKGaCJr1S3CO6UFiv2nEepdy5twoybewo+lA7YFC2mVw1bgZ7YT3zS0Tir7UZL3aTJMWcbv/hs2Lp/7MVOW+YRwbEvIe0KTHkuxHRyh1IKD1Gnyco2HoJxZaid9M4RYQBNwzw8pdu9OokaicxNyzjMVg7paO6prFo049Uu9C2A+MGoJaKew/xuIGPwzkbqdxM0nrrUV9vxFhCcasEDQf1wjfzA89SsM6fRooKniY7SmZi8VHX5gRFLRvFvzT9vupaKwkam0ODBlrn4rp1lefoVSZNntD4edBu3Vz1Dm55HlLporJclFRi2i9L1wjEeKSWyQN7RHwQtw0+GXpf3iymJui7zP2RiRrGXYWKzDJnwvia5sOqTsmz6eeGCfJ63MAIpQ098Y+HtFqCrNFtwRh
+ YMqD2qOq
+ 5vNeKaut1LJv8iNbwYeztML11KCsf3H18Bh/BoUJ9b/ctphV+UTUFH+KF9bA8HtnI5nhorV7C/r1hqSxFUkS2E2zvk7KG+iq1RnJj+pV7ca3VPVLaE1+ZpH5rbQ6uZH3wyu7pDXyI2EUrF4WecuFOUJr8xDMd6HlfGn5+6rpzfonkI0tgNtPRsf+aV1zHZ+4U+Cb8Jam3RMMcUaofj7cY/9HbYRtPCZ1n+mbZkBBPJL87Q0KmFjn59D5cKtc91dW+Ovlluk0/IsZhnBSEoq3m76RmFBJ72Bwr755mj0Mbzy3ozysY6Ml18mjfSVu2cNDBhOlIcWX7UnrTW5P0OYVACRHXyrGEJhRz06WWBheGXwtmYoBN7SZR66mUQMvtGj7f2Dn/30aC6it09j1kaXBV1HEClp0fCRfJ7/StikYFVYaJllAL9Eim5k8vu8Gx4NFIu5U152+UVQGDNpAFjcASLanaMhH931GNHWAHKMF1R4GAMSSBdJGp0BR+oJCLp8himsqAuGkG7IlkQiDTtpcIQgTFUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +124,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 12:17:17PM +0000, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> Hi,
-> 
-> This series contains some updates for the Kexec Handover (KHO) and Live
-> update entries. Patch 1 updates the maintainers list and adds the
-> liveupdate tree. Patches 2 and 3 clean up stale files in the list.
-> 
-> Regards,
-> Pratyush Yadav
-> 
-> Pratyush Yadav (Google) (3):
->   MAINTAINERS: update KHO and LIVE UPDATE maintainers
->   MAINTAINERS: drop include/linux/kho/abi/ from KHO
->   MAINTAINERS: drop include/linux/liveupdate from LIVE UPDATE
-> 
->  CREDITS     |  4 ++++
->  MAINTAINERS | 10 +++++-----
->  2 files changed, 9 insertions(+), 5 deletions(-)
+Remove the odd VM_WARN_ON_FOLIO(!folio, folio) usage and replace it
+with a simpler VM_WARN_ON_ONCE(!folio) check.
 
-For the series
+Drop the redundant VM_WARN_ON_ONCE(!pmd_none(*pmdp) &&
+!is_huge_zero_pmd(*pmdp)).
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Refactor the PMD checks to use pmd_present(), making the control flow
+clearer and avoiding duplicate condition checks.
 
+Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
+---
+ mm/migrate_device.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 8079676c8f1f..fe1c1999aa2d 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -807,8 +807,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 	bool flush = false;
+ 	unsigned long i;
+ 
+-	VM_WARN_ON_FOLIO(!folio, folio);
+-	VM_WARN_ON_ONCE(!pmd_none(*pmdp) && !is_huge_zero_pmd(*pmdp));
++	VM_WARN_ON_ONCE(!folio);
+ 
+ 	if (!thp_vma_suitable_order(vma, addr, HPAGE_PMD_ORDER))
+ 		return -EINVAL;
+@@ -865,12 +864,13 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 	if (userfaultfd_missing(vma))
+ 		goto unlock_abort;
+ 
+-	if (!pmd_none(*pmdp)) {
++	if (pmd_present(*pmdp)) {
+ 		if (!is_huge_zero_pmd(*pmdp))
+ 			goto unlock_abort;
+ 		flush = true;
+-	} else if (!pmd_none(*pmdp))
++	} else if (!pmd_none(*pmdp)) {
+ 		goto unlock_abort;
++	}
+ 
+ 	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+ 	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
 
