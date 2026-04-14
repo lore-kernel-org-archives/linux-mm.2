@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E62F9D0D2
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 14:24:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA91F9D0D3
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 14:24:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D3436B0088; Tue, 14 Apr 2026 10:24:02 -0400 (EDT)
+	id 4CA656B008A; Tue, 14 Apr 2026 10:24:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AA896B008A; Tue, 14 Apr 2026 10:24:02 -0400 (EDT)
+	id 4A1C86B0092; Tue, 14 Apr 2026 10:24:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C0446B0092; Tue, 14 Apr 2026 10:24:02 -0400 (EDT)
+	id 33F7F6B0093; Tue, 14 Apr 2026 10:24:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 77AC86B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:24:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D71A140537
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BCC96B008A
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:24:03 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C940113ADB4
 	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:24:02 +0000 (UTC)
-X-FDA: 84657380724.10.C2C9382
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 18A831A0012
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:23:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CUMgG7US;
-	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+X-FDA: 84657380724.23.75A0927
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DFD382000E
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:24:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ne7QX6p4;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776176640; a=rsa-sha256;
+	cv=none;
+	b=QXieMKRzN6UbudDlrMBQ34sDwU/uXMzHn22L9bcZoICFaleKrRxFhAUxyrhiMutA2kezFs
+	JC6ydNNYB0TP/s3Ba0lYOaQkwGRA4LcdlEvYkFbONNLFnZzyZS0qm7Shn4Vy6hinLo72fa
+	GyMZzTS66afiea/xjx95jglR7wrT+qI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776176640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=l/DIY4Wc2xC5bw06GZUdaqfjSUmMjDlkLw1fJqLtdqk=;
-	b=2AE1DlaArDWSKGMY8rwcEXd1tWVNvvTkzJpMkKcZng/dmHTCh4PQ7379A6k1qdM3LDkOi1
-	Y0BE0qgWXVP5f59dx0P/vAmn1H6Kshv9xddTSeNC6nSXJG5GQ55CTj5aX1S3y6R8VU7gNT
-	jx7O7ykD/r5lhKbHIDFAaLoI8i3d+jA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776176640; a=rsa-sha256;
-	cv=none;
-	b=Kb1GXjKL6UJDkU6Dtil8yuEQBRjRaET5qx7yc7a3yk7GpiSlkFs20deMR7jKxvvw1pVFis
-	p8cex40XERSaHUBxdM2b1U0+73qlIsvi6RLxxSadwUz8+P30BUB1ySO7pUw0++2sPSZ82j
-	KzhdahksSLHKJsW0Bl/7ThDcp6YdzB8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ALjUV2Rynz/UryiDLcLNpijVJfq0KYq3HBY3Kx7gqDs=;
+	b=uhjDjEdB2FHn8xxhLBPn3+RaVPjoUy042XQTKlmMnFAo5NUwfQd1DboMkCUqoxjxKg/E8D
+	JjrASMHxrZTCjBzkIHYBrxV7EbkJ2Dn9bCMlvhY28clTMDOlUDjnw9HwCzCQc3LMAxUj53
+	t3h5sd+HELyMuNoKaPO8X9Wzo34jqfk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CUMgG7US;
-	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ne7QX6p4;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC34543575;
-	Tue, 14 Apr 2026 14:23:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0669EC2BCB0;
-	Tue, 14 Apr 2026 14:23:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6458C60125;
+	Tue, 14 Apr 2026 14:24:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0404C4AF0B;
+	Tue, 14 Apr 2026 14:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776176638;
-	bh=/fCVxa0eMyMWklv2E9q9GFJdXVtpfKD77F6QKI/nFIQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=CUMgG7USGrHWNOhxeLwWd/mwPJHpMj3QUt4q9oHTRQdLna0K9mfo2uXiVDMQ4hKpc
-	 uqrM/kI+CMLi/YxeXP3Uj623dK4aKke80UIjoAkHX6M43RqZ9INfja18DHQc7R/S2+
-	 pW4MsWKJLn0WAhQd7L7Bnq2qe9L/yhS012c69IM4E8TCzpKVthZEBVCnW8ufu9TC95
-	 4DEGxxDjc8+U+4jNcXTmaTYPTexLDZ2jImIEi8IukiOLl4yyK7zsCk9aJdFfpN8eBS
-	 VYO4GHxm5TEZYZGz0+e6qMSjf4rzl5yQgj3E4hw6+5bIWpkdYJqXbqzw6K8qRMJ6CJ
-	 2qGv8yv3OQZ6A==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 28BECF4006B;
-	Tue, 14 Apr 2026 10:23:57 -0400 (EDT)
+	s=k20201202; t=1776176640;
+	bh=D3Xb8PeTvLmTI+UVvNhEzjipl2DCTEFkVuBJpSK3e5A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ne7QX6p4nh9f/KVkal6ql22E5r/yWYe9JHa7nSlxz3j6Ic+3FzQVmlFp+3vAuTlat
+	 v0HqOSM0yhyjH6x1IQIW9w1yjn1IpsgQgDA/ke4oZiY/c7jkPkLvQfTXTCThogjp9c
+	 ZZ3+3pIh/vV6BvtlvbyB+osol2DpabaFs7qIIRZHHN4zTEmevQYfc0MyFMUA4qppiy
+	 sdM/Otrt5Eojdb4TREddxEgauSm1zgx3ntLtbVEHXfIQD7M+Bz89OCnyxFO+NHEVs6
+	 XhYHb8/aDtAjTsZdr3Zbwz6M8YnRJuertzI2MGpRZHLYHmlPILZh/g6rUS8mxGV2eT
+	 Hh2UjFnmMz96Q==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CED13F4006B;
+	Tue, 14 Apr 2026 10:23:58 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Tue, 14 Apr 2026 10:23:57 -0400
-X-ME-Sender: <xms:_U3eaQCvx35FDPWnL6sBweeurEOIpI1LijIehBqkLQ-bQHEONKlxzA>
-    <xme:_U3eaT_VLmjwZOt1WWXNz-43IGClnMVgKQG_vmW9Zpt3C0HbfQIow8sRSqkzPvv-R
-    D_TrBXUamNa9V1MsdCGIbUQMkUdXgaIPtCBTAxjlvnrjaXezzIrkyw>
-X-ME-Received: <xmr:_U3eae-dUcx-b5B52N4dZw92O_l69d7jJWMEWbFPEPP9sCzpLlTml1QK-rznEA>
+  by phl-compute-02.internal (MEProxy); Tue, 14 Apr 2026 10:23:58 -0400
+X-ME-Sender: <xms:_k3eaYmXrNrN-qr501zOHDvLusSEZrkoDcPvW9apto0ahi-91bljqQ>
+    <xme:_k3eaez40MANzPpm30026fJ4PDz3487xgWxj9TEKvvM2fmiAib5Dg9Ql1qdH-EGrQ
+    bxyM_XfPNKMvU9VFC49vbAR3DFmTmm4LIkTabJS0zeWN7cNi8IF1qg>
+X-ME-Received: <xmr:_k3eabtWHaxRcRP1t_HLdqSd-Q6r5vaa2gb_6yQl3oZxbQxQy1v0GkAOlV40tQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegudefkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomhepfdfmihhrhihlucfu
-    hhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqeenuc
-    ggtffrrghtthgvrhhnpedvleevheejjeevveetgfejvdfhtdfftefhhfettefgkeejfefg
-    keduhfdthfehhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
-    hrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudei
-    udduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshh
-    huthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphho
-    uhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrgh
-    dprhgtphhtthhopehpvghtvghrgiesrhgvughhrghtrdgtohhmpdhrtghpthhtohepuggr
-    vhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhr
-    vghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggskhgrsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhm
-    pdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:_U3eaT3tV0clRDLau64h_TF2174YK72e9bO6MIuYmNiAAB_3GGKYmw>
-    <xmx:_U3eaW-oonZ89wLF8NBRjooF_IQKHfLzthUEv49mYfz9vXflpFxGFw>
-    <xmx:_U3eace5NWItR9K6l05oht3kgIeUcBoOkY2SSpv5ilJbt-QDeiPC9Q>
-    <xmx:_U3eaaEyQMfeSO-25SexlC6pwViL_nRKottkT37wtZNO6LAucKdryw>
-    <xmx:_U3eaZAbUtd7_zzDnzhJQDQYpwcvp63VCCSURN19-3KzfM-2D_ehBgmi>
+    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpedfmfhirhihlhcu
+    ufhhuhhtshgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgheqne
+    cuggftrfgrthhtvghrnhephfdujeefvdegkefffedvkeehkeekueevfedtleehgeetlefg
+    feevveeukefhtdetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqddu
+    ieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghessh
+    hhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
+    hgpdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegu
+    rghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhu
+    rhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtgho
+    mhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:_k3eabsnhOdE9eKCW0R68cYIHgOaEaZxDTCFAzAVBLPx25eeefpF3A>
+    <xmx:_k3eaRnhuTNrXVfuV_mLnq6M8pGgr3R6DMaF_omhSOYQchz-nxaw-w>
+    <xmx:_k3eaRslP7TT9Rcx3n0gDnpay90f8thXQ4qARLyxXIiEqh_TLbKebw>
+    <xmx:_k3eaQNXaUwZz4ioIGby9lE2uyqI55Lashhrx0c0ggrmizG6SCA2Yg>
+    <xmx:_k3eaS0NztkyBvinGJLL4VbWZxe8tP2fhhjcyGW5Tm0TQzPqLjo0RaBw>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Apr 2026 10:23:56 -0400 (EDT)
+ 14 Apr 2026 10:23:58 -0400 (EDT)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Peter Xu <peterx@redhat.com>,
@@ -117,21 +117,22 @@ Cc: Peter Xu <peterx@redhat.com>,
 	linux-kselftest@vger.kernel.org,
 	kvm@vger.kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest memory
-Date: Tue, 14 Apr 2026 15:23:34 +0100
-Message-ID: <20260414142354.1465950-1-kas@kernel.org>
+Subject: [RFC, PATCH 01/12] userfaultfd: define UAPI constants for anonymous minor faults
+Date: Tue, 14 Apr 2026 15:23:35 +0100
+Message-ID: <20260414142354.1465950-2-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260414142354.1465950-1-kas@kernel.org>
+References: <20260414142354.1465950-1-kas@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fdsq97agnns5srjm95f6egrbgm3qtxra
-X-Rspamd-Queue-Id: 18A831A0012
 X-Rspam-User: 
-X-HE-Tag: 1776176639-46862
-X-HE-Meta: U2FsdGVkX1+t3j4jQP5VVEl02JIi/ULTZDwtx13Z87DqtpTehzVL4mwqo69Xy7UOC5hmwSu0VThGGK/b+ZJtVvkmjnOTxO0AX9gHWIn/LI7UurOxCIKj8KdTD9pC3qz9FwUO+Ukp6Amru5thWp7qKIxZevCsBacVwaUiPvR3NwbG3yfl5tAKYM+EYdUBPfkj/D5VC5d8kGCU7eQ/zuZAy2H4Uk9G4ypT/h5GazI0Be9fzemsRhKRcg0SIOFcSM9Bz0SunwOILoef+9rQ9h2/jfWxPDgHCK/WtGzGPIE+fP5RbAsv51fGB0tf9UDP/r3gRps20lvQ9R3PyLBgbGBWpQdQtNKArasI2sKmWbQitk4OgtlcC3jqLwcQQVQYMT2Jq6UroGb+nwMYc/EuTDmdO4Xfjrvs/RA4JpZyveDFc3t9evZRayZrYm5tITLf03S9uDA8taN5qcBMyFXZ1tLsBg8ZZhOHALFX9VIUex09vnc6lpS6iWDbX5Imjc1hNR9x+VTSsLVDvMiLDeDVGSruMT3lPvjq+jYrea+vVL7pq5/9gouSIQdJ8tNQmk61/MCXPQNNVqCfs2XC/JZImmchzDn9Wvn3XANAlnpuFT6+vMdBNzgLxFWmmE/btNm4j7mY+VYhTLPbg0fRAcX4sh5HKr4yshM9mBDU7blbthF8WgjkErbU8NL/vNJXw/9n+hQgEW0EpT63FIihbFsCQ2SxDrwIUqdVCudyxVQ9fLsonDalsgRHcWNE67zXyVvhbx54PtJZ0t0OO9vruc5Pv1CWSzpqDiWD/PUyOEq5721j1U/I5y3YU8C/LOCl4d947MH/rO9qddi7ZdiGwX0/3yfqwJ7fMrmC+CMPPkBpI5FkkpIFy+95k3kxRj7lmVABCxrjt/V/e/62MNH3GdXE5ihNk7AQ3pn6uScwlutV0HiE5wHpSspml/W+x2FoLoTg2fGYQUctX7J0/0BwqQIse4b
- ZrP9GyBs
- nJF9+asThW+4U7ojtSNB5CgyvPqVqPmrL1zjQ7UJ20FGw43WXW4/bkWxUt9h6uK16wwmHXdodWZ98vDRtykfXXt3dg7V9ohc9GVoHsUpwAdyuIFsflemjKFcmRDOzd+Q+rqBlNHc+0CUygHct7TZ72repDM78qQex0z7Now8mUXFDy51hSoNXdwHbVzc6OJ2olcZPBwWkXAwr2I0pgDea8lFkIPy0xzXt/ajRnyZ4p5gYnUhaQetIH6UE4Yimje6SvXW7ewGFR+QQlIQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DFD382000E
+X-Stat-Signature: 7jtg7qwxmfxjqc68drs7bxxwcbnkrows
+X-HE-Tag: 1776176640-547121
+X-HE-Meta: U2FsdGVkX19/wtgk2f4onUbbqHXamYad1gsQobaPlbNNyc1+mGUB8ENY9WBlr332n7dHnc3e2Rn5QIyOhWAJWa3SvoHxMvx3MwXdabQrmyIBoFdqRflJk9VZVPsmSHjDhJy+8kf8pEGYPRPgrlx3oAFgcWyKWNOk3hR+nRLnkFPe1El7yRAUWduy1uqz5nAhNUMDiSP+sRSASeAXwSD6uFCvZZfXqsKnL4Lq+EUcD4XH/kroqGjhBVzQ1Wmd7mAk2Mr++0xbF9+T5EAayVeARl0JgHLaYtsHhIQuvarXc/QRXKxykoERU7t0Z62OXgdl7jO3UR1fS42iSxIZUgU+mBMGFRnls5GZVS6Z+Ro+to9PtJBwNoxQP6pr6nBtITBFSJs9iZCr3MYLv/9AgHWNCjIhtUlBTNJifCCpvuNbsupRgCcXc1DnQT4jegBdgmsGb1OvZOhHHt80zv0LKppEa4MGawjF0yjyiEE9O886/2nE253QgV0IeabJA/y9CE82jHV8TuBNO6N9ADlwQCgCWmtZ7SXMv9aPlM97JWfc8KnLiBNybl0k3mn2u2gm02dBhbJD/9+2KakRCDUh7UhLQx1UXYaVYsAyPlw8Hmcpvp+1Y/fe+fsaep72P4oo2nod/7tm7p+/XCvriaEz31JT9wjJgC1l3cji/chp9OsL5TaYGKd0KzXfoEOaAUEHlKkrnu0eIFzup6siCTqHy6tnp9T8t7EarqQzb9lO3E8h73myXoomUl9RJfZo1P5EBqmXDAuMNj3iSC7MzkXgYNrFRhRp6EYx8y+iOf7c7nWyyuvlFl3fuzp3Vyq+mRIDggrnQXiJcmt7LThW2O3eFMZf6yT2jjZDFWOMfrW21r7CuBMG9whZkSg9ClEoql//q/c3mTDpIiD9uh+NiWh1Z/u3Ij+gtKi5nKQduaiVGLQe8Ud4LLqFLkdfwm/MhGLCen0ndihEjczWWAQ+tSdum5S
+ 8+VZGeq5
+ Jcf9byJpdbmRWXDs7fodogz7ulQ+8JbC0+atXVN+f1McOat6KWJ4Nzyel1X+GPSvrKBASo7Jgc9KsEkdqFd5i3t/m8vhGfu35j/0IKhls0zzSMcD4KvJaaOxkgemYSM1Td0FwiCGRwVZiUkYqj7O04Md/heYqeJ0bTZoPGtk1+PjG8Ci9z4JfDZP3cmndX1mi58dq8Jit8VKOIKUVhED6OU+H/RiV4P3tKGJ5W0WW59iwjA+TMJcB22PDpEOJkHzc2Rjs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,147 +140,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series adds userfaultfd support for tracking the working set of
-VM guest memory, enabling VMMs to identify cold pages and evict them
-to tiered or remote storage.
+Add UAPI definitions for userfaultfd working set tracking on anonymous
+memory:
 
-== Problem ==
+- UFFD_FEATURE_MINOR_ANON: minor fault support for anonymous memory
+- UFFD_FEATURE_MINOR_ASYNC: auto-resolve minor faults without handler
+- UFFDIO_DEACTIVATE: mark pages as deactivated (protnone or PTE zap)
 
-VMMs managing guest memory need to:
-1. Track which pages are actively used (working set detection)
-2. Safely evict cold pages to slower storage
-3. Fetch pages back on demand when accessed again
+Not yet added to UFFD_API_FEATURES or UFFD_API_RANGE_IOCTLS.
 
-For shmem-backed guest memory, working set tracking partially works
-today: MADV_DONTNEED zaps PTEs while pages stay in page cache, and
-re-access auto-resolves from cache. But safe eviction still requires
-synchronous fault interception to prevent data loss races.
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Assisted-by: Claude:claude-opus-4-6
+---
+ include/uapi/linux/userfaultfd.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-For anonymous guest memory (needed for KSM cross-VM deduplication),
-there is no mechanism at all — clearing a PTE loses the page.
-
-== Solution ==
-
-The series introduces a unified userfaultfd interface that works
-across both anonymous and shmem-backed memory:
-
-UFFD_FEATURE_MINOR_ANON: extends MODE_MINOR registration to anonymous
-private memory. Uses the PROT_NONE hinting mechanism (same as NUMA
-balancing) to make pages inaccessible without freeing them.
-
-UFFD_FEATURE_MINOR_ASYNC: auto-resolves minor faults without handler
-involvement. The kernel restores PTE permissions immediately and the
-faulting thread continues. Works for anonymous, shmem, and hugetlbfs.
-
-UFFDIO_DEACTIVATE: marks pages as deactivated. For anonymous memory,
-sets PROT_NONE on PTEs (pages stay resident). For shmem/hugetlbfs,
-zaps PTEs (pages stay in page cache).
-
-UFFDIO_SET_MODE: toggles MINOR_ASYNC at runtime, synchronized via
-mmap_write_lock. Enables the VMM workflow: async mode for lightweight
-detection, sync mode for race-free eviction.
-
-PAGE_IS_UFFD_DEACTIVATED: PAGEMAP_SCAN category flag for efficient
-batch detection of cold (still-deactivated) anonymous pages.
-
-== VMM Workflow ==
-
-    UFFDIO_DEACTIVATE(all)            -- async, no vCPU stalls
-    sleep(interval)
-    PAGEMAP_SCAN                      -- find cold pages
-    UFFDIO_SET_MODE(sync)             -- block faults for eviction
-    pwrite + MADV_DONTNEED cold pages -- safe, faults block
-    UFFDIO_SET_MODE(async)            -- resume tracking
-
-The same workflow applies to shmem, with a different PAGEMAP_SCAN mask
-(!PAGE_IS_PRESENT instead of PAGE_IS_UFFD_DEACTIVATED).
-
-== NUMA Balancing ==
-
-NUMA balancing scanning is skipped on anonymous VM_UFFD_MINOR VMAs to
-avoid protnone conflicts. NUMA locality stats are fed from the uffd
-fault path via task_numa_fault() so the scheduler retains placement
-data. Shmem VMAs are unaffected (UFFDIO_DEACTIVATE zaps PTEs there,
-no protnone involved).
-
-== Testing ==
-
-The series includes 6 new selftests covering async/sync modes,
-PAGEMAP_SCAN cold detection, GUP through protnone, UFFDIO_SET_MODE
-toggling, and cleanup on close. All 73 uffd unit tests pass
-(including hugetlb) across defconfig, allnoconfig, allmodconfig,
-and randomized configs.
-
-Kiryl Shutsemau (Meta) (12):
-  userfaultfd: define UAPI constants for anonymous minor faults
-  userfaultfd: add UFFD_FEATURE_MINOR_ANON registration support
-  userfaultfd: implement UFFDIO_DEACTIVATE ioctl
-  userfaultfd: UFFDIO_CONTINUE for anonymous memory
-  mm: intercept protnone faults on VM_UFFD_MINOR anonymous VMAs
-  userfaultfd: auto-resolve shmem and hugetlbfs minor faults in async
-    mode
-  sched/numa: skip scanning anonymous VM_UFFD_MINOR VMAs
-  userfaultfd: enable UFFD_FEATURE_MINOR_ANON
-  mm/pagemap: add PAGE_IS_UFFD_DEACTIVATED to PAGEMAP_SCAN
-  userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
-  selftests/mm: add userfaultfd anonymous minor fault tests
-  Documentation/userfaultfd: document working set tracking
-
- Documentation/admin-guide/mm/userfaultfd.rst | 141 ++++-
- fs/proc/task_mmu.c                           |  11 +-
- fs/userfaultfd.c                             | 184 +++++-
- include/linux/huge_mm.h                      |   6 +
- include/linux/mm.h                           |   2 +
- include/linux/sched/numa_balancing.h         |   1 +
- include/linux/userfaultfd_k.h                |  21 +-
- include/trace/events/sched.h                 |   3 +-
- include/uapi/linux/fs.h                      |   1 +
- include/uapi/linux/userfaultfd.h             |  40 +-
- kernel/sched/fair.c                          |  13 +
- mm/huge_memory.c                             |  33 +-
- mm/hugetlb.c                                 |   3 +-
- mm/memory.c                                  |  51 +-
- mm/mprotect.c                                |   9 +-
- mm/shmem.c                                   |   3 +-
- mm/userfaultfd.c                             | 164 +++++-
- tools/testing/selftests/mm/uffd-unit-tests.c | 458 +++++++++++++++
- 18 files changed, 1096 insertions(+), 48 deletions(-)
-
-Kiryl Shutsemau (Meta) (12):
-  userfaultfd: define UAPI constants for anonymous minor faults
-  userfaultfd: add UFFD_FEATURE_MINOR_ANON registration support
-  userfaultfd: implement UFFDIO_DEACTIVATE ioctl
-  userfaultfd: UFFDIO_CONTINUE for anonymous memory
-  mm: intercept protnone faults on VM_UFFD_MINOR anonymous VMAs
-  userfaultfd: auto-resolve shmem and hugetlbfs minor faults in async
-    mode
-  sched/numa: skip scanning anonymous VM_UFFD_MINOR VMAs
-  userfaultfd: enable UFFD_FEATURE_MINOR_ANON
-  mm/pagemap: add PAGE_IS_UFFD_DEACTIVATED to PAGEMAP_SCAN
-  userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
-  selftests/mm: add userfaultfd anonymous minor fault tests
-  Documentation/userfaultfd: document working set tracking
-
- Documentation/admin-guide/mm/userfaultfd.rst | 141 +++++-
- fs/proc/task_mmu.c                           |  11 +-
- fs/userfaultfd.c                             | 184 +++++++-
- include/linux/huge_mm.h                      |   6 +
- include/linux/mm.h                           |   2 +
- include/linux/sched/numa_balancing.h         |   1 +
- include/linux/userfaultfd_k.h                |  21 +-
- include/trace/events/sched.h                 |   3 +-
- include/uapi/linux/fs.h                      |   1 +
- include/uapi/linux/userfaultfd.h             |  40 +-
- kernel/sched/fair.c                          |  13 +
- mm/huge_memory.c                             |  33 +-
- mm/hugetlb.c                                 |   3 +-
- mm/memory.c                                  |  51 ++-
- mm/mprotect.c                                |   9 +-
- mm/shmem.c                                   |   3 +-
- mm/userfaultfd.c                             | 164 ++++++-
- tools/testing/selftests/mm/uffd-unit-tests.c | 458 +++++++++++++++++++
- 18 files changed, 1096 insertions(+), 48 deletions(-)
-
+diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
+index 2841e4ea8f2c..336d07e1b6de 100644
+--- a/include/uapi/linux/userfaultfd.h
++++ b/include/uapi/linux/userfaultfd.h
+@@ -79,6 +79,7 @@
+ #define _UFFDIO_WRITEPROTECT		(0x06)
+ #define _UFFDIO_CONTINUE		(0x07)
+ #define _UFFDIO_POISON			(0x08)
++#define _UFFDIO_DEACTIVATE		(0x09)
+ #define _UFFDIO_API			(0x3F)
+ 
+ /* userfaultfd ioctl ids */
+@@ -103,6 +104,8 @@
+ 				      struct uffdio_continue)
+ #define UFFDIO_POISON		_IOWR(UFFDIO, _UFFDIO_POISON, \
+ 				      struct uffdio_poison)
++#define UFFDIO_DEACTIVATE	_IOR(UFFDIO, _UFFDIO_DEACTIVATE,	\
++				     struct uffdio_range)
+ 
+ /* read() structure */
+ struct uffd_msg {
+@@ -230,6 +233,18 @@ struct uffdio_api {
+ 	 *
+ 	 * UFFD_FEATURE_MOVE indicates that the kernel supports moving an
+ 	 * existing page contents from userspace.
++	 *
++	 * UFFD_FEATURE_MINOR_ANON indicates that minor fault interception
++	 * is supported for anonymous private memory.  Pages are made
++	 * inaccessible via UFFDIO_DEACTIVATE (sets PROT_NONE while
++	 * preserving the page) and faults are delivered when the pages
++	 * are re-accessed.
++	 *
++	 * UFFD_FEATURE_MINOR_ASYNC indicates asynchronous minor fault
++	 * mode.  When set, faults on deactivated pages are auto-resolved
++	 * by the kernel (PTE permissions restored immediately) without
++	 * delivering a message to the userfaultfd handler.  Use
++	 * PAGEMAP_SCAN to find pages that were not re-accessed.
+ 	 */
+ #define UFFD_FEATURE_PAGEFAULT_FLAG_WP		(1<<0)
+ #define UFFD_FEATURE_EVENT_FORK			(1<<1)
+@@ -248,6 +263,8 @@ struct uffdio_api {
+ #define UFFD_FEATURE_POISON			(1<<14)
+ #define UFFD_FEATURE_WP_ASYNC			(1<<15)
+ #define UFFD_FEATURE_MOVE			(1<<16)
++#define UFFD_FEATURE_MINOR_ANON			(1<<17)
++#define UFFD_FEATURE_MINOR_ASYNC		(1<<18)
+ 	__u64 features;
+ 
+ 	__u64 ioctls;
 -- 
 2.51.2
 
