@@ -4,124 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99723F9D0E7
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 16:49:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7152AF9D0E9
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 16:58:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECC3C6B0088; Tue, 14 Apr 2026 12:49:46 -0400 (EDT)
+	id B55D96B0088; Tue, 14 Apr 2026 12:58:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA4236B0089; Tue, 14 Apr 2026 12:49:46 -0400 (EDT)
+	id B07246B0089; Tue, 14 Apr 2026 12:58:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB9CF6B0092; Tue, 14 Apr 2026 12:49:46 -0400 (EDT)
+	id 9F5BB6B0092; Tue, 14 Apr 2026 12:58:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA6F56B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:49:46 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 720C01A01CC
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:49:46 +0000 (UTC)
-X-FDA: 84657747972.14.4D5BD05
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8AAF3140014
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:49:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AheSCCfk;
-	spf=pass (imf23.hostedemail.com: domain of charsyam@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=charsyam@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C6296B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:58:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3157856B5D
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:58:00 +0000 (UTC)
+X-FDA: 84657768720.08.16B512A
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 53C821C0003
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:57:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RdWMhD9a;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 3FHLeaQkKCMcnyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3FHLeaQkKCMcnyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776185878; a=rsa-sha256;
+	cv=none;
+	b=mjY2iSjugiLKGisW67JzqbrYVqGMbKWQ6ZAbkCiWQlfDs9NU23zq3w0/9Y6uUz0+SFD4YL
+	BnrxZ3k7oG3Fh9xHW+3nIOYwOdvD2op7bIcId+9o9MazM0+vjwXWb3BLCmOM0xDsaXqOQj
+	LWJc27ThacKqKmA6Uxxi8CWs7JeXgng=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=RdWMhD9a;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 3FHLeaQkKCMcnyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3FHLeaQkKCMcnyvpr4Buyt11tyr.p1zyv07A-zzx8npx.14t@flex--aliceryhl.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776185384;
+	s=arc-20220608; t=1776185878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FUoYKq79bxvjyxgdJrulHpNt50LqCWweYqk4dEJlv4E=;
-	b=iIBYvwggebWwNzj2rJkN5mXQp5/B3mpJRAslCzIHMTkTIVaXCNZZGKI5zfgK/+YgISQG31
-	7QMqKCEyKbaVrhwWVs43DxUEcgof7Fg2oGh6VsaP5YbquVrsEcoH6CkkFv/lB75/o9kGYA
-	2swdsqv8/h9P8zS1KockUTaYNR1VW48=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776185384; a=rsa-sha256;
-	cv=none;
-	b=JGOc8l3vj2EMba4GjoXdWxx29A0BpOsedXjV9seHEoyVipMW1rrWihAKM3TyFILOZ2NjWF
-	UlHYEKuHv6F+eGzq/ZxDLPom6Wv9xfOVKVQJ4vTeO4lBL2NJB96VlgpSOKPwD7IGOXB6Tm
-	zxFbHlTLmLmaZNbBqZ8tS4dMyu+cTIA=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=AheSCCfk;
-	spf=pass (imf23.hostedemail.com: domain of charsyam@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=charsyam@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b467d03d57so1651985ad.0
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:49:44 -0700 (PDT)
+	bh=UkYGbEc6QvWyzB+ejatgY30VNPQeVmDmmsT64e5J5sc=;
+	b=fpncsDCZlk7LuyT5Xf5153eAXJF5lrW+uAet/PqBKM00jPL2TKuwuuF+Dg2OUWe8vHg9Po
+	LXb8Z0QELf2EOcjuNO861EGVt3fVkcs/n8+At/NQ8YgqP2kZMB3rpPMlWwaXiyUT8aJ5Sa
+	83aMnP5Mpw/0G2O1slKz9OwZvB/V2+k=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-488d8deb75fso28124955e9.3
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:57:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776185383; x=1776790183; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FUoYKq79bxvjyxgdJrulHpNt50LqCWweYqk4dEJlv4E=;
-        b=AheSCCfkG+BlmdtBDgLL0/Luc2qJZ2SlluO2SA9JwrAtA8wejXSzo8V4jSn+bfGSzd
-         QWM+tkl+trd9M1TCKttOBiOUkcdn6CJ73K6pQf5M0V0FhH3t8DnlrOVv0/Hq3KvoidWS
-         Ys0tn5wLz/Y2jqwoqhsWFnSPW/N9l8gYyyt11/zyhXfzV84owtK76d8xncMAdop/ncMR
-         iDSWOdWDf4pA4eusiz6jPy6YoDwgQvW9wzkoOD96l0SRfYzfo+i4NQBJ8dfraGnR1jgC
-         MI4JRBQjRA0MjOd5MHoNsoTOBXnoun3slz02TQ/SDMDKSj3m92BMNoDigSoZB/yWCjhX
-         eUuA==
+        d=google.com; s=20251104; t=1776185877; x=1776790677; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UkYGbEc6QvWyzB+ejatgY30VNPQeVmDmmsT64e5J5sc=;
+        b=RdWMhD9aY1NrpLBD+dLeo/q8RqucfFA0dpaRO4XleluuED3Muh/HHD5GFWNXKz17Hr
+         +3G1euRNIi4Dw2xVvzNsvH0sAujJDPodC7LoCcJD8sPYm4SHko/TEBpANbMOkagtKaI+
+         o9mNFUDNaVyzvEnNX0hZiB1Heg5+JegQfn+rxOTiVtYnneCPivTife8R7BCBtRUw55Gx
+         wkZyhylik8Acq92LAIkBFv3bnuxV+99JYgry5tHWEEzVbbwm0novuSK0XP3GGI9wMqOd
+         oX3hTSeRWNjjFH9oCspzFCu6A9rVYbKRIOg3Wa7fS2d+C0QFSS2zipxccCXKte3RsznC
+         jv1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776185383; x=1776790183;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FUoYKq79bxvjyxgdJrulHpNt50LqCWweYqk4dEJlv4E=;
-        b=bTWp73h0D0CwRC05NdecPLtizgk3h/1z1F8LaLCU724gkDi1aUcpCwzSK+xpKJ476o
-         KP2gOvqL/Ec77lDbZ/8LJ1kEU0pcjmSiCukZvhUrgGDni27Mf87RAQRSW+0/+oataw6l
-         kbOM1r3BxbWMApC5xALz13Inye9G0ZuX7EK6Y8OCR6wdSQu6Z++V0KOyNTcBwCMAGqZw
-         or2zw60aXE3Z5G8E+CKES8ibeeOmz7JMg1dbqAizL9FqBXLWo7N+m8Gevlhn9CwG15/r
-         CfF8K/f63Rb162wkS7+DpoU6sLVV9gWzEdhFjGSkD+JqFIJPdnEIsHarkfxSxW/VrToA
-         Kyag==
-X-Forwarded-Encrypted: i=1; AFNElJ/29HJeKV4FsDeenafrmNHZXwi7gxwrgio6qA/SNukDbquvcw0aE41GdSZ2KrO9xThnidfa79Rhkg==@kvack.org
-X-Gm-Message-State: AOJu0Yyhh7w28GUm7LCzJCAI4NeOhWywfevyaLlowV9+puw/GEwasdw2
-	1WQRgIfb1kFKpD6Sva2gB+wyLIRVDJgzu3LwOkks5hsvua1IFUfA7Sx+
-X-Gm-Gg: AeBDiesQhvbiFQIwK2LkFMNVeSFMWCVBIUWiHrZh8EI4dlILzEDLrDMCKUv3UdZCC8r
-	TC4WiiSaKozPsbzRGGpky/x9Dgcp0uHHS7MV8iQnEciwZ1jzpEHsSFGAVki4X0KCyw0SeFa4DqB
-	FW67Z6L1Xq1n2ylZ6uHnW6OTzXgXAuyK2QlkSySn6pAdqVBZpFqVQNHxszKz8mgKnU9JKqdmtmK
-	qMfsjgUz4RxD1prR8UfGBlA9F6Zg0cTyEu2tc85WJ8ZvuG6IRGb+KUlVD8taJ6a68+b0u4YGdz+
-	DNlUzvFw2pLvg9YC43NCrFNNVMyGHA+zjIII69U/gl1cX9ykzGvZeGi2AqBl0FsRS5YJ47+BMOl
-	PfS9cJs/85wAK9UWKM/Xr/V8M/cyfYyverHiU10ECsSqWhwpdEvCW4Md3FGFfYt45nv1WIBohF+
-	s6DaJmVJGgOFELQGPy
-X-Received: by 2002:a17:903:faf:b0:2ae:3f3f:67c4 with SMTP id d9443c01a7336-2b2d580f23cmr111214755ad.0.1776185383117;
-        Tue, 14 Apr 2026 09:49:43 -0700 (PDT)
-Received: from ser8.. ([221.156.231.192])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dabca4sm153358325ad.15.2026.04.14.09.49.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 09:49:42 -0700 (PDT)
-From: DaeMyung Kang <charsyam@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Youngjun Park <youngjun.park@lge.com>,
-	Kairui Song <kasong@tencent.com>,
-	Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	DaeMyung Kang <charsyam@gmail.com>
-Subject: [PATCH v2] PM: hibernate: keep existing uswsusp swap pin if re-selection fails
-Date: Wed, 15 Apr 2026 01:49:36 +0900
-Message-ID: <20260414164937.1363887-1-charsyam@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260414143200.1267932-1-charsyam@gmail.com>
-References: <20260414143200.1267932-1-charsyam@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: g86sfsatppsghso9kzfhcxntszbxjjyr
-X-Rspamd-Queue-Id: 8AAF3140014
+        d=1e100.net; s=20251104; t=1776185877; x=1776790677;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UkYGbEc6QvWyzB+ejatgY30VNPQeVmDmmsT64e5J5sc=;
+        b=Fdw+CpDvVzPbUogDGsmnK4w8QSo6D5kffUKwNE8rS0GMISOl3A3UyE5Zz6x9PYxNII
+         h7VdLUh5v5buvYayFjOvRRD8VaqziAJ4YqthIvWpmEdwtCQ3XH+VOlWXqiC7DC76cJ0p
+         z19YkGkkWWEj/0CCoF7+p2O0vhxfsscnOiJbPN4JO4MRSEOxvDdF2782qJTlyl+du8bG
+         7h+fLCoMUG52E4T8mzUW4qM80P+xK5xJJc2h2NJZda9w0i0pdJTMCV5oO90gPpgC11NE
+         nRbEwUNMQzHXzxY5Jvk9yvF4JsjZAkdkVNZnjp1/9+D6n5E3gOpmU/V5+Kas+hgJyxms
+         V+FA==
+X-Forwarded-Encrypted: i=1; AFNElJ/3RQJb70eEN8ocB+RsGRT8PdTkU1t1Lmy+2mVWkgO2s5CnFPHod5Ihi8HX1S6nDmnzaB3wqnF7lA==@kvack.org
+X-Gm-Message-State: AOJu0YzHv17sym1PzhXDZB/mmSN+FBlIfZ06HxzZc6fr7b40C+JsbTWM
+	C4okvuehP12S0wO6p52NGvggX12DvejwkStysE9mx3rbghR3MAr9ttCYaxEDuaLbl3m10lqoCVL
+	oNdAs1UjCYJIFvWecwQ==
+X-Received: from wrfo7.prod.google.com ([2002:a5d:58c7:0:b0:439:cfa2:e197])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:674f:b0:488:a82f:bb9b with SMTP id 5b1f17b1804b1-488d68cb47amr264888155e9.30.1776185876348;
+ Tue, 14 Apr 2026 09:57:56 -0700 (PDT)
+Date: Tue, 14 Apr 2026 16:57:55 +0000
+In-Reply-To: <7d16f260-ffd0-4e45-b66e-9e7f71332466@zohomail.in>
+Mime-Version: 1.0
+References: <20260404-vmalloc-shrink-v10-0-335759165dfa@zohomail.in> <7d16f260-ffd0-4e45-b66e-9e7f71332466@zohomail.in>
+Message-ID: <ad5yE0sgV1HJsyaC@google.com>
+Subject: Re: [PATCH v10 0/4] mm/vmalloc: free unused pages on vrealloc() shrink
+From: Alice Ryhl <aliceryhl@google.com>
+To: Shivam Kalra <shivamkalra98@zohomail.in>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-HE-Tag: 1776185384-542071
-X-HE-Meta: U2FsdGVkX1+SbCpB9BXpvwtbmfxsVILpLvTq7E1gu4+jDyTbK6nHrXHXeBHgmpk20i4FvQNt3wg4BhQMPcUQc9R0tNDO/P8eJmacTuZJp4+d+C2Z31kjoGsT4mC6uB9NLnFFOsufVFvjUyTl/8uslKS2rTk2Udo9Rttd9unVTwszpDlypPl5y5IDDwpu64QFS5BS33M3cUMxgYQOevSmA0lQXNtol2iNtkbqtOEzrt2XN5B/0849alOM5Tdp5qiGKmvFclFANZ/3DP6d/2xoXaaTKJbYqQbCym32HVxvwyx2NvIXXS5F6kZd5ECsLk8GlHORqsU6os67V84KHOdFZJaaxnDK0DX4Eze5B0NL+d5PnUOflfZefQOCnp5O7tjh+kijwvBoeN8FEuFy31fqePbrOo7KU6VX9VTlwC/qTqQJ8AHA0KwI+52U0vWX62FDDbNyzDGmZP7KLqxrtImvzxblNVOL0QzckjiLNfJNiT/gLF84OvSOo7GiKocf9EMMiI21eqyEPMVcCOPh8WsCXi4hOifTXlhMOKDT3AF8JStNAvXgpMUWWoJi3rS7VR2BofJ8rgmWxBgI4fUlVveiYLLIRNnXN7DIqjebS0xGL75TDKRB/zlepi4YZfNSLAAk1bpM2aDxCdLLoQ8FYhdoHAXy29OrV2grsVLLCvjiAtmZF9Pw3cZzJghB/y6R6b4Rg+7ZwCHs80b9e7wcxjpO7cKY3Vo+696d5cwArsGulVgQ42lQxd/UXcjtJA9YaN56+LCWDs6tUMRg3oyjzOdK2+UiflLkwAgHYTTzrSYixnMaRw+ILf/VgjYA5QoxB/erVwJ8LD1MKgX5nfIXHoV79byukjU7DT49RD1CpaOF6WNfnYBOW9E4CAOxpjYHjiC9JjWIkK77Sd1TlZgEKIRHTLE8hOml/FhXlG0hGc54KsPsxqGAAAGchVjuiNeXu0loy53P8l2saaljarquCbS
- 4aYGIlfs
- q3IWTakXVwhv+U16HU/V71C/jQZPFgT7/lxJrz/aLx+UTkOvz5pGItxhiEX3lh9OGNYTvAbmqtIWxopkuPesvW4Vbg5O6xypWV8ivKf/h9QAjptjw9NYU3PhJBBKJJR7rql5zUEOFqYSoz5B9ybM5SAp/wnCbfjVuuQm388a1h7aRwe2zTwkSvYgiBLihnmlBtM2wdEcAtvwwOxMIQUG1XbKt/f6uXFKfwJhC8331qE75snF5k+bD/9aACQuVZq8okyUQEJw17Lhi+VmhWfxktxdJQhMcfwhYGlRcNo5F4L0yZuvMR/sGhl6qkH/NOdRJ9kCbgpWz5rOc4pWvZr9MkK50/I74XmOeZ0KA4LS1bvHHbxHJyxq43TELY4eu3LGefQ2EFXbkPwDjK5ds2d4ywBqD6+anhrk5wLG0BrMPLkbYoTC8cwkvvMCZrJmdN7U8DBG+ZPcHN8x3TF4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 53C821C0003
+X-Stat-Signature: jsr5ou13myz8b85dc45c1qy78yiix6fg
+X-HE-Tag: 1776185878-679108
+X-HE-Meta: U2FsdGVkX19tv/a3iDXRKP2SSBioR+CJLeOViaNkmX3EYt+n5VwqSeIVlxofjW/lIUyQuGVTghRGH6KIs10YUomuvQ7OkrhfNI8YI0wPwVhqfms4la4fvyVI+W985f0vj6rGjY1EqD5B1YFElRvn6MQjHoHh2F5hcJO0wlt4FiTBkWk/D/tco1EBKBpaAo7rnZpBj+orfeOxevKmfcNeGN92dZq8D38/F2Og3ndYgt/2AdW7r/X0sbVpPvS3KBHqnDvDeJOPsGVydWkVMni4t6gmyzRMpmnuEYeq5UWncMMTssFT1yELFo3alJMXPNmbCqIFs0z/gOtqPw02qCN0UcKJTUMJGc1PBtc0SL14b9dnJQQ7ZnowySWxJGpLN7yW9D4k097Zl5jGiu2mNyeR+Xb0tDGJ4r6aZlTZPnBPJAh0wlx2gYHtvb2yqzJg4VnRqCrQ7UyWoqjx8/7M1kO5XNyAGtatYpLF1qjI/zO3JLmAg4C1tiqLjy8W2PXpDo/6fLr7GQy5sf8wDXUqmPMhne3KGxAfGF7pUxlQljDYmGdvotefy5mhshLrjR2sDHdRRlaTrqOsFVzrtscUG1UGugigG3XKxoi6NPmnpZeag6jTQZDfPGdbfr/qiDBWv6YIH7M91Cg8zQi+TauSQx4Tdf/HVkB8h+Cz02Q2a6TlbSo/kR+3+87FkfNe/qxI45GmjqT0iKaUMwmDC/l7JVVfq2vxb13AJfB3gPO2ZomT4tnnEzBfwU5ZaZtnuIEyWAS4kXjpzt8D1m6TjuaEfrSkHBv5vqY7Ce9QHEV634susk3qdhFjCvb5/qLc3gloOQEAFhSKl+By+z8vAzxvpvukdpQGrrLoi4Obfj/OIxDAOpGcOD8bqA/9CvY9iSD7cV+e9DKFfrHShLdoJsCVWKOOjIDEC2vGT831jdwPohLGfHYpxWJ8WzJZewgejh2RIzhMJQk1419tMhFs5zfQX5f
+ CL/EjODU
+ oBaf1QxEDmJhLCLgV0uEDsyzsct5/xiW25T9Q1aQZxdJmyo2cVNbT+1/arV27S8sEjYzU/roTyYPonJtF2Ud7kS7fGLvFmSoPYlNhSt/Y7n7WMpj2kGZZyomqQiHs4xmdx43fljvWi3L3mDTNzqNTYXnh7RBgeIPHzBUFgpXSULivbgyvEIeBUl1//FIx1QJ30yi0Hl9lD55CR4v+QD5n6KtAl+INs5KsZQyVsWZ0Sx12CBgxbClpLfotyK61XWXgvR4LrvYmRe8YrAUY/rfJ4q8aK93kY/y9ojnS7CBrFh41mVgVjuCqqsY0iUu74NWzvgHlnUOHwj7um37/p7YDy1er95LoXXCsVGmdC25ZAV1fZTgaD4p0uWoYGs2eqVNfG47XD04dndjGZjHqVz9wck4TUWknQVIn7/e2y7Gtxrbk96CfaSAo8lgb/u6rrCWqXIzIXOvtFTfkNyyu425mPN+w1WnH8oCnt/2hePqbZmKm6uTDVz4FBJcBHP21ZgNFRhkT4mDZHphDHglExLOpdWdxwND/WbMjeSBC2EAjipyRwLnIJYUPc9pYCFHfbJEHAO0XWJZHoyApAyaEOf9ykFpEIc5k5VzADWr4zQX8dqTTzV76QfgpAlxfpeNxO5tpDddINg6HPXsj6PcAhmSA4PLjVcLQujfui5TL+uDhaszDbF/Q4JCpcIL2WS3uGP4RsLrqVhz4r0fjwTipPv4nn6p607X+afIiNekX3ggpVwEN7nlricVk5zqen9Unn4CDIyjQqMpTLjy6fYA8YRIiYpY+wkrrmB/E0Q8CjLTeRye4TRqMaJ9Eprg/i14q9EAQaxvNmoaxS4E6WFs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,336 +106,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 5b2b0c6e4577 ("mm/swap, PM: hibernate: fix swapoff race in
-uswsusp by pinning swap device") introduced SWP_HIBERNATION so that
-the swap area selected through /dev/snapshot remains protected against
-swapoff() for the lifetime of the uswsusp session.
+On Tue, Apr 14, 2026 at 02:09:09PM +0530, Shivam Kalra wrote:
+> On 04/04/26 14:06, Shivam Kalra via B4 Relay wrote:
+> > This series implements the TODO in vrealloc() to unmap and free unused
+> > pages when shrinking across a page boundary.
+> > 
+> > Problem:
+> > When vrealloc() shrinks an allocation, it updates bookkeeping
+> > (requested_size, KASAN shadow) but does not free the underlying physical
+> > pages. This wastes memory for the lifetime of the allocation.
+> > 
+> > Solution:
+> > - Patch 1: Extracts a vm_area_free_pages(vm, start_idx, end_idx) helper
+> >   from vfree() that frees a range of pages with memcg and nr_vmalloc_pages
+> >   accounting. Freed page pointers are set to NULL to prevent stale
+> >   references.
+> > - Patch 2: Update the grow-in-place check in vrealloc() to compare the
+> >   requested size against the actual physical page count (vm->nr_pages) 
+> >   rather than the virtual area sizes. This is a prerequisite for shrinking.
+> > - Patch 3: Uses the helper to free tail pages when vrealloc() shrinks
+> >   across a page boundary. 
+> > - Patch 4: Adds a vrealloc test case to lib/test_vmalloc that exercises
+> >   grow-realloc, shrink-across-boundary, shrink-within-page, and
+> >   grow-in-place paths.
+> > 
+> > The virtual address reservation is kept intact to preserve the range
+> > for potential future grow-in-place support.
+> > A concrete user is the Rust binder driver's KVVec::shrink_to [1], which
+> > performs explicit vrealloc() shrinks for memory reclamation.
+> > 
+> > Tested:
+> > - KASAN KUnit (vmalloc_oob passes)
+> > - lib/test_vmalloc stress tests (3/3, 1M iterations each)
+> > - checkpatch, sparse, W=1, allmodconfig, coccicheck clean
+> > 
+> > [1] https://lore.kernel.org/all/20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in/
+> > 
+> > Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> > Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> > ---
+> > Changes in v10:
+> > - Reorder vm->nr_pages to the beginning (Alice Ryhl)
+> > - Link to v9: https://lore.kernel.org/r/20260401-vmalloc-shrink-v9-0-bf58dfb997d8@zohomail.in
+> > 
+> > Changes in v9:
+> > - Remove READ_ONCE, WRITE_ONCE and drop commit
+> >   about show_numa_info. (Uladzislau Rezki)
+> > - Update the commit message in Patch 2. (Alice Ryhl)
+> > - Remove zero newly exposed memory commit.
+> > - Link to v8: https://lore.kernel.org/r/20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in
+> > 
+> > Changes in v8:
+> > - Strip the KASAN tag from the pointer before addr_to_node()
+> >   to avoid acquiring the wrong node lock (Sashiko).
+> > - Rebase to latest mm-new.
+> > - Link to v7: https://lore.kernel.org/r/20260324-vmalloc-shrink-v7-0-c0e62b8e5d83@zohomail.in
+> > 
+> > Changes in v7:
+> > - Fix NULL pointer dereference in shrink path (Sashiko)
+> > - Acquire vn->busy.lock when updating vm->nr_pages to synchronize 
+> >   with concurrent readers (Uladzislau Rezki)
+> > - Use READ_ONCE in vmalloc_dump_obj (Sashiko)
+> > - Skip shrink path on GFP_NIO or GFP_NOFS. (Sashiko)
+> > - Fix Overflow issue for large allocations. (Sashiko)
+> > - Use vrealloc instead of vmalloc in vrealloc test.  
+> > - Link to v6: https://lore.kernel.org/r/20260321-vmalloc-shrink-v6-0-062ca7b7ceb2@zohomail.in
+> > 
+> > Changes in v6:
+> > - Fix VM_USERMAP crash by explicitly bypassing early in the shrink path if the flag is set.(Sashiko)
+> > - Fix Kmemleak scanner panic by calling kmemleak_free_part() to update tracking on shrink.(Sashiko)
+> > - Fix /proc/vmallocinfo race condition by protecting vm->nr_pages access with 
+> >   READ_ONCE()/WRITE_ONCE() for concurrent readers.(Sashiko)
+> > - Fix stale data leak on grow-after-shrink by enforcing mandatory zeroing of the newly exposed memory.(Sashiko)
+> > - Fix memory leaks in vrealloc_test() by using a temporary pointer to preserve and 
+> >   free the original allocation upon failure.(Sashiko)
+> > - Rename vmalloc_free_pages parameters from start/end to start_idx/end_idx for better clarity.(Uladzislau Rezki)
+> > - Link to v5: https://lore.kernel.org/r/20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in
+> > - Link to Sashiko: https://sashiko.dev/#/patchset/20260317-vmalloc-shrink-v5-0-bbfbf54c5265%40zohomail.in
+> > 
+> > Changes in v5:
+> > - Skip vrealloc shrink for VM_FLUSH_RESET_PERMS (Uladzislau Rezki)
+> > - Link to v4: https://lore.kernel.org/r/20260314-vmalloc-shrink-v4-0-c1e2e0bb5455@zohomail.in
+> > 
+> > Changes in v4:
+> > - Rename vmalloc_free_pages() to vm_area_free_pages() to align with
+> >   vm_area_alloc_pages() (Uladzislau Rezki)
+> > - NULL out freed vm->pages[] entries to prevent stale pointers (Alice Ryhl)
+> > - Remove redundant if (vm->nr_pages) guard in vfree() (Uladzislau Rezki)
+> > - Add vrealloc test case to lib/test_vmalloc (new patch 3/3)
+> > - Link to v3: https://lore.kernel.org/r/20260309-vmalloc-shrink-v3-0-5590fd8de2eb@zohomail.in
+> > 
+> > Changes in v3:
+> > - Restore the comment.
+> > - Rebase to the latest mm-new 
+> > - Link to v2: https://lore.kernel.org/r/20260304-vmalloc-shrink-v2-0-28c291d60100@zohomail.in
+> > 
+> > Changes in v2:
+> > - Updated the base-commit to mm-new
+> > - Fix conflicts after rebase
+> > - Ran `clang-format` on the changes made
+> > - Use a single `kasan_vrealloc` (Alice Ryhl)
+> > - Link to v1: https://lore.kernel.org/r/20260302-vmalloc-shrink-v1-0-46deff465b7e@zohomail.in
+> > 
+> > ---
+> > Shivam Kalra (4):
+> >       mm/vmalloc: extract vm_area_free_pages() helper from vfree()
+> >       mm/vmalloc: use physical page count for vrealloc() grow-in-place check
+> >       mm/vmalloc: free unused pages on vrealloc() shrink
+> >       lib/test_vmalloc: add vrealloc test case
+> > 
+> >  lib/test_vmalloc.c |  62 ++++++++++++++++++++++++++++++
+> >  mm/vmalloc.c       | 111 ++++++++++++++++++++++++++++++++++++++++++++---------
+> >  2 files changed, 154 insertions(+), 19 deletions(-)
+> > ---
+> > base-commit: b47b4fa4c232ee36aae58630e9d6520e35d33f3a
+> > change-id: 20260302-vmalloc-shrink-04b2fa688a14
+> > 
+> > Best regards,
+> Hey Ulad, Andrew
+> A gentle thread bump. Will we include this in this merge window?
+> Let me know if you have any suggestions, I will resolve them
+> asap.
 
-When user space issues SNAPSHOT_SET_SWAP_AREA again,
-snapshot_set_swap_area() currently drops the old pin before attempting
-to pin the new swap area.  If the new selection fails, the ioctl
-returns an error and user space is expected to abort the session.
-However, preserving the existing pin in that case makes the kernel
-side more robust against a failed re-selection, while keeping the
-existing userspace-visible behavior unchanged.
+If you mean the merge window that opened yesterday, then it's too late
+for that, and I believe we agreed to not include it there anyway in [1].
 
-Implement this with the existing swap helpers:
+I can try to look at it again. I guess the main difficult thing is
+interactions with other parts of the kernel, of which sashiko claims to
+have found another one [2]. I can't help but wonder if it would be
+better to reduce the vma size to avoid issues with other codepaths using
+get_vm_area_size(vm) and assuming that all pages in that range are
+mapped.
 
-  - look up the requested swap area first
-  - treat re-selecting the already pinned area as a no-op
-  - pin the new area before unpinning the old one
-  - leave the existing pin in place if the new pin attempt fails
-
-This keeps the hibernation session protected against swapoff() until
-/dev/snapshot is closed, even after a failed attempt to switch to a
-different swap area.
-
-Suggested-by: Youngjun Park <youngjun.park@lge.com>
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
----
-Notes (not part of the commit, stripped by git am):
-
-Changes in v2:
-  - Drop Fixes: and Cc: stable; reframe as a hardening improvement
-    rather than a regression fix, per Youngjun's feedback that the
-    current behavior is intentional and there is no concrete
-    user-observable harm.
-  - Drop the new repin_hibernation_swap_type() helper. Rework
-    snapshot_set_swap_area() in place using the existing find / pin /
-    unpin helpers as Youngjun suggested; the change now touches only
-    kernel/power/user.c and adds no new API.
-  - Update the subject and commit log accordingly.
-  - Add Suggested-by: trailer.
-
-v1: https://lore.kernel.org/lkml/20260414143200.1267932-1-charsyam@gmail.com/
-
-Baseline
---------
-This patch is generated against linux-next at commit 5b2b0c6e4577
-("mm/swap, PM: hibernate: fix swapoff race in uswsusp by pinning swap
-device"). Mainline does not yet carry that commit, and neither the
-helpers used here (find/pin/unpin_hibernation_swap_type) nor the code
-site this patch modifies exist there. The base-commit trailer at the
-bottom of the mbox records the exact commit.
-
-Testing
--------
-The behavior change can be exercised entirely through the
-/dev/snapshot ioctl path; no actual hibernation cycle is required.
-A targeted assertion test is below; run it as root in a throwaway VM
-with two active swap block devices and one non-swap block device
-(three arguments).
-
-Run inside a VM on linux-next at 5b2b0c6e4577 with this patch applied:
-
-  step1: pinned active swap /dev/vda
-  step2: swapoff blocked with EBUSY while pin is held
-  step3: repinned active swap to /dev/vdb
-  step4: swapoff(/dev/vda) succeeded after repinning away
-  step5: repinned swap is blocked with EBUSY
-  step6: bogus SNAPSHOT_SET_SWAP_AREA failed as expected: No such device
-  step7: swapoff(/dev/vdb) is still blocked with EBUSY
-  result: pin preserved across failed re-set (hardened behavior)
-  step8: swapoff succeeded after closing /dev/snapshot
-
-Without the patch, step7 instead reports
-  swapoff(/dev/vdb) succeeded after failed re-set
-because the old pin had been released before the failed pin attempt.
-
-What the assertion test covers:
-  - SWP_HIBERNATION is enforced against swapoff (step2, step5);
-  - the success path moves the pin from one active swap to another
-    (step3, step4, step5);
-  - a failed re-selection preserves the existing pin (step6, step7);
-  - the pin lifetime ends on /dev/snapshot close (step8).
-
-What it does not cover:
-  - the snapshot_open(O_RDONLY) initial resume-device pin path;
-  - the full suspend-to-disk image create/restore flow;
-  - concurrent swapoff racing against SNAPSHOT_SET_SWAP_AREA;
-  - the type == data->swap idempotent branch (not externally
-    observable since it intentionally skips the bit toggle).
-
-A normal sysfs-based suspend-to-disk cycle continues to work; the
-find_hibernation_swap_type() / pin / unpin paths themselves are
-unchanged. Build tested with allmodconfig and run-tested with
-CONFIG_PROVE_LOCKING=y and CONFIG_KASAN=y. The VM was booted with
-oops=panic panic=-1 so any WARN/Oops/BUG would have halted the run;
-the full test completed cleanly with no kernel log diagnostics.
-
-Reproducer (C source, for reference only -- not added to the tree):
-
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Reproduce / verify the SNAPSHOT_SET_SWAP_AREA pin-lifetime behavior.
-  *
-  * Run only inside a throwaway VM. The test manipulates swap state and
-  * leaves the target swap area disabled on success.
-  *
-  * Usage:
-  *   ./uswsusp_swapoff_repro <active-swap-1> <active-swap-2> <bogus-blk>
-  *
-  * Exit codes:
-  *   0 = expected (hardened) behavior: pin preserved across failed re-set
-  *   1 = old behavior: pin dropped on failed re-set
-  *   2 = setup error / inconclusive
-  */
-
- #define _GNU_SOURCE
- #include <errno.h>
- #include <fcntl.h>
- #include <linux/types.h>
- #include <linux/suspend_ioctls.h>
- #include <stdbool.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
- #include <sys/swap.h>
- #include <sys/sysmacros.h>
- #include <unistd.h>
-
- static int encode_dev(dev_t dev)
- {
- 	unsigned int major_num = major(dev);
- 	unsigned int minor_num = minor(dev);
-
- 	/* Match new_encode_dev() / new_decode_dev() in the kernel. */
- 	return (major_num & 0xfff) << 8 |
- 	       (minor_num & 0xff) |
- 	       ((minor_num & ~0xff) << 12);
- }
-
- static int get_block_dev(const char *path, dev_t *dev)
- {
- 	struct stat st;
-
- 	if (stat(path, &st) < 0) {
- 		fprintf(stderr, "stat(%s): %s\n", path, strerror(errno));
- 		return -errno;
- 	}
- 	if (!S_ISBLK(st.st_mode)) {
- 		fprintf(stderr, "%s is not a block device\n", path);
- 		return -EINVAL;
- 	}
- 	*dev = st.st_rdev;
- 	return 0;
- }
-
- static int snapshot_set_swap_area(int fd, dev_t dev, long long offset)
- {
- 	struct resume_swap_area area = {
- 		.offset = offset,
- 		.dev = encode_dev(dev),
- 	};
-
- 	if (ioctl(fd, SNAPSHOT_SET_SWAP_AREA, &area) < 0)
- 		return -errno;
- 	return 0;
- }
-
- int main(int argc, char **argv)
- {
- 	const char *p1, *p2, *pb;
- 	dev_t d1, d2, db;
- 	int fd, ret;
- 	bool buggy = false;
-
- 	if (argc != 4) {
- 		fprintf(stderr,
- 			"usage: %s <swap1> <swap2> <bogus>\n", argv[0]);
- 		return 2;
- 	}
- 	if (geteuid() != 0) {
- 		fprintf(stderr, "must run as root\n");
- 		return 2;
- 	}
- 	p1 = argv[1]; p2 = argv[2]; pb = argv[3];
-
- 	if (get_block_dev(p1, &d1) < 0 ||
- 	    get_block_dev(p2, &d2) < 0 ||
- 	    get_block_dev(pb, &db) < 0)
- 		return 2;
-
- 	fd = open("/dev/snapshot", O_WRONLY);
- 	if (fd < 0) {
- 		fprintf(stderr, "open(/dev/snapshot): %s\n", strerror(errno));
- 		return 2;
- 	}
-
- 	ret = snapshot_set_swap_area(fd, d1, 0);
- 	if (ret < 0) { fprintf(stderr, "step1: %s\n", strerror(-ret)); goto setup_err; }
- 	printf("step1: pinned active swap %s\n", p1);
-
- 	if (swapoff(p1) == 0) {
- 		fprintf(stderr, "step2: swapoff unexpectedly succeeded\n");
- 		close(fd); return 1;
- 	}
- 	if (errno != EBUSY) {
- 		fprintf(stderr, "step2: expected EBUSY, got %s\n", strerror(errno));
- 		goto setup_err;
- 	}
- 	printf("step2: swapoff blocked with EBUSY while pin is held\n");
-
- 	ret = snapshot_set_swap_area(fd, d2, 0);
- 	if (ret < 0) { fprintf(stderr, "step3: %s\n", strerror(-ret)); goto setup_err; }
- 	printf("step3: repinned active swap to %s\n", p2);
-
- 	if (swapoff(p1) < 0) {
- 		fprintf(stderr, "step4: swapoff(%s): %s\n", p1, strerror(errno));
- 		goto setup_err;
- 	}
- 	printf("step4: swapoff(%s) succeeded after repinning away\n", p1);
-
- 	if (swapoff(p2) == 0) {
- 		fprintf(stderr, "step5: swapoff unexpectedly succeeded\n");
- 		close(fd); return 1;
- 	}
- 	if (errno != EBUSY) {
- 		fprintf(stderr, "step5: expected EBUSY, got %s\n", strerror(errno));
- 		goto setup_err;
- 	}
- 	printf("step5: repinned swap is blocked with EBUSY\n");
-
- 	ret = snapshot_set_swap_area(fd, db, 0);
- 	if (!ret) {
- 		fprintf(stderr, "step6: bogus unexpectedly succeeded\n");
- 		goto setup_err;
- 	}
- 	printf("step6: bogus SNAPSHOT_SET_SWAP_AREA failed as expected: %s\n",
- 	       strerror(-ret));
-
- 	if (swapoff(p2) == 0) {
- 		printf("step7: swapoff(%s) succeeded after failed re-set\n", p2);
- 		printf("result: pin was dropped on failure (old behavior)\n");
- 		buggy = true;
- 	} else if (errno == EBUSY) {
- 		printf("step7: swapoff(%s) is still blocked with EBUSY\n", p2);
- 		printf("result: pin preserved across failed re-set (hardened behavior)\n");
- 	} else {
- 		fprintf(stderr, "step7: unexpected: %s\n", strerror(errno));
- 		goto setup_err;
- 	}
-
- 	close(fd);
- 	if (!buggy) {
- 		if (swapoff(p2) < 0) {
- 			fprintf(stderr, "step8: swapoff(%s): %s\n", p2, strerror(errno));
- 			return 2;
- 		}
- 		printf("step8: swapoff succeeded after closing /dev/snapshot\n");
- 	}
- 	printf("note: re-enable with `swapon %s` and `swapon %s`\n", p1, p2);
- 	return buggy ? 1 : 0;
-
- setup_err:
- 	close(fd);
- 	return 2;
- }
-
- kernel/power/user.c | 35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
-
-diff --git a/kernel/power/user.c b/kernel/power/user.c
-index 4406f5644a56..e1ab85db2e95 100644
---- a/kernel/power/user.c
-+++ b/kernel/power/user.c
-@@ -218,6 +218,7 @@ static int snapshot_set_swap_area(struct snapshot_data *data,
- {
- 	sector_t offset;
- 	dev_t swdev;
-+	int type, swap;
- 
- 	if (swsusp_swap_in_use())
- 		return -EPERM;
-@@ -239,18 +240,34 @@ static int snapshot_set_swap_area(struct snapshot_data *data,
- 	}
- 
- 	/*
--	 * Unpin the swap device if a swap area was already
--	 * set by SNAPSHOT_SET_SWAP_AREA.
-+	 * User space encodes device types as two-byte values, so we need to
-+	 * recode them.
- 	 */
--	unpin_hibernation_swap_type(data->swap);
-+	type = find_hibernation_swap_type(swdev, offset);
-+	if (type < 0)
-+		return swdev ? -ENODEV : -EINVAL;
- 
--	/*
--	 * User space encodes device types as two-byte values,
--	 * so we need to recode them
--	 */
--	data->swap = pin_hibernation_swap_type(swdev, offset);
--	if (data->swap < 0)
-+	if (type == data->swap) {
-+		/*
-+		 * Re-selecting the already pinned swap area is a no-op.
-+		 * Keep the existing pin and just refresh the cached device id.
-+		 */
-+		data->dev = swdev;
-+		return 0;
-+	}
-+
-+	swap = pin_hibernation_swap_type(swdev, offset);
-+	if (swap < 0) {
-+		/*
-+		 * Preserve the existing pin on failure.  This can happen if the
-+		 * target swap area disappears before pinning, or via the
-+		 * defensive -EBUSY path in pin_hibernation_swap_type().
-+		 */
- 		return swdev ? -ENODEV : -EINVAL;
-+	}
-+
-+	unpin_hibernation_swap_type(data->swap);
-+	data->swap = swap;
- 	data->dev = swdev;
- 	return 0;
- }
-
-base-commit: 5b2b0c6e457765adbe96fb2d464ff1bcd3d72158
--- 
-2.43.0
-
+[1]: https://lore.kernel.org/lkml/20260327113758.75f04588310a707b4d4b1aac@linux-foundation.org/
+[2]: https://sashiko.dev/#/patchset/20260404-vmalloc-shrink-v10-0-335759165dfa%40zohomail.in
 
