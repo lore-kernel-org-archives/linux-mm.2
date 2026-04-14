@@ -4,89 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACB93ED7B84
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 07:58:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8008CED7B84
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 07:58:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F332D6B008A; Tue, 14 Apr 2026 03:58:05 -0400 (EDT)
+	id EBE326B0092; Tue, 14 Apr 2026 03:58:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F09266B0092; Tue, 14 Apr 2026 03:58:05 -0400 (EDT)
+	id E95576B0093; Tue, 14 Apr 2026 03:58:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E46546B0093; Tue, 14 Apr 2026 03:58:05 -0400 (EDT)
+	id DD2926B0095; Tue, 14 Apr 2026 03:58:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D54496B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:58:05 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 59D681A048E
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:58:05 +0000 (UTC)
-X-FDA: 84656408130.27.896180F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B77F01C000E
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:58:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JqfRbvLT;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CC0DC6B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:58:31 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6FED01A04D8
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:58:31 +0000 (UTC)
+X-FDA: 84656409222.02.59E51B8
+Received: from mail-m82130.xmail.ntesmail.com (mail-m82130.xmail.ntesmail.com [156.224.82.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8569516000B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:58:28 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.130 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776153509; a=rsa-sha256;
+	cv=none;
+	b=D4blsQ0srP3LCLtSQ9owAjdWar1wxv+KpEc0GJak8U/J8ySnW9P4mYBC3O3uN8XI9Hyykw
+	omWpZSQQnbQZguhOYFgyd/1O4BDjm0goO8n1Xfs2tatYVUElGLwxbmrt6fHlydjjlu72iO
+	rZLROJl+38eurvyAJvyFajKH20bz/AY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf08.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.130 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776153483;
+	s=arc-20220608; t=1776153509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dIJyZECg8iTObfZ0uJTZY1ud8JKptMmWEw9v4pixmMA=;
-	b=8Bf8UD2w2sFpp/1rhyWmyDwM5Yl7TnDuTQjU+TsGQG7+EWX51xlrtzUbzB9pDBsG43vxDI
-	rbIOR5DIH6JLaFJBC7Yb92ZkPOAC1vUAftx/vohzAhZKlAdBIY7gZhIk02WaOVr2d3uwd8
-	+bCvZru96wWJgpLXuJTcHy1o8Vb4uqQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JqfRbvLT;
-	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776153483; a=rsa-sha256;
-	cv=none;
-	b=Irqtg0y7Kdp06rItYKtGP8Wz+sy0iYeHeDe2vMQ8OuoYmLZrXiXe/VLQPEOULT3Pb1wsn0
-	7Lk87YPTd4p4H+6or/gKuKI3+WR+syri4eCEYeYHDBoSgpb/5a9p42Z4Pu8mLtVD4fC+tW
-	E2R0aNR/T5bN8dnf09SGpAwGfTFjEKc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 23C0F60018;
-	Tue, 14 Apr 2026 07:58:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC63C2BCB5;
-	Tue, 14 Apr 2026 07:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776153482;
-	bh=Wd00Fb8v82agFo5MqfTVM6OTKpK8OL65duSpxeBGSeA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JqfRbvLT4hCuBCnA5MJjWfqA38egZlzZmFDR4OF6TsMAF+DVLvQ/nDm69oJPQIsne
-	 ck9NeyFNqoNOeiQbMUIIQKQSufxjbTz8vAnaGUZL5aDu2Neacw78Z25W+MEj13WDRO
-	 tIG9OoxV88NNbjNfVTa5tTLjFDMmtHfFi/mIXBQrT9TCRyiZMm2Kw2KIDvctS0II4V
-	 CWDyM2/afqFAdvj6uA3gsdYSKez0yf9Cgq9JQDtCLW47H1Z8FDSXS36T95KNu1YCTv
-	 6VXUOwgBA6ZnlZ0e+q7NHlyPrXutQ2XPb0wPpkrLi4k2vKvVk/qPyNDyuUKUMqbfmi
-	 7zbVmYKzbR0OQ==
-Message-ID: <453f7de1-1ed7-4785-ab95-5d63dd4a3499@kernel.org>
-Date: Tue, 14 Apr 2026 09:57:59 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=/BWdt3RnnWJ8S6tEkChL+3Dmf3/tQ48LwzUATc2b7fA=;
+	b=XJFyErTdo7F2daBfvWsLDD6wmVP0v7eCxyKCmMNp0CF2JNsI8jurkZrMAK95QTUtlqJXHD
+	3vBC1KKVkBAIWyT5sCDZenSpceM2XaEDX4hPI/a9lp2qsyOJFG0KWAbwqXhsDX/4Eqn2DO
+	dFe3qTdzakH1kPTXyMLtt7zh3hqgVL4=
+Received: from localhost.localdomain (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 18e28d26a;
+	Tue, 14 Apr 2026 15:58:22 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com
+Cc: linux-mm@kvack.org,
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH] mm/page_owner: fix %pGp format specifier argument type
+Date: Tue, 14 Apr 2026 15:58:13 +0800
+Message-Id: <20260414075813.3425968-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/pagewalk: honor action in pgd_entry and p4d_entry
-Content-Language: en-US
-To: Cao Ruichuang <create0818@163.com>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260414051854.18487-1-create0818@163.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260414051854.18487-1-create0818@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B77F01C000E
-X-Stat-Signature: gp45zbd9b1ejoa9gjarfd89xh9w94gb1
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d8affa3630229kunm9220ab7132a8d3
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVlCTkMfVhoYGUsZSh8aH0tCTFYVFAkWGhdVGRETFh
+	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09LVUpLS1
+	VLWQY+
+X-Rspamd-Queue-Id: 8569516000B
+X-Stat-Signature: irt5dqgnzor4s58pasb9z5iuxdwxg66i
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776153483-706241
-X-HE-Meta: U2FsdGVkX1+81G23/9D+gkByUfxmG2ytlQISejvfgSElfN1dkVYsYvjiKWtK7v6BNbkm4H1wpw0GzCuFXqaZJP8KmDfPuuMMc4fLPiCJ74DV5mlkHmowuCGPC+nbURU/qxlvCLUW1Kc5HzDjQND8rIKV5bzoKvKZSF6LtnkzjnFEqkg8ue0eDmHIXWpU5+H4SwNbir1o04Bf+qr8dt3FwEFy6/RWGyzzJXq/4dnCgMLi1YuWUJV8CB8wOyg4Yt/IeuxDKUrKcZqpSJIgPTdHnxUmIUGYCsjwmFW0H/RiV8Ywq6PJ5CAqbvmNmERxGT1p/c/GLIRwWfLBi8AmV9zR8lnQ+fHK/QUqPW4jts6bmy0Z0VI48aWliphMYzDYDJDyxNjWDzwL0VWSq+yp5hdUpHibIUDcg2E8JPD10poYG4rH/mEj1RuPwwrD7obOleYhDiqkn2qb/XGEFZJsOr6vOhpa0T8wCd4AyG8A20eb7NhFFHVLPi1QgPqItP1ApnY3wc+Z+z57yPu0X6Yp3U4QISqjgGuPhAEGmtEBiyDWcQSlStHftmgGax8r2fP+PavJupyvxFY/CN8UftFXSJ6naeinYH9pDqKg67h8ovXpxRMpxXoampdEPgCQ3WsEgpfGJlyHih9PXZknsfA+YC4j0dmbE4sfmI6gk8ji4f6vlLn42cCCphIfAPmmx31UYTZ9LS2y6QA0AZsAnE5jL7dizL4HdFBl5Or3I4aN9bsexVSDtbKJTg04VGjtkGLdr9Eibbu+lQQOwnaiLufhAJaiESVN6Yz6iwNBo8Gu0JzMv847iAJxP4IUjvEdnx6l+7FsWfAILDlTnwzplzrPze4Ei347afGCFyg+nb/6h/aEA2mSvqmBDQzg/fy5U/qmHWpYU371EGUVMMMrJ8BAmgRWaMDtwOAbHrRtntJK2+alWhlni9qUxJBffRe2YyJTSAXbaooIPM6kh4HwzmgUt9e
- H06Ych6j
- tisuESZPfhIlGh22/ppO6QnaJw1JbvfCruVpMF//keHvuj1sdeG6/jmfAvoWujVeZyueJ2/93xChi43/Dk+W8RDk2sjjYkCiUlRJu9LxLHinVm8l4rujr1OXGTdw+j5PUiQgM/FaoyLK1rSuiIKqdxaOCqUc7EvRetwzOdNQjAZbLHiWyVOmyt7qxsbDCxeGJCfVRGu7tB75upTclfeDgD5HmQf5geWEd0efKc4ZpBlqbyuudjUwhxZUDznRFlI7sPkalxPrgK09NGZuDtdM1eQyA8NX13udKBX0H9YdZQU04loXs/pbfYblCCA==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1776153508-178833
+X-HE-Meta: U2FsdGVkX18ShBzTsBwKErkI1fhBT2JU4TIsz3Ne8k2a03LBFOeb2LmW9rbGSwWlr5JfkaA5h+iZ6oFnedPctgAZov6ZCt4Rcj9EAn80THNdXnNFNqYzI9+S90996K2pA8e6W4kwPXCys71imNl7td1YMh49HHeopZ7v6seDkSRHBMRJOH2JpxfKjE9wTOQTaokgPtwKdLUZqUTJCGmAqDE46E+oVnmUVWC0WVGlUSHX6T+e8IWif68l1WzH+gDGdcBrD9DUVHnc7XLBttCv6YHG5mBIlROFek48Ohu0KMRdDlaFjNP7ZVkAAfmtjuW8pw7tgN9A2im6XRaKq3QbnXa8uVL9YvKIScayEf8juMSi8fLAf8syZhSpU/uoX0LoKjasyZPEIiVYWhHtJZvCH/hpO4d8tKfSsSyAPWyCxe5sZypY5FfgU7ENzqkYJQ/OukhVztPlG+LSUvYCFu4pzetAlwHmktV055E08nt1U4IhnGzrChEnqRzc5VjFRRBsZ68cBc3uTS2Cd/hfAxLG/3tQeDDsq/P6gHrS+i+T3wR+F/WfBLyurIsvLm713lE95S15Qb32u/myQ5p3v5uxZ34Knbpn1ZzX8DzWEilpPk/j3hJCB+CDwFyJOj4GEfNsuEhKJKpUiyF0B4Lat+ZdjND9AAwC5Mu21ExuqJj2/ueDLVf9oeNK3xPwZkjbZ7g1s1xovDUzDq4nEDbts8Kxt4W+DyZhjL1QLrSOKKSV03q2Tfsm1UB/lglIBZ+lwWpHrhA092XY+qo3hqcUzP32Rjsxcv1PkaJ6sDKcFUTiJJLydNjfUN2QUtyU6erFymaSFWX11yXGSkG1EwYOdHFmztlXR6kSbYdKfkrBcD/YDaVZGS9v4vFjsMUbe9x49V3YwvrwFd8TvEMhLw1d+N/ttzunxXcV2l3zEKkBMIg4vFPNdA1YKznIY1YcEB2XFn5Ay7rNcFGA9exjQKbwv7S
+ o+ZxNPKT
+ p3O0vsTQltw4G+FbjnDqy4dGq8my1oIvCTSwzKkrhd7FtVHpmiTUfv48wtRDGz0a83I2+KJFPcXUGKNGUSh15E4I3jqTdiPr6NOdjSjnwgJVN7ypfdTwBsLY44IeX+rJ3tqqBH4MQqVZIgGI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,100 +87,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/14/26 07:18, Cao Ruichuang wrote:
-> walk_pud_range() and walk_pmd_range() reset walk->action to ACTION_SUBTREE and honor ACTION_CONTINUE/ACTION_AGAIN after invoking their callbacks, but walk_pgd_range() and walk_p4d_range() do not.
-> 
-> That leaves the top levels with inconsistent callback semantics. In particular, ptdump sets ACTION_CONTINUE from pgd_entry() and p4d_entry() for leaf entries, but the generic walker still descends into lower levels instead of skipping the subtree.
-> 
-> Initialize walk->action before calling pgd_entry() and p4d_entry(), and handle ACTION_CONTINUE and ACTION_AGAIN afterwards just like the lower page-table levels do. Also update the action comment to reflect that it applies to pgd_entry() and p4d_entry() as well.
+The %pGp format specifier expects an argument of type 'unsigned long *',
+but page->flags is now of type 'memdesc_flags_t' (a struct containing
+an unsigned long member 'f') after the introduction of memdesc_flags_t.
 
-Your LLM has broken line wrapping. But it's ok, we're not interested in
-patches produced by LLM reviewing code, with no human oversight and
-understanding. NAK.
+Fix the type mismatch by passing &page->flags.f instead of &page->flags,
+which matches the expected type.
 
-> ---
->  include/linux/pagewalk.h |  4 ++--
->  mm/pagewalk.c            | 20 ++++++++++++++++++++
->  2 files changed, 22 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-> index 88e18615dd7..d3f84781792 100644
-> --- a/include/linux/pagewalk.h
-> +++ b/include/linux/pagewalk.h
-> @@ -94,8 +94,8 @@ struct mm_walk_ops {
->  };
->  
->  /*
-> - * Action for pud_entry / pmd_entry callbacks.
-> - * ACTION_SUBTREE is the default
-> + * Action for pgd_entry / p4d_entry / pud_entry / pmd_entry callbacks.
-> + * ACTION_SUBTREE is the default.
->   */
->  enum page_walk_action {
->  	/* Descend to next level, splitting huge pages if needed and possible */
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index 4e7bcd975c5..4268e08eabb 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -261,6 +261,7 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
->  
->  	p4d = p4d_offset(pgd, addr);
->  	do {
-> +again:
->  		next = p4d_addr_end(addr, end);
->  		if (p4d_none_or_clear_bad(p4d)) {
->  			if (has_install)
-> @@ -272,11 +273,20 @@ static int walk_p4d_range(pgd_t *pgd, unsigned long addr, unsigned long end,
->  			if (!has_install)
->  				continue;
->  		}
-> +
-> +		walk->action = ACTION_SUBTREE;
-> +
->  		if (ops->p4d_entry) {
->  			err = ops->p4d_entry(p4d, addr, next, walk);
->  			if (err)
->  				break;
->  		}
-> +
-> +		if (walk->action == ACTION_AGAIN)
-> +			goto again;
-> +		if (walk->action == ACTION_CONTINUE)
-> +			continue;
-> +
->  		if (has_handler || has_install)
->  			err = walk_pud_range(p4d, addr, next, walk);
->  		if (err)
-> @@ -302,6 +312,7 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
->  	else
->  		pgd = pgd_offset(walk->mm, addr);
->  	do {
-> +again:
->  		next = pgd_addr_end(addr, end);
->  		if (pgd_none_or_clear_bad(pgd)) {
->  			if (has_install)
-> @@ -313,11 +324,20 @@ static int walk_pgd_range(unsigned long addr, unsigned long end,
->  			if (!has_install)
->  				continue;
->  		}
-> +
-> +		walk->action = ACTION_SUBTREE;
-> +
->  		if (ops->pgd_entry) {
->  			err = ops->pgd_entry(pgd, addr, next, walk);
->  			if (err)
->  				break;
->  		}
-> +
-> +		if (walk->action == ACTION_AGAIN)
-> +			goto again;
-> +		if (walk->action == ACTION_CONTINUE)
-> +			continue;
-> +
->  		if (has_handler || has_install)
->  			err = walk_p4d_range(pgd, addr, next, walk);
->  		if (err)
-> 
-> base-commit: e39f5a33eec1a4ea03358d82e861d6bb0a426b17
+Fixes: 53fbef56e07d ("mm: introduce memdesc_flags_t")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+---
+ mm/page_owner.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 8178e0be557f..2dddcb6510aa 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -573,7 +573,7 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+ 			migratetype_names[page_mt],
+ 			pfn >> pageblock_order,
+ 			migratetype_names[pageblock_mt],
+-			&page->flags);
++			&page->flags.f);
+ 
+ 	ret += stack_depot_snprint(handle, kbuf + ret, count - ret, 0);
+ 	if (ret >= count)
+-- 
+2.20.1
 
 
