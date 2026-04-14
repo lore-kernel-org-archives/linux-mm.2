@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E91AFF531E8
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 11:07:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF797F531DE
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 11:07:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 613DB6B0093; Tue, 14 Apr 2026 07:07:07 -0400 (EDT)
+	id 1F56A6B0093; Tue, 14 Apr 2026 07:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EB2A6B0095; Tue, 14 Apr 2026 07:07:07 -0400 (EDT)
+	id 1CD156B0096; Tue, 14 Apr 2026 07:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 501C36B0096; Tue, 14 Apr 2026 07:07:07 -0400 (EDT)
+	id 0E3976B0098; Tue, 14 Apr 2026 07:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F2AE6B0093
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:07:07 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0F118BC3B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:07:06 +0000 (UTC)
-X-FDA: 84656884452.07.77116D5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F3774C0012
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:07:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LSft1JIj;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776164825; a=rsa-sha256;
-	cv=none;
-	b=2KY28a4hGDa/klJHKk2Xnio2tWPyFExPj85xMSDRhJUhCTnyuzA0PvSEKClgAcb0b0qlRr
-	nwT1VbvPeQREcqOBh8R2gLYrrIrTtXchz0gd+92P/K417xyULhehYo6sAC2mPyN/1+AfU/
-	yzdwhta/vTmhdRwutMcFkqFPGRSryQc=
+	by kanga.kvack.org (Postfix) with ESMTP id F14F06B0093
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:07:38 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8B16E39C5
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:07:38 +0000 (UTC)
+X-FDA: 84656885796.16.A4A560E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1750D1C0004
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:07:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ATMBctj0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776164825;
+	s=arc-20220608; t=1776164857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KIZ38Mt/Fn0IVI4kh1wHrcwvw/HGbVDhX+B38AAeEMY=;
-	b=ueM8mMl1kXP5Bu72LG5IrqV8o/ZYz2Siz6XVnRvuRaV2UyupTXh4GWqOd5RReM4tP2eeSd
-	61ElVlUcBfCw705sHQ3klW3EAcX1aefYz5BjFRDRwU+9mW/M5vN4ehqpJ3it4PMzZilrvd
-	SsqpQeg9j5z3Lnbkmf+e3iVNrwygAos=
+	bh=KkQuziA8q4s91pV1YIU4gFsCibXgPQvYBrRhaFrX4bs=;
+	b=67iGjWC/2iklmJ/AbNPNJ25ZoPjPhYb6ZISjCiKVtix389fqQ6W44jylN+4w55UsVLqf4c
+	FfZ7hc5NXIzzl7ZxvSXqEnGCEWsIDTz8DDCvC1iChqulOVJJ7zdwbLOK1Wp3eROiXa+y3O
+	JAWrFfzKZLn8QpLvmtpCha7y4KQx7hY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776164857; a=rsa-sha256;
+	cv=none;
+	b=cNHUqXayreL3Nm4GjTkI/MXio4ca2K7zd+iO7vc7MHD5w5s3hveAg5MYVIwQBjQfXP9iNB
+	8efX/gifKkEn4s45QNHT+SzBrUR2+X+xnVZPTuBzdxFyoysGw3PV3SazqfZESi/qA7vuRr
+	YmcQuGkX7n4j8TnIQum20cqZHQAvu54=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LSft1JIj;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ATMBctj0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1328643BA6;
-	Tue, 14 Apr 2026 11:07:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3E0C19425;
-	Tue, 14 Apr 2026 11:06:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 78800600AD;
+	Tue, 14 Apr 2026 11:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75810C19425;
+	Tue, 14 Apr 2026 11:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776164823;
-	bh=LdH/VtABVvIZd1mcd+RsS8OArlVVXrW+GtEkqQ6K1ec=;
+	s=k20201202; t=1776164856;
+	bh=h6mc8jie8MzEoUPQ7I5cFnzZRgkEfbbKtBuB4QW0hdo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LSft1JIjnltiWFUtp5Xi5+P7DrvpPEANm49SmeqMhIKIw8DNcil6I7P8KWJ51SBcq
-	 zpP1t3j+riqfMhUUp8ldFxvSyuy7E5onIlQznc1HvT4bRuc7FvUpbTeaTxte/o/E7l
-	 ThZvFbKq3a2M1ztzJJ64W0gCMBIV1IhfYYZEtsiFKlFPmspjzMaJE98AfEz8t6iWXk
-	 HKbpbdaqMgw8CGuhAcUMp9VH7ff0Xnmb/ga9/mcOwsSyOhT02B9dC2v2EquljSnDc3
-	 jeu9nCpzPqDMPLXjY/7tnpDDaFSQSQ31hIQ7XSDcKyxhRdAdwZihO3BI2iVFiDr5Z6
-	 z/+UVDwisnpmQ==
-Message-ID: <7dc98115-ed22-4643-aff3-fd0c4bdd3222@kernel.org>
-Date: Tue, 14 Apr 2026 13:06:53 +0200
+	b=ATMBctj0z8nZzAlbXRzoxXf7mJ5bwP9C0BW2ZMnXcMCbybkluttXeTKiqejmyihIV
+	 VVRH3SfyueBNDK5NXhwU+fJKip4wxKsbqWHJrCKoi25JO1dg8/Cay6iiQmFokpPh3L
+	 T7wRiyoozKMcD5mTvV5q92GrJrQUVxmlkT/EaLJT62UDGHhG5wngwYDyHeoSIntN+V
+	 CEhcGCA0LEgjQFyIORw5/fekzZnL+LyLVPGCD+mm/dC1p4xPzeAhW+bj1Dq7MgPK0z
+	 u+LEmIZb6HnEfVdMeMTyUBQ8HrTYmeyOnZTdKLojLeBscrNlDrQlpuiF9wSCAKrpbZ
+	 ixqVEyj5ZKsVQ==
+Message-ID: <342ea75b-4b96-4f80-9e48-9c9a019081ea@kernel.org>
+Date: Tue, 14 Apr 2026 13:07:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v2 11/12] selftests/mm: remove READ_ONLY_THP_FOR_FS in
- khugepaged
+Subject: Re: [PATCH 7.2 v2 12/12] selftests/mm: remove READ_ONLY_THP_FOR_FS
+ from comments in guard-regions
 To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
  Song Liu <songliubraving@fb.com>
 Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
@@ -86,7 +86,7 @@ Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-12-ziy@nvidia.com>
+ <20260413192030.3275825-13-ziy@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260413192030.3275825-12-ziy@nvidia.com>
+In-Reply-To: <20260413192030.3275825-13-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1750D1C0004
+X-Stat-Signature: 7enshf5wbmxtnx9zwzr1y7mt9tcj463j
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F3774C0012
-X-Stat-Signature: pscw1k1a5rd6j4darhui3uwy467ewygu
-X-HE-Tag: 1776164824-832929
-X-HE-Meta: U2FsdGVkX184CMSzqJ7Al9tB0f+cZV9545wlsUN0NjjO7JQE6U2ST6V6N0xbIfuOB/JXi0INLC9HCaQIChXVvtpIFOeJ+XN9kFwFuw9j2veKRcyxzEJiRUTmTwBLL+6kCF0m9NT55OvyLe9jQrEULP8I6nW0l0S8rufbigX9/FocGP71UuSylEKJi6tiKOKl34JTq/unbCBHWjRizF2397lBhmjGQVH67XlAEIYDIzj+7TX/xq30E+pEuc9icydTuB1UF2wGsdsBVWySuRiCIy4/Wufb/BUtKMRpg7TSG9p0IO5Z94lv5AHbWSpFE3Z1oWBV6oK9g+ssQ+f4id43FC47N5YC03cPaVKMLWBuU44FDRUJsjyHkrquyNgLZTanDNp76sDuWLrq9sgOSZ7r+mIv+z6DsNUGYSEWNFB+1qW2T6y/MIo/Cgsyuee7HmCSYQ4SmMr0JufqqyqHCpIGIPrm4oFiGl+J/ajJV6/qzNP3tWXX+j/jHQg5AzgAOFquPPlD5FjHOjaoNl42OUSbMQ6M1DZyO6I/GpERSudQr211ezqXGAsYQ0Ga9BAeTWRiH2ySv4D+kXqm/7imgaWfbZs/dvCSq2xIA1az/7UdOuMJf8CqXis1g0sqPxU3o8aUpAnf+BszfEouMhzd0XpppLDmZAb35pvr1737EeiYv09bgRJLgpHMycrHQUbdTa8tFJDuIl26wbi2FW3s1DMdvWgkz8siQKm+ccSl8QmyBJsKCwWBtvY8/KVyzqRlz1KQOOpJsHeWIiIst52GX7n17cAWaaKw7AI5bnd3EhzRcFznm/6JzPaC/FPsItwhFjp9ZoG1tYSMprGKLZVcXGEUH0bLsjDAnvz4xHeQSDH6EriICPnXpSH+7XMNxf5hO1VLT33BiX1WZiEACASOz3dPZW7N9X+BdaT2bVMq2N2hBcfgx/6V2V7NEC4ZIJkc/2QEzhUtQs+G2pqhrl2MNKM
- Yv6RrD6K
- KiNKdjJk7QRmiB25I/bvZPilrz9sDGwR4jeOYmcQVSgh6YWhsjH9uv0ySNWdjjgAp6LEtN+eK45+P4dzRnTMKPOGaJbXU4uHG4oO05guo6qqWIf8B64iLHwIjS21j88BbFjyZUdT1XSV/M4gessz/bN7qjsaSt6y0Uv8UnQY+nOdwIpHnDKveWK3+vJwWvE3FQDLm0stReLCcX93unpfMm/kO+qR2hPGLDwKZIIkzbb9oklGfp/aaO34m99zRNI8DsL4Ov5jfecwfWrKJFwvQTeBuAoZHSaKdv5MHy/G/uZKFb6bJozUZrrOerBkCG6HJU0963426KfTu7UcRw6eP4/LQYfHDdajoUNl/YcOGUw5pCWbpCgAx7gzuirKB9msJihxy
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776164856-457856
+X-HE-Meta: U2FsdGVkX18//YhYvonQD98Fi5+qPcllPYDgjq4Okfy1iq1pslYzf8laIoLk5QkGRfP1/LrrL2GmOqusrGM2R6OAa2mQaC0ku0UfBMaPB6h2zOEX5SnswGpuHE8vaEYgH9eyFXh4L3hvE6OWmm2jliqVzYuSUOs5JSWeJqX28sMopr3RFh+e2cZT7gFY6jf/jGQkctHfZsA6eNlLLBsSdJJKGyEiCLD9KbOMfcgzje0chVU+u18YvUiYRigoBYTuLiieLqfXnnL+ne4ru2AsiSFvZ+WDaI3Oei8rKwtJ5o9aVuqMB9ul5I1qvH/bA5nkccF8xM/8Hynt/66ImDmJAx22pTNJ2FgBBLuJcEmJrn8jxhIrYIXDTMVpsoaIWMawE8mKllguvFFj92B7kwDUq3BXLWyVbhTsXHF/CLWyr6MTG6VT/w7A8jgY/4cAR19lkigyuapCdqgFYlfXhIn+8Z8SYynmJEdVRiJlfAW+qRhjfKtRP8H/qRrlJMtVbp3scjHv4tRUEr5S+bgZ1IradhyAEgnA5RicJlNRlMxY8ZAaNnh9AEZceRDaLc/M4OYPuttrs3WCqszBn6XQjOM04sraDKEE7/eLG872D+iREnfeMTvhzdUPftkBrU7EgMxIik2Fpak5bXh5Tpy4sHpStuw/35TBeIrVuWlC2VRebGHdGiwRmgt6jLoXqUT86UFVDVqwr0L1EZXgWmyOU4eAP5xM8XSd9l7fnmwKI53U08TvoPlBW33AkFMpOjE0oKgK9+0x+C0brJ4g6+9wvLOP6PtSKqc2uz4YyDNfoy8uV7R+QZTgN/uO1v0ZHj81AI47xZRxeQmZbaQth2t76aTOYu5HVuu6+h34ix96T7F/YZ9lNkfz/GKxQPgFjjYTz0SODbuRVEPc98EHFM78tRDU2mPPlSw0LTgQCPsApq3WLatd1tRAIysrqA5ibkTTOaSmptZ3Ljeq6JIj9M+bK21
+ stnsa3cG
+ kgIP8TL1XqlVm6nUtZR2UaXZEuzZ5JdKfFVRBTPeUhD4MVLI0TeDjmWhkRbFM9OM6dNyLFBR7nT8ttY95w4SAMQa0p0qzAafeJDj0OTbCe1sq/ypzPyx9QTRsVVeREWLt4dtUUZhCSBJyZYBMAatjjW4rA8CnA0vWak++RloL1ppAhXQ4sU1/IrM+uBza7jubeB1lXrrb3+JdJzRIzdLKC4CfCGu3hxtDtlKRPETU08zfkuRiXP2hMcUQ7y+QuF92QTitnLVExdUNbOFKQJHTYaJikkpZEXff6Cs3MB7QsqmqefG2tCjdVlsmaifXkW6rpTG5ZBuDycPRbmTN6h/cjfWuz++HN/Ce/9PL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,12 +152,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/13/26 21:20, Zi Yan wrote:
-> Change the requirement to a file system with large folio support and the
-> supported order needs to include PMD_ORDER.
+> Any file system with large folio support and the supported orders include
+> PMD_ORDER can be used.
 > 
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>  tools/testing/selftests/mm/guard-regions.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/mm/guard-regions.c b/tools/testing/selftests/mm/guard-regions.c
+> index 48e8b1539be3..13e77e48b6ef 100644
+> --- a/tools/testing/selftests/mm/guard-regions.c
+> +++ b/tools/testing/selftests/mm/guard-regions.c
+> @@ -2205,7 +2205,7 @@ TEST_F(guard_regions, collapse)
+>  
+>  	/*
+>  	 * We must close and re-open local-file backed as read-only for
+> -	 * CONFIG_READ_ONLY_THP_FOR_FS to work.
+> +	 * MADV_COLLAPSE to work.
+>  	 */
+>  	if (variant->backing == LOCAL_FILE_BACKED) {
+>  		ASSERT_EQ(close(self->fd), 0);
+> @@ -2237,9 +2237,10 @@ TEST_F(guard_regions, collapse)
+>  	/*
+>  	 * Now collapse the entire region. This should fail in all cases.
+>  	 *
+> -	 * The madvise() call will also fail if CONFIG_READ_ONLY_THP_FOR_FS is
+> -	 * not set for the local file case, but we can't differentiate whether
+> -	 * this occurred or if the collapse was rightly rejected.
+> +	 * The madvise() call will also fail if the file system does not support
+> +	 * large folio or the supported orders do not include PMD_ORDER for the
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+"folios"
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
