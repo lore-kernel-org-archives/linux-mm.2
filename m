@@ -4,88 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2DAAF531D0
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 03:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 971CDF531EA
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 03:56:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D984D6B0088; Mon, 13 Apr 2026 23:52:40 -0400 (EDT)
+	id 057616B0088; Mon, 13 Apr 2026 23:56:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6FB26B008A; Mon, 13 Apr 2026 23:52:40 -0400 (EDT)
+	id 02F156B008A; Mon, 13 Apr 2026 23:56:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAC966B0092; Mon, 13 Apr 2026 23:52:40 -0400 (EDT)
+	id E86E56B0092; Mon, 13 Apr 2026 23:56:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B98426B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 23:52:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6B6DA1A03FF
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:52:40 +0000 (UTC)
-X-FDA: 84655789680.25.E32F64F
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E2A442000A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:52:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LOdjCPmX;
-	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D62156B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 23:56:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 72FD6588E5
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:56:10 +0000 (UTC)
+X-FDA: 84655798500.27.03B95A7
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf08.hostedemail.com (Postfix) with ESMTP id A70C4160009
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:56:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eSc0ovaO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776138758;
+	s=arc-20220608; t=1776138968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Hsa5jfeTcTq/O2GmFxGJYQJNsRI2GpDuYxjEIeC86U=;
-	b=2DmSJunRHMm/nN/P+G+4JX4Ks4dMFJ3zYiKOvzW+OOPaqLRf02mVC/2iePOtbFSzvRsqY1
-	vYMAx5uvWTQYzcaM5jZ38Chd4HKYb8dzuGtCcID+Adfxw7AUuOaIHytdkNjcIatpM0B+7P
-	dtIAW/aWDxH3YOolE2cjtQNspI3edWs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LOdjCPmX;
-	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776138758; a=rsa-sha256;
+	bh=mDoJdnP8HPkkIqmmxUqnVNtEqsYM1X9CNiGkQpd9dSc=;
+	b=6oaKktxyjS4LlspR8hR3dvuWiUvvu71sT4+X9ABJSAXy6i1uqnGKpMutmE4qCKKENCR8nV
+	kRTJtoUxa0rmNPxUysgKOKDsP0XO2B3xYH8FT/RQwQNUjkRRUEfBtYDR2xUbvkclcNsvAh
+	04a/wonKZoT+ahuuHAaHVflm/9xOBz0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776138968; a=rsa-sha256;
 	cv=none;
-	b=s0VWRuG0CoVbubEz4vnBBaHgtHd3I7mCXMIXZoKFvylkER9S4Ok0YjPEPZCRnPJe/Yryl4
-	zonvC8vcQlW/C2F9xm8+PWxtLkaaWn/mxkdsTqRyNRAH+BIPQ88/+Zg3JDsHAHN8LVxOMa
-	du1ThwnX60TPxkWf0bKiE0qpU+LeDjk=
-Message-ID: <358c60e1-fa91-40a1-9e00-84c93340c04e@linux.dev>
+	b=lc4fjRoJ7g3CecfOi4SYomC9ar/kjTxo+TR2FjrOdEANvnOBSGj3Wl/KQE2o+0zWoUl7GT
+	1JDcSaMX9iSQKF0F+y6Jj1z3ds5fN3pN6sztpiB6be/ic3VQpPwSBaa2WFPJJDvZUNjN5B
+	QomIT+u+7t8uSoJaLHgqK4yr4op0XmQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eSc0ovaO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Date: Tue, 14 Apr 2026 11:55:55 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776138754;
+	t=1776138967;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1Hsa5jfeTcTq/O2GmFxGJYQJNsRI2GpDuYxjEIeC86U=;
-	b=LOdjCPmXff29fEJNKAZ3LMXkF9RzU2+hFU9CxpdNwutuqYVfL4ZInbe/sjUEEbqSDzBjEm
-	IUNWxqVvNTpAwKQayHyG8BhbttLqSgBn6ACYfFMCMltOrO5EcHJcXCl7Z/bqIe3pL1t3SM
-	cqKF6PtDYf93gaDyzuMiG0wScgL2eMY=
-Date: Tue, 14 Apr 2026 11:52:13 +0800
-MIME-Version: 1.0
-Subject: Re: [syzbot] [mm?] [cgroups?] WARNING: bad unlock balance in
- lruvec_stat_mod_folio
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- syzbot <syzbot+1a3353a77896e73a8f53@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org,
- muchun.song@linux.dev, roman.gushchin@linux.dev,
- syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com, yosry@kernel.org
-References: <69d54494.050a0220.3030df.0002.GAE@google.com>
- <ad1tV5WpFhxbQ86N@linux.dev>
+	bh=mDoJdnP8HPkkIqmmxUqnVNtEqsYM1X9CNiGkQpd9dSc=;
+	b=eSc0ovaOXWhOfudkQbOkcUJkUAcCqVraJeyNrZnUK935g68YcEBqrtsS3nM1IVRYshEFTJ
+	IMonzgAAkWMy9/y+BRCSnhqAdppuoQdy2TvMDTP7xF3pyI6O33HzJJXwciz2KwWGSfgPtp
+	QtZEYCnuYl3N1zUzHaVRvkIyNPS/P5g=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <ad1tV5WpFhxbQ86N@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Hao Li <hao.li@linux.dev>
+To: hu.shengming@zte.com.cn
+Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, zhang.run@zte.com.cn, 
+	xu.xin16@zte.com.cn, yang.tao172@zte.com.cn, yang.yang29@zte.com.cn
+Subject: Re: [PATCH v6] mm/slub: defer freelist construction until after bulk
+ allocation from a new slab
+Message-ID: <6hedy72mmajtutplztj57k63odkidzjr5zyn7yh7p3c62ybbj7@jupudx6k4lpz>
+References: <20260413230417835rnfiEWduEx44lc3u4uR9_@zte.com.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413230417835rnfiEWduEx44lc3u4uR9_@zte.com.cn>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E2A442000A
-X-Stat-Signature: umi68fc68aq5ueg793cmrfmqt9fbzamx
+X-Rspamd-Queue-Id: A70C4160009
+X-Stat-Signature: 8ce7jfiyffbxzsijmnsie9xybjk7ejx8
 X-Rspam-User: 
-X-HE-Tag: 1776138756-176512
-X-HE-Meta: U2FsdGVkX181Vl5pk5OPq4QKwPeHmEJA6fFG7f1Itzp1h1xPjyBTxs9+MA+VTI6ApRJzjRDXzMFEi7NVmyKunVry+q+T84TA5dT5fCe/uYFH+vt+2d6TW6jcDkd/o15JUDiCL2zAm9fsVIpOnik4wZZCg/FUpH4NHC2l0gtC5x92GNP2t8kyzWMiCMZrCz6iXpwnHZiX/zzJ+3lgXq/FSZgm1IDDaHJcJt4JRWwykYZCaVkbvU0DqtxYHuwYUHrYx/gjKAZN8LZsvUsZ9BcRH3KstzmFgMOMFfPp55vfEEpqlinzt1RmYW3Dli8jUmxUspaPOurGS+/4X4h5/DV4oNgIAYz37ML4Gbag5R9FCPuUSeUkGnWWZW1f/DAjfarlzQFioLgsFoFDeLNvKCbMHD2E4B9WFdWhiGuL+tERLaYexRea9D2FZx8+FnhB0JLH1rtUcO2DIHBPBTkp/U8DRxhopT1BOXNysLBJdnU1p8C4biwuNPuFIBYM5S4Q8iK2ZYK/SUoC8Ilv8bfd6vy9VJpLFFrC2t6An5KpS3S4K0NSb2d2Ymhzwri30cg3Qo6O2YUCG+RDaCgecAYyG9/4oDeRp+SDIQT1zYiv7Z/nmbeu0/PENeU1F1ownFHiupjl2rqHqTjRJEt7f+GMCBWcuDF5NeJjpW7LEay2lUxI3HzAj+Ix/sj58Vos2JFm/v3EQ3pxpNJdWhe8VqtKFivyLBV657v4QqjUKsSvHm/wfcg340szuUviYV8KTNr0V7L6sk+EVcoQsCNso+HU5H1fApt6Jnq6Dt6KROvdjivwE/GPZQ84rigUwY8ljaTaGhvDj3QDYr1scn1tac0IDG+5fVxBWoutdPcZiKr6g81mWhGn/WKVEkGSVe7rZn6+Z9IZ6RFWdd1fLu8X3CHC/PYdd4yQbiMPEeSVwAXnNDT6EaYdXIe6Ws36iFG0QE5JDHxKUJdWegXGvg0zCH7WibA
- PWHj5Kd+
- stJGQQL24RHNoDT9i006q8iizTRNdYnO3Ho23tt79olgmhTPRyrOzAVxUpfXs88Ckn+EYIYIIQ3kEN5xbMdsdtIJmIso4kUg5S32wFqJTlGKrnRGsOM8astA4jbE7mnHR/Ob8doqszmj46cYijfDsZe1g3wvAAqg4EeK0MSFiNo64StAk1U4/izgqIEhf++zgVr77gMbCokHeNXNALsLQaZZBHHQQb+zd8bW6/g99H5QSVN8+pFaahBukl2KYrQLflTCzA1hda27O7pyAysT5LHgJNRMyhCpjEU4DxmG8nTli/b4Ma3wS0N76/5S7D2kubEOm+SlYeaM1BEvn+KjgEqoBxdUYO9sh12oPYYAeX8B3GNe4lerTP8I6hMsSB5usDE/Gmttk5RGz1lLB8tVMpHlji6mkccnYuqsiEez/fuyzdTJTWsAL9eY22/v3iK438pcsyzLKKRahIkGYj8byBos5jGFfxc0hVBsysbx0+4EkTqHf4O3ltxmJsIrnzk2MUhmWW5DMpVw6SpE5zpHYAz6ggXcrh0UWN8e6bdBFSMTP3rGUmN1+cR5zWLF4PQCxMexp
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1776138968-873738
+X-HE-Meta: U2FsdGVkX1+88MOellL1EuoK2N37jw0sGJcEVO7cf/dgSOQlsNP4sd/Jal13VFHUvY2/TDUgKkqiHJf9RberQH0pYxZKYXXAXnoKzZQ4xpeFYd5JE3FvGN4duw28ojF0IPMDESYK7jXZa7kORB5/Ss2GZDjB1kLOs9rVK0XgN3bMueDAW/J5yRysltVzx3a+J0NJwL98dqpbYzacBUBc+P/D69ZJjEWk2ycbRKZbcMJomyObjvmVSSklW1vgq6QFsrAnguyDkfJPVIXe+Cq4Li4iGs9O7bC0tgzmYYeVbSc5BePTTug76l8Q1zgOwgVvtBOrYNW7iu3xS0JNEygVFxp4ttDtEHTU19lN8UbYFn9+1hufXV/dpaT2qUq4AHGoYANOVnna+8nlcD3F4Ik9ZPeFEnaqPelqm1NmLTWvfvIb1zy8PoCnRouDYjmH/bZujSPAPwyZb10ckS5EJmh6DiMqaNo4asDegaxKn9APANDknPCsa+g7+3ncFurUSYDzwo04y95RaU1qw0LszdQw73VWLpBy/8jxNo20//yoRjnKGoexEbeLc6tWAjfqodwNtLUl+bcHHjxNJoo8p56372yS39weKEv0wuVV4jJA+lVNwtJEXJ4pUHFMOyGTDqKBLSr0oGpkQpD5Iqos3EjI7TI6JFnCZKzxR6zQnA7xmnxgf4EdoijCaOA+UWiTxlVr/gfM0Sqj0uqQu7vPDpfMAbT1INp95R+StVPDEU4mQfOPKGMqEuqK5j5Bh6J6BwDhC7FGAM+JCHB9WqPgnXrvSqsjufS79FjpRl413t5BIxJANtAXvcbq1pk8sK4YIbA1kLvgZ/I0QbFyOrF0Bk7TJFH5h2FQV4ZZlKUVvgFHuBzPu3Uw+xfwrWbB80by2qayYGgEzYoHvzEj3UGKktqguuQVbM4ze5AXRYpppvSP8cGS64wCIceIqbKEL/o9/yLKsWqhyvsayTDwShWw0XQ
+ PsL8jbHD
+ Vl2F5kUYl7cI+UNnfFNnuF4UbZz+YeXO/mg5No5+xGLMpIlJwIXb5auU2co4yIAMdJVaOUsICspWpUkYFfal6tF/TCGjEX42JlchoDjKSTO6r1N1KJ5thiz4qf/X3dXG6Zm/pGR1oTIfFv1MSLufjkW0z2Dt7XZh+e+2rWGkB9ujZrSYJkiN2E5HbA6BiBcWSTj7CVq0WrLxvaXM1SR4JjocclQLPq/um1VIeQGLYYm5I7CPacpTxq3KbAuqeWqmBNMfJqT1Pk8ML7NY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,97 +89,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Shakeel,
-
-On 4/14/26 6:28 AM, Shakeel Butt wrote:
-> +Qi & Yosry
+On Mon, Apr 13, 2026 at 11:04:17PM +0800, hu.shengming@zte.com.cn wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
 > 
-> On Tue, Apr 07, 2026 at 10:53:24AM -0700, syzbot wrote:
->> Hello,
->>
->> syzbot found the following issue on:
->>
->> HEAD commit:    cc13002a9f98 Add linux-next specific files for 20260402
->> git tree:       linux-next
->> console output: https://syzkaller.appspot.com/x/log.txt?x=10d8946a580000
->> kernel config:  https://syzkaller.appspot.com/x/.config?x=4e6c8be618ab359
->> dashboard link: https://syzkaller.appspot.com/bug?extid=1a3353a77896e73a8f53
->> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
->>
->> Unfortunately, I don't have any reproducer for this issue yet.
+> Allocations from a fresh slab can consume all of its objects, and the
+> freelist built during slab allocation is discarded immediately as a result.
 > 
-> Let's wait for the reproducer. I can only think of cgroup_subsys_on_dfl() check
-> returning different value in get_non_dying_memcg_start() and
-> get_non_dying_memcg_end() to cause this uneven rcu unlock. However I can't think
-> why and how that can happen.
+> Instead of special-casing the whole-slab bulk refill case, defer freelist
+> construction until after objects are emitted from a fresh slab.
+> new_slab() now only allocates the slab and initializes its metadata.
+> refill_objects() then obtains a fresh slab and lets alloc_from_new_slab()
+> emit objects directly, building a freelist only for the objects left
+> unallocated; the same change is applied to alloc_single_from_new_slab().
 > 
+> To keep CONFIG_SLAB_FREELIST_RANDOM=y/n on the same path, introduce a
+> small iterator abstraction for walking free objects in allocation order.
+> The iterator is used both for filling the sheaf and for building the
+> freelist of the remaining objects.
+> 
+> Also mark setup_object() inline. After this optimization, the compiler no
+> longer consistently inlines this helper in the hot path, which can hurt
+> performance. Explicitly marking it inline restores the expected code
+> generation.
+> 
+> This reduces per-object overhead when allocating from a fresh slab.
+> The most direct benefit is in the paths that allocate objects first and
+> only build a freelist for the remainder afterward: bulk allocation from
+> a new slab in refill_objects(), single-object allocation from a new slab
+> in ___slab_alloc(), and the corresponding early-boot paths that now use
+> the same deferred-freelist scheme. Since refill_objects() is also used to
+> refill sheaves, the optimization is not limited to the small set of
+> kmem_cache_alloc_bulk()/kmem_cache_free_bulk() users; regular allocation
+> workloads may benefit as well when they refill from a fresh slab.
+> 
+> In slub_bulk_bench, the time per object drops by about 32% to 70% with
+> CONFIG_SLAB_FREELIST_RANDOM=n, and by about 50% to 67% with
+> CONFIG_SLAB_FREELIST_RANDOM=y. This benchmark is intended to isolate the
+> cost removed by this change: each iteration allocates exactly
+> slab->objects from a fresh slab. That makes it a near best-case scenario
+> for deferred freelist construction, because the old path still built a
+> full freelist even when no objects remained, while the new path avoids
+> that work. Realistic workloads may see smaller end-to-end gains depending
+> on how often allocations reach this fresh-slab refill path.
 
-My AI bot told me that the cgroup_subsys_on_dfl_key can be dynamically
-modified at runtime during a rebind:
+Thanks for both Shengming and Harry's hard work!
 
-rebind_subsystems()
---> if (dst_root == &cgrp_dfl_root) {
-		static_branch_enable(cgroup_subsys_on_dfl_key[ssid]);
-     } else {
-		dcgrp->subtree_control |= 1 << ssid;
-		static_branch_disable(cgroup_subsys_on_dfl_key[ssid]);
-     }
+This patch looks good to me, and the overall approach makes sense. I did not
+see any other issues, so:
 
-However, when I actually tested it, I hit the following error:
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
-mount: /tmp/cg-rb-repro: mount point is busy.
+I also ran a few tests on my machine. From what I saw, the mmap and ublk
+cases did not show a very noticeable difference, but I also did not observe any
+regression, which is great. My guess is that the fully consumed case as an
+ideal scenario may still be relatively uncommon in practice.
 
-Indeed, there are already many child cgroups under the cgroup v2 root
-(the VM just booted):
+Tested-by: Hao Li <hao.li@linux.dev>
 
-root@localhost:~# find /sys/fs/cgroup -mindepth 1 -maxdepth 2 -type d | 
-head -50
-/sys/fs/cgroup/sys-kernel-debug.mount
-/sys/fs/cgroup/dev-mqueue.mount
-/sys/fs/cgroup/user.slice
-/sys/fs/cgroup/user.slice/user-0.slice
-/sys/fs/cgroup/sys-kernel-tracing.mount
-/sys/fs/cgroup/init.scope
-/sys/fs/cgroup/system.slice
-/sys/fs/cgroup/system.slice/systemd-networkd.service
-/sys/fs/cgroup/system.slice/systemd-udevd.service
-/sys/fs/cgroup/system.slice/system-serial\x2dgetty.slice
-/sys/fs/cgroup/system.slice/wpa_supplicant.service
-/sys/fs/cgroup/system.slice/system-modprobe.slice
-/sys/fs/cgroup/system.slice/systemd-journald.service
-/sys/fs/cgroup/system.slice/unattended-upgrades.service
-/sys/fs/cgroup/system.slice/system-systemd\x2dgrowfs.slice
-/sys/fs/cgroup/system.slice/ssh.service
-/sys/fs/cgroup/system.slice/dhcpcd.service
-/sys/fs/cgroup/system.slice/systemd-resolved.service
-/sys/fs/cgroup/system.slice/dbus.service
-/sys/fs/cgroup/system.slice/systemd-timesyncd.service
-/sys/fs/cgroup/system.slice/system-getty.slice
-/sys/fs/cgroup/system.slice/systemd-logind.service
-/sys/fs/cgroup/dev-hugepages.mount
-
-So it seems impossible to rebind memory in a production environment
-using systemd?
-
-Then I disabled systemd:
-
-set `init=/bin/bash`
-
-and found that I could successfully run the following commands:
-
-root@(none):/# mkdir -p /tmp/cg-rb-repro
-root@(none):/# mount -t cgroup -o none,name=rb none /tmp/cg-rb-repro
-root@(none):/# mount -t cgroup -o remount,memory none /tmp/cg-rb-repro
-[   65.903125][  T241] option changes via remount are deprecated 
-(pid=241 comm=mount)
-root@(none):/# mount -t cgroup -o remount,name=rb none /tmp/cg-rb-repro
-[   73.405829][  T242] option changes via remount are deprecated 
-(pid=242 comm=mount)
-root@(none):/# umount /tmp/cg-rb-repro
-
-So it seems this race condition does exist. Should we fix it?
-
+-- 
 Thanks,
-Qi
-
+Hao
 
