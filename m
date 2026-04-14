@@ -4,116 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F35CF9D0CA
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 13:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B89BF9D0D2
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 14:02:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E524B6B0088; Tue, 14 Apr 2026 09:43:58 -0400 (EDT)
+	id 287696B0088; Tue, 14 Apr 2026 10:02:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2BE06B008A; Tue, 14 Apr 2026 09:43:58 -0400 (EDT)
+	id 25EF26B008A; Tue, 14 Apr 2026 10:02:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3F2F6B0092; Tue, 14 Apr 2026 09:43:58 -0400 (EDT)
+	id 1A1F46B0092; Tue, 14 Apr 2026 10:02:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BF7FE6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:43:58 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 680CFC1F61
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:43:58 +0000 (UTC)
-X-FDA: 84657279756.30.A240DC6
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2B6D9A0005
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:43:55 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=S6AAfSv+;
-	spf=pass (imf25.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 098426B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:02:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 80AF5594BE
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:02:54 +0000 (UTC)
+X-FDA: 84657327468.29.4B75A2A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B91BDC0016
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:02:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nMGh5aJ9;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776174236;
+	s=arc-20220608; t=1776175372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fBYaHCpG8hC1NEAoLKhT2eDDnp5ePCFis5i2nukgCY4=;
-	b=DcJTZfGbZ1OjTgEcbcg9E3b9vtGe/GSi1IhJPmByhggLgADSZOgXqiitOcd8RufjiNPZb2
-	bZ4uNcqiWT4dzzKskDmNmd+tpMNyb7AU6PMfx62wQzOGzTdTplE4dytPAbz9mmmUgpa4We
-	VrnPsFOQ9Y+qkxqqcpcxwj3eTnbind4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=S6AAfSv+;
-	spf=pass (imf25.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776174236; a=rsa-sha256;
+	bh=4AqPy0AMwjqvqg+exYoaCnTjV/qg8szmXavLM1Vzh9U=;
+	b=2R2BT8AnxH3FhVa/8usDsba+6WWrRK6GCh1qjCadpmvgIdA0qGYHpk8YlJna5FL6fSQula
+	h6HwxOzz7plP4wUU6AnHq7wZS+bqm2ELuqN38v3xQPafjMlUQsI0BunDk4BMNo6oxGrgxr
+	8mQZp2klCTJ2usO34em/+tKboj5oZ34=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776175372; a=rsa-sha256;
 	cv=none;
-	b=uqHJpk6V4Aw1ztpY45L07cPF74gF3xwt/aouuB93UyriRUgfxbnykDt9VLpApttgxCeG3G
-	in6KFhlsnUbKpuc2gJoyCu6gt785oTvf/4dUWgxav7Sl4VmFmVT28txZTjKCyLdIWD3d/Q
-	a+gbcwU/YY2hXRjlZqAtoSd4rSms/kw=
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 210641A32A8;
-	Tue, 14 Apr 2026 13:43:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E416660410;
-	Tue, 14 Apr 2026 13:43:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 450DD10450118;
-	Tue, 14 Apr 2026 15:43:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776174232; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=fBYaHCpG8hC1NEAoLKhT2eDDnp5ePCFis5i2nukgCY4=;
-	b=S6AAfSv+oUeOvIrxD+z5bbdfpbvEOB21uXEtXvB4AqMh4FY8aCuyB3wHwx9r7WuVdHJYL+
-	rD0/08M7IBbmkTkrkT4y4rKcwWyqFckHbY0d9PtwNrkx7DaSk7KT0vztBafKaTOmUOws5w
-	qAGaNH/SCsFaeSpXq+U1fXnRnSb6RTAFiP4wAme1fA2E/ecJefwxeRaUPgj3ZmXhRt7wxY
-	aas0aDmqQnMSQ8xEcyHooL1//5S5S9RSul/ZsJlUWSIBozq2b3PI6l6xl3ldUHUduj47SE
-	koioV9P/g0ItanZHdEow/RtOOTONKeljDR3QB5PLNB90x26lfEpu4eQqk7yUEg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 14 Apr 2026 15:43:42 +0200
-Message-Id: <DHSX7PABLUSN.1VYMRZ02DFZEL@bootlin.com>
-Subject: Re: [PATCH RFC bpf-next 8/8] selftests/bpf: add tests to validate
- KASAN on JIT programs
-Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>,
- "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
- "John Fastabend" <john.fastabend@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, "David Ahern" <dsahern@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Shuah Khan"
- <shuah@kernel.org>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
- "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Andrey Ryabinin"
- <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
- "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo Frascino"
- <vincenzo.frascino@arm.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- <ebpf@linuxfoundation.org>, "Bastien Curutchet"
- <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
- <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>,
- <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
- <linux-mm@kvack.org>
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Andrey Konovalov" <andreyknvl@gmail.com>,
- =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
- <alexis.lothore@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
- <20260413-kasan-v1-8-1a5831230821@bootlin.com>
- <CA+fCnZekgcEgsZnRrOB=+HoG=neRg=oLTt2jStyrPJ6mYf2ctQ@mail.gmail.com>
-In-Reply-To: <CA+fCnZekgcEgsZnRrOB=+HoG=neRg=oLTt2jStyrPJ6mYf2ctQ@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 2B6D9A0005
-X-Stat-Signature: 4n7qfesby3cmnzhkrk6uuh8rrqbi7gmc
+	b=Pp4LLIwLSqyYAr7mKX5Ydsr96wB4rK9ISqcHQnYVR05qPzFsfe9DHogzKLjdJ19tR32zsY
+	zz0na/P8csiFVFpJWyryb7dklkTpJLLeK8VerHortLg446STqR00FixBlsNQ7haUNOAWng
+	8elIKLsF6onsxOQ84SaCLQBvRdEyXdA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nMGh5aJ9;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EB6E260018;
+	Tue, 14 Apr 2026 14:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C38C2BCB0;
+	Tue, 14 Apr 2026 14:02:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776175371;
+	bh=x7XJtLqXh17ZcImOlaVLyo5LTdL3i1fbBepv/qg5ZPk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nMGh5aJ9U11ND7fOu9C/bNwMLWIVbpAAaBVR/PGX4KZH7Fta8xBVgm9YdoX7tW+AH
+	 Smw23T2oFCr6Pk/Ad1UGEdyCfJKCbmJOba+z7+onL+UJzEvsZ1YeQe3KOn6J8cl1gv
+	 nGYMXhtpHtG06H000JrCqAvF55rTzyOZCwwyeUzIUnDrnfuG4s+p8Wd2XOzUMKuPWs
+	 TiTmdGrikAJd58xtG99dwzYxNH0FHBPVTHMS7BKclCHeSl3lS+i6K/VH9rwloDbi8R
+	 0I0GrIkHf2RQTohrjoPmULxhO4xT26PXX7syMEQMd5X7ohRx4/zVFjDha96OtAq6X4
+	 JH9ahcyxcN3lA==
+Date: Tue, 14 Apr 2026 17:02:45 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Alexander Graf <graf@amazon.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] MAINTAINERS: update KHO and LIVE UPDATE entries
+Message-ID: <ad5JBQ-hxej1FNl3@kernel.org>
+References: <20260414121752.1912847-1-pratyush@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260414121752.1912847-1-pratyush@kernel.org>
+X-Rspamd-Queue-Id: B91BDC0016
+X-Stat-Signature: zzor99z7oqjgbfiy6fjptyxr8a1n8biu
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776174235-400115
-X-HE-Meta: U2FsdGVkX1+3MFvZ8K6sVVV8ZoAVxinuyvyQa3qNO8kUKieN3UWcbeQwVMDub/nEua2X6ELBoSWfO5TE0yNZ8NjXxZFRIaJdfxz43aSyOirAounGKyTUgOn7fyXgTEMAolnnT/chaEUFhADEFGesmYm0Yyyiky5x/DrMA3NbGmARl4T3PAscQbXFcKwmyxwxmeYtQVyfEg1RAPOCpUlIhvIl7s9aw47fnZhI4WSq3/zVl+3LEWIk9YC8KgWFZLoCPqjFUQCb77kTeOloGNmaoyYww9JUyvcK84I5RtBNhSj5IGH8rRlJ1s1k2NP1VYS/FHUaj7XObbMUtIe2Juwy+3jHz5EnM5KrEq45qI5IgGNb+bMyg2qHASuzOWC6ulbW/ub7pxZW0wmufNU9QhwIyW+L3gY47QzfHymufijqb5gGuSwuwDIYAUmpmKvyhS0BKkrgx4a1X11r7JfMCKjpgkOg4XUORoS9qrUgMAlieFHB6H5ZxJtATGOwtZLrMObae7Cec0VJRLQeHYSyGxNQyBil8vcVlQhU48a+sDjo0R2xo4phq4dGb9ztZ/4B6JuJc9t8AupuiN+V3b5daq8p+NYBkhsmlxzI2Vs6QsatV3kvgpIwA1ysfXWliSaJmoz3pwzzQPv1XmX/mwmtH6+0l4CVualJViQlcPaC3hj3CCMCI7FTB8FhjBcqs4iQpM8fAUaXAEqHmyuVzfi6cD+Zr7e7Ka+HeW5SKohmjjNwwZPJP+iCPJz71NdNrWLHON3QedviLLObyrkRPOPt/khj0fYHnBn6qNUwpsL6b06+TAP0w1iEk19wmhZUhhPhOS/JzDr4reL1kKms3kxHasne/IyM0QMWtJYAj9Ec7TwxxkPzobtH7dOZTiBA5g4PKDVsdEmvO5x5uwwxFn6JcwaoKsh2ivBVYeSilqs4z/jBdszqofp5X+JUTd2a5r+9JgH3e4Fexo5ON0SEYD5P7d4
- zX02NqJC
- gRs0id3c87BbC8R+JCQ09POSubLDChjJNbO8t0aFFCoyJQkZV4S9Ds7qWDp8UuiCTFuSfDnBfxhb5UZPSeNjJKt3nTtfX6mfJ5MlpXasPR71wjBt+Sh2aaLpJFHNWMhuR04gFkwcwP1XcOpzUw7YNUBMV3SUIpWnRVdpRPyTfvlUpk1LmPp84FQa3UAHM46Si2q/jHMONGM2nuDlu4t05M8m8LYO0mjvudwQ143zROWFRxbRdwft3+QTMa7cFyBAUDN/+e0hXPm3Xf7VYDqE0b8/dI2CVwljqAs3CoKlTIOGORjI7292FuSp+rs2V7uitwAVF7GNpQSqRoJ7WhVi3x2Pbr05iw2Yr3ZGYTJ3Yz2z86xMmsNv2nFbHwUl0ZGCE5am32vRO8pUQ79gE8r2oK5UgDyXcBcA8q5GAhyKUQvq65F8Rmxs84McDGf4ICucPaTMswl8R5PW5VAR24ZIuEyQNyQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776175372-257686
+X-HE-Meta: U2FsdGVkX198bx+Bn5+Z7dhK5zzpaqZOWZ0AmGeiFwJxoTbFU0B4s81u8i6ALqJzVHYGxqNAbBFX0K/dOn7MspTNCH5rIU3sjEZ2Fcz2iujRokdzaf7lPqauBFdhPeDA43sPwqjcbVUyu+jLU1iEoGm19+mMAEhVt4CIHSo/NT/+TNvsnPY2rciYkNwQlnr3qemhT6zGgWvEIrsWEVgncK0zKCaJ+XqoO4/6EII7atPzgze3Px8ipJpJgBFlstUwRiMXKJov6jjlm7I8n/lbjPiR8ovwHlyjscB2Jy6PSiA1P0XEATraiQhQJDgdx55+UrvWsOARi6ANUopRyTImoHPBvg0ayujahqiQEpNnCfUS27jwAqskTHFYA1khHA2MPlBAdXYMdSp4Ie8UlgIj77cA1dZwmCz1o06kmf3uBePRpps9akMGgbUqmMC9ixJUV963r0FxFWj/KBpmiASTSnNdizxFezItVcjOa2EnUfujZI+xBziOSBJMxJVtL4kD/kCUPSdB+H8cyiQsjlVViTZjRiv5drFIgKMYd3YKSENNGTzPq7h6b+rJMI6uD/MThoRVPMTQp1Qo9stZ7ydo1PiKxum4pdQh5kQWcMcnatovk6N6QYeICLVihvzz7+CX/ZH15tginRXLzIn+6vrVgV0WJanNFti6PgWMDnFj1Cj/4dkibhT23Ve9wDysAJHe0d4ceQ+4Q58UZMToZxuy7smOHfmw4vBlbrRX8Qkch4bD4JizXsR10htPgMAu1qHEOGR/APGtAA+L/k3RYxnzFhX5ssnlvztRRWlKV/ZvtldHz2hHq5joIl6ob5fkBQKY4K6E4RiPtemfHbYyKql0yLJZ/dCjupNPYFCBeBLChvpqcF5j+fJukiXxx+9Hw/GBOv7ODzq8zrL8E1tCOeiYCjXBWrSYndnZ1boR2GsOuNNcrXi/oxRF94LYHvhctBvSBQDxciMqp0ajcpUMip4
+ hWcsZxvw
+ N93wQ9Vxgv7tkDn7qa7cIqqqoSN2koOhUYGlmVlyqOwwneT4HlRD9yRAkUh/uFOen0pakS7KZBsmZcNWge+lzM+u8qvpzRp/mgNRLFtR5vvVvMczxtF71fAk1IphCr/gzDa/GynzhJrf2/QxCx9HjJhz6iAeMb6h+RX7z+egMe7itV55IFC4dXZjgxz31UKXjGi0oa64ipeMBoAEhHLlIROes0iDH15M5cg+RQVmCA/EmjakvJZ0YRdpAukHp0a0GCqza7GRgS/JnfRanZ7ZoWImFbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,58 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Apr 14, 2026 at 12:20 AM CEST, Andrey Konovalov wrote:
-> On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF Foundat=
-ion)
-> <alexis.lothore@bootlin.com> wrote:
->>
->> Add a basic KASAN test runner that loads and test-run programs that can
->> trigger memory management bugs. The test captures kernel logs and ensure
->> that the expected KASAN splat is emitted by searching for the
->> corresponding first lines in the report.
->>
->> This version implements two faulty programs triggering either a
->> user-after-free, or an out-of-bounds memory usage. The bugs are
->> triggered thanks to some dedicated kfuncs in bpf_testmod.c, but two
->> different techniques are used, as some cases can be quite hard to
->> trigger in a pure "black box" approach:
->> - for reads, we can make the used kfuncs return some faulty pointers
->>   that ebpf programs will manipulate, they will generate legitimate
->>   kasan reports as a consequence
->> - applying the same trick for faulty writes is harder, as ebpf programs
->>   can't write kernel data freely. So ebpf programs can call another
->>   specific testing kfunc that will alter the shadow memory matching the
->>   passed memory (eg: a map). When the program will try to write to the
->>   corresponding memory, it will trigger a report as well.
->>
->> Signed-off-by: Alexis Lothor=C3=A9 (eBPF Foundation) <alexis.lothore@boo=
-tlin.com>
->> ---
->> The way of bringing kasan_poison into bpf_testmod is definitely not
->> ideal.  But I would like to validate the testing approach (triggering
->> real faulty accesses, which is hard on some cases, VS manually poisoning
->> BPF-manipulated memory) before eventually making clean bridges between
->> KASAN APIs and bpf_testmod.c, if the latter approach is the valid one.
->
-> Would it make sense to put these tests into KASAN KUnit tests in
-> mm/kasan/kasan_test_c.c? I assume there is a kernel API to JIT BPF
-> programs from the kernel itself?
+On Tue, Apr 14, 2026 at 12:17:17PM +0000, Pratyush Yadav wrote:
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+> 
+> Hi,
+> 
+> This series contains some updates for the Kexec Handover (KHO) and Live
+> update entries. Patch 1 updates the maintainers list and adds the
+> liveupdate tree. Patches 2 and 3 clean up stale files in the list.
+> 
+> Regards,
+> Pratyush Yadav
+> 
+> Pratyush Yadav (Google) (3):
+>   MAINTAINERS: update KHO and LIVE UPDATE maintainers
+>   MAINTAINERS: drop include/linux/kho/abi/ from KHO
+>   MAINTAINERS: drop include/linux/liveupdate from LIVE UPDATE
+> 
+>  CREDITS     |  4 ++++
+>  MAINTAINERS | 10 +++++-----
+>  2 files changed, 9 insertions(+), 5 deletions(-)
 
-Possibly indeed, but I think one important use case will be the
-possibility to run those tests in BPF CI ([1]), and this depends on
-those tests being integrated in the test_progs framework
-(tools/testing/selftests/bpf)
+For the series
 
-[1] https://github.com/kernel-patches/bpf/pulls
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> There, you can just call kasan_poison(), some tests already do this.
-> And you can also extend the KASAN KUnit test framework to find out
-> whether the bad access is a read or write, if you want to check this.
-
-Alexis
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+-- 
+Sincerely yours,
+Mike.
 
