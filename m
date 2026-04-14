@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD322ED7B96
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:19:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F1C3ED7B96
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 10:20:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E98E6B0088; Tue, 14 Apr 2026 06:19:16 -0400 (EDT)
+	id AB05E6B0088; Tue, 14 Apr 2026 06:20:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09AE96B008A; Tue, 14 Apr 2026 06:19:16 -0400 (EDT)
+	id A88446B008A; Tue, 14 Apr 2026 06:20:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECB236B0092; Tue, 14 Apr 2026 06:19:15 -0400 (EDT)
+	id 99DB26B0092; Tue, 14 Apr 2026 06:20:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DB13E6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:19:15 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1297EB9933
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:19:15 +0000 (UTC)
-X-FDA: 84656763870.30.CA1502A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5571712000D
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:19:13 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tLRQLee1;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 89CB86B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:20:32 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CF6C58B11
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:20:32 +0000 (UTC)
+X-FDA: 84656767104.04.D0C6F46
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4242C40002
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:20:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Za1ua/c2";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776161953;
+	s=arc-20220608; t=1776162030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zipAUA5Yaf56ZLEAskxAMpT+1BclO1sPsMVbAnC/eLI=;
-	b=IeYKGjLjrd+aiC1jmpprPD4wyQU+9qECYQbkyo4InRUDxjwbOIzJLkihMAVtyOowNBP7J5
-	CnzT2eaJdsaB5gIVZ39NDDFXReTI7A6ZC5G0kP0cazaIvbMjv5y67DPGy0p061CtchzKKa
-	W/ueLH2u6lez0gJxSQjUaN8Owp/hG1Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776161953; a=rsa-sha256;
-	cv=none;
-	b=Nql7ov7HIQRjXrSjADwrLqRV1CkZuUUoPg2BvL+H93gNkyOn4ZSJbd7fiX6/kUK9uaCq3n
-	VQbm1Da5Vnmoxsq2EMGQsV3eGv5OzFMJEENatGA/lQ62q+93NB6jI3elpO0diPX3qDDs+r
-	ynAe9kd0//Y2tugvX/CwpXkXtRbq7h0=
+	bh=0h7ODnzRoQxwwbG4YgZDOIQbuA7NP+BVAo5B7S2hcU4=;
+	b=ejj7n1/BDvkR8rIW7EZYSqsERtOSHJt80Ouhw/ucv0MuFlDazQj38mXrK9irQw2YJS0IA5
+	ULX8wI47UntigQHJuToLGiGE4c62P1LVBN4c/KtIp7V3b7fsMltjmNJ9huwbacOqiUOuMn
+	+WoLRD687ISRp0eXlS5nRsgox/pNmQw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tLRQLee1;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Za1ua/c2";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776162030; a=rsa-sha256;
+	cv=none;
+	b=Sx7cN1wEPqakLj0IUtIEbbDOx7mE2ORoaSf/rGxQ4T2QtVm8cJYeUtYrKhfQ3hd6jg3PSb
+	ZLBFD6G21XM6g7/edx8ypDfY4kXWhCIBlcjz8WkH5ZDaG0T07oGKcU8vDF6xjHYYv9/2BV
+	2v/atNSBTFxo+lIjI7QymGpUrgk/FmE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7AA5260131;
-	Tue, 14 Apr 2026 10:19:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A33C19425;
-	Tue, 14 Apr 2026 10:19:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3FFC542DDE;
+	Tue, 14 Apr 2026 10:20:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADE4C19425;
+	Tue, 14 Apr 2026 10:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776161952;
-	bh=MDxYDpGQmy5Oxh+Of/cJzn+fi3bCoNS15eBhroroskc=;
+	s=k20201202; t=1776162029;
+	bh=RGgiwNNKERTEHoOTPwB9B49AuENlAfKt7sU34JQ6brg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tLRQLee1YgXHJrcPplFsAm3WeFn4fNmAKXn3Y0ZZK/SsNsEVHxwzCghZjXlMEgv8f
-	 +DJOuFeqgWrsZPRaEGTNra1MaJQ6+2eobv045cs5M/9tARoAebOa6WG1cxYcYeawOB
-	 SYrA4gak03seD0kMfx8kowEkI+xf2nreknYrJv6rAwubb4Fa0bF4sKhmQiGdDYP3bG
-	 HifW8OodnnvoALRlYyAgQDRcyJ097cJvSvrsTZDwnrxFGPNb7m7bvFY1lMJ1sDJ0ZQ
-	 rEnLYH7nJmpCl6bfi+BtsewOAGiE151lEakpDBZU1bcb3K1XIMkHaO7M6DcuH2ceyu
-	 QfUzWIi7Gvvfg==
-Message-ID: <d20a526f-49fa-4037-87a8-7ffec1391beb@kernel.org>
-Date: Tue, 14 Apr 2026 12:19:02 +0200
+	b=Za1ua/c2pBc2SFfHoE9LK94I5v2vvCEqP+T0fD3yg+NZGgSkqjcAQQxDo2PuyT0Oz
+	 7kSmatnHBwa1r7/ybCAH/w3+bmRIPw1+TfawF6oZs78YEU1C67uRFNC6NrS+8MJKST
+	 09IcwKF/jVZTrrrd8G6cO1uwfujb/jWnDqH9tBmvTRMN4N9zXYVYfHqjTwVAFSPH+F
+	 uqP1+HavbMfQufGK87I6hQNJp4AAFX4pxRtSjSbq3k/zBJjZ8CthPl/3tGhb2QAOUg
+	 LKkUF/rIlqdQsvMRkME8GYw7YHGfvaO7yVdIYxOiqU8wOYc+5HQ7lO/DNl/LzqSkBw
+	 syvj5qllWnvuw==
+Message-ID: <45d8e6d2-66f3-4ce9-8f01-7c47cd81e4e5@kernel.org>
+Date: Tue, 14 Apr 2026 12:20:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 7.2 v2 01/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
@@ -137,14 +137,14 @@ Autocrypt: addr=david@kernel.org; keydata=
 In-Reply-To: <CD565023-4FA6-44C4-8E40-8B06CB09B59F@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5571712000D
-X-Stat-Signature: ki43k79pxutcf3j1a9em45dc56eauh5a
+X-Rspamd-Queue-Id: 4242C40002
+X-Stat-Signature: nkyhwcf1gn5i8hp455atf7qk6ydhaqds
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776161953-918571
-X-HE-Meta: U2FsdGVkX19eqyDf+jovxscLqUznwV4EIbNw9d/KnJvCCJLNiO0cKGiK+rtLfpKtmwgDmlNmOwIqR0cHPifzIwuxogUbTrFN7IRD5No0JnqaUKNX6ClWqM+fZH0ZQ80BJq9QmataZxSFSONSXVtb7xnvFCYhdMYHDeEdPmbVg76VD2erBLHDw6Ivz84iLLmIj8JWCjAJeQuLAMxppBI6AEbQ9NXl+Wq/4qoyMJmUMJKANC/xs9p0zy7jQjpKmImmeVenG5CeX7YFSQi78NgUKJ4tCRc8mLNrW6XP7nh3tjhM3Qsu2lMpbVXU7X6lc8y+E/GDkizbsEOBAO7lp/blpl2XCQkZpxwiCllw8m2cXJWGt2iiQBPzDl77oCYBeozx1vV4UqLAu/LRlVlMnhAf+9O2R87+SO0Cm+aJ6PrB7h5FwE5y5/0qy6N/jC5UOJMkXOi8j+Yb5QM66N9y8o/Nn/HOWsRopbCZ6aXjSLQbLVkp+6UJ8xqYaA5Y8Rk/Vjpks/4qbqFVCebqW2iA24nS/WNKrrefDfwnDynopqdqW95ZoKN7vdaVo0t11d+VQbLHwAL83xti6I2F9YQmzRzWEquKogRrJGf2tUapWbZurrUI+41FyV0zq9Cw4FXakxcm33Dotl7qTjkbSsBxi7+SwwHl5zgQ/5fD/f07fTYImB+PGZWmEsSME71RfSv0UZ1KOZ2MUwBiKb8YOAyW5w4HF+H1R8uVkAqL/OCX3Y5AKuWT73UnWfqPkIyOQO09/9mq9wwUw2CKLvjP3mRQblVSJ1VazQ1yFdWD/7wwF5lkzPJlg1up8mxLxZfqjipBf97MdkuXH5w9+kS5kIzVn/XMNob6BIp1q5w81RpiyP2P0cHGIHbG1bFjeQYfI8PzHgowJVOsndgUEYfJmLc8YCQ7e81kyWne3sey7/sB8lfyCcvlrBSURB8HiakDTuA1AG57SlHsMOk9tGA1Hnm9VmS
- 2db7Dbs2
- aeLW3BRum3Y72ngr57E30PXXYBbuzp2FFFp6kEN3qE8euSmKucWv79cZm9C7bq7Ac9Jo6ddG5NoXL9I1XPrM0ZzazHJl8KwLbjn4rcFeF2zeYiwIBtd/wteZ6lqKycwPuZdgM+Cye81uDsJM/fo7vQeHoMJxsi5oLxQWqEL7A1U7FUgCHr4zizRDJBq4IJ8VIqynSP+RbAekR2O/BPgkZLYWtxHQ6hNgcKkbDl9Hvvrr9NJnLHNfDPp6TSoQbrVCMS77f9lKkbT4EHnEXvnERvovuEyLmf0UEQvG72Ju52UepqALMh+y0wTFSYw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776162030-735651
+X-HE-Meta: U2FsdGVkX18+LQzOZVidufFfQy6N2qRGbWG6ySIId0HtE2t7bQnSbrvABxt7hodLcLMkQgzn78sHyIvsquoX/im/IWvUY1GWvRORaAM2cuQFvbbKYuFlOOtPVvwva9jPxT53wO9lp7ynkpkVWpG8Zfa4tFuWYJx5iGXInRiljv8uAO/pp/yAAeQolJJJLdbayOdihaEOhIdvt7INWOpjUWTHF1a5SzA3uUY4tS2JKi8iizY6eJ02apCVV3Xa9pJVJj2ACM1furJ38JRz0U0yvx/UWB385W2pZYAmzyCAbRI2nwtVEudK/G1Nfrf00U5rl4dOeMTx60bg0cXh7w7qbavGEXtbGnhtGffomeFecnwFLnZFuSKWcaIvAxWcpl72mrt5S5SsQ+pwj5ErB1xVYQtBuO4ABTpQJGInCOPQElHLh9DmCqdB8uLW0Ga661FI4TOfRbT1sG76tYNQRNmCUpIycFiKHKWg0f7iuDmn1nRqIDpQnpM1PFk8nKh378bIhZu3MC9WEZ20Z2QOxQmW2e7JIuyp4rknRHpF398ISY81zCqZQv6LOY3AgWDEqm0C/UxBPYoMuPYD6zADpzzzymlj96Vwf6lMTu4rMiMk51BJgNn8beFzkvP1rGgugcidIkhfffbE8z1MatXuisMLwIQKTGr6eKwYdSs3iqsJoN5PUsAEluZvJTDuhDQQwsw54aXEHpe6CEc3CCBtYG2Ryh3WGxEPrJfaaFLbY4+q6Y4Ri4Ctys7cepu9f5QMv7aB5mAc+j5FpieuyftdTTaPji9HO65mgYy7t+9C8UwBRANeUGfTMwKW08SM8SanjOQyyqh9S4hs1WUnWbk55j47lMLM9JGgVpeRCvWi0MukIM0Gh5F99eS/gjqZ0POfVrjktY20nOyuVxpIm8LVEtnx/40tzQG822GqJ6VbI7+/dy1xnYByNPqLJiJijMc8UevaYVaLxRpdNL2bj1TpDyK
+ ncYHEULH
+ jgggp//fn3xtZoEWSpcJlkd61qGJwQj0EWUZP53UB0yK9CYY5M1gssMaiU96JDl4HPEu4BgTDrCkpPH/yICnIhTFpPH6VbTNYxSAROaGiD5ABx3NhXMa4Y4/BfDwyS+LyQVW2RdRxuIRZ6cmGm5Md8vrPjlnxB46Egoniwvw0Fbd5mIRe8jxCrR+Pywm3ihhWFe1JNcjT4hWou9D88h8oL2azTw1xxhVcY784UIhjlOSy9bt/KcfBZ7E5s+ptsTL+Lv0HVO5X4MQSH2pRd0ILE2tdF8xXzDkJDkSSANNhtiTq74V7Opu9CP1UDsvRW2mcGMJZEhYBtA4vMfIqKLwmK02v7mwNkj1hkEGTWIw0xNj++g4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,22 +152,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/13/26 22:34, Zi Yan wrote:
-> On 13 Apr 2026, at 16:20, Matthew Wilcox wrote:
-> 
->> On Mon, Apr 13, 2026 at 03:20:19PM -0400, Zi Yan wrote:
->>> collapse_file() requires FSes supporting large folio with at least
->>> PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
->>> MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
->>>
->>> While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
+>> huge=never       Do not allocate huge pages.  This is the default.
+>> huge=always      Attempt to allocate huge page every time a new page is needed.
+>> huge=within_size Only allocate huge page if it will be fully within i_size.
+>>                  Also respect madvise(2) hints.
+>> huge=advise      Only allocate huge page if requested with madvise(2).
 >>
->> Why?  These are bugs.  I don't think we gain anything from continuing.
+>> so what's the difference between huge=never and huge=madvise?
 > 
-> The goal is to catch these issues during development. VM_BUG_ON crashes
-> the system and that is too much for such issues in collapse_file().
+> I think madvise means MADV_HUGEPAGE for the region, not MADV_COLLAPSE.
 
-VM_BUG_ON should have never been added to the kernel.
+Yes, most likely. The doc is quite old.
 
 -- 
 Cheers,
