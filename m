@@ -4,170 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 499EBF9D0E8
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 16:45:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99723F9D0E7
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 16:49:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FEF56B0088; Tue, 14 Apr 2026 12:45:34 -0400 (EDT)
+	id ECC3C6B0088; Tue, 14 Apr 2026 12:49:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AF8D6B0089; Tue, 14 Apr 2026 12:45:34 -0400 (EDT)
+	id EA4236B0089; Tue, 14 Apr 2026 12:49:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59D146B0092; Tue, 14 Apr 2026 12:45:34 -0400 (EDT)
+	id DB9CF6B0092; Tue, 14 Apr 2026 12:49:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 48E0F6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:45:34 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB5C1C0A20
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:45:33 +0000 (UTC)
-X-FDA: 84657737346.18.FAE887D
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011071.outbound.protection.outlook.com [52.101.57.71])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0DBBA120010
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:45:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=txS4PMAa;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.57.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776185131; a=rsa-sha256;
-	cv=pass;
-	b=qy1NlxeYHeJ+Fs+4HKcXFtFMhZxXkMTz1aOXDCMCDk5DmqWmzqa1L90uV0y2s+LxEu7e9r
-	86v+8rmogZEMxMBYtjjcPufx02GkXZ5VQ66teU2kMGOyrWmd1FnhlR3Z9AkblVLT5VYGa6
-	l25YH37hM1coJ3tMfZ2r6FXWdPGzuyw=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776185131;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA6F56B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 12:49:46 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 720C01A01CC
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:49:46 +0000 (UTC)
+X-FDA: 84657747972.14.4D5BD05
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8AAF3140014
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:49:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AheSCCfk;
+	spf=pass (imf23.hostedemail.com: domain of charsyam@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=charsyam@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776185384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Jvrl/6Gj/xrsxEx4GH6Uuj5rcNnnIbLXzjXdRXW3J4=;
-	b=p226tUjOyvnIktxpVcYCjan3DGqJ6zD/5ubOgAW6c2R9i0rlk0c3RHUI3n/RucSw2LO5Q1
-	0PR2JmMP8hslk+wU2ILHebqCFKckqmd+se2kR0TkxDQc0+/Lzx5EEMQ2Wb7kkDbuDN2ASs
-	phZRfRGPbTO+NierTR0NBoRf2CZ7Ev0=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=txS4PMAa;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.57.71 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SQtrBPcdTGpeyHgBWGDq+xMcnYw6HX5op5UJ9TkKGyEFu6nHH9+oNINl46ZgKNr2S8KsGLFqlyQRegUcwiY4wR8LhFC4Zovxp+qcE10OhUPW0M+9LHjzuMg0b5OEDFIQR7oq7mNJ+7RVhRchkLw8PVaTOveVmQyBPZlnc11/Up7QPiLvFLX+Snoe4tyeZNNrsU4/RC13SiNXOtOsHrgtH1jcUDM2D8qXXmibaQWD3VwKk9yizEEKsLvNf1Ov59i096u6HW++D1U8VGpWsi6M86GOs0Fyp/3PYCvDeXxq2g8ql3RDNtcEUM3Q529zS9xDxQEv0aieyP9EOkD+2H7vnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5Jvrl/6Gj/xrsxEx4GH6Uuj5rcNnnIbLXzjXdRXW3J4=;
- b=Gkuw2yDSzCBdH4tYDdZjFNZq0OovdXO/f0HTdKlY2Eiy/maBH1zt4CmG3fb+So1ZkxZ1lPMM5bHwBHM2ASBa2YOI4FVluWg4nnDJT7l8KDrx7V1I8nxMhRqkE6/mkFMLlxU3jv/OY8CtE1gd1ToimBbgno4BB3SinFNIfBaKOZUqv+hbUm6k4p1eC0eHez8dHDid6PU2zN+ymUZ3R+AKZslOnji3vOIkgH5N7KsvjQ/cNdFya/jfBAeizv24wSKktVLIiq/d8vNrnp9pl6ZwSUqwzSMpuK/E2Lkj/JsYiPky7ZiwFEIrMYC/BHAoWCy+rNrcK0sx1GpZnGgSaVUkag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Jvrl/6Gj/xrsxEx4GH6Uuj5rcNnnIbLXzjXdRXW3J4=;
- b=txS4PMAa6lSfMWUC+77UEPR3O+z3TM9R2rxK/X1cXvc9XiVwaq7XSZivWgDtpWSyFN6sMIylajj8f+PNQRlSEc3M1RjaDWdImpi71p7c3clRuzQGA0LY/Ww/BQFBnIyDjis0HW5X8JqiGFtQAwe9GdMPHPL2IcRbBCLNJ8XSLkZflTcvvqmnNck1nkTqg5pVjFUbeqCBuSML5AeiFQUA7gHrUPj6fH6Gh2EWTXzlQeei54edqeG/ZEiamQ0ebhDkDuxGs82nwAf8JEyqjhZsVcfDefDn5gbxsvum62o09RgaNZpW1G+OpXQjHBcswAYwGWhVlRHM16w7d4VCPL/lwQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH3PR12MB9169.namprd12.prod.outlook.com (2603:10b6:610:1a0::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.15; Tue, 14 Apr
- 2026 16:45:21 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9769.046; Tue, 14 Apr 2026
- 16:45:21 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Matthew Wilcox <willy@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v2 12/12] selftests/mm: remove READ_ONLY_THP_FOR_FS
- from comments in guard-regions
-Date: Tue, 14 Apr 2026 12:45:18 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <1EBEBA57-E519-4004-899A-CBF21A77ED53@nvidia.com>
-In-Reply-To: <c696705c-4c0a-4e3c-996c-358d2f0b7074@kernel.org>
-References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-13-ziy@nvidia.com>
- <ad1WTCR5Kld-tiL8@casper.infradead.org>
- <E3268570-18E4-40AF-92E5-931A8ED1C9B5@nvidia.com>
- <ad1uK11f_J8sFN0e@casper.infradead.org>
- <c696705c-4c0a-4e3c-996c-358d2f0b7074@kernel.org>
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR20CA0051.namprd20.prod.outlook.com
- (2603:10b6:208:235::20) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=FUoYKq79bxvjyxgdJrulHpNt50LqCWweYqk4dEJlv4E=;
+	b=iIBYvwggebWwNzj2rJkN5mXQp5/B3mpJRAslCzIHMTkTIVaXCNZZGKI5zfgK/+YgISQG31
+	7QMqKCEyKbaVrhwWVs43DxUEcgof7Fg2oGh6VsaP5YbquVrsEcoH6CkkFv/lB75/o9kGYA
+	2swdsqv8/h9P8zS1KockUTaYNR1VW48=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776185384; a=rsa-sha256;
+	cv=none;
+	b=JGOc8l3vj2EMba4GjoXdWxx29A0BpOsedXjV9seHEoyVipMW1rrWihAKM3TyFILOZ2NjWF
+	UlHYEKuHv6F+eGzq/ZxDLPom6Wv9xfOVKVQJ4vTeO4lBL2NJB96VlgpSOKPwD7IGOXB6Tm
+	zxFbHlTLmLmaZNbBqZ8tS4dMyu+cTIA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AheSCCfk;
+	spf=pass (imf23.hostedemail.com: domain of charsyam@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=charsyam@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b467d03d57so1651985ad.0
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:49:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776185383; x=1776790183; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FUoYKq79bxvjyxgdJrulHpNt50LqCWweYqk4dEJlv4E=;
+        b=AheSCCfkG+BlmdtBDgLL0/Luc2qJZ2SlluO2SA9JwrAtA8wejXSzo8V4jSn+bfGSzd
+         QWM+tkl+trd9M1TCKttOBiOUkcdn6CJ73K6pQf5M0V0FhH3t8DnlrOVv0/Hq3KvoidWS
+         Ys0tn5wLz/Y2jqwoqhsWFnSPW/N9l8gYyyt11/zyhXfzV84owtK76d8xncMAdop/ncMR
+         iDSWOdWDf4pA4eusiz6jPy6YoDwgQvW9wzkoOD96l0SRfYzfo+i4NQBJ8dfraGnR1jgC
+         MI4JRBQjRA0MjOd5MHoNsoTOBXnoun3slz02TQ/SDMDKSj3m92BMNoDigSoZB/yWCjhX
+         eUuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776185383; x=1776790183;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FUoYKq79bxvjyxgdJrulHpNt50LqCWweYqk4dEJlv4E=;
+        b=bTWp73h0D0CwRC05NdecPLtizgk3h/1z1F8LaLCU724gkDi1aUcpCwzSK+xpKJ476o
+         KP2gOvqL/Ec77lDbZ/8LJ1kEU0pcjmSiCukZvhUrgGDni27Mf87RAQRSW+0/+oataw6l
+         kbOM1r3BxbWMApC5xALz13Inye9G0ZuX7EK6Y8OCR6wdSQu6Z++V0KOyNTcBwCMAGqZw
+         or2zw60aXE3Z5G8E+CKES8ibeeOmz7JMg1dbqAizL9FqBXLWo7N+m8Gevlhn9CwG15/r
+         CfF8K/f63Rb162wkS7+DpoU6sLVV9gWzEdhFjGSkD+JqFIJPdnEIsHarkfxSxW/VrToA
+         Kyag==
+X-Forwarded-Encrypted: i=1; AFNElJ/29HJeKV4FsDeenafrmNHZXwi7gxwrgio6qA/SNukDbquvcw0aE41GdSZ2KrO9xThnidfa79Rhkg==@kvack.org
+X-Gm-Message-State: AOJu0Yyhh7w28GUm7LCzJCAI4NeOhWywfevyaLlowV9+puw/GEwasdw2
+	1WQRgIfb1kFKpD6Sva2gB+wyLIRVDJgzu3LwOkks5hsvua1IFUfA7Sx+
+X-Gm-Gg: AeBDiesQhvbiFQIwK2LkFMNVeSFMWCVBIUWiHrZh8EI4dlILzEDLrDMCKUv3UdZCC8r
+	TC4WiiSaKozPsbzRGGpky/x9Dgcp0uHHS7MV8iQnEciwZ1jzpEHsSFGAVki4X0KCyw0SeFa4DqB
+	FW67Z6L1Xq1n2ylZ6uHnW6OTzXgXAuyK2QlkSySn6pAdqVBZpFqVQNHxszKz8mgKnU9JKqdmtmK
+	qMfsjgUz4RxD1prR8UfGBlA9F6Zg0cTyEu2tc85WJ8ZvuG6IRGb+KUlVD8taJ6a68+b0u4YGdz+
+	DNlUzvFw2pLvg9YC43NCrFNNVMyGHA+zjIII69U/gl1cX9ykzGvZeGi2AqBl0FsRS5YJ47+BMOl
+	PfS9cJs/85wAK9UWKM/Xr/V8M/cyfYyverHiU10ECsSqWhwpdEvCW4Md3FGFfYt45nv1WIBohF+
+	s6DaJmVJGgOFELQGPy
+X-Received: by 2002:a17:903:faf:b0:2ae:3f3f:67c4 with SMTP id d9443c01a7336-2b2d580f23cmr111214755ad.0.1776185383117;
+        Tue, 14 Apr 2026 09:49:43 -0700 (PDT)
+Received: from ser8.. ([221.156.231.192])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4dabca4sm153358325ad.15.2026.04.14.09.49.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 09:49:42 -0700 (PDT)
+From: DaeMyung Kang <charsyam@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Youngjun Park <youngjun.park@lge.com>,
+	Kairui Song <kasong@tencent.com>,
+	Chris Li <chrisl@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	linux-mm@kvack.org,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	DaeMyung Kang <charsyam@gmail.com>
+Subject: [PATCH v2] PM: hibernate: keep existing uswsusp swap pin if re-selection fails
+Date: Wed, 15 Apr 2026 01:49:36 +0900
+Message-ID: <20260414164937.1363887-1-charsyam@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260414143200.1267932-1-charsyam@gmail.com>
+References: <20260414143200.1267932-1-charsyam@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB9169:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d2a3948-40db-4aee-a732-08de9a4537c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	fi0P7M5fV/oHPMBFYpGmjZljo1FPVg2vJRY2e9NxtxUP3VNptBZkib0B6dWwA4Xh2Npk9CYaCy94rS/b2opQF6VlRlg9ZJ91JnIady4PUnHR00tBFZa6qKq7Koqj7bzt9t4H21zhf0uR9fZVkTEQQwP3D1OPNwCcWX6Vg9oA3WuZDgtXDOVi7k/0j7QJhNqkLV0b936VFszFycrRQSmPq5ESfW0wVEQZq6DNaO/yS43rjkd+wPQPA4GOK7tjP3Ohv3TdtVj6kA+bSd80nP4kZzELTxFZoKLbR3rbp8Z6M9EJ0T7I+6HrpwrpM7+8+km1tCU+JVuBGLFclLviJdgZAqCugDv2lPkgsuAxz4k/zjaltscKFIHFgTAMZS3L+CpuTmB/I1EgOuVmVtUartwakEPjbLtVhY1WgRM7VQ8sbMKear5PtLkfiFXxrf0S2MA83fVhT0KGBFpjKGYquhu3zWonmJx5Rnmx3EsoHPC6Z9T6zvffASu2df/ayH3a+YECS7o4rOwJEroGU9jEDqQ0iXKwyOsnbeTBj6Xx3fXIRVylO8iPRPcXa/qHSZ+TbiX5xZnOM1295AUgT8hjhS6pF1s+0MsxTUhJshK3A/cQB/PZ+z5RJiVr6vXuIXGpMIHzqnIglmRDwauS3utimFmLIVhaheVxfGC+iTrsnRr7PsFtOWyzYc8EZ6+eTrl+FiWcaNz5KTtUsgbO8fx6t+IZSzvh6vGQsDfVVeQd6UXdYCg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GwrIOc3J/sqZGExdeBe4LNcbBqmcaANc/F2sVcl1164NHqEDx+meI5WP09Vl?=
- =?us-ascii?Q?BDbQYdtxrT+pO/ZGSxDoktlIPrKOc2KL9lJ/Xl9iaIaD+UjaNkcTsKjLq9w6?=
- =?us-ascii?Q?kduvZRCj8Sgd2wLWEtVsSzW/gz4Y7V1xfvkefP3S0iXTznhdbCbuXg9R2T5Z?=
- =?us-ascii?Q?HBPtYgXmMvJDrJy7mMubBdmxifYKqgsQAxOUJ9JZvqyyqoC7jhjZhUqry89a?=
- =?us-ascii?Q?51hqybAYKQG4O18Ouuz1J8ANFzPeDXuxfuaomQ0iQaE1EZm9sg2ckRScqUP6?=
- =?us-ascii?Q?RwUKJ8kP17Dg3lJ3JiZsiImIS90Bs/ketwvpYRrRMw3SldQ1t/9EwzJL7mhe?=
- =?us-ascii?Q?fA6nI3/aXU/czmU1p5c2rJkY+F7q871qhGcem3H/JdtESGtZnHmI25o4FMIW?=
- =?us-ascii?Q?K9YkZkk/OIXgBs1Fla7+PSsXdrriDM44yRdQ7dEFMgedMQ609etwmIK9Ju2j?=
- =?us-ascii?Q?jpPQCNmtht6YFkQE0aX3DKUMxl/sTMUFqaLhrV77XUeLsVAqBB19C6LSYPtT?=
- =?us-ascii?Q?YTcKET/nOMXFwDNz/K8YFeCRnDNDaN/Ld/6EH1GEPhKTGlGSTPHXGMqvHejn?=
- =?us-ascii?Q?ukgm8IDkRDQrHTK0CCuNGR4COgc2tkBNJCKNUJv3dJn4vShQOt41AbM4Sdg2?=
- =?us-ascii?Q?/bUA3jIFYrM+tyvPI1ENTOiIEkpj8/whDUlAWQgQ4lu8ETu2OT06bqbXqO6d?=
- =?us-ascii?Q?HdH4vCOLqdNE2DCYOXWooyAlRtEjSXMtG4axhO+idEfZGwYdX6iNF1i7ShIr?=
- =?us-ascii?Q?uDB+EAHWJ+h2q3OQt+pawbbpIhwrwciFYJG4iwkcCWc4yBuxkare4m6uS80j?=
- =?us-ascii?Q?kyO5PHIhaGgNusui8Y11kIEvaRApdZtxH/BjSsGnVMREMvoLHk13aItfgp+6?=
- =?us-ascii?Q?I4j73FB9lKpGOJZ3Ea+JNcm9eChAYDk8FjQMD2tM0IhIce/ngdwFG9lEAyJQ?=
- =?us-ascii?Q?CMf3t9gbD1RWs09qjMuSEyJoLlYqfILVBiK+XiSnMp8VW4vDNXLftcvqxxRo?=
- =?us-ascii?Q?3bGSMwx1l7HPcemmP0NM59nbjr2Vl/EG1cFA1SIAFacemkCZWdoqcwQ3YrI2?=
- =?us-ascii?Q?C10XDYgHkj2eDgR5hPL82yBYJ8X26eaxBgCl0ymW/GoQ7AO9piRQN6uQDU0Q?=
- =?us-ascii?Q?U3krg7VVO+vDawyIO53iH5+adwu7ggenUn8yyzgmkQJJkGy+QHGTd/xPJzzv?=
- =?us-ascii?Q?RWXqT8NhOCpnwv1NnhFbanFTjPtFdsyu18atIgjh0dpmMvmXZy6nkUEg/wEq?=
- =?us-ascii?Q?s1sg+Li1pw9zfwtt//0aTwwHiEc+A7soOwGkWHcl6xjIcX0P6bqi4ih1hpbx?=
- =?us-ascii?Q?/oMGJGZ/1anuw/iYvVoI8Un2nW04hvZT2FLf4CZrhAyjyjFrGDNfEzuvzlKX?=
- =?us-ascii?Q?u8hyhg9FgRc+ZaKNOKOBXB5inHrjnYbglWuRa47ic/lEcRS+pmvfJf2ff4S2?=
- =?us-ascii?Q?BvjRod1Qf4LqTQrWlkwm5KTjC7k0LZh11O0HSjQf4zgusuSZ7JwBF5U112mW?=
- =?us-ascii?Q?0vRPUTtFD/kzi5TD78V33g8G6wsjXQJ+3fJI93yJq9g1PMJ65xbI8aHThyLV?=
- =?us-ascii?Q?CgqlZrLxHWcwXrTunkQTQphQql+o9g78fOeLmRkgfpJFRiFqT8DxH7EBQX3S?=
- =?us-ascii?Q?xEsriz51rsKv6MyM6ODmERs+07KgDynmBgwsSCqJD/qdRKXDZxXMo0jqwODw?=
- =?us-ascii?Q?UmOp7/cyidlnFrJiTIWKkC0W6wevbC8NMTXzVqITzUbUCw4X?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d2a3948-40db-4aee-a732-08de9a4537c1
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2026 16:45:21.3196
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: okEzDO3JM4KoLacEjs+QV6Srfj4cYzUr48CGkKKaUPQw78yI5+L9Ou4SAx475Gwi
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9169
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: g86sfsatppsghso9kzfhcxntszbxjjyr
+X-Rspamd-Queue-Id: 8AAF3140014
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0DBBA120010
-X-Stat-Signature: j6qsapb8ewzpn3uumw8senri9occ5dn9
-X-HE-Tag: 1776185130-972019
-X-HE-Meta: U2FsdGVkX1/wUrx8hrdn2fM8rwpdi5U42O4pp+PLsn1d8NKQV4wWyY5Xa22wpaymbD+1ASUbTwGQ7s17naHtljwUJ85++cMCgkMHQqjSVEZc5zKUUXVgSYvEPOY8BseWI+Gu/vNqS2aT2kIdqX7OeTHqn5tvn9dJ7REjjT8hkjdKYAbSPKRZhOIe3V8RsvV7aNUdVdsUD6zg0l0QMqdm1+TCHdWrw7VddHt3q3egGDTdkOxO6D1vJCqqQm9TDQPB/Xzlxg1vngLwwC9SCRQJdFRX+Wg5KelqnVjdUcJauIuisx+mThmqi/BjsI/snGZcaM0aIh8weyKbMMohhtlXM3J7nROdzk5EJqRzEs3QiGyG5oLsEfISdJBuH8CYoYFJMVgkDwwhv7/K+0jDlYRWmHGjYlsSKD9B++uEQsby/+fd8gYdOrY53F/l20/Q5q//K8buVpQn8mQjEA85o+O4akteWgb+Qdi0uwTrdY1ThfFpIf81zfTDx1o249t3bIYB8or25DzN4eGH2hhUh94W6zKy5+QNSBIVxLoIXsjZExS5qnkqNsLbV6RqvUGAtBuWI9G1+MxRdK1jBZkUNhhthOpeWplAmjLSnbZRdU8kQCX1Qbg7LEyuButTh+aloQqaS6ytWEuFJQ5PgBhAqINtEKy/PoIMZwQcexCquU51R5q4kTvr9DYf1mm31uYVdUFFNPnrCqUfypQfRHQ6wLqDhEKZTs/wmunDt2LWoUAzt21eZcXZLfnkjh+iE/QksafTp9Gfd5Nso0FYfwb4pzZeN9Uk95GjBZOI33EkI2ZeANJRY/MfbfR7cNifEcqOXrK5/hhdNgIwRv4bmEG6o0lIdBKV/s+lQM1mhSx2miuotXHjT/JEzmbXIVGcKTMnwcxGhVwcqbKscAE7czgX9NoHF4xveZz22ru1AREUPXOTG4yhal5IfIjR0slJxW9nurNYR4cEu0hbvK+jWuc7U0I
- uUzPZQY+
- gZhkPkoVoRqFHFVQz4GOu4iTeeoCHkdxDrdz/zFVufXd0PFN0JLwDtWxGGD6IFlPf+9NcsJHEQJv9Wz5wopN5vEuFcdVSU5lfuq6vASohZo+BUFqsJoBM+s4fOM9q+KrGmUUcK1m32q0ZyrRaJINP2d8C8wKNchkT3p8gP1pb0xpEZWSFEvykJtif2sOZ4RByTBMQ2hx04gdH6wKpnCsiFtNv82QGzVvzdHIyd6KX19PQp9t4dTprx6M4sfYsx9gmQ7ql9YY1RcVinrJCpnhHeuU9lWdU2O2G1n6Zbe/dLKw5dVwR+AYjSEQ49qvQeMFJJJONNMLFO/wELqneG6ionDiBElhesWyJm/dw0WYVBhZZ27N05g42xrylrg==
+X-HE-Tag: 1776185384-542071
+X-HE-Meta: U2FsdGVkX1+SbCpB9BXpvwtbmfxsVILpLvTq7E1gu4+jDyTbK6nHrXHXeBHgmpk20i4FvQNt3wg4BhQMPcUQc9R0tNDO/P8eJmacTuZJp4+d+C2Z31kjoGsT4mC6uB9NLnFFOsufVFvjUyTl/8uslKS2rTk2Udo9Rttd9unVTwszpDlypPl5y5IDDwpu64QFS5BS33M3cUMxgYQOevSmA0lQXNtol2iNtkbqtOEzrt2XN5B/0849alOM5Tdp5qiGKmvFclFANZ/3DP6d/2xoXaaTKJbYqQbCym32HVxvwyx2NvIXXS5F6kZd5ECsLk8GlHORqsU6os67V84KHOdFZJaaxnDK0DX4Eze5B0NL+d5PnUOflfZefQOCnp5O7tjh+kijwvBoeN8FEuFy31fqePbrOo7KU6VX9VTlwC/qTqQJ8AHA0KwI+52U0vWX62FDDbNyzDGmZP7KLqxrtImvzxblNVOL0QzckjiLNfJNiT/gLF84OvSOo7GiKocf9EMMiI21eqyEPMVcCOPh8WsCXi4hOifTXlhMOKDT3AF8JStNAvXgpMUWWoJi3rS7VR2BofJ8rgmWxBgI4fUlVveiYLLIRNnXN7DIqjebS0xGL75TDKRB/zlepi4YZfNSLAAk1bpM2aDxCdLLoQ8FYhdoHAXy29OrV2grsVLLCvjiAtmZF9Pw3cZzJghB/y6R6b4Rg+7ZwCHs80b9e7wcxjpO7cKY3Vo+696d5cwArsGulVgQ42lQxd/UXcjtJA9YaN56+LCWDs6tUMRg3oyjzOdK2+UiflLkwAgHYTTzrSYixnMaRw+ILf/VgjYA5QoxB/erVwJ8LD1MKgX5nfIXHoV79byukjU7DT49RD1CpaOF6WNfnYBOW9E4CAOxpjYHjiC9JjWIkK77Sd1TlZgEKIRHTLE8hOml/FhXlG0hGc54KsPsxqGAAAGchVjuiNeXu0loy53P8l2saaljarquCbS
+ 4aYGIlfs
+ q3IWTakXVwhv+U16HU/V71C/jQZPFgT7/lxJrz/aLx+UTkOvz5pGItxhiEX3lh9OGNYTvAbmqtIWxopkuPesvW4Vbg5O6xypWV8ivKf/h9QAjptjw9NYU3PhJBBKJJR7rql5zUEOFqYSoz5B9ybM5SAp/wnCbfjVuuQm388a1h7aRwe2zTwkSvYgiBLihnmlBtM2wdEcAtvwwOxMIQUG1XbKt/f6uXFKfwJhC8331qE75snF5k+bD/9aACQuVZq8okyUQEJw17Lhi+VmhWfxktxdJQhMcfwhYGlRcNo5F4L0yZuvMR/sGhl6qkH/NOdRJ9kCbgpWz5rOc4pWvZr9MkK50/I74XmOeZ0KA4LS1bvHHbxHJyxq43TELY4eu3LGefQ2EFXbkPwDjK5ds2d4ywBqD6+anhrk5wLG0BrMPLkbYoTC8cwkvvMCZrJmdN7U8DBG+ZPcHN8x3TF4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,31 +129,336 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 14 Apr 2026, at 7:09, David Hildenbrand (Arm) wrote:
+Commit 5b2b0c6e4577 ("mm/swap, PM: hibernate: fix swapoff race in
+uswsusp by pinning swap device") introduced SWP_HIBERNATION so that
+the swap area selected through /dev/snapshot remains protected against
+swapoff() for the lifetime of the uswsusp session.
 
-> On 4/14/26 00:28, Matthew Wilcox wrote:
->> On Mon, Apr 13, 2026 at 04:51:28PM -0400, Zi Yan wrote:
->>> On 13 Apr 2026, at 16:47, Matthew Wilcox wrote:
->>>
->>>>
->>>> Is this true?  Does MADV_COLLAPSE refuse to work on writable files?
->>>> Should we delete some code here as well as fix the comment?  ;-)
->>>
->>> file_thp_enabled() used by __thp_vma_allowable_orders() refuses
->>> writable files with inode_is_open_for_write(). That should prevent
->>> MADV_COLLAPSE from working on writable files.
->>
->> That sounds like more code that was added for RO_THP and should be
->> deleted?  See commit e6be37b2e7bd
->
-> Sounds like something to implement on top of this patch set?
->
-> But with the added dirty checks in patch #2, maybe it's trivial to do it
-> in this patchset already.
+When user space issues SNAPSHOT_SET_SWAP_AREA again,
+snapshot_set_swap_area() currently drops the old pin before attempting
+to pin the new swap area.  If the new selection fails, the ioctl
+returns an error and user space is expected to abort the session.
+However, preserving the existing pin in that case makes the kernel
+side more robust against a failed re-selection, while keeping the
+existing userspace-visible behavior unchanged.
 
-Can you two elaborate? The code from commit e6be37b2e7bd is moved around
-and replaced by functions like __thp_vma_allowable_orders().
+Implement this with the existing swap helpers:
 
-Best Regards,
-Yan, Zi
+  - look up the requested swap area first
+  - treat re-selecting the already pinned area as a no-op
+  - pin the new area before unpinning the old one
+  - leave the existing pin in place if the new pin attempt fails
+
+This keeps the hibernation session protected against swapoff() until
+/dev/snapshot is closed, even after a failed attempt to switch to a
+different swap area.
+
+Suggested-by: Youngjun Park <youngjun.park@lge.com>
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+---
+Notes (not part of the commit, stripped by git am):
+
+Changes in v2:
+  - Drop Fixes: and Cc: stable; reframe as a hardening improvement
+    rather than a regression fix, per Youngjun's feedback that the
+    current behavior is intentional and there is no concrete
+    user-observable harm.
+  - Drop the new repin_hibernation_swap_type() helper. Rework
+    snapshot_set_swap_area() in place using the existing find / pin /
+    unpin helpers as Youngjun suggested; the change now touches only
+    kernel/power/user.c and adds no new API.
+  - Update the subject and commit log accordingly.
+  - Add Suggested-by: trailer.
+
+v1: https://lore.kernel.org/lkml/20260414143200.1267932-1-charsyam@gmail.com/
+
+Baseline
+--------
+This patch is generated against linux-next at commit 5b2b0c6e4577
+("mm/swap, PM: hibernate: fix swapoff race in uswsusp by pinning swap
+device"). Mainline does not yet carry that commit, and neither the
+helpers used here (find/pin/unpin_hibernation_swap_type) nor the code
+site this patch modifies exist there. The base-commit trailer at the
+bottom of the mbox records the exact commit.
+
+Testing
+-------
+The behavior change can be exercised entirely through the
+/dev/snapshot ioctl path; no actual hibernation cycle is required.
+A targeted assertion test is below; run it as root in a throwaway VM
+with two active swap block devices and one non-swap block device
+(three arguments).
+
+Run inside a VM on linux-next at 5b2b0c6e4577 with this patch applied:
+
+  step1: pinned active swap /dev/vda
+  step2: swapoff blocked with EBUSY while pin is held
+  step3: repinned active swap to /dev/vdb
+  step4: swapoff(/dev/vda) succeeded after repinning away
+  step5: repinned swap is blocked with EBUSY
+  step6: bogus SNAPSHOT_SET_SWAP_AREA failed as expected: No such device
+  step7: swapoff(/dev/vdb) is still blocked with EBUSY
+  result: pin preserved across failed re-set (hardened behavior)
+  step8: swapoff succeeded after closing /dev/snapshot
+
+Without the patch, step7 instead reports
+  swapoff(/dev/vdb) succeeded after failed re-set
+because the old pin had been released before the failed pin attempt.
+
+What the assertion test covers:
+  - SWP_HIBERNATION is enforced against swapoff (step2, step5);
+  - the success path moves the pin from one active swap to another
+    (step3, step4, step5);
+  - a failed re-selection preserves the existing pin (step6, step7);
+  - the pin lifetime ends on /dev/snapshot close (step8).
+
+What it does not cover:
+  - the snapshot_open(O_RDONLY) initial resume-device pin path;
+  - the full suspend-to-disk image create/restore flow;
+  - concurrent swapoff racing against SNAPSHOT_SET_SWAP_AREA;
+  - the type == data->swap idempotent branch (not externally
+    observable since it intentionally skips the bit toggle).
+
+A normal sysfs-based suspend-to-disk cycle continues to work; the
+find_hibernation_swap_type() / pin / unpin paths themselves are
+unchanged. Build tested with allmodconfig and run-tested with
+CONFIG_PROVE_LOCKING=y and CONFIG_KASAN=y. The VM was booted with
+oops=panic panic=-1 so any WARN/Oops/BUG would have halted the run;
+the full test completed cleanly with no kernel log diagnostics.
+
+Reproducer (C source, for reference only -- not added to the tree):
+
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+  * Reproduce / verify the SNAPSHOT_SET_SWAP_AREA pin-lifetime behavior.
+  *
+  * Run only inside a throwaway VM. The test manipulates swap state and
+  * leaves the target swap area disabled on success.
+  *
+  * Usage:
+  *   ./uswsusp_swapoff_repro <active-swap-1> <active-swap-2> <bogus-blk>
+  *
+  * Exit codes:
+  *   0 = expected (hardened) behavior: pin preserved across failed re-set
+  *   1 = old behavior: pin dropped on failed re-set
+  *   2 = setup error / inconclusive
+  */
+
+ #define _GNU_SOURCE
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <linux/types.h>
+ #include <linux/suspend_ioctls.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
+ #include <sys/swap.h>
+ #include <sys/sysmacros.h>
+ #include <unistd.h>
+
+ static int encode_dev(dev_t dev)
+ {
+ 	unsigned int major_num = major(dev);
+ 	unsigned int minor_num = minor(dev);
+
+ 	/* Match new_encode_dev() / new_decode_dev() in the kernel. */
+ 	return (major_num & 0xfff) << 8 |
+ 	       (minor_num & 0xff) |
+ 	       ((minor_num & ~0xff) << 12);
+ }
+
+ static int get_block_dev(const char *path, dev_t *dev)
+ {
+ 	struct stat st;
+
+ 	if (stat(path, &st) < 0) {
+ 		fprintf(stderr, "stat(%s): %s\n", path, strerror(errno));
+ 		return -errno;
+ 	}
+ 	if (!S_ISBLK(st.st_mode)) {
+ 		fprintf(stderr, "%s is not a block device\n", path);
+ 		return -EINVAL;
+ 	}
+ 	*dev = st.st_rdev;
+ 	return 0;
+ }
+
+ static int snapshot_set_swap_area(int fd, dev_t dev, long long offset)
+ {
+ 	struct resume_swap_area area = {
+ 		.offset = offset,
+ 		.dev = encode_dev(dev),
+ 	};
+
+ 	if (ioctl(fd, SNAPSHOT_SET_SWAP_AREA, &area) < 0)
+ 		return -errno;
+ 	return 0;
+ }
+
+ int main(int argc, char **argv)
+ {
+ 	const char *p1, *p2, *pb;
+ 	dev_t d1, d2, db;
+ 	int fd, ret;
+ 	bool buggy = false;
+
+ 	if (argc != 4) {
+ 		fprintf(stderr,
+ 			"usage: %s <swap1> <swap2> <bogus>\n", argv[0]);
+ 		return 2;
+ 	}
+ 	if (geteuid() != 0) {
+ 		fprintf(stderr, "must run as root\n");
+ 		return 2;
+ 	}
+ 	p1 = argv[1]; p2 = argv[2]; pb = argv[3];
+
+ 	if (get_block_dev(p1, &d1) < 0 ||
+ 	    get_block_dev(p2, &d2) < 0 ||
+ 	    get_block_dev(pb, &db) < 0)
+ 		return 2;
+
+ 	fd = open("/dev/snapshot", O_WRONLY);
+ 	if (fd < 0) {
+ 		fprintf(stderr, "open(/dev/snapshot): %s\n", strerror(errno));
+ 		return 2;
+ 	}
+
+ 	ret = snapshot_set_swap_area(fd, d1, 0);
+ 	if (ret < 0) { fprintf(stderr, "step1: %s\n", strerror(-ret)); goto setup_err; }
+ 	printf("step1: pinned active swap %s\n", p1);
+
+ 	if (swapoff(p1) == 0) {
+ 		fprintf(stderr, "step2: swapoff unexpectedly succeeded\n");
+ 		close(fd); return 1;
+ 	}
+ 	if (errno != EBUSY) {
+ 		fprintf(stderr, "step2: expected EBUSY, got %s\n", strerror(errno));
+ 		goto setup_err;
+ 	}
+ 	printf("step2: swapoff blocked with EBUSY while pin is held\n");
+
+ 	ret = snapshot_set_swap_area(fd, d2, 0);
+ 	if (ret < 0) { fprintf(stderr, "step3: %s\n", strerror(-ret)); goto setup_err; }
+ 	printf("step3: repinned active swap to %s\n", p2);
+
+ 	if (swapoff(p1) < 0) {
+ 		fprintf(stderr, "step4: swapoff(%s): %s\n", p1, strerror(errno));
+ 		goto setup_err;
+ 	}
+ 	printf("step4: swapoff(%s) succeeded after repinning away\n", p1);
+
+ 	if (swapoff(p2) == 0) {
+ 		fprintf(stderr, "step5: swapoff unexpectedly succeeded\n");
+ 		close(fd); return 1;
+ 	}
+ 	if (errno != EBUSY) {
+ 		fprintf(stderr, "step5: expected EBUSY, got %s\n", strerror(errno));
+ 		goto setup_err;
+ 	}
+ 	printf("step5: repinned swap is blocked with EBUSY\n");
+
+ 	ret = snapshot_set_swap_area(fd, db, 0);
+ 	if (!ret) {
+ 		fprintf(stderr, "step6: bogus unexpectedly succeeded\n");
+ 		goto setup_err;
+ 	}
+ 	printf("step6: bogus SNAPSHOT_SET_SWAP_AREA failed as expected: %s\n",
+ 	       strerror(-ret));
+
+ 	if (swapoff(p2) == 0) {
+ 		printf("step7: swapoff(%s) succeeded after failed re-set\n", p2);
+ 		printf("result: pin was dropped on failure (old behavior)\n");
+ 		buggy = true;
+ 	} else if (errno == EBUSY) {
+ 		printf("step7: swapoff(%s) is still blocked with EBUSY\n", p2);
+ 		printf("result: pin preserved across failed re-set (hardened behavior)\n");
+ 	} else {
+ 		fprintf(stderr, "step7: unexpected: %s\n", strerror(errno));
+ 		goto setup_err;
+ 	}
+
+ 	close(fd);
+ 	if (!buggy) {
+ 		if (swapoff(p2) < 0) {
+ 			fprintf(stderr, "step8: swapoff(%s): %s\n", p2, strerror(errno));
+ 			return 2;
+ 		}
+ 		printf("step8: swapoff succeeded after closing /dev/snapshot\n");
+ 	}
+ 	printf("note: re-enable with `swapon %s` and `swapon %s`\n", p1, p2);
+ 	return buggy ? 1 : 0;
+
+ setup_err:
+ 	close(fd);
+ 	return 2;
+ }
+
+ kernel/power/user.c | 35 ++++++++++++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 9 deletions(-)
+
+diff --git a/kernel/power/user.c b/kernel/power/user.c
+index 4406f5644a56..e1ab85db2e95 100644
+--- a/kernel/power/user.c
++++ b/kernel/power/user.c
+@@ -218,6 +218,7 @@ static int snapshot_set_swap_area(struct snapshot_data *data,
+ {
+ 	sector_t offset;
+ 	dev_t swdev;
++	int type, swap;
+ 
+ 	if (swsusp_swap_in_use())
+ 		return -EPERM;
+@@ -239,18 +240,34 @@ static int snapshot_set_swap_area(struct snapshot_data *data,
+ 	}
+ 
+ 	/*
+-	 * Unpin the swap device if a swap area was already
+-	 * set by SNAPSHOT_SET_SWAP_AREA.
++	 * User space encodes device types as two-byte values, so we need to
++	 * recode them.
+ 	 */
+-	unpin_hibernation_swap_type(data->swap);
++	type = find_hibernation_swap_type(swdev, offset);
++	if (type < 0)
++		return swdev ? -ENODEV : -EINVAL;
+ 
+-	/*
+-	 * User space encodes device types as two-byte values,
+-	 * so we need to recode them
+-	 */
+-	data->swap = pin_hibernation_swap_type(swdev, offset);
+-	if (data->swap < 0)
++	if (type == data->swap) {
++		/*
++		 * Re-selecting the already pinned swap area is a no-op.
++		 * Keep the existing pin and just refresh the cached device id.
++		 */
++		data->dev = swdev;
++		return 0;
++	}
++
++	swap = pin_hibernation_swap_type(swdev, offset);
++	if (swap < 0) {
++		/*
++		 * Preserve the existing pin on failure.  This can happen if the
++		 * target swap area disappears before pinning, or via the
++		 * defensive -EBUSY path in pin_hibernation_swap_type().
++		 */
+ 		return swdev ? -ENODEV : -EINVAL;
++	}
++
++	unpin_hibernation_swap_type(data->swap);
++	data->swap = swap;
+ 	data->dev = swdev;
+ 	return 0;
+ }
+
+base-commit: 5b2b0c6e457765adbe96fb2d464ff1bcd3d72158
+-- 
+2.43.0
+
 
