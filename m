@@ -4,87 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 140EDF9D0E8
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 17:16:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79215F9D0EB
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 17:23:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CCA06B0089; Tue, 14 Apr 2026 13:16:00 -0400 (EDT)
+	id AB9626B0088; Tue, 14 Apr 2026 13:23:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A40A6B0092; Tue, 14 Apr 2026 13:16:00 -0400 (EDT)
+	id A91DF6B0089; Tue, 14 Apr 2026 13:23:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BA256B0093; Tue, 14 Apr 2026 13:16:00 -0400 (EDT)
+	id 9AD1A6B0092; Tue, 14 Apr 2026 13:23:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C9686B0089
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:16:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D1771A01E6
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:15:59 +0000 (UTC)
-X-FDA: 84657814038.06.A6A8D77
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8DE464000F
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:15:57 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lDiQZ3kP;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776186958;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AB136B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:23:58 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2B478E15D5
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:23:58 +0000 (UTC)
+X-FDA: 84657834156.27.885C832
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 13CAA10000B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:23:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kmak8lhQ;
+	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776187436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sdGaJ1kfPvwvrDDRsofvgKCgSPPMcVc4q17G+sHRwG8=;
-	b=BABY8cfoUlh6Wy1NUuWXbglBpcx85g2ZswHAvNt9EhPUCJ18FWhboqZX7ULtV+0753/x3e
-	wCuT9FsRDtKqBMw8NSCqnZ99qQ3ivWPZNfhpMG6WJVoUXK8l/kCT3gcOIfSJs6qx4ccpnM
-	W9uEugKtdl32FYSVSRLsPMP2yXayW/M=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lDiQZ3kP;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776186958; a=rsa-sha256;
-	cv=none;
-	b=rlNGz44ruaNAMTCGKKDLbtxG61j5SJvAKvGo44+nwasat/VAxLsrq7MlizfwUU/k7QCaOd
-	B0aS+qUEjtueefvOrZOjRloZvFxyjwpzoRknyYGstM+P+c3pMf41L1A2lSKLVnnfj7mO7c
-	nGTlFX2E6ddyrQkVPkx5OiSxmvroRP8=
-Date: Tue, 14 Apr 2026 10:15:50 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776186955;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sdGaJ1kfPvwvrDDRsofvgKCgSPPMcVc4q17G+sHRwG8=;
-	b=lDiQZ3kP1q4ljLOtXGUeSiDgZVrlt+imZNexfUnsxU8YhLd0XOmGT3pF3uPDUsOcutbWli
-	5ZTtF5pRjNh1RX0UPL9rPW9f6duLdOvWhexGPRDTf58BbbvLhT6pW9XxzFkUcmLusLBSjg
-	qZkttKYp+ZoKBxjOq9VWWerfHYKqDJ4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: syzbot <syzbot+1a3353a77896e73a8f53@syzkaller.appspotmail.com>, 
-	akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com, 
-	yosry@kernel.org
-Subject: Re: [syzbot] [mm?] [cgroups?] WARNING: bad unlock balance in
- lruvec_stat_mod_folio
-Message-ID: <ad5134-5FkAKDqtP@linux.dev>
-References: <69d54494.050a0220.3030df.0002.GAE@google.com>
- <ad1tV5WpFhxbQ86N@linux.dev>
- <358c60e1-fa91-40a1-9e00-84c93340c04e@linux.dev>
+	bh=dp82XmEr+jeti4TR19n6W0flGrbWCgKnTbsqPQVkS+w=;
+	b=zLaRIUN/SWNI0wQOcmw5JrcOggbqDK1/u9qrKBoFH6mUHfx0mPcYUSgZgJjj7qtDxe+rcx
+	kDo+I3zzzeEBIu4nwZ64SC78sSSh4RKSYDIvw3RerGNV7qlH2FvtLxbRQoMe8G0oKDKxXw
+	asH+YYawAi2d4CDKCEhcXqpj/hppnBc=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kmak8lhQ;
+	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776187436; a=rsa-sha256;
+	cv=pass;
+	b=rBoK0kEvnZaBK1XWed36wMR6M/1LjsLIF2dEiFxuocD5HrjNIxTmMl5vQkeLhJvH0FwH4y
+	1ck8pkjpDdCKnhJrBS10FRCiy7tc4ZFcK2EfdDOyRjJZ17IJIp5Jk0h4HHZBcEufvgcb7T
+	RkGr7cPmstqV4sxOGrMnG5vEFpbJPus=
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43cf5ad500fso4951224f8f.0
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 10:23:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776187434; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YA1K+3UuPARrfsGDG3VZMJDQqYhmFevngJvjJ14JzElWWvnclBzZ5XVo57zNexyAwN
+         4IDadz7OzQ/mVyPLhghGgNJyqB878r7YU+5i59CLIC341Meh1r1BauvH5591v9bnPZ8s
+         NuVgcMkYkSyZ3ODJNs2FwIoDvDvqEHrc90q0AzTHYecnIOwyC22rfpGe+X4ap+rZAGq4
+         QFvLbd2S0UiKRkgQ8Ymhl0SJDaq1HppqqQaUsO6s0MDxjuniMlUbk/8+RXnQh2x1A/M9
+         uQbC8y8Cn1W1dsvVyxmD/2+2Hp1ZYTiNfIf7xFNoDNrVJr6j1p73rXzkidfXEeJKV9rY
+         xkIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dp82XmEr+jeti4TR19n6W0flGrbWCgKnTbsqPQVkS+w=;
+        fh=zTCvo73QbLqTAeBwo/ZoQaVkO5jHabxNhz/DtUvxOOc=;
+        b=THETPpQXhPMSQqF6HqevGEuO+yrgJ1jtPLWyEXMXLwLtXjtzLAkiiNMG6szdesH1Nj
+         CgwrZx4Zc6u0oOgEqvAFfSDB5qYfUVLc8XYDKKlrAQ5InyaCrEGPGlyUflloKkUgLBz0
+         ylipNPzr1DtjPAZXkx46osgu4vlgFVCoitDcK4CThsKT/NmvOiyuKlC7zNJFP18XBd9s
+         qMvGqUWB8ZeM4qFR1XAejAFPUCRzRUdxfZq7f7+ZeJTbJc9hborYELQ1BDgEvRXjaVkE
+         B93KBbPUUKqs0WDzpyD8uJ2pwDiWGER/TSlXZYbEOhJtAztTpFBsPrdfgqlqLdrpKRMT
+         bFjg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776187434; x=1776792234; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dp82XmEr+jeti4TR19n6W0flGrbWCgKnTbsqPQVkS+w=;
+        b=Kmak8lhQsmfBzvAnocOGzK8bLxCq1wo3m2EyDaqVrj2Up8KLXgcss6DCFnM+qvoFA0
+         vRF6rMo+2noud+zYpuZoayI0yOIhVrLL81yH6S9/+g7HIHJi5gi37Myg3NxOW5T7w8hy
+         GRnix7EQ0vDngvSglSUB+4eYvD4e6FAnj6p+ev9r0xkvcY8Z0qQRXJoWff9wVczXhopz
+         TJ00nqnEzD0AGYLuXDjMG8IaUdxYzPsyn7esfRb/UzJqAI/zXKRWWE7Myrgnanw/25YT
+         ITNaW4oDGClKX4dwueCs3a5auyYhUOn8sdZB1mz01PKkORTiRVP4EC41YqezP0+tuM0K
+         JESg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776187434; x=1776792234;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dp82XmEr+jeti4TR19n6W0flGrbWCgKnTbsqPQVkS+w=;
+        b=fPPdd47GjCEfSvJXtKGPmrsAIyTb+vyFIFkhV5luRZKp7sIXXNjEAzE4Y4RXuVbNSn
+         +P8oCETxFU2xHuWnHIzW2eM83yWx1nLkMVg+svAjuri2CEkmq/hvtH4W/xSv3LjCQG11
+         pt+3Sl093MmTF7fkOGFM6YhJv14Wj79srrIQKJQHws7zhkVYZvGGull0V9u6cyMzOMwF
+         aOWSYQK6F1IqEpMYs0iQhWnLssQjyWiNy4z0gftXpdHbB0Vul9IfIiKb04asoxBIZbFS
+         NfbIdC7XcEdYg6WOH7TKWGVDzkXknvWr86inKI89i9z/LPvbZmNvOp8V+TUzZMwdTWRd
+         pkKw==
+X-Forwarded-Encrypted: i=1; AFNElJ+0/Qkx/7IN+q5ngSrFkj5zpFAn5dcfjhxrBu+BIqiCNU3lMQAPwOwSOyHp1iMLq1kpqw/GLqvVIQ==@kvack.org
+X-Gm-Message-State: AOJu0YzXeDAme70d2H0XaaWfgQ0V31ANDI2h1XoTv1VHerdZl3DDi9U6
+	o+iQzFKAgWPctcb3qVh1ihQA/G8zD6yk++5NTYv4Q3Lz0tbKiH/8e63B8wdUl5FJyvszaAMBKEB
+	TN+LGWLEwKesEvKi/ChKtksq9cQCXztk=
+X-Gm-Gg: AeBDiessdIOAeBWuXfgIco6Ql4Shd2n7KJ1ZJyVjby5p3Z/AqOKw2swH2uAapaALLAP
+	pkOQjfCws0uT4Pp11k3qOhMehV3NnRFR9ax4IPmHEWUhdO72S6OB6jcCbv/UbK8i7mCv641ITO9
+	iAdvTLepcfXabn44h0aREsqoQjxJ0zmHTz7+u/CecDMEzOOYM4i2kQHbmDWAvZjNOUJqSM4obmG
+	Q8N8Kzq7huZMqATxC1IkCrTRZ/81qN+Kbkyslqnb9dR8MOsrCytCfJgtDPQCLzqZZnkvd2ijxfC
+	tpk47SBWyvwyjInO0p9y5yas3yVMAkz0hpYX/uo=
+X-Received: by 2002:a05:6000:2211:b0:43d:2f92:633f with SMTP id
+ ffacd0b85a97d-43d641f97aemr27791434f8f.0.1776187434027; Tue, 14 Apr 2026
+ 10:23:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <358c60e1-fa91-40a1-9e00-84c93340c04e@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+References: <20260320192735.748051-1-nphamcs@gmail.com> <CAMgjq7AiUr_Ntj51qoqvV+=XbEATjr7S4MH+rgD32T5pHfF7mg@mail.gmail.com>
+ <CAKEwX=PBjMVfMvKkNfqbgiw7o10NFyZBSB62ODzsqogv-WDYKQ@mail.gmail.com>
+ <CAMgjq7AzySv801qDxfc8mEkEsFDv4P=_qw0rNOTe0n+qy7Fz6A@mail.gmail.com> <CAKEwX=P4syV38jAVCWq198r2OHXXc=xA-fx1dk6+qYef6yzxWQ@mail.gmail.com>
+In-Reply-To: <CAKEwX=P4syV38jAVCWq198r2OHXXc=xA-fx1dk6+qYef6yzxWQ@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 14 Apr 2026 10:23:42 -0700
+X-Gm-Features: AQROBzCvQ2Y205EwGC1lGKq27IJDyjI-VHhfD6X3kasimC4o5zGPGqT7idYCq1M
+Message-ID: <CAKEwX=NrUhUrAFx+8BYJEfaVKpCm-H9JhBzYSrqOQb-NW7QRug@mail.gmail.com>
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, apopple@nvidia.com, 
+	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
+	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
+	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
+	lenb@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev, 
+	npache@redhat.com, pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, 
+	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com, 
+	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
+	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
+	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
+	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
+	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
+	riel@surriel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 13CAA10000B
+X-Stat-Signature: mudxyfmhk7tg4d3zz4fr98spuignbe3e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8DE464000F
-X-Stat-Signature: j557ormxth44gj8hfc9xcpohwmws3bnj
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776186957-467306
-X-HE-Meta: U2FsdGVkX18Pm8saBnNyWhnurqxcLu5cBD9svq1FNTX2sRb8q8DKzbYRcEZaTcO4SwWlXcpXc3YeDQAS28Wf4F4Aqt8L+CEDK9pIvpXcTYe6QsGSlcLr5iZamY5VyDUCillbZbNtaNtagIZJbupQL8xueJIslsEW8P+hUvfIbXOujIyUgAuX/8vPTPjaDo9YQ6q4pFDwxuw6GSQF6QRhLNPXjA9AR//ZDgUOSyqD1BTkAobFwxPV6S9szc9swiDZOdvWN508xD+lcv1q4Af8Vok7BvC+apiHg10P1gouejuSG3Tw7nr7z3sxRMSvALZMv5/s4DmEIpIltdmdbQTZ4HtRh9U6SXMoLCUg9mEQKmGvH0gdKML36pfJDE0cKZ0Q9S3yaLQm04YO0vesurT2arVBwKxG6Fl7ZoVekhUYezgOfdFswr82ig+ZWsgS95xVXyMRNfZL+nM/UoaNyzZ/ggFa/R790tQRusMFQ/zPewC+xRVJoB12SehRi7Z3egoa8MuYOMQpyhouJn672ad++EnTUmCvSxaiUdznuoqRvJy2pn4AOJm1VGJfuCyeBbYPGkUG+2HhHpRv1+LIGh91yOtUywWsEF7L+We4tf0E6fUfZ6E4of9/Ri7NlA8qUKSD1z3AWxFbWllwT0cWFjLU3KmbjcGhKqn4W/OHu8JnnrtO5cLtamDf2RVtO6qRLIZpCNOzPsp07MJX42aMZpglpxdf6vWLlqktj92GzH1g9COiJEItk+0w43Dz3zgM7XuXk3UxvEfLWg3DO1CTgFK6p44IaJiD5LMAJYFbAmUD18owQiXXMRenZj1QWHB8pGLJkkPDstfTOJ3VV09NkETvuyFtynqN/lKMGvJZ6qRlE8YjoAIHVWRRMZBk+Z/y5LuMkDyOiSXrR2/YC5NidcEZmPlQd6TjU7+MaDffS5WkT4ZTYrIEugA4EcM4Q5KVmHIwr6wCKA4n4MdXrnXveuK
- 6ld4MrHE
- Ch1g5BBbNCENYQkbkGY186a7INMlzTNLyrFrzSqs2t9bZlxbkAWISJqZ8MCGrMpZinUGyw6Pk8CTOCnCcVAIq1aWpx7cv6x89oADB33iH+d3KH3i7x3zeyPuOIyyWRzuHa1XeH6vlxal6ipHIj9CfaGMeROMmo2nThV4Lfqz6ODu9BoqyRqgzI7jvyj/XDpGLnuS8i9ZF+3zdn3DO1LctSR1X+KHOahbow7HEYpA3xgpud/XGGVMo6UYV+/vKkro1u7Hq8k3ebobBEfnUfyB0unJbjEv9Z4+gltbRc6Hrd4it/SwgIqHcbY4TWcVZsFTV2OzJ2s9LTLgTVF5AY59wZ1xWcb1kEWTL12/buhkQ5EbwFO2qkEjJNV4fOXzsvCVmwqJFgUWv2GtnUT9iTk7kQokLJVuRtRVJa6Y+KtJx2cC7eIPzz6XQxH/7znY2DFn2z3LD5smyhAEfu1i/i/fjmGZlsgcX9Stzw1ggcmVCDN4+XlX+PWuma/jC6qX5EgZP/IKrQaSqNpNlrY5H1GDHKPu8eUp0q6rPnSLj7PCON2Eks6QrwPbxkhPioSIKkVtCXsFU
+X-HE-Tag: 1776187435-568023
+X-HE-Meta: U2FsdGVkX1+fXETFBj8deyV029zP4yMT3b/z+p95irjlDbg4YX8WUFP6SUB8HWScE8focCzVID5WTc2BsPmI9j6jgWe9mzI2BAWTmUDs2iX3z5nkRkJELCbBAor/AzPYD8YWneulcrtsWHbhmGkwkkgqmrdp6cbDFFIvvo4EWofTuT2VO7P9h07WF5hTNSLeFVyvNVqM1NTPxVN3RBx6Mwr6BT/rarLQfQVZwboPZAkfy1McokwMwXnxAD1iZtZrbbVnDVLuWggFcQX1CoraK5+OUd6jR5rCe2q7ohPNXI0jOvV+8PGUUBI47I6oE+CtgDWYLMng5gMNz1pvWNkzZlzJNWJnxQ5wsl8llB0xJ970rMxeYszIOkSJyK3qng5x+VkmypfJ8B7E3O0xBUCJX9WAcOV6SFimH8xV3OiuNmyAlWhtEYUA9Yu/6efu/BkFC6aNbJmbsQRnl7LfTwsXYrCMHtBQZk78wYKo3bxdo+KqvgNoQ1FOXQL8ufqdVJs+BwR+5rN+sZdcZg1YuvVTEjDb8ubn8pxTbx/0q13FQU2vHVLrpRMvxT4V6H7ufhHLjTFrLS1an9nxlWNK+G7a3wFTYVfdEfmtAzIx0sTeEsOeI+whJZP7zkwLXDtSTM+Bl2ydGh/F0gy8IzaC+Ynla9ialpVSEyXKgS/b2tphsXAjxrn4x5VZhmgQEcBofCVRAUqFIUIgF3Gsj9TwGQdjEiGJ9gfEioMpTQwiHGgwOoqNB19EuvdugnjD5QRTLqrEPEgFzuyNnIJVvnS7sfrRAwTP+2brBFdgdmG5uMQJPZ4J53xZN9SmQFfwmd+MkH6g7brgIwJLruKHBbtqYC5JQLSLLVAJzEchzaJ9TfqE4txW2H6elxl/m0xsPUEUdSZ3eBPzXec/wifCRLUEKduYyfL6kPO3Xz+J2IXjZtPMZ7uCFGgVN23uzZOOClQANvYI4PrqVVEXq3ZEvnOwseM
+ FBosfpjX
+ DVAtvXpC8Yp4nQ39rLJMi3+hp/3irUGq1niYPuf9EM5iwqO4Js6xLvBBK6TMvj1z0mSHXsXe10Lae9cyjR9yXgYyPT87WxlEwCiD/uF5RU9TA0SUuORnHAaykVYBueDrTlg42L/eaXywL/u+rgOijFpM8HSpAHfdNXouZwRbTAI1fjCpuzbR4X6mRGyT/M/+WJoD+HiO/vDAnk+delVz1sekCCjjxrL4R+K5EmwSR8IGxXRO+EQEHbnh9QfTsfjIpkRqdA3bWBGc6klXx3V4p9tTev8RgKJb0KQ8lYtiC70C0IuQm/XvGsd9IIWA0xn+s0uKTgVmlP1zUg6DdBSDhL7h6qlatmS6SVQ3f9MOBg7vR1B4ZpFUcaXIFoLbhZpZGmQTAjgNZCQbEq3Mv4cL05S6j3ZPOCncWgeZybb1CZk49TUI65vjmkULJ9TX896Y5qwsgw2AYUj2Lx4qy3lDqgC7oW/BpjxkVlI4EG/1jrR36GKE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,99 +155,228 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 11:52:13AM +0800, Qi Zheng wrote:
-> Hi Shakeel,
-> 
-> On 4/14/26 6:28 AM, Shakeel Butt wrote:
-> > +Qi & Yosry
-> > 
-> > On Tue, Apr 07, 2026 at 10:53:24AM -0700, syzbot wrote:
-> > > Hello,
-> > > 
-> > > syzbot found the following issue on:
-> > > 
-> > > HEAD commit:    cc13002a9f98 Add linux-next specific files for 20260402
-> > > git tree:       linux-next
-> > > console output: https://syzkaller.appspot.com/x/log.txt?x=10d8946a580000
-> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=4e6c8be618ab359
-> > > dashboard link: https://syzkaller.appspot.com/bug?extid=1a3353a77896e73a8f53
-> > > compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> > > 
-> > > Unfortunately, I don't have any reproducer for this issue yet.
-> > 
-> > Let's wait for the reproducer. I can only think of cgroup_subsys_on_dfl() check
-> > returning different value in get_non_dying_memcg_start() and
-> > get_non_dying_memcg_end() to cause this uneven rcu unlock. However I can't think
-> > why and how that can happen.
-> > 
-> 
-> My AI bot told me that the cgroup_subsys_on_dfl_key can be dynamically
-> modified at runtime during a rebind:
-> 
-> rebind_subsystems()
-> --> if (dst_root == &cgrp_dfl_root) {
-> 		static_branch_enable(cgroup_subsys_on_dfl_key[ssid]);
->     } else {
-> 		dcgrp->subtree_control |= 1 << ssid;
-> 		static_branch_disable(cgroup_subsys_on_dfl_key[ssid]);
->     }
-> 
-> However, when I actually tested it, I hit the following error:
-> 
-> mount: /tmp/cg-rb-repro: mount point is busy.
-> 
-> Indeed, there are already many child cgroups under the cgroup v2 root
-> (the VM just booted):
-> 
-> root@localhost:~# find /sys/fs/cgroup -mindepth 1 -maxdepth 2 -type d | head
-> -50
-> /sys/fs/cgroup/sys-kernel-debug.mount
-> /sys/fs/cgroup/dev-mqueue.mount
-> /sys/fs/cgroup/user.slice
-> /sys/fs/cgroup/user.slice/user-0.slice
-> /sys/fs/cgroup/sys-kernel-tracing.mount
-> /sys/fs/cgroup/init.scope
-> /sys/fs/cgroup/system.slice
-> /sys/fs/cgroup/system.slice/systemd-networkd.service
-> /sys/fs/cgroup/system.slice/systemd-udevd.service
-> /sys/fs/cgroup/system.slice/system-serial\x2dgetty.slice
-> /sys/fs/cgroup/system.slice/wpa_supplicant.service
-> /sys/fs/cgroup/system.slice/system-modprobe.slice
-> /sys/fs/cgroup/system.slice/systemd-journald.service
-> /sys/fs/cgroup/system.slice/unattended-upgrades.service
-> /sys/fs/cgroup/system.slice/system-systemd\x2dgrowfs.slice
-> /sys/fs/cgroup/system.slice/ssh.service
-> /sys/fs/cgroup/system.slice/dhcpcd.service
-> /sys/fs/cgroup/system.slice/systemd-resolved.service
-> /sys/fs/cgroup/system.slice/dbus.service
-> /sys/fs/cgroup/system.slice/systemd-timesyncd.service
-> /sys/fs/cgroup/system.slice/system-getty.slice
-> /sys/fs/cgroup/system.slice/systemd-logind.service
-> /sys/fs/cgroup/dev-hugepages.mount
-> 
-> So it seems impossible to rebind memory in a production environment
-> using systemd?
-> 
-> Then I disabled systemd:
-> 
-> set `init=/bin/bash`
-> 
-> and found that I could successfully run the following commands:
-> 
-> root@(none):/# mkdir -p /tmp/cg-rb-repro
-> root@(none):/# mount -t cgroup -o none,name=rb none /tmp/cg-rb-repro
-> root@(none):/# mount -t cgroup -o remount,memory none /tmp/cg-rb-repro
-> [   65.903125][  T241] option changes via remount are deprecated (pid=241
-> comm=mount)
-> root@(none):/# mount -t cgroup -o remount,name=rb none /tmp/cg-rb-repro
-> [   73.405829][  T242] option changes via remount are deprecated (pid=242
-> comm=mount)
-> root@(none):/# umount /tmp/cg-rb-repro
-> 
-> So it seems this race condition does exist. Should we fix it?
+On Mon, Mar 23, 2026 at 1:05=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Mon, Mar 23, 2026 at 12:41=E2=80=AFPM Kairui Song <ryncsn@gmail.com> w=
+rote:
+> >
+> > On Mon, Mar 23, 2026 at 11:33=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> =
+wrote:
+> > >
+> > > On Mon, Mar 23, 2026 at 6:09=E2=80=AFAM Kairui Song <ryncsn@gmail.com=
+> wrote:
+> > > >
+> > > > On Sat, Mar 21, 2026 at 3:29=E2=80=AFAM Nhat Pham <nphamcs@gmail.co=
+m> wrote:
+> > > > > This patch series is based on 6.19. There are a couple more
+> > > > > swap-related changes in mainline that I would need to coordinate
+> > > > > with, but I still want to send this out as an update for the
+> > > > > regressions reported by Kairui Song in [15]. It's probably easier
+> > > > > to just build this thing rather than dig through that series of
+> > > > > emails to get the fix patch :)
+> > > > >
+> > > > > Changelog:
+> > > > > * v4 -> v5:
+> > > > >     * Fix a deadlock in memcg1_swapout (reported by syzbot [16]).
+> > > > >     * Replace VM_WARN_ON(!spin_is_locked()) with lockdep_assert_h=
+eld(),
+> > > > >       and use guard(rcu) in vswap_cpu_dead
+> > > > >       (reported by Peter Zijlstra [17]).
+> > > > > * v3 -> v4:
+> > > > >     * Fix poor swap free batching behavior to alleviate a regress=
+ion
+> > > > >       (reported by Kairui Song).
+> > > >
+> > >
+> > > Hi Kairui! Thanks a lot for the testing big boss :) I will focus on
+> > > the regression in this patch series - we can talk more about
+> > > directions in another thread :)
 
-This only succeeded because there weren't any active cgroups. Were you able to
-trigger the warning as well. If not, I think we should just wait for
-reproducer from syzbot before doing anything.
+Hi Kairui,
 
+My apologies if I missed your response, but could you share with me
+your full benchmark suite? It would be hugely useful, not just for
+this series, but for all swap contributions in the future :) We should
+do as much homework ourselves as possible :P
+
+And apologies for the delayed response. I kept having to back and
+forth between regression investigating, and figuring out what was
+going on with the build setups (I missed some of the CONFIGs you had
+originally), reducing variance on hosts, etc.
+
+I don't have PMEM, so I have only worked with zram backend so far. I
+did manage to reproduce the regressions you showed me (albeit at a
+much smaller gap on certain metrics than your cited numbers, which I
+suspect is due to zram/pmem difference).
+
+There are two benchmarks that I focused on:
+
+1. Usemem - the exact command I ran is: time ./usemem --init-time -O
+-y -x -n 1 56G
+
+My host is 32GB, 52 processor(s) / x86_64.
+
+Build        real (s)          vs base   sys (s)           tput (KB/s)
+       free_ms
+baseline     175.6 +/- 3.6      =E2=80=94        121.9 +/- 3.3    391,941 +=
+/-
+8,333  6,992 +/- 204
+vss_v5       184.0 +/- 3.9    +4.8%      130.5 +/- 3.8    376,192 +/-
+8,581  8,297 +/- 247
+
+(I hope the formatting works, but let me know if it looks weird).
+
+2. Memhog: time memhog 48G
+
+My host for this one is 16 GB, 52 processors, x86_64 too.
+
+Build        real (s)          vs base   sys (s)
+baseline      80.5 +/- 1.9      =E2=80=94         62.7 +/- 2.0
+vss_v5        83.0 +/- 1.8    +3.1%       65.7 +/- 1.8
+
+On both benchmark, I enable MGLRU, to more closely match the setup you had.
+
+Staring at the run logs (and double check with the logs you sent me to
+make sure it's not just on my system), there are some common patterns
+I noticed across these runs:
+
+1. Kswapd is slower on the vswap side, which shifts work towards
+direct reclaim, and makes compaction have to run harder (which has a
+weird contention through zsmalloc - I can expand further, but this is
+not vswap-specific, just exacerbated by slower kswapd).
+
+2. Higher swap readahead (albeit with higher hit rate) - this is more
+of an artifact of the fact that zero swap pages are no longer backed
+by zram swapfile, which skipped readahead in certain paths. We can
+ignore this for now, but worth assessing this for fast swap backends
+in general (zero swap pages, zswap, so on and so forth).
+
+I spent sometimes perf-ing kswapd, and hack the usemem binary a bit so
+that I can perf the free stage of usemem separately. Most of the
+vswap-specific overhead lies in the xarray lookups. Some big offenders
+on top of my mind:
+
+1. Right now, in the physical swap allocator, whenever we have an
+allocated slot in the range we're checking, we check if that slot is
+swap-cache-only (i.e no swap count), and if so we try to free it (if
+swapfile is almost full etc.). This check is cheap if all swap entry
+metadata live in physical swap layer only, but more expensive when you
+have to go through another layer of indirection :)
+
+I fixed that by just taking one bit in the reverse map to track
+swap-cache-only state, which eliminates this without extra space
+overhead (on top of the existing design).
+
+2. On the free path, in swap_pte_batch(), we check cgroup to make sure
+that the range we pass to free_swap_and_cache_nr() belongs to the same
+cgroup, which has a per-PTE overhead for going to the vswap layer. We
+can make this check once-per range instead, to reduce overhead. Even
+better - we can skip this check in swap_pte_batch() for the free case,
+and deferred this check to later on where we already enter vswap
+cluster lock context :)
+
+With a bunch of changes like that, I closed the gap majorly:
+
+usemem:
+Build        real (s)          vs base   sys (s)           tput (KB/s)
+       free_ms
+baseline     175.6 +/- 3.6      =E2=80=94        121.9 +/- 3.3    391,941 +=
+/-
+8,333  6,992 +/- 204
+new_opt_v2   179.8 +/- 3.0    +2.4%      126.1 +/- 2.9    382,536 +/-
+6,662  7,105 +/- 183
+
+memhog:
+Build        real (s)          vs base   sys (s)
+baseline      80.5 +/- 1.9      =E2=80=94         62.7 +/- 2.0
+new_opt_v2    79.9 +/- 1.7    -0.8%       62.4 +/- 1.7
+
+I would like to also point out that, some of this overhead is specific
+to the swapfile backend case, which is why we don't see this in zswap
+in the stats I included in V5. Zswap does not require this
+swap-cache-only dance, because in virtual swap, zswap only needs the
+virtual swap slot as the index (on top of much more negligible space
+overhead thanks to zswap tree merging into vswap cluster, no swap
+charging, no double allocation, etc.).
+
+Anyway, still a small gap. The next idea that I have is inspired by
+TLB, which cache virtual->physical memory address translation. I added
+a per-CPU MRU virtual cluster. The idea is that a lot of consecutive
+swap operations operate on the same range of swap entries - merging
+these operations of course makes the most sense, but sometimes it's
+not convenient to do it. The non-vswap, old design sometimes lock the
+physical swap cluster and expose the swap cluster struct to callers to
+pass around, but I would like to avoid that if possible :)
+
+With this change, we close the gap even further - exceeding the
+baseline in average in certain cases, but as you can see it's within
+noises so I wouldn't conclude too much out of it:
+
+usemem:
+Build        real (s)          vs base   sys (s)           tput (KB/s)
+       free_ms
+baseline     175.6 +/- 3.6      =E2=80=94        121.9 +/- 3.3    391,941 +=
+/-
+8,333  6,992 +/- 204
+cc_v2        176.4 +/- 5.3    +0.4%      123.6 +/- 5.4    390,405 +/-
+12,792 6,987 +/- 296
+
+
+memhog:
+Build        real (s)          vs base   sys (s)
+baseline      80.5 +/- 1.9      =E2=80=94         62.7 +/- 2.0
+cc_v2         79.9 +/- 0.9    -0.8%       62.1 +/- 1.5
+
+The reclaim and compaction stats tell a similar story:
+
+Reclaim / Compaction (usemem)
+Metric                               baseline
+vss_v5                   new_opt_v2                        cc_v2
+allocstall                 167,787 +/- 10,292           170,532 +/-
+15,185           169,782 +/- 9,903            168,635 +/- 13,526
+pgsteal_kswapd          6,932,143 +/- 186,411        6,965,962 +/-
+288,323        6,968,188 +/- 286,383        7,038,513 +/- 202,696
+pgsteal_direct          9,759,350 +/- 480,674        9,978,721 +/-
+765,543        9,899,698 +/- 480,781        9,845,668 +/- 544,319
+swap_ra                        82.9 +/- 22.6             5994.8 +/-
+2817.5            4976.8 +/- 1484.2            4718.2 +/- 1510.5
+pgmigrate               1,029,901 +/- 428,416        1,687,072 +/-
+399,505        1,260,451 +/- 202,603        1,144,560 +/- 490,177
+
+Reclaim / Compaction (memhog)
+Metric                               baseline
+vss_v5                   new_opt_v2                        cc_v2
+allocstall                 101,245 +/- 6,271            109,320 +/-
+12,180           100,207 +/- 11,053            99,223 +/- 9,905
+pgsteal_kswapd          8,817,264 +/- 432,519        8,436,548 +/-
+265,763        8,728,944 +/- 305,101        8,962,443 +/- 589,012
+pgsteal_direct          5,408,046 +/- 394,775        5,932,611 +/-
+584,873        5,419,891 +/- 551,226        5,349,352 +/- 601,655
+swap_ra                        66.5 +/- 22.8             8589.5 +/-
+3325.1            8954.5 +/- 2661.9            8703.1 +/- 1746.6
+pgmigrate                  239,410 +/- 46,014           277,193 +/-
+71,487           320,672 +/- 59,488          243,989 +/- 136,129
+
+You can see that the latter versions gradually restore the behaviors
+of baseline in terms of reclaim dynamics :)
+
+Some final remarks:
+* I still think there's a good chance we can *significantly* close the
+gap overall between a design with virtual swap and a design without.
+It's a bit premature to commit to a vswap-optional route (which to be
+completely honest I'm still not confident is possible to satisfy all
+of our requirements).
+
+* Regardless of the direction we take, these are all pitfalls that
+will be problematic for virtual swap design, and more generally some
+of them will affect any dynamic swap design (which has to go through
+some sort of indirection or a dynamic data structure like xarray that
+will induce some amount of lookup overhead). I hope my work here can
+be useful in this sense too, outside of this specific vswap direction
+:)
+
+I will clean things up a bit and send you a v6 for further inspection.
+Once again, I'd like to express my gratitude for your engagement and
+feedback.
 
