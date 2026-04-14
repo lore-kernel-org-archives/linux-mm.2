@@ -4,88 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00D82F34C79
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 04:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AEEAF34C61
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 04:50:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 479376B0092; Tue, 14 Apr 2026 00:50:16 -0400 (EDT)
+	id 16BC96B0093; Tue, 14 Apr 2026 00:50:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B45E6B0096; Tue, 14 Apr 2026 00:50:16 -0400 (EDT)
+	id 0CF1C6B0095; Tue, 14 Apr 2026 00:50:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2551F6B0093; Tue, 14 Apr 2026 00:50:16 -0400 (EDT)
+	id EFF686B0096; Tue, 14 Apr 2026 00:50:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 152F66B0092
+	by kanga.kvack.org (Postfix) with ESMTP id D50E16B0093
 	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:50:16 -0400 (EDT)
 Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C375E1B6E64
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:50:15 +0000 (UTC)
-X-FDA: 84655934790.11.A29308F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2DA6EC0002
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 93B6C58800
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:50:16 +0000 (UTC)
+X-FDA: 84655934832.11.3D37041
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E9B3B8000C
 	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:50:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ue0OyZPg;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O41lfk3t;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O41lfk3t;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776142215; a=rsa-sha256;
+	cv=none;
+	b=JLR/+pYwlOIZrjsfgNzPMGVYsvsdMm6tkFte7+iWHgqDve6L4/+V3R8GfqWcktr01zQvhp
+	O1IcPtMsv8JuA9nkn2qfr4DqNIuVC4eslii3Y0eY0r9gdmmYlbORLq4xoQwzgrucnEB1D4
+	iTWnXCSpYHtXo8DOR1UcF+s/B/EYd8Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776142214;
+	s=arc-20220608; t=1776142215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hZZJDeDMUCJ4duVMOF5j+VcTG1WGQDsVO6ZNF1QPLYg=;
-	b=0JB23qDIj07hvDfMqJdL1HNFQ0gBsoe6uxMaQNkLwt1rdvwjwqZ3BNHNv4ovVz5IC2QgeY
-	LQ3eyOEWOEDJLV9nMGDY8GKW/BLCZgrnFhZ9hQ5Ak6jQfBC6YOg03YPyPAOP6KWsJO1Yxv
-	eKRLopwjMEKEOQWZU48CI6z3agkPDvI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ue0OyZPg;
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776142214; a=rsa-sha256;
-	cv=none;
-	b=tjhk7h87ZWXBBalNgpR+HIQFaUJFogMMfuJR3/omG/isGRWGorcxzY+qCn7TDsXmQrrZHC
-	Bl9YtNu5C27tRGrLFT2DWo6V5Sp0SKcGXJIb8/uOXG6RdDa8g4VKwZqK58rjIUM5oyEgxj
-	gMC9JDVIntujC/32EepfplBhPUz+0qk=
+	bh=5DT7v+ZBeibD1+dU+3tKC5Zd3lQbqve/+9li1RJa/8A=;
+	b=3P5/v3eM46rDecBth05kZBmjfo1wDZ78VgRTZvoHY+/QskknaZHloTOiTPihxjmr7D9sBd
+	6jlhGES5Avmhyq7yVQoeqhtuUwPXeoDzqjOcigcpNnlDfmLage5B1548PmdsBJePUbcNJ+
+	QudPRlzTObjzWqvbtImNq4P3u6TMbYw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 986126012A;
-	Tue, 14 Apr 2026 04:50:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EB3C2BCB6;
+	by sea.source.kernel.org (Postfix) with ESMTP id 24C4B43B35;
+	Tue, 14 Apr 2026 04:50:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B871C2BCB7;
 	Tue, 14 Apr 2026 04:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776142213;
-	bh=tEc5S1Hg5SD+ndgy55KmKghFX44j7oOw2xQAGI0H8z8=;
+	s=k20201202; t=1776142214;
+	bh=Te4GL7YI2bga7ObPIqHKNdIOFUrcsNxgo3oTxgGUtEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ue0OyZPgAKphMQmfgufZ2O980EarRHbBfjq+clKfoxTrPNS/sRMGwvKWPR+k2nI6V
-	 WbaeMSQbSvFgXYglf9GY0PmVsD4bDWriarNDgdciO4K8MMIn81q9svdQtQ3XwQMLBJ
-	 ezf7jCkUo1KLEVrxgWjTfPC+taBkQBnQ8ugAd+i05ppnCM3ejkHXCO7TsdB6nzlHwR
-	 sZyUAaF/35qC/gIDoOZVo+WvIQA1vsoUwirXaZDIbj1UVfxC9IxyVmxo3cHDT60tkP
-	 XRdUqjKLPIsfS16Hy1PlbGnp/ffQbaYoGITIJ9fcDaVMfHP0BM7q/MmLsffDjmvmBE
-	 Q7BlFiOVf8e3w==
+	b=O41lfk3tx4LDd6ZI5YugjYAHTmDpBB3Z9WOtx/8ul230mVvea+IRclgfX9xOKMnuu
+	 yDmf15V5BDiXD1R+bZ77R7ARhB7U/vBqwGepCPGmxtqXpzWEjITNyg7ictoS3NQZdl
+	 MPISL4UKh2jZjC1YNFfj4btg1h7l3TTlTzyJOf3WowY8CxJLaEQe4ZCmWs/VymHLmz
+	 4cc0A2K/rllsNntuRK333jXn0m774Txn6ntISewsHSPnX+rcUTaVdTH1PQswb8OOX5
+	 2+Q9fb6uN1AMZ1PHvGJJXezj4OjYRrroNrfn58YXOmuOVv7a7is2F8eUQvzBUB4Q+p
+	 VeVw8Lc9xjSDw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/2] mm/damon/stat: add a parameter for reading kdamond pid
-Date: Mon, 13 Apr 2026 21:49:59 -0700
-Message-ID: <20260414045002.88110-2-sj@kernel.org>
+Subject: [RFC PATCH 2/2] Docs/admin-guide/mm/damon/stat: document kdamond_pid parameter
+Date: Mon, 13 Apr 2026 21:50:00 -0700
+Message-ID: <20260414045002.88110-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260414045002.88110-1-sj@kernel.org>
 References: <20260414045002.88110-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2DA6EC0002
-X-Stat-Signature: mk6q4sgiwmkahm3rdt81f6ekxw8adr9h
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E9B3B8000C
+X-Stat-Signature: b175p8hcp4x94j3ygnuahhsafxjox5wj
 X-Rspam-User: 
-X-HE-Tag: 1776142214-250945
-X-HE-Meta: U2FsdGVkX19U09Yyl/xcg11t97oYw2KaTa164q+yYyL8AwtxDZdAV0H/YQXg3KKS7lwlZAJ7qsY/RhSQ9eUrjEqyfhXS79xheu3c6LReZn6zf/twXW9uYTUFIurZc/s3erx2AsBc+9WpfnT6GX0MI4W5mNLo3Q9R1W4MfEhO8+qr2I0i++1v9n4VfwYWi77Hh7XKMjW3qA/GbWt9Ij4luaEU9d5Un3c1NR7MAP9FmvV0EcDws1nemK6k5f7Y6zqcF58EM+Gc/ALqlrWe556PGlmuxR949+FUXX0CEYXdw3ZG1rOz3OPIcA7emWpGZWKuicVxRXGLYx1elWAMJu94HUf8QGCHUn3/mhZvLllmM9wGgqWfpTFyZPDaEoERhtp765hBfJvdfcrBKJmp6MqaV0qdREnN7iVoPqdcaDfvGHS5dil1wdoTPgVTd6GsBoXRru1r0CJm6fyhwVoAhQD+nyBPvzerST9nikJlGuEPT2U8FCUQAi+MT4cVB5d9mN4M1Ef8zqsy77R0cN8a62xa1wVCquZBJJtvv1cac6EL+8kGCwvuNbGIsD93YlhGB3uG/3IX7zi6NpDwf0xJDDIWVWvhO+OBTpt/aYLI0SA+jEnvJQyOy31dpihKxg7v3dlynwNXl8ZrLZjnKMdKVtrY8i7HkhKuwFlorWLqHL/nX2qvt+DK7bWRYeyeB5GYVsMgS5GYB5j6L6B4E2dtjm6XuWakNdd+u/Yjb85YUBi/U8LZkK+ceazmnKUiuc+Hm9vUexCW30/bZa/ZIqvD8JXwCJzp0bwjlHz6zECGLui3beJNekYOBJ1ZIsVcYazhae5BJm9DoVrxlGRs97/R13ySG5z3Z0gZ82CAB9Dp3e0bxSyEwl0po/EqEvlFzU3GEoW4cAavjiZJM8Wk/YoVobA6Qc2aXrDFacpvV8pFTv0cBMF0aLCbU8R9hVjYYHPS/6pBHPZcjVKVn+kbPhiw4kO
- 5iN2mBM0
- CRKeM86Q2nUJIdp7OBHwIbaKlon6RRhQDdewHIDpbZiA51wIate/637KBnawZTMeE6yGxOYKykFn0tvKQp/NjbXO8qe59f2y7PIVP8ZCQn00Nm8KNXkJYZWdd4uHFgx3oqFZg0Upxp1qMISnXdas4sJxJ7z6wqdAw/LAlM+rjcEefLY1rWkZC6sVkBiFMYlxJyaqH1vYRPikdj7X/QIz7tk7t/xECClc9dZoV
+X-HE-Tag: 1776142214-412496
+X-HE-Meta: U2FsdGVkX19YUF9fl713/prrmvRFOJb0eMBFKNzBy3znfZd8fAzK82sPIQetcgPFC+uPG6lbq/w5e547sgBZeFGG95Bl8Lgm4iG/TUwxxWmLYruokpsjU9n3YVJxhN/lJ165Ys3ZJdsqYpF5tp2iEA+2MXCSo9EEF/RbRHsMVE+1tWrX+ZTJBBP0rSfyAoleCI7ZkWpIrn393WmORiQXhBFv2n/Ian6ID1z4dtibgvjTMMtg0/nRZy/vnw3a0wVu35uYNjq/whTXZWjhgE1DQ/TqZ7JPXhmhH90zhJqtnL3vUJodDHhk/Z7RlYLKVy5k8FoJusG7bnYc8kQ+7lC5unOe90e418X5lkD8ma/a72uj3sp0PPO/RdqMa6dRE/N1KvaH8MTCaw6kA9aOrD1+MCLX1GAbzcnF/NtaXQFMso0NmI4iWfL8xUdSVyo8gsmRIHxE4jnfUDM+z6zKs+7u3iwnVb054JPAMaiT5/upA96lHQnti8BhHpICZmjSZ6C9goZW3T+Zr4VBMqxD7GZfZ8ub7gNDxsHZ0Xvh7ysAO/x1l1JrsydRMDZITxcovrNZIBAOmW5tlCgBEb4l+DF2N+2VQB3U6sOV3LLS7C3cqFbmqddL2KrMFQdD6iq6HejAnE33elSAtqShgVutzNCgM56l+GrSCcyMCB12Te0jGOwAZrhJCswTtgthGb2ZGCgLpfhrfBjIqCaC4vPGG/fQELTZFDc8/9kTisgVXLOLfZm0KNkm/HIG4GgKsl1UhCDCEJxo6shSp8bQAYOKofxxFYgfq/E2VkB4trM0Egn4fd53U4/N6B8ET9dHQQSlXHfqPd/e2bo/V4FnO1+dJ3hyzEGyspUQ6cDOZzYM4dY9sTZfiGduSx2FM95VktzRQxGrMccdHe4mH7nrNwnkP7vphqexshAzqJBXLkxTjeZV+L7rsIHXN5f5IvQTQvXAhgUWKsDlnC9bZofJKEeV+D7
+ xALHnpCo
+ ZaBkn2ITjpq7JHpI5qvfq8sw2/L8UwUBiwVhbNVRVFA7z16Bca/q5M767DwvNn1YMQviI66MCQMPToo9RgNQG1/2TJ9XZqePiuqCuTcdF0H920QBe9+QwqE6mw3aPPUFHnZVqh2DHmoUpFXL793/Z7Wcl9NubchmB5kktnZk8nhhK4jIydISojdyCl/LDolOdjYN1tS8COfg6dFjioSdbp5CaMebObN3/1HPAVPqCy5M+GSgmi0xmbjjjNFnJcjZXNvYQJCDtpRBuOEeao5DvYxcG/pXqDV6pBdvH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +103,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Knowing the pid of the kdamonds can help user-space management including
-monitoring of DAMON's system resource consumption.  To make it easier,
-DAMON_SYSFS, DAMON_RECLAIM and DAMON_LRU_SORT provide the pid
-information.  DAMON_STAT is not providing it, though.  Expose the pid of
-DAMON_STAT kdamond via a new read-only module parameter, namely
-kdamond_pid.  This also makes DAMON modules usage more standardized,
-because DAMON_RECLAIM and DAMON_LRU_SORT also provide the information
-via their read-only parameters of the same name.
+Update DAMON_STAT usage document for newly added kdamond_pid parameter.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/stat.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ Documentation/admin-guide/mm/damon/stat.rst | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index 99ba346f9e325..21fa04d95eeac 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -44,6 +44,15 @@ module_param(aggr_interval_us, ulong, 0400);
- MODULE_PARM_DESC(aggr_interval_us,
- 		"Current tuned aggregation interval in microseconds");
- 
-+/*
-+ * PID of the DAMON thread
-+ *
-+ * If DAMON_STAT is enabled, this becomes the PID of the worker thread.
-+ * Else, -1.
-+ */
-+static int kdamond_pid __read_mostly = -1;
-+module_param(kdamond_pid, int, 0400);
+diff --git a/Documentation/admin-guide/mm/damon/stat.rst b/Documentation/admin-guide/mm/damon/stat.rst
+index c4b14daeb2dd6..46c5dd96aa2ed 100644
+--- a/Documentation/admin-guide/mm/damon/stat.rst
++++ b/Documentation/admin-guide/mm/damon/stat.rst
+@@ -89,3 +89,10 @@ percentiles of the idle time values via this read-only parameter.  Reading the
+ parameter returns 101 idle time values in milliseconds, separated by comma.
+ Each value represents 0-th, 1st, 2nd, 3rd, ..., 99th and 100th percentile idle
+ times.
 +
- static struct damon_ctx *damon_stat_context;
- 
- static unsigned long damon_stat_last_refresh_jiffies;
-@@ -260,6 +269,9 @@ static int damon_stat_start(void)
- 		damon_stat_context = NULL;
- 		return err;
- 	}
-+	kdamond_pid = damon_kdamond_pid(damon_stat_context);
-+	if (kdamond_pid < 0)
-+		return kdamond_pid;
- 
- 	damon_stat_last_refresh_jiffies = jiffies;
- 	call_control.data = damon_stat_context;
-@@ -269,6 +281,7 @@ static int damon_stat_start(void)
- static void damon_stat_stop(void)
- {
- 	damon_stop(&damon_stat_context, 1);
-+	kdamond_pid = -1;
- 	damon_destroy_ctx(damon_stat_context);
- 	damon_stat_context = NULL;
- }
++kdamond_pid
++-----------
++
++PID of the DAMON thread.
++
++If DAMON_STAT is enabled, this becomes the PID of the worker thread.  Else, -1.
 -- 
 2.47.3
 
