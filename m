@@ -4,82 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB379F531F8
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 07:20:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAF94F531F6
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 07:31:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 471AF6B008A; Tue, 14 Apr 2026 03:20:47 -0400 (EDT)
+	id 1747F6B0088; Tue, 14 Apr 2026 03:31:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4219E6B0092; Tue, 14 Apr 2026 03:20:47 -0400 (EDT)
+	id 0FEA06B008A; Tue, 14 Apr 2026 03:31:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35ED66B0093; Tue, 14 Apr 2026 03:20:47 -0400 (EDT)
+	id F09086B0092; Tue, 14 Apr 2026 03:31:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 245D26B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:20:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D1099B9730
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:20:46 +0000 (UTC)
-X-FDA: 84656314092.27.1350714
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E986740003
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:20:44 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bChfPImS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id DA2D36B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:31:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 88D891B807B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:31:28 +0000 (UTC)
+X-FDA: 84656341056.14.72DB264
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4B7CD180004
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:31:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="PW/X3Bs6";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776151245;
+	s=arc-20220608; t=1776151886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPWYjo9GhqaMpwQ+mEVfK6/tiojaazojzQ0cBIRZ8mo=;
-	b=vMeQJ1xCgwCnmCynVxa8Ok5CXKqluK0FMgmq1bz87+DNYNVc4ZdzKCKBk/qHb62BnBMgCy
-	Us1C79yuJvPXrd1JHsgu35UwUCbluEMvyOzLgIF+CA1OaDxeXICCFZVEBzjb3oMTe08dPx
-	v2Muy2FnOqTpZRdnrMIScrhZ5D4NaoA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776151245; a=rsa-sha256;
+	bh=qNl+LPO03zGJUgsQxiHE2yjg9/SCHM7uwbJqE6xVl3U=;
+	b=I0FKZ77qhPh4imQLGVmExakgT9MRFmR7cr7D/973/IboMSCd1cMmbA8I1aXpnB4ZYtjHRJ
+	Laq8sAyb6TdIR99+60H6/9vpZZVZrNIazltClRyJWmoJU9SmVayhga/Q/qnhhWLkaOTK6k
+	0rLhMKPerItnqGFC3PhGjsfypjSD7uM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776151886; a=rsa-sha256;
 	cv=none;
-	b=GQF6/DvT9+RwWVrIK8B5OIpeFteMnZr5USNpXFfjtKSedlH6ezBySatb9BzVhl28HmF+Jb
-	6oUU9lfeiUXui70eZ0rF6CsGpzBQmBQRMh7Op6OyC0+WelAQlQp5kZMAZZD1CSkU8/uod9
-	15yGzwHt5KSBOBXk84qOpIRSyCSnC7I=
+	b=XaJCTrYgG6jux3g3Vex6NcHemnlLCHdhaVexA/8w1cTm14Dlnldz8FrGi2+6kUtDNlDObf
+	YdBYWymFpsNCtNoItTrpATHdXwxCl8T7X/hMRQBZF1TxrXJZAY5W2q65SZlZ9920EM+YaN
+	E0dq0+i+TU9hGY8taPfOjy7yu1O2RE8=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bChfPImS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-Date: Tue, 14 Apr 2026 15:20:33 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776151241;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JPWYjo9GhqaMpwQ+mEVfK6/tiojaazojzQ0cBIRZ8mo=;
-	b=bChfPImSqYu4PwGtucE+CcphBwv4vWnwTUwbVosYoWuncoTp/VY/esGiJ1QDfgKqf7W9Nf
-	EFwgQaAFmBf2MXUGOIv8/Cseejsr4ds1ljv4cITBnukmOckSCL/A7KO4D9Lp7sMuKfn1Xg
-	OhYTLpr/s1hYd50w32rFUqv54THNMtQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-	stable@vger.kernel.org, chenyichong <chenyichong@uniontech.com>
-Subject: Re: [PATCH] mm/vmalloc: Take vmap_purge_lock in shrinker
-Message-ID: <ad3qwblVAJ0tUQBF@MiWiFi-R3L-srv>
-References: <20260413192646.14683-1-urezki@gmail.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="PW/X3Bs6";
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63C9F22F8;
+	Tue, 14 Apr 2026 00:31:19 -0700 (PDT)
+Received: from [10.57.89.16] (unknown [10.57.89.16])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19F6A3F7B4;
+	Tue, 14 Apr 2026 00:31:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776151885; bh=1MTJayB2QhMtyhYQJ6koMdeIvmyUr+qdTV/ptmiRC80=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PW/X3Bs6E85EfWr9rSt/SzrOZBqo2Z4jP8P2X7/0vy8jQSQnogPiKh53dCqYE6eZP
+	 IEA53U+t5gFcZo1amxZ3m2s8E8I9AkQ0KeDF3rtSV3nXUipRR4XsSPfamLAKKpeV83
+	 bHa0Hn3VYy3p0Hrhmx1hnWspzc6NTgKtxujDJTJ4=
+Message-ID: <b5fde792-6b9d-4bd4-8a64-f3a270ceb621@arm.com>
+Date: Tue, 14 Apr 2026 08:31:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413192646.14683-1-urezki@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: E986740003
-X-Stat-Signature: a81tgzzpcpurnf7pmz7t8cgjg3hfqkkx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: Simplify byte pattern checking in
+ mremap_test
+Content-Language: en-GB
+To: Dev Jain <dev.jain@arm.com>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, akpm@linux-foundation.org, shuah@kernel.org
+Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ anshuman.khandual@arm.com, Sarthak Sharma <sarthak.sharma@arm.com>
+References: <20260410143031.148173-1-dev.jain@arm.com>
+ <5297e0da-d8ec-49df-9b32-0d9f907588d6@kernel.org>
+ <8b5544eb-5ec0-4c85-a2da-7a454fa606dc@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <8b5544eb-5ec0-4c85-a2da-7a454fa606dc@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4B7CD180004
+X-Stat-Signature: 3yrwic7nhpmngwj5pu3ejtjef1gyhptc
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1776151244-692554
-X-HE-Meta: U2FsdGVkX18VB0abqW8kPB6003hymHvI/G5KezTFjgQVpY57u1UM5FD5VZdjH+iOn5Z87hkBoXKm4SwN5ooS8ylhcTc2MaoVmSBIgvhMv3FvSB8wjHjLiSrFeAzOZqZrWcSgqv9RojqXOQUyfXxDuM45O1rvzJ6NAV0gF4DYYHd2TdrdpAYQ5SiaEQkYraRsw3h7fCO5W3QVjYi5YTLE+LSKVjcQfdRVm8lUw/hPm0ODJdp1ATgYk24qVvpujgH6spGwXYEL1W5FwYxlENQH3NKvye4Jka3fW694nJrdotEVWLMYNx3x/rWtnWsLgXEBAzY3GaInpT3ao85q+izB7oH43Qtpk6rs5jl2cgoMokESiBu31zrBMW8tOEGty/SvTv2nnnDSCyYwdPsCYIoh+ZP31IEDCgRSFN112BiBx1XdYLOa7vLLFx5vZW2Nz3xxL9AVVZxGj/kvKcZsHKIPzsqPZvz+iGSq7GXBjvZA2mtDvouFbisrQKYvJ1UthwdiQoFx8FkoLmgE01/4rUlqTEb8JjKwEDVnpp4/AGr3lm8btFt4Z2NyqEBSezWaAT2zGxUjJ5qNhr+OH2NexYfLhBK8c/jeRJY8ljG0VRjy03oUqafwMf+Ao5pIDGA+G7gcYRMxUBS8H6Ma5tl7aOlyOcXDEL0iGCnS5ZAPia7DStqSSLw22sRrC8ptGhE2HgTUVBkuonm3LBSyUJkHEm+LFmwkdam7wMnLAahdYeGwAMzEuUd2APeWG34e9vRUYjln1fVafJkCK3lrxXhFjMThr8yiMg7IAlgG7H1cQ/k88OjUMhuYYuFXCI50qxfQbhpQIuksWR0i8WODGO18vTpAbT+OQ5OYE/8cW5EEGHvKiB58ZI0Hcd+t9kEcm/fwQMPrIQxlxr8TZ/eiw5B9tqbY2GUG6LcwnskBwl1gkEO1ER/iADZZZA9qYCDecNMaebREToN1N7K3tJbdtRYn9ci
- C8+p6yOO
- 0llhHUhRkyd0WxYcykSdxbdR8mc+ZAWYol9P8SVQqwihUyVJqG4Dwq+KIrbuqhwdUxKaw8XQFl8158TvpGeCn8MKY2F5bMR70eCEmkRRx4PR5h27RIJw/Iy6ASJWJlvP0hjbhpT1eHsCvXcwx9Uol8Kg+HjM+mbT1gc59B7i3NI5qFV51UD2OQnPBUxHqJitn8i1L7kpSyI37/GmvKEZFn1pMZKbhh+aPaacl6yC7Z27JqUvltC2KpJ9vQmqfXQ+Ir8HllOBL0ZKgfKhpoUcZ2ILodbGVOgrGW1SDo4a+ZlcpD4/pSMnjs6Xf/XRT4dHmLj1fkVzCnIy3Vnls1fLvzR6ECGf4V2HJfnz85XbAsBWA9TLjBUXxJ6bXq7RXVFPTSvYw+Q4GrjFNZfvZXv0mLCy/R8G6xT6p/unEyi4bCdtCkLX5FjVqpktVZg==
+X-HE-Tag: 1776151886-955425
+X-HE-Meta: U2FsdGVkX1/P8Yhp37RqZHQch7nlbPXpmczcSuB8ll20PR8duoD0UY9PR9B16Jt7Ruwb0FA53Wvn6tceAK3UBjt8ub8+B/ojQMRB9uxJMjZSSeumd4+tKXVYE+/3j7iTaOfUEsdNG+31XSJb86+zxJv1XGIQiFcv1Hh9+W+dDxmUJ/CNCOOktjISf0zj0PtcXKfDuaDjt7C9JES/QYxZ3SQoERR3J6Pgt95NvQXzbnqCjDIwIZGIbKqJoIouKBF3rwo6D7BjSQT3gWe26g/fYp0KDdX261UsDBKAN4jqYm1wOfWzSsQvWNpLrdwezwwPd7Dt3HgG9PVvxvMSvGM/1f1XNU+go/pMmukIwnFhUXoCS6Ccn/Ip5TITFLmHWIka9aRzPsvaC2ERmeZIRL+rHF93S2+6RiZANyVgCVZ96BXvmZUX2mp6i/z9/IYKZ/GDpIFRKWr6sgiRVxHZ8XnynJDtXkM1vkXntirFsVlYSrCAezFqLwMBUaUXmBs/XD/19XLRRGxdQjxaY2SS8bYm00ldaCGusz3xRQkgmpXZTOtmW9HZtdUmGifh5dB2Yaw+KGDvtDiSj6has8Sb6xPLyu9ErPzv9mG/G6yOBHmv6EJYY/7I3uX1aaTVr5yLYkhHv6SWQTCA50OiViWWugn2OmJxdX4gCof5OkumfCsYJDCeh5ne/yK6VDFqQwmF6aZmYATzE4bgFlaesY4OsyUb44l9OeGglO8b+4oB8NwqN89znxgEuAnMyr1ElTubZCTfa/v0jQ5/+3OdUuk71o2CzeYiN8WhIW8bvrG4qpNyNqkCpbHvN2KQDVGZd5YZ0OTXVNh/zj2m9sfkQrPNbHtGEeUnFUQIhNVe3rEAXLbLqEMWlN2L9nDMKOsk6z8VoW4HehuOm0W9ZEpzn7K7P9WoLK73lXWpTOvCV0pF0K+oIJa98xt9IFuh0xU4d+oMaMYIq6LnopKZhORcRS1biPa
+ ltQ0CKCO
+ Bpr+rmYXIVRarrgpYOJMQi2QhjeOmeKXh8LfhwZW/noJZKnPw1FH6vQPB0ovFskfVCyLPGwkL4n4vw7lIVywTl3qWv7RTe8LXVItm51rIcIBziJg8PQEg5vzHRk0UQfQJq8YHWcGd8qg2TLerlakELR0Cdf0NLUJqrOp/i/H1mSYqu+l0aj86KXYJDclVUncZsbVR1Q82uA2oL6RadhmaVDgnljByV7u/xV4zSBNbdBslIhb9FDUPjqwz8kHu5K5tL8FZe38Sd1qzVvd4PAuln8l2Ft/lXNO4r0TChd2m0q4YlX+k4qvaOeBYtck2rtB3s6d7kB6dInb0J6pnz1W5TZn9bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,40 +96,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04/13/26 at 09:26pm, Uladzislau Rezki (Sony) wrote:
-> decay_va_pool_node() can be invoked concurrently from two paths:
-> __purge_vmap_area_lazy() when pools are being purged, and the
-> shrinker via vmap_node_shrink_scan().
+On 14/04/2026 06:09, Dev Jain wrote:
 > 
-> However, decay_va_pool_node() is not safe to run concurrently,
-> and the shrinker path currently lacks serialization, leading
-> to races and possible leaks.
 > 
-> Protect decay_va_pool_node() by taking vmap_purge_lock in the
-> shrinker path to ensure serialization with purge users.
+> On 14/04/26 12:57 am, David Hildenbrand (Arm) wrote:
+>> On 4/10/26 16:30, Dev Jain wrote:
+>>> The original version of mremap_test (7df666253f26: "kselftests: vm: add
+>>> mremap tests") validated remapped contents byte-by-byte and printed a
+>>> mismatch index in case the bytes streams are not equal. That made
+>>> validation expensive in both cases: for "no mismatch" (the common case when
+>>> mremap is not buggy), it still walked all bytes in C; for "mismatch", it
+>>> broke out of the loop after printing the mismatch index.
+>>>
+>>> Later, my commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
+>>> execution time from minutes to seconds using chunkwise memcmp") tried to
+>>> optimize both cases by using chunk-wise memcmp() and only scanning bytes
+>>> within a range which has been determined by memcmp as mismatching.
+>>>
+>>> But get_sqrt() in that commit is buggy: `high = mid - 1` is applied
+>>> unconditionally. This makes the speed of checking the mismatch index
+>>> suboptimal.
+>>
+>> So is that the only problem with 7033c6cc9620: the speed?
 > 
-> Cc: stable@vger.kernel.org
-> Cc: chenyichong <chenyichong@uniontech.com>
-> Fixes: 7679ba6b36db ("mm: vmalloc: add a shrinker to drain vmap pools")
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> ---
->  mm/vmalloc.c | 1 +
->  1 file changed, 1 insertion(+)
+> Yes.
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 61caa55a4402..676851d5cfe7 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -5416,6 +5416,7 @@ vmap_node_shrink_scan(struct shrinker *shrink, struct shrink_control *sc)
->  {
->  	struct vmap_node *vn;
->  
-> +	guard(mutex)(&vmap_purge_lock);
->  	for_each_vmap_node(vn)
->  		decay_va_pool_node(vn, true);
+> I'll explain the algorithm in 7033c6cc9620.
+> 
+> The problem statement is: given two buffers of equal length n, find the
+> first mismatch index.
+> 
+> Algorithm: Divide the buffers into sqrt(n) chunks. Do a memcmp() over
+> each chunk. If all of them succeed, the buffers are equal, giving the
+> result in O(sqrt(n)) * t, where t = time taken by memcmp().
+> 
+> Otherwise, worst case is that we find the mismatch in the last chunk.
+> Now brute-force iterate this chunk to find the mismatch. Since chunk
+> size is sqrt(n), complexity is again
+> sqrt(n) * t + sqrt(n) = O(sqrt(n)) * t.
+> 
+> So if get_sqrt() computes a wrong square root, we lose this time
+> complexity.
+> 
+> Maybe there is an optimal value of x = #number of chunks of the buffer,
+> which may not be sqrt(n).
+> 
+> But given the information we have, a CS course on algorithms will
+> say this is one of the optimal ways to do it.
+> 
+>>
+>>>
+>>> The mismatch index does not provide useful debugging value here: if
+>>> validation fails, we know mremap behavior is wrong, and the specific byte
+>>> offset does not make root-causing easier.
+>>
+>> Fully agreed.
+>>
+>>>
+>>> So instead of fixing get_sqrt(), bite the bullet, drop mismatch index
+>>> scanning and just compare the two byte streams with memcmp().
+>>
+>> How does this affect the execution time of the test?
+> 
+> I just checked with ./mremap_test -t 0, the variance is very high on my
+> system.
+> 
+> In the common case of the test passing:
+> 
+> before patch, there are multiple sub-length calls to memcmp.
+> after patch, there is a single full-length call to memcmp.
+> 
+> So the time should reduce but may not be very distinguishable.
 
-LGTM,
+My intuition would be the opposite; if you hafve a 4096 byte buffer, I would
+have thought that a single memcmp would be significantly faster than sqrt(4096)
+= 64 calls, each over 64 bytes.
 
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+If you want to keep the common case fast, but also find the first differing
+offset on failure, I expect you can exploit the fact that the buffers are all
+page aligned. With some prompting, Codex gave me this:
+
+
+---8<---
+static size_t first_mismatch_offset(const void *buf1, const void *buf2,
+				    size_t len)
+{
+	const uint64_t *ptr1 = buf1;
+	const uint64_t *ptr2 = buf2;
+	size_t word;
+	size_t words = len / sizeof(*ptr1);
+
+	assert(!((uintptr_t)buf1 & (sizeof(*ptr1) - 1)));
+	assert(!((uintptr_t)buf2 & (sizeof(*ptr2) - 1)));
+	assert(!(len & (sizeof(*ptr1) - 1)));
+
+	if (!memcmp(buf1, buf2, len))
+		return len;
+
+	for (word = 0; word < words; word++) {
+		if (ptr1[word] != ptr2[word]) {
+			const unsigned char *bytes1 =
+				(const unsigned char *)&ptr1[word];
+			const unsigned char *bytes2 =
+				(const unsigned char *)&ptr2[word];
+			size_t i;
+
+			for (i = 0; i < sizeof(*ptr1); i++) {
+				if (bytes1[i] != bytes2[i])
+					return word * sizeof(*ptr1) + i;
+			}
+		}
+	}
+
+	return len;
+}
+---8<---
+
+I've not benchmarked it though...
+
+Thanks,
+Ryan
+
+
+
+> 
+>>
+>>>
+>>> Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>
+>> Fixes: 7033c6cc9620 ("selftests/mm: mremap_test: optimize execution time
+>> from minutes to seconds using chunkwise memcmp")
+>>
+>> ?
+> 
+> Not needed. 7033c6cc9620 does not create any incorrectness in the checking
+> of mismatch index.
+> 
+>>
+>>> ---
+>>> Sorry for sending two patchsets the same day - the problem was made known
+>>> to me today, and I couldn't help myself but fix it immediately, imagine
+>>> my embarrassment when I found out that I made a typo in the binary search
+>>> code which I had been writing consistently throughout college :)
+>>
+>> :)
+>>
+>>>
+>>> Applies on mm-unstable.
+>>>
+>>>  tools/testing/selftests/mm/mremap_test.c | 109 +++--------------------
+>>>  1 file changed, 10 insertions(+), 99 deletions(-)
+>>
+>> I mean, it certainly looks like a nice cleanup.
+>>
+> 
 
 
