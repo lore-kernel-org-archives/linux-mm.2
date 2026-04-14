@@ -4,84 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF8F0F9D0CF
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 13:18:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1A37F9D0CF
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 13:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A87F6B008A; Tue, 14 Apr 2026 09:18:19 -0400 (EDT)
+	id 200E76B0088; Tue, 14 Apr 2026 09:24:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17F806B0092; Tue, 14 Apr 2026 09:18:19 -0400 (EDT)
+	id 1AFF36B008A; Tue, 14 Apr 2026 09:24:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 095A46B0093; Tue, 14 Apr 2026 09:18:19 -0400 (EDT)
+	id 0A02A6B0092; Tue, 14 Apr 2026 09:24:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F03C56B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:18:18 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EDC236B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:24:28 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C2B21A03EC
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:18:18 +0000 (UTC)
-X-FDA: 84657215076.05.0EF399B
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AD5B8A0012
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:18:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZWxGBwIf;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F048C1C9B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:24:28 +0000 (UTC)
+X-FDA: 84657230616.05.7F5C73E
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 456DD14000B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:24:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=X6A4tqU3;
+	dmarc=pass (policy=reject) header.from=bootlin.com;
+	spf=pass (imf23.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776172696;
+	s=arc-20220608; t=1776173066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wSsvXqHkk+zqYvLTBPIs4fKDOVrgYcewrUX/PvzkTYc=;
-	b=sbwiN/FkmlXUhm4iKvySLCbX0QRa/Pmz0WTzmiamTS3L82pdq7B1GG5kh+uvvPoUuzB8yg
-	WJiiYptoE1f+Am7dhP+aNYMuCSLGwD/kBm37Tj65Ei7MVzV/G6kz9mJ/g4Wjzra4DqMP7k
-	5Cy2z6jp1vTIzmjNnpm+L8nNY2Gae2g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776172696; a=rsa-sha256;
+	bh=cMPO/P6ZptnY7PwA9Kq6DHiKsIFPvqoz4r+zqZlAlBc=;
+	b=tGBJ582jHc2z8Gk1qBWivOO0XMRFO28Zo7qIWayYcsD5DA1g76nGBZ7PkSf9F0m6R3YfTv
+	hh/5hKszVcoI8mDPLT6OUeChPMLG7FKBOiy8Vq7abU93XKQ9g83PdumrPskeKrP4JiCnFD
+	QF+a9KMPcSVSOnDvbBBzcLD57l9iRAs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776173066; a=rsa-sha256;
 	cv=none;
-	b=I3ykoXh6ed/wHjizKpZK3PizPI01nufKbYp88yfT1ozS0RboGwP132vo4jynh0v4MvjGrR
-	HQyn6CdSsTaTKQSBOuukEpkmipHCaZg0omjzrGrL7NY3SRTgmRuaY2hxtu8fFcLgjXPbFT
-	7lzitTdxWZuHACzBSoMg3hABihwU2eY=
+	b=xxxsYjbzHEXwa/U1nM9iuzjTZVsd+/dS3hS+u4hpAmzm+QxCdtBO/eGsVHWSVHcmkpiDrk
+	bFG8g0lFykkXRjsdavUivnGxMpDkH+Skzh/BR1D9Rj9hyo4vV2+GzjA0ddxojF+LWkUdk8
+	t9ARE2wH4dJ01lQU5yfTUG+Z44TZsNs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ZWxGBwIf;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wSsvXqHkk+zqYvLTBPIs4fKDOVrgYcewrUX/PvzkTYc=; b=ZWxGBwIfHG9Rx/E190VMj7+GOH
-	vVPNv6THSkPLrls9Shm7y7DwgcZ9+3lRIXGAwrmz+f6tL8uNKPEiIHxZDQwIdW8XW6iEKjH6NkucK
-	tpBTp3JoXq1P0W2a4P31VZrMTdgFGUdo7lpNaJVFqESaDIjqTndImTGnDl4GW/0uuj0BgkiFdL4h2
-	A4+rlqdr52xL82wRksIso/DPrevX1b5YFSJ32P0LJ/o6Q20JhDIwuJfyEDhAorLNhpIu0uLx9iYnV
-	N1Bgf+0SaVjIP9JEjwqszb9dKJAq4HI9kOToTEgBnrgA6pp11bcAWByI651T8g/crvZSmJSdoKAIW
-	233pMw2A==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCdec-0000000Fbs6-2VDp;
-	Tue, 14 Apr 2026 13:18:10 +0000
-Date: Tue, 14 Apr 2026 14:18:10 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Ye Liu <liuye@kylinos.cn>, Vlastimil Babka <vbabka@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] mm/vmstat: simplify folio stat APIs
-Message-ID: <ad4-kpPTPqOuDF_E@casper.infradead.org>
-References: <20260414091527.2970844-1-ye.liu@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414091527.2970844-1-ye.liu@linux.dev>
-X-Rspamd-Queue-Id: AD5B8A0012
-X-Stat-Signature: 1iywf7ouuso38qimjmgsqt59ekbwxzcw
+	imf23.hostedemail.com;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=X6A4tqU3;
+	dmarc=pass (policy=reject) header.from=bootlin.com;
+	spf=pass (imf23.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.85.4 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 49A624E429A0;
+	Tue, 14 Apr 2026 13:24:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 15A6960410;
+	Tue, 14 Apr 2026 13:24:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 91474104500A2;
+	Tue, 14 Apr 2026 15:24:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1776173062; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=cMPO/P6ZptnY7PwA9Kq6DHiKsIFPvqoz4r+zqZlAlBc=;
+	b=X6A4tqU3MkoqM6hdV2BYcurk14+6JZDEN/gbqla0kWX1zkUOVhzepr1g+eqrPNbNUv/huV
+	YvRVcaXQMDSoKNvHHEev5avgGrcMFEKbpEaqiYiDYgm7Bt3jlvoqJQ5ERrTOmbM6hkpZ4c
+	lSZlrap8zNk/UzuRZwSWbVolH6CoRl3/X0CCVwBfc1YF32vGuKDzOTtnFMST1koqfhy2JQ
+	FHgxzpJuT7y8RT0NzKx5KsKEo6MlgAJgguOw61CCS91aw38/mmn96yQctauQKN1Mw/26EC
+	Mku30aEpcpuqoVCUdGMmoRzHpFjahdvvfYrXfOquex2Iaj6Ff2PksIHe5lfBCw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 14 Apr 2026 15:24:14 +0200
+Message-Id: <DHSWSSYRPUVC.2W3G3OU27L3HG@bootlin.com>
+Subject: Re: [PATCH RFC bpf-next 3/8] bpf: add BPF_JIT_KASAN for KASAN
+ instrumentation of JITed programs
+Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
+ "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, "David Ahern" <dsahern@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Shuah Khan"
+ <shuah@kernel.org>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Andrey Ryabinin"
+ <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
+ "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo Frascino"
+ <vincenzo.frascino@arm.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ <ebpf@linuxfoundation.org>, "Bastien Curutchet"
+ <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
+ <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
+ <linux-mm@kvack.org>
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+To: "Andrey Konovalov" <andreyknvl@gmail.com>,
+ =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
+ <alexis.lothore@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
+ <20260413-kasan-v1-3-1a5831230821@bootlin.com>
+ <CA+fCnZf-o8tiv_tX9YB5eBUGx17OpztKZsEB6Awjw3WAqBAiUw@mail.gmail.com>
+In-Reply-To: <CA+fCnZf-o8tiv_tX9YB5eBUGx17OpztKZsEB6Awjw3WAqBAiUw@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 456DD14000B
+X-Stat-Signature: zrs3r4e9xp35h3ncsfk9s8b61owg66kz
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1776172695-908942
-X-HE-Meta: U2FsdGVkX19I9ku5aisJ9UZMKJFfOfT5EhLQQW/z0wzFrlnbxCY3mql7qqYYBOCo5cV9hEXBJATyuFDsYkOpfr2QPNFSDKjE9IwaISUpitCnad0IqUc1JpteTEqv67F/htgLHDWoaj+Vj3ztXC6iE322WK3gwkWGqFp3r/eozMTR/IQXxRARDVU8I4q/OZO3/gICWQY0+z3D1FUl6aBq3fHMojhnN2zib41xaPX319wnEsBCCNeY/GD1oCw+KvjtZeg+EqxCS3euujAHs7ovYZU4ntWqq+t4zl3Evfhx7VZd43FxvC2CoSB40KUCdaRgRXuN8onL8RJpADHjXPS+lSV1FOK6dmDV757idVOH0saL1zhDNlAdgGjYvImCYcx4gJaTNNPt9p5PVPYpEWYJSe4F6rssz/byiGN2kdZZjTCsXb0NaL5gUgs2YmmhglunQecPS6ws8epDO1YP0iCnuz1PFMOF+AiSaVpS8hmQ3uM1HfF3r/miAY06UL+FoYqRJ7ZAu7BLh68/XMbwYwc5cxCvQuth9f38JnIh7GiE083ctD3Y38QajP2Tz1XXEi/UGyB8rcHdBp01nbA1V99vKpV8eM7ja8Ic2IZXYLKnRQL84WN/jaCUyszxTpV7bVAGZq86i0tPklw9mXZnmF0HdacJi4gv1OQAZnQ7DZIZY0bN1vKtMUtPlRwNghDMAbFPt7JFbLrbs36qgAU9NdIJieya0UO5px5CEKuACkZWqTEFzHleYFDTk3D3wVyvSsY3G9wc1quk11cp2uMz86gftwhJ73rhOu3rI7xJfaFbpJ4XAp0N5HSR/jatJrUbRtLoxjULSJzQ/mtxqeJwUoUHsbY5rNfYjZWmGLzabJtPa4NF9hwOF5JXNRpi2pGtOyE9Vg8Xdbdi7sziXpavp9KHUpQO9vAdxmJm/bDxE325dM5nqKfhOl9VyE1Gwdpbkix/4uisBdQ1NjvN7n03oVi
- IpcF4MK4
- uKA1jEWBgfX7yQUFfrc2dwS961lOBb8JRdk7MHWJqTDb7J+psCEaO9I3kVf9mjs97WqrwjzsqY0IyLb4gJrwLuVXTPfP9Ed6L8Pnx+GmPrfkhYUoW9TnB3gdiMvVRgNt5UacwfhvKOrK3EsKC1vIS20BrskaMh8LmZX75rOkEifW2YB773X9VZqZja+YFIyt7i4XvPXmq1NHB9/jJQZatl35LhoWRQ/6xQLUEQDRjQclQjyOqRj53I31yOg==
+X-HE-Tag: 1776173066-21553
+X-HE-Meta: U2FsdGVkX18nVRAhqEaPAPTRAp3J+cMO6/QFHG4VmkMKRDgy6AWzijpd1+9Nw2QyfU4fi7O9YyccBs57sPI2tVchx5JHX53zlA9JRCQTLXIv5QNDD61XArINj0PDLYRO9/pPnHO+PBrwkfa0bvpVdt8i9trxiqzo6kmPejFEhNwLq3i8R0Brq/wJB4nSa2S340KDkEgrPtIpE2wjAh1jgnpgU5qcQwdkILo8EnGGTVokkfmfwynYqu8FuOpD9XMgZb8av1eYxJNEVO+rbiJv4rno33N/wCfb14vKt9la6wL4AjqLFCF84ibfJHk0KQcHMfB9wonPS0Ssk+ORELivyMzGiUVeYW9Y+xh19cD3ohJsHhSF+ME2VQF0QwbZB3AoMcBJhU26iY9WYx5I7xx9fZGH3VgeOban2tB+6uaW3hlm73UhiSWwLSDIzAnP0+0lhsVLjgLh6akAZMCOqV8j2QJ4X9uOSertYsYtHptwyRZQ6avsWBf2Xa427RVtYyYsGKGzKfpiXY49P3+TPHRCaIkYRucCZGrWztJje0Qka/hbxHOpi1/29F3rD9+NRvW3zVObws/1Na3zMIt/nzeaOu9/vThRRQXyguilXou3N7VKMb/PwBDtROklNyMo24ZIAcBPYcr276icL8Ja0DGGgfj4EwT2kLUxpHKOI+qfGzIX/kQ92n7T/C6APd+gL2cyxfqPCxdhafH1clQqp6W7EIGYHocBriWe3QV/RVEdYUp8VKc5I5wdrGLRqc4TiIVN3o8U7DLvx4JzlLADTgcwenKkNU3v9Chcq4J6waDpU/qW9TiFGEigh3epyKYOFzHiSemXM9PbO05RcGuPsskiElniloaRuz5/lkGheyGAFLHSoUU3c3iQgDdfADQFbyS7SlzaCzZ/UgI5ApzDY1lRG+nDye3aJCpjYWeLgAHseO+zoUKXVIrAYDJO937SjxJAlCkzeWEDkHC+WtKriwE
+ ChpuwVHV
+ 1LH396BUsQlmu9WVOEyP91GvSI0k6UHJWzOsEK0zW6ib+0BW/4sV2RUqXBWjoibQAyve0RqDjUFPHzlrURevetYfgVi2wpdbjB0/TRrtuXdIWCKcs9k48ZwQmsiKWUt0pw799vdfrLHCi+CfrLAiylm875iVqJmn49l/xCC3+d6ajr0scWk4WUwx1+jGeV7p3E+R6KwHxWVf/wCm67bncooY8hFdk3CUB5taYwIs1CjJYdq46zFmblAzbGZYWoUgxwHD1MSJ9b1Jb30ZvfCL72gtujqTGruQiaWvkTYHeIVSdM/Bv/mEjHQvMniI2E8mKO15L36oJrtJqR0/ZHxZP0e3TJHlMjgr/mQnIT7lStf2EgU12qitPDuEhsX3qwZKxvXaUNX0TEVw7bc7hAFBnzNCF0MUHzjJOfM5YOuT4WIvpJSx8IEN83FMVR/of/N06XJaiU0JMmqFgMjIY2kcHu5OYS8N6xNkg3QX4c1AXUFwgC/PnawTLPqoGUwJDA1pOBr6WHroUGipaLHMDW3JEgiumW7r7kNaXnCUG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,15 +121,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 05:15:17PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> This series simplifies folio statistics accounting by:
-> 1. Replacing node_stat_mod_folio/zone_stat_mod_folio with more semantic
->    add_folio/sub_folio functions
-> 2. Removing unused __node_stat_* and __zone_stat_* wrapper functions
+On Tue Apr 14, 2026 at 12:20 AM CEST, Andrey Konovalov wrote:
+> On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF Foundat=
+ion)
+> <alexis.lothore@bootlin.com> wrote:
+>>
+>> Add a new Kconfig option CONFIG_BPF_JIT_KASAN that automatically enables
+>> KASAN (Kernel Address Sanitizer) memory access checks for JIT-compiled
+>> BPF programs, when both KASAN and JIT compiler are enabled. When
+>> enabled, the JIT compiler will emit shadow memory checks before memory
+>> loads and stores to detect use-after-free, out-of-bounds, and other
+>> memory safety bugs at runtime. The option is gated behind
+>> HAVE_EBPF_JIT_KASAN, as it needs proper arch-specific implementation.
+>>
+>> Signed-off-by: Alexis Lothor=C3=A9 (eBPF Foundation) <alexis.lothore@boo=
+tlin.com>
+>> ---
+>>  kernel/bpf/Kconfig | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>>
+>> diff --git a/kernel/bpf/Kconfig b/kernel/bpf/Kconfig
+>> index eb3de35734f0..28392adb3d7e 100644
+>> --- a/kernel/bpf/Kconfig
+>> +++ b/kernel/bpf/Kconfig
+>> @@ -17,6 +17,10 @@ config HAVE_CBPF_JIT
+>>  config HAVE_EBPF_JIT
+>>         bool
+>>
+>> +# KASAN support for JIT compiler
+>> +config HAVE_EBPF_JIT_KASAN
+>> +       bool
+>> +
+>>  # Used by archs to tell that they want the BPF JIT compiler enabled by
+>>  # default for kernels that were compiled with BPF JIT support.
+>>  config ARCH_WANT_DEFAULT_BPF_JIT
+>> @@ -101,4 +105,9 @@ config BPF_LSM
+>>
+>>           If you are unsure how to answer this question, answer N.
+>>
+>> +config BPF_JIT_KASAN
+>> +       bool
+>> +       depends on HAVE_EBPF_JIT_KASAN
+>> +       default y if BPF_JIT && KASAN_GENERIC
+>
+> Should this be "depends on KASAN && KASAN_GENERIC"?
 
-I'm not convinced this is the right approach.  We've often computed
-folio_nr_pages() for use by several different functions, and you're
-making us recompute it.
+Meaning, making it an explicit user-selectable option ?
+
+If so, the current design choice is voluntary and based on the feedback
+received on the original RFC, where I have been suggested to
+automatically enable the KASAN instrumentation in BPF programs if KASAN
+support is enabled in the kernel ([1]). But if a user-selectable toggle
+is eventually a better solution, I'm fine with changing it.
+
+[1] https://lore.kernel.org/bpf/CAADnVQLX7RSnOqQuU32Cgq-e0MVqyeNrtCQSBbk0W2=
+xGkE-ZNw@mail.gmail.com/
+
+>
+>
+>> +
+>>  endmenu # "BPF subsystem"
+>>
+>> --
+>> 2.53.0
+>>
+
+
+
+
+--=20
+Alexis Lothor=C3=A9, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
