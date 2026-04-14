@@ -4,140 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14E5FF531ED
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 11:13:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A642AF9D0C0
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 11:20:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FF556B008A; Tue, 14 Apr 2026 07:13:44 -0400 (EDT)
+	id 11F3E6B0088; Tue, 14 Apr 2026 07:20:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6986B0092; Tue, 14 Apr 2026 07:13:44 -0400 (EDT)
+	id 0A9F96B008A; Tue, 14 Apr 2026 07:20:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EC2D6B0093; Tue, 14 Apr 2026 07:13:44 -0400 (EDT)
+	id EDA3C6B0092; Tue, 14 Apr 2026 07:20:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 00D5E6B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:13:43 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8BE0258FF8
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:13:43 +0000 (UTC)
-X-FDA: 84656901126.06.9CA16E7
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 05434160008
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:13:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="Lnpz/coF";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf08.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776165221;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D6E406B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:20:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68678B9B46
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:20:56 +0000 (UTC)
+X-FDA: 84656919312.23.26FDA65
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7FCC740005
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 11:20:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C4k2hj74;
+	spf=pass (imf12.hostedemail.com: domain of charsyam@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=charsyam@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776165654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=18wnu0j6nOlBo7L66MN9NA7h7B+h1kmUSFuqSPpe4YY=;
-	b=0hP3qfAqzYVH+Rok5xGzrmPw9cJ8CaISW3vIQyU9yIsrBoXleya/Z+tYFdkYN3n12DjasA
-	DofFrNCbM8o0l0NjVa4ePEh4CjiPY4Y82eyvoiE5izNJ0A7yPmJxYBPekV4cD9kBhWZ/8g
-	pvZNI/6YYsjzthUX84y3FtnBXCK5oZY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776165221; a=rsa-sha256;
-	cv=none;
-	b=fwj4uclPDLH7ka2jBUrRHdbml6q2zKReOcDvC0FIUgH5GnMVZUgTlOOIq/MGM5QEWf3ZGF
-	MJ5VCYzWsCfLzJY9mEwZOTr8vtY3vj/KygK5cMi3EN5RWwRD+BvYBmJ2FAdcJ4aIGDH8sL
-	e7ZegG9DmdZzRMhM3Aq6K/np8mApZNI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="Lnpz/coF";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf08.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DLIq1G1860578;
-	Tue, 14 Apr 2026 11:13:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=18wnu0
-	j6nOlBo7L66MN9NA7h7B+h1kmUSFuqSPpe4YY=; b=Lnpz/coFjQnxQwuMCjNkhE
-	98/FSVSTpLcwDZddkGiEgUhB3W+zOk8IVKR8nCRjk4nz7QbtzVuWKAchobLrilWV
-	Wgt2t3iYQnTSl5lTlA5o12jAWMqXkLDxu7q6dCACf+394cVUKM1zbWXZ5OJOAv3A
-	PLmGyR1r/mFyTYboAhiRmFyRpxmlbuqx6cj5oD7Ge5zYVljngCt3KDDSsLpiuMwn
-	xBoQOFuJH+TC9cBCKBk2Qx2q5fMO0X82cZj1kvPRrk1trkrvheBmBcwVPD0/NtpJ
-	pdg7ln6kjI2IlNI/EzZmbpPqmd5eNsJ7e/mxzm6Zr/nLA0+Px+Zyjt8kE1iCx2BQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89pa8uj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Apr 2026 11:13:27 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63EALejN004188;
-	Tue, 14 Apr 2026 11:13:27 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg24k92vt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Apr 2026 11:13:27 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63EBDQ8F22676018
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Apr 2026 11:13:26 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D1BDB58053;
-	Tue, 14 Apr 2026 11:13:26 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D6C9758043;
-	Tue, 14 Apr 2026 11:13:23 +0000 (GMT)
-Received: from [9.39.26.89] (unknown [9.39.26.89])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Apr 2026 11:13:23 +0000 (GMT)
-Message-ID: <b1a5b96a-a525-4566-876d-5286c1367d7a@linux.ibm.com>
-Date: Tue, 14 Apr 2026 16:43:21 +0530
+	bh=Mm3jwhb6+OKntvMAoPGWsQTvhsdxLGsWKJzqFLjZ1Wg=;
+	b=JU2vV5qnMQ+uXN2ugUaA4wcSNzM7xWibb6XOlQDYZNCvQPvWZ7qyFVtjWY4L0RJuDPblEb
+	9qg28SS1t9Zb7VoTsHIYeOWHyVJQdSap4c8hAzyJ6qmtUKLYYBFK4JZD8yeKDfH7MG0lJH
+	cYi/OuG+GyUTApeah0gQ+9azbFcpo/Q=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C4k2hj74;
+	spf=pass (imf12.hostedemail.com: domain of charsyam@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=charsyam@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776165654; a=rsa-sha256;
+	cv=pass;
+	b=JbwR+7QOI2Xui4ZfJKYBg0Bk2ZnURYRwZr1fzGL9hLPSOSJKGIH/hUIuaW+Gw0QoZT3DaJ
+	QTbLXdoA+jtjmXvI+3m1MDvjsNMWj3h0HiusYu+fdj1U39QrF/Asypcos5SriEevfmXR7b
+	RCeovZyD7bgqlfxHTccwA+NQ6mp1DbY=
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-65019c1dc32so451987d50.1
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:20:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776165653; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FhYZh2lPFMu2QjTXzudYe3kgvO23ozGFKGKMuV1Av100mcHQ4qbRoOAgwLZx1X9u8T
+         R3kRt/DoMvvccoW4mVaMbOUk68EoamX4GJw+OMR+qLrDAtPC2Pzjay3JXUkbCIPmSGa/
+         NONSqtgZgOB+HhF+pDPPoUjtvDXdeDolAI9CtPgOhcBr16Ik6TPj27LhrmQUu0su33of
+         /viYplqvVTKTpVX5vm5Z23pFEpzs8fl/voEh1siUYcqKBLatW+P69RDBtnGpzwY26SB8
+         1l0L1f8s71xOb/RHXWmwPWBX8qzkPGjQhkmjDxKJEsnckwIWeAgNJnN7zcrhaKp3awSg
+         uErw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Mm3jwhb6+OKntvMAoPGWsQTvhsdxLGsWKJzqFLjZ1Wg=;
+        fh=irZu6ha1jLBRi5/SFgAOzDCFvSSA4LnUBd2IDaUQt9s=;
+        b=efYcawALWw2/Gl9TqZOBC+giwwXiX1OCxAr2+YtiUd8VoTTvFJX/ivtfXgg0Rf+Qb7
+         FdvLhffNTfzmo46R3ektsB/IWXjPO8k5dQA4EXDrTPCP+5MUm74DV//XcnxBJZX5d4Fm
+         3EFo655XBvhQVujV3Pt/XjqRPf25Ww3Cjsj3aLN+2Zv2SQP2OFhrX+OBUXuWhmK5RjYe
+         ImSJumJYqAJaGjOGFRJPApwR3NEo/FNaePaRv+RZLqOxKq+qsJAfH4LKM5oSxdeA3D2O
+         ge4XwasUORqYWo0wDqOdmCJeDqP2ykzVMaOMpLnuoLy/dw47tvkp8QPcBQtowzVNIfvj
+         UV8w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776165653; x=1776770453; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mm3jwhb6+OKntvMAoPGWsQTvhsdxLGsWKJzqFLjZ1Wg=;
+        b=C4k2hj74J79PvH9CDqZw3GMNPTBge+kRlMZuq4/nhNy68DK1wrnPAHq/Nc+nbfAmnj
+         0+EWmEO3POgtSEQPS61QoCQ8b5zmMeNOeBY0TL/b3E6BwX1PpL30Y9wrRfLGvXXBjmZY
+         574yRsdqmUwrdk2NCh/EmvrxpR8SRTtuGkMJ9N97hLN62CpCXvn16lzXzrLE0StSrWlK
+         thTXcIesE4XQc7czqdg7AGuP+15gV6o99DKoKBRNX11d+WcayRE69oJFtrGcfxeS3kN1
+         /8uG5m4C2Gli6/jeFxBtsO3dn7bDw/vxubmZMLBbGFP38gWRDMqNmc980vcUEmWN7QHW
+         gDMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776165653; x=1776770453;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mm3jwhb6+OKntvMAoPGWsQTvhsdxLGsWKJzqFLjZ1Wg=;
+        b=obxhCNV3k+TCiFZtA9xfqCmLqb2iJeTg//kkhTQlNFfvy86D+v/15fLF68ozU0B/et
+         uqMkSMv4Vtpo+gXTI/iZcFsmTOzr59xvCKxJzUzuRuObD+RH6+Z0lGnBGV0SGUlZZP/j
+         pvL5ZY0QAWoSygoMujuMDyTQkIhkJJJUM5vXGW51P9JtxpMO2tluGGDCtSJaY6lnbULe
+         rtq1AvmaTsNdqdFZWb62h5y0DznE2NU4Qg2JuEkmO3YZjfj/SP1LLhpHbYz+Wz94DwMM
+         vA4YynudxrMpu8zwBkNuqcn3z5I4Q1LCqfJPnFlFURb3P1pzc3L3Tbv9x0s/S4jY5ktj
+         vZ3A==
+X-Forwarded-Encrypted: i=1; AFNElJ8Hg/7NXIBs1GJmXZmpf6zQ371svKvMnp9AHZZEwO7HtONOIhOstRuvbRBSdJRyKHZyLmh7pP8Bnw==@kvack.org
+X-Gm-Message-State: AOJu0Ywn0cMm6mqkujFx4idHD/lrUuYA3nXy4ZR0SkGIFe9V6kzLq3PM
+	BVZVQ27Bt/IQzx7V8k34McR5Yjkv0JsMCPGdCkD163aGHX7FC7qefe8pat8kQpDpaUhtBYRuTal
+	03GCFelceaEzbZgrWdsgj+P4UmuG/LeIfBkLG75F3Twpr
+X-Gm-Gg: AeBDiesCpjzQ8veC/VMD4CMmTM9zeaHvcgPiSuQYHedFEor+W+scDq8YqFkOsdUJyvX
+	f7p2U0N7yEIiCx6naV8qvVcqD7cyRWmUvMucNTjH1Faihg9AVHd7ee7gQCj5edmeBiLAc4oaJyo
+	Uoy9u1qiUTpAUASbTVQiBaoMIOTgryOsjWIT92kiRKx8kgtwsNZktsf7Xl2MyZU3vJ8SOwV3ybF
+	DjYI2zU9QZ35tGpfBzhFNEA+pkyo90oIr9Vl7+P7OKGOQi/NvN311Z/Isg1WZWYxcKxjqpXxbcq
+	JJCretSOYQ==
+X-Received: by 2002:a05:690e:e8f:b0:64e:acda:c126 with SMTP id
+ 956f58d0204a3-6519a8a49c6mr10867058d50.4.1776165653304; Tue, 14 Apr 2026
+ 04:20:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/memblock: fix off-by-one page leak in
- reserve_mem_release_by_name()
-To: DaeMyung Kang <charsyam@gmail.com>, Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260414094439.982853-1-charsyam@gmail.com>
- <20260414104353.989063-1-charsyam@gmail.com>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260414104353.989063-1-charsyam@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: wkLhB1sG-uScmjyYMpuqjEOmKu6tMIPb
-X-Proofpoint-ORIG-GUID: 7JcEVzdBO7YccUBjh6yMYYB6HFHeu3pv
-X-Authority-Analysis: v=2.4 cv=WbE8rUhX c=1 sm=1 tr=0 ts=69de2158 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=A9Q-lSG_ta5snbpTm5QA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDEwMSBTYWx0ZWRfX3M/DsbIwZE4i
- QAWM4kkD8F/DarLEXqCHMCquT2f/UVJ7m+ub+kBtazP1cOwUOIJTAsIOXzjPzwrWJr+wlFgqaK5
- zprW8W8enLD+5lQUXdOgnxxwrnDzcrpLK16CaqzBVOKAOVYqRrZrMyQTFDMk1L/arC82TyUhlXu
- OpSY9WCcLjihggUiuQYfjXo/QEZ2nQV84Nbyzzrhttlwn/FVi24h4giwqqGePAys21GhXCPyhaP
- JDDrUo5U7YWwTOKV/sDidYh6vmiIm6n1uwemOKXMa/sGn1zpsw6FqAx9lPfUO3Hvjra+YAD8f+B
- LlJHkNE/ZsvpFkdoL0tc2xgumxR0tZa0xnD0R2KeJVnMhUSca+as1Ycd1Bq63ECeR4iDwB2PlpR
- GHZ5H927brRWyFnpnqbgR0DBGr6XLzRkjksaj82OWTKKy+Twy/nVpQXELBM/OH9PVVFBpZgpwEh
- g3JrLg7FykuytS6jdAQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-14_02,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0 clxscore=1011
- phishscore=0 impostorscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140101
-X-Rspamd-Queue-Id: 05434160008
-X-Stat-Signature: m3qr7dh59yqj8eyyw3u8rcq5jnbfctyz
+References: <20260414094439.982853-1-charsyam@gmail.com> <20260414104353.989063-1-charsyam@gmail.com>
+ <b1a5b96a-a525-4566-876d-5286c1367d7a@linux.ibm.com>
+In-Reply-To: <b1a5b96a-a525-4566-876d-5286c1367d7a@linux.ibm.com>
+From: CharSyam <charsyam@gmail.com>
+Date: Tue, 14 Apr 2026 20:20:42 +0900
+X-Gm-Features: AQROBzB6cCk_WsJcQ7n6sx5j0EXno6TJzt93U35Rlx7gTU857QJrtvn8_mIIG5U
+Message-ID: <CAMrLSE7CAJ-eqxhijGJUw07_7Z8a7q7jpOi9+VE_4Uu3NovqZA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/memblock: fix off-by-one page leak in reserve_mem_release_by_name()
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000d3d80f064f69cade"
+X-Rspamd-Queue-Id: 7FCC740005
+X-Stat-Signature: 6ydq76xhpk8g8yo7wgcu5dzbcg5py63i
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776165220-405101
-X-HE-Meta: U2FsdGVkX1/94tRzSzOfMNdxJyPRJzpwU0ycO/ah+WdbN6CIDgKv5q4e6nzHbYqz55Cby9hBXKWRpwngiv50SHrnsBFfpLvfzwi6ioKz8CRSkdLI1VHwA9AJM6ruqHly4/iJ1O5hSRsQRH0p/Np83DXw8THuv4Qsdy34V3VOEcgxzsxRQZQwRunaYGzMFG64GHRWAQbgrC/3ocPa2/n4OUXFj9fflyIGd6GLL3FkfVMNwGA9f7AxstOSinYtfCOJqXkGVw7DtoggEfm8DAzQ6uDflmCcC26rV4l2wod1PuhXVKZe2884/URqsT+mjWXt2G+8HmmQ71H9bNR48brM64CrD2aYsZrjqnLIAMlUse1hFRW3CIqqgGmZOU1IvTU8SrhnlB8nbDCqQxePe3/qO4Z7akVQfrxpia7Y5QRTWF2jD1dJ0HXvruihRt4X2lwlV42fTwVOHTOVUFwlM/PSAU/RBmq0hVZ+JqqB0inPZYFXbBpTDQXkAfy7XAB/k0dMaBR088048ZtKMr6ADcYODJDZu7osoXiWdiWGuR2KCb8abvKFkF9QYtD3Kg72gkqtMqzm4SdS9jypllyfQjj6M68ZBj4UXOVsddod+6r1IB0t2G8QczHMFaRbtrRi1LCAgfEx+xsks6bZA/skDwtihnb0TVuTKqa4kq+igpePv/VutEOOPjxQYYGEtrKXa8I+RaW6fLPu+lC+lrP5cyEpon24E17QQwGi+Vdkujss6UgZS9VrooEy9/Ggcoq7bMBjjnsQqTSkbjfNxm2iRnCWUhFcf2oRLYpU0Db//0ODOYy5iSR/HZqVA1UsjI3lIqbhBmlcN8F4EPNrKlHrvDRwXQWivLFmCC+OVsU9nSHTuggPLt9AbftxvXWwBiSOyEwvqVwulH26XN1f4hwlZMFYoRo/ag0alUo24YsAaxuokREe46FAh/Hs+KOa3sea1U8teYK1ht6dLvanMmU/Rs8
- jYIHJU1V
- 9YFwZ+5rIPUYMDAWy5HWAIv4L2iobE4JIpfhj7Mos5dZtO5AnJ1FHlFdn8G89W8ZOygAgGfiSvpmrBoM4C9eMj4smH/NxkC88hqSWByAkQeHbbP+JHtMrI6VlLFql554dmiemXkzK4b3Jz2Ji/yuGKf7BWR+Vrth8MGOY7RfuFyziW4lED4CnGptoGcm45CcN85+1Hb/5iiAd0s+WlbywMXx+MhcA8NUlCS7vYU5V268W4aqVSsOaAmzruw8OmiNoRJGmXVIfJ4bb53X1192eMSOWtCiZNZPrExVMMhO42kq5DxkHK9Kot1GMxo5+XTEZQ4zQLif4rBwrI6MW6aor1PXhSCfzGyPpptp577FOs/OSOvQ=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776165654-347341
+X-HE-Meta: U2FsdGVkX18Inv21rI2VCAkiJl+K0kmxhcK+WLgLF5JVcwm8ADUGxuDyoSXE8Iyk57KGI7zhCvlkDhUsjS6inprH3dNqvsHNZ3Bh1NMxvEJWH9fF4tFg6LCNVW+JdgUStM9D/Mzn4yzffNFHd2WYwy/3nVXqyrBPezJeySNWcx+507WkMUr/Jsvn8h/PoRi6gswuJChl9Se3vzoVBsQCPulummJsWWE85nt66Y2BDmBhjcZuM2EMiF8RqBEMNG6IJYgGsSnWL2l7KgJnCuRDNTpsAC5MrOBEcNBvJi6vXpN5ZtxyIpQjFd+xdBifS9jk1Pp3Y3wlDPI1tBucSN5e1X5OaA1ZzeA3cw4eywfKIYz9lhx98aHb6obaz1pYQLlgyhAf5YJ73oJKBKhVS1V9/ZzAqg5m7n50YIf6Ru6T9dESa0cxDtscXc141UKA03j39y8Akf9jjU/hZ+MBus9Awpzl+o2oBP0Bt/EGPvNYcosjyyuHbaG3MTrSjN9XJngaDLlNlLKAVgbbPEiTisj7i2A/5nZe71kcaKihe8jWe86Cs57j/tExJjP4NuSZYWNajO+j6j9sqcVrWbkCy2lIlQD63+1Z8OYRVorslVyvZbFbwf8xrPsQP9ay1m0O45UHYH8lyl8GBam8fwvGjzYWuvY6mn83M7beINDWTov4/lgidriO8fID76B5tQYvW9O6wFIuMR8K6zt7Fh7ua+JAwbqPxLjzZ+wkCfuAyPZh1JkzHlcWrk6mpSUd8+Bx6ADgLxOfyuW8+svIS56xHKTH7rnUuwZVvB8eLZN0X9X2KdLi2XTueey/0zvWPsV3xadVTJGlr10I3awKgekbKa1OpBOKs54AQcO5tFiG3SSwkHUXAbRS67CxZlx/+eZz9umkHBh2RdS3KUH+EB2xkRtrzu2xO7FuOQikD72o/6JxlGdylrQ9yi5KQ5XIlko3WvoAL4Xkj9Qinu3NML6ua67
+ uNmcSh+9
+ jjbni8cRgJocuSc35cF/P1qJX/87lmJJlpUqEKy3zkPYZ6IW5QpWKnuMcFT1jAt6RP43hqsa8IhT4rG0HCdHg+9n94nfC8oMO+73pqFgZY6Aw6X6YgGFirhxKQBhs3esbrFArkQ1DRSz9ZPzGAvZtG8nfK+HpPcJggjPV6GYV3eUNLUh6dipJR698fh0f50A2hT8l+7t9R6JUAaXkYJgCHlftuOjbHKCjaPnRQgNu/plwy5Aw3X9NsM60jPd8M5wu1KhtL+tKqpWwHbb9GSbbQULI9HnAYWUGPPuwyLyoLsugd6Ix0bUXXj9ZVpq82/yfj/GAFZcsXZhktrvxWB0nq4xo77z4qhdBTvpPqCoocT+ObikfTg8Sxd/49u960guxyUaHKO9s7wztHwKpRxzCzHllURdYsUZzWQLrtMWzOZ+XpRo+41Iuw3rdT8V+97AVu3tD4GtVH7luVYWA2FwHvxu4YwVI0gf0DV0NRuqVrsWwDiJGmQAL2grFHHSm/zeVd+k0omGxZvCWY4bL6nxsmsQh4UUdR8GfTdfhe3X/wOt3jlaple/RjjUQKJXZ/keqH1J5ncQNrpRuulA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,53 +137,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
+--000000000000d3d80f064f69cade
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/14/26 4:13 PM, DaeMyung Kang wrote:
-> free_reserved_area() treats its 'end' argument as exclusive: it aligns
-> end down via 'end & PAGE_MASK' and iterates with 'pos < end'.
+  Please disregard this patch -- I just noticed the same fix is already
+  in linux-next as commit c12c3e150780 ("memblock: reserve_mem: fix end
+  caclulation in reserve_mem_release_by_name()") by Mike Rapoport.
+
+  Sorry for the noise.
+
+  Thanks,
+  DaeMyung
+
+2026=EB=85=84 4=EC=9B=94 14=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 8:13, D=
+onet Tom <donettom@linux.ibm.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+
+> Hi
 >
-> reserve_mem_release_by_name() instead passes 'start + map->size - 1',
-> which causes the last page of a page-aligned reservation to never be
-> freed. For a reservation spanning N pages, only N - 1 pages are
-> released back to the allocator.
+> On 4/14/26 4:13 PM, DaeMyung Kang wrote:
+> > free_reserved_area() treats its 'end' argument as exclusive: it aligns
+> > end down via 'end & PAGE_MASK' and iterates with 'pos < end'.
+> >
+> > reserve_mem_release_by_name() instead passes 'start + map->size - 1',
+> > which causes the last page of a page-aligned reservation to never be
+> > freed. For a reservation spanning N pages, only N - 1 pages are
+> > released back to the allocator.
+> >
+> > Fix it by passing the exclusive end address, 'start + map->size'.
+> >
+> > Fixes: 74e2498ccf7b ("mm/memblock: Add reserved memory release function=
+")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
 >
-> Fix it by passing the exclusive end address, 'start + map->size'.
 >
-> Fixes: 74e2498ccf7b ("mm/memblock: Add reserved memory release function")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-
-
-I think it might be better to send v2 as a separate patch  rather than 
-as a reply to the previous version.
-
-This patch looks good to me.
-
-Reviewed-by: Donet Tom donettom@linux.ibm.com
-
--Donet
-
-
-> ---
-> Changes in v2:
->   - Add Fixes: tag and Cc: stable (per Donet Tom's review).
->   - v1: https://lore.kernel.org/lkml/
+> I think it might be better to send v2 as a separate patch  rather than
+> as a reply to the previous version.
 >
->   mm/memblock.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> This patch looks good to me.
 >
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index b3ddfdec7a80..d4a02f1750e9 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2434,7 +2434,7 @@ int reserve_mem_release_by_name(const char *name)
->   		return 0;
->   
->   	start = phys_to_virt(map->start);
-> -	end = start + map->size - 1;
-> +	end = start + map->size;
->   	snprintf(buf, sizeof(buf), "reserve_mem:%s", name);
->   	free_reserved_area(start, end, 0, buf);
->   	map->size = 0;
+> Reviewed-by: Donet Tom donettom@linux.ibm.com
+>
+> -Donet
+>
+>
+> > ---
+> > Changes in v2:
+> >   - Add Fixes: tag and Cc: stable (per Donet Tom's review).
+> >   - v1: https://lore.kernel.org/lkml/
+> >
+> >   mm/memblock.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/mm/memblock.c b/mm/memblock.c
+> > index b3ddfdec7a80..d4a02f1750e9 100644
+> > --- a/mm/memblock.c
+> > +++ b/mm/memblock.c
+> > @@ -2434,7 +2434,7 @@ int reserve_mem_release_by_name(const char *name)
+> >               return 0;
+> >
+> >       start =3D phys_to_virt(map->start);
+> > -     end =3D start + map->size - 1;
+> > +     end =3D start + map->size;
+> >       snprintf(buf, sizeof(buf), "reserve_mem:%s", name);
+> >       free_reserved_area(start, end, 0, buf);
+> >       map->size =3D 0;
+>
+
+--000000000000d3d80f064f69cade
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">=C2=A0 Please disregard this patch -- I j=
+ust noticed the same fix is already<br>=C2=A0 in linux-next as commit c12c3=
+e150780 (&quot;memblock: reserve_mem: fix end<br>=C2=A0 caclulation in rese=
+rve_mem_release_by_name()&quot;) by Mike Rapoport.<br><br>=C2=A0 Sorry for =
+the noise.<br><br>=C2=A0 Thanks,<br>=C2=A0 DaeMyung</div><br><div class=3D"=
+gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">20=
+26=EB=85=84 4=EC=9B=94 14=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 8:13, Don=
+et Tom &lt;<a href=3D"mailto:donettom@linux.ibm.com">donettom@linux.ibm.com=
+</a>&gt;=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">Hi<br>
+<br>
+On 4/14/26 4:13 PM, DaeMyung Kang wrote:<br>
+&gt; free_reserved_area() treats its &#39;end&#39; argument as exclusive: i=
+t aligns<br>
+&gt; end down via &#39;end &amp; PAGE_MASK&#39; and iterates with &#39;pos =
+&lt; end&#39;.<br>
+&gt;<br>
+&gt; reserve_mem_release_by_name() instead passes &#39;start + map-&gt;size=
+ - 1&#39;,<br>
+&gt; which causes the last page of a page-aligned reservation to never be<b=
+r>
+&gt; freed. For a reservation spanning N pages, only N - 1 pages are<br>
+&gt; released back to the allocator.<br>
+&gt;<br>
+&gt; Fix it by passing the exclusive end address, &#39;start + map-&gt;size=
+&#39;.<br>
+&gt;<br>
+&gt; Fixes: 74e2498ccf7b (&quot;mm/memblock: Add reserved memory release fu=
+nction&quot;)<br>
+&gt; Cc: <a href=3D"mailto:stable@vger.kernel.org" target=3D"_blank">stable=
+@vger.kernel.org</a><br>
+&gt; Signed-off-by: DaeMyung Kang &lt;<a href=3D"mailto:charsyam@gmail.com"=
+ target=3D"_blank">charsyam@gmail.com</a>&gt;<br>
+<br>
+<br>
+I think it might be better to send v2 as a separate patch=C2=A0 rather than=
+ <br>
+as a reply to the previous version.<br>
+<br>
+This patch looks good to me.<br>
+<br>
+Reviewed-by: Donet Tom <a href=3D"mailto:donettom@linux.ibm.com" target=3D"=
+_blank">donettom@linux.ibm.com</a><br>
+<br>
+-Donet<br>
+<br>
+<br>
+&gt; ---<br>
+&gt; Changes in v2:<br>
+&gt;=C2=A0 =C2=A0- Add Fixes: tag and Cc: stable (per Donet Tom&#39;s revie=
+w).<br>
+&gt;=C2=A0 =C2=A0- v1: <a href=3D"https://lore.kernel.org/lkml/" rel=3D"nor=
+eferrer" target=3D"_blank">https://lore.kernel.org/lkml/</a><br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0mm/memblock.c | 2 +-<br>
+&gt;=C2=A0 =C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+&gt;<br>
+&gt; diff --git a/mm/memblock.c b/mm/memblock.c<br>
+&gt; index b3ddfdec7a80..d4a02f1750e9 100644<br>
+&gt; --- a/mm/memblock.c<br>
+&gt; +++ b/mm/memblock.c<br>
+&gt; @@ -2434,7 +2434,7 @@ int reserve_mem_release_by_name(const char *name=
+)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0start =3D phys_to_virt(map-&gt;start);<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0end =3D start + map-&gt;size - 1;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0end =3D start + map-&gt;size;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0snprintf(buf, sizeof(buf), &quot;reserve_mem=
+:%s&quot;, name);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0free_reserved_area(start, end, 0, buf);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0map-&gt;size =3D 0;<br>
+</blockquote></div></div>
+
+--000000000000d3d80f064f69cade--
 
