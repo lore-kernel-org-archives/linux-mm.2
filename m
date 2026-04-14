@@ -4,133 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B13FF9D0DE
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 23:02:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD34AF9D0DE
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 23:09:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B68A6B0088; Tue, 14 Apr 2026 19:02:40 -0400 (EDT)
+	id EE5CD6B0088; Tue, 14 Apr 2026 19:09:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 340A86B0089; Tue, 14 Apr 2026 19:02:40 -0400 (EDT)
+	id E96466B0089; Tue, 14 Apr 2026 19:09:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2081A6B0092; Tue, 14 Apr 2026 19:02:40 -0400 (EDT)
+	id D855E6B0092; Tue, 14 Apr 2026 19:09:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CBCA6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 19:02:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8009FE3790
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:02:39 +0000 (UTC)
-X-FDA: 84658687638.29.9233790
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 978CC4000B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:02:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=taNZ5vB0;
-	spf=pass (imf07.hostedemail.com: domain of wyihan@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=wyihan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C5D2A6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 19:09:33 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 57E211602BC
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:09:33 +0000 (UTC)
+X-FDA: 84658705026.18.FE77593
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A640A20013
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:09:31 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qBelCepT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of "SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776208171; a=rsa-sha256;
+	cv=none;
+	b=4I0eIEMy7FBUaa2YUIJXZ62bra5HvMQ6GdrrAmAIfEqhfiW02IOi88NFXoNFt4xetY/as8
+	qFnwy3oJnPfhIQXXLI7Eq0dLrSKfAbIyVAQSpNbwIefY4+BKL+FruwDh+ldu7PPe9XZv1h
+	qw22xfr4zi1ei/stD4Ccap3uDM+IFHM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qBelCepT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of "SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776207757;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776208171;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hYhIIDY1BBnC9l/Uqt+TOwqFCFA2hfXSopa3Cxt9ADI=;
-	b=A8br9ieqU4CcK+NLUDcMKmNaWOR1snNnPff4UUd3X6Yy0SwKN8g5QRM1cMUaTf+TkchyJq
-	d2sNRP8MW4SSS42WD00g+qTvKYA01DWUaojzRYNWDeJXaSeF2yuKs9+njyQLaiA+VJtYn4
-	G2IevJAm6DA9icuZ1+ZK6GdFviWHeGE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776207757; a=rsa-sha256;
-	cv=none;
-	b=JMGsEA4LnqAXVTUUKd44KCysl43vZ1VHze837ean9m39CeA32xXSB9CXP43OUA7SJAe0lf
-	cbzuhPovSKFG53rxmjtE+s9oqFM93Qbom9dOyB6VnCfE1MtCwzuiqRpj1v9xtYOiFPt3gc
-	BrGjxShCwsDN6RmS3XtjNQHp2A0F7Zg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=taNZ5vB0;
-	spf=pass (imf07.hostedemail.com: domain of wyihan@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=wyihan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso278385ad.0
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 16:02:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776207756; x=1776812556; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hYhIIDY1BBnC9l/Uqt+TOwqFCFA2hfXSopa3Cxt9ADI=;
-        b=taNZ5vB08HTwdU02j/wU0BFIa6w6gh4tZxyXLN3Lrn+CJ4qa/amvuboVZouNpxGJyQ
-         54hK4Ri9u5f52aNbtCthRA5h6FNNp/Hu7BsgHBpJSI3kfiLhcufA6YTV9XFlqkuoeDsC
-         1L7dZ/8LCtdoLB8NDr4Dz/4NRzyZeKRdJl1YHIAhQpEef457lfkMgioBVbm8hcsOIiXA
-         DoxjN0bJdvuX9FDEsf8jKeHrxejsuqk/apmoVmy7Tdx3KzFRb7OdNYxIC57jr1mx9pJ1
-         1LInYfPjiTZun7llyU3nKa7NVdLl410ZJ/fz7Zr+ukcREkqB9Q/cvrwy8b/d2bGZD/iN
-         6YAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776207756; x=1776812556;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hYhIIDY1BBnC9l/Uqt+TOwqFCFA2hfXSopa3Cxt9ADI=;
-        b=Z6Sx8eoML8cOfAfpb1c351CaqTTFoNp44ACUfbsOuI4UkznCXK8s/iCGHtUbqDTUGe
-         hQFnZsZVTW+aJDMkt4pmEPcJEOMoSqhhdy8Y9z0PB1XnOMzy8Le4FFclyQAsbuMIXs3A
-         840KN1BBBbPvBUPrN/EOuaCbBh1XsVEGv4E24Q7EiYCpwAP0Er5s9FgaAnKR7QtF5Uyu
-         diS9PAwBfsA0ONr4qhWUSjM+ueyiGCPVnFN/MGglVoNtQFXMRd9LzaMKFaY6tW7owFJz
-         6e9GG7W7rPIhUzWeQ3Lm058+wF510y8gYveqOal6h6GEuly6xFQNHOr+Y1xOVVsYanru
-         Tw/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8iDEJmvGWoeptsElLCpDo9fwlCu0Fahbiyi6iWZam8okds0g0DoPlNEvuUXIWRQLrlwwCJmspQvA==@kvack.org
-X-Gm-Message-State: AOJu0YycH2v+fk0S8WxQB7A03tgoznSfLUKC7DlaJwUgxeFEP60zliJQ
-	zZnhLe0cftdeYBuzHL7rjrypVCO3bR3fOlxE/Wei7r9huCS/kdR6nxzMw8mM9P7X+A==
-X-Gm-Gg: AeBDieu/uiH2VEtfPrIfCF+L8mIxQ5ALvngoCEDyHVwuuaban7fHYkhzYCHVrQ2QK/6
-	GRtFkyRBGvM6hXt0bl/25Db+Jf2wXRCQw9sQcHSPPGLeVhfenM+jxXsLjsE43x3wv/UKjWKhIhq
-	BKFJtWIWO2RTFJwzBZJ18MyMHOUZy/seW5EYJsaaYCMLyYIP7qLrMe2VVTMSNpEzKe8aD0rqlCX
-	+yfKdoj7RftlIhausaJDeYfrbz7AAlsSEdr5PXpQsENZq+aMdnNCS/0/cqO5yJ785/skPS8FgLy
-	F5x14pNUk6qEDy6hwi1Em4rbjHe42anzJrhZHviyJxEyEqp90REDj7H7xPQljsOo8MtACuykaNw
-	zn39EC2XgN8vaT46uIIlh60/Ukmphx6CM/ZbgJw19qUJsDmIgvVah5sTKae5K3NKAUmikQTsGXN
-	lQ408phczueCVJA3sFU4xU63t2Ia+ABm81kuCbEc7k/c2Ytd6OqA/e/2bhO1KqSNUSmWTklTZbR
-	monFxfBBhx4TA==
-X-Received: by 2002:a17:902:d50d:b0:2a9:5ef5:399b with SMTP id d9443c01a7336-2b476bcdeb8mr642005ad.19.1776207755684;
-        Tue, 14 Apr 2026 16:02:35 -0700 (PDT)
-Received: from google.com (115.112.199.104.bc.googleusercontent.com. [104.199.112.115])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f673e38ccsm64574b3a.33.2026.04.14.16.02.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 16:02:34 -0700 (PDT)
-Date: Tue, 14 Apr 2026 23:02:31 +0000
-From: Lisa Wang <wyihan@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, rientjes@google.com,
-	seanjc@google.com, ackerleytng@google.com, vannapurve@google.com,
-	michael.roth@amd.com, jiaqiyan@google.com, tabba@google.com,
-	dave.hansen@linux.intel.com,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC v2 2/7] mm: memory_failure: Allow
- truncate_error_folio to return MF_DELAYED
-Message-ID: <ad7Hh_kz2aIOeZFI@google.com>
-References: <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com>
- <20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-2-92c596402a7a@google.com>
- <2f177e0f-2eb0-48d0-b48c-7a0a340caf5d@huawei.com>
- <adA_1zXLUBqmSHFl@google.com>
- <5c5dfa85-baab-5c0f-6f6d-b71abbe10ed8@huawei.com>
- <4d38d333-d446-40a3-b6f4-c4890bfd24cf@kernel.org>
+	bh=cj12voxMKYpLQfRtBzt3M2FVnXHkE0HaRXw+dtrKomc=;
+	b=MrrinLoe6RoZbPmcIFDIaWsK57zIKea8mbXbc6Ve7BFa0BpMLyyhQYnLeR6k79UgZ6vS+u
+	OMig2HZxCJCT9wtiw5IhyWcFTIxrPCaSyZbkJmIEbX7f7exLu3lK9fT5v3OqnwDUR5sigs
+	tlRNcimPNul9FOeUtDf8T6P+DrtqoIU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C17FE600AE;
+	Tue, 14 Apr 2026 23:09:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6918DC19425;
+	Tue, 14 Apr 2026 23:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776208170;
+	bh=m0W/Ernt03ORrUvvuWlaV+yJl5KaCu8uMNwKRgnc1JU=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=qBelCepTc9lFdVUgh+o5h1aXWx6734PGrt1TsMYUW8hNHRDFGGvbQBnbL7dkpco6k
+	 FOWMq2sxkQ//wmRKXPFKM2vXXv6BS3Sv3GEPKQgc9sNlUbSKK0Z3Ea5TZwC/uq1yAx
+	 XmarXC3/Ng/MOmZpZtC2AlgJFzmvc9Ns3XgKRXeNVliCghDA1lZzITubKE4U5WMow4
+	 aLNVnwqvUSMw7gjHi2mEqYtiDu3lfqxpFZHxsZI966VlBMLNFolgMJDx3pPmVkSeKs
+	 jkTzJ9lwTV80UFCo9VCmOvVlg94JahYcn8tZKQTzVofGTAOdvXmkjGvWtz5BmsTKPW
+	 7sluvHMU/cwXg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 0224ECE13BF; Tue, 14 Apr 2026 16:09:29 -0700 (PDT)
+Date: Tue, 14 Apr 2026 16:09:29 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 3/5] locking: Add contended_release tracepoint to
+ sleepable locks
+Message-ID: <2d2a6584-2b75-44e9-953e-e6244ff2abc9@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <cover.1774536681.git.d@ilvokhin.com>
+ <d2e5763278812499335b22a013aafb4979e3324b.1774536681.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4d38d333-d446-40a3-b6f4-c4890bfd24cf@kernel.org>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: eqiz5akgpcc17pnw7tj6tne1974kjadw
-X-Rspamd-Queue-Id: 978CC4000B
+In-Reply-To: <d2e5763278812499335b22a013aafb4979e3324b.1774536681.git.d@ilvokhin.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A640A20013
+X-Stat-Signature: xbzik5fcp4r6pitrwgdcw9ksg35qorap
 X-Rspam-User: 
-X-HE-Tag: 1776207757-856242
-X-HE-Meta: U2FsdGVkX1+rUvyQ8LhGCZ/clZrQnapjUkb7XAJaOeD9uy/+MQl5QI8JRXz8OUo4ZcVq0Njp9IxV0TLJ5HATkkiOx+jupwcod0M/ltPQUey0d0H6fB8JcuwJRBoYD4Nl77Hr4fq3a1VQcY0uMNoOOyVDxXVyw8NClDsqNg6UZPgY22hwL2TJLudSvNrhQethDP2SqitA1oIWhnf1AHoJZlsJ81LEnuGIRHrlI919le7YW8AhoJ5hLFKGuaNgfgXkuys1wLV51r+HqemY9PwHneVulxlhFqPESSzlLU7AZcfC1BbUz30D3oz7cp14e9W+iuTlS0W8k1YV8k/AukMfrtzVKFo4r2HH2w4RxER0wNKQZTs4PXU7AQkL2JE+HIuEeWJU9dwdqOrDs85CzmCFmhAOvr7FtpsAaKtYqVe+TBe8AX5dvCsBHDwpMne3QhTR7J5s3IiZ3UJ4Ryt8MV58c7GTsvEVBBTa09jyQ/NJb7K9Cfpg9VuTr0na1AUDvH8uUHoS8uYcNaWFGVWq3n8jHdECc2c2V0613gu6aAkJnhmos9567hhMTyvo5bX70rCoMjU7sgWtAD22+tirlPJ6ETM2SQQBrTVTRtNBYNnVNL/NImfbhCtwn3wzpuyGbWSOz3XkxTguA9UTQjHK9FLtyWhXF9vQHXCyXcPCcO3FLj3C1TJlrLDk96PJErvLlhgu4GDQ1nUCnVh4RMMX5iCr4GThvi2jc2cMezV/S7dAmeSv/0OsjhmSVvQ/hXXhOCQorJHgBTAiYlwpt4nKcf1c2/NZchCQXZIRyGHTsds6thx6gcOLpDsPLxoH/DaQBUP2Hkq9CwNYn9fN/NNmmlLNe44lYq+h4dTpJsFFZB1bv+vnXr5hVJ1B4ZtBRIRiMKLGobzC61KblNATbak2yEZs86Sw1WzhBwM9jeXpTJQ/Ve/a1Avo03bYoJzDamWWVai+8fmLUS67TVZPIIPPx3L
- hzt8KTt2
- EQKm5d8nopiEDIoDDOe/CS1mQcrXNqWWoaEAD0fpag9ZnrhJRLrUKV6wu4RivoLeAVnTAmvzU6bqWe0sz4p9tacjsPlBett/AeRTUJ2rIjie0H7bI0xft2Su8LamJYQ8xEJgQc7/pllIE3FDv7yKZm7q8F2ZNKqaTk4P2GBTewWxvMTcwTsYMHm8SQuvg/ek3i3ExQtGPwmA4I12Pbz9tq7QJwRQsNPrROG+hcLmXAnfTo6jzEERYxFafDTnSmvz+pN1p6AMu8UxOij33s2JzOvv+ldVWhYbCk5+xKYezOg02f9juLIlIPzITrz0T/YrL1lNUHhz0fox/oqzqbEPyjp7pyvmEiHZmIPKzykS01vQtbcKcMbLiv0zNdb7YUAbT9rHdIGX4sxz6PCE+zB80mw8DGSMiuoGVjBW8681CotaauZFKNQ6rWr2/yleZLXa6bFK6sSWI8NssJTUh3HufGU54PI4oUN8cxjrc
+X-HE-Tag: 1776208171-907539
+X-HE-Meta: U2FsdGVkX19WOvhx9Z5v+BDiNj0GePX7qX/tZIOFmeUdCUB8Rr8oPBAvHC9egFhB0ZNDX10tWOwEhHJYVhUgzkA6qpPUc1XVGhajMDx3Ag0VEbuFk118p/hbwaSkD2Izu3/Lu0KOJxf0jZcP2SZ0RaEOXItYW5vhRZ+XKD6yX2MzinTlWvx+EqVgPB/nbYa4Vlbshm2K0XC80qcHJZVvsm1FrlgJhDYdGa2BZNFUmAMZSlzxnaNUan/o/iwAF/b84sfRFER7liBN1tm8pWPAy1nRtw2fvoHyU5N5A5nRV23uiBlgOSHAcpfoAaelTflzZYa7ryqeWIbizVm2zJw0r2qiH+gbpx70PWu59wefhxTPXjc1Wb0i4U3bBOsG2ZNOlcKphc7hia8BOa2UxLhaO53tv7Eso1z3r4sZZq2DRhBJ0wpDdRjXb15evVwwU1WDLYygJ3EdBmJxi7pP+UcMUbjxs6ZCmrpVsUxusj9iMjlpDt9sl3Q/l65VwC3TXn/0laHTNCHlw/reC/kXqcLlxtRPWvag/Kul+qv4uNQ2iKrV51Gn4VJur9P2N+CFaw0ijh22nyMiWYOF8yGoZ2cJQDAWG3U1bcV9pv8O65oSSjKrsDmlSGTYLAiiLo18SVq0byFOA/ByPuB8BxOsfLnI+WB1JBZOIgxISP22yfSfTHZ0UbZkyGb/J1goE6Daf8Cxll+YW7zn3uoobWbrTfxU0nVrDPSx/PEAsfPdktD58oO04jQyiptzU1ji+UZC8RUamQxDT1zUOdabGpNidR6Qh9/2anRET8BUx1/vVrlgaXWKj3ysCaVjPXxCJPR7UclFbj2qmd175B6CyloRirpBzcJylCFBq/8/Wz8ZfTEVk2T2A6eHjt8eYBM4IMtoWqfedxtkw/2kCUKVg6s8j/GTD4wTNKd5MEUASihNAcCuNcqiv/2bKBd48blT5JUR9gFiXSIAubSxrAVYb9Fap4+
+ 0CT8R5cv
+ HZG2oNFLvItGcCs8ANG7GPXTVRoV4vCHVoXRTkQg9yBfCrCbwnOHMb70ztyuBr4NT6zjN5OU7Jf52njFGs3AfL/lllXZqo9KR8u2rQ7U+y7f7mTFemYqAFqgrlxS9gUiGLxHFSj6AWPgeGmfaVd8/XpijupMyva+XdS3gvgBeS/wbKjM0h6Wpp9DaZ0dl3wv7CHiBVJ1kkR87KKUiMv6ktx/sJLt31peUL/JoFDk5xdCDkSWFtRo7G/VD6qK1NFyc1lSp7uSXh8aPIHP8J94BuASONmiPxgq56HjK3iGlmMldAWqhEM/+s1ykK9VNHbfCZjOi5qUbE8SCp5enjEVb9Xiyla3cSaXKJhIqcPEdavLRn5JEM57E78gyarNKuoXMqVYp8p0NpTFMnTZKtYpAKhMEV5TDjJb54mWUEhxzcrPi+q47cJLk+eZjpGloT2xQOjNJN1/k5GjcpyjEYOGetDJbHszAIFcSh4GdNiW+xmHUKJ8RXP1xlva7xNtO9LPeGvMf6Dbhbfmg/vPNgynLgy1vfbrxIIlOytibs+VkXdi4Fr+Cf/NzQZ+0sFrDTmQL5GoUQP+ZiKx3ph3arKCaaMhQQehbFEf1VP3EK2rqAlQ68Gy2kVNVtByDz5TJenRWY1dBVkCakhwlnXOqR6gTqpcsW7tJxE7WXGIACtbDQ993sg4DkRzulY7QhC+fkqWrK2L+NbxGlQ0Xkl7dhEW29Yclj8Ko+2KZpw7I3yHatDQdein1UDBCUnMw6qhB8f08XzHu04NZVFooh7SJzF98A0gjBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,37 +113,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 09:18:13PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/7/26 05:55, Miaohe Lin wrote:
-> > On 2026/4/4 6:31, Lisa Wang wrote:
-> >> [...snip...]
-> >>>
-> >>> Will it be better to add a pr_info here to provide some information for users?
-> >>>
-> >>> Thanks.
-> >>> .
-> >> I think we don't need to add pr_info here; truncate_error_folio() always
-> >> leads to action_result, which already logs the recovery status.
-> > 
-> > No strong opinion but I want to make code style more consistent with sth. like below:
-> > 
+On Thu, Mar 26, 2026 at 03:10:02PM +0000, Dmitry Ilvokhin wrote:
+> Add the contended_release trace event. This tracepoint fires on the
+> holder side when a contended lock is released, complementing the
+> existing contention_begin/contention_end tracepoints which fire on the
+> waiter side.
 > 
-> Yeah, would be cleaner.
+> This enables correlating lock hold time under contention with waiter
+> events by lock address.
 > 
-> > if (err == MF_DELAYED)
-> > 	pr_info xxx
-> > else if (err != 0)
-> > 	pr_info("%#lx: Failed to punch page: %d\n", pfn, err);
-> > else if (!filemap_release_folio(folio, GFP_NOIO))
-> > 	pr_info("%#lx: failed to release buffers\n", pfn);
+> Add trace_contended_release() calls to the slowpath unlock paths of
+> sleepable locks: mutex, rtmutex, semaphore, rwsem, percpu-rwsem, and
+> RT-specific rwbase locks.
 > 
-> Maybe we can even make the failed here a "Failed" ;)
+> Where possible, trace_contended_release() fires before the lock is
+> released and before the waiter is woken. For some lock types, the
+> tracepoint fires after the release but before the wake. Making the
+> placement consistent across all lock types is not worth the added
+> complexity.
+> 
+> For reader/writer locks, the tracepoint fires for every reader releasing
+> while a writer is waiting, not only for the last reader.
+> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 
-Noted. Will update in V4.
+Looks plausible:
 
-Lisa
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
+
+> ---
+>  include/trace/events/lock.h   | 17 +++++++++++++++++
+>  kernel/locking/mutex.c        |  4 ++++
+>  kernel/locking/percpu-rwsem.c | 11 +++++++++++
+>  kernel/locking/rtmutex.c      |  1 +
+>  kernel/locking/rwbase_rt.c    |  6 ++++++
+>  kernel/locking/rwsem.c        | 10 ++++++++--
+>  kernel/locking/semaphore.c    |  4 ++++
+>  7 files changed, 51 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/trace/events/lock.h b/include/trace/events/lock.h
+> index da978f2afb45..1ded869cd619 100644
+> --- a/include/trace/events/lock.h
+> +++ b/include/trace/events/lock.h
+> @@ -137,6 +137,23 @@ TRACE_EVENT(contention_end,
+>  	TP_printk("%p (ret=%d)", __entry->lock_addr, __entry->ret)
+>  );
+>  
+> +TRACE_EVENT(contended_release,
+> +
+> +	TP_PROTO(void *lock),
+> +
+> +	TP_ARGS(lock),
+> +
+> +	TP_STRUCT__entry(
+> +		__field(void *, lock_addr)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__entry->lock_addr = lock;
+> +	),
+> +
+> +	TP_printk("%p", __entry->lock_addr)
+> +);
+> +
+>  #endif /* _TRACE_LOCK_H */
+>  
+>  /* This part must be outside protection */
+> diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
+> index 427187ff02db..6c2c9312eb8f 100644
+> --- a/kernel/locking/mutex.c
+> +++ b/kernel/locking/mutex.c
+> @@ -997,6 +997,9 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+>  		wake_q_add(&wake_q, next);
+>  	}
+>  
+> +	if (trace_contended_release_enabled() && waiter)
+> +		trace_contended_release(lock);
+> +
+>  	if (owner & MUTEX_FLAG_HANDOFF)
+>  		__mutex_handoff(lock, next);
+>  
+> @@ -1194,6 +1197,7 @@ EXPORT_SYMBOL(ww_mutex_lock_interruptible);
+>  
+>  EXPORT_TRACEPOINT_SYMBOL_GPL(contention_begin);
+>  EXPORT_TRACEPOINT_SYMBOL_GPL(contention_end);
+> +EXPORT_TRACEPOINT_SYMBOL_GPL(contended_release);
+>  
+>  /**
+>   * atomic_dec_and_mutex_lock - return holding mutex if we dec to 0
+> diff --git a/kernel/locking/percpu-rwsem.c b/kernel/locking/percpu-rwsem.c
+> index f3ee7a0d6047..46b5903989b8 100644
+> --- a/kernel/locking/percpu-rwsem.c
+> +++ b/kernel/locking/percpu-rwsem.c
+> @@ -263,6 +263,9 @@ void percpu_up_write(struct percpu_rw_semaphore *sem)
+>  {
+>  	rwsem_release(&sem->dep_map, _RET_IP_);
+>  
+> +	if (trace_contended_release_enabled() && wq_has_sleeper(&sem->waiters))
+> +		trace_contended_release(sem);
+> +
+>  	/*
+>  	 * Signal the writer is done, no fast path yet.
+>  	 *
+> @@ -292,6 +295,14 @@ EXPORT_SYMBOL_GPL(percpu_up_write);
+>  void __percpu_up_read(struct percpu_rw_semaphore *sem)
+>  {
+>  	lockdep_assert_preemption_disabled();
+> +	/*
+> +	 * After percpu_up_write() completes, rcu_sync_is_idle() can still
+> +	 * return false during the grace period, forcing readers into this
+> +	 * slowpath. Only trace when a writer is actually waiting for
+> +	 * readers to drain.
+> +	 */
+> +	if (trace_contended_release_enabled() && rcuwait_active(&sem->writer))
+> +		trace_contended_release(sem);
+>  	/*
+>  	 * slowpath; reader will only ever wake a single blocked
+>  	 * writer.
+> diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+> index ccaba6148b61..3db8a840b4e8 100644
+> --- a/kernel/locking/rtmutex.c
+> +++ b/kernel/locking/rtmutex.c
+> @@ -1466,6 +1466,7 @@ static void __sched rt_mutex_slowunlock(struct rt_mutex_base *lock)
+>  		raw_spin_lock_irqsave(&lock->wait_lock, flags);
+>  	}
+>  
+> +	trace_contended_release(lock);
+>  	/*
+>  	 * The wakeup next waiter path does not suffer from the above
+>  	 * race. See the comments there.
+> diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
+> index 82e078c0665a..74da5601018f 100644
+> --- a/kernel/locking/rwbase_rt.c
+> +++ b/kernel/locking/rwbase_rt.c
+> @@ -174,6 +174,8 @@ static void __sched __rwbase_read_unlock(struct rwbase_rt *rwb,
+>  static __always_inline void rwbase_read_unlock(struct rwbase_rt *rwb,
+>  					       unsigned int state)
+>  {
+> +	if (trace_contended_release_enabled() && rt_mutex_owner(&rwb->rtmutex))
+> +		trace_contended_release(rwb);
+>  	/*
+>  	 * rwb->readers can only hit 0 when a writer is waiting for the
+>  	 * active readers to leave the critical section.
+> @@ -205,6 +207,8 @@ static inline void rwbase_write_unlock(struct rwbase_rt *rwb)
+>  	unsigned long flags;
+>  
+>  	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
+> +	if (trace_contended_release_enabled() && rt_mutex_has_waiters(rtm))
+> +		trace_contended_release(rwb);
+>  	__rwbase_write_unlock(rwb, WRITER_BIAS, flags);
+>  }
+>  
+> @@ -214,6 +218,8 @@ static inline void rwbase_write_downgrade(struct rwbase_rt *rwb)
+>  	unsigned long flags;
+>  
+>  	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
+> +	if (trace_contended_release_enabled() && rt_mutex_has_waiters(rtm))
+> +		trace_contended_release(rwb);
+>  	/* Release it and account current as reader */
+>  	__rwbase_write_unlock(rwb, WRITER_BIAS - 1, flags);
+>  }
+> diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+> index bf647097369c..602d5fd3c91a 100644
+> --- a/kernel/locking/rwsem.c
+> +++ b/kernel/locking/rwsem.c
+> @@ -1387,6 +1387,8 @@ static inline void __up_read(struct rw_semaphore *sem)
+>  	rwsem_clear_reader_owned(sem);
+>  	tmp = atomic_long_add_return_release(-RWSEM_READER_BIAS, &sem->count);
+>  	DEBUG_RWSEMS_WARN_ON(tmp < 0, sem);
+> +	if (trace_contended_release_enabled() && (tmp & RWSEM_FLAG_WAITERS))
+> +		trace_contended_release(sem);
+>  	if (unlikely((tmp & (RWSEM_LOCK_MASK|RWSEM_FLAG_WAITERS)) ==
+>  		      RWSEM_FLAG_WAITERS)) {
+>  		clear_nonspinnable(sem);
+> @@ -1413,8 +1415,10 @@ static inline void __up_write(struct rw_semaphore *sem)
+>  	preempt_disable();
+>  	rwsem_clear_owner(sem);
+>  	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
+> -	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
+> +	if (unlikely(tmp & RWSEM_FLAG_WAITERS)) {
+> +		trace_contended_release(sem);
+>  		rwsem_wake(sem);
+> +	}
+>  	preempt_enable();
+>  }
+>  
+> @@ -1437,8 +1441,10 @@ static inline void __downgrade_write(struct rw_semaphore *sem)
+>  	tmp = atomic_long_fetch_add_release(
+>  		-RWSEM_WRITER_LOCKED+RWSEM_READER_BIAS, &sem->count);
+>  	rwsem_set_reader_owned(sem);
+> -	if (tmp & RWSEM_FLAG_WAITERS)
+> +	if (tmp & RWSEM_FLAG_WAITERS) {
+> +		trace_contended_release(sem);
+>  		rwsem_downgrade_wake(sem);
+> +	}
+>  	preempt_enable();
+>  }
+>  
+> diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+> index 74d41433ba13..35ac3498dca5 100644
+> --- a/kernel/locking/semaphore.c
+> +++ b/kernel/locking/semaphore.c
+> @@ -230,6 +230,10 @@ void __sched up(struct semaphore *sem)
+>  		sem->count++;
+>  	else
+>  		__up(sem, &wake_q);
+> +
+> +	if (trace_contended_release_enabled() && !wake_q_empty(&wake_q))
+> +		trace_contended_release(sem);
+> +
+>  	raw_spin_unlock_irqrestore(&sem->lock, flags);
+>  	if (!wake_q_empty(&wake_q))
+>  		wake_up_q(&wake_q);
 > -- 
-> Cheers,
+> 2.52.0
 > 
-> David
 
