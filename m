@@ -4,129 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A66F531FB
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 07:36:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45950F531FA
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 07:43:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA4846B0088; Tue, 14 Apr 2026 03:36:53 -0400 (EDT)
+	id 6B6FF6B0088; Tue, 14 Apr 2026 03:43:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A54FA6B008A; Tue, 14 Apr 2026 03:36:53 -0400 (EDT)
+	id 667D86B008A; Tue, 14 Apr 2026 03:43:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 944C06B0092; Tue, 14 Apr 2026 03:36:53 -0400 (EDT)
+	id 57DF06B0092; Tue, 14 Apr 2026 03:43:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F12E6B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:36:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BFE38BA44
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:36:53 +0000 (UTC)
-X-FDA: 84656354706.10.5E21C78
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1725818000B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:36:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YJPAI4f5;
-	spf=pass (imf06.hostedemail.com: domain of yintirui@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776152211; a=rsa-sha256;
-	cv=none;
-	b=oqVoKnE2cPBHLf9P/yIodgQbwpC0Bz4/asVg4Q26xgp4nKrAqCJ4MZ5Af3DG5JaHJ95CGX
-	my/Ba+LD7Ht1n/dwgzzGUb/vHdPOYubiWdJXa2NZACSqza+8Uw1hZQqFeIcv7AzyjmRIXS
-	K3pCwyCMckhzt1DaQPzyJQoy+38fYns=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 460526B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 03:43:36 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD96F1604CC
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:43:35 +0000 (UTC)
+X-FDA: 84656371590.27.C894059
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1BE0A140008
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 07:43:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776152211;
+	s=arc-20220608; t=1776152614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/0ogmPgdwUipHOmKcnr8RlOytrha5m2as46j8FW3cr8=;
-	b=riaozQ/V7jeAoWGdXPBPIxHyH2WBTsTX0jxb7YX7RG8oCtee/sFUmrA4VGi2BvoTZW3hcv
-	xnvo7phs7UnUF51R3YrVggC1zPojHsHAbHn1+IMH22QrCsbakKyPCoWmgYjBBEPc1GfssU
-	fBZBuo3Pgp2UxigmY6hDobRmO+Y5GCI=
+	 in-reply-to:in-reply-to:references:references;
+	bh=uOxZcwlIxYVbz2yr6yP4drg3m3MVgW1yk8a1J4hfOtI=;
+	b=0R+Ge+EtuLvBV0gvJRlEvDqtN9FwU8OBeMqcHT4Svw7gH8m4Di36SclSTKhJ6XPBo86a9D
+	bZBzRP5EQ02B/LR71pqBDVKliFHYh7SnecacGBdzMoZxvbSmQD3ACiplSrLiZkGuHwB7Wm
+	WVNYNQAgJEAMk+8e2W7WByLUBRMi1LU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YJPAI4f5;
-	spf=pass (imf06.hostedemail.com: domain of yintirui@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c76eea1672aso1806796a12.1
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:36:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776152210; x=1776757010; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/0ogmPgdwUipHOmKcnr8RlOytrha5m2as46j8FW3cr8=;
-        b=YJPAI4f5ReTh4ujY0/lu3smkluIxDaMBTLS+fMxWBh0EQ4uUc0wJALHONyl5NK6AnA
-         R4Q5LTS6xMI1sdGvqQC1Cib5KQR3e4n9DSOpvKB47fWJAtsDmhjzZudVeB6fvIszUEye
-         GRbkxWycmxME8Es2Xf9gj4oC0+jYGD6Qp5jVOcwMrxrNRk3Lpso/e9yRrS7xlJfA0HBO
-         b5pJQGVhi7QtfK4tAierUK2E2eeNwxiwd8sn4vVJ5qH6Ldq8NikBryMgEiJYWGMzSnOW
-         +hc70XJa0GtGnOglX9AZFfo09woGmExTfOxvRMTyL23hGDCoju3lNV+2U9HEKoH6xKL5
-         TTxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776152210; x=1776757010;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/0ogmPgdwUipHOmKcnr8RlOytrha5m2as46j8FW3cr8=;
-        b=sJo14jtC8qT1mOzXtXul1LSYKMoNI+JXLDdznWK37PuR7fu2xb+8G6UVCFz6TqRBXS
-         oez3UifIakoTYcBcRxQf//fBUufM9l+J2TaCJ/qsEzL6sb91V4ilbGOqgxsoJ8CgX1nT
-         ZJ5Hw/RBGqWDpEd3AXX0bOpGz2oJVHv953aigQnHFzvXe88oPaVqnXPFhkDVfl+B/Yup
-         lmleZ5GjoZmAAG2jeS69L3GAxHvrqyAq6oxlvo6nGZ2ThxZZV6SkQJ6sP6mc9LyWh+Eo
-         FA1xJVezB7tYeLCTwR3+UGexWesEObZc9tHdptgb5rEQmubmkOHsj21GzI+IK7iN02A4
-         7U0Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+GueABKmgOcng2pURNEMPT1fK8ddvpA3j1hO+1G+4aMvUozkhfR3a4d+NEEEP+h/5C4WUdq2i2Kw==@kvack.org
-X-Gm-Message-State: AOJu0YzLYtygE2mCfvM1RPpBFAOcS2ccZfMyVKAWZ5CowHdlhamgtDvO
-	oxLI3VTubYCb8fetkP+mFBIabkAH2ha0xf1QsJPrhvfxPXo/JVS08cw2
-X-Gm-Gg: AeBDieti+mo4QNCW866MWWEazBPF+0HtujqBsalrzEIvmwGJnZWY+rDXwBYzGSd66Dx
-	Gs71QN0TOYR4eyqw7uHJaiz4OqULbuWOo4OnOoZs3hanuQ7DkIN62fkjjcaj3x154W+qnyQKX8+
-	Kv2TX2/EaqpP7S/fBrD3P+eCmfPzVmAv1095+oFe0/TNZ0A1FKERmGh2PDf2cmNNUtN2DFECOTA
-	w1LPMJOLIRxfI+QeEb+8UCh7UN0Pk6S3uknoLlVeCPqQ5H3PFvq+YKNYBlI/3SKuAw0hZB2gon3
-	yYL1cknqFf+bgdIkhTOMjnO+oi5dj5bQSkpXWhaHcgZ5zgXbL+4a6Eh8+eMPmk+o51JkRJXENxF
-	eAQHHoD8aZoadP3MwrSYdB6OUEOx8o/1PQO3p+THicSaM9XLJb8cghO6vkRdXIA6MDMF3K4qNvV
-	A55QDvbrzZsxa+ohimvct+2aJ62jwhipFsqC8nZsT46H1ivqFxhE+JYqEKzzRswEUPSpp2K/Agr
-	qK6k5rkc7ys3rn0MmWhsWjNbyqiaYKNvNlG1O5ruefiV/GxkcBf7Q==
-X-Received: by 2002:a17:903:2785:b0:2b2:45b7:306e with SMTP id d9443c01a7336-2b2d593683cmr115063175ad.3.1776152209649;
-        Tue, 14 Apr 2026 00:36:49 -0700 (PDT)
-Received: from [127.0.0.1] (211-76-176-101.dynamic-ip.pni.tw. [211.76.176.101])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b2d4f3b299sm169494335ad.73.2026.04.14.00.36.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Apr 2026 00:36:49 -0700 (PDT)
-Message-ID: <2f29f66b-46db-4925-b922-4add61b633bf@gmail.com>
-Date: Tue, 14 Apr 2026 15:36:39 +0800
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776152614; a=rsa-sha256;
+	cv=none;
+	b=oVyyHe67kM9LEiMyust7E3mA9D2nSJ33HkGApjWsBCCHRYmMdsSkJHQ8NXuaTGnjliKhLr
+	Tw2Lb8PT8VkaIZEKpMwETB4hE+vRey12z3xDDGCJQj8f/qukziOpocS9w0ChHf/q42P+Ce
+	pP9DiVnhK0gDmtmNSQcwE76XWSBc9xw=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fvx8j5tSYzKHLvh
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:43:17 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 97F8E4058C
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 15:43:25 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP2 (Coremail) with SMTP id Syh0CgCnim8c8N1pDrluAQ--.1789S2;
+	Tue, 14 Apr 2026 15:43:25 +0800 (CST)
+Message-ID: <fa857b2e-1471-44a4-9784-3f051f41715d@huaweicloud.com>
+Date: Tue, 14 Apr 2026 15:43:24 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use
- has_deposited_pgtable()
-To: Lorenzo Stoakes <ljs@kernel.org>, David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1774029655.git.ljs@kernel.org>
- <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
- <41b1ff54-c120-42ae-8b74-54767abf3554@gmail.com>
- <fe357495-2e45-443a-93b4-52bf21d3bdff@lucifer.local>
- <c6748ac8-6dcf-41b5-a281-2f21069b1f2e@gmail.com> <adTb6_xqQoQqK74Q@lucifer>
+Subject: Re: [PATCH v5 08/14] mm/mglru: remove redundant swap constrained
+ check upon isolation
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Leno Hou <lenohou@gmail.com>, Yafang Shao <laoar.shao@gmail.com>,
+ Yu Zhao <yuzhao@google.com>, Zicheng Wang <wangzicheng@honor.com>,
+ Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan
+ <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
+ <20260413-mglru-reclaim-v5-8-8eaeacbddc44@tencent.com>
 Content-Language: en-US
-From: Yin Tirui <yintirui@gmail.com>
-In-Reply-To: <adTb6_xqQoQqK74Q@lucifer>
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20260413-mglru-reclaim-v5-8-8eaeacbddc44@tencent.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:Syh0CgCnim8c8N1pDrluAQ--.1789S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw4kJF13JryrCrWfXFWfAFb_yoW8Cw15pF
+	Z3Ga1DGFWrJF1UWw17AFy8uw1Fv3y5Ka1UAFW7Jw1xJF13Wrs5KFW3tw1rJFWDJ3s8Za1I
+	vF12gFyxW3W5JFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	s2-5UUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1BE0A140008
+X-Stat-Signature: m3ac4z75ifwztmg7ebhek33spbpy1z7w
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1725818000B
-X-Stat-Signature: j167g3mq6s4y4djty56nhzc6y8ppup85
-X-HE-Tag: 1776152210-13536
-X-HE-Meta: U2FsdGVkX1+FLeJBtibIkjRjOzZz+nznijiBv/RrWfMHavt/iMAjBHT08XyWbQxC1Llz0Vtc85u0xYxALFRnX2Sbut4ZZ4GVIbWu7L1psPbQr3bMUkhkzZiEUimAC+80bBuGlVdOL8I57EvUK/905/cGc/4CsRNxka9YlKzvBCIbmHt2LUV0CVRdgbSmvtfwhMIEBmmbKVveB/fDga6pu0KDlxMBUuiRo1VFSX0fnwATXvjZx60f/YBce8Q+KpJ5QHiehu+g0YdMAuKipA/PE8Ju3Ha2R5fa90IsSMjrIaclXtvlcthDydKUCIhrNleWmlUSGiQfEt3ZyNDLUqF2+xUPjFdSQP7caL64jzSE81I+q5P6g+cQ3ewIanEk+a5hksYRZuPwhxPW9FJZrc0okX4khmYTdehM3suzFE18vkGOixPzcrersALKhvUhai9jEzzj8KHNiyua539eRjyVW2FJTSsab147TX8CbrZ12nlvMBDlI3YJ6COfqPILPsgFl+2EyFfMgqZsQ0Z/EZTvSCqLuj7Lr/1jkWtJkIuhdtKuJzHij95GafA9uYd7X+ERO5vdXCPi2IJ41iFWAVNT3BQGsTWjutVIkLbzVnsYfY9YcZ8XxDEnjkQhJAmzHUimX2DAjMJHTdsH4YoNgl1MenlR0AwimYp5B24b0LT3CEanHaTOI1LReZBthcLyR2Sv9MUczL25nZ1NU3kuxVaMTAw8lPFtO9iLanMpcAP/3do8Y/7cRPji5wT7IH7uVuNdrpFwA5Bn5vuxu+fNRTLuod3U/HhLb+3qKE1Mlxp14GEz4fAUK1fW/SA3cpS4+pUFSHJaUedJ8mGnT8CjPZIc//JwiJ32JaMlPqqk87rGQvLIumug28K8+GrUsaXxDzXy5fQURpF4V0P4NBy0smqkHTu2+qECB2yiDzQyrYqtiugFTolfO2/Vo2i/cqpJOL7aENv2UdU6OYnulZkrylM
- uDBncb6u
- bRbMoTZ6d7jycA4/37wW4iEGrV4ga6Jd/3t+dSBKupl8DSQmw9R4f/eXOOfCbNT77t2rxFagyFM3wgfreEXQPQSbm16uUiw3TERLmqGjvrxFyHdsHOycN6hxo9rK3SgwLfJoX2nCMsgtQt+sejgEZF1SCW7P84B/rZIlbKnuf4nF8aL5gSK4m4E192nk4zW6opLzeo8RwQj9vONamgrbDlmgVlexHnMa+QouZScxH4JGxodosSg7aZblG9YBIZfWyqyYD62bX/HtxmhZFaVrKniU6TE+ajb7EwOEZAjPrqjxxnhJUEyYQIsIOEyvlhEB25h3RDEqRFVPf8814Xa+muGSUn1q+3KbbqppW0Q5i59yVOKV1FW2eHNTufimyX95JpVBo6MWzXPutjosKESePkCb4zt6yvFmHmv1Kv/pV3J6alIxC2+EhNU07qkusZKo7ixLtmZbVRF+LTD6QZRpQICUu7g60+laoAbsan2XkjSYXMlt03Q9scHLBQ+/yMLCTUQinEDDHmzDZLey5sViAf/0DbXBWorLyboEWFK8vWxEtC36QXeeL82QV76LJeKh0fWVBeUDQAv9Hsnc=
+X-HE-Tag: 1776152611-171131
+X-HE-Meta: U2FsdGVkX1/7FfQ4fRU4qDiGXMjn2+Bb1by62NDosCPONWFjDl4mfe6vqZM8pRAyehAzu7R0NDMH9gsrQgzMCRmR6w0g0DgDwbHOHBtYI6uCYywOe8FFjQKot3uZwK/Fnfq91di9urm1fCVN5+Oj1BgnwaORHlAUmsx/Rjozbtyokmjz8adkwl78u/W+1mzkIBHThOciiq+1nV4E2dFDShOzxjhLtMsy1fRB0qOmd2ChQ3VMt85UhiWl/C30FzmiT/qEGYmAZlJPZci+Yoso7NT2NVgA323A9ZsgHemKgGDmp/CV874Q+DjZlen4vkZKEGwRCsY3mEVIBXYZujSZVoXUT3rJkGv96l3dVQyzJxL6RT2xZ9LL9knMs82o32Goawm6zYxecc4kADgXnwxnx0b7dxLsPB5OZX426Cmbhs7Y3Ws8Sx265MGQIgeTmGsxut+7M5LVKYhkZwABEEjZ9QXgWduX4G2cqodH9WFdIO4RAbMkRCaOJKIzC5gDEcNt2PoxvXneWQxd84lDEFUTECqRNhaOr1WhVIvm8AQmeDvuQsJtQ0OF1CbE2jd6LOXAgsyREsVSHNdtXlrEosgBTt34gUJ5CkgjazM6dxLryKNmJqsYjkZr5DiW+cq0NRBkSbSdZRjIc1DP7cK6SfvI6Or7rabZNFJ2EWPeUx2kbncS1MEWqwTmL4kVrQjE2uFs7ugNQzITjGRfZ7qiynXbX5CX7RGIaYPvzj7ciaQaV3KFA24GINV3Rr8MFS0DcXzwURyCv+vuR67ijVuBiSMiBfxoP2RW1Yvb+BVz/9YV84coVwlYTF1iQAwkglkKiz+LmqFGjwuBdprD2VGtIbh3cQXBa9mYzx+jyjYNJ/a6PIk4B1YKL5CNQtN1C4ynQiO1GgHYLGVNSDsh2WRirDyoHuY6XRBL60ocjNfsbz10/lD4nwXNFudCf7BCeUgUS9igpafVUjLk+MkNHNaPn+R
+ IqqO6vsh
+ jurPjABmauglVH/SHeefUzgUuRC+Q5A3yumgb6lgp13EiQT9InSgW4Ujzy15TRFp7OnQwYHUPEBtnctTD8X3qB4PXOS7hvY0CsiNV1bA0CbWqj1LYz5TaDQAOqrsr7PwePEIpZS6G+klFFJ/wUZCnZaEmO8ieG5xfXe96U75Z5E6gt5IbXfi0ctbf9f79R/tgQESZGxMAU7uxa5xQukKVrB+rxVVfFd7sz5QV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,166 +116,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo and David,
 
-Sorry for the late reply.
 
-On 4/7/26 18:48, Lorenzo Stoakes wrote:
-> On Thu, Apr 02, 2026 at 03:49:35PM +0800, Yin Tirui wrote:
->>
->>
->> On 4/2/26 14:46, Lorenzo Stoakes (Oracle) wrote:
->>>
->>> I mean you would have needed to handle this case in any event, since this change
->>> is strictly an equivalent reworking of zap_huge_pmd().
->>>
->>> But it seems that doing so has clarified the requirements somewhat here :)
->>>
->>> I haven't had a look at that series yet (please cc this email if you weren't
->>> already, I do filter a lot of stuff due to how much mail I get daily)
->>
->> Hi Lorenzo,
->>
->> Thanks for the quick reply. I will definitely CC you on the v4 series.
+On 2026/4/13 0:48, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Thanks.
+> Remove the swap-constrained early reject check upon isolation. This
+> check is a micro optimization when swap IO is not allowed, so folios are
+> rejected early. But it is redundant and overly broad since
+> shrink_folio_list() already handles all these cases with proper
+> granularity.
 > 
->>
->>>
->>> So if this is a PMD leaf entry it will be present and PFN map, so I'd have
->>> thought simply adding:
->>>
->>> 	/* Huge PFN map must deposit, as cannot refault. */
->>> 	if (vma_test(vma, VMA_PFNMAP_BIT))
->>> 		return true;
->>>
->>> Would suffice?
->>
->> Here is the dilemma:
->>
->> Currently, VFIO uses vmf_insert_pfn_pmd() to create huge pfnmaps on page
->> faults. This sets VM_PFNMAP in vfio_pci_core_mmap(), but it does not
->> deposit a pgtable (unless arch_needs_pgtable_deposit() is true).
+> Notably, this check wrongly rejected lazyfree folios, and it doesn't
+> cover all rejection cases. shrink_folio_list() uses may_enter_fs(),
+> which distinguishes non-SWP_FS_OPS devices from filesystem-backed swap
+> and does all the checks after folio is locked, so flags like swap cache
+> are stable.
 > 
-> Hmmm... it's only the VFIO and hyperv drivers using this.
+> This check also covers dirty file folios, which are not a problem now
+> since sort_folio() already bumps dirty file folios to the next
+> generation, but causes trouble for unifying dirty folio writeback
+> handling.
 > 
-> Wouldn't we generally want a deposited huge page here now we're allowing huge
-> PFN maps?
+> And there should be no performance impact from removing it. We may have
+> lost a micro optimization, but unblocked lazyfree reclaim for NOIO
+> contexts, which is not a common case in the first place.
 > 
-> Or are this _special cases_ where we have a PMD-sized entry but are not
-> necessarily wanting to treat it as THP?
+> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/vmscan.c | 6 ------
+>  1 file changed, 6 deletions(-)
 > 
-> This is a real wrinkle in this whole series no?
-> 
-> David - any thoughts?
-> 
->>
->> To resolve this,
->>
->> Option A: Force VFIO (vmf_insert_pfn_pmd) to also deposit pgtables. This
->> unifies the VM_PFNMAP lifecycle. However, since VFIO can refault,
->> depositing pgtables here incurs unnecessary memory overhead.
-> 
-> How can VFIO refault as a PFN mapping? Does it intentionally sometimes
-> clear PTE entries to effect a refault, and implement a custom fault
-> handler?
-> 
-> I guess having a fault handler makes it refaultable...
-> 
-> I mean obviously that then contradicts the suggested comment above :)
-> 
-> That seems to me to cast a bit of a question over the whole series - having
-> PMD mappings that are _sometimes_ THP and _sometimes_ not is weird (TM).
-> 
-> And it'd suck to add - yet another very specific check - to determine if we
-> do, in fact, assume THP for a PMD sized PFN map.
-
-Yes, exactly. VFIO and Hyper-V rely on their custom `.fault` handlers to
-dynamically build mappings. In contrast, `remap_pfn_range()` establishes
-static pre-mappings.
-
-> 
->>
->> Option B: Introduce a new VMA flag set during remap_pfn_range(), which
->> we can explicitly check in has_deposited_pgtable().
-> 
-> Yeah would rather not, that feels like a hack.
-
-Agreed.
-
-> 
->>
->> Option C: Check vma->vm_ops->fault (and huge_fault). We would only
->> deposit pgtables for mappings without fault handlers. However, this is
->> fragile because a driver might still register a .fault() handler that
->> simply returns VM_FAULT_SIGBUS.
-> 
-> I mean again this is yet another check (TM). But probably the most preferable I
-> think.
-> 
-> Wouldn't a driver doing that be being somewhat redundant? E.g. in do_fault();
-> 
-> 	if (!vma->vm_ops->fault) {
-> 		vmf->pte = pte_offset_map_lock(vmf->vma->vm_mm, vmf->pmd,
-> 					       vmf->address, &vmf->ptl);
-> 		if (unlikely(!vmf->pte))
-> 			ret = VM_FAULT_SIGBUS;
-> 
-> And so can expect maybe some more redundancy if they also happen to map
-> PMD-sized ranges? :)
-> 
-> And the only two callers of vmf_insert_pfn_pmd() - hyperv and VFIO both
-> implement actual fault handlers anyway.
-> 
-> So I think this is fine?
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 5ae6bd967b17..965d8905a4fe 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4650,12 +4650,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
+>  {
+>  	bool success;
+>  
+> -	/* swap constrained */
+> -	if (!(sc->gfp_mask & __GFP_IO) &&
+> -	    (folio_test_dirty(folio) ||
+> -	     (folio_test_anon(folio) && !folio_test_swapcache(folio))))
+> -		return false;
+> -
+>  	/* raced with release_pages() */
+>  	if (!folio_try_get(folio))
+>  		return false;
 > 
 
-I agree.
-
-David, since Lorenzo also asked for your thoughts on the overall design
-aspect ("sometimes THP and sometimes not"), what is your opinion on
-this? Should we proceed with checking `!vma->vm_ops->fault` to
-differentiate the deposit behavior for huge PFNMAPs?
-
->>
->> Do you have a preference among these, or perhaps another idea?
->>
->>>
->>> By the way, I am wondering if the prot bits are correctly preserved on page
->>> table deposit, as this is key for pfn map (e.g. if the range is uncached, for
->>> instance). That's something to check and ensure is correct.
->>>
->>> I _suspect_ they will be, as we have pretty well established mechanisms for that
->>> (propagate vma->vm_page_prot etc.) but definitely worth making sure.
->>>
->>
->> Yes, they are correctly preserved!
->>
->> During a PMD split in __split_huge_pmd_locked(), we populate the
->> deposited pgtable like this:
->>
->>     entry = pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd));
->>     set_ptes(mm, haddr, pte, entry, HPAGE_PMD_NR);
->>
->> The newly refactored pmd_pgprot() correctly extracts the exact
->> protection bits (including crucial cache modes like UC/WC for device
->> memory) from the huge PMD, strips the hardware-specific huge bit, and
->> returns a pure PTE-level pgprot_t.
-> 
-> OK good :)
-> 
->>
->>>>
->>>> [1]
->>>> https://lore.kernel.org/linux-mm/20260228070906.1418911-5-yintirui@huawei.com/
->>
->> --
->> Yin Tirui
->>
-> 
-> Cheers, Lorenzo
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
 
 -- 
-Yin Tirui
+Best regards,
+Ridong
 
 
