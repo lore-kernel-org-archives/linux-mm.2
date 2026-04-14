@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2252F531DE
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 00:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31010F531CE
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 00:34:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EBC96B0088; Mon, 13 Apr 2026 20:29:05 -0400 (EDT)
+	id 5EC116B0088; Mon, 13 Apr 2026 20:34:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14E6E6B008A; Mon, 13 Apr 2026 20:29:05 -0400 (EDT)
+	id 59C1C6B008A; Mon, 13 Apr 2026 20:34:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03D6C6B0092; Mon, 13 Apr 2026 20:29:04 -0400 (EDT)
+	id 4B14F6B0092; Mon, 13 Apr 2026 20:34:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E65656B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:29:04 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CEDF140348
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:29:04 +0000 (UTC)
-X-FDA: 84655276608.27.974F1E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CE9ED40009
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:29:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R+yYJ3OE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776126543; a=rsa-sha256;
-	cv=none;
-	b=5iDIMXBsy1CK68sqJVmHeF50AvlJ+u7FthSMzPmvZZu8Rda8HLelo8XXjJCRvKXXGY1oHZ
-	H1jlZJLbrwjMKrTjVjHVvXAtRIM1HLMWnn8zbZxxfAK1Gcf2X+M9YvSy1An1MJw7FY1c3c
-	qzMzyAmrxt0zWrtoey8d73Bc4866JUs=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R+yYJ3OE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 383466B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:34:45 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C768B8B549
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:34:44 +0000 (UTC)
+X-FDA: 84655290888.06.EBE4E58
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3C065180003
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:34:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jg51ZdQx;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776126543;
+	s=arc-20220608; t=1776126883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=22sKUZy8U8Nwwvqlb1ZDC5e6P21jZVbF+s1GjgNMKzY=;
-	b=sJgSv/CDpcvKEVfsZJTF+qvogvulk+wrtggye+TgihnnZmt9Yq5pqnCkQ56xUDI1us9XrS
-	rVs4KVw/oPgH+9pdbuM0pP2X6c+RnFfZHMUStM7X+rYW1s2rT6MgPD/2bJpY6HYZ6Xzj74
-	SXxiTbhqoIA1NStiRsfg6jwOOALkw3Y=
+	bh=sLHJnCdWa0Cw0/5pmrSPBU0Rz5KofOhsmRu+dPHHofQ=;
+	b=Htfd8bmIM85HDPSRi911UFsX1zw5pq0oSLb/Q0OtspvdVhCHACYmm4mtmYKcORUS+wP8W5
+	gx4pxPyVEY8Qy3C4NKsSQJkIewACEPq3TUgZDZQKaZr/cE0z/HIHFh7SrTbKB2DwWFdN0u
+	hUqoO5VS0m4GjsFvTDCVJ/Uf8/0WYDg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jg51ZdQx;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776126883; a=rsa-sha256;
+	cv=none;
+	b=v8SOAMxYyMILOyjGETbgwV5bnx8eWrXsC/cIBFSQwnQq5q+OEy8IqRIhS4tyJCrCu4IIib
+	+X5fRtqlRBSNwKiQzp9dJR9ZEQ/qinWRzK0BqXKUnkbAkcL+F6h9nAQLo/k27A1ag34cpl
+	TBIJsWn9cl7guKkmohxzYMyjaD+ZCQM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EC7AB4360F;
-	Tue, 14 Apr 2026 00:29:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8C1C2BCB4;
-	Tue, 14 Apr 2026 00:29:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 66A0660018;
+	Tue, 14 Apr 2026 00:34:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBACEC2BCAF;
+	Tue, 14 Apr 2026 00:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776126541;
-	bh=KJQ8DjNdIK1+MWNYUBk1EM61NlNb9p1GDy6iEy4DTG0=;
+	s=k20201202; t=1776126882;
+	bh=rKC/FuSHBQjUqfWFKqtW02kqh5fExR6jEuIsswCLAQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+yYJ3OEIxNXhrBnBljLxL3lE5OcCdPspgAAE9SMqP3A/xLorXJ7KyTjH++vqAfsG
-	 rShEU7EVM7LUBmJzJJbkGDwl0Kkpme/WZzFEfhAOXig2/odpfSwTbhB3CK2yFeJk4g
-	 Nz1S2fMXNjSqekVil7TTxHbf17Q9BMi397+VCIFvFa7eQSl2Bh8RD2kzqdMCXjHAjo
-	 +pAO44PwNXq2yLntTUZ23teL2fWuodJ5iHFHp79s99bo65JpXq6oDWkZk7RNCeQGyt
-	 ooDwxNJuYMxe5TxGEZOZyRvw0DhNmIvulKTyWwKg4v9s//bL7zvp62a9RYhhNzy7Qo
-	 DUu1Lco4mktaQ==
+	b=Jg51ZdQxMg5FW7/m4sfIFrbXt8FLCSi9kR/RwRMzsKhRmnFDqEdL8L73RM2C9B3wh
+	 AJler8tDrsVk0/yJ6fuPr1AnNbEDbMlgCw+mNwSqFc0drWXFj8kXRyUPKOF2VWIpJU
+	 /F0gwD5nupZWX5YscBMpB1wUl+5yFVa/eEp2Ch74vLWK2xbUziYv++f2miXuK6BgUD
+	 0FfZx7vkDFPY+XSQ1T91DeieSxicbpAifRVRKRJWbuwGJN5Sz56Ll870Du2roybCu4
+	 UhWJ229SsK4sbL6NhFlcYmRYB/HjlgcdEh5f1tbKr/LetZgP9W/1e1OAxQvZzli3+Y
+	 yjms/F07QveFg==
 From: SeongJae Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
+To: SeongJae Park <sj@kernel.org>
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
 	damon@lists.linux.dev,
 	linux-mm@kvack.org
 Subject: Re: [PATCH v2 0/2] mm/damon: reset thread status parameters upon kdamond termination
-Date: Mon, 13 Apr 2026 17:28:53 -0700
-Message-ID: <20260414002854.83483-1-sj@kernel.org>
+Date: Mon, 13 Apr 2026 17:34:34 -0700
+Message-ID: <20260414003434.83697-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260413220511.30677-1-aethernet65535@gmail.com>
+In-Reply-To: <20260414002300.83328-1-sj@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mk5ombc4gnzpwdmac8pyxako1k8f3ojw
-X-Rspamd-Queue-Id: CE9ED40009
+X-Rspamd-Queue-Id: 3C065180003
+X-Stat-Signature: hhkxupwcpwm7nbkqozjikmcjb4foxm66
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776126542-949687
-X-HE-Meta: U2FsdGVkX18gLHpjoEb47K1mz9e84hZKCz+2nIn7m7ZLVWFTbx1emvp/5ltDJ0eE1U+2SmadwWljuGUbySZ2uPk6EdtS7xKUb6AzxBjwmbnoftqEoS74YGWINb+9LsQe5pnhb+wEO9dHU0uH6p9eiXee5li5wVXSGADucV2peSIop/fx+Z9c4DHt0aTf5CqaQUJiWMTmxzIbJqDYg+UyFV4lNX1ZWU38Ny1lbAR++fPZoq38ZLSEdU1hAQa2jHBu2DjipCX19c2OnLqsfaA27IacpOWEimyUuhFuaz0hGvBuZ7WkHJGr1OT9X26X/euLUr4Zg3qkD3zgZxtkTOlTKFP7BkNCWyqeXmZoSNFOcgkGw7BJKn6b8wquC8AHUs90lmVtT/1SRL1ImRqnE1l67ZqapsXBlaZyhILJf4W27Dg6+dYCen3DinzZ7Hle2uRucuCKIaSpmCYzn7ef4f579GX7YOL83l41rBRmqc2gaZYoT+5oa3kDn/mNOtzNmfn/dlOAmSHGAHgr1+toHE/iUJEF8DWQXnXZrGRQWoA8K5+7/kT72fwxKJ0F0FpFPIAAX+vZNCBTrc1XZL4s2VWFFEbooVwh7s9c6gYB174Lb/S73EPXMBoptCEY42F4W0pr9erq6fwFJIMdJGtJXdPKyG9TIu7No9axfREFwT6n/2X8Zhbm+a51Gv0tIDojGPbASMHqi5mD6PigRJaVs6imjHTsa4TpjOvpua2ONDog1zRLakMaJf8XIbYeC5F5U7cNqEyqhvcADMisJjOjwl45eTRgioikT+FAykAGmnfc9812MUYL/WXmx6fRDxfpvVmFdUZ2czTao5OWPNQA8bmBIvknFSfyCrjx2za7je5RlA3cAsIvrBCZw8BOMqUemegl5+s11yt6vuxz1+Kn9UmYoyn7YRMW312iJZwWLyb2NGi2m1ypumpGIrF2CmxXfooR8bicj9DE//xY9pwT8BD
- hzQXsIGg
- Qm0hTUdZuCd/xxgQ/YZjm10ruLt+c9CPB3glbMUoFFv81f4amiDvWxy85VL6lOUX1HHGq2Ef/Y6abkDtWnxxP6AScA6PuHq4wCNHAYmGtjwDoqA0J79noZ5fMNEOZhcW1MtJo66y19bD7Iz8NFZCLJkrq/Ev3f19qpRL9it0uHUQWbtCKgQhQA+749D12aKJBZkAIxwR9EgFD2CBIKFA6rtkeFfVSHbFIqE3Pb8n9xFILPpzPNnrwZ53KR+DmjxzQFDuD
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776126883-8458
+X-HE-Meta: U2FsdGVkX1/URL3g8ju23+94bPGjvnLGU6bZrBoym4Hy9uv+AmZkjgmYkZ0Kaow3v4Qn8T2d4agJUmt6ZQKIAqWFj7Vbl3fXEIK5iY1d/0L7tsq+Od0HUZWVC1Uapk2WQF7nhWxBuyJFzXZyOda3dUWhSxmZFu1KPirJpo8hmyqk+vhnhki0W1JKVBnvL1yUYhqg0Zj8u+Gj5fwxQqIgSK2OLOeu9nirPLSl6l8IIGXfoKs9uojKDHd+N58uz3hDzGuzT6xsFw0YJcaui/XD5sC+hu1iUkIzqyIaNF22ZEOCmHlFq2k9ufSSDmFCYlXLHkvCSLclxWPYFGA1sDq2UAqJGG3gtUC87Y7l6LTc+8YPjYX4DeR4ydtqB0bYa224jjy44PCz4ZzySo+g30EJyx5xl061nEAuQq/Pj8JsCZMjuO4mRP9CwrdY7M98rWhs/R+1nxonGGvvAsXaeoQ78K6SsOaVG6wk4x3RGX+gB2YeuwQ8Cjwr2PT2USWzTNHH8KvWx6Vv/TUlm01/3m6s53UPvNSmi9S0AEsYgCKboth90uYESRMCr/dwyLKn9cVkErpepllY9vg2bnfiW0+ff4rfPnM1pKVoMV7rJRFh+x7FFPKJqEuCJyuGRzQ/p9apVcfLFN+KVA++TB0LXdF7e3pIYGkzhts2EaQGPTBeA5NlCR8tj7kyYtdswpmRe3KSWaZyWN+8pwh5zw5TSigxkad5CbrdBritPPeIsQKhR03sJ/sT9qxW7RSNyebY5JdUYCTEz1tp70ciLT+uYY36R6xJkRol3NQCv8/cUcEJmWp2SniaRar9CLReU+uRy157r+o9oamA7CDjIwefW8DtxRyYGgGLLYFWazoXRpOhzqbiZHHh7QsHy+6aU1RzFoiaavThQXXRBkgn+0OAe4MB04VhB6MoHBLnRkBis+AxkPW8rzAToG8TqoDUlrpTNDlwlpqJyiZrplGckbom7u8
+ KyZaVw2C
+ WaHQGUMLpxUVglupeNrMioJ6IbJ+gLu5guRPgtrZkHYrw9Q2dHlQnOwqa4awO5/JliZiR+Y/MqwP94MkKOO47t2+4o/32STDtizOvopMvhAseqrmRowwkL4Lbe7uEa4Hr87UTxpD6JI4xzg73Xmv0FTgmzHX6Y/oBnu7daIF72ANLFKU+QAHaD/a/kIRxCxZRbPSVONo0qp49/x2JTyCYB87/slsaHhfqb4LVww5p+GUJ8/ifk6u4X5JMrT4SWizgdIgo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,82 +91,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 14 Apr 2026 06:05:11 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+On Mon, 13 Apr 2026 17:23:03 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> Hi SeongJae,
+> On Tue, 14 Apr 2026 02:52:47 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
 > 
-> I've reviewed the Sashiko report on [PATCH v2 1/2] and [2/2]. Since the
-> issues are essentially the same, I want to reply to them all in one
-> email.
-[...]
-> # PATCH v2 2/2
-> > > diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> > > index 86da147786583..e3e148fd80f97 100644
-> > > --- a/mm/damon/reclaim.c
-> > > +++ b/mm/damon/reclaim.c
-> > [ ... ]
-> > > @@ -250,6 +250,10 @@ static int damon_reclaim_apply_parameters(void)
-> > >  	if (err)
-> > >  		goto out;
-> > >  	err = damon_commit_ctx(ctx, param_ctx);
-> > > +	if (err) {
-> > > +		enabled = false;
-> > > +		kdamond_pid = -1;
-> > > +	}
-> > >  out:
-> > >  	damon_destroy_ctx(param_ctx);
-> > >  	return err;
+> > Problem
+> > ========
+> 
+> Let's align the underline with the subject.  Also, let's add one blank line
+> after the underline.
+> 
+> > When kdamond terminates unexpectedly, 'enabled' remains 'Y' and
+> > 'kdamond_pid' remains stale. This prevents user from restarting DAMON
+> > because both writing 'Y' and 'N' to 'enabled' will fail.
 > > 
-> > Can prematurely resetting enabled to false here introduce a race condition
-> > leading to a use-after-free of the DAMON context structures?
+> > "Unexpected termination" here means the kdamond exits without any user
+> > request (e.g., not by writing 'N' to 'enabled').
+> 
+> Could you please further explain when such termination can happen?
+> 
 > > 
-> > If damon_reclaim_apply_parameters() is invoked from the kdamond worker thread
-> > (for example, when applying commit_inputs) and damon_commit_ctx() fails,
-> > ctx->maybe_corrupted is set to true. This signals the kdamond thread to
-> > break its main loop and begin its teardown phase, such as executing
-> > damon_destroy_targets() to free lists.
+> > User Impact
+> > ===========
+> > Once kdamond terminates this way, it cannot be restarted via sysfs
+> > because:
 > > 
-> > Because enabled is set to false asynchronously here, a concurrent sysfs write
-> > of 'Y' to enabled will succeed and immediately trigger
-> > damon_reclaim_turn(true). This unconditionally calls
-> > damon_reclaim_apply_parameters() and executes damon_commit_ctx() from the
-> > sysfs thread.
+> > 1. DAMON_LRU_SORT/DAMON_RECLAIM is built into the kernel, so it cannot
+> >    be unloaded and reloaded at runtime.
+> 
+> I think this is quite obvious, so may better to be dropped.
+> 
+> > 2. Writing 'N' to 'enabled' fails because kdamond no longer exists;
+> >    Writing 'Y' does nothing, as 'enabled' is already Y.
 > > 
-> > Since damon_commit_ctx() locklessly mutates and frees items in
-> > ctx->adaptive_targets and ctx->schemes, would this race directly with the
-> > still-exiting kdamond thread traversing and freeing those exact same lists,
-> > resulting in list corruption and a use-after-free?
+> > As a result, the only way to restore DAMON functionality is a full
+> > system reboot.
 > 
-> The core issue is - modifying 'enabled' and 'kdamond_pid' in the error
-> path of damon_commit_ctx() is racy.
+> Thank you for clarifying the user impact.  I think this deserves Cc-ing
+> stable@.
+> 
+> I think 'Problem' and 'User Impact' can be unified into one section.
+> 
+> > 
+> > Solution
+> > ========
+> > damon_commit_ctx() sets 'maybe_corrupted=true' at the beginning and only
+> > sets it to false upon successful completion. When 'maybe_corrupted'
+> > remains true, kdamond will terminate eventually.
+> 
+> This seems better to be explained earlier, on the problem section.
+> 
+> > 
+> > Therefore:
+> > 1. In damon_{lru_sort, reclaim}_turn(): Add fallback logic to reset
+> >    parameters when damon_stop() fails but kdamond is not running.
+> > 2. In damon_{lru_sort, reclaim}_apply_parameters(): Reset parameters
+> >    when damon_commit_ctx() fails, as kdamond will terminate due to
+> >    maybe_corrupted mechanism.
+> 
+> So the problem is that 'enable' parameter value is not trustworthy, and this
+> series is trying to make it trustworthy.  I think it is bit complicated,
+> especially for stable@ fix.  What about simply using more trustworthy
+> information, e.g.,
+> 
+> '''
+> --- a/mm/damon/reclaim.c
+> +++ b/mm/damon/reclaim.c
+> @@ -390,7 +390,7 @@ MODULE_PARM_DESC(addr_unit,
+>  static int damon_reclaim_enabled_store(const char *val,
+>                 const struct kernel_param *kp)
+>  {
+> -       bool is_enabled = enabled;
+> +       bool is_enabled = false;
+>         bool enable;
+>         int err;
+> 
+> @@ -398,6 +398,9 @@ static int damon_reclaim_enabled_store(const char *val,
+>         if (err)
+>                 return err;
+> 
+> +       if (ctx)
+> +               is_enabled = damon_is_running(ctx);
+> +
+>         if (is_enabled == enable)
+>                 return 0;
+> 
+> '''
+> 
+> > 
+> > Changes from RFC-v1
+> > (https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com)
+> > - Remove RFC tag.
+> 
+> When dropping RFC tag, let's start from v1 again, from the next time.
 
-We simply made such racy user behaviors be prohibited [1].  So this should be
-fine.  But, I'd prefer simpler fix, as I replied to the cover letter.
-
-> 
-> My plan for v3:
-> - Remove the reset code in damon_*_apply_parameters()
-> - Keep only the fix in damon_*_turn(false)
-> 
-> This resolves the restart issue without introducing new races.
-> Please let me know if this direction looks good.
-> 
-> Small changes for v3:
-> - Delete a "=" at the bottom of "Problem" (commit message):
-> 
->       Problem
-> -     ========
-> +     =======
-> 
-
-I also added comments about above as a reply to the cover letter.  Please reply
-there.
-
-[1] https://lkml.kernel.org/r/20260329153052.46657-2-sj@kernel.org
+Also, I just found the patches don't have Fixes: and Cc: stable@.  Could you
+please add those appripriately?
 
 
 Thanks,
 SJ
 
-[...]
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
 
