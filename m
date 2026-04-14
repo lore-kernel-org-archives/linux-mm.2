@@ -4,138 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1FF2ED7B93
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E2F1ED7B93
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 09:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43BD46B008A; Tue, 14 Apr 2026 05:46:42 -0400 (EDT)
+	id 771186B0088; Tue, 14 Apr 2026 05:47:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EDA56B0092; Tue, 14 Apr 2026 05:46:42 -0400 (EDT)
+	id 7493E6B0092; Tue, 14 Apr 2026 05:47:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 302936B0093; Tue, 14 Apr 2026 05:46:42 -0400 (EDT)
+	id 686E56B0093; Tue, 14 Apr 2026 05:47:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21E636B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:46:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C1DCB59031
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:46:41 +0000 (UTC)
-X-FDA: 84656681802.20.DAB254E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1219DC000D
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:46:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kIdLQ3ob;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776160000; a=rsa-sha256;
-	cv=none;
-	b=COxQq43hdg6EZMRL3Th6r8S5G0qAaZDkCviryZiI0OMoMHSTHTczLvLLbn1NsrorTfqP5A
-	jUKbLPg540QqBzeOz09H9OT5ueNmTB5775FgDhFskIgZ6IAGWqODexp4ZFTwnXU6AKa2cX
-	0DftC+TTSnhZ8GGKPYb/eEGhiAXUeNo=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kIdLQ3ob;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 57CB06B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 05:47:18 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C5328BAE2
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:47:18 +0000 (UTC)
+X-FDA: 84656683356.11.A4A86B2
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1D985180007
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:47:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ib+MF5g6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776160000;
+	s=arc-20220608; t=1776160036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y+ojrvB4BTWWqh51OvtYEnWfG/Msa2Gmxn3VW4+W8AY=;
-	b=N1RzC0nunOIfSL09Crtu4ozI7R0WNLQoyitN+ehyWJ1jJSeKuC1Q2DbgmYx/gNmftqfoVa
-	xz273xdkRLM0NtONEWIUMSBXoo+Mmo0vqnulQh351gGXDxC5MPKn2yA11MrQVWTb7Xw/IB
-	Lu1VgVZVJXGUKsnd93LJ8xVX6ro6Vno=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7C10F60018;
-	Tue, 14 Apr 2026 09:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C87FC2BCB4;
-	Tue, 14 Apr 2026 09:46:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776159999;
-	bh=6sEhxOOE1Aj7pCDiLrWqUUaqum3nPTJ8S4/1FTOMZ/k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kIdLQ3obujLEplnrv+jkqgccCFd1D+wekSsoKKeRVxq80FUf2iFHPBipViZo/dXW9
-	 y1ET3yZgrUSmUaN8Bb/Qypty2L5rzXf8S68UhZgJLjqxgEUlotzWXrqV9XsrdvQWT5
-	 FHynNmxIcfiCL9HnuUa/UCKSCVr6RMPptdukwKOl94rN0ISUMn1xrTu7CkvQ8Hom+N
-	 MNQKqJzaAhs2WZDHpV1Q+JQKAy3CZxghj04bLBcb2PkWq9g0xX1EZxZscGHZbNfRv+
-	 w+HHVNvNG7qir8DdWuko87cWdFx/G8hJMMU1Ws792PDSQEBXlleqDsRvJn0yfFF2kV
-	 MHWV6y0Q8A81w==
-Message-ID: <e9db5e85-1f8c-4713-9a2b-91bfd20a50c3@kernel.org>
-Date: Tue, 14 Apr 2026 11:46:33 +0200
+	bh=+4CBGPNUZVh6VtntpItYJ/x6BwDqFr0ckEOccx/tIqk=;
+	b=L7CBo81JvyZ2vsGFx7wJPJlhPn/dMX8ZoYULxKAabXf3tiV35dXNogL7wkogElrGSd9WOV
+	MqEZH7HYnDcMWQgNWJ3VP4esHZ6GdSD1u+Kdo3zvgt8L4b8CzTmXZJjWhJYcvExRn0Jxwi
+	HWjTbaik61+YFktCmVaW7SsI/vhqkRg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776160036; a=rsa-sha256;
+	cv=none;
+	b=uCURBknowJyCbbRLB6sgCXv8FY9tBvtr0PLYEZ+q3yc4CixGfkzpYsxx8nNVuunANROrJ9
+	XTCbtkX4O379F3fD/yb1vG8+QeUhwpao1d/5dWUoHAvP90Jpx0/D63YtRxALxenC7kfPHT
+	j/48a2UNqv+eYP8zYQXNjBe6PiB+7rE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ib+MF5g6;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43d77f6092eso1429116f8f.2
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 02:47:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776160034; x=1776764834; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+4CBGPNUZVh6VtntpItYJ/x6BwDqFr0ckEOccx/tIqk=;
+        b=ib+MF5g6+tTbERWaySvZ5BNlSL+zEajb4+M2HDme8tKhxz/7nxiosxz0iZoLN1eDOe
+         tHN5+gctAWOqTbJNbwBDjtu4RFxCA5y1a+3fBMKEgcjSWKvwReFt+0rDF/wnYqVA4FTd
+         pBkmUTsphjQJN6Ry1p4cDValnzYW5o5Y9YlEDGKCrGsr9UdmyvbYmlcX7hoKcDalACmq
+         Xw83DeoRwm1/sslqYFUQcej5Z6FM+QrU+WMCMVahnUsju+7IfCh/N5ds+d9VMg/WbPvj
+         kArEV0s5r9cuNEVU4mNwG+ZTmp4nxliLUahoUMQVHnJJjgE74SDZZDqaPVhGX5gxN4//
+         g0cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776160034; x=1776764834;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+4CBGPNUZVh6VtntpItYJ/x6BwDqFr0ckEOccx/tIqk=;
+        b=FJp+Tex9v4801+c3B4H1Edxa2lQBgd/evxqqyGgkHGNPZgaAibZaMn+UxQYh4Bkxeq
+         VrGcpvxStQ6bwNheX/SNwL6W2ILrZVqsa1I2tw+JaFIaHDZ6q0NeVcn4VEUK1M7qMv9s
+         fQiQ1I+C9FimJAvm/MkvkwrwrkF2YWLqMSw/Y0+LQwe9T/FGKKXsPTcCKM8GoqhT3xzb
+         CVYzNYTkGX8L86xqYULvHstKOO4AXJpPSf7FNeUkWAufdx0mT+Z5lYeg+1emw+YNMbdD
+         FEgBhA9KP4FOJDJbJKvpOuuxE/sfk7wNg7ZxsiFl4PX4XzJj1fMnL3RV/6cuJ6T3iP/Z
+         MTnA==
+X-Forwarded-Encrypted: i=1; AFNElJ+u1XXm2Ibxa3RdiEiQ7n9Ftsc/YsUcWpiWkQnFPieFgqZ07/xEN3m8ECq60kG3rclNbmDLuULeaQ==@kvack.org
+X-Gm-Message-State: AOJu0YzLULe13h6tvXeXPOWWQlNw9i9++T7VwQDtH9i2Jlng+mNShrAH
+	XFy7LBv+mQFjOfe9zJ1z4+ijPs9qJQdf7O0wdIUGwPr0wXAaMPVAIjaBk8N0v6Pk
+X-Gm-Gg: AeBDievcu6rFcvT+VUFApYoCUmI0MTG0Hhhyx8wOnSq5XuGmS17HQy87eLEYjpbtjZa
+	+WvT0LQ9loOvU8bUmqGmVZXstFAVars6nKYXkT7WOCEYLsCWlydJRWVQdCrPCY2VdhJ6cfNn4Tn
+	OHMigivlmZh8KzR9t98a75/wPfhdO6boaK0dVwxvSEiI/qkGpd4OQI6/vrLlKmF+5PrJgJQtTKp
+	ChfE+94CEOMJiwGULeB43QETl/SyV3fKQP0i49+AlgXKnTGeSlhlnE1Tdw0fr8OIrUUYyAOaa9V
+	BoSISa1Bv/E+cBZhs8onwo7vX86Od5WqLNfGZOIY6TgL2Ndpvig+yPfYiX42Fjm7BFko77YU9mB
+	SicHkEiGpMrSypKd7MJFPLPLyeOFqn7U8AAcZvwHQwuHxKGPFforT8UJMcqWGjs6WbfU00G5pYc
+	+biQKscGinkr8uAZ7JIY8F9s6mjlEPahupq3BWlGCenD2XBQhsWlMxFHXpJPOKx3sd
+X-Received: by 2002:a05:6000:268a:b0:43d:7403:4b60 with SMTP id ffacd0b85a97d-43d74034c72mr14460452f8f.3.1776160034363;
+        Tue, 14 Apr 2026 02:47:14 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63de2e4csm40900179f8f.2.2026.04.14.02.47.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 02:47:14 -0700 (PDT)
+Date: Tue, 14 Apr 2026 10:47:12 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
+ shuah@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: Re: [PATCH] selftests/mm: Simplify byte pattern checking in
+ mremap_test
+Message-ID: <20260414104712.2b634741@pumpkin>
+In-Reply-To: <134c372e-5c9e-493d-b954-d9954546beaf@kernel.org>
+References: <20260410143031.148173-1-dev.jain@arm.com>
+	<5297e0da-d8ec-49df-9b32-0d9f907588d6@kernel.org>
+	<8b5544eb-5ec0-4c85-a2da-7a454fa606dc@arm.com>
+	<134c372e-5c9e-493d-b954-d9954546beaf@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: fix double unlock and remove dead code
-To: Matthew Brost <matthew.brost@intel.com>,
- Sunny Patel <nueralspacetech@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260413130927.13263-1-nueralspacetech@gmail.com>
- <ad18sckPDwMDUtIo@gsse-cloud1.jf.intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ad18sckPDwMDUtIo@gsse-cloud1.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sx3akh7wy1dnasohfn4j6mcd43911b6d
-X-Rspamd-Queue-Id: 1219DC000D
+X-Rspamd-Queue-Id: 1D985180007
+X-Stat-Signature: 5hwich45qojo5e4p5yfb5zteknpmntky
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1776159999-52385
-X-HE-Meta: U2FsdGVkX19ac0MkrXVOoXeU9URKt4Iq9WxCabXdVyj4MwKXc/OfzPU4suiZj5Bdlsus+qhhoDm+2nLFEhc7kF+A4UfABIkX/71075C0c6JuqqX3rLhqs/kzSIZ0BMSJ4/xyAumXSasZeGUfLmzEghdyjkgC/nvHBR/8BR83DeUAmITqPVhiZtFo8j33GyMB2dX5Ek9xUvW0BNuk2oPzKh9V0jCUO2FWnnGHFUjWFd9kXqtozANtlLDf/uPSkEo7AB5Es8BxYU0x82THpCCX2Ungjh8WJyiBGDTvOakxHM3rTz99nSSnKi1lgJljR4n8mG6FXnn49sZTN8T2+2ykwqv+6S57oOLl/b2C4B92QmJ4RwI6FP4ET7ciw29Y+bP/JUzVtGofkZKgXleZYg/sXLIk3dEGap1+CSSbnr/CmAdnspQWLFZQVPEsJLUUguh+blYDhpo2cWk4p1F9C/uNiADm3lghMCN52xAFek4PBo3lPYoTkx6ZqxBCGl2/oFnpS2XpoXokmGHGGml+macbUT3hYUVRSvur8Gat3iICTfkMEC38oy32khqzYLiY8o8DnG8HWFloXA83t+C0R84GPAV8gLIwaLGM6ef0AZvA0PgNQ5UKlZZSu/Ilczh/CiWrabC7adyrY0BDrUcanqvlgDJSyCiJnuyFH885dolovsJg7BqZaOQOw+oO4YTcWiMxnWuxtCVK1OyqZw9OjIXPvbNcoT3WfySwVqaXnaBhF3oV+gBwalEgWvCeo8qHJuciG1LlpIpTNyyf+8LwOKz+czSQlmieRmioZMkWKrE+dJ+GFvdgaKlbS2H/gGKgo135F0/y45V8xKC+mxNmd7PVKvEvrmmcZI0l/rympgr9uXN+mMrwyTfIQwFEM6N+9h+P9++MAiOLF6ClQQZl97Gix/np4gzkuNrau/aXyc9yckGnD6dBa95vQTNI+I9j7TQmB2lB1WbvbVlsQDCDcmh
- jubdImuw
- wLXdeBDbtKuWbEaijmp7nyV9UjBA1btprgDQMULz31frZJYuO1cg3ExE7mpCv4IePTW5j8u8PbytTR8hZoXjF2sM4ter8lXANoXpSAvSU8W3gQkkmeOvWg+paPsq8PjrbCjvyEVxyZ3xjUteeOPAT7zTfOfBV0Gk3tk5KmuBpwTs//rynBD1B7SpM3IRfjRztwxa2HmHICpr5noyQE+pdZ0axJGzh3bfuOKJKwngvnMl/33ERmS6HpwodbifCsZQatzqp5SQyANabKkbZQ4QWfBiMOl0u48EmAsnr+NqWYxJcYWJtf3Zrj/srVT1f50Hgt7OKxe5J2+JhsMYslpSTxWJXD1XJSdL8XwJI1WgQe2HWpHxLqPjm5N0lOqdhNgpJxa/z6FS3FTJZ5SYHh/gg7HFnEMpcfXHo92bPLSMQeoRiNQFfrCbUTIQnIPJft9y4o+K2Qg9ztFAL33U=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1776160035-762426
+X-HE-Meta: U2FsdGVkX19gTmcvooWDYq0/sxSWjMKtH9AjuKFCJbjD9ftYvvOecAwwIHa/ReDidLIowJSitNmbyue2cUUdDcGLk0X6zQwKkpJZDdXkYVjhf9N+MBSygtmP/GQzGbS/uFUVUorzQP+x+eFl9/EUbMc+yn67SOY0l2DqnDyVYEovCBvX0oHzZX0qx32OQ33slHtUcDfL7JgfFtFZyq7tpyZuiOTXBvHRTMbdaW2mJe5gD9U9BZHA7thuNGYnfoYGYzBLq0w2xB4yfwmXOHNkw2qiYPeRJQdGCHRpmRMEac/YTpJw2tbZZkGer5dRwo8AAOgqS3j1XJ/z4wJViLcGiydeGqZgwJT471PuLut3MnvPm80Ck3IW6bbZibhwZrJTT2FJcVYAGUFqTw/8RcsPtXQq/gH8S27gVAxHjztrP8VN/yEAnBcBZb+etq+hmKmuTnOv3r+/Q+b6YDeqZSVJ3rhSY1Ln1NXxwRSkKZ0LdzIvX3deI1941jOcdQLPF66VvJC/0GjHo96PlCkxcMzvbgFZ/3NqkJYWVVIKqmwBbVkBclSiQiikEWis2depC1UunpXgcBfVJNF70fe2Hcz8LWpyv/pPk/08+BeMCadLleq09EtjAa+NXts9dreBgAWKX2fkfLawPvHOyo1ylooKjLu19xheWikYPCC1UEDEnHx4qGF+gtIXJKltBlVfD88+5M6WXUBsAJPBr5BpdqNiY4OT0CufAIvh+bvZqQBSOQLFx2th4MdYORIVdGL76tfJ0a32ShE54aMuJ4pEuRjt464ZtgjYwVlVzd+YnD4COqqEjsLSu5Y74Wzgnms/E6DUSLdHMYnXMJxC1NmBA+/DYDfRDU8QREQ+JVL7FmNzMLJPZbY9PVirXuovl4EMxmejZxYsz6p/5HMDY04P3PAyVcO5GwRCfB3cVZ417wlKbzKkzgcVKAEIw7xjQTIF9JlG1HBG3hkgvPdSrKR259B
+ f8PB+nEI
+ Py+/pQU1ISdCixisekOoo5ECcZA6pZx24SULNJsCoDqkaiHFqzMf7UNlN0ZHWYp+4dbGh2e69R7h/KzBCqpPd/5IHUtnwREZ/NHJzzSMh1HkjdOGMUrTb0sECwlK1iv8upFpzbwuCYGpkUBsaB15Q9nTeEF3JSm7xgoCxI4zXM7Kxx86vS0nmEQaxTPRAsSWzH764njTWSn1lGMvcIHuyyBJcAwCbKVfMcci/QrOXi+mn/eYyZOJcaH+lN7ev9pieakyIxtxy5DrBslhzbd8I6aZq1sMui3NuqoXzr2ZX6E3sWYnwVfQcKWE+vX6K8oK/WAFl1mPQg4pjOzXnvCsGP9CWSGh5VkdWF8A0T5cEaOjrAc7km3ShCSq3s/Yduq1vZTKnratsHuXg692XsiY/kSG3eXWBIo4nuoCcANtQK9MOJ42l2Wsfx41PXypDQ6FI+oWEliBSgBoED0jWIcC7jFptteRDLFpSfxwRk25zmkr8kHoffqe1bPfDMCo7XwjdW9nMkk/CxvaYvc86lDkJgcswq8BpYUPV72S6+ihkMQbfbtmbiI9mt7yRXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,51 +127,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/14/26 01:30, Matthew Brost wrote:
-> On Mon, Apr 13, 2026 at 06:39:23PM +0530, Sunny Patel wrote:
->> Fix two bugs in device migration paths:
->>
->> 1) migrate_vma_collect_huge_pmd() calls spin_unlock after
->>    softleaf_entry_wait_on_locked(), which already releases the ptl.
->>
->> 2) migrate_vma_insert_huge_pmd_page() has a dead else-if branch and this
->>    branch is always unreachable.
->>
->> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
->> ---
->>  mm/migrate_device.c | 4 +---
->>  1 file changed, 1 insertion(+), 3 deletions(-)
->>
->> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->> index 8079676c8f1f..0e005c26ee88 100644
->> --- a/mm/migrate_device.c
->> +++ b/mm/migrate_device.c
->> @@ -177,7 +177,6 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
->>  
->>  		if (softleaf_is_migration(entry)) {
->>  			softleaf_entry_wait_on_locked(entry, ptl);
->> -			spin_unlock(ptl);
->>  			return -EAGAIN;
->>  		}
-> 
-> This entire if statement is dead code, since we bail out and collect a
-> skip on !softleaf_is_device_private immediately above. I thought we
-> already had a patch from Davidlohr Bueso 'mm/migrate_device: remove dead
-> migration entry check in migrate_vma_collect_huge_pmd()' that removed
-> this whole if statement. I even have an email from Andrew pulling this
-> patch, but it looks like the code is still present in 7.0.
-> 
-> I found this link via a google search which contains the above patch
-> too:
-> 
-> https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/25-new/+/f405e7bc5d93a541cf11663b2424baf0a03b496f%5E%21/
-> 
-> Look like this change got lost somehow?
+On Tue, 14 Apr 2026 10:01:57 +0200
+"David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-Oh, even better, then we don't even need a Fixes:
+> On 4/14/26 07:09, Dev Jain wrote:
+> > 
+> > 
+> > On 14/04/26 12:57 am, David Hildenbrand (Arm) wrote:  
+> >> On 4/10/26 16:30, Dev Jain wrote:  
+> >>> The original version of mremap_test (7df666253f26: "kselftests: vm: add
+> >>> mremap tests") validated remapped contents byte-by-byte and printed a
+> >>> mismatch index in case the bytes streams are not equal. That made
+> >>> validation expensive in both cases: for "no mismatch" (the common case when
+> >>> mremap is not buggy), it still walked all bytes in C; for "mismatch", it
+> >>> broke out of the loop after printing the mismatch index.
+> >>>
+> >>> Later, my commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
+> >>> execution time from minutes to seconds using chunkwise memcmp") tried to
+> >>> optimize both cases by using chunk-wise memcmp() and only scanning bytes
+> >>> within a range which has been determined by memcmp as mismatching.
+> >>>
+> >>> But get_sqrt() in that commit is buggy: `high = mid - 1` is applied
+> >>> unconditionally. This makes the speed of checking the mismatch index
+> >>> suboptimal.  
+> >>
+> >> So is that the only problem with 7033c6cc9620: the speed?  
+> > 
+> > Yes.
+> > 
+> > I'll explain the algorithm in 7033c6cc9620.
+> > 
+> > The problem statement is: given two buffers of equal length n, find the
+> > first mismatch index.
+> > 
+> > Algorithm: Divide the buffers into sqrt(n) chunks. Do a memcmp() over
+> > each chunk. If all of them succeed, the buffers are equal, giving the
+> > result in O(sqrt(n)) * t, where t = time taken by memcmp().
+> > 
+> > Otherwise, worst case is that we find the mismatch in the last chunk.
+> > Now brute-force iterate this chunk to find the mismatch. Since chunk
+> > size is sqrt(n), complexity is again
+> > sqrt(n) * t + sqrt(n) = O(sqrt(n)) * t.
+> > 
+> > So if get_sqrt() computes a wrong square root, we lose this time
+> > complexity.  
+> 
+> Ah, thanks for clarifying.
+> 
+> > 
+> > Maybe there is an optimal value of x = #number of chunks of the buffer,
+> > which may not be sqrt(n).
+> > 
+> > But given the information we have, a CS course on algorithms will
+> > say this is one of the optimal ways to do it.
+> >   
+> >>  
+> >>>
+> >>> The mismatch index does not provide useful debugging value here: if
+> >>> validation fails, we know mremap behavior is wrong, and the specific byte
+> >>> offset does not make root-causing easier.  
+> >>
+> >> Fully agreed.
+> >>  
+> >>>
+> >>> So instead of fixing get_sqrt(), bite the bullet, drop mismatch index
+> >>> scanning and just compare the two byte streams with memcmp().  
+> >>
+> >> How does this affect the execution time of the test?  
+> > 
+> > I just checked with ./mremap_test -t 0, the variance is very high on my
+> > system.
+> > 
+> > In the common case of the test passing:
+> > 
+> > before patch, there are multiple sub-length calls to memcmp.
+> > after patch, there is a single full-length call to memcmp.
+> > 
+> > So the time should reduce but may not be very distinguishable.  
+> 
+> Okay, so doesn't matter. I agree that we should simplify all that.
+> 
+> The exact index is irrelevant. Whoever wants to debug the test failure
+> could modify the test to find that out. It's one of the tests we don't
+> really expect to fail (often).
+> 
+> >   
+> >>  
+> >>>
+> >>> Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> >>> Signed-off-by: Dev Jain <dev.jain@arm.com>  
+> >>
+> >> Fixes: 7033c6cc9620 ("selftests/mm: mremap_test: optimize execution time
+> >> from minutes to seconds using chunkwise memcmp")
+> >>
+> >> ?  
+> > 
+> > Not needed. 7033c6cc9620 does not create any incorrectness in the checking
+> > of mismatch index.  
+> 
+> Yes, agreed.
+> 
+> 
+> I would suggest to rewrite/simplify/clarify the patch description, not
+> talking about "buggy" etc, focusing on the simplification.
+> 
+> "
+> The original version of mremap_test (7df666253f26: "kselftests: vm: add
+> mremap tests") validated remapped contents byte-by-byte and printed a
+> mismatch index in case the bytes streams didn't match. That was rather
+> inefficient, especially also if the test passed.
+> 
+> Later, commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
+> execution time from minutes to seconds using chunkwise memcmp") used
+> memcmp() on bigger chunks, to fallback to byte-wise scanning to detect
+> the problematic index only if it discovered a problem.
+> 
+> However, the implementation is overly complicated (e.g., get_sqrt() is
+> currently not optimal) and we don't really have to report the exact
+> index: whoever debugs the failing test can figure that out.
+> 
+> Let's simplify by just comparing both byte streams with memcmp() and not
+> detecting the exact failed index.
+> "
 
--- 
-Cheers,
+ISTM that if you get a failure it doesn't really matter how long a
+second scan takes.
+So a simple byte loop that reports the offset and data of the first
+error and counts the number of errors is more than enough.
 
-David
+	David
+
+
 
