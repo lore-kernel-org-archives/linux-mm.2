@@ -4,103 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15031F9D0F6
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 21:00:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93073F9D0F1
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 21:05:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE6236B0088; Tue, 14 Apr 2026 17:00:11 -0400 (EDT)
+	id BB9FB6B0088; Tue, 14 Apr 2026 17:05:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E96CE6B0089; Tue, 14 Apr 2026 17:00:11 -0400 (EDT)
+	id B6AE16B0089; Tue, 14 Apr 2026 17:05:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D60B86B0092; Tue, 14 Apr 2026 17:00:11 -0400 (EDT)
+	id A59836B0092; Tue, 14 Apr 2026 17:05:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C19706B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:00:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 722C2E2D84
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:00:11 +0000 (UTC)
-X-FDA: 84658379022.03.9659C28
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6CF724001D
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:00:09 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HS7YjAe0;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9439E6B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:05:39 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 24311139CAA
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:05:39 +0000 (UTC)
+X-FDA: 84658392798.24.57D2AEB
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2CD9CC0010
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:05:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VBZ16NCm;
+	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776200409;
+	s=arc-20220608; t=1776200736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/y7pq0EJ1jaov65+vGohdk0BJsP4QYKsTDYLpDxD/Oo=;
-	b=NawBnxX1rj8pVNvK44yjnuFVcscs7oIg0E2l+Y2+thqaNPuBltpnGZIKWGhC/g+8eZaeBu
-	OU1Em37gjJus50Ja2KxqfZCM+hiKVeZ+cEQHNHG2HHvk4IXLkvbaV4C7N8L+kUjjozHd0P
-	X+TPht0ZuIyN3e2Oy0FQQcqh3DJXSOM=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HS7YjAe0;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776200409; a=rsa-sha256;
+	bh=WFQt6WFmWVPfUNz0yp/lCGugbU7zTlDBXyrUbnhxBDw=;
+	b=gsXtmX+nx3uHvtRVfHHrfQ1A0TguGrX8NKJ+Mnu4mIvDJdsqkXMWKCW3J/YFOXK7u3vqbh
+	nrgJKWcXLgUhJZbmP1Uv9wfodzxybE5W4FhFSf1uT/pgiPp+pGiZncEjikaNXmvfqyzHvJ
+	nZj/cL5TUByJrIhtsTYKoSbjlFHmaZM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776200736; a=rsa-sha256;
 	cv=none;
-	b=svrEe8oETK/ecIx1hKX4MiBQKE+wac6yiR8KzIp26La3hLDCT8vnRmipEGV5xUD+U8pWNf
-	iPvbX1shhdn+29BAit4Lr6KvHGvujYUL6xkxR4/6rHhRUh6ACrvOAepFAnm8WAPgfLS//F
-	n1UjRpR5J4TQsS7esGen1ER675bxlO8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 65A0B44288
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:00:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E740C2BCC7
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776200408;
-	bh=mduecyo9txtQyzrRbR5Q2G7rVYfbP1Zo16EDOJNGpp8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HS7YjAe0WuuJf++7+e1yek2cH/BMiQtp43ZcCP+dD4Y3M5NFATlRdfpmojwnoA6cc
-	 +wf7BMjYx6qoelFhPLjQoAkzbIeszS5cg/mo1mcTwFG/CxT582IXLRfMJXs3DYNseX
-	 VZqdyHvBHOxZJAMgFmt8Xz3HiuL+GfhbY46twIgeyHFBVazl7/bSDQNBLLBOg6Eh9X
-	 FrSbFzGiM7JA82lZY3DwhfJ91xIVaVMAEjCR6HY2GFP5gN0M0+rfuh9nytg173Lzf+
-	 /mAcMlpNokgD1OzHUBHM1ekpjZPjabsnZSzOP3nd/6c4nUNB7QRqeHHWWlrpHit97l
-	 qaL2saihF9SBA==
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a032383008so68153496d6.1
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:00:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+eWX9qV48kKJL+Chk+2m1QmUiAPg98QHV6q1N1mglE+EhUP1U2Uzr8XzZ/9uoU9t7Lf9ZwmGPojQ==@kvack.org
-X-Gm-Message-State: AOJu0YzLKYvfPAPMd/gM8M+Y94AouYnr8xkFZSKvUt2ubKGeXxowJWt6
-	nX0oXft9drdG3rKjKMM0vyPg9vNiuTkFe0PKTQl0HUvltd77wBn7qnlO8V1Zvqv3AYv1PEWWO2x
-	Oiuf0gQf6/+w05+O4n6ziJE90Bmx4BF4=
-X-Received: by 2002:a05:6214:da4:b0:8ad:bccd:94cf with SMTP id
- 6a1803df08f44-8adbccd95c9mr73153366d6.18.1776200407210; Tue, 14 Apr 2026
- 14:00:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260414065206.3236176-1-arnd@kernel.org>
-In-Reply-To: <20260414065206.3236176-1-arnd@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 15 Apr 2026 04:59:53 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xWNzjpMZTNThijdix6nKAsZPkPBazT7JJpsVyNFTJkSw@mail.gmail.com>
-X-Gm-Features: AQROBzD5UaAc4n9tOLGFa-kWgR7p4d77lr5y8E1TxejXmChGVIRzd3Ozk2hXIN8
-Message-ID: <CAGsJ_4xWNzjpMZTNThijdix6nKAsZPkPBazT7JJpsVyNFTJkSw@mail.gmail.com>
-Subject: Re: [PATCH] [v2] mm/vmscan: avoid false-positive -Wuninitialized warning
+	b=Y77K9JjwDqYB++Qzn4DtR1roe8skIfyTRvawBzX2Pk21Kvspw+kij4o508Ma9tHY9CUwe/
+	HFk+dITHFD8tZGJPMU0sGEx+p/9/Aacx/tzOZT7gxjsRcgP5WL8tzUt4iZTrM1HSfD86kr
+	/rHHVJI9GiK71GLvXml58mwLbz9cBjE=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VBZ16NCm;
+	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48896199cbaso64293395e9.1
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 14:05:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776200734; x=1776805534; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WFQt6WFmWVPfUNz0yp/lCGugbU7zTlDBXyrUbnhxBDw=;
+        b=VBZ16NCmxhIqw8HLFpZLLvA9Fgg9hWzFKNgsRZbmFdz98xxlPqshMmL8xLWa3R6lg6
+         zhKTShDnjQ2Ms3u9YhuqzwKwo57wT2GhqUPSW+oO6cWduUJDZr65AVsZAxdy6j+gTToy
+         JZ/9+ZytC7MIUEgGFmT0EEwskwPvbihN4En1QehEv/z5dWPCzUUR4W3UuW5dw0rwuzj0
+         OIu/R7M0uthtzH6eOUGys0RwltxB/zLR+sxzdZxAIAG814XgPrlDobly8YgDQivBMeKe
+         IfRqzlpRgIaZCnko6XZPqDhkqJdNtHKLTtP0D6VFi1Gpl41S/GiNqjO1wfYxkU0VC0D0
+         EuCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776200734; x=1776805534;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WFQt6WFmWVPfUNz0yp/lCGugbU7zTlDBXyrUbnhxBDw=;
+        b=oM+aD4B5kekctm/G145JGQwh1lW0kvDelXngYxxbw92LRDOkye1NNDfF/NTXdsj3qW
+         V2kc2NHKbb6W7yoIOW7A6HxpIZszJ0Dk3bea3g1MmkVSvu+jpG7j93gD7med2BmyFd6Y
+         IAnY6KLG1Dtn4iw5RSYyfpFPfHLpw4rCGQ2bWoKEYZVTXbO34bYe5oAM/lmQN9SvYhfy
+         t8gaQdEFOgbA/1+lbTUP31eDKSPa3afX2l74oRZXviGSZODXwz2Ik2q3HN/MJZ+WG+ji
+         8gYxikvkV+AYVCSPYeEumwdD0aJwC1l17ttZxPIKsp3TnozHb+/vVY34AldMn8tJQrvG
+         NK+g==
+X-Forwarded-Encrypted: i=1; AFNElJ/LQoYRpBe8X9JvJHGJ6pMsahWoz+S3xnsO7di2x7HAvGpTIBs07LK4WTcn1UwLCVqInBw5CrV5VQ==@kvack.org
+X-Gm-Message-State: AOJu0Yys6tvsiPI+VM96NPTiaQ8MIbmPYH22kXz7ziomaDmbGSe+gDS+
+	0iWwirj/tXfClmG7NRK3Ybr0tgEWEGIkW3KVxdtZ6/UnGU20ZU49+VDe
+X-Gm-Gg: AeBDies9WxUYFyQ0XNNA0cZtm5E2HAbjBT2jy7M6+rVjBxIm4A1seiF8V3YpHXI9wmU
+	kHam01AxwpiYAsqlAnIi7FIPdi2vns54kPwstYbC9wwBz86EMB4EHGkGnfPgRXSKGfMn+99sRRd
+	42HHaXjecRrPw6koEes3kyuKVA5dO8FfIuGD8X5cLmw3jbf4BOl6+iooQHS7TtMx93Xi1rVo6Vo
+	qRfkJVEUwNpZZRJGgUYiN9M+PryhMuNT996javC0vI7sU5ZLCo7utgfQWhmRIHrhQu8V4EXDwA3
+	m8XuY/W9ZdWVMV0ZWOG9DVQ48zVeSBhB5MMdIW41B/+4siRSWC7BUfRDfcEvHlvpVTh6lrqrel2
+	OeKlH8hrloggYPyjaf05gW/+woY8fow/ppXowTD1NdKvPy/BWY/Box+6k7c6r68Xr48WunKxLsz
+	PAVe0Qc5v/rJrhK1Cw0GaVjYU7P2hLSUQIipfC4SXhSdFdDu38n6KEGVWpW8JKmH/T
+X-Received: by 2002:a05:600d:d:b0:488:ba5f:984f with SMTP id 5b1f17b1804b1-488d67b8dadmr205583445e9.6.1776200734242;
+        Tue, 14 Apr 2026 14:05:34 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488ede15cfbsm83786205e9.1.2026.04.14.14.05.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 14:05:33 -0700 (PDT)
+Date: Tue, 14 Apr 2026 22:05:32 +0100
+From: David Laight <david.laight.linux@gmail.com>
 To: Arnd Bergmann <arnd@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Koichiro Den <koichiro.den@canonical.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6CF724001D
-X-Stat-Signature: 4uq8t64gm8e78fsxi6gm7bw3byz5h3yj
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, Arnd Bergmann <arnd@arndb.de>, Kairui Song
+ <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, David Hildenbrand <david@kernel.org>, Michal Hocko
+ <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Muchun Song
+ <muchun.song@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, Koichiro Den
+ <koichiro.den@canonical.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [v2] mm/vmscan: avoid false-positive -Wuninitialized
+ warning
+Message-ID: <20260414220532.3c89dfa3@pumpkin>
+In-Reply-To: <20260414065206.3236176-1-arnd@kernel.org>
+References: <20260414065206.3236176-1-arnd@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bgqnrxh4jxxp4awkmt54dajiyd36ktey
+X-Rspamd-Queue-Id: 2CD9CC0010
 X-Rspam-User: 
-X-HE-Tag: 1776200409-464209
-X-HE-Meta: U2FsdGVkX1+UzaDSwWhBMgl7NYogzher0f+0rF8xZ6GXeTaO/A2lVDc4t6+7B5/q35vr5NBWP6G2EpvKHKWNvaijiyX5E1aRQz4P1sULq39DSBVBYinjgsEaPUmkLD4MawjDY/1KC+0AWG37OVlJYxNk6xFUFw4+Q0nPHo7nadpnUYDF0Gv04PUXJWgXKcXFk8Dymmek909n/AxOCqFCZqK9a5u3ImxaCqaohKp30dHvFRHsPWyc8i9o7C5ARAUXR+xzVMf6WzzVB89CP68lWj517jFNU9Nzy8JGjnAjSdG6rlzuTzBE3bhuyWhekQtHk/rcULy83SD4fE5A4PIyxnstods4IT3JqWcMDa6pfzOagNTbeSDGDrqgirdPWshEJvAhsWyuabzP3tG0G6bVKaqaL+k5pK70Eta32uK5wXKQ8mW3sBKDo0LiJ15wPqlsA0Y7rWcA6/1rtuVWM/AjmoXS+XCkwi247NLluxHySp5gZIw6faBQUi5f/ZYGDcWgn+DeGkKfGvW+/YthXDE/xfhN96gybXZKA2WnYhAVuXqxQ/A5wsdLFJwCvpHHxjk6GL+xLyElg3jrqoXTUM9VRSqNSR24flInYujaKm8glAYMGceOWAShD35NiiozsLxkFfE3kTCZVigye4mIbRx2BOGaLwV4uUzPWc4ahg+Pb30b0Iw+r26lo1C5VBGLvdU0ZjRsXi7H4tAtZg9wK0hoYKh7jjo1eRZivqN+u3wygXqgQ2APUlvav1p9Ue7IrPN6wdUZQhLy0/nwT90bDJ6Ie0J3FCew4MF+5ZCC1At2SR78+7HH4A1k/fFl79nZEvG5eulB4y6oJHQB2DPkiBpWzq1LHTqRFyv0KP+Sz+qDmdlXiryMSDIZLPiJmEkBr1MhUG5otxSKUV61CP24N1sr0YNdkpdiM83kTlmuwNXby3WiRaQ6JRzli16MJe+ZHPOBkGuXg70RXjnrhyX5g2K
- QeCyQcwx
- 8BRkJHrwGGDlObe4QxxtKKhdGe42THw1wVTurUVBdMxIJyyd3ccwvgzTKrYkqbpvg4xr4g7T6stFML+s1tnh+fellaKwco6paIrvaZm0q98QruFSuy3R9Fxas6l3iryMImx7JVBB3hAsq06OWuhnfg5WC74X6mHdzKoNCrgoLTV6uV+vjeAxfyo74cQk5zZykpcCQLwOfhLBcKqTRJiiGqB6picN5P61O1rs6bLtqw+GVb2kIRS2A4rhDRWGCKexkWkkvsvaUVpNcKf4NP6wjRw8dTTveY838we2ElJJ1fbUsF9+BRKPBE7B1vH6vfexPwqHAJBtPskCd5kM=
+X-HE-Tag: 1776200735-259871
+X-HE-Meta: U2FsdGVkX1+Egbfo5UUOWZK/o1d5VIgfcziQEligcfTML6WTl1PULHS6gOTq6iTXaFt4almBasNVLl7B9h+2s6/z4YrQ4QO8bUuMIwEUo1bD0pMFLvg1uTZfEz7FC8nDjjlqsycTKO9dZpZjZtq0OrnC8bBNx3w+9I16vMJs71EaeY4sd94stL/NJ2nzMzaeJnDwynVB9e1Rba11Vpk0BE/QT9fDlF8Hup34ajdddNwllH2CIdCEN/nVDYVJgopOTX7BnRT8VYKgFbgIW/2ZbdPr7JIGHTD45L+qjOsPrQyAbvYy2mMaICh06MaD0qpfatySwZAkW2UmTwp+dAcd+TgILuzajtcFXcIp0Ot8PdEIArzwQTm8vbtv/VPoq0VV415hOcuzxwES/09JRrw1ds9cqtyeEdwr78YQOlkg+z4C/pl5cqUJDb/U4yqoVbYLMWhMIxBnGAlAkZuXkgIZM57FuJLJNi5rGMsNyVaYQpsWZuZj+v24tWfWhLXxSS3OirXOhXKqXnn7p/a54jk4LBg2BO5InDB7qPYL2mwKLPlJPujtH+5DTkt+fRfZ1BWp99uwRG+YuyktVhJIlF1lhY0SPmRYTe+0NBAxgoVQ9qVr7+Izr96bAnDGoGUbViclkpQXk9sqlLoiBVQnzgAzI6IHPjei7XyhJpZ+In1QSkbdZ/G46Ae9uHsXW7kLphaocHP8LKRiVtoAvS5orJr4u+V0qEs68AFTdaEWHNATWksNkqNc+91ZckjBsZoVxi2fIwvli81RJXsEGgR1Jlhw54sh9/EQjM4ZTKMHLhlF2D1VbNm0zKQ2wCjurYTBMAx0GEDxOScsBkJTMPZKQbYNTbFDXNnlZFUWdKljSjtjXu97i2lJQ1MmtKhK5vMwvyZKybp967f7iJpooVyOsc5ePKmYQNWToGQsvT2lvm+o6jC421eNjqPtMmfsHjWzEnxAQYOd6jmK61wr6d/NMvD
+ gXHQfXI5
+ 6c2lRuxjtHCxKYUeEQFCAAhYPwj4i0qLCYITkzgHF1LGXLTIgIz1LFUdPJQZIjvDOC5680gTndFSg8dlQdQhasCP0QWsRFjjGygvKH6baIIoJGVkkNJA7zopy3gi27ixXqmdG5mYfRdJPrit1o4wdPXoS2mzYE0g1WrkbRUvPg9FuI3kuWRMGziOhyiREuaOY9LEDLgJLuU7AGy4FFpxqUlqetRPNIxnSQbzbb0ch+rtR1572AHQnBjn0QCBPeeDokKvrn93EZ1CrnRIkJ/enqUM4TuzV2briGaJIHS1MhP3zkjr/XW4Dk617Mjw2YkfZtHLAE4Y7w6tJXZnRVaiWYtdIujVE7pFbl0JyqCaSR7M/jE9mQHTwW9ehW1G5JC++ZjtE9TU2zUJnTeU2qKn7SwS9DFV5JJ3j7ZYJKFm8LAehbEyorlXG+DyzvoqoffGbITPSNI7p8iZRzJUc+PdxG91jrmu8IzCuqqMZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,36 +129,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 2:52=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
-te:
->
+On Tue, 14 Apr 2026 08:51:58 +0200
+Arnd Bergmann <arnd@kernel.org> wrote:
+
 > From: Arnd Bergmann <arnd@arndb.de>
->
-> When the -fsanitize=3Dbounds sanitizer is enabled, gcc-16 sometimes runs
+> 
+> When the -fsanitize=bounds sanitizer is enabled, gcc-16 sometimes runs
 > into a corner case in the read_ctrl_pos() pos function, where it sees
 > possible undefined behavior from the 'tier' index overflowing, presumably
 > in the case that this was called with a negative tier:
->
+> 
 > In function 'get_tier_idx',
 >     inlined from 'isolate_folios' at mm/vmscan.c:4671:14:
 > mm/vmscan.c: In function 'isolate_folios':
-> mm/vmscan.c:4645:29: error: 'pv.refaulted' is used uninitialized [-Werror=
-=3Duninitialized]
->
+> mm/vmscan.c:4645:29: error: 'pv.refaulted' is used uninitialized [-Werror=uninitialized]
+> 
 > Part of the problem seems to be that read_ctrl_pos() has unusual calling
 > conventions since commit 37a260870f2c ("mm/mglru: rework type selection")
 > where passing MAX_NR_TIERS makes it accumulate all tiers but passing a
 > smaller positive number makes it read a single tier instead.
->
+
+We've had issues with that code before, might have been related to the min().
+Unless that function is inlined (and the compiler generates a sane loop)
+the generated code will be completely horrid.
+
+If this code is executed in any kind of 'hot path' it should really be
+done differently.
+It isn't as though there are many callers; and one want to process
+all the tiers - but not in the same way.
+
+The code isn't even that readable.
+
+	David
+
+> 
 > Shut up the warning by adding a fake initialization to the two instances
 > of this variable that can run into that corner case.
->
-> Link: https://lore.kernel.org/all/CAJHvVcjtFW86o5FoQC8MMEXCHAC0FviggaQsd5=
-EmiCHP+1fBpg@mail.gmail.com/
+> 
+> Link: https://lore.kernel.org/all/CAJHvVcjtFW86o5FoQC8MMEXCHAC0FviggaQsd5EmiCHP+1fBpg@mail.gmail.com/
 > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
 > v2: replace the earlier more invasive cleanup with a trivial
 >     workaround
+> ---
+>  mm/vmscan.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index d3312c51f3f2..f829435d2807 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4760,7 +4760,7 @@ static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>  static int get_tier_idx(struct lruvec *lruvec, int type)
+>  {
+>  	int tier;
+> -	struct ctrl_pos sp, pv;
+> +	struct ctrl_pos sp, pv = {};
+>  
+>  	/*
+>  	 * To leave a margin for fluctuations, use a larger gain factor (2:3).
+> @@ -4779,7 +4779,7 @@ static int get_tier_idx(struct lruvec *lruvec, int type)
+>  
+>  static int get_type_to_scan(struct lruvec *lruvec, int swappiness)
+>  {
+> -	struct ctrl_pos sp, pv;
+> +	struct ctrl_pos sp, pv = {};
+>  
+>  	if (swappiness <= MIN_SWAPPINESS + 1)
+>  		return LRU_GEN_FILE;
 
-Reviewed-by: Barry Song <baohua@kernel.org>
 
