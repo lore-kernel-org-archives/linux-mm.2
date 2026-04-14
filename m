@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA67F531DE
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 00:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFF83F531DC
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 00:58:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4EE96B0088; Mon, 13 Apr 2026 20:47:49 -0400 (EDT)
+	id EBA836B0088; Mon, 13 Apr 2026 20:58:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7876B008A; Mon, 13 Apr 2026 20:47:49 -0400 (EDT)
+	id E92176B008A; Mon, 13 Apr 2026 20:58:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9F476B0092; Mon, 13 Apr 2026 20:47:49 -0400 (EDT)
+	id DA8716B0092; Mon, 13 Apr 2026 20:58:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A25DA6B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:47:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34C6AC17AB
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:47:49 +0000 (UTC)
-X-FDA: 84655323858.30.4FBF138
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9FCE58000C
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:47:47 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eFbPd3zO;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CA7DE6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 20:58:34 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 77A651A0213
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:58:34 +0000 (UTC)
+X-FDA: 84655350948.02.BC1DB3C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BB068C000C
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 00:58:32 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OcsJXF1P;
+	spf=pass (imf22.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776127667;
+	s=arc-20220608; t=1776128312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aiYsXtgceDGaHJteYmEM3PECp06FEs5dMiF0DCsRI8s=;
-	b=HW/UcoP90NSgAnyzMerzGQu45167bw+ytm7IFVDT3p4iPLM3emyRPvUOmUjtnvu7gcxpY9
-	DgADFbqT2LKwAH/qJTYxAeMcQijm5fda8/4oqQjf/BGCgXwaHqkL2cOYSNtMOEC2hZf1hP
-	lLNZkeDKxhwPR5XYOXGbjAEdPrcN7/w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776127667; a=rsa-sha256;
+	bh=r3LAEV04Ii7sBhBVEYN/4cey+p6saxFGFs/cAnZ92yk=;
+	b=P8/6z4sD11KkGDu46PTLcIkT8pSDZtmSPQ3bKYzqKhCrbqOLFQWtPRG2be4XyjpwcbPHHa
+	r7wGa94HyHoDHzgU8wHSZ7xzWFtEXX3dfM/7/BYsa4QjSgdfx1FYTupZ3+cTquK48dZqjA
+	hWZ6u6PsLJAy910r5btiIezfmIdLZtQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776128312; a=rsa-sha256;
 	cv=none;
-	b=kYus3KpBAFGHg2CL4uLIEDMADODW0RqPTrddt9TybEFaGqPMetzOB/tcKGsIi6n16fbuDe
-	w96/4dinK0K5n2lr4ZsmwDzKg4uB3Yo5WfSgKtaQ2w+uCoGuDySs/yymq/rv5kixh5unLu
-	uIOk4GdSmzVtDUdUsA7WjPNsFdxQG+w=
+	b=SwyPZM1X3sdNCJht2Jr5TRyhfamkkHfBIj0uT0ZQ+IybzbsRZSf8CX9F8khmGlyONmuWTb
+	uRJSYtsB+2XG/FN5TO0NHBrOQRAjSy7unArKv43ZwBn8/DjJ3EzYvrHxnsWtNvnWrrtkSn
+	zJBgcThGGyvLNKMdDiiMJcNGoW3CSBw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eFbPd3zO;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OcsJXF1P;
+	spf=pass (imf22.hostedemail.com: domain of dgc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dgc@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ECC10600AE;
-	Tue, 14 Apr 2026 00:47:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C89C2BCAF;
-	Tue, 14 Apr 2026 00:47:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AD32940667;
+	Tue, 14 Apr 2026 00:58:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E1FC2BCAF;
+	Tue, 14 Apr 2026 00:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776127666;
-	bh=kwCR6jNJyCy5Cp/beB01W/9pSDx/xZgjV5/dwIyldN8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFbPd3zON/QBBLjsaBL9P4bAEnAhFOjdcnQ1A91hGh1Dgrup8rO7XCvvVgB5Rk4Qd
-	 VURnfGuEv9yb9o8FcefA/FAeMjj6vv0nmBYrigQSE0A2mRjpib11zJa7rKsJr3KXBU
-	 k74GIc5CLK9Hc09IePt5XQKVuGwf1dmNJ68rqAQQpsNI2F/cJFGILlt3GZ+vIhSBeL
-	 n6xlOpnR1FZZAfIO7B1Socc3uoPZ5QvuDr5JHieb6HPN5EvQVca1+tvuwZJ6TxmxAT
-	 0Nd8qyZ70fzfOgYeiDIhwCoU0G46U4Fxj9/rNCCns5YwfBUiW2A2nSeOh3V6KNqXLx
-	 4H2I/ATLJOLyw==
-From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1 1/1] mm/damon: generalize ctx_target creation for damon_ops_id and add vaddr support
-Date: Mon, 13 Apr 2026 17:47:38 -0700
-Message-ID: <20260414004739.83961-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260413145943.512192-1-gutierrez.asier@huawei-partners.com>
-References: 
+	s=k20201202; t=1776128311;
+	bh=3CPipGJaHA3s88GYGUsO7x7ehen2R8UngXGLoTHJjjw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OcsJXF1PmRjCZDAfuYGZoXbIniLv84Y/ELoCE7qu3TgOHRTrVtUykun/PwQZccOnZ
+	 6PAQXF1uHTMuw8JRnCIRQUcHacvwwIDGYCflED7jspQ4Dk1hSHD9EIcwKt75U25MNm
+	 GXlvVkaNlmgoWYfPVlmEDVmQScReiJW+SBCFXwC9TUJUDDZ1cNQ85FCC6BNOX1ClBS
+	 7uF4GFWmCBmTZwJWoobFmybkYl5JZ0bqL7SL29031q8R1x5jvJQ/8BR+0CLMx/W7Bh
+	 FYTxmGNZr/VD7oP2SiGvam5GfwHFsK17AbwxbrBGeDQtDs/cKX9vhXFAmnc3HFDkkt
+	 pqwDN77HE8ImQ==
+Date: Tue, 14 Apr 2026 10:58:16 +1000
+From: Dave Chinner <dgc@kernel.org>
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: Christoph Hellwig <hch@lst.de>, Tal Zussman <tz2294@columbia.edu>,
+	Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, Sandeep Dhavale <dhavale@google.com>
+Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
+ support
+Message-ID: <ad2RKNo2FGhpzJQp@dread>
+References: <20260409160243.1008358-1-hch@lst.de>
+ <20260409160243.1008358-9-hch@lst.de>
+ <adl1iqhldFvJwSw-@dread>
+ <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9FCE58000C
-X-Stat-Signature: xw18heppbkfjyocbp5ecbuisbgfz7ydk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com>
+X-Rspamd-Queue-Id: BB068C000C
+X-Stat-Signature: mxy3gu7gqadhf786tyo9sownxbqsfys9
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1776127667-428275
-X-HE-Meta: U2FsdGVkX19+574is08D3XmcrnAnny6AsyjDNqpG93eJz9iDMhSSKcffRHWNAzGIEI89q5R5HtxaZEoTOkid8GE43khQ3xmmG77eY0MFHxvcalCxpSD4tfFHsKuSsEOmITaJBPLB2JvU42uamLvuI5KTb/kp9AgribZGsLXamW3IIH00pmZgbLNASjHgQMLO9Mbr3g+/O7EO0oYbp0+5GJMUbkBh5NDf5HJUCmGOQBVQAARp/NoB2u5er6+65+WyvnH+9Dli5QSMibdTY6slQfkIzm4DFSAaoI3Tq0YjoDEXUUldKv7odTFj48LUNfkd6qAL3F9or41S9XrLnlCH6i7I0y3EoHFga3xatMMZzzSRgAYNwc2ieYPSOuL+XgS/VGu/8X8+DIqL8EAMAMaX0n7zeV42Toi2bU8fpNE9yYKjvQCcZ6lUC2D0NpWUt0Q/8ajUyMtIpvwdhJjGHArR4shyRLXBNOwEPAHvHXXKOlyC0dEdfaN+f4iSu1Wdx8yh1UYqWTLsIa0XalsB4VxaOErRHiRRlutJviK6jMvCjJK9NxM+vG9wJpPXTELBPxYK33ZChrKCeJCTv4J0/M4NsIXhDBqEAgC/1YysE9OBnTDYe8I9LIcOCqhOZh0hy+6z6pwejqqp3gQL62C4HuVScti3VEoKZXLptIeRpQuuHSysc5qLxbd+5jbMju0Y7iOflQb5tsYmiZPjDqk9qZ+fdhFqVhuIR7AZlbsyv2xlqwVMbQxo3T95Mi5eMMq+m0Mx/O8eI+2Or/PZOfvzxkRixuw/VmWmb3k1ab3jmF3DCCmQiWjCSuN70plVT0qsVYIIID4FLJZ6DnAUIkVbxmjQFoPqVoA/24558VhY2XsS2HGA9hgxt/8QBW8k65s/fBDwNPkKEC5nagbW205mN2M8+ipNDLXnQUFT4NwJTCOgbo2v0TCBNDCFOyYOokKtqVwTyhYbIU6L7/aXFqzPBrE
- O8Kx2P6G
- o1K+WdnVnmDgKuIBtEif5od4XTHskCyYr0saMFB/Jh2qw13AmY4uOEr0ojiUSumR8x0xsU2jfCLGPHtS5jxB92RMg3xC1GtK2Z/vjE42M/gu1pkHdehi9eqxoBxD0hQReHNKwgCCSAO0vwvDpTk4DaKn3LXE1UEbQdX3up4OqH8ilm/Kfqv0wZ/eNSYHQnZbbavSGHkr+Dv9vjgT5cbxrwBFclWcQMPZNFbbk2OaYJ/Csu4LO+hA0w8h8rcPSPwGi6nMpKyaicT9YB+LWT+mAB3ZB30eKJa7W3OTe9FUbAnG1sHfMIjNLBn0L++d9QR6aLWn1Ox9Vdo0U58kQVmLQF2cKcA==
+X-HE-Tag: 1776128312-926859
+X-HE-Meta: U2FsdGVkX1+9IH6EwX+LmNemfaRjuXM99cKzVmx1v2XD2kaFwNBGU7JqM+1IYdicZOrm1s/0M+0y9kr5UB876/k1Wsvqe31nYz4aXsMet0J0gz2wcjdove8TJKFAtqBtYWJ+UKdaQ319+Od7kXJOq6x2MfGCu4dJI/pLIOI1Gulr+3YT6OVkpKwgMOySJzlJJyZWUbRVbcW4+lED7oRsnnnHhCeOcw4YJzmK0XTroxUeAuxwUx+hzjdMU25/UHKXZEy6fXcIUpwudSg1YtyZOYWkN/1RYQw+X3gZ57AZfXw5y8OsFfWOuvYBaEz/7GNXrVxcMgYTT5cBPGGIE9QxgKu/FEPzurNWrF8D1TQnXLrSMEu9+9NzxucNG/y7w2/e3pnr5FjM8eHs09pQDZ2e/HGgOxtIdMBJMBy0knXLGxllv0gb9vSULpfrz2cp/ED+CnJDl+VD/wUEqgaVW7OKHcTu0tiDM3Dr+TFc+7cpAwkJOlEF0/xluZ+HubhrcYqExQRujKZCtQyycJCOtgA2VQq0iU2aHdjRX+IsKx3VG170vGinvt6dLECYOJrTlTqRhXL+S5YA6+TqWFR9NBYVi0M/zC+z6Ysx/Yi2/ulbj4f3VD4B8RIHPg3J1iwZkSjL7su4H+UTdVWXhGPZkDHNUn+KYxNaUW6ySwIIKNT53f/K6S/fKULE4zm73dQIQqzYzl3lBDhufDuV264hGA0/LNtNdDu6M1qZ+ypLl1mNkoAlJrZVEFu5IcVyCyO8gcvLlNxufp/+xdDEGOTJo7p/VED7WXYZKEmr3hqhPrPZMPI9naHtx5j+P0N0AOasNxk171UKmTnMLTZolHIDqm0EIosnUVnysjUgVjne/H10W7I+BCa0F+aJPjd+5oigqCZFsD+yad3yh7dJr4dNsowG3FxZuBHaKk8EhpegsKoBKr4pOuscCsXWRwikn51ifKfE2YFbeTEgJPtAlSn3JUw
+ 0ysjk+CM
+ 0EIQg4DfMdKrOPs3JC9h5RbG1cLpxVUusXzNVnku3p5CHnWrF8QRlYm4f+6f3EHDfvr3lKHQTFFVgMRlbePFu+/eyFQkRfy7q5xPJuILQPuUom3ChOw5O8cwyjS+MA+E8kNSKtvBUjPI9e9jg9A+tV/EnkGg0YG7OoRcTK1nd9Av+l9gNOB3xeB2K3L2JbyV/7LL/jRHEZX5tjz6JEp18I4Dh5Aq9Szq9qxT20XRSTkldaI4X1DCBrZXFqARGDup35DVMourS4Ifqk/8eYZmKBAi6JdFJ+vheZmdLdtR8MahvzLaguHedjxoeTvfhzF48rYicybBVnZBhpoqBLeU6LFZsdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,32 +102,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Apr 2026 14:59:43 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+On Sat, Apr 11, 2026 at 07:44:43AM +0800, Gao Xiang wrote:
 > 
-> This patch adds a new function damon_modules_new_vaddr_ctx_target.
-> Since ctx_target creation for vaddr and paddr is almost identical,
-> the logic is extracted to a new function,
-> damon_modules_new_ctx_target, and vaddr and paddr functions are left
-> just as interfaces.
 > 
-> This change was suggested earlier[1] and it is needed to allow
-> developers to create DAMON modules that use DAMON_OPS_PADDR targets.
-
-You mean DAMON_OPS_VADDR?
-
-And I agree this can be useful if we will make a DAMON module that runs for
-virtual address spaces.  But we don't add new functions without their callers.
-So this patch should be submitted only together with the caller of the
-function.
-
+> On 2026/4/11 06:11, Dave Chinner wrote:
+> > On Thu, Apr 09, 2026 at 06:02:21PM +0200, Christoph Hellwig wrote:
+> > > Commit 3fffb589b9a6 ("erofs: add per-cpu threads for decompression as an
+> > > option") explains why workqueue aren't great for low-latency completion
+> > > handling.  Switch to a per-cpu kthread to handle it instead.  This code
+> > > is based on the erofs code in the above commit, but further simplified
+> > > by directly using a kthread instead of a kthread_work.
+> > > 
+> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > 
+> > Can we please not go back to the (bad) old days of individual
+> > subsystems needing their own set of per-cpu kernel tasks just
+> > sitting around idle most of of the time?  The whole point of the
+> > workqueue infrastructure was to get rid of this widely repeated
+> > anti-pattern.
+> > 
+> > If there's a latency problem with workqueue scheduling, then we
+> > should be fixing that problem rather than working around it in every
+> > subsystem that thinkgs it has a workqueue scheduling latency
+> > issue...
 > 
-> [1]: https://lore.kernel.org/damon/20260311005759.90440-1-sj@kernel.org/
+> It has been "fixed" but never actually get fixed:
+> https://lore.kernel.org/r/CAB=BE-QaNBn1cVK6c7LM2cLpH_Ck_9SYw-YDYEnNrtwfoyu81Q@mail.gmail.com
+> 
+> and workqueues don't have any plan to introduce RT threads;
 
+They don't need to (or should) introduce RT threads. Per-cpu kernel
+threads already get priority over normal user tasks on scheduling
+decisions.  However, they do not pre-empt running kernel tasks of
+the same priority.
 
-Thanks,
-SJ
+In general, kernel threads should not use RT scheduling at all - if
+the kernel uses RT prioprity tasks then that can interfere with user
+scheduled RT tasks. This is especially true in this case where a
+non-RT tasks issue the IO, and the IO completion is then scheduled
+with RT priority. IOWs, any unprivileged user can now impact the
+processing time available to, and the response latency of, other
+RT scheduled tasks the system is running.
 
-[...]
+Tejun asked Sandeep if setting the workqueue thread priority to
+-19 through sysfs (i.e. making them higher priority than normal
+kernel threads) had the same effect on latency as using a dedicated
+per-cpu RT task thread. THere was no followup.
+
+In theory, this should provide the same benefit, because what RT
+scheduling is doing is pre-empting any user and kernel task that was
+running when the interrupt was delivered to execute the completion
+task immediately.
+
+Setting the workqueue to use kernel threads of a higher scheduler
+prioirty should do the same thing, without the need to use dedicated
+per-cpu RT threads.
+
+> If Sandeep has more time, I hope he could have more time to
+> test since I don't work on Android anymore: In principle,
+> I still think RT thread is needed somewhere for such usage
+> since lowest latencies is needed.
+
+All that is needed is for the kworker thread to be scheduled to run
+immeidately after the interrupt that scheduled the work exits. This
+does not require dedicated per-cpu kernel tasks or RT scheduling....
+
+> Compared to the scheduling latency issues, interested users
+> don't care "individual subsystems needing their own set of
+> per-cpu kernel tasks just sitting around idle most of of
+> the time". If end users care it more, they can just turn
+> it off by Kconfig.
+
+Distros enable all these subsystems all the time, so saying
+"turn it off via kconfig" is not a viable mitigation
+strategy. Proliferation of dedicated per-CPU worker task pools is a
+known problem, and we really don't want to regress back to those
+days when a typical system had thousands of dedicated per-cpu work
+queues that largely did nothing most of the time.
+
+-Dave.
+
+-- 
+Dave Chinner
+dgc@kernel.org
 
