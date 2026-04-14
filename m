@@ -4,115 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E089F9D0CE
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 13:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18E36F9D0CD
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 13:14:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5228B6B0092; Tue, 14 Apr 2026 09:13:06 -0400 (EDT)
+	id 6F8CB6B0088; Tue, 14 Apr 2026 09:14:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FA3F6B0093; Tue, 14 Apr 2026 09:13:06 -0400 (EDT)
+	id 6D06E6B008A; Tue, 14 Apr 2026 09:14:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 410506B0095; Tue, 14 Apr 2026 09:13:06 -0400 (EDT)
+	id 5BF3D6B0093; Tue, 14 Apr 2026 09:14:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F4E26B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:13:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE2C81605DC
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:13:05 +0000 (UTC)
-X-FDA: 84657201930.01.A835FAD
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 891BDA0017
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:13:03 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=lhDeNvog;
-	spf=pass (imf15.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C3B96B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 09:14:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D6AC11A058B
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:14:05 +0000 (UTC)
+X-FDA: 84657204450.29.7F1A4AE
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F1814120015
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 13:14:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rEcgUPaG;
+	spf=pass (imf29.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776172444; a=rsa-sha256;
+	cv=none;
+	b=MeatsqC7J2Im+slZQziX3kvw0JDbURHrd9iGUwn2CTp6z7vYMNXWNZwPn/1GjtqkSGXFuV
+	+ajjPJ64o1gwfFG/reCarPaQVNFpusyBxSLFZ1qEESCcS8Xg0kXEOoKBVBx0YJUqdBKIOs
+	HF8mBtxBnV7s/GxLezgNCk0ffGuE7Sc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776172384;
+	s=arc-20220608; t=1776172444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ljtr9WPSUnaAjZD/FtGwji3II/sbFJuzXTsBaHKsQSU=;
-	b=L4MmpBxbdGDpXo4hwjNwGFxWkfJtY5Yw+DIJ4yUGOC1VnotmhsSyelaw6r95wk1WVJIOOG
-	HM+uv/INNQAX5/GWUl98bIsgnQlnvcfl+2Ijo1RGzMMi12IF3fRFOjP4ZXvXkVbqVumajB
-	mxVNRaDhNtMB1iDLEu+JrxT71aGEUeA=
+	bh=p2yQNWWDsx/mIlUloKDUpE0HbqZx6yFU3riRkk2FowU=;
+	b=wpsizVqvV1xlFd2qe75UsqTgDypUDSLBENnlQDoTTHULskEcf7agCwTv5fzCr49LNuTQ2Q
+	gGjp9J4CHuKEiVIPIxsWJ9eXNEmdkbLdIbqTYIrBlN2eJWuNWHqaj1YCcW3KKVZXhTxsPF
+	D7celumLGEE8VrWiaF32oJU9W2TKrsU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=lhDeNvog;
-	spf=pass (imf15.hostedemail.com: domain of alexis.lothore@bootlin.com designates 185.246.84.56 as permitted sender) smtp.mailfrom=alexis.lothore@bootlin.com;
-	dmarc=pass (policy=reject) header.from=bootlin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776172384; a=rsa-sha256;
-	cv=none;
-	b=Ys6w6F+y1HdtiIjXX4txuTU8XBVSg/xa2DAjgBoYPRenbT8mdAJwXNoJeiKxoe+qvRtPeA
-	l8XzaBePm2+bUqf/Z4sO3P8+r8lSEy7AQ1HOAt9+A607sL9Gh5C9syhAfi18pf76daGNMg
-	CORHc3qq+MDnjLiiwGBSGMVNjlDksd0=
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7FCA11A32A8;
-	Tue, 14 Apr 2026 13:13:01 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 46E3160410;
-	Tue, 14 Apr 2026 13:13:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 569A6104500A2;
-	Tue, 14 Apr 2026 15:12:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776172379; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ljtr9WPSUnaAjZD/FtGwji3II/sbFJuzXTsBaHKsQSU=;
-	b=lhDeNvog7+cXfwfKejAzO+yVIre7KeKOh4nxhyYR84tw7Qhs4CDNLFYshF/sNo/ddcHeul
-	OAXDnRRPYFfdKmNFr6FNXLWBgkwR5bSerHfi1jG3QAuxmeyq9DKVn4ADpvD+k/LktKcxCV
-	Qo+C51KQYvBPk2tQWgzerrUX38wX8fl9mns5nowg6aBHUe0QUCDETlFcTsN3Vd+g6AhDW1
-	t0+PPdVn0VXoKLO/NdWsu8xr8pa5SfFsPWlNHjagwF2HUg4Jwz/bTTtoEDbu5jNS5UXcqe
-	/1a7m2ycQR5Rypiiam1nxF1Kid65dAD8mzMdsDqIpVAnb6rsDVnu+pzT2qXnlw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 14 Apr 2026 15:12:47 +0200
-Message-Id: <DHSWK17EZUDP.GIJ6BX2NFR6U@bootlin.com>
-Subject: Re: [PATCH RFC bpf-next 1/8] kasan: expose generic kasan helpers
-Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>,
- "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
- "John Fastabend" <john.fastabend@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, "David Ahern" <dsahern@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Shuah Khan"
- <shuah@kernel.org>, "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
- "Alexandre Torgue" <alexandre.torgue@foss.st.com>, "Andrey Ryabinin"
- <ryabinin.a.a@gmail.com>, "Alexander Potapenko" <glider@google.com>,
- "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo Frascino"
- <vincenzo.frascino@arm.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- <ebpf@linuxfoundation.org>, "Bastien Curutchet"
- <bastien.curutchet@bootlin.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Xu Kuohai" <xukuohai@huawei.com>,
- <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>,
- <linux-arm-kernel@lists.infradead.org>, <kasan-dev@googlegroups.com>,
- <linux-mm@kvack.org>
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Andrey Konovalov" <andreyknvl@gmail.com>,
- =?utf-8?b?QWxleGlzIExvdGhvcsOpIChlQlBGIEZvdW5kYXRpb24p?=
- <alexis.lothore@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260413-kasan-v1-0-1a5831230821@bootlin.com>
- <20260413-kasan-v1-1-1a5831230821@bootlin.com>
- <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
-In-Reply-To: <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 891BDA0017
-X-Stat-Signature: m5jbcunha7corsxxnsy7cu9kbskjkq1t
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rEcgUPaG;
+	spf=pass (imf29.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-827270d50d4so5036777b3a.3
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 06:14:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776172443; x=1776777243; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p2yQNWWDsx/mIlUloKDUpE0HbqZx6yFU3riRkk2FowU=;
+        b=rEcgUPaGunCMSGrdqYOFtQuVe2em76JCcVEcYE8+TkoNZdGLAgegs60ceR8N279WIT
+         HlGlscCJzCIftoU3nmHoK7xwce6K2v3NrM35pI6EGjZsELY/LiCrd7yrMhqSFNTkqAEg
+         kEfw/xuE9LPZtKa1qavMvH0hpwkhO5gB+48/Bdg8/7SJeeIRZJweNKXYrYWrxb5hqahp
+         b6IzPPFZFqDxbMi+ehXtSveOzNds2/wQgCWIs+Dow8pXTNNa7FJr+5FLVixc+ANIvuaL
+         yuCgM3QoljyDV2m8CdIcix2ECknaJA3dsAl2i03U/9vXxIkfiU5okeUllXMSH1JLmoiI
+         gtqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776172443; x=1776777243;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=p2yQNWWDsx/mIlUloKDUpE0HbqZx6yFU3riRkk2FowU=;
+        b=XewLyShPCCvGtPXuAWEQlrDJNzfXCWzXwO6+sn5P1mc/7Lfk3wzt+NPG/BT8cBNlBw
+         1UfLsSQRYQnEXEu116nRfYVvhVwiuGDOLZxh1vuCcguQ/E7VB6NnVsv9vUWMcWV5tNuF
+         68wQfWhYJopZZsBQmVPwpzSVjx8kxkPUcLxGx2666kVpiHT8iupAYaeaSyiUCI+sZqPh
+         6HUsPXCxA6HHjRMxPrazQFayLN82E1iCPuGhAW/GSF+Vhhh3E01uV3iD/NJmrFy7a/sX
+         gYGrI0sdLfU1woUyeoZai10+NAkn1VuLj6Qer/6bvAhhfcImRHN95PP9Vz93FnjdLs49
+         LgaA==
+X-Forwarded-Encrypted: i=1; AFNElJ8lY+Bhl0GuWIYGZT2N7h7YtxPMWdA5I0qnEf9o11JPVA7o5PpE52/4mxrc41SBg+xwWXnEXt7/7w==@kvack.org
+X-Gm-Message-State: AOJu0YwwDhAnTY7fBWqJOz4AIxsOya3irGp1eNTR+3NO49gxVteygwVZ
+	IsC/k/Awe48vfsItkqljcNXJT6drnYJpJ0Mpg2pGwQ0JCJO1yBzv1zgUHvD50Q==
+X-Gm-Gg: AeBDieu3V86IPltPOrWfdeqI1WD4e2XT4Xw5QGSu7xStCRXkXrgPPeXQ3k8Jgzo0Jmr
+	jSZ2ujgc3w8mLGFW9P5vN/g/1ks/QMu4/UKF758HZdumSIfmkCa7o8f6iMOjhko4JLQtMnuWJll
+	rb6d0YeA05TFWY6PwwstVvodesmU/F4BF1r2HpEl/J8x/S+Q4rY9TJHU2BvHDbvqllTj2ruqwMS
+	KnTRG1+NtcrRbtRWpFPV9Zn9cUaT0cZ+rZenzVmAzq4OkCgZ8N/0nNw8j3MXfwCatJ2Ei+wkGeq
+	qc74bY78lvm6QLNzH8OrzUDl835/1t4WwejLi5i052c+K12AWELXfuyAOwKaUlk/0k5jXZ3Wq53
+	dGyDS/ytQ1UJu+JQuJjwJWjLWCCHBslsfudVjfVfaMxDsD+MWvAQl0krPj8M6eCgh8UNKyEqHRO
+	GQ0e6njvpX+4Wh1uNy0DNg411WoYV4Vm4qmGyjITa1T5cs9IfoW2vR50Q=
+X-Received: by 2002:a05:6a00:400e:b0:82c:9f7f:3495 with SMTP id d2e1a72fcca58-82f0c351b36mr17153382b3a.45.1776172442703;
+        Tue, 14 Apr 2026 06:14:02 -0700 (PDT)
+Received: from tech-Alienware-m15-R6.. ([122.171.18.84])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4b5a79sm15269008b3a.30.2026.04.14.06.13.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 06:14:02 -0700 (PDT)
+From: Sunny Patel <nueralspacetech@gmail.com>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	apopple@nvidia.com,
+	balbirs@nvidia.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	joshua.hahnjy@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	matthew.brost@intel.com,
+	nueralspacetech@gmail.com,
+	rakie.kim@sk.com,
+	stable@vger.kernel.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH] mm/migrate_device: fix double unlock
+Date: Tue, 14 Apr 2026 18:43:53 +0530
+Message-ID: <20260414131353.8543-1-nueralspacetech@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2c0c00aa-7fb2-4d7b-90b3-0309c13468ce@kernel.org>
+References: <2c0c00aa-7fb2-4d7b-90b3-0309c13468ce@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776172383-712314
-X-HE-Meta: U2FsdGVkX18hCZgqfWCZ/knZs6Gp1UV9XwZn/WC2ycX2tPlsvvh2BfRqr3ZbbavNnixkFSflL9T0GDTLL3q8xmlcQY67elY7n8DNUpMZTreFF05xHPVafGYanOSI3ylK//x+uOXImfk9/OReQQum+MCHRdBY1RBSpKTvgcNzF9mWevqVOrChkgW1lnJABm/SmlPDbED/aHulUZe8ziBYJtSqOgI1zOLcoW03L5/d0Kf7UcD4aJi+idwx3KBnylC6ddsGWGtKnuyn3VjDRMcy4K32JrkRz769TS4d4pJnozBi7B4V2kenZNoVaBTSwFJm1zCO5UJ9E/CcqKJU7n1yfw8rFQHXK7FjLCg7Q9YT6AV/GZ/MqJ8w5pl4OMFDusFJ2llbhiyYGev+5CfLSyA7PgzymITaoD0GUPXNzoDbFIvlx9bTpCBk+ROhnnJfZ4JCjdrj9JU3w4glQbh9USmwC9Cx4CneQE8mSnx9Kc7pxN2YvhjbfjEioo38pTB9MRG1x/tjaxgaZFrUKvh4ClLFssKkM7UCq+y0605tlAq7AdNMb+7NkcVCnV3t35fLE47w88VFMRGsZbMKjQuynC0/9kv9cp6Q7aLROCoZNt8csJ5quIAvT8niv7rou1TMtdIGwsBWf45DXIDSf4HmdWrJEA7XigY/EzSBp1d6qu2tUx696QhXsPIcBruzmrtaFMWm8kVrZbQL+u3bIYwVlYOw6MhpEzvV3/0R+CWXnKjVcRQgpCIdbQAH+xdsgz39Ue7Az+ZF3JHO+UKzomkF3kDOBxPzRCIzcR5tWwULCC0Y/0D6iTESoq3wStzGEYzdD2svJ2gIz4QZEF40nR/eZU/xkGuUHCIvJZ/14Rfbi/PxxH5g+7D2d/P670+3lIduCqi3Tmn262b0wlNlgbX+w//pq7Xzh3jXAvVziRvmLYYBWCikkxk590OMEl2Zaa/d8YoRR1wumPUtGt9j8RMHWcT
- j8EptQwh
- AmXoi2Ay3ASLWsoMrHriElR93Y+2Wb94FozG0a7Uab5fT/uPw9ixQPEbHpwfTVG70b+0T5oP7BJ613ABMufFHmyRKg2pOTi9pRp4Z0nbjJ8H5gbsR/Z+GNlCZfuV6FriPwT+m53hvz+gFv5vWceo5mVx08liGTczeEDFghz01QPmigu4zrX1dkAaJ8wp+jSw3R+H15Fvak+ztc1UnnZREsfAb30CL2P4Jj8DjX75CwCPRkLK0iyxuD31tMx2XpBoCNHYgJ5X88ofbJn9JhZu45xra7eIXz1IJ5deggRdwdMuQ1NyvpPNIn7B+EhOdU5bS+mBR1KD2JFw5E5/e5ejFBTgr+gqM11ECW6RahO1r6/VXM33nusFSDPBFC4F6pFx77YRZTgMTT4ohk+e3SFJXuKnqpEVRdrJ/ABZWCf9h0ZzDAPS9xTU8PJz5RbvILCHY5wa/
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F1814120015
+X-Stat-Signature: k9b7rnw3iu67yhkd1k7osnm6eqnxqtoz
+X-HE-Tag: 1776172443-581456
+X-HE-Meta: U2FsdGVkX1/99sOw1ewr8qF6rGWhERGJybptC60Qot2+MfMO15CT73OsIsamL6tKiReZn0300yosOYWQoqJauPqmbkVnZzD0qJ5l21UATBXLStmT0Hic0aI7OjpaJlJVuhPgslEcDiE1hUL7Es0/7q+446m+JJTO3rUdipAovBwRA+TdZ5mDuT+hHppYrWN2UzljNUmLYMlq+a+2pGlLqGJq6/EuCDAOjEslLlF0xtbJrcflAgn+zevX4+RYHK5PiHv0syVnCLS5V+v+wfNHdE0wO/AKawaouWs4vMHrbITDVskzsfGwtTF3Tbjteeb7hWnqLVJr+P2D6roG2ujCXdDSkQ+33eb3+Cz/ltaoz3TD0iH2lJHKpxDfQnWl6qOLIsjNKyRIbDyLuvjLCaaWa2ovRt5fBtJSOp6hI4wJG2k9b1pXvIn0U7RZPIaGAR+Y7+pfbUc4mBXeoXP7HYQAaHdgR/DVSff6QsUrvysiZW+ZAgDjhUI+qXusx+cLCcaUaI0gH+CnzCHqgldQWl6Bj7/L509t+UIpyzXAyGvc44T9QQUCv9Tr2nulQTl1c1MqsBYnN9+REWtl2A4abP4+sd7Hb9gbxYypXmT9rzs4nOZfDW10aeoq6YF/pT0rA5tVJRB7Ut5S4qdxGMwldcSQcLLTTyTJkl3gvmu5khczAiXR2xWDSs/wLlbihCFgxHVfcyYxnDVv+Fa0fj29BF8pVuKVIir4e9YSXMHq6DEnz2xflKu9jVBxnO+zjCIAzpXQjesbV9FZc5VOOzyl5RynSiWJSC51nS/b6xSkUAj3b5DZWNvGOiOPV9Rla+JhSTSPjPSZ8hutVReHuvHsTg9X+Znklk+v97GRcEJ34ZkQKmlTWQgACe5RjARb4vpnJcB8oXmSQtTQeE+aqe5C2hxDZlwkp02weOD+d8vdTkDEbNuUwStYmz3cnlwj/ssruM25aVyM0SmmMJYnRZYtHys
+ iI4bolTA
+ /pHskhH+cDhCFcjkM0o66RSm7n4nxEevxS4fMokRP93clOiIgZ/nn21sdAxldiKekbMfrSackW8ijMtqmSwpxKeOsG8c72pkITwI5bTF/DSZLTNQ5OOfEK5q36yAJLejj9pBu69S97LhRfew7F3GLaNFXg8Iqj3UVg7KSzWKS5K+vAvGzRKKPuXfulD3Uyc4qkA9reh3Qxco/Nbe+ZUcGkOpLWoeVWIyEniSS99rQwzYeq77DY9wAWJRvbuuOtqtrck4S1Wr/xgh+bN6vzOKym9OCb47L1oB7Nfg8NI3kMfkq6LmndpBin5cXRJ+NWg3F7STwDgkOnNYf1dFxEpii8sODQWiA/D9cOXrnMG2qxxOM+mGGhNlh794xtGGyTvvCOgivjG0Q2I8BgHowdw30z+V/WqTBMns+IXMS5/xicO3+l+5wRBwlrmQ4EsyA99SLqSyLYevbHW8L059zsmwEIKDV0GXtsKrh219no3JEVo+5cDkjOYe/puxxBoQ52cwCj5Kiz9FH6FWGPU/cWjuqNlO7Tf1887agki+RLsvuOVDWeBTNeRGnWmFVZKYo0zYBCq+IoGPYYC/dSOnXl+6OK/FDMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,46 +129,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrey, thanks for the prompt review !
+On 4/14/26 20:03, David Hildenbrand (Arm) wrote:
+> As raised by Matthew, the entire code block is dead code:
+> https://lore.kernel.org/linux-mm/20260212014611.416695-1-dave@stgolabs.net/
+> And I even Ack'ed it /facepalm
+> So we should take that (cleanup) patch instead. Thanks!
 
-On Tue Apr 14, 2026 at 12:19 AM CEST, Andrey Konovalov wrote:
-> On Mon, Apr 13, 2026 at 8:29=E2=80=AFPM Alexis Lothor=C3=A9 (eBPF Foundat=
-ion)
-> <alexis.lothore@bootlin.com> wrote:
->>
++1 
 
-[...]
+Thanks for the pointer. I will drop my cleanup patch and defer
+to above patch at the above link instead since it already
+addresses the same dead code block and has your Ack.
 
->> +#ifdef CONFIG_KASAN_GENERIC
->> +void __asan_load1(void *p);
->> +void __asan_store1(void *p);
->> +void __asan_load2(void *p);
->> +void __asan_store2(void *p);
->> +void __asan_load4(void *p);
->> +void __asan_store4(void *p);
->> +void __asan_load8(void *p);
->> +void __asan_store8(void *p);
->> +void __asan_load16(void *p);
->> +void __asan_store16(void *p);
->> +#endif /* CONFIG_KASAN_GENERIC */
->
-> This looks ugly, let's not do this unless it's really required.
->
-> You can just use kasan_check_read/write() instead - these are public
-> wrappers around the same shadow memory checking functions. And they
-> also work with the SW_TAGS mode, in case the BPF would want to use
-> that mode at some point. (For HW_TAGS, we only have kasan_check_byte()
-> that checks a single byte, but it can be extended in the future if
-> required to be used by BPF.)
-
-ACK, I'll try to use those kasan_check_read and kasan_check_write rather
-than __asan_{load,store}X.
-
-Alexis
-
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Thanks,
+Sunny Patel
 
