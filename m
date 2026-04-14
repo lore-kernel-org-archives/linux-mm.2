@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72709F9D0DE
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 23:11:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47A77F9D0FB
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 23:20:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C77966B0088; Tue, 14 Apr 2026 19:11:54 -0400 (EDT)
+	id 6910B6B0088; Tue, 14 Apr 2026 19:20:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C50226B0089; Tue, 14 Apr 2026 19:11:54 -0400 (EDT)
+	id 61BCA6B0089; Tue, 14 Apr 2026 19:20:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8C406B0092; Tue, 14 Apr 2026 19:11:54 -0400 (EDT)
+	id 4E27E6B0092; Tue, 14 Apr 2026 19:20:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A73866B0088
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 19:11:54 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B56D138CE8
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:11:54 +0000 (UTC)
-X-FDA: 84658710948.25.779CF14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7C1621A000B
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:11:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V3PiMs9h;
-	spf=pass (imf19.hostedemail.com: domain of "SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A0C16B0088
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 19:20:31 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA75DB7B33
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:20:30 +0000 (UTC)
+X-FDA: 84658732620.24.76964F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2326212000F
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:20:28 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dr1H9aPW;
+	spf=pass (imf29.hostedemail.com: domain of "SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776208312;
+	s=arc-20220608; t=1776208829;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p7yiQ4GuOf19tyg+Icm+bJAptf4kAy67/F8rV4Uw3eQ=;
-	b=ml8UHOyf6/wa2rVKsHtWLXJ96MqH4/yEv3eNJ7CYr5CJy6Q/At3F8KdVkeuKaguVy18kEf
-	SlgqCcR2WUBxWvn1uY/xRNQhtTRbaM2LUDI6HggLiZabWfXwLw+iKee31EG2kxXQPyrlc/
-	Tmi0IHHpR+JE9ujwoK2Yw7Y8WuqAZMc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V3PiMs9h;
-	spf=pass (imf19.hostedemail.com: domain of "SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.234.252.31 as permitted sender) smtp.mailfrom="SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776208312; a=rsa-sha256;
+	bh=hgmdXSX7ZdMBUy/JpB7d64z9wvsndv2TobjtqzEocD8=;
+	b=Ld6bobGzSS52URQxXjJO7xdcl5ezEoQU7bOaJUDKc5HvRjAY6u8ohBiSQ0Z4bKNos9CiKR
+	XBeioH1fqEOcVrF3HGmTOZfunDD1CkGSztwBg0f4VOav4yA/0R6hzeiZdDZU1mMchOY6rD
+	W7kF637cl6Tq/STev3Vuzwd6kgF5fDo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776208829; a=rsa-sha256;
 	cv=none;
-	b=r4ahM8lceQzD0Izg71IUrpYmDbsedHQAstqavztbElTZiphIkfLniwQ0n/8tjHHRVMAzkE
-	LOMYcyBI9ZN0Se/dPcqMWuZqHZ1OUD04nNnrYXdsGscT6mq+RyiU+VbqpWLQatkdOxm+Gr
-	+Ky913ySBt71DgSGFYPeV2Ff0511xqc=
+	b=BdiKV2S9+c8D9lb2rkxfivsGcQ5AiUn/6cwTbxuQkCiZhpOq1iHkLquJ0pcGcKm/cBKg2p
+	N6cD6yBF978kP3RoGxVq9Y6kw5cxEpGy2Bl+ay/fvQ1z4ijiH9HL6lwdhDzvA5bvV7kZG8
+	5676o2ROU3aUmlpMfT8y6bjzscP/kms=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dr1H9aPW;
+	spf=pass (imf29.hostedemail.com: domain of "SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=JV0k=CN=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43E6744341;
-	Tue, 14 Apr 2026 23:11:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BED0C19425;
-	Tue, 14 Apr 2026 23:11:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B7B49600AE;
+	Tue, 14 Apr 2026 23:20:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A8AC19425;
+	Tue, 14 Apr 2026 23:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776208311;
-	bh=R8XiXnmNEFMK4hw6KfSubp/WFYUzB4aHlNAwFNTNhJ8=;
+	s=k20201202; t=1776208827;
+	bh=hKC8Rq5NfJNZWW7OdEl3J1osacHazL7oouQZKOMFRnM=;
 	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=V3PiMs9hgRtUF05cEpSP5akhX3fb2Gfnh4UfyDoeN4U7OGQyYagrx+0aIM88025LN
-	 njYj1T8JKNWYcWKEUcV11NVmN+EXo7+055JWUA/o2cnaouBSaXdHbkaLZEjXDKKOpe
-	 6sRX1ILrkwQ0Ro3an5LjudM9BoL2W9fsIpcqwtmRcyz1icYqvhmyav3rBqofSfFr14
-	 JsXPlB62TIKSFHJ2EvOz/DCP22f4xqPGBthRbAnitCziOwE+31HcTph0fY/8wvGCQy
-	 Udx4nhbWP8WaBAtzy2THWRuQ4+RTppkXVmxHUg3ow/PcdD6NTYe7pEeYk4b4DcYDuV
-	 40ehIqZB+gbXQ==
+	b=Dr1H9aPWj8lP+ZM1jtp+jHMcbG37rN6rK6GTAbADb7vRIrIUZcg/cFXZIMoDEgMuB
+	 22O5uanPHclLc5ci5ycIRepqK4T1IUjYD110E4S88wp19FND3ZEcXDKNPJALRjNX3f
+	 ZU3oQMGHqaRnymhESqVuhgS1xd6nbP5RxFf25yRDyPhd193/F7LUp2q2g3C8OVzJuD
+	 T87eAtW28GXdVtUnzm4++bOL/fk/kz+ccBGv5sncSZzIQpW0xxffWjD6Z3eM5F3YkJ
+	 nk73mP07aE+kCNZP11DJnXLomg87Yd3/ZPa5ouxuAimKxZaz434j/8wRZGu4equQnR
+	 spGbw0Uru4ykA==
 Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id B344FCE13BF; Tue, 14 Apr 2026 16:11:50 -0700 (PDT)
-Date: Tue, 14 Apr 2026 16:11:50 -0700
+	id C71C8CE13BF; Tue, 14 Apr 2026 16:20:26 -0700 (PDT)
+Date: Tue, 14 Apr 2026 16:20:26 -0700
 From: "Paul E. McKenney" <paulmck@kernel.org>
 To: Dmitry Ilvokhin <d@ilvokhin.com>
 Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
@@ -88,23 +88,24 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
 	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
 	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH v4 4/5] locking: Factor out queued_spin_release()
-Message-ID: <d0c4d8da-a9bc-4efd-9a92-553a5cbd2a1c@paulmck-laptop>
+Subject: Re: [PATCH v4 5/5] locking: Add contended_release tracepoint to
+ spinning locks
+Message-ID: <8d98d9f4-ccab-4864-b406-d3eb684cab45@paulmck-laptop>
 Reply-To: paulmck@kernel.org
 References: <cover.1774536681.git.d@ilvokhin.com>
- <c15d0462f57722aa9e7bd4fd4ec1b48a0420c442.1774536681.git.d@ilvokhin.com>
+ <81eb8e0cd90b31e761e12721dbacb967281f840f.1774536681.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c15d0462f57722aa9e7bd4fd4ec1b48a0420c442.1774536681.git.d@ilvokhin.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7C1621A000B
-X-Stat-Signature: twfhd7egsqxtfkn5fgr5ptmxcuc4s5fz
+In-Reply-To: <81eb8e0cd90b31e761e12721dbacb967281f840f.1774536681.git.d@ilvokhin.com>
+X-Rspamd-Queue-Id: 2326212000F
+X-Stat-Signature: y5jzt5krq1ntnqscqhd7qj86en58cx6u
 X-Rspam-User: 
-X-HE-Tag: 1776208312-241177
-X-HE-Meta: U2FsdGVkX1/y/FzNURsgly8VJjGTlNwKfw78zblUjTTVPIIjTOfm63AqJ7orPt9dtC99kuHk0l9NsysGLgXcz4ixEdViR38P3VVu8HOt4zn/P+/wxO8lw158TxGqUuG+Q+sjthMt66zByTfars5XuRknQFLKfl1QslEXvC6EBpOqna11I1rIIXvFhMG4EJm6dXPZWErTCqnHeE/9v2n2T6c+sl8lzddzqmPCLgU6yWGoTGUnhF0cJzoY5s+JSvLmbwjQM4GXgffJI61vrjKIfKj4Q54don1VyOaTdQLXTrypu3Xdf6uTxCLQno+fIyA93mbWF3AoqLxmOZ2pSWlj5iNRx3s3h1R/r+hLjZvTxR3p4sYQSoG572hg/LnIqgZXUfiLMwWOK4YJ9i24naZ3EfKEyG3tHj/IEomdjwwj+g5+TfBpZOr+2RsT76EAGela774NR+ZLdPu7yJ1tIAZTiJc2cmr6biu/wMGze97KzEAyPoZZANx5dSa023zItcIO787GWapuMVqtbO7hTX9rUmjAMyUiv/kgIlU3QnSnngn7cVJ+9lfPnMBiQ0kjHBLelOSE5822pMzZYkWpleKkMi+xefxBNcUvZVeGSTNlDD5vMfoJcBSdKBiG7AYtKLkJyYhUpvneDJXw9M4azP+Ssw3jGgSRE9fWqD//hTCLjpBUvbI6gDK7+eIIpdB+6atRRE6L79X+XG3jSMJbkxYrWjpabW4LPF0Z9wKYUP26pkpunQkEZOoN63Q/vVzyMj4iVoNO9s8yw8fQLRtC6RSLd65gEDNlxJwuSjmAgZUd/KJkFAdgBa0B11NxnEm0AkX3bIEznuC7r9RObfqsl1rDmEuP5OR1QlTUEgmwUapxKcAwWgdZQeEf1i9d5Txm+3+MNpmcyFlhE+ng2p51TwEvp8qA06KKVPDGo+e6GhVfkqOucXQyp2HtDthyXeugyi/ENVCtxvpXWvOeRgexzJs
- Dp6kTjiO
- rpU8tFBxo2kFB9WRIefl/81tobYAeLpOjRAG+gN+xea/gKUdlsfTd6hns7Y77eMQKV/jzRU8I5esAUEuLoiSOKVPTN9BNiLrpyxkgM2qzi5e3Up22MpLlmSXHgcQ3nwb1knrAIZtDuJ8Z1LS9LfShBNe2KHgbcT31yjIyuerGWyl6XhRRVXuTX+Y3cn+LYSZ561CGR5hkiqqfFxzkAXOwTeBw+OwKDE/4uGnzim5/Vps+T/getiN45+YGswLVOYo+kGir/WYtWVlw7EtQxFS7+HygfMgKIbcBlx/ElKNlk6n/u5PSoV954+n72whWwUnEM8UNxbA4mzhzJsWXKv9tPZ/L6C3L90hLCKQvcTLyjDyEBfy+7vTMZau3HrlPEGeVaRUPxYZQOWtuuNsXvhMSx4tdeKpQTL9DUtQJodpY75e6891FvKuTpBFKo1ijVIEzxUSG7yYycVokUZrOssyWC4wSklO5EV1AOtyyXvhaXPcUf/QW3A71f8Ns75097rJtGvyrouOSm2xJJWyMe3dQmbq9ljKsEamD+t1PrnZJWG776cpntx4RuBTQGhuLNmuA74RHbA2qo4BkrebjDTvwdd+ryvC4D0Lq1nfQ4Qk2Z8k+GPhaWMUZJ42FriTAi87R4+SqLO+O8mql9icyObsiuCnkIAMamOZxDcK4w58lPAUT5WdyNQYc6DVBm1TA6EQuTyCljnGI+GGUUDD5URPnBU4PDtdUQPUi/abuCzExZbQMRpyswRtS2Q3pk3MH7bNVLjFmuGfSCvV92T/Odfd/nYCv4g==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776208828-393928
+X-HE-Meta: U2FsdGVkX18jMSTOcAp1dg4PgVFbc1Z9td6jH1xEmXY3eY7IFplqVzb7sWGHMsNFDhqR2hGS8sRnAeOwE43Vc/asSMCmA928VcrHbw/NoimXHTP+5v4RpFAs3SI0gFngn2ZUJljT7Xj1UtiMyplFPXQdM5F9QqRYdUd6PceKcs6LWqZZLra02D5JDa2qk0UoVtz+7KoMfz+biBI6P5+IQD/zgMtSMTxu4oRJdMcqrZSPWA3c/WlbA+9pJV/fwKJVsIJnrRhcVQhJ65/El5QcJT2Q0dwAofpslCx/m8+Uwj+FOMqHtnBi69lDCuQKuwTPzM067flqdb9afe1QU3Fth9JJIMeD1s6HN3Oe282EVsvrbUpuV5t1Q3I4BqL5p7e6XPrMLdPZYnBXVH43b9izmzMFtBmIpnHs7Rqqms0PfTjWNgRx3PsY7YEuwl9kUfAp6L/Es14p2WWAx77Yk2d4NMuxnidx9ogukj1ThP6qK8Ux/5wjT20wizt8OX4lxu29yNQjHajjzc1XfJ/n3Svl4HsaJlZC3tQ6tlXl3PD2QCWSHbmyscvDWMpWVJHoL5RnUE7zYKPg2wCqSoyMVoI3XkyW6L/jsPeTcvkZ+y0Gh2HU3gyJzkr7FWe1BUFUXx/2G2tWC9451//tlg1obikgoH2dY9Y03u4yoHfAXhdS6BCW7d1FezIvb3Wx1scE0adAyJot4DYQ9BRJyOH4/rh0F2104aPMG8gnSFu0AeXOTBuaIDUlUOU/sOZ9ewGWXRDAz7kRqZwXJSuWsZx4ydRBxQUtqiPIFLwMEONCyE7EQchvqYRVVcdmROqGr46lluaZzv3Bl88QAsRkY1TLq/oqwWc1c4/XpjEGB0BUN3Eo7AKRcVBu12FN3Bc4omDXyUUmUQDlXSAwKY5EdOAx4+clZ4KrwsxG7SWMkqW4MZAbw1xtqvVMza1TEk4hPYf4zbW6GkcvY9GAyV5qhjRV+id
+ lUnJ+G1t
+ SG/c37QkCI7OOhrnt0+Dhzmp22JOuv1Bp5J872LhsVei1zuJRuwgUsbU92f5jENuU36RXKhuMWEzHVpakngmXR4/Cjvg0DVXXVydjJ9BufzR0WUvZYJ8b3aS97RyPKXEoBOflRAeEhYpC38U12no+Nuo9PpECBFLRKir1r+pRwqFjsWx3fRhM/KbJD58RV+fKbEshXlKt+Jm6+MUnXNihI+svYFqIIFrfMODVe6AnGSxa55MjjJNEXZu3GDeG0s8tvcYfRtma0QZPdLIF7bR9JHW9zU+kUIYfrZmk4kX4yKzCNJMBbC0ATY7PpDnBhXqB6mcmaDyK9u1kuiqXSNTElfi+NhD37+fdThsjnL2JBRCR3vaNZS+oGpXpNI6orYvcf9r6IaJKi+WxeD0wbxbKXktustzAJg36FTXwEpQHVaL8f9zQZwZako8tUvvJwh48GGbMQGTmOsimhsr3yAwqDQWY1umoacsDwGmTv4mWZhQ3RbphTxDf4Iu3RV9G90aaA99PkTodEfXoaC3x8clryKCyMis2HBDOFZx3lwr5SWJfLWFml4MubU0Ja/uQTNj07rMKzzHniOMrul1jDW3k5Ak9uXJ6DRnZ2aJJRT6SQrNmJDBe656C89d/45tIBBh12a1H4ymohutYIojko3Zx2BnCobVGuEqFds8mMJQnwmGkHNH04/bG426ogtWxllDB0x8eMqvi8BIYisz+EURYCOlCvnMed57yVtfnp7hh3/EmlvBB5n2xspziaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,108 +113,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 26, 2026 at 03:10:03PM +0000, Dmitry Ilvokhin wrote:
-> Introduce queued_spin_release() as an arch-overridable unlock primitive,
-> and make queued_spin_unlock() a generic wrapper around it. This is a
-> preparatory refactoring for the next commit, which adds
-> contended_release tracepoint instrumentation to queued_spin_unlock().
+On Thu, Mar 26, 2026 at 03:10:04PM +0000, Dmitry Ilvokhin wrote:
+> Extend the contended_release tracepoint to queued spinlocks and queued
+> rwlocks.
 > 
-> Rename the existing arch-specific queued_spin_unlock() overrides on
-> x86 (paravirt) and MIPS to queued_spin_release().
+> Use the arch-overridable queued_spin_release(), introduced in the
+> previous commit, to ensure the tracepoint works correctly across all
+> architectures, including those with custom unlock implementations (e.g.
+> x86 paravirt).
 > 
-> No functional change.
+> When the tracepoint is disabled, the only addition to the hot path is a
+> single NOP instruction (the static branch). When enabled, the contention
+> check, trace call, and unlock are combined in an out-of-line function to
+> minimize hot path impact, avoiding the compiler needing to preserve the
+> lock pointer in a callee-saved register across the trace call.
+> 
+> Binary size impact (x86_64, defconfig):
+>   uninlined unlock (common case): +983 bytes  (+0.00%)
+>   inlined unlock (worst case):    +58165 bytes (+0.24%)
+> 
+> The inlined unlock case could not be achieved through Kconfig options on
+> x86_64 as PREEMPT_BUILD unconditionally selects UNINLINE_SPIN_UNLOCK on
+> x86_64. The UNINLINE_SPIN_UNLOCK guards were manually inverted to force
+> inline the unlock path and estimate the worst case binary size increase.
+> 
+> Architectures with fully custom qspinlock implementations (e.g.
+> PowerPC) are not covered by this change.
 > 
 > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-
 > ---
->  arch/mips/include/asm/spinlock.h         |  6 +++---
->  arch/x86/include/asm/paravirt-spinlock.h |  6 +++---
->  include/asm-generic/qspinlock.h          | 15 ++++++++++++---
->  3 files changed, 18 insertions(+), 9 deletions(-)
+>  include/asm-generic/qrwlock.h   | 48 +++++++++++++++++++++++++++------
+>  include/asm-generic/qspinlock.h | 18 +++++++++++++
+>  kernel/locking/qrwlock.c        | 16 +++++++++++
+>  kernel/locking/qspinlock.c      |  8 ++++++
+>  4 files changed, 82 insertions(+), 8 deletions(-)
 > 
-> diff --git a/arch/mips/include/asm/spinlock.h b/arch/mips/include/asm/spinlock.h
-> index 6ce2117e49f6..c349162f15eb 100644
-> --- a/arch/mips/include/asm/spinlock.h
-> +++ b/arch/mips/include/asm/spinlock.h
-> @@ -13,12 +13,12 @@
+> diff --git a/include/asm-generic/qrwlock.h b/include/asm-generic/qrwlock.h
+> index 75b8f4601b28..e24dc537fd66 100644
+> --- a/include/asm-generic/qrwlock.h
+> +++ b/include/asm-generic/qrwlock.h
+> @@ -14,6 +14,7 @@
+>  #define __ASM_GENERIC_QRWLOCK_H
 >  
->  #include <asm-generic/qspinlock_types.h>
+>  #include <linux/atomic.h>
+> +#include <linux/tracepoint-defs.h>
+>  #include <asm/barrier.h>
+>  #include <asm/processor.h>
 >  
-> -#define	queued_spin_unlock queued_spin_unlock
-> +#define	queued_spin_release queued_spin_release
->  /**
-> - * queued_spin_unlock - release a queued spinlock
-> + * queued_spin_release - release a queued spinlock
->   * @lock : Pointer to queued spinlock structure
+> @@ -35,6 +36,10 @@
 >   */
-> -static inline void queued_spin_unlock(struct qspinlock *lock)
-> +static inline void queued_spin_release(struct qspinlock *lock)
->  {
->  	/* This could be optimised with ARCH_HAS_MMIOWB */
->  	mmiowb();
-> diff --git a/arch/x86/include/asm/paravirt-spinlock.h b/arch/x86/include/asm/paravirt-spinlock.h
-> index 7beffcb08ed6..ac75e0736198 100644
-> --- a/arch/x86/include/asm/paravirt-spinlock.h
-> +++ b/arch/x86/include/asm/paravirt-spinlock.h
-> @@ -49,9 +49,9 @@ static __always_inline bool pv_vcpu_is_preempted(long cpu)
->  				ALT_NOT(X86_FEATURE_VCPUPREEMPT));
->  }
+>  extern void queued_read_lock_slowpath(struct qrwlock *lock);
+>  extern void queued_write_lock_slowpath(struct qrwlock *lock);
+> +extern void queued_read_unlock_traced(struct qrwlock *lock);
+> +extern void queued_write_unlock_traced(struct qrwlock *lock);
+> +
+> +DECLARE_TRACEPOINT(contended_release);
 >  
-> -#define queued_spin_unlock queued_spin_unlock
-> +#define queued_spin_release queued_spin_release
 >  /**
-> - * queued_spin_unlock - release a queued spinlock
-> + * queued_spin_release - release a queued spinlock
->   * @lock : Pointer to queued spinlock structure
->   *
->   * A smp_store_release() on the least-significant byte.
-> @@ -66,7 +66,7 @@ static inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
->  	pv_queued_spin_lock_slowpath(lock, val);
+>   * queued_read_trylock - try to acquire read lock of a queued rwlock
+> @@ -102,10 +107,16 @@ static inline void queued_write_lock(struct qrwlock *lock)
 >  }
 >  
-> -static inline void queued_spin_unlock(struct qspinlock *lock)
-> +static inline void queued_spin_release(struct qspinlock *lock)
->  {
->  	kcsan_release();
->  	pv_queued_spin_unlock(lock);
-> diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-> index bf47cca2c375..df76f34645a0 100644
-> --- a/include/asm-generic/qspinlock.h
-> +++ b/include/asm-generic/qspinlock.h
-> @@ -115,12 +115,12 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
->  }
->  #endif
->  
-> -#ifndef queued_spin_unlock
-> +#ifndef queued_spin_release
 >  /**
-> - * queued_spin_unlock - release a queued spinlock
-> + * queued_spin_release - release a queued spinlock
->   * @lock : Pointer to queued spinlock structure
+> - * queued_read_unlock - release read lock of a queued rwlock
+> + * queued_rwlock_is_contended - check if the lock is contended
+>   * @lock : Pointer to queued rwlock structure
+> + * Return: 1 if lock contended, 0 otherwise
 >   */
-> -static __always_inline void queued_spin_unlock(struct qspinlock *lock)
-> +static __always_inline void queued_spin_release(struct qspinlock *lock)
->  {
->  	/*
->  	 * unlock() needs release semantics:
-> @@ -129,6 +129,15 @@ static __always_inline void queued_spin_unlock(struct qspinlock *lock)
->  }
->  #endif
->  
-> +/**
-> + * queued_spin_unlock - unlock a queued spinlock
-> + * @lock : Pointer to queued spinlock structure
-> + */
-> +static __always_inline void queued_spin_unlock(struct qspinlock *lock)
+> -static inline void queued_read_unlock(struct qrwlock *lock)
+> +static inline int queued_rwlock_is_contended(struct qrwlock *lock)
 > +{
-> +	queued_spin_release(lock);
+> +	return arch_spin_is_locked(&lock->wait_lock);
 > +}
 > +
->  #ifndef virt_spin_lock
->  static __always_inline bool virt_spin_lock(struct qspinlock *lock)
+> +static __always_inline void __queued_read_unlock(struct qrwlock *lock)
 >  {
+>  	/*
+>  	 * Atomically decrement the reader count
+> @@ -114,22 +125,43 @@ static inline void queued_read_unlock(struct qrwlock *lock)
+>  }
+>  
+>  /**
+> - * queued_write_unlock - release write lock of a queued rwlock
+> + * queued_read_unlock - release read lock of a queued rwlock
+>   * @lock : Pointer to queued rwlock structure
+>   */
+> -static inline void queued_write_unlock(struct qrwlock *lock)
+> +static inline void queued_read_unlock(struct qrwlock *lock)
+> +{
+> +	/*
+> +	 * Trace and unlock are combined in the traced unlock variant so
+> +	 * the compiler does not need to preserve the lock pointer across
+> +	 * the function call, avoiding callee-saved register save/restore
+> +	 * on the hot path.
+> +	 */
+> +	if (tracepoint_enabled(contended_release)) {
+> +		queued_read_unlock_traced(lock);
+> +		return;
+> +	}
+> +
+> +	__queued_read_unlock(lock);
+> +}
+
+Shouldn't this refactoring be its own separate patch, similar to 4/5?
+
+That would probably clean up this diff a bit.
+
+> +
+> +static __always_inline void __queued_write_unlock(struct qrwlock *lock)
+>  {
+>  	smp_store_release(&lock->wlocked, 0);
+>  }
+>  
+>  /**
+> - * queued_rwlock_is_contended - check if the lock is contended
+> + * queued_write_unlock - release write lock of a queued rwlock
+>   * @lock : Pointer to queued rwlock structure
+> - * Return: 1 if lock contended, 0 otherwise
+>   */
+> -static inline int queued_rwlock_is_contended(struct qrwlock *lock)
+> +static inline void queued_write_unlock(struct qrwlock *lock)
+>  {
+> -	return arch_spin_is_locked(&lock->wait_lock);
+> +	/* See comment in queued_read_unlock(). */
+> +	if (tracepoint_enabled(contended_release)) {
+> +		queued_write_unlock_traced(lock);
+> +		return;
+> +	}
+> +
+> +	__queued_write_unlock(lock);
+
+And the same here, so one patch for interposing __queued_read_unlock()
+and another for interposing __queued_write_unlock().
+
+>  }
+>  
+>  /*
+> diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
+> index df76f34645a0..915a4c2777f6 100644
+> --- a/include/asm-generic/qspinlock.h
+> +++ b/include/asm-generic/qspinlock.h
+> @@ -41,6 +41,7 @@
+>  
+>  #include <asm-generic/qspinlock_types.h>
+>  #include <linux/atomic.h>
+> +#include <linux/tracepoint-defs.h>
+>  
+>  #ifndef queued_spin_is_locked
+>  /**
+> @@ -129,12 +130,29 @@ static __always_inline void queued_spin_release(struct qspinlock *lock)
+>  }
+>  #endif
+>  
+> +DECLARE_TRACEPOINT(contended_release);
+> +
+> +extern void queued_spin_release_traced(struct qspinlock *lock);
+> +
+>  /**
+>   * queued_spin_unlock - unlock a queued spinlock
+>   * @lock : Pointer to queued spinlock structure
+> + *
+> + * Generic tracing wrapper around the arch-overridable
+> + * queued_spin_release().
+>   */
+>  static __always_inline void queued_spin_unlock(struct qspinlock *lock)
+>  {
+> +	/*
+> +	 * Trace and release are combined in queued_spin_release_traced() so
+> +	 * the compiler does not need to preserve the lock pointer across the
+> +	 * function call, avoiding callee-saved register save/restore on the
+> +	 * hot path.
+> +	 */
+> +	if (tracepoint_enabled(contended_release)) {
+> +		queued_spin_release_traced(lock);
+> +		return;
+> +	}
+>  	queued_spin_release(lock);
+>  }
+>  
+> diff --git a/kernel/locking/qrwlock.c b/kernel/locking/qrwlock.c
+> index d2ef312a8611..5f7a0fc2b27a 100644
+> --- a/kernel/locking/qrwlock.c
+> +++ b/kernel/locking/qrwlock.c
+
+And is it possible to have one patch for qspinlock and another for qrwlock?
+It *looks* like it should be.
+
+							Thanx, Paul
+
+> @@ -90,3 +90,19 @@ void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
+>  	trace_contention_end(lock, 0);
+>  }
+>  EXPORT_SYMBOL(queued_write_lock_slowpath);
+> +
+> +void __lockfunc queued_read_unlock_traced(struct qrwlock *lock)
+> +{
+> +	if (queued_rwlock_is_contended(lock))
+> +		trace_contended_release(lock);
+> +	__queued_read_unlock(lock);
+> +}
+> +EXPORT_SYMBOL(queued_read_unlock_traced);
+> +
+> +void __lockfunc queued_write_unlock_traced(struct qrwlock *lock)
+> +{
+> +	if (queued_rwlock_is_contended(lock))
+> +		trace_contended_release(lock);
+> +	__queued_write_unlock(lock);
+> +}
+> +EXPORT_SYMBOL(queued_write_unlock_traced);
+> diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
+> index af8d122bb649..c72610980ec7 100644
+> --- a/kernel/locking/qspinlock.c
+> +++ b/kernel/locking/qspinlock.c
+> @@ -104,6 +104,14 @@ static __always_inline u32  __pv_wait_head_or_lock(struct qspinlock *lock,
+>  #define queued_spin_lock_slowpath	native_queued_spin_lock_slowpath
+>  #endif
+>  
+> +void __lockfunc queued_spin_release_traced(struct qspinlock *lock)
+> +{
+> +	if (queued_spin_is_contended(lock))
+> +		trace_contended_release(lock);
+> +	queued_spin_release(lock);
+> +}
+> +EXPORT_SYMBOL(queued_spin_release_traced);
+> +
+>  #endif /* _GEN_PV_LOCK_SLOWPATH */
+>  
+>  /**
 > -- 
 > 2.52.0
 > 
