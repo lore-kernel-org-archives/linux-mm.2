@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005CAF531E7
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 02:23:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1550F531E6
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 02:29:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DAEA6B0088; Mon, 13 Apr 2026 22:23:23 -0400 (EDT)
+	id E06076B0088; Mon, 13 Apr 2026 22:29:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B1606B008A; Mon, 13 Apr 2026 22:23:23 -0400 (EDT)
+	id DB72D6B008A; Mon, 13 Apr 2026 22:29:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C8CD6B0092; Mon, 13 Apr 2026 22:23:23 -0400 (EDT)
+	id CCC806B0092; Mon, 13 Apr 2026 22:29:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 09DEF6B0088
-	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:23:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 99264139998
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 02:23:22 +0000 (UTC)
-X-FDA: 84655564644.10.855CE4E
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 33A2AC000A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 02:23:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VJwEAPSI;
-	spf=pass (imf22.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE38C6B0088
+	for <linux-mm@kvack.org>; Mon, 13 Apr 2026 22:29:20 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C9CB1B7575
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 02:29:20 +0000 (UTC)
+X-FDA: 84655579680.25.A36DC1E
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4055F40006
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 02:29:18 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Yd2bGA7z;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776133400;
+	s=arc-20220608; t=1776133758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N5c08oqpW8xInrDeySZRyRa+d0wZsG8dfZpf7bL6oRM=;
-	b=G2ZiKUmdWE6jDppEeQ6XdWU6ETUnfAWLD+CPpgPZO5LR5lJeIXMRY7bwbXZtcWr/Xo87U7
-	egGuAWKw8pGZxFtA5kVabliJCurSCaqE8KtKtZ95hc7l/X8jnIzy6Xy/D6F1yl+MUQglV9
-	WCQOGxLcFjDGT42BsOKmadyjHlmj0bQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776133400; a=rsa-sha256;
+	bh=V5QX9+pQg1ULyMnKqjfgXchOKAT14re8KJFOLZ7j1Uc=;
+	b=Oi3H7wvSM4Ea0tklq5K70ecLyTObfYHMHXVAiDrAcC0Q76mYd/Kq7jG1AEcXcHxYZvpo6c
+	nHFgIUL7cJkxsZxwwSPunvx4lTr1c1vLOQdha4/A8EBug1m+Xs5lxTh/XGtnNK0mwl1CAX
+	DCzPh2gGR//a1VT1lvRS8NS9rwRWNJQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776133758; a=rsa-sha256;
 	cv=none;
-	b=OZyONuctr9QBk8CU45YmJKTAsavcbrIkqwee++geDX7dowNZxmr7j34kts2NbAoQkr+s0n
-	+OtzwUchO03rB6WfhhjOD9iEhJiVv6kINnHA3U7zHLDj52qnXYdOEa6bHB/of7t+IkvNh1
-	69QnuaTBq4PmhFNdzihTzGOjX1qQQ8s=
+	b=OIxPD8TLpxdcrFwpzN8cVCSpAP9dy8lUrLqDSmYoBQvrS+wMG7PIFjMLGb1G3SqMiDQc9x
+	vpet8ZnDDlZJM1LnpBy+EjADEZjnv+31OqYT3qpsuVeElV7NGM0kXkVH7ULfjRd8l/KJAB
+	4S9rg30gxB9dHY4kbRU0uk9/S2bj5MQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=VJwEAPSI;
-	spf=pass (imf22.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776133395; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=N5c08oqpW8xInrDeySZRyRa+d0wZsG8dfZpf7bL6oRM=;
-	b=VJwEAPSIUmoAYrOU/jCJpL4PYF5aDRum1kUp5KDluWRM0OFh9AfkjjWrJRa/tSnlQpFsYk8XdG+JDiFrdVAef/UcnOkTRfN802ZH9cdSVFk/OKSa9FNGq9zQrapQhK7drwWxyVvfZlnxXaWAcTp73Uxwum7IotLkrvHUPN9paiE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X1.p49D_1776133393;
-Received: from 30.221.131.198(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X1.p49D_1776133393 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 14 Apr 2026 10:23:14 +0800
-Message-ID: <a7a74185-df02-4906-a0ec-f87e2394aa5f@linux.alibaba.com>
-Date: Tue, 14 Apr 2026 10:23:13 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
- support
-To: Dave Chinner <dgc@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Tal Zussman <tz2294@columbia.edu>,
- Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Christian Brauner <brauner@kernel.org>,
- "Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- Bart Van Assche <bvanassche@acm.org>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Sandeep Dhavale <dhavale@google.com>
-References: <20260409160243.1008358-1-hch@lst.de>
- <20260409160243.1008358-9-hch@lst.de> <adl1iqhldFvJwSw-@dread>
- <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com>
- <ad2RKNo2FGhpzJQp@dread>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <ad2RKNo2FGhpzJQp@dread>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: oonruqqtktqyzsk981d9a5675di85jxt
-X-Rspamd-Queue-Id: 33A2AC000A
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Yd2bGA7z;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776133755;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V5QX9+pQg1ULyMnKqjfgXchOKAT14re8KJFOLZ7j1Uc=;
+	b=Yd2bGA7z+vMWx2P0hf+Ov1gl4sMFJg6i7OJVdClj6OGD3ec4EqbxCfQ/5VoLn6XgtOKb83
+	nP3kyHV5sscI5E+Q1Vp55uKsfQ9jDr0m5aGN3876Obkur4sGjaZwHTpPHVRVlssBSo/Pqd
+	gIRpkEbiM6gSw4IOlo+LHzPtvGNrYiE=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH 03/49] mm/sparse: fix vmemmap page accounting for HVOed
+ DAX
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <d44ff75a-a1bd-4a28-8e8b-0b008d24d41b@kernel.org>
+Date: Tue, 14 Apr 2026 10:28:24 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AF32475C-3782-4EAE-BFF8-10078AC08052@linux.dev>
+References: <20260405125240.2558577-1-songmuchun@bytedance.com>
+ <20260405125240.2558577-4-songmuchun@bytedance.com>
+ <d44ff75a-a1bd-4a28-8e8b-0b008d24d41b@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 4055F40006
+X-Stat-Signature: 8sr6nzqsq6jqcp3exzdz69ecoqafhmuo
 X-Rspam-User: 
-X-HE-Tag: 1776133398-84539
-X-HE-Meta: U2FsdGVkX180gyazHD9ATGxHCKjg5aD9VVu7TxroWulQSbY4Y3VIjm+mJ2VcxggDccp7ZiN5ON42sOAOG2zYjHQVPMvp35znKFcSna8J6MIPfPgAqUrH9D4h9rAQhlJWXfMUPGHNTvYYBtSTbgGJeGzEEn1jH8LORnk4qnl8YWrBreSaBRKy1EgO+QdXiGsMiDjlWA3PntWRe6jrGinU5jbEVray50QAsX8dgeBwbOqP61ub5GKv9tqMzNcfH8ca1Z4YqwVEW6pnb/6A9HT2k+Q1rtHIgYJ6PqGzM4X3V3tsnwM3012hj65KSyJs+AFIFUK+89B4kLCq3QNsHC6fmAFWTXCEEg5e+rEnrd+++Xs+7Y5zJwdxn5tGPYWZP7s3KkXmiK/RvEw3V7C+5luw7O3AJSpLt3sXoMyi7o/0QLkfkoQXX3gzg3Fml0wMEhlnQNraSzx9anf5xeisupmYsrQuvHGDN4CnIPUcIAExtUfoxjHsOlCY/X6MuMMKGO1Hw3dPp9S/Ihz+r+fjSEpfO85RugzTwqi83UBMmYNOiB6tZo2J6xIutQ/KXEaR4OaAMlxSpDLdtnws0jMhzDxZt8KrFC/mcvp+lq6eoGFWQBRWyerZqtIxuz56U8Orx64E3TKZu0/Tjf3E/XMe+6WhhNMezwHPyRkDn+zUbT1CjH4PJQh0ZWQXDlqccXNRGQeGYVVE8Mlk7/Yw3/GNOKmb6RfFUz/y4EgTFyNImmr3NJL8Dqz8p5fXLO9EwWRw3N6p+dDAuE2wvyk8McXogkmcrXKiJtJhhXUp9sgQfOOJXMH5+05GbltJdcADKFQYFmBFWvbzM+YV3BSfI9rKPJnAZivdK6UY8y0Dt7SDAK7zBsmvSaLrqijwmelJ+5weFIHVx0JL0aRHOHLBsP5DBHkHunRfvp50jwCp4E/vv5c3+zeq7JbPSLjuT/4WQdNWLZ55i4eW/sFCleSEBDQ+4mQ
- /bzJAhDq
- rRW8xqm8dtC3O9ZhCaQERf32J47HiknCCFcFJ5nbDPTJ7Io2Roug0l+890fyYb203/QIF+D9bPQ0WPLJB3XDthtB3EDJR+jxhlJQ75Eq0vd1X14qN/tcej3AjF7xc1deUAi/WthvE+UYhrKAOPxjGOXP4WgnplDQwwX4OoHFcEjsT9itXe7QyB1Rsg7nE2mNvjuK1e/DnqCI6FYxGWeV/tqbrPrqSp3MfO8ttR6p6GPurwl+WSlEFO6vCZ3Wjgt38k5vpov091ocLsK89WKD5GRnXIbUR7jJhQVzCKxZzcvtoOF2g7xl+8dvhGbbnxKP+iiqOa+IboxfRXh57EVXwZ2cmsH1o0eN/k5Q32UGkvMrrWoa4McYjFuK+dUIYAGUQ2eaTsz9K4hU48a7snLvxY3Lop4AG6nj9Pf2l
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776133758-925167
+X-HE-Meta: U2FsdGVkX1+QedQgHtrW4PVDgAORo4gGrVV5JiZsDsFmtbtmgwltt9nMog+MmWd+d3J4dIM4hly9szGZAToYWM20aYvWNu+kcK9Pye0t7ZXWYw6Bmjo9vNgC0XykaV0uQ3Q4wgETDXJCpNM3zxMNCYvW1mSCSj+b3evSLir2cTsrX7GUzwge1FL4w7nlfpbfMfrvi8BrnGl9+cvul92xV7Gq3N1LMQNHYkjT6U2zvSmtL4sjTqsolcyMIB/lW2S0yQRK/2lL1VI6pywb5yNIxua47T1//AsKAZOMMBZJuj0avezz3genw78AQrcx1fpCGXXI+wA0BN3uDzmoHMhBYfgLpQsIJCBXYcp2TqSYfQH2px5+8DShmgqPbqw4DNxqp2Mfq7o5HUqFX6nRX5RU+vHPK3SI9/PwbmLbqItwvlAluAEOZ926ZT48GNaIAswhdvt8358yh6kEzbeQXh5SMv3AkTF62IkSI+8vZdDw36JhElBw/XDe8b8u12/QJPVk0bdJ3ScLN7Yc/lJjWHBK06i8jQqrqGrBuRJAIb+xDKMm+DdwjgAgtjdGbXpOejBwy78V42Mk/PpNHVuS0KqiAnoCPYShxc5ewCQStgm2Dixa3n4F4BH1tOOzG1uR5fTFn85pOo/M7L/r6ox0spUtYOzIfq0hrutxCYpuR26w12NUyTuaxh1n7P9PYRxQSR4E9tBcns1hL8IFAk6z4bzaYTIpnNYKK7T0BtLcKDRO/uSMT/ucegK/DQ7kgHy+vBDu4aD9wDn5+MqVNr9iNJXDb6rGz0FFY3OXSKxaKKh8o8trS5SHglYwAL8cD9mMRnFJ0UbLug+SKQ6vcovxsAH/cmR9QEIx4CRR8QpC+lbcfUmjTwPK0Nbsr6pONlBYvAqTSAtR+I+E0sheksnJ4+0l59nwaE6h36/j2DfpuTfnnqnAEb4ExOZtUqYogCBLBBiNFk7y+AnrYd9aWysyz1c
+ OwMg2M70
+ 5SFMT2/TC0S6fjIn0lbY/vfPlFin38b2V9+ZZMM6LDZ1euq1Y8GsAV2uUrCY12jNOMmm0cUtnUKSq6yWsS+xEdAXqTqmI3PMonyVq2kmRm/XUPFJyVWNls2/T1Z2lgnOhBBygAIF5NXNeFSdYEB6Zm+9TOQr5ztPPVV0+aaRjTrXNiXWBO04IStmK/9VydVDvAJEDrkIasOvce9ti2BgZqJZKBmYrqPpOh8+YoipTfuIjBK7jX0pA9ZW3LQ9H8Cl6hx2bZvCF7oJiJTeun11gb36Y8QN+Pw6ojLfF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,161 +110,101 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/4/14 08:58, Dave Chinner wrote:
-> On Sat, Apr 11, 2026 at 07:44:43AM +0800, Gao Xiang wrote:
->>
->>
->> On 2026/4/11 06:11, Dave Chinner wrote:
->>> On Thu, Apr 09, 2026 at 06:02:21PM +0200, Christoph Hellwig wrote:
->>>> Commit 3fffb589b9a6 ("erofs: add per-cpu threads for decompression as an
->>>> option") explains why workqueue aren't great for low-latency completion
->>>> handling.  Switch to a per-cpu kthread to handle it instead.  This code
->>>> is based on the erofs code in the above commit, but further simplified
->>>> by directly using a kthread instead of a kthread_work.
->>>>
->>>> Signed-off-by: Christoph Hellwig <hch@lst.de>
->>>
->>> Can we please not go back to the (bad) old days of individual
->>> subsystems needing their own set of per-cpu kernel tasks just
->>> sitting around idle most of of the time?  The whole point of the
->>> workqueue infrastructure was to get rid of this widely repeated
->>> anti-pattern.
->>>
->>> If there's a latency problem with workqueue scheduling, then we
->>> should be fixing that problem rather than working around it in every
->>> subsystem that thinkgs it has a workqueue scheduling latency
->>> issue...
->>
->> It has been "fixed" but never actually get fixed:
->> https://lore.kernel.org/r/CAB=BE-QaNBn1cVK6c7LM2cLpH_Ck_9SYw-YDYEnNrtwfoyu81Q@mail.gmail.com
->>
->> and workqueues don't have any plan to introduce RT threads;
-> 
-> They don't need to (or should) introduce RT threads. Per-cpu kernel
-> threads already get priority over normal user tasks on scheduling
-> decisions.  However, they do not pre-empt running kernel tasks of
-> the same priority.
-> 
-> In general, kernel threads should not use RT scheduling at all - if
-> the kernel uses RT prioprity tasks then that can interfere with user
-> scheduled RT tasks. This is especially true in this case where a
-> non-RT tasks issue the IO, and the IO completion is then scheduled
-> with RT priority. IOWs, any unprivileged user can now impact the
-> processing time available to, and the response latency of, other
-> RT scheduled tasks the system is running.
+> On Apr 14, 2026, at 02:39, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 4/5/26 14:51, Muchun Song wrote:
+>> When HVO is enabled for DAX, the vmemmap page accounting is wrong =
+since
+>> it only accounts for non-HVO case.
+>>=20
+>> Fix the accounting by introducing section_vmemmap_pages() that =
+returns
+>> the exact number of vmemmap pages needed for the given pfn range.
+>=20
+> I guess only the accounting in /proc/meminfo is messed up, correct?
 
-All softirq IO completion already works like this although
-softirq tasks are not strictly called "RT tasks" (i.e. a non-RT
-task issues the IO, and the softirq IO completion will interrupt
-all ongoing tasks).
+No. It is in /proc/vmstat
 
-Basically what we want is to get a non-atomic context instead of
-using the current softirq context for read post-processing and
-switch to the task context immediately as you said, because:
+	cat /proc/vmstat | grep memmap
 
-  - Our post-processing needs to work in task contexts since
-    advanced features like compression deduplication need it;
+	nr_memmap_pages 0
+	nr_memmap_boot_pages 2097163
 
-  - Even regardless of our specific requirement needing task
-    contexts, using a dedicated task context for read
-    post-processing is much better than run in the original
-    softirq context:
+>=20
+>>=20
+>> Fixes: 15995a352474 ("mm: report per-page metadata information")
+>=20
+> Similarly, please send all fixes out separately.
 
-    - Algorithmic work could take extra time (especially slow
-      LZMA algorithm could take milliseconds on low devices
-      (however, we need a common workflow for all algorithms,
-      including fast algorithms like lz4) and verify work for
-      example); and long processing time will interfere with
-      other remaining softirq tasks like sound-playback
-      / network softirqs;
+Will do in next version.
 
-    - If it is then deferred to softirqd, it just makes this
-      latency issue _worse_.
+>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> mm/sparse-vmemmap.c | 30 ++++++++++++++++++++++++++----
+>> 1 file changed, 26 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 7aa9a97498eb..0ef96b1afbcc 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -724,6 +724,27 @@ static int fill_subsection_map(unsigned long =
+pfn, unsigned long nr_pages)
+>> return rc;
+>> }
+>>=20
+>> +static int __meminit section_vmemmap_pages(unsigned long pfn, =
+unsigned long nr_pages,
+>> +    	struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>> +{
+>> + 	unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
+>> + 	unsigned long pages_per_compound =3D 1L << order;
+>> +
+>> + 	VM_BUG_ON(!IS_ALIGNED(pfn | nr_pages, min(pages_per_compound, =
+PAGES_PER_SECTION)));
+>> + 	VM_BUG_ON(pfn_to_section_nr(pfn) !=3D pfn_to_section_nr(pfn + =
+nr_pages - 1));
+>=20
+> No new VM_BUG_ON. Ever. :)
+>=20
+> VM_WARN_ON_ONCE() is your friend.
 
+Got it.
 
-Thus, if there is another dedicated mechanism which can provide
-a lightweight task context and is scheduled to run immediately
-after the softirq: that would fit our requirement and I believe
-it's useful for other various use cases, but currently there is
-no such clean infra; RT threads can just fulfill our requirement
-in a less elegant way.
+>=20
+>> +
+>> + 	if (!vmemmap_can_optimize(altmap, pgmap))
+>> + 		return DIV_ROUND_UP(nr_pages * sizeof(struct page), =
+PAGE_SIZE);
+>> +
+>> + 	if (order < PFN_SECTION_SHIFT)
+>> + 		return VMEMMAP_RESERVE_NR * nr_pages / =
+pages_per_compound;
+>> +
+>> + 	if (IS_ALIGNED(pfn, pages_per_compound))
+>> + 		return VMEMMAP_RESERVE_NR;
+>> +
+>> + 	return 0;
+>> +}
+>> +
+>> /*
+>>  * To deactivate a memory region, there are 3 cases to handle:
+>>  *
+>> @@ -775,11 +796,12 @@ static void section_deactivate(unsigned long =
+pfn, unsigned long nr_pages,
+>>  * section_activate() and pfn_valid() .
+>>  */
+>> 	if (!section_is_early) {
+>> - 		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * =
+sizeof(struct page), PAGE_SIZE)));
+>=20
+> That's nice to be factored out in any case.
+>=20
+> --=20
+> Cheers,
+>=20
+> David
 
-> 
-> Tejun asked Sandeep if setting the workqueue thread priority to
-> -19 through sysfs (i.e. making them higher priority than normal
-> kernel threads) had the same effect on latency as using a dedicated
-> per-cpu RT task thread. THere was no followup.
-
-I think the issue is that people are not already working on the
-same topic:
-
-  - Unlike large subsystems like XFS, people don't already work on
-    EROFS unless they have new requirements or urgent production
-    issues;
-
-  - The original latency issue was already considered as "done" in
-    2023, and I'm not sure if Sandeep could have the bandwidth to
-    pause his current work and test more setups according to this
-    ongoing discussion in 2026.
-
-> 
-> In theory, this should provide the same benefit, because what RT
-> scheduling is doing is pre-empting any user and kernel task that was
-> running when the interrupt was delivered to execute the completion
-> task immediately.
-
-But anyway, I think nice -19 can be evaluated if Sandeep have time,
-but such nice value should be set by the filesystem instead of
-the userspace since the reason is as above.
-
-Additionally, we also need a way to set nice if we decide to switch
-to the new BIO_COMPLETE_IN_TASK approach as well if the nice way
-really works.
-
-> 
-> Setting the workqueue to use kernel threads of a higher scheduler
-> prioirty should do the same thing, without the need to use dedicated
-> per-cpu RT threads.
-> 
->> If Sandeep has more time, I hope he could have more time to
->> test since I don't work on Android anymore: In principle,
->> I still think RT thread is needed somewhere for such usage
->> since lowest latencies is needed.
-> 
-> All that is needed is for the kworker thread to be scheduled to run
-> immeidately after the interrupt that scheduled the work exits. This
-> does not require dedicated per-cpu kernel tasks or RT scheduling....
-
-Right and not sure, it needs some latency evaluation with
-heavy background/foreground app pressures.
-
-> 
->> Compared to the scheduling latency issues, interested users
->> don't care "individual subsystems needing their own set of
->> per-cpu kernel tasks just sitting around idle most of of
->> the time". If end users care it more, they can just turn
->> it off by Kconfig.
-> 
-> Distros enable all these subsystems all the time, so saying
-> "turn it off via kconfig" is not a viable mitigation
-> strategy. Proliferation of dedicated per-CPU worker task pools is a
-> known problem, and we really don't want to regress back to those
-> days when a typical system had thousands of dedicated per-cpu work
-> queues that largely did nothing most of the time.
-
-That kconfig is off by default, but all Android vendors
-turn it on, and that latency issue is particularly vital
-for Android ecosystem.
-
-Currently RT threads won't be used for other use cases even
-desktop use cases: Android workloads are pretty harsh
-even compared to desktops for example.
-
-Thanks,
-Gao Xiang
-
-> 
-> -Dave.
-> 
 
 
