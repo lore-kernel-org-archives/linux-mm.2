@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64744ED7B8A
-	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 08:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3079BED7B82
+	for <linux-mm@archiver.kernel.org>; Tue, 14 Apr 2026 08:23:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBDF56B008A; Tue, 14 Apr 2026 04:22:59 -0400 (EDT)
+	id 98B826B0098; Tue, 14 Apr 2026 04:23:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C48596B0098; Tue, 14 Apr 2026 04:22:59 -0400 (EDT)
+	id 93BB66B0099; Tue, 14 Apr 2026 04:23:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE89E6B0099; Tue, 14 Apr 2026 04:22:59 -0400 (EDT)
+	id 73FCE6B009B; Tue, 14 Apr 2026 04:23:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D5C16B008A
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:22:59 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6AF451A04C9
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DDD76B0098
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 04:23:02 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CAC2E3865
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:23:02 +0000 (UTC)
+X-FDA: 84656471004.02.E59364F
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AF41C100002
 	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:22:59 +0000 (UTC)
-X-FDA: 84656470878.05.F9FF407
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1E62C40002
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 08:22:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Zsne20Vp;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf11.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=nkWBfs3w;
+	spf=pass (imf05.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776154977;
+	s=arc-20220608; t=1776154979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7DaF97K18SRMtygc1p5bBtDdhAo0qzwBysVgANcUPEU=;
-	b=W/IYpsu2NBTsf4b5X0QSMuUwSGHxXyTu3Oij7ZeCqF1SNz6BdAqz2k7SnDuglrvZVGmMdP
-	T5NTidO7vfgrQuL8Rv1It0NjUth3Emp4o19BgaJQiRIUyDILXKY+y5CP1Y3cgVV/Z4WSnh
-	VSqcXlGJ18b2MO3iJJAc92dcJ1eAv30=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776154977; a=rsa-sha256;
-	cv=none;
-	b=0ymYl812wuumXsUEOiHIVAwuPLUMDZnx+0InJF+qlsBjAzF8+FUx09KSB7HynOozO5fqEc
-	wL+gNw4TEXlv8ZOKW0m4Tnj2EJ5kpxZKiper9QWAj8DuGbI2BYl8KKo4uNnGbRbX8nYD04
-	Kiqcpx+6tWBRFc0B0V6FKEWptkub5XI=
+	bh=KF0duKJ7kidshxIeQZb5EcnjWw7TF8XQDpz9/tTREjA=;
+	b=xt7Qxwbv3Nm7UNEMfmusMbrPugg5SsvDf817hTHvjXXqTUEYWk58JvsZH8MboZDESSCj0K
+	l1kd9T1PSa8i3V5URUjri/7cImMLqqdl3Ecs6EvVF1ByjaLZmjhvL0xjgtJaxlxXMpLFhZ
+	7MURVGZJFwCosO0iYr/GJAmssLRB0xI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Zsne20Vp;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf11.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DLIUv81733958;
-	Tue, 14 Apr 2026 08:22:47 GMT
+	imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=nkWBfs3w;
+	spf=pass (imf05.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776154979; a=rsa-sha256;
+	cv=none;
+	b=Knli5UKFpk13IgExPYbyelqeGPESvl82op71lCs9jSTbkEIH/nRFe966ejR1gi6a9jY30o
+	6lRM6rk1FpwEGeWq5MtsfbJD5dgCB08sfQQTJBnvUmNqzHfQGixDltoAbG64YXtT0iQ0Jx
+	LCRNrhOL7qYTwoj5Q0B83MtioJ13bFs=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63DLIwMd2131218;
+	Tue, 14 Apr 2026 08:22:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=7DaF97K18SRMtygc1
-	p5bBtDdhAo0qzwBysVgANcUPEU=; b=Zsne20Vpah5+igCMdb9Q/VoKQ0WKUagqS
-	AJmhi0DnIDwmu+MEoYApZaCQSMsjKUGxkP9KII17qeqGgjXXVhqFaXAsxMGATsmr
-	5xy2iqCU72cNXkuh1K7CrIbfw/EXrFQEYsHa0YqNVeBE8ufkNlPI3gZMd3mNF5lN
-	zs5U6v0Zclj8XjVH0sHDWe3bUGrXWPzSXVDJSitX/0WbwO5lONSFkIZQlc980Arw
-	apOQ3875saO7tYSUBey01/SNRM1iFxQ/F2poMTacV8bmsyzl8ZfSKAICGT6gqdNh
-	aZdldjrv1uswUIEY48wRSokAVL5aVJUVpSGVRU/6gyUIaDp7zxHDg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89m1pnm-1
+	:mime-version:references:subject:to; s=pp1; bh=KF0duKJ7kidshxIeQ
+	Zb5EcnjWw7TF8XQDpz9/tTREjA=; b=nkWBfs3wMfP9p/r/uKp5TmtLAVh3GKhw6
+	8MlTa62g0LQrkqtQB6mNCJhwmMrlShfxN3e51bMyBjOGMsUWlC/z4XFIXnD6zrWs
+	D7kvIGq2R04ZTtIl5B1hQ2be0aAI2s8NhbeSqxcl1fr2Dmo2YnnUTuodLz0yLgHg
+	cDT/36oQEmZwgvannka2VazIG0kGJFusbFEvmiNSfkhJ/nSiTSIUi1373ExrVygS
+	klRh9YH9FmhssviXKajKVsWcOzTGQPuLJl92b57X2QwjQt1ZEE+oevp6T3Pc2xzf
+	uJJvlIPhYmdMla3ZYNDdP9BAaID8EdW5qxWjMhzUvULStb4lkUh8Q==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89n9smw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Apr 2026 08:22:46 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63E3UBEg015158;
-	Tue, 14 Apr 2026 08:22:45 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0msgrqv-1
+	Tue, 14 Apr 2026 08:22:51 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63E5BYA8004188;
+	Tue, 14 Apr 2026 08:22:50 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg24k8hr4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Apr 2026 08:22:45 +0000
+	Tue, 14 Apr 2026 08:22:50 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63E8Mgpv27591332
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63E8Mk4928836270
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Apr 2026 08:22:42 GMT
+	Tue, 14 Apr 2026 08:22:46 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 14D912004D;
+	by IMSVA (Postfix) with ESMTP id 7012C20040;
+	Tue, 14 Apr 2026 08:22:46 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 79E3520043;
 	Tue, 14 Apr 2026 08:22:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1396620043;
-	Tue, 14 Apr 2026 08:22:38 +0000 (GMT)
 Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.ibm.com.com (unknown [9.39.26.223])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Apr 2026 08:22:37 +0000 (GMT)
+	Tue, 14 Apr 2026 08:22:42 +0000 (GMT)
 From: Sayali Patil <sayalip@linux.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -96,9 +96,9 @@ Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
         linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
         Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
         Sayali Patil <sayalip@linux.ibm.com>
-Subject: [PATCH v5 05/14] selftests/mm: fix cgroup task placement and drop memory.current checks in hugetlb_reparenting_test.sh
-Date: Tue, 14 Apr 2026 13:51:59 +0530
-Message-ID: <9c395e89454325ac8a3f93f191e5238214103551.1776150071.git.sayalip@linux.ibm.com>
+Subject: [PATCH v5 06/14] selftests/mm: size tmpfs according to PMD page size in split_huge_page_test
+Date: Tue, 14 Apr 2026 13:52:00 +0530
+Message-ID: <ac04b3ee7d733798b4d79c840f4ce4e94118680c.1776150071.git.sayalip@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1776150071.git.sayalip@linux.ibm.com>
 References: <cover.1776150071.git.sayalip@linux.ibm.com>
@@ -106,37 +106,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=I/dVgtgg c=1 sm=1 tr=0 ts=69ddf957 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-GUID: sdLlBxLRWW2dQEnIHW_peSXjD8a3crlA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDA3NyBTYWx0ZWRfX2DLbFH1MWf55
+ uykUb+YnbD1eCfjAiGm8I8gIgfBbC+8m7lMnIme1JuO07SgmzrqsllBhnfwmc0tq9JYtXO8XP+E
+ fYH3PBvHJyoI5sHUdX1p1WBchYc08w0CLucKaXHTrlHgR9Y5zRUSct4+RC1P8ZVn4BBSFg6diN6
+ nvC/zCAf5b+guEaTf0iQkCutNqpTh1toAxwYA+8rbdciAJbhXb9++8Ln1Y0E1Ivt8vxwsiErgT1
+ ftabRL3Xnqae3tW0gaa4RRkZ5NtpJ5a5hABIBXrZ2g5S7dQc7BUnG1DrgoT17Ebfce10MutaqjP
+ 6N0oH40Ko+PzxYkWiXzssCGC3hZPuMcTsaH84dVOI60G3eE76rWf9bZQOz8PaoAOSRsiqNPS82V
+ iHo/HC8oUxR51Gg0V3sUCS2zxppPV6KiX/plefYG8hsz8Merz1pCXk8FAj7ZKLaSUXdcxX/T8On
+ mkotUhMSAZd9FppbhwA==
+X-Proofpoint-ORIG-GUID: dC3DXqNFqgJNAEehbZaZ6BSS4YwKpAhw
+X-Authority-Analysis: v=2.4 cv=FY4HAp+6 c=1 sm=1 tr=0 ts=69ddf95c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=XZ4_RENMreZbN4apZO0A:9
- a=O8hF6Hzn-FEA:10
-X-Proofpoint-GUID: PBXI-A13GjqNF_d4uvuAjEMIssLZ5vKk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE0MDA3NyBTYWx0ZWRfX3vibR2w2UfWV
- FB8ZTkDwIxCmPNGRGSigbBeTX7k0OqgUrBnXy9SSVNXwtiuFcgELLuhwb07Htab5kBUFD2y+tv0
- n1trZ6RE0us87r4PN9WO8CqD13dhvfR0ZVnuQFuB+zyDzEU6GGmtp3W/KaJhU8iiRB0sUroIg8q
- BExKYxaDaMq6ACFeKxVPy7tsDjRO1gtILxhsbsOI/hiPnuHiN7moPhSDv2F1K53drxn/dFThO/I
- 21t3TQAneZQ+ecWZYPcPrawPBqp/NOJAspJDbt1RtlLaibAJ2j5UqFEFBNronV+kb/LGaxt/OhG
- PIJ2KqacOwujVjwLfUBydz406+a/RtKq8UWxzyR/zQbJfvLQSXAjcXSEONMPmdGsRHQF4+/vZ3p
- R+LyDId7mTpK9VQO31JzY9dNDXpg4cnkIlQl0fkbPtdBwWN4QmHZKejmngzfORwWIXlcA55yj1W
- gtQBJYAIwjMijnEOdyA==
-X-Proofpoint-ORIG-GUID: M43yzD6g_1ZMRo-MLoP4CHb6XGA-Uw5m
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=Ikd4Dj_1AAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=2DqBuDyFdJ_AORcY0zkA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-14_02,2026-04-13_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
- suspectscore=0 impostorscore=0 phishscore=0 spamscore=0 priorityscore=1501
+ adultscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 spamscore=0
+ lowpriorityscore=0 suspectscore=0 clxscore=1015 malwarescore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604140077
-X-Rspamd-Queue-Id: 1E62C40002
-X-Stat-Signature: jdrt3zric7uq31gzdokqeqyksmpehhno
+X-Rspamd-Queue-Id: AF41C100002
+X-Stat-Signature: h3wm1ow18bre847s41i5fw6erfdqogej
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1776154976-897117
-X-HE-Meta: U2FsdGVkX1+3n+M4sKfemAahTetDuZudwExHUTbZ2bJZ45IIA/jIPwQFqPEZq7QqU0VbdhmKOMY2UXA4nFwmvmHJ5LjAoUpg9Orspe7qAdo3j8c0UAQTappkBapW5eynHxhBIX6APv6halgFCGw2n0eKLeRwfVd5Nlndu5S/dy0U1JimOelfLIpeo+9uCaXe9m1zs7VFwqVSE7ZawhSML4a+R//ZAbfXvyIZfCefbmwYEGj1QbHiihCYNW0eV6nDG8mGq+fsJmTYUFMGPAFmRUw9Y1lAq2JKDhMdWK+xFIOHmRz7a1pptViBKl0aQsJTODoJIMw54hp/1Lce4tm0fDS97kcusQs3p6OPxyttaGFljVelv4jTl5hcplzSKv0ZZfewhs+Wd8aV3+DoeYN5ccL/GdV1XcHgnW0/FE4B/DG7Z6ndTlfKf7gY3kSfVbWHJ3jiuN1yGvRvgxSd8xzxZWYRmVVrlwszgp7kEZFf3G49ViGtwTllnXlxfoHBK99MSkrMMl6hYUuiZzegvZoUudojlbWFsTbE9jeOAzx26dW48ENazKU73R6C7+sGM+i8J20wNWKCV/V8Hvsmwo0gcSCT0doWI+Jz2ZOdA2hM9bMwUlfmsT/I8/GoqIgLslmHSqquWioY4qCBcVdojMK3QTKJQFE9A9lO+mdHB3ksInkd6FBsgb3IMWTFpACK5wiUzeP0oa4n5iYcTtC5wYCKwkWyG/ZnlEcrIND0l/6iPtuwiXmlPq6gTTnE162m84S0xhNwK5F9bY5imXbGLtMVNryJJMnfhppLfdT/5g14cFBuVCeUDu5seq0nglVBp3Ix+WlE3HDH62Jx4DVG3IUWsZhevXa4bGE7yRdapiq4QhAj9WxJdy9r6WGugYiXPQgf6GzZ8QXH0+mZygAmMmlZ4xIHKFC3EhFycz+s3IvJe5h9m6Gik9CGJZjkcB1NnnNsM8YnTambgdAcOPw8PN+
- 9AsXz0gl
- Ktx1jny0HixKg2KQ/eXZHSVP0dToiTfN/+L7XgpG97gPZoye2iTkFCNSeM0jqOn7+wCbVu4rrYTxHwSnV64kk9KbjCbm3xYL5X0DZ097aj/A20CexBZk2/yaG1Znc1m6fJzSoi7y02Je69bvqGFaQncShsAHwU2+ERYth1OwDGuvPecl4VTiGBJKaTDXCxlia+Q19avFd4rERY10R+aAfhqIE/PdiL2rpeDDyyBkVGKXJ6+d9nOW6AlaqYC27DD2RK9JfFLB/0AG63iUKyTvl1afONOjxTRR+gZvfztZZRkd+aK4EtwokKZIyUn2Ttu0zxPmWcohtJ8pF+kSAcgwp4lGMHw3FU9h4XQtsx/Wm2GesL9eb8wUo7LdNTJnUSfX8j0ClNfIM1ROMjhPr7iANiyQx0ezNB0vVgcRuq4Kxb2yCJoai+R2PKWD7HA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776154979-150997
+X-HE-Meta: U2FsdGVkX19jVzhIsFQpRRS/HMDdGaB8CFamotx6InmBm7Isdq6Cowu7hErzuE2VUZc1Qt5zb6zNoaDcuZyRgGFGOWjFckCxcv18f7n8p96xj25MPD/6Ku5YoPnXGIJfuQ+qve+uH//Z6iW0br2635Yp3EZZvyq5WPuVBtAMlsPWychJXHPH0dk874HKhdH/MM55axZfCOCXkesTR4I6/oeN2JO9cE6LEU0sn1kNy5ZLRpxi5FO6DQnEAsxVRu7YkYUFyyBpTCr3UBcRzm0zRTmdkdDm7qzFDws56dVhxKPKaahAQJZx/mPFJVu1srFND6EeMMcij8UyjFrRjGUP82EYGb1K6xrYzPm+cCMdx89J8Hjub7eMas9oIwIU+yJUEFR09nzn4lSfSaigbmGam9NnhCvSNTXvc3MmNv13CEEkhiOgQP1Mvgw7ma3m7I0UH7HWF+2fyb+9RP1oc130p58grVmfXjCflNF0WXphP+5kqjmaTbsuuPBeMR9/PQoaJ3RFVhNHWZG5UTysW68W4siTMVLF9U5inaNPYFVNbkiqgPImEtJjBqA16iLCXO6By+h8ocSNV6iT9Iyw1zKXkyGuqbNgzbY3w/s+kJ1BghYIJyCKPLIzUrneK3kHRV7TNHQa9hDwJQ5NqcW0a/ECavjXbDp4zCyTC3RUzwggPgxj3hS265mPnCrvVTt/gtUBUgdsWO0nf68pPqPS7wm8rUnscse3FXtlvZk3rd4i4rCuaxjR9p8egqbPY63KFYPnKqeFXUaD9grSRxOFcxcVLj77oFP6T1Wu/Y5T4eLmKUcTEQBIDLtJA1WlEdTtO3hfuAXGWl5DUbd7Qzt7FfavglXEaSZ7m/jHZ17NUVJcMZhn3DbFSIWALncUQPKQBiU6ye2zTtozxSGJdvg7bnKGsayBiycfakCJSYHVzdAbNg138h4nFr7pbZN20AjEqIOndu26BtALxbLKNYdOEnx
+ 1172aZGA
+ +D/Nj6hD/S0bGK7LimR6kqO2CO4cBTmS0HqHogbzhWG6TEEmeHxdhNZ9ZqYgJIIhvxuEOiys5GVT3N4MnuJFfbRe2dsqgRujuaaG0wyu9x4wfHCQtWIZVWfQi/F+lSrmqPVB6+7EmNB8LOJUs6w8aNQ+wEx4AMqNOJAjcXyYWAWTBAVxaNn9Esu+juyYaCAYnx6iWCaxW+i+SOeixu03DKoTAfcKwm7wsLT2QamaKTts2zZF3oXEY/lL5CM1XtysWUUynXYIIiHb66UI4LsnT32yE7ckLDS4Ypj/ydPm451O8UMtzAtad9MGEns6xOVxW5wwiBDp908qRmBhyjSiolj8nKTMCS+EMX4emBk+HqmCg+Kg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,136 +144,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test currently moves the calling shell ($$) into the target cgroup
-before executing write_to_hugetlbfs. This results in the shell and any
-intermediate allocations being charged to the cgroup, introducing noise
-and nondeterminism in accounting. It also requires moving the shell back
-to the root cgroup after execution.
+The split_file_backed_thp() test mounts a tmpfs with a fixed size of
+"4m". This works on systems with smaller PMD page sizes,
+but fails on configurations where the PMD huge page size is
+larger (e.g. 16MB).
 
-Spawn a helper process that joins the target cgroup and
-exec()'s write_to_hugetlbfs. This ensures that only the workload is
-accounted to the cgroup and avoids unintended charging from the shell.
+On such systems, the fixed 4MB tmpfs is insufficient to allocate even
+a single PMD-sized THP, causing the test to fail.
 
-The test currently validates both hugetlb usage and memory.current.
-However, memory.current includes internal memcg allocations and
-per-CPU batched accounting (MEMCG_CHARGE_BATCH), which are not
-synchronized and can vary across systems, leading to
-non-deterministic results.
+Fix this by sizing the tmpfs dynamically based on the runtime
+pmd_pagesize, allocating space for two PMD-sized pages.
 
-Since hugetlb memory is accounted via hugetlb.<size>.current,
-memory.current is not a reliable indicator here. Drop memory.current
-checks and rely only on hugetlb controller statistics for stable
-and accurate validation.
+Before patch:
+  running ./split_huge_page_test /tmp/xfs_dir_YTrI5E
+  --------------------------------------------------
+  TAP version 13
+  1..55
+  ok 1 Split zero filled huge pages successful
+  ok 2 Split huge pages to order 0 successful
+  ok 3 Split huge pages to order 2 successful
+  ok 4 Split huge pages to order 3 successful
+  ok 5 Split huge pages to order 4 successful
+  ok 6 Split huge pages to order 5 successful
+  ok 7 Split huge pages to order 6 successful
+  ok 8 Split huge pages to order 7 successful
+  ok 9 Split PTE-mapped huge pages successful
+   Please enable pr_debug in split_huge_pages_in_file() for more info.
+   Failed to write data to testing file: Success (0)
+  Bail out! Error occurred
+   Planned tests != run tests (55 != 9)
+   Totals: pass:9 fail:0 xfail:0 xpass:0 skip:0 error:0
+ [FAIL]
 
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
+After patch:
+  running ./split_huge_page_test /tmp/xfs_dir_bMvj6o
+  --------------------------------------------------
+  TAP version 13
+  1..55
+  ok 1 Split zero filled huge pages successful
+  ok 2 Split huge pages to order 0 successful
+  ok 3 Split huge pages to order 2 successful
+  ok 4 Split huge pages to order 3 successful
+  ok 5 Split huge pages to order 4 successful
+  ok 6 Split huge pages to order 5 successful
+  ok 7 Split huge pages to order 6 successful
+  ok 8 Split huge pages to order 7 successful
+  ok 9 Split PTE-mapped huge pages successful
+   Please enable pr_debug in split_huge_pages_in_file() for more info.
+   Please check dmesg for more information
+  ok 10 File-backed THP split to order 0 test done
+   Please enable pr_debug in split_huge_pages_in_file() for more info.
+   Please check dmesg for more information
+  ok 11 File-backed THP split to order 1 test done
+   Please enable pr_debug in split_huge_pages_in_file() for more info.
+   Please check dmesg for more information
+  ok 12 File-backed THP split to order 2 test done
+...
+  ok 55 Split PMD-mapped pagecache folio to order 7 at
+    in-folio offset 128 passed
+   Totals: pass:55 fail:0 xfail:0 xpass:0 skip:0 error:0
+   [PASS]
+ok 1 split_huge_page_test /tmp/xfs_dir_bMvj6o
+
+Fixes: fbe37501b252 ("mm: huge_memory: debugfs for file-backed THP split")
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
 ---
- .../selftests/mm/hugetlb_reparenting_test.sh  | 41 ++++++++-----------
- 1 file changed, 17 insertions(+), 24 deletions(-)
+ tools/testing/selftests/mm/split_huge_page_test.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-index 00f3f3cd8909..014201cb6427 100755
---- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-@@ -105,22 +105,17 @@ function assert_with_retry() {
- }
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index e0167111bdd1..57e8a1c9647a 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -484,6 +484,8 @@ static void split_file_backed_thp(int order)
+ 	char tmpfs_template[] = "/tmp/thp_split_XXXXXX";
+ 	const char *tmpfs_loc = mkdtemp(tmpfs_template);
+ 	char testfile[INPUT_MAX];
++	unsigned long size = 2 * pmd_pagesize;
++	char opts[64];
+ 	ssize_t num_written, num_read;
+ 	char *file_buf1, *file_buf2;
+ 	uint64_t pgoff_start = 0, pgoff_end = 1024;
+@@ -503,7 +505,8 @@ static void split_file_backed_thp(int order)
+ 		file_buf1[i] = (char)i;
+ 	memset(file_buf2, 0, pmd_pagesize);
  
- function assert_state() {
--  local expected_a="$1"
--  local expected_a_hugetlb="$2"
--  local expected_b=""
-+  local expected_a_hugetlb="$1"
-   local expected_b_hugetlb=""
+-	status = mount("tmpfs", tmpfs_loc, "tmpfs", 0, "huge=always,size=4m");
++	snprintf(opts, sizeof(opts), "huge=always,size=%lu", size);
++	status = mount("tmpfs", tmpfs_loc, "tmpfs", 0, opts);
  
--  if [ ! -z ${3:-} ] && [ ! -z ${4:-} ]; then
--    expected_b="$3"
--    expected_b_hugetlb="$4"
-+  if [ ! -z ${2:-} ]; then
-+    expected_b_hugetlb="$2"
-   fi
- 
--  assert_with_retry "$CGROUP_ROOT/a/memory.$usage_file" "$expected_a"
-   assert_with_retry \
- 	  "$CGROUP_ROOT/a/hugetlb.${MB_DISPLAY}${UNIT}.$usage_file" "$expected_a_hugetlb"
- 
--  if [[ -n "$expected_b" && -n "$expected_b_hugetlb" ]]; then
--    assert_with_retry "$CGROUP_ROOT/a/b/memory.$usage_file" "$expected_b"
-+  if [[ -n "$expected_b_hugetlb" ]]; then
-     assert_with_retry \
- 	  "$CGROUP_ROOT/a/b/hugetlb.${MB_DISPLAY}${UNIT}.$usage_file" "$expected_b_hugetlb"
-   fi
-@@ -154,18 +149,16 @@ write_hugetlbfs() {
-   local size="$3"
- 
-   if [[ $cgroup2 ]]; then
--    echo $$ >$CGROUP_ROOT/$cgroup/cgroup.procs
-+    cg_file="$CGROUP_ROOT/$cgroup/cgroup.procs"
-   else
-     echo 0 >$CGROUP_ROOT/$cgroup/cpuset.mems
-     echo 0 >$CGROUP_ROOT/$cgroup/cpuset.cpus
--    echo $$ >"$CGROUP_ROOT/$cgroup/tasks"
--  fi
--  ./write_to_hugetlbfs -p "$path" -s "$size" -m 0 -o
--  if [[ $cgroup2 ]]; then
--    echo $$ >$CGROUP_ROOT/cgroup.procs
--  else
--    echo $$ >"$CGROUP_ROOT/tasks"
-+    cg_file="$CGROUP_ROOT/$cgroup/tasks"
-   fi
-+
-+  # Spawn helper to join cgroup before exec to ensure correct cgroup accounting
-+  bash -c "echo \$\$ > '$cg_file'; exec ./write_to_hugetlbfs -p '$path' -s '$size' -m 0 -o" & pid=$!
-+  wait "$pid"
-   echo
- }
- 
-@@ -203,21 +196,21 @@ if [[ ! $cgroup2 ]]; then
-   write_hugetlbfs a "$MNT"/test $size
- 
-   echo Assert memory charged correctly for parent use.
--  assert_state 0 $size 0 0
-+  assert_state $size 0
- 
-   write_hugetlbfs a/b "$MNT"/test2 $size
- 
-   echo Assert memory charged correctly for child use.
--  assert_state 0 $(($size * 2)) 0 $size
-+  assert_state $(($size * 2)) $size
- 
-   rmdir "$CGROUP_ROOT"/a/b
-   echo Assert memory reparent correctly.
--  assert_state 0 $(($size * 2))
-+  assert_state $(($size * 2))
- 
-   rm -rf "$MNT"/*
-   umount "$MNT"
-   echo Assert memory uncharged correctly.
--  assert_state 0 0
-+  assert_state 0
- 
-   cleanup
- fi
-@@ -231,16 +224,16 @@ echo write
- write_hugetlbfs a/b "$MNT"/test2 $size
- 
- echo Assert memory charged correctly for child only use.
--assert_state 0 $(($size)) 0 $size
-+assert_state $(($size)) $size
- 
- rmdir "$CGROUP_ROOT"/a/b
- echo Assert memory reparent correctly.
--assert_state 0 $size
-+assert_state $size
- 
- rm -rf "$MNT"/*
- umount "$MNT"
- echo Assert memory uncharged correctly.
--assert_state 0 0
-+assert_state 0
- 
- cleanup
- 
+ 	if (status)
+ 		ksft_exit_fail_msg("Unable to create a tmpfs for testing\n");
 -- 
 2.52.0
 
