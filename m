@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAE63F9D0F6
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 01:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F4D0F9D0FD
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 01:21:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E99006B0093; Tue, 14 Apr 2026 21:21:00 -0400 (EDT)
+	id 06FF56B0095; Tue, 14 Apr 2026 21:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E21856B0095; Tue, 14 Apr 2026 21:21:00 -0400 (EDT)
+	id D376B6B0099; Tue, 14 Apr 2026 21:21:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4D376B0093; Tue, 14 Apr 2026 21:21:00 -0400 (EDT)
+	id B3BFC6B0098; Tue, 14 Apr 2026 21:21:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DF076B0096
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C7D96B0095
 	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:21:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 32A8158122
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4E762E3053
 	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:21:00 +0000 (UTC)
-X-FDA: 84659036280.05.8D2720B
+X-FDA: 84659036280.30.903BACC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 644DA140002
+	by imf20.hostedemail.com (Postfix) with ESMTP id 915C41C0006
 	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:20:58 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aK64Gw2u;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zuqu7Ybr;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776216058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8dYXSnsy3YgKkiYK2k8BEGYVs6F8PwUlTNDUI2oZeWg=;
-	b=NNhDDCvSoPk/iBNMRH0Vi3JlJ0hMUSjTgRK3WNqXeQv0cLAqVJmatPEd7QGssS/gycU30M
-	UvOsjcqxzlqgTB9iYaWhuS4mEGP+FOVfGAVgOizArwshmXDvU6/ZFr8NkEw/uNaELiUMCU
-	eam5DerAJWmHPHqpBb0SQWey9k9M9lQ=
+	bh=KsTMemCfzY0lhpWKvlz0/7Un7osB+uqGWOt7hdC9jrE=;
+	b=uz75GWcjtjSY0SjkDJV6UFhXC80Z97nIBKu9MO2DNCaVuN9PVQQBK31vSm75IdcnilJxz4
+	PhiUa6h4dLQ18TaA25j+vfr8mLtPF8NOavGir5esHTdam52yHe2HYL2+lUwoD6jKu1/kd6
+	PFVSjhIutga5NBFTUk8E0THVQUvBK7Q=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776216058; a=rsa-sha256;
 	cv=none;
-	b=lfLJCad/XTYmc2/NOCj559r/tsCOlTpLQlVcB1E5Pe66y+slwADG//LelKyHVNjOLlxQBV
-	m13xVSXhr/Vo3MDdRiyNdT8VMTb6rHZLKW4uW6Yc2LKoI03pdmNaDo/Py/vcHkCxBPB3/p
-	Q9eWCqZa5bk+GQF0d8KVmWOcw3U1Urg=
+	b=mm8H2QDQ6oMhZ6IITy58gpQi4tE8PiO7uOtLpEIsl9Pf0S6vOVj5vUKu1ibTe1mT/aCXgo
+	C0WOhZuHXnPA5uNaR49DwhPBqd264gZZCU+Qs91OjLQHHNGmAT13y10j5vma9JCriqua8Q
+	DWFL/1mHOQ5E+CVD04UZQYY8soQeydI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aK64Gw2u;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zuqu7Ybr;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 245A8444A4;
+	by sea.source.kernel.org (Postfix) with ESMTP id BFEC64457A;
 	Wed, 15 Apr 2026 01:20:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD95BC4AF0B;
-	Wed, 15 Apr 2026 01:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79892C19425;
+	Wed, 15 Apr 2026 01:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776216057;
-	bh=9rMAkySwPwOzbR0wIgkJ8MpOnAl8M9axmSlqMcxmgDo=;
+	bh=d7zJukuGsoRpeCy4tkwyJwYBmFc6TkPv6uDC4T8m6EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aK64Gw2ur1hChS7ihUc5Z+ZtOlcOMO6rKxfPpk1x12xYtp19gCrx5YtOmmiBtsPLK
-	 Nqfa/HwiNAbxNJge6BC928eI8Xc+Q58dLxSglm8rjoRI/Q0VzDq5xkrIa/gEO/Ubde
-	 l8XKuPG8BsYipTEhAL6hqA/zB1rIyBUhkdlvhJ1AhokMkEbgtx5lmuI3LG4/jKUq9z
-	 ezcuoQVS0T6tB+Q0hsPVTC2KFJidYWEnPxw3QxLYf5NgjD9Yih2CXxndfAnxqnLd+k
-	 Gd6TIaEhRv86iDjoaTWErgw12wq+oISGaWy/z7ebg5f382XxNZ6wTKYOVlbm0jcSxw
-	 zMZ31oUofRvSQ==
+	b=Zuqu7YbrOifqoHzSY082nxiqYcDO/tBge91J9GrdcWoRwoXkGeQ+IdioKg/uFdhVC
+	 Xw5IkdfhzRbLL0QuUQSeCTDI1STf4I3rQTG4DVoGdQP6Q2/HDQca7pXzAG075Lt0Fc
+	 hTIva8vcI3ZgBAbV7aZ6xuPpLRSYcFx/LpNUsKE7+iR8X4FpHVAYWlOFQJNbmXwGNP
+	 8efYV/WT7rBKYs7BNNlmLw2iFodhCBc9nIKpA2pnhjuXxVYsOCikiRmKCAvUr3EEUW
+	 y2jbBC31jEJqRWuVOrGWNLPbASVU2+GGqnDJEPGHCIeX9YMJsA1hmoJxcptzLUaMB2
+	 1te8pUaaWPvog==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/7] mm/damon: introduce damon_set_region_system_rams_default()
-Date: Tue, 14 Apr 2026 18:20:29 -0700
-Message-ID: <20260415012048.76508-2-sj@kernel.org>
+Subject: [RFC PATCH 3/7] mm/damon/lru_sort: cover all system rams
+Date: Tue, 14 Apr 2026 18:20:31 -0700
+Message-ID: <20260415012048.76508-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260415012048.76508-1-sj@kernel.org>
 References: <20260415012048.76508-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 644DA140002
-X-Stat-Signature: xofi6e7aifbnao3dnb9p555uy8hkp4hk
+X-Rspamd-Server: rspam12
+X-Stat-Signature: mxeus8h3m8drmqt6cerrq7i5gsfwksfc
+X-Rspamd-Queue-Id: 915C41C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776216058-149586
-X-HE-Meta: U2FsdGVkX1/iLtNCKb4NUGKERuP+i/FXydVIXWnTWPK96xrkWDatByZtVnBwZCXbZJpoWug0CjYh4ZPYt2axIi41HegdqDPgZomeUUvC2l6+QmhW8z4RLzQv5hJ73hsADm/JrXRD6EkdpBml1P5RlvyhH8x8c3fGzPIN5VHldY2Jb30yPjmvE5rjHL0OWqWPwV21MjJVUzCqIG5lV7nvCAnaj663Gn5OMdbFTsAJCE6l3s4JPGju3gwwfyjxqaRGJmawGQ9q7iRRMpdbkfQVbf2MDRpYx1W+EolHlcCUfHBPyrE7IfXV0O+57MXOWMSFk5oDT1Uf+t62atnidT/1NwhjQ6cZ4IhvA7Zvc7x3HJG5aK0q0/spI3tmxIr+zpE1wuh2in2uQ+gpxigPQ0/dThJTR1n5RI0vyq3OQJmJXYkNVmM5EVB9QgNT7FOwTCyQvO42mqN9MdwiNxZLy2XfVQlVZadVI4jU5C6YbvvgDQfYG6OJ3lE4f93YkfVgSfF87/WXOG9dtBdLwDt47rxdAyYSTDiF0YCV2ioomBAV+bxTA2YAevzQwt+22w3R18hvIC4PtVVHTIxz24mL+H7jYBL1yOAUPEy7mCCXkEaOVHcrYYfVREhT1OQvEejviviZShjWwbKnBafbbnUDWizDggwnKuRUz2VKTWrOlhIeeme9Gb0/rUxWWB4X8xCTTojAKKX4RLl2kMUx48DXYLYn49/beseH+XrK7uNTG87y7MCVS1p8eR20eZPdiw3tHpygRp/YNgN812+zQGEH5e5nc98AYamOaiDDfQaopH1WGNVVEgEpWxiT4FCVGo68f/Rh35E+j+NsAPHdu6kKXsE132OSyzh6YOzQU/n9SS6hEe2RJ5hl9pDG767/IAvMlSYC/FvC435nrEGnOwMQAvA+B0dGq2J5QHU5pPVEZ3kTUZWfAP3ywdkDC8Q5B1yR/kDfSfAljfVb9UBBRTGdX3h
- ETZJzvUO
- DrvqnSb1pSS214jcndaKdoaCxxZVBS5Zjrarc7KzKa19o4zzDG18wfn6r3hQ0Re762pTzf3urd+rWeBBuvU03tZfriFTvrHBfFXvu0feIr2aOd2bSfNkEN5oqwHaKvWulYRk5sJnJACU7AJxtyQ4yxglEt2T9xbddpPUmGeF8zLurjI2QhzLiOViT+oyXuPBMrj4rqbo5MrPSjyjhunVmHU4hiZ0V7/LvizEKfb3qyS0lDKAihy0cew2fYkSLKiS1Ypx5uvWLANtFmjz7FoP8DDVOgg==
+X-HE-Tag: 1776216058-730076
+X-HE-Meta: U2FsdGVkX1+NVh0qaLQ7cKymgp/tQVjhLHaZorEziWMQcRHUNenTNjiDSvbS4IVo4vHCQnyRGLoDT+lneQWsZH4XxxXuH4m9AVw36lQzPLQzQyAY/Jglb+yvUA9WljxYjP/JA42DtKjcHDRdJs9LsSfrEOabS481GpFf1sfL2Z4XSPeTPOad5BU+llQSKCvnPhWZQRPPz28Lp49Z++IoXX9y9pwWPX62IH2kibNNVS0z/mwSvP437fiOE72xUfMmTXgHY6ngaWyA946HIiyYQwUK16apRrpW+oQEFfrqOR5MgFideHLqVHJ2bYcPo11HS5DWC2+tyfelSLchY9IZkXSraH0kuJ9pms5reTbdzfkAK5hBFuv8sSHAPZ4uZqpkmP1Lp3qipt43P5zNjAbgNFpDGvcft1SuK8OB8WH2if9hn6+BqxkshFeXol7Bz2SPY1qGK3zYfErySMwPFgryl/dqK3DhjnudM4Jxmuw/swdPrRklPsSvpryN9COVnK8D0nd6prKqsVyFTwA8u4vkeBGkWEiVOTkp4U6P5UwtaMFb3sfPQgBiRGx8eH1wSqUOpj3qg+r8d5QfqbYToakGzv34FvIcXeWPnChP1Mt6lhJmZ2yEOi2IJ2QuLQaSz8XzHJ/PHgiL9qnHXUn/zph5xRea178zfDw452jjGmJ9OH99pPxgJozZVoTHN4CFWP1nJPDouCRe12wwFrbd3zym6DSNSwHyhIazixaxZQG1UJ0qwTE+NYEQqxbV0kFTDSSmIpVGZGYRsQlNZbM0oaH4vrfXx27oBERrOSLdyZAYD591tu4p5YW7JDoKAvnE/YnwcXu5YsWInQeGukxOOOgoOlPFMkxf7gdBMdmpF6/hk/9fZFIAgeIPFy3IFglt+Umn13anGW5xfgiBSAMCV4DbAq60hItRKj+8klQVwBCF9l9+82/vOTvM46L0qfV/J4XVdxASpU/Oxowb4w46DAf
+ FYTFtqRu
+ 2mNYWu2qRw+uRiM7qljR402ZEJEaT4WuBSss63tP+xzhSxV3ga34mpRpQWf5h0nNgegYs6xKZhvsCkkNAqYq5+Nhp/eKUTFpyXHhA81mHkGhzOs/AufeMalDofsYtxzP3posNu7K+rdBJ51KymSO1DONg3sCI+o1luy/dUqmbw9iDe4/sgzsdQaL9RrIb2yJyv7+CnWgHwj9ESUO1lHzEJZ788dJjmIg+BNhecInprgFYfq9VAHyOVsao8oYSQL8Q9q+wFhXq+y3E9rnvBiCtuF70ug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,135 +93,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_set_region_biggest_system_ram_default() sets the monitoring target
-region as the caller requested.  If the caller didn't specify the
-region, it finds the biggest System RAM of the system and sets it as the
-target region.  When there are more than one considerable size of System
-RAM resources in the system, the default target setup makes no sense.
-Introduce a variant, namely damon_set_region_system_rams_default().  It
-sets a physical address range that covers all System RAM resources as
-the default target region.
+DAMON_LRU_SORT allows users to set the physical address range to monitor
+and do the work on.  When users don't explicitly set the range, the
+biggest system ram resource of the system is selected as the monitoring
+target address range.  The intention was to reduce the overhead from
+monitoring non-System RAM areas because monitoring non-System RAM may be
+meaningless.  However, because of the sampling based access check and
+adaptive regions adjustment, the overhead should be negligible.  It
+makes more sense to just cover all system rams of the system.  Do so.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h |  5 +++
- mm/damon/core.c       | 77 ++++++++++++++++++++++++++++++++++++++++---
- 2 files changed, 77 insertions(+), 5 deletions(-)
+ mm/damon/lru_sort.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 5fb1dc585658b..c4cdaa01ea530 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1007,6 +1007,11 @@ int damon_kdamond_pid(struct damon_ctx *ctx);
- int damon_call(struct damon_ctx *ctx, struct damon_call_control *control);
- int damos_walk(struct damon_ctx *ctx, struct damos_walk_control *control);
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 641af42cc2d1a..48ddfa6369c93 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -139,7 +139,8 @@ DEFINE_DAMON_MODULES_MON_ATTRS_PARAMS(damon_lru_sort_mon_attrs);
+  * Start of the target memory region in physical address.
+  *
+  * The start physical address of memory region that DAMON_LRU_SORT will do work
+- * against.  By default, biggest System RAM is used as the region.
++ * against.  By default, the system's entire phyiscal memory is used as the
++ * region.
+  */
+ static unsigned long monitor_region_start __read_mostly;
+ module_param(monitor_region_start, ulong, 0600);
+@@ -148,7 +149,8 @@ module_param(monitor_region_start, ulong, 0600);
+  * End of the target memory region in physical address.
+  *
+  * The end physical address of memory region that DAMON_LRU_SORT will do work
+- * against.  By default, biggest System RAM is used as the region.
++ * against.  By default, the system's entire phyiscal memory is used as the
++ * region.
+  */
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+@@ -335,7 +337,7 @@ static int damon_lru_sort_apply_parameters(void)
+ 	if (err)
+ 		goto out;
  
-+int damon_set_region_system_rams_default(struct damon_target *t,
-+				unsigned long *start, unsigned long *end,
-+				unsigned long addr_unit,
-+				unsigned long min_region_sz);
-+
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
- 				unsigned long *start, unsigned long *end,
- 				unsigned long addr_unit,
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 48633da449104..3cef74ba7f0f4 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3186,14 +3186,20 @@ static int kdamond_fn(void *data)
- 	return 0;
- }
- 
--static int walk_system_ram(struct resource *res, void *arg)
-+struct damon_system_ram_range_walk_arg {
-+	bool walked;
-+	struct resource res;
-+};
-+
-+static int damon_system_ram_walk_fn(struct resource *res, void *arg)
- {
--	struct resource *a = arg;
-+	struct damon_system_ram_range_walk_arg *a = arg;
- 
--	if (resource_size(a) < resource_size(res)) {
--		a->start = res->start;
--		a->end = res->end;
-+	if (!a->walked) {
-+		a->walked = true;
-+		a->res.start = res->start;
- 	}
-+	a->res.end = res->end;
- 	return 0;
- }
- 
-@@ -3210,6 +3216,67 @@ static unsigned long damon_res_to_core_addr(resource_size_t ra,
- 	return ra / addr_unit;
- }
- 
-+static bool damon_find_system_rams_range(unsigned long *start,
-+		unsigned long *end, unsigned long addr_unit)
-+{
-+	struct damon_system_ram_range_walk_arg arg = {};
-+
-+	walk_system_ram_res(0, -1, &arg, damon_system_ram_walk_fn);
-+	if (!arg.walked)
-+		return false;
-+	*start = damon_res_to_core_addr(arg.res.start, addr_unit);
-+	*end = damon_res_to_core_addr(arg.res.end + 1, addr_unit);
-+	if (*end <= *start)
-+		return false;
-+	return true;
-+}
-+
-+/**
-+ * damon_set_region_system_rams_default() - Set the region of the given
-+ * monitoring target as requested, or to cover all 'System RAM' resources.
-+ * @t:		The monitoring target to set the region.
-+ * @start:	The pointer to the start address of the region.
-+ * @end:	The pointer to the end address of the region.
-+ * @addr_unit:	The address unit for the damon_ctx of @t.
-+ * @min_region_sz:	Minimum region size.
-+ *
-+ * This function sets the region of @t as requested by @start and @end.  If the
-+ * values of @start and @end are zero, however, this function finds 'System
-+ * RAM' resources and sets the region to cover all the resource.  In the latter
-+ * case, this function saves the start and the end addresseses of the first and
-+ * the last resources in @start and @end, respectively.
-+ *
-+ * Return: 0 on success, negative error code otherwise.
-+ */
-+int damon_set_region_system_rams_default(struct damon_target *t,
-+			unsigned long *start, unsigned long *end,
-+			unsigned long addr_unit, unsigned long min_region_sz)
-+{
-+	struct damon_addr_range addr_range;
-+
-+	if (*start > *end)
-+		return -EINVAL;
-+
-+	if (!*start && !*end &&
-+		!damon_find_system_rams_range(start, end, addr_unit))
-+		return -EINVAL;
-+
-+	addr_range.start = *start;
-+	addr_range.end = *end;
-+	return damon_set_regions(t, &addr_range, 1, min_region_sz);
-+}
-+
-+static int walk_system_ram(struct resource *res, void *arg)
-+{
-+	struct resource *a = arg;
-+
-+	if (resource_size(a) < resource_size(res)) {
-+		a->start = res->start;
-+		a->end = res->end;
-+	}
-+	return 0;
-+}
-+
- /*
-  * Find biggest 'System RAM' resource and store its start and end address in
-  * @start and @end, respectively.  If no System RAM is found, returns false.
+-	err = damon_set_region_biggest_system_ram_default(param_target,
++	err = damon_set_region_system_rams_default(param_target,
+ 					&monitor_region_start,
+ 					&monitor_region_end,
+ 					param_ctx->addr_unit,
 -- 
 2.47.3
 
