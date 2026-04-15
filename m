@@ -4,99 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1753DF428F5
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 20:56:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAE8EF428F5
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 20:56:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB00F6B0005; Wed, 15 Apr 2026 16:56:00 -0400 (EDT)
+	id 5BEE46B0089; Wed, 15 Apr 2026 16:56:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3A046B0089; Wed, 15 Apr 2026 16:56:00 -0400 (EDT)
+	id 570306B008A; Wed, 15 Apr 2026 16:56:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A017E6B008A; Wed, 15 Apr 2026 16:56:00 -0400 (EDT)
+	id 437DD6B008C; Wed, 15 Apr 2026 16:56:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 864D66B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:56:00 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BCD70160605
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:55:59 +0000 (UTC)
-X-FDA: 84661997238.03.8F16C1F
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 12E804000B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:55:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X3DZ13Ow;
-	spf=pass (imf11.hostedemail.com: domain of vinicius.gomes@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=vinicius.gomes@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776286557;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3089A6B0089
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:56:51 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D33C8160612
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:56:50 +0000 (UTC)
+X-FDA: 84661999380.13.E32C44E
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C0D4A180016
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:56:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=h9FnKW8i;
+	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776286608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ENNbs4gbyOAs95P0v1deKno0AQbBqBiXnzI8NKCHyzw=;
-	b=X/hkI4tuuowSSirTG0PRE+4j+Rli8oEpe035C/+KGzYMvM4pX02K+lA30EuRzyUnRJripu
-	NAweXViF3jBUeXCdz4UraPkCgrB1e8fZRNhm2E/TwN3QarhgkeTPhw/6hKWGoeB0kV5tXe
-	apjD79mNxt7cdIxFq6myuJ4U58vR3k0=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=X3DZ13Ow;
-	spf=pass (imf11.hostedemail.com: domain of vinicius.gomes@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=vinicius.gomes@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776286557; a=rsa-sha256;
-	cv=none;
-	b=D9wxE5PVgrIuL3mXFDQRxMGjqBg5G/71Mu5L4ktM/wITWByevHpKqTDBD/tQtc/ky7tvP9
-	DKwoe6ssiXbueRUrO+Kh7+NSCGuerJaCWUdvEwGghIZbckacw2zi1ioTt1nxp96NnBLVGy
-	KlA+casFKAdZZo9YuKfZsKX65dvm42c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776286557; x=1807822557;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=G1TIPTrudC61FQEc6LlRZJ0Y6VI6iOIVzJ8PnSQ90e4=;
-  b=X3DZ13OwZ4uxpoCSlL2/t4dy6veecnroD5QUPJKKICkB66Mv54M6ka/6
-   3i4mKsxgKe7+4gQReXc1RiCdsMx20LZshm/DULIOaKYhRzxvPn+cIFuu/
-   qGbqKLJZZ4ANFAIrKgnsGaKfVrK8CsZzXRxT2lGOiap+CEhnuVxna3EPU
-   2RnbrchZGEMvmrEcMPCOi2wHcm8Pg/7HZ75/0VaK5Fauvz/APGVg56/G2
-   enXUJ+EDPIpsKogul5KjsOHR2mzFKkyglQelRIftD6lmLx+e2x5wlFEJm
-   bgHdhfNF+BWDzNZ+sXBd5IUStijH23chu7I+sgoeDgQeEHBSOg52IRU3n
-   w==;
-X-CSE-ConnectionGUID: /rDgJ3rXSzyDQb7tyDRRTw==
-X-CSE-MsgGUID: EQDVMUv4TxGS6vxgZDT7VQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="77392675"
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
-   d="scan'208";a="77392675"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 13:55:55 -0700
-X-CSE-ConnectionGUID: uZtdK/G0TNiRuGshzxZDjQ==
-X-CSE-MsgGUID: PJVmEMMATpKvAhB+wYBHYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,181,1770624000"; 
-   d="scan'208";a="226211101"
-Received: from vcostago-desk1.jf.intel.com (HELO vcostago-desk1) ([10.88.27.144])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 13:55:54 -0700
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org, harry@kernel.org,
- akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.orgg, Hao Li
- <hao.li@linux.dev>
-Subject: Re: [RFC PATCH] slub: spill refill leftover objects into percpu
- sheaves
-In-Reply-To: <20260410112202.142597-1-hao.li@linux.dev>
-References: <20260410112202.142597-1-hao.li@linux.dev>
-Date: Wed, 15 Apr 2026 13:55:54 -0700
-Message-ID: <87a4v47xk5.fsf@intel.com>
+	bh=JqmrcX9qSaqHr61SrWlzMf7ZmFlrG/fsUaqnrdHct58=;
+	b=Us+6XNIpsuMHHW3HS50wDeu8gMsE8zmubAjkcSy2PuqJFb89+Ntk5+eA0xWxMXSojNLbXp
+	seH2km0lnBI6SzHV1fqOY4XXebPz9J23O432uJ7D8Ghqqk+YNXzAkKy/cbMnL12SKdgvnt
+	yXOOg+LR67o1PHLESz6Sp7AB0KLH11k=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=h9FnKW8i;
+	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776286608; a=rsa-sha256;
+	cv=pass;
+	b=y1eE9tOaDcHg8mnBXGviBOCeyFstJVTgFM5JIvmMaxy8zEt5fwXT3nZm4N3a0f2df1zsUL
+	lm0RgH6nft7f04n95pvtQYWTRF1a++0De9gy2y1rfCOUsd09klfq3qc3GAIguTgqF3Idl4
+	lVSLxGw3Vyyunx189u9mKxHRUYMOQQI=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488879dcbc3so3885e9.0
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:56:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776286607; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ds86J3anpmJ4nVzvHopTdq/7ksqHfvtEegJ95pO5IRjEDk4l4CrTL1PtOX0zMsNNvB
+         tQ9dL8g0VnN7XZie0V23IcUiqqPPQDQEBjkiB8vjGYjiqCOVAqacncNjrVHeqcF9C+hf
+         fWEeGM327IncnFX4VVCGIy6Q733nbPrxEHdluJqWRjO44zUSol0IElom/+zmFXEcpFG1
+         y+EDJMwpCqpYGxp34UTO/E+DrPeGa+8EzwWCKc9vC+SJ5nBIHHhZs6FFVq+tpbPZUrAV
+         fVyouD/snnTUYorc0vhhYLQo8Q6ItFwXFB0fkEVvOuyyB93rVIHjhQxbdwCBCpJyoPKx
+         3/Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JqmrcX9qSaqHr61SrWlzMf7ZmFlrG/fsUaqnrdHct58=;
+        fh=dxQwZ/IK11WsmPFCvx+GTTSHwJv3tKnB2EZTyl3KfMA=;
+        b=lNIikKe6fuG6PjwChQYEZ+yqBoixC+b5YvHB7MqIXiQ/fBIhOUDjhEkuVnkSaKeIHK
+         lsVNjSnNW9WrXv/DBwrtAcUFCa1YcNrmVHn7PrLVeqPe9pdog7GpH/dnhbWGG4P+Dbon
+         jreTuR7LbkvBZ8z0svC4mvDnKh4rqrQrF5A6GiSUIRYlUjl/atEhevkRKlZqU1MnHsgI
+         tBECIuN4mppwqw3lxXL5fR6F3gWxwqOYPpH5fVPDe9O4MhyHa4+yXEiFu8D9eLqa2tBX
+         SUadlZxJIBuy/MS00+nfODtb+LYvAO8ksV8QMg5R+VZPy6Cn4okX9GRVB1pKoBBpLo5P
+         r/Sg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776286607; x=1776891407; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JqmrcX9qSaqHr61SrWlzMf7ZmFlrG/fsUaqnrdHct58=;
+        b=h9FnKW8iUZy8/Pjbdv8vJY8ClgyXSS+zPcIGhikwoaZ39T3ZELMFzoJncDfGCLFGvd
+         ehVupe/oaniTlQ51cBq5F5U+ZveuQXzfoAp9sEjs7syO5z3sgc6RnJ/qX0VYnI4SW4m+
+         RBF3PZ+gG/dQJE4lF1PldVbZalgqpQqhnoDsUi8AC0QFcLXslbCwsYN8doikamtpokaj
+         VgS2pL6+f25/hk+1aR23NS/hgBQLjGXysheLG4F0qM5XObBgm6/eFO1tParfR57q6Ehe
+         MHkcGkroJEZ0ZOqabQNdY7iLaPGETbghyD3Vy8nu6b+0Pdaiy/x+geGJxMXPegF72qMN
+         5jlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776286607; x=1776891407;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JqmrcX9qSaqHr61SrWlzMf7ZmFlrG/fsUaqnrdHct58=;
+        b=C8Wa+1T8veXSaGUTvZjgFvFamVrLex2IqxIqcrqjWcCkVRRU4Y2RBSG5YJaBF4wklL
+         UEpljGncXvxS2aLCJ07uq+NcB4DgS5iZNVsCs2XhJBRIZ0GrlswFq3ztvpMVo6oU5XFY
+         qEHTwXYTa2HFzc2BvMH5Egg9fNfWsmeboYGCHEbK6URBYP5x1h7/U/WH1vkD6xK96lI2
+         FpCk9tBX3gfGVGpM8g19WE1tvBjKURdnJmLOhSFwEsBJ9PyGIsdMF8Ec8fTxFO7mi/7s
+         C9JytfXb/x2Kp1okp4xbVfyJU7LEjSkURjNhXLY9M510GmP9m/NI5ct7RH1X0FxhIY6a
+         SYfg==
+X-Forwarded-Encrypted: i=1; AFNElJ+yJvRk38FRpPHNX1ffL+nZD8ysqMnAxBvyzyRqo5AsN97dnesQCEnDJmEjDj9Izn+OJq7yB6IMkg==@kvack.org
+X-Gm-Message-State: AOJu0YxsB7z6tk/suzFuwtg1TisjiA6TqCg/CR6g5h4J+p0cp7bJr/nU
+	Fs2oSME0UlkkHoRveGdYXUnh8OC0f4Qlm6whDx0lOdY0NntXM1wtwJjdKD41Ijh+A2KSXj/2zyB
+	qKerAH2sLPlCYzBMiofwKyPIw8MONYfMNNhvVMszV
+X-Gm-Gg: AeBDievpUmmPXoip7sS2oxY5aoGP5OhoumLi4VhRl+waCWASCcYSbt2J7f1dMcvcNKy
+	Yxm4R9BR9fP/7UgvAk6HfZ4YFRyfAUwhxp7q8Janxzd25/Kk9lYx//gWo6b+nbuv7GUJVOef4x/
+	hmJSvf/AeH9I7P6Y4DQ8O681CWnSOGxZH09HKY+XR1sz52xNTlE5UF6Dq3Td8hT77qcEJi2ZWsX
+	VvBXhVAejbpW2lQuhf7elzCbmDKVdA+Z3MV3aWLlWc4XA2Tonvfb04yolEMi1KYjEBTS3wMacXJ
+	QBgP6PYJi/YpZ2o2sE1eroDhsq4wOhiCdqgckYwEmcrOelKYkf3yZESfAg==
+X-Received: by 2002:a05:600c:32af:b0:477:86fd:fb47 with SMTP id
+ 5b1f17b1804b1-488f4a9d81emr153385e9.8.1776286606809; Wed, 15 Apr 2026
+ 13:56:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: ismh5caooj8pmp48mjkmkqiyyy3kokp9
+References: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
+In-Reply-To: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Wed, 15 Apr 2026 13:56:35 -0700
+X-Gm-Features: AQROBzC_-yVQi7CjcD3DiHe7zBgEWti0V3awpLyPpMnYVTnD0d4omoeELg1sqHw
+Message-ID: <CACw3F51PC0iB6mfbiceQ_Kh242FN8zdXOfTyE5Pa_5+gjTPPGg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] mm/memory-failure: add panic option for
+ unrecoverable pages
+To: Breno Leitao <leitao@debian.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: xmimhp4u75nz189wf67gu4kw11qe3izr
+X-Rspamd-Queue-Id: C0D4A180016
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 12E804000B
-X-HE-Tag: 1776286556-777042
-X-HE-Meta: U2FsdGVkX1+h81kn9FVjypDz4RRMBDQMn4mR1ENA8O7Sx1RSAxTpz6vZiSiu3bayn5XHDK5F9xx5sXwFYeVC6kma5WNN0A1yZtPOXhx8QrMLvI+CgN61xE0RDFG5GpROlX4SzMJGKa3WiXdAoVHoA2U1QdC19vVDQX6PsviazVdpsWwHsZcZT8NzWTBP93QRMGoLCTySQfvkB1vgF28Ioyci/yE13aQ0HMxCvogeho74iAQ1Kj8bXhADSen2Rw+5M98pIUFNeR5en0k/xJNGBtuf1HEgO6oFkhBJ+GInW/k+8yOaMVBb8LiJ9FnTZTfItDjqump2MJJ99fn5mz5HWaoujOYstizaK+zJXwO7O3XeQjUG4zE1BFFSGdBRI4P23zYtmjpsWIO9QFlLJOeH86YiGIp8d2Wlx0fxlJf7Ia/PW4Mzzr8aDJnlCJ2n02wDXkgVIq8iPamVf9hGw1xEB6GgA4oWYLBwlK35LZiSziaKfaN1HYf7iVxxJWN+ghumjDhb9UkDBIXZa5BVOVAd7e0Ezz4UYggOf3cWS4lFxpaUv/r/8ApADytsr/apZ64Br7BVlvpGOORzG6Gxk1UxMJeut0ejK6fkOPcDayNJFnf7kQPDojBDMYubXi4GjAWi31cIYamUo1dKwSC5I+xFZSPPGfiSuVOH9560hUROGoeqCPlItl24FXBqmp9EstZ/2/bLnL3hojTKL919WK/SWCWvGrWwBYeeGkfv/3JsvQO2SEBX/3Ke5Pi3cErJvMWLXgeSaNRAdUKNP5bshFvh8BHMnDSTYJngDtwBoX9P6DW9OlqpWumy4qWMfo0n+oNEsypn3N7pJOUn1AqZpOpZCuoY0Lne4ye2QB9LtpR3WyRdc5A/mtkP62k4e5Ob9TjkvG2OaxaVmOE1j7tUyRZcXIcbP2A56t0z/8y2jYOi4fpY1NbWs+RKOinU699qsSy7keKQoOHPHnZ1VR3g40G
- 6bPn1eZj
- r0sIaIZLusN5BVpxsixlmNtIJxef1N+wxROHS8mXtJ+WEkGP+MkT1mF7CCMwSdgbOXav0sbMj6soxm1z2wtxXlSHUV/sPSeG+5xNt1RohuarlaFMVkSxM6ZNiPKH+WiXKQH8IBZcCbSm8xiNMkA9nCnfvS5+9V0qPV189f7Tt/ku4Hz8=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776286608-799169
+X-HE-Meta: U2FsdGVkX18iLltkeuPfXLoAkC3mzpFZDYZmsXlM3B0J5Wz+V7PwQurAKz+onT8uLgqF6ij6AB5FlqjRkkEvwnawlaNiusK8Z2Md8NEyJDT5aZEBEBdQFTn5AS1XUcSrVUiCzS5zqkXSBv42ERIiG7XGx6zvIzIBxz71ad0/eVbx/PfHBhV5m6Wajice8S46IrDAfq4vGMfEAOLblNmp3X5+L1MCVX0qOTL4GjTwIVsuG0m58Vav2B/6uY+SAIdTiQpedKDnI3riK+NEa+ZrRY/83zRX0xgDvOkBZVQnWNigM+/aeNPM+ydm8fb43Juo2XOf5/QhxJBmNGJRHu5fT4Fj2kwgzvJbZ+G0VmlHvS+tL2HHx7etRCo+nJ9a2D1T2J5y8Kkb1y8ZNjX7QuDjofs/wEbnU+6C2K40tFBtc/DHm5cu47es9A4J0zWYf1L7hWRPiVN2ua+862GZ84gUvGTYoMrdzLbETxNund8C34p0nJfS1RkZ/w8ZyORwluFvNfgsSjjtgilrbMot5PVK/rrBYe8l1w95ZJcgWVa8FAbNXZV9mYIiH2tRGky9NcNemF2TRuHmU1LV4E9peOoGXOYjs/93fhgzw3z4lS7eUOozAKzMI1gsvdhgxxNeudSvn7Alct9IujiMIi2MOxG+bbusdJFeBt2a+ItiS3VMvhBcekY2D7xFPxBbMwZhMooyZhXKRSqbVQxbQ4bcMsSWCivu1PnB2Sb3nrjcTTIXF38OrnzQQkbBYn2dDSgFK36hYxJwqjWUtd3ZeBF/fYEFYbduW3eBJJ0u1XOOWMt5p7q6LEae2YCwpvIE26QbuAeP+MBfjtwT+07gHtiuuJN0L0jOcJ4KpSMphadJPHgy/ya7vkJDtkzEl+C53JRBiJ1Dwitdjjl9neVFElWdU154CM0p7H9ycCvUzmZ/3bw4eeU+1tyuXr+YxNCjdVqhTC9/lHRYzQk7pYVsR5ruuFJ
+ qRNsjKUT
+ Awv9urrhorTWf8fLZbvJtx5nI4VU08XpbBpquVI9l6TByYk2RnwWpD0kCU+rpiMKUiJrZ4eyr0TIWLdakSInGxH16BHU7+XSTU5Tv0/HIKDj/IWyRuRoNh0HNyvFVH6h1arT2cRlubcE5sm82Xh1cC7O3zuyOD5OGz12VkvakmMiOFVJjiSTOAESgSXA8sQkEviHZSBYfGobJVpgEl1Tt3LTcDoSosBEmfD4KDRTCGFlIXD9r9Iwf8ayHG5OtIuDx5eH2tePPzd89+GwTmPVN43lzzjpSUhpXykw7d8vPnmwTPCIFbteYPgV8GxSkwrtmX3G9RdLTVGSCiS7f5IksqVJBE4fxyZduTWjtt9jDkZYt23yPMc5yq4aziJDwj8xGwcQjdlQNP0GNlYxP3d1G9tiPETnDz84ipAKloP5daLjV0GRVYJ0ArQE6ISlvy4cb3nV2aNHj+0uza/FSzIyhwXGu0QCCiCaF395SiynnCJQeTNxKHjsRKnpTlw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,248 +144,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hao Li <hao.li@linux.dev> writes:
+Hi Breno,
 
-> When performing objects refill, we tend to optimistically assume that
-> there will be more allocation requests coming next; this is the
-> fundamental assumption behind this optimization.
+On Wed, Apr 15, 2026 at 5:55=E2=80=AFAM Breno Leitao <leitao@debian.org> wr=
+ote:
 >
-> When __refill_objects_node() isolates a partial slab and satisfies a
-> bulk allocation from its freelist, the slab can still have a small tail
-> of free objects left over. Today those objects are freed back to the
-> slab immediately.
+> When the memory failure handler encounters an in-use kernel page that it
+> cannot recover (slab, page tables, kernel stacks, vmalloc, etc.), it
+> currently logs the error as "Ignored" and continues operation.
 >
-> If the leftover tail is local and small enough to fit, keep it in the
-> current CPU's sheaves instead. This avoids pushing those objects back
-> through the __slab_free slowpath.
+> This leaves corrupted data accessible to the kernel, which will inevitabl=
+y
+> cause either silent data corruption or a delayed crash when the poisoned =
+memory
+> is next accessed.
 >
-> Add a helper to obtain both the freelist and its free-object count, and
-> then spill the remaining objects into a percpu sheaf when:
-> - the tail fits in a sheaf
-> - the slab is local to the current CPU
-> - the slab is not pfmemalloc
-> - the target sheaf has enough free space
+> This is a common problem on large fleets. We frequently observe multi-bit=
+ ECC
+> errors hitting kernel slab pages, where memory_failure() fails to recover=
+ them
+> and the system crashes later at an unrelated code path, making root cause
+> analysis unnecessarily difficult.
 >
-> Otherwise keep the existing fallback and free the tail back to the slab.
+> Here is one specific example from production on an arm64 server: a multi-=
+bit
+> ECC error hit a dentry cache slab page, memory_failure() failed to recove=
+r it
+> (slab pages are not supported by the hwpoison recovery mechanism), and 67
+> seconds later d_lookup() accessed the poisoned cache line causing
+> a synchronous external abort:
 >
-> Also add a SHEAF_SPILL stat so the new path can be observed in SLUB
-> stats.
+>     [88690.479680] [Hardware Error]: error_type: 3, multi-bit ECC
+>     [88690.498473] Memory failure: 0x40272d: unhandlable page.
+>     [88690.498619] Memory failure: 0x40272d: recovery action for
+>                    get hwpoison page: Ignored
+>     ...
+>     [88757.847126] Internal error: synchronous external abort:
+>                    0000000096000410 [#1] SMP
+>     [88758.061075] pc : d_lookup+0x5c/0x220
 >
-> On the mmap2 case in the will-it-scale benchmark suite, this patch can
-> improve performance by about 2~5%.
+> This series adds a new sysctl vm.panic_on_unrecoverable_memory_failure
+> (default 0) that, when enabled, panics immediately on unrecoverable
+> memory failures. This provides a clean crash dump at the time of the
+
+I get the fail-fast part, but wonder will kernel really be able to
+provide clean crash dump useful for diagnosis?
+
+In your example at 88757.847126, kernel was handling SEA and because
+we are under kernel context, eventually has to die(). Apparently not
+only your patch, but also memory-failure has no role to play there.
+But at least SEA handling tried its best to show the kernel code that
+consumed the memory error.
+
+So your code should apply to the memory failure handling at
+88690.498473, which is likely triggered from APEI GHES for poison
+detection (I guess the example is from ARM64). Anything except SEA is
+considered not synchronous (by APEI is_hest_sync_notify()). If kernel
+panics there, I guess it will be in a random process context or a
+kworker thread? How useful is it for diagnosis? Just the exact time an
+error detected (which is already logged by kernel)?
+
+On X86, for UCNA or SRAO type machine check exceptions, I think with
+your patch the panic would also happen in random process context or
+kworker thread,
+
+Can you share some clean crash dumps from your testing that show they
+are more useful than the crash at SEA? Thanks!
+
+> error, which is far more useful for diagnosis than a random crash later
+> at an unrelated code path.
 >
-> Signed-off-by: Hao Li <hao.li@linux.dev>
+> This also categorizes reserved pages as MF_MSG_KERNEL, and panics on
+> unknown page types (MF_MSG_UNKNOWN).
+>
+> Note that dynamically allocated kernel memory (SLAB/SLUB, vmalloc,
+> kernel stacks, page tables) shares the MF_MSG_GET_HWPOISON return path
+> with transient refcount races, so it is intentionally excluded from the
+> panic conditions to avoid false positives.
+>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 > ---
+> Changes in v4:
+> - Drop CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC kernel configuration option.
+> - Split the reserved page classification (MF_MSG_KERNEL) into its own
+>   patch, separate from the panic mechanism.
+> - Document why the buddy allocator TOCTOU race (between
+>   get_hwpoison_page() and is_free_buddy_page()) cannot cause false
+>   positives: PG_hwpoison is set beforehand and check_new_page() in the
+>   page allocator rejects hwpoisoned pages.
+> - Document the narrow LRU isolation race window for MF_MSG_UNKNOWN and
+>   its mitigation via identify_page_state()'s two-pass design.
+> - Explicitly document why MF_MSG_GET_HWPOISON is excluded from the
+>   panic conditions (shared path with transient races and non-reserved
+>   kernel memory).
+> - Link to v3: https://patch.msgid.link/20260413-ecc_panic-v3-0-1dcbb2f12b=
+c4@debian.org
 >
-> This patch is an exploratory attempt to address the leftover objects and
-> partial slab issues in the refill path, and it is marked as RFC to warmly
-> welcome any feedback, suggestions, and discussion!
+> Changes in v3:
+> - Rename is_unrecoverable_memory_failure() to panic_on_unrecoverable_mf()
+>   as suggested by maintainer.
+> - Add CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC kernel configuration option,
+>   similar to CONFIG_BOOTPARAM_HARDLOCKUP_PANIC.
+> - Add documentation for the sysctl and CONFIG option.
+> - Add code comments documenting the panic condition design rationale and
+>   how the retry mechanism mitigates false positives from buddy allocator
+>   races.
+> - Link to v2: https://patch.msgid.link/20260331-ecc_panic-v2-0-9e40d0f64f=
+7a@debian.org
 >
-
-I was also looking at these regressions, but I went from a different
-direction, and ended up with 3 patches:
-
-1. the regressions showed a lot of increase in the cache misses,
-   which gave me the idea that a cache would help (and it seemed to help)
-
-2. Allowing smaller refills (but potentially more frequent);
-
-3. A cute (but with small impact) use of prefetch();
-
-The numbers are here (the commentary from the bot are very hit or miss,
-so don't pay too much attention to them):
-
-https://github.com/vcgomes/linux/commit/c898c39ee8def5252942281353eda6acdd83d4ea
-
-I am re-running the tests against a more recent tree, but if you
-want to take a look:
-
-https://github.com/vcgomes/linux/tree/mm-sheaves-regression-timerfd
-
-Also, if you feel it's useful, I can send a RFC.
-
+> Changes in v2:
+> - Panic on MF_MSG_KERNEL, MF_MSG_KERNEL_HIGH_ORDER and MF_MSG_UNKNOWN
+>   instead of MF_MSG_GET_HWPOISON.
+> - Report MF_MSG_KERNEL for reserved pages when get_hwpoison_page() fails
+>   instead of MF_MSG_GET_HWPOISON.
+> - Link to v1: https://patch.msgid.link/20260323-ecc_panic-v1-0-72a1921726=
+c5@debian.org
+>
 > ---
->  mm/slub.c | 107 ++++++++++++++++++++++++++++++++++++++++++++----------
->  1 file changed, 88 insertions(+), 19 deletions(-)
+> Breno Leitao (3):
+>       mm/memory-failure: report MF_MSG_KERNEL for reserved pages
+>       mm/memory-failure: add panic option for unrecoverable pages
+>       Documentation: document panic_on_unrecoverable_memory_failure sysct=
+l
 >
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 2b2d33cc735c..fe6351ba0e60 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -353,6 +353,7 @@ enum stat_item {
->  	SHEAF_REFILL,		/* Objects refilled to a sheaf */
->  	SHEAF_ALLOC,		/* Allocation of an empty sheaf */
->  	SHEAF_FREE,		/* Freeing of an empty sheaf */
-> +	SHEAF_SPILL,
->  	BARN_GET,		/* Got full sheaf from barn */
->  	BARN_GET_FAIL,		/* Failed to get full sheaf from barn */
->  	BARN_PUT,		/* Put full sheaf to barn */
-> @@ -4279,7 +4280,9 @@ static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags)
->   * Assumes this is performed only for caches without debugging so we
->   * don't need to worry about adding the slab to the full list.
->   */
-> -static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab)
-> +static inline void *__get_freelist_nofreeze(struct kmem_cache *s,
-> +					    struct slab *slab, int *freecount,
-> +					    const char *n)
->  {
->  	struct freelist_counters old, new;
->  
-> @@ -4293,11 +4296,26 @@ static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *sla
->  
->  		new.inuse = old.objects;
->  
-> -	} while (!slab_update_freelist(s, slab, &old, &new, "get_freelist_nofreeze"));
-> +	} while (!slab_update_freelist(s, slab, &old, &new, n));
-> +
-> +	if (freecount)
-> +		*freecount = old.objects - old.inuse;
->  
->  	return old.freelist;
->  }
->  
-> +static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab)
-> +{
-> +	return __get_freelist_nofreeze(s, slab, NULL, "get_freelist_nofreeze");
-> +}
-> +
-> +static inline void *get_freelist_and_freecount_nofreeze(struct kmem_cache *s,
-> +							struct slab *slab,
-> +							int *freecount)
-> +{
-> +	return __get_freelist_nofreeze(s, slab, freecount, "get_freelist_and_freecount_nofreeze");
-> +}
-> +
->  /*
->   * If the object has been wiped upon free, make sure it's fully initialized by
->   * zeroing out freelist pointer.
-> @@ -7028,10 +7046,15 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
->  		return 0;
->  
->  	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
-> +		void *head;
-> +		void *tail;
-> +		struct slub_percpu_sheaves *pcs;
-> +		int freecount, local_node, i, cnt = 0;
-> +		struct slab_sheaf *spill;
->  
->  		list_del(&slab->slab_list);
->  
-> -		object = get_freelist_nofreeze(s, slab);
-> +		object = get_freelist_and_freecount_nofreeze(s, slab, &freecount);
->  
->  		while (object && refilled < max) {
->  			p[refilled] = object;
-> @@ -7039,28 +7062,72 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
->  			maybe_wipe_obj_freeptr(s, p[refilled]);
->  
->  			refilled++;
-> +			freecount--;
->  		}
->  
-> +		if (!freecount) {
-> +			if (refilled >= max)
-> +				break;
-> +			continue;
-> +		}
->  		/*
-> -		 * Freelist had more objects than we can accommodate, we need to
-> -		 * free them back. We can treat it like a detached freelist, just
-> -		 * need to find the tail object.
-> +		 * Freelist had more objects than we can accommodate, we first
-> +		 * try to spill them into percpu sheaf.
->  		 */
-> -		if (unlikely(object)) {
-> -			void *head = object;
-> -			void *tail;
-> -			int cnt = 0;
-> -
-> -			do {
-> -				tail = object;
-> -				cnt++;
-> -				object = get_freepointer(s, object);
-> -			} while (object);
-> -			__slab_free(s, slab, head, tail, cnt, _RET_IP_);
-> +		if (freecount > s->sheaf_capacity)
-> +			goto skip_spill;
-> +		if (slab_test_pfmemalloc(slab))
-> +			goto skip_spill;
-> +
-> +		if (!local_trylock(&s->cpu_sheaves->lock))
-> +			goto skip_spill;
-> +
-> +		local_node = numa_mem_id();
-> +		if (slab_nid(slab) != local_node) {
-> +			local_unlock(&s->cpu_sheaves->lock);
-> +			goto skip_spill;
->  		}
->  
-> -		if (refilled >= max)
-> -			break;
-> +		pcs = this_cpu_ptr(s->cpu_sheaves);
-> +		if (pcs->spare &&
-> +		    (freecount <= (s->sheaf_capacity - pcs->spare->size)))
-> +			spill = pcs->spare;
-> +		else if (freecount <= (s->sheaf_capacity - pcs->main->size))
-> +			spill = pcs->main;
-> +		else {
-> +			local_unlock(&s->cpu_sheaves->lock);
-> +			goto skip_spill;
-> +		}
-> +
-> +		if (freecount > (s->sheaf_capacity - spill->size)) {
-> +			local_unlock(&s->cpu_sheaves->lock);
-> +			goto skip_spill;
-> +		}
-> +
-> +		for (i = 0; i < freecount; i++) {
-> +			spill->objects[spill->size] = object;
-> +			object = get_freepointer(s, object);
-> +			maybe_wipe_obj_freeptr(s, spill->objects[spill->size]);
-> +			spill->size++;
-> +		}
-> +
-> +		local_unlock(&s->cpu_sheaves->lock);
-> +		stat(s, SHEAF_SPILL);
-> +		break;
-> +skip_spill:
-> +		/*
-> +		 * Freelist had more objects than we can accommodate or spill,
-> +		 * we need to free them back. We can treat it like a detached freelist,
-> +		 * just need to find the tail object.
-> +		 */
-> +		head = object;
-> +		do {
-> +			tail = object;
-> +			cnt++;
-> +			object = get_freepointer(s, object);
-> +		} while (object);
-> +		__slab_free(s, slab, head, tail, cnt, _RET_IP_);
-> +		break;
->  	}
->  
->  	if (unlikely(!list_empty(&pc.slabs))) {
-> @@ -9247,6 +9314,7 @@ STAT_ATTR(SHEAF_FLUSH, sheaf_flush);
->  STAT_ATTR(SHEAF_REFILL, sheaf_refill);
->  STAT_ATTR(SHEAF_ALLOC, sheaf_alloc);
->  STAT_ATTR(SHEAF_FREE, sheaf_free);
-> +STAT_ATTR(SHEAF_SPILL, sheaf_spill);
->  STAT_ATTR(BARN_GET, barn_get);
->  STAT_ATTR(BARN_GET_FAIL, barn_get_fail);
->  STAT_ATTR(BARN_PUT, barn_put);
-> @@ -9335,6 +9403,7 @@ static struct attribute *slab_attrs[] = {
->  	&sheaf_refill_attr.attr,
->  	&sheaf_alloc_attr.attr,
->  	&sheaf_free_attr.attr,
-> +	&sheaf_spill_attr.attr,
->  	&barn_get_attr.attr,
->  	&barn_get_fail_attr.attr,
->  	&barn_put_attr.attr,
-> -- 
-> 2.50.1
+>  Documentation/admin-guide/sysctl/vm.rst | 37 +++++++++++++
+>  mm/memory-failure.c                     | 92 +++++++++++++++++++++++++++=
++++++-
+>  2 files changed, 128 insertions(+), 1 deletion(-)
+> ---
+> base-commit: e6efabc0afca02efa263aba533f35d90117ab283
+> change-id: 20260323-ecc_panic-4e473b83087c
+>
+> Best regards,
+> --
+> Breno Leitao <leitao@debian.org>
 >
 >
-
--- 
-Vinicius
 
