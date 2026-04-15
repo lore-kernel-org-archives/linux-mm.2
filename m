@@ -4,84 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00D4AF531E3
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 09:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD6CF531E9
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 09:11:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 121446B0092; Wed, 15 Apr 2026 05:04:18 -0400 (EDT)
+	id B181F6B0092; Wed, 15 Apr 2026 05:11:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3576B0093; Wed, 15 Apr 2026 05:04:18 -0400 (EDT)
+	id AEF136B0093; Wed, 15 Apr 2026 05:11:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00F1F6B0095; Wed, 15 Apr 2026 05:04:17 -0400 (EDT)
+	id A2C526B0095; Wed, 15 Apr 2026 05:11:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E49AE6B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:04:17 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7AE09160410
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:04:17 +0000 (UTC)
-X-FDA: 84660203754.08.CAD6070
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E04D114000B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:04:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UR3usZWN;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 921656B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:11:18 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 516E41B8198
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:11:18 +0000 (UTC)
+X-FDA: 84660221436.04.739523F
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5C94810000A
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:11:16 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=drMAOFhu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776243855;
+	s=arc-20220608; t=1776244276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WZXCR3v/1e2hz4wXUuiewvZGR4/jMr34Rcd+pZEUtH0=;
-	b=JhWDybXqrbYrvwKCwKfjoyQulmN3CYdC0K0PB/ho78x3WO2aXyl3CPJhIrumdX45XEGqUC
-	2bs2YJ3OG0VUbE5U6fSaytQ+VwK1HSDNroS6CdRrGr51icWH9mMgEun94Jk/f3FtN6S+ez
-	LvluP95rzca4CF9RZAXUoycePovG0tQ=
+	bh=niwzD+HTaVSeyOYRpZrIOJZYYAYWhLi1x8LzB4xVLGE=;
+	b=rcpQZSwsnFjqhbcwdYDhLz+g+Weq9N8YieroyyYvygC1Kk+qLD9Qto7f3zJ/ejv1DPPKmW
+	3+kiUrC9u83wSQoOkrTJevunA4RGCdz90DMpvSTlOZY93yuDdvIxqjo30TefP0WQJHnyAJ
+	CvSta4K0pVYaBbbbDgTA1EkXGhlUnwg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=UR3usZWN;
-	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776243855; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=drMAOFhu;
+	spf=none (imf14.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.128.53) smtp.mailfrom=matt@readmodwrite.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776244276; a=rsa-sha256;
 	cv=none;
-	b=gziO8BiOi4Wnx6t8BRRsxSO/H79TvL/l0vjTh4YSjEi2N560dO2EhA10TtanKTRWpvslib
-	4nVxDMxu28Zai1PsTvdC4G5QFpZ40ZjA4bVmjyKlr97Pel+cGFSkfkGT94uEM0W3zrwi1J
-	Un6FS1mLgbu2gAMdbTkFRfZPwf881NE=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776243851; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=WZXCR3v/1e2hz4wXUuiewvZGR4/jMr34Rcd+pZEUtH0=;
-	b=UR3usZWNaX7XSItQyyHx8cucRuF3f0BhiWAfhfwcFo5vySPLUvH4013YkTUXMrXldV6f8poIv3bqIBoEhA95lG5+to28Kw/bF+y2qAJ49Td+uC3ldaA7w/KYXU0Tk/ScLlJsjDbGCiGblAMY3/fecVc8p1nwE23/pAf/wYM/j4w=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R331e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X1448p5_1776243849;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1448p5_1776243849 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 15 Apr 2026 17:04:10 +0800
-Message-ID: <e07071fc-15b7-495f-b6d5-96004aa0f8b6@linux.alibaba.com>
-Date: Wed, 15 Apr 2026 17:04:09 +0800
+	b=kSHlqqoxzXEr5kKPP/iJOoGKcxNtcX61b8R4dTa1PrlV/xziWuVKzfgEl+FOjmZQDvWyTl
+	B2xvCUaS0x4gMkotp3FjUdztBti60QNY32ohWIeZd5PkkodM1Vd5LWXdDathHaeFNWycqK
+	MbFe0yLZQ4m27A2qzi5zbrPm6lbyNs0=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4888375f735so64461105e9.3
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:11:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1776244275; x=1776849075; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=niwzD+HTaVSeyOYRpZrIOJZYYAYWhLi1x8LzB4xVLGE=;
+        b=drMAOFhuGp+y5yra9rnkbMQfRG+SvOJf3Ew02utGrXa0NF7nrk+hPq97LQYKQJsShr
+         ekifREo64uxDQYmWZhD57tf4vD16QXRTo1vw/blmtlSHt6oM5S0jhxbJG/HZrKQOmu1R
+         L8ZMRJna/t6itebmNUgGRBtahZZoIsI6/iaaDJZtG4lxAIOeDkTmsdgSZkAaZwtzW13l
+         UOY/+V+1MTMYgZzrfbn0Ju59bQvibe5iumuRz83SJ31Rw26DCm9ucQIpBKVudX4kEOXk
+         dKRZYYEKlY2Q+XjV9vcmaNc3EgIndZuwTr+/s8ihlcwywt259TWsJ1QAe6x6w9bZwc5C
+         eSZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776244275; x=1776849075;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=niwzD+HTaVSeyOYRpZrIOJZYYAYWhLi1x8LzB4xVLGE=;
+        b=A+fj+muBzWUXh/MsRRHVQVGnJzhqovOa1fQFlhJu3N2k0YB0WkO+NXNFKxUsly0m+Q
+         kk7x+jtAqIYAcqncyoRzzyYsVmmSt8/Z5oIPPLMTtY9Ty/QtHXrpx8vpEV/747HitDNY
+         oLfvtsowlQbYyjiK94obR1R2X13MHX35o2o4w5gMRh8CE5j1eI3KkE5xZg/6FxV7Iy1B
+         A8KUp0oCyk+HkF9z/KbamT2e5hlCqmmk7vewU5kYueObxEP2ogVK1zRMeYG8yDGzooBm
+         1/7lhZWvyng2gV7/v4YKqS00u5ZPOU5HnFQx7NzLwAEks7jNsq8YprT40Pf/AsiGYaH1
+         h+Vw==
+X-Forwarded-Encrypted: i=1; AFNElJ/nLhNsIJq7nxU0ZaNnsPpttaAvjoN7zAe7L9c7sYKLetQKr09k8LSa8ENdxq6o8zX6WmJoaGcaBg==@kvack.org
+X-Gm-Message-State: AOJu0Yx/dezoOBla0IJmteOcBhKf6cNbcgNQDefbNXSvbtjtXZa/F5eJ
+	9YTEktTpWTijiFOEu9CpP0wic9YG125zn1SMGaTwyRjX58ypKYjXMZNhQdBRhlLWctY=
+X-Gm-Gg: AeBDiev2Y5W9AAGru/bwVQpM7S0rZ4k79hH4HAP4qbMMI8WgS+AUOB4Hwufm0vG7BOl
+	6gvXDnmakzTztDBHgQTLGsxDWgjtD8FoBgFC6vjr4G66U7eNnAjqezF7XvAIwXdR5ISUzJA7LFv
+	4dG6NrxxO4qSw1K9It5LLIczP/x8IG8WXMED1NwKUhrvvX/XYj6/qGcRyy/75qlDEZgxZhJvaB5
+	1coHbWpDGogrGo8N/wq7RE3RyK4Um9JrLIJFhWhUpMoj4kHcxA7jlzW2tS6tlz+IDbTesy/fa93
+	9E6e49cBUrFgugSk8aRfYFivJyEPuaIPTT8bfDpt8RAUZplMOvV0E+USMCjfV0aKEE5UOiCuU7i
+	NavkKOJjINpe1KMOBNpg4hBREVnzcCjrohPUyApTD0YX0iPtsycUvs9qClmKBZs+ylRQgvkmBXQ
+	7YhQKjYKTXTiDea4X/xPkweAFtHXi1mgs=
+X-Received: by 2002:a05:600c:8b6b:b0:488:be21:54b9 with SMTP id 5b1f17b1804b1-488d67ce792mr300007505e9.8.1776244274651;
+        Wed, 15 Apr 2026 02:11:14 -0700 (PDT)
+Received: from localhost ([2a09:bac6:37a8:ec8::179:23a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f1d60ec2sm35799535e9.0.2026.04.15.02.11.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 02:11:13 -0700 (PDT)
+Date: Wed, 15 Apr 2026 10:11:12 +0100
+From: Matt Fleming <matt@readmodwrite.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Minchan Kim <minchan@kernel.org>, kernel-team@cloudflare.com, 
+	Matt Fleming <mfleming@cloudflare.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Require LRU reclaim progress before retrying direct
+ reclaim
+Message-ID: <ad9SVxWIP4FN1c9D@matt-Precision-5490>
+References: <20260410101550.2930139-1-matt@readmodwrite.com>
+ <6ca33173-145b-43aa-8a8a-34985d375246@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
- shmem mount
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
- <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6ca33173-145b-43aa-8a8a-34985d375246@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 3h3efknuxw3kjd1zpdigo4nnnroyrk43
-X-Rspamd-Queue-Id: E04D114000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776243853-751078
-X-HE-Meta: U2FsdGVkX18+/QZK3uFjewWSBuAgCDvSiMb+qDIBZiths/9JiSwuzNj3iTJ2YRdI8uJXC/BbYSgBynAf/HmZAxx3rpiGTMf0jujVip2NGovs+hYraODKzqLZkZihzKEuNUhWumLgCabi8lkRoklvpzm3SPqdqSyw23qfdxJFsXarP9XR1TrxqJQ87GC4jLdYVI/zpKFdUDzcJyOs1ptc00NZJtg9A0sglSdOnXx0L8L2qPamHiPMtiF7nscMCmrpi7xLvm0b1Nx/8IHu6sxzYCu9kVh4w3JGuusepNtOosoShDT6BagZb/Tp76nAbT3lzThmOMg2Kzcx+h1iLm+akROJw+uOYkt1UP+ZuWuPH9w9c8qu9h680Aq8oAII2HgYdCvzZBkzfvWI8IEKFtvi/iFQozBRYf8NUFRvmBkzgclbeEZRSxr4FZ+RNaoWKX2nv6+ZSoQ+Qcsyz9To7kn4BZ9Zhl8fXWFgzY1ttbVgHzwjpaVGV7VmLl9BOqtmOPvgo4AbHHVom7BOkotdkBuhcwD4Vw5zLkRSKfnIVKgdmSRK6roesLI6c8firiXbcn9aU0fu1HVTC1hs5/DqQMp30a0j02cTNtGLccGZ0mwgk/XWp7EvQ9L7NVDryutj+1N0oWUi6IYgkUpY6cyI5WU4x4EIE9DBetrfBsbNB/keCxRF9ZWtCLkhJp6wFjVFzMRShJ1JEifomiwKajkuMaXWKw6zcTtDjiUpm5ENeiBk7ub/uZY5pYeRHCgTpgy7kKD3+dDJ+XkszX091XRqIpVqKNNzSsnqWE69KLdW3nUUmIiNMwvNDyRM9+BPu4X2MJ/vcEcMBEoUrVweqMroBimt1EaLWwlJ1J+l7vPyQEsD+azgfImumPfN6e0Nm2XsV6EEpepjzfuAe9IpzYTFtHwoRSm8PHZDy28MYaJt46gSc786HpklUAlUPNNpgWvFnJlUsGU1lnKM7TVmmsKruDb
- fw1LmHuj
- NTEZZ9WpIz2Hc6SEEAI4Teeky69Nsi3o838XagltzMq5FsK6ehesmhTdGOJIL/AEVQ7iYjrtrax3eSi8VU0PGCzriBd5fecIj9U3oQAv06DGI3K2ooIQmbnEiHaNjR1o5T71okm6r5MU2mPC1xVGs/weXcO2gg9+8lSc+6OMvXrXMxEjBo31Ekv5Tr9AmR+2NL/paCimcjbj2CLmga+WpoTfdFptTioGzJm01MFIw76Ll7vwSItp+9gihzog4x/oASdHaXzOhH2O8SfSOgXtxPqCNhZwcDi1+nvrz8Y631ALEdmyQdTS7HU0MPrUfvbuodQLn
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5C94810000A
+X-Stat-Signature: d7qw175ifpxqbigdx4xjnj7x3q7349oi
+X-HE-Tag: 1776244276-700843
+X-HE-Meta: U2FsdGVkX1++dCtPnnj8LXgfZyU+e/5nc/WQjjcJU9qoZT/mtRpJfQjWQmobR4gmPQiE16mHxGyWAHFJdIHddoKFsJkbENsZZyfHR9mIZe+UzS6z/Rud/CVeuG6TVza7FwMvhVzYCb6NS9Db3meYIwMNrqCmHzpCd1ibfKQqqO1+nkkiI7kLKH5WRWqPFDaMEMV+cCJ5WomJud6FVsYU2n8hV8I5zjFtJWGnOAUHwrF7GjoUfwMPp5bxcBCWBeQf17v+wNsh4NcWZIm+EMFCD+zbQdR7rs3CleH6Ss4gsPhBMS+1cpm5pNxFZ/KAJe3isw9pt/Pn+H/zaYnj8t1GDbuqqpxz7D98Gr8Uv6O8i2YWbxE2RohQh9FCr1laDfufzC/VUgOFgOkCznJKFaBmGjOPoSEVt2Tuj0AYH4ZraXkt1TLubntIHrFfgG1UlmpuXd4/KZfzW1OWZLi+kHRNU3K1HumbipvMO1kGF/hbj6t5SQ/Xhbb9aCJhyNPqXpyFnrLo2fxaafCd5lTZrKVmK3ZxQfyKBA/NdlRicU0N8EG1tmzO4OVBrZBaJIAax9Ow0NUrwyOfxWQanFyqguSh+PwbTVOy21uvGUSMd4sx5oPszHF+pi4nPLi7k4eY5bgPqA7tm9ou9nZ0hOlzLBjoa21aQwroRo53sd6tv1V94PTiWJrw2XQrCd21hZIVaAjDa11GY6Ia4dmI5rDSAL+OnpleSacHHilSdKyZ4hK2V4ZICjnoxVQEX9IMz4EoqPqJp60HPYBvBtM3WauhQBgCCdlAHzaksFvRg48pE4kVrQEjZgozM1sHxqalYZSnKAg75DqNu2GrV5UnIr+xV2cfDUGeb+vgg/MknIavy1CS+fE3q5CH68XswYE1xZF4LhegPIoav5fquF7TkI6eKQ3hJQFm7LItEx1NJq5OEPGPdjPeQmprK/i/DHgDlfJLE4gP5RO2R7evVnkwNicMREt
+ Qr6zgqPp
+ yFKRONcHNMBoOgMHpybkc9V5p66fDa1JJmYTQE9yJWJw2YMBESXOu1I1auxNlo7fs1GEllbKiFlFF+43nmcjaC8L5/rUB+nmrdMwWSAd1EugmIItnfJBVOO/N70jF7pNrSE5dil1f5/uIFE5hwX9gAhF9gZ5yrfKyTaGpfC5gQ1zyi2pLMS0lN/79XJp2LO7BnJZuZBSRBzkpcsbLDN8oopdQhx26H2uFS0mx27QaF1akS9PokLBfXHu+peQvCqi7NjhaeB2c2OSje1Cm/urs54Vh8Fnia/MjA81Xok2XsQGWmHdM6fapTPTFKeIE0B2ZF43x9CjSEHEX2uCti3ukFg+lwz205niURw+jGINKas87vR0qLhXCh+aDL+p+xUkbwzLGfeHqnLZk9VLSkGZGkUl043V/2RsltAzEaGRb3sT5jngW9E7NsL5pt515v0SySLCdqvM2l6BAPcOvUDM1K9dyTK9aoYu5kkM6JBoR/SqdofiA0VR3r/tEgF9I68Pw4QrnLzUFPtrt6lQiPYMGC0TuQudp8yw157PbPpiiM/EjKrQEZDxQPAjleKYoTFqXkdAwi+i0K09nP9X1PWEr64YMvg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,80 +127,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 4/15/26 4:47 PM, David Hildenbrand (Arm) wrote:
-> On 4/15/26 10:22, Baolin Wang wrote:
->> Anonymous shmem large order allocations are dynamically controlled via the
->> global THP sysfs knob (/sys/kernel/mm/transparent_hugepage/shmem_enabled)
->> and the per-size mTHP knobs (/sys/kernel/mm/transparent_hugepage/hugepages-<size>kB/shmem_enabled).
->>
->> Therefore, anonymous shmem uses shmem_allowable_huge_orders() to check
->> which large orders are allowed, rather than relying on mapping_max_folio_order().
->> Moreover, mapping_max_folio_order() is intended to control large order
->> allocations only for tmpfs mounts. Clarify this by not setting a large-order
->> range for internal shmem mount (e.g. anonymous shmem), to avoid confusion,
->> as discussed in the previous thread[1].
->>
->> [1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->> Changes from v1:
->>   - Update the comments and commit message, per Lance.
->> ---
->>   mm/shmem.c | 12 ++++++++++--
->>   1 file changed, 10 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 4ecefe02881d..568e1baee90d 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -3088,8 +3088,16 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
->>   	if (sbinfo->noswap)
->>   		mapping_set_unevictable(inode->i_mapping);
->>   
->> -	/* Don't consider 'deny' for emergencies and 'force' for testing */
->> -	if (sbinfo->huge)
->> +	/*
->> +	 * Only set the large order range for tmpfs mounts. The large order
->> +	 * selection for the internal shmem mount is configured dynamically
->> +	 * via the 'shmem_enabled' interfaces, so there is no need to set a
->> +	 * large order range for the internal shmem mount's mapping.
->> +	 *
->> +	 * Note: Don't consider 'deny' for emergencies and 'force' for
->> +	 * testing.
->> +	 */
->> +	if (sbinfo->huge && !(sb->s_flags & SB_KERNMOUNT))
->>   		mapping_set_large_folios(inode->i_mapping);
+On Mon, Apr 13, 2026 at 05:38:19PM +0200, Vlastimil Babka (SUSE) wrote:
 > 
-> I don't like that special casing. In an ideal world, any mapping that
-> supports large folios would indicate that.
+> Hi Matt,
 > 
-> Now, which large folios to allocate is a different question.
-> 
-> What's the problem with indicating for all shmem mappings that support
-> large folios that support, but handling *which* folio sizes to allocate
-> elsewhere?
+> so have you tested it for your usecase with zram and have any observations
+> how it helped, what values did you set etc?
 
-Thanks for taking a look.
+Hey Vlastimil,
 
-As I mentioned, the original logic has several issues for anonymous shmem:
+Yeah I've tested this out. So far, results have been positive -- I see
+system-wide OOM kills when memory is low and direct reclaim occurs, but
+not so many OOM kills that the SRE folks have started screaming at me.
 
-1. Whether anonymous shmem supports large folios can be dynamically 
-configured via sysfs interfaces, so mapping_set_large_folios() set 
-during initialization cannot accurately reflect whether anonymous shmem 
-actually supports large folios.
+I've only run with the proposed 1% value so far. I also ran a bunch of
+benchmarks alongside a memory hogging app that peridoically touches
+anoymous memory.
 
-2. Calling mapping_set_large_folios() here by default makes anonymous 
-shmem support 'MAX_PAGECACHE_ORDER' by default. However, the range of 
-large orders supported by anonymous shmem is also dynamically 
-configurable via sysfs interfaces, which could cause more confusion.
+Workload                     rpp=0              rpp=1               Notes
+----------------------------------------------------------------------------------------------
+Kernel compile + anon hog    Completed, no OOM  Completed,          Global OOM confirmed from
+                                                Global OOM fired    __alloc_pages_slowpath
 
-3. Currently, no users will call mapping_large_folio_support() related 
-functions to determine whether large folios are supported for anonymous 
-shmem.
+Memcached + anon hog         282k / 2.30M ops/s 562k / 3.53M ops/s  Global OOM killed hog,
+                             No OOM             Global OOM fired    then benchmark ran faster
 
-Therefore, rather than having anonymous shmem call 
-mapping_set_large_folios() and introduce so much confusion, I'd prefer 
-to exclude anonymous shmem from calling mapping_set_large_folios().
+Pure fio (5 reruns each)     median 3710 MiB/s  median 3702 MiB/s   No reproducible regression
+Mixed fio + anon hog         2747 MiB/s         2915 MiB/s          Global OOM killed
+                                                                    unrelated services
+
+reclaim_progress_pct=1 seems to help in these memory exhausted
+situations, and doesn't appear to cause a regression for the pure file
+workload case.
+
+If you have any suggestions for other tests or benchmarks to run I'd be
+happy to do that.
+
+Thanks,
+Matt
 
