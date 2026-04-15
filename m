@@ -4,95 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0DCAFA0C3A
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:53:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16132FA0C3B
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:59:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCF346B0092; Wed, 15 Apr 2026 02:53:24 -0400 (EDT)
+	id 76B296B0092; Wed, 15 Apr 2026 02:59:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7FFC6B0093; Wed, 15 Apr 2026 02:53:24 -0400 (EDT)
+	id 71C216B0093; Wed, 15 Apr 2026 02:59:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABD046B0095; Wed, 15 Apr 2026 02:53:24 -0400 (EDT)
+	id 658C56B0095; Wed, 15 Apr 2026 02:59:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C98C6B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:53:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 239811A0391
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:53:24 +0000 (UTC)
-X-FDA: 84659873928.01.5CB2B7D
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5E3264000E
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:53:20 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dIeNDihW;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 525066B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:59:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EB28516045E
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:59:23 +0000 (UTC)
+X-FDA: 84659889006.17.DA20D3B
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2D70440004
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:59:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776236362; a=rsa-sha256;
+	cv=none;
+	b=RnOyzJvrgPwctSE7UtJFPeJazh38tkekhJt6bYziNtoav9VR0/9tGVhucwpgGWVwMmIQ5u
+	908dPbIMSJ8q2smz4j/4RZzv3XfmGCgJvt2GqW3jqhsyXlXV0RunvmJciT4+y9DnoUgGkL
+	0HJz39dDqXxpXdEbBK6l/ypR+5/NXbY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776236002;
+	s=arc-20220608; t=1776236362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UCQ7usOU14shNLTSWEUmhQvpbKphWMoPUYFh990S0rg=;
-	b=jrhH1ci/LjNrCaIvEhK0hHc1iUZij2fbc6XgrLUDoCs/C9Lp9MFmbhZy+zYEAYq/kb7Woa
-	xsVlaIcWDQoaAecCOJmFIhwFzzsr2FzOlTxFvaMKIhYSG8P0QDgxb9V8SbNw5WJd1T+FMR
-	ZlTk1nU8ui45XZBe19l/JDnP8Nzq5Uo=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4cycmBmatrnCWRvdzG28xMg794YYKWzuy6LwUqRuvQc=;
+	b=GmidbrQHTmbIWfBpRbjFqwTwpqlfMsMoBcvVszUSgGaORIo1X/UhLNUW9CKvW//5AvlhzP
+	xgJv9YI5v+1nnGPrPB9e8NhjBaQR5JD9CJThEFDCDc0xkqJa/3iDfJt5GeuJY0mN7zGp+T
+	t4a/tS6RiQpFSaYWMqM6IRxJx95BkqQ=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dIeNDihW;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776236002; a=rsa-sha256;
-	cv=none;
-	b=MD9euLd+LFj5l4gYBG92UO8CvOcO07v3g6Cpdx/icp9JtSfrVXsY1wm8fQwWU67f0Fej1H
-	9H207ZvxczjV5z+vngKpQ0m1YkJqqjd536OjkazA+925fpQabTPzgnYhEK5fP+WDIVshuo
-	apJZzHIYvrHoY5vaS3mnGReNMALVoWo=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776235998; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=UCQ7usOU14shNLTSWEUmhQvpbKphWMoPUYFh990S0rg=;
-	b=dIeNDihWPnT3FOfPJY6nab8kDF+BPhtQayJ1mfCq4Q+l0Nx+lZsfFppX3TeuXcsZ6lF2WJvjpnbV40qVH+mqkNihYDbbY9HIz5TffEPzFq3aX+V8LQQx4Y9pNlPGeTzcC9hrFb51kPd7R5EWZ8j8fLGeUoQbop8mXCd4LJIoDCI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R921e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X13f5NE_1776235996;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X13f5NE_1776235996 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 15 Apr 2026 14:53:17 +0800
-Message-ID: <85f163b8-9a86-4223-b835-b271a4502b47@linux.alibaba.com>
-Date: Wed, 15 Apr 2026 14:53:15 +0800
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 8250268BFE; Wed, 15 Apr 2026 08:59:16 +0200 (CEST)
+Date: Wed, 15 Apr 2026 08:59:16 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Christoph Hellwig <hch@lst.de>, Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Dave Chinner <dgc@kernel.org>, Tal Zussman <tz2294@columbia.edu>,
+	Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, Sandeep Dhavale <dhavale@google.com>,
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Anuj Gupta <anuj20.g@samsung.com>
+Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
+ support
+Message-ID: <20260415065916.GA28634@lst.de>
+References: <20260409160243.1008358-1-hch@lst.de> <20260409160243.1008358-9-hch@lst.de> <adl1iqhldFvJwSw-@dread> <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com> <ad2RKNo2FGhpzJQp@dread> <a7a74185-df02-4906-a0ec-f87e2394aa5f@linux.alibaba.com> <20260415055552.GD26893@lst.de> <20260415063051.H3zA99Qh@linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v2 06/12] mm: fs: remove filemap_nr_thps*() functions
- and their users
-To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-7-ziy@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260413192030.3275825-7-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415063051.H3zA99Qh@linutronix.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5E3264000E
-X-Stat-Signature: o7hojc69c51kcyddqso3gc4a9kp9gxom
-X-HE-Tag: 1776236000-463039
-X-HE-Meta: U2FsdGVkX18zLyOYhrnTvjM2/Lg8l/04fuazWqyrJBQkjDbXP5lBNSNrYnwtlvSR+ZAnj3k2oSxAlUAh7GhrsQb51LoFlWrUkntiNi37zSQjl70DYtS1PPe/SOTkKCPo0codaND8VVbchpmx2+gqvdsQn29E2kaOKKTMPbopl2a3okUSbBAFBsIVzHNw0mudsoV62RJ+DOJoOYF+9Gp4EO9HA8yfJFRTD+/XYeQIlXV3LkoRyzgRqU9ksefIbvfCd4sRHh4PTh6lZj/Kn/scdjhhukv5I0DTifQzdTzX90s3ZHOxdw43o2SktFCNiobu9uodXlZrDUKq3g73kJJGRvfS14alQZHOmbAk/jG3F99aWal1Cfadn5cIl6l0uA93GIZEaX8OcuJAlJqODFNfxziKHesTL2PdAL2aCctexT8ZyuCnFIyrftHhchYBbnSCXfADa1nbYh1+Ec4TX6A742wF71LuDyV3ejW/x6dLrc3B/j+VLa2wesrTHJ+iDoLNpykrxKKSrK9PYu+Exems2daqw0XpQTP22olla7FvxYFF+kBrn4t5TffyItlgVgPWQK6QKz/HzH5XY93F2hWBHt1Un9nDoyAhyOJUj5tHyNfKkz4JvkexSl/xtVPThs1qPwVbNceBuHP8wX1+s3tld0iXJlg4BiYFknGETmNDeGocpZ4y71aYXg7FgR+Ht2ldd9k+LR4krcB08LULDfxUsVMBmaS0ffz+HVN5g6UJGeytx5sFj2qiom5QqeNqNYpG23rKSlPEpXJvQTci8XJ+IAorGnYIaprl+fOh1caT1yGKYI+vRibcwbgob6BoyT3Tj+JhLFYU1+4YTL4MvaX+5lwDRT3tXc2DaG5VZ60MztLb2YH5F6DZciir7Roa7Qf80aMajPXnKlVMJAJsZ+cq/JuqdzpamGQQBjaN6nh2+TgBWUfAEMUEqFF3Xprkb5Bho+iJ5jP7Q17sWqFxYjy
- 5Hv4Mk8/
- ZSrAj0lXM5h58LrV8yTlzL4HmoeUtcs8JdBQ2QKW8bWEeuNM7yPyNNNzLVa/+658mn6YCj+cbTMIqeDf+uMfR9H2UJKs/DyUKsYi7jDxAvUuqsqpnn5ztYGEyRlcgEBkiczVyvJ76ynK+c8p/8wdj+VKbDhQPvYcE2A84HaNARRfIlFJdBkuEBQUsHPxFeS0mNHSbxDFHslrPJenurZROhmIIvXoiRFnXGfkMcsMc+2zPDFl6OJR5c2cselQb95CO7H9UiOPXFsHag/+8/WbWATajT4t8rV8WGi81lGiL5EtSqPxT662sx+k1/A8euR/iP/krvauhNDkq+7U=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2D70440004
+X-Stat-Signature: k1w6oy3ju84pag4dykbk41y7mq94ibgr
+X-HE-Tag: 1776236361-770565
+X-HE-Meta: U2FsdGVkX1+IH9larFAR1jVd4ZYDYDnNP5Qh+7uX02THggVXBSEGppejceScZbYmkcZbvr0OMefhP9AdB540VmJj7E+udAVzjMPUBOCHavkM2YYWATmtQpxWuFP0++R7nVcXivdO5gyY7DUkfcPb/gAtc6OIk8oKj+WPsRIiZo4UZHzlxcxORfb4P/jUScvuyVPJa/+HouVftrfjuZBsDTcVkHpw743q12hqtL0rE78tpHXTskBOiZQigSvZqc6X09JgSZn4aUOaaDzYS/ZCIPXgarAAH7oepsQ7LgOzjbcaQUub6W23H0h72qhoQ2mxgw/reQqHAIlDGi04XejyEVWWIiGGO0nfJgVi6iZEWPhlc1UVff/RtQt+KXEjy9h9t3ouibJWv+38kt5Cl5TEskgc0e+NiZ1O6yroQ3vAJyzusJadOr0TZF/ThOSeLP7u9fwALNgLR+F5pyN7q89IoSy++1RvL966zOd3V2Q4VgyUFr7zhD06y3dqvxDkTdpKuVDAq2czQjilEKaiux+n7wM/RiGrVEKeMhUYfuUsIN3ZzZHwr0q/u2z6VUjrkDgeroTAn3ZNwKWYV/kKQy/rIsjw1fgU+O/9ByFhN0CR0+PykE0EfGa37F+26wQmEkghK4KjW7kLI47An+T7XXjj6rbIp0Z8vfpH+b4RGMYl1X8tJH2SXF0RfkGE7qAihv3uOuYGNoTryU1VISccMPRSqyl7tTi/+gNJQBJbs/3Vupso+OccddDm6CiTobJEosr4I086fs3p7EkkgA5hZCB7wsgFqkbRMI3y5BmumKzd5ExXKZsUtNAVUIL/HpVjepV4FybWVozfaipsyPL4mAGIK9IqCfMdHzlBdv2nw3MpSHT3hknQBpIMU+jsThLq7guRJIdsviUgl4CS/TSnGmuHR1DrB0tXEpVkHz811S/QkKRuNRBPNGN/fLMwoYABuHrwMmnvOF6ufAjJmePnuI4
+ cD4SrtgO
+ fKl1tsBdxNryPX9nKa7SrfW534AbJM4XsTP3NpG3VE7FT7EYIxyZgDmcNEpSblm3bCo09aY1fxAmbAqdU5M30wt9lTv+3ah3Ws9T61no5CptqK4DVc/NZh7Or7ljBh5WDCdO7sre6YbpnUL0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,30 +91,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Apr 15, 2026 at 08:30:51AM +0200, Sebastian Andrzej Siewior wrote:
+> Not sure why I ended up here
 
+Because this is very similar to ksoftirqd and softirq.c doesn't have a
+maintainer, and you were the last one doing substantial changes to it.
+And you're also very knowledgeable about PREEMPT_RT, which has a bit of
+a history of low-latency user context helpers :)
 
-On 4/14/26 3:20 AM, Zi Yan wrote:
-> They are used by READ_ONLY_THP_FOR_FS to handle writes to FSes without
-> large folio support, so that read-only THPs created in these FSes are not
-> seen by the FSes when the underlying fd becomes writable. Now read-only PMD
-> THPs only appear in a FS with large folio support and the supported orders
-> include PMD_ORDRE.
-> 
-> READ_ONLY_THP_FOR_FS was using mapping->nr_thps, inode->i_writecount, and
-> smp_mb() to prevent writes to a read-only THP and collapsing writable
-> folios into a THP. In collapse_file(), mapping->nr_thps is increased, then
-> smp_mb(), and if inode->i_writecount > 0, collapse is stopped, while
-> do_dentry_open() first increases inode->i_writecount, then a full memory
-> fence, and if mapping->nr_thps > 0, all read-only THPs are truncated.
-> 
-> Now this mechanism can be removed along with READ_ONLY_THP_FOR_FS code,
-> since a dirty folio check has been added after try_to_unmap() and
-> try_to_unmap_flush() in collapse_file() to make sure no writable folio can
-> be collapsed.
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
-
-Thanks. LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
