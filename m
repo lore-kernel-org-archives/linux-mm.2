@@ -4,121 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C846CF4198B
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 12:02:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D0B4F41996
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 12:06:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11D326B0089; Wed, 15 Apr 2026 08:02:58 -0400 (EDT)
+	id 2A84B6B0092; Wed, 15 Apr 2026 08:06:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F42E6B008C; Wed, 15 Apr 2026 08:02:58 -0400 (EDT)
+	id 27FA26B0093; Wed, 15 Apr 2026 08:06:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0098B6B0092; Wed, 15 Apr 2026 08:02:57 -0400 (EDT)
+	id 196196B0095; Wed, 15 Apr 2026 08:06:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E45296B0089
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:02:57 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B8FB8B746
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:02:57 +0000 (UTC)
-X-FDA: 84660653994.07.F3B5C48
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id AB8194000A
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:02:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dDqaIIub;
-	spf=pass (imf17.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776254575; a=rsa-sha256;
-	cv=none;
-	b=cncLY7+EqVVKoBDyqHOeRHpVDmp52gvj7l+QDTbU5YFQeWl/XluyI1yInDUiFtHn/5/IQy
-	6Wus6DSHXHDj11MHEHIGjCvdmINEm5l5AWkwWYGRdbJvD3i0CrLt+FNIA0tm3vS2xBMhpF
-	DB45+w5O4SaUMLaz9DDaKXe3Y/ZsPdw=
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 088F26B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:06:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A01958B68
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:06:16 +0000 (UTC)
+X-FDA: 84660662352.11.71FE896
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E007E18000A
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:06:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JhjMDbpc;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D9TzG1hZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JhjMDbpc;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D9TzG1hZ;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776254575;
+	s=arc-20220608; t=1776254774;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HoMaIGXyhpJEcgUNQSMOdguyei3/mYhC0SBbYHAkqzQ=;
-	b=kKaStfMVayS83x5SvBHaWSxacLTuVtMZqv4AKdgRNBGr3IdJzRsFV2XRBl8iYfhQ5c5i04
-	1UqhmQcFfkU7t7GsaTejAa/hU3VuI5+mP2J9mZrWaWZ9dapwPA5+4zXjAp/9hlsLcXGL+x
-	TJp4sXkhZnV1Eo2ziqX/YuZZMV3Q5Dc=
+	bh=dC95RKCSCi9LVrg1A8un9ES6lp7MegYkrQ18OXExBbc=;
+	b=S5X9C7Eie4dZp6TmCWWFqCdJLVuIf64ZzX7T2r0k7WFLynhjsUDKgGLs/4H0jHcEfff+8L
+	3MSd+/de0JzqSMkHnUWbXWbPrV7oOHwxscp3ihfmFmaUksnWoI/dIZb4GA+5NU+eVdEDhX
+	i4FE97zfWMT48FA14reedj666LiaL44=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776254774; a=rsa-sha256;
+	cv=none;
+	b=GC5G/1sCctC0SKZESDGFiP85q/96uB4F0ym0CeXqZyh4xtUVfihezXbxAUDPHvxCKG6JQZ
+	+o63LggvLcMiEU3logCJ27RUBZkzNt4c3G997R3Rhqk66AbFT3cZgW4G8TYWkQWdzCgIxD
+	pKLeB4gV3HHT2erAQeUi5Uyri2DGqUo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dDqaIIub;
-	spf=pass (imf17.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71BE743FBF;
-	Wed, 15 Apr 2026 12:02:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF24C19424;
-	Wed, 15 Apr 2026 12:02:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776254574;
-	bh=eKpAfFlcF7u1s2jPRNx9CVvNstoHhkqQHcfDi4NbSzY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dDqaIIubJna8ZP2jWgq3qJm/LFyOcYl8FNtme5bdPRGBfmajV8Vx55SK8VCZ6epSz
-	 cEmE81itZ5YJGUSx474OdIVgCBYgpGHw/yynmBNhQcc7t5mJctJePxrTOvzx4p3UlG
-	 8wMccEaCVlKYf0eEYGMa0w6K+iJqMbOSCYmyfRth0GUKfskAOPXXTmpxOMfYGCqIhW
-	 pGl+CfUmgnr3JxAGFoYl4Wy6ZR+zWSAacBk7e9Ya5h7ztpsf/6sAb6dpbOmrdSX4kd
-	 +f+3UBwCTMPRRjTeDrEilwjLCuG68pDLJrLjBpe8tWNr68eGM68R0luoAlBlooJbIE
-	 tFT5vDJ4aMYqw==
-Date: Wed, 15 Apr 2026 14:02:51 +0200
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
-	Jann Horn <jannh@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Clark Williams <williams@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: Re: [RFC PATCH v8 08/10] x86/mm/pti: Introduce a kernel/user CR3
- software signal
-Message-ID: <ad9-a1OtQ9HwyuzP@localhost.localdomain>
-References: <20260324094801.3092968-1-vschneid@redhat.com>
- <20260324094801.3092968-9-vschneid@redhat.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JhjMDbpc;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D9TzG1hZ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JhjMDbpc;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D9TzG1hZ;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 607AF6A7E2;
+	Wed, 15 Apr 2026 12:06:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776254772; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dC95RKCSCi9LVrg1A8un9ES6lp7MegYkrQ18OXExBbc=;
+	b=JhjMDbpc2lU9/UB8R7Xr/Y4op4IjOAEy58l7zPCyS1zO3143XIN5+vldCGxg0k+nnKlUxU
+	YWyuCW3jKPHNUjRWEub8nJrT9S/VF/pAGh/+X8oHBxauSZ4VeHNNc8JMXL7TF//2VycV8N
+	f8xIIx/DlqAbNMuiQKmbHayWwHPQh2I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776254772;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dC95RKCSCi9LVrg1A8un9ES6lp7MegYkrQ18OXExBbc=;
+	b=D9TzG1hZmdWBcb4rhaXwoDbJIIF05o1vfaGJbFQaAnp3uwh5xGoHyBwRSgCUpQFFdomaGr
+	SUBO0bIW7SHyvGCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776254772; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dC95RKCSCi9LVrg1A8un9ES6lp7MegYkrQ18OXExBbc=;
+	b=JhjMDbpc2lU9/UB8R7Xr/Y4op4IjOAEy58l7zPCyS1zO3143XIN5+vldCGxg0k+nnKlUxU
+	YWyuCW3jKPHNUjRWEub8nJrT9S/VF/pAGh/+X8oHBxauSZ4VeHNNc8JMXL7TF//2VycV8N
+	f8xIIx/DlqAbNMuiQKmbHayWwHPQh2I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776254772;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dC95RKCSCi9LVrg1A8un9ES6lp7MegYkrQ18OXExBbc=;
+	b=D9TzG1hZmdWBcb4rhaXwoDbJIIF05o1vfaGJbFQaAnp3uwh5xGoHyBwRSgCUpQFFdomaGr
+	SUBO0bIW7SHyvGCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 31A534B9CF;
+	Wed, 15 Apr 2026 12:06:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id R52vCDN/32mlEgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 15 Apr 2026 12:06:11 +0000
+Date: Wed, 15 Apr 2026 13:06:09 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Anatoly Stepanov <stepanov.anatoly@huawei.com>
+Cc: willy@infradead.org, akpm@linux-foundation.org, david@kernel.org, 
+	ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, wangkefeng.wang@huawei.com, 
+	yanquanmin1@huawei.com, zuoze1@huawei.com, artem.kuzin@huawei.com, 
+	gutierrez.asier@huawei-partners.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] filemap: use high-order folios in filemap sync RA
+Message-ID: <3cr6ppe6bic47tan2iapuh67s67hiroangvdiap4jbn7ypru2o@rbvqv3sxifwp>
+References: <20260415192853.3470423-1-stepanov.anatoly@huawei.com>
+ <20260415192853.3470423-3-stepanov.anatoly@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260324094801.3092968-9-vschneid@redhat.com>
+In-Reply-To: <20260415192853.3470423-3-stepanov.anatoly@huawei.com>
+X-Rspamd-Queue-Id: E007E18000A
+X-Stat-Signature: 8ytoh4t61hu4mgw6gy38twworr8foog1
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AB8194000A
-X-Stat-Signature: d8mi6sf4ou5myfuwrkp6hg9tst7pwnc8
-X-HE-Tag: 1776254575-644601
-X-HE-Meta: U2FsdGVkX18kVU/FmqA07Nf/dp/mMB78M+mNGMwPwxCMfFDZxS7eYKyheR3saxV3fMNC9G2b7txjqZ1r5u01b+ulfwzWVRgNPbLT1Aw8XTDqnx8ncixYQzxGp+wxBX0JfV6Cf7Z2r0iHr7O578gAjEedJP/N3Hi3RaHNdUqIR7B9n/GgIG/3Xrxljlh/Yti8oZl98O0kwDssBRBQLNWCLOwzIcOIJxMkm+XLbV9oxiiBnn2a/qvN0ZvEIUZKHUzKn2bUyUmVZh2E+9bbZ3YBAx8KZBTRyBV4Xzo8rX9AoxurQhBe833Y5VUJYXbqNKvoFiezic+Oji7oZYeMdFWdAw5v1y11J8QWgtORByxHmzgHqrHoSUrrmwm6HL1tmM46nIW27i9Bf0F1bgvYYwTRhC3psj6p1OwletnETu1QH07JtXagXDXSsoDRUGC7KgkxjmTLh8+r8wot08tNue5IjdD8Q2C0CeDYzUl08TDJBJrCM2UwGUgZb58BKXO/oCRYp/aFzJIsojp3QtcE8cJ6dm9cv/sYyUUxq1T72BZQSV7g0hm0PAEjE0uwcHEh/hjJxpl2EwXdONTBGJqCu5TdkmEpvtJAIJVoWBVBh2WfkZ3aYb3lFDFQaSzMvgOcldusqLOcbzqlfnDrnMN0vt2fg5Z1lTbdJ7+pepXUjQAP5V3RFfHz8UPaShdATmY5SUxBZCjGqDc9vukIVLmRsOH5chz3ffcXwr/NSj3hbb14RyHl2dRtf/EGPu+9r2tyKI9FF+5tYf365Cz/tCVMh0sdoUUbON/Ue/dRO4RwiuWCgVpDEkTOiADN86vHqUm7M0OY5fW832ICCn7jy09jhcuqr24V83cg6aXasvDEsBobXTv/KreT4W5XTo81Md52y07yTrG6BgYW3/hvQJkb4HFG26iewM3nhAc1oYcTIMW41p4wk/NVXuRj4oGaDme7RmMeZn1W2YQudv3jq09ixEQ
- dGoxcfEB
- 98sZayss64ylNQiOt5PL7dPtDmx9gkGKdGAwmglQ4pB9pWpUd1i3MbtfX65CHbnsi66lLxht3/NfCr518Isz36/aj/Htp8O9PtTWvUoMUlpPr/99wHxW+9PhnEkxW7oQKHg3CECcs6WXxUK1brBtobEiQd8CNR6EhVvzWmob7eQMDhiBTObqVWFtaOrcrJSbdzaY7lT+up8dqY6Wje4JKUAtf0RqfwXbF3TMtBOsUieYACQjxqIzFkO5FAUqK1UwLoHurgE2OAsI3y84nddYHiYn901KIO1VK9iF8/E5RuVNDWyjvFaK7z+CPQv9Zrp9zYErPeAW5D3Se63s/7DtNiMWPR3pFQfUy571wuC/oFLtfXVybImRlPCAXow==
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776254773-253386
+X-HE-Meta: U2FsdGVkX1+aMnod0CD2iJLzZMztFFl1UGYu3rHUIhCnGne3uBtvWEqZu058qLd93UuqJ2gBD8aLa2drgzvmPjMoum3ltYCyCEBmIF1o5cvtBrrpXMF5mrvseCJ4yusdwaSjkw9tlJVPF2v8mSBvVHX5lUnUDZEhQ5EjO9pe6rAgezKNr6vhOi/hqODbLWKXOiDm0uUxDDIXZnVvUQIdMxuwaU4ezKNCpHs103DycAgZkWLW0Q7ecH+4Qbv5eHwixcWNoWXmUOGv9e88+IgN7/HMYhqt/IrvY8Q8JWXbYdNRLTnXrIyCRNVH/N5ycoN88TW9CH12NbooMrmQ+FvPnfswZjIgSM68cbHAi6GcjqDgEhT+k+hVv/mxQ+YoY4ToaM9V6Bf4FudgRQIEJpWEByBz8OcdH0H80Y6/Y5s/56um6jHvKW+F/xrGx9Sk9UcgkV+DCwyXmZTMPY+2Zn07qSJ0wLVAXiK06pjuK6f7HFGKHAIOT2jVZTxaZLnoRNs1ouWtNlzFXsmyi9s3LFBYuR3h6RgbeJMbwBXfi5S5PNo5CJtiWSA2Dwi6r65kt4njQx6UYGH6kzfCdr3pUBwPQ1Hc1PhrXSOmBeMKQKUXKQAKTxbYFd6mw4Lr4az/0LtHGcBiYAswQhYp9IyI7bS7ePT/RQEFCslGDNmFSyGOgmImo6DzHWsScqE+F9ZjO1K0DLBXxMP1S4ZslCehYVL4MYJGjeuMmJfZTiDlJta++7iTTW4CJ2vcuY0hht9jtdL2qu9LUe2IqnO8CRcxCBMV/RAAb4MDZZeaDgjwKutbI0jebbp+kvvlJgpdBmuMqWXt7ITMfUlcJErYfHUrrVgSHG6GnK6M1QE6pIrIBQMYg7+Wtr12cSWeOltFrzhGRozioF2QChXxB3XNofsXzve6M145MdLBPwvjCS+VuVH/+x78YnD/lBXQ/Mbxlnry/HL2kH1jW3FChCR+dOJkMGx
+ O6SEIKCo
+ hmjh/QNRXcl872rH9K7v8CwAA8uF+W2FFD/qQoZrfRXdMvxxZYLdhi22Om0vIK7ASHCEPMQHplW0xDOi8KKiZtnJC7gydVIdtMdcsWxKFTT3ozdVMTG9ai0vLAXHkRcJ96zE6+0coxsoUpT2K0hoNeFQrVN2cRwjuCa6X1leFCJSnq2EHKScGCc2ytEmqJWHF24k6QW9Nn5Hj46D3lKJrLl4NNM85vkQw69kgorO2jKrKU1k/SJJFZ93O4ftKET79xfLd4UNI8iQANCWn00YLNZ/2zIXIdsW+yif6dLYrrAkYmLE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,100 +134,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Tue, Mar 24, 2026 at 10:47:59AM +0100, Valentin Schneider a écrit :
-> Later commits will rely on being able to check whether a remote CPU is
-> using the kernel or the user CR3.
+On Thu, Apr 16, 2026 at 03:28:53AM +0800, Anatoly Stepanov wrote:
+> [Idea]
 > 
-> This software signal needs to be updated before the actual CR3 write, IOW
-> it always immediately precedes it:
+> If a mmap'ed file being accessed such that async RA never
+> kicks in, we might end up with only 0-order folios in the page cache.
 > 
->   KERNEL_CR3_LOADED := 1
->   SWITCH_TO_KERNEL_CR3
->   [...]
->   KERNEL_CR3_LOADED := 0
->   SWITCH_TO_USER_CR3
-> 
-> The variable also gets mapped into the user space visible pages.
-> I tried really hard not to do that, and at some point had something mostly
-> working with having an alias to it through the cpu_entry_area accessed like
-> so before the switch to the kernel CR3:
-> 
-> 	subq $10, %rsp
-> 	sgdt (%rsp)
-> 	movq 2(%rsp), \scratch_reg /* GDT address */
-> 	addq $10, %rsp
-> 
-> 	movl $1, CPU_ENTRY_AREA_kernel_cr3(\scratch_reg)
-> 
-> however this explodes when running 64-bit user code that invokes SYSCALL,
-> since the scratch reg is %rsp itself, and I figured this was enough headaches.
-> 
-> This will only be really useful for NOHZ_FULL CPUs, but it should be
-> cheaper to unconditionally update a never-used per-CPU variable living in
-> its own cacheline than to check a shared cpumask such as
->   housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
-> at every entry.
-> 
-> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
-> ---
->  arch/x86/Kconfig                | 14 +++++++++++++
->  arch/x86/entry/calling.h        | 13 ++++++++++++
->  arch/x86/entry/syscall_64.c     |  4 ++++
->  arch/x86/include/asm/tlbflush.h |  3 +++
->  arch/x86/mm/pti.c               | 36 ++++++++++++++++++++++-----------
->  5 files changed, 58 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 80527299f859a..f680e83cd5962 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -2192,6 +2192,20 @@ config ADDRESS_MASKING
->  	  The capability can be used for efficient address sanitizers (ASAN)
->  	  implementation and for optimizations in JITs.
->  
-> +config TRACK_CR3
-> +       def_bool n
-> +       prompt "Track which CR3 is in use"
-> +       depends on X86_64 && MITIGATION_PAGE_TABLE_ISOLATION && NO_HZ_FULL
-> +       help
-> +	 This option adds a software signal that allows checking remotely
-> +	 whether a CPU is using the user or the kernel page table.
-> +
-> +	 This allows further optimizations for NOHZ_FULL CPUs.
-> +
-> +	 This obviously makes the user<->kernel transition overhead even worse.
-> +
-> +	 If unsure, say N.
-> +
->  config HOTPLUG_CPU
->  	def_bool y
->  	depends on SMP
-> diff --git a/arch/x86/entry/calling.h b/arch/x86/entry/calling.h
-> index 77e2d920a6407..4099b7d86efd9 100644
-> --- a/arch/x86/entry/calling.h
-> +++ b/arch/x86/entry/calling.h
-> @@ -9,6 +9,7 @@
->  #include <asm/ptrace-abi.h>
->  #include <asm/msr.h>
->  #include <asm/nospec-branch.h>
-> +#include <asm/jump_label.h>
->  
->  /*
->  
-> @@ -170,8 +171,17 @@ For 32-bit we have the following conventions - kernel is built with
->  	andq    $(~PTI_USER_PGTABLE_AND_PCID_MASK), \reg
->  .endm
->  
-> +.macro NOTE_CR3_SWITCH scratch_reg:req in_kernel:req
-> +#ifdef CONFIG_TRACK_CR3
-> +	STATIC_BRANCH_FALSE_LIKELY housekeeping_overridden, .Lend_\@
-> +	movl \in_kernel, PER_CPU_VAR(kernel_cr3_loaded)
+> if fault_around_bytes is larger than 1 single page, then
+> it's beneficial to use high-order folios, which brings significant
+> filemap_map_pages() speedup.
+> So, let's just use fault_around_bytes as a starting point here.
 
-Does this need full ordering of some sort? Like this should be LOCK xadd ?
+Well, this heuristic looks arbitrary. I don't like to mix different concepts.
 
-Thanks.
+With this, in practice most file folios will be 64K. Why? Why is it related
+to faultaround when faultaround is a separate mechanism that isn't particularly
+relevant here?
+
+> 
+> if an arch supports PTE-coalescing we can get more of those for free.
+> (see arm64 example below)
+> 
+> We don't save the new order to "ra->order", so if async RA will happen
+> it would normally start from order-0.
+> 
+> [Things to be discussed]
+> 
+> But at the same time, i can see drawback for 16K, 64K pages, in this case fault_around will still be 64K by default.
+> In this case, it seems makes sense to make the fault_around_bytes be like order-N of PAGE_SIZE, not fixed bytes number.
+> 
+> Another issue is - when fault_around=0, but we'd like to use high-order folios for sync_RA, for cont-PTE for example,
+> For this we can use kind of "max(fault_around_order, cont_pte_order)".
+> 
+> Or introduce some dedicated tunable like "sync_mmap_order".
+> 
+> [Benchmark]
+> 
+> Simple benchmark below reading 100M file in 4M (RA size) chunks
+> such that async RA doesn't kick in and the page cache ends up being
+> filled up with 0-order folios.
+
+Well, the problem is that you are _never_ getting RA to kick in. Folio
+size is the least of your concern, you are effectively not doing much
+readahead since the kernel thinks you're doing random accesses.
+> 
+> The patched kernel gives ~3 times increase in throughput,
+> considering the page cache is filled up at the moment.
+> 
+> The main speedup comes from filemap_map_pages() due to high-order
+> folios usage.
+> 
+> As a bonus, we get better cont_pte bit coverage for Arm64.
+> 
+> Example:
+> // Open 100M file and read every 4M chunk, given max_ra=4M
+> // Perform 10 runs, measure the throughput.
+> ...
+>  char *map = mmap(NULL, filesize, PROT_READ, MAP_PRIVATE, fd, 0);
+>     if (map == MAP_FAILED) {
+>         perror("Error mapping file");
+>         close(fd);
+>         return 1;
+>     }
+> 
+>     struct timespec start, end;
+>     clock_gettime(CLOCK_MONOTONIC, &start);
+> 
+>     unsigned int size_4M = 4*1024*1024;
+>     unsigned int num_reads = filesize / size_4M;
+>     volatile char val;
+>     for (int i = 0; i < num_reads; i++) {
+>         off_t offset = (off_t)i * size_4M;
+>         val = map[offset];
+>     }
+
+This doesn't seem like a real issue. And if it is, you can always issue
+readahead manually. But the whole pattern of "every perfectly-sized RA
+window, access 4 bytes and advance" is completely bizarre. And _if_ this
+is your workload, then having order-0 folios at the read site is much better
+than filling your page cache with data you are not accessing.
+
+Do you have an actual use case for this? Where have you observed these
+problems?
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+Pedro
 
