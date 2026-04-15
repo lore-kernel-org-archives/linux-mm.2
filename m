@@ -4,89 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B55B8F43832
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:06:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96CCDF43832
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:09:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB12A6B0005; Wed, 15 Apr 2026 11:06:02 -0400 (EDT)
+	id D7CEC6B0005; Wed, 15 Apr 2026 11:09:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E39FE6B00A0; Wed, 15 Apr 2026 11:06:02 -0400 (EDT)
+	id D551D6B00A0; Wed, 15 Apr 2026 11:09:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D02646B00A1; Wed, 15 Apr 2026 11:06:02 -0400 (EDT)
+	id C6AEA6B00A2; Wed, 15 Apr 2026 11:09:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5C46B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:06:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 502B5B9B04
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:06:02 +0000 (UTC)
-X-FDA: 84661115364.10.4A058D9
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 13E8B18000A
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:05:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dP+nJDxx;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id B16B66B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:09:13 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7CC601B8073
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:09:13 +0000 (UTC)
+X-FDA: 84661123386.27.C8B8590
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8AA7140017
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:09:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kfffJOx8;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776265560;
+	s=arc-20220608; t=1776265751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ewAlXClOqu3fM1vgHTkEEdvPbORH/Ej6RFM0SsurHY=;
-	b=sUkWFOILsBybcfs7m7deD9Uvy7a6mdYF/XWr0nf6MjafST6xf1d1C9jlc/1a8oYBhXLUI5
-	dqvKk9NAI02ys1FcCxWRThg97tFHGBXLSMDiuG04PS/2Jm23CVnZyUHQFUZJHsXdvlbXGE
-	zSBgfXWxiH71Y98qKRNdNVQZG0f4e80=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776265560; a=rsa-sha256;
-	cv=none;
-	b=NrueadQMIGmmQB2eXm/WbbGfv5efemgbqO246os1JcvNoQTyRDMZ5+vq89+cMlrsGP/NeV
-	cQmpEPCN3Zo4FgtUXqIJYva9hkyff2/zCMMFDK51TZs3xf+OyqIyHeXXnShiFZd52aJU87
-	woOYT+pyL8jMcJErO5CnoxCXkk3m6a8=
+	bh=DTbY8XYoOMeANO+YssI33JYga8YW2EPuDPwZbcUAWPk=;
+	b=qmYuJNy03l8BJMNeFfVIISL+DjLmpo6JYgXMTy0sJqRSBXxchshvuO5wbBxNQTh2DtD6XF
+	0H4LTY3fPh2nBf3JduWS2IkobM+BWV2fD1ZIkIKQebUcKhR6o+n3wDlFxzbbdIvD49uMeR
+	CRsgsKnanlHvCFfrl6DAAqgJa/X/P6c=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dP+nJDxx;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kfffJOx8;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776265751; a=rsa-sha256;
+	cv=none;
+	b=z2eNc7PAGnIS6AeI58jBlmYWi8EPC+AI+CVpJhkMAfT876Po9bJcafXk+vbGwXyhR8iqgC
+	XSMIBTY09i1UWxtJBHL4v4OEaODo/5Qomn2Dg9vwlUIV++ODoq3+GTyYVM7mo8EzTpmxHq
+	I9vS7PGSwZlgzxsyAF1QmhHV4UqOvSM=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776265557;
+	t=1776265749;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1ewAlXClOqu3fM1vgHTkEEdvPbORH/Ej6RFM0SsurHY=;
-	b=dP+nJDxxI/l3UQSVzfzfE2iYPFataqNw2M0TPqTf/upRLF51HHc6ja4wnHPWUJWF9ZZoP9
-	tauQFAVcWGsPdQiqMaZRm23KTjf8b0tiYOiBW+fzidHCHmMTNRa5HMijHCmvXk76UU4n89
-	Hpe29uAs9KJ1A04LId2DYvYd+BRExTo=
+	bh=DTbY8XYoOMeANO+YssI33JYga8YW2EPuDPwZbcUAWPk=;
+	b=kfffJOx8g7JzNZwe9Fiqdzaa6C6hGPqjhhrXVRjHDnF8Ra3s2/OdzCkJzg72YQimCBXAfI
+	sL8ZbD4ggGqW/rEAomv9YVvV8fxRck5UOZVgMZnXyXHjYUskEOUghCCpQ0UJoJkQQpFMR+
+	/4fm+CMCquFDmFEyMWl5/YxhxkBfhEE=
 From: Usama Arif <usama.arif@linux.dev>
-To: Baoquan He <baoquan.he@linux.dev>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	youngjun.park@lge.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] mm/swap: use swap_ops to register swap device's methods
-Date: Wed, 15 Apr 2026 08:05:49 -0700
-Message-ID: <20260415150550.3616172-1-usama.arif@linux.dev>
-In-Reply-To: <20260415085658.993859-3-baoquan.he@linux.dev>
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 10/12] userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
+Date: Wed, 15 Apr 2026 08:08:59 -0700
+Message-ID: <20260415150900.3660575-1-usama.arif@linux.dev>
+In-Reply-To: <20260414142354.1465950-11-kas@kernel.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 13E8B18000A
-X-Rspamd-Server: rspam04
-X-Stat-Signature: kaikkben17a6yb3kgwyxofuwu5o5ayru
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8AA7140017
+X-Stat-Signature: rfepzn7qkajheg19xsizrebkquj9s9hd
 X-Rspam-User: 
-X-HE-Tag: 1776265559-886079
-X-HE-Meta: U2FsdGVkX18bjEe7QEuBab2SIEFoKyLrvlE6SaETqjb/es05KMsG5vLf80nk+Y8o8L0pvl8soeYPC1DMwFY+7+ObIWzH8mOOrAMYM+HHr9GbuZmU6er6U/Y1nlLNmWcmzWnOutZvqj5CPHvE+Kk9Qz/SMHoAw2P1ALn6klOWuL4ioIL4ynS1AWOFZKDLh6RN8D01TTXcBkD6OWjJaEt2EDD02Fad5d1VN00QsJGSTFLBBic6/Z7e+NXL5Z5f6ybhyvlCgEXsTGdHksOANrHAVFA67d/29FAlUC5cqWFdRIJ5H5juekbVySO+qtLozsLxaxwV3E3Y5nf1EDJQLjC/NatLcgwsQNhnbxHPciD7lShCMMZnfXgbjhp4g5xVQ6LOaTovT+6c08FLnXkufAyxJt2cqSeSESFFHkUmMPJkDVihKycXgOOog9dqGFmmlVTQXA5IQ3Hc2fkKpkzNsUgsMoPVpKmDlEDlUKb1U64B9yE3NiCLJEuexCrRLzzX+HcprX2m2vmDuYujPnQK4v4mlIhFrH5v0uGr3TYRu3OTjhxbYIfGh/gh780sv/yonMVfmtr/3ztQzwawN5TO+GJMQhYZVZTGQNUMYxJbs5ez1IusP/Lg2kxcupZIOCZzPbcnlxznOk9FVAnWQLwsJChVH44B/uO1RheBt65xvepQxjPACF882jJy7tnKP3dQs5QjerSKH25tESQZh8ciwEgc8c8XZi7KfAycJ3cA4TKasl1uOFYW442pKRv4oiABL1G1Bviqc/qfyfuMDmjGdQku9LoIytAatsUETvs/x2X80i6pYmYMeGJw6NhtRf/YT5hqVUxzeLjRYzpgxdHcgtW3O/Bub97CCFs3Rwy+FskD72bbgX9x9SDI8C30vD7qfJpaSghFYujxtwEw7pr/3KNDXvJNzCcc2774KnTBuxfl19z5wxc+PPJHlnQcUFuMmihpAl12sarF0j73IFmSGQv
- WEC/lQKW
- AWRyoa2I5sXkqVBu92nctQkj8feg3o/BXZ4xqijIZKUXA2ENRDxb8IyQP5hBWm197eIzIdNZqTHbmsibRrzDT8eo/uHlPVOMkVQ62yr3n8iWKdZ10bXf+u33bNh9vVpXIEvA6hk2/rX7LfwA7s9kxckuoFtIgcNQf6fwXRvIkeEThayIT7nEQCEO/EavY9Uc5ywjobm+wpaYz21Gv7rhvB/SKcBIHyeqa2yf6zblmADynpKU=
+X-HE-Tag: 1776265751-186606
+X-HE-Meta: U2FsdGVkX1+wlWIUe/KEOhnDyiLxTbudwuA4la2Ch3ALKVhbAbzsBULk13n61mztFA65yTiTruGOYneaNSX31+8BrpG4yM6U+zhE+IWsg2RD95+7Q+hd2e1Nw4uL5eh4xwSRMZ5foB1eOUL0MWETKbvd0u5HYy9hYd2EDvkvbByFl9NNWjkkINUCGikR87jWq6nn9LO8tmbx8aohhM3a+R9vQ0An9A58+/+Psz42oVcX2ONmsafWUtddWbSv/Y7wiwRM80dZsB12KI8iYkEkUNB+XsZ84OzaRQoA+AQOHBpRaccL+qD1WfxcF2gyvb1mgeqiJ874D7E2U+zYVnl02jSMFRTuhmLgfCfRK8V4ITuo/MlWC+UklaW98yFa0dUvXQajQ6zz8c0SlEBRpjt52TDVClfIF/J6RlFdWB54sa9PMBgbjeDORsWFckC62U1feDnal0fMwqh5w+P6K3Hf6vSIyVMM7tmJl3F9yZf6GFDX5seClQpG5X3G8NisFFSMurPIMMb3PvoCCcIhLYNvgogCc6/Zi9o+wglbW4DympixZy6PeyP9CivR6O2DDPT2Mi9h/fkceelrmInrmsHlUU5HZI2KppP0vgEFQFMGPO3LV0jCVEqrTELafjCxKQsw+xA4H7TdDIKIJdadMC0uUx+zbAEqi5GozsAgDd1a1zT0yhf2Kuje/KyKkBQ0tho1iL9rS/zVze1fPVt4cIA1JnA4dHGcCCTe/VyG0QN7zHW3WLFCQdVDTEpEopVCk67sZmSF6qwusestJBkf3+V/XabC8X+VYii+18WE0I1hrqOFKFMSJt0jpW3LYT7C2SONukL56CtrGEvqPZNVy07j6qLvenr/QNMIiJp9A55Wq+6+fpO7Z+qYgXG6aGbMjTLPFYbbbucFBl+EKWF7TIH2PUvtXH6+Pv+nQV8ac3Jy9+MkksNGl8kCR1FTQ83u5uFp89dsRLeznCkUnS8Iz/I
+ flv5gJDy
+ tZVCT4iRMuXRhmHN1SJvwBfzcbv0BAE/9SpkvlDHs286r4T3UG8yUFUxe1aNHyu0CjBf4U7yA6WfK2cD9uPfnyuIOWZXmmnmD2e4OMxJOwFU1kERo5lX5FaSqubz/ERAutb5JXxSfmrJ72FTjhS6gYlBd8wFa8oHQCPa2sLBagJYIsZAUkNTclhhCvahaosZdUjns6HBZsp4m2AfaxuRJXiHtxxVxq3/vgZHeh7ChuengUQGoixiqUENSYNbfG5gIOHbb1znO1HANTrK1Eb85stOmxH94Tmp+cxa0TgFxFK0RdgQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,305 +103,263 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Apr 2026 16:56:57 +0800 Baoquan He <baoquan.he@linux.dev> wrote:
+On Tue, 14 Apr 2026 15:23:44 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
 
-> This simplifies codes and makes logic clearer. And also makes later any
-> new swap device type being added easier to handle.
+> Add UFFDIO_SET_MODE ioctl to toggle UFFD_FEATURE_MINOR_ASYNC at
+> runtime. Takes mmap_write_lock for serialization against all in-flight
+> faults. On sync-to-async transition, wake threads blocked in
+> handle_userfault() so they retry and auto-resolve.
 > 
-> Currently there are three types of swap devices: bdev_fs, bdev_sync
-> and bdev_async, and only operations read_folio and write_folio are
-> included. In the future, there could be more swap device types added
-> and more appropriate opeations adapted into swap_ops.
-
-s/opeations/operations/
-
+> Since ctx->features can now be modified concurrently, add
+> userfaultfd_features() helper that wraps READ_ONCE() and convert
+> all ctx->features reads to use it.
 > 
-> Suggested-by: Chris Li <chrisl@kernel.org>
-> Co-developed-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
 > ---
->  include/linux/swap.h |   2 +
->  mm/swap.h            |  10 ++++-
->  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
->  mm/swapfile.c        |   5 +++
->  mm/zswap.c           |   2 +-
->  5 files changed, 76 insertions(+), 45 deletions(-)
+>  fs/userfaultfd.c                 | 95 ++++++++++++++++++++++++++++----
+>  include/uapi/linux/userfaultfd.h | 13 +++++
+>  2 files changed, 96 insertions(+), 12 deletions(-)
 > 
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 62fc7499b408..3069bbfd7a05 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -255,6 +255,7 @@ struct swap_sequential_cluster {
->  	unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offset */
->  };
+> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+> index 43064238fd8d..0edb33599491 100644
+> --- a/fs/userfaultfd.c
+> +++ b/fs/userfaultfd.c
+> @@ -79,24 +79,33 @@ struct userfaultfd_wake_range {
+>  /* internal indication that UFFD_API ioctl was successfully executed */
+>  #define UFFD_FEATURE_INITIALIZED		(1u << 31)
 >  
-> +struct swap_ops;
->  /*
->   * The in-memory structure used to track swap areas.
->   */
-> @@ -300,6 +301,7 @@ struct swap_info_struct {
->  	struct work_struct reclaim_work; /* reclaim worker */
->  	struct list_head discard_clusters; /* discard clusters list */
->  	struct plist_node avail_list;   /* entry in swap_avail_head */
-> +	const struct swap_ops *ops;
->  };
->  
->  static inline swp_entry_t page_swap_entry(struct page *page)
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 81a80605fc6a..0f4c597e3f28 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -213,6 +213,15 @@ extern void swap_entries_free(struct swap_info_struct *si,
->  /* linux/mm/swap_io.c */
->  int sio_pool_init(void);
->  struct swap_iocb;
-> +struct swap_ops {
-> +	void (*read_folio)(struct swap_info_struct *sis,
-> +			struct folio *folio,
-> +			struct swap_iocb **plug);
-> +	void (*write_folio)(struct swap_info_struct *sis,
-> +			struct folio *folio,
-> +			struct swap_iocb **plug);
-> +};
-> +int init_swap_ops(struct swap_info_struct *sis);
->  void swap_read_folio(struct folio *folio, struct swap_iocb **plug);
->  void __swap_read_unplug(struct swap_iocb *plug);
->  static inline void swap_read_unplug(struct swap_iocb *plug)
-> @@ -222,7 +231,6 @@ static inline void swap_read_unplug(struct swap_iocb *plug)
->  }
->  void swap_write_unplug(struct swap_iocb *sio);
->  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
-> -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
->  
->  /* linux/mm/swap_state.c */
->  extern struct address_space swap_space __read_mostly;
-> diff --git a/mm/swap_io.c b/mm/swap_io.c
-> index 4bf210bd677e..602e9b871b30 100644
-> --- a/mm/swap_io.c
-> +++ b/mm/swap_io.c
-> @@ -238,6 +238,7 @@ static void swap_zeromap_folio_clear(struct folio *folio)
->  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
->  {
->  	int ret = 0;
-> +	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
->  
->  	if (folio_free_swap(folio))
->  		goto out_unlock;
-> @@ -279,7 +280,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
->  		return AOP_WRITEPAGE_ACTIVATE;
->  	}
->  
-> -	__swap_writepage(folio, swap_plug);
-> +	sis->ops->write_folio(sis, folio, swap_plug);
->  	return 0;
->  out_unlock:
->  	folio_unlock(folio);
-> @@ -369,10 +370,11 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
->  	mempool_free(sio, sio_pool);
->  }
->  
-> -static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
-> +static void swap_writepage_fs(struct swap_info_struct *sis,
-> +			      struct folio *folio,
-> +			      struct swap_iocb **swap_plug)
->  {
->  	struct swap_iocb *sio = swap_plug ? *swap_plug : NULL;
-> -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
->  	struct file *swap_file = sis->swap_file;
->  	loff_t pos = swap_dev_pos(folio->swap);
->  
-> @@ -405,8 +407,9 @@ static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
->  		*swap_plug = sio;
->  }
->  
-> -static void swap_writepage_bdev_sync(struct folio *folio,
-> -		struct swap_info_struct *sis)
-> +static void swap_writepage_bdev_sync(struct swap_info_struct *sis,
-> +				     struct folio *folio,
-> +				     struct swap_iocb **plug)
->  {
->  	struct bio_vec bv;
->  	struct bio bio;
-> @@ -425,8 +428,9 @@ static void swap_writepage_bdev_sync(struct folio *folio,
->  	__end_swap_bio_write(&bio);
->  }
->  
-> -static void swap_writepage_bdev_async(struct folio *folio,
-> -		struct swap_info_struct *sis)
-> +static void swap_writepage_bdev_async(struct swap_info_struct *sis,
-> +				      struct folio *folio,
-> +				      struct swap_iocb **plug)
->  {
->  	struct bio *bio;
->  
-> @@ -442,29 +446,6 @@ static void swap_writepage_bdev_async(struct folio *folio,
->  	submit_bio(bio);
->  }
->  
-> -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
-> -{
-> -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-> -
-> -	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
-> -	/*
-> -	 * ->flags can be updated non-atomically (scan_swap_map_slots),
-> -	 * but that will never affect SWP_FS_OPS, so the data_race
-> -	 * is safe.
-> -	 */
-> -	if (data_race(sis->flags & SWP_FS_OPS))
-> -		swap_writepage_fs(folio, swap_plug);
-> -	/*
-> -	 * ->flags can be updated non-atomically (scan_swap_map_slots),
-> -	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
-> -	 * is safe.
-> -	 */
-> -	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
-> -		swap_writepage_bdev_sync(folio, sis);
-> -	else
-> -		swap_writepage_bdev_async(folio, sis);
-> -}
-> -
->  void swap_write_unplug(struct swap_iocb *sio)
->  {
->  	struct iov_iter from;
-> @@ -533,9 +514,10 @@ static bool swap_read_folio_zeromap(struct folio *folio)
->  	return true;
->  }
->  
-> -static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
-> +static void swap_read_folio_fs(struct swap_info_struct *sis,
-> +			       struct folio *folio,
-> +			       struct swap_iocb **plug)
->  {
-> -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
->  	struct swap_iocb *sio = NULL;
->  	loff_t pos = swap_dev_pos(folio->swap);
->  
-> @@ -567,8 +549,9 @@ static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
->  		*plug = sio;
->  }
->  
-> -static void swap_read_folio_bdev_sync(struct folio *folio,
-> -		struct swap_info_struct *sis)
-> +static void swap_read_folio_bdev_sync(struct swap_info_struct *sis,
-> +				      struct folio *folio,
-> +				      struct swap_iocb **plug)
->  {
->  	struct bio_vec bv;
->  	struct bio bio;
-> @@ -589,8 +572,9 @@ static void swap_read_folio_bdev_sync(struct folio *folio,
->  	put_task_struct(current);
->  }
->  
-> -static void swap_read_folio_bdev_async(struct folio *folio,
-> -		struct swap_info_struct *sis)
-> +static void swap_read_folio_bdev_async(struct swap_info_struct *sis,
-> +				       struct folio *folio,
-> +				       struct swap_iocb **plug)
->  {
->  	struct bio *bio;
->  
-> @@ -604,6 +588,44 @@ static void swap_read_folio_bdev_async(struct folio *folio,
->  	submit_bio(bio);
->  }
->  
-> +static const struct swap_ops bdev_fs_swap_ops = {
-> +	.read_folio = swap_read_folio_fs,
-> +	.write_folio = swap_writepage_fs,
-> +};
-> +
-> +static const struct swap_ops bdev_sync_swap_ops = {
-> +	.read_folio = swap_read_folio_bdev_sync,
-> +	.write_folio = swap_writepage_bdev_sync,
-> +};
-> +
-> +static const struct swap_ops bdev_async_swap_ops = {
-> +	.read_folio = swap_read_folio_bdev_async,
-> +	.write_folio = swap_writepage_bdev_async,
-> +};
-> +
-> +int init_swap_ops(struct swap_info_struct *sis)
+> +/*
+> + * Read ctx->features with READ_ONCE() since UFFDIO_SET_MODE can
+> + * modify it concurrently.
+> + */
+> +static unsigned int userfaultfd_features(struct userfaultfd_ctx *ctx)
 > +{
-> +	/*
-> +	 * ->flags can be updated non-atomically, but that will
-> +	 * never affect SWP_FS_OPS, so the data_race is safe.
-> +	 */
-> +	if (data_race(sis->flags & SWP_FS_OPS))
-> +		sis->ops = &bdev_fs_swap_ops;
-> +	/*
-> +	 * ->flags can be updated non-atomically, but that will
-> +	 * never affect SWP_SYNCHRONOUS_IO, so the data_race is safe.
-> +	 */
-> +	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
-> +		sis->ops = &bdev_sync_swap_ops;
-> +	else
-> +		sis->ops = &bdev_async_swap_ops;
-> +
-> +	if (sis->ops || sis->ops->read_folio || sis->ops->write_folio)
-> +		return -1;
-
-sis->ops is always non-NULL, and you will return -1 here and
-swapon will always fail with -EINVAL.
-
-You probably wanted?
-
-      if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_folio)
-          return -1;
-
-> +
-> +	return 0;
+> +	return READ_ONCE(ctx->features);
 > +}
 > +
->  void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
+>  static bool userfaultfd_is_initialized(struct userfaultfd_ctx *ctx)
 >  {
->  	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
-> @@ -638,13 +660,7 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
->  	/* We have to read from slower devices. Increase zswap protection. */
->  	zswap_folio_swapin(folio);
+> -	return ctx->features & UFFD_FEATURE_INITIALIZED;
+> +	return userfaultfd_features(ctx) & UFFD_FEATURE_INITIALIZED;
+>  }
 >  
-> -	if (data_race(sis->flags & SWP_FS_OPS)) {
-> -		swap_read_folio_fs(folio, plug);
-> -	} else if (synchronous) {
-> -		swap_read_folio_bdev_sync(folio, sis);
-> -	} else {
-> -		swap_read_folio_bdev_async(folio, sis);
-> -	}
-> +	sis->ops->read_folio(sis, folio, plug);
+>  static bool userfaultfd_wp_async_ctx(struct userfaultfd_ctx *ctx)
+>  {
+> -	return ctx && (ctx->features & UFFD_FEATURE_WP_ASYNC);
+> +	return ctx && (userfaultfd_features(ctx) & UFFD_FEATURE_WP_ASYNC);
+>  }
 >  
->  finish:
->  	if (workingset) {
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 60e21414624b..7e1660f59c00 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -3413,6 +3413,11 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
->  		goto bad_swap_unlock_inode;
+>  static bool userfaultfd_minor_anon_ctx(struct userfaultfd_ctx *ctx)
+>  {
+> -	return ctx && (ctx->features & UFFD_FEATURE_MINOR_ANON);
+> +	return ctx && (userfaultfd_features(ctx) & UFFD_FEATURE_MINOR_ANON);
+>  }
+>  
+>  static bool userfaultfd_minor_async_ctx(struct userfaultfd_ctx *ctx)
+>  {
+> -	return ctx && (ctx->features & UFFD_FEATURE_MINOR_ASYNC);
+> +	return ctx && (userfaultfd_features(ctx) & UFFD_FEATURE_MINOR_ASYNC);
+>  }
+>  
+>  static unsigned int userfaultfd_ctx_flags(struct userfaultfd_ctx *ctx)
+> @@ -122,7 +131,7 @@ bool userfaultfd_wp_unpopulated(struct vm_area_struct *vma)
+>  	if (!ctx)
+>  		return false;
+>  
+> -	return ctx->features & UFFD_FEATURE_WP_UNPOPULATED;
+> +	return userfaultfd_features(ctx) & UFFD_FEATURE_WP_UNPOPULATED;
+>  }
+>  
+>  static int userfaultfd_wake_function(wait_queue_entry_t *wq, unsigned mode,
+> @@ -435,7 +444,7 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
+>  	/* 0 or > 1 flags set is a bug; we expect exactly 1. */
+>  	VM_WARN_ON_ONCE(!reason || (reason & (reason - 1)));
+>  
+> -	if (ctx->features & UFFD_FEATURE_SIGBUS)
+> +	if (userfaultfd_features(ctx) & UFFD_FEATURE_SIGBUS)
+>  		goto out;
+>  	if (!(vmf->flags & FAULT_FLAG_USER) && (ctx->flags & UFFD_USER_MODE_ONLY))
+>  		goto out;
+> @@ -506,7 +515,7 @@ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
+>  	init_waitqueue_func_entry(&uwq.wq, userfaultfd_wake_function);
+>  	uwq.wq.private = current;
+>  	uwq.msg = userfault_msg(vmf->address, vmf->real_address, vmf->flags,
+> -				reason, ctx->features);
+> +				reason, userfaultfd_features(ctx));
+>  	uwq.ctx = ctx;
+>  	uwq.waken = false;
+>  
+> @@ -668,7 +677,7 @@ int dup_userfaultfd(struct vm_area_struct *vma, struct list_head *fcs)
+>  	if (!octx)
+>  		return 0;
+>  
+> -	if (!(octx->features & UFFD_FEATURE_EVENT_FORK)) {
+> +	if (!(userfaultfd_features(octx) & UFFD_FEATURE_EVENT_FORK)) {
+>  		userfaultfd_reset_ctx(vma);
+>  		return 0;
 >  	}
+> @@ -774,7 +783,7 @@ void mremap_userfaultfd_prep(struct vm_area_struct *vma,
+>  	if (!ctx)
+>  		return;
 >  
-> +	if (init_swap_ops(si)) {
-> +		error = -EINVAL;
-> +		goto bad_swap_unlock_inode;
+> -	if (ctx->features & UFFD_FEATURE_EVENT_REMAP) {
+> +	if (userfaultfd_features(ctx) & UFFD_FEATURE_EVENT_REMAP) {
+>  		vm_ctx->ctx = ctx;
+>  		userfaultfd_ctx_get(ctx);
+>  		down_write(&ctx->map_changing_lock);
+> @@ -824,7 +833,7 @@ bool userfaultfd_remove(struct vm_area_struct *vma,
+>  	struct userfaultfd_wait_queue ewq;
+>  
+>  	ctx = vma->vm_userfaultfd_ctx.ctx;
+> -	if (!ctx || !(ctx->features & UFFD_FEATURE_EVENT_REMOVE))
+> +	if (!ctx || !(userfaultfd_features(ctx) & UFFD_FEATURE_EVENT_REMOVE))
+>  		return true;
+>  
+>  	userfaultfd_ctx_get(ctx);
+> @@ -863,7 +872,7 @@ int userfaultfd_unmap_prep(struct vm_area_struct *vma, unsigned long start,
+>  	struct userfaultfd_unmap_ctx *unmap_ctx;
+>  	struct userfaultfd_ctx *ctx = vma->vm_userfaultfd_ctx.ctx;
+>  
+> -	if (!ctx || !(ctx->features & UFFD_FEATURE_EVENT_UNMAP) ||
+> +	if (!ctx || !(userfaultfd_features(ctx) & UFFD_FEATURE_EVENT_UNMAP) ||
+>  	    has_unmap_ctx(ctx, unmaps, start, end))
+>  		return 0;
+>  
+> @@ -1826,6 +1835,65 @@ static int userfaultfd_deactivate(struct userfaultfd_ctx *ctx,
+>  	return ret;
+>  }
+>  
+> +/*
+> + * Features that can be toggled at runtime via UFFDIO_SET_MODE.
+> + * Only async features that were enabled at UFFDIO_API time may be toggled.
+> + */
+> +#define UFFD_FEATURE_TOGGLEABLE	(UFFD_FEATURE_MINOR_ASYNC)
+> +
+> +static int userfaultfd_set_mode(struct userfaultfd_ctx *ctx,
+> +				  unsigned long arg)
+> +{
+> +	struct uffdio_set_mode mode;
+> +	struct mm_struct *mm = ctx->mm;
+> +
+> +	if (copy_from_user(&mode, (void __user *)arg, sizeof(mode)))
+> +		return -EFAULT;
+> +
+> +	/* enable and disable must not overlap */
+> +	if (mode.enable & mode.disable)
+> +		return -EINVAL;
+> +
+> +	/* only toggleable features are allowed */
+> +	if ((mode.enable | mode.disable) & ~UFFD_FEATURE_TOGGLEABLE)
+> +		return -EINVAL;
+
+The commit message states "Only async features that were enabled at
+UFFDIO_API time may be toggled."  However, the code only checks that
+the requested feature is in UFFD_FEATURE_TOGGLEABLE.
+
+Is it intentional that a user who opened a uffd without
+UFFD_FEATURE_MINOR_ASYNC can still enable it later via
+UFFDIO_SET_MODE? 
+
+> +
+> +	if (!mmget_not_zero(mm))
+> +		return -ESRCH;
+> +
+> +	/*
+> +	 * mmap_write_lock serializes against all page faults.
+> +	 * After we release, no in-flight faults from the old mode exist.
+> +	 */
+> +	{
+> +		unsigned int new_features;
+> +
+> +		mmap_write_lock(mm);
+> +		new_features = userfaultfd_features(ctx);
+> +		new_features |= mode.enable;
+> +		new_features &= ~mode.disable;
+> +		WRITE_ONCE(ctx->features, new_features);
+> +		mmap_write_unlock(mm);
 > +	}
 > +
->  	si->max = maxpages;
->  	si->pages = maxpages - 1;
->  	nr_extents = setup_swap_extents(si, &span);
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 16b2ef7223e1..d8930d9054df 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1061,7 +1061,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->  	folio_set_reclaim(folio);
+> +	/*
+> +	 * If switching to async, wake threads blocked in handle_userfault().
+> +	 * They will retry the fault and auto-resolve under the new mode.
+> +	 * len=0 means wake all pending faults on this context.
+> +	 */
+> +	if (mode.enable & UFFD_FEATURE_MINOR_ASYNC) {
+> +		struct userfaultfd_wake_range range = { .len = 0 };
+> +
+> +		spin_lock_irq(&ctx->fault_pending_wqh.lock);
+> +		__wake_up_locked_key(&ctx->fault_pending_wqh, TASK_NORMAL,
+> +				     &range);
+> +		__wake_up(&ctx->fault_wqh, TASK_NORMAL, 1, &range);
+> +		spin_unlock_irq(&ctx->fault_pending_wqh.lock);
+> +	}
+> +
+> +	mmput(mm);
+> +	return 0;
+> +}
 >  
->  	/* start writeback */
-> -	__swap_writepage(folio, NULL);
-> +	si->ops->write_folio(si, folio, NULL);
+>  static int userfaultfd_continue(struct userfaultfd_ctx *ctx, unsigned long arg)
+>  {
+> @@ -2150,6 +2218,9 @@ static long userfaultfd_ioctl(struct file *file, unsigned cmd,
+>  	case UFFDIO_DEACTIVATE:
+>  		ret = userfaultfd_deactivate(ctx, arg);
+>  		break;
+> +	case UFFDIO_SET_MODE:
+> +		ret = userfaultfd_set_mode(ctx, arg);
+> +		break;
+>  	}
+>  	return ret;
+>  }
+> @@ -2177,7 +2248,7 @@ static void userfaultfd_show_fdinfo(struct seq_file *m, struct file *f)
+>  	 *	protocols: aa:... bb:...
+>  	 */
+>  	seq_printf(m, "pending:\t%lu\ntotal:\t%lu\nAPI:\t%Lx:%x:%Lx\n",
+> -		   pending, total, UFFD_API, ctx->features,
+> +		   pending, total, UFFD_API, userfaultfd_features(ctx),
+>  		   UFFD_API_IOCTLS|UFFD_API_RANGE_IOCTLS);
+>  }
+>  #endif
+> diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
+> index 775825da2596..f0f14f9db06c 100644
+> --- a/include/uapi/linux/userfaultfd.h
+> +++ b/include/uapi/linux/userfaultfd.h
+> @@ -84,6 +84,7 @@
+>  #define _UFFDIO_CONTINUE		(0x07)
+>  #define _UFFDIO_POISON			(0x08)
+>  #define _UFFDIO_DEACTIVATE		(0x09)
+> +#define _UFFDIO_SET_MODE		(0x0A)
+>  #define _UFFDIO_API			(0x3F)
 >  
->  out:
->  	if (ret && ret != -EEXIST) {
+>  /* userfaultfd ioctl ids */
+> @@ -110,6 +111,8 @@
+>  				      struct uffdio_poison)
+>  #define UFFDIO_DEACTIVATE	_IOR(UFFDIO, _UFFDIO_DEACTIVATE,	\
+>  				     struct uffdio_range)
+> +#define UFFDIO_SET_MODE		_IOW(UFFDIO, _UFFDIO_SET_MODE,	\
+> +				     struct uffdio_set_mode)
+>  
+>  /* read() structure */
+>  struct uffd_msg {
+> @@ -395,6 +398,16 @@ struct uffdio_move {
+>  	__s64 move;
+>  };
+>  
+> +struct uffdio_set_mode {
+> +	/*
+> +	 * Toggle async mode for features at runtime.
+> +	 * Supported: UFFD_FEATURE_MINOR_ASYNC.
+> +	 * Setting a bit in both enable and disable is invalid.
+> +	 */
+> +	__u64 enable;
+> +	__u64 disable;
+> +};
+> +
+>  /*
+>   * Flags for the userfaultfd(2) system call itself.
+>   */
 > -- 
-> 2.52.0
+> 2.51.2
 > 
 > 
 
