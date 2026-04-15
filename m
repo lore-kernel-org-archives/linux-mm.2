@@ -4,130 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5774F41986
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:05:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71568F4198D
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:05:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59C716B0099; Wed, 15 Apr 2026 06:05:34 -0400 (EDT)
+	id C530A6B009D; Wed, 15 Apr 2026 06:05:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 574C26B009D; Wed, 15 Apr 2026 06:05:34 -0400 (EDT)
+	id C2A896B009E; Wed, 15 Apr 2026 06:05:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9026B009E; Wed, 15 Apr 2026 06:05:34 -0400 (EDT)
+	id AF2E86B009F; Wed, 15 Apr 2026 06:05:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D2C76B0099
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:05:34 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B67611B81CC
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:05:33 +0000 (UTC)
-X-FDA: 84660358146.15.AE22959
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ADDD2C000B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:05:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="r MihxMb";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=aeRHL9NH;
-	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776247531; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A28576B009D
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:05:36 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6865BC1FA7
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:05:36 +0000 (UTC)
+X-FDA: 84660358272.29.ED7B497
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4C3ED80012
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:05:32 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Amg53dRb;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776247534; a=rsa-sha256;
 	cv=none;
-	b=pNQ31Jha8WEnpbXdKrmzTxRe0DJtr377Qddc0Hco/E4STk+d1JFpEOHyjz1VRMGtTpeMY3
-	Y58P2Ep3itrU48lMjVTn/Zr6b5GHnsikuGzfASHLEgr65MNFsYw4FhTu6A6oCfxqnvzCAk
-	ziXWnU+FhHoWDw84Mx7eK/he6ZysNDk=
+	b=fgp66EKeRP4Ns4nIxfIC8KLOkyp0X3dmG8tlVV4Jj/nlp/C9eF1Z6Qb3ATbpNETUF76Ol5
+	sytttncAppFMFtfs/cM8qkVpX88UG6YNPMwVtrvsi4pB7Ib3npc8uhTJHCGEmIgTY/nAvM
+	g3A//7DEm/wXf9o1UBjfQPThbxHszW8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Amg53dRb;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776247531;
+	s=arc-20220608; t=1776247534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gz/2LXU1K8BhzecoWedpHAL3WhAhwdUS9rpTtpz7gUQ=;
-	b=rHtUVO+69tz8rKMIB2Dovpwz08Pvj/PvogyG+jV4T4ClSh8yQ8CHltYqI4o74K1qscUnZn
-	QnLM+TwRJqF+HbKx5lja9uFwR4bXvtwt7jUbwNjFJvlcKLWLC9NIMtyC1iG8hbwGPyB2Vw
-	RhHdlxFmsaMuuzUsvbDIwhzMvkY1QI4=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="r MihxMb";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=aeRHL9NH;
-	spf=pass (imf10.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 183E1EC0468;
-	Wed, 15 Apr 2026 06:05:31 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 15 Apr 2026 06:05:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1776247531; x=
-	1776333931; bh=Gz/2LXU1K8BhzecoWedpHAL3WhAhwdUS9rpTtpz7gUQ=; b=r
-	MihxMbpACz6IajCeWCwHlLQsnD7jNefsYQHWduxFgSQDsSIfL8MCWCvlBEmxZ3wS
-	HUUpR1Zqx1z4re8ZqJhd1FLLZ3DQQwVH+7QOiD6uZ/ZIewctG7MY6TMdK2zEf2xu
-	k8Lul/1m9Af8k12ooQ/mztCl4elVDlB6XkJtOop/DgK4Eq1llUFBv2xqA62beA3Q
-	pEW8TPpR3U8ApJV8aaYmSGMPnujQnRfMO6vOc90fX6RjJBYCXRp8pudgm5kcIoA+
-	8EtTtCvzPR+FBcvr/4ERTp4UH40dt8C3sEN+lvFBJanoErAjseHA2S3ZIUi3AlXs
-	nS7VUl/CVgiAEdNrVxp9g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1776247531; x=1776333931; bh=Gz/2LXU1K8BhzecoWedpHAL3WhAhwdUS9rp
-	Ttpz7gUQ=; b=aeRHL9NHunEMk9W4/cvLQ3p8XcOinFi9Y8oS8+mRouE7JdXm9Vs
-	gxFu1jrXco5aWTms3E9BNfcRqpnSJX39se6DYbNZpIJolcx5Gp/Srgot/sQ2xx/t
-	Q5aAMlkkOPG1nyDhhWw3HBRbatZ9sU7P3AZZboUg56WuqilFG/NIDmkn+BBxzj8U
-	3IKgAi/hps0/iPop0QKkV6ZGva1175TWtfKCj48p/8R7Y4D+OCSUoDtACKUJPARf
-	Jfy7wZQYvAfXpMFurUUrvYPLGx2XA9QH3ZvfRbOPopHIYD0wXDxlcnF2FJG2z2S9
-	ya02tB7ObCRK40l6LnQTeBxLM9FpqRYTNGQ==
-X-ME-Sender: <xms:6mLfaWAc9YdFjHQAGO7gHUs-GlzlHoZP1eNW87__MmlIBF57csJr0Q>
-    <xme:6mLfacajXl-iRko3WiIu998OxraCfgWSXdShsu1fPnkaXkiyK6kR2WDv2KXZbo3bD
-    NWc9ai9nXevYUYK6FTM14mLF-FvGxmtp35nxygMhVvZE3IcenFRHNC0>
-X-ME-Received: <xmr:6mLfaVGGC1r3F-vWXyk1a1er9lfAlmkejm1In5Q0uQmRF7wylZNW_r19GAClLA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegfeejlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtf
-    frrghtthgvrhhnpeefteehjeduueejieekteduledvveekfedutdekvddthedtteeiueei
-    teejueegtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvddt
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhnghihuhdrhhgvsehshhhoph
-    gvvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgt
-    phhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohephhgrnhhnvghssegtmhhpgigthhhgrdhorhhgpdhrtghpthhtoheptghl
-    mhesmhgvthgrrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrh
-    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdr
-    ohhrghdprhgtphhtthhopegsfhhoshhtvghrsehrvgguhhgrthdrtghomhdprhgtphhtth
-    hopegrgigsohgvsehkvghrnhgvlhdrughk
-X-ME-Proxy: <xmx:6mLfaYvgsxWcMmu7Mk83CMbexwvnD9rgjgGJN10jNwvGk326lNc6Xg>
-    <xmx:6mLfaTI2496G5wsWC-omTnhciKbmRbfnmfmIULHnBX8fiQRcwZu8vQ>
-    <xmx:6mLfaeOV4hu3ZyUXPuXlBRoBn3UpLMBOIKZPg-NA6Acp1UgBuCI1Xg>
-    <xmx:6mLfaTblMYOaDLEYzjXfg5ndAvYoMJpmU-EApVLpflOtDUquS76rGg>
-    <xmx:62LfaYTz-M4YyhDbs3i_K9rNoL1qKzMPN7tEiNE8zwD7h-CXmPsugzRb>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 15 Apr 2026 06:05:28 -0400 (EDT)
-Date: Wed, 15 Apr 2026 11:05:21 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Mingyu He <mingyu.he@shopee.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, hannes@cmpxchg.org, 
-	clm@meta.com, linux-kernel@vger.kernel.org, willy@infradead.org, 
-	bfoster@redhat.com, Jens Axboe <axboe@kernel.dk>, littleswimmingwhale@gmail.com
-Subject: Re: [ISSUE] Read performance regression when using RWF_DONTCACHE
- form 8026e49 "mm/filemap: add read support for RWF_DONTCACHE"
-Message-ID: <ad9g22IbYJatwptY@thinkstation>
-References: <CAAoBcuSK38z5Nh7rGuHDFwpNvtc0W49OZKc1_d1QkCbK_nL7Ew@mail.gmail.com>
+	bh=siihScA3aZpqcwTKenkHHbymWnhF4GwJHnW9Do+vUPQ=;
+	b=iwyELl2Ud3907NBtDeH2A3iL9I85EO+AXlHU0rX3uWoeUcV8c4yXQSloQkTFtPraO6ZXqv
+	iV/LX+iIT7ApIorWfKWjdkj1Fdi8rR1efeH5ytp86+T8FZ9P69z6zpxwCslNJNh5mTFQwS
+	BlSxtIWPkOiEwHQXnSFoqvltlry0bMo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776247525; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=siihScA3aZpqcwTKenkHHbymWnhF4GwJHnW9Do+vUPQ=;
+	b=Amg53dRbkWwX7gIMNO4W87MQKrdNAIhszml+R33QtWTeUDSTHsPt2QzNlFwLEMYUojKxfqJlPMdgzT4rw+2m5DPr1LNzitzPcipYQf6ZeH4n4GGnE0hmKOf+70CQehqf72FvDN4DxXe1ZOBKpx6qPLJLbm2iPkDpeWN/lxE7K+k=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X14KnF8_1776247524;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X14KnF8_1776247524 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Apr 2026 18:05:25 +0800
+Message-ID: <1a3cb6b2-94e0-4268-8cd9-1f9a9deb6c6b@linux.alibaba.com>
+Date: Wed, 15 Apr 2026 18:05:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAoBcuSK38z5Nh7rGuHDFwpNvtc0W49OZKc1_d1QkCbK_nL7Ew@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
+ shmem mount
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
+ <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
+ <e07071fc-15b7-495f-b6d5-96004aa0f8b6@linux.alibaba.com>
+ <c88ea567-6b03-4540-8173-7fceeac23f7d@kernel.org>
+ <2d138a3f-0006-4a01-852a-4570d7ba781d@linux.alibaba.com>
+ <eda13ed2-117a-488b-9120-d64e0fe0b731@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <eda13ed2-117a-488b-9120-d64e0fe0b731@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ADDD2C000B
-X-Stat-Signature: xmc5msd3rqnm3ufzbngn6edaonyng8ak
-X-HE-Tag: 1776247531-177907
-X-HE-Meta: U2FsdGVkX18qsH2aGQO0BRUwNM44URrtyHB9Zi3GLcMk2IqWTmirvu6YMZfBdn24CanBinuFLbp+ATQGCdRDv7Jo96Sa5yRdgCXQjoRFYTFsrdAut3u7mzXmJ3MkD1bzQBgdmaRmb5T2TWHKAbmDewqOAQqmA+xlpDyv713E96asW5BP3hvwucBRSy/+Z+g+VGn1n1qcM7X8Pq0tbda1fdruUrzkUurvBE00CBSWwrNnGhi959kp/g23bAeNDQQnscMVHkceRi49WeE/+m6E9SjVztSz1k9S+Ak1KuOKQ7qj+yj7am9x5ct8WyKw7Rl32hMJNLHFdXo8Pl4U7lHsIzzynoFnTnIOmpN+PMhxki3Xy2DFL1OS1rEHv/Me3bPLusm3n3SG84Gd31stSXFTYZ0T3XQS6lJBnZxW7Ru9C0ermMHB+AfSTmTLnOIt7LgeVJda92EOBFjS2LcTF2P+VIj0RPAYQ8W95N9+Qfz0mU3cq/zmwGRODianmTmIvIvWl+ZsKsZb5WpXklx2dhwBQT7/gVQUCBuAXLESQOdqJTGzkjiEsI6shI85ngudMI3A2tFVCHcho0/PSZXAp7Q2Hz+P2R+sJ/J2tvUPNL5qcOP6ppvJ1M3P0YyR++uYZvluKyPFNOGem2C8CXdXbg2GvyY1eqwndL439HYjyXFQ7QZy0zyZvskibQJWxMp4U5+CnyIRr5Kd1mvuWrdko4r+q8sNvZlcAVyBkhdG0wiq5wP9d5PCRa9hA2XFAdApM2tLlGv29tt/qcoA5abL/9GX7VWo7nOAqoDFcaBOiOEZZ0OjnQ8zsUIwA5TbHhH/0+wcYSlpALwOT7bWsf6cZmp2vniRJb+bbtrh3AlmT5lcD4H2reheLl8jTBPyXRu93q9KFu9bvWelg86XBELccWRXOWrBLY/YeCfF5Lqa9+yj4BFlj7AMIdWEzzlLkT0mifAwdp7P7Ejm1zOVw38gzf6
- l3jpWl6A
- BisuikodsZTtwBAFLwR72JzSCfOg8d0xcWb0G3TgIvwIMjiTmAQrEYtLHzv4e+lMkEqpy6flUut54FgVVd+lw/ivwxcbvima3Lez6pRQxBH202gpsWkTi2NB4DxrsCzgY/kqnD6YNR/19xkMtU1mvzYvLuuTkU/kNLL6EAH4n1yBCRiq5L+Ao8hIPZDKHmoj1DLM1No7r2bi/mO7lAulHPiQAElCeul4HWJ2UoG2yiZICJ8KiDAKlORlhhIs3Ebnoac4Pr7eiF2qTtTQCRf9n1XVelS8aPrCi+5nv0n015l3+eCfqD5cGnoS2XrjJFsMVXLobM+sHI3YhpNdtFWIITudrIEYNQKtuGFvf5e7iXY3+XbKeBqysGMpGg8Tnp2bjdxyceayWqxv60m7BGWn7x4jaFdge7e6lvS6KtZwQ5ecdhE//YonWFN3+MhPLR9LHueRvdFX1X6ze88OLIo2HkLyE+I25JoV9okc6oKGi/hq2AgM6PYkhlmRDG2KhHafC4zsMiAr1HzCXKMQ=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4C3ED80012
+X-Stat-Signature: bu3ffb3w1oqprncdfw4sanfsocsz8i3d
+X-HE-Tag: 1776247532-757142
+X-HE-Meta: U2FsdGVkX18ionY+H/mp6sUQM52bcR+4MikRp8l1kb5Vpn1ZD6nVAVTsaRibG7nkCM7r0IvPGufclLd1hXodHswQEu5UNX4c/7nwyJCKDkvp26g8HJW2eIPKESiiJ14ZkWVFtKPzSu1C4IfLotgMTypZE/R4czAt23JwFgQYGcUh/QyAUjFFKp7pLDJT52A2/75xIiPHOnd6useNkrFGtCDbLEQnncj4wAafYVLt+SV7FU0UKaVwpmDccQi5Tw/Q+AL+1pISNXigMNDxH8Q51D6R6/p8lOsO2FpYnxP4guXQ2sweRe4wjRwoYbXV+KOiwZUzgrpKfTZmWd8mJ/KJSmMuaOv+//oBZ2EHWpmu/2gf0O0o8YcGJRK2niU5Mc3UmF2oV/YHzYhTDZH3EDobgV6CG/jGh9nW+M16ytqMtLYB4E+sChI4w48RMhUD7QCOH2IN6+zmPUi8OQrAH3CUHrjopXLm4pUZ8AY9S6T1x9uv/BO2cH7J/NeUMr4WnHyHO1LwbBc5+o+CIxm5/k8onAl82tjJF1v0EZ2uXkpFSnD1e49eZgaXvfHjXu92wAUn3k7NYw2iS9d5zknLXzj+RhiPfV+sQ+hO5yAV0qCUIxSU5pMNpqVo7qjR5Wgnb1ZEHkKrsPijHyJP1PS8qakBAYGgCfj2wijaxcihO8Z3S1obWfbr/MVTOpi1XIvn+hAZa86l7gYXpuv4yTXjdzWAg+lJHzWcl/BnopGac0jpITfPFtpcuikAB3QYWRQjC7xFnOxIreDkr4ZFZZqgIh2E/38Yrmt/M3uxYgAtoH2VJGY4cKeJ5wl4Wmy8CuKMvtQo5bCksF3qWJZUCZv/ux4TroPg9sh6GEzNr6P1jM1Ket9JGvqw8d8/FLd6rHK4Y6wkZgOZerwD1auvT6HevKqyfEd/x85QPEF5r7F2mheQLpJPajK63fKFBTueSbM0lVVS9x2m55JLhsWBCE6KISp
+ ijf1lVeG
+ LyuiHau43n1i22DWgGhnq3Qq1w8AuzVkS5iXT/OFAsjGO9+eQt04MZ51S1dhuo33yTqLDuL1WM+SedX+UcIWOvXpBK/aqTjdO1THEU1OI49U5ofmQ1nGcp2/v/RNt/j5C3PZ2HKdO7oZPXig3xeW564K5rx+bU9/3TtC2mbyzj588vvpQ6UvSLASs5Ig6ho4e+r4dMyOs4Y3qR6F6fnokAFLqUZiWwfqfAUNF+2toHUm/Zf7b3pGZjfQyCdiRRuG60u09yRYTWjjJt0v/tiF2sA8ZoALKq5orANFRu3PhfYpCh5J0j9zoxiKLeY/7I0lItxmVqdKqhHWKGAPk5C7a5iPSSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,20 +93,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 03:28:27PM +0800, Mingyu He wrote:
-> The smaller the buffer_size in the test program, the more the
-> performance dropped. Initially, I used a 4k buffer_size, and the
-> performance decreased significantly. When the buffer_size was
-> increased to 128K, the read performance with RWF_DONTCACHE actually
-> surpassed the non-flagged version by about 10%.
 
-Maybe you have block size larger than 4k? Core-mm will allocate larger
-folios for page cache if filesystem asks it to. And if you try to access
-it with 4k buffer it gets multiple read-discard cycles for the same
-block with RWF_DONTCACHE. Without RWF_DONTCACHE only the first access to
-the block will lead to I/O, following accesses are served from page
-cache.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+On 4/15/26 5:54 PM, David Hildenbrand (Arm) wrote:
+>>>> As I mentioned, the original logic has several issues for anonymous
+>>>> shmem:
+>>>>
+>>>> 1. Whether anonymous shmem supports large folios can be dynamically
+>>>> configured via sysfs interfaces, so mapping_set_large_folios() set
+>>>> during initialization cannot accurately reflect whether anonymous shmem
+>>>> actually supports large folios.
+>>>
+>>> Well, the mapping does support large folios, just the folio allocations
+>>> are currently disable.
+>>>
+>>> It feels cleaner to say "there might be large folios in this mapping"
+>>> than saying "there are no large folios in the mapping as the mapping
+>>> does not support it", no?
+>>
+>> Yes, that makes sense.
+>>
+>> However, it’s also possible that the mapping does not support large
+>> folios, yet anonymous shmem can still allocate large folios via the
+>> sysfs interfaces. That doesn't make sense, right?
+> 
+> That's what I am saying: if there could be large folios in there, then
+> let's tell the world.
+> 
+> Getting in a scenario where the mapping claims to not support large
+> folios, but then we have large folios in there is inconsistent, not?
+> 
+> [...]
+> 
+>>> What if we say:
+>>>
+>>> shmem that *will never have*/*does never allow* large folios never sets
+>>> mapping_set_large_folios().
+>>>
+>>> shmem that *might* have large folios (in the past, now, or in the
+>>> future) sets mapping_set_large_folios().
+>>
+>> For the current anonymous shmem (tmpfs is already clear, no questions),
+>> I don’t think there will be any "will never have/does never allow"
+>> cases, because it can be changed dynamically via the sysfs interfaces.
+> 
+> Right. It's about non-anon shmem with huge=off.
+> 
+>>
+>> If we still want that logic, then for anonymous shmem we can treat it as
+>> always "might have large folios".
+
+OK. To resolve the confusion about 1, the logic should be changed as 
+follows. Does that make sense to you?
+
+if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
+	mapping_set_large_folios(inode->i_mapping);
 
