@@ -4,103 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D93F4384E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:50:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7545BF43848
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:53:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 865066B0005; Wed, 15 Apr 2026 11:50:42 -0400 (EDT)
+	id D72E86B0088; Wed, 15 Apr 2026 11:53:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8163A6B0088; Wed, 15 Apr 2026 11:50:42 -0400 (EDT)
+	id D49A56B0089; Wed, 15 Apr 2026 11:53:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7523A6B0089; Wed, 15 Apr 2026 11:50:42 -0400 (EDT)
+	id C86E26B008C; Wed, 15 Apr 2026 11:53:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 609176B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:50:42 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13D598B71B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:50:42 +0000 (UTC)
-X-FDA: 84661227924.09.9535607
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4962CA0008
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:50:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=hR3+dovg;
-	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BA0C16B0088
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:53:38 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4F5EA14043D
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:53:38 +0000 (UTC)
+X-FDA: 84661235316.16.921668E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C20B380010
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:53:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DlGLUOug;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776268240;
+	s=arc-20220608; t=1776268416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KOMJEclslTGko0CKo3zJ9nnmBRPTykeI0IPan0usj1E=;
-	b=E2vwhS+qkTgflqyh0lvmM7SVxiPWPxVbRQB2OrJ/Qgrh2cGFFHEssxbvjJhBNatg3qtSMC
-	8BNmMUweoQvCgN2jeIvBoyMXr5AXrGx++Ux+4qHMvCGDt1lVoFnfGXAkto23B5j3Yi+4QS
-	8bWS5oP8Nzdd3ZCTCJOrRg27f9ewPm0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=hR3+dovg;
-	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776268240; a=rsa-sha256;
+	bh=2Eah7MTKP3MQv1T3pNJu3Q/x/mQvB0bQiXwPwwnBgAU=;
+	b=0I4htZZ2DUka9cVrK1BXshDUxs3qjaeV97NqkwmJpbFgfffnbMxHYKI/TKKxhyVknKrB5+
+	a1V+9mHdmXr91YIVolH0LYzVr3WVZhEBW2fPswA9nIIg7CCBGRUuxHr+HZP/HrIG+2QjIv
+	BTCx8fnwmviq5mpYZ1mMrT3GsgTOg7E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776268416; a=rsa-sha256;
 	cv=none;
-	b=FoTv3I2t9Dl19wP08x+JP4z6iDLlGUTWGfWA/glleakWFYvPkdpaVXD3VuVYga/G+/jT4W
-	IrslH73CNUjnxm4MzDEZc78NW9PjRK0dkrtHFGqSmQYJRCgsZ1iN9gtQzoGRNKoI6SlpDo
-	Rutx5ukvoIZPicwVZjcNmb7auQurVTY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 77E3F3543;
-	Wed, 15 Apr 2026 08:50:33 -0700 (PDT)
-Received: from [10.57.61.135] (unknown [10.57.61.135])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5AC703F7B4;
-	Wed, 15 Apr 2026 08:50:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776268239; bh=KOMJEclslTGko0CKo3zJ9nnmBRPTykeI0IPan0usj1E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hR3+dovgqaAoCeD7Tj26ImE/aKDrkOG7n2ey9QHxI3X9difSYSy69sYtkr08iAEHk
-	 fyQlQqCCEJG3ZsAktdUrlv/o6tLioBkfsevEDHaXxc5Hh//9nV+0z8WKgSU1JBm0v0
-	 6SAa+zLxImrdvyYlNd1yAhbhoIUq82FWMkSjwMhM=
-Message-ID: <fea9c939-f955-4020-bed6-427e592f0024@arm.com>
-Date: Wed, 15 Apr 2026 17:50:29 +0200
+	b=zy6Kj4KzDLtCV8mrxCMWOMq3WcNvl3ahCJNkKKTXALXkX7vBmWLQip9Szfq6lvefWvi9e/
+	4UK++sbozo0I1rqFLysMWvFBJDIjoqWOZyfa6V4kZR2dRG9p4v0JlslZixbcHwlXziIfbS
+	KNessozxnlKvCg2hdVi17L6H6NcuWdc=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DlGLUOug;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EB0BB600AE;
+	Wed, 15 Apr 2026 15:53:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A646C19424;
+	Wed, 15 Apr 2026 15:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776268415;
+	bh=pF5Ty1TKfbXQTKmLGalKXImAXtzwkULsJDc+vi4BCZU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DlGLUOuga1MKiMMANQa+Xk/NacVG+N3rBbJfCtnyo19AEl1tE+4MksQOwjbEhbhPp
+	 jW7SzH/5Nyz1ZO+tC4wvPydch5UTMHICyGDxlOJm3ceDJeRhFvHkZ+8+LsUtLzoyhz
+	 32fmq9wPfWG550vpxwBSqtJPFwaqyFBz7UFdwAH7je4GAH6yNHCNBfXGpn+pPkFSwb
+	 bx8T3rxSf1V08O+tncqh6acRwlEE0HsKP0+zmeWypjdet9c+vb+WXyd9YyI4LRlEoe
+	 Zdr9LirARf4S4xVxQIGPC3feUCBDloz+XHbrlXpQK1a912jqlO4/aLE6DCRJa98/Lt
+	 DPukwP+gwpx0A==
+Date: Wed, 15 Apr 2026 18:53:25 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] mm/sparse-vmemmap: Fix vmemmap accounting
+ underflow
+Message-ID: <ad-0dcuaoC9LKDEF@kernel.org>
+References: <20260415111412.1003526-1-songmuchun@bytedance.com>
+ <20260415111412.1003526-2-songmuchun@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/30] mm: Introduce kpkeys
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-hardening@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
-References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
- <20260227175518.3728055-2-kevin.brodsky@arm.com>
- <eaca640b-5006-489b-8b2d-148a3c4073da@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <eaca640b-5006-489b-8b2d-148a3c4073da@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4962CA0008
-X-Stat-Signature: 53asdfoifhawrs6ejmxoyazhchwid3fy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415111412.1003526-2-songmuchun@bytedance.com>
+X-Rspamd-Queue-Id: C20B380010
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ukpq6w9j79sihufqagioc7s5oguyqi8h
 X-Rspam-User: 
-X-HE-Tag: 1776268240-36439
-X-HE-Meta: U2FsdGVkX1/eBip7u57K/zF87CZv3qrJrl6otdh67JaidfDJp8BIXuPySV97903XXPt3YKM9zH53r1OgiGjbp4fM+86lk1fKDEK679pLOwum8OJ6vK52EZf/xBnhQ8E0cdIwbJ7dLgYpHjs56PQscYhL7KkT2tWuzePp7mOTYXzY6iu678s5id5UtEkHRzvHT4HexDtLxlevq+wpuRUCOO6CrXDwQbcHwj3vHcAR68jqYcaj6RyOcmvcPHYXTU3ugXmrCQoAENOr5OlKkIQCxZE8Upxz0iIWDYk1WvtBiSBJ4S0tW1DINpDi0WZxknkXlPzGDoeIh3cbC1E6GvMGYb76gM6lyuMQf6U+yU1zEpyyEV1e+vCcX/BB/V9OrkGcY9WQWcXec4bjdqqhy8QBNxLju5G/GFcIkUzECEWLnzWph48V3SKZfRxr6pL1DqSJXvJlMo/AAtAc7w9FLMgfVrztFEu9HPfw5us7aiL6pddgSyqJDGH2sth75rFJhTrEASrISPfAvokvSorLi8s2HvoTS6d63jUtaYJg+GfI8L9xp8ZS8m+V6urWKIwoShMeqU7sraLnR5bEP3+3eHU+kt0OX3NCynj2rsNjQP4WuGRDBTETQEwbzAYz7RKQdfbym7k/JAvkZkcxHCLoWNERp6GHWY8e0CaXggQtR7Bs+31qSQUV+wsnHYHXdq1Xx2PzQ2c6AnY3gz7aCyjAFKpxyv/oCN56EVDmccO5GHwo8KswJ53peiGKH+NjmoGw0lLXUp7j6P5a3rFNtf0kpeCnXxHnUenAYkURXlhXngtNxPgjWfPGO/Alncfiz/3RhmIBanYNnv188m8WTj6lIYBQ84nzYeJYuuWOUsJuPR0PppbpZ5KOf/eVhyeXaCj0Jfoa8FOFOxjN5+h8Cyaosgrb7xBYg0CzMJXLtHSEA/gvWu9r14MLC5DNTyTcIJwjfS6Sg4vj8USdbE2mX9TF3ZY
- LreeuFu1
- TjRO/E8+xjP4KO6uBeNiW3IZjkZC/ywDm/rAe6WEO+PXotm6KkVntWb5qygqNTjyZHNteOLsKoREheJBpjwVfJVmp5VLoKvfMQ+ywTyXFMerhPCT+F3J4Mx7aA/oC3TwZ4O7NsIukuTQaVSi984sk4dpBFIlEdB1gJcXHQI9/1gk8ajePAvhKT7DUe9DPaLsBSNT1X74rfvMUKtf5wtR2bhDu0CednEBiGNoHI3+4WB/FDmI=
+X-HE-Tag: 1776268416-469566
+X-HE-Meta: U2FsdGVkX1+uZal7K93ue4KUJ4eRh1TLQJdAMfBW+/bDSCrVLRVG9s+vLBjKVLmHAMAC9ixPuLLJFmAkl9mW5iS/qTbaEn9GfWVOqkpZzcCCs7UvGXrN55ETdF+QFiCdscI6LQ0E8LunAAQAj5fA5jvcvyqZboHCSV+KvwO+Rvvs6LTVyz0kaeVmJxoSImJHokwRAmhLYB1xY+PnjtKKn7aVAbO+x9SYiU66yMQZKdKApcLIj3zXsRlo/uoy3sY1X5SGrwS+D9OLUSXk0zhJzUW10ZUDXOzK5JvEUkS+rMob8HQbwb0G+qwm0uL3EgxWv6FY9z+1t8Qm4hbp7PgelvwJ/1u8Z1dkMyry9xJp1eLZAMLycxSO9uYy5FZc8ITgNlo9V8ewdnHAmMb9/6Vq6dAmM2UpSREO5P8ukqAvvov5/g272CZiEsXwmYSdZMjOvNq0hrUstLcI1eiTQQsg5Kj5KflZVWDq8CsiNXhaCKOGX1x+Y5p4d3oc07zCvAPYcn9JWo1SS3+n4576YmraA9d/RP0Kxhu4vYKfGpMM/WfZqUkxSHhHmeU0iSw+9Mm7RBmdtrooriSjyy4cR8v9M0AKV4rzwxxjLUweTNtkDGuY5nvXOMGZYtaTEHlN1eC41whfIOy983lHUY1VovQNdP3+PNyh37wp6x0rVJsMrYkLI9tlQlwdraZaIcwes8qSLll+HulAYZMWTDYqqsdP0Lj5s7vj124YOun9T0hj04cxupadHt7y2zLd9vn45XCWiF5Dr9Ji7NbAwZXuj38g2MVe86EvFEGFfY4ze+7a1swyXwtYyPJOjO37C4p5zm/YfnoRPLtLFSLohlB+DwdlaFTqGZhOJ4X1PmXBh6/HLLNJ9x/yTfPQm8SQh4OTNxjoqgEF1Nbhk8CA5Iq51n8NdGgCc8covh38uQ1L/Jk9Z3jyqdRffA9Kw0tfSPHSX/yOvBH/uILmmrSraBdzz2t
+ E7NxgBH/
+ iqx0gjnhvEZXKLwztISohDQ0SkV6oJ+sSBlEVRUXgWvDi7dnq5U3OrcjLv+oppYKd4nmNB/us+1itMEfEPiwqsO+m2rukDPz3QAFcmK++hDoxxxwlWK7atC0BDm4lSvN8tug1wqM46wvhXMJwliv96Nak1UBcrhaVO3pMe+jo81CblMOeihzJoJXPyM81taAMdw8XfLL1aOCuGfX4GqMIZ/W3Y9MD4IvmpKdWn5esxsBRcljTTG4ef2qTeeYaywhOabdymk8xEwZmiYdy1ngHyoUQgVSCMH9glRGQh4QbxZVc+B0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,69 +104,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15/04/2026 15:00, David Hildenbrand (Arm) wrote:
-> On 2/27/26 18:54, Kevin Brodsky wrote:
->> kpkeys is a simple framework to enable the use of protection keys
->> (pkeys) to harden the kernel itself. This patch introduces the basic
->> API in <linux/kpkeys.h>: a couple of functions to set and restore
->> the pkey register and macros to define guard objects.
->>
->> kpkeys introduces a new concept on top of pkeys: the kpkeys level.
->> Each level is associated to a set of permissions for the pkeys
->> managed by the kpkeys framework. kpkeys_set_level(lvl) sets those
->> permissions according to lvl, and returns the original pkey
->> register, to be later restored by kpkeys_restore_pkey_reg(). To
->> start with, only KPKEYS_LVL_DEFAULT is available, which is meant
->> to grant RW access to KPKEYS_PKEY_DEFAULT (i.e. all memory since
->> this is the only available pkey for now).
->>
->> Because each architecture implementing pkeys uses a different
->> representation for the pkey register, and may reserve certain pkeys
->> for specific uses, support for kpkeys must be explicitly indicated
->> by selecting ARCH_HAS_KPKEYS and defining the following functions in
->> <asm/kpkeys.h>, in addition to the macros provided in
->> <asm-generic/kpkeys.h>:
-> I don't quite understand the reason for using levels. Levels sounds like
-> it would all be in some ordered fashion, where higher levels have access
-> to lower levels.
+On Wed, Apr 15, 2026 at 07:14:07PM +0800, Muchun Song wrote:
+> In section_activate(), if populate_section_memmap() fails, the error
+> handling path calls section_deactivate() to roll back the state. This
+> causes a vmemmap accounting imbalance.
+> 
+> Since commit c3576889d87b ("mm: fix accounting of memmap pages"),
+> memmap pages are accounted for only after populate_section_memmap()
+> succeeds. However, the failure path unconditionally calls
+> section_deactivate(), which decreases the vmemmap count. Consequently,
+> a failure in populate_section_memmap() leads to an accounting underflow,
+> incorrectly reducing the system's tracked vmemmap usage.
+> 
+> Fix this more thoroughly by moving all accounting calls into the lower
+> level functions that actually perform the vmemmap allocation and freeing:
+> 
+>   - populate_section_memmap() accounts for newly allocated vmemmap pages
+>   - depopulate_section_memmap() unaccounts when vmemmap is freed
+>   - free_map_bootmem() handles early bootmem section accounting
+> 
+> This ensures proper accounting in all code paths, including error
+> handling and early section cases.
+> 
+> Fixes: c3576889d87b ("mm: fix accounting of memmap pages")
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-That was originally the idea indeed, but in practice I don't expect
-levels to have a strict ordering, as it's not practical for composing
-features.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> Think of that as a key that can unlock all "lower" locks, not just a
-> single lock.
->
-> Then, the question is about the ordering once we introduce new
-> keys/locks. With two, it obviously doesn't matter :)
->
-> So naturally I wonder whether levels is really the right abstraction
-> here, and why we are not simply using "distinct" keys, like
->
-> KPKEY_DEFAULT
-> KPKEY_PGTABLE
-> KPKEY_SUPER_SECRET1
-> KPKEY_SUPER_SECRET2
->
-> Is it because you want KPKEY_PGTABLE also be able to write to KPKEY_DEFAULT?
+> ---
+>  mm/sparse-vmemmap.c | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index 6eadb9d116e4..a7b11248b989 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -656,7 +656,12 @@ static struct page * __meminit populate_section_memmap(unsigned long pfn,
+>  		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
+>  		struct dev_pagemap *pgmap)
+>  {
+> -	return __populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
+> +	struct page *page = __populate_section_memmap(pfn, nr_pages, nid, altmap,
+> +						      pgmap);
+> +
+> +	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
+> +
+> +	return page;
+>  }
+>  
+>  static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
+> @@ -665,13 +670,17 @@ static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
+>  	unsigned long start = (unsigned long) pfn_to_page(pfn);
+>  	unsigned long end = start + nr_pages * sizeof(struct page);
+>  
+> +	memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
+>  	vmemmap_free(start, end, altmap);
+>  }
+> +
+>  static void free_map_bootmem(struct page *memmap)
+>  {
+>  	unsigned long start = (unsigned long)memmap;
+>  	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
+>  
+> +	memmap_boot_pages_add(-1L * (DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
+> +						  PAGE_SIZE)));
+>  	vmemmap_free(start, end, NULL);
+>  }
+>  
+> @@ -774,14 +783,10 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+>  	 * The memmap of early sections is always fully populated. See
+>  	 * section_activate() and pfn_valid() .
+>  	 */
+> -	if (!section_is_early) {
+> -		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
+> +	if (!section_is_early)
+>  		depopulate_section_memmap(pfn, nr_pages, altmap);
+> -	} else if (memmap) {
+> -		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
+> -							  PAGE_SIZE)));
+> +	else if (memmap)
+>  		free_map_bootmem(memmap);
+> -	}
+>  
+>  	if (empty)
+>  		ms->section_mem_map = (unsigned long)NULL;
+> @@ -826,7 +831,6 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
+>  		section_deactivate(pfn, nr_pages, altmap);
+>  		return ERR_PTR(-ENOMEM);
+>  	}
+> -	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
+>  
+>  	return memmap;
+>  }
+> -- 
+> 2.20.1
+> 
 
-Right, and in general a given level may be able to write to any number
-of pkeys. That's why I don't want to conflate pkeys and levels. Agreed
-that "level" might not be the clearest term though, since there's no
-strict ordering.
-
-> But how would you handle KPKEY_SUPER_SECRET1 and KPKEY_SUPER_SECRET2 then?
-
-Presumably those would also have access to KPKEY_DEFAULT. However, if
-you consider the reverse situation where the level is less privileged
-than the default (say an eBPF program), then write access to
-KPKEY_DEFAULT would not be granted.
-
-Also worth noting on the notion of level that POE2 will bring further
-per-level restrictions, besides which pkeys can be accessed. For
-instance, we could prevent an unprivileged level from executing certain
-instructions. This isn't in scope for this series, but this is a
-consideration in the design of the kpkeys abstractions.
-
-- Kevin
+-- 
+Sincerely yours,
+Mike.
 
