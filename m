@@ -4,139 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAE8EF428F5
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 20:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE683F433C5
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 21:11:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BEE46B0089; Wed, 15 Apr 2026 16:56:51 -0400 (EDT)
+	id 166D56B0005; Wed, 15 Apr 2026 17:11:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 570306B008A; Wed, 15 Apr 2026 16:56:51 -0400 (EDT)
+	id 13F266B0089; Wed, 15 Apr 2026 17:11:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 437DD6B008C; Wed, 15 Apr 2026 16:56:51 -0400 (EDT)
+	id 0541B6B008A; Wed, 15 Apr 2026 17:11:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3089A6B0089
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:56:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D33C8160612
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:56:50 +0000 (UTC)
-X-FDA: 84661999380.13.E32C44E
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C0D4A180016
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:56:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=h9FnKW8i;
-	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776286608;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EBD296B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:11:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 858E913B433
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:11:09 +0000 (UTC)
+X-FDA: 84662035458.19.FDCF65A
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6CD31180005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:11:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="j/fcrj0e";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=leobras.c@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776287467; a=rsa-sha256;
+	cv=none;
+	b=w7+/Wxjs37/EKd6uGDyKHIJ1mHKrHjCURjhFpE115ydZNgMNDpF6Q/B75G4wf8Kt/NA9WK
+	/LTnvS1m1jeTOtIG5Phx1ZbWtXbhIlrJrdUFihpi10lvN/wsveIABBedtxjm0TYOx+4W19
+	38Z4AoWfWlOMmJtqA/z6wYrAHvsfNgA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="j/fcrj0e";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=leobras.c@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776287467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JqmrcX9qSaqHr61SrWlzMf7ZmFlrG/fsUaqnrdHct58=;
-	b=Us+6XNIpsuMHHW3HS50wDeu8gMsE8zmubAjkcSy2PuqJFb89+Ntk5+eA0xWxMXSojNLbXp
-	seH2km0lnBI6SzHV1fqOY4XXebPz9J23O432uJ7D8Ghqqk+YNXzAkKy/cbMnL12SKdgvnt
-	yXOOg+LR67o1PHLESz6Sp7AB0KLH11k=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=h9FnKW8i;
-	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776286608; a=rsa-sha256;
-	cv=pass;
-	b=y1eE9tOaDcHg8mnBXGviBOCeyFstJVTgFM5JIvmMaxy8zEt5fwXT3nZm4N3a0f2df1zsUL
-	lm0RgH6nft7f04n95pvtQYWTRF1a++0De9gy2y1rfCOUsd09klfq3qc3GAIguTgqF3Idl4
-	lVSLxGw3Vyyunx189u9mKxHRUYMOQQI=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488879dcbc3so3885e9.0
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:56:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776286607; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ds86J3anpmJ4nVzvHopTdq/7ksqHfvtEegJ95pO5IRjEDk4l4CrTL1PtOX0zMsNNvB
-         tQ9dL8g0VnN7XZie0V23IcUiqqPPQDQEBjkiB8vjGYjiqCOVAqacncNjrVHeqcF9C+hf
-         fWEeGM327IncnFX4VVCGIy6Q733nbPrxEHdluJqWRjO44zUSol0IElom/+zmFXEcpFG1
-         y+EDJMwpCqpYGxp34UTO/E+DrPeGa+8EzwWCKc9vC+SJ5nBIHHhZs6FFVq+tpbPZUrAV
-         fVyouD/snnTUYorc0vhhYLQo8Q6ItFwXFB0fkEVvOuyyB93rVIHjhQxbdwCBCpJyoPKx
-         3/Xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JqmrcX9qSaqHr61SrWlzMf7ZmFlrG/fsUaqnrdHct58=;
-        fh=dxQwZ/IK11WsmPFCvx+GTTSHwJv3tKnB2EZTyl3KfMA=;
-        b=lNIikKe6fuG6PjwChQYEZ+yqBoixC+b5YvHB7MqIXiQ/fBIhOUDjhEkuVnkSaKeIHK
-         lsVNjSnNW9WrXv/DBwrtAcUFCa1YcNrmVHn7PrLVeqPe9pdog7GpH/dnhbWGG4P+Dbon
-         jreTuR7LbkvBZ8z0svC4mvDnKh4rqrQrF5A6GiSUIRYlUjl/atEhevkRKlZqU1MnHsgI
-         tBECIuN4mppwqw3lxXL5fR6F3gWxwqOYPpH5fVPDe9O4MhyHa4+yXEiFu8D9eLqa2tBX
-         SUadlZxJIBuy/MS00+nfODtb+LYvAO8ksV8QMg5R+VZPy6Cn4okX9GRVB1pKoBBpLo5P
-         r/Sg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=TULGaxumukw4hqiyMiXrmR8JwZrOcKaREIVruS3C59o=;
+	b=rZ+YlZMUkxobjbC4Nsfktx6DaO7LnPdbSJ6rt2X1lT2BOID4nuIpCXSJNxBmXvtSukgho3
+	DA8qqec9PDi/uXG4QNjaoMLcvmafq7QXYCL+jRtW/9MR6xfOomzKuUElLImqhi6Fy5nuG9
+	Lzrybop5uAcZkGCqhJYwrXjISXmj3/Y=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488c2690057so73644285e9.0
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:11:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776286607; x=1776891407; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JqmrcX9qSaqHr61SrWlzMf7ZmFlrG/fsUaqnrdHct58=;
-        b=h9FnKW8iUZy8/Pjbdv8vJY8ClgyXSS+zPcIGhikwoaZ39T3ZELMFzoJncDfGCLFGvd
-         ehVupe/oaniTlQ51cBq5F5U+ZveuQXzfoAp9sEjs7syO5z3sgc6RnJ/qX0VYnI4SW4m+
-         RBF3PZ+gG/dQJE4lF1PldVbZalgqpQqhnoDsUi8AC0QFcLXslbCwsYN8doikamtpokaj
-         VgS2pL6+f25/hk+1aR23NS/hgBQLjGXysheLG4F0qM5XObBgm6/eFO1tParfR57q6Ehe
-         MHkcGkroJEZ0ZOqabQNdY7iLaPGETbghyD3Vy8nu6b+0Pdaiy/x+geGJxMXPegF72qMN
-         5jlw==
+        d=gmail.com; s=20251104; t=1776287466; x=1776892266; darn=kvack.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TULGaxumukw4hqiyMiXrmR8JwZrOcKaREIVruS3C59o=;
+        b=j/fcrj0ek+LCH4Tq1CWSTeBmROWKF9FoGO1bsl5i2fGdUcuJJb0RI6aNRe3ehJxBRw
+         U/L33HxIn3lg2ljsnt5BhRo47HxlH2Gnr9ry2W6zFWuLomj9DuIqfgEoSq/2ENTkEGK1
+         d4fQ8b3q5Rk+FmBdxS5CFahqC/EvXr0ia/U9psfuI9TcIJqwRbRDCbb0KXuVac+5cjFM
+         5GKzyfHQOxxDqiiiuWCwpt4MDn6xEsIjBbgA6Ba8+777bWz+YPbaSIwRN0Hz5gKMfAy7
+         w6bg8GuooUVYvMYjIh0e1At8+41tHkzu8zq3+sq0uoqwqzr2DZtL1ld3W/9zhI3/hOq0
+         JpOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776286607; x=1776891407;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JqmrcX9qSaqHr61SrWlzMf7ZmFlrG/fsUaqnrdHct58=;
-        b=C8Wa+1T8veXSaGUTvZjgFvFamVrLex2IqxIqcrqjWcCkVRRU4Y2RBSG5YJaBF4wklL
-         UEpljGncXvxS2aLCJ07uq+NcB4DgS5iZNVsCs2XhJBRIZ0GrlswFq3ztvpMVo6oU5XFY
-         qEHTwXYTa2HFzc2BvMH5Egg9fNfWsmeboYGCHEbK6URBYP5x1h7/U/WH1vkD6xK96lI2
-         FpCk9tBX3gfGVGpM8g19WE1tvBjKURdnJmLOhSFwEsBJ9PyGIsdMF8Ec8fTxFO7mi/7s
-         C9JytfXb/x2Kp1okp4xbVfyJU7LEjSkURjNhXLY9M510GmP9m/NI5ct7RH1X0FxhIY6a
-         SYfg==
-X-Forwarded-Encrypted: i=1; AFNElJ+yJvRk38FRpPHNX1ffL+nZD8ysqMnAxBvyzyRqo5AsN97dnesQCEnDJmEjDj9Izn+OJq7yB6IMkg==@kvack.org
-X-Gm-Message-State: AOJu0YxsB7z6tk/suzFuwtg1TisjiA6TqCg/CR6g5h4J+p0cp7bJr/nU
-	Fs2oSME0UlkkHoRveGdYXUnh8OC0f4Qlm6whDx0lOdY0NntXM1wtwJjdKD41Ijh+A2KSXj/2zyB
-	qKerAH2sLPlCYzBMiofwKyPIw8MONYfMNNhvVMszV
-X-Gm-Gg: AeBDievpUmmPXoip7sS2oxY5aoGP5OhoumLi4VhRl+waCWASCcYSbt2J7f1dMcvcNKy
-	Yxm4R9BR9fP/7UgvAk6HfZ4YFRyfAUwhxp7q8Janxzd25/Kk9lYx//gWo6b+nbuv7GUJVOef4x/
-	hmJSvf/AeH9I7P6Y4DQ8O681CWnSOGxZH09HKY+XR1sz52xNTlE5UF6Dq3Td8hT77qcEJi2ZWsX
-	VvBXhVAejbpW2lQuhf7elzCbmDKVdA+Z3MV3aWLlWc4XA2Tonvfb04yolEMi1KYjEBTS3wMacXJ
-	QBgP6PYJi/YpZ2o2sE1eroDhsq4wOhiCdqgckYwEmcrOelKYkf3yZESfAg==
-X-Received: by 2002:a05:600c:32af:b0:477:86fd:fb47 with SMTP id
- 5b1f17b1804b1-488f4a9d81emr153385e9.8.1776286606809; Wed, 15 Apr 2026
- 13:56:46 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776287466; x=1776892266;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TULGaxumukw4hqiyMiXrmR8JwZrOcKaREIVruS3C59o=;
+        b=FMrNt07AIrZF3jG+Ez+WBshg1N19hb4RM0MEV3VQVLAWGfxuuNGcOUFqN6gOBvDZO1
+         OMS90g+uUbsJZvUsy2AWZXGErvDch3Gihxn6SUEVkWiwljUj06KyAIwKNOyKzpTUKMGl
+         IvI7rpRetgrEWkw20OswTM7BU7IvLm71H/hcFjc3j+nb3JOP/FNYd256wjkjQA93q4YT
+         LXQCRbthmUyEGIp6zIUvcACsc72rANayM0lJ3xvzY0BgyRJappGeR2Faze3z9BfpBozw
+         +eF+ObJeuj68PYipLA7O9lAUBfvmIpm3Mb0hKAn/MQ4A3drALVajdNBK+20fxaXjl6Lo
+         2jNA==
+X-Forwarded-Encrypted: i=1; AFNElJ85PhhqJz1Qtx7o3YA5n6Z9Dm00yYdPhxOdL5mszAUBalmqQoArEkVh0oBionXYLQKuNAbJkRF/ag==@kvack.org
+X-Gm-Message-State: AOJu0YzF4Pm4cx0NJbQ3/24fBR3H1k1ZWHJSGkxo6BRd7aJ6T1VtqpoW
+	qFrtnf/vvTZyoTDpb78U84+oFiZmS0KfgXQxw+u8PHGB2BBpkXA7wLBT
+X-Gm-Gg: AeBDieut47WdNg2YoiXqJDWcU0gsUuEX3WLvv4BdlXjEPsWcrFMq6J6px2F2ZyMUXtu
+	QlOLl0DvAiESKJygTpC4cxuVsmhsC83KB4bqWxvHmPOurYrE1qcOT5cYhStwRKLvG17uWI/4e1A
+	VoVkddYmzlBSQkXcVz+xGxIhF5vGFf2WvhcpoQlqFoSioRIIivEKXc707KIf45iiqUbQi2Qj/Pl
+	zBtLdSLcEtpcSGv3l4lrDC8J22Z88MDzGcLJhe2OptVcfARUxu3h3qoHDAHakKWtKgkW5UMat79
+	1w/qdKbhybJjjGUn4tOsI7MbuHkWp6GpE2zU0ehnnoyTHJbR6Xd/czkjKd5I4YDctJXfBz4PbU/
+	HTaobyZjtdaeSfjU5PcuxrSDeW4qVUT7kHg0mIQHpIGvVYc5PqbNTWxRqC7rE4OgFyYxNdnO4wp
+	glY1ckSk4FA8UazdwjxRISDfxGhUksj7l7gNb5HV3EeWA2sw==
+X-Received: by 2002:a05:600c:528c:b0:488:a2ac:a337 with SMTP id 5b1f17b1804b1-488d68c2bffmr299093265e9.21.1776287465591;
+        Wed, 15 Apr 2026 14:11:05 -0700 (PDT)
+Received: from WindFlash.powerhub ([2a0a:ef40:1b17:2901:1431:3a2e:b55b:4b5f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488ede1e050sm270798335e9.5.2026.04.15.14.11.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 14:11:04 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Leonardo Bras <leobras.c@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feun <boqun.feng@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v3 0/4] Introduce QPW for per-cpu operations (v3)
+Date: Wed, 15 Apr 2026 18:10:58 -0300
+Message-ID: <ad_-4hidfeFgPzRI@WindFlash>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323175544.807534301@redhat.com>
+References: <20260323175544.807534301@redhat.com>
 MIME-Version: 1.0
-References: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
-In-Reply-To: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Wed, 15 Apr 2026 13:56:35 -0700
-X-Gm-Features: AQROBzC_-yVQi7CjcD3DiHe7zBgEWti0V3awpLyPpMnYVTnD0d4omoeELg1sqHw
-Message-ID: <CACw3F51PC0iB6mfbiceQ_Kh242FN8zdXOfTyE5Pa_5+gjTPPGg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] mm/memory-failure: add panic option for
- unrecoverable pages
-To: Breno Leitao <leitao@debian.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: xmimhp4u75nz189wf67gu4kw11qe3izr
-X-Rspamd-Queue-Id: C0D4A180016
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: t9fndekz8tecs4k4g68cdx6rf849jqmn
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776286608-799169
-X-HE-Meta: U2FsdGVkX18iLltkeuPfXLoAkC3mzpFZDYZmsXlM3B0J5Wz+V7PwQurAKz+onT8uLgqF6ij6AB5FlqjRkkEvwnawlaNiusK8Z2Md8NEyJDT5aZEBEBdQFTn5AS1XUcSrVUiCzS5zqkXSBv42ERIiG7XGx6zvIzIBxz71ad0/eVbx/PfHBhV5m6Wajice8S46IrDAfq4vGMfEAOLblNmp3X5+L1MCVX0qOTL4GjTwIVsuG0m58Vav2B/6uY+SAIdTiQpedKDnI3riK+NEa+ZrRY/83zRX0xgDvOkBZVQnWNigM+/aeNPM+ydm8fb43Juo2XOf5/QhxJBmNGJRHu5fT4Fj2kwgzvJbZ+G0VmlHvS+tL2HHx7etRCo+nJ9a2D1T2J5y8Kkb1y8ZNjX7QuDjofs/wEbnU+6C2K40tFBtc/DHm5cu47es9A4J0zWYf1L7hWRPiVN2ua+862GZ84gUvGTYoMrdzLbETxNund8C34p0nJfS1RkZ/w8ZyORwluFvNfgsSjjtgilrbMot5PVK/rrBYe8l1w95ZJcgWVa8FAbNXZV9mYIiH2tRGky9NcNemF2TRuHmU1LV4E9peOoGXOYjs/93fhgzw3z4lS7eUOozAKzMI1gsvdhgxxNeudSvn7Alct9IujiMIi2MOxG+bbusdJFeBt2a+ItiS3VMvhBcekY2D7xFPxBbMwZhMooyZhXKRSqbVQxbQ4bcMsSWCivu1PnB2Sb3nrjcTTIXF38OrnzQQkbBYn2dDSgFK36hYxJwqjWUtd3ZeBF/fYEFYbduW3eBJJ0u1XOOWMt5p7q6LEae2YCwpvIE26QbuAeP+MBfjtwT+07gHtiuuJN0L0jOcJ4KpSMphadJPHgy/ya7vkJDtkzEl+C53JRBiJ1Dwitdjjl9neVFElWdU154CM0p7H9ycCvUzmZ/3bw4eeU+1tyuXr+YxNCjdVqhTC9/lHRYzQk7pYVsR5ruuFJ
- qRNsjKUT
- Awv9urrhorTWf8fLZbvJtx5nI4VU08XpbBpquVI9l6TByYk2RnwWpD0kCU+rpiMKUiJrZ4eyr0TIWLdakSInGxH16BHU7+XSTU5Tv0/HIKDj/IWyRuRoNh0HNyvFVH6h1arT2cRlubcE5sm82Xh1cC7O3zuyOD5OGz12VkvakmMiOFVJjiSTOAESgSXA8sQkEviHZSBYfGobJVpgEl1Tt3LTcDoSosBEmfD4KDRTCGFlIXD9r9Iwf8ayHG5OtIuDx5eH2tePPzd89+GwTmPVN43lzzjpSUhpXykw7d8vPnmwTPCIFbteYPgV8GxSkwrtmX3G9RdLTVGSCiS7f5IksqVJBE4fxyZduTWjtt9jDkZYt23yPMc5yq4aziJDwj8xGwcQjdlQNP0GNlYxP3d1G9tiPETnDz84ipAKloP5daLjV0GRVYJ0ArQE6ISlvy4cb3nV2aNHj+0uza/FSzIyhwXGu0QCCiCaF395SiynnCJQeTNxKHjsRKnpTlw==
+X-Rspamd-Queue-Id: 6CD31180005
+X-HE-Tag: 1776287467-300794
+X-HE-Meta: U2FsdGVkX1/KLeQ0tGqjVlpkD9ogqs00g63f2fOI2cuZhYiKXiZADqv2155JN0mCsEYkM2TjubZF3HbdANUke+7OWJwCg/TF2szYajj6krlf5K06lwW319mg7AwXwNYK6c+XivTj+RGVWf8KXn94nxkKapD/cNDXSggKgQ2hn1Qn/rD5JJkqWHtkd7uuIVfN/Gc/77ajHsMZ1y034mX5aTGM1GKOyJDEY5JYuBI11yrpxSFKt+NMhh3K0Mg69vULsQ5FV37/j6mjhofWWsOUMCynZBFTRVXMShxG3GkX64AHencCAEnwQBxTetUV2D+D5hWmwtLsE0Z6xIVyFNMcPh/heVcCNnOKIgGRn9lB2iCwhp51wXORC54e0D2aFx4GZUHnIWmCMBlSfjbjStVJHRHcjQVhmtnPyeQQ2XgTkKhtxySvrkbap9shtxyYt9eP1wi2d7sGZb/Ax1U3cTI1yjQRRz5+OzAc0raqOT7qXKp43N2XjF+j+kM9DbWePZW+yPpE8/WUe4jvarr72jGBg0ffupLrJ3erDtU/DRU66HDAHedIzhf36JXEJUc7UomR/fvBC4N4x7crIzTsjUwCEuL627CBxMAo3kh9K+uhOftGa5eMSnarmMFogWqdFKaqAvb4a5IWx2A8wiphVZARxmtbiWZ/VfnsEb4XmxwWyXXN7bVvhtc4NoKY6fhAfvElpc0Q4q7KDoBdQahEaFoZrWqmCRljXTli/hvIRl/fsinWm70I0ptnKnLMl+v+S3U+XEMqPw6ItT8gHv5aD+lmSk7Izu9Rsd5h15MoLzzjz/uppwd28AWLRok627rXtzFruIWj1SW3uuyKV5jghwcuwEke75Ac+ED+x5wRbPiVTEAOxcpNWj2eb3osTP2sxT6pVT0H7r3vMq8wEMQzaMxoQgXqLtlf+/tkQJUnffx3AuGs2PkDZeFwEi+vF4i9mbNa2dOw9HdroVu8sgg9s6R
+ BeJeCNhF
+ F5pf0hlVOgJ8hvO5EFHryou8gccbhF0Tv/r7u/+flV8W2wPUa9qg+VYZNXQFrzuGUbLZxxS3X0OZekG5gpW9BCoYyU/HlML4uFVNJrHXj8i+JrmnFbcf+zS6swEeWNGpq3xGQLjSTBNS8IOxLhQts3Kmn8IpLosapF/SgEogR/XN74OHybj5a0w3KiCHctxq8v5XYtz3jAWFXJv/Z0VVvVb/k8q2h+Ogn8XC2nrClQ5QXVYAiU+oyoxby8LWV/b0GdIxDEJzsNQnKA7kst6yB8NUBWQujjiBQdzdAsfvpANXy1t8xgn0ZIoG2ECz56HUx+5NOtW18mXcLXTexjvlqpLfjZTMqkX2HdOM1hV88H3br2GqXJ0fJWGjP5fTy0NHNYwcgH/8X60r2uW/lp5wdcqXSUUNVrmbCFsNNhGlESBFIdmcu+vCph1PvmgQeUwg2SvKe8uXpUYK5PxTYqjkp9Zk+YMWDbXyMJIh5ictbv77/nEk3nVvd3hbPgxW4LcdoQKZxyEhAtAl+2MRu7QbNIJWlO+rheduS4IuEbxzSVFMqccuVOVjDEN4MI68ILovL2/7/8BqgO1a3WWkDX9c2rjfnC1BiWSE0Maz5gyhcro2BuT6m5mh5fIoEw4mzNNjeQke7YsZjAy2jeRJgB2yFpN3bSC25Pesw2DTIdNs28txflEHqhmj1bMJfGU8Ur6uNvddhXKL+Tjfezh2ibyExGnXHo+NfA30CE+fZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,140 +138,268 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Breno,
+Cc: Peter Zijlstra <peterz@infradead.org>
 
-On Wed, Apr 15, 2026 at 5:55=E2=80=AFAM Breno Leitao <leitao@debian.org> wr=
-ote:
->
-> When the memory failure handler encounters an in-use kernel page that it
-> cannot recover (slab, page tables, kernel stacks, vmalloc, etc.), it
-> currently logs the error as "Ignored" and continues operation.
->
-> This leaves corrupted data accessible to the kernel, which will inevitabl=
-y
-> cause either silent data corruption or a delayed crash when the poisoned =
-memory
-> is next accessed.
->
-> This is a common problem on large fleets. We frequently observe multi-bit=
- ECC
-> errors hitting kernel slab pages, where memory_failure() fails to recover=
- them
-> and the system crashes later at an unrelated code path, making root cause
-> analysis unnecessarily difficult.
->
-> Here is one specific example from production on an arm64 server: a multi-=
-bit
-> ECC error hit a dentry cache slab page, memory_failure() failed to recove=
-r it
-> (slab pages are not supported by the hwpoison recovery mechanism), and 67
-> seconds later d_lookup() accessed the poisoned cache line causing
-> a synchronous external abort:
->
->     [88690.479680] [Hardware Error]: error_type: 3, multi-bit ECC
->     [88690.498473] Memory failure: 0x40272d: unhandlable page.
->     [88690.498619] Memory failure: 0x40272d: recovery action for
->                    get hwpoison page: Ignored
->     ...
->     [88757.847126] Internal error: synchronous external abort:
->                    0000000096000410 [#1] SMP
->     [88758.061075] pc : d_lookup+0x5c/0x220
->
-> This series adds a new sysctl vm.panic_on_unrecoverable_memory_failure
-> (default 0) that, when enabled, panics immediately on unrecoverable
-> memory failures. This provides a clean crash dump at the time of the
-
-I get the fail-fast part, but wonder will kernel really be able to
-provide clean crash dump useful for diagnosis?
-
-In your example at 88757.847126, kernel was handling SEA and because
-we are under kernel context, eventually has to die(). Apparently not
-only your patch, but also memory-failure has no role to play there.
-But at least SEA handling tried its best to show the kernel code that
-consumed the memory error.
-
-So your code should apply to the memory failure handling at
-88690.498473, which is likely triggered from APEI GHES for poison
-detection (I guess the example is from ARM64). Anything except SEA is
-considered not synchronous (by APEI is_hest_sync_notify()). If kernel
-panics there, I guess it will be in a random process context or a
-kworker thread? How useful is it for diagnosis? Just the exact time an
-error detected (which is already logged by kernel)?
-
-On X86, for UCNA or SRAO type machine check exceptions, I think with
-your patch the panic would also happen in random process context or
-kworker thread,
-
-Can you share some clean crash dumps from your testing that show they
-are more useful than the crash at SEA? Thanks!
-
-> error, which is far more useful for diagnosis than a random crash later
-> at an unrelated code path.
->
-> This also categorizes reserved pages as MF_MSG_KERNEL, and panics on
-> unknown page types (MF_MSG_UNKNOWN).
->
-> Note that dynamically allocated kernel memory (SLAB/SLUB, vmalloc,
-> kernel stacks, page tables) shares the MF_MSG_GET_HWPOISON return path
-> with transient refcount races, so it is intentionally excluded from the
-> panic conditions to avoid false positives.
->
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
-> Changes in v4:
-> - Drop CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC kernel configuration option.
-> - Split the reserved page classification (MF_MSG_KERNEL) into its own
->   patch, separate from the panic mechanism.
-> - Document why the buddy allocator TOCTOU race (between
->   get_hwpoison_page() and is_free_buddy_page()) cannot cause false
->   positives: PG_hwpoison is set beforehand and check_new_page() in the
->   page allocator rejects hwpoisoned pages.
-> - Document the narrow LRU isolation race window for MF_MSG_UNKNOWN and
->   its mitigation via identify_page_state()'s two-pass design.
-> - Explicitly document why MF_MSG_GET_HWPOISON is excluded from the
->   panic conditions (shared path with transient races and non-reserved
->   kernel memory).
-> - Link to v3: https://patch.msgid.link/20260413-ecc_panic-v3-0-1dcbb2f12b=
-c4@debian.org
->
-> Changes in v3:
-> - Rename is_unrecoverable_memory_failure() to panic_on_unrecoverable_mf()
->   as suggested by maintainer.
-> - Add CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC kernel configuration option,
->   similar to CONFIG_BOOTPARAM_HARDLOCKUP_PANIC.
-> - Add documentation for the sysctl and CONFIG option.
-> - Add code comments documenting the panic condition design rationale and
->   how the retry mechanism mitigates false positives from buddy allocator
->   races.
-> - Link to v2: https://patch.msgid.link/20260331-ecc_panic-v2-0-9e40d0f64f=
-7a@debian.org
->
-> Changes in v2:
-> - Panic on MF_MSG_KERNEL, MF_MSG_KERNEL_HIGH_ORDER and MF_MSG_UNKNOWN
->   instead of MF_MSG_GET_HWPOISON.
-> - Report MF_MSG_KERNEL for reserved pages when get_hwpoison_page() fails
->   instead of MF_MSG_GET_HWPOISON.
-> - Link to v1: https://patch.msgid.link/20260323-ecc_panic-v1-0-72a1921726=
-c5@debian.org
->
-> ---
-> Breno Leitao (3):
->       mm/memory-failure: report MF_MSG_KERNEL for reserved pages
->       mm/memory-failure: add panic option for unrecoverable pages
->       Documentation: document panic_on_unrecoverable_memory_failure sysct=
-l
->
->  Documentation/admin-guide/sysctl/vm.rst | 37 +++++++++++++
->  mm/memory-failure.c                     | 92 +++++++++++++++++++++++++++=
-+++++-
->  2 files changed, 128 insertions(+), 1 deletion(-)
-> ---
-> base-commit: e6efabc0afca02efa263aba533f35d90117ab283
-> change-id: 20260323-ecc_panic-4e473b83087c
->
-> Best regards,
-> --
-> Breno Leitao <leitao@debian.org>
->
->
+On Mon, Mar 23, 2026 at 02:55:44PM -0300, Marcelo Tosatti wrote:
+> The problem:
+> Some places in the kernel implement a parallel programming strategy
+> consisting on local_locks() for most of the work, and some rare remote
+> operations are scheduled on target cpu. This keeps cache bouncing low since
+> cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+> kernels, even though the very few remote operations will be expensive due
+> to scheduling overhead.
+> 
+> On the other hand, for RT workloads this can represent a problem: getting
+> an important workload scheduled out to deal with remote requests is
+> sure to introduce unexpected deadline misses.
+> 
+> The idea:
+> Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
+> In this case, instead of scheduling work on a remote cpu, it should
+> be safe to grab that remote cpu's per-cpu spinlock and run the required
+> work locally. That major cost, which is un/locking in every local function,
+> already happens in PREEMPT_RT.
+> 
+> Also, there is no need to worry about extra cache bouncing:
+> The cacheline invalidation already happens due to schedule_work_on().
+> 
+> This will avoid schedule_work_on(), and thus avoid scheduling-out an
+> RT workload.
+> 
+> Proposed solution:
+> A new interface called Queue PerCPU Work (QPW), which should replace
+> Work Queue in the above mentioned use case.
+> 
+> If CONFIG_QPW=n this interfaces just wraps the current
+> local_locks + WorkQueue behavior, so no expected change in runtime.
+> 
+> If CONFIG_QPW=y, and qpw kernel boot option =1, 
+> queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
+> and perform work on it locally. This is possible because on 
+> functions that can be used for performing remote work on remote 
+> per-cpu structures, the local_lock (which is already
+> a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
+> is able to get the per_cpu spinlock() for the cpu passed as parameter.
+> 
+> v2->v3:
+> - Use preempt_disable/preempt_enable on !CONFIG_PREEMPT_RT (Vlastimil Babka).
+> - Improve documentation to include local_qpw_lock on operations table
+>   (Leonardo Bras).
+> - Enable qpw=1 automatically if CPU isolation is enabled (Vlastimil Babka).
+> 
+> v1->v2:
+> - Introduce local_qpw_lock and unlock functions, move preempt_disable/
+>   preempt_enable to it (Leonardo Bras). This reduces performance
+>   overhead of the patch.
+> - Documentation and changelog typo fixes (Leonardo Bras).
+> - Fix places where preempt_disable/preempt_enable was not being
+>   correctly performed.
+> - Add performance measurements.
+> 
+> RFC->v1:
+> 
+> - Introduce CONFIG_QPW and qpw= kernel boot option to enable 
+>   remote spinlocking and execution even on !CONFIG_PREEMPT_RT
+>   kernels (Leonardo Bras).
+> - Move buffer_head draining to separate workqueue (Marcelo Tosatti).
+> - Convert mlock per-CPU page lists to QPW (Marcelo Tosatti).
+> - Drop memcontrol convertion (as isolated CPUs are not targets
+>   of queue_work_on anymore).
+> - Rebase SLUB against Vlastimil's slab/next.
+> - Add basic document for QPW (Waiman Long).
+> 
+> The performance numbers, as measured by the following test program,
+> are as follows:
+> 
+> CONFIG_PREEMPT_DYNAMIC=y
+> Unpatched kernel:                       60 cycles
+> Patched kernel, CONFIG_QPW=n:           62 cycles
+> Patched kernel, CONFIG_QPW=y, qpw=0:    62 cycles
+> Patched kernel, CONFIG_QPW=y, qpw=1:    75 cycles
+> 
+> CONFIG_PREEMPT_RT:
+> Unpatched kernel:                       95 cycles
+> Patched kernel, CONFIG_QPW=y, qpw=0:    99 cycles
+> Patched kernel, CONFIG_QPW=y, qpw=1:    97 cycles
+> 
+> kmalloc_bench.c:
+> #include <linux/module.h>
+> #include <linux/kernel.h>
+> #include <linux/slab.h>
+> #include <linux/timex.h>
+> #include <linux/preempt.h>
+> #include <linux/irqflags.h>
+> #include <linux/vmalloc.h>
+> 
+> MODULE_LICENSE("GPL");
+> MODULE_AUTHOR("Gemini AI");
+> MODULE_DESCRIPTION("A simple kmalloc performance benchmark");
+> 
+> static int size = 64; // Default allocation size in bytes
+> module_param(size, int, 0644);
+> 
+> static int iterations = 9000000; // Default number of iterations
+> module_param(iterations, int, 0644);
+> 
+> static int __init kmalloc_bench_init(void) {
+>     void **ptrs;
+>     cycles_t start, end;
+>     uint64_t total_cycles;
+>     int i;
+>     pr_info("kmalloc_bench: Starting test (size=%d, iterations=%d)\n", size, iterations);
+> 
+>     // Allocate an array to store pointers to avoid immediate kfree-reuse optimization
+>     ptrs = vmalloc(sizeof(void *) * iterations);
+>     if (!ptrs) {
+>         pr_err("kmalloc_bench: Failed to allocate pointer array\n");
+>         return -ENOMEM;
+>     }
+> 
+>     preempt_disable();
+>     start = get_cycles();
+> 
+>     for (i = 0; i < iterations; i++) {
+>         ptrs[i] = kmalloc(size, GFP_ATOMIC);
+>     }
+> 
+>     end = get_cycles();
+> 
+>     total_cycles = end - start;
+>     preempt_enable();
+> 
+>     pr_info("kmalloc_bench: Total cycles for %d allocs: %llu\n", iterations, total_cycles);
+>     pr_info("kmalloc_bench: Avg cycles per kmalloc: %llu\n", total_cycles / iterations);
+> 
+>     // Cleanup
+>     for (i = 0; i < iterations; i++) {
+>         kfree(ptrs[i]);
+>     }
+>     vfree(ptrs);
+> 
+>     return 0;
+> }
+> 
+> static void __exit kmalloc_bench_exit(void) {
+>     pr_info("kmalloc_bench: Module unloaded\n");
+> }
+> 
+> module_init(kmalloc_bench_init);
+> module_exit(kmalloc_bench_exit);
+> 
+> The following testcase triggers lru_add_drain_all on an isolated CPU
+> (that does sys_write to a file before entering its realtime 
+> loop).
+> 
+> /* 
+>  * Simulates a low latency loop program that is interrupted
+>  * due to lru_add_drain_all. To trigger lru_add_drain_all, run:
+>  *
+>  * blockdev --flushbufs /dev/sdX
+>  *
+>  */ 
+> #define _GNU_SOURCE
+> #include <fcntl.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <sys/mman.h>
+> #include <string.h>
+> #include <sys/types.h>
+> #include <sys/stat.h>
+> #include <stdlib.h>
+> #include <stdarg.h>
+> #include <pthread.h>
+> #include <sched.h>
+> #include <unistd.h>
+> 
+> int cpu;
+> 
+> static void *run(void *arg)
+> {
+> 	pthread_t current_thread;
+> 	cpu_set_t cpuset;
+> 	int ret, nrloops;
+> 	struct sched_param sched_p;
+> 	pid_t pid;
+> 	int fd;
+> 	char buf[] = "xxxxxxxxxxx";
+> 
+> 	CPU_ZERO(&cpuset);
+> 	CPU_SET(cpu, &cpuset);
+> 
+> 	current_thread = pthread_self();    
+> 	ret = pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset);
+> 	if (ret) {
+> 		perror("pthread_setaffinity_np failed\n");
+> 		exit(0);
+> 	}
+> 
+> 	memset(&sched_p, 0, sizeof(struct sched_param));
+> 	sched_p.sched_priority = 1;
+> 	pid = gettid();
+> 	ret = sched_setscheduler(pid, SCHED_FIFO, &sched_p);
+> 	if (ret) {
+> 		perror("sched_setscheduler");
+> 		exit(0);
+> 	}
+> 
+> 	fd = open("/tmp/tmpfile", O_RDWR|O_CREAT|O_TRUNC);
+> 	if (fd == -1) {
+> 		perror("open");
+> 		exit(0);
+> 	}
+> 
+> 	ret = write(fd, buf, sizeof(buf));
+> 	if (ret == -1) {
+> 		perror("write");
+> 		exit(0);
+> 	}
+> 
+> 	do { 
+> 		nrloops = nrloops+2;
+> 		nrloops--;
+> 	} while (1);
+> }
+> 
+> int main(int argc, char *argv[])
+> {
+>         int fd, ret;
+> 	pthread_t thread;
+> 	long val;
+> 	char *endptr, *str;
+> 	struct sched_param sched_p;
+> 	pid_t pid;
+> 
+> 	if (argc != 2) {
+> 		printf("usage: %s cpu-nr\n", argv[0]);
+> 		printf("where CPU number is the CPU to pin thread to\n");
+> 		exit(0);
+> 	}
+> 	str = argv[1];
+> 	cpu = strtol(str, &endptr, 10);
+> 	if (cpu < 0) {
+> 		printf("strtol returns %d\n", cpu);
+> 		exit(0);
+> 	}
+> 	printf("cpunr=%d\n", cpu);
+> 
+> 	memset(&sched_p, 0, sizeof(struct sched_param));
+> 	sched_p.sched_priority = 1;
+> 	pid = getpid();
+> 	ret = sched_setscheduler(pid, SCHED_FIFO, &sched_p);
+> 	if (ret) {
+> 		perror("sched_setscheduler");
+> 		exit(0);
+> 	}
+> 
+> 	pthread_create(&thread, NULL, run, NULL);
+> 
+> 	sleep(5000);
+> 
+> 	pthread_join(thread, NULL);
+> }
+> 
+> 
+> 
+> 
+> 
 
