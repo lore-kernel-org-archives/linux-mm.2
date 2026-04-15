@@ -4,151 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99822F43857
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 16:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F46F43858
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 16:16:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F328B6B0005; Wed, 15 Apr 2026 12:06:31 -0400 (EDT)
+	id 864456B0005; Wed, 15 Apr 2026 12:16:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE3B86B0088; Wed, 15 Apr 2026 12:06:31 -0400 (EDT)
+	id 7EE326B0088; Wed, 15 Apr 2026 12:16:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD2926B0089; Wed, 15 Apr 2026 12:06:31 -0400 (EDT)
+	id 68F5C6B0089; Wed, 15 Apr 2026 12:16:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CC68F6B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:06:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F1B81403E1
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:06:31 +0000 (UTC)
-X-FDA: 84661267782.28.792977D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CCC031C0007
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:06:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LayR2o4i;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 543A56B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:16:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EFBC016055D
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:16:52 +0000 (UTC)
+X-FDA: 84661293864.16.02D049F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 375C52000D
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:16:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s38oCA76;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776269189;
+	s=arc-20220608; t=1776269811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=volIntgCytMyyz9CGQVY0aKWzemt3fNYnxr7susioHg=;
-	b=bBsyZ0SzEo/saptBL0TRzvZIiBKClSfz2ezd/ec4qkt7O5P1O0BGIl+wJYz/JpNBbGpX5L
-	LrB9hiMM+Fxp3rBDPG91lrnQnSBVypVngXq1Z0mgRoFZx9oX9J+5M9YWWE12PiVssG0PzH
-	gPEkWNMyFz/iQ+e/h50ykjihjl7sqvI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LayR2o4i;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776269189; a=rsa-sha256;
+	bh=et7lNV/EK5ZapdM1wdvtSxAzbD4whSn1kk9KNgMMsng=;
+	b=X/qrC0SBwVRydteqOmU10aF0lLkNqNCz+LieCuMMSFgU5Y9k3GsBPpJljpotiaF+43jFT1
+	iRBGQy7Aaj+Thk+j+R5Mq20NZ+w/+w5i8ZiVMGMrEdLlhdfDioeNFfbcMn/DNVF1UlSge8
+	us8s2qdQDR9HlgIbsOEEnwJ0AUD05sk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776269811; a=rsa-sha256;
 	cv=none;
-	b=j9LJg5vNlH7IknuusXV9uPMFAUXI+5s83qPEqoX2rNPB6QrjDXQNc6Kl181Kv4zObSFlKz
-	zsl2EZ14IQOYE5jKIx6e7wLEniVrUm3RXpQC5kzsFIkAmg9a3IdCktm/9K2cpNiYrYq5cL
-	vrDgRb4v66TrLKQHOWXIckEQjPkGUlU=
+	b=rlzKKp1e96kkishx+GLMWspmfA1E4bLBtNEFUK+ThHMA+mJpcIt/NgClwsEB7FRbXwUPRr
+	40HgVHAySaQkTHPD/ePZVGtTl6l42WIS2fZ1OHNFjffwEY0QtiJGCA+pgENlgX/3h6DaPV
+	4jidN30IKoMEFhpNbSXH9pNWGUtMs24=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s38oCA76;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2175560126;
-	Wed, 15 Apr 2026 16:06:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68251C19424;
-	Wed, 15 Apr 2026 16:06:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1777043682;
+	Wed, 15 Apr 2026 16:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BF6C19424;
+	Wed, 15 Apr 2026 16:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776269188;
-	bh=pP5qF55v4T/UO8xfVPhdQ1Q8GyZ5nL/NH5kww4BEids=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LayR2o4ifNIJdDeSe2KzWJZrtOP1YP62HtJ+BrYGKck8hYnArzshH1pgYHK34Ds2D
-	 1Is039hXefQaHBWah6+dNXT3fbxJ0yX8UusyU/VsacfhFxzllgDz8bPLHZNvwj/Rq5
-	 QsWAl5I/ecqEMwIAzhsXNCZ7nDcMZyRBXg4X6Xf+KvT9/rcxvTQSqjb/qslXCMo+eN
-	 LPegkRVn6tD8yhspc6hEwbXbLaIoEBZW/yNpWZAN5GjDLoOEEViEz+8GbfJizn+VbV
-	 YqGPD+o5k/4FeQkfGWxbjtqwTixF/d8ZvC6kdvKidGwI9aZKWeMMo84UQDxsrxJJlU
-	 w8JLvd1NhnUow==
-Message-ID: <4993bd8e-427a-47b4-894b-d003d6717909@kernel.org>
-Date: Wed, 15 Apr 2026 18:06:18 +0200
+	s=k20201202; t=1776269809;
+	bh=BYzmB8AMTn+l7fVaMR9XEBHosEJ+cHfReEz/ISoReJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s38oCA764aLQkbmWhMkN4zvvwN/6QqwzqM1bNOcd+01RXf02hI+6o8xXG0UNwE8DD
+	 lfgmiEHUc+6/y/vWdbSx0SQ8rktpitZSCIwz8zdnzKQUW+Ns7gZyCsXeT6qWB+F2yu
+	 ZtLPXWuYn8M+lIN8b9/VXlkgYy1W/Kfp3fHnQ/BI9FuCF+4C5FwLY+Z5VPmvCBtUrZ
+	 ynMjTuanQS/unbHiJnV+M/OTolYTPW2ENyzDpvHfWyMLmjzzIveR0CtJWommhYk3Em
+	 rqdU/qxfooRO1y84xZLSkniknZXsH7g9mVXjYey8SXAjmIf8uYEVE6EFD2rDS9iFBx
+	 phiXWwy8SecSw==
+Date: Wed, 15 Apr 2026 19:16:44 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: priyanshukumarpu@gmail.com
+Cc: akpm@linux-foundation.org, changyuanl@google.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] tools/testing/memblock: fix stale NUMA reservation
+ tests
+Message-ID: <ad-57Iq8yat01OiN@kernel.org>
+References: <20260413091458.774770-1-priyanshukumarpu@gmail.com>
+ <20260415122731.1768912-1-priyanshukumarpu@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/13] mm/huge_memory: add and use
- has_deposited_pgtable()
-To: Yin Tirui <yintirui@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1774029655.git.ljs@kernel.org>
- <f9db59ca90937e39913d50ecb4f662e2bad17bbb.1774029655.git.ljs@kernel.org>
- <41b1ff54-c120-42ae-8b74-54767abf3554@gmail.com>
- <fe357495-2e45-443a-93b4-52bf21d3bdff@lucifer.local>
- <c6748ac8-6dcf-41b5-a281-2f21069b1f2e@gmail.com> <adTb6_xqQoQqK74Q@lucifer>
- <2f29f66b-46db-4925-b922-4add61b633bf@gmail.com>
- <53d748d3-4150-4e7b-8c1f-4c58587e9183@kernel.org>
- <6125defb-3aa4-494c-abed-982be684f839@gmail.com>
- <6417587a-7e43-4615-9e2c-50a245842f59@kernel.org>
- <f7f26a91-5346-40d6-aee3-3b64c3249ac4@gmail.com>
- <6edde1e9-0f42-4dae-b0d1-3f2895f2111b@kernel.org>
- <2987ed25-bba1-4218-a776-0bb98aa87bbc@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2987ed25-bba1-4218-a776-0bb98aa87bbc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: w7doz9dsdda71dnsdu61gqh45pcyqj4s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415122731.1768912-1-priyanshukumarpu@gmail.com>
+X-Rspamd-Queue-Id: 375C52000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: mqmr55tityig8ba4f9k5k6xr95woumzd
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CCC031C0007
-X-HE-Tag: 1776269189-822670
-X-HE-Meta: U2FsdGVkX18l62Ae+J43WhVa1JlWbpz0F1CvbsbGAvSO9WoERAcL+8fMQO4fKDB5C8Imxv0ic6RLG27Bwi14KfeRmIXEXhffu+8RstiDxtTIgblYAA/LRPGmAzQCKoHOybhi3sSbxk+olQKaFDukzrxp8s7DgPET1SBQzgh+t8JexSasDHAQbl1zSwO9a+7IjQZOIrsed7fegGZyvTrJUJ70LbofQvSoM4EghPyb/PN2orC0DppEz2VuZRo8FuuLUZvqFxwXq2h9Jmz1ZqXrkaa+fBXEfQcpbdCwShD4iqP4SKBncqdJdKtYqtxNdYII5m1j/Zv3LnJ+LWXcGwfSVN5s1/EjliAnu/6hsECmgDJSqsnT086FFY1pQ5XTyaBtUjTYzXbH0TqaUzDpOli+uLli2bD2M3GSRGu1/NflWzA8vQRPLL7ozzwfprzfzi9FhXWJPMOlFKoe31xDd7VIdw5y04TdhyDu3VfTRDQFgrC6IvSRn28+lAOd9Vdp0CFC7w46LM2OKCgtKlX1upj/KNSBZRfzE7Na7dC6CYWe2XX/BRU4l+Uc1HGQaoLEj2nzc9EA6wgXKvq0DkU0w0PuHn/2qh+QZzH/cJyXqM2yCrfGO/7sjiHZv6/5sIbEpcZJMyymilPY88vIohTrNqdKKpvk+Why+vc475lzDVVcpGZcZJSQQaPuPVv+2oqDLKJ1Df7JlkiNhFW1vgjg+mk3tiAeXdv+p2BSfkNIbjBFtJ493MU3o240h7vyNEVILWSFS0/RcyDkJx+0XBiLLxl0zL2yYjmshy2vHni1tXKP4mgnMnTBtfcMr3D3Y4DhrlHcW8d21jT4jAnfcUE/mQGQDjvd2rzQ8cYjPVIDmEw1yda8POJRlmnm8RmUth8iHbEfpcTmUgFKJKw97VzXolLiQCqrrduvQskA6vdKl8RWl0FqjGXvHHXnMAheRZpWpV+bAQGiH1NmUs5UJr6DU0j
- uFII9af4
- F7RWZZC7pQBUpHCGM9gggmQzFEoy8jXfGZVJopg6OIC8lQN2MGW0YWDYgsQWzHQQw0FDQY7GKJALD4/m1ZtscGMASo5aw868YFR8f+nvG7WAR4uR92O3rDMRx6eP3s/YerK5h4S0Q/F+KlQjrkRoXBHgm4P+6NbikzDJdw0Ljp0vjjboE9+UANv7TJpJt78amMCZziblP8LbvmZ812r3oPuD0PwdZhLhd+aOvpbByAvIFumuwfZhD/pYNykE439zQ8KRtr7HwaPRMwLv/NjvoM2Jmc0mFE+Vg/GifyDvH3e2nnr9YMA3xxT+ky6FnIvd/AWxTP0LKVnahHiWRzQQ87n1pjH81XJWkYsOkrKW2gyRUF3Q=
+X-HE-Tag: 1776269810-640074
+X-HE-Meta: U2FsdGVkX18cVXHL/Wx2/fIRXwiwxUG5xMBREjhdcfkzpBpkjpC/NmEVUn6s5RvmAYSbYZ3niscXj95mGKK/ADHs10U3i77IphK6XGbvG2lCwZgXsKY7DhLjdJ4zoi8HlR8ZO7YoIwl+kVAdea1ZZ26bfRUMjFWEslHXHCoz3WIeGoLRkDCv2nYNIMyxqopYyQaBwtcetrbRjLBYRybSIBmqnt83Joni3Dm+E5jzZphD9zIMb+pK8/wadC4RTaBmlf+f2N7VqcCU14lKviZAh03X5I5VbKHytBEcU4SrT00yVE+y9EBTsHQIOvAQzFlVYLoz1PSvVE3Co64II9jpCBO87Ypav9qpSu+CjuC/R6sLr5jOVjvAniHRLHLKVopNAbiqv3y5ARpRqm2ZjTQ+zPxyQFg11jGImL+k0pnpq6/aPEJHnTQ8d4VHehOrmyK34h1fayuzLG85PScYGoS0LP1otGFEjQtS4skMkN9T2J5JHB4HaO+iTt0jPVSGD3X9h96jDEwX6/ixutmggWIf2EwDj3bBe/cdEm0NFFkHyU0F5gjsPnhBfr6QwybQA80j9Z3u3/jEwX5NopTHEKH8nRPDEYYABhAg+psE6yMI8LvtN+m//FfF+4gjfjxysPY8iDtDe5OH72EEeQHOCPHwT5RPADllYH564ZbSaac0wB4CMN6JHpuIVgv7gXaQ3DJ0ZiZmQLorZQgFGWa1YcU+9vb/JSvrKfpqDJNV7+3K5OCjaLHlm5N6O5EsryaAIwkEmnCqq9CPIOqo0miGBzex7KleOrFeTNDE6fPMHsayqIaapptuYAbUMKslAZWNFi6qJZdakdGBMREd13YnRutDghERJWCLpieDnUVOacD01+R0wyt1BYkdu9m+ZLzlR9+vaA4UUHX/S+nBCJ6O7E1AZfZWKmWsMpERkaJMG8hi9i2VHUsWOwYPliJlK0fUhDYG157oZGF7T8hoR2G2krg
+ Pz9eJWvI
+ lQ2igXUt2/9JZZIAmalYuUxts0Dztw43Y3xqMVmUnEUNY+H1TxLAawuBS5J+N2vK2Yesc8p1Locfn/iygzdNByVojVCSs2VXTRP41tlEsqey/mXdnD/fBXdIHNHTqHsKjcdb2RYCg9D21ZENOJ303WhCZY7U0NUz0/D79IQoyi9gn8fJPHFj/jQllZ1JNGNDM6wsOMzpfsLoGXixa1rRPwpucpHvpPG6VIBOJcsAuMGcyQpcQMoaX17tKNG2Kj2FhctNJ3+gyRmGBLh7m1cajrgvv7OoaEHc3ksp1V9nCY6CmgKHu02B3hUYD8CV2Zev2c5VMSuP5gRmjq0s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,28 +92,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
->>> Then, when we encounter a huge PMD, we know for sure whether it was
->>> installed through remap_pfn_range() (needs a deposited pgtable) or
->>> ->huge_fault() (no deposit needed, can be refaulted).
->>>
->>> So for Lorenzo's `has_deposited_pgtable()` helper, we could simply use:
->>>
->>>     /* Huge PFN map without a huge_fault handler must deposit */
->>>     if (vma_test(vma, VMA_PFNMAP_BIT))
->>>         return !vma->vm_ops || !vma->vm_ops->huge_fault;
->> As mentioned above, also considering vma->vm_ops->fault;
+Please next time send v2 as a different mail rather than replying to v1 and
+add description of the changes between the versions:
+
+https://docs.kernel.org/process/submitting-patches.html#commentary
+
+On Wed, Apr 15, 2026 at 12:27:31PM +0000, priyanshukumarpu@gmail.com wrote:
+> From: Priyanshu Kumar <priyanshukumarpu@gmail.com>
 > 
+> memblock allocations now reserve memory with MEMBLOCK_RSRV_KERN and,
+> on NUMA configurations, record the requested node on the reserved
+> region. Several memblock simulator NUMA tests still expected merges
+> that only worked before those reservation semantics changed, so the
+> suite aborted even though the allocator behavior was correct.
 > 
-> Will do.
+> Update the NUMA merge expectations in the memblock_alloc_try_nid()
+> and memblock_alloc_exact_nid_raw() tests to match the current reserved
+> region metadata rules. For cases that should still merge, create the
+> pre-existing reservation with matching nid and MEMBLOCK_RSRV_KERN
+> metadata. Also strengthen the memblock_alloc_node() coverage by
+> checking the newly created reserved region directly instead of
+> re-reading the source memory node descriptor.
+> 
+> Finally, drop the stale README/TODO notes that still claimed
+> memblock_alloc_node() could not be tested.
+> 
+> The memblock simulator passes again with NUMA enabled after these
+> updates.
+> 
+> Signed-off-by: Priyanshu Kumar <priyanshukumarpu@gmail.com>
+> ---
+>  tools/testing/memblock/README                 |  5 +----
+>  tools/testing/memblock/TODO                   |  4 ++--
+>  .../memblock/tests/alloc_exact_nid_api.c      |  6 +++---
+>  tools/testing/memblock/tests/alloc_nid_api.c  | 21 +++++++++++++------
+>  4 files changed, 21 insertions(+), 15 deletions(-)
+> 
+> diff --git a/tools/testing/memblock/README b/tools/testing/memblock/README
+> index 7ca437d81806..b435f48d8a70 100644
+> --- a/tools/testing/memblock/README
+> +++ b/tools/testing/memblock/README
+> @@ -104,10 +104,7 @@ called at the beginning of each test.
+>  Known issues
+>  ============
+>  
+> -1. Requesting a specific NUMA node via memblock_alloc_node() does not work as
+> -   intended. Once the fix is in place, tests for this function can be added.
+> -
+> -2. Tests for memblock_alloc_low() can't be easily implemented. The function uses
+> +1. Tests for memblock_alloc_low() can't be easily implemented. The function uses
+>     ARCH_LOW_ADDRESS_LIMIT marco, which can't be changed to point at the low
+>     memory of the memory_block.
+>  
+> diff --git a/tools/testing/memblock/TODO b/tools/testing/memblock/TODO
+> index e306c90c535f..c13ad0dae776 100644
+> --- a/tools/testing/memblock/TODO
+> +++ b/tools/testing/memblock/TODO
+> @@ -1,5 +1,5 @@
+>  TODO
+>  =====
+>  
+> -1. Add tests for memblock_alloc_node() to check if the correct NUMA node is set
+> -   for the new region
+> +1. Add tests for memblock_alloc_low() once the simulator can model
+> +   ARCH_LOW_ADDRESS_LIMIT against the low memory in memory_block
+> diff --git a/tools/testing/memblock/tests/alloc_exact_nid_api.c b/tools/testing/memblock/tests/alloc_exact_nid_api.c
+> index 6e14447da6e1..0c46c73b5e04 100644
+> --- a/tools/testing/memblock/tests/alloc_exact_nid_api.c
+> +++ b/tools/testing/memblock/tests/alloc_exact_nid_api.c
+> @@ -368,7 +368,7 @@ static int alloc_exact_nid_bottom_up_numa_part_reserved_check(void)
+>  	max_addr = memblock_end_of_DRAM();
+>  	total_size = size + r1.size;
+>  
+> -	memblock_reserve(r1.base, r1.size);
+> +	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
+>  	allocated_ptr = memblock_alloc_exact_nid_raw(size, SMP_CACHE_BYTES,
+>  						     min_addr, max_addr,
+>  						     nid_req);
+> @@ -861,8 +861,8 @@ static int alloc_exact_nid_numa_reserved_full_merge_generic_check(void)
+>  	min_addr = r2.base + r2.size;
+>  	max_addr = r1.base;
+>  
+> -	memblock_reserve(r1.base, r1.size);
+> -	memblock_reserve(r2.base, r2.size);
+> +	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
+> +	__memblock_reserve(r2.base, r2.size, nid_req, MEMBLOCK_RSRV_KERN);
+>  
+>  	allocated_ptr = memblock_alloc_exact_nid_raw(size, SMP_CACHE_BYTES,
+>  						     min_addr, max_addr,
+> diff --git a/tools/testing/memblock/tests/alloc_nid_api.c b/tools/testing/memblock/tests/alloc_nid_api.c
+> index 562e4701b0e0..c23652727976 100644
+> --- a/tools/testing/memblock/tests/alloc_nid_api.c
+> +++ b/tools/testing/memblock/tests/alloc_nid_api.c
+> @@ -1965,7 +1965,7 @@ static int alloc_nid_bottom_up_numa_part_reserved_check(void)
+>  	max_addr = memblock_end_of_DRAM();
+>  	total_size = size + r1.size;
+>  
+> -	memblock_reserve(r1.base, r1.size);
+> +	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
+>  	allocated_ptr = run_memblock_alloc_nid(size, SMP_CACHE_BYTES,
+>  					       min_addr, max_addr, nid_req);
+>  
+> @@ -2412,8 +2412,8 @@ static int alloc_nid_numa_reserved_full_merge_generic_check(void)
+>  	min_addr = r2.base + r2.size;
+>  	max_addr = r1.base;
+>  
+> -	memblock_reserve(r1.base, r1.size);
+> -	memblock_reserve(r2.base, r2.size);
+> +	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
+> +	__memblock_reserve(r2.base, r2.size, nid_req, MEMBLOCK_RSRV_KERN);
+>  
+>  	allocated_ptr = run_memblock_alloc_nid(size, SMP_CACHE_BYTES,
+>  					       min_addr, max_addr, nid_req);
+> @@ -2496,15 +2496,18 @@ static int alloc_nid_numa_split_all_reserved_generic_check(void)
+>  
+>  /*
+>   * A simple test that tries to allocate a memory region through the
+> - * memblock_alloc_node() on a NUMA node with id `nid`. Expected to have the
+> - * correct NUMA node set for the new region.
+> + * memblock_alloc_node() on a NUMA node with id `nid`. Expected to allocate
+> + * the region within the requested node and mark the new reservation with the
+> + * correct NUMA node.
 
+This change is not related to the fix and I think it's adding too much
+noise to the test in any case.
 
-Please make sure to wrap such a check in a well named and good
-documented helper function :)
-
+>   */
+>  static int alloc_node_on_correct_nid(void)
+>  {
+>  	int nid_req = 2;
+>  	void *allocated_ptr = NULL;
+>  #ifdef CONFIG_NUMA
+> +	struct memblock_region *new_rgn = &memblock.reserved.regions[0];
+>  	struct memblock_region *req_node = &memblock.memory.regions[nid_req];
+> +	phys_addr_t req_node_end = region_end(req_node);
+>  #endif
+>  	phys_addr_t size = SZ_512;
+>  
+> @@ -2515,7 +2518,13 @@ static int alloc_node_on_correct_nid(void)
+>  
+>  	ASSERT_NE(allocated_ptr, NULL);
+>  #ifdef CONFIG_NUMA
+> -	ASSERT_EQ(nid_req, req_node->nid);
+> +	ASSERT_EQ(memblock.reserved.cnt, 1);
+> +	ASSERT_EQ(new_rgn->size, size);
+> +	ASSERT_EQ(new_rgn->base, (phys_addr_t)allocated_ptr);
+> +	ASSERT_EQ(new_rgn->flags, MEMBLOCK_RSRV_KERN);
+> +	ASSERT_EQ(nid_req, memblock_get_region_node(new_rgn));
+> +	ASSERT_LE(req_node->base, new_rgn->base);
+> +	ASSERT_LE(region_end(new_rgn), req_node_end);
+>  #endif
+>  
+>  	test_pass_pop();
+> -- 
+> 2.43.0
+> 
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
