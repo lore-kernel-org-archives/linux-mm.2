@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2313AF41986
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:47:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D535F41986
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:50:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 601D66B0092; Wed, 15 Apr 2026 06:47:27 -0400 (EDT)
+	id EB86C6B0092; Wed, 15 Apr 2026 06:50:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B2E56B0093; Wed, 15 Apr 2026 06:47:27 -0400 (EDT)
+	id E69966B0093; Wed, 15 Apr 2026 06:50:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A1EF6B0095; Wed, 15 Apr 2026 06:47:27 -0400 (EDT)
+	id D57A96B0095; Wed, 15 Apr 2026 06:50:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 39A356B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:47:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C76C2E3F04
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:47:26 +0000 (UTC)
-X-FDA: 84660463692.09.EAAC282
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C39D86B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:50:08 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6AC32B8DA5
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:50:08 +0000 (UTC)
+X-FDA: 84660470496.30.65B8B05
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0376740008
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:47:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X5YaRU94;
-	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id BC43540011
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:50:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kxpj4DTv;
+	spf=pass (imf27.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776250045;
+	s=arc-20220608; t=1776250206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xQ0Bpf3i9lHR4VDPvrLIOtLjNuY/Xv0gAJLYlaDLwzs=;
-	b=TD803MzzeZh0trAlGdCcaJDntp19AcOXlXnFeymp5sVunvTrdQVzVIOfcGnVZ3a6B0rYvk
-	8y5BcBGwJ2M5wHkWIpstnIZSBrtOwWAPzvHPELY2xSqVYSTJNAosyXtG06sAks4OtbUoV9
-	HODkUcCc5ytbzB6Uh2LljBajPGY87FE=
+	bh=0FhEAh2yMY3ZRUW3oRYhtfOc6QKCMV5gEvjNOl2w+lg=;
+	b=vtGA+mxUVfs67Yi02/QXmUyEphrOZKDLPziAdyDI3QxnX3f+WojRsLaWHV6h2PozTAJ0Q5
+	xWnTOLKzbgkHaBmK5M+k9dLD7OFHxK4MtfxX17dT+mXU0gEQGKoQvDwyfj6iYNsvUqSFRl
+	juLTe6PzRcEAk4HDeCe4LfRUgzrS95M=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X5YaRU94;
-	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kxpj4DTv;
+	spf=pass (imf27.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776250045; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776250206; a=rsa-sha256;
 	cv=none;
-	b=4kqDkO8slvBzi8s405L/D88zG7ZqPyfhGHxHJC3xUDs0mVi91F34OjGkBHi5RYzIK52APE
-	I8YjV4/NW0yg1Pu2mAlH2L+AZmI4k01+8lfLQvOY1Ynap9o4QE9Tfp31GW2CVAcwe9cvKA
-	BUxiMhWAJDaG4tyQxdf9vT8vE4kw6ig=
+	b=N5mH3rMtmmdMpAwgYJkQRhrrxTHYk7gM+yBVelZPfFgDim1OVD/kSWLhhS4XnRhKzZrqc9
+	M1PYgFWAg/wpwudqb0BQh1plCaREpvZQtRROrL4beQzcY0RmS/PfbM78h8meUVLJxuiVfq
+	L+3sqSBxeexCAw89z2ZBDTCWjQVfjEo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0AE6443C1;
-	Wed, 15 Apr 2026 10:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65598C19424;
-	Wed, 15 Apr 2026 10:47:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C6F8A42B25;
+	Wed, 15 Apr 2026 10:50:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D0CC19424;
+	Wed, 15 Apr 2026 10:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776250043;
-	bh=NPkH3odK+y9+Iw7bAZA8ca0+l9lmm7YtInB3PhCdnWw=;
+	s=k20201202; t=1776250205;
+	bh=7Y9LZV6U1xyrOHwAijlBN1vXwQsWgvG1uZWTDoxA/OM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X5YaRU942uo88Bz6wJUMEWxPz7pezQji73dhxljy8WgWWZ4oFdKiaj8kuMNQbpe3g
-	 ejnm2n6TJZKu8Fd24uQcxpxMMqjKvNdrdpr4FHtvEB//unXAmXS78psdWFCgHAur1x
-	 OlSYp1JF8WOOKOzMujadJS5MzqtSAzCtYc1SrfM/mOMdLeZKjOha+BWUJq/nwn0ozM
-	 +UXqlvJ86RrNkIoid3QazzX3gIiOsPBYSGxbFbfNNW6/iOkHBa0tVVcc0SWWG6iHuf
-	 9yoEIMUTqisydm7Ql118U3OEEwU2vjENDOZNeM1go+4dNgInjFn2laS5salb/EiDaN
-	 qOJiF4UAEw3Tg==
-Date: Wed, 15 Apr 2026 12:47:21 +0200
+	b=kxpj4DTv/Yk7p5jvwdsLH5oWgEvb10ysaAyxQKmqcTsDbjN7noPDFcF4XY92vYNJb
+	 dOBvecYWIYwyaKhU51xhNFbJzDK1/r+r7irvKFZf0QXmrqleaKgjuTdx9MEhpQPWHC
+	 a/kBEIAQAcdivAYufyXZYmLM/fymJTb/ieawaY6CT9YD/021Wf0MNWjlUDAJiUu6r8
+	 j0zwzpWv45cWJNWchRO6obf4PwTSAA+kyao49lACKA2EfoMqYVDGORFxrazmDTg6Qa
+	 NooZUVllQoJyWF1P2kWtY0IE5W9KG6V0laP8BmIxTjn241wOO3SCgCxFMx9RDe2gzP
+	 lV1YlUpVXGoGw==
+Date: Wed, 15 Apr 2026 12:50:03 +0200
 From: Frederic Weisbecker <frederic@kernel.org>
 To: Qiliang Yuan <realwujing@gmail.com>
 Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
@@ -99,24 +99,24 @@ Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
 	rcu@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 07/12] sched/core: Dynamically update scheduler domain
- housekeeping mask
-Message-ID: <ad9sudAozBTBfI5U@localhost.localdomain>
+Subject: Re: [PATCH v2 08/12] workqueue, mm: Support dynamic housekeeping
+ mask updates
+Message-ID: <ad9tWw-J_t-f6AcB@localhost.localdomain>
 References: <20260413-wujing-dhm-v2-0-06df21caba5d@gmail.com>
- <20260413-wujing-dhm-v2-7-06df21caba5d@gmail.com>
+ <20260413-wujing-dhm-v2-8-06df21caba5d@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260413-wujing-dhm-v2-7-06df21caba5d@gmail.com>
+In-Reply-To: <20260413-wujing-dhm-v2-8-06df21caba5d@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: iunjyya1wi1qtig4y8q7nz3gunyonfaf
-X-Rspamd-Queue-Id: 0376740008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776250044-8988
-X-HE-Meta: U2FsdGVkX1+SJqFhHbV+joRo5N+8m3WdJpnCGJPrXi3TcEZjRoEpx23ZEMvt1aUQFqakfYuK1r/3v1zoLmT0GtDRKx6eFgIHYzq/eQlm8/ZuiFAQsHN4UB9wisWGAZgXV+UMQ9FTuTddwhrgPlQ3njS+a0XNwCIHhLU8LfuV6AZ/Dyy0mYqbbYHUlkq87hXKCoIDCk6EzNq0JWO4jqek3yEPMf6MWBMW0NAI7Xhkz29rVyK+F6GPiBBkxegMcJ0GLwAjOXwpiBMJfQ9i3V33ZNhxZrRY+D1ZpauNfreHWslPsSPttCJy33NrO1p06hwF1EWY3yR6AZJx68eZtncOKkV2vx1b/uvxscj01WOBL1sbDwu2qfYOHSvsGQs4sF7jufHUcdE0kHqTnHv2WNToVY01NgTNWttBsgURThhdZ0jnNP0W5ZeQOQrgjQi2GzxFxVu0KNmlW6M6TIQFQ5VX3z/iuplU9PeUG2eOsGgtGcCPvlqUOgIrW2pybSvLaY8/kEhEJRr2tugxH5nZMUO15GWP2+/5CITj5HV3PH9q15rbElKM/R3WN5afZoP72Qm23w2kAvz2w6XbSSDK6eKN2AAsxteyYwHLO3oGJhHO5KdUJw4Esb1Cg4EspLknQB8i8wmktvZ9Ck38YY9a9q4PY7vIlhJFE4sNC+3wjpa/Ets1ORdtJ2V2slLPxDhNltvuOjHkeYS1b542Gn7zq8rpIsklK9vZMcPqnFXfRsdhCseXVvDmsZp4bgyinRDtm8nlH2/3SaixCAbgo2Q0Te2golShIV21GF5+uOPk8uf512LrML2UvpAQc0PgeQNXdws6WTPe80uYHeNAWbGKRWRp+0qNAFYQmxiNgUrgNyhEDR1CmpQe3/GfanCIfwhGiuFbt2551v7tBI7+DLRcMTC/zWaVXqHbzfzHiYrgcRB9D1KXkKVpBgR7QWEnn1PwaNzKw2RbE2nlW59uQ86bMby
- uwAgruVm
- uUaiturXbpc1zG0gmttN4tS8yz+QDhGnQd7/9OIBgsHHCR3ct16NVI+L81gBdqfyWHW2e20q8E4dz8wKaCBCvjTO8X9yHThDpmg0zu7kXirKPkMZcq/YzMSzcB2srtRJSrvZXvTMOvK6YPHR4+8ur+BfKaI2STFrgAM2fYgCIFgbGq9SbleMQdDsq6VYbrB5D9hY8cxWiu8I3sSQT6Y5GAr48A8ocC4Y2Y6kxbMjZkcuPAOOD91FY25mNULvaNaG3QyAnutqF8hvLOwELm7qBALefTOdwryB6yOCWMi2pm4go0UO07zb6aV3X/5LRW1kKZ6h3iQKFRtRaLu0=
+X-Rspamd-Queue-Id: BC43540011
+X-Stat-Signature: axyw3dtta8t81t6w8dtpprxabgk35uiz
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776250206-446849
+X-HE-Meta: U2FsdGVkX19XAwbwez5xXsWBGYnOmDsGRWavIyNM7gtUIsQ8E8qnounqiTyy9dANFQeguk/qo+bW2ZHYpXDNiFhX07qkLpXz0qNTT/xilrB3GCBhEqep9oV9MqQcPjygzqDVrat7IhKLwbe6NCIJYi80ztGRqrf0RArjZGFkV5MFRnPilabKfYUoWitZV/NXKrR7vwUvjGTtqLq9zbxvsRU6dnJm0zjijz7MpoNDRLTZG2+e+h7Tn9crPrTxI5WjKCE+hoiaFAIknA+N6IZah12omIiO1o3zwZmL72KRWd2sx9Q6GEHdeA7TZeOuIv3Aen7YpCrdlcPc63grEXYAd4upY5N9B4l/PLuAgH3/8wNs3mh7cmR85Yo+3t0h+k5SvH2ZCxRnNWYjEXFqhHreImhArsTS4EAjsRbQZDu4wdkimotsgnytercQJgHM6630Og8JkEIKTDSwf+io/vH45xw4YWNHgBhwdVISQ8ExBF2ZxKinx1UqwKaY+lLRJb7QEWpvlqC/1ykGPrOmYMe+VqYtkiD6GJcZORD1Ijt0KtXhKCG6g08kaoolC14Za3EfEu5ZIYTHVhIU2m0PnWRxt6PBeHIYE6Pqol1L5HXOEJG32ecwYxsVL6coTgpvmJ0FVDHOUl1m2bJMqXLdBU3IUskFJGo8p4D3pSiB2TeFx70iCI8QrW1DyhvLNe1wuR1aEY7BwcIaXhcy9lNQOQ8cyVNz2yTrQbaNG14pSly8UuEjVOonA1HhgvND5w1n1X9sgQZOVpFzYygMFcwIVlM6wvUT45KLTjKCjMumonxnUPbXylFxOALw7MebGoOdbkzr4o6A4/PaS0FTyTUqrFA1M9woYatNS4xWHmAFFWUSY1sXKkjtXeHntmx5hMHhh2ccrf8YSLpvjTVL/2HGVkbSO72G0kV8+vKnVbOzR2JyKWTyVc/rW7yVpcfDfeNF0nMW3vF770GKnCwpwqYUGyK
+ Lx3PAkE2
+ Of+H8lcPgYeT2CEdc3TD7kQCjEKKZ4+2CQoXY5gXyr/CeuUV4kk4P/VQn6cBForAyUjATvQUlqMzzrqkztg6EOG96v7hwlENqblh7lXYlSTReKz3E2Mqrx21M1UpQ7QpIHzq5RvMiOZUf8F1o9GMRJQxNO+o2Z5FqoZlazyYkYCTVjZHWE+7XKyUxenYmWcZSjpAHVCU+sUYXNs0qRqif1Ih//NYV/2WlBMQGVzeK87qITiCs2WAg796Vz59abXaBJ0+JUt2d0oV5qKw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,68 +124,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Mon, Apr 13, 2026 at 03:43:13PM +0800, Qiliang Yuan a écrit :
-> Scheduler domains rely on HK_TYPE_DOMAIN to identify which CPUs are
-> isolated from general load balancing. Currently, these boundaries are
-> static and determined only during boot-time domain initialization.
+Le Mon, Apr 13, 2026 at 03:43:14PM +0800, Qiliang Yuan a écrit :
+> Unbound workqueues and kcompactd threads determine their default CPU
+> affinity from housekeeping masks (HK_TYPE_WQ, HK_TYPE_DOMAIN, and
+> HK_TYPE_KTHREAD) at boot. Currently, these boundaries are static and
+> are not updated if housekeeping is reconfigured at runtime.
 > 
-> Trigger a scheduler domain rebuild when the HK_TYPE_DOMAIN mask changes.
+> Implement housekeeping notifiers for both workqueue and mm compaction.
 > 
-> This ensures that scheduler isolation boundaries can be reconfigured
-> at runtime via the DHEI sysfs or cpuset interface.
+> This ensures that unbound workqueue tasks and background compaction
+> threads honor dynamic isolation boundaries configured via sysfs or
+> cpuset at runtime.
 > 
 > Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
-> ---
->  kernel/sched/core.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
-> 
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 496dff740dcaf..b71c433bbc420 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -39,6 +39,7 @@
->  #include <linux/sched/nohz.h>
->  #include <linux/sched/rseq_api.h>
->  #include <linux/sched/rt.h>
-> +#include <linux/sched/topology.h>
->  
->  #include <linux/blkdev.h>
->  #include <linux/context_tracking.h>
-> @@ -10959,3 +10960,25 @@ void sched_change_end(struct sched_change_ctx *ctx)
->  		p->sched_class->prio_changed(rq, p, ctx->prio);
->  	}
->  }
-> +
-> +static int sched_housekeeping_update(struct notifier_block *nb,
-> +				     unsigned long action, void *data)
-> +{
-> +	struct housekeeping_update *update = data;
-> +
-> +	if (action == HK_UPDATE_MASK && update->type == HK_TYPE_DOMAIN)
-> +		rebuild_sched_domains();
-> +
-> +	return NOTIFY_OK;
-> +}
 
-This is already handled by cpuset isolated partitions.
+Unbound workqueues and kthreads are already handled by cpuset
+isolated partitions.
 
 Thanks.
-
-> +
-> +static struct notifier_block sched_housekeeping_nb = {
-> +	.notifier_call = sched_housekeeping_update,
-> +};
-> +
-> +static int __init sched_housekeeping_init(void)
-> +{
-> +	housekeeping_register_notifier(&sched_housekeeping_nb);
-> +	return 0;
-> +}
-> +late_initcall(sched_housekeeping_init);
-> 
-> -- 
-> 2.43.0
-> 
 
 -- 
 Frederic Weisbecker
