@@ -4,119 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFADBF9D0FB
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 00:27:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECC73F9D0FB
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 00:28:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 398CD6B0092; Tue, 14 Apr 2026 20:27:06 -0400 (EDT)
+	id 3C1F26B0092; Tue, 14 Apr 2026 20:28:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 349626B0093; Tue, 14 Apr 2026 20:27:06 -0400 (EDT)
+	id 372426B0093; Tue, 14 Apr 2026 20:28:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25F5B6B0095; Tue, 14 Apr 2026 20:27:06 -0400 (EDT)
+	id 2612B6B0095; Tue, 14 Apr 2026 20:28:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1723C6B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 20:27:06 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97D8B5835A
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:27:05 +0000 (UTC)
-X-FDA: 84658900410.27.9D3C5A6
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C1C3840016
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:27:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fBKTEjFj;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776212823; a=rsa-sha256;
-	cv=none;
-	b=1ixbkQWIytTGZMWtKIAPGs6o8hpKe+Q6ExCThv2yLFyuvN0luLj5MTjMxSOJgeAOwtIb4W
-	n6Qgq4zFlG0Jnnu4TZvolgTLcRueYGUUtw8+C293IG+okJynRrgurueo7u95qjMMkicU/I
-	Oq8yZ13eh8FPbAhGMs3EhmCKKRgR9aw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=fBKTEjFj;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F39E6B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 20:28:32 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9EEEF1B51DD
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:28:31 +0000 (UTC)
+X-FDA: 84658904022.16.453DFC2
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EE519A0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:28:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BYXY1q5N;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776212823;
+	s=arc-20220608; t=1776212909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kDpGBnaT3lT3hUJ3gOq0kFT1XqTcnbKHudND+6nYB6c=;
-	b=Ezfmmg53k8iig3UCiBR6k5UQ+RggVNoGfQeqbkse0JoGJWeESukJTW2fSoW4ENGcoi1gUC
-	i+pOugGY+OvKouTjAJaId0PnxHRCKFJWAhryB8VSLmfYwHk66sEVgW1OjSLvNxOdwjfmW4
-	Ms+07k1e9Q51W5IxNDF3TLvniIy4t5E=
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cd71fb9f06so386891685a.2
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 17:27:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1776212823; x=1776817623; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kDpGBnaT3lT3hUJ3gOq0kFT1XqTcnbKHudND+6nYB6c=;
-        b=fBKTEjFjxlSqn1vX2fmLaD7s8GZxFew1dfp10/sPBdDEbbhjDMXUPygI+5kPmuTIX6
-         52EIrVdH3QOcKaLpsmiwc20wep7qyFgf1P+kGXKtlLXhVIrv0Xy45SVAILw3no2y9Y3I
-         q7CdtE2Cqbo5OP/CcMbkTAp5S8AR44X3a9ykPdtHo3jRJ5yUgkhzY+XdzKvkEV9BbTSq
-         /kfYxnzTinZLHDoYWzC+qcD8mmvsXNSokkt4/DiGX9L9Ek7vploE4tvI7G0hn0bO6emg
-         Ae1JKnA27dWF6nWCvS267bZggFuNwO1F2jxq7wODkLzX4KPt1mYjHhcr7AUNVkiSc4pb
-         IxiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776212823; x=1776817623;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kDpGBnaT3lT3hUJ3gOq0kFT1XqTcnbKHudND+6nYB6c=;
-        b=DrmUaJpkFZiRBSpgj8ULJb+rjYo3W2aX9n7+xk2D22DxLq5dMzTx49bVH5O1p6RGZV
-         CCL5ONtNe2tmoeNmP5VEbbxNb1F5elQKf57YCYl9GjwtZ2C4iwcxx9vraJChpJzD3obH
-         CiwnaIPtRGINugbhuOG/dez8ZvDagMhS7VU6IKHsA6NxXv4oyu5zwrg1jkfFfoBqvzC9
-         Zw/izty3J/6VN6BReF23PyQaFoCRgVwlW/5ITrE0Fm7BKSA8oO2f++WUUyjV4FuJ+QoQ
-         cHKZlsmV65M7IO6TrDEpOcOfdlJoDQY5SvqXQcLz4tobEoKq1EU4r/Rrh46MNSWthrUz
-         t1pA==
-X-Forwarded-Encrypted: i=1; AFNElJ9cJilYMVCFaBheK88zd5Kv5+nJewdZOYxTUxS7o+HwttBhQcx6TNfxQko2i+tTP4iQ3jc3gnMIyA==@kvack.org
-X-Gm-Message-State: AOJu0YwhRP3MwE2IPFysCdtmFiOmtqrk6UBT04Mp3ka6cEPk/WMuNDdb
-	5KkH35wFcI7L0hdlcjVH/kJgOuXV47dJ//hQvM5WMmdAfIARhjDIaix3nbRZXdphLm4yZXLBKqA
-	lIA1G
-X-Gm-Gg: AeBDietvooi6v5UmoKlw1to30uKFHmVeap11VotlLltZeCrc0A8PoBt/uh7WZR/eQz7
-	dggf2bZvB1r9cRlTBARLDL+mGbVDHOQNdlk7n1DHCVvnseUAIMQClqf/Rvw4A13ldUbvtFFOrcF
-	HqMbb7uA9r9PXev2H0//PtrYPkxCqnEDD0dKLa25hhc4wl1UkDi09DqS64gDwOVsaKNyFs5+RiH
-	X7f3JMZaafPGnwJJA6HDorOnZsJSa2OppyQIXo+3Kim2QRsWbmYeDIhI3ilAPKlDaieGlLNf6KS
-	FJvNgyENzzoLU+ofDBJrrzSYWqwylivPghHJ3Z25jMqFCp5b9fzebfQIXWSlGnQpdEYyLDCKJKO
-	/JhMwE8UytEgA0K9bOL9swss4EPVx3V4JK2EQhIrglkgCwgVaFk5SBgrRt14x/+bWFigmTuybo0
-	d6hm1cLB4fDeV0MUwMoPmwV7VzWnzYnrw7bg5Y+bq/FtbthzSJAgJz6QbXRxNSO45TEZX8m+Hkv
-	u+23yD5V3CJFg2Wvyz+Tno=
-X-Received: by 2002:a05:620a:4411:b0:8d6:bd01:a684 with SMTP id af79cd13be357-8ddcd6f8560mr2828658085a.7.1776212822595;
-        Tue, 14 Apr 2026 17:27:02 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-71-191-243-150.washdc.fios.verizon.net. [71.191.243.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e4ef33afc7sm7479885a.18.2026.04.14.17.27.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Apr 2026 17:27:01 -0700 (PDT)
-Date: Tue, 14 Apr 2026 20:26:59 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Hannes Reinecke <hare@suse.de>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	lsf-pc <lsf-pc@lists.linux-foundation.org>,
-	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [LSF/MM/BPF TOPIC] Strategies for memory deallocation/movement
- for Dynamic Capacity Pooling
-Message-ID: <ad7bU9Guk_csFsEG@gourry-fedora-PF4VCD3F>
-References: <e06deabf-44ad-4f3f-b817-78506c5e3203@suse.de>
- <20260413164359.00001c86@huawei.com>
- <ad1b4dVCgG27A5AK@gourry-fedora-PF4VCD3F>
- <38952332-dad4-4d17-a9c1-5c25d79f67b4@suse.de>
+	bh=pEDguHnuRGv9AHdE8EEWVJP9Dcq2OUA6BfBG51qwd5U=;
+	b=jIC9jKA7j34cTxUZJF15eAakXB9l/UxusUX/Vjjur+5pzMiK5Usj99D5UrRJWD4ojcEc5e
+	0vNtcKlDg1PLbd+91Lqm6yJWMGHLXRlJ9TXYS59p4qwBPynxKFjw9DQpDDsMq6ijwtd25u
+	xfbxd5+VfAltG3WKEr8gH+XwcENZZLI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776212909; a=rsa-sha256;
+	cv=none;
+	b=IC5oLPvMG+GBuife52EU3HP4k6EWKVfWODub7Ioaqu8OuN0jyz71bXDTWyIZ5fr5iRJJj0
+	nYS6aj+JZ2pzZOKG9KH0u+jRgOBdPk6GaL7DFWMbCyRoINM0/DEdxqdBWZ7UyrYE5HjSDR
+	muGD4t1+wnbbsg0eAg7vmJhuyfawmiI=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BYXY1q5N;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776212909; x=1807748909;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6qHIjl1O8jAt7kVac/CbZAb3DjdrN8WLJAUZQIMMWFY=;
+  b=BYXY1q5NJ5IQSFWtQ1NlOHTpP2SHVHmNVgELP7W/WNy79rgBNwqas12b
+   OPZYY+d8QRykQzbsLCGljrRuptklqPw6ePQ6XeCe4F9b8mFfLfPWkn0pn
+   t+kKpj7yyT4DQlcYWuGo5F+IOxbFYcH56zvd76hiaucZjhbyGieD1307E
+   fCa7GWij9IHMvmXwrXZa88Lo5Mfl8mq9ztbRUddqAsC53ChXisQdTzlOW
+   D3tMb54WjWX3ONxtfHVEOl8tk8ydc4CT9ZVXjHDH3KM3oTe+RutVsoAue
+   OuYbdsFL0CJ3qbxi8BZxxi1DGcdKEJFxkOmaWUcsAgS8G8qvJaXrhAJel
+   g==;
+X-CSE-ConnectionGUID: ACB4zWstQy6idPXTI7t5mg==
+X-CSE-MsgGUID: NEjgPqtGSnaX2yu4vofNHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="80779746"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="80779746"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 17:28:27 -0700
+X-CSE-ConnectionGUID: pv1YhFHyTPi2jlKw00PuVA==
+X-CSE-MsgGUID: vp30E1BLR7KBAu3RJOAVWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="230103404"
+Received: from lkp-server01.sh.intel.com (HELO 7b0b59b3a0d4) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 14 Apr 2026 17:28:25 -0700
+Received: from kbuild by 7b0b59b3a0d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wCo7A-00000000217-0hXH;
+	Wed, 15 Apr 2026 00:28:20 +0000
+Date: Wed, 15 Apr 2026 08:28:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Youling Tang <youling.tang@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
+	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, youling.tang@linux.dev,
+	Youling Tang <tangyouling@kylinos.cn>
+Subject: Re: [PATCH] crash: Support high memory reservation for range syntax
+Message-ID: <202604150808.7HxFp5b4-lkp@intel.com>
+References: <20260404074103.506793-1-youling.tang@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <38952332-dad4-4d17-a9c1-5c25d79f67b4@suse.de>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C1C3840016
-X-Stat-Signature: ygq88h863d3yon8qqsnu1hgbfd1mp54b
+In-Reply-To: <20260404074103.506793-1-youling.tang@linux.dev>
+X-Rspamd-Queue-Id: EE519A0005
+X-Stat-Signature: guyuawg76do4btyw56nkzmpg3nhomfc7
 X-Rspam-User: 
-X-HE-Tag: 1776212823-436823
-X-HE-Meta: U2FsdGVkX18g+PbbOLIuIp0zxWOsge+gZe8oMZzoYMJbJfi6m94/eQ9tYYJXW7QyihI4sI5x9Nkl7NYbqEZQJOd/jxa3zRS4AiCIw0/EqcLByuo53CvWnYVAo55oQ3ikln634ouOIdDjeCEhSdQlRxhoY6IaW1ubtKJPe9atBo7bX/frbiCU6YWvH4j3/qCEjCj2fly1RfF6FfRMKODNa0NWALqjRioeFfjq964G0flQtLoIUyP2oLUYHoQKRw5mznoZ3AD++7hN50JEQ1xi3vku6iENSCicLsZn5CfvkUKXY7zzs/vmC57vivJWuRI9wLFEJaPVhhE+JlnS8MdKfyfU2/JlCrygJrkpZVn26R1Dg/LQaWTzwOX3fy33yK7KxpgSOn8zbycffzcZfE0ifMSymizLyRBofUee91R2wVfHcSOQ1DGN66xyWQIxlrchnaPOH1COWJlVhRy1XkQkVL6IzzMDScalYgf68qFWnOlEC06MggscXvby4xPKK6bpC/4fmm3XXe504HEdFMU/xDutsIy1izXumB6ShEyx+8upnZEgdIJqYV/mDGloaGHQ/2iRLvOp4awuaHSb+xBrlN3k8yRxLDkQu+vZMSHLK47rbj3mzvalo+n0+8y+C8n6655RWUN3jDk9drX7NI3IbzqYcmim0JHm1rhJ1L83XNeX7ZIEBPpDXSPRU/wGhxKlI0b6w4WBTfQu8+XGP1TvLCJNt3rAgW5pat0xme53rElyZ++sV1H0UHPCwPnjgr1m93iMlqnfuVUGcl5zvy9+cYuxpzXxeVv0nnQFauwJWXIXEYjtOUIxqyB6DSu/ZKpZwVd7Gr+9nJ/+KnDzMDOJyr0/z9kfM32zMowRcB/IbjxwnJKfcnSm5+Xt3jTISsJyuu7xY/2eIRkfEDi1HRr3nv4782KLZOYmjNDy9+f9FLN2lHU7Vj8/SwXa/IBQkYLs1l7ncgsF28jqSm1d2Ou
- T1q3e8W8
- c4SVO/WJc0mJLxU2o1PVvj0NfLYlgDN5qGmrN/5O3yMFVxmJvaF/hLVgToc+ws6MewGcpquWSwSKlCnL84QZP5WFURYf39XhAdQ1K+/ewh9u/ChmGB5W0GB7z0B8kVQqC/goNW1drAvYF23l0r+uIort2DlXyFOXnTsBYknlp/eZNZojqMko9KEx7Uq9hzGTJHxYVWJHN5GE0C9+tfJDO8y95urbN38rdEXdelsc1RdJ8fwX8cu0mJhxfE2X4Ha29OQJdbO5hm655Oej7ZAv97wEpW+XJUhgjwrWHh4RxikfzLYtQyoQdNnn7ms+mWZNYknWe1wwPj4ChZDM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776212908-797441
+X-HE-Meta: U2FsdGVkX19XCp64u2l6MGpsy8hFLPnt3J+9K64ycjG0JSaj2vHpfDGRVi7PpKVakfdUycFkFo88ssigzGs9OukyBm7PRFoaaD50TWlMn/TvJeNvDiU4gweJQeuXiq4o0FnjaKckiY05fLoYeUptLSHp1oZx19ygdPYtfyOVE+rlY7F3x+3hcCSnKzeUx1dMx8LxnThIdGORZ+DJHs8iKE2xJoq10no+A3+yEwnBzkM9HWPHAQSC/wzGF5EECpr28LQ57gQjgvZ5YFdFLw+PE9Sfd0OCAADOgiHNQJJAqoToTq9On/04PD2dnBLnwxkOZ6PRiyvjygeUl72U/mj6GIQDQmvj002a17I5dvZvflJ8gHddp9g+0fpV4147gUFj11XSAFUHCIkQb2G6Mq9eCPvhbOdDOaiSt8kbkG7n4cx0K9O7uM4Zftv56e3MYOIHuh7KgAXidFP8N0VALsCGippFvir8dx3CGcQzX5zhD3rkmGrXZZqOFs5dLBebx+1DUOJPI0PaCBUFUbgj1M/6p5sAi06pTowmIb9sNrks5I98KX7WwJ6FnqrwOe0YxMSWPT4+6Rf0bbpy8x2dgQhxnkhkWVYGgYYHMu+sLJtaugpqlVR+F8vbyyUxEwrPiID6laMsdyYGbB+hfp5JxbYZZCG5P0pjPrQPOn28ipF7KXnpce5YuIdgjKG/RrYCS8IcXOSwzvRB37fmoHxiuXMVKnEKx9m6g30BXG6iPacEadMywLCEjfeRldJPluGgfxstfEkWC2ACPthV4dyEOhnkwFymhQlTNWA01+G+TGQpT4diJaAlprzPYB4Bgm1qGhxqiHin+y08Mz0kML2mvy4Rgb8GrfXN3S5R4D/Bc9Mqa/sNqRar53h6+LRjwQe7Kz8BeiWa0MYzrgj3Oyq3EMM1lewCQu8LMG/gNobbz0aOFsK+CkIsyhAdzrhogdJMkjXh28r9isRCCqpGuqdDgLV
+ X/VJU9mu
+ Ph/utp9GzWr4ZC7fKwyYXjVhAURYoQ49Ec4k9kXOZEHRoaVpT8EL64aIhGiAz2tB2ugpV09CPCiIO8WlZyaG0SxaLfF//vvm3BXdQlALJptmBM/ZKP/n+Pmeufo89Nl4tDX5RbhEFU4L59t19+A6Rtt1rKd1J/bS36NurCkx0Q1ATHX2HxFV6rHB9OcXRD7m+FVPV4dBbyQMybcPwmzc8QMclROAsHwhN6GRtzSqmf8uP/q70tib9TlRqb/S17JHAc8IEwR6G6/d/6jug3SptVlQ2Fx4gw8IQQUyfqg2iza2vHDNdx8JFUEyOGgByNBEM4GhiSxknrZuwiBUVaUCfkFU3MZj3Czx46G+t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,85 +112,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 09:08:22AM +0200, Hannes Reinecke wrote:
-> On 4/13/26 23:10, Gregory Price wrote:
-> > On Mon, Apr 13, 2026 at 04:43:59PM +0100, Jonathan Cameron wrote:
-> > > > 
-> > > > So quite some things to discuss; however, not sure if this isn't too
-> > > > much of an arcane topic which should rather be directed at places like
-> > > > LPC. But I'll let the PC decide.
-> > > 
-> > > Superficially feels a bit arcane, particularly as we are currently
-> > > kicking untagged memory into the long grass as there are too many
-> > > open questions on how to present it at all (e.g. related to Gregory's
-> > > recent work on private nodes).  On recent CXL sync calls the proposal
-> > > has been to do tagged memory first and only support allocation of
-> > > all memory with a given tag in one go and full release.
-> > > 
-> > 
-> > General consensus after last few months seems to be:
-> > 
-> > "While technically possible, untagged memory a bad idea for $REASONS"
-> > 
-> > I do not thing the private node case changes this, if anything it only
-> > changes where the capacity ends up.
-> > 
-> Thing is, there will be things like CXL switches. And with that we'll get
-> CXL memory behind the switch, making it possible to reshuffle memory
-> 'behind the back' of the application.
-> While the situation is similar to the current memory hotplug case
-> (and, in fact, the mechanism on the host side will be the same I guess),
-> the problem is now that we have a bit more flexibility.
-> 
-> The reason why one would want to reshuffle memory behind a CXL switch
-> is to deallocate memory from one machine to reassign it to another
-> machine. But as the request is just for 'memory' (not 'this particular
-> CXL card holding _that_ memory'), the admin gets to decide _which_
-> of the memory areas assigned to machine A should be moved to machine B.
-> But how?
-> 
-> And that basically is the question: Can we get the admin / orchestration
-> a better idea which of the memory blocks should be preferred for
-> reassignment?
-> I'm sure there are applications which have a pretty flexible memory
-> allocation strategy which, with some prodding, they would be happy to
-> relinquish. But I'm equally sure there are applications which react
-> extremely allergic to memory being pulled of underneath them.
-> And then there are 'modern' applications, which also don't like that
-> but for them it really doesn't matter as one can simply restart them.
-> 
-> So it would be cool if we could address this, as then the admin
-> /orchastration can make a far better choice which memory area to
-> reassign.
-> And it might even help in other scenarios (VM ballooning?), too.
-> 
+Hi Youling,
 
-I'm a little confused by how you imagine this memory actually gets used.
+kernel test robot noticed the following build warnings:
 
-  1) Are you hotplugging directly into the buddy as a normal NUMA node
-     and letting the kernel dole out allocations to anything?
-     - i.e.: existing add_memory_driver_managed() interface
+[auto build test WARNING on akpm-mm/mm-everything]
+[also build test WARNING on linus/master v7.0 next-20260414]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-  2) Are you trying to plop the entire dynamically added extent into a
-     a specific workload?  Something like ioremap/mremap or ZONE_DEVICE
-     exposed by a driver's /dev/fd ?
+url:    https://github.com/intel-lab-lkp/linux/commits/Youling-Tang/crash-Support-high-memory-reservation-for-range-syntax/20260414-205035
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260404074103.506793-1-youling.tang%40linux.dev
+patch subject: [PATCH] crash: Support high memory reservation for range syntax
+config: loongarch-randconfig-001-20260415 (https://download.01.org/0day-ci/archive/20260415/202604150808.7HxFp5b4-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260415/202604150808.7HxFp5b4-lkp@intel.com/reproduce)
 
-  3) Are you reserving this region specifically for in-kernel/driver
-     use but not doled out to random users?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604150808.7HxFp5b4-lkp@intel.com/
 
-  4) Are you trying to just plop an entire extent into a VM (in which
-     case you technically shouldn't even need to hotplug, in theory)?
+All warnings (new ones prefixed by >>):
 
-  5) Are you trying to just decide which memory to release based on how
-     much of it is used / hot / cold / etc?
+>> kernel/crash_reserve.c:264:19: warning: expression which evaluates to zero treated as a null pointer constant of type 'char *' [-Wnon-literal-null-conversion]
+     264 |         char *first_gt = false;
+         |                          ^~~~~
+   1 warning generated.
 
-I see lot of "Wondering if..." here based on what a switch COULD do, but
-divorced from real use cases, 99.999% of what COULD be done is useless.
 
-There are basically an infinite number of ways we should shuffle this
-memory around - the actual question is what's useful?
+vim +264 kernel/crash_reserve.c
 
-Some use-case clarity here would be helpful.
+   254	
+   255	/*
+   256	 * This function parses command lines in the format
+   257	 *
+   258	 *   crashkernel=ramsize-range:size[,...][@offset],>boundary
+   259	 */
+   260	static void __init parse_crashkernel_boundary(char *ck_cmdline,
+   261						unsigned long long *boundary)
+   262	{
+   263		char *cur = ck_cmdline, *next;
+ > 264		char *first_gt = false;
+   265	
+   266		first_gt = strchr(cur, '>');
+   267		if (!first_gt)
+   268			return;
+   269	
+   270		cur = first_gt + 1;
+   271		if (*cur == '\0' || *cur == ' ' || *cur == ',') {
+   272			pr_warn("crashkernel: '>' specified without boundary size, ignoring\n");
+   273			return;
+   274		}
+   275	
+   276		*boundary = memparse(cur, &next);
+   277		if (cur == next) {
+   278			pr_warn("crashkernel: invalid boundary size after '>'\n");
+   279			return;
+   280		}
+   281	}
+   282	
 
-~Gregory
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
