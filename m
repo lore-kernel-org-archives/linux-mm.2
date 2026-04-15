@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C77CF4198E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:35:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D126F4198C
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:37:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E540B6B0093; Wed, 15 Apr 2026 06:35:17 -0400 (EDT)
+	id DE26E6B0092; Wed, 15 Apr 2026 06:37:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2C186B0095; Wed, 15 Apr 2026 06:35:17 -0400 (EDT)
+	id D93586B0093; Wed, 15 Apr 2026 06:37:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D421F6B0096; Wed, 15 Apr 2026 06:35:17 -0400 (EDT)
+	id C82616B0095; Wed, 15 Apr 2026 06:37:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C2B916B0093
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:35:17 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6BD3F590D7
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:35:17 +0000 (UTC)
-X-FDA: 84660433074.19.1BA96E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 806A818000E
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:35:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c0X1iM/l";
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B92A06B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:37:49 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4CDB6C1FDC
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:37:49 +0000 (UTC)
+X-FDA: 84660439458.03.73B9224
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9BC0940008
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:37:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rx3On75X;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776249467; a=rsa-sha256;
+	cv=none;
+	b=EfdmSOUjBGAGtKR1/NpNuhB4kBdhnJ8xyL0mrhuzUWsJ5Hk5YNNvC3UcnnWLjYekWb7W7C
+	48L95EILNvTwTzU1UcpSQUY+NLkphagl6atEIS2BDIfj+b8CYhiVocLMIsTiiHoQWpl36E
+	AC6aso+9SYMpdFIQuZ09F0hNkEKKBVA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rx3On75X;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776249315;
+	s=arc-20220608; t=1776249467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=am9Vfb1Aq580mnQo1cyYfFVKDwtcUwL0M+34cRZgLu0=;
-	b=kOdX7dTxTBQjFcd+G7tfS+0g8wBr0YPNi7I9iyw/eJ0wZQpz1C8wnh3J7vwNa3qLPmqSSB
-	A/yGfzFv4++I2HJS2UosM72h3uDv947lABSSwRR9rLf7Wq7Eu7U3/AAdtGyJWf0i818QUh
-	PE1EtfCOLfcLsf+OmBnNZFRznYGiYwI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c0X1iM/l";
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776249315; a=rsa-sha256;
-	cv=none;
-	b=b4k1wg0Vxe0wc5ZV3+k4I/I+Dc16nx3eou/KRSLmtnoRluOPKWS/1uueO/EQp7xSpTR5CW
-	7Is+YntK9jwLuLixbqqnsrRWOBSwd8h6eafSyIrhbXtBPJIQ2ToFG9Ok27wCuc5frPNX0p
-	I9NatbYuqoN0MFfvfYRBfYzqfN6InoM=
+	bh=akiAmAyh8lCTBxYdaxPA4DzOnhkzNxxi3xIqsHTRUR0=;
+	b=rD3vGX6RCXsUAms9G622OAq+CCyQ9FvsYOKIOcWvxunGRKblw77GjU7Mv0Wb2M8mIibT/5
+	cm0pzwpqwAKtPxCSqrw7rsyoxMgsiN//aU7223dHznfbpcCbu/9OyjdhD2/+qIp9nttrVY
+	ONQ5MONmkKy29jCTXoBIhWKT41rT8TY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 66C1F44491;
-	Wed, 15 Apr 2026 10:35:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECF4C2BCB3;
-	Wed, 15 Apr 2026 10:35:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EFB06600AD;
+	Wed, 15 Apr 2026 10:37:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA067C19424;
+	Wed, 15 Apr 2026 10:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776249314;
-	bh=bpHgcNl4FYMb3tMxE2yHLnHeP4ny/KqKAE26kXtowaQ=;
+	s=k20201202; t=1776249466;
+	bh=f66BS374o9yicV24P6l2YJ4oEbiJ5q8d6MqcbAuKZpY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c0X1iM/loYQV+lM9Y7nboPQ5AI057tcs4b3NzAj+4Ek9Mgu7fDkzUIT4bbM9KSX2G
-	 XVawRbC0AKM05vBRWJMZWLNgk2qDYdhQdB5GpVQBGYgZpWu66sjDgz6f9RrRnbqgWJ
-	 m6ays8iGIBJ6yqow4uNHPsK5Lix/zhsvs7/q/qc8015Ki9N9YyYJvj0b7V6NOr0qoY
-	 s3r1xNWSe24u7FGHpMdykAN7BkR8hh/cp8OsqbQTRE7zVd9kToPNuXO6Tgo+OurmpY
-	 2ZFjTof4Gzk32YdqX13IeddI/nNkWhEVd0oKNBs9/95fiT5m/8uBmxrRoQWk1jpgq9
-	 U7ZE/jfalFfIg==
-Message-ID: <d61a8e11-5b8c-4cea-a7f4-a890f65d62f4@kernel.org>
-Date: Wed, 15 Apr 2026 12:35:07 +0200
+	b=rx3On75Xszu4n08udrTE7xE5Lub7Qhmn8d6aHoDLCpcMivecgYsi+R9kxA4WDUkot
+	 3kRT2phk8L1JqgxFxeHX3W5Cg+9OfdT/pIGVirrHJEio/bZaNHPkJ7LC5tHeN/Thaf
+	 hdf3oWWiDwiCyRomMDBKvCgkMRrIQ63Po32PbeUpQUIiMJd9GgjXGcm/PgMwMi9F/e
+	 qq+QzVzCZm2pdqAcxrPBMX91/7dNmw42kWK0boJM+SY63JKs/okeicjOH5o5OTho3X
+	 W7hrFbChtoIMW8dwsXSHLB4AWAkcZmWkg5Jw8RxxwEZiM1isQNv8jF5dQA06a0bJXw
+	 VCs9uLN82H4hQ==
+Message-ID: <4789eae4-2319-43ca-9141-72de767e071b@kernel.org>
+Date: Wed, 15 Apr 2026 12:37:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 07/16] arm64/mm: Convert READ_ONCE() as p4dp_get() while
- accessing P4D
+Subject: Re: [RFC V1 08/16] arm64/mm: Convert READ_ONCE() as pgdp_get() while
+ accessing PGD
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -79,9 +79,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, kasan-dev@googlegroups.com
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-8-anshuman.khandual@arm.com>
- <238ab437-06b1-43ef-86bb-9341c02040b1@kernel.org>
- <c490455f-084a-4f53-86b0-89c15669efb3@arm.com>
+ <20260224051153.3150613-9-anshuman.khandual@arm.com>
+ <e294a87b-392b-4b12-bd12-70c66c793fcd@kernel.org>
+ <37a7e502-ac1d-4573-a877-23b1bfd07238@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <c490455f-084a-4f53-86b0-89c15669efb3@arm.com>
+In-Reply-To: <37a7e502-ac1d-4573-a877-23b1bfd07238@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 68uhbortxaomjawafnk163koarjwki9d
-X-Rspamd-Queue-Id: 806A818000E
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776249315-292704
-X-HE-Meta: U2FsdGVkX1/NKo3udW/bhyimEHXFkst/FMSX6VdS6u3XZfZ5X9kP1qlrnAkVviBBZBllTer6KxhnL0Bft9OAqXoubjDpNbaWlAStoaOGO1pLSQM5qXpcanFAfhPcEdGV3xHJsE8/0rZSlxdPkl0VwwRomyohD4Y4q7XnO1acETtj9AKkObcXh2yIc0ZP1dm0PMhk9PzukEGn1r1wLAfcGxDwO7dZpvyfgTH99IUOW/t/zyZBYv6R3dOpy4p+ZAqMMD6zHOzHA3ghxnPOcE7oqF+2WlBY0yD8YJB3JxCRKTefqTg8QeTOYhKQmSbCnhnKHwHdbeDfmBRYXrLmMy5H7HY0aSixxgCZCg/qKRLwkqQsQT4fxMJTBGrabj9o57S8fxWheisuP5sE5vLpOYtGP8761jBJ11l/gf3vqx3zFYgYD1ljZLe5OLaFJdNqeIRkAz1dGIzdM4NKmod5WrvbWmd8ozWPtIXwBqF0FEhi1vlZ8zJxBDgjFuU/bR/oMVNzseAg8gdoYa7y2jfKo5dJ7blud0mUbL5hfMMmqrWZ6NvlKFo4gY9GP6N07WhtdnSrcE9Hac7MgpWKsQPirA7QMPLnp/jUD4hlA7U7cVch8My1AVPVaNsZJ219V32J/uZGxQ6tpsvrw/3j1Lhw+rB2AjhfArpvbBGlar9CbJWxEB8zpoce3cZYkd8SukN0Mm6jKAxOMfuWEcxvZazGPP7+r/ApKsYDtEQu4AzeASlfk/4zi4D/HmeD1lR6LsG3Udq6AeJrnKolmYJ5pMnOVzwWcJ8zHGZIDJX2OM0dsGO9CAjJ7Z43ZJa2XaP21FtpHvFCJMwZK3aCOnDhwnqSThTeBthasDRF8pNcbyY+Mv7YtdTR4LgdWiFYe+KqaVOJn69j1id6k6MYrbDTTgsI2XHiQ9ir3l4F+Gja0l3+Gvn0lS8xt4GuS81jPDML4xTw4WCD2yhAfaj6knJUcKZC3r4
- XOZetZBb
- j31OCKAiMO2HeODRbb1asGrdpcHuXVUsOOLVpLu+uwxUKUZwyoUoOWNkuRg3yLTa5AbTJ+13sztZbJBD3KpoQ//pteA01rAJt9/ipOLn8mdROQ8PZ4Zolbd/A+x9eFAkU/S1GKTDkTAVbt5lWQyesKJa7UJgnGdlqxIZC85HXXW5oN56S9oOYAZWl/TmAd8xX7VSJMU7w6aMyauFIc2yWlLm9q3tunuza9jnJNjANdR14d2BdpCwV6HpWIKLzJNL+7OLF1UBcqNMVIDj7yefRepp6XPdujqRR05eSdaPpdl/mnycwVqOHutZ0uQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9BC0940008
+X-Stat-Signature: xk3jrncewqk1aq8sxdw9shr36ajtrhi1
+X-HE-Tag: 1776249467-79963
+X-HE-Meta: U2FsdGVkX1/FGST1UlEjNi/wGIxUl+LZj8oPF5++lzhxw7gdnsU3uH60JqvS2NecyzxJzSQoFpZQR6qLVU9fjXlWfPD1OM8H9MBMDXVv/t0G8U3GcQZ3WxugTUVikKWcman+3jfUGJEeIrW2/YHInwzZ+O/0x0cFXoE9aNF+UULxwCY1S51vfOoZsACxaI2P7w3h914siJNOmW1Ph1FLcQt6UlWtLQoBOFGITpwDY5M3QikpSvTRSM9b1we6Caq6T03wpUqUvTPosF4bgzcoIA2s98o7/n7y7uBYXiuSmdX5Z4UwQtZv0aR8QI0I52M9wCdS2zfpZPo+mo82l42HkzPlfvnX+8st5blUlv05s8IXvCygJTHQSe3Uzbws/qK3LsEJpUPH+gJxnBL0VNQNA+Q0/W87ERpPWyhI3IfRvLB5Mb4MBt15mZcYLB14nHeYWcld30f3AIqKdFYoNgYEJRF2mfrfK988AJ3nyea2QRVVzznWSB23l7EwsmbXbeF4UeE5DbcTsoMgrUFJOl8h2n2pqYdgFWsR/d92vaJWWyruMNABo96ImrhQH8ERMQ06Op0eEqBAbRrCYO+HVHI6urrZSiFDLra15i1zOJDzd8D6P0cQ8hWTz+CevnFfjSdNnYUcpSleIhA2XyuDmzgkZjVLp0SNe8KTYpYYT+GENmWEVHK6r+sZ3JhuSqbY/Ph2JWEfWDYWs66SVWEuU6tRSCBfaM+ukEI+GFkU/QVK1Y9cstTVHvc50LCN3Qs+qMm9aFCrT++KWAKQuHrrgci4da08Pg3LTCz7t0Wy+jeQzKNLd5vtATed3bJ9yziBidWAA8lHUuu0Ui7DOVmCTYUWWCzDdQd0zzjahU1HMMoATXNwrNB647wZoQ1F+MtYI2uaDUEgFyuYNA0/u6+RCa54Mj3q1JhZ9YmmKPKRbvtXOzi2O5iXLGnEDUU//tY58lhq8YH9jUXpYqIwptj2yfM
+ j50BZc6C
+ 2Q65XK5kcZeUwzksz7r213Q7epRdL8509LdhGS90BJ0yq+evh0EDDbKaHKbtA8DtLT51EwceRFO3ayJYrh8DyvXHaOX3K2hYQF4cCmC7FWl9b/aovUlipfOQ2/aQ3die/itS8zx2zmM+foBb/o1VkryqhnNfGTmAJpNGVAXRaMBL9TBJe07H3bC5w8b8EB4EpL/v+vt5L8ry3rYmL6Hfg0kHuYNop8nhtOzIejDkR+gZUGj7ypt1YReNOSfjnabiw6gVQh8IXLWKc1Iy1qE4v2pK8NxgwD1+o6HAbD7ZHwjs2tS7e6cRHpAX6rw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,44 +146,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>>  
->>> @@ -2258,4 +2258,21 @@ int pmdp_test_and_clear_young(struct vm_area_struct *vma,
->>>  }
->>>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
->>>  
->>> +#if CONFIG_PGTABLE_LEVELS > 3
->>> +phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
->>> +{
->>> +	p4d_t p4d = p4dp_get(p4dp);
->>> +
->>> +	BUG_ON(!pgtable_l4_enabled());
+On 4/10/26 07:30, Anshuman Khandual wrote:
+> On 08/04/26 5:49 PM, David Hildenbrand (Arm) wrote:
+>> On 2/24/26 06:11, Anshuman Khandual wrote:
+>>> Convert all READ_ONCE() based PGD accesses as pgdp_get() instead which will
+>>> support both D64 and D128 translation regime going forward.
 >>
->> Heh, while at it, convert that to a VM_WARN_ON_ONCE() or anything else
->> that is not a BUG.
+>> Please mention here why you move p4d_offset_phys/p4d_offset. (same
+>> applies to other patches)
+> 
+> Will do that.
+> 
 >>
->> I strongly assume CONFIG_DEBUG_VM checks are sufficient.
+>> Do we get additional function calls that might degrade some page table
+>> walkers?
 > 
-> There are multiple similar BUG_ON() instances
-> 
-> arch/arm64/include/asm/pgtable.h:       BUG_ON(!pgtable_l4_enabled());
-> arch/arm64/include/asm/pgtable.h:       BUG_ON(!pgtable_l5_enabled());
-> 
-> arch/arm64/mm/mmu.c:                    BUG_ON(pmd_val(old_pmd) != 0 &&
-> arch/arm64/mm/mmu.c:                    BUG_ON(pud_val(old_pud) != 0 &&
-> arch/arm64/mm/mmu.c:            BUG_ON(p4d_val(old_p4d) != 0 &&
-> 
-> Shall we convert all of them as VM_WARN_ON_ONCE() in a separate patch
-> as a pre-requisite ?
+> Sorry did not get it. Are you asking if D128 adds new page table
+> function paths thus increasing memory access latency etc ?
+Each p4d_offset() etc. now does a function call.
 
-In MM at least, we fix them up when touching the code, and only
-sometimes convert entire files.
+So during ordinary generic page table walking code (see
+folio_walk_start() as one example), you'd now perform a bunch more
+expensive function calls:
 
-As documented in Documentation/process/coding-style.rst, there might be
-some exceptions where BUG_ON makes sense (severe data corruption
-possible), and some cases would want to use WARN_ON_ONCE() + recovery code.
+pgdp = pgd_offset(vma->vm_mm, addr);
+...
+p4dp = p4d_offset(pgdp, addr);
+...
+pudp = pud_offset(p4dp, addr);
+...
 
-All of these cases here sound like VM_WARN_ON_ONCE() is more than
-sufficient though, so feel free to convert them all in one shot.
+That's not desirable. So I wonder if there is a way to just keep these
+things inline.
+
+Might have to move the definitions of pgdp_get() etc.
 
 -- 
 Cheers,
