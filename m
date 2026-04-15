@@ -4,152 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03228FA0C47
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 08:00:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 139ACFA0C43
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 08:01:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 380C06B0092; Wed, 15 Apr 2026 04:00:22 -0400 (EDT)
+	id 7546B6B0095; Wed, 15 Apr 2026 04:01:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 332356B0093; Wed, 15 Apr 2026 04:00:22 -0400 (EDT)
+	id 72C256B0096; Wed, 15 Apr 2026 04:01:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 247D46B0095; Wed, 15 Apr 2026 04:00:22 -0400 (EDT)
+	id 641B36B0098; Wed, 15 Apr 2026 04:01:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 17F276B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 04:00:22 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BFC088B3F6
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:00:21 +0000 (UTC)
-X-FDA: 84660042642.29.011718A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BBF30C0008
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:00:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KfxA/Ood";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 543386B0095
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 04:01:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1229814039F
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:01:57 +0000 (UTC)
+X-FDA: 84660046674.07.2B483E4
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C9FAF4000E
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:01:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CLcWqVcJ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6U64RHXM;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1y+e3Gr+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CopcsibF;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776240019;
+	s=arc-20220608; t=1776240115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NsQBjLj8krqs1WBtci0M7iLrloMzqy1peOJ3cgXRXAw=;
-	b=PogN038ESRXObwfpOqcH5cabYUVocpzexugTLFp31ANP8tNtjzMU0mUXAaPv6EywcT9uxB
-	vgvdPOMGIQ0VvMxoU+MoP3/jaSl8N+tV2NR8BtaDGAcBmqe4RE60UmlKvtMjONzeIS8slJ
-	MnS0mKFk7iA5ChiL2sfon+TyGBXs7jM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KfxA/Ood";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776240019; a=rsa-sha256;
+	bh=akN5Uu+otL7jpkoKju+WPDV2S3IuEX0eNSjfjFCNvqk=;
+	b=P6rYtPSOBD7JTGqdPSb7s2IfXGZfGnE35wHbshwpaskCLPhu3UsP58Rr3iQ04xjrwIKUlx
+	U6G4OiLY0nxhArQcpNE53BOSl3uUQ/PaqEtsmq3u/W0jeFAF1mjJN4qiEZ5huB1eb9AV9V
+	4iXA+J6tOjE+QUhSEFjlDQ9+s70ngFE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776240115; a=rsa-sha256;
 	cv=none;
-	b=WoE8wtolYv2Lm1ii4jXtOFVNudl5tU6sTzqCvrWcl3olDLl/FSRK1gGI7lsEkSPYaV+DSz
-	2FPGY9Hy3tXuzpf/PsQg6PgB1B+gxJpo9LI/9ffz/VVeNoT0UTZkNch90wtxIC3WSzfvBP
-	aSxLJ2u208jylau5Hsl921mgdLxc8Nw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 14EAB600AD;
-	Wed, 15 Apr 2026 08:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B568C19424;
-	Wed, 15 Apr 2026 08:00:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776240018;
-	bh=T2jntT0X/pK44/JuefmgfMlW6eFP7bkoZpA49cK9uzk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KfxA/Oodk9iFPThH9dvnsW0pNj0rSEFWsWZrrXbStx7TwcjvOfdVl6LBAMu6VMYIM
-	 vZLYipHy5iDPVsZ0PV2nxvo5ApSwiDKQcSZlJka64lVYH5FrLKO8Fy3TZhlNUG9nZ5
-	 txARWZhtjLkuToUr+dheN8mEai2lnDZB9dh6FydBx2pN7L2d0vfHvpLolcO1+2IJgT
-	 kemlrdslr8XbMPBnBmoTDOsGK/u3KPM7Z1Rihv/RGFH46uPluCHE+XtjV9JJrweNVh
-	 I0kVRIgC/CMhJmNTyk373OUVOkXwqTBLb/UJ742PWR9qFVNgPZSxUKYvhPXY6fRMh+
-	 0O85NXbSjY3mg==
-Message-ID: <afe0dfb9-feeb-4243-bc4b-305e5e33b581@kernel.org>
-Date: Wed, 15 Apr 2026 10:00:08 +0200
+	b=AKk6S0vDX9f+C80t6PrxhrmRC6FOCXK+VlvRQk05978ZaPNCYcyzzKkmPplsRLwASLmi7v
+	UUgbCAM1w2lzcr/eS+ZpzoTmhiY4GSLfmtK6LEVzR65vWrhtcZXIbFrySLunej5yylPp0m
+	o+jOjaye9V8RqY0e9gdKmBBmYzDdCmo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=CLcWqVcJ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6U64RHXM;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1y+e3Gr+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CopcsibF;
+	spf=pass (imf12.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 364BB5BE0B;
+	Wed, 15 Apr 2026 08:01:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776240112; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=akN5Uu+otL7jpkoKju+WPDV2S3IuEX0eNSjfjFCNvqk=;
+	b=CLcWqVcJ8h9lG3TjkVCHKEYzyv9XYd/dQ0OaXz4yOxNEWSJ3ZMQTrEv1X5jIFjpe3CIuX1
+	BMXBopE3IVEEEmEcEPlB+K2wDqW6LIgpYcMul+rWBS3vfP938rPqBTFo7RXwyxmfJUE5w5
+	cMiqD6f5N2kuo5k2Io5ytzH1W6f/ukI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776240112;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=akN5Uu+otL7jpkoKju+WPDV2S3IuEX0eNSjfjFCNvqk=;
+	b=6U64RHXM9iglHLh//cFd9OAT3tpP9SDjIt4AxM58I7ObJhrZxRMyTFsIC9iJ0TQ+EGDQpu
+	7KD/oV6FADbMiOBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776240108; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=akN5Uu+otL7jpkoKju+WPDV2S3IuEX0eNSjfjFCNvqk=;
+	b=1y+e3Gr+sGjZq97lNRz7Y0mbkFWB3vGraS5HKPjSq0lHW+ALFBIBtg/H3tl9bDxJT31vTl
+	fBscObtzWrgpZFIyGMw6VD8r449R8kfE9UWMl2rCemAjtXyAGyVNsfSM+xgmT+m6rmW1NN
+	3lvkIJTqJvuhTbstVpYAczEAiO0JsBM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776240108;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=akN5Uu+otL7jpkoKju+WPDV2S3IuEX0eNSjfjFCNvqk=;
+	b=CopcsibFGDiM272ncR2T6HKKzD2nZIpxLAuNWpkuLXkP+XUkvIupOzAdLqLfaGeyQd867B
+	hEZMPAZRAxigx5Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 733B04B8DB;
+	Wed, 15 Apr 2026 08:01:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9w0HGutF32lzIAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 15 Apr 2026 08:01:47 +0000
+Date: Wed, 15 Apr 2026 10:01:41 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Jane Chu <jane.chu@oracle.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org,
+	hughd@google.com, baolin.wang@linux.alibaba.com, peterx@redhat.com,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] hugetlb: pass hugetlb reservation ranges in
+ base-page indices
+Message-ID: <ad9F5duupm8Rn-Yw@localhost.localdomain>
+References: <20260409234158.837786-1-jane.chu@oracle.com>
+ <20260409234158.837786-7-jane.chu@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v2 05/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check in hugepage_pmd_enabled()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Nico Pache <npache@redhat.com>,
- Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-6-ziy@nvidia.com>
- <ad1TMjF1L3usYIC5@casper.infradead.org>
- <05F00072-7E06-47C9-BC26-FE3736F557FC@nvidia.com>
- <a4d477a8-71d8-4219-9cb3-153f2c01e184@kernel.org>
- <84B8F641-A3DF-4219-AA57-6BA48E9B4998@nvidia.com>
- <998c02b6-2612-42c1-8099-d65ae275d1a2@kernel.org>
- <7468C68E-FB09-4714-94A3-4BED63453295@nvidia.com>
- <b7aa5515-6908-4ec6-91e9-eb79d5ef70b4@linux.alibaba.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <b7aa5515-6908-4ec6-91e9-eb79d5ef70b4@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260409234158.837786-7-jane.chu@oracle.com>
+X-Rspamd-Queue-Id: C9FAF4000E
+X-Stat-Signature: qw1i6m8qkqdgtr9qm8q8tmbiy86g3y8j
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BBF30C0008
-X-Stat-Signature: hdy8ap63ipnj4a1kqe3g1yi1xhchfib7
-X-HE-Tag: 1776240019-805276
-X-HE-Meta: U2FsdGVkX180Oro08lqNmqyN02xFsIJjajEf7ZUAgxk0YbfBLEs6orqKpw/iEzt4p02vN52ueHzLerH9QIdx68gcreEKj7jB9slQCsMLtwLhUmx4A6aDfe2x9x+L8VZSpGqZ/3QivMjCvBZPWdkVEOW5O1hUVdRE83HtYBKTJdSP+j6B7K7E006yMYuhwhyzfvLbRmxIrjME2lbnF2x99et7U8c+btURcVTMMMGQYS4O2o0cCViApiYe/fpD3j/hIi6pAqiLry0TPRo53f6UagsZ5aw5WGErtFtxaq4FLg9wslbHHf8Dw10WLiKaIX06OnPDyXYp32SzvnCvmhMzbmVwRxBmkeDTAIZ+ox+GmyoxXyX8Zx91DXMEBj9wXBlOkfD/z1Os7gDxlSwdHXmprijA2kwUdkyj+9rWGH02Bl4sjn1+kNA8db1iRFsQOY4131D/yohwBkHNIUACQVIokx/JIAcMDjwA2YLqPhcUi6tkDDmTLVFicVhr2wXvyr94tNHFBBX+sw5A6nrsz3cuTeWb6bT7G6mEwp5IU/kPgvI1Njmkrd2NmV0YWJ47m1X3CrdKh+z6qhDlrbf1y4NE3UIbT2dF7cPP25A/h4fOGBAM/ffIYM7N3bD5z/y/tUgNeara0C+ygKY/AEOOqYo3leVpAi27NbsnJ7+mZOuIj3Q68AQ34I90pIRV+WgAa5dqDLIqQT+Bchfw8Cpvhz0QDl2XOtp2e661SzG8z9sjhrcVNKTuss5ke1kIMaY9PbylIujzl4I6aTRKf7JEHn44f6+NNUtdOKyA8OFavIkQfM417g0Iy4dg8amrvOoCstuUCczrQ5Op9tcqa9XhHEVbGfA/li2/6to3nLXvRt9u1bieAGwt7JrsjQjeb1gICzaapYJOSJuyCbHbsIlp+PW48D6dAcweYqnD3mnIEZNa9uj14eb/PLV6mr07HxsCKUBwybJ1OV+4XxAZqQTIXHd
- 36/Vkdsv
- TDFu9rFX8JRbQO8kMqIj02pxwJl6pOlUpnGgJgbyz1HaGEATNpIatB2ppxjVuZF8H5Omzin5JvTylRKY2+1Si6CZdqWVROOlnRpBBGk+DHyiJx/g//ZritBVaeGrF9uLDKpGyzIqznR9GCzSBiu1orgC15hruiCK1jVC0tlqLrmDfJM37+23RMaDXR5mw5AXe28HaFQVbxIrTuOHZ+Bo1Pb9uxcO/HshL+a1//4lp4uS07i/FwYXJ1QBgDYyEG3UEsEtBfKPuOr6U7VZPg/ORMQr6/XWoL+/kgG5F12Cl7ipw4dKH7LBYx48iVC74NJ5rqdrVcEPSXUH2kAM=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776240114-90616
+X-HE-Meta: U2FsdGVkX1/4UPi1iDzFl1OTeyOdIw171wvg17Vrcy/+ZFlHaZaOuopC+9Y/lT+yDU6Gmiapqz6+OTrUOF6tQkWK1oj7LoOf3HZpTF/pInlxIjVBGSeyNmDlg6uGfV70zztn8lxetRVlVqZ6Vccgr7vhPAk7Pj3UXtLykJNWn1nt6QVrupWlJeSdHD0Gi7bi7BI6Hf57vxXdgox97bIcPa6rUdy+ErQETbnliPDqstjFkewL4FRmarbiwKw4DDA0gwwAC3kz6esbMhOsgN7lEeu4McU8uU5nvVbpJeKBEcs3t27++0ptHKpqD3fWrHPwkuwytFWTd8OlrujxIrNNWYJmF93CGEiLR834agzTSNgAoawC0dmclLIUzQxrQpCM5EtP8Kk5K8FmMsm+XPdeS9Q2mJ47qqV5S77OW6hOTwn5PKOCkulBrVs5ydlgOM7LgscsZXH0mApuOiNXa+aDTgTLphr16/fqWnvar4uzjn3kg7VCTM3ihB/CXCowG4oVUFhkJWlNCPIpF57aJq5xMoTPBVbFw7mW1Ek7+q11VoZM/3s0i8aq6Oxck6G/u+ibOnjPGoKvBxYuOtnsl6HsT10OtwufQ6Ki34fruPUUEgaPmULgNVgdkdqv7patd9khuYJDTBIjRyHrayhLQXa5/aJhRa2OJkUEP6E70/8S6QmlB3H9y2lKhBBA9cDDQFOaLZhcasNP6IhagElOZunTROJ/8ISNeJ+QJO8N57cX4ORI97pYwt0nCy7y+7Fk17K/yV1YX0BnMWGAuq6JVefI95kBeFTOGYp8KXJkLREallEcuZIvcn/1hH1drIEbnDga04jf8SU63z8lcT30yHZkXkGx4JehJQWrwSpCp3rixbNWdQIPdoaVoFNuwQLxyQYZilmtb2Y5eLcO+9NNlb0jzglz1Wmofh29lj9tY4oGxzgX70vEfpaQZdqdgO+dk/7ylEPBIV9uf7cG/UT7Z8B
+ izoRDgrq
+ Q06fwzroAyiR8QHLab2GONk0jRZasJlN4ZjCNMV9yOtJdsaDtClESF9N2L0ncvyJIlyO6fZLYOwVsVewIVJYRNUaCKYt1ZL6W+633YaqZ350woo6jSo/oE1INa8090GgEbmzuMg3xO9pccPLJkAviGn+MWEyTS3s8/8MFxD2lZy+q4Y9Qq/EjCmS2rHCjEdi27kRGYXi4wlCKiJ3EzcG256OnSVlYsw1TGu51PLveSQ2tuA+KxQGuFrR3X28GCj2GMl/LHgu+y/SwEvrdhDX9CcIJ0dhkFBm9KEMl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,36 +136,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/15/26 08:36, Baolin Wang wrote:
+On Thu, Apr 09, 2026 at 05:41:57PM -0600, Jane Chu wrote:
+> hugetlb_reserve_pages() consume indices in hugepage granularity although
+> some callers naturally compute offsets in PAGE_SIZE units.
 > 
+> Teach the reservation helpers to accept base-page index ranges and
+> convert to hugepage indices internally before operating on the
+> reservation map. This keeps the internal representation unchanged while
+> making the API contract more uniform for callers.
 > 
-> On 4/15/26 2:25 AM, Zi Yan wrote:
->> On 14 Apr 2026, at 14:14, David Hildenbrand (Arm) wrote:
->>
->>>
->>> Yeah, it would be better if we could avoid it. But the dependency on the
->>> global toggle as it is today is a bit weird.
->>>
->>>
->>> I don't think there is other interaction with FS and the global toggle
->>> besides this and the one you are adjusting, right?
->>>
+> Update hugetlbfs and memfd call sites to pass base-page indices, and
+> adjust the documentation to describe the new calling convention. Add
+> alignment warnings in hugetlb_reserve_pages() to catch invalid ranges
+> early.
 > 
-> I'm afraid not. Please also consider the per-size mTHP interfaces. It's
-> possible that hugepage_global_enabled() returns false, but
-> hugepages-2048kB/enabled is set to "always", which would still allow
-> khugepaged to collapse folios.
+> No functional changes.
+> 
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> ---
+>  Documentation/mm/hugetlbfs_reserv.rst | 12 +++++------
+>  fs/hugetlbfs/inode.c                  | 29 ++++++++++++---------------
+>  mm/hugetlb.c                          | 26 ++++++++++++++++--------
+>  mm/memfd.c                            |  9 +++++----
+>  4 files changed, 42 insertions(+), 34 deletions(-)
+> 
+> diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
+> index a49115db18c7..60a52b28f0b4 100644
+> --- a/Documentation/mm/hugetlbfs_reserv.rst
+> +++ b/Documentation/mm/hugetlbfs_reserv.rst
+> @@ -112,8 +112,8 @@ flag was specified in either the shmget() or mmap() call.  If NORESERVE
+>  was specified, then this routine returns immediately as no reservations
+>  are desired.
+>  
+> -The arguments 'from' and 'to' are huge page indices into the mapping or
+> -underlying file.  For shmget(), 'from' is always 0 and 'to' corresponds to
+> +The arguments 'from' and 'to' are base page indices into the mapping or
+> +underlying file. For shmget(), 'from' is always 0 and 'to' corresponds to
+>  the length of the segment/mapping.  For mmap(), the offset argument could
+>  be used to specify the offset into the underlying file.  In such a case,
+>  the 'from' and 'to' arguments have been adjusted by this offset.
+> @@ -136,10 +136,10 @@ to indicate this VMA owns the reservations.
+>  
+>  The reservation map is consulted to determine how many huge page reservations
+>  are needed for the current mapping/segment.  For private mappings, this is
+> -always the value (to - from).  However, for shared mappings it is possible that
+> -some reservations may already exist within the range (to - from).  See the
+> -section :ref:`Reservation Map Modifications <resv_map_modifications>`
+> -for details on how this is accomplished.
+> +always the number of huge pages covered by the range [from, to).  However,
+> +for shared mappings it is possible that some reservations may already exist
+> +within the range [from, to).  See the section :ref:`Reservation Map Modifications
+> +<resv_map_modifications>` for details on how this is accomplished.
+>  
+>  The mapping may be associated with a subpool.  If so, the subpool is consulted
+>  to ensure there is sufficient space for the mapping.  It is possible that the
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index a72d46ff7980..ec05ed30b70f 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -157,10 +157,8 @@ static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
+>  	if (inode->i_flags & S_PRIVATE)
+>  		vma_flags_set(&vma_flags, VMA_NORESERVE_BIT);
+>  
+> -	if (hugetlb_reserve_pages(inode,
+> -			desc->pgoff >> huge_page_order(h),
+> -			len >> huge_page_shift(h), desc,
+> -			vma_flags) < 0)
+> +	if (hugetlb_reserve_pages(inode, desc->pgoff, len >> PAGE_SHIFT, desc,
+> +				  vma_flags) < 0)
 
-The question is really which semantics we want.
+Ok, this is something that I have been thinking every time  I looked
+into hugetlb reserve code, but I think we should be really starting to
+put some meaningful names for from and to, and pass that to
+hugetlb_reserve_pages.
+Because "desc->pgoff" and "len >> PAGE_SHIFT", meh, and it is not that
+many places we need to touch, but we might want in clarity.
+The same goes for hugetlb_unreserve_pages() of course.
 
-Right now, there is no way to disable khugepaged for anon pages, to just
-get them during page faults.
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 47ef41b6fb2e..eb4ab5bd0c9f 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6532,10 +6532,11 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+>  }
+[...]
+> @@ -6558,6 +6560,12 @@ long hugetlb_reserve_pages(struct inode *inode,
+>  		return -EINVAL;
+>  	}
+>  
+> +	VM_WARN_ON(!IS_ALIGNED(from, 1UL << huge_page_order(h)));
+> +	VM_WARN_ON(!IS_ALIGNED(to,   1UL << huge_page_order(h)));
 
-And we are now talking about the same problem for FS: to only get them
-during page faults (like we did so far without CONFIG_READ_ONLY_THP_FOR_FS).
+If we want to scream if someone passes us unaligned indices, we might
+want to do the same in hugetlb_unreserve_pages() ?
+
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index 56c8833c4195..59c174c7533c 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -80,14 +80,15 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t index)
+>  		struct inode *inode = file_inode(memfd);
+>  		struct hstate *h = hstate_file(memfd);
+>  		long nr_resv;
+> -		pgoff_t idx;
+> +		pgoff_t next_index;
+>  		int err = -ENOMEM;
+>  
+>  		gfp_mask = htlb_alloc_mask(h);
+>  		gfp_mask &= ~(__GFP_HIGHMEM | __GFP_MOVABLE);
+> -		idx = index >> huge_page_order(h);
+> +		next_index = index + pages_per_huge_page(h); 
+
+Trailing white space.
+
 
 -- 
-Cheers,
-
-David
+Oscar Salvador
+SUSE Labs
 
