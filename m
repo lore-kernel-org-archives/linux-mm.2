@@ -4,150 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37EA6FA0C3C
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 07:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03228FA0C47
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 08:00:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A45B6B0092; Wed, 15 Apr 2026 03:51:50 -0400 (EDT)
+	id 380C06B0092; Wed, 15 Apr 2026 04:00:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854CF6B0093; Wed, 15 Apr 2026 03:51:50 -0400 (EDT)
+	id 332356B0093; Wed, 15 Apr 2026 04:00:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 748E86B0095; Wed, 15 Apr 2026 03:51:50 -0400 (EDT)
+	id 247D46B0095; Wed, 15 Apr 2026 04:00:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6058A6B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:51:50 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1B6BEB8878
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 07:51:50 +0000 (UTC)
-X-FDA: 84660021180.07.5609900
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 02587140009
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 07:51:45 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PYtTvnee;
-	spf=pass (imf09.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 17F276B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 04:00:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BFC088B3F6
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:00:21 +0000 (UTC)
+X-FDA: 84660042642.29.011718A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BBF30C0008
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:00:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KfxA/Ood";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776239507;
+	s=arc-20220608; t=1776240019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CRIBpBXdILwWULwaeFoVfR5LPSMUXfdDEhKqNVYPy/M=;
-	b=rA6LNvcmcXD9AFDko9QDcvPPMxKL4LBD3NfxEVBsGMMIEaLk5jEeHdKgcFWMpHzIXwQ3zi
-	zTgVJ2+FXmZsLzZxSxFwHGLvnqN1YbOgjcjYbtQtfuqIY2s7MfPMWqr6PwPgpbHlEZOJUs
-	pkdx/wrVEzmOPSZt7FdQCqIKvfc95kM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776239507; a=rsa-sha256;
-	cv=none;
-	b=tZgGNZFPsHWyErVd6dav4fuR4TvcgB1i26RgeaaXzs0yPo5QTxL9PQKgPNp5ELd8q5GYMs
-	Ccej3JSYGf6E3Ai+sFs2F0hdYtm0F8j0AF3WquwcG1eGSePBueQBeOP355lGN25n0+UrWs
-	TLc0ewe4c/C2eZMRxtZJ3V+e8GM3wsE=
+	bh=NsQBjLj8krqs1WBtci0M7iLrloMzqy1peOJ3cgXRXAw=;
+	b=PogN038ESRXObwfpOqcH5cabYUVocpzexugTLFp31ANP8tNtjzMU0mUXAaPv6EywcT9uxB
+	vgvdPOMGIQ0VvMxoU+MoP3/jaSl8N+tV2NR8BtaDGAcBmqe4RE60UmlKvtMjONzeIS8slJ
+	MnS0mKFk7iA5ChiL2sfon+TyGBXs7jM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=PYtTvnee;
-	spf=pass (imf09.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F4hP6w1834976;
-	Wed, 15 Apr 2026 07:51:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=CRIBpB
-	XdILwWULwaeFoVfR5LPSMUXfdDEhKqNVYPy/M=; b=PYtTvneewOlvgdYzloR+qc
-	Y4M1EbHICI/uP/kLG8PsghpdlxOzSYIPWpHI1WfodzNL/C1LOtCAK/gYfGME4jla
-	wsKKkhyBSDwvTfhcFF3cifAcU/tjQy+XzqaqMjcE9xV+bQZ26A17vmtzS6WgPU0M
-	pi/sKTZOpOyvkldXz1c4Yl8vNSVXfRKye9P/uMOSX1SUb+nLggfM2uCamqbxaF1d
-	pVOR5/73cqf8Q+fWHNPd6YUIbgyzme0bkaT6E9nPb/koaWxj770EUu7iiCraG5zA
-	K77GVuAOUASATFZdQLKelnv6NhP3pic+d6Uh9qZPgxuprwr1lz0UHfzVcX/e8K1w
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89rexhk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 07:51:39 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63F36QuJ003594;
-	Wed, 15 Apr 2026 07:51:38 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg1mnd880-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 07:51:38 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63F7pbOs5440264
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Apr 2026 07:51:37 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8981A58055;
-	Wed, 15 Apr 2026 07:51:37 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8587C5804B;
-	Wed, 15 Apr 2026 07:51:28 +0000 (GMT)
-Received: from [9.124.217.38] (unknown [9.124.217.38])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Apr 2026 07:51:28 +0000 (GMT)
-Message-ID: <5304948b-18ad-43f1-b447-df1f97f31949@linux.ibm.com>
-Date: Wed, 15 Apr 2026 13:21:26 +0530
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KfxA/Ood";
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776240019; a=rsa-sha256;
+	cv=none;
+	b=WoE8wtolYv2Lm1ii4jXtOFVNudl5tU6sTzqCvrWcl3olDLl/FSRK1gGI7lsEkSPYaV+DSz
+	2FPGY9Hy3tXuzpf/PsQg6PgB1B+gxJpo9LI/9ffz/VVeNoT0UTZkNch90wtxIC3WSzfvBP
+	aSxLJ2u208jylau5Hsl921mgdLxc8Nw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 14EAB600AD;
+	Wed, 15 Apr 2026 08:00:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B568C19424;
+	Wed, 15 Apr 2026 08:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776240018;
+	bh=T2jntT0X/pK44/JuefmgfMlW6eFP7bkoZpA49cK9uzk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KfxA/Oodk9iFPThH9dvnsW0pNj0rSEFWsWZrrXbStx7TwcjvOfdVl6LBAMu6VMYIM
+	 vZLYipHy5iDPVsZ0PV2nxvo5ApSwiDKQcSZlJka64lVYH5FrLKO8Fy3TZhlNUG9nZ5
+	 txARWZhtjLkuToUr+dheN8mEai2lnDZB9dh6FydBx2pN7L2d0vfHvpLolcO1+2IJgT
+	 kemlrdslr8XbMPBnBmoTDOsGK/u3KPM7Z1Rihv/RGFH46uPluCHE+XtjV9JJrweNVh
+	 I0kVRIgC/CMhJmNTyk373OUVOkXwqTBLb/UJ742PWR9qFVNgPZSxUKYvhPXY6fRMh+
+	 0O85NXbSjY3mg==
+Message-ID: <afe0dfb9-feeb-4243-bc4b-305e5e33b581@kernel.org>
+Date: Wed, 15 Apr 2026 10:00:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 18/53] selftests/mm: uffd-unit-tests: use kselftest
- framework
-To: Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton
- <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
-        Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
-        Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-mm@kvack.org
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-19-rppt@kernel.org>
+Subject: Re: [PATCH 7.2 v2 05/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
+ check in hugepage_pmd_enabled()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Nico Pache <npache@redhat.com>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-6-ziy@nvidia.com>
+ <ad1TMjF1L3usYIC5@casper.infradead.org>
+ <05F00072-7E06-47C9-BC26-FE3736F557FC@nvidia.com>
+ <a4d477a8-71d8-4219-9cb3-153f2c01e184@kernel.org>
+ <84B8F641-A3DF-4219-AA57-6BA48E9B4998@nvidia.com>
+ <998c02b6-2612-42c1-8099-d65ae275d1a2@kernel.org>
+ <7468C68E-FB09-4714-94A3-4BED63453295@nvidia.com>
+ <b7aa5515-6908-4ec6-91e9-eb79d5ef70b4@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260406141735.2179309-19-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <b7aa5515-6908-4ec6-91e9-eb79d5ef70b4@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDA3MCBTYWx0ZWRfX7uf5yzMp4EV7
- ZcwOKodXJFjvDXMi4SwG9EGvPVVr8V2a5xDzUTmJiR5z/DCxjTbWqLlt232AZtYbtnfrqo0yYaJ
- y4KaDkz3hk8m4z/hTVEi/vCgbz6YHk9aNyWLa8B+aD0gSpKQ1C62icHFjJHo+ifZjW9pbnE8NWy
- nNzW6thb1bUMxkdUalHZL6zdIeTEXMqDu7Rsd/q/slwVj4KZzb54syUIzqA71AJitTKJnGpYrQc
- xeOC7p8Tk2efU9mzzXL1DD8qIJoCJuPK3BQPJdcL0gXj8QIpmvT8g5PSvSuzSrhclxFTqSTSWTa
- LDoQPVlzZCHFuZI9t6BIVMqHC9Ua0bvP5n+qRLg5ktmWSwsNN8r0re6tFoIxE3VkCMInS9oFl7p
- 6WmESoTDN16gzo+jK97ieci7flahxhD/rrge9HJN7WFe0u+TT0rdT3XSzqZK9TpFum94sokK/qA
- CsLMi1TU6zFKBAfWQAw==
-X-Proofpoint-ORIG-GUID: crsjs0cRZXeEf6DcRBo75EnMdPl_BFTG
-X-Proofpoint-GUID: RdUmzU2AB-5czPCzIDm2gTB5_OhM7cwq
-X-Authority-Analysis: v=2.4 cv=fYidDUQF c=1 sm=1 tr=0 ts=69df438b cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=ICrVR6_wMwjK95LA6u4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 phishscore=0
- bulkscore=0 priorityscore=1501 spamscore=0 suspectscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150070
-X-Rspamd-Server: rspam12
-X-Stat-Signature: y5nacftiomoe79ykpk7yndgnws33zzou
-X-Rspamd-Queue-Id: 02587140009
 X-Rspam-User: 
-X-HE-Tag: 1776239505-211998
-X-HE-Meta: U2FsdGVkX18TZvFGoy5hSOsyuuRfi4LMKe/ER7Zqr4I1a+X4ktVL1m6qwyPVxbGs4EJCqRVucYaLLekMBHEp/FkwwSNG4lej0HbE5Xij1EIVCWydnQoUVnes8a3frtBS6L1gmdSkarlNY+yHiSOTwyZ9mzg9LtCLLCvcAEUuSHgYTT9Xx24Jf3ye7RAM1AqykvXqX8GCRocY3M7dsIrOTP5wjMuEEMo4KZLZDgKSjhum7n4FO3jwU4WQ+ixRs3rPHy7HkUrl/nQ6evMznGzxJ5yL0b5kJR8H+MhwkRj4Qz4eL8U2Iw90HmLwJlPjjsXjbu6RkySISUYtEaRlxUrnuxBB8T4eoWfUDsNdHYCqLRovJQ2nzPbU6USf9CNU/sQR0+pUYyMRIn56AVnl73INV30WpmFT0gUotWlf6qvZ/xcvhFJIegEqqs2nlq2MJRFEXvI/vEZ4hxszFsTrqdmxn/oTRt6VBbhnS/zjSR9U6EMEShjl+x4e4VEuLtUoBL/VCbVoNxkdr58M0KH4GbGwKvIY1U75OCukmN8zAukV6yfa8iQlIw9+h+pTIesyPV32nabnK3dEf2REtfKZ+JVWNYLeOeqICthb7I8ELR9r+Pzra/zFvfXI5znOeGGG7UqpJGXMWdlV4wtryMj+TZKxkiTcrqqJhO0/nBY94glslh4CPLnwSh5GF/qv6dShfQRVVDCz4naF8Qy81gbrd7TessPvyVWBy/Rsq9QIx/YFTmeejjxvhMg+/lj724+UDP5QyPK5tMJs86/XQ/8+X0Lye2jxUqdNdnjsRZVa6b0HNolGlMf0D0cwuPLoK+4X5H+S9K0+7wMZNzqgCo92E20d9YJQrJ2BW3Jf7kkxBYIOlMb/Yt2r99S4HbEFfIyuvqzM/s5LmkzFpAM1+7r6soKoMdPl/JSgKFDhgAygyspRHf1S1ZbidYgcrj3oWY2v0HIk9OYhM3MxHQ9os+9Ln/3
- L7HxS5T8
- sNP9xLX+RUhSMR2UVqW3N+BQVHaYuX2cnAvrbn3tI0A4PPdY+Mf4/looRo9gSd3porZzaAT5UcJlsUS55VnVwTeMuitxR1GHBgOGdwKbb0ANbPbUYmxrk4dXtOlewW16c14ddFY+xikgBEZSDv8UrWz+qNEK/0wSQZAVWGxrnuY0zZE5s+xB1xn6XkV/G3z+ifZR7gSbFGhOtmGv0JS0MsbUi+g/yO4UgpEJcnzXIbmfAxrGrqJVzXTIfVXKKhCzXc1MB9Pclz96/dR5NqWOyqvaqgg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BBF30C0008
+X-Stat-Signature: hdy8ap63ipnj4a1kqe3g1yi1xhchfib7
+X-HE-Tag: 1776240019-805276
+X-HE-Meta: U2FsdGVkX180Oro08lqNmqyN02xFsIJjajEf7ZUAgxk0YbfBLEs6orqKpw/iEzt4p02vN52ueHzLerH9QIdx68gcreEKj7jB9slQCsMLtwLhUmx4A6aDfe2x9x+L8VZSpGqZ/3QivMjCvBZPWdkVEOW5O1hUVdRE83HtYBKTJdSP+j6B7K7E006yMYuhwhyzfvLbRmxIrjME2lbnF2x99et7U8c+btURcVTMMMGQYS4O2o0cCViApiYe/fpD3j/hIi6pAqiLry0TPRo53f6UagsZ5aw5WGErtFtxaq4FLg9wslbHHf8Dw10WLiKaIX06OnPDyXYp32SzvnCvmhMzbmVwRxBmkeDTAIZ+ox+GmyoxXyX8Zx91DXMEBj9wXBlOkfD/z1Os7gDxlSwdHXmprijA2kwUdkyj+9rWGH02Bl4sjn1+kNA8db1iRFsQOY4131D/yohwBkHNIUACQVIokx/JIAcMDjwA2YLqPhcUi6tkDDmTLVFicVhr2wXvyr94tNHFBBX+sw5A6nrsz3cuTeWb6bT7G6mEwp5IU/kPgvI1Njmkrd2NmV0YWJ47m1X3CrdKh+z6qhDlrbf1y4NE3UIbT2dF7cPP25A/h4fOGBAM/ffIYM7N3bD5z/y/tUgNeara0C+ygKY/AEOOqYo3leVpAi27NbsnJ7+mZOuIj3Q68AQ34I90pIRV+WgAa5dqDLIqQT+Bchfw8Cpvhz0QDl2XOtp2e661SzG8z9sjhrcVNKTuss5ke1kIMaY9PbylIujzl4I6aTRKf7JEHn44f6+NNUtdOKyA8OFavIkQfM417g0Iy4dg8amrvOoCstuUCczrQ5Op9tcqa9XhHEVbGfA/li2/6to3nLXvRt9u1bieAGwt7JrsjQjeb1gICzaapYJOSJuyCbHbsIlp+PW48D6dAcweYqnD3mnIEZNa9uj14eb/PLV6mr07HxsCKUBwybJ1OV+4XxAZqQTIXHd
+ 36/Vkdsv
+ TDFu9rFX8JRbQO8kMqIj02pxwJl6pOlUpnGgJgbyz1HaGEATNpIatB2ppxjVuZF8H5Omzin5JvTylRKY2+1Si6CZdqWVROOlnRpBBGk+DHyiJx/g//ZritBVaeGrF9uLDKpGyzIqznR9GCzSBiu1orgC15hruiCK1jVC0tlqLrmDfJM37+23RMaDXR5mw5AXe28HaFQVbxIrTuOHZ+Bo1Pb9uxcO/HshL+a1//4lp4uS07i/FwYXJ1QBgDYyEG3UEsEtBfKPuOr6U7VZPg/ORMQr6/XWoL+/kgG5F12Cl7ipw4dKH7LBYx48iVC74NJ5rqdrVcEPSXUH2kAM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,165 +157,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike
+On 4/15/26 08:36, Baolin Wang wrote:
+> 
+> 
+> On 4/15/26 2:25 AM, Zi Yan wrote:
+>> On 14 Apr 2026, at 14:14, David Hildenbrand (Arm) wrote:
+>>
+>>>
+>>> Yeah, it would be better if we could avoid it. But the dependency on the
+>>> global toggle as it is today is a bit weird.
+>>>
+>>>
+>>> I don't think there is other interaction with FS and the global toggle
+>>> besides this and the one you are adjusting, right?
+>>>
+> 
+> I'm afraid not. Please also consider the per-size mTHP interfaces. It's
+> possible that hugepage_global_enabled() returns false, but
+> hugepages-2048kB/enabled is set to "always", which would still allow
+> khugepaged to collapse folios.
 
-On 4/6/26 7:47 PM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Convert uffd-unit-tests to use kselftest framework for reporting and
-> tracking successful and failing runs.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   tools/testing/selftests/mm/uffd-unit-tests.c | 79 +++++++++++---------
->   1 file changed, 44 insertions(+), 35 deletions(-)
->
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-> index 6f5e404a446c..1a33db281f8a 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-> @@ -86,39 +86,24 @@ typedef struct {
->   	uffd_test_case_ops_t *test_case_ops;
->   } uffd_test_case_t;
->   
-> -static void uffd_test_report(void)
-> -{
-> -	printf("Userfaults unit tests: pass=%u, skip=%u, fail=%u (total=%u)\n",
-> -	       ksft_get_pass_cnt(),
-> -	       ksft_get_xskip_cnt(),
-> -	       ksft_get_fail_cnt(),
-> -	       ksft_test_num());
-> -}
-> +static char current_test[256];
->   
->   static void uffd_test_pass(void)
->   {
-> -	printf("done\n");
-> -	ksft_inc_pass_cnt();
-> +	ksft_test_result_pass("%s\n", current_test);
->   }
->   
->   #define  uffd_test_start(...)  do {		\
-> -		printf("Testing ");		\
-> -		printf(__VA_ARGS__);		\
-> -		printf("... ");			\
-> -		fflush(stdout);			\
-> +		snprintf(current_test, sizeof(current_test), __VA_ARGS__); \
->   	} while (0)
->   
->   #define  uffd_test_fail(...)  do {		\
-> -		printf("failed [reason: ");	\
-> -		printf(__VA_ARGS__);		\
-> -		printf("]\n");			\
-> -		ksft_inc_fail_cnt();		\
-> +		ksft_test_result_fail("%s\n", current_test);	\
->   	} while (0)
->   
->   static void uffd_test_skip(const char *message)
->   {
-> -	printf("skipped [reason: %s]\n", message);
-> -	ksft_inc_xskip_cnt();
-> +	ksft_test_result_skip("%s (%s)\n", current_test, message);
->   }
->   
->   /*
-> @@ -1701,6 +1686,26 @@ static void usage(const char *prog)
->   	exit(KSFT_FAIL);
->   }
->   
-> +static int uffd_count_tests(int n_tests, int n_mems, const char *test_filter)
-> +{
-> +	uffd_test_case_t *test;
-> +	int i, j, count = 0;
-> +
-> +	if (!test_filter)
-> +		count += 2;	/* test_uffd_api(false) + test_uffd_api(true) */
-> +
-> +	for (i = 0; i < n_tests; i++) {
-> +		test = &uffd_tests[i];
-> +		if (test_filter && !strstr(test->name, test_filter))
-> +			continue;
-> +		for (j = 0; j < n_mems; j++)
-> +			if (test->mem_targets & mem_types[j].mem_flag)
-> +				count++;
-> +	}
-> +
-> +	return count;
-> +}
-> +
->   int main(int argc, char *argv[])
->   {
->   	int n_tests = sizeof(uffd_tests) / sizeof(uffd_test_case_t);
-> @@ -1730,24 +1735,31 @@ int main(int argc, char *argv[])
->   		}
->   	}
->   
-> -	if (!test_filter && !list_only) {
-> +	if (list_only) {
-> +		for (i = 0; i < n_tests; i++) {
-> +			test = &uffd_tests[i];
-> +			if (test_filter && !strstr(test->name, test_filter))
-> +				continue;
-> +			printf("%s\n", test->name);
-> +		}
-> +		return KSFT_PASS;
-> +	}
-> +
-> +	ksft_print_header();
-> +	ksft_set_plan(uffd_count_tests(n_tests, n_mems, test_filter));
-> +
-> +	if (!test_filter) {
->   		has_uffd = test_uffd_api(false);
->   		has_uffd |= test_uffd_api(true);
->   
-> -		if (!has_uffd) {
-> -			printf("Userfaultfd not supported or unprivileged, skip all tests\n");
-> -			exit(KSFT_SKIP);
-> -		}
-> +		if (!has_uffd)
-> +			ksft_exit_skip("Userfaultfd not supported or unprivileged\n");
->   	}
->   
->   	for (i = 0; i < n_tests; i++) {
->   		test = &uffd_tests[i];
->   		if (test_filter && !strstr(test->name, test_filter))
->   			continue;
-> -		if (list_only) {
-> -			printf("%s\n", test->name);
-> -			continue;
-> -		}
->   		for (j = 0; j < n_mems; j++) {
->   			mem_type = &mem_types[j];
->   
-> @@ -1794,10 +1806,7 @@ int main(int argc, char *argv[])
->   		}
->   	}
->   
-> -	if (!list_only)
-> -		uffd_test_report();
-> -
-> -	return ksft_get_fail_cnt() ? KSFT_FAIL : KSFT_PASS;
-> +	ksft_finished();
->   }
->   
->   #else /* __NR_userfaultfd */
-> @@ -1806,8 +1815,8 @@ int main(int argc, char *argv[])
->   
->   int main(void)
->   {
-> -	printf("Skipping %s (missing __NR_userfaultfd)\n", __file__);
-> -	return KSFT_SKIP;
-> +	ksft_print_header();
-> +	ksft_exit_skip("missing __NR_userfaultfd definition\n");
->   }
->   
->   #endif /* __NR_userfaultfd */
+The question is really which semantics we want.
 
+Right now, there is no way to disable khugepaged for anon pages, to just
+get them during page faults.
 
-LGTM
+And we are now talking about the same problem for FS: to only get them
+during page faults (like we did so far without CONFIG_READ_ONLY_THP_FOR_FS).
 
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
+-- 
+Cheers,
 
--Donet
-
+David
 
