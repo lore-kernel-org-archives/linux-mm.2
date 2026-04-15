@@ -4,107 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97D2EF9D0CE
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 03:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D75D6ED7B99
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 03:20:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E35A56B0092; Tue, 14 Apr 2026 23:18:33 -0400 (EDT)
+	id 4C2D46B0093; Tue, 14 Apr 2026 23:20:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0D466B0093; Tue, 14 Apr 2026 23:18:33 -0400 (EDT)
+	id 498FA6B0095; Tue, 14 Apr 2026 23:20:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D22796B0095; Tue, 14 Apr 2026 23:18:33 -0400 (EDT)
+	id 3D6116B0096; Tue, 14 Apr 2026 23:20:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C0EE36B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:18:33 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 664F913A799
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:18:33 +0000 (UTC)
-X-FDA: 84659332506.23.6ECC601
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A69CC80008
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:18:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AmsbWIcL;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BCB36B0093
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:20:04 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA30EC1442
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:20:03 +0000 (UTC)
+X-FDA: 84659336286.27.134E7F8
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6E93BC0008
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:20:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wc7FaSkQ;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776223111;
+	s=arc-20220608; t=1776223202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4tZtfPotxl8kfqhlcellANwp2kwmi1pimXdRirEPd8U=;
-	b=aOd5IXLnTQCNcDrOvk+m09bm8UOWW68c2eY56hx6Ue792pwf+FC92S+c4kGJXkOZQAoveb
-	+l5vHhT4F8OYO50R5GTBVR5g5ovTO5VV8LF+MQnynCD3e43X6Ckttfz+3eznPji7Tl9kDn
-	eE71Yf+WJPWUR8OaBP8JAQDqZF6EWYk=
+	bh=CcGhwNl9tCxinhH/Mw8L5+KsTgwgIEcOsH66vEObKtk=;
+	b=VorE6rJ1hB429Hb1s4YLuFENC79MOoLscox4DoBvCO3W0LVhLVa78V49dFPl2aMsyL260A
+	DxjgHyQHc/zBy/Bk+nl3RQK0DH8exiVrIC1fIqkLk1iaMb8V/VcxaqFGNxYyqJrSchIQSe
+	m1vSs89X7tdc84AaMqbBf7F8XTD+tEc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AmsbWIcL;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776223111; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wc7FaSkQ;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776223202; a=rsa-sha256;
 	cv=none;
-	b=MI8a5Pdx0AOfRp+00qzRE+o03jD4kJOmBonW/od9zv7pnEIXu9CBEJzp0W07ZhRcccSXRW
-	/p0pCxIbtjZpvFYiCkmUo3RCfYA8GXX9IUBZPR23jxcPFr6Sk9oeB/0zJEG1ll+URkD++O
-	dpMnV+XZEx5p4FRXyN1FH/HxARVVTps=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776223111; x=1807759111;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pN4vBEp6nfcqXNrQLkmLldYUzKj2XXj7ZHPiuukhJLg=;
-  b=AmsbWIcLz5riUkLdscBozmShIzp5v/qmzfMGl1XEDOw0MALX13jvQsYP
-   KebVYl9uJVNBFAIOP2OxqUFiKMo/kmz344TSWkm5ENnb+oGEPOWozqdKV
-   VZ1LZ8rtAlqXGlkbEerwtfVhkPKw4SpK/i32QgumvGcRt07lCf2uDxcEH
-   ihqq8IMSPQ81E+fo2I4qYjNz8p2wiwfaRYiy03jhxZU4p8j8ZCsjiqEfS
-   DvS+lYcu1OgTucS4az8YN1scvrpLl8Z1QRFeroKl8Pk+Hsf/2Z9oiUiQ7
-   8wgC4c0qXCk99J/iorqscCuEKH1dHCQqoVbLZSLYsVZXVec88wx+Z9Kt7
-   g==;
-X-CSE-ConnectionGUID: 4vtcSXx3QDaLijFwAVsiRQ==
-X-CSE-MsgGUID: kUIcatmLQnyCUKdGIGpfjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="76224287"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="76224287"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 20:18:29 -0700
-X-CSE-ConnectionGUID: hRHIx42nTce3zJplxlFpbg==
-X-CSE-MsgGUID: 36SwFOnOTKqLOuqoFusQfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="223780958"
-Received: from lkp-server01.sh.intel.com (HELO 7f3b36e5d6a5) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 14 Apr 2026 20:18:26 -0700
-Received: from kbuild by 7f3b36e5d6a5 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wCqlj-0000000005h-0rLu;
-	Wed, 15 Apr 2026 03:18:23 +0000
-Date: Wed, 15 Apr 2026 11:17:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Youling Tang <youling.tang@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, youling.tang@linux.dev,
-	Youling Tang <tangyouling@kylinos.cn>
-Subject: Re: [PATCH] crash: Support high memory reservation for range syntax
-Message-ID: <202604151100.7wbci6vo-lkp@intel.com>
-References: <20260404074103.506793-1-youling.tang@linux.dev>
+	b=54EJX9kQ4ZynlXAvmpWLZaG3m2hG9ch1AKkcCaQrPCtUr8Qqc+EZ5J71q3x3HC77lhbKO6
+	mWuDdcnqGn/5PeqKRWt3r3ixmrnOSWuoiYBXSIRfi2bU3Mr8DOBDjuSTHMnFhBZhhA4V9W
+	/PcHdMc5UXo3zOr44Diujwotrt9Mz8g=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776223197; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=CcGhwNl9tCxinhH/Mw8L5+KsTgwgIEcOsH66vEObKtk=;
+	b=wc7FaSkQL9ki5rwq/KsYWFzxEEBmWLzYVfSvJH4BQo5bVZDQ0BzaQRW2unZhuY9uxu6HMvCgyeddsUYmyKfSvJSGbx0k0lvcEZUpxoQE2D0y6smhzM4gOW5uhqgiV6VSod5VINo/gk6+DSd4lCnm/6ipDh80GuNrHh2dBI1zo/8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X136K2n_1776223196;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X136K2n_1776223196 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Apr 2026 11:19:56 +0800
+Message-ID: <cd687269-4bd9-4d8e-8a3b-192956d7aba6@linux.alibaba.com>
+Date: Wed, 15 Apr 2026 11:19:55 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260404074103.506793-1-youling.tang@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 08/14] mm/mglru: remove redundant swap constrained
+ check upon isolation
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
+ <20260413-mglru-reclaim-v5-8-8eaeacbddc44@tencent.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260413-mglru-reclaim-v5-8-8eaeacbddc44@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8jg3mzp3beaepgfd3zn3t93ei9x67zem
+X-Rspamd-Queue-Id: 6E93BC0008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A69CC80008
-X-Stat-Signature: nssyji7uy8tmsjwxph1irgrahm77cjd1
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776223110-396165
-X-HE-Meta: U2FsdGVkX19pmsFySPKmuD14yt+xLJFCFyv2os+V0XVJ+/SpqpW4t2rx21lg/rQ9GIu9PH/ogXHHuX+EL6t+9Qtt+T+BffPhIeWnmjQeTGy0ek7oOe2fR1urm5JdRE628rtDHjO/Ic+VoOjK9mlJOZkOj5OP1R7KhxE47VRXX2E24s8kmCzLchtejyjmnADDgeTQi0b+NMY1DFsNuaa2y+6qjeSRzc+hkfJCkNpDhDhAE0oJ2xf1w/o9roHv6XP31rNmHZcfCH9LOYKkRXYuu3+BIkoUOxJaKFdsjSdXf6mwEOjiGjFWE07BXKZNpH5fZ4Ww01RE0f+JzDBML7/b5DIQxXmRaSwGh6AZiVQCloh/wHOkNFurOHnYK+D93HnOpuHXazzWq7kvPCNkPgx4/3CwKaZRu0qmJwrFIi+fHy4Aj1+UuHbRR5CknSAJPlUJDPHYaXL2aaadSLygakcn/rpXPGMSiAa8yMlkxk9gczgcvDLljwLN8hQ9uGTm+LmTlrUiRuZnwtIHlU7IMqvk6joh+rO9xw+/zLPIty7CgvZZg5L/T8/m9W7m02GCRq9P1xLxIC+wI65GYnzsffYqVqohOtip7J18Gt6BNjYvRwbA2G5Htb1GrJ85wRlDTUcLtxE3vAe4sjr8SA5G9Xv3oPwHMekkots3LWvfL8vw4tlo+DRoYOhByzfbCUJl5dyuFNFuOPECqiDxtCmK6f3zEK8vc24PnFq99C5tCoT/J3SAuUq6JbhvLxNwfFn7zrdzaQklPdwzbBsDvChkd4r7dCLmNauYP7S7jod94JcVmNxoF056ErZBkKu1H8OKUwtXvQUUK+v09OiYSilSO4O5Ed4jC6912AijC3OZ50xp29HWcoIknsP171lvUWkyWwhzidyMUabpPiumR3Eq/J3TBBBR47unxG/04ShFhk6nj9lCvyCjdV7naOF3m/6cD0sxJZ8zC+JUtvO3DSWy8qs
- z5NYLgXl
- teQHK+LmLMNCTgknMc1leKrUp5/8W9Mmlyj8bID7qyUkplNEPQAK59i3fVRQUEHULL0+XPuUf7OaWDSwVqyr0UD0WnhPjDgPNikPPIgoq9u9P6CecQ1Li/SuGHVtPNH8omhSkHPIqZYyMrF34wUBOeLfDWEJiyw+9Sjbew4aFjhh4EooH3dhSUHnqSHS6tUZfTBH2SsFyX3wAl9/EheBlnEI/hWi1vX8xZ9nxuHfBd1wm5aHUdIN8VTlmxAL7W7jvDK4WlJeJpJxztJhpvGsUl8numwDSZ11wuFVxdnLrZyYWQpPfxikzIgu4d4MWIx199voEXN8J1jzK+GwCzHpGh6mEOtx7Ycp5vA0H
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1776223201-144076
+X-HE-Meta: U2FsdGVkX1/im1DFz+PfGMlOKOxnxjrEaMQ2T2NfYrdpYpoL1wDUGTpm7KW6wLHVhHUM1N47cMYo6XmfSrc1x64kYpZxrzrSwwaPmD1wAln1z4tHuGprtaFQyxzEc2JSYjzmsvJBxi+ZBz5ksAhmHw5+TEUWiGnvUaiCZfZgwr+ntPs+Z/ZxkTJ5JrjZLp4VRoS6KPloIvna17Xh/WHzZhPCivmjM0eLIFQ0nFN6RoGmGTe6QSleRcCTp6Kj6tM07QxTLBLoBOUWEUFSCUrSROo0wPO1PrjpLPiyU2FloOqebunmUGxxO9nQu2QdQbBlfnRTptcXX5L0VrvfkW89O5XjPS+fu5Nq8ZNXo11mb2y59hxoPLPC9GYGnLZ+z/qHgBsmT94Yevr/kVLST7s3INdlAY3Hzirgup8JCRk+cT4bmbB+aqZuW56ASN+gzeZruidn1JVMbEZUGuzuDq4+Ya8XWQGG1C16/Z2E6+qG+WnaarjPBsYFmWn19a2/e3AL06pY6ldC3f7pn2tPKylu4JIvtSXU52CvE5t6o7WjpA21oJ7a14fmBlohAvfXvVo/WL5vRZuKclb5n114WMaNC9Rj+rKY6mSpTUod1kK0kz4pQ0f1yXeIhcpF5eGzsXrDL9MSDH43IpxY2IsRNvbufM92T8cZZQ/AdpVR6996FF4332xV/YEr7cvhGTXjPnHzU5JM95Ti9niEU5oi14QOKTiojQxQXkzy9+0xPxiSyrp5q15PclSSb6/3uZIglA/uKxDdIk683TDpGe7B2MgBaZKHxcfDrR6hqRp4KY/rt9YUx2u+XDPKw3RJ0ELZkeUhi07QV2ZKAxXh7VwmuNIW2xpQn8BSCps7y5MlgWXCgJ9ll4aGZtZ0w3Cv47hGZgV9G70XPoXRbaE4DZN09aVX+/pQGyOcVC4G/kw0B7MSDTek5AFLWNvqiBCvussNaNbU/9HrpnJl44Yc9NIaRRO
+ Vo7f+pn3
+ vYb1dI2w8Zl7gfaF4ftvWBdTOiwwg//lquz/Wjj5jzRthn2VDnJ+9kDLWgSW2FO/n8fPK2KKJBWpU3m1nOlZwMweXbgpTXqqAIQSAj5WxvXCF8Fzj/Nrx7j6Sla7/zHe7fOIOZ6cJRc3ezrI/kZVsbWm1IZcVnxjAkSFi8W6Cmg+0zwxzwVOBDQJj4Tf0DOqi15VJSqxMG2VnKMtJPtasPCPtfj05Xpn0GUlgzphuzgVbawPIOOpDwgm8P3W5YHzk2nAlwV8ZGIdCr+Jbi6j4hbxBm2jGX+IWggbDQ3yBRIMMGhUIoMeZ5Fwt7DMoNGuH7/e9jggXkQppfiTl1QskYvhnBZdnpG4AB+FVUysjRD5mhmy564YsyfEzrP0JixOJMnqm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,93 +99,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Youling,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on linus/master v7.0 next-20260414]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Youling-Tang/crash-Support-high-memory-reservation-for-range-syntax/20260414-205035
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260404074103.506793-1-youling.tang%40linux.dev
-patch subject: [PATCH] crash: Support high memory reservation for range syntax
-config: mips-randconfig-r061-20260415 (https://download.01.org/0day-ci/archive/20260415/202604151100.7wbci6vo-lkp@intel.com/config)
-compiler: mips64-linux-gcc (GCC) 12.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260415/202604151100.7wbci6vo-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604151100.7wbci6vo-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   kernel/crash_reserve.c: In function '__parse_crashkernel':
->> kernel/crash_reserve.c:324:37: error: 'DEFAULT_CRASH_KERNEL_LOW_SIZE' undeclared (first use in this function)
-     324 |                         *low_size = DEFAULT_CRASH_KERNEL_LOW_SIZE;
-         |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   kernel/crash_reserve.c:324:37: note: each undeclared identifier is reported only once for each function it appears in
 
 
-vim +/DEFAULT_CRASH_KERNEL_LOW_SIZE +324 kernel/crash_reserve.c
+On 4/13/26 12:48 AM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
+> 
+> Remove the swap-constrained early reject check upon isolation. This
+> check is a micro optimization when swap IO is not allowed, so folios are
+> rejected early. But it is redundant and overly broad since
+> shrink_folio_list() already handles all these cases with proper
+> granularity.
+> 
+> Notably, this check wrongly rejected lazyfree folios, and it doesn't
+> cover all rejection cases. shrink_folio_list() uses may_enter_fs(),
+> which distinguishes non-SWP_FS_OPS devices from filesystem-backed swap
+> and does all the checks after folio is locked, so flags like swap cache
+> are stable.
+> 
+> This check also covers dirty file folios, which are not a problem now
+> since sort_folio() already bumps dirty file folios to the next
+> generation, but causes trouble for unifying dirty folio writeback
+> handling.
+> 
+> And there should be no performance impact from removing it. We may have
+> lost a micro optimization, but unblocked lazyfree reclaim for NOIO
+> contexts, which is not a common case in the first place.
+> 
+> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
 
-   282	
-   283	static int __init __parse_crashkernel(char *cmdline,
-   284				     unsigned long long system_ram,
-   285				     unsigned long long *crash_size,
-   286				     unsigned long long *crash_base,
-   287				     const char *suffix,
-   288				     bool *high,
-   289				     unsigned long long *low_size)
-   290	{
-   291		char *first_colon, *first_space;
-   292		char *ck_cmdline;
-   293		char *name = "crashkernel=";
-   294		unsigned long long boundary = 0;
-   295		int ret;
-   296	
-   297		BUG_ON(!crash_size || !crash_base);
-   298		*crash_size = 0;
-   299		*crash_base = 0;
-   300	
-   301		ck_cmdline = get_last_crashkernel(cmdline, name, suffix);
-   302		if (!ck_cmdline)
-   303			return -ENOENT;
-   304	
-   305		ck_cmdline += strlen(name);
-   306	
-   307		if (suffix)
-   308			return parse_crashkernel_suffix(ck_cmdline, crash_size,
-   309					suffix);
-   310		/*
-   311		 * if the commandline contains a ':', then that's the extended
-   312		 * syntax -- if not, it must be the classic syntax
-   313		 */
-   314		first_colon = strchr(ck_cmdline, ':');
-   315		first_space = strchr(ck_cmdline, ' ');
-   316		if (first_colon && (!first_space || first_colon < first_space)) {
-   317			ret = parse_crashkernel_mem(ck_cmdline, system_ram,
-   318					crash_size, crash_base);
-   319	
-   320			/* Handle optional ',>boundary' condition for range ':' syntax only. */
-   321			parse_crashkernel_boundary(ck_cmdline, &boundary);
-   322			if (!ret && *crash_size > boundary) {
-   323				*high = true;
- > 324				*low_size = DEFAULT_CRASH_KERNEL_LOW_SIZE;
-   325			}
-   326	
-   327			return ret;
-   328		}
-   329	
-   330		return parse_crashkernel_simple(ck_cmdline, crash_size, crash_base);
-   331	}
-   332	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
