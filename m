@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78F46F43858
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 16:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78CE7F43858
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 16:23:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 864456B0005; Wed, 15 Apr 2026 12:16:53 -0400 (EDT)
+	id 9CE2E6B0005; Wed, 15 Apr 2026 12:23:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EE326B0088; Wed, 15 Apr 2026 12:16:53 -0400 (EDT)
+	id 97F3E6B0088; Wed, 15 Apr 2026 12:23:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68F5C6B0089; Wed, 15 Apr 2026 12:16:53 -0400 (EDT)
+	id 894C56B0089; Wed, 15 Apr 2026 12:23:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 543A56B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:16:53 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EFBC016055D
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:16:52 +0000 (UTC)
-X-FDA: 84661293864.16.02D049F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 375C52000D
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:16:50 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s38oCA76;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 76C536B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:23:43 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0E5D81B80E3
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:23:43 +0000 (UTC)
+X-FDA: 84661311126.30.8450F7C
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2923D14000E
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:23:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=I6NToXSy;
+	spf=pass (imf26.hostedemail.com: domain of create0818@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=create0818@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776269811;
+	s=arc-20220608; t=1776270221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=et7lNV/EK5ZapdM1wdvtSxAzbD4whSn1kk9KNgMMsng=;
-	b=X/qrC0SBwVRydteqOmU10aF0lLkNqNCz+LieCuMMSFgU5Y9k3GsBPpJljpotiaF+43jFT1
-	iRBGQy7Aaj+Thk+j+R5Mq20NZ+w/+w5i8ZiVMGMrEdLlhdfDioeNFfbcMn/DNVF1UlSge8
-	us8s2qdQDR9HlgIbsOEEnwJ0AUD05sk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776269811; a=rsa-sha256;
-	cv=none;
-	b=rlzKKp1e96kkishx+GLMWspmfA1E4bLBtNEFUK+ThHMA+mJpcIt/NgClwsEB7FRbXwUPRr
-	40HgVHAySaQkTHPD/ePZVGtTl6l42WIS2fZ1OHNFjffwEY0QtiJGCA+pgENlgX/3h6DaPV
-	4jidN30IKoMEFhpNbSXH9pNWGUtMs24=
+	bh=F8DGeYEPDbd6uTkQWGQlOL5JIA2NkbZr/DhyV0YRVO0=;
+	b=rdkeIYtwjqBmffXpqCpb3UkMPZ5pRl+tWiA3abEn+rfdfJ/j/B9WtXUoZ/dX0E1j7A1t9y
+	uy0E8AyDjeBTg2d0xTC+D5TapH7OLX9zFZX8/RozaJdEmgskbfNrP7C2ekBVVDEls5KxJw
+	LpaWwIS9tj0JIj0WAM2lRl2Q7laoAAA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s38oCA76;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1777043682;
-	Wed, 15 Apr 2026 16:16:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BF6C19424;
-	Wed, 15 Apr 2026 16:16:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776269809;
-	bh=BYzmB8AMTn+l7fVaMR9XEBHosEJ+cHfReEz/ISoReJM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s38oCA764aLQkbmWhMkN4zvvwN/6QqwzqM1bNOcd+01RXf02hI+6o8xXG0UNwE8DD
-	 lfgmiEHUc+6/y/vWdbSx0SQ8rktpitZSCIwz8zdnzKQUW+Ns7gZyCsXeT6qWB+F2yu
-	 ZtLPXWuYn8M+lIN8b9/VXlkgYy1W/Kfp3fHnQ/BI9FuCF+4C5FwLY+Z5VPmvCBtUrZ
-	 ynMjTuanQS/unbHiJnV+M/OTolYTPW2ENyzDpvHfWyMLmjzzIveR0CtJWommhYk3Em
-	 rqdU/qxfooRO1y84xZLSkniknZXsH7g9mVXjYey8SXAjmIf8uYEVE6EFD2rDS9iFBx
-	 phiXWwy8SecSw==
-Date: Wed, 15 Apr 2026 19:16:44 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: priyanshukumarpu@gmail.com
-Cc: akpm@linux-foundation.org, changyuanl@google.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] tools/testing/memblock: fix stale NUMA reservation
- tests
-Message-ID: <ad-57Iq8yat01OiN@kernel.org>
-References: <20260413091458.774770-1-priyanshukumarpu@gmail.com>
- <20260415122731.1768912-1-priyanshukumarpu@gmail.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=I6NToXSy;
+	spf=pass (imf26.hostedemail.com: domain of create0818@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=create0818@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776270221; a=rsa-sha256;
+	cv=none;
+	b=Ez88u/2ABaBaH1dl03XHn+HtDhsGi6bDabunGEYXxMwBHWTOBNR9H6ORaRpY2sJfnzFRm3
+	zm1t8NU1min5WNVTJPOzIUnnxblK4ayvhdb43MxnL4aGV/rlkWDp2jzCEBIXBg2uHWKAm1
+	I/vsNoLogdOCF7vm29hmOWpyPNeZBOs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:Content-Type:
+	MIME-Version; bh=F8DGeYEPDbd6uTkQWGQlOL5JIA2NkbZr/DhyV0YRVO0=;
+	b=I6NToXSyUkbGvDwVEBuWToyVpgMro9rCAORifBvQTlucqupmisnv6lbW0e1ryl
+	Lvk30r+FMavfCG9luAG0fMam2Kcj8LE/LY/HDEqnq6YcjMWSByGiwaApB4xAl1wZ
+	Oeq4MLo90NMcFZZEcCV+n1oQCtXmFlO6krFN6jM6zXITU=
+Received: from 229.199.16.172.in-addr.arpa (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wB3WoNeu99pgeDOEw--.35537S2;
+	Thu, 16 Apr 2026 00:23:01 +0800 (CST)
+From: create0818@163.com
+To: Vlastimil Babka (SUSE) <vbabka@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Liam R. Howlett <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzbot+1a3353a77896e73a8f53@syzkaller.appspotmail.com
+Subject:
+ Re: [PATCH] mm/memcontrol: restore irq wrapper for lruvec_stat_mod_folio()
+Date: Thu, 16 Apr 2026 00:22:53 +0800
+Message-ID: <177627017370.51713.13753959033860067852@163.com>
+In-Reply-To: <ef2d8f65-b3b4-4a9c-a77f-78ad1cadff28@kernel.org>
+References: <20260413064833.964-1-create0818@163.com>
+ <ad0clnEYxf1H4_S1@linux.dev>
+ <ef2d8f65-b3b4-4a9c-a77f-78ad1cadff28@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415122731.1768912-1-priyanshukumarpu@gmail.com>
-X-Rspamd-Queue-Id: 375C52000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mqmr55tityig8ba4f9k5k6xr95woumzd
+X-CM-TRANSID:_____wB3WoNeu99pgeDOEw--.35537S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Gr1rtr4rZr1UuFW8tFyrJFb_yoWDCFcEvF
+	y0krW5Ww4xAr42qa10yF1qyr9aq3WfCr1DAa4jgw4Sv3s2qFn0gaykur12qFn3Ka18tFnx
+	Gr47uw17K3yY9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUUgo2UUUUUU==
+X-Originating-IP: [39.156.194.234]
+X-CM-SenderInfo: pfuht3jhqyimi6rwjhhfrp/xtbC6AVak2nfu2XCbAAA3i
+X-Stat-Signature: freqeakrur8e1rxrzygoqxqk7n9m39mi
+X-Rspamd-Queue-Id: 2923D14000E
 X-Rspam-User: 
-X-HE-Tag: 1776269810-640074
-X-HE-Meta: U2FsdGVkX18cVXHL/Wx2/fIRXwiwxUG5xMBREjhdcfkzpBpkjpC/NmEVUn6s5RvmAYSbYZ3niscXj95mGKK/ADHs10U3i77IphK6XGbvG2lCwZgXsKY7DhLjdJ4zoi8HlR8ZO7YoIwl+kVAdea1ZZ26bfRUMjFWEslHXHCoz3WIeGoLRkDCv2nYNIMyxqopYyQaBwtcetrbRjLBYRybSIBmqnt83Joni3Dm+E5jzZphD9zIMb+pK8/wadC4RTaBmlf+f2N7VqcCU14lKviZAh03X5I5VbKHytBEcU4SrT00yVE+y9EBTsHQIOvAQzFlVYLoz1PSvVE3Co64II9jpCBO87Ypav9qpSu+CjuC/R6sLr5jOVjvAniHRLHLKVopNAbiqv3y5ARpRqm2ZjTQ+zPxyQFg11jGImL+k0pnpq6/aPEJHnTQ8d4VHehOrmyK34h1fayuzLG85PScYGoS0LP1otGFEjQtS4skMkN9T2J5JHB4HaO+iTt0jPVSGD3X9h96jDEwX6/ixutmggWIf2EwDj3bBe/cdEm0NFFkHyU0F5gjsPnhBfr6QwybQA80j9Z3u3/jEwX5NopTHEKH8nRPDEYYABhAg+psE6yMI8LvtN+m//FfF+4gjfjxysPY8iDtDe5OH72EEeQHOCPHwT5RPADllYH564ZbSaac0wB4CMN6JHpuIVgv7gXaQ3DJ0ZiZmQLorZQgFGWa1YcU+9vb/JSvrKfpqDJNV7+3K5OCjaLHlm5N6O5EsryaAIwkEmnCqq9CPIOqo0miGBzex7KleOrFeTNDE6fPMHsayqIaapptuYAbUMKslAZWNFi6qJZdakdGBMREd13YnRutDghERJWCLpieDnUVOacD01+R0wyt1BYkdu9m+ZLzlR9+vaA4UUHX/S+nBCJ6O7E1AZfZWKmWsMpERkaJMG8hi9i2VHUsWOwYPliJlK0fUhDYG157oZGF7T8hoR2G2krg
- Pz9eJWvI
- lQ2igXUt2/9JZZIAmalYuUxts0Dztw43Y3xqMVmUnEUNY+H1TxLAawuBS5J+N2vK2Yesc8p1Locfn/iygzdNByVojVCSs2VXTRP41tlEsqey/mXdnD/fBXdIHNHTqHsKjcdb2RYCg9D21ZENOJ303WhCZY7U0NUz0/D79IQoyi9gn8fJPHFj/jQllZ1JNGNDM6wsOMzpfsLoGXixa1rRPwpucpHvpPG6VIBOJcsAuMGcyQpcQMoaX17tKNG2Kj2FhctNJ3+gyRmGBLh7m1cajrgvv7OoaEHc3ksp1V9nCY6CmgKHu02B3hUYD8CV2Zev2c5VMSuP5gRmjq0s=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776270218-889359
+X-HE-Meta: U2FsdGVkX1/J/LtidWTp+DScuP0eI+8nUvwiBB8E7Fjf83xv4vFineY4T1qCPk6marOrOU0UQ/ia5eXaGQpphlH/J1s42fSSaNqUdzA78dP15gs/Hd1V1y1FZ6FFZK41L9odhFoGifhuh3FQvzfD5q1L/FOcexXzbHV8i22tKiFekUDYdnz+Fy6FcWoukQX2tZuuIhzK1Lebp5/QohmCGOGKt76z94xOBZpaRIFQx7D0j84C/+yPr5OBuiGl4Hr1JzraJcFf25r3d0pUDIsB8Jpv0YNomVUqm8tmXO3z4GF1GWPvLrlDdy7kCto96h3pU3HwH2XelXRvOmbXciKrlyD06hyoYd2G/0MyQGRXe9uQO4El3N5Bd3NxlYWL4g3Js60en2nVylOmXORNxC6VyMosFea/X/7lV8lm3b5buteszD0JyxnxsrrVdLtOETz2iZu3t6+JAHURKdvaMLaVAf9p2V8Qd/zrOjLDJM5k6erLX2ir1QPs8FNJ/TxI+ISwcAfBM5PGIQN2ZripNXfHOqCszpLKGz22gy8s3P0LyHY9f3cM7ZufOBse0XqHM7UL7MKDTw2+rqrosxmjDbHnXNlh5r1WZ4s5tcESNO3GcU1mWfsiFQVrpCmuYqmoY1PpShW9w+68/CuO7r9+yAzCgGlxvHmv530y4KvSidtYCtQKlfQLH9u5E36f8x5aKNtMOEa4Zviyvf26accT29T2Y4AvKMGot4SOXuplNEtGYdQQqmLsZC4flbs8VA6l6aYX/RrlYJTd101kEtI6cgaPFRSDZrLZKY4c/ZH8jprqqgJHlgFIxrcmgyan87i5HL9sRNJz4Aeapx7ulo4NlyjaUo0gYiNwjFZTjYSkJNiK90cP2+ns/Mkm4/GYLntcUQnVuB++/tBLdx3eCqecJ6z0x1OOkBTTLOe/tRrOrBAFZlWDNs6yJ+Ru2t5Tr02S7KAlB32luGHWPdaFPKoc9I0
+ pG5xNXFi
+ Mh3r1fTZ+njoBMJFWO9VL5OwprO83AnQNyPetYdSoUnEyvwOQJxQh+XdKhyhhFF3TgJIMWHuchshkvYHGDCMwlnYQ0CGSPAHaNRsPLKijenKP8xl5ZuV8Ns2LrnHNOW4nlGN0nEDtUZ2GvVWDTJkWUxnwRlYIDZ0Ql8k8IeCEOJATBN+1n+QMKhrDcKHQ2TmX2+9IuDINL9P6y+lBszQ/k2Ga9X23MDxhajBcNoBzlEoIWaZ03Jt6zCCiXf7gaYC0Fx1I/CHGLxjfl3tlK6iPJt9AgL4jUieu5MgWDC/PFAE8Z1dh6dEOelpa9hspjCUJVgqjXyVDF8I+AmkpN9legD1jKVaYXKcRlNsdjgm5rVH9eyRiuE+BO3tmJMBR2SjcLkGhEb/Tp7O3KjtbnkYCJq26pK4F+2tasUS1tLtiNyNMJj+ecohKVJBe4+jm30eAB5onggSB+H1gbW3fKySQY9vS39Wam34lNVgOMQyRH5VSUGFGdoUWmxmTzjzYqvmU1d+w/aBoVYO+YWAkNdj/d/QdXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,163 +105,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi,
 
-Please next time send v2 as a different mail rather than replying to v1 and
-add description of the changes between the versions:
+Sorry for the noise and for sending an insufficiently validated conclusion ea=
+rlier. I rechecked this more carefully, and my earlier conclusion was not wel=
+l founded.
 
-https://docs.kernel.org/process/submitting-patches.html#commentary
+I can no longer justify
 
-On Wed, Apr 15, 2026 at 12:27:31PM +0000, priyanshukumarpu@gmail.com wrote:
-> From: Priyanshu Kumar <priyanshukumarpu@gmail.com>
-> 
-> memblock allocations now reserve memory with MEMBLOCK_RSRV_KERN and,
-> on NUMA configurations, record the requested node on the reserved
-> region. Several memblock simulator NUMA tests still expected merges
-> that only worked before those reservation semantics changed, so the
-> suite aborted even though the allocator behavior was correct.
-> 
-> Update the NUMA merge expectations in the memblock_alloc_try_nid()
-> and memblock_alloc_exact_nid_raw() tests to match the current reserved
-> region metadata rules. For cases that should still merge, create the
-> pre-existing reservation with matching nid and MEMBLOCK_RSRV_KERN
-> metadata. Also strengthen the memblock_alloc_node() coverage by
-> checking the newly created reserved region directly instead of
-> re-reading the source memory node descriptor.
-> 
-> Finally, drop the stale README/TODO notes that still claimed
-> memblock_alloc_node() could not be tested.
-> 
-> The memblock simulator passes again with NUMA enabled after these
-> updates.
-> 
-> Signed-off-by: Priyanshu Kumar <priyanshukumarpu@gmail.com>
-> ---
->  tools/testing/memblock/README                 |  5 +----
->  tools/testing/memblock/TODO                   |  4 ++--
->  .../memblock/tests/alloc_exact_nid_api.c      |  6 +++---
->  tools/testing/memblock/tests/alloc_nid_api.c  | 21 +++++++++++++------
->  4 files changed, 21 insertions(+), 15 deletions(-)
-> 
-> diff --git a/tools/testing/memblock/README b/tools/testing/memblock/README
-> index 7ca437d81806..b435f48d8a70 100644
-> --- a/tools/testing/memblock/README
-> +++ b/tools/testing/memblock/README
-> @@ -104,10 +104,7 @@ called at the beginning of each test.
->  Known issues
->  ============
->  
-> -1. Requesting a specific NUMA node via memblock_alloc_node() does not work as
-> -   intended. Once the fix is in place, tests for this function can be added.
-> -
-> -2. Tests for memblock_alloc_low() can't be easily implemented. The function uses
-> +1. Tests for memblock_alloc_low() can't be easily implemented. The function uses
->     ARCH_LOW_ADDRESS_LIMIT marco, which can't be changed to point at the low
->     memory of the memory_block.
->  
-> diff --git a/tools/testing/memblock/TODO b/tools/testing/memblock/TODO
-> index e306c90c535f..c13ad0dae776 100644
-> --- a/tools/testing/memblock/TODO
-> +++ b/tools/testing/memblock/TODO
-> @@ -1,5 +1,5 @@
->  TODO
->  =====
->  
-> -1. Add tests for memblock_alloc_node() to check if the correct NUMA node is set
-> -   for the new region
-> +1. Add tests for memblock_alloc_low() once the simulator can model
-> +   ARCH_LOW_ADDRESS_LIMIT against the low memory in memory_block
-> diff --git a/tools/testing/memblock/tests/alloc_exact_nid_api.c b/tools/testing/memblock/tests/alloc_exact_nid_api.c
-> index 6e14447da6e1..0c46c73b5e04 100644
-> --- a/tools/testing/memblock/tests/alloc_exact_nid_api.c
-> +++ b/tools/testing/memblock/tests/alloc_exact_nid_api.c
-> @@ -368,7 +368,7 @@ static int alloc_exact_nid_bottom_up_numa_part_reserved_check(void)
->  	max_addr = memblock_end_of_DRAM();
->  	total_size = size + r1.size;
->  
-> -	memblock_reserve(r1.base, r1.size);
-> +	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
->  	allocated_ptr = memblock_alloc_exact_nid_raw(size, SMP_CACHE_BYTES,
->  						     min_addr, max_addr,
->  						     nid_req);
-> @@ -861,8 +861,8 @@ static int alloc_exact_nid_numa_reserved_full_merge_generic_check(void)
->  	min_addr = r2.base + r2.size;
->  	max_addr = r1.base;
->  
-> -	memblock_reserve(r1.base, r1.size);
-> -	memblock_reserve(r2.base, r2.size);
-> +	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
-> +	__memblock_reserve(r2.base, r2.size, nid_req, MEMBLOCK_RSRV_KERN);
->  
->  	allocated_ptr = memblock_alloc_exact_nid_raw(size, SMP_CACHE_BYTES,
->  						     min_addr, max_addr,
-> diff --git a/tools/testing/memblock/tests/alloc_nid_api.c b/tools/testing/memblock/tests/alloc_nid_api.c
-> index 562e4701b0e0..c23652727976 100644
-> --- a/tools/testing/memblock/tests/alloc_nid_api.c
-> +++ b/tools/testing/memblock/tests/alloc_nid_api.c
-> @@ -1965,7 +1965,7 @@ static int alloc_nid_bottom_up_numa_part_reserved_check(void)
->  	max_addr = memblock_end_of_DRAM();
->  	total_size = size + r1.size;
->  
-> -	memblock_reserve(r1.base, r1.size);
-> +	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
->  	allocated_ptr = run_memblock_alloc_nid(size, SMP_CACHE_BYTES,
->  					       min_addr, max_addr, nid_req);
->  
-> @@ -2412,8 +2412,8 @@ static int alloc_nid_numa_reserved_full_merge_generic_check(void)
->  	min_addr = r2.base + r2.size;
->  	max_addr = r1.base;
->  
-> -	memblock_reserve(r1.base, r1.size);
-> -	memblock_reserve(r2.base, r2.size);
-> +	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
-> +	__memblock_reserve(r2.base, r2.size, nid_req, MEMBLOCK_RSRV_KERN);
->  
->  	allocated_ptr = run_memblock_alloc_nid(size, SMP_CACHE_BYTES,
->  					       min_addr, max_addr, nid_req);
-> @@ -2496,15 +2496,18 @@ static int alloc_nid_numa_split_all_reserved_generic_check(void)
->  
->  /*
->   * A simple test that tries to allocate a memory region through the
-> - * memblock_alloc_node() on a NUMA node with id `nid`. Expected to have the
-> - * correct NUMA node set for the new region.
-> + * memblock_alloc_node() on a NUMA node with id `nid`. Expected to allocate
-> + * the region within the requested node and mark the new reservation with the
-> + * correct NUMA node.
+  memcg_validate_race: fixed start/end mismatch (1 -> 0)
 
-This change is not related to the fix and I think it's adding too much
-noise to the test in any case.
+as evidence for this patch.
 
->   */
->  static int alloc_node_on_correct_nid(void)
->  {
->  	int nid_req = 2;
->  	void *allocated_ptr = NULL;
->  #ifdef CONFIG_NUMA
-> +	struct memblock_region *new_rgn = &memblock.reserved.regions[0];
->  	struct memblock_region *req_node = &memblock.memory.regions[nid_req];
-> +	phys_addr_t req_node_end = region_end(req_node);
->  #endif
->  	phys_addr_t size = SZ_512;
->  
-> @@ -2515,7 +2518,13 @@ static int alloc_node_on_correct_nid(void)
->  
->  	ASSERT_NE(allocated_ptr, NULL);
->  #ifdef CONFIG_NUMA
-> -	ASSERT_EQ(nid_req, req_node->nid);
-> +	ASSERT_EQ(memblock.reserved.cnt, 1);
-> +	ASSERT_EQ(new_rgn->size, size);
-> +	ASSERT_EQ(new_rgn->base, (phys_addr_t)allocated_ptr);
-> +	ASSERT_EQ(new_rgn->flags, MEMBLOCK_RSRV_KERN);
-> +	ASSERT_EQ(nid_req, memblock_get_region_node(new_rgn));
-> +	ASSERT_LE(req_node->base, new_rgn->base);
-> +	ASSERT_LE(region_end(new_rgn), req_node_end);
->  #endif
->  
->  	test_pass_pop();
-> -- 
-> 2.43.0
-> 
+I rebuilt an apples-to-apples baseline/fixed pair from the same source base a=
+nd reran the QEMU validation. The result is:
 
--- 
-Sincerely yours,
-Mike.
+- baseline and fixed both reproduce the warning under the original remount-ba=
+sed harness
+- baseline and fixed both stop reproducing it under a no-remount harness
+- the validation workers still start in the no-remount case
+
+So this warning does not distinguish the wrapper patch from baseline behavior=
+. At this point it appears to be induced by the remount/rebind test harness i=
+tself, not evidence of a wrapper-specific regression.
+
+I do not have a reproducer that distinguishes baseline from the patched kerne=
+l, so I am dropping this patch from this line of argument.
+
+Assisted-by: OpenAI Codex: GPT-5.4 [shell] [qemu]
+
 
