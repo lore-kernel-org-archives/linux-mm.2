@@ -4,93 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBA08FA0C26
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 04:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90A94FA0C26
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 05:23:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AF076B0092; Wed, 15 Apr 2026 00:45:35 -0400 (EDT)
+	id B6F0F6B0092; Wed, 15 Apr 2026 01:23:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 960276B0093; Wed, 15 Apr 2026 00:45:35 -0400 (EDT)
+	id B467F6B0093; Wed, 15 Apr 2026 01:23:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 875846B0095; Wed, 15 Apr 2026 00:45:35 -0400 (EDT)
+	id A83A96B0095; Wed, 15 Apr 2026 01:23:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7648B6B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:45:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D9B9713A8E0
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 04:45:34 +0000 (UTC)
-X-FDA: 84659551788.17.B568067
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B7EB2140002
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 04:45:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=eokLRvAh;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CCCF6B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:23:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 26BAF1603B6
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:23:08 +0000 (UTC)
+X-FDA: 84659646456.10.C86F39A
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 548F740008
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:23:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IDODRyD0;
+	spf=pass (imf12.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776228333;
+	s=arc-20220608; t=1776230586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=cNtuv37NTaPfVdG2Wyq1cY183ygGsxhutDabViwK+DQ=;
-	b=V7JyweLnjaJBXcirnUnBiZM4FUz9Pp8b6/I0hwm/Xvfpr1zUHbIuROL/TDC1QRX9y0jJuj
-	zUga5GV7dCuScs/glAGMvQ5hDdZxiWo9VPZvdI7xG/XV4jhPia8C3Jy8Pd4oKmINwPlZYK
-	B7dbYXEOKwhhvkSV3CE0j3jRJX4r4HU=
+	bh=ahvhNnnqb7Kgkx1NCZ5CBW0y21V8G4hdByGJdydbTqM=;
+	b=JaJL9EF6hsaJ+25HHvlNuQRJAK1WvAD1Jg6S4FMEgujEOcWFluT2n2NunzDfn7AcinqSOq
+	1M2tltTnCjjVf4HKTrwoKJ2bvdunyeDblqwc5I1xo7ZIQvCjST2nvzFtXJLVVORaFtI6o7
+	UyjxTo9p0CR03N9NlUpMIRt6pWZvxeY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=eokLRvAh;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776228333; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=IDODRyD0;
+	spf=pass (imf12.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776230586; a=rsa-sha256;
 	cv=none;
-	b=fmjLW32yAt9ECIZaeI3xH2kkiOBlL2soJlADFPIs34FgSdJHfYg2iEuuZEM5BqMDuamwmo
-	Bf46bFEwHChwzt58TBKWQoZGQyR8UDcZad89twLrym4Ks5e29vJu6GxD3JMgOBf9umTSDT
-	JGqodvDoX82vYY2aW5QmC7sUOm7kuuE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4367337D;
-	Tue, 14 Apr 2026 21:45:25 -0700 (PDT)
-Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6C49F3F86F;
-	Tue, 14 Apr 2026 21:45:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776228331; bh=TVMWKdtf33Q9VHYtStDLDAKGyqg5Xckzkj5HLoa3F8Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eokLRvAhysbewSW5m115UvHQa/oTGWnuc2hWGGfJOzYWG52ay0ijHPROZOs+7SGan
-	 hamk5wRE2pc8Xzo3uyO0dVXgLvGZrFm/fCgig5wtgQidr6r+syLzNqjnrADTRGFAIT
-	 aagjGFwbMioNfJPt0FyqbUQdTNEv2EsBwWBPD9Os=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	shuah@kernel.org
-Cc: ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
+	b=ThcwOQKAnZ6GhfAro83ZnGPWAFxM2tZGr8x3YKG/PBk0Qd3JLBFW2Cu883IkakOT+/e2Oq
+	49fpiIyBj9pqmzhY9UDBn73jXoxAIeWZNNXsBCIKc0WgvTVoNEjVkcFk7AtqTeqnrtXRsa
+	gVwP8cCa4djtKFKWKk5XdnFC5achoBs=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43cfd96354aso3779989f8f.1
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 22:23:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776230585; x=1776835385; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ahvhNnnqb7Kgkx1NCZ5CBW0y21V8G4hdByGJdydbTqM=;
+        b=IDODRyD07Txi7KMXjCqK9je1zf/A3bcQNmnCwHjJwt4U8Vjlpg1uOuVBDCcQVy1g/D
+         l4LVq0Wpp5z+cMjywfwjaT9ZCqjvkFnoqQpcKEL3ypr/ccvdJyu9C2DO3oeyVs/0rAGm
+         kGbo636xv7CtcLyiBCEv07guVL/NGRA4JzwP5pC2aEMEmQ0IOP1cWUjpIB93vj8t+Os5
+         Oew8gknJg3Mdy7dcANgD98s9/33//ukTGReZeUPXSf89UiQzuVAY0RsDKoxnyElpwUWw
+         Wkuw8qa6HbfPZsNKsizLkcqqAz3o3ait77tIWD+EbqZRvt5WjNYxz/aBXBZHgOnJiRZe
+         /OBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776230585; x=1776835385;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ahvhNnnqb7Kgkx1NCZ5CBW0y21V8G4hdByGJdydbTqM=;
+        b=WwBk5tCpz5Q+WcwMgwekj97YSMWaZBq3fNKdMINxEHqS6pPcX1m+bhgbRjVoOcxx23
+         VAdcgfG6KFBuYQjrtq2UxhPyEGkZoE13uI5itbpKyD53Ab7zo9xF9GTAnF1b48eFaQy9
+         4mkHthiT70T1gW2yMhCWwAbcMaALIyrDh3OLl6UXC8hJtbJSdDuusvK+2PgcpjepBkD6
+         uhBHLarQrj27smF7OBLmR/C39OVlAjE1wTVSleaTIaU43Q/TQ3mQcgIsAho2DHUXNu8y
+         2NjvJY1mhr3KlKjmJrNcFyiiHLSWCYOf0lN3yoV0zYgi+JxlcRG1XBs3lXC9PkNdLWbL
+         TvGQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9jSVnpRqixYwTA96Rpj0J07dpl1aTk90gqJj0IS2BKEGcSYvvbsUJoXe66Hxp07PhiH8pXBhn6Rw==@kvack.org
+X-Gm-Message-State: AOJu0Yy58Tkv9Q5OhdkfSHgIirEnJbVaFb+A0XaaNJsucs7XBkNWKml6
+	HN/FR4lPPVcI242JVRKLKMOmdeauXn2nqbrjjRf2nLoribmfmuS2Ctwe
+X-Gm-Gg: AeBDiet2gEEp01lt97KqMmqBB7r1jrL1twbP/kI3P/3yQyG+LpbYZgMHKQBykU6gnWM
+	Xhm7mGi/r3xaKP9HBLQoT5aVAoMieq1m49e4zaImddiKQM4HVmPevX/tD7nEddfGsdN9m5xBTPP
+	nKuOddqEDIv+hbpfdrjEsHssntD49MOGBIYBopdZpApOvCqG5fCoK23x6P3qicwcY2S3E14MKuy
+	SrPclVDbK5RAGMX93hdhrjuFMwj6o6HZbZw5TWEpBT4INIF5YWbDwAws4fl1uR3+6o9/al9a8vs
+	arVWjw28+xaDQPDcVTn6wtZlAr9LwZvvTmWPlBbODJdGgqY1hwIDFWvv9F5nj1rvNowfbWhYxMH
+	dX6tkrhUgR8OkLZ2ga0WWFvN+lzTEBljab1aCXF/QB73OauwGWc5GypI0sPIh4pc55H/cl3rBQQ
+	/TWW5ovRWi+q9xHj9wonpoU+g0LxJf2KpLw0M4I6ArrLl7a81Zd11+PHudgoW1x45GEQTxi128B
+	Nh3AtlfObb3DAvd7jJqdrQ=
+X-Received: by 2002:a05:6000:2082:b0:43e:a70d:763d with SMTP id ffacd0b85a97d-43ea70d79a4mr7652684f8f.46.1776230584485;
+        Tue, 14 Apr 2026 22:23:04 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3ebaaasm1851925f8f.32.2026.04.14.22.23.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Apr 2026 22:23:04 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Chenghao Duan <duanchenghao@kylinos.cn>,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	Dev Jain <dev.jain@arm.com>,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: [PATCH v2] selftests/mm: Simplify byte pattern checking in mremap_test
-Date: Wed, 15 Apr 2026 10:15:09 +0530
-Message-Id: <20260415044509.579428-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.34.1
+	David Carlier <devnexen@gmail.com>
+Subject: [PATCH] mm/memfd_luo: report error when restoring a folio fails mid-loop
+Date: Wed, 15 Apr 2026 06:23:00 +0100
+Message-ID: <20260415052300.362539-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 548F740008
+X-Stat-Signature: auk5ugr4zzfoco989jc5b69ciez8prsy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B7EB2140002
-X-Stat-Signature: 5wwtguu9wp75s3s3uu7m5nbh8y5pig8s
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776228332-17440
-X-HE-Meta: U2FsdGVkX19GoTS/ncmuCw9Rvow+9LymaQpW1qBT6R0I57sGEVorbI0UGSGifE/NYISEzV8HbOge8y73OugM9fJic3YlfsDjoRDA902fP5tGW3b6loEOIpc7S/XroxcxE3ZSSVjhgBe7pqul7KzDt6NpIO5r/vI0RWS04kDiCUcUOuyZc7KxBzMEkFNh8hGfV/40uv1Qmvfk8N+PATpdlmmN+gszbD6uwuWiXJZK1/b1uogeeF+XYh2WEmxHK4qCq4fSo4j0nEBSzQDUjGQKnTf6YhIE6T7aLw8/NvrUOsidGZnNKljgiele1sWYttJbXLxF6Uf+H9e817rapbTz16448oNb6W9IXdJM8fhHaVllwVMH6i+RWPtanxwx9z0/9Ftn/T83HAiyN2sIm55p7TnftOVoNFgKRxEFKAYzzvuLu92JajXnq5wQ0kBwUhpc76V+6QEHYOliZWJ8bff/r2rLBL04RiswQY8+fZ2sGLESutPmteyXCBH9U/V/uadRrerT2YSlzrcUVN4FauDnbu+o6uYqSxS4XJKtUSLwdDeXa6kJFvjfA0Inoxqx4BEcyh/hs2FVBXm4uHcG451piYEVQtEoHKFuSWovd9a43JEgwA6cPxouUi64my5sTyBtqj6EouA51gHTe3A2SdEbzw3yWWfnrVNIbIuX2ru+rxiysFOGPJUbCd4nKiPpSV5USrYQs2LDZ81wP0lchyOTW/dSWGYtzfw2ielIjssWlGRp+4TsBSeGkzrFUwg/DufC9ze7HKUrFnp1Q45MjMb+C59Ien0r3s9PIrp88RdZAmbPMUQ2IW3ZVnpbrEZS9L9bAyfr3DTz7eC9Sb8Zg9lmf3leSnjcXJdznyzLQ3Ts8DwmlSV41O2H6dWMMMOl3T/iFdRHKF0EViMx3ICPQtU8vWb/9k6m2jE61WpB3Xp4HHRxu9gYs+oUFtf/+Yk1N9L9GY4JSxYNNd/LcpzXmwH
- NusTo9oy
- GJrOal2pjIKYwfVxm9qP5ir7di9/ZEV4ueoA4yqznFiB69tD8MIRoyZAoqYEasM9tkH8VRF321Ery2PsKzepc+u2tjdEQejLoG7zSi5gm4gr5JM991OOpXWfY/WA6HIwfOSkQtCzDNBzA890QyYpqe3FLh4bp6zmlhMhrCIfRDmGmbMWWcZjg5VpQFSVk7cYeAhi+FikkgBy/1eMGdSE8b204HAbaKrcD2VxPXNQ5P0VEWK3KYjntskENnjbIrLB8QEqBfQNHxNeva3G3NCsvFGsktX/89edkeZkKh4SiZGu7quIu2Pc4Uk19yX4wiEddKHj6
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776230586-490087
+X-HE-Meta: U2FsdGVkX1+s7bwXxPDwHVHlH59mVpfCVwo1pHhJ882MuMUqbDZd3U7uvx2Gj9kV8cryiFZfF39aoDyll6UONj5B5mkPM8yu2hYzTJs4cmX5RwYUVfwXj6QbkuL9NKdr67G5pWYW718XTd/B9paVOYBXmtWciUkE74Twj8l17scEMhrURHfYKw9ROClr1WfIZkDgMUoRsC0DNV+SoupMDYM84OSaoL/n0hJ9q6jd3YDnr5QA6BUuCVkVadT7XHRz2JoZxalHdBQWXDRvlac6XgCG2gQBxtAa8O14DWuNYWRSmgO0z3navJz4jeAElatROUVqc8fKQVFeME3SzHI+ta3ChOYZnlZOE7yXM1Ir2OrsArZPPiX/mYNSCAZjNDMobI6GqATEfQ+y0kCgty8swwPahOZe58pZliRwllxIVuvMu7sEJxUn/FFEAKLjU+HtWyllujEEaPfKw5axc2XE5D580Bbm4x6REi/54Im9k7nurs1pHIipDD8lR7FhkIWuewXMLSsAjf8GwBR+3ShXyqALfs9CYVxNSOCp5FNZI0hpHPLO60LBOqWCUX0/zgknDIPf8aksl/b67ocOiW3/u0paMOOvBA1zqYkOaTzL17SmBUdPBt9co+mOVl33HlAoevoxWKxL0UQYIqYbBoj338UruNNp6GWhdinicy3zm7H6ITw3u4VIqn7lQetAZLEWXGlKLxS0kUJHhRSS7VI2hZfUC570zFgZTGaaTDNJCjArV4zwSp1C7C5BFH+i5jYLE2PeaVIfj1GC5dNBDviXwnrIse23NOux0tgGg9WnZG4xc3EELT0puTDu0RBUJrvbZl7mYKbeSqOFpAGX8N5l9S+no7SwyTWAsbqiVDokM6tWacK04D0RYzah++ym4XEJ93z7eOtS9wmEJ1pJZ7JfPQMWD6t/ZeMfoQeyGumOvfLgwv7LYmGEaQY//CneP9jRFR9pmgTBP7pW5eejV2C
+ F6KAH0YD
+ c7VTNeE+9amQukMsusPVVJ4UVGTqfswdZy23Vl7I27U3F+7NgA4PWolebgeS2fJSsC0SXCm7P7z4S/ULt+9oT2IGal3sNnMZ9VePNa6Hsl4OQ1eFGFzVLA56eTTlMcBhuAAmiwFoZczFMKVwJnk+QzEwfrAdDs005FJCUZh+TAE4OgWOaB+0CYUgF2Hii2U805THhzY2ZVorWi2sQMDsyXBP7w69RxhYLaCU2BcjHFirHgrJvX9QLQ2vgAWcnEC5CpvBHyCPu0VcbNl3le089wQptVuXyi3rM/8BFngKkSrBUWggXKpT3Jhql6E6GUjagvbphhHRTdMK4JaA6j38Pg0Me4ppOSh+I3dRiVuEg9GNH2o79YvCRHCDXUXt7N2UQssKsUfAvbeFtV8BvyfTx0hGB9hux/lykb8PPXc0ZEITy/WXlwUHEIzjErJgKp9QSrV9+SjmOfb2EMrM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,180 +120,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The original version of mremap_test (7df666253f26: "kselftests: vm: add
-mremap tests") validated remapped contents byte-by-byte and printed a
-mismatch index in case the bytes streams didn't match. That was rather
-inefficient, especially also if the test passed.
+memfd_luo_retrieve_folios() initialises err to -EIO, but the per-iteration
+calls to mem_cgroup_charge(), shmem_add_to_page_cache() and
+shmem_inode_acct_blocks() reuse and overwrite err.  Once any iteration
+completes successfully, err becomes zero.
 
-Later, commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
-execution time from minutes to seconds using chunkwise memcmp") used
-memcmp() on bigger chunks, to fallback to byte-wise scanning to detect
-the problematic index only if it discovered a problem.
+If a later iteration's kho_restore_folio() returns NULL, the failure path
+jumps to put_folios without resetting err, so the function returns 0.
+The caller memfd_luo_retrieve() then takes the success path, sets
+args->file and reports the restore as successful, leaving userspace with
+a partially populated memfd and no indication that anything went wrong.
 
-However, the implementation is overly complicated (e.g., get_sqrt() is
-currently not optimal) and we don't really have to report the exact
-index: whoever debugs the failing test can figure that out.
+Set err to -EIO in the kho_restore_folio() failure branch so the error
+is propagated to the caller.
 
-Let's simplify by just comparing both byte streams with memcmp() and not
-detecting the exact failed index.
-
-Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
-Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
+Signed-off-by: David Carlier <devnexen@gmail.com>
 ---
-Applies on mm-unstable.
+ mm/memfd_luo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v1->v2:
- - Simplify patch description
-
-v1:
- - https://lore.kernel.org/all/20260410143031.148173-1-dev.jain@arm.com/
-
- tools/testing/selftests/mm/mremap_test.c | 109 +++--------------------
- 1 file changed, 10 insertions(+), 99 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 308576437228c..131d9d6db8679 100644
---- a/tools/testing/selftests/mm/mremap_test.c
-+++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -76,27 +76,6 @@ enum {
- 	.expect_failure = should_fail				\
- }
- 
--/* compute square root using binary search */
--static unsigned long get_sqrt(unsigned long val)
--{
--	unsigned long low = 1;
--
--	/* assuming rand_size is less than 1TB */
--	unsigned long high = (1UL << 20);
--
--	while (low <= high) {
--		unsigned long mid = low + (high - low) / 2;
--		unsigned long temp = mid * mid;
--
--		if (temp == val)
--			return mid;
--		if (temp < val)
--			low = mid + 1;
--		high = mid - 1;
--	}
--	return low;
--}
--
- /*
-  * Returns false if the requested remap region overlaps with an
-  * existing mapping (e.g text, stack) else returns true.
-@@ -995,11 +974,9 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
- 			      char *rand_addr)
- {
- 	void *addr, *tmp_addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
--	unsigned long long t, d;
- 	struct timespec t_start = {0, 0}, t_end = {0, 0};
- 	long long  start_ns, end_ns, align_mask, ret, offset;
- 	unsigned long long threshold;
--	unsigned long num_chunks;
- 
- 	if (threshold_mb == VALIDATION_NO_THRESHOLD)
- 		threshold = c.region_size;
-@@ -1068,87 +1045,21 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
- 		goto clean_up_dest_preamble;
- 	}
- 
--	/*
--	 * Verify byte pattern after remapping. Employ an algorithm with a
--	 * square root time complexity in threshold: divide the range into
--	 * chunks, if memcmp() returns non-zero, only then perform an
--	 * iteration in that chunk to find the mismatch index.
--	 */
--	num_chunks = get_sqrt(threshold);
--	for (unsigned long i = 0; i < num_chunks; ++i) {
--		size_t chunk_size = threshold / num_chunks;
--		unsigned long shift = i * chunk_size;
--
--		if (!memcmp(dest_addr + shift, rand_addr + shift, chunk_size))
--			continue;
--
--		/* brute force iteration only over mismatch segment */
--		for (t = shift; t < shift + chunk_size; ++t) {
--			if (((char *) dest_addr)[t] != rand_addr[t]) {
--				ksft_print_msg("Data after remap doesn't match at offset %llu\n",
--						t);
--				ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[t] & 0xff,
--						((char *) dest_addr)[t] & 0xff);
--				ret = -1;
--				goto clean_up_dest;
--			}
--		}
--	}
--
--	/*
--	 * if threshold is not divisible by num_chunks, then check the
--	 * last chunk
--	 */
--	for (t = num_chunks * (threshold / num_chunks); t < threshold; ++t) {
--		if (((char *) dest_addr)[t] != rand_addr[t]) {
--			ksft_print_msg("Data after remap doesn't match at offset %llu\n",
--					t);
--			ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[t] & 0xff,
--					((char *) dest_addr)[t] & 0xff);
--			ret = -1;
--			goto clean_up_dest;
--		}
-+	/* Verify byte pattern after remapping */
-+	if (memcmp(dest_addr, rand_addr, threshold)) {
-+		ksft_print_msg("Data after remap doesn't match\n");
-+		ret = -1;
-+		goto clean_up_dest;
- 	}
- 
- 	/* Verify the dest preamble byte pattern after remapping */
--	if (!c.dest_preamble_size)
--		goto no_preamble;
--
--	num_chunks = get_sqrt(c.dest_preamble_size);
--
--	for (unsigned long i = 0; i < num_chunks; ++i) {
--		size_t chunk_size = c.dest_preamble_size / num_chunks;
--		unsigned long shift = i * chunk_size;
--
--		if (!memcmp(dest_preamble_addr + shift, rand_addr + shift,
--			    chunk_size))
--			continue;
--
--		/* brute force iteration only over mismatched segment */
--		for (d = shift; d < shift + chunk_size; ++d) {
--			if (((char *) dest_preamble_addr)[d] != rand_addr[d]) {
--				ksft_print_msg("Preamble data after remap doesn't match at offset %llu\n",
--						d);
--				ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[d] & 0xff,
--						((char *) dest_preamble_addr)[d] & 0xff);
--				ret = -1;
--				goto clean_up_dest;
--			}
--		}
--	}
--
--	for (d = num_chunks * (c.dest_preamble_size / num_chunks); d < c.dest_preamble_size; ++d) {
--		if (((char *) dest_preamble_addr)[d] != rand_addr[d]) {
--			ksft_print_msg("Preamble data after remap doesn't match at offset %llu\n",
--					d);
--			ksft_print_msg("Expected: %#x\t Got: %#x\n", rand_addr[d] & 0xff,
--					((char *) dest_preamble_addr)[d] & 0xff);
--			ret = -1;
--			goto clean_up_dest;
--		}
-+	if (c.dest_preamble_size &&
-+	    memcmp(dest_preamble_addr, rand_addr, c.dest_preamble_size)) {
-+		ksft_print_msg("Preamble data after remap doesn't match\n");
-+		ret = -1;
-+		goto clean_up_dest;
- 	}
- 
--no_preamble:
- 	start_ns = t_start.tv_sec * NS_PER_SEC + t_start.tv_nsec;
- 	end_ns = t_end.tv_sec * NS_PER_SEC + t_end.tv_nsec;
- 	ret = end_ns - start_ns;
+diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+index b02b503c750d..35d1247281e0 100644
+--- a/mm/memfd_luo.c
++++ b/mm/memfd_luo.c
+@@ -427,6 +427,7 @@ static int memfd_luo_retrieve_folios(struct file *file,
+ 		if (!folio) {
+ 			pr_err("Unable to restore folio at physical address: %llx\n",
+ 			       phys);
++			err = -EIO;
+ 			goto put_folios;
+ 		}
+ 		index = pfolio->index;
 -- 
-2.34.1
+2.53.0
+
 
