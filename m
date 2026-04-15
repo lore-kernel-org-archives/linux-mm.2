@@ -4,84 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5598FA0C26
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 05:50:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4914DFA0C30
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 05:51:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04C8D6B0093; Wed, 15 Apr 2026 01:50:09 -0400 (EDT)
+	id A138C6B0093; Wed, 15 Apr 2026 01:51:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0245B6B0095; Wed, 15 Apr 2026 01:50:08 -0400 (EDT)
+	id 9EAE16B0095; Wed, 15 Apr 2026 01:51:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA3A06B0096; Wed, 15 Apr 2026 01:50:08 -0400 (EDT)
+	id 9288F6B0096; Wed, 15 Apr 2026 01:51:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DAE606B0093
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:50:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 85B56E2CF3
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:50:08 +0000 (UTC)
-X-FDA: 84659714496.14.631C22B
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C839212000D
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:50:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776232207; a=rsa-sha256;
-	cv=none;
-	b=DOOXLDh69QHU3Uhsah7VyZQ26yxAM70ISFNsj7qF4pHPSOeT7lU4MuJbPp7oIzCZy2FqkR
-	FfxI2eSot0jzFysYKWOso5uVrTOkI1Jwk2kjyUaXJP7UmsNqO/txLniqyEWFFry36GhZHV
-	8+f/9DPA3ETRn6yhBFe1YLLG5LOr7H8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E3B06B0093
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:51:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2AD96E3CD8
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:51:25 +0000 (UTC)
+X-FDA: 84659717730.27.57A9459
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 27F94100003
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:51:22 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O1wBKG9X;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776232207;
+	s=arc-20220608; t=1776232283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Fk7YcQ6QKf5fLUVsvamkPBjeLdGsl9ofX5zFjUfyoj4=;
+	b=7O77PokOZu6RZxLbDkKRozjS+wbH1iYrWANJcuJvFdEEoppk0yec9IN29dhhfPwp14ZYtS
+	uwRXHZ5jG58afQSpfR47w5NSheI1P4ywMLtTNFKwXb4LZ9J8IZyYACWpIMCQBg1XOa+kCM
+	ckiFQc/2UYUL55zy8sC8kNaHQOaPWL8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=O1wBKG9X;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776232283; a=rsa-sha256;
+	cv=none;
+	b=scMG/K7yYzzYRuAxYEZBY/+DIRonFcdnVqgpecgJ47u3QXiq6JmIWrOzMx87B9ZHSRN2eH
+	XjV+7T+8acJeXQvBtpsfZ4A/IZ4TNuxtJuQ4XBqu+4WCd2hVXK9eeAmA81ydkOVPYFInna
+	uKo9GDHbZhw2077e+G55Bt4IAV4xGrw=
+Message-ID: <c55c49d7-642b-4b99-a2c7-053cb88541d0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776232277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8QzlMtMaj4YFIrQN3lYld6fS+2+p6vh5n6+XXVwQpj8=;
-	b=CYc3yMPysEXGCLu5Z7AUf3MY75gi7keiDPHpjQ/yt76fE/boHztxaVGFVUW1f5tstCetV+
-	c7Wq9kznUQkRTFU+kWtZgQZ8QsjndhlZjytkYiuP3Y8orSHv5gmt4pUx4aXygjvskPqr8c
-	vVAIJGKyc1OnpxkIRJPL4LT9Fub3bqU=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 4246468BFE; Wed, 15 Apr 2026 07:50:03 +0200 (CEST)
-Date: Wed, 15 Apr 2026 07:50:02 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Dave Chinner <dgc@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Tal Zussman <tz2294@columbia.edu>,
-	Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>
-Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
- support
-Message-ID: <20260415055002.GC26893@lst.de>
-References: <20260409160243.1008358-1-hch@lst.de> <20260409160243.1008358-9-hch@lst.de> <adl1iqhldFvJwSw-@dread> <20260415054835.GB26893@lst.de>
+	bh=Fk7YcQ6QKf5fLUVsvamkPBjeLdGsl9ofX5zFjUfyoj4=;
+	b=O1wBKG9X40Zk2mMmuCRqGjMgiGlRuDC+q7N47GfqkXQg8WL8pshpe1HRLc8NEm4jemSF8b
+	KgwkiMqtYJtlqorV/PWC5OtuPCGZ7kX+05rXeX6JYXYBzdYL9Afx3DUG7G1ez7TRaZOpgH
+	dMOzuM1aV4jv9sXiJ1KcbwLPMnmhQWY=
+Date: Wed, 15 Apr 2026 13:51:02 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415054835.GB26893@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C839212000D
-X-Stat-Signature: 7yzf544fc4w1a4ybrtfnjaa1yp3tj5ei
+Subject: Re: [PATCH 3/4] mm/vmstat: remove unused __node_stat_* wrappers
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Ye Liu <liuye@kylinos.cn>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20260415022910.1890050-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <20260415022910.1890050-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 27F94100003
+X-Stat-Signature: wabqz631aq1h8xy44orfa1ek5opsncpj
 X-Rspam-User: 
-X-HE-Tag: 1776232206-451594
-X-HE-Meta: U2FsdGVkX1+gU422M3JKYzrtVHQFlmDBpF3/pqFUfP98u5xUFb4f/YWidSACSV+5oG1cE9ZaAlUNZjogzkJ0XIfjmcYegCUux+kiKzp0wLsXCdVhDNZlYQBM2gnwnyBcZNfj0evtz8XnxXjp4P+mtwz70myQbaG22njjF9dZL3S0Xs2lfD7RLpvvzCkzG6sELPOwzH4m1HN9AmClfMiJQsEJEmX1Il2L8hf635n2E0AuNx/Ndp51C68JPdNu3HYHpRQvYQhKRE7WyZwRhAnVAevRltPX5aYvVnltqEhWmtz7eEDawER4n4qWTJnjm5ZKJeHo/YlMuvU23lbgY9j5QagO1bMo4lsSgBNKIgXCBxQJR97Bgo+OOf6vnBQSBeouwXOH9PA0w9R9p1QJ1/cWBmASwjlTcjwy+JWHxP3/qYyUk6jVpS2CEDQREJVVNJ0MCAWm/6Q2kZJpmXM363w6xN8M2LyYpItoKpyRpBTWQGX9JdHi9eVqDdGFYTVDczNLDdKyhn8k9Pj25qkfgGswKaVFtka8E6O/SPc5Q1WZ9hY5eUi4RhYozj2W2+e6T6fbGQa98ZgXUiWtgNUsabF+oMy1cYSb3GGpcRfUIVJLwrsln680dpocS9b2nhkGfveoZSGTD1HA89FvqIn8nlpdcrbhSf5a0hz3GV+o2gITzkhPJ7uwS1PJrrAPOVzbtwb2IURlhbfxKHlYvfPDlrvd9UzaJWT7rSWk0JSzu2GxBsGxoCx+x3r1Y6saabyEv3DOIfqccS3hBYM/yPC4Xtigyzq49F8pcg/k7zjJzAn+SJpFuK75sr24qkXdKySd1ENAhnjdmOFDVP7CGVz2YoPf4qTuAZ3eOIlf1oJ1/ANvJ6nVfBTEVc1xdTcUOCbANT/uesF7GUTwI8Psmt8TnlxRJTI2xxrjf0QhYhevrM/8XHo5JuJzdIgky1dUDw6ecdcEtawFXALR+HV822rftiN
- ILE776wA
- mNekPG+4SI1DA+B6td+Jmk51AwR7JXoeu1MR9G5YG0o/MrEHFwQ+pJq//7yRTCpehk0T3pnzwhF6O6EESnUSftQgaDuGF1saPDTmlAI9KQMBFQtCKdipHTaed6QQzPVGUdTxCN+pksBVEe60=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776232282-351301
+X-HE-Meta: U2FsdGVkX18XHbT4ubwUDoWBxoCsQoLr8K47FszAN6QEQ5dN5MQv8Aczsg6+K+nxDC/GX8uMN3q+DRLVgEjMTeDOGkzVIMThgtObNPn1sPCrOM6rxDW5UpGuyByfHDUuCve4edn1Ct2L3Sw0Z8rpoeaMY1VxGB5XHJQTwhJKfzAP4FslmK7PsIVQiiucVHLiLCJg6svy0izNWPerzKbdveicAtfew5AxaSPDjQ6km77H43RqmOoF7+mQfmlLLySa2+UkIR5Ca2owD/gIooeaqjD2qFUkG2CtS7x7XLVEcm4LG9q+bYHQAMG/aHYfCu4DRvuqUkQGLB2otLO+rcWoa5/hpiuOA5Bhtgeb3TJr/CrE4DH29fuKsoCqspcKTI65isP6UqA9A9iGUQn5LnWB8xx7qor/x8AJyUCjcYP3V66Hr2vaTIH0BzvCkwY21Z7vzK0oj97XntpgxWqViMPkHuWnlyVWvj/V0+db8IaiNYlUAEnqB9LR1G+bH+IB1hc/IfcZ5RjXICJ65hpdHBlaBtoV//90UQdWxbNdZNkhskew94YA2cTQFzUxoJWWqithBx0Uu/UJ23Gua6fx7w+TK6zVO4NQqJAf/Ih/FzYv69x57RihJwM4t4aE7WIVqJxUIdB6k7N4BrQpxEF7uW8rP2ZyqvB/TJb/z+QFoHSAIrVdwuU/rK7m1eQTnToT/adCIDC+1RtjAYxpj99OFFo1iz10H3m9AlVdUxPlt0yyUGdOEeserpXdS81giNmYo6h1jpl+0erYMfbJq/49Uq5RW8LR7LGn94RTQi9znbbgZu3hLB+qyauegYq1SUCUkqEjzFC7T64T7JA1f2b7Fb2Adm2vLr5viNXi9+xUGo7QZgwgAYUxgP+4N9e6svyy3le0dytAMfQ3Uqtl5m0nA5IQgdUIctA9AdfpDZqRuMyDAOYzuXODThygopPY3DoyeY0/yQL0PyBFPGYFJ8T8L80
+ 3i2JP68Y
+ XDgCClHkKrIycXS8tgUff3ljXwYejpvwEL1EiKllTK8/SGxRNGDtLyrG31Ju3FG6r/FoaqHIwfLGAEZ3Zygo3MVKJFZ1dEd3GQAGWuulM72tswqx71UcS0lXp1uphSnNvqYZe7gfknXIcsuQFdqfX6b51dmAaKnP6GjLt4R0dsGggbB3Voj1qO2xXxIhMX4NJZnvIZHbAlXLO/YE4v00hOjI/Rh9BbKg3o30gTBDXA5UPE34ZOkDxws9P31l8wAs6hR5gYJ/YiW4RdoatG7IhKXA4RxPV5oOMUY9b52QtVYTbcvjkCrVSWuesCWDWjAiOtai2FPLfn8FBfBwhNn3BA6qYaRtueQQ0XdVX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,37 +95,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[adding the workqueue maintainers that I should have added]
 
-On Wed, Apr 15, 2026 at 07:48:35AM +0200, Christoph Hellwig wrote:
-> On Sat, Apr 11, 2026 at 08:11:22AM +1000, Dave Chinner wrote:
-> > Can we please not go back to the (bad) old days of individual
-> > subsystems needing their own set of per-cpu kernel tasks just
-> > sitting around idle most of of the time?  The whole point of the
-> > workqueue infrastructure was to get rid of this widely repeated
-> > anti-pattern.
-> > 
-> > If there's a latency problem with workqueue scheduling, then we
-> > should be fixing that problem rather than working around it in every
-> > subsystem that thinkgs it has a workqueue scheduling latency
-> > issue...
+
+在 2026/4/15 10:29, Joshua Hahn 写道:
+> On Wed, 15 Apr 2026 08:50:54 +0800 Ye Liu <ye.liu@linux.dev> wrote:
 > 
-> Fixing the workqueue scheduling would be nice, but the attempts so far
-> failed.
+>>
+>>
+>> 在 2026/4/14 22:59, Joshua Hahn 写道:
+>>> On Tue, 14 Apr 2026 17:15:20 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+>>>
+>>>> From: Ye Liu <liuye@kylinos.cn>
+>>>>
+>>>> Replace the single call to __node_stat_mod_folio()
+>>>> with node_stat_mod_folio(), and remove the dead inline __node_stat_*
+>>>> wrapper definitions from include/linux/vmstat.h.
+>>>>
+>>>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>>>> ---
+>>>>  include/linux/vmstat.h | 18 ------------------
+>>>>  mm/page-writeback.c    |  2 +-
+>>>>  2 files changed, 1 insertion(+), 19 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+>>>> index 3c9c266cf782..54da7d820f78 100644
+>>>> --- a/include/linux/vmstat.h
+>>>> +++ b/include/linux/vmstat.h
+>>>> @@ -440,24 +440,6 @@ static inline void zone_stat_sub_folio(struct folio *folio,
+>>>>  	mod_zone_page_state(folio_zone(folio), item, -folio_nr_pages(folio));
+>>>>  }
+>>>>  
+>>>> -static inline void __node_stat_mod_folio(struct folio *folio,
+>>>> -		enum node_stat_item item, long nr)
+>>>> -{
+>>>> -	__mod_node_page_state(folio_pgdat(folio), item, nr);
+>>>> -}
+>>>> -
+>>>> -static inline void __node_stat_add_folio(struct folio *folio,
+>>>> -		enum node_stat_item item)
+>>>> -{
+>>>> -	__mod_node_page_state(folio_pgdat(folio), item, folio_nr_pages(folio));
+>>>> -}
+>>>> -
+>>>> -static inline void __node_stat_sub_folio(struct folio *folio,
+>>>> -		enum node_stat_item item)
+>>>> -{
+>>>> -	__mod_node_page_state(folio_pgdat(folio), item, -folio_nr_pages(folio));
+>>>> -}
+>>>> -
+>>>>  static inline void node_stat_mod_folio(struct folio *folio,
+>>>>  		enum node_stat_item item, long nr)
+>>>>  {
+>>>> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+>>>> index 6f9b7b081ab7..ed3301753e89 100644
+>>>> --- a/mm/page-writeback.c
+>>>> +++ b/mm/page-writeback.c
+>>>> @@ -2627,7 +2627,7 @@ static void folio_account_dirtied(struct folio *folio,
+>>>>  
+>>>>  		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
+>>>>  		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
+>>>> -		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
+>>>> +		node_stat_mod_folio(folio, NR_DIRTIED, nr);
+>>>
+>>> Hi Ye, thank you for the patch,
+>>>
+>>> In addition to what Matthew has pointed out, I also wanted to note that this
+>>> substitution isn't trivial; there are differences between the __ prefixed
+>>> version of node_stat_mod_folio and the one without. Even though the correctness
+>>> of the two versions might be the same, I think that a change like this should
+>>> be supplemented by a description of what side effects this change has
+>>> (i.e. introducing additional overhead from the cmpxchg loop).
+>>>
+>>> Thank you, I hope you have a great day!
+>>> Joshua
+>>
+>> Thank you for your review, Joshua. Regarding the difference between
+>> __node_stat_mod_folio and node_stat_mod_folio: in the current implementation,
+>> both functions ultimately use __mod_node_page_state, as mod_node_page_state
+>> is defined as __mod_node_page_state. There is no functional difference
+>> between them in terms of atomicity or overhead. The __ prefixed versions
+>> were wrappers that are now unused, which is why we're removing them.
 > 
-> In addition to that for a lot of theses cases workqueues are actually a
-> surprisingly bad fit - we have items we want to queue up an one single
-> function to call on all of them.  So the overhead should be a list item
-> (which often can be singly linked) in the object, while the workqueue
-> also adds flags and a function pointer, bloating the size. We often work
-> around this by having a single work_struct work on multiple objects, but
-> that just increases the amount of work that needs to be done, including
-> atomics and scheduling.
+> Hello Ye,
 > 
-> Last but not least bio completion isn't really any random subsystem.
-> Block I/O completion is important enough that we have an even more
-> epensive softirq allocated to it.  I agree that the dynamic
-> workqueue-style workers are a much better choise for most use cases,
-> though.
----end quoted text---
+> Thanks for the quick response. However, I'm not sure that's true.
+> For #ifdef CONFIG_HAVE_CMPXCHG_LOCAL in mm/vmstat.c, I can see that
+> mod_node_page_state calls mod_node_state, which includes the cmpxchg loop.
+> I think many users enalbe this config, including x86. IMHO, we should document
+> this effect of the changes.
+> 
+> Thank you, I hope you have a great day!
+> Joshua
+
+Thank you for your review, Joshua. You are correct that there is a difference.
+The __node_stat_mod_folio call goes directly to __mod_node_page_state, which
+assumes the caller already has the necessary serialization. By contrast,
+node_stat_mod_folio goes through mod_node_page_state, which on systems with
+CONFIG_HAVE_CMPXCHG_LOCAL uses a this_cpu_try_cmpxchg() loop and on other
+systems serializes via local_irq_save/restore.
+
+That means the wrapper removal is not purely cosmetic: it changes the
+update path from a direct per-cpu diff update to a serializing update
+path, and therefore incurs extra overhead.
+
+-- 
+Thanks,
+Ye Liu
+
 
