@@ -4,98 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03865F9D0CE
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 02:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56071F9D0CE
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 03:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 677016B0092; Tue, 14 Apr 2026 22:32:53 -0400 (EDT)
+	id 7C90D6B0092; Tue, 14 Apr 2026 23:16:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 628116B0093; Tue, 14 Apr 2026 22:32:53 -0400 (EDT)
+	id 77A626B0093; Tue, 14 Apr 2026 23:16:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 518C26B0095; Tue, 14 Apr 2026 22:32:53 -0400 (EDT)
+	id 68FE56B0095; Tue, 14 Apr 2026 23:16:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C75F6B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 22:32:53 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02CC6B6E24
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:32:52 +0000 (UTC)
-X-FDA: 84659217426.27.92BA343
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4743B180003
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:32:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ihO8yONh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5710E6B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:16:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 04ED114031B
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:16:30 +0000 (UTC)
+X-FDA: 84659327382.06.265F4D9
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1337B180004
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:16:27 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KY437Mun;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776220371;
+	s=arc-20220608; t=1776222989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ke7ZU96pP8AphVfQ1r7P8Nw6ADajpZRT0hzukpb8KsU=;
-	b=n5gn6DgM4q4FYz0SSWokllvggFxLuiMzurG7TAcbAt4ZPq8uazsoybmcdDpmx4euM3VU24
-	o9AICqJ5J0KLUOXXHFJNjRBJJqZ1i4wHqjfD6zW2fi47QsqT08csiABUatEiX1tw9oV7Wk
-	X80tHWakrsBSYUME5vRe4PGR5uQO910=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776220371; a=rsa-sha256;
-	cv=none;
-	b=q2iP3zxP0dVOKBHSmnzfyVPtk+qMAQ0ITL2SDryxODZ7cX0CXmraGwzrdM21qVY4eI+AOQ
-	IYAxm+4O7yRHaKsezeBszTkbDMNiMUV4NkBiVZW8CIM4XoW0vFIfr0cOqkypR7M3yf+ACJ
-	BorgVCk3xRsfteWSQFcZh7zlAtaZk/A=
+	bh=INOKKU/DUYfCs/lHfTk6eEwVUS5M/lRl2T8/ng8E9CM=;
+	b=VZ8Xk0A4AA3VDarP9fKBRbqG3ER3bywpob06TKRMXEIqK+pWsO4Xj37QOQHeTU/Y4EcjiC
+	Zr3Ot6m2F/SPE5CEgHyqE0UR/oR+7nt7zY9aYtEE1MesvA+RQ9vnrGNOR5FRX+Do5FQITv
+	IqwAsfHq0PKHplUfVjdv9/5Ig8ohaH0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ihO8yONh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 17E4B4321F;
-	Wed, 15 Apr 2026 02:32:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4C3C19425;
-	Wed, 15 Apr 2026 02:32:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776220370;
-	bh=nJMDOKwUC4j12LbXLzHBYxV0fA5WtS3uw2VZtj0OTNI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ihO8yONhn73jqtT9LKoDI8ZQvx+l2ahTGx+fKK5FDeGDdx43suX9nWb1kgJ8GzZNg
-	 u8OdnnwKye8rgsgGTLidab2SYSTZ0JyTtpayVtZLhqJZSuJVb1BscXnwA/XMEU17AZ
-	 6gSKbcn16Qd+OXCnjbozDLpCyunvc2q62WycDcZB+dxiRCPVoXaHHxD1/1QB8Zr7hM
-	 unRtpY/GXTc0v/nJKc/zI12bfcfdHIr14nQW4IJ1XRIfSM2O7oNU0sjWobavxiNuzZ
-	 kRKKwRe7zayEqxVcUKN9cuv2/8h/Mb3ut3/8lyW9TMqBoy1+TDmwTYdFt0vTSmcfhq
-	 /J6HZJ+NhBOKw==
-Date: Wed, 15 Apr 2026 11:32:47 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/percpu, memcontrol: Per-memcg-lruvec percpu
- accounting
-Message-ID: <ad74z5aSkwxn9QQG@hyeyoo>
-References: <20260404033844.1892595-1-joshua.hahnjy@gmail.com>
- <20260414202631.2753640-1-joshua.hahnjy@gmail.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KY437Mun;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776222989; a=rsa-sha256;
+	cv=none;
+	b=EWhwt+0CLu1gtwMkq5ufSumlfoAmQOM4+62+5PXaZprw7alG+uQliRL8S+YP+D65SYuiqf
+	fwSGgUlwgIBqGULUCZy5Z8VVGQXzGl+o31avI5UFuLMNRLeQ0ZCzaU5xY4cXh4IuZ5aZOy
+	P2xNlwtRtm4BacPvA051IIL8lTOqP1U=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776222981; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=INOKKU/DUYfCs/lHfTk6eEwVUS5M/lRl2T8/ng8E9CM=;
+	b=KY437Mun3O4QuXVWlEs4M8Emqml8F0VkSiApHsNzIT6xmAd9t+50mpIRPrWnPWyIHJJ3al/7d8IpdvNGgK5jdA4v2eaIHFZwgSJPbOxNKQMNuZvWZyBkY1teeJzINvywkuMDAdGNbLxX+wtj7b4FfuthnSAsv0111rFQ+BH//kg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R261e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X138wtU_1776222980;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X138wtU_1776222980 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Apr 2026 11:16:21 +0800
+Message-ID: <a6114618-4bd0-4459-9c53-450ceeaa3711@linux.alibaba.com>
+Date: Wed, 15 Apr 2026 11:16:19 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414202631.2753640-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Queue-Id: 4743B180003
-X-Stat-Signature: a3juznjfa188qjoiwsnjgw4dma64y8hy
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 05/14] mm/mglru: scan and count the exact number of
+ folios
+To: kasong@tencent.com, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
+ Qi Zheng <qi.zheng@linux.dev>
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
+ <20260413-mglru-reclaim-v5-5-8eaeacbddc44@tencent.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260413-mglru-reclaim-v5-5-8eaeacbddc44@tencent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776220371-481930
-X-HE-Meta: U2FsdGVkX193+rElaNvn2Zpen6Avlj59Ql6eceT4/iyDIJAYSMBpFsV7mvlcC13ydv1hRMKD9o96cVA+c1F+QsmYjoFdzJ5g1jDCzqJHJeYg5QngxzQGDMVP/Iuq7YmOixDx24iJdn6esLIDoVh04kcw40dE1CYrlnP9pDs7T/CVdcWxWHZm0FE1tWxj39lt6wbHqLqgLHUWQQSn13XdPf0yO0eeXLWV6s/x7kHvNxpoTiFf9YwA9tQUMumsX8PnEE2OwRnTg8vwB8XNDXn8x5shlgjYVsXhc/NXYjjl/yNjiX1HvLRoTQwubpNxWtHvuWcXbTj6J3ZTbgKnFCYh+f2vQFjqWmaGQZDQRl3INptoloY/7DWtm4bNFb7QD0UY7hD/yqiGrQZgXQvXntWB1zA0awDtlC2EDTkm1j0EEeSXK+v+cNFTn94HX0rXWoOwueVhReCwG9ZfJiC0gclZG/2qJAUuM+GJGxD4T8lnxdVmhkus0OYjo/tJNmJpItf0Jhndz8dCNrFNvN9yQf12NuVsb/UeMutrJk6eSbov8KK7xoaYGlzIT6002bdhW2GK36Q6UzKh188t7yj1LEDrG1XoXrKeBdhLS2vY4x00gYMsQtIPoU5+A53Ar2p7jMyWqR+Upl4f8rnaKIpEogFXZ3hixP2UvSg9bhmOC9hH1yppAqPkvA431Rux5tUAUOlsqWZaknLh3ya4pJt4nn3/5NOXdIWMq7NJXtlsQfYFn8m/WDimKpblGSgWj4AK40XoqlHlDdz4z0SfODdtCsnD27pHqyCYT1Y9N7GFfAAgohcNIRIiNqMoy5sFNzivABHLdF6AZk68tODr0XO0nDou4U/RFRdtApwcGJA2b2U+47lm7NdIDVmcAkduHACArVzuh1nlStuh3h+ebQCQ8lBB99qPH73jsPdE18WxNa0LGyvCNWN6PL69lA97Gc7resIPxuhO0IXrksDKX1FnbwF
- fgoFplSr
- i9HNSqS4jcsJZQzEXf8McnyJfPBRA6cgYN8s55n/4CLonurnKtNaO0W5+2fHWjRz2oC5u8S6dy9O6EIyDj1V2Af2E1ec8guS/RUY1Kp4OjaNm95Im52OiDunKg9DJ+RBuuGPmJwHDFKLc5n9xBqbrv/xQ29piXm3KlGyMdRLGK7E6/SuYWZyV+mQ9S5wHPQ6UUygolCd6uvsMjaJP3sVZ4yoFULNIrS2e6iTvUum13zZ9ZywwRZP6RjclRHcsjiUhIrhmf3aHBQdUDd1GGLrDp2rDeroBPq6XmUrinpnDHJX3ra2mD6RboaDsixYRzyGO3qgs3SA+2JIjJJgLNz4y5A7ihmimE3Ax5Ke4xVqc1+rG60xU+wvWI3R0R04XMywbq+r+9ue3VMGu7xj9Wg7FpwZFiw==
+X-Rspamd-Queue-Id: 1337B180004
+X-Stat-Signature: afqfwwwc9ud7b5iy8z5duhbpg554q1o9
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776222987-972736
+X-HE-Meta: U2FsdGVkX19sn2gUYto84iPExI/td58ffVbywtJlwMNPPigcRhe3qJ2alMUm0+25m0pMb7oEbOMF0Wk33aIgnBYgh2dDl/QdlCamWcTSZQ08LDmvJWUGALY1PiuF9R1B2tGVYlt+v2xQjP+dPxsDM2D0juKpd2s23QREU/Eix++JsaBImecJ04qV4vwlVWyz+KwtsS5aBL71SglQY2bOxSy70oXyDQNRAWcVKsXM1p8vtBHdtJprF68JFwPk+H3e/KyVUiEYXkBYwB0ixi1pIOoSM5NGWi+zXRV8p7fQOazGAzlHVCPx3GL7O7RDk38xk9InNwf7zg+TkdB9rhoMNqPhfRJQOuZqDs231NFUIUDtdnmtqa3ST41ga1SyblgbeNaJTpaAo822OiHubr5iPz3uxL8pbuYf7ihi/e+Tita8pRMngWQL1bZ/EUKmRB6AAZbbx5fxbLSfv8lJ2YIlfZJlInqx6SF1Tl7iWUczrKB/HfHmAy7/LGH2jC3WQLr1mKA5n/9jDjMI6wopaniORfzXc8GZMH3NWriDvw/jhDN0Z8P82d6Pg0hn5a8foqDwpZD82kLHED11VJa4lp2+fcw0G9HFsIcU3gs7IAOvq/rSDN897piEeNswmFzlct4HZX/V3rkpdj7l9MddUI0AzKTBW1V415pMfqfCQqwQlXzSc7juPu5qJXPdF02Ck9eRIXNLneupxf5FFlogIdNV7Nyya5UDltrFE1RiPoPGZI1HAfxoJ3L/VcP/kwsnkENhln9EbUqTPfgxo/0OW2geUaQySrRwJUuL0hYStrO7cxOYb/F3omse1oIffwKL1yqxVYeO4Qh1CbxgE4wsSnvlZQvuig+/rRjdQGIF3llR28Su7CLqh0kIVK3NUbgOdJiTqi3aFU7oFVYRF3K9pYg1Mq7MzXGLsXDILtQU+hggbJDqA+eZxIAkDmnSdObez+JEe+Cyxf5ens9q+xIVnn7
+ 87gQgO1r
+ z+EtcUkD9iiUKRGFK2A2HRSwsh94tcTypU9I3JolIhQ8/tE4PIhaLDL7Y6Yq2Ashi9zLImuuYrFDzbEstsVDxXFCYpUVNFn7iVBYmixfvhV24VzdOpspuQUIEoqJ6NyJ0bnCplnvMAUe3FYQr2MqkmJnt3iQ5WXexp+c7vVxljwDlE4BtufYUwbylCuTgnlXxdHK6WBjD+TFmNFVKcCZtsBWyvb4zGx2L7GwbBhg8fH6YsKVcslKlJUvGePFkITxMyrzLcwbpDuBFQc6jwDcVMwA1pMxZ0h1ICelvceTNmzYQaJb6IGkOV4NUdOHaOZwmeOeSbttfmDLmZEBu2VNtAiMu+uOX6r9c5Es4kDwAAUVjGH+8QrwL0OLdQ7jjqVjoDXKZ+Pz6cP4EHoU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,115 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 01:26:31PM -0700, Joshua Hahn wrote:
-> On Fri,  3 Apr 2026 20:38:43 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
-> > enum memcg_stat_item includes memory that is tracked on a per-memcg
-> > level, but not at a per-node (and per-lruvec) level. Diagnosing
-> > memory pressure for memcgs in multi-NUMA systems can be difficult,
-> > since not all of the memory accounted in memcg can be traced back
-> > to a node. In scenarios where numa nodes in an memcg are asymmetrically
-> > stressed, this difference can be invisible to the user.
-> > 
-> > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-> > to give visibility into per-node breakdowns for percpu allocations.
-> > 
-> > This will get us closer to being able to know the memcg and physical
-> > association of all memory on the system. Specifically for percpu, this
-> > granularity will help demonstrate footprint differences on systems with
-> > asymmetric NUMA nodes.
-> > 
-> > Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
-> > account node level statistics (accounted in PAGE_SIZE units) and
-> > memcg-lruvec statistics separately. Account node statistics when the pcpu
-> > pages are allocated, and account memcg-lruvec statistics when pcpu
-> > objects are handed out.
-> 
-> [...snip...]
-> 
-> > @@ -55,7 +55,8 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
-> >  			    struct page **pages, int page_start, int page_end)
-> >  {
-> >  	unsigned int cpu;
-> > -	int i;
-> > +	int nr_pages = page_end - page_start;
-> > +	int i, nid;
-> >  
-> >  	for_each_possible_cpu(cpu) {
-> >  		for (i = page_start; i < page_end; i++) {
-> > @@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
-> >  				__free_page(page);
-> >  		}
-> >  	}
-> > +
-> > +	for_each_node(nid)
-> > +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
-> > +				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
-> >  }
-> >  
-> >  /**
-> > @@ -84,7 +89,8 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
-> >  			    gfp_t gfp)
-> >  {
-> >  	unsigned int cpu, tcpu;
-> > -	int i;
-> > +	int nr_pages = page_end - page_start;
-> > +	int i, nid;
-> >  
-> >  	gfp |= __GFP_HIGHMEM;
-> >  
-> > @@ -97,6 +103,10 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
-> >  				goto err;
-> >  		}
-> >  	}
-> > +
-> > +	for_each_node(nid)
-> > +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
-> > +				    nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
-> >  	return 0;
-> 
-> Hello reviewers,
-> 
-> Since I submitted this, I have been thinking about the feedback that Sashiko
-> has given this patch [1]. Harry has already pointed out the points about
-> drifting due to CPU hotplug, but one there is one particular concern that
-> I have been trying to tackle with no avail.
-> 
-> The issue is, pcpu allocations for CPUs on node A may actually fall back to
-> node B, if node A is out of space and under pressure. This design seems to be
-> intentional, to prevent memory pressure from failing these allocations.
-> 
-> However, this means that we cannot charge percpu memory based on the number
-> of CPUs present on a node, because although the memory "belongs" to the node
-> (since the CPU it actually belongs to is on the node), the memory can be
-> serviced from elsewhere.
 
-Ouch.
 
-> To handle this, I've tried several approaches. All of them were either too
-> expensive (iterating through all pages at allocation / free time)
-
-How expensive was it compared to the baseline?
-
-> or introduces
-> new drift (I thought of managing per-chunk statistics as well).
-
-How does it introduce a new drift?
-
-> To be honest, I think I'm out of ideas at this point :/ So I wanted to see
-> what others thought about how to track physical locations for pcpu allocations
-> that were allocated via fallback. Are these rare enough that we are OK with
-> the misattributing here? Should we eat the cost of iterating through all pages
-> to find out where it is physically?
+On 4/13/26 12:48 AM, Kairui Song via B4 Relay wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> Or is this patch not worth pursuing at the moment? ; -)
+> Make the scan helpers return the exact number of folios being scanned
+> or isolated. Since the reclaim loop now has a natural scan budget that
+> controls the scan progress, returning the scan number and consume the
+> budget should make the scan more accurate and easier to follow.
 > 
-> I hope this all makes sense. Thank you all in advance!
-> Joshua
+> The number of scanned folios for each iteration is always positive and
+> larger than 0, unless the reclaim must stop for a forced aging, so
+> there is no more need for any special handling when there is no
+> progress made:
 > 
-> [1] https://sashiko.dev/#/patchset/20260404033844.1892595-1-joshua.hahnjy%40gmail.com
+> - `return isolated || !remaining ? scanned : 0` in scan_folios: both
+>    the function and the call now just return the exact scan count,
+>    combined with the scan budget introduced in the previous commit to
+>    avoid livelock or under scan.
+> 
+> - `scanned += try_to_inc_min_seq` in evict_folios: adding a bool as a
+>    scan count was kind of confusing and no longer needed to, as scan
+>    number should never be zero as long as there are still evictable
+>    gens. We may encounter a empty old gen that return 0 scan count,
+>    to avoid that, do a try_to_inc_min_seq before isolation which
+>    have slight to none overhead in most cases.
+> 
+> - `evictable_min_seq + MIN_NR_GENS > max_seq` guard in evict_folios:
+>    the per-type get_nr_gens == MIN_NR_GENS check in scan_folios
+>    naturally returns 0 when only two gens remain and breaks the loop.
+> 
+> Also change try_to_inc_min_seq to return void, as its return value is
+> no longer used by any caller. Move the call before isolate_folios so
+> that any empty gens created by external folio freeing are flushed, and
+> add another call after isolate_folios to also flush empty gens that
+> isolation itself may create.
 
--- 
-Cheers,
-Harry / Hyeonggon
+As I mentioned earlier, the try_to_inc_min_seq() changes here indeed 
+fall outside the scope of "Make the scan helpers return the exact number 
+of folios being scanned or isolated." However, the changes still make 
+sense to me. Anyway, I don't have a strong opinion on this (there's no 
+need for another iteration), so:
+
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
