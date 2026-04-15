@@ -4,88 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2687F43832
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9BF1F43834
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:24:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BB086B0096; Wed, 15 Apr 2026 11:18:42 -0400 (EDT)
+	id 09CF86B0092; Wed, 15 Apr 2026 11:24:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06BC56B0099; Wed, 15 Apr 2026 11:18:42 -0400 (EDT)
+	id 027336B0095; Wed, 15 Apr 2026 11:24:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEA6F6B009B; Wed, 15 Apr 2026 11:18:41 -0400 (EDT)
+	id E7E6C6B0099; Wed, 15 Apr 2026 11:24:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DFCCE6B0096
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:18:41 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A6C8DB9A3F
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:18:41 +0000 (UTC)
-X-FDA: 84661147242.02.E0CBF22
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F039A140002
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:18:39 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cy0BooHy;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D27836B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:24:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6996E1A04F3
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:24:56 +0000 (UTC)
+X-FDA: 84661162992.30.169BF38
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6C4E9A000E
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:24:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kcGyWJCT;
+	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776266320;
+	s=arc-20220608; t=1776266694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ra6EtkF3z7PFps8jaXuPC6Kmfio0uumOxFyjVmwDmCM=;
-	b=6uGoXA0G1S+YXMXIKcrGia4cIoHkBn4H3c7EDL1XIcGaYEjBD/RNxtx2D0ly8o5DYz4fXg
-	FFd1Zy+RUeSVwPm8Z9INabUXAWkh/IZ58uy079csJ0dTg3Bka9dtdLOx3j5+avEh+mQ2dh
-	tGcdPXNNEwA/UxglGjqzp5sYCEkEaqE=
+	bh=zRMRmyy9EWk8CIIPpL2LFE86JxkN0Rgl8uTe98Wyi+g=;
+	b=hJibYf9dRFCyUQEz+ZDzlDCj5edFVtGN+pu1QERlwRzKs1R2Vh1HdBuOrfWFeb8N/XSBVU
+	BGzm0Q66en1DPUru3exWfcnhKF5xJJjXE/r3DKT35oMeRq/TfjYUJupZzU19AfwjpDEHe0
+	8E0o5wNLessnhY3WQ+2Pk5oFOdP2eNQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cy0BooHy;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776266320; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kcGyWJCT;
+	spf=pass (imf25.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776266694; a=rsa-sha256;
 	cv=none;
-	b=iT67L0NTskkNdSVyAFpzLvxaIYoDDXpbDurYasVqtztbWM515JpjxIsxcAMvMr5//5ZFdP
-	VRRny8eHubMuMMQgVMxMUOD+FEYisRztlqmumY05W1/F7CpsO4ZfkZvnw6nTGaVBkp+l4C
-	99wSHNPB7LkQDcn61e/0pHQcFsVAs+o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B9CC741919;
-	Wed, 15 Apr 2026 15:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E3BC19424;
-	Wed, 15 Apr 2026 15:18:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776266318;
-	bh=spPodaQQ2KV5AGi/Zab2Sit6wY9oszgJNiSDRnTy6So=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Cy0BooHyYzKBkujHE/ZEtWBSkQhdVdHrxKUGWYpuC29q7sjnOi69xrIbcQBMZku6q
-	 rgDgHOGZ6RXC8r7X27Zs3tvqGedq7T0iPVdt8sDJZ2piEuGzQmzy52Z8eiD6xAfQ9I
-	 F9xDe05kOkU/+jaCk1nJa4DufC5KxHTOtUuv2uu/4lupouDSlRn2OhzauVYsejZGL5
-	 feIBvRa/mVLQ7IBMNzdqATVD6LkBVVJ874MmZIN62yTplT4yE4Wco2yWWBMLZqv9lJ
-	 oRyX1p169xSn+Qkh2/t6TagQuonKq/hR3h6GlRZXp+7X1YZXjBfzG9vx3CU0uZbaEc
-	 +IBNv/cGUMi9g==
-Date: Wed, 15 Apr 2026 18:18:33 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, dmatlack@google.com,
-	pratyush@kernel.org, skhawaja@google.com
-Subject: Re: [PATCH v4 02/11] liveupdate: Synchronize lazy initialization of
- FLB private state
-Message-ID: <ad-sSRmWYhFiSD-r@kernel.org>
-References: <20260413185127.128180-1-pasha.tatashin@soleen.com>
- <20260413185127.128180-3-pasha.tatashin@soleen.com>
+	b=1XArXyWjQWZ79ImtXR/ZbGeGrWj5h95Zpcm8FNjcF6D7VY1u50JHZzTONt9zgQHt0kUJxv
+	Ku70x6q4Z38u35ixcTQJJ3pOjDqOnDuOt2oXzXctcpqdtgoJ2kcntoqaee6AUhigpSYyOq
+	LOQRRaqpe00QeAEhcTWIPPiZ4Pa50Fw=
+Date: Wed, 15 Apr 2026 23:24:43 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776266691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zRMRmyy9EWk8CIIPpL2LFE86JxkN0Rgl8uTe98Wyi+g=;
+	b=kcGyWJCTD2OLfde0AeTZ55okox+Pnkciu73MjFRJ1zIV5E2AwF6UEHJ9ZYIEbAtmrc0g8L
+	SH3hcXYZoNhWkjsAcsmqxjgu0slt/o/s4WqiqcjS7tpcLOiHOHIbMhmzTNbf3dUd/eoMjo
+	58m34J5LjDMs/5UYneSKpzAZOJ36RZ4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, baohua@kernel.org,
+	chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com,
+	shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <ad-tuwdq_AeVRuIr@MiWiFi-R3L-srv>
+References: <20260415085658.993859-3-baoquan.he@linux.dev>
+ <20260415150550.3616172-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260413185127.128180-3-pasha.tatashin@soleen.com>
-X-Rspamd-Queue-Id: F039A140002
+In-Reply-To: <20260415150550.3616172-1-usama.arif@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 6C4E9A000E
+X-Stat-Signature: 47nqrnyhir6x8k9z3z4arb8rtyt6ccwo
 X-Rspam-User: 
-X-Stat-Signature: tpzun9fmfyah784569o7rcceqa5ecq8n
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776266319-624036
-X-HE-Meta: U2FsdGVkX1+vFAFVoF3qL1yYVkVYZ8XG/ld6lKv14z9BfZ9+rVQvYpz3tQLvGVHS8hgsdLImg8jx0sQtB+t49bKF08rOxltuytmHAPe1uFIvMpi5jFbE8DQHHob9QM2UhrrW8p/NDK2Zb0d8mL+gzIfxeBQJ1mzQXa0BoBNgNewm/dBnoA3zlniKxzBk2KCjCa4uheyk/BO0QTeQo+HphsaVqjQNJ6cIm4+2OAiSFF6plzDXWeg7OkyBzLLW9PKbI01e2G68OVke0uhjReqgzPawouPOHzfi0z16+c82UGNtgyqt+baGNxdiEA52OV3NN6c2SYuHvA9v/l4q1QMCQsAtaAahio8ZqJw6eqNLc0LJZAb+V3okWYSax5gOFj1JO2LQTXCP4FJMjToKFrKpxij0dtqV4LYNKCGRuNI+bRBeCn440tPtChk8Sburj5AicFfMC9DN4jNLdtNzT6V8Rmm1vZY/XOYfX/sz7vh09CC1bIyQrDfyMmXOcK30zrlMwXMJhpBwoaOdz7J8jzdSppFZQF3WQkcv1wJO49lETMffVIZGR5QxWDe5uVN90grSUudzB8NaqzYYwxvIwfg+rlEPMbWxkq8sOXsmpAMhG0HAR0cqvNrXic1usmIg5UfB3MjEfWCUtbR2E+hyXw3NysG+k/bHNgwzqcGagp7UfXCqVXRNwlHXanoRn3kxoj2nNdBCIgcIcUB/MpxPoY8mMNxBSrZxVyRocLVp9kjLjl3d+ychfbJ17M0Hxcb70D136GsRWLHovKG4yi6kgd8ROg8NOPC5O+ihcBFFKqRu16VasdmPJP68joKvGP4xLE9Q8Y3YOx/bBqmxBIucT5dPoucilivUqcGrbpsfZTaV5pjdFQS4jG2Vm2HOVcdviT5Z7n4orzGrH2riKjgd/t7187tH6sau9ss1nyHWJteVrsI1P1g5CNY8fhItA3miUla1onJ8pGsYP3hrsLow7ZL
- GyS80+3+
- KktRg+k0j8q3867+JgW4TVYlXKIohAUht8QhqDnD+nMAd0aO7r2WqC4jhYTeG7v9JJnP59Tq2WqDHoA44OpWTxZchujEhSHaZMnEBc5X+5klV8mM/NxpanBcn2RUn7NC8m1jn0x5/179+/ACBRkVIjfvaK6xr97Mc5hYdbMeBDiivDbyOnugFwJaaoRkxBuXivB95Ht9z7xcaBAw1jzt5ZV8GO8XEc6lVaCZfhhuOfDkRbAfyQZCK5VS1WPBHjSDUhQBP/YCopgT+bcXE2ioA8yhX1bkNMLG3f0T+whO7bwyqcM3JAj2N+1V/w+cme+ywGRy4VKbkTjLiLALMAhkyV0/jQQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1776266694-24799
+X-HE-Meta: U2FsdGVkX18ATP8fjwaqVFrGZ0U9GRIrOAZ59X4rCfih689hfx89LUtHkLiL+QsW+Aui3RstMtKQtr8nV24E9BKzrS1+jMcUAnDQdQqEnIFsZ7Qz46bR4OcuCh37Ly8gLBl8NngKQv0oLZTdM+wzDUoa3K9dOMX8AWZptImHSpvVWtJ/ekLrq9msMqZOW2CX0XH0gNsKVccp/jOcgyVSbQKYigNopHck307622lhhmNuRFPQxMioR39UVLpsJyvRdW1Xrp3Cy1Aa5Z1eW/W2pW277ezuIh6GY4IU80q+dEdpgPIc99O4uuIlHJjD8RY70M6IKuXXdj6rw3iHEa6CzBXIz8XQ8i9/tf/MqgcYIh798MRHm1cMMCQgL3J6zakFyzLpWPyDQRLQyo+AXgp8rgBVOBbWl2TbZumnWJzDUsrz136SwupWYwNhcNsn7aKY9nMY6kGB0MprpdoSrE6wPrfD4lvZg8fNkvf92fUP2179Yivtk0eZpyEX3YvKd6INsY3njsOI30qK+vj1LTQjDiRun+QalkcwNdAXLhVxqMKeR+If0iqLObK7mFk8s3si3xyaEnFMKao/m9gE7w6yXjtMy5tFGrMJPK0zmpAiGCr0wcizySd37S5DvlO/lxo6EuE28MmYg7JlM02DaRymrrcXvIqsHDjTHjOWZA3AkW3fKUpMKjkh6E9ZuOeawecBCyzDLL+7nHkmrBbIYrKZJdJBzqpoFDaDogndvS7YwagIamLUKDNw5nB2ua0Oeu30G4Z4Eu3+Ma+HiWkZidGAyTiTiTJYd1YDhsBwfgoWSrpfWGRJecOa/25YZme1o2gcAZ6z00dT1cFDitbMR2LD0dMXfrwKzVyYCjjiAictAQT1c5OLtYSvajMnR0Q9cY1wwvXRPDJ31kb8z2wGz+Vnw1vHiy9CftuvxedLeNeZCe5siturNetXsEKG1XLLjNkb1w4T0agionr8LZrZYEy
+ yb9W/8NL
+ hmQJDbmw3kgQh0xn0SmQKp/i0Ya6LYahsMt6oVdoQpZu3NuiYYkFNajmMzOHvnx/TqkV/PzsL2ar2nTEOWiql8RIqH57DDHG8W6vhwipbyx1tqMBgrGNmizZcJLKQ/RQBpMKTxeCjKXvp4E6X091JIX2p9Wl1TO+2NuNO8B13V44AAjQRnpmLnsMgH7hm69Pq/FnH8Ly9v2TbebMQf862VPs7GPsx/XBaCkkRsqpMGdWSDjwV6qeQ+KFq8H4BzoO4ydxooIUipg0hhc8RCCAyZfEtrQOZc4dYTjBFwwEY4XYN3m6MAPOFylTsquYsgn6rugVvz/j2tsO5T3fZtGO2WgwBOqytilj3NBoe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,56 +90,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 06:51:18PM +0000, Pasha Tatashin wrote:
-> The luo_flb_get_private() function, which is responsible for lazily
-> initializing the private state of FLB objects, can be called
-> concurrently from multiple threads. This creates a data
-> race on the 'initialized' flag and can lead to multiple executions of
-> mutex_init() and INIT_LIST_HEAD() on the same memory.
+On 04/15/26 at 08:05am, Usama Arif wrote:
+> On Wed, 15 Apr 2026 16:56:57 +0800 Baoquan He <baoquan.he@linux.dev> wrote:
 > 
-> Introduce a static spinlock (luo_flb_init_lock) local to the function
-> to synchronize the initialization path. Use smp_load_acquire() and
-> smp_store_release() for memory ordering between the fast path and the
-> slow path.
+> > This simplifies codes and makes logic clearer. And also makes later any
+> > new swap device type being added easier to handle.
+> > 
+> > Currently there are three types of swap devices: bdev_fs, bdev_sync
+> > and bdev_async, and only operations read_folio and write_folio are
+> > included. In the future, there could be more swap device types added
+> > and more appropriate opeations adapted into swap_ops.
 > 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+> s/opeations/operations/
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Good catch, thanks.
 
-> ---
->  kernel/liveupdate/luo_flb.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-> index f52e8114837e..cf4a8f854c83 100644
-> --- a/kernel/liveupdate/luo_flb.c
-> +++ b/kernel/liveupdate/luo_flb.c
-> @@ -89,13 +89,18 @@ struct luo_flb_link {
->  static struct luo_flb_private *luo_flb_get_private(struct liveupdate_flb *flb)
->  {
->  	struct luo_flb_private *private = &ACCESS_PRIVATE(flb, private);
-> +	static DEFINE_SPINLOCK(luo_flb_init_lock);
->  
-> +	if (smp_load_acquire(&private->initialized))
-> +		return private;
-> +
-> +	guard(spinlock)(&luo_flb_init_lock);
->  	if (!private->initialized) {
->  		mutex_init(&private->incoming.lock);
->  		mutex_init(&private->outgoing.lock);
->  		INIT_LIST_HEAD(&private->list);
->  		private->users = 0;
-> -		private->initialized = true;
-> +		smp_store_release(&private->initialized, true);
->  	}
->  
->  	return private;
-> -- 
-> 2.43.0
+> > 
+> > Suggested-by: Chris Li <chrisl@kernel.org>
+> > Co-developed-by: Barry Song <baohua@kernel.org>
+> > Signed-off-by: Barry Song <baohua@kernel.org>
+> > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+> > ---
+> >  include/linux/swap.h |   2 +
+> >  mm/swap.h            |  10 ++++-
+> >  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
+> >  mm/swapfile.c        |   5 +++
+> >  mm/zswap.c           |   2 +-
+> >  5 files changed, 76 insertions(+), 45 deletions(-)
+> > 
+...snip...
+> > diff --git a/mm/swap_io.c b/mm/swap_io.c
+> > index 4bf210bd677e..602e9b871b30 100644
+> > --- a/mm/swap_io.c
+> > +++ b/mm/swap_io.c
+...snip...  
+> > @@ -604,6 +588,44 @@ static void swap_read_folio_bdev_async(struct folio *folio,
+> >  	submit_bio(bio);
+> >  }
+> >  
+> > +static const struct swap_ops bdev_fs_swap_ops = {
+> > +	.read_folio = swap_read_folio_fs,
+> > +	.write_folio = swap_writepage_fs,
+> > +};
+> > +
+> > +static const struct swap_ops bdev_sync_swap_ops = {
+> > +	.read_folio = swap_read_folio_bdev_sync,
+> > +	.write_folio = swap_writepage_bdev_sync,
+> > +};
+> > +
+> > +static const struct swap_ops bdev_async_swap_ops = {
+> > +	.read_folio = swap_read_folio_bdev_async,
+> > +	.write_folio = swap_writepage_bdev_async,
+> > +};
+> > +
+> > +int init_swap_ops(struct swap_info_struct *sis)
+> > +{
+> > +	/*
+> > +	 * ->flags can be updated non-atomically, but that will
+> > +	 * never affect SWP_FS_OPS, so the data_race is safe.
+> > +	 */
+> > +	if (data_race(sis->flags & SWP_FS_OPS))
+> > +		sis->ops = &bdev_fs_swap_ops;
+> > +	/*
+> > +	 * ->flags can be updated non-atomically, but that will
+> > +	 * never affect SWP_SYNCHRONOUS_IO, so the data_race is safe.
+> > +	 */
+> > +	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
+> > +		sis->ops = &bdev_sync_swap_ops;
+> > +	else
+> > +		sis->ops = &bdev_async_swap_ops;
+> > +
+> > +	if (sis->ops || sis->ops->read_folio || sis->ops->write_folio)
+> > +		return -1;
 > 
+> sis->ops is always non-NULL, and you will return -1 here and
+> swapon will always fail with -EINVAL.
+> 
+> You probably wanted?
+> 
+>       if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_folio)
+>           return -1;
 
--- 
-Sincerely yours,
-Mike.
+You are right. Think one thing, write another. Will fix it in v4.
+Thanks a lot for your careful reviewing.
+
+> 
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
+> >  {
+> >  	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
 
