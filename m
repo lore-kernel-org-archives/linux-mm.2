@@ -4,109 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA3DFA0C36
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE0D5FA0C32
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E16C6B0092; Wed, 15 Apr 2026 02:30:58 -0400 (EDT)
+	id 4FDBB6B0093; Wed, 15 Apr 2026 02:35:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 592076B0093; Wed, 15 Apr 2026 02:30:58 -0400 (EDT)
+	id 4D4DC6B0095; Wed, 15 Apr 2026 02:35:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A7E46B0095; Wed, 15 Apr 2026 02:30:58 -0400 (EDT)
+	id 411A76B0096; Wed, 15 Apr 2026 02:35:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AA126B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:30:58 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D00CCB8A64
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:30:57 +0000 (UTC)
-X-FDA: 84659817354.26.08A9975
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E455E180007
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:30:55 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3287A6B0093
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:35:07 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3666B89BC
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:35:06 +0000 (UTC)
+X-FDA: 84659827812.29.300EE46
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2EFD3180004
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:35:05 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=VE7mAYeP;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=sGHXEiBr;
-	spf=pass (imf24.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CuMkoXWf;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776234656;
+	s=arc-20220608; t=1776234905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VdAKD36E8rLdN/EhiUpV79Bm4JP9i6LgdGtBCZLwAhI=;
-	b=dGvoSh4UoZLgSJAuoiWE1ML92JVcxtMR03toiGBOzFAp7yxOTygDyrLDFB5J3YI6HDczJf
-	PMcZJytkjWzue7/uQ5/ZNVEH4aidNKkT6wC3T+d+UD40VCDmtObjRTSldXCbJ6MuMCTGzs
-	xB+k4uavtznchHqyf49qoD35O669nmo=
+	bh=IBIFChv5u3e0gIoiVcTtrpvSVwZSCR7TwcaW0HD50Jc=;
+	b=dAPgFvEICB8G0Mqhn9gWrwjQxhbGraPlBCX/bikZXBUYnIeTZYVBozwbesTqEsxJ6dPiGO
+	IU965hl4i+xXqPklxvUQkQDXoEvhoffcraTFaBMBBFPCEreHurQZOQdNxKvs864IOQKpmb
+	tGiRQEK3PTw+Lx0Ru+Gtvq0+rStyeRg=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=VE7mAYeP;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=sGHXEiBr;
-	spf=pass (imf24.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776234656; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CuMkoXWf;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776234905; a=rsa-sha256;
 	cv=none;
-	b=NXtEMvzrvyA9vw9SquAdSjoPeVrZ1Uok1lgZC9lNR2qsUiRx8VEBZSXwnS6hhFAr4XYYZ6
-	n5SBYz8Bm2ZrdioapbuFnYQ7Ut1ydoRjKJaQW22MK7O7FG93eZ9/nsdDCcL6VbpovWSf6Y
-	+qI+g0DIJkgRIQc/mIr9INs2lX2HfNw=
-Date: Wed, 15 Apr 2026 08:30:51 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1776234653;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VdAKD36E8rLdN/EhiUpV79Bm4JP9i6LgdGtBCZLwAhI=;
-	b=VE7mAYePSJuw8rYF2IEg8Uj5hjEni6px0w3pSuYBi6Zr4//Fs4BFaYhs6s3LLD0zT16FQZ
-	+p/SbZIr3b4N3YaRnHlraP39iqn35JLtKphSUWJ6UUmZc/1vJbISKv73yu8bqwBbYRQqt2
-	xzA8CzYm5G8MzbwIcTYdCFzt4oPe86BCZDLDCmEGueK109llRwV8U2KYJg24CG4SssKbrG
-	ofkl2ebupTRXI7ey9j1UjryAlI1hKsNHDB93aSopTB1+h6fSATl1MDrQcP3YuvPV1mD+5U
-	Ux5DD2DWvt4/bFtCDZjEIRNX61X/bfoy68PYrxABvZqiw4fFtZQKJiV/Q3Yoiw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1776234653;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VdAKD36E8rLdN/EhiUpV79Bm4JP9i6LgdGtBCZLwAhI=;
-	b=sGHXEiBrPEae0nW+Z4/Iz9is3KfRzvNPPszk5NeI4llau3YrME7LKceUTvCHIrpg1GtRK2
-	3dTRgU45mNFgUBCA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Gao Xiang <hsiangkao@linux.alibaba.com>, Dave Chinner <dgc@kernel.org>,
-	Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, Sandeep Dhavale <dhavale@google.com>,
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Anuj Gupta <anuj20.g@samsung.com>
-Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
- support
-Message-ID: <20260415063051.H3zA99Qh@linutronix.de>
-References: <20260409160243.1008358-1-hch@lst.de>
- <20260409160243.1008358-9-hch@lst.de>
- <adl1iqhldFvJwSw-@dread>
- <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com>
- <ad2RKNo2FGhpzJQp@dread>
- <a7a74185-df02-4906-a0ec-f87e2394aa5f@linux.alibaba.com>
- <20260415055552.GD26893@lst.de>
+	b=hBpZF0YovpaZBaClBP9Uq6Le7n1QjEtSQ0SWzUi/Y8DvDwHqXEQuazPyI7HBSlkU+dRjur
+	tRylBkMRn2pIB/54xYftLjNJ2TW/oVVglnIUFwGeQCzX8TyGZyJYbDsbDtgY9MWpVTTx+e
+	Itl5HjhHt6UoUCYU3bMUe62aVqn3zig=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7740D600AE;
+	Wed, 15 Apr 2026 06:35:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED810C19424;
+	Wed, 15 Apr 2026 06:35:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776234904;
+	bh=IBIFChv5u3e0gIoiVcTtrpvSVwZSCR7TwcaW0HD50Jc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CuMkoXWfeYctFAhHSaDWr5eVIyKNfEmBqUXxPkd77WB12jVHe77dVOsSCvU9F/z+H
+	 1ANcgUsodUH8A/f6bEh4rIfIHuqVhJ/Ds082W739oju9QtvT8gnHwKuuuLGn+bwOZx
+	 hZ3gSgXwPsBXqJQb2PEdiPW4GMDvR5g+LjuezSw0EN6/5dCniB4tD55ZM8dNNFzp/o
+	 VNfCPu96Qwr1+cnEtRlW5t2fEh0GVIxF1oVGFB3ucKA+olleQi1021qVU7aJUq4g/W
+	 1IZiItoyll9lYZvslFLKUD1TffeuRbrmhL1wLdexX3/0nOeyiMcH6LxMPJ9hJ3o/S8
+	 M+Yl5a+eNTdNQ==
+Date: Wed, 15 Apr 2026 07:34:58 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, David Hildenbrand <david@kernel.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Subject: Re: [PATCH mm-hotfixes] mm/vma: remove __vma_check_mmap_hook()
+Message-ID: <ad8xfnn05PtejbMP@lucifer>
+References: <20260413105713.92625-1-ljs@kernel.org>
+ <20260413221724.c939e483e83304fb40e3d6da@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260415055552.GD26893@lst.de>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E455E180007
-X-Stat-Signature: wbfwt78c54cy9pqkjrfb7a1bugtrepp1
+In-Reply-To: <20260413221724.c939e483e83304fb40e3d6da@linux-foundation.org>
 X-Rspam-User: 
-X-HE-Tag: 1776234655-211526
-X-HE-Meta: U2FsdGVkX183BZfxjdBZ9db1mQXFtY2pq8raACC58LIBXSQIGM8dY9QHZvIELe/+qUIQ8riQ26MtvVdV3OEX4TZFrxE+v4F1F0cTI7L62pW85OfEpBKr5A3o18EAextdmlCHv4ure57gpYXj4f7aiRz4T3iT3+it/BTRUqwPqeIdBuNR/DgWfBU2UugEOdu+Cpkh8nW7PvNyRsxRDqYWpkX9FYZcjWJEnREPHmD9YlJC7HkYkMR2Aeawannwk+k/r314PON9ohTBJ+LTvvG/HJKfX5gfOQwTeiHSCpZLJ9hQSD8eOJCnJMMuPAiGAsDEbOB/UJDq0xjS4h+E10ARoYnjy+u2OgF6VCueRVIrIvULsZlIjkNqG8CB9fWuk32KA6dWU3Q1esrNyUhuJB3mG+yHT+BHwuxqWRQZfW6+2qsgqFqeeYJkc7zR0plPbElIMG1RVtz+viRw8TroqSRT3TSj22yHOMKRDdYxOLyso024xasrUuLg1Fx1tg/M9dKInko/qw4O1U09XhtatpUZ7XO5tTN85GQOGb8mXNygKT+k8I6R0+l5GBIg3gcmZY7MWkmr6mkNGQQcBuunReWkcLbGQE0DPqbof9KcR9mULce+xwYutU5eO8UKxLZv4qhZLt029aAC3Dw3d9MtQ+waX5OSOyiymuoAZ3czEk6Q/H3RGdrPVyhbmgBI+8GvnVEjAAPLm+5suq+/iOTX1M3jqnqXUFi4ZfDHoTh6nkfA4EBEawfpcexzR5suWV24u+U+tdJMBqSmr9DOzbrGw4yDbgMhDrI0VVR7zMf3v4tFa51zYuGqmUfCBsz50bOU7xKZVWpnur4ty2litkikp4vsDfYEfnqO4ox28QR0VvU87oBIqaF/IAlvCsiF5PN8A3axFLGYBUjdlHlveHIoSvW4tfQz5UmgB7Moj3nVbscLen0ryNY5RZRM6WG/DdIWUyTp/3+1P7gbDsAMFckjHta
- fOPipICG
- FKwGxZh5W00OWerYVO8yljHYzvmR2TX3diUQYUjg55xip8WjqpGDKonSRFchxKnr11nC+8lOcT7PrBfNa1z8ByndimZbgll95pkVjy+6DNedY6vSMt9++DK7/vGFOaoyEnxFs3fPhOGpXxSrqsj1H/1SwgkqRArSBlHSiwlIjjPjpJMlrIHQOqNwjYx2YjDM+yO8O/VqElKchKFo6/4L+UaPkXuXLBr9vYECEIJunhM4vPqvn2fTiXS73Dw==
+X-Stat-Signature: txcb4zmxiutwb3qta88u7yhz8hfxmxbx
+X-Rspamd-Queue-Id: 2EFD3180004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776234905-911096
+X-HE-Meta: U2FsdGVkX19J2EcenlE/veZiz+wfualOmPrPncTFYHZdqliyS87E9hJZ+/2V/PR7KqjlUpButWAOXzcjx3UAm0V2DDhA+TKD1rllCBf805x2pdX8VREgVWkudsKxBgwj50xOUMjSjX6mebIB/deEdXA1lJNuw681ChS+Px4kmUlAnkj+3HqOXnWFVfSQ8sn5Ckz6G/gpawdNW4Mo0g7/DSFLuNZM12kTmRweesnQs2o6Vu85G2hKDFO0QvQdCYB4A6q6tcL+1a4mzMmJM3gkaIooYdvOdserbekHXX7Iktf9EDQ64O7u9+IftiL7LIi1X3uEXoeGUbdwdCcLcEE+BjbGoy1MRSPlPSXHTjl0Y+425/ZHvgCwzy0rMcWiVW043eRqLfgVQFR2i/24VC4QL1ziALDSF5G7fcb8ck6K8jXmfCrDlDJQzdbWy1aXnqYHEg1nKf/I7a21bAyTW/cUhVB4JiOMYBkPilOJG0knC7MIcHECB0K86KnyDQHcFzj5OEZKwn74Hhi7GN8zwOP6YHOb5e8gsff2bxL+KHvygOA+mlX8dbLYfQgtR+/WVWPWg4tPAOezL7U+Ii1TOWvsBfchY5C3ghEklggrvajJHgWfoU61y4sYtMFl7ydMxB7Nbyd0wE3oj0yCUPmPEheyYELUtu28j336tWvlYHlvnUIZFu1gKakUWOHDcInNl8JAOU1hSlRVxvQaskG3JHjZVxW8aXrxm/pHgESMoHRVyOFAvWsmVe/nsA07ARUt6EJ/4/f1LoXWGbgNfMxGD4yfkUG063uT0jQObvO2z1wKIi57oStajNsfcbvW5gmGmQU6BkRgWret26MDhfEhJThoGJvnsM03KAYtbnQy4RmlKAnKF+6JBpmjW6MU4KxRvKpc94J0i+fIfewh1iWesjaOdtUZfNyzu+LAoXvDuhgmrkSFMdqUkCRsOfwtYcd9qUARSJ82dAIOKCAzlKOlY85
+ 8pmcXBqr
+ yrs6psQ550FuIfRpthW3Y0uHzHxSv3iKhqCLEgavR9dmpreKX/IkzK0EzgSkLXc1PxgpF8JEilYW5DkWEkPHdvYCM7aNUc5B8qWljfkwNysJOMe4xGcArNubIAxqGYKRnjm4u6a0NaKA9Z8gQn2ZvDkVTfUSdGQo6lVkDScg1qYnI8Ov1jwB8C6Ql1l1pY8885iCV5THpZT663S1fRylFozAY4U9Y+Wx0mOnd/eOvRnvqc7KFEDnGBtqJwKXi7Bh6d4oMEcXP/jX10V3MBrbM5SMWQ6Nr5CuWBrfIA/8R9WDxkjFkVGAx675vloNWmhdv1aWm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,52 +95,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-04-15 07:55:52 [+0200], Christoph Hellwig wrote:
-> On Tue, Apr 14, 2026 at 10:23:13AM +0800, Gao Xiang wrote:
-> > All softirq IO completion already works like this although
-> > softirq tasks are not strictly called "RT tasks" (i.e. a non-RT
-> > task issues the IO, and the softirq IO completion will interrupt
-> > all ongoing tasks).
+On Mon, Apr 13, 2026 at 10:17:24PM -0700, Andrew Morton wrote:
+> On Mon, 13 Apr 2026 11:57:13 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+>
+> > Commit c50ca15dd496 ("mm: add vm_ops->mapped hook") introduced
+> > __vma_check_mmap_hook() in order to assert that a driver doesn't
+> > incorrectly implement both an f_op->mmap() and a vm_ops->mapped hook, the
+> > latter of which would not ultimately get invoked.
 > >
-> > Basically what we want is to get a non-atomic context instead of
-> > using the current softirq context for read post-processing and
-> > switch to the task context immediately as you said, because:
+> > However, this did not correctly account for stacked drivers (or drivers
+> > that otherwise use the compatibility layer) which might recursively call
+> > an mmap_prepare hook via the compatibility layer.
 > >
-> >  - Our post-processing needs to work in task contexts since
-> >    advanced features like compression deduplication need it;
+> > Thus the nested mmap_prepare() invocation might result in a VMA which has
+> > vm_ops->mapped set with an overlaying mmap() hook, causing the
+> > __vma_check_mmap_hook() to fail in vfs_mmap(), wrongly failing the
+> > operation.
 > >
-> >  - Even regardless of our specific requirement needing task
-> >    contexts, using a dedicated task context for read
-> >    post-processing is much better than run in the original
-> >    softirq context:
-> >
-> >    - Algorithmic work could take extra time (especially slow
-> >      LZMA algorithm could take milliseconds on low devices
-> >      (however, we need a common workflow for all algorithms,
-> >      including fast algorithms like lz4) and verify work for
-> >      example); and long processing time will interfere with
-> >      other remaining softirq tasks like sound-playback
-> >      / network softirqs;
-> >
-> >    - If it is then deferred to softirqd, it just makes this
-> >      latency issue _worse_.
-> 
-> Yes, and the same applies to a lot of other things.  A very similar
-> algorithmic issue is the checksum validation, be that T10-PI or
-> file system native checksums.  We don't want to run them from
-> soft/hardirq context obviously, but we really need them to preempt
-> other work on the cpu, and avoid scheduling latency.  The case
-> that started this is a bit different - folio invalidation mostly
-> needs user context to take sleeping locks, but those are usually
-> uncontented.  Again, getting this work done ASAP as readers
-> are synchronously waiting is important.
+> > This patch resolves this by simply removing the check, as we can't be
+> > certain that an mmap() hook doesn't at some point invoke the compatibility
+> > layer, and it's not worth trying to track it.
+>
+> Cool, thanks.
+>
+> > Fixes: c50ca15dd496 ("mm: add vm_ops->mapped hook")
+>
+> That's presently in flight mm.git->Linus, So I'll include this fix in
+> next week's second batch of MM updates into Linus.
 
-Not sure why I ended up here but looking at the patch I don't see how is
-different to the kworker solution that is removed. Unless you fiddle
-with the thread priority in userland.
-The get_cpu() + spin_lock usage breaks on PREEMPT_RT.
-The NOHZ_FULL camp might not be happy about putting load on isolated
-CPUs. I remember there was some effort to avoid those CPUs.
+Ack thanks!
 
-Sebastian
+>
+>
+> > c50ca15dd496 is in mm-stable, so thought best to do as fix-patch? Will
+> > leave a small bisection hazard (unfortunately) so putting this as close as
+> > possible to the patch it fixes would be ideal.
+>
+> Yep, I did that.
+
+Thanks!
+
+>
+>
+
+Cheers, Lorenzo
 
