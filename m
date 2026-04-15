@@ -4,100 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8112F4198E
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 11:04:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 942E3F41990
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 11:14:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D1426B0093; Wed, 15 Apr 2026 07:04:38 -0400 (EDT)
+	id 9D3E46B0095; Wed, 15 Apr 2026 07:14:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A9796B0095; Wed, 15 Apr 2026 07:04:38 -0400 (EDT)
+	id 984A06B0096; Wed, 15 Apr 2026 07:14:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E6B36B0096; Wed, 15 Apr 2026 07:04:38 -0400 (EDT)
+	id 89AB46B0098; Wed, 15 Apr 2026 07:14:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F59D6B0093
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 07:04:38 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E50DE8B854
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:04:37 +0000 (UTC)
-X-FDA: 84660506994.20.3DD69C9
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 49B35120012
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:04:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=N4M95Yhv;
-	spf=pass (imf29.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A9E96B0095
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 07:14:26 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60F948B746
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:14:24 +0000 (UTC)
+X-FDA: 84660531648.02.A076199
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 028B520008
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:14:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=J2oVc8Qo;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf13.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776251076;
+	s=arc-20220608; t=1776251662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OEARKQBxnn04zkvEzfKGe1qNS9yfLYWPkusw3SDlgrg=;
-	b=Hv7tiC0zqGCUvtSREprBSO7ECrh3hkS2CyHHPsmbXdk58cpsaACtD8/dLRnlv9X6NBlrAp
-	UoW9Ou9B21H4neFDLtxavQx3qzrkujiJe7hV+V0B1/gS5uRCeFI0VM38SQ4vqG7ruzLzpZ
-	w+qHaQSOWJHw2rS6n1dHqKfjAr+3PA0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=N4M95Yhv;
-	spf=pass (imf29.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776251076; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=Hg37UlEcW10cmklaT0P772ahobtvEU06guOHNmMT8sw=;
+	b=AVRlxWTuGasa/ncGKeT4GSG2UUxtTsbXpESvIpru5GDtcJQTMNhH7UcFSmvkH8RXQaI18F
+	w4ujunuL/ZL58sygq1s9J4+R2ApwphiFfCt9gieDs48ndoC8SQ0AorE1k3pZciP3UF9oAz
+	6Nl0MxSDz4KnHQRHG6rW/N5R0mmArtg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776251662; a=rsa-sha256;
 	cv=none;
-	b=5UgOyRc2vr4li1G4/6MgyKWW2MxbCOBr945tv8jIpXZoPSPODqGA1bPnNUOkZA+URpCIsA
-	f29SU4vTVbflho1w+qJGe1FiosV/bExdKj6xKCREfufD2Qs/LA2PQ7Z9Ny7MkH0mSQji25
-	8jDRXwTxq7s94bYk853IHKfmIuTAz6w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=OE
-	ARKQBxnn04zkvEzfKGe1qNS9yfLYWPkusw3SDlgrg=; b=N4M95YhvcQrIaB9dFR
-	eyqy1LTaxZB7QB0uFegoouZGDAkKXDT9EM9HMxO793x0vkEdMIkddGaiGO47WKQR
-	DMlYpLmsI5OBoalvTV9Awnky5OSjCE/N07pcDmZYoiohcdTe0yqV8OGhCwr+7axj
-	iGG6KRB+3g+tbrglMrY6ugYRc=
-Received: from ubuntu24-z.. (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgA39QGdcN9pD65+AA--.81S2;
-	Wed, 15 Apr 2026 19:04:01 +0800 (CST)
-From: ranxiaokai627@163.com
-To: mkoutny@suse.com
-Cc: akpm@linux-foundation.org,
-	cgroups@vger.kernel.org,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
+	b=Z+571+/bBbixcoQMUEQaOFNWM4hd2SuwQbSXTvf1u72T4VrWsWi8ZOV1L7pGkDWG+Mpec/
+	xQ1nkYFq+nn+enghKmIe8pNN/1ay4trpTP2aqI2m2cfllwcy+IsZk4s3SqacjWWtyYyewn
+	3u8HI17G6m6ak4BIGk8eoNatD1dA2Gk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=J2oVc8Qo;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf13.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b2ea1b3962so21602665ad.0
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 04:14:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1776251661; x=1776856461; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hg37UlEcW10cmklaT0P772ahobtvEU06guOHNmMT8sw=;
+        b=J2oVc8Qor5PeElrauMuDv3kNgkVLkgtN34M0/6ADPxAeZOEZySyRrZce8pypurYGVC
+         y+XN99nDrhf5/jJiBCQJhCCO8R1iAEETcmpvbc0DigCBAQ0EjW73bpIJZV8vAeLa+G8X
+         zxbHs6E8S10bFVPiws+Ua150W0GhXM2M5+CSFzgRF1/06AwT4RBvC2rjyMCS/GQGXBgK
+         3MmPwZkM2jCf8HHU7kgAJJMY9Xq3EgtqQ1oND+YnGhXBuS4hLGnv1yf/PL/gYDeH0+Ex
+         jX8Y9wTKMHz11VM86+Xn+jGeGNU2ixVn8JrKmG9x5wefU7wyH6v0s20Ex9NV2wGIM/f6
+         i80g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776251661; x=1776856461;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Hg37UlEcW10cmklaT0P772ahobtvEU06guOHNmMT8sw=;
+        b=riE7XAgO8Z4GSyepD9GnDUOpIPFP/sMwKEyIGp7LXLw5pnP7zTvhElDMtb1vice5VL
+         qkl0Yk/MDt9fwQS2iDUBe4L7ZKgbdGSy8aGuAXSpviU0PI/uKsCQJseWGA7MR/kCcQj9
+         92mVJNscgHmBE2BEoyFcWw7AU5RqzGDsAeQypyziYKxZIJV6vdHTON1NbGUcU3LdxW3V
+         +D7YXqHonFJLbiMCOgb8zL/3nA6tRbQLWXwpKIUPpygraLNYgh6I7IEm3p6FbFp2nepc
+         d0i1H51hWXO6f6OEaIS1oPYkAlTswYeXlwFomVOh8i8BEiUCRI93ghRV+jWqBDndk91A
+         6/lQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/yUSUVXiMJsADosb//ibiIcpdzc3gob+mYXjRlOpr/vXSg9n9qjsQfv9r+kkm7CLin2N1VxcTe1A==@kvack.org
+X-Gm-Message-State: AOJu0Yx9jzwklK1ZVblKB3RpMh1CUCDY7QVwBGA8SXetjlYfj2TKkU7n
+	IBnhLsSeWp1Q9Ho1cLcrdsqAGG2yckfknQC2lQqEw3XvZUKqiMDEig1CdJLEpXBZykU=
+X-Gm-Gg: AeBDietJD/E8dkXN/1ceJ0vw6+tEsei64m5kxsVCkIX0enXBX/GZ3GPiXay4YzGgmdx
+	RU7W6j9WWzo1dSAEnp4y40x/2UtsvmI9tLV2tTdDBaNCwE4JTva7xZByKf3sVeT2LG+YRBKNlxT
+	KdeyFC74W9GJ4ZqyQaCivPup+XWxeqDp8utO0T6voQHQwnbnt2jilsA+AMLGmjPTTK3pKFjIb60
+	43RsqXhqje5HBs+rIkbTXyNjzOru7AruMuKyT/nITu6Z222t7yKVNG5jO4Y8eTTS+P/HH2EIij0
+	oG3MLO3HwQL1WYRTkaWEbjLtaWDFWdk6mCVr1NZrqPhmZdR58wCEcGCw9xLtzfoWKG/qRwhdwJ3
+	tSDfEib+uyezwpaxc/kmB6alcGv0NXTGq+AC56jDGadBqxwXHgwwTZb0eGxhLSvp+3f27r1TAYi
+	+mXqLJQfOEW6H/YGHW1KUTFAmXyiQmbfqDi4kkF4Sot2c=
+X-Received: by 2002:a17:903:5cd:b0:2b2:42f8:1a45 with SMTP id d9443c01a7336-2b2d5a8ebc5mr145530325ad.39.1776251660541;
+        Wed, 15 Apr 2026 04:14:20 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b477fd3724sm19509485ad.0.2026.04.15.04.14.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 04:14:19 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com,
 	linux-mm@kvack.org,
-	mhocko@kernel.org,
-	muchun.song@linux.dev,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	shuah@kernel.org,
-	tj@kernel.org
-Subject: Re: [PATCH 1/2] kselftests: cgroup: update kmem test tolerance for multi-memcg stock
-Date: Wed, 15 Apr 2026 11:03:56 +0000
-Message-ID: <20260415110356.3546-1-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <vjhou23d62pvtdqsan2nrlldkwf27qchpfmzf4yoetqn2gdhbj@cfiuqzzotbxf>
-References: <vjhou23d62pvtdqsan2nrlldkwf27qchpfmzf4yoetqn2gdhbj@cfiuqzzotbxf>
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v2 0/6] mm: Fix vmemmap optimization accounting and initialization
+Date: Wed, 15 Apr 2026 19:14:06 +0800
+Message-Id: <20260415111412.1003526-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgA39QGdcN9pD65+AA--.81S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrurWUurWDJF4fJr43GrWUCFg_yoWkuFX_uF
-	Wjyr1DKw4UKFyxuFZ0yFs3XF12vrWUArn7Xa95tF4xta4Dta1kJrZ5Wryjkw4rGay3GryS
-	9ws0q34Yq3ZIgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRM8n5JUUUUU==
-X-Originating-IP: [117.176.243.250]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxQGW4mnfcKGkwgAA3x
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 49B35120012
-X-Stat-Signature: 9x8g86ab8grtonqkapmu8wp5jbcezndd
+X-Rspamd-Queue-Id: 028B520008
+X-Stat-Signature: 54yrkuazfknoitgw9p4nfwn5nomq8u9q
 X-Rspam-User: 
-X-HE-Tag: 1776251074-111002
-X-HE-Meta: U2FsdGVkX1+2mSArPBe43wZgFWkJLRR48AgibNNAxp7TCTBvRUmlsFDb1XQFHRmFduOwI45C9jsy8tRsiTB14tcLATBRQPPkevPX0xI/AApDyYZb9kljBTqtf7HzCIX61XYDGcMmT3ihzdvDOKXrqmI4HVeiEZKqeXb0duYghu2VxUA9sKzbI238OJvrl6mhTfN5qKr5MLBYNmLPyKAyWDK7A7NZxlbDCcZ0LrnkjXDkEdmL/xaqIsozv3I43eTu6aZ2H9Iwc7XggfnfwA/eoj6Je5gXX+ZqQB/gR4wv6mF2gxzLceKomDNwx7u4fXU8RXZMljOknU78AFj3Vvj8x5YQp9Z6m6VWmvgeAHq8rNq78FZ4RtzwaUjA68UkLh3ToPxKmsQXSj4ToUyPIASFcYqxhhPl6j3H/vvr0gWFfvlrhospSxQrItoblaiqtgNO+03f2BUpS/JYQ3+CHTiDzF6q5QNcQGMRcOsGt3zMz/u+e8Ux4QTtlw3LC2Qn7qKhMyHax5Sd6EFCdqFAIoj5OTf/2Zh05P0YR6XC9iInJCXkr8MMqiiF2Rf6aUjk8Du+cfwGxBV9jOE8rKL2zriTQt4KZ072HBTKFLobqcP+2NgnXb2n71VSewPyyxoHHx2XmJ8LZJpqQUGG2znpg3f7SX5tTsEFVkfDtYhOOagHKkcEJjjRvmYJDlOZfvMWe9fvBO3w/2x/3ko7B8zvh7bmosGOUR+7JYVFAzi2lBSUvT4/tAP+1O93AZ0iCvcS4LWL7yp4vLlGfivpAF8DjhGDqvUXWBJa/9yEGJmY74P2aypV9xAlilZI+qCVJytlsFuhPagRtQ1xWW4gU40B+tfjBl81ojdyvrVwheWLPyd1YepxmNv+KV5HVoQ/QdPTcA5e9LvkjiAWTgRYaFbEumagg74ItZlR32eOI5Wq7G66j00xW1c+p+TZsJRC5KsboZVGjqZETeKKsply/8RZhGV
- /kQy+Yza
- ibRiU9k7LFkcnlTI0y+fUrwM+mVNpb0BPoMl1AGe4aLfQ9/kzbn0XLTAgH9YshUY2aWvuo78AJNzksM3FPyvJal4eDv4x+ccVnlA7fodStq0Ti3e364EpU6V5zhKmkXuOm10wyOipOWGd2DaIEH8l/104avJrsp+aERy8eag7RRfyVCyG+J9gDbMM7aPXv74iAIdAmPXK7nnscD3bM81bnKPXD3VJbjOVCsUlpi8i4oqb4637unzv2ecBN3JpyiDSYT/PL1GK8bZEeppFOMxUqwECx3icAdUrQ/lSIRSKJEc8Dj7Ffm3kPaQzWW3RJJ8PpWKXYGAo3FUdfEWZS6UxQjESzMgqbR+aa3NVt67kwErNeDI=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776251661-283213
+X-HE-Meta: U2FsdGVkX19Ig7l4uwBSQ1idn5Zul2UZ6LkJp90JMIquUhHbA/i4Fy5CxFzF5SwDliwH8IUOrQ8qhWRfik4taFcczA8tuWYROgWQm1cuYTO/dat/xOzpd5kiaje6XsSO1nW9uvRNGJCrtscTe3bkZS8fY4CgkpfnigIttbcpIsFnGN+OyhBrsc7zv7qSQT3qupCw3YX2JBzb6il48eZ5rG0yejdgcjxEXpknWaoEppxQ7/jjilsmhR81gzsL4KLQzLabkqBfAbYEUibXNOF3UXWJx6LFUEHQazPLuQnem+khZq31Al+pIO2xtSwo68GQw/tajuJjzzp+vhi6DugN3VusLg7LLAwzdSXUIQr1AB/lBz8T1ILJ49rwEE6L2IQNh3oShK2TwK7TMzLMkDdN3kqz41SV7QuT3ULjNH68I+T7du7lyeuMv2dxRSjot6UbFQjtFakYwruXEdAjRBOx7/ev9OuZd4g30GDxGg4Wvk0SvVFiERudrHmQMS64nKmrFC2gm/BoP+EgFGK9H456AduZtX53I5F6JtGzqe/HyOHvBUToehZVpPQgO0Gpp7/+Z05VeOpAU858afXG5Jfj2CM7KcEblGzB0gbepsSCE2MxqiqagIlIe9tG1nJ/nLR+lljkY6q/DshD5grbTkwRNUjufTonNofEQ9TrAphvQL15h1cyht6z9XMd4g90KR9wQ3f3Z1S35OmwK2I3yRPmZYK3T8tw9spNr7umjceIjlF8YvoA+DmbCiyhXYtfmyjQGe/xrbxVrei6JwUjXQynG2J8E1QWQESGiltHqdKk8LvzriRhOt+0Cwa20Q32Kp0ee9GyZk3IVd128If7l2NkCZprI7nY0M6ytpD968gUmkikP/OujgQiKnoi3lfOpnIKWheAwxHd9K0LSWsOGvMMPj8rWyR7+4xxPzj9QugxgcQF6+mJf2nqxfFC8hGsRa5JMifcZy+gFbEpN3JE9XF
+ Q1DohnqR
+ 2GDuucUtWtJTCgrB0mceOE5VFJNY0gY0VSRTtuXJMDSZjrMjgg9Uop8jaKqKvx8KSUjXAHzFpCs2joPpme8rh74BrC8LugJ7+Dm5sQiMtrhIrvIqGXex/gQhDDd/0egdjRZLeApDLnUaamHQfE5I6ZnakiEi+2MNoXClTwcyRHJ2yp64UUJ39xtCjSadIXsT6CZuUWVAJz/J28k7h/5TPukLzWQ8lDGzIZHfBt5dTsDdSFa1ecnWk+U9FJDMU4kxD2sLyIIhXqQ0qakMf5q+y2D3h7FZ1oUpW5OFCrmwwZwhl3XkdE8tPK1IHuHyF1Q+IxyldU4ju8lvVGCc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,38 +131,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->Hello Xiaokai.
->
->On Tue, Apr 14, 2026 at 11:05:23AM +0000, ranxiaokai627@163.com wrote:
->> Fixes: f735eebe55f8 ("memcg: multi-memcg percpu charge cache")
->
->An interesting catch.
->
->> -#define MAX_VMSTAT_ERROR (4096 * 64 * get_nprocs())
->> +#define NR_MEMCG_STOCK 7
->> +#define MAX_VMSTAT_ERROR (4096 * 64 * NR_MEMCG_STOCK * get_nprocs())
->
->When you touch this, I think this could be factored into it too:
->
->+#define MAX_VMSTAT_ERROR (sysconf(_SC_PAGESIZE) * 64 * NR_MEMCG_STOCK * get_nprocs())
+This patch series fixes a number of issues related to vmemmap optimization
+for compound pages (e.g., DAX), including incorrect page accounting and
+missing architecture-specific initialization steps.
 
-Thanks for the review, yes, this will improve the test' portability
-across architectures with different page sizes.
+The series addresses these issues through the following steps:
+- Patch 1: Fixes a vmemmap accounting underflow in error paths.
+- Patch 2-3: Fixes DAX vmemmap accounting by plumbing the pgmap
+  argument through memory deactivation paths.
+- Patch 4-5: Fixes missing architecture-specific page table syncs by
+  plumbing the pgmap argument through vmemmap_populate APIs.
+- Patch 6: Fixes pageblock migratetype initialization for large
+  compound ZONE_DEVICE pages.
 
->And given how much the selftest depends in this implementation
->detail(?), I see that there are other selftests that include directly
->from the tree, I'd suggest also
->#include "../../../../include/linux/memcontrol.h"
->
->and use the constant from there (i.e. move NR_MEMCG_STOCK to there too).
->
->That should make the selftest more flexible, resilient to future changes
->and it'd document ramification of these constants too.
+Changelog:
+v1 -> v2:
+- Moved vmemmap accounting to populate_section_memmap() /
+  depopulate_section_memmap() to fix accounting underflow,
+  suggested by Mike.
+- Replaced VM_BUG_ON with VM_WARN_ON_ONCE as requested by David.
+- Reduced frequency of calling cond_resched() in pageblock_migratetype_init_range()
+  based on feedback from David and Mike.
+- Extracted all bugfix patches from a larger patchset
+  (https://lore.kernel.org/linux-mm/20260405125240.2558577-1-songmuchun@bytedance.com/)
+  into this separate patchset, suggested by David.
 
-Agreed. Including memcontrol.h ensures the test stays in sync with
-kernel changes.
+Muchun Song (6):
+  mm/sparse-vmemmap: Fix vmemmap accounting underflow
+  mm/sparse-vmemmap: Pass @pgmap argument to memory deactivation paths
+  mm/sparse-vmemmap: Fix DAX vmemmap accounting with optimization
+  mm/sparse-vmemmap: Pass @pgmap argument to arch vmemmap_populate()
+  mm/sparse-vmemmap: Fix missing architecture-specific page table sync
+  mm/mm_init: Fix pageblock migratetype for ZONE_DEVICE compound pages
 
->Thanks,
->Michal
+ arch/arm64/mm/mmu.c                        | 11 +--
+ arch/loongarch/mm/init.c                   | 12 +--
+ arch/powerpc/include/asm/book3s/64/radix.h |  9 +--
+ arch/powerpc/mm/book3s64/radix_pgtable.c   | 18 +++--
+ arch/powerpc/mm/init_64.c                  |  4 +-
+ arch/powerpc/mm/mem.c                      |  5 +-
+ arch/riscv/mm/init.c                       |  9 ++-
+ arch/s390/mm/init.c                        |  5 +-
+ arch/s390/mm/vmem.c                        |  2 +-
+ arch/sparc/mm/init_64.c                    |  5 +-
+ arch/x86/mm/init_64.c                      | 13 +--
+ include/linux/memory_hotplug.h             |  8 +-
+ include/linux/mm.h                         |  8 +-
+ mm/hugetlb_vmemmap.c                       |  4 +-
+ mm/memory_hotplug.c                        | 12 +--
+ mm/memremap.c                              |  4 +-
+ mm/mm_init.c                               | 42 ++++++----
+ mm/sparse-vmemmap.c                        | 93 ++++++++++++++--------
+ 18 files changed, 160 insertions(+), 104 deletions(-)
+
+-- 
+2.20.1
 
 
