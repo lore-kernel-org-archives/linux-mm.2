@@ -4,94 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56071F9D0CE
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 03:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97D2EF9D0CE
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 03:18:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C90D6B0092; Tue, 14 Apr 2026 23:16:31 -0400 (EDT)
+	id E35A56B0092; Tue, 14 Apr 2026 23:18:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77A626B0093; Tue, 14 Apr 2026 23:16:31 -0400 (EDT)
+	id E0D466B0093; Tue, 14 Apr 2026 23:18:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68FE56B0095; Tue, 14 Apr 2026 23:16:31 -0400 (EDT)
+	id D22796B0095; Tue, 14 Apr 2026 23:18:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5710E6B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:16:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 04ED114031B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:16:30 +0000 (UTC)
-X-FDA: 84659327382.06.265F4D9
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1337B180004
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:16:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KY437Mun;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C0EE36B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 23:18:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 664F913A799
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:18:33 +0000 (UTC)
+X-FDA: 84659332506.23.6ECC601
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A69CC80008
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 03:18:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=AmsbWIcL;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776222989;
+	s=arc-20220608; t=1776223111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=INOKKU/DUYfCs/lHfTk6eEwVUS5M/lRl2T8/ng8E9CM=;
-	b=VZ8Xk0A4AA3VDarP9fKBRbqG3ER3bywpob06TKRMXEIqK+pWsO4Xj37QOQHeTU/Y4EcjiC
-	Zr3Ot6m2F/SPE5CEgHyqE0UR/oR+7nt7zY9aYtEE1MesvA+RQ9vnrGNOR5FRX+Do5FQITv
-	IqwAsfHq0PKHplUfVjdv9/5Ig8ohaH0=
+	bh=4tZtfPotxl8kfqhlcellANwp2kwmi1pimXdRirEPd8U=;
+	b=aOd5IXLnTQCNcDrOvk+m09bm8UOWW68c2eY56hx6Ue792pwf+FC92S+c4kGJXkOZQAoveb
+	+l5vHhT4F8OYO50R5GTBVR5g5ovTO5VV8LF+MQnynCD3e43X6Ckttfz+3eznPji7Tl9kDn
+	eE71Yf+WJPWUR8OaBP8JAQDqZF6EWYk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KY437Mun;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776222989; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=AmsbWIcL;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776223111; a=rsa-sha256;
 	cv=none;
-	b=EWhwt+0CLu1gtwMkq5ufSumlfoAmQOM4+62+5PXaZprw7alG+uQliRL8S+YP+D65SYuiqf
-	fwSGgUlwgIBqGULUCZy5Z8VVGQXzGl+o31avI5UFuLMNRLeQ0ZCzaU5xY4cXh4IuZ5aZOy
-	P2xNlwtRtm4BacPvA051IIL8lTOqP1U=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776222981; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=INOKKU/DUYfCs/lHfTk6eEwVUS5M/lRl2T8/ng8E9CM=;
-	b=KY437Mun3O4QuXVWlEs4M8Emqml8F0VkSiApHsNzIT6xmAd9t+50mpIRPrWnPWyIHJJ3al/7d8IpdvNGgK5jdA4v2eaIHFZwgSJPbOxNKQMNuZvWZyBkY1teeJzINvywkuMDAdGNbLxX+wtj7b4FfuthnSAsv0111rFQ+BH//kg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R261e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X138wtU_1776222980;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X138wtU_1776222980 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 15 Apr 2026 11:16:21 +0800
-Message-ID: <a6114618-4bd0-4459-9c53-450ceeaa3711@linux.alibaba.com>
-Date: Wed, 15 Apr 2026 11:16:19 +0800
+	b=MI8a5Pdx0AOfRp+00qzRE+o03jD4kJOmBonW/od9zv7pnEIXu9CBEJzp0W07ZhRcccSXRW
+	/p0pCxIbtjZpvFYiCkmUo3RCfYA8GXX9IUBZPR23jxcPFr6Sk9oeB/0zJEG1ll+URkD++O
+	dpMnV+XZEx5p4FRXyN1FH/HxARVVTps=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776223111; x=1807759111;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pN4vBEp6nfcqXNrQLkmLldYUzKj2XXj7ZHPiuukhJLg=;
+  b=AmsbWIcLz5riUkLdscBozmShIzp5v/qmzfMGl1XEDOw0MALX13jvQsYP
+   KebVYl9uJVNBFAIOP2OxqUFiKMo/kmz344TSWkm5ENnb+oGEPOWozqdKV
+   VZ1LZ8rtAlqXGlkbEerwtfVhkPKw4SpK/i32QgumvGcRt07lCf2uDxcEH
+   ihqq8IMSPQ81E+fo2I4qYjNz8p2wiwfaRYiy03jhxZU4p8j8ZCsjiqEfS
+   DvS+lYcu1OgTucS4az8YN1scvrpLl8Z1QRFeroKl8Pk+Hsf/2Z9oiUiQ7
+   8wgC4c0qXCk99J/iorqscCuEKH1dHCQqoVbLZSLYsVZXVec88wx+Z9Kt7
+   g==;
+X-CSE-ConnectionGUID: 4vtcSXx3QDaLijFwAVsiRQ==
+X-CSE-MsgGUID: kUIcatmLQnyCUKdGIGpfjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="76224287"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="76224287"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 20:18:29 -0700
+X-CSE-ConnectionGUID: hRHIx42nTce3zJplxlFpbg==
+X-CSE-MsgGUID: 36SwFOnOTKqLOuqoFusQfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="223780958"
+Received: from lkp-server01.sh.intel.com (HELO 7f3b36e5d6a5) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 14 Apr 2026 20:18:26 -0700
+Received: from kbuild by 7f3b36e5d6a5 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wCqlj-0000000005h-0rLu;
+	Wed, 15 Apr 2026 03:18:23 +0000
+Date: Wed, 15 Apr 2026 11:17:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Youling Tang <youling.tang@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
+	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, youling.tang@linux.dev,
+	Youling Tang <tangyouling@kylinos.cn>
+Subject: Re: [PATCH] crash: Support high memory reservation for range syntax
+Message-ID: <202604151100.7wbci6vo-lkp@intel.com>
+References: <20260404074103.506793-1-youling.tang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 05/14] mm/mglru: scan and count the exact number of
- folios
-To: kasong@tencent.com, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt
- <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>,
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>,
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>,
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>,
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org,
- Qi Zheng <qi.zheng@linux.dev>
-References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
- <20260413-mglru-reclaim-v5-5-8eaeacbddc44@tencent.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260413-mglru-reclaim-v5-5-8eaeacbddc44@tencent.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260404074103.506793-1-youling.tang@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1337B180004
-X-Stat-Signature: afqfwwwc9ud7b5iy8z5duhbpg554q1o9
+X-Rspamd-Queue-Id: A69CC80008
+X-Stat-Signature: nssyji7uy8tmsjwxph1irgrahm77cjd1
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1776222987-972736
-X-HE-Meta: U2FsdGVkX19sn2gUYto84iPExI/td58ffVbywtJlwMNPPigcRhe3qJ2alMUm0+25m0pMb7oEbOMF0Wk33aIgnBYgh2dDl/QdlCamWcTSZQ08LDmvJWUGALY1PiuF9R1B2tGVYlt+v2xQjP+dPxsDM2D0juKpd2s23QREU/Eix++JsaBImecJ04qV4vwlVWyz+KwtsS5aBL71SglQY2bOxSy70oXyDQNRAWcVKsXM1p8vtBHdtJprF68JFwPk+H3e/KyVUiEYXkBYwB0ixi1pIOoSM5NGWi+zXRV8p7fQOazGAzlHVCPx3GL7O7RDk38xk9InNwf7zg+TkdB9rhoMNqPhfRJQOuZqDs231NFUIUDtdnmtqa3ST41ga1SyblgbeNaJTpaAo822OiHubr5iPz3uxL8pbuYf7ihi/e+Tita8pRMngWQL1bZ/EUKmRB6AAZbbx5fxbLSfv8lJ2YIlfZJlInqx6SF1Tl7iWUczrKB/HfHmAy7/LGH2jC3WQLr1mKA5n/9jDjMI6wopaniORfzXc8GZMH3NWriDvw/jhDN0Z8P82d6Pg0hn5a8foqDwpZD82kLHED11VJa4lp2+fcw0G9HFsIcU3gs7IAOvq/rSDN897piEeNswmFzlct4HZX/V3rkpdj7l9MddUI0AzKTBW1V415pMfqfCQqwQlXzSc7juPu5qJXPdF02Ck9eRIXNLneupxf5FFlogIdNV7Nyya5UDltrFE1RiPoPGZI1HAfxoJ3L/VcP/kwsnkENhln9EbUqTPfgxo/0OW2geUaQySrRwJUuL0hYStrO7cxOYb/F3omse1oIffwKL1yqxVYeO4Qh1CbxgE4wsSnvlZQvuig+/rRjdQGIF3llR28Su7CLqh0kIVK3NUbgOdJiTqi3aFU7oFVYRF3K9pYg1Mq7MzXGLsXDILtQU+hggbJDqA+eZxIAkDmnSdObez+JEe+Cyxf5ens9q+xIVnn7
- 87gQgO1r
- z+EtcUkD9iiUKRGFK2A2HRSwsh94tcTypU9I3JolIhQ8/tE4PIhaLDL7Y6Yq2Ashi9zLImuuYrFDzbEstsVDxXFCYpUVNFn7iVBYmixfvhV24VzdOpspuQUIEoqJ6NyJ0bnCplnvMAUe3FYQr2MqkmJnt3iQ5WXexp+c7vVxljwDlE4BtufYUwbylCuTgnlXxdHK6WBjD+TFmNFVKcCZtsBWyvb4zGx2L7GwbBhg8fH6YsKVcslKlJUvGePFkITxMyrzLcwbpDuBFQc6jwDcVMwA1pMxZ0h1ICelvceTNmzYQaJb6IGkOV4NUdOHaOZwmeOeSbttfmDLmZEBu2VNtAiMu+uOX6r9c5Es4kDwAAUVjGH+8QrwL0OLdQ7jjqVjoDXKZ+Pz6cP4EHoU=
+X-HE-Tag: 1776223110-396165
+X-HE-Meta: U2FsdGVkX19pmsFySPKmuD14yt+xLJFCFyv2os+V0XVJ+/SpqpW4t2rx21lg/rQ9GIu9PH/ogXHHuX+EL6t+9Qtt+T+BffPhIeWnmjQeTGy0ek7oOe2fR1urm5JdRE628rtDHjO/Ic+VoOjK9mlJOZkOj5OP1R7KhxE47VRXX2E24s8kmCzLchtejyjmnADDgeTQi0b+NMY1DFsNuaa2y+6qjeSRzc+hkfJCkNpDhDhAE0oJ2xf1w/o9roHv6XP31rNmHZcfCH9LOYKkRXYuu3+BIkoUOxJaKFdsjSdXf6mwEOjiGjFWE07BXKZNpH5fZ4Ww01RE0f+JzDBML7/b5DIQxXmRaSwGh6AZiVQCloh/wHOkNFurOHnYK+D93HnOpuHXazzWq7kvPCNkPgx4/3CwKaZRu0qmJwrFIi+fHy4Aj1+UuHbRR5CknSAJPlUJDPHYaXL2aaadSLygakcn/rpXPGMSiAa8yMlkxk9gczgcvDLljwLN8hQ9uGTm+LmTlrUiRuZnwtIHlU7IMqvk6joh+rO9xw+/zLPIty7CgvZZg5L/T8/m9W7m02GCRq9P1xLxIC+wI65GYnzsffYqVqohOtip7J18Gt6BNjYvRwbA2G5Htb1GrJ85wRlDTUcLtxE3vAe4sjr8SA5G9Xv3oPwHMekkots3LWvfL8vw4tlo+DRoYOhByzfbCUJl5dyuFNFuOPECqiDxtCmK6f3zEK8vc24PnFq99C5tCoT/J3SAuUq6JbhvLxNwfFn7zrdzaQklPdwzbBsDvChkd4r7dCLmNauYP7S7jod94JcVmNxoF056ErZBkKu1H8OKUwtXvQUUK+v09OiYSilSO4O5Ed4jC6912AijC3OZ50xp29HWcoIknsP171lvUWkyWwhzidyMUabpPiumR3Eq/J3TBBBR47unxG/04ShFhk6nj9lCvyCjdV7naOF3m/6cD0sxJZ8zC+JUtvO3DSWy8qs
+ z5NYLgXl
+ teQHK+LmLMNCTgknMc1leKrUp5/8W9Mmlyj8bID7qyUkplNEPQAK59i3fVRQUEHULL0+XPuUf7OaWDSwVqyr0UD0WnhPjDgPNikPPIgoq9u9P6CecQ1Li/SuGHVtPNH8omhSkHPIqZYyMrF34wUBOeLfDWEJiyw+9Sjbew4aFjhh4EooH3dhSUHnqSHS6tUZfTBH2SsFyX3wAl9/EheBlnEI/hWi1vX8xZ9nxuHfBd1wm5aHUdIN8VTlmxAL7W7jvDK4WlJeJpJxztJhpvGsUl8numwDSZ11wuFVxdnLrZyYWQpPfxikzIgu4d4MWIx199voEXN8J1jzK+GwCzHpGh6mEOtx7Ycp5vA0H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +112,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Youling,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on akpm-mm/mm-everything]
+[also build test ERROR on linus/master v7.0 next-20260414]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Youling-Tang/crash-Support-high-memory-reservation-for-range-syntax/20260414-205035
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260404074103.506793-1-youling.tang%40linux.dev
+patch subject: [PATCH] crash: Support high memory reservation for range syntax
+config: mips-randconfig-r061-20260415 (https://download.01.org/0day-ci/archive/20260415/202604151100.7wbci6vo-lkp@intel.com/config)
+compiler: mips64-linux-gcc (GCC) 12.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260415/202604151100.7wbci6vo-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604151100.7wbci6vo-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   kernel/crash_reserve.c: In function '__parse_crashkernel':
+>> kernel/crash_reserve.c:324:37: error: 'DEFAULT_CRASH_KERNEL_LOW_SIZE' undeclared (first use in this function)
+     324 |                         *low_size = DEFAULT_CRASH_KERNEL_LOW_SIZE;
+         |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   kernel/crash_reserve.c:324:37: note: each undeclared identifier is reported only once for each function it appears in
 
 
-On 4/13/26 12:48 AM, Kairui Song via B4 Relay wrote:
-> From: Kairui Song <kasong@tencent.com>
-> 
-> Make the scan helpers return the exact number of folios being scanned
-> or isolated. Since the reclaim loop now has a natural scan budget that
-> controls the scan progress, returning the scan number and consume the
-> budget should make the scan more accurate and easier to follow.
-> 
-> The number of scanned folios for each iteration is always positive and
-> larger than 0, unless the reclaim must stop for a forced aging, so
-> there is no more need for any special handling when there is no
-> progress made:
-> 
-> - `return isolated || !remaining ? scanned : 0` in scan_folios: both
->    the function and the call now just return the exact scan count,
->    combined with the scan budget introduced in the previous commit to
->    avoid livelock or under scan.
-> 
-> - `scanned += try_to_inc_min_seq` in evict_folios: adding a bool as a
->    scan count was kind of confusing and no longer needed to, as scan
->    number should never be zero as long as there are still evictable
->    gens. We may encounter a empty old gen that return 0 scan count,
->    to avoid that, do a try_to_inc_min_seq before isolation which
->    have slight to none overhead in most cases.
-> 
-> - `evictable_min_seq + MIN_NR_GENS > max_seq` guard in evict_folios:
->    the per-type get_nr_gens == MIN_NR_GENS check in scan_folios
->    naturally returns 0 when only two gens remain and breaks the loop.
-> 
-> Also change try_to_inc_min_seq to return void, as its return value is
-> no longer used by any caller. Move the call before isolate_folios so
-> that any empty gens created by external folio freeing are flushed, and
-> add another call after isolate_folios to also flush empty gens that
-> isolation itself may create.
+vim +/DEFAULT_CRASH_KERNEL_LOW_SIZE +324 kernel/crash_reserve.c
 
-As I mentioned earlier, the try_to_inc_min_seq() changes here indeed 
-fall outside the scope of "Make the scan helpers return the exact number 
-of folios being scanned or isolated." However, the changes still make 
-sense to me. Anyway, I don't have a strong opinion on this (there's no 
-need for another iteration), so:
+   282	
+   283	static int __init __parse_crashkernel(char *cmdline,
+   284				     unsigned long long system_ram,
+   285				     unsigned long long *crash_size,
+   286				     unsigned long long *crash_base,
+   287				     const char *suffix,
+   288				     bool *high,
+   289				     unsigned long long *low_size)
+   290	{
+   291		char *first_colon, *first_space;
+   292		char *ck_cmdline;
+   293		char *name = "crashkernel=";
+   294		unsigned long long boundary = 0;
+   295		int ret;
+   296	
+   297		BUG_ON(!crash_size || !crash_base);
+   298		*crash_size = 0;
+   299		*crash_base = 0;
+   300	
+   301		ck_cmdline = get_last_crashkernel(cmdline, name, suffix);
+   302		if (!ck_cmdline)
+   303			return -ENOENT;
+   304	
+   305		ck_cmdline += strlen(name);
+   306	
+   307		if (suffix)
+   308			return parse_crashkernel_suffix(ck_cmdline, crash_size,
+   309					suffix);
+   310		/*
+   311		 * if the commandline contains a ':', then that's the extended
+   312		 * syntax -- if not, it must be the classic syntax
+   313		 */
+   314		first_colon = strchr(ck_cmdline, ':');
+   315		first_space = strchr(ck_cmdline, ' ');
+   316		if (first_colon && (!first_space || first_colon < first_space)) {
+   317			ret = parse_crashkernel_mem(ck_cmdline, system_ram,
+   318					crash_size, crash_base);
+   319	
+   320			/* Handle optional ',>boundary' condition for range ':' syntax only. */
+   321			parse_crashkernel_boundary(ck_cmdline, &boundary);
+   322			if (!ret && *crash_size > boundary) {
+   323				*high = true;
+ > 324				*low_size = DEFAULT_CRASH_KERNEL_LOW_SIZE;
+   325			}
+   326	
+   327			return ret;
+   328		}
+   329	
+   330		return parse_crashkernel_simple(ck_cmdline, crash_size, crash_base);
+   331	}
+   332	
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
