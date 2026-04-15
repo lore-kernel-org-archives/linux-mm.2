@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE7D7FA0C31
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 05:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4BDFA0C32
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 05:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 277366B0095; Wed, 15 Apr 2026 01:54:27 -0400 (EDT)
+	id 204DF6B0092; Wed, 15 Apr 2026 01:56:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24E4A6B0096; Wed, 15 Apr 2026 01:54:27 -0400 (EDT)
+	id 1DB226B0095; Wed, 15 Apr 2026 01:56:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18ADC6B0098; Wed, 15 Apr 2026 01:54:27 -0400 (EDT)
+	id 1194E6B0096; Wed, 15 Apr 2026 01:56:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0764F6B0095
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:54:27 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ACAE75872E
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:54:26 +0000 (UTC)
-X-FDA: 84659725332.27.84069F0
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C6436A000F
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:54:24 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="eXL/xuVz";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776232465; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 030D36B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:56:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75237C1A24
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:55:59 +0000 (UTC)
+X-FDA: 84659729238.20.565A4ED
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8112440004
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:55:57 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776232557; a=rsa-sha256;
 	cv=none;
-	b=KaUHXH6SBdivQp6Ps4n8DGlyWUIgk+s7Kaap8nyjzEH9o1ChgcEoV9XMK9OTj1+mjvvjjb
-	OB1QQzDSWj6a1WHZRj1vRskvbHNWqMNYd95KP4LZZ/VmOcoR6dBPv0Dw9UKQowesDGnD7T
-	qDw/BL+uomv5rwh68Dmp8ih04UDi+ww=
+	b=n0Q67I/0u6HFP9PnVI4pYaACZXbukfgZ9zsOGiQoKXFxugJFTFQTn5RsTt9acwO8IprJVB
+	ioK+/EEugfOJp3XkLYuItw48b49wy0REYgIPksFEnO1uLVAZHEfTiiupctKc72qlSnQKuJ
+	uPzyl92slllA58HICcjIQRH4EzHk3g8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="eXL/xuVz";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776232465;
+	s=arc-20220608; t=1776232557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=goM4TbNKzPkSw4+mRWT3apYDp0FWr3JgrOICL0Dn9Zk=;
-	b=8c6olV5uw2av9ZfqQ2JoU498iQD82eFFZwiwQbzNmBsPpSLvyMH68GF9muMnB0WH34nvqc
-	mMwFmP6uRoydpmJuaARoOIoMN6bEd1WN74JV7CM2nKm8v8lUeOz70uJpAIxSw3dF2zbN1v
-	o+axH1lvPdPfQGuWrIBDwkboTrUsvto=
-Message-ID: <170b0c6c-387f-4317-967d-2cf02e86621f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776232462;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=goM4TbNKzPkSw4+mRWT3apYDp0FWr3JgrOICL0Dn9Zk=;
-	b=eXL/xuVzwxTkYb1o25oNEMo/S0RPJLv4k4Esio9gAu3LbRFeyXiS/s5zgPyFik5yIdbFuI
-	4cicOycxb+L1gU4PLKMKNiMf18lpDbD62v2bcVJYdgsoj17b4s7j3H2zM+iSJ6iyrF/yl6
-	3hmgbuqylqbpFLpo3IqfVLezf/YJnnw=
-Date: Wed, 15 Apr 2026 13:54:16 +0800
+	bh=rCFMEdrJiTKlOsuj6TLfyyiOuywfDSnJ6crk+SJcQnM=;
+	b=gOOtY6T/FfFyPID+GnBXqqVTR8eSan4Y42yaUPkrzyDlY7zZ0vtIWL+wVmqG2lQjeLtRXW
+	v/IRv6gI6MzjeEV+mJz4ctBEt0bi6lyB4QesaGZEqA4hlx+LS1TYFUNHwF0vXmMrAUBoSw
+	fxbsSM95ePm/KW0fYHJQ7KuAoyEqoss=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id A55CA68BFE; Wed, 15 Apr 2026 07:55:52 +0200 (CEST)
+Date: Wed, 15 Apr 2026 07:55:52 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: Dave Chinner <dgc@kernel.org>, Christoph Hellwig <hch@lst.de>,
+	Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>, Bart Van Assche <bvanassche@acm.org>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, Sandeep Dhavale <dhavale@google.com>,
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Anuj Gupta <anuj20.g@samsung.com>
+Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
+ support
+Message-ID: <20260415055552.GD26893@lst.de>
+References: <20260409160243.1008358-1-hch@lst.de> <20260409160243.1008358-9-hch@lst.de> <adl1iqhldFvJwSw-@dread> <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com> <ad2RKNo2FGhpzJQp@dread> <a7a74185-df02-4906-a0ec-f87e2394aa5f@linux.alibaba.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/4] mm/vmstat: simplify folio stat APIs
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Ye Liu <liuye@kylinos.cn>, Vlastimil Babka <vbabka@kernel.org>,
- linux-kernel@vger.kernel.org
-References: <20260414091527.2970844-1-ye.liu@linux.dev>
- <ad4-kpPTPqOuDF_E@casper.infradead.org>
- <6c0ab55e-a687-4ad1-b18e-b4ca97305a44@linux.dev>
- <ad8NKAxUAP0RYP5h@casper.infradead.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <ad8NKAxUAP0RYP5h@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a7a74185-df02-4906-a0ec-f87e2394aa5f@linux.alibaba.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8112440004
+X-Stat-Signature: g1nuezo1knehjzh8b7fk4kijfa4b6crx
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C6436A000F
-X-Stat-Signature: x3sfx5jby3cnybmofhi5s9cp9gsw1wyt
-X-HE-Tag: 1776232464-539561
-X-HE-Meta: U2FsdGVkX197d68fFX+9XE1TMK7q9Uz3+BxcqQ8SHZSa0jHCbgaahhgLcZcyANL1o8LbfQ6qrm5wPE01XsHiNsoJqf+RP3FBPuGhYFHDT+nL8tXuKc0i6CjJ8vATiZ5zcaNTvQzRWjcqC+lzC/hRjb79C8Sw1mAM4FhgkmMJq1YY6J+qJjazDGxCnUdwt2LuNx8/6/wRYoBsdp+z+N7zRBJxcPgUZSAfz2+9uFSKeQ8Xb2qMffkycezpBqqP4A22TRZ79HwBEX/yrMj6HNpqQB4y6QESgrqwLkZJ2XscUZ6dz36JB515ef8wHlEWSY/zqmRGKf2TaHITX8VodrrJq9BZX28KAr8GNnH3+rb6HLciPDJUd9DIy5NVruIqctcFsbLz20uN6yVLNpIyUaGHrzTyM0HTFNDAgXqySnxv4hHi2+aB+g5h5tKdDhBn8BcSBTGUCOFzvIiFCBSsKyWknp6cp5LkfK32P9NBn9L1l+Z8VjBLW0nxPsPBtkxrtvWKLj/PHMBDGdjsJWQ5L0yq2tzzjWo677TSMQ4BffqltSVd3GsWPJkgaATmgZG4P2vuiGMmM6dL3p2o3TltRdG7RA3zE+f6oXqhb1IbstR6PtNwgXVBVXFvV0Hqckk/wMcicsLp4KsoC/sIr316b+ClCG2aKKBXW7TvYaZQh9I2unZmlhS7snogPKgWRqq9yvDC0b42Ej0C8Uls3MG43o6Ymm5Ru4AfEjpgko/qxu02857CotgDPysLgG4HeU+5Hsrecoy2t4fwn9HiMm+BZaxLP58FF2Gb6Rnv5n9AmIxp27jG9RZL7cea8FUwWD0YX+/Pef9rSvJRxrwQ5Kxuf1HderyHCej4pFIDnq8FGOK+Zh7BPGD5q3uLjEnU2bEKyOAuCz+r1EwtTWyB6DShFjQk1RJx7k/YBJr9L4sVfDDrQ2QCbJ2mLi3YOoxAJl6luhuA4lUeUO4dt723Mzj49P0
- rUVuOU8S
- jL5xp7Fkj+HKj19v+vEmUbJ6Dt/0QqcBW9sfywZElHmC71OtCAewYvXVaj0+53XUuoV/5lIMFOF40bNR9/IlpMp5O2SFWPO2ucCf2xg91m+r4LGO7sqwb/i3ODTR9aMWAEHZlAE1lXQdantTxd361s6GijnFLPJxfpjIBWraPkFXD54fzvhbM66r5T7HYLcz3HbMcKfexQ6hTa8HCL6qTYB4dgF9NK4K+fH5JLCvgvYWxKfM=
+X-HE-Tag: 1776232557-528894
+X-HE-Meta: U2FsdGVkX18kKfoy3zhwWMmP9ZXYZah56mvnIZZwXdyv/rnKvz9cVv3s3K0gGF7e+N5I2HnRnQL3B9A0nFaRhzZcafJ8BqOkpza4STXsIiovjD9nPEVyCyZwjbzpRRXqCo6XY8F4c9lR1edYY9z1zTNRPlA1+3X33cchxQ7CfgyqUS3sc1Zo4jZRJVUEdOYT6WraOm8CFFJmG+HMEobPORoeugP6M14pDp5NKRL0XAxzIqGzMINXb2qwPaOfxeO/QkIIwtouxtCtT6krX6zk/ZmnF3CoVQsvKXWEpVmhc4iRTp0LujHvYh0qREXzh1SY0sYtWwZf08V7SwCe8eAOjUCYct6oXzPzkBxyFsnjls8qUOv/51ro6PSYGb2IiXdKNeZHFlCgX6C0HHWGvVmrfwr1m4WA58/wUwDUWkm/+swy0FfDHRHUM7gH17V8j7CrjwfzP34g1lkofXB+ChdbRVsvVRzTmFsUNVIzZ63jhWy7pgTnaZWm0RVq5B8wXThSHm6Z9x639UwwkOuSDjUP6wizCjrKgyh6SfXvuECwwYeJ9saPlOmf2gerO+8cV+7kF9KsoDaX0+NKCjF/0UtnGzZclAQ8OM1/ZyG363tD1l12Zl78F4pn3pZdacIqq2KjDzim76E+OpLyRS51Ew7rW60TndcG3C/NB1SDUJlKrDuWbPUWy5sJ37VwhWc96/dPmCrZDuoLe3jn+K3Dp7H/3NR3y9cOvrtDFWRk6uTDcF2ht4z5ElZz/WZjwyEvusmyR3R7oyzSy2UgZ+J9ld7quKncePojXuDBE5p4lb2/K8OUeJ9fF9H9gOEXdiZf6JNAN5icg50T8gXcLNNrxwNA7y6cy0mFI7d+mQ6TRWyShVPOa3z7Y0h91N5ARmFHv7DbLQA7WIW1xFf3WozxB4I0Fi/Mol70m9KI4w8O29Fy9LwCVRqEBnKCUIrdTkJRwHemv/Xt9FEMAB3+a0anr4d
+ ehT7dLaJ
+ r8fzQEITDqx4O+youH4HhEaXJ9sh8usgBf0AR56z5MwwQf/tx+1OpfBok2/ZL4pt0JoBgFslYItkIzmUV6DHtF8yoKMyWvUllLn3gHfJKUqWSDrYdMxSPLDQIZjeM1C7p7hASudgixXrIPmHdYZd0Ii/XGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,25 +91,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 14, 2026 at 10:23:13AM +0800, Gao Xiang wrote:
+> All softirq IO completion already works like this although
+> softirq tasks are not strictly called "RT tasks" (i.e. a non-RT
+> task issues the IO, and the softirq IO completion will interrupt
+> all ongoing tasks).
+>
+> Basically what we want is to get a non-atomic context instead of
+> using the current softirq context for read post-processing and
+> switch to the task context immediately as you said, because:
+>
+>  - Our post-processing needs to work in task contexts since
+>    advanced features like compression deduplication need it;
+>
+>  - Even regardless of our specific requirement needing task
+>    contexts, using a dedicated task context for read
+>    post-processing is much better than run in the original
+>    softirq context:
+>
+>    - Algorithmic work could take extra time (especially slow
+>      LZMA algorithm could take milliseconds on low devices
+>      (however, we need a common workflow for all algorithms,
+>      including fast algorithms like lz4) and verify work for
+>      example); and long processing time will interfere with
+>      other remaining softirq tasks like sound-playback
+>      / network softirqs;
+>
+>    - If it is then deferred to softirqd, it just makes this
+>      latency issue _worse_.
 
+Yes, and the same applies to a lot of other things.  A very similar
+algorithmic issue is the checksum validation, be that T10-PI or
+file system native checksums.  We don't want to run them from
+soft/hardirq context obviously, but we really need them to preempt
+other work on the cpu, and avoid scheduling latency.  The case
+that started this is a bit different - folio invalidation mostly
+needs user context to take sleeping locks, but those are usually
+uncontented.  Again, getting this work done ASAP as readers
+are synchronously waiting is important.
 
-在 2026/4/15 11:59, Matthew Wilcox 写道:
-> On Wed, Apr 15, 2026 at 08:47:24AM +0800, Ye Liu wrote:
->> Thank you for your feedback, Matthew. I acknowledge that this change may
->> introduce additional calls to folio_nr_pages() in some cases where the
->> value was previously computed once and reused. However, the new
->> add_folio/sub_folio functions provide clearer semantics, explicitly
->> indicating that we're accounting for the entire folio rather than
->> potentially partial pages. The overhead of recomputing folio_nr_pages()
->> is minimal in most scenarios, and the improved readability and reduced
->> argument passing outweigh this concern.
-> 
-> I disagree.
+>> Tejun asked Sandeep if setting the workqueue thread priority to
+>> -19 through sysfs (i.e. making them higher priority than normal
+>> kernel threads) had the same effect on latency as using a dedicated
+>> per-cpu RT task thread. THere was no followup.
+>
+> I think the issue is that people are not already working on the
+> same topic:
+>
+>  - Unlike large subsystems like XFS, people don't already work on
+>    EROFS unless they have new requirements or urgent production
+>    issues;
+>
+>  - The original latency issue was already considered as "done" in
+>    2023, and I'm not sure if Sandeep could have the bandwidth to
+>    pause his current work and test more setups according to this
+>    ongoing discussion in 2026.
 
-Thanks for the direct feedback.
-
--- 
-Thanks,
-Ye Liu
+Which unfortunately might explain the sad state of Android.  You
+really need dedicated people around and help to improve core
+infrastructure, instead of adding random Kconfig choices.
 
 
