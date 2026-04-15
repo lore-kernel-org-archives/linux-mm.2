@@ -4,136 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 881DFF4213F
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 18:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA05BF428C2
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 18:45:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3CC96B0005; Wed, 15 Apr 2026 14:44:24 -0400 (EDT)
+	id 4879B6B0088; Wed, 15 Apr 2026 14:45:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEDB86B0088; Wed, 15 Apr 2026 14:44:24 -0400 (EDT)
+	id 438816B0089; Wed, 15 Apr 2026 14:45:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DC5A6B0089; Wed, 15 Apr 2026 14:44:24 -0400 (EDT)
+	id 326DA6B008C; Wed, 15 Apr 2026 14:45:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BBC06B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:44:24 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3DAB13B2CF
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:44:23 +0000 (UTC)
-X-FDA: 84661665606.23.A58C70A
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B919D40013
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:44:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=eSTTIvS8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776278661; a=rsa-sha256;
-	cv=pass;
-	b=4DXFNrRb/YCputED6pMhDy1v5QuNd0hA3CuPxxJ1SrjHZRSihXnz43qUTeDEC8KminEbCh
-	uktOEDKCSQLWvABcv7FcHaKxIDkHF8QLgC5lstg5mo5wJWFJQxpAHkemLcgolk8+IrI1W4
-	InVxcohpC8q6a5JfTQDtjbyoxBcATDY=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=eSTTIvS8;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776278661;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F5A06B0088
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:45:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A42A4140563
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:45:00 +0000 (UTC)
+X-FDA: 84661667160.06.30913BB
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A6CA840016
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:44:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="W/HUxjsN";
+	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776278698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f+yQntTqR0h6JwI09uPQd0dPCAWFqdxHNy6GJxTs0Us=;
-	b=WbELUd8fWcmMnJ+moCCfmEYgryb9elXbHuBqQIny78nJ94m+UQSOrqjd33izBqWV84eU03
-	3c/UiH1m5uf62Ha5napt56sHj0h0FUxxoWMypbxpR2DQrtu1Sr58LmpVhUKpOtjY9tX+Cr
-	S2U9EThisPMMnDarD96S4eb6NB6QyuA=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66d65646c65so5352754a12.1
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:44:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776278660; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dFBvHLWeqqydqzzJ0nwAXf9HJBCJNDEmcgkf7Wczon2wD8vKdsRNCcil5sX5t66y4A
-         EzfeJDr6yZa4HUZjwtWM5+Yubz9evkkYIYNhUk2nns5RpR90V+holpNciQdrCsAcbaQq
-         qDhFQceW++qPO1VuXnsRttMn7njmhyD/6tEUT6zaH4VmD0s4kOymo0Y2HcXqn8vw+dpP
-         vfkO7fSLHgzOV550XA0TTp8V0QP6mu1D2mE084rjG8fcm9YGg78660IWkFOfJW44xOSN
-         PEFhPE/7k+aDzFhmVnp5dywhQgV0aYT5CyFFBao9/Mx/R+nPdyRfrGnzgpRHjM+E3L8L
-         K96A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=f+yQntTqR0h6JwI09uPQd0dPCAWFqdxHNy6GJxTs0Us=;
-        fh=WF8FmuLc8jWcE5P7MQABZEZmIFq56VEmv1RnidQ1Jbk=;
-        b=Mdqr56FLFag/eXY7Jj6ZNK7i75HP2nDTDFP1jQxRrLw1pOjLEmRg7UNH6zTTw733TG
-         iTPdXhP1kRPRWsG9HrwK4d9DawBDQlqAN+GuG8F1sVDiiQk4/F8LRN2tCqpNEQRDEUju
-         aNuDn3wdQ0bjWLRSiGSJnEGm/yHWV/+xpbm/L5pyxBaTNz3FYZLT64V7FOhNF/p/fUqf
-         +NjukxY6KFW9SZhvyvFgefpCg8BLTAm+86K5vIb8g20GWUSqft2NzAhoQuHsEFopkYZc
-         hgEOUdQQmeqtbvZi/cENY2hJImmPLTmpuFTqbNIYBCaJljZYbNQdvpULhDil3jpwYuCB
-         e6qA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=BI+4MMhKwlqJVBTeBPlTkRj9rTN/wEgXw0QahwfBzo4=;
+	b=TzldWjOdQpgmrq23WHUrfhMe2unXLtJjr+3pcDIObOe17VziAdb+XXl3E2gkyYc6LKI2eR
+	jtNa8o+8VtJ8DH1CldRPW604pun5M9M1YBGZOvjopjYSkl0n3yQq1cQE8x3jQp66uAjp79
+	1O5G6aHYG8BK5kZHXCbKGHFNxB6H8uY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="W/HUxjsN";
+	spf=pass (imf27.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776278698; a=rsa-sha256;
+	cv=none;
+	b=SJbXrNS+F5qlfBduU0nE+UpbX46JTkRdpvcnKtscgK9lPUltCe/lJj/s3RQ38e2OdxuYaa
+	0xVBDgGz0P+OZAWfrgAkFZPy0G7jPWj6o2PS2gFIzVlgY1lUdk/MheP7Ge95hdsdVGGHMA
+	t0TkTecuGod3avjrzjOSOFzY1PrsWD8=
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38dd575bca3so68327821fa.1
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:44:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1776278660; x=1776883460; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f+yQntTqR0h6JwI09uPQd0dPCAWFqdxHNy6GJxTs0Us=;
-        b=eSTTIvS8X9XGb+U0UCplvHnIei3p6jYEhpw90F49T6i9VrOxSBluLLNPhW6VuqMG8O
-         Zghq98eVEUxv+FnGneW0nkN8iJo1HUQeFln3yKIpz4hzlRrNhQyLrLdbFkBUbnkA+fky
-         Vb6Y3RbWehgTH0ZoT7ds+iLrd3yiPRBFdtgCuKAcDvJ5xFZjKG8pmD51MTL6qbZIQVDo
-         uVYIk5QGcwMc0Kp742mt+gobHq2Yq0swanI6XWHms1OGRGCpBdlPJPUJWXzKOfyVW+R8
-         3cI4vW4povxc5Q95bRJ4cPS5ftkGlREULdJD3yLAhcvqZD2ZHHwBZkbgz7pHJ7BPr5Kr
-         7bCw==
+        d=gmail.com; s=20251104; t=1776278697; x=1776883497; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BI+4MMhKwlqJVBTeBPlTkRj9rTN/wEgXw0QahwfBzo4=;
+        b=W/HUxjsNUpdsyA4ALb4oalQqSmDqbCJXOU/hOMhS14wUW18Buu2BBz4Aouhji3jaN2
+         Z6SDp3xhslnMKX+3Cnaq3BdP0B8WjlQeKg29d/qmwdkdpGGrozNYA6+7kMMPVf07Edwh
+         Y9ExfQyMgs9WK1TRr/2LH6y0x4GbS0HqIb0/gP6qNszJlCe12F2wXfYqZ5xZANeeX+X3
+         TC+iAg8kUxYD5qsrUxmwp2Wn+Bq+dDxEsBAyMhTEKmm2y+ndoajlTc27IHtWtXFM9iII
+         57Pept2wUpB8AQx0PZNdRatd2pepwIEJJbnNMzY5PDL+Ucs+FR5Ke2XNa4ShLc0KMjcp
+         WGqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776278660; x=1776883460;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=f+yQntTqR0h6JwI09uPQd0dPCAWFqdxHNy6GJxTs0Us=;
-        b=sRXqIf6LCuMw5DLBB5CkzoGmAIKmXSPHwYhE/c0lHPF1YE/l0GPLW20G7qpw5tXHUG
-         K6hkqzlBY2uHTuLCdCRCYL5uBs6tl1Ks7O6oiJaY6Oet5o8ecIJ+esSziohJvutkLI6w
-         Sh/34s3yrYbMi11q4mb38r9xZJbiX1hSGsjPQnaro9zp3bPXUHoiLZbirFuq2je/LrFj
-         OvSNTmBSnxgPKxiH2MdddeBTiMC3bk+QZFrbs8YDY5qEcjK3+lC99JsY+KHXCRaLInsI
-         mypL/S+asxlkPpvDXb6S0wiweIU0P/k2ONii3esWeD0oJFCiL/SXkZi1c6U9CO4RdZ12
-         F0yw==
-X-Forwarded-Encrypted: i=1; AFNElJ//HvO+S11XaO8e6CKRqYECiAt1Nf23cA7hra63IBmrt+eQQ3E5w5WyDKKX6j+m/6aEBA/KRIUoGg==@kvack.org
-X-Gm-Message-State: AOJu0YyyECelpAZmDiHtYxNy7wJn9XZoAnzGWKM7gcZTIzfEC935Lj0K
-	ZoFi73abgmXy4o7yKEJkAUPIgzJJVd595karmDPMcNOAVp2w9zPGAko9ce1QhXZS/wbmHxsjF12
-	o6z21UcoCxka/AwQb6tDVqlhWVRnv0l4X2ZinJMBrvw==
-X-Gm-Gg: AeBDietXqsH3rONIPqlR0gEFNeEsiP0hMteD5COllhPTOfJ7viMog6BXuPa2P3KTfqN
-	KgfLsyhzkHM5bhob/VWn9YrCicXfVZE8mZr5cAPZYwmylAR4scjKJ/qvq6MHA9sn41zBhlrCi8q
-	tHf8E5nbnkQeffxP0AFA+b5ZGrEC2MGzo4fYVF/qpqcB5tmEhiQ+hraT65TuruD7G8cbGLvuk5O
-	E25Ei6iAxoPIXgN+WQf36Dx+PFyCYSpRkM/mc8wXKc8ttOHzLKGGbpLQLRmkwHT2hcXjA4hSroi
-	g72HgZJY1O/im2wWXrV67PULaN/gyURPHXfPkQ==
-X-Received: by 2002:a05:6402:a21c:10b0:671:9dec:ba3 with SMTP id
- 4fb4d7f45d1cf-672711d3509mr270895a12.13.1776278659796; Wed, 15 Apr 2026
- 11:44:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776278697; x=1776883497;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BI+4MMhKwlqJVBTeBPlTkRj9rTN/wEgXw0QahwfBzo4=;
+        b=HjHWeFmQM1DB4nxTK0mNHkFngPDFEhGfZ7mDFXN2VWH07to28CNG7pEMp7JjPQ3Beq
+         H/oflKjujLjgs21RRtbCQ4wycoRONnRHNZeJ2EcCc0Q+VjNSWXopYcC+sZHaVpVaD7B7
+         ZXIKH6FlaSiWjfBYONtUWz1MvCQeAkXRGDvtiQq3R/JmfVEvbVrRe0osIBEnBH1TU040
+         Efgu9pcb3/czUss8g+n3JfAGb+Pr8D2a2PSgRVDyRbsSf+tV8Kkhn2j+Za8uTmiajCbE
+         XNgiwtUsfhxKK0lSmM21FUyDQHCz51/oe11e2JjJneAEwLFe/yWVHzegyk5ybY56mJti
+         n+zQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/vP9tWwf1ZaqEGN7OugLhB4p3WUnB6gwjk4kDxEFqlqDqtK1pkJBPih8r4/yHZRYvPBaV7x/2Sig==@kvack.org
+X-Gm-Message-State: AOJu0Yz08Zkjku7v3dIVjiFLakKEv3RJ245U8/pzrYd/mqC+uk2f/5Z+
+	9jhhDTDpE9WF2Kuls2L49xAHfiwM2iFb3qVIMbttp22MqkMGBNDDkPMS
+X-Gm-Gg: AeBDieuNouP4Oak3dQexAELhTKgo7hSWSJV+thv5qbcLciGkttYvXcjVf8KKRmuO6+P
+	oEgL3xVCEH0xEBckDkYyAh7qaW+NnxlLKQS1db+EPqJmOnsZHKDFuYopTivRM/qQaMPGuidwzG3
+	ruoiMrwvA8rNLlu+hr+iH7ldIt7gtxp6TCg9HFu+0WGSIRXuvEtk60rwH5u6BirCM1ErmqKq+z7
+	WtrIpxcms/uqDnx4txgHN2xJAyJDnZI+Q502IwSNmy43/SOln/IJTP0LO1F2Ogf+NsNEkxUoc3Q
+	84rNLr2GSrjN0Saf9MiTV7IdSjP5gjLNd2TbJjORzuAKKxU4PWwGFqam0OkQb4q5cnV2i0Hk2fp
+	UiKvgXipgaKv0skXCOVvNZ9JcG2qoTfph8krvZu3U4k1UmndUJzVxKefZdNKKmLyH
+X-Received: by 2002:a05:6512:1151:b0:5a1:1de6:bc66 with SMTP id 2adb3069b0e04-5a40df9652bmr187844e87.18.1776278696262;
+        Wed, 15 Apr 2026 11:44:56 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a40a2fbae2sm652303e87.63.2026.04.15.11.44.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 11:44:55 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 15 Apr 2026 20:44:54 +0200
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Shivam Kalra <shivamkalra98@zohomail.in>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v10 0/4] mm/vmalloc: free unused pages on vrealloc()
+ shrink
+Message-ID: <ad_cpqx38LtQPlX8@milan>
+References: <20260404-vmalloc-shrink-v10-0-335759165dfa@zohomail.in>
+ <7d16f260-ffd0-4e45-b66e-9e7f71332466@zohomail.in>
+ <ad5yE0sgV1HJsyaC@google.com>
 MIME-Version: 1.0
-References: <20260413185127.128180-1-pasha.tatashin@soleen.com>
- <20260413185127.128180-12-pasha.tatashin@soleen.com> <ad-xwh2Ecr3Yg270@kernel.org>
-In-Reply-To: <ad-xwh2Ecr3Yg270@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 15 Apr 2026 14:43:41 -0400
-X-Gm-Features: AQROBzAm6dBwIuInDhC_BczhgxGme7QKv_GFc3kbSYJUQ8UndxZrGzaf5vLCT3k
-Message-ID: <CA+CK2bB_qFMzf4U1oMSGCDXuFTgp+1g_JrHgfpBuKSHTwLLvjA@mail.gmail.com>
-Subject: Re: [PATCH v4 11/11] liveupdate: fix return value on session
- allocation failure
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, dmatlack@google.com, pratyush@kernel.org, 
-	skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B919D40013
-X-Rspamd-Server: rspam12
-X-Stat-Signature: pgy8ozrtkdwsz7cqm7zy7ms8zu66exo8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad5yE0sgV1HJsyaC@google.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A6CA840016
+X-Stat-Signature: stjd7hxaojcpgayrttqx61s4takrh9ag
 X-Rspam-User: 
-X-HE-Tag: 1776278661-57761
-X-HE-Meta: U2FsdGVkX1/r69x3mZ8VQPKx4zHCuJYABWE/Hds0F1Z0Lh6t4/tJGxMW1Gnb5v6cjder9UKqphp4N7xBIbE33/5+u69XWe4xWMkRQg/Qmtc2J4WdUQkXxaisMrQG/9IB4+tl3jIjktaBZcYtmnYc3U/EOkNPyNp6TxpKNTe/nWUXl9d6L+KyZ8g2AGkZ7SMkhZmT/LFCBLe2mSII1IY+cX6TJLhLfxigHoCQpoZ4lJwuDjXNHZKnaKeEUPLhiQtV7rpBQQHp0QfDAev0bWYS3TkParJBnfo5RMGvvlkKV7+Vb4+CaNbDWu2xHAgTxtDdPNklybarTDETgy51De4XXZRK7HBp3kRwMH41WYbq3PQ+tPR0E+rUpORjMQ5hRA+Td8ozMVzk7+Lk9XfUQefUt8hu44yybKZB98ptjGrJqPBkohCp64BL7Ej9CwMY6S/l55ggrFvmd/UulfROpZFhOZtSnQDTDhOh88FjlodXO0EsFIl17/q7W8DrOOLR7VUUR5MR7KwZGJGEA/oCCE3NuL0mPwOihngfQqRZA3V+c9xK8f/0yzymjSgb5H8ZhyxPc9X0wUjwD3A2DdnmFuQ+slnjl8GBunOt4VThgWpABomeKB0w50ks9eKxj00WldLQF4rQkiFq2oBq+bkIsP2TOvoD2pS023va5pZQMmcCeUB7nTeOQCW36BXi/+gik0KoKZx26jxvNMzCcUO/sKVsyqXMJu5jb/QlWT40OZwTiUh2MQv5OkyViILBDS/ckIqz7cjxQ+464Io2iI2YD1XaTu+/ZREEtuiYwDH+lkFzxjBq54NLqKEqSBLhzSH9oVhnN0dKBJbjnMea+Um+wD8TX2lDgLNIJX6jDPT7Dyp51agTfB7sODwRLpX6yTSN7w8ppersWYIXuBFHK/EsV/LSPSRM6USrS+5YExwxaaGciSD1Pg/N+v4NxYyPE8hKKpfU7AGQOaZyhoeSPiXrb9h
- fBQU6HUv
- dayjiq31CZNQfdflYUnUjBaTLJfQz19UtLsHMeSsSXF5QALgb9kqqD20hgRECaJL+tL+9CQj35KsVGXyqnTUmgS3IihGtKvTZ51pbJXwylLJmYDRm9kweEfnXR0XYwCgLPDlI35znS3LMCukQKs3O/tdPbtuprttRNAIx3ACOV3X8CoiD/rAijB3NyaWBOpJqA5OPKQI9Gpm1LNp5/nr2dxklh+62BnwpnyDjJt/xhXaosUzx/C4Qv0BUuXyLTlVm6eydj1r7lGofGZVy3z7n0Rvw6ougvh5ge0IE2eGDDfKhIgtRjDY6gFaBqaSexTgyeGcX
+X-HE-Tag: 1776278698-430625
+X-HE-Meta: U2FsdGVkX19xOm9JMDO2V1VbwNiUiSVhedZ45a9sd3uVpZNL3H3JycuSiisrHulxtgbQVf0Iu9IqZoiQgejqiSOEaNx89Scn3La33arwSX5znr6V0fN6UrVnxVsQv0pHRnKYz9fPnL5MH2xNMUHyJEEeWlbyKGE9S/jd30nnIDZbBk5HNYJSNbK2xGeY8lD+dL9Xlvwp9rKgBhzC4JtSgzU/1BncsI9Gl4/7nnFmZOqIyVGOc/YK/CNvh6tTgJ67uX67lJOcdjwB0b5N4g+xi8Lc4lj7j2L73hcfPRxek55SGks6uvcU20CHn166Qi+Wpu3ZszfHt/e/m01fnli+SU80D01W4e0w8F6N9fv+aeXTxcPtRh/knipPFvFinz3xZvs1zdI6MoPQ5c3WhHvYvTPtL3qQDw6UtCTKioVHVGwRLlYdQfxqJykyzOQMOryfi6+wEu4F6rBKQZUxmY0o/L4CyxY0PsKLNnnaWEufqnHzZtPlbAOCnrUdY5lVV3w06mn8YPLNZl4vmjgJtwD/3rACnql2xEBUOI9n2i9bVdphej9Z6Y2j9yNLX5tuyLerR+qqqG7kwk7wJ+MwGLWTsKqm3bprKt+jvc86dAMEyjGvQ0d04/O4AckK8KUdUtd54deywdwt77Upt7CggFRqiraWkeuKz2xdv3GYg6xoM5qwA4K9N/bjdDAeP0YNV/pDtkr4GasBfyQ7Z8MrI67Uvk9PsqqQuNtsEBmhi67gWwbvkhxsocldghpfQm/d7Oe8N+pXqZ+cd5s2nAacA+9p4Jv1/McuNkzV7N8ZUHk9AHr7jWU3twayB5MFqp0KlrXs1fKiyJvkrS+bLaIPpC/A+52RzJypMW37YuSk0ZTC1+sYiK/bjr33K2zPO2C6akI26jVSdasuXj+kUpPALmTQW/LNR/NKjHYhGTB+LxAV7IfgzKwz/xIkZICic/80bnxSpNseqXDWBlmZfEJk4/f
+ yCd0t7zW
+ Cs7El3qv85/oj1MqRFhbXwwv+qCzpAML/1mxnyPoAl1iJ0B1FeYCGHOmDh1k0QCfkD6vCaF6vrXcrBy7fBxf6t1IQwWs1nvUSIjB/tlJTeKhgViVYssura1zkaVp4ggaMAbTTwzI6VO8uBJEPBz1L/WuRkp87/NBX8H41UG3SDl65zipeMJyKKKutW/ZhvXIXZ2LzsK3h5EDJHdhZ7V+IDJ75pB0YSjh9XPHm7xgSQgINDjCj389kXfcCpxDqS5rSKFbNAtq1kUNhHeaY040igUgbn07sgqg7inX/hdRpJJ0cArGfmq9EvbWUg1SXZbDIYjXNvwCLSsAbl9SoWUZvWj9fWSi5TJw0Owrdrfpbu/6hVBQcse9F/gXF4Ple5QfIg9kdXvBZRn1vGkEtuuHkj+V/dLYKnYnriP1HkvzbuUNdTROh7xKEnp0bx6UgqCwCaNcGDNn47GJLLl1BSqnLvvJsPIuGipteC9leZgwWunGH930GUvmJo+l/Nz3Fjh0amQJPPfGIQq9nEPT1JpayaClYdvKdiLPhIPUUCy1XHquzqP4UfQS57nvs8M3f+3qRLSwZGOjj5rf9XDBTohDk9u1EJGaK8QCo4svDHpIXAG0Z7pU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,59 +121,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 11:42=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wr=
-ote:
+On Tue, Apr 14, 2026 at 04:57:55PM +0000, Alice Ryhl wrote:
+> On Tue, Apr 14, 2026 at 02:09:09PM +0530, Shivam Kalra wrote:
+> > On 04/04/26 14:06, Shivam Kalra via B4 Relay wrote:
+> > > This series implements the TODO in vrealloc() to unmap and free unused
+> > > pages when shrinking across a page boundary.
+> > > 
+> > > Problem:
+> > > When vrealloc() shrinks an allocation, it updates bookkeeping
+> > > (requested_size, KASAN shadow) but does not free the underlying physical
+> > > pages. This wastes memory for the lifetime of the allocation.
+> > > 
+> > > Solution:
+> > > - Patch 1: Extracts a vm_area_free_pages(vm, start_idx, end_idx) helper
+> > >   from vfree() that frees a range of pages with memcg and nr_vmalloc_pages
+> > >   accounting. Freed page pointers are set to NULL to prevent stale
+> > >   references.
+> > > - Patch 2: Update the grow-in-place check in vrealloc() to compare the
+> > >   requested size against the actual physical page count (vm->nr_pages) 
+> > >   rather than the virtual area sizes. This is a prerequisite for shrinking.
+> > > - Patch 3: Uses the helper to free tail pages when vrealloc() shrinks
+> > >   across a page boundary. 
+> > > - Patch 4: Adds a vrealloc test case to lib/test_vmalloc that exercises
+> > >   grow-realloc, shrink-across-boundary, shrink-within-page, and
+> > >   grow-in-place paths.
+> > > 
+> > > The virtual address reservation is kept intact to preserve the range
+> > > for potential future grow-in-place support.
+> > > A concrete user is the Rust binder driver's KVVec::shrink_to [1], which
+> > > performs explicit vrealloc() shrinks for memory reclamation.
+> > > 
+> > > Tested:
+> > > - KASAN KUnit (vmalloc_oob passes)
+> > > - lib/test_vmalloc stress tests (3/3, 1M iterations each)
+> > > - checkpatch, sparse, W=1, allmodconfig, coccicheck clean
+> > > 
+> > > [1] https://lore.kernel.org/all/20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in/
+> > > 
+> > > Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> > > Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+> > > ---
+> > > Changes in v10:
+> > > - Reorder vm->nr_pages to the beginning (Alice Ryhl)
+> > > - Link to v9: https://lore.kernel.org/r/20260401-vmalloc-shrink-v9-0-bf58dfb997d8@zohomail.in
+> > > 
+> > > Changes in v9:
+> > > - Remove READ_ONCE, WRITE_ONCE and drop commit
+> > >   about show_numa_info. (Uladzislau Rezki)
+> > > - Update the commit message in Patch 2. (Alice Ryhl)
+> > > - Remove zero newly exposed memory commit.
+> > > - Link to v8: https://lore.kernel.org/r/20260327-vmalloc-shrink-v8-0-cc6b57059ed7@zohomail.in
+> > > 
+> > > Changes in v8:
+> > > - Strip the KASAN tag from the pointer before addr_to_node()
+> > >   to avoid acquiring the wrong node lock (Sashiko).
+> > > - Rebase to latest mm-new.
+> > > - Link to v7: https://lore.kernel.org/r/20260324-vmalloc-shrink-v7-0-c0e62b8e5d83@zohomail.in
+> > > 
+> > > Changes in v7:
+> > > - Fix NULL pointer dereference in shrink path (Sashiko)
+> > > - Acquire vn->busy.lock when updating vm->nr_pages to synchronize 
+> > >   with concurrent readers (Uladzislau Rezki)
+> > > - Use READ_ONCE in vmalloc_dump_obj (Sashiko)
+> > > - Skip shrink path on GFP_NIO or GFP_NOFS. (Sashiko)
+> > > - Fix Overflow issue for large allocations. (Sashiko)
+> > > - Use vrealloc instead of vmalloc in vrealloc test.  
+> > > - Link to v6: https://lore.kernel.org/r/20260321-vmalloc-shrink-v6-0-062ca7b7ceb2@zohomail.in
+> > > 
+> > > Changes in v6:
+> > > - Fix VM_USERMAP crash by explicitly bypassing early in the shrink path if the flag is set.(Sashiko)
+> > > - Fix Kmemleak scanner panic by calling kmemleak_free_part() to update tracking on shrink.(Sashiko)
+> > > - Fix /proc/vmallocinfo race condition by protecting vm->nr_pages access with 
+> > >   READ_ONCE()/WRITE_ONCE() for concurrent readers.(Sashiko)
+> > > - Fix stale data leak on grow-after-shrink by enforcing mandatory zeroing of the newly exposed memory.(Sashiko)
+> > > - Fix memory leaks in vrealloc_test() by using a temporary pointer to preserve and 
+> > >   free the original allocation upon failure.(Sashiko)
+> > > - Rename vmalloc_free_pages parameters from start/end to start_idx/end_idx for better clarity.(Uladzislau Rezki)
+> > > - Link to v5: https://lore.kernel.org/r/20260317-vmalloc-shrink-v5-0-bbfbf54c5265@zohomail.in
+> > > - Link to Sashiko: https://sashiko.dev/#/patchset/20260317-vmalloc-shrink-v5-0-bbfbf54c5265%40zohomail.in
+> > > 
+> > > Changes in v5:
+> > > - Skip vrealloc shrink for VM_FLUSH_RESET_PERMS (Uladzislau Rezki)
+> > > - Link to v4: https://lore.kernel.org/r/20260314-vmalloc-shrink-v4-0-c1e2e0bb5455@zohomail.in
+> > > 
+> > > Changes in v4:
+> > > - Rename vmalloc_free_pages() to vm_area_free_pages() to align with
+> > >   vm_area_alloc_pages() (Uladzislau Rezki)
+> > > - NULL out freed vm->pages[] entries to prevent stale pointers (Alice Ryhl)
+> > > - Remove redundant if (vm->nr_pages) guard in vfree() (Uladzislau Rezki)
+> > > - Add vrealloc test case to lib/test_vmalloc (new patch 3/3)
+> > > - Link to v3: https://lore.kernel.org/r/20260309-vmalloc-shrink-v3-0-5590fd8de2eb@zohomail.in
+> > > 
+> > > Changes in v3:
+> > > - Restore the comment.
+> > > - Rebase to the latest mm-new 
+> > > - Link to v2: https://lore.kernel.org/r/20260304-vmalloc-shrink-v2-0-28c291d60100@zohomail.in
+> > > 
+> > > Changes in v2:
+> > > - Updated the base-commit to mm-new
+> > > - Fix conflicts after rebase
+> > > - Ran `clang-format` on the changes made
+> > > - Use a single `kasan_vrealloc` (Alice Ryhl)
+> > > - Link to v1: https://lore.kernel.org/r/20260302-vmalloc-shrink-v1-0-46deff465b7e@zohomail.in
+> > > 
+> > > ---
+> > > Shivam Kalra (4):
+> > >       mm/vmalloc: extract vm_area_free_pages() helper from vfree()
+> > >       mm/vmalloc: use physical page count for vrealloc() grow-in-place check
+> > >       mm/vmalloc: free unused pages on vrealloc() shrink
+> > >       lib/test_vmalloc: add vrealloc test case
+> > > 
+> > >  lib/test_vmalloc.c |  62 ++++++++++++++++++++++++++++++
+> > >  mm/vmalloc.c       | 111 ++++++++++++++++++++++++++++++++++++++++++++---------
+> > >  2 files changed, 154 insertions(+), 19 deletions(-)
+> > > ---
+> > > base-commit: b47b4fa4c232ee36aae58630e9d6520e35d33f3a
+> > > change-id: 20260302-vmalloc-shrink-04b2fa688a14
+> > > 
+> > > Best regards,
+> > Hey Ulad, Andrew
+> > A gentle thread bump. Will we include this in this merge window?
+> > Let me know if you have any suggestions, I will resolve them
+> > asap.
+> 
+> If you mean the merge window that opened yesterday, then it's too late
+> for that, and I believe we agreed to not include it there anyway in [1].
+> 
+> I can try to look at it again. I guess the main difficult thing is
+> interactions with other parts of the kernel, of which sashiko claims to
+> have found another one [2]. I can't help but wonder if it would be
+> better to reduce the vma size to avoid issues with other codepaths using
+> get_vm_area_size(vm) and assuming that all pages in that range are
+> mapped.
+> 
+> [1]: https://lore.kernel.org/lkml/20260327113758.75f04588310a707b4d4b1aac@linux-foundation.org/
+> [2]: https://sashiko.dev/#/patchset/20260404-vmalloc-shrink-v10-0-335759165dfa%40zohomail.in
 >
-> On Mon, Apr 13, 2026 at 06:51:27PM +0000, Pasha Tatashin wrote:
-> > When session allocation fails during deserialization, the global 'err'
-> > variable was not updated before returning. This caused subsequent calls
-> > to luo_session_deserialize() to incorrectly report success.
-> >
-> > Ensure 'err' is set to the error code from PTR_ERR(session). This
-> > ensures that an error is correctly returned to userspace when it
-> > attempts to open /dev/liveupdate in the new kernel if deserialization
-> > failed.
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  kernel/liveupdate/luo_session.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_se=
-ssion.c
-> > index a3327a28fc1f..92b1af791889 100644
-> > --- a/kernel/liveupdate/luo_session.c
-> > +++ b/kernel/liveupdate/luo_session.c
-> > @@ -547,7 +547,8 @@ int luo_session_deserialize(void)
-> >                       pr_warn("Failed to allocate session [%.*s] during=
- deserialization %pe\n",
-> >                               (int)sizeof(sh->ser[i].name),
-> >                               sh->ser[i].name, session);
-> > -                     return PTR_ERR(session);
-> > +                     err =3D PTR_ERR(session);
->
-> it's really not obvious that err is global and it should be set before
-> returning.
->
-> I'd suggest replacing all return with goto that will return err;
-> This way it should be clearer that since err is returned it should be set=
-.
+Yep, the problem reported by Sashiko regarding area->size and vread_iter()
+is correct. V10 does not address this. 
 
-SGTM, I will send a new patch as reply to this e-mail, instead of
-re-sending the full series.
+I am not sure that reducing vma size is a good approach here. It is
+widely used and we might end up with fixing even more corner cases.
 
-Pasha
+vread_iter() and vm-size calculation there should be fixed.
 
->
-> > +                     return err;
-> >               }
-> >
-> >               err =3D luo_session_insert(sh, session);
-> > --
-> > 2.43.0
-> >
->
-> --
-> Sincerely yours,
-> Mike.
+--
+Uladzislau Rezki
 
