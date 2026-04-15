@@ -4,115 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80C4BF4199C
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 12:28:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A0E8F41998
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 12:31:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B05FA6B0089; Wed, 15 Apr 2026 08:28:03 -0400 (EDT)
+	id CB84D6B0092; Wed, 15 Apr 2026 08:31:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB6C86B008C; Wed, 15 Apr 2026 08:28:03 -0400 (EDT)
+	id C69936B0093; Wed, 15 Apr 2026 08:31:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A5586B0092; Wed, 15 Apr 2026 08:28:03 -0400 (EDT)
+	id B7EF86B0095; Wed, 15 Apr 2026 08:31:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 88EBC6B0089
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:28:03 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 326CB1A038C
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:28:03 +0000 (UTC)
-X-FDA: 84660717246.17.90B6DB0
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3126C14000B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:28:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cwj8k8bS;
-	spf=pass (imf09.hostedemail.com: domain of priyanshukumarpu@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=priyanshukumarpu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A37166B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:31:16 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3FE0EC1C0F
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:31:16 +0000 (UTC)
+X-FDA: 84660725352.22.94EBE9E
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3E6F28000E
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:31:12 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of stepanov.anatoly@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=stepanov.anatoly@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776256081;
+	s=arc-20220608; t=1776256274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MGXqlQS/KnXB9/V1z19COjJZUtHkidF1KtI4LzcaBPE=;
-	b=AYBsupUySnZ8zlHc8Qe7SHgINfUw0KLEbt+289ZZ4UET9gBb+LqpxQ4CBGNe4VsGdWpcXq
-	GorE+0ytp73FLuKqzcHxhyX9LeXBxkFnVdF4snxYlMz6FVn+3JRbgjjZ6q0EXM6T5BBQ/B
-	fURi4nx5W9WBAznbL9SyW7wF3lDjBQ0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u4YxofDQ//EfYyt1OgVhS0xCBGGqyAgQ6K1TtBYqrdM=;
+	b=uvg9/yN+9JSzct2CfJRssFIz3pXB/NpJcegDmoqCsuw6KCZKV3x0DNaNOvKj0VoL4A5Yp2
+	+p+V71TOQkCmNb5ul+wUxd/JHweowlkoIZnz4MNBQyop18NMBijMtVHd0ids+VFZi9jIgO
+	tDn3vHHRFP7hpAG7ehqpdA8He4xk0jo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cwj8k8bS;
-	spf=pass (imf09.hostedemail.com: domain of priyanshukumarpu@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=priyanshukumarpu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776256081; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of stepanov.anatoly@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=stepanov.anatoly@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776256274; a=rsa-sha256;
 	cv=none;
-	b=6KPV+SBL0y52bHIVrI84fbSa/+HY6O2gm+0iCj3UCf5o8GTxL9bsXDCwn+/SAA8LZPq6qZ
-	mNaabuCcxUEyU0OY9mUZrsQDk8mhU9HUNlMH2SuWMWCxwaO5vBtQkZ+WgRbA90FehyCPLh
-	pmR+gYaUFMGSVUZ1MQZps03kFolSP1w=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82f33d28c1dso2001703b3a.3
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:28:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776256080; x=1776860880; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MGXqlQS/KnXB9/V1z19COjJZUtHkidF1KtI4LzcaBPE=;
-        b=cwj8k8bSCvOUs7gf2TV3NBmFuXXHXNJ/fr3OJb03pdilqMggcatImSMKmqCHohr7v8
-         VjwQnqUGd+jzAiTvJiH+Pbav+2XwSwmfathkuKXaMu4Mj+AMRqEjJmdBM0TAkZi/UJ9l
-         sp95aAVjX32lycbGYnX/QJyEZk/Y79Zzq9yOa5cLEoce+fH9GGSVx/83MIHoIYB29+pn
-         Vqy5dU61Cw8zDixXArGwirhaHo2j5aNEPZpiFVqWKRoWDN7Nghp8eZWNZ04L1s10CwN/
-         +d8GtBVa+qbJpFECwtLxVg8klLsAkUx0AM15a8++EjwCONacvGqmcKBdYqzMle3gXTol
-         uweg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776256080; x=1776860880;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MGXqlQS/KnXB9/V1z19COjJZUtHkidF1KtI4LzcaBPE=;
-        b=TP8oUUxaRsk1BvFyjEzt9MUI3yd9Y7Si3TeRyqYLCf1C3eddkziTiJpcFGNHU/ijMv
-         461TJtxxs5798h3eoNtJgqKvE8nc8lyO6EeTaMifIByu/nWJ1x+eJoetBVOVG0U5ajtW
-         XIeKYngA9h8KbCQZV5laglouOmtx9tp5AZUd5kKa6qUNPdb4ROVce30yFx7kNS/OoTMz
-         xxCqQzvRGtkKwenT4fLjjxj2gob2T8Hd4sYAEjz1x79rqcYrTZ5aL0YBhZBQToZXGhuF
-         Oma83dfe8VxDscGzeEFloiI2n83P54+sPog9fiuzDncsD4hJnxC/02HS0btdIVHptBbA
-         5Isg==
-X-Forwarded-Encrypted: i=1; AFNElJ+PE51VMfk4FJKAwXIbBPuLPGVhfpm7kGw+MZLH3/3w/AWWLG1dY4QaUscU2MVQGyn8e+ngo2/Xzw==@kvack.org
-X-Gm-Message-State: AOJu0YxHRJ9GXMma3XhlKM55n6pKYm0IGyoj9P8JMdAtLKKFSwSLEmlp
-	DfuPkVm87qqijJugz8/r92O0GaXUbLsVAehcvWcN65vs1/Y2lHM7ClMZ
-X-Gm-Gg: AeBDieuqNrL/9dJac0Yi7dV2WSR+YGLCSlUxevAbT7xGf24rNBVv2DbajYWX6Ds78Rd
-	zzWBGnC9Esglq//9kaHjBsvA62X9xTYMy24KcpKWKbyw2+ntpWGjQ+jlo9TFpj9XZZg9gycUX5Y
-	XqNSW5Lkpj+bglyZP5CwSSN2flIw37Pc7HASBmkHyj7RlcHaCPcOPGVyKFrEY6hW4FIEpGov4NH
-	Lv3PZ5j7HGQ8Cdv7vE05IqihFXH693m/dEO4FrmU2hj5WdLmgfOJlokbLBoBJ2s+mh6ogSGCl6+
-	u/buVZgygc/Uu26TuWhHNVHnXpX+vsJmTcRYEpnQJYH+nq9E3hgWf0mlW38ydOd8nx/x6nn7RJM
-	m4YzdfX9AXlNByRpCc/aT8hd2NdaLuHTd0+IsjTtT7jj0gnK+ke/zFHb/ov558K/gp2t2O+EWI4
-	71pjbXnhMxYByFp+52eKSyMnu6LFA=
-X-Received: by 2002:a05:6a00:2ea2:b0:82d:30f:b197 with SMTP id d2e1a72fcca58-82f0c28b84bmr23171264b3a.22.1776256079805;
-        Wed, 15 Apr 2026 05:27:59 -0700 (PDT)
-Received: from potato.. ([192.19.252.250])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f673e149fsm1824361b3a.32.2026.04.15.05.27.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 05:27:59 -0700 (PDT)
-From: priyanshukumarpu@gmail.com
-To: rppt@kernel.org
-Cc: akpm@linux-foundation.org,
-	changyuanl@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Priyanshu Kumar <priyanshukumarpu@gmail.com>
-Subject: [PATCH v2] tools/testing/memblock: fix stale NUMA reservation tests
-Date: Wed, 15 Apr 2026 12:27:31 +0000
-Message-ID: <20260415122731.1768912-1-priyanshukumarpu@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260413091458.774770-1-priyanshukumarpu@gmail.com>
-References: <20260413091458.774770-1-priyanshukumarpu@gmail.com>
+	b=l94cBLdYXlg5QPZjN2oHmgCvYZ6CKwmEGnpa51ltLq0a6ZjS3jvwV+ESEehdmk/JGDHMCH
+	ScV2HHDvO10lqoJkLlk3O+ZstSybQFymFzkQARLN4+TBH8HISsiztqnL57DS/nMDq6mX+q
+	sevdZ5MlkwiOxxRp6QsJojzQYyTqWds=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fwgTX0QYXzJ46BK;
+	Wed, 15 Apr 2026 20:30:24 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2BB6E40569;
+	Wed, 15 Apr 2026 20:31:07 +0800 (CST)
+Received: from [10.123.123.226] (10.123.123.226) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 15 Apr 2026 15:31:06 +0300
+Message-ID: <e9033191-2f31-4d52-be17-a1e9fe0d40ab@huawei.com>
+Date: Wed, 15 Apr 2026 15:31:05 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/2] filemap: use high-order folios in filemap sync RA
+To: Pedro Falcato <pfalcato@suse.de>
+CC: <willy@infradead.org>, <akpm@linux-foundation.org>, <david@kernel.org>,
+	<ljs@kernel.org>, <Liam.Howlett@oracle.com>, <vbabka@kernel.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<artem.kuzin@huawei.com>, <gutierrez.asier@huawei-partners.com>,
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260415192853.3470423-1-stepanov.anatoly@huawei.com>
+ <20260415192853.3470423-3-stepanov.anatoly@huawei.com>
+ <3cr6ppe6bic47tan2iapuh67s67hiroangvdiap4jbn7ypru2o@rbvqv3sxifwp>
+Content-Language: en-US
+From: Stepanov Anatoly <stepanov.anatoly@huawei.com>
+In-Reply-To: <3cr6ppe6bic47tan2iapuh67s67hiroangvdiap4jbn7ypru2o@rbvqv3sxifwp>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.226]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 3126C14000B
-X-Stat-Signature: 1hbtzc7ep7xg9yhih5tr15kgb1qzxuf5
+X-Rspamd-Queue-Id: 3E6F28000E
+X-Stat-Signature: zy8nj969wie1tf63oqx94cqzgh8xfz73
 X-Rspam-User: 
-X-HE-Tag: 1776256080-398679
-X-HE-Meta: U2FsdGVkX18TQVMxx7sj/3LwdcIUKTNHooaFJr0VPnC57ARXQ1qIV+s5ClaVrzO7aK9UrQ38BlwKM+Hp8hhIo5NDXKPuZyFQryXnTN9ItYXIGU9wJe1K0rAauXJDjiM+wgEaqVle6jTePSPW1wOtTuLbZJL+c4jE2Lwp1R2ecR+r2jGxpGqeQjXrLoqyiP0cjGUohXxpj8RW1CMx0LfxDh2STtXumcxrq2yiKaIgb/8mOX2Pw/GTYD7E2hEQt+fIRj8/tbqFOw8QxjOuedEW2qg0vgiLu5ftn+JvOaDYuufl+L/OJh5yR1DWND7maF9kUltfQAiabGCP5xDGUf+LlqrjtV4MFeM2gdzD7l4rm9gmdYYUIRPlEKV7CtiZl4tQ2boxyBQSnBNSKUeD5xvJlD3We/e3etXQj8KWO+wtgENXBjqZu+FjlAnhNaO+KbdlLFqMa2moyFFsyPHAbGnruRp0KJJEd9bq6/qXaG54+SZ8b5dOHEnnY+UfL0hJrRut4H8/bDoG2sZ7AaDoGfKTi/8GZGXpoPMqIBGr6/kDJXWvAXMuPFBPPiBM+w9ZxoFXjb3GWCgt6VfeZOOzBMJms+yEsOlXGIKnSLlhAHn9BalOvFt491DPPLaS7EGzdTYtQUllykXZs72vKkTrh3kRARZsKkywWOtyVOrE5k9yQHozuZtUTnW2oYJYkSNfC2sc82o0GvGlWwML+MBlZnWy/ZeQGvRNbvgtuY6oRXaeY92LCht64le8/Jer3TMb9tGLC3Wa53FZTrx9+gq7GUtKT6RX+iKgn2PuFV1Hn9wVRYvkLkap8i7YZz2iqgPYpI8PlEMThtwLcFSQQXa3jn/EqVd4M/0p9aM5qNwkeY9rGiz8douEz485IKStJpykoyf6RdUshAGrnXq/xC0EjYSAmO2LLFiefS+86Efv23FElhP5f+uHIZ+UtEFubfO5l7W2Qnzxo+92D249YFv+QkQ
- b2ikOhyY
- yFZU98v35fZkDpbxDIU07Z64uHTFd+/gu7UWwGmh7VCL03usYDxdtmc7L/OcIouBP1G5LqPKG+dKKj/d9Lr/sNawEpl9ya5e45znf1hcncGvpuzX+8fQOBxHGkdsyn+rAxB/Ruvz9t+AzH3Eu6SaHSkqlYS5HyWJbN7jMmlhuD74hwzfWHhpQLnXd4yLs40ICtGe79it7Am0Alhh+SQ9lTHcXE/agchIgxOmdwdf1wEbz6x+8xeE9Zrh0yE8JG0jEO+D9iUV+ZTBH9oXe+pAq64l3Rdk3pmaSh1TqSe6ouX9lxrejWWysFK2wmqAKauA5mqzgDTavwGZyJC62cqN/00I9nmcTJdpR1qy1B0Dl7EB5bxRNgw7StKYB7/iBNax2/mvxuFqViN5/P/h+555dYzq99Q==
+X-HE-Tag: 1776256272-996325
+X-HE-Meta: U2FsdGVkX1+92oThm4b+qf17MRQjFLbHuwHCOgTCyh8IrP3G2BbCxlbjpjBlfUzdY7uCQlH7L/TDjJywWQuKmiLHXJKksYD3wMu6puBl7/g4r4HDGBsiWBy736cAFyBqvxcgb5zMvLHefg2o+PBE9UdBWOX38QVMs0kpUuADzZ3WU1l9HXV4wkhLpxiHRyzbieqRhqf5o9BONd6deTcJrTzurjkrpl1lI+jFs7PlSy+y5aPS7w8z+TpChkRtn5ODKb+b32YLoEd8AamzNF3S10GioaaZs11YRmRmth8KcKT3Q12mA/oy2Uq5Y1NNoEG73cTDwSkWX6CeDjIdWpvXsVtVyPXw9bm0q2CrzyKzCdF6bbC1k14Wz/kmg/WR/h57MG+yzGSms3LcBPG2wr9tyG1HoEsbzUs2tHp5ZKgZ9/TXn9lgVtOKrxlj38O51mJ095aZpwWR5dm427rKRZPgb+WO42cnLPsaNahL4b4mwmFBvogXZDyjKbPEOqnoF46CVCnC6KxpDGG6wPUBOdSw1bTeSzzZ0S+a+0Qq/3/fL8mb6zVAJuwjnRkj08qCI+fQK8N7VjI/mzqsT9GPYCoTF41T/S69DUiBewdoq51z95TKnYOXrsnEWdRCruEDwIGhvSrOW8EJgt1J3T1zf85lqMYuVMdjtWKt+YxDnzl2sT9LOwbwoI/OcntOWTc/XrF6l+WhSxjXfgDCZFHG7LgFm95yH0rcmSrpVKPpmo0xgs/+p/e3rTJU7z8x/jhamkTdyrtI/Y6cb8bxpYqzBPlbsoc7FveFgGvr21NVonMoBs0UvNxNltyx7r09Uubt2QUbTfnq/RDvJg+X00oUvPGdFhExru2ENDzf1fm0G5UinVDqJPaiyqDLbI4+dgCPcYZ6qBeQ8JzGokXjtHxp66u4Ry08Awqfwhww2e5TV7L4JtRT0XAVfi0zKDsycFIVqRWaw9syU7KuuhORvLwcyfo
+ YHtX2A2v
+ W3yLzwOWcDQ72XyeUrwNNKw/8YJ5+PFVepEg7XsEQkYSb5clu75NG6hyixR9HHhgtosQt5UIGTXs6gcMxkv0JZRMlCeF9I2h/hXc3TiQ1f68P6GM/7lI+wz4hAviTkGqxrj1weR68c4B//WjMGNBMt9RRCllR/9LA78Tw1mSWCe+q0jpuHKflE7Un72C1suXhYAVJaCZGrItaboH37/u2J6habQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,149 +98,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Priyanshu Kumar <priyanshukumarpu@gmail.com>
+On 4/15/2026 3:06 PM, Pedro Falcato wrote:
+> On Thu, Apr 16, 2026 at 03:28:53AM +0800, Anatoly Stepanov wrote:
+>> [Idea]
+>>
+>> If a mmap'ed file being accessed such that async RA never
+>> kicks in, we might end up with only 0-order folios in the page cache.
+>>
+>> if fault_around_bytes is larger than 1 single page, then
+>> it's beneficial to use high-order folios, which brings significant
+>> filemap_map_pages() speedup.
+>> So, let's just use fault_around_bytes as a starting point here.
+> 
+> Well, this heuristic looks arbitrary. I don't like to mix different concepts.
+> 
+> With this, in practice most file folios will be 64K. Why? Why is it related
+> to faultaround when faultaround is a separate mechanism that isn't particularly
+> relevant here?
+> 
+fault_around_bytes > 4K means we need to iterate over folios in the page-cache
+for high-orders it'll be faster, obviously, which is shown below in the benchmark.
+So heuristic actually makes sense.
 
-memblock allocations now reserve memory with MEMBLOCK_RSRV_KERN and,
-on NUMA configurations, record the requested node on the reserved
-region. Several memblock simulator NUMA tests still expected merges
-that only worked before those reservation semantics changed, so the
-suite aborted even though the allocator behavior was correct.
+Regarding the value itself, i don't have perfect answer,
+for instance for 16K,64K base pages or if the fault_around is disabled.
+That's why i would like to gather feedback from community, regarding this.
 
-Update the NUMA merge expectations in the memblock_alloc_try_nid()
-and memblock_alloc_exact_nid_raw() tests to match the current reserved
-region metadata rules. For cases that should still merge, create the
-pre-existing reservation with matching nid and MEMBLOCK_RSRV_KERN
-metadata. Also strengthen the memblock_alloc_node() coverage by
-checking the newly created reserved region directly instead of
-re-reading the source memory node descriptor.
+>>
+>> if an arch supports PTE-coalescing we can get more of those for free.
+>> (see arm64 example below)
+>>
+>> We don't save the new order to "ra->order", so if async RA will happen
+>> it would normally start from order-0.
+>>
+>> [Things to be discussed]
+>>
+>> But at the same time, i can see drawback for 16K, 64K pages, in this case fault_around will still be 64K by default.
+>> In this case, it seems makes sense to make the fault_around_bytes be like order-N of PAGE_SIZE, not fixed bytes number.
+>>
+>> Another issue is - when fault_around=0, but we'd like to use high-order folios for sync_RA, for cont-PTE for example,
+>> For this we can use kind of "max(fault_around_order, cont_pte_order)".
+>>
+>> Or introduce some dedicated tunable like "sync_mmap_order".
+>>
+>> [Benchmark]
+>>
+>> Simple benchmark below reading 100M file in 4M (RA size) chunks
+>> such that async RA doesn't kick in and the page cache ends up being
+>> filled up with 0-order folios.
+> 
+> Well, the problem is that you are _never_ getting RA to kick in. Folio
+> size is the least of your concern, you are effectively not doing much
+> readahead since the kernel thinks you're doing random accesses.
+>>
+>> The patched kernel gives ~3 times increase in throughput,
+>> considering the page cache is filled up at the moment.
+>>
+>> The main speedup comes from filemap_map_pages() due to high-order
+>> folios usage.
+>>
+>> As a bonus, we get better cont_pte bit coverage for Arm64.
+>>
+>> Example:
+>> // Open 100M file and read every 4M chunk, given max_ra=4M
+>> // Perform 10 runs, measure the throughput.
+>> ...
+>>  char *map = mmap(NULL, filesize, PROT_READ, MAP_PRIVATE, fd, 0);
+>>     if (map == MAP_FAILED) {
+>>         perror("Error mapping file");
+>>         close(fd);
+>>         return 1;
+>>     }
+>>
+>>     struct timespec start, end;
+>>     clock_gettime(CLOCK_MONOTONIC, &start);
+>>
+>>     unsigned int size_4M = 4*1024*1024;
+>>     unsigned int num_reads = filesize / size_4M;
+>>     volatile char val;
+>>     for (int i = 0; i < num_reads; i++) {
+>>         off_t offset = (off_t)i * size_4M;
+>>         val = map[offset];
+>>     }
 
-Finally, drop the stale README/TODO notes that still claimed
-memblock_alloc_node() could not be tested.
+> 
+> This doesn't seem like a real issue. And if it is, you can always issue
+> readahead manually. But the whole pattern of "every perfectly-sized RA
+> window, access 4 bytes and advance" is completely bizarre. And _if_ this
+> is your workload, then having order-0 folios at the read site is much better
+> than filling your page cache with data you are not accessing.
+This benchmark only intends to highlight possible case, when async_ra doesn't kick
+and we can get more performance easily with increasing RA order.
 
-The memblock simulator passes again with NUMA enabled after these
-updates.
+> 
+> Do you have an actual use case for this? Where have you observed these
+> problems?
+> 
 
-Signed-off-by: Priyanshu Kumar <priyanshukumarpu@gmail.com>
----
- tools/testing/memblock/README                 |  5 +----
- tools/testing/memblock/TODO                   |  4 ++--
- .../memblock/tests/alloc_exact_nid_api.c      |  6 +++---
- tools/testing/memblock/tests/alloc_nid_api.c  | 21 +++++++++++++------
- 4 files changed, 21 insertions(+), 15 deletions(-)
+If you're asking about real production scenario - i don't have such yet.
 
-diff --git a/tools/testing/memblock/README b/tools/testing/memblock/README
-index 7ca437d81806..b435f48d8a70 100644
---- a/tools/testing/memblock/README
-+++ b/tools/testing/memblock/README
-@@ -104,10 +104,7 @@ called at the beginning of each test.
- Known issues
- ============
- 
--1. Requesting a specific NUMA node via memblock_alloc_node() does not work as
--   intended. Once the fix is in place, tests for this function can be added.
--
--2. Tests for memblock_alloc_low() can't be easily implemented. The function uses
-+1. Tests for memblock_alloc_low() can't be easily implemented. The function uses
-    ARCH_LOW_ADDRESS_LIMIT marco, which can't be changed to point at the low
-    memory of the memory_block.
- 
-diff --git a/tools/testing/memblock/TODO b/tools/testing/memblock/TODO
-index e306c90c535f..c13ad0dae776 100644
---- a/tools/testing/memblock/TODO
-+++ b/tools/testing/memblock/TODO
-@@ -1,5 +1,5 @@
- TODO
- =====
- 
--1. Add tests for memblock_alloc_node() to check if the correct NUMA node is set
--   for the new region
-+1. Add tests for memblock_alloc_low() once the simulator can model
-+   ARCH_LOW_ADDRESS_LIMIT against the low memory in memory_block
-diff --git a/tools/testing/memblock/tests/alloc_exact_nid_api.c b/tools/testing/memblock/tests/alloc_exact_nid_api.c
-index 6e14447da6e1..0c46c73b5e04 100644
---- a/tools/testing/memblock/tests/alloc_exact_nid_api.c
-+++ b/tools/testing/memblock/tests/alloc_exact_nid_api.c
-@@ -368,7 +368,7 @@ static int alloc_exact_nid_bottom_up_numa_part_reserved_check(void)
- 	max_addr = memblock_end_of_DRAM();
- 	total_size = size + r1.size;
- 
--	memblock_reserve(r1.base, r1.size);
-+	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
- 	allocated_ptr = memblock_alloc_exact_nid_raw(size, SMP_CACHE_BYTES,
- 						     min_addr, max_addr,
- 						     nid_req);
-@@ -861,8 +861,8 @@ static int alloc_exact_nid_numa_reserved_full_merge_generic_check(void)
- 	min_addr = r2.base + r2.size;
- 	max_addr = r1.base;
- 
--	memblock_reserve(r1.base, r1.size);
--	memblock_reserve(r2.base, r2.size);
-+	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
-+	__memblock_reserve(r2.base, r2.size, nid_req, MEMBLOCK_RSRV_KERN);
- 
- 	allocated_ptr = memblock_alloc_exact_nid_raw(size, SMP_CACHE_BYTES,
- 						     min_addr, max_addr,
-diff --git a/tools/testing/memblock/tests/alloc_nid_api.c b/tools/testing/memblock/tests/alloc_nid_api.c
-index 562e4701b0e0..c23652727976 100644
---- a/tools/testing/memblock/tests/alloc_nid_api.c
-+++ b/tools/testing/memblock/tests/alloc_nid_api.c
-@@ -1965,7 +1965,7 @@ static int alloc_nid_bottom_up_numa_part_reserved_check(void)
- 	max_addr = memblock_end_of_DRAM();
- 	total_size = size + r1.size;
- 
--	memblock_reserve(r1.base, r1.size);
-+	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
- 	allocated_ptr = run_memblock_alloc_nid(size, SMP_CACHE_BYTES,
- 					       min_addr, max_addr, nid_req);
- 
-@@ -2412,8 +2412,8 @@ static int alloc_nid_numa_reserved_full_merge_generic_check(void)
- 	min_addr = r2.base + r2.size;
- 	max_addr = r1.base;
- 
--	memblock_reserve(r1.base, r1.size);
--	memblock_reserve(r2.base, r2.size);
-+	__memblock_reserve(r1.base, r1.size, nid_req, MEMBLOCK_RSRV_KERN);
-+	__memblock_reserve(r2.base, r2.size, nid_req, MEMBLOCK_RSRV_KERN);
- 
- 	allocated_ptr = run_memblock_alloc_nid(size, SMP_CACHE_BYTES,
- 					       min_addr, max_addr, nid_req);
-@@ -2496,15 +2496,18 @@ static int alloc_nid_numa_split_all_reserved_generic_check(void)
- 
- /*
-  * A simple test that tries to allocate a memory region through the
-- * memblock_alloc_node() on a NUMA node with id `nid`. Expected to have the
-- * correct NUMA node set for the new region.
-+ * memblock_alloc_node() on a NUMA node with id `nid`. Expected to allocate
-+ * the region within the requested node and mark the new reservation with the
-+ * correct NUMA node.
-  */
- static int alloc_node_on_correct_nid(void)
- {
- 	int nid_req = 2;
- 	void *allocated_ptr = NULL;
- #ifdef CONFIG_NUMA
-+	struct memblock_region *new_rgn = &memblock.reserved.regions[0];
- 	struct memblock_region *req_node = &memblock.memory.regions[nid_req];
-+	phys_addr_t req_node_end = region_end(req_node);
- #endif
- 	phys_addr_t size = SZ_512;
- 
-@@ -2515,7 +2518,13 @@ static int alloc_node_on_correct_nid(void)
- 
- 	ASSERT_NE(allocated_ptr, NULL);
- #ifdef CONFIG_NUMA
--	ASSERT_EQ(nid_req, req_node->nid);
-+	ASSERT_EQ(memblock.reserved.cnt, 1);
-+	ASSERT_EQ(new_rgn->size, size);
-+	ASSERT_EQ(new_rgn->base, (phys_addr_t)allocated_ptr);
-+	ASSERT_EQ(new_rgn->flags, MEMBLOCK_RSRV_KERN);
-+	ASSERT_EQ(nid_req, memblock_get_region_node(new_rgn));
-+	ASSERT_LE(req_node->base, new_rgn->base);
-+	ASSERT_LE(region_end(new_rgn), req_node_end);
- #endif
- 
- 	test_pass_pop();
+
 -- 
-2.43.0
-
+Anatoly Stepanov, Huawei
 
