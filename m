@@ -4,114 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB336FA0C35
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:48:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0DCAFA0C3A
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:53:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5381E6B0095; Wed, 15 Apr 2026 02:48:11 -0400 (EDT)
+	id BCF346B0092; Wed, 15 Apr 2026 02:53:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50F096B0096; Wed, 15 Apr 2026 02:48:11 -0400 (EDT)
+	id B7FFC6B0093; Wed, 15 Apr 2026 02:53:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44C7E6B0098; Wed, 15 Apr 2026 02:48:11 -0400 (EDT)
+	id ABD046B0095; Wed, 15 Apr 2026 02:53:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 34FA86B0095
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:48:11 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E228FC1A45
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:48:10 +0000 (UTC)
-X-FDA: 84659860740.17.5E57D35
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 090AF12000D
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:48:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Wn6Hr/rv";
-	spf=pass (imf29.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C98C6B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:53:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 239811A0391
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:53:24 +0000 (UTC)
+X-FDA: 84659873928.01.5CB2B7D
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5E3264000E
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:53:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dIeNDihW;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776235689;
+	s=arc-20220608; t=1776236002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yCfDM/MK3nfeMalsuUCejEYgbVuWPS8f+Bt6LFEQrWw=;
-	b=24y+5rUiCUiwiKCUI43YlnoTw+jS/HFyHKiiHItxEwPO+ZbRS697aUfMXwzkzgoMYa4xiw
-	lpAk7YvGIC6J0/qtSUWvq/eGVZhRyxqowqxvaHNnZgI0zFgRxXKpoy2YiPLfNNauBLJseP
-	wx2ZMUxWMeMGkNPM5N9Noxw9gBv4SF0=
+	bh=UCQ7usOU14shNLTSWEUmhQvpbKphWMoPUYFh990S0rg=;
+	b=jrhH1ci/LjNrCaIvEhK0hHc1iUZij2fbc6XgrLUDoCs/C9Lp9MFmbhZy+zYEAYq/kb7Woa
+	xsVlaIcWDQoaAecCOJmFIhwFzzsr2FzOlTxFvaMKIhYSG8P0QDgxb9V8SbNw5WJd1T+FMR
+	ZlTk1nU8ui45XZBe19l/JDnP8Nzq5Uo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Wn6Hr/rv";
-	spf=pass (imf29.hostedemail.com: domain of chleroy@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776235689; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=dIeNDihW;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776236002; a=rsa-sha256;
 	cv=none;
-	b=BVIUydPU/IJgUtL0esal8T7/9q1MfJ7UCCIuurqRFvIOObdpiR/hwUz8wzzTcL+US3JXZC
-	6RtuDzwSy7hGoGjKZzsD5FaOSJTTv6RvjVOVvKNmkiM7EA5mhHG8sJUzCMq1uA1QChXYAY
-	iiLUUvOWCQOSlacNBrAM7X4eXOoS5XU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C884D41A70;
-	Wed, 15 Apr 2026 06:48:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1D1C19424;
-	Wed, 15 Apr 2026 06:47:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776235687;
-	bh=uO1fFgRaYkEaX03uIGSllbIp0KmN4e8uhrxbiL7j6JA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Wn6Hr/rv7RQ0mjmBpBGnHzSLGoawtRWrJKf8Yulby+TTpp7z1W2m+/e3q+cBeZYn8
-	 9EULstKmB1P1aIGBA/hM7NfdL90zPADnWSMrSZUOJgfBI2Y0gYKo15ZH/8SN+3BCpi
-	 LFdpD3kIOkfmc5kLWHOPn/7qJv2G9rdoWFZcqmWwEJGa7DK0r7DBeorJlYNCKX5hcM
-	 Q22Qw/tg/rR1esDPVyaYxqkxnFQnTVF5/bVWUROMriQiIMAWyo9xVZRAIqfM9NCvMV
-	 JvPvhMbjPkTiWVz5ZUzK2DMWWd8bbim3aFcilo4uxvNCEcTYhNnaiu0tF2t4jRv/Q5
-	 DezCa9n7clYBA==
-Message-ID: <9c33afea-7a64-456e-aa2f-bdcf7459b567@kernel.org>
-Date: Wed, 15 Apr 2026 08:47:55 +0200
+	b=MD9euLd+LFj5l4gYBG92UO8CvOcO07v3g6Cpdx/icp9JtSfrVXsY1wm8fQwWU67f0Fej1H
+	9H207ZvxczjV5z+vngKpQ0m1YkJqqjd536OjkazA+925fpQabTPzgnYhEK5fP+WDIVshuo
+	apJZzHIYvrHoY5vaS3mnGReNMALVoWo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776235998; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=UCQ7usOU14shNLTSWEUmhQvpbKphWMoPUYFh990S0rg=;
+	b=dIeNDihWPnT3FOfPJY6nab8kDF+BPhtQayJ1mfCq4Q+l0Nx+lZsfFppX3TeuXcsZ6lF2WJvjpnbV40qVH+mqkNihYDbbY9HIz5TffEPzFq3aX+V8LQQx4Y9pNlPGeTzcC9hrFb51kPd7R5EWZ8j8fLGeUoQbop8mXCd4LJIoDCI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R921e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X13f5NE_1776235996;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X13f5NE_1776235996 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Apr 2026 14:53:17 +0800
+Message-ID: <85f163b8-9a86-4223-b835-b271a4502b47@linux.alibaba.com>
+Date: Wed, 15 Apr 2026 14:53:15 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [patch 33/38] powerpc: Select ARCH_HAS_RANDOM_ENTROPY
-To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
- Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev,
- Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
- linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>,
- Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
- Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+Subject: Re: [PATCH 7.2 v2 06/12] mm: fs: remove filemap_nr_thps*() functions
+ and their users
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
- "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org,
- Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
- linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
- linux-parisc@vger.kernel.org, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
- linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- sparclinux@vger.kernel.org
-References: <20260410120044.031381086@kernel.org>
- <20260410120319.789114053@kernel.org>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260410120319.789114053@kernel.org>
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-7-ziy@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260413192030.3275825-7-ziy@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 090AF12000D
-X-Stat-Signature: pgfjky6eocfojfdb4qsqc8jxgnsdja8a
-X-HE-Tag: 1776235688-906216
-X-HE-Meta: U2FsdGVkX1/ZuUUSIQDFlmhy7h2UMKA4Nj3hb99Xd7ZRAPzmG/VLckP1LrfKLXNJVypYOf0HGynx1CYagh7F3bm9J8l+HOMGe46rQWc9MJXtTAs2JSQ9jOEVG7Nc2xCCOW0MyDAz/G20FRpCsSMuNpkvvu0/RvHeQKpIgLUGzXrytOKM2TkCG37793W7U5a8hyiYfPWhxLc2dpbfAgxLx/TXfrCUlBj8xFn9MAEyaLlL4Lx7xOWavbMZkacvtNXE1CzGS8LfRbt3YbpAM48OalEyOwXQIp/mht0DBjonAD3cKNKoBFKz4+eXG6qzsBwh6ChNBd3x4G+aqLDDyJbPVSt9suIgW9WbTTupZ/AiJ6kSmr0ZyMkmKYeubCjeX3++6qgEuR5Na6O3muPur7WVpxtAuFs+gPQ6ZO936PK3n8fdiwCOOYseriOBbiQkn4QjE0KIaJpsoD+SfFxo2MFmDNGB6RKqWuvQE+wqOx5JrS5zTn+nnyVCLGlmphN/x1IiIjJTQ9xV44ic5c73fVUP/N7XePY47MMtordxrKY29ark1V8Kff9KK9xZPAI6Q6KD5z75V70IcZ4SA7qcnDuZsF8KBEONjWDMiy/Kkr9EpZVtZUyrudFqL5E9PrRl1SJ7wmmCtNM+gb/4g1s5EoSQRne4XgPsPDNhd2Sm8x3lYthnrC4FnGjM52u2vxX8mGGY72oBo/owN2xx6ZMUq2phwAOy9uiqYU0TsTHpUeRcuYooRw8pIP1zDvJCJJydWyMnz7nJBtBLPpp0IsJRoJxkfLl9pG5q95d6Bofh4MR8h6XkS3Z1xSUJkUs3fMdRTtv6e/OpS/Ef8FfIh4U/+K0NLS5B7Fv2EGjWCF5iRI7RoHmbEgG5KQTsfZkWShhTJFzFUsnRbZZKXbJqihDdC7fK3Ehn1jy65lKkLZN8POxgzMnjjfwK8kx2Dh925YTVAbDgAhGEBc+kLFfQKV4SL9O
- 0L0XenJ0
- 6cEO5gcONVgG6FI4lwtY5W9PuWg7vqBS7iygUI3A9V/721mGb1L2amRWWoMFxIU4eLPz7rU9LtMtueTh01JKwAy+Ej3AYDEm02/qIwfjEktVoW3vbgmy7GNH9gXiILVF5U/h1bQQA4QFoO61wN5QLfqDF3iOr7eGewSbfh9s1kxXrPwT6Rjtw6xAKBL6OlyopokZjAFwbz0Ep15qXL8bGPtD/TMspSDayFm5TEoRHqdVi2tdqsxRFTpcqlFWxvu5NNXHA1WrKWasEWFCgToiMCGINVC1POasmUpmMlCznY0oPeMMeC9bhYuTsBGEEHYyqVozU3dpSIIQbtzehOBdPDpTy5BNEf6XWPuwplk5ipjUogB/1oioMVPTYb3Wn9YlzxRM3+GOpkLqVLrikDgFEtcm1NGB5cUdYSi27qElljNTj3bLHbQS23Gddy6A1vqDRi8J2TDKFQoIcK1+szJZQQxAbOkuar6VPDukaHN0Z9PD6ZlQ=
+X-Rspamd-Queue-Id: 5E3264000E
+X-Stat-Signature: o7hojc69c51kcyddqso3gc4a9kp9gxom
+X-HE-Tag: 1776236000-463039
+X-HE-Meta: U2FsdGVkX18zLyOYhrnTvjM2/Lg8l/04fuazWqyrJBQkjDbXP5lBNSNrYnwtlvSR+ZAnj3k2oSxAlUAh7GhrsQb51LoFlWrUkntiNi37zSQjl70DYtS1PPe/SOTkKCPo0codaND8VVbchpmx2+gqvdsQn29E2kaOKKTMPbopl2a3okUSbBAFBsIVzHNw0mudsoV62RJ+DOJoOYF+9Gp4EO9HA8yfJFRTD+/XYeQIlXV3LkoRyzgRqU9ksefIbvfCd4sRHh4PTh6lZj/Kn/scdjhhukv5I0DTifQzdTzX90s3ZHOxdw43o2SktFCNiobu9uodXlZrDUKq3g73kJJGRvfS14alQZHOmbAk/jG3F99aWal1Cfadn5cIl6l0uA93GIZEaX8OcuJAlJqODFNfxziKHesTL2PdAL2aCctexT8ZyuCnFIyrftHhchYBbnSCXfADa1nbYh1+Ec4TX6A742wF71LuDyV3ejW/x6dLrc3B/j+VLa2wesrTHJ+iDoLNpykrxKKSrK9PYu+Exems2daqw0XpQTP22olla7FvxYFF+kBrn4t5TffyItlgVgPWQK6QKz/HzH5XY93F2hWBHt1Un9nDoyAhyOJUj5tHyNfKkz4JvkexSl/xtVPThs1qPwVbNceBuHP8wX1+s3tld0iXJlg4BiYFknGETmNDeGocpZ4y71aYXg7FgR+Ht2ldd9k+LR4krcB08LULDfxUsVMBmaS0ffz+HVN5g6UJGeytx5sFj2qiom5QqeNqNYpG23rKSlPEpXJvQTci8XJ+IAorGnYIaprl+fOh1caT1yGKYI+vRibcwbgob6BoyT3Tj+JhLFYU1+4YTL4MvaX+5lwDRT3tXc2DaG5VZ60MztLb2YH5F6DZciir7Roa7Qf80aMajPXnKlVMJAJsZ+cq/JuqdzpamGQQBjaN6nh2+TgBWUfAEMUEqFF3Xprkb5Bho+iJ5jP7Q17sWqFxYjy
+ 5Hv4Mk8/
+ ZSrAj0lXM5h58LrV8yTlzL4HmoeUtcs8JdBQ2QKW8bWEeuNM7yPyNNNzLVa/+658mn6YCj+cbTMIqeDf+uMfR9H2UJKs/DyUKsYi7jDxAvUuqsqpnn5ztYGEyRlcgEBkiczVyvJ76ynK+c8p/8wdj+VKbDhQPvYcE2A84HaNARRfIlFJdBkuEBQUsHPxFeS0mNHSbxDFHslrPJenurZROhmIIvXoiRFnXGfkMcsMc+2zPDFl6OJR5c2cselQb95CO7H9UiOPXFsHag/+8/WbWATajT4t8rV8WGi81lGiL5EtSqPxT662sx+k1/A8euR/iP/krvauhNDkq+7U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,77 +102,28 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-Le 10/04/2026 à 14:21, Thomas Gleixner a écrit :
-> The only remaining usage of get_cycles() is to provide random_get_entropy().
+On 4/14/26 3:20 AM, Zi Yan wrote:
+> They are used by READ_ONLY_THP_FOR_FS to handle writes to FSes without
+> large folio support, so that read-only THPs created in these FSes are not
+> seen by the FSes when the underlying fd becomes writable. Now read-only PMD
+> THPs only appear in a FS with large folio support and the supported orders
+> include PMD_ORDRE.
 > 
-> Switch powerpc over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY
-> and providing random_get_entropy() in asm/random.h.
+> READ_ONLY_THP_FOR_FS was using mapping->nr_thps, inode->i_writecount, and
+> smp_mb() to prevent writes to a read-only THP and collapsing writable
+> folios into a THP. In collapse_file(), mapping->nr_thps is increased, then
+> smp_mb(), and if inode->i_writecount > 0, collapse is stopped, while
+> do_dentry_open() first increases inode->i_writecount, then a full memory
+> fence, and if mapping->nr_thps > 0, all read-only THPs are truncated.
 > 
-> Remove asm/timex.h as it has no functionality anymore.
+> Now this mechanism can be removed along with READ_ONLY_THP_FOR_FS code,
+> since a dirty folio check has been added after try_to_unmap() and
+> try_to_unmap_flush() in collapse_file() to make sure no writable folio can
+> be collapsed.
 > 
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linuxppc-dev@lists.ozlabs.org
-
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 > ---
->   arch/powerpc/Kconfig              |    1 +
->   arch/powerpc/include/asm/random.h |   13 +++++++++++++
->   arch/powerpc/include/asm/timex.h  |   21 ---------------------
->   3 files changed, 14 insertions(+), 21 deletions(-)
-> 
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -150,6 +150,7 @@ config PPC
->   	select ARCH_HAS_PREEMPT_LAZY
->   	select ARCH_HAS_PTDUMP
->   	select ARCH_HAS_PTE_SPECIAL
-> +	select ARCH_HAS_RANDOM_ENTROPY
->   	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
->   	select ARCH_HAS_SET_MEMORY
->   	select ARCH_HAS_STRICT_KERNEL_RWX	if (PPC_BOOK3S || PPC_8xx) && !HIBERNATION
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/random.h
-> @@ -0,0 +1,13 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_POWERPC_RANDOM_H
-> +#define _ASM_POWERPC_RANDOM_H
-> +
-> +#include <asm/cputable.h>
-> +#include <asm/vdso/timebase.h>
-> +
-> +static inline unsigned long random_get_entropy(void)
-> +{
-> +	return mftb();
-> +}
-> +
-> +#endif	/* _ASM_POWERPC_RANDOM_H */
-> --- a/arch/powerpc/include/asm/timex.h
-> +++ b/arch/powerpc/include/asm/timex.h
-> @@ -1,21 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -#ifndef _ASM_POWERPC_TIMEX_H
-> -#define _ASM_POWERPC_TIMEX_H
-> -
-> -#ifdef __KERNEL__
-> -
-> -/*
-> - * PowerPC architecture timex specifications
-> - */
-> -
-> -#include <asm/cputable.h>
-> -#include <asm/vdso/timebase.h>
-> -
-> -ostatic inline cycles_t get_cycles(void)
-> -{
-> -	return mftb();
-> -}
-> -#define get_cycles get_cycles
-> -
-> -#endif	/* __KERNEL__ */
-> -#endif	/* _ASM_POWERPC_TIMEX_H */
-> 
-> 
 
+Thanks. LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
