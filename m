@@ -4,127 +4,188 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73C03F42100
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 18:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C54EDF41995
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 18:01:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CB846B0005; Wed, 15 Apr 2026 14:00:47 -0400 (EDT)
+	id 3ACD16B0005; Wed, 15 Apr 2026 14:01:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57C196B0088; Wed, 15 Apr 2026 14:00:47 -0400 (EDT)
+	id 3358C6B0088; Wed, 15 Apr 2026 14:01:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41C756B0089; Wed, 15 Apr 2026 14:00:47 -0400 (EDT)
+	id 1D4996B0089; Wed, 15 Apr 2026 14:01:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DD266B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:00:47 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E89BA140586
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:00:46 +0000 (UTC)
-X-FDA: 84661555692.14.98922CF
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A9AD81C0012
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:00:44 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=dilger-ca.20251104.gappssmtp.com header.s=20251104 header.b=H9Urihm9;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of adilger@dilger.ca designates 209.85.216.51 as permitted sender) smtp.mailfrom=adilger@dilger.ca
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776276044; a=rsa-sha256;
-	cv=none;
-	b=RzdFgndDVRVl+OSXs4EuQZR1dYYDVoygd7lz+Qqlb6JH3Xr2jgmhpD0hLZi00/xKadEwre
-	Ax1OKLT8qpSvjftQ4TS3hi53ndUFnTCKHo5B66XPAutR8y9YvokJbwJqIpU8ob+4HMq4+q
-	R/2RHzRjTYqYKHKOFm1KhvFgcttsLHo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=dilger-ca.20251104.gappssmtp.com header.s=20251104 header.b=H9Urihm9;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of adilger@dilger.ca designates 209.85.216.51 as permitted sender) smtp.mailfrom=adilger@dilger.ca
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776276044;
+	by kanga.kvack.org (Postfix) with ESMTP id 04DA06B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:01:47 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B14B3E41F4
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:01:46 +0000 (UTC)
+X-FDA: 84661558212.29.65F4913
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010043.outbound.protection.outlook.com [52.101.85.43])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 972DA4001F
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:01:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=C09ETDyq;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.43 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776276103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fyjSIVQggWZv2yuG1S8MJT6ctCYnQ0vE1n2meEvSQNY=;
-	b=Bk9Ax/Ip59YjHi9c2HSKHj1jRNpDP2uyj2Oq8ajxQQksbej06ffpqUtD86tmkwIA3NYTEx
-	GWTQVw19u/pqEp4dKUUbjaJbM1wiWILysyEoqZVXC2wBdgUblkdXOXh/dbIXzy7ieeOR8h
-	EmvsNMu64c3ADJO18oerYa0BKCT4tV0=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35da9692ec3so6351834a91.1
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:00:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dilger-ca.20251104.gappssmtp.com; s=20251104; t=1776276043; x=1776880843; darn=kvack.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fyjSIVQggWZv2yuG1S8MJT6ctCYnQ0vE1n2meEvSQNY=;
-        b=H9Urihm9wb3zsxTQgfi5gBUgJzKo6zC7lvnJOfsW5aHd1dzHUGot543GCVbnMXZ1So
-         jngXSxDvyimztfAaQhiMWZqED30qXpu4udHf4c0f7I6YWrP2TNd650ZCEFKfSQX3Vtw5
-         oxJVyhZkeUumty/PZ2CsgqXOQ1WXlJ4Vgr+AV3BYahenk77CsU2HolDnCwBRM/eXmCKy
-         X33IQzwI4bHYDe8fHgp539ZUeTq3rbA9BhSLWLC590/PTBektRdiq3osnX5Fo8oElx3v
-         4xfTgJcNqvULFl3ZwW4vdAdl3aLdrebRQNyfhp8IsH+2BQ8cQvlsO14CEdbuGDOzgBAA
-         RXog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776276043; x=1776880843;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fyjSIVQggWZv2yuG1S8MJT6ctCYnQ0vE1n2meEvSQNY=;
-        b=hRieLbTmQK6XJV1yl4/nPa4sbf3VT2vnnIWCDrMGxuSdFDjnMB/ybRJQANaT0VllC7
-         kYWM577CwOC8IW3nUQ1wnK6I6OvTVBTk5F8KiiV+8w03YejkJXIx8lU9Brn7RmgMTq5E
-         xGhvPI1ckPQYtJoB+pzu/ehu+/czsJarOxpWScEAma3/O5CDVEqsAv1zq+gsio0f0Qf0
-         RzK1q5mEJ+dInMBdoXCs6xfhnUJyqT3WyFKBgfmGMUjuZYHYNTGblDpOiA6bH34TcVtG
-         7RoKUHWZRgZDjdl9fkVcZJVpfkbtEHZkreq8701ZYHL8JL0zKgHwJ+0s6XLClI6yzf/A
-         +EpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/HLvjUJkWGAk7ZElSEeRYbmKE7hgRP8AYQ0QN7uiafwmrc4FtnpD5PVTbmt8wQhkCYzvOwYtCp/g==@kvack.org
-X-Gm-Message-State: AOJu0Yzjn9llUfJN5tu3Rbl+qhweSeZzqE51eR02Ewr3JoDm359X+WGo
-	LXMPA4lYd0YDT7H2OI3pAinhGjqmcTh1L32IAXK1tekrPl2peM5xY/z21VRKqcso0JQ=
-X-Gm-Gg: AeBDieuQwoaPHCjlzrHW18Oaktr5a+jKR/6kiZ7LzYvmKN+ltJwkQWHmcDW77+Smrcr
-	KiwofCukcF1u2nH6T9Rtvvl7ANuztTDhj2fSRqP18XR0JuzXHkRZYeJA71Q/Mt4w8kdyJPc3RZ9
-	1I3cwiIN8dw2byekS1JSY0vNN4NGkNdeY2nCPsXFX9PmXdUyWYyUF7qjLZy46CWKK2NptCzoXfX
-	vRIirQ40JYuCFp8X53s5oKPBGO7wWSj7Bs2upmBrMRkq+g/bKvRfumHDnwk8pKJuBXB26IN7/MD
-	wYPLCmoFKBF7wuN+p7dqxms6m7UxSFh+lxc+gCJr2aeMFW9HEUYkA/NkEG95viAwPU7nIhhLq6Y
-	LCweNt22jDBZbnhL8zi3t8nUVkJdRiebALLtYX7IhkTP+JQ7dPciTAIZpVhmLRrT0kZyPELikgP
-	b7zD8MzIXe55RTjKQpEvZuOJi3v1RpuNOyUSTwNPc993QYc4qB9NqCEwVGfmygDTroJwwhtaBm7
-	HRhm8dWtnOYTleu
-X-Received: by 2002:a17:90a:38e6:b0:35f:9ab2:a5b4 with SMTP id 98e67ed59e1d1-35f9ab2a8bamr8851412a91.6.1776276038607;
-        Wed, 15 Apr 2026 11:00:38 -0700 (PDT)
-Received: from smtpclient.apple (S01068c763f81ca4b.cg.shawcable.net. [70.77.200.158])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fd20d0e78sm4093440a91.11.2026.04.15.11.00.37
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 15 Apr 2026 11:00:38 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.100.1.1.5\))
-Subject: Re: [ISSUE] Read performance regression when using RWF_DONTCACHE form
- 8026e49 "mm/filemap: add read support for RWF_DONTCACHE"
-From: Andreas Dilger <adilger@dilger.ca>
-In-Reply-To: <CAAoBcuQ9s68HKiFwhqXPc8-bfXYsFXc2SeD01H3d62pyxi4uvQ@mail.gmail.com>
-Date: Wed, 15 Apr 2026 12:00:26 -0600
-Cc: Kiryl Shutsemau <kirill@shutemov.name>,
- linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org,
- hannes@cmpxchg.org,
- clm@meta.com,
- linux-kernel@vger.kernel.org,
- willy@infradead.org,
- bfoster@redhat.com,
- Jens Axboe <axboe@kernel.dk>,
- littleswimmingwhale@gmail.com
+	bh=EIVoJFKLsd+GmKLJIP56L/AqueFYsBTzI89ga0HARPQ=;
+	b=3eET8Iu1KQs+FXGFeOpww1jzbFm2N1f9l2RUhm7Rk6HdEGfgw/7KeRd+9fZfXDx98R3ujo
+	s1Ges1pHCDK1H2j/S0lRVrsrakyqDUwZJcAW8o4EzxZZ41Fmxk5p4wLoy6FSaMNVFvOO8w
+	N/ZS+6xH+omlwNw2hSjsTlF0jPDJ8ck=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776276103; a=rsa-sha256;
+	cv=pass;
+	b=ePHwQDDWJnJrpnsaMFLh9e/kZysCh0LxrJJXoFAFxSk6waB2Ha1YKJ/mOWRzw/XK2OEZ8s
+	MS4Hv0J7p2Qp1fmac0p7M7O4rg2xpkKjMijiau1W8/Bh0NMIQeHe5+jgfZKDmlFmJwt4MV
+	YmQy2iDcWq0BW2LU4yRUAOG+5toWIxU=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=C09ETDyq;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.43 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=phlGZtDluSL/JIMJ5MEFB3VMVqbLDHtl95WlyMBb9imzY2LwPDJP65gNU3jNZrTKYr4IysGS4gLszAYeG7Io+pgEHg8RoC9prRiFYYBNumIbj6f2xSM7bjr7Myp22uZvk7F4d3AlgMLmu4otXRIk1mv1iwOEcmsh6UoxSYzu7r1SfYeNgTHyTfvgv+5lv89c/yECPYuV8zkRQeRmcGQ/i9epWLEwcyN+o8NUHc029EaSZAVXijoTLgWezccZCW+xQSdtc9Iyl3n4KpMHYTo+vmSywj098SeioA5XLFEtsmFg4UTw3Rtaiq2a0bLb5fqM5gQn/nnFBREwxqS5zffGRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EIVoJFKLsd+GmKLJIP56L/AqueFYsBTzI89ga0HARPQ=;
+ b=GC18814QhMb4OS842OmWk7BEBXHvZAp5UpYKbmhjB8rmNgw8CHUcm7btKdIJGaSLPId1ITq/9n6VO0b+TNLELrX41EujdOIvANmFIWgwD2DtVAKhUkmWnhH4uAJ1BThbX9/vueXMLcOMj68BFMDFzXx/Zu0Sb04EnBnCWZ80F9NLZ+Lhq42OfXr/yfZAhIt97PDjaulpiDYBf0zW6R3IL+gdd60oyS0XgMHn1gc3qmL0qw8+vjMSwOTQiB9sk+LKhnNQu422cJjoaqxTuX6iJVZiSTqbxvdyQpmzI0i9twu6U0EzD/EkE0oLh2PIIA/HPUiTMqPfxbCW8RCbdkt2cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EIVoJFKLsd+GmKLJIP56L/AqueFYsBTzI89ga0HARPQ=;
+ b=C09ETDyqccLuowvEocgnCvMyxXwxOoDVugv9L4tCw2is803IMnaomhLlCSDgL6BZl0X5XukfX5EebprUtLk9u0BeTrLiHacPzIVPTPtjRtMhuploJmPeie28kB0pN74dWMefjviQ2VOPIO/baw5O9JCvMiSim8U5ZBTrmjbryZ5ANztmJKghAxmHa3dRgMiTK4gZdPIptQ/Tam9r3XdlBVCPMVTkE05rYLIxovnC3K7V0+4wY4Pa0d+AgA7Vq7vUtclFsnuv6DYmJ0vnkAYInUiMdNGB8YR+4186tvpJR1qGQMa/B8V2bJg/SFl8N+i3UA7HtdACMvTkhvuyjFdzWg==
+Received: from BL4PR12MB9478.namprd12.prod.outlook.com (2603:10b6:208:58e::9)
+ by IA0PR12MB8086.namprd12.prod.outlook.com (2603:10b6:208:403::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Wed, 15 Apr
+ 2026 18:01:30 +0000
+Received: from BL4PR12MB9478.namprd12.prod.outlook.com
+ ([fe80::4d08:451e:a51e:33a1]) by BL4PR12MB9478.namprd12.prod.outlook.com
+ ([fe80::4d08:451e:a51e:33a1%6]) with mapi id 15.20.9818.017; Wed, 15 Apr 2026
+ 18:01:30 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>, Song Liu <songliubraving@fb.com>,
+ Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 7.2 v2 05/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
+ check in hugepage_pmd_enabled()
+Date: Wed, 15 Apr 2026 14:01:27 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <68F85F77-8EFE-449D-B643-AEEB38CB50B2@nvidia.com>
+In-Reply-To: <38697379-cbba-4c64-ae65-6774b01021d9@linux.alibaba.com>
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-6-ziy@nvidia.com>
+ <ad1TMjF1L3usYIC5@casper.infradead.org>
+ <05F00072-7E06-47C9-BC26-FE3736F557FC@nvidia.com>
+ <a4d477a8-71d8-4219-9cb3-153f2c01e184@kernel.org>
+ <84B8F641-A3DF-4219-AA57-6BA48E9B4998@nvidia.com>
+ <998c02b6-2612-42c1-8099-d65ae275d1a2@kernel.org>
+ <7468C68E-FB09-4714-94A3-4BED63453295@nvidia.com>
+ <b7aa5515-6908-4ec6-91e9-eb79d5ef70b4@linux.alibaba.com>
+ <afe0dfb9-feeb-4243-bc4b-305e5e33b581@kernel.org>
+ <38697379-cbba-4c64-ae65-6774b01021d9@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <B0F17C4D-C1E3-4778-A352-AE9CA3434E8F@dilger.ca>
-References: <CAAoBcuSK38z5Nh7rGuHDFwpNvtc0W49OZKc1_d1QkCbK_nL7Ew@mail.gmail.com>
- <ad9g22IbYJatwptY@thinkstation>
- <CAAoBcuQ9s68HKiFwhqXPc8-bfXYsFXc2SeD01H3d62pyxi4uvQ@mail.gmail.com>
-To: Mingyu He <mingyu.he@shopee.com>
-X-Mailer: Apple Mail (2.3864.100.1.1.5)
-X-Rspamd-Queue-Id: A9AD81C0012
-X-Rspamd-Server: rspam12
-X-Stat-Signature: t9zuhj997p9zyyan59mjf8i43mupq1ku
+X-ClientProxiedBy: MN2PR11CA0010.namprd11.prod.outlook.com
+ (2603:10b6:208:23b::15) To BL4PR12MB9478.namprd12.prod.outlook.com
+ (2603:10b6:208:58e::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR12MB9478:EE_|IA0PR12MB8086:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18723a24-bfe6-4f0e-93ca-08de9b190541
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	BD1AbVlp8wmr5t+IgWB/fmoVCHKrdjjODuXoJ8wxphgJihZvXHT5ZHw6dfEwqUgUgJtyoSvgI6qWsbM4qZhaREc5yRPSLrDYgGVbwbiYtn9syPnn7VIvUFZygdBNt2nmuIFKyVSsL1W/hdgxjBaqktuh93Vr/RmRynxCo7rjX9lmDzAW+aWe1GfpsjON1dMxuKakTCeNNACB5xMWQhlw9/M4hGW9lztDbpfkUXeWBusDmKl9YzSSdb9jpYPc/sI+sFEzu+RtwcUplg2xAUUUBaVWMcGexZ3gf3510sdDhnVc8YAbGf3MrOUobe1eGn808EQivS+GMdNNFhHqJiAkwoReKPALQSt3F3boBSOMEN3xR42x6SHXozXxKt/y6WSh6tCFt6SGWBGyBTpgitFGu3lkMA1SVadiVBTgmgXnDeO4s9iiKbcfpRqyMlIfYIi4YUb5mNw5CZ4gwjb6IjC40dmGeufPkoA5uq/AfQi6LdcH2InUUWKzL+CORAsriXkGVTRfDRc8NF4a+LuD5kGvWrBJ7UTh2Vq4L3MhHHoRgLtMrvM/ghiqngO90wLmzHOu9wf6edVqhz3M8P0WfSaSChFT632HgFTHPCb8Axk3ZeOjT4mizVrNEKfCBLJ5NSPZey+s18DVU9adjBAWAIFMt4cuq3KbFtWFDg9wKqEqd1aaJ4+OMF4cmYafk4Od3l/0C4XcmYR+skmlqILswABnc5E5SilWqaY/ZajNN8tPCu8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR12MB9478.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MURVa1IySFg0WWR2ckoybDROVWpPc21ieUVMdVlKVVNjUkMwRmVMTFVvS0hv?=
+ =?utf-8?B?c20wbFgwSitqQjZaRnBrY0c3RmJoeWZ3ZmtoeUlsaVBNc1F5b0dXL1dPdGh5?=
+ =?utf-8?B?Nk5ReW9rY2UzV2dML2g2ZFJtUnpqU2NJRC83VWdjUGJiOGJRMzdHUFU1RTAx?=
+ =?utf-8?B?dGpCYjg3QVlwQzYzMkxjTC9PMGs4dU1yWVVqRW9mUTBLU2FOSDR2d2ZkbEZI?=
+ =?utf-8?B?cTBxUXlINUZWMEVIZjh2UURoS29Fbm5NVUdFbzUvNEkrVVhWQWVPR2lsclZ2?=
+ =?utf-8?B?UHpaU0FGNFcvbDl1TkIvclpWNGVXTXNMM0JCdXgvME42dncvdFExVmdIUWRO?=
+ =?utf-8?B?WWF3UGRvRjBhWVg2YWw3SkZQbFhGV0ZGQVVLY29ja2d6TjU0cldDYnRWWEEz?=
+ =?utf-8?B?bGRxTWxoSFNQOG5pNlAwZHFFRSsydThWY2VQTWk2clp4TXU2Y3NXakdkUmRr?=
+ =?utf-8?B?cXdLcUlFaWFsd2M4b3g4bjRLSEhhejdRRFhtMWFUQ1FlSVozMktEWmJLcHhZ?=
+ =?utf-8?B?YnFwWkNNVi85N09EWHlUdUVyNTdqa0lCVWNWSWMrbHJFV2M3MU1rVmlBK09j?=
+ =?utf-8?B?a3NpaHh6STdabWtIYTIzK3M4Z1JMVkdQVmdBMzUrVmU2T0YrMDJTUDdFOWhi?=
+ =?utf-8?B?K1psMkxMbUJvODkwdDNEc2krdWRxMlJQZGEzNDFyY0FOdTFIQ2kvU3lKdnkv?=
+ =?utf-8?B?SDh0ZElERGE3VVlCL3dSelJkMkJyc3BKR2J0VkpNMnZKa01FOVJnVitYbGdi?=
+ =?utf-8?B?ZFZ5M3NPOStQRkNxL1dISHJMbWdDWWpGQnVqc3V0d01keTRISEVnUXJIVDVa?=
+ =?utf-8?B?SWUwUlNRUXYzM1FsZDVMMTc0bHVydDg1YmtoQldwY0JaRlc5d3J5NGQ3RWJU?=
+ =?utf-8?B?aHAvOFZuNm1NTk8rUlJHdEYrWVdRM2x1SndDbE50Y28ySG5DYy9rQW5PVlNx?=
+ =?utf-8?B?U3BFM3JYVEdVNklma3pHMzExNlpxQXRkYXdUTndDVkRwOWhSN2Mvbkk4U1Rh?=
+ =?utf-8?B?SjlidDBhc21taFg4YjhjV04zV1d6NFAyM2xwZ04wMm5JYlRXajBzL1JVUkFP?=
+ =?utf-8?B?enFLWlJOYUVQNXRyWE1PUUlRVkNROTF4R2UvRjVZbW1GSEhXMjBmSEVyOW9I?=
+ =?utf-8?B?bmhJZ0xpWlN5cUtYR094clhhcDFqdXBpZVZodXRkNitkMGZHOUY1UUdVY2pI?=
+ =?utf-8?B?ZU9FWm1TaW9lQ0ZJakN4SmdNckJ0L1NEV0owWnZnRFkxWnFTZk1zWFJoL3Jq?=
+ =?utf-8?B?VVFpL3M2Yi9SVEZFWTU5SEJxZnJ2Mjd0bXl6RVNzN3h2K1dRWlZnY0FNK0ZJ?=
+ =?utf-8?B?cElza09INlY5ZnhSRU0zY3E4Q3QzWDhJM1hFanV1M3EyWXdYa1FYRi9TOG5Q?=
+ =?utf-8?B?a012cHBGU0FBdFZUbWpvREdSblFqZk80eDk1Y3BvYUhVK09mdTlPR3pQUTdD?=
+ =?utf-8?B?d1RqMGJ6blZSZDAyWW1UREJDa0VXcWlSMVFPZDRWS21VbldhVVFXMnJUd2JR?=
+ =?utf-8?B?SkZpNVA5WXpwWlBGSW5HMzZFdUM2c3hGbFlSOUJZb0o0KzZKeUdEWGo3L2VR?=
+ =?utf-8?B?R01oTE1EZWxpN3JlR3QvakJqSXNvNkwyYWgxNUg3MXRZb0xLQXoycmJDT2Vh?=
+ =?utf-8?B?Q2VTSUpNZHBBc2g0aDNidmY0RDVXblNjb2l1aThtSzhFQmJqamllZVIvSW00?=
+ =?utf-8?B?akNEQTdtWnZWSUwzeUJkTlpGTkpNVWVoekpzbWd0MkFhd1BQM0pra1VIbWNY?=
+ =?utf-8?B?ekJ0eVZ1bTFCc1R6Q0J2ZGI5V2JiRnVGVFdRNUl6clZxclhLVEZlOEp0WkVX?=
+ =?utf-8?B?Qk51Y3hmb2JmQkFMd29GdHNQZDg0T0d2TEY3YjhmWUpFOW8xN2ZzZkl3YUlB?=
+ =?utf-8?B?ZTUrc01LQW9yWlNXZEFJQnN1MFZHNWk4aHRzazhjSjFBZFBHU3oweGtia1p4?=
+ =?utf-8?B?eTRKNVhJcENCZjRnOXo0d0MvVEwwMWJmU1pFOFlWV0hvZ2N1V1dNbEZxWEhG?=
+ =?utf-8?B?RTAzQlBlMUJIRmNERitDa3FTUm1rZGhFT2IvNDl6aExPcjNkLzdCM3JhWGtL?=
+ =?utf-8?B?SUlLOFkxbWwxdE1TMFRZK0REeWpEaTBFSVNrbmtHdDFWdnl1RWRKQmtsdU1V?=
+ =?utf-8?B?bEp1TVcxUGY0RDJEQ2MzMG9uWmJwMkhPQ1YvbnJoTHVXWlJva2NOVUZFRTdT?=
+ =?utf-8?B?a2ZHd1QxQXpNcjZGT3NESzY4dG1WWGEwRmp3bU9qNm5ibEwzbDdNL3VTZ2Ri?=
+ =?utf-8?B?Ry9PMm02VVBrRXNvQ1h5V25nUFhFSXlrdEJLRzFrSDJKYmFvanBaNkJSWFBZ?=
+ =?utf-8?B?TEZ0cnovY2RVZDQvSFJvQ3ZMSlFvZEl3SWZqdVhjc2o4ZUIzNnk1Zz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18723a24-bfe6-4f0e-93ca-08de9b190541
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR12MB9478.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2026 18:01:29.9616
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: P6R7F+uh8MXQc3U73iwxz5LxatoLegmVL/pMj2dO3RRLKN1f4dR0r9OloS9LW9Cq
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8086
+X-Stat-Signature: 59fxupskk5x7frwfzhk3tdbj9xnwjbu1
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 972DA4001F
 X-Rspam-User: 
-X-HE-Tag: 1776276044-110045
-X-HE-Meta: U2FsdGVkX19fAPsJsO57/iIM/xM6McdDt6AOnFKdE+AdZBqRDDM7c9Chx7kCyqOI0ylNr6ltDO2upz10doxXg0zO5fyZ1gGa64uIPD7ec1gqlXGzHAN8jKhGLlkgbqidZ+daClkgM9AfvM8x5boZjN92YQsdUjRWTonBfAgorU4azZ9zAENJJr58s3gDHCiDHdmOnLwv02M80xJj4x8UV63PwoGUcdhDn6LZwsUaCZIhLZxPORKkTDH7fRnD0UX7pfTSwuqTKrckE8HeFGY3SWD+1pvf9r9UZ724L0UQ3B8IX/gNbhv82+ebH0xFvpnYRYS+vXdj6oSX3Be8Ao1ts+jpbFQ4Qwkkru6N/sHx5+5Yj8cMLAtpTy7JsCBzUgsWV7OSYAzOssMgosF5OY0XmX+XX6BDc5wgeNKJl8Dy1EQ4khPkH6y/2N7AfzoJ994vJ9ZUtHFq9hjShMQfC9l0ibRVyfWkUnqKAsQmz9j0BtDu6PAN9oZecOkQlHLak0TqDBtEAQXTnYZZB4kJ2Z0m7W9mkFKi4dyLm2FQtl1Mjv6krZXt3R2WQMXQrbNNGIJl/mOIdoK/TUY4oAZfNNi0tMh1Nh8zqbRkmpz+6ED/WfkLuY4ExjMAzLacD/mya90T7VleTkSx0eV3VEa9Lr4Ur9Di5lWZGoh4iuX5/turmIY5/uD40Y2HTnsHofWonno574CjXm7/2qdaHo4RQkIsuYFtoNUtKnHZtlDAiQnfkuD8SbEDLx4X02U2349/FDzlfui8eimslhu+3GdhBORqRcluecVEoYISnq/97CYCYLi2YPnIdjQco3WEiiLABN1UnhxNWTzzp/9anlQ/ipHVfd+x4pcSUU+DKIroZGj4U5IQ/OOIuwBzDeRJycqAnUiTPYs557GaoSUITmaxrpIuNJMFVTLmGHTyEPf6+PUaegR7Hkhdp2yRIVqK39tlEhWU2iK3MoOgAStrqaFnCQv
- yimezWij
- ba6amSI2ZWPRitIWfw0W3xV4Ff9xaLA9cKEGOPy0IGRSoGTzvh1YUeRDxfT9TlE14S2DjiZnPzjKDgmKkxWut3ODpSkGqS7P78zKcXA6j5uboSMuFTOSqj1aCJHvvaRyMAvioHRM3sbj2djh3SvB7j7sUCxDbw3Q9arAVPtLFH+w05xBSEEoR2iJB2xsH0NXmWzvc1appuApj4roJcIWYw19QE7HU5Qoiz5o/7r0/50Q8HFb333Skos6brwaNErJZhaEHfvRblTaXT/ycljNF3oVonvTrtaAePsYRdtTz4pSiWpltkvuNg7KsiMVpqXLqSojSn12bwe3qoLtTYirUY8z7CdRTusuI/jzwtJ5ve7Tj3iBUUYQMe9HHYrW8VA+gH7pZ+Md8iy5o/zsFS2PbSpUtD7wC47p264aip7HnB4cmRGAOmzNfLzr3rk3SOYECyaU9P7QgTX9S4d2UTZvG2VMbXziwQfckpj3xSsnJQFr0Dnw=
+X-HE-Tag: 1776276103-197020
+X-HE-Meta: U2FsdGVkX194kxaeRsd7Dam6Rbs8UKfPHL03s7R17irIt5mOnTDSukc9Tvb07lfzXqb4w82Vh2fxyYZy/znXGTRr+PrXdrq+6x5ppc6IMP7VjKxti1BjYXL1dVrrendxQuR6lBQF9vDoYUZCa+pi9tFdPtNrkAP5ELghsjv0MnjucbMynbmegGXnXyxKnznnCJWkISJrKOgKbdrGiziGgCvlkzF6UfYDt+OV6vvHJQGcuuCJQ2sTM83qm1A9957R5Aia7nSkJdMltI7XWvMgSQ237dVFS3PMoiqFeMDZhds6CEHeYalu6uwE9ozSmN/F4kveiY2hIvYPu3kk8621kBnXTvbPR6RGobSkRzldl/iYmKIP32HQ+g+96MKimaB78esqcGm9a2iBFDY1kwtLPQRG7qpDYqcKwzn+Z8YluWIO+NiG5dwZlYOdb+EcCttL3HsoLo3YtiOCUujV+jyCOyF2fwc/QoCai7mWMMQjMLgE7NSvPp8sY/4Py5t2KGxz/afsvBdI2nBkJhEb/0EXMpJwq0e/Wrjrzj0DeBir84Mcek86Rwf673VT0Df0SarUg7jmBXNktVoF1GyydK9AbHRH021Mr9qzdq7wgvh+WH7f0WO8x34CeEUODKe46SmS3zd1XDKTNmaUa4jm+AzkGa+bEtO5blT4FllgOV+PLkwYaOKrYMW4JwM46ayBBq8gxKUlwKTYGeWrmW1jUXHM1jdtCBRdk4KscIAFmCj+4XtcDquara7aQVfvVoQ2iSGovCxPprgo/KP08pZzB/6F3D25pVdYLNsR93cMF6K47odtA+krtdCcFIQPuviV2jmgzKPuZrxhDE/E2nTNTrFerWqb2Q6eS0dQKYDPUqXHtMxQF8S8fFM6xVSXuIbIAAvcao4hHnb2LfF732Q0trc4QequCDm2gbGUPvILwp0MIkmfqYVsjoAvr2rqYCIL5lw5k2/nCm2APjYJkIs49v/
+ g5RNhIBG
+ Ah6RCnHF0Bshb7vy0eQ339IImPYn3WpxBT6652wu4CB1+hdrUPHH+/uPot1NlOEdEHLMQfHo2r5upqEwwwbUXFcVqE5pwB2N89+9nHgL2aPuOcIrE6oTHZ23S1mjvhyzXSyEZ6ZczGK0c9HuLJOP8wobUwjJI1kFQnqmIaHR88BQoVsWE8A/4eqRiAzAEK7jAgSs2iEPRY5vR06Mk9BMnn4OlZp0Lt6AfAtNZUYWYtUWsYY9Ia8YVyzRJgHV4gj7eDKnoZzVIhG5wGkg/4giHIGLTqGSLNm6cJIq0pVT4HSYE1JH5A+YF9sLUQ7U5TrNvga9l7kFUMrkjIugQ/gSGxl9rBY83DehCc/RfmUYcBexWBbw8KrVO/WL+1uaQsoRXddQCHx6yg2B1h+YagW/ueCIC/A8M80NTkzjpUUpY66+tfQlyhZvWOOaU26l//DlptFi1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,160 +193,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Apr 15, 2026, at 05:04, Mingyu He <mingyu.he@shopee.com> wrote:
->=20
-> Hi Kiryl,
->=20
-> I will list my phy sec and fs block size at the tail of this email.
->=20
-> I have 2 types of hard disk on my Linux. SSD NVME and HDD.
-> And I tested buffer_size with range from 1k, 4k, 16k, 64k, 128k.  And
-> also with/without cgroup.
->=20
-> On both type of hard disk I got same output: RWF_DONTCACHE has very
-> low performance.
->=20
-> Strongly guessing this is due to readahead.   Pages are dropped after
-> reading. So system need another I/O to get the next part of the data.
-> However, I dont test the cases with Kswapd strongly working (But this
-> is not the core of the question.)
->=20
->=20
-> I guess this case needs optimization. But I am not sure it needs an
-> optimization or just I got wrong using cases, as I am not a proficient
-> kernel developer.
-> So I need the advice from experts like you to make sure.
-> If this is a case worth optimizing, I'd like to do that optimization
-> ( But I think many people might have noticed this problem, so I'm not
-> sure I could finish the optimization before those proficient
-> developers )
->=20
->=20
-> RWF_DONTCACHE Performance Comparison (MiB/s)
->=20
-> =
-+--------------+-------------+------------------------+------------------+=
+On 15 Apr 2026, at 5:21, Baolin Wang wrote:
 
-> | Device Type  | Buffer Size | RWF_DONTCACHE (MiB/s)  | Normal (MiB/s) =
-  |
-> =
-+--------------+-------------+------------------------+------------------+=
+> On 4/15/26 4:00 PM, David Hildenbrand (Arm) wrote:
+>> On 4/15/26 08:36, Baolin Wang wrote:
+>>>
+>>>
+>>> On 4/15/26 2:25 AM, Zi Yan wrote:
+>>>> On 14 Apr 2026, at 14:14, David Hildenbrand (Arm) wrote:
+>>>>
+>>>>>
+>>>>> Yeah, it would be better if we could avoid it. But the dependency on =
+the
+>>>>> global toggle as it is today is a bit weird.
+>>>>>
+>>>>>
+>>>>> I don't think there is other interaction with FS and the global toggl=
+e
+>>>>> besides this and the one you are adjusting, right?
+>>>>>
+>>>
+>>> I'm afraid not. Please also consider the per-size mTHP interfaces. It's
+>>> possible that hugepage_global_enabled() returns false, but
+>>> hugepages-2048kB/enabled is set to "always", which would still allow
+>>> khugepaged to collapse folios.
+>
+> My comments are in reply to Zi=E2=80=99s comment:
+>
+> "I think hugepage_global_enabled() should be enough to decide whether khu=
+gepaged should run or not. "
+>
+> I=E2=80=99m concerned that only relying on hugepage_global_enabled() to d=
+ecide whether khugepaged should run would cause a regression for anonymous =
+and shmem memory collapse, as it ignores per-size mTHP configuration.
+>
+>> The question is really which semantics we want.
+>>
+>> Right now, there is no way to disable khugepaged for anon pages, to just
+>> get them during page faults.
+>
+> Right.
+>
+>> And we are now talking about the same problem for FS: to only get them
+>> during page faults (like we did so far without CONFIG_READ_ONLY_THP_FOR_=
+FS).
+>
+> OK. I=E2=80=99m fine with using hugepage_global_enabled() to determine wh=
+ether khugepaged scans file folios.
+>
+> My concern is that for anonymous memory and shmem, the per-size mTHP sett=
+ings should be considered.
 
-> | HDD          | 4K          | 119.6                  | 2268.1         =
-  |
-> | HDD          | 16K         | 1568.6                 | 3814.7         =
-  |
-> | HDD          | 64K         | 2351.0                 | 4161.8         =
-  |
-> | HDD          | 128K        | 2951.4                 | 4061.0         =
-  |
-> =
-+--------------+-------------+------------------------+------------------+=
+OK, I misunderstood the meaning of hugepage_global_enabled(), since per-siz=
+e
+mTHP settings could also enable khugepaged if PMD_SIZE is set.
 
-> | NVMe         | 4K          | 148.7                  | 1556.1         =
-  |
-> | NVMe         | 16K         | 619.0                  | 1601.5         =
-  |
-> | NVMe         | 64K         | 1139.6                 | 1618.6         =
-  |
-> | NVMe         | 128K        | 1725.4                 | 1579.2
->  |- NVMe @ 128K is the only case where RWF_DONTCACHE > Normal
-> =
-+--------------+-------------+------------------------+------------------+=
+I will take willy=E2=80=99s original suggestion and make khugepaged on if t=
+he global
+setting is enabled. The below is the new version of this patch. I moved ano=
+n
+pmd huge page code to a separate anon_hpage_pmd_enabled() like
+shmem_hpage_pmd_enabled() and cleaned up the comment. Let me know your thou=
+ghts.
 
+Thanks.
 
-If the HDD performance is 4GB/s then it is almost certainly a RAID =
-system
-with multiple individual spindles.  Reading at 4KB or even 128KB is =
-likely
-only reading data from 1-2 spindles at a time. The 4KiB read size is
-showing that a single spindle has about 120 IOPS, while modern HDDs have
-about 250MB/s bandwidth, so you need to read 2MB/IOP *per spindle* to =
-get
-peak performance.  For an 8+2 RAID that means 16MB reads would be best.
+From 92b92f2b2ab41c70b41dd304ce648786ee6a1603 Mon Sep 17 00:00:00 2001
+From: Zi Yan <ziy@nvidia.com>
+Date: Wed, 15 Apr 2026 13:52:50 -0400
+Subject: [PATCH] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check in
+ hugepage_pmd_enabled()
 
-Cheers, Andreas
+Remove READ_ONLY_THP_FOR_FS and khugepaged for file-backed pmd-sized
+hugepages are enabled by the global transparent hugepage control.
+khugepaged can still be enabled by per-size control for anon and shmem when
+the global control is off.
 
-> # lsblk -o NAME,FSTYPE,SIZE,FSUSED,FSUSE%,ROTA,MODEL,MOUNTPOINT
->=20
-> NAME    FSTYPE  SIZE FSUSED FSUSE% ROTA MODEL
->    MOUNTPOIN
-> sda             1.1T                  1 PERC H750 Adp
-> =E2=94=9C=E2=94=80sda1            4M                  1
-> =E2=94=9C=E2=94=80sda2  vfat    110M   6.1M     6%    1
->    /boot/efi
-> =E2=94=9C=E2=94=80sda3  ext4      2G 517.1M    27%    1                =
-                    /boot
-> =E2=94=94=E2=94=80sda4  xfs     1.1T  70.4G     6%    1                =
-                    /
-> nvme0n1 ext4    1.7T     5G     0%    0 Dell Ent NVMe v2 AGN RI U.2 =
-1.92TB /data
->=20
->=20
-> # lsblk -o NAME,PHY-SEC,LOG-SEC
-> NAME    PHY-SEC LOG-SEC
-> sda         512     512
-> =E2=94=9C=E2=94=80sda1      512     512
-> =E2=94=9C=E2=94=80sda2      512     512
-> =E2=94=9C=E2=94=80sda3      512     512
-> =E2=94=94=E2=94=80sda4      512     512
-> nvme0n1     512     512
->=20
-> # dumpe2fs /dev/nvme0n1 | grep "Block size"
-> dumpe2fs 1.47.0 (5-Feb-2023)
-> Block size:               4096
->=20
-> # xfs_info /
-> meta-data=3D/dev/sda4              isize=3D512    agcount=3D566, =
-agsize=3D516864 blks
->         =3D                       sectsz=3D512   attr=3D2, =
-projid32bit=3D1
->         =3D                       crc=3D1        finobt=3D1, sparse=3D1,=
- rmapbt=3D0
->         =3D                       reflink=3D1    bigtime=3D1 =
-inobtcount=3D1
-> data     =3D                       bsize=3D4096   blocks=3D292326651, =
-imaxpct=3D25
->         =3D                       sunit=3D0      swidth=3D0 blks
-> naming   =3Dversion 2              bsize=3D4096   ascii-ci=3D0, =
-ftype=3D1
-> log      =3Dinternal log           bsize=3D4096   blocks=3D16384, =
-version=3D2
->         =3D                       sectsz=3D512   sunit=3D0 blks, =
-lazy-count=3D1
-> realtime =3Dnone                   extsz=3D4096   blocks=3D0, =
-rtextents=3D0
->=20
->=20
-> On Wed, Apr 15, 2026 at 6:05=E2=80=AFPM Kiryl Shutsemau =
-<kirill@shutemov.name> wrote:
->>=20
->> On Wed, Apr 15, 2026 at 03:28:27PM +0800, Mingyu He wrote:
->>> The smaller the buffer_size in the test program, the more the
->>> performance dropped. Initially, I used a 4k buffer_size, and the
->>> performance decreased significantly. When the buffer_size was
->>> increased to 128K, the read performance with RWF_DONTCACHE actually
->>> surpassed the non-flagged version by about 10%.
->>=20
->> Maybe you have block size larger than 4k? Core-mm will allocate =
-larger
->> folios for page cache if filesystem asks it to. And if you try to =
-access
->> it with 4k buffer it gets multiple read-discard cycles for the same
->> block with RWF_DONTCACHE. Without RWF_DONTCACHE only the first access =
-to
->> the block will lead to I/O, following accesses are served from page
->> cache.
->>=20
->> --
->>  Kiryl Shutsemau / Kirill A. Shutemov
->=20
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+---
+ mm/khugepaged.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index b8452dbdb043..586d27ce896e 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -406,18 +406,8 @@ static inline int collapse_test_exit_or_disable(struct=
+ mm_struct *mm)
+ 		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+ }
 
-Cheers, Andreas
+-static bool hugepage_pmd_enabled(void)
++static inline bool anon_hpage_pmd_enabled()
+ {
+-	/*
+-	 * We cover the anon, shmem and the file-backed case here; file-backed
+-	 * hugepages, when configured in, are determined by the global control.
+-	 * Anon pmd-sized hugepages are determined by the pmd-size control.
+-	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
+-	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
+-	 */
+-	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+-	    hugepage_global_enabled())
+-		return true;
+ 	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
+ 		return true;
+ 	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
+@@ -425,6 +415,20 @@ static bool hugepage_pmd_enabled(void)
+ 	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
+ 	    hugepage_global_enabled())
+ 		return true;
++	return false;
++}
++
++static bool hugepage_pmd_enabled(void)
++{
++	/*
++	 * Anon, shmem and file-backed pmd-sized hugepages are all determined by
++	 * the global control. If the global control is off, anon and shmem
++	 * pmd-sized hugepages are also determined by its per-size control.
++	 */
++	if (hugepage_global_enabled())
++		return true;
++	if (anon_hpage_pmd_enabled())
++		return true;
+ 	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
+ 		return true;
+ 	return false;
+--=20
+2.43.0
 
 
 
-
-
+Best Regards,
+Yan, Zi
 
