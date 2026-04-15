@@ -4,127 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AAE4F43821
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 14:33:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 116B7F43824
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 14:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EA4C6B0005; Wed, 15 Apr 2026 10:33:48 -0400 (EDT)
+	id 582E36B0089; Wed, 15 Apr 2026 10:36:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09B8D6B0088; Wed, 15 Apr 2026 10:33:48 -0400 (EDT)
+	id 533D66B008C; Wed, 15 Apr 2026 10:36:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECC496B0089; Wed, 15 Apr 2026 10:33:47 -0400 (EDT)
+	id 422F76B0092; Wed, 15 Apr 2026 10:36:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D812A6B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:33:47 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63D801B7F51
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:33:47 +0000 (UTC)
-X-FDA: 84661034094.28.594F800
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 82B05C0006
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:33:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Xy+gBCDe;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 303626B0089
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:36:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DCD5613AF79
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:36:57 +0000 (UTC)
+X-FDA: 84661042074.12.D38E410
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 00AC114000E
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:36:55 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ajc0ZCrp;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776263625;
+	s=arc-20220608; t=1776263816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z6++CI4laqgUkEu/9WjoRCFUvBg1ZLNaXzfHGKxYlnY=;
-	b=Iwz4DLCt6EczFGG02qTY7+ri19qfU/JIpX+H7SCYPyM1tBhBPgBXwyTzD36iBOqXUP+Jmo
-	ESixUuGf9iPhFqBpjb57M6kthkMfwfprpTT4sqC3xt8UJA6HGVSxhryo8fDnVYI6H2VJK9
-	Y3lJW5VfoBiytxAz7u4POGejNCthH3A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776263625; a=rsa-sha256;
-	cv=none;
-	b=yUAibrhH7HNDDtRsHUFEdWh2OJhQjPQjCg2Krn9vsOPPeBKPOdpcHboHFIsDvPLzHU3ZYf
-	HaWqs8Lvnib5HWxsED5GVK3KnTch5EF+Ptnr3JgpdT089V/ZQOk1S0+0nUb4iQHCk0HjqW
-	BKnFGK3DAWTMoPpl+AiZCauQHVqabSQ=
+	bh=R41xfSaGuu9/unRTK6Co4hDrkXjvHiWt3X2jqtUtbVM=;
+	b=5WDni4mD+STKGImBwFpPCql2F+DxokIolsSOnQjKSN1sky1w5OY4Rp1ILxiWZ3DzDwsVbe
+	7nnZYt9THlCfOISRCn9I6N4wT7LVnWEqG/YfnYy1uFiwvJkFVyCVNzjhp9Yfi/CutWAbai
+	l/9dzxvXzfUp6epzuYxFwP1rpI7L/hk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Xy+gBCDe;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7dbdcb85067so5749738a34.1
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 07:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776263624; x=1776868424; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z6++CI4laqgUkEu/9WjoRCFUvBg1ZLNaXzfHGKxYlnY=;
-        b=Xy+gBCDe8KOjCZz0y/b/tXHJwTUbY87RWRWuccj2aYiats/s+rvRa+hqqwV1629oyR
-         rkq8T/L673+TZ2PPRBvfMAwU5ujOGwCZuwEmJsHHkZbiWhr+SMRNZn57Yo0WXb578uCU
-         XjirM2lJRRQDYoMxiKHnxPlTpDZTHiW4Wwd/4RcjMBU5yokTEd6ePcEeXBETQrOYy5DY
-         cu/G/2Ac9llFoWFHusWnExgILVdGglb/TAWjZ5wm7+T8FtPmIrkcNke8h6oO92lSmW0a
-         0yKqB+LA0ENuXIbZtVFW2yt/CNW32qBPdKw8v05HAX7G4UNSnxB9GthIk9vrslLl9KfU
-         8DYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776263624; x=1776868424;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=z6++CI4laqgUkEu/9WjoRCFUvBg1ZLNaXzfHGKxYlnY=;
-        b=P/gqzhNO8/2HeISfs3UrGRLfdqCFtm48iTKcDG7dijLHvaO8x9rz9VT1FdWy0GV15G
-         6DuqMtRZVNhlz7xGe+1Kr1w8tZZXb3rY7X7DnxMUDj1biTY8CVxr3qAa1gPhxhK8ga6W
-         k3zVASeJfP4fACsUwfVDAx4niG63RayqtNoNIfyqOMPqFSMDX1wQReyui45WyRJtMh6E
-         t12+RiChEHOkOEIzqJ5DHOBEPLF9B8BdjwgUgvkM852qvM6T+AX3MQ73HV74pku6lP+N
-         i+CsxJrW4+Cz/8TLzmbbHLoNBWPFSObJ2N5EM0S0grKSHWh+gzE4uZ4qXeua0+Gm3zR+
-         E6Ew==
-X-Forwarded-Encrypted: i=1; AFNElJ/l2ahVN8Me08RadZ7Fx++YtXpVfi5SM9xlEc4PHqfAEDklTz0inhYWBm+PvkdtdEhKLhOnQbnbZw==@kvack.org
-X-Gm-Message-State: AOJu0Yxk0uw+bFoNPSmccG8ClXvXZ4JsdiOe8WDoITI9OlDQUTYSpbZj
-	FzMyLM92mBn9BY09iw1GhE/zrIgH4tib/DtSCkc39XhajgXDxiXMkd8H
-X-Gm-Gg: AeBDieu8srLOup70LP5E0mwcYPW67bj3PsTiBa6+APpB/IqIV+k/FF5wfQj7VC1645p
-	CK0Jx/ihSR/07iU7hXZ6BPuP6+fMy6foXKSnkL9BVoaz3rHRpY/f+36kuNVA1e4oU6pzE6Z7yTa
-	VQNmCL9MvU4HFwhv6t1MtcxYLaAc37E/1UhsHNzm0OF/3UFhFND+kvK5ZoLsJ7ADkBrJQFHaqSc
-	zxGzFt9Ll8CNHknADIRvN/v8/FDdueyIRyqX0y/3rHRxc5obAXypdAKF7pU8uExgmqZ3c0pqPtj
-	dorod66vXWkg6GDG96As9YzOhWUOkLSu+aAfcEJUKHe6tnzxCV/hsUXIEs6VVv+aKI0HvAp7Tiu
-	e5k9qDj9JcyrwjXOUE/8SighBevAoAnkM00D2nvP7oNkZdbjlbuo/PUhM7Pcbl7pJdE9gwrulR4
-	WZTg3LuJnfR8cFrnDASlRIsg==
-X-Received: by 2002:a05:6830:6ae9:b0:7d7:d8ca:c211 with SMTP id 46e09a7af769-7dc27dde06fmr13267298a34.1.1776263624373;
-        Wed, 15 Apr 2026 07:33:44 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:53::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc76a3612dsm1524656a34.10.2026.04.15.07.33.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 07:33:43 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/percpu, memcontrol: Per-memcg-lruvec percpu accounting
-Date: Wed, 15 Apr 2026 07:33:41 -0700
-Message-ID: <20260415143342.81714-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <ad74z5aSkwxn9QQG@hyeyoo>
-References: 
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ajc0ZCrp;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776263816; a=rsa-sha256;
+	cv=none;
+	b=CgUq+SQIx+lTzbSCSH3Ux0E152mX7xeKWoiNHzdBJyCp5Yej289F8qn1XHjPCrrcX7r1wX
+	U+vIOzUbZHL+TpTXuH/n3fuEJbV8M9BIXOEsevWtuaQ+7ihrwVLW3H/uvE+YfTbeBZ1ORS
+	tdHtP2Pj2ETzikBynTJtzDSKBNPi0v8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D86DF600AD;
+	Wed, 15 Apr 2026 14:36:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143D8C19424;
+	Wed, 15 Apr 2026 14:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776263814;
+	bh=hha2hAkeavqEK37XCQsy4N+tg4I2zcpdNgvkEtX+Ka0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ajc0ZCrp48qFOd5YeMwU6awPpTlPgOEdgiCW6t9HWpyQfnzlwVgfg/AsqhiG7oyXm
+	 nLr+XUl4e20NWvAyngeSQ/T3A9cPeh/iLU2MRydo/sXPwUCq5tStnSMWlbWdk4nxe2
+	 SJC4gavTW9vPFR/OyBPrPy5s+tZ95aIdgN9CMgH8/WkWaJKy/rl5orib3fJXfcnm3N
+	 jodgITL9XOiwf+y6glhCkD9qRLxtg1dsbYBzawQcSNn1jKjWe63AYk3tLP1Kn1QIh6
+	 B0XR3httHFjAONX3ZES54kIkzsRSYch53zvV0eJKuxBxnzUiQd02TbR5wDRafb3c9L
+	 +LlLcE2o2QiwA==
+Message-ID: <875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org>
+Date: Wed, 15 Apr 2026 16:36:46 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
+ shmem mount
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
+ <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
+ <e07071fc-15b7-495f-b6d5-96004aa0f8b6@linux.alibaba.com>
+ <c88ea567-6b03-4540-8173-7fceeac23f7d@kernel.org>
+ <2d138a3f-0006-4a01-852a-4570d7ba781d@linux.alibaba.com>
+ <eda13ed2-117a-488b-9120-d64e0fe0b731@kernel.org>
+ <1a3cb6b2-94e0-4268-8cd9-1f9a9deb6c6b@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1a3cb6b2-94e0-4268-8cd9-1f9a9deb6c6b@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 82B05C0006
-X-Rspamd-Server: rspam04
-X-Stat-Signature: yoripsxks38z6af3jwwktpxqnj11ccu4
+X-Rspamd-Queue-Id: 00AC114000E
 X-Rspam-User: 
-X-HE-Tag: 1776263625-394859
-X-HE-Meta: U2FsdGVkX18xcdxTTuwT1CwGbKY8r4riXYCN1oYxtYWfe46ukh4C50nZOn1iRxTzMN203XVKZRJsUgORqcMaE9jEFa4Eq0iAIYIafNTcPnzAmU8Z+23zTlGS58Ske6IFkIlRBvk+G+y82GcoFRsi9XzQnqVKURzMt+L5TGpB5yFJG7E6z/w8xB+/7QRB05CMaRpmy10T2BdbHz2tf1jwjlVgpt2Q1yesb2xlOKL3c7kBzC9ockR8uewazw/hVYdvYDms4/yaMjOjYKpXMUanSu00/FY/rhdwtjfcVrAnBNH+mATfBg4S9Ljs+/phvSd2eYtxoE3SON6s4ujPZHk/FoHSQq5Gqpijlh0A5B7nYGz/11DrvGqH3eXrowywCUYBqda4syiNaos2pGLNDeQayjQl9HFglSxURDvLbPhT9uc9wfAamAAaMxGMX36ImU6SiEpbVuU/jBRQFnijyEVMVJ2acQbiIpDf/1xSHYcqiy1ykVlkO/FIYCqkLRPbBncGI0kQpFeAzTCHHeTCUmTJnjWHcVVAmQxX5FYWc7t5LMCQ6nReB/krLoshWeOErM7BCTllAFT7llB3Xbqtv3k8cRdqEYp3XKtzeJ8nSz+xsWbRm3DmJBYzguHNLXOj6wTxByQLq/GPb6Z6wM1NiQHgxg7S/cVVUPBfk353Ndzxj2DXS8UETwgA136cUGPsrwNPOueoifzQq6GW54MpFr+OxrcNop4esVjxnFk6r1b4RRaSFP72Xxf+b3/q9MNcs3N+JDORk39adGKVDk2zNV6EMGMJmjZ2ytmFLptLgFdWQlfLWEwkayQGySQDDsWdlOwXF7sRYLJGWwxVFGjJ+MyMapBGM2a4a3y8Fh3ZpwlYXs/CPMxnEvPiGdwC5sARLATjyiXAbtmpgHjEJNmgFV/dU++zMtH18yt+NMBqGpt1LOw3gMJwtJlwuSK0vk3Bl2cDfta8Kpzy5xwYoMvf4yI
- jn12xrKr
- vfGLu7dqavrFZv+JY2Mypu7WH5Vl3Kjfa+85jXJl7r2mbjvR+aN98BFRyC2FqHBwqng8137wiwTU+pWLfQSAztCPnNZKLbbGhNoN0akHNIo8P5z96y0vfv7jLhzNtrEmnFHTNClM95ub4ehVjpj+hQBPstkyaNrMUP1/1nNkWkDoMDfw3gpondPIVZW9EfqFRTNu1JwRyQgKDSps7ugYLqeHY++CUwYE8UevJb6DqBsbSxUJLIe4tUMG9Li5Lt5o/8E1y4+fLpCKx1tQwv6K7fNpN9wjVH0YRw8Wo+F3nGzH09X1bgh9GAaOQPs/ahD+slT2m8nAG6MsOSXTdVW/TJTgb/x9aOGA7d3MSnqhmhQktdjFSaULLWozxTnsAFyoiGKvjvB5ivbOrPZUoRBjUlg9qEjijFXStGGBX9t4Xu9ZLZn591mcjwFBFKdwv62i8tJB2JpJbenQONKfqW9WIVVa415yz7hpXRPEEd8HPa7P81IADddkH6FvKA6h0vFhW/ou3JlmZN5niUwWoHyw7AgFprA==
+X-Stat-Signature: 3f4zei6fncimigog11prtym7ysxradf3
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776263815-792275
+X-HE-Meta: U2FsdGVkX18r081PDt96G53Hn8xnseAJ2BdYzWOTdsnfaZ2xO4OgV54F9AHvarQDV0IcHGVhO5eAVEgi1wizn1Ewcn5MDhme6dCgKTBKNvDtz3uCBn1lxJucZ12Dc80cwST+mo7ItLeMe6AQr3hsW57rLvxDQNkdboNdc+46qF6VQxvpfOTXEC9Oyh0M5Tr8lDWp5ZLsZ8mAp8gi7Nc0cJxlGXrlE6vfvMtQEjd2JM/afiLw67FHOfAow+GatUGpBB1k85GHD8lh17EJ3E5fHb3RZN8VAy5Gxt7ITxY518CehWg7RyVS4uLatkBUHjv2BN4O8A7n+s9krctAqwNGEOrbQVWWrAosusYtIs32yvc/FZ+lzYuVOFciIJmkv1J3wdjweP1p0lTxZ19Jf6fbseuzzwgXPVB43ETgwamQXcNpaSewcQoH/dX2DG+bi1MN6vTu0FnUJYcGp9nBMRN/Il2HvN4j43qiUBr/MfGi10PZpi9ToplzRIA3hAvhafncdUBKcitTchGWs6i0UvpRP+4ZeLIlz5olnlVFj8JNGK/R9zHM5cjMa3SCpLy2l1Xnan3HMPeWJpZ/5nt8KbqQIFlW/rYVIvMZEOSP73vjJPCfWf1ahNDJg3okF6Ov6RpvQkzTCKpHOBbMPQIaWRlWrBJj2H97ZL0hymLKYdceyDokxEI0h4BTe2LQPIaU7fQwY3N78UJf2txFGlvUpI0OzAwMzASKBcpaLbGKccYBW4GwzuJBoV02gcT6OxIxla3XJYZgrGwyz2j2zDga8HfScSmvSktom8i58DeHd5dJkfQiNivRqONlle4nnpBTzxWe7/kUzkxjSQ7GibBMY0IuRdg3rotYZMmQQjkH5IQn9QNZCIO5+1wXfV/4+mZ22FrFWdWn9zQzmDP1DpXr3/aJeJJzkDw7JNluvIJ2Nl8Wk0JQrlSJlyhpO5iCEgWsepGRzuOYw4T9mS1PNPUD3cK
+ G9q8Xm7J
+ 36Plguxv4zjwqrNxPeRq7w0ATkECCm/sF4KNrnhOLaYAniR55sO04SweT1YlnoytLHgco3IS5HuKfrzFYpo/VDxKvy8ahe1ELr0fyeLAw77eJqY6Q03PMrlrluvFj8GyUfgEJP0vMNd+j11EAGeRxKPgWeNin6qISbaiI0gx4Lkj2BM1+C8hTQ3th092SGzY0OkUNGnUzP7ZFfI7YKY0Q8uD0LVaMx+1qH9qteXa1Qh/Qosrd3rTeFJftMqpKgWJdy9uoS+wTtKDt0tKK4svFt15XGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,119 +145,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Apr 2026 11:32:47 +0900 "Harry Yoo (Oracle)" <harry@kernel.org> wrote:
-
-> On Tue, Apr 14, 2026 at 01:26:31PM -0700, Joshua Hahn wrote:
-> > On Fri,  3 Apr 2026 20:38:43 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > 
-> > > enum memcg_stat_item includes memory that is tracked on a per-memcg
-> > > level, but not at a per-node (and per-lruvec) level. Diagnosing
-> > > memory pressure for memcgs in multi-NUMA systems can be difficult,
-> > > since not all of the memory accounted in memcg can be traced back
-> > > to a node. In scenarios where numa nodes in an memcg are asymmetrically
-> > > stressed, this difference can be invisible to the user.
-> > > 
-> > > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
-> > > to give visibility into per-node breakdowns for percpu allocations.
-> > > 
-> > > This will get us closer to being able to know the memcg and physical
-> > > association of all memory on the system. Specifically for percpu, this
-> > > granularity will help demonstrate footprint differences on systems with
-> > > asymmetric NUMA nodes.
-> > > 
-> > > Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
-> > > account node level statistics (accounted in PAGE_SIZE units) and
-> > > memcg-lruvec statistics separately. Account node statistics when the pcpu
-> > > pages are allocated, and account memcg-lruvec statistics when pcpu
-> > > objects are handed out.
-> > 
-> > [...snip...]
-> > 
-> > > @@ -55,7 +55,8 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
-> > >  			    struct page **pages, int page_start, int page_end)
-> > >  {
-> > >  	unsigned int cpu;
-> > > -	int i;
-> > > +	int nr_pages = page_end - page_start;
-> > > +	int i, nid;
-> > >  
-> > >  	for_each_possible_cpu(cpu) {
-> > >  		for (i = page_start; i < page_end; i++) {
-> > > @@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
-> > >  				__free_page(page);
-> > >  		}
-> > >  	}
-> > > +
-> > > +	for_each_node(nid)
-> > > +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
-> > > +				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
-> > >  }
-> > >  
-> > >  /**
-> > > @@ -84,7 +89,8 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
-> > >  			    gfp_t gfp)
-> > >  {
-> > >  	unsigned int cpu, tcpu;
-> > > -	int i;
-> > > +	int nr_pages = page_end - page_start;
-> > > +	int i, nid;
-> > >  
-> > >  	gfp |= __GFP_HIGHMEM;
-> > >  
-> > > @@ -97,6 +103,10 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
-> > >  				goto err;
-> > >  		}
-> > >  	}
-> > > +
-> > > +	for_each_node(nid)
-> > > +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
-> > > +				    nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
-> > >  	return 0;
-> > 
-> > Hello reviewers,
-> > 
-> > Since I submitted this, I have been thinking about the feedback that Sashiko
-> > has given this patch [1]. Harry has already pointed out the points about
-> > drifting due to CPU hotplug, but one there is one particular concern that
-> > I have been trying to tackle with no avail.
-> > 
-> > The issue is, pcpu allocations for CPUs on node A may actually fall back to
-> > node B, if node A is out of space and under pressure. This design seems to be
-> > intentional, to prevent memory pressure from failing these allocations.
-> > 
-> > However, this means that we cannot charge percpu memory based on the number
-> > of CPUs present on a node, because although the memory "belongs" to the node
-> > (since the CPU it actually belongs to is on the node), the memory can be
-> > serviced from elsewhere.
+On 4/15/26 12:05, Baolin Wang wrote:
 > 
-> Ouch.
 > 
-> > To handle this, I've tried several approaches. All of them were either too
-> > expensive (iterating through all pages at allocation / free time)
+> On 4/15/26 5:54 PM, David Hildenbrand (Arm) wrote:
+>>>
+>>> Yes, that makes sense.
+>>>
+>>> However, it’s also possible that the mapping does not support large
+>>> folios, yet anonymous shmem can still allocate large folios via the
+>>> sysfs interfaces. That doesn't make sense, right?
+>>
+>> That's what I am saying: if there could be large folios in there, then
+>> let's tell the world.
+>>
+>> Getting in a scenario where the mapping claims to not support large
+>> folios, but then we have large folios in there is inconsistent, not?
+>>
+>> [...]
+>>
+>>>
+>>> For the current anonymous shmem (tmpfs is already clear, no questions),
+>>> I don’t think there will be any "will never have/does never allow"
+>>> cases, because it can be changed dynamically via the sysfs interfaces.
+>>
+>> Right. It's about non-anon shmem with huge=off.
+>>
+>>>
+>>> If we still want that logic, then for anonymous shmem we can treat it as
+>>> always "might have large folios".
 > 
-> How expensive was it compared to the baseline?
-
-I haven't done any performance analyses, but the changes that were made required
-every pcpu allocation to iterate over all the pages in a loop, and account the
-page where it came from, whereas previously we didn't need to do any iteration,
-just charging or uncharging based on the size. But maybe it's not so bad
-after all, since these allocations should usually be pretty small.
-
-Let me try running some tests to see what the absolute worst case scenario
-regression would look like.
-
-> > or introduces
-> > new drift (I thought of managing per-chunk statistics as well).
+> OK. To resolve the confusion about 1, the logic should be changed as
+> follows. Does that make sense to you?
 > 
-> How does it introduce a new drift?
+> if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
+>     mapping_set_large_folios(inode->i_mapping);
 
-The other approach I tried to do to avoid the iteration over pages was to
-stash per-node counters per-chunk. But of course this doesn't work well if
-we need to have statistics per-pcpu allocation, or if we change the ordering
-of the charges based on the ordering of the chunk's pcpu allocations.
+I think that's better. But has Willy says, maybe we can just
+unconditionally set it and have it even simpler.
 
-In any case, thanks for taking the time to check on the patch.
-I'll try to spin up something soon!
+-- 
+Cheers,
 
-Joshua
+David
 
