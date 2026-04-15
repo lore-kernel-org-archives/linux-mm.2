@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D126F4198C
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:37:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83001F4198C
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:38:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE26E6B0092; Wed, 15 Apr 2026 06:37:49 -0400 (EDT)
+	id EA82B6B0093; Wed, 15 Apr 2026 06:38:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D93586B0093; Wed, 15 Apr 2026 06:37:49 -0400 (EDT)
+	id E7F836B0095; Wed, 15 Apr 2026 06:38:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C82616B0095; Wed, 15 Apr 2026 06:37:49 -0400 (EDT)
+	id D957F6B0096; Wed, 15 Apr 2026 06:38:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B92A06B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:37:49 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4CDB6C1FDC
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:37:49 +0000 (UTC)
-X-FDA: 84660439458.03.73B9224
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CC5D36B0093
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:38:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7DCC2E3EDD
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:38:47 +0000 (UTC)
+X-FDA: 84660441894.13.83861F8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9BC0940008
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:37:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rx3On75X;
+	by imf09.hostedemail.com (Postfix) with ESMTP id C8381140009
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:38:45 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kZLIyAbB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776249467; a=rsa-sha256;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776249525; a=rsa-sha256;
 	cv=none;
-	b=EfdmSOUjBGAGtKR1/NpNuhB4kBdhnJ8xyL0mrhuzUWsJ5Hk5YNNvC3UcnnWLjYekWb7W7C
-	48L95EILNvTwTzU1UcpSQUY+NLkphagl6atEIS2BDIfj+b8CYhiVocLMIsTiiHoQWpl36E
-	AC6aso+9SYMpdFIQuZ09F0hNkEKKBVA=
+	b=THfADEfMsXyz2RIOqSOPGBFtDcRFO8nCOpRKIewWGGI+7mBsXsYK5sj7d9h9L0d3Mc+vQf
+	exajH89RWxjbPM8ndMXmPpDYhbUPpUutRVZEC1PhfC3Otwig1XVRdV2rP/Jd/yNgStqxUL
+	r94aRxhpVem5Due9cA/1xSvHjJ31DsQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rx3On75X;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kZLIyAbB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776249467;
+	s=arc-20220608; t=1776249525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=akiAmAyh8lCTBxYdaxPA4DzOnhkzNxxi3xIqsHTRUR0=;
-	b=rD3vGX6RCXsUAms9G622OAq+CCyQ9FvsYOKIOcWvxunGRKblw77GjU7Mv0Wb2M8mIibT/5
-	cm0pzwpqwAKtPxCSqrw7rsyoxMgsiN//aU7223dHznfbpcCbu/9OyjdhD2/+qIp9nttrVY
-	ONQ5MONmkKy29jCTXoBIhWKT41rT8TY=
+	bh=AzugdfaOWv0mpiqwtW8ZXjy66zEjkhjnQ3wMX2aWyrM=;
+	b=n5oZ5VQ7/WtxFYJgZCKgk03kg2bOXXf9py2zOf9tAALMmiZ9wuSTZ/ghO3yoN0KZkTrWZB
+	NmtZlBkpGp/vi3qRr9f+yRpPyMB9wJES87dLrJb711mtliIEY4RFNuzho37lmkKLTsbEcd
+	MrXGcPp3e2ffMH1T9Hu5DziMSH6h3Pc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFB06600AD;
-	Wed, 15 Apr 2026 10:37:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA067C19424;
-	Wed, 15 Apr 2026 10:37:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 523D2600AD;
+	Wed, 15 Apr 2026 10:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB067C2BCB3;
+	Wed, 15 Apr 2026 10:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776249466;
-	bh=f66BS374o9yicV24P6l2YJ4oEbiJ5q8d6MqcbAuKZpY=;
+	s=k20201202; t=1776249525;
+	bh=qCE51tFTa1BLfSxOaRiThiT09pL3zMpL8+i20K7u+bo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rx3On75Xszu4n08udrTE7xE5Lub7Qhmn8d6aHoDLCpcMivecgYsi+R9kxA4WDUkot
-	 3kRT2phk8L1JqgxFxeHX3W5Cg+9OfdT/pIGVirrHJEio/bZaNHPkJ7LC5tHeN/Thaf
-	 hdf3oWWiDwiCyRomMDBKvCgkMRrIQ63Po32PbeUpQUIiMJd9GgjXGcm/PgMwMi9F/e
-	 qq+QzVzCZm2pdqAcxrPBMX91/7dNmw42kWK0boJM+SY63JKs/okeicjOH5o5OTho3X
-	 W7hrFbChtoIMW8dwsXSHLB4AWAkcZmWkg5Jw8RxxwEZiM1isQNv8jF5dQA06a0bJXw
-	 VCs9uLN82H4hQ==
-Message-ID: <4789eae4-2319-43ca-9141-72de767e071b@kernel.org>
-Date: Wed, 15 Apr 2026 12:37:39 +0200
+	b=kZLIyAbBtz7vnZrkuoI+3ia2GC3PxiBHPzLFHBr6Tn100ovNNWLEylPCJVT1Iboit
+	 /S65KwvbpDLKyaZXwfwrDhsE1w7xFkeigtzIGZjfRs0Vp5/4vUJwJ8p0ySZHZN8JDB
+	 R2EW5eskfszLPx7vY0DfArpVM/0hObfZxKzMP+5+hTxexeglU51gubR8rCDIHO5Ai9
+	 aIvqSyQ9MQAvFBOiqDK4r8XNUmL48x+L/v5QNYX7Ic7w+Rp4vWPt14E8FsdudIYVmN
+	 z6h5EdVg0sMQtlrBrHicjqtlhY9vANDD8vwAPuqDNlEZ2q3JJVrHvT2oF+/y+f6NYr
+	 7m412mIgcOJhA==
+Message-ID: <10dd6ea4-8da5-41bb-88ea-c6a4a976a6c9@kernel.org>
+Date: Wed, 15 Apr 2026 12:38:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 08/16] arm64/mm: Convert READ_ONCE() as pgdp_get() while
- accessing PGD
+Subject: Re: [RFC V1 11/16] arm64/mm: Route all pgtable atomics to central
+ helpers
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -77,11 +77,11 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kasan-dev@googlegroups.com
+ linux-mm@kvack.org
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-9-anshuman.khandual@arm.com>
- <e294a87b-392b-4b12-bd12-70c66c793fcd@kernel.org>
- <37a7e502-ac1d-4573-a877-23b1bfd07238@arm.com>
+ <20260224051153.3150613-12-anshuman.khandual@arm.com>
+ <aeb1972c-57ba-4f21-8289-66424e4e619b@kernel.org>
+ <e5558ba2-dad6-4090-87d0-2fdec426e815@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <37a7e502-ac1d-4573-a877-23b1bfd07238@arm.com>
+In-Reply-To: <e5558ba2-dad6-4090-87d0-2fdec426e815@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C8381140009
+X-Stat-Signature: nem9941mxexodgtbhh9k3ygawwwny9rz
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9BC0940008
-X-Stat-Signature: xk3jrncewqk1aq8sxdw9shr36ajtrhi1
-X-HE-Tag: 1776249467-79963
-X-HE-Meta: U2FsdGVkX1/FGST1UlEjNi/wGIxUl+LZj8oPF5++lzhxw7gdnsU3uH60JqvS2NecyzxJzSQoFpZQR6qLVU9fjXlWfPD1OM8H9MBMDXVv/t0G8U3GcQZ3WxugTUVikKWcman+3jfUGJEeIrW2/YHInwzZ+O/0x0cFXoE9aNF+UULxwCY1S51vfOoZsACxaI2P7w3h914siJNOmW1Ph1FLcQt6UlWtLQoBOFGITpwDY5M3QikpSvTRSM9b1we6Caq6T03wpUqUvTPosF4bgzcoIA2s98o7/n7y7uBYXiuSmdX5Z4UwQtZv0aR8QI0I52M9wCdS2zfpZPo+mo82l42HkzPlfvnX+8st5blUlv05s8IXvCygJTHQSe3Uzbws/qK3LsEJpUPH+gJxnBL0VNQNA+Q0/W87ERpPWyhI3IfRvLB5Mb4MBt15mZcYLB14nHeYWcld30f3AIqKdFYoNgYEJRF2mfrfK988AJ3nyea2QRVVzznWSB23l7EwsmbXbeF4UeE5DbcTsoMgrUFJOl8h2n2pqYdgFWsR/d92vaJWWyruMNABo96ImrhQH8ERMQ06Op0eEqBAbRrCYO+HVHI6urrZSiFDLra15i1zOJDzd8D6P0cQ8hWTz+CevnFfjSdNnYUcpSleIhA2XyuDmzgkZjVLp0SNe8KTYpYYT+GENmWEVHK6r+sZ3JhuSqbY/Ph2JWEfWDYWs66SVWEuU6tRSCBfaM+ukEI+GFkU/QVK1Y9cstTVHvc50LCN3Qs+qMm9aFCrT++KWAKQuHrrgci4da08Pg3LTCz7t0Wy+jeQzKNLd5vtATed3bJ9yziBidWAA8lHUuu0Ui7DOVmCTYUWWCzDdQd0zzjahU1HMMoATXNwrNB647wZoQ1F+MtYI2uaDUEgFyuYNA0/u6+RCa54Mj3q1JhZ9YmmKPKRbvtXOzi2O5iXLGnEDUU//tY58lhq8YH9jUXpYqIwptj2yfM
- j50BZc6C
- 2Q65XK5kcZeUwzksz7r213Q7epRdL8509LdhGS90BJ0yq+evh0EDDbKaHKbtA8DtLT51EwceRFO3ayJYrh8DyvXHaOX3K2hYQF4cCmC7FWl9b/aovUlipfOQ2/aQ3die/itS8zx2zmM+foBb/o1VkryqhnNfGTmAJpNGVAXRaMBL9TBJe07H3bC5w8b8EB4EpL/v+vt5L8ry3rYmL6Hfg0kHuYNop8nhtOzIejDkR+gZUGj7ypt1YReNOSfjnabiw6gVQh8IXLWKc1Iy1qE4v2pK8NxgwD1+o6HAbD7ZHwjs2tS7e6cRHpAX6rw==
+X-HE-Tag: 1776249525-683632
+X-HE-Meta: U2FsdGVkX19h42cw4uXBe64AjM+APk7GIF+4/6e196DzN/9g5sEl1p3D65ix9UbE7JxDE9qejTr2LZoYV4qznsEeaglOEnVfxVhQO65shSU/Na7Fvc450ZtyUiONhe8R0GiG9YsuClMw+fmBFS+X6+zBEYIgr4xNgfvAnRRtjoRxrH/HSr9XU7TQT4T91fQIXcj+Vm2RaaVn6fihcmH+BMYqUZyP5GX8IGuZErr+KG7rgFoqvTnGMkmGpJuwnAC5AL40TA0zqipsVgRbeDzblexqhYd9evNt6dg9PxRT/cr00S2psubU8Q/BiPTce3lyGMBw2LxEOuxYkdRseSxSUV/8Bd4BqgBWluWmj18+entv/8e00tV5gJMf6N+x/UHKCTyGUHInHkbd6yKXH07Az1WyJ4gMKZAywZSLgf8Me080nk32Db7b3eofKexrDFu6tev4sW6nehCJI3Lc0tcghugShTXQvJrknNcA8YYV7VQcNz7Nxu/PQQFcu01OOu6gFn4h45hFQYIAMO6rAsZv0zgSUUdsUUJPdlfcysLAgFErr7TxRC+gdEUWkFGoOiy74hfEzEQWNsPAx+lLbFNeh6v4Cj1YYYCx2a10dF4rabfgtoVijl04cKLGt/TYKI1xjE9RoNg17nf1XoWmpvLUKPBCHx9kWsHvymxg+xvNwasn24krmrB5bO3CgF2GlA8T+GzuOUxpw0PDcruwhamsVDD3GY529Jyk4KKZ4s/6zSAaWOKQNJ3egCYS1n7mPHNBfgiL6UM4TM0yVb5MZZxk65PmCHM1JO3B/1iQX2UP1YJnhVMN++Q63xbeA5us6fkOklPB8poKJ9d9uOxabcglWEMYx4CAowZPDVGS+EFCoB9wRGJzn5mOcp9s839huE1Q/ZnXWo/nVIPexvGDCElLMy61Juhlt4xWfqzdZ8FfEjjG2i/S3CpzhIEE6tDFg2NrZz3KUiiJ6YqL10kWhG7
+ uELswhWz
+ CB3PyXCmAi8LbuD8KUJ99gRc0gwUlavJT/oTZsTSkjQ+X7Cj5XnIqazFsQFX+KfZQx6fsl87c596s+UkR3wN4kS8xn/aB1Fq39ljvjvTZhJBnd8XXp7jNUqDHHxZ00ieHFhOU45ST4x2hTuQLV5r/u6Q1SRhs9nqvhl6aV6Bfzc5/mA9jRsb139tSp/plJfRqZcpQqk9GzTx1a1Uf9X8Mj7NvtWxXcxjrnaodJT28e5NwzTjn4b2TwZbnhIs/8wnVv18BlX7VZJo6T9ynevDZ6DXb+mgCJJPMatiIJCxJCCch7XcSsp6dWWHm0Wt93/ZM1vee5ZM+c/3p9y1+cEhbyKSGw2Pg6dabpEfmBKC9T1e+MypaKbAhbn69XPl6PcaS4ui9SmMqPimgH97VfEDPY8NRCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,40 +146,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/10/26 07:30, Anshuman Khandual wrote:
-> On 08/04/26 5:49 PM, David Hildenbrand (Arm) wrote:
+On 4/10/26 06:02, Anshuman Khandual wrote:
+> On 08/04/26 5:58 PM, David Hildenbrand (Arm) wrote:
 >> On 2/24/26 06:11, Anshuman Khandual wrote:
->>> Convert all READ_ONCE() based PGD accesses as pgdp_get() instead which will
->>> support both D64 and D128 translation regime going forward.
+>>> Route all cmpxchg() operations performed on various page table entries to a
+>>> new ptdesc_cmpxchg_relaxed() helper. Similarly route all xchg() operations
+>>> performed on page table entries to a new ptdesc_xchg_relaxed() helper.
+>>>
+>>> Currently these helpers just forward to the same APIs that were previously
+>>> called direct, but in future we will change the routing for D128 which is
+>>> too long to use the standard APIs.
+>>>
+>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>> Cc: Will Deacon <will@kernel.org>
+>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>> Cc: Mark Rutland <mark.rutland@arm.com>
+>>> Cc: linux-arm-kernel@lists.infradead.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>>  arch/arm64/include/asm/pgtable.h | 23 +++++++++++++++++------
+>>>  arch/arm64/mm/fault.c            |  2 +-
+>>>  2 files changed, 18 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>>> index 42124d2f323d..cf69ce68f951 100644
+>>> --- a/arch/arm64/include/asm/pgtable.h
+>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>> @@ -87,6 +87,17 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>>>  #define ptdesc_get(x)		READ_ONCE(x)
+>>>  #define ptdesc_set(x, val)	WRITE_ONCE(x, val)
+>>>  
+>>> +static inline ptdesc_t ptdesc_cmpxchg_relaxed(ptdesc_t *ptep, ptdesc_t old,
+>>> +					      ptdesc_t new)
+>>> +{
+>>> +	return cmpxchg_relaxed(ptep, old, new);
+>>> +}
+>>> +
+>>> +static inline ptdesc_t ptdesc_xchg_relaxed(ptdesc_t *ptep, ptdesc_t new)
+>>> +{
+>>> +	return xchg_relaxed(ptep, new);
+>>> +}
+>>> +
 >>
->> Please mention here why you move p4d_offset_phys/p4d_offset. (same
->> applies to other patches)
-> 
-> Will do that.
-> 
+>> We really want the rename of ptdesc_t before this change.
 >>
->> Do we get additional function calls that might degrade some page table
->> walkers?
 > 
-> Sorry did not get it. Are you asking if D128 adds new page table
-> function paths thus increasing memory access latency etc ?
-Each p4d_offset() etc. now does a function call.
+> Planning to rename ptdesc_t as ptent_t in a pre-requisite
+> patch early in the series.
 
-So during ordinary generic page table walking code (see
-folio_walk_start() as one example), you'd now perform a bunch more
-expensive function calls:
-
-pgdp = pgd_offset(vma->vm_mm, addr);
-...
-p4dp = p4d_offset(pgdp, addr);
-...
-pudp = pud_offset(p4dp, addr);
-...
-
-That's not desirable. So I wonder if there is a way to just keep these
-things inline.
-
-Might have to move the definitions of pgdp_get() etc.
+Good. As discussed, something that contains "pxx" might be clearer than
+something that includes "pte".
 
 -- 
 Cheers,
