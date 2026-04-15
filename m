@@ -4,83 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 689E9FA0C2D
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 05:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BF77FA0C2D
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 05:44:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3C8C6B0092; Wed, 15 Apr 2026 01:44:16 -0400 (EDT)
+	id 91E4B6B0093; Wed, 15 Apr 2026 01:44:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEDE46B0093; Wed, 15 Apr 2026 01:44:16 -0400 (EDT)
+	id 8A7D66B0095; Wed, 15 Apr 2026 01:44:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C03696B0095; Wed, 15 Apr 2026 01:44:16 -0400 (EDT)
+	id 7973B6B0096; Wed, 15 Apr 2026 01:44:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ABA456B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:44:16 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6749D13A89F
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:44:16 +0000 (UTC)
-X-FDA: 84659699712.15.A576C5D
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 65E4C80008
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:44:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 683BA6B0093
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:44:33 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0329DC080A
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:44:32 +0000 (UTC)
+X-FDA: 84659700426.10.95B6A26
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5120C140005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:44:31 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OK21Xv7f;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776231854;
+	s=arc-20220608; t=1776231871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=12kEJKMEAKDFWxj9hNE2aGvJCeI8OywtIK0vKhWxsiY=;
-	b=LBKK9wFTAIzZnFX3YMWFWvruKDGPajoXLf2w1gAL6GmcInYN7KLOIA+knWDAAr3W2C+E6P
-	V9NqpF755+Lpr+74hrhCNIW1VWO2xkcGmPaN/aMQ8LEJJ+WtkqVKOupoBkau9dIuH/wexR
-	xr4VtPnBazT5+GV7mBhvvRut3uWv3eM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776231854; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SmlORgX2iPDACOY/tAGFdoR2u4OpFKOKRN4Zdm1mxp8=;
+	b=oZsFQHC0VKULBF1Bom0IWGytnr4NqOq+0CtZ++nDYom68C73cxzuAgQ0K5J0Jdbd65P72g
+	yBTeS4EscgaNpAiWMTLPCDdFlKVxX2OQZSUclYEXoT9qPl4jWX8QtOAvtejsd7Hq49V7Gu
+	n0VkB01gyxNV+rXWohzA5CqnMZ0x9r4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776231871; a=rsa-sha256;
 	cv=none;
-	b=0b0ox9UT8M1nRyxLJj7BbuAAZhrlVb9AfdHl1N/AkT/gIFDNEQ54MJ2YXFEuIzhBEAo4QF
-	mn4wMjFTiFlhA/3tEmGlZKkg1SXanVtNTwUdew71iXX+PtHOp88/edhEdlaYgBIoga1mUl
-	K/iSAk3pAPV1ZbxGrGN2/j2creSdpUo=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id B147B68C4E; Wed, 15 Apr 2026 07:44:07 +0200 (CEST)
-Date: Wed, 15 Apr 2026 07:44:07 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>, Tal Zussman <tz2294@columbia.edu>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>, Dave Chinner <dgc@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 4/8] FOLD: block: change the defer in task context
- interface to be procedural
-Message-ID: <20260415054407.GA26893@lst.de>
-References: <20260409160243.1008358-1-hch@lst.de> <20260409160243.1008358-5-hch@lst.de> <adgJqiA0vivaW7NA@casper.infradead.org> <20260410061725.GA24667@lst.de> <adj6iibxNot-yc9X@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adj6iibxNot-yc9X@casper.infradead.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Queue-Id: 65E4C80008
-X-Stat-Signature: ujfgjcncznhu6xwtmiar5e3jd9hx4swx
+	b=vBiaYOTecnZbXV9QM7VabZp8KXXv1bAKT8vm9mlIQIrni4gckoVFpXckPHPedxxu6IucH8
+	T8tAavnvKrn8Y0mR7wzL6T0QX75s9vEgoeK3egGtgy1R91IE2Pfwcw5rZCd1eJpnXXdtRb
+	VQs6OjH1Q+AUReInj7OCLLZ8oH2LJ+4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OK21Xv7f;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6BE806012A;
+	Wed, 15 Apr 2026 05:44:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D201AC2BCB0;
+	Wed, 15 Apr 2026 05:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776231870;
+	bh=ULEdZKOlyHUFAHTvKEpw6ZXT98VHr7FG4P/ABfzjD5U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OK21Xv7fgD18lW8YMItHZM5UiVgKPJ8r66Ohfg321bvYzgZHvjqvQSxNpDtzUwTkX
+	 jo1owznB7qT7j668xhhQ6UBAdR2PcKQ0sfqmvB1s0Ik4998BzvI3yJ9MLMFPXzCld1
+	 PrWud/iFUoL+ds6JxwJXiX02KVDDhQ96eZ+Nd0js=
+Date: Tue, 14 Apr 2026 22:44:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@kernel.org>, Oscar Salvador
+ <osalvador@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>, Muchun
+ Song <muchun.song@linux.dev>, Kairui Song <kasong@tencent.com>, Qi Zheng
+ <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Barry Song
+ <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil
+ Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH] mm/sparse: Fix race on mem_section->usage in pfn
+ walkers
+Message-Id: <20260414224421.c030868f5960ad0115ac1668@linux-foundation.org>
+In-Reply-To: <20260415022326.53218-1-songmuchun@bytedance.com>
+References: <20260415022326.53218-1-songmuchun@bytedance.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5120C140005
+X-Stat-Signature: qcwomab8hdbbej4r4bkquc9e6tkc69yh
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1776231854-762905
-X-HE-Meta: U2FsdGVkX1+aPb+lDLf16vvSir8gYpZ7lJhzDTAhzAQa56Eww4df/IMY+32F82X9a4+JwNaec1QuqZjClh7Hc71UhZ3YwyWS/nhGjiZ0fjkXEz/ZkKc5IIpbx3g8t9nnuZv7o+OgR2BvGaWibhGJd0r2I2yKlbmHhCsr9XTeTSn4Hi6973J6PIf8I4JNZFtHFQtBjgROIOvsCTGZQtmSx14lxwEHBe74cVn78gp0j1FQQX7lwP2bvqBb3vwRnbwhoM8Its2KKz6mjy3G/VjOwCHibJz05pnTXQrTqvbCB+sKDgXljuOIRSG2fOJuvgQYlhI/B27AutR/R/De6s3bLqh0uWbpde/VAAtr23Dm4sC4194fY5Oyop7A2rUEpND2vthZ3p9wSNhU4hynj34a6pYdIS+F1DTp2xL5Ag6RBO9IppbQjIxdTABopqFO9L9Nme2L2XtiNaBgInxssy1PG8Gnyuixi5EETuZ0jSRIeYkDQYSeZjJZMKqpSEj5n2uDk2iF7AvaXwC949FCIS7AHxJ+iCrZHjGdLMbl1afFPkR7gTXC+A91Xd9xjBzwyYcAFwcBL9KG69DYwR5wCCM8JbIDHwsIbiHfOVXIAr4KKpSqR+hTYOm+xLqsCmzhawfRXaFbrYBn9hbfDmkXcN72fhIfOsuRiQEbdzXyTT5UZWvHv1UgNWofens/7fIXbEBgGeNDRxpobertmJYJK5LHqtRdAHDAwuD6QVrMldG2bExSeZR+feDxdT6kDm1Pi1cOOaZzFali/tk9lUSTot6+hIdvCcKb87AgwSC4AiBKrV2mxKbkxpYjJRoUCixQEnhwtn98ancVIqe/nHc/AGYZVB+vo/m7oC6LHscHPBk/1yoz5eTkT162ZNPizeoTTYfdVTCHrdvJAMmHC1SM4sIfeIaERqQ9kQjDK5Y8WUfnlKXpRurkuupwcNINv8RIupmqpvYf5/5NFF2zA2PTLlA
- yMt0ZPqy
- DqZz41cnXii6FlczykULiKAg7jUUf4F6FFc5fKXPFyS4/FSEo3mVOzoNlic9zHu5TmJsUU+zGpd720at6Rm7UX/q52hy3b+V4Ih97
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776231871-282324
+X-HE-Meta: U2FsdGVkX1+lFRD7PVFMRD9pSscUiubJ9sgUwiDG6IKVwI0t/+3Lycuw1K2K5GIQ64Qcz2AEABhAka7xMc+w6pVvBlafdRwfSrVX5unxy1w2R4QgGfAB1nYyuUi5+24oB5W47U2ZUda+V3B5Mv4uigPbUxRYfSounyOyi9HlLppMk2o8XQJTfQB5f5Lc2QBvISViKb80LJchorjoWsYiwiatKDfTXSDJdgYHWrisD8SNLy2BtRGHi9WDo45El+fQb/fOsMG+Z5u8dHiAjjb6Lh/wT5bRy+zZFgl+cQlsgQrxjMWeZgl/GDoYX1mqz7Q8hlSanSbHOFn0/9laH9hq9dWY7g4Yw2o3UjfxfRg8Wk80OUhC3Ui/lQaehpx1VaXlwd3Be0MmVI9+F8311mdAB5svFPPOvR99k9hgquYaDfmArmEcF0+VyO9A1wyc/6zYOdipEpQNi1D+dtkyZdmSmQJ4G1xcTH8XVsxZuYATxgCa58FrcH7onlL54l+0rv+4LFF2UFDOBzvmLgZCzRmSjOuS6XXZPSLaQMCN50NuvJh+bXStGnad6yygzofoVShFTXeytARc6fT8HFGlgUOcNZeyMN94sN2KclrlJ691VSiBrCAqZM5UC0uiKkK/EZdfiJueQZrcenG3hMIONBW+qJVFL1w6DRhOD1qJnQNu/1+Kt7mwY7U/603pCqP4lTRNKrnWS6R+kNdmqO1xz6PvZmXUIR+wGQqGEaYYsvm0oZ4FfHBRwD1v8Eck0lkUf0Vf4qvRs+DcKSoOh2Dn9TuE4ykJyzHihXdpTSk1ZnTXgcr1mjqheATApsygOZt4PVHzK7y7TVXHH0Ueo1UidREUOZ1vzt2o+IB33qReUP3vyBqllRVjgKaySohHMjetC2fs3RQ9HU50pQ0yCrTXETymDmVTHClRWulYwcAS0quZCzDLx3iC7/6nr+ZSXMvNLZ45GnpVQB65yZcOPa8pyL/
+ e4B7Jdtn
+ ZLl86W5wwTkTz/QT8ZxvOONWBma0wg71CGpNk1OALHywlpiaidEKlYOvrdexG/KDyNmxjaDcKJqpntlhyJ7N3bcZ1ZKdxIBVbABdPjp31aZh0sz4JLBozeNLnUBVhrJ+8oFLNC7T/n72BmAZjHo5HbOyh+6YPrtiNQV9Q2hY2wwwG5V9/ie3k5CqxXCmmAQJ9D3LL25YUiAa7e7Ul5xbuQ22nW2piKiwyxeVZe0YuSpVL4tTh/D1qSOu5SLBWlaI4JG5n1OaVeR2B43URSywwGiNUH/fjaxfnAAKIn2+A5jgjdFEK1BwlZg8fA27iyzpBZjOm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,18 +98,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 02:26:34PM +0100, Matthew Wilcox wrote:
-> > Yes.  On the other hand we can actually use it when we don't know if
-> > we need to offload beforehand, which enabls the two later conversions
-> > and probably more.
-> 
-> I don't understand why we need to remove _this_ way to defer completions
-> to take context in order to _add_ the ability to defer completions
-> inside the bi_end_io handler.
+On Wed, 15 Apr 2026 10:23:26 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
 
-I don't need to, but we'd better have very strong reasons for two ways
-to do the same thing, and I don't really see it here.  But I can give it
-a try if the consensus is that we want to way to do it, and we're not
-worried about people getting the bio-flag one wrong as we could set it
-from ->bi_end_io, but it would not do anything.
+> When memory is hot-removed, section_deactivate() can tear down
+> mem_section->usage while concurrent pfn walkers still inspect the
+> subsection map via pfn_section_valid() or pfn_section_first_valid().
+> 
+> After commit 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing
+> memory_section->usage") converted the teardown to an RCU-based
+> scheme, the code still relies on SECTION_HAS_MEM_MAP becoming visible
+> to readers before ms->usage is cleared and queued for freeing.
+> 
+> That ordering is not guaranteed. section_deactivate() can clear
+> ms->usage and queue kfree_rcu() before another CPU observes the
+> SECTION_HAS_MEM_MAP clear. A concurrent pfn walker can therefore see
+> valid_section() return true, enter its sched-RCU read-side critical
+> section after kfree_rcu() has already been queued, and then dereference
+> a stale ms->usage pointer.
+
+Then what happens?  Can it oops?
+
+> And pfn_to_online_page() can call pfn_section_valid() without its
+> own sched-RCU read-side critical section, which has similar problem.
+> 
+> The race looks like this:
+> 
+>   compact_zone()                    memunmap_pages
+>   ==============                    ==============
+>                                     __remove_pages()->
+>                                       sparse_remove_section()->
+>                                         section_deactivate():
+>                                           a) [ Clear SECTION_HAS_MEM_MAP
+>                                                is reordered to b) ]
+>                                           kfree_rcu(ms->usage)
+>       __pageblock_pfn_to_page
+>          ......
+>           pfn_valid():
+>             rcu_read_lock_sched()
+>             valid_section() // return true
+>             pfn_section_valid()
+>               [Access ms->usage which is UAF]
+>                                           WRITE_ONCE(ms->usage, NULL)
+>             rcu_read_unlock_sched()       b) Clear SECTION_HAS_MEM_MAP
+> 
+> Fix this by using rcu_replace_pointer() when clearing ms->usage in
+> section_deactivate(), then it does not rely on the order of clearing
+> of SECTION_HAS_MEM_MAP.
+> 
+> Fixes: 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing memory_section->usage")
+
+December 2023.
+
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+> This patch is focused on the ms->usage lifetime race only.
+> 
+> ...
+>
+> I am not fully sure whether that reasoning is correct, or whether current
+> callers are expected to rely on additional hotplug serialization instead.
+> Comments on whether this is a real issue, and how the vmemmap lifetime is
+> expected to be handled here, would be very helpful.
+
+Thanks.  Quite a bit for consideration.
+
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -601,8 +601,10 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+>  		 * was allocated during boot.
+>  		 */
+>  		if (!PageReserved(virt_to_page(ms->usage))) {
+> -			kfree_rcu(ms->usage, rcu);
+> -			WRITE_ONCE(ms->usage, NULL);
+> +			struct mem_section_usage *usage;
+> +
+> +			usage = rcu_replace_pointer(ms->usage, NULL, true);
+> +			kfree_rcu(usage, rcu);
+>  		}
+>  		memmap = pfn_to_page(SECTION_ALIGN_DOWN(pfn));
+>  	}
+
+This part isn't applicable to 7.0 - it depends on material I've sent to
+Linus for 7.1-rc1.
+
+So for now I'll drop this into mm-unstable to get it some runtime
+testing.  If people like this patch and we decide to proceed with it
+then I can make it a hotfix for 7.1-rcX.  But the -stable people will
+be wanting a backportable version of it, if we decide to backport,
+
 
