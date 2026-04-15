@@ -4,107 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 250A6F9D0CE
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 01:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EBB9F9D0FE
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 02:22:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F64D6B0092; Tue, 14 Apr 2026 21:43:36 -0400 (EDT)
+	id 444866B0092; Tue, 14 Apr 2026 22:22:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A6566B0093; Tue, 14 Apr 2026 21:43:36 -0400 (EDT)
+	id 3F58C6B0093; Tue, 14 Apr 2026 22:22:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 394F66B0095; Tue, 14 Apr 2026 21:43:36 -0400 (EDT)
+	id 30B616B0095; Tue, 14 Apr 2026 22:22:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 285646B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:43:36 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C696A8B10D
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:43:35 +0000 (UTC)
-X-FDA: 84659093190.29.174BCF6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 15F25C0006
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:43:32 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DC4F6B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 22:22:40 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6CB37160314
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:22:39 +0000 (UTC)
+X-FDA: 84659191638.30.A2A4B28
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 89796C0006
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:22:37 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Ct++P5Xs;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IOjTynhS;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776217413;
+	s=arc-20220608; t=1776219757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Bl7WGpmLYIApMfuS1TwMShkQjfWUQ5qudg2RkqIKY0=;
-	b=wDIQyRZxTUUH4oODicf3qeMiOPp21RIZXasgVPwB0UeGbVsk9Fztzh3PWFT0TlT1tj4YwW
-	SejWAMj/jfZbcPZ4mTXarEgkx+IRJJN6M2gY2kE5+sQ56QPFh2fcOO83SWEVV/SQ4RnVbY
-	m46InjMEP51fvnppjGqCCdiYCF7CAc4=
+	bh=SxdlTa6h3czNPKK/Gx4JCfQxJJmMB+PRQCNkrNojt5w=;
+	b=HvkbhRi1VoLrAF+Nj2CT0J+A+Gz5XWoT3AVcUCOkmqJhSB79BvMAvLXrrq5K4U3UmsM563
+	Wu1vjC3Z3RhkzbtJbzha4OgJGvfG6Ot2VmRxPenQiFQUSTY25y0M3aUtr56pNtzAfp1fgL
+	WuktZ9VULFpTGjc+9CshvIC+4ke44Jo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776219757; a=rsa-sha256;
+	cv=none;
+	b=lzzG5YSx8pnzDuVw9SRow6vH87e38zNMsmEwMqzw/j6oTBREB21nRt2UKN+P6WhWRCAOIz
+	1kKM0bu8k/Ha4q4sXmKq5x41zHJi8E1G2CqhrSPighXWTL3HV/jUa9Jmm+2syAHwGqiWnT
+	70B9fJH91N8tHsE9kcz1pEuHA7b/KPA=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Ct++P5Xs;
-	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776217413; a=rsa-sha256;
-	cv=none;
-	b=Mm50AVepcywLKZj9VRarqJty2F8T9ZtBQfxc6XOc4X+UFc2SmTy2q8iti2actsEEAnb5CL
-	c7a3N0Yg4dIjLYHW6SGmERU8ycC7lyvNz8CwqbrVlwJmAY8kxWFPBxvJEtNSIKoVM3ViqJ
-	ogcFeGqV2l0zk0MBBdeG7DLMf+78UuM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776217413; x=1807753413;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KJ1dmm7JBQS8tm37XInqKorcvhoHPQHM2ZL56cx+0tc=;
-  b=Ct++P5XsUBJCz7JhMzvZ3nfAX/zU+GXjhBdXvJPFBZKI0igDRwv6xV8l
-   FJcmfmd31z0n2FoiNnUJovxN5b2uhY+KmPi0a41pmjBkAhXa+3MgKKFzt
-   jkhMkJvRQoOrsAIjqLu3/ueLQcZMNlr5jq54SqV3pRS9p88r2X30UtZOY
-   TWXYH5MbuQ3EboqQmqNzhBbh5f6GystlI+x8jBJzh3oFJluwYrlrPq0HH
-   oFDCaZIHjHKekDN4d/kCXRXGh3z9wC3NeJn3fhgZTwiJxi8CqwAwCeyHl
-   TDxsD9Ool4xpVQuAvhrd3ajeZX9PoEgA0/KzYnsurpKlEyYtaaYjEzbNo
-   g==;
-X-CSE-ConnectionGUID: +uhlwKD1RbuZYJR2PRMXOQ==
-X-CSE-MsgGUID: +dPt4UNKRiCuojh/APHZiw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77092848"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="77092848"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2026 18:43:31 -0700
-X-CSE-ConnectionGUID: xDnDgNgmQHylQE5TEFOqqQ==
-X-CSE-MsgGUID: 0K3ensgWS3ubo6LrqDE3yw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="229401197"
-Received: from lkp-server01.sh.intel.com (HELO 7b0b59b3a0d4) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 14 Apr 2026 18:43:28 -0700
-Received: from kbuild by 7b0b59b3a0d4 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wCpHp-0000000023N-1IVW;
-	Wed, 15 Apr 2026 01:43:25 +0000
-Date: Wed, 15 Apr 2026 09:43:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Youling Tang <youling.tang@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, youling.tang@linux.dev,
-	Youling Tang <tangyouling@kylinos.cn>
-Subject: Re: [PATCH] crash: Support high memory reservation for range syntax
-Message-ID: <202604150941.oDguaP7A-lkp@intel.com>
-References: <20260404074103.506793-1-youling.tang@linux.dev>
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IOjTynhS;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <e657c791-0768-452e-9a21-ae5dd13aa706@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776219755;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SxdlTa6h3czNPKK/Gx4JCfQxJJmMB+PRQCNkrNojt5w=;
+	b=IOjTynhSxRbXbBSIhYqt2yRd7gag1Ol6pIPFPPWfKEsMNn0st+gT7Nx2aN/4/2E9c0tByV
+	o2/VyHreSZkVVP70OUwZcbozDNSPvno3Q4trUeesMZXyk/tXVVMWMlHl+WLb4/JQU3iAJb
+	UrympiKJEuVbJBeZ/4t3uteVtAH3I6k=
+Date: Wed, 15 Apr 2026 10:22:05 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260404074103.506793-1-youling.tang@linux.dev>
+Subject: Re: [syzbot] [mm?] [cgroups?] WARNING: bad unlock balance in
+ lruvec_stat_mod_folio
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: syzbot <syzbot+1a3353a77896e73a8f53@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org,
+ muchun.song@linux.dev, roman.gushchin@linux.dev,
+ syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com, yosry@kernel.org
+References: <69d54494.050a0220.3030df.0002.GAE@google.com>
+ <ad1tV5WpFhxbQ86N@linux.dev> <358c60e1-fa91-40a1-9e00-84c93340c04e@linux.dev>
+ <ad5134-5FkAKDqtP@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <ad5134-5FkAKDqtP@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: mk84xy6koq95k3kcp9tmuwy55yktixwj
+X-Rspamd-Queue-Id: 89796C0006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 15F25C0006
-X-Stat-Signature: ebuhnb6cmj4fs8mrjqwct816bobtj8cb
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776217412-639800
-X-HE-Meta: U2FsdGVkX1/+Fzu1sbvfeMIj4cq7IsRNeyy7zAG2xKaJ8h8LmkMYrpdyBIw9R77znRCi/3vB3w659/M0QFIJUP4xFMRs2Qe6zV7wjBKXWcUzLe+Vln3j8/4q7SfbsjE2+jbSy0pRwwBEm4xfI9i65ZhrepDpQHtgLAUt3/A4VPFsiia7hSlG3OOFmxKPU5JXX9kG2SHfaNKhGNZVzgIZhaJLp8eiwdMfZq+uMUkuUGLJiLhz05TErSyS+fyXhJG7yD6NzhqaLY2ETywF8Dmp90ThFV4qViKDcZhzFgHB8q8ELfYPxEvjP+rZC+qwPv/jWKMb2kVMd97iK3XEdRHqXHnxfF2w63mM/x7XSd70ydCrnejqbhRFqSiVztm3Kl2OB/tZ4Ys6u5eepQAbrxqwOmCHE7ChK4gxOQkZgQxyPbxw4Bw4P4jZnnCwO7yGkXWxqTSoZM/sei9Vo9s/10Uxb4i4hDmG+RXkgzL+PvMFjmwBiyzm1v4TE6rwSjMbDzUIIbTrbuy5W8khq/zGV758ttPVkV18hM2yM0YMMWynCrR7zKsQ2zX5sY9B6FqVwS9rNTdUjA5qsEOHlj3v1KrwLoZ4j9GvYMOQOThV73j6FxvRPF3FULraIecKj9m8ZzQBSLKWrjar60Gvd9MyozXVoHxPdluNZOzEIKQwCbWrR3Kf5f4jsDl+ZYS8S1F8opigfrym0Wga1NjyLxtvrPtbDkENmigRC044itVquyzGptVslbhTQER8T2bftB9fjyckaVcnH/+0f7cp/MHy9Dsc8ulo7tNyjxLpvaDBKAExmfRuWkK2KEackw7wOYS/xDIsongZU6QCBbP//s41v2IQ+hnQBxDaTkrk2J8pikXSAywK/yZKUAFvxjRxloh04B/TS7qqp4S3BXuZu3/0Hd3NC+vAE2gV9uYW5/coy+EJrgfSv7Tmzi2E29FrJkBNOZ9NHyhQkbUzvEHgNP5uTDc
- xt8Ec3T7
- 13iiEhZOZqmExrHc+SB+zA0CqReRVidwmt0G8CnjjCXNszemPYZV2aXyXmYkiveB8ZMoJ88Ud8el33ttqVS1zc+cqS86Qia9ycwYVape7jRJNkJCNv+UhQme0ScBf9klVwUDuMwpctabVoLiuKbriZZbG/uHuz+JpEgppYaXZ7mxv56B5brcGPLYbXj3LTNvnD2ODWfS9LWWI8gILguD1fUjOa0BoyjHPyMK09f0LT3JHCB2NPdPLVz+/Nmhr9cm6YAE6JkICaTUU8PpPFiN8epUEYzWmYA+P3v+2KL5wIePVHvdw88/8r+EtbU6LOuUMKZ8IPUE4LVDrFJiv9bZThTXzDU6Rd7kcq1z5
+X-HE-Tag: 1776219757-921792
+X-HE-Meta: U2FsdGVkX18dxL50VCh9qtAWCgfDgo0O5EMcoFdmdu7Dytpzzypix0PIFVTdx7W6IRReg6s7lPaE1PE3a96N7AE9KjpQR3OUVp+ojhcpi4oyDxPGExpC6teHW66v499dUx3PfnpG9D95IZfSJczT+71DEEprZVZT3sbnSAEpkzAb6Ip7i3jmgbfriEALuzm/Fk6kFpIlKYSvGWfSnVBY9nXYXvkANKeB8NxWK+mCEalnTKGTHvvXfu9QAelfFT4XdH+Y8EFo91EvkpxHRn95FSQuYv9bJ0GRAMmgP23CNM5sA62qUIKjbOcutL7o+jDZ14Ir7mpDne59SlfswCQtVVmgpo4cdIZePJf6gYwjWv4SuH3tzvPWs7zXEW91+bLG6U340PR6JZX1tbvFbaxY2OsO29eJiwjJr2/c9hNaZ0RgVwAq0UawwN36Y+RIZ7pQQXaTWXKP1e5nPH8aq78LLfQsKbsfP/CS0XX4eLBgub3gctWjnu8kKPJsw+njQ4jIfXzcgZ+ovRRTFAAqXV95U2qBqZ+mjP9YzeoPs8zFrxaSVdlSsjd/7xp3bxXNZB5bkbF5NK7mTIERD54WXd+nTWm7eyE8qyOxinxCtWt7L9jG+WfV/47qmmPi2AA8UMD5gVRbVnOPdgfeKP/DvZc+OekcpPf4AykF/EoO5tHlzKZM5SdBdQxkrSdfX72CV5fScV+Af0TyAN+NhRF0dP8ocwEVMQhdne8nzbBLgL1TJBPYKvOYRrQRtZ9g4BWwrpH6+zWsa3erHPPsITh6IbCqAkpg1e9kFF8Ytb8O33PK6FrikIXsaYgSuAxOWy6g3PYnYZC3YQNizGGcayvtVF1mlCapB7k5t+u9x0tFMjPfAgyngA8jvOhwrvau6p+GRC0v+b5RoirR70Muj1fPtdRwye0f+hv+lv5L6Ragu6A+i6BVg0HKND7aGJJSFzxPGhQsCwWQFGCKjPRUr+7wJa1
+ iCDNxrRh
+ Xwjj3PPUwD7zyiYESWM3Ee/Jqq0wGnnCnx2KzoWpBroBzeWSmHGFxbsJVV/zQwIYiMyqfI0IptrIE/HVCA3W3RY5CmYnxY9fi7gT+hv1gx2mQ7ytLoFhx1CF8Q3jJILKA6CSFM2dDoKmUYkSpfNS4vihJ2jTI1JyR8ExUZnL10CBDf9fi4LCHFWuDk69PofaexEo7KUyqyDJ47Y2ribheqPLyy0Tj5WJvSA5KddCVjHKOqNaF/JgGOFze84OkEy107PzmAbbjOH/B3wUHX1Y5L7WHnAN7MNrpCIeyDWXo0IBWmeMMHWIpcsz9qBiz7JY8OeXB+QmrJZwgg0QfN5/8jO1irNa0/WUBcwnz/jG02KTquapCVMF3GYcg7dWKVdRsVFhO+bXl4/9kT/bbPm6s9FMuh1VDYGDdZM0sRsGVsMp2z3i8C/eu8Nw/JrmWAvgwcIo/Ca3nYxHIjABSUQipLhKOdsg8tLc+PhTNnNIgqwjCZSXBJ/KF1UBKYvHez6zaDKNcKlJq6Nm5Hs1/qgCuGxE86M2E+wcXDwjLrOc5/6gsvQvjmHpsbGw+R0ZaMX+rENgF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,95 +94,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Youling,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-[also build test ERROR on linus/master v7.0 next-20260414]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Youling-Tang/crash-Support-high-memory-reservation-for-range-syntax/20260414-205035
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260404074103.506793-1-youling.tang%40linux.dev
-patch subject: [PATCH] crash: Support high memory reservation for range syntax
-config: s390-defconfig (https://download.01.org/0day-ci/archive/20260415/202604150941.oDguaP7A-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260415/202604150941.oDguaP7A-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604150941.oDguaP7A-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   kernel/crash_reserve.c:264:19: warning: expression which evaluates to zero treated as a null pointer constant of type 'char *' [-Wnon-literal-null-conversion]
-     264 |         char *first_gt = false;
-         |                          ^~~~~
->> kernel/crash_reserve.c:324:16: error: use of undeclared identifier 'DEFAULT_CRASH_KERNEL_LOW_SIZE'
-     324 |                         *low_size = DEFAULT_CRASH_KERNEL_LOW_SIZE;
-         |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 warning and 1 error generated.
 
 
-vim +/DEFAULT_CRASH_KERNEL_LOW_SIZE +324 kernel/crash_reserve.c
+On 4/15/26 1:15 AM, Shakeel Butt wrote:
+> On Tue, Apr 14, 2026 at 11:52:13AM +0800, Qi Zheng wrote:
+>> Hi Shakeel,
+>>
+>> On 4/14/26 6:28 AM, Shakeel Butt wrote:
+>>> +Qi & Yosry
+>>>
+>>> On Tue, Apr 07, 2026 at 10:53:24AM -0700, syzbot wrote:
+>>>> Hello,
+>>>>
+>>>> syzbot found the following issue on:
+>>>>
+>>>> HEAD commit:    cc13002a9f98 Add linux-next specific files for 20260402
+>>>> git tree:       linux-next
+>>>> console output: https://syzkaller.appspot.com/x/log.txt?x=10d8946a580000
+>>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=4e6c8be618ab359
+>>>> dashboard link: https://syzkaller.appspot.com/bug?extid=1a3353a77896e73a8f53
+>>>> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+>>>>
+>>>> Unfortunately, I don't have any reproducer for this issue yet.
+>>>
+>>> Let's wait for the reproducer. I can only think of cgroup_subsys_on_dfl() check
+>>> returning different value in get_non_dying_memcg_start() and
+>>> get_non_dying_memcg_end() to cause this uneven rcu unlock. However I can't think
+>>> why and how that can happen.
+>>>
+>>
+>> My AI bot told me that the cgroup_subsys_on_dfl_key can be dynamically
+>> modified at runtime during a rebind:
+>>
+>> rebind_subsystems()
+>> --> if (dst_root == &cgrp_dfl_root) {
+>> 		static_branch_enable(cgroup_subsys_on_dfl_key[ssid]);
+>>      } else {
+>> 		dcgrp->subtree_control |= 1 << ssid;
+>> 		static_branch_disable(cgroup_subsys_on_dfl_key[ssid]);
+>>      }
+>>
+>> However, when I actually tested it, I hit the following error:
+>>
+>> mount: /tmp/cg-rb-repro: mount point is busy.
+>>
+>> Indeed, there are already many child cgroups under the cgroup v2 root
+>> (the VM just booted):
+>>
+>> root@localhost:~# find /sys/fs/cgroup -mindepth 1 -maxdepth 2 -type d | head
+>> -50
+>> /sys/fs/cgroup/sys-kernel-debug.mount
+>> /sys/fs/cgroup/dev-mqueue.mount
+>> /sys/fs/cgroup/user.slice
+>> /sys/fs/cgroup/user.slice/user-0.slice
+>> /sys/fs/cgroup/sys-kernel-tracing.mount
+>> /sys/fs/cgroup/init.scope
+>> /sys/fs/cgroup/system.slice
+>> /sys/fs/cgroup/system.slice/systemd-networkd.service
+>> /sys/fs/cgroup/system.slice/systemd-udevd.service
+>> /sys/fs/cgroup/system.slice/system-serial\x2dgetty.slice
+>> /sys/fs/cgroup/system.slice/wpa_supplicant.service
+>> /sys/fs/cgroup/system.slice/system-modprobe.slice
+>> /sys/fs/cgroup/system.slice/systemd-journald.service
+>> /sys/fs/cgroup/system.slice/unattended-upgrades.service
+>> /sys/fs/cgroup/system.slice/system-systemd\x2dgrowfs.slice
+>> /sys/fs/cgroup/system.slice/ssh.service
+>> /sys/fs/cgroup/system.slice/dhcpcd.service
+>> /sys/fs/cgroup/system.slice/systemd-resolved.service
+>> /sys/fs/cgroup/system.slice/dbus.service
+>> /sys/fs/cgroup/system.slice/systemd-timesyncd.service
+>> /sys/fs/cgroup/system.slice/system-getty.slice
+>> /sys/fs/cgroup/system.slice/systemd-logind.service
+>> /sys/fs/cgroup/dev-hugepages.mount
+>>
+>> So it seems impossible to rebind memory in a production environment
+>> using systemd?
+>>
+>> Then I disabled systemd:
+>>
+>> set `init=/bin/bash`
+>>
+>> and found that I could successfully run the following commands:
+>>
+>> root@(none):/# mkdir -p /tmp/cg-rb-repro
+>> root@(none):/# mount -t cgroup -o none,name=rb none /tmp/cg-rb-repro
+>> root@(none):/# mount -t cgroup -o remount,memory none /tmp/cg-rb-repro
+>> [   65.903125][  T241] option changes via remount are deprecated (pid=241
+>> comm=mount)
+>> root@(none):/# mount -t cgroup -o remount,name=rb none /tmp/cg-rb-repro
+>> [   73.405829][  T242] option changes via remount are deprecated (pid=242
+>> comm=mount)
+>> root@(none):/# umount /tmp/cg-rb-repro
+>>
+>> So it seems this race condition does exist. Should we fix it?
+> 
+> This only succeeded because there weren't any active cgroups. Were you able to
+> trigger the warning as well. If not, I think we should just wait for
 
-   282	
-   283	static int __init __parse_crashkernel(char *cmdline,
-   284				     unsigned long long system_ram,
-   285				     unsigned long long *crash_size,
-   286				     unsigned long long *crash_base,
-   287				     const char *suffix,
-   288				     bool *high,
-   289				     unsigned long long *low_size)
-   290	{
-   291		char *first_colon, *first_space;
-   292		char *ck_cmdline;
-   293		char *name = "crashkernel=";
-   294		unsigned long long boundary = 0;
-   295		int ret;
-   296	
-   297		BUG_ON(!crash_size || !crash_base);
-   298		*crash_size = 0;
-   299		*crash_base = 0;
-   300	
-   301		ck_cmdline = get_last_crashkernel(cmdline, name, suffix);
-   302		if (!ck_cmdline)
-   303			return -ENOENT;
-   304	
-   305		ck_cmdline += strlen(name);
-   306	
-   307		if (suffix)
-   308			return parse_crashkernel_suffix(ck_cmdline, crash_size,
-   309					suffix);
-   310		/*
-   311		 * if the commandline contains a ':', then that's the extended
-   312		 * syntax -- if not, it must be the classic syntax
-   313		 */
-   314		first_colon = strchr(ck_cmdline, ':');
-   315		first_space = strchr(ck_cmdline, ' ');
-   316		if (first_colon && (!first_space || first_colon < first_space)) {
-   317			ret = parse_crashkernel_mem(ck_cmdline, system_ram,
-   318					crash_size, crash_base);
-   319	
-   320			/* Handle optional ',>boundary' condition for range ':' syntax only. */
-   321			parse_crashkernel_boundary(ck_cmdline, &boundary);
-   322			if (!ret && *crash_size > boundary) {
-   323				*high = true;
- > 324				*low_size = DEFAULT_CRASH_KERNEL_LOW_SIZE;
-   325			}
-   326	
-   327			return ret;
-   328		}
-   329	
-   330		return parse_crashkernel_simple(ck_cmdline, crash_size, crash_base);
-   331	}
-   332	
+Nope.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> reproducer from syzbot before doing anything.
+
+OK, Let's wait for syzbot to reproduce it.
+
+> 
+
 
