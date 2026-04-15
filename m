@@ -4,125 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08AC9ED7B97
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 02:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03865F9D0CE
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 02:32:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736756B0089; Tue, 14 Apr 2026 22:30:21 -0400 (EDT)
+	id 677016B0092; Tue, 14 Apr 2026 22:32:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E7E06B0093; Tue, 14 Apr 2026 22:30:21 -0400 (EDT)
+	id 628116B0093; Tue, 14 Apr 2026 22:32:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6243B6B0095; Tue, 14 Apr 2026 22:30:21 -0400 (EDT)
+	id 518C26B0095; Tue, 14 Apr 2026 22:32:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 561A36B0089
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 22:30:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 181021A02BA
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:30:21 +0000 (UTC)
-X-FDA: 84659211042.30.297C426
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0C9BE40008
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:30:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nM0gxUcG;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776220219; a=rsa-sha256;
-	cv=none;
-	b=w5YF0OI8dOgCgJKEkk28MqtFQx/pUr8jmB7EjSQcRJlraxNFXPmPuOyTQKEZnMg+zxfVaU
-	6ZV/uSCqF+PUgG9nAat8Vfk03yeGPz+tuj11WBK4J5+XfYCtU7xxpb+a0jdC7NS5LhcSVj
-	G1PQW/PeNGRc0bzPd3AdHFTFo8USiRA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nM0gxUcG;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C75F6B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 22:32:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02CC6B6E24
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:32:52 +0000 (UTC)
+X-FDA: 84659217426.27.92BA343
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4743B180003
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:32:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ihO8yONh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776220219;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776220371;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=StC25PVDWT8M7W9NSgY17XCq6J9v4q/RTTNrlPmFksY=;
-	b=lwzDdW2lt0TljxIK5g83UM8xWD3wYzm81VB0gj62PpCR0R7WKH9+3NSCTn8UKcXafF+n3y
-	hZepOgzuIRW5/ANY+O5URwU32azMHevP2AbnoEeABk0HAomDns1/pXWho/26swzkpsCToZ
-	kbRCpXupDVYMZ/NeFTlqpYvzv29HvX8=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-671ff4b716cso2166537a12.1
-        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 19:30:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776220217; x=1776825017; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=StC25PVDWT8M7W9NSgY17XCq6J9v4q/RTTNrlPmFksY=;
-        b=nM0gxUcGJGh/7gnK87EpaicAKGU6aSz4etEwWaISmV3yo+QNr1wvqF5HXX1+PwoTt8
-         5UEYi4F2w2UoUDYucZLqKQusqayccIM1H8R/gzagOjftMhugwr5SvpHXHJh5s4ARv8YF
-         uU/M80HaMsDsuC696Ue0fIHaW6oJxazH7ocUo20y4CCkdL/mMmXs8CQ3GUkeUzHqLYrY
-         NhhCuraou+5zje3xvQRUAYI+Qy7oAOzVGAESj9VLwtjkZuVGU3wFJlwhufUSLYXQvESV
-         IsLFbfXvGdmMFv9MWL5PJyIZg16t2O/gGaCi4z0hxYDoxTy2ghZ28EhVE8wWr5qhRfJI
-         cxKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776220217; x=1776825017;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=StC25PVDWT8M7W9NSgY17XCq6J9v4q/RTTNrlPmFksY=;
-        b=crCQ5g8H2Wvz5HQ1Vgbr0nxgt88B1HjtAVUJ03weiBzrIq1vw3G0cJjcYwlWd31V7N
-         8L5VFuO78z7c2iceOH6JQgS2o549INRrneA6Dq3+7hj1mi446ZyH8nbEVJWUQVgMtWAs
-         RBzJRiJ+qla2XCxuXMDsbdoLcqJa0YbWtNPhorQTqrpAhY1bBR8g+0Vg1Oc2cdVqEQtq
-         MqRwQ2azWzI6FnWilNcrO5X3fLDQHqSzc8CZjtp3PpG3EMZApDVCtxsfQu8FPi6bzrtO
-         ZP8lvbgldxOTZjdrBuOES20Oe9ebNT0myvSzc6V0j0paCaxFI/6Y4xOP26B7ugTRpoBC
-         4sMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+uoljMeDb1O7eymnyzJwrcu6CMFo5fHiUvZbrkfRUHtLHHOhBVqGt7aOGO3FL2+KKlGeBwlgcXgQ==@kvack.org
-X-Gm-Message-State: AOJu0YzbGV1QwCOR7oHhddf7kxh9vE9UmPOAnDSuZf2x2dh0UlJza+Y5
-	qhuwRMU9cbtmVTJl/sAttRBaoyIFQkAGoTOFklPr1j1kKXnfAj2NYbB6
-X-Gm-Gg: AeBDieseQD1/+ZaugM+Ir6FrzXMExyKnd3ICuTqWE7XXxyrO6FivGI4ZM2CeOYsyEUO
-	/tGKLBESHESTARFtuqDUQO3jbi8/V7Ve2Sajv+wutObG1XWQZsEGFPdDRqvJFnkRpH5AQHw3yCl
-	Yc1t2mN0R63DqMkrYdPB7sy+CQAk47BhiFdYAQbFu/Z6YjE7mfzRGxlBf1q/URKjtEyS8+jmj7b
-	DLCFYVAA+VNsGS0z7x2jsoqIrEPCcVWEsSm0Qh8DpfkvOrY74VjjaCMHaeUp3JUuzhMxoRWKRZD
-	ajV7BJg+wjqK73zydgJ4bpqUdC8wc/f6nIQBeOJjeY1BXRdPiMGoa28o/wjGxodEQEqX+9+GICx
-	5Rq7iyduN0prfN1jZdfbu10SnYVYEBa+ehaZtWHkfmnc7rqwGoWVJWmK4igSNgHXCrQz/MKdCY7
-	vcUE1lmt6cfI7j+GhXOooP7AABeLCHX3V+
-X-Received: by 2002:a17:907:25cc:b0:b9c:aae6:907e with SMTP id a640c23a62f3a-b9d7260da0emr1116420366b.13.1776220217053;
-        Tue, 14 Apr 2026 19:30:17 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba1784a808fsm7816466b.61.2026.04.14.19.30.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 Apr 2026 19:30:15 -0700 (PDT)
-Date: Wed, 15 Apr 2026 02:30:15 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Yuan Liu <yuan1.liu@intel.com>,
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
-	Nanhai Zou <nanhai.zou@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
- check when changing pfn range
-Message-ID: <20260415023015.5i7hrixrk64uzjqj@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260408031615.1831922-1-yuan1.liu@intel.com>
- <20260413130633.knzkliyqvjhuz2kd@master>
- <1928b6b0-2ec3-43ca-a41b-e880d974af04@kernel.org>
- <20260414021219.wayysugpfbzirzh6@master>
- <fd59736d-a02a-4693-9e70-23c593c9dac7@kernel.org>
+	bh=ke7ZU96pP8AphVfQ1r7P8Nw6ADajpZRT0hzukpb8KsU=;
+	b=n5gn6DgM4q4FYz0SSWokllvggFxLuiMzurG7TAcbAt4ZPq8uazsoybmcdDpmx4euM3VU24
+	o9AICqJ5J0KLUOXXHFJNjRBJJqZ1i4wHqjfD6zW2fi47QsqT08csiABUatEiX1tw9oV7Wk
+	X80tHWakrsBSYUME5vRe4PGR5uQO910=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776220371; a=rsa-sha256;
+	cv=none;
+	b=q2iP3zxP0dVOKBHSmnzfyVPtk+qMAQ0ITL2SDryxODZ7cX0CXmraGwzrdM21qVY4eI+AOQ
+	IYAxm+4O7yRHaKsezeBszTkbDMNiMUV4NkBiVZW8CIM4XoW0vFIfr0cOqkypR7M3yf+ACJ
+	BorgVCk3xRsfteWSQFcZh7zlAtaZk/A=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ihO8yONh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 17E4B4321F;
+	Wed, 15 Apr 2026 02:32:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4C3C19425;
+	Wed, 15 Apr 2026 02:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776220370;
+	bh=nJMDOKwUC4j12LbXLzHBYxV0fA5WtS3uw2VZtj0OTNI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ihO8yONhn73jqtT9LKoDI8ZQvx+l2ahTGx+fKK5FDeGDdx43suX9nWb1kgJ8GzZNg
+	 u8OdnnwKye8rgsgGTLidab2SYSTZ0JyTtpayVtZLhqJZSuJVb1BscXnwA/XMEU17AZ
+	 6gSKbcn16Qd+OXCnjbozDLpCyunvc2q62WycDcZB+dxiRCPVoXaHHxD1/1QB8Zr7hM
+	 unRtpY/GXTc0v/nJKc/zI12bfcfdHIr14nQW4IJ1XRIfSM2O7oNU0sjWobavxiNuzZ
+	 kRKKwRe7zayEqxVcUKN9cuv2/8h/Mb3ut3/8lyW9TMqBoy1+TDmwTYdFt0vTSmcfhq
+	 /J6HZJ+NhBOKw==
+Date: Wed, 15 Apr 2026 11:32:47 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>, Yosry Ahmed <yosry@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/percpu, memcontrol: Per-memcg-lruvec percpu
+ accounting
+Message-ID: <ad74z5aSkwxn9QQG@hyeyoo>
+References: <20260404033844.1892595-1-joshua.hahnjy@gmail.com>
+ <20260414202631.2753640-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fd59736d-a02a-4693-9e70-23c593c9dac7@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20260414202631.2753640-1-joshua.hahnjy@gmail.com>
+X-Rspamd-Queue-Id: 4743B180003
+X-Stat-Signature: a3juznjfa188qjoiwsnjgw4dma64y8hy
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0C9BE40008
-X-Stat-Signature: 13ndhn15t96a5emhep5m5ukwx978qfnj
-X-HE-Tag: 1776220218-387822
-X-HE-Meta: U2FsdGVkX18frLIrbaSEg9bF6dyvkLBJyT3ytf6bKZw2j4S7vDS4sg92ExqCZpEgHuKuIVicx1I0jL1QQZg538Ij2dG4pgC+IvrgSd51uDfgH5hM+Pb9FpGsmeXPjwPYUrXRnXpz7DwGzmEBwMBEcrrtvr23V1qjro/t2OwmV1NNQBVmuRFU09JxN/bsrI7TeEAqGSdiuKGgGgutrhWtvplvwqeihyLD+vgCq0EarlQYFZJkJ+tKAmagidoXWBZFYj/qo2l+hpllHlneeFg1tbkODlVZxfsZOlViosSYRZY9jneTU3ulgYyqhM+yuZkHH1uiHMJnaqKCuyw8MYYAxCMeXzTZ1hmZfh4/rGPLgHCM6HK1X2hJ9nQmc/01NEWgF6nGP1SvU5O2QHAWOCNOsv32D630F34FMIMK0R6jKvy4kB8XJtH+nr8rlVm2gRprWxVsDjxTIMCZMqSv1nYAXteBV5sKMV5qXSIkgoURu28veDc9Db8mjXKc4QbExUCRp74DNRSDLF4M2MT4IC+KVx9LCMnMDWD18NEi5w424bUSHVwlslN/5cT4eCgiloCdE3rRB7y+3fvVQ5gWprVvMh943eIMHNkp/lpjfiB+LT2ScuWXouV6pHZRlnExOXeBAMurn7CvhRPADMRK6fTZvHEyw/ebqp51wtoTjiwVAThbxUqfRcvXGpC8G3gQf8T4CvHAQpjaba1MIBvYoISrYbpIVRPrio0qyRm+r32gk3MTU5/IzVV5rVaJ8VI5wLzN6EI7ifEmgi9G/lzEYceJOD51CAekPvgVrQVbWKXaYDi1moK+DcV7trcBtwdFshszWyhiGVW/Dzzpim3+SimkMthk/KTF0a090QRemGDcdMN2cUPdVhont1X2lsjzEjTLylrmwns18AWIV+mmd2XXMZf/57GU66gVwxn77TJ3LZDTV4F683fBRfTr1i1znQXgOL7QjfpvOJ+y9mpaQ5+
- xUy+2ZHm
- +zBGj5O/MXSOK5gX65y4Dn8CQr9gZDz7p/pbV4Za/XGMxveKhu7TQuNFTS5EvjjzU+I+DjVwZXr4r3F3x8said8ujAHzh4zq8f/ivtXdJydeJZYIrBqwBj4fqahTcIJG7pnUE2Z2INN9e6x65JH6AUx6WsknIZ7K54YrF0uJBVs0fSGGdqs4nzRKN0qIrdq845CXv4oVNg8lNI9SOuZ3dytDddJ/+V/RvqY3s421u3GdjPrNHsPQ3llvspf5DRc2hVCaHCAV0T55k523pVUZZRwxeyXYA7N3pcnGC4BEiwAmhTcBSFGNS51vANn5ptzIxsvyPFSvtRHPoDJB8HKtfXKqS1pYBvYStj5+/bYZlrQJCZTdzChP9HfFda4/JWTawa3tJMh26ywJs1I9veHwR1yuv4QNDua+ejfsiyvgJOnR/3GTK6jrGWyCD0V6fhKvdbwh9EmoO8z1d4yWkbOivwbQ753lNxSbcZdr/f7KR5kRt2TqWnTQwV4+bLTRNJGoE8zjsvdeivayxyWdsFrlVnBLsS4ci9rjA9v3xqXpuSNB4vQ86NW8gUqbb7nWN+n26uZUP7bfWi7YNavM7dMhvew8mlw5B+9QwqDRQiMIOcwuyo/jm+SZN1kmUQXXQONa17s15OQyMD9d6aFXCmThGBCcuNfkBKBdqpBFCTZ/FmgkYGmea7mFlZZIZJ/p7+52X4xe3yDfA5OLlhhfeXgyLQwcXcZoIynXc5L3tl7Ou7K2069A1J72pflXfT5L+oVE1wO2zgA8rE0BaAns=
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1776220371-481930
+X-HE-Meta: U2FsdGVkX193+rElaNvn2Zpen6Avlj59Ql6eceT4/iyDIJAYSMBpFsV7mvlcC13ydv1hRMKD9o96cVA+c1F+QsmYjoFdzJ5g1jDCzqJHJeYg5QngxzQGDMVP/Iuq7YmOixDx24iJdn6esLIDoVh04kcw40dE1CYrlnP9pDs7T/CVdcWxWHZm0FE1tWxj39lt6wbHqLqgLHUWQQSn13XdPf0yO0eeXLWV6s/x7kHvNxpoTiFf9YwA9tQUMumsX8PnEE2OwRnTg8vwB8XNDXn8x5shlgjYVsXhc/NXYjjl/yNjiX1HvLRoTQwubpNxWtHvuWcXbTj6J3ZTbgKnFCYh+f2vQFjqWmaGQZDQRl3INptoloY/7DWtm4bNFb7QD0UY7hD/yqiGrQZgXQvXntWB1zA0awDtlC2EDTkm1j0EEeSXK+v+cNFTn94HX0rXWoOwueVhReCwG9ZfJiC0gclZG/2qJAUuM+GJGxD4T8lnxdVmhkus0OYjo/tJNmJpItf0Jhndz8dCNrFNvN9yQf12NuVsb/UeMutrJk6eSbov8KK7xoaYGlzIT6002bdhW2GK36Q6UzKh188t7yj1LEDrG1XoXrKeBdhLS2vY4x00gYMsQtIPoU5+A53Ar2p7jMyWqR+Upl4f8rnaKIpEogFXZ3hixP2UvSg9bhmOC9hH1yppAqPkvA431Rux5tUAUOlsqWZaknLh3ya4pJt4nn3/5NOXdIWMq7NJXtlsQfYFn8m/WDimKpblGSgWj4AK40XoqlHlDdz4z0SfODdtCsnD27pHqyCYT1Y9N7GFfAAgohcNIRIiNqMoy5sFNzivABHLdF6AZk68tODr0XO0nDou4U/RFRdtApwcGJA2b2U+47lm7NdIDVmcAkduHACArVzuh1nlStuh3h+ebQCQ8lBB99qPH73jsPdE18WxNa0LGyvCNWN6PL69lA97Gc7resIPxuhO0IXrksDKX1FnbwF
+ fgoFplSr
+ i9HNSqS4jcsJZQzEXf8McnyJfPBRA6cgYN8s55n/4CLonurnKtNaO0W5+2fHWjRz2oC5u8S6dy9O6EIyDj1V2Af2E1ec8guS/RUY1Kp4OjaNm95Im52OiDunKg9DJ+RBuuGPmJwHDFKLc5n9xBqbrv/xQ29piXm3KlGyMdRLGK7E6/SuYWZyV+mQ9S5wHPQ6UUygolCd6uvsMjaJP3sVZ4yoFULNIrS2e6iTvUum13zZ9ZywwRZP6RjclRHcsjiUhIrhmf3aHBQdUDd1GGLrDp2rDeroBPq6XmUrinpnDHJX3ra2mD6RboaDsixYRzyGO3qgs3SA+2JIjJJgLNz4y5A7ihmimE3Ax5Ke4xVqc1+rG60xU+wvWI3R0R04XMywbq+r+9ue3VMGu7xj9Wg7FpwZFiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,199 +103,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 11:32:13AM +0200, David Hildenbrand (Arm) wrote:
->On 4/14/26 04:12, Wei Yang wrote:
->> On Mon, Apr 13, 2026 at 08:24:05PM +0200, David Hildenbrand (Arm) wrote:
->>>>   With the last memblock region fits in Node 1 Zone Normal. 
->>>>
->>>>   Then I punch a hole in this region with 2M(subsection) size with following
->>>>   change, to mimic there is a hole in memory range:
->>>>
->>>>     @@ -1372,5 +1372,8 @@ __init void e820__memblock_setup(void)
->>>>             /* Throw away partial pages: */
->>>>             memblock_trim_memory(PAGE_SIZE);
->>>>      
->>>>     +       memblock_remove(0x140000000, 0x200000);
->>>>     +
->>>>             memblock_dump_all();
->>>>      }
->>>>     
->>>>   Then the memblock dump shows:
->>>>
->>>>      MEMBLOCK configuration:
->>>>       memory size = 0x000000017fd7dc00 reserved size = 0x0000000005a97 9c2
->>>>       memory.cnt  = 0x4
->>>>       memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x0
->>>>       memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x0
->>>>   +-  memory[0x2]     [0x0000000100000000-0x000000013fffffff], 0x0000000040000000 bytes on node 1 flags: 0x0
->>>>   +-  memory[0x3]     [0x0000000140200000-0x00000001bfffffff], 0x000000007fe00000 bytes on node 1 flags: 0x0
->>>>
->>>>   We can see the original one memblock region is divided into two, with a hole
->>>>   of 2M in the middle.
->>>
->>> Yes, that makes sense.
->>>
->>>>
->>>>   Not sure this is a reasonable mimic of memory hole. Also I tried to
->>>>   punch a larger hole, e.g. 10M, still see the behavioral change.
->>>>
->>>> The /proc/zoneinfo result:
->>>>
->>>>     w/o patch
->>>>
->>>>     Node 1, zone   Normal
->>>>       pages free     469271
->>>>             boost    0
->>>>             min      8567
->>>>             low      10708
->>>>             high     12849
->>>>             promo    14990
->>>>             spanned  786432
->>>>             present  785920
->>>>             contigu  0           <--- zone is non-contiguous
->>>>             managed  766024
->>>>             cma      0
->>>>     
->>>>     with patch
->>>>
->>>>     Node 1, zone   Normal
->>>>       pages free     121098
->>>>             boost    0
->>>>             min      8665
->>>>             low      10831
->>>>             high     12997
->>>>             promo    15163
->>>>             spanned  786432
->>>>             present  785920
->>>>             contigu  1           <--- zone is contiguous
->>>>             managed  773041
->>>>             cma      0
->>>>
->>>>   This shows we treat Node 1 Zone Normal as non-contiguous before, but treat
->>>>   it a contiguous zone after this patch.
->>>>
->>>> Reason:
->>>>
->>>>   set_zone_contiguous()
->>>>       __pageblock_pfn_to_page()
->>>>           pfn_to_online_page()
->>>> 	      pfn_section_valid() <--- check subsection
->>>>
->>>>   When SPARSEMEM_VMEMMEP is set, pfn_section_valid() checks subsection bit to
->>>>   decide if it is valid. For a hole, the corresponding bit is not set. So it
->>>>   is non-contiguous before the patch.
->>>>
->>>>   After this patch, the memory map in this hole also contributes to
->>>>   pages_with_online_memmap, so it is treated as contiguous.
->>>
->>> That means that mm init code actually initialized a memmap, so there is
->>> a memmap there that is properly initialized?
->>>
->>> So init_unavailable_range()->for_each_valid_pfn() processed these
->>> sub-section holes I guess.
->>>
->> 
->> Yes, I think so.
->> 
->> When memmap_init()->for_each_mem_pfn_range() iterate on the last memblock
->> region, init_unavailable_range() will init the hole.
->> 
->>> subsection_map_init() takes care of initializing the subsections. That
->>> happens before memmap_init() in free_area_init().
->>>
->> 
->> Yes. I guess you mean sparse_init_subsection_map().
->> 
->>> Is there a problem in for_each_valid_pfn()?
->>>
->>> And I think there is in first_valid_pfn:
->>>
->> 
->> You mean there is a problem in first_valid_pfn?
->
->That is my theory.
->
->> 
->>> 	if (valid_section(ms) &&
->>> 	    (early_section(ms) || pfn_section_first_valid(ms, &pfn))) {
->>> 		rcu_read_unlock_sched();
->>> 		return pfn;
->>> 	}
->>>
->>> The PFN is valid, but we actually care about whether it will be online.
->>> So likely, we should skip over sub-sections here also for early sections
->>> (even though the memmap exist, nobody should be looking at it, just like
->>> for an offline memory section).
->>>
->> 
->> And it should be like below?
->> 
->> 	if (valid_section(ms) &&
->> 	    pfn_section_first_valid(ms, &pfn)) {
->> 		rcu_read_unlock_sched();
->> 		return pfn;
->> 	}
->
->Probably, yes. We have to understand if other users would be negatively
->affected.
->
->> 
->> IIUC, this would skip hole and leave allocated memory map uninitialized. And
->> then those pages won't contribute to pages_with_online_memmap, which further
->> leave the zone non-contiguous.
->
->Yes.
->
->> 
->> But we want zone to be contiguous when we have a hole like this, right?
->
->Not if a subsection is marked invalid. That's why the existing scenario
->is that it will not be contiguous.
->
+On Tue, Apr 14, 2026 at 01:26:31PM -0700, Joshua Hahn wrote:
+> On Fri,  3 Apr 2026 20:38:43 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> 
+> > enum memcg_stat_item includes memory that is tracked on a per-memcg
+> > level, but not at a per-node (and per-lruvec) level. Diagnosing
+> > memory pressure for memcgs in multi-NUMA systems can be difficult,
+> > since not all of the memory accounted in memcg can be traced back
+> > to a node. In scenarios where numa nodes in an memcg are asymmetrically
+> > stressed, this difference can be invisible to the user.
+> > 
+> > Convert MEMCG_PERCPU_B from a memcg_stat_item to a memcg_node_stat_item
+> > to give visibility into per-node breakdowns for percpu allocations.
+> > 
+> > This will get us closer to being able to know the memcg and physical
+> > association of all memory on the system. Specifically for percpu, this
+> > granularity will help demonstrate footprint differences on systems with
+> > asymmetric NUMA nodes.
+> > 
+> > Because percpu memory is accounted at a sub-PAGE_SIZE level, we must
+> > account node level statistics (accounted in PAGE_SIZE units) and
+> > memcg-lruvec statistics separately. Account node statistics when the pcpu
+> > pages are allocated, and account memcg-lruvec statistics when pcpu
+> > objects are handed out.
+> 
+> [...snip...]
+> 
+> > @@ -55,7 +55,8 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
+> >  			    struct page **pages, int page_start, int page_end)
+> >  {
+> >  	unsigned int cpu;
+> > -	int i;
+> > +	int nr_pages = page_end - page_start;
+> > +	int i, nid;
+> >  
+> >  	for_each_possible_cpu(cpu) {
+> >  		for (i = page_start; i < page_end; i++) {
+> > @@ -65,6 +66,10 @@ static void pcpu_free_pages(struct pcpu_chunk *chunk,
+> >  				__free_page(page);
+> >  		}
+> >  	}
+> > +
+> > +	for_each_node(nid)
+> > +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
+> > +				-1L * nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
+> >  }
+> >  
+> >  /**
+> > @@ -84,7 +89,8 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
+> >  			    gfp_t gfp)
+> >  {
+> >  	unsigned int cpu, tcpu;
+> > -	int i;
+> > +	int nr_pages = page_end - page_start;
+> > +	int i, nid;
+> >  
+> >  	gfp |= __GFP_HIGHMEM;
+> >  
+> > @@ -97,6 +103,10 @@ static int pcpu_alloc_pages(struct pcpu_chunk *chunk,
+> >  				goto err;
+> >  		}
+> >  	}
+> > +
+> > +	for_each_node(nid)
+> > +		mod_node_page_state(NODE_DATA(nid), NR_PERCPU_B,
+> > +				    nr_pages * nr_cpus_node(nid) * PAGE_SIZE);
+> >  	return 0;
+> 
+> Hello reviewers,
+> 
+> Since I submitted this, I have been thinking about the feedback that Sashiko
+> has given this patch [1]. Harry has already pointed out the points about
+> drifting due to CPU hotplug, but one there is one particular concern that
+> I have been trying to tackle with no avail.
+> 
+> The issue is, pcpu allocations for CPUs on node A may actually fall back to
+> node B, if node A is out of space and under pressure. This design seems to be
+> intentional, to prevent memory pressure from failing these allocations.
+> 
+> However, this means that we cannot charge percpu memory based on the number
+> of CPUs present on a node, because although the memory "belongs" to the node
+> (since the CPU it actually belongs to is on the node), the memory can be
+> serviced from elsewhere.
 
-Let me try to understand.
+Ouch.
 
-During previous discussion[1], we want to define "zone->contiguous guarantee
-pfn_to_page() is valid on the complete zone". So this definition is not true
-now, since we found the behavioral change.
+> To handle this, I've tried several approaches. All of them were either too
+> expensive (iterating through all pages at allocation / free time)
 
-Because __pageblock_pfn_to_page() won't treat range with hole as contiguous,
-detected by pfn_to_online_page() on invalid subsection.
+How expensive was it compared to the baseline?
 
-[1]: https://lkml.org/lkml/2026/2/9/550
+> or introduces
+> new drift (I thought of managing per-chunk statistics as well).
 
-Now you are thinking the problem is in the iteration function,
-for_each_valid_pfn(), used in init_unavaiable_range(). It should only take
-valid subsections into consideration, even for early sections.
+How does it introduce a new drift?
 
-So your concern is if we change first_valid_pfn(), it will affect other users.
-
-If the above understanding is correct, maybe we can use spanned == present
-to do the trick? Because holes are marked subsection invalid and holes are
-counted into absent.
-
-But I see the mirrored_kernel thing, not fully understand yet. This is the
-reason to prevent spanned == present approach?
-
->Note that Wei reported that it was not contiguous but would now be
->contiguous.
->
->
->If you have a DAX device the plugs into that hole through
->memremap_pages()->pagemap_range(), I think this could cause problems. I
->doubt that this would happen in practice for such small holes, but if
->they would be bigger, or at the start/end of the range, it could be
->problematic.
->
-
-Not fully understand yet, will take a look into it.
-
->-- 
->Cheers,
->
->David
+> To be honest, I think I'm out of ideas at this point :/ So I wanted to see
+> what others thought about how to track physical locations for pcpu allocations
+> that were allocated via fallback. Are these rare enough that we are OK with
+> the misattributing here? Should we eat the cost of iterating through all pages
+> to find out where it is physically?
+> 
+> Or is this patch not worth pursuing at the moment? ; -)
+> 
+> I hope this all makes sense. Thank you all in advance!
+> Joshua
+> 
+> [1] https://sashiko.dev/#/patchset/20260404033844.1892595-1-joshua.hahnjy%40gmail.com
 
 -- 
-Wei Yang
-Help you, Help me
+Cheers,
+Harry / Hyeonggon
 
