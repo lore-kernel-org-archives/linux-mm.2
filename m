@@ -4,128 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF55F428C8
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 19:19:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D6FF428CA
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 19:27:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B4296B0005; Wed, 15 Apr 2026 15:19:09 -0400 (EDT)
+	id 9F7826B0005; Wed, 15 Apr 2026 15:27:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 865916B0089; Wed, 15 Apr 2026 15:19:09 -0400 (EDT)
+	id 9CF5B6B0089; Wed, 15 Apr 2026 15:27:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 752F56B008A; Wed, 15 Apr 2026 15:19:09 -0400 (EDT)
+	id 8E4086B008A; Wed, 15 Apr 2026 15:27:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 645996B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:19:09 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 187131605E5
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 19:19:09 +0000 (UTC)
-X-FDA: 84661753218.25.FDEB7FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6AB231C000A
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 19:19:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VLLShjcI;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776280747;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D6726B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:27:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1CEF8C21C1
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 19:27:18 +0000 (UTC)
+X-FDA: 84661773756.19.36AA402
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 223D3C000F
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 19:27:15 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PAQYjvJb;
+	spf=pass (imf28.hostedemail.com: domain of avagin@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=avagin@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776281236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=jql/qHKdfL5AQyBBEKy05tU355MQ/oUNAU9rOUQ6YO4=;
-	b=GdDY2axezi6uV43Qt6WlNulrj03agEJGyXwPaCFR0ZIlGsWWjECeWxCXGUSBe2Yf182eBR
-	rCEYpl0+wtCPB2kZK/kNhzXgQ+ooVkBb3aIaycxTL+2nd9Gq0SNnm4LYci6+WhC8CxCHEZ
-	eKvm2LY3V9wKlEICcbJREFTQJ2Okl+c=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VLLShjcI;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776280747; a=rsa-sha256;
-	cv=none;
-	b=c2pL706LWEzFlCBCYcv6/yJB54z7JbLxAqG4fY8evklhu1ntFD/fl3egWX8qfgtBmjP7Qi
-	X/XWUB6kLNIX991rA294afsS0Q9M3uqdYLb7uTJwzfjwW3ooBPvmV6mu7wVgXQXMg/HOFh
-	Ag9CXpemQnlASPGZRFz3g6Urm69ghd4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9140660120;
-	Wed, 15 Apr 2026 19:19:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB66C19424;
-	Wed, 15 Apr 2026 19:18:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776280746;
-	bh=scCdsYjFYYmIPYeVxOiQhweu4J8pahVfH00BNvONAWE=;
-	h=Date:From:To:Subject:From;
-	b=VLLShjcITeVLMl0t21iWavTeH/Fjdj0ryl+MX3nw4Oyu+bJH66MioEi+LTLgJiHA7
-	 kyBghLnt+ajQ2vd3IIsOB5iFG+9A3Q7BiGieCEl7u05MMmUPxKWWmXlr+XV/4Qt3/r
-	 xt4iZjWwzmVbd/WMuTVWdpVJOdWd5zoKWApF6SRdnNMRhcM//9DxjdYNXNiISn0bqM
-	 iBz19yQu4py2MpFPHW8Rp3cSiwljC8YsoEKeW6QvhVaWyohPtWy3VJkdlghACiyBJJ
-	 rOGP1x/wBIYBYSvC4QwudOWnQxRJS3BikX/jGhBRuUtOM+XNsro90OKqfYexwz5DWa
-	 KwCkogwqTjglg==
-Message-ID: <dd0902ff-f132-4e07-96cd-2425af99ca55@kernel.org>
-Date: Wed, 15 Apr 2026 21:18:51 +0200
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WQ7kho8nNPiCZN6dDdK/LtHsVWQC24olPeq9GPw1YEU=;
+	b=U2STWATmuaO63LLelA1b7KfgvvWeNGiIFLGVZbrRgKjNUfzv/9sh9BK4e6buLIgGPA8ugG
+	Lwx8gFdYcsUcB+D+FI45ly8AeeFdUp0rOmbFeLOqh7bdbgN4i5aqfLiqF9IfiEyG4vOfl4
+	AbCtQBRG5Ydi2rfOYeDqVDH8NAIhjtY=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=PAQYjvJb;
+	spf=pass (imf28.hostedemail.com: domain of avagin@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=avagin@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776281236; a=rsa-sha256;
+	cv=pass;
+	b=iu0PF/hVfjKZVmWUNBs4vJ9YwYMyrCU6LLtbPULZmKaAoVxFw7TK0r4Odvl6pxnKrOaD48
+	V3uxIEf751XDbffGPjBoLZW1gNolJn/rm/RjM9GaTv/ZDe9q5v65S3amgPz6iuot+DYPRd
+	D8cmJhk3nzTbs7y6Qud41nUesgQstls=
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7dbe437b072so3911421a34.2
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:27:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776281235; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QMadJghSWjsrziQIaUtDRw4/1nRuDA5xZ8cuyelJwT619nFMfkwwKcaaHQqM/iSi/S
+         NsLnBWfGlo3H1GZFGGu2TmBgt8qm1n6wC1tziDSQg0PIjYnvdxFePxNYl0Nlso9ANleG
+         uzlkHq/3nVbcSjG8cO64w9N0UC9jCY6odAqGkj+oUJAjCVV8798//FwH90SOMG+IW1C5
+         khiOTOYryfBQuVtHbJ84gnIkf0acQpQ/3JcfNenG+UJhk8J2X7iiKMZR8HGtBWctPrpI
+         5d0YD3fXkSGYkGNM3ZOBDbycaN8LSYCgMACg4NJdONxqt0X4/C2CCfbOxL7RmXp5fXSG
+         ncAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WQ7kho8nNPiCZN6dDdK/LtHsVWQC24olPeq9GPw1YEU=;
+        fh=Y37ZDAVdQcd1Amfz583O5P0Aqi+3MuPglzRMJBOP16k=;
+        b=Apw2f4nDv6ZcmtnkCnY1VrEG7MDsS4Qjf4jUgG50YEGwzi+bxJTaYquzi/0QD3phWp
+         iCshsDZMNoUVaANr5Tu9mYdmF0Hpoatdv0nmKg7R8W25pgwVrmteBbM5q3H+stHmKTyt
+         9bAfm6PU8mEGHHxCTePEIAz6lDXbLhCeVhSrvWraXDdMNZnBs92Cc8q9pHaQ4gJg6HsV
+         n4RfSZM5lD0aoXJ5NDLJN735hFU/a5T19JZegyRN38SBOZg3w1phAephXtdVMxZgCcj4
+         CPk93nGnoaQw/FzU9Xe5C2IjnmxkhURZPVqeR0p+0T9NTJB5e8jbva6T8HOC+3FUb5Kq
+         FMow==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776281235; x=1776886035; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WQ7kho8nNPiCZN6dDdK/LtHsVWQC24olPeq9GPw1YEU=;
+        b=PAQYjvJbfu8mDPyIW94ekxKxteCQxBFv5g2AXJOesTAaAMsBkA4m7dKH6/rqF87roh
+         QlfXAxAIKKI9qdXVLhzXyJV+QswjutV02Pwouz49lLF9XVafuc3q8BmXw4Aynt/NGBJr
+         c/4mBmrUs2kMoPeWfCm+8tRR+HUseJcjlAxiUuapIlBr/TpxEIXdhsikaCwopjR9Z86y
+         ozA3ZuimLNA/pE1PTtANzSd9AeshRxuxsVog1OG75WhcdofjXRyAaSKlpAk3noUi+KS9
+         YptavLev5Re44MyywzyWKjrBtzyFZwwa8aVg4akbphAjYHytVSYJdJiwR554a/S5t1zm
+         SXqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776281235; x=1776886035;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WQ7kho8nNPiCZN6dDdK/LtHsVWQC24olPeq9GPw1YEU=;
+        b=lto7jzr/53JzkTksYsKsntsBmuUw+DS6xXE+meZ42nfp8RZ9DvuC7LvwT0V7dXRhef
+         +fTFw8Gi1sKgygEn3GvBoOb9m3deAyeDiRiDU0y9f/pnzvaG8rL/y8JhhLWd0padmWJr
+         9DiFNdvBYXolGR7lcUzi9LHstOrflRUyuo5i3sqIsZ7IeAlX0Tx47mWFrcprqyHSjgn8
+         /XWX9F8QqZyPsc94MTg55xnBzIV2HpBYiYSKguXWior+kDR7LO/fNZjlNBEH6pkea6eJ
+         ua4zmnT40OpMMhWI0RvdHCQCjBh0AgvkADktTM3gZhfkQ3sFp7kZrlXZMKUFbxCvHzKS
+         oC4g==
+X-Forwarded-Encrypted: i=1; AFNElJ///wHGq38gX63EvIlc45IC76Hkb26T/ch2GlZ+44I0W6VE3LLNFwf/pDMcD90NAFg+ECdIJ7xq5A==@kvack.org
+X-Gm-Message-State: AOJu0Yz2jcxdf2dKOjjkxsWQW5H4xzPra8UErBxQoe+p3VWv/uYo3rI6
+	5MfR+PEQBUcjPJBHFgjVb9RZN1hiXc9sYXkBijp57lBFkU57AAaJt5AU0sZ82hv9ho2E3EbBIDP
+	laSodpZntpBKGED0/LIQFsxyAihUCR0I=
+X-Gm-Gg: AeBDieu4w8HoJg7wSz+RSAaQ80qp/JH+jU2p4P18WtHQErJFxJPHXp5Gze87+GoK9tX
+	88tQCnAakHTrYA25kB1VrAp+ngD8g7SvIDA9GSBVK11sd8sQ0x/G+61B+rd9Qpd3PqLXe+g5Lup
+	bTqkIc4XaeD+FpBeDGGdh1kzYQcLDYp5V9odEyRK+sq4Nux0B7nuxPfou5N7xOVsTLggBp8hhOJ
+	RleVgp7edT/UnSYgF4QPbXBWBiCKe6Qedj7UQXpumoWg69A+kVu690NFa/peiGE87ujZe9HaauK
+	h205ZzCq6Bib29wszg==
+X-Received: by 2002:a05:6830:25c5:b0:7d9:f50f:968a with SMTP id
+ 46e09a7af769-7dc27c66377mr13072583a34.5.1776281234901; Wed, 15 Apr 2026
+ 12:27:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-To: KVM <kvm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: bi-weekly guest_memfd upstream call on 2026-04-16
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1mwxkr64z1js1qm8bcgztsfkkogognwz
+References: <20260323175340.3361311-1-avagin@google.com> <20260323175340.3361311-2-avagin@google.com>
+ <acGEonF9I6sPA42B@J2N7QTR9R3.cambridge.arm.com> <acJnOB-rlyt-3jU4@willie-the-truck>
+ <CAEWA0a7iR8YHooqXJfhersV6YhAXGMZDUhib3QQH5XGn=KNowA@mail.gmail.com>
+ <acarA3sGKY4Acozw@J2N7QTR9R3.cambridge.arm.com> <CAEWA0a7AZiuy1F+0LDxtEtJpdu=zA-RKhPb1wcDMpy2tSMFO5g@mail.gmail.com>
+ <adUhbk0sKT0ucWhJ@J2N7QTR9R3>
+In-Reply-To: <adUhbk0sKT0ucWhJ@J2N7QTR9R3>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Wed, 15 Apr 2026 12:27:03 -0700
+X-Gm-Features: AQROBzBNtO31xd0yW9r81lEqB1GfFyuOQPPb5LE8m1aTt5Q8NnQOvyvucUSdcQk
+Message-ID: <CANaxB-xitpwsU9SmQ1D7q0Jn0Ng1b4WYxzAWF3L-pE+EYzbObg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] exec: inherit HWCAPs from the parent process
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrei Vagin <avagin@google.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Cyrill Gorcunov <gorcunov@gmail.com>, Mike Rapoport <rppt@kernel.org>, 
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, criu@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	Chen Ridong <chenridong@huawei.com>, Christian Brauner <brauner@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Eric Biederman <ebiederm@xmission.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Koutny <mkoutny@suse.com>, 
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>, 
+	Linux API <linux-api@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: io3p9krpscjs9mfcsynmr4htqb19u4pk
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6AB231C000A
-X-HE-Tag: 1776280747-878089
-X-HE-Meta: U2FsdGVkX18xCmK0MugFkUVd88XbB9xnLMbVLhFppyAownAWgp9/M5wUewuXFm9ptQswauLm9pn/YHz7jpRUtmIgTpDxAqdXqTL2lbGFUH62pVcpzyM7XxSWx7NX+5E3iw7hQ4tdMRPDUMWuDCsWsYXYSMMJgAv/yRGEkztMAveCiRERJkgyExjrptc3ic8hxF75RwbTxtM7rsanTxb/1HA9dEYrRlVow1mzNPTEeX3WojBZ18o+W01GrWPOMlosZNTzDCTTiTaH2JNJc2mfmj2Riuo3z07U46tK/zMJwbiAbhlgw4yxZEwFwl48M1WmcYQ1dLsCQEANYAgpuw8QFuCeqYWyFpMmJWZIQF1ZQGtLXXkBhQJjvOn9/DeAidsnmzXBWz42hJ8xjoTpni4RC2NGLVw4kZSCnmWcuBIw5pnR/AaywMldE44gQ9gPSjMOD3oOJCznYqvmdXTvagldbXhqtFrmvsXpynPbL8NrWcxc1OV6OXdbiOzG6nYicSSL4DTFW6cNFb9VWDMCKBm6uhVMBKLPQg7kN4KLybolb+6xTd8zfIKNY9+T5emPrhYgpbpOIEr247LRlaWJnAQf29so6jX01pmNLwUy0ev35CSMoOOFzdDQ2y9UVH/Vuq98ZJiHB9dsHhQYIZ0ywv/gEPuo/ArdEHbDLqeFnng2zLT5LsE0tmv2uWA4qSs0WJZmERzBSuYhNfxk7N7VGsl17dEaRlL6EvL/WMoJF1klWV7+kj6W8BGaaEDkSPR6Iu49UbRHb9NWJRDQla0bvPl3ncQfItIxOVYLf6wBbaEE7AHduaisWoj5SUoOtcnf3utO1XrjhvHk9U88KJqsK8hLSb5gPxOzpfoLZbqFHBRrhw5EiPFEZUR8yQv3S0+LDSLYS8meIg92ac0IhDdprjKodceFrlIW0GitK5J82+0xTph9fAVtR6QjTSL27JmvkwB7J2wthPlnLtX9gW3krW6
- XUoWemYu
- pEH0lEaU1rfMy48lLH18MpTCiYWy1mzKSdlTNf8TjirjjPatg6bxhdxXrlAooB9nfUYahgBPDf2BaDbIdGBttTuahYn4qvGkIbeOSkT6Y5I9lYyOdSK6g5ePY6qSZR29BGpifcyOajwOnZnopauoywltLTcDncU9Tc/6ozlLZSa7U4wWRidz3/TQl0w+bTxQRTATsESeFt694Uoz5SjoOOLP6kbeUcoSgd87XH5/sSRg+hIeyZkXfwkuOZxrk90odGH6RIrpuJl6oF7BUWi9F9QaE/g2yCKzAiaA9/6Ggdq6z8MAEmMng4TcLhvzRlk0sJGArda8wVi3AffK06oMw5tk99pwNdDfPpIUMlrSn/NfVxgZT2R4ybs4aO70z9CGk2wEfFDxvCDDZjcg=
+X-Rspamd-Queue-Id: 223D3C000F
+X-HE-Tag: 1776281235-180618
+X-HE-Meta: U2FsdGVkX1/RCeN3Q4fpfvRGklCXhTWTR/MXdqmN+aDSJpHJMByqFMlI5Wl6VDDU55u6Lm65ph9iKMpL4PetwU4P+yXfsNVVOGCSELey+Ysr1u5s5j12oUBQrg1+Ybxu+NBy7nuncjgw3SjRRccy7nW1r/30wLGe9U0rtb8PSyvOTx37MmU5bPkaU1Tsgn8IKC73vzxyy/ZB/yGj8KjfkDxiYcNrqDNuN+8vbx1sR8e4XzTWts6Ydc6pcRO7zraulgbX5qxqFwDl8lRW1clZKzPunTniRVB7/WDjZKwUCNq+jRM0/u30s6d3NOvUL7IyXH8mUghJAOCP1d28bt6pZbqs2V4rMBW2b+PGs3LKPsAug2wUwt7rIDcvo5awCs+rUX+Otho3boxGV4w75vPDfADMQIf8pyduUvrjFYV4BJX4e6Np3aAj/XmM1Zp2gmsQ3toO/UjY0qbPdUE8VFSVe7TPueF0bCJmRPLPA+Gif0cgUA75UGIyaS+YM/ywrWwp6ZHLlHMFTl5G7/JJJ9w6sSDy3bRvIm7oLxSkJG5LJntY594seRGggWg1Iu69/esG94Gra8pjUN0UBORYPBKABKOyUU6rBF7Wa+HTn3JEMwnXdzUUt59d8kyW/Ck+xKApzva8cG9et1v+ivKcESQZQ/AxjIprjcNX70jTOg/deVN6CjuLETWABQru3Tq1aO+3b6VQN2x89OTDje4TtAgYmerhUe5KUzSLG9e+NnjYhktKVobzgebThZ/MnR61jaAV82rC4csC4F4/SZck3SEflM9wdLxCWNA/6HEHzFFbzmh5XLWd///jBs3cjswTQPc213vkU/THH1R2aFYuypKBW6jYPYKaMlUOYzWl+tjZF5/pULX+fvqwuHYZ6oFMgTAW0st/BETeNRWIYd1hj3A/gA0timI41ibf3Fld2vXqdRzCNSAGZE55yO9Cm3/t0vtk9GDNN5sKfgvC+LUmodW
+ 3AIWRkXJ
+ a9kRT9GQaAlIkHPvuHRK5NF5Y1P+LS6YyKiqg4PYczupWAgXa3hf7ngbKA3GZ5TQSHKJMzhUTfSDt+unxaWM+yx4wnA8xWZqm6dTrfQISTx7NTNKzRKd8i+K4KEgaN1p6NpC0ol/yJslPMzrMzv2Sv8QNLLyYil8nfvqJcAOmWCEgpWBMg7QSoBtIzGQ7I9svGU9KyNRAIQJUr/Wv/sUIO6CejBJGfeEDyQK/uewNb3YzjsMptI2TxJ0x2rRioWUCqXkbp1fWI5uuk+gF3O2WJzTgg0zRIue/ZvNAuZAva9cfVf7nqPiVQ/zjTp98fRjIZ9B1ia7VQVc12s3Gx03dFCtN4BODbSTaGb0we+ZV6S2Pf4N7mzuDbrSDyXsaP34xzC3IKg/1DyYnIlezG8Oo34TOk9PNf0cZz5jDifT0H9bP2MEuwx/5DHSk42O70ZndxTypu4gVWWyaIN0XV9AYNRAmGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,32 +151,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+Hi Mark,
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2026-04-016 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+Thanks for the feedback and sorry for the delay, was on vacation.
+Please see my comments inline.
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+On Tue, Apr 7, 2026 at 8:29=E2=80=AFAM Mark Rutland <mark.rutland@arm.com> =
+wrote:
+>
+> On Fri, Mar 27, 2026 at 05:21:26PM -0700, Andrei Vagin wrote:
+> > Hi Mark,
+> >
+> > I understand all these points and they are valid. However, as I
+> > mentioned, we are not trying to introduce a mechanism that will strictl=
+y
+> > enforce feature sets for every container. While we would like to have
+> > that functionality, as you and will mentioned, it would require
+> > substantially more complexity to address, and maintainers would unlikel=
+y
+> > to pick up that complexity.
+>
+> The crux of my complaint here is that unless you do that (to some
+> degree), this is not going to work reliably, even with the constraints
+> you outline.
+>
+> Further, I disagree with your proposed solution of pushing more
+> constraints onto userspace (to also consider HWCAPs as overriding other
+> mechainsms, etc).
+>
+> I think that as-is, the approach is flawed.
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
+I would really appreciate it if we could move this conversation toward
+how we can make it work.
 
-In this meeting, Mike wants to talk about IOMMU considerations for
-in-place conversion/hugetlb with pass-through devices. And I'm sure
-other things will pop up :)
+>
+> > Even masking ID registers on a per-container basis would introduce
+> > extra complexity that could make architecture maintainers unhappy.
+> > There were a few attempts to introduce container CPUID masking on
+> > x86_64 in the past.
+>
+> > In CRIU, we are not aiming to handle every possible workload. Our goal
+> > is to target workloads where developers are ready to cooperate and
+> > willing to make adjustments to be C/R compatible. The goal here is to
+> > provide developers with clear instructions on what they can do to ensur=
+e
+> > their applications are C/R compatible. When I say "workloads", I mean
+> > this in a broad sense. A container might pack a set of tools with
+> > different runtimes (Go, Java, libc-based). All these runtimes should
+> > detect only allowed features.
+>
+> I do not think that arbitrary applications (and libraries!) should have
+> to pick up additional constraints that are unnecessary without CRIU,
+> especially where that goes against deliberate design decisions (e.g.
+> features in arm64's HINT instruction space, which are designed to be
+> usable in fast paths WITHOUT needing explicit checks of things like
+> HWCAPs). Note that those typically *do* have kernel controls.
+>
+> I think there's a much larger problem space than you anticipate, and
+> adding an incomplete solution now is just going to introduce a
+> maintenance burden.
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the meeting notes.
+I am not adding arbitrary constraints for standard non-CRIU use cases.
+Previously, I suggested that standard libraries would need to call prctl
+to determine if hwcaps should be used for feature detection.  However,
+we can avoid this extra syscall by adding the new HWCAP2_CR bit. Then
+libraries will simply check this bit in auxv[AT_HWCAP2], meaning the
+overhead for "non-criu" cases is just a single bit check.
 
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+As for HINT instructions, there are two class of instructions.
 
--- 
-Cheers,
+The first one doesn't change a process state and they are not required
+any special handling in term of checkpoint/restore. If a process is
+checkpointed on a newer cpu, and restore it on an older cpu, the older
+hardware will simply skip over that instructions.  The architectural
+state (registers, memory) should remain consistent.
 
-David
+The second class such as PAC are instructions that actually change a
+process state. These instructions require kernel/userspace coordination.
+For example, usage of PAC keys can be controlled from userspace via prctl.
+I mean when support for new instructions is implemented in the kernel,
+we will need to consider that userspace should be able to control them.
 
+>
+> > Returning to the subject of this patchset: this series extends the role
+> > of hwcaps. With this change, we would establish that hwcaps is the
+> > "source of truth" for which features an application can safely use. Any
+> > other features available on the current CPU would not be guaranteed to
+> > remain available after migration to another machine.
+> >
+> > After this discussion, I found that the current version missed one majo=
+r
+> > thing: there should be a signal indicating that hwcaps must be used for
+> > feature detection. Since we will need to integrate this interface into
+> > libc, Go, and other runtimes, they definitely should not rely just on
+> > hwcaps by default, especially in the early stages. This can be solved
+> > via the prctl command.  Libraries like libc would call
+> > prctl(PR_USER_HWCAP_ENABLED). If this returns true, the runtime knows
+> > that only the features explicitly listed in hwcaps should be used.
+>
+> I do not think we should be pushing that shape of constraint onto
+> userspace.
+
+Look at the previous command.
+
+>
+> > You are right, the controlled feature set will be limited to features
+> > the kernel knows about. And yes, we would need to report CPU features i=
+n
+> > hwcaps even if the kernel isn't directly involved in handling them.
+>
+> To be clear, that is not what I am arguing.
+>
+> As I mentioned before, the way this works on arm64 is that the kernel
+> only exposes what it is aware of, even in the ID regs accessible to
+> userspace. We usually *can* hide features, and do that for cases of
+> mismatched big.LITTLE, virtual machines, etc.
+
+I understand that. My point was that the kernel would need to report
+features in hwcaps even if they don't require specific kernel-side
+handling.
+
+>
+> > Honestly, I am not certain if this is the "right" interface for that,
+> > and I would be happy to consider other ideas. I understand that these
+> > hwcaps will not work right out of the box, but we need a way to solve
+> > this problem. Having a centralized API for CPU/kernel feature detection
+> > seems like the right direction.
+>
+> I think that for better or worse the approach you are tkaing here simply
+> does not solve enough of the problem to actually be worthwhile.
+
+This approach mimics solutions that some CRIU users are already
+implementing in userspace, but those only work when the user controls/
+recompiles all their libraries. I am open to other ideas, but we need a
+path forward.
+
+>
+> > As for signal frame size and extended states like SVE/SME, we aware
+> > about this problem.  However, it is partly mitigated by the fact that i=
+f
+> > an application does not use some features, those states are not placed
+> > in the signal frame.
+>
+> That is not true. The kernel can and will create signal frames for
+> architectural state that a task might never have touched.
+>
+> Generally arm64 creates signal frames for features when the feature
+> *exists*, regardless of whether the task has actively manipulated the
+> relevant state. For example, on systems with SVE a trivial SVE signal
+> frame gets created even if a task only uses the FPSIMD registers, and on
+> systms with SME a TPIDR2 signal frame gets created even if the task has
+> never read/written TPIDR2.
+>
+> When restoring, an unrecognised signal frame is treated as invalid, and
+> we can require that certain signal frames are present.
+
+You are right; that was my mistake. My only explanation for why we don't
+see this failure often is that C/R is rarely triggered while a process
+is actually
+inside a signal handler. This is definitely a problem that still needs
+to be solved.
+
+>
+> > In the future, when we construct/reload a signal frame, we could look
+> > at a process feature set for a process and generate a frame according
+> > to those features...
+>
+> When you say 'we' here, are you talking about within the kernel, or
+> within the userspace C/R mechanism?
+
+... within the kernel.
+
+Thanks,
+Andrei
 
