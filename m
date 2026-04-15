@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8633EF4198C
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:32:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C77CF4198E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:35:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17B56B0093; Wed, 15 Apr 2026 06:32:35 -0400 (EDT)
+	id E540B6B0093; Wed, 15 Apr 2026 06:35:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC8966B0095; Wed, 15 Apr 2026 06:32:35 -0400 (EDT)
+	id E2C186B0095; Wed, 15 Apr 2026 06:35:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDE9E6B0096; Wed, 15 Apr 2026 06:32:35 -0400 (EDT)
+	id D421F6B0096; Wed, 15 Apr 2026 06:35:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ADD136B0093
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:32:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 67B1EE3EDD
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:32:35 +0000 (UTC)
-X-FDA: 84660426270.30.C69844D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B1457180003
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:32:33 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C2B916B0093
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:35:17 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6BD3F590D7
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:35:17 +0000 (UTC)
+X-FDA: 84660433074.19.1BA96E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 806A818000E
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:35:15 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D97O1w5y;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c0X1iM/l";
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776249153;
+	s=arc-20220608; t=1776249315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vb4ApaNKGbL8+M+FidV52TNNZ3tFHT+hhS09LGCWCpU=;
-	b=yGaX3rxhM6ZhkTy0qq+6GA5UjXuwJZELWtUPDUR8IzH1Pz8cSdFo6k1PdXnc9NkB8lNWXO
-	4Rm8L0QMBTda2f62HV1scrZmwIBWI82k69KvcCVPWU69qSygqT+yROiQEWTosrX070PQx1
-	bkVPVSFkEE/Qn8/tEodXIBiPpbHioGI=
+	bh=am9Vfb1Aq580mnQo1cyYfFVKDwtcUwL0M+34cRZgLu0=;
+	b=kOdX7dTxTBQjFcd+G7tfS+0g8wBr0YPNi7I9iyw/eJ0wZQpz1C8wnh3J7vwNa3qLPmqSSB
+	A/yGfzFv4++I2HJS2UosM72h3uDv947lABSSwRR9rLf7Wq7Eu7U3/AAdtGyJWf0i818QUh
+	PE1EtfCOLfcLsf+OmBnNZFRznYGiYwI=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D97O1w5y;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c0X1iM/l";
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776249153; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776249315; a=rsa-sha256;
 	cv=none;
-	b=HuQkG3IHnm4cJUYZgnTMNgo7Rme6B9k+Hf/v7svG++Ab71xCimRp6OizM+4Q7vtD/5DpMI
-	lh1oY+2CVMKYLDO19vCRaqMhB3S5lbiyFSz6XYCfK4sDnogScpw1nQb8TJAgRPoMTiJ78T
-	4lJlsG4ENIf/s/uA/WVezl41kGY8Hac=
+	b=b4k1wg0Vxe0wc5ZV3+k4I/I+Dc16nx3eou/KRSLmtnoRluOPKWS/1uueO/EQp7xSpTR5CW
+	7Is+YntK9jwLuLixbqqnsrRWOBSwd8h6eafSyIrhbXtBPJIQ2ToFG9Ok27wCuc5frPNX0p
+	I9NatbYuqoN0MFfvfYRBfYzqfN6InoM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38B17600AD;
-	Wed, 15 Apr 2026 10:32:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBD4C19424;
-	Wed, 15 Apr 2026 10:32:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 66C1F44491;
+	Wed, 15 Apr 2026 10:35:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECF4C2BCB3;
+	Wed, 15 Apr 2026 10:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776249152;
-	bh=dIKjmnqM6oUTiL+YZGK0NoKhkwGaTLfBB089nc7SMyc=;
+	s=k20201202; t=1776249314;
+	bh=bpHgcNl4FYMb3tMxE2yHLnHeP4ny/KqKAE26kXtowaQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=D97O1w5ysWxeGP7GcN3ChbzY+zPak2gSdq6xrWTDtQeR5AWCHEw8wkP+Vg/t5LFt6
-	 ap42mjvw6UvD1y8evOqk9IL5Xv3v3Zel/SmtKXfnbZnYx8MaBYspUWulwAri/4KOA9
-	 TUmh3YJiqY+SJ51dSWE7hRmVDXlVB+vFbOhMImsDY0NqDcCvCZ5wzVMvWY3cpo02zJ
-	 HanYvjFWPsQX7N4wfX/iB8N8zTIkHc9pKXudi0++KNxAwQOVjTIFZz+Xrwb+M8X8Bf
-	 hYQtAow41nfWTr0jb1GUxgkt6kNO4By0T64Sh+w/RsqXKNBr7k26wUB95m60y0wAPS
-	 iFlpo1At1gmXw==
-Message-ID: <eaa6386e-4de0-4d9b-a92f-ee4f6e4f4f58@kernel.org>
-Date: Wed, 15 Apr 2026 12:32:26 +0200
+	b=c0X1iM/loYQV+lM9Y7nboPQ5AI057tcs4b3NzAj+4Ek9Mgu7fDkzUIT4bbM9KSX2G
+	 XVawRbC0AKM05vBRWJMZWLNgk2qDYdhQdB5GpVQBGYgZpWu66sjDgz6f9RrRnbqgWJ
+	 m6ays8iGIBJ6yqow4uNHPsK5Lix/zhsvs7/q/qc8015Ki9N9YyYJvj0b7V6NOr0qoY
+	 s3r1xNWSe24u7FGHpMdykAN7BkR8hh/cp8OsqbQTRE7zVd9kToPNuXO6Tgo+OurmpY
+	 2ZFjTof4Gzk32YdqX13IeddI/nNkWhEVd0oKNBs9/95fiT5m/8uBmxrRoQWk1jpgq9
+	 U7ZE/jfalFfIg==
+Message-ID: <d61a8e11-5b8c-4cea-a7f4-a890f65d62f4@kernel.org>
+Date: Wed, 15 Apr 2026 12:35:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V1 06/16] arm64/mm: Convert READ_ONCE() as pudp_get() while
- accessing PUD
+Subject: Re: [RFC V1 07/16] arm64/mm: Convert READ_ONCE() as p4dp_get() while
+ accessing P4D
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -79,9 +79,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, kasan-dev@googlegroups.com
 References: <20260224051153.3150613-1-anshuman.khandual@arm.com>
- <20260224051153.3150613-7-anshuman.khandual@arm.com>
- <b1e1783c-3621-41e4-b65d-38cf66a1124c@kernel.org>
- <6d91c17f-2027-482a-b0b2-98ad258f1687@arm.com>
+ <20260224051153.3150613-8-anshuman.khandual@arm.com>
+ <238ab437-06b1-43ef-86bb-9341c02040b1@kernel.org>
+ <c490455f-084a-4f53-86b0-89c15669efb3@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <6d91c17f-2027-482a-b0b2-98ad258f1687@arm.com>
+In-Reply-To: <c490455f-084a-4f53-86b0-89c15669efb3@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: gd9r6f36e53wiburo1cwyfukfd755ahj
-X-Rspamd-Queue-Id: B1457180003
+X-Stat-Signature: 68uhbortxaomjawafnk163koarjwki9d
+X-Rspamd-Queue-Id: 806A818000E
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1776249153-461185
-X-HE-Meta: U2FsdGVkX1+UeiBvOWaBoEDcJaeIgqRATyGXIqcjIVN7ZvR0yQmwaFLZEFccXCiehEJXtV8oo88FoDvzMK+Gg8L4/iKeIBNd+uRTkxWeH99srMoGbMt6QjAACeaXi1MQD0TE+G4kJjiFAdO2ylM6wkyOc5BYQb1z3RqIYP6H7Gr+tKqdkSqg2f76rJNIJZDfgrJyXhiTTbzFBVyDQiw4UIabtRkAqt3bMOJ4c6mFGodRLH8HTE86H8TXKxbo7LzgTM6WMUDruhhF+Lp+9eZGNspwL7WtT7SC7T4a7CqmajVa7UF/r6XTUQI4ECsBBduSQ/vevf9dJeT4Gug1LxKUSsE+dtmSGywmFdVXIG2LNPngDSsYQEufrSfy2M9lTNvKHSjGH6Tlpv5Z5D++hFXv3QOhvmCNzhmdAeu1RSqiK3jOyYh2HBUS37Tdxh+ZyrOlYWiiR9KxXC9/DBhQlU1LVX2jdN4TALJhDnyGebZZVibXJGd9cE/Y1pkGGr1ZpZdlWkLBsSUSVlFn4WqyHNB1rcRGDqn00fggVZppeDPk75xmm0Y1GsOvEqh/gobIubupBPvcvCudcjmPcctR4fLyF6/iLnN8s12/z3Iudq0ZAALYOA3XwjkAwLnCZyFCYMUWuTty+Rc3bg4YrDHj5NPZ3V/cZz2tqCNzUulJcKLjBaK49ZBiRH3j4O/Xy6OyF+jFSiqyoy/ILNt4Xiqlgal8Sq+vIBvyGI35CJFT36YZ5LnF/+jYf3F2nUlUd8V2PLNAOEHCOx4TVw/fZCuwdbb1IaVxp7UKDX44wwDKd5Q7wNcCM6ELdPcCmULP6sqXRfaQh5c5avftjCP0Gw1oe5BBGrNZzjoAI2El895yN/7Sh7NNFZHLAS1CVQCsSOvw2Uqh0um4bw6RkId7736ceLOsCxUc0Dx6h7NS87HsorwZbkxxmpQaMwjlrhSOH0Q2KiKDs+NCF/v/AJG+Y872zp4
- N/Rg7yqp
- 401BN7xbB8HbUqccN6EywoYJ003BjHC990y4cTyTIDlzKYCXhqLK4SiMNPDmFIiPbAQkTNfl+fhOVRkm4WyfLaK0aaY2B7MsnmtfTexTInpSuFY8CGF7x0QkIXoIWUlQo+oFKzrPP/+FgF5PhNOxaUZ5rDKEegQydTmoeGjBFUScaYlCJp2z2knb2NjfS9k2fXLMfmPA5Q7gfZb/IGDda9bpz5SUQsT6Zzz2rAJRhzQ4opzUXEMy8JdSj540YTlqMPzGCkfHM3dIj5+FVKkOGz6XXd0+2wJ7VldZdzetMVL4ubRcEf0AdhU4ZwYKf8x9Y6o5B9rspwKXM4ML154CYS8Lj3kFVObGCO+BhJFSWjINcIZSTSBbYQzySQhB/x47pHJWvVwCx8gpvKvw91dfyULWTdmG8xx/aUT736OEYluIV1DeRR+BTLCVYNYIduqqMgUyWmgI2b/ygOMjf7C6PsHSQHBOyAw6IEShOiuVpdbsTmfkw3HaQta8gx28oCG4PqduP
+X-HE-Tag: 1776249315-292704
+X-HE-Meta: U2FsdGVkX1/NKo3udW/bhyimEHXFkst/FMSX6VdS6u3XZfZ5X9kP1qlrnAkVviBBZBllTer6KxhnL0Bft9OAqXoubjDpNbaWlAStoaOGO1pLSQM5qXpcanFAfhPcEdGV3xHJsE8/0rZSlxdPkl0VwwRomyohD4Y4q7XnO1acETtj9AKkObcXh2yIc0ZP1dm0PMhk9PzukEGn1r1wLAfcGxDwO7dZpvyfgTH99IUOW/t/zyZBYv6R3dOpy4p+ZAqMMD6zHOzHA3ghxnPOcE7oqF+2WlBY0yD8YJB3JxCRKTefqTg8QeTOYhKQmSbCnhnKHwHdbeDfmBRYXrLmMy5H7HY0aSixxgCZCg/qKRLwkqQsQT4fxMJTBGrabj9o57S8fxWheisuP5sE5vLpOYtGP8761jBJ11l/gf3vqx3zFYgYD1ljZLe5OLaFJdNqeIRkAz1dGIzdM4NKmod5WrvbWmd8ozWPtIXwBqF0FEhi1vlZ8zJxBDgjFuU/bR/oMVNzseAg8gdoYa7y2jfKo5dJ7blud0mUbL5hfMMmqrWZ6NvlKFo4gY9GP6N07WhtdnSrcE9Hac7MgpWKsQPirA7QMPLnp/jUD4hlA7U7cVch8My1AVPVaNsZJ219V32J/uZGxQ6tpsvrw/3j1Lhw+rB2AjhfArpvbBGlar9CbJWxEB8zpoce3cZYkd8SukN0Mm6jKAxOMfuWEcxvZazGPP7+r/ApKsYDtEQu4AzeASlfk/4zi4D/HmeD1lR6LsG3Udq6AeJrnKolmYJ5pMnOVzwWcJ8zHGZIDJX2OM0dsGO9CAjJ7Z43ZJa2XaP21FtpHvFCJMwZK3aCOnDhwnqSThTeBthasDRF8pNcbyY+Mv7YtdTR4LgdWiFYe+KqaVOJn69j1id6k6MYrbDTTgsI2XHiQ9ir3l4F+Gja0l3+Gvn0lS8xt4GuS81jPDML4xTw4WCD2yhAfaj6knJUcKZC3r4
+ XOZetZBb
+ j31OCKAiMO2HeODRbb1asGrdpcHuXVUsOOLVpLu+uwxUKUZwyoUoOWNkuRg3yLTa5AbTJ+13sztZbJBD3KpoQ//pteA01rAJt9/ipOLn8mdROQ8PZ4Zolbd/A+x9eFAkU/S1GKTDkTAVbt5lWQyesKJa7UJgnGdlqxIZC85HXXW5oN56S9oOYAZWl/TmAd8xX7VSJMU7w6aMyauFIc2yWlLm9q3tunuza9jnJNjANdR14d2BdpCwV6HpWIKLzJNL+7OLF1UBcqNMVIDj7yefRepp6XPdujqRR05eSdaPpdl/mnycwVqOHutZ0uQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,31 +146,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/10/26 06:50, Anshuman Khandual wrote:
-> 
-> 
-> On 08/04/26 5:45 PM, David Hildenbrand (Arm) wrote:
->> On 2/24/26 06:11, Anshuman Khandual wrote:
->>> Convert all READ_ONCE() based PUD accesses as pudp_get() instead which will
->>> support both D64 and D128 translation regime going forward.
->>>
->>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>> Cc: Will Deacon <will@kernel.org>
->>> Cc: Ryan Roberts <ryan.roberts@arm.com>
->>> Cc: Mark Rutland <mark.rutland@arm.com>
->>> Cc: linux-arm-kernel@lists.infradead.org
->>> Cc: linux-kernel@vger.kernel.org
->>> Cc: kasan-dev@googlegroups.com
->>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->>> ---
+>>>  
+>>> @@ -2258,4 +2258,21 @@ int pmdp_test_and_clear_young(struct vm_area_struct *vma,
+>>>  }
+>>>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
+>>>  
+>>> +#if CONFIG_PGTABLE_LEVELS > 3
+>>> +phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
+>>> +{
+>>> +	p4d_t p4d = p4dp_get(p4dp);
+>>> +
+>>> +	BUG_ON(!pgtable_l4_enabled());
 >>
->> I was wondering for a second whether it would be better to structure
->> this as "convert READ_ONCE to use pxxxp_get() in fault.c" instead,
->> essentially, to touch each file only once.
+>> Heh, while at it, convert that to a VM_WARN_ON_ONCE() or anything else
+>> that is not a BUG.
+>>
+>> I strongly assume CONFIG_DEBUG_VM checks are sufficient.
 > 
-> But will not that create too many patches ?
+> There are multiple similar BUG_ON() instances
+> 
+> arch/arm64/include/asm/pgtable.h:       BUG_ON(!pgtable_l4_enabled());
+> arch/arm64/include/asm/pgtable.h:       BUG_ON(!pgtable_l5_enabled());
+> 
+> arch/arm64/mm/mmu.c:                    BUG_ON(pmd_val(old_pmd) != 0 &&
+> arch/arm64/mm/mmu.c:                    BUG_ON(pud_val(old_pud) != 0 &&
+> arch/arm64/mm/mmu.c:            BUG_ON(p4d_val(old_p4d) != 0 &&
+> 
+> Shall we convert all of them as VM_WARN_ON_ONCE() in a separate patch
+> as a pre-requisite ?
 
-Good for your patch count? :)
+In MM at least, we fix them up when touching the code, and only
+sometimes convert entire files.
+
+As documented in Documentation/process/coding-style.rst, there might be
+some exceptions where BUG_ON makes sense (severe data corruption
+possible), and some cases would want to use WARN_ON_ONCE() + recovery code.
+
+All of these cases here sound like VM_WARN_ON_ONCE() is more than
+sufficient though, so feel free to convert them all in one shot.
 
 -- 
 Cheers,
