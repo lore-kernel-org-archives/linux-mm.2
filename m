@@ -4,97 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C633F43830
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 14:50:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62326F43828
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 14:57:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60D496B0005; Wed, 15 Apr 2026 10:50:34 -0400 (EDT)
+	id A37B86B0005; Wed, 15 Apr 2026 10:57:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BDF46B0088; Wed, 15 Apr 2026 10:50:34 -0400 (EDT)
+	id 9E8926B0088; Wed, 15 Apr 2026 10:57:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FB2F6B0089; Wed, 15 Apr 2026 10:50:34 -0400 (EDT)
+	id 8D6DF6B0089; Wed, 15 Apr 2026 10:57:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4000B6B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:50:34 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6B8F1B7FAD
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:50:33 +0000 (UTC)
-X-FDA: 84661076346.12.8E47DF4
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 97ABD180011
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:50:31 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EArKl0On;
-	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DB976B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:57:34 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 162E113AFB3
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:57:34 +0000 (UTC)
+X-FDA: 84661094028.02.A0BF817
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D190316000C
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:57:31 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZOqieyER;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QhK952uR;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZOqieyER;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QhK952uR;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776265052; a=rsa-sha256;
+	cv=none;
+	b=6Pm/XkBgrnQylGZ2ol45HZ2PtNGelusGbv07I10HZUkQY4zYN3JNn/aycuMo7kKH+HYkRP
+	3YuY896FXiBiVjK+A2frPHFJyFUcfcS9LaNpGmd8ZM+XNhCGQUYuSh3XEKjp37lOn8wOfE
+	gpy2plJLpJRuInu2PekYGmXl0W5MXCU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZOqieyER;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QhK952uR;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZOqieyER;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QhK952uR;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776264632;
+	s=arc-20220608; t=1776265052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uk0JsMQf+CVFWDP/CsyX5sUtLObhpV7jtN+MOYTyvWk=;
-	b=2xWLgxX1wugMAX5bWeiTAGsVx13rhIXzjdWQiTBddIyU7p8CGMTJx9yEEk08LR1D1VNdR+
-	/e4f+p89vDyASB+W74bsAvDgHCLklQUQ+VYp0CVnu+26j/kk3R0s56qqfOJdDx6bSWKq2F
-	Z0QVqWwG7AAnkoPJgFbiI8awDLbvltg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EArKl0On;
-	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776264632; a=rsa-sha256;
-	cv=none;
-	b=hzgiy4uNODAk6o91m97VnBWY5T2qb2AMURKYEQuPrF14Qv0tVZZEArvTP2Q0CczibVJtmq
-	0+IC95xjr90/4gZi3NzSh3QusRSIWWFZkqoPnT8UwkrxWvC4ViaRWDr8WL9gND18Y9Ct4T
-	1zCZjQ7xK4okxuFMsY1FCSiOh1k4A+0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Uk0JsMQf+CVFWDP/CsyX5sUtLObhpV7jtN+MOYTyvWk=; b=EArKl0OnAG9XoW3gQ9ptsyMcdE
-	b6gh6tQcpyIV8JguJZcbvXRbQ/wsJaYDXB0GU1SP7B1bOsZ8urKsRrJemFZjwxdWctEbvvyjCDbSR
-	wFnLNA7zNVO3RbjZQz7mIIO1dFwBX6AiXbK6oncdHs1kJrzufhytyiSparn7qGacnOTLFmsS066EX
-	wRDcF6P/59+TOksrTxfTvdBX4CgK94PB+IEe5dFi7H8mDyzKiFyd+LtwpF56AggnGniRVd1E/ZRCn
-	Tyn8MTq6BYcEE880k7ujkyDhl7loQbrS/8ZpnNAQx5QtXWHjwdUfXEkYawLopo9a7+JN7gOKd4Oud
-	uCcI9fOw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wD1GI-0000000004t-1aLk;
-	Wed, 15 Apr 2026 14:30:38 +0000
-Date: Wed, 15 Apr 2026 15:30:38 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Tal Zussman <tz2294@columbia.edu>, Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>, Dave Chinner <dgc@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 4/8] FOLD: block: change the defer in task context
- interface to be procedural
-Message-ID: <ad-hDv8QoeTmlPW9@casper.infradead.org>
-References: <20260409160243.1008358-1-hch@lst.de>
- <20260409160243.1008358-5-hch@lst.de>
- <adgJqiA0vivaW7NA@casper.infradead.org>
- <20260410061725.GA24667@lst.de>
- <adj6iibxNot-yc9X@casper.infradead.org>
- <20260415054407.GA26893@lst.de>
+	bh=dejBW0wqfl5La/A5fNZs8+yJ4zYDF/zcppXmo6s+WTg=;
+	b=O6bdTKtoscVbCo5jCL6Zc2yjaddCNNcBD06JS/C7oTdbR+kdLhJOLUE1F37OCdY1PS716I
+	iuzq40OXTH8vkWKnkm6PvFfbzK2cWLG6ftkljzpqT6wzeUYn8oaQQmSd/JaFd7i/up1ZC0
+	UQJopqAc17oRsLQnQPfSPkoS9eNSwQI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 03F8E6A7EE;
+	Wed, 15 Apr 2026 14:57:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776265050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dejBW0wqfl5La/A5fNZs8+yJ4zYDF/zcppXmo6s+WTg=;
+	b=ZOqieyERkstU4sq/1i1UVTKuxcJTiKftBbrzu+87cPT9jJCKFCJ8sSTA6HUssbcN4pUqv6
+	PT7beI1ZTsgo/Kik48NrZNvogx+ex2X5la3wqDIAqs4xTCZ7HNZ2/QJBd+qZSKHCl+NB1y
+	XvGfLgvHS0ILpEDkjJ46JbLmfX9RmCs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776265050;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dejBW0wqfl5La/A5fNZs8+yJ4zYDF/zcppXmo6s+WTg=;
+	b=QhK952uRnEeFAz0CfB0Hz+28Od4WreKz3F1G8dvjGLDWQLjrSUx/pz5YehqFOdxk40UuxL
+	bvjH1iuArfq6g+Dw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776265050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dejBW0wqfl5La/A5fNZs8+yJ4zYDF/zcppXmo6s+WTg=;
+	b=ZOqieyERkstU4sq/1i1UVTKuxcJTiKftBbrzu+87cPT9jJCKFCJ8sSTA6HUssbcN4pUqv6
+	PT7beI1ZTsgo/Kik48NrZNvogx+ex2X5la3wqDIAqs4xTCZ7HNZ2/QJBd+qZSKHCl+NB1y
+	XvGfLgvHS0ILpEDkjJ46JbLmfX9RmCs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776265050;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dejBW0wqfl5La/A5fNZs8+yJ4zYDF/zcppXmo6s+WTg=;
+	b=QhK952uRnEeFAz0CfB0Hz+28Od4WreKz3F1G8dvjGLDWQLjrSUx/pz5YehqFOdxk40UuxL
+	bvjH1iuArfq6g+Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 274AB4BA7A;
+	Wed, 15 Apr 2026 14:57:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id aKYJBlin32k2PQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 15 Apr 2026 14:57:28 +0000
+Date: Wed, 15 Apr 2026 15:57:25 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Matt Fleming <matt@readmodwrite.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Minchan Kim <minchan@kernel.org>, kernel-team@cloudflare.com, 
+	Matt Fleming <mfleming@cloudflare.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Require LRU reclaim progress before retrying direct
+ reclaim
+Message-ID: <v3j7f476gbj7b5rxigpcorxhaimg5dyhgtovsl5quo7gc33swc@7i4ypekahw5h>
+References: <20260410101550.2930139-1-matt@readmodwrite.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260415054407.GA26893@lst.de>
-X-Rspamd-Queue-Id: 97ABD180011
+In-Reply-To: <20260410101550.2930139-1-matt@readmodwrite.com>
 X-Rspam-User: 
-X-Stat-Signature: dax53wd6bb7yynij4pqjotxuax7w9suz
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776264631-498665
-X-HE-Meta: U2FsdGVkX187KdBsm3aeVmOECBmO7XAl1KiGPBQAPq3ihgyVnnUUdAUcb+mTonJUzCOMUgma8NrYH5V283MBsc8vDWsVgqTtDnDSeIs8QE9NMErRbrAaoGGq3Cpr27HRxYen1JRRRlkxxYEBC9OY+ChcQ+oOtZZqsjMDM9mc+nUz6mxbNUGsgLVDT8qoHHZzoQrg20fsM6vhz1wuHV8yHnbHu58DRy7QQxgLS+mhznJ51ERfIwCRWWTulWh1TAUf0aMEQhF9mt9qJYhOaIOQduP9aTvP2xkrIWLR55vj0ZkDnx+FpnfFnRE2BetLEljTJAhKm/Z6V0eHNKK4F5TQ5qwFsf4sK3Pci8JukJ9n4UN2z76z+J6F2aKFmuVt6q7ryH7e0PdvgRKxA+p107aFBnC4TE2zydM3GjckWR7gsWBwZQ1+MelOMzucAz45h/M6He8/J7S313cgOl0ntFT3NnOQztAyZiAbGb/89t4icPIlwYVw2ngJoBVLkvB5iqify2lXP/k1XFMnj7ycsH9Pes7LLvH7ViLI5v18mEdsyeNwhGYedZc5+yknHaNgnhs7B0pzIcFtKNxFUDb6aHwZrVw31FV9yyphfy/jV3KufrTj/+EW4bXtbdUW+L3xGkbRZmJCgoQwMF+539q2JyxIUQ7x/F72gLmADVdPsrYgxvk2ElBVkN0CbKKaooUra25SIXiEr3XPNWIvFAgrxl6xFythqlCIjxBJBSKpJU6a/eX6WGBSJBdNpYXkHKn43nOutwWqbmJVym0AHDABfkto7Y1GfvriUP5uNduBN763c13fd4ttgArlvw52Ma9C9bIorZ7lyKEkN7H9NE4HabO98SNdBm7CMDXeK2o2dYGQGIAVQih9/Qgwhgp75S8PvI9OURKZiKkHGI84S0CIiA4Rtw8tV0n8zaanvsbp1Cz2JDwpkf/DZzOeoVn6OHAXLdmMhfSC92P40zjLNBxJM4v
- 6eiFy3Cp
- awiF9oJMQEQIo7WhPFaazWQLujabe2vLT+HfKTAGTZwS/Ce7+3vK6cnPp5FGxlD4Dp1CuC6CkweKgt1H77BprqSHL/7NQ6yob2M4Uy2QTiPWZyRaS8X1RSMjARBux6cLLSEM7FBASLBTiIk7XRC8qkksVS+lm5lzgcGf7orvUTIvDrIMtRq3X5roYJl8Mo8CoPXHwrQu5+7zaNWg3xUcTyLFKYQ==
+X-Rspamd-Queue-Id: D190316000C
+X-Rspamd-Server: rspam02
+X-Stat-Signature: sqwq4kym94ocn9aqkgmjmpw7zkciyk5q
+X-HE-Tag: 1776265051-413811
+X-HE-Meta: U2FsdGVkX1+MP29NW6nrKlwnyiWy3yFMIegtmJiI61G/guoVGiErVGrxLL48T18PaamU+fxk9VFwLULmDSaonNC/RrSWRfzZw0PWlAYD2ZbZXb+MAC2TRJ127HAvLUUCSuiMBo98OSI41K2S8/b2PHKx0BMCA7YzlrRuR9Py0gu7/L52ElI0U3hwY/35OcDvddKCo4m/+CzkDgxK0DwbY2cUbuA4nm1JsTQ9qSNdc8VohBD6vDreOl8AmSsB4ShS+SmFUDTC3c5MUESKtmXdf1YHmWkxuzr1nRlOfDqHlfjZGPz27MgAYrjTh97L//oFO6RjiB4YMs1BkRz20bmwZ1yGzpuGwie/PzvUlGhaAmHOrkKggOLHvEQ1qRU/cMGoFVz26dK49knWF+VdlVTIle77eKZKSgF0Ovi1vOXWyTZLB10gEr02U1FizMH9kR81B/xvbzcc0+RzjHaAiHPbOVjIkYwSGezWaV0xuj5p3BZ+B6bpSoM3r3ctE9zcnfBJJkYFlDwB/0DKmvFj4nUfTMIc5wjMpcPYOhgyFJvkaPyuD0C8J24pp8LzqStQMJz/xvpAyS4CO4+NEs/BZtiRxxA0FX9Cr92ve4zd/M7B0RwQYaC0wDCB1QLyDJnpdY3zH/L29DH6XKvW5pV8hB24ZsjEJraSmswQfb/21Buk/G1HYNSN3SqK8c8df+FhW5+TuX8HT0JB9r9AV7R7d0HMOrMDrhMHot86IWE9VAZKzVVeH5NF8jgodd0oTe3J+H1O1iAQZHPD/vAkVWbxrdBAn/nCYMZClj+ySqSsZhYM+xT34h2OASnaB0FgO7q7JVSpY3v6vJfV9M+k9GxM/DKFTo0EwHPmzbJ12gTfoNgEwhWQTDQwTAMcaPSS5zU9hgNbCMOM7t4HiZRs/h0gPa7ab2I1Jwf2Df9a0Rb7k+HIZfkNbUTdOi+q1Q6OWW6XAhqxBNLKNdh03GDlcr/nuUv
+ mBZ/B3co
+ guwaNg8YB4iWD1i4FSOc978BIx7lDnU8Ib2HhdpMf9K1eIIu9sQVmdz5y+ibUSZivSTsFBVBcGrJZlcP3MMJN4/XIzgNPgFoDFsdzudu5+R4XMHNE/3JSchCGBDHDnctXF/dFXKc5TmhGbGEoRYHs5Gl1UmEFhsk/oT0fJO399GS2MSCZ0uWeA1G9v2iRPdanNkHpAu5DKwtciA5c5SnZCcawTBxr3GXvh6qFJ7kfRxExCIjM9W16m3mgZc3axGvWZMSA1AfoULCKhRNRu64XpSFiZY25pGBy3apOPnuTVP46DvX/AAyRsKu8ynV5Ue1AFNDGhr8qhSGsfcI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,22 +142,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 07:44:07AM +0200, Christoph Hellwig wrote:
-> On Fri, Apr 10, 2026 at 02:26:34PM +0100, Matthew Wilcox wrote:
-> > > Yes.  On the other hand we can actually use it when we don't know if
-> > > we need to offload beforehand, which enabls the two later conversions
-> > > and probably more.
-> > 
-> > I don't understand why we need to remove _this_ way to defer completions
-> > to take context in order to _add_ the ability to defer completions
-> > inside the bi_end_io handler.
+On Fri, Apr 10, 2026 at 11:15:49AM +0100, Matt Fleming wrote:
+> From: Matt Fleming <mfleming@cloudflare.com>
 > 
-> I don't need to, but we'd better have very strong reasons for two ways
-> to do the same thing, and I don't really see it here.  But I can give it
-> a try if the consensus is that we want to way to do it, and we're not
-> worried about people getting the bio-flag one wrong as we could set it
-> from ->bi_end_io, but it would not do anything.
+> should_reclaim_retry() uses zone_reclaimable_pages() to estimate whether
+> retrying reclaim could eventually satisfy an allocation. It's possible
+> for reclaim to make minimal or no progress on an LRU type despite having
+> ample reclaimable pages, e.g. anonymous pages when the only swap is
+> RAM-backed (zram). This can cause the reclaim path to loop indefinitely.
+> 
+> Track LRU reclaim progress (anon vs file) through a new struct
+> reclaim_progress passed out of try_to_free_pages(), and only count a
+> type's reclaimable pages if at least reclaim_progress_pct% was actually
+> reclaimed in the last cycle.
 
-I want to make all writebacks complete in task context so we can change
-the i_pages.xa_lock from being irq-disabling to a plain spinlock.
+I think there is at least one problem with this heuristic: you are counting
+everything that hasn't made progress as "we cannot reclaim it". When in reality
+you can simply fail to make progress on any given folio as e.g it's referenced
+and we want to give it another spin in the LRU.
+
+My theory (from merely reading the patch, maybe I missed something) is that
+a pathological case for this is a lot of folios added to the LRU in a row,
+that are set referenced (or dirty). Say SWAP_CLUSTER_MAX * MAX_RECLAIM_RETRIES
+- it will simply OOM too early.
+
+The other question is whether this effectively solves reclaim problems - some
+hard numbers would be great.
+
+-- 
+Pedro
 
