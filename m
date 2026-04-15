@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C70CF9D0F6
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 01:21:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DE6BF9D0FD
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 01:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B64186B009B; Tue, 14 Apr 2026 21:21:02 -0400 (EDT)
+	id 102D86B009D; Tue, 14 Apr 2026 21:21:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B14346B009D; Tue, 14 Apr 2026 21:21:02 -0400 (EDT)
+	id 08E5D6B009E; Tue, 14 Apr 2026 21:21:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93F9F6B009E; Tue, 14 Apr 2026 21:21:02 -0400 (EDT)
+	id DF9DE6B009F; Tue, 14 Apr 2026 21:21:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 797F16B009B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C71D66B009E
 	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:21:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 404DA13A6E6
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 72B7813A364
 	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:21:02 +0000 (UTC)
-X-FDA: 84659036364.08.DD10904
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8AA9E180004
+X-FDA: 84659036364.24.D500CB3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CF5B0A0008
 	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:21:00 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X11PWJG3;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ojB68Fzi;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776216060;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vEGo5DtmWWGdgvsVdHEg/7lChf+E1z9sjR7zEbplfEQ=;
-	b=qOK5PZYVe4WgRQaIIeRdfrH8y8UOoXC63PvWfLWPXqUUiFQ2Hermq9W1/Z6YU/giAkt20z
-	pUOddJHRdGJdRGhnBmtB2kZpJ+v7i/mMVaeCZp9ZAbwyTxX3UqgUJo3ZxXgeEm8ZK0g5Ga
-	HrdBHQV0XWxQLisUMYUsFS/vixZu/6c=
+	bh=2Vq/I2zyRgT7cXYPOJUbUoi+kTDJ76oSHr6p7iv9q2M=;
+	b=taQDyYYucVHE8K7sa83LBjnutO34iZJeWN0NiL9kFIMOMHG8+nh7vOR9tp4ZY1KJqXM945
+	K+Pwb1DsRa8WvAUje4rjAwyRkfMm+oG8T2j3bHyANtwif/Yy+VekYDF2C2UVO1VsQim1M9
+	EWFUivwef3wjcENV0Jo0RubC2QBiVZ4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X11PWJG3;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ojB68Fzi;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776216060; a=rsa-sha256;
 	cv=none;
-	b=6VjfonaYn9vu5NTOcPJPJNATZOoZpLqkyD41iumZIplvOKABtN9nH+2T+PpDEEajUPq46Z
-	c49VWf5jp3lh5Dvu5c5LFiMhnorvOHi2Tf4jYO2UIhyPZDcwJVZvTWcVVCXY2qV/FchlHs
-	1+l/GHqcJkds6sz1ZPuBOwoDgLrdALc=
+	b=5JgHI/DkbXSAO1Mi1t9GszsSWpF0hwuPIrD4JnEXtU5m+M0l7WDULWrwwyY5yT/WPCf1yB
+	6zeb0cnBZOqzrWTcN+ipbmsoqbXOOz4yEsWJ9AEev59CIamfFFZ+T6v5WuYELLqFkjaBAU
+	OAnyY7Lysc0R8g7KuQ7OYTXjWpqhwU0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E8651600AE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 12CC74446B;
 	Wed, 15 Apr 2026 01:20:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8B3C2BCB3;
-	Wed, 15 Apr 2026 01:20:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E061C19425;
+	Wed, 15 Apr 2026 01:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776216059;
-	bh=DstdtJTxjDChhGDlgpo8hhIle9ABxcUjhKJsfY7hfhY=;
+	s=k20201202; t=1776216058;
+	bh=Da5/SEejhoG/cyXVJpn39CgULzBmR9p+dGF7QD34w0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X11PWJG3DoyCdwo0kmy8K1QumXjfCBzqpVmpQ8z6UHj45Tx7uZkXnsrlkqQKR/fpA
-	 vKiVuxnMUpslv9P9F/VaHo89XVjAcCJHnRVB/HXTBK/9HWJS3d9Dm5+HDAAdmhNr1g
-	 VfNO3aEC/3GsPS5oLDVCsgAlUtoh2uHmj1jx2z1OAsc7GYNrqyT5WJJwCxrfW562mC
-	 ETt0+5MXhtpvii2faQu/fIRzhfpdyen8YqDfgMf8667O3sqp4a4/oHRnaG0R4Qw8vX
-	 uh11VIHnV/wRdEgo5OI83UclPt3xpe2ysGbpDHLX/iXFt/jUoiJbi0BbSSdNbTHb9A
-	 TDnP20D5ppmFg==
+	b=ojB68FziWg70XqRdPmUGGSPM9jWyeQ4u7trrbqB1Hu3t6tG1YQXVtcaenU4cBf6ra
+	 zUzQW8zSjRdN0UxfF0dE4bXQD5A/pAhUKi1iX32c9xDlHQpfyYw5OIbdJOKTCHMTqS
+	 Z7bAmSg0KDpdRi0lzWxYKehwY3a20/hfE9GAPuUwwpdvGOaX3/tF484sPWQYVAbfkC
+	 1vx/1AYP16HMLhc9UnI7mK9m/DLOM3toZXrBHus3FPoNp/jjGZ1kkV3vSVE48t8gFU
+	 qDx2S0zXE+oRHQ0+UPG0XZwmnWdPHLO4w3h9E45MQKJkt9MbnPpMnA49bHqcmrprBC
+	 fXrHGfeALiHqw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -80,22 +80,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 7/7] Docs/admin-guide/mm/damon/lru_sort: update for entire memory monitoring
-Date: Tue, 14 Apr 2026 18:20:35 -0700
-Message-ID: <20260415012048.76508-8-sj@kernel.org>
+Subject: [RFC PATCH 6/7] Docs/admin-guide/mm/damon/reclaim: update for entire memory monitoring
+Date: Tue, 14 Apr 2026 18:20:34 -0700
+Message-ID: <20260415012048.76508-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260415012048.76508-1-sj@kernel.org>
 References: <20260415012048.76508-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: b33ns9zpw93j16zuebppwedtp9koamwd
-X-Rspamd-Queue-Id: 8AA9E180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1776216060-833361
-X-HE-Meta: U2FsdGVkX1/y0V/0v/is2YfQFv70vc+fcHkI4EE+eqFUp5E5bizH7Qx0K+YEZYKhkcIPD17Z9009K8Byvn+JRjg4nc80+yh1ws0m5wPONOAXSbBgPAneP3BcObtGBxqXeLGTJgrg5s3LpTeIkymU1R/L+Ei0qxir+2c63NhDyMLRS7RXvO4dZe+/IKnXY7ef+SzAJPYBwj8nYdY5HqGKem3otp3/+5OrQamYZwOfXxU4kVOEWfcW2ZOS0BwvP1CJ7HMRiKORjozn9PbrS5zpljrjUhxoZlGg4Sb6r09ma3glNPncd76Vg3Z0I4Mf7IODWY15tSLptAsSeqfyJQK2g8O6DKwYp7lMZd9WMH9+Hyiuw7WLxD8DqnMXqZUVxXETuMm/u4XIHw8dn9zNdIJIWNTh0423TZ4xdgDMPONgmycVH08hPs+8ADvcqEoWxrrZhkS5EyOhBfCyaJ/szdNj9iPBeVlksjxYpC7/m/odvP8e/7FGZ84WBXxH1ZjZkxioVfgI9ZoIZ6V66DMMrpRh2C5IYzLyS/uyUt33EU2mRrVuZb1jSDaR+eZXpvNUVLBIJU9PjPy+yzc3tSWkQj2fWKnB6XB3I9uwh6IRvZgMKBFA+YVHW30bEGJK/4KGNUpDKl2VhG/T901newNwGmi5t+e0Uqc0icRM5pdaFBdoMQOFOkDGXCLurJp3ANg2a4p07wWQBKNtg/z8Z3Nf0nYGjKTByrwxl1jP9NTt/43vD4rluD5Z/dLLGO+sNAdc1BZFEeQs1z25GlAxZcBNkNpCBQeWZC+kU4WVdTY/VrVKEAdOhZvKWQc+fAyssIYygAFufcwmjjcu2A3t8yPBrXreQ9ZxWPbZbrNsrCWHxUIEuIBfOtX8P1ZLrsMU+4wvlRPIRKLQLAMw7gHRKgLTBGS3SvaesgHz2z9RJsLV+pfvd78swwXDKEtNXMNWJS22i5oBHVz/U01GsIbaBdj6HE9
- r0WYZaA+
- Vjp1LT5N6iU8KB4Cyo9viQmMjqiQCLi3pfFfCFqXZG8NUGzeVaVW37bZ4TZUTGKcpeZFEhR5ULuv0TG7fuUQz9kCyJw1dcO0yiq9CeKCyXKWqyCqOgQSyqgQF5JswxIJaW8kC9G8Sif9xjAcWiWSss3Sl+3n7yxcyTaFmG8V/DhAhqP7gZ/qO7HQzFI7mSOcHdB+fzqrH75WK7tLrRRXLJ5+HHoFSdPkZRcBpKaBoDHUAeKzpLyDG0v/qmwbbGUX5XW+x+PUojzP0DQZP2z8SqQ1Cfw==
+X-Rspamd-Queue-Id: CF5B0A0008
+X-Stat-Signature: g9tedex4u81kjud559m1pwbtb9z5ecb4
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776216060-262053
+X-HE-Meta: U2FsdGVkX1/NBkFXeefbauc88ZB/hEGFqRwfNd2nU0E6RcltuEVhNDUvjzjcHxcQ11nI2mYKmrds+xMKdYwSpo3HsNuDllioH/FFLaJFYL6MxdOEol1hprP+fdrR+kwErEH540eBscS3X0vpFvFfZra62fDrdaWAiSlysMjx+IcBXqlwde/ZWb+ny3v6LHueEFXADmymrhFWTIQVV2R7UgXGadMQ7p3e6NNF4D3uJtuk9Y5z6ezCWQVyPLn7mfwh8D+EfXNDGmftP5eH6MlwlTXCh6/lMkmshikwp25lW3N33na6Us+A/28vUxM9OnwPszOhyTI48mptBvqqh6EqHnC/dJPcXQAH2Ph+ww2dUmPiPE9jcIjy2DOUYIlQn5a9FqVixbZbVvdwX29/7iLzf+jQbvFa2C7IpRqAJJBKHvhjx6CZaQoxfNBMVjyPUDDLcdcy45ZF2+cCoKN31bE5wAtM1SJzv6e57FFkpTWkOQKal9T48FWYgYEVnPPA9OOR92p9j0d0KLnhPynZImjcKfdN7wN9rn0WrmPMUdqJ/xagPxUzdUFqcSHh1yi+2Er8EZr6gWY/9w/2tfEFDr6Gj8Fi3BHPX96ljWzbXgUd57nLprK/l2mXNEvZaOI4LBISNyXpCMSfg97hwHWY9l6sZJ88szdPSWPuQjvBdr1B0MNQEq1wc6JvYxEnStVLovd5fNcS0FIxmQFKdmv0CXBPlA52WEfCuro1pk8J5B5kbHemCLPLRv7n5YKdJmwCWrE2dv1SoEqvKzIpvNDWbHQ5ymIO/isKidzEMp3tPDlQ2AJk0DHtX35ECX3virrR1JlEqv3PUuwUv4cJvylbfAibrF3VhbLavFGyzdVmGVEuL+EYlwojM0N01NvoR3/rFaEwdMlVx+iVeyrVu3CTqgoE7jYKk6U/NR5e8NZRimR84r/oZy1snpF1/wiTOB9rTOXqWfYySmq0T96yURzZO9z
+ 2vuDVDPq
+ BkbbX6asKwFrSGE2sasg3aI2cvMDUb/jhCeJ4AOQD33BYpoaPhilVvN7GM+6VTkjq5P+jMe8vxyCfQW6fd+rdFlk7zEXNKooDkSnrFxMaNipyet4+TKlY7n7kwrCp5JsF+2e7UmmZE+Q0rsZzidwdP6ncAdUitPOPxs7F3wlUj+m4z5r0JHQ/gok7TuKunD5v5QjKtleS0Nk7eDKQCuuHDEF7v2zO835U5gv90SvNHGrmHZs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,34 +103,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON_LRU_SORT usage document for the changed default monitoring
+Update DAMON_RECLAIM usage document for the changed default monitoring
 target region selection.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/lru_sort.rst | 6 ++++--
+ Documentation/admin-guide/mm/damon/reclaim.rst | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
-index 25e2f042a383f..796b0a028555d 100644
---- a/Documentation/admin-guide/mm/damon/lru_sort.rst
-+++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
-@@ -246,7 +246,8 @@ monitor_region_start
- Start of target memory region in physical address.
+diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+index b14a065586271..ec7e3e32b4ac6 100644
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -240,7 +240,8 @@ Start of target memory region in physical address.
  
- The start physical address of memory region that DAMON_LRU_SORT will do work
--against.  By default, biggest System RAM is used as the region.
-+against.  By default, the system's entire phyiscal memory is used as the
+ The start physical address of memory region that DAMON_RECLAIM will do work
+ against.  That is, DAMON_RECLAIM will find cold memory regions in this region
+-and reclaims.  By default, biggest System RAM is used as the region.
++and reclaims.  By default, the system's entire physical memory is used as the
 +region.
  
  monitor_region_end
  ------------------
-@@ -254,7 +255,8 @@ monitor_region_end
- End of target memory region in physical address.
+@@ -249,7 +250,8 @@ End of target memory region in physical address.
  
- The end physical address of memory region that DAMON_LRU_SORT will do work
--against.  By default, biggest System RAM is used as the region.
-+against.  By default, the system's entire physical memory is used as the
+ The end physical address of memory region that DAMON_RECLAIM will do work
+ against.  That is, DAMON_RECLAIM will find cold memory regions in this region
+-and reclaims.  By default, biggest System RAM is used as the region.
++and reclaims.  By default, the system's entire physical memory is used as the
 +region.
  
  addr_unit
