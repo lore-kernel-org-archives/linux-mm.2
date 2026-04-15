@@ -4,99 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 413A9F43848
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:59:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F2BFF4384D
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 16:02:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A45D66B0005; Wed, 15 Apr 2026 11:59:00 -0400 (EDT)
+	id CE23A6B0089; Wed, 15 Apr 2026 12:02:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F6096B0092; Wed, 15 Apr 2026 11:59:00 -0400 (EDT)
+	id C93616B008C; Wed, 15 Apr 2026 12:02:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E4956B0093; Wed, 15 Apr 2026 11:59:00 -0400 (EDT)
+	id BAA2C6B0092; Wed, 15 Apr 2026 12:02:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CE816B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:59:00 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 015A28BB5D
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:58:59 +0000 (UTC)
-X-FDA: 84661248840.28.19CD004
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 37280C000B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:58:58 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0i33bJZ;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A76026B0089
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:02:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4BAACE42C5
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:02:25 +0000 (UTC)
+X-FDA: 84661257450.14.0236588
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B9263120015
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:02:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=H07As6TE;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776268738;
+	s=arc-20220608; t=1776268943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O7rgm7cxZaadd6+va1WKqLPVDJoEG/g/j6EWoeXD+ew=;
-	b=y/AUDPiCNqxnE2xhloVpZP4eEfvT05z0mKjt/CeUbXHA1WN27qzeh3rEsjfS4HENk3VCbe
-	kscFiQUDLszZaoy/Unj8k6MpWkQ0SpEXzAmj3vWrL/oGzI5lZug04zgllszXLL1gA+X7PS
-	XQBj7v93+NOuxLtOZ8bh4Dltvnn/ldA=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=0uQkOCEfU0yDxogfs9BHArbgxHBSWXVDeRx3grpptoA=;
+	b=RcQ7cC+XjMdsP9OFrjzWiaLPD9aiyyRE1Fd+OOMROsIb7E2KbfWChOFK1Ycfg3+nBzUbiW
+	3NEM0v8ATQjjlWucnkiIyuob/Y/FvG+l4733eb6lBw601Agx7aVThBwZgNkSEyiFaSSYd/
+	39zhwYgvmBA0hKFWpLnL2k0+fpZXOQw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H0i33bJZ;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776268738; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=H07As6TE;
+	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776268943; a=rsa-sha256;
 	cv=none;
-	b=PonsbXYp6VM3EPqRV6/482ncmXqngRo5XgpyaoUWFEAKOhFcwGH+kZIVd4Cozfu2nS4Kuy
-	vJH5uRZEGF64wNiQ9BbkklrRpcsTESKVl4HkxCjB1o3IsV/KmRGxxzisCAuiFANqV0kLux
-	RB1WrwPYDSjpW2Pt4cWk/yRcXove4iY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3B94F404B4;
-	Wed, 15 Apr 2026 15:58:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6368DC19424;
-	Wed, 15 Apr 2026 15:58:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776268737;
-	bh=y+oq4INIxgbLQllztrJYjafmJkeuG9Q8awCwafdTv18=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H0i33bJZOnaxzNBKISduWbARJbUIWH5tRHgMmNW9tGUDA65uuEWbQytdZpKAwleUm
-	 2R/5Xj3BYQt06J9Pt8r1Umg7yauBzgLvmDnjAGySIE0ayUcHQHxeky8KavBuS9QUcs
-	 ZF0KFAz/6OUD0nQ+T+f1dJDvWHdhhTq8+PDYVBnlLr4nuTkaADeTEMzJXYlVO7s3AX
-	 o6fAv2+7lLuamfYG62wd2tnlRZNPn97bj0RSkuegYp/wVfhHKD0B1KQpV14gm4I9da
-	 BQ9hZk46xrvcn+0wl4O3LCZCwKYjlZ/63x5kdPTeA9qbpk182SsVzVmouMLLhLdgnI
-	 itjpqaY6gD1Cg==
-Date: Wed, 15 Apr 2026 18:58:47 +0300
-From: Mike Rapoport <rppt@kernel.org>
+	b=K+6VeqlBNlOnTysTIZCz5rB7BcFaOFSjCGQKnkR7KrlgIKHafhU1ZRYzUaMbhsn0qMjQL7
+	toZjxeQuA/T+oLYa5xtw2NtVWco5llQgvaELMaI0h3zTabGn+p22GEHIyeoSqtXz+X2FTg
+	hvBpXIOtonaXJPsmhC7ioU1sAqPq+x8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776268943; x=1807804943;
+  h=date:from:to:cc:subject:message-id;
+  bh=gcWEs+rCOf8VGnANuBpvPLCpsCBVQARvBjgn3rhoBEw=;
+  b=H07As6TEOtv2K2AGVlESfs9qUdfjrw0l6HZhBemfchDD3seUYLb282YF
+   dbT4LcCN7YyelfMVZFLNDW4bXJfUoiv64YjeumB0/Qeo9P3oUmCKePdeE
+   ryeu247NzEVImlsnkh2AWroMXgIC/W73WuV8N8dwurPb4ef7qtR7FZnLt
+   O1Lq0zpOkDKoIZGx2N5yTAMpYJZM1EqfuiJM/j6i0JHntaS9dLd89XInO
+   ZkBiyFmIgY64s9F2Gk6W1duhtb79o/cFL6oFvwltVI4mtnLz45h6TYb5b
+   JnZ1qMI2QQvHaYnuOG56QmiCYWX7LRqq/os/01ZgyNRf7qc8SSRNISjhJ
+   w==;
+X-CSE-ConnectionGUID: yVmPJA0BS+Gacvaz81YD+A==
+X-CSE-MsgGUID: w94pzghcQGG/NWOCbnorZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11760"; a="87559624"
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="87559624"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 09:02:21 -0700
+X-CSE-ConnectionGUID: ls8atoaGSH2jPpp1to33rw==
+X-CSE-MsgGUID: rNN2UEoGQ3+3lPJ2897XEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
+   d="scan'208";a="227292592"
+Received: from lkp-server01.sh.intel.com (HELO 7f3b36e5d6a5) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 15 Apr 2026 09:02:19 -0700
+Received: from kbuild by 7f3b36e5d6a5 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wD2gy-000000000fC-2Tye;
+	Wed, 15 Apr 2026 16:02:16 +0000
+Date: Thu, 16 Apr 2026 00:01:23 +0800
+From: kernel test robot <lkp@intel.com>
 To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] mm/sparse-vmemmap: Fix DAX vmemmap accounting
- with optimization
-Message-ID: <ad-1t9sMWBqmgJ3g@kernel.org>
-References: <20260415111412.1003526-1-songmuchun@bytedance.com>
- <20260415111412.1003526-4-songmuchun@bytedance.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415111412.1003526-4-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 37280C000B
-X-Stat-Signature: g778nuqstwkpsqno5k1o7pzcw6exioi5
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 159/160] mm/sparse-vmemmap.c:766:35: sparse:
+ sparse: incorrect type in argument 1 (different address spaces)
+Message-ID: <202604160027.KyDdtIJG-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: o1xhck548i6f359n7hatmrnon6836u7s
+X-Rspamd-Queue-Id: B9263120015
 X-Rspam-User: 
-X-HE-Tag: 1776268738-918629
-X-HE-Meta: U2FsdGVkX1+U0slhgAYt3RwDEpv4G3HwQ130aSwI1hLVdpAPO+kBv+gX5cxZG6PjUHFd/9EJL/YEc1ExL/lO2DmsooZCPNNLdN7GQKZ77gGZjyxEZBNBbYbpqBsDDyEDGM3JvyXYhL/AnRtZNYPfm6PhHvbdItUNzoDIgLYoNYL2YAZcHlZaBopwTt3Z9f9C0gI+PWjIIbSJLkxC7MsBPjlU/ybtpeMM9/C2zsS5Xc0Io5p0UC5rbc2cCZMXYk0k6oSEDrya7ijN23rdFcaROSGjxKWsPL6INbQ1NxsQSMAKA2Ur1eEVSneU8Cre3Jzgk3OSxBNPu7+r5jaBIKBqTGWP7HHyzYVIS43cD72GaiVgj2JVjjV4FLE9A98diVxjdDqJw9Mb126MVNTpAYPyPSJDDPCSZ/49PnaRKQlsVH/eIzcR3S6EdusLPWhbsPercgCdyJuvlwftrltGjJAt/sLotDN78Ql/j5ncMDrtsMwXmycsVtue7Q6cNmw9hoxR3CV6PH31ivtG8/sRaOY1v4h/5tPlbu4gdPjmpP2tZAr038RN9EILpaVlRWdW20YiRnr6IPPBXFl4jRVrY3PJxhjIezC7+nKLhwLJs3rYr0fkbP3fAdF5XR5WLSMOKJvlh+oPbc6/hWuGYDF5zDE5S03x1PlxJ6BwKDTj1zazwdzkuDyRi8+HuKVEvfbpD6cyeRjEj78es+kV+oo/s4iHGsCFfhSrOCOgkdlC23zV26TfxSysXy1nDOp3shSzCTuRpfwlgFn7dLmwtNl84YS26ltHbEgyjZACutAtYAM3GXVq+JJz0zH8h/+Enqbw42FP2YwbiW35HTjX/mr64g0rsHY7Fm1xXU47c/a1mpszPwvTuGxN36bAUUBDO97UruzvyfzLEaOgx6VJQPyZ/7PEF/Zo6sVDFq7j4i+rnc4Ohd60ypiSDu5JKjaTw8fVbnC716FAGDUvoQqcM8wDOMZ
- I45tbk9I
- ieca2RoqtJlZum/8xxY7eMAwXgjNKNKWV18gwVCi4DABBOji5meY2ttLJKqnZGbCcQvXl/I/FL1TLJ2DeLD0eI3IVB4DpepAdPAPtfcq0qACMSAvEhQki8+podV8h1Ui6enrpMM5QR5hDGxhmxj8tD46SpfJv98vzysc5FhG76Zaa6p9Cx+0euhfgh3VziZ/5A18t1XfVEoqoVzG9dvyt7i4pMo/jm5C1GtGMOlJJAkbPuOTiVnXFsIAdVRb8y/fpuinr8/C0FqJxKssoAadXriUttJ2tPIolFLJxZaqr6GDhxpw=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776268942-272176
+X-HE-Meta: U2FsdGVkX1/mZmuM8vAYmuDPExMC2xrNcjJZOaRUm5B4N3Ekj8Uum+1vFqBjNvj3R0Rw0Ml1AkA1I+hHmO6g1pHdfk8C4CfRqn9R1TKhVIJSCPgh7vUyeRYZdF/n8li+pKKmr4xfnNHUmG5U4O7C9qWFUeNRNEwJ1oDLndk1WfVVRrbO0H1nmuEwKqnm5InSS21Fy8Bek9ad/GjXPHwZ/uzr3AFnDFq6EV3rUFqrDrZ/4Euz8wwBPKgIzZKjUc79dgbzSR7glAfLUxuubjs5BgtwzXch1MYlwU4OgaZWRIxGwpMipPHOXFxpBw5Z2Sa1GKJpoaLooBydl4HPHhvVfTW6fA9tUfYymEhzApI+jW6vZbK8FhIDA0uaAsy9nFnsDt8XHvbzJlfTKldSZtLcAdOlsGu8sPVtbhcs07DXbxwDHVp9v/59ZGNxI+jDoko7vcB0NqxxPscEMcZCiRkLOwQhwFlA0PZfHFZLFPb6RZV50BB5MowDVEJ+A7xOcWFsax8YPaU3gCx7El8HVtohWuVo0fJoCwi7093JP3j1FjR00v8Psw8rn7PPjrBmhUGdbCV/fRuh+0SwoZeRIfto/gsNqTh2mTCh7lAdy6423gSfDhoVvLqmhcK/TSxW+LH9GuNcYPRiafgEkZm2jWcyMrd49vY8PVnsN3Df1YeCDTLYgFIC6Qv7AphX/HDjNeu3AunQ3JhaCfmNU5MZHXxO5VydTOkuXYIY0I9CAUHCaGmwAQzHVG65krJvcnyZISOl70VHbrB/J5oxwxtzeN28SfsBKoZ3XEdeKaKjDtJbAaMaU6DhqBqB12LryPoJUEOzNx/CHyQvkLvxObtUM9EittBO1qTasBv00bKxxaDDj16K6utKc9dWCVi47iIBVheJMk5ipoU5zHZrBRgl8JctldQ4+8YR/fO7nMo6PJ2RSJRQeP1yrksTE9Hs17wB8JsafRBszePgLnIkWZGhQMI
+ LkK4IuDn
+ J0F9RP21lUdp+2qUt7O58X1VhSpCd7Ht8VbtBLcGBP/G1lVccge6ZgxreaD3o1QxFm/Y2HSJPtj5sKoyggKV9P01RK0lMmohRh6RItFYmUOSBiAZ0E00LYq1b0yEpRtsP9Ky+gvszhmXa0d2Yy8CPn+wD8sEARSDD7YG2whyGQllp3Dr4MKiv+kxlUpEJPBOFSiWdi/qh5o5tmYFqUIpEoaWTZ/o2jifjhyLm3yuOCeBjZc7G0HGESK95tG2Rco3kvuuMJ3rWbpgBMJt/B3eVcV50SVA3BOoAEunqSheJgJ8GrYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,97 +102,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 07:14:09PM +0800, Muchun Song wrote:
-> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
-> counter in /proc/vmstat is incorrect. The current code always accounts
-> for the full, non-optimized vmemmap size, but vmemmap optimization
-> reduces the actual number of vmemmap pages by reusing tail pages. This
-> causes the system to overcount vmemmap usage, leading to inaccurate
-> page statistics in /proc/vmstat.
-> 
-> Fix this by introducing section_vmemmap_pages(), which returns the exact
-> vmemmap page count for a given pfn range based on whether optimization
-> is in effect.
-> 
-> Fixes: 15995a352474 ("mm: report per-page metadata information")
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   f358e95febcb2f3d7ac6aafab0a2b9ace9cc8b7c
+commit: a55cc18eb303ff23501859829362c863e39372ef [159/160] mm/sparse: fix race on mem_section->usage in pfn walkers
+config: s390-randconfig-r112-20260415 (https://download.01.org/0day-ci/archive/20260416/202604160027.KyDdtIJG-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260416/202604160027.KyDdtIJG-lkp@intel.com/reproduce)
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604160027.KyDdtIJG-lkp@intel.com/
 
-> ---
->  mm/sparse-vmemmap.c | 32 ++++++++++++++++++++++++++++----
->  1 file changed, 28 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 40290fbc1db4..05e3e2b94e32 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -652,6 +652,29 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
->  	}
->  }
->  
-> +static int __meminit section_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
-> +					   struct vmem_altmap *altmap,
-> +					   struct dev_pagemap *pgmap)
-> +{
-> +	unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
-> +	unsigned long pages_per_compound = 1L << order;
-> +
-> +	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, min(pages_per_compound,
-> +							PAGES_PER_SECTION)));
-> +	VM_WARN_ON_ONCE(pfn_to_section_nr(pfn) != pfn_to_section_nr(pfn + nr_pages - 1));
-> +
-> +	if (!vmemmap_can_optimize(altmap, pgmap))
-> +		return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
-> +
-> +	if (order < PFN_SECTION_SHIFT)
-> +		return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
-> +
-> +	if (IS_ALIGNED(pfn, pages_per_compound))
-> +		return VMEMMAP_RESERVE_NR;
-> +
-> +	return 0;
-> +}
-> +
->  static struct page * __meminit populate_section_memmap(unsigned long pfn,
->  		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
->  		struct dev_pagemap *pgmap)
-> @@ -659,7 +682,7 @@ static struct page * __meminit populate_section_memmap(unsigned long pfn,
->  	struct page *page = __populate_section_memmap(pfn, nr_pages, nid, altmap,
->  						      pgmap);
->  
-> -	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
-> +	memmap_pages_add(section_vmemmap_pages(pfn, nr_pages, altmap, pgmap));
->  
->  	return page;
->  }
-> @@ -670,7 +693,7 @@ static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
->  	unsigned long start = (unsigned long) pfn_to_page(pfn);
->  	unsigned long end = start + nr_pages * sizeof(struct page);
->  
-> -	memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
-> +	memmap_pages_add(-section_vmemmap_pages(pfn, nr_pages, altmap, pgmap));
->  	vmemmap_free(start, end, altmap);
->  }
->  
-> @@ -679,9 +702,10 @@ static void free_map_bootmem(struct page *memmap, struct vmem_altmap *altmap,
->  {
->  	unsigned long start = (unsigned long)memmap;
->  	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
-> +	unsigned long pfn = page_to_pfn(memmap);
->  
-> -	memmap_boot_pages_add(-1L * (DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
-> -						  PAGE_SIZE)));
-> +	memmap_boot_pages_add(-section_vmemmap_pages(pfn, PAGES_PER_SECTION,
-> +						     altmap, pgmap));
->  	vmemmap_free(start, end, NULL);
->  }
->  
-> -- 
-> 2.20.1
-> 
+sparse warnings: (new ones prefixed by >>)
+   mm/sparse-vmemmap.c:616:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected unsigned long *map @@     got unsigned long [noderef] __rcu * @@
+   mm/sparse-vmemmap.c:616:39: sparse:     expected unsigned long *map
+   mm/sparse-vmemmap.c:616:39: sparse:     got unsigned long [noderef] __rcu *
+   mm/sparse-vmemmap.c:684:17: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected unsigned long *subsection_map @@     got unsigned long [noderef] __rcu * @@
+   mm/sparse-vmemmap.c:684:17: sparse:     expected unsigned long *subsection_map
+   mm/sparse-vmemmap.c:684:17: sparse:     got unsigned long [noderef] __rcu *
+   mm/sparse-vmemmap.c:701:55: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected unsigned long const *src @@     got unsigned long [noderef] __rcu * @@
+   mm/sparse-vmemmap.c:701:55: sparse:     expected unsigned long const *src
+   mm/sparse-vmemmap.c:701:55: sparse:     got unsigned long [noderef] __rcu *
+   mm/sparse-vmemmap.c:714:24: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected unsigned long *subsection_map @@     got unsigned long [noderef] __rcu * @@
+   mm/sparse-vmemmap.c:714:24: sparse:     expected unsigned long *subsection_map
+   mm/sparse-vmemmap.c:714:24: sparse:     got unsigned long [noderef] __rcu *
+>> mm/sparse-vmemmap.c:766:35: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void const *kaddr @@     got struct mem_section_usage [noderef] __rcu *usage @@
+   mm/sparse-vmemmap.c:766:35: sparse:     expected void const *kaddr
+   mm/sparse-vmemmap.c:766:35: sparse:     got struct mem_section_usage [noderef] __rcu *usage
+   mm/sparse-vmemmap.c:805:27: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct mem_section_usage [noderef] __rcu *usage @@     got struct mem_section_usage *[assigned] usage @@
+   mm/sparse-vmemmap.c:805:27: sparse:     expected struct mem_section_usage [noderef] __rcu *usage
+   mm/sparse-vmemmap.c:805:27: sparse:     got struct mem_section_usage *[assigned] usage
+   mm/sparse-vmemmap.c:884:59: sparse: sparse: incorrect type in argument 4 (different address spaces) @@     expected struct mem_section_usage *usage @@     got struct mem_section_usage [noderef] __rcu *usage @@
+   mm/sparse-vmemmap.c:884:59: sparse:     expected struct mem_section_usage *usage
+   mm/sparse-vmemmap.c:884:59: sparse:     got struct mem_section_usage [noderef] __rcu *usage
+   mm/sparse-vmemmap.c: note: in included file:
+   mm/internal.h:987:19: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct mem_section_usage [noderef] __rcu *usage @@     got struct mem_section_usage *usage @@
+   mm/internal.h:987:19: sparse:     expected struct mem_section_usage [noderef] __rcu *usage
+   mm/internal.h:987:19: sparse:     got struct mem_section_usage *usage
+
+vim +766 mm/sparse-vmemmap.c
+
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  726) 
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  727) /*
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  728)  * To deactivate a memory region, there are 3 cases to handle:
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  729)  *
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  730)  * 1. deactivation of a partial hot-added section:
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  731)  *      a) section was present at memory init.
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  732)  *      b) section was hot-added post memory init.
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  733)  * 2. deactivation of a complete hot-added section.
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  734)  * 3. deactivation of a complete section from memory init.
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  735)  *
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  736)  * For 1, when subsection_map does not empty we will not be freeing the
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  737)  * usage map, but still need to free the vmemmap range.
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  738)  */
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  739) static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  740) 		struct vmem_altmap *altmap)
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  741) {
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  742) 	struct mem_section *ms = __pfn_to_section(pfn);
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  743) 	bool section_is_early = early_section(ms);
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  744) 	struct page *memmap = NULL;
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  745) 	bool empty;
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  746) 
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  747) 	if (clear_subsection_map(pfn, nr_pages))
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  748) 		return;
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  749) 
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  750) 	empty = is_subsection_map_empty(ms);
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  751) 	if (empty) {
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  752) 		/*
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  753) 		 * Mark the section invalid so that valid_section()
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  754) 		 * return false. This prevents code from dereferencing
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  755) 		 * ms->usage array.
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  756) 		 */
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  757) 		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  758) 
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  759) 		/*
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  760) 		 * When removing an early section, the usage map is kept (as the
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  761) 		 * usage maps of other sections fall into the same page). It
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  762) 		 * will be re-used when re-adding the section - which is then no
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  763) 		 * longer an early section. If the usage map is PageReserved, it
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  764) 		 * was allocated during boot.
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  765) 		 */
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20 @766) 		if (!PageReserved(virt_to_page(ms->usage))) {
+a55cc18eb303ff2 Muchun Song             2026-04-15  767  			struct mem_section_usage *usage;
+a55cc18eb303ff2 Muchun Song             2026-04-15  768  
+a55cc18eb303ff2 Muchun Song             2026-04-15  769  			usage = rcu_replace_pointer(ms->usage, NULL, true);
+a55cc18eb303ff2 Muchun Song             2026-04-15  770  			kfree_rcu(usage, rcu);
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  771) 		}
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  772) 		memmap = pfn_to_page(SECTION_ALIGN_DOWN(pfn));
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  773) 	}
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  774) 
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  775) 	/*
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  776) 	 * The memmap of early sections is always fully populated. See
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  777) 	 * section_activate() and pfn_valid() .
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  778) 	 */
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  779) 	if (!section_is_early) {
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  780) 		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  781) 		depopulate_section_memmap(pfn, nr_pages, altmap);
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  782) 	} else if (memmap) {
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  783) 		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  784) 							  PAGE_SIZE)));
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  785) 		free_map_bootmem(memmap);
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  786) 	}
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  787) 
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  788) 	if (empty)
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  789) 		ms->section_mem_map = (unsigned long)NULL;
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  790) }
+738de20c4fafe64 David Hildenbrand (Arm  2026-03-20  791) 
+
+:::::: The code at line 766 was first introduced by commit
+:::::: 738de20c4fafe64290c5086d683254f60e837db6 mm/sparse: move memory hotplug bits to sparse-vmemmap.c
+
+:::::: TO: David Hildenbrand (Arm) <david@kernel.org>
+:::::: CC: Andrew Morton <akpm@linux-foundation.org>
 
 -- 
-Sincerely yours,
-Mike.
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
