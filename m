@@ -4,98 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C75EF419B6
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 13:32:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 215ECF419B6
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 13:34:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76B9A6B0005; Wed, 15 Apr 2026 09:32:15 -0400 (EDT)
+	id 7474C6B0088; Wed, 15 Apr 2026 09:34:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71D136B0088; Wed, 15 Apr 2026 09:32:15 -0400 (EDT)
+	id 6F8256B0089; Wed, 15 Apr 2026 09:34:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 632C86B0089; Wed, 15 Apr 2026 09:32:15 -0400 (EDT)
+	id 60DC96B008C; Wed, 15 Apr 2026 09:34:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 503116B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:32:15 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D5ADA138344
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:32:14 +0000 (UTC)
-X-FDA: 84660878988.08.BAA36B7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 37F6340016
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:32:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="hcAlNgI/";
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776259932;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=R07CHDLJo5eLMDGCFPiClvOfIRm4jNkCYrNdBLkrUzI=;
-	b=3mWp0H6UDyRQ4m4n/cWXP3L+9veCeiOU+nSFS2oMnw+oNhnarn9WPhLXySm/FvdhyXbYcF
-	mTz12HYQvQZqyXt++oImf6bD6WARA3JAV92HVU0paa7c/fPFrN4AlKOoHTBeH7uRLNYfCv
-	VjHmGJyKpJBD5TC3St2wqPJcDk7ZnBw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="hcAlNgI/";
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776259932; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 533496B0088
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:34:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C90AA58C83
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:33:59 +0000 (UTC)
+X-FDA: 84660883398.09.5CEFD0E
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8641B1A0013
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:33:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf19.hostedemail.com: domain of stepanov.anatoly@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=stepanov.anatoly@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776260038; a=rsa-sha256;
 	cv=none;
-	b=pF/NkCCbu80z9XPU0f824dxtFs01GYJZXTBL2uJYDOtj3Mp14mjFi5mi4Q+s1uuZF3T/t6
-	TLEfsRXZS6oxvR5V5nJXCWowQoCISZHtdZ5hHDCceEFv+AqeMUGovi55tljTWxog4nro4s
-	h5dkZMtaDxeXtqJ/BArw5UbDAILSDIY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776259932; x=1807795932;
-  h=date:from:to:cc:subject:message-id;
-  bh=aXkGhsVy594aYIb+ZwNsUstG2giINOKSNBMf9ItvRJc=;
-  b=hcAlNgI/DhxPhEqfX9ZakcgHQkvkboU+EnDY0ZU4L/6jUJnv+kAXQWMq
-   lXyrSj6yJ9H6GCgCS4CNbnV6CoZPlT9Uw++r2P6yK1kkbK21Z+CY63MEc
-   nOkV83gub5ESJl2b1zZ/ikHgyCnoBI3QMRB/7Be1MDckuF9u/b9be7dC0
-   FIm18A8uOsYHUI64s5pX2wBJkNs9gV8W1vLz9/wHPlA1RN9hF205JIX2y
-   ipisWiuBgpj3U8ui/3NPCagnQnF/29N3hodRkfvp9jcmYb/o4ZZdnA+pN
-   zOiuwxwY0fV/oXrXVkvFhH/TpDuhVgiSfpGIv+LUp//5UFeQ9JIp60GZw
-   w==;
-X-CSE-ConnectionGUID: IS/OFmlqQ9CuSop3IEBNlg==
-X-CSE-MsgGUID: 1Y90x3xKTK2xbl4NOX6wRw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11759"; a="77260499"
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="77260499"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2026 06:32:10 -0700
-X-CSE-ConnectionGUID: lExZ/GPKTMaB/tf6TKYkEA==
-X-CSE-MsgGUID: yDOAGoRoTEOysZQUyRSm7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,179,1770624000"; 
-   d="scan'208";a="227253158"
-Received: from lkp-server01.sh.intel.com (HELO 7f3b36e5d6a5) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 15 Apr 2026 06:32:08 -0700
-Received: from kbuild by 7f3b36e5d6a5 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wD0Ld-000000000Xf-33x5;
-	Wed, 15 Apr 2026 13:32:05 +0000
-Date: Wed, 15 Apr 2026 21:31:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-new 159/160] include/linux/mmzone.h:2052:18:
- sparse: sparse: incorrect type in return expression (different address
- spaces)
-Message-ID: <202604152138.zbTaYxbG-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	b=6h/qYWI2sehIuCJfzhLy3ANdx0YpnENLcolX4W80Oln2JyprxHcqqguShwoX7zgviZvi8a
+	GiaEcRDwYRS03HXyJN1ssCVB9sItnGAD+9S3fREa8jlA92MK1mLNfFYfhqIDOkvcD2UmLI
+	KVJ6eg2OseWL0np805xGDOL4D1E6Kas=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf19.hostedemail.com: domain of stepanov.anatoly@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=stepanov.anatoly@huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776260038;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YWzi8YjwqgugqT4HM35QV+agzWZ+MAWoKLWaJ6h8Nas=;
+	b=p2X4UNoAxK/uHRIBrp6gOb0peSREnS//JWZlC8udhWetAkQlOvlAJ7Ex6WW/FJk+/cxPUp
+	+VjnaHua3zcDFlDBpczZOp9dVOt0P6f01+zCtLgXAyhGzWlpTfvMsrvuPiiMYEjFahUGDr
+	vAYhckfE9inWDOiMuJCb3ADdIgTai8g=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fwhtP2rLzzHnGk5;
+	Wed, 15 Apr 2026 21:33:33 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 81D204057A;
+	Wed, 15 Apr 2026 21:33:49 +0800 (CST)
+Received: from [10.123.123.226] (10.123.123.226) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 15 Apr 2026 16:33:48 +0300
+Message-ID: <972b8365-60cf-4f29-ac4d-05e6c50f573c@huawei.com>
+Date: Wed, 15 Apr 2026 16:33:48 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] Use high-order folios in mmap sync RA
+To: Matthew Wilcox <willy@infradead.org>
+CC: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
+	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <wangkefeng.wang@huawei.com>,
+	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <artem.kuzin@huawei.com>,
+	<gutierrez.asier@huawei-partners.com>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+References: <20260415192853.3470423-1-stepanov.anatoly@huawei.com>
+ <ad-QQwctxvJVHW4U@casper.infradead.org>
+Content-Language: en-US
+From: Stepanov Anatoly <stepanov.anatoly@huawei.com>
+In-Reply-To: <ad-QQwctxvJVHW4U@casper.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.226]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 37F6340016
-X-Stat-Signature: 1qm9hfozrxhtabupd7jfbxgug8qp794a
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776259932-606563
-X-HE-Meta: U2FsdGVkX18dNtzQDBeozM28qLFj7gzxhuUtuUsIbnzgjP4exZ4TO5zPIR+kSbV18oZK/s5WNmWoNxFMvt31hNsglvbzEyBYI145ddTOjHgssIFVFFb1fyx2AoTK59JAa5/BXBi21qfoAD/pm62mvLLLXXztTb1eqB1XGojRPdK2NjdRJL0nc457kC78rrRjJd3UMftF9lD80mdhJi7xTymnYmyKac5hLZQ5oSKu59A5yDp3odBzZDYNfzER8Tc5ZYeZ9J7YzTEp5gDK5x7Qpkax4t3+GHqmRkbPyNRF7VBKHkb+5WMc6yg/9hDY6eQpiDVANtthDaBEdzSBMGk2gNMpCdimuqPuCbwNQ/Wo7VDqhFy2L3uobTuKrLMg80jvaFedckqcA62VJYxcqJ5eYRTNBc52b8hlDy5ToR9hBUlVD/tAZbQ++hpKJY66a0Rd7PpcpLT9NTiBkA66/1JjCDW4JuQj0kZ0U4hrLgRHcsvEA08UTwY8aWwYQ0E8gbmp4+Sbvi+SmcYd6JwmOP06nHYC0arHNTGj2m5u9+mOU7xC5AOjQmCqTI98sJpF9/8XOUwfy1uO9xYGLmMbe5e5fiODsC4TyE9v9JHO/MIKYuW6GR+OhZoFyORSPw02o0qIfaxhH/s80e5PN27udOp8fbZb+C6qyePJVTqu3npv4Ee1nNMn9EJLSH5qtRcsVJ1NEcVQmAj2GnJIS6IeKVm8CbmZ3B84M/V1Rz43jGw7wyrPOpFciFZlwO4JI1/4KDJKAHLVfHyyYxGW9kC+QvVcB5AJmgToeRMTXoyEjLkdSWKBxJTwx9YrPYOBoXL9ZEWExnaQ03GokdB/6BqwAG9RReXOAYRdRyf06+xH03oWQfN6yZSac9SLka0VmPv8jo4PR2pOp3BZHQ7upVSOzgDNjZk/yVvvfLYQtgGo+DP720WqAM4agKzQYhH9P9dyeK05BShoYEpCeNMtQOYFGcb
- yJdwvN7v
- eckdRrxwjAhcBswG87yMGoNGZMa2ZTi3qkoI1X9YAABWz9JGo7PgoKoDOJZpk5brgx06KXeu7y2IVhpLrkNg3Hz7pKDDG/pCoJ9zG9u3WwgF8mgzP93IU45kvGE5tmS2DaTOc+aBcQl1q9OOl1FH4YgIwqONl7e4sH+X364aEPPfLhCJrePkK7IrlFinRrcW0wLwtq1ufKOAMnfZSZFpijAe8H3TbDTxPLemZ90oTiCi7PsByqkqHN9QQ1rlr6CzMp32d
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8641B1A0013
+X-Stat-Signature: ojmaapgn5md8my6r4g8nmigx84im78ff
+X-HE-Tag: 1776260036-73202
+X-HE-Meta: U2FsdGVkX18AR2m4BUC7WO3yXP7Bo+K4lJUqNzIHo17NSzgsQJ1d03mw8ZsrRCB2eL/uyRO0ZZAUn7oRUER6zL9+KLs3ynI27tIXxtLQi4Fo88oYgrjkCG0FR09OudKWsEUI0LpHTs23KpdOM3TAETC34FzkIlvg4KEIdl6gBtmXlhhNec1ldb/JDXoStvj7aWTCgleCRGiIYdNcZ6uZNISwZrASIqCJroV4XYkfpb4L1d67wgN2fdDo3whIAsNj+mz1hrXu8YgYgr9H2BbLAyYWmcwwpTIFxXZdi34PHi8snsBfVhus0VsOudk5NHRadkYs20JDdrS+1Xgy2fKy/UFUrwxIcXSTgyicmJEPoWlPH829IK+5wXnbOqnvqHY2jCueMI6zwJ3ZcfaL9Ud8L0yIlofQbPjYV/NmMzfGEIGP9fZ8CT1MVur8d9GYoKvTURQgwWX1Q2iNbApXwIPewnZ56dwBTKXDceu8G/PsWnoc2SCLczvQQmxtI8GfcCt1hc6m03hNFlaWTC62hsEKuMlxF+g5jHD5AFCGOI+QD7GYYrC+fA6DbmkTPEOZVg7CgfvAAMmijM3PGyGzEoZq+cFrcrBbhmpY3sqV9YwaZdj8FUuVIaMcLksANOrgvBH5n7EugX9TfFCpZbAuEgfnTTnR/K8ubToWhz7aOvAQp9hmlDDQotDvfEkQrFdhHk8B6/Zcduvsl9pKv+R+NrfbfTx3PpIizKyN8h/ry7mmbTO4ikPAsSPCm7ZlOXHVD276uYh+JiYeUBIt3pMjHA7aLlh/P33WnEpjNDh+NoE0M2kDlzDCQ7SHIF/0L8Wiz1l2cU1dq8jAb0u9IJe3MleUqY7SbroE/1OIeCioYPGu18xczxj9XDi0NwozX2kwrs3Ek8KSecreHc9ClSX2X99H2tvkKawf4AD7SOY9bgqzT60y404b0JDkmFqU+oNYMxUPre/ZphFFHjZ+4Z6ZtQN
+ 0UYJiPgJ
+ w2TiJDKmfY5n6gPEiGDHYvloGvkdbAuauUoOhDCOV+r0JZMnAo9WBnoRpIPyiw7G7NEB8Z2quEhBDXGy7LDCrbnYsisp5h8ZXK3HvFAHoK64s9uSeK/Kdrq9CsSfYAoa0k+Ss1yu9XTUABbiq6BIwi1mDfyDVqcN86Bx7WX+6065CPcuD/fJF1ZSsvJ2GcIOVrk9aNrLubrg7mo/ynkZswn0RGA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,58 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   f358e95febcb2f3d7ac6aafab0a2b9ace9cc8b7c
-commit: 085038a33b6f00e4c43cceab8116315d1d42380c [159/160] mm/sparse: fix race on mem_section->usage in pfn walkers
-config: i386-randconfig-r132-20260415 (https://download.01.org/0day-ci/archive/20260415/202604152138.zbTaYxbG-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260415/202604152138.zbTaYxbG-lkp@intel.com/reproduce)
+On 4/15/2026 4:18 PM, Matthew Wilcox wrote:
+> On Thu, Apr 16, 2026 at 03:28:51AM +0800, Anatoly Stepanov wrote:
+>> When "fault around" is enabled, 0-order folios might significantly
+>> slowdown filemap_map_pages().
+> 
+> There's a lot of "might" in this patchset.  I'd like to know that there
+> is a real workload that benefits from this, and if so by how much.
+> 
+Actually, no real workload at the moment.
+The intention is to highlight the filemap_map_pages issue,
+i found it during my experiments with the page cache.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604152138.zbTaYxbG-lkp@intel.com/
+> You raise an interesting point that faultaround may be slow, and maybe
+> we should start out with 0 faultaround until we've determined (somehow)
+> that faultaround would be beneficial for this particular mapping.  Like
+> we adjust the readahead window.
+> 
+Sounds nice, 
+looks like, there should be kind of "virtual readahead" or smth like this.
 
-sparse warnings: (new ones prefixed by >>)
-   mm/sparse.c: note: in included file:
->> mm/internal.h:987:19: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct mem_section_usage [noderef] __rcu *usage @@     got struct mem_section_usage *usage @@
-   mm/internal.h:987:19: sparse:     expected struct mem_section_usage [noderef] __rcu *usage
-   mm/internal.h:987:19: sparse:     got struct mem_section_usage *usage
---
-   mm/page_alloc.c: note: in included file (through include/linux/gfp.h, include/linux/mm.h):
->> include/linux/mmzone.h:2052:18: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected unsigned long * @@     got unsigned long [noderef] __rcu * @@
-   include/linux/mmzone.h:2052:18: sparse:     expected unsigned long *
-   include/linux/mmzone.h:2052:18: sparse:     got unsigned long [noderef] __rcu *
->> include/linux/mmzone.h:2052:18: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected unsigned long * @@     got unsigned long [noderef] __rcu * @@
-   include/linux/mmzone.h:2052:18: sparse:     expected unsigned long *
-   include/linux/mmzone.h:2052:18: sparse:     got unsigned long [noderef] __rcu *
->> include/linux/mmzone.h:2052:18: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected unsigned long * @@     got unsigned long [noderef] __rcu * @@
-   include/linux/mmzone.h:2052:18: sparse:     expected unsigned long *
-   include/linux/mmzone.h:2052:18: sparse:     got unsigned long [noderef] __rcu *
->> include/linux/mmzone.h:2052:18: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected unsigned long * @@     got unsigned long [noderef] __rcu * @@
-   include/linux/mmzone.h:2052:18: sparse:     expected unsigned long *
-   include/linux/mmzone.h:2052:18: sparse:     got unsigned long [noderef] __rcu *
->> include/linux/mmzone.h:2052:18: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected unsigned long * @@     got unsigned long [noderef] __rcu * @@
-   include/linux/mmzone.h:2052:18: sparse:     expected unsigned long *
-   include/linux/mmzone.h:2052:18: sparse:     got unsigned long [noderef] __rcu *
+BTW, for the benchmark i posted, if fault_around is disabled (4K)
+then the throughput is even higher.
 
-vim +2052 include/linux/mmzone.h
 
-d41dee369bff3b Andy Whitcroft 2005-06-23  2049  
-f1eca35a0dc7cb Dan Williams   2019-07-18  2050  static inline unsigned long *section_to_usemap(struct mem_section *ms)
-f1eca35a0dc7cb Dan Williams   2019-07-18  2051  {
-f1eca35a0dc7cb Dan Williams   2019-07-18 @2052  	return ms->usage->pageblock_flags;
-f1eca35a0dc7cb Dan Williams   2019-07-18  2053  }
-f1eca35a0dc7cb Dan Williams   2019-07-18  2054  
+>> For example when async RA won't be able to start,
+>> we might end up with a large mmap'ed file with 0-orders.
+> 
+> That is a feature, not a bug.  If access is random, then we don't want
+> to do any async readahead because we don't know where the next access
+> will be.  We just end up occupying large chunks of memory with
+> never-used data.
+> 
+> 
+Yes, i understand the logic behind this, what i mean is that it can actually happen.
 
-:::::: The code at line 2052 was first introduced by commit
-:::::: f1eca35a0dc7cb3cdb00c88c8c5e5138a65face0 mm/sparsemem: introduce struct mem_section_usage
-
-:::::: TO: Dan Williams <dan.j.williams@intel.com>
-:::::: CC: Linus Torvalds <torvalds@linux-foundation.org>
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Anatoly Stepanov, Huawei
 
