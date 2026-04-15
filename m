@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32D53F43849
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:29:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D786F43844
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:30:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CA546B0093; Wed, 15 Apr 2026 11:29:09 -0400 (EDT)
+	id A683A6B0092; Wed, 15 Apr 2026 11:30:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97B4F6B0096; Wed, 15 Apr 2026 11:29:09 -0400 (EDT)
+	id A19776B0099; Wed, 15 Apr 2026 11:30:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B8D76B0099; Wed, 15 Apr 2026 11:29:09 -0400 (EDT)
+	id 956AD6B009B; Wed, 15 Apr 2026 11:30:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F57D6B0093
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:29:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0D65D16050E
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:29:09 +0000 (UTC)
-X-FDA: 84661173618.01.07967E8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5D18D180008
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:29:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Uh43M2OF;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8278D6B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:30:19 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 21BBB1404E9
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:30:19 +0000 (UTC)
+X-FDA: 84661176558.13.0AFEA77
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6BEB0C0003
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:30:17 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P0DH5yRU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776266947;
+	s=arc-20220608; t=1776267017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8oeNtCczUh2lxL29EmEDKbVDUJQiFjum7UTi9H1Z0/Q=;
-	b=krSmw2Ln1vDftyejSaoRLBTYasQ97JnQl3UerewbxGg3ADEdnY6gbTpC7OYzUvvsQ99K0x
-	M70dxoaWNpY28R1SaJzg4L0xdkjPqghiQZxuf4JwrYsxuWu1lEnNQ+h9CTF7usl/qrn0QE
-	CqYw8m/zBcLfQT/HXhVXm9NwGkbpCpM=
+	bh=cKZIlu+WNapM+0zWA0Ck2GzPwqC5DwYR6I8Mklg+slM=;
+	b=yPxIUOI0uwk72TaUTemTDoqm/0MCuG97PvKOmtotKl/H6q0wlQauh57CkadlS0il9S1a96
+	LjAiD1i28PlfUNQZrusbd4IBMBoTZPHJ1H9GWUzzsVf61yokJPSXlHLkeEiIDDpGretddp
+	xZq6GJQAOwzIt6NfTUQvYD7zpRRovp4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Uh43M2OF;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776266947; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P0DH5yRU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776267017; a=rsa-sha256;
 	cv=none;
-	b=lvzVJvElPA/z9yS32PnFlDiWwRMCnLoHzwR5tLV/7PnUcnlHN+MyL0VSBdHUHRiOa+inkX
-	F9wqoUh7aTqpKeZDK4XXz4oqhHscGve3wjyOp/AUSQC4awhbyqYF/2/vAON1S2Vg/qguXJ
-	SJWgeJWrtSIJZeu2+exuVLouvZCop48=
+	b=bGpAiQwKTBcp2WM+gYHkstBspzNVsSHq23CU80Oqg1esIzOCbteuXiCFozuCtPAT1UIMuU
+	q4alpnBkL4WqpVJFSFuejIYODE9igSkhMIGAv8U3d5yG1DegxS8SlfPz9Z/XH059/FkHun
+	I9cX2CZmi9m0DWIOmKZMv3C0yCOzA04=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3B26E434CC;
-	Wed, 15 Apr 2026 15:29:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42692C19424;
-	Wed, 15 Apr 2026 15:29:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A7964600AD;
+	Wed, 15 Apr 2026 15:30:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89079C19424;
+	Wed, 15 Apr 2026 15:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776266946;
-	bh=b7F6dEl/fEDrYP//U5wNccvIPE7yc2JN/vaCoN2DyCw=;
+	s=k20201202; t=1776267016;
+	bh=61GJtuhGF2ApcQH3dcfOxAooOZkKNJHUOcToNmosODw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Uh43M2OFwIS3dJsit5Sm/nu4DvzvgG54RBiMqoErTLLRQ41CfAJpdyXwk4uM263PZ
-	 55MAPapME/Hp+hI+K4/xZ7NSZSBXwcoBolNvR0s+wr9y/pRKf3spB4EIloCgMCZdH1
-	 PCNliafYveptLE1kby5seoadkVZ7w+5lt6P7zo4zrmlKCJGe4eMaSb79r5R6VPMIN3
-	 1l5ZwWwIeeTFVMWSWN9KZ4Qv4uRt8OSj6sjuwajgaR9sWu6BYWHeEtyv2E+K7X31jN
-	 mSZ1l9o/2qJPECv8lvU2GdTLihhdWwcjAEhQArPLDEgwvaOvZlkJFAhQ8ZZJP/dC5e
-	 NCFzaXXpjchlA==
-Date: Wed, 15 Apr 2026 18:29:01 +0300
+	b=P0DH5yRUuzX0vMq1N8iGKcI2U1Wt5DWDYu5FsEFX9pAiPeN1dDJmvMrWtFYS0eXoo
+	 snTFb/TMP0LOF0+1PgEPdRTHPpJ8OfbmiG8Uu908ZbDYh/qec414fLtD4ns8PxsCh4
+	 SacNYWXWSnk8Vk+FLqw4lZ5tb6jNp4jtNfSRIUvvIkGD1Fg5ZgkRb5IATLRK2Kxje0
+	 1bBXWQzoFzAAo4DriaCNVUtIuKQNuOUoo80+Uj9Omtsx+W44QujW/RGCP1WaQGayjS
+	 Qmenj5ex7Vc/BH/GMvIHhHaTMf3CGI3PgJzLuZh5kC7e298RS6KTQShPoH2fLf6sgu
+	 PL2MGqEq0It0w==
+Date: Wed, 15 Apr 2026 18:30:11 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, dmatlack@google.com,
 	pratyush@kernel.org, skhawaja@google.com
-Subject: Re: [PATCH v4 05/11] liveupdate: Defer FLB module refcounting to
- active sessions
-Message-ID: <ad-uvfHVCRje0odk@kernel.org>
+Subject: Re: [PATCH v4 06/11] liveupdate: Remove luo_session_quiesce()
+Message-ID: <ad-vA46Mcn6Q2Awt@kernel.org>
 References: <20260413185127.128180-1-pasha.tatashin@soleen.com>
- <20260413185127.128180-6-pasha.tatashin@soleen.com>
+ <20260413185127.128180-7-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260413185127.128180-6-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5D18D180008
-X-Stat-Signature: f3hnrx59ifh3f5573rkashna8zu5bftp
+In-Reply-To: <20260413185127.128180-7-pasha.tatashin@soleen.com>
 X-Rspam-User: 
-X-HE-Tag: 1776266947-145863
-X-HE-Meta: U2FsdGVkX18GqbfY80RSIGWtFFoSK84+eORmUqo6ZFe4hR0u0CvE+984iiOW9IWkHNEoHKTS3OcjrcKNUHDHJHSaCXbKDuBUKjQQehbbLoO487lZx9NgBChPX16Qhemh9S8WoGYkztDpvPMWmLVr73jmIpfOIbNacl9IdsqaKr0jvo1aid29Xv19dUo2UKx1215lveV06gO9DkalUAo5nwhDvzbrQKE5Ng83Uj8gM+03qOtrKcBhRqmvEo6B5r9PL0xFujLMx+Z20tlusPX8RHySB39WzkWm2Zo5pIQQgmLv3trwrmRUr4ThVq6Ewiu448uIMUE68GIGeGliYyq+Le6sSqpaXtsG3NjkoF3ktwVC4IY6TuDn0FdgUJL+xTxICyRkoNz9OGCYz/+UaKLn15MxAFlriIjP89kUJruqHIiXZYmYNfZZkB4t3zA86WCWOsBPDXn7UCQpdQGeoLvh/h9VJD7wv+Hv/rwz6KjtkUx/++eZQFwXBtL+oAsQnZ78olqGc79v7Z2lKt7NW/ygBmsqEk614M5UKOS9aR1xrOyM9qBFsZv5UeTYO+ahajcApCvikK85e1bM3MCL7l8B3T8u/5qED0MlqPH+1XsmxBrWIacENtfNlrXJQbJUxlOx0jD8Okjv9QAPLki/7Eu49nj1Q1OiMpzhiXaJw413GxxGSd1CyA1EVN4qbgLuDeZybyYK5tuFe5v060vJDRGNR1ZazD7591NVKUsgatruCaXCef1Mi/oynuLx5adu9p8ll65Re9sSX+Fpzi6Q/D9Qa6GqBhBDqbnoDgrjgkhrsIu9m+RMmVfrPRxM4SoNTq2S1LetExCVd14H1r8kaVAXf0Pfoa2sg49MaM1FcEbDIGS443dD2Us3CPs26RDT9bYNq31nC84PD67/wbzCle7i+OUANEPmzKLXR1I/qynf0E/1zwLIhcQ/9r1l7qE6UF6t1Xayr/2lKeLpHpTWNtN
- 8oTex0jh
- IlSaV0C3MfHvObiWx1AqVZYmsBxW3jqgJj4/erw5ioPJjX0ZCxVE+6rtykYfvoYPjNaupzqck0V4nXC3/hLj2pcgGJdKB+g/XGCs36ToQb53snT4qM9MPOBYyby4YjVYXBK1eWJOjgYT0qX6C/2nFjolYnTs9bpCFE1ucqYsk0f5B4eYgu3DR6GBFcRbBBBYqfYDhJYNlulqnRzac8kvMCn9D0zUCNvrrIrO1ko3hoRVtwHkch3jqSp80pFCL/Nq8+BU3Pw7k0yyTLgUaeuSmDKoiv+y5O99eCkAHtJJM/6ZdVYix9VyYfK4TU4gxrIRjc2tEVBDWsZWhZU0ftV8Zqs0M++JW1FMByMyA65MlM6KSOZQ=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6BEB0C0003
+X-Stat-Signature: jbapza4zi9hnqdfa568ffsj86o4i3ykk
+X-HE-Tag: 1776267017-385602
+X-HE-Meta: U2FsdGVkX18slwpi4gvB9UH12xF7IVuBNTqU+KzREJPYqpNGFkSahEpIWTBiQBaTP9knXTXQqkds8RrcxLFxNBFEuD0BXUXOaUoQF5GGzLCCulcpj2oegYiuotrmmFIeLqqMpzSe7j/dj+9O/FYl8YARFedp2JhqYwTadeK/W9K7CwCVSX2q+hj0UHo6tN0+fUX0TIPvNfS8YLUvCOCbkEbFAV+6kwxVzQ8wzTU25oMfbBhVcNu7EcepM3lnsiHIvlhVBz/8eFSqvudfGFQZPxa0xhdBJ30l/rX9nbBvIKB4Jj8Sm+oBrqYFOnmlRc0E6oErSXjnv8nsGkS1+mRI6HidFpb6py9M4pQvbbve2s5wzPvGtw/2VwLaxkhqXU6HNuuRZJHWnf11KXwkDy34SsmvW0SWCWHTvjvMsXmXrSgHj/Y51VGrvsvIVYwSmCH2IVCt8oKRxkyhj0CborpFV8RNUxKVakrc/+aGy3bV7D8HtDrc3nUuXARFqubVaEqCQPSp8u/mMnR32VwdyLjpszPrgloUUm0ED1mRH8+gAruNaYZYO7P8VDmerskiR+vs57BVQwbO0HYIPvjAapSeZoq5r4DGd9hQ876DIPNAnLLK5IQWrWHaEAuWaAixdTjUrsSVMQ08GBQ5CT38kK7gyR5EVInBiCPjzma92a47mL7UR4EIZw4G77Cjmm9c/1U+iJxkIeaS47GztY1GjDLUnCj+pqO4JkLIHzMBlkiV949PhFotE4WunZ7Uge787EaYrJ7+6VRTrMchXTLfCTogA3FF3jIfO2aSOAsNt3fQVLYId/f4qw4h5fMDtHr9vy5q3W8+BtPvFohAaHtCwKx+ckemurY9X5xvi4KH6YUCt2+8NL9zkx91wiMM6YL5JR3CBMjNZB30zD1RV+ZQcHq7tCwBZD2pW7JDJX+U8CldxnZaa6bjmQwCEIEbLEJHy4n67bZyMbZouWUUGCLMztI
+ WVHYM4b4
+ JCczBNjmo6gGT1SQ9Mw0sZuysQNDaVCLeRhJkqGq80QdV9fftxlmQXWnNYqYuc4lYKE2KmzLfSJUgWfHiAm5HTt+JB4TiWJDn46jD4eLIdzhN5s6/6MojR/1YYp8gOgPL7ej7pwo9uNPAqnFucHJtoXDT0DMQBq15D6mRcJok6mD4I6usAPi/LjvHMfdv2oVmYirPZe+830+ndUYMlUxKpXJzRZuZ9baQknNISicy9hCDppb0uhXh5OD4zY/mdNys05UZYmhVswYaB2vAZWt7cdLwmPKw8yyWpyO7umhgw2I9MMZLPIQhNPzEfPqjSXpfKSjMJXpnizojXGc+dPlJWHXniMMeL8QBvQDPTy68ICsA8RvK11p0TMxdh7dJ/BziTqR7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,25 +92,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 06:51:21PM +0000, Pasha Tatashin wrote:
-> Stop pinning modules indefinitely upon FLB registration.
-> Instead, dynamically take a module reference when the FLB is actively
-> used in a session (e.g., during preserve and retrieve) and release it
-> when the session concludes.
-> 
-> This allows modules providing FLB operations to be cleanly unloaded
-> when not in active use by the live update orchestrator.
+On Mon, Apr 13, 2026 at 06:51:22PM +0000, Pasha Tatashin wrote:
+> Now that FLB module references are handled dynamically during active
+> sessions, we can safely remove the luo_session_quiesce() and
+> luo_session_resume() mechanism.
 > 
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
 > Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
 > ---
->  kernel/liveupdate/luo_flb.c | 27 +++++++++++++++++----------
->  1 file changed, 17 insertions(+), 10 deletions(-)
-> 
+>  kernel/liveupdate/luo_file.c     | 21 +-----------
+>  kernel/liveupdate/luo_flb.c      | 59 ++++++--------------------------
+>  kernel/liveupdate/luo_internal.h |  2 --
+>  kernel/liveupdate/luo_session.c  | 43 -----------------------
+>  4 files changed, 11 insertions(+), 114 deletions(-)
+
+I like it :)
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 -- 
 Sincerely yours,
