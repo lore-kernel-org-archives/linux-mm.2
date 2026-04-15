@@ -4,90 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6E3DF41986
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD968F4198E
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 10:30:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7EE26B0092; Wed, 15 Apr 2026 06:20:26 -0400 (EDT)
+	id 06A7F6B0092; Wed, 15 Apr 2026 06:30:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2FF26B0093; Wed, 15 Apr 2026 06:20:26 -0400 (EDT)
+	id 01BCA6B0093; Wed, 15 Apr 2026 06:30:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A45706B0095; Wed, 15 Apr 2026 06:20:26 -0400 (EDT)
+	id E739D6B0095; Wed, 15 Apr 2026 06:30:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 944C56B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:20:26 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 400181B81CC
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:20:26 +0000 (UTC)
-X-FDA: 84660395652.25.7C42BED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9ADE020005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:20:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fNtKUlcX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D57AE6B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:30:54 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BB7816038A
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:30:54 +0000 (UTC)
+X-FDA: 84660422028.15.AFE0605
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 84728C0010
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 10:30:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mE17bSEC;
+	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776248424;
+	s=arc-20220608; t=1776249052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=beSTTiJ9+CWIXQSuIxQtLmL5Gxy05TeMjLjDwVxhmns=;
-	b=4Wv/feZDj6JF3lrjqWd7d6awqEWfx6bNJE5oC9Yiu/MWtZ2Ymkxr6irawAF05eVE+7zwZF
-	RZ9ddCAM044BS/uDeJmfQzGk6/AtAmJbsz4TQ0pQZQqcwD7FgqCAtgjeLePAsdwgjyeYGh
-	kWJE0+Nz91UxW+W4kcccfn3daXtDqXE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776248424; a=rsa-sha256;
-	cv=none;
-	b=LXW0BT7XOe3ncCcIyAUMdardaPcUWSb6EWreaMxypXOJeWduQ87L5vw2KuGJGIUVWk5oTJ
-	Rbs25g45QZw27qPXfF9rtHbzR6Wdgpx07HtAJhGTswT9wHgfNAOk23O35dyRerg6heVvsN
-	kNe7uiSvpNfwHIXgl9Fr5urYMs20WAo=
+	bh=43Y5EuMZCliooxm18QEO+BRO1GEJzdf7tODE9by7ZDE=;
+	b=G+3uSTHVdW4Q+aBOT65WdBNZF31AAnEqtnt5ns5tyUk8ZNOJ2L+trp49RVUTquYQUAkNr5
+	/oF2UXpx4KUqIunYnFw/g0jJkCFs/+8uA3sVyoixWVnT1p/Ea5v1BM02RrU/8l030oE2oI
+	vU3tZUzWn87R3MLMFs8QooYVvbvRXgI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fNtKUlcX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 04678600AD;
-	Wed, 15 Apr 2026 10:20:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF54C19424;
-	Wed, 15 Apr 2026 10:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776248423;
-	bh=3W7oDSldjIH5and8d1MkEeryH5EnFVbZIKn3P1rs9AM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fNtKUlcXr58bAFxCNT0MSa1aoVKHO70TFNh51wS6FW1yQ/iOiGCNVoxWYf7XWwuOY
-	 chOl5S6rjU/Dx7nvmOB3WCiAkUexvLDpaJpnv5mNGQSfJXWaSyKEz9CR4SbkDqtLIH
-	 1fTmS8AiqAD6ERDrkBV/kirK+eXgCGabqqKn3DX2/WcNhQWubwO72iXLOZRlsDMWx3
-	 TQpPyoyXWA7NuGgYBNZSvM267UEPkCtZNi6cs1XTHQIL2W5bbwQpa6kl9Y20pB2dbb
-	 3Rp8TkqS8k+Sj2ZKV5vXBw7KLjGlIQh0ROPpK372f+JuFst0KQIlJgeG+OM3vn2uYp
-	 pTIDFIR7yj3TQ==
-Date: Wed, 15 Apr 2026 19:20:21 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: Re: [RFC PATCH] slub: spill refill leftover objects into percpu
- sheaves
-Message-ID: <ad9mZeERenhwh7De@hyeyoo>
-References: <20260410112202.142597-1-hao.li@linux.dev>
- <ad39TJZYLItrEnIM@hyeyoo>
- <bbtmo4fffalhjglohnazrxvplzfxelmuivbonnbfi3gzsm7qj3@bvh42p47dsqa>
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mE17bSEC;
+	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776249052; a=rsa-sha256;
+	cv=none;
+	b=jYI7k7fYCjSOVcvaRFjhXy6/tm5mx8K4RFxcr/9JM++nfoNBrFCpB733wjUgd4IuvD0ha0
+	gVmAeqEkcn8TOXDh9msLwxYGoY1BfBVsXg1bhDoX7aeH4hZi0YlpzOpNpGgdrOhpJ+iyDj
+	4IDPgN/gs0FLCBVIJJCQ/z0E5slJ1aQ=
+Date: Wed, 15 Apr 2026 18:30:41 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776249050;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=43Y5EuMZCliooxm18QEO+BRO1GEJzdf7tODE9by7ZDE=;
+	b=mE17bSECRchLGwhJ02/2dxDFwkI+vGBpXoLmr1JWJWG+QK2ya587tbNtMHit31p/yZR5Cr
+	U+L+cefpBxFEDPYNMqmDU1taiQbyclQ/8msfgN10q0bC/tVIG55O0mgu9VdLAwbWiwXNm6
+	kkv+Wqi59gq96UDX9h5PpHgTzQt23Xk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: bhe@redhat.com, 21cnbao@gmail.com, chrisl@kernel.org,
+	kasong@tencent.com, linux-mm@kvack.org,
+	lsf-pc@lists.linux-foundation.org, youngjun.park@lge.com,
+	Nhat Pham <nphamcs@gmail.com>, Kairui Song <ryncsn@gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] swap_ops and plugable swap back end
+Message-ID: <ad9o0eSTs3bm1xpS@MiWiFi-R3L-srv>
+References: <aZiFvzlBJiYBUDre@MiWiFi-R3L-srv>
+ <20260324124645.3944104-1-safinaskar@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bbtmo4fffalhjglohnazrxvplzfxelmuivbonnbfi3gzsm7qj3@bvh42p47dsqa>
-X-Rspamd-Queue-Id: 9ADE020005
-X-Stat-Signature: f9zokmo8rkas63ytzr1rs9kznit81qfm
+In-Reply-To: <20260324124645.3944104-1-safinaskar@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ksoftorttxbr6pazt7wopn78izh4u6n7
+X-Rspamd-Queue-Id: 84728C0010
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1776248424-637802
-X-HE-Meta: U2FsdGVkX1891w1vO8dd/isApw0jGF89Y+MRACEs2SoLS6oFsMtBP0CSai5HXDIUFsyNATlDmPphsi1Gn2C6Ub2RKJxH8JyWLB9ggcopqp9wQlwNvcqDYVm5VTy7sSRZE8x+NMWuf3sRY5KEOJFa8iEF18KHD7vwAElXboynyYwHsFXBUTUdiBUo0zb2KTxXRLQN5EZHe1vqPJEqwTw7kFdFNhi9Fv01J87Bl5vNcS48wz7KIUNauHXIuWz7ToUZCsXqaKVwzY0/2Uuut4sqZR3vibif2p+UF5b4Fauh13THz7UA0woJxdf8S5wA1T4JBIG4tT8wPJz37zyXbmrC8O6lQFQTM2pUeAMGH57Mb5S5QcdvuhBKcfrY6OsfPEdjKiKsDpZUUwm47FB9zp9ruryWe2OM7N+l1OKD4qjRRw9hIhA1xqBTTnqBWldFe+OpEAfJ3JHCosm8f1g7DkTolNR2gpxYf+Y9v9oJFIB5etHPPrqgcyiEBxosYXYgzmJoDaSMunfu0yRKh6a4yf0bseSu+/GV2yJ3njSwbARhdejJoAT3tWhrHSaZbzbU7FGNvEXTinlHNUu9LyIdwOEic0CuChGeKuFz84MbfLic/V/ZjcBboxaUOcNn03lxfLnR5rOyf1Fdt1uWlRftz7rIR4y6W0eQymqhaItVNxLHWRs1LTuoLZcw5i3Ba+yjLPO/Iw1p/suDFlwClImdFiO1WJ2+ECRA2cKo2vgwxYTVFepaSrZ2/0nEK0Y7lctiaDXEMTMj3AxArOai3HJjLIh3i9z/3n9PQSglB6NLXvKlU/Og5YO7caYYdEgNKRfCU4hJKx0EAcKLjEzKjCWRQG5z1bWMlRbIZUi4/SjdHK8jjGvTCFvwzaGU48Cx1G8NBO8f6gd9eF16XVUHCFj1BB5bcAg29tnSu6CiR5YcHxcj3yR54ewADBZm3EaK7VCsqGhYicC5oN8yHlpbagSZWrx
- u3VAornN
- Bn932MpQqcL4QW8lRqW5kKPssOT7sDsr/l68Ofcu/Clg1vmNUQlHrXRm2fOwB3FIbkh03o6A4IQI7/FM40CTSrronVVYt/lsx0SbNPHxhTB04oiU/LSOf5H5zCrEMbCQYv45IUyjcS57uX+UCRWKOq0wD4p622O4EFiR9K8Jn1FHFPx1k27udjUQEVjiTc4ekDmZg133heVXCT9qVRl7ro6ST5X1uCyAf45W58EqG5WGIPuDeW+RKUOBIxw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1776249052-697324
+X-HE-Meta: U2FsdGVkX191glRZer68TnjUK1mW4kjb6cfxiX5FVWbVGq5WIa7h9uJvK2EJ4IIp2s43kgrO8LH8uZbLtIFmq1Y8Wzq4MDIPmrb+T33yjY6+uk+ZbarZSQ6jj6SQjryf8uo7gKz5rd9yhDAYF6jUrnPhXQYjjo1+x/+Tnwdh8CXF7tunmToD6LF5LI6rO00rk1ToYrAvOgoFH9J6SvzFHTuSHB7UU9Fzhx4Ax9TOtXpmWd3uUj5yFT7Q1r3hkLX9hk325/8/8YiQzJnbEKI9QOsnrmD7FqzYqjcztpwumAXs2Er9irwbSaw0T3t9fSLtTrqGKJcX4IVm67dpIw658obVuvDAEc8baJBDd4872OyCp1fcr54rJ3oF9Xg+y1tHjCjjzAN+Ayy0HJfD2HO4FuCW/4Lvkt4lgWdledtUvVkGlQizfr60GC2zsqdCaQMnETwy7TIH8wxhvPsUCQFYhmcRCHdd9/qCXtaBBW/ClGOzdrYBd1lqJWRYIQw0sNmJs5X7zrDZtpmiI1rSKXDWTlNE9hKE2TFqzGT8lSQAk5ZhWeBCMz0kx65IJ9IhNOZItm0cj/rsPtA6etZqWTYZOoca+Scr4Rs3nSI1IsGbv0GLgX+wDvK+jQM/7VbEQpmB57CqjwTrfHls8TJHuFasJhuu6lGbGzwX7GiHNVPGSg9/wmqq8ERx2Qmyk4UB5KqsBrkNJv2IGJ3ayzPiATKzFaewS6Z1H/5tPtPAl1hOR6t8NG/9V0HSg71ygw+4dEOUZH0M6hVwKjzmJggnMV2Cl4he6zipy2JpU/6G97xMO/vLCu7wJ0LPjyfvEfCa2PihtOhfVXTO/XPeXW7D89L16+gkOwyCheVbOJj2Y+xy95hDFzgozmcYuKSI1xVMyuQtX5YAJkf/XB2Ndn9NRPrj/zXv9wCdWgUVc9uv0dHMs/c8wEQ7N6/Nq948zZy3GXjsYVPhYRb9eqKIQox6ed5
+ kbxV4+zW
+ YGdlZlyYyu4cnhT/Ww2eKLc8VlhlCQkK1gBqe2Z5FHtyHTWqRwHMQtuvAfNG2JsTgeh+OHvi1Q07XS8grWxUE8KiVtCKk5+i4AWQbvspqTSbucyT5IYWAGRWzvt+9MePll6w0RXSes7k6x2PTA+2qFDECKF9qbLBnFeIJGmo/CyMojR82TPFwsI7X4v9vDqWmHkXlM1m22ED+Ydb4dnVAP0r27eOeSQE7OXV1vFphxZ3mArmetdoEvOtUiOQ9RdsCV5PwzgE7OCf7aqDukTpXNV3y3NcAw2rp6CwrI5AqtamRdpb4+ILrAfGBnsV3c4eJ5QnkjbANrwCB79xtPX8BsR1Pa0sINlSsOyAy5ZbLVNVb9NgoDISYO+9wZC90uRziKh446BriqONsFw0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,169 +89,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 05:59:48PM +0800, Hao Li wrote:
-> On Tue, Apr 14, 2026 at 05:39:40PM +0900, Harry Yoo (Oracle) wrote:
-> > On Fri, Apr 10, 2026 at 07:16:57PM +0800, Hao Li wrote:
-> > > When performing objects refill, we tend to optimistically assume that
-> > > there will be more allocation requests coming next; this is the
-> > > fundamental assumption behind this optimization.
-> > >
-> > > When __refill_objects_node() isolates a partial slab and satisfies a
-> > > bulk allocation from its freelist, the slab can still have a small tail
-> > > of free objects left over. Today those objects are freed back to the
-> > > slab immediately.
-> > > 
-> > > If the leftover tail is local and small enough to fit, keep it in the
-> > > current CPU's sheaves instead. This avoids pushing those objects back
-> > > through the __slab_free slowpath.
-> > 
-> > So there are two different paths:
-> > 
-> > 1. When refilling prefilled sheaves, spill objects into ->main and
-> >    ->spare. 
-> > 2. When refilling ->main sheaf, spill objects into ->spare.
+On 03/24/26 at 03:46pm, Askar Safin wrote:
+> Baoquan He <bhe@redhat.com>:
+> > How to handle storing compressed data. e.g. data from zram directly
+> > write to the swap backend without uncompressing.
 > 
-> the current experimental code is biased toward spilling into the spare sheaf
-> when possible.
+> This is already implemented here: https://lore.kernel.org/all/20251201094754.4149975-1-senozhatsky@chromium.org/ .
+> The patch is already in mainline.
 
-Oh ok.
-
-> for kernels without kernel preemption enabled or !RT, the spare sheaf is
-> generally NULL at that point,
-
-Right. We're either refilling the previously-spare-sheaf (->spare = NULL
-now) or an empty sheaf because ->spare was NULL. (in both cases 1 and 2)
-
-> so the main sheaf may still end up being the
-> primary place to absorb the spill...
->
-> > > Add a helper to obtain both the freelist and its free-object count, and
-> > > then spill the remaining objects into a percpu sheaf when:
-> > > - the tail fits in a sheaf
-> > > - the slab is local to the current CPU
-> > > - the slab is not pfmemalloc
-> > > - the target sheaf has enough free space
-> > > 
-> > > Otherwise keep the existing fallback and free the tail back to the slab.
-> > > 
-> > > Also add a SHEAF_SPILL stat so the new path can be observed in SLUB
-> > > stats.
-> > > 
-> > > On the mmap2 case in the will-it-scale benchmark suite,
-> > 
-> > > this patch can improve performance by about 2~5%.
-> > 
-> > Where do you think the improvement comes from? (hopefully w/ some data)
-> 
-> Yes, this is necessary.
-> 
-> > e.g.:
-> >   1. the benefit is from largely or partly from
-> >      reduced contention on n->list_lock.
-> 
-> Before this patch is applied, the mmap benchmark shows the following hot path:
-> 
-> - 7.85% native_queued_spin_lock_slowpath
->     -7.85% _raw_spin_lock_irqsave
->         - 3.69% __slab_free
->             + 1.84% __refill_objects_node
->             + 1.77% __kmem_cache_free_bulk
->         + 3.27% __refill_objects_node
-> 
-> With the patch applied, the __refill_objects_node -> __slab_free hotspot goes
-> away, and the native_queued_spin_lock_slowpath drops to roughly 3.5%.
-
-Sounds like returning slabs back indeed increases contention on slowpath.
-
-> The
-> remaining lock contention is mostly between __refill_objects_node ->
-> add_partial and __kmem_cache_free_bulk -> __slab_free.
-> 
-> > 
-> >   2. this change reduces # of alloc slowpath at the cost of increased
-> >      of free slowpath hits, but that's better because the slowpath frees
-> >      are mostly lockless.
-> 
-> The alloc slowpath remains at 0 both w/ or w/o the patch, whereas the
-
-(assuming you used SLUB_STATS for this)
-
-That's weird, I think we should check SHEAF_REFILL instead of
-ALLOC_SLOWPATH.
-
-> free slowpath increases by 2x after applying the patch.
-
-from which cache was this stat collected?
-
-> > 
-> >   3. the alloc/free pattern of the workload is benefiting from
-> >      spilling objects to the CPU's sheaves.
-> > 
-> > or something else?
-> 
-> The 2-5% throughput improvement does seem to come with some trade-offs.
-> The main one is that leftover objects get hidden in the percpu sheaves now,
-> which reduces the objects on the node partial list and thus indirectly
-> increases slab alloc/free frequency to about 4x of the baseline.
-> 
-> This is a drawback of the current approach. :/
-
-Sounds like s->min_partial is too small now that we cache more objects
-per CPU.
-
-/me wonders if increasing sheaf capacity would make more sense
-rather than optimizing slowpath (if it comes with increased memory
-usage anyway), but then stares at his (yet) unfinished patch series...
-
-> I experimented with several alternative ideas, and the pattern seems fairly
-> consistent: as soon as leftover objects are hidden at the percpu level, slab
-> alloc/free churn tends to go up.
-> 
-> > > Signed-off-by: Hao Li <hao.li@linux.dev>
-> > > ---
-> > > 
-> > > This patch is an exploratory attempt to address the leftover objects and
-> > > partial slab issues in the refill path, and it is marked as RFC to warmly
-> > > welcome any feedback, suggestions, and discussion!
-> > 
-> > Yeah, let's discuss!
-> 
-> Sure! Thanks for the discussion!
-> 
-> > 
-> > By the way, have you also been considering having min-max capacity
-> > for sheaves? (that I think Vlastimil suggested somewhere)
-> 
-> Yes, I also tried it.
-> 
-> I experimented with using a manually chosen threshold to allow refill to leave
-> the sheaf in a partially filled state. However, since concurrent frees are
-> inherently unpredictable, this seems can only reduce the probability of
-> generating leftover objects,
-
-If concurrent frees are a problem we could probably grab slab->freelist
-under n->list_lock (e.g. keep them at the end of the sheaf) and fill the
-sheaf outside the lock to avoid grabbing too many objects.
-
-> while at the same time affecting alloc-side throughput.
-
-Shouldn't we set sheaf's min capacity as the same as
-s->sheaf_capacity and allow higher max capcity to avoid this?
-
-> In my testing, the results were not very encouraging: it seems hard
-> to observe improvement, and in most cases it ended up causing a performance
-> regression.
-> 
-> my impression is that it could be difficult to prevent leftovers proactively.
-> It may be easier to deal with them after they appear.
-
-Either way doesn't work if the slab order is too high...
-
-IIRC using higher slab order used to have some benefit
-but now that we have sheaves, it probably doesn't make sense anymore
-to have oo_objects(s->oo) > s->sheaf_capacity?
-
--- 
-Cheers,
-Harry / Hyeonggon
+Thanks for telling, sorry for late reply.
 
