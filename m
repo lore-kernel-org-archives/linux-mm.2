@@ -4,90 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35AC4F43848
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 16:44:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DC46F4385A
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 16:47:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D5936B0005; Wed, 15 Apr 2026 12:44:10 -0400 (EDT)
+	id 5AB9B6B0089; Wed, 15 Apr 2026 12:47:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AD3D6B0088; Wed, 15 Apr 2026 12:44:10 -0400 (EDT)
+	id 55C106B008C; Wed, 15 Apr 2026 12:47:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EAC16B0089; Wed, 15 Apr 2026 12:44:10 -0400 (EDT)
+	id 498C96B0092; Wed, 15 Apr 2026 12:47:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F19F16B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:44:09 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A1F4313B151
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:44:09 +0000 (UTC)
-X-FDA: 84661362618.27.0BA64F2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E8BD94000A
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:44:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rbPWbt6O;
-	spf=pass (imf04.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A29D6B0089
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 12:47:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A2050160578
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:47:32 +0000 (UTC)
+X-FDA: 84661371144.02.7C75821
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 340A6A000D
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 16:47:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of fedorov.nikita@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=fedorov.nikita@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776271448;
+	s=arc-20220608; t=1776271651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=izNmtuPksv9dWlm1qjx8wSRD5cGbl09SCU7x1jDY56U=;
-	b=2qdVeaKiDHmZjpfIMhY3Ge6IfVSfOn5ygNBdJ99QYRpWrt8eLUjqhw4rI2MKa4LoM8RZVM
-	fOH5yOyHjmyK8EMxrUtOKyVKF/04TXRC2VxBv1Sl/H4Itcl4QReMqthKfAphtAwXNHAoA3
-	rgCwNXSHIfvvRsXM16CNqZhRnaS6B0c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776271448; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=Zea3HjUgRWG/fBmALUWnqq0TgzKXGLOrbiT8m5uaTMM=;
+	b=8qGuPC8KUYK+LaWjno91pXL6GpobNMmoLUpqkTtbVMFjxJ41zUSOLp04FGO2D56s3HZCSf
+	rBQN7v5nGkDh9knBmYXM7GYfwE/N6K2qARQbun81HcduU1P6cAGoY6oqmDKiGTYWMA7Aio
+	FTDUKWa/zp1rOMdC49BC1MTZIXCmk0U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776271651; a=rsa-sha256;
 	cv=none;
-	b=X2QFnKXjgkdoqrkOyDnXdJb4SzRAQxp7VTm5LgvI+Y80yGoCvM95Yr3GGD6JdNvPvn5gq+
-	5P8+JOZ6Tlfcj/iiJ42u+rVQ3n/BEk4sq1TMaR82CcFpswY/DDhd8y7LbTDWch0H927pWF
-	27+tcP+MZvtmMZIrM+ACBymAGT9jO6Y=
+	b=pH0uGzucnNEeFbFXwFI9UiRQXOcDueJkATeBb2WIkEIt/Qsekb1qEl2NI7zEc1xiIiaTRT
+	FxvSlM6LT4KOUnlOuieyKNa8mOMgx+zRdotn6s6YHHSf+zHFkp1wJKgty6REqHTTDrSj1A
+	tM3qy4wuDFVNrxEOm/zdxttTYmfurk4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rbPWbt6O;
-	spf=pass (imf04.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B8E1E440E9;
-	Wed, 15 Apr 2026 16:44:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEA3C19424;
-	Wed, 15 Apr 2026 16:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776271446;
-	bh=2XzfifibjGLTjaTgfDTA+z/KHXzhehAjX1QCcM/h0KE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rbPWbt6OyaWAi9CXC7bhsK0GKQdJ23LbxAxGd56VF+vXifmLnZxT2cftnINp9l7XV
-	 d3Lu/FxsuvVwmk8Miv3CHh4X/4/dZZXSITIIkdpRw230ah6yD6sLECUlQjWUzYuMRK
-	 cJ8LggacmqB90gS/tHnOmc3RCsnk0A0tQufABU/aA2lZ+k08UmjMgOwfAJEHKOfsjG
-	 qkMfDi0NSMS4ZE6Wtw5F4NvNsAQDBM3U6iH2acLvwrQX2hluD6sNm+g3iWErispTQT
-	 tv4wEYoT/+siCHqi9dUAtkU6lgOC2n0F6qrGYiPIb2ZqujCEzc+hU+Lc2RqVV9ebyz
-	 B4RkELkEdVk6Q==
-Date: Wed, 15 Apr 2026 16:44:04 +0000
-From: Jaegeuk Kim <jaegeuk@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	Akilesh Kailash <akailash@google.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-api@vger.kernel.org
-Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
- inode number
-Message-ID: <ad_AVHe7RMnGrGTb@google.com>
-References: <20260409134538.3692605-1-jaegeuk@kernel.org>
- <adhPZxtbZxgU-37v@google.com>
- <ad30g9xMs9wNJhFb@infradead.org>
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of fedorov.nikita@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=fedorov.nikita@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fwn9p1RZ4zHnGjl;
+	Thu, 16 Apr 2026 00:47:10 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8C8F340569;
+	Thu, 16 Apr 2026 00:47:26 +0800 (CST)
+Received: from localhost.localdomain (10.123.66.205) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 15 Apr 2026 19:47:25 +0300
+From: Fedorov Nikita <fedorov.nikita@h-partners.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, Juergen Gross <jgross@suse.com>, Ajay
+ Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov
+	<alexey.makhalov@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>, Arnd
+ Bergmann <arnd@arndb.de>, Peter Zijlstra <peterz@infradead.org>, Boqun Feng
+	<boqun@kernel.org>, Waiman Long <longman@redhat.com>, Darren Hart
+	<dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	<andrealmeid@igalia.com>, Andrew Morton <akpm@linux-foundation.org>, David
+ Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+	<rakie.kim@sk.com>, <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple
+	<apopple@nvidia.com>, Anatoly Stepanov <stepanov.anatoly@huawei.com>
+CC: Nikita Fedorov <fedorov.nikita@h-partners.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<virtualization@lists.linux.dev>, <linux-arch@vger.kernel.org>,
+	<linux-mm@kvack.org>, <guohanjun@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<weiyongjun1@huawei.com>, <yusongping@huawei.com>, <leijitang@huawei.com>,
+	<artem.kuzin@huawei.com>, <kang.sun@huawei.com>, <chenjieping3@huawei.com>
+Subject: [RFC PATCH v3 0/7]
+Date: Thu, 16 Apr 2026 00:44:52 +0800
+Message-ID: <20260415164459.2904963-1-fedorov.nikita@h-partners.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad30g9xMs9wNJhFb@infradead.org>
-X-Stat-Signature: bob5g737ghpkbf1y5qmdakm9z9ozs9m3
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E8BD94000A
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.123.66.205]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Queue-Id: 340A6A000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: rjc7z6aeofkgadm15yafxhifm7hk9aue
 X-Rspam-User: 
-X-HE-Tag: 1776271447-160026
-X-HE-Meta: U2FsdGVkX18QoST19fyuzvNZRNpjsZpqAlWpiZqqzuEuP45SoWS8MMEUqpI6A3oLES9IuO2Cyyv1cTuk5yb/42kVRLS4Lzk4Tj8SwMShYIivbiBrxZy+0d6n1jU5JBXs/FJV6i4BZAdQ7vvbix+Zl0rrJzz0iqoLlsM1LAOWy9ffx4jsEuv9OgLR4DwkB6avSfQirkrmSZIYzWWZJJAh8C00j612fL1NOZ648emj5dNPx2OkCOU/btNgGUu6dh4wpUT1/Tm0i7j3sL9/FB94RpguSHgTm0whagKj6GL8jluwnay1dP0LsDlfkD5NZGBUx1lczBFyCC0AF1rZTMkaKtSl0ab5vBOyAxCE8/dFAb+pcBTUi/ln4jVjsJ/1d9FO9JXyVG6swTqBnf2fyT1FL5xV8+TzprNBOrZ5fzvK/HMsMW5q3+shY4N2Cndv4SkhMtUMkrA5U/KgJYYpsR53M9rMCltCMtEOGsVN6X0TLrKENB0WQbHEWgYLeCqet/8WTSl8zq40+zjhyk0PlUAePrxjvzEWTOSyu9gPPrg3EOQJDueALPlQZD66A7QPQIG11kcCrEcoyFZXF2x/VsGaQ+0w3AbIm6+pG9swzfCQ2TFUAXK7V09b+hhqTv6F7evqIe3IWt58VuIqvC+4qkbtks0WAo42793HfgdF5V0cmQbXxgwrr8HVvZZJ1apYylAyCatDYwbHnuxh5l1CrQDO04SiuPeLgN4Gg1KI4VD+8cTCo/MUvYqs23UFiUiH8evOTa6DWgjdBtsqjpSeJKpKL3GHlfg40cy7BsFUQ+7VisZbCXTje2uEbd8Kk2r9/pP8OZT366HbpUiVqFWxnx8xk5x8fgizjXpUER/Y44zh4eNZWzC+t3M/TaGZWe2Zwep28ROorpXXpS7J17yma7iBQVPkBIdXqUDrxUKac3U0KBH5FlB0xRCYpTYinxyF7mWOfrROMsUZr0NRo2jdHVB
- 3dKYNuhx
- +1FHBTk1Yw98Qp7Q/CqupF77pBzNxx7naBA5Ub634bH1T6X5dMt+Vc7r0rOkpx1EGAXRWp77WfutuJW+qGt5spvaCH0sDGKTzdePFF/JpQjImzFmq73Ih89q5kg/+//rfnLTF9hfUpvUvN3023BKyLb3DxWHkgph1LgU9IwepSMctyERRRvTDilEipKP+9AjKf3BN8no8aWCEhokwnsP/LsvfbKGxRNIzLNds49o43/2ipeYJ9ldCX45bUkVNEOIHZcYQ
+X-HE-Tag: 1776271649-256889
+X-HE-Meta: U2FsdGVkX1+6qStEl1YRL5zYtuUUE/lJ4XcIvCK9n8+ejaT9vw83hlOSa6IXouOny6Gfc1TpDgcK/ZbMuDnCCkbQLjOb6chw8cc4Z09Dk1tETO2UUDfXRTqf3XMLPL+AcOtROY9k6iSCsK8ueMXNjZ5nOdrwDFbnwdTvHef8cymzDeMSp0sWxgQl1j9SjQK2GGz6rUybzsZYA9LDn2rhqnqS11efYs2liuRktTjZ7Enu5FDEucaq/OYTATAws2az45Js1k7zHB5zyi941JQHMjT2npGeKY/pJ4ofRat7qx9QCHn9speS8ecVWGd2mnozF2xn5TpOxDq/t290AOBvaEDO/n2lPceVpIy50jqeOcUGeDd3RfS5C0G4TofsXvKO7o7vlvs0PcDn5AvCAD7J2/0qIM+EQeU4jRVnZdx3FWWsCFs2NArJ0yfhx/u1USWGnX066bI3kIBSBpunCxP5vpQEdiRl3BgqejX9eqnIMCkE6xwVTWdDh5BfsOThDBpNunLUq6w6WQo1COK4nwFIlP6ekG3yjQFXIdDhaqfwxAs54BZ9l2/dbIdzm2V4kUCego3HPh8vZMmDCgAo4WfGj6rjxSOprwEy/h+u6PhkXCnCXRUZiiPXGUCM2YEVtznhqcjEkWn0MwOwRuRgXcGH4HCB08cfutNE7e39vuXFtrh41NWRpg1tH+UE2U3n8+ju5Z1CWqssUxNEpOWbGfBu8Kn1RwxxZCykuNq7/gdKed4j/mJ3fcDe7klCj50tqMHY0Ar7VuADlclFKE3YKLiMcPfQQ0L8Qg/jPjvXQfchgRsckCuqrNCrONwHpVA/1mQy7dNfTfUE7k0e6y2Rz2NmVmp2cFI2kt29heL/DZi/svqVWAD4sBqVhAh7ueeWLc13k9Bogu1Muhykkj1JkKGYAHrGFvUp9gjZAdsX8DAh33NtpWfj8yXi1Xf/EIj9Y7PQ62JwIw3O/iELa4XprFI
+ K5y1m8Py
+ 7K10aVgfYBZZ4C7JpoEgNgbclrdNBEr0IBLW/QV6VaeXhbioV/kIoZGbCZ9v+Oywib0CaTfbo2TYjJqA4giNORgpwWiQ0iugs0gjhPdJs9Dq+RjrYwEIriqC0ue6zYFgbucu2Hy7XMZzOTwQRJDYTvxtmmx9KtbMzVErZEBp005+w50mkMxIM4ElnhI7No4JsGj6n0q49k0Xy6nlPF9TQcMqzChv5nO/I3ZTOUSXOrDtfTqKu7/4QrejiHrjDtacSVm4X6UO5UlEpq7CiWnWWe3eLudBJWd0fKjBOIqgjqkP/QrKzbx8TkL6K4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,330 +105,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04/14, Christoph Hellwig wrote:
-> Please add the relevant mailing lists when adding new user interfaces.
-> 
-> And I'm not sure hacks working around the proper large folio
-> implementation are something that should be merged upstream.
+Changes since v2:
+  - split the patch into a smaller patch series,
+  though it is still hard to split the hqlock internal logic itself
+  - remove some unused code
+  - rebased onto Linux v7.0
+  - allocate hq-spinlock metadata with kvmalloc instead of memblock
+  - added contention detection and verified we have no performance degradation in low contention scenario
 
-Cc'ed linux-api and linux-fsdevel onto the patch thread with a proposal that
-I'm not sure it's acceptable or not. 
+[Motivation]
 
-> 
-> On Fri, Apr 10, 2026 at 01:16:23AM +0000, Jaegeuk Kim wrote:
-> > enum {
-> >        F2FS_XATTR_FADV_LARGEFOLIO,
-> > };
-> > 
-> > unsigned int value = BIT(F2FS_XATTR_FADV_LARGEFOLIO);
-> > 
-> > 1. setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
-> >  -> register the inode number for large folio
-> > 2. chmod(0400, file)
-> >  -> make Read-Only
-> > 3. fsync() && close() && open(READ)
-> >  -> f2fs_iget() with large folio
-> > 4. open(WRITE), mkwrite on mmap, chmod(WRITE)
-> >  -> return error
-> > 5. close() and open()
-> >  -> goto #3
-> > 6. unlink
-> >  -> deregister the inode number
-> > 
-> > Suggested-by: Akilesh Kailash <akailash@google.com>
-> > Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-> > ---
-> >  
-> >   Log from v1:
-> >    - add a condition in f2fs_drop_inode
-> >    - add Doc
-> > 
-> >  Documentation/filesystems/f2fs.rst | 41 ++++++++++++++++++++++++++----
-> >  fs/f2fs/checkpoint.c               |  2 +-
-> >  fs/f2fs/data.c                     |  2 +-
-> >  fs/f2fs/f2fs.h                     |  1 +
-> >  fs/f2fs/file.c                     | 11 ++++++--
-> >  fs/f2fs/inode.c                    | 19 +++++++++++---
-> >  fs/f2fs/super.c                    |  7 +++++
-> >  fs/f2fs/xattr.c                    | 35 ++++++++++++++++++++++++-
-> >  fs/f2fs/xattr.h                    |  6 +++++
-> >  9 files changed, 111 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/Documentation/filesystems/f2fs.rst b/Documentation/filesystems/f2fs.rst
-> > index 7e4031631286..de899d0d3088 100644
-> > --- a/Documentation/filesystems/f2fs.rst
-> > +++ b/Documentation/filesystems/f2fs.rst
-> > @@ -1044,11 +1044,14 @@ page allocation for significant performance gains. To minimize code complexity,
-> >  this support is currently excluded from the write path, which requires handling
-> >  complex optimizations such as compression and block allocation modes.
-> >  
-> > -This optional feature is triggered only when a file's immutable bit is set.
-> > -Consequently, F2FS will return EOPNOTSUPP if a user attempts to open a cached
-> > -file with write permissions, even immediately after clearing the bit. Write
-> > -access is only restored once the cached inode is dropped. The usage flow is
-> > -demonstrated below:
-> > +This optional feature is triggered by two mechanisms: the file's immutable bit
-> > +or a specific xattr flag. In both cases, F2FS ensures data integrity by
-> > +restricting the file to a read-only state while large folios are active.
-> > +
-> > +1. Immutable Bit Approach:
-> > +Triggered when the FS_IMMUTABLE_FL is set. This is a strict enforcement
-> > +where the file cannot be modified at all until the bit is cleared and
-> > +the cached inode is dropped.
-> >  
-> >  .. code-block::
-> >  
-> > @@ -1078,3 +1081,31 @@ demonstrated below:
-> >     Written 4096 bytes with pattern = zero, total_time = 29 us, max_latency = 28 us
-> >  
-> >     # rm /data/testfile_read_seq
-> > +
-> > +2. XATTR fadvise Approach:
-> > +A more flexible registration via extended attributes.
-> > +
-> > +.. code-block::
-> > +
-> > +    enum {
-> > +        F2FS_XATTR_FADV_LARGEFOLIO,
-> > +    };
-> > +    unsigned int value = BIT(F2FS_XATTR_FADV_LARGEFOLIO);
-> > +
-> > +    /* Registers the inode number for large folio support in the subsystem.*/
-> > +    # setxattr(file, "user.fadvise", &value, sizeof(unsigned int), 0)
-> > +
-> > +    /* The file must be made Read-Only to transition into the large folio path. */
-> > +    # fchmod(0400, fd)
-> > +
-> > +    /* clean up dirty inode state. */
-> > +    # fsync(fd)
-> > +
-> > +    /* Drop the inode cache.
-> > +    # close(fd)
-> > +
-> > +    /* f2fs_iget() instantiates the inode with large folio support.*/
-> > +    # open()
-> > +
-> > +    /* Returns -EOPNOTSUPP or error to protect the large folio cache.*/
-> > +    # open(WRITE), mkwrite on mmap, or chmod(WRITE)
-> > diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
-> > index 01e1ba77263e..fdd62ddc3ed6 100644
-> > --- a/fs/f2fs/checkpoint.c
-> > +++ b/fs/f2fs/checkpoint.c
-> > @@ -778,7 +778,7 @@ void f2fs_remove_ino_entry(struct f2fs_sb_info *sbi, nid_t ino, int type)
-> >  	__remove_ino_entry(sbi, ino, type);
-> >  }
-> >  
-> > -/* mode should be APPEND_INO, UPDATE_INO or TRANS_DIR_INO */
-> > +/* mode should be APPEND_INO, UPDATE_INO, LARGE_FOLIO_IO, or TRANS_DIR_INO */
-> >  bool f2fs_exist_written_data(struct f2fs_sb_info *sbi, nid_t ino, int mode)
-> >  {
-> >  	struct inode_management *im = &sbi->im[mode];
-> > diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-> > index 965d4e6443c6..5e46230398d7 100644
-> > --- a/fs/f2fs/data.c
-> > +++ b/fs/f2fs/data.c
-> > @@ -2494,7 +2494,7 @@ static int f2fs_read_data_large_folio(struct inode *inode,
-> >  	int ret = 0;
-> >  	bool folio_in_bio;
-> >  
-> > -	if (!IS_IMMUTABLE(inode) || f2fs_compressed_file(inode)) {
-> > +	if (f2fs_compressed_file(inode)) {
-> >  		if (folio)
-> >  			folio_unlock(folio);
-> >  		return -EOPNOTSUPP;
-> > diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-> > index e40b6b2784ee..02bc6eb96a59 100644
-> > --- a/fs/f2fs/f2fs.h
-> > +++ b/fs/f2fs/f2fs.h
-> > @@ -381,6 +381,7 @@ enum {
-> >  /* for the list of ino */
-> >  enum {
-> >  	ORPHAN_INO,		/* for orphan ino list */
-> > +	LARGE_FOLIO_INO,	/* for large folio case */
-> >  	APPEND_INO,		/* for append ino list */
-> >  	UPDATE_INO,		/* for update ino list */
-> >  	TRANS_DIR_INO,		/* for transactions dir ino list */
-> > diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-> > index c0220cd7b332..64ba900410fc 100644
-> > --- a/fs/f2fs/file.c
-> > +++ b/fs/f2fs/file.c
-> > @@ -2068,9 +2068,16 @@ static long f2fs_fallocate(struct file *file, int mode,
-> >  
-> >  static int f2fs_release_file(struct inode *inode, struct file *filp)
-> >  {
-> > -	if (atomic_dec_and_test(&F2FS_I(inode)->open_count))
-> > +	if (atomic_dec_and_test(&F2FS_I(inode)->open_count)) {
-> >  		f2fs_remove_donate_inode(inode);
-> > -
-> > +		/*
-> > +		 * In order to get large folio as soon as possible, let's drop
-> > +		 * inode cache asap. See also f2fs_drop_inode.
-> > +		 */
-> > +		if (f2fs_exist_written_data(F2FS_I_SB(inode),
-> > +					    inode->i_ino, LARGE_FOLIO_INO))
-> > +                       d_drop(filp->f_path.dentry);
-> > +	}
-> >  	/*
-> >  	 * f2fs_release_file is called at every close calls. So we should
-> >  	 * not drop any inmemory pages by close called by other process.
-> > diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-> > index 89240be8cc59..e100bc5a378c 100644
-> > --- a/fs/f2fs/inode.c
-> > +++ b/fs/f2fs/inode.c
-> > @@ -565,6 +565,20 @@ static bool is_meta_ino(struct f2fs_sb_info *sbi, unsigned int ino)
-> >  		ino == F2FS_COMPRESS_INO(sbi);
-> >  }
-> >  
-> > +static void f2fs_mapping_set_large_folio(struct inode *inode)
-> > +{
-> > +	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-> > +
-> > +	if (f2fs_compressed_file(inode))
-> > +		return;
-> > +	if (f2fs_quota_file(sbi, inode->i_ino))
-> > +		return;
-> > +	if (IS_IMMUTABLE(inode) ||
-> > +	    (f2fs_exist_written_data(sbi, inode->i_ino, LARGE_FOLIO_INO) &&
-> > +	     !(inode->i_mode & S_IWUGO)))
-> > +	    mapping_set_folio_min_order(inode->i_mapping, 0);
-> > +}
-> > +
-> >  struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
-> >  {
-> >  	struct f2fs_sb_info *sbi = F2FS_SB(sb);
-> > @@ -620,9 +634,7 @@ struct inode *f2fs_iget(struct super_block *sb, unsigned long ino)
-> >  		inode->i_op = &f2fs_file_inode_operations;
-> >  		inode->i_fop = &f2fs_file_operations;
-> >  		inode->i_mapping->a_ops = &f2fs_dblock_aops;
-> > -		if (IS_IMMUTABLE(inode) && !f2fs_compressed_file(inode) &&
-> > -		    !f2fs_quota_file(sbi, inode->i_ino))
-> > -			mapping_set_folio_min_order(inode->i_mapping, 0);
-> > +		f2fs_mapping_set_large_folio(inode);
-> >  	} else if (S_ISDIR(inode->i_mode)) {
-> >  		inode->i_op = &f2fs_dir_inode_operations;
-> >  		inode->i_fop = &f2fs_dir_operations;
-> > @@ -895,6 +907,7 @@ void f2fs_evict_inode(struct inode *inode)
-> >  	f2fs_remove_ino_entry(sbi, inode->i_ino, APPEND_INO);
-> >  	f2fs_remove_ino_entry(sbi, inode->i_ino, UPDATE_INO);
-> >  	f2fs_remove_ino_entry(sbi, inode->i_ino, FLUSH_INO);
-> > +	f2fs_remove_ino_entry(sbi, inode->i_ino, LARGE_FOLIO_INO);
-> >  
-> >  	if (!is_sbi_flag_set(sbi, SBI_IS_FREEZING)) {
-> >  		sb_start_intwrite(inode->i_sb);
-> > diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-> > index ccf806b676f5..11d1e0c99ac1 100644
-> > --- a/fs/f2fs/super.c
-> > +++ b/fs/f2fs/super.c
-> > @@ -1844,6 +1844,13 @@ static int f2fs_drop_inode(struct inode *inode)
-> >  			return 1;
-> >  		}
-> >  	}
-> > +	/*
-> > +	 * In order to get large folio as soon as possible, let's drop
-> > +	 * inode cache asap. See also f2fs_release_file.
-> > +	 */
-> > +	if (f2fs_exist_written_data(sbi, inode->i_ino, LARGE_FOLIO_INO) &&
-> > +	    !is_inode_flag_set(inode, FI_DIRTY_INODE))
-> > +		return 1;
-> >  
-> >  	/*
-> >  	 * This is to avoid a deadlock condition like below.
-> > diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-> > index 941dc62a6d6f..0c0e44c2dcdd 100644
-> > --- a/fs/f2fs/xattr.c
-> > +++ b/fs/f2fs/xattr.c
-> > @@ -44,6 +44,16 @@ static void xattr_free(struct f2fs_sb_info *sbi, void *xattr_addr,
-> >  		kfree(xattr_addr);
-> >  }
-> >  
-> > +static int f2fs_xattr_fadvise_get(struct inode *inode, void *buffer)
-> > +{
-> > +	if (!buffer)
-> > +		goto out;
-> > +	if (mapping_large_folio_support(inode->i_mapping))
-> > +		*((unsigned int *)buffer) |= BIT(F2FS_XATTR_FADV_LARGEFOLIO);
-> > +out:
-> > +	return sizeof(unsigned int);
-> > +}
-> > +
-> >  static int f2fs_xattr_generic_get(const struct xattr_handler *handler,
-> >  		struct dentry *unused, struct inode *inode,
-> >  		const char *name, void *buffer, size_t size)
-> > @@ -61,10 +71,29 @@ static int f2fs_xattr_generic_get(const struct xattr_handler *handler,
-> >  	default:
-> >  		return -EINVAL;
-> >  	}
-> > +	if (handler->flags == F2FS_XATTR_INDEX_USER &&
-> > +	    !strcmp(name, "fadvise"))
-> > +		return f2fs_xattr_fadvise_get(inode, buffer);
-> > +
-> >  	return f2fs_getxattr(inode, handler->flags, name,
-> >  			     buffer, size, NULL);
-> >  }
-> >  
-> > +static int f2fs_xattr_fadvise_set(struct inode *inode, const void *value)
-> > +{
-> > +	unsigned int new_fadvise;
-> > +
-> > +	new_fadvise = *(unsigned int *)value;
-> > +
-> > +	if (new_fadvise & BIT(F2FS_XATTR_FADV_LARGEFOLIO))
-> > +		f2fs_add_ino_entry(F2FS_I_SB(inode),
-> > +				inode->i_ino, LARGE_FOLIO_INO);
-> > +	else
-> > +		f2fs_remove_ino_entry(F2FS_I_SB(inode),
-> > +				inode->i_ino, LARGE_FOLIO_INO);
-> > +	return 0;
-> > +}
-> > +
-> >  static int f2fs_xattr_generic_set(const struct xattr_handler *handler,
-> >  		struct mnt_idmap *idmap,
-> >  		struct dentry *unused, struct inode *inode,
-> > @@ -84,6 +113,10 @@ static int f2fs_xattr_generic_set(const struct xattr_handler *handler,
-> >  	default:
-> >  		return -EINVAL;
-> >  	}
-> > +	if (handler->flags == F2FS_XATTR_INDEX_USER &&
-> > +	    !strcmp(name, "fadvise"))
-> > +		return f2fs_xattr_fadvise_set(inode, value);
-> > +
-> >  	return f2fs_setxattr(inode, handler->flags, name,
-> >  					value, size, NULL, flags);
-> >  }
-> > @@ -842,4 +875,4 @@ int __init f2fs_init_xattr_cache(void)
-> >  void f2fs_destroy_xattr_cache(void)
-> >  {
-> >  	kmem_cache_destroy(inline_xattr_slab);
-> > -}
-> > \ No newline at end of file
-> > +}
-> > diff --git a/fs/f2fs/xattr.h b/fs/f2fs/xattr.h
-> > index bce3d93e4755..455f460d014e 100644
-> > --- a/fs/f2fs/xattr.h
-> > +++ b/fs/f2fs/xattr.h
-> > @@ -24,6 +24,7 @@
-> >  #define F2FS_XATTR_REFCOUNT_MAX         1024
-> >  
-> >  /* Name indexes */
-> > +#define F2FS_USER_FADVISE_NAME			"user.fadvise"
-> >  #define F2FS_SYSTEM_ADVISE_NAME			"system.advise"
-> >  #define F2FS_XATTR_INDEX_USER			1
-> >  #define F2FS_XATTR_INDEX_POSIX_ACL_ACCESS	2
-> > @@ -39,6 +40,11 @@
-> >  #define F2FS_XATTR_NAME_ENCRYPTION_CONTEXT	"c"
-> >  #define F2FS_XATTR_NAME_VERITY			"v"
-> >  
-> > +/* used for F2FS_USER_FADVISE_NAME */
-> > +enum {
-> > +	F2FS_XATTR_FADV_LARGEFOLIO,
-> > +};
-> > +
-> >  struct f2fs_xattr_header {
-> >  	__le32  h_magic;        /* magic number for identification */
-> >  	__le32  h_refcount;     /* reference count */
-> > -- 
-> > 2.53.0.1213.gd9a14994de-goog
-> > 
-> > 
-> ---end quoted text---
+In a high contention case, existing Linux kernel spinlock implementations can become
+inefficient on modern NUMA systems due to frequent and expensive
+cross-NUMA cacheline transfers. 
+
+This might happen due to following reasons:
+ - on "contender enqueue" each lock contender updates a shared lock structure
+ - on "MCS handoff" cross-NUMA cache-line transfer occurs when
+two contenders are from different NUMA nodes.
+
+Previous work regarding NUMA-aware spinlock in Linux kernel is CNA-lock:
+https://lore.kernel.org/lkml/20210514200743.3026725-1-alex.kogan@oracle.com/
+
+It reduces cross-NUMA cacheline traffic during handoff, but does not reduce it during enqueuing.
+CNA design also requires the first contender to do additional work during global spinning
+and keeps threads from all nodes other than the first one in the single secondary queue. 
+In our measurements, we only saw benefits from using it on Kunpeng;
+on x86 platforms, CNA behaved the same as a regular qspinlock.
+Thus, there is still quite a lot of potential for optimization.
+
+HQ-lock has completely different design concept: kind of cohort-lock and
+queued-spinlock hybrid.
+
+If someone wants to try the HQ-lock in some subsystem, just
+change lock initialization code from `spin_lock_init()` to `spin_lock_init_hq()`,
+or change `DEFINE_SPINLOCK()` macro to `DEFINE_SPINLOCK_HQ()` if the lock is static.
+The dedicated bit in the lock structure is used to distiguish between the two lock types.
+
+[Performance measurements]
+
+Performance measurements were done on x86 (AMD EPYC) and arm64 (Kunpeng 920)
+platforms with the following scenarious:
+- Locktorture benchmark
+- Memcached + memtier benchmark
+- Ngnix + Wrk benchmark
+
+[Locktorture]
+
+NPS stands for "Nodes per socket"
++------------------------------+-----------------------+-------+-------+--------+
+| AMD EPYC 9654									|
++------------------------------+-----------------------+-------+-------+--------+
+| 192 cores (x2 hyper-threads) |                       |       |       |        |
+| 2 sockets                    |                       |       |       |        |
+| Locktorture 60 sec.          | NUMA nodes per-socket |       |       |        |
+| Average gain (single lock)   | 1 NPS                 | 2 NPS | 4 NPS | 12 NPS |
+| Total contender threads      |                       |       |       |        |
+| 8                            | 19%                   | 21%   | 12%   | 12%    |
+| 16                           | 13%                   | 18%   | 34%   | 75%    |
+| 32                           | 8%                    | 14%   | 25%   | 112%   |
+| 64                           | 11%                   | 12%   | 30%   | 152%   |
+| 128                          | 9%                    | 17%   | 37%   | 163%   |
+| 256                          | 2%                    | 16%   | 40%   | 168%   |
+| 384                          | -1%                   | 14%   | 44%   | 186%   |
++------------------------------+-----------------------+-------+-------+--------+
+
++-----------------+-------+-------+-------+--------+
+| Fairness factor | 1 NPS | 2 NPS | 4 NPS | 12 NPS |
++-----------------+-------+-------+-------+--------+
+| 8               | 0.54  | 0.57  | 0.57  | 0.55   |
+| 16              | 0.52  | 0.53  | 0.60  | 0.58   |
+| 32              | 0.53  | 0.53  | 0.53  | 0.61   |
+| 64              | 0.52  | 0.56  | 0.54  | 0.56   |
+| 128             | 0.51  | 0.54  | 0.54  | 0.53   |
+| 256             | 0.52  | 0.52  | 0.52  | 0.52   |
+| 384             | 0.51  | 0.51  | 0.51  | 0.51   |
++-----------------+-------+-------+-------+--------+
+
++-------------------------+--------------+
+| Kunpeng 920 (arm64)     |              |
++-------------------------+--------------+
+| 96 cores (no MT)        |              |
+| 2 sockets, 4 NUMA nodes |              |
+| Locktorture 60 sec.     |              |
+|                         |              |
+| Total contender threads | Average gain |
+| 8                       | 93%          |
+| 16                      | 142%         |
+| 32                      | 129%         |
+| 64                      | 152%         |
+| 96                      | 158%         |
++-------------------------+--------------+
+
+[Memcached]
+
++---------------------------------+-----------------+-------------------+
+| AMD EPYC 9654                   |                 |                   |
++---------------------------------+-----------------+-------------------+
+| 192 cores (x2 hyper-threads)    |                 |                   |
+| 2 sockets, NPS=4                |                 |                   |
+|                                 |                 |                   |
+| Memtier+memcached 1:1 R/W ratio |                 |                   |
+| Workers                         | Throughput gain | Latency reduction |
+| 32                              | 1%              | -1%               |
+| 64                              | 1%              | -1%               |
+| 128                             | 3%              | -4%               |
+| 256                             | 7%              | -6%               |
+| 384                             | 10%             | -8%               |
++---------------------------------+-----------------+-------------------+
+
++---------------------------------+-----------------+-------------------+
+| Kunpeng 920 (arm64)             |                 |                   |
++---------------------------------+-----------------+-------------------+
+| 96 cores (no MT)                |                 |                   |
+| 2 sockets, 4 NUMA nodes         |                 |                   |
+|                                 |                 |                   |
+| Memtier+memcached 1:1 R/W ratio |                 |                   |
+| Workers                         | Throughput gain | Latency reduction |
+| 32                              | 4%              | -3%               |
+| 64                              | 6%              | -6%               |
+| 80                              | 8%              | -7%               |
+| 96                              | 8%              | -8%               |
++---------------------------------+-----------------+-------------------+
+
+[Nginx]
+
++-----------------------------------------------------------------------+-----------------+
+| Kunpeng 920 (arm64)                                                   |                 |
++-----------------------------------------------------------------------+-----------------+
+| 96 cores (no MT)                                                      |                 |
+| 2 sockets, 4 NUMA nodes                                               |                 |
+|                                                                       |                 |
+| Nginx + WRK benchmark, single file (lockref spinlock contention case) |                 |
+| Workers                                                               | Throughput gain |
+| 32                                                                    | 1%              |
+| 64                                                                    | 68%             |
+| 80                                                                    | 72%             |
+| 96                                                                    | 78%             |
++-----------------------------------------------------------------------+-----------------+
+Despite, the test is a single-file test, it can be related to real-life cases, when some
+html-pages are accessed much more frequently than others (index.html, etc.)
+
+[Low contention remarks]
+After adding contention detection scheme, we do not see performance degradation in low contention scenario (< 8 threads),
+throughput of HQspinlock is equal to qspinlock,
+while still having practically the same improvement in high contention case as mentioned above.
+
+Previous version:
+https://lore.kernel.org/lkml/20251206062106.2109014-1-stepanov.anatoly@huawei.com/
+
+Anatoly Stepanov (7):
+  kernel: add hq-spinlock types
+  hq-spinlock: implement inner logic
+  hq-spinlock: add contention detection
+  hq-spinlock: add hq-spinlock tunables and debug statistics
+  kernel: introduce general hq-spinlock support
+  lockref: use hq-spinlock
+  futex: use hq-spinlock for hash buckets
+
+ arch/arm64/include/asm/qspinlock.h       |  37 +
+ arch/x86/include/asm/hq-spinlock.h       |  34 +
+ arch/x86/include/asm/paravirt-spinlock.h |   3 +-
+ arch/x86/include/asm/qspinlock.h         |   6 +-
+ include/asm-generic/qspinlock.h          |  23 +-
+ include/asm-generic/qspinlock_types.h    |  44 +-
+ include/linux/lockref.h                  |   2 +-
+ include/linux/spinlock.h                 |  26 +
+ include/linux/spinlock_types.h           |  26 +
+ include/linux/spinlock_types_raw.h       |  20 +
+ kernel/Kconfig.locks                     |  29 +
+ kernel/futex/core.c                      |   2 +-
+ kernel/locking/hqlock_core.h             | 850 +++++++++++++++++++++++
+ kernel/locking/hqlock_meta.h             | 487 +++++++++++++
+ kernel/locking/hqlock_proc.h             | 164 +++++
+ kernel/locking/hqlock_types.h            | 122 ++++
+ kernel/locking/qspinlock.c               |  65 +-
+ kernel/locking/qspinlock.h               |   4 +-
+ kernel/locking/spinlock_debug.c          |  20 +
+ mm/mempolicy.c                           |   4 +
+ 20 files changed, 1939 insertions(+), 29 deletions(-)
+ create mode 100644 arch/arm64/include/asm/qspinlock.h
+ create mode 100644 arch/x86/include/asm/hq-spinlock.h
+ create mode 100644 kernel/locking/hqlock_core.h
+ create mode 100644 kernel/locking/hqlock_meta.h
+ create mode 100644 kernel/locking/hqlock_proc.h
+ create mode 100644 kernel/locking/hqlock_types.h
+
+-- 
+2.34.1
+
 
