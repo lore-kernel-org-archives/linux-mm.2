@@ -4,122 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD6CF531E9
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 09:11:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D449F531E9
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 09:11:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B181F6B0092; Wed, 15 Apr 2026 05:11:18 -0400 (EDT)
+	id 858B16B0093; Wed, 15 Apr 2026 05:11:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEF136B0093; Wed, 15 Apr 2026 05:11:18 -0400 (EDT)
+	id 808956B0095; Wed, 15 Apr 2026 05:11:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2C526B0095; Wed, 15 Apr 2026 05:11:18 -0400 (EDT)
+	id 71EEA6B0096; Wed, 15 Apr 2026 05:11:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 921656B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:11:18 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 516E41B8198
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:11:18 +0000 (UTC)
-X-FDA: 84660221436.04.739523F
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5C94810000A
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:11:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=drMAOFhu
+	by kanga.kvack.org (Postfix) with ESMTP id 637DD6B0093
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:11:21 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 278F58BDDB
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:11:21 +0000 (UTC)
+X-FDA: 84660221562.21.41E8C4D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 60AE180013
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:11:19 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UUcI+zX5;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776244276;
+	s=arc-20220608; t=1776244279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=niwzD+HTaVSeyOYRpZrIOJZYYAYWhLi1x8LzB4xVLGE=;
-	b=rcpQZSwsnFjqhbcwdYDhLz+g+Weq9N8YieroyyYvygC1Kk+qLD9Qto7f3zJ/ejv1DPPKmW
-	3+kiUrC9u83wSQoOkrTJevunA4RGCdz90DMpvSTlOZY93yuDdvIxqjo30TefP0WQJHnyAJ
-	CvSta4K0pVYaBbbbDgTA1EkXGhlUnwg=
+	bh=BgUV5xskdMm4Bo52O8ecvdUm7uMsqcd/PU9NByzW5tk=;
+	b=lv1SHXMdaDThJSc610//vwth0eHGD8RN9QMWw6B0V7iPw9QWVe4zDnMrrkxzXZPiPc19Qe
+	5LLVDwekHMORe9MM4L7J1fFha7DCZyPblYclhQONpYuu7wQxkKl4ApF5tRPWfK+3O4eCgQ
+	Id0BSueGtf9vERK5feE0n2pTNJyaymc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=drMAOFhu;
-	spf=none (imf14.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.128.53) smtp.mailfrom=matt@readmodwrite.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776244276; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UUcI+zX5;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776244279; a=rsa-sha256;
 	cv=none;
-	b=kSHlqqoxzXEr5kKPP/iJOoGKcxNtcX61b8R4dTa1PrlV/xziWuVKzfgEl+FOjmZQDvWyTl
-	B2xvCUaS0x4gMkotp3FjUdztBti60QNY32ohWIeZd5PkkodM1Vd5LWXdDathHaeFNWycqK
-	MbFe0yLZQ4m27A2qzi5zbrPm6lbyNs0=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4888375f735so64461105e9.3
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:11:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1776244275; x=1776849075; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=niwzD+HTaVSeyOYRpZrIOJZYYAYWhLi1x8LzB4xVLGE=;
-        b=drMAOFhuGp+y5yra9rnkbMQfRG+SvOJf3Ew02utGrXa0NF7nrk+hPq97LQYKQJsShr
-         ekifREo64uxDQYmWZhD57tf4vD16QXRTo1vw/blmtlSHt6oM5S0jhxbJG/HZrKQOmu1R
-         L8ZMRJna/t6itebmNUgGRBtahZZoIsI6/iaaDJZtG4lxAIOeDkTmsdgSZkAaZwtzW13l
-         UOY/+V+1MTMYgZzrfbn0Ju59bQvibe5iumuRz83SJ31Rw26DCm9ucQIpBKVudX4kEOXk
-         dKRZYYEKlY2Q+XjV9vcmaNc3EgIndZuwTr+/s8ihlcwywt259TWsJ1QAe6x6w9bZwc5C
-         eSZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776244275; x=1776849075;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=niwzD+HTaVSeyOYRpZrIOJZYYAYWhLi1x8LzB4xVLGE=;
-        b=A+fj+muBzWUXh/MsRRHVQVGnJzhqovOa1fQFlhJu3N2k0YB0WkO+NXNFKxUsly0m+Q
-         kk7x+jtAqIYAcqncyoRzzyYsVmmSt8/Z5oIPPLMTtY9Ty/QtHXrpx8vpEV/747HitDNY
-         oLfvtsowlQbYyjiK94obR1R2X13MHX35o2o4w5gMRh8CE5j1eI3KkE5xZg/6FxV7Iy1B
-         A8KUp0oCyk+HkF9z/KbamT2e5hlCqmmk7vewU5kYueObxEP2ogVK1zRMeYG8yDGzooBm
-         1/7lhZWvyng2gV7/v4YKqS00u5ZPOU5HnFQx7NzLwAEks7jNsq8YprT40Pf/AsiGYaH1
-         h+Vw==
-X-Forwarded-Encrypted: i=1; AFNElJ/nLhNsIJq7nxU0ZaNnsPpttaAvjoN7zAe7L9c7sYKLetQKr09k8LSa8ENdxq6o8zX6WmJoaGcaBg==@kvack.org
-X-Gm-Message-State: AOJu0Yx/dezoOBla0IJmteOcBhKf6cNbcgNQDefbNXSvbtjtXZa/F5eJ
-	9YTEktTpWTijiFOEu9CpP0wic9YG125zn1SMGaTwyRjX58ypKYjXMZNhQdBRhlLWctY=
-X-Gm-Gg: AeBDiev2Y5W9AAGru/bwVQpM7S0rZ4k79hH4HAP4qbMMI8WgS+AUOB4Hwufm0vG7BOl
-	6gvXDnmakzTztDBHgQTLGsxDWgjtD8FoBgFC6vjr4G66U7eNnAjqezF7XvAIwXdR5ISUzJA7LFv
-	4dG6NrxxO4qSw1K9It5LLIczP/x8IG8WXMED1NwKUhrvvX/XYj6/qGcRyy/75qlDEZgxZhJvaB5
-	1coHbWpDGogrGo8N/wq7RE3RyK4Um9JrLIJFhWhUpMoj4kHcxA7jlzW2tS6tlz+IDbTesy/fa93
-	9E6e49cBUrFgugSk8aRfYFivJyEPuaIPTT8bfDpt8RAUZplMOvV0E+USMCjfV0aKEE5UOiCuU7i
-	NavkKOJjINpe1KMOBNpg4hBREVnzcCjrohPUyApTD0YX0iPtsycUvs9qClmKBZs+ylRQgvkmBXQ
-	7YhQKjYKTXTiDea4X/xPkweAFtHXi1mgs=
-X-Received: by 2002:a05:600c:8b6b:b0:488:be21:54b9 with SMTP id 5b1f17b1804b1-488d67ce792mr300007505e9.8.1776244274651;
-        Wed, 15 Apr 2026 02:11:14 -0700 (PDT)
-Received: from localhost ([2a09:bac6:37a8:ec8::179:23a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f1d60ec2sm35799535e9.0.2026.04.15.02.11.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 02:11:13 -0700 (PDT)
-Date: Wed, 15 Apr 2026 10:11:12 +0100
-From: Matt Fleming <matt@readmodwrite.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Minchan Kim <minchan@kernel.org>, kernel-team@cloudflare.com, 
-	Matt Fleming <mfleming@cloudflare.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Require LRU reclaim progress before retrying direct
- reclaim
-Message-ID: <ad9SVxWIP4FN1c9D@matt-Precision-5490>
-References: <20260410101550.2930139-1-matt@readmodwrite.com>
- <6ca33173-145b-43aa-8a8a-34985d375246@kernel.org>
+	b=7TmjEWHbjDzkt2lCOTtKW5l9lkgiAquP3OfOP6pVsVALd+ZgtIb7K+eF/QJtFAC/sEthZp
+	6WIgzYiKFwsLVjrPU+ffvXoWCI0jC3Q4ySXuz+Hbqz3dizAFmp9vrLYcXuq5xSJ5RYxFod
+	H2LrjciVeUtMB3ZKZQN6IJ3+h97KBLI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C80AB60127;
+	Wed, 15 Apr 2026 09:11:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F08C19424;
+	Wed, 15 Apr 2026 09:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776244278;
+	bh=TPZN45jns1itKScJG6KOizfOoI5BuoeGCxqRTDVziAY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UUcI+zX5V8d8kCwrPCn9umtgXSOGtgZGhsheBt4lW6r5RYb4g2UNipJzES9Oo7NwJ
+	 u+HL5dVFTORwiKn6qgwHKUqc42zuXM8e9EiUVIrnwSl68TPzG20gAw4EZ/x+qOmqRc
+	 N+xD/aEKsG9z/38JURaga52nU3UX+8nki9rGixBkc57Z2xGSqDKBZPlkwacirk7VQ5
+	 RMDd9JjsuvDrKfjYj0ZXeRaVuRbRuL0O35gpIIt5nPtt/lAxJTo+5B70Ke29/QH492
+	 Lw1+dzYJU5lGP7LVcUrZDcaV5856fy61JlwWvn/6d5Q0DYeobtjkwvzIGS9d5fUQgB
+	 oUyh2+sEtyGjw==
+Message-ID: <b9e7e80a-f052-42ab-ad24-033d714911dc@kernel.org>
+Date: Wed, 15 Apr 2026 11:11:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ca33173-145b-43aa-8a8a-34985d375246@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+ Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Tianyou Li <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ linux-kernel@vger.kernel.org
+References: <20260408031615.1831922-1-yuan1.liu@intel.com>
+ <20260413130633.knzkliyqvjhuz2kd@master>
+ <1928b6b0-2ec3-43ca-a41b-e880d974af04@kernel.org>
+ <20260414021219.wayysugpfbzirzh6@master>
+ <fd59736d-a02a-4693-9e70-23c593c9dac7@kernel.org>
+ <20260415023015.5i7hrixrk64uzjqj@master>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260415023015.5i7hrixrk64uzjqj@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5C94810000A
-X-Stat-Signature: d7qw175ifpxqbigdx4xjnj7x3q7349oi
-X-HE-Tag: 1776244276-700843
-X-HE-Meta: U2FsdGVkX1++dCtPnnj8LXgfZyU+e/5nc/WQjjcJU9qoZT/mtRpJfQjWQmobR4gmPQiE16mHxGyWAHFJdIHddoKFsJkbENsZZyfHR9mIZe+UzS6z/Rud/CVeuG6TVza7FwMvhVzYCb6NS9Db3meYIwMNrqCmHzpCd1ibfKQqqO1+nkkiI7kLKH5WRWqPFDaMEMV+cCJ5WomJud6FVsYU2n8hV8I5zjFtJWGnOAUHwrF7GjoUfwMPp5bxcBCWBeQf17v+wNsh4NcWZIm+EMFCD+zbQdR7rs3CleH6Ss4gsPhBMS+1cpm5pNxFZ/KAJe3isw9pt/Pn+H/zaYnj8t1GDbuqqpxz7D98Gr8Uv6O8i2YWbxE2RohQh9FCr1laDfufzC/VUgOFgOkCznJKFaBmGjOPoSEVt2Tuj0AYH4ZraXkt1TLubntIHrFfgG1UlmpuXd4/KZfzW1OWZLi+kHRNU3K1HumbipvMO1kGF/hbj6t5SQ/Xhbb9aCJhyNPqXpyFnrLo2fxaafCd5lTZrKVmK3ZxQfyKBA/NdlRicU0N8EG1tmzO4OVBrZBaJIAax9Ow0NUrwyOfxWQanFyqguSh+PwbTVOy21uvGUSMd4sx5oPszHF+pi4nPLi7k4eY5bgPqA7tm9ou9nZ0hOlzLBjoa21aQwroRo53sd6tv1V94PTiWJrw2XQrCd21hZIVaAjDa11GY6Ia4dmI5rDSAL+OnpleSacHHilSdKyZ4hK2V4ZICjnoxVQEX9IMz4EoqPqJp60HPYBvBtM3WauhQBgCCdlAHzaksFvRg48pE4kVrQEjZgozM1sHxqalYZSnKAg75DqNu2GrV5UnIr+xV2cfDUGeb+vgg/MknIavy1CS+fE3q5CH68XswYE1xZF4LhegPIoav5fquF7TkI6eKQ3hJQFm7LItEx1NJq5OEPGPdjPeQmprK/i/DHgDlfJLE4gP5RO2R7evVnkwNicMREt
- Qr6zgqPp
- yFKRONcHNMBoOgMHpybkc9V5p66fDa1JJmYTQE9yJWJw2YMBESXOu1I1auxNlo7fs1GEllbKiFlFF+43nmcjaC8L5/rUB+nmrdMwWSAd1EugmIItnfJBVOO/N70jF7pNrSE5dil1f5/uIFE5hwX9gAhF9gZ5yrfKyTaGpfC5gQ1zyi2pLMS0lN/79XJp2LO7BnJZuZBSRBzkpcsbLDN8oopdQhx26H2uFS0mx27QaF1akS9PokLBfXHu+peQvCqi7NjhaeB2c2OSje1Cm/urs54Vh8Fnia/MjA81Xok2XsQGWmHdM6fapTPTFKeIE0B2ZF43x9CjSEHEX2uCti3ukFg+lwz205niURw+jGINKas87vR0qLhXCh+aDL+p+xUkbwzLGfeHqnLZk9VLSkGZGkUl043V/2RsltAzEaGRb3sT5jngW9E7NsL5pt515v0SySLCdqvM2l6BAPcOvUDM1K9dyTK9aoYu5kkM6JBoR/SqdofiA0VR3r/tEgF9I68Pw4QrnLzUFPtrt6lQiPYMGC0TuQudp8yw157PbPpiiM/EjKrQEZDxQPAjleKYoTFqXkdAwi+i0K09nP9X1PWEr64YMvg==
+X-Stat-Signature: wgjcumfpqbbk7xwpwctwx4qb4tbcd8q1
+X-Rspamd-Queue-Id: 60AE180013
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776244279-289566
+X-HE-Meta: U2FsdGVkX1/eKx8t27DBDUmiB1A2B7uy1LqIFCYA1qHCPa0OMW+NmumbCNGz9QqOCW4AiUBVtLjpRuXGbtD64YY/z0+Gs0Y/jqGBYPOkvlyfRwsViyztjlFk7RfEfRD030pjxiTkU2e0KLotpvvbjWkYrDN4B91WH3tVT687plgDJq4l/3iRtgjJtuSv9AVUbCq0DIiuADEprFrehyygit8jHKQ58HPyaYm5vzb8zsdg7s15byeC3F/X1VKEAsK9YBzHBiKiPgCim1uI9vVkIOGYhIsXwA2D9zQz6vUoO+xt5eRcjuPGpxUvxuWn2QCIQVrQYlrYBSrDqJ/XfB54oXNZBOjGOzczzsVGVAKKilwc5fFSXba6zNwrDf2dk58IWYWlsWnWhrLH6t53D+pmjx0RuyHhgXBt/sbTtS4nlTU0YkGbGk1LoBbq7dEzAJgLxaHk4vcT+wrkZhstFInIguRnCiHy8431EUnCFzCjFNxQTZS3tLQ9nF1lRKCjqMJw20iG2YgO/YvftKkV6F4BPBrh/7bESV/bJw96b+9tFYM6G2kQ+MOHFgB3TySzac1qCnI5za4OdlDd0am9N7VFmglZUJcMX1UhGy3GkeonC9SeFzRJgZgJmcLzyc8/WYttu9bljbsTaqdZA1PKGxmtYFOL/N/H5KsQbMsArwQUGlhoHpSIUHMQGfClAAjGuY/VZav/cenNGoaEGpLSyPIidoIrWWeqxOMGgTxZvDor0qPvAuLSs6i3v6y7csqtkTlclaSxsKczSAIgShFFnxlMFTqjr/Sp/lM6nN/U9KLxjE4nzmeCRJ8Jr5UGpgUJIiGn/z97eWEbRsGcU2PcMDCEaOwa1f09oQGDdRi6EDPjQG/OYDwE1t9jIdtIpFjA6XNqIralKkn9vnsGkcw9fueuiCnTK+5tP396Qh+7dCaF+Dj61k9EEfhO7pXMJHF3VTZkGn4nuzUuFVvJDkOTYHd
+ 5Xh98bdd
+ MNaq2pWhlz8xr+6AbMLo1fWr2CohYrOCma8x9qWCODgPatVAwkqWdrGqaxJCTIaHYYQX3XifSXv+l/pbJ4ze4yrx964Y8oKKOaf1KUfllddurSoAxEJzRroMJK6QCd/lgMRCk6P91FhAt7vRpSvkIh3cM7b5hskC1jbARRNtt/Z1oOQdaOL3GzDscbdOjNEXxV88eY6rQWiclPz0QScDunAj/wbFcPLL757kjukIOzzPibecxN+N42buDMm5hHgqwsIWmlGdpjOGMRXWZU2d9YXM1usYjJXe40C0FanV7X0bDSl76YUXDcl9XiVmyY5hl5URnV/ht/emNFqGjxbWkF4wVYHBpRLRSaiGBqIC632Z1di4W0G30zAUExpJ5hubYrKTP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,42 +148,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 05:38:19PM +0200, Vlastimil Babka (SUSE) wrote:
+On 4/15/26 04:30, Wei Yang wrote:
+> On Tue, Apr 14, 2026 at 11:32:13AM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/14/26 04:12, Wei Yang wrote:
+>>>
+>>> Yes, I think so.
+>>>
+>>> When memmap_init()->for_each_mem_pfn_range() iterate on the last memblock
+>>> region, init_unavailable_range() will init the hole.
+>>>
+>>>
+>>> Yes. I guess you mean sparse_init_subsection_map().
+>>>
+>>>
+>>> You mean there is a problem in first_valid_pfn?
+>>
+>> That is my theory.
+>>
+>>>
+>>>
+>>> And it should be like below?
+>>>
+>>> 	if (valid_section(ms) &&
+>>> 	    pfn_section_first_valid(ms, &pfn)) {
+>>> 		rcu_read_unlock_sched();
+>>> 		return pfn;
+>>> 	}
+>>
+>> Probably, yes. We have to understand if other users would be negatively
+>> affected.
+>>
+>>>
+>>> IIUC, this would skip hole and leave allocated memory map uninitialized. And
+>>> then those pages won't contribute to pages_with_online_memmap, which further
+>>> leave the zone non-contiguous.
+>>
+>> Yes.
+>>
+>>>
+>>> But we want zone to be contiguous when we have a hole like this, right?
+>>
+>> Not if a subsection is marked invalid. That's why the existing scenario
+>> is that it will not be contiguous.
+>>
 > 
-> Hi Matt,
+> Let me try to understand.
 > 
-> so have you tested it for your usecase with zram and have any observations
-> how it helped, what values did you set etc?
+> During previous discussion[1], we want to define "zone->contiguous guarantee
+> pfn_to_page() is valid on the complete zone". So this definition is not true
+> now, since we found the behavioral change.
+> 
+> Because __pageblock_pfn_to_page() won't treat range with hole as contiguous,
+> detected by pfn_to_online_page() on invalid subsection.
+> 
+> [1]: https://lkml.org/lkml/2026/2/9/550
+> 
+> Now you are thinking the problem is in the iteration function,
+> for_each_valid_pfn(), used in init_unavaiable_range(). It should only take
+> valid subsections into consideration, even for early sections.
+> 
+> So your concern is if we change first_valid_pfn(), it will affect other users.
 
-Hey Vlastimil,
+Let me clarify: We created a bit of a mess.
 
-Yeah I've tested this out. So far, results have been positive -- I see
-system-wide OOM kills when memory is low and direct reclaim occurs, but
-not so many OOM kills that the SRE folks have started screaming at me.
+pfn_valid() says: "early sections always have a full memmap, so even invalid
+subsections have a memmap".
 
-I've only run with the proposed 1% value so far. I also ran a bunch of
-benchmarks alongside a memory hogging app that peridoically touches
-anoymous memory.
+pfn_to_online_page() says "it's an invalid subsection, so it sure can't be
+online and the content must be stale"
 
-Workload                     rpp=0              rpp=1               Notes
-----------------------------------------------------------------------------------------------
-Kernel compile + anon hog    Completed, no OOM  Completed,          Global OOM confirmed from
-                                                Global OOM fired    __alloc_pages_slowpath
+for_each_valid_pfn() obeys to pfn_valid() semantics, and we use it to initialize 
+the memmap (that's not going to be online) and accounts it with this patch here 
+as "pages_with_online_memmap", which is wrong.
 
-Memcached + anon hog         282k / 2.30M ops/s 562k / 3.53M ops/s  Global OOM killed hog,
-                             No OOM             Global OOM fired    then benchmark ran faster
 
-Pure fio (5 reruns each)     median 3710 MiB/s  median 3702 MiB/s   No reproducible regression
-Mixed fio + anon hog         2747 MiB/s         2915 MiB/s          Global OOM killed
-                                                                    unrelated services
+The *cleanest* thing would be to not handle early sections in a special way. That
+is, don't allocate a memmap for subsections. That would remove the special
+early handling from pfn_valid() and for_each_valid_pfn().
 
-reclaim_progress_pct=1 seems to help in these memory exhausted
-situations, and doesn't appear to cause a regression for the pure file
-workload case.
 
-If you have any suggestions for other tests or benchmarks to run I'd be
-happy to do that.
+As an easy way forward, maybe we can just make pfn_valid() / for_each_valid_pfn()
+behave just like pfn_to_online_page():
 
-Thanks,
-Matt
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index e6858b13a0be..bfa5c3df5ee2 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -2253,6 +2253,10 @@ void sparse_init_early_section(int nid, struct page *map, unsigned long pnum,
+  * there is actual usable memory at that @pfn. The struct page may
+  * represent a hole or an unusable page frame.
+  *
++ * Note that this function returns "0" for PFNs that fall into
++ * invalid subsections as part of early sections, even though there would
++ * currently be a memmap allocated (that should not be touched).
++ *
+  * Return: 1 for PFNs that have memory map entries and 0 otherwise
+  */
+ static inline int pfn_valid(unsigned long pfn)
+@@ -2277,11 +2281,7 @@ static inline int pfn_valid(unsigned long pfn)
+                rcu_read_unlock_sched();
+                return 0;
+        }
+-       /*
+-        * Traditionally early sections always returned pfn_valid() for
+-        * the entire section-sized span.
+-        */
+-       ret = early_section(ms) || pfn_section_valid(ms, pfn);
++       ret = pfn_section_valid(ms, pfn);
+        rcu_read_unlock_sched();
+ 
+        return ret;
+@@ -2297,8 +2297,7 @@ static inline unsigned long first_valid_pfn(unsigned long pfn, unsigned long end
+        while (nr <= __highest_present_section_nr && pfn < end_pfn) {
+                struct mem_section *ms = __pfn_to_section(pfn);
+ 
+-               if (valid_section(ms) &&
+-                   (early_section(ms) || pfn_section_first_valid(ms, &pfn))) {
++               if (valid_section(ms) && pfn_section_first_valid(ms, &pfn)) {
+                        rcu_read_unlock_sched();
+                        return pfn;
+                }
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 330579365a0f..6d0bbf8a2159 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -775,8 +775,8 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+        }
+ 
+        /*
+-        * The memmap of early sections is always fully populated. See
+-        * section_activate() and pfn_valid() .
++        * The memmap of early sections is currently always fully populated. See
++        * section_activate().
+         */
+        if (!section_is_early) {
+                memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
+
+
+
+It would now return !pfn_valid() on subsection-sized holes. The price is another
+test_bit(idx, usage->subsection_map) check for early sections. If that's a real
+problem, we could add a section flag that just caches "full valid section".
+
+> 
+> If the above understanding is correct, maybe we can use spanned == present
+> to do the trick? Because holes are marked subsection invalid and holes are
+> counted into absent.
+> 
+> But I see the mirrored_kernel thing, not fully understand yet. This is the
+> reason to prevent spanned == present approach?
+
+I think we have to rework the way that mirrored .... stuff is handled. It's
+way too intrusive, and the memmap init special casing deep down in there is
+just nasty.
+
+I'd think that we should just skip over mirrored part on a higher level.
+
+My understanding is: mirror memory has two physical ranges that mirror each other.
+We expose that memory to ZONE_MOABLE. But only one of the two physical ranges
+is actually used by the buddy, has a memmap etc.
+
+The other (mirrored) range should just be ignored entirely.
+
+-- 
+Cheers,
+
+David
 
