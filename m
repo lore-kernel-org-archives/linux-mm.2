@@ -4,91 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47205FA0C38
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 08:35:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B07C1FA0C4D
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 08:38:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75EC86B0092; Wed, 15 Apr 2026 04:35:19 -0400 (EDT)
+	id 0FB886B0092; Wed, 15 Apr 2026 04:38:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 736766B0093; Wed, 15 Apr 2026 04:35:19 -0400 (EDT)
+	id 0D24F6B0093; Wed, 15 Apr 2026 04:38:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674896B0095; Wed, 15 Apr 2026 04:35:19 -0400 (EDT)
+	id F2A1F6B0095; Wed, 15 Apr 2026 04:38:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5687A6B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 04:35:19 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07D59160408
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:35:19 +0000 (UTC)
-X-FDA: 84660130758.23.12EA0C4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BD7754000B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:35:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Ghv78G0w;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E599F6B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 04:38:03 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C4FF1B7EC3
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:38:03 +0000 (UTC)
+X-FDA: 84660137646.16.EF141EE
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1FCE4C0008
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 08:38:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J3YBlqxF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hEvGsYck;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J3YBlqxF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hEvGsYck;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf22.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776242281; a=rsa-sha256;
+	cv=none;
+	b=utNhcPhz0v13pasrP5h3fSlUHSiFcu639mNDIBJeHQ85n0HcgVecG45sw3Ufz01rf5ifhl
+	qvD19XQDI2YfPDRJ+tfepLjfqyt3k0obm/7Ue3d5IXGCTBWSkMIA+ZMmm2OFjlJT1pLmZY
+	2As6yI3qAvVK74kJLRvW6jZqapIhRjk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J3YBlqxF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hEvGsYck;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=J3YBlqxF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hEvGsYck;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf22.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776242117;
+	s=arc-20220608; t=1776242281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kao9rAwy1WwSrz1E69Dg314QlkhYtlMDsW0KIetomxk=;
-	b=cSXokVoXsu+BtrN3JPBjMuT3gGM509Ft4UluA1pmT1pmJ579jBynxgHAUfbROZhVJTuBnK
-	yvrg8k2mO8t1VCt3JskOd107PYkRCI8APqkIAfK+OdJjSLN6FhRDtvl99p3adND7acfhB5
-	sIL+ofup93s3vfXAw2IBXTMKhmJslN4=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Ghv78G0w;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776242117; a=rsa-sha256;
-	cv=none;
-	b=7PMIEl3fKpGvhaBSMhxNzIt6lPpZfVME4Cu+LYFgU/xrW8KU9a9PQ03FZdno3KHL4kB50v
-	EwUcFRV6yYMoueZrRs9QQJ32qx1vCJjmiaqIVXbQknOnwEAxs4iLQ88OaL7xBz15GnFFKZ
-	o6boyojR8Vo59CnFx/l9OhKjr9o/G5A=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0946D4FBA;
-	Wed, 15 Apr 2026 01:35:10 -0700 (PDT)
-Received: from [10.164.148.46] (MacBook-Pro.blr.arm.com [10.164.148.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D44233F86F;
-	Wed, 15 Apr 2026 01:35:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776242115; bh=wqq1jxfb037jdTdgNzItw0yzIyAC7MxkmAXbXkvvQVo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ghv78G0w0VxXymddvIAQe/GYkOoBW2u+eNE+Z+KEpDpD0TeyUFyfrNwpeGdbDnTBu
-	 P96PJ+u86gXFeE2pmbjUPnoZAJV9/JwiSXylZIEjYjyuxFAdsP7Y9BdE6yMi6YT4bV
-	 OG+wbMatZn8FPMQ+/fnqx05q8vD6nsBaMpnWKojc=
-Message-ID: <57b5d0f9-3e56-4f96-9e3a-2f475a78a8eb@arm.com>
-Date: Wed, 15 Apr 2026 14:05:01 +0530
+	bh=PB019jISU1/JV0vj13AJi5SAPdeqiJKzwFyxmcN5xO8=;
+	b=IhrVgnlDfcng4Y1G3Fth+Xdzbaa3dGugpsbAxd+cxhrC3nfvGoi2yifr7qgoYE+DuhT/VQ
+	F8sx0q75gEG8qfvk8xwAbsS6H5TcBkmcFGKCnsrFemvxIoVgyIh5yzjC70Q2uI1FFi1xvd
+	BOjr/gmjKRML6Wn8g/hrNtpC6Syqn/s=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 86EC25BE28;
+	Wed, 15 Apr 2026 08:37:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776242279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PB019jISU1/JV0vj13AJi5SAPdeqiJKzwFyxmcN5xO8=;
+	b=J3YBlqxFO9//ViOCKoMwBkJc6v5lA/uIpEljRxo13KRQDtjFdorQ3di6/ETeuxQqhMvOVv
+	jV8x9EJfxYywMEhhzvePCwtoEN+yIpdYws9IUjHOIGeSZJNKFJAvZYjpKllryJRdb+3yly
+	+RfnqgoasI/hIMqdMhkQz1BDsqOy00A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776242279;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PB019jISU1/JV0vj13AJi5SAPdeqiJKzwFyxmcN5xO8=;
+	b=hEvGsYckZeEjadqHGTRQTe2iQZeX5fpLUmKCBJ9iego3f8uIuCOi5I4NDJOvwbCLOD3sh1
+	fS1RWStf2Y2ybzBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776242279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PB019jISU1/JV0vj13AJi5SAPdeqiJKzwFyxmcN5xO8=;
+	b=J3YBlqxFO9//ViOCKoMwBkJc6v5lA/uIpEljRxo13KRQDtjFdorQ3di6/ETeuxQqhMvOVv
+	jV8x9EJfxYywMEhhzvePCwtoEN+yIpdYws9IUjHOIGeSZJNKFJAvZYjpKllryJRdb+3yly
+	+RfnqgoasI/hIMqdMhkQz1BDsqOy00A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776242279;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PB019jISU1/JV0vj13AJi5SAPdeqiJKzwFyxmcN5xO8=;
+	b=hEvGsYckZeEjadqHGTRQTe2iQZeX5fpLUmKCBJ9iego3f8uIuCOi5I4NDJOvwbCLOD3sh1
+	fS1RWStf2Y2ybzBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7F7334B8FF;
+	Wed, 15 Apr 2026 08:37:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5g2QHGZO32lFRAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Wed, 15 Apr 2026 08:37:58 +0000
+Date: Wed, 15 Apr 2026 10:37:56 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH] mm/sparse: Fix race on mem_section->usage in pfn walkers
+Message-ID: <ad9OZAVnYvhxfh-Z@localhost.localdomain>
+References: <20260415022326.53218-1-songmuchun@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] selftests/mm: Simplify byte pattern checking in
- mremap_test
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- shuah@kernel.org
-Cc: ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com,
- Sarthak Sharma <sarthak.sharma@arm.com>
-References: <20260415044509.579428-1-dev.jain@arm.com>
- <2e34b619-085f-4a9c-bb41-bc024fd40dd7@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <2e34b619-085f-4a9c-bb41-bc024fd40dd7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415022326.53218-1-songmuchun@bytedance.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BD7754000B
-X-Stat-Signature: 9a4znhrpaj45zh41ps4e18ia5y739qh6
-X-HE-Tag: 1776242116-377944
-X-HE-Meta: U2FsdGVkX18V/soxaj8ZCtAd/3SIBl0aZHt4kmc73eWDks+Febf84nZ4JwFR14K/duJX4UgTLANftnJqCv2ZGmu+VfkmDrkNpe5rphi0FluMGEgXXmN7X3Znn31fsdVfA9YQsmLWhVhGAj3izDKXrJslGCcFaA60i9tQJHFhYGU84q9nRErbG+Fthb8Pw3OVlQHi20OHxjfE0TM0f59E69QFcTl3lQYhCugZjB7pldMjfKZW/aFzH697kO/WlVFRd8EnEJAAuwftvlCbZJCMjdOk5uRed49Pd4Rlm56s1QcyqECGLUZgufUTU/jyYBFJGz02z6a6EKb4ph3S4OapimNwNhP4dXzsu524yarqdVH7G8i33VYuLZn7Vhe44bL7F6GQq8syCdg+MMzw3Vhx8TqkVlA2rqHJEEiRvasst/2GWILDstleVRWbn5e2Hgo1uam5eI0uiCrxEcp2LyCVzfUnkpoOkRFBECsIQBOyvZbjEaam+MKj7MOg5dDVBxfTOSROeZevfDQMWqI3WbNaGmDgwitlOpS14VKsDm3BuO1p/PZp6uwYUrBNCrUgaNHb45eQR5mn3nHGjWImARGUrVZdY15PSk360/kz9bArPJtCUSiULbgcX0b+qdgMEgkz8dTC75Dq9Jpr+BvNW2yiDdS38oBx694JpoHk+jA691dEsxDt/ryFg3lkdxjAH0Vl8rl0fRbLr5cjBt6IyjB/3xrjK+u6MuqiU1WpqYzazijUiOBH/u0WPMsSFocd6Z2Qc/jQ3ye3KqPVOOwPBVTbpoc+lsBRmBlP7kBi9JncPKyhqAYA6MDBp1FiZohDY1aidEURbalYCPLG6rrqHja92AGFJHDTbnPzQiExoYQvTkXHGdheYqJJcGGMI+7Ji6i+BOvQIxX0h1fkSIXwnP9EzfnO4oKay6+Gnh/BlpxOJSDqSlPERMUU76t4e7dcqP4a0RiH3G3QMiHfOjKuoYg
- J5h8upCz
- GxwS8GqiuhyyTZN6lykLBYCPJ+brBDUJ/mbYPUWxpyHWZAb6QGihCKquN7nN2YJS+9/LCpuTaKYJQ0JFmtJr4UQVJJdqu4hK6xq8hbcKTEqMChV/vkZC1Qfy4q+zYrH6xO+HQO0FN3yu9zt7brz7ORcNAsGRvuNdjIbp2y7NJHBslewMlhYxgAd3gvgW8WtdkIotHXLrxkOdz4qu7xY1tL8lsri74FV6Pmma4oX++kHGZUxznjiKTVAxrJoptQg+Ikq2Pbu101UnRiFWYI9a4UrxbpPNvViC6B6Zlr9FNH7sQWNfaXzCp1ZM+dN6UlbGyR2XJ2xfQ6pbnmgfPWCwX2cw29A==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1FCE4C0008
+X-Stat-Signature: cg7grmmyxdy5c4fzambqud1e5fifrem4
+X-HE-Tag: 1776242280-54397
+X-HE-Meta: U2FsdGVkX19/KoQ0DcjNNcZ0vb//bQdC9wwB1dRZ7zNBQgEP8/gXf1Uy6EFiPn0ps6axQ60PZe8j0DXntZq1gKJ2Vb6UGxt0M5YxlyWaMIWFxuARzrp3TbKFzCT3aXCacw2rIVv0EYWDxcHZBu1ah3MqJqaL69ydsMoIORNBO4dP4kpI1P+dB3Ozs34s2vy3NMKX7M8V9J2x35sXqa7umW6n4+ZDNbN/CKqADY6DWqXo6NmdGJ/+2xKOAhfpMdGUQxxEcFe6xaUpiU7jEFD+yOa9POA9/JBll6a9nP2BU257ppnVbwkawzQYOKaBlcLqU4CrveTx3mTbPpk+TsC/+WnKVX+YBX2CSN/W8xeObqnY1IYm4ThvFPPCfFBYqJzPTOqZld8ztZgYf7dlPQi321FpPYGc4+xrBSKgL1X57qZsTw7KAAItY9kKKQSN4PYFQSlFJdSO7KyCaDI9wTOBS5Bq3Vh27tZ3nrmbFetTv0SWeoTkToyVwOenWArti/SSYja380rLq3BMP7DoPkYChXf77PMDFrW6XLsNBTkV1GBvH8aPInX6mj3jPpgpCxRqbf61FuIdeKlGmUQ3CxfcnhhfyuxxA145GiKs+jqD9zQnyAyRu0mJ9XqulxCBRo7fO+3SwfEPQfsode1iSHgoyH3Gs49Eai/30waG7vrgiWGV0H2+eKOI1C1O8THBdxA3ulUyN4Ue+NAr4/ZKXLZ3kzuCmqmTVC4g7oqWgP8iJFTtR0p+j3r7Lirx2RxTZofMw11vQ1SB6Xb8l8nLObtnBwBex8cNTCUfAciu9YsTRIKnf8lvYbl8CEW1PEduDCEf2ClEhkEJqfSPrOjDqvJJycPozQZvzb+zFM0CqRG5NRggLpy9KSPlSliJiMQiqJjk9yd3+pQ7d0b0wHuNm7zRhA5RanfyLIAlX2IV3CIhb+HC5L6wut4yy2Z1lDPpwuEuLToAeXMkkqH/EF88fOQ
+ XDnckaUJ
+ L5BBuRCMbBciuW7XUGMERZXlMqN6baFfll8Y7DofREztYjHZUPKiXE7rXX+6Dqq+RyPazIz9USZRNXijhLvY2eGdAKn6OwOlQ6Dzl1isWhG5G0l4T0Btv192D8mv2zlECGHZxX8c1cpPzX3okY2Q8wnHIIuHNE+goNw+QWiutQqrr13Zv5cx692WcEUCmHAdOm8Cr145b+S2iwM2NFmR313732EeMZUsGljlHz0DHnUpDq+jDpsRrXTf1KVkFaScRIwIjB4iimlU4YbH9R7T4/nFbNkHEGH6CS8caiimO9qPvBeZuIF4qJHSkVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,115 +143,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 15/04/26 1:18 pm, David Hildenbrand (Arm) wrote:
-> On 4/15/26 06:45, Dev Jain wrote:
->> The original version of mremap_test (7df666253f26: "kselftests: vm: add
->> mremap tests") validated remapped contents byte-by-byte and printed a
->> mismatch index in case the bytes streams didn't match. That was rather
->> inefficient, especially also if the test passed.
->>
->> Later, commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
->> execution time from minutes to seconds using chunkwise memcmp") used
->> memcmp() on bigger chunks, to fallback to byte-wise scanning to detect
->> the problematic index only if it discovered a problem.
->>
->> However, the implementation is overly complicated (e.g., get_sqrt() is
->> currently not optimal) and we don't really have to report the exact
->> index: whoever debugs the failing test can figure that out.
->>
->> Let's simplify by just comparing both byte streams with memcmp() and not
->> detecting the exact failed index.
->>
->> Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
->> Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
+On Wed, Apr 15, 2026 at 10:23:26AM +0800, Muchun Song wrote:
+> When memory is hot-removed, section_deactivate() can tear down
+> mem_section->usage while concurrent pfn walkers still inspect the
+> subsection map via pfn_section_valid() or pfn_section_first_valid().
 > 
-> I'll note something interesting: before 7033c6cc9620, we would check
-> random bytes in the stream. With 7033c6cc9620 we only check the first
-> threshold bytes IIUC.
-
-Before 7033c6cc9620, the block of code was:
-
-	/* Verify byte pattern after remapping */
-	srand(pattern_seed);
-	for (t = 0; t < threshold; t++) {
-		char c = (char) rand();
-
-		if (((char *) dest_addr)[t] != c) {
-			ksft_print_msg("Data after remap doesn't match at offset %llu\n",
-				       t);
-			ksft_print_msg("Expected: %#x\t Got: %#x\n", c & 0xff,
-					((char *) dest_addr)[t] & 0xff);
-			ret = -1;
-			goto clean_up_dest;
-		}
-	}
-
-which is still checking the first threshold bytes only. Note that
-pattern_seed remains constant at runtime, so 7033c6cc9620 just replaces
-this with a buffer filled with the rand() stream.
-
+> After commit 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing
+> memory_section->usage") converted the teardown to an RCU-based
+> scheme, the code still relies on SECTION_HAS_MEM_MAP becoming visible
+> to readers before ms->usage is cleared and queued for freeing.
 > 
-> That means, that we are not actually verifying most of the area at all
-> anymore?
+> That ordering is not guaranteed. section_deactivate() can clear
+> ms->usage and queue kfree_rcu() before another CPU observes the
+> SECTION_HAS_MEM_MAP clear. A concurrent pfn walker can therefore see
+> valid_section() return true, enter its sched-RCU read-side critical
+> section after kfree_rcu() has already been queued, and then dereference
+> a stale ms->usage pointer.
 > 
+> And pfn_to_online_page() can call pfn_section_valid() without its
+> own sched-RCU read-side critical section, which has similar problem.
 > 
-> The whole test options are extremely questionable:
+> The race looks like this:
 > 
-> $ ./mremap_test --help
-> ./mremap_test: invalid option -- '-'
-> Usage: ./mremap_test [[-t <threshold_mb>] [-p <pattern_seed>]]
-> -t       only validate threshold_mb of the remapped region
->          if 0 is supplied no threshold is used; all tests
->          are run and remapped regions validated fully.
->          The default threshold used is 4MB.
-> -p       provide a seed to generate the random pattern for
->          validating the remapped region.
+>   compact_zone()                    memunmap_pages
+>   ==============                    ==============
+>                                     __remove_pages()->
+>                                       sparse_remove_section()->
+>                                         section_deactivate():
+>                                           a) [ Clear SECTION_HAS_MEM_MAP
+>                                                is reordered to b) ]
+>                                           kfree_rcu(ms->usage)
+>       __pageblock_pfn_to_page
+>          ......
+>           pfn_valid():
+>             rcu_read_lock_sched()
+>             valid_section() // return true
+>             pfn_section_valid()
+>               [Access ms->usage which is UAF]
+>                                           WRITE_ONCE(ms->usage, NULL)
+>             rcu_read_unlock_sched()       b) Clear SECTION_HAS_MEM_MAP
 > 
-> Nobody will ever set these parameters, really. And tests that test
-> different things each time they are run are not particularly helpful.
-> 
-> We should just remove all that and do something reasonable internally.
-> 
-> That is
-> 
-> a) Remove all the perf crap (ehm sorry, "advanced tests that don't
->    belong here and that nobody ever runs") from this functional test
+> Fix this by using rcu_replace_pointer() when clearing ms->usage in
+> section_deactivate(), then it does not rely on the order of clearing
+> of SECTION_HAS_MEM_MAP.
 
-Hmm... perhaps this is useful, we can keep this by default so we can
-detect if a bug comes up in PMD/PUD mremap? If the test takes too long
-we know we have messed up something there. Although "test taking too
-long" is not a nice way to know that there is a bug ...
+The fix itself does not look too intrusive and I guess it kind of makes
+sense when you think about the ordering issue, so if we want to be
+rock solid, why not. 
+Does it slow down operations a lot?
 
-and test won't even take long perhaps since memcmp on 1G will be fairly
-fast. In case we mess up PMD/PUD mremap real bug reports will come sooner
-than anyone detecting this from mremap_test.
+I would also point out that you rcu-protect pfn_section_valid().
 
-So I'll remove this.
+Regarding the pfn_to_online_page() race, that is something that every now
+and then pops up, but as David said, we never seen that happening in the
+wild so I guess no one really made the time to look into that.
 
-> 
-> b) Remove all options from the test. Nobody ever uses them. They are
->    stupid.
+ 
 
-Agreed.
-
-> 
-> c) Remove any randomization from the test. There is no need for random
->    patterns, just fill pages with increasing numbers.
-
-Agreed.
-
-> 
-> d) Just always verify the whole regions. Without the rand() magic this
->    will probably be just ... fairly fast?
-
-Yeah we are doing a simple memcmp() so it is fine.
-
-I'll implement these changes.
-
-> 
-
+-- 
+Oscar Salvador
+SUSE Labs
 
