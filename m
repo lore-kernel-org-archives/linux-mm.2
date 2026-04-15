@@ -4,97 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0970FFA0C2D
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:05:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A206CFA0C2D
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F30B6B0092; Wed, 15 Apr 2026 02:05:13 -0400 (EDT)
+	id C9D136B0092; Wed, 15 Apr 2026 02:08:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CAF16B0093; Wed, 15 Apr 2026 02:05:13 -0400 (EDT)
+	id C74B76B0093; Wed, 15 Apr 2026 02:08:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 607E76B0095; Wed, 15 Apr 2026 02:05:13 -0400 (EDT)
+	id BB1466B0095; Wed, 15 Apr 2026 02:08:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D60B6B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:05:13 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB83AE3B5A
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:05:12 +0000 (UTC)
-X-FDA: 84659752464.20.F9C8D53
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DCD5DA0002
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:05:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Q9DUB2a7;
-	spf=pass (imf25.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A89526B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:08:10 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 590EDE3CB3
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:08:10 +0000 (UTC)
+X-FDA: 84659759940.06.A11D7AB
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7EBAC160014
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:08:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MPiJ17Ru;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776233111;
+	s=arc-20220608; t=1776233288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y3Bvp+KpwAJJ/lnzTS+tDvjyO24nE7JkQWZFHl55Uq4=;
-	b=roQAZ4eWZTAJ2IWJdSkC+LRY1T6D9sAbwYHzMxoNaRAiBGjcoNPD59WG4Vm5bICZd60ivX
-	T56gBUhHwB2vGWJttiDLkgUVRZ3MG8t4PoqfgHhGyXPu0TWEdu4mM1H9Nh4BbSLRu8i2ms
-	F0CLUuYJJEDwGcuy7K7pjjA+927sjwk=
+	bh=Qkmui+O/6xlsFUmo6WfB3AyT/WYrnFjXuhphrajGuAw=;
+	b=sME73lq9xqTp+qvOaLJpDDYYO6fqPJZmqdP3Nn1lCi6BLvUaqs7TlUesSuUevX+n+R1XdT
+	2YIkW6vPcv/oXi5WKeP7YGRYblbghGScbg0zNgG+Ak/92sIItLLjjqBNgOPwU0k1/tf22q
+	k5oC8j30naGi98HMXbFYrPzpbzUyxvU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Q9DUB2a7;
-	spf=pass (imf25.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776233111; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MPiJ17Ru;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776233288; a=rsa-sha256;
 	cv=none;
-	b=7RG2CAxREA8kdUirGtKYLnxwkNuliPV85Sm/31ND3hFLQoqDEzmah21KRlHYmOQFMRJSZY
-	45kkvunHcBlKu+QtZc9/fiEkDRm/eauS94fH9CJal3Fu+hX7ELsw7kCtwY2xcaVgBQyERC
-	duX72n8CfOgyWlLAJHIxMc2KLZbjSmk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776233105; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Y3Bvp+KpwAJJ/lnzTS+tDvjyO24nE7JkQWZFHl55Uq4=;
-	b=Q9DUB2a7UuNlpv/cNBHtuglxexo/I8r4Q1beNTTyJnPqMmK2fmlufkPUAywPj7TicG9FYhJcUAZSALQ6jtNzHMO3w+sECOb+0U55/hN9hTJzbAF/ED+OxikvJgHjJV7ob2uuBk26O07oNFWm4wpH459GMlyEnt9eKL9h6PZ5Tu8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R561e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0X13erf3_1776233103;
-Received: from 30.221.132.134(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X13erf3_1776233103 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 15 Apr 2026 14:05:04 +0800
-Message-ID: <58d1a07d-e266-4d58-9be9-f1445a68599c@linux.alibaba.com>
-Date: Wed, 15 Apr 2026 14:05:02 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
- support
-To: Christoph Hellwig <hch@lst.de>
-Cc: Dave Chinner <dgc@kernel.org>, Tal Zussman <tz2294@columbia.edu>,
- Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Christian Brauner <brauner@kernel.org>,
- "Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- Bart Van Assche <bvanassche@acm.org>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- Sandeep Dhavale <dhavale@google.com>, Tejun Heo <tj@kernel.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Thomas Gleixner <tglx@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Anuj Gupta <anuj20.g@samsung.com>
-References: <20260409160243.1008358-1-hch@lst.de>
- <20260409160243.1008358-9-hch@lst.de> <adl1iqhldFvJwSw-@dread>
- <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com>
- <ad2RKNo2FGhpzJQp@dread>
- <a7a74185-df02-4906-a0ec-f87e2394aa5f@linux.alibaba.com>
- <20260415055552.GD26893@lst.de>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20260415055552.GD26893@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+	b=EpkYQl62Or6LyUggKdikQJqznPN/pxRoWadZM+l5q2QRwAtiUy/CteJDo/XhtsqpXBR/7n
+	sovBZuOFB51lChBlZuxwk37JuyHCqnksTDb4/ariPMjr6NmzZSA19f2Im0W9u09ZanmVwx
+	crXpVnJsl6yXMir5jYjJevwHd4g0hQ8=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776233286;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qkmui+O/6xlsFUmo6WfB3AyT/WYrnFjXuhphrajGuAw=;
+	b=MPiJ17RuAuIGNOtXqwFkwLymQFIjSiqTT+2M57piZ3VK2T6EVdjuBmPk+tjInuUT8aTLNL
+	gB0AX2DCS/xnlUzlxdonGB1lpdTP6oX8dR4q06Ra1rbprJ4pigmBdl+xKVY+/miLI0xZsZ
+	Ck19wI4MYK3l4eB7Ij4q2DJPdA4RQGg=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH] mm/sparse: Fix race on mem_section->usage in pfn walkers
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260414224421.c030868f5960ad0115ac1668@linux-foundation.org>
+Date: Wed, 15 Apr 2026 14:06:57 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Charan Teja Kalla <quic_charante@quicinc.com>,
+ Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2EDA3598-6D6E-479A-973C-92037C7EFF1F@linux.dev>
+References: <20260415022326.53218-1-songmuchun@bytedance.com>
+ <20260414224421.c030868f5960ad0115ac1668@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DCD5DA0002
-X-Stat-Signature: iwpsnp659rrh9yqpynpcuzmqmqoupr74
-X-HE-Tag: 1776233109-632356
-X-HE-Meta: U2FsdGVkX19mHv7t/bX5CiUBK9VKdPpp640K8An8ZBasUpx8o1cYAC5lGDGEcTW2cs2jyfvzl8qQMuc2fnnNTyyXl1sNjTn/GdGTJnqseb9ibapfm0JVxMnPbuLvPRQANIjZsaInrlLBgRBRL8kYwW0mP9s8eB5ZBRJo60YZ6LJXxu8zg4Eu/yAuLKX/LluWbnn+YokNelWXKv5sRJ9wjw4biNjcaMyV7rZrS1k2A0ZktendhHCJSossD6DZDuvGr+UWfb5NIPlDkMZpI64kJVUcjUOG4V/SyU1SASUJYSlJgRhjzcqVX/QZkWKg/nDtKr1/1fS2VfioY/pQyehRzasaKutGl0IBkQ92fvRSlm0GJdvxO8wre/4joxcubnR+Vxc/AJJ9nt2YOIBwlE6cvpF3uGEMjO8Or3tsuvuvUsXpY3pVpBlgv78Qvqs8fpNKmrUE5JFiMXYGTpYlSoccgwuOW1yiDpcDPzqBTiPw/QCLjnPxEWGIJDBPREqU1gTC0mfLFqcnqTQnP/r5QY8jXveuOXQB4YE7s5mdkhCERbB9orGdroMFtHNMKeu7SwP/cCSPYS7Lmrkb36sn83hk2sZqzi6mEnVErCmCTrYOd5BlQykvRHVxzwPWKE2DFpNnPVW0Raq3m4LRmgtf2fmr+JPuCTCK37SDtqo+iLI42CGjc4TuSKzlHkuCu2khT9JBwGZUbU/SQeet3hwYEKgIM1raDq0VgQJZW1D6X2Nckr6oBTUsBPWTgvn1UgxyEWTu2cdcgtitl2zSOpaJuXyy/cqpca/wjFWWxVUHWPcWu4JPvUbgbhUIpRdmq7iXawdoLAcGNpxwBibwJ1yKf7HJomX3rNgAImHEte8PvfXWy6192NHcO0OPfoV+lXd7K6geobPNgI/TtiqJBgTy8cOsEE4Oq94Kllu4vpeJ0q4pMCqcAnS2Qps4pKHmILi2n0D39GRGbXp66Gskvz/kPfx
- r4vtGAJj
- j6Wc1XiCclFIQdhjpxuQZ7aP2otG7/sCPCUhS2RjO1DybwBE1zfMC/hmnQCJP3NU8AnatXfBoAM2p7ixDQztfBHANj/TSxQc7DSsJ1KskU0VL3YrlH1o0dXq7UJvUQmnk20yq7Y4fkFnZaZxiojAB68FfCZIuycRro+4EEjzQCI2SMjchaYJUw3imgFdxiaJ6/xJ/VU5Cgyt5SEyBwmR8GmcqK1NE0htM/07PWYMHnVzJ+MDJ8FEZHVuxObEiEHHbOlfuZtetTdiCCEK/rQM9fy+9h3V0uOmr23qF8YhNPvmnOt57U/iJ8KwPktDdng/xZeVovSqim9OjxfxW5X4AG5X2l7Kpu0rdt5I8dBftAepwfuY=
+X-Rspamd-Queue-Id: 7EBAC160014
+X-Stat-Signature: ihbcq74ir5da6iccicgabwptj677r5g5
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776233288-305111
+X-HE-Meta: U2FsdGVkX19RJjwG6kM7p+RjtmqAqMs7hhTP3Z6xoInmzVXA5SfYkv5rq1tEOWOwaXbNspeuQJjdy2KP3p5Vit+cIlRxEgsVwIX6DGeYr/N2yeBF7Ov79dgAkOV1RsNAghGVG1HpFIkmQD7oS3nN9tDqvMP2KDPR2MOWwqTt7UzR55V1qD9tr4VDx48cfvWtjAYQyfHWeyX67WfACCXZc1US0yKJS6RDBKyXVjoxazybpmKGbe53cHtwjmHhLjUHZyvewqpqpmJaih7Aj6dg2hQU32cvzCBs4HPZ/D/gtkSErciCuKLAtkGF/trIKKUvZK2KkmIWStkvGcR/RFVliZbV0EHva2B3QntjD/P1qNqetWRG4AALVBaNw+OZeHgHbtCn/Ix+IHLbzcwaH77CkmW32h2MTEr+mgHdxiAlpH7vGByNJsBFRpPEsJL3z2/PwzP2jGhkd9uSXtbLcD95OYQtTBCOxpI+QQ2FkTZTUFMfqbrvWDrtOmax54U5GOUZoj0BuAemsRQePUWGCCVPmXM+1IO9fFyxcFjKs7Pc6YqyGS2hDtJongsr1TrOLtn95gJ9pCCiani4yGwE4XUo28yWMnHRtWdl5lnehH7VVfJTQVbF2jDfdieeENdgjvM8vhHPuzYSzK1q9/5oaVfbA3ZltkS/wp/p1KdK9QkZ6se0YTcNmGnx4d4G7rdOnVKEj3LllYtuPKct7emgG2dh6mmXU4qoMMPCekxdlvUr8+jh3fqzPNg2XHcwswhzWYFBV36ZQH6rsMtU7vfH0odEiqGBWPy3svH5nUiZCfzDGq/ec9bBgQCKHlOd5cBpr12QUkXxIJAwCJAdhRN1JqEvoeFw1EZ61LyJGWNosF6XKRvmJH/rxuIQAuo/M2j8/45ZiU7RVmi7EZjBTPk19LhRJ7dP/fyVly5Cb0cQI431d5AR17zwiDxZXzXMep9ObjObZ1T90PuC7zSq1b9sjjU
+ o3/ZBi+7
+ KFqwGncsHkBJtnf2R9v96aAKLZrriQrn5JDkWy33jBhifme5Jp4n0q7Vqfh5purrsdauDMOGj769syz9A5SOO5rHBUEkmgPqdqXSy4rnbF/Nxu7Sd0uPolYOcqZh9pEWXB0xtI41z4z+s0FqSctF59m5qQJe7PBjmZ0K1aPmh6jOXf6p51VzxUgOdq+0v/Ls+jOt4F5g1grEw6rYzd0LOi1nNwgvx3rYCsZcgoODCSc7NJnJemuRdal6mglpgkiayFPPOTrkyPVAAHV9s3v0Gmu9ajbm4EQfdLeOdIsNWHNwXJMHLHbYvoCiGDqISfAi2jWV780KvYTy+o+DaXJXMtKtSNgHAQnq5GvOpi+xy6F9zpvM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,42 +110,119 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/4/15 13:55, Christoph Hellwig wrote:
-> On Tue, Apr 14, 2026 at 10:23:13AM +0800, Gao Xiang wrote:
+> On Apr 15, 2026, at 13:44, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>=20
+> On Wed, 15 Apr 2026 10:23:26 +0800 Muchun Song =
+<songmuchun@bytedance.com> wrote:
+>=20
+>> When memory is hot-removed, section_deactivate() can tear down
+>> mem_section->usage while concurrent pfn walkers still inspect the
+>> subsection map via pfn_section_valid() or pfn_section_first_valid().
+>>=20
+>> After commit 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing
+>> memory_section->usage") converted the teardown to an RCU-based
+>> scheme, the code still relies on SECTION_HAS_MEM_MAP becoming visible
+>> to readers before ms->usage is cleared and queued for freeing.
+>>=20
+>> That ordering is not guaranteed. section_deactivate() can clear
+>> ms->usage and queue kfree_rcu() before another CPU observes the
+>> SECTION_HAS_MEM_MAP clear. A concurrent pfn walker can therefore see
+>> valid_section() return true, enter its sched-RCU read-side critical
+>> section after kfree_rcu() has already been queued, and then =
+dereference
+>> a stale ms->usage pointer.
+>=20
+> Then what happens?  Can it oops?
 
-...
+Probably not, because struct mem_section_usage has no pointer members,
+so there will be no dereference of a pointer. The UAF here may lead to
+incorrect logic judgments later on.
 
-> 
->>> Tejun asked Sandeep if setting the workqueue thread priority to
->>> -19 through sysfs (i.e. making them higher priority than normal
->>> kernel threads) had the same effect on latency as using a dedicated
->>> per-cpu RT task thread. THere was no followup.
->>
->> I think the issue is that people are not already working on the
->> same topic:
->>
->>   - Unlike large subsystems like XFS, people don't already work on
->>     EROFS unless they have new requirements or urgent production
->>     issues;
->>
->>   - The original latency issue was already considered as "done" in
->>     2023, and I'm not sure if Sandeep could have the bandwidth to
->>     pause his current work and test more setups according to this
->>     ongoing discussion in 2026.
-> 
-> Which unfortunately might explain the sad state of Android.  You
-> really need dedicated people around and help to improve core
-> infrastructure, instead of adding random Kconfig choices.
+>=20
+>> And pfn_to_online_page() can call pfn_section_valid() without its
+>> own sched-RCU read-side critical section, which has similar problem.
+>>=20
+>> The race looks like this:
+>>=20
+>>  compact_zone()                    memunmap_pages
+>>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D                    =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>                                    __remove_pages()->
+>>                                      sparse_remove_section()->
+>>                                        section_deactivate():
+>>                                          a) [ Clear =
+SECTION_HAS_MEM_MAP
+>>                                               is reordered to b) ]
+>>                                          kfree_rcu(ms->usage)
+>>      __pageblock_pfn_to_page
+>>         ......
+>>          pfn_valid():
+>>            rcu_read_lock_sched()
+>>            valid_section() // return true
+>>            pfn_section_valid()
+>>              [Access ms->usage which is UAF]
+>>                                          WRITE_ONCE(ms->usage, NULL)
+>>            rcu_read_unlock_sched()       b) Clear SECTION_HAS_MEM_MAP
+>>=20
+>> Fix this by using rcu_replace_pointer() when clearing ms->usage in
+>> section_deactivate(), then it does not rely on the order of clearing
+>> of SECTION_HAS_MEM_MAP.
+>>=20
+>> Fixes: 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing =
+memory_section->usage")
+>=20
+> December 2023.
 
-Sigh, let's not regard it as a technical problem, and it's more
-of a non-technical development resource issue among different
-resource groups & vendors.
-
-The detailed background is much much more complex than I could
-write all down explicitly here, but at least I will try to
-contact with Sandeep and more related people to test again
-in 2026 if a cleaner approach can be worked out.
+The probability of reordering is relatively low, and as mentioned above,
+serious issues are unlikely to occur, so it will be hard to be =
+discovered.
 
 Thanks,
-Gao Xiang
+Muchun.
+
+>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> This patch is focused on the ms->usage lifetime race only.
+>>=20
+>> ...
+>>=20
+>> I am not fully sure whether that reasoning is correct, or whether =
+current
+>> callers are expected to rely on additional hotplug serialization =
+instead.
+>> Comments on whether this is a real issue, and how the vmemmap =
+lifetime is
+>> expected to be handled here, would be very helpful.
+>=20
+> Thanks.  Quite a bit for consideration.
+>=20
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -601,8 +601,10 @@ static void section_deactivate(unsigned long =
+pfn, unsigned long nr_pages,
+>>  * was allocated during boot.
+>>  */
+>> 	if (!PageReserved(virt_to_page(ms->usage))) {
+>> - 		kfree_rcu(ms->usage, rcu);
+>> - 		WRITE_ONCE(ms->usage, NULL);
+>> + 		struct mem_section_usage *usage;
+>> +
+>> + 		usage =3D rcu_replace_pointer(ms->usage, NULL, true);
+>> + 		kfree_rcu(usage, rcu);
+>> 	}
+>> 	memmap =3D pfn_to_page(SECTION_ALIGN_DOWN(pfn));
+>> }
+>=20
+> This part isn't applicable to 7.0 - it depends on material I've sent =
+to
+> Linus for 7.1-rc1.
+>=20
+> So for now I'll drop this into mm-unstable to get it some runtime
+> testing.  If people like this patch and we decide to proceed with it
+> then I can make it a hotfix for 7.1-rcX.  But the -stable people will
+> be wanting a backportable version of it, if we decide to backport,
+
+
 
