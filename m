@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D59DFA0C32
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:00:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0970FFA0C2D
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:05:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF0CD6B0092; Wed, 15 Apr 2026 02:00:43 -0400 (EDT)
+	id 6F30B6B0092; Wed, 15 Apr 2026 02:05:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA1B96B0093; Wed, 15 Apr 2026 02:00:43 -0400 (EDT)
+	id 6CAF16B0093; Wed, 15 Apr 2026 02:05:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB7706B0095; Wed, 15 Apr 2026 02:00:43 -0400 (EDT)
+	id 607E76B0095; Wed, 15 Apr 2026 02:05:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BE5596B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:00:43 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C6F513A998
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:00:43 +0000 (UTC)
-X-FDA: 84659741166.15.5370357
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BF6231A0011
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:00:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PG+gdCpn;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D60B6B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:05:13 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB83AE3B5A
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:05:12 +0000 (UTC)
+X-FDA: 84659752464.20.F9C8D53
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DCD5DA0002
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:05:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Q9DUB2a7;
+	spf=pass (imf25.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776232841;
+	s=arc-20220608; t=1776233111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3upfb8bDKI5gt7cAdR60JSKcY9WrN7j/DIf1ViFEcP4=;
-	b=NIjiHniKALho2wnFSrfmi59amoRmZ6ZkZqxYeDRrXLF1G3Gk3Cu3KhcbWWM6F3dJZtYAtD
-	Rw3cIScprip8IMOW+oePnp+GOOFsZ2FQ9b6sHB+6gn+INjH6+XmUtX+Qa+ZrdvONXRs7b0
-	Cmj8QTuO6T0F83voeB5QfEebiPD/2Vc=
+	bh=Y3Bvp+KpwAJJ/lnzTS+tDvjyO24nE7JkQWZFHl55Uq4=;
+	b=roQAZ4eWZTAJ2IWJdSkC+LRY1T6D9sAbwYHzMxoNaRAiBGjcoNPD59WG4Vm5bICZd60ivX
+	T56gBUhHwB2vGWJttiDLkgUVRZ3MG8t4PoqfgHhGyXPu0TWEdu4mM1H9Nh4BbSLRu8i2ms
+	F0CLUuYJJEDwGcuy7K7pjjA+927sjwk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PG+gdCpn;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776232841; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Q9DUB2a7;
+	spf=pass (imf25.hostedemail.com: domain of hsiangkao@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=hsiangkao@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776233111; a=rsa-sha256;
 	cv=none;
-	b=eV9K00dllGB9f3AJSTdpC/6pBUrUJaK4zVRun1K4Cm5eIdfuv9UH687Drs/XwjuABjAJEx
-	qp4jHisC64o1v6eM+uakn3qaKmsjMKEgNgc88yuDIIgvU+rLj4+DM+bcqARMVSAW02tIlT
-	2dQCPgTpN80SqBw8sby+0N71MZ7TLl0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F633444AC;
-	Wed, 15 Apr 2026 06:00:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7675AC2BCB0;
-	Wed, 15 Apr 2026 06:00:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776232840;
-	bh=YpO2tJR55GH2ObkpqG7bQmAtIKqR5Kp4eMXaU9peBC4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PG+gdCpnhZU2mWNHnWjDbccaSYpzW5DWa7oI/L1CZa12jlDWtuuhVgVMvXBSieI5W
-	 1mTKkTaPWJLD/7YPLme69oHfx+SqSdka5UJJLQ1JSEj8G/fwR1vKDIL4j9tCnJeXEk
-	 SY2pobBl6jNteh8KlrO6WT//yIZHk6KAXt2Hjp0Di+VZncSOHveFrxLquCp41i6EWA
-	 RiByggS2Z38tgRf1kBnidx8U6FCVMAdQB7BsauFIhoL+0oihLsQ1YPfGeZkVU1PHNM
-	 TOZxYTnx2E6Ox33hogCr348RU1StshzU5rhoFZrFbiLu1YjSVNVJeZVHHWutt2BZy8
-	 ipURrYufRW9Lg==
-Date: Wed, 15 Apr 2026 09:00:31 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, shuah@kernel.org,
-	ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org,
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com, anshuman.khandual@arm.com,
-	Sarthak Sharma <sarthak.sharma@arm.com>
-Subject: Re: [PATCH v2] selftests/mm: Simplify byte pattern checking in
- mremap_test
-Message-ID: <ad8pf_wawwRYDW1l@kernel.org>
-References: <20260415044509.579428-1-dev.jain@arm.com>
+	b=7RG2CAxREA8kdUirGtKYLnxwkNuliPV85Sm/31ND3hFLQoqDEzmah21KRlHYmOQFMRJSZY
+	45kkvunHcBlKu+QtZc9/fiEkDRm/eauS94fH9CJal3Fu+hX7ELsw7kCtwY2xcaVgBQyERC
+	duX72n8CfOgyWlLAJHIxMc2KLZbjSmk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776233105; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Y3Bvp+KpwAJJ/lnzTS+tDvjyO24nE7JkQWZFHl55Uq4=;
+	b=Q9DUB2a7UuNlpv/cNBHtuglxexo/I8r4Q1beNTTyJnPqMmK2fmlufkPUAywPj7TicG9FYhJcUAZSALQ6jtNzHMO3w+sECOb+0U55/hN9hTJzbAF/ED+OxikvJgHjJV7ob2uuBk26O07oNFWm4wpH459GMlyEnt9eKL9h6PZ5Tu8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R561e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0X13erf3_1776233103;
+Received: from 30.221.132.134(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X13erf3_1776233103 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Apr 2026 14:05:04 +0800
+Message-ID: <58d1a07d-e266-4d58-9be9-f1445a68599c@linux.alibaba.com>
+Date: Wed, 15 Apr 2026 14:05:02 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415044509.579428-1-dev.jain@arm.com>
-X-Stat-Signature: iro7d5kx33h9adx9d3xt9ctpt748c1gj
-X-Rspamd-Queue-Id: BF6231A0011
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 8/8] RFC: use a TASK_FIFO kthread for read completion
+ support
+To: Christoph Hellwig <hch@lst.de>
+Cc: Dave Chinner <dgc@kernel.org>, Tal Zussman <tz2294@columbia.edu>,
+ Jens Axboe <axboe@kernel.dk>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Christian Brauner <brauner@kernel.org>,
+ "Darrick J. Wong" <djwong@kernel.org>, Carlos Maiolino <cem@kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+ Bart Van Assche <bvanassche@acm.org>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ Sandeep Dhavale <dhavale@google.com>, Tejun Heo <tj@kernel.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Thomas Gleixner <tglx@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Anuj Gupta <anuj20.g@samsung.com>
+References: <20260409160243.1008358-1-hch@lst.de>
+ <20260409160243.1008358-9-hch@lst.de> <adl1iqhldFvJwSw-@dread>
+ <7f0d072b-97a7-405f-bff5-d3819de2e3dd@linux.alibaba.com>
+ <ad2RKNo2FGhpzJQp@dread>
+ <a7a74185-df02-4906-a0ec-f87e2394aa5f@linux.alibaba.com>
+ <20260415055552.GD26893@lst.de>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <20260415055552.GD26893@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1776232841-236562
-X-HE-Meta: U2FsdGVkX1/Y9b0lhhxgmYBjrAzsJWF7FQh5L2HviB+YFgnC4lZ5FmgjioG95Qcg/FBsrA0vpPBtE4oMRMsdmBbkR6GNA/i//yFO66IhQ7d3TQ1dgr3A8h3usZRWmrnn3XSZX7z1XtxmUn87yYPSyogbBX4pU4qWWxFcghyV1vGHqZyC/q8XmECuWym7nyRFLTAIsdfAmQiAFvKZQeMZDTHeEfH4SrFZh42wKaD/hpT0ZI/iDdF6okgzVMTMF2S/QcSDQfToM64DD8X4RXJboyo4xjriGtsXB1EEZZcBp6HtnPqDhAczi+MdYJld/pKlO32zp1SbUCbHGA4zDk21sn/TfjUg4mAg1LmJ8UmVC7iwYNdoS1ab3JZ62Qh2h3Vx7CwqqmH35+bRE5Ra0y5rUsE1muX6fmoCF7DFHTEXkBWF7YGZQJSa9MeigUULXcj+ySpCSTKfLv8A5mTxzR+5iNz+UL3GQP8wQz/6v06wyjMbFiUrGm7ulHW76sX3F6jqpA7YLNi6IStqvkNKeVYPT1MAt0p+PDvlD6+425naYp9lWrQ8+/kv3WIRoHClJ6GtdCCGS0pyZr1x4Jj/ju0T4xQINRE4D2uVpREqKwIeImTeEgcxHGoR/KaentwvJVpVajZ7Hiu3/ytYpsICRXm7nPX4L6cJOzQz0wlOlJ0VmH5uW+9009DvkGHE7RFpDXc7h1ALgtWEy3qgKjNgvrG/8kGj2WBT8WFqpLYbkNznX2sGke+jPJ4GuyeBpnRlXXcfcucdUhgWO4zDas6STErmeooTdBuIu2WmNlB1VnltN7GZ26SZKPnlSKKeU0nIkVMHANAfg4TSSswsntLFrMgFL3wNXVl99eaygw6gh+MEMzpVQrjz+APsq0zOyIlj+rQqLGxqUvN0H+E3dz+GBdnrPoW8M81rwcOyEi/ULaFUrIJrYJjQuDDAF/Vm7gZDMxifIHjeHJaIxMfN33sKYOY
- 0iRcpENq
- ErMaxbDGLN9upK8/fd55F2dhx6mGtWZhcneAzHv/ln/js5qFYb0FreeU2at/9jUH7h7vaaxXCvDTzx3RnHYLsYZKaJ8qP2Lzz75NnmGs/xUD9p4ksUiVdKRLaKTfvI9mrhdBtEnarejtpa6lYWURdkxOz3uwWxYyssw83OP8F0ailXXrv0FGOt6voyhH5NBwEPKY4vQ0l9D1DrQ1U816nFsuKqUKRi6AvUjSraBuT7acfoZ6gCs88Dd6OICjEnyzZkIh8JQdrgrdIzwN4mVXCAKmToO+8b0L54CQ95sR5iUZWP8sG0kazmj9gaKlqX5R89QwlBoehsN0pVl0eBEN4DPp45WhaPzy1ZdGrAU2Ksz/xKVG3680OVBh6ua8YOCTH0VAJ
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DCD5DA0002
+X-Stat-Signature: iwpsnp659rrh9yqpynpcuzmqmqoupr74
+X-HE-Tag: 1776233109-632356
+X-HE-Meta: U2FsdGVkX19mHv7t/bX5CiUBK9VKdPpp640K8An8ZBasUpx8o1cYAC5lGDGEcTW2cs2jyfvzl8qQMuc2fnnNTyyXl1sNjTn/GdGTJnqseb9ibapfm0JVxMnPbuLvPRQANIjZsaInrlLBgRBRL8kYwW0mP9s8eB5ZBRJo60YZ6LJXxu8zg4Eu/yAuLKX/LluWbnn+YokNelWXKv5sRJ9wjw4biNjcaMyV7rZrS1k2A0ZktendhHCJSossD6DZDuvGr+UWfb5NIPlDkMZpI64kJVUcjUOG4V/SyU1SASUJYSlJgRhjzcqVX/QZkWKg/nDtKr1/1fS2VfioY/pQyehRzasaKutGl0IBkQ92fvRSlm0GJdvxO8wre/4joxcubnR+Vxc/AJJ9nt2YOIBwlE6cvpF3uGEMjO8Or3tsuvuvUsXpY3pVpBlgv78Qvqs8fpNKmrUE5JFiMXYGTpYlSoccgwuOW1yiDpcDPzqBTiPw/QCLjnPxEWGIJDBPREqU1gTC0mfLFqcnqTQnP/r5QY8jXveuOXQB4YE7s5mdkhCERbB9orGdroMFtHNMKeu7SwP/cCSPYS7Lmrkb36sn83hk2sZqzi6mEnVErCmCTrYOd5BlQykvRHVxzwPWKE2DFpNnPVW0Raq3m4LRmgtf2fmr+JPuCTCK37SDtqo+iLI42CGjc4TuSKzlHkuCu2khT9JBwGZUbU/SQeet3hwYEKgIM1raDq0VgQJZW1D6X2Nckr6oBTUsBPWTgvn1UgxyEWTu2cdcgtitl2zSOpaJuXyy/cqpca/wjFWWxVUHWPcWu4JPvUbgbhUIpRdmq7iXawdoLAcGNpxwBibwJ1yKf7HJomX3rNgAImHEte8PvfXWy6192NHcO0OPfoV+lXd7K6geobPNgI/TtiqJBgTy8cOsEE4Oq94Kllu4vpeJ0q4pMCqcAnS2Qps4pKHmILi2n0D39GRGbXp66Gskvz/kPfx
+ r4vtGAJj
+ j6Wc1XiCclFIQdhjpxuQZ7aP2otG7/sCPCUhS2RjO1DybwBE1zfMC/hmnQCJP3NU8AnatXfBoAM2p7ixDQztfBHANj/TSxQc7DSsJ1KskU0VL3YrlH1o0dXq7UJvUQmnk20yq7Y4fkFnZaZxiojAB68FfCZIuycRro+4EEjzQCI2SMjchaYJUw3imgFdxiaJ6/xJ/VU5Cgyt5SEyBwmR8GmcqK1NE0htM/07PWYMHnVzJ+MDJ8FEZHVuxObEiEHHbOlfuZtetTdiCCEK/rQM9fy+9h3V0uOmr23qF8YhNPvmnOt57U/iJ8KwPktDdng/xZeVovSqim9OjxfxW5X4AG5X2l7Kpu0rdt5I8dBftAepwfuY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,44 +102,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 10:15:09AM +0530, Dev Jain wrote:
-> The original version of mremap_test (7df666253f26: "kselftests: vm: add
-> mremap tests") validated remapped contents byte-by-byte and printed a
-> mismatch index in case the bytes streams didn't match. That was rather
-> inefficient, especially also if the test passed.
-> 
-> Later, commit 7033c6cc9620 ("selftests/mm: mremap_test: optimize
-> execution time from minutes to seconds using chunkwise memcmp") used
-> memcmp() on bigger chunks, to fallback to byte-wise scanning to detect
-> the problematic index only if it discovered a problem.
-> 
-> However, the implementation is overly complicated (e.g., get_sqrt() is
-> currently not optimal) and we don't really have to report the exact
-> index: whoever debugs the failing test can figure that out.
-> 
-> Let's simplify by just comparing both byte streams with memcmp() and not
-> detecting the exact failed index.
-> 
-> Reported-by: Sarthak Sharma <sarthak.sharma@arm.com>
-> Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
-> Applies on mm-unstable.
-> 
-> v1->v2:
->  - Simplify patch description
-> 
-> v1:
->  - https://lore.kernel.org/all/20260410143031.148173-1-dev.jain@arm.com/
-> 
->  tools/testing/selftests/mm/mremap_test.c | 109 +++--------------------
->  1 file changed, 10 insertions(+), 99 deletions(-)
 
-I like it :)
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On 2026/4/15 13:55, Christoph Hellwig wrote:
+> On Tue, Apr 14, 2026 at 10:23:13AM +0800, Gao Xiang wrote:
 
--- 
-Sincerely yours,
-Mike.
+...
+
+> 
+>>> Tejun asked Sandeep if setting the workqueue thread priority to
+>>> -19 through sysfs (i.e. making them higher priority than normal
+>>> kernel threads) had the same effect on latency as using a dedicated
+>>> per-cpu RT task thread. THere was no followup.
+>>
+>> I think the issue is that people are not already working on the
+>> same topic:
+>>
+>>   - Unlike large subsystems like XFS, people don't already work on
+>>     EROFS unless they have new requirements or urgent production
+>>     issues;
+>>
+>>   - The original latency issue was already considered as "done" in
+>>     2023, and I'm not sure if Sandeep could have the bandwidth to
+>>     pause his current work and test more setups according to this
+>>     ongoing discussion in 2026.
+> 
+> Which unfortunately might explain the sad state of Android.  You
+> really need dedicated people around and help to improve core
+> infrastructure, instead of adding random Kconfig choices.
+
+Sigh, let's not regard it as a technical problem, and it's more
+of a non-technical development resource issue among different
+resource groups & vendors.
+
+The detailed background is much much more complex than I could
+write all down explicitly here, but at least I will try to
+contact with Sandeep and more related people to test again
+in 2026 if a cleaner approach can be worked out.
+
+Thanks,
+Gao Xiang
 
