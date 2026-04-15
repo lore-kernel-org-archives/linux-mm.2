@@ -4,107 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 734EFF9D0FD
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 00:48:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D967F9D0FD
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 00:51:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA4BD6B0092; Tue, 14 Apr 2026 20:48:48 -0400 (EDT)
+	id A4CAF6B0092; Tue, 14 Apr 2026 20:51:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D54C46B0093; Tue, 14 Apr 2026 20:48:48 -0400 (EDT)
+	id A24B56B0093; Tue, 14 Apr 2026 20:51:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C44936B0095; Tue, 14 Apr 2026 20:48:48 -0400 (EDT)
+	id 961BC6B0095; Tue, 14 Apr 2026 20:51:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B02676B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 20:48:48 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 590BF160210
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:48:48 +0000 (UTC)
-X-FDA: 84658955136.21.65B4D02
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6F1F01A000B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:48:46 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wt9j8PlX;
-	spf=pass (imf19.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 832046B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 20:51:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 287711402D6
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:51:22 +0000 (UTC)
+X-FDA: 84658961604.29.474AE7B
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 511DC1C000F
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:51:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J8YU0AlS;
+	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776214126;
+	s=arc-20220608; t=1776214280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4dOLQgMFIc5WUqLkqCJZGmnuCCvn5m/W7yOiMCxXGac=;
-	b=nOqoDf98oicnMzfZ7qJNwodPk8NvwHRay+zKGc1e2wH4L6oNmi63ZqMwnNzqS9JJFO3H+b
-	HMv5c4OliePTWqpQvKJf/D9M90Nz4y1THsFjRKmhmf1JrKpKlBg8Z4NZlAO8MijXp8OhAf
-	Ea8VZ1CT1HqUAOFKHw5T8ZSmtnU/DTQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776214126; a=rsa-sha256;
-	cv=none;
-	b=5sTypY1rG+qDN6M7nmEalndtVRCVtVwtt65AkxfAaBOgpbmO8Lv70HBWLHisXP94iYFau4
-	EJrSR/mbvuQqjbYJ08NMRsInw0+NZmlF/U2+mkdEmvl6xYBdG4hrVzwNS/mfwqBovm1daW
-	7yNkEToMP5pdU3uUW8wNd8H5A3cU5lg=
+	bh=4mzC9E+DlpUUGq46xAvgFHlJHte5hw9EwrSfNtsp0mE=;
+	b=dlATuMqyJq9LeCNzVazafRpmKqJQ8QQuZ6WLIuziGG7GhhcFbLk22/Jy4CdeTReGNEUtnN
+	6e8OV9Nx3zpe+vFrFDJa7FlK8j3TwVHPv6BmCemYEFF8qeL10jkMudbwawZ+mzS/GxJGQp
+	oDDsVF2Te+FKF2DwUIShgO5aiylnAro=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wt9j8PlX;
-	spf=pass (imf19.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J8YU0AlS;
+	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <7388e265-ccb3-4938-90d0-4b503198ddd4@linux.dev>
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776214280; a=rsa-sha256;
+	cv=none;
+	b=sQ4uKgt7S0pOoaJESeH4DgoBeXs+NSy6wtoyr6gnqfQfMEr0MX9wg3eoUWW3iPeVHz71GE
+	Iu9NiSBVjyJWeRsYuJBaqCqdFiZEIV8ShHaSuUR0TrH7+CgA3PRyjNW7wODIZB+8zErEUY
+	gE5oasy6wuMH/IEagkUNk4cNIBvdhiA=
+Message-ID: <9a852e74-1499-4a5a-8e98-56a33c67d639@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776214124;
+	t=1776214278;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4dOLQgMFIc5WUqLkqCJZGmnuCCvn5m/W7yOiMCxXGac=;
-	b=Wt9j8PlXjKFscfm8IaE/7fE32DTbPJEridqhLxVM6uhZW+xqalaHoT9Tt8/Vfn23ji9k45
-	CBYPlUoobc9vIvtFyDSUZ995PPzra2KnDqphha67t9ihj9dhj9KvKloVCF2praJbRY++id
-	XxDS1vNDRy1nl3tFSewQ91fuGreoRaA=
-Date: Wed, 15 Apr 2026 08:48:30 +0800
+	bh=4mzC9E+DlpUUGq46xAvgFHlJHte5hw9EwrSfNtsp0mE=;
+	b=J8YU0AlS5C5k/kXq7rlFACUywmi7oGfW7YBS4Bq+IlpZTYRixEXAT3hqtLFusz3FxsXs6B
+	rD8AsY97471H0gKZlgTZq1ZtamhUSPOnl8FSJVkIFg+jDSjB0vMtLRP3uLZDLFDplN4CFi
+	027XHKDxVHXTl5dh7RIN1ZMbHGu5Pj0=
+Date: Wed, 15 Apr 2026 08:50:54 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/4] mm/vmstat: use node_stat_add_folio/sub_folio for
- folio_nr_pages operations
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Chris Li
- <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
-Cc: Ye Liu <liuye@kylinos.cn>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Kemeng Shi
- <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Youngjun Park <youngjun.park@lge.com>,
- linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org
-References: <20260414091527.2970844-1-ye.liu@linux.dev>
- <20260414091527.2970844-2-ye.liu@linux.dev>
- <fa26f2c4-a755-4ed7-b835-465c8c5fe0e2@kernel.org>
+Subject: Re: [PATCH 3/4] mm/vmstat: remove unused __node_stat_* wrappers
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Ye Liu <liuye@kylinos.cn>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20260414150001.3262806-1-joshua.hahnjy@gmail.com>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <fa26f2c4-a755-4ed7-b835-465c8c5fe0e2@kernel.org>
+In-Reply-To: <20260414150001.3262806-1-joshua.hahnjy@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6F1F01A000B
-X-Stat-Signature: 4iud1rut3fdykdwqw7o7wm5o3m9rfasu
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1776214126-343179
-X-HE-Meta: U2FsdGVkX1//zah003SuoIhNZhFBj0LhMKSNRgcoSZ2Ul44rnOXRHuYXUrCIvTjzf3IldwUxnk9U16qvkUYX6B/oioUimf63svKzstEXqBteEI6C19o3YL7O7rYsoePYx/b0cOnWpLQ8L7czZR1NpjLrgOfcOiwfhISCvvnjSqAPXiGXXIXnUS05sow0BFxwin3k2jRYzSMMedn0VFfhWMWKlVLQHoHJW7QtrtYRLEAnkYKXjp5mjzI0Eoe0uvHZyjAGDaqzulOFT7hkwEuaQb/1WYpsyFUCtZIJDBJH1qESIgxlf5Z09TkRb5WPNxecrQRDcvs6Nl1hgYXSI8pETZkby7PJANSBpKc6yGY/JmmomhZIh2Dx6FhUIrZTX9zwMfdeIqMU9Xc+9AIHnkkMe1LGYFlmLB5j+owZrdpPaGl8AijJiopYk747F9MlFDNDVrUFyhFf7xfPDalZqIU4ktrNP7GNzZn/Aj1QZVcDQQtVdQhEn6NtPPpROvdJhDNInykX9eiTkHIBQglXCthhhYXW5Fsutg2RanSZmmXYRwkQmsuB2zbjxq46UiIVmVuUdUl4MqteaPU0P+6s9Di1GTs4Liu9WEXgbq1qLeEuTvgCDuKNkgGWemT8QwPe7O86pz75YF4nwKGE3H9xvvxKe/oVIDf5abw9yKg7LT63PxLanj3LS9GlEBr7K1X5zBYxVuWpCjVhU+oIUIjA7hHgeyDCVz79Zz9yYuY4GdMXXShJldm4DPKXAh4KDprROrOIvONLlT3Bw0TgNMtwXejyMhQ0PakYk2ucybjk6sAROW7AwF+IPrvpe957JKJLy2h0Ibc2BB+4ig7/HvMQt5leLUAidwRXLiYREf9peA3EFGeTuxGTvAh95c07T4xHU+dOd6G8MKDkItHbffjE23CL2j5OLHpWyB5OocSnbdfphz8Jznp1GJIePQTs88qcIV0ERT9nsKWyYh7YcZT9IRe
- 7oadiIx2
- ZM7SOWMjpbPdA6swjt5R6qCxEfYc9nzRvRAF6AbUQOg3V/WjwHk7AJKKpawmV62qhurdKl8TqrgpN+rgi8hjXhLv6KCPI+Tmx8uoxohe9eyNgAu7tgFTfvzz4sCu1pgp1Tb0yYeqr2hy/qjfD7D4dyzFxNma6PcPz6pGDBEKv73rzvWB+cm1wFBOHSzHNi+Ip+X/uJo5yUIWASYt9e7rpWzOuRlKaYf26NQeEdvFbkzmSnK4toXvyuEUVO7kJqbGcBcotjgCJh35WeJqBPyxCXnkBTIkHfPFecLnIUCqULN4D0Y7dGsvgM80FtsM/2HYKnPTP/j1nSRz/89r53MswmASbeA==
+X-Stat-Signature: o8wo5yyi9y8x9kaneu7p3u8rxk6uofuw
+X-Rspamd-Queue-Id: 511DC1C000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776214280-161048
+X-HE-Meta: U2FsdGVkX1+BjzJv+ifJIoAoZBeerpGAH0PBWktecJzAro52grtbAWzfUn62UdRMQ9B8Iun5Ay4732eZfYgOz4pcCxch/wwFsC3NMwDQ7dldO1pMXOribEKeqPND1aEBNygw5SC/mPloGTWQ265dXwIThiwvk7o6L38jda4Fbbuigi+EwJhoBn5fzQkHFy1zJeVORsks1LXtE727yrqFjK4WdD0ZqODoAMIBplBddUqymC8D+cnqKqAWyZZHhLjFb7QQdH4AC4wfqlX3X2eioiem3WKA8acvU1Qv6Cpj7gFp6XuSU9oZXgTa8dT5zrMudbk306Kokb6004uefBoWGOEPOQ1SE24/1Ur4v0JOREu6jVyZi7LKijkZM8ksjq+G6n1NUb2n/Sjoq81uN7MOabgx3MGUT0dAFGlLpyLIXcaGZwswnAVg2L2adykxTLgPV+SUCcOMMQeXxYj20Drri7EHqzztyUXz227yL6zEmG3LyQuMqlITD8iqRe2pZgNCpg1cjmi7zmo4V3FaiJt67PO3Vs6ty3dFJjHQbutRCX4lBzmiuiQeDtI8V+lIIIzaocCnLhiEdRKRdzU0Ih7IA7pmqopf4DyxPkGRZuioWEGBGldY+JkKAsm0xjsS0yVEci8nAHpzxjZqpSTMQ6o9p3V4HVpIJDrCDF319PppGkESfA/Ius4ykrDy2rbUC9ZjEosEb89w6AncED2gLEwTk/2zJ+4yGT/zFMQO6P+95nfBVVSJLnS2oWiHDdcVqp+xoP9YocjZWcOe5eCskQTL9zjhW05Gaq0n+aZgE1kcdJubslwurO0Zqp1QXrOG0zUmSL5htKMz7+vkhleOWCG3Q61Q1QDzXXlFAQfElvtmtdRbnYeBz1a1yWbxt4qOpY/PtqKDeKj5hLL++N/QjLKRNXOLOI5hHELWhl1UaacVIhU0cHUjJyB3vQZ9ecR6jMMnd73L156x6wYXz/wJ/Q1
+ amMsPEYL
+ mshLtYgvqIVqAziNMFjfHdjjzOJwkEJkaQrzP6KRLW0LI/o4qJdv4roMmY5lWUdXoK1eaXnnc4niwRVEBEw5LR613qCZPR7Hi1KSgE6bHEt9xdAFcFE87oqhHwBl/8ljVZEpyjCp6K0Afboov3XxhXzNukaOI4ASeD5OB2F+6myscXpgFqhwnTAxcdZl3ykn/id+BEn4K0ecCx056un69WNJ+yDG1ey1bW+jnwNgWP/eCRmk9E0YEUEUemuCpCIL9LLaRh+thnMIRiG0j6UFRJhmmZkReZkt97boAJ5XkO84Ef8oZZN1RlnjLRN+SDj4KYlSAZzJPuaTluYqkTdXmv5V78SCmFRSEjIHl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,23 +97,79 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2026/4/15 01:52, David Hildenbrand (Arm) 写道:
-> On 4/14/26 11:15, Ye Liu wrote:
+在 2026/4/14 22:59, Joshua Hahn 写道:
+> On Tue, 14 Apr 2026 17:15:20 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+> 
 >> From: Ye Liu <liuye@kylinos.cn>
 >>
->> Replace node_stat_mod_folio() calls that pass folio_nr_pages(folio) or
->> -folio_nr_pages(folio) as the third argument with the more concise
->> node_stat_add_folio() and node_stat_sub_folio() functions respectively.
+>> Replace the single call to __node_stat_mod_folio()
+>> with node_stat_mod_folio(), and remove the dead inline __node_stat_*
+>> wrapper definitions from include/linux/vmstat.h.
 >>
->> This makes the code more readable and reduces the number of arguments
->> passed to these functions.
+>> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> ---
+>>  include/linux/vmstat.h | 18 ------------------
+>>  mm/page-writeback.c    |  2 +-
+>>  2 files changed, 1 insertion(+), 19 deletions(-)
+>>
+>> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+>> index 3c9c266cf782..54da7d820f78 100644
+>> --- a/include/linux/vmstat.h
+>> +++ b/include/linux/vmstat.h
+>> @@ -440,24 +440,6 @@ static inline void zone_stat_sub_folio(struct folio *folio,
+>>  	mod_zone_page_state(folio_zone(folio), item, -folio_nr_pages(folio));
+>>  }
+>>  
+>> -static inline void __node_stat_mod_folio(struct folio *folio,
+>> -		enum node_stat_item item, long nr)
+>> -{
+>> -	__mod_node_page_state(folio_pgdat(folio), item, nr);
+>> -}
+>> -
+>> -static inline void __node_stat_add_folio(struct folio *folio,
+>> -		enum node_stat_item item)
+>> -{
+>> -	__mod_node_page_state(folio_pgdat(folio), item, folio_nr_pages(folio));
+>> -}
+>> -
+>> -static inline void __node_stat_sub_folio(struct folio *folio,
+>> -		enum node_stat_item item)
+>> -{
+>> -	__mod_node_page_state(folio_pgdat(folio), item, -folio_nr_pages(folio));
+>> -}
+>> -
+>>  static inline void node_stat_mod_folio(struct folio *folio,
+>>  		enum node_stat_item item, long nr)
+>>  {
+>> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+>> index 6f9b7b081ab7..ed3301753e89 100644
+>> --- a/mm/page-writeback.c
+>> +++ b/mm/page-writeback.c
+>> @@ -2627,7 +2627,7 @@ static void folio_account_dirtied(struct folio *folio,
+>>  
+>>  		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
+>>  		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
+>> -		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
+>> +		node_stat_mod_folio(folio, NR_DIRTIED, nr);
 > 
-> Also, that makes it clearer that we always account the full folio, never
-> parts of it.
+> Hi Ye, thank you for the patch,
 > 
+> In addition to what Matthew has pointed out, I also wanted to note that this
+> substitution isn't trivial; there are differences between the __ prefixed
+> version of node_stat_mod_folio and the one without. Even though the correctness
+> of the two versions might be the same, I think that a change like this should
+> be supplemented by a description of what side effects this change has
+> (i.e. introducing additional overhead from the cmpxchg loop).
+> 
+> Thank you, I hope you have a great day!
+> Joshua
 
-Thank you, David, for your support. I agree that the new functions make
-the intent more explicit.
+Thank you for your review, Joshua. Regarding the difference between
+__node_stat_mod_folio and node_stat_mod_folio: in the current implementation,
+both functions ultimately use __mod_node_page_state, as mod_node_page_state
+is defined as __mod_node_page_state. There is no functional difference
+between them in terms of atomicity or overhead. The __ prefixed versions
+were wrappers that are now unused, which is why we're removing them.
 
 -- 
 Thanks,
