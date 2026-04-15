@@ -4,90 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D967F9D0FD
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 00:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 281B4F9D0FB
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 01:10:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4CAF6B0092; Tue, 14 Apr 2026 20:51:22 -0400 (EDT)
+	id 539316B0092; Tue, 14 Apr 2026 21:10:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A24B56B0093; Tue, 14 Apr 2026 20:51:22 -0400 (EDT)
+	id 4E9DD6B0093; Tue, 14 Apr 2026 21:10:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 961BC6B0095; Tue, 14 Apr 2026 20:51:22 -0400 (EDT)
+	id 3D9216B0095; Tue, 14 Apr 2026 21:10:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 832046B0092
-	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 20:51:22 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 287711402D6
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:51:22 +0000 (UTC)
-X-FDA: 84658961604.29.474AE7B
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 511DC1C000F
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 00:51:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=J8YU0AlS;
-	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BAE06B0092
+	for <linux-mm@kvack.org>; Tue, 14 Apr 2026 21:10:41 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 824181402FF
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:10:40 +0000 (UTC)
+X-FDA: 84659010240.10.4658D72
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CC2424000A
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 01:10:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ddFiHdSE;
+	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776214280;
+	s=arc-20220608; t=1776215438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4mzC9E+DlpUUGq46xAvgFHlJHte5hw9EwrSfNtsp0mE=;
-	b=dlATuMqyJq9LeCNzVazafRpmKqJQ8QQuZ6WLIuziGG7GhhcFbLk22/Jy4CdeTReGNEUtnN
-	6e8OV9Nx3zpe+vFrFDJa7FlK8j3TwVHPv6BmCemYEFF8qeL10jkMudbwawZ+mzS/GxJGQp
-	oDDsVF2Te+FKF2DwUIShgO5aiylnAro=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=9BY0u+9ICUg6YWkwSP8FEux5iqufebTEc1CFNWOpcLM=;
+	b=VrEi24HPk9CJ2YlDvRD2rlxOCMqOEXeHt4+18Eb4SpTYZKwLh6NHVkVKuQRy070W4ExTYq
+	DaQ4Py+Ew2Ob8kzNsz+Jq5XpZw7hBNyHxX6tFr3QuPrpxGQL41PwcL9ZK/j+rDvLnD7uJm
+	OTAolkjSu+fIQsc7Lo7mTIXNICmrKVY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=J8YU0AlS;
-	spf=pass (imf21.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776214280; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ddFiHdSE;
+	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776215438; a=rsa-sha256;
 	cv=none;
-	b=sQ4uKgt7S0pOoaJESeH4DgoBeXs+NSy6wtoyr6gnqfQfMEr0MX9wg3eoUWW3iPeVHz71GE
-	Iu9NiSBVjyJWeRsYuJBaqCqdFiZEIV8ShHaSuUR0TrH7+CgA3PRyjNW7wODIZB+8zErEUY
-	gE5oasy6wuMH/IEagkUNk4cNIBvdhiA=
-Message-ID: <9a852e74-1499-4a5a-8e98-56a33c67d639@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776214278;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4mzC9E+DlpUUGq46xAvgFHlJHte5hw9EwrSfNtsp0mE=;
-	b=J8YU0AlS5C5k/kXq7rlFACUywmi7oGfW7YBS4Bq+IlpZTYRixEXAT3hqtLFusz3FxsXs6B
-	rD8AsY97471H0gKZlgTZq1ZtamhUSPOnl8FSJVkIFg+jDSjB0vMtLRP3uLZDLFDplN4CFi
-	027XHKDxVHXTl5dh7RIN1ZMbHGu5Pj0=
-Date: Wed, 15 Apr 2026 08:50:54 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH 3/4] mm/vmstat: remove unused __node_stat_* wrappers
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Ye Liu <liuye@kylinos.cn>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-References: <20260414150001.3262806-1-joshua.hahnjy@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <20260414150001.3262806-1-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	b=egYNvG7gmjGu8vBRctASmC/XZzGwc6UfKwf/+jbTiGyuMfvr972c1SVNaUKdzFOJulEUuc
+	cWb4LsMNuSni68/hgT6fKFS+xS5V/U5g7tuEkTAdyKmEEpQ5pTx+UYmBMOpYAorXAC736R
+	Bwz0qjqRWGX08fqFP0m1HGXrtuYP+eg=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b97f9587e6eso863523566b.3
+        for <linux-mm@kvack.org>; Tue, 14 Apr 2026 18:10:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776215437; x=1776820237; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9BY0u+9ICUg6YWkwSP8FEux5iqufebTEc1CFNWOpcLM=;
+        b=ddFiHdSECpTdCP+d5o1vAEBok7Vlt0aVOYOc+1hrEREBfeU6cay9acLmNmoye2HIvV
+         sIjq1EXOFAZERMcjBtkGyl6JG/AueE2C6ApEEVS7MQ5OJwI/6lwPxZWhaz4aUre7qfu1
+         ge3G+wAF4Q7GkRyRbrNV/RrvNkAOHYZsyKE/c4tq48SU4I52m3fJu6sydA4/DpGS5fft
+         PO8sP/ZJ5uNjjz4fu6AtbKaK7uC8LmUwA3cqjzgaIJ4aqcIpkCBONk3+m/0FGYrzEpgX
+         6OjcOwS1adVKhC4CEF3WLsl0rT4CZDLsP1LOQQAiQq5oroSYXRpbgQtHWkdDuP0Cdsju
+         telA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776215437; x=1776820237;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9BY0u+9ICUg6YWkwSP8FEux5iqufebTEc1CFNWOpcLM=;
+        b=LjaXtUYsjXqze23MmAGcB3KxG5cuizFqnvSmme6H92JSHzyqxS6IIgJEziDn0EObJM
+         toqix2Po4ciFJlGm+xZGr1pgaRFeKyd2tSEnNXZCtrN88YtYXDyTGIZZZKrnXV/c1L6j
+         yh4gsqG5u0chkPTpKlYZLFMal1zfWdIss6oI05NLB2cqbRdp9/GY8vgAygvbpunvl4Ss
+         pcyaWX8SRxKg/xEMN4gaCIBDJzBOCgVo/chFUOS+HSeyY2mleWeHEVl6nam5AW//BJ/s
+         oRKRTa/bDjazHwowKrmeJQY5VdI9VGpg1TMz434SwapDrLRGKm1H9/CzphPriBJsy+U8
+         y8Yw==
+X-Gm-Message-State: AOJu0YxUkXDUrUNKcSuWlmXvQZhDpbBs7v42P+AvZilH3jDs93XPb0eq
+	Me/6mAgoEhtjkWQ9adfyookCsvNFpaJYEQmgYsWg6g27WOPuVHoiWTTk
+X-Gm-Gg: AeBDiesg9otMUYWVKIi8ZF8MI8W+uO9/FGX+T764EN2DrPFWOkNkRU52hCOpegLIjEO
+	kroMvnJElKcF8rcf6MeXk+nubgsruKt2dICq0uuUfqCJOpLoLdahwnqH0cCi3nOAYwLJZaioGiY
+	jHqZz2AVqfg5jUuUK8JB7pdZt9XUtlTUMAxlZFK/yNoYGypP5qMK3mCI409hcJUpW0D13RVOEVS
+	tThjnqv6O/0dfNrI88th+/Fi7isd/VbhEIwXtpkrH0MRtb0DGQgaHCcB9BLMRr5kTogQ6qbOjik
+	iaKAb7+IpGdIc0gWp/UlbA/dobzw/VOd7Wb/u//VzUK5KxJhYHUbGg8oUzl7ROAKh8iiSFt7xvk
+	FsEJ3nBhCEqJBRdmRKVc0ImKSKy4qzXaUBZvQGW93z6hfBAmEoy/Gt7SjdkY9+TwgsGI1cYJV69
+	+xduVasg3/JO9Beqfh8IZrqpNBjgEWblp9
+X-Received: by 2002:a17:907:3f20:b0:b9e:165:4b2e with SMTP id a640c23a62f3a-b9e01654b85mr425273966b.28.1776215436840;
+        Tue, 14 Apr 2026 18:10:36 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba1778c58cbsm3865266b.49.2026.04.14.18.10.34
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 14 Apr 2026 18:10:35 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	riel@surriel.com,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Gavin Guo <gavinguo@igalia.com>
+Subject: [PATCH 0/2] mm/huge_memory: optimize migration when huge PMD needs split
+Date: Wed, 15 Apr 2026 01:08:37 +0000
+Message-Id: <20260415010839.20124-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Stat-Signature: cgm9jt4k8jr386d7cp4ctbakdt5eepwe
+X-Rspamd-Queue-Id: CC2424000A
 X-Rspam-User: 
-X-Stat-Signature: o8wo5yyi9y8x9kaneu7p3u8rxk6uofuw
-X-Rspamd-Queue-Id: 511DC1C000F
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776214280-161048
-X-HE-Meta: U2FsdGVkX1+BjzJv+ifJIoAoZBeerpGAH0PBWktecJzAro52grtbAWzfUn62UdRMQ9B8Iun5Ay4732eZfYgOz4pcCxch/wwFsC3NMwDQ7dldO1pMXOribEKeqPND1aEBNygw5SC/mPloGTWQ265dXwIThiwvk7o6L38jda4Fbbuigi+EwJhoBn5fzQkHFy1zJeVORsks1LXtE727yrqFjK4WdD0ZqODoAMIBplBddUqymC8D+cnqKqAWyZZHhLjFb7QQdH4AC4wfqlX3X2eioiem3WKA8acvU1Qv6Cpj7gFp6XuSU9oZXgTa8dT5zrMudbk306Kokb6004uefBoWGOEPOQ1SE24/1Ur4v0JOREu6jVyZi7LKijkZM8ksjq+G6n1NUb2n/Sjoq81uN7MOabgx3MGUT0dAFGlLpyLIXcaGZwswnAVg2L2adykxTLgPV+SUCcOMMQeXxYj20Drri7EHqzztyUXz227yL6zEmG3LyQuMqlITD8iqRe2pZgNCpg1cjmi7zmo4V3FaiJt67PO3Vs6ty3dFJjHQbutRCX4lBzmiuiQeDtI8V+lIIIzaocCnLhiEdRKRdzU0Ih7IA7pmqopf4DyxPkGRZuioWEGBGldY+JkKAsm0xjsS0yVEci8nAHpzxjZqpSTMQ6o9p3V4HVpIJDrCDF319PppGkESfA/Ius4ykrDy2rbUC9ZjEosEb89w6AncED2gLEwTk/2zJ+4yGT/zFMQO6P+95nfBVVSJLnS2oWiHDdcVqp+xoP9YocjZWcOe5eCskQTL9zjhW05Gaq0n+aZgE1kcdJubslwurO0Zqp1QXrOG0zUmSL5htKMz7+vkhleOWCG3Q61Q1QDzXXlFAQfElvtmtdRbnYeBz1a1yWbxt4qOpY/PtqKDeKj5hLL++N/QjLKRNXOLOI5hHELWhl1UaacVIhU0cHUjJyB3vQZ9ecR6jMMnd73L156x6wYXz/wJ/Q1
- amMsPEYL
- mshLtYgvqIVqAziNMFjfHdjjzOJwkEJkaQrzP6KRLW0LI/o4qJdv4roMmY5lWUdXoK1eaXnnc4niwRVEBEw5LR613qCZPR7Hi1KSgE6bHEt9xdAFcFE87oqhHwBl/8ljVZEpyjCp6K0Afboov3XxhXzNukaOI4ASeD5OB2F+6myscXpgFqhwnTAxcdZl3ykn/id+BEn4K0ecCx056un69WNJ+yDG1ey1bW+jnwNgWP/eCRmk9E0YEUEUemuCpCIL9LLaRh+thnMIRiG0j6UFRJhmmZkReZkt97boAJ5XkO84Ef8oZZN1RlnjLRN+SDj4KYlSAZzJPuaTluYqkTdXmv5V78SCmFRSEjIHl
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1776215438-130522
+X-HE-Meta: U2FsdGVkX1+CthKDxmZxpQyVPsbByKfkhzVLjHu1AZi5JpIiCv+VuzL+n03eI0GVo7Sc36igInAge2A+x2Mcr42hrEqdwciupSyI6RaZcMYNON/u+FtLDvexN4ZrZjSx1r7ogFsbsF397+USe3KJPBZMexgulkpsT7mGj3lr2A5R/5zVoQvydbahOz80u15DBzEWsV2CfkM/DT3NZs0I1hkteFHEuUuG2s/lut0NeZHFTnDeFC051oaieLqfjTBF+0b7khGY5R7vtZkVvWrYcj2SpSMV5lkEsXgjL8ia0Pg++XzEofpz3As/MXdSNzxfKpDIo6dfUEDDb8jd5pZhnI2rj84/Q5ahRBeJdo0TRhOV6ZG8Nxrad4WLNTAkVi+KZagQjHJcErZcBgAE4Q70vTJSEs8kr7TnV2ptGtrk47ltKO84aOaoyvdnh+rmW4w9ZucYUpRp96vxqF1Q9csD3MlYNggMOtPtYKCgx8T/IBI5yBpaE1/tZ7w50c9A9ooYByjwC6bxEJjD+G+d2d1U+qop+XacJEmMtoRukpC/IpkRF8AWsgy0hzUAafTD/YcFDASf2S81+cXOQu8Wnyo0yq/lZxvLr7ZLyOsAebogTI10tq2DUnmJrU/WMQs6Ad5mCE06CS03gjJRy9L3rzrjHEtOgUkQP8SJSBNhEnQ2/4zOSJndSEYVLHxUsHUXzBd99Kte7akGrqICBVMhbdjKyjKxZqpx1gRk9QYJ4BcIJl+nCyINRg1V7mEkfhUjufXUwUT9f+j9HYB1HY1hTN9Hps9CH/T0M6uuN2tMjqPOkgLphVh2BJevhEGFhVUGRzJ7WcTYtBzLkQFNAHPKaIGrI2kBggK38GhHOTuxCfvXtwMqYTrAYsyOtkqzQtGOQU2CgqrOrvkIPFWM8H4TCFf8h7AvARojLV8boimakc504poswxwA6bcZOFt28Xpj5BZfmHC+tGEsKQ3pe3SV5rS
+ L+K1mwGP
+ 1KgwWatmEt83P1SeQEkd1QHuc0p7dO/m7p8asCWhgnPo5h9d2ywWLTYUyCJdlxUnRMSJg/XpmOLgvJuKntzpoeILvV+d03UD4JwX8Do4rV5EQzCc4hhfcXHlnBZpCzXLyNxQR4PMubK8vnkvr9zKgMT9DgI5oKtwwAxbFf1PV1hT0smf3MtVXjUPfvE8YRrKdhzzRIfZtPnAP6lkb04LMXdNmN9UztFu6joPvqUkFuxze1OqnBK5eZOuUcQX0Y4jNo/YkqRZZaHUpqL+vV2FVdFPX9ZbUfcm0sWJExUtPu0UkHgOW+TQq8Ojhx6wPIo2FNcW/tUksSRf5HmEjZzadxNlUpcH2a7GVpFY5xhCntLqJfu+e8JtC/0nyloN6dqAG42z0JG7ZIAV1OabM8lNOIGCREUsb7ZIyXJ0EchgbLMnlyeRCD9YLcL4DRzEChxS31ckIEwnTmsWNjJj0XAhG4CxeDl7yZqVagwq5+HjHLY4vsxcU05gFyfBCKDwcZXEtNx5ra3obL/JAy9gl0YgHMt7GlQVartrEVj33ZazazyLhWXA29cU5OfqfI57vwWlEmiCrvAZd9ToKfVcVbAXpeRoECgcvgZHqJGgMwzdw74JjUI7aHRhOhPSvZQG7qYJkmngN3SoKXQ3xNWG3SqCRNOhbS6EQOCaXE1ynVdF76+uZbBc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,84 +128,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is a follow up optimization for commit 939080834fef ("mm/huge_memory: 
+fix early failure try_to_migrate() when split huge pmd for shared THP").
 
+When split_huge_pmd_locked() successfully split the PMD entry with @freeze
+= true, it means each PTE entry are properly set to migration entry.  And 
+we can return from try_to_migrate_one() directly. 
 
-在 2026/4/14 22:59, Joshua Hahn 写道:
-> On Tue, 14 Apr 2026 17:15:20 +0800 Ye Liu <ye.liu@linux.dev> wrote:
-> 
->> From: Ye Liu <liuye@kylinos.cn>
->>
->> Replace the single call to __node_stat_mod_folio()
->> with node_stat_mod_folio(), and remove the dead inline __node_stat_*
->> wrapper definitions from include/linux/vmstat.h.
->>
->> Signed-off-by: Ye Liu <liuye@kylinos.cn>
->> ---
->>  include/linux/vmstat.h | 18 ------------------
->>  mm/page-writeback.c    |  2 +-
->>  2 files changed, 1 insertion(+), 19 deletions(-)
->>
->> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
->> index 3c9c266cf782..54da7d820f78 100644
->> --- a/include/linux/vmstat.h
->> +++ b/include/linux/vmstat.h
->> @@ -440,24 +440,6 @@ static inline void zone_stat_sub_folio(struct folio *folio,
->>  	mod_zone_page_state(folio_zone(folio), item, -folio_nr_pages(folio));
->>  }
->>  
->> -static inline void __node_stat_mod_folio(struct folio *folio,
->> -		enum node_stat_item item, long nr)
->> -{
->> -	__mod_node_page_state(folio_pgdat(folio), item, nr);
->> -}
->> -
->> -static inline void __node_stat_add_folio(struct folio *folio,
->> -		enum node_stat_item item)
->> -{
->> -	__mod_node_page_state(folio_pgdat(folio), item, folio_nr_pages(folio));
->> -}
->> -
->> -static inline void __node_stat_sub_folio(struct folio *folio,
->> -		enum node_stat_item item)
->> -{
->> -	__mod_node_page_state(folio_pgdat(folio), item, -folio_nr_pages(folio));
->> -}
->> -
->>  static inline void node_stat_mod_folio(struct folio *folio,
->>  		enum node_stat_item item, long nr)
->>  {
->> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
->> index 6f9b7b081ab7..ed3301753e89 100644
->> --- a/mm/page-writeback.c
->> +++ b/mm/page-writeback.c
->> @@ -2627,7 +2627,7 @@ static void folio_account_dirtied(struct folio *folio,
->>  
->>  		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
->>  		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
->> -		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
->> +		node_stat_mod_folio(folio, NR_DIRTIED, nr);
-> 
-> Hi Ye, thank you for the patch,
-> 
-> In addition to what Matthew has pointed out, I also wanted to note that this
-> substitution isn't trivial; there are differences between the __ prefixed
-> version of node_stat_mod_folio and the one without. Even though the correctness
-> of the two versions might be the same, I think that a change like this should
-> be supplemented by a description of what side effects this change has
-> (i.e. introducing additional overhead from the cmpxchg loop).
-> 
-> Thank you, I hope you have a great day!
-> Joshua
+Currently it is done in a sub-optimal way: it always restarts the walk and go
+through each PTE entry by page_vma_mapped_walk() which then skip all of them
+when the PMD is split to migration entry.  
 
-Thank you for your review, Joshua. Regarding the difference between
-__node_stat_mod_folio and node_stat_mod_folio: in the current implementation,
-both functions ultimately use __mod_node_page_state, as mod_node_page_state
-is defined as __mod_node_page_state. There is no functional difference
-between them in terms of atomicity or overhead. The __ prefixed versions
-were wrappers that are now unused, which is why we're removing them.
+Let split_huge_pmd_locked() indicate whether it split PMD to migration entry,
+so that to optimize migration if huge PMD needs split.
+
+Also add a selftest to check the bug fixed in commit 939080834fef
+("mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for
+shared THP") will not be introduced.
+
+Cc: Gavin Guo <gavinguo@igalia.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+
+Wei Yang (2):
+  mm/huge_memory: return true if split_huge_pmd_locked() split PMD to
+    migration entry
+  mm/selftests: add split_shared_pmd()
+
+ include/linux/huge_mm.h                       |  9 ++-
+ mm/huge_memory.c                              | 21 ++++--
+ mm/rmap.c                                     | 11 ++-
+ .../selftests/mm/split_huge_page_test.c       | 73 ++++++++++++++++++-
+ 4 files changed, 99 insertions(+), 15 deletions(-)
 
 -- 
-Thanks,
-Ye Liu
+2.34.1
 
 
