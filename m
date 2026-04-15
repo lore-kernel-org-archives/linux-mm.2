@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48A13F428C2
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 18:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9419DF428C2
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 18:45:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B16CD6B0005; Wed, 15 Apr 2026 14:45:09 -0400 (EDT)
+	id 090866B0088; Wed, 15 Apr 2026 14:45:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC7876B008C; Wed, 15 Apr 2026 14:45:09 -0400 (EDT)
+	id 068D96B0093; Wed, 15 Apr 2026 14:45:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B67E6B0092; Wed, 15 Apr 2026 14:45:09 -0400 (EDT)
+	id EC19D6B0095; Wed, 15 Apr 2026 14:45:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AE516B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:45:09 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 319AA1B832F
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:45:09 +0000 (UTC)
-X-FDA: 84661667538.16.BBD6F2A
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 310131C0013
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:45:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KD1E92st;
-	spf=pass (imf21.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DC1636B0088
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 14:45:55 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 89CAB1A05DB
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:45:55 +0000 (UTC)
+X-FDA: 84661669470.12.73B2D95
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C54B68000B
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:45:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sfPfexTB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776278753; a=rsa-sha256;
+	cv=none;
+	b=fx5MICsO+U5rif/xht4FJujiqYhnSIB3HPhAQMHmpPflywShF9hzVX9MZ8A+rymiGQgeXR
+	EtCro0ke7MuTOPFfua5z64+IEh7TA2gCbx1VT55AAfXP4xQKDAATkqV2sKnh9WqVAxkL13
+	3a3h+bf6k/m5ps6ml/htbxlMZWdCTfg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sfPfexTB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776278707;
+	s=arc-20220608; t=1776278753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WupQx6W6/LXfROgbPlaGvE5ASqZyPH3jS54/5qrkZO4=;
-	b=h06cHZ4gqIkZsdaqoCRYiVEeUhc4iogfP5A3IZq9UB0mL31NfsO6mmM4YKapAxh2aNzX5Y
-	y/dK+T5aUlxTmMCeiSrKcCjsDlM/8UMmrYcBqMuycgG9yok2VjIfhmE1PLKj+UU6tIW+/Q
-	xLQJthtmcOgejLGZUAVLnxcaSZ0Cj10=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KD1E92st;
-	spf=pass (imf21.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776278707; a=rsa-sha256;
-	cv=none;
-	b=PNZ8YH8cKfGtyFnFHghdkO6J6+uy5sFLUJTPO0bEA2jwbRuiFRnXrQlQFy0dPelIab1KYY
-	Yd4VTMhCkIPa2C7x91SU4R31/fEm8qFyjYnonRUObJ3IKHAeJQRNEgJwJvGaRUgfEsfTP6
-	UWdYLJrVohqf9RnxgzN/bIiR/Lq2M4M=
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82f344e880bso2513436b3a.3
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:45:06 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=sOoG9NE6Osa5/oH7LSm8JFnpzmfcQ/eAf3R+ydFAr6c=;
+	b=PwKpXcAXpHHITIi/sh/KqJWh95mAPy0olubmB5kY2u4zkMbSMecmQEt92SsIZ9eAIP6Iyk
+	2s5Xn0osy8RejrOUb7Nqheg3vhVKCVwEVWtNUYi2CO5M7rxI7x70sfIlDNxDeeAtFL9w2v
+	iF9maKM5cLogITfn7OkFDr6+xoh6dGE=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488a14c31eeso57520965e9.0
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:45:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776278706; x=1776883506; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WupQx6W6/LXfROgbPlaGvE5ASqZyPH3jS54/5qrkZO4=;
-        b=KD1E92stT05y7+dF5vW2piqFSItso4de+PPMG5sA2SnlPQ9lQFm2bVwDBg+gI4uebF
-         M+piyLZ6yKZtdxSA/nEc7MZPNL5rKbEf9EJWEBTe304qIivzNy22Of2TcMzMrua3qBg4
-         SqCPVuxVn7iTmAv4Y07QBICCA9sf9h7+3Vd++VL29TOoa7ftXAc0RfvF8ghLzNEquB+5
-         PLjwPVXMOMyMTWsVMvz/2m4WySXvGbCm+bi7tpluuZ8DwX5K5ZAfP4IhWBTbNJSyM9/n
-         Z+yD8ow6dUyBKWTN0z7iWaSy6feR/cwqPzPdlfvQGCFYBkFDGs8xe+/1AgBD4OWbrI7A
-         Lnbw==
+        d=gmail.com; s=20251104; t=1776278752; x=1776883552; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sOoG9NE6Osa5/oH7LSm8JFnpzmfcQ/eAf3R+ydFAr6c=;
+        b=sfPfexTBQo7kGXnpXjOnSIOzRzV34Sc5WKFOEOMPmEuqb732UfmHtFyAIdRZoNQgLT
+         LWWDs2rEWQh+JOnNRtqBi7g34LcenWPagWZp6Y+EhIdb/k/Hk6G/aap1rA9xhlURfa18
+         b7kB7tknii+U2pEg96ZjHqnFbiNJOkfVj27ZJq4Ae8a5AdW5vd2W1vAwrp1+8HRsatje
+         BeNjx7L0RaNXPadxn0kxQZWiJGquodJaIOQF6Sscw/gwSDABwGFLHy+Vdchf84lzMjeQ
+         tmDTF+JFxm4/u5BeHkWgVSgEVNYUwq1pA8xtAunBJwoutqLZ3lkb7aPUztxDTLgKwYy9
+         ROWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776278706; x=1776883506;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WupQx6W6/LXfROgbPlaGvE5ASqZyPH3jS54/5qrkZO4=;
-        b=TeQR6dDhL2rd7VbduMbiBhqvLPMr+H3idayKDkqas+E+zRDLYlzcRZABgGlb4xZLxu
-         HVurrxvVRKa5RY9NV0Sw0U3zejr4LIaM9I0ziHoGH1PHJ44C7DpnskGxoSWTRZ7aEhAT
-         WGJDZD8GAbjE8wAuxKgz4J3iGMsYTAOoSNzggsl6ms7jz+p+LwNJ2V8dO77aMvKIpSIS
-         vQcH9QcEEhGmcdMfX3Zf2gf789Vwcem7oRIy0rbBXjmplQ3pq/4vlOOpHt4rsBN0XNs5
-         pB8usjoTkMAE6vCcEV49uf5vEiBSgnQtsN0jDd1el+LoQlWmjp7m5ClZSf4CajZIqWDf
-         BD2g==
-X-Forwarded-Encrypted: i=1; AFNElJ/gTPmPMT9TkoCQiRs7sBqaEo4iFnQzuWJEZ0+Z2H/P/Ba8ylVx3eZIchrpHTfURARjk8N2NpSHBA==@kvack.org
-X-Gm-Message-State: AOJu0YymMEgF2EXjkd+13i980tfGBA+1UqMXDzVcSo94bmdzNIGfjX6o
-	lAU7zQb2ART/DEr2qz/Oghk6+DDLnF5Bne+U1lXejxv7BPRsGvuLEMQJ
-X-Gm-Gg: AeBDies2bL5d/NwYx5UckmVBmzxo5hy93IUsGZLb0uX8xf8vKS0JEe/gO/OIUGMjeD2
-	VtwSK8mpMWcmEYOtyfEb9t7BuDMskvRo9LX51ArnTlQ3IbmKhD9GLoODJknDdtXW2tvZ0AqalkM
-	RAzRpo3Df4cXvg76U8ofoc2OFFd4Ep7m3pvF+hA5XpCfNoFiyxXfrjXq8z9ixp+6KHg560Mdush
-	yEYsTVFZYHZ3eyKWEHySKDUUdWuxLEJipp0xHzPQHt7+RPOqUdvjPLzJFJxr/cknFBW+KIw/4pp
-	7bxXnZdH2w5kCErHPfnVvnRTyIoAlPjqrhoKVhuPWnvlxPfjNU7SlpxFfuUjLyjYlkwzv1u3Nrf
-	JMRBaggvzN23UIbWE73GDeY9DqrWPl8vhhrZ/ULbxKwTMMJkRV63RvR0VpG6JkVM4GyX4hgDneO
-	efx0RSD7ht0S4uUOanZ4xlJmwfj1LqKeRYO4X6JR1E2TzdWpbn4Tc=
-X-Received: by 2002:a05:6a00:2985:b0:827:4372:dd15 with SMTP id d2e1a72fcca58-82f0c2c2096mr22049833b3a.40.1776278705868;
-        Wed, 15 Apr 2026 11:45:05 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:898b:301c:d085:a35:99e7:ffec])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f69ef0b79sm2380698b3a.36.2026.04.15.11.45.03
+        d=1e100.net; s=20251104; t=1776278752; x=1776883552;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sOoG9NE6Osa5/oH7LSm8JFnpzmfcQ/eAf3R+ydFAr6c=;
+        b=myz0CAwKeOCXjpuhhO8D0tsCI3QiukUZr57x1+sE/Dk7kVn2N7a64BFqNZaLQPv9m+
+         rIDxQo6rKRnUd3T7rJ2QuTTgRzFlkbggBrjAt1iPkqL4EZIuO6elh9P0ZElmKNDYT+O4
+         WJtmly4hnxTvLhcboxXcPa9dAXYfzj4jbgZRr3MjbygLa7jyPDgpNm9ODFtsxDhpArWD
+         OfB2Qck2oGfndLCxVNOdm/1xISzCoKQcUvvbY9eJwbkSm0rD+CMvRWprjLaahHGy4sqH
+         DPQ/8HUoHF8eLlNp+5h3hAh30Wcxw2NsOtPs4dDCPcWJHAPQJKxHUvNHm7ARJYR8mdZU
+         Q8Eg==
+X-Gm-Message-State: AOJu0Yxi4hHd4x5xeMKEo9JbmadaJCi7Bs/iUBZCRTCgrRBdEeBPVZ4U
+	I6UbmhwTntbZOfWSYsyoJTIeTnQUrQCS4kDPuYyUohxRuOpgDQ0VDctD
+X-Gm-Gg: AeBDievml/LqiQn4BWCfVjFwlyXipCJghU2xi5fQRZXJ2lUJH/EDTdV5vVnQjqkksQ6
+	uYkY80A1MP0uTU0h2BGlcZSjIBykjI3SdcK4JNU9K7irTdOB1qQAz9b0LY3MXvLmbCyFWk0yfW3
+	BZ7kefAsg3jvLgL+MYcQWgTp3pdnj61BQiAQ9zouST+qMlaz+vRLCFTN95JpYdpyJEXxXJPexS+
+	By2eNvS9Lc7yTD6mBYbLn3eOPYWMmiBNRJ2fMxF7L8zqzCSauUV/PhR+bVwgeGJZuRycMmFU1vW
+	SNSbeZrEVwi9vz7lwnGawe/1SLF2VV4A0q2waXJBxP3OTfwjVKow818K5goJOMgA9GGZ5cJgg9F
+	yNYGOxdeKZcvSCyRFsdUR6Uj4X2grq1sn9epoGGxV2yQDIkPhych2zVF7aJfiLez2zcM5/yyTrF
+	tY8XUutDraDCEoPCBZZ4Hvt+7ht1eGGsWfsqHPrlk=
+X-Received: by 2002:a05:600c:8207:b0:488:7a24:9ddf with SMTP id 5b1f17b1804b1-488d688dd31mr309324205e9.28.1776278752017;
+        Wed, 15 Apr 2026 11:45:52 -0700 (PDT)
+Received: from localhost ([2a01:4b00:d036:ae00:1648:8c4d:e867:9ebb])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-488f0ec6cc6sm26153255e9.29.2026.04.15.11.45.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 11:45:05 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/2] mm/damon: reset thread status parameters upon kdamond termination
-Date: Thu, 16 Apr 2026 02:45:12 +0800
-Message-ID: <20260415184512.14026-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260414003434.83697-1-sj@kernel.org>
-References: <20260414003434.83697-1-sj@kernel.org>
+        Wed, 15 Apr 2026 11:45:51 -0700 (PDT)
+From: luca.boccassi@gmail.com
+To: kexec@lists.infradead.org
+Cc: linux-mm@kvack.org,
+	graf@amazon.com,
+	rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	brauner@kernel.org,
+	Luca Boccassi <luca.boccassi@gmail.com>
+Subject: [PATCH] liveupdate: add LUO_SESSION_MAGIC magic inode type
+Date: Wed, 15 Apr 2026 19:44:57 +0100
+Message-ID: <20260415184536.1155220-1-luca.boccassi@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 310131C0013
-X-Stat-Signature: qhpc8m9su3fcmt4aktre6gihhcsdsdts
+X-Rspamd-Queue-Id: C54B68000B
+X-Rspamd-Server: rspam12
+X-Stat-Signature: yfwy4qawg85fqc95ddstcjf4gdzq36po
 X-Rspam-User: 
-X-HE-Tag: 1776278706-133186
-X-HE-Meta: U2FsdGVkX186tIkpWY6xoD76HeVg/571/JU2ov8J7d2fppXs2Fm/Ah3LMPMDO61reNAgeAYN3DfNuick84apAH2sepqc73/P+nOO8QxexbHJNz8lC2/5nqvaU9EP/rb0HAxHfqgzEAscGWN4jrb4NxicMTxdOiNq8Y+ugbnMHBr/CFnmcCWdbkrkWB8lpnbJeGaSU8sJtEuM9KfGrPjKicxm21KL7mMhWJEsOUcKE5zO1UaUHFROy5YUqnrywxShVaHT70A1o428mQd9suVkbEOEsbb+q11BTVIQJ4mjC6eMGGyKey0M2JqRB831MRD1UZwidozl2uq76NwnUSwVm3HAWVVoQyAHri5Xcc9Gp2/hp7CRuKVCKhDHWqUAjvLjlxej6SsXVxYnI5dYSZjnO1Nlod/DMYM1EomV+0TVRzcIn61iRJNJckJWBX/CyznZTJKIz+l3S9poGu8rz8PpbEIEnLKNA4tjYt/g3UTxHJAvRGLYPfVugJ5EBADGuEJgZiDpQdzUAlZreqwpX/RuAKv3liKi4iNaLb3e5LB7VdP3VXhU/XQmwg4d12VeZ306WaRYcUEMhp7tSAwPx02CCJRPeP7O3A/YOEwVs2j+dzav4f7whfAO6ezZK0e8emXeuPIpvNCfsoHjkNWKI9+Qma5fOWSvnesKgPm58vQ11UCLRSgoA/228TP5m8BbrVrfoVmqy2y5ePd6jTF2AziU+/n714TLidZGAueojDWzXPh3DWc/B+/jQ2ipa5W1f/0mxYLPLCH83195CiWW6UkMy6unkmU3AEVpc8HG8LZfm8AkSk2nkvfMlatXES3zyMU/BjkiZnTwjdgTL1s/GJ1wPh7tXJiC+jEF3cc/r7/vuVMbQH0/QC7lbhjhOYA6rq9ynspvTszKo6mZw2b/VqWy18j53JdAYioouLSfLxHRJb87YXluMrTphRzj8aQ1+uZx3zk4U5vMmuEu2fyguAj
- TUIKW6L6
- d6KsTCV7l3pRmPrsPVHNlNXfLQgMLOZ/+u5pMbuZUb+DYEs6n/stCc/WkI5tmkrTLL6PnFOSXuO4sntfnZN0BYOLJAl32fENamz/7BLP9j+0e2ijJlFOqTn6eHH59tAHo1J3riy4AjLqGDEfsV2OGEpjFWMGVFwwXYAORMaxCKiytbyj4d09XaNKBCxJpUT/ZfSxtO/Dc4b/WFLYNl+JgqgTZQm1gOHZVWWX/QhYdm1g1SHIieblBXH221eDiGmmbXUsr2hXs3tgY+F4AIC2Wb2pNX3O8mYTkm1lGGyIEYbZPfisoLWXjM4nQIthpRKE6mm8l6r2Okz6MFPGaDWth+/pxSEZS/GnY66yJTtH3gd9qL74HW1FJm+rmnsxI5nrbgZ0nbfUZhpFlsEk2glc7aPJ6Z9ZbJv0ZOfYoTE6+rGGq/nhP57jDSsSsH+kNqw7oAp7x
+X-HE-Tag: 1776278753-436414
+X-HE-Meta: U2FsdGVkX1/4GGKfBy0Uoa6VaZu5BSZ5JBifst95AhsjnDFpTjW8Jvdj6YWR1DO3e6j7tm+mtap8V1TphuZrS2/3cryAGZehchJYqguiGSqhMRYPIm3l9ELJC4uZ0g10Wl9iqWbzTeJMEkd8vx0ma2NAj2d6BiFTa/vgRi41d1FOurOq3HaCm8XOKFTdJD9wabEXn6e9GIgDLOvWVhycCLFh/PRPT/YXyrwK/RKDLgfcY5kIEHbZ1TxMszNblfJv5mXheXq9v9cbTin2tyiCYipRG0wePIqAljTXjyvFO42yBT8Df2l5LDnDENgqIChyOkjJxO9FIXikTDP0TcGgrMWknwJP6FlPX/CGjQvzl5chmc5zd5shB1iU2gHrCd3d3TaqS8xCGkBuAztvX2Jf+XdfODDC1kUnzeKP21pDABUGaeItbaV5clGVuyL/JeD6FA1RSVOp6BxtagOQNdRA5a4V6RzHLHpd0qlDB7rg0ujRFCjlinEUxWuCEZ8baTmIf0Yb/za0DLkaiR0K3ZbXauK7ivRfxUn06NpTDg98fyYPmgAMen2L0gSn9bdDZWVSZe9nasSC4EQP8M9L3+f0rU+iyPnzrwsksJ9fmgclEuqwUBHi6SI7C38IeyDk8lm1EEGwjdxS/PMe5I/6J5W9M4WI5nU6NA2Tg1yi0xCt9h/araqf1DJodjwkBbqPD4YG+aaBN/+DW/JABPFOyCLDV6xJVJWhuxlhy2JySl+5zsbfHxCKtRnjl0iE9APeYzrUWc1kqMY2XiUWzCrh2Fkq+Fjk5L6ALlsViyM68FaksA5Y8L4StAsgevM8bTF60m9TmuPzwBonsvcm1ZRnDqiYU+UWiclfFLvFObAkqITNyut7yB2o45UU74rALCsJrYU1UsyBNM3NAMsqbN8X0hxTBTul1oP3WfOL81f9n8hLkYwyYtbZE704cFMHTZblvMQ+SUEMlTcAwzJq1gT5sBr
+ NFyYj7oi
+ B5UF/lh77rxBM0N9laSeU61aOn5fOoHfzA8oRVOcybYJLy71DCrpMBaOQS7lSvPS5OKw1EUyLuy/TaPNcEiU7ihWVYUK1vgIvjo0uuITsQ6gBghCtTQ4LZKrYQQjXYufkqlXhmAYBD8UqLxjEIwr5mkfT6z/YbLG7a6Pz5YYGMJ0WD1m6uUrUsKvtdefy48Y4IeBk4//mZUEi1CY6Anyl+KZyXXzAI70mFbnalGOSzUel0h9eeMM2gpWoxUIpmZ56OxBvfZFYlPpGUwN9m84ClBuSwOHGamWYqrtJvCvRdOH4kX2TNFn1olMUpsyzLCgjeBcIkJ2fJHRRs+bjheL3lKMkVebXcUfwjnaE9DBZT93U8x29m7KytlculY1xtNdV2x54B87acEluJJeyMBO9kOuf77MUQxOjiqjtuy3ozF4267C9BsIww6XaeUZzWXp87XMP02SbWnouKGHl8TenhnnICij1zshp/ExtZduMFbnhGF6iJLUJrYzkMmf1qrUiy8FjlLC+VP3zQR2dJX9DFcP/+VZic1ZQcruJkgfrx9AMV3pBEXuwNC8gloQ0e7Jpl1XwlBjxVV5SbYJaEa9s8vcFomBDQiGa0CBVXRHPyUFXLWcQP9WuIxfJptoaHpuKGEkWo4SpKrUbhCyzdmf+XylABzVeb/MLx7Xl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,143 +118,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 13 Apr 2026 17:34:34 -0700 SeongJae Park <sj@kernel.org> wrote:
+From: Luca Boccassi <luca.boccassi@gmail.com>
 
-> On Mon, 13 Apr 2026 17:23:03 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > On Tue, 14 Apr 2026 02:52:47 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > Problem
-> > > ========
-> > 
-> > Let's align the underline with the subject.  Also, let's add one blank line
-> > after the underline.
-> > 
-> > > When kdamond terminates unexpectedly, 'enabled' remains 'Y' and
-> > > 'kdamond_pid' remains stale. This prevents user from restarting DAMON
-> > > because both writing 'Y' and 'N' to 'enabled' will fail.
-> > > 
-> > > "Unexpected termination" here means the kdamond exits without any user
-> > > request (e.g., not by writing 'N' to 'enabled').
-> > 
-> > Could you please further explain when such termination can happen?
-> > 
-> > > 
-> > > User Impact
-> > > ===========
-> > > Once kdamond terminates this way, it cannot be restarted via sysfs
-> > > because:
-> > > 
-> > > 1. DAMON_LRU_SORT/DAMON_RECLAIM is built into the kernel, so it cannot
-> > >    be unloaded and reloaded at runtime.
-> > 
-> > I think this is quite obvious, so may better to be dropped.
-> > 
-> > > 2. Writing 'N' to 'enabled' fails because kdamond no longer exists;
-> > >    Writing 'Y' does nothing, as 'enabled' is already Y.
-> > > 
-> > > As a result, the only way to restore DAMON functionality is a full
-> > > system reboot.
-> > 
-> > Thank you for clarifying the user impact.  I think this deserves Cc-ing
-> > stable@.
-> > 
-> > I think 'Problem' and 'User Impact' can be unified into one section.
-> > 
-> > > 
-> > > Solution
-> > > ========
-> > > damon_commit_ctx() sets 'maybe_corrupted=true' at the beginning and only
-> > > sets it to false upon successful completion. When 'maybe_corrupted'
-> > > remains true, kdamond will terminate eventually.
-> > 
-> > This seems better to be explained earlier, on the problem section.
+In userspace when managing LUO sessions we want to be able to identify
+a FD as a LUO session, in order to be able to do the special handling
+that they require in order to function as intended on kexec.
 
-Okay, this is my current commit message:
+Currently this requires scraping procfs and doing string matching on
+the prefix of the dname, which is not an ideal interface.
 
-    Problem
-    =======
+Add a singleton inode type with a magic value, so that we can
+programmatically identify a fd as a LUO session via fstat().
 
-    When kdamond terminates unexpectedly, 'enabled' remains 'Y' and
-    'kdamond_pid' remains stale. This prevents user from restarting DAMON
-    because both writing 'Y' and 'N' to 'enabled' will fail.
+Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+---
+This was requested by Lennart and Christian when discussing integration
+with systemd for LUO management.
 
-    "Unexpected termination" here means the kdamond exits without any user
-    request (e.g., not by writing 'N' to 'enabled'). This can happen when:
-    - Internal error of kdamond.
-    - Invalid parameters commit via 'commit_inputs' (e.g., addr_unit=3).
+ include/uapi/linux/magic.h       |  1 +
+ kernel/liveupdate/luo_core.c     |  6 +++
+ kernel/liveupdate/luo_internal.h |  1 +
+ kernel/liveupdate/luo_session.c  | 67 +++++++++++++++++++++++++++++---
+ 4 files changed, 70 insertions(+), 5 deletions(-)
 
-    The root cause is that damon_commit_ctx() sets 'maybe_corrupted=true' at
-    the beginning and only sets it to false upon successful completion. When
-    'maybe_corrupted' remains true, kdamond will terminate eventually.
+diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
+index 4f2da935a76cc..4f51005522ffe 100644
+--- a/include/uapi/linux/magic.h
++++ b/include/uapi/linux/magic.h
+@@ -105,5 +105,6 @@
+ #define PID_FS_MAGIC		0x50494446	/* "PIDF" */
+ #define GUEST_MEMFD_MAGIC	0x474d454d	/* "GMEM" */
+ #define NULL_FS_MAGIC		0x4E554C4C	/* "NULL" */
++#define LUO_SESSION_MAGIC	0x4c554f53	/* "LUOS" */
+ 
+ #endif /* __LINUX_MAGIC_H__ */
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index dda7bb57d421c..ec00c681a0f50 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -197,6 +197,12 @@ static int __init luo_late_startup(void)
+ 	if (!liveupdate_enabled())
+ 		return 0;
+ 
++	err = luo_session_fs_init();
++	if (err) {
++		luo_global.enabled = false;
++		return err;
++	}
++
+ 	err = luo_fdt_setup();
+ 	if (err)
+ 		luo_global.enabled = false;
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index 8083d8739b093..223a9dc1ca29b 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -79,6 +79,7 @@ struct luo_session {
+ 
+ int luo_session_create(const char *name, struct file **filep);
+ int luo_session_retrieve(const char *name, struct file **filep);
++int __init luo_session_fs_init(void);
+ int __init luo_session_setup_outgoing(void *fdt);
+ int __init luo_session_setup_incoming(void *fdt);
+ int luo_session_serialize(void);
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index af9e498206d24..fbc4b32b39cb8 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -50,7 +50,6 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+-#include <linux/anon_inodes.h>
+ #include <linux/cleanup.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+@@ -62,7 +61,10 @@
+ #include <linux/libfdt.h>
+ #include <linux/list.h>
+ #include <linux/liveupdate.h>
++#include <linux/magic.h>
++#include <linux/mount.h>
+ #include <linux/mutex.h>
++#include <linux/pseudo_fs.h>
+ #include <linux/rwsem.h>
+ #include <linux/slab.h>
+ #include <linux/unaligned.h>
+@@ -376,18 +378,58 @@ static const struct file_operations luo_session_fops = {
+ 	.unlocked_ioctl = luo_session_ioctl,
+ };
+ 
++static struct vfsmount *luo_session_mnt __ro_after_init;
++static struct inode *luo_session_inode __ro_after_init;
++
++static char *luo_session_dname(struct dentry *dentry, char *buffer, int buflen)
++{
++	return dynamic_dname(buffer, buflen, "luo_session:%s",
++			     dentry->d_name.name);
++}
++
++static const struct dentry_operations luo_session_dentry_operations = {
++	.d_dname	= luo_session_dname,
++};
++
++static int luo_session_init_fs_context(struct fs_context *fc)
++{
++	struct pseudo_fs_context *ctx;
++
++	ctx = init_pseudo(fc, LUO_SESSION_MAGIC);
++	if (!ctx)
++		return -ENOMEM;
++
++	fc->s_iflags |= SB_I_NOEXEC;
++	fc->s_iflags |= SB_I_NODEV;
++	ctx->dops = &luo_session_dentry_operations;
++	return 0;
++}
++
++static struct file_system_type luo_session_fs_type = {
++	.name = "luo_session",
++	.init_fs_context = luo_session_init_fs_context,
++	.kill_sb = kill_anon_super,
++};
++
+ /* Create a "struct file" for session */
+ static int luo_session_getfile(struct luo_session *session, struct file **filep)
+ {
+-	char name_buf[128];
++	char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH + 1];
+ 	struct file *file;
+ 
+ 	lockdep_assert_held(&session->mutex);
+-	snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session->name);
+-	file = anon_inode_getfile(name_buf, &luo_session_fops, session, O_RDWR);
+-	if (IS_ERR(file))
++
++	ihold(luo_session_inode);
++
++	snprintf(name_buf, sizeof(name_buf), "%s", session->name);
++	file = alloc_file_pseudo(luo_session_inode, luo_session_mnt, name_buf,
++				 O_RDWR, &luo_session_fops);
++	if (IS_ERR(file)) {
++		iput(luo_session_inode);
+ 		return PTR_ERR(file);
++	}
+ 
++	file->private_data = session;
+ 	*filep = file;
+ 
+ 	return 0;
+@@ -662,3 +704,18 @@ void luo_session_resume(void)
+ 	up_write(&luo_session_global.outgoing.rwsem);
+ 	up_write(&luo_session_global.incoming.rwsem);
+ }
++
++int __init luo_session_fs_init(void)
++{
++	luo_session_mnt = kern_mount(&luo_session_fs_type);
++	if (IS_ERR(luo_session_mnt))
++		return PTR_ERR(luo_session_mnt);
++
++	luo_session_inode = alloc_anon_inode(luo_session_mnt->mnt_sb);
++	if (IS_ERR(luo_session_inode)) {
++		kern_unmount(luo_session_mnt);
++		return PTR_ERR(luo_session_inode);
++	}
++
++	return 0;
++}
+-- 
+2.47.3
 
-    Once kdamond terminates this way, it cannot be restarted via sysfs
-    because writing 'N' to 'enabled' fails (kdamond no longer exists) and
-    writing 'Y' does nothing ('enabled' is already Y). As a result, the only
-    way to restore DAMON functionality is a full system reboot.
-
-    Solution
-    ========
-
-    The problem is that 'enable' parameter value is not trustworthy.
-    Instead of relying on the 'enabled' variable, use damon_is_running(ctx)
-    which reflects the true kdamond state.
-
-> > [...]
-> > So the problem is that 'enable' parameter value is not trustworthy, and this
-> > series is trying to make it trustworthy.  I think it is bit complicated,
-> > especially for stable@ fix.  What about simply using more trustworthy
-> > information, e.g.,
-> > 
-> > '''
-> > --- a/mm/damon/reclaim.c
-> > +++ b/mm/damon/reclaim.c
-> > @@ -390,7 +390,7 @@ MODULE_PARM_DESC(addr_unit,
-> >  static int damon_reclaim_enabled_store(const char *val,
-> >                 const struct kernel_param *kp)
-> >  {
-> > -       bool is_enabled = enabled;
-> > +       bool is_enabled = false;
-> >         bool enable;
-> >         int err;
-> > 
-> > @@ -398,6 +398,9 @@ static int damon_reclaim_enabled_store(const char *val,
-> >         if (err)
-> >                 return err;
-> > 
-> > +       if (ctx)
-> > +               is_enabled = damon_is_running(ctx);
-> > +
-> >         if (is_enabled == enable)
-> >                 return 0;
-> > 
-> > '''
-
-Thank you for the suggestion. I have tested this implementation and it
-works expected. I agree that its complexity is much lower and more
-suitable for a stable fix.
-
-> > 
-> > > 
-> > > Changes from RFC-v1
-> > > (https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com)
-> > > - Remove RFC tag.
-> > 
-> > When dropping RFC tag, let's start from v1 again, from the next time.
-
-Regarding the versioning, I have two questions:
-1. Is version number inhritance only required when converting from
-   non-RFC to an RFC?
-2. Should my next version be tagged as v3 (since the current one is v2)?
-
-> 
-> Also, I just found the patches don't have Fixes: and Cc: stable@.  Could you
-> please add those appripriately?
-
-Regarding the Fixes: tags, I will include the following:
-- Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-- Fixes: 059342d1dd4e ("mm/damon/reclaim: fix the timer always stays active")
-
-Best regards,
-Rui Yan
 
