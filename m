@@ -4,77 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF65FFA0C32
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA486FA0C30
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 06:17:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D0876B0092; Wed, 15 Apr 2026 02:14:30 -0400 (EDT)
+	id 2BF8F6B0093; Wed, 15 Apr 2026 02:17:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 181736B0093; Wed, 15 Apr 2026 02:14:30 -0400 (EDT)
+	id 2708B6B0095; Wed, 15 Apr 2026 02:17:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BEFF6B0095; Wed, 15 Apr 2026 02:14:30 -0400 (EDT)
+	id 185E86B0096; Wed, 15 Apr 2026 02:17:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F17986B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:14:29 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8D58813A89F
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:14:29 +0000 (UTC)
-X-FDA: 84659775858.18.A4E78D2
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B9ACBC000F
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:14:27 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 092C86B0093
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:17:36 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A50248B645
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:17:35 +0000 (UTC)
+X-FDA: 84659783670.13.AE0297D
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5A41C1C000A
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 06:17:31 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ynDQi691;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776233667;
+	s=arc-20220608; t=1776233854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sVQK/DfywlnRSvprzIYKSXSIPHRnV1UoF2XR5AbgItc=;
-	b=gWcPD4gT6vZxEKG5MqGezkVfI4WBtUMrrGLqd83ttWUPkx7As8btVtmK5WYSDU5rNW2tmh
-	MqA5ipc9kQSZoT7n85rwFIzSmXbVTon2k21zvhGqkCzq5toCWcXr4XTeboEGl8cLQYNP1v
-	uPNBpNlFtxxnguXEmFaEKTtU8NGyijI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776233667; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=x2HHnAsQZ4MfYHDSO/spA2qHLwiRh3qZPNKbpsbyQmc=;
+	b=gwhKQew4E7munrQqHkvYTMfuIXWm1Q9Yt99G/VYpe+JW7h8wtPz3QunDEjtVZ0yHnt1CLi
+	jeZB4JhDjjq+ph9GlTqH49r2vkKAaYRxpx2LBrMlmQ6H91UHPYgygR2//yDtAGAwqgSeh/
+	dNyoJ0bslJ+qn9cIM+i5OVQYeT3V634=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776233854; a=rsa-sha256;
 	cv=none;
-	b=r41FEKDMgiu/TQmj6sFXy4fl9S/uPxcToXX3+9ebBI8Pt78PtYW9ktIDL/Iwm5eGyL1j/e
-	2fS0J+vvuNyE14s6EYI/vXDr1xQpsg2FxbRaSndfd96hH81jkDlnYLtBIsrNFV+k07Mm6I
-	9Wgm2vOOy+5iiibqEExuNHbEU6e0Xoo=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 67D4B68BFE; Wed, 15 Apr 2026 08:14:23 +0200 (CEST)
-Date: Wed, 15 Apr 2026 08:14:23 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
-	hch@lst.de, ritesh.list@gmail.com, jack@suse.cz,
-	Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
-	p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 1/5] mm: Refactor folio_clear_dirty_for_io()
-Message-ID: <20260415061423.GA27588@lst.de>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com> <a35d5d65953cd9bdead0843d09c4cfc9d1fd65aa.1775658795.git.ojaswin@linux.ibm.com>
+	b=4yBqlu+tqzFck7/yPu6kCP3vf98Sf4FNWEjKzLBAs0DtgVmR7/2Ms7obTaQrLIWVwabU2k
+	OgSg0tERRSSsklxo/i0RxxTG08gpp37jxAjD8k3Fr7SU2db9DyWn+WdGz9wM6nii1sz8Gv
+	dv3TzNYJP90/86rzqSLU7x8HRjP86mU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ynDQi691;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776233847; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=x2HHnAsQZ4MfYHDSO/spA2qHLwiRh3qZPNKbpsbyQmc=;
+	b=ynDQi691ow2I3Fu/4pdfhP3OjMauRh4943hu2ZXZRfrvu/wP+NaoHzTSUEdFKWbS3mcOVSreILCJCGijua2REguj9Jmvw6f/5CJAbQeoQPV0rG+BJCHinfsyQ9GpIq1UGWpPlNLpmjc8jwLvXhEhf8kzrXol/mKlqe7rAso6MKs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X13dQMQ_1776233844;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X13dQMQ_1776233844 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 15 Apr 2026 14:17:25 +0800
+Message-ID: <19f2cc25-de3f-4a32-bbc6-44dda466f615@linux.alibaba.com>
+Date: Wed, 15 Apr 2026 14:17:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a35d5d65953cd9bdead0843d09c4cfc9d1fd65aa.1775658795.git.ojaswin@linux.ibm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B9ACBC000F
-X-Stat-Signature: ojukgehpwnkqpnh7c5wny6gxzajjagk5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.2 v2 03/12] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
+ from file_thp_enabled()
+To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-4-ziy@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260413192030.3275825-4-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5A41C1C000A
+X-Stat-Signature: d718eeq9dd663qftmorue7p667csjct5
 X-Rspam-User: 
-X-HE-Tag: 1776233667-859936
-X-HE-Meta: U2FsdGVkX180cQybkxNR/rPxcedJQX+r6kOXWMEhxuR6RJIZdVrfMpBJQ1Be4cf7iuka5NPX+iNp9+4m+IEA8HuwPQY9yYI8fz5CSZkL+cmZuQ5ua9UYhk1byw7VyCmWcRfNppGIy8BiRR9ZX7L/43pA4iuIW1hvlNbNG0Z/yL/qMmWhErEupaE/A1jYVLV9gtvI0zMQanFwYpz/8Y/9SoLSYX4a09rhhiI77sP0Yt/MZXuk7zcPsn7B/ibdzvJJcTgVd+j1mgaI320bsKbSHXMd/qzU4RCEVZA/05Pk/moyUMYs9kS8GbP0Ea3IDfSWq60Vy8+HX0f3h2bIqLEzzgDYKM80pVrXV+IJ1ULoHSvpQQSKRkdC4qA6LCUiMrHxkPaNqFmWs7+e/WNv6lxq53ZJvOJOjWBsHdZ8GitDr+3X8m4Etlk//KmCjoeifC4t3ZKmgjINmlObw6VV1LCQ0rsaaOfIUsxkh+B8xeFgUmGlRBID+oLPY6gq3iBKkP5l3yB5Y+rslZhjFkQBNkIF0DC1tyJP8yT7VU3RaXeSwZ7slBUdgvl+qH8yUxO+TSkxvVMOU+YeOcM0daSu4Yvd4CtHoNDsDP5SPxs54V+0Gkpr/2x9QBaU66BMFPsXV99kTZM5swGlbjO4opVxVBEmV+8XgwWzP44XlkYfNULV83/fEfn4XOcIQEw9qE6U5zYK8FJJdm4wtGyfOwNjUJlXj6T3g3vScG5HOEUujvt6rRdXDhEm/hXD6bo/M0YnlC29weEcXLsglp6Ck76NLzLDOydmrxBJVV8H/75mXM8bok4Qeo3Ywk3QMdLU2s819g1naDiyx2/cmm5CEa0EpONpFUjsR+MLNhN9h4ViM2sITh5SWAsiEJl0jVPBC0ycfDdZ47mdYYAiOOIY0JsB8uJXuYsjhPNV9BJkhnXlf630EsdjJrNuM6cxS5rqvJUZfWiIVcMN3ZYEefrhM4oR8tQ
- Muw3XYGy
- DHjal4giwR7uTrUKbfk50zuGl3Zv+DoMsdkG7HWoWKd+ZBlbj3tfqcDS9FHcP30L4S+gIkbZOl0vgjiJ1xgCjuV6CAgVLkYcMNKXtv7+d2sR8QvxBL7MCtAYHLBjW/3Ckw4OZVJM52wzofvSr/Oz0+FILSWXOPVBWO9ZcicF2xDBoZuyYlvh23TcJqmPNQrvH7ifooasJ1KtooMPOyNnbwoZtFZhJjuEvArLBqUufwZOiJwViA25q0f67UGqPuL//kE+1EFdWVMfct+A=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1776233851-703710
+X-HE-Meta: U2FsdGVkX18/IptNIAo8a1L22TRo3Y7ibo+ci37dKAFY9M3abQ2313VOgbqYZ0ekQfboUM/AaCTG7vCf+8Iw91bmW1dJvYYo9nV2kbUxChS4yKdT0AJ9YQgmjqEKST+vlmAtl9Nj8YIy7YzGD8i5/qa5T2z9Hqt3GqF6BUkEmh4nT3lpTcgjrqBjuyj2fOMHddLMg265NFPZ0thZVEhPml77srcsv67pZtClTggWt0wq6FMHmLbGSUBDD2OrleiVBmiB2fS67OBVBRlRYUMOsl7j2CMxsgsG9nKQSWmFTmf0mCcXykFfqFwCQH7rJZjDFV1c8Yc4chRlsU8b5aA7DYbrttOrlSbIGL/mi24FySVpqnIlfOCCt9/86XqG4m4a0W2s8QjzkctYWcvSpxwViKxjkCtXBsukCkBYHRXd2Q0TeL1zUJyqh4/43fhY7feDOpsMvmLMW3+jtlG9+MAhmLvbP3notxuhIhslHOHpI8f3OHlezrWI7uJfaUUh6j5u9aoVpStyuh4BFzQMyiWZ9Lkj0BisgSZhQL+HIzCqMj4fxqx+Z1NDt4WYGPM4s87Cig3D/SwymukRp0xXZfIn1NAjUkqaURIfdE/0aakozD2dJ6WHT08SOlZd6rtnGDisRpVu/5uecPxavkwPeaHP6g8TeLh1+Wpd2m21pHIdmnvviTRV5WRFrR9qL3NZ1SGms2XfZ6v8fdh4tgdxrDTh+zLx4H4Y+NsNZNJmOpheh5TXb1N+F5GQEG7OFzyDMDQNQ6Rly52Hv36b1lCR2uHjLRENiAkQcQ7lH+L+PA0yxF8mtbL0MKVnP+Y1RWucNtdYcEdWiHy7ljY5fCOLW+JaWfSkh0H847btzjdP30Uyk9dfTANoGBadUczptuYbmIekBho4lXRahI8HdO/ImcUw+14S0Qtjr0+Ub/ebbkT5qkZyBUBLr7EqJa3aMReETt0lINcm+teY5OsfiV0L58j
+ rn/r7gQu
+ PtLPN7+OoISRZ2ZFrxD7v9WZSJoTTvN8WK0dpwX08yrGETPPmzQa5CHPf0ulggg04fpmObaqeeDG34HtFcxMPjnzF+OkhYOHWn+18uP9sw/PgLYprwzoVg4l0ep2s04qK3++LMNWpwgAgClTyrfwUrLorTTSNxiMT2kRvjuNNQzUQOpR7zGu3U0MCAMrk9qFWOXSWmLZb/jWfRX2OoRaj4yxWa53kuYejG0hgW4/i57WnIPOrzR775peIWn/wSQG0a3wU9RqQUSHn+YMhez5/dh2cIPWqKLmY0xUlzSxCvAMzVupGOYGzfSmIHYa1G3J1eg2c2dsXAmuizDuzIqugxEwuu4X7o0IPU0GM7VSBqfSurgv+EM2MG+za3OvtKfaeuHvUM80aT9zapMYphxqdEEK2eTbLaVHLIAmyFIuSre1C9MHiFTjinXV8mA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -82,16 +100,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 09, 2026 at 12:15:42AM +0530, Ojaswin Mujoo wrote:
-> @@ -2847,8 +2847,11 @@ EXPORT_SYMBOL(__folio_cancel_dirty);
->   *
->   * This incoherency between the folio's dirty flag and xarray tag is
->   * unfortunate, but it only exists while the folio is locked.
-> + *
-> + * For some cases we might not want to do mkclean, eg, if we've already taken
-> + * care of it, hence pass the should_mkclean flag to indicate if its needed.
->   */
 
-The kerneldoc should move down to the exported version. 
 
+On 4/14/26 3:20 AM, Zi Yan wrote:
+> Replace it with a check on the max folio order of the file's address space
+> mapping, making sure PMD_ORDER is supported.
+> 
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
