@@ -4,123 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10181F419B9
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 17:40:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2F92F419B9
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 17:43:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2527D6B0005; Wed, 15 Apr 2026 13:40:58 -0400 (EDT)
+	id 11DD46B0005; Wed, 15 Apr 2026 13:43:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 229966B0088; Wed, 15 Apr 2026 13:40:58 -0400 (EDT)
+	id 0CDC46B0088; Wed, 15 Apr 2026 13:43:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1672B6B0089; Wed, 15 Apr 2026 13:40:58 -0400 (EDT)
+	id EFF7A6B0089; Wed, 15 Apr 2026 13:43:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 082886B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:40:58 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB61B13B176
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:40:57 +0000 (UTC)
-X-FDA: 84661505754.06.E20AFBA
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 40F54C0013
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:40:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2shBBi3d;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W6bztLOy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="r/jnHiMi";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="cQIKW/EN";
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DEE9C6B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:43:21 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 953C91B8265
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:43:20 +0000 (UTC)
+X-FDA: 84661511760.14.A0D552A
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9EC8840004
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:43:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=SM6B0AO6;
+	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776274855;
+	s=arc-20220608; t=1776274999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=fOAqbQ+KWx7Iq4Jk4o0vTv5cvwzxS/CD54a2lpB+Ois=;
-	b=0lBY6WOOjzPfdizsPnNBlM4uy/qXK/4ujjgoSHDzehH+eNljYUIVXz4bq+GHQ7gxrIBlcp
-	lbwBGNj6DTLN1om0tkhOOKSGwgxdBIh5ggrb2S7TjvRW6oONFis5yoLwZTotQNXcGZP+Fq
-	toDPOKz7J5zYjl3y/o+OkeeKmaaj8MU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2shBBi3d;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=W6bztLOy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="r/jnHiMi";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="cQIKW/EN";
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776274855; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SOJSWDSELeB0YTngjDwuIRTiVa2seMMmI2D7vgbLJHE=;
+	b=oyO46+AIszeEyZFmwD+NEGfHMCee2V6fgZ/lhPZU3zC61htdefOQmw1ywAwAXp4yiyNQ02
+	ZNtff8j5cn0P3r+b2x2s2KMvdMe/V2AxqtY8dQk/Z2n+rmETiU6SnuctI2reocmw7W2esR
+	vJC1jWMWokcfCom/8kQnQn73Wo1AAVs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776274999; a=rsa-sha256;
 	cv=none;
-	b=rm5w9DzGatHIjnkgRQC4fshd6E6V1bPVMa8dQpSoTzfl+bG9RQMN9UiOUR7gb7TeqHSCsi
-	2VgPbJGExoVTjGv2AB2srafbQ8Cy8pfjjee71rc0JdNK/qXaK8iKB0HbjpLJkT6WowI6dE
-	STCAOT85j9TcNk4vfzvnXAB7dwHkra4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4791A6A7F0;
-	Wed, 15 Apr 2026 17:40:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776274853; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=fOAqbQ+KWx7Iq4Jk4o0vTv5cvwzxS/CD54a2lpB+Ois=;
-	b=2shBBi3duodbqKjmrBUuwD3klJhfc18zpkZY8bMnwntvNGArBXCAwQ3Gu+pkpr0+aca463
-	9VwjLpQkkjHrT/5q6JA74c2vISiYX559UT/I4+Ac8Nr2b7EGcXje37/aLRYFf0NOZNX12c
-	JgH/ZaO2YtxSL7JDl/zN7JYpSh9qxn0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776274853;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=fOAqbQ+KWx7Iq4Jk4o0vTv5cvwzxS/CD54a2lpB+Ois=;
-	b=W6bztLOyLHQblbA2aX8F/vqYGGOyUiyDDq92x8suvbkY323wKfhmP9Na35BdlsdVKOmxZa
-	fbCTcbDFnh7UeRCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776274852; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=fOAqbQ+KWx7Iq4Jk4o0vTv5cvwzxS/CD54a2lpB+Ois=;
-	b=r/jnHiMiHjWCzEwr02XQKam/ncPcqsjy15FzG6jWpeU+z5LLEvccty6D79p/T879Q7Ymfz
-	vanwaN3BzVk/rfQ/WqO0li+q44rOgVg+ZrbIRasG6otfw/bRn6DhyCgjCTuJ1ZyyFG2rFt
-	FAIAiph2Nm6ER6vARqYqyZdY7PrB2hQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776274852;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=fOAqbQ+KWx7Iq4Jk4o0vTv5cvwzxS/CD54a2lpB+Ois=;
-	b=cQIKW/ENmZr8HWqE9mqwQQlMPN6Q7ZOWTdeuf3i4k9nfeFrnJn2E6YO3MlnFs+K1IYIcp4
-	pFToHgy8yO3j5+Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 38CE94BB1E;
-	Wed, 15 Apr 2026 17:40:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EQ11DaTN32mWXAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 15 Apr 2026 17:40:52 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E26B4A0B59; Wed, 15 Apr 2026 19:40:51 +0200 (CEST)
-From: Jan Kara <jack@suse.cz>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	<linux-mm@kvack.org>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH] MAINTAINERS: Add page cache reviewer
-Date: Wed, 15 Apr 2026 19:40:40 +0200
-Message-ID: <20260415174039.13016-2-jack@suse.cz>
-X-Mailer: git-send-email 2.51.0
+	b=4uQdbNtWPcDG9BzM+5ypjcYoSnPL0K2Xo4kgIWaxovHEDLe3UiyncIti1vi3Q4z/nMF3UK
+	BCedxCBXIaainPgxRLYj9HlHLcYKY6O89QS2Vori4bWJzOQxmYigKsch1OrXirHzTKkTC7
+	EXzG0P6QyXvDfDmOljnnkbpdxWTPouI=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=SM6B0AO6;
+	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 93F3CC73A9;
+	Wed, 15 Apr 2026 17:43:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1776274996;
+	bh=SOJSWDSELeB0YTngjDwuIRTiVa2seMMmI2D7vgbLJHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SM6B0AO6SmMcSfXheaPbbVLMC7aRcI7Hs4se/r4k9imn2nObg2IzOFbNYHgZgva9b
+	 ow5wVC2t14ax/460besk2BLk2ZWreZ/iowSL/PsDXW8Jvz0IPJzEXCWLkYn3Z/5pOK
+	 biOqNAzm1emEyoQaB5lwW/xPsxIFCbmK8c4HniVw=
+Date: Wed, 15 Apr 2026 17:43:13 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Juergen Gross <jgross@suse.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 5/5] locking: Add contended_release tracepoint to
+ spinning locks
+Message-ID: <ad_OMbqBSjtTPsok@shell.ilvokhin.com>
+References: <cover.1774536681.git.d@ilvokhin.com>
+ <81eb8e0cd90b31e761e12721dbacb967281f840f.1774536681.git.d@ilvokhin.com>
+ <8d98d9f4-ccab-4864-b406-d3eb684cab45@paulmck-laptop>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=575; i=jack@suse.cz; h=from:subject; bh=AnYdRSkpK16gyCJHY4l7/7D7E4F7gGFB8UpWTNjgw/U=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBp382Xqa+hPL1iu4KIEURTE+x4zkUxC8ADBPXDX BiwHbHEBvaJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCad/NlwAKCRCcnaoHP2RA 2eNQCADothi9W+AuDdyN2BmXgNAdxzzC10wfNZXzgxyQi7IrwdB8Rnm6MtKvV7defaig1+hSZFw V3IFWN9xiRcNG2wfagz+V9jfDrg6gteSex9JZ9e5+5MoXY2I+ehPn6K/rT2PveXPgYLcZWwmQZj 1atTIyl4JFHfFJb8a+5BWVldalMgJu6mbOrNK2RGNeSp2C79is2R4KXBUkkTwnV/vTVD4y4WArU KNpgDptRM/fS4n15kFqbgUtnBIHaI4kVq2yHFAccrMxiqFlI5juxzPD59qEOtdd0NjU3ktpq1UN WBXkch58v2r52a8jQqlZXLZja6B6GpCNdSUPqgPnOU8P8cy5
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 40F54C0013
-X-Stat-Signature: g17renkjbwiqnhfzorbj3wxn4dstpph6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8d98d9f4-ccab-4864-b406-d3eb684cab45@paulmck-laptop>
+X-Stat-Signature: yr7s4fmtnduay78q11dyshydekfi3eru
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9EC8840004
 X-Rspam-User: 
-X-HE-Tag: 1776274854-70414
-X-HE-Meta: U2FsdGVkX19wOxZuKNyMDzCCV/A14VqZqHxlKpFynNVxqAqDLDCQ4nEtRj+nr8CNkxbDOejKOmoW26A4KGBFzaUtRBvw3YhHMc14UDp3jRpZd7316i+lnLP3P/561by4sUKK8SogyTTwLJXg9B5xZIGpUfRgyogte3OeZSoKiiH8nzy5h60L/f1B7ZH8vALjSC8VGvfrVoV2U6fFhuBp5zvDPSYEtaNYo8NCzDFVG8lfLZwW7+NeatrDuXD1umcvTZ1LtlkCc5CQobQaMrbB7RcWAZFWbkfusfU23KttMG+vrdLhGWQy9ns6Hm/9c4Joisi/DJUae+jQDIGBhNHm1x0iBs+cYG9gyRE/u3yZniygG6nuvnSC44CWGhr9A5WBNdUN+vBbDspsSlZzW41HYHCgVjEmw0HyHre98RD+i0EDJt12kwG9Bwi5f3vzTniXeNE5U2YIZTLBfbOmXQFDqd38LnoXIcXnpRUvZIF11y63nPgQUgZIQgdZdQv4t/lKvuGuo2DSTtLaOMaX9A24Cwk12F9plQHUPKmwKmRR6/ACZxjLavDEjD2vLkLQrHnm3FGgxfEUL59QPywIALVi9b8aNmbkL5WvZYrxNPa1SLuS/HvOu9DjqkmOKSoQr+wevH5RgiC0csQQcoWOwFEu7PoN2ZEUeG6nR7hHSXCo48Z1sOBBCPsTKCQrjLeW2amM4PveADTpt8elUz4rwaON1V/3mL28rbTDFpAMnGJD8Vxc//n0Y0ChaaMPns1/5XD/uXeymHVqatrMvhWRoW/W1f5LcXFIBZaRmMMxeeQnfgXaYphIs1MexL8BTu4p7DS5jRbVeLG4ki66X6Y32kSUdh58fAZufwtOkQ1adXbZVG4kBsc4dNwRe0OUO5rV3dskf0fJtf2S9zIN7lcaT7qZ3/eQWqWMpKeDe1kVeqY1AqPQTk0PGvaT1wWX7dea0BcvJidt2TXr49b2l1WT529
- CLxkU73Y
- ajXl/1MRQlODWBkwwE15f6ZmyG1WqdSKjACMOvZ5h1Umd5sDJt7I0DDI4LhqPCWG3e9KHzIfNKCF5DRa9vkZIaWC3/Z3sLJS7Ebr7pIGC/jwfd3VfHr0ost79t+eUDx9u+ClPs7kY0ndZZ46x4LtpSM7Jdjyy/FC5f9/a5Mk18SybzPScjOR26C2fAeDlbD+QkLeK0Uss8Oi+Z0krbD8Tff4P32idSu9vm12WqeH4ldBYZQ29NGSG0x62mgXcgPoJu40Tfy5Fte0mPOm0YvF97HouePec/85X+iDe3bDr/BWlKvLunLXB0JaY8JiElHrONZUj
+X-HE-Tag: 1776274998-534629
+X-HE-Meta: U2FsdGVkX19OAeMMSgR+ke/Y8SKDIAId1yL9QB0jMoUITGpZ47TrtR8bd39pB2IbQ9HzRmUho57ZwsEf/TNeibuk/iorhlCkvyrjV2gMzY1ZpHaZzNXm+vWsUqH1vk03TTHzbs/3GLXmg0+3iPrtZcmHJaJN9H8vqPuYe7XT63CMd57ac7PxWTefW4/zGtFh4xUGF5ETXOzls5/E7Z331q/SvNxxwIAWlH7v8ozTsFdpwOicZ/39+ma/x+djCjtrr0WpQXQ70niWOLK2gTcZwm1VpI+e1G6fSq64Ia39WRdq45GfyMPqZvANkq8uYF+1mASOS/t8+96oLrKIQ7Vc7+tKJgr/7z8G7skysOEq/iAFDPE6Bk7cPbkrZnF+3VDHKaNQehJ37gDGoRVZJJvv9lGfUsBxJ+ESNQcokaVzzJYMV4pA6adDaYHBmcTJ1uW2y8x43+Bp7nIcb9RllCk5LoOyr1m+VZC/WlSABmM3moYabZroNuPTGNu9Gpha+Hy0TuBGiUtBnwmRAgVmGA88YbBPPKOW95b03xOELns1SjtMyaw0CJvKYSicgpWchtYRDBTKNdOKngKdBVrTpFOKS5TVUa7sTNvnUNORsXp2AdjwH23zVQnVsH8ILHczHy54xEBeUlSdm12B9jrCToKeDPNt0LpHPboduAW5k3QHzsCJuZByU5qiL5FhSi8BBft4YGEK7fEDEo4YY7Qzts2dPFay2pbayUbecr8dny+7c38OIEGKh/8nT8A56M+SlwNqlmglyfcsguY/2hg7O7Od9Y5DRxoMhJTMeOGyxOTAXi/i4rx1KaYuey9n9m2HsmbdjBwfSTZlE1gQiBV+MEgPFaXZydtpGYnGYN5wBMNkEcWZQPp4b0SxSNhqa6RJpm18ZA3GcYhA+Bk21Vu+BB5GM4MocVc/VvuTyVB9pCCRIOYAzIeo4nDbqf1WAkG5aGOsyenfhQ9kZmV4EBaGpQu
+ wylhHCZ/
+ xF+ixEtEQwyqB808fEk2X1DBp8vjNTahnAV1wiXe4inKsM6nn19NgY6L9+W24mkMHlz4oi+uK6CB8ZGRPeARItV1y6BJOkOF6l6UsJxclLhsQI4Geo7RHOnqvn8O/CFyzXN00SKYKdhDkv6fz5dwPERNgbjWLyhbiEZPlUx/17cMFmFLR4BAAyPAen2nTHy/3A9qNgnV4408onmtOYkqRYa3zp65r4XyKqNk98EYyNtj7ZASe7T9VAjZtdZ9EIQ0H1IzcLSfX+mP4N+S8C+pnayc/LU/Ie7OfFEut
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,27 +107,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add myself as a page cache reviewer since I tend to review changes in
-these areas anyway.
+On Tue, Apr 14, 2026 at 04:20:26PM -0700, Paul E. McKenney wrote:
 
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+[...]
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d1cc0e12fe1f..2af750f5f06d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19961,6 +19961,7 @@ F:	kernel/padata.c
- 
- PAGE CACHE
- M:	Matthew Wilcox (Oracle) <willy@infradead.org>
-+R:	Jan Kara <jack@suse.cz>
- L:	linux-fsdevel@vger.kernel.org
- S:	Supported
- T:	git git://git.infradead.org/users/willy/pagecache.git
--- 
-2.51.0
+> > +static inline void queued_read_unlock(struct qrwlock *lock)
+> > +{
+> > +	/*
+> > +	 * Trace and unlock are combined in the traced unlock variant so
+> > +	 * the compiler does not need to preserve the lock pointer across
+> > +	 * the function call, avoiding callee-saved register save/restore
+> > +	 * on the hot path.
+> > +	 */
+> > +	if (tracepoint_enabled(contended_release)) {
+> > +		queued_read_unlock_traced(lock);
+> > +		return;
+> > +	}
+> > +
+> > +	__queued_read_unlock(lock);
+> > +}
+> 
+> Shouldn't this refactoring be its own separate patch, similar to 4/5?
+> 
+> That would probably clean up this diff a bit.
+> 
+> > +
+> > +static __always_inline void __queued_write_unlock(struct qrwlock *lock)
+> >  {
+> >  	smp_store_release(&lock->wlocked, 0);
+> >  }
+> >  
+> >  /**
+> > - * queued_rwlock_is_contended - check if the lock is contended
+> > + * queued_write_unlock - release write lock of a queued rwlock
+> >   * @lock : Pointer to queued rwlock structure
+> > - * Return: 1 if lock contended, 0 otherwise
+> >   */
+> > -static inline int queued_rwlock_is_contended(struct qrwlock *lock)
+> > +static inline void queued_write_unlock(struct qrwlock *lock)
+> >  {
+> > -	return arch_spin_is_locked(&lock->wait_lock);
+> > +	/* See comment in queued_read_unlock(). */
+> > +	if (tracepoint_enabled(contended_release)) {
+> > +		queued_write_unlock_traced(lock);
+> > +		return;
+> > +	}
+> > +
+> > +	__queued_write_unlock(lock);
+> 
+> And the same here, so one patch for interposing __queued_read_unlock()
+> and another for interposing __queued_write_unlock().
+> 
+>
 
+[...]
+
+> And is it possible to have one patch for qspinlock and another for qrwlock?
+> It *looks* like it should be.
+> 
+> 							Thanx, Paul
+> 
+
+Thanks for the suggestion, Paul.
+
+I think separate commits for the read and write paths of qrwlock is a
+bit too fine-grained, but I like the point about mixing refactoring with
+instrumentation and keeping different lock types separate.
+
+I'll split this commit into four.
+
+    locking: Factor out __queued_read_unlock()/__queued_write_unlock()                                                    
+    locking: Add contended_release tracepoint to qrwlock
+    locking: Factor out queued_spin_release()                                                                             
+    locking: Add contended_release tracepoint to qspinlock
 
