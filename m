@@ -4,86 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45717F41984
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 09:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F4F9F41980
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 09:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E0706B0092; Wed, 15 Apr 2026 05:41:29 -0400 (EDT)
+	id A62A46B0092; Wed, 15 Apr 2026 05:46:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BCFF6B0093; Wed, 15 Apr 2026 05:41:29 -0400 (EDT)
+	id A12F76B0093; Wed, 15 Apr 2026 05:46:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F6A36B0095; Wed, 15 Apr 2026 05:41:29 -0400 (EDT)
+	id 9287E6B0095; Wed, 15 Apr 2026 05:46:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C8806B0092
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:41:29 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8549D6B0092
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:46:16 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 97AF6140384
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:41:28 +0000 (UTC)
-X-FDA: 84660297456.13.A773C73
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 89617C0010
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:41:25 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MHEc3dZe;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2EEFD1A03D6
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:46:16 +0000 (UTC)
+X-FDA: 84660309552.13.208DC57
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3822280002
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:46:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QBjm0Q98;
+	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776246087;
+	s=arc-20220608; t=1776246374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jh//D4vksZoAA6xh7LCf64lJtL6THr5KcZUnckQfI34=;
-	b=UEPhyLvPZmcAdWZwFilY+EnA9O1vDH7638aJtoYrhub4qsafNrmPqt92obfk/bWMzagKb3
-	f+E3g9En9AuMoS+N3jRej/EfR18S+MK5O36btwvJgCX72Ck536AZth4LXPHYJPk7W4372u
-	9sFnw7EGwNGse7X/NSs5bWwYZ8HcqYE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776246087; a=rsa-sha256;
-	cv=none;
-	b=yCGxwZGCmpjO1fuaty85HBu/rYl3FGotA3tZZNKaP1oR03ZQuYAIWskiJpQ4mkRP/11ZHr
-	5/yFeiff1+FT744mXyI9xbp6dAuuRNBowFPTYjD1zDe6TukjKYLUaBjAkLCWcIVjtNxaMW
-	cSDNTurcLkCy/fPCBKT/+oGgI8Lxss4=
+	bh=xd8e3J+b1LcawueW4g5SlvWwVt0JRcLEm6Lowqe8HOs=;
+	b=YRDxHZC/e7e1Ga+bLbznJUj8K4NrOKJ2KWyrps1tXA+K2xKu/eDRqoKjerzDKeRkqzk+u8
+	3YG5EmMrGTxe+sCsvwQeNV9JDCnEfQr+sap6OqDhcLzPK3MfocCXuXm6UYc9KCNyUEZ4MI
+	qTo1zrUM/dCgDfYHH7pBtC0Oy6uBNq0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=MHEc3dZe;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776246082; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Jh//D4vksZoAA6xh7LCf64lJtL6THr5KcZUnckQfI34=;
-	b=MHEc3dZeJy9Fh3Mu5+HAG1OXJC51KyGjzKYZ15hJ6RFyXhYGDJvFna6hmvKfdd8CV8e9zkN5yLt8Nr8rLpdQVTZWPxh1TmxEAnKwmA27HOdB4/1bvqBYDvyK7cMLQwV28oAI6yO4z2ObSZHkbzp16x/sbvfzeI/1lakq/3L9odY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R651e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X14EjGc_1776246080;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X14EjGc_1776246080 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 15 Apr 2026 17:41:21 +0800
-Message-ID: <2d138a3f-0006-4a01-852a-4570d7ba781d@linux.alibaba.com>
-Date: Wed, 15 Apr 2026 17:41:20 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
- shmem mount
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
- <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
- <e07071fc-15b7-495f-b6d5-96004aa0f8b6@linux.alibaba.com>
- <c88ea567-6b03-4540-8173-7fceeac23f7d@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <c88ea567-6b03-4540-8173-7fceeac23f7d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: rfbnsjr4puu9nf63kq9ukgo49dgbum7g
-X-Rspamd-Queue-Id: 89617C0010
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QBjm0Q98;
+	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776246374; a=rsa-sha256;
+	cv=none;
+	b=fz74y+cdoszfMSusNTAgtKHfDkqNSMI6GiOdFB/mdVjhwoKy5YjIFd1Va99b2A6Kj5+SiK
+	4shZckjiFdGO/qd61SYj/aP2p2jOF8DELv3QmWqIO6eSjhF774z0Pg0eZD7AC6e7Kknk7y
+	q7seueohR88cOq8Fy7JKtB9tbTkXYP8=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776246371;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xd8e3J+b1LcawueW4g5SlvWwVt0JRcLEm6Lowqe8HOs=;
+	b=QBjm0Q98krTet/JEVaYxsXi3oRR/HslqU6S8M/huMahtsUrSqju2CsMK51OOb10zGFFiht
+	b2u0G+nNTz3ItgjIOnwsT41ZtHsmuZwONXdX1Fr79WE63a+3itGIICjNzcoPxz4dZ0SVsV
+	qMEIFNVptxhj8mN9y+7WGVtkDGVJfNs=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH] mm/sparse: Fix race on mem_section->usage in pfn walkers
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <ad9OZAVnYvhxfh-Z@localhost.localdomain>
+Date: Wed, 15 Apr 2026 17:45:30 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Charan Teja Kalla <quic_charante@quicinc.com>,
+ Kairui Song <kasong@tencent.com>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9E4115F4-5787-495F-BCEE-1E9B1113E9E5@linux.dev>
+References: <20260415022326.53218-1-songmuchun@bytedance.com>
+ <ad9OZAVnYvhxfh-Z@localhost.localdomain>
+To: Oscar Salvador <osalvador@suse.de>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 3822280002
+X-Stat-Signature: 1i3qhkkyc8zbtfsbx3gc5wj3jhbr6zij
 X-Rspam-User: 
-X-HE-Tag: 1776246085-663513
-X-HE-Meta: U2FsdGVkX1/PJuXcZO6U5fqHnrQpqStkMApJ3eTX23WH5QIooGzauCf4Eyaa7tYpOxrBgVm1BlB4DcrauNcw/v3LcuWXabFVjTKfduvodzGgRqRXvSy4YpAhsqZE3rYLgbVkZV/ZnitFzaRDC9l9tPguESt2UDSxrR3ECd+Ro+qamliz+KpAMjULZiMctKMBPanteuE9jRUt/wyHrtcmEpoEOz29jGcSELEvC0XyfA+skfI3WdK+skvcPl+UW56bK3cowCXFnvuoPatV/gLTcjqmacn9gH2ZTTy9H+39Q2zgSdxhgJa6EgQyXkLfiwaIvxgQ3YQSghJbL3GDLcI0pJ83XrFNCWMp+ewu09Hct+4xFxjqvPPGZaBiyW8shCjwsAEPbS2NqFkXjXAYTTgQWGxN0qw7mLQ56I1wmBmXGYSnrvn03j0mLu2QWPdywWXRSsQSiLIQi7DPgDoYBaL6l6UYGDuG/Ihz9bPrYi7esCGeyIiG1Pm089LeZNuJzobSkF9irxu6MvnqPy3upeB0h4ITehJbOuHdFJxpOgJg/QLKxfU/e5FBTeiqVuYmUGUnabFV+V0Zif3atinE8mX474CqxOIew3wLLK+KntVYLULCGw6xcQaoFtX1aYCUwn8gK3FCpsbQTJfRtppBOfi3X8eKWPuq1PC+jZpb9mlcljHnG5+lyzmLBLtlWh27q+P5y/R8zzYudvK/DpoaxNpeTIvFF83n9thq8sIogEjjHkdClwGomTLlKHKP/u2AtJWtsdKCF1EWXn2cS5tfP7+qPgeWBHAOFX0j03oOea3uyR3Qbl9qqZSXT37HMf32XhPtKl3CmAdhyTkxMLDnzN8J4PzT2rhwRz0fmFPDzooAYZzKD6kNLHN5HgA/MH5h2FwvaTcOgJcupjNVt6DW8N/5J08FH/cB3NXFNRLjvTdxfCkVjLcAAw/hURD8mxTGO1N7YBpbhGZj737O7LxrC+A
- j4M7sbMs
- hN4+kDilChYMrdpvbLtI+RsRKPwZfG00lILmALyiLSRpoMTtSL6vNoNE040Ii0rHby9GEwjM2lTsNz4+GY8m4pKZWgp6jcmeP8JY/ydezSSAMD0lsSeIH+xMbkaseUtqJB3wCGeYxqQyaVSsVCbJ2wG1+fyyHtIEv8XminMmYFodrqZnvbl4Udey3DDQ74w6AWVLZkoFPXb182iXrbPJYmtRQv7Jtms+NIDNdqhZMscWipjTFvCuGgeDWRCCokcds0qplAqI/8AAxZy2DnSCAzuuAUqaL0Qm7M7T7VbHcUyjiY/E9vp3vKHre4ef4jCRkZdnTkL88qDPmCknlCy+szk5mNQv3CLe6YJsk
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1776246374-785542
+X-HE-Meta: U2FsdGVkX1/3FJ18wB7p/Y5+PNxwQM5io5zPIK+mYTbjfeftSjQeOtzqE8C1SipCCs7QIaGI3pckoN3ZMZiBfQCenWkZuJdIM2KI6Tg2EC99KGUsq7PVSi8+UNu/QuEj0QFM2frA9/IhYGA7RmotdjCJgCtETCQpHtOSmS4R54V4MVySBpfYn5UWztGFXtybXzLA6gzEJDiuhY4LFoS6N9/qJx8SAWIAgw4MNqr+CXJC5wmnS1kRpKkNr2ejNDrIFuJwtHDaW3idiYG8v/SGHbTWrwKhO0bElIqcQ9k8jT9UjAFYKygyLjusaxtRCk4y+JJcuqqUfmYO+6yGQrLREBolNTfvn8KF/PiN3JwnryR/l4Eeiy+8TGLYcLrgDuUcjgaIRA9kaZrIUR6ZLVAOWl6KrBtL7/bQtV8L9TLH1wwCTxWkTkh4gkvSLLzFyktWmGQ6QcczmwsI9FGR48yjVbSHJU41kf0JhQe0aCLJ4DNB3hqRlncHsiLCGoR1qy/GRgzI0pV/+i91BjZAoK+MtJUArlCYxts+C4kICL+RWxCTK9f1Jr+l3yyzTQWnPJaV8GKMaZgXT98Ud1hxGhSg+Yswy0YIvinfs+o3LbICukcC+cV7ZzjQNQpaS9XWRHRnSzhzpiWJMR04y415aoGR4k7YH2GNo7OBUd+/pEuzibETT+XcG8slwrFMEwt65G09aGCBYPxR1v4ObkHBRMx6WJddLO+MscEWFQKD48yj4dUmoIh//GJwzOYuaKp0G9Z/Bu7lrKBomj7HiA2aEiGaug6nRMLgUYUema9Ps/dfItXGiI0COC3WncuHtJ3lUYgGELstWrKhM1uxojvpz6+IrSc1051n0Tak5PuX/G6Pq7HguoZ7khVjBc93nUU012HG/Y8fxyEen8Z7p+oZRTL4pq0w2Z0xJWX4isTQjHqagSt54kuhpN3l3ch+F16Wi/ujgMNM1zwg8fFGFeMUdYh
+ AYfNmGY6
+ 4kEs5zkGHgP3tDVqztR/vSmwk4114rz2Ogil0HwKtA6E9sZz+sifukWXZybrpwghlXb3Kb+2N+n4O5XmtTydIiFsLz8Orn7yKeTSXyiqMPxFLyRes3sfLmH5JHcVpPqfaF+sFxyovCwKtwSa4u3eHdJ6gqDX0c1dsv476f/fAnoMXS/3c+Yjv1G03U7YK/x/FQvVQfJ2y1PrCdTo/lAjF4flvLRpiHn7zTGVOB1SP+EmwvNp2hauQk5skHg+RZGvnfdAR5XMmR96mEmGY67+Is9GiTKDB8dMC5t/O
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,141 +110,121 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 4/15/26 5:19 PM, David Hildenbrand (Arm) wrote:
-> On 4/15/26 11:04, Baolin Wang wrote:
->>
->>
->> On 4/15/26 4:47 PM, David Hildenbrand (Arm) wrote:
->>> On 4/15/26 10:22, Baolin Wang wrote:
->>>> Anonymous shmem large order allocations are dynamically controlled
->>>> via the
->>>> global THP sysfs knob (/sys/kernel/mm/transparent_hugepage/
->>>> shmem_enabled)
->>>> and the per-size mTHP knobs (/sys/kernel/mm/transparent_hugepage/
->>>> hugepages-<size>kB/shmem_enabled).
->>>>
->>>> Therefore, anonymous shmem uses shmem_allowable_huge_orders() to check
->>>> which large orders are allowed, rather than relying on
->>>> mapping_max_folio_order().
->>>> Moreover, mapping_max_folio_order() is intended to control large order
->>>> allocations only for tmpfs mounts. Clarify this by not setting a
->>>> large-order
->>>> range for internal shmem mount (e.g. anonymous shmem), to avoid
->>>> confusion,
->>>> as discussed in the previous thread[1].
->>>>
->>>> [1] https://lore.kernel.org/all/
->>>> ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> ---
->>>> Changes from v1:
->>>>    - Update the comments and commit message, per Lance.
->>>> ---
->>>>    mm/shmem.c | 12 ++++++++++--
->>>>    1 file changed, 10 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/mm/shmem.c b/mm/shmem.c
->>>> index 4ecefe02881d..568e1baee90d 100644
->>>> --- a/mm/shmem.c
->>>> +++ b/mm/shmem.c
->>>> @@ -3088,8 +3088,16 @@ static struct inode *__shmem_get_inode(struct
->>>> mnt_idmap *idmap,
->>>>        if (sbinfo->noswap)
->>>>            mapping_set_unevictable(inode->i_mapping);
->>>>    -    /* Don't consider 'deny' for emergencies and 'force' for
->>>> testing */
->>>> -    if (sbinfo->huge)
->>>> +    /*
->>>> +     * Only set the large order range for tmpfs mounts. The large order
->>>> +     * selection for the internal shmem mount is configured dynamically
->>>> +     * via the 'shmem_enabled' interfaces, so there is no need to set a
->>>> +     * large order range for the internal shmem mount's mapping.
->>>> +     *
->>>> +     * Note: Don't consider 'deny' for emergencies and 'force' for
->>>> +     * testing.
->>>> +     */
->>>> +    if (sbinfo->huge && !(sb->s_flags & SB_KERNMOUNT))
->>>>            mapping_set_large_folios(inode->i_mapping);
->>>
->>> I don't like that special casing. In an ideal world, any mapping that
->>> supports large folios would indicate that.
->>>
->>> Now, which large folios to allocate is a different question.
->>>
->>> What's the problem with indicating for all shmem mappings that support
->>> large folios that support, but handling *which* folio sizes to allocate
->>> elsewhere?
->>
->> Thanks for taking a look.
-> 
-> Sorry for the late feedback.
+> On Apr 15, 2026, at 16:37, Oscar Salvador <osalvador@suse.de> wrote:
+>=20
+> On Wed, Apr 15, 2026 at 10:23:26AM +0800, Muchun Song wrote:
+>> When memory is hot-removed, section_deactivate() can tear down
+>> mem_section->usage while concurrent pfn walkers still inspect the
+>> subsection map via pfn_section_valid() or pfn_section_first_valid().
+>>=20
+>> After commit 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing
+>> memory_section->usage") converted the teardown to an RCU-based
+>> scheme, the code still relies on SECTION_HAS_MEM_MAP becoming visible
+>> to readers before ms->usage is cleared and queued for freeing.
+>>=20
+>> That ordering is not guaranteed. section_deactivate() can clear
+>> ms->usage and queue kfree_rcu() before another CPU observes the
+>> SECTION_HAS_MEM_MAP clear. A concurrent pfn walker can therefore see
+>> valid_section() return true, enter its sched-RCU read-side critical
+>> section after kfree_rcu() has already been queued, and then =
+dereference
+>> a stale ms->usage pointer.
+>>=20
+>> And pfn_to_online_page() can call pfn_section_valid() without its
+>> own sched-RCU read-side critical section, which has similar problem.
+>>=20
+>> The race looks like this:
+>>=20
+>>  compact_zone()                    memunmap_pages
+>>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D                    =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>                                    __remove_pages()->
+>>                                      sparse_remove_section()->
+>>                                        section_deactivate():
+>>                                          a) [ Clear =
+SECTION_HAS_MEM_MAP
+>>                                               is reordered to b) ]
+>>                                          kfree_rcu(ms->usage)
+>>      __pageblock_pfn_to_page
+>>         ......
+>>          pfn_valid():
+>>            rcu_read_lock_sched()
+>>            valid_section() // return true
+>>            pfn_section_valid()
+>>              [Access ms->usage which is UAF]
+>>                                          WRITE_ONCE(ms->usage, NULL)
+>>            rcu_read_unlock_sched()       b) Clear SECTION_HAS_MEM_MAP
+>>=20
+>> Fix this by using rcu_replace_pointer() when clearing ms->usage in
+>> section_deactivate(), then it does not rely on the order of clearing
+>> of SECTION_HAS_MEM_MAP.
+>=20
+> The fix itself does not look too intrusive and I guess it kind of =
+makes
+> sense when you think about the ordering issue, so if we want to be
+> rock solid, why not.
 
-No worries:)
+You are right. Generally speaking, where RCU is used, the pointer should
+be cleared first, and then the memory corresponding to the pointer =
+should
+be released via kfree_rcu(). Therefore, the correct sequence of use here
+should be:
 
-> 
->>
->> As I mentioned, the original logic has several issues for anonymous shmem:
->>
->> 1. Whether anonymous shmem supports large folios can be dynamically
->> configured via sysfs interfaces, so mapping_set_large_folios() set
->> during initialization cannot accurately reflect whether anonymous shmem
->> actually supports large folios.
-> 
-> Well, the mapping does support large folios, just the folio allocations
-> are currently disable.
-> 
-> It feels cleaner to say "there might be large folios in this mapping"
-> than saying "there are no large folios in the mapping as the mapping
-> does not support it", no?
+	WRITE_ONCE(ms->usage, NULL);
+	kfree_rcu(ms->usage);
 
-Yes, that makes sense.
+The actual code has the order reversed. To prevent such errors, the RCU
+mechanism provides the rcu_replace_pointer() interface. If you look at =
+its
+implementation, this interface is essentially equivalent to the code =
+sequence
+mentioned above.
 
-However, it’s also possible that the mapping does not support large 
-folios, yet anonymous shmem can still allocate large folios via the 
-sysfs interfaces. That doesn't make sense, right?
+> Does it slow down operations a lot?
 
+Regarding section_deactivate, I believe there is no functional =
+difference.
 
->> 2. Calling mapping_set_large_folios() here by default makes anonymous
->> shmem support 'MAX_PAGECACHE_ORDER' by default. However, the range of
->> large orders supported by anonymous shmem is also dynamically
->> configurable via sysfs interfaces, which could cause more confusion.
-> 
-> Fair enough. The mapping supports it, we just don't want to allocate
-> some orders (right now).
+>=20
+> I would also point out that you rcu-protect pfn_section_valid().
 
-OK. Make sense.
+rcu_dereference_sched() is equivalent to the previous READ_ONCE(), but =
+for
+RCU-protected resources, it is recommended to use the RCU-specific =
+interfaces
+to avoid having to manually account for memory ordering issues.
 
->> 3. Currently, no users will call mapping_large_folio_support() related
->> functions to determine whether large folios are supported for anonymous
->> shmem.
-> 
-> Right, we special-case shmem all over the place :) For example, in
-> khugepaged. I wonder if that could help with Zi's changes to get rid of
-> some shmem checks.
+>=20
+> Regarding the pfn_to_online_page() race, that is something that every =
+now
+> and then pops up, but as David said, we never seen that happening in =
+the
+> wild so I guess no one really made the time to look into that.
 
-Sure. I'm also reviewing Zi's series.
+After taking a closer look at commit 5ec8e8ea8b77, it=E2=80=99s clear =
+that it was
+intended to resolve a race between __pageblock_pfn_to_page and =
+section_deactivate.
+While the issue surfaced this time due to ms->usage, I=E2=80=99m =
+concerned that even
+with ms->usage fixed, the underlying race condition in the execution =
+path
+still exists. This suggests that subsequent accesses to struct page =
+might
+run into similar trouble down the road.
 
-> What if we say:
-> 
-> shmem that *will never have*/*does never allow* large folios never sets
-> mapping_set_large_folios().
-> 
-> shmem that *might* have large folios (in the past, now, or in the
-> future) sets mapping_set_large_folios().
+That said, I=E2=80=99d love to hear what everyone thinks about whether =
+this warrants a
+full fix.
 
-For the current anonymous shmem (tmpfs is already clear, no questions), 
-I don’t think there will be any "will never have/does never allow" 
-cases, because it can be changed dynamically via the sysfs interfaces.
+Thanks,
+Muchun.
 
-If we still want that logic, then for anonymous shmem we can treat it as 
-always "might have large folios".
+>=20
+>=20
+>=20
+> --=20
+> Oscar Salvador
+> SUSE Labs
 
->> Therefore, rather than having anonymous shmem call
->> mapping_set_large_folios() and introduce so much confusion, I'd prefer
->> to exclude anonymous shmem from calling mapping_set_large_folios().
-> 
-> I think it's more confusing to end up with large folios in a mapping
-> that claims to not support large folios?
-
-As for 1, it still doesn’t make sense to me.
 
