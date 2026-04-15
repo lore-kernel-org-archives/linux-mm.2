@@ -4,117 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 549AEF41987
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 09:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E43BCF41987
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 09:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA55F6B0096; Wed, 15 Apr 2026 05:53:19 -0400 (EDT)
+	id 42CA06B009B; Wed, 15 Apr 2026 05:54:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7C8D6B0098; Wed, 15 Apr 2026 05:53:19 -0400 (EDT)
+	id 404056B009D; Wed, 15 Apr 2026 05:54:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A92A66B0099; Wed, 15 Apr 2026 05:53:19 -0400 (EDT)
+	id 31A116B009E; Wed, 15 Apr 2026 05:54:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9462A6B0096
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:53:19 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01FB713A989
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:53:18 +0000 (UTC)
-X-FDA: 84660327318.02.B70C035
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 192AF20003
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:53:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FtCsIPAs;
-	spf=pass (imf03.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 203DA6B009B
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 05:54:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B37161B7BC3
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:54:12 +0000 (UTC)
+X-FDA: 84660329544.22.DD5F259
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DCF3080004
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 09:54:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WT4zpnko;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776246797;
+	s=arc-20220608; t=1776246851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jl2opwE1RDHcRGVmWLd07hWifPyRG0CM/7HsKxadKT4=;
-	b=jfwLq522MSZoha8ukhf3H0ivDWX9t7jrT9zQODgOo3L/5vmxB3ZCSSvIjUc7ECoO4KhiBH
-	jud60EWi0In9QSO7PliMcrRLVRNFF1s9p66Ld93+j+jyZOJIGStZvhIYAdjxYzAXAUduxu
-	eHWBqzCT5AIRYLOgQflktpCmWIwR6Ps=
+	bh=HbncXILEcoajtQPdLRvmNZUquk7eWicP7+0e9SIqwVQ=;
+	b=WRcG4BU/tNUW7IeJuhNwNprWUJuwsD4sTIN+OR15Rud110z5abkA/1/uZFVxubEJHUFTwG
+	/hAd0rxNCJPsXYqQ9fz4FbWb95y1cy/y3xYHRtFIMc7fKLidYh4Ac0Ber4mjx89faYUKlv
+	dFnPLH92+9hZ6+bejtMbnVjTUp9io/M=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FtCsIPAs;
-	spf=pass (imf03.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776246797; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WT4zpnko;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776246851; a=rsa-sha256;
 	cv=none;
-	b=l+653W+QXy9hKynBrc6WPi6TPgFALENv+LEU7hj3UY1nuAVe10sBeMWnDg2IgSO4hQGRqg
-	93YcHNgfxb0r50s+sw6d/qGl/BuSbo//vt0faqAo36ZFfDHGIJNVgesEoGQheZoHxNGqgD
-	czs6GrETQFzQ5rnSaH92mqO67VYJYtk=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488ab2db91aso101628885e9.3
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 02:53:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776246795; x=1776851595; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jl2opwE1RDHcRGVmWLd07hWifPyRG0CM/7HsKxadKT4=;
-        b=FtCsIPAschXlhv3iH7JyHD4KCd66vGTQOxg6c2REEUc7IgqSEhsTwtTDBZweb54Xye
-         iOYtFbiknPVVBehxClhiCF8a0PaGzi4y0CaF2h2oTAUxOpxgckX6qhNHvtqDiBs8Wmkv
-         Ehb8Swo6WYBfeHkXp/jTiy5bpbO9AWgYX3iEyRDwkdxC+VHR1s3JlKko8YJuET75c8sf
-         AnPIICSw4/VlT9hvusnbBIAWEuLPR9ML+zJ/3MyxOV0HG5FwXrZKFR0tIAG2HUedPylY
-         nxWAi7GDhLm6qq7SnD+dA8kuqNSm1POX8T2zBoSOm43APPQp6AtzWApHm/wYx3IdPIXZ
-         HGzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776246795; x=1776851595;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jl2opwE1RDHcRGVmWLd07hWifPyRG0CM/7HsKxadKT4=;
-        b=edx6z2B4Z6sHpWeTM6/JvgAzcQx/6qkjj6G85PuaCYT/ZJ70yJ0Qz/lM9DzD5hgMwc
-         DQtKnpEVt6IZaJRpy8FegBP9vD1cebfU+euhEIudu3ZLYsuBjF2Am0w3i9iiVRogALVD
-         7X4mMkjhrLrGvqZNUhV4xV8MyXVM02Br6FF6as0DDe7eWwrBsGYSE1516Bs0qSt0tPTu
-         UsEd9SH2j0viHwWthm1QefxZlbzvSjMgyVLCfYaDneSD3vlec/PWP4TxAnmh3AkzouJD
-         FYxGkz5OPXvTBGjGvlYAWBCU8qoeW09UYzGuAScHBLguc7fA5akT1f781WCVYcvXUQKF
-         /bKQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/YqyCf5zQl5QvQ7imPAW84Xi+d0t3vLX076hdoG/N2j/+sc1LWYWsiFHFx4WMD77fCtEwlAraBug==@kvack.org
-X-Gm-Message-State: AOJu0YzqX2+bvR0X+DODgxIi5bolmCX2FDtyNCVKlYD46uNlnFDIOj3g
-	42ftNvfX0YSDzhmUomRkHbuDHO9JkRBEJhI9wWeZg0HE0s9DZhNaBbnta5vyMHMKo5c=
-X-Gm-Gg: AeBDieuA3R4Mgk+bUTN39b+WTftcVR3kC97Qybb6+ACs7sklsZygnYkIPmE3pav1tJc
-	eIjc6h/UV2bckSUVLK0Dygju2dB38gGC21+nGJ6l2e9AQmUPJvBAyGKKa6MLflzM0uDYlr/AiYd
-	LhCUVR6Pc4rf8YI+meUsp+Mpt9L9ONTjydlKyBuA+O5ISd2cptVZm5Sx5czv28osKCW22+L4lBp
-	ep30WNh0FeE2L294SSzSioposljhXRL9upy8oHGoaSpFuga4lFmKrmNumN26gFnscmqDwWXzxIR
-	hBDgSKFS3tLNSrQqCweA0FNKbcq92UpmjLBFcqE+s26meNhS/xfoQ84J8PbKTQDJsXq2Id3FCx6
-	b4OCwTqVtHe4HV2p5EtBo7vQXtWqJz32y+nh6NxK7pFckLoMFLZNK8Qln1Zpays1FzW2fN5MiD3
-	Cml69KXaeBxCqHhc0iXPp8CL0qyBi8U4FqE5h5C0sB/qJD73qhyJtkXA==
-X-Received: by 2002:a05:6000:2010:b0:437:711c:8754 with SMTP id ffacd0b85a97d-43d642978e4mr31875774f8f.7.1776246795396;
-        Wed, 15 Apr 2026 02:53:15 -0700 (PDT)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3d6409sm3838343f8f.23.2026.04.15.02.53.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 02:53:14 -0700 (PDT)
-Date: Wed, 15 Apr 2026 11:53:13 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: ranxiaokai627@163.com
-Cc: hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, tj@kernel.org, shuah@kernel.org, 
-	kuba@kernel.org, hughd@google.com, akpm@linux-foundation.org, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ran.xiaokai@zte.com.cn
-Subject: Re: [PATCH 1/2] kselftests: cgroup: update kmem test tolerance for
- multi-memcg stock
-Message-ID: <vjhou23d62pvtdqsan2nrlldkwf27qchpfmzf4yoetqn2gdhbj@cfiuqzzotbxf>
-References: <20260414110524.2414-1-ranxiaokai627@163.com>
- <20260414110524.2414-2-ranxiaokai627@163.com>
+	b=TAarTw5CWMqzP9LBcOxwb7i/b/sD3HYPwyAyc9IwqWQsXAcq5ZZt7y3ifUhynyKfmOOgsh
+	dGQhO6KtGQFQZ0M+j98hRqac3LOFzT9yfIuFD7Ug+iafTRbPwh3gq/bV+iSVCCbP2/QCN6
+	mYJn7bHggFi9MiqlHk7KV1IiDUwbeA0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B43D144014;
+	Wed, 15 Apr 2026 09:54:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F028AC19424;
+	Wed, 15 Apr 2026 09:54:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776246849;
+	bh=3F6cwswsouEqKn0KSjD6trG+dv/d5FAUIPx9gae0kC0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WT4zpnkoSW0aOFSRV871WrRtxflVsRg9rfHguPcazzwrWmrC/RG7AybINjzCihbkh
+	 yCs1pC/0QDvYAO56mpWaBoVt/mQHviuWkrnoaVt9mstrNtdtXlgIZnJihiF0r0RDgA
+	 W/MdHETbaVIWDDHif6wwdkEX9FUCPRizYZSm4rqIEr9a50I2tqRY20v9OMnIrP1jeL
+	 0giKpBOwxbEaQwo1jAHvwje6lQede9d1tDmLiy7jhu4HK9vkbN2QnVsgM/kwjCllem
+	 9pbzGfC/J63+iwp/bdc/yd+AL/mLzQee4MOGBESGqmN9aOn8GhtRWsnDzuIPEZJbn1
+	 B2MZkvXibqmdQ==
+Message-ID: <eda13ed2-117a-488b-9120-d64e0fe0b731@kernel.org>
+Date: Wed, 15 Apr 2026 11:54:03 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="k3iorpsupp5gfcn2"
-Content-Disposition: inline
-In-Reply-To: <20260414110524.2414-2-ranxiaokai627@163.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 192AF20003
-X-Stat-Signature: intpwpz7psosfsbiu8o4pwgb5txwg776
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
+ shmem mount
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
+ <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
+ <e07071fc-15b7-495f-b6d5-96004aa0f8b6@linux.alibaba.com>
+ <c88ea567-6b03-4540-8173-7fceeac23f7d@kernel.org>
+ <2d138a3f-0006-4a01-852a-4570d7ba781d@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2d138a3f-0006-4a01-852a-4570d7ba781d@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: octz6b713hif7z1bnk3e3wh16pcmc13z
+X-Rspamd-Queue-Id: DCF3080004
 X-Rspam-User: 
-X-HE-Tag: 1776246796-460492
-X-HE-Meta: U2FsdGVkX1+bwfZMgsByIx1ef12XyXq1K9zFnwkeBKo/rJzy1CehDSXmONu62kaVO33gi7q0E1XeMAdJcokq9rXtK6RwIkqEUSvb+F4Dfu7YaGl2/f3ligQgNkSobsohEEev520K/iVHOtwXPstCafuSLZaLJSKiwj7BRfyKgf/atUGPMFUnHrej/wd+3JHJDN4A/BGvwd+iRlZt8jYyjE0f5garTnjM+XUMrodqNYEOnaVoCO9g+5seb6k3R5jk14+mis+hln5brfSOd0wKAQtf9u4ojmnMmgNpYPATcrMiAD2ZvfZE988IkKy3n58o3uuA7EH1Yrj67Ai6tJpGSfiCA1eit9Hk5fPikvtOartYiirlJrHLqllojyNyg5jbLXeJdGaOUDPAdx9arQ4wtwQS5Gcgfuk2L3tShfWGzC6enqFBecaXhH40j+cKJ5zN/JAY+5V20MHfJyxJ6WdiRTGliD7pttHyIlRKGRzi7N2NSBhQa66kyFCHdBMC7q/X9Mb3WGnMuZudmoqlttjGk8SdobgzkhabXpfnMAa01Sl/AsRUPxgRF1CKza9O8Lj1SvWA0A2DLpOb2dYOQe7Wm6KkNqq6gxroCk4TKt43bRBFAvTlOtmRf79Vmai31py5ZKmTl44R+SRqbBgWeV96YhL11AFPx4pg4PpS+WZAGCPubaNlkDuB5a+d0f+V4RY8lH1TIET7ku1TyqhmcmseZF96/y0CjJlEkyOEOaku6qlyFGQHYaF3/hokAX9NBnWdNb29iAXR9xA48afKGrRwEevVI0xyKna8lVkFmZ4zlM/je/rdrplyXX6KWMKopU4FHscBOVDYDLfaMGc61fFXiV88kEcc2yqY8qqyE8kzsZKHB0fKxSFb1ea4oLq7s2dm1+bhD2j+pYt4cMQk3cFygd/Ncj4MIkVCduZ79LSfhZpEKyhrZLKA5LPCMTo+GO3se6oddL5Whd3T1FNh1eU
- tPaXbH7Z
- j5K0N7wk2btMijfXLLjPR1nDjD6emRHAdc9m6oEWew6NJ6ZZs8q9PAVFILQiqj4Fm5iNoXMpaClCEuGSyYiGNy3DTiAezlVqPKVHFUFK5pE6Z/fTa6OwCaNZQaYxVCWiUxDnnKbc61MkltTth84Q7n03FIpHmibEPoSSDB48hmNZJsvoMHsn9tYqcihM+Ek6VYHExEE89tsMOpDchkaIZbi5NfUdw7rStlMkt5kCOX8iMN1UdaYNbcM008vZI+R4+9Jo9HQGna7X9Vkr6uzI96+heJA1+EOORtvqN1TxqF5jzKFZTXlhmBI/lmRt9mymbFWCR89hjdd9Lc/VjXEWjkekb/0qNmkkzuuRyii0R8sjPKE1ziNDLemkN13u/lJ7sXHVYW3stZOg/sj7/Ra79b/FN1jNagxqpzqTrjyAy4pfQXPypnqFNdZkG0uvj6vYWab6iWOWRiApQD/jbdEg0VjUdExPq16LA+EUjjuiXTtQVCJxNaoNTL4QbMlPpvKL63NrQlQTNdWCFh5LLeli6WTzam0f/Nx7CsjMw
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1776246850-228840
+X-HE-Meta: U2FsdGVkX1+9ljZkeJl+zcc396OZh8Sf6Gvvm++cfDB3pL9HtPOezSPbL1ZpmyvSP32YNty/mQY65ufyaDC/492U6DX3zDr/LeRDyHX9HnIn9PABxXWOgKQabfxHC/3E/NjvriX0I5xsHrJjkApeakFnBgv4Jrt6QXmzA4K67zuoSW7sVc2BiYIyGANRHDBYwM+X5QsjKbZ1J54xL6eDvpZfZlrhl3rx8paC4En9W9dGgnvgqQAl7gdHzktQV6/m3sRnlr8/qYPGIa2NDGtxmLHOnd2ONBx/YeWSTPlSj5Fsnn/g/h/6SND89DvpFJG3D9+TnOHUPjr8o39RyBMI+ymjkk+RFZ2sWvzyoh2hont5ywO7aheiTnM896S0suPqPgaWBeK4PWzN0ka9H9AoNvu1TAR8AyVRN8f1kyoN4ytTPAdgfL7oquT8e/o7poQQdYNENFRjZqWGjDr16N4jGPR833qHm/+HaKmHKJvNqZj+tNtZFp9yheD36k0tzMlY/ep0HK7R6AS0OPtXEDhk2H3EiSQYoWb7XMaGtdlYirKtu87WlhBvaL7RJ9TEAex9MB2DK9WgdSJVXJrovRPCe46rdtw4G8qLUV4vUNvQy/j8GlAMjXZBZtARunRHeQ7/ZYL/k1+zHGM8IMMNUTqM0+tzIC1LA/5DipaRMTu3J2Lh1YOgz8NXKecmfRdCUgVY/Ww0Q0hJw+qUFz6SP9R9VasM5RwgIyjcsWkjgHQdpFTmOtAvNdtBGgfVu1FDyPuWd5Jn5EX7gBQq5rN4QWkO9FiJR7Fa6WKkb9PWWckQNjYlDzXPsXIRRqUzb22Xp++grH+mmPMvode8S9+Gj+em/IUhFFaqnJnr88ym4TskCkCmrF2R+6BnYQfcuok90/pKn5Gi0AewMDEN91f+5QehGaXxi99eMMjfmRP6IpWqzfbxk7hYg42uDWYkAQS0SXKm17bBExPHxxowgp9nOgs
+ Snw/kHBP
+ IWlkTRbkGt+UWohKfBlNeVPSCzm2v4gqDjqMtTu0eb2Ujy2TqnBbGkL8sE15kdyDNb1N+J2A8QX00F6w+epVVL1YoZvyFh9eZwhNF1un2R1ITPZ1nKl7fyqecgVpac0s8DF9uZXXhZg+nAGvfazaiCNm+kgIWCItMGhX44LrLd29WvG15AOHMf4z7DrWTjZtbZ51DfOcj4CT1EwL+L6+4nYePcXTXpOUBA1Qd2MTmcgOEeehKNfgDVlkzTt8kJ8TRCcr1zTY+1bJYVZE0GE2/rhEO8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,55 +143,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+>>> As I mentioned, the original logic has several issues for anonymous
+>>> shmem:
+>>>
+>>> 1. Whether anonymous shmem supports large folios can be dynamically
+>>> configured via sysfs interfaces, so mapping_set_large_folios() set
+>>> during initialization cannot accurately reflect whether anonymous shmem
+>>> actually supports large folios.
+>>
+>> Well, the mapping does support large folios, just the folio allocations
+>> are currently disable.
+>>
+>> It feels cleaner to say "there might be large folios in this mapping"
+>> than saying "there are no large folios in the mapping as the mapping
+>> does not support it", no?
+> 
+> Yes, that makes sense.
+> 
+> However, it’s also possible that the mapping does not support large
+> folios, yet anonymous shmem can still allocate large folios via the
+> sysfs interfaces. That doesn't make sense, right?
 
---k3iorpsupp5gfcn2
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/2] kselftests: cgroup: update kmem test tolerance for
- multi-memcg stock
-MIME-Version: 1.0
+That's what I am saying: if there could be large folios in there, then
+let's tell the world.
 
-Hello Xiaokai.
+Getting in a scenario where the mapping claims to not support large
+folios, but then we have large folios in there is inconsistent, not?
 
-On Tue, Apr 14, 2026 at 11:05:23AM +0000, ranxiaokai627@163.com wrote:
-> Fixes: f735eebe55f8 ("memcg: multi-memcg percpu charge cache")
+[...]
 
-An interesting catch.
+>> What if we say:
+>>
+>> shmem that *will never have*/*does never allow* large folios never sets
+>> mapping_set_large_folios().
+>>
+>> shmem that *might* have large folios (in the past, now, or in the
+>> future) sets mapping_set_large_folios().
+> 
+> For the current anonymous shmem (tmpfs is already clear, no questions),
+> I don’t think there will be any "will never have/does never allow"
+> cases, because it can be changed dynamically via the sysfs interfaces.
 
-> -#define MAX_VMSTAT_ERROR (4096 * 64 * get_nprocs())
-> +#define NR_MEMCG_STOCK 7
-> +#define MAX_VMSTAT_ERROR (4096 * 64 * NR_MEMCG_STOCK * get_nprocs())
+Right. It's about non-anon shmem with huge=off.
 
-When you touch this, I think this could be factored into it too:
+> 
+> If we still want that logic, then for anonymous shmem we can treat it as
+> always "might have large folios".
 
-+#define MAX_VMSTAT_ERROR (sysconf(_SC_PAGESIZE) * 64 * NR_MEMCG_STOCK * ge=
-t_nprocs())
+Exactly.
 
-And given how much the selftest depends in this implementation
-detail(?), I see that there are other selftests that include directly
-=66rom the tree, I'd suggest also
-#include "../../../../include/linux/memcontrol.h"
+-- 
+Cheers,
 
-and use the constant from there (i.e. move NR_MEMCG_STOCK to there too).
-
-That should make the selftest more flexible, resilient to future changes
-and it'd document ramification of these constants too.
-
-Thanks,
-Michal
-
---k3iorpsupp5gfcn2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCad9f8hsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ah09wEA3WEcFRBjif8H4jLqnOLn
-ZwnKif6bna2CGogxl/N556kBAND7SAIiWdZTXcOAME4PmEgfWjWiWRDi1KSjBeeX
-qmQK
-=LmmD
------END PGP SIGNATURE-----
-
---k3iorpsupp5gfcn2--
+David
 
