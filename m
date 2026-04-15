@@ -4,142 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4897AF43832
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:01:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B55B8F43832
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 15:06:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CDCF6B0096; Wed, 15 Apr 2026 11:01:38 -0400 (EDT)
+	id EB12A6B0005; Wed, 15 Apr 2026 11:06:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A5266B0099; Wed, 15 Apr 2026 11:01:38 -0400 (EDT)
+	id E39FE6B00A0; Wed, 15 Apr 2026 11:06:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 693276B009B; Wed, 15 Apr 2026 11:01:38 -0400 (EDT)
+	id D02646B00A1; Wed, 15 Apr 2026 11:06:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 574AF6B0096
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:01:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EF74616049D
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:01:37 +0000 (UTC)
-X-FDA: 84661104234.03.A6374B2
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6DC5218002B
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:01:35 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB5C46B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 11:06:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 502B5B9B04
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:06:02 +0000 (UTC)
+X-FDA: 84661115364.10.4A058D9
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 13E8B18000A
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 15:05:59 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=L18ep5zs;
-	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dP+nJDxx;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776265295;
+	s=arc-20220608; t=1776265560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kh5NIg+tCmgqxLw712whetL2DfIqpUdC//9g+2sX4n4=;
-	b=SEM8QRT8ZiPO/6RQAbBr2N/39T24sYvKUUMa9Orm5/ZcyPfY1kS99RHcZFclFTLRunwobJ
-	qOfjXfL6BrmnwAzcA6DBJR/b4Bh1bvYHU3OC2qQ736inD76Cf22dWCu71oUbUze9eOeCHv
-	5tdakUY8sMTcWWlSeP5dXcLHpGOIlig=
+	bh=1ewAlXClOqu3fM1vgHTkEEdvPbORH/Ej6RFM0SsurHY=;
+	b=sUkWFOILsBybcfs7m7deD9Uvy7a6mdYF/XWr0nf6MjafST6xf1d1C9jlc/1a8oYBhXLUI5
+	dqvKk9NAI02ys1FcCxWRThg97tFHGBXLSMDiuG04PS/2Jm23CVnZyUHQFUZJHsXdvlbXGE
+	zSBgfXWxiH71Y98qKRNdNVQZG0f4e80=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776265560; a=rsa-sha256;
+	cv=none;
+	b=NrueadQMIGmmQB2eXm/WbbGfv5efemgbqO246os1JcvNoQTyRDMZ5+vq89+cMlrsGP/NeV
+	cQmpEPCN3Zo4FgtUXqIJYva9hkyff2/zCMMFDK51TZs3xf+OyqIyHeXXnShiFZd52aJU87
+	woOYT+pyL8jMcJErO5CnoxCXkk3m6a8=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=L18ep5zs;
-	spf=pass (imf06.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776265295; a=rsa-sha256;
-	cv=none;
-	b=OSQu4jgqbsKQ9DdjJMugvBYoLQl1lFMS7IMs4FRFpL6SiQndIqeZL7+INWKsJTY6Q3n/Qb
-	lk+yHE7i24q+U72WWDYMMPhXDtsspktFcW/N22XPPaNmUYRcuKkudNek8cIzCIXrkXQ18Y
-	U6DIbvAQxaD8MTk2lDWPO6mi19LyJ1g=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F5bDiH2030542;
-	Wed, 15 Apr 2026 15:01:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Kh5NIg
-	+tCmgqxLw712whetL2DfIqpUdC//9g+2sX4n4=; b=L18ep5zsRU1smJtlyFqlcv
-	xNtx5kAeRPqHhgeZJa4T5G8c7OTcJZiImxJsD66YkrM6ll0DtytPQSaTYiNEG0nH
-	lDbpHcadoG8LpUjTb7uWE2y4ZAucc022YBkqFuJmKm4KZmcSWprxc09ouPrDnYDj
-	gJmPthmYeU/yFlBlPTzxq6lKdKbJX+1I78gqYCNnsnIvbyLwzu/WNrcPzTS7ldKd
-	sdB2mxt4mGgjORK6d5xbBdhea2sYjxyn5V3iSN2pTCnsJXNQydyEmWGyfEp6Mtxc
-	jHpnKsjK2Jd15cry7NdUMGRPKqZlIGFnQK09vkQLgXaQNFA4SGEKt75Hyr1xAMpw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89m8688-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 15:01:29 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63FDNpoP003256;
-	Wed, 15 Apr 2026 15:01:28 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4djbh90aud-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Apr 2026 15:01:28 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63FF1PgC45482368
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Apr 2026 15:01:25 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1DA072004D;
-	Wed, 15 Apr 2026 15:01:25 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ECF4020040;
-	Wed, 15 Apr 2026 15:01:24 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed, 15 Apr 2026 15:01:24 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id D6DF0E080A; Wed, 15 Apr 2026 17:01:24 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/6] s390/mm: Make PTC and UV call order consistent
-Date: Wed, 15 Apr 2026 17:01:22 +0200
-Message-ID: <7b0e73e3c6f4000f9bf7cb161d8ca9a9f2312d70.1776264097.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1776264097.git.agordeev@linux.ibm.com>
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dP+nJDxx;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776265557;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1ewAlXClOqu3fM1vgHTkEEdvPbORH/Ej6RFM0SsurHY=;
+	b=dP+nJDxxI/l3UQSVzfzfE2iYPFataqNw2M0TPqTf/upRLF51HHc6ja4wnHPWUJWF9ZZoP9
+	tauQFAVcWGsPdQiqMaZRm23KTjf8b0tiYOiBW+fzidHCHmMTNRa5HMijHCmvXk76UU4n89
+	Hpe29uAs9KJ1A04LId2DYvYd+BRExTo=
+From: Usama Arif <usama.arif@linux.dev>
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	baohua@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] mm/swap: use swap_ops to register swap device's methods
+Date: Wed, 15 Apr 2026 08:05:49 -0700
+Message-ID: <20260415150550.3616172-1-usama.arif@linux.dev>
+In-Reply-To: <20260415085658.993859-3-baoquan.he@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=I/dVgtgg c=1 sm=1 tr=0 ts=69dfa849 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=sUKjrkhoaZ6cYlpXR9kA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: GfE48YsPTVl7zllCgjvdRH7LvPfm3xJ5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDEzNyBTYWx0ZWRfX/07hu9qNKP6r
- QKBNomPZz7UzONVTmNLDO6fQfAVZXFHJanLyTBj2i0kFfvFq2UNXrVvdqnKAcoo2/GcL4SdpAQQ
- AXozAvUogB+Pe9q0CGDVMcWCj/EXM29fpbEjGlTQOY4FdDAPYc0UAb4xn+aQe2brSsABBLwW201
- kLSfPhT1yb/yCQ63+n6v7NG2fn3JPnQvTro5PxSwVHGbCJWkDCs1XUuS5/Rn/rKq/1/bOGDSH88
- OguXmlwtb+HLzNMSlLtAdlwjaURiicwb9R04uMNpVEEHIfbpHVHaJbVlvI2P08pu1PMxR6cv4zT
- 5KAoVv/9L/rogs6OsHtXmXTjc9I8JBeS5qF5o96HiaCkIQePHjj9F1CX0n6EZMPx6OWzl/4IJV+
- zKeCEsUGQocNjSgLj/66IXDNyCGlFRVTHV0Z5YhsQhzOeYhglOJogNpLrHc4xPKUBS7m46oJTcC
- 1ZFKrO+lToDUc9n4M1A==
-X-Proofpoint-ORIG-GUID: GfE48YsPTVl7zllCgjvdRH7LvPfm3xJ5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-15_01,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
- suspectscore=0 impostorscore=0 phishscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150137
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6DC5218002B
-X-Stat-Signature: pdoz3pndae5zuz6w4q6n6mgq85ciygrc
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 13E8B18000A
+X-Rspamd-Server: rspam04
+X-Stat-Signature: kaikkben17a6yb3kgwyxofuwu5o5ayru
 X-Rspam-User: 
-X-HE-Tag: 1776265295-924641
-X-HE-Meta: U2FsdGVkX18IAX/levSCNECHgTmQ6iu4lhMrICqtCI9HoIQYLNFeIkj69u49sVn0Znr/tYc7RBU9fCoFxYlwMkNNpO82EvL7HHMF4DmQm1g0dynVUsGHKE302gSOdolDogYEhDf5Yp/1zV2KpWgzjGeAwi6nWxKBsRhB0oFFU8l2MXpK0RJQwotOU5wWzeg8NaBtI9Xjt9aimBnwrSiDnJ4kr7yx7sU2HV2Fcj0iY0KnAknYwsqwODc0BKa0tiK+5SIoiGgx5w+d1uDe2O4hGy/vA5AxB3m6WN6/P0Oqv8Ozo3sCF0nr2BcGLnXTPS04gta6Wzx5nx5bCrRWXvuktzmYhoCwf7z5gFSpk983lpnsXk6ZrRw4N5RgRgs05d2bf/PR6KY6TjjqEjGQn+NX2AtuPV8AHvfS4Y0Fljc2+sBfGVfq/PG3FLHp0r6OwQ6UsyvegLn/7wzf6TjHlv9VaIhaiWLWeNUkiA79NRZwiHSwItaHfgxkXUwh83eLO2aHwhzAbzeozAgN/JM/IBexdULi8IYqg4g/4mO/wZ8QNy9CqQAqYink+FlowHIcndNDL4TIr4HmAsiuo0R5VpG5G/OrDsy3RwICM2zjUzfPLfRUPzQwPpd+dluLE/AehSUfKSqiNo4JRKUSYfICVR+wX9cgojor15KHXMpHa2/Co+OcsxJ2PMGr2bYz8pqVwL14kLHPqVYgqJWFAbwDnbTYw/ykGkvvb4vUzznSKwbWdUs+Os0NjTp3eU2qlCr8G0GZiN1TpNqIXGTt6E49NNuJc2ckCm4pnbK5GejDdeDoP8YzoNp4g6xGbSZAS+KteZbF3AdF7iXXaNX4eclEpxWDpF733PlgfUm+Xe0tqN6OlhC91gex+tFoFWG8Ng/9xzVxA2SjKca231TbFgYMJdfVWC6pdsydb5kBJK4UcK8TPsia3DXz7hnG1uoMPeMc0sDg6JXANzh83FNUbrj4dwK
- gFa2KQjS
- IopK2Yt8i1xOq9kdy47CbY9J2Gvq9hPHFXK0Ktr6T9WZyoMFeQbt0DPfnodlVEOyRpw1p4v9cwPhEcE/WQYI6TmZXwoI2Es+Y5BSIQo36KzfWxbDtNgCgdyjBDY8j40xaumN+lUG4b6fXtBraqv7Z99ToOSr5AhzxleyAHUerwtTsNn6P9kXB4aYKDgQRoh9/8wHvYsojR69DveQ/zzG0jmDomcE8lfw1xanPETMIa6JgFwgRwschrl5HTzTz5hiaSeGeJ7ZEf8NvyvMkOjs3qRPP/0GtrKIKe8ZM/OWgJZ4qSkc=
+X-HE-Tag: 1776265559-886079
+X-HE-Meta: U2FsdGVkX18bjEe7QEuBab2SIEFoKyLrvlE6SaETqjb/es05KMsG5vLf80nk+Y8o8L0pvl8soeYPC1DMwFY+7+ObIWzH8mOOrAMYM+HHr9GbuZmU6er6U/Y1nlLNmWcmzWnOutZvqj5CPHvE+Kk9Qz/SMHoAw2P1ALn6klOWuL4ioIL4ynS1AWOFZKDLh6RN8D01TTXcBkD6OWjJaEt2EDD02Fad5d1VN00QsJGSTFLBBic6/Z7e+NXL5Z5f6ybhyvlCgEXsTGdHksOANrHAVFA67d/29FAlUC5cqWFdRIJ5H5juekbVySO+qtLozsLxaxwV3E3Y5nf1EDJQLjC/NatLcgwsQNhnbxHPciD7lShCMMZnfXgbjhp4g5xVQ6LOaTovT+6c08FLnXkufAyxJt2cqSeSESFFHkUmMPJkDVihKycXgOOog9dqGFmmlVTQXA5IQ3Hc2fkKpkzNsUgsMoPVpKmDlEDlUKb1U64B9yE3NiCLJEuexCrRLzzX+HcprX2m2vmDuYujPnQK4v4mlIhFrH5v0uGr3TYRu3OTjhxbYIfGh/gh780sv/yonMVfmtr/3ztQzwawN5TO+GJMQhYZVZTGQNUMYxJbs5ez1IusP/Lg2kxcupZIOCZzPbcnlxznOk9FVAnWQLwsJChVH44B/uO1RheBt65xvepQxjPACF882jJy7tnKP3dQs5QjerSKH25tESQZh8ciwEgc8c8XZi7KfAycJ3cA4TKasl1uOFYW442pKRv4oiABL1G1Bviqc/qfyfuMDmjGdQku9LoIytAatsUETvs/x2X80i6pYmYMeGJw6NhtRf/YT5hqVUxzeLjRYzpgxdHcgtW3O/Bub97CCFs3Rwy+FskD72bbgX9x9SDI8C30vD7qfJpaSghFYujxtwEw7pr/3KNDXvJNzCcc2774KnTBuxfl19z5wxc+PPJHlnQcUFuMmihpAl12sarF0j73IFmSGQv
+ WEC/lQKW
+ AWRyoa2I5sXkqVBu92nctQkj8feg3o/BXZ4xqijIZKUXA2ENRDxb8IyQP5hBWm197eIzIdNZqTHbmsibRrzDT8eo/uHlPVOMkVQ62yr3n8iWKdZ10bXf+u33bNh9vVpXIEvA6hk2/rX7LfwA7s9kxckuoFtIgcNQf6fwXRvIkeEThayIT7nEQCEO/EavY9Uc5ywjobm+wpaYz21Gv7rhvB/SKcBIHyeqa2yf6zblmADynpKU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,95 +94,305 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In various code paths, page_table_check_pte_clear() is called
-before converting a secure page, while in others it is called
-after. Make this consistent and always perform the conversion
-after the PTC hook has been called. Also make all conversion=E2=80=91
-eligibility condition checks look the same, and rework the one
-in ptep_get_and_clear_full() slightly.
+On Wed, 15 Apr 2026 16:56:57 +0800 Baoquan He <baoquan.he@linux.dev> wrote:
 
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- arch/s390/include/asm/pgtable.h | 39 +++++++++++++++------------------
- 1 file changed, 18 insertions(+), 21 deletions(-)
+> This simplifies codes and makes logic clearer. And also makes later any
+> new swap device type being added easier to handle.
+> 
+> Currently there are three types of swap devices: bdev_fs, bdev_sync
+> and bdev_async, and only operations read_folio and write_folio are
+> included. In the future, there could be more swap device types added
+> and more appropriate opeations adapted into swap_ops.
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgta=
-ble.h
-index 42688ea4337f..010a33fec867 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1219,10 +1219,10 @@ static inline pte_t ptep_get_and_clear(struct mm_=
-struct *mm,
- 	pte_t res;
-=20
- 	res =3D ptep_xchg_lazy(mm, addr, ptep, __pte(_PAGE_INVALID));
-+	page_table_check_pte_clear(mm, addr, res);
- 	/* At this point the reference through the mapping is still present */
- 	if (mm_is_protected(mm) && pte_present(res))
- 		WARN_ON_ONCE(uv_convert_from_secure_pte(res));
--	page_table_check_pte_clear(mm, addr, res);
- 	return res;
- }
-=20
-@@ -1238,10 +1238,10 @@ static inline pte_t ptep_clear_flush(struct vm_ar=
-ea_struct *vma,
- 	pte_t res;
-=20
- 	res =3D ptep_xchg_direct(vma->vm_mm, addr, ptep, __pte(_PAGE_INVALID));
-+	page_table_check_pte_clear(vma->vm_mm, addr, res);
- 	/* At this point the reference through the mapping is still present */
- 	if (mm_is_protected(vma->vm_mm) && pte_present(res))
- 		WARN_ON_ONCE(uv_convert_from_secure_pte(res));
--	page_table_check_pte_clear(vma->vm_mm, addr, res);
- 	return res;
- }
-=20
-@@ -1265,26 +1265,23 @@ static inline pte_t ptep_get_and_clear_full(struc=
-t mm_struct *mm,
- 	} else {
- 		res =3D ptep_xchg_lazy(mm, addr, ptep, __pte(_PAGE_INVALID));
- 	}
--
- 	page_table_check_pte_clear(mm, addr, res);
--
--	/* Nothing to do */
--	if (!mm_is_protected(mm) || !pte_present(res))
--		return res;
--	/*
--	 * At this point the reference through the mapping is still present.
--	 * The notifier should have destroyed all protected vCPUs at this
--	 * point, so the destroy should be successful.
--	 */
--	if (full && !uv_destroy_pte(res))
--		return res;
--	/*
--	 * If something went wrong and the page could not be destroyed, or
--	 * if this is not a mm teardown, the slower export is used as
--	 * fallback instead. If even that fails, print a warning and leak
--	 * the page, to avoid crashing the whole system.
--	 */
--	WARN_ON_ONCE(uv_convert_from_secure_pte(res));
-+	/* At this point the reference through the mapping is still present */
-+	if (mm_is_protected(mm) && pte_present(res)) {
-+		/*
-+		 * The notifier should have destroyed all protected vCPUs at
-+		 * this point, so the destroy should be successful.
-+		 */
-+		if (full && !uv_destroy_pte(res))
-+			return res;
-+		/*
-+		 * If something went wrong and the page could not be destroyed,
-+		 * or if this is not a mm teardown, the slower export is used
-+		 * as fallback instead. If even that fails, print a warning and
-+		 * leak the page, to avoid crashing the whole system.
-+		 */
-+		WARN_ON_ONCE(uv_convert_from_secure_pte(res));
-+	}
- 	return res;
- }
-=20
---=20
-2.51.0
+s/opeations/operations/
 
+> 
+> Suggested-by: Chris Li <chrisl@kernel.org>
+> Co-developed-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+> ---
+>  include/linux/swap.h |   2 +
+>  mm/swap.h            |  10 ++++-
+>  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
+>  mm/swapfile.c        |   5 +++
+>  mm/zswap.c           |   2 +-
+>  5 files changed, 76 insertions(+), 45 deletions(-)
+> 
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 62fc7499b408..3069bbfd7a05 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -255,6 +255,7 @@ struct swap_sequential_cluster {
+>  	unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offset */
+>  };
+>  
+> +struct swap_ops;
+>  /*
+>   * The in-memory structure used to track swap areas.
+>   */
+> @@ -300,6 +301,7 @@ struct swap_info_struct {
+>  	struct work_struct reclaim_work; /* reclaim worker */
+>  	struct list_head discard_clusters; /* discard clusters list */
+>  	struct plist_node avail_list;   /* entry in swap_avail_head */
+> +	const struct swap_ops *ops;
+>  };
+>  
+>  static inline swp_entry_t page_swap_entry(struct page *page)
+> diff --git a/mm/swap.h b/mm/swap.h
+> index 81a80605fc6a..0f4c597e3f28 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -213,6 +213,15 @@ extern void swap_entries_free(struct swap_info_struct *si,
+>  /* linux/mm/swap_io.c */
+>  int sio_pool_init(void);
+>  struct swap_iocb;
+> +struct swap_ops {
+> +	void (*read_folio)(struct swap_info_struct *sis,
+> +			struct folio *folio,
+> +			struct swap_iocb **plug);
+> +	void (*write_folio)(struct swap_info_struct *sis,
+> +			struct folio *folio,
+> +			struct swap_iocb **plug);
+> +};
+> +int init_swap_ops(struct swap_info_struct *sis);
+>  void swap_read_folio(struct folio *folio, struct swap_iocb **plug);
+>  void __swap_read_unplug(struct swap_iocb *plug);
+>  static inline void swap_read_unplug(struct swap_iocb *plug)
+> @@ -222,7 +231,6 @@ static inline void swap_read_unplug(struct swap_iocb *plug)
+>  }
+>  void swap_write_unplug(struct swap_iocb *sio);
+>  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
+> -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
+>  
+>  /* linux/mm/swap_state.c */
+>  extern struct address_space swap_space __read_mostly;
+> diff --git a/mm/swap_io.c b/mm/swap_io.c
+> index 4bf210bd677e..602e9b871b30 100644
+> --- a/mm/swap_io.c
+> +++ b/mm/swap_io.c
+> @@ -238,6 +238,7 @@ static void swap_zeromap_folio_clear(struct folio *folio)
+>  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
+>  {
+>  	int ret = 0;
+> +	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+>  
+>  	if (folio_free_swap(folio))
+>  		goto out_unlock;
+> @@ -279,7 +280,7 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
+>  		return AOP_WRITEPAGE_ACTIVATE;
+>  	}
+>  
+> -	__swap_writepage(folio, swap_plug);
+> +	sis->ops->write_folio(sis, folio, swap_plug);
+>  	return 0;
+>  out_unlock:
+>  	folio_unlock(folio);
+> @@ -369,10 +370,11 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
+>  	mempool_free(sio, sio_pool);
+>  }
+>  
+> -static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
+> +static void swap_writepage_fs(struct swap_info_struct *sis,
+> +			      struct folio *folio,
+> +			      struct swap_iocb **swap_plug)
+>  {
+>  	struct swap_iocb *sio = swap_plug ? *swap_plug : NULL;
+> -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+>  	struct file *swap_file = sis->swap_file;
+>  	loff_t pos = swap_dev_pos(folio->swap);
+>  
+> @@ -405,8 +407,9 @@ static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
+>  		*swap_plug = sio;
+>  }
+>  
+> -static void swap_writepage_bdev_sync(struct folio *folio,
+> -		struct swap_info_struct *sis)
+> +static void swap_writepage_bdev_sync(struct swap_info_struct *sis,
+> +				     struct folio *folio,
+> +				     struct swap_iocb **plug)
+>  {
+>  	struct bio_vec bv;
+>  	struct bio bio;
+> @@ -425,8 +428,9 @@ static void swap_writepage_bdev_sync(struct folio *folio,
+>  	__end_swap_bio_write(&bio);
+>  }
+>  
+> -static void swap_writepage_bdev_async(struct folio *folio,
+> -		struct swap_info_struct *sis)
+> +static void swap_writepage_bdev_async(struct swap_info_struct *sis,
+> +				      struct folio *folio,
+> +				      struct swap_iocb **plug)
+>  {
+>  	struct bio *bio;
+>  
+> @@ -442,29 +446,6 @@ static void swap_writepage_bdev_async(struct folio *folio,
+>  	submit_bio(bio);
+>  }
+>  
+> -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
+> -{
+> -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+> -
+> -	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
+> -	/*
+> -	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+> -	 * but that will never affect SWP_FS_OPS, so the data_race
+> -	 * is safe.
+> -	 */
+> -	if (data_race(sis->flags & SWP_FS_OPS))
+> -		swap_writepage_fs(folio, swap_plug);
+> -	/*
+> -	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+> -	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
+> -	 * is safe.
+> -	 */
+> -	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
+> -		swap_writepage_bdev_sync(folio, sis);
+> -	else
+> -		swap_writepage_bdev_async(folio, sis);
+> -}
+> -
+>  void swap_write_unplug(struct swap_iocb *sio)
+>  {
+>  	struct iov_iter from;
+> @@ -533,9 +514,10 @@ static bool swap_read_folio_zeromap(struct folio *folio)
+>  	return true;
+>  }
+>  
+> -static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
+> +static void swap_read_folio_fs(struct swap_info_struct *sis,
+> +			       struct folio *folio,
+> +			       struct swap_iocb **plug)
+>  {
+> -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+>  	struct swap_iocb *sio = NULL;
+>  	loff_t pos = swap_dev_pos(folio->swap);
+>  
+> @@ -567,8 +549,9 @@ static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
+>  		*plug = sio;
+>  }
+>  
+> -static void swap_read_folio_bdev_sync(struct folio *folio,
+> -		struct swap_info_struct *sis)
+> +static void swap_read_folio_bdev_sync(struct swap_info_struct *sis,
+> +				      struct folio *folio,
+> +				      struct swap_iocb **plug)
+>  {
+>  	struct bio_vec bv;
+>  	struct bio bio;
+> @@ -589,8 +572,9 @@ static void swap_read_folio_bdev_sync(struct folio *folio,
+>  	put_task_struct(current);
+>  }
+>  
+> -static void swap_read_folio_bdev_async(struct folio *folio,
+> -		struct swap_info_struct *sis)
+> +static void swap_read_folio_bdev_async(struct swap_info_struct *sis,
+> +				       struct folio *folio,
+> +				       struct swap_iocb **plug)
+>  {
+>  	struct bio *bio;
+>  
+> @@ -604,6 +588,44 @@ static void swap_read_folio_bdev_async(struct folio *folio,
+>  	submit_bio(bio);
+>  }
+>  
+> +static const struct swap_ops bdev_fs_swap_ops = {
+> +	.read_folio = swap_read_folio_fs,
+> +	.write_folio = swap_writepage_fs,
+> +};
+> +
+> +static const struct swap_ops bdev_sync_swap_ops = {
+> +	.read_folio = swap_read_folio_bdev_sync,
+> +	.write_folio = swap_writepage_bdev_sync,
+> +};
+> +
+> +static const struct swap_ops bdev_async_swap_ops = {
+> +	.read_folio = swap_read_folio_bdev_async,
+> +	.write_folio = swap_writepage_bdev_async,
+> +};
+> +
+> +int init_swap_ops(struct swap_info_struct *sis)
+> +{
+> +	/*
+> +	 * ->flags can be updated non-atomically, but that will
+> +	 * never affect SWP_FS_OPS, so the data_race is safe.
+> +	 */
+> +	if (data_race(sis->flags & SWP_FS_OPS))
+> +		sis->ops = &bdev_fs_swap_ops;
+> +	/*
+> +	 * ->flags can be updated non-atomically, but that will
+> +	 * never affect SWP_SYNCHRONOUS_IO, so the data_race is safe.
+> +	 */
+> +	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
+> +		sis->ops = &bdev_sync_swap_ops;
+> +	else
+> +		sis->ops = &bdev_async_swap_ops;
+> +
+> +	if (sis->ops || sis->ops->read_folio || sis->ops->write_folio)
+> +		return -1;
+
+sis->ops is always non-NULL, and you will return -1 here and
+swapon will always fail with -EINVAL.
+
+You probably wanted?
+
+      if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_folio)
+          return -1;
+
+> +
+> +	return 0;
+> +}
+> +
+>  void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
+>  {
+>  	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+> @@ -638,13 +660,7 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
+>  	/* We have to read from slower devices. Increase zswap protection. */
+>  	zswap_folio_swapin(folio);
+>  
+> -	if (data_race(sis->flags & SWP_FS_OPS)) {
+> -		swap_read_folio_fs(folio, plug);
+> -	} else if (synchronous) {
+> -		swap_read_folio_bdev_sync(folio, sis);
+> -	} else {
+> -		swap_read_folio_bdev_async(folio, sis);
+> -	}
+> +	sis->ops->read_folio(sis, folio, plug);
+>  
+>  finish:
+>  	if (workingset) {
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 60e21414624b..7e1660f59c00 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -3413,6 +3413,11 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+>  		goto bad_swap_unlock_inode;
+>  	}
+>  
+> +	if (init_swap_ops(si)) {
+> +		error = -EINVAL;
+> +		goto bad_swap_unlock_inode;
+> +	}
+> +
+>  	si->max = maxpages;
+>  	si->pages = maxpages - 1;
+>  	nr_extents = setup_swap_extents(si, &span);
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 16b2ef7223e1..d8930d9054df 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1061,7 +1061,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>  	folio_set_reclaim(folio);
+>  
+>  	/* start writeback */
+> -	__swap_writepage(folio, NULL);
+> +	si->ops->write_folio(si, folio, NULL);
+>  
+>  out:
+>  	if (ret && ret != -EEXIST) {
+> -- 
+> 2.52.0
+> 
+> 
 
