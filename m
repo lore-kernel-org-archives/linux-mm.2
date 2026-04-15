@@ -4,102 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2F92F419B9
-	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 17:43:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4192BF41995
+	for <linux-mm@archiver.kernel.org>; Wed, 15 Apr 2026 17:45:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11DD46B0005; Wed, 15 Apr 2026 13:43:22 -0400 (EDT)
+	id 7613C6B0005; Wed, 15 Apr 2026 13:45:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CDC46B0088; Wed, 15 Apr 2026 13:43:22 -0400 (EDT)
+	id 7130E6B0088; Wed, 15 Apr 2026 13:45:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFF7A6B0089; Wed, 15 Apr 2026 13:43:21 -0400 (EDT)
+	id 64F0E6B0089; Wed, 15 Apr 2026 13:45:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DEE9C6B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:43:21 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 953C91B8265
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:43:20 +0000 (UTC)
-X-FDA: 84661511760.14.A0D552A
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9EC8840004
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:43:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=SM6B0AO6;
-	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F8326B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 13:45:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1AA6A1B8240
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:45:20 +0000 (UTC)
+X-FDA: 84661516800.30.A7B474D
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AFB79C0017
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 17:45:17 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="mlBO/mYu";
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776274999;
+	s=arc-20220608; t=1776275118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SOJSWDSELeB0YTngjDwuIRTiVa2seMMmI2D7vgbLJHE=;
-	b=oyO46+AIszeEyZFmwD+NEGfHMCee2V6fgZ/lhPZU3zC61htdefOQmw1ywAwAXp4yiyNQ02
-	ZNtff8j5cn0P3r+b2x2s2KMvdMe/V2AxqtY8dQk/Z2n+rmETiU6SnuctI2reocmw7W2esR
-	vJC1jWMWokcfCom/8kQnQn73Wo1AAVs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776274999; a=rsa-sha256;
-	cv=none;
-	b=4uQdbNtWPcDG9BzM+5ypjcYoSnPL0K2Xo4kgIWaxovHEDLe3UiyncIti1vi3Q4z/nMF3UK
-	BCedxCBXIaainPgxRLYj9HlHLcYKY6O89QS2Vori4bWJzOQxmYigKsch1OrXirHzTKkTC7
-	EXzG0P6QyXvDfDmOljnnkbpdxWTPouI=
+	bh=C563PKmBwu9e720CGXp4gDf43TiENk08CsMILQPkock=;
+	b=ObeEWmAO4ZipytbPnUwacDbAWL1zeW6OSVhEGIxYZwsyzbtSqdWwmErFswDgeDyKFbKk+d
+	85mKnCFjgBkLWy2Jvehf9kuFlkfBrx3QyI+M3VVM1xPVlPIA1rFQWF9JEmgjUG//fs0lKq
+	NeUTOHPNpIxhOW2y7EyS99uePORTiHw=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=SM6B0AO6;
-	spf=pass (imf17.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 93F3CC73A9;
-	Wed, 15 Apr 2026 17:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1776274996;
-	bh=SOJSWDSELeB0YTngjDwuIRTiVa2seMMmI2D7vgbLJHE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SM6B0AO6SmMcSfXheaPbbVLMC7aRcI7Hs4se/r4k9imn2nObg2IzOFbNYHgZgva9b
-	 ow5wVC2t14ax/460besk2BLk2ZWreZ/iowSL/PsDXW8Jvz0IPJzEXCWLkYn3Z/5pOK
-	 biOqNAzm1emEyoQaB5lwW/xPsxIFCbmK8c4HniVw=
-Date: Wed, 15 Apr 2026 17:43:13 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 5/5] locking: Add contended_release tracepoint to
- spinning locks
-Message-ID: <ad_OMbqBSjtTPsok@shell.ilvokhin.com>
-References: <cover.1774536681.git.d@ilvokhin.com>
- <81eb8e0cd90b31e761e12721dbacb967281f840f.1774536681.git.d@ilvokhin.com>
- <8d98d9f4-ccab-4864-b406-d3eb684cab45@paulmck-laptop>
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="mlBO/mYu";
+	spf=pass (imf22.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776275118; a=rsa-sha256;
+	cv=none;
+	b=I00dh+XYtZVhmN4Sqjtz2ARxkAKP73DKQu3TBKaB0EySidPnr2yX29FuWiZS1wBqqTaddI
+	Anz2lsdoIBbENVsc7PVt2TsZd5wLXWpTw598X2NVN1SsgqTMOTCDIiGfkTMaAfkQFi3mx9
+	WEQl/SQl++YbAIUsdBKDLQJjYnppMvM=
+Date: Wed, 15 Apr 2026 10:45:11 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776275115;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C563PKmBwu9e720CGXp4gDf43TiENk08CsMILQPkock=;
+	b=mlBO/mYuSt24pu6Q9NZK+FQoFa5e4S7j8OhN8bkeo/zjADF19DoMR0UM8f5kCZ2NBTdlJn
+	lhoxYey87BzLhBhHyXroPE4h1+FGjCt3U2VTLIlHGFFy+46Rmi8ZFLviVVeitkNmIJ1hHK
+	5SJpHv0NShbHtCSghFl6+zFFd7imAiQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Matthew Wilcox <willy@infradead.org>, lsf-pc@lists.linux-foundation.org
+Subject: Re: [LSF/MM/BPF TOPIC] Filesystem inode reclaim
+Message-ID: <ad_Eo7iQVT-HUkx1@linux.dev>
+References: <m5v2s4fc6od2y2en5m62sr6fx57fdkhtqrn2kv47ngpcb65ump@4cfu4os3x5yy>
+ <ad1QfUWEPSCDUDYv@linux.dev>
+ <z6m4h2yamlckbyzh2ey2ixa7t7s6hlzg5jcle4qyebkopkvujw@pcrzrkuycg4g>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8d98d9f4-ccab-4864-b406-d3eb684cab45@paulmck-laptop>
-X-Stat-Signature: yr7s4fmtnduay78q11dyshydekfi3eru
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9EC8840004
+In-Reply-To: <z6m4h2yamlckbyzh2ey2ixa7t7s6hlzg5jcle4qyebkopkvujw@pcrzrkuycg4g>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 78nx5ygbwmfdoet17nkpqnpq4axjqx53
+X-Rspamd-Queue-Id: AFB79C0017
 X-Rspam-User: 
-X-HE-Tag: 1776274998-534629
-X-HE-Meta: U2FsdGVkX19OAeMMSgR+ke/Y8SKDIAId1yL9QB0jMoUITGpZ47TrtR8bd39pB2IbQ9HzRmUho57ZwsEf/TNeibuk/iorhlCkvyrjV2gMzY1ZpHaZzNXm+vWsUqH1vk03TTHzbs/3GLXmg0+3iPrtZcmHJaJN9H8vqPuYe7XT63CMd57ac7PxWTefW4/zGtFh4xUGF5ETXOzls5/E7Z331q/SvNxxwIAWlH7v8ozTsFdpwOicZ/39+ma/x+djCjtrr0WpQXQ70niWOLK2gTcZwm1VpI+e1G6fSq64Ia39WRdq45GfyMPqZvANkq8uYF+1mASOS/t8+96oLrKIQ7Vc7+tKJgr/7z8G7skysOEq/iAFDPE6Bk7cPbkrZnF+3VDHKaNQehJ37gDGoRVZJJvv9lGfUsBxJ+ESNQcokaVzzJYMV4pA6adDaYHBmcTJ1uW2y8x43+Bp7nIcb9RllCk5LoOyr1m+VZC/WlSABmM3moYabZroNuPTGNu9Gpha+Hy0TuBGiUtBnwmRAgVmGA88YbBPPKOW95b03xOELns1SjtMyaw0CJvKYSicgpWchtYRDBTKNdOKngKdBVrTpFOKS5TVUa7sTNvnUNORsXp2AdjwH23zVQnVsH8ILHczHy54xEBeUlSdm12B9jrCToKeDPNt0LpHPboduAW5k3QHzsCJuZByU5qiL5FhSi8BBft4YGEK7fEDEo4YY7Qzts2dPFay2pbayUbecr8dny+7c38OIEGKh/8nT8A56M+SlwNqlmglyfcsguY/2hg7O7Od9Y5DRxoMhJTMeOGyxOTAXi/i4rx1KaYuey9n9m2HsmbdjBwfSTZlE1gQiBV+MEgPFaXZydtpGYnGYN5wBMNkEcWZQPp4b0SxSNhqa6RJpm18ZA3GcYhA+Bk21Vu+BB5GM4MocVc/VvuTyVB9pCCRIOYAzIeo4nDbqf1WAkG5aGOsyenfhQ9kZmV4EBaGpQu
- wylhHCZ/
- xF+ixEtEQwyqB808fEk2X1DBp8vjNTahnAV1wiXe4inKsM6nn19NgY6L9+W24mkMHlz4oi+uK6CB8ZGRPeARItV1y6BJOkOF6l6UsJxclLhsQI4Geo7RHOnqvn8O/CFyzXN00SKYKdhDkv6fz5dwPERNgbjWLyhbiEZPlUx/17cMFmFLR4BAAyPAen2nTHy/3A9qNgnV4408onmtOYkqRYa3zp65r4XyKqNk98EYyNtj7ZASe7T9VAjZtdZ9EIQ0H1IzcLSfX+mP4N+S8C+pnayc/LU/Ie7OfFEut
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776275117-540417
+X-HE-Meta: U2FsdGVkX192u5arE5RB3YPNZohZ/W61Prj2ZBIgqknYvWZ/eCsKNVoG+2ae4bYzJ4p1Y9JaGnCS1o7UFcdrTo9Kuy+x8RQ3cEd+JujoB7mJGxy23p6xfOtoofFNh58l+cROG/pgPEw/3hst2ktj+M/nAQkMc0itteTnOIPF+0afGAUf4/KgJzhCB/669pZj+HRst31Ynhgwv/cCcCFTn1xgTgzN1m8xecM2q0H6nd88Pw2WSonSKkQv73YNm1uW59q/BNuQeGJZFVqn1au4fZeEMsXXZLXmQZYp2Ttz6V3sIGX50tkz8OYhofenm2+S9eTHyta3XvJfdRTVlnMqK0CrJBq6Ou46DXDNb2f7Z+k822vA9zthbOzxV7ZOwQ5YyENzpqYZGKVQztUJNNgIAwqSpctwtTScca++fnxezlul/JL19b6qQupKhimwtFBU5ZJywm6Ko/rG9XiJFMB0M/Ey1QnvkMUqjybUBFbMp9h8EWeG7a7iVbzWcBXsC0/WM9iP0WtppBGjMilEDFq4oHQMrtKm6HStqZ22uJ+PVvzbmxKhWZVWl9mYXZZn1tK/HLtQDUUIIWI8af2qA8m7uB8WBNluUbYR8cY/46mTcxuY8AYpCwJtCXHfmA9XQs/Ffxj9Ofou+CrjIiZsYDi30y5NmvvluCIq6CZwj+ht7Xuc/+O0HpBzjCI36hXM47L9pydHoHnSL6dXSWH94xnMjUR3TBqkzaw3T+GhGcD0tUs5CxaSuJhsnY3juHJ9wpWGEVBG8uZ1cD/rZvYR9Pik2mmObPifNFb+WiRgFOAGb3nikkYxydYurBIg5Ld3JUF/Tj4k41kG87bhh/+U1fvVXtr2v94f+Z876g+A3EHKnkiDvaIS4zaSEYB4aZpk7SkIv0c/GwXFQ5cOA8mM2Gcux2OOxwS86CmsCCOpPpNLsILdfg/HySR0cdhcIDg1/mKC7H99bqlhg2YZRGr9xEo
+ 0xHiH4LL
+ mMgD8r1qhIzQEhkEHE8jD7PoSYVEtncr6rlPE5ezQ771l8LEPGbj8KWTK2evH2mo5G4vF29cSC9ql1B50uFtEeeNq3gNUmAQAJEgMAHSzvvM3AwTp4KtvVMJ+IvISdF0LvpbcXO7hXb09sW8MznZwhxo8LS9ZhoDSJL0nKWsS5BSvRtx7OTRLMD9dfQr/+k2AHVDIGxRPpG+1yVw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,77 +88,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 14, 2026 at 04:20:26PM -0700, Paul E. McKenney wrote:
-
+On Tue, Apr 14, 2026 at 11:15:48AM +0200, Jan Kara wrote:
+> Hi Shakeel!
+> 
 [...]
-
-> > +static inline void queued_read_unlock(struct qrwlock *lock)
-> > +{
-> > +	/*
-> > +	 * Trace and unlock are combined in the traced unlock variant so
-> > +	 * the compiler does not need to preserve the lock pointer across
-> > +	 * the function call, avoiding callee-saved register save/restore
-> > +	 * on the hot path.
-> > +	 */
-> > +	if (tracepoint_enabled(contended_release)) {
-> > +		queued_read_unlock_traced(lock);
-> > +		return;
-> > +	}
-> > +
-> > +	__queued_read_unlock(lock);
-> > +}
+> > Some of these allocations may have __GFP_ACCOUNT flag as well, right? Also are
+> > these just slab allocations or can be page allocations as well? And does the
+> > caller holds shared locks while performing these allocations?
 > 
-> Shouldn't this refactoring be its own separate patch, similar to 4/5?
+> Yes, some of these allocations may be __GFP_ACCOUNT - e.g. if we end up in
+> fs/buffer.c: grow_dev_folio() which needs to allocate folio to load
+> metadata into and allocate buffer_heads underlying that folio.
 > 
-> That would probably clean up this diff a bit.
+> Regarding shared locks - it is fs dependent. I cannot currently remember
+> where __GFP_ACCOUNT allocation would be done under some wide-scale lock but
+> I cannot also completely rule that out. Definitely there are allocations
+> without __GFP_ACCOUNT under fs-wide locks.
+
+Thanks for info and this is really important i.e. allocations under fs-wide
+locks.
+
 > 
-> > +
-> > +static __always_inline void __queued_write_unlock(struct qrwlock *lock)
-> >  {
-> >  	smp_store_release(&lock->wlocked, 0);
-> >  }
-> >  
-> >  /**
-> > - * queued_rwlock_is_contended - check if the lock is contended
-> > + * queued_write_unlock - release write lock of a queued rwlock
-> >   * @lock : Pointer to queued rwlock structure
-> > - * Return: 1 if lock contended, 0 otherwise
-> >   */
-> > -static inline int queued_rwlock_is_contended(struct qrwlock *lock)
-> > +static inline void queued_write_unlock(struct qrwlock *lock)
-> >  {
-> > -	return arch_spin_is_locked(&lock->wait_lock);
-> > +	/* See comment in queued_read_unlock(). */
-> > +	if (tracepoint_enabled(contended_release)) {
-> > +		queued_write_unlock_traced(lock);
-> > +		return;
-> > +	}
-> > +
-> > +	__queued_write_unlock(lock);
+> > > I have been mulling over possible solutions since I don't think each
+> > > filesystem should be inventing a complex inode lifetime management scheme
+> > > as XFS has invented to solve these issues. Here's what I think we could do:
+> > > 
+> > > 1) Filesystems will be required to mark inodes that have non-trivial
+> > > cleanup work to do on reclaim with an inode flag I_RECLAIM_HARD (or
+> > > whatever :)). Usually I expect this to happen on first inode modification
+> > > or so. This will require some per-fs work but it shouldn't be that
+> > > difficult and filesystems can be adapted one-by-one as they decide to
+> > > address these warnings from reclaim.
+> > > 
+> > > 2) Inodes without I_RECLAIM_HARD will be reclaimed as usual directly from
+> > > kswapd / direct reclaim. I'm keeping this variant of inode reclaim for
+> > > performance reasons. I expect this to be a significant portion of inodes
+> > > on average and in particular for some workloads which scan a lot of inodes
+> > > (find through the whole fs or similar) the efficiency of inode reclaim is
+> > > one of the determining factors for their performance.
+> > > 
+> > > 3) Inodes with I_RECLAIM_HARD will be moved by the shrinker to a separate
+> > > per-sb list s_hard_reclaim_inodes and we'll queue work (per-sb work struct)
+> > > to process them.
+> > 
+> > This async worker is an interesting idea. I have been brain-storming for similar
+> > problems and I was going towards more kswapds or async/background reclaimers and
+> > such reclaimers can do more intensive cleanup work. Basically aim to avoid
+> > direct reclaimers as much as possible.
 > 
-> And the same here, so one patch for interposing __queued_read_unlock()
-> and another for interposing __queued_write_unlock().
+> So similarly as we eventually moved direct page writeback from kswapd
+> reclaim, I think it makes sense to remove difficult inode reclaim from
+> kswapd as well. In particular because I think such separation makes it
+> clearer that while you do complex inode reclaim and allocate memory from
+> there, there's still kswapd that can free some memory for you to make
+> forward progress. And you better need to be sure that there's enough "easy
+> to free" memory to allow for forward progress of difficult reclaim.
+
+Another important point that we need memory guarantee for forward progress of
+the difficult reclaim.
+
 > 
->
-
-[...]
-
-> And is it possible to have one patch for qspinlock and another for qrwlock?
-> It *looks* like it should be.
+> > > 4) The work will walk s_hard_reclaim_inodes list and call evict() for each
+> > > inode, doing the hard work.
+> > > 
+> > > This way, kswapd / direct reclaim doesn't wait for hard to reclaim inodes
+> > > and they can work on freeing memory needed for freeing of hard to reclaim
+> > > inodes. So warnings about GFP_NOFAIL allocations aren't only papered over,
+> > > they should really be addressed.
+> > > 
+> > > One possible concern is that s_hard_reclaim_inodes list could grow out of
+> > > control for some workloads (in particular because there could be multiple
+> > > CPUs generating hard to reclaim inodes while the cleanup would be
+> > > single-threaded).
+> > 
+> > Why single-threaded? What will be the issue to have multiple such workers
+> > doing independent cleanups? Also these workers will need memory
+> > guarantees as well (something like PF_MEMALLOC) to not cause their
+> > allocations stuck in reclaim.
 > 
-> 							Thanx, Paul
+> Well, single-threaded isn't a requirement but in the beginning I plan to do
+> it like that for simplicity similarly as currently there's only one flush
+> work doing writeback (although we are just discussing moving to more for
+> that). Also the inode cleanup will contend on fs-wide resources such as
+> journal so although some scaling can bring you benefits it will be
+> difficult to scale beyond certain limits (again heavily fs dependent).
 > 
 
-Thanks for the suggestion, Paul.
+Difficult reclaim uses fs-wide resources (and locks) and thus we can not depend
+on it to be effective under extreme memory pressure, right? Or do we want it to
+be reliable under extreme memory pressure where we will need to provide memory
+and cpu guarantees to it?
 
-I think separate commits for the read and write paths of qrwlock is a
-bit too fine-grained, but I like the point about mixing refactoring with
-instrumentation and keeping different lock types separate.
-
-I'll split this commit into four.
-
-    locking: Factor out __queued_read_unlock()/__queued_write_unlock()                                                    
-    locking: Add contended_release tracepoint to qrwlock
-    locking: Factor out queued_spin_release()                                                                             
-    locking: Add contended_release tracepoint to qspinlock
+One more question, I assume it is fs-dependent but is it possible to avoid
+allocations (and thus reclaim) under fs-wide locks? One challenge/issue we at
+Meta are seeing is (btrfs) lock holders getting stuck in reclaim causing
+isolation issues.
 
