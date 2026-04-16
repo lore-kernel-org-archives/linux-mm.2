@@ -4,105 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ACA7F433D2
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 00:49:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CFFEF433D4
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 01:02:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A06606B0005; Wed, 15 Apr 2026 20:49:45 -0400 (EDT)
+	id 81E366B0005; Wed, 15 Apr 2026 21:02:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B7546B0088; Wed, 15 Apr 2026 20:49:45 -0400 (EDT)
+	id 7A7766B0088; Wed, 15 Apr 2026 21:02:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A62E6B008A; Wed, 15 Apr 2026 20:49:45 -0400 (EDT)
+	id 66ED66B008A; Wed, 15 Apr 2026 21:02:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 76E396B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:49:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A6078BA6C0
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 00:49:44 +0000 (UTC)
-X-FDA: 84662586288.24.210B82B
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8686380008
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 00:49:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=al0GMVKG;
-	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 514146B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:02:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C1A41B86C2
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:02:26 +0000 (UTC)
+X-FDA: 84662618292.13.E11D26E
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 17C3F40004
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:02:23 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=svbvtnVI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776300583;
+	s=arc-20220608; t=1776301344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMDkB3M6DeO+x7rz8eUh1YbTs7caB4nDxuzSIvsHJSU=;
-	b=V3V2wr2QLBHlorZpugSes9z/OhW8snPkJ4XOHyJZALPqOo/FMeriSMrDg1i62zsu0hpOY3
-	NIC1yXtZc/C27CLx0oHQ+5hFyw6Eqm7V4iykAiQruppYQB9N6PvKzXknMOgpY1xljTQKAX
-	b1Rbq+YSRBcCqVqGsydydWqmjYNNuHQ=
+	bh=M/IxZ9Exo9xtMakzxD94fQQCxKkr37hohfsJWCyPGpU=;
+	b=aO3b1/Aj/ztvzI2P2zroYlst2/4q9ib31JN0QprXkVMV1VARE1fWs9sAah7k/wIJeukV1D
+	H/S1kElw4epGZreGNSjqdBSz2+XxrZVlwRKQLujcTK/91XuwPjtrai0unP1m6fu5JZXxe6
+	sLi0A7iFwAmlPYQkmLyo2/par8/YquQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=al0GMVKG;
-	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776300583; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=svbvtnVI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776301344; a=rsa-sha256;
 	cv=none;
-	b=bBkKZOyRFTonlFL1UcFdLBG/DJfYV6Z96bRwswWdbxMy8NAVw7gXECundkVkPGoJb+Xf5Z
-	MeMNKCwNyKHYbeJa0czaVO8rklV0S/6neNNtLhvlZ5M2ZavKCF4HGhF9qOYFp4ugfGbkDR
-	Kp5A+StA9YXx6M6c22lXShBL7OHmvBw=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776300578; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=wMDkB3M6DeO+x7rz8eUh1YbTs7caB4nDxuzSIvsHJSU=;
-	b=al0GMVKGONtLy/MIKAKvKxomn3g5aP5ZgkbiTifzboRHalvQFWS0I8Cy+KYTQMQB3dYg1rNGqN3QJh0qgt2DZ6SMCkoviAjIUQ6snrWvbuhNYmuBzS3t6R12zcJjE5+TqbML3r9uQdwfVe8vFI/c03ereYHAkF4mzPs2NyCphCY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R811e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X1680nn_1776300576;
-Received: from 30.74.144.131(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1680nn_1776300576 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Apr 2026 08:49:37 +0800
-Message-ID: <9c6e376e-1a91-4aaa-9918-ca161fe57130@linux.alibaba.com>
-Date: Thu, 16 Apr 2026 08:49:36 +0800
+	b=LkX6nvVEvr6ZpO76LFQCvffaTbFyC17FXplWmxdOGzgbCZbaytLXHCTTa66TkLgdjUowWr
+	aGxTY9qEqlea7H7UoZjo8Iv44RLmJlAQraQYkXxAqg1SokNufaVlNNSsUPXXi4+av56KCJ
+	w/Tb5cM+VDmJtUcROFG1mLwNu8km0QY=
+Date: Wed, 15 Apr 2026 18:01:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776301341;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M/IxZ9Exo9xtMakzxD94fQQCxKkr37hohfsJWCyPGpU=;
+	b=svbvtnVIstOZ+4s1tT6Pc2S5sB5+MzNqsn2eqkXKDE6BKiuA3xhWll1qDnSC5yf7e2RZoW
+	/NNXdhCYFXAewFWhBQSOZoL6gg/gLdjS1RBfAB101F6EMJfrWIbC1HML5F75nZBJM9yA+a
+	J3B+viP3FcnEM1zeypuq0tjd4wD5+iM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Matt Fleming <matt@readmodwrite.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Minchan Kim <minchan@kernel.org>, kernel-team@cloudflare.com, 
+	Matt Fleming <mfleming@cloudflare.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Require LRU reclaim progress before retrying direct
+ reclaim
+Message-ID: <aeAtOUIhFv5hXOyb@linux.dev>
+References: <20260410101550.2930139-1-matt@readmodwrite.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v2 05/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check in hugepage_pmd_enabled()
-To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>,
- Matthew Wilcox <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>, Song Liu <songliubraving@fb.com>,
- Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-6-ziy@nvidia.com>
- <ad1TMjF1L3usYIC5@casper.infradead.org>
- <05F00072-7E06-47C9-BC26-FE3736F557FC@nvidia.com>
- <a4d477a8-71d8-4219-9cb3-153f2c01e184@kernel.org>
- <84B8F641-A3DF-4219-AA57-6BA48E9B4998@nvidia.com>
- <998c02b6-2612-42c1-8099-d65ae275d1a2@kernel.org>
- <7468C68E-FB09-4714-94A3-4BED63453295@nvidia.com>
- <b7aa5515-6908-4ec6-91e9-eb79d5ef70b4@linux.alibaba.com>
- <afe0dfb9-feeb-4243-bc4b-305e5e33b581@kernel.org>
- <38697379-cbba-4c64-ae65-6774b01021d9@linux.alibaba.com>
- <68F85F77-8EFE-449D-B643-AEEB38CB50B2@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <68F85F77-8EFE-449D-B643-AEEB38CB50B2@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8686380008
-X-Stat-Signature: exky3r44piqwur5raqf3zcx5eqch9myo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260410101550.2930139-1-matt@readmodwrite.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1776300581-376210
-X-HE-Meta: U2FsdGVkX19xvtyplCifL9+6d0nVwQRKfzsolv0EehKlOKRJEezuHOEJ5xvUa+yDrrCk59yISDtHOt+P5yLrk/o22RdO+61OG6p/jAUjzuLO16xMoAxLGvhL54QSYn4GN5bbDU/8PchvpQb5HnBKix6YVQ0a1DCA4vLa8KuDH5/K7j6hnrq2hqOZWILY8FjTO5Z58OxhHaMH+7WSUYbk8ZhG+u3AvkqkyBadO1xfkv0PUEwOiwjFALMiEBVOL/0g0858gHk8hsh8tuEyog3HAHtGhNAJzsr3+7BHE7pIxCF6OE9CO3MZMxX7Lexe9XaEzO52qEla/3J/sHn93btsAQTLf5a8NzCDwz8pM8yGFkushOr6KI4vJXxwKYBnYpeNUF+k0npWW9+FuyyOSDtR5W1mNsC9xC4cQ039e0+43Zblpu8SCCH10O/DnxX26+3X8rFayR5wTisDK3P7JF+/SII9MozcMayFg1Gs6aQKUH8aWvlKYDSh6pWLSoOe+cfodTeYK5J/YeQ9gymHmTzPldQ+mBVjy/GxZhRv7Kq1M3UkDjGC0/bd27hWgAzmfDOotvAS7Z8vm70tfVLb6gQZBWmwxG+zbF7IfVRl/JQ6YyZwAIa+aZ6b+cEEvAmH2UQwnc2TlCl/UruwuoOjd+A0NOMsLUETcxS24oMiYPt+faXkkJRQP3VcaPJdUDoJoyhBgqbM8fm56MrU7j4TvEwUXlWHGPMzy7zMsULYyhkYfOnp3TkV/FDyYxOvg9Yih33HT+uDJeeKF5y2r5hxMQp/dia1ooyBszRxHw2Iej53oHoiGzkOsse6JXWxg0SY4VcUUNEr/HkAs57Cj5rI4m6TzMPxmJjU0/KVAJWHfdeLLSlshhuo4Am1akbD6V0qE8pjxBxeh4PLWuLHQdlSWl3NxBKdRKxATmX2CAePnoLqxCDmvr9/GjV/AXJ6uMmK41Lz5RQI/OiMlfbSlkOdZB+
- DO0uEti1
- ypG948zQNnTiewBr+fOjwrcoT9vLApPQJnJY66emBQg4+pVMrXeeQfFHc4M99QEQssDs2IgSO7A6NmIC6iYoHzVNK8kTZGse2Oa3CCFyODgS2XN2gKr0Y4hsGlWawW8GbDZZUDDT2nwFPKKD8/XScguVnM36PNjOSxKaFPVWPl1yW42a8J/1aAZVNJUM0XjmV8X9YQ8SQi2Xe8KgJq+Dw649f8XFLPetF3NaUIURNt126y2NWn75Eaa8igrHwYsP/SbCF6XdkGVg5FCmUiOmXPoK8y76RdeviGZ0jBBx1XzzKzR4zDjxooGDMPGiHHNvfyKKtKBOLkJauexBn/LacIJ8e0IyYc0Ulz2jQ0F6LBBGpa0Fu8L/lh/Bci8eWL09TznVg2YKGc/0B+AWmh/sV8mqqLw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 17C3F40004
+X-Stat-Signature: kfmuqhwgryiupmw55ao3oz1psc1bf5sy
+X-HE-Tag: 1776301343-108418
+X-HE-Meta: U2FsdGVkX1+ZokBR9tajb3NBPgbVgwXJxqIOMyzywFER/lPiqFILUiBDunmplcwFFgVYJ7I2z8Q3RmNNnu0oE8Ya9ME6aCoBfvpQvWSIKqF9GiCD90KiCWUFT/z2t6IQ6c8IB+A/RHv1ZYwuaoMNF1IlHnOvnVk8L12L53HeL0jEbmd2R6ywdcb7aA/vgh2aLHJQP1QTgncz40twID/eNSuCUObCaGP+7B2GKWi0c1a6o5xNHs0bZsWL2KC8y/7QOQ68N+p59l4sqgoBPivzd2zLsThI9gVsV1lfu3lEzSQiy0SmA71yVkrXppP9kidP7PQsMRoPL816akmR8dThsYGd7izx3SlULjwQcdUmtsLuSfcNMe/lRVdTq0mskpQ+kxXjYEC7dF/bEJm4SJ2eMwHCcXt9y63z5+5xjZ60P+Me4nlf+ez9OtCgj14RcZ6HZzZD1bDE3GafEEnDDXOsZ6zTj+fmiqVlmKyWZzMDuLqs1v3THb5iX/0rjrkJn0L3hTxgVEYzgBlFbfOJkSk9I1xzs07GZeRpZfx9meWNqOxgsRWjJvDQqmUs0H7UXQxMoOadkd0BNLR3j4IvhcpQDsR46L6dDb1rHG5DkvEpq3sW1awXL3AgDGVoVZ5Ks117howbziXz+0U++u5EcqMClU4TgxxdpKCCT1WD0zyWxYb9a9QUztSrhvC+h8V0xAMefblraY10iVvho83xTbRLeBe+Dqo/0z2/pb38TgubVsk3h89FVM1k6qH26dC2ZW0D/xleVrZGDYCbYXWkQX0gQ+wGsSHiLo5oGg7zWeIogs+jAcWc6rManlLvFTNFF1Xvu0yDUh6lvXDDX2GT9sMXIGV7+jTW1l87sXY+wm/uyeWvQbjNGeqXuuQ0139ArL2TaDcSaaub6fsH4ldvl0SeEQ024zz6M9V//yyJZhYZGG3LLRwSZm3BZ8c16GOdAOGrXmDG8DkCwHA4ZFuJuHh
+ CjlTcGT0
+ fpcooV+9P1V9NlATVqjNQZyxkWK1rbcnXO7Wbv3srW15mrndqfmTndblzvQ8Kk/+HVwJzXmZ9ra4T12lvBZCymCgVHYAIBKUPzR/+HhrNJEG4WcyRecrdlJlLyBYR2ND8P+/9Q5eeEAjNgSXMz42lzmkT/Pu0VBFQcTqDbGQcSgh8TJ0w76ky/61gBi0tzXjiuFJdg5AQuD7lFVyxQpNc8PG3bC9jFUf4YgYpdbzEUdJjDAokRXCNK8bYtE75SUZoLrgmOMxWx75UgKt/djVRHXcuFj+jFlzRs/ZowKSGsqQPz+g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,123 +98,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Apr 10, 2026 at 11:15:49AM +0100, Matt Fleming wrote:
+> From: Matt Fleming <mfleming@cloudflare.com>
+> 
+> should_reclaim_retry() uses zone_reclaimable_pages() to estimate whether
+> retrying reclaim could eventually satisfy an allocation. It's possible
+> for reclaim to make minimal or no progress on an LRU type despite having
+> ample reclaimable pages, e.g. anonymous pages when the only swap is
+> RAM-backed (zram). 
 
+Or incompressible memory on zswap with writeback disabled or overcommitted
+memory.min.
 
-On 4/16/26 2:01 AM, Zi Yan wrote:
-> On 15 Apr 2026, at 5:21, Baolin Wang wrote:
+> This can cause the reclaim path to loop indefinitely.
 > 
->> On 4/15/26 4:00 PM, David Hildenbrand (Arm) wrote:
->>> On 4/15/26 08:36, Baolin Wang wrote:
->>>>
->>>>
->>>> On 4/15/26 2:25 AM, Zi Yan wrote:
->>>>> On 14 Apr 2026, at 14:14, David Hildenbrand (Arm) wrote:
->>>>>
->>>>>>
->>>>>> Yeah, it would be better if we could avoid it. But the dependency on the
->>>>>> global toggle as it is today is a bit weird.
->>>>>>
->>>>>>
->>>>>> I don't think there is other interaction with FS and the global toggle
->>>>>> besides this and the one you are adjusting, right?
->>>>>>
->>>>
->>>> I'm afraid not. Please also consider the per-size mTHP interfaces. It's
->>>> possible that hugepage_global_enabled() returns false, but
->>>> hugepages-2048kB/enabled is set to "always", which would still allow
->>>> khugepaged to collapse folios.
->>
->> My comments are in reply to Zi’s comment:
->>
->> "I think hugepage_global_enabled() should be enough to decide whether khugepaged should run or not."
->>
->> I’m concerned that only relying on hugepage_global_enabled() to decide whether khugepaged should run would cause a regression for anonymous and shmem memory collapse, as it ignores per-size mTHP configuration.
->>
->>> The question is really which semantics we want.
->>>
->>> Right now, there is no way to disable khugepaged for anon pages, to just
->>> get them during page faults.
->>
->> Right.
->>
->>> And we are now talking about the same problem for FS: to only get them
->>> during page faults (like we did so far without CONFIG_READ_ONLY_THP_FOR_FS).
->>
->> OK. I’m fine with using hugepage_global_enabled() to determine whether khugepaged scans file folios.
->>
->> My concern is that for anonymous memory and shmem, the per-size mTHP settings should be considered.
+> Track LRU reclaim progress (anon vs file) through a new struct
+> reclaim_progress passed out of try_to_free_pages(), and only count a
+> type's reclaimable pages if at least reclaim_progress_pct% was actually
+> reclaimed in the last cycle.
 > 
-> OK, I misunderstood the meaning of hugepage_global_enabled(), since per-size
-> mTHP settings could also enable khugepaged if PMD_SIZE is set.
+> The threshold is exposed as /proc/sys/vm/reclaim_progress_pct (default
+> 1, range 0-100). 
+
+Let's not expose any sysctl or user visible API for this heuristic. It will
+evolve and then this interface would be awkward and hard to remove.
+
+> Setting 0 disables the gate and restores the previous
+> behaviour. Environments with only RAM-backed swap (zram) and small
+> memory may need a higher value to prevent futile anon LRU churn from
+> keeping the allocator spinning.
 > 
-> I will take willy’s original suggestion and make khugepaged on if the global
-> setting is enabled. The below is the new version of this patch. I moved anon
-> pmd huge page code to a separate anon_hpage_pmd_enabled() like
-> shmem_hpage_pmd_enabled() and cleaned up the comment. Let me know your thoughts.
-> 
-> Thanks.
-> 
->  From 92b92f2b2ab41c70b41dd304ce648786ee6a1603 Mon Sep 17 00:00:00 2001
-> From: Zi Yan <ziy@nvidia.com>
-> Date: Wed, 15 Apr 2026 13:52:50 -0400
-> Subject: [PATCH] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check in
->   hugepage_pmd_enabled()
-> 
-> Remove READ_ONLY_THP_FOR_FS and khugepaged for file-backed pmd-sized
-> hugepages are enabled by the global transparent hugepage control.
-> khugepaged can still be enabled by per-size control for anon and shmem when
-> the global control is off.
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
 > ---
->   mm/khugepaged.c | 26 +++++++++++++++-----------
->   1 file changed, 15 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index b8452dbdb043..586d27ce896e 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -406,18 +406,8 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
->   		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
->   }
-> 
-> -static bool hugepage_pmd_enabled(void)
-> +static inline bool anon_hpage_pmd_enabled()
->   {
-> -	/*
-> -	 * We cover the anon, shmem and the file-backed case here; file-backed
-> -	 * hugepages, when configured in, are determined by the global control.
-> -	 * Anon pmd-sized hugepages are determined by the pmd-size control.
-> -	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
-> -	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
-> -	 */
-> -	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> -	    hugepage_global_enabled())
-> -		return true;
->   	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
->   		return true;
->   	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
-> @@ -425,6 +415,20 @@ static bool hugepage_pmd_enabled(void)
->   	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
->   	    hugepage_global_enabled())
->   		return true;
-> +	return false;
-> +}
-> +
-> +static bool hugepage_pmd_enabled(void)
-> +{
-> +	/*
-> +	 * Anon, shmem and file-backed pmd-sized hugepages are all determined by
-> +	 * the global control. If the global control is off, anon and shmem
-> +	 * pmd-sized hugepages are also determined by its per-size control.
-> +	 */
-> +	if (hugepage_global_enabled())
-> +		return true;
-> +	if (anon_hpage_pmd_enabled())
-> +		return true;
->   	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
->   		return true;
->   	return false;
 
-Thanks. Looks reasonable to me. Let’s also see what David thinks.
+[...]
+
+>  
+> @@ -4637,7 +4672,24 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+>  			!__cpuset_zone_allowed(zone, gfp_mask))
+>  				continue;
+>  
+> -		available = reclaimable = zone_reclaimable_pages(zone);
+> +		/*
+> +		 * Only count reclaimable pages from an LRU type if reclaim
+> +		 * actually made headway on that type in the last cycle.
+> +		 * This prevents the allocator from looping endlessly on
+> +		 * account of a large pool of pages that reclaim cannot make
+> +		 * progress on, e.g. anonymous pages when the only swap is
+> +		 * RAM-backed (zram).
+> +		 */
+> +		reclaimable = 0;
+> +		reclaimable_file = zone_reclaimable_file_pages(zone);
+> +		reclaimable_anon = zone_reclaimable_anon_pages(zone);
+
+Here we are getting the current reclaimable pages.
+
+> +
+> +		if (reclaim_progress_sufficient(progress->nr_file, reclaimable_file))
+> +			reclaimable += reclaimable_file;
+> +		if (reclaim_progress_sufficient(progress->nr_anon, reclaimable_anon))
+> +			reclaimable += reclaimable_anon;
+
+And here we are comparing the current reclaimable pages with last iteration. Is
+this intentional to keep things simple?
+
+> +
+> +		available = reclaimable;
+>  		available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
+>  
+
+Another heuristic we can play with is to also pass through the vmscan scan
+count. If for couple of consecutive iterations, we continue to see low reclaim
+efficiency, go for OOM. Also maybe compare the scan count with the watermark as
+I expect we don't see much difference scan count for consecutive reclaim
+iteration, so, it is a good representative of reclaimable memory.
+
+The reclaim efficiency heuristic should handle the swap-on-zram or
+incomp-zswap-with-no-writeback. Treating scan count as proxy for reclaimable
+memory should handle the overcommitted memory.min case.
+
 
