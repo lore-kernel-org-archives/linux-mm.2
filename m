@@ -4,96 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 747C5F8A157
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 11:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F11D3F8A157
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 11:07:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C7CD6B0005; Thu, 16 Apr 2026 07:02:39 -0400 (EDT)
+	id 345176B0005; Thu, 16 Apr 2026 07:07:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2791D6B0089; Thu, 16 Apr 2026 07:02:39 -0400 (EDT)
+	id 2F5186B0089; Thu, 16 Apr 2026 07:07:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18F3D6B008A; Thu, 16 Apr 2026 07:02:39 -0400 (EDT)
+	id 20BFD6B008A; Thu, 16 Apr 2026 07:07:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 02B8A6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:02:38 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 43594B7E4D
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:02:38 +0000 (UTC)
-X-FDA: 84664130796.22.016F9A6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 84C371C000E
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:02:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g/lvgYMq";
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 07D2F6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:07:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8BFF41B8A95
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:07:03 +0000 (UTC)
+X-FDA: 84664141926.17.B5D2580
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D31664000E
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:07:01 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wKL2ASzP;
+	spf=pass (imf11.hostedemail.com: domain of 31MLgaQoKCDMbRaPeXchZXVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--mclapinski.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=31MLgaQoKCDMbRaPeXchZXVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776337356;
+	s=arc-20220608; t=1776337621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TSOJ7fp16/HzLzUNRxULVnij3qirHW0INLIB+g7KEG0=;
-	b=AAeatbjaBJDbM3yb2OVR95GzPJlMg9L3v9DYTXZ8dCX9k5kC8MAJK1Qf2fvd+ImpLUyrxi
-	YGCsPTaOVkFlQX7BhroNsXX4H+Jn8eFlNCAJvnf0cM+DNYDb/U9vNTBL4LJQa4X+uIxsgQ
-	NFr2RzWTiM+E2IPDSA6nlXdfx9AVbhs=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lKHwSeRo/ultSF+DvjG6BVyCb2GmqVTT5wmkO/QWglI=;
+	b=QCqx8orCMHyOF9L10F5yZdyWunKgpgI2vyhfEVL9uf2bfsoTfMVLB0iJ48k/NStHemd1Ap
+	OJulPREV+TVs+SsGmW+6PPpbViLXLtG4MaNOPDCRcXq4sXwF1xJ3zk8nybAFTgW54XhiA3
+	JceYBlWUtcjCYmBOvZNQ6hqbtYsX2PE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="g/lvgYMq";
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776337356; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=wKL2ASzP;
+	spf=pass (imf11.hostedemail.com: domain of 31MLgaQoKCDMbRaPeXchZXVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--mclapinski.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=31MLgaQoKCDMbRaPeXchZXVddVaT.RdbaXcjm-bbZkPRZ.dgV@flex--mclapinski.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776337621; a=rsa-sha256;
 	cv=none;
-	b=jI+9t9HlTkt1AuL6D3M+miiV+A4BE7pNiaYxPJvDD/NwFE4aPAVozs+OHFc8guoDgfOya/
-	ee94HVxe6RhGGGJCx30U735HY2Kg7W04s2/vgsHgkdix/3wkMiy3EkH+jsTOWjjhS/GP19
-	MjUyA/GZB9zou6ETPHbLfgkgd3VHU8o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DCD0460127;
-	Thu, 16 Apr 2026 11:02:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF43BC2BCAF;
-	Thu, 16 Apr 2026 11:02:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776337355;
-	bh=46lfpU4rVAhipbkBh+dqyHYerEK6axXIuEa3SsVYybY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g/lvgYMqhxgbdZTndBZsA+ofc5/WHdXHktUB69Po+cR1Gl88XowUpJhrnwSZEv2Z0
-	 EFOUK6NK9bhmP95sehwR1ihfpVS6ev2LtISPmLK5hA4U3NAhUC1OSNZXj0GqV6z5Fj
-	 wkfqAEUDqhuinGIVoCdtZ3rqhyAtDrA5xsNWXq7Z8fs3lq1c9y1xdFrC+kYc6iV+cC
-	 gejIMgh02Vs+vC3DyeQGvoWICUtOz2Fi9zeyrdAQb5KRV4m9RgzTJZ8uSfiM8EVDCY
-	 EH6prm0nfwKyFqGeSKs1L4h8rUPgkSrwcMAKQ80s8v+O7wWsN9R+oo6RYtXuFaZuHg
-	 aPuaT1qjRVkBA==
-Date: Thu, 16 Apr 2026 14:02:27 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 3/4] arch, mm: consolidate empty_zero_page
-Message-ID: <aeDBw4O655-pXiHy@kernel.org>
-References: <20260211103141.3215197-1-rppt@kernel.org>
- <20260211103141.3215197-4-rppt@kernel.org>
- <20260416100221-57063053-1c9e-4450-8b0c-d9783657fa47@linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260416100221-57063053-1c9e-4450-8b0c-d9783657fa47@linutronix.de>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 84C371C000E
-X-Stat-Signature: 6r6wsokrsi119whctipcfaggeyhcbm1t
+	b=W1XTKyXCtTjcLOlsGUtnWgmLX0bsGbAM16uJBAtSZn0klS4lhFInJSUoW/rnGT7TCxUHEB
+	tZzXbTYtwr4WfiG25duYkT+yoIqvvkYjUTqqbVJP9WQoNehb3lHN8zh6gydifzmocuTReD
+	kvABH+sq2qQIj8GZMryO7UqIWNmyD0E=
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-66f103b3141so5134181a12.0
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:07:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776337620; x=1776942420; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lKHwSeRo/ultSF+DvjG6BVyCb2GmqVTT5wmkO/QWglI=;
+        b=wKL2ASzPkgjLXIxCY6p501sdTsNf+oNiTRiZiBoqYhR0p6fb+jZxQ7uR1jI4NSo//2
+         Q3pTcnnPuP8+IKXTnbr0fABTj4gDuZOG5Qh3ylttIfQ63kW+CZAU28um6nd7Aw8X5Lzv
+         K5HHydN9/mU7Zq7q2xo0lYzJ9ItQQNyMNKKoyUc/H5HNIsZmKbogCAzaxzaclErUZolc
+         DKkjm3PKZ0cv+gJpEVzmkKKIFdUltdLywzdzKrw07jZGAks1xF7VbUDdBxjVhcQcfDPR
+         QymP9s+aKKaSy7tyaGy2Uzlt6kolK9qAU8Bw/ZUqv+G4OYjrsBqza6j6VZxg60VES1Su
+         prHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776337620; x=1776942420;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lKHwSeRo/ultSF+DvjG6BVyCb2GmqVTT5wmkO/QWglI=;
+        b=jHTBV6AErMKzTSpUEtJtRftWk1TVjU3KIUN1V2S5/aTV4eC4r4Dssqcgxmdi+arcTB
+         +feWElVwacpX38o9fTAPlAe7AWgJ3AoqvikreE1OwlOL/cwucnrWRlTmx2xT8YCHmtqR
+         EEcC9szbBjqkJf37SyqVLlE0xc+XRhKJ6zVGzCT+3uSPgzkEXnvoldlvPM32rrxJh4Br
+         j7XQFiKVEKDFqWRHucETCAMJL6pbXi9snatf15tYWkKU/Xp8syyvotQRteK9+fpMDPhW
+         t3Oojtj0lr7ImgZkR5X0Ve8eJ+MLIMuk115cq0NuQ+bErZiBGAH7eEEN0wDXuN8ROuzf
+         Yiww==
+X-Forwarded-Encrypted: i=1; AFNElJ8c/R6BKTNXnvFQ2z99wjQP8DAytH8JSksSRC7zXHldr8xJX1gao2EOmApj0CK4cvqV94KGE+3DLQ==@kvack.org
+X-Gm-Message-State: AOJu0YxZu0d1IQqJ2TTv+VjkcmuFClTatNDQeE13niBiNV5/t3Fezmq3
+	CfY3K8NiomoNxRGmb4dtf7XBqTpPzPtPcnlHY7U+vScaAwAhXPdvI2Pj2EbkrGsbE7/Gvuqv3mP
+	ZmAt0XussKJ2dlFjDqq4Y0w==
+X-Received: from educ13.prod.google.com ([2002:a05:6402:100d:b0:66e:cdad:9d95])
+ (user=mclapinski job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:2b99:b0:671:bc46:1b93 with SMTP id 4fb4d7f45d1cf-671bc461f4dmr6398522a12.18.1776337620197;
+ Thu, 16 Apr 2026 04:07:00 -0700 (PDT)
+Date: Thu, 16 Apr 2026 13:06:52 +0200
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
+Message-ID: <20260416110654.247398-1-mclapinski@google.com>
+Subject: [PATCH v8 0/2] kho: add support for deferred struct page init
+From: Michal Clapinski <mclapinski@google.com>
+To: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Michal Clapinski <mclapinski@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: atk7kw4c87eccji63p7w6gwdwr5j4fxr
+X-Rspamd-Queue-Id: D31664000E
 X-Rspam-User: 
-X-HE-Tag: 1776337356-842140
-X-HE-Meta: U2FsdGVkX19BgoU+gr0FW+TmI8ccqFzqC05/t2i1Ry7oHIm7cx7pKjRnYy20FAiFgbw5Mj5LthYfJKu0U8rKNrYAwK4Y2u2zoVqXkOlk4ULv2NUDgSDOWKZUJ7Yr6LJsVoYK+xrb6t/jI+aGYH82AeZYtSoNrDzlc7c5rNhvxNp57dft9h5lmd7qsGl/P3INYmXfn9TzkWwh/HfiOgSqiXTNwSvVamCDGgSHpNNbJEUl7+LxzTnpuA2qpomRG3F53aR5DjWX+VXu33Bj29nozBU66TuFKS5v0EZdLizyo/odxwNUYiFfgomUYA7bnkd2LRrIRYkGVcvR5jAgsEcLObOY5yu6ZKTPmgf4yABNDAN+2VgzlDs1FTocgbSomAxW0f6QRZDk4y5kl5eXF3LHfyO4iJxw6cz+lkfOcsR9kP/zNLDO0x+M7neQ8JN1Ye6BXSZjcfB0SXy8NH9ifQUdI+QEhiv7K6xwejixDlOsKHv2TIm9PpvA780GeiY91SgA2EUcTVlLAQDK8QZ97jOpALepKx+ygviEFKzHHtnSbl6k65VqO92cyHjKUcyFm3H9IkI2fJIq993U5spw9qpbKUOwQT8P7mB9RVREhqxWS+jAoPZB6FYI+Gx0eBscuQ9XetaNKZO9KBDcDWtiZ2N7nA4zk7Vjh84Gl3YQrgZpNJyXXi4i7l5NcOfZ076xnsx4PI49aO94REqpf8lD+VoofT9LHt/8nG4fVCRKFGS2/5S45qtqjPhBVqAgWahDW4On4sZJktLanviHDQ/9LM1D7uqAM/PgfKyudgq45hDA5uDCjLWhjuf8xwFW2pg6UumiHSIcYHqMDnTaeXw2tNh8krF+jus3w+n64GYmabRofo5hNqlu2cSBrsrKZdXwdlqny+uboSxEl/WqCExJrlXI5cNZD+w7KNXLZVCc+AAvp3I4c16o92ekYBgZZ3DcOEpdMhs25FuvOLD2jBlcupM
- tIRUDaj4
- vumrGMPLDsUxz2/wxg6nH5g5qkVkTxGQYI5WmIx5AyU87RcHFTHeNBLOEjrlscwL/dpq8VaEx9GiWDCOnmq9Hy+idnmDqibQrSfqTBZTMDQ7KLJvyu9kUEsJ4SnhB39e7GaZ1JZ3sL9D3DCHfycXbtE5qk9IkBhOWlWEgf6lzseIY6S3181n8TBWYXNGG75XJruZNnObqE7ty/IFwVo7JhJBJiQx+H6OBxj1O1P/Og+wpybH+yMubb7V8NgiTu12NhcK1kKQeT8Gb+AZV+mcHmf07hCegLDYI0bfgN3JGRIFwKPJ9RxCxdxdLGIp/fQlEbIqiFVaiMS5TF9cnOOcd2NHfI/krTKRr1BVN
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776337621-55194
+X-HE-Meta: U2FsdGVkX18RqWyfOwilFE4dC9DfCOpE7mjT6GG6+Fk3Mom8khKUU/Jstzr7jDeElBP37ZJ0plvohX1Bml6FbOgMrwVXIY3kb5OP5q/qfCt1t3WAjmK0+j8TewKVEEB+uOUG8b+ADmGY/oa9NtC2BPxT2Y6c6bGHxd50dTYkau+JuruMIzDMgBgPg8hU+O4cUIicS5RBHjtYb/yqwRDIhGydxdsqRE6u/wf9pOF/fp2sRTtFa7zfDxuznbH8ikBY4MKVuIwBi9gsvFzmmaYjxW32E5jqyhRwWJ1ulHgZyHPc6tf0+3TzIUH3sgpvQFC7FFnA2vUgdLET56FqYyQ3mXgSoXCk0Bybm5UTVQGDtZX/ynZaFQVmEsDmhgmTTf01CbnLXa0MJhWBfihimyMfi+1PQ0i1hBojKPeikkRyLuO7nLeWkt3AcrNoyquRVWQ7lR0yyEZkOMdhdkaLWbtMrcz0ypM+9oajvDzj5y2AKbxWSud7g/jN/hP8Gg1y32HK/rH0sXYvJaS66OljvAi7rxe2UzSG9IZrL1ujQ0kTDhHy0iLO/q7M8TezDdUIahCum4lqZGsjT8Wocxs3sY7r0ShlugS51vbImK13S3RErf7AhrvyRvEpGKiX3BCWO+fyScsLlA0xV24sWTAOHDGWVP/DIPCfzPzdYg08ZYfq7nq0H0SE5ScUMEWAXk3DNAo1bLlzfw6jDdjJwNJhfQJqNkj105HIGz56EbwMj4lBAA0PoXe1xJdaB+hKCtWjYj6aA0VvSjS2ua4glLDUDg+aCDPQeTGXrF8/UdE8jRFjArvHlTFdfcZr/IQUbITb2sgFjlPSPTooKqt6bSAFmMbM9gUZTGNie/jBUQwg/ekPFHUp5epFhxWlID1EQmj0AxQk3WUKh7G5LabLo6FRHATYYXgcHblz4RtbZ9xKrPGQ6gNsX+4EzV+Wix6OyZj2MGMJUHnetyC3HyXDN/sCIKb
+ Xsn2S3Qv
+ /EEyhRWCx+NntIj3hUFVHloJNTh/1RhDpwSl3R7c8MtOiOGebyFRahTH6kxGiLZwVxU35mycMiTfeqmo09VtSbvTKYA4pIUX9zbv2WEAAcwjDdggDIF+nmTVEEbX6STiwNFOHcFB4BDpJTRLtNvkWZWwUkYtQdt2NeXzGK7P6qHAyQ/VeAEX/TA+sEnbrTM3maT4V+Wbn3d6412CKWLfndY4dsMfqAf+ai8FchG0TvTDQux+GK8GvaNGUE3pGYHZuB4mR8P29rQYK/0L+WJT8iYGnEl/+Es6VKwroUKZGLBPUtemQ30rc1wcSXk4LoyFEsUAZPt6VxPxBpaPGQ783/BYH1eWHltlm5x/8GNgmlOw7VpjMw2fnLPRSopAOCphQ/1vXuVMmWwiI/4RysQlMO/jbisg+skAiRtAnuAyV0NzwnjwB50E0bsVLTiJ612xXfYqhdxyIa2o6Qj1rRWT8mtQ3+/NlTFisDlWBokKvoVLYDO4+wdhQMXjCgdVCMgO6Mc0gu3FqF2Gcugdd7iAuCuaDbuS7gTtiU5RFgS0roJNtfg3/7ZtATyEF6KJsq8MpgmPzhAIdluoU0czij9480y410lMFs8VJMdqOjnK3WhvoLok8UF8U/5rMANP/zUR61QemOgveEZ1pPo/sVEGAgA1OK0RvF5KP9YyZbctz46ufF9jtV/itB1nI0tJg7BELIjBar2nOT+L1RC7D2nO4wgFgIf0dKqIY8Xlu2TBO1Osoz0E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,87 +108,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 10:10:06AM +0200, Thomas Weißschuh wrote:
-> Hi Mike,
-> 
-> On Wed, Feb 11, 2026 at 12:31:40PM +0200, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > Reduce 22 declarations of empty_zero_page to 3 and 23 declarations of
-> > ZERO_PAGE() to 4.
-> > 
-> > Every architecture defines empty_zero_page that way or another, but for the
-> > most of them it is always a page aligned page in BSS and most definitions
-> > of ZERO_PAGE do virt_to_page(empty_zero_page).
-> > 
-> > Move Linus vetted x86 definition of empty_zero_page and ZERO_PAGE() to the
-> > core MM and drop these definitions in architectures that do not implement
-> > colored zero page (MIPS and s390).
-> > 
-> > ZERO_PAGE() remains a macro because turning it to a wrapper for a static
-> > inline causes severe pain in header dependencies.
-> > 
-> > For the most part the change is mechanical, with these being noteworthy:
-> > 
-> > * alpha: aliased empty_zero_page with ZERO_PGE that was also used for boot
-> >   parameters. Switching to a generic empty_zero_page removes the aliasing
-> >   and keeps ZERO_PGE for boot parameters only
-> > * arm64: uses __pa_symbol() in ZERO_PAGE() so that definition of
-> >   ZERO_PAGE() is kept intact.
-> > * m68k/parisc/um: allocated empty_zero_page from memblock,
-> >   although they do not support zero page coloring and having it in BSS
-> >   will work fine.
-> > * sparc64 can have empty_zero_page in BSS rather allocate it, but it
-> >   can't use virt_to_page() for BSS. Keep it's definition of ZERO_PAGE()
-> >   but instead of allocating it, make mem_map_zero point to
-> >   empty_zero_page.
-> > * sh: used empty_zero_page for boot parameters at the very early boot.
-> >   Rename the parameters page to boot_params_page and let sh use the generic
-> >   empty_zero_page.
-> 
-> With this in mainline as commit 6215d9f4470f ("arch, mm: consolidate
-> empty_zero_page") booting sh on QEMU is now broken.
-> The machine hangs before any output.
+When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, struct page
+initialization is deferred to parallel kthreads that run later in
+the boot process.
 
-Hmm, looks like sh does not like boot_param_page declared as unsigned char *
-This fixes the issue for me:
+Currently, KHO is incompatible with DEFERRED.
+This series fixes that incompatibility.
+---
+v8:
+- moved overriding the migratetype from init_pageblock_migratetype
+  to callsites
+v7:
+- reimplemented the initialization of kho scratch again
+v6:
+- reimplemented the initialization of kho scratch
+v5:
+- rebased
+v4:
+- added a new commit to fix deferred init of kho scratch
+- switched to ulong when refering to pfn
+v3:
+- changed commit msg
+- don't invoke early_pfn_to_nid if CONFIG_DEFERRED_STRUCT_PAGE_INIT=n
+v2:
+- updated a comment
 
-diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
-index 63c9efc06348..b7c4469cb61e 100644
---- a/arch/sh/include/asm/setup.h
-+++ b/arch/sh/include/asm/setup.h
-@@ -3,12 +3,13 @@
- #define _SH_SETUP_H
- 
- #include <uapi/asm/setup.h>
-+#include <asm/page.h>
- 
- /*
-  * This is set up by the setup-routine at boot-time
-  */
--extern unsigned char *boot_params_page;
--#define PARAM boot_params_page
-+extern unsigned long boot_params_page[PAGE_SIZE / sizeof(unsigned long)];
-+#define PARAM ((unsigned char *)boot_params_page)
- 
- #define MOUNT_ROOT_RDONLY (*(unsigned long *) (PARAM+0x000))
- #define RAMDISK_FLAGS (*(unsigned long *) (PARAM+0x004))
- 
-> Reproducer:
-> ./tools/testing/kunit/kunit.py run --arch sh --cross_compile sh4-linux- --raw_output=all example
-> 
-> > * hexagon: had an amusing comment about empty_zero_page
-> > 
-> > 	/* A handy thing to have if one has the RAM. Declared in head.S */
-> > 
-> >   that unfortunately had to go :)
-> 
-> (...)
-> 
-> 
-> Thomas
+I took Evangelos's test code:
+https://git.infradead.org/?p=users/vpetrog/linux.git;a=shortlog;h=refs/heads/kho-deferred-struct-page-init
+and then modified it to this monster test that does 2 allocations:
+at core_initcall (early) and at module_init (late). Then kexec, then
+2 more allocations at these points, then restore the original 2, then
+kexec, then restore the other 2. Basically I test preservation of early
+and late allocation both on cold and on warm boot.
+Tested it both with and without DEFERRED.
+
+This patch probably doesn't apply onto anything currently.
+It's based on mm-new with
+"memblock: move reserve_bootmem_range() to memblock.c and make it static"
+cherrypicked from rppt/memblock.
+
+Evangelos Petrongonas (1):
+  kho: make preserved pages compatible with deferred struct page init
+
+Michal Clapinski (1):
+  kho: fix deferred initialization of scratch areas
+
+ include/linux/memblock.h           |  7 ++--
+ kernel/liveupdate/Kconfig          |  2 --
+ kernel/liveupdate/kexec_handover.c | 52 +++++++++++++++---------------
+ mm/memblock.c                      | 41 +++++++++++------------
+ mm/mm_init.c                       | 27 +++++++++++-----
+ 5 files changed, 69 insertions(+), 60 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.54.0.rc1.555.g9c883467ad-goog
+
 
