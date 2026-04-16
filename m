@@ -4,107 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D9BEF8809B
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 07:32:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3355EF43841
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 07:39:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 250C56B0005; Thu, 16 Apr 2026 03:32:39 -0400 (EDT)
+	id 5DC486B008A; Thu, 16 Apr 2026 03:39:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 201A56B0089; Thu, 16 Apr 2026 03:32:39 -0400 (EDT)
+	id 58D296B008C; Thu, 16 Apr 2026 03:39:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F0B86B008A; Thu, 16 Apr 2026 03:32:39 -0400 (EDT)
+	id 4A3186B0092; Thu, 16 Apr 2026 03:39:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EE6C26B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:32:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FE8A140705
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:32:38 +0000 (UTC)
-X-FDA: 84663601596.29.0C3EA24
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1018720003
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:32:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FyGrNKGC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776324756; a=rsa-sha256;
-	cv=none;
-	b=KOVB2niJyTgdf8leR4/7yCF+ZfqIxJ2z9HH2cbZ7Rch3/kyc3zgxTGzl8ZyYXzOVutFl0d
-	xgQIJngroay+GvQlhZD1oSJQtapm35IZrgbpBQFMdUFrU0T+kQy391AC196t4cHD4zuHVQ
-	ztcg4741tlFXLbYZUKK5gkRDZmX+P/Y=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FyGrNKGC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776324756;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A7A76B008A
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:39:24 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CE30F5A469
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:39:23 +0000 (UTC)
+X-FDA: 84663618606.22.695A5EA
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4166BA000A
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:39:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=uZU2MU9B;
+	spf=pass (imf25.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776325162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zwioQqo3saFabutwcMLfJtYnp376Ch/FQYG56niV6tc=;
-	b=Upq8fvslBk7+BVjoGHOyybavnd+M5xg1CWlJp+6ibwOmbcwpW1z1ehKT7hpWsLNL9jNBA0
-	Dxlkioj9TvrxXZiUQZyV+17xaGHfg/1tDXsdLu3LyA4KJ/TJfzlFWVq3akfre2XJcu86Jw
-	BhEkwybXx2+cf+aLS1ySWy+/DWMDQqU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C25A8444AE
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:32:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949D7C2BCAF
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:32:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776324754;
-	bh=oV7AP5mxtlQKF75hMQurxqdhxeqExUc+aEqIYXJ9l5U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FyGrNKGCDx+b4EADrkLbazLm7XA9uk/KIFm8dvVP+YFr6ZaaguUKlMHxJYUeHpL2s
-	 q4BJ0f0cR4eQ6eNAZOFlA+yCatzHqWwg5sHGc3LuvoaHn17MOJzy3vZENhcLIAhzZF
-	 TU6r5MnsZANc52EshVlPBwyDMcw7UEpilIDSQA6g5wmyIDW7lUIPzDliGocpaAWALA
-	 gyW/VItFzEj4aIF8U63pWYbRZS65kpD6G/m6r9MB48w2qum2Kt5XV+2gqHrDZC83GC
-	 yeFe3vgwveX9D8BE7oYBUydPq1KiCsOUc7DntsEPvFcJpXELv8sleMPGFA12KXYEyN
-	 0J2CMQBDF9kcQ==
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8a016799d2cso82855826d6.1
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 00:32:34 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yy4Hw14u/dQFXgI/Txp2w/0VgQ1avCztuF1t3s1OlXHUzyzsQHK
-	bXNvoLB/Z1yO+Z4UUI+IQ3aKvCVO02nfH5QjJwd549FpO5nSgXy/Ff+1hTtrGMPP9Q/FQjP+ejy
-	An1sgsIx3AKdDiB9SOjJgQEevaes8R1s=
-X-Received: by 2002:ad4:4ea7:0:b0:89c:9fa2:5de9 with SMTP id
- 6a1803df08f44-8ac862a63dbmr422176606d6.36.1776324753663; Thu, 16 Apr 2026
- 00:32:33 -0700 (PDT)
+	bh=OCt1bwlr4N4M9lvWO3MK3T376Aq0/1T6MNpyVbtCJeA=;
+	b=47QX86MrIpvcX7BsTSj3BKgN8CSojCV4IX6+stT90zXalwvQ1HahvEvMGf9lCRuPsjUsvE
+	KqC9megXf4WUoz+D5sOOyybeukXKv3MnK1N0/gUWSrmHl4QONjvlzeyLj6kJ9NEBQGTExF
+	0P91NOpmn+NqzBaaPoeYVG50lH6kF3Q=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=uZU2MU9B;
+	spf=pass (imf25.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776325162; a=rsa-sha256;
+	cv=pass;
+	b=LaUQqWnk6Ea1a4oF89AuTHArjajZt/ctWygvsasmdVWrPKQF8jMBdbsM8EP26BNsHsclT6
+	3hc7cJZsigEkb/Qg1SN63ovE4C+cjCp73jtHQlDJsTF3sKM9lGUzFLBFkg/RJ8EWVBXRm3
+	UCx0lsLdRYdWrytWrG70xyjFUowjyxI=
+ARC-Seal: i=1; a=rsa-sha256; t=1776325137; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=GZwQUFonOWEpakPScWBAZyfTsj4R4pYeoGdBsp4h/aSXCqP94pUOgGAiNmkQfAZgsa4Hwtn1lEWzfxdE8A2cB2HP8Lxs9l2CPRh2zpfI/qpHC5wBO2x7qf+N1VAPPW3PqCojiq4/tiTLwr6qX/erGpNzmDWpmNwzGd2O2z3fqiI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1776325137; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=OCt1bwlr4N4M9lvWO3MK3T376Aq0/1T6MNpyVbtCJeA=; 
+	b=ACtzG7EXkxi3UPUlEaefUV2wCNMV5UH4wbJGGnmsAe26GLPodEDQAeZO8fxTqG6A2OOgNnwXfOOM0vzqN73HhkFE7ZqidPdnwSvUJGKrQRaqtAKkWlvl7EPA+jZkwkeH1WKRITL5fawAdx1uBmJGNp+LGEy9Qxo5mE/X57Zjig0=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776325137;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=OCt1bwlr4N4M9lvWO3MK3T376Aq0/1T6MNpyVbtCJeA=;
+	b=uZU2MU9BcEfuFjtveNpjocKh1fDTvVX7bNcAZqkuEmf5nPJEPZrQuTIXhZRvZJ+6
+	63C79C50mXU0F4HGtGyF/z0ejYdsnbGcjprtXExKUf32g5CqFdlDEHk15S2jqp33uyG
+	yhZ9S2+2yra1JeKFrVHbNaC70G6je1Q2b1wqnjUA=
+Received: by mx.zoho.in with SMTPS id 1776325135428241.04645771779064;
+	Thu, 16 Apr 2026 13:08:55 +0530 (IST)
+Message-ID: <73c867a4-b2aa-4b5b-871e-d3585ea864d0@zohomail.in>
+Date: Thu, 16 Apr 2026 13:08:54 +0530
 MIME-Version: 1.0
-References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com> <20260413-mglru-reclaim-v5-7-8eaeacbddc44@tencent.com>
-In-Reply-To: <20260413-mglru-reclaim-v5-7-8eaeacbddc44@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 16 Apr 2026 15:32:22 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wUvBZMbXA0sb_+TeGcpr=HjqMAPZS6WYyjU2wv5-+kHg@mail.gmail.com>
-X-Gm-Features: AQROBzAUFaJKGEkE3cHcprN4bf5vG9D_0uxg7dnNE_sUxPdgo9B8itsdFfUTq4I
-Message-ID: <CAGsJ_4wUvBZMbXA0sb_+TeGcpr=HjqMAPZS6WYyjU2wv5-+kHg@mail.gmail.com>
-Subject: Re: [PATCH v5 07/14] mm/mglru: don't abort scan immediately right
- after aging
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Stat-Signature: pekqrimt49g1mxdyr4trnnwxa6g5tuys
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 0/4] mm/vmalloc: free unused pages on vrealloc()
+ shrink
+To: Uladzislau Rezki <urezki@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+References: <20260404-vmalloc-shrink-v10-0-335759165dfa@zohomail.in>
+ <7d16f260-ffd0-4e45-b66e-9e7f71332466@zohomail.in>
+ <ad5yE0sgV1HJsyaC@google.com> <ad_cpqx38LtQPlX8@milan>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <ad_cpqx38LtQPlX8@milan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+X-Stat-Signature: 5n89bzyjndzdewox4m9x6ynnwg9q7gpz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1018720003
-X-HE-Tag: 1776324755-77128
-X-HE-Meta: U2FsdGVkX1+Sxt5c9MjJrKeZtFuJVM2P7J5DsjY/1AcekdxzUeFYDkOwtuv2XZWbR18ZVcazBsZWiVazQfz1V4RHhIjv+jGCZabf6hPHDjOuy9ikYHQBFZaiZKpgs4F5qLhi2hVNKDbzgRVn7Tc/Sb8QcLybBUHax78sV/tg/B0T13NEON5FU33216y/tN2W/HR2yG+r+V6u+u2A5eYkws60AJFIl2bQ9f0XB7lyKY6CFeZJbU2ek1Z8fJStY15vE5YrsR92+t7h8dYMS4tlBSTbidTNMPbq1QBhePTME3pnpJBEIktOnYKhbViU79l1Sk3w3PU3R1fKlHBOpTvNUJsaWqja+jvRAYCVHaJFNQEgKWmGyzs4QbYKZWaArN9Is2j1mdLw3XoKLHT6WhBcBb4RIsNbpOA3BpGXy/YDh20y/6Kdew8GCV/kSqE1z48RibfSX7ixNfVSSUbN0/j9cKMv/rNZw7sY8xPQEf5vCvjVILUz8mT9TMbwsJIU1yQjLQJXH3UNUYb3Y2FXZGTJ+I+T0Eh2kovgfgSo+f3njiSLjuPfQM2RmMsermoy6+HR899vo4uMKBL9As0zisGt3FgA19dqofJ7Ivw+uozghO7pUMhHv4RdLos0lzEHEUr4HGGab59GaI+u5RWBP6vfmuiJIJWNswgY/oNzO9plYifMLEdOvpR+6XraANqQiQTedWQbvJIPwDENQ4eTohTdehcBAAnIRw8BMlj3pBfuG8P6m3H6QvpuhvcGbaQxs7pp8LccFgAsa+Tw0jTALCm9ororwC10cKQH3PKgFlOi/ehzydrjhjdvKu2OYxDmfJS3iEqbCERT1meDyJdSNy2xB7pbdUBW8RUYwMw6cJ4uDNwikvePylQKlubl6+sfrF6a2ACIJGfjbDTCwP6CCPrYHGu7VDPo3ffV4RY534LgTz2wAgfLy3lYG97C6TYDHTm8AAEF1v5OJ4DIokCpI2T
- /p6mF1gH
- avIN+iiupcSy3j8RczLTDs2cYPBs8e31QOXKLtpA08rTG/um1Q/KRBmUxAQrmBdWI8hJ3yui0VwcPIDndpZnGnSIl6Ao9VT1HT6gmYm0x9ZBzohqFFmXQUvgm3SvJdBB2cK2qo3mENrxwuIpKGPdY0TERXZEVAKq8ImyshUGwN0zziyQ54rDRFw7yjDXuQuazzHJVqEKDhjVKzlsEXsutlZu0xSzqpOzsWicKseA16TvG8PD2lpqCSJ3P1ThizhTgNrgQl3P9z4DeYiCL6ZB2sX+EQUOnuEIrLlYzM8rNGgrMKTHRaU4/4+fNtjBvpqtF7kVngOjl4xfoEvU1Arr1XOTSUIQueWbqE4Jghi/FbNGgFpxpCiaB3cB0dZ4iS7tCpbTrlwNS/Beu4SyndaSt2siRs9J3VoUkxZUs3iofYEZ/z2xsrvzfbLTRdY9+RRN68mNl
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4166BA000A
+X-HE-Tag: 1776325160-813395
+X-HE-Meta: U2FsdGVkX18+19PDWJYI11SKgQg3iptIyuOL2IIQvb5p/1t5XP0iAVkD8L51UNeZ06ogA/VVCTGs9NA5YwFCI55K7PNxrksgR+CGwQizdvlKEI5PiVwlBbiA0n/HWb3lNixUHmILxbrYNgD1CDsvX5JmBPJB4llYzFzvO1tAPs4xYL/+0h8QbqhWWElICGzWYCS07+8jGc4TBc+fIsG7KUiR6OyoFMRqWWebE2C3gbKbE+W/rFcAq5Ej7XxVd7BsrHMKqnY9W3BFdwP6Y49Y4oWG6IH4fxktTVTh69jFYNwW15ylV1UNaK547gl5oSxV3ukroH/1KeVmk/N0Oxp0Yud6Hngax5acLVliBltOqRb6fxBXmR/uteTrzIH6+Pb9T/fMSeuWsd+Tui5lUEZ7vu70hDSZXuyxqx8uSSbsNAlEyN98MCzt/dvd80iG1UJiimPEbm5kDVHHrfMqzc9uahm2qdqpmhbUrI9urtRzfv2ODlL3NezJc/GGc7KLBxmQqldv+38FcDOjrK7Gzo3t2TgH1NWawwKjzO8mJUaesTY1vCy4QD5InBLs/JV5sxEQsCxaRHCNt52WB8coT1ciW+G9Jxn0ztsx+daQG53PzFKR159W5iipOuHxqdpCyQjSAT3GIFaFa2bXBCHubehWBrpC/zd4CFT4pEZUAtAL/+q0aURtIu6nXNcJdgvVKbg/GvrHgTys7JmBQsScHv0wkCHYFaIaKnkr/FZtukiawh6TbI9XWUU0HsDOvQjPdgh1EpNaWmX8RX6nYOxIb2Q5BFUhpliKl+a4rbGV5BQVYmr1k6ugj8KqgpmIFv2oJwkjwvZwKpmI6ESkdMohIerzKdzDAC1341/J+wnI+qXLFLfzWQ1oDef38QEUVjPPIokagK2JsxHq/zI43VJp7bmuK2fb7N92KpLjpQi4irrsEG7sY6iW2yhpMhPpiZJL4P74+BBxLh2egM3QzapvzCr
+ K8vz9aqn
+ 8wvWz02u5j2esUmEyGu6RdmoYW8IS5lpb5GTzHivUnyN+YZm6S7jutyHpO5Dmkhj/RxP+aQ4Br/BT4xBOQCOB7GMSg1qjmFv++PACiZ/hXLh6ZxkFwhczlqyoKfsLowfqQpbUxPZ895Vu5SrXS9Nc1i3FtO/9VhepxDpnpNAYPPWcYzSIbJLLXyDDeOAk6OW2adiraLwLjqSzalqWPop+gVvAXscoz7sg8ilD96WzoOghqIBW35dQnE0uq06txJ3BOS0ddGxh31TDd/LCAmUABRwEvj15JnpTtK8q5oJMqIySRa9F6nFuSnog5YDisuJt40zhaP13mVY/TX4BIOiZanEgP6Nw/leXHBXTLByPHnxEIJUumrD3JPRMqSz7PwH+KDaN3nir0irKAaI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,58 +104,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 12:48=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Right now, if eviction triggers aging, the reclaimer will abort. This is
-> not the optimal strategy for several reasons.
->
-> Aborting the reclaim early wastes a reclaim cycle when under pressure,
-> and for concurrent reclaim, if the LRU is under aging, all concurrent
-> reclaimers might fail. And if the age has just finished, new cold folios
-> exposed by the aging are not reclaimed until the next reclaim iteration.
->
-> What's more, the current aging trigger is quite lenient, having 3 gens
-> with a reclaim priority lower than default will trigger aging, and
-> blocks reclaiming from one memcg. This wastes reclaim retry cycles
-> easily. And in the worst case, if the reclaim is making slower progress
-> and all following attempts fail due to being blocked by aging, it
-> triggers unexpected early OOM.
->
-> And if a lruvec requires aging, it doesn't mean it's hot. Instead, the
-> lruvec could be idle for quite a while, and hence it might contain lots
-> of cold folios to be reclaimed.
->
-> While it's helpful to rotate memcg LRU after aging for global reclaim,
-> as global reclaim fairness is coupled with the rotation in shrink_many,
-> memcg fairness is instead handled by cgroup iteration in
-> shrink_node_memcgs. So, for memcg level pressure, this abort is not the
-> key part for keeping the fairness. And in most cases, there is no need
-> to age, and fairness must be achieved by upper-level reclaim control.
->
-> So instead, just keep the scanning going unless one whole batch of
-> folios failed to be isolated or enough folios have been scanned, which
-> is triggered by evict_folios returning 0. And only abort for global
-> reclaim after one batch, so when there are fewer memcgs, progress is
-> still made, and the fairness mechanism described above still works fine.
->
-> And in most cases, the one more batch attempt for global reclaim might
-> just be enough to satisfy what the reclaimer needs, hence improving
-> global reclaim performance by reducing reclaim retry cycles.
->
-> Rotation is still there after the reclaim is done, which still follows
-> the comment in mmzone.h. And fairness still looking good.
->
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-
-Reviewed-by: Barry Song <baohua@kernel.org>
-
-> ---
->  mm/vmscan.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
+Thanks Alice and Ulad
+I will look into this and post my approach for
+v11 soon.
 
