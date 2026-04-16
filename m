@@ -4,136 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF8B7F8A14D
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 10:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F262AF8A146
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 10:23:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F30A06B008A; Thu, 16 Apr 2026 06:18:38 -0400 (EDT)
+	id 59B606B0005; Thu, 16 Apr 2026 06:23:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE0EE6B008C; Thu, 16 Apr 2026 06:18:38 -0400 (EDT)
+	id 54B846B0089; Thu, 16 Apr 2026 06:23:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD0546B0092; Thu, 16 Apr 2026 06:18:38 -0400 (EDT)
+	id 413ED6B008A; Thu, 16 Apr 2026 06:23:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CD2DC6B008A
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:18:38 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 622031B8A34
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:18:38 +0000 (UTC)
-X-FDA: 84664019916.10.ABE4484
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6F51C180004
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:18:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fHzIkmdC;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776334716;
+	by kanga.kvack.org (Postfix) with ESMTP id 2E4676B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:23:34 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 06527E48A0
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:23:34 +0000 (UTC)
+X-FDA: 84664032348.04.67C49A2
+Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 55C51C000C
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:23:32 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf22.hostedemail.com: domain of 3o7jgaQkbAOwgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3o7jgaQkbAOwgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776335012; a=rsa-sha256;
+	cv=none;
+	b=X9s/g1A/CXhrNWr9SKWJOlU4v2i5Kg+Xc1WVdquDxdyOcSB63Hh+6siQkcloLfF1YuwNgn
+	IAFjpqvddIlw1276vVZcApAiYRIg0hm1smwZ1R4B8sTzio+ffuZCodkIYA7Nmuo9BQLtUc
+	HsEPrHxofCnvXbZ8wQEUG1hmjYsvfaM=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf22.hostedemail.com: domain of 3o7jgaQkbAOwgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3o7jgaQkbAOwgmnYOZZSfOddWR.UccUZSigSfQcbhSbh.Qca@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776335012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pheiDINOAwUsYN7vopid31AhY8r07w9KHuqWqrAWou4=;
-	b=HL/3DF/ea6TuTPW6Phgbq3hARTh0UMoNdY3QqTxSiKMN84lwnWHkiJqUqD//VHcMxo+rq9
-	PUL1ph9bo6pmZV1BFyDW3vUF10oEBqdCj3GpYB6vTfbzHSuxr7OC1HxxcdcxNi0snBcJGI
-	Wbb42ULChlJP49s9fqgTNX2FbmRi0MI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776334716; a=rsa-sha256;
-	cv=pass;
-	b=3l4Scv1f9QsuZDPeSTCM3GQLfxfibp3YfZ6i96/vVHkaN8SGYbdr0W55+6dnc9JYRWO6KR
-	GJNnMTWc64MGTETAlg21FQrbQj9k4CuiMKE8eR2AWFppsMfh3ktSa4K9Uv/ejSivgjdH3i
-	xJaeDIIWPvdd/cqadCbVcM1OWSz99jg=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fHzIkmdC;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7b41fdf9de2so29002567b3.0
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:18:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776334715; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Bw+6864JJqagjlqKIe9+rSGrY2WpGjG+u8T0ifQbFk60Gp6/flkpSW5uL9JJe4hTV0
-         Y9HyqGfsxI88WjAsb6Nhu7XM41rfCqgGGE/HpU4KIJ4lGlRS7d6I5b05P24HwLnxD0Wh
-         3H8FS4FaoieYLUhnQgaAeaIyPJesExenoctdm8BrAsk+3rNjYpg51ZJZC6HFF/cqhFRl
-         0MJh9/4s/YPEyRMgxp0l0F+CcnVfZz3IUSCfGWrcjKbcmz/52vPeJ1rVhyYe/iJrLIGX
-         QsY6mi22Zr5S5HMqrDYe2rUEUeDeCRFAic1pbc+yT5ptBj8N9/3IF/eILER8YFKz3lAg
-         b5BA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pheiDINOAwUsYN7vopid31AhY8r07w9KHuqWqrAWou4=;
-        fh=QVz+8T54OH6ixlF9PCYpZuMdydHzGZmjOCJN7UGQ6TQ=;
-        b=JMylseWxca3is1oj0G77ZW5wa/srjMhL9xHgI8F9DERgxlKAlwaoUD950Wev3fZ8te
-         OwABcYxl+JuL/yx0SGa7Vy5u9EU33zzOBvTmheQ6z3i6UvKxTfwlE51U/u2tCN8OdZlT
-         g8oryHxS5rfuSWq3EaYS4bR39HIq9m7u1zNarN0gXELmocB0Ve3ls7ENVN8nJCq+TtGp
-         a1KBvv7yt1fPPuz2AXCvuUa15OV8+qButEcANA+l7MakaULpWVet4DLvVraYlIfkGdX2
-         c14d+ZNI02N1kC9EYubHZNjEPNWzpFBZDHSdZ4UuapezGNpgC8Bwtkbz43WBWn2aK9e4
-         zAwQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776334715; x=1776939515; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pheiDINOAwUsYN7vopid31AhY8r07w9KHuqWqrAWou4=;
-        b=fHzIkmdCd6J5QeqrwaMBUwikmItozWztM9Fd+OCFZk5FGP8QswCQ1ERRNlmbJPF7z/
-         kzo7gDmHSo7K5YCx25SGipt7CueWfeOwZHgY7njh72xOQXaRFZPxMqWWkzyPPLW/NQ6T
-         m6jzHgT8tmtZSZ8p2wErVBo2XXwu5xo7C70z7zNHsZIgMJzJYJyijvPPMinB/MpGOyR4
-         WHL1OuMpxwFSzok0kA1yiyrMZ5etnte8eMlJ8QGQcPUT+JRd6pTJR4sjpFGcSfkJcDtJ
-         X1FsrrCF1aPJtnY338VZYCTZh22i8F+U9t5k45dmBFdBG4vVkBHtGoXR6ckGtkd1mNkJ
-         nCrQ==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=JEaj6fnSOKXp4q3360HUqOm88OpwUS+0PKrmb3o9nY8=;
+	b=onBnJQUdc9HWKM3fXeq+aQkm4jkjPAR011s+XHSkZU7mwXxNyt6abShC6MB4pyLcUuynCn
+	sqox6C5LHnQ6iriIIMYIYNB3S8emyZUumKBcNpBtWzNGLjB2tmgZOtWqbUDfsUgw8YUU5B
+	bU6wZ1SN4WYC+jmSu9GWKYu/8HM0Qig=
+Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-68cfc614246so10010119eaf.3
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:23:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776334715; x=1776939515;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pheiDINOAwUsYN7vopid31AhY8r07w9KHuqWqrAWou4=;
-        b=iRl1ytCGFqzHsbSumyPeAf9BG65eFwELi+LY8uqulSVPNfdNO/Z58By1RmIiyLfThO
-         40hUShBvaS9ZKJ3dp0M16MYW9iITQAJZo2W+47YLSAcw5td3tZDWW8t33ehJQHiXmJbL
-         UOCKUQrV1zeZDQGcvPF/qxzoiEMkEh1Ma17mHuLwLDhfwsF1nL7Jkl5oV6BMs5rxOxmO
-         LB0a29wbeFfvIWbN23rHHKdtHgpQuE67GFVp4tzc4FiGaiLHrlHpn07Gd1rzNS/CWay0
-         hxVubsK5nWREZmSFu1U/EGu0Q9NC2nmM3SjoxFYnvPATP10CfCfVb5+O7ZIy3IRdaukK
-         yhsg==
-X-Forwarded-Encrypted: i=1; AFNElJ8geLRccevo+96FGmBpawkmF6Qw02yaPOhEM1pzAQSf6ZrytY9+0uMPCacDDaWoxZLU/H/THYiEvg==@kvack.org
-X-Gm-Message-State: AOJu0Yzs7bLSVxL/+P5IUFFMuAQrlXJpjb8gjL+S0nxNu7tQsORyRa9s
-	vQDmECGJu7HLbky/iPMlzYcDk3doI95mNpXQjTtKCOHfxoMBLu5O4KdWO39UDI4D9cxW1PwBgkS
-	u2aNUQqbCLOXs20dwhh4TjW10mX1WHyg=
-X-Gm-Gg: AeBDiet/yJ0H9PjpTAc9HD9AghatdzETAsmoumOlW9TNdGIssjZaUHJcA8tkrlPMRVs
-	0vP+jlXIizpeO2hsKpjIGvbEjAfIziX0WTTxlplH9phj4tq7fvYlDU+LzZAXJWaT9nsoQjBki2I
-	6w6SdF+0+ALeLQ2f6t7Jy4gmrgLQoilXa9FfxZWolArxLYrDo2gl7Ef3bcGUZaFegKryX2TMCco
-	2j2DJP42kyFIGiBJWFZYNbx5pUSnxQDgcJlOb2IMu7OgF/3oUjmqiIONGA8sFnJ3pWYLaRr0WVA
-	SiDhtZnIH6jaeT2kh9PbBe/sug==
-X-Received: by 2002:a05:690c:c513:b0:7b8:338d:7d79 with SMTP id
- 00721157ae682-7b8338d8083mr43597987b3.30.1776334715394; Thu, 16 Apr 2026
- 03:18:35 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776335011; x=1776939811;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JEaj6fnSOKXp4q3360HUqOm88OpwUS+0PKrmb3o9nY8=;
+        b=Drx06LJdMbI/fs++M8MDdSTepAF7sDRMvmneCtNDVyU+uur6I4rq+U2GnGjz0PXm5E
+         HHGmi3Sv0ihUyIqQktQgzuAksFJV7i0m0563Z6uaq+uzW7ZWoacCspbgXbZ3se5Mpj5f
+         MaR4tELj6mEtYrlZJ0sSpUQj+4991Mrljd6G1w9ZQeij9/H7CHBEC7cIV07+PH1Rli85
+         cnDm8TvqXkkWN/R/zypw3+xsRbiBwww/HsMRkvE5QBYqFUKcsDV5WgBfC1EojMYbYNhf
+         ynpzFdUKVyPcTb+SOVmnKq5Eb9Uwwa45wPnONeYK+t4N8fyO1dZYNs+yMya5ser3A9sO
+         sWLw==
+X-Forwarded-Encrypted: i=1; AFNElJ95RDRL96iBOoi6BMSlcehM405awxDkrvxkd9ukuHKW2WfBpNwghJBWvDdP5Dy0BKSiV5r+5wCL1A==@kvack.org
+X-Gm-Message-State: AOJu0YzypTS73CNjQoN6pEp6N5Itff3ZfW4lRc413KDAD8k/SwzUuLhs
+	eT1yO2wcoqDYkKqlWbss53WbNbORo18y4zo9ap7jV6g+VM2qPma5PrpH8X/yhWg4/8e44RZJ8Vl
+	N0t7T8khuwco34GKl2lZ6JJ4YmIGOHjOg3s/ar8SRO920rmiIZjrrx6ke4jw=
 MIME-Version: 1.0
-References: <20260413154438.396031-1-ekffu200098@gmail.com>
- <20260413154438.396031-2-ekffu200098@gmail.com> <ad40-uVPKtaP6wuw@kernel.org>
-In-Reply-To: <ad40-uVPKtaP6wuw@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Thu, 16 Apr 2026 19:18:23 +0900
-X-Gm-Features: AQROBzCuLgCaPOXeRciUhYYsIsIaleERiNMswtAhG6ED3VpHFIBGRhjA5i5QxkQ
-Message-ID: <CABFDxMGbqDscOSMWKhPE2RT205=+0v_hWiNdFCmkTEBssN=0AQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] mm/fake-numa: fix under-allocation detection
- logic in uniform split
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, djbw@kernel.org, mingo@kernel.org, 
-	linux-mm@kvack.org, Donghyeon Lee <asd142513@gmail.com>, 
-	Munhui Chae <mochae@student.42seoul.kr>
+X-Received: by 2002:a05:6820:4dcb:b0:68e:b666:74 with SMTP id
+ 006d021491bc7-68eb6754550mr8852634eaf.30.1776335011373; Thu, 16 Apr 2026
+ 03:23:31 -0700 (PDT)
+Date: Thu, 16 Apr 2026 03:23:31 -0700
+In-Reply-To: <69ca48ca.050a0220.183828.001a.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e0b8a3.a00a0220.8f24c.017a.GAE@google.com>
+Subject: Re: [syzbot] [mm?] KASAN: use-after-free Read in copy_folio_from_iter_atomic
+ (2)
+From: syzbot <syzbot+6cc93ec9a4035badb85f@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, hughd@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com, tahernady45@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: b1mx9pyta63n87u79cdq9azufg5dzgfi
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6F51C180004
+X-Rspamd-Queue-Id: 55C51C000C
+X-Stat-Signature: 3d19ruswe5bf5bxdw36uwic9jbd8udqh
 X-Rspam-User: 
-X-HE-Tag: 1776334716-72011
-X-HE-Meta: U2FsdGVkX18KOFVpFOc2YSyz/JDdnOsolesjcrupUlSbQxdYorbQCmHXPWUFRetrkk4zbFlcsG3RPsRrP82MoDWyjzmxuNH8hTgN+x4X97P+kxYXvYfyGqQ2gHanGifqcor0oe3QV4/ViCECxRoJPpIMg/oY9sRIWoUivNU03eVGnw2vho5KxXevo27KK6Q/fSBW6q2oXEig/QI3fTySpKntiAfgmho2Y5niyENrrDAw4RyI8YVVVrISAOT7RA93Z0IKtkfXqUcy77ECAL2xzfmcuglYkGd6VAs45rX4BDBrfDoPCYSiXmAvhbjzgUEHiqXT88igdaRMZtKtywng8Eb2QkaHdPeJ72TT4eVlfpKUy6fsIw62zZHstjFGuNX4JpM+G7jI1ilZmQUA+oI4aNuGqsajAnhFolRv/ap0ug98c8PgaoLAn8cflm6QU7OV0E/i+mGNz4q6rH9Uqua/m/r1SmLQ+25WuNXxWEiq5PaH9cR9zS6GdH0SqqMMzHPrtAgFSjQHgrlmh1KweDPdjKyZWgmJQy27UbwNJ+qDcNOfnA3NzGZEoX6tKxAgk1lMQzHZwjZIgsuo+d9Cg88/pmygaKFYv6ct9GJdBjcMTVYp3b/92o8qf6mCYXxm2KHfEAxRqi6Jw4JDDh2CMTT3Ej4NrFFD+RGYmsmITvv8GoW4ehWj0bRFzGDmgbNYRzeUq9ZUvlxMclrbddakTOlIm1dAC84/ZlrORZcDN9ytUPynfk/ONAW/0Z74vaXgS0eOl9MkyNG9Ei2vuD1A4URDJ3pwScNzeq9lBrO6eSBOp6Dfehzo7Gh0AaWoitOn+seDZBXwidkWKvzO5kUXsYRUTGV1X+cjJRDmxDQAXbYE+5XvgNPjkl57rQIVgMDTI0C5ROiOcmGQcscS1JN5HFOFzFr23dbXQmBfrG3oJGnNredJ4JKN1MayvtMvxnloJPxAE4ZYLtN5nZcfQbpUen9
- f4LgZAW0
- k8mg2GqRz6kNdqNfbiZF5Y+NE6MD4uWHrU+prdpgyyEBr55ykq+0rF6K1f09Y9VgkNADt8riAJLaRaMEvKiJgWdEtjEII+1JDvQ9pcesmHOf8VDnU1BaGFbkpWjyWOWjc6gQpkynjBT7qZ3cmR4pmerXfBt/3/XbZZlK8O+Aa9aiUWPG8dUo4UrsP2Q/Ch9gRlbs9IKe+cTuR/ZzT/nWpINjDS22mh62vmwBEpb+ufT42pIpsVZPttGHnVCzYyYXnRnfK8DaOwaeFFokA4dh6g0pNKLFXHVbg0HtPS1XBVomMuJ2K4a0AkqItrx11dqf/sTNwimzwkaxQEzQKkwao28Rz7L5Egs532L+dYhYHj+4OM7D4h3fHGt778IQ6XzfzFVlGEpSaCq7L7qqJBFLK1A/7VvrvmI5idr9Hxp0+EByMljQGnUJPMHbQxVT/0BXHV4oJ
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776335012-794042
+X-HE-Meta: U2FsdGVkX18XUdkavVfXWqIAanCuoyhCPdXbzHqe/MHMVFYJl9Lbjjs9JVVh5+g2BuxmKOxaXgCPJklYWVLNq5izzB8yMvc/VTQTUqsVt6DZnR5KYucX3qIzY2DsPJhvychedvcfk0Sg3jzjKfFugfWVx7ArhAq2r9y0Y1RK+jTYOrjyx02YkuEeWdcG58oO3rb98yrxyXkjoIrJkV4sMUl6CCUiQcnUx5XGzgOBsjkl6h9dFv0FVOQqWeTKWKf3U6jjQOdsF30fTP59ew0mB1yJ9ZPe6B+uQ3iqoZFarTc/zPAJdM7NG0S5ub+Gd/rhu/CR55Yii1yEjRukqCk293+tsq2K1xk64kwxj8gSAFF1zn627MUl3Lxoz1AvvjkQLuyxQXRDZ073Ivoz9RgW29CC1d+e965mlbGzwtgi6shCOcntol4NncqU0T0bikZEJpdeIOHYJm9Tb7XozHwPnLaY4CLvhBROMVjiI3ctDR6a/N/I3QtDpy3jJ/Ye/isIuMvD6+iOc4NfMA24sSo1QA5+Wvt2czrNuidgHuHZ/8rexmHdnVhDgrpjuC7S4Cdp2ppW5bpsFCllsiwb6cjuScCI79IdHah+93GnZcYJqFck7XDvNNm4LToZLfHH1PlA2RzvkMW/B9N4xhu1tp1T3ewCvAaWNcmUpqM0unsgDC1Rod7/Y6q5KxrpWrofINoqP0SEjSf5klw3QAl7LcIS8HyMn/xluJ3tiRe0942zFW2Lzm2g+NmbNvSSCR/1hk6cbaAAebYcu8sr3SMVM2mw7FqTD81VC0U6qBYoDa748qKZuoVQ7GThxjyp6ysRG9Jm3xHmnGj3mEDxhBTmhA+a/rJtuaiaR0YEUHb5VYND/QGuz3BfB4hye8DoN5OTCfn9zNnuFu7hjcoOcLXuTgkxKvRnZTVCe1WaITuGv5EcqxfBYfiqMo1qqcYbrZFtbh6ikpLplPX8ouc+NjVV/R0
+ Os8LDUPb
+ EvSyghQV4BXIolcuQDSiY8B1M5MBUkChP2vJk0gctoxx9cLe18RKdXYACQ6l7pJkH+2ZN42/lXu1YvvicIAkJOFMi1uYL0VExfBAzkgzCFxlhb0FDi2kceXPMlWMJJarg3LzcyPWEp9Oh8AoKN2LEoHSwZGf95SzhFXmDpYvs6nJ19Mmo1zfzxJ4N1d3+d//1xTATV0DF2KfAf2CSJ5dcWlQg7tYYx0MlXuTmrEx2yPhEYBZDNYBDJHZBX6JRqfVr25NZZpbPNNMC0efpO5N8W1llymFT8zyVrZhz4z56ff6zdXEaeiUo+v6Rbc7E59rE+hKJCW2nqHPve5DsfYvkOgHu8BuSHxtkJ8DHfh8Zbfl6W0Ij565n80UqhQK+YeFQ5XHyy7drhWcR9WWauy5jdtH7RUF9WG9bJ7GFSsEoN3DrvRjunyrTDgxirHuIPflnimx3iY/YFzQi50AyBKyYjG9aCtvePJdnUoFcz0iaaNR6UyHNowNWCfgWRorCryXiY1XWNa0jV2oxNIDrrYopeBbq6m9/yznH+QTvdAaw/dmDv9my+uvWfZ3nUCdRHzvbQtAN+zCVfKYVjPjLuPU+FWHYP+bUEbaGLXHngrvUPxb32YQ2+6x5oGRL+5wq7SH9MiUb7t0tyD0aJAa7gH5qqzN297vaAZ9oun3uqHunjnbHiziHMnTrQwNa51A29Og/gMtXr8IFW0TWq94+srbST4UqH56VJNKkKlEZ2+Fe0reGRQPwIjB/kABG0MPqxDQ3OgNtAr96Fz+6NRymJYhyP/2tM3jPFuifrkcOsj3emWwF4CGge9lSXaLmAuG6DDWMlbLEHgNYznSequWKBTLskL3micedv+fQvVl/b5digA0UKPFD+KKluePthABMKO/By2dNI4J02UoukyvD/5Sp5Ef+vWEwR9AaA9xaiUzS8EgjHlvmfBwB+HUcX5aD72v1rBQWpcNHEGQyx1gXX3WPDGZPSYpo
+ 1s04xfcd
+ qEuYPiTeIuY5qXcLOqs3dLzwjCmjPC5ZFp4eKgNixnvCBE+9TGRwn80Wsm2JPy5nTykdN6qZldgroNL8rv9ujL9n1AfpROxesFt4LPhemZBFC49a1vncy8Rp17mH8bInWXhLDmaxMJ62ic7Q+X17Tn7XI8F7oIVZwtqLBWJJGEXKtGTdjlBcg75nP9RCjCDS1qA7DuVQ6eMH2HAfcJAuS9AFCYHkUh9sWJJbs9505HuxEzPul45FaSIfHD9xVT6Kfjeiimgrdug0x9Y0U9phFjlF6mChkEby4HRQb3iwJBSRm4IVpzCUlKjbhdc88peAFfSWRh999PJMEM+JbBOnmdSU+/s/CWc2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,68 +98,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Mike
+syzbot has found a reproducer for the following issue on:
 
-On Tue, Apr 14, 2026 at 9:37=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> Hi,
->
-> On Tue, Apr 14, 2026 at 12:44:37AM +0900, Sang-Heon Jeon wrote:
-> > When split NUMA node uniformly, split_nodes_size_interleave_uniform()
-> > returns the next absolute node ID, not the number of nodes created.
-> >
-> > The previous under-allocation detection logic compares next absolute no=
-de
->
-> I'd replace "previous" with "existing"
+HEAD commit:    e6efabc0afca Add linux-next specific files for 20260414
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=17908702580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=56c2b36de3316f1b
+dashboard link: https://syzkaller.appspot.com/bug?extid=6cc93ec9a4035badb85f
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14c798ce580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1142c4ce580000
 
-That's good :) I'll replace it.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/e7099cbf73e4/disk-e6efabc0.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/439c402df1b9/vmlinux-e6efabc0.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/fc0c0175fc76/bzImage-e6efabc0.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/94fa7bad6be9/mount_0.gz
+  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=17017b16580000)
 
-> > ID (ret) and request count (n), which only works when nid starts at 0.
-> >
-> > Fix under-allocation detection logic to compare the number of actually
-> > created nodes (ret - nid) against the request count (n).
->
-> It would be nice to have an example of memory configuration and
-> numa=3Dfake=3DnU that demonstrates the issue.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+6cc93ec9a4035badb85f@syzkaller.appspotmail.com
 
-Sure, I'll add it.
+==================================================================
+BUG: KASAN: use-after-free in memcpy_from_iter lib/iov_iter.c:85 [inline]
+BUG: KASAN: use-after-free in iterate_bvec include/linux/iov_iter.h:123 [inline]
+BUG: KASAN: use-after-free in iterate_and_advance2 include/linux/iov_iter.h:306 [inline]
+BUG: KASAN: use-after-free in iterate_and_advance include/linux/iov_iter.h:330 [inline]
+BUG: KASAN: use-after-free in __copy_from_iter lib/iov_iter.c:261 [inline]
+BUG: KASAN: use-after-free in copy_folio_from_iter_atomic+0xbb5/0x1ad0 lib/iov_iter.c:491
+Read of size 4096 at addr ffff888037cb3000 by task kworker/u8:7/1020
 
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > Reported-by: Donghyeon Lee <asd142513@gmail.com>
-> > Reported-by: Munhui Chae <mochae@student.42seoul.kr>
-> > Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capab=
-ility") # 4.19
-> > ---
-> >  mm/numa_emulation.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-> > index 703c8fa05048..e7f856c8f2a1 100644
-> > --- a/mm/numa_emulation.c
-> > +++ b/mm/numa_emulation.c
-> > @@ -416,7 +416,7 @@ void __init numa_emulation(struct numa_meminfo *num=
-a_meminfo, int numa_dist_cnt)
-> >                                       n, &pi.blk[0], nid);
-> >                       if (ret < 0)
-> >                               break;
-> > -                     if (ret < n) {
-> > +                     if (ret - nid < n) {
-> >                               pr_info("%s: phys: %d only got %d of %ld =
-nodes, failing\n",
-> >                                               __func__, i, ret, n);
-> >                               ret =3D -1;
-> > --
-> > 2.43.0
-> >
->
-> --
-> Sincerely yours,
-> Mike.
+CPU: 0 UID: 0 PID: 1020 Comm: kworker/u8:7 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
+Workqueue: loop0 loop_workfn
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description+0x55/0x1e0 mm/kasan/report.c:378
+ print_report+0x58/0x70 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+ kasan_check_range+0x264/0x2c0 mm/kasan/generic.c:200
+ __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
+ memcpy_from_iter lib/iov_iter.c:85 [inline]
+ iterate_bvec include/linux/iov_iter.h:123 [inline]
+ iterate_and_advance2 include/linux/iov_iter.h:306 [inline]
+ iterate_and_advance include/linux/iov_iter.h:330 [inline]
+ __copy_from_iter lib/iov_iter.c:261 [inline]
+ copy_folio_from_iter_atomic+0xbb5/0x1ad0 lib/iov_iter.c:491
+ generic_perform_write+0x5b1/0x8b0 mm/filemap.c:4342
+ shmem_file_write_iter+0xfb/0x120 mm/shmem.c:3478
+ lo_rw_aio+0xc80/0xf00 include/linux/percpu-rwsem.h:-1
+ do_req_filebacked drivers/block/loop.c:433 [inline]
+ loop_handle_cmd drivers/block/loop.c:1925 [inline]
+ loop_process_work+0x637/0x11b0 drivers/block/loop.c:1960
+ process_one_work kernel/workqueue.c:3308 [inline]
+ process_scheduled_works+0xb68/0x1910 kernel/workqueue.c:3399
+ worker_thread+0xa90/0x1040 kernel/workqueue.c:3485
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-Thanks for your kind review.
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x38 pfn:0x37cb3
+flags: 0x80000000000000(node=0|zone=1)
+raw: 0080000000000000 ffffea0000d17548 ffffea0001353448 0000000000000000
+raw: 0000000000000038 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as freed
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0xdc0(GFP_KERNEL|__GFP_ZERO), pid 6098, tgid 6098 (syz.0.91), ts 154383709391, free_ts 154428922615
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x231/0x280 mm/page_alloc.c:1858
+ prep_new_page mm/page_alloc.c:1866 [inline]
+ get_page_from_freelist+0x27d6/0x2850 mm/page_alloc.c:3946
+ __alloc_frozen_pages_noprof+0x18d/0x380 mm/page_alloc.c:5226
+ alloc_pages_mpol+0xd1/0x380 mm/mempolicy.c:2490
+ alloc_frozen_pages_noprof mm/mempolicy.c:2561 [inline]
+ alloc_pages_noprof+0xd2/0x2f0 mm/mempolicy.c:2581
+ lbmLogInit fs/jfs/jfs_logmgr.c:1813 [inline]
+ lmLogInit+0x357/0x1a00 fs/jfs/jfs_logmgr.c:1267
+ open_inline_log fs/jfs/jfs_logmgr.c:1173 [inline]
+ lmLogOpen+0x4e1/0xfa0 fs/jfs/jfs_logmgr.c:1067
+ jfs_mount_rw+0xee/0x670 fs/jfs/jfs_mount.c:257
+ jfs_fill_super+0x754/0xd80 fs/jfs/super.c:532
+ get_tree_bdev_flags+0x431/0x4f0 fs/super.c:1694
+ vfs_get_tree+0x92/0x2a0 fs/super.c:1754
+ fc_mount fs/namespace.c:1193 [inline]
+ do_new_mount_fc fs/namespace.c:3758 [inline]
+ do_new_mount+0x341/0xd30 fs/namespace.c:3834
+ do_mount fs/namespace.c:4167 [inline]
+ __do_sys_mount fs/namespace.c:4399 [inline]
+ __se_sys_mount+0x31d/0x420 fs/namespace.c:4376
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 5945 tgid 5945 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ __free_pages_prepare mm/page_alloc.c:1402 [inline]
+ __free_frozen_pages+0xf9b/0x10f0 mm/page_alloc.c:2943
+ lbmLogShutdown fs/jfs/jfs_logmgr.c:1861 [inline]
+ lmLogShutdown+0x44e/0x850 fs/jfs/jfs_logmgr.c:1681
+ lmLogClose+0x28a/0x520 fs/jfs/jfs_logmgr.c:1457
+ jfs_umount+0x2fb/0x3d0 fs/jfs/jfs_umount.c:124
+ jfs_put_super+0x8c/0x190 fs/jfs/super.c:194
+ generic_shutdown_super+0x13d/0x2d0 fs/super.c:646
+ kill_block_super+0x44/0x90 fs/super.c:1725
+ deactivate_locked_super+0xbc/0x130 fs/super.c:476
+ cleanup_mnt+0x437/0x4d0 fs/namespace.c:1312
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ __exit_to_user_mode_loop kernel/entry/common.c:67 [inline]
+ exit_to_user_mode_loop+0xed/0x480 kernel/entry/common.c:98
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:238 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:328 [inline]
+ do_syscall_64+0x33e/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Best Regards,
-Sang-Heon Jeon
+Memory state around the buggy address:
+ ffff888037cb2f00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888037cb2f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff888037cb3000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ^
+ ffff888037cb3080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff888037cb3100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
