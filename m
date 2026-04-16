@@ -4,93 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CFFEF433D4
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 01:02:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DA16F433D2
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 01:02:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81E366B0005; Wed, 15 Apr 2026 21:02:26 -0400 (EDT)
+	id C64A06B0088; Wed, 15 Apr 2026 21:02:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A7766B0088; Wed, 15 Apr 2026 21:02:26 -0400 (EDT)
+	id C14CB6B008A; Wed, 15 Apr 2026 21:02:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66ED66B008A; Wed, 15 Apr 2026 21:02:26 -0400 (EDT)
+	id B2AE86B008C; Wed, 15 Apr 2026 21:02:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 514146B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:02:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C1A41B86C2
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:02:26 +0000 (UTC)
-X-FDA: 84662618292.13.E11D26E
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 17C3F40004
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:02:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=svbvtnVI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A1A096B0088
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:02:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B8C08C1B6
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:02:57 +0000 (UTC)
+X-FDA: 84662619594.23.82E73E3
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 768881A0012
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:02:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Uig85Owz;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776301344;
+	s=arc-20220608; t=1776301375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M/IxZ9Exo9xtMakzxD94fQQCxKkr37hohfsJWCyPGpU=;
-	b=aO3b1/Aj/ztvzI2P2zroYlst2/4q9ib31JN0QprXkVMV1VARE1fWs9sAah7k/wIJeukV1D
-	H/S1kElw4epGZreGNSjqdBSz2+XxrZVlwRKQLujcTK/91XuwPjtrai0unP1m6fu5JZXxe6
-	sLi0A7iFwAmlPYQkmLyo2/par8/YquQ=
+	bh=8tvR6j+WnM9Rqg1W+aSR1Bip5pdx0V3AQgd1HBaA/BM=;
+	b=cVtjSOWx0AEpWKm/xS4LaKP8aArbUyhSs08tTKG1YOpJIohTDkD9uaWQbMDwykZ0+mZaaj
+	v82qxlbEa10qbHiFDY7CRdhZBIFfU0QOWjVegbTi5Nb5mbXerwpY6rgGjTStkw0WfO8JpF
+	cxWpgOlXW5ZxmX4v60WlOlKnzdbmf3k=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=svbvtnVI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776301344; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Uig85Owz;
+	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776301375; a=rsa-sha256;
 	cv=none;
-	b=LkX6nvVEvr6ZpO76LFQCvffaTbFyC17FXplWmxdOGzgbCZbaytLXHCTTa66TkLgdjUowWr
-	aGxTY9qEqlea7H7UoZjo8Iv44RLmJlAQraQYkXxAqg1SokNufaVlNNSsUPXXi4+av56KCJ
-	w/Tb5cM+VDmJtUcROFG1mLwNu8km0QY=
-Date: Wed, 15 Apr 2026 18:01:54 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776301341;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M/IxZ9Exo9xtMakzxD94fQQCxKkr37hohfsJWCyPGpU=;
-	b=svbvtnVIstOZ+4s1tT6Pc2S5sB5+MzNqsn2eqkXKDE6BKiuA3xhWll1qDnSC5yf7e2RZoW
-	/NNXdhCYFXAewFWhBQSOZoL6gg/gLdjS1RBfAB101F6EMJfrWIbC1HML5F75nZBJM9yA+a
-	J3B+viP3FcnEM1zeypuq0tjd4wD5+iM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Matt Fleming <matt@readmodwrite.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Minchan Kim <minchan@kernel.org>, kernel-team@cloudflare.com, 
-	Matt Fleming <mfleming@cloudflare.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Require LRU reclaim progress before retrying direct
- reclaim
-Message-ID: <aeAtOUIhFv5hXOyb@linux.dev>
-References: <20260410101550.2930139-1-matt@readmodwrite.com>
+	b=O/YF523vqtnC6Pn07KgzN2ARGrscKUGLOF2L3HpubomCYFSwo9o7GQ9vDaSPOxhKbUoJ42
+	K1ysOhTkGoy/UM/jUxp77uSEH9Y4BZBDlQDQ6csBpcmV79UblOOmIoI0vavW7Oyi/V2u/J
+	wHy0GzaQsy6uRb7a0A/kT0V73MMavM0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776301371; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=8tvR6j+WnM9Rqg1W+aSR1Bip5pdx0V3AQgd1HBaA/BM=;
+	b=Uig85Owz2qrPGTPbhph4jy/e29B9PvJSgqZtbz9ZPhI/35eZ/TmF/mJGIGSvk/og6fRi/WKoeHfhx/uqBnu3hR0XLLDc4yNrdhCHmAG4Z1cWK27CiYUbJjOOamqbta7sFBVbsTDkvuGfh7Wfdyw1TEjNEde9dO8Nmr2z63HIt1U=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X162oXY_1776301370;
+Received: from 30.74.144.131(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X162oXY_1776301370 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 16 Apr 2026 09:02:51 +0800
+Message-ID: <760c048b-8da3-435b-a28f-fa8ec519cdc6@linux.alibaba.com>
+Date: Thu, 16 Apr 2026 09:02:50 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260410101550.2930139-1-matt@readmodwrite.com>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
+ shmem mount
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, hughd@google.com, ziy@nvidia.com,
+ david@kernel.org, ljs@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
+ <ad-WY2B_9OxyWlzX@casper.infradead.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ad-WY2B_9OxyWlzX@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rf9df7rcisx8bnx4ndzk8cwhiq79wcg9
+X-Rspamd-Queue-Id: 768881A0012
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 17C3F40004
-X-Stat-Signature: kfmuqhwgryiupmw55ao3oz1psc1bf5sy
-X-HE-Tag: 1776301343-108418
-X-HE-Meta: U2FsdGVkX1+ZokBR9tajb3NBPgbVgwXJxqIOMyzywFER/lPiqFILUiBDunmplcwFFgVYJ7I2z8Q3RmNNnu0oE8Ya9ME6aCoBfvpQvWSIKqF9GiCD90KiCWUFT/z2t6IQ6c8IB+A/RHv1ZYwuaoMNF1IlHnOvnVk8L12L53HeL0jEbmd2R6ywdcb7aA/vgh2aLHJQP1QTgncz40twID/eNSuCUObCaGP+7B2GKWi0c1a6o5xNHs0bZsWL2KC8y/7QOQ68N+p59l4sqgoBPivzd2zLsThI9gVsV1lfu3lEzSQiy0SmA71yVkrXppP9kidP7PQsMRoPL816akmR8dThsYGd7izx3SlULjwQcdUmtsLuSfcNMe/lRVdTq0mskpQ+kxXjYEC7dF/bEJm4SJ2eMwHCcXt9y63z5+5xjZ60P+Me4nlf+ez9OtCgj14RcZ6HZzZD1bDE3GafEEnDDXOsZ6zTj+fmiqVlmKyWZzMDuLqs1v3THb5iX/0rjrkJn0L3hTxgVEYzgBlFbfOJkSk9I1xzs07GZeRpZfx9meWNqOxgsRWjJvDQqmUs0H7UXQxMoOadkd0BNLR3j4IvhcpQDsR46L6dDb1rHG5DkvEpq3sW1awXL3AgDGVoVZ5Ks117howbziXz+0U++u5EcqMClU4TgxxdpKCCT1WD0zyWxYb9a9QUztSrhvC+h8V0xAMefblraY10iVvho83xTbRLeBe+Dqo/0z2/pb38TgubVsk3h89FVM1k6qH26dC2ZW0D/xleVrZGDYCbYXWkQX0gQ+wGsSHiLo5oGg7zWeIogs+jAcWc6rManlLvFTNFF1Xvu0yDUh6lvXDDX2GT9sMXIGV7+jTW1l87sXY+wm/uyeWvQbjNGeqXuuQ0139ArL2TaDcSaaub6fsH4ldvl0SeEQ024zz6M9V//yyJZhYZGG3LLRwSZm3BZ8c16GOdAOGrXmDG8DkCwHA4ZFuJuHh
- CjlTcGT0
- fpcooV+9P1V9NlATVqjNQZyxkWK1rbcnXO7Wbv3srW15mrndqfmTndblzvQ8Kk/+HVwJzXmZ9ra4T12lvBZCymCgVHYAIBKUPzR/+HhrNJEG4WcyRecrdlJlLyBYR2ND8P+/9Q5eeEAjNgSXMz42lzmkT/Pu0VBFQcTqDbGQcSgh8TJ0w76ky/61gBi0tzXjiuFJdg5AQuD7lFVyxQpNc8PG3bC9jFUf4YgYpdbzEUdJjDAokRXCNK8bYtE75SUZoLrgmOMxWx75UgKt/djVRHXcuFj+jFlzRs/ZowKSGsqQPz+g=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776301374-900096
+X-HE-Meta: U2FsdGVkX18N2yh4xFDifWYK78ZWP+m+Urreh64E+299eX1aRNNH7MzBGkqvOArQbYglCEpJQQXf7SeEvYGF/MQj4/b3bOiFijHgy+Jxt4Zf+A2Q7WpukETw+P7Qc8sHXtLUTyGadILFvEJCkFLFhI691TgZqMeJdV0StHK1ooFgAKtIS2L7+3/73l8L0jVZJDi0lv70W1H9i7Gh3i48758Y48EzRVpRFqDe2AJj11yS4LRr0BCyA4w535ewfAdU1YlbC27KGtcH6WX2KB/UniUk/5zDVtCaQVgokTac4WMVkLq1FA3AgS0YYK3nJPOauR6EZpAoVdUnTI5+wj14MOFW/QMOjoRJf3TbCRTy3MXhaehfFzwruvmonYvHnRrIAPp5ZFBOzI2yhHCvuDA3CZjclND6l8FWptt8D/u7c63TsjB8uNFxYGJgQKa6aSsaXVlAWzgbfjN+BWpdJ9Mfr2q0UuWGhE5WoXFE7hWtQ1KOtrrEXktSfwAFE10smrFlH+c/C1I0Z/Cvt89vnO4fjZqHkTfhMPd7Nsbjcgwzo32l4qs1mie1+3bYLr4HPDEP/wMJdBDHS4z/GdKT23Xdo0puO7CQr6on4/PC8Y+PLC3Lxu2iC3soTfoGWA8TyCs8K8ewja+nGhDVAmTA5yZy1lDESPF+qYYQp4H4f6OuQjrazsJ+BOk6frxG7zF35Nc2oVpL7eZprqGrydfZFARuuHj5ChAXxmiro0RywmtysACmyoI6GEKOju7qjoxYn5hu8TX06lMHcNk4MStu/c/IdYAygE74C15bFFJgHT/54bZYvYaC5gLKXCPUmDVaEBGFqf45lpFoAzkPzk5p57j5q2ZdS/BEVkC7+c7ahuedbcu1F2gFnKl0GD2jXwlrSWJUys7PvphQu4m1gigGome4pmxvy3XNB4Iv7dwuVkA6jTBQ3m9mhJsgI8YuuozHfUMTiAeP9uvfoi17Tvo9MCD
+ RtuevMOy
+ HnwiNA+hezvEDLRAPm4Ejy8QTy1EYilQzdBB6Z59J6NiQRsICrpgKwhb9m48OfuEZTC0UaIN7Lw3ycyerxeAH+hCX12gFxIvmax6sPZHj6ERZomoYhfSOBlF97eTj+89+Bv5YKyBo1BlUwkMXAr2bIxzxujvgdR4qJcEfRJbpHA7DtftVNTuMTG9P9mHHG7zfZaSIVNFla3MrfwMsoZylKs+IafS2hPt3nB+qWtrLzWPBet4uYmYUIJXweWK3wIQHz5DBBnnajySmoWp+PZAldvb0b7VEY80p5RdM260i/z04buhLwzfL5mPI5PJ2VJrskV0ECEvW7LubVWIwMPxHq4TYeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,84 +89,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 11:15:49AM +0100, Matt Fleming wrote:
-> From: Matt Fleming <mfleming@cloudflare.com>
+
+
+On 4/15/26 9:45 PM, Matthew Wilcox wrote:
+> On Wed, Apr 15, 2026 at 04:22:53PM +0800, Baolin Wang wrote:
+>> +	/*
+>> +	 * Only set the large order range for tmpfs mounts. The large order
+>> +	 * selection for the internal shmem mount is configured dynamically
+>> +	 * via the 'shmem_enabled' interfaces, so there is no need to set a
+>> +	 * large order range for the internal shmem mount's mapping.
+>> +	 *
+>> +	 * Note: Don't consider 'deny' for emergencies and 'force' for
+>> +	 * testing.
+>> +	 */
+>> +	if (sbinfo->huge && !(sb->s_flags & SB_KERNMOUNT))
+>>   		mapping_set_large_folios(inode->i_mapping);
 > 
-> should_reclaim_retry() uses zone_reclaimable_pages() to estimate whether
-> retrying reclaim could eventually satisfy an allocation. It's possible
-> for reclaim to make minimal or no progress on an LRU type despite having
-> ample reclaimable pages, e.g. anonymous pages when the only swap is
-> RAM-backed (zram). 
+> This isn't how mapping_set_large_folios() is supposed to be used.
+> It's supposed to indicate "does the filesystem support large folios".
+> shmem should be setting it unconditionally and if there needs to be some
+> other way to prevent large folios from being created, we should do that
+> instead.
 
-Or incompressible memory on zswap with writeback disabled or overcommitted
-memory.min.
+As discussed with David, we’ve agreed that for anonymous shmem we should 
+set mapping_set_large_folios() unconditionally.
 
-> This can cause the reclaim path to loop indefinitely.
-> 
-> Track LRU reclaim progress (anon vs file) through a new struct
-> reclaim_progress passed out of try_to_free_pages(), and only count a
-> type's reclaimable pages if at least reclaim_progress_pct% was actually
-> reclaimed in the last cycle.
-> 
-> The threshold is exposed as /proc/sys/vm/reclaim_progress_pct (default
-> 1, range 0-100). 
-
-Let's not expose any sysctl or user visible API for this heuristic. It will
-evolve and then this interface would be awkward and hard to remove.
-
-> Setting 0 disables the gate and restores the previous
-> behaviour. Environments with only RAM-backed swap (zram) and small
-> memory may need a higher value to prevent futile anon LRU churn from
-> keeping the allocator spinning.
-> 
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
-> ---
-
-[...]
-
->  
-> @@ -4637,7 +4672,24 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
->  			!__cpuset_zone_allowed(zone, gfp_mask))
->  				continue;
->  
-> -		available = reclaimable = zone_reclaimable_pages(zone);
-> +		/*
-> +		 * Only count reclaimable pages from an LRU type if reclaim
-> +		 * actually made headway on that type in the last cycle.
-> +		 * This prevents the allocator from looping endlessly on
-> +		 * account of a large pool of pages that reclaim cannot make
-> +		 * progress on, e.g. anonymous pages when the only swap is
-> +		 * RAM-backed (zram).
-> +		 */
-> +		reclaimable = 0;
-> +		reclaimable_file = zone_reclaimable_file_pages(zone);
-> +		reclaimable_anon = zone_reclaimable_anon_pages(zone);
-
-Here we are getting the current reclaimable pages.
-
-> +
-> +		if (reclaim_progress_sufficient(progress->nr_file, reclaimable_file))
-> +			reclaimable += reclaimable_file;
-> +		if (reclaim_progress_sufficient(progress->nr_anon, reclaimable_anon))
-> +			reclaimable += reclaimable_anon;
-
-And here we are comparing the current reclaimable pages with last iteration. Is
-this intentional to keep things simple?
-
-> +
-> +		available = reclaimable;
->  		available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
->  
-
-Another heuristic we can play with is to also pass through the vmscan scan
-count. If for couple of consecutive iterations, we continue to see low reclaim
-efficiency, go for OOM. Also maybe compare the scan count with the watermark as
-I expect we don't see much difference scan count for consecutive reclaim
-iteration, so, it is a good representative of reclaimable memory.
-
-The reclaim efficiency heuristic should handle the swap-on-zram or
-incomp-zswap-with-no-writeback. Treating scan count as proxy for reclaimable
-memory should handle the overcommitted memory.min case.
-
+However, for tmpfs mounts, we should still respect the 'huge=' mount 
+option. This was a previous performance fix, see commit 5a90c155defa 
+("tmpfs: don't enable large folios if not supported").
 
