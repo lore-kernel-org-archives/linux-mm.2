@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6DE0F8D76E
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 19:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F29DF8D774
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 19:32:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E0F76B0005; Thu, 16 Apr 2026 15:29:54 -0400 (EDT)
+	id D1F316B0005; Thu, 16 Apr 2026 15:32:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26A3B6B0089; Thu, 16 Apr 2026 15:29:54 -0400 (EDT)
+	id CF66D6B0089; Thu, 16 Apr 2026 15:32:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 159CE6B008A; Thu, 16 Apr 2026 15:29:54 -0400 (EDT)
+	id C0D946B008A; Thu, 16 Apr 2026 15:32:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 04C8D6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:29:54 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8393F13BDF4
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 19:29:53 +0000 (UTC)
-X-FDA: 84665409066.13.C4989A4
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AA9256B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:32:51 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6893EBC032
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 19:32:51 +0000 (UTC)
+X-FDA: 84665416542.09.B292695
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 085081C0006
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 19:29:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TjiRJ3JY;
-	spf=pass (imf20.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id E051B40010
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 19:32:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rw1vIfWy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776367792;
+	s=arc-20220608; t=1776367969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zUHI/uE+8wXb1NPS5/0fe9BrIRorqRCB+r5YbC8Vm6c=;
-	b=WYldYGMFw+KFp/nIljJ0GwqUN4zNXHICyeiajdPQMuL4INw0wmIsBqfvQFzw6PJhaMs1Vb
-	v9bGoHb9BVDtRlKey48t2EXTUSJTkPja6jkRMA+v1feQpVT1uhgRooKMrr7SwEdI3AiUIu
-	bALANGsLcrpAc60z7mdiBZN1G5Ke+pY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776367792; a=rsa-sha256;
-	cv=none;
-	b=vKdwqGAAs/Mg2XdYewaLtcpxzvPq4OUMEAlZKzohL7MTUHmbgXQUck1hmWvsjmwLiNS9Li
-	nioecRlfDCfDh7KE3zoDJ2599XmfSoSaZ7wwjKhhyjGQeDU5ay71ibJJxNymUZWsx2ZMto
-	CX3wnQ/oA5NI+uqPlZhPuTpKWAstY1A=
+	bh=92ERkl7IqZ3D3ZBskV2Dg9cLo0xCsyjyPbt0J7jJ1bo=;
+	b=6P1REm5aCYXQByCehFNYZDKDIvi47E7MnK6nPlorkgcFpVoCskWM6owDD2fd7helW2Hge7
+	jOwGNGipjAJY085/Naw85jDde9NGjbzdfakrVblnzkxhef5Ym6GrwamATrQGtZMNBltjk/
+	qlZbo93tDSrVh2yj5l3Jpdus6RwWwNI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TjiRJ3JY;
-	spf=pass (imf20.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rw1vIfWy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776367969; a=rsa-sha256;
+	cv=none;
+	b=8KV5ehYbfEw7QRC9UTTc8nkVTM+JN2uK04U7UKuMAw2spBF7vNqsRaQgL03ahFom4PBFWk
+	38RsCG5NRSTUylC6VkfaidVV9RJc6Xmdq+Wd7xkM0FgcvYXSOpLinVAkYJqEXOwYZfbWND
+	87AfpFwLuliDP3cyg4y6TJfuVO7K7vI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA94660127;
-	Thu, 16 Apr 2026 19:29:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F0EC2BCAF;
-	Thu, 16 Apr 2026 19:29:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4CDE860128;
+	Thu, 16 Apr 2026 19:32:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E8AC2BCB0;
+	Thu, 16 Apr 2026 19:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776367790;
-	bh=IYYhpzvOPkjnKmWSOWOV2gjFmCyUK20pzUwsrPCl5+c=;
+	s=k20201202; t=1776367969;
+	bh=92ERkl7IqZ3D3ZBskV2Dg9cLo0xCsyjyPbt0J7jJ1bo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TjiRJ3JYC6H6QODlRe73weMWqu2ToVyxgZaKwDYZeUuXvTFyEukiq8tmP1ejDxYzD
-	 rmrx12vxM0g7ZC9obrRxDAfB+VnhJNvbWfFDZNFPe0bmQhLp4LsxxAr5syn+ysbEnb
-	 CJFNwSq3IzVphxzvT3UyUKOg1K7FQt/yAeF/6TILljylkaralKACrM4Mn6BgOOeIKv
-	 wGHlIow7JIanfsrwpPNBBsFvw34FcmmRQCfrRZvueDO/yyXUoANoGReW/3j6l4sYGi
-	 SDFU6WZgysyVavWZIkFYQOfBKcrZOljXUSUoxloeAjzhJrasftfXxGpcy4vC+O3xsf
-	 ay/dWzrcNvMPQ==
+	b=Rw1vIfWy5g39RTrQBVfk7P8+0yZErGWNG5UA9/vEtpQjlFkvwDTSfy9DcHen7/CI1
+	 yvB26rPsstyEixHeRP2kRFTYsbED9hoqdAx8pp9JCjVGtqsECj0BmLbEADz/j0Ea1z
+	 cuKaCVwjWLvXDg/CryubhnWhKyfuiuUjmH8fhvqeL/w/0cvoWWHyuhgdCpeuqDPtkC
+	 KhOKnJGX3lMBUei6zDvHwn/e429dg5HpUaKZZFagDf5a9Cwpgy1mEmtIvUBtm2UV8a
+	 d3rsfZkg4WL5nt8ssrtLumcRxpUUuH7CR13mk1NCsH3yKQQbT7v7wh+ISgR1TJLd7z
+	 vH5LnF1y8pygA==
 From: Thomas Gleixner <tglx@kernel.org>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-s390@vger.kernel.org, Arnd
- Bergmann <arnd@arndb.de>, x86@kernel.org, Lu Baolu
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, LKML
+ <linux-kernel@vger.kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, Lu Baolu
  <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, Michael Grzeschik
  <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org,
  linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
@@ -87,25 +87,26 @@ Cc: LKML <linux-kernel@vger.kernel.org>, linux-s390@vger.kernel.org, Arnd
  Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, Helge Deller
  <deller@gmx.de>, linux-parisc@vger.kernel.org, Michael Ellerman
  <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, Paul Walmsley
- <pjw@kernel.org>, linux-riscv@lists.infradead.org, "David S. Miller"
+ <pjw@kernel.org>, linux-riscv@lists.infradead.org, Heiko Carstens
+ <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "David S. Miller"
  <davem@davemloft.net>, sparclinux@vger.kernel.org
-Subject: Re: [patch 35/38] s390: Select ARCH_HAS_RANDOM_ENTROPY
-In-Reply-To: <20260416134238.9230Ba6-hca@linux.ibm.com>
+Subject: Re: [patch 07/38] treewide: Consolidate cycles_t
+In-Reply-To: <0758843e-8f75-4c82-b9c0-25fab502e62f@kernel.org>
 References: <20260410120044.031381086@kernel.org>
- <20260410120319.924028412@kernel.org>
- <20260416134238.9230Ba6-hca@linux.ibm.com>
-Date: Thu, 16 Apr 2026 21:29:46 +0200
-Message-ID: <87y0imemad.ffs@tglx>
+ <20260410120318.045532623@kernel.org>
+ <0758843e-8f75-4c82-b9c0-25fab502e62f@kernel.org>
+Date: Thu, 16 Apr 2026 21:32:45 +0200
+Message-ID: <87v7dqem5e.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Stat-Signature: 6q4j9egkj59baend9dfwcffzgxig7w91
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 085081C0006
 X-Rspam-User: 
-X-HE-Tag: 1776367791-698788
-X-HE-Meta: U2FsdGVkX18xsyP/yjeY1KIf2P5N3HwnmggyEjhaYFMVvvqxSi2/01JFqOunXchv//X7RmD/S8zF8Hm7BxYoLytcv4Yov3Wm/H/im2QuuHJKI16SpkaKsURM8wBS2X2+FprXVvT7NhE8rswcRir44+HC6pYcaOxW2+ELfA94SYLkb1gdBsfh8gj/GYqKN0+9VZtj/odBHEYaAsJtM59q8ID2DiPLbwTVHJGm93Q6heXI6kYaBMyfJbPUhtfk/q2G3ejySUk8QHcXWTWvIjAfZqSrh2NycfqzHiVUvLMr9DuUyFGrztb+bW6Inz04jMbhtiBXMkUk+1Pb9qemy2A8sebmdyNJTgWAu7hohiyww9P7QRr7x4G6GgblTqmwe8UEk0DwHTZDQj8+dsoDvHmof45jI1zlxWlFvu39A1xAtDcHpU2b2HEj8jKPFhKi1cholANi67Sy+N61CRiRMFItXIOZzl3cs9YVOhg5roQEFD80p7aOz9/fnnX85Ojw59EbRMIkb/8d1XrP5li/fOB8tGL5iUqCkyif3XHpi+Ddj3xr9gAbXKQz78Y8Oiph/hEe8XfmWcr6zW30wWSQZWqO4xIkMzvNc9bAeS75hCAjNUNHCQCkENGOD8cSv+MTv333TQTSYOtaibLp9n87T2CcuwoJQvH3wKkQSAnl41ewr/8YYsIeYxcxVkLJGBD8jCLlIYDbsERyetfHcGpJNk6R/M4Fk/xJtG4EYkEK4b/otDodFC+7RMM8CnK+418cLnMz0LQywuJRmcHibTixv17TydEewPyKArHscSNvM4VP3/PInkWBDMqH66jPvhSmTHronCrnzIkp1amtz2avPFya1FAAZSbsPc+yIPBiGDoHG4Lo022kodE5s/eHq9Vqfp7T3k5V/IvF4DfT8k+OgUFb1KcGP+Jte/rUqSzaCL81ULbmKNBjTm9hJBEWk61FJF3u5AJFI5snFT2XqKu64eG
- MUP8Qiit
- OZTMxx326Wd1XW7BJ6+jYVHR7TOZ1DX2M8ni/gKS8VzVqenXfJyAt9gjFsTDFua+WOh6L3LJC7bfhYdq3H+hVWlIQS+T5Gi4EOajc52Cg/0cAvHxkAIPSeuIbtmHHJ/ndFinSC89FD5bnWjFmkkr6kIQdhC+bICpXOFwuGpmTVZKJaIrewb3eT/lhEiWwO167hDSD0R2NKXjg/tviAuqW7V6Co0cPdXy/5F2UiYBXrgc9l1/Nsi23zThZkwOrXtAp9rxbZJUfVFyuijMtIoI5RdnaVys7CDHOLMsfHUJaHcNHI17ZRxaM1krfh2koIRz0VLNRCTY7mzBFThIjbiNanpw0eT/hIcUghyeWPwE0GppRCZHRNePYz+wGt9IFmfDM5oAvrWK+OxPs1GgtQgno/KsAbiH7D/5/MfPP
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E051B40010
+X-Stat-Signature: z4x3ibwpr6hpkefjmhdc68dw8uw3epry
+X-HE-Tag: 1776367969-31075
+X-HE-Meta: U2FsdGVkX18iDGJLi0TdP+whKOFNKscWBvHPUtLKav0nQqVx4N+L0htM0bvwit81ZxdE8wDw60FA4Z9J0F1kaWS2kT05wcCp91VsMFW0Ns+abN+jiECxB7aqx/TXFALfeRR/gwpcCIWke7J68nVGtZZYpJg96A/dSJ0aQdvdZAFOG//ugBKQCs8m5Otf06CpYBrw/9Kasm6GaGLrLF77oDOam+Ul9n3567UhW6KaXhs0V6r4B+eVoG4UKiO7uaIjWe/h+iiRN0SiqlbUTcY1+ohj4RdrUKgTgsfKj1cfhjdUXGUiwyYGcVg7W9QU6rBCECFGY9PSxgl7fd62EfRFO5msZ5lzyx7J3IaB/kP5gA5w04w8aTMm5vlxWAn3vzr0wH8YhB6hTsKUWrQuugjUIfREtLBKtGgbk/MttdY5s/zg/mNrtvc/z9zR1jd2Vj0bxV9hjc3O6Bmtl5wKQ+szMwoainJtxSNE0dA4r1p/tb7NnCzgNlkk8p5X6tLDIUnqYq1Q3J9ZymtLCJAYg2fCEwE3Vm8XMFoPUCTX3BQBYowJDseeIZmwOJ2R8um4KlcXLsPQrpeqPTYssyyhh1vLzyfLFRJrBQoqQeyrKkZmKREbRvHM5ubAj+/ocWPE5d1zN8CTh/DNfT7L79x7n/0INsQ4yADxeC4l5lIFvxhS/rJNP+kALDsquHf6vtLW2T9hYFvv+4QlRqOGpCgpbDtXgt2DKGpioX/N9cIoMqvuAlXNZmwUssy77CJYT3YltqtXVF/uuB7Y9dW5TZzJaOKExtPCwljT6A4cxqX9TGXyFEwI58Nglf12uqiNcCt2AI8L92G8uLRxNptNC5z3I5WcnwWsOGt8ql4QnmlzUjngiZIeyfyApHYs4JuODQpJl6YsbCvK8wmZ4uHpCHD55YojXvq2TE0bGi++S6tz283Erp6FnbbYLO8eTMUD3IOZF8KeyWm4MK35nKnQPtEatl/
+ ZPNhu+Xc
+ +gRSMhJargU6ftFeVRBNY56md7Kwz2xipPelwZH06VwPB8o4hmk0rt1VqB0lSOsxDdwccLK4WfJaxwceE8Btgcc5c/EIPr0B3IGfk9MFavShjmXn462twd/cEdf4KUBMxoTT2yEAqg3C6hp4AKjkYXSPEjjhhq+qG4SBJcrF0+PFntG6Vi3xMVkgGHdNKtjrxmzSjLPHnMXTm7BmKAa7gh3reaHiulfSxeL+DsPB6kBhqWVf989gfwBNQftcjAYbE6iF3fw78cB0GK89L8wbUkR2yd75ds+GXp0rhm7I/rbIboFK1OhXL7tNtxmMfWa9Ro5aOJgx02HNkvks=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,32 +114,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16 2026 at 15:42, Heiko Carstens wrote:
-> On Fri, Apr 10, 2026 at 02:21:19PM +0200, Thomas Gleixner wrote:
->> The only remaining non-architecture usage of get_cycles() is to provide
->> random_get_entropy().
->> 
->> Switch s390 over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY and
->> providing random_get_entropy() in asm/random.h.
->> 
->> Add 'asm/timex.h' includes to the relevant files, so the global include can
->> be removed once all architectures are converted over.
->> 
->> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
->> Cc: Heiko Carstens <hca@linux.ibm.com>
->> Cc: linux-s390@vger.kernel.org
->> ---
->>  arch/s390/Kconfig              |    1 +
->>  arch/s390/include/asm/random.h |   12 ++++++++++++
->>  arch/s390/include/asm/timex.h  |    6 ------
->>  arch/s390/kernel/time.c        |    1 +
->>  arch/s390/kernel/vtime.c       |    1 +
->>  5 files changed, 15 insertions(+), 6 deletions(-)
+On Wed, Apr 15 2026 at 08:43, Christophe Leroy wrote:
+>> -typedef unsigned long cycles_t;
+>> -
+>> -static inline cycles_t get_cycles(void)
+>> +ostatic inline cycles_t get_cycles(void)
 >
-> Acked-by: Heiko Carstens <hca@linux.ibm.com>
->
-> Thomas, would you mind adding the below as minor improvement to this
-> series?
+> What is 'ostatic' ?
 
-Sure. I'll respin it next week.
+That's a really good question :)
 
