@@ -4,98 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A330AF8A160
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 11:22:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81AE1F8A161
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 11:29:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAA2D6B008A; Thu, 16 Apr 2026 07:22:32 -0400 (EDT)
+	id C3FD66B0005; Thu, 16 Apr 2026 07:29:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C826D6B008C; Thu, 16 Apr 2026 07:22:32 -0400 (EDT)
+	id BF11F6B0089; Thu, 16 Apr 2026 07:29:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B98106B0092; Thu, 16 Apr 2026 07:22:32 -0400 (EDT)
+	id B06666B008A; Thu, 16 Apr 2026 07:29:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A88416B008A
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:22:32 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A12A96B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:29:55 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4E801C27C5
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:22:32 +0000 (UTC)
-X-FDA: 84664180944.06.827EF8C
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4575012000F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:22:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776338550; a=rsa-sha256;
-	cv=none;
-	b=gD8JHCrBAieeCrrSeDH8m6/8EsMQJECcTPnILfjQKjP4vkgJlS+qHe5JNcQf2spcuMGrkE
-	UEX3IKZdJ2/koAMkyh7c1ZRDeS1/kXLV11bE6FYNzSh8keGmdI0RHJkbQUxe4glLHfyJnE
-	ZJl8OaYKKWmTHrz6QYbz3wBZan2fDL8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com;
-	dmarc=none
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 30950140823
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:29:55 +0000 (UTC)
+X-FDA: 84664199550.06.21E6D8F
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 309BD18000D
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:29:53 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776338550;
+	s=arc-20220608; t=1776338993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I6jqlHRyBmHp78NPQbVn/INUSPCxYZ/sUXVIyq1nXfE=;
-	b=tzFkX1ZiOLzUIxRGr0z4gQfD7AVumQ8+YavcNxXi2KRrQr4uwXgNe6XFYlu/tFJ47uPo50
-	AlaYEx7JjZmiHBBPqDw11b7TjfFgb4BWLldq/PszMVRi6ppbe3W/dsY/UL1hkdJ7+fkoEw
-	o1H9CnxQrXVGTnqeUDLYl0JGTtjiDeU=
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56d95bc93e3so4675507e0c.1
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:22:30 -0700 (PDT)
+	bh=0N28AiHhMQm9a3ncbvMl4jwXcNZbOrN6OiiJm2DjJOE=;
+	b=lYuzM1beocIVdft1IvbhM/ObgfsHYSN6XL4QP4SpwU73iUPCeA47R+iF1aGd6HW9Tku0/B
+	g+hzirRUenQcCAuv32FC/B6p7B1RpbSNnjG37jZsZw7o5lNr6bEO2cXX+JoV1jrYrC+gro
+	dZP22ivqLEk4x8dhMCIWBIfOGIJV22I=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776338993; a=rsa-sha256;
+	cv=none;
+	b=pEiXKiRHzVirziT09oi1wKsgp5bCg+gSNqTxt6lzssefH6QFUmMnaz994smpVTEJ7J26Pz
+	2cLNwfzmMMtdM2xobUSJAKRdDBAeohp8tIacLa9p7yuTZHHQK92J/EMP/I+VHHEL04pubr
+	UreytKTNQuCGc6rSbsPCZzhcdA1AIE8=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8cb40149037so729424985a.2
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:29:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776338549; x=1776943349;
+        d=1e100.net; s=20251104; t=1776338992; x=1776943792;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I6jqlHRyBmHp78NPQbVn/INUSPCxYZ/sUXVIyq1nXfE=;
-        b=Kbf/lN5VewPDnTwh60TpG28/DjrCBELUntglxJG8irhHPkriqthmE3pNcSipxHhxfe
-         vaMYiqbe9QbCXZV/3JruWPta63LDKq/MrOtJHrjH/YvK6GlrX8Smd3/Kl4tTNXJwRt9w
-         xRpNGvX0adVT7sh6exf70Jf+HEhDr8zWvpzL1EgOEKhJAFN2E3WM/2uDeyVWcvPFhuvY
-         FmtJamLbJzVxuV+nv8gpNZH/cELdQiR2Jlflcs97ibBx+0d37sHV4MHHJ0Y+BdFzf3+F
-         f0MESrGB98ksytIdAWfulqrWAPe1gh6NU5APNq0qRKV+SAvauRGK1ghlzjjaGR4t89/R
-         pDyw==
-X-Forwarded-Encrypted: i=1; AFNElJ9yymSbZh3Ho/ovrnFkWBUx0yGpPCGvMEO3IJ5J/HzrnyX2MY/MdJPbmf9OdP69zO2StZhBnxlkUw==@kvack.org
-X-Gm-Message-State: AOJu0YwISHarYEcv5vktLRfpNGJxCg9J5MaSeWz30313WDx+p4WLJXql
-	PbkwOLJWmz3gjwBc2EwJlo5RIYzk3WNoIGut2KKNfoPKtWDBsZchnqmvJ2FV1ebD
-X-Gm-Gg: AeBDietMhF3sdhN/CWsuPVhvRTTc2imnaaxwxMwANh/MWkpgcks97LNcxI7ZO3kgY2F
-	SqKeisIRlnzb2WTKQmMpM7/q6gfjspoa+k1Na0/Cf973sXgecqcmiWg4PsaQcr3lcaSR9e/pkH6
-	7uS4dBe/7xxPikHxvxdxCfSCA6G9VJuq8LNmXaR4e4DJi5tOhTpIqzjz5T4146KTxWntqog85QF
-	fsWi3yFGeKy5ThLNVnu+2XVWih7+kWkvz/SFKkckvjlTtzTse+vQg58ha+hv8D5FguM2G9vFIXv
-	KqUIgzr/qeCea1fw49/umDBzNQG1Fwpx9WtwQGRzAQue1YNwmc+OeflVFm55qX4qjaUk/fvdWyT
-	8rcowpqv/JnfhLZzbvnecakVmUNwRku8UNQLhS62sh1jHj24XCfRqS68z2XYkobRG8mlAME+5O2
-	LTX3j3sbol0bKe0UzT1eLFmfnnxUw8ojmQiWSidwarKd5KVSpXzpIO/aJc1GpC83irAe9ueTI=
-X-Received: by 2002:a05:6122:8b82:b0:56d:2ca7:fbc3 with SMTP id 71dfb90a1353d-56f3bba6252mr14119769e0c.5.1776338549310;
-        Thu, 16 Apr 2026 04:22:29 -0700 (PDT)
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56f89dfee48sm2780370e0c.5.2026.04.16.04.22.27
+        bh=0N28AiHhMQm9a3ncbvMl4jwXcNZbOrN6OiiJm2DjJOE=;
+        b=HW9J2EUhRD1lwAST6puUBPKIgU0xke9ReRQKIChIoDP7NjT7RYCLeXKvCTJu7rLwy5
+         alCeYGy7a4p8HrnYy1zwtjDfkLdSyhdH+ax1MPljSBvN2vKRYya/sFcBAuOzkfPt4oGT
+         I3YFkEENfQFs0NAkO6alL2LWJC/UW/AIwT4X3u+iCvWeZZxfVcR5u2NWlXSWpBA6g6/4
+         ORRtjxHuxjOwRx1kgJQTch2+8YAoW+XF1FF3QZmcMU8GwisRHLFCg7WwEYnE63UJimym
+         Uebs/jBFjPtGCM8UaAfqwNZI4ba99ssTyaREkpbhUbldtuGGKLPKmuMTZiYg5ZN11G9R
+         9RwQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8YGFmGWVBtoUQDAoNVLiZKCK7NIV9+X49Is3cgArHb937Uy1OlwU7DlVifP6sJMVOMg/IjiywMyQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx44/WCrQCSoqRahH4M029oW+bbw/sue18yKQsI4yrEhlRgMTvT
+	CD1D0D5LFCOI9N5CkfUExvxaLABGw1FuLAW/AlEhWkaNzZy+bjeOktxyjELJ252M
+X-Gm-Gg: AeBDiesedJCUCvMjIsada0LEnNatvWRio3c/gJQYg3m6hCj4mI3PpbHVJAZ8plWch7R
+	0dfW0AupvtO8y0hUn87KKRD15iuvv7ZX2cHgH2lD4Qgqd93mDNWZLFT6Ci4oM7JE8EaKnjy/wRh
+	YmcTRjgBAjm/vVXgBgpQ4m5ajZDOxdbGmIGyTpySpYfJ+nOVEvTW5UWaK+FcsxheBDIeZuIJJXr
+	oRnMC/YNquXmiavDOG+aKre/TD7l4zB/SLcGtKVHAt5Eimubau0DBWoLh/Cb1JdPJUP1+/cIizp
+	SvrYSDNPrfdDaApW1H5Oiydaw3UT/XNNZhjjmOVGfyEvVWgUjg2ibcSD7WpMJ/jfDQcbYfykPvR
+	sbv5BcCERIzY5QJO1THVMfMUZ2E+2d7oqaicHsHjW56GVpw24Y/8YE2wfghuaj8XGPIt+5I2m8d
+	o8ls956e3vyWoipTESHGj+uBeGEYisrSBAlGhSZimsiTWl7wcARrDua9wy36Zgk0c6rXmIV0/rk
+	crYtz5U5/p1eg==
+X-Received: by 2002:a05:620a:4451:b0:8c6:a034:9224 with SMTP id af79cd13be357-8ddcfbaf5cemr3683770985a.47.1776338992196;
+        Thu, 16 Apr 2026 04:29:52 -0700 (PDT)
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com. [209.85.222.178])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e4f2345c3bsm398922985a.24.2026.04.16.04.29.51
         for <linux-mm@kvack.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Apr 2026 04:22:27 -0700 (PDT)
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-9540bb77b1aso4158628241.1
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:22:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+/y3jCTxutcKWcfJ9SICZXmrNT5HUSP7DxEJpEkUYh8c8artA91CuDoRuQMqM9LirqI5HcRmor9w==@kvack.org
-X-Received: by 2002:a05:6102:6044:b0:5ff:c64d:2283 with SMTP id
- ada2fe7eead31-60a0157295cmr11348128137.30.1776338547396; Thu, 16 Apr 2026
- 04:22:27 -0700 (PDT)
+        Thu, 16 Apr 2026 04:29:52 -0700 (PDT)
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8d560ede296so924642285a.0
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:29:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8i6TRwjMyATqMAwxepMDxl/qf4y4gxPbtLP24rl+p+CTa4QB8MqpK54RxWfOixt2hQc1NAW30uzw==@kvack.org
+X-Received: by 2002:a05:6102:3fa2:b0:608:1b6e:f4dc with SMTP id
+ ada2fe7eead31-609ff0c50e9mr11028119137.11.1776338540828; Thu, 16 Apr 2026
+ 04:22:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260410120044.031381086@kernel.org> <20260410120319.397219631@kernel.org>
-In-Reply-To: <20260410120319.397219631@kernel.org>
+References: <20260410120044.031381086@kernel.org> <20260410120318.045532623@kernel.org>
+In-Reply-To: <20260410120318.045532623@kernel.org>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 Apr 2026 13:22:16 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVoo_6i9=2oQj-=yjW7nK8eL4og08bdYvk_EGj=_cQvQA@mail.gmail.com>
-X-Gm-Features: AQROBzCJ6rVnwwfhi99PI36wWXAFQ5DEgo1zw3RhVwYNSXoxkTYAcgIxt5Z0K1g
-Message-ID: <CAMuHMdVoo_6i9=2oQj-=yjW7nK8eL4og08bdYvk_EGj=_cQvQA@mail.gmail.com>
-Subject: Re: [patch 27/38] m68k: Select ARCH_HAS_RANDOM_ENTROPY
+Date: Thu, 16 Apr 2026 13:22:09 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXtR7T62Wf+yDM=J0+96C64qRws=ffX_xXbfzfbS0Xz8g@mail.gmail.com>
+X-Gm-Features: AQROBzCyA8BqoTVnHFn7fWQMKVWyMF2wrQlYn44P8f0X0RsdCOwGnnxui8decDA
+Message-ID: <CAMuHMdXtR7T62Wf+yDM=J0+96C64qRws=ffX_xXbfzfbS0Xz8g@mail.gmail.com>
+Subject: Re: [patch 07/38] treewide: Consolidate cycles_t
 To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-m68k@lists.linux-m68k.org, 
-	Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, 
-	iommu@lists.linux.dev, Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
+Cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
+	Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
+	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
 	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
 	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
 	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
@@ -115,14 +116,14 @@ Cc: LKML <linux-kernel@vger.kernel.org>, linux-m68k@lists.linux-m68k.org,
 	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
 	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 4zryphwmm9ak3ydhus61ezsdjfwa6uja
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 309BD18000D
+X-Stat-Signature: ocsnfoyznpn46f8nzouteqw1g37r9rpb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4575012000F
-X-HE-Tag: 1776338550-968779
-X-HE-Meta: U2FsdGVkX1/vHR3+gVLoi0bUHGYT6d2kLJRiH4m3SWGNHGWBV1kPGxedJFbYSGRRiU07Y72sEG9Mbhhi/7PYcCujxeh4D8jyGGWLTa3/WbaN2iRkfR1PrpezUsL00XkicdkOLnqU5Qnk2sGC9Ub0vQdLSNcOMD6WlyQDaCPjsqFxxIYs/LOKH1GyYhqx9BV0CKPu4cYoRiSwPpGI9aA1jNlnsdl8R+IL+324i9d29E6l0rlnV2p8x4EJQHfOoJ5OmTSAvG3wB4MqdCy4j6V1ZJiPan17K0leZfl2HEan0euX7CApY1qyKLUhPWUDibLv2UVaX7nIj/2/KcYmsSrtaJ2f1lbf2HEHON25jYT95iCLeiAaFqw6r5iXPVL6JXYOFW/pq1foDlm3kMx23kjP1lcOwOYr7ykrZIkOuyP8qnYzqyzhhqtC3F9uqbDKZDMwCU15riCnxEb7G/UqMNb8xccDcD00RYtmGj9oNlZjwmVNFufLSHyjDMmzegELi/1ztsotTyzaIFA0tAMJYaY6psSRXjah5I04vjRw25umvFLikdrAAExOHdcl/wvlKoBaguSsnNAgwMpkMkn1XZR6WI1NwfRh5RpBDsD711YNagAffRMxuNqdppxhqoihSN1G2EL992HnP/2MKMVBH2Me5zr6IonXeshhSNLgWqeaN72ZDzPLS+euWFnANCsPhuoCY90WzZxbLqseFAwqETmKqQ1wd9SEa/9o++wSq2/nW/qh/XYf/v8UB+iarZsSWevXQ+pPpWXrr8iqdpr2mKIguuAqZTDZBfCTbuqsx57s7/Zza6kzhUTL/YAXZoh0IEe62qCUSb42iqKjzr9g3AGIGxsgdvsHv8oL3JdLjok8RdmNN4OErGBgSF97mkKtNXLc5Jjqp2zmUwukfHD6HbwVWFBPb3VxaLObLjBMNyX0BMWqS/vgMkMHOOlT8Y7WCnLm0QXk+mM/cv3N/3oB8Aw
- K/NLXDOO
- g9ND5CmGBtuhz07qfULgD9111t8fi6Hwy98xD27FsSn8AO1cSL2AVEC9zq9KQoB+pC3iQdRbroTP5+04a2S54/J4Azqc3mHJevqWpKz1gSxxorw0Q3fOm5tLkrM1dUYlxaHGMx1+bBDWzcspGxATBYhzSQTkDCBBeb8NUbs3cNKoD/CXE9XdmM6ij4Ze8U6tudvjVM8YLbfRAt9bu9doFRQa+DLF5E1+oj4nxSFHl3ixTwerYId5ycttlrcjbHMfcVrmdSbEB809qgwLstnf2sdjvgeYY1xB5L6/RSFmLZWFwNzRoDzIB4nWG+iXpVev8CCgA/2UNNZMDOf5/7yueHdPhAU21Fuv7vjj7dFIMMOMcih30N4VUTXHu/DqM+7F04sbQHW2FXSkQzndxLubs/o2tfDf5JzxCB6ObATgkKTUBv1NPLNpGd71fUrolYG8u464ED8nk6GmFNoFiZdCVNQgTTxZhxvUlim8lxkRYiJqRGR1y7nBDb9vKgFp7MvvCmLp85mSLZuXgybxbO9gfDdG/PbttvsiW6yMZqWRHZ1TwkyE=
+X-HE-Tag: 1776338993-169425
+X-HE-Meta: U2FsdGVkX18NLVy4V7XzDLK2zgSeoUVOlADUQcH4mqdcurY8GF92IrveILe62p93d6cnnAkAw2AC+9P7i2xoD0iydVoO7QYqote1dB+LSyu+Y5lugdDkRdvQs3lWcflGkZA/TyFvNbHLTdEUwHqw7tifPZ6Kv9Q+K8INJnZ5rIXRV3/hGN+Pal1RiqkwfuPbIqaC2ZLIYPsZSpSsDyZuYVWpJ5XWVcvllEbrs719K5sVEHiYpTRKRUOuazNtsMP6U2yWxOrBnbIjQWLV1pJxKV7QMmtKnjCAU62I1gWXWnMyNoWm6924jHMsei+IX9MYFzP3kwzi7P7b/HUcnLeeGOq6l21ZnHhVg9fxzJ6JNHfT1l7yfZwp3vq9ASOKUTm6Ge4eqHBCky0hsJ1i9hY8rLumUIXUlhJ/RmMK08a1+01RooWo8YPf0wCn+El/T6tIoMNSvuxJDM4V8GQq7zA99UEPFG30DCMpnpZsvQiIHBgmYXUnX1wvZnwoc75AZ3Iz1rXLCwJHNYh6EDppN4TV9l8WDgM7ZANVxJyDxGX9ZXUlpkg5BuMlrBfdSJTwmfXl/JzVXMaqhY8NtKQBRxRrwH2ndvoUaSEIPUFcLq3Vca2TKldNO/YSryUjF7zBUB1FvIWWxoUh2YqOQAvkpoQcDZIS0Suho8wq0WWmHkU7bWRI7x1Ga3SRkbPHAUbF9Odyq9dgXe9HdI2xvHq4/Gz+QJAMXhdpVTXF/HA7ENFTn+hYfqZZDJj/6Ccy64cxXFCcOqbx/0y71WiXSZoCcPFXs0IsxAFVMC5BoegQlKp8SubCiJEQ1/9hjq3houkxynD6iDvSuSfF5f61ukL7BTHtFkKej+9zrcLFcN9m5uOqCKCJIBO/fmcKK5ZXcCyCAvwVOLAvpkddp7knLwgCpHoNYZv2CJSPGqxNwNlSXhMeoQCW6zrAieLWM8Xjp/przdNYuougHoRGLul9MlV+bmB
+ VB4flcvx
+ tOWPTUeE5cMj/hWFjspsxSUZzD/xHqd2s5eVNQvgXgyp/1xF7Uo8iCFO83qZ4762EUZYg/zhY9J/cxFCpj3DGnTv4ZL26tZoq4/UgB2E6XhkGkK8bbv8We2Xc304Gd/SX9GRLTSninbWhoAtldzqUda8ekOgCY7M2BRPJ2FiyYJKz9/HX0Tk5Dsy8jawLuLRevJBCDhf7+ReH38IDXBz7Rf9g8NmPDwSpNZcX+elTQBq8GlJT0AK4mi/c3yy8yVFUfcl5AhJ29qvRRWw7InJFtz3qbtQQcRsNZdYMo04xT2YNexjogRswwuHivhVUOppxlHfRHaP69WXfgnkguxJgxD516cP8FGFjd8p4AXzwF2Hv9ZnOjfWXARa4i8SGjPGFfm2JDb2kpnLfFTyJc+WE07G7HV6ENefPgAtKnYWnZYB8LYVt24fDpq38RAdkcrYek54TA1AYzJepYmOYQnNJkZiMeu+Kn0DGS0zZByPXFzwQZt+jYry+MqQdxqqftp4LhxDR4EUxrXcTZ6nqhY/ppWpEgNZ/VNH5MhzdB+WaoFddqyI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,19 +131,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Apr 2026 at 14:20, Thomas Gleixner <tglx@kernel.org> wrote:
-> The only remaining usage of get_cycles() is to provide
-> random_get_entropy().
+On Fri, 10 Apr 2026 at 14:19, Thomas Gleixner <tglx@kernel.org> wrote:
+> Most architectures define cycles_t as unsigned long execpt:
 >
-> Switch m68k over to the new scheme of selecting ARCH_HAS_RANDOM_ENTROPY and
-> providing random_get_entropy() in asm/random.h.
+>  - x86 requires it to be 64-bit independent of the 32-bit/64-bit build.
 >
-> Remove asm/timex.h as it has no functionality anymore.
+>  - parisc and mips define it as unsigned int
+>
+>    parisc has no real reason to do so as there are only a few usage sites
+>    which either expand it to a 64-bit value or utilize only the lower
+>    32bits.
+>
+>    mips has no real requirement either.
+>
+> Move the typedef to types.h and provide a config switch to enforce the
+> 64-bit type for x86.
 >
 > Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>  arch/m68k/include/asm/timex.h      |    2 --
+
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 
 Gr{oetje,eeting}s,
 
