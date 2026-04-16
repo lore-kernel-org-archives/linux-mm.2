@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47DC6F8D753
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 15:05:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E670F8D753
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 15:05:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B9896B0093; Thu, 16 Apr 2026 11:05:40 -0400 (EDT)
+	id 829416B0098; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47F946B0095; Thu, 16 Apr 2026 11:05:40 -0400 (EDT)
+	id 73FDA6B0099; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 348476B0096; Thu, 16 Apr 2026 11:05:40 -0400 (EDT)
+	id 51A8C6B0095; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FFAA6B0093
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:05:40 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D904A1A0965
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:05:39 +0000 (UTC)
-X-FDA: 84664743198.21.8368824
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E4376B0095
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB1FA13B99A
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:05:40 +0000 (UTC)
+X-FDA: 84664743240.17.D15D8E7
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0148A14001F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:05:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Gf2mkIEe;
-	spf=pass (imf26.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id DA54A180013
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:05:38 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=3TJtPhEi;
+	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776351938;
+	s=arc-20220608; t=1776351939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9s+loRtFAzfD79lyKEPuPxMA+1b2QD2AJxg+DhNBrpc=;
-	b=gcBJH3oHhYSZCrXr3iy7IVSeeIrE2Rnq8NW1lBpJWpFFVZRTAb2JAafDmWftQYgnvzkqyj
-	Ts9p6hty6paihfjpjWmwtcQl092v+S/9MwCVHK37QD+cGyBY4pQW1AmP5E4AEUMXnHXcw5
-	8fK5wPTG+StrzHbKf1Sujr3ThYSZlkE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Gf2mkIEe;
-	spf=pass (imf26.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776351938; a=rsa-sha256;
+	bh=0iNiXafam+/e0hkdJzF6nIr0O4d4HoUoH1x5V8VkIAs=;
+	b=eOUO8avaPT8V0127RIUsvSz1WjC1vRSm255/0du2DHpxJH0MfFvU4YM4WVDtMtnSmDblV4
+	LpR4/8sY4q6e6X65pwoPxYtpsskaqmgMzmdbrOzLGLDYa6Rob2TZD6gVgTsqyF8sDpwBMs
+	+8I25Y5a4sKU5Z47859fjevprTdS6Xw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776351939; a=rsa-sha256;
 	cv=none;
-	b=IC5IiZ8O0Tl39yAJRd+NgcZ8VR8jnbzstlWiwotm2YTgQv6Fzrlt0EtJSAEnWLz8BN5L+l
-	7T9M8LMbAUjoX2zKRLP9zUSqX0EsiUaXuhndcjJYqAhiUK1N8XZm//T70zb8Szc8dOhUhh
-	iDytZ/q7SpJJryt8tYbbgxoIc/5sriA=
+	b=hUGeuKRWBdt07t+cLRZoF09lojIbuwAhHgNlG5lxaNKkv2dZ2ldetEOsZeDNzCMGXIuMjr
+	PmqGo0VdGLHZOqsV6pEZO6XyxumobdNn7dHUWB2H6W0UQqWJAjKwFeNuMzqdbfI0TI2wTf
+	8R/RHAsGWlFHvI0UvE6C+jturbuAZ7w=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=3TJtPhEi;
+	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 8C7E0C743E;
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id E322BC7442;
 	Thu, 16 Apr 2026 15:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1776351935;
-	bh=9s+loRtFAzfD79lyKEPuPxMA+1b2QD2AJxg+DhNBrpc=;
+	s=mail; t=1776351936;
+	bh=0iNiXafam+/e0hkdJzF6nIr0O4d4HoUoH1x5V8VkIAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gf2mkIEeYywB6lpxUFYIx8wZ2oSrNjV4kIUzjIfksdZsnwL+zbgxBig7yFFDJ5URC
-	 HuDV/WO6z8Iy6BfCDBINswdSJ3w8Pat1nbxeGssSCaZTZ8TcxsVG1J2oDUvIlsexOF
-	 1xzYIS9uZIj6UxfZvaAxxtHH+qXIORRQ9gEb2y6o=
+	b=3TJtPhEirfgcM4Mp+y12OqqpCtgrlTu1gBPbKH4woMmwhFIrlBuBkE+p1sj1IY6LX
+	 VXfevcdTXViMWKZf5xjTMP55D4UuU2U4KJatrcLuegUo4PXYEVFK2I/0DsdYv8rdx8
+	 JJh4+06+hN7Upzg2Fhqyelg8VEIR5mC+LY1T15cg=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -91,22 +91,22 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v5 3/7] locking: Add contended_release tracepoint to sleepable locks
-Date: Thu, 16 Apr 2026 15:05:09 +0000
-Message-ID: <a9e6ce4611ee4b1c42aa81bb431dc3e7c38531b3.1776350944.git.d@ilvokhin.com>
+Subject: [PATCH v5 4/7] locking: Factor out queued_spin_release()
+Date: Thu, 16 Apr 2026 15:05:10 +0000
+Message-ID: <e42c5d27d82b4ba083b91a0413b2046b0959f5b7.1776350944.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1776350944.git.d@ilvokhin.com>
 References: <cover.1776350944.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tedzxq1n6zrscdibetj88uwqbitn8frq
-X-Rspamd-Queue-Id: 0148A14001F
+X-Stat-Signature: 9iz6qxc3grppq3ns9kf8awox76ee6kxy
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DA54A180013
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776351937-630642
-X-HE-Meta: U2FsdGVkX1+o1Y+TRfAwcInJen+escOsPfbIdvVzAZLyNO/AzoiHbfPjI/2IjE0grO9YLgnp99Gt/vo/qQHYtdeD+IKE1y75WwONYzp9JEYh5f6JtQJ99de9QQpg3Fu/pE2/oys3cRQjlZyvC1xPWcri6qunHqz9zG7WKs/ncbWxIPJDvo4n/udcumcttXBBpod8g3edqdcSktTtYkjwTgJ/AtJgtY1SBWkWlFlOZZ/dD7zMu3gERT9oBgfKKyEFd8bpPg8zkNwGciuf8W03zC5wjTJqu5t03yecT9RF4Nqs0HVjnZaH3noiaeDYgTATohy3vTu/fcV1mzPZP88JXut8KnMsvaP1V1GLBXRJvH1y/T/kXr/LGMSetWPjs2e8wvx2AIhCK8fh7xr7JvDFAFl4mb/QiEuhAXPp/OBlW3eu3VOkJ31TcLuoYnih+eSOnEPRpL7g/AtM9lBemIUtxP5spXITbQmDTdTq0tPF9ULFWMRCNWCiDpasgh6uJKEV7q3VRvOaJhv+pnQtniPRPln/ynryJp7D+QvgRY1MrzULVBoUXTFJH3oWOYrEzlIJPbfg9HEZp8RZe6fSvIbqUWYILwjMfSH8GcQ1hZa6MVhlGYpU0z+MfttlU+EBqoCeT053XBil2Lx7Pb4XFK+ab28ns8xTX7+OqwhBKDUwalCGQiwquWONXXVGjJOMurqF0cf/TKkrb33VRplZKrhKoVVcz+N/7kA7XRREuPOk58dpuKd9+5TFegwELpJC1Nq4AY5Z6HHO9A2AfI6cdV1FOjywGJsXlyPRp3fnwiFA+4N/4v9chxpDpwZCfHEWkAF8zjvnJAgL8NNW5dO/O1km1RhY+1P0N655TLAto2hMBpR4bSRu7noWMKU8fonMqX8m4mTozzshudkC/HnnXRxrGpW7OQsKQeDlTSQcX07WUec1jykR3EUGeE9wrRgat8pEWMsYzP+NAiMq+jkbZhx
- r8KonJVD
- DScNmqp4MWiwqsocuN/OlD1MPYkKYB6D+m+fRGmKLHhiIMAcZ6yUwqplRYdfbrYz0M66VEGFZUzVaoY/SO/64QwtJfsH9OD7dCZfQ/McXhcdvEPzv9uayXENv+F2EUxZjaMc0V0/KqPG4gdDZbEzM3/I3fqZP8vITB+yoMJygpsgNYKXlE/xOg4RaOc1sjtCq1GcDYCHwqOsdMAxopfxuVJemrX6NCu2tlm24TcO+QERYNwUjMBNx7qgBSOqipUISqpsHXKICcILBjJEOyu6+/HRN21uVEahJNaivsFPdrEmYOJZf3fblrxejIyZl7uAg1fmh5HIzordKYb4Y39jKmXeL9ah71sW+LRBK
+X-HE-Tag: 1776351938-575560
+X-HE-Meta: U2FsdGVkX1+3Dk36aOo+b3PhiuilWVIBfMUfcaSEuo2in0R+gJNt77bdCnPjNpZ49wJ4ZcuYh4za7hAwRe3QIGrNNZFsO1FmAegtEvQN1spNlXnxXLCC2BzVHhBXmt3KZ88xI7/YSOWKmwJwp3T7UCDY9UESj3tlYjg64fc48AN/BXF27Eh/aAQRxjfEfP2DUsu9yV0DPNLPrKTLU1yLjHGM13FecfOySTIj57CZP2PZPUsIqMhnEeppclom6iDcwdMZ8G+vmLE4Qd0uNbYewgqYId+t3LNknFRw5xMin6GPM9PkIKsbnSve8bSr5oy1KM9BYs6rW85ajZBE2/gcBB4zliaOKF2AuIm40909c7KyRAyHj21QrlrvZuriVkjvr6YeACND2mwBvO24vGEcyuqavv9+TwjttQoM+sLbpZW/c54xlksG17b1b+SPE8Aj06cc/cFKzqthaQBgTZxpKuo1ku62vprK9p3tpxL6rRKpHWNtRTwG15/wiDQKnB6Qzj87t2Eo9Tk08Q4N3CG3I83vwOAtqztDxc/dkQwa6cgZkqjxvUT2+tLcrTrXMHFSHomRHcYkkmXXfQIja4LWKbpVtcRlDadALn8lH7+mgWQQnSSuvK+gVerNssw8dIMUMIZi0uUM8H0Byx6vJx2bbAgbNQNicRWIf8JBZmq387RDYhTnLcKBWOoB+FiI9AMHzIdIe1MXxrzgUltdf+Ngo4VRPb32SDfLDtQ+2PLNvVENRACaRS5Aw2kIC512OBj/L8EE9T/Epymk34ZwbU7nTgD6MduUh2W+QCUEpkwuVyI5WgaTq306engHizezQ7FVbjUoozdbkGlm1VNtCImqcqnkSqyS5ly1O2groJkKFpdfGmbrjDfiamnRfmik5mvg0ZA1C+YgOBl70FgbVWbupiJmKfkjIVqjhpvwC1D3CpaZEaN4f0XNRg6kckWH5l928ngmqOIlp+/VRFUwkp6
+ fqZtcpcI
+ 1rPKWGQawTwMucK0yhxPYretIBeEJ3zxyH10VDwaoh5r9IGmiICZ3mfqp37CUsl3efnZwR8ynOUulkUHvQpJ7eZoVf56ayD68hcuONr0S61+vteyKU0fTk3eJfOg/O94XtoAESniwU4dahyQifzsqil9AIL8+GbYZx9uJdLRoFATZ7nKdvkf3n1f/z5i37iSwS9HoEvH5zgN+Eu7vIgB5WfrC2U/hVvTYLXyKsd3/NlF9UEtgish5jTCQMFZaVJwrcWXTz+w73dWGSHQGqtISwxxp3AIJ3gntOh3Ych97cvegItxhWp5p0BSJ9lqJa5aMlROW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,213 +114,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the contended_release trace event. This tracepoint fires on the
-holder side when a contended lock is released, complementing the
-existing contention_begin/contention_end tracepoints which fire on the
-waiter side.
+Introduce queued_spin_release() as an arch-overridable unlock primitive,
+and make queued_spin_unlock() a generic wrapper around it.
 
-This enables correlating lock hold time under contention with waiter
-events by lock address.
+This is a preparatory refactoring for the next commit, which adds
+contended_release tracepoint instrumentation to queued_spin_unlock().
 
-Add trace_contended_release() calls to the slowpath unlock paths of
-sleepable locks: mutex, rtmutex, semaphore, rwsem, percpu-rwsem, and
-RT-specific rwbase locks.
+Rename the existing arch-specific queued_spin_unlock() overrides on
+x86 (paravirt) and MIPS to queued_spin_release().
 
-Where possible, trace_contended_release() fires before the lock is
-released and before the waiter is woken. For some lock types, the
-tracepoint fires after the release but before the wake. Making the
-placement consistent across all lock types is not worth the added
-complexity.
-
-For reader/writer locks, the tracepoint fires for every reader releasing
-while a writer is waiting, not only for the last reader.
+No functional change.
 
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- include/trace/events/lock.h   | 17 +++++++++++++++++
- kernel/locking/mutex.c        |  4 ++++
- kernel/locking/percpu-rwsem.c | 11 +++++++++++
- kernel/locking/rtmutex.c      |  1 +
- kernel/locking/rwbase_rt.c    |  6 ++++++
- kernel/locking/rwsem.c        | 10 ++++++++--
- kernel/locking/semaphore.c    |  4 ++++
- 7 files changed, 51 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/spinlock.h         |  6 +++---
+ arch/x86/include/asm/paravirt-spinlock.h |  6 +++---
+ include/asm-generic/qspinlock.h          | 15 ++++++++++++---
+ 3 files changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/include/trace/events/lock.h b/include/trace/events/lock.h
-index da978f2afb45..1ded869cd619 100644
---- a/include/trace/events/lock.h
-+++ b/include/trace/events/lock.h
-@@ -137,6 +137,23 @@ TRACE_EVENT(contention_end,
- 	TP_printk("%p (ret=%d)", __entry->lock_addr, __entry->ret)
- );
+diff --git a/arch/mips/include/asm/spinlock.h b/arch/mips/include/asm/spinlock.h
+index 6ce2117e49f6..c349162f15eb 100644
+--- a/arch/mips/include/asm/spinlock.h
++++ b/arch/mips/include/asm/spinlock.h
+@@ -13,12 +13,12 @@
  
-+TRACE_EVENT(contended_release,
-+
-+	TP_PROTO(void *lock),
-+
-+	TP_ARGS(lock),
-+
-+	TP_STRUCT__entry(
-+		__field(void *, lock_addr)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->lock_addr = lock;
-+	),
-+
-+	TP_printk("%p", __entry->lock_addr)
-+);
-+
- #endif /* _TRACE_LOCK_H */
+ #include <asm-generic/qspinlock_types.h>
  
- /* This part must be outside protection */
-diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index 427187ff02db..6c2c9312eb8f 100644
---- a/kernel/locking/mutex.c
-+++ b/kernel/locking/mutex.c
-@@ -997,6 +997,9 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
- 		wake_q_add(&wake_q, next);
- 	}
- 
-+	if (trace_contended_release_enabled() && waiter)
-+		trace_contended_release(lock);
-+
- 	if (owner & MUTEX_FLAG_HANDOFF)
- 		__mutex_handoff(lock, next);
- 
-@@ -1194,6 +1197,7 @@ EXPORT_SYMBOL(ww_mutex_lock_interruptible);
- 
- EXPORT_TRACEPOINT_SYMBOL_GPL(contention_begin);
- EXPORT_TRACEPOINT_SYMBOL_GPL(contention_end);
-+EXPORT_TRACEPOINT_SYMBOL_GPL(contended_release);
- 
+-#define	queued_spin_unlock queued_spin_unlock
++#define	queued_spin_release queued_spin_release
  /**
-  * atomic_dec_and_mutex_lock - return holding mutex if we dec to 0
-diff --git a/kernel/locking/percpu-rwsem.c b/kernel/locking/percpu-rwsem.c
-index f3ee7a0d6047..46b5903989b8 100644
---- a/kernel/locking/percpu-rwsem.c
-+++ b/kernel/locking/percpu-rwsem.c
-@@ -263,6 +263,9 @@ void percpu_up_write(struct percpu_rw_semaphore *sem)
+- * queued_spin_unlock - release a queued spinlock
++ * queued_spin_release - release a queued spinlock
+  * @lock : Pointer to queued spinlock structure
+  */
+-static inline void queued_spin_unlock(struct qspinlock *lock)
++static inline void queued_spin_release(struct qspinlock *lock)
  {
- 	rwsem_release(&sem->dep_map, _RET_IP_);
+ 	/* This could be optimised with ARCH_HAS_MMIOWB */
+ 	mmiowb();
+diff --git a/arch/x86/include/asm/paravirt-spinlock.h b/arch/x86/include/asm/paravirt-spinlock.h
+index 7beffcb08ed6..ac75e0736198 100644
+--- a/arch/x86/include/asm/paravirt-spinlock.h
++++ b/arch/x86/include/asm/paravirt-spinlock.h
+@@ -49,9 +49,9 @@ static __always_inline bool pv_vcpu_is_preempted(long cpu)
+ 				ALT_NOT(X86_FEATURE_VCPUPREEMPT));
+ }
  
-+	if (trace_contended_release_enabled() && wq_has_sleeper(&sem->waiters))
-+		trace_contended_release(sem);
-+
- 	/*
- 	 * Signal the writer is done, no fast path yet.
- 	 *
-@@ -292,6 +295,14 @@ EXPORT_SYMBOL_GPL(percpu_up_write);
- void __percpu_up_read(struct percpu_rw_semaphore *sem)
+-#define queued_spin_unlock queued_spin_unlock
++#define queued_spin_release queued_spin_release
+ /**
+- * queued_spin_unlock - release a queued spinlock
++ * queued_spin_release - release a queued spinlock
+  * @lock : Pointer to queued spinlock structure
+  *
+  * A smp_store_release() on the least-significant byte.
+@@ -66,7 +66,7 @@ static inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
+ 	pv_queued_spin_lock_slowpath(lock, val);
+ }
+ 
+-static inline void queued_spin_unlock(struct qspinlock *lock)
++static inline void queued_spin_release(struct qspinlock *lock)
  {
- 	lockdep_assert_preemption_disabled();
-+	/*
-+	 * After percpu_up_write() completes, rcu_sync_is_idle() can still
-+	 * return false during the grace period, forcing readers into this
-+	 * slowpath. Only trace when a writer is actually waiting for
-+	 * readers to drain.
-+	 */
-+	if (trace_contended_release_enabled() && rcuwait_active(&sem->writer))
-+		trace_contended_release(sem);
- 	/*
- 	 * slowpath; reader will only ever wake a single blocked
- 	 * writer.
-diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
-index ccaba6148b61..3db8a840b4e8 100644
---- a/kernel/locking/rtmutex.c
-+++ b/kernel/locking/rtmutex.c
-@@ -1466,6 +1466,7 @@ static void __sched rt_mutex_slowunlock(struct rt_mutex_base *lock)
- 		raw_spin_lock_irqsave(&lock->wait_lock, flags);
- 	}
+ 	kcsan_release();
+ 	pv_queued_spin_unlock(lock);
+diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
+index bf47cca2c375..df76f34645a0 100644
+--- a/include/asm-generic/qspinlock.h
++++ b/include/asm-generic/qspinlock.h
+@@ -115,12 +115,12 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
+ }
+ #endif
  
-+	trace_contended_release(lock);
- 	/*
- 	 * The wakeup next waiter path does not suffer from the above
- 	 * race. See the comments there.
-diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
-index 82e078c0665a..74da5601018f 100644
---- a/kernel/locking/rwbase_rt.c
-+++ b/kernel/locking/rwbase_rt.c
-@@ -174,6 +174,8 @@ static void __sched __rwbase_read_unlock(struct rwbase_rt *rwb,
- static __always_inline void rwbase_read_unlock(struct rwbase_rt *rwb,
- 					       unsigned int state)
+-#ifndef queued_spin_unlock
++#ifndef queued_spin_release
+ /**
+- * queued_spin_unlock - release a queued spinlock
++ * queued_spin_release - release a queued spinlock
+  * @lock : Pointer to queued spinlock structure
+  */
+-static __always_inline void queued_spin_unlock(struct qspinlock *lock)
++static __always_inline void queued_spin_release(struct qspinlock *lock)
  {
-+	if (trace_contended_release_enabled() && rt_mutex_owner(&rwb->rtmutex))
-+		trace_contended_release(rwb);
  	/*
- 	 * rwb->readers can only hit 0 when a writer is waiting for the
- 	 * active readers to leave the critical section.
-@@ -205,6 +207,8 @@ static inline void rwbase_write_unlock(struct rwbase_rt *rwb)
- 	unsigned long flags;
- 
- 	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
-+	if (trace_contended_release_enabled() && rt_mutex_has_waiters(rtm))
-+		trace_contended_release(rwb);
- 	__rwbase_write_unlock(rwb, WRITER_BIAS, flags);
+ 	 * unlock() needs release semantics:
+@@ -129,6 +129,15 @@ static __always_inline void queued_spin_unlock(struct qspinlock *lock)
  }
+ #endif
  
-@@ -214,6 +218,8 @@ static inline void rwbase_write_downgrade(struct rwbase_rt *rwb)
- 	unsigned long flags;
- 
- 	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
-+	if (trace_contended_release_enabled() && rt_mutex_has_waiters(rtm))
-+		trace_contended_release(rwb);
- 	/* Release it and account current as reader */
- 	__rwbase_write_unlock(rwb, WRITER_BIAS - 1, flags);
- }
-diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
-index bf647097369c..602d5fd3c91a 100644
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -1387,6 +1387,8 @@ static inline void __up_read(struct rw_semaphore *sem)
- 	rwsem_clear_reader_owned(sem);
- 	tmp = atomic_long_add_return_release(-RWSEM_READER_BIAS, &sem->count);
- 	DEBUG_RWSEMS_WARN_ON(tmp < 0, sem);
-+	if (trace_contended_release_enabled() && (tmp & RWSEM_FLAG_WAITERS))
-+		trace_contended_release(sem);
- 	if (unlikely((tmp & (RWSEM_LOCK_MASK|RWSEM_FLAG_WAITERS)) ==
- 		      RWSEM_FLAG_WAITERS)) {
- 		clear_nonspinnable(sem);
-@@ -1413,8 +1415,10 @@ static inline void __up_write(struct rw_semaphore *sem)
- 	preempt_disable();
- 	rwsem_clear_owner(sem);
- 	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
--	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
-+	if (unlikely(tmp & RWSEM_FLAG_WAITERS)) {
-+		trace_contended_release(sem);
- 		rwsem_wake(sem);
-+	}
- 	preempt_enable();
- }
- 
-@@ -1437,8 +1441,10 @@ static inline void __downgrade_write(struct rw_semaphore *sem)
- 	tmp = atomic_long_fetch_add_release(
- 		-RWSEM_WRITER_LOCKED+RWSEM_READER_BIAS, &sem->count);
- 	rwsem_set_reader_owned(sem);
--	if (tmp & RWSEM_FLAG_WAITERS)
-+	if (tmp & RWSEM_FLAG_WAITERS) {
-+		trace_contended_release(sem);
- 		rwsem_downgrade_wake(sem);
-+	}
- 	preempt_enable();
- }
- 
-diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
-index 74d41433ba13..35ac3498dca5 100644
---- a/kernel/locking/semaphore.c
-+++ b/kernel/locking/semaphore.c
-@@ -230,6 +230,10 @@ void __sched up(struct semaphore *sem)
- 		sem->count++;
- 	else
- 		__up(sem, &wake_q);
++/**
++ * queued_spin_unlock - unlock a queued spinlock
++ * @lock : Pointer to queued spinlock structure
++ */
++static __always_inline void queued_spin_unlock(struct qspinlock *lock)
++{
++	queued_spin_release(lock);
++}
 +
-+	if (trace_contended_release_enabled() && !wake_q_empty(&wake_q))
-+		trace_contended_release(sem);
-+
- 	raw_spin_unlock_irqrestore(&sem->lock, flags);
- 	if (!wake_q_empty(&wake_q))
- 		wake_up_q(&wake_q);
+ #ifndef virt_spin_lock
+ static __always_inline bool virt_spin_lock(struct qspinlock *lock)
+ {
 -- 
 2.52.0
 
