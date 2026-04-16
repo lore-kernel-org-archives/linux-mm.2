@@ -4,127 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A4FCF8A176
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 13:27:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC6DF8A175
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 13:29:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96CD36B0005; Thu, 16 Apr 2026 09:27:26 -0400 (EDT)
+	id 4B4BA6B0089; Thu, 16 Apr 2026 09:29:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91E476B0089; Thu, 16 Apr 2026 09:27:26 -0400 (EDT)
+	id 465C56B008A; Thu, 16 Apr 2026 09:29:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80CD36B008A; Thu, 16 Apr 2026 09:27:26 -0400 (EDT)
+	id 37CFA6B008C; Thu, 16 Apr 2026 09:29:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E2E46B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:27:26 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 940C11A08CA
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 13:27:25 +0000 (UTC)
-X-FDA: 84664495650.28.BF05073
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A58B980002
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 13:27:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NXDzxqC0;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 281E46B0089
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:29:03 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AB2CE5AC8D
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 13:29:02 +0000 (UTC)
+X-FDA: 84664499724.14.8D04A22
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EABA6140012
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 13:29:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KHHbyrwh;
+	spf=pass (imf23.hostedemail.com: domain of 3GuTgaQUKCLsfmwfshpphmf.dpnmjovy-nnlwbdl.psh@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3GuTgaQUKCLsfmwfshpphmf.dpnmjovy-nnlwbdl.psh@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776346141; a=rsa-sha256;
+	cv=none;
+	b=itFBeGv2GN3j8gTefP8r690QzTo/2dY+RWa2CUAkH6buH0RXANlaE06C3IAJeif8CuZLwo
+	JaBevoEex2mxwJXViZLB0jTRS3LTulxri29KKbva+cPbn1wkOFL3D01q3jvU65NG6+t5XM
+	WH7C+CVZ64hg2ozzATQIliWu6AFLE9s=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=KHHbyrwh;
+	spf=pass (imf23.hostedemail.com: domain of 3GuTgaQUKCLsfmwfshpphmf.dpnmjovy-nnlwbdl.psh@flex--elver.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3GuTgaQUKCLsfmwfshpphmf.dpnmjovy-nnlwbdl.psh@flex--elver.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776346043;
+	s=arc-20220608; t=1776346141;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rTuTruzGdYx0pfLDvhNMyl4JeCuWAkcMOkgF5X7HAeg=;
-	b=Aa3I5oBgNZ+z69sA9n8bEVzIRSlYv3nao6xHU2MIumGyvO837npVNGrtx4OwkCXnMoJKVJ
-	tIyV97Pjkt4vptLONQSFPl/jl5wLJuWy5H4RGxDhOtZ6SKUqhchZZat0CFdbCYveSOBp6U
-	jRr3wC4eIBvD7waaQkM6XzBWax/Em0c=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NXDzxqC0;
-	spf=pass (imf02.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776346043; a=rsa-sha256;
-	cv=none;
-	b=Rq9YJmEnfS5+OVo3HXFErRz7KRAQGW4pIIzy//KJRZ0VrVLKxUD1Tl0gnYndXCqOS6Z5kt
-	AMOCHBSUMo6P+kaq1iooaUSgGa9p2qD04PS8e96y+bXWlTq942JQerIUj/ICPQVUypAY5k
-	91iCBku0ZDSjPijF/nFPe8RatZXTIGA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A12356012B;
-	Thu, 16 Apr 2026 13:27:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8351FC2BCAF;
-	Thu, 16 Apr 2026 13:27:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776346042;
-	bh=U0wkkhyzba+VOCKmZclFLbF+sxUF9Ywi5JITEPUwc7k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NXDzxqC0hW0ThnadfmrPp7viAciYVTS7DtQhOWv7D4kcjgU8G/0DcZQkZMjdLmZAb
-	 ZtUsukwaXohNXgthC37FkuLlmRrq6mgaN9y/hm/H9bV7Iorzq93J4P3oi7KFk3iA+d
-	 61Du4q0jCHJgWtAwG5JR/cxKxqb56iTljqQfTiwou+No/c2ziU/ZY1M6pcRv+iAv6P
-	 hnlJAolJjEYZF8MAtJwWk75fnQ9fomG25I7xHuzZWo9ITBcjIF7umRsr3jErbNqGte
-	 1gcIhVzXyV59qrdLc/dQNwuy1dTdKa5cE7MW2jgwVj79HOVGm324Ok+n7+16Zy6ebY
-	 rf+ez3RsEmUOg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 85D3FF40068;
-	Thu, 16 Apr 2026 09:27:20 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 16 Apr 2026 09:27:20 -0400
-X-ME-Sender: <xms:uOPgaSk_pM6BuGhHptX9-amFXqT0UE2TM2wzA7HHgiENOXqea5Zmew>
-    <xme:uOPgadL-UqmGJ7BML7mME_r8-DxdWdy-GcSfr7AcUImmFz2ZAbB-p1Kr2eeewnuq_
-    mzFtP4FTTqgSs3OlwKW2qxIGfGEAhdX0NCIBCfcYUCOhBse5YxyQbc>
-X-ME-Received: <xmr:uOPgaccZcaWcEty1RZiELLMnLg0zpNfLCHITOax68C9SLv8VAEJJcHzOZapXiw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegjeduudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeeuieejieffkeehfeffffdtkeelfeelhefhfefhudehjeehvdffleeuvddufefgkeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
-    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
-    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
-    grmhgvpdhnsggprhgtphhtthhopeefkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    ohepuhhsrghmrgdrrghrihhfsehlihhnuhigrdguvghvpdhrtghpthhtoheprghkphhmse
-    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehpvghtvghrgies
-    rhgvughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhpphhtsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpd
-    hrtghpthhtohepvhgsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgr
-    mhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhm
-X-ME-Proxy: <xmx:uOPgaZxt_HEBPxXdhHDBAeAtykf6aHcXL77XFB7L1kzKKuRgr8KhOg>
-    <xmx:uOPgaUwdlNspXNQ2md4kX5WpB6oTKsYqkzxB6thSi84_GXxB2wXFlQ>
-    <xmx:uOPgaaUER8pEqvOLKPlSpRxZjlGB5oVBs5W0IxVz9Hkw6UIM3IrlGg>
-    <xmx:uOPgaUc-WsUOcgNf8whhteEVnf0B1htZu4McDmu0SLGH0dpVWJVSCw>
-    <xmx:uOPgaXfCqcIf0Fbi7qdwViNxE3Nt7ki312s5joURJKDR8U_3R_9WwV3j>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Apr 2026 09:27:19 -0400 (EDT)
-Date: Thu, 16 Apr 2026 14:27:17 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 10/12] userfaultfd: add UFFDIO_SET_MODE for runtime
- sync/async toggle
-Message-ID: <aeDje8vylad8bGoj@thinkstation>
-References: <20260414142354.1465950-11-kas@kernel.org>
- <20260415150900.3660575-1-usama.arif@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415150900.3660575-1-usama.arif@linux.dev>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A58B980002
-X-Stat-Signature: r9w3wr3zdb3ojno61kd11954sayuqgaj
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=sXyay+WHlh8f8CqBFyXL5GTNWYbapDVN1nCV3X7TprM=;
+	b=B6sdYVAeCe8x4fY5aKWPxnjz5itwSVmG8lZdcF1T0/jK0WBece7US2jAjIje2xfIKKDkV+
+	55GCDTpnMzULK/wOTHQcwjWLF1W9XYdzgkq3+5gHwB73lLZ7egIJnhnKTeKo/09aEIZDCo
+	YA3+6oXzs5dqt6EF1DotcwJ+AWzlcVk=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so66761905e9.3
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:29:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776346139; x=1776950939; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=sXyay+WHlh8f8CqBFyXL5GTNWYbapDVN1nCV3X7TprM=;
+        b=KHHbyrwhFwdedRtctl/PxXYiim8aKLHy0Qiwi9c4ZSKSpQouLnVah1z3OLYyTSNMnW
+         /GNWtvP4xkQrOoZWVEyZrZv+xkTE4YBpN62kk+tRI39Q2e4RwUo66kjHN0qLGInc9H+1
+         /T3QflW777keIMc/lFMg4FlOEXV5miHVpfnuhHnca/id2/ShXDcVW6sXX4aihavoajhe
+         Jo58O15aTA9WuFaVujdFH2h18FjvS+zbwKq6ETreGlnf9eei323Q00W/JhKWJInbY9/N
+         i0VctTVhYA+IGs/ACfWxZKEJuT3sf1d3/f/Ll4yjFtd9Ty9fi8APwhghzn0s03/WZqR0
+         nh6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776346139; x=1776950939;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sXyay+WHlh8f8CqBFyXL5GTNWYbapDVN1nCV3X7TprM=;
+        b=Pe/aDhtBkBI7Ve3lI3G/P1xxgJ/32+HnpTigJY9vVYh77fq8KI39jUMVvuj2e2BZMm
+         oZVLBp5OnlN4yzVu0FOT+Nxrn9aReE2zuHw3rU9Wrn7rVuNcF1Zcs1bx7I8jHBvEsTcK
+         6RjUbMaoqFrwDdwGVHb4aNHOvV5TAks8G+pY6R81NMcOp4kaYuXSv5gJL9kWfdKVEmWf
+         rPmGrVACRoQPcfxbCFAT32ile71G8plRv1UuGlbJaBiwwLVInAJ/4ogPWgf/Q8zqNwL0
+         VKtSkiuasGFePPsj3LlsLgth+Vg00g92agYm8Y5a0QsHcpLKlJeMhYz3B5IYRiar3nbp
+         I9CQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/xLCUtgdwrRfT9un+r9H5U2keLSXyYo7rGcroXIzzvJ3ftqEwgMEId38zGvgVop53GBz5bdWbTQg==@kvack.org
+X-Gm-Message-State: AOJu0YxcTd3rMtDw84cDXsRLN39a/Ypd8ka+69Xg5EaBPfE5gU08/PFj
+	TN4KwAGXJvn0RqTnlbRcC8Q6X9zgbIx57haiwC+lVShLiDYm+Vrejb4fWAfDnmS882G5VezERkk
+	4Lw==
+X-Received: from wmtm7.prod.google.com ([2002:a05:600c:c4b7:b0:488:a6d9:e91a])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:45c6:b0:488:a797:f0ac
+ with SMTP id 5b1f17b1804b1-488d6ac2226mr319528795e9.28.1776346138934; Thu, 16
+ Apr 2026 06:28:58 -0700 (PDT)
+Date: Thu, 16 Apr 2026 15:25:07 +0200
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
+Message-ID: <20260416132837.3787694-1-elver@google.com>
+Subject: [PATCH] slub: fix data loss and overflow in krealloc()
+From: Marco Elver <elver@google.com>
+To: elver@google.com, Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: EABA6140012
+X-Stat-Signature: ssrnseij8dgxjqzxtp99msbo7rf5kg9o
 X-Rspam-User: 
-X-HE-Tag: 1776346043-628633
-X-HE-Meta: U2FsdGVkX1+MzxHdS5E8kqOWgiWt5o5byU37NFbviWBUpgRpHeOXD7SC69vVRrhIIbfjcmBha8hMUHsxVdbwwEQmJ9vNxgXq/nscuuGsXPLObD4J9kmvT7RRFgp/AT4hCtWH1MXXgHVqG6rp9B+k4J+FEDACYFnsr13enbDzo7jtA33Vda6Z30s6mCi5+lyxLhgOagPD9o7MntyPD2tvdXvyEOQhUemFVqkop2Fut4OiDKusckxeWrk0VXe+bAudBWcFSA+0BlmAEHOFthjBrQPqoRF4cA2Y0lk22CJeY47opA57lW8DSCHss123xNT3uz4RfXcuY1c3wp2J2+TKx800TqiQ2o6006FVtECjYMH2oY0Vj4Ec39sV/AxlQFjH0kDIcmh3ADOhaLsuB0ou83kUgVi2mg5ofYfjq8xXRXDktkaa/0J49Tbdqmrwiy6R31rBFsxY0ES0we2G9bXutjhsgJMr8HnH2QP/nbdOLLzwE9rj+PanJMgq6BPVpc7MLpueJjFNQfUdXSYrRtPpb7TSmEquvQjVeK4KnF+Br/wtUXWBOqw1/wXwb5ss10IPLdFIJ58r0S83Z73CFOWqKWf5avt+7xBoPdDzcg4LkkjNiM2mC5vZu1SzhUzH95gRhIAk6FEFd0aqZg3tqF8pxB0uXwIUO/tdw5lRzIbaNzXS9lhHcKR/ZOgug+kv2C/hng0YtHo9UlqiQn9c2dO8cBDuwz6FDtl9zvGyXSfvPKBcQ38DAg21TN9cMncjOsCwOM2JQqkv1idpUR1lcTNGqagIdsxrYboq1OMAWOkHPBnwpxNC5ujWvpxFljemiWR7i1Z64g3s5E0iySiP9zPUGPcThNwspPoTPeezCIFaGbujuUXxBP/3y/8+/Ka7RKOJEmnPBQXZab60Uk9dVQS2GN93KQWLxbmK8pxv2O0LbVhbV4muCWxJ1lKKQ9WF9DMqhNCHmo6PVzNjDT/sg1r
- TB5X5ujC
- CWwQuS8TKuftIiws1b5wl0eHtSjSQ1Ca786PupPIqtHgN74/XHB3avbOufdOWgNGRsisA1Q8nPDZCVydzu12Pgh2RI9NE9tAGl1JfxtfYe1NpnUZcII0Hw/p3MjIPCVZcZsiadx5g/OmjsTUjSfY6L8z0+qvp8ASZYbvMXbefQYeimvqpSzXVV1iX59Iql2WdjSlMGInmk/qj+WzCjuWheqjTigykqrQYXyrz04TGlFMlzScTCJSuO6FxqjPAgJaKrOytfYNk+sRj3URDjppxeMFlY/mQ5UuetwQC1owindHmdXUlX3poqc453AypHi+4gzSY/6GlSxDxmI3URIFV5VphGtE0fjrrLB0c
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776346140-425858
+X-HE-Meta: U2FsdGVkX1/IC/MeT4jTQaq/GKpqqi4JhjNdsqUedMKeFj624Dci365JaJjN/dr0i6MeEFs10LoQH+FQFGi5/8YFhK9dQgBtTqE1rYpY1aKycQcRA8510ovJ0JzufCux0S7WTojl2Z1L9cnRQemtADi02gtFWQsErGlANl0J9fqC2uCGJRv/mBEkYlQcxH4L4YuIIEjAOOFFfp6W0bxkH5AGUkrFBPs81GCmzdJnCxfiev5iJYG60dpCH2lCKpGCPzdxFevEKSOkaATf9euKBmHD/brQ7Vc2XYNn7MfwQZIm4tmJUaNibGuZqvP48J/xlM873Xx+8PxIUa4mPTxGvVf/g/6VPifFEPvtA2BjoqBbrh6Pmnqr/hv9W7p5OIrOO2IMVJsuSvI+BEZdkn+LLQIzoBzX9r6MoB1uIlzmv5O4vLBGEObB/r/mqQJpnAvQ4r5C3kWw9CE4qtdikT10+d7Gw8vl/z9aNEE0ML4LFNdJzLh32TRst55PEj6wfvnWKAaYJFQ+2rBVHHXfDmHZoGZsXClMlDZsnXEtx4eRMyeredPGO417X25DEt+kWzBgQb8FQAPyLzIHlpAYc0L3ZhUXlDCFSbeaqXXoJryUB4dqVjn1S55XWkbBoENpfRJLxuzhZo0P1KP1B5s7mDk/qs/vNFDKcQa5lDN91SsvSBWQEtmRSsrZRY3V7NvMW5jM2EgZewr06s6wVdcGdH4TAo35+rUWUa1PkKbxafH90CsJrskCPacDPzZcPskhdgEDg7+GCjwYSHGIOKIo3C2kHpP6BBoayl+HA0KyS+QYCE46M6E/kyYfbJwLELEh0nWh2l8hRFzzS32DQFS4zHkndfdPQiRbhxASZLpAzjSX/aJvzJ0LQ0GMvJmxDaWY/qcvEByloQEK6OHFA5oG/+4zQ3vVtohWEoNQ7L2D30U9NKox1nQxaJ4UUG4rauRD2eyy3/Qi0ePtvutiRwxtd87
+ bydR10GL
+ 1KcsUZojJrj/7mOLgUXrBoK1TiBPf0P+u0ziE7xqkieMAGmhyxZT5pWY3GYbB5UCraRFTNKIBWPfG0TjfnG8ABMXJ70o2hPAuSA2SVpFhwlCgN1WWT//8E2iXFi2INjXNR2Iq9/+rwR7NAKYqe2NPNyPT5PbovlWh7giLbFLKUtDhJ0EIIw4YsYiRAfbz2Tbmf2LyrxzwailC6ZWStOT4bQCWn/LRMtuz6N/u7PBQsRoeOYV2aiUUSS1MGN1xbZHRUMXXhA+1iN5I/4gfOywIeFiFJfAuNEvE1v/vg+lzEHZjiPoxa6A3fZ0RuCsxXD63j5jFUHLhTLT/5X9AwMt+l/3Ccxv8yeGAeb+DE8BtYX0olb2poxE4zym5XU7tajwfs5lV0snwI8lj+A74YpDGCuuTvj7WSiG8Bg+2HErqS61xJP4Pzl8zY4SwCBP1KND8NBc/Zq3oSqDhRA9Gy13DMWgeKUPiaymqSKivCSyi/gnROeNuly+091Rub2OzqVJ1kykR80pBQFxXDEafBkfyd6aAtRFW0orDX5lRZ+dA+LlJWkfXCMfVrDFzUexXFxKUNuXe2rLP65S12eAyAiQ0qzIHqdjbKiR59ojl7unPRHbcZ0yfyxQl7whj9bMvFc9Bm8aIvA5TPwaXsL6S7yx9nbbvMcs0lqbquiQ3hO0Y3nN5ENDMu9pCq/0pRdL3VfA2ytT6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,21 +107,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 08:08:59AM -0700, Usama Arif wrote:
-> > +	/* only toggleable features are allowed */
-> > +	if ((mode.enable | mode.disable) & ~UFFD_FEATURE_TOGGLEABLE)
-> > +		return -EINVAL;
-> 
-> The commit message states "Only async features that were enabled at
-> UFFDIO_API time may be toggled."  However, the code only checks that
-> the requested feature is in UFFD_FEATURE_TOGGLEABLE.
-> 
-> Is it intentional that a user who opened a uffd without
-> UFFD_FEATURE_MINOR_ASYNC can still enable it later via
-> UFFDIO_SET_MODE? 
+Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
+k[v]realloc") introduced the ability to force a reallocation if the
+original object does not satisfy new alignment or NUMA node, even when
+the object is being shrunk.
 
-The comment is stale. Will fix.
+This introduced two bugs in the reallocation fallback path:
 
+1. Data loss during NUMA migration: The jump to 'alloc_new' happens
+   before 'ks' and 'orig_size' are initialized. As a result, the
+   memcpy() in the 'alloc_new' block would copy 0 bytes into the new
+   allocation.
+
+2. Buffer overflow during shrinking: When shrinking an object while
+   forcing a new alignment, 'new_size' is smaller than the old size.
+   However, the memcpy() used the old size ('orig_size ?: ks'), leading
+   to an out-of-bounds write.
+
+The same overflow bug exists in the kvrealloc() fallback path, where the
+old bucket size ksize(p) is copied into the new buffer without being
+bounded by the new size.
+
+A simple reproducer:
+
+	// e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
+	while (1) {
+		void *p = kmalloc(128, GFP_KERNEL);
+		p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
+		kfree(p);
+	}
+
+demonstrates the issue:
+
+  ==================================================================
+  BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
+
+  Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
+   memcpy_orig+0x68/0x130
+   krealloc_node_align_noprof+0x1c8/0x340
+   lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+   lkdtm_do_action+0x3a/0x60 [lkdtm]
+   ...
+
+  kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
+
+  allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
+   krealloc_node_align_noprof+0x19c/0x340
+   lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+   lkdtm_do_action+0x3a/0x60 [lkdtm]
+   ...
+  ==================================================================
+
+Fix it by moving the old size calculation to the top of __do_krealloc()
+and bounding all copy lengths by the new allocation size.
+
+Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
+Cc: <stable@vger.kernel.org>
+Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
+Signed-off-by: Marco Elver <elver@google.com>
+---
+ mm/slub.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 92362eeb13e5..161079ac5ba1 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6645,16 +6645,6 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
+ 	if (!kasan_check_byte(p))
+ 		return NULL;
+ 
+-	/*
+-	 * If reallocation is not necessary (e. g. the new size is less
+-	 * than the current allocated size), the current allocation will be
+-	 * preserved unless __GFP_THISNODE is set. In the latter case a new
+-	 * allocation on the requested node will be attempted.
+-	 */
+-	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
+-		     nid != page_to_nid(virt_to_page(p)))
+-		goto alloc_new;
+-
+ 	if (is_kfence_address(p)) {
+ 		ks = orig_size = kfence_ksize(p);
+ 	} else {
+@@ -6673,6 +6663,16 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
+ 		}
+ 	}
+ 
++	/*
++	 * If reallocation is not necessary (e. g. the new size is less
++	 * than the current allocated size), the current allocation will be
++	 * preserved unless __GFP_THISNODE is set. In the latter case a new
++	 * allocation on the requested node will be attempted.
++	 */
++	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
++		     nid != page_to_nid(virt_to_page(p)))
++		goto alloc_new;
++
+ 	/* If the old object doesn't fit, allocate a bigger one */
+ 	if (new_size > ks)
+ 		goto alloc_new;
+@@ -6707,7 +6707,7 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
+ 	if (ret && p) {
+ 		/* Disable KASAN checks as the object's redzone is accessed. */
+ 		kasan_disable_current();
+-		memcpy(ret, kasan_reset_tag(p), orig_size ?: ks);
++		memcpy(ret, kasan_reset_tag(p), min(new_size, (size_t)(orig_size ?: ks)));
+ 		kasan_enable_current();
+ 	}
+ 
+@@ -6941,7 +6941,7 @@ void *kvrealloc_node_align_noprof(const void *p, size_t size, unsigned long alig
+ 		if (p) {
+ 			/* We already know that `p` is not a vmalloc address. */
+ 			kasan_disable_current();
+-			memcpy(n, kasan_reset_tag(p), ksize(p));
++			memcpy(n, kasan_reset_tag(p), min(size, ksize(p)));
+ 			kasan_enable_current();
+ 
+ 			kfree(p);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.54.0.rc1.513.gad8abe7a5a-goog
 
