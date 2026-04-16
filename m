@@ -4,107 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C69A9F8A149
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 09:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4988FF8A14D
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 09:35:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2A096B009E; Thu, 16 Apr 2026 05:18:40 -0400 (EDT)
+	id 4408E6B0096; Thu, 16 Apr 2026 05:35:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC2E26B00A0; Thu, 16 Apr 2026 05:18:40 -0400 (EDT)
+	id 3F1BD6B0099; Thu, 16 Apr 2026 05:35:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD8996B00A2; Thu, 16 Apr 2026 05:18:40 -0400 (EDT)
+	id 3074B6B009B; Thu, 16 Apr 2026 05:35:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BBE096B009E
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:18:40 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F6DA8C44F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:18:40 +0000 (UTC)
-X-FDA: 84663868800.12.FC65449
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BB1C6B0096
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:35:21 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACB61E47AD
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:35:20 +0000 (UTC)
+X-FDA: 84663910800.13.70B7015
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 637B810000B
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:18:38 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A99cJbAw;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 12E87120009
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:35:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V2OY/WXd";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776331118; a=rsa-sha256;
+	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776332119; a=rsa-sha256;
 	cv=none;
-	b=4P18hnwYe/8NKXZbnqmbPP5mQ6AU1KarZHWKOpflXt4C25pJqjQ/qlZNoXAZ/gTvbHJs1z
-	VS6+i5SnkW8290WYHEsPOXSjTs0rknMx5v3+PmYa1INOWzB/qByDhLlADj8T4AN7SqOax9
-	6D/xyMs1erGUSP7atmTVjvQEp22pmsA=
+	b=xX8bjCru+J02Sue3tiVhHyxD80S2Nyw8uagrs2wV5YKl3Hw9qp6KQbZP6U7rS/NQvqgzjl
+	PBLoF35tXF7EkJwgWMcofHrXZ1AbXet21wm7eF4/CB1RLH6lAYa0Tn2StEDCmKuWyLKnwS
+	2dF06jS08fAQePnSzW+ySO+GjAK4vUk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=A99cJbAw;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V2OY/WXd";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776331118;
+	s=arc-20220608; t=1776332119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=37LIe+aq3xvfVtxHkUR8aWgYefKXUCUB4SdKrNcPMP4=;
-	b=QSD8Q5v9p+iUqaSDQwetCX4PSVAbFGc/I2vC06Dom161Dvs6dqBWH3X+DXiocygK6bCMBT
-	nxNp4sdVPRFNbEHtI6nrJhWLnfNFJ/u9kNwAOfQiEw0zDA3ZXJE+zyjDQWmAfBksG8rpG4
-	1urMEpfjxunZrg6bN2pzcp8U3NKC0ek=
+	bh=vOHyF5Cx8M6AJuZCzjekkJ/vI/N2yGPVGXahIMu48OE=;
+	b=Jfwu0KKThVdJvWMDU7vQpUH0mFF7u8G2b3mntVlyNBbFyKHj3uqr5P2JXTDRrZfe2UtQ81
+	6VfyPAS5OR42obur2SSyb++hkHgTsAF1sNnl/WiiyLlwBJFFFC9hNSjyUPnh1Swlxmwbhr
+	HF8ZgNeNfulKNfdPDm1rDHZ97DL1RjQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6552240614
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:18:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F17C2BCAF
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:18:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 15BE9443C0;
+	Thu, 16 Apr 2026 09:35:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FA3C2BCAF;
+	Thu, 16 Apr 2026 09:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776331117;
-	bh=37LIe+aq3xvfVtxHkUR8aWgYefKXUCUB4SdKrNcPMP4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=A99cJbAwjVY62xh3PvHdrzNrMmF8lCSYOvTDZI8M2zx1H4FJVoIbJvGvZSGcKtC82
-	 C7QtifEjd0oDLxFhw8vx2uGpgDBFhUxqu9lhdfsP66rEZZkTjz5sSvpg+iRUtfKjl+
-	 he5MdcPXNdr6cSFbLcf0fERsMsCNph18hqmCKaVeR1jt6aiC0mkAARkMYKWPug5wbV
-	 rsiawI9eWdY/NUK48zEG99dw2eUyCGVRZ74uEz1OyZp6rcn1q8P69f+hTii6Xg/tsB
-	 0/bGPXBpwY5cTnw4OYFG//wfpPDY+KF6PMH6QswRymv4gN8K0r4qL567XpJAc/YHLi
-	 Yye7RqlEqw6lg==
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8d7e7f48499so760151685a.1
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:18:37 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyZe5lZEQps3+/VXhwOYpc8jKZqSOKQW3sNzHubBTIO9GE+m40C
-	TVmUAT+u9HTnM2KgrGqj+ucMphZ1e7dN981wiAXvHPOhSLbJxsklJBNFj/P8XVlq7VLzcCmZJ3R
-	6AbHf3XOHc8Nhi57rMWVeZ+E8DoySrTg=
-X-Received: by 2002:a05:620a:d85:b0:8cf:e152:592d with SMTP id
- af79cd13be357-8ddcdae4eb7mr3857193085a.21.1776331116597; Thu, 16 Apr 2026
- 02:18:36 -0700 (PDT)
+	s=k20201202; t=1776332118;
+	bh=qzx86yIYEM/GemLvFCh/lwiEzuYxSCpGtYSGjiBaBAY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=V2OY/WXd/jcvmTN+lN0/LtgwDqPt1EqOT/yVI1PrNnh/fI7foPgvgxdGx54kwKGKN
+	 E/2Ggvpn6n2OZ7eyYF3SzeoST/lwZ8wYWbdjUB0YidY5dw+8qU+W0VoGe/tIZGXyvK
+	 W1AIYLxoYYnU1LFW965p0UTthgAyMyiObDfnDoG/NpMwVwRxd3j5G0cRxPApZEW5y9
+	 Y5NluBS9bpV12u/Vj4npXYp36Jb7M1zF50aFMy/lPFg8eYGFSlO9cCFffS3jdo0ZrQ
+	 bEgwNIdp2af7qzaBYnor+rcBtHDPBYCEOTxmQzmxr4AaoPeH4ebZ69LysVK79NtLWu
+	 3YYlqzcFxQBAg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Chenghao Duan <duanchenghao@kylinos.cn>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  pasha.tatashin@soleen.com,
+  rppt@kernel.org,  akpm@linux-foundation.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  jianghaoran@kylinos.cn
+Subject: Re: [PATCH v3 2/7] mm/memfd_luo: optimize shmem_recalc_inode calls
+ in retrieve path
+In-Reply-To: <20260410014537.GA28528@chenghao-pc> (Chenghao Duan's message of
+	"Fri, 10 Apr 2026 09:45:37 +0800")
+References: <20260326084727.118437-1-duanchenghao@kylinos.cn>
+	<20260326084727.118437-3-duanchenghao@kylinos.cn>
+	<2vxz8qb5hbgz.fsf@kernel.org> <20260410014537.GA28528@chenghao-pc>
+Date: Thu, 16 Apr 2026 09:35:14 +0000
+Message-ID: <2vxzse8v6yel.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com> <20260413-mglru-reclaim-v5-9-8eaeacbddc44@tencent.com>
-In-Reply-To: <20260413-mglru-reclaim-v5-9-8eaeacbddc44@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 16 Apr 2026 17:18:24 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xMw2hGHE+zySxS7nHzu08XGZEGm2PER7EPuvM9ficY+Q@mail.gmail.com>
-X-Gm-Features: AQROBzD1HZBDOBK7eKDOiRnzA3d41LsFOqPsOUKmFLbZ5S9bghKH22Kvn9McKfg
-Message-ID: <CAGsJ_4xMw2hGHE+zySxS7nHzu08XGZEGm2PER7EPuvM9ficY+Q@mail.gmail.com>
-Subject: Re: [PATCH v5 09/14] mm/mglru: use the common routine for
- dirty/writeback reactivation
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 9qzop7kmo9os5gkh1fkt4ye4m7d1nik4
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 12E87120009
+X-Rspamd-Server: rspam12
+X-Stat-Signature: xixof7nku98dzbwcx5e1dg53bcxtjm87
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 637B810000B
-X-HE-Tag: 1776331118-489808
-X-HE-Meta: U2FsdGVkX1+kxwmHudOJyAEYvM4b/TBZZx1iMVRpx4F2YTpvH2thHIZx3BSWBEo8SjG1LRA5/hBwlNH4egVAu1E7LAijOL65GgEFC0JW7CfbQdDYdaMOfw2Z/+am9NlDCADapMqim1iUR6ad22fJFki5XqDpWvV+1nyX2UJ3F3YwrmsoqU70VYWSRLM7oZvecEsMOLptnmDUmNYBOOibajridsNXl3S5aVBQwExg/k/JOLkLNv4lXomOYz+m0jaBxRVUTgyRUf1sZ6VcKgYqBNPO3Ho+odEk41NDW4hoB4ikmmdagNtxQgfMIWkf/4IablIWv5T6E7HIXyG0Tugj7WZO3NzA6cHfqep8Q0c/jQXVHJGaanmiZP0xa8Fha5YOFzzaq5OygKYrzZLfilqb/ljqzhLiyg2rtbVvLOVn7ciFWgbYZDZ1K0stqYKKQBc9eYHpqKa1sbRkLRMAUGN7haR/SgDaWPcGRXI4AlaiaJ/VONF4hV26ahADGax6eJmmqbbiUmzd+kAwiOVBc9rCqaBzdMDvp9XYspqAQeOjCXYNW8BdEBr10xDcFH7qAN2Vnspu+zwQs3prB3YF7eKIx4QEVM9eBhzz6G3TW6bQzQM17vD4lXVQdJ7/oqO7zNnvxUTQTEsjZJSp9NAh5N6+DZ35b4+nFwq6PuusR0b18YNwEzarPgIgpn4Du5PV5d5Ezjamb31sN2SS93pjNc0D2oX/nZAgsFrkgC3vhHL2VkXpw9IXu1gRH3I9Bs2zVU3f90nkU6sd3YBTqXqJ6TB5q3X6yYCezRzbhquAWnBkOmibmqNhDJ+7IXPzcPnDVooo4SVn6kdVu7eA3tGY4p5BPWy7zV9M0xGKY0pc9sfOb5umNcV519j1Urce8QeyM6FDtdQFRyP+nHLbNBGnjjCjxGxEfrQANA8Q2czBs6PNaGgjp8U0yGEqHSINwZEfL0Gq1jVBUP2TftW+Hz1lD/l
- GlK8R9uM
- zzyGV/fKRxCFOpLN/AVdymddyyNDp72LPtjo3XKVEfqsY8CeXYZpQ4CsT4MX5ION+8lCcGnYfHZLYdRoQAkam8IsMjm3I0/KFgkLhesGC9T1hGx4vVQU/eXl/LrsGl5+EI4ngZ3An55PF8xC5YC3ogkF55cHB1A45QFrVHO2g3b7NE23zeq7Xb3QBKDH3QOdi/2Daqp6pXD4dypXh5rX35DSgvnEGv4WMOWkotT7p38Z3rUOE7SKEoHhM8SkN/cHwMn1E/FxVOi6OocfVzVr/XaR/MAcYBZp70EM1a0Nx7qmSTP9L1sQgl3fVWrjW0GD+l0KSBp2N+7Ks+sNagsBs0TJI5aM9bwcC3Bc1Lu999g2tGhUKHw3xq18QEd4zQVbF9EJxdiGOxQpLd/jHjlsK9pu7aPENvzT47QEVhNZ+XZ+wlEY=
+X-HE-Tag: 1776332118-160340
+X-HE-Meta: U2FsdGVkX1/8MMuw/gK6thSLGK72vpMa7l3pY3nC0EMqquxkEuxECCHr7FxwK3i3koIomoW8QRXmxaD42ZRJKk6tNZa6yrHbjB5LCAjsgW3Cc/k7Zi+IzCsDbyU5XEkBsBJC7z0sa+wp76Myg2YlsQMqRE7vXLnvHYHHecnGksZZLdtzH9beQsEh63+YXMTZ5nP9vL3WTB/BKwRD1oRz+R/JOMtCap1Wm1GOM60CX+qzOVJyhqHeGNHsRcD1Q7dQLwzlMjkmk4TcUFtfHdbIYV959HrWte20L+b1nXBbfb/t6txRXsH+QyaIUKA6kcZBGCXDt/aKPg0aPRQdXIUye6X6E5QJWYvP7KPIXYxpn+kB45TXklYiYAGn2Zm5BblVKPgWpni8/CZI0+kql7WNje32FxG8op7ClKreLM6WW4wxl4a48NoX+dNDT0Fxke6V9Mwoq0g706kPTehzlYURcZnF2QviswawS3XTOOcOJp043hNzzgB3EG7c/zTnHBy7bczaCzl0nQ8W/HuGQt6B+pCjzFKDsKBs3miv5K6Rg5e6l9dTG7G2nnA/hgkXVUX2cLx2G2HKwYwLSWpUFmAo0LyaOlK4+cLqvwuT/CFb7O01uqUnurGfmIYtHCJkl9CdOfx3XHF/ifnTb5Cmaicyy+a0gF94wgLrCEMauD0Z/i97JPNQEYPZkEnAO8tzE9n1kscesHUT5OjOEcdILNwaxgnWGPDSUueCEx9s1hXPsC9Xr1TOU7CTI4/FLC/Dz+y9n7sOxSHS65zvo66yD73Uq0Uc0/Q7fKZHrPrIqaYsFPfcJycYhN1fvTXp3qyiAMCNXLcKLNLTCdhBhjXNq2mrmd7KKxFpDqHZAMkoFOS1LTI1/1DtVsyeQk9Ctq91uZB2+HeJpyn+aB/O4Dc4gA9zZVoqr2KqBkTYckkWHB5n8Jg7uHqYwnia0v7fLMknf3JOt9KRFDV7B0JrpeKobct
+ d8dKrGZl
+ iEnV3y113Zj6EN/RygizHKd0vtkWG90VD/WDSNQec9H/anG4Kd1dArbOqwLwZIAeN9HVg3RkTwLeQd9gAfEL1S17OjZzatF1li2vWoWWST1LzR2muX0Gc/iKSTfUNMJT2Ufm0cdAHQkTPWg8RsbUnts05TWnOPRZN/adlEE4cYeojobf5feR5QtR5mf7gntICvtb+Wc7QlK5VJ57KQOCMkvsqn935DUw+7TkvjU88q0G//UKQhjdlYoyp9fFul807w++1tEo+1/V2wgOharHijqjkH6pbjyUBRoH4ouCcmmMB1d0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,50 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 12:48=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Currently MGLRU will move the dirty writeback folios to the second
-> oldest gen instead of reactivate them like the classical LRU. This
-> might help to reduce the LRU contention as it skipped the isolation.
-> But as a result we will see these folios at the LRU tail more frequently
-> leading to inefficient reclaim.
->
-> Besides, the dirty / writeback check after isolation in
-> shrink_folio_list is more accurate and covers more cases. So instead,
-> just drop the special handling for dirty writeback, use the common
-> routine and re-activate it like the classical LRU.
->
-> This should in theory improve the scan efficiency. These folios will be
-> rotated back to LRU tail once writeback is done so there is no risk of
-> hotness inversion. And now each reclaim loop will have a higher
-> success rate. This also prepares for unifying the writeback and
-> throttling mechanism with classical LRU, we keep these folios far from
-> tail so detecting the tail batch will have a similar pattern with
-> classical LRU.
->
-> The micro optimization that avoids LRU contention by skipping the
-> isolation is gone, which should be fine. Compared to IO and writeback
-> cost, the isolation overhead is trivial.
->
-> And using the common routine also keeps the folio's referenced bits
-> (tier bits), which could improve metrics in the long term. Also no
-> more need to clean reclaim bit as the common routine will make use
-> of it.
->
-> Note the common routine updates a few throttling and writeback counters,
-> which are not used, and never have been for the MGLRU case. We will
-> start making use of these in later commits.
->
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+On Fri, Apr 10 2026, Chenghao Duan wrote:
 
-I like the move to the common path, activating the folio and
-relying on folio rotation afterwards. The original MGLRU code
-seems over-designed and may hurt performance. It seems to
-overthink things.
+> On Thu, Apr 02, 2026 at 11:02:04AM +0000, Pratyush Yadav wrote:
+>> On Thu, Mar 26 2026, Chenghao Duan wrote:
+>> 
+>> > Move shmem_recalc_inode() out of the loop in memfd_luo_retrieve_folios()
+>> > to improve performance when restoring large memfds.
+>> >
+>> > Currently, shmem_recalc_inode() is called for each folio during restore,
+>> > which is O(n) expensive operations. This patch collects the number of
+>> > successfully added folios and calls shmem_recalc_inode() once after the
+>> > loop completes, reducing complexity to O(1).
+>> >
+>> > Additionally, fix the error path to also call shmem_recalc_inode() for
+>> > the folios that were successfully added before the error occurred.
+>> >
+>> > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> > Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
+>> 
+>> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+>> 
+>> BTW, can we also do the same for shmem_inode_acct_blocks() it the call
+>> to it can also be aggregated in the same way? You don't have to do it in
+>> this series, but possibly as a follow up.
+>> 
+> Thanks for pointing that out.
+>
+> We can move shmem_recalc_inode() outside the loop for aggregation, as it
+> performs a single inode state update for the folios.
+>
+> In contrast, shmem_inode_acct_blocks() is a validation step for resource
+> reservation, quota, and block accounting. Since it can fail on its own,
+> aggregating it outside the loop would complicate the error handling and
+> rollback paths, especially when only a subset of folios have been restored.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+Okay, fair enough. Thanks for looking into it.
+
+-- 
+Regards,
+Pratyush Yadav
 
