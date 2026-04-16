@@ -4,116 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D657DF433D8
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 02:19:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E29F433D7
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 02:23:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5AAE6B0005; Wed, 15 Apr 2026 22:19:54 -0400 (EDT)
+	id 6C05E6B0005; Wed, 15 Apr 2026 22:23:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0C766B0088; Wed, 15 Apr 2026 22:19:54 -0400 (EDT)
+	id 699A76B0088; Wed, 15 Apr 2026 22:23:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D22696B008A; Wed, 15 Apr 2026 22:19:54 -0400 (EDT)
+	id 5DA1A6B008A; Wed, 15 Apr 2026 22:23:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C32ED6B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 22:19:54 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7E61BE3CD7
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:19:54 +0000 (UTC)
-X-FDA: 84662813508.04.C64F495
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B3D1F1C0010
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:19:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ga6BMNAv;
-	spf=pass (imf21.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EE4C6B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 22:23:58 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E13ADBA6B0
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:23:57 +0000 (UTC)
+X-FDA: 84662823714.13.BCD1C8E
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F30FC20003
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:23:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mTCoxB0p;
+	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776305992;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776306236;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=r/b6LeONGsmHeQryJPpKqE/rRI/nwz9UqzvnQv7bsao=;
-	b=7nlbDnUZyoD8MwptSOr6p5npFEKeEcswVa3igWnBi3ZikSaSVU/4kjIs91w9A8oljtS0No
-	CPCr91yA8UVNWanAvhSHrVGqXDSxYvIu7+BgRZpY1WgugPjzR9X7KJlghiw4xPh03v2zsf
-	OqUoxE5Hr7rw/lSeUUKLh5qS0GSIoBQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3EZO+AlyFvDQ+L9T+ECdGiRnOG/Ep4JVC8TTiPB3/Ng=;
+	b=Cn6H1G68c7r4eYuSwY7RuR9zs0+hdkjv6Kz0qk4IhJ6MCL/gHvHC83eea85KfxkIJk0vrF
+	rUGRykig9YnPXeeLkrWuqMR85EIyzbkQ03yHFomAckHg/0xMqtEy3X7WN28G1vP0FqGNb+
+	pNIFZpZ2B85O/GLPh9FelBbcSIxqjCg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ga6BMNAv;
-	spf=pass (imf21.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mTCoxB0p;
+	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776305992; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776306236; a=rsa-sha256;
 	cv=none;
-	b=e4Hr5aqDP4cXA0DscmUGziXFRrVOURK++UIJV46a773v38pJ5uz1sroDVPfRNL5YEr/I+m
-	6tFKoZdcR+nlGCwDHZRnrjYOP0LinIMKa8XVDEVBzlPDs8phK5zkzRKEQHcyIQR2V/Htt6
-	GXLQeCYq1gpZG+0KKrSjC1HSedYIb8k=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ad21f437eeso1057405ad.0
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 19:19:52 -0700 (PDT)
+	b=2ZWJ2spk16K45MXusnArLwqHAvomV0/+m2QiP/gEwQxb0/ZOBIYfIMLvedkyBBLjn60Ppw
+	ZH5BDH/2MculA4khPW3tlhPKbq5ojW7lVTQ3VRheaKCGypWwQo6oFK9a3F/X/XTeXrsqxL
+	+dIqJwNs49EhqbeKsgwAsB4yLHPSa/U=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-671dad7cac8so4392164a12.0
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 19:23:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776305991; x=1776910791; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=r/b6LeONGsmHeQryJPpKqE/rRI/nwz9UqzvnQv7bsao=;
-        b=ga6BMNAv1rlEELx+i7UR5p0W91GNqKEyJGXwWAWFUUU3fOuuSg87GNo3elsjmDS8md
-         FPeUhvurGMBvBZGxws+3aOogXGU7eYCOFUT6PN+428Egksib8smHlPF+1fKtdrOMzuUv
-         0kKRS27E/Gynm1t9Y9kVYYsrXL1MQLtUgYyQ/hpl5PWHWaXOuJxZ5BJ6pnha+VXTCFox
-         wh5/ADUK8UIDwB1OqZoVWYnlPFYY7KbvNukshGmVU6FZMwUjL4th8MrSyDlq/RrVnp3K
-         S2HE2hIxCg7IPqDHd0IcL4dr/G/WJ5XqmODX7oNVzeAS6XEWIpVxhjN+7rqmuqmYqgfX
-         LxiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776305991; x=1776910791;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776306234; x=1776911034; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r/b6LeONGsmHeQryJPpKqE/rRI/nwz9UqzvnQv7bsao=;
-        b=O43xoULNu7qhEWK/ihAeX39JNbgNyQBrS5a8jINF50Pupx8QNx9Q7y88ZXVcGwt70e
-         Y0TVcCW0U5CEeSbpu8bJ8W1zm+5iWxXVk8RkESwKswlxj224ru6vqfiOIonEy5O8pijf
-         iw7c1fHuCWu7kxJ6Lg6zoczr4+8mMCX0nIVC9WTh2uRQX34N7FzSDhiv5g6tC4gXDZAW
-         uwJdOWLTg/na+PO9RqnffZrLUrql8MxxuEtHul2Alpwv1T/BPYBjC4kGoVDxTQFCZP/e
-         OdSYcuNbAyCSRIatBqRdaTV9dHSev/JoR4THQwq4/XGBOtDs+bXeXw/PFEwJXZTHEx2b
-         kgSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/wS6h4JVqZNocIKMCOjlBJrERICaVu/z86elMUqL5QLmjV3V0xVLBSWxm2IvyuS3otrVRi/I0NFQ==@kvack.org
-X-Gm-Message-State: AOJu0YzR2s8//T1hBoPbbG86ZXwANbb6nOq+/N5WFx5kYy8I8myLwFmw
-	rrXE55JwG10N0MpWQ0Jn9QPina3p37oLJkWJxmb+VcETL+qCgx/Ul43Q
-X-Gm-Gg: AeBDievqAXU+DASjYG78gOKdUGk2+fkNkfqwnu6vbnfdcx8xKX2FfP3J7sECvXvUJcQ
-	i8Qqm3wU8XCm+bkiPAClVYFXeR5+uPCF4Fc/xeCArAQh6/TfIB833P09wbJE1P+aFuAkzA+bhY+
-	lbPGPm2lOrJFRSKsnjn2pPpqd9fpCmLTxOlHiL8t703O+9f3IJnDE0nzF4c/vvrz6k3NvW0ZUHt
-	lal7l/HgBtYEAWCCz+3r14tj7l+4hqBvOH9Hn5Pzqr9bjur6OtY4O9N0B3NpjyzWa2Sh4G8in+0
-	ksJMp+pbu5Mg/qZZgForH7Isax/I8Jh9HVdu9PTEnNNAqy2Na5co/lN2OZ4ZKjNhyE9vSn1WZoZ
-	wnwlP3J7fFm4KYMwpN4KnJ0z/w6ZsWnFnOikkQt8JaVa+/NkyiTKmScW6niS50WcL/8kNjeTKPp
-	gAQv8q/N7W1UlvQSgiU3NqG43KkM3KYyVr
-X-Received: by 2002:a17:903:3910:b0:2b4:6447:f8a2 with SMTP id d9443c01a7336-2b5eaabce4cmr14916825ad.21.1776305991282;
-        Wed, 15 Apr 2026 19:19:51 -0700 (PDT)
-Received: from xiao.mioffice.cn ([43.224.245.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b47826e917sm47129935ad.54.2026.04.15.19.19.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 19:19:50 -0700 (PDT)
-From: Xiang Gao <gxxa03070307@gmail.com>
-To: akpm@linux-foundation.org,
-	vbabka@kernel.org
-Cc: surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xiang Gao <gaoxiang17@xiaomi.com>
-Subject: [PATCH] mm/page_alloc: fix spaces used for indentation instead of tabs
-Date: Thu, 16 Apr 2026 10:19:45 +0800
-Message-Id: <20260416021945.682234-1-gxxa03070307@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=3EZO+AlyFvDQ+L9T+ECdGiRnOG/Ep4JVC8TTiPB3/Ng=;
+        b=mTCoxB0pv6gLECyGHZOjRWaj/NE7OX4qhPWTKJDHMz1Q/T3jCGzifS+Oqb+5cs2Crr
+         DhoTaAjgQKfMDaKgZ96W7CKzfD7Ge/yLsKbGLYxDL27A1YrcJPB66fRSMPDo7kc6RG+J
+         SEpd9oprc3Y6C7a62u7weVFo/pcTSVd77cc3k+eShvCOqK7QQsLFEcsc63D9+MfXb2Qr
+         e5l+TBeU5P63wKZYzX+gJAOIw8Wq1U13SSwyUN9ZHZXdUzVKM9YfQZsGXClO8DHcFcxt
+         VdOp2Ff04xb4bG6gky58GjFXPQx4jf18B4DVQDloj5qPTCypm/sNpLf6WXPUm5dz28Db
+         uSZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776306234; x=1776911034;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3EZO+AlyFvDQ+L9T+ECdGiRnOG/Ep4JVC8TTiPB3/Ng=;
+        b=BNE6CJ3bCYNzAuda4p7lNhD6H1SuHu+E8/Tds/0Ybxg3B22rRakwPgUcqANNugLqow
+         deHckyVPMIT5XecH9ZSMMnfMQwMYTtizRj2baE+yJkjjh1Sobkknc5aKPDaePbTexIs3
+         9qwAFs5LAtHezIbYPqgEpEg19qUTAxlBoRrKSUUARDX8gnZI2pb7Gpxzd4D8TNxx/yHy
+         C3sNodVLaN6qUDzOLiEIYVX6VtCI4RaIqC5cYJrk+dLemzHTkut8PbW2MuKscInmdrNI
+         ljC9mfUFx0UTbvATr/2DLvcrwAKQKJRmYHYylhZkvJ+aRnwZQRtXd83FLcexRyLHxH7N
+         5gHA==
+X-Forwarded-Encrypted: i=1; AFNElJ87VP7RxG8dBWXj0qURhgxTg4CfVKUehcn237mvA2H+JqAZqqyzim/5GDjFAjFgLuwLbT2Pgfoxiw==@kvack.org
+X-Gm-Message-State: AOJu0YyRnCcMBAepZinP6zLSRZ2Gd4tPzziZ+iY6tOgSjKGKJP1dDaBo
+	w1F7NIRcXCnoYJIjGv3xwTHI1D1/5MUS23oUHvyVvNKShEBiSEaBwdp9
+X-Gm-Gg: AeBDietO906VE5c93skry2FmRbp1GjhvwLmVUuXR8qmxe/75gP//mPxkT1V15oLwgrS
+	WreEGmdn2khQWlS5TKzKDqN1vhE0EtPMxVS50MvuxbejgmADADtNbiEq2Uuzf9XhTrrT+CiTwjv
+	8gyh4kVIHK445sG0gglOC0PAUBNVk7G5GbkVJvnn/DM3PYVcCW3n1aIgvF+CjYOcdpSphM0wVjC
+	Rhw5DTTltXHbJbL2RLArjohNPrXbmLIW8AnYDNsCcdpg70j5vQ4ziDSVEtR56DOsbCJ64yBbAFL
+	LggA0w1VLgOTxth29BqN7lpWYXXOXXGn/P7udfpOnUGfpi+dYcUEjTNhYgdYAwUTympSYCckS71
+	At4ftWzejcRwwV9aXJ+DAP2YmPUYt5NcijB+E3HCP1oRgtiayhF/v+aBftXvkmaXjSqkgH4k0JE
+	dFLwHPoZ8ClM8711ZbllK22PZSwvra/DHj
+X-Received: by 2002:a17:907:d0d:b0:b9c:f69:598c with SMTP id a640c23a62f3a-b9d725ebe50mr1351344066b.22.1776306233925;
+        Wed, 15 Apr 2026 19:23:53 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba17341bdf6sm110494366b.1.2026.04.15.19.23.51
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 15 Apr 2026 19:23:52 -0700 (PDT)
+Date: Thu, 16 Apr 2026 02:23:51 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Yuan Liu <yuan1.liu@intel.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+Message-ID: <20260416022351.llek76h5cik3nese@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260408031615.1831922-1-yuan1.liu@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jbd5qa7wqzak8mk8hf1ope74wkde3d41
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260408031615.1831922-1-yuan1.liu@intel.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: 76tuy1uhzrn871hnzqchuiw1fn7c6byu
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B3D1F1C0010
-X-HE-Tag: 1776305992-755128
-X-HE-Meta: U2FsdGVkX196rXy9/opu0+hmqonhEDUA/FWheBlH5P6nidofm3EpOjYsVc1AhhG3/qzeF46p7mNP3AjvOO4dtKE4moKP1t7jwKHWsNx6dEQoqAvi4LddP+oQKn7n7tljVbFzD0K3dt8vu4YWZGDm2bj77+ZYgOZloHpcBmxA/HEfPLdiQUzgSNAoKevxhWmSIxQ58WPhnHvc58GXMKC2cWMOF9Bwv1jb41OXCPXAnO9BxHDEqTEPUvQyY/tVUzDb0nVvKs51LYiKgI1Xy+L4/D7FNewE5H0ZskzZz5+UUO3edgSdyahpfloHcYyCsXllUJFV8Nyt0pKM7XukgihzXUW8y5kmsgId4QR7yib7bbYeFWSRoDlPIzpdpgza+XFLrzR/ebr/I/hcq84up+H9GSbNsuP8DYaW80iBEMMtOvEzU4uE1aCMfHoZYHhp4RLgfvb2WJokKBNfVgA/zBjMShTXjSpULZy7959grP2NtJwIJvSvW07IRcg6Wire04yUUKSPyGKdE4Ob4HcHTSRu1XK0kZzJ2XYvKWlbI7DfzgUPFTaZNmebybwyRiJwA6igI1W59O2dBR2mSajLGcpDvG++M3G8rjRK90DqI9OCcghU5zZvsd+K6wzKcdRq+PzIFx9GriMXvZfjcgiyxENVUaUR7MEog7qNOhUV8BS9Pu6m6XFCmuTuaNJd/oGpvJhieu8W69V3OzTR/rrUbnV8yA5Bp9myaKUAWl3Rkau3Jlg/e1ji+/4lvxAQJTV0fxo09ELjNg4B8BjSizGv/pmVyuIWS9DP3P2reSnJwXSQdMX99U271et/fnY6JWieZ966bKx46Bco8e+YYccTwZOHUVmFmQCrUlV+KPV1MQKyLxplsxayqxRg7eMWst0+3H6ydan5D83FwB1WXnUm0R4FxTaFum4cSDDBkLXo+QawtYTzTQPZR2TXiiFZm3j8bFtXSYWcj1PPUh4RJfTKA4M
- 1jGqDcEX
- WryoTnrN3rU48Intlfa3JYnKVqh0Ajty3oQqz8WQFsheGohRqkTyJnjlOhPWAm7BFJz6UjpMpavNzlO//yBwQYRaZtjGr44/fhn6fcXJXjqhnHUyIfkzgRoKBrnvfH4ZFCy8QnOuBLFvL0o46eSSlDiWEysdUX2zAXuh9qkNJpt+P/d9kbooHEcHSce5j4G28pcPSaz4szPtpUnYhwf955O042VwXYPEMVZwvzGbm28VFq27996wpX3KHietPQEdsp1UT8WUtwj9zjGoNOcAcguWDJJ9Hg8gJLhXyFazGMIzV3XCBTEqyZrBSenAVuggn5r+6nuOCKDT+zwfgqtcL6livxA4qfF5YddmSR/IaQgkL9r6up/m8eZMbU/BKFEMc3LUXmKgFMNz3+3XyQ2prT5Y973tHLNjk4oViaEK6BKswKa8=
+X-Rspamd-Queue-Id: F30FC20003
+X-HE-Tag: 1776306235-660136
+X-HE-Meta: U2FsdGVkX1+je5NmIYvNKp/W7j9Ddy5mj7jsZ1CiEJ/IRFbwnnw+D6uivV90+Pgrl+Jvfb3jR6PL5K7K107/MLU+5+uH+PFWR4J8z5E6S5vxH5X+0SO8jnPOOlO5c8MxitM7AvtOyF9ZJ259ZLRgZnOjp3MCCIfdBNlin0XRFNmxs/rNLDJxJd2skopb/MEeLPpSOq0ZWTmFHZIUAKCnFgxVZrnICfM3KwIvb6La9fWUq1EZ/04Imu2p61GiBOr7QnrfMPl8gT+PKZMU5rOwL5WzRGxXsBXSVqS7WnQoiuGtmPutN9cv4QweneDEFP/OKDfbd4J1kbiR9gaoSta0h/WLeR0auQUwrBDGo49VF4U0y/RxFBWCDdktOn8GzqTLZc+/kiwtU1NygQgAYhN9dKfboIkzC+vyCgoMUlPKvwsJpYbQGoOpNSTYR8ZwulThXzBq1GhQNe/3PH4wBttDzZyw2zOF7kx9pAkxKlHvVHYGowDh0sL8spLiq7CprXQlb+UwSHA3n5jqF5H96w52fjWZTiOc9bUrFW+Kt5NKxlSoo66sI1XP4+7GoN/VYNmmuMnTNvBTo571YBtrTi97Boz0N+6/Lff2H56nWypdvqJJ+iI2Y+juX6LXQCpGazvmcskW2k9fAai5jTltW9jAuDqd+BvtsrpbDNSrLiq7llefrKrVIquGJCiDet8iICKC+FMTPfy240iKqkildvQoZJTriRrtk9/U3TxewvzX1lmnY9/vYrTthO3trdhsqnZJZF5DMHd8W7/wu5I9oRG4yhs2kBHb7zhYW50+OPsOEMggiUR5EjfkBe9XdBCcK9mnNnq/9dfu1owWdBitW9dH0nvKWmj0xShHocCZAGVmLtV+ipWVtGCFf5He95BspyG3+R7v4+/MDPmjj3R0SlQ+hQa3Pfcwbd2qwA9dawRPGkqelJt7b1CDQD3byxYW0YsE64O/nVYV9zC+iSRPZzI
+ 3CQbE5v2
+ a4k6zWjJ36mFAGhVc3f7ZwsHrb5IWmGkXXwkxu+mFrIAU0niWI/44VXjOi/hTulccOej9s8c/PX2ULn5D6+z7Itmqvr0HSVoc0LEbcdxzvWXFITdkjtEitB9byV3CPGoyHcUtIgDRiLEo664b9ZElpnUHUwbALPDHMKBNwHaaUn8HYB1E+EYp7RLqGR1arYuiulGM4ev4i7F7kdr37BwulfE1rlf0W1T8wW8wTd0wWyvt7/1mis7oLpcj3NSNi7myOBOlgHngMEARfnor2YsXSH0Tju0u0JLpa+9Dd4KEAcaf/Aod7RbRzBF4pMpYExFAmpU3zGz7z5ABJPujnsIf47uOPPGqj91DoKRO2orcc9XObGkpY7IhMCcC1MZ1SPSFHIsm8P/3kue51xadTKNnZsRIau4dUNGE9lTkab4xfVGkw4MaW0Lls2G33leIxE3QxrZjLlrioldgrweb7TnpCEojflLEDWWuAGmx86umqgksXwvFMUCxQCSML+XjFKGoBuYVMndaRWGsJWEHn0aPqYFZpWETajg5ULLCg6UGYwGOIZy2iJslp2MHNu4PHAqWurYU2ij54qWCyDQVsYV5FWQeGdaK5VbGn/7JzjkbVU8a3JMgqZrxZmG2Sz4ZRcs5elA1VSW6cQtijt90BjOS44oJvUc7QobKGrlHPtSeFDpKOn3mE9Uwx2C8+6cpGN+8+MDVUuRxtR8zKB0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,57 +126,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Xiang Gao <gaoxiang17@xiaomi.com>
+On Tue, Apr 07, 2026 at 11:16:15PM -0400, Yuan Liu wrote:
+[...]
+> 
+> /*
+>@@ -956,9 +957,22 @@ static void __init memmap_init_zone_range(struct zone *zone,
+> 	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
+> 			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
+> 			  false);
+>+	zone->pages_with_online_memmap += end_pfn - start_pfn;
+> 
+>-	if (*hole_pfn < start_pfn)
+>-		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
+>+	if (*hole_pfn < start_pfn) {
+>+		unsigned long pgcnt;
+>+
+>+		if (*hole_pfn < zone_start_pfn) {
+>+			init_unavailable_range(*hole_pfn, zone_start_pfn,
+>+					       zone_id, nid);
 
-checkpatch.pl reports two indentation errors in page_alloc.c where
-spaces are used instead of tabs:
+One question here:
 
-  ERROR: code indent should use tabs where possible
-  #887: FILE: mm/page_alloc.c:887:
-  +        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,$
+init_unavailable_range(zone_id)
+  __init_single_page(zone_id)
+    set_page_links(zone_id)
+      set_page_zone(page, zone_id)
 
-  ERROR: code indent should use tabs where possible
-  #6626: FILE: mm/page_alloc.c:6626:
-  +						         sysctl_min_unmapped_ratio) / 100;$
+[hole_pfn, zone_start_pfn) doesn't belong to this zone. Would this be
+a problem?
 
-In __del_page_from_free_list(), the VM_WARN_ONCE at line 887 uses 8
-spaces for indentation instead of a tab. The identical VM_WARN_ONCE
-calls in __add_to_free_list() and move_to_free_list() both correctly
-use a tab.
+But it seems we have already done this for a long time.
+  
+>+			pgcnt = init_unavailable_range(zone_start_pfn,
+>+					start_pfn, zone_id, nid);
+>+		} else {
+>+			pgcnt = init_unavailable_range(*hole_pfn, start_pfn,
+>+					zone_id, nid);
+>+		}
+>+		zone->pages_with_online_memmap += pgcnt;
+>+	}
+> 
+> 	*hole_pfn = end_pfn;
+> }
 
-In setup_min_unmapped_ratio(), the continuation line at 6626 uses 6
-tabs + 9 spaces for alignment. Replace the excess spaces with 6 tabs
-+ 1 space to correctly align with the opening parenthesis on the
-previous line.
-
-Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
----
- mm/page_alloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2d4b6f1a554e..752673a9b43c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -884,7 +884,7 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
- {
- 	int nr_pages = 1 << order;
- 
--        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
-+	VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
- 		     "page type is %d, passed migratetype is %d (nr=%d)\n",
- 		     get_pageblock_migratetype(page), migratetype, nr_pages);
- 
-@@ -6623,7 +6623,7 @@ static void setup_min_unmapped_ratio(void)
- 
- 	for_each_zone(zone)
- 		zone->zone_pgdat->min_unmapped_pages += (zone_managed_pages(zone) *
--						         sysctl_min_unmapped_ratio) / 100;
-+						 sysctl_min_unmapped_ratio) / 100;
- }
- 
- 
 -- 
-2.34.1
-
+Wei Yang
+Help you, Help me
 
