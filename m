@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84042F433DF
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 03:17:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB40BF433DD
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 03:18:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BDBE6B0005; Wed, 15 Apr 2026 23:17:21 -0400 (EDT)
+	id 2097A6B0005; Wed, 15 Apr 2026 23:18:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86E546B0089; Wed, 15 Apr 2026 23:17:21 -0400 (EDT)
+	id 1E0C26B0089; Wed, 15 Apr 2026 23:18:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 784806B008A; Wed, 15 Apr 2026 23:17:21 -0400 (EDT)
+	id 11F0D6B008A; Wed, 15 Apr 2026 23:18:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A18C6B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 23:17:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 06C5D1606CD
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:17:20 +0000 (UTC)
-X-FDA: 84662958282.23.D19978F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 102CEA000B
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:17:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXqBnryB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776309439; a=rsa-sha256;
-	cv=none;
-	b=FKXDb3KqEyNPqbwxACakpDtjDrrTvNQtsI4UmAMfxV/RLqaU6wOf4f0l8kKOLLWujeQHBl
-	Qskii8eFBatlx1P9TeD9HE/BNfftAMW/bE5KHMfQcD6S3YP1TWji403pOghBhHXeEglKsE
-	TSsUwC509yNaG4aIGt8FqLhaZDknVtw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXqBnryB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 050186B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 23:18:40 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 99DE4160700
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:18:39 +0000 (UTC)
+X-FDA: 84662961558.05.BBA15E2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id CE8D2C0003
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:18:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CUnVYvlz;
+	spf=pass (imf28.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776309439;
+	s=arc-20220608; t=1776309517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/nBmGGsm4iwgSKnnJppEfzKhl4wyO4jRpckQgWh7jPY=;
-	b=loHh007DH78PbUa116O4f32oHpNqMR6QCnmS96tYY8srzk+O/TprmF6k5jbnhODFBz8sjx
-	AuietZwTs1ZsJHy3zAszqObMR/ngCC663XKJddPdKKAJTsFih778a+VgFtdrLtr6cN+iyI
-	PgdNUT1l2khltObfI21SzwWosTUu8PA=
+	bh=g++/TzLSngXqnQuvfhZftdLquLr5oh8XV2a7B3GO9D0=;
+	b=l8ziYw42HTQU7Nvidgd1TUWc507JiDjcIs64G2rJvk2rD/OgtUG3yGntU43WTBco4ww1iw
+	U9UrSeLVhsn4Pm2MBRJ2NAIBuXElSHv9tH0P/ch+oT35DHm5Bi7T92oggqdZRrpM6BjIsM
+	js1ZkLl+crihreqTEhbgSE/fC7q6loE=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CUnVYvlz;
+	spf=pass (imf28.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776309517; a=rsa-sha256;
+	cv=none;
+	b=mRGRDpKnFJfDlAlR87RRIPbJ+4CgxUykHTvHY4FLhOThszGVazi0cozQ6TheTTrsyUNqkl
+	RRg7DV6F780MeKfO4/Iwl3sCA2VEWbyP1nCM66+KbkFxl/YxTiECB4qiVK5Vvl0beVsvHp
+	qe83utL4zLsUft7BzDFZasUtgDPnEEo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D947944437
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:17:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD44CC2BCC6
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:17:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 27FB160123
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:18:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DEEC2BCB4
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776309437;
-	bh=/nBmGGsm4iwgSKnnJppEfzKhl4wyO4jRpckQgWh7jPY=;
+	s=k20201202; t=1776309516;
+	bh=g++/TzLSngXqnQuvfhZftdLquLr5oh8XV2a7B3GO9D0=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DXqBnryBwVf0Y9R9eXg9pqlQAopV3JbbcK86rEWD6Ksu7JCeJRIWT6CCv+vAls6e5
-	 uBEv3t5AbP7n4Zrq0t4151lduMVTv0T6Htpv5rJUO7Y4AWkBFEmjEopQBV/Tp36n53
-	 mx/+lXqJzRlmqJxuaQQxXegYCqmSrVtTg6QHXuUdYUBYkKluWm5Lnu8q5bbJ6ysyDV
-	 HUDepyfxiUr30uMQ+wscmH91m5o0Y+CnnrcRKfNlXNfxkDxJIG+MTHRyhfr4J+tX3r
-	 bAEB426IOCZnLsSvTHBCL2OipKkwT8R7sl6tJpo/rCGk22qhYzza9dOkBFY5uMts6B
-	 A+3aMysKTetMQ==
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79885f4a8ffso79880607b3.3
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:17:17 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yz3HAd26dubOpNyYSeQrbDhbRwl0a3sAUMh8+7QNqe9X25fET9P
-	+5CWV8e8U3LW4sY1tJUUTMLQxKn/ooS4qzBgCfFLrxav3PqUhOPt0NpFdfqQAzlKxrSKuKSEKyA
-	a8A4/YcrrhoQZuqHFAu1qyUasqi/arDGqA1YIYWDnYA==
-X-Received: by 2002:a05:690c:d91:b0:7b3:b0a6:2c5b with SMTP id
- 00721157ae682-7b3b0a632f6mr150410167b3.12.1776309436995; Wed, 15 Apr 2026
- 20:17:16 -0700 (PDT)
+	b=CUnVYvlzdgo8AWD5DKcpsov6pdvWGA+eTe9v3MwsSNDKEiKz5utGde5Kr1VFg83Fw
+	 DRsHyFKQ2jNqsEfzKNCIRuVSte5WIZfrtTaUPOkQZFdGXaqEskoJFMxXlGa0BzFJEP
+	 K5UjbKTJYJouTM8WEsJ6Iyv8589+4QfBntPG2wzBNsettwC3i7NBeufyp/qhVYI3kU
+	 xrGaLzcDhpfxofRwm/lLm49fmfzYTKxvRMsVHqsViivGbLh2hZd9oPcICzA457qzZe
+	 OU92WnIPBFZT11sHBN7KXSxSaPZRva/XSpLOU0jZp3LufHQD/OD+2PPXbIfvnyOhgj
+	 88bKctWK1sntg==
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-650775f427eso7824515d50.2
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 20:18:36 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxnPw/BSyAn/TvfcTYbHk2Wg7V5tIEEPlmqODdYn0ME/V8UMbIU
+	iPiD8Yw++W3AxfozdA5vyRK6/tjmsSFGqkV5c8AbH7XVTg1Ot0q6EzqZJOER0QVoDnrPyQXH4jf
+	bSH9HCV30da5PJlfJfbE77lB2fujG/EJkSWcH6afzIw==
+X-Received: by 2002:a53:ac88:0:b0:651:bdff:daef with SMTP id
+ 956f58d0204a3-651bdffe9f9mr16710813d50.19.1776309516234; Wed, 15 Apr 2026
+ 20:18:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260415085658.993859-1-baoquan.he@linux.dev> <20260415085658.993859-2-baoquan.he@linux.dev>
-In-Reply-To: <20260415085658.993859-2-baoquan.he@linux.dev>
+References: <20260415085658.993859-1-baoquan.he@linux.dev> <20260415085658.993859-4-baoquan.he@linux.dev>
+In-Reply-To: <20260415085658.993859-4-baoquan.he@linux.dev>
 From: Chris Li <chrisl@kernel.org>
-Date: Wed, 15 Apr 2026 20:17:06 -0700
-X-Gmail-Original-Message-ID: <CACePvbXra-aXHf-N9btoCHAAaVGrVdJPzdeZVcsR0or7kLfF0A@mail.gmail.com>
-X-Gm-Features: AQROBzBUSYuzJxADs3MMAhnlRX8eZx_cofZToGgTxu2tuiC0nx8YJfCO8q0OOcU
-Message-ID: <CACePvbXra-aXHf-N9btoCHAAaVGrVdJPzdeZVcsR0or7kLfF0A@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] mm/swap: rename mm/page_io.c to mm/swap_io.c
+Date: Wed, 15 Apr 2026 20:18:24 -0700
+X-Gmail-Original-Message-ID: <CACePvbXd=DM-4Fp47KruwtML611AVhXLTtrH=98wMiBnTXNgQg@mail.gmail.com>
+X-Gm-Features: AQROBzDpQiDYV_BEAg6iFPgcSOVrcJ1c-GKNJg28DL5lJO7_iY7glMy4I6ojZ34
+Message-ID: <CACePvbXd=DM-4Fp47KruwtML611AVhXLTtrH=98wMiBnTXNgQg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
 To: Baoquan He <baoquan.he@linux.dev>
 Cc: linux-mm@kvack.org, akpm@linux-foundation.org, baohua@kernel.org, 
 	kasong@tencent.com, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
 	youngjun.park@lge.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Stat-Signature: nrndozijqt6rj1aqbg3ibwqde1aqj4pp
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CE8D2C0003
+X-Stat-Signature: 83aojtopcq4e1oj5g1tpyq8ny5xch8kw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 102CEA000B
-X-HE-Tag: 1776309438-368591
-X-HE-Meta: U2FsdGVkX1+aRKm9akSwc4vEYwnj6smTlHTUiT23LgaA/f2jra5G8q2iv6yUioxhrQrjWVEUida+B3B0UUH+0jQVHry7XHBVxy21/kbRZ28hithrIH19/mTdB6oXQyE73+YzP3mT8VXoyyTAUij7H31ftXmbaAtxVIKw0Njcwlx/RiKq9kq6ymc4bk+6/3jtnZDkGiRKGWQxYHc92dqljcrsDqgM1UwyFmNRl5xPCvcWwEIKp+Z95CK+PmRIUWafSofUHQg4Erl1LCJB8MkIxZUfhTQ9tLRmppEg72yGcfLgl9HvhlCR4THBAk+n/21kPZGLhJo2oJ7gZhaQ59QuDZxBf4xE6ScCAi8QZuRaPvWHznXV6V+RicjOz8br7td+LM8SGgkzS3EXUyjIzGJ6P+39PBwqiI5W9MyD4aY05jQbsEohavDGCe816jZSyCSGK9F6v7G6k4sKWWTsCxLU3YRmL3r5sSpHESnjTD9gMYgTmmUsKjsmRNrNV28P4/ZXb4sMoMbeKiM2+3cwvW49pNwsSubtpHgGaBvN/8K4M6T+i+SUfyJSvkp0K42UJnAreh1h/fdgvPxrfP8MHVicgQHt77+NMXVusFIrB6b14eg/QH06Is7NIR2DP0tDHajxJSwkhnSbAX+SD2fszbfWp0HOGBXUhYsyrmWf4bBnITutORkUlaXtZ44vl6nWz8QYl71pj6dTkC4wcRC/MGc8kBBRpaDW3VMw3AF4za02THh1MyMeHgv42QcmP1ZOqfmG1SRHAseSVihfwDecbpz5txs6oVOZ/PRo7BSdZcB2ImeGbEJbMznaYixb24uwPm152JIR5aUu/hBYqnuyFLfOOBG8Etz8L5freE5lULXG8OwTT0BvI4hGFPFULr6vtU0Gg5aB/W9m+VtYV7naXFJ8XOI1Z8/WkKW06z6ifI8REBrZkZKDz1oRjfPuOxGia40ShSA2I8iNnS0EIkGOaYR
- YYIQ7Rtk
- RL9FGOQD20+MBt27FPjAfIQJtQqNoN+zlg/DU+QXYc04+TNeyR8EHB+3JxVZS/vhwqHQPdMxnHz7d50s+Pa+xnaQrHZxObgC9CRzsVDy6g6dJY0o5GXe4yH/H9Nu6DoSgdwzPQ0rnaxaChG/d9wBMKjXtPTG89JDEc+sGQeYv8ITY2Ua4QQqaJ6IdtWOyzIBormncWtffH4VsNo93+4R8jpJhIvAYtq0mr9ygVemajayPMO6g7r129jlKpf4MKQQ3SdKupzEY5k4rBnJjTMC1M+bF9YVVWOngwZL1Tb3M891RD9zKAvMZ3oRaXpueb2LJ/zbU8Ws5EAVAQER7/ngOQg/d15QEugaR1hbDCw+oe0lOXotaHN2rzC4meyKd+0BVoG76Ex27rQm+IlaWvswOZkNw/UTzkfbToiscB4E8Dw06Rio=
+X-HE-Tag: 1776309517-378014
+X-HE-Meta: U2FsdGVkX1+mTh+ZosRl6qR7O02vI078Jykinasgfw7+zj3Eu4DbwEeDkPC7RcneHOctwBqYzKaUH01GM4n4DqQf1IG1o3YIjry0AlAsG/A6FbI9ZN/H2oODv38y/g7kRQOVghgQc9t6uHLUeHdEPiM0zTa79cjWxgfdouFF9vcvE+YDCI5xX9VziVagyuWHowDBxx42u+OA2oVmpqYrmoQCuDa/BQBgCqn39PFCFF/rfrCfCCSCD5dzUc3Sks4LzELz8x/9O73HvKj0em5izPbHJtfmivtBjTQlIBoO7PrOI7aXM1RwfnMFY+qI9QjtxFOVqqbU7eT6JR5dP80ps5Ag0Ag6+RQQ8VAbLZqw0BT4TkJ8Hy3Xjkj3kVNZnhLNyseW5SyBHIi/qokrL8P5PMI/waruMPWEwKnzMR5/mks3iBALEc8Z8P8RFqjE8+9dsAubTpLNi734617SL3fTmhGJW94VD7ahN2HXvx9cqrUbhMXHxRto9z6LxepxvjewcxPumdR8GXaAdyfA3SGCVbYhH3UQ0gHjvCyAugYL5y/obKRsa0D4Mn8f4JYL3FcgKdjbKAyJKvB0bSc7VuTQdY6I5chk11Zf8m+3pBLeMSHiZxEgf9W0WleDrCoZAdqvsMArOcHK/MM387qJbSJNgHCUB+vbaz/vXlvc9qtl/BiT/eyHo6c+mh8/0sASZ6DTLZANhSDL8Zu95m32Q6w1SfIAujkt0R4xydlFmhPTA0o3412N9lo86aoTBhSIqVaUmr793VgSfaEkeN4M6mhE5LfG6xXpzafCIYGy92nrZuTaH5fh2MNieHgIb2+tqgvm+srfJfMgwUo2cOltEG/tD2HotJpIl1Et8qDsBoNfS3yEVwJR1u7k9nQAv+uL5P0oImJIvlCvMHr1cpGmDLCfzmv5N8rLZeCPLPNh5daewsR3/imeWHepCPjsdsU15N89BxsSkbjD9NZNwo7uSqU
+ 7nKCBprD
+ NPnyYGRtWG84SU48j+VMzLw3mQIN+7ksGB1BetXjWddjEz46h8WBDjEzqQkBaOXtzhbF2ViSYSE77H+XYc5DhsePJEmOUOBNTgLwuXVzMQMsHZ48s39bPQIVNd5kAP68Z6jPOU7ZZ6iVVzo4qO7/Hw4n65h8LEwSRMpWEn+vlo2+JlLWO91Ajh0FVpaGEqst6bm7kmXovglN6ttkhSMU0bF9n8VKWBbDrnH5izI32b5JU3gjQ2qnaMMdrcf0KDpS5L7aMY//wzkeBtOy/qrebq8p3EEIhNJGvUvXVGFzH2tSSN6R2FpTqQ1eQXIxPXaAGGFp3xZAfSkEr3nVe6ahHi6WJSSO+QEAtuW0B3xvF0UFOyPHc7xipTEpaOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,16 +105,13 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Wed, Apr 15, 2026 at 1:57=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> w=
 rote:
 >
-> Codes in mm/page_io.c are only related to swap io, it has
-> nothing to do with other page io.
+> All these swap_writepage_* functions are hanlding passed in folio, but
+> not page. And this renaming make them consistent with the their
+> counterpart swap_read_folio_* functions.
 >
-> Rename it to avoid confusion.
->
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 > Reviewed-by: Barry Song <baohua@kernel.org>
-> Acked-by: Kairui Song <kasong@tencent.com>
+> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
-
 
 Acked-by: Chris Li <chrisl@kernel.org>
 
