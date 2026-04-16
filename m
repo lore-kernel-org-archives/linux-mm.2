@@ -4,89 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF23AF8A14D
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 09:44:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AB2DF8A146
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 10:05:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FD5D6B0095; Thu, 16 Apr 2026 05:44:43 -0400 (EDT)
+	id C5D9C6B0005; Thu, 16 Apr 2026 06:05:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D4E66B0096; Thu, 16 Apr 2026 05:44:43 -0400 (EDT)
+	id BE7656B0089; Thu, 16 Apr 2026 06:05:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5116B6B0099; Thu, 16 Apr 2026 05:44:43 -0400 (EDT)
+	id A878F6B008A; Thu, 16 Apr 2026 06:05:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 445566B0095
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:44:43 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D74D113BA27
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:44:42 +0000 (UTC)
-X-FDA: 84663934404.21.E6C9ACF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 44ECF4000D
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 09:44:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRqcfWwL;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 946C06B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:05:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C97D8C52B
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:05:34 +0000 (UTC)
+X-FDA: 84663986988.17.B5B043F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6647D40004
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:05:32 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtUb6cwE;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776332681;
+	s=arc-20220608; t=1776333932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sGHi20IGPNHy1AHrlIZiCtpLfLIBsbJrblbmwXTvkOE=;
-	b=02sZL3L3VQ9oW8Da9p5KbRF7TYlSXVXRjIE6MKL7SLGgng1Nd1Ihe4zM4fI3fH2KFfrSXp
-	6v/1XyjcI0/nS7RsO3esyJjRVhhGUCPWmPPeAGtJeDKZwou273xlg8JFrPK/wAAgkj7pLl
-	2i00WhSkEq4zNkwvF7zxMCGJb/6K6zU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QRqcfWwL;
-	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776332681; a=rsa-sha256;
+	bh=bZCamC3NO5H6FDh5Ud8NF2G8Xxcja9K0kOjvNKUpyog=;
+	b=FOH9Enk3NhFIyy1TcRcSAiZrbHev4SkW4i4tIopbiVQVZGekQQRZIV2XYJ+V8sCWcN8lua
+	/o/QnaWbnEYdB0ho11N8NmHEtE4G8+Gx1h5GTE6GIKktvx8g7ve0l6iNIWT9yOHN99DS1t
+	j6QAneRxA9gxBpRjJGlTvJSGJSyGoWU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776333932; a=rsa-sha256;
 	cv=none;
-	b=X3m78fKDcvIWrpUo4t/mwQjcdQvUBg6lBAkdY+gF1ILo53W/aQcL0l8t/RktJ4pV28ipUU
-	W74acTM2e3Nm7smVnVcG0lJlnAZgLSfM9AOuuHnvEy4VP+l5WK7KxS0qCl5H/PoKei7sNI
-	Eb+Kdht6dIdchh56O8XVtf0cBCiE7TM=
+	b=G9KIGAI+bb/41pRj/mCFC+6yiVrwok6CsDhqnfj/zeJt7+7vzeIInHoS0+tjdMIw0fOp+0
+	vDo2dct5BhQZ6d1sZjMmj5h3mPzqBKf05vTAV3n01M26g17ddZDahIO5hoHtty+iLuq0v6
+	Io1rkZfeJpuGDqWMtNLbBWNaRgKsBns=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtUb6cwE;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BB81860127;
-	Thu, 16 Apr 2026 09:44:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06BEC2BCAF;
-	Thu, 16 Apr 2026 09:44:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1422943716;
+	Thu, 16 Apr 2026 10:05:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E33C2BCAF;
+	Thu, 16 Apr 2026 10:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776332680;
-	bh=C1B6Q/ycpGRJxXWmx7rnSJOiJwKESH8P+kjhI/iqoEM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=QRqcfWwLVlutzlJWcd4eblfxvkeYGV3iLBwKV95VWeFGk2J41HWv4baV+wFuw4VbB
-	 pnt11u4k1tgYEBQv00NE1n70jfhHkmLi7ly6ZBfmLZEXbOT/xXPeUJIJ/aFIpsR0F/
-	 ztICVLr2g32F9wQLjAPXTLUVtyWJoUMcixvJgNX6Ge4fVGm1ivQ/0IQLJj9D4pQMNQ
-	 8n5ITpCgXMWKaYP+nkS0oawBOljImKzPm+ca7tAw6+CXV3sXltbHCrVPwY7qScXKJN
-	 Cb8+ZcVoGXuTIsl7tyT4BB7yFrtEcYbeVtfG7CqIHc7kGlQnU1Q/TiGI4Toa16ICvr
-	 AGbXCe5xaD+sg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: David Carlier <devnexen@gmail.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
- <rppt@kernel.org>,  Pratyush Yadav <pratyush@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Chenghao Duan <duanchenghao@kylinos.cn>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/memfd_luo: report error when restoring a folio fails
- mid-loop
-In-Reply-To: <20260415052300.362539-1-devnexen@gmail.com> (David Carlier's
-	message of "Wed, 15 Apr 2026 06:23:00 +0100")
-References: <20260415052300.362539-1-devnexen@gmail.com>
-Date: Thu, 16 Apr 2026 09:44:37 +0000
-Message-ID: <2vxzik9r6xyy.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1776333930;
+	bh=8gyZUaLwbT9XK/gBK6i0TFCYB/r+2lYDLzDL4l1s5EY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TtUb6cwEGYRjaC6Xkc6sM5pQaMqh4YiEV4RrNWkD4lGUhKygpzCg9HdZ4FZU8OALs
+	 mwEuc2zvhg2Ylp0ZfztSWpQF++fuvLyl1NTwMsOMguQ/U0jPcvsHkfZaat1D1LNXNH
+	 SpAq1RTal4xZ39M0h19M5DjXUfF9b3JEAwX6FLPDNU5PvrwDwlPh1BN5QCbNNvZmSF
+	 VKyLDMlP1gzdnKTwJfdtjiccm8JU72z7IUq5Do9ZHaPKYimEnBNepUMvRKE0Wnt2tl
+	 c6Y1PyOjuM7FFFa+1eluY9U4tiIs78crX2yaRxkaIBfGdAVxHj2xmiwrMzmjnU6YgD
+	 zGEECpiJP8Skg==
+Message-ID: <af3a7fa9-b368-4ffd-964d-9e4fcba863a8@kernel.org>
+Date: Thu, 16 Apr 2026 12:05:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 44ECF4000D
-X-Stat-Signature: fyad46deo5tje5kwxdcdckh4351yeuyz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] making nested spin_trylock() work on UP?
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ LKML <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, Linus Torvalds <torvalds@linux-foundation.org>,
+ Waiman Long <longman@redhat.com>, Mel Gorman <mgorman@techsingularity.net>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>, Hao Li
+ <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+References: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz>
+ <aZAWGwZP_Z75YHKt@casper.infradead.org> <ad_cqe51pvr1WaDg@hyeyoo>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <ad_cqe51pvr1WaDg@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: e9re7y8gnxedmf676srqus1xizgnuu1j
 X-Rspam-User: 
-X-HE-Tag: 1776332681-627241
-X-HE-Meta: U2FsdGVkX1+LjudCIT+TlH7/W7sb6HJ9G4SJanZgt6qRakZduecd56HSOmxGz9j6EdBcZd7rpb/jawMyRT7Iqn/0CEeXbvUNLN+9aIt6oTsk8pKHljcSoGW03TbR1uHf0cnnnLab4fwgVyQD/e/y5M0FMdVCpf99wGiCfkDhJ0CmAshXQFCqONa//1/InfCjF8WNLxnx9cltIbd0aKpyDFCwJHvvRZeUS5F5DyrPa5eIrV8i8oGtSOKr8vFxED8OVycPmp7X9QTwHBD7E0ZSGgZFFfub3h9gwBKtlrm1+5qBBGmPcukRtjJ+XciYxYVIfGAcSry9vIdEkvo4e9AZN8HBncY1weTOPnS+P4+lJibTSYvWt3NJ6NIMhz1JECPAN5qkEsL8hjvwpFrBpClt4U9TPKf9UV1inKs/Did5QFEcHFhjrgd23Zpl9xKJ1BlodTNs3AXZTmrSiRyT8kZ7i4Op5N0oxRTqMepI4q8FKoQ/n57lefKnG+Zdg9Hr9gLp7Xtg6jOItzupTaWjOqH8mBwr/SAnDSfUqjWRTZlC4gKf9jmYSIxaHokNX4MSnt89Gu+vPKsQNdmyqx0A9a8K4uDfBg/W88hE8sdFGpEAaNsMLZLXiS2Ikh+0X2cq+VV9dYEu7sj8u6YpF3BeZxv3yrx5AwM4TNrP53DANLLf/roD543cVUC/VMLI7MBHKRqdu+9QmCzZoADOdWUTTojL5WmajzX2DSrF121R28UzrPaZasI6rk1l+SdzChfWW5AFI6n7jzSGmpqJM8mDnO3DGDTQzQMZGaKJg3OuBQdMNvdunykOyCXlfNTpWRBz7DTlxF0UoCf6nyLevEcn1d7tx/tCawdte29y7Xer4MGm8ZeGHtPmdaY4AROfWotSkdI2YtVeopcCJKCOlyH0AxfkOPGEURmYerXEax2elReYr7xPwtpYk9pIsuERV9S/aqchdVl97W6b3jzPS+UTyyE
- GkxP81wr
- upnF6DmdqS1OvDQuJ7qCGNkIkrsHIAyZKZxIKBImWIfl1pKWiQlK3PQMGDnNnCOVPsbf/ZkRmmsiejBeI4Qp5qVhcUKyyuS054bQg1A6QF9FAJU5U54DvBst2f0Bdf5e/Vq1tkaHYkSxJAvo9673lkiIj2srfbtRFxDjkY0yhXvt/aE3DpaKdWPIW9eMAi89JBoUG6heEAGnP6MtTjkslFvRAyYALFjVkE7s3fymq4m9ZgOA9y1LiMK/0mx3nkgHRKKnY8kAK/frzqbw=
+X-Rspamd-Queue-Id: 6647D40004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776333932-200962
+X-HE-Meta: U2FsdGVkX1+dwSL7rqECKWlZfj1sfSzgImLy5ALPvsEzLi+XMpkg4RO0YUN6eODbJNFRFCy9/nw1r8gtdcLmz3IC/8eItL/33bjZ/QF5l9y0wuxlht2H2zzv3uaUrRJHc4W+EDQxRKcpWkZyP3pjMTtXouOm/4EUDh4NIC9s/AH5kNQxJNBlP4muY5E7FpU2dRIOy4o522RscdiZPHqvYE3zEYHPDrqi/4yif+ls1WQD12ptDg6FNoIKDWUuCMQtS86gkp2PSKeAWgwudATLsRkyW/6RkGbdJfL89n1mEWLjKy9zHYazZHTmHZNdlQ34mvo8LU4W+4aMGYyY8GjeQkD2R74ddBh7EIU/tMOgFO+ThmWFDoiZlPu/8FWAPb2Vg/T2eXRIRfsfWA/nKFbiGknRc+//8iWwvXLf81AzZOnBCatEcwGTdyvouu1sX3ocCTMqc33eIW2HTveDWG8xcTWZC+74g/xoGzEXQQlT1Lm0Tdgr2aw0z5X0RHXDu727kdPOpgDi9XBxSOkeU6Pq+7eVMEU9+/qNrPs3edzBR6mKfcNzVv9oD0UB4hY0JsZjxhHGlKCPm9JWEIp+j7LHCKlpgrdW2qht8/fl9eC3kX9iULFWQUBN1dHo+t4A+dZDtVrWHXpAQnXACmq4iV4aG2w8pN3MFaOQLbUT7dI351VxaUT2liBUJ3bbn7i8VoSyEAUE+9ySiCatzp7ZKjxYzXETfTOAEzykS21b7mhXnc0Bm3/eMAV5NvcGfjje7rWkJvocjiysfNIjr58M+hCXCrvZ6VODZ+b+XtdIM3Sbilc+IXRw32VyYUzwXiLR21eOnV1MpoAh3ur02+9Wjmcvxwpujq57Q98TOpbUl+YNhuwyjD9v7UoDk4qankSzinlVhztqXM+WFWwDx80pABRREsuQx47GbJTfCGIP3SJ1aLPGZmukeIZc/wQayKzlCkw8Ey2GvqQJCiVneT05Nh3
+ BGjzYiqf
+ uQ+qnDZkU4XMVsy38eORCzZcS9XDQXtnken8OE9FbYcDvRNofHY07qmJl6NAOfnu9N/VyFgPk2KHAxPOMXH2raLLEjJbdFWVzMIz8NmkBG4Mj8WnaNtLEwGdbmXrEL/cbR9x+hH1pCYfvUPYKjQJGya04+CaBr4RACXxpGTkpjEkICUC4dswcBn1ht4dBcTDjlui8K36pEn8YsHeyknk7kga1v6cXXUfdV6+6Xv9XSzU+xAHqZjWT0Nr020zkFEqwt3IVBomn0hqxOttibed3bxgjNVJ1m+C04aEZ4U2LI43wds2BeW5J6XkexyRbqYsZexhvyxS5C9JfnRtwE4hYaqX2agD6+kLtrtU5dxAl57J46DmRHFeJuO7ZLq5sGxeQodARADf6S+AoP2QY7nJFGDwwasXde4lKCy2FpYKHYvUjbGgt5e5/H2bYJ0d96pwaDaQXx9AgsFSmNz0pHPvXwK6Ogs0FO8KYtnzxCJrLVcItyhU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +107,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15 2026, David Carlier wrote:
+On 4/15/26 20:44, Harry Yoo (Oracle) wrote:
+> [+Cc Alexei for _nolock() APIs]
+> [+Cc SLAB ALLOCATOR and PAGE ALLOCATOR folks]
+> 
+> I was testing kmalloc_nolock() on UP and I think
+> I'm dealt with a similar issue...
+> 
+> On Sat, Feb 14, 2026 at 06:28:43AM +0000, Matthew Wilcox wrote:
+>> On Fri, Feb 13, 2026 at 12:57:43PM +0100, Vlastimil Babka wrote:
+>> > The page allocator has been using a locking scheme for its percpu page
+>> > caches (pcp) for years now, based on spin_trylock() with no _irqsave() part.
+>> > The point is that if we interrupt the locked section, we fail the trylock
+>> > and just fallback to something that's more expensive, but it's rare so we
+>> > don't need to pay the irqsave cost all the time in the fastpaths.
+>> > 
+>> > It's similar to but not exactly local_trylock_t (which is also newer anyway)
+>> > because in some cases we do lock the pcp of a non-local cpu to flush it, in
+>> > a way that's cheaper than IPI or queue_work_on().
+>> > 
+>> > The complication of this scheme has been UP non-debug spinlock
+>> > implementation which assumes spin_trylock() can't fail on UP and has no
+>> > state to track it. It just doesn't anticipate this usage scenario.
+> 
+> This is not the only scenario that doesn't work.
+> 
+> I was testing "calling {kmalloc,kfree}_nolock() in an NMI handler
+> when the CPU is calling kmalloc() & kfree()" [1] scenario.
+> 
+> Weirdly it's broken (dmesg at the end of the email) on UP since v6.18,
+> where {kmalloc,kfree}_nolock() APIs were introduced.
+> 
+> [1] https://lore.kernel.org/linux-mm/20260406090907.11710-3-harry@kernel.org
+> 
+>> > So to
+>> > work around that we disable IRQs on UP, complicating the implementation.
+>> > Also recently we found years old bug in the implementation - see
+>> > 038a102535eb ("mm/page_alloc: prevent pcp corruption with SMP=n").
+> 
+> In the case mentioned above, disabling IRQs doesn't work as the handler
+> can be called in an NMI context.
 
-> memfd_luo_retrieve_folios() initialises err to -EIO, but the per-iteration
-> calls to mem_cgroup_charge(), shmem_add_to_page_cache() and
-> shmem_inode_acct_blocks() reuse and overwrite err.  Once any iteration
-> completes successfully, err becomes zero.
->
-> If a later iteration's kho_restore_folio() returns NULL, the failure path
-> jumps to put_folios without resetting err, so the function returns 0.
-> The caller memfd_luo_retrieve() then takes the success path, sets
-> args->file and reports the restore as successful, leaving userspace with
-> a partially populated memfd and no indication that anything went wrong.
->
-> Set err to -EIO in the kho_restore_folio() failure branch so the error
-> is propagated to the caller.
->
-> Signed-off-by: David Carlier <devnexen@gmail.com>
+IIRC for the BPF usecases of kmalloc_nolock() think there could be also some
+kprobe context somewhere in the locked section.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+> {kmalloc,kfree}_nolock()->spin_trylock_irqsave() can succeed on UP
+> when the CPU already acquired the spinlock w/ IRQs disabled.
+> 
+>> > So my question is if we could have spinlock implementation supporting this
+>> > nested spin_trylock() usage, or if the UP optimization is still considered
+>> > too important to lose it. I was thinking:
+>> > 
+>> > - remove the UP implementation completely - would it increase the overhead
+>> > on SMP=n systems too much and do we still care?
+>> > 
+>> > - make the non-debug implementation a bit like the debug one so we do have
+>> > the 'locked' state (see include/linux/spinlock_up.h and lock->slock). This
+>> > also adds some overhead but not as much as the full SMP implementation?
+>> 
+>> What if we use an atomic_t on UP to simulate there being a spinlock,
+>> but only for pcp?  Your demo shows pcp_spin_trylock() continuing to
+>> exist, so how about doing something like:
+>> 
+>> #ifdef CONFIG_SMP
+>> #define pcp_spin_trylock(ptr)						\
+>> ({									\
+>> 	struct per_cpu_pages *__ret;					\
+>> 	__ret = pcpu_spin_trylock(struct per_cpu_pages, lock, ptr);	\
+>> 	__ret;								\
+>> })
+>> #else
+>> static atomic_t pcp_UP_lock = ATOMIC_INIT(0);
+>> #define pcp_spin_trylock(ptr)						\
+>> ({									\
+>> 	struct per_cpu_pages *__ret = NULL;				\
+>> 	if (atomic_try_cmpxchg(&pcp_UP_lock, 0, 1))			\
+>> 		__ret = (void *)&pcp_UP_lock;				\
+>> 	__ret;								\
+>> });
+>> #endif
+>>
+>> (obviously you need pcp_spin_lock/pcp_spin_unlock also defined)
+>> 
+>> That only costs us 4 extra bytes on UP, rather than 4 bytes per spinlock.
+>> And some people still use routers with tiny amounts of memory and a
+>> single CPU, or retrocomputers with single CPUs.
+> 
+> I think we need a special spinlock type that wraps something like this
+> and use them when spinlocks can be trylock'd in an unknown context:
+> pcp lock, zone lock, per-node partial slab list lock,
+> per-node barn lock, etc.
 
-Please add these when applying:
+Soudns like a lot of hassle for a niche config (SMP=n) where nobody would
+use e.g. bpf tracing anyway. We already have this in kmalloc_nolock():
 
-Cc: stable@vger.kernel.org
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+        /*
+         * See the comment for the same check in
+         * alloc_frozen_pages_nolock_noprof()
+         */
+        if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
+                return NULL;
 
-[...]
+It would be trivial to extend this to !SMP. However it wouldn't cover the
+kprobe context. Any idea Alexei?
 
--- 
-Regards,
-Pratyush Yadav
+> dmesg here, HEAD is a commit that adds the test case, on top of
+> commit af92793e52c3a ("slab: Introduce kmalloc_nolock() and
+> kfree_nolock()."):
+>> 
+>> [    3.658916] ------------[ cut here ]------------
+>> [    3.659492] perf: interrupt took too long (5015 > 5005), lowering kernel.perf_event_max_sample_rate to 39000
+>> [    3.660800] kernel BUG at mm/slub.c:4382!
+> 
+> This is BUG_ON(new.frozen) in freeze_slab(), which implies that
+> somebody else has taken it off list and froze it already (which should
+> have been prevented by the spinlock)
+> 
+>> [    3.661674] Oops: invalid opcode: 0000 [#1] NOPTI
+>> [    3.662427] CPU: 0 UID: 0 PID: 256 Comm: kunit_try_catch Tainted: G            E    N  6.17.0-rc3+ #24 PREEMPTLAZY
+>> [    3.663270] Tainted: [E]=UNSIGNED_MODULE, [N]=TEST
+>> [    3.663658] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>> [    3.664571] RIP: 0010:___slab_alloc (mm/slub.c:4382 (discriminator 1) mm/slub.c:4599 (discriminator 1)) 
+>> [ 3.664949] Code: 4c 24 78 e8 32 cc ff ff 84 c0 0f 85 09 fa ff ff 49 8b 4c 24 28 4d 8b 6c 24 20 48 89 c8 48 89 4c 24 78 48 c1 e8 18 84 c0 79 b3 <0f> 0b 41 8b 46 10 a9 87 04 00 00 74 a1 a8 80 75 24 49 89 dd e9 09
+> 
+
 
