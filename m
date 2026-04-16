@@ -4,98 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C19BF8A163
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 11:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AECF1F8A15F
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 11:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65F936B0005; Thu, 16 Apr 2026 07:42:16 -0400 (EDT)
+	id E30506B0005; Thu, 16 Apr 2026 07:48:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6370E6B0089; Thu, 16 Apr 2026 07:42:16 -0400 (EDT)
+	id DE1086B0089; Thu, 16 Apr 2026 07:48:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 573A86B008A; Thu, 16 Apr 2026 07:42:16 -0400 (EDT)
+	id CF6E06B008A; Thu, 16 Apr 2026 07:48:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 484236B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:42:16 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CBB2414081B
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:42:15 +0000 (UTC)
-X-FDA: 84664230630.22.8A8131C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 11DA8C000D
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:42:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bYNZeaA1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C114F6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:48:46 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8ADA0E45B6
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:48:46 +0000 (UTC)
+X-FDA: 84664247052.06.722A1C0
+Received: from mailgw2.hygon.cn (unknown [101.204.27.37])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1E9EF10000C
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:48:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776339734;
+	s=arc-20220608; t=1776340124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ADKAlhRkOLlS9qJrCQ5+HhJJAAJlDfB07KyMtd2WdF0=;
-	b=7y3xtvrYbnc1YZ2b1u5S24NKqfddB5pKAmvGaelckdALVasrJEVLK5jlyqXHr37imEw5pO
-	NBqM9Qz67EhUU9g6wYq7g3hQZOh7aQqyz3Me1zhog+rpas3DFp4SjMjyiDOFsljtgKzBhz
-	qdKq4KPiR5N0WiGznQBoFE2riEebres=
+	 in-reply-to:in-reply-to:references:references;
+	bh=hyAKoaUrWVN/s3zuhKLsCGJnZpFTtwjmUwQCRO+jL98=;
+	b=MR5RyAVrRPgfKPobAKEsdHOqFerAzzzlCc/0uti+r4s+9hi+Kr4sSEGk59PhaeeyG0GwWb
+	mkQUuLrZqIXJ7O22bDxVq+TiOrFgKe+lcvndnmCoGERi/lPu4IzcWS89Un4L7eaviMQMAu
+	vr7mWG0Wum6pLkQwep99/PRCcNs+F8w=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bYNZeaA1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776339734; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776340124; a=rsa-sha256;
 	cv=none;
-	b=qOFaBTOz/qxgtZrRBLwA7P4VoNquRrN8tT0C5wjuqOw/uREnqjaBMnRWz/5ERRox+WMSuM
-	b/A2+IWAhcJ6wZgButTGUV+xRzS664Mk4zghUsZh9IIBWjlFlPZW2CIlIbhDbZ+IDogqrK
-	zriDo7uADfqBCo/dM4O3eX4mWXFt7+c=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 039FA41878;
-	Thu, 16 Apr 2026 11:42:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F174C2BCAF;
-	Thu, 16 Apr 2026 11:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776339732;
-	bh=45qgrqFScnEZlWgBNq5rpUzjALmjVlD3QYp2/Yd42dc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bYNZeaA1ZUcDHIjq+0OqBy0LPmzNxX7Y7YB3UWtkVExrSUlrlDPM82HMre4S9yIGK
-	 nlJFZA+591IuaFjBEWT+zMPNPW2rkLStOcEJZbflAN3CwD9izDbDIABtU///SjzkE4
-	 B3vMVOdY52YYscNABm+7wnsN30m8y4PmkK1fJ4trJJOz0gBfnIC+U10hAXPay8VLQT
-	 hKxHc1cVl1IyLq5HBUUMZHcAE78NZYr2pHiltTjFl6HE7H0gBxgqZLWXAi1MQHULuB
-	 KcZvwP4OCZvhsKiNd0gRDyW1cognJw3KlimFEwpoZCsXV50WbUrcDfKprf5tuYHPwG
-	 93CRwWuA3ml6Q==
-Date: Thu, 16 Apr 2026 14:42:05 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 3/4] arch, mm: consolidate empty_zero_page
-Message-ID: <aeDLDSJAwYfsj78A@kernel.org>
-References: <20260211103141.3215197-1-rppt@kernel.org>
- <20260211103141.3215197-4-rppt@kernel.org>
- <20260416100221-57063053-1c9e-4450-8b0c-d9783657fa47@linutronix.de>
- <aeDBw4O655-pXiHy@kernel.org>
- <20260416131914-f20c3a56-bddb-4488-b4bd-560e52ab9416@linutronix.de>
+	b=H8iEWfRAdvWfPMsrP1zFydah2BDx/Ixtm+1cnKJ26MKET+T0Kv03l77F5AGUmt6m223Mn7
+	N+/TEIdKM7hyFYU3ny9VYKHGM5HmDWJBz50aWuvH/a9o1z23ppeOav3iJK6qWnEuSoD6vf
+	mXMHIJUJTqdDL8M3OPVMtp3MCabtwzM=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw2.hygon.cn (Postfix) with ESMTP id 4fxGVj1kD1z1YQpmX;
+	Thu, 16 Apr 2026 19:48:29 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw2.hygon.cn (Postfix) with ESMTP id 4fxGVh5pwfz1YQpmX;
+	Thu, 16 Apr 2026 19:48:28 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id CC695300D1F6;
+	Thu, 16 Apr 2026 19:46:31 +0800 (CST)
+Received: from SH-HV00110.Hygon.cn (172.19.26.208) by cncheex04.Hygon.cn
+ (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 16 Apr
+ 2026 19:48:27 +0800
+Date: Thu, 16 Apr 2026 19:48:24 +0800
+From: Huang Shijie <huangsj@hygon.cn>
+To: Mateusz Guzik <mjguzik@gmail.com>
+CC: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
+	<brauner@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-fsdevel@vger.kernel.org>,
+	<muchun.song@linux.dev>, <osalvador@suse.de>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
+	<linux-parisc@vger.kernel.org>, <nvdimm@lists.linux.dev>,
+	<zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>, <yingzhiwei@hygon.cn>
+Subject: Re: [PATCH 0/3] mm: split the file's i_mmap tree for NUMA
+Message-ID: <aeDMiBqscm-CZA6D@SH-HV00110.Hygon.cn>
+References: <20260413062042.804-1-huangsj@hygon.cn>
+ <76pfiwabdgsej6q2yxfh3efuqvsyg7mt7rvl5itzzjyhdrto5r@53viaxsackzv>
+ <ad4EvoDcAKE2Sl4+@hsj-2U-Workstation>
+ <CAGudoHGLaoc+CoBPNCvFRYojnj+6E_Lsdv7NaJWxFMoHezemMQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260416131914-f20c3a56-bddb-4488-b4bd-560e52ab9416@linutronix.de>
+In-Reply-To: <CAGudoHGLaoc+CoBPNCvFRYojnj+6E_Lsdv7NaJWxFMoHezemMQ@mail.gmail.com>
+X-Originating-IP: [172.19.26.208]
+X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
+ (172.23.18.114)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1E9EF10000C
+X-Stat-Signature: r89cfd948nifodtkaotwfckx474aj9rq
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 11DA8C000D
-X-Stat-Signature: 8zuz8sumbizgfkmsz9wq8nyrakhab1np
-X-HE-Tag: 1776339733-612362
-X-HE-Meta: U2FsdGVkX1+zHFTE2KhITJLaelW0Iyrd2qzUmlZxM52V8xaOg//h6pv/41OofWiuZnlFDnh3P6Bi5WGBaIgU0k6xmw5eEl7jOr2fd6AhNAAftgbehNCKQSRAZYYWPs6M41N1JOeACV9KxwkGxlGm6HS8LvTUZap3YMw+oKKCysraj1bUaeox+oYDGzDl/Oc7M6WymgXmE9LLVeChBEop4E4dIq3tT9Yq5Sa318FjPLX8uMV1rYkh4Xa+wrhkTYRIPFla2KiP5bcKFsWDFwByc7hQCogk3ZtAR+yPkmX996/5m21UHzqwtoFolvoKFcW9Xi+FLZyJI3G421ddjpBdg5tZLRjVqsNxInaJTtWF6wzUXrhYXLJyMaMOaU/bSLq7yxXA3oeOymv0fWiMpX705ldl2JXMmwXwVRoJmn2zTbz7n1nsGfNTIwwwXRLvPjWnhaaVpLkBwA8gypWmyjbCwu1FRn0rLJiFhA6T/9Fn9/6jSP6xd7NlDa3JYU4z7zqN1Sybc7N6vIwyZ5D4yUds+ErVTQeO540nCLApyA6f+zjWNJ05O+ZHEuyoCE4d799R4YITBG4QvxTfXi4/osq8B2011BM5zkie6RPj5uME9hVM+KyD8j3KgjcfgftuAQKy0mj97Bq/2c9aAJ5f/5MRUuzbBTWYN2JLThaeFcDCM530FmFJtrhws0V7yJajWbNeKNAV1cL9ry3VAmih2eD/esQvKGtlUvRlh6uWsBz8So+V4tvVQ8Nyrr98TNyXpQK7eyoF3b1hRvsrNbK/MKhQvH831YfzWLmGCWElb/VPsqKkh8wjr3XmX5V2LwBCG+p/ByBGB3+tHh7gu98HCq4B7hWyvywQ0o6r7v25yF/YRj1JK57xcmHetuVUT88cJexkjfANpLtpPutL9Au9cE0Umr2uRJ3b5WtQpEhPiYauy9hspE26L0ecDt9HbhD2FNKTm7tSQJ8iwt5Z19SIQUs
- E0dGUpwo
- XtLjak5Pr7YKIktQhYp7bhTkD0zrSxR63jDWBvns9pKPuAFZ7H2/N1GX4SxRFDaER8gGTwpWnxyvxQAf4F1yEemgOVAwVr3hkBbPCOlQ3NAF2BQz+kPZiYKvHSspnkH2qKz1SK7Td3K4oOUyc/rm7sppMPmikL09TkYpV8kQzkFQc4BHueJTsppGIejRSWfEk5fJJAev/6+y+2vylB7AVk9A+qcMQuaQq/rMttIjzF93pWYWHxPN2SmSAZXii2famaTv/j5IpeJCEiEoSeJycQ55eUaFG7dPByvgtsT++NnEIngTOTb0IV5dw+5zRSWRWHyiQ+6UaWnvmdnvBVYrS2g6Z7iyxQkRw+9NZ
+X-HE-Tag: 1776340118-99599
+X-HE-Meta: U2FsdGVkX1+l7o+fRBsafDnXCgBch9QBlg+d/dSarB4zqm6znmM+ySlsEnKAy+yNdE8RaVleLpCiYtHKACKDNC7uXvM3uaD3RrQYJFNByPdyFgD718ak9QwCQOfa3b0d70rjvQ36LI46ggdSedMIQrHM8grNkIcynshzK4JeF8rBtQzgnwJrKIWDR4EV+sVyJ0FHsDum61dHhFUGduOiYeONbWFQMgItNEN5qYpN8oqOfIFz2Vsbk/iv2Xdczbzk533lYorbPW9+HRtO/JVjRN6+B+MD3kNbgnF2gUCsLMgpRXlF+qXvA3cxeb8IzpfwrEf0w0ZXbbM947mzVnBEnVSuVKHlOzz/oVn/uxrWJF7RtMyNXVBtITU5sg3m0O/YcnFV6rYcEpxKCwPg1Mcbf2ISRK0SNwT5v0u5j2Xf29T1FWiqtdHKihBl2SRKChVLesHegBUsxGdXce1/cvcXZLuzRgf4Uv+3fmVGLtuMgDsET160AYkdf3kfTKXvNcV9+fAutvQbOTS/ZKopy9YtvxWoiEL57qDS4SOtBR0lpRKxgWtIYi2AYz/a2BBBp+oBfk2+fJPsBIAGpvmNw/M2mYN6lKsckpjD7TT0EigifeNQF2Lt8UrJkdNm7daPdhkRhA8oA55j8BBdfb6E+D0+9r0++EW+yza0kmuxcLqflX5OjI04jLlrrvrwAidwr1fzmlK4OBtOAW/M/8vvk5Lm9M+JElB9YvTxChphg/CVVHMioOw5XGH8UR/3MBdlo85kUC4BhSqYFl/aBjeUyB8ubU9xMyNOVrf6Wr4qu2phepFJ9CNpbEQpDH/F6Add3N7es07kalChVjbTJkxPCGJwC/MTlsP+A9LyMrbb+uWv8tfQ/nbzQ0Xgy1GTY52FEq5JQCX3WHFoywlweBR5M3uAvvgRxr3IVHfaADYakmqmmiQiBFTp4Q9zfCz6Mar1iTkF72kH8lhjG3L9QYMXk0h
+ tBomQtQl
+ i4f/5VHqdXbPWQDRhxTuUpm8xh+Vt3VgWkHBzPnb1Pv0ZX28sc5cjFdy8wVHboN+O3c58GIGm9wpXtdQxPfXLPorHok7b4WmYoTup6BDKkRnl355iItm+m3DqAS24XeEwl6au45mV+AMS8kbjvVW+DcDej0AdAuYKPtTrHhOxdPDxS06YDhuO1NkQYEqO7jppBeC871WCIf+gZklFi3Z39Q7i2+hlaeYqSTyzaQZzPPdNLzOVE2DCucyxzwC3/giYbEfA52LIih978ce7c9buH5FSDwRB769nNmUeqOByj/gu0JUcqyoQw5cnD7cDxDcESeJJeYSxpI4AAJGlPX8o80W2t6faJ1AevUGTKM6d0zu1JLEOsaeYAPSUnmWsDdAzvyHfoQCfutNWO//4JjBBsXHNRzvZZ6Cbswo6Bl2iSOfh5Lnjb0xJ4AU1uMunsWjYTK85CuYFo1eq0aG2+RVsJ9CgN0EsmL32ZqG5d3J+JZMDS6CjEnQy1Ln48y8/rFnE5/kG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,93 +101,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 01:20:17PM +0200, Thomas Weißschuh wrote:
-> On Thu, Apr 16, 2026 at 02:02:27PM +0300, Mike Rapoport wrote:
-> > On Thu, Apr 16, 2026 at 10:10:06AM +0200, Thomas Weißschuh wrote:
-> > > On Wed, Feb 11, 2026 at 12:31:40PM +0200, Mike Rapoport wrote:
-> > > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > > > 
-> > > > Reduce 22 declarations of empty_zero_page to 3 and 23 declarations of
-> > > > ZERO_PAGE() to 4.
-> > > > 
-> > > > Every architecture defines empty_zero_page that way or another, but for the
-> > > > most of them it is always a page aligned page in BSS and most definitions
-> > > > of ZERO_PAGE do virt_to_page(empty_zero_page).
-> > > > 
-> > > > Move Linus vetted x86 definition of empty_zero_page and ZERO_PAGE() to the
-> > > > core MM and drop these definitions in architectures that do not implement
-> > > > colored zero page (MIPS and s390).
-> > > > 
-> > > > ZERO_PAGE() remains a macro because turning it to a wrapper for a static
-> > > > inline causes severe pain in header dependencies.
-> > > > 
-> > > > For the most part the change is mechanical, with these being noteworthy:
-> > > > 
-> > > > * alpha: aliased empty_zero_page with ZERO_PGE that was also used for boot
-> > > >   parameters. Switching to a generic empty_zero_page removes the aliasing
-> > > >   and keeps ZERO_PGE for boot parameters only
-> > > > * arm64: uses __pa_symbol() in ZERO_PAGE() so that definition of
-> > > >   ZERO_PAGE() is kept intact.
-> > > > * m68k/parisc/um: allocated empty_zero_page from memblock,
-> > > >   although they do not support zero page coloring and having it in BSS
-> > > >   will work fine.
-> > > > * sparc64 can have empty_zero_page in BSS rather allocate it, but it
-> > > >   can't use virt_to_page() for BSS. Keep it's definition of ZERO_PAGE()
-> > > >   but instead of allocating it, make mem_map_zero point to
-> > > >   empty_zero_page.
-> > > > * sh: used empty_zero_page for boot parameters at the very early boot.
-> > > >   Rename the parameters page to boot_params_page and let sh use the generic
-> > > >   empty_zero_page.
-> > > 
-> > > With this in mainline as commit 6215d9f4470f ("arch, mm: consolidate
-> > > empty_zero_page") booting sh on QEMU is now broken.
-> > > The machine hangs before any output.
-> > 
-> > Hmm, looks like sh does not like boot_param_page declared as unsigned char *
-> > This fixes the issue for me:
-> > 
-> > diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
-> > index 63c9efc06348..b7c4469cb61e 100644
-> > --- a/arch/sh/include/asm/setup.h
-> > +++ b/arch/sh/include/asm/setup.h
-> > @@ -3,12 +3,13 @@
-> >  #define _SH_SETUP_H
-> >  
-> >  #include <uapi/asm/setup.h>
-> > +#include <asm/page.h>
-> >  
-> >  /*
-> >   * This is set up by the setup-routine at boot-time
-> >   */
-> > -extern unsigned char *boot_params_page;
-> > -#define PARAM boot_params_page
-> > +extern unsigned long boot_params_page[PAGE_SIZE / sizeof(unsigned long)];
-> > +#define PARAM ((unsigned char *)boot_params_page)
-> >  
-> >  #define MOUNT_ROOT_RDONLY (*(unsigned long *) (PARAM+0x000))
-> >  #define RAMDISK_FLAGS (*(unsigned long *) (PARAM+0x004))
+On Thu, Apr 16, 2026 at 12:29:50PM +0200, Mateusz Guzik wrote:
+> On Tue, Apr 14, 2026 at 11:11â€¯AM Huang Shijie <huangsj@hygon.cn> wrote:
+> >
+> > On Mon, Apr 13, 2026 at 05:33:21PM +0200, Mateusz Guzik wrote:
+> > > On Mon, Apr 13, 2026 at 02:20:39PM +0800, Huang Shijie wrote:
+> > > >   In NUMA, there are maybe many NUMA nodes and many CPUs.
+> > > > For example, a Hygon's server has 12 NUMA nodes, and 384 CPUs.
+> > > > In the UnixBench tests, there is a test "execl" which tests
+> > > > the execve system call.
+> > > >
+> > > >   When we test our server with "./Run -c 384 execl",
+> > > > the test result is not good enough. The i_mmap locks contended heavily on
+> > > > "libc.so" and "ld.so". For example, the i_mmap tree for "libc.so" can have
+> > > > over 6000 VMAs, all the VMAs can be in different NUMA mode.
+> > > > The insert/remove operations do not run quickly enough.
+> > > >
+> > > > patch 1 & patch 2 are try to hide the direct access of i_mmap.
+> > > > patch 3 splits the i_mmap into sibling trees, and we can get better
+> > > > performance with this patch set:
+> > > >     we can get 77% performance improvement(10 times average)
+> > > >
+> > >
+> > > To my reading you kept the lock as-is and only distributed the protected
+> > > state.
+> > >
+> > > While I don't doubt the improvement, I'm confident should you take a
+> > > look at the profile you are going to find this still does not scale with
+> > > rwsem being one of the problems (there are other global locks, some of
+> > > which have experimental patches for).
+> > IMHO, when the number of VMAs in the i_mmap is very large, only optimise the rwsem
+> > lock does not help too much for our NUMA case.
+> >
+> > In our NUMA server, the remote access could be the major issue.
+> >
 > 
-> Seems weird but works.
+> I'm confused how this is not supposed to help. You moved your data to
+> be stored per-domain. With my proposal the lock itself will also get
+> that treatment.
+> 
+> Modulo the issue of what to do with code wanting to iterate the entire
+> thing, this is blatantly faster.
+> 
 
-Seems like it's enough to declare boot_params_page as an array, this one
-also worked for me:
+I tested an old lock patch yesterday. It really helps a lot.
+The lock patch is from this link:
+  https://lkml.org/lkml/2024/9/14/280
 
-diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
-index 63c9efc06348..8488f76b48b4 100644
---- a/arch/sh/include/asm/setup.h
-+++ b/arch/sh/include/asm/setup.h
-@@ -7,7 +7,7 @@
- /*
-  * This is set up by the setup-routine at boot-time
-  */
--extern unsigned char *boot_params_page;
-+extern unsigned char boot_params_page[];
- #define PARAM boot_params_page
- 
- #define MOUNT_ROOT_RDONLY (*(unsigned long *) (PARAM+0x000))
- 
+The test results:
+   v7.0-rc5 + (lock patch)                    : improve about %60%
+   v7.0-rc5 + (lock patch) + (this patch set) : improve about 130%			   
 
--- 
-Sincerely yours,
-Mike.
+						
+> >
+> > >
+> > > Apart from that this does nothing to help high core systems which are
+> > > all one node, which imo puts another question mark on this specific
+> > > proposal.
+> > Yes, this patch set only focus on the NUMA case.
+> > The one-node case should use the original i_mmap.
+> >
+> > Maybe I can add a new config, CONFIG_SPILT_I_MMAP. The config is disabled
+> > by default, and enabled when the NUMA node is not one.
+> >
+> > >
+> > > Of course one may question whether a RB tree is the right choice here,
+> > > it may be the lock-protected cost can go way down with merely a better
+> > > data structure.
+> > >
+> > > Regardless of that, for actual scalability, there will be no way around
+> > > decentralazing locking around this and partitioning per some core count
+> > > (not just by numa awareness).
+> > >
+> > > Decentralizing locking is definitely possible, but I have not looked
+> > > into specifics of how problematic it is. Best case scenario it will
+> > > merely with separate locks. Worst case scenario something needs a fully
+> > > stabilized state for traversal, in that case another rw lock can be
+> > Yes.
+> >
+> > The traversal may need to hold many locks.
+> >
+> 
+> The very paragraph you partially quoted answers what to do in that
+> case: wrap everything with a new rwsem taken for reading when
+> adding/removing entries and taken for writing when iterating the
+> entire thing. Then the iteration sticks to one lock.
+> 
+> The new rw lock puts an upper ceiling on scalability of the thing, but
+> it is way higher than the current state.
+Could you tell me the patch about it?
+Is this lock patch merged ? or not?
+
+I can test it.
+
+> 
+> Given the extra overhead associated with it one could consider
+> sticking to one centralized state by default and switching to
+> distributed state if there is enough contention.
+> 
+> > > slapped around this, creating locking order read lock -> per-subset
+> > > write lock -- this will suffer scalability due to the read locking, but
+> > > it will still scale drastically better as apart from that there will be
+> > > no serialization. In this setting the problematic consumer will write
+> > > lock the new thing to stabilize the state.
+> > >
+> > > So my non-maintainer opinion is that the patchset is not worth it as it
+> > > fails to address anything for significantly more common and already
+> > > affected setups.
+> > This patch set is to reduce the remote access latency for insert/remove VMA
+> > in NUMA.
+> >
+> 
+> And I am saying the mmap semaphore is a significant problem already on
+> high-core no-numa setups. Addressing scalability in that case would
+> sort out the problem in your setup and to a significantly higher
+> extent.
+I am afraid even the lock patch resolves the scalability high-core no-numa setups,
+we still need to split the i_mmap for NUMA.
+
+> 
+> > >
+> > > Have you looked into splitting the lock?
+> > >
+> > I ever tried.
+> >
+> > But there are two disadvantages:
+> >   1.) The traversal may need to hold many locks which makes the
+> >       code very horrible.
+> >
+> 
+> I already above this is avoidable.
+> 
+> >   2.) Even we split the locks. Each lock protects a tree, when the tree becomes
+> >       big enough, the VMA insert/remove will also become slow in NUMA.
+> >       The reason is that the tree has VMAs in different NUMA nodes.
+> >
+> 
+> This is orthogonal to my proposal. In fact, if one is to pretend this
+> is never a factor with your patch, I would like to point out it will
+> remain not a factor if the per-numa struct gets its own lock.
+Yes. It is orthogonal to your proposal.
+
+Thanks
+Huang Shijie
+
 
