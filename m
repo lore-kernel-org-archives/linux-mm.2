@@ -4,125 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DEDF8A154
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 10:30:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C69EF8A157
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 10:37:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAB446B0089; Thu, 16 Apr 2026 06:30:39 -0400 (EDT)
+	id 7849F6B0005; Thu, 16 Apr 2026 06:37:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C827D6B008A; Thu, 16 Apr 2026 06:30:39 -0400 (EDT)
+	id 75C306B0089; Thu, 16 Apr 2026 06:37:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B98696B008C; Thu, 16 Apr 2026 06:30:39 -0400 (EDT)
+	id 671B46B008A; Thu, 16 Apr 2026 06:37:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A8D716B0089
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:30:39 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50C298C543
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:30:39 +0000 (UTC)
-X-FDA: 84664050198.27.0970E84
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 401D41C0012
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:30:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776335437;
+	by kanga.kvack.org (Postfix) with ESMTP id 5B93F6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:37:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A135BB231
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:37:14 +0000 (UTC)
+X-FDA: 84664066788.26.E98D025
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 28A27C0008
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:37:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lSvEySs5;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf28.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776335832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z9HEDsaws+1AaPEcUyrGjtCss1Kv3jZQFAB8Oib7mmY=;
-	b=u3rTrFDfz1vVF0Ij/SU0jnIxyA/Ys7nikcSsOXJkxIKJ3tFr7qc3H8+N7Bl2ikls3/4ZYy
-	oiXZ6U8EUMYo30XWiMXqA9Xlwi+KKYdjsXloaUw+njaroQlyOPWqZhUPeCvgjJ34drc5cW
-	0stdp2TOUQbRSPwx4RTG5504MyFz5Pw=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776335437; a=rsa-sha256;
-	cv=none;
-	b=K/Q08UgCQa/VxZVk8sdl7LHyE6Bz11XrC/11lFHRiWGijrJ/SfeOK0SytxFjxE3Br6Eiho
-	ZYNV6klHaN2WXJLwXdWLfQEH4YhRVicSTNvI6UieAoDl4hneOj/4pSlFdigvXwaTHr8acW
-	hG5ymtQt/ZwFUD8lhAhPUYTQvfaBzbI=
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d7ebe11bffso6492847a34.0
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:30:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776335436; x=1776940236;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7wlY3RSevRuq3DaBIrMyQdYxp5UuY4sfTgf8TKMIySc=;
+	b=DZbUxnxOogbLYF9KJqjt37bMsImvBm8fN4/zL0xLsaMtczrQnAbrNruKq0zKTls2EpfCx9
+	nhDnmyvC1EXT6ZFNDDlqm2SkkrXBvMMaCSvHi3ULuHff6Ysycf3+hdBTMCq4TPXIVD1R7N
+	kePehRTs2BZP9wb+oi/3njgEln2byaE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776335832; a=rsa-sha256;
+	cv=pass;
+	b=XOdHuMwReefRgyz0h46srwMFDWQoOFBTmnZ8qT4Yn1KIdjGJdZwXDYVyZin4nCDG4bzEss
+	Fem4rq5KuOVwzQXugQy6lgv5nK7McwfQ0921ywByO0zW9K33DmiLAromwdAmmTrAGOdtoT
+	peagCt2AVu/VQ+OCqDU4OLixXP0m8Es=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lSvEySs5;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf28.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7b81f5ab95fso13694267b3.2
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:37:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776335831; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dNN3/2AP+93K9HBndNXGutF3vVoHvQa+9itaeD+eEM1GWgFFt2GxCwXqQ99PilNwLd
+         GhISbwDKzs+bWSKAaoqVQdQ77PvS7c2JFBxXpMuqhMuJPafD+8oDOWHhUer9zgqAqdWd
+         tsDt7aiAR+vEmA5Cb2fxMA39H+yl2q2r0AYnUj4xuKLMwSCgtvjX3y1MxlKV3b2TmPiJ
+         bdai0w6wm5esMJawblaQI0fBfOIfxsmvbxKLva60STJxOC392TxSNWObaohGQNxBmSgy
+         g1vgGgDGg0MhuQQ3zFRqNEbhduSlIEjw9s4wV5kzE7Rk/jmpcacYLjC38W94h9EO6fMe
+         KrnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7wlY3RSevRuq3DaBIrMyQdYxp5UuY4sfTgf8TKMIySc=;
+        fh=PX38tVck0k1B0O5o/9FsaJj6D8pDxyavOZT6baTm6Fc=;
+        b=akSxaY+qtwJ6JlNOnEXJIVBu87eIEHZpgrJYsi6YmEfzmzR/1XsOSkrhNdhN+tB99j
+         TBxvYDLNa5S1WzgJhHNuf3VHRIiVJ/KpCS1rMoHmsP5Fw9oTTT9yLeHkgzKpAXLQ/GNA
+         8pz7bHIZmHNr6f9xjtcSh/ufPOeOuB//VUw8QcbgpxNMQJwqSpzGwwlUK+jnYY+jWynj
+         MeVcR9mjOQZBIZ5yaAVq9yBznnnN4/Y9MbVQAPU+RhIGt3lYsBKz/p29F97Bauo2Mqep
+         Y65sQLncf92CgUD7hRrXLKc0sk1z5q1JzvTaLwOs7hVCRVuiy2grjK3OOmzvph0ssNl3
+         HIjQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776335831; x=1776940631; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z9HEDsaws+1AaPEcUyrGjtCss1Kv3jZQFAB8Oib7mmY=;
-        b=kF29Yl86XPERvUcqxk4axM0SAAhwpHgpZpBfup5xjtWKzwbtlB97kXDK+AqW/q4F8K
-         +1gkRABzZLI5nASM4uSt0JQgdmV7KeSBq7bCt7GoSg9vJeRAx2OXya3lk5uF4OkTIugQ
-         Zz8nsA09uJaxwNe7WnMEa0d/+aCaGF4xfONmGzVtGGOSK123hGMdmSEfQ9iZIdeAjVhq
-         vRQ3yIm9J8bWO0uzdqezQVidRNZPpY8SMOStdiVN2NKgPGbMBWDsxAO7vnzFqHDkyYNA
-         TGhToBDBW5cqZUukjHo6e1qFyC8xDbA//D+yTcYBlaHLhzjaYgybCkfcqKGlU9wZiDcg
-         t1Bw==
-X-Forwarded-Encrypted: i=1; AFNElJ/PU/KjuYL+ClXBSfYGOeDVejmeJXNu+HqCBtbHxzR9RLvVFtXFVnqDoxP8EOzhUzmLNEOmWIvjow==@kvack.org
-X-Gm-Message-State: AOJu0YzwRa7HLqK7qBdLzX/+SnFIlWynkTllMuU5qNwNAmK6znCfl/sY
-	+UpJhbSGauVjSt1SvBJ2TTwIUMkXPb4KdyB2rZr1oj44CmETM1BVlh0hKZ/31mX0
-X-Gm-Gg: AeBDieu6K6Y9XvVloewaS3fvw8z7lr6HM6xTM15SChTIXdhXo3icaVBomaXs6zTJVIN
-	d8vxPRryBR9t3MJndGGiml3NCwCPkgt/FARHNdv7AHnO9sWDoqSvSEjAw2cNwtdeneFSeXj+Hp/
-	Y4ucAJocqeUbtXcQUoRYQ7iF3TJRT+4asMeg7Q5I8hnp0lSYTI0K/EDDV6AGDC1YTd9MQ/MC7AU
-	dTHzrp4Rsvdtt7YKlTiO3kzHtLJhTrSL4dE1wvWtDgh/yCJmFcpzrzaCNYDrV8LyHUAQKGDjr2O
-	rfrhbqE94DMAZyJWynhhl5Ysf0oezSylUpbA9b4crcZdVfxi+Ot4EOjY7Krj6xXqUidTYVes2Pq
-	1HrRs9a82jUJyxEjKSVYBH0rIOS49eMtA2Nruz+KnbUEIvo505LmsBxj3hdEGMb+NON0SWsl2oT
-	hsYf68KjN/QlUl6a5mXP7an+rGy2VMlpAX43QBFmn2kKh3M0mz2mq9GgG6OdwozTSGlqE4fpI=
-X-Received: by 2002:a05:6830:25d5:b0:7d7:57c4:367b with SMTP id 46e09a7af769-7dc27fe671emr16374696a34.28.1776335436152;
-        Thu, 16 Apr 2026 03:30:36 -0700 (PDT)
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com. [209.85.210.52])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc76b95a2csm3322885a34.22.2026.04.16.03.30.35
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Apr 2026 03:30:35 -0700 (PDT)
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7dbcb467f2bso7038133a34.3
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:30:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+3Do32z6mV7HByv6zFsogO8BFDZjaB4s2eaBrzahvhJiFegel+Hhlpidd+JlfkpF2JnbDeZdyPdQ==@kvack.org
-X-Received: by 2002:a05:6102:c48:b0:608:cd24:354c with SMTP id
- ada2fe7eead31-609fe9b0d22mr11966750137.3.1776335071251; Thu, 16 Apr 2026
- 03:24:31 -0700 (PDT)
+        bh=7wlY3RSevRuq3DaBIrMyQdYxp5UuY4sfTgf8TKMIySc=;
+        b=lSvEySs548vYhf9HfTSlQ2Vb1hhm3w21HGi8fkWVa6Gox6xghbfdwhFzMnxPMlwax2
+         EpapM532wmLSmQ/lVen7+/G4obPS/OHOIC+h+trbVhGQ5cZ7NM9yRCW9rRvvmlO7SfvD
+         Pp+SDLOTfbnDnnk1lADHID5WwqKsb3rkPGWN8do45yuwYgU13IN+/z1oY3ZPLU8vB4Yr
+         Wl6C8p76nTawD3ud707qQACfQKJb04tA7LYMSxmk9Oh9gb7fbiAU2PV76FVA5GhUViAS
+         9UOebi9Nfx7qoz/J5+tNoy8SHWFW1XnQbrdrIC1qNkSaX9qOnfGvp19CFaZ0pGZITjHJ
+         y0jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776335831; x=1776940631;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7wlY3RSevRuq3DaBIrMyQdYxp5UuY4sfTgf8TKMIySc=;
+        b=q5A39gy8g0Vbkw3id9AmBEVitlyMcTajN3eFx+Ct0aVl+FUQTBQIdyWgd/078aJkkT
+         A+x8MuLHS4q6dDhIE8BCae5+ToNuXx7C52SV68s5zVwhTujxXDEghhAlxf2JYTvHWqAP
+         t0WdqusvG1z0lIONSuNZKLJSUl9H70LF4aE/JXjAjen+4e8Tmq1nDVe8Jtmqpe8xF3Qi
+         KuVmEmkifPhSn0lweuBdbqmrfZ99LSe4Ji8C6jxh5Ri//q25+C/LSesX5zPOgLWWo0fJ
+         NX3fE+nwKS0SZFy3Q418g+GmWFmxWfLnGBhSRu22DhO8B8ra6qZLA8qFahsbbI9bTveE
+         9nEA==
+X-Gm-Message-State: AOJu0YzKczCEFcY5TnlWUe1teVpkaVQKbYxees3WLyy2QSJWX/FrC7tx
+	ujjkrrf5geTkG/RjTT4pjJ8As5Ps2DprBoikPSHoO1WUJ7CJT2weSWkfpCSbK04Nkl3w9SZXUaU
+	dL/Wn2SHvFe6X+zlneLvoomUuvrIIkKT8vIg/
+X-Gm-Gg: AeBDies77+miTRsOxnBsPduBxJZOq8JIIpUimR5kX76KKKAVoN7FBAUPXxBW8V+UB+B
+	7MPMY2u3BkIig8jBO4UlRwjwPyWfkk0EAWI1nOzLwrgY51/vhKdGreETsCn8O2F11LdTmQ8PBW/
+	r7R7wHQgSiR0iZfvxO7B2MyAFdLrSoZBRKcU7/HpJzCtr5S12imYrY9XwjbavxfmxQCCLGpjmtl
+	sRFxUmeLR78BIfkT3bkaq/292JwJeYrGxOJfZ7XouJ824bc5pQZe+qZDh6GdTxdJM5zhiEZherp
+	hUkhZn88W+Kb7y4=
+X-Received: by 2002:a05:690c:4992:b0:7b7:5f48:d9aa with SMTP id
+ 00721157ae682-7b75f48de35mr60601227b3.50.1776335831119; Thu, 16 Apr 2026
+ 03:37:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260410120044.031381086@kernel.org> <20260410120318.794680738@kernel.org>
-In-Reply-To: <20260410120318.794680738@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 16 Apr 2026 12:24:18 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
-X-Gm-Features: AQROBzDRGGELVSySTko37h6zEj8YoV3p6pwZDCVQUlUW6sZbw_W5mbJzFIh35nQ
-Message-ID: <CAMuHMdVerN6Pz07CQH+hcvT=-ZD-r9VNrSrGzTQZBEsuecK_ig@mail.gmail.com>
-Subject: Re: [patch 18/38] lib/tests: Replace get_cycles() with ktime_get()
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
-	Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
-	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
-	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
-	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
-	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
-	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
-	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
-	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
-	Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org, 
-	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+References: <20260416102558.575210-1-ekffu200098@gmail.com>
+In-Reply-To: <20260416102558.575210-1-ekffu200098@gmail.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Thu, 16 Apr 2026 19:36:59 +0900
+X-Gm-Features: AQROBzCaJ7C3-yC0pAhxXvwZz0sb0SJWM8a3VW0L8TPCeER3AAgbFVST7RSQDT0
+Message-ID: <CABFDxMEx=GTSNc5kOr=aip=Mo6qBG9bdsTtQRcwLoyd7mAvYPA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] mm/fake-numa: fix under-allocation detection in
+ uniform split
+To: akpm@linux-foundation.org, rppt@kernel.org, djbw@kernel.org, 
+	mingo@kernel.org
+Cc: linux-mm@kvack.org, Donghyeon Lee <asd142513@gmail.com>, 
+	Munhui Chae <mochae@student.42seoul.kr>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 401D41C0012
-X-Stat-Signature: ixnub7xbgcya6xjpn3uy8a47pmys6ayj
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 9a5aohynzzkp6dg7emwoga7gpeuagkph
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 28A27C0008
 X-Rspam-User: 
-X-HE-Tag: 1776335437-439868
-X-HE-Meta: U2FsdGVkX1/JHwrNfBG8VrdfaDxhnVqJCJ8mkd7zdwN1UqjDGIDyxpDvUUZwlJEY5Y+diXf0C9Il9gTmtSPVDq87qJMe1yx9UcimyXdStfHglC3HMgaiyNxVFo2habxi1zv5GzhKD1Vb725PVHS0BkKbS/+LeLnI7bBL3xOssQdMgAl/2hdOXxObKcfaIq5ny59xNv1x3xyUB+Fc+xQXySX1FQTM3GGPyeWpsDQMlLnytm9AsVu6aYCfxtgJhWUdgM4HIBXUWvQLieJOcTmiKqB0V+G6rc+Cdh573FTCgSfQBPiiJXgZ3I0AHGbaeefydgSj4nciLzaTOcbD8A285B9ZAAq5f0k3YTYIUbMMhQ9AVXRvs7VEsvricwPI1UfEVzpyYyoRfQnJqYjpGKgx7o6U+VgkVjqyVuCxzMqoHl+zHjgXQEMlnm+ZVl99WdNQnQ6ycU3pg2EUJ3syV/pRBBL3J0R+RNwtGa29e04Rk2yLyuPo/uKbaiVoVjs7puB8GmZUQ53Yckn+6w7fxR+30UNbGSysOTMmv1tE2js5e9V1e/v7FGUHqXoJBFv9d3wuwVh9sPb5p4zNmGbS5RXWewrBrfkS34W5nCvuw9Vo6wLhfv3Zfhi7fIYK6aNHr424Ebw0kb1ZK6FEOCFS6xah6nYGBz2CWmgwnws0BhWT3mLUIKkIh+KZeoPu94au7Juoszcq386WrjyQ2rJXAbh7/DvsoV9ZdEzMiIdsWmNfMSWuUNaC6h/EfnCMqktMWMx6HFP6UiKTTBApWmgvwvPO6zI00WLtgHC3ho98y3/K5dq+K/9bJa3GHuFjhsednw2mUNuuuEA15LEnfkuGb3YX4nvzLbodKCQTvfg05JlTeVGvtfmjrP+zaALO2ba2tGcYZVxy8N3TaVMQGW5buQ1VYMq/BhRg3UzRqi2eS1xwkZIezBYhyeh5/cJMa3J8XbT2NiYgXio06lbAhoiRlMb
- WFrDS0kN
- GLk0bSCCwcF6RbcTTVQGZ5E/4jmodA0k8AcifG3vJONkBHEOlob1epbsESPJt7baWwdImXtDAMcHziGjQT3C2B3gZc5mEWI3bFuthFDctcPINmG2ifOfPzHtbHqr63rqu3ilCzyKjMYXqtJ0HCnuPo7A6pCaeQ5oUDnaOiMPw4h7HSbdEW7SFReH2pA+VydhErF2ksBQ9j70wOvt3J0JBidT59r77YhWAaUd31STxC+udTE+7MAD/a2ne5EFHE5g3WJu3C5kztTdudbOSnGbqnZSxun5z7np5xgmppFv8ZyP3NY6dgONIVrpihBciq8c5qWMk1BEAjSVZ7IiOlw+AdpEDHwnhrT8RXohuccgoNYbbIBzpxEfSykamOaqYHtqy6xK+JT17rjPUoO/UjvCtjSgC1Yt4cbKZlmxv3hVBKigr5AMdKKyJnRXEGIcAiVY8P7Z+AOn7tcG2pMzCN05OD/K68KYImif779nCPIqQxnB9+jND682fpz1Of9afOdTT+qBJ010ngpcuxOMFGYkQ0HMg3KO3W5vdb1mY+y1jYOJVQSY=
+X-HE-Tag: 1776335831-449971
+X-HE-Meta: U2FsdGVkX19HMVKLs9QnOXj3GusS8g6++ijpf1kEE+pcoMpOteEHSl6/V8Vn0VOxIdqHJzgLGO65bbluP9/NbL4BpvsDA4v/KPmCJCnD+vuYsyGSH9UGqr3gMoH0kAxmAhtZXNmMuQMSpGdj93xsdDzlGlHA2zKoUWVcjAjJ9rcsLQA7aD3pXzLnW5lMD6a99RvbvOOWBF7hnfqPkpW1zEyMOlTYsy3TJsfHP9wTCQK/K0dTWsecaA3OWFCtofsMJpYnS0Ztix+NtiG4gRbVNWHtZZx+6o+Gco04tMZXHziGfY2aIV6KOZX25Un9mAluuFGV5VBN2xiqG1dlI7JQWrokT3XdNDpc4yooFpFqUmY7hWyiMYWiZC/xwroQrawviIjI4TY9Igid7tQAw63N2RaSXyj8IvWcOCbqLgb5CFfKfU9fGr4k5V1ndbUNrjJLXzRDmfmupGT+2uUG4FGnSLWLbdinS7KVg4yWYdwD28G+YUg8s+GrmgL6KSwvYbW9cZApAAsv9jLIc2kotekzIb9mAaxukftB3vV7xnue5Ai2kH6o4lqjWRB/9epuTi2/VuCFpMhz1zQ8quRCpumIz82flgecNswUlwPqK3J2/0hKBifsu1M3DbMd1PsI/OXO0XT9GXouAQtN+QnIGjGK1+2bXEk1vP+K4dYmkedHwwwn3f3uMkUej93HcTjVZkG4TnqcPld02PkAvRTw5dJ2GS/uGbkGT0OgOV7Z2EHzgi6Y0OpAbHRrXDn8VQpPhkvXSFrYGDfxpnUcdagn9zXdNNxWugJMSnAdwMilx1aEqecARXvvRyS9A9SShEqShOrNcKwCSER5ABaM4Kkerw8slum8Ow4S/lH/sc9turUNUTuATRv97pyrNpzwVxwCkd35TRHye+RcU03ab4LquvY6j7YZujhbJ/VoLXL+vRfkElbhxh9nrtgTZUd3XtK2X5DUZCUTtVR+2PeUaoU4vyS
+ yq8kOkfl
+ udCOhn0ceCDDChHSt/s5KkXEzC3ULaV0D36KxSuiDzxyftuNoN1404dhNCE5wcVyB6eUL0gf/wXyhAWe2Odo5TLONU9+YO5CJJ3G6TufRLucws9XC25RFwFu7h1A8Nxx7GLToINNUYZvOIDXOYdsxOQ+C7DRZfYGZE76c680yDNwAJw87nd2WfuNTxfzoQjylEOE1+OLaK0FcIc4xET6yVvVA+C/9LqXmOyR+3HmUH/tE2aDHKfWXH00EQhFdRMjAtcVyTGmRDPqBE64qIgex0ecJU+cmDDt6PiUDvN/zK56sKUMfHsAabJ86oNatixyersOdXSwmPTEcnUTi1rSPu99IRlI5Q78OMXNbeSLovdxYXNh1y3KzlbNK6TQEDO6r2S5bYp/RCve8dnIjcs9tJMmRO+T2m07cChzya6t19NAVGDcUTFnTKYRNcs7uLOtLh39s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,82 +139,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Thomas,
+Hello,
 
-On Fri, 10 Apr 2026 at 14:20, Thomas Gleixner <tglx@kernel.org> wrote:
-> get_cycles() is the historical access to a fine grained time source, but it
-> is a suboptimal choice for two reasons:
+On Thu, Apr 16, 2026 at 7:26=E2=80=AFPM Sang-Heon Jeon <ekffu200098@gmail.c=
+om> wrote:
 >
->    - get_cycles() is not guaranteed to be supported and functional on all
->      systems/platforms. If not supported or not functional it returns 0,
->      which makes benchmarking moot.
+> When split NUMA node uniformly, split_nodes_size_interleave_uniform()
+> returns the next absolute node ID, not the number of nodes created.
 >
->    - get_cycles() returns the raw counter value of whatever the
->      architecture platform provides. The original x86 Time Stamp Counter
->      (TSC) was despite its name tied to the actual CPU core frequency.
->      That's not longer the case. So the counter value is only meaningful
->      when the CPU operates at the same frequency as the TSC or the value is
->      adjusted to the actual CPU frequency. Other architectures and
->      platforms provide similar disjunct counters via get_cycles(), so the
->      result is operations per BOGO-cycles, which is not really meaningful.
+> The existing under-allocation detection logic compares next absolute node
+> ID (ret) and request count (n), which only works when nid starts at 0.
 >
-> Use ktime_get() instead which provides nanosecond timestamps with the
-> granularity of the underlying hardware counter, which is not different to
-> the variety of get_cycles() implementations.
+> For example, on a system with 2 physical NUMA nodes (node 0: 2GB, node
+> 1: 128MB) and numa=3Dfake=3D8U, 8 fake nodes are successfully created fro=
+m
+> node 0 and split_nodes_size_interleave_uniform() returns 8. For node 1,
+> fake node nid starts at 8, but only 4 fake nodes are created due to
+> current FAKE_NODE_MIN_SIZE being 32MB, and
+> split_nodes_size_interleave_uniform() returns 12. By existing
+> under-allocation detection logic, "ret < n" (12 < 8) is false, so the
+> under-allocation will not be detected.
 >
-> This provides at least understandable metrics, i.e. operations/nanoseconds,
-> and is available on all platforms. As with get_cycles() the result might
-> have to be put into relation with the CPU operating frequency, but that's
-> not any different.
+> Fix under-allocation detection logic to compare the number of actually
+> created nodes (ret - nid) against the request count (n).
 >
-> This is part of a larger effort to remove get_cycles() usage from
-> non-architecture code.
+> Also, fix the outdated comment to match the actual return value.
 >
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> Reported-by: Donghyeon Lee <asd142513@gmail.com>
+> Reported-by: Munhui Chae <mochae@student.42seoul.kr>
+> Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capabil=
+ity") # 4.19
+> ---
+>  mm/numa_emulation.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
+> index 703c8fa05048..c1d0a76aef64 100644
+> --- a/mm/numa_emulation.c
+> +++ b/mm/numa_emulation.c
+> @@ -214,7 +214,7 @@ static u64 uniform_size(u64 max_addr, u64 base, u64 h=
+ole, int nr_nodes)
+>   * Sets up fake nodes of `size' interleaved over physical nodes ranging =
+from
+>   * `addr' to `max_addr'.
+>   *
+> - * Returns zero on success or negative on error.
+> + * Returns absolute node ID on success or negative on error.
+>   */
+>  static int __init split_nodes_size_interleave_uniform(struct numa_meminf=
+o *ei,
+>                                               struct numa_meminfo *pi,
+> @@ -416,7 +416,7 @@ void __init numa_emulation(struct numa_meminfo *numa_=
+meminfo, int numa_dist_cnt)
+>                                         n, &pi.blk[0], nid);
+>                         if (ret < 0)
+>                                 break;
+> -                       if (ret < n) {
+> +                       if (ret - nid < n) {
+>                                 pr_info("%s: phys: %d only got %d of %ld =
+nodes, failing\n",
+>                                                 __func__, i, ret, n);
+>                                 ret =3D -1;
+> --
+> 2.43.0
+>
 
-Thanks for your patch!
+The change log from the previous patch was accidentally omitted, so I
+added it here.
 
-> --- a/lib/interval_tree_test.c
-> +++ b/lib/interval_tree_test.c
-> @@ -65,13 +65,13 @@ static void init(void)
->  static int basic_check(void)
->  {
->         int i, j;
-> -       cycles_t time1, time2, time;
-> +       ktime_t time1, time2, time;
->
->         printk(KERN_ALERT "interval tree insert/remove");
->
->         init();
->
-> -       time1 = get_cycles();
-> +       time1 = ktime_get();
->
->         for (i = 0; i < perf_loops; i++) {
->                 for (j = 0; j < nnodes; j++)
-> @@ -80,11 +80,11 @@ static int basic_check(void)
->                         interval_tree_remove(nodes + j, &root);
->         }
->
-> -       time2 = get_cycles();
-> +       time2 = ktime_get();
->         time = time2 - time1;
->
->         time = div_u64(time, perf_loops);
-> -       printk(" -> %llu cycles\n", (unsigned long long)time);
-> +       printk(" -> %llu nsecs\n", (unsigned long long)time);
+---
+Changes from v1 [1]
+- Merge patchset into once.
+- Change base from linux-next to mm-unstable
 
-While cycles_t was unsigned long or long long, ktime_t is always s64,
-so "%lld", and the cast can be dropped (everywhere).
+[1] https://lore.kernel.org/all/20260413154438.396031-1-ekffu200098@gmail.c=
+om/
+---
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Best Regards,
+Sang-Heon Jeon
 
