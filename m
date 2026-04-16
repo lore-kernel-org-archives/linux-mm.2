@@ -4,99 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4123CF8A145
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 08:47:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4975F8A14A
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 08:52:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 864A66B0093; Thu, 16 Apr 2026 04:47:21 -0400 (EDT)
+	id 0CB496B0089; Thu, 16 Apr 2026 04:52:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83E196B0095; Thu, 16 Apr 2026 04:47:21 -0400 (EDT)
+	id 07CBA6B008C; Thu, 16 Apr 2026 04:52:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 752616B0096; Thu, 16 Apr 2026 04:47:21 -0400 (EDT)
+	id EAD326B0092; Thu, 16 Apr 2026 04:52:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 640426B0093
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:47:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 031101A07FD
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:47:20 +0000 (UTC)
-X-FDA: 84663789882.10.372F084
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4CB0240002
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:47:19 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OoR+cLLp;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DB8FA6B0089
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:52:15 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8ED0CBB01B
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:52:15 +0000 (UTC)
+X-FDA: 84663802230.11.26AD245
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B1A1BC000D
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:52:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SG1FGUNE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776329533; a=rsa-sha256;
+	cv=none;
+	b=1rg9jrK9W+PSiua3LdgCUfZNTsp9kxE6UFj5zPgifwjZvFQ7rQF1IqoiodzdOmncbS6PTp
+	+d7f0J18eK2Qys/heJgC9Z22cIr4SLqGxhdbi47Zh5IcrftpYO64Mbdru1dkW24Ui9Y0kh
+	lFyv6JmRqa7CdTer+HhUM35QGInaEHY=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SG1FGUNE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776329239;
+	s=arc-20220608; t=1776329533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NRIlcviQ8zreu7FrGRWAGt++VCNbIn2HmVUlT4VFVV0=;
-	b=SCSu/4j3ilzOTJoBzYIULbt/0p5tm/o5j3XDiFXLaeLiVIFfWEMOjMQjVhrCv3iTVEE0wm
-	x2fOC58p2d/lcHt53JJPGfLiaEY8LfXRZT4K8aSNpzSQN7VT0oVTmXJoJnkIyLxei1FFwM
-	iUyXV+ixrhsOjtO7Lp2jjsw4A7XFo0I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776329239; a=rsa-sha256;
-	cv=none;
-	b=XS7A9SwBE8WVE26vFaZ4lwruNhKd0XeVL64pcrURVBClsTzXU51kG4O9xItn6pp7M4njOb
-	aG7ZisWh/xHsSjEFLQV8TkQMDInaooArlf0K68NNtVakKwD3O8X+BNDD83KGGB8rVev8Iy
-	MoBqySsRaPJPgZaAyAEfvX6YZtmGxiA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OoR+cLLp;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=rLQNB5c5SIaXcAEXHceWox8W9jqfNcCe7ojst1q+QWc=;
+	b=IZcjgEKmg4xulCxGTLS2ovAtcXXdFqDtftwDpf2uqdwAX0ZBRdO0Bz/dYi1OoT0JU99Cqu
+	I1aKhnreO9MC+3AZFe1g2FnjFvZm7j4/0s7s87m4YiBgMJqjdBsXIPzIxU9ILPwFMtzCX1
+	gh3H5KmgeG9nPWA3YgotmG3HE1Z1k/M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 926CD60126;
-	Thu, 16 Apr 2026 08:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236FFC2BCAF;
-	Thu, 16 Apr 2026 08:47:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AA88A442F4;
+	Thu, 16 Apr 2026 08:52:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07BAC2BCAF;
+	Thu, 16 Apr 2026 08:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776329238;
-	bh=ljHxmoprfBQIb7mZOQd9Nqr851XmhOqAdzFFK3AVVB8=;
+	s=k20201202; t=1776329532;
+	bh=g1Hw4WC9BuiiYPxLoJGIqMt62pc+nYnQvs95d3Tl6IE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OoR+cLLpx1ccGF8jHeCIEO2WG0KmtE7gfcMfcszVO2ap0qzWDPGRaOzUF7ry7egHn
-	 Nu9ZzjXLV5ep+/DQ7VRURFa0r6t8qXmr40PjYDKsdFcleR6S/Ws4j8UptbKPH5c/LW
-	 0l8bRYlXgZwLbncZ6FZfDX68tvs5tolPPvGxWyDo/5ZXO4HwtpyxV6IJnaVQAzyp7t
-	 oSlic8y4ay5jx+bjaoa1wnGln8rP/e65WEuRERPVXkvOmYR1CPz1S/A+aDNjjQSjSK
-	 8SqmC7DUl0w+XbDv78koqFD+ifY5f3Jy01Lz75H0f4/BYDTPM6tdVmlnL7t90HCPbS
-	 A1NUFh4DOZF/w==
-Message-ID: <8d95a9ad-4c85-4b8e-8724-af843e1b7859@kernel.org>
-Date: Thu, 16 Apr 2026 10:47:05 +0200
+	b=SG1FGUNEpefy2PFt5pAPpydPb/RP3GVGwvaunJ/FzQfLwUhy55cvvCAZHOPqvXKpc
+	 I02KO1WCvxmiAZJBMYl5Cxmqx5wdgVKUN0SUb2yg8cK9h5NYsMKC/yH9NdjBJbzMbN
+	 fINLRueFjs6cPypk/vRCriX33RnKA6LsjX2g/pEtnbY6dpBQ62DbthA1HIrKSEob/A
+	 tg14TjjV4niiGvv+33alXBnmf9oSoRH+oMn+sG3cWlVLW6Cn25BPAfIaOwM09AWdzk
+	 7cLESpUb2sdyMVI4S0oPe6QVEwB1AlVfnyisb0IEHEsj9j4MB47qI+eBntuo4hiSkR
+	 SOkkpg8Zohgmg==
+Message-ID: <7c5cffc5-f4db-490f-b8aa-6604c32b34f2@kernel.org>
+Date: Thu, 16 Apr 2026 10:52:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v2 05/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check in hugepage_pmd_enabled()
-To: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: Nico Pache <npache@redhat.com>, Song Liu <songliubraving@fb.com>,
- Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260413192030.3275825-1-ziy@nvidia.com>
- <20260413192030.3275825-6-ziy@nvidia.com>
- <ad1TMjF1L3usYIC5@casper.infradead.org>
- <05F00072-7E06-47C9-BC26-FE3736F557FC@nvidia.com>
- <a4d477a8-71d8-4219-9cb3-153f2c01e184@kernel.org>
- <84B8F641-A3DF-4219-AA57-6BA48E9B4998@nvidia.com>
- <998c02b6-2612-42c1-8099-d65ae275d1a2@kernel.org>
- <7468C68E-FB09-4714-94A3-4BED63453295@nvidia.com>
- <b7aa5515-6908-4ec6-91e9-eb79d5ef70b4@linux.alibaba.com>
- <afe0dfb9-feeb-4243-bc4b-305e5e33b581@kernel.org>
- <38697379-cbba-4c64-ae65-6774b01021d9@linux.alibaba.com>
- <68F85F77-8EFE-449D-B643-AEEB38CB50B2@nvidia.com>
+Subject: Re: [PATCH] mm/zone_device: Do not touch device folio after calling
+ ->folio_free()
+To: Alistair Popple <apopple@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Balbir Singh <balbirs@nvidia.com>,
+ linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260410230346.4009855-1-matthew.brost@intel.com>
+ <adxnwZMn-BHD5bAA@nvdebian.thelocal>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -143,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <68F85F77-8EFE-449D-B643-AEEB38CB50B2@nvidia.com>
+In-Reply-To: <adxnwZMn-BHD5bAA@nvdebian.thelocal>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: f8xmnzntm17g5ufajteb1hysupycidym
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4CB0240002
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: j4qcy6isdqjhwbqrfkeeodjwq7ja9qbd
 X-Rspam-User: 
-X-HE-Tag: 1776329239-337483
-X-HE-Meta: U2FsdGVkX18LfFaXoRz/HpPeW+jcNJXAK2WaJrbTwNTkEL17MxjGRTnBLz1h93tSazQQBwi986LdxzkCCvcbgSMtlQsQA72/TTXehKPfoLeK65+PS4lBmgtjTVRUzSqEsnqSXD19slJ4almO0jqzPhZSY1upPhbSPv7c6dr4DP8UqgdHpLG+PTuXufjDT+D4Al59MDFBjMMYcMJ6Q/fbR2R/5LC7a1DYBsLvDn09BQLWuRGH9byGildryY9nS5DQ/2FEKMjAqnfmvB8DUyU/dfDhbEvT1yvV1K2sDpF3U2fgm5ou1Ql7GMDwFmYQGLD4kapJpHGVETAEJk8SUe5IMoF676ijDtrQO0ITgLatbMOLyMDqvxr5F5UYLznlosrNLeP3XThW+EDeBMqJAXmzlftuWQrjk+hLuG7+R7e3R+YXdpFOCh+3TBY9Y09q9EpH4o6hziKSIIuq/TE02U2sqtz6PvYLHRDLLcFdpxVHTQH/WgYnrg7Uq6H4gHl27NAM7svsoo7AYgSos5F7d2XHF50szQZNOfRHJC3IhgY4noQ26snfupOD7idase5EclQdfbDasclBuaenhq+VLxasLWRTN31gvLsytATIg0c4M8YUOd+sldxResT0qIaRsRTTkWUMWLv+EO1iMB+gkdGJg3AVDP8nt/4/J0je7E+O/gio8Xdd0JTzvXawa9Fa4/S4ySeD8SCXe+DhWG/6+mdmElguz4fAXLOaIiqxi+ncIlaGJPVcMJ8rJlNKt/4AkkOo5Pu7iisAEzUHkiKYLfEAvYZqtUQ3iz0Lqi/XyordLzemoJiyrqXmeB4lzHAIMa24UgV8Pu0bIPHM0ZDB7lFuneT9DIVTmowXKjKGwae144YlaY7PW8mdOA6Z52zufPoPj/IWvE1HffuFRolEhArrUrT2N2oY16OS+JMPhVkBh2qwXKpQqtHpFndF5O4GGFMwrHF1lUL5RpLbqQEplsr
- ggpXU/On
- UbSMGuveKnlE29hEplBGiVuUHzSvPAHtJfKS2J/wpJCcV+6l5QlgTz2d3NgmZAHhGPp2jwvU003P3aQYAsKggd3jWPk+h0r11vxt7W54/noNbhHzL/LWFP3huwx7g05+j/F7Y7cH7tGP1jM36GNwA9Lskn97tRMGgfUuWddJ7puYSdmh4yUn253wyyT5HZ9UR1DGFIsTgqbNcdMC2oXlXx9Lns1GwrTHqmDSWlyxpNHDJYQ8/qF1I5EUyxIIqpOkh1aFIaIj42MxouHcBFBOgJvu0c2MKOR0SbrBsksS907e2aD+mHb4rmNRIT3xSNN0E6dCNG9wnFxFY0bNOwqHE85thShvapSc8Gozn
+X-Rspamd-Queue-Id: B1A1BC000D
+X-HE-Tag: 1776329533-870342
+X-HE-Meta: U2FsdGVkX18suOMlgXU0dL2qiuyQWaN5ny0y7P8xoiiVkyAA4ZJrTX68TNn43HAUM1HiIzIP1n8gmq8cgOlxR4JebxslJLKQJXems6hx+BmSbk+LlpwRIQI9+oONNMlb3HiwzWsp1wnhK7DWGvJtdbKbvPYn82847IRAFuOjiyB25iqrJdq/6Zte2CCcGDtk/5Lu7OXrU3X9zQYKfqTCQazv9YZh71nfCdNlyCoN8+WXUD8TO04QCAzZbt3KBLln9jcXbcAg7DjYSuRqbBrD0QHl/2x/kZgIm6ySzvRhQhPzzKiVE9TaX2SDlo7G5mTLk+TlY4AsYVW5+WAerOGie0w0qkjVBo6qz0M+Czk8RTnzsiSAawVv7o+T9rLeVlXnLx23vAogWRUDST1TPVRhLxIAtXqhdaW7GjUK/pGJLyKHQJrcBZxfRsOo4r2xFICjKV6INOAKxIgRkdrgheXMw4NRKEdMbUEA60ErWFL2hC4d10AB///KbQhAR4ptin/aH0qLKSs40LpU8ZUpIi7d01GYRXUEUoSgwYUoASnqJPGXoIciXAiUTw8yGvT9ErpOHED6VIwcTsp9GRS2Zh2RmPNNkos9k07GEO2Ljz3bDV6vZMCWwjaDdtAj1sifwLiw+hZLEwzizYTusj4weGBas64FzM61a4TnsNHa1EfJR+eauuhfBwDEUwhC6MJbGjjvn5cfHZuAa9Q25bYxlHbTcAEYRtcqkab+IC1kPke0XHiOKib+m6V4GkuxWVTtbiB6XbFnW/fcNNmS02VLD2kx4wHNOXQQV4cbjiI/t/TdsBKieC7eXkJvwhbpgXpjItO2wszDvWXovRlQ1zUNP+bzXSdrUXGzMyJe52JFE8K84wCbb2RZkloHuQ0qbDe+20WMWSDxvPi/cYcee3mwaj+phhgZ3wBEf7NvrVIF1H3z6/sb45+FUz9rn1v37bRFaGLHl7OgnjLTh6K4z2jJ5Ap
+ JgiFH7q1
+ Oi7+PS5aA/KQ1byWFZmktz5SXGWkZlwIJGev3Ef+jRUSfyw0W0GprJ6wBVc6MKn85V4TY9HecglWGdtx5PSPSJ99HhrJAAfQKdNIg6o7/vtDT12KzFcfIATwBkB5NpqMcXYYLRyv1Qnx+5ggIwfr0HWN6UMUTBMxvHnr5FY2lY9NctZrVw+nA2PIraQyjn8hcS/0jl5KHfZFXjhFEk5CPuh2xk1DOFeKtUBQ1sMn/FzUTQF61LYjH1qBE72au8QVmdHbojhVfuTepmI7sGupPCBONdfm9gEMoQu5KE9kc/SVY3nYHe6eTOiozX2rWnlEHz7CThbEqD4a3uRsKRAljo0nxtt2T4YI4wn0kvpFQtsNP6mSglOHjT8yRKrGpXYO7oy5pBVKaBzVrFypKsQvASqvlUTVr/iOSFZ9IdKL5I4ohDazM5HMqKouV495IDoINNWkaaDE1LullRNIDfzBu9SiVTy0vcaw4yM19yZiOg0z0iIhiOOFcivYeiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,106 +142,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/15/26 20:01, Zi Yan wrote:
-> On 15 Apr 2026, at 5:21, Baolin Wang wrote:
-> 
->> On 4/15/26 4:00 PM, David Hildenbrand (Arm) wrote:
+On 4/13/26 06:06, Alistair Popple wrote:
+> On 2026-04-11 at 09:03 +1000, Matthew Brost <matthew.brost@intel.com> wrote...
+>> The contents of a device folio can immediately change after calling
+>> ->folio_free(), as the folio may be reallocated by a driver with a
+>> different order. Instead of touching the folio again to extract the
+>> pgmap, use the local stack variable when calling percpu_ref_put_many().
 >>
->> My comments are in reply to Zi’s comment:
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Balbir Singh <balbirs@nvidia.com>
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-cxl@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Fixes: d245f9b4ab80 ("mm/zone_device: support large zone device private folios")
+>> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 >>
->> "I think hugepage_global_enabled() should be enough to decide whether khugepaged should run or not. "
+>> ---
+>> Stack trace:
 >>
->> I’m concerned that only relying on hugepage_global_enabled() to decide whether khugepaged should run would cause a regression for anonymous and shmem memory collapse, as it ignores per-size mTHP configuration.
->>
->>> The question is really which semantics we want.
->>>
->>> Right now, there is no way to disable khugepaged for anon pages, to just
->>> get them during page faults.
->>
->> Right.
->>
->>> And we are now talking about the same problem for FS: to only get them
->>> during page faults (like we did so far without CONFIG_READ_ONLY_THP_FOR_FS).
->>
->> OK. I’m fine with using hugepage_global_enabled() to determine whether khugepaged scans file folios.
->>
->> My concern is that for anonymous memory and shmem, the per-size mTHP settings should be considered.
+>> [  631.875165] [IGT] xe_exec_system_allocator: starting subtest threads-many-new-prefetch
+>> [  632.282992] Oops: general protection fault, probably for non-canonical address 0x900000000000000: 0000 [#1] SMP NOPTI
+>> [  632.293469] CPU: 8 UID: 0 PID: 59267 Comm: xe_exec_system_ Not tainted 7.0.0-rc7-xe+ #281 PREEMPT(full)
+>> [  632.316023] RIP: 0010:free_zone_device_folio+0x149/0x240
+>> [  632.339782] RSP: 0000:ffffc90023d1fd00 EFLAGS: 00010206
+>> [  632.344947] RAX: 0900000000000000 RBX: 0000000000000001 RCX: 0000000094472d4d
+>> [  632.351991] RDX: ffffffff8155c76f RSI: 000000006f2213bf RDI: 000000008e84943a
+>> [  632.359042] RBP: ffffea0ff4030001 R08: 0000000000000000 R09: 0000000000000001
+>> [  632.366094] R10: 0000000000000028 R11: 0000000000000000 R12: ffff88811828e400
+>> [  632.373145] R13: 0000000000000000 R14: 000fffffc0000000 R15: 0000000000100073
+>> [  632.380194] FS:  00007f2f0fdfe6c0(0000) GS:ffff88890a7e7000(0000) knlGS:0000000000000000
+>> [  632.388186] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [  632.393870] CR2: 00007f2f002e90f8 CR3: 0000000106708002 CR4: 0000000000f70ef0
+>> [  632.400919] PKRU: 55555554
+>> [  632.403605] Call Trace:
+>> [  632.406039]  <TASK>
+>> [  632.408131]  do_swap_page+0x146d/0x18c0
+>> [  632.411938]  ? __pte_offset_map+0x3e/0x190
+>> [  632.415994]  __handle_mm_fault+0x6e8/0x8d0
+>> [  632.420053]  handle_mm_fault+0xbf/0x250
+>> [  632.423855]  ? lock_mm_and_find_vma+0x41/0x6f0
+>> [  632.428256]  do_user_addr_fault+0x168/0x690
+>> [  632.432399]  exc_page_fault+0x74/0x200
+>> [  632.436117]  asm_exc_page_fault+0x26/0x30
+>> [  632.440092] RIP: 0033:0x5587554ff70d
+>> [  632.462142] RSP: 002b:00007f2f0fdfc970 EFLAGS: 00010246
+>> [  632.467308] RAX: 0000000000003fc0 RBX: 00007f2f082e1fc0 RCX: 00007f2f12b3287d
+>> [  632.474355] RDX: 0000000000000000 RSI: 00000000c048644a RDI: 0000000000000003
+>> [  632.481404] RBP: 00007f2f082e1fc0 R08: 00007f2f0fdfc958 R09: 0000000000000066
+>> [  632.488450] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+>> [  632.495495] R13: 00007f2f082de000 R14: 0000000000c00002 R15: 00007f2f1319e000
+>> [  632.502547]  </TASK>
 > 
-> OK, I misunderstood the meaning of hugepage_global_enabled(), since per-size
-> mTHP settings could also enable khugepaged if PMD_SIZE is set.
-> 
-> I will take willy’s original suggestion and make khugepaged on if the global
-> setting is enabled. The below is the new version of this patch. I moved anon
-> pmd huge page code to a separate anon_hpage_pmd_enabled() like
-> shmem_hpage_pmd_enabled() and cleaned up the comment. Let me know your thoughts.
-> 
-> Thanks.
-> 
-> From 92b92f2b2ab41c70b41dd304ce648786ee6a1603 Mon Sep 17 00:00:00 2001
-> From: Zi Yan <ziy@nvidia.com>
-> Date: Wed, 15 Apr 2026 13:52:50 -0400
-> Subject: [PATCH] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check in
->  hugepage_pmd_enabled()
-> 
-> Remove READ_ONLY_THP_FOR_FS and khugepaged for file-backed pmd-sized
-> hugepages are enabled by the global transparent hugepage control.
-> khugepaged can still be enabled by per-size control for anon and shmem when
-> the global control is off.
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  mm/khugepaged.c | 26 +++++++++++++++-----------
->  1 file changed, 15 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index b8452dbdb043..586d27ce896e 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -406,18 +406,8 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
->  		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
->  }
-> 
-> -static bool hugepage_pmd_enabled(void)
-> +static inline bool anon_hpage_pmd_enabled()
->  {
-> -	/*
-> -	 * We cover the anon, shmem and the file-backed case here; file-backed
-> -	 * hugepages, when configured in, are determined by the global control.
-> -	 * Anon pmd-sized hugepages are determined by the pmd-size control.
-> -	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
-> -	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
-> -	 */
-> -	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> -	    hugepage_global_enabled())
-> -		return true;
->  	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
->  		return true;
->  	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
-> @@ -425,6 +415,20 @@ static bool hugepage_pmd_enabled(void)
->  	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
->  	    hugepage_global_enabled())
->  		return true;
-> +	return false;
-> +}
-> +
+> I'm not sure, but I think Andrew likes the stack traces included in the actual
+> commit messages. I've certainly found it helpful when debugging traces reported
+> from the field so would prefer it there.
 
-Works for me.
+Agreed.
 
-> +static bool hugepage_pmd_enabled(void)
-> +{
-> +	/*
-> +	 * Anon, shmem and file-backed pmd-sized hugepages are all determined by
-> +	 * the global control. If the global control is off, anon and shmem
-> +	 * pmd-sized hugepages are also determined by its per-size control.
-> +	 */
-> +	if (hugepage_global_enabled())
-> +		return true;
-> +	if (anon_hpage_pmd_enabled())
-> +		return true;
->  	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
+> 
+>> ---
+>>  mm/memremap.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/mm/memremap.c b/mm/memremap.c
+>> index ac7be07e3361..053842d45cb1 100644
+>> --- a/mm/memremap.c
+>> +++ b/mm/memremap.c
+>> @@ -454,7 +454,7 @@ void free_zone_device_folio(struct folio *folio)
+>>  		if (WARN_ON_ONCE(!pgmap->ops || !pgmap->ops->folio_free))
+>>  			break;
+>>  		pgmap->ops->folio_free(folio);
+>> -		percpu_ref_put_many(&folio->pgmap->ref, nr);
+>> +		percpu_ref_put_many(&pgmap->ref, nr);
+> 
 
-BTW, can we please provide a stub for shmem_hpage_pmd_enabled() in
-shmem_fs.h such that we can remove the IS_ENABLED here?
+I assume the ref keeps pgmap alive, such that that cannot go away after
+the folio_free().
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
