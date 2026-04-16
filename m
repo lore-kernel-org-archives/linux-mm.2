@@ -4,122 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A53F8D756
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 14:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 073FEF8D755
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 15:00:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13BA26B0005; Thu, 16 Apr 2026 10:54:44 -0400 (EDT)
+	id 14BB56B0005; Thu, 16 Apr 2026 11:00:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EC8A6B008A; Thu, 16 Apr 2026 10:54:44 -0400 (EDT)
+	id 0F60C6B0089; Thu, 16 Apr 2026 11:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1DC96B008C; Thu, 16 Apr 2026 10:54:43 -0400 (EDT)
+	id 00B8F6B008A; Thu, 16 Apr 2026 11:00:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DFC086B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:54:43 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 81FEA1A095E
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:54:43 +0000 (UTC)
-X-FDA: 84664715646.16.34E2E7A
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 81E5A18000F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:54:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=RSloyeSw
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E7BB16B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:00:45 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8C3B6BBC20
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:00:45 +0000 (UTC)
+X-FDA: 84664730850.19.DBB64BE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BE7721C000E
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:00:43 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UwSbvBSi;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776351281;
+	s=arc-20220608; t=1776351643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h9ArDot26j/SH+ZznkdYubmynXqAUZSHKndJja+UouM=;
-	b=gldaFZkSEDJdIpi4t0RyLYXejj6/WtsnbrBRcNniF7qfN9g1MbqqFIKm1Fi7VQPbZwoErS
-	PaOUUg+Fk0yy/lnsJ6KYthwKWtrIM3E90UH1rRqvl7oWtHwTTQ22qp/WJATzD8vQ8+ogDc
-	UTvQ5+G2+ItaxomvQOwuHPRiK/k9bVM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776351281; a=rsa-sha256;
+	bh=0hD33l6NeAodFbLOBu/cQL2Ziw2Dhq18nL8kGZwsI+M=;
+	b=32E7Llg+/hOaznHeKPrgSJrlja9KVPfTF3qpiZcBPb17l5yc+FCJBDatY/cGgZYGmM6Y0T
+	sPnme4ice26NxcNrKixIw6i015pVBIE9gsicG/zI0JvZYBld21d0claemfZc6qPdICHqXB
+	nKRlyS6arZLFqxl1uBjsrrJKJaTiInQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776351643; a=rsa-sha256;
 	cv=none;
-	b=oCLozUiT4pcPCpEoP/esRP8cDSktPuQ+m1+VlXmIQBZWid2xoPG+2grhxq7Qjw9ZEO4Hzb
-	mrHYAyVNCf/2FlQV4Pw57pM4Ges6WFwROkfVbOEF3F4YNkleOmL8/sPzLX9804gW1SHHP6
-	ZnrLGbInr2dTnv/8nLGii6pyUbI/alw=
+	b=TIaOki7eDy8QkvsK/VgXXmUwT+5iiJn1MMQPDj27bMDzeH72ceectuML4g9luakXMOem2k
+	4FlCAYWQCYAOelQkZuezKVia57g/6hBE2mPy01lVEdIua7nBnfk6XwkAmj08zl6CA/4wc0
+	RSWfs3+0HZrB6lXvnVsCZYQJNTa4Buc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=RSloyeSw;
-	spf=none (imf06.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.221.51) smtp.mailfrom=matt@readmodwrite.com;
-	dmarc=none
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43d72875729so3306449f8f.3
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:54:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1776351280; x=1776956080; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=h9ArDot26j/SH+ZznkdYubmynXqAUZSHKndJja+UouM=;
-        b=RSloyeSwSmFOTeytAD8isAlJxw8dmnVWHupHdLmI0pMWtAZF/FwxjAwpzD/eRcWXFv
-         pda4FuGOrVUkJG2YnBxdkguyNXa5iWUnKOlrDmFyDm1+4fTq4t5NvBKsjgGhZ7FF0EW1
-         DT196AqfcwkITfxltpPfZtZnBROWvzFgNmxywsLwnwgQsfdj/1Q3RNhLpfug/L0Q49rF
-         oFkuj0FlFmVQteooyMdhvdL0aqfFlfuoak+Kn25tRNi8oKA7uCKoevrYPcC+c9Me71cY
-         91q6YBsxDDvxT6zfxf8WLOqRP6N8bqI4UsDbUs8ePVWqsXUCrmK1OqlsTT9lf1bgomUY
-         i7MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776351280; x=1776956080;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h9ArDot26j/SH+ZznkdYubmynXqAUZSHKndJja+UouM=;
-        b=QCG2YJZlRQdawMSXkguXcFjxrdb/FVIsUFNCPVUk2yVuDdY33SaAQLSpihbUSY7/95
-         kS96cFLq/qp/WXbTPQMWIK/uPIoxowgnxZH9A+GXPLdWqptJnPoLNwiVuk41E2TVfoMk
-         CHI8epuQpsF/HBPGpwcu7dWGiOdq6Se5CcZjZI5tWDTbL13ZIuAkuwBpgYG/XtnSmsZJ
-         M366hhEvI+zZV2x9BnDvwmqiT4vTTQXlVSn0P6OtnjbdIH4JgRVx/xxC3usCDJ9hMzNO
-         7e03uJPmrgHQmXNG0NdZJi2kY6KlysT7bJWjE5/cuvImT0ejPIMfs9wcn5E0QZ7d70S9
-         n+Aw==
-X-Forwarded-Encrypted: i=1; AFNElJ/0kSpOpMamkQ9iLPkqFDoLzrCZiCNE0O96sfpCrY8BeNMGHjNaDwJzUPI2pSnwmnxKibQYSsuZTQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywy3nlGJgGniEv1yveu4VAhV63tP1AfZC74SkCauwg/SWQ2QTPz
-	U5w16+kcSUpBMFNjKcmt09VQRHB5WemIF+1/zfGDqVym2LXaxa6UI5X6nRxV/FAuMJs=
-X-Gm-Gg: AeBDietQKK3WJ0Ao21yYm7Gs5mLkCvKVeW/kZrDwNV0dlVMu8EHcAsKrMPPfe65ejIU
-	YD2YDdLI1OtxTGDxWiiN+P4ULF4wFxdsZDigth3E+PWngtn6u48xbWRqQIhV664u6eGBIAnCeEy
-	IvSlqJf/Vq2x+WBKsjQIvb/ka6O9NaQ1c2GdfAxfF9qnB/FnDhEL3XwNQb9BXMkNMybrXBx5/l4
-	vUvUfLu4irvsecUiy52qdLmC6oSReXfhxEVazsDAWxj0vBSvm4fAsWsPElEGU5YgP2kxSXjYLpS
-	8C3Xc3KgSPcmlp+LGG3djb9PIDM8SY1y2IcBzyJ+i7uuP1d1RH5H18CqH9bT00H89AvzgqwCnRU
-	juHgnHyr3iC6o6BIhrravy1IHSPG6oCbXClbVWJXveWHEDar4DVXfMdCz++9qSBF6NcxtCh3SOv
-	IJRtWqaXX/bRMqd5yEOw==
-X-Received: by 2002:a05:6000:2503:b0:43e:b0f8:66f1 with SMTP id ffacd0b85a97d-43eb0f866f9mr6366546f8f.43.1776351279910;
-        Thu, 16 Apr 2026 07:54:39 -0700 (PDT)
-Received: from localhost ([2a09:bac6:37a8:d2::15:40d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43ead3e00b3sm13211504f8f.27.2026.04.16.07.54.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 07:54:39 -0700 (PDT)
-Date: Thu, 16 Apr 2026 15:54:38 +0100
-From: Matt Fleming <matt@readmodwrite.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Minchan Kim <minchan@kernel.org>, kernel-team@cloudflare.com, 
-	Matt Fleming <mfleming@cloudflare.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: Require LRU reclaim progress before retrying direct
- reclaim
-Message-ID: <aeD3beNiGDas2WXK@matt-Precision-5490>
-References: <20260410101550.2930139-1-matt@readmodwrite.com>
- <aeAtOUIhFv5hXOyb@linux.dev>
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UwSbvBSi;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D3EC40327;
+	Thu, 16 Apr 2026 15:00:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B3FC2BCAF;
+	Thu, 16 Apr 2026 15:00:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776351642;
+	bh=JUgUGNgPbhEBAHbcpHrlNrJNbNlPc7RtPYnZIl6AaJs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UwSbvBSi8VF3f3Tq5qpdorKIGcCcVEyMQn5IR0/uhNUFHF44DXbV9J7RD7w2qdGp3
+	 g7H+22JhxJTIT68QSarpWVwYMG6oILD9LlwLOPEcJ90KdS7912K3NJX2ukivcEw21s
+	 +e5Oi3qWujsjPr/V8KeFR8iszmfR2eLfsSPe00GI26iidvTiHRmNl8+wuiWJ0YCDGx
+	 +I9Xdku6QxtYuUlgrBYG4FfAHUbGwLht+n+vwHGt2EgMlA5ouC6LZ5GDdUpqNehuzw
+	 6ZgOqrJbVuj59hNB9qcd9DpJcBpJlsSoUwJGnOgcqb4bOB0Et4/z6FolG56MMiyb3/
+	 zqIK4vTquolsA==
+Date: Thu, 16 Apr 2026 18:00:33 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Michal Clapinski <mclapinski@google.com>
+Cc: Evangelos Petrongonas <epetron@amazon.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v8 0/2] kho: add support for deferred struct page init
+Message-ID: <aeD5kboEdzwuR4P_@kernel.org>
+References: <20260416110654.247398-1-mclapinski@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aeAtOUIhFv5hXOyb@linux.dev>
-X-Stat-Signature: 4qyjnyf4yek1tuag4x171mu7d5whigqo
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 81E5A18000F
+In-Reply-To: <20260416110654.247398-1-mclapinski@google.com>
+X-Rspamd-Queue-Id: BE7721C000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: n9o6bg9u7jsjkw583wse7ct6qfsxhe6o
 X-Rspam-User: 
-X-HE-Tag: 1776351281-204115
-X-HE-Meta: U2FsdGVkX19xdeyA7PfFwqNcSpPXuam5A97APnZ09cjamQwmcglPtmghXta7bywxvTe3/q+3RwkgJtn/cZG7wG5S9nT0ldFE95GnbREskbNCmAs5Oh9/cyapbF5dCS3LMRAJM2c1YygvaZ0aPDPljx5IW6iK/xH+wzpeN1UCLvBFqIERH/k3RUY4zax5keJ9pjz422k+8IG9eZXNyg2DO71E8iUWw9/oXYjwyJbfnzbRyj6vjVxFTcdSMGh9I7HRDf3rCEmOUnZryMfa7Ddz+0FQWrkQaFB+MltPSAiWCpea3IO0mnQyawqTsVZsSkoqCYiR3MSu1m0lsDEcYe94iyjIdl1Iuf3X0K6xyBVrEF3Dn1Hzizuv1hz1NB+ND88fPdV9glfYBlT5oYwAuAOZLw96om68DY1kZ5AtL4gFAecYlOjECS2xGY7CNv15x/tM8zSy6XdUty/5DLW5Gq7tfGq0WEC4TJWWpQ0d/HTl748Y9fWaECTzjnk1mgVsJ0YHZ487Xovla1teZR9QL3b/057nIgsVQeBFURfuQ0ZKeJWQw3ludfRRlxkgoWaJo3LSx1RfyuKKuxvBWZVYtvmCisUEZJFqbEub94jX4gHhaML9f3MTzhzUdqKp/srXFDxkVuicpFU/X3Ehniidd2mRgOWzQ+CFILMiV3nSbmcADX/t5bVJ82DDgx2AGD4ARp958g6bTavIXOm2ZcKoC2kfmLUZUM/SawN3hj9Tw5pm6z/zeE8VuPEH+haZQuM/OKVzJvLh9aKsDL8wK4MKoarOYM7XEia5fYkG8ZacVSBGwb/oDCTCrCT90zsW4YxpOSeo8AO//mIOgf08oqoJKIKvVEMYwGHvPqoVoMeDqrRhqR92W+hhINtCCirg5K/fXYRaflcNVJb76CcyNnBUMduqPAILZoJiyAKXEfGlTItpoqdhoVDAgIyA2bJRZmb88d3EFK4ZTPSl7mJFFYKG+hM
- LdQV+REP
- z0aEHE2Yfw4XbRIk4kABoytv7KUXvGb5xYdJ8I404eft9JOlah3WkHYf5i6sjb+C0LHLYNCL0wBDnXkZVe0SBX3OfEM9GUXmuiKNAKRLuzN7SIOW/u7rsgwl9csoJZZNOxUq8wEvoUogXQJ74QwDeV/8+vlL5KZemEOnUvmO2IYtHGjtWzPl/9AuAwvGob5GBnxSqNW/34LdcnjE6O7ngOuqhVPOgrUmZCV/Mhz81s3osjpHR5r56QaguQJ3W/n/44Gzas9LioVOG3zMB0YnnHgLZXx3bSKDfMEsZsKH2DFLUlKZsUM2KGNHRF8Oj8OdnSvdqc4QbE1coemC+CmThlSrYSPeJQ9LhSCIBQPwjEFHfSts7Cz6XvTM6Q96MVC0X30Qa0CSNXiCCV3lbtkuPHCXPFKOuUh2TTOYg2yL8hx8z0Tw6kPwYlb/rIEPZr/d0bb4m1X59IsuRbEDby9UvLvU6ZBtva/o/CyHJevO11zeJR7oJxmsMotvtU4pIY1NJ1aiM
+X-HE-Tag: 1776351643-814457
+X-HE-Meta: U2FsdGVkX18enUTrVbMQl5izqb3MNE13xV4+iAvRrNpqnml7XrQ0KE1NMHbgWAz4+NBt1OTLk+8JY0ywrfo66OYQlMXNBJB6Pm6NK5HYOVhObrnAnbTgvBKXP8UgiH2j/i64COMK4+K4FqT7lo7GBdom/xsvxCfLtVbyiuW8MiNlbrcfMQ0VrW+wDk7YOnb5BMgIJyRNRjtCTu7kWAgD3wFqqpPdU2kHAWuyet92FyciQIMmkfi96jwWlJrrTZYFz4Gf3xi2bC8tYhTKDZGmLcX9l4CoiQYgqcoZP7dO+iD3kGWZfietyeTVkQnm1/Nl8UXTj/K5Mxn3TOjexopS+lmJfGwxAN6QrjCgsfom+KbsPqDwVLXzqGywtpivjCDFdZ06giIK9ZTsloIYy+Nlw9kGQ40M9SmHOpE6mdatOCsR7DhkFskdG4kfw+yf+gCOeCu0R+/3GOZkTq8JUwMrsFoojVsGSftA/6kItqwMnJbfgsWUVQ0CY+Rj6pPqRYAgVCt3tcNnIK1xdIQRhhcnLv25cY2UrHDNGtsp1+xM1z10Gz4Sy0qMaZNWXgBivfn4Ri/ZrawbkhbSNlG1+0yPtMRDLyBST+FkQ/qYu0nAXUx4y2eZLsnN0SsGpOz0LnM04VT2Myq294ZMLRGYBGyHN5WhT+4sY0772xHDvMUWf8DOqycjkUifjFGURvgA8w6z1l3oeA5gIenmFlP78jNqDRV6LLS3tgzW6jANxKcEnbK9yRmmq1za2wHV7d08HWaUyUIZ/RyW41kFqOin1nZJx3T+9zd3rDkUPPrzW2A2wQn+fu7njl4MjT3hXJvsttS/O9410Yt4nlc36JexmWfsqaOowwM1NpCaDw8CywX0KF7CF4+Gqcher6MvnRr8B2/P8EnYFIePEcXSkohN946zmAnSuUTz0GNAhQDzWvQUngZ6Oe2Meww8HzA8OtxY1q5J17lbasBUlKyKyZklern
+ QTYdy88g
+ 1oHjvdHDlI1yvvNdqr8Dp2O8vHL/Bep3FYt8AtdnsDuiaZGq7ECqhfPqBv6Fj57SN4iGXwh9AQj/7tL2bEzMb/cFqJLbYjRirF43Fcx4Ajq21ELeSnV4/WlS7GGu65Jiil3IAnOA1mhhlCMBhCsWXtR9AgJkeiNVKM3/CnFrvRQbFWPT+UPrezDbfFP/7paVqNjah+ujNZvX0+tCjfkzJEoiB7fUdA+8EZeQzrjYr2i7icfht9jn/vtAxzZBr9ZPTOgUk2WQOpsmXfsHtibZdSJKIPWfaq+vZt8BAF7Wl6ndCcBviBNG/taQliWLzcjJKiSwI7UOCe9OjA/7op/Rm3H16fw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,53 +100,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 06:01:54PM -0700, Shakeel Butt wrote:
-> On Fri, Apr 10, 2026 at 11:15:49AM +0100, Matt Fleming wrote:
-> >  
-> > @@ -4637,7 +4672,24 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
-> >  			!__cpuset_zone_allowed(zone, gfp_mask))
-> >  				continue;
-> >  
-> > -		available = reclaimable = zone_reclaimable_pages(zone);
-> > +		/*
-> > +		 * Only count reclaimable pages from an LRU type if reclaim
-> > +		 * actually made headway on that type in the last cycle.
-> > +		 * This prevents the allocator from looping endlessly on
-> > +		 * account of a large pool of pages that reclaim cannot make
-> > +		 * progress on, e.g. anonymous pages when the only swap is
-> > +		 * RAM-backed (zram).
-> > +		 */
-> > +		reclaimable = 0;
-> > +		reclaimable_file = zone_reclaimable_file_pages(zone);
-> > +		reclaimable_anon = zone_reclaimable_anon_pages(zone);
+On Thu, Apr 16, 2026 at 01:06:52PM +0200, Michal Clapinski wrote:
+> When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, struct page
+> initialization is deferred to parallel kthreads that run later in
+> the boot process.
 > 
-> Here we are getting the current reclaimable pages.
+> Currently, KHO is incompatible with DEFERRED.
+> This series fixes that incompatibility.
+> ---
+> v8:
+> - moved overriding the migratetype from init_pageblock_migratetype
+>   to callsites
+> v7:
+> - reimplemented the initialization of kho scratch again
+> v6:
+> - reimplemented the initialization of kho scratch
+> v5:
+> - rebased
+> v4:
+> - added a new commit to fix deferred init of kho scratch
+> - switched to ulong when refering to pfn
+> v3:
+> - changed commit msg
+> - don't invoke early_pfn_to_nid if CONFIG_DEFERRED_STRUCT_PAGE_INIT=n
+> v2:
+> - updated a comment
 > 
-> > +
-> > +		if (reclaim_progress_sufficient(progress->nr_file, reclaimable_file))
-> > +			reclaimable += reclaimable_file;
-> > +		if (reclaim_progress_sufficient(progress->nr_anon, reclaimable_anon))
-> > +			reclaimable += reclaimable_anon;
-> 
-> And here we are comparing the current reclaimable pages with last iteration. Is
-> this intentional to keep things simple?
- 
-Yep, that was the intent.
+> I took Evangelos's test code:
+> https://git.infradead.org/?p=users/vpetrog/linux.git;a=shortlog;h=refs/heads/kho-deferred-struct-page-init
+> and then modified it to this monster test that does 2 allocations:
+> at core_initcall (early) and at module_init (late). Then kexec, then
+> 2 more allocations at these points, then restore the original 2, then
+> kexec, then restore the other 2. Basically I test preservation of early
+> and late allocation both on cold and on warm boot.
+> Tested it both with and without DEFERRED.
 
-> > +
-> > +		available = reclaimable;
-> >  		available += zone_page_state_snapshot(zone, NR_FREE_PAGES);
-> >  
+Any chance you can clean that monster and send it as patch 3?
+There's no real difference between core_initcall() and module_init() with
+respect to that deferred page initialization, they both run after the
+memory map is fully initialized.
+
+> This patch probably doesn't apply onto anything currently.
+> It's based on mm-new with
+> "memblock: move reserve_bootmem_range() to memblock.c and make it static"
+> cherrypicked from rppt/memblock.
+
+You can base on for-next in the memblock tree:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
+
+> Evangelos Petrongonas (1):
+>   kho: make preserved pages compatible with deferred struct page init
 > 
-> Another heuristic we can play with is to also pass through the vmscan scan
-> count. If for couple of consecutive iterations, we continue to see low reclaim
-> efficiency, go for OOM. Also maybe compare the scan count with the watermark as
-> I expect we don't see much difference scan count for consecutive reclaim
-> iteration, so, it is a good representative of reclaimable memory.
+> Michal Clapinski (1):
+>   kho: fix deferred initialization of scratch areas
 > 
-> The reclaim efficiency heuristic should handle the swap-on-zram or
-> incomp-zswap-with-no-writeback. Treating scan count as proxy for reclaimable
-> memory should handle the overcommitted memory.min case.
- 
-Nice. I'll take a look at this.
+>  include/linux/memblock.h           |  7 ++--
+>  kernel/liveupdate/Kconfig          |  2 --
+>  kernel/liveupdate/kexec_handover.c | 52 +++++++++++++++---------------
+>  mm/memblock.c                      | 41 +++++++++++------------
+>  mm/mm_init.c                       | 27 +++++++++++-----
+>  5 files changed, 69 insertions(+), 60 deletions(-)
+> 
+> -- 
+> 2.54.0.rc1.555.g9c883467ad-goog
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
