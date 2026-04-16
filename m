@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8593CF433C7
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 04:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CA21F433C7
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 04:40:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 550696B0005; Thu, 16 Apr 2026 00:22:25 -0400 (EDT)
+	id A9CC66B0005; Thu, 16 Apr 2026 00:40:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 501426B0089; Thu, 16 Apr 2026 00:22:25 -0400 (EDT)
+	id A750F6B0089; Thu, 16 Apr 2026 00:40:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F0736B008A; Thu, 16 Apr 2026 00:22:25 -0400 (EDT)
+	id 98A1C6B008A; Thu, 16 Apr 2026 00:40:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D8056B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 00:22:25 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D2FC859AAC
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:22:24 +0000 (UTC)
-X-FDA: 84663122208.02.98083EB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 86EA26B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 00:40:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25454160449
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:40:35 +0000 (UTC)
+X-FDA: 84663168030.04.5DFAEB2
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7840CA0008
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:22:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=bksPd80P;
-	spf=pass (imf15.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id BC9D6140008
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:40:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="o/a1t3og";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf09.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776313342;
+	s=arc-20220608; t=1776314432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UbjDTFCafDYMJbsKLc4sKLOMaexnyfa/MqYdYKYXm3M=;
-	b=DE7g+CgkzVcQWnWjS9pZDKAUplDcGZgnnjqeQjcSKMASd1OQ/J+rUlFKNR1+2wd9l9alvS
-	aXiSGkcCysvhDIOr/6t9ELxFndejHwNbJ5X/x3V5Dfh+aNQ1qp597U4T1D4ZkyKM6H+l39
-	faIMaWCQ3kmNfVhN1noPeV4XBmGv/LQ=
+	bh=ocBwvM8LLinmE6lLgYosYUJ9poUW6iu7VmYJ9PnLyF0=;
+	b=i7CDD7HIhjHWmC9MPUfzWrktlEoiPEJV6UWNtxQJKKx808F6DEpQz70LTTinXs/BzlmEuG
+	6PSU34jnEE+9EpIgcoG6/+KJiMgD+jDicD6T3ba1anJYXUYuX4H2aZ9+dGxJR9lYDXrntx
+	2IMUdcANrDxuFsRtYco2hI9qge5ne5k=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=bksPd80P;
-	spf=pass (imf15.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776313342; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="o/a1t3og";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf09.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776314432; a=rsa-sha256;
 	cv=none;
-	b=C9fjI3hlyFplXAewtYVJBbgRq6z8/aFetsAFhMiF1cKwQYeQd2DE6xnQKcVBW3WlgIKKdl
-	gkOmSoQuPl63sm/D/VwRmAt1SqVQSy1N/w8ulZTAQTScQEaSxlFLIdK7af1uxgmuj2F/6E
-	hUXGKDDEwAvnirRBzKgt/SSNakbbfnY=
+	b=esDcBAUcZzo5W3fqqnbeToX/gK4pePEnmR5/8aJv2iKq7C87BaZmmpiIH1W3cAY2h3tsew
+	0/vpqAGfQjvcQLwugisGbkq1Sk+AoTKTHX/F2ZCxhpV2+g0YpR6Vj7Y8RWtPxtElj/Ma5Q
+	thrlArjXkBe3oJLEvcvM9sKt2ocYJ6M=
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63FK8m872487108;
-	Thu, 16 Apr 2026 04:22:18 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63FHbvaK1734499;
+	Thu, 16 Apr 2026 04:40:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=UbjDTF
-	CafDYMJbsKLc4sKLOMaexnyfa/MqYdYKYXm3M=; b=bksPd80P8cmHnJ6vMl2Tsr
-	GZ1fG3a3lwOXp7N+7XIy9P73erVl2BSYWKBsBoURE78ozAZGecpM7ODMq0fCNjtA
-	+XnrJH6XCiUOx2auafbgsylyGlRuqPokHr7ITXwIy/3nAX2ySkCHBBpujzl91fyY
-	sdSm5ehRP3uwTLL36GdajmczUkF99ITen+CU7f8iLMqn+C+iVKHE96UiHtJN30zM
-	3g+qE2mxHqZe1UJ8wSRzoQS2Jh6LTFgqZ0kWe1XBXyQJrtCaLOGyfJD3ed1iC451
-	GSYY3scRgh3UXueAmekeTt0j1PlJZcne1DLeLaWWXPTf3eAATojoTGRKZQrhb+mQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ocBwvM
+	8LLinmE6lLgYosYUJ9poUW6iu7VmYJ9PnLyF0=; b=o/a1t3ogRSmaXXnuGOuQPo
+	X9pXVZeastYgPhSiv0KCxEO8zt8IE1F0KB7yX41nOR+EZIp0aRzz0t/LTpTV/Pfi
+	1lJrVaMo6h5Pn4CDPRSFwSPUgL0pd1wa2y97iRehXVQLsi4DUDmT6QDLbjZpVZjU
+	AWMllPtH/M+aRwquR9gQNf9ieCNisogPuVE5W4cNssYehpFH9P0IiULh71iN9xb9
+	m+3PFnolGGAURCg9RioImgwElmMU7Eon5kyhE2SCYzm7Fgx8iI2JSIc/bkTGrHfa
+	brWdYxDVQutcwwjgoTBke+7lFU0sVkgCmDoTN5JphPlIex24lzPiu+YdaV2pIaqg
 	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89mauhm-1
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89mavx5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 04:22:18 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63G0aHo4015164;
-	Thu, 16 Apr 2026 04:22:17 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0mssgcp-1
+	Thu, 16 Apr 2026 04:40:20 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63G3co9i026284;
+	Thu, 16 Apr 2026 04:40:19 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg2ujs5ec-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 04:22:17 +0000
+	Thu, 16 Apr 2026 04:40:19 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63G4MGjU33620538
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63G4eJPU29688492
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Apr 2026 04:22:16 GMT
+	Thu, 16 Apr 2026 04:40:19 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7B7458055;
-	Thu, 16 Apr 2026 04:22:16 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 14CB658043;
+	Thu, 16 Apr 2026 04:40:19 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C9D058043;
-	Thu, 16 Apr 2026 04:22:13 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id A357258059;
+	Thu, 16 Apr 2026 04:40:14 +0000 (GMT)
 Received: from [9.39.27.85] (unknown [9.39.27.85])
 	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Apr 2026 04:22:12 +0000 (GMT)
-Message-ID: <54b0f31f-6720-4e39-a182-ba11948cb024@linux.ibm.com>
-Date: Thu, 16 Apr 2026 09:52:11 +0530
+	Thu, 16 Apr 2026 04:40:14 +0000 (GMT)
+Message-ID: <87167cf2-5851-46a5-99bf-deb5894ff214@linux.ibm.com>
+Date: Thu, 16 Apr 2026 10:10:12 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: fix spaces used for indentation instead of
- tabs
+Subject: Re: [PATCH] mm/vmscan: fix typos in comments
 To: Xiang Gao <gxxa03070307@gmail.com>, akpm@linux-foundation.org,
-        vbabka@kernel.org
-Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
-        hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Xiang Gao <gaoxiang17@xiaomi.com>
-References: <20260416021945.682234-1-gxxa03070307@gmail.com>
+        axelrasmussen@google.com, yuanchu@google.com, hannes@cmpxchg.org
+Cc: weixugc@google.com, david@kernel.org, mhocko@kernel.org,
+        zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, ljs@kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Xiang Gao <gaoxiang17@xiaomi.com>
+References: <20260416024248.687943-1-gxxa03070307@gmail.com>
 Content-Language: en-US
 From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260416021945.682234-1-gxxa03070307@gmail.com>
+In-Reply-To: <20260416024248.687943-1-gxxa03070307@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=I/dVgtgg c=1 sm=1 tr=0 ts=69e063fa cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Authority-Analysis: v=2.4 cv=I/dVgtgg c=1 sm=1 tr=0 ts=69e06834 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
  a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=IeNN-m2dAAAA:8
- a=1azo6HzM0BMiu3SuvnMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: epCRGs4vnWPIgG8-ZtT0ohZs1Bx2acYi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDAzOCBTYWx0ZWRfX0Xg/xp8qXUAM
- nF9H3XYipk1IawCIwlh8eIXLbBem/XetLBGlnEHtR5J0s1bcddD5CRZY4r+m6bpE9uqMyLj0wIk
- nishbjouVaQycm6FIKu0IiEGIn0vpoj7d6dEWGg9zAYzLIzdgO7x+P5BFAFjBR9r+nvmm/PKUCE
- EIOfVvhBekF5Et60bppYz+spc2hrdmNw6iDkOO6hWZYW0WgDXUX5monD/Kzecf3nLHRQoOHpIXB
- oErUPa9s78JFf2sdXu3Ly4frCZVpGAy+Jks53DXq4wXnGwBjzE9/qzvggJyw9fRs9ZvhRhwoWRB
- uJq7VMyKRsQeGX49cDCh/VbLqDynA/0iDajzYKW3xaH9sVbEGge3+lFlYKZSUuyVeJJTjwRyNAs
- 3auiv/EhB657daxKZS8PA45v5f76515v2gtxGeYxhTy0TFabfCLBp/mezN5LLh8ABCA5dR3pfNw
- YZzX7Ov6AmUIpx/qTwQ==
-X-Proofpoint-ORIG-GUID: M9nBvpOhQkEOfsEYgUM1n95gPL1rsio-
+ a=3-Y1g2vecON_pCC63V0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: oUjvAYfSWxYFSRLcQxJYPgR0nupqMfnw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDAzOCBTYWx0ZWRfXyanoReN7nQOI
+ 3n3IVlsalCVYow7vMp7EDS8S0O09D8ba7i35CWYMD7uTiWMjdj/8I6LRNGaSq2X1BfCTqDgfuaV
+ jMNfGC4vIGClfD9nx9G5+45dct0B2+AqJwPWreDtJRqy/vt8TqFTtP/j70KGLsDyXeyNdeXGenS
+ xJ1GGgkd8wGgyif7QInsJAp2QU+dRgX8al2MXHV6cbpauuQqMaAEs4eCOQG6h/IEPbLrF///GJF
+ Y945gIsC14wj2BeNe58z/vkB3jHorraw1DtyK5WyQh/ip+xYFGEaoXdbEAT4+eyJSlrb025kqAB
+ +3qy4T/s4OWMeRRDeQakxotFvW58j4XXGw1cPUKvXonaCAmcwmwOA5oA4LJq3Jysal+To1kwanw
+ TctXYUkaYvA2Kmp+d5eBj0UPDju2kaRl6qiVuLOxuav83WQP1GB9fll3JtbUPvb4ggYuaLT51OZ
+ ZP6YPmstS60VVWTRf2A==
+X-Proofpoint-ORIG-GUID: LMKESwVRZsC_0MN9WIaMqYBkNGFQ_rEw
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-16_01,2026-04-13_04,2025-10-01_01
@@ -128,14 +128,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0 impostorscore=0 phishscore=0 spamscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160038
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7840CA0008
-X-Stat-Signature: e457o4r77x8xm6xb7ubfrozbeyjw73ad
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BC9D6140008
+X-Stat-Signature: xxphzi7qmunwz5158gd4ft5b7ofyq1xg
 X-Rspam-User: 
-X-HE-Tag: 1776313342-3198
-X-HE-Meta: U2FsdGVkX19AUH+5OdfqcbPbk7RZdpoueXwa/u91P+JldVoJSczbKGd5yDXTmh+RXUXI5SMAdscgJntBMMBJSknxf4n96pkD/1l29Hi0hEsODscF18YsPPUSsAVZUKLogli95jflzGQJfOiPCiBBwxKKUuqnlrZGNUREtaj0rUGBBgA43pE/UFn6Li26C9+5NSsVodFBUBcdA4LRAE/AyV8ymMtaubShHz8ftkf9xMKdLlwnl0hMMfuSwk6tX83hW7rhJMYR74vX7pA9mQddc8Hs9Z1E4a/ThvloCtUXCzKJzTQpPuJB5UbKP8nK5jXqiWrt1zk0ohouHdGoan8zgHuGg2UdZOk/QV9FpqDRjS9UGXHnbPWcAnDg5zlUOOw6qKW66dgGgvCFS+3f9tro+il2tGq3iiUyzBvY2Oj8zhK0XXLS9ZUWKyf2sp1xA/MzmiiaO50kQfWAmh8fns3wJkXik0YgONV2XXj5iYhVOzkJ+apmNRF0WwrQTtdFHpsGZD5xzSKr9NMVvAkJxdJHhjkE1KeURSJupzPEIi6KJ2/P1q4uhUVEI8WNv+AJluHohoqwX4Sbsp2VVd8Gi3UWkij4kfc0uEiMLH0Q51oJIkSF9Pjj6vmnLFYFVP6t71E6EC5xB4ycletmCKqY5Rtl+syxTNNAN9pcB7OPgfzVz5AzTeOAgIEz9KMv0kzR9R5/GEGYAtQsMW0PrTS2t+oEs9qmt9TFFuOaBMVIhXE6s9bQqA/NlyxbmiaP+syRqt7nybzFWi/a8lDtIshj8FQ9ZsBoyoLJTZTK3Em0OCNZbWU1R+F3t/XegNyfnurCFFoZ801ZEDdiGufnaJytrhb21GLBR5bUDUTIzqsd7K7naT3HulWcmdhmtBypbuDgGHnpI7VtDwJMbyYxJt9tguusKcCPLatZqe5mGkaC7gHqUwh8dKcTS83a8j0PAaUumjlDd9BvLgOt9S20KqhVx+O
- YqMM9wMX
- 17DSg4Z9SzvSITbkz9jA9bHtcWC0DynZ73UoQFcUCyW01tcEhzaV3NW+szArz+1vM9/b2aoWmmWlKBLPI1D0YuGq6N78yQyHeCGaSKmSpYDOWO2i97f9iF5JLxzDsXQiMPAt9vbRedDZFFIhMHeB6QwrKlKAqk5Aid8lArUZ3UfE8beqJEoKw1VnyoGCaYELP8jxzsNu9TErzSN8GHs41GYL5bU2xAlTCKsfCo8ilUZbdjy7rQkRmQudDLjO9D1Wav8XHUcR7dr7a2LTmRKjVy5fiKuyJ5s82/rY+PS33dqUR9ZZL82xCyrC9Zp7tLz4oWtVY/etWO8f20gP+fhgqCMLB/1ap4VIkxlQo
+X-HE-Tag: 1776314432-436873
+X-HE-Meta: U2FsdGVkX19cKzq0ubsFJ1LsqAZvSOebFfXWzjdVPU0CitCxN7vNgrGXDmaIgY2FvlHuPl3LNNA7myJp/yWY8Ulu3/gSGqF8QWQYgUy2V6fJPbhY6USktcZavWzyVl8HNxA2CS8vIRNqFuIe8nz1qemDD0Z2nZiLwojgh/PwlIID1iFOVLp0xtFeWO23M0hQEPKdTwH3fnnQXMeuSrCHFeGkdAv3TeS/Tg4CFMMuykVUcMdGshKW1ErhfIEvV6wseq1ZmF1C3wIy+Taxg+8PqU+esx9IkkXXeCA1kV04d0MQwTxoTI8H/6wcnIW6iw/JTJXp0BUoY2g5MS5MgdbIq8HOEOtBthY/3ExMAkHCTkZUX/IrV6tpmabu3fh5G4TPyd+12Mv3wgVbvqTd0DauHgyeO323ajZim+kaL64Nl3ljVEbj9QY+BGH7nIETjF1lPUzGC84Ain8NkhMIfHbPjdKgbKTIVLoSPkyKiJ1GmLzshJcy7GovXbsMwVc6ydbbkSqx5Qt5Dv/REnT7DHLSeZb9F0fnKPBLF+GK7cZo7HPPzslfFJMdJAGv58k91HZigp2vzAjvSy7uxLg+SvYQFEAf3mLxv/QPt1pDHmEiYhYEgXMv7Gk1245Yjm/6F8bAPhIbhi31MwPZZrhhmRwORkf8P9W/et43ojqoAM5SlVYLAuqYOadpONGgEVuUpC/WjzOpoEPGhn0ZoXzdJnVx/p1GISSXfnIV7ooQ6xqY4WLrPVzrK38sa0Ncnl0CXFhX2Do2uYEXXQBuR7HKB0mMH/cl1u9Xji6P1xJTDKc14JpVG5sNPCGfDb+XKSz80O84+Wv50C5fFovfNcEkFo2fqHTcutU8oOPijJVSLul++PPNjQBz1RxTAqF/7GujnGEAHEkVac0mdH/v0+tYT4XQ0t2PwaVxQzx17DgPjB1NH6hFHhCRgOrtD7mAXlIv7MJtUxsEPJRCVw0zVdFLTka
+ OwhXwxEZ
+ aQnQRaTbOjo7RUhnZIls1BCmyDzCz3NQZSaW8/+ZOAN5edp/K8f7Y29qYrLYFzq/wqqUlxNkUNOv9k70ox/ERAjQo3EXguxgNjDupohDbFcBVfB6SEmXo1kD3XdgLptiM1zdPICkgKQGSJughlindSdjOOyizJRRA/NK2JdFSa9k0YXqV6ft0NWeVRZ3ayAtjgQWJhG5LXXdyokUenzHX9DRxcHvYx95apOIR1Ytc9mM8CQyT//Hk3PKxN7+pnLXcUFvI5lROH3YZlPLV0F29vvPL4wBKbd3KrsCFRGuOKhmoH1u3fLvBQlaz2DufM7yjBZacKuELBCy5UM7k8Uhc4DXH4mHVs8/eUlj1TNSbus1WEuU0S7Icd4OfIjODXHkgh37G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,66 +145,60 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Hi
 
-On 4/16/26 7:49 AM, Xiang Gao wrote:
+On 4/16/26 8:12 AM, Xiang Gao wrote:
 > From: Xiang Gao <gaoxiang17@xiaomi.com>
 >
-> checkpatch.pl reports two indentation errors in page_alloc.c where
-> spaces are used instead of tabs:
+> Fix three typos in comments:
 >
->    ERROR: code indent should use tabs where possible
->    #887: FILE: mm/page_alloc.c:887:
->    +        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,$
->
->    ERROR: code indent should use tabs where possible
->    #6626: FILE: mm/page_alloc.c:6626:
->    +						         sysctl_min_unmapped_ratio) / 100;$
->
-> In __del_page_from_free_list(), the VM_WARN_ONCE at line 887 uses 8
-> spaces for indentation instead of a tab. The identical VM_WARN_ONCE
-> calls in __add_to_free_list() and move_to_free_list() both correctly
-> use a tab.
->
-> In setup_min_unmapped_ratio(), the continuation line at 6626 uses 6
-> tabs + 9 spaces for alignment. Replace the excess spaces with 6 tabs
-> + 1 space to correctly align with the opening parenthesis on the
-> previous line.
+> - Line 112: "zome_reclaim_mode" -> "zone_reclaim_mode"
+> - Line 6208: "prioities" -> "priorities"
+> - Line 7067: "that that high" -> "that the high" (duplicated word)
 >
 > Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
->
+
+
 I am seeing below issue with checkpatch.pl
 
-./scripts/checkpatch.pl --strict 
-0001-mm-page_alloc-fix-spaces-used-for-indentation-instea.patch
+./scripts/checkpatch.pl --strict 0001-mm-vmscan-fix-typos-in-comments.patch
 WARNING: From:/Signed-off-by: email name mismatch: 'From: Xiang Gao 
 <gaoxiang17@xiaomi.com>' != 'Signed-off-by: gaoxiang17 
 <gaoxiang17@xiaomi.com>'
 
--Donet
+total: 0 errors, 1 warnings, 0 checks, 24 lines checked
 
 > ---
->   mm/page_alloc.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   mm/vmscan.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 2d4b6f1a554e..752673a9b43c 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -884,7 +884,7 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
->   {
->   	int nr_pages = 1 << order;
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 0fc9373e8251..710fbe1ee151 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -109,7 +109,7 @@ struct scan_control {
+>   	/* zone_reclaim_mode */
+>   	unsigned int may_unmap:1;
 >   
-> -        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
-> +	VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
->   		     "page type is %d, passed migratetype is %d (nr=%d)\n",
->   		     get_pageblock_migratetype(page), migratetype, nr_pages);
+> -	/* zome_reclaim_mode, boost reclaim, cgroup restrictions */
+> +	/* zone_reclaim_mode, boost reclaim, cgroup restrictions */
+>   	unsigned int may_swap:1;
 >   
-> @@ -6623,7 +6623,7 @@ static void setup_min_unmapped_ratio(void)
+>   	/* Not allow cache_trim_mode to be turned on as part of reclaim? */
+> @@ -6205,7 +6205,7 @@ static void consider_reclaim_throttle(pg_data_t *pgdat, struct scan_control *sc)
+>   	if (current_is_kswapd() || cgroup_reclaim(sc))
+>   		return;
 >   
->   	for_each_zone(zone)
->   		zone->zone_pgdat->min_unmapped_pages += (zone_managed_pages(zone) *
-> -						         sysctl_min_unmapped_ratio) / 100;
-> +						 sysctl_min_unmapped_ratio) / 100;
+> -	/* Throttle if making no progress at high prioities. */
+> +	/* Throttle if making no progress at high priorities. */
+>   	if (sc->priority == 1 && !sc->nr_reclaimed)
+>   		reclaim_throttle(pgdat, VMSCAN_THROTTLE_NOPROGRESS);
 >   }
+> @@ -7064,7 +7064,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
 >   
->   
+>   		/*
+>   		 * There should be no need to raise the scanning priority if
+> -		 * enough pages are already being scanned that that high
+> +		 * enough pages are already being scanned that the high
+>   		 * watermark would be met at 100% efficiency.
+>   		 */
+>   		if (kswapd_shrink_node(pgdat, &sc))
 
