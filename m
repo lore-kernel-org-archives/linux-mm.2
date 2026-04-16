@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43CC7F433D4
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 01:19:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 684CDF433D4
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 01:22:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85DAD6B0005; Wed, 15 Apr 2026 21:19:12 -0400 (EDT)
+	id A5D986B0005; Wed, 15 Apr 2026 21:22:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E7D36B0088; Wed, 15 Apr 2026 21:19:12 -0400 (EDT)
+	id A0E3B6B0088; Wed, 15 Apr 2026 21:22:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AE896B008A; Wed, 15 Apr 2026 21:19:12 -0400 (EDT)
+	id 923B16B008A; Wed, 15 Apr 2026 21:22:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 549E36B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:19:12 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E56968C281
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:19:11 +0000 (UTC)
-X-FDA: 84662660502.05.314BC49
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5B37340007
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:19:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h4B7BqzB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776302350; a=rsa-sha256;
-	cv=none;
-	b=WgCTUkfWTgXwCLDrcuFsqMOpjVM1iPzB0De9FNrPViD5fQ0Hrd4D8iLbv0vpNz/+gHNR/M
-	zunsXlZubfhbTbl/3ZH9L9cqUnjVQ+iWEVvRz+3Lp3zOHTw6sQkzf50SoKj11bDg/U0MAr
-	JuJzEA3AvmCLe9WoYADZu2QwjKHhVkk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=h4B7BqzB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of jaegeuk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CFF16B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:22:50 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ED4F71A0755
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:22:49 +0000 (UTC)
+X-FDA: 84662669658.04.66BD246
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DA93C160003
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:22:46 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EWG5oybv;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776302350;
+	s=arc-20220608; t=1776302568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=17TjlCZCIXEN+7lApT284XqATffQCeo9XWg2qxpzwI0=;
-	b=BXYSnk4BmOLNCKaUpq7ITTr8L+UZ+JS4cX67ILxqqIbhmTa3QMvpta26ZZKcd4KapxIX3+
-	+NcKa212xONTZKIV2RlStS0PIedlW6aNvbrj+pMU5mBoNSz0afKPv0xe9T1taU0wDWhHtD
-	0Ik57ijQEVpKZEXLo+ovT+8z/UZ9l3U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E78960123;
-	Thu, 16 Apr 2026 01:19:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CC3C19424;
-	Thu, 16 Apr 2026 01:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776302349;
-	bh=sGPVhh1PMoxtSRZpRrI3iao9xw5DxpR7NnDEs0o9Kgw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h4B7BqzBdmwkiQP3eic2DNPc5SfwzxkiQTs6gPXXav+LObOeFH7nkioxT7SaepznJ
-	 tKeHtP/Q/R1rN+IYoojyUMD/9KImNkUeDlEZ5WlslsOlCvQ2KqZlW3coZcdxlw3RNz
-	 3mCV7tjMjQ2OqsxWlPvw1ydH4/JIGVkdDmVKz1KpUuDTB5O8MyYUvD27sG0B+C9qgU
-	 8jolvhM0TULMdqnl/LgRNrTYwCl5WgyWumi8qCF1q67v2K/cuqrhQNUhqaIazzxjtC
-	 Apa5NTA7awDPIth5oapqjqZwGGydEyX8hC8yE+ut1WrXAhm2X/Ni0qm5cQBQ819JSR
-	 jrW0S6CU0yzgQ==
-Date: Thu, 16 Apr 2026 01:19:07 +0000
-From: Jaegeuk Kim <jaegeuk@kernel.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Akilesh Kailash <akailash@google.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-api@vger.kernel.org
-Subject: Re: [PATCH v2] f2fs: another way to set large folio by remembering
- inode number
-Message-ID: <aeA5C8byIpXWla7f@google.com>
-References: <20260409134538.3692605-1-jaegeuk@kernel.org>
- <adhPZxtbZxgU-37v@google.com>
- <ad30g9xMs9wNJhFb@infradead.org>
- <ad_AVHe7RMnGrGTb@google.com>
- <ad_HwhzlNPUEKQi6@casper.infradead.org>
- <aeAK8mFxzgMOepmZ@google.com>
- <20260415234950.GC114184@frogsfrogsfrogs>
+	bh=M0bEAAbgBNmbxicu2CtQb8Q27gLpg83fQgDiS0p6Nz4=;
+	b=qvvq2ptATK4yDc1Brp2DGCRZb4ZTZGsRZL7yA8SwPqZ6/LCK62W6MuuUBFFy7aTM59NdXf
+	3jVIF/GeAkFA9MRPRJazARHGcWhx5kqNaj3HowLPFDDR+wuEDVzOVezAktBTvo71bqP/Q3
+	95NJ40hxxNGjSMOSxJq9XrRLSrar1Xc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EWG5oybv;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776302568; a=rsa-sha256;
+	cv=none;
+	b=zCkcdo7vEkegILv5p97oXTtPoYeTw0AhqJFQXP/lw0bL5ljSzIwEYd/MesW04cLwjnAyao
+	b/1u5Zvk+wbLfRVmlMCLc3PG3fer6NHFmrCHKt/sVaMGazqj67HErdw6wiHDr/IzN1feAr
+	/1G90JsveGF5NSGduVOB13MwGLejaEk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776302562; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=M0bEAAbgBNmbxicu2CtQb8Q27gLpg83fQgDiS0p6Nz4=;
+	b=EWG5oybvxIkX9t8vcE78+GmHJsxURoAXQb3IXDWC1aITG6x5nAwZHUKVoFZtGJNtnt30/vsAlF3XEsSlIxAA8/0ck/oAzdMWW8+QF4el8teSQUQUoQgJoDys+e7AvSx3gbDuCEsJ4pInr9WQ5qN9d8cinEQCZ97kVwqV2QSht0E=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X16GTzA_1776302561;
+Received: from 30.74.144.131(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X16GTzA_1776302561 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 16 Apr 2026 09:22:41 +0800
+Message-ID: <16745f2b-b008-4df1-ac76-f18b4a826dbd@linux.alibaba.com>
+Date: Thu, 16 Apr 2026 09:22:40 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415234950.GC114184@frogsfrogsfrogs>
-X-Rspamd-Queue-Id: 5B37340007
-X-Rspamd-Server: rspam12
-X-Stat-Signature: on4mwqj1e9ffrxb8y7ti9taoqwz6hgxt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
+ shmem mount
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ hughd@google.com, willy@infradead.org, ljs@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
+ <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
+ <e07071fc-15b7-495f-b6d5-96004aa0f8b6@linux.alibaba.com>
+ <c88ea567-6b03-4540-8173-7fceeac23f7d@kernel.org>
+ <2d138a3f-0006-4a01-852a-4570d7ba781d@linux.alibaba.com>
+ <eda13ed2-117a-488b-9120-d64e0fe0b731@kernel.org>
+ <1a3cb6b2-94e0-4268-8cd9-1f9a9deb6c6b@linux.alibaba.com>
+ <875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org>
+ <b3257e56-b202-40b4-94a8-0f4ba5e24cfd@linux.alibaba.com>
+ <846B17B0-1BAF-4959-8FC2-42744C44B1D6@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <846B17B0-1BAF-4959-8FC2-42744C44B1D6@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DA93C160003
+X-Stat-Signature: gp86zgtuui4r7yuxo4x56uxadtnu19j9
 X-Rspam-User: 
-X-HE-Tag: 1776302350-303030
-X-HE-Meta: U2FsdGVkX18aIPAw9+860v99eLHJMMwT45m8xRmPVFAgxD3JRKdT3PMgejS/F/Nja4483pLu3IxbIisKhbBmQ3ac8YCOWYwBUWpwyA51ZkzZojsYdGzlOmWRyUaQzMkeiSpuO4Tq/V7+Ghxj3GaAYC+KlnZvlGEbhmIQ90DHeEplqQtnCpvQoeKHz6d7sLDgvpg1qVZAlVz8NLI3LFkTFu3fhKNMKeWcy3GO+lWCqVSQ//myGaYz30DWPKeZ5AYHl+kay0psfisruHclE2WVjj2atinnH1jZzEeXdmHxWiqAGHbLU2xntTZspxRbZ6P4dhIyqv4Kqdg7r4si89PIhCu5D8JXjeEkWmxPzl2XbF5HybiRSrtNKldtuNsxJh1Qh2QpXrr9aIs1moJHZr5/KhrMjNcAWLFTLlWYynfyay82tiQK0knTvLVlyKvOEC65nC/SjN6wP1hXySO1c/Jag1FWhmuHp7IkcbqWNCRkR0GIlJkOnhS21zBqlHfuetHYg7qhf4QWXifp3D7zTXHVufwl2jEJ3dOzlc8lZOA6HiKkmChcFQ7aad6CpphT6MyeZGfbpiNppDTjxN7m3qMT8ibAxQgobYZzNQvKM6JxmAKGB+82stopg2k6GAVtgLb4OAu4Ee7ZaW49HAam4mr+gNKM7OQMOCZu+b1iTCm3hIBsFjbYfh8yA7kwy/F5NvwrgiXXm87G2Tixzn5/kkvOJTjFR1jwbLdN1ItqFfsBmhiss0qWn2Xy7CngHtaftohQbM0wENl6w/e7pu+SreUVUHSyWTaQHHJ5rjB01HcBoyTB1eVHQj20jcs+wGDT3Wrf0eMJ5vrou58RsSefDPNzgPIeP60PtU3JczJMKeNvtpPOYGzL31KJIp+msprTP2nXqpvd9NtdQRAB2+vdT/bHZHyzLbf0Lq1xbP/mRDyNnFtghquwDeYCck5OnlKGGC4AyMnXZ7i5vFGnS873fH8
- RAuQY0zx
- BX67gJGOR214cNYY1nBimQeUpqxLyUqnXoJU6REtj2xoNjS+yggBstqvycAgyZOs90SQdnSNU8L3LGMOrySWKySL3Nn6ciASJpGujd7JvJ7UYWNA6kD+1gcTd4S28ZeSEHdAhRVCW+xyT5KDeQ8yByzcDb7Qsuuv5sGE7O0YLociJTphnCoKwjY0A9vX8be5k0jSce0nJiM7TAw/DAEapwH7fx6YtfwLGQDOGLaDySJKUb0KjotEJFI09Z8dLS8TEGBkJ7O3+GB0skj9a59vz8iILQdDhS4l3ZGvC
+X-HE-Tag: 1776302566-328127
+X-HE-Meta: U2FsdGVkX1/dgILsKveJrSZMy6nCmUT18fzRDGNberib6VLMNKCzijt5zqaytQBWWCMb2Cyx4TmCFJ3qfO/og6AkFIzDdN5isKGvgDQkeOQcHqrv2fLl3MQrHLszzehOZgmAKN2fEj3qB/WbTrNY8o0KLMTp+1y53MpLN9U4V+/pO+8cMyufi5ir/2OFCiftpEyHt9gOBFA4eOXfKDNOpPd7qE4tYZCXcFhS+s6gcCvHmPVUXa5/tk25OrILLYptBMcIHTujLC5lAC0Tz7Kt9n4scnDIvE1Ms414btRkrOxEREjXqNG/Fe1GFWLjs514XmGeP9KapzIdwiBTZWX1all36ljhYahEr/24XWCKrcNw3Ec+IJQfRWDoPXuHhu85hRJ7zTNW1pzSWXr+d3KwV6UI4eka26J+y0ZmkoSwQi37mcgOZRUEKBgGaxVzEoZBYJlGEPBcQnW9HRPCPsWNnlj+A74FHqWfSwA2TxLe6YMs4RzQ0SJ+eLjijpbfH3IqW49crspptfrMOiJTBd93QStsCNwd6QqVoS5//cuO7m99KY8rryqJkKkAc3ZokdSuzPW2SkknzwW69SbiuaXTOq+Ww4nZ7JMkLMEKarBzlz9Y1I8J1emdXwyCO82zfr1K7rrGUbxxu0gzG8kQdmAuzeTAdYs0nWXMOaIS49Sia7eidAF2QvOwQRucXkdL2WZp0ahtxTfZOqWI6GEca+NOu3y/KqGMoj2iwNNTWdybMBq5RplAQpQ+aGPf3mqanCwVUPLstCyoou75FqoOLqMSoERk3ONmBu1XJN583bwNpqKNkosEPzEAP6jVBScW0+GzAc8RtDHNdAr6MO1C4oF6pZekwe9M8XDEOENJrfGyz8fMdlRRuWhIToH1vxBhcYD2D8+RJsc3V/mu/CRWPS6cXt4iBDSIz8w4KsQZyGhfSP5CdcBY2p2JJJUZO2eUA8yBdpOz0mkeKvBv3Mz7GLf
+ xcx1IFJe
+ 0ZPu9DaA5Hqa7hgX3jf056cd7VXcl9bMpqU9y+WkvMBDuzBazOoClgyI7Ln2msmLKKWQXDXFGqkw4VwAGguOVDGrLCQCUUtL6CDOz2HQCVVHeDMPCrXvML2QSQAzCQMXRSqwjEv7C8BinfZtg6uW+lJDV3EaB3hqh3aOkch3rSqY/kIK6PiYoxo8LsWWwPO91ebu6b7G24T0Re0nDzFOSfwIU79vCHrIz0bxeG4MNBLI7Te7euYvanXsWtXpAj/nguTYT1bce2t27Y10NqCEgFxEM1AHrxgW37B8S6tsc93md+GIKB6n4cPzoplCdEid+ZdZEvLWxe9cYMmwa+hyAAzs8SQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,54 +97,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04/15, Darrick J. Wong wrote:
-> On Wed, Apr 15, 2026 at 10:02:26PM +0000, Jaegeuk Kim wrote:
-> > On 04/15, Matthew Wilcox wrote:
-> > > On Wed, Apr 15, 2026 at 04:44:04PM +0000, Jaegeuk Kim wrote:
-> > > > On 04/14, Christoph Hellwig wrote:
-> > > > > Please add the relevant mailing lists when adding new user interfaces.
-> > > > > 
-> > > > > And I'm not sure hacks working around the proper large folio
-> > > > > implementation are something that should be merged upstream.
-> > > > 
-> > > > Cc'ed linux-api and linux-fsdevel onto the patch thread with a proposal that
-> > > > I'm not sure it's acceptable or not. 
-> > > 
-> > > You haven't sent a proposal.  This is a reply to a reply to a reply of a
-> > > patch.  There's no justification for why f2fs is so special that it
-> > > needs this.  What the hell is going on?  You know this is not the way to
-> > > get code merged into Linux.
-> > 
-> > I added two ideas in that email. Have you even tried to understand?
+
+
+On 4/16/26 9:11 AM, Zi Yan wrote:
+> On 15 Apr 2026, at 21:05, Baolin Wang wrote:
 > 
-> You want to establish "user.fadvise" as an extended attribute containing
-> a bitmask.  The sole bit defined in that attribute means "use large
-> folios", but you also have to change the file mode and set the IMMUTABLE
-> bit for it to actually do anything.
-
-Partly yes. This path has nothing to do with IMMUTABLE bit, since I used to
-activate the large folio with that bit, but hit a big pain which requires
-clearing the bit whenever just deleting the file.
-
-So, this gives a new way to activate the large folio by chmod(0400) and
-setxattr("user.fadvise") only while providing quick inode eviction in order
-to set mapping by iget, and allowing file deletion easily.
-
-I feel the arguable points would be 1) the path to evict inode by calling
-d_drop in release_file and returning 1 in drop_inode, 2) how to give the
-hint between fadvise(FADV_LARGE_FOLIO) or setxattr(user.fadvise) by individual
-file system.
-
+>> On 4/15/26 10:36 PM, David Hildenbrand (Arm) wrote:
+>>> On 4/15/26 12:05, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 4/15/26 5:54 PM, David Hildenbrand (Arm) wrote:
+>>>>>>
+>>>>>> Yes, that makes sense.
+>>>>>>
+>>>>>> However, it’s also possible that the mapping does not support large
+>>>>>> folios, yet anonymous shmem can still allocate large folios via the
+>>>>>> sysfs interfaces. That doesn't make sense, right?
+>>>>>
+>>>>> That's what I am saying: if there could be large folios in there, then
+>>>>> let's tell the world.
+>>>>>
+>>>>> Getting in a scenario where the mapping claims to not support large
+>>>>> folios, but then we have large folios in there is inconsistent, not?
+>>>>>
+>>>>> [...]
+>>>>>
+>>>>>>
+>>>>>> For the current anonymous shmem (tmpfs is already clear, no questions),
+>>>>>> I don’t think there will be any "will never have/does never allow"
+>>>>>> cases, because it can be changed dynamically via the sysfs interfaces.
+>>>>>
+>>>>> Right. It's about non-anon shmem with huge=off.
+>>>>>
+>>>>>>
+>>>>>> If we still want that logic, then for anonymous shmem we can treat it as
+>>>>>> always "might have large folios".
+>>>>
+>>>> OK. To resolve the confusion about 1, the logic should be changed as
+>>>> follows. Does that make sense to you?
+>>>>
+>>>> if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
+>>>>       mapping_set_large_folios(inode->i_mapping);
+>>>
+>>> I think that's better.
+>>
+>> Thanks for your valuable input.
+>>
+>> But has Willy says, maybe we can just
+>>> unconditionally set it and have it even simpler.
+>>
+>> However, for tmpfs mounts, we should still respect the 'huge=' mount option. See commit 5a90c155defa ("tmpfs: don't enable large folios if not supported").
 > 
-> Meanwhile, you can't actually persist any of the fadvise(2) advice
-> flags, so the xattr name doesn't even make sense.  Maybe you meant to
-> call it "user.madvise" since the closest thing I can think of is
-> MADV_HUGEPAGE?
-> 
-> I've understood enough.  YUCK.
+> Is it possible to get sbinfo->huge during tmpfs’s folio allocation time, so that
+> even if all tmpfs has mapping_set_large_folios() but sbinfo->huge can still
+> decide whether huge page will be allocated for a tmpfs?
 
-Thank you for taking the time to take a look.
+Yes, of course. However, the issue isn’t whether tmpfs allows allocating 
+large folios.
 
-> 
-> --D
+The problem commit 5a90c155defa tries to fix is that when tmpfs is 
+mounted with the 'huge=never' option, we will not allocate large folios 
+for it. Then when writing tmpfs files, generic_perform_write() will call 
+mapping_max_folio_size() to get the chunk size and ends up with an 
+order-9 size for writing tmpfs files. However, this tmpfs file is 
+populated only with small folios, resulting in a performance regression.
 
