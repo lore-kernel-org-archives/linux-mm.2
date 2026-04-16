@@ -4,144 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EA8FF8A140
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 08:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25A4FF8A146
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 08:40:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 075826B0089; Thu, 16 Apr 2026 04:22:23 -0400 (EDT)
+	id 26CFD6B0005; Thu, 16 Apr 2026 04:40:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F41506B008A; Thu, 16 Apr 2026 04:22:22 -0400 (EDT)
+	id 2173B6B0089; Thu, 16 Apr 2026 04:40:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E09636B008C; Thu, 16 Apr 2026 04:22:22 -0400 (EDT)
+	id 0DED36B008A; Thu, 16 Apr 2026 04:40:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C963F6B0089
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:22:22 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 41829140457
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:22:22 +0000 (UTC)
-X-FDA: 84663726924.25.D5E3721
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E436BC000B
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:22:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=e2Fj1hLf;
-	spf=pass (imf10.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EC73A6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:40:06 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D979E4548
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:40:06 +0000 (UTC)
+X-FDA: 84663771612.27.37471B6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 528948000B
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:40:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FRGv6TDd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776327740;
+	s=arc-20220608; t=1776328804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EghXYYnkmIraQBRylz8V08Xw1Fw8PiFljL3GV4sjMm0=;
-	b=VHe8tTk8vmd9PvxCyX5dJ4CZTg0DWp5mPLGQvNJRe3ZU+hNcwXQkIcvcE5B2+7GrLtlVdx
-	ZM/KURkLYHF4ZGjuoCexyNTGsObUaf0+qK3aJMavjM0KujuF4XLaAIFedKWettR7xhDJx5
-	Xr9G8DAtGJYLV8fd8WkHVLHoSUPoeDs=
+	bh=XuaF9MfsKfhmQouDFWM+lht7083CLnGsSoDaijTTrbI=;
+	b=FULB7YRDONVOLiMjoQCWpwX8rUGjwtXeFEDv7Mh4rwXuYnv38caOLXmgNDZYlPEBFxHssW
+	yDl0B4OZFPOMUksC1z1+2KVj2JBk2S9CKuETDWHTICT89nYHMXoTAV37iUtQNqa29J728+
+	zVaCnMVdupnxzCXPwOzc9djqoExdCLY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=e2Fj1hLf;
-	spf=pass (imf10.hostedemail.com: domain of borntraeger@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=borntraeger@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776327740; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FRGv6TDd;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776328804; a=rsa-sha256;
 	cv=none;
-	b=7VI0VSyIxZnhaymQIZ1jq332VGZamEUsZpqqVfSVeEeeU1S4cCrvS++kadUgs9x1w0fXzb
-	/OPSaK1xjpb4d1ehEejaSbUQcAEfwOVlh3YfhaDut1XwdAexRBNOD6dayaNofZwmF9MaB2
-	N3petR33Yz1xm+EaC7T+PsPIxzorPh4=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G6Edg91733184;
-	Thu, 16 Apr 2026 08:22:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=EghXYY
-	nkmIraQBRylz8V08Xw1Fw8PiFljL3GV4sjMm0=; b=e2Fj1hLfI0Z8Po/oWJGVW0
-	kG/Su8H3VxOIUcJipozN8A1Nh5d8pn6dKbMb4XGpU8+r3sqys4Un10OW+VGpyloE
-	T2L4eq1Kj+ZxvDazOTJXRV1PAjI6D1DvWAMlJTWzE/YnUEzYghxhOZeuGBSmFC8w
-	wdS5PjkoG4zUb3IjvVyBBNJWh5J3lni9lg9QlQdNKSMDNpZxJg5tz4Nt40UT8CHr
-	R/cG8ESBb9p6eVhIk9AfoVlZApcVSUhmDd8dfkvJwMHqgGophpEU3sy6RxfCSw2C
-	fumrNuHk+2nH2AmQ/www7b6lqruiOK1ZBfqZwJN3O/+JhJ4p0dVYx+sJ4n5f3xxw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89mbk9e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 08:22:16 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63G6FXdP015164;
-	Thu, 16 Apr 2026 08:22:15 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg0mst7rd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 08:22:15 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63G8MCti27984192
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Apr 2026 08:22:12 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 243C02004D;
-	Thu, 16 Apr 2026 08:22:12 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B4A1C20049;
-	Thu, 16 Apr 2026 08:22:11 +0000 (GMT)
-Received: from [9.52.200.39] (unknown [9.52.200.39])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Apr 2026 08:22:11 +0000 (GMT)
-Message-ID: <161ab40c-dad7-42b4-b6ad-917f8249254a@linux.ibm.com>
-Date: Thu, 16 Apr 2026 10:22:11 +0200
+	b=S5jT4ZYvnb8FOe3Fye+jUrc90dKiHU6yEOP8asNaSDttbiPRdX17/94Zyqr0buvSYGofZ6
+	/ZEoOgzDUIKlcwqLVsC9O1P8RKjvp8K9qQqMTICSXdsEo/Edp4gkr2RF2bEkt1ZInhlmLX
+	gTJIELJYjJvPgNhj5sJ9SR1YEPoJPN0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C643F43784;
+	Thu, 16 Apr 2026 08:40:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96C4C2BCAF;
+	Thu, 16 Apr 2026 08:39:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776328802;
+	bh=qoCcvhCddFl/JRy2cur4v0b/BY7NeK62mPtbEGaij24=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FRGv6TDdb/CbTs0XqVEWfWFufNO6r11Sec9GNZCu99m074cH+9gDMKx7EQ9tMQXBr
+	 OnRF/W9n//CCRHlK5PsY0adB2obxDy/gafQUEoS1jqc49gRe9eUslf+dK1p6MCuU8u
+	 tNU8US+6mfWjCUyeg6jrteBEwdQurFTU8bWNXfuqjQApqOwtM3boYCfOqgAsSMhuXX
+	 0xKKg0xcWwkoiM9B9sGTLwNZps5/PB+Z1zmmPL5P/zaNKKUjIXPMhJPRZyC3eK3HPi
+	 7QPSxFZkflveXtdsasyl+8jWzH1UfnZa2eo3fE9f5lHmsNVU9pjx3OAreNFQRhfYiJ
+	 Ru9sNP6eyUrog==
+Message-ID: <a88aaf79-ad64-4529-a86e-b94fc8fa9b27@kernel.org>
+Date: Thu, 16 Apr 2026 10:39:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/6] s390/mm: Allow lazy MMU mode disabling
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda
- <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <24d843c5568a8b591cbbe16eca092e7f45d18cf5.1776264097.git.agordeev@linux.ibm.com>
- <20260416054405.10407B6c-hca@linux.ibm.com>
- <2a497bff-1773-4245-a63c-784ed8853b11-agordeev@linux.ibm.com>
+Subject: Re: [PATCH v4 3/3] selftests/mm: run the MAP_DROPPABLE selftest
+To: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
+References: <20260416033939.49981-1-anthony.yznaga@oracle.com>
+ <20260416033939.49981-4-anthony.yznaga@oracle.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <2a497bff-1773-4245-a63c-784ed8853b11-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260416033939.49981-4-anthony.yznaga@oracle.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=I/dVgtgg c=1 sm=1 tr=0 ts=69e09c38 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=bZTvA-38IwGshgt2pOQA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: cybN27AT70Xlug33CcVsFDGHqa-ZO9sJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDA3NyBTYWx0ZWRfX2Uocvty7Sfzg
- 3EKlGo+vHAXe/bxw3gU+c95Q5guzP+mOtWdsoQvd1m49GlwN8B4zgT/2IRWbjrCf8Z8Ez6/mhfC
- cl+WXtWMpsbbF+rCwcVMWO1nRPPLVuOPAYWHPJ/gyZHbY53pRHZGfysgBskJH6/sHsPvq614gNR
- NK9IvglftKx10tyLUhewEHJ2IyvDcizzTPZ2eKIZzvF2eB+ivmeMoJoJHYdxaAYslB4Py3SUvV6
- +synpXrscZek6LfanKvVHcCuwdMzjruRvxdXfhqpz95+kEqqzS4HLihEXPYoyOT7+kJEmsk6byM
- dgym7Y0ddR1mmu7cLNdAcUFbaNbtzOnlIJdWWashK4VP/5eNnkMcKTkmA20aOEw0iTsqe3sNm6j
- JOruNSZ63uJCCxs1b+UGCrP+cMo+7+FkZbFZIhLT4CfyuHBXV6aAKfY0Y0m6fQPZapYTIhQh+FP
- qmEiz7gMaXcyn+nZqhQ==
-X-Proofpoint-ORIG-GUID: cybN27AT70Xlug33CcVsFDGHqa-ZO9sJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_02,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 clxscore=1011 adultscore=0 lowpriorityscore=0
- suspectscore=0 impostorscore=0 phishscore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160077
-X-Stat-Signature: 8he48yikh3bw3czeznaxura9s7on7agu
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E436BC000B
-X-HE-Tag: 1776327739-786017
-X-HE-Meta: U2FsdGVkX1+pObTyaoJLRjptlIfEi5QzhgL0J03VPQUafpe8RoyRWr9sSr6rgX2yQg5xBpkjuvqErtm70XBtpVWr4uuNkUusD9586e0Dgo7Xp8P5bBEpCwRUuvgmYf6Zzn0aonQz0IL31V12/a6HRGJ8AhrP8kBm/UzPRyxl9JEjdebaopZqYKONuyTuDneLG4d35C9sk/BDorOn2hYdTVE6xvKD0g4QbYFEtYPWUoalXSXRY2f+8PDDcqmNbVu0ilT8pomLMdiOJv2YolwGJ3IgsaFEmTaIOz87F6cqp5iwrjFNZrtl5FstMuG1WSRe52Vhz2sHpAsy6rQAtj46ul0Fv0fvsSh6PvWgE9OUb7m+2/WQn6U4CSp9bvzEUjCzagKfu6LZiBPKC4hIq4R1TVqSsw/sXMZePeyAlE99B3TLOEzqNjSzUyjUzXC+P0Vr+vuuPP5vi4ysfY3LlwUO5NACZxv63PwibfY4gHYOqiO5E69346lQaC13ays0kvazARQD62RrQPWfctzIOu8gV3Nm7tQsd2hT4zmakfyeUZppfh41qiv2RwokpDMp+IE39L8SSnAa/dc55fdlINLIiso2VCUzHjpZ4TJSe7Q9cajDYERd0n31DQvO8n/kgguqjkrsc6muNv8PxIa8uz9mDd8j4KLqyA5RUhWR8vctJ0nUNu9CZykh+NwFyVtGjBtsmBuLK7+7KjAMcD3I4Mmu4aCr37HgPbslMBam9gj6LiATFl8oP6/x6JJ1HVYguB59zKErlMPujybNxL1xRF87Fy9EtYeVhkYR+szajN9IC7HXZkmwfYnDwqEJ9ecMM5qdEXkHF3THR2IjD7MrLmMJAj64Sz3X+gOZV5wXS9L/pj0NE++fWP/fTIPhHql0FjNTUTKmOZRQg/gzFj9LLbxxasCbgDXGdgJKfjfCi+OfqKemGgVr6psl1Ft9Z3QQiV4Ej6AHFTaI3HvEZ4kUT7Z
- kdvIRwOP
- msxr8TCNW5Lef8MYKj0c/beVe23t0accA8TCc83RD6pRQQWjH5XHlgiENKRBZPFaYha2NJ8v9qTEcIdBVXEUPV+C0msEL35/rxIfzV529SlkyePmhm2OrsP+YfrnuzD0mewkrnjIEvKBt6ZDXHbo3b9KzRF/CrjgldhFsYJsmxF7EPznwv+uGFsnZ24dJGGqmi6fYJj/5fP+zp/fx3vphs4mK/fgWLlrfwqq3FD2zM46SLV+HF7Mir2KfeWPBysG0BQrtoohN60frEmbQkXxL9/8Janj+jqcIb5/011B56yxG/EPfNyfR62l2JuT7O3Vz4QKn
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 528948000B
+X-Stat-Signature: mqm8i1egbyjm43t1wpeuqpps4xrffg84
+X-HE-Tag: 1776328804-332117
+X-HE-Meta: U2FsdGVkX1/jQxli3/YGGb53g4UHVVYm3zb3ZJrKHp0XsrMAlU/4uID2TTXb/U2+5sQrVSe5ibW/N9HTYogJFE31WNhYkifQpkx0q6jnO6mbom+hBcG64JiK3sttEyr1ZUq4VGiZHDqeF0tV1Yp1OjaBZH02GfsrF+5ot+CbIGnSmeghzscfkYtOI/7lWTSeIJdeIFXEuZB0OCUnVsm3wHp0ncrlwbmzDA1063+oSJmOrtPjeYXDOGwXBGYDibR3gIyd3j2cXHFPDyeWGK1YT63A49cvftSbU93UOevqyPrQFIu+/UeiSBCPPgiekJ5DbWE90AeuRQZSB8rpwMqNW+I8B9CFL7uFk0lno21+jTka+CWbwivpv4gH72fnWAtw6WOCdkzaEOSvU/HOl1NRW0EqqcNMVR5xPnuaOTadvVDpyzFQYpiBO1Y0enbqpp/25ztjCxuFQb9rQcx3yRBNAahTGBqdY1zjb44se841UKQSmc49ryJ4R+HhV/jf6GSnLFJ4ClsLQDcnBvY1K9G/xxxeoR/jgTqo7JNqgL5yYb/pTZnkeM+vOua8bM6QdCjdlVrq4pJpG3Z1UIwFQ/fm9atxzRONU3bh5wS9on8wbzKX7naeOCEB0n83C2P26rPUxEB7fJJgt5i+rQqdZxoqkfBSkDUtMSIx3A4GNN+yF7XShrmiuS+KWHTWKqqKzyFwIXO87zVUeKcwNzJzg0Kp3DYuh04CMI1N3GWzx+BbJCQM8sDc2m1k7RmcK5PsqkC//Y3fQ8kMqGfJfIPByt4LXC00p8y+5ng6OjKnyhFg0/jqadPxQ/2SUTSDK3UxqF3hS6FLgpdMLeQzRfmH9j10xaGyaMC0CpI8pZC1aGw8TZI/UYaNDrAx5Rf+ZSnGyQPc0x93Hd2A9xDUYgPw2Rkfmx1oSDH3GYOYvfyo/uAuhdX3PxwcMsFXIQc7g3kjYwJdpuoxGUoaOD4KLpoNNkC
+ Iil02Okb
+ UqHQReAIDTUbMCp+y46v5ZQ5Dcw1l91qufE8gtOifVboKLjQUOjksKwJ8gx8QikQEfv6DrkbkTD5nlOc0aLVuDdEQgkreq5rhgToYtMCdaNf18RPif+0+0omVIV+LgSYXI5ZDHMaXtvcjuOnctd6r3o6OYZdMZ6xTKdDQcHPwDzO5Fw79reg3yCNQ3Pwak2VEtgkD2KM8Xyc6jWZfs02CudxEP8mQT79qxSMaCWawGP4xuIZFw3ElOVE4HkZwFWxRbNWOtv5lOWGO3iB8vY85lOEl6JSIobo2mz0E239+5/abJMq90n7q7XvCmldVoCa+gU/hviU8KOml3Kz/62MovkouXuLRwvwh8F+T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,27 +140,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-Am 16.04.26 um 09:00 schrieb Alexander Gordeev:
-> On Thu, Apr 16, 2026 at 07:44:05AM +0200, Heiko Carstens wrote:
->>> @@ -169,6 +185,8 @@ void arch_enter_lazy_mmu_mode_for_pte_range(struct mm_struct *mm,
->>>   {
->>>   	if (!test_facility(13))
->>>   		return;
->>> +	if (!static_branch_likely(&lazy_mmu))
->>> +		return;
->>
->> Looks like there is an alternative chicken switch available: remove
->> facility bit 13 from the facility list via kernel command line option.
->>
->> Unless I am mistaken: that should be sufficient and avoids adding more
->> code.
+On 4/16/26 05:39, Anthony Yznaga wrote:
+> The test was not being run by the selftest framework so it was never
+> noticed that it would fail with an assertion failure on configs without
+> support for MAP_DROPPABLE. Update the test so that it is skipped instead
+> when MAP_DROPPABLE is not supported, and add it to the mmap category so
+> that the test is run by the framework.
 > 
-> But that would also withdraw multi-IPTE from other unrelated parts of
-> the code, e.g. from __kernel_map_pages().
+> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+> ---
+>  tools/testing/selftests/mm/droppable.c    | 9 ++++++++-
+>  tools/testing/selftests/mm/run_vmtests.sh | 1 +
+>  2 files changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/droppable.c b/tools/testing/selftests/mm/droppable.c
+> index 44940f75c461..30c8be37fcb9 100644
+> --- a/tools/testing/selftests/mm/droppable.c
+> +++ b/tools/testing/selftests/mm/droppable.c
+> @@ -26,7 +26,14 @@ int main(int argc, char *argv[])
+>  	ksft_set_plan(1);
+>  
+>  	alloc = mmap(0, alloc_size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_DROPPABLE, -1, 0);
+> -	assert(alloc != MAP_FAILED);
+> +	if (alloc == MAP_FAILED) {
+> +		if ((errno == EOPNOTSUPP) || (errno == EINVAL)) {
+> +			ksft_test_result_skip("MAP_DROPPABLE not supported\n");
+> +			exit(KSFT_SKIP);
+> +		}
+> +		ksft_test_result_fail("mmap error: %s\n", strerror(errno));
+> +		exit(KSFT_FAIL);
+> +	}
+>  	memset(alloc, 'A', alloc_size);
+>  	for (size_t i = 0; i < alloc_size; i += page_size)
+>  		assert(*(uint8_t *)(alloc + i));
+> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> index d8468451b3a3..e1e355d50e65 100755
+> --- a/tools/testing/selftests/mm/run_vmtests.sh
+> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> @@ -382,6 +382,7 @@ else
+>  fi
+>  
+>  CATEGORY="mmap" run_test ./map_populate
+> +CATEGORY="mmap" run_test ./droppable
+>  
+>  CATEGORY="mlock" run_test ./mlock-random-test
+>  
 
-Which is fine. Do not over-optimize for a case that should not be
-needed unless we really mess up. This parameter is way too complicated to ever
-be set/unset by a customer.
+On my older kernel:
+
+$ ./droppable
+TAP version 13
+1..1
+ok 1 # SKIP MAP_DROPPABLE not supported
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
