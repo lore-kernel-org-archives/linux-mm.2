@@ -4,151 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE227F8D765
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 18:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB965F8D755
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 18:47:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18B0D6B00BB; Thu, 16 Apr 2026 14:47:25 -0400 (EDT)
+	id 3D6816B00BD; Thu, 16 Apr 2026 14:47:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13BD86B00BD; Thu, 16 Apr 2026 14:47:25 -0400 (EDT)
+	id 3AE4E6B00BF; Thu, 16 Apr 2026 14:47:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02A8D6B00BE; Thu, 16 Apr 2026 14:47:24 -0400 (EDT)
+	id 2C43B6B00C0; Thu, 16 Apr 2026 14:47:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E31676B00BB
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:47:24 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 884F213BEB1
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 18:47:24 +0000 (UTC)
-X-FDA: 84665302008.11.382145C
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 81B2BC000F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 18:47:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rV66+YHX;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C3B96B00BD
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:47:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3745BC02C
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 18:47:58 +0000 (UTC)
+X-FDA: 84665303436.03.5A847EF
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C9E3F40002
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 18:47:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OK78HKhr;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776365242;
+	s=arc-20220608; t=1776365276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fV2yQdpPdBSM0JKi/3hIXKAc4W3UmbJU7CKjv7sEIcs=;
-	b=zM9Zxvuydc9nPnpy4STTBaRMzBOWNyTPxU2+rzNCz8gW67a1tqg9Kqf+hVu8qCwVrt9PQf
-	IcOdKmvHiYDBx2dQ0AAuUrsfqSXRqmb0y8asPBA+Jc2pJduFK7ucwluWTKaHdorRPLTPUu
-	reNphFOavogeLdjG7SwXexT8LLy0T5k=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rV66+YHX;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776365242; a=rsa-sha256;
+	bh=8ILOA3s1cbaK/JJIe+EXA1vNnzKgJjP9I4Ap8Gg380Y=;
+	b=DVoTxbHDW/IBX2Vm/J7JSPP/kKQqPSWeTtWV6OUu9tzc82NhKyEvgrjPoCrBypBjz6qXUS
+	MQblO4UfSAeeQC0S+Btm98+mhXFJLDt4609yUyJ/+bLKhEobrLnCjtTc+3nY9wtjbubEQ/
+	Psb1LC8ZJyMG9kE1q6TezrYCufMzP7E=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776365276; a=rsa-sha256;
 	cv=pass;
-	b=A7vzJy+5NTpaM9UM9hWxUNBwIYHSoHTcIMBNPvds9mignthhP/y9fLSC+ZMBRLlXxykWxR
-	Apd8LXvPgORMMY0ycKYnnb5CoDNy/1ra9+THuZvIkeGxwT5bfg8nY/NtUoFYxmImdn8Vh3
-	v+WbRr6kiG8rUNdlSiz8PGyKSCoNADY=
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-66ba9dfe83bso10962222a12.3
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:47:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776365241; cv=none;
+	b=p1BwZylbmm6cTze5ZGBBzUCtl/HAA+DDNmwidsAjnZm5ZY6kGSDKiznIQJNQnuq+14Ffrq
+	Kc5aTLi0DKpj38xRGxx4iOHNRT+8wfjWXl4dO5rbwE5r9ZzEgtu5VsxIjGpqvr5+HXgKgb
+	U+s1gCIPFEKAI7ic9Ttf7PRrhKXKfsA=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OK78HKhr;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-671d60ef9c6so4759478a12.2
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:47:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776365275; cv=none;
         d=google.com; s=arc-20240605;
-        b=Asn+AMNj+Hv3Sn+8eU1jx0kjVpNoPW7HFXFmijkSuehGuB20Uvsu3WkxJO4ZfANjIp
-         rKQFkNRwlEw/KBTMPs1CM6DnzZ9jRdrGuii9EjZPBWSK9hMLLl5PulqbR2U2uyDwYAQh
-         /h6g6SOEYFwhcuaBPq8wO5x7BlvnqrUjzSkXtN+fwnKMZImyk1O27oLleLCfUxpXWW0N
-         s+BeQ8pBFkemOqANe8EZuXPqnBXBGTQd04+ybVCaTKvU+g5Hi4Tg1+rR5wcfzCfedC+/
-         cyycmFyCarQAJUxTo6Xq1jfcmDEM/M+XrWF2nlGiwyqD1VEI7I2OSXqVXDbcl/QAAIEF
-         0khQ==
+        b=jAFuGvMhpj7QY8XRQSrVNI95py2lHIMGiGMb2bLBNEp6ZaJEPk6h5ld6NNP1z9ObMo
+         3tFo44L4qAFCP5Nk7le3JFu2QChqgjfosP3KWJmVOURYBSpttJlqMzRNV0E6VN5G+z5U
+         FOV7Kq3IrMxdTbCd/JlqVOtIBUQd/07ZBXUXQxNNUPELwxOH6Rhpi7Rbyc4rRUzE98DR
+         bOArblL17VFFAQ2DINGNmIXSvoJBS2m6iRg7bRBAKBgIflXVxXI1/CEZEXldgnKj4g+1
+         HlxTidgACRLc5O8DUsMISMB3QW2XdL7cLuSUftMKxJ2Zj8LgBE9Z4YwD/sz4X7O0SEwA
+         6nCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fV2yQdpPdBSM0JKi/3hIXKAc4W3UmbJU7CKjv7sEIcs=;
-        fh=o+vgyOY2D9A+JKzp9bwJwtBgLUl0UGjc04U1iAkY+Cs=;
-        b=itUXuo/AqyD50VbsOhj1ramAtfdnVKzQUEa1ncZJM4VX7LW0toRNgxDrPunSGEdjmL
-         vhW9HPnZlSE+iyAID5SvRNGCapj0OHfA2aCCdCJsN/P4KpM/y/PT0p0EdwBm3w6hcGeU
-         +Rh/kjqeQh+IrxbFoWwpiECKYVxGX9M1qrMbkGfVH1H3EvqjnqaU3H5UyAiHxRfKyPRW
-         a09Xa+AcZFWz1V/3mvkQDVFz7wibJ5fYg8LqHejWyKGDKvm6BIdV3saQoXJ4E/naE2Zj
-         injtdBHqFKO8g7yF3d2XzSCYExam9vPA+1r77k/WXDFT1IdAaeWChMkjU3fCiByAafdz
-         WXtg==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=8ILOA3s1cbaK/JJIe+EXA1vNnzKgJjP9I4Ap8Gg380Y=;
+        fh=3REOVNzYkQ8+arRUXdGjum57Nfv0U5m/3yka4Z4sNSI=;
+        b=TVagzoA7THCPy5z9mucZG84sW9n8J9XNuI+LyZDc27pUBGf8jQ4TlYV+8qX6emxq4H
+         X8jNqrdQASQesOgHONoibio2osaRzQxy/rKLjgHpAqj/fE8h7iB0a0QRua5t4orOYRPC
+         X+q1ISpuX1/SEpoCMxAsAL83MdY3LCKWPhNHuPfWDruJYtvXxtLtfSG+X4e5Ou3t1s+G
+         YJQf3XZSIBjUDQEK0bSgsn89zDAZ5BuAPJtmkfkMQcFFfwbY8AekFESTnWSoOulkEjPq
+         gHYDZlOjlLtWcITgM/IWVvkmtM0fptAyqItkvxApFfrgLLP75UFAAxsCUxHNB4BhIUPv
+         o36w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776365241; x=1776970041; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fV2yQdpPdBSM0JKi/3hIXKAc4W3UmbJU7CKjv7sEIcs=;
-        b=rV66+YHXPvwBKm0oqNQOgkFFhYi1PwoBQop7bvBltvvmOY9oglU0dMgyOZJQ8ByqmX
-         lbNV8XRJfcGWFP9WX+8rdo94nznEWp4LFkwrTUn/oiv+vzZs2ZzuAovjZzqAxJZq2MPl
-         TFb/tyawfyXVxeSjFpej8eqTDQ74laDlqNjqg8qogUDQ+RqMDbaT+sHk9lGdS4Bw40sf
-         9W2w+bOaFdsH0hEZGQv1ya7tH3XMpQ+UJdFY3VKFZfix/UNhtwpDUJ0Ayli4VV7AVUtV
-         8QtXsd8cu2SXRgzt2owkqMj+1rhYMQ5DnqKXr1r17SX05LURdmw+gw8mKWMzBqolrgr3
-         a7SA==
+        d=gmail.com; s=20251104; t=1776365275; x=1776970075; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8ILOA3s1cbaK/JJIe+EXA1vNnzKgJjP9I4Ap8Gg380Y=;
+        b=OK78HKhr4IosJ55rOHaLmjczYD8eiiRQdXFMwkIIqTiW81gcsadiPO+/HcgxKRDP5v
+         oijKOoTL+4/1YoaH3JaZrTgK1ZZeSDwk8gzxMyf01IkhzqXpYtxX8ZAErl2VMLkvS4Yh
+         7VEsTCLUCqKBlE+9NZr6Jdeq4247M3+eFv+KJRmIL2euhm0UzpxxX881t3KaQM6sSDL/
+         BJBi2CUNARhYLWFWVrVspXRs2IWqX8bQCB6/T9PnwyWjltbDQBiEoXfFdTh4VO18GwhW
+         oFlvEWCU0Bhraw+472trtTLTBa1gK1FFbgKEW9S3cH/+LcqaWv2xxQkTsR/WiPhqzhBn
+         At9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776365241; x=1776970041;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fV2yQdpPdBSM0JKi/3hIXKAc4W3UmbJU7CKjv7sEIcs=;
-        b=R32jFL9Cf4ZNe14hdFH89SMm/4uPm5fh0eSTZKu4Xek+JULGKsPrwzaPoGVUOMg9IE
-         bvam1VDkBgcLW9CViWU2CTtiqz2/Woqjq+Jl+1hOJ6cU0WlurR+GFf0/z1lea/6Hu4FC
-         HOcD4GcY4qKa8IiQeHceb20uNHYCbOk9CanMR+Zw10ZiZ6nukLx+8DXSUfWU5Yjlyqcl
-         Sj24UCzYlTmt/7RvPZRcSHdDvV4ABBpKWeDWKo2D2JI91t2ga4Lny6L86mhiEddmgTFz
-         sA++Yr7yBz/LHxhtNBPfDKFZja0I3SulkoJWc0o5SfzbfL/ha7bz1Uo1dugCwDzDq/qa
-         Zv4g==
-X-Forwarded-Encrypted: i=1; AFNElJ+wNTOLV15/ce5b06ZgW9+WWSvHhJ+GDwRR1WoEWAFFm8Jm5YKaDAZgj6IUS+52P6Cl7uvktzwh6A==@kvack.org
-X-Gm-Message-State: AOJu0YxW/KA+EOx8gupnmLxbnW8XeAdbQw8KEb/h2Lx4BhcKVIfs3KcA
-	3+it+ymtAjt+798I0LYhbOvbMiAsfH+wUFgRCAnCYPmqroZg5MS4KhOaGUDj0QI5ftiGIa5kjJS
-	fFCbpq8+bz2ENLa8AsNFMYy32C6KWgcs=
-X-Gm-Gg: AeBDiesbvu/tPHqfCBcfk7yWex2pE5WPtfNx+IVrE40cPxUBf/nu5XYYPK8trSQ5GKI
-	yDRx2gSQ8toYOv1a+qI9P40vK41eqRbxkzK+fQjC8zw4wIBZhapX+ZWpm0430xMI7qaKCTb+IfO
-	+yWj26NkcIqppO8MsRZrSaHKaLP2b+r1jIBrrQybjSC79fwquP/sRPk02ZpihWlD+Du73/TNJPm
-	DO2hfR7GMYN2Rw0gB00Zt7vEfM1oIrqARNT7kKTnp6CqJ2EepNf/+mNbMpdO38qX+Ih8Eh8ZAGi
-	WH6bcUWdGpIqpRay+TKHoMKBKu3D6GynjxwJALshMgSTib+GUSQ=
-X-Received: by 2002:a05:6402:3513:b0:670:8b30:a8a7 with SMTP id
- 4fb4d7f45d1cf-672bd216aefmr183464a12.0.1776365240497; Thu, 16 Apr 2026
- 11:47:20 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776365275; x=1776970075;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8ILOA3s1cbaK/JJIe+EXA1vNnzKgJjP9I4Ap8Gg380Y=;
+        b=ktBQpkSe2baMaNnfETM9xbZFa44r9Q5HQbPk0ha3qwATTkDTUlCOCD1U5gmTWrQTaz
+         nCibcq2NbgEKq1eFh6Mi47lAIM5vC+e0coAFA3SdgfR53PQWYNWaHudA4vGmLwWInWyQ
+         GG9OkYHctfAsC5gqrACjynOy0DYpn6rhxuMz3zJznejfk7NV3MGHYwf2usV47jK0l65h
+         GUQE/HUB8YbrJzup2WcM1+ciab3woRIr+2U7D7BjrotuTtTw1B49uDf2s9RgBnyiGOIr
+         XTyMXb5qTfiFPYwCh9cKT6ButQ1coIdaIdz9SAxNLKe29qCMAa5IMtH4B/JOtcXoTfv9
+         E+8Q==
+X-Gm-Message-State: AOJu0YxCEhakOFHijOYdI8apoogfQKxErzegPR5X/M6ArsWSZRCE+B5i
+	Moc+90dwZRrKz/wFVgyKfcGQTDVfOIOUryGMY9Jb3M1v3JAiv9pmhlwN3652GYZM3MTpYSVrC6Z
+	k9M6jONOXDBOg5+OcCYk+qsc/REPBIBQ=
+X-Gm-Gg: AeBDievPGN+2Wum7Y5ikxiyHxwXR5H+Wi88PeylNhpKvwu64/tVEEzCz7v93QwjevLw
+	XlgSvECp5jMDiKNU8UXJOdBCdt+a8Gpdz7It8EM2xhw84Za+vvmmIzhwX8axEwkHbN8rcXnlyOk
+	H1xGuPD3dSUiOgmuzKc9jLQOTHT/pA0jSbIaTOWnoDrtrXessl7s9c75gsdOqec9J4fH8UOtv5B
+	mTAQAGjnU2f+ks6sE3yylxuGiZX/Cnr08jW2/Xljrrq+Njqmj5fbhkxqF8eswYVMttQq6H74r6T
+	8BuBb1NFUZid00ADj/lfsibavvzAMznxCjIIgQPynOvtPiv8Lzc=
+X-Received: by 2002:a05:6402:5d2:b0:671:a18b:32b8 with SMTP id
+ 4fb4d7f45d1cf-672bd216a6cmr191416a12.0.1776365274995; Thu, 16 Apr 2026
+ 11:47:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260320192735.748051-1-nphamcs@gmail.com> <CAMgjq7AiUr_Ntj51qoqvV+=XbEATjr7S4MH+rgD32T5pHfF7mg@mail.gmail.com>
- <CAKEwX=PBjMVfMvKkNfqbgiw7o10NFyZBSB62ODzsqogv-WDYKQ@mail.gmail.com>
- <CAMgjq7AzySv801qDxfc8mEkEsFDv4P=_qw0rNOTe0n+qy7Fz6A@mail.gmail.com>
- <CAKEwX=P4syV38jAVCWq198r2OHXXc=xA-fx1dk6+qYef6yzxWQ@mail.gmail.com> <CAKEwX=NrUhUrAFx+8BYJEfaVKpCm-H9JhBzYSrqOQb-NW7QRug@mail.gmail.com>
-In-Reply-To: <CAKEwX=NrUhUrAFx+8BYJEfaVKpCm-H9JhBzYSrqOQb-NW7QRug@mail.gmail.com>
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com> <20260413-mglru-reclaim-v5-4-8eaeacbddc44@tencent.com>
+In-Reply-To: <20260413-mglru-reclaim-v5-4-8eaeacbddc44@tencent.com>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 17 Apr 2026 02:46:42 +0800
-X-Gm-Features: AQROBzCEgUiZi2O6FzTs1ms_GwJiz6hkD3Or1x7kVqF5Vc65bqWpNQK9z7Fsc8M
-Message-ID: <CAMgjq7DJrtE-jARik849kCufd0qNnZQs7C8fcyzVOKE14-O+Dw@mail.gmail.com>
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, apopple@nvidia.com, 
-	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
-	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
-	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
-	lenb@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev, 
-	npache@redhat.com, pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, 
-	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com, 
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
-	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
-	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
-	riel@surriel.com
+Date: Fri, 17 Apr 2026 02:47:18 +0800
+X-Gm-Features: AQROBzBu_5JMyy9KPWYmIHJAz78L41ZiFiEq9wxTDY-co5QMNWMGiw2GpLBgl4U
+Message-ID: <CAMgjq7ArnmmoHOGRt6Wc8hu7tjx_t583-UVzJK+HOHgjjetQ9g@mail.gmail.com>
+Subject: Re: [PATCH v5 04/14] mm/mglru: restructure the reclaim loop
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: bc8h68bs7k9staadkyexjni7b6ogqkp8
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 81B2BC000F
-X-Stat-Signature: 8qofgwkkbe936ogo3ac7pphhz1c1whij
-X-HE-Tag: 1776365242-322122
-X-HE-Meta: U2FsdGVkX1/FoIn7ApLmb3jujjZd85zLnthGYtQv06obVWCeE6IYUADE9ByeiLemUc2H+UR70THrJIrhQdLO99gsUs3aa3uD2CeU6L6jZG5QLZAyoyiGPCpES4wGj12065dtK8+7kelxJ0Kn0Qj+t9Ikkc5iexqzh3OmalGInqygJoDYYi53yHO4owzps2Wht27X+vHMQE/Vz+Jd5dDmHbaheVWJKjDFe54WT7178liCRMRVUf1PblJB01pO1vKXSK1tWfdZ9ZvkMnPGB+pJzunRAV9EYwLpDRLTQNmRMX030tQcXhFwctjU5qRAwKC1OyyZuw2Tx/dYtFNCS9K/6f9GiabsWs4SrBi+lUI4C85PAuDgKMCptgqHgXQ2rhNmyWnZhucoQRj9hLdm5Es0O37Rya5hyX/r9zUeJBZ6hjoTRA/5V/jFZWfAIFKbnT4yuQqdlLrIeEmBU7kXAwhT37oZcaI7Zgv0eMN79pn2kcZmoJ4aIun2SZp8hjhn2qNS8HR9R8+ydZtdwJe6ldO9L/8qJx2FHh/L+zvoYNJtFsFUC8Ljg0Q5hIWYN86YNLBOZPztQgNDEprI/5Yk2Bvw5J19HtFiUN1Zbu/nU9eJIYwlCvqIi+fGlMkv7n26aDvz4XA55zhplfFc6jhHHlDZqIyDSR75QguDwwbdtunxJ1oQ7dT6jA0P8l/tX16Q95tyX4f0a2ZPL1Qz0IDyK/uREupt6FxzKKb5CHqelJnKJotswI9VM2rIGZORG5uhLrZ+OVJeJ+wqqPxjCYE1opgJKfWwDkba6gT0dCfQSMAABK9KvQTbgxTVe+EP97651MALqr/Sh7Ixk7nzxif84wyeRovqPIVbUJpVOb3gLbg10MFw6LPaw/XAucil1BItqx2y3+lcXXh4d06QESfsUP6ZaVs59CIQq1f0HkZ3NVOwdnDXrkGyFagAPVJTRtMVZgTcEbasBCSbB4ByfXEDpF4
- Y9YOuWtB
- 5xkbAdMZDb8bjySo+L4nKVukdvKcQT2ZVYEDEh17KVtBsfeg2jIoLVZ8fhNDJ0lCsaDTgX3vuCcScmhViNljgMyhTAtAmusEbecDa6NnRml7w1G+Ow0KTWmeqG62WRit6equ9F4zyJLKhua322doQy30//sc5bSqqPH6N6wdVY4+1ZfeOlMgWBtZ+FlVn9jgX2zO+bg6FL7gTxbxNUHJUXeKU9rPzF7haB0gJEtnXWJNcBJnSrJqqq48z5su7AVHbf1Ssei2QhQxnGT/YAt4qGNKD5/jVU5Lp4aIQ97r5vDGf8g4tC4sLNG9eL/ipnHzsl5MlQ3gL+KyE1IkpesouC0xelhGPykMExA66LMCNnHmu8E6ONHb10FVxSKO2cb+CI0bgZwvQNMeemPRfzAqU2N99pj1djjQUk0Twkae68mXHDUcB2XFz/BAsRK+HZeS5484wArD3lKNuQnFEk7SJ39ZN3Xz9Fvgw03Vtmex+DHKbJJFJXqw1Q8mc3A==
+X-Rspamd-Queue-Id: C9E3F40002
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776365276-119619
+X-HE-Meta: U2FsdGVkX18A8XgSn7avK/L7YKnTJsu/VBfNZ8VPBtafcHXLXhH0jBszLDQeOxuPZ70FLSOr13KLhenDpNDjM/OvfX+vJkwrvFY68XuTjzUTvXLYEknXhLVb5mbqJ5ZfZsCTuWz08goKO07RQYNjiL3EQxPIhrVD04yQqTyK0/2I5vR04JH2W3ZKWJxv4UGBgxaabIzP5SD5YSWQdIylcJZrFoxM6aerWA7vL+HGpEcWT7PVnZLpkJl5sGlpLadZVOkuHKiNfF69EUsUqPkmQSk+tYYXss8rdTCJy6sLyUEerS0XfQcugOsU8Xewcl4KYsEwpnao4tggsnsF6OhBWFPremUmUl4o0dBhkE7nqUdZiyoChqgLJi0m6JJc/Z/hvTDVpT6jJZ18YjOS+JPWYnw84L9kVFXXyugz5KhmwzW7+yHCzbBw49xSuFPIC8GbajnRwjI7CgrbJMKgYsGKSJJBo2xwUUdJpuyDMXPWXZQ4LMATMcX79drfTzrX0GqMXcLRl5/fB77e1htvy0lg1lVW1In/pItzoa06AX9ryJ2fuOsRmVSRQQm5oy+oA+SfZUoJfCYPTw382mPUm/I9b2hwLXAoJad54GHA7PI3nyivg7vpn51vE+3Sg9Z1MYwvtFdwGJ47DCRApVl6D92iL7OYfsuzHLzv0pYEbBoRnVGMNgY6g26j7eA84X1oTpjr2caoRrg0JsDgVYR64StTIdFUx9N9HyLowANIhYQjFakX8FXoUZzYOCTRrTLzuPckKxD/y7MyD0kkeuGKY/+qhwXqfA5PoqpJ2GSwgvTVLAeiFph5FifigKh3zJTf3NpsdruXYG1bwN9zF8VyIA/RvXufBmXN92DGXEfm0zcvylO5evZu4ddBnJdkYKiKYBLdqjgoyndcKzgYqXypP+/FITW+FvktTjbZmjWnObITp+6j+3lZxKU5/epJFIg447AlGr9Rst3E1N4evvPtP0a
+ N1H75yXX
+ E6YkQFErdgDSyij9MutzAaDRvAzJfJNxDzic8TZ6+iiG8pcrWNbGWqQfZH/RLmwDjMOGcXq/5Q4zqC/FuFWN1saeUhRwJJeAp8ku+cdnpU+RDVPzZXIuuEBOXlkwI4UAdIQ4vQ4/EP/iU3TmC9Vhu04QzfVjQOEICjOi94Z8BffZP9uEVVdr39c7HbI1jcKEzKH61hPGIJ/a+zaeHKdJ/XJSrK3QgtWguIroJMXvBGEXT76jbEhYdqxdYfojrPB8BIB5rkZGjpLVZAsUljBnj3FMD5u5LGQM1u/eLd7MUPbTIBHHwQReyAxB4/ldrX1RF1smMNCYHPoHlZp8Ig9A4ZD9ww28bA+FpTY3EkO1o9IlhODcOcw6oZ3p+jCTJ9hWRhfjPUQ7GUeWCHfhOVRRocxZZMZVbEZTfKX/7jEkk+6GotkIFIIEMzc5MDZDRRy5AKJtRSykz5sbNIvsz3+1yGgC24Np3f0blBxe5ZL99mCeBs4abwXm6kTwE4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,105 +144,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 1:23=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
-> Hi Kairui,
->
-> My apologies if I missed your response, but could you share with me
-> your full benchmark suite? It would be hugely useful, not just for
-> this series, but for all swap contributions in the future :) We should
-> do as much homework ourselves as possible :P
->
-> And apologies for the delayed response. I kept having to back and
-> forth between regression investigating, and figuring out what was
-> going on with the build setups (I missed some of the CONFIGs you had
-> originally), reducing variance on hosts, etc.
->
+Forwarding a sashiko review, which I think part of it makes sense:
 
-Hello Nhat!
+> commit d1c559ae5b78a93fe3aef7c2115b93fc96970a6f
+> Author: Kairui Song <kasong@tencent.com>
+> mm/mglru: restructure the reclaim loop
+> This commit decouples aging and rotation in the MGLRU reclaim loop. It
+> calculates the scan number once per reclaim pass and consistently applies
+> priority shifting. The behavior for offline memcgs and default priority
+> aging is adjusted to make rotation more explicit.
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 963362523782a..d4aaaa62056d9 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> [ ... ]
+> > +static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
+> > +    struct mem_cgroup *memcg, int swappiness)
+> >  {
+> [ ... ]
+> >  nr_to_scan = apply_proportional_protection(memcg, sc, nr_to_scan);
+> > + nr_to_scan >>= sc->priority;
+> >
+> > + if (!nr_to_scan && sc->priority < DEF_PRIORITY)
+> > + nr_to_scan = min(evictable, SWAP_CLUSTER_MAX);
+> >
+> > + return nr_to_scan;
+> >  }
+> Does the new minimum batch fallback invert proportional memory protection?
+> When an unprotected memcg has 1024 evictable pages at priority 10, the
+> scan target evaluates to 1 (1024 >> 10) and bypasses the fallback. However,
+> a protected memcg of the exact same size has its target floored to
+> SWAP_CLUSTER_MAX (32) before shifting. This evaluates to 0 (32 >> 10),
+> triggering the fallback and forcing a scan of 32 pages. This results in
+> the protected memcg being scanned much more aggressively than the
+> unprotected one.
 
-No worries, I was also thinking about submitting some in tree test for
-that so testing will be easier, but got really busy with some other
-issues, series and the incommong LSFMM, will find some time to do
-that.
+No? This part of the review is not correct.
+Proportional memory protection have a much more aggressive
+batch fallback. We are already very cautious here.
 
->
-> 1. Kswapd is slower on the vswap side, which shifts work towards
-> direct reclaim, and makes compaction have to run harder (which has a
-> weird contention through zsmalloc - I can expand further, but this is
-> not vswap-specific, just exacerbated by slower kswapd).
+> >  static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+> >  {
+> > + bool need_rotate = false;
+> >  long nr_batch, nr_to_scan;
+> > - unsigned long scanned = 0;
+> >  int swappiness = get_swappiness(lruvec, sc);
+> > + struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+> > +
+> > + nr_to_scan = get_nr_to_scan(lruvec, sc, memcg, swappiness);
+> > + if (!nr_to_scan)
+> > + need_rotate = true;
+> >
+> > - while (true) {
+> > + while (nr_to_scan > 0) {
+> Could setting need_rotate for zero scan targets shield small memcgs from
+> reclaim?
+> If a memcg has fewer than 4096 evictable pages, its scan target at
+> DEF_PRIORITY evaluates to 0. Setting need_rotate to true causes shrink_one()
+> to return MEMCG_LRU_YOUNG, moving the memcg to the young generation.
+> Since subsequent global reclaim passes with higher priorities iterate over
+> the old generation, this might completely isolate these small memcgs from
+> memory reclaim.
 
-It might be related, e.g. could the dynamic alloc and RCU free of
-vswap data cause more fragmentation hence more pressure?
+This concern makes sense.
 
-> 2. Higher swap readahead (albeit with higher hit rate) - this is more
-> of an artifact of the fact that zero swap pages are no longer backed
-> by zram swapfile, which skipped readahead in certain paths. We can
-> ignore this for now, but worth assessing this for fast swap backends
-> in general (zero swap pages, zswap, so on and so forth).
+I think the need_rotate = true above can be just dropped then,
+it was added due to previous concern that tiny cgroups don't have a
+chance to be rotated, but now they might get overly rotated
+indeed. Meanwhile now we already have a min batch limit above
+when priority < DEF_PRIORITY, and we never do aging (before or
+after this patch) at DEF_PRIORITY anyway. So if priority has be
+escalated, we will
+always enter the reclaim loop and have the chance to do aging / rotation.
 
-Hmm... That just brought up another question, you can't tell the
-backend type or properly do readahead until you look down through the
-virtual layer I guess?
-
-> I spent sometimes perf-ing kswapd, and hack the usemem binary a bit so
-> that I can perf the free stage of usemem separately. Most of the
-> vswap-specific overhead lies in the xarray lookups. Some big offenders
-> on top of my mind:
->
-> 1. Right now, in the physical swap allocator, whenever we have an
-> allocated slot in the range we're checking, we check if that slot is
-> swap-cache-only (i.e no swap count), and if so we try to free it (if
-> swapfile is almost full etc.). This check is cheap if all swap entry
-> metadata live in physical swap layer only, but more expensive when you
-> have to go through another layer of indirection :)
->
-> I fixed that by just taking one bit in the reverse map to track
-> swap-cache-only state, which eliminates this without extra space
-> overhead (on top of the existing design).
-
-Isn't that HAS_CACHE :) ?
-
-> 2. On the free path, in swap_pte_batch(), we check cgroup to make sure
-> that the range we pass to free_swap_and_cache_nr() belongs to the same
-> cgroup, which has a per-PTE overhead for going to the vswap layer. We
-
-This might be helpful:
-https://lore.kernel.org/linux-mm/20260417-swap-table-p4-v2-8-17f5d1015428@t=
-encent.com/
-
-I observed a similar but much smaller issue with the current swap too.
-Deferring the cgroup lookup to the swap-cache layer, where we already
-grab the cluster (in a later commit), should reduce a lot of overhead.
-It requires some unification of allocation though as shown in that
-series, things will be much easier after that :)
-
-> Anyway, still a small gap. The next idea that I have is inspired by
-> TLB, which cache virtual->physical memory address translation. I added
-
-I think this is getting over complex... You got a mandatory virtual
-layer, which already comes with some cluster cache inside, and the
-lower physical allocator has its own cluster cache, and then a new set
-of cache on top of the virtual layer?
-
->
-> Some final remarks:
-> * I still think there's a good chance we can *significantly* close the
-> gap overall between a design with virtual swap and a design without.
-> It's a bit premature to commit to a vswap-optional route (which to be
-> completely honest I'm still not confident is possible to satisfy all
-> of our requirements).
->
-> * Regardless of the direction we take, these are all pitfalls that
-> will be problematic for virtual swap design, and more generally some
-> of them will affect any dynamic swap design (which has to go through
-> some sort of indirection or a dynamic data structure like xarray that
-> will induce some amount of lookup overhead). I hope my work here can
-> be useful in this sense too, outside of this specific vswap direction
-> :)
-
-Glad to know things are getting better! We can definitely work
-something out. But besides the problem above, I think there are some
-other concerns that need to be solved too. Good part is I think
-everyone agrees that some kind of intermediate layer is needed.
+Removing this need_rotate for !nr_to_scan looks perfectly fine to me now,
+and cleaner than before.
 
