@@ -4,96 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30004F8D750
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 14:45:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD273F8D753
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 14:51:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 610C46B0005; Thu, 16 Apr 2026 10:45:55 -0400 (EDT)
+	id 15D646B0089; Thu, 16 Apr 2026 10:51:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C1456B0089; Thu, 16 Apr 2026 10:45:55 -0400 (EDT)
+	id 10E566B008A; Thu, 16 Apr 2026 10:51:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D75E6B008A; Thu, 16 Apr 2026 10:45:55 -0400 (EDT)
+	id F3EFE6B008C; Thu, 16 Apr 2026 10:51:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 404C26B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:45:55 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D994CE4A35
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:45:54 +0000 (UTC)
-X-FDA: 84664693428.19.DFE3A03
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 36B9D80011
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:45:53 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S6sKv1I7;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E0ECB6B0089
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:51:09 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8844F160855
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:51:09 +0000 (UTC)
+X-FDA: 84664706658.24.22BA6DF
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8679A1A000C
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:51:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=Gf2W4WCy
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776350753;
+	s=arc-20220608; t=1776351067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WlURetGYwP+rF8xw+qDuJhAWb06CalZJJOmLjqFkTCE=;
-	b=q6RGga5dnUE0tmd9SF/QSfS+iAAYkAPJQl3gasbM2gfdOR4LnYTJrUmnzPPWH0xgQSZSDK
-	RNY1SalzflqWzwxl1ZOH+dE9Gp0lrlRQQsf83jEBRphncqgBk2uy062zyRw0emXprWBdzd
-	NydelkQKnyHRP2pxG9sLPAsIFVT8PVU=
+	bh=FMRz/WI21Uh5Gr86fIIlkO6L3sSSjv9gzE39RNxVDRw=;
+	b=VY6V2c0gMVddqzhQZwy40wHHbdbdYFh4MBbGTp8soQlQ3Lcv7I3RzCnfQUBdamfZE6I3yE
+	jqUtSh8CZJ6fQ+pVmOul8xSDh2fbY0g+jyxZrl8XcD9v4PCt6ad1bQtPdQaRAhwL3uCJBa
+	gxba68s+n5YRkLxGWXglL07m+Uisq+c=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S6sKv1I7;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776350753; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=Gf2W4WCy;
+	spf=none (imf19.hostedemail.com: domain of matt@readmodwrite.com has no SPF policy when checking 209.85.128.46) smtp.mailfrom=matt@readmodwrite.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776351067; a=rsa-sha256;
 	cv=none;
-	b=QSJE7iw/qrYxeCvpGYQsHe1CAIWJIMXdDoz3lPqXjrUlMWkqiBSZQ2yVf6j5X3wgDpiWkY
-	0/85cC/QpSrhuyaed6uucpCtTp4+wweL5bHwdTSw/X7TKbsKwQpLNXnCGoJV7vVd3dqu2l
-	Gq19tYXGJwpKdEqG+qFi9nE8r50vw+E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8071360127;
-	Thu, 16 Apr 2026 14:45:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21860C2BCAF;
-	Thu, 16 Apr 2026 14:45:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776350752;
-	bh=/YNr/GrZbYaNzG/uHKxQpL93wASCVsAz1H7F4jBakYI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S6sKv1I7r8lh01rJ/h54T12rX/bC+nvPXbpOI43w3SiQHdDRaXBwFP+Fqmsfff1Bb
-	 7yiMIrh/olX4qMTGBDjHFRvhmwmWnI8i3+aGqO75OnbIdIWOJf+1uTTKRwfLcq8C6n
-	 fmDaz3GnzK2M1vV2adzfjYwvxyy2U/kFcJL8hzhmxxR28WDntbog7SToOKhyFA2K5d
-	 lZ+mQn00mD2pk4EF3D0spimLElWx+8RAFzow4FCC9sN2OKWY6Npn+UKaOlnc+k1qOH
-	 zXoBDYHg3lkk+3wEc9nqaxS0ZzFZ8SqEwimBsdigfE8SvIgupCHdjjiUzq7g9RkBdf
-	 PCCTm9A9iM5hg==
-Date: Thu, 16 Apr 2026 17:45:43 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Michal Clapinski <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v8 1/2] kho: fix deferred initialization of scratch areas
-Message-ID: <aeD2Fzr6yr4pu9-X@kernel.org>
-References: <20260416110654.247398-1-mclapinski@google.com>
- <20260416110654.247398-2-mclapinski@google.com>
+	b=Sikobce486jBS7+XDNzBWTLOfIE99IM9Kk6pTpx5fPKzXDR/bPIZtoBlNZFK82nxZGdHqu
+	I9iZa6f+YqZqNA41LIoKkCPp83TlIQkCykXlu9sgkJ5/iDcocVisJA/YT/wMQnvL09FpQ+
+	cqGNNI8dmAyquyZW51B7I7tOIkhMR6U=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488b3f8fa2bso7303175e9.1
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:51:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1776351066; x=1776955866; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FMRz/WI21Uh5Gr86fIIlkO6L3sSSjv9gzE39RNxVDRw=;
+        b=Gf2W4WCyqVAL12wgdXvMQrgHvNE/C46bZ8BuaASaDSTvHHCnOI6V9Ycgm/ShDIPbAl
+         UsBmfC6nHGWqnWRqN/RpY4Kf/YWqKoW2G0w91VwW9L7zmC/2GeCKkAore/yW6Gkh5GoG
+         yP3SpCEOtGudmMtNsDuhZtkUOiCak5pHWX20OGi70xCm3rSmOJQI43efJK3VgHXqgjrR
+         5l1+Zb9QgfnNTjOWGS+ustJXugWzmtHJBbIRvuC3bDSy1roG3XyVOloo1h5si5Rz1Em0
+         TaFSBXfy19LcXg/lvCgPmf23ogL/wGy0IWM2P3L9EOcnGIm7CP5a5b6Xw9weoZ1A7JtN
+         thwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776351066; x=1776955866;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FMRz/WI21Uh5Gr86fIIlkO6L3sSSjv9gzE39RNxVDRw=;
+        b=imqtHMVRHFwYrkMV0VhGuhUPP4RMtDEOmxqOJ+UJRM5ZgfuakCsa7AUjllAz8YN5CU
+         d7yrf7DAY7mZzPSwaZ819iNDBKin2yvrK9BGIaIz2dl17VOshQ5T92ZiDHyiJK0Nardm
+         Vrj9jPspCKtpeKTb8FyatsOAHYE/c4GgmlskqKFxxolrYdM5rGUfAeJYh16xKX4FJqi9
+         pPLTmG8AEJOR67CpKCR+XkkRKfugT7SISrazPHKxAxEA7bBNqhnXmhbPm1HV2nJSIqg1
+         8rV/F+QGZwpDSthOLu4s/7+AbQ7tEsAJOG/Tol7zR0Ut9E4vMdayxnQ3QO3JNzN4Q4Lp
+         4BvA==
+X-Forwarded-Encrypted: i=1; AFNElJ8KX2G+JMceTCAc3m4LkWv8Ih67cC9Wg69yllKrtOtlmOxeoWSKGpkRnBspGEQNoGIO3L0A6AhEzg==@kvack.org
+X-Gm-Message-State: AOJu0YytpuXGlw/37YTG+gHWz5CjFKYnCdYMgYqybssFMGZ9SFdXJElC
+	1+orQTjcdAvFZXFNzXTJ7zS0IzeOU7OiDZyjGHEI5FoKdMp+7fZTXk/1gRpaXUNYQKQ=
+X-Gm-Gg: AeBDietHQWsa4o0tvJJ5K+ei2YEx7TiJc7ev2U5PhyatbOVpS/ASlVRMM7k6RboghpF
+	LzrRL4nKU8JrQhSh3fqaEI7QlOuIMJwWqMjVC77MVwuGt1fo5ubGqdcg4dETVSXAmGgpihqxteW
+	TVpCxSaabZR8PIsjPmtZDSlpIXf4rcH95SagpF9BMuAFhHwIGT2xs6/jjX8CHWu4ImNniJ1zhOS
+	z/+riZ7P3gWMWDSX5SEe3JmsfIRhDXtaSOsP+qiK2SvKZszAmDORhxImfSd0pTP+zZoxCfovPtC
+	OnOwOz6RmPG6c7v61ZD1quKlXOjj5/dr3FzWKPS1KH7UZO/kUd/HKyib8yHrnMcWmVSf3bNDLE+
+	EPE8PYanthzOCisDYgeo4boK+Gdn1wFPh0bUm5U1CJMhlCahzw808f12S34gFf4QeS3o/rWyotm
+	GYL6LWWOUYsR95hsbV/g==
+X-Received: by 2002:a05:600c:8582:b0:485:3c2e:60d5 with SMTP id 5b1f17b1804b1-488f45cc724mr39994985e9.2.1776351065748;
+        Thu, 16 Apr 2026 07:51:05 -0700 (PDT)
+Received: from localhost ([2a09:bac6:37a8:d2::15:40d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f0e9c668sm75209365e9.4.2026.04.16.07.51.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2026 07:51:05 -0700 (PDT)
+Date: Thu, 16 Apr 2026 15:51:04 +0100
+From: Matt Fleming <matt@readmodwrite.com>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Minchan Kim <minchan@kernel.org>, kernel-team@cloudflare.com, 
+	Matt Fleming <mfleming@cloudflare.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	David Hildenbrand <david@kernel.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: Require LRU reclaim progress before retrying direct
+ reclaim
+Message-ID: <aeDuVmN8Q6cpNTuT@matt-Precision-5490>
+References: <20260410101550.2930139-1-matt@readmodwrite.com>
+ <v3j7f476gbj7b5rxigpcorxhaimg5dyhgtovsl5quo7gc33swc@7i4ypekahw5h>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260416110654.247398-2-mclapinski@google.com>
-X-Stat-Signature: 7s37fgywbhzynw316hx68tpeorpa9ao9
-X-Rspamd-Queue-Id: 36B9D80011
+In-Reply-To: <v3j7f476gbj7b5rxigpcorxhaimg5dyhgtovsl5quo7gc33swc@7i4ypekahw5h>
+X-Stat-Signature: brg9cnypw5o38nyxt3gdahaapdmtd7rw
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776350753-561556
-X-HE-Meta: U2FsdGVkX19fuNclfpFrFPAUJ8kbJSZ6vfGgWDlPuVUuimPNcnN4AT/FI4sizSF3UnzcAvziKC843tmr5ZGBxO12y/l3ov0QZjlELv5x5GgJ8PJWzAWGGPgFyFJLqxURgmi7wCTzWYO+sHiOCK/Az61Uuq+kypR3Yy69fvkQx2FNR5v211W0JNCutLYQOPFuQ9ItOr4AoiEhuoWPCKRX2s2ZLQ4fn2b5H1Jp4R5L3/6vfqJ70RxQx5t/KG+TK/J/v+GWfKyzWdSlbchr5hm+J3n5MPzYTSgqDhDjOeWRkSHxPCYoGYgEfdfN7AgCL0CQP1MPMqa4dP2t6rnWTJUzdXXzJnYFRkBNCKZrAotgjK6NLV/GjZcipBZaQl8wFhfMGIAsAkU4EWFcAgUq+3Qr0zW3r1EtMi1a09qYqje7E/XTY/eIifChzUTQ6GpCkR4kj9VVykSVU4F3QKC7kZ3JiFR6lWC+bYMktLpLDYLD4NXpys3mTYiI9Aetl4am4TP36401UL8hrmXBKaF94oNDFWKwZMFvvOI/Z/mEfwIlh5u5Y4KjKcMvIEDRqFW4abtzQoG3oiVrN/0b0Khdn9s6BUFToDOOFDWwWx+Y5BteZJFZirvJCRQbHYpvMhBelcvSHgL3/y6qMVnzVLk5sSKrvULurDg5RT9+0sVMDmJVHXr2rENgIN5Rfa3BkrfEI97cvOM6z7n+MhSqtIkxv5LsziHpomE3M15bhmuqdIi9o1f0YgwR1cB8gcwtFS63EniPr56pcxB/I5/KjXB+42Ts+deFQRCnOCQt57fN2jaVW8uLxV4rZYvct40gADSjwcr3osisLieU+Jokyl8fGo/4FK/eaH+jEoiXuuPFfwtAM2XmC9mJx2/itRgO1RoiqQpTuopSA0tZWNeIaY/LMMoTLoUAm6i2L3RqXNwh5A0x5YqdM2ZV4ue1Xi1d9rMuubcfi4ZXe/iswBcYTY2oJW1
- NHQckwhn
- B1RjuTN2djOXF5BkGIuPfn0sRbmb5vAChUVUtCk0jpYivfHGqlba+QuYkVdY6TPVjGVLrw3XUAJZMD2zMft/8ehNZ7yXlcEC3DkjjamPNeFHhEP04wJNOGykNWweqB0Ukqixwgv52t6xJhnCx1rpD6H5nihvmLwshuqE9O8+ABZWXijpJgu9LAhJ8j8TpxUWvsGhSp7j2isCpKR14FZvrAKr9KwtpqQqX63LRPxgyA+sB6jtNyv+KtoL6/Js0crczVaTwhLKPrymJEIJjFzF/zP8iUcd7buB5qqQP
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8679A1A000C
+X-HE-Tag: 1776351067-271937
+X-HE-Meta: U2FsdGVkX1/m+q/r5To8mTHQpQRzjMxt3RF3DpbT1DHNrEYqT2lUwYRYi4R5wyzkDjyVxgzGxwpxOzoJOSrOkMZSMMX58F/S1NPnFHGF+UiO1odU2kGPXQDWs4xufEWRbNPg1XTTYfbeS8/1NrNtNOiO6Bu100e/g+FpkRuBKaJV1pF+7dhSFbYCYFvgWvR3zlLbewvdgYkF9D+2F9iFxatsGku5gczH0IOabW/5lFToAm2okzOxqbU3uBe7Ohm8bMwHIlV8sztJOW23SmyeVokQfMsffu2LyAzqDjUEYjkBNHVezhD7xpvKuoY5cgOnv3M4ICS8+uMmhU5RbNmS8PISnJzOLq7XlYRE/kmH7L/YA7ebozjnpPljFbibuYNZ6jVo3X7aIaQwU0UIuOKEtfyAic2a/Ufe1e4TLdC03+YojoxxbEvGR47SKdzGEvapzxt0mWlvP/yIFb6r0F7Ds5iw62Af1cL6kErh9ZYaxMJihi5toIHuS6P1P1Nuvw9efgSk98D2nvWagLIy3g1Yt3HjNIEmKqSRc26z43OXO+6MAKwmjG7RnO6SmkIF3B2tOIRu6aKc5nYeIfj1ix7D7g+RBpP0rCNXDYIrQWOHSa7SbZC8sereRlOb6lKGSPLM7isQigSckrgPyLx1ZFT1Q+FSMf3p7GVX7V96ZxPCzaUe6ALjwkvrRDMBrf2pkXGwADjzm3IAJREOsxuMaXEF8Y/qIjH6+91FCVrjaOEyEZcKu27NJG9ldFr4CciCOQrG+B/jM2HHaS/lzmR6/zkTmQHj5FtY3SSGu2OsPLF0OXiD8Xp2lUOX8GKLmWKPxkhOYCQjTevqpz4zBE9f/z76JuHb5tnFLn2JhIcs1e7BZ5SLybGwbtAdMnwyC5WiiN9kkslhqAXbeXAKIT3ktUajWd52oie5dVcGBYkEwXuPe0DR4ykzxjHdiF/cDWa2TYNGCEYiXYkw4/fhNDGqHUE
+ V+miu845
+ E9kXCeLF2XwRvncDRMOZI2rAJJkwQqrBgnqpl2QJxLkLDqLa3lr3uA14XttIf+cwkdDgl0YdfjStkRCKSNbrTnmUUxSUTcleB12YlyhjPmN9h8LJ+4Oc4K3BFx0pPvhptzOcZcf/77frhTGzULW9Ayl/aZ6CiFPbZOJ0UrJfJ+mbs7VyE23pf/dls3xXiEP1zk287C2GV6RItRiZzRhXDO3f7fU0b1xIC06IXWo2cvH/Ll0eNw4WFJ91I4l+f67tSb8FaoEJNHra4o832cuk8QLJ36aUwB9nViGiAXzhEnA7gVGJ11usQW5C4/xX20HqJT0NDPV15760wKhSvilvxVw2bZJZmoLr9gKgd6ks3VZP9g89G0lltegw9EjuJzCUvWmb3REwS8c0ubPfvIiQVj5OtsmLHxriirIgB6FlHdigCoRtdL4g6zbbkYbBBYnfKsfm3JxcAZJyg7BnGnnaLYcDKiQHEQobILCGLWjt887CBum1IxPlDZ0zdEZdltLHFDeeS3hoU8W0UYLOe5CImGai5ZE70n6okhWodJCYeWdC1bB5O4u5mrMe7ZhEIN+rklz1PM68BjywpRsgrJUGgq8668QM3w69KSNSaOb8TEuwLKX2HSTQSmu5VpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,270 +128,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Michal,
-
-On Thu, Apr 16, 2026 at 01:06:53PM +0200, Michal Clapinski wrote:
-> Currently, if CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled,
-> kho_release_scratch() will initialize the struct pages and set migratetype
-> of KHO scratch. Unless the whole scratch fits below first_deferred_pfn,
-> some of that will be overwritten either by deferred_init_pages() or
-> memmap_init_reserved_range().
+On Wed, Apr 15, 2026 at 03:57:25PM +0100, Pedro Falcato wrote:
+> On Fri, Apr 10, 2026 at 11:15:49AM +0100, Matt Fleming wrote:
+> > From: Matt Fleming <mfleming@cloudflare.com>
+> > 
+> > should_reclaim_retry() uses zone_reclaimable_pages() to estimate whether
+> > retrying reclaim could eventually satisfy an allocation. It's possible
+> > for reclaim to make minimal or no progress on an LRU type despite having
+> > ample reclaimable pages, e.g. anonymous pages when the only swap is
+> > RAM-backed (zram). This can cause the reclaim path to loop indefinitely.
+> > 
+> > Track LRU reclaim progress (anon vs file) through a new struct
+> > reclaim_progress passed out of try_to_free_pages(), and only count a
+> > type's reclaimable pages if at least reclaim_progress_pct% was actually
+> > reclaimed in the last cycle.
 > 
-> To fix it, make memmap_init_range(), deferred_init_memmap_chunk() and
-> memmap_init_reserved_range() recognize KHO scratch regions and set
-> migratetype of pageblocks in those regions to MIGRATE_CMA.
-> 
-> Signed-off-by: Michal Clapinski <mclapinski@google.com>
-> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> I think there is at least one problem with this heuristic: you are counting
+> everything that hasn't made progress as "we cannot reclaim it". When in reality
+> you can simply fail to make progress on any given folio as e.g it's referenced
+> and we want to give it another spin in the LRU.
+ 
+The intention was that the percentage threshold would avoid giving up
+on reclaim as long as "sufficient" progress was made. This should allow
+for some folios to need another trip through the LRU but...
 
-Your signed-off should be last here :)
-https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
+> My theory (from merely reading the patch, maybe I missed something) is that
+> a pathological case for this is a lot of folios added to the LRU in a row,
+> that are set referenced (or dirty). Say SWAP_CLUSTER_MAX * MAX_RECLAIM_RETRIES
+> - it will simply OOM too early.
+ 
+OK yeah I think I see the problem now: this heuristic applies the
+threshold against all reclaimable pages but that falls apart when doing
+SWAP_CLUSTER_MAX chunks of reclaim.
 
-> ---
->  include/linux/memblock.h           |  7 +++--
->  kernel/liveupdate/kexec_handover.c | 25 ------------------
->  mm/memblock.c                      | 41 ++++++++++++++----------------
->  mm/mm_init.c                       | 27 ++++++++++++++------
->  4 files changed, 43 insertions(+), 57 deletions(-)
-> 
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 6ec5e9ac0699..410f2a399691 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -614,11 +614,14 @@ static inline void memtest_report_meminfo(struct seq_file *m) { }
->  #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
->  void memblock_set_kho_scratch_only(void);
->  void memblock_clear_kho_scratch_only(void);
-> -void memmap_init_kho_scratch_pages(void);
-> +bool memblock_is_kho_scratch_memory(phys_addr_t addr);
->  #else
->  static inline void memblock_set_kho_scratch_only(void) { }
->  static inline void memblock_clear_kho_scratch_only(void) { }
-> -static inline void memmap_init_kho_scratch_pages(void) {}
-> +static inline bool memblock_is_kho_scratch_memory(phys_addr_t addr)
-> +{
-> +	return false;
-> +}
->  #endif
->  
->  #endif /* _LINUX_MEMBLOCK_H */
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 18509d8082ea..a507366a2cf9 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1576,35 +1576,10 @@ static __init int kho_init(void)
->  }
->  fs_initcall(kho_init);
->  
-> -static void __init kho_release_scratch(void)
-> -{
-> -	phys_addr_t start, end;
-> -	u64 i;
-> -
-> -	memmap_init_kho_scratch_pages();
-> -
-> -	/*
-> -	 * Mark scratch mem as CMA before we return it. That way we
-> -	 * ensure that no kernel allocations happen on it. That means
-> -	 * we can reuse it as scratch memory again later.
-> -	 */
-> -	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
-> -		ulong start_pfn = pageblock_start_pfn(PFN_DOWN(start));
-> -		ulong end_pfn = pageblock_align(PFN_UP(end));
-> -		ulong pfn;
-> -
-> -		for (pfn = start_pfn; pfn < end_pfn; pfn += pageblock_nr_pages)
-> -			init_pageblock_migratetype(pfn_to_page(pfn),
-> -						   MIGRATE_CMA, false);
-> -	}
-> -}
-> -
->  void __init kho_memory_init(void)
->  {
->  	if (kho_in.scratch_phys) {
->  		kho_scratch = phys_to_virt(kho_in.scratch_phys);
-> -		kho_release_scratch();
->  
->  		if (kho_mem_retrieve(kho_get_fdt()))
->  			kho_in.fdt_phys = 0;
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 4224fdaa8918..fab234f732c3 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -17,6 +17,7 @@
->  #include <linux/seq_file.h>
->  #include <linux/memblock.h>
->  #include <linux/mutex.h>
-> +#include <linux/page-isolation.h>
->  
->  #ifdef CONFIG_KEXEC_HANDOVER
->  #include <linux/libfdt.h>
-> @@ -959,28 +960,6 @@ __init void memblock_clear_kho_scratch_only(void)
->  {
->  	kho_scratch_only = false;
->  }
-> -
-> -__init void memmap_init_kho_scratch_pages(void)
-> -{
-> -	phys_addr_t start, end;
-> -	unsigned long pfn;
-> -	int nid;
-> -	u64 i;
-> -
-> -	if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
-> -		return;
-> -
-> -	/*
-> -	 * Initialize struct pages for free scratch memory.
-> -	 * The struct pages for reserved scratch memory will be set up in
-> -	 * memmap_init_reserved_pages()
-> -	 */
-> -	__for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> -			     MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
-> -		for (pfn = PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
-> -			init_deferred_page(pfn, nid);
-> -	}
-> -}
->  #endif
->  
->  /**
-> @@ -1971,6 +1950,18 @@ bool __init_memblock memblock_is_map_memory(phys_addr_t addr)
->  	return !memblock_is_nomap(&memblock.memory.regions[i]);
->  }
->  
-> +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> +bool __init_memblock memblock_is_kho_scratch_memory(phys_addr_t addr)
+> The other question is whether this effectively solves reclaim problems - some
+> hard numbers would be great.
 
-We already have a block under #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH, please
-add this function to that block.
-
-> +{
-> +	int i = memblock_search(&memblock.memory, addr);
-> +
-> +	if (i == -1)
-> +		return false;
-> +
-> +	return memblock_is_kho_scratch(&memblock.memory.regions[i]);
-> +}
-> +#endif
-> +
->  int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
->  			 unsigned long *start_pfn, unsigned long *end_pfn)
->  {
-> @@ -2262,6 +2253,12 @@ static void __init memmap_init_reserved_range(phys_addr_t start,
->  		 * access it yet.
->  		 */
->  		__SetPageReserved(page);
-> +
-> +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-
-No need for #ifdef here, there's a stub returning false for
-CONFIG_MEMBLOCK_KHO_SCRATCH=n case.
-
-> +		if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)) &&
-> +		    pageblock_aligned(pfn))
-> +			init_pageblock_migratetype(page, MIGRATE_CMA, false);
-> +#endif
->  	}
->  }
->  
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index f9f8e1af921c..890c3ae21ba0 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -916,8 +916,15 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
->  		 * over the place during system boot.
->  		 */
->  		if (pageblock_aligned(pfn)) {
-> -			init_pageblock_migratetype(page, migratetype,
-> -					isolate_pageblock);
-> +			int mt = migratetype;
-> +
-> +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-
-Ditto.
-
-> +			if (memblock_is_kho_scratch_memory(page_to_phys(page)))
-> +				mt = MIGRATE_CMA;
-> +#endif
-
-memmap_init_zone_range() is called each time for a region in
-memblock.memory. This means either entire range will be KHO_SCRATHC or not
-and we can check for memblock_is_kho_scratch_memory() once for every region
-in memmap_init_zone_range().
-
-> +
-> +			init_pageblock_migratetype(page, mt,
-> +						   isolate_pageblock);
->  			cond_resched();
->  		}
->  		pfn++;
-> @@ -1970,7 +1977,7 @@ unsigned long __init node_map_pfn_alignment(void)
->  
->  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
->  static void __init deferred_free_pages(unsigned long pfn,
-> -		unsigned long nr_pages)
-> +		unsigned long nr_pages, enum migratetype mt)
->  {
->  	struct page *page;
->  	unsigned long i;
-> @@ -1983,8 +1990,7 @@ static void __init deferred_free_pages(unsigned long pfn,
->  	/* Free a large naturally-aligned chunk if possible */
->  	if (nr_pages == MAX_ORDER_NR_PAGES && IS_MAX_ORDER_ALIGNED(pfn)) {
->  		for (i = 0; i < nr_pages; i += pageblock_nr_pages)
-> -			init_pageblock_migratetype(page + i, MIGRATE_MOVABLE,
-> -					false);
-> +			init_pageblock_migratetype(page + i, mt, false);
->  		__free_pages_core(page, MAX_PAGE_ORDER, MEMINIT_EARLY);
->  		return;
->  	}
-> @@ -1994,8 +2000,7 @@ static void __init deferred_free_pages(unsigned long pfn,
->  
->  	for (i = 0; i < nr_pages; i++, page++, pfn++) {
->  		if (pageblock_aligned(pfn))
-> -			init_pageblock_migratetype(page, MIGRATE_MOVABLE,
-> -					false);
-> +			init_pageblock_migratetype(page, mt, false);
->  		__free_pages_core(page, 0, MEMINIT_EARLY);
->  	}
->  }
-> @@ -2051,6 +2056,7 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
->  	u64 i = 0;
->  
->  	for_each_free_mem_range(i, nid, 0, &start, &end, NULL) {
-> +		enum migratetype mt = MIGRATE_MOVABLE;
->  		unsigned long spfn = PFN_UP(start);
->  		unsigned long epfn = PFN_DOWN(end);
->  
-> @@ -2060,12 +2066,17 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
->  		spfn = max(spfn, start_pfn);
->  		epfn = min(epfn, end_pfn);
->  
-> +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-
-No need for #ifdef here as well.
-
-> +		if (memblock_is_kho_scratch_memory(PFN_PHYS(spfn)))
-> +			mt = MIGRATE_CMA;
-> +#endif
-> +
->  		while (spfn < epfn) {
->  			unsigned long mo_pfn = ALIGN(spfn + 1, MAX_ORDER_NR_PAGES);
->  			unsigned long chunk_end = min(mo_pfn, epfn);
->  
->  			nr_pages += deferred_init_pages(zone, spfn, chunk_end);
-> -			deferred_free_pages(spfn, chunk_end - spfn);
-> +			deferred_free_pages(spfn, chunk_end - spfn, mt);
->  
->  			spfn = chunk_end;
->  
-> -- 
-> 2.54.0.rc1.555.g9c883467ad-goog
-> 
-
--- 
-Sincerely yours,
-Mike.
+I shared some numbers in my reply to Vlastimil, but if there are other
+cases you'd like measured I'm happy to run them.
 
