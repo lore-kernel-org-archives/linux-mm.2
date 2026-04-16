@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C0CF433DD
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 03:39:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81710F433DF
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 03:39:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 584346B0005; Wed, 15 Apr 2026 23:39:52 -0400 (EDT)
+	id 3886A6B0089; Wed, 15 Apr 2026 23:39:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E66B6B0089; Wed, 15 Apr 2026 23:39:52 -0400 (EDT)
+	id 2EB236B008A; Wed, 15 Apr 2026 23:39:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AE576B008A; Wed, 15 Apr 2026 23:39:52 -0400 (EDT)
+	id 13E006B008C; Wed, 15 Apr 2026 23:39:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 23D466B0005
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F0FD56B0089
 	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 23:39:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB79E13AA2C
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:39:51 +0000 (UTC)
-X-FDA: 84663014982.01.85F21A6
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A08C48C25D
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:39:52 +0000 (UTC)
+X-FDA: 84663015024.15.74BC7E8
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 92F994000A
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:39:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=WZAzhYZB;
-	spf=pass (imf04.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9EC514000B
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:39:50 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=nYWXXbzy;
+	spf=pass (imf11.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776310789;
+	s=arc-20220608; t=1776310790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pkK/gpx2ErjKx3G2Uq6ljwesXsbQnQRoVjdIPtDsVIE=;
-	b=tHOtw0Qv1RlM3LffMRK5TnqovVCEXJzcjq9mPbIKJ7st07qrcxa/YPhboz1uOMxKE2JaR7
-	uYsiIqt0duVT1MQPGxLJ/d347KMKGU3lpBF+yTLJNQVG+ngUQ72S42nF6nFF6u6lTe4E/0
-	3qvchygzWn/2/KxUjnBkWz/KlM3YyNI=
+	 in-reply-to:references:dkim-signature;
+	bh=jvfGwj9gk3exsHlit2tgP9PwiszVaoknxW+bdXzbjYg=;
+	b=gKNFoqOSu2xFf+WUttS9cc+MhCapHejFzODoDpVuF02dvqnyo0ZvJxAtouzZy1LlTt6hzp
+	Y5Txap0+4BQxtLcY77fK7YgDiYYces1A+gmrwXJqLq7lzFB7Pe7CW5SHr0sMvw5TDmaouQ
+	tSwbiGjFZXnhqkTvQdiNoAxgIB1s5m4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=WZAzhYZB;
-	spf=pass (imf04.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=nYWXXbzy;
+	spf=pass (imf11.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
 	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776310789; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776310790; a=rsa-sha256;
 	cv=none;
-	b=iSxRjYX7TQjYbfV5VZBAwmm0FiSaF/Tqk9TKFqgzde8lKlLj6sefo/5DERP5FopZaZZqjf
-	p+QAGNX8ja0vqI3Ab0wRrbUuiA+CY6CSJYw/5uVsaOObuofDIEkhqvqqC8upycx5QNZu8l
-	nXGPm2m2xNfnuUx1DoOiKaCNG1uJg6o=
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63FJMNkf4004959;
-	Thu, 16 Apr 2026 03:39:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=pkK/g
-	px2ErjKx3G2Uq6ljwesXsbQnQRoVjdIPtDsVIE=; b=WZAzhYZBfpYwKkbsIUCkg
-	whxSOEUnkW5X7Srp4Dh2IbEyYW6RWS8CBllJnWPrQqYtnPQECdApZPCZ7PPNAODZ
-	evIOr124PGjil4nZIz8ZBnG5RoG2fFsWx3gn43edq+14NueIU8ItJdJ8XvpcID/c
-	JNPpFq8RnQhOp7Zz1akjX8ockP+4MrC0g5H2II8n6yT23+buqYFD5jcwivyxe1Gy
-	5/lfRWnPq5ZUQJ0KapiCwhD42NZjTdkWnlQbcM4B+aQWmpSrEwQCSg5DrcfijAx7
-	dQpBlswnAhSAeiIt8WLA6IVW9h38xnqQM+deo9jgsUH/YlsC+rVB0z+3S5adpNUS
-	A==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dh867excv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Apr 2026 03:39:45 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 63G3dXDm022548;
-	Thu, 16 Apr 2026 03:39:44 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4dh7npq7mb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Apr 2026 03:39:44 +0000 (GMT)
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 63G3dgit023193;
+	b=BT5os9DZOid/AOu84FNih91hqIGQFbVKwEfqBOvT9N8KrSf+Li/dWDA0wyBEaWAnEcWukx
+	hAgvTi/jpY9Yio2ZPoI8xQ07zbhf5hlVUIu3hXGr03mazAzJf49Z2vatTyL2TEs0ZtRP2t
+	WinHWfZ2HjE6QY7gRbYG/51nVS4p2WU=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63FJMTNh2471195;
 	Thu, 16 Apr 2026 03:39:43 GMT
-Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4dh7npq7k1-2;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=jvfGwj9gk3exsHlit2tgP9PwiszVa
+	oknxW+bdXzbjYg=; b=nYWXXbzyOARYWAUrPvnxqFEfkqc3qNXp5f0LZohpOvvOA
+	ckYzZwewp+NtqTwPmDN8A2D8yOaOq8XxLE22SgeHfrYyjtEffV1ouzUKyUBtQAor
+	18qdGJr1cTi0q2H6zzom4H9rgJ1GLcIznFJPvdiJjWMpe7/Gje8aB/UZmI5zUFhx
+	TFb53DXjC5NKfOj1D5PlBCs90Nq/jZ3uRHKqDCbEE8/9H1KzzFvibSKHEHzHkQvM
+	JRXhrHDAL6HTs7K+x9C4bPdj7vgfE+FqKpJp/c1fIR8S58zv83/S0zk0McZ/G+4h
+	fAj98sd+u9VDxB6vokCYvaOpknZh3CEeeA5msMt6Q==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dh85qetk1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Thu, 16 Apr 2026 03:39:43 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 63G3dXqU022531;
+	Thu, 16 Apr 2026 03:39:42 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4dh7npq7kp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Apr 2026 03:39:42 +0000 (GMT)
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 63G3dgir023193;
+	Thu, 16 Apr 2026 03:39:42 GMT
+Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4dh7npq7k1-1;
+	Thu, 16 Apr 2026 03:39:41 +0000 (GMT)
 From: Anthony Yznaga <anthony.yznaga@oracle.com>
 To: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         linux-kselftest@vger.kernel.org
@@ -85,44 +84,41 @@ Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
         Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
         surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de,
         Jason@zx2c4.com, shuah@kernel.org
-Subject: [PATCH v4 1/3] mm: fix mmap errno value when MAP_DROPPABLE is not supported
-Date: Wed, 15 Apr 2026 20:39:37 -0700
-Message-ID: <20260416033939.49981-2-anthony.yznaga@oracle.com>
+Subject: [PATCH v4 0/3] fix MAP_DROPPABLE not supported errno
+Date: Wed, 15 Apr 2026 20:39:36 -0700
+Message-ID: <20260416033939.49981-1-anthony.yznaga@oracle.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260416033939.49981-1-anthony.yznaga@oracle.com>
-References: <20260416033939.49981-1-anthony.yznaga@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-16_01,2026-04-13_04,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- phishscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=991 bulkscore=0
+ phishscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=795 bulkscore=0
  mlxscore=0 adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.19.0-2604070000 definitions=main-2604160031
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDAzMSBTYWx0ZWRfXweU741C/7Ah1
- DOj0Fk5yXEwNdLh7itYMd2mOGH8YuqklOnzqdmtYx4bTXjZzsmc+QeLBOVHfUdGpEbXuyXd5D0e
- HmoLx8qZmI8b+FOVTP2fyV1CzYJhzr7bqEsqfcecf9tfOvwv4UsGChhKgVKy6dEE4648NK9Jg2f
- 8WPRZpQuM51Gz9OefmRiF2Z2o0MK9QtxBbtzBP8IcWfha8WnjoBPCpaPtiNCZIfdDrFNxKBmIEW
- Y/q5MHwVq/ZSFr8fWBA3lm/HqUcwC8cMGyY1YU2IcVsPbhc2JNNFV/eYYeYFtWDTZkf5wueLdla
- 04ZE7A4DAHpNl289b25rWzyGHfKt90OoMVmq1cKCcKesWPTXR7hWmxkdf1Vup0NogGF08OCNkzH
- ZUsYl+ySjy/zodfwh+6at6+XAEySdrvceThnSVoElPrmho4xbtZCzVSoEZG1WWdhn28FLtLD7BB
- GvXLx0XCJ8ymUYadzDeAF1s/P5qBYUBjRfXKaKUQ=
-X-Authority-Analysis: v=2.4 cv=cbjiaHDM c=1 sm=1 tr=0 ts=69e05a01 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=d77FDxjE c=1 sm=1 tr=0 ts=69e059ff b=1 cx=c_pps
  a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=BqU2WV_vvsyTyxaotp0D:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=Dv_WXUeMNy8hEQbTb70A:9 cc=ntf awl=host:12291
-X-Proofpoint-GUID: CsDO3YR0k8f9eD17oFOBMn50UdVXwONW
-X-Proofpoint-ORIG-GUID: CsDO3YR0k8f9eD17oFOBMn50UdVXwONW
-X-Stat-Signature: nzk5x11qxjf7idoyiqe6tbrg4ig1hbap
-X-Rspamd-Queue-Id: 92F994000A
+ a=o5oIOnhZENCTenyL_yNV:22 a=hZgukN1trT8sADp7EUgA:9 cc=ntf awl=host:12291
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDAzMSBTYWx0ZWRfX6kxMqrmdnCvS
+ 5ohLfPNa2qzdQv2rTtT0jJ9UXVSd+Ag7VAaVTm0NCXE2mOipm3CdqS99GPHwr7P9gJwWgLK/DmH
+ 0uc9Q88fH/Pj7bEKyjcwzEoChtwBMTVSO9+Ms+pvp4Euuh+Ac4vZChSdQv5kRjfakv1X0nn9XhK
+ LsNtuZruMKtdTrvQVTEzdlHkSINOI4boSXgNUwms9waoadE1F3+ObQfDuN9gpCAgDw+K4IwYXpg
+ MnYd2BGcA668TU2lFVLcYn5TvjNCmXQgHOl2ZfJLuevVbvR7zXfYcaYJ7mxw7Th+9XAYcRej70e
+ H/69dfSbYlq8GBt0/npRwCRTAYRDj8xMBxKdBKwaboL0NjZfAH1rzdDD9PmcOS9rq8gp9FUMVUe
+ KSd9P3bEr4se4LcX0ZtFXbBjxYpp4p5vLwHjKp6HzRtBq7G7wzQYc4ZxCDUvKMJ45cof0kpS4Np
+ o0lMe5lazMPIun9s9AqBUa9WqtEtilXmU3KJKSGE=
+X-Proofpoint-ORIG-GUID: OrpsW_e-qVrLPYUohSQ6-2NVMWT80gHv
+X-Proofpoint-GUID: OrpsW_e-qVrLPYUohSQ6-2NVMWT80gHv
+X-Stat-Signature: 3rh7jkj6gtsccsct1rf6oif8gdua794i
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776310789-969905
-X-HE-Meta: U2FsdGVkX1+BCgEoDMt9vHPAL/datIDz98kCroUI8Lt9bE8n+P0Hlrme4Qp/VOrq8xuuiPFRENsCh8pFwWOlUTKD16NNZrlxlNAFsG6aeUDnSyTUUWKOR1jf4FRGGlABcYoeWyhxOR/ANl6kw31C8vSF0X5bkBKn5zkgtqYHRrdFkT4ok2BCw8C+kuyB5lZgNAhU80gv/pZbJ+Hjl8ZWizYCoYRVu9sB3Q9mlYDvNHBnYgONnv23XCt+zoBHLPFPSWfSRIFjXXpCT2celGnNDu0ASplqIWaNXFk85fwWKBNI0C37/P4E+xC3uBmmjDnDnyQB3/6thUoSnp19To/W0vtLkK5nGNUNc4DPCBlHJd7170bJgW73QP5+NDjX3Xeu0l5iZvzZGujv60pVg7vfUAo/8GR3YKpJ/T5jnGSq9Ure8DeOM4c0C8jXRSig+jUmf0jFgJIDedhVkWjwcEnXdj9r0QtyN6dxOjXKkWtIONUr9py1TyFPdDj0Z8gjscELD4ntPK4u+Qc1ma0azhpiS/oCoHUQxEtqM0xNqcK+zL1ytexCxJ/ISaUZtTHO5t6OhHyH1IyUMF/m9jrU7X9Iu8WhJmtff3uGhxkNcex2DoRQlpBJ3PqVnzJnf8L8/S8udlmn2+/kjUR67spbeSiUvaYFW46Uvkh9KNd0Jv+AoByG+squlXBYp3stCtDtEi/8hBFIDU9tKmCH4X/Ck0hJaxMZ+NzolZ0cTqvRcG94IEu9sM0XB8Ct2thW07Wi1K2YsCn9wlbtqgbTOGnYZyPuAIgQM2cwOTfmxPN+iET+fRGgu5njet6oCr94bQi8tIa3AOaLgv3WSNR50uZ0IN+lBJV7r9b6blKDzrpikyF8xCKfVOVYGbrKkYirulRnkPFQw8hOWQjJt/rCEJYiBSkVqbT7bWonBk0NdyUtaFjNgFGe1eGLp4piU+203UfDNFfn1akzRCd+ccNUrOcu2oB
- l8Ho1ezU
- 961QbaKq/t6PXGaCOoBfbUCOvfC+BLlTNT5MXS0vDqxbW8rHaa5hsVtKDyTVsRdvAQ9yYI4g+fWZUhAL/j0Cvl6eS9+5KuszR2+wmUkJTMVIiFOD2RI4p+Zrrhp3720g4aE53q2A7xY/WK1N7r91ZEhNC5Vp2apd25niupxPmY2CxNUGtorHGMKe3IEOF5w+GO/prX5dDc0m00ur2svbd7hM05FF1Bx3RLnqAsAwE+BMVg9/8mXCQ4F7+M1AzhSWQr5w6p3Q2K82wd4hChnKdtg2UaqKIk5+MlYeCF8JGw5uwtzz2Eb+NKd5aFSzVI9WwqdV+yR/bM6suNMkldBrS4tRQ/A==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9EC514000B
+X-HE-Tag: 1776310790-376751
+X-HE-Meta: U2FsdGVkX1+uLVdPfAY7Ur3YereNkK4Tku8oumBwFfgBkE85MJXa9pq9dBMzoHO9PWJ4oRfejSn16bqZOlUc6vyMkseFol+0GWY0y7yVzC8TEH3xlr2ndPHCODPuwifoIoVfoZTnH94TlasLiACykh14IWNdxKRbOKiymOUkMkYMLU24KRo/3CMgrepDGTuiUT44w/9QGwxOLRS92+mq5dQSR+dqgHqhrrNGAwoGPh4rvNRPnffHBjP4kys00eEXJwRNQ/HaCMLpjvs+mmRqcWtHjNRk2fr2EuRgaJhexZqt2HSUwGPFtup2pFRMiHkSO5+MEfisrBXFIITEFoZpjt+wh36OT2y3yz8KH28mHPW86HEFTMaIghA0+zamZpnNBjhUCFTFri4Lvdq8qoxCySDYJ3p/Q6815QPbz8+KQNWpUHAGig32cIHD2xlXnIskcqLchjGussSgg6WTC74tTMm0no287nocgrj5H0oGGO/2CnMkWZR0oO3MXSgXrob1UO6JIQCP5andCnb5vvzwZCjeMU8TiyWpcW40c1UkUtxeEqaOgwRKoPns+PpAhaogUeHkxapLs6vUALv72WiOhZTGJXcYSKwK4Fgky8toLhujKTRg8anFZpYIdKvJZDSH5F4DHUyknzFNGOuc/sAFWx9znexhZs+vB1WGJQMBH3TjBFK7PVn4gtgbJJ/yfzJgeXcoJ9ow3JobC4g6kgyyLxf1sbXJUJiiIMY5j3GZjG3736n9fIapQmVFEQ6//M4jdr+nkIBXObLb0o6/JrE+5kH8Zm1S3QTHUUsPVSCHP0MYBCiHeEkPoAguUoviKlIQoKUFiaUG4UPdyMPNjm+TEuXgdrSwpNCwQsXXcx+0qVOC+9PcfNIbQmF7BoN7k6RFWSq35gPUPDEp50ObuCf5TKS+Ab691VhA2A3fLqS52I0QFqGkZc0HoVGtOQweqM7wmOyj6ojxQPLzpl58pHl
+ ST5XAz47
+ 4xeXXOLcuVqW8aG4uGzxQ/nO3hx/D+m0syq4e+s0ma0QO1k1mQq8fg8f1N3EPb51b3gda3zc7QRcnaGKfEToPfxw3WQxmFQx0JKOIF02+dwYIBgdzHU0fvjBHGMOAOhA0ZO8qeRCnHPT3wwR8uPDm6DLrXelFwDix/+xesFsTrx13sLIqJ7hF1eVg/Pp7j8wMoTP2DBJONxEmHeDU4vPcFymgXpWioraN9MOBKT+DUl2B6UT0hqg60/+DWu5V34xHEbiYRW0M2gJLy7HGPjnpI9U+J4wlDS1E1igm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,37 +126,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On configs where MAP_DROPPABLE is not supported (currently any 32-bit
-config except for PPC32), mmap fails with errno set to ENOTSUPP.
-However, ENOTSUPP is not a standard error value that userspace knows
-about. The acceptable userspace-visible errno to use is EOPNOTSUPP.
-checkpatch.pl has a warning to this effect.
+Mark Brown reported seeing a regression in -next on 32 bit arm with the
+mlock selftests. Before exiting and marking the tests failed, the following
+message was logged after an attempt to create a MAP_DROPPABLE mapping:
 
-Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reported-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
- mm/mmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Bail out! mmap error: Unknown error 524
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 5754d1c36462..2311ae7c2ff4 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -504,7 +504,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 			break;
- 		case MAP_DROPPABLE:
- 			if (VM_DROPPABLE == VM_NONE)
--				return -ENOTSUPP;
-+				return -EOPNOTSUPP;
- 			/*
- 			 * A locked or stack area makes no sense to be droppable.
- 			 *
+It turns out error 524 is ENOTSUPP which is an error that userspace is not
+supposed to see, but it indicates in this instance that MAP_DROPPABLE is
+not supported.
+
+The first patch changes the errno returned to EOPNOTSUPP. The second patch
+is a second version of a prior patch to introduce selftests to verify
+locking behavior with droppable mappings with the additional change to skip
+the tests when MAP_DROPPABLE is not supported. The third patch fixes the
+MAP_DROPPABLE selftest so that it is run by the framework and skips if
+MAP_DROPPABLE is not supported.
+
+v4:
+- Removed unnecessary #ifdef MAP_DROPPABLE from patch 2 (DavidH)
+- Changed the tests to also skip if mmap() returns EINVAL
+- Added a third patch to fix the MAP_DROPPABLE selftest
+
+v3:
+- Added acked-by's and reviewed-by's to patch 1
+- Addressed sashiko AI reviewbot questions:
+  - Call munlockall() if test_mlockall_future_droppable() returns early
+  - Skip the tests if they are compiled for an older kernel without
+    MAP_DROPPABLE.
+
+v2:
+- Remove unnecessary mlock() call from selftest (DavidH)
+- Change tests to not exit on failure (DavidH)
+
+Anthony Yznaga (3):
+  mm: fix mmap errno value when MAP_DROPPABLE is not supported
+  selftests/mm: verify droppable mappings cannot be locked
+  selftests/mm: run the MAP_DROPPABLE selftest
+
+ mm/mmap.c                                 |  2 +-
+ tools/testing/selftests/mm/droppable.c    |  9 ++-
+ tools/testing/selftests/mm/mlock2-tests.c | 84 ++++++++++++++++++++---
+ tools/testing/selftests/mm/run_vmtests.sh |  1 +
+ 4 files changed, 85 insertions(+), 11 deletions(-)
+
 -- 
 2.47.3
 
