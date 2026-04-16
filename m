@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0228DF433E2
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:18:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 251EDF433E2
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:20:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 530B86B0089; Thu, 16 Apr 2026 01:18:56 -0400 (EDT)
+	id 6B9936B0092; Thu, 16 Apr 2026 01:20:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 507DA6B0092; Thu, 16 Apr 2026 01:18:56 -0400 (EDT)
+	id 669986B0093; Thu, 16 Apr 2026 01:20:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 445276B0093; Thu, 16 Apr 2026 01:18:56 -0400 (EDT)
+	id 57F636B0095; Thu, 16 Apr 2026 01:20:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3250C6B0089
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:18:56 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D0706E449D
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:18:55 +0000 (UTC)
-X-FDA: 84663264630.20.989512E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 441A86B0092
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:20:04 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD4611A0779
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:20:03 +0000 (UTC)
+X-FDA: 84663267486.24.DCAC4C6
 Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [118.143.206.90])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0399140004
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:18:52 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id A1484C0006
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:20:00 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf28.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776316734;
+	s=arc-20220608; t=1776316802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YxVNuvv5bUu/1HJS/apiy6Hv/k96cSqScBmT4AylQqg=;
-	b=GzEnETrv6fy8rAwI1+cE2qZA7g+Vzhftkxg0+w2hk44+JXaIX+sApAlr02pE4XLtB2oV94
-	yUR0Gkpe6YkJkjSeaFdyYrRRKZg2JftFX84YLoBZjyyp+nKqSX+6K/T5lpHntd5cZ1jFeq
-	G3LjWwClIBZLTYVQYj93dkGwITTlrdo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776316734; a=rsa-sha256;
-	cv=none;
-	b=qHyCu2bMR/71i3OhV1Hgb0YK4xBrkc9ZaQYlypOwZSdQF/K9bKTVQIqkNTC4SKdardNcme
-	KjY9YDJbEfplsSDkM28icAPYJ2a4YLIYFEiSnlg9u7ezwxGRh+vjXbz8ehiI3RMdIMqOwR
-	XRj/qdumFar8fgP6sUbBxxe13iKbIN4=
+	bh=v0PEnlXukZrm7Z+s9KPrQETPAxibKFw1lTW9SYEqsNs=;
+	b=r88ANYx7IpuT1XQRsRXWJUaBQvSq34zQNcAb6wdeEjHvZK/tLFBSwjBDabLt5TfZCCI/Py
+	vZ54JFDaENwVrEvNFHGgAv3WM/jBSPK12mcm/neMQtPN3WeuxF9ApRnNjSvBUrv4ysAj/o
+	HGxn+iG8EGB18qp296XUhcIVVHIafm0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
+	imf28.hostedemail.com;
 	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com
-X-CSE-ConnectionGUID: fsAn/7xlRtaNlSa4o5ibuA==
-X-CSE-MsgGUID: bBpnYd99TDeU60/GgpChUA==
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf28.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776316802; a=rsa-sha256;
+	cv=none;
+	b=s6chFtk6jkWvZT8MolSUHXPcVwcZcq9or6VXOoNTKFkolI5sZBA4T6pdC0glSanDyGEG+3
+	TFxuFgJL0mt02aW6yjuskCj43fvhd5p4Y7ZZreo1pn0xtODN2pkmPOE2WdEjIk9M3dROJB
+	FovX1YPUGTnt6MwqHI1IEYiT4Xo06Nk=
+X-CSE-ConnectionGUID: v/PXY4VhTIWaR96mBjcK3w==
+X-CSE-MsgGUID: s58fslSvSIaaNkgbrIB6UA==
 X-IronPort-AV: E=Sophos;i="6.23,181,1770566400"; 
-   d="scan'208,217";a="146821604"
+   d="scan'208,217";a="146821715"
 From: =?gb2312?B?uN/P6A==?= <gaoxiang17@xiaomi.com>
 To: Donet Tom <donettom@linux.ibm.com>, Xiang Gao <gxxa03070307@gmail.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "yuanchu@google.com"
-	<yuanchu@google.com>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>
-CC: "weixugc@google.com" <weixugc@google.com>, "david@kernel.org"
-	<david@kernel.org>, "mhocko@kernel.org" <mhocko@kernel.org>,
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
-	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, "ljs@kernel.org"
-	<ljs@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: =?gb2312?B?tPC4tDogW0V4dGVybmFsIE1haWxdUmU6IFtQQVRDSF0gbW0vdm1zY2FuOiBm?=
- =?gb2312?Q?ix_typos_in_comments?=
-Thread-Topic: [External Mail]Re: [PATCH] mm/vmscan: fix typos in comments
-Thread-Index: AQHczVs0wTtTiYGS9UukkTMaiPUrc7XhJR+D
-Date: Thu, 16 Apr 2026 05:18:49 +0000
-Message-ID: <cdeeca7614ea4fac8449b581b1a13f6d@xiaomi.com>
-References: <20260416024248.687943-1-gxxa03070307@gmail.com>,<87167cf2-5851-46a5-99bf-deb5894ff214@linux.ibm.com>
-In-Reply-To: <87167cf2-5851-46a5-99bf-deb5894ff214@linux.ibm.com>
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "vbabka@kernel.org"
+	<vbabka@kernel.org>
+CC: "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+	<mhocko@suse.com>, "jackmanb@google.com" <jackmanb@google.com>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "ziy@nvidia.com" <ziy@nvidia.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: =?gb2312?B?tPC4tDogW0V4dGVybmFsIE1haWxdUmU6IFtQQVRDSF0gbW0vcGFnZV9hbGxv?=
+ =?gb2312?B?YzogZml4IHNwYWNlcyB1c2VkIGZvciBpbmRlbnRhdGlvbiBpbnN0ZWFkIG9m?=
+ =?gb2312?Q?_tabs?=
+Thread-Topic: [External Mail]Re: [PATCH] mm/page_alloc: fix spaces used for
+ indentation instead of tabs
+Thread-Index: AQHczVin8cJ6zIqEdk6/BznFxOZCYrXhJpd+
+Date: Thu, 16 Apr 2026 05:19:57 +0000
+Message-ID: <5456c776468a4cb98fc24fbded24e441@xiaomi.com>
+References: <20260416021945.682234-1-gxxa03070307@gmail.com>,<54b0f31f-6720-4e39-a182-ba11948cb024@linux.ibm.com>
+In-Reply-To: <54b0f31f-6720-4e39-a182-ba11948cb024@linux.ibm.com>
 Accept-Language: zh-CN, en-US
 Content-Language: zh-CN
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
-x-originating-ip: [10.237.88.13]
+x-originating-ip: [10.237.8.163]
 Content-Type: multipart/alternative;
-	boundary="_000_cdeeca7614ea4fac8449b581b1a13f6dxiaomicom_"
+	boundary="_000_5456c776468a4cb98fc24fbded24e441xiaomicom_"
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 0399140004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: cuwzqz4hz9yq47oh3tobut44fuz5iemc
 X-Rspam-User: 
-X-HE-Tag: 1776316732-381504
-X-HE-Meta: U2FsdGVkX18hTTnCa5GgRkq+/jedmi2y8lrjMhJIgZagpPO4dSu2zRI7TteqmEfGaqjXFB/4DIYgj0fI+Pp4ea+oGZzLNHKDKCcN2WutwnZIScO6gTXlkUFe+xiSBZnNhE9BJdcUvBd9OWleOzTCGKpvHiv/D2RtIcIIz9mS4ABDcH722vu1WBORXPIfRAlQ+HSQPnjCncrGeZlmuzJu+XrMTnUWsM3U/oP2ZCEdftsYnqzckTytrp2o70roqr5mo44SWja9P64iKtsJofqti2ixtjBsCZAWg75NUdy+212eOxAbPdZHA/EmkL63y0EUXLBQPmxV+MGgPATLX6x2upZN2I/TajSzMLGrh4y4ShoaE4Cc03GC6q5u+SvEMXviJhNLpgHHOHM7PJpp7TXfx3kIa0dbBf39JI1elIjJfCSCmzW8zZtoJ9sNpeceLoQVrUFN3HnMlepxLQAiX6XC68VfbSHJIYeJpmqFjsCimDK4MHFZr1igVr2x632ISf81qxa3DMTp3AkssPnJBaYdlQihwFE2YrWsw+sUy7v3n+kr8LFpdfLFikCwiXZdD3EqhRYkt8Syr12WNmxsJm+uy78AOIpjVuM017vbk7xBoNkqaEZ+20u6XLg40lrX5r9KjvllnVZLNhybhBmeLnAE1id+LWdjI1nX5dx2oh+1Py+2L7W3pEVH+zFzrO7Tgee7ATmK+Z6AetAxDoUld3bp4NrM7yai79W6VjDs/qhn2A7WJWeMXqdtFSiHp+pe74KIjLH7RZLcwoCfldwMLZueld7TAAgkmpR14k7k63UFqrKhX6qjRXajufjC2ZbScLzZ6vL39LKSYLEZj7HxjECVCTatuG6tXzSZtApZ3zcDyNHYOQy4NYc3oW569jBWaBncJxcHQ1wPJXgNhtxOM1A2FayUCNojKVJ5s7Zf2KaoZxO25SonMvcQTNyOVdwCzFYlhwimGMzKVhEbAMUTtLb
- Trbw4hgs
- JZrAfGUVtgo41g+uvvuT+erJV1KcEv0wofdabNFIi+LgiKtJsNCejjFv+JsfMmETtZm2sJRv6Isjt3mhgxC9TARFwNJRJUJsKt/H9m7/RvbcwUe+FFewQujcMkwlckzX2VMbWjMnnfVTUtNIncC7A7Mf9hLQ4dVdZScZGs800nZcQuanf0fwiZV151OWxfFEPdiYY12Q5GVnA8SYtRAq9Hu6n3s3UHnyWylKu7WoYDhxNmdpTAs6xa+8udFiXQdDBvE6nKzZMRQmHv8yqfHz1ECOEyOLHB1oQzbIZXhVbmrXBlWMmiUOij2TtLDMOVzlCAaPV2bbgN286x+xzYaETd0+ufBrbjiWiVCisjQg6yWfyZDDvYuslxZUVtLKjZTl3NixFrpyK5TIWwreFhlMYuiW/QNoike4O/lVfD8PkJqiAk7bZyyXLLuF+p5j4eBQWiG5E2r4G+UzK0EQjE1NC1IRLUusO+hxhvEPBDBBADHWPFEzYSOYKHVvFrAShsc9iOFSdx30p/otIU4TUtBrReI+IrJFOZsiB4ODJ1re4cBt1LWp5MHUTw32qRLnKl7bESZ8H6xWzIwVSS/sHVyNSVEadavYRqftNdR0BjuXu76nq+UBnAZMMHbSpJiCfH4vV9FocO/fuGFhrg/HmEGDQUmARUjxJFWchpiFk6VhAavUfgqUXLojpm7px+i8PSYxJ7rnw
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A1484C0006
+X-Stat-Signature: u6wuo6ayouoq41ywoznjbd84t9uznkf6
+X-HE-Tag: 1776316800-833419
+X-HE-Meta: U2FsdGVkX1/nL7VPWpio1geD+8xdHqNdRJljbXutSRL6uWye06SpOXdPrwqnO3hakaaBPjQzV1P55mYzL5wUQ4mhtcShiV0a0FHzWv8VLe4TLAOBGpLLcCfPRH52CEgbpssgwjj5xo4nmPf/aU3FZqJMzrRCjyUZNkGJYVAX5J6n/7JPU1HkT57TqPFIEX0YzTVUnvOlyjbsTqPyINET0f7dvqEh6qx9NebpWrbhpzlDc0ePy96cnkQxgD8+abh/4a7ntdrGn76bjXskHEr2WGi62vMUZOYX2v8b4rF1e8sjrR48cYG0jTHP6SqK8unc1X0ko61yjRxW7i0wnJpSKpZAapcR7TELAV5jkMhBIX7KH6S84h5WNFQ2RQrP5K7dphpneNdzMZ3fRA/voFnydjHIkPOluxRY+WB19SaF5JKImkLZyLRmZepquGaLXdKnLS8cGa0X6lPWgdCFz+eJ4su8cLAVDIgtCCNgsSxFZhZO7cLcaWlkDw71jYQBR0DAOWdBiERvsLmc+rhBRxPpKNoCFqIdyIEFwGBEuYXyBy8ASb1kFB7tfpS4y0akvuVtOGQFJTaSMJd4y2/nVwPMTkS5Zae5o2S5Qv8bffR2TeZkXTdIh3rQrzBbZ0Xx9iVB6Dxzjm8Hkzx+TCQdtd1DJshgYPZ6ALiuoqcCGoEd1AayZzTkKy1s/POYbioqkuAvt+DhDij3Vvk6AJRKsKtJBIznYDFKaGNbpZzr7iaQPcGBVUT2Zeqmz3UEAZaI8UcN+Tju6d+puk21xCwCEE4xE00na/thDZvjk8Abq04CoW34ww+zb3I0CT9KBCyfBuf3uE7pAVc+FkH8BHsN02OhSiNcXq2H3Eiyt3oPz8aUzevqmJEN3f2OGFhzeJiZMmqYSXQFV6NYUH3i+YNeJVxafcevDi7x9ayzI5yC+OcAmBnfvLD6ERzehUJLIdPZOCngPi+7cYVcp2oG57Azc7w
+ yrDO7DAH
+ uunyoTLKkwEFOuD5qLzYAfUubfdKCPH4m27ap1Kz+DSLU0+yi2Szv8afHRzj9EC0ENNP/2t5TngEFVWjHGy83e2/2fLDk/xk4BV03F0IuRwOW8LI1C1udH3YsvPn8s4BSx5V7rSTCbp0FWTaVAzEbV39X+fiSAXCAjZf56S3nluyFtu62PgdcwTELznEXXqjPOg4ZsJkGRJTMa0pvURxAFxm6s+5gd9g9TQLPb4WIgwSJ5mneKKLXxaZd37B6YLntcD0rSAowiBCZCPh/ySOWyvgj5B+YIh/shcVM/efbIUWPPCnRj/963rdkQwqCHYe/1I3lWkkL7mlwPG9qGjuh/FhbRXmxolI3hoczsWcmBKlX9h037iUoJ8j8WsCdUhCGhytgxfrjYaNsAJuDAtda1Yos/yHxt9Kroej788WuMzTfguXaFofsLjxSfdepRKfHWV+Sr4InAF992wTErL2R/9Otu+e/NKiTHSl5R1+QpM7VKePJr+NuGh+BwtBs1pDbq7LMTmWrNPGQA8sCXPZyRIRYR9s1E7PkE95qtJc8g+d5EVQXZ7maPNBhHES9up1QZTfV8IeCMcRhKXOJgXHgg+CO4obW2TNC39vfQlpoN81AZuyaTfztHU8UZ+r/w/q1fD3cqAVuz7rygbIgWBnXjb+jByElLBj5VjU0CUycS72LmCKFuM4MkUrt3ctHkznZsnjPqAqVTN6WCbZGJPNsJxOl4vCRw58cabkiUB1kh4vVi76Aei5jNTHIzFMNqiHc6PgWWUFKgQpEcFk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,64 +94,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---_000_cdeeca7614ea4fac8449b581b1a13f6dxiaomicom_
+--_000_5456c776468a4cb98fc24fbded24e441xiaomicom_
 Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
 
-SGksDQoNClRoYW5rcyBmb3IgY2F0Y2hpbmcgdGhpcy4gSSdsbCBmaXggdGhlIFNpZ25lZC1vZmYt
-YnkgbmFtZSBtaXNtYXRjaCBhbmQgc2VuZCBhIHYyLg0KDQpCZXN0IHJlZ2FyZHMsWGlhbmcgR2Fv
-DQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQq3orz+yMs6IERvbmV0IFRvbSA8
-ZG9uZXR0b21AbGludXguaWJtLmNvbT4NCreiy83KsbzkOiAyMDI2xOo01MIxNsjVIDEyOjQwOjEy
-DQrK1bz+yMs6IFhpYW5nIEdhbzsgYWtwbUBsaW51eC1mb3VuZGF0aW9uLm9yZzsgYXhlbHJhc211
-c3NlbkBnb29nbGUuY29tOyB5dWFuY2h1QGdvb2dsZS5jb207IGhhbm5lc0BjbXB4Y2hnLm9yZw0K
-s63LzTogd2VpeHVnY0Bnb29nbGUuY29tOyBkYXZpZEBrZXJuZWwub3JnOyBtaG9ja29Aa2VybmVs
-Lm9yZzsgemhlbmdxaS5hcmNoQGJ5dGVkYW5jZS5jb207IHNoYWtlZWwuYnV0dEBsaW51eC5kZXY7
-IGxqc0BrZXJuZWwub3JnOyBsaW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtl
-cm5lbC5vcmc7ILjfz+gNCtb3zOI6IFtFeHRlcm5hbCBNYWlsXVJlOiBbUEFUQ0hdIG1tL3Ztc2Nh
-bjogZml4IHR5cG9zIGluIGNvbW1lbnRzDQoNClvN4rK/08q8/l0gtMvTyrz+wLTUtNPa0KHD17mr
-y77N4rK/o6zH6733yfe0psDtoaPI9LbU08q8/rCyyKvQ1LTm0smjrMfrvavTyrz+16q3orj4bWlz
-ZWNAeGlhb21pLmNvbb340NC3tMChDQoNCkhpDQoNCk9uIDQvMTYvMjYgODoxMiBBTSwgWGlhbmcg
-R2FvIHdyb3RlOg0KPiBGcm9tOiBYaWFuZyBHYW8gPGdhb3hpYW5nMTdAeGlhb21pLmNvbT4NCj4N
-Cj4gRml4IHRocmVlIHR5cG9zIGluIGNvbW1lbnRzOg0KPg0KPiAtIExpbmUgMTEyOiAiem9tZV9y
-ZWNsYWltX21vZGUiIC0+ICJ6b25lX3JlY2xhaW1fbW9kZSINCj4gLSBMaW5lIDYyMDg6ICJwcmlv
-aXRpZXMiIC0+ICJwcmlvcml0aWVzIg0KPiAtIExpbmUgNzA2NzogInRoYXQgdGhhdCBoaWdoIiAt
-PiAidGhhdCB0aGUgaGlnaCIgKGR1cGxpY2F0ZWQgd29yZCkNCj4NCj4gU2lnbmVkLW9mZi1ieTog
-Z2FveGlhbmcxNyA8Z2FveGlhbmcxN0B4aWFvbWkuY29tPg0KDQoNCkkgYW0gc2VlaW5nIGJlbG93
+DQpIaSwNCg0KVGhhbmtzIGZvciBjYXRjaGluZyB0aGlzLiBJJ2xsIGZpeCB0aGUgU2lnbmVkLW9m
+Zi1ieSBuYW1lIG1pc21hdGNoIGFuZCBzZW5kIGEgdjIuDQoNCkJlc3QgcmVnYXJkcyxYaWFuZyBH
+YW8NCg0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0Kt6K8/sjLOiBEb25ldCBU
+b20gPGRvbmV0dG9tQGxpbnV4LmlibS5jb20+DQq3osvNyrG85DogMjAyNsTqNNTCMTbI1SAxMjoy
+MjoxMQ0KytW8/sjLOiBYaWFuZyBHYW87IGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc7IHZiYWJr
+YUBrZXJuZWwub3JnDQqzrcvNOiBzdXJlbmJAZ29vZ2xlLmNvbTsgbWhvY2tvQHN1c2UuY29tOyBq
+YWNrbWFuYkBnb29nbGUuY29tOyBoYW5uZXNAY21weGNoZy5vcmc7IHppeUBudmlkaWEuY29tOyBs
+aW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7ILjfz+gNCtb3
+zOI6IFtFeHRlcm5hbCBNYWlsXVJlOiBbUEFUQ0hdIG1tL3BhZ2VfYWxsb2M6IGZpeCBzcGFjZXMg
+dXNlZCBmb3IgaW5kZW50YXRpb24gaW5zdGVhZCBvZiB0YWJzDQoNClvN4rK/08q8/l0gtMvTyrz+
+wLTUtNPa0KHD17mry77N4rK/o6zH6733yfe0psDtoaPI9LbU08q8/rCyyKvQ1LTm0smjrMfrvavT
+yrz+16q3orj4bWlzZWNAeGlhb21pLmNvbb340NC3tMChDQoNCkhpDQoNCk9uIDQvMTYvMjYgNzo0
+OSBBTSwgWGlhbmcgR2FvIHdyb3RlOg0KPiBGcm9tOiBYaWFuZyBHYW8gPGdhb3hpYW5nMTdAeGlh
+b21pLmNvbT4NCj4NCj4gY2hlY2twYXRjaC5wbCByZXBvcnRzIHR3byBpbmRlbnRhdGlvbiBlcnJv
+cnMgaW4gcGFnZV9hbGxvYy5jIHdoZXJlDQo+IHNwYWNlcyBhcmUgdXNlZCBpbnN0ZWFkIG9mIHRh
+YnM6DQo+DQo+ICAgIEVSUk9SOiBjb2RlIGluZGVudCBzaG91bGQgdXNlIHRhYnMgd2hlcmUgcG9z
+c2libGUNCj4gICAgIzg4NzogRklMRTogbW0vcGFnZV9hbGxvYy5jOjg4NzoNCj4gICAgKyAgICAg
+ICAgVk1fV0FSTl9PTkNFKGdldF9wYWdlYmxvY2tfbWlncmF0ZXR5cGUocGFnZSkgIT0gbWlncmF0
+ZXR5cGUsJA0KPg0KPiAgICBFUlJPUjogY29kZSBpbmRlbnQgc2hvdWxkIHVzZSB0YWJzIHdoZXJl
+IHBvc3NpYmxlDQo+ICAgICM2NjI2OiBGSUxFOiBtbS9wYWdlX2FsbG9jLmM6NjYyNjoNCj4gICAg
+KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN5c2N0
+bF9taW5fdW5tYXBwZWRfcmF0aW8pIC8gMTAwOyQNCj4NCj4gSW4gX19kZWxfcGFnZV9mcm9tX2Zy
+ZWVfbGlzdCgpLCB0aGUgVk1fV0FSTl9PTkNFIGF0IGxpbmUgODg3IHVzZXMgOA0KPiBzcGFjZXMg
+Zm9yIGluZGVudGF0aW9uIGluc3RlYWQgb2YgYSB0YWIuIFRoZSBpZGVudGljYWwgVk1fV0FSTl9P
+TkNFDQo+IGNhbGxzIGluIF9fYWRkX3RvX2ZyZWVfbGlzdCgpIGFuZCBtb3ZlX3RvX2ZyZWVfbGlz
+dCgpIGJvdGggY29ycmVjdGx5DQo+IHVzZSBhIHRhYi4NCj4NCj4gSW4gc2V0dXBfbWluX3VubWFw
+cGVkX3JhdGlvKCksIHRoZSBjb250aW51YXRpb24gbGluZSBhdCA2NjI2IHVzZXMgNg0KPiB0YWJz
+ICsgOSBzcGFjZXMgZm9yIGFsaWdubWVudC4gUmVwbGFjZSB0aGUgZXhjZXNzIHNwYWNlcyB3aXRo
+IDYgdGFicw0KPiArIDEgc3BhY2UgdG8gY29ycmVjdGx5IGFsaWduIHdpdGggdGhlIG9wZW5pbmcg
+cGFyZW50aGVzaXMgb24gdGhlDQo+IHByZXZpb3VzIGxpbmUuDQo+DQo+IFNpZ25lZC1vZmYtYnk6
+IGdhb3hpYW5nMTcgPGdhb3hpYW5nMTdAeGlhb21pLmNvbT4NCj4NCkkgYW0gc2VlaW5nIGJlbG93
 IGlzc3VlIHdpdGggY2hlY2twYXRjaC5wbA0KDQouL3NjcmlwdHMvY2hlY2twYXRjaC5wbCAtLXN0
-cmljdCAwMDAxLW1tLXZtc2Nhbi1maXgtdHlwb3MtaW4tY29tbWVudHMucGF0Y2gNCldBUk5JTkc6
-IEZyb206L1NpZ25lZC1vZmYtYnk6IGVtYWlsIG5hbWUgbWlzbWF0Y2g6ICdGcm9tOiBYaWFuZyBH
-YW8NCjxnYW94aWFuZzE3QHhpYW9taS5jb20+JyAhPSAnU2lnbmVkLW9mZi1ieTogZ2FveGlhbmcx
-Nw0KPGdhb3hpYW5nMTdAeGlhb21pLmNvbT4nDQoNCnRvdGFsOiAwIGVycm9ycywgMSB3YXJuaW5n
-cywgMCBjaGVja3MsIDI0IGxpbmVzIGNoZWNrZWQNCg0KPiAtLS0NCj4gICBtbS92bXNjYW4uYyB8
-IDYgKysrLS0tDQo+ICAgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlv
-bnMoLSkNCj4NCj4gZGlmZiAtLWdpdCBhL21tL3Ztc2Nhbi5jIGIvbW0vdm1zY2FuLmMNCj4gaW5k
-ZXggMGZjOTM3M2U4MjUxLi43MTBmYmUxZWUxNTEgMTAwNjQ0DQo+IC0tLSBhL21tL3Ztc2Nhbi5j
-DQo+ICsrKyBiL21tL3Ztc2Nhbi5jDQo+IEBAIC0xMDksNyArMTA5LDcgQEAgc3RydWN0IHNjYW5f
-Y29udHJvbCB7DQo+ICAgICAgIC8qIHpvbmVfcmVjbGFpbV9tb2RlICovDQo+ICAgICAgIHVuc2ln
-bmVkIGludCBtYXlfdW5tYXA6MTsNCj4NCj4gLSAgICAgLyogem9tZV9yZWNsYWltX21vZGUsIGJv
-b3N0IHJlY2xhaW0sIGNncm91cCByZXN0cmljdGlvbnMgKi8NCj4gKyAgICAgLyogem9uZV9yZWNs
-YWltX21vZGUsIGJvb3N0IHJlY2xhaW0sIGNncm91cCByZXN0cmljdGlvbnMgKi8NCj4gICAgICAg
-dW5zaWduZWQgaW50IG1heV9zd2FwOjE7DQo+DQo+ICAgICAgIC8qIE5vdCBhbGxvdyBjYWNoZV90
-cmltX21vZGUgdG8gYmUgdHVybmVkIG9uIGFzIHBhcnQgb2YgcmVjbGFpbT8gKi8NCj4gQEAgLTYy
-MDUsNyArNjIwNSw3IEBAIHN0YXRpYyB2b2lkIGNvbnNpZGVyX3JlY2xhaW1fdGhyb3R0bGUocGdf
-ZGF0YV90ICpwZ2RhdCwgc3RydWN0IHNjYW5fY29udHJvbCAqc2MpDQo+ICAgICAgIGlmIChjdXJy
-ZW50X2lzX2tzd2FwZCgpIHx8IGNncm91cF9yZWNsYWltKHNjKSkNCj4gICAgICAgICAgICAgICBy
-ZXR1cm47DQo+DQo+IC0gICAgIC8qIFRocm90dGxlIGlmIG1ha2luZyBubyBwcm9ncmVzcyBhdCBo
-aWdoIHByaW9pdGllcy4gKi8NCj4gKyAgICAgLyogVGhyb3R0bGUgaWYgbWFraW5nIG5vIHByb2dy
-ZXNzIGF0IGhpZ2ggcHJpb3JpdGllcy4gKi8NCj4gICAgICAgaWYgKHNjLT5wcmlvcml0eSA9PSAx
-ICYmICFzYy0+bnJfcmVjbGFpbWVkKQ0KPiAgICAgICAgICAgICAgIHJlY2xhaW1fdGhyb3R0bGUo
-cGdkYXQsIFZNU0NBTl9USFJPVFRMRV9OT1BST0dSRVNTKTsNCj4gICB9DQo+IEBAIC03MDY0LDcg
-KzcwNjQsNyBAQCBzdGF0aWMgaW50IGJhbGFuY2VfcGdkYXQocGdfZGF0YV90ICpwZ2RhdCwgaW50
-IG9yZGVyLCBpbnQgaGlnaGVzdF96b25laWR4KQ0KPg0KPiAgICAgICAgICAgICAgIC8qDQo+ICAg
-ICAgICAgICAgICAgICogVGhlcmUgc2hvdWxkIGJlIG5vIG5lZWQgdG8gcmFpc2UgdGhlIHNjYW5u
-aW5nIHByaW9yaXR5IGlmDQo+IC0gICAgICAgICAgICAgICogZW5vdWdoIHBhZ2VzIGFyZSBhbHJl
-YWR5IGJlaW5nIHNjYW5uZWQgdGhhdCB0aGF0IGhpZ2gNCj4gKyAgICAgICAgICAgICAgKiBlbm91
-Z2ggcGFnZXMgYXJlIGFscmVhZHkgYmVpbmcgc2Nhbm5lZCB0aGF0IHRoZSBoaWdoDQo+ICAgICAg
-ICAgICAgICAgICogd2F0ZXJtYXJrIHdvdWxkIGJlIG1ldCBhdCAxMDAlIGVmZmljaWVuY3kuDQo+
-ICAgICAgICAgICAgICAgICovDQo+ICAgICAgICAgICAgICAgaWYgKGtzd2FwZF9zaHJpbmtfbm9k
-ZShwZ2RhdCwgJnNjKSkNCg==
+cmljdA0KMDAwMS1tbS1wYWdlX2FsbG9jLWZpeC1zcGFjZXMtdXNlZC1mb3ItaW5kZW50YXRpb24t
+aW5zdGVhLnBhdGNoDQpXQVJOSU5HOiBGcm9tOi9TaWduZWQtb2ZmLWJ5OiBlbWFpbCBuYW1lIG1p
+c21hdGNoOiAnRnJvbTogWGlhbmcgR2FvDQo8Z2FveGlhbmcxN0B4aWFvbWkuY29tPicgIT0gJ1Np
+Z25lZC1vZmYtYnk6IGdhb3hpYW5nMTcNCjxnYW94aWFuZzE3QHhpYW9taS5jb20+Jw0KDQotRG9u
+ZXQNCg0KPiAtLS0NCj4gICBtbS9wYWdlX2FsbG9jLmMgfCA0ICsrLS0NCj4gICAxIGZpbGUgY2hh
+bmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEv
+bW0vcGFnZV9hbGxvYy5jIGIvbW0vcGFnZV9hbGxvYy5jDQo+IGluZGV4IDJkNGI2ZjFhNTU0ZS4u
+NzUyNjczYTliNDNjIDEwMDY0NA0KPiAtLS0gYS9tbS9wYWdlX2FsbG9jLmMNCj4gKysrIGIvbW0v
+cGFnZV9hbGxvYy5jDQo+IEBAIC04ODQsNyArODg0LDcgQEAgc3RhdGljIGlubGluZSB2b2lkIF9f
+ZGVsX3BhZ2VfZnJvbV9mcmVlX2xpc3Qoc3RydWN0IHBhZ2UgKnBhZ2UsIHN0cnVjdCB6b25lICp6
+b24NCj4gICB7DQo+ICAgICAgIGludCBucl9wYWdlcyA9IDEgPDwgb3JkZXI7DQo+DQo+IC0gICAg
+ICAgIFZNX1dBUk5fT05DRShnZXRfcGFnZWJsb2NrX21pZ3JhdGV0eXBlKHBhZ2UpICE9IG1pZ3Jh
+dGV0eXBlLA0KPiArICAgICBWTV9XQVJOX09OQ0UoZ2V0X3BhZ2VibG9ja19taWdyYXRldHlwZShw
+YWdlKSAhPSBtaWdyYXRldHlwZSwNCj4gICAgICAgICAgICAgICAgICAgICJwYWdlIHR5cGUgaXMg
+JWQsIHBhc3NlZCBtaWdyYXRldHlwZSBpcyAlZCAobnI9JWQpXG4iLA0KPiAgICAgICAgICAgICAg
+ICAgICAgZ2V0X3BhZ2VibG9ja19taWdyYXRldHlwZShwYWdlKSwgbWlncmF0ZXR5cGUsIG5yX3Bh
+Z2VzKTsNCj4NCj4gQEAgLTY2MjMsNyArNjYyMyw3IEBAIHN0YXRpYyB2b2lkIHNldHVwX21pbl91
+bm1hcHBlZF9yYXRpbyh2b2lkKQ0KPg0KPiAgICAgICBmb3JfZWFjaF96b25lKHpvbmUpDQo+ICAg
+ICAgICAgICAgICAgem9uZS0+em9uZV9wZ2RhdC0+bWluX3VubWFwcGVkX3BhZ2VzICs9ICh6b25l
+X21hbmFnZWRfcGFnZXMoem9uZSkgKg0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgc3lzY3RsX21pbl91bm1hcHBlZF9yYXRpbykgLyAxMDA7
+DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3lzY3Rs
+X21pbl91bm1hcHBlZF9yYXRpbykgLyAxMDA7DQo+ICAgfQ0KPg0KPg0K
 
---_000_cdeeca7614ea4fac8449b581b1a13f6dxiaomicom_
+--_000_5456c776468a4cb98fc24fbded24e441xiaomicom_
 Content-Type: text/html; charset="gb2312"
 Content-Transfer-Encoding: quoted-printable
 
@@ -164,108 +167,48 @@ n-bottom:0;} --></style>
 <body dir=3D"ltr">
 <div id=3D"divtagdefaultwrapper" style=3D"font-size:12pt;color:#000000;font=
 -family:Calibri,Helvetica,sans-serif;" dir=3D"ltr">
-<p></p>
-<div data-page-id=3D"RLYad2SOQotXsUxobDPc7gtYnbh" data-lark-html-role=3D"ro=
-ot" data-docx-has-block-data=3D"false">
-<div class=3D"ace-line ace-line old-record-id-doxcn1cNS5NzmxyKhjy05SZUlph">=
-Hi,</div>
-<div class=3D"ace-line ace-line old-record-id-doxcn1cNS5NzmxyKhjy05SZUlph">=
-<br>
-</div>
-<div class=3D"ace-line ace-line old-record-id-doxcnlvaZjiwI9ThbBzTEqHtjVb">=
-Thanks for catching this. I'll fix the Signed-off-by name mismatch and send=
- a v2.</div>
-<div class=3D"ace-line ace-line old-record-id-doxcnlvaZjiwI9ThbBzTEqHtjVb">=
-<br>
-</div>
-<div class=3D"ace-line ace-line old-record-id-doxcnXMTc76rNTbAbIqgKGNBcLd">=
-Best regards,Xiang Gao</div>
-</div>
-<span data-lark-record-data=3D"{&quot;isCut&quot;:false,&quot;rootId&quot;:=
-&quot;RLYad2SOQotXsUxobDPc7gtYnbh&quot;,&quot;parentId&quot;:&quot;RLYad2SO=
-QotXsUxobDPc7gtYnbh&quot;,&quot;blockIds&quot;:[2,3,4],&quot;recordIds&quot=
-;:[&quot;doxcn1cNS5NzmxyKhjy05SZUlph&quot;,&quot;doxcnlvaZjiwI9ThbBzTEqHtjV=
-b&quot;,&quot;doxcnXMTc76rNTbAbIqgKGNBcLd&quot;],&quot;recordMap&quot;:{&qu=
-ot;doxcn1cNS5NzmxyKhjy05SZUlph&quot;:{&quot;id&quot;:&quot;doxcn1cNS5NzmxyK=
-hjy05SZUlph&quot;,&quot;snapshot&quot;:{&quot;type&quot;:&quot;text&quot;,&=
-quot;parent_id&quot;:&quot;RLYad2SOQotXsUxobDPc7gtYnbh&quot;,&quot;comments=
-&quot;:null,&quot;revisions&quot;:null,&quot;locked&quot;:false,&quot;hidde=
-n&quot;:false,&quot;author&quot;:&quot;7484727598392606721&quot;,&quot;chil=
-dren&quot;:[],&quot;text&quot;:{&quot;initialAttributedTexts&quot;:{&quot;t=
-ext&quot;:{&quot;0&quot;:&quot;Hi,&quot;},&quot;attribs&quot;:{&quot;0&quot=
-;:&quot;*0&#43;3&quot;}},&quot;apool&quot;:{&quot;numToAttrib&quot;:{&quot;=
-0&quot;:[&quot;author&quot;,&quot;7484727598392606721&quot;]},&quot;nextNum=
-&quot;:1}},&quot;align&quot;:&quot;&quot;}},&quot;doxcnlvaZjiwI9ThbBzTEqHtj=
-Vb&quot;:{&quot;id&quot;:&quot;doxcnlvaZjiwI9ThbBzTEqHtjVb&quot;,&quot;snap=
-shot&quot;:{&quot;type&quot;:&quot;text&quot;,&quot;parent_id&quot;:&quot;R=
-LYad2SOQotXsUxobDPc7gtYnbh&quot;,&quot;comments&quot;:null,&quot;revisions&=
-quot;:null,&quot;locked&quot;:false,&quot;hidden&quot;:false,&quot;author&q=
-uot;:&quot;7484727598392606721&quot;,&quot;children&quot;:[],&quot;text&quo=
-t;:{&quot;apool&quot;:{&quot;nextNum&quot;:1,&quot;numToAttrib&quot;:{&quot=
-;0&quot;:[&quot;author&quot;,&quot;7484727598392606721&quot;]}},&quot;initi=
-alAttributedTexts&quot;:{&quot;attribs&quot;:{&quot;0&quot;:&quot;*0&#43;29=
-&quot;},&quot;text&quot;:{&quot;0&quot;:&quot;Thanks for catching this. I'l=
-l fix the Signed-off-by name mismatch and send a v2.&quot;}}},&quot;align&q=
-uot;:&quot;&quot;}},&quot;doxcnXMTc76rNTbAbIqgKGNBcLd&quot;:{&quot;id&quot;=
-:&quot;doxcnXMTc76rNTbAbIqgKGNBcLd&quot;,&quot;snapshot&quot;:{&quot;type&q=
-uot;:&quot;text&quot;,&quot;parent_id&quot;:&quot;RLYad2SOQotXsUxobDPc7gtYn=
-bh&quot;,&quot;comments&quot;:null,&quot;revisions&quot;:null,&quot;locked&=
-quot;:false,&quot;hidden&quot;:false,&quot;author&quot;:&quot;7484727598392=
-606721&quot;,&quot;children&quot;:[],&quot;text&quot;:{&quot;initialAttribu=
-tedTexts&quot;:{&quot;text&quot;:{&quot;0&quot;:&quot;Best regards,Xiang Ga=
-o&quot;},&quot;attribs&quot;:{&quot;0&quot;:&quot;*0&#43;m&quot;}},&quot;ap=
-ool&quot;:{&quot;numToAttrib&quot;:{&quot;0&quot;:[&quot;author&quot;,&quot=
-;7484727598392606721&quot;]},&quot;nextNum&quot;:1}},&quot;align&quot;:&quo=
-t;&quot;}},&quot;RLYad2SOQotXsUxobDPc7gtYnbh&quot;:{&quot;id&quot;:&quot;RL=
-Yad2SOQotXsUxobDPc7gtYnbh&quot;,&quot;snapshot&quot;:{&quot;type&quot;:&quo=
-t;page&quot;,&quot;parent_id&quot;:&quot;&quot;,&quot;comments&quot;:[],&qu=
-ot;revisions&quot;:[],&quot;locked&quot;:false,&quot;hidden&quot;:false,&qu=
-ot;author&quot;:&quot;7484727598392606721&quot;,&quot;children&quot;:[&quot=
-;doxcn1cNS5NzmxyKhjy05SZUlph&quot;,&quot;doxcnlvaZjiwI9ThbBzTEqHtjVb&quot;,=
-&quot;doxcnXMTc76rNTbAbIqgKGNBcLd&quot;],&quot;text&quot;:{&quot;apool&quot=
-;:{&quot;nextNum&quot;:1,&quot;numToAttrib&quot;:{&quot;0&quot;:[&quot;auth=
-or&quot;,&quot;7484727598392606721&quot;]}},&quot;initialAttributedTexts&qu=
-ot;:{&quot;attribs&quot;:{&quot;0&quot;:&quot;*0&#43;1d&quot;},&quot;text&q=
-uot;:{&quot;0&quot;:&quot;Reply: Fix typos in comments - checkpatch warning=
-&quot;}}},&quot;align&quot;:&quot;&quot;,&quot;doc_info&quot;:{&quot;editor=
-s&quot;:[&quot;7484727598392606721&quot;],&quot;options&quot;:[&quot;editor=
-s&quot;,&quot;edit_time&quot;],&quot;deleted_editors&quot;:null,&quot;optio=
-n_modified&quot;:null}}}},&quot;payloadMap&quot;:{&quot;doxcn1cNS5NzmxyKhjy=
-05SZUlph&quot;:{&quot;level&quot;:1},&quot;doxcnlvaZjiwI9ThbBzTEqHtjVb&quot=
-;:{&quot;level&quot;:1},&quot;doxcnXMTc76rNTbAbIqgKGNBcLd&quot;:{&quot;leve=
-l&quot;:1}},&quot;extra&quot;:{&quot;channel&quot;:&quot;saas&quot;,&quot;p=
-asteRandomId&quot;:&quot;fd87a4c8-8b96-4bbe-8eff-1fe858a0c457&quot;,&quot;m=
-ention_page_title&quot;:{},&quot;external_mention_url&quot;:{},&quot;isEqua=
-lBlockSelection&quot;:true},&quot;isKeepQuoteContainer&quot;:false,&quot;se=
-lection&quot;:[{&quot;id&quot;:2,&quot;type&quot;:&quot;text&quot;,&quot;se=
-lection&quot;:{&quot;start&quot;:0,&quot;end&quot;:3},&quot;recordId&quot;:=
-&quot;doxcn1cNS5NzmxyKhjy05SZUlph&quot;},{&quot;id&quot;:3,&quot;type&quot;=
-:&quot;text&quot;,&quot;selection&quot;:{&quot;start&quot;:0,&quot;end&quot=
-;:81},&quot;recordId&quot;:&quot;doxcnlvaZjiwI9ThbBzTEqHtjVb&quot;},{&quot;=
-id&quot;:4,&quot;type&quot;:&quot;text&quot;,&quot;selection&quot;:{&quot;s=
-tart&quot;:0,&quot;end&quot;:22},&quot;recordId&quot;:&quot;doxcnXMTc76rNTb=
-AbIqgKGNBcLd&quot;}],&quot;pasteFlag&quot;:&quot;1e12da80-4231-4db6-a5a8-08=
-4982c32e32&quot;}" data-lark-record-format=3D"docx/record" class=3D"lark-re=
-cord-clipboard"></span>
+<p><br>
+</p>
+<meta content=3D"text/html; charset=3DUTF-8">
 <div dir=3D"ltr">
 <div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size: 12pt; co=
 lor: rgb(0, 0, 0); font-family: Calibri, Helvetica, sans-serif, EmojiFont, =
 &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, NotoColorEmoji, =
 &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, EmojiSymbols;">
+<p><span id=3D"x_ms-rterangepaste-start"></span></p>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
+t-size:16px">
+Hi,</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
+t-size:16px">
+<br>
+</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
+t-size:16px">
+Thanks for catching this. I'll fix the Signed-off-by name mismatch and send=
+ a v2.</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
+t-size:16px">
+<br>
+</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
+t-size:16px">
+Best regards,Xiang Gao</div>
+<span id=3D"x_ms-rterangepaste-end"></span><br>
 <p></p>
 </div>
 <hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
 <div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
 color=3D"#000000" style=3D"font-size:11pt"><b>=B7=A2=BC=FE=C8=CB:</b> Donet=
  Tom &lt;donettom@linux.ibm.com&gt;<br>
-<b>=B7=A2=CB=CD=CA=B1=BC=E4:</b> 2026=C4=EA4=D4=C216=C8=D5 12:40:12<br>
-<b>=CA=D5=BC=FE=C8=CB:</b> Xiang Gao; akpm@linux-foundation.org; axelrasmus=
-sen@google.com; yuanchu@google.com; hannes@cmpxchg.org<br>
-<b>=B3=AD=CB=CD:</b> weixugc@google.com; david@kernel.org; mhocko@kernel.or=
-g; zhengqi.arch@bytedance.com; shakeel.butt@linux.dev; ljs@kernel.org; linu=
-x-mm@kvack.org; linux-kernel@vger.kernel.org; =B8=DF=CF=E8<br>
-<b>=D6=F7=CC=E2:</b> [External Mail]Re: [PATCH] mm/vmscan: fix typos in com=
-ments</font>
+<b>=B7=A2=CB=CD=CA=B1=BC=E4:</b> 2026=C4=EA4=D4=C216=C8=D5 12:22:11<br>
+<b>=CA=D5=BC=FE=C8=CB:</b> Xiang Gao; akpm@linux-foundation.org; vbabka@ker=
+nel.org<br>
+<b>=B3=AD=CB=CD:</b> surenb@google.com; mhocko@suse.com; jackmanb@google.co=
+m; hannes@cmpxchg.org; ziy@nvidia.com; linux-mm@kvack.org; linux-kernel@vge=
+r.kernel.org; =B8=DF=CF=E8<br>
+<b>=D6=F7=CC=E2:</b> [External Mail]Re: [PATCH] mm/page_alloc: fix spaces u=
+sed for indentation instead of tabs</font>
 <div>&nbsp;</div>
 </div>
 </div>
@@ -278,88 +221,104 @@ ments</font>
 <br>
 Hi<br>
 <br>
-On 4/16/26 8:12 AM, Xiang Gao wrote:<br>
+On 4/16/26 7:49 AM, Xiang Gao wrote:<br>
 &gt; From: Xiang Gao &lt;gaoxiang17@xiaomi.com&gt;<br>
 &gt;<br>
-&gt; Fix three typos in comments:<br>
+&gt; checkpatch.pl reports two indentation errors in page_alloc.c where<br>
+&gt; spaces are used instead of tabs:<br>
 &gt;<br>
-&gt; - Line 112: &quot;zome_reclaim_mode&quot; -&gt; &quot;zone_reclaim_mod=
-e&quot;<br>
-&gt; - Line 6208: &quot;prioities&quot; -&gt; &quot;priorities&quot;<br>
-&gt; - Line 7067: &quot;that that high&quot; -&gt; &quot;that the high&quot=
-; (duplicated word)<br>
+&gt;&nbsp;&nbsp;&nbsp; ERROR: code indent should use tabs where possible<br=
+>
+&gt;&nbsp;&nbsp;&nbsp; #887: FILE: mm/page_alloc.c:887:<br>
+&gt;&nbsp;&nbsp;&nbsp; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VM_W=
+ARN_ONCE(get_pageblock_migratetype(page) !=3D migratetype,$<br>
+&gt;<br>
+&gt;&nbsp;&nbsp;&nbsp; ERROR: code indent should use tabs where possible<br=
+>
+&gt;&nbsp;&nbsp;&nbsp; #6626: FILE: mm/page_alloc.c:6626:<br>
+&gt;&nbsp;&nbsp;&nbsp; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp; sysctl_min_unmapped_ratio) / 100;$<br>
+&gt;<br>
+&gt; In __del_page_from_free_list(), the VM_WARN_ONCE at line 887 uses 8<br=
+>
+&gt; spaces for indentation instead of a tab. The identical VM_WARN_ONCE<br=
+>
+&gt; calls in __add_to_free_list() and move_to_free_list() both correctly<b=
+r>
+&gt; use a tab.<br>
+&gt;<br>
+&gt; In setup_min_unmapped_ratio(), the continuation line at 6626 uses 6<br=
+>
+&gt; tabs &#43; 9 spaces for alignment. Replace the excess spaces with 6 ta=
+bs<br>
+&gt; &#43; 1 space to correctly align with the opening parenthesis on the<b=
+r>
+&gt; previous line.<br>
 &gt;<br>
 &gt; Signed-off-by: gaoxiang17 &lt;gaoxiang17@xiaomi.com&gt;<br>
-<br>
-<br>
+&gt;<br>
 I am seeing below issue with checkpatch.pl<br>
 <br>
-./scripts/checkpatch.pl --strict 0001-mm-vmscan-fix-typos-in-comments.patch=
-<br>
+./scripts/checkpatch.pl --strict<br>
+0001-mm-page_alloc-fix-spaces-used-for-indentation-instea.patch<br>
 WARNING: From:/Signed-off-by: email name mismatch: 'From: Xiang Gao<br>
 &lt;gaoxiang17@xiaomi.com&gt;' !=3D 'Signed-off-by: gaoxiang17<br>
 &lt;gaoxiang17@xiaomi.com&gt;'<br>
 <br>
-total: 0 errors, 1 warnings, 0 checks, 24 lines checked<br>
+-Donet<br>
 <br>
 &gt; ---<br>
-&gt;&nbsp;&nbsp; mm/vmscan.c | 6 &#43;&#43;&#43;---<br>
-&gt;&nbsp;&nbsp; 1 file changed, 3 insertions(&#43;), 3 deletions(-)<br>
+&gt;&nbsp;&nbsp; mm/page_alloc.c | 4 &#43;&#43;--<br>
+&gt;&nbsp;&nbsp; 1 file changed, 2 insertions(&#43;), 2 deletions(-)<br>
 &gt;<br>
-&gt; diff --git a/mm/vmscan.c b/mm/vmscan.c<br>
-&gt; index 0fc9373e8251..710fbe1ee151 100644<br>
-&gt; --- a/mm/vmscan.c<br>
-&gt; &#43;&#43;&#43; b/mm/vmscan.c<br>
-&gt; @@ -109,7 &#43;109,7 @@ struct scan_control {<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* zone_reclaim_mode */<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unsigned int may_unmap:1;<br>
+&gt; diff --git a/mm/page_alloc.c b/mm/page_alloc.c<br>
+&gt; index 2d4b6f1a554e..752673a9b43c 100644<br>
+&gt; --- a/mm/page_alloc.c<br>
+&gt; &#43;&#43;&#43; b/mm/page_alloc.c<br>
+&gt; @@ -884,7 &#43;884,7 @@ static inline void __del_page_from_free_list(s=
+truct page *page, struct zone *zon<br>
+&gt;&nbsp;&nbsp; {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int nr_pages =3D 1 &lt;&lt; order;=
+<br>
 &gt;<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp; /* zome_reclaim_mode, boost reclaim, cgroup =
-restrictions */<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp; /* zone_reclaim_mode, boost reclaim, cgr=
-oup restrictions */<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; unsigned int may_swap:1;<br>
-&gt;<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Not allow cache_trim_mode to be=
- turned on as part of reclaim? */<br>
-&gt; @@ -6205,7 &#43;6205,7 @@ static void consider_reclaim_throttle(pg_dat=
-a_t *pgdat, struct scan_control *sc)<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (current_is_kswapd() || cgroup_=
-reclaim(sc))<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VM_WARN_ONCE(get_pageblock=
+_migratetype(page) !=3D migratetype,<br>
+&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp; VM_WARN_ONCE(get_pageblock_migratetype(p=
+age) !=3D migratetype,<br>
 &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; return;<br>
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;page type is %d, passed m=
+igratetype is %d (nr=3D%d)\n&quot;,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get_pageblock_migratetype(page)=
+, migratetype, nr_pages);<br>
 &gt;<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp; /* Throttle if making no progress at high pr=
-ioities. */<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp; /* Throttle if making no progress at hig=
-h priorities. */<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (sc-&gt;priority =3D=3D 1 &amp;=
-&amp; !sc-&gt;nr_reclaimed)<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; reclaim_throttle(pgdat, VMSCAN_THROTTLE_NOPROGRESS);<br>
-&gt;&nbsp;&nbsp; }<br>
-&gt; @@ -7064,7 &#43;7064,7 @@ static int balance_pgdat(pg_data_t *pgdat, i=
-nt order, int highest_zoneidx)<br>
+&gt; @@ -6623,7 &#43;6623,7 @@ static void setup_min_unmapped_ratio(void)<b=
+r>
 &gt;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_zone(zone)<br>
 &gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; /*<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp; * There should be no need to raise the scanning priorit=
-y if<br>
+;&nbsp;&nbsp; zone-&gt;zone_pgdat-&gt;min_unmapped_pages &#43;=3D (zone_man=
+aged_pages(zone) *<br>
 &gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp; * enough pages are already being scanned that that high<br>
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp; sysctl_min_unmapped_ratio) / 100;<br>
 &gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; * enough pages are already being scanned that the high<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp; * watermark would be met at 100% efficiency.<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp; */<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; if (kswapd_shrink_node(pgdat, &amp;sc))<br>
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sysctl_min_unmapped=
+_ratio) / 100;<br>
+&gt;&nbsp;&nbsp; }<br>
+&gt;<br>
+&gt;<br>
 </div>
 </span></font></div>
 </body>
 </html>
 
---_000_cdeeca7614ea4fac8449b581b1a13f6dxiaomicom_--
+--_000_5456c776468a4cb98fc24fbded24e441xiaomicom_--
 
