@@ -4,92 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 684CDF433D4
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 01:22:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75797F433D4
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 01:25:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5D986B0005; Wed, 15 Apr 2026 21:22:50 -0400 (EDT)
+	id B243B6B0005; Wed, 15 Apr 2026 21:25:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0E3B6B0088; Wed, 15 Apr 2026 21:22:50 -0400 (EDT)
+	id AD5566B0088; Wed, 15 Apr 2026 21:25:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 923B16B008A; Wed, 15 Apr 2026 21:22:50 -0400 (EDT)
+	id 9C4356B008A; Wed, 15 Apr 2026 21:25:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CFF16B0005
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:22:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AB216B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:25:05 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ED4F71A0755
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:22:49 +0000 (UTC)
-X-FDA: 84662669658.04.66BD246
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DA93C160003
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:22:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EWG5oybv;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B7551A0744
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:25:05 +0000 (UTC)
+X-FDA: 84662675370.04.88E94E3
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 52211180004
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:25:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=VXTOvnYo;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776302568;
+	s=arc-20220608; t=1776302703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M0bEAAbgBNmbxicu2CtQb8Q27gLpg83fQgDiS0p6Nz4=;
-	b=qvvq2ptATK4yDc1Brp2DGCRZb4ZTZGsRZL7yA8SwPqZ6/LCK62W6MuuUBFFy7aTM59NdXf
-	3jVIF/GeAkFA9MRPRJazARHGcWhx5kqNaj3HowLPFDDR+wuEDVzOVezAktBTvo71bqP/Q3
-	95NJ40hxxNGjSMOSxJq9XrRLSrar1Xc=
+	bh=L0GVcI8Mcl8O7u/nlxfa5xhicBajYIQOeBkH2STJXfY=;
+	b=wq9RLEVfIhV5JW1rV4SV6P/J1wl1oSrVCMn98JqFs2yKDTFnWQX6FzEDUZlECNG5hTusjP
+	BpYxRXc/OQiOhvmd4GNdhn+FZxhfp/l534WykCEk0myLrGJM/goqtcsQdq8juX05JNy0ds
+	GwHnQ6j732IHK4bRDeD0lT0Y1ehjGGw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=EWG5oybv;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776302568; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=VXTOvnYo;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776302703; a=rsa-sha256;
 	cv=none;
-	b=zCkcdo7vEkegILv5p97oXTtPoYeTw0AhqJFQXP/lw0bL5ljSzIwEYd/MesW04cLwjnAyao
-	b/1u5Zvk+wbLfRVmlMCLc3PG3fer6NHFmrCHKt/sVaMGazqj67HErdw6wiHDr/IzN1feAr
-	/1G90JsveGF5NSGduVOB13MwGLejaEk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776302562; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=M0bEAAbgBNmbxicu2CtQb8Q27gLpg83fQgDiS0p6Nz4=;
-	b=EWG5oybvxIkX9t8vcE78+GmHJsxURoAXQb3IXDWC1aITG6x5nAwZHUKVoFZtGJNtnt30/vsAlF3XEsSlIxAA8/0ck/oAzdMWW8+QF4el8teSQUQUoQgJoDys+e7AvSx3gbDuCEsJ4pInr9WQ5qN9d8cinEQCZ97kVwqV2QSht0E=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X16GTzA_1776302561;
-Received: from 30.74.144.131(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X16GTzA_1776302561 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Apr 2026 09:22:41 +0800
-Message-ID: <16745f2b-b008-4df1-ac76-f18b4a826dbd@linux.alibaba.com>
-Date: Thu, 16 Apr 2026 09:22:40 +0800
+	b=JjKWKNHYQolovIrjs+3n6zuaQ7Htw8mXWGvlBd5iBFeeyXOsSxmFDZFbVlba5QUABGAMuu
+	jN1IO/h3yBEoudTjBpU53JKLs0ttMdKymWkLa30LF+E0gmFhjBkFOH7NqgG4DwyJO+58Ep
+	MzY+xX4Wy+beRgbHheu9fpL4O6sHvaI=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50d880e6fbbso2000221cf.0
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 18:25:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1776302702; x=1776907502; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L0GVcI8Mcl8O7u/nlxfa5xhicBajYIQOeBkH2STJXfY=;
+        b=VXTOvnYoKMYdHSxLEL95g9Mw2463sKY+gUJWNE/sEnUrL7KP3u4lRxetG8OPtvSKu2
+         f4CQykHTKJrB45kNZx2uocdZZ9QZlgLKrxB/2DNtWAUPhMYBiYtHYRVP9+tIYGGDN15m
+         G7G+jEbW/UUMLMJ7+/ND4clHRAxu0L5asLtA/R2e0HMrLo/Hgh2zI92Z9TFC3qdlivxN
+         hv5NWu1wYpp7ihSab+REkk2CaQ43lGDUVAFkn21+CWtoFCQwWG9T7KcL1tAwiFKRLDXt
+         kBw4RWBm13Z/nDDIZHvsWfcPnubN3P6lC8TQG6NAO0IA0nLTx6IqXJhlFDTcXM7RYfmg
+         tLlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776302702; x=1776907502;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L0GVcI8Mcl8O7u/nlxfa5xhicBajYIQOeBkH2STJXfY=;
+        b=S1gNLRKKKYSVZHcAg250yZhb7fJVt7umpZZag2vfHe74UDs5yj/z8brdSN0mtyBwHP
+         pXkxLcvxmRwYXlwxPkH+2uv2Aj5Kai61fkSZyn3WNTSORTDEMv15NS/0UpC2/d+AQ11O
+         ItOLhpRNsF6xYa5Tceev2Npg0XA1xVz0bX/LWci7o0s2pYlVK5w3D308B9ZHyrmlPdWK
+         qzbLmTBqGDvfuLjSdfrFU2vsFhILXfGz0ySxXJruAYbEjR+JXAlxnKYQKgXUsbikff5A
+         JFa3z+Iq6FdK0vo4c2P7XaMvBzAo7YkxaodaIm6j6U7NDxOCepgvdV4sfs91q+aw2fSi
+         nOuw==
+X-Forwarded-Encrypted: i=1; AFNElJ/budeS4c1mw951bu89UHXPYKlI9rSCbGk9ZPJtVC0kvnsNOcv22No66XqYCahXDTaDMNaPxzLWKQ==@kvack.org
+X-Gm-Message-State: AOJu0YylYaY/kOZjwwhGYbEGDJoKP1ZKyQZwtKYQOdCoVgV/+v/iK2/3
+	9pvuN2mhE/NxFFYAyV6m02jsQBriwFEwTAfc+SrIsbpWyKHb5oCqg14NsnbviPH14Lc=
+X-Gm-Gg: AeBDieugVfFKYwXQp39GjIJi8EYVEf/0/XEVNGj6XYZh/ZDhT2zTz79XMir7arQjfrP
+	ml5mROoYWKp2EqxO50SwpiE9vBpFIgmyfnKroGf4M6YT9Mk9bLN8U7JrG9k7RmjQicySNiEu4nK
+	e+Xsnij3OaA76qzQGqyhP8ayU9q0m1flBlW0NLQ38No0rgOPPcHXAoBaQ2DT66TSYRfbf7nwfPZ
+	iSH7zM44pAuYgqqjaZUIRCGUGlJbCTdgqydY5ZW0mbTeHwtD1JmbK1p4PNx2dJ/sKVWAt4SWreI
+	/olohn9HCPcO7LYtjMEapTanTQTuE9+rPMnnub3W3YCpJDUa7rSdXWSCAqGrQj2ztBvOMYV1U5L
+	uAqrYF2PFIQ1rbj+gLN52ONo735M8oEqx0zB4NYgLlzWO7Sa8BZVwfn0V12IN9OayI+wGbcCb5B
+	yFnbthXVtwXdFtAyDy6Qjr4GFDJ53dwdy7B+0Ft6eLrWfnvTAl56Bz3kyWc2A9k7a9vfCuFiUKk
+	i/2yDv7+ruOVW0osIQrWB0=
+X-Received: by 2002:a05:622a:d1c:b0:509:1b5c:fe25 with SMTP id d75a77b69052e-50e24b8e774mr23717671cf.23.1776302702216;
+        Wed, 15 Apr 2026 18:25:02 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-108-28-184-130.washdc.fios.verizon.net. [108.28.184.130])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e1adbcf10sm24957831cf.10.2026.04.15.18.24.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 18:25:00 -0700 (PDT)
+Date: Wed, 15 Apr 2026 21:24:56 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Frank van der Linden <fvdl@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	damon@lists.linux.dev, kernel-team@meta.com,
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+	dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com, longman@redhat.com,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, osalvador@suse.de,
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk,
+	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, tj@kernel.org,
+	hannes@cmpxchg.org, mkoutny@suse.com, jackmanb@google.com,
+	sj@kernel.org, baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
+	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
+	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
+Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
+ Compressed RAM)
+Message-ID: <aeA6aNDpQ-U5UJCs@gourry-fedora-PF4VCD3F>
+References: <20260222084842.1824063-1-gourry@gourry.net>
+ <3342acb5-8d34-4270-98a2-866b1ff80faf@kernel.org>
+ <abwRu1FNqI3dVyqL@gourry-fedora-PF4VCD3F>
+ <2608a03b-72bb-4033-8e6f-a439502b5573@kernel.org>
+ <ad0iT4UWka3gMUpu@gourry-fedora-PF4VCD3F>
+ <38cf52d1-32a8-462f-ac6a-8fad9d14c4f0@kernel.org>
+ <ad-r7hwIdnvKsrh9@gourry-fedora-PF4VCD3F>
+ <CAPTztWajm_JLpp9BjRcX=h72r25ELrXeGkOXVachybBxLJGS=g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
- shmem mount
-To: Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- hughd@google.com, willy@infradead.org, ljs@kernel.org, lance.yang@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
- <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
- <e07071fc-15b7-495f-b6d5-96004aa0f8b6@linux.alibaba.com>
- <c88ea567-6b03-4540-8173-7fceeac23f7d@kernel.org>
- <2d138a3f-0006-4a01-852a-4570d7ba781d@linux.alibaba.com>
- <eda13ed2-117a-488b-9120-d64e0fe0b731@kernel.org>
- <1a3cb6b2-94e0-4268-8cd9-1f9a9deb6c6b@linux.alibaba.com>
- <875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org>
- <b3257e56-b202-40b4-94a8-0f4ba5e24cfd@linux.alibaba.com>
- <846B17B0-1BAF-4959-8FC2-42744C44B1D6@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <846B17B0-1BAF-4959-8FC2-42744C44B1D6@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DA93C160003
-X-Stat-Signature: gp86zgtuui4r7yuxo4x56uxadtnu19j9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPTztWajm_JLpp9BjRcX=h72r25ELrXeGkOXVachybBxLJGS=g@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1776302566-328127
-X-HE-Meta: U2FsdGVkX1/dgILsKveJrSZMy6nCmUT18fzRDGNberib6VLMNKCzijt5zqaytQBWWCMb2Cyx4TmCFJ3qfO/og6AkFIzDdN5isKGvgDQkeOQcHqrv2fLl3MQrHLszzehOZgmAKN2fEj3qB/WbTrNY8o0KLMTp+1y53MpLN9U4V+/pO+8cMyufi5ir/2OFCiftpEyHt9gOBFA4eOXfKDNOpPd7qE4tYZCXcFhS+s6gcCvHmPVUXa5/tk25OrILLYptBMcIHTujLC5lAC0Tz7Kt9n4scnDIvE1Ms414btRkrOxEREjXqNG/Fe1GFWLjs514XmGeP9KapzIdwiBTZWX1all36ljhYahEr/24XWCKrcNw3Ec+IJQfRWDoPXuHhu85hRJ7zTNW1pzSWXr+d3KwV6UI4eka26J+y0ZmkoSwQi37mcgOZRUEKBgGaxVzEoZBYJlGEPBcQnW9HRPCPsWNnlj+A74FHqWfSwA2TxLe6YMs4RzQ0SJ+eLjijpbfH3IqW49crspptfrMOiJTBd93QStsCNwd6QqVoS5//cuO7m99KY8rryqJkKkAc3ZokdSuzPW2SkknzwW69SbiuaXTOq+Ww4nZ7JMkLMEKarBzlz9Y1I8J1emdXwyCO82zfr1K7rrGUbxxu0gzG8kQdmAuzeTAdYs0nWXMOaIS49Sia7eidAF2QvOwQRucXkdL2WZp0ahtxTfZOqWI6GEca+NOu3y/KqGMoj2iwNNTWdybMBq5RplAQpQ+aGPf3mqanCwVUPLstCyoou75FqoOLqMSoERk3ONmBu1XJN583bwNpqKNkosEPzEAP6jVBScW0+GzAc8RtDHNdAr6MO1C4oF6pZekwe9M8XDEOENJrfGyz8fMdlRRuWhIToH1vxBhcYD2D8+RJsc3V/mu/CRWPS6cXt4iBDSIz8w4KsQZyGhfSP5CdcBY2p2JJJUZO2eUA8yBdpOz0mkeKvBv3Mz7GLf
- xcx1IFJe
- 0ZPu9DaA5Hqa7hgX3jf056cd7VXcl9bMpqU9y+WkvMBDuzBazOoClgyI7Ln2msmLKKWQXDXFGqkw4VwAGguOVDGrLCQCUUtL6CDOz2HQCVVHeDMPCrXvML2QSQAzCQMXRSqwjEv7C8BinfZtg6uW+lJDV3EaB3hqh3aOkch3rSqY/kIK6PiYoxo8LsWWwPO91ebu6b7G24T0Re0nDzFOSfwIU79vCHrIz0bxeG4MNBLI7Te7euYvanXsWtXpAj/nguTYT1bce2t27Y10NqCEgFxEM1AHrxgW37B8S6tsc93md+GIKB6n4cPzoplCdEid+ZdZEvLWxe9cYMmwa+hyAAzs8SQ==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 52211180004
+X-Stat-Signature: frxzpy7ni64kfgxh334f1rqhenm9ic7t
+X-HE-Tag: 1776302703-689590
+X-HE-Meta: U2FsdGVkX1/r/GDY55yCFwxWbDNqHdBaRWvN0ISEnf4VoFdfaOVro8V5UkY68/lE3AzzeJQ4XHzBp9C41azu2+lVxCyZFGHUApcoNtmupp+5jPbH0GwoU1Chrbd4XRnXoPsVi/8p2VVn2k88k2a4b+BKb5O3qmPey6OI2MAyH45jDF+gxi93AV81qnIkNlyWf/ppwOhDxx2nD59VgU5qJGv2cmkVoclKmW9frKyaU1N2+3db/f3UQ7GFhhSFQg/vp6jU3A36r1nMpbK8na55jQfE6KkoRZM3cq+XUwX7+6xXtOAf+PbY+YwO9ZTOOmTeQLI4J5XOAvli9TsNLKhvKPV+F3if5eeKDvpYHQu61elJwXOLdyWkBIJBGj1w+XuLvu8IKAI2fobX2R4tI733WU7mL/vgCdjSzNZcf3kHpPgspoIWzCx4wbb1PTxyHF4uGSgwNgmB55pt0Pe343zXXcXVCL26LJIWKyGchZ5skBccc0jGyd7rbqV8X81EvnvkqHJPZNfdbpBQzGNxFBgZ1SWYHE7RkTvwe5gNuSCrArJiWkRNIjJ8HmbUg/aKGSCyq9dOj01Vhk+uzFzhBMN9oAa5BLakxgrdXoNd5Jqc2Ax89wngxUng7wwp+SCj3I4CqJVTyOfUarN/IQoh6xVE4HG+d8yRHrosEmaxE9qfncIZ74xrreAKljyNf1CNZEhZMNWabZMOFdvawm9VbBrazDTNSCPlUNPgND/bL92muaUtAC39pJPDQ1OrqAsqm/Qt0gNadSzZCFJ+Aw5uE/ntJSKWHrO/MZ+IwugntaB5MbcsrBQ3oC/Aw6imYGiw9Xtih4K1JRlVX80Fqe/DIKA38uIcAU1ZvrGT6/LzHnFSmxg602BmJuIakX+zXmctziYWYhbE/QuHN9jCKswsnGwnGOnqUX0cpiS+qQCScsll6aarp1mn/hk+zeT+SwDQsl16JAdLmmmDjLTEhzPyZ+2
+ XYApvU9z
+ mIJBufPwEfTCgHTsVQtafCC9kC107q8VBG6FGuu07gqtTW82+Bh9U8VxUPqPLwhwBg2/zXTFxtBR9JK1Sq3VqyQSkrJq5CUfxOQG3pIYVfqeirGds/2Z5QOVy7gwQaHpOAsxXFW7kp8ISJ+DtHl/qGZBiYVKqmjeS6/wbvFyQo8QHfnwJwIo9aC9u1tB9ssDWlwKbbQ9pu5OiLbRinN4Pl6U2mjDWtn4fjSVXWohPKW3hqB4+dex0SbZ3BKEsuVljF74zgRTiB7O9KP7sQSZ4wyyFlIsTdqEqH0z76d1HCScIMlYDjImU1eVlwCPXUHJRRR+ICPWeuLStl3FliHDpg6H4gc6SfSCvqw5ihTd9zX1Xx7ntJN7QJ3Q0gUSqTvOaTS7MJGdijMckW6YqP6+Brh2TIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,68 +151,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 4/16/26 9:11 AM, Zi Yan wrote:
-> On 15 Apr 2026, at 21:05, Baolin Wang wrote:
+On Wed, Apr 15, 2026 at 12:47:50PM -0700, Frank van der Linden wrote:
 > 
->> On 4/15/26 10:36 PM, David Hildenbrand (Arm) wrote:
->>> On 4/15/26 12:05, Baolin Wang wrote:
->>>>
->>>>
->>>> On 4/15/26 5:54 PM, David Hildenbrand (Arm) wrote:
->>>>>>
->>>>>> Yes, that makes sense.
->>>>>>
->>>>>> However, it’s also possible that the mapping does not support large
->>>>>> folios, yet anonymous shmem can still allocate large folios via the
->>>>>> sysfs interfaces. That doesn't make sense, right?
->>>>>
->>>>> That's what I am saying: if there could be large folios in there, then
->>>>> let's tell the world.
->>>>>
->>>>> Getting in a scenario where the mapping claims to not support large
->>>>> folios, but then we have large folios in there is inconsistent, not?
->>>>>
->>>>> [...]
->>>>>
->>>>>>
->>>>>> For the current anonymous shmem (tmpfs is already clear, no questions),
->>>>>> I don’t think there will be any "will never have/does never allow"
->>>>>> cases, because it can be changed dynamically via the sysfs interfaces.
->>>>>
->>>>> Right. It's about non-anon shmem with huge=off.
->>>>>
->>>>>>
->>>>>> If we still want that logic, then for anonymous shmem we can treat it as
->>>>>> always "might have large folios".
->>>>
->>>> OK. To resolve the confusion about 1, the logic should be changed as
->>>> follows. Does that make sense to you?
->>>>
->>>> if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
->>>>       mapping_set_large_folios(inode->i_mapping);
->>>
->>> I think that's better.
->>
->> Thanks for your valuable input.
->>
->> But has Willy says, maybe we can just
->>> unconditionally set it and have it even simpler.
->>
->> However, for tmpfs mounts, we should still respect the 'huge=' mount option. See commit 5a90c155defa ("tmpfs: don't enable large folios if not supported").
+> This has been a really great discussion. I just wanted to add a few
+> points that I think I have mentioned in other forums, but not here.
 > 
-> Is it possible to get sbinfo->huge during tmpfs’s folio allocation time, so that
-> even if all tmpfs has mapping_set_large_folios() but sbinfo->huge can still
-> decide whether huge page will be allocated for a tmpfs?
+> In essence, this is a discussion about memory properties and the level
+> at which they should be dealt with. Right now there are basically 3
+> levels: pageblocks, zones and nodes. While these levels exist for good
+> reasons, they also sometimes lead to issues. There's duplication of
+> functionality. MIGRATE_CMA and ZONE_MOVABLE both implement the same
+> basic property, but at different levels (attempts have been made to
+> merge them, but it didn't work out).
 
-Yes, of course. However, the issue isn’t whether tmpfs allows allocating 
-large folios.
+I have made this observation as well.  ZONEs in particular are a bit
+odd because they're somehow simultaneously too broad and too narrow in
+terms of what they control and what they're used for.
 
-The problem commit 5a90c155defa tries to fix is that when tmpfs is 
-mounted with the 'huge=never' option, we will not allocate large folios 
-for it. Then when writing tmpfs files, generic_perform_write() will call 
-mapping_max_folio_size() to get the chunk size and ends up with an 
-order-9 size for writing tmpfs files. However, this tmpfs file is 
-populated only with small folios, resulting in a performance regression.
+1GB ZONE_MOVABLE HugeTLBFS Pages is an example weird carve-out, because
+the memory is in ZONE_MOVABLE to help make 1GB allocations more
+reliable, but 1GB movable pages were removed from the kernel because
+they're not easily migrated (and therefore may block hot-unplug).
+
+(Thankfully they're back now, so VMs can live on this memory :P)
+
+So you have competing requirements, which suggests zone is the wrong
+abstraction at some level - but it's what we've got.
+
+> There's also memory with clashing
+> properties inhabiting the same data structure: LRUs. Having strictly
+> movable memory on the same LRU as unmovable memory is a mismatch. It
+> leads to the well known problem of reclaim done in the name of an
+> unmovable allocation attempt can be entirely pointless in the face of
+> large amounts of ZONE_MOVABLE or MIGRATE_CMA memory: the anon LRU will
+> be chock full of movable-only pages. Reclaiming them is useless for
+> your allocation, and skipping them leads to locking up the system
+> because you're holding on to the LRU lock a long time.
+>
+
+This is an interesting observation that should be solvable.
+
+For example - i'm pretty sure mlock'd pages are on an unevictable LRU
+for exactly this reason (to just skip scanning them during reclaim).
+
+Which is a different pain point I have - since they're still migratable,
+they could be demoted to make room for local hot pages.
+
+> So, looking at having some properties set at the node level makes
+> sense to me even in the non-device case. But perhaps that is out of
+> scope for the initial discussion.
+> 
+> One use case that seems like a good match for private nodes is guest
+> memory. Guest memory is special enough to want to allocate / maintain
+> it separately, which is acknowledged by the introduction of
+> guest_memfd.
+> 
+> I'm interested in enabling guest_memfd allocation from private nodes.
+> I've been playing around with setting aside memory at boot, and
+> assigning it to private nodes (one private node per physical NUMA
+> node), and making it available to guest_memfd only. There are issues
+> to be solved there, but the private node abstraction seems to fit
+> well, and provides for useful hooks to manage guest memory.
+> 
+
+I have wondered about this use case, but I haven't really played with
+guest_memfd to know what the implications are here, so it's nice to hear
+someone is looking at this.  It will be nice to hear your input on where
+the abstraction could be better.
+
+> Some properties that I'm interested in for this use case:
+> 
+> 1) is the memory in the direct map or not? Should that be configurable
+> for a private node? I know there are patches right now to remove
+> memory from the direct map for guest_memfd, but what if there was a
+> private node whose memory is not in the direct map by default?
+
+Presuming a page was not in the direct map and it was in the buddy
+(strong assumption here), there's a handful of things that would
+straight up break:
+
+  - init_on_alloc (post_alloc_hook) / __GFP_ZERO (clear_highpage)
+  - init_on_free (free_pages_prepare)
+  - kernel_poison_pages (accesses the page contents)
+  - CONFIG_DEBUG_PAGEALLOC
+
+But... these things seem eminently skippable based on a node attribute.
+
+I think this could be done, but there is added concern about spewing
+an ever increasing numbers of hooks throughout mm/ as the number of
+attributes increase.
+
+But in this case I think the contract would require that an NP_OPS_NOMAP
+would have to be mutually exclusive with all other node attributes (too
+many places that touch the mapping, it would be too fragile).
+
+There's a few catches here though
+
+  1) you lose the ability to zero out the page after allocation, so
+     whatever is in the memory already is going into the guest.
+
+     That seems problematic for a variety of reasons.
+
+     I guess you can use kmap_local_page?
+     But then why not just unmap after allocation?
+
+     If never mapping is a hard requirement, if that memory lives on
+     a device with a sanitize function, you maybe could massage kernel
+     free-page-reporting to offload the zeroing without having the
+     kernel map it - as long as you can take a delay after free before
+     the page becomes available again.
+
+  2) the current mempolicy guest_memfd patches would not apply because
+     I can't see how OPS_MEMPOLICY & OPS_NOMAP co-exist.  A user program
+     could call mbind(nomap_node) on a random VMA - and there would be
+     kernel OOPS everywhere.
+
+     That would just mean pre-setting the node backing for all
+     guest_memfd VMAs, rather than using mbind().
+
+Something like (cribbing from the memfd code with absolutely no
+context, so there's a pile of assumptions being made here)
+
+  struct kvm_create_guest_memfd {
+        __u64 size;
+        __u64 flags;
+        __s32 numa_node;  /* Set at creation */
+        __u32 pad;
+        __u64 reserved[5];
+  };
+
+  #define GUEST_MEMFD_FLAG_NUMA_NODE    (1ULL << 2)
+
+  if (gmem->flags & GUEST_MEMFD_FLAG_NUMA_NODE)
+      folio = __folio_alloc(gfp | __GFP_PRIVATE, order,
+                            gmem->numa_node, NULL);
+  else
+      /* existing mempolicy / default path */
+      folio = __filemap_get_folio_mpol(...);
+
+Which may even be preferable to the recently upstreamed pattern.
+
+> 2) Default page size. devdax, a ZONE_DEVICE user, allows for memory
+> setup on hotplug that initializes things with HVO-ed large pages.
+> Could the page size be a property of the node? That would make it easy
+> to hand out larger pages to guests.  Of course, if you use anything
+> but 4k, the argument of 'we can use the general buddy allocator' goes
+> out the window, unless it's made to deal with a per-node base page
+> size.
+> 
+
+Per-node page sizes are probably a bridge too far, that's seems like
+a change that would echo through most of the buddy infrastructure, not
+just a few hooks to prevent certain interactions.
+
+However, I also don't think this is a requirement.
+
+I know there is some work to try to raise the max page order to allow
+THP to support 1GB huge pages - if max size is a concern, there's hope.
+
+On fragmentation though...
+
+If the consumer of a private node only ever allocates a specific order
+(order-9) - the buddy never fragments smaller than that (it maybe
+spends time coalescing for no value, but it'll never fragment smaller).
+
+So is the concern here that you want to guarantee a minimum page size
+to deal with the fragmentation problem on normal general-purpose nodes,
+or do you want to guarantee a minimum page size because you can't limit
+the allocations to be of a base order?
+
+i.e.: is limiting guest_memfd allocations on a private node to a single
+order (or a minimum order? 2MB?) a feasible option?  (Pretend i know
+very little about the guest_memfd specific memory management code).
+
+~Gregory
 
