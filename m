@@ -4,131 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31A1DF8A163
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 12:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CDF1F8A16C
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 12:12:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 548846B0005; Thu, 16 Apr 2026 08:05:44 -0400 (EDT)
+	id 4B6F36B0005; Thu, 16 Apr 2026 08:12:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FA356B0089; Thu, 16 Apr 2026 08:05:44 -0400 (EDT)
+	id 468176B0089; Thu, 16 Apr 2026 08:12:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E8A46B008A; Thu, 16 Apr 2026 08:05:44 -0400 (EDT)
+	id 356F76B008A; Thu, 16 Apr 2026 08:12:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 30B9D6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:05:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BF74D1B8B1F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:05:43 +0000 (UTC)
-X-FDA: 84664289766.26.89FA05D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5DC911C0011
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:05:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xfBPxdTo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="T4/LdxVK";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xfBPxdTo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="T4/LdxVK";
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776341141;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FFAE6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:12:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DCCEBB77F
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:12:52 +0000 (UTC)
+X-FDA: 84664307784.01.D1AE24A
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2583F40015
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:12:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=do1uEFxp;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf27.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.219.43 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776341570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rzic6Sec5CbuqHmkHsjg0YroaADL07uS7ZD4kwHtxlc=;
-	b=5wOpeNVPz2Jb96HS61ZH+ofcS+Io3MSyCV7NQVQQCCqSybJZ8EGd8aLt12COGFCu6fDP1u
-	YgopOrOJamESuoA8LgiBlLwsWoRPop5pyqc09Lhv8wpK4db9/szvsC9T4RWsiomeq0/uUv
-	JhY0UD43XPGjMy9JIRdVDuJ/c7/QGMc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xfBPxdTo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="T4/LdxVK";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=xfBPxdTo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="T4/LdxVK";
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776341141; a=rsa-sha256;
-	cv=none;
-	b=hdXBLQt+5c6WlMvhcOis3LCb9xbiDuMMC7YDY8ijtvWi6jXXI0dU3d6hS6JdsvWWwhnRkk
-	HxXbVlJOFFROguwPCMU4K0osYteAFQ5T++CW0MN9c4aRYaxb9jDziuxahGWS2kg9WMBBko
-	sY39n9qTGrB5P3rioUo0mKPlVCUSVxo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 90A296A7F9;
-	Thu, 16 Apr 2026 12:05:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776341139; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rzic6Sec5CbuqHmkHsjg0YroaADL07uS7ZD4kwHtxlc=;
-	b=xfBPxdToC5U8ErxBtunsRT59prlS+QPeDJbP8MISpIr85lpV8SNIAxskf3Z2TescqwqKRS
-	Mtnx52HZXpkrmMVmR72ez8LpqgrCT+qE7jcgSfOw+7K3PnsjPC1cBwLMpob+aIZ5mpNzJ7
-	EbiGqRohc65yUIINs9Bm8BE8S9K0leE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776341139;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rzic6Sec5CbuqHmkHsjg0YroaADL07uS7ZD4kwHtxlc=;
-	b=T4/LdxVKWKFmDADmBO/WtToF+wVJa/EczIBvCy3ZlXL4Hio4qD/62bOiZV6/MmBly+pEZG
-	78MGpUi8qwmm57Dw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776341139; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rzic6Sec5CbuqHmkHsjg0YroaADL07uS7ZD4kwHtxlc=;
-	b=xfBPxdToC5U8ErxBtunsRT59prlS+QPeDJbP8MISpIr85lpV8SNIAxskf3Z2TescqwqKRS
-	Mtnx52HZXpkrmMVmR72ez8LpqgrCT+qE7jcgSfOw+7K3PnsjPC1cBwLMpob+aIZ5mpNzJ7
-	EbiGqRohc65yUIINs9Bm8BE8S9K0leE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776341139;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rzic6Sec5CbuqHmkHsjg0YroaADL07uS7ZD4kwHtxlc=;
-	b=T4/LdxVKWKFmDADmBO/WtToF+wVJa/EczIBvCy3ZlXL4Hio4qD/62bOiZV6/MmBly+pEZG
-	78MGpUi8qwmm57Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5CF22593A3;
-	Thu, 16 Apr 2026 12:05:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IPOmFpPQ4GlRBgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 16 Apr 2026 12:05:39 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id DCB6FA0B67; Thu, 16 Apr 2026 14:05:34 +0200 (CEST)
-Date: Thu, 16 Apr 2026 14:05:34 +0200
-From: Jan Kara <jack@suse.cz>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, 
-	ritesh.list@gmail.com, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>, 
-	dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, 
-	brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
- RWF_WRITETHROUGH
-Message-ID: <5l2pnrwodwbey7lwmysjxldqpm2kbyi7kqp5tqg7xozvaoecuh@dcglcdr3ipnz>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
+	bh=xs4hGlZiJqAV9QCGrkSslLomiSfE5gcr4xqzLhglwS4=;
+	b=BGixrj7cvatJ+DyzGk1sMp/1WFXHbLuaNrF8wiXyiWJ4yOYpROzCm90XcsxDJ0SP5u3Y5Z
+	FY58+7Y9rW75z9cWcZPwuLY72VWGYaCTamI879PdM2JHYA+PkV5J2BHg+XtCyp5xfhvMe3
+	z7secTs+RSqye/yeOSkNVXtxw8mImog=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776341570; a=rsa-sha256;
+	cv=pass;
+	b=blCJfVFzOK5ovs5z79yGnMtIuW8eOEagJsCV32xe2FoO072nxbbIlbX3t2wRE3UtV4MZOq
+	PGFGvVGULJO8lvvm+k2qU8dm8aJrHRa5G/dsd11Uo68RNF3L8CNoQCFaDQ1MMC0kigX2PR
+	We5kJgZGLwCEGJWkkIS16hccGai3ow8=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=szeredi.hu header.s=google header.b=do1uEFxp;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf27.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.219.43 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
+	dmarc=pass (policy=quarantine) header.from=szeredi.hu
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8a016799d2cso85057866d6.1
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:12:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776341569; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CcGnM6dY0gIgDBy5V6fyUWDHEj4xNypZmQraUsyOTceCPBt2BsH33muTDK/nsbq1cJ
+         AALWhxEHzRwvx86xVdt3MqBMc9cTsTocm522umKfx1NBQb9htIQcLcQnCHVhpXe1QAZI
+         YAONHmFEAD9nQT8L61v9BxhywHj5LT0BLaF5o4L5WwukSQnPfQ/h+iZLfripZPt2e6i7
+         5c6dT4bE3ZPuaqGU33zYQI6Qu4wr8cq8PWZwFhm75LPSxgAknl0bslShp85OyDwN6Vu+
+         UdA0mtNltldUCV1xTVlGqcOcTf8DTKjzPsrx6SoYOJiDp/dfCDTLNfo9nMP9LBSQwoK6
+         ryrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=xs4hGlZiJqAV9QCGrkSslLomiSfE5gcr4xqzLhglwS4=;
+        fh=Tr+yDhr4X3nfVZoREwn3gm1dB66/BUqH+Qg2Qk6RamI=;
+        b=lySiErLQpK4cNq+UXUaMKqlOx6LwHCP+8zUvzZmH8j+b6bly1Lrao4YD7VqwkOsCa7
+         fnsnFqI1FCeu348Aa2vJeQCbpos8tE2OombGbMgzbVVN21EfQj84KLirL45jKQAHeroU
+         XWbPXd2/AUSdWo4OqKSadmeELY0mcz//XynKi/5dkXsU2HuEN1O2Fj8gLLxpGXHiuHbF
+         Xun9uH0d+gjd5MLxc7/ZGOTpS1Cdm3wVzeLZeWJ1vJOWiTHygUBSuDmo54fC999kaXMo
+         3kL3FRipuYUaxN5L6maOnqDUKfiN+uSczfy9KTlFXrld6b7BxLHQNw/GxPVzHV0WcWZd
+         1RKA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1776341569; x=1776946369; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xs4hGlZiJqAV9QCGrkSslLomiSfE5gcr4xqzLhglwS4=;
+        b=do1uEFxpqUs7pgKiI3ee0NX7A+CXZzVNLyuEa536Zc904FaSE7feSFOTE2obxQ7tc+
+         fHgmUEdFzFm/pgCu+39d3txrBY0MPeazUyHnlSvkJaDkQYXeEqf9+o7pi7rBfdYQRoN/
+         OHDa0sJrVRKBcx9PRIm2/hS6RO97FIKEnuS3I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776341569; x=1776946369;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xs4hGlZiJqAV9QCGrkSslLomiSfE5gcr4xqzLhglwS4=;
+        b=rvO+I79wX2fNrLWIaB5ccJMgaetbIbOyzEobN5EkiPPezx+Uja6Duvb+mDrpj6tKPf
+         Z9P9fFfaoWsd4+vSEG/dEm+knyCmv1/lp9cJuNssbt6rysrx7hhz48+rV7ZN9woQ9ngv
+         R0N7xQHd4dyk+O/c2uG9zUdclWnc56b7IKvcl9EuSmkZQzXXuuKHk+NHse5xQeKAhH9B
+         rVw+Ltzg3CXDySwpwwpy0jctn3fIR8M216eqdpemuDwcQrogY6HQY4kZgCfE0ooEA5yD
+         vuqhHls3KQ5lCeYtClqgA1qXsi9SIBUxZF4mME/HvfvBmJ5sNz3qTsypJDHxKHNGU6df
+         ObYg==
+X-Forwarded-Encrypted: i=1; AFNElJ97TOVja7cSQhwoFmty8nmHzJk8vyjtvjIXxzCZM31DL71KuMiLHUl6fkyPlecqiID3W28i4g4m+Q==@kvack.org
+X-Gm-Message-State: AOJu0YwkEwxVxzXv28qsl9TTbPEfBCRQO7qUR3/L4w03mP7uNaoQzVBu
+	I4jNNFu2wRXmAVyh8SgIR39WLhpFt/zt2BXnNI2fM+3KH+uyQlHga1jml6hsAn68ClV95/LKl77
+	gunNsxa+zEGmO1FH3yWlYBnbNX8xxzBp3lPJDZgzuHg==
+X-Gm-Gg: AeBDieunZzGwSxebEENq7ViOqPLMnPYPbGIa5B6qKydFb3Z2W/vAbhMP+WSa9HDw1OG
+	6yxkHUiUR3Ghjpkr/qVxyFWKIRpepB8mNCaDV4n9/mh93/Bic60ohH8JmnAnuuup02uk+E9/PBW
+	OwdlyiaFvd3N68dBV0zo1vqm5zg954Q3ZULPvV1v4d6rHZicYZ9RepBhwjWEoc7r1MMea90JfFR
+	g48EtEWoQy/XyzWY2a8lhjQ3LzQRb3rAiBjSG5BpXVCvb8r0KLbTaG0lNAJwIlPvEr0bOnRUrf/
+	qOh1EVByNoW1aBALxBSIOO98dtkLGJBqSUQT
+X-Received: by 2002:ad4:5e85:0:b0:8ac:bb62:fe5b with SMTP id
+ 6a1803df08f44-8acbb630feemr194285446d6.12.1776341569011; Thu, 16 Apr 2026
+ 05:12:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5DC911C0011
-X-Stat-Signature: py8q8c3wcaeypweeh8h4qkzhd4rmmxt5
+References: <898a4e10-6193-4671-b3b1-7c7bc562a671@fmap.me> <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
+In-Reply-To: <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Thu, 16 Apr 2026 14:12:37 +0200
+X-Gm-Features: AQROBzBX4a19crGk_XkETxKLhmewGXqK0FtKuy_vUEQL4x7MLk1p9L_bODNm4ek
+Message-ID: <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
+Subject: Re: [fuse-devel] Debugging a stale kernel cache during file growth
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Nikolay Amiantov <ab@fmap.me>, fuse-devel@lists.sourceforge.net, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, Amir Goldstein <amir73il@gmail.com>, 
+	fuse-devel@lists.linux.dev, linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 8dfnbdfg96sz161jh9xsndi9176p5aen
 X-Rspam-User: 
-X-HE-Tag: 1776341141-815545
-X-HE-Meta: U2FsdGVkX18j3g+t8R5BDlHAX3WgSOS8Y2ZYD+fcm0F1ouZqXbAg9rKUUAhX8KbQdrX2VL3HmBt6MCAjLsI5TDFLABOKBMKKBD+iPQuZkMdnxBOPIa9dXoBfb/3il/Fg97FGKgUOdPtDc7aXqCH8Fu9q/D/GSKvLix3eUTBxRhnKgzzu7cBHybEAlL+WIUjUIn3o8xzaUnF5eW27vyFe3hjAAuOa/zgl1aBIhKkEPGBeO9UicGUH3SLyjDuBOBR+JiS/zDBeyWF0eGkA3+EAcN9DDZEKsUb/XtQLQTnZjwEK3XI9IDqSd1am6oYYFZzHCWZd+ZgHXuQvGMvyjNsh/mX4YSxOIoQxqRp5dzLtF5rlGIC6wmyTqHYPVLfxwqGsjqL/ocCje4zacNxgPir9hId4nv9UO0l62LgEEXdFRvbEzsNOYHxOQ6YLum6jqWBmRRs2QeSvbl7NA08+dIrEnWPJSDD8HmTeSIKANk6slE1KsKPRWKu94zIGM1RxkYevJ6PNdr58AD4/OxbenwusrCnhlf/OZjlhrskeYVMwf2qcl9m7TU3r7y29LFY7wCrTildb7105s8DiqZSe4mJ2izd5EfH/P6gYeSZtrX2FfK1tvfz6O7RQMKLOzlcOubQU4sQzUI6OCrdgcA5KWuX7v/VyfsSWtFAaoDZNEYxoz7BhzlNRto/v0vIt9SLaEtD86NYkpC8Lv7ijplKLSpeOHhVkTifLkF4TqWML+E6pReD2bGqeMjHQv1QsLzj/a4wBRPhDiqD4d/6B6ml9ZfM59dtNCOH69MVqQSgQ575jxWXpN5ewo+BuXNsdE0uojI/Ck1tjuN7RFRHdIff2mTRdbO5Y/bujd5nB1cah5p1Mhiccs4PxNptnR/JcN40Dpj/JKjT0sE2rwiPy3T70S/LiDNz0Aazr+qPMucUmBfZ21MU4BWagd9yj8TdfdlLrcrMluvEYgXnGZpALAFlK4aw
- qKTyzrPm
- 8WqKfZaBntDAzOrqqVUKrcZkSgDtA7jWFX92GuQDrXNkKZTG9/QTV6rEsKfyUXoC4wohbdOPwWl5nEkuj+ZB+N/c72f6CCNMPU3pKVhj2E7XIlq7Jo9ArpsjDgQT0MUlyQcigL3FL7++pfWGdaXyVIoXM2HP/5UDUITPArje/XmtrxLPZd5DxxdOinmQwBvAHQ3WZFCrqqb7hX1g4vVSUlb2nJgjXMccQBqKZ2/Bqq9LGD76dXxojibI5xWu4U3+OpbEZgdKO4h2rXaOd5H32o94CTT4i7nkZnhfqvh+S450HG4f/IjcVJ5xrfttt2+HULec9yUVtymqhctSuKV4d/8cLuVn5MW9ChiBiifPaqUluMZY8uhtQ3hvek7pormwk9ieF7yLCCOcCVe9trM28AFgfu/cEvq0+AytZ6g3PXAGs1WbmzYuw6LcuV1wnMJMqnDLDXcxgHjx2voXlfhYT4/yw5YcMALc5qfL/OtG415exJP8cpHOHYi/n5JkD1+A/ICbCUwnbuYfQ86OULVNZ4qpm7g==
+X-Rspamd-Queue-Id: 2583F40015
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776341570-296191
+X-HE-Meta: U2FsdGVkX18usZ1onVMDWtwTBYt/FL+zd++C+I6+vVs1oYgl/KpypbYVcIwAF7W+n6VuL8X79TV6mzw6BC+UcLQfJUqOyGqDnylViuzLDhXbf2DoNkZWQNC0gzZpu2C96WUplZf8duHbUkkY09omraCuArkLM6FBAdu/gt5OZ9+EN5mZl5wsdUpOTWJ7bINMoWbA88HRl7kZhC59edGPcBpb1yQO8JdhSFzfZW1pDIhlm626besdFtOhKyAw5bs5gHU8gxv9qaFF+/+6jlp4xzA4ry1DhLhd3co/ugmrt4l+J5aruosqS3Y1c2Mx1sGFfquXpqdSQdPX1ofDwUHZPbKUyKASnGUy4O7UZc5+MwaK/5rakoaqB9/qpUgX+vJeued8A/P+IwMucaAHPxIn5Q/LGyQGud2rGok/giwr2lVPFpgAYGqtfzLzE8BD68niYPqUG0Wm0yTyQ4Pm51X7OZ3UdReHOktcjkN9mw2V/RJjBrn2AVkyiQ0KRXrb24hF+evOlh2Vg3SqjrsJ3FwiupnrWX51rAo/onwE3ng7iTySDD82dYAg3MOR+qnXZor+pc6qrFLSBzvOx/qkGehIo954dnp6uOFD62NGzHU/MQPajMvPe6BxQwdLkIGbq6r5cz68/t22RDctOOviaLfehmn5b3nFTWTeDk76q/+lyhD0WoX/z+ceBZC/5JpfzAjItLhAkJt/YIrM9gsNUG3gEgY6H3FwEqzEitHhtecZJt9PN7hCmQYiOCSi1JDy/AFHSWmvo7aAvScNFPRvgkDuR20NaInYhYi87Y9BQ52SK521xEuP/tJPA8+XwJkeKNOiTI0AdJOy4BOXCqVxXp8ndn5F+X7sDw/i1KOVBs9zmo4VqfUflcOjzTHjp6bQLXnQ0t0CdW5TrOOAFuIjDodXosO3qMZGpBFXQe9jPvVzaAuC+tYO3icQrJktYyXoGSlAKO35skSOGg0xrJa7y5G
+ hapyE3Bv
+ wdxovhyCYujgrI6ubb5T/RsxqZUggeTtGTRN1yxEFF5nftOVsgmjnB0eny4xC4TbJzgecR1qj+dmS/lrsRR30ynHw+YZUmr9hbsK8axlWbQPf4TNKQCv/60pzQVSV/WxUvVpfuqxnKncIPLG58oKtSjujzyUGTtk9XWzlyAZ+1DAL8ysdNCGBWNBxfNyWsz+zQjZo+/cB7Q/4BeWqokkRVFwOCgX3G3braOxGBcH+8KivNTijuQg55swLFOk0YWbbBo+Z5raRkRjy/NE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,156 +133,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 09-04-26 00:15:43, Ojaswin Mujoo wrote:
-> This adds initial support for performing buffered non-aio
-> RWF_WRITETHROUGH write. The rough flow for a writethrough write is as
-> follows:
-> 
-> 1. Acquire inode lock
-> 2. initialize writethrough context (wt_ctx) and mark
->    mapping as stable.
-> 3. Start the iomap_iter() loop. For each iomap:
->   3.1. Acquire folio and folio_lock.
->   3.2. perform memcpy from user buffer to the folio and mark it
->        dirty
->   3.3. Wait for any current writeback to complete and then call
->        folio_mkclean() to prevent mmap writes from changing it.
->   3.4. Start writeback on the folio
->   3.5. Add the folio range under write to wt_ctx->bvec and folio_unlock()
->   3.6. If bvec is full, submit the current bvecs for IO.
->   3.7. Repeat 3.2 to 3.6 till the whole iomap is processed. Submit
->        the final set of bvecs for IO.
-> 4. Repeat step 3 till we have no more data to write.
-> 5. Finally, sleep in the syscall thread till all the IOs are
->    completed (refcount == 0). Once that happens, the end io handler will
->    wake us up.
-> 6. Upon waking up, call fs ->end_io() callback (which updates inode
->    size), record any errors and return.
-> 7. inode_unlock()
-> 
-> This design gives buffered writethrough the same semantics as dio and
-> any error in the IO is directly returned to the caller. The design has
-> delibrately open coded the IO submission and completion flow (inspired
-> by dio) rather than reusing the dio functions as accomodating buffered
-> writethrough logic in dio code was polluting it with too many if else
-> conditionals and special cases.
-> 
-> Suggested-by: Jan Kara <jack@suse.cz>
-> Suggested-by: Dave Chinner <dgc@kernel.org>
-> Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+On Thu, 16 Apr 2026 at 09:24, Amir Goldstein <amir73il@gmail.com> wrote:
 
-Overall this looks good to me. Just a few smaller things below:
+> > I've recently encountered a weird issue with JuiceFS [1], a network FS
+> > which uses FUSE. tl;dr: when a file was being slowly appended, a reader
+> > of the same file on another host would periodically read a block of zero
+> > bytes instead of the actual data.
 
-> +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
-> +				   struct iomap_iter *iter, struct iov_iter *i,
-> +				   const struct iomap_writethrough_ops *wt_ops)
-> +
-> +{
-> +	ssize_t total_written = 0;
-> +	int status = 0;
-> +	struct address_space *mapping = iter->inode->i_mapping;
-> +	size_t chunk = mapping_max_folio_size(mapping);
-> +	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
-> +	unsigned int bs = i_blocksize(iter->inode);
-> +
-> +	/* copied over based on DIO handles these flags */
-			       ^ missing 'how' here
+Thanks for the report.
 
-> +ssize_t iomap_file_writethrough_write(struct kiocb *iocb, struct iov_iter *i,
-> +				      const struct iomap_writethrough_ops *wt_ops,
-> +				      void *private)
-> +{
-> +	struct inode *inode = iocb->ki_filp->f_mapping->host;
-> +	struct iomap_iter iter = {
-> +		.inode		= inode,
-> +		.pos		= iocb->ki_pos,
-> +		.len		= iov_iter_count(i),
-> +		.flags		= IOMAP_WRITE | IOMAP_WRITETHROUGH,
-> +		.private	= private,
-> +	};
-> +	struct iomap_writethrough_ctx *wt_ctx;
-> +	unsigned int max_bvecs;
-> +	ssize_t ret;
-> +
-> +
-> +	/*
-> +	 * For now we don't support any other flag with WRITETHROUGH
-> +	 */
-> +	if (!(iocb->ki_flags & IOCB_WRITETHROUGH))
-> +		return -EINVAL;
-> +	if (iocb->ki_flags & (IOCB_NOWAIT | IOCB_DONTCACHE))
-> +		return -EINVAL;
-> +	if (iocb_is_dsync(iocb))
-> +		/* D_SYNC support not implemented yet */
-> +		return -EOPNOTSUPP;
-> +	if (!is_sync_kiocb(iocb))
-> +		/* aio support not implemented yet */
-> +		return -EOPNOTSUPP;
-> +
-> +	/*
-> +	 * +1 to max bvecs to account for unaligned write spanning multiple
-> +	 * folios
-> +	 */
-> +	max_bvecs = DIV_ROUND_UP(
-> +		iov_iter_count(i),
-> +		PAGE_SIZE << mapping_min_folio_order(inode->i_mapping)) + 1;
+I wonder if we could clear PG_uptodate on the page which had its zero
+bytes exposed by the i_size increase?
 
-Can this overflow? iov_iter_count() returns size_t which is ulong.
+Willy?
 
-> +
-> +	if (max_bvecs > BIO_MAX_VECS)
-> +		max_bvecs = BIO_MAX_VECS;
-> +	if (!max_bvecs)
-> +		max_bvecs = 1;
-
-I don't think 0 is possible here since we do +1 in max_bvecs computation
-above.
-
-> +
-> +	wt_ctx = kzalloc(struct_size(wt_ctx, bvec, max_bvecs), GFP_NOFS);
-> +	if (!wt_ctx)
-> +		return -ENOMEM;
-> +
-> +	wt_ctx->iocb = iocb;
-> +	wt_ctx->inode = inode;
-> +	wt_ctx->dops = wt_ops->dops;
-> +	wt_ctx->pos = iocb->ki_pos;
-> +	wt_ctx->new_i_size = i_size_read(inode);
-> +	wt_ctx->max_bvecs = max_bvecs;
-> +	atomic_set(&wt_ctx->ref, 1);
-> +	wt_ctx->waiter = current;
-> +
-> +	mapping_set_stable_writes(inode->i_mapping);
-> +
-
-We should check if mapping is already marked as requiring stable pages
-avoid messing with (in particular clearing) the flag in that case.
-
-> +	while ((ret = iomap_iter(&iter, wt_ops->ops)) > 0) {
-> +		WARN_ON(iter.iomap.type != IOMAP_UNWRITTEN &&
-> +			iter.iomap.type != IOMAP_MAPPED);
-> +		iter.status = iomap_writethrough_iter(wt_ctx, &iter, i, wt_ops);
-> +	}
-> +	if (ret < 0)
-> +		cmpxchg(&wt_ctx->error, 0, ret);
-> +
-> +	if (!atomic_dec_and_test(&wt_ctx->ref)) {
-> +		for (;;) {
-> +			set_current_state(TASK_UNINTERRUPTIBLE);
-> +			if (!READ_ONCE(wt_ctx->waiter))
-> +				break;
-> +			blk_io_schedule();
-> +		}
-> +		__set_current_state(TASK_RUNNING);
-> +	}
-> +
-> +	return iomap_writethrough_complete(wt_ctx);
-> +}
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Thanks,
+Miklos
 
