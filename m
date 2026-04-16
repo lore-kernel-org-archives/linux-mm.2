@@ -4,113 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF30F433E2
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:28:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2587AF433E3
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D41F6B0005; Thu, 16 Apr 2026 01:28:01 -0400 (EDT)
+	id 8504E6B0089; Thu, 16 Apr 2026 01:30:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982566B0089; Thu, 16 Apr 2026 01:28:01 -0400 (EDT)
+	id 800906B008A; Thu, 16 Apr 2026 01:30:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 870DD6B008A; Thu, 16 Apr 2026 01:28:01 -0400 (EDT)
+	id 715796B008C; Thu, 16 Apr 2026 01:30:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 718436B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:28:01 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DC8948C39B
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:28:00 +0000 (UTC)
-X-FDA: 84663287520.13.CE047A0
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F2BC640004
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:27:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UKVBvJdm;
-	spf=pass (imf12.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F3C86B0089
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:30:49 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 013A913B838
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:30:48 +0000 (UTC)
+X-FDA: 84663294618.04.9706AA4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2546A14000E
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:30:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CesJqNnM;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776317279;
+	s=arc-20220608; t=1776317447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p72YAJlXun4KRmB4NWfj7l+RbQybeUrM/jVB+1XMQZI=;
-	b=OsJK26dyyMy+gJSTWTev8vcUzkiOyxlq4p1LSWYZwojtppU4bcYbAv/PVE2CeBj+2JnZMm
-	iGUs8NiPV0hTg5qPgm+A03OogIC/PEG74DY66jQxFcB2OxSKk38MPHkY1M/Y9lB5RppSpA
-	F063TXR5hbepTsEUL7ebssvQbzGug1w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776317279; a=rsa-sha256;
+	bh=BKdprjO9iqrDHMjwSYEyQPaHIfGiuPJrNzlgJ5M5gfM=;
+	b=Z2iJdZUk16vFuWZr0ZgQOKS+OTDfIpqdpCoUjHjwlI6G1PQNoanOAt9bEbBWu5wmrHJGFg
+	c4tEZBm18u3+8hLo0HvV6EbAhXztfu2gtXJkpaWT/WBe2mgrvLw2hQNDCUEEIpo1Jr83pM
+	JfMoN9xKN8C3mthTgaWFVTjoArvMm1I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776317447; a=rsa-sha256;
 	cv=none;
-	b=qG8PXzYyzUKLH0flDgG7JyS3i1Ef3UeE010xBcCpDtriJ7Vg6Cv9yHH6cxPaxi8RSwm4DV
-	hzixsYeRWS3w8n1WpBtNFvUO61hVIAmeEUWgvAHE+zuFI39kOL4+OhoszqKT9gxshW1sV3
-	F6uQIxtdxcN/UN4gEuYDsBM3w5D9cPo=
+	b=hpTT77FgTNLXZ8UpTSfHvPv8pIxaia1cnXEFU9Z0b2m2v/Af3UpWyRULKdIX2E/Oaw/exU
+	b/yLgLBI3ud05oXzdSPV2aQFnCS2DOAbwU5ipXiRtHegOIfqmGMM8xGQdYnzrtLKT8C6Rm
+	rEJ/elB2GFxycrOl3XDJB5+KnEDZLYk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UKVBvJdm;
-	spf=pass (imf12.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a8fba3f769so34585285ad.2
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 22:27:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776317278; x=1776922078; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p72YAJlXun4KRmB4NWfj7l+RbQybeUrM/jVB+1XMQZI=;
-        b=UKVBvJdmzHFKClppC9QX6NZgfxFK4PX7CnY5SjYyv1aYd9zdJ90bi4ZZB+b0HzCNLV
-         +g1Cb622oGVAiYRTMNiYX3HHhMPmRm5kw7x0HLVyQgJF2GVNRvVohrWwEnNEDpn5SHer
-         EajqlQzP4P8Ar4cR2TvwcGWRxA2gMIldUeVgQ4PekNg7989dC4sxpDOarShQWrrA1RNw
-         XoW52Ydm/sdg9g9NI23SArifMrCOyrJodFdCHGM2zF31VPt7x+OGaaaiww5WchMXG1AC
-         vuPAdL79gPfoiQj6f6Wrg6Bv2AGxKnC6fFeRZoWzESLTWGlUh4wG2jYTT1R9xpqKnb5t
-         wp9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776317278; x=1776922078;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=p72YAJlXun4KRmB4NWfj7l+RbQybeUrM/jVB+1XMQZI=;
-        b=kkKy46HZK8drgu+Plf4524Ho1TxQ2GxMb7JH2TU+oSqPoSck2uKPR8MgB7Xrq7YJVG
-         ieTzI7ROXqg6TsOpo/nActUQAGms7fBxoZhKgaKKf7DEqB48GGJgoctcusTlI3mPPlow
-         R9iPj1/HJ+AozWxJR5ASFUl9/TDTWEfrfeYqI3tE2tyEN+pUjwYXA1LuyEDDd6qc18qE
-         nmvic48As04Lb8fYCd4usrQ00OloCLrczFRm4EFzld2dsr+3OMBz0Vg3Aysv0eIeiT7W
-         VZJUYY4RqqtRcQRcELzPVZnwhXQegP0mx4Q+s172zeuanCQ6fK/OdFUJrfJwaaIkVQIb
-         Cg8w==
-X-Gm-Message-State: AOJu0Yx6++3Feoknr6+KUBfg1SoX9SeGj4vqt8UcZv1cABdkwpPjd/cg
-	Tgsur3WAKGPOmsyYjWFm8rzs0vklJoDplejoYWimktBUpTUzGkCdOgyn
-X-Gm-Gg: AeBDiesOgpqgRoB+vRvuYBimbPr8HNkfr8YUmNqpZ/4bjq1dsyy5WNM0eszThKkZNn+
-	YhyCnnwYyyO2iiZx1S9P2+eqjvdKN40ZzhKeTxFSSBB9VNG8Fv7WEQTpxQJiLu4YtN0c9fDNKc6
-	Dzek9y2pDuA+v2Q61j1qxWYNdexJy2EeAHcBzWfiUQNb+BE6DjLzwmesXo0mtDf3OC78Km17LpV
-	NoaA4oJ8H/KI7j4ibeIn6EqwBgIZRQfDvh7KIwvpuxycJ7htDktOIimJWJB/joBxDJGVczpzdfo
-	VuCnWBq9wwouAPKoBSH9O51/R/NzatHhLPthtqfmU5AFtmtthFLkYM4R+KTzHXCvnCuEzjN+FgY
-	PB4Z4bjKDnBPlBo6TqPvG79RDk7nvrV7+l9+E5H5JgrQVzaL89m2QgqZprJNHHx9Ym4uVr/8ZbA
-	fol0KEubPJYqj+1/0/90mqM2A7uKBUkURx
-X-Received: by 2002:a17:903:3c4b:b0:2ae:ac0c:5a2a with SMTP id d9443c01a7336-2b2d59433c5mr255006405ad.6.1776317277602;
-        Wed, 15 Apr 2026 22:27:57 -0700 (PDT)
-Received: from xiao.mioffice.cn ([43.224.245.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4780efa5bsm42811275ad.10.2026.04.15.22.27.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 22:27:56 -0700 (PDT)
-From: Xiang Gao <gxxa03070307@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	donet.tom@gmail.com,
-	Xiang Gao <gaoxiang17@xiaomi.com>
-Subject: [PATCH v2] mm/page_alloc: fix spaces used for indentation instead of tabs
-Date: Thu, 16 Apr 2026 13:27:52 +0800
-Message-Id: <20260416052752.713821-1-gxxa03070307@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260416021945.682234-1-gxxa03070307@gmail.com>
-References: <20260416021945.682234-1-gxxa03070307@gmail.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CesJqNnM;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5006160128
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:30:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1790C2BCF4
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:30:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776317446;
+	bh=BKdprjO9iqrDHMjwSYEyQPaHIfGiuPJrNzlgJ5M5gfM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CesJqNnM8Y0VrwMy5D4OtnkofFrEL+XRr/Yn7AKVtib8/aaWnnTS5mQzdIgzO/Td5
+	 bVIxvjeUT2Us0tjYEKDgeQ729LWtKPMmEBApjL8ttSsTm+2A0PgQvF16GL12taOGrw
+	 W4OZv/620q+SJr7yPaL1wrE1MU6IEmEt7jb9O6ehyFYKgj6mLLD8cfnwR//rxIGNpK
+	 SBi8ZqjhISWfX8Cik2A4ukv69YaPxAkTyzBmYi3ytTAVNmTUo4LzhYeyJ9dV3HwQPz
+	 1+khSHK1Uol49qxjxLpxPmG1T8APEKyAQQKga31WurosStipcAOV40QPjXUU70Dbyu
+	 58+l3SphhMY6g==
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-89f87257904so61825646d6.1
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 22:30:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+KHm0cO8KXYLOKpNWlokB6Zgim0idOFeOfl/hpiQDoFOC9qRBHulUSC/hirIQpovJG0g+XuQavxg==@kvack.org
+X-Gm-Message-State: AOJu0YxAPIOaGSJq+sqFfiHypAKRWLJc1zSe1zv0TRTvQ/4TF9BO66eo
+	dpDDm9FgDAuh/BoI2Mqj2W9Df86A5YdZlzFYrD+pTFUsg0JudVUi8cvP3rrZJJvrFeBXFHZBmFz
+	rGSBp8rkvS3tF/Vb1bcNWi6jCnXgrbl4=
+X-Received: by 2002:a0c:f208:0:b0:899:e567:f04d with SMTP id
+ 6a1803df08f44-8ac8613a0c1mr388294306d6.11.1776317445207; Wed, 15 Apr 2026
+ 22:30:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 179y63xn1m6wfc3tqc6pkgcrdsgtwb1e
+References: <20260415192853.3470423-1-stepanov.anatoly@huawei.com> <20260415192853.3470423-3-stepanov.anatoly@huawei.com>
+In-Reply-To: <20260415192853.3470423-3-stepanov.anatoly@huawei.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 16 Apr 2026 13:30:32 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yBmrFDHLg8Cf7x0dCLELBp+kY6yoMuP_sHt4Z1wuVrBg@mail.gmail.com>
+X-Gm-Features: AQROBzA247U2xaU38UZDq7xvNkV4HsQyvZYePko41DYVZxoaxkV_BD5AjV-0F4w
+Message-ID: <CAGsJ_4yBmrFDHLg8Cf7x0dCLELBp+kY6yoMuP_sHt4Z1wuVrBg@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/2] filemap: use high-order folios in filemap sync RA
+To: Anatoly Stepanov <stepanov.anatoly@huawei.com>
+Cc: willy@infradead.org, akpm@linux-foundation.org, david@kernel.org, 
+	ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, wangkefeng.wang@huawei.com, 
+	yanquanmin1@huawei.com, zuoze1@huawei.com, artem.kuzin@huawei.com, 
+	gutierrez.asier@huawei-partners.com, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 5gygmwjqgkh7r9mteas84xtqdqsr9nwd
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2546A14000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F2BC640004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776317278-888498
-X-HE-Meta: U2FsdGVkX1/Xtk649PwHgR7uMzVbx0Y5/3h7kv51neRusy1PjVczSv5htnL3N5mpjTcj/OuugrVzOn752UndpkVVk9Kq7jISdJ13hwr70UtLCr4DujWa7apP9x3r9E5WqbCse3VAb4qJWAW6Zw74kr11tZ+66ghlDwzakPdRUDtPnqG2q6FoPLzP14VNS/H6ZZ6Qgox1gHfhnAld/HPIf7OcFMXOlRBHcyyV0nUzhndWoR0Hz5ETObiTRe9DKm+3EVP5ujQz0OXGdl8nlVCgFqShF++D2DSiO9Ik/zSw+vIlZkqrxJcsDXh9JMYDIjdAsv5yVLkpcJtN84LEloXIPYbrvzStc28rcmtrfnonJRF4/Q8Cwx6/D5UvRN2Dhtr2dRCwZZslTjQNyZzxurIw5TPnTwveFSog6J7tQ0DMfvP5KFS+K69xwQMREI3dI7jN4PPuyWFANZYpRc4bpa8b2MXl7krkykftPWbs4fd1NW2g7CeHKEiFAQvZecQZsIJa5zNwQuLzi/EDD6rWZH6twnPy4UZnX4l70nxZtYAQf5wpKzsIdaled9Ol19I3RylSMON+moxDG3dJ4Vd4+ktQ7qVsqhKXL7vJMY0teJiRtUrdtwAA2Q1p+olmvhjKfuBoUHjznmCzkBqNlLzNu5egBMtfd0lkHHUnVccCkOItptnJR9t2xkeKJlVSf/VgR94z2MVY3rgBZ8uCE2t+tLxIOplDbvNf5UHP/yh+tT96+XUg3sL4c9vs3QTwji9bL+l/Ss4hshl/EGIMdaNECZIbSodyBJdBo3Ae5fPI/6XRUI77+y7EZ+sQQaq4LiTxCnlGbvrW8hhYfYDid6C1H5OYYiyeG6clZpSl9Z3bjhaEWVaW1GNC8g/pb7hGjS0nR/RcnWgaMdkC7UG+hwPpQ0HoC05Q0E4EPbeOzyOdzKJUKHb1qtDqP/gjcfNpcAaMYF7uBstWZjdQd8wZxLmC3mt
- b1/J6YKH
- MkoVtxjHZsB3GcFhLBV2MZRCH6czM3UtKvR3gLPngTGb6fRlsc0CPPjcT6SbgfJkpRFecZL3jmUtMaf0LzA8te6Nyp998yw+WhzTtKpoC4mOXQGDE4bGcACC5yqXvas/2QJl8+2mSP28tahKQVkrPQOsDBy0bkt9EFnf266O7wSi3aRDZHBf8GQpEBWB20oCjp0Rggct6He4zFJ/Apmby0t5QxdAMmbMW9EaKlcifQBVI9KrOr26q1mrA8sP11jumSzkoihtZ0uryh+37DRPVgE80Hg/K7TQg1kEe8QuPsvLjsgMcgioz+jRFTb3AE/ZQ1g0XG0hx15wJNV6l9HI8G9GgHNNZtzavPSDsQNdXZKSbHZHZg/bY+RYPnBBuNF71yHBT+GMYFKLIB+fizsJ1dLll7vKqTmVW25SrI+rKrzKb0KXD1oPkwEUdHyNWvk5gOWmqu4+Vwbpclos43xb56hoc46pqgXgJCafDjKzn8mQOgzM=
+X-HE-Tag: 1776317446-755560
+X-HE-Meta: U2FsdGVkX19yLtNzZtP9npjBR02/RwCb40PKgbHS3mPmOB5VA69wzKfpi5hf9UCFcbisBh9Jnh+HS9MRiWo+o+s8SaZPby2/l4QJrnC7eAfskd9JEPxY3j5PQjhrYw9fIK6wbIIs0z2FTb2FpcKGW0ge4KtjGGZS4dgyTUpwFsHiB4Y6wgwSov+TRN5QhwsgTOWoqASVTb8DsBt06lHRnRD4y2cJ5vDiydgE0qSVPtO25DFRaBoOolME5zo403VARBumaUMq6LLz9fDMBFJM2LSqrkKmmU+tJQIiOuICzLe3dDGSQZd5006iwLwDxW3zl9vmNxBIx7aWKG0vDH/oefAQCtuzJYHFZzrdQEkWVHwzOrm7Eoe8Mio/2TNDYBTXyb9YS3PRzlq2T34ZFoWRXF1X4eol263VHaIgB5aIbw9nMU9UyivExqHYABe5EKZAt9gED1HCWolaDai8+r4AY7Ih6omvtJj1R/a7jzv7xcp9SDzDcH321z3vLBpMOMSb7y9gT9m5PYej5PFNYRcyKKoluYom8oEJJiUfpF4yDu4k7Ox1XBGJvC7BczNOjp3QiUMN52gbjpl/dS8uZvEsPJMRLCnRQwJFLyDCNpjC3v+C0dJGmI6UjqAlPJaxcbL+vt9/YbZBXdVl6S4uwbxn126zA7oRW55I963GZBKieODHXErXrIYECL/I4xEoJQdOSFGbXygPiHEorhcxBnWNnyzWELyk+IWp2sohc2CSXbxjCx1EAb0FtGBF9SXHlDO8JJEXBnXMuc+0v198gf0yyHXbjQ0KgvVDHPv2aJHAjoSWYe7DmWQeL+PpPp25f5JLGmn94rxmNhbm6RsPvqDUqSAkk3iq7Xr/g//0nqNPBjsr53Uh5gT6lqZ1XnOgJgqCgjJHddmbQJlSGIir+bRuVzHGOgZ/lH6vWL388QP+5sfOTIZC2udmtBmZKMteua+76JjqetS6KzwsVM9J4h6
+ 9NjEoB1e
+ YOiMPqy558wobdm7qcLeQABE6lJYS/KN/1ZRSjqQBW4EWCt6t0ns6G3lion/zVs09M7/+rhnmZwjm4E/ALCshczqGaoV9MCtTcABR1fqDnFBcHSVzHF1/NNrCdTPl0TkpRtHcX8mGH2tMRbug2Sd+YSZ+1GhEHbsZryybgfSaBDhxZGDlumCBrMGb2BVI7QudA6WU79G2U3o9XplJoKkjXWLyn3Q+XtB135u7L2fQC81vZq1GdhmiMD10f6Hm105fgGW4ZXTIPRSERqPlUTYwd6gFT+2H1GUqPFAfT/h2vtTO8irA19I/GJ2EjY15+ILf0ZJty4i+S93o7tqVJUrHRuO5TdSVpHKjUvuu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,57 +106,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Xiang Gao <gaoxiang17@xiaomi.com>
+On Wed, Apr 15, 2026 at 7:47=E2=80=AFPM Anatoly Stepanov
+<stepanov.anatoly@huawei.com> wrote:
+>
+> [Idea]
+>
+> If a mmap'ed file being accessed such that async RA never
+> kicks in, we might end up with only 0-order folios in the page cache.
+>
+> if fault_around_bytes is larger than 1 single page, then
+> it's beneficial to use high-order folios, which brings significant
+> filemap_map_pages() speedup.
 
-checkpatch.pl reports two indentation errors in page_alloc.c where
-spaces are used instead of tabs:
+Please note that there have been many complaints that readahead
+pages in PF, as well as fault_around pages, may not be used later[1].
+The performance of filemap_map_pages() is not really that important
+compared to pages that will never be accessed and could otherwise
+be reclaimed. With large folios (=3D fault_around), a single young PTE
+can mark an entire folio as young, which can be quite harmful to
+real workloads.
 
-  ERROR: code indent should use tabs where possible
-  #887: FILE: mm/page_alloc.c:887:
-  +        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,$
+> So, let's just use fault_around_bytes as a starting point here.
+>
+> if an arch supports PTE-coalescing we can get more of those for free.
+> (see arm64 example below)
+>
+> We don't save the new order to "ra->order", so if async RA will happen
+> it would normally start from order-0.
+>
+> [Things to be discussed]
+>
+> But at the same time, i can see drawback for 16K, 64K pages, in this case=
+ fault_around will still be 64K by default.
+> In this case, it seems makes sense to make the fault_around_bytes be like=
+ order-N of PAGE_SIZE, not fixed bytes number.
+>
+> Another issue is - when fault_around=3D0, but we'd like to use high-order=
+ folios for sync_RA, for cont-PTE for example,
+> For this we can use kind of "max(fault_around_order, cont_pte_order)".
+>
+> Or introduce some dedicated tunable like "sync_mmap_order".
 
-  ERROR: code indent should use tabs where possible
-  #6626: FILE: mm/page_alloc.c:6626:
-  +						         sysctl_min_unmapped_ratio) / 100;$
+I guess we could benefit from a small order, such as 1 or 2.
+Order 4 is really too large for many systems, such as Android.
 
-In __del_page_from_free_list(), the VM_WARN_ONCE at line 887 uses 8
-spaces for indentation instead of a tab. The identical VM_WARN_ONCE
-calls in __add_to_free_list() and move_to_free_list() both correctly
-use a tab.
+But it seems Matthew never likes new control knobs?
 
-In setup_min_unmapped_ratio(), the continuation line at 6626 uses 6
-tabs + 9 spaces for alignment. Replace the excess spaces with 6 tabs
-+ 1 space to correctly align with the opening parenthesis on the
-previous line.
+>
+> [Benchmark]
+>
+> Simple benchmark below reading 100M file in 4M (RA size) chunks
+> such that async RA doesn't kick in and the page cache ends up being
+> filled up with 0-order folios.
+>
+> The patched kernel gives ~3 times increase in throughput,
+> considering the page cache is filled up at the moment.
 
-Signed-off-by: Xiang Gao <gaoxiang17@xiaomi.com>
----
- mm/page_alloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+If we consider reclamation, it becomes a completely different story.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2d4b6f1a554e..752673a9b43c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -884,7 +884,7 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
- {
- 	int nr_pages = 1 << order;
- 
--        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
-+	VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
- 		     "page type is %d, passed migratetype is %d (nr=%d)\n",
- 		     get_pageblock_migratetype(page), migratetype, nr_pages);
- 
-@@ -6623,7 +6623,7 @@ static void setup_min_unmapped_ratio(void)
- 
- 	for_each_zone(zone)
- 		zone->zone_pgdat->min_unmapped_pages += (zone_managed_pages(zone) *
--						         sysctl_min_unmapped_ratio) / 100;
-+						 sysctl_min_unmapped_ratio) / 100;
- }
- 
- 
--- 
-2.34.1
+[1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vi=
+vo.com/
 
+Thanks
+Barry
 
