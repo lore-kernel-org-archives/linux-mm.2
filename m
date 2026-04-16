@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D43DF433FE
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 06:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 932FCF88073
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 06:52:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 868A36B0005; Thu, 16 Apr 2026 02:48:20 -0400 (EDT)
+	id D10A76B0005; Thu, 16 Apr 2026 02:52:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8010B6B008A; Thu, 16 Apr 2026 02:48:20 -0400 (EDT)
+	id CC0A46B0089; Thu, 16 Apr 2026 02:52:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 716D66B008C; Thu, 16 Apr 2026 02:48:20 -0400 (EDT)
+	id BD6946B008A; Thu, 16 Apr 2026 02:52:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6134D6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:48:20 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 00413C1B19
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:48:19 +0000 (UTC)
-X-FDA: 84663489960.09.6353AF9
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 62CE120009
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:48:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id AE84D6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:52:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 71B3E1A05B0
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:52:04 +0000 (UTC)
+X-FDA: 84663499368.04.C95031F
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [118.143.206.90])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C4F841A000B
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:52:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com;
+	spf=pass (imf19.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com;
 	dmarc=pass (policy=quarantine) header.from=xiaomi.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776322098;
+	s=arc-20220608; t=1776322322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wRsBsu3PPxde9Q4UZ/UDZXrjvMGbc72/BCnOVK4pd7I=;
-	b=a14vUf8bAonlOR2AWXD9eRWgYTDzySSZtTAPkQWIvoDRH3GR3fUPs/RHQQ98t669JISJp7
-	U1krIr9qrrTaLduM06btfIiDKUe7txxtGxhgH8XQTlkzkOhuO56jfjeZPaqJUjUXF0CqFk
-	Fp8WhdsEzn+YbsSh6LCBxWKA9R9hCnA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776322098; a=rsa-sha256;
-	cv=none;
-	b=hcF0O1qVqpvUGoUQTIDmiM/9dRw6o2BkLmE0KetN5qEG5MFCYvUYfYtbWgQ2/I7aQwQ28O
-	VmnAjXhkpvifjIyC5xhb0wu1Lu0kHuSqu6xpctyXPBc6ZiXJ0SOyJxw+NB5n8KnnXUXURS
-	kpWwqaXfLY061QsXH1UXhhzJHFWemHk=
+	bh=AodDOuHKaW/dnRlYdgj0BWvKBMcKpCstH7rwz/AJuaA=;
+	b=rmll0zsvhI4Cnv0TkCf2lO5k3WgI8kn4AoEQlIUqrLYBJMQy6L/U6bBwh+NWWHAvVOH5wd
+	GrRIg/9cv71beQMpDNuIOpMB5dqk6JF0j8v2zSe/lzDopOUjEPPHGgOlaLk7gDVCLIhvVv
+	NAhdKDXsboYa662YwLNefOZm4w64+Gw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com;
+	spf=pass (imf19.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com;
 	dmarc=pass (policy=quarantine) header.from=xiaomi.com
-X-CSE-ConnectionGUID: wxc+fogXSIOVirraaFfRxQ==
-X-CSE-MsgGUID: nsAemFJQQNmgBCQWaQTCtA==
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776322322; a=rsa-sha256;
+	cv=none;
+	b=Hv5RQllpBwE3bVOMVsFpt/kqrWoqIgYDnve+BLtlwwg0MUJ/Oi4clgkYfiP2aDnqpEDvD7
+	fVpY8otLZ0fFV1gJnrMBM4zdSsSHCBNIzuxqdLpJFTZYjTHjQ4lq007lcJffNTqdifFKfv
+	t4xjlX/pmiCfNbttWJpjdVC2/8lWEhU=
+X-CSE-ConnectionGUID: hddVRI67RSaNY4fFggLQWg==
+X-CSE-MsgGUID: N6ycaVZlTuSG4shGufmQFw==
 X-IronPort-AV: E=Sophos;i="6.23,181,1770566400"; 
-   d="scan'208,217";a="173029610"
+   d="scan'208,217";a="146833258"
 From: =?gb2312?B?uN/P6A==?= <gaoxiang17@xiaomi.com>
-To: Dev Jain <dev.jain@arm.com>, Xiang Gao <gxxa03070307@gmail.com>, "Andrew
- Morton" <akpm@linux-foundation.org>
-CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "donet.tom@gmail.com" <donet.tom@gmail.com>
-Subject: =?gb2312?B?tPC4tDogW0V4dGVybmFsIE1haWxdUmU6IFtQQVRDSCB2Ml0gbW0vcGFnZV9h?=
- =?gb2312?B?bGxvYzogZml4IHNwYWNlcyB1c2VkIGZvciBpbmRlbnRhdGlvbiBpbnN0ZWFk?=
- =?gb2312?Q?_of_tabs?=
-Thread-Topic: [External Mail]Re: [PATCH v2] mm/page_alloc: fix spaces used for
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Xiang Gao
+	<gxxa03070307@gmail.com>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>
+CC: "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+	<mhocko@suse.com>, "jackmanb@google.com" <jackmanb@google.com>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "ziy@nvidia.com" <ziy@nvidia.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: =?gb2312?B?tPC4tDogW0V4dGVybmFsIE1haWxdUmU6IFtQQVRDSF0gbW0vcGFnZV9hbGxv?=
+ =?gb2312?B?YzogZml4IHNwYWNlcyB1c2VkIGZvciBpbmRlbnRhdGlvbiBpbnN0ZWFkIG9m?=
+ =?gb2312?Q?_tabs?=
+Thread-Topic: [External Mail]Re: [PATCH] mm/page_alloc: fix spaces used for
  indentation instead of tabs
-Thread-Index: AQHczWsmgtvV5a4JfUiaaR93D3nOhbXhPqQ2
-Date: Thu, 16 Apr 2026 06:48:14 +0000
-Message-ID: <e301fb41e3a24915b48334a8a555f5c0@xiaomi.com>
-References: <20260416021945.682234-1-gxxa03070307@gmail.com>
- <20260416052752.713821-1-gxxa03070307@gmail.com>,<0eed63fd-4119-44e8-90e9-79bca1620826@arm.com>
-In-Reply-To: <0eed63fd-4119-44e8-90e9-79bca1620826@arm.com>
+Thread-Index: AQHczWv0LlrNGEw6ZU62cIxLQ8YBorXhP9eL
+Date: Thu, 16 Apr 2026 06:51:59 +0000
+Message-ID: <e1d5f34930ce42acbf16c8bf20b641e5@xiaomi.com>
+References: <20260416021945.682234-1-gxxa03070307@gmail.com>,<0a578026-3bc8-480d-8992-c27c3496e15b@kernel.org>
+In-Reply-To: <0a578026-3bc8-480d-8992-c27c3496e15b@kernel.org>
 Accept-Language: zh-CN, en-US
 Content-Language: zh-CN
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-originating-ip: [10.237.88.13]
 Content-Type: multipart/alternative;
-	boundary="_000_e301fb41e3a24915b48334a8a555f5c0xiaomicom_"
+	boundary="_000_e1d5f34930ce42acbf16c8bf20b641e5xiaomicom_"
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 62CE120009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: a7enetzm9sxdoaydwtgbmb8rh7rg1odz
+X-Stat-Signature: 93ek9o8st3dpta8azyg4woid4eo4k4rn
+X-Rspamd-Queue-Id: C4F841A000B
 X-Rspam-User: 
-X-HE-Tag: 1776322096-167129
-X-HE-Meta: U2FsdGVkX1+NaVLSRxmO/HRXmdomA1g52saZ/mh4YqJ1NKjtj1MMRaTaWMttnJQ1y9svLkdSfrfalEZXAz4kfdqofFEDVQiPZm9qbUG5bToJYLz9ZXwVjP1s2qBzqyvnVC8Nd2p3uGxY56j1CyqqptH56Z/hivL0Sb9gaxaF91tqAxcS0aejyO3hZ6huoBoiLeCq1BAnR5cvf5RCk+oewnrvtop5Ev6yjWo6AbzUihN6lRXT+Z0sWM+uYDPlj6LAQfF7tgsdLPcIujzwq7/8B8CYnqShfeqm09+BsXcllhEh+jdV2ucKFVptsb6PlDdVn/J8U/RAkeWTcqRl38kqa4pVNjIh3zp3dQeZHSNln1tsQUG1ozX9uf+MRXWTWYOlhpjumSop6EMwtc/iS+06hlg9gvpLFbHKt08vUx70paJbmU6niXaCmrY0j/MQ3evpyW9uIduZlVhH8KZkuNdndaDCSo8BpJevN/oZVD6JDDWMmfMwInmd4g6SL0zSDY0CFcXVq/QfWlLFx+6aSHEfIdDA9rSgy68Jf7tSUsQj1r71HmkR80KSILjGY65Zu3NBoqdTe6tTCp4AP9b8SC/MDl6SggkjQsw9NHLj2/3zpawwJRbzMna/SBfLxhA28G2LCcl4tKiuZ6Yfk3kZvpGOkSRyFiJiNa1pS0a8VBVqFczyRHafEgVHqMczmFbtiA8TUHPSFYgrQz4iI46JLEhDD/1A6e8vujAUot7Hgp0uGXbnUGxEexDm7eyGBZNDZPQ7I/7g7XBg86H6FpgiBfHNpwcqcvv68v/ZJ2LGoIYgMThZknMkN71uWLye8hP2Zoa5VJWcrFTCI31NUAQ9B5ZsRY3/4scTWqildLQD8Anyc34yqgldH/sS6SbIZmlzX4EFr1cDOU7U7Z6mpzmnZwttJyLz7CDCOELFJbIT+gYEJ4PhODkp5sw061OZJOSYfVzETaWkjiXG8lp+NTxe+be
- yWy3QUc2
- GcwB8q+7FbtuIj2R1vXTIwQCzuvw8tvXpMceFUSybvPAk34wb3yxVXEGhGs4VuUqRTXbGhLFCrlF5c6ROnZmgztkDjbFjRP3fy87HpnEHLHcojL3V1f7ya3tbRyJq45Na7oui2fVjMAP1pW6L6iILBRUVmN8l4jOjzpgH8HoQY2MpLzkeilj32ZGJ9OBI2fDUpVBsG59ilFKwUGtJCOOGFWXxbkHc9ofbdjrHgrSFOJu1lEF2W0EKnqRh3rFAD/GGu984frz1d7Gxv6VnTzV2wi+oxTU189jhQpAkmhfg6ODuf0covUrGrRo74iK1aDhpb3j3sY1JV3wes6NYh7KInQOS53I3ssNXT1g5gJJJedKbdpk1TJlj/1acyIMr9GUjmK+4h6l0eMJdY01yUCYy77VS95Ia2F1yOEyxt9R8zjYhOa/4g9E2SKtHbsCS5cbR7JPOtI7ayql4K57DmiVkbcLQuwPkHpTjGOOklRQpEnI1IbMiPXIAVEGZLIzzh3os2aMELpbUkGalf1OPc69LGJG633duoVjpXCZFyvq7e/yVDFjY4JXQEIcQ8qyXIKpIaSAeEnIMUHDO9xwmg6wr37S0FhdIcvd8L4UpMdP5rq5xrr3/5yAt3mSijrCz6dp4H8XUKI2eZS1/XrlloN7v36DU5xtdyyRASkoSlZ2QYJo9iyYNnbsq0hbawnKCmoWwHsEsaohZEQMMrAk=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776322321-316173
+X-HE-Meta: U2FsdGVkX19jS/85SWgJMCDSINKo44Veim6U011MtBhu5kfe1E1+Um80LKJTZoyzjTk3Y5Z2cCsiIMsKfbsrrs3Jo0PFZ/qwgus/6DPF3U/7TFr3IheIDR9ur/RtnNN3+QHDLHqw2Q4FaO8O2pTShnpDUfiCKV8YHT6sqqM8Ez8TpKJgv5YXcx675O02E45A8rfWJInaqNqC9UN6qhuDrEdaDIbPvUcAl9IzfkClHAxPsA+HzJ1/jLd0Qf8LLFG7Bm4+zGvN4LQB1csK3yn13uhndZYvkukKmUhKvEJlesCb1iWSa06isRVTqDchuF5o46H3+KBzzV5lpND9BC6yglY2rO/I0EJpVCoT/L88pxQUPeTf58jQc2oeManXoQ+uzjrjTCHmsEbcgQaczgOLhHCBzLttJ3hZgdhbNviyaav7XimPElXiNg+jui3l57BIUG3GYv7ZW2csSGn3BsJucEKyreev+J/HD4TZTkA8Z7R0XUZpuCUh57fvkvgg7s1TL3wdLr4u6pMdlxRqxhfCWqQZ68LCnxXmH9pChhlMSyO13nU738IM1j30dPLjiX4vb3cY1Tzqo1FE8jRpNd8Eit3Tb+FdPZHOugNjV8RfmmtHvLuMvMUpbGrYrCFa6e4/ZRlci6NnJq4V94Y/i7DQ0gX4X2vEfnpKQw/TkaYgfWeSRpn4VZivZxgkbqG2pOnVRtZJ8fgFBOuZm4MzdxlaPIWZj99JOPZRd05SygGR/LxwHYxYjI9Eo9ns6Y29WFZwz+FyR7ZFG5A62A8a+gXnluQOQbEN17nZy9KsWaLOdqLB/tCoZeltbsTSOLTJVipDpE30EkXHkkYT6yNi02IfOr4eMWe7xWGmtNmi4NoInY18CgCLW090HMVwDW55llG9PU8H/5pMFxX2SWTsBzlWXi4DAJAktRLLsfQT4ntU8egEScQKeaqpAuKPZRQgQzbzXnzXK3+PuUiaKgp3r3A
+ gRoJlkB9
+ 3IIvmB7ZuPCEE2aW6CCf+myK/ki8byPPwHmjanaphjOsE1lLjQPouetfLulFNg/c6h+1LFCQ0xhLY9M8mxI1cZgxOxYqslOWRR6xXZ7Z89v0VsuSGmV2/y4lI+T8Y/U5uTPbze/fTLaUAiZwJ951UByDqvGLCnnWazxk6fVGDWvevs+RSJaV2o1nKUReQe0prqqD9RJPn4xPkfzPsOCwyfRUtX6Y0aW3p1Vkl+0Pv+p1PiO1o9kgs5bzzpp13fEagQTbPtly/TXCEWmHGPtFqsK/btuLO1lLr2Ow+E1xrD7f+OC2MgYRJuLo8LZJrUUBYQevok965Zzv5ZAlZD5hYqfXh5HY3ecovSEuEGuWoSkOmCIxMiBmdZNoC04B6dhXYvH872B5Z3fxTqUJn6pALPLNAnoD/1YRyAya0XyRTqi+PspD6aklRn25WMsHFtvgxXGuvTDiVYRDPdfMNgud+WoBRTgI5ZS5QVPTkDzjORT5s/zsUEX17npFrE69z2+AX9wxdJDGjurTMoDYqYizxRwsUTbTkodfHDlT02KMLdUHju9hKl/l50h2W1meaVmrIM3Wk3x3O1qrcCgLTJHj/36Ky2fv5gaAnD8IDAxv2qeYlPL9/lRAkCzj53Qqneir3YcbWfP9OnKF6hUf0ynkWIKpbUQBl4Gq4hdZq7FQCzfxcR2CgbkJDhAT2uGlwPmdO8BWb7bTWNhYCRHU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,64 +94,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---_000_e301fb41e3a24915b48334a8a555f5c0xiaomicom_
+--_000_e1d5f34930ce42acbf16c8bf20b641e5xiaomicom_
 Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
 
-WW91J3JlIHJpZ2h0LCAiNiB0YWJzICsgOSBzcGFjZXMiIGlzIGVmZmVjdGl2ZWx5ICI3IHRhYnMg
-KyAxIHNwYWNlIiBzaW5jZSA4IG9mIHRob3NlIHNwYWNlcyBlcXVhbCBvbmUgdGFiIHdpZHRoLiBU
-aGUgZGVzY3JpcHRpb24gaW4gdGhlIGNvbW1pdCBtZXNzYWdlIHNob3VsZCBoYXZlIHBocmFzZWQg
-aXQgdGhhdCB3YXkuIFRoZSBhY3R1YWwgY29kZSBjaGFuZ2UgaXMgY29ycmVjdCChqiB0aGUgcmVz
-dWx0IGlzIDYgdGFicyArIDEgc3BhY2UgdG8gYWxpZ24gd2l0aCB0aGUgb3BlbmluZyBwYXJlbnRo
-ZXNpcyBvbiB0aGUgcHJldmlvdXMgbGluZS4gVGhhbmsgeW91IGZvciB0aGUgcmV2aWV3Lg0KDQoN
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fDQq3orz+yMs6IERldiBKYWluIDxkZXYu
-amFpbkBhcm0uY29tPg0Kt6LLzcqxvOQ6IDIwMjbE6jTUwjE2yNUgMTQ6MzQ6NDINCsrVvP7Iyzog
-WGlhbmcgR2FvOyBBbmRyZXcgTW9ydG9uDQqzrcvNOiBsaW51eC1tbUBrdmFjay5vcmc7IGxpbnV4
-LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGRvbmV0LnRvbUBnbWFpbC5jb207ILjfz+gNCtb3zOI6
-IFtFeHRlcm5hbCBNYWlsXVJlOiBbUEFUQ0ggdjJdIG1tL3BhZ2VfYWxsb2M6IGZpeCBzcGFjZXMg
-dXNlZCBmb3IgaW5kZW50YXRpb24gaW5zdGVhZCBvZiB0YWJzDQoNClvN4rK/08q8/l0gtMvTyrz+
-wLTUtNPa0KHD17mry77N4rK/o6zH6733yfe0psDtoaPI9LbU08q8/rCyyKvQ1LTm0smjrMfrvavT
-yrz+16q3orj4bWlzZWNAeGlhb21pLmNvbb340NC3tMChDQoNCk9uIDE2LzA0LzI2IDEwOjU3IGFt
-LCBYaWFuZyBHYW8gd3JvdGU6DQo+IEZyb206IFhpYW5nIEdhbyA8Z2FveGlhbmcxN0B4aWFvbWku
-Y29tPg0KPg0KPiBjaGVja3BhdGNoLnBsIHJlcG9ydHMgdHdvIGluZGVudGF0aW9uIGVycm9ycyBp
-biBwYWdlX2FsbG9jLmMgd2hlcmUNCj4gc3BhY2VzIGFyZSB1c2VkIGluc3RlYWQgb2YgdGFiczoN
-Cj4NCj4gICBFUlJPUjogY29kZSBpbmRlbnQgc2hvdWxkIHVzZSB0YWJzIHdoZXJlIHBvc3NpYmxl
-DQo+ICAgIzg4NzogRklMRTogbW0vcGFnZV9hbGxvYy5jOjg4NzoNCj4gICArICAgICAgICBWTV9X
-QVJOX09OQ0UoZ2V0X3BhZ2VibG9ja19taWdyYXRldHlwZShwYWdlKSAhPSBtaWdyYXRldHlwZSwk
-DQo+DQo+ICAgRVJST1I6IGNvZGUgaW5kZW50IHNob3VsZCB1c2UgdGFicyB3aGVyZSBwb3NzaWJs
-ZQ0KPiAgICM2NjI2OiBGSUxFOiBtbS9wYWdlX2FsbG9jLmM6NjYyNjoNCj4gICArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN5c2N0bF9taW5fdW5t
-YXBwZWRfcmF0aW8pIC8gMTAwOyQNCj4NCj4gSW4gX19kZWxfcGFnZV9mcm9tX2ZyZWVfbGlzdCgp
-LCB0aGUgVk1fV0FSTl9PTkNFIGF0IGxpbmUgODg3IHVzZXMgOA0KPiBzcGFjZXMgZm9yIGluZGVu
-dGF0aW9uIGluc3RlYWQgb2YgYSB0YWIuIFRoZSBpZGVudGljYWwgVk1fV0FSTl9PTkNFDQo+IGNh
-bGxzIGluIF9fYWRkX3RvX2ZyZWVfbGlzdCgpIGFuZCBtb3ZlX3RvX2ZyZWVfbGlzdCgpIGJvdGgg
-Y29ycmVjdGx5DQo+IHVzZSBhIHRhYi4NCj4NCj4gSW4gc2V0dXBfbWluX3VubWFwcGVkX3JhdGlv
-KCksIHRoZSBjb250aW51YXRpb24gbGluZSBhdCA2NjI2IHVzZXMgNg0KPiB0YWJzICsgOSBzcGFj
-ZXMgZm9yIGFsaWdubWVudC4gUmVwbGFjZSB0aGUgZXhjZXNzIHNwYWNlcyB3aXRoIDYgdGFicw0K
-DQo2IHRhYnMgKyA5IHNwYWNlcyAtPiA3IHRhYnMgKyAxIHNwYWNlLg0KDQoNCj4gKyAxIHNwYWNl
-IHRvIGNvcnJlY3RseSBhbGlnbiB3aXRoIHRoZSBvcGVuaW5nIHBhcmVudGhlc2lzIG9uIHRoZQ0K
-PiBwcmV2aW91cyBsaW5lLg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBYaWFuZyBHYW8gPGdhb3hpYW5n
-MTdAeGlhb21pLmNvbT4NCj4gLS0tDQo+ICBtbS9wYWdlX2FsbG9jLmMgfCA0ICsrLS0NCj4gIDEg
-ZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYg
-LS1naXQgYS9tbS9wYWdlX2FsbG9jLmMgYi9tbS9wYWdlX2FsbG9jLmMNCj4gaW5kZXggMmQ0YjZm
-MWE1NTRlLi43NTI2NzNhOWI0M2MgMTAwNjQ0DQo+IC0tLSBhL21tL3BhZ2VfYWxsb2MuYw0KPiAr
-KysgYi9tbS9wYWdlX2FsbG9jLmMNCj4gQEAgLTg4NCw3ICs4ODQsNyBAQCBzdGF0aWMgaW5saW5l
-IHZvaWQgX19kZWxfcGFnZV9mcm9tX2ZyZWVfbGlzdChzdHJ1Y3QgcGFnZSAqcGFnZSwgc3RydWN0
-IHpvbmUgKnpvbg0KPiAgew0KPiAgICAgICBpbnQgbnJfcGFnZXMgPSAxIDw8IG9yZGVyOw0KPg0K
-PiAtICAgICAgICBWTV9XQVJOX09OQ0UoZ2V0X3BhZ2VibG9ja19taWdyYXRldHlwZShwYWdlKSAh
-PSBtaWdyYXRldHlwZSwNCj4gKyAgICAgVk1fV0FSTl9PTkNFKGdldF9wYWdlYmxvY2tfbWlncmF0
-ZXR5cGUocGFnZSkgIT0gbWlncmF0ZXR5cGUsDQo+ICAgICAgICAgICAgICAgICAgICAicGFnZSB0
-eXBlIGlzICVkLCBwYXNzZWQgbWlncmF0ZXR5cGUgaXMgJWQgKG5yPSVkKVxuIiwNCj4gICAgICAg
-ICAgICAgICAgICAgIGdldF9wYWdlYmxvY2tfbWlncmF0ZXR5cGUocGFnZSksIG1pZ3JhdGV0eXBl
-LCBucl9wYWdlcyk7DQo+DQo+IEBAIC02NjIzLDcgKzY2MjMsNyBAQCBzdGF0aWMgdm9pZCBzZXR1
-cF9taW5fdW5tYXBwZWRfcmF0aW8odm9pZCkNCj4NCj4gICAgICAgZm9yX2VhY2hfem9uZSh6b25l
-KQ0KPiAgICAgICAgICAgICAgIHpvbmUtPnpvbmVfcGdkYXQtPm1pbl91bm1hcHBlZF9wYWdlcyAr
-PSAoem9uZV9tYW5hZ2VkX3BhZ2VzKHpvbmUpICoNCj4gLSAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN5c2N0bF9taW5fdW5tYXBwZWRfcmF0aW8p
-IC8gMTAwOw0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHN5c2N0bF9taW5fdW5tYXBwZWRfcmF0aW8pIC8gMTAwOw0KPiAgfQ0KPg0KPg0KDQo=
+VGhhbmsgeW91IGZvciB0aGUgZmVlZGJhY2suIEkgdW5kZXJzdGFuZCChqiBjaGVja3BhdGNoIHNo
+b3VsZCBvbmx5IGJlIHVzZWQgb24gcGF0Y2hlcywgbm90IHRvIGZpbmQgYW5kIGZpeCBwcmUtZXhp
+c3Rpbmcgc3R5bGUgaXNzdWVzIGluIGV4aXN0aW5nIGNvZGUuIEknbGwga2VlcCB0aGlzIGluIG1p
+bmQgZm9yIGZ1dHVyZSBzdWJtaXNzaW9ucy4gU29ycnkgZm9yIHRoZSBub2lzZS4NCg0KX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18NCreivP7IyzogVmxhc3RpbWlsIEJhYmthIChTVVNF
+KSA8dmJhYmthQGtlcm5lbC5vcmc+DQq3osvNyrG85DogMjAyNsTqNNTCMTbI1SAxNDo0MDozMQ0K
+ytW8/sjLOiBYaWFuZyBHYW87IGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmcNCrOty806IHN1cmVu
+YkBnb29nbGUuY29tOyBtaG9ja29Ac3VzZS5jb207IGphY2ttYW5iQGdvb2dsZS5jb207IGhhbm5l
+c0BjbXB4Y2hnLm9yZzsgeml5QG52aWRpYS5jb207IGxpbnV4LW1tQGt2YWNrLm9yZzsgbGludXgt
+a2VybmVsQHZnZXIua2VybmVsLm9yZzsguN/P6A0K1vfM4jogW0V4dGVybmFsIE1haWxdUmU6IFtQ
+QVRDSF0gbW0vcGFnZV9hbGxvYzogZml4IHNwYWNlcyB1c2VkIGZvciBpbmRlbnRhdGlvbiBpbnN0
+ZWFkIG9mIHRhYnMNCg0KW83isr/Tyrz+XSC0y9PKvP7AtNS009rQocPXuavLvs3isr+jrMfrvffJ
+97SmwO2ho8j0ttTTyrz+sLLIq9DUtObSyaOsx+u9q9PKvP7XqreiuPhtaXNlY0B4aWFvbWkuY29t
+vfjQ0Le0wKENCg0KT24gNC8xNi8yNiAwNDoxOSwgWGlhbmcgR2FvIHdyb3RlOg0KPiBGcm9tOiBY
+aWFuZyBHYW8gPGdhb3hpYW5nMTdAeGlhb21pLmNvbT4NCj4NCj4gY2hlY2twYXRjaC5wbCByZXBv
+cnRzIHR3byBpbmRlbnRhdGlvbiBlcnJvcnMgaW4gcGFnZV9hbGxvYy5jIHdoZXJlDQo+IHNwYWNl
+cyBhcmUgdXNlZCBpbnN0ZWFkIG9mIHRhYnM6DQoNCmNoZWNrcGF0Y2ggc2hvdWxkIG5vdCBiZSB1
+c2VkIG9uIGV4aXN0aW5nIHNvdXJjZSBmaWxlcywgb25seSBvbiBwYXRjaGVzDQpjaGFuZ2luZyB0
+aGVtIGZvciBhbm90aGVyIHJlYXNvbi4gVGhlcmUgYXJlIG1hbnkgcHJlLWV4aXN0aW5nIHRoaW5n
+cyB0aGF0DQp3b3VsZCBiZSBmbGFnZ2VkIGFuZCB3ZSBkb24ndCB3YW50IHRoZSBjaHVybi4gU28g
+d2Ugb25seSB1c2UgY2hlY2twYXRjaCB0bw0KYXZvaWQgaW50cm9kdWNpbmcgbmV3IG1pc3Rha2Vz
+LCBhbmQgb25seSBmaXggdGhlIHByZS1leGlzdGluZyBvbmVzIHdoZW4NCmNoYW5naW5nIHRoZSBj
+b2RlIGZvciBhbm90aGVyIHJlYXNvbi4NCg0KPiAgIEVSUk9SOiBjb2RlIGluZGVudCBzaG91bGQg
+dXNlIHRhYnMgd2hlcmUgcG9zc2libGUNCj4gICAjODg3OiBGSUxFOiBtbS9wYWdlX2FsbG9jLmM6
+ODg3Og0KPiAgICsgICAgICAgIFZNX1dBUk5fT05DRShnZXRfcGFnZWJsb2NrX21pZ3JhdGV0eXBl
+KHBhZ2UpICE9IG1pZ3JhdGV0eXBlLCQNCj4NCj4gICBFUlJPUjogY29kZSBpbmRlbnQgc2hvdWxk
+IHVzZSB0YWJzIHdoZXJlIHBvc3NpYmxlDQo+ICAgIzY2MjY6IEZJTEU6IG1tL3BhZ2VfYWxsb2Mu
+Yzo2NjI2Og0KPiAgICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgc3lzY3RsX21pbl91bm1hcHBlZF9yYXRpbykgLyAxMDA7JA0KPg0KPiBJbiBfX2Rl
+bF9wYWdlX2Zyb21fZnJlZV9saXN0KCksIHRoZSBWTV9XQVJOX09OQ0UgYXQgbGluZSA4ODcgdXNl
+cyA4DQo+IHNwYWNlcyBmb3IgaW5kZW50YXRpb24gaW5zdGVhZCBvZiBhIHRhYi4gVGhlIGlkZW50
+aWNhbCBWTV9XQVJOX09OQ0UNCj4gY2FsbHMgaW4gX19hZGRfdG9fZnJlZV9saXN0KCkgYW5kIG1v
+dmVfdG9fZnJlZV9saXN0KCkgYm90aCBjb3JyZWN0bHkNCj4gdXNlIGEgdGFiLg0KPg0KPiBJbiBz
+ZXR1cF9taW5fdW5tYXBwZWRfcmF0aW8oKSwgdGhlIGNvbnRpbnVhdGlvbiBsaW5lIGF0IDY2MjYg
+dXNlcyA2DQo+IHRhYnMgKyA5IHNwYWNlcyBmb3IgYWxpZ25tZW50LiBSZXBsYWNlIHRoZSBleGNl
+c3Mgc3BhY2VzIHdpdGggNiB0YWJzDQo+ICsgMSBzcGFjZSB0byBjb3JyZWN0bHkgYWxpZ24gd2l0
+aCB0aGUgb3BlbmluZyBwYXJlbnRoZXNpcyBvbiB0aGUNCj4gcHJldmlvdXMgbGluZS4NCj4NCj4g
+U2lnbmVkLW9mZi1ieTogZ2FveGlhbmcxNyA8Z2FveGlhbmcxN0B4aWFvbWkuY29tPg0KPiAtLS0N
+Cj4gIG1tL3BhZ2VfYWxsb2MuYyB8IDQgKystLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0
+aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4NCj4gZGlmZiAtLWdpdCBhL21tL3BhZ2VfYWxsb2Mu
+YyBiL21tL3BhZ2VfYWxsb2MuYw0KPiBpbmRleCAyZDRiNmYxYTU1NGUuLjc1MjY3M2E5YjQzYyAx
+MDA2NDQNCj4gLS0tIGEvbW0vcGFnZV9hbGxvYy5jDQo+ICsrKyBiL21tL3BhZ2VfYWxsb2MuYw0K
+PiBAQCAtODg0LDcgKzg4NCw3IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBfX2RlbF9wYWdlX2Zyb21f
+ZnJlZV9saXN0KHN0cnVjdCBwYWdlICpwYWdlLCBzdHJ1Y3Qgem9uZSAqem9uDQo+ICB7DQo+ICAg
+ICAgIGludCBucl9wYWdlcyA9IDEgPDwgb3JkZXI7DQo+DQo+IC0gICAgICAgIFZNX1dBUk5fT05D
+RShnZXRfcGFnZWJsb2NrX21pZ3JhdGV0eXBlKHBhZ2UpICE9IG1pZ3JhdGV0eXBlLA0KPiArICAg
+ICBWTV9XQVJOX09OQ0UoZ2V0X3BhZ2VibG9ja19taWdyYXRldHlwZShwYWdlKSAhPSBtaWdyYXRl
+dHlwZSwNCj4gICAgICAgICAgICAgICAgICAgICJwYWdlIHR5cGUgaXMgJWQsIHBhc3NlZCBtaWdy
+YXRldHlwZSBpcyAlZCAobnI9JWQpXG4iLA0KPiAgICAgICAgICAgICAgICAgICAgZ2V0X3BhZ2Vi
+bG9ja19taWdyYXRldHlwZShwYWdlKSwgbWlncmF0ZXR5cGUsIG5yX3BhZ2VzKTsNCj4NCj4gQEAg
+LTY2MjMsNyArNjYyMyw3IEBAIHN0YXRpYyB2b2lkIHNldHVwX21pbl91bm1hcHBlZF9yYXRpbyh2
+b2lkKQ0KPg0KPiAgICAgICBmb3JfZWFjaF96b25lKHpvbmUpDQo+ICAgICAgICAgICAgICAgem9u
+ZS0+em9uZV9wZ2RhdC0+bWluX3VubWFwcGVkX3BhZ2VzICs9ICh6b25lX21hbmFnZWRfcGFnZXMo
+em9uZSkgKg0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgc3lzY3RsX21pbl91bm1hcHBlZF9yYXRpbykgLyAxMDA7DQo+ICsgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3lzY3RsX21pbl91bm1hcHBlZF9y
+YXRpbykgLyAxMDA7DQo+ICB9DQo+DQo+DQoNCg==
 
---_000_e301fb41e3a24915b48334a8a555f5c0xiaomicom_
+--_000_e1d5f34930ce42acbf16c8bf20b641e5xiaomicom_
 Content-Type: text/html; charset="gb2312"
 Content-Transfer-Encoding: quoted-printable
 
@@ -173,27 +181,25 @@ p
 or:#000000; font-family:Calibri,Helvetica,sans-serif">
 <p></p>
 <div>
-<div class=3D"x_ace-line x_ace-line x_old-record-id-IQqId0MmzoalaLxzNX1c31q=
-Unrh">You're right, &quot;6 tabs &#43; 9 spaces&quot; is effectively &quot;=
-7 tabs &#43; 1 space&quot; since 8 of those spaces equal one tab width. The=
- description in the commit message should have phrased it that
- way. The actual code change is correct =A1=AA the result is 6 tabs &#43; 1=
- space to align with the opening parenthesis on the previous line. Thank yo=
-u for the review.</div>
+<div class=3D"x_ace-line x_ace-line x_old-record-id-CkWCd1zxToQKxHx26WVcApx=
+Cnwd">Thank you for the feedback. I understand =A1=AA checkpatch should onl=
+y be used on patches, not to find and fix pre-existing style issues in exis=
+ting code. I'll keep this in mind for future
+ submissions. Sorry for the noise.</div>
 </div>
-<span class=3D"x_lark-record-clipboard"></span><br>
 <p></p>
 </div>
 <hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
 <div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
-color=3D"#000000" style=3D"font-size:11pt"><b>=B7=A2=BC=FE=C8=CB:</b> Dev J=
-ain &lt;dev.jain@arm.com&gt;<br>
-<b>=B7=A2=CB=CD=CA=B1=BC=E4:</b> 2026=C4=EA4=D4=C216=C8=D5 14:34:42<br>
-<b>=CA=D5=BC=FE=C8=CB:</b> Xiang Gao; Andrew Morton<br>
-<b>=B3=AD=CB=CD:</b> linux-mm@kvack.org; linux-kernel@vger.kernel.org; done=
-t.tom@gmail.com; =B8=DF=CF=E8<br>
-<b>=D6=F7=CC=E2:</b> [External Mail]Re: [PATCH v2] mm/page_alloc: fix space=
-s used for indentation instead of tabs</font>
+color=3D"#000000" style=3D"font-size:11pt"><b>=B7=A2=BC=FE=C8=CB:</b> Vlast=
+imil Babka (SUSE) &lt;vbabka@kernel.org&gt;<br>
+<b>=B7=A2=CB=CD=CA=B1=BC=E4:</b> 2026=C4=EA4=D4=C216=C8=D5 14:40:31<br>
+<b>=CA=D5=BC=FE=C8=CB:</b> Xiang Gao; akpm@linux-foundation.org<br>
+<b>=B3=AD=CB=CD:</b> surenb@google.com; mhocko@suse.com; jackmanb@google.co=
+m; hannes@cmpxchg.org; ziy@nvidia.com; linux-mm@kvack.org; linux-kernel@vge=
+r.kernel.org; =B8=DF=CF=E8<br>
+<b>=D6=F7=CC=E2:</b> [External Mail]Re: [PATCH] mm/page_alloc: fix spaces u=
+sed for indentation instead of tabs</font>
 <div>&nbsp;</div>
 </div>
 </div>
@@ -204,12 +210,20 @@ s used for indentation instead of tabs</font>
 =AC=C7=EB=BD=AB=D3=CA=BC=FE=D7=AA=B7=A2=B8=F8misec@xiaomi.com=BD=F8=D0=D0=
 =B7=B4=C0=A1<br>
 <br>
-On 16/04/26 10:57 am, Xiang Gao wrote:<br>
+On 4/16/26 04:19, Xiang Gao wrote:<br>
 &gt; From: Xiang Gao &lt;gaoxiang17@xiaomi.com&gt;<br>
 &gt;<br>
 &gt; checkpatch.pl reports two indentation errors in page_alloc.c where<br>
 &gt; spaces are used instead of tabs:<br>
-&gt;<br>
+<br>
+checkpatch should not be used on existing source files, only on patches<br>
+changing them for another reason. There are many pre-existing things that<b=
+r>
+would be flagged and we don't want the churn. So we only use checkpatch to<=
+br>
+avoid introducing new mistakes, and only fix the pre-existing ones when<br>
+changing the code for another reason.<br>
+<br>
 &gt;&nbsp;&nbsp; ERROR: code indent should use tabs where possible<br>
 &gt;&nbsp;&nbsp; #887: FILE: mm/page_alloc.c:887:<br>
 &gt;&nbsp;&nbsp; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VM_WARN_ON=
@@ -235,15 +249,11 @@ r>
 >
 &gt; tabs &#43; 9 spaces for alignment. Replace the excess spaces with 6 ta=
 bs<br>
-<br>
-6 tabs &#43; 9 spaces -&gt; 7 tabs &#43; 1 space.<br>
-<br>
-<br>
 &gt; &#43; 1 space to correctly align with the opening parenthesis on the<b=
 r>
 &gt; previous line.<br>
 &gt;<br>
-&gt; Signed-off-by: Xiang Gao &lt;gaoxiang17@xiaomi.com&gt;<br>
+&gt; Signed-off-by: gaoxiang17 &lt;gaoxiang17@xiaomi.com&gt;<br>
 &gt; ---<br>
 &gt;&nbsp; mm/page_alloc.c | 4 &#43;&#43;--<br>
 &gt;&nbsp; 1 file changed, 2 insertions(&#43;), 2 deletions(-)<br>
@@ -295,5 +305,5 @@ _ratio) / 100;<br>
 </body>
 </html>
 
---_000_e301fb41e3a24915b48334a8a555f5c0xiaomicom_--
+--_000_e1d5f34930ce42acbf16c8bf20b641e5xiaomicom_--
 
