@@ -4,132 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75401F8A16D
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 12:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C66F8A16E
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 12:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB1516B0089; Thu, 16 Apr 2026 08:34:24 -0400 (EDT)
+	id 1FC586B0005; Thu, 16 Apr 2026 08:41:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D61FD6B008A; Thu, 16 Apr 2026 08:34:24 -0400 (EDT)
+	id 1ADD46B0089; Thu, 16 Apr 2026 08:41:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C51346B008C; Thu, 16 Apr 2026 08:34:24 -0400 (EDT)
+	id 0C3BB6B008A; Thu, 16 Apr 2026 08:41:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B272A6B0089
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:34:24 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4EB2D8C618
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:34:24 +0000 (UTC)
-X-FDA: 84664362048.13.4F17544
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F13EF40012
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:34:21 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id F07186B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:41:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8E73A160870
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:41:46 +0000 (UTC)
+X-FDA: 84664380612.04.2C6145E
+Received: from mx.fmap.me (fmap.me [51.75.121.85])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C7DC64000A
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:41:44 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2lAvgDJA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TRzt6xZc;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2lAvgDJA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TRzt6xZc;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	dkim=pass header.d=fmap.me header.s=mail header.b=J1J5BJtX;
+	dmarc=pass (policy=reject) header.from=fmap.me;
+	spf=pass (imf11.hostedemail.com: domain of ab@fmap.me designates 51.75.121.85 as permitted sender) smtp.mailfrom=ab@fmap.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776342862;
+	s=arc-20220608; t=1776343305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VfRVQztVxZE1qlczIEiG+Di0cRaEaqEBpXbqpnycMEg=;
-	b=EZFL9+WNJJxszbVDcKbyCxJbG5j6QJGuPx6vvC5TPMB0L35Lxy73r7Hn6rgiTFcvjulVNV
-	s47rZB/ZTpxOKiCgcosjHeFDsoWbjBCa3zzcS9CREkITIv1UULB6ZpbqEKRafic1igxE1R
-	U3JyMd7QS1tkbMTzT8LsXR9XFt6MjCw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776342862; a=rsa-sha256;
-	cv=none;
-	b=UU0lEFkXVNZkbIRyzF78oAC3hL7MBBgXMwa2EWxJZQBXhOWPasZFCBYv2gVU0HfGFYY5Z8
-	wYG2NPCyzE2gL+jjclFwaRusho0wJWQfDOwZkIh7sdLsiW1YR5h4By8AUfZ83X8B6KMo6Q
-	1OKf0TvnZMoV4/dyFnroIx75LrBQ3LI=
+	bh=LpJDpjvd754lZqTJVTbKzY3+WbuscGrA+ZFXy3r6Kto=;
+	b=0HqwvKqdS8usAOczXuan42KyTpbGuZmxtH/KFBVlKiDOEdFDWw++RKDN1tqwtB5omHoNmW
+	LZmYfLH8QqwZUmT1ObU08qi18is6xLqaqlmRewR4QLR7I415LK23x8M/e4OQviFAEXoOV1
+	6rePCQ/xNAxBzpkko1qJKMMCySux2D0=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2lAvgDJA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TRzt6xZc;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2lAvgDJA;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TRzt6xZc;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1B9866A7EC;
-	Thu, 16 Apr 2026 12:34:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776342860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass header.d=fmap.me header.s=mail header.b=J1J5BJtX;
+	dmarc=pass (policy=reject) header.from=fmap.me;
+	spf=pass (imf11.hostedemail.com: domain of ab@fmap.me designates 51.75.121.85 as permitted sender) smtp.mailfrom=ab@fmap.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776343305; a=rsa-sha256;
+	cv=none;
+	b=r2qJ12brTYPtNUPqRW3CUi3SBPY1RNba2KNR3MNXgdMeKS5TqCaGnWwxCoX/Wgn8SatIFX
+	79hELc00r0hOEU/sm3S2iUFYwV2450GW67VR0N8IXLvBHEIvviodoAZ6/D5Q0QsiAcpp6B
+	e8f+YJHSScTa5e8SUM7VXJstaOaZQmw=
+Content-Type: multipart/mixed; boundary="------------PBWAN3Bbi1100Ta0o8JUsV1J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fmap.me; s=mail;
+	t=1776343302;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VfRVQztVxZE1qlczIEiG+Di0cRaEaqEBpXbqpnycMEg=;
-	b=2lAvgDJAq/JoBGC7FwG9XFNG6323BkBaYk2YGa6y2Wg8d7U/VoNhv7l/kpUCDLGwn85Xmc
-	ENOpKOhp0HqlXQ/YdUQ8Z7Wyz128OW/zrrZvn24GDdtEdjm1ehJppkJn/MjHfMWONGzqvN
-	mRUjmYvrDKwjfJeBSaSpOtA3D9fmHZ8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776342860;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VfRVQztVxZE1qlczIEiG+Di0cRaEaqEBpXbqpnycMEg=;
-	b=TRzt6xZc9OrfkCBcA7qKq99GsLISMToJjn4dVQlYzcKF8VIjubsyHlqCadtqpUpD8Un4UU
-	fqu2kzSHAKnwQcDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776342860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VfRVQztVxZE1qlczIEiG+Di0cRaEaqEBpXbqpnycMEg=;
-	b=2lAvgDJAq/JoBGC7FwG9XFNG6323BkBaYk2YGa6y2Wg8d7U/VoNhv7l/kpUCDLGwn85Xmc
-	ENOpKOhp0HqlXQ/YdUQ8Z7Wyz128OW/zrrZvn24GDdtEdjm1ehJppkJn/MjHfMWONGzqvN
-	mRUjmYvrDKwjfJeBSaSpOtA3D9fmHZ8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776342860;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VfRVQztVxZE1qlczIEiG+Di0cRaEaqEBpXbqpnycMEg=;
-	b=TRzt6xZc9OrfkCBcA7qKq99GsLISMToJjn4dVQlYzcKF8VIjubsyHlqCadtqpUpD8Un4UU
-	fqu2kzSHAKnwQcDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F409B593A3;
-	Thu, 16 Apr 2026 12:34:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DSuOO0vX4GmxIgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 16 Apr 2026 12:34:19 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id B287FA0B67; Thu, 16 Apr 2026 14:34:15 +0200 (CEST)
-Date: Thu, 16 Apr 2026 14:34:15 +0200
-From: Jan Kara <jack@suse.cz>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, 
-	ritesh.list@gmail.com, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>, 
-	dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, 
-	brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
- RWF_WRITETHROUGH
-Message-ID: <52wsh6owrtmznt5xuks6ljwy4zbpyid45x5dbxo5xgssxm4zxy@iue2on3llpfb>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
+	bh=LpJDpjvd754lZqTJVTbKzY3+WbuscGrA+ZFXy3r6Kto=;
+	b=J1J5BJtXHWa1d4QPJyoCDsnBwpevNEU3KBLF2+Dqp0dZBWtzoXUUA+CERjGgfkGjV5zx+Q
+	G0CvVdo+Ow0eUyTRjmTB1q3VBQBTSWmaQEVPTO4Bo7TZFrGaKByzrSWkWXaSuUDPAQHK2w
+	tkNBLeV1iWbfcLfHijgiNpMUToVLZGA=
+Message-ID: <59ab54f6-680e-456e-91f4-0a26889844ef@fmap.me>
+Date: Thu, 16 Apr 2026 19:41:37 +0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: F13EF40012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: uzy6t4t3c8jmfnzh3higbmgq3bu6mgyt
+Subject: Re: [fuse-devel] Debugging a stale kernel cache during file growth
+To: Miklos Szeredi <miklos@szeredi.hu>, Matthew Wilcox <willy@infradead.org>
+Cc: fuse-devel@lists.sourceforge.net,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Amir Goldstein <amir73il@gmail.com>, fuse-devel@lists.linux.dev,
+ linux-mm <linux-mm@kvack.org>
+References: <898a4e10-6193-4671-b3b1-7c7bc562a671@fmap.me>
+ <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
+ <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
+Content-Language: en-US
+From: Nikolay Amiantov <ab@fmap.me>
+In-Reply-To: <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1776342861-735062
-X-HE-Meta: U2FsdGVkX19w4tVrq7R/4jKv/yAk5xzRY2z2dDHyeNV+h+gP8cGuYQrnYAjFj1imuOPJNE+iJQf8R63kTpmqXMPB0GcmP40otK8eCYil6QCAZo/9z++tu9PyzMCpKWlPCvkyibfNh9VBydypyiQgcKKPqwhr3nUB5W9cE7F99ED5pbWZWQr+jyFSYwU9V2/CQcAG/buXlxPKGUEmJLynWn4FSQIa3QZ0sxyY2B0NmQEHKM5R8V2wweDI0O3pM/vWJdL0ez3RTWp2AODjvje+iYoL3RSA306fy+wZmwVG7NnuKi/eesHueNsHLfGssJFs3625wRFoDSH6/veNXLLSqOfWHVheYPk/ojKBg6qyxW/dzllUr4CLb3oeS51yANSK45qMg95GtCaNUNrij976IFpG4xtoLG7yXHN2MoPim+xE8KOJ0EC3q37kVK/iGoVprLW+B2xLupm8lA6t6caQ2jZu0J7g+stZvf+lZgTbngrEn4Nq1UX4PJIhC70gUTtAovLdJHgQ8EKZONmwnSmiTFkGHraTm8q3U7hSFPbOQ8IJLYzUUgGG7jxLVKuV0ZzTZHb9FoXcvZkZUlYJCRa+kZ+n+sIvDEFipBQ3A4rdPBYyu0sIQthGjYrxi95jOLLbQqztUcQk/54JsTRfP1O5piS00VBiw6rrnSl3Jz8dxbKcjD88Zen+WEmbERx99mpzDUSR+AbIYuyFmjUJq0keib58Nhhfya/b7PTwHV8XxqyzL/6oYOvFTAZpykQE7kMKlQwtlpPluZhBp3oO2EPL7Y2o3ZVRd7V5P2wm2LduyQ0hUybZQfNwzTzzMb0/ZQ2ZFniMMzDZUZtwJp7MCkphWKc+g68C3b8/7gfJhSzQZonCO/pcWb4y7VZyFAyds2ai3pythcYyCaZ+WlA98HBjdLlV0fopD9E0viFZ6MQyenEVKqfQv6TdyKa65dPbCFOKqfHvHWMiku3+znKK0Ck
- zopWwY1D
- iSv5vvmBrnNr1SGRAa7ptq1CgccTaTyXccMTK6Pz3C88+SDo8dQpOq/9RTFTciR9H5FXmPffeqUFg/J5FdaLgdI3Tt/aYjABn8m19sD1xDQfyDnEeQ/x/uDlXdPmagiE8dU9QmY81ZOfySeKrPtl441JA+KWhSWRaJmFN4jwBIw3QOmMUbbQdmm3WV+4b91dHPZcZJK37y9BAfEP7A5tGN8pX0OpphidQS94tOT9VZ/4FYm1VBUkp5W2/TcxjuBd38sikr8BDYTvat/IKR95vceQfexsu28EXIA4zZLykQ5Jl7ZRFveNKsRtLTIq3lfc32nwLFxMTnPUfaTA8FBkgLQKgEMwuhHyXatZgXBctDfHtgx9S3Z1lSr13PEqhKt7o3ZzdQKd+KKhmWgmRA7fix96o/tMk3oIVp+4DYv/oGE9Twy8td65ANhlzb3R6I9Y1q0F0L7g6vbdNUeI=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C7DC64000A
+X-Stat-Signature: 3m5ec4d18ndjcewpoqob6s3szab1hgd4
+X-HE-Tag: 1776343304-87182
+X-HE-Meta: U2FsdGVkX19Hgc6mb/BFEkcj6Ebf9TdkorMQK6QwKfuN5VaHnLMQ0EJcol45YhI8hGnsZc7tV/zzKl1DZbPo/KgmIqR07rfTGdgoVkfqbgyOgxI2WbGeQETgRVsJulRAYnePGCpaui87/gMPEfuMIGuA1bFI/wCRD4VFJQLAGmYOgtzNRqDnZ2Uz6aVOJyKceeM6rCs30jiOqLxuqwZjsm+G8LR/kIS6S8IYK/LRsitDxkXaEaFJn89vIQLxQmv0xYb6D+lWNEMyiQoJ/vM2dlqRmDfyolv/0NLXMyznv6VeD7bm4j4jJdGOVEd6A0jagOnNIu1+AMKv/FCQjFhqnmI5iduoFSn38dsREr/nULbNmahBXmP4+GaEvYhmWFXIkP9YQJnfN3jRIsEMmZbbLsqUHQAHa4//qAvdd64gh8kwN5p74wt2AKen5a/dyj3/d1lPXV7drY8HEGA0KOA2MLYkzLYHfvDz1XzJFifHKmWq2B7In3b9RhL0EF4jt0OzLcLp7moAG7ESHGJ4za0qBf7LOc2sAvmzm5SiVbAJ7AavZuQxq7oUXmTE/0SUq5LiKkAkAE8jBUFkOQsRVXjtGqXjQECHYzcN9lKh7dbtojlBjraXQrAsqm9gEdIvzSfyTDYJbzLf9ytqrBjT4ArtX9GzuF3LHk/ypceYv7hSZnA5xdf2xuEsa7THaGHCrUUVLHiPsVYCR6+WlT1i//opR7z75HVRY04CS4JKN5hIoftZiO2kOBcdIwi8yA9AMrAYtXV771MIIRC488izL1bfUTyI0Yzyp6p1Jwxs5UbzzbPGLhkiAcUy1KCNqh6qASC/Ie6Yv8wN0BViQuObUJg6LIxwDLIeVZEJwMsRce9Losh1u3laSmLOvZAbnr1rT7PmHoY5WkrAKZK2jkVgkHyD6UZO02ApVQ1CEWmncoydqNj4tklcb77e9YBnk7OPUkQOBcsw/Db1FK4IVoseoYo
+ KwoG89NW
+ EQQ25uRl8bfmvx49tMke8tBGptnmHFXueXpDVY73UYa8i9g0RF9rs9A0pT6kOTzRwsfVFCz/6H2Ewp9UNDe+7cKMFB9QvyFUvBQvINghyPv3ciV6teUu3Rya7qDUIoc+GIIcI5t75grmTauvOTaUG3GvcrmCKfuh28zRC45Lv88K9ywSFgDZzkDMQ+Aaprdkg0DE7sp5RYkmb1ya5fhYhGodR04w1QNci5qqoVY1XSg6u4zr5Czev67PIw27eEnKHR8qqc4Tq7Uu4TXoUDzw4ScXvDMecLYLHHjwUIKdLOo0MKdmDwg6y3A/VPg0VIaOkxOWO3HqF64Rf1nW4+8VDRRm+NaMQzV6wPu/K8gMt6R+0GaEcl8xWK/vM4R4fV1trL8AyeJZUezUnoTRV8l+GOtK5BtfNv/nczk2Bsc5IJLtj//GjhAVR+kzYpqXQpEbCH4PD4g/RG4CGwzggapX756L6NJmHZvKp79DVHXaE6IQDmOl1HpwPzXl+KgUOwVCiFeGdXgs23zjjxPydGOJMI+LtMrXKQxSasjnplRVexpfPL6Eqcy8kHFX7ZBx0aslNuowRjds91eswcmi2BuvwAak3dRZEzjrK8fz6vz5l0NE/MH9wJRXKV1VMmI1wp77U89H1fHonAvhCw0w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,197 +88,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some more thoughs... :)
+This is a multi-part message in MIME format.
+--------------PBWAN3Bbi1100Ta0o8JUsV1J
+Content-Type: multipart/alternative;
+ boundary="------------52NtMlTbHFL7c0NjiV8XF8Yj"
 
-> @@ -1096,6 +1097,276 @@ static bool iomap_write_end(struct iomap_iter *iter, size_t len, size_t copied,
->  	return __iomap_write_end(iter->inode, pos, len, copied, folio);
->  }
->  
-> +static ssize_t iomap_writethrough_complete(struct iomap_writethrough_ctx *wt_ctx)
-> +{
-> +	struct kiocb *iocb	= wt_ctx->iocb;
-> +	struct inode *inode	= wt_ctx->inode;
-> +	ssize_t ret		= wt_ctx->error;
-> +
-> +	if (wt_ctx->dops && wt_ctx->dops->end_io) {
-> +		int err = wt_ctx->dops->end_io(iocb, wt_ctx->written,
-> +						wt_ctx->error,
-> +						wt_ctx->flags);
+--------------52NtMlTbHFL7c0NjiV8XF8Yj
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-It's a bit odd to use only ->end_io from dops also because we don't really
-use direct IO submission path. So perhaps you can have just an end_io
-handler pointer in iomap_writethrough_ops similarly as you have a
-submission one?
+On 4/16/26 19:12, Miklos Szeredi wrote:
+> I wonder if we could clear PG_uptodate on the page which had its zero
+> bytes exposed by the i_size increase?
 
-> +		if (err)
-> +			ret = err;
-> +	}
-> +
-> +	mapping_clear_stable_writes(inode->i_mapping);
-> +
-> +	if (!ret) {
-> +		ret = wt_ctx->written;
-> +		iocb->ki_pos = wt_ctx->pos + ret;
-> +	}
-> +
-> +	kfree(wt_ctx);
-> +	return ret;
-> +}
+I've actually tried that first. The idea was to get or create a new page 
+on the EOF boundary, lock it and poison it with an uptodate reset if we 
+need to. But this resulted in an instantaneous EIO in my test. If I 
+undestand correctly, this is because of another race condition:
 
-...
+* A fresh page gets created and read by FUSE; uptodate is true;
+* The page is unlocked on return from `fuse_read_folio`;
+* Simultaneously, we run `getattr`. The page gets locked, uptodate is 
+reset, the page is unlocked;
+* Now back from `fuse_read_folio`, `filemap_read_folio` gets this page, 
+waits on `folio_wait_locked_killable` (waiting for the getattr to reset 
+uptodate), and then checks `folio_test_uptodate`;
+* The page is !uptodate, so an EIO is returned.
 
-> +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
-> +				   struct iomap_iter *iter, struct iov_iter *i,
-> +				   const struct iomap_writethrough_ops *wt_ops)
-> +
-> +{
-> +	ssize_t total_written = 0;
-> +	int status = 0;
-> +	struct address_space *mapping = iter->inode->i_mapping;
-> +	size_t chunk = mapping_max_folio_size(mapping);
-> +	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
-> +	unsigned int bs = i_blocksize(iter->inode);
-> +
-> +	/* copied over based on DIO handles these flags */
-> +	if (iter->iomap.type == IOMAP_UNWRITTEN)
-> +		wt_ctx->flags |= IOMAP_DIO_UNWRITTEN;
-> +	if (iter->iomap.flags & IOMAP_F_SHARED)
-> +		wt_ctx->flags |= IOMAP_DIO_COW;
-> +
-> +	if (!(iter->flags & IOMAP_WRITETHROUGH))
-> +		return -EINVAL;
-> +
-> +	do {
-> +		struct folio *folio;
-> +		size_t offset;		/* Offset into folio */
-> +		u64 bytes;		/* Bytes to write to folio */
-> +		size_t copied;		/* Bytes copied from user */
-> +		u64 written;		/* Bytes have been written */
-> +		loff_t pos;
-> +		size_t off_aligned, len_aligned;
-> +
-> +		bytes = iov_iter_count(i);
-> +retry:
-> +		offset = iter->pos & (chunk - 1);
-> +		bytes = min(chunk - offset, bytes);
-> +		status = balance_dirty_pages_ratelimited_flags(mapping,
-> +							       bdp_flags);
-> +		if (unlikely(status))
-> +			break;
-> +
-> +		/*
-> +		 * If completions already occurred and reported errors, give up
-> +		 * now and don't bother submitting more bios.
-> +		 */
-> +		if (unlikely(data_race(wt_ctx->error))) {
-> +			wt_ctx->nr_bvecs = 0;
-> +			break;
-> +		}
-> +
-> +		if (bytes > iomap_length(iter))
-> +			bytes = iomap_length(iter);
-> +
-> +		/*
-> +		 * Bring in the user page that we'll copy from _first_.
-> +		 * Otherwise there's a nasty deadlock on copying from the
-> +		 * same page as we're writing to, without it being marked
-> +		 * up-to-date.
-> +		 *
-> +		 * For async buffered writes the assumption is that the user
-> +		 * page has already been faulted in. This can be optimized by
-> +		 * faulting the user page.
-> +		 */
-> +		if (unlikely(fault_in_iov_iter_readable(i, bytes) == bytes)) {
-> +			status = -EFAULT;
-> +			break;
-> +		}
-> +
-> +		status = iomap_write_begin(iter, wt_ops->write_ops, &folio,
-> +					   &offset, &bytes);
-> +		if (unlikely(status)) {
-> +			iomap_write_failed(iter->inode, iter->pos, bytes);
-> +			break;
-> +		}
-> +		if (iter->iomap.flags & IOMAP_F_STALE)
-> +			break;
-> +
-> +		pos = iter->pos;
-> +
-> +		if (mapping_writably_mapped(mapping))
-> +			flush_dcache_folio(folio);
-> +
-> +		copied = copy_folio_from_iter_atomic(folio, offset, bytes, i);
-> +		written = iomap_write_end(iter, bytes, copied, folio) ?
-> +			  copied : 0;
-> +
-> +		if (!written)
-> +			goto put_folio;
-> +
-> +		off_aligned = round_down(offset, bs);
-> +		len_aligned = round_up(offset + written, bs) - off_aligned;
-> +
-> +		iomap_folio_prepare_writethrough(folio, off_aligned,
-> +						 len_aligned);
-> +
-> +		if (!wt_ctx->nr_bvecs)
-> +			wt_ctx->bio_pos = round_down(pos, bs);
-> +
-> +		bvec_set_folio(&wt_ctx->bvec[wt_ctx->nr_bvecs], folio,
-> +			       len_aligned, off_aligned);
+So it effectively results in inability to have a successful `read` when 
+a `getattr` for a growing file happens simultaneously.
 
-Shouldn't we zero out the tail of the folio if we are submitting partial
-folio for write?
+Finally, if I understand correctly, this also leaves a (much smaller) 
+theoretical race condition in `filemap_read` between checking uptodate 
+and getting the current inode size.
 
-> +		wt_ctx->nr_bvecs++;
-> +		wt_ctx->written += written;
-> +
-> +		if (pos + written > wt_ctx->new_i_size)
-> +			wt_ctx->new_i_size = pos + written;
+Attached is the patch with this attempt; please check that it does what 
+you meant in case I misunderstood.
 
-I'm probably missing something here but where is i_size update handled? I
-don't see new_i_size used anywhere? Also why is it OK to not call
-pagecache_isize_extended() but that goes with the i_size update...
+Cheers,
+Nikolay.
 
-> +
-> +		if (wt_ctx->nr_bvecs == wt_ctx->max_bvecs)
-> +			iomap_writethrough_submit_bio(wt_ctx, &iter->iomap, wt_ops);
-> +
-> +put_folio:
-> +		__iomap_put_folio(iter, wt_ops->write_ops, written, folio);
-> +
-> +		cond_resched();
-> +		if (unlikely(written == 0)) {
-> +			iomap_write_failed(iter->inode, pos, bytes);
-> +			iov_iter_revert(i, copied);
-> +
-> +			if (chunk > PAGE_SIZE)
-> +				chunk /= 2;
-> +			if (copied) {
-> +				bytes = copied;
-> +				goto retry;
-> +			}
-> +		} else {
-> +			total_written += written;
-> +			iomap_iter_advance(iter, written);
-> +		}
-> +	} while (iov_iter_count(i) && iomap_length(iter));
+--------------52NtMlTbHFL7c0NjiV8XF8Yj
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Overall the differences of this function from iomap_write_iter() seem
-relatively small so maybe it would be possible to just extend
-iomap_write_iter() to support writethrough IO as well? Basically once we've
-copied data into the folio and called iomap_write_end() we can have "if
-writethrough, call function to prepare & submit the folio for IO".
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 4/16/26 19:12, Miklos Szeredi wrote:<span
+      style="white-space: pre-wrap">
+</span></div>
+    <blockquote type="cite"
+cite="mid:CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com">
+      <pre wrap="" class="moz-quote-pre">I wonder if we could clear PG_uptodate on the page which had its zero
+bytes exposed by the i_size increase?
+</pre>
+    </blockquote>
+    <p>I've actually tried that first. The idea was to get or create a
+      new page on the EOF boundary, lock it and poison it with an
+      uptodate reset if we need to. But this resulted in an
+      instantaneous EIO in my test. If I undestand correctly, this is
+      because of another race condition:</p>
+    <p>* A fresh page gets created and read by FUSE; uptodate is true;<br>
+      * The page is unlocked on return from `fuse_read_folio`;<br>
+      * Simultaneously, we run `getattr`. The page gets locked, uptodate
+      is reset, the page is unlocked;<br>
+      * Now back from `fuse_read_folio`, `filemap_read_folio` gets this
+      page, waits on `folio_wait_locked_killable` (waiting for the
+      getattr to reset uptodate), and then checks `folio_test_uptodate`;<br>
+      * The page is !uptodate, so an EIO is returned.</p>
+    <p>So it effectively results in inability to have a successful
+      `read` when a `getattr` for a growing file happens simultaneously.</p>
+    <p>Finally, if I understand correctly, this also leaves a (much
+      smaller) theoretical race condition in `filemap_read` between
+      checking uptodate and getting the current inode size.</p>
+    <p>Attached is the patch with this attempt; please check that it
+      does what you meant in case I misunderstood.</p>
+    <p>Cheers,<br>
+      Nikolay.</p>
+  </body>
+</html>
 
-> +
-> +	if (wt_ctx->nr_bvecs)
-> +		iomap_writethrough_submit_bio(wt_ctx, &iter->iomap, wt_ops);
-> +
-> +	return total_written ? 0 : status;
-> +}
-> +
+--------------52NtMlTbHFL7c0NjiV8XF8Yj--
+--------------PBWAN3Bbi1100Ta0o8JUsV1J
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-fuse-fix-stale-page-cache-data-race-on-file-growth.patch"
+Content-Disposition: attachment;
+ filename*0="0001-fuse-fix-stale-page-cache-data-race-on-file-growth.patc";
+ filename*1="h"
+Content-Transfer-Encoding: base64
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+RnJvbSA1MTIxOTRiOTgyZmQwZWRiYzFkY2FhNTBmYWZhZDc1YjFiZTI2ZDQyIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBOaWtvbGF5IEFtaWFudG92IDxhYkBmbWFwLm1lPgpE
+YXRlOiBXZWQsIDE1IEFwciAyMDI2IDA3OjI4OjE5ICswMDAwClN1YmplY3Q6IFtQQVRDSF0g
+ZnVzZTogZml4IHN0YWxlIHBhZ2UgY2FjaGUgZGF0YSByYWNlIG9uIGZpbGUgZ3Jvd3RoCgot
+LS0KIGZzL2Z1c2UvaW5vZGUuYyB8IDM2ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKystLQogMSBmaWxlIGNoYW5nZWQsIDM0IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25z
+KC0pCgpkaWZmIC0tZ2l0IGEvZnMvZnVzZS9pbm9kZS5jIGIvZnMvZnVzZS9pbm9kZS5jCmlu
+ZGV4IDczNWFiZjQyNmEwNi4uMjA3NDE4NjlhYzJmIDEwMDY0NAotLS0gYS9mcy9mdXNlL2lu
+b2RlLmMKKysrIGIvZnMvZnVzZS9pbm9kZS5jCkBAIC0zMzQsMTAgKzMzNCw0MiBAQCB2b2lk
+IGZ1c2VfY2hhbmdlX2F0dHJpYnV0ZXMoc3RydWN0IGlub2RlICppbm9kZSwgc3RydWN0IGZ1
+c2VfYXR0ciAqYXR0ciwKIAkgKiBleHRlbmQgbG9jYWwgaV9zaXplIHdpdGhvdXQga2VlcGlu
+ZyB1c2Vyc3BhY2Ugc2VydmVyIGluIHN5bmMuIFNvLAogCSAqIGF0dHItPnNpemUgY29taW5n
+IGZyb20gc2VydmVyIGNhbiBiZSBzdGFsZS4gV2UgY2Fubm90IHRydXN0IGl0LgogCSAqLwot
+CWlmICghKGNhY2hlX21hc2sgJiBTVEFUWF9TSVpFKSkKLQkJaV9zaXplX3dyaXRlKGlub2Rl
+LCBhdHRyLT5zaXplKTsKKwlpZiAoIShjYWNoZV9tYXNrICYgU1RBVFhfU0laRSkpIHsKKwkJ
+aWYgKFNfSVNSRUcoaW5vZGUtPmlfbW9kZSkgJiYgYXR0ci0+c2l6ZSA+IG9sZHNpemUpIHsK
+KwkJCXN0cnVjdCBmb2xpbyAqZm9saW87CisJCQlwZ29mZl90IGluZGV4ID0gb2xkc2l6ZSA+
+PiBQQUdFX1NISUZUOworCisJCQlzcGluX3VubG9jaygmZmktPmxvY2spOworCQkJZm9saW8g
+PSBfX2ZpbGVtYXBfZ2V0X2ZvbGlvKGlub2RlLT5pX21hcHBpbmcsIGluZGV4LAorCQkJCQkJ
+ICAgIEZHUF9MT0NLIHwgRkdQX0NSRUFULAorCQkJCQkJICAgIG1hcHBpbmdfZ2ZwX21hc2so
+aW5vZGUtPmlfbWFwcGluZykpOworCQkJaWYgKCFJU19FUlIoZm9saW8pKSB7CisJCQkJc3Bp
+bl9sb2NrKCZmaS0+bG9jayk7CisJCQkJaWYgKCF0ZXN0X2JpdChGVVNFX0lfU0laRV9VTlNU
+QUJMRSwgJmZpLT5zdGF0ZSkpIHsKKwkJCQkJZm9saW9fY2xlYXJfdXB0b2RhdGUoZm9saW8p
+OworCQkJCQlpX3NpemVfd3JpdGUoaW5vZGUsIGF0dHItPnNpemUpOworCQkJCX0KKwkJCQlz
+cGluX3VubG9jaygmZmktPmxvY2spOworCisJCQkJZm9saW9fdW5sb2NrKGZvbGlvKTsKKwkJ
+CQlmb2xpb19wdXQoZm9saW8pOworCQkJCWdvdG8gc2l6ZV91cGRhdGVkOworCQkJfQorCQkJ
+c3Bpbl9sb2NrKCZmaS0+bG9jayk7CisJCQkvKgorCQkJICogRm9saW8gYWxsb2MgZmFpbGVk
+IChFTk9NRU0pLiBSZWNoZWNrIGluIGNhc2UgYQorCQkJICogd3JpdGUvdHJ1bmNhdGUgc3Rh
+cnRlZCB3aGlsZSB3ZSBkcm9wcGVkIHRoZSBsb2NrLgorCQkJICovCisJCQlpZiAoIXRlc3Rf
+Yml0KEZVU0VfSV9TSVpFX1VOU1RBQkxFLCAmZmktPnN0YXRlKSkKKwkJCQlpX3NpemVfd3Jp
+dGUoaW5vZGUsIGF0dHItPnNpemUpOworCQl9IGVsc2UgeworCQkJaV9zaXplX3dyaXRlKGlu
+b2RlLCBhdHRyLT5zaXplKTsKKwkJfQorCX0KIAlzcGluX3VubG9jaygmZmktPmxvY2spOwog
+CitzaXplX3VwZGF0ZWQ6CisKIAlpZiAoIWNhY2hlX21hc2sgJiYgU19JU1JFRyhpbm9kZS0+
+aV9tb2RlKSkgewogCQlib29sIGludmFsID0gZmFsc2U7CiAKLS0gCjIuNDcuMAoK
+
+--------------PBWAN3Bbi1100Ta0o8JUsV1J--
 
