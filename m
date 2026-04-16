@@ -4,113 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BBC3F8A14D
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 10:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E12AAF8A146
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 10:30:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3FF86B0005; Thu, 16 Apr 2026 06:26:18 -0400 (EDT)
+	id 4E1D36B0005; Thu, 16 Apr 2026 06:30:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF1CE6B0089; Thu, 16 Apr 2026 06:26:18 -0400 (EDT)
+	id 4927E6B0089; Thu, 16 Apr 2026 06:30:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE0136B008A; Thu, 16 Apr 2026 06:26:18 -0400 (EDT)
+	id 381496B008A; Thu, 16 Apr 2026 06:30:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A8D1B6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:26:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2BD8B1B8995
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:26:18 +0000 (UTC)
-X-FDA: 84664039236.22.8E9A527
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 674F510000C
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:26:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lh6wVoP2;
-	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 271676B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:30:08 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BCC071B8A75
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:30:07 +0000 (UTC)
+X-FDA: 84664048854.29.E3889EA
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf03.hostedemail.com (Postfix) with ESMTP id AD6FD2000B
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:30:05 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JJF+yqXV;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776335176;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776335405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=svqYsveO0zDGB0jjimFV830rt4ZkKBxhk+Yt9m+T9fk=;
-	b=fDOWzlpqEvL7EtWeO93tfMOg6gdkIk/yNHeLwbERNdsgNK4/sDSqrTv0EpHFQZ8kbr7l5p
-	WOIfPER5hXnm6P5+STBaMvFwHvZMmUsMWdANTEzltX9jjJ/LoMhzqMaTWpwAkVR59aVlXS
-	CZQJw9KFg9lDJ8KYsUm7g0bittIFm90=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776335176; a=rsa-sha256;
-	cv=none;
-	b=iEt+8UU3gKlGrP9Sv4w3SXa4OpURiKM0l819142Pf07sDqEmMSBbrhNSnLc92Chy0SZifo
-	ucyOXGxTMYnw0Pt9P4P7pACA71KeSBb3/fwuichULwHLvamKlkBXH8jt5K91mIpMHgvuGk
-	jwfWTA4hijRCy+pEIFcSy9PQESq3A8w=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lh6wVoP2;
-	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=O4x/p20rCdbt363tjV0+ABHeJuaMLyMj2lG+gRWDekg=;
+	b=sxBio/Gbs5fdPsrQXqffVMTyYYrEBTAOT6IU6ZabHCJf65Q/s8OAo98g285ReCBTjpfDWD
+	LNlkWRC5uGu7nPABrR6fT3v4LJKWhpKy/y9FhEH7Nfl9daPcUB7uajNIBfIbGFUwcdWsp0
+	KdCj0MsMYFPV95vHMfkVRy/Jqdl102g=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776335405; a=rsa-sha256;
+	cv=pass;
+	b=nFT7yJ93cT/Az2qd7UE/OUxDMWqFDBysC8KQNUUkJuFJ/d/ffTUNoClpDcoBoE5EMj8+bD
+	JXvaMbpyH5myJBrd6TMKe6oRELjaqp0NqEXiO9kw0F2bcG4BlsNNpYDWY/3l4Szln4XQ8j
+	lIdqOKdLyCqlBsoCZBesKAHr7jSCwOI=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JJF+yqXV;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ab46931cf1so3803535ad.0
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:26:16 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6729c8f9c55so164423a12.0
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:30:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776335404; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Q8zjUn6YqE1ArW7uOZemQ2jYglQx/fVmBS/vXV1NsznriA6Rf7NQQzumbLDNx9cK7C
+         JmoBAhCb5BBeUHG9FFMf5WS1rDtjaohe4Lcy/SywyWlGrDPxP/dtGquUSC+Kpqpe7ivp
+         oKiSuJZg45U/ID1DROxZp+az8RJ8L7RgKbKQenQKH3LCuGw0YM5ILzXte6zfNAyXrIJ+
+         4LWGeGJ8/+zDfGdABU1HesI0/EqjOQd9mnMpxp1BD4IhYXUFHYiB7oiEdxUMdZA0UoYw
+         CSfKzK/n+5J8AfDvu8UIcmBIMuMGZmkzRp1UXsAGMMc9NVXqqCNd0YETZ7IrUYvIah1/
+         uihA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O4x/p20rCdbt363tjV0+ABHeJuaMLyMj2lG+gRWDekg=;
+        fh=EXQlazoa9N3kPdNOIbWhzKueHGNc7Iho1phJS5OUofk=;
+        b=CaxT2em5l6bujZgLWDHOCcu550SBd6rhs2LYcoTeUgPuJfvndJYvPnDk2yjmYyrign
+         ep6RUJvDmEN8avBIYqL9hnBGEYOGboce0OzB6WPtySxdPNQh8YyCRRfupEz3qTd9rVck
+         280ZzpSInu+6ZV2MPGqYGRs34gMNS9nL4u46c5dywEP9NleBoTuHNyYKaW3BbA1lzgdt
+         6gCIH/ufihznHQz34yP4Os+MyAhlIs+bKqeVvPmAqm3ZIuzkEWx7JqSVzhIR5GTHy88z
+         TW8uT1ZTr28vQ8k2K5JeTR6bkVKm/0l3EUX9gguDvZtGliNHItca3pfSACiJg8XmsHlq
+         sk1g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776335175; x=1776939975; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=svqYsveO0zDGB0jjimFV830rt4ZkKBxhk+Yt9m+T9fk=;
-        b=Lh6wVoP2APllFzdWax/9oVa83O5agf/5IHrpONLwXR6qbBpZt2VZRSky18J7GbxAX6
-         +hFV88r4UI0dTQwFy9YIoOYWLpQ/p/blopjBMQvVDLzCJg5lpTC2ZYSHvcLb9QxiSOg8
-         vvQ8apgSF+kU4YYi8PueoeQHpTMfVmhNRdBsJmWD79puOkQbbAjwCTRiWjOatWQMTmQi
-         mL19jwE5IvGZkeDy8+qRCPFR0Ffg5OcFN+RdgGUD8PCjTdpdQ/5oSahXt2I9HtBVDay7
-         9XWW0SGRComuGjSBiYo1ZlYc3G/MulALAYPoR0vW1k8t3Ed9U2BzreZyrBFYaz+hW0mv
-         dnHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776335175; x=1776939975;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776335404; x=1776940204; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=svqYsveO0zDGB0jjimFV830rt4ZkKBxhk+Yt9m+T9fk=;
-        b=E7QIbQ33EWfklz+og6n20okBmJ5VH8ARjoJgghAJqpvJ0QTj1drgtFjJhwF16ayJW7
-         /sRQ0T7tzv7rXjcBQ1nlJVqsnKgpMf5XgS3wEuLelteTWRmSvKYK4B+w9lnXrfYd6lwt
-         02d5T9sscquhvtG7L0DgM0FSeDvVk3JDOZ8SSuc0bhtOPYNjTbTE2fUUNk+HN82DiHGk
-         gcxwkWvfcZQXSimr15Awc792dLagNtdERArn1CFKekW7z/xKf63VFA+T0hQaexOj/c89
-         NpFTm6X8iqQQaIXQprRNjFIA+h99VIFJWtIgBzDGvLzLc7C3DLACaGTDu1cgv/p2omS0
-         bHZA==
-X-Gm-Message-State: AOJu0Yx1i068ZUp3TUUHhVL2HNfhNzrgxodWLEAoRrEb6TBlklS5k6sd
-	n9SJKug78lRZ8lXHowO+tZlO3s7mokNvfKmnpEwSaZ2a/EzDpE4obi+K
-X-Gm-Gg: AeBDiev8HCip869SZXfu2DNQUvG0caBon369HPUWmYK2jmOOPuHix55voGkhP/Gcl2G
-	XyRP7p4caLcO98iEQwBQTlAfzVPWs2h5k9ORXgfN/l+AaSNnIPwtmgd7E0IPbqPIIzpsU+IbkMc
-	WWGe4i/CB7dzlIuDZYv9F/t5JranqrAA/T2TGAAfcFUP9h8p82xpkuZNTYPV6/569tSKXtBywBz
-	qN2Ze2psGYrzNXTRwKort4PyMv35/ucg1IEPafy9+qD0WUx2sFOB362uVtBBoO4kobQomKmhbw+
-	YAzQQvhDc2PNwL39/KXsIaOk5jZuOXdEP3ZL7OIfs3sFq3T5lIJweHCYxWgzLt2YYHt8z+mdS9V
-	9CVI4alM7lMlsUVbyBdiJwBGqFaBzjBdAW6E9SVS6SuixPQzdAIyOoOH4z9hjynH4OjOv35o3Nc
-	4+8Yvbidi0i0p+ZldvsX4mHmG445ws
-X-Received: by 2002:a17:903:2c05:b0:2b0:aebe:259 with SMTP id d9443c01a7336-2b5f028e1a1mr11115575ad.19.1776335175055;
-        Thu, 16 Apr 2026 03:26:15 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4780ef365sm47955245ad.1.2026.04.16.03.26.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 03:26:14 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	djbw@kernel.org,
-	mingo@kernel.org
-Cc: linux-mm@kvack.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Donghyeon Lee <asd142513@gmail.com>,
-	Munhui Chae <mochae@student.42seoul.kr>
-Subject: [RFC PATCH v2] mm/fake-numa: fix under-allocation detection in uniform split
-Date: Thu, 16 Apr 2026 19:25:58 +0900
-Message-ID: <20260416102558.575210-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=O4x/p20rCdbt363tjV0+ABHeJuaMLyMj2lG+gRWDekg=;
+        b=JJF+yqXVrimHAtcqRDyHC4KBgU6foIWUCxukajzjEC4BYBY+i9JIQS/aRYsyOFGY6z
+         +DqXpDSJ72J2rVsUhks7a84EcEzL8H/DmTMO8q4+u1xJdAmWL3nJc/SbAoGkkWfiHC7y
+         6ax/EgmWci/ZlqjxgsTFGKJ3QNaFGSg3NoG3+GWCXsGGi8n41hGF72PS/PC02ihLBf2o
+         o3JZ5nIaAZDSkL3/ONv+UycHy+Bc2Bw80YJ5GyX3Q0cf7PLdSMcfLf+E0aeUUiOmmUZb
+         gKfm/OmqyglnDjMbV7P0CXm6Ggi6j6GPd0+pC5uUtQoDThQqlCWdX4rioCiaQoH0sZsb
+         wgxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776335404; x=1776940204;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O4x/p20rCdbt363tjV0+ABHeJuaMLyMj2lG+gRWDekg=;
+        b=WV6AYaj/pTKnIRwcXuJHdF16VFykCDunBJmLnP82zAqK54pWjIRlnafe9XPNzYKYsk
+         gJW/+FfzKPOBUqg7ndakgWhhojEiO7iXKsYdfax6q4NTsqSwfNKY6Ep5H9G8ephRkiRE
+         gHLFrEwUnVnm5IeK2mH2MagLDSwtIFEPkHqjuIgUqNt0nXCjYmiUq9wNMGmNdhn32WfB
+         n+9a0F/xO/eBffm7xSmSLn22XWHvZ2oCPgCPK9nBm+lu1UcP/515f+LZmGEUhD/4Hy4/
+         9sRmkcX/e3QEB8Xw0INmP3X3cGPL5JUfpL9m5VRDH3R+HFrXUCWjba/IKEWIPKurf3IX
+         4XQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9+fRIN2/K0HVJj/LDXKAhTBiuSk2RpQONbD9FT6QtO90dD2EqKP0Kf7b7zOCSBc1AeRfSNuMKd/A==@kvack.org
+X-Gm-Message-State: AOJu0YzZPqGSPSVBfrH/XM4kVDkLPDz11DoyoWVBtrB/n75uk6aKZCft
+	hEJvBb652AqWbFZJWA9hhe857tJcbA3Zu6okkgE/d1Ru31l2OTTZlvc9YP4fobzg1W2D4XHhPdp
+	gwpJtA+hfuHRSVFu4279YljIvUzlaBco=
+X-Gm-Gg: AeBDiet9eY2dp+vyzDkzXl7aDReg29AXWZI12IzSbkF9jqzi5gonauEcA9H87tfabMJ
+	gWvpSWkgCOAHh44f4j0qgr7qb09UII1Rgf/Kcke6Ov3QrYrfOX59jV0Z2AzDu08wjtcZzdT09ol
+	ClJIls47Dgk7HGsIQwtk6pXbi53V5+C0kA07OeWBOSNan5Lxf8dEiZhckQN+urDrN0cOGTZeGZs
+	FLimt2XAh0PnkHQ498mulRR4yuyW3JGbiWtKe79OlrcYxTZdT+2z9/GZrFKf8DyWWcEA8ZNzJ+W
+	KDld0jd9zXmQDz3554CKscHZ1iQlGwF4q3Te0Jt/rcX1TCODhA==
+X-Received: by 2002:a05:6402:1bd0:b0:66e:103b:6350 with SMTP id
+ 4fb4d7f45d1cf-67271085617mr945994a12.7.1776335403710; Thu, 16 Apr 2026
+ 03:30:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 674F510000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ba9m59zupccfd6tq6ncobo5ey1wuz6bi
+References: <20260413062042.804-1-huangsj@hygon.cn> <76pfiwabdgsej6q2yxfh3efuqvsyg7mt7rvl5itzzjyhdrto5r@53viaxsackzv>
+ <ad4EvoDcAKE2Sl4+@hsj-2U-Workstation>
+In-Reply-To: <ad4EvoDcAKE2Sl4+@hsj-2U-Workstation>
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Thu, 16 Apr 2026 12:29:50 +0200
+X-Gm-Features: AQROBzC-j8c2wDPnYX4NqzriRAjav7sQoMIZaVyLzvRZ8lq-CJThcPkUuW_xSxI
+Message-ID: <CAGudoHGLaoc+CoBPNCvFRYojnj+6E_Lsdv7NaJWxFMoHezemMQ@mail.gmail.com>
+Subject: Re: [PATCH 0/3] mm: split the file's i_mmap tree for NUMA
+To: Huang Shijie <huangsj@hygon.cn>
+Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	muchun.song@linux.dev, osalvador@suse.de, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	nvdimm@lists.linux.dev, zhongyuan@hygon.cn, fangbaoshun@hygon.cn, 
+	yingzhiwei@hygon.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6zt9asdgtjxwh4wz9f5bo3rz5xmck4wo
 X-Rspam-User: 
-X-HE-Tag: 1776335176-456300
-X-HE-Meta: U2FsdGVkX1+gYJ0cK5IB8FF1vEB9+MMBNFWXtIepS67mqSAXfNOdzoai9uBWzWMasHAH1cBVmy8Zu+Ws7ufV/2KPW7h+xUDqPT2HKlGwE2gtIvi+5HI0WLWF/6vL1yHnSn+zlvWGvrOTPO3NWmkTqKt5SGHwa3nCIy3SBP8DIGeceThSrRD385sey3eqSNQDzahaLop3/G6Dc4YkRbb+6/8tvyETCEftmPedxyMqhjgePKZXRCGbUrfgLoeQ0Zv1BY8WoqVmDotrtt+6CxyvMdLA+T+3nNinerArBEp0mmdnaeLIgkj2CWcQ5wndJSUetEevxsFzF/6xEoI3AbKLnBf0PSj7IsLv4pOxhT55jLe66Z8fcXKiBYvTJT9oe7MlGHm9loQni4l5rJUx+UEtBbkn8Ak1hcr5JjVNlfKFkWLa0DlncN8YnCMCvHt9qJ2L6NwFP+CTIWtJFwJ/kMo6ENXoD9z9hvbO+pTnPJsUkFOWe339Bxa7ANlHAtMl55VBaKTGB0s2hVG2j+qpgXbvUfIGN+NlZE66VR50EhiyBlAcA5ncJnIln9Z3YtgbGGZ24SJ7IeefNGMw9En0BEU6jrwgID+m9HisidCAhRU7OpMjRBzcF6HG17R5SNBIU4lvF1tFS8VOG2D+qC2X7hCbXV1HtTLRUOCKjUVAhbptGPjsRP2wjYFB9C1MEh9+izQhLq5Jd5sFt8yQTuFhYEAtbzYLiV8M+r5XIBB9DPwZbgfwUIinHg6IQFfCOtBh3bUdEKXMSpOqV5fjz6Lf/mOEok+ZJ1xf37+XKOo6e39PU+gJ8+b/FN6s5ebp8fLkBlJ2IV+aFUwOAEWx5eZDSm5eM3mFGhyApfnn26vc90aOfoaJDKu2VLJCz6quVO3hPkl3xwvwqkDQPXIXeELPU3L4qOBfrEoO6vZmLlrTWcB41fNtJOTjjZw3oBxVu14kzMxb/uwAS3TzN5aJa7kIBST
- /JMB/zWu
- sFj84SDEnU4jrrMtkzexWWMB1gMq5FZjdih28Vf1IQK6v9ASrvHReGb7YTOSong1c+Z8egWq07pk5ssXDnApFGQMoUKfYtVyu1Q7RZh82rOpAUwm3ybsrL1N12Y9f6eV+npxC3CdqcX0LDBvihDPuwXbCqxMMX9zVv4m30rP3XyeIhI+xhh/hAtYLMO9kBF8LjCFfr2RGhhy9Pt9VudXTg2uMc898JTnh3UBQ+ppttdtXb8nGPeSiTCJazE4FUZZwN+uRTq3lV+9pcvnwA26/gyPIxrBzcnotfn5EXzIiKfK1hpDLGySbZibwBQS9Z+/iy1GJSPgPWxlk/6lihHlE36O6qTIEOoBeWsEAMLQzD6IwRTQSDfbTnnXUxEhvui3Bi1zIDvkbAXyim5KmvyDuBlqsoGgkZS6iWms2
+X-Rspamd-Queue-Id: AD6FD2000B
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776335405-328794
+X-HE-Meta: U2FsdGVkX1/Ulfc/diugIf1XTzDEHq4Bze6gLp+dHz2j7mUZ3/nvgC0MraVqPXf724pBAi0Ue9698KFzKRqeNzA4QaZ2h1cKJHy5VusTKmjL+yj2xPn/kQ0fat19jRilvpIBqXOpBAyvBVvQ1MuqGzTy1xZp7JOuxUfiUb51SgV0yn3ISsfVF1d9eWg1NL0Iw1XJfmpuCA6QH4v+v91lO6t2kvYVNbBru8TlnrZph2czUbXqhU0+k0/9QRa09VtH3cLRip+GPws1wh+eSNUJfRlulZuP1mG6lx8I+UPVe/QM73pm1TZjItsxZ3E6i4x7Ept+xTMoVpYxUfh+Sg046bGXNDv6vwbSqzP2/vmPctbRJ0fqx1d/yx7fUlrw7CwtEaSi71oriqSaea8PvErGTRwDWLSCemKLK2jlvwppfKnRXS2EnDt43p4SklAa8EVBkL3rm0oAmEZnT00c3wgVgz4yMFHrAcPjIVrQpUdA0I0ImQi0tgwfLqoaB/GucQWYNCnizmMM32jT4bRSrAEHgB4/loOvk8Ok5GLPuW7x5KJWgzTJWrO4T1MxMooVqxsKSomNYedfE6JF0BKuvXG47fEjVmuAJvrY+ffFTcDN1efgdKa/orND/UPocUSzn92ODS576/Y2MC3pUM5ldlIc4JnRucBOmu90Qy2aVemuOHT13yNYvqDL6z06AcPPDOFLvoDnv7uL61mOK4l2g7wiDzkR4IuA3lbK7vuxeC7csm1kTVcD52ZfVUTMU4fM/UXTPXchccEM6NZ/iTnk8RStNGO8oZbq62Ay92vBjwNrz992uOo3ProH6wIIM5AP7FGzkosFUdP4MgjgaaNd0FtznoAvIYkoU4AoJIUHGz6Q+Ut0C8trVdAmFWNAS2JpKobaYLs3Qz6vF5wC+plNQjW7I0qobqppKAsibIavwWw5VmB9tpOscQlfHUqdaTWs8Z6KxAUHR66fNGOv9W8RjtL
+ gbgIRIgO
+ eIscoFVOo0KeywXMHjSIiEoB5OVMVrgSt+dF+IDfg0GOaqXgfbWI7urJQjDQ43PX+plTVc0FdckZ2eta/9E7NsBb6/Y5yiyogsm21LFr/36D4GHYKT66I1/XTfUwhygKXfKwTVMjls5TXjijiwovSdJJ4M4kDDpCmTbvtmNiQ8MQO0rGutdL4UQMi2YGOtgkLlN8lk+fpBoYf4R1Fqcbuxam4adgnUMZ2J2ZPopzSR+6ZTIeIJYuwKi6jWgSEiMEMYmGWsyVNcaI/hnxCfffvfbw/V31PHDor6NmN8Nkm8OW/4UbOvzZZlDxtmzHi1BwyulBcLJlMeCt0QCNiyTE4N+xVF4xH6KX3UK4g+tLPuxroBjmbyc+dAutzr4RilRaUk/1dCNEPD0ZaJ8uY/jB/Ij4ZMB9y2/mvRL1hVCiIwnELzz/x8PzROTEMBTCeBauCATbR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,57 +144,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When split NUMA node uniformly, split_nodes_size_interleave_uniform()
-returns the next absolute node ID, not the number of nodes created.
+On Tue, Apr 14, 2026 at 11:11=E2=80=AFAM Huang Shijie <huangsj@hygon.cn> wr=
+ote:
+>
+> On Mon, Apr 13, 2026 at 05:33:21PM +0200, Mateusz Guzik wrote:
+> > On Mon, Apr 13, 2026 at 02:20:39PM +0800, Huang Shijie wrote:
+> > >   In NUMA, there are maybe many NUMA nodes and many CPUs.
+> > > For example, a Hygon's server has 12 NUMA nodes, and 384 CPUs.
+> > > In the UnixBench tests, there is a test "execl" which tests
+> > > the execve system call.
+> > >
+> > >   When we test our server with "./Run -c 384 execl",
+> > > the test result is not good enough. The i_mmap locks contended heavil=
+y on
+> > > "libc.so" and "ld.so". For example, the i_mmap tree for "libc.so" can=
+ have
+> > > over 6000 VMAs, all the VMAs can be in different NUMA mode.
+> > > The insert/remove operations do not run quickly enough.
+> > >
+> > > patch 1 & patch 2 are try to hide the direct access of i_mmap.
+> > > patch 3 splits the i_mmap into sibling trees, and we can get better
+> > > performance with this patch set:
+> > >     we can get 77% performance improvement(10 times average)
+> > >
+> >
+> > To my reading you kept the lock as-is and only distributed the protecte=
+d
+> > state.
+> >
+> > While I don't doubt the improvement, I'm confident should you take a
+> > look at the profile you are going to find this still does not scale wit=
+h
+> > rwsem being one of the problems (there are other global locks, some of
+> > which have experimental patches for).
+> IMHO, when the number of VMAs in the i_mmap is very large, only optimise =
+the rwsem
+> lock does not help too much for our NUMA case.
+>
+> In our NUMA server, the remote access could be the major issue.
+>
 
-The existing under-allocation detection logic compares next absolute node
-ID (ret) and request count (n), which only works when nid starts at 0.
+I'm confused how this is not supposed to help. You moved your data to
+be stored per-domain. With my proposal the lock itself will also get
+that treatment.
 
-For example, on a system with 2 physical NUMA nodes (node 0: 2GB, node
-1: 128MB) and numa=fake=8U, 8 fake nodes are successfully created from
-node 0 and split_nodes_size_interleave_uniform() returns 8. For node 1,
-fake node nid starts at 8, but only 4 fake nodes are created due to
-current FAKE_NODE_MIN_SIZE being 32MB, and
-split_nodes_size_interleave_uniform() returns 12. By existing
-under-allocation detection logic, "ret < n" (12 < 8) is false, so the
-under-allocation will not be detected.
+Modulo the issue of what to do with code wanting to iterate the entire
+thing, this is blatantly faster.
 
-Fix under-allocation detection logic to compare the number of actually
-created nodes (ret - nid) against the request count (n).
+>
+> >
+> > Apart from that this does nothing to help high core systems which are
+> > all one node, which imo puts another question mark on this specific
+> > proposal.
+> Yes, this patch set only focus on the NUMA case.
+> The one-node case should use the original i_mmap.
+>
+> Maybe I can add a new config, CONFIG_SPILT_I_MMAP. The config is disabled
+> by default, and enabled when the NUMA node is not one.
+>
+> >
+> > Of course one may question whether a RB tree is the right choice here,
+> > it may be the lock-protected cost can go way down with merely a better
+> > data structure.
+> >
+> > Regardless of that, for actual scalability, there will be no way around
+> > decentralazing locking around this and partitioning per some core count
+> > (not just by numa awareness).
+> >
+> > Decentralizing locking is definitely possible, but I have not looked
+> > into specifics of how problematic it is. Best case scenario it will
+> > merely with separate locks. Worst case scenario something needs a fully
+> > stabilized state for traversal, in that case another rw lock can be
+> Yes.
+>
+> The traversal may need to hold many locks.
+>
 
-Also, fix the outdated comment to match the actual return value.
+The very paragraph you partially quoted answers what to do in that
+case: wrap everything with a new rwsem taken for reading when
+adding/removing entries and taken for writing when iterating the
+entire thing. Then the iteration sticks to one lock.
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reported-by: Donghyeon Lee <asd142513@gmail.com>
-Reported-by: Munhui Chae <mochae@student.42seoul.kr>
-Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capability") # 4.19
----
- mm/numa_emulation.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The new rw lock puts an upper ceiling on scalability of the thing, but
+it is way higher than the current state.
 
-diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-index 703c8fa05048..c1d0a76aef64 100644
---- a/mm/numa_emulation.c
-+++ b/mm/numa_emulation.c
-@@ -214,7 +214,7 @@ static u64 uniform_size(u64 max_addr, u64 base, u64 hole, int nr_nodes)
-  * Sets up fake nodes of `size' interleaved over physical nodes ranging from
-  * `addr' to `max_addr'.
-  *
-- * Returns zero on success or negative on error.
-+ * Returns absolute node ID on success or negative on error.
-  */
- static int __init split_nodes_size_interleave_uniform(struct numa_meminfo *ei,
- 					      struct numa_meminfo *pi,
-@@ -416,7 +416,7 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
- 					n, &pi.blk[0], nid);
- 			if (ret < 0)
- 				break;
--			if (ret < n) {
-+			if (ret - nid < n) {
- 				pr_info("%s: phys: %d only got %d of %ld nodes, failing\n",
- 						__func__, i, ret, n);
- 				ret = -1;
--- 
-2.43.0
+Given the extra overhead associated with it one could consider
+sticking to one centralized state by default and switching to
+distributed state if there is enough contention.
 
+> > slapped around this, creating locking order read lock -> per-subset
+> > write lock -- this will suffer scalability due to the read locking, but
+> > it will still scale drastically better as apart from that there will be
+> > no serialization. In this setting the problematic consumer will write
+> > lock the new thing to stabilize the state.
+> >
+> > So my non-maintainer opinion is that the patchset is not worth it as it
+> > fails to address anything for significantly more common and already
+> > affected setups.
+> This patch set is to reduce the remote access latency for insert/remove V=
+MA
+> in NUMA.
+>
+
+And I am saying the mmap semaphore is a significant problem already on
+high-core no-numa setups. Addressing scalability in that case would
+sort out the problem in your setup and to a significantly higher
+extent.
+
+> >
+> > Have you looked into splitting the lock?
+> >
+> I ever tried.
+>
+> But there are two disadvantages:
+>   1.) The traversal may need to hold many locks which makes the
+>       code very horrible.
+>
+
+I already above this is avoidable.
+
+>   2.) Even we split the locks. Each lock protects a tree, when the tree b=
+ecomes
+>       big enough, the VMA insert/remove will also become slow in NUMA.
+>       The reason is that the tree has VMAs in different NUMA nodes.
+>
+
+This is orthogonal to my proposal. In fact, if one is to pretend this
+is never a factor with your patch, I would like to point out it will
+remain not a factor if the per-numa struct gets its own lock.
 
