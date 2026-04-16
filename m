@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F007F433C7
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 04:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1180DF433D1
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:15:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E8A16B0005; Thu, 16 Apr 2026 00:50:02 -0400 (EDT)
+	id 0E6136B0005; Thu, 16 Apr 2026 01:15:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9721B6B0089; Thu, 16 Apr 2026 00:50:02 -0400 (EDT)
+	id 0978A6B0089; Thu, 16 Apr 2026 01:15:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 839226B008A; Thu, 16 Apr 2026 00:50:02 -0400 (EDT)
+	id EC7556B008A; Thu, 16 Apr 2026 01:15:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F14E6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 00:50:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 283FFBAB50
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:50:02 +0000 (UTC)
-X-FDA: 84663191844.09.CBC180B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4AF1B160008
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:50:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AOsPsGfG;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DBE036B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:15:42 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1BBCCE429F
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:15:42 +0000 (UTC)
+X-FDA: 84663256524.06.59B0B16
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 47FD7140009
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:15:40 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qp3wtGgX;
+	spf=pass (imf09.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776315000;
+	s=arc-20220608; t=1776316540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ivnbKdVLI/vynoab1ZSQFr0Gswa/T+oQnjFjirTcHCA=;
-	b=ez7WcvgjUOQRqpVHbgN2wqlU+7osZamya9LQFHAgfvXKhifhdkDeeQXVormcmvPcsknN/0
-	Q44VfreTqXZDswAbGulIUAvPVE8icJme2KSc6iurk2tE3p++LtfPtpJE7DWJbngc+QQeHX
-	QpKgHefiDzLSytirP4dxBkgZcdV/u78=
+	bh=yzCPqRfYWNQ3O2cYuHAxJrU/i3tD03jXJbGUMk0bn9A=;
+	b=dLHeJ25yJc/+aGzcouwVe0HfbJrA+Hs825656owYFaTJaX4lfeO3n0C+xTfRaPfeg4EklN
+	0fPGJjA8fT1mh1NxxnwFpOmRHdjySHpEOsYNcKOf+lG8yHU7ECOnSdsfdwLAoLp4PJNM85
+	eyUQw+HviNY1S9G8wraAFc2tHTHxkE0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AOsPsGfG;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776315000; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qp3wtGgX;
+	spf=pass (imf09.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776316540; a=rsa-sha256;
 	cv=none;
-	b=p17yr4Un5RikVnuhc0ygRnyCRbVmAwGmleuQbp5/I58+GaByNEt7f6fVbyuVtCHlmm4p1U
-	ntkgUVVIMDSjMLB3zT7Rvy5SAGWID5JalZyrZ1p1G2wBUs+25XKccNtbeCK2BF0OO18pMz
-	AQKCa1A+dx3RXpxKH1IzBGoEGLPPEOE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7295660127
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:49:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A281C2BCC6
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:49:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776314999;
-	bh=ivnbKdVLI/vynoab1ZSQFr0Gswa/T+oQnjFjirTcHCA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AOsPsGfGw8osjtrrbdhRqrEuXpOgbbztCTz9zNhs2aoPGS6oJyvR8V0Wc5AhYrhT3
-	 XthasEws2muOlM2aWausjYI0oeID9TnkaoOWrmx14mKnt+pa1muMpUKtf+KOAIGrxa
-	 3UlpZZlLqtglSYDo9zYGB3H0Tg5OtElC1ge3VQ/xPmzFoSi5a1xz0V6QGJub6iaFeC
-	 rSdjvSp+YOz9Xl7gfy8fFAbgauw3ouDUqyj1lYl8Ofe2xhHhG64kwov/2H7m5pdpYj
-	 TAGyYdZD+9do8PvZ9jQ+zrMlQ4wdYt/k8kiNPSdSSDCgsybeYxl/DT4SXtrC3MFO0M
-	 i27m7ZLMTUoSw==
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8aca6bd57cfso51622196d6.0
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:49:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+eKKFsJ3r9sPrWO5VCFhtQ0QgLEBK+8/8/EipQy7lf6K7D6NnSXxnsQYgV6eg9A4PlNOsjcC064Q==@kvack.org
-X-Gm-Message-State: AOJu0YwpDKHYvU3VT1pRtAXlxBvGeWPROs79Jva83SKiysuaMyT0xr8R
-	9ud7aLcIBMJvVhNYQZ1q0dNeA/jDOlu1+mI5F1+YWr27MqRpIxE8I17fR2UwSGWrQjSFCRiPtd7
-	DbwcaYiVCNW+XKaIISnwyw+uov9YX780=
-X-Received: by 2002:a05:6214:258f:b0:899:fd8c:55c3 with SMTP id
- 6a1803df08f44-8ac861b7754mr371308066d6.22.1776314998341; Wed, 15 Apr 2026
- 21:49:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260416024248.687943-1-gxxa03070307@gmail.com>
-In-Reply-To: <20260416024248.687943-1-gxxa03070307@gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 16 Apr 2026 12:49:46 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y+6W3v+9cvNzZT68pCwPdk-4sWQT=XJLXCrvDOSiN6uA@mail.gmail.com>
-X-Gm-Features: AQROBzD3V4-ve4yujHHvY8l-6AxMl91V_sgYK1Gc9_6Tc2iM28a3MXZDD9feyf8
-Message-ID: <CAGsJ_4y+6W3v+9cvNzZT68pCwPdk-4sWQT=XJLXCrvDOSiN6uA@mail.gmail.com>
-Subject: Re: [PATCH] mm/vmscan: fix typos in comments
-To: Xiang Gao <gxxa03070307@gmail.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com, 
-	hannes@cmpxchg.org, weixugc@google.com, david@kernel.org, mhocko@kernel.org, 
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, ljs@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	b=b6TJKpba8LD/amvRrveFNG+GA37U7Uu6QJMvE8PaJYTi4tTIFQ2uhS4XOuF+KDpmWR3QVa
+	ig101+Xq9uO7YiCVqSTtxtXw76PZ8YelmJqMnfkImejw74aQQEaYKE4UzAEB0OBYNLrrhh
+	wRbkWN/JTSQmGdQfoM6/y9khKR9teak=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35fc258aaa4so2347053a91.2
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 22:15:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776316539; x=1776921339; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yzCPqRfYWNQ3O2cYuHAxJrU/i3tD03jXJbGUMk0bn9A=;
+        b=qp3wtGgXJgzI5per55M0a5sbO1N1n9SZcwBoNm8v3k3Kq1sVcoNhPw26s1GgqAVWjb
+         zTpDgiEHJfWn843FBK9/Q9SIsXWVdynFDPgDRQrgsOSSHmrSBP1GQfi72M3tIbWaXehs
+         EZRxysKNxU7OnkMhiLTZ1r25Lp0YmORXEWGPYjdUKd48BkqLv64fdicyHrWmCQIHAAj1
+         cGcK28G9FIXdNjjkAiTZIuCYfdC2rPij4aUZAgwINDcImS32YqDWCJHEnb3hPgFRja9B
+         2naP/ZDiXuLM/J5hb1nm97XL5sN0NYuPvLP/L5lwM8yjuJVMpVenlRh9lcfZrpgd+qqH
+         /4FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776316539; x=1776921339;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yzCPqRfYWNQ3O2cYuHAxJrU/i3tD03jXJbGUMk0bn9A=;
+        b=IyEhgQsHMdXp7YXjwi2oDonaSh42K6f1WuDE0QsFl+l2LeaC1V9eYr9hKHNsqTXqW6
+         ht3Yd/ExNiTAjOr77494A5PmRQGzSz7cUHolwsB4lu5Szo+LUgpno5Ay5+HE5h8VJ+QV
+         aHN8dc4cpxwKnlXYb1JkglUol4puU87NPpVq6FIZyTSxoIbKkfO7VkEBo1ixP2BePXng
+         v4u6HTvJmR+gOEzO/tq11AH1jGPxRvW3Ox//apaUcxRCFVzC9yHTe0ec+X/roJ/aY+1O
+         bQlGTzFfK2vvxdjvr6/I3io6GfNKrKyhWa6d8oSLIbHZ0tN4V/Ow1lmXHIdtfajK8nYs
+         UV8A==
+X-Forwarded-Encrypted: i=1; AFNElJ/3FHqTBPoignuwEbNqs+HdXP7iY7nm4Uv1EaV1iyrQva3zi1t0+aUMrj3UMn3BPY+zH5usm1zKqg==@kvack.org
+X-Gm-Message-State: AOJu0YwCXyAEYLht8xTJ9/o44uzKVVmPsvJSx61q1zhZgwJd7EkIhQPM
+	kbgHw1UJyTIJGeUibe9bF9CycdG/cukmoZ3JBbPG382YIpWcvW8jrxP5
+X-Gm-Gg: AeBDieuVInVWZ+GOjNDaLmLrLhGgRkkDIixP9lk604MfTpef+StMx/c+jw68/9WDbnN
+	eyTYQE2Bc3xWexJGNKcvRfQLYvH80ySv+jHF0Vhj2nNZcS0g/7oIfFLq4xSPkDQUA6L7jb+sB00
+	H4Rv2z/vuQ7BAZBTYWKv4NLOE1Q0D/tui9Pj2LYYzfgKhhCgXsDaSF976RJ7wzd05cqHtm/tFOL
+	oONWDguJQ17gYWfQbSLWT9LbYks4h42u+Z7ycXNnh58kCjhVTRkVwOW2bgbFfi/pwC1RpdDzizX
+	Pmson1wLolWjWPwJLrLsbiSsnIEMAI0IZ/JEOQRNYyItwQMr8ibjNWuS7h2WfxLKsYKY4iYKV0F
+	YZ6SFyHZu7P7LhNSOrFsBy4Z58U8Cpp0en9OstFpRC/5EJBvJiGwle6u5rLRle90D1rkY65T71R
+	cpx079Yp0H9asH3njTMuTk3SF0uWAdYq/F
+X-Received: by 2002:a17:903:94f:b0:2b4:6367:7b86 with SMTP id d9443c01a7336-2b463678a27mr136040735ad.37.1776316538890;
+        Wed, 15 Apr 2026 22:15:38 -0700 (PDT)
+Received: from xiao.mioffice.cn ([43.224.245.230])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4782a89c5sm37570585ad.61.2026.04.15.22.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 22:15:38 -0700 (PDT)
+From: Xiang Gao <gxxa03070307@gmail.com>
+To: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	hannes@cmpxchg.org
+Cc: weixugc@google.com,
+	david@kernel.org,
+	mhocko@kernel.org,
+	zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev,
+	ljs@kernel.org,
+	baohua@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
 	Xiang Gao <gaoxiang17@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4AF1B160008
-X-Stat-Signature: wwiwmk1y18b7aai13aefu8b8wzsfbtd6
+Subject: [PATCH v2] mm/vmscan: fix typos in comments
+Date: Thu, 16 Apr 2026 13:15:33 +0800
+Message-Id: <20260416051533.708909-1-gxxa03070307@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260416024248.687943-1-gxxa03070307@gmail.com>
+References: <20260416024248.687943-1-gxxa03070307@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1eee4dm6yskszz17o7d1ihhn3gp76qb8
 X-Rspam-User: 
-X-HE-Tag: 1776315000-184099
-X-HE-Meta: U2FsdGVkX1/6pJgJunux0NdEpsMxFc78J2tBIT1MWu7m3XTZ6qA2iPKfY8wORA+AysKdiQ/rlzkNFMAXoZAOPymzyLGAXZ+y1KuJKhyljvpu3hI2S7Fq2vse0JXvpJFE6QnSgDZHZl1fsESL/QjqRPkSWk/KokjXtNvj4hIbBYdt2N2fra0ZEjQ4xLJvi+FbsnclNy0CE9yWTYwksbbRKYE47iwgySiW2ouxJTDx3YZYyltEjUTUfTE471xtmGoJ9SHcchmaByzU2QzziJ9Wn60YjCt9mk9Gofo1GoyT1eYbKPQOw8+tEG1KSRZ3AbXewEJLH1rHEWPxhQGQQYhg8GMq98pevnrcaiW+T41nfwHgd79W1E+tNFCsETJ0QNEtfJjs/N4qe/gv/yg595n1qx+R5odG21kst9U9UUOlMdKdHM+57ktAedFRdBEh2CXZL8+2W9LTytTuHgR8slpIi5I/wJ7fKDL0zdpT26tvdvLXQ1mBCPotWIUfktEbXYp8+E/STwtc60BoaIgLeS+ycDzwp58/y2l2F7WuVAtUz4FWbfD94bXZnXRNLeyS1U41hOlmses0wuQHgApKKsJqgT6eRsxTU+ZOiuPYf85p5TMESZRkh1HpdskuxRHD68cr6ATbp/TOlIDdbXtsnTxlDVxoQP2Po+3KGaHOooZVVelhX9ZcI4pBNC8tbKbJMkN6ZOeq6e9ZghtBiIfJ99dlpV6isLPlSbmLqIwC0USsCMhDRTeimQKSM9XJb6tIFFxmToNEq5dAjCLXV9FjlWX/J+q8lV//51kMOKV50UaKANIEIcZE6+uf/zJ7sdRznV77iz33k1K/ntEeCpBI37xNSa1U0jTnZlk6MNYcBrSFAm+mJT5/Wc0kPZ6YAIjszgjxDfxW6M2AyreBRcaHKGOA+WVmCmUBmM/gP3DO87T5vA5TA4BNSLUMP0D+pkIkfb9IipUtI/8xPZIcA50tu+O
- 3UBa7X4G
- baSI1krUzBP0t9jx/Qeo82gs2XMLPiMmvveHXf+DabYObMY2FllfX0QlsDXiZO0ANIsYBZMGBsljfsVohl+RNsvZVM2XIkUQ5lsdFwb5eo164t/YgsNrlGKhqb4mhaoNjGCS7zJ2hddV3StY2tS8zdV7fPxP56c5C2brg2BTRHKYb6J8YezRNaAXEhktoV5YEX2Am3RaRWKT9gW3IoxlTpREy88eHkpf7QS014ICBb64AkGR/+n42H3ji8AKz9nX0uv6GlWXzyJ+xc/vUkHVDloHh1i4s4JpQcn4q5x697dCHwi55rwXQKr3HHJ3NB9z4i2HRNPj9P3uoeJBXPdz++gYh5uMxoqBMOxXq
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 47FD7140009
+X-HE-Tag: 1776316540-638355
+X-HE-Meta: U2FsdGVkX1+YPgeHYmg6M5hRxOXTZMy6vIw51hkqFFfuLMZtjSFmXtkk29f6pnXx3nGk1kt5YjNqAM7/LbnGWPtuCFrHyqoZPfTpJddiu+ZHDWQVgEwCE3zyOKk9XbUXcckdu4tv7jpQfC+4RUQCh0/w8gtxLKzQnjR1LbsvASqCZ59+dUJMlcKwcr3zBuGGgkegv/VIzs9qmxcViVtutI+PXwC2fgm8VWn7HVSTto/c/lHvOFps1LKgYQbsn7v0I03juGW9G2PgK2YcSuyNVJZIlK8PINbPmDArAVqNd6GfSkj+vZ6W+6PGHpVrhIogKuXxu9/K4JBQ/e7WbtNl9ahFFBFY+AD76XTpYtnYyqLInCIbO07hbzaMbrW2t6NwfOopGwLeLzm3A9JK+pYFF+ECj5IEdSSIxM8iBgu/nZDSjxfXtyDdMptJT6aZOTLiqGUdgSL/4kV/DTYCf847DY1w74kKYEsC4dmY9YibbTAeaK4Pas2sOQZOL9lPKN9rcHCwTGvIfUXBPps3WA01WjLVpEnmY9bs9GSmFLlO2kwgcNVOqN/kBSlEO9vRr3g6oUc2r/6foFqDDli57+HUBsc+U1T4gTbZOmoL8MlRd6W3t5HGOxscTgx5KrYXekZBYfEnjr3qEM9KoNIqL//+Um/K6ByEoC+FebZeOmiwO+pIEKwGcsQQtX+qmvI/BjQ/G7Ts2pCZlurw7OfizMKglz9lMLZWAUuIxrKsnPQvdY5qQljAHUbbri5+ryuTqDR+2VttzVsAdDRSrSiGlgAjdOUJIGvc2UXBA1/vyOVfOkrwhiEUXXCm9vQasDzDqWO0n8qBPmUu7quyhsDsGUOV6wIRlPc0JmBY95JKZV4IQ9HWN8qdTVBY68IOnR6UcEVRY3R6Pv2Y1NkG8n90MZBLsTSQuAxwzrVo+QVAk5cRKmluK3MySw5ZTCSJQ7kK0GPDRshyTfONCi10gHjvbhF
+ WbIeY1iL
+ KiTofnRIBWR6Wxw4TFfy/K2g6uJEsGt3RqMGBBrLkCOt1Tzi7JoM1dmsWqRMdUyKUDEjQieJ9Ux8rtHVKrJTaag7XNqVKZdY+NpCPCbx3lP9cz+hvGN+SzWLmHAnE3YaqCAxFM8D1rzFsB1JafYT3T0equzBKCqB+bYz3vPhySfZqOTD1wkWM4pnFDYs2JhiLkBCcF+23oWO3gOjW6Z+Tsvk/PhLJj0cD/ugArvlOsfIOx3DZ3z/pKp5XqlRqfNPrFTvgXTgwwQwWwfr6CmUVkSG9+adKPd8Al3ujzOVweMvUH6+WMIDNmCttqVqc0XEzQCyQrfqGvXeQA1S8a1zDd7OIQn9rpByfnnOd5CM22bgktpIkLEGlVBaV7iNSLH1Hm2C+WYP6ZNKejTebaTzIKtMmOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,23 +128,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 10:43=E2=80=AFAM Xiang Gao <gxxa03070307@gmail.com>=
- wrote:
->
-> From: Xiang Gao <gaoxiang17@xiaomi.com>
->
-> Fix three typos in comments:
->
-> - Line 112: "zome_reclaim_mode" -> "zone_reclaim_mode"
-> - Line 6208: "prioities" -> "priorities"
-> - Line 7067: "that that high" -> "that the high" (duplicated word)
->
-> Signed-off-by: gaoxiang17 <gaoxiang17@xiaomi.com>
+From: Xiang Gao <gaoxiang17@xiaomi.com>
 
-Should be:
+Fix three typos in comments:
+
+- Line 112: "zome_reclaim_mode" -> "zone_reclaim_mode"
+- Line 6208: "prioities" -> "priorities"
+- Line 7067: "that that high" -> "that the high" (duplicated word)
+
 Signed-off-by: Xiang Gao <gaoxiang17@xiaomi.com>
-
-Otherwise,
-
 Reviewed-by: Barry Song <baohua@kernel.org>
+---
+ mm/vmscan.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 0fc9373e8251..710fbe1ee151 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -109,7 +109,7 @@ struct scan_control {
+ 	/* zone_reclaim_mode */
+ 	unsigned int may_unmap:1;
+ 
+-	/* zome_reclaim_mode, boost reclaim, cgroup restrictions */
++	/* zone_reclaim_mode, boost reclaim, cgroup restrictions */
+ 	unsigned int may_swap:1;
+ 
+ 	/* Not allow cache_trim_mode to be turned on as part of reclaim? */
+@@ -6205,7 +6205,7 @@ static void consider_reclaim_throttle(pg_data_t *pgdat, struct scan_control *sc)
+ 	if (current_is_kswapd() || cgroup_reclaim(sc))
+ 		return;
+ 
+-	/* Throttle if making no progress at high prioities. */
++	/* Throttle if making no progress at high priorities. */
+ 	if (sc->priority == 1 && !sc->nr_reclaimed)
+ 		reclaim_throttle(pgdat, VMSCAN_THROTTLE_NOPROGRESS);
+ }
+@@ -7064,7 +7064,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 
+ 		/*
+ 		 * There should be no need to raise the scanning priority if
+-		 * enough pages are already being scanned that that high
++		 * enough pages are already being scanned that the high
+ 		 * watermark would be met at 100% efficiency.
+ 		 */
+ 		if (kswapd_shrink_node(pgdat, &sc))
+-- 
+2.34.1
+
 
