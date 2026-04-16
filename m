@@ -4,138 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80646F433F2
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:51:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87CD4F428FF
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 06:20:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC97A6B0089; Thu, 16 Apr 2026 01:51:38 -0400 (EDT)
+	id 982516B0005; Thu, 16 Apr 2026 02:20:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B79F06B0095; Thu, 16 Apr 2026 01:51:38 -0400 (EDT)
+	id 933446B0089; Thu, 16 Apr 2026 02:20:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A68CC6B0096; Thu, 16 Apr 2026 01:51:38 -0400 (EDT)
+	id 821DE6B008A; Thu, 16 Apr 2026 02:20:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9239B6B0089
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:51:38 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D1F21A06E5
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:51:38 +0000 (UTC)
-X-FDA: 84663347076.02.8E2F201
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CDE29180004
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:51:35 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sXHr8Edz;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf24.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776318696; a=rsa-sha256;
-	cv=none;
-	b=sasZ8WWAZTB9i+c55diZyohjxFd1vcTBcyKKoETqc1R8z6yRN+xVLwSRbUHAULKEnL/Ct8
-	gjC0Ygo6KIMH+ClaQ9byDSUMnmI11jE1TB1BLAwiPBPffX/TR0wAHcNeD3LauWmZClNnha
-	fj+gP2lZPLH2/L71Rmbp2t7EBTacM/8=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sXHr8Edz;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf24.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DE9C6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:20:15 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BD7E13B7FD
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:20:14 +0000 (UTC)
+X-FDA: 84663419148.14.5C91391
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D037BC0003
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 06:20:12 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VMiGTDpg;
+	spf=pass (imf28.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776318696;
+	s=arc-20220608; t=1776320412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U8ZRn9J58C2tx9KmJMMxW40X0fA9L1IY5FebFkKSNqs=;
-	b=Hhv+bpWqZIwSLw4M8sCu6//wmztKoBwgemuWVcpddPx2PJ/2GZqhiD7OoK9dK8NyCCL+1G
-	2WuZDC97JAxgqx04SaxiG7weNxEyoCkyECD10BiQgH4gtHYgQkCu5ZAfpIUNVJ40wSMLei
-	4vn69dP7sIJ75qezNaXais2KEz/EdCc=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63FH5aTh1834640;
-	Thu, 16 Apr 2026 05:51:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=U8ZRn9J58C2tx9KmJMMxW40X0fA9L1
-	IY5FebFkKSNqs=; b=sXHr8EdzAdYtC7Dy/MQGRJ6gCJmuB9HC5SfiA6Jov2hRn4
-	BpUtV4s4rnevLNx2lfedSMiq/7cxZ/lATxTtjcKi0cG2DzWtGXklAHTapxDm2+ec
-	wtd+Bm81Fu7phUj73Ll2w5PC2FCCBEhA6LDmJVdBKp8cAGxZqvpnxkSmdYIFN3BF
-	D5UnWHaJX3NcKQ6jqwjcSP/zCK9/Tc8lBFZib4Fk+2AiZrnIDnEseBOrgcx//0pk
-	6Y3zQysqvD7cTBfs44kRIC9gnzrVx/joAbxDYc1YYfWn4j0dMIraNr6y8UM72k35
-	qSOeT5TharBdevNzLxWs9ue3b69gmtZ6x/c9YdDg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89rkv3h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 05:51:31 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63G2fCnP003299;
-	Thu, 16 Apr 2026 05:51:30 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4djbh935bh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 05:51:30 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63G5pRqs8585520
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Apr 2026 05:51:27 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 34B3920040;
-	Thu, 16 Apr 2026 05:51:27 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 79A1F20043;
-	Thu, 16 Apr 2026 05:51:26 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.42.253])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 16 Apr 2026 05:51:26 +0000 (GMT)
-Date: Thu, 16 Apr 2026 07:51:24 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/6] s390/mm: Batch PTE updates in lazy MMU mode
-Message-ID: <140b7365-e3c9-4bbe-ae10-15332ab97b62-agordeev@linux.ibm.com>
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <924c91e711e8b16470eb2af7e31d0b6ffcf2940c.1776264097.git.agordeev@linux.ibm.com>
- <20260416054045.10407A20-hca@linux.ibm.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Nf0QCsalo0B1Wg3Ym29TQTIyvRB8LMAG8+6qUgbfobo=;
+	b=xwgNBGRpE+DMz/Ek5iYZHkFh6OO8wWBZ+HkUcsoXuro5BXIh/c4ggytKjsUyJ82HsLElKG
+	ZUD0l7o+RlsEbKJweD961TDptM/EESh+19+HYmpJ79fMb/RShhfhLSwYZet/LK6Ir17UQ/
+	Ijcz0Z77gBRG74t1jsl8ZF6YtrO9orA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VMiGTDpg;
+	spf=pass (imf28.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776320412; a=rsa-sha256;
+	cv=none;
+	b=27G2TKVfNCqh+bzEpnuoalCZaY1xquMQYz6EglVkBfHz1gWHl4g4avkPsDJSOrt/EmLbZ6
+	jFdDBGW+QAi2US1h+aib8LuxUdqg6glTrcjg2xem9ZR6d7hQHt6g/SiAF+ZgQ9FB8UFF9N
+	nE6deorNdXYeOakzkARm2DujJZA+MtA=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82f0fc82c76so2589588b3a.0
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 23:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776320411; x=1776925211; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nf0QCsalo0B1Wg3Ym29TQTIyvRB8LMAG8+6qUgbfobo=;
+        b=VMiGTDpgQhixQP1BfHSDRgQ8jDQM7GJTX3oxefpf+h6orgTliMD52iXkbcJ4x6CcVe
+         Ev3T4z2uEQmw4g7MyVkdv/pQxO/gyFrLOSrsvhun/OmaSJEfAlwLjuDMSoozl8KEqD8O
+         NKJoe5OK3Vz9QVLeDLMfT2lVK1GEI2CPyhiN6jJJSPLJ3dJBFjp63W82L5mPF5Q7DuDP
+         8nVbyizqF+JpHgRhh2v817S/vJ5p2H7HzZTvb06dgYAKWeEaIY4GMYaqQemj42NVp7s5
+         SnvAiWkHKgdyhn7MnN8EUanXCgLbPUHM0dzHiENrhqGH1ciJVc/q6ysxI1u0heE/WNKf
+         vIpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776320411; x=1776925211;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nf0QCsalo0B1Wg3Ym29TQTIyvRB8LMAG8+6qUgbfobo=;
+        b=Q+iIIXCcMrdvbVeynOM611bqUppFLJwabWO8SZmS9//qgiEDsZ+meJJmt3jD4rFpIr
+         CMh7plzmS6a28ASjrSeOu7qsHauLiAbmg1Y89wEwabcoUqj4/OK+EY5m0UfuarHpPHph
+         gLDc3Ej1kBlPz+PvlmPlfjwE69/1ioKoU707ZiqIXXRIkhg/SvsXlLL+skMnlRm1gOhB
+         3pCnGHgQMGEeYdecTHYFmYibKf/ACH2WX+IKuGxPIjATNHJMp0OwxMlubQmg9JUCdruS
+         V5ZL+T8tBf9jrvBJ0DGcQwkw8NaSS+2UsKWo1MmudSgEebLMOAYEOW0OolJg3B1drjHg
+         HbOg==
+X-Gm-Message-State: AOJu0YxjcDBqm6L8TnN12+mlxVl7GbqIU1KuC/1dm/XmcZMNtSfAou4V
+	nhFkciQArVRazfS8+taYLUnWYntgYRR0HdNzznZGkU+hVxOq09knnEWy
+X-Gm-Gg: AeBDievWdvtdeqqz1p/b7zo/EZluWnQ3TSvs4p162c8E3ZzR7dNfuT2Pc5vaBNavpVB
+	bLkHgLezlLxUnBMOM7HPdSWUUVQ3IWLfB6mhtgiz8KeaDTCT7NFUECnYTIkqRfILx+WfXMXI1wb
+	iZ/VxHy/72h6EErbpJLaYPPNTDfEaQne8EU+QDcSKqvKVAz5pFBGcQcrWViAJfN4ztPPWGGYBIq
+	Val0cR36O6BTILAG7Rr7OO5iHomODX6p6g2oGLboEd+kcKeBHumz+vXcawxhxHO2Vguk9f7U9u4
+	LfFQsxF6VnGub42JeJJKyzFommgQZEJHGS1Qcf0HJlDGHtuqAkM6aDJ2jvrHsPD1vQsW/Y/ZJkG
+	YjCGUKChm7QmUMQdqwMmY8CBHRp8yyIUzk7g8pNko8s/40tzz0jkOIAGFYMdCLdXD9gTMKsPO8i
+	Oi0onZc+3uK273tkoyQ0PoCCR9+b4F49WZ
+X-Received: by 2002:a05:6a00:9457:b0:82f:37e3:ae6e with SMTP id d2e1a72fcca58-82f37e3b11fmr14219676b3a.31.1776320411470;
+        Wed, 15 Apr 2026 23:20:11 -0700 (PDT)
+Received: from xiao.mioffice.cn ([43.224.245.230])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f6cae74dcsm3414971b3a.11.2026.04.15.23.20.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 23:20:10 -0700 (PDT)
+From: Xiang Gao <gxxa03070307@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Donet Tom <donettom@linux.ibm.com>,
+	Xiang Gao <gaoxiang17@xiaomi.com>
+Subject: [PATCH v3] mm/page_alloc: fix spaces used for indentation instead of tabs
+Date: Thu, 16 Apr 2026 14:20:06 +0800
+Message-Id: <20260416062006.725677-1-gxxa03070307@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260416054045.10407A20-hca@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDA1MiBTYWx0ZWRfX5pIGN9vk30we
- dEdDpjHcN3OtZZhU9RR6MeNf2QNxxFkV0hzShlf5P32vZ/72MVdRnUOWgAxVNPplaFNcT7/QSIj
- SY48LJKBDrMU+HVnn0iunlzFd4dEWGN9mvCyZfloITf19pxIuel2ViUn1UuCcCuKrtdT0Ha01Vg
- /OuqiETY1NC9qBcwMWOAXzx2f7kI6n2ofhS825l2tlzwjHweZCOHZAcj8zNOnh3yMq3k754+rfg
- FflZ67AzX/ZpvN/HkPVVwt8ZvutgINT6fmLfnla0yRzg3kweZL/aDR8lAttzHHfb5XAV7DWrPnb
- 9CmmK+3kTHDLOIEXy2AXfgmT9z2CV1ml7G2+4rl7ojVbARA4EdhLNc0oOYLSQiRRCT3dgfIntaZ
- J+ZHcjZVXsUbhx9dTS3Y9MUckE/QT1hYqjEIRXjIjJFs0m3hBFva0/ZvNhwnXzDL0zVo2QTos/G
- 7c5UeehORU3RaYMGSgg==
-X-Proofpoint-ORIG-GUID: UEg3ZGRPSaxBIgycQGOzLqPcS2ClwgUn
-X-Proofpoint-GUID: UEg3ZGRPSaxBIgycQGOzLqPcS2ClwgUn
-X-Authority-Analysis: v=2.4 cv=fYidDUQF c=1 sm=1 tr=0 ts=69e078e3 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=glRYRA6g95Ob0rDooU8A:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_01,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 phishscore=0
- bulkscore=0 priorityscore=1501 spamscore=0 suspectscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160052
-X-Rspamd-Server: rspam10
-X-Stat-Signature: qyjq6omkdem51cpbaxgfzbc5ht4wbngn
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: iw3brbagmdifjeq7985zth8zqedjpkkn
+X-Rspamd-Queue-Id: D037BC0003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CDE29180004
-X-HE-Tag: 1776318695-36812
-X-HE-Meta: U2FsdGVkX1/8QKN0Jv4wBuTtnWC6YJXrM5klXe4Ll6guJUdw2GW86p/N0fiv34dGM6VZekPLXdgi3rXmYB3UOjChfbog3kZP8vRfp/0hHFgt2yHTK7jXr0PFqYuOHHvInZT+8jK5gd0R1cp7jNlTpWZtMbEGTkCfCuLjYoJH+vE7iut3qvkwiygEkj5DZxiFS/hRGJikBUKvDqXcdmroL7D9Ma0E5cDtaKvQCq65QVLQim9IHzzNZCjk3qv+JP11U79qF7MEXUX/3At3lA6AWrKaVbXTUw7FPkTD5MmHUNfy2Xb+Ne4XUbhSIlAuvIrVfP/R8HU2HMx2u+OZMrkOqsrr5stEnbCpl8uanGtbD8jOaexzQG4InhNnJYmqr3xAwXa+l6iW5HrQ4du6G1wuVzOi7f+HyAfTM7RpCiatqEHG3ZYJiUmlWl/hk5zJX4SEfTZkipJAiB73AvxTB1s/d+rpqB8xXuD+x8hTdbPANEFC3iS9sXL1RlnZQce6gwyAR6ud/2c0HgGBIzebFlSFsuE1FxSpSTfphUf2LvYW1bPRLs7hLz7zWFaqQFf4bGv5+Vhzbhod86eSBzo5tVAhTR2NNOy8w1mO+d4QBuWmMvT2iaBuORlFr232DbXAn3ZUnabIueRL09T3Y7HHK4w3PdbPbJo5EMECrDNwsul5IWepLj/LR++U0PEJ2gndH4snYToQ9pfoTaffeAP8ad2By7IcfkmirZiNUBl0xG5TGxjBYYLmEW0GnjlqDJqvWdd2onzqSSbjrhoK36GTsU35T93FlWcq+8qdUIdYZFO6WDGsZkYKJMDnA6UIGpesAwZcK7pVWQ+Z/idmp0i9xEJ9G+7fyIGpRG5w6EI+W1GQK384yDGMHc2GMR8pRTKkxnF71cGEdi4qH7bvZ1Z35uXiABTaffshCRjbYe7S/OJfvyYAgtaA68IUGE8xD/Q5osZgWvyM+3M/O7PJB3PrsJA
- ZNhY7jDD
- EU4qFlyJAoBOn06PwCYBRK+FhLcMkXwLtA+tKttxm5zcbipzBn88R6lpfAybuP9b2w2jerkg/il6DCQaKGBIIubj4bmx8SI08Qnrggxe8M5cuTc5zWntULyw/x+ejRYnoFFEge4Ff2km0okzWk0cm1BAbQQtvgs4F7oxqKBB7tufMRl1b9g8uMkIlops6DYMZBPB60cbk90HsjlJiVdt6+swLBy0GKDDLAYXxA4/ICT5CWJKo0aOq1TB8SxwVBWhwBh6Ba3dotuD7hVSL5s2TaB5kMOLEQheVlZuRr66gzcD7C0KB+8tCUTC0qg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776320412-501351
+X-HE-Meta: U2FsdGVkX1/EbAIEHIFFKK4jpx31AbBaUh+5fE3waV1uztWrYuOfrHF6KLWxLeR5msypQ6IfmcNayOQjmuA34iGFyPVottjmqNoOFEy6XK04hcogjk7RS3r5PRoYo8YM9sWpy1zowE3dQg2tnvh+vZmPrip05h+g/Js3ZS8TCaXcNJgI151KtbV/0n25/pNkg84++KdP1Kn3FtDg4m4c2F/hA86lTFkx+EE0rFhxebWRK1TcLal7eypX4U10fkRN89pGaVFxoGMoVBiAiEneBiWD1PnJGYsxJQindh9p2Yx4PuW0TLW5KaCBFcOtm/H5Ao7cGUxb4DTttwztlsm++NHKhTusDGqII7V1XQcljEGF1RKz+e4Srtt2uryrKRmuv6sx8jZvx/hXYqucgxUJuPKEHQJWPIuF98S6aoeO1VtfBqdqSKo8/xnf0/hSAt6YBJcCpIv3EG+BDhF1/HcMUCutUEx0cg3Dvm42ZF77AK3hJaG7dhKrQXlxGzU7txY0/9mkwS37I6L9g1eCKTZXDkUcxq6UCZ9Gla0kQ4fz11iD9LsryMCpGrgYuHyRYBNfHt7OfNtq3ewEHO6CwDjKxtPGN5nzrEcZU9lVMtnUFQZAxndrRbqkrD3D0bKR2nBSUmvk6kZMhiijdsbmDvMKabCX5T76Tmx5Ew1pDG+FgtMBXl4uC/DWL0XNIlm16umrdZrrc4GvqfxbWbZIovqwH9Kn8C/vAw6uKkIJ+qJ3Qnf0S1nTgpQLuMf/+nqVv2N31VYxAso9g2gbTT0FMPEFrVxuzC67Rs45LiWwJKqoVv907NbAZkEBI+ewz7uT5uLFZ4SsDoPDJMoUABknqhA5u/pFzFi5NHvAWaCmPM7j6JIuIjrxw+EClW+kdOyzc8lEHv/dnQbAUCgSPZDtCrFos14OjYKbseQc0lY0Tzjz0fT7FOl99j3hOZgI16AGWGAcRGI/AXMeCkFsnwKy/do
+ ABBJHpTK
+ 9pAuSxx7AmWwoth5X3J7d7aUthzKKMEDr6DUjtkMIFKqZ4GZo27otN+lt2Mg4ZuqfiVNshQha1AZcB13MwRoPQ/+6/KW9dIajXcK4JzUhsPKxRNA6TsWZCER2xM7k0ebK5IeYTVhfnnJUknV0Zd0a7/wEQSQ0m8jOhM1R2NbttHCMmSIOc5Gx5iyGpziol/NcXk3ElOS3Fv4OoKuy/W7Tt/Khb4t4B+u+HB6Kf6N5W6YTrTFDgOhHgigl9PEMhw2TOMgwSIaRf/cRlDNmOTMtdkISd4Z7gIgPcl7w1ku/rH8kVaynDu3vp2M2sXQw8H1a1O63Kw5MGGLxjKGddLNyESGMUwx3V3p6dycRS2oWdnajcp7/WVfO+hxNXK/oqTlXgreCnTj2es/fWYAbmM4dWf70v+zC7YpyO2ec6ReSNihH/gyBT4xW4yMicwRfuwYLq8IK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,18 +115,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 07:40:45AM +0200, Heiko Carstens wrote:
-> > +#if !defined(CONFIG_IPTE_BATCH) || defined(__DECOMPRESSOR)
-> > +static inline
-> > +bool ipte_batch_ptep_test_and_clear_young(struct vm_area_struct *vma,
-> > +					  unsigned long addr, pte_t *ptep,
-> > +					  int *res)
-> > +{
-> > +	return false;
-> > +}
-> 
-> Why does this depend on __DECOMPRESSOR? Which code in the decompressor
-> would generate a call to the ipte_batch functions?
+From: Xiang Gao <gaoxiang17@xiaomi.com>
 
-Any call to ptep_get() or set_pte().
+checkpatch.pl reports two indentation errors in page_alloc.c where
+spaces are used instead of tabs:
+
+  ERROR: code indent should use tabs where possible
+  #887: FILE: mm/page_alloc.c:887:
+  +        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,$
+
+  ERROR: code indent should use tabs where possible
+  #6626: FILE: mm/page_alloc.c:6626:
+  +						         sysctl_min_unmapped_ratio) / 100;$
+
+In __del_page_from_free_list(), the VM_WARN_ONCE at line 887 uses 8
+spaces for indentation instead of a tab. The identical VM_WARN_ONCE
+calls in __add_to_free_list() and move_to_free_list() both correctly
+use a tab.
+
+In setup_min_unmapped_ratio(), the continuation line at 6626 uses 6
+tabs + 9 spaces for alignment. Replace the excess spaces with 6 tabs
++ 1 space to correctly align with the opening parenthesis on the
+previous line.
+
+Signed-off-by: Xiang Gao <gaoxiang17@xiaomi.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+---
+ mm/page_alloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2d4b6f1a554e..752673a9b43c 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -884,7 +884,7 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
+ {
+ 	int nr_pages = 1 << order;
+ 
+-        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
++	VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
+ 		     "page type is %d, passed migratetype is %d (nr=%d)\n",
+ 		     get_pageblock_migratetype(page), migratetype, nr_pages);
+ 
+@@ -6623,7 +6623,7 @@ static void setup_min_unmapped_ratio(void)
+ 
+ 	for_each_zone(zone)
+ 		zone->zone_pgdat->min_unmapped_pages += (zone_managed_pages(zone) *
+-						         sysctl_min_unmapped_ratio) / 100;
++						 sysctl_min_unmapped_ratio) / 100;
+ }
+ 
+ 
+-- 
+2.34.1
+
 
