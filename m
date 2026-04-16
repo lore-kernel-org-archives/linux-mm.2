@@ -4,145 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC64FF8D754
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 14:38:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF879F8D754
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 14:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F36B6B008A; Thu, 16 Apr 2026 10:38:05 -0400 (EDT)
+	id 62D1A6B008C; Thu, 16 Apr 2026 10:39:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CABD6B008C; Thu, 16 Apr 2026 10:38:05 -0400 (EDT)
+	id 5DE046B0092; Thu, 16 Apr 2026 10:39:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E0A86B0092; Thu, 16 Apr 2026 10:38:05 -0400 (EDT)
+	id 51B606B0093; Thu, 16 Apr 2026 10:39:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D8CD6B008A
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:38:05 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD135E4AB5
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:38:04 +0000 (UTC)
-X-FDA: 84664673688.22.4D690A7
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CD51D40014
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:38:02 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kLDejRMx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776350282; a=rsa-sha256;
-	cv=pass;
-	b=R2ifSf+TtSCqJFBzru+xfQ/opBHlUzd09zwv1fWY+mCQBuwHJdgjzDEfsEe818i2fnQJAA
-	uWe4vqDqA/8aCKK2XFEufOM1WnIG7S/v3GkRCc1ThgbCxK1w5Wt8cP3TBgUZTcmeD1kAVs
-	Wj5bn9PcW1p7ykWgDQKXTXsW7EVxJ0M=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kLDejRMx;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf11.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776350282;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 418C76B008C
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:39:11 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DDBFEC2A0F
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:39:10 +0000 (UTC)
+X-FDA: 84664676460.19.29FC50F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 60B30A0006
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 14:39:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X/nNbhC2";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776350349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3pkKSjP+wJVMcMFvJFoHSHFWn8sH3nk4J1o7IV+VvKA=;
-	b=gsd7Phn3BN5EUClDLDEUfezAcjPEghn6G4JEeCx5fJ7uPSzvyOdv72Z/wqz6409SydFKgb
-	9nAlpmqYlNTHmx3KAukLT7S37xlpLmd3R9XzoRVBitsYC678YYdFb9LqIMy9BzbcDhTVKK
-	Q9+sieKeFkJ7vdrtkDip3XW0oiBxcRM=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48896199cbaso83975825e9.1
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:38:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776350281; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LM73LH7f3l46ULU1dMuIZRd79/OG8dP6e4OOtB3jSILr+67S73gsCJbNiuRCbd81EL
-         itv4kkFKYyuN0gKM90oKaNVtVCfVpWp+ZvUIude80RjLMrSF1zcpW5eZjG7IfHO5kB7E
-         FXCfrcm687gNqlEicB/lLGxbTGFx+eQTaVtZGXrJOq7hfm8e7NvoksK7pcKT+rtQ/mu3
-         XVlq8CDtQjlDIPLmWre7GgYYWMsQJPSGIDiPZJ2SE20QmcQqDx7W3B8C77CAmOSBdtEj
-         mJAJowLZLcQp7RbovY/eNQVOXeIg3SLByGXEncCSLd8awCtMuLo4saN53cehOiR4BQNh
-         MQ8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3pkKSjP+wJVMcMFvJFoHSHFWn8sH3nk4J1o7IV+VvKA=;
-        fh=a6gOU5JGLmVyF+b9YTTjrtv2uNCWFonWm0pxG226JlQ=;
-        b=gIKPFhr623zPpJLKR8FOkFWtxy6XB+kFCSWhI8Am/Minaa720G6dD2D8MHM7BafWpI
-         4BY1zxtyi1j7+SPtZo0RLmOZmbx+hpLFhQ01RHuTnl7PDzYhCPUgN4rOBHBSVvFRGVM0
-         Y/MWGMi7ZQazJ+gNLw5ISHRHua+cw4b4Q4KRqkk2WTZmTWizdrxGckmAfbLCaGlZYKFw
-         MUQdP5yWOZVoqebQ0i/HfWp4W/E3VeoKLLpZeU9aGzEBirYCXOzYbYYwSs/tYJVuPPOb
-         ZUQdDL4o0QvZDnTMLhhaypkVII4T3LxaPvBpI37A2Bbw5d8NuPBsCI7gnrR4KEkczYix
-         VImw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776350281; x=1776955081; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3pkKSjP+wJVMcMFvJFoHSHFWn8sH3nk4J1o7IV+VvKA=;
-        b=kLDejRMxiC1T1MJJrLbcjiQ4YWcUaPS/mONfM8z7jDlIhJn/m9C+dbLvbD4GpywuJ0
-         HNUnC4ZO0d2YdoaKM5vSk06O5MA8VWnHBE0NpN6NdEiNMk+T2e/rgIMVUBUavXXcDPpf
-         5/0d9JX3YEK1f+0gNM4wk6R1lo+u+extsII+vHOAOSlG/RIZxLbiub/drtZAYuvrJmZI
-         yMYx85tpD3nNXCb+axBmayaspvddM3w1dM2JbZayzFBtl1decHG6wrr3vWTLRqcjyA42
-         lGkQdbSuFx3EXrj3PQZNGO2huwFDXBFdqNm2hIsIE5Z7n/cTrCZfdgf0XHsCSUT28FNt
-         DpJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776350281; x=1776955081;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3pkKSjP+wJVMcMFvJFoHSHFWn8sH3nk4J1o7IV+VvKA=;
-        b=PnaWwrKnNm2YjNPUwkfBkRrFO3bL/8G8e4rwpj2kyS+PgKFOCBGXxMILjimAghVPma
-         8mfGv22uOmWn0au6CltBpjXYiStaOylODgW89+HW/IJ2GJOVW/HVBgDEs/SwzBhgai2q
-         83uZxanH2GGoQfk8Cz4Kuhspxo0IDb6f7X5Uclbzsuc+tHwX2J0SkU0pNgLmwHOMfIOs
-         oUHy3no0MQNN6EjADkgX6gVqUqp7JE/pvDdJHE8mPP/WmDX1T8mWomFRlRjK6jqqOkXk
-         Q4Fi8tiog3UvGr/oFIsMgQLjJIuLE54zvFIHJAq8Z3bnD8t8VCEeasxDYoh2oIA9e2US
-         KSWg==
-X-Forwarded-Encrypted: i=1; AFNElJ/2bVWAkRaXdkwLU/Wdc0RAoAJlEyWqudj5qdeXJRkgxO/rCtkcl68gn9sxC2nyA5jizlDpKBXrJQ==@kvack.org
-X-Gm-Message-State: AOJu0YxBo4tFLBMAIyKja8RZoPAMnsxedy7i0BzLj2VbM8/Ptww6H7Bj
-	/9sL0iht5qBUqGPXKqOiCL5IqcfC6aS0xpAIQ2v8sA/BDn9uIInyLNZ9ZciW7lA0sKwvmtdak0G
-	gJVlbBOqDkqs1gG4kQsUzp3j31jY57ew=
-X-Gm-Gg: AeBDieu02NwvvXtWzw5vJDoYjklLZyXuy22snaM/P+wkGjcBCaYcCHtzTeLs93wCm88
-	dmA1KWfZQ6pwzuXjNSInlO7cyDNKmN4o17MrgeV3AGHdDGJ4Tjm49FfaOdj9ImoTCmYAect+YHI
-	JIqno3pKWwXDCBDX9a77gwVnqIaMG59HVDUmx7DsOmiuBfrTKU+laYcqTX3JVU/8utAOBtQ4tBL
-	eaLTXB5LiIL2WYXm0WeGPVLFl0jPm3cq9O+G2xM9JROAAhWcVu4dl71NRLoYErLbv0Xc5qD6opy
-	rKIfT2hEy1G3Y7osGOS0B5g/6uqzVoExRflCDz2QcYemQ3gckrc0BEdq+iQmyRW8BwsxN1I6Eoz
-	t4Z1vpKLuy57+1A5rY5v511K0Y2l8dSBik8DS
-X-Received: by 2002:a05:600c:4443:b0:488:8577:d9cc with SMTP id
- 5b1f17b1804b1-488d686be7bmr350526455e9.20.1776350280913; Thu, 16 Apr 2026
- 07:38:00 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=x157wvB12bwOB7//C8zEXuk58Z95Q3/BpMPFdv0o9fE=;
+	b=sm4gZmyN7ojAApnb7vPPjPvQ9dT7dFJunzOf/1J4M6vfb6rsAdWolpXbc2MpDeAJlqQXrX
+	wckOmCj9BoCFq8Fmm/3m2wlh7gG1burisdKlqtx9SVv09/eMhjTCry7G2N9Wr2ov4WeYsC
+	IwOkOuHjIAw9slIzpvVmauQKFebPVkU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X/nNbhC2";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776350349; a=rsa-sha256;
+	cv=none;
+	b=YhC8MvVp9XHxLzQL09VXKLhHGT7qqg+ekMZ1NjpFfjmBxv8j8Ztmcg7yn1e9vw8FJeYYjd
+	KIOn8M0cfYa1MFPzIGq+PqqNYKQ8AyH62jUI6q7Mm3z0Qq2Qhj+prHh/fO5FmK/jABCsgv
+	gHyt0WIqZhiClkucOI2itxKx9Pai8kw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D736160126;
+	Thu, 16 Apr 2026 14:39:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5860EC2BCAF;
+	Thu, 16 Apr 2026 14:39:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776350348;
+	bh=ISIO6kAu45FSQY075H+uIGwTqhCGHuJ5pC1ocL3AuWs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X/nNbhC2pauFxgiFhETPbQlHRyiGdJzADwxmhq8c2pr/CCkvFtHICNfHc3lv6Th1J
+	 4amfaFMuG+1ku42xVSvSjeQA/tKSCspS8C1ufIgzTKH5shodUpzpCh+C9WYwCdgza3
+	 wFGF7NAHcVKBQRi4yMnQ72oN+UvEv6yC9kx/mCEhbS0xGinuxi60hAQXKr4dvLz9GP
+	 Xeivm9TDGQjEUzYdZ1Q7LWTMllJgOYzoc84oZ1fXppqFV2jhkY5dWfNESSN9NnnNY7
+	 a+j+t1rbkjiTYcIN8XhlFy2MryfsojSSzjRCv/erZ/zlhJYcGz9UcrGE5VrdUfT1zR
+	 FXQzChbmuyGxA==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH] mm/damon/stat: detect and use fresh enabled status
+Date: Thu, 16 Apr 2026 07:38:55 -0700
+Message-ID: <20260416143857.76146-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz> <aZAWGwZP_Z75YHKt@casper.infradead.org>
- <ad_cqe51pvr1WaDg@hyeyoo> <af3a7fa9-b368-4ffd-964d-9e4fcba863a8@kernel.org>
- <DHUNDMZS4YQ0.24SZXD72JIMCE@gmail.com> <aeDzovGHlFmPFpNt@hyeyoo>
-In-Reply-To: <aeDzovGHlFmPFpNt@hyeyoo>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 16 Apr 2026 07:37:49 -0700
-X-Gm-Features: AQROBzA8Z07FNydMayiplhklWIK_8QazEzSWh8Qzv8kCNrSoFXdHEvBXGKLZU7Y
-Message-ID: <CAADnVQLc_6SfF0h+-W+-sa-Qfvn8a02b6sbELJwpQcG7CFNqAA@mail.gmail.com>
-Subject: Re: [RFC] making nested spin_trylock() work on UP?
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Will Deacon <will@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	LKML <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Waiman Long <longman@redhat.com>, 
-	Mel Gorman <mgorman@techsingularity.net>, Steven Rostedt <rostedt@goodmis.org>, 
-	Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CD51D40014
-X-Rspamd-Server: rspam12
-X-Stat-Signature: nek7anpzug1e1zfsufthy3rocdd74rg9
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 60B30A0006
+X-Stat-Signature: nucy8c1fm4xhzq3dk9bnk1h16sn3uf5p
 X-Rspam-User: 
-X-HE-Tag: 1776350282-760490
-X-HE-Meta: U2FsdGVkX18l9d9k0a+lpedYkRXw67bvmelrhmy9d1MQlSxqcaqEcEi0Jwq+dnzyhuJrJ+u6LdpbQvakKAb3hn8PU9AYXgWUZgws/FX2h8iuG2hGZI+8RWs7jrIP0ODnuHq9p5r8FmMsP0b6cu9dHha4z/E4uEPFokTbTqDesHkWObyt0sjhhtqMY96Bm0lsMkQa3hLJSTPaHzrOmrPmJSs+uD4/9r2aZefuLbEXfUFQS+JbxeQoY5NsDumrWayX6ito+whrCDiqNr62+5YsJGuMfZ0+8Utgf17j3NLtwJvqQNuSLLRB0K7dHkGU8C7NwjQ9nIwEDzw74ce2NLIYoiv37qNlw6TxkMvmeq58frNU+hQMIjym61LxM+xhI90CakrPeJ5bJ4p28aRG70wd8KL3uZb577Z7+K1PRn2kQgABzalLDVBBeMD7xKhY+xYwosSX9qtchH9dySqGV1SgPDjbP6jsMl3QIsJcafTJKkWnQoW7C5JmJEELBimyq5Dm5+0WIWgD2Jl3d2WOQXr2tnOpG3Qd999/C7kMjkD+xh2dramXUJLhfAGb3erx26S9+ktuSPo3WGM9YLy3416LfZgL5imB10PLCxEDflBMi3P6PsHFnYvseUVgPdbVvUZI5RSAbhs3eVe9guznJVZyejDOjaFf9ZvuCzfoFP3mcv/XiwJ2tULpmV0HYnnLx2H4QYfbRKcZ1gOqgAHIYQ8jcXUNCEf3j8Qd5QJVSI9c2HHuWHXpLJVCMN7gFEM8q4LVCKWjeduxnO3zBp/ix9bR0tJVJsptCA+BaYp8DFFEHbG0suNPDUdGbW0Z29n++0o8GnhYntF5J5Su5aY7zITvlA5CZ27buBxGfYJXqVg/lfHT5279vew3NzfhEAr/El/zyWc5GlFmpa/e24Hz9TGlIvog3uWI3cCnCcEEZ/S+LA2bpN/YUHC+dSATuo20v//OhV7AFBKvRJB67zgzx/T
- BChjDM/P
- FVn5ugG32uEQszWamb91/XGXKzihZh9vZVZy9zpczckqqim+G7V2Q5+89q//0qMg1WoFcS2kbqE85QnVcP5cX7HS1nRF4MOm1ElBw071ZPlAOopOaMVxncydrHwDQJhOCzwUdjK6iYw9h4qVUF3ecJV3lW80djFcSB3pZgLUxBSvVy5HE54dDclJkN0c97TOjDm3SqYEVC84RkxGP6655HHimrS5EbT4ISGZR67/djRkUaQcFAwtO3djQITeHfe0ruutFXoAaLzt9oZtGypF33pxyugfucPVozcRsXiQKrmSOZYWlAp0DOEmY6h/c+E8kYxT1cwDDq8LD7o8xSkm0DNj5WnPEaj/1AIDMA/qMqVTeiUAJJXLYmiHruI4Ieuz7IqN+4OSb3e35oeRGVKXH0sI2hznfYb9VQyNGJuCwenwi894pvqE8pgaphWAxiiCjn7uLPIPkasloEwHdo713BXNdf2jRT23LG9fVuNfC4HrXXwCZlUOLoU1p0sG35rHLRvUPk1mbHzqXwMb1NkWcldfANvskVArIxvUxZTRypIYC9JjmtBLbMe4VbeLMRHe/NWxAEMwViDtFJPw=
+X-HE-Tag: 1776350349-893293
+X-HE-Meta: U2FsdGVkX1/NdPURG9iQ1J3rjKXdarMeziUFxSe1lGSIg7ub5rPLY8oVbkU5gskU8P4ipA2sz7xP2Q6XfhYDvcrBnxv51e8jZmdJXf58qxxgdbLuTmfkwa/gTqHQqVtht/9ztfw2rLvht0TZadHN+Q5WjqTRqCc8VPa28x8sel8IzGa3q4pFlWA7+sgs43s1IF4XMTYfH7IlnuBG/9uefXY+ebOyboEof/doGf0o/jsuc9bCeQV8Fl1XOmikfSamtunY1qPWvgyRNZoGWdCUyaRxxw7K03hkqH/XNNMAdz9ZwXca9l/y0Dp/m6lsBHyWDuThVzACkRmHDaCCtkbTFkAvsXRFfLUe8vLtc0LgdDJX3klSInQZSDDEZAwwks8YhpTeepDu5GVfXB/8XOr6UCjbVzOgkPwUFLeo1aitTl8OfxcqqX/ykptSG1vYqA6fm2m8eZvXAUCk2LVIddmWWKhH52n8zdRKYxv5bF0i6XaqPr5n+6HQ5UcO+yLLETkYwkXy8RDFdykJ7m+3D2foSg0m0n07gI79JLl+i6c/LILaLOr/iR/su3K9f83jx+A5p7ZeVXBpW2u7/2ZgfrEH69p0njYnzNGGmL8CFgLcAN9jhAPocZ4fVC02wv4ib92SXmCqYaO078xgl0blVXpeqI0JBWGJka5+3Q8v+C3BmW5RD/Yaw0Y1EgOMDbjs1HrTDc+t50vE8UTQl649kyXtgPWQTQB2Oyp6zxqIpW7E/qBMeNV+DRleW1ztvSNwvxnsdqaz7ISkRgCNlu+ofjCcKnNDlvR3D/WxPCKTQZeNpx1J9dr74nb9liS0NiFf5U32j7zoFkdOWuGnSLKEXkO/lyQ4bSS8iGno29rnvTcGCKCwDm2RIp48J/IeU+5nCn18dOqIdLCAjJNAowKrjqBllbVJY4mbLQ4WRV1W8CpRU0c6kAf+m3bwRTN6NcJ3U1xksygfnhFZjdFwd8YXJjD
+ dxuPENyg
+ UnZcFFnqsBq/NlbumOSSVUUpL2bYNMsI3l50fGXq1PVVhx+rgpFwbiaVrPktcrEYwGGDZsxTxoQ6f5NMdjwkjxWy+VHa5Jhh2GZZlNft4niaPVFYD3cETiSdeelKQG0J1JU88MzOXhMgLqM6fS3/4cvA2MOIR+UPP0AHDyJes1ZZMTNOXxCB5y5tFZPkViYr3ypOMR6ZZXUUp40nSn1YJCal0pSKKEsoo+Kbm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,53 +92,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 7:35=E2=80=AFAM Harry Yoo (Oracle) <harry@kernel.or=
-g> wrote:
->
-> On Thu, Apr 16, 2026 at 07:26:36AM -0700, Alexei Starovoitov wrote:
-> > On Thu Apr 16, 2026 at 3:05 AM PDT, Vlastimil Babka (SUSE) wrote:
-> > >> I think we need a special spinlock type that wraps something like th=
-is
-> > >> and use them when spinlocks can be trylock'd in an unknown context:
-> > >> pcp lock, zone lock, per-node partial slab list lock,
-> > >> per-node barn lock, etc.
-> > >
-> > > Soudns like a lot of hassle for a niche config (SMP=3Dn) where nobody=
- would
-> > > use e.g. bpf tracing anyway. We already have this in kmalloc_nolock()=
-:
-> > >
-> > >         /*
-> > >          * See the comment for the same check in
-> > >          * alloc_frozen_pages_nolock_noprof()
-> > >          */
-> > >         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq(=
-)))
-> > >                 return NULL;
-> > >
-> > > It would be trivial to extend this to !SMP. However it wouldn't cover=
- the
-> > > kprobe context. Any idea Alexei?
->
-> I think Vlastimil meant it'd be trivial to do:
->
-> if ((IS_ENABLED(CONFIG_PREEMPT_RT) || !IS_ENABLED(CONFIG_SMP))
->                 && (in_nmi() || in_hardirq()))
->         return NULL;
+DAMON_STAT assumes the kdamond will keep running once damon_stat_start()
+succeeds, until it calls damon_stop() to stop it.  If the
+regions_score_histogram allocation in kdamond_fn() is tried after
+damon_stat_start() returns, however, and if the allocation fails, the
+kdamond can stop before DAMON_STAT calls damon_stop().  In this case,
+users will show the 'enabled' parameter value as 'true', while it is not
+working.  This could make users confused.
 
-This one.
+The user impact should be mild, though.  First of all, the issue may
+happen only quite rarely.  The allocation failure is arguably too small
+to fail (100 unsigned long objects) in common setups.  The time window
+for the race is also quite small.  Even if the race and the allocation
+failure happen, users could find the fact that the kdamond is stopped
+using 'ps' like commands.  By writing 'N' and 'Y' to the 'enabled'
+parameter sequentially, the user can also easily restart DAMON_STAT.
 
-> But it doesn't cover the case where kprobe hooks an arbitrary function
-> (in the middle of kmalloc() or kfree()) and calls kmalloc_nolock()?
->
-> > Yeah. Totally fine with that.
->
-> So I'm confused exactly what you're fine with. Did you mean this?
->
-> if (!IS_ENABLED(CONFIG_SMP) ||
->                 (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq=
-())))
->        return NULL;
+That said, the bug is a bug that needs to be fixed.  Instead of managing
+the complicated state in the variable, detect and use the real kdamond
+running status when the user reads the parameter, via the parameter read
+callback.  This will allow users to always read the correct 'enabled'
+value.
 
-Doesn't need to be that drastic.
+Note that the 'enabled' variable is no longer the argument for the
+'enabled' parameter.  But it is still used for two use case.  For
+keeping the config/boot time user-set parameter value.  And for keeping
+the user request to compare against the current state, to see if the
+damon_start() or damon_stop() call are really needed.
+
+Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/stat.c | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
+
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index 99ba346f9e325..3951b762cbddf 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -19,14 +19,17 @@
+ static int damon_stat_enabled_store(
+ 		const char *val, const struct kernel_param *kp);
+ 
++static int damon_stat_enabled_load(char *buffer,
++		const struct kernel_param *kp);
++
+ static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_stat_enabled_store,
+-	.get = param_get_bool,
++	.get = damon_stat_enabled_load,
+ };
+ 
+ static bool enabled __read_mostly = IS_ENABLED(
+ 	CONFIG_DAMON_STAT_ENABLED_DEFAULT);
+-module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
++module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
+ MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
+ 
+ static unsigned long estimated_memory_bandwidth __read_mostly;
+@@ -273,17 +276,23 @@ static void damon_stat_stop(void)
+ 	damon_stat_context = NULL;
+ }
+ 
++static bool damon_stat_enabled(void)
++{
++	if (!damon_stat_context)
++		return false;
++	return damon_is_running(damon_stat_context);
++}
++
+ static int damon_stat_enabled_store(
+ 		const char *val, const struct kernel_param *kp)
+ {
+-	bool is_enabled = enabled;
+ 	int err;
+ 
+ 	err = kstrtobool(val, &enabled);
+ 	if (err)
+ 		return err;
+ 
+-	if (is_enabled == enabled)
++	if (damon_stat_enabled() == enabled)
+ 		return 0;
+ 
+ 	if (!damon_initialized())
+@@ -293,16 +302,17 @@ static int damon_stat_enabled_store(
+ 		 */
+ 		return 0;
+ 
+-	if (enabled) {
+-		err = damon_stat_start();
+-		if (err)
+-			enabled = false;
+-		return err;
+-	}
++	if (enabled)
++		return damon_stat_start();
+ 	damon_stat_stop();
+ 	return 0;
+ }
+ 
++static int damon_stat_enabled_load(char *buffer, const struct kernel_param *kp)
++{
++	return sprintf(buffer, "%c\n", damon_stat_enabled() ? 'Y' : 'N');
++}
++
+ static int __init damon_stat_init(void)
+ {
+ 	int err = 0;
+
+base-commit: d8bf71b1ab52974349a5d58e40749f04daa339dc
+-- 
+2.47.3
 
