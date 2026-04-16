@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E670F8D753
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 15:05:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B16BDF8D758
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 15:05:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 829416B0098; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
+	id B38996B0095; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73FDA6B0099; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
+	id AEA106B0099; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51A8C6B0095; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
+	id 803AB6B0096; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E4376B0095
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 59BDB6B0098
 	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:05:41 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BB1FA13B99A
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:05:40 +0000 (UTC)
-X-FDA: 84664743240.17.D15D8E7
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1FA1313BC2D
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:05:41 +0000 (UTC)
+X-FDA: 84664743282.02.81F0A96
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DA54A180013
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:05:38 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=3TJtPhEi;
-	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 67DE3C0016
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:05:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=D5DQ6guF;
+	spf=pass (imf28.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776351939;
@@ -34,31 +34,31 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0iNiXafam+/e0hkdJzF6nIr0O4d4HoUoH1x5V8VkIAs=;
-	b=eOUO8avaPT8V0127RIUsvSz1WjC1vRSm255/0du2DHpxJH0MfFvU4YM4WVDtMtnSmDblV4
-	LpR4/8sY4q6e6X65pwoPxYtpsskaqmgMzmdbrOzLGLDYa6Rob2TZD6gVgTsqyF8sDpwBMs
-	+8I25Y5a4sKU5Z47859fjevprTdS6Xw=
+	bh=D8xulR7JjCNqJss+1hEV+Wl86yGJuhLSBNqNTNYuFwc=;
+	b=Ve7GjUlLj4Yzz/mfbT9REdI38v7U1wLeu0eUMQzFjHI3Q97nMjN8NTICP5NAvlkL72/vKG
+	JwsKy0B0xDXAFddMuemyKSJRecBi+kWVkpMH4dFYJWsAe4g6qvO/7ptILsPEenoOqnSQwm
+	h4mvcpK9xBtq0zcgHNexb6maA6astek=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776351939; a=rsa-sha256;
 	cv=none;
-	b=hUGeuKRWBdt07t+cLRZoF09lojIbuwAhHgNlG5lxaNKkv2dZ2ldetEOsZeDNzCMGXIuMjr
-	PmqGo0VdGLHZOqsV6pEZO6XyxumobdNn7dHUWB2H6W0UQqWJAjKwFeNuMzqdbfI0TI2wTf
-	8R/RHAsGWlFHvI0UvE6C+jturbuAZ7w=
+	b=WoJvCseE97V42v4QCsV6I8qJ8ASwQ2Q3DREF3VY4i2jOKGjZ66Tf9Go+dMWZO4P1F+/TyA
+	QZLdZy/Fw9ksDrUSkbFn3WtqFW3Ii59VkfkfsgZOb33mG0jEC4So/uy+5o9zgbIhWVxUv/
+	+VBAh1vRns6yBahOBMNqfYcCe+LgOes=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=3TJtPhEi;
-	spf=pass (imf16.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=D5DQ6guF;
+	spf=pass (imf28.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id E322BC7442;
-	Thu, 16 Apr 2026 15:05:35 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id A14B2C7449;
+	Thu, 16 Apr 2026 15:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
 	s=mail; t=1776351936;
-	bh=0iNiXafam+/e0hkdJzF6nIr0O4d4HoUoH1x5V8VkIAs=;
+	bh=D8xulR7JjCNqJss+1hEV+Wl86yGJuhLSBNqNTNYuFwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=3TJtPhEirfgcM4Mp+y12OqqpCtgrlTu1gBPbKH4woMmwhFIrlBuBkE+p1sj1IY6LX
-	 VXfevcdTXViMWKZf5xjTMP55D4UuU2U4KJatrcLuegUo4PXYEVFK2I/0DsdYv8rdx8
-	 JJh4+06+hN7Upzg2Fhqyelg8VEIR5mC+LY1T15cg=
+	b=D5DQ6guF7Ywnq+T4TcmGaOvR9vQeJOZ5qbphM7VEVdzCduoknOLynXGcqMXroOQUD
+	 Sy/KkZXeMb1oW4Rc6STD5g6Ymo5SiON6w8WYKu6yeJpskapDA5zGG5U4OYXtNR31Jl
+	 29TqDiToONSpxM/rdWX86C2ZYc/cO7sAuVqOo4oI=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -91,22 +91,22 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v5 4/7] locking: Factor out queued_spin_release()
-Date: Thu, 16 Apr 2026 15:05:10 +0000
-Message-ID: <e42c5d27d82b4ba083b91a0413b2046b0959f5b7.1776350944.git.d@ilvokhin.com>
+Subject: [PATCH v5 6/7] locking: Factor out __queued_read_unlock()/__queued_write_unlock()
+Date: Thu, 16 Apr 2026 15:05:12 +0000
+Message-ID: <eabc9de3347ca042eb0593c9b81c8e48254a4874.1776350944.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1776350944.git.d@ilvokhin.com>
 References: <cover.1776350944.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9iz6qxc3grppq3ns9kf8awox76ee6kxy
+X-Stat-Signature: n3by4nsckbuw9yjekjw5mhkpwyqsqpug
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DA54A180013
+X-Rspamd-Queue-Id: 67DE3C0016
 X-Rspam-User: 
-X-HE-Tag: 1776351938-575560
-X-HE-Meta: U2FsdGVkX1+3Dk36aOo+b3PhiuilWVIBfMUfcaSEuo2in0R+gJNt77bdCnPjNpZ49wJ4ZcuYh4za7hAwRe3QIGrNNZFsO1FmAegtEvQN1spNlXnxXLCC2BzVHhBXmt3KZ88xI7/YSOWKmwJwp3T7UCDY9UESj3tlYjg64fc48AN/BXF27Eh/aAQRxjfEfP2DUsu9yV0DPNLPrKTLU1yLjHGM13FecfOySTIj57CZP2PZPUsIqMhnEeppclom6iDcwdMZ8G+vmLE4Qd0uNbYewgqYId+t3LNknFRw5xMin6GPM9PkIKsbnSve8bSr5oy1KM9BYs6rW85ajZBE2/gcBB4zliaOKF2AuIm40909c7KyRAyHj21QrlrvZuriVkjvr6YeACND2mwBvO24vGEcyuqavv9+TwjttQoM+sLbpZW/c54xlksG17b1b+SPE8Aj06cc/cFKzqthaQBgTZxpKuo1ku62vprK9p3tpxL6rRKpHWNtRTwG15/wiDQKnB6Qzj87t2Eo9Tk08Q4N3CG3I83vwOAtqztDxc/dkQwa6cgZkqjxvUT2+tLcrTrXMHFSHomRHcYkkmXXfQIja4LWKbpVtcRlDadALn8lH7+mgWQQnSSuvK+gVerNssw8dIMUMIZi0uUM8H0Byx6vJx2bbAgbNQNicRWIf8JBZmq387RDYhTnLcKBWOoB+FiI9AMHzIdIe1MXxrzgUltdf+Ngo4VRPb32SDfLDtQ+2PLNvVENRACaRS5Aw2kIC512OBj/L8EE9T/Epymk34ZwbU7nTgD6MduUh2W+QCUEpkwuVyI5WgaTq306engHizezQ7FVbjUoozdbkGlm1VNtCImqcqnkSqyS5ly1O2groJkKFpdfGmbrjDfiamnRfmik5mvg0ZA1C+YgOBl70FgbVWbupiJmKfkjIVqjhpvwC1D3CpaZEaN4f0XNRg6kckWH5l928ngmqOIlp+/VRFUwkp6
- fqZtcpcI
- 1rPKWGQawTwMucK0yhxPYretIBeEJ3zxyH10VDwaoh5r9IGmiICZ3mfqp37CUsl3efnZwR8ynOUulkUHvQpJ7eZoVf56ayD68hcuONr0S61+vteyKU0fTk3eJfOg/O94XtoAESniwU4dahyQifzsqil9AIL8+GbYZx9uJdLRoFATZ7nKdvkf3n1f/z5i37iSwS9HoEvH5zgN+Eu7vIgB5WfrC2U/hVvTYLXyKsd3/NlF9UEtgish5jTCQMFZaVJwrcWXTz+w73dWGSHQGqtISwxxp3AIJ3gntOh3Ych97cvegItxhWp5p0BSJ9lqJa5aMlROW
+X-HE-Tag: 1776351939-593835
+X-HE-Meta: U2FsdGVkX18ZmWTWAsnu/K5Dx/Uq307PM8v50e2FtOCvTBmp6BHrUeZ01hzrTnCeuEv/1fBTQBpWzKIKHDteKJoT1NGAlBZ1vfweOa71s56dio2nXv/3ijA62l1CiLQoobhLVmBBpRceFDkRfGPqVYYvb0401lYgKTIBje5Z/IORZHSrQy7CE28UQZyfRjJYUidnLkSac1lBA43lQEPCkB7ayhXgo5Xyv1wL+N/K7wpqboHEjy4+XLl38tlGVY9Zk2i4WIQxkcBkp22aldb8ZpUJh7VZmmLHvM8yNNbTcy2MZe+JUwhUkdPiZxQDm5snphhdAD6HfLbAbprp8gDC/Uvh/me7+lb08i9QXitwemY/fBKSN6nFlwXYXPALo5W3kD0EzLpryhGR5fedFHXNS+OM1Yv+AcpTz7KKiwJO7SPKQmgpQCJjpHp996tSun6b1ZHRCG1ZLNJvxb5+/mJJYRwGFg1Z5hAa/I36KwpGhVbu5QB1gcYYIFatsfF17pGbcDyx9ifsS1KjlbM5RRJYNQ2Y+NaSCcaHZgmcqyFZe8wO0RQcvbxMxEag+UBnOylqd6dfdXPDpSGBddZJNw2cf6ISvYGZnumMvNzdSQ8/wRBLW5kpkZrUFievlV9Ku5Ha+4+tc653kOVEXDVv+d7022JcC+de4gAHkYY2vevHy5yDWUBUQX23msLBroZJIySSO03FJ3dMtBMY6JdRnc5xYCrZNnrb1fTGLfJ1Qph18byeOW7WvaiXreNphxGf/VEMvYypELG3ANZ4yFuKBayK9qy199nOHIQBFexJe/YA5AVqGTni/uiAPpXl/dx6iLWEuuqSQBkd63jHiQfnR0uEaUYxgbIw202U4Y/+jmB9lcRwY5mopRaqtrV0nDnAqRl9N92+L4e/xAtAzpTuVSLETzfKi3X17nGCjkF+CbdWMfZnf31GTZOIlqEAfl31g7WDo9QSERW/u39e+FCgDam
+ +4BCouUF
+ HNMqZ9RytDsr+oeu2j9UwQGDJI3Rqmib1vZMcjiD83bw6RxgMUFZ05PDsxmXrhXYAiRpz9SbxtNitzUr/sIbHU9Rsd1QF6++mnu5ivevrTaZNQoNFJvAGPwkpwW994v3CjE9cL88QRW+hm3nad+iRaB6IQ9nsep0lLWPvvP4VoWgo3aKNDNy5qDhYoVHmjcm9TE40fHwdotD6RzM5iVMIdFePJyBrsBptJbLfVKTbL79GCsCuHisZn6zT/TIP9pts2dzC5nM4UZ5g0PR/bWEoo+K2YdA4ScAolH4BR3Yq6N44DK0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,106 +114,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce queued_spin_release() as an arch-overridable unlock primitive,
-and make queued_spin_unlock() a generic wrapper around it.
-
 This is a preparatory refactoring for the next commit, which adds
-contended_release tracepoint instrumentation to queued_spin_unlock().
-
-Rename the existing arch-specific queued_spin_unlock() overrides on
-x86 (paravirt) and MIPS to queued_spin_release().
+contended_release tracepoint instrumentation and needs to call the
+unlock from both traced and non-traced paths.
 
 No functional change.
 
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- arch/mips/include/asm/spinlock.h         |  6 +++---
- arch/x86/include/asm/paravirt-spinlock.h |  6 +++---
- include/asm-generic/qspinlock.h          | 15 ++++++++++++---
- 3 files changed, 18 insertions(+), 9 deletions(-)
+ include/asm-generic/qrwlock.h | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/spinlock.h b/arch/mips/include/asm/spinlock.h
-index 6ce2117e49f6..c349162f15eb 100644
---- a/arch/mips/include/asm/spinlock.h
-+++ b/arch/mips/include/asm/spinlock.h
-@@ -13,12 +13,12 @@
- 
- #include <asm-generic/qspinlock_types.h>
- 
--#define	queued_spin_unlock queued_spin_unlock
-+#define	queued_spin_release queued_spin_release
- /**
-- * queued_spin_unlock - release a queued spinlock
-+ * queued_spin_release - release a queued spinlock
-  * @lock : Pointer to queued spinlock structure
-  */
--static inline void queued_spin_unlock(struct qspinlock *lock)
-+static inline void queued_spin_release(struct qspinlock *lock)
- {
- 	/* This could be optimised with ARCH_HAS_MMIOWB */
- 	mmiowb();
-diff --git a/arch/x86/include/asm/paravirt-spinlock.h b/arch/x86/include/asm/paravirt-spinlock.h
-index 7beffcb08ed6..ac75e0736198 100644
---- a/arch/x86/include/asm/paravirt-spinlock.h
-+++ b/arch/x86/include/asm/paravirt-spinlock.h
-@@ -49,9 +49,9 @@ static __always_inline bool pv_vcpu_is_preempted(long cpu)
- 				ALT_NOT(X86_FEATURE_VCPUPREEMPT));
+diff --git a/include/asm-generic/qrwlock.h b/include/asm-generic/qrwlock.h
+index 75b8f4601b28..4b627bafba8b 100644
+--- a/include/asm-generic/qrwlock.h
++++ b/include/asm-generic/qrwlock.h
+@@ -101,16 +101,26 @@ static inline void queued_write_lock(struct qrwlock *lock)
+ 	queued_write_lock_slowpath(lock);
  }
  
--#define queued_spin_unlock queued_spin_unlock
-+#define queued_spin_release queued_spin_release
- /**
-- * queued_spin_unlock - release a queued spinlock
-+ * queued_spin_release - release a queued spinlock
-  * @lock : Pointer to queued spinlock structure
-  *
-  * A smp_store_release() on the least-significant byte.
-@@ -66,7 +66,7 @@ static inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
- 	pv_queued_spin_lock_slowpath(lock, val);
- }
- 
--static inline void queued_spin_unlock(struct qspinlock *lock)
-+static inline void queued_spin_release(struct qspinlock *lock)
- {
- 	kcsan_release();
- 	pv_queued_spin_unlock(lock);
-diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-index bf47cca2c375..df76f34645a0 100644
---- a/include/asm-generic/qspinlock.h
-+++ b/include/asm-generic/qspinlock.h
-@@ -115,12 +115,12 @@ static __always_inline void queued_spin_lock(struct qspinlock *lock)
- }
- #endif
- 
--#ifndef queued_spin_unlock
-+#ifndef queued_spin_release
- /**
-- * queued_spin_unlock - release a queued spinlock
-+ * queued_spin_release - release a queued spinlock
-  * @lock : Pointer to queued spinlock structure
-  */
--static __always_inline void queued_spin_unlock(struct qspinlock *lock)
-+static __always_inline void queued_spin_release(struct qspinlock *lock)
- {
- 	/*
- 	 * unlock() needs release semantics:
-@@ -129,6 +129,15 @@ static __always_inline void queued_spin_unlock(struct qspinlock *lock)
- }
- #endif
- 
-+/**
-+ * queued_spin_unlock - unlock a queued spinlock
-+ * @lock : Pointer to queued spinlock structure
-+ */
-+static __always_inline void queued_spin_unlock(struct qspinlock *lock)
++static __always_inline void __queued_read_unlock(struct qrwlock *lock)
 +{
-+	queued_spin_release(lock);
++	/*
++	 * Atomically decrement the reader count
++	 */
++	(void)atomic_sub_return_release(_QR_BIAS, &lock->cnts);
 +}
 +
- #ifndef virt_spin_lock
- static __always_inline bool virt_spin_lock(struct qspinlock *lock)
+ /**
+  * queued_read_unlock - release read lock of a queued rwlock
+  * @lock : Pointer to queued rwlock structure
+  */
+ static inline void queued_read_unlock(struct qrwlock *lock)
  {
+-	/*
+-	 * Atomically decrement the reader count
+-	 */
+-	(void)atomic_sub_return_release(_QR_BIAS, &lock->cnts);
++	__queued_read_unlock(lock);
++}
++
++static __always_inline void __queued_write_unlock(struct qrwlock *lock)
++{
++	smp_store_release(&lock->wlocked, 0);
+ }
+ 
+ /**
+@@ -119,7 +129,7 @@ static inline void queued_read_unlock(struct qrwlock *lock)
+  */
+ static inline void queued_write_unlock(struct qrwlock *lock)
+ {
+-	smp_store_release(&lock->wlocked, 0);
++	__queued_write_unlock(lock);
+ }
+ 
+ /**
 -- 
 2.52.0
 
