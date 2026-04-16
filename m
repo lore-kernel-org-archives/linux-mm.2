@@ -4,84 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FB11F433E5
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:49:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C688AF433E9
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:49:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 732E36B008A; Thu, 16 Apr 2026 01:49:15 -0400 (EDT)
+	id 33B026B0092; Thu, 16 Apr 2026 01:49:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E3426B008C; Thu, 16 Apr 2026 01:49:15 -0400 (EDT)
+	id 312736B0093; Thu, 16 Apr 2026 01:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D26A6B0092; Thu, 16 Apr 2026 01:49:15 -0400 (EDT)
+	id 24F196B0095; Thu, 16 Apr 2026 01:49:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E2356B008A
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:49:15 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E5B341B8885
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:49:14 +0000 (UTC)
-X-FDA: 84663341028.30.58A64AE
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DEA1816000B
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:49:12 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="h6/qK1xv";
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 140AC6B0092
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:49:19 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE3B3E4085
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:49:18 +0000 (UTC)
+X-FDA: 84663341196.20.5E58BAD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EFAB0C0008
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:49:16 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OhOc0RBf;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776318553;
+	s=arc-20220608; t=1776318557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=daWfBerFBtT6n6dMWAtcr/2jBz+Sptdt/5I1F7o3Ajo=;
-	b=CVCHvt9k2paNyK+ARQC+RuPDasReBosYaJQgM9P8HCA+zNloJnYXjevB96Fw48JnPeGNiz
-	cln8Xhh/kqG+olHPUwkl4vLu9zfMtsqM8ZSlFgMwT2yET9xSkOMzgx3RMIlsrETwo5hj/a
-	PMzbd1vkN1AYpodeyUoHhku2+TB36ro=
+	bh=ZoMYUFFqJX10VRRqCz0hZilNcV0YTcs60QdMGfYawHs=;
+	b=xe2+DfcUmkXq1N74HyxqVjzH2rLk0RoyEneFnIwoklln8nXCJz4HidGYW8jM4TO1616pvp
+	ROJnBTnn0qBVntoj34KzN25arEUIBh407N3m4LTSG9zZzYbBzqkAclsTYXFe9crjqz1MJK
+	iqIiSJWPeK2gYLGc92HJd1zpl+QF2q8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="h6/qK1xv";
-	spf=pass (imf08.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776318553; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OhOc0RBf;
+	dmarc=none;
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776318557; a=rsa-sha256;
 	cv=none;
-	b=GsWVkWqAkVp6sGZrvlTN9O046e+66F8FOVvULY1riQQBKxRuYDUr0ZynWCWNVhv9JyVuhF
-	YJd6W+mpS4q4S8dEdM7quOwlYXalC6zB1sZ9gfiKn2FFrxUIYaqgzp3qhmgGYjSHpw49hj
-	fLhKL9/Xi0zV2lF9hrPkVQcyMiGae/4=
-Date: Thu, 16 Apr 2026 13:49:01 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776318550;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=daWfBerFBtT6n6dMWAtcr/2jBz+Sptdt/5I1F7o3Ajo=;
-	b=h6/qK1xvi2S4mvTdtK8i52FkkUAQxLQouCQjmen+LKngtBUEWtn0zWozRuOh5d+iNtFYMs
-	Uj/ZE3s5glWlmk4u8JCLe/fy7q/y+4NsjJE8lKpPSZjPU5Oe8/TQ3GHu8zgyO1Z5uY7QxX
-	bkD9RY7nZ5T2XwfGIEtPtLt1GXAU4GM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Cc: vbabka@kernel.org, harry@kernel.org, akpm@linux-foundation.org, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.orgg
-Subject: Re: [RFC PATCH] slub: spill refill leftover objects into percpu
- sheaves
-Message-ID: <wamsxmuhcbr6hj5y53bheub4cmkq7pd3psntl66o74k4bmtygi@qhyse67jvr3f>
-References: <20260410112202.142597-1-hao.li@linux.dev>
- <87a4v47xk5.fsf@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a4v47xk5.fsf@intel.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 7445nc4n9twcceu8i1qf4oyx8w5mjc6t
-X-Rspamd-Queue-Id: DEA1816000B
+	b=g/O0QgpQQY3WoATXQgf0H7KjPgPnCCyriVeakXklmhSORCmMq6j8TXjk72IfqmsqsUAcEL
+	W+LZ9D/RMtljT/cs8JGoja8s/tYUdulafw0wNzTvbuCHBm+JsRRrp4m4KAkqzbFJLYtvep
+	FHtKqMV+wGwVQJVOA+j+ASXPVZtkBJE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 963FE40422;
+	Thu, 16 Apr 2026 05:49:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3301BC2BCB3;
+	Thu, 16 Apr 2026 05:49:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776318555;
+	bh=TjD4DVp4r0NsP/6idZk8ijE+d8yOAvrj2zlcjV2TT3A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OhOc0RBfhb/HTKW43l7z4by2Kia7EZtHFzctGhb5/mNzpBYKgx/vsLEmhQ36vhGkV
+	 /E7d30MqpvYXmyRJtMV2z8YOQJSJe2YKuv+IAX6o66Tjc9pv6+B9cT0cM/EhzJEkeD
+	 ysr7OJsYHBTvbe44Hk24DB/zc42a3FyDT7Wn8amk=
+Date: Wed, 15 Apr 2026 22:49:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>, <linux-mm@kvack.org>
+Subject: Re: [PATCH] MAINTAINERS: Add page cache reviewer
+Message-Id: <20260415224911.444a1e8cf6d8bc31bc4880f9@linux-foundation.org>
+In-Reply-To: <20260415174039.13016-2-jack@suse.cz>
+References: <20260415174039.13016-2-jack@suse.cz>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776318552-125072
-X-HE-Meta: U2FsdGVkX1+Jre3xt3waJ3hvxLVn7w0aJasAMuavlu38is0O+M+dXIeO8esMry7IbZjpfpP8DBLNS0ejt+OcGVxpQz5dMS6eNChPavSHAbnuYOQPhRaymY7JNo8g18PkCXRFhUPequsok7qFtvNt52oYw+oX4briU0jWak15so5cyLxMW+utR83uMORq5N4EPVA5Nq4pGLfATOVVj+sv4g742w7LuMSNVyTmJZhue+MR7hqv1OfDT/5y+mDBx+V/0pJAd68fG3ChwUbV0QkL9pg43DY0ejkfKwLGXm5nKGQZ6CYnnnqhEVNUglppL2Huim9LISZXJG6cP9ksWZvZxJ/fLuP+qQ3VXtI8uA6E9D59RKaRKEAwU5N4L3MGXn+J6cIaUqoy4Kics2IR96ElQEyNqALquaqlZNBR1QfA3VMfNl8TIXfywdNWzKcKuTx5V4uOWGiPR+xE4859wWbVDgYZdDXxG8P04Qk+0/MHuVRc5IbVVDfelFCE2gy77s7lb7dbkYQff+Ox40dQVw1KgUNJYr8n8BMkN/q8ExLn4VTq2TrqmLT2n7MtkXuAFSCWyTyubadT0I1IGi+S/0zkoVwImk87ORxwXOnZVKKdfiXzhn+//OAHljikOn2oU0AbUlm982BUlLrLXsfokeyYOnzXlluj41Z8p472c1fcwkRrVdaE25+91zjZOYeIoIPIo0TLcO3E/yvWe2B5H3IQssO0QdAarRmGggTtDrztGrCry604bdNG8/kR0EDhH+G45ymMvIMFMERZER+rgtffxke3wn+MXfK2zudK98NCSo95D+ve2XipBCYUid/B5qP+QvC9WIm71JTJf99kKElDGnKPO3RAK4sxyVZ6ctSGGf1c3fPpOIWy6hSDi1305NVsxna9TYE4WyuF4lM+ze0NEgIIup0iVuofdQZlbin9JSHe8s4ZxlshpFKTbJNJjb7peUCGrh3kLqRxJoSnSZc
- D5E/CKSA
- sK2pyfFqYemRkUYpc37XVcneK42K1VE+SRTeUgFo5vEeETk8Yqou4mzjk8bqgaEXj/Vbr2fzI7TJ64J+sBPpK4fyuuFdAyu3gBvCQGY1nRJUHE/1ph3F9Yt9mPjWFGAFc744coRzf6BBc55ihFIvsF6jQzSFMnbWa8OwknDLdaxgK286Ut0mMr0wtSwwLQGZIcOJz5XKtjs0KiWG3Bkqugpw2r+/fhbXv01BS
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: EFAB0C0008
+X-Stat-Signature: 5zptfroqf4a7q5paywzz8xxj1zose8j1
+X-HE-Tag: 1776318556-28764
+X-HE-Meta: U2FsdGVkX19DMTNDYcgtgm57e8LnHHpYmn4OB21MF0bPDrfv9MhRxrUSzPtISNM9sLZ0p6aJdojORlCbRRbZItRNhdD4LXiScYyTZ+ykHSRrP3QgT9sW+oGgfn6UADcS72Q7sGt7arcK3xVmDlOTLTXfppoA56fQHFZLqF3kS+1e5pf+ymdRp2Wfi6J8Y2lY7d9bJAGYRJqwwSkaUKCUj3wWHEi1UVxLokPulzRoYGfInEPhIrPAQmBu5N9TthRHCoXbp4fIXkJvGBztLhT7zIVC/1FOSRAUYYB0tqFQbCNNipOF0yu18Lvtjxx4eE/+0l3qxiABjsvdDEn8wpw9MXtB49lM85QJlDmD/dJI0V3nQ10jSVgu6GtXRPOV9F2EkFGLaar1NgcsOZ2laAKteDbPfFFzv8D1iKJ7NU4mx4jubDihILIUehI1pkyA0LOe6ZyOVNOLqU0Yt1bjntmw3ewo9zWEvriD615JIJGYcEnZXUQ8B5NQJxm1ERVh8DCUqDyePmPfkCatDu4K9vmsc1+xeKab+a83+DpM5ptgNqvG4zgTtccQ/byXVb9U0ttmtmhYzNgUvv7sHRmf3KnDKXrAP8m3wtyPyq3BckQTwEzklmS/ZK3fgi0TPA6twAb+m/fDRxEdA612s2a6oefsxSTAtWBF9vCHDshmSGK4p+Jy9pCT8dfzJanoczZrCl4HZ1fKJk2YOPLOm5dWeSrZGF15fnONDerfhz7xtD5kRzZ2pf6qLqIOLdIfTHPLHK/lq0lMuUSNvAmwSRznPmAWPaS8KTzLrR8mkwrpgvqEzakv2IcIpOP1vbVjNPFOOyh7StV58zFWNBMnJQRzG5of+3yz8dcLUPsfhR72PSMviNqcXteJHUU4ZnZDyT74Am6QtflXNieABR0bloWXhm9zxAz1T72x1SoQ7zqvt30dqc1l+eOHawVhkJc/jFOik2HhRK3Kuxiz4LHAMbP3tlS
+ QuiKGzuq
+ Lr8A29rl4Bc28fsHJfoK/+6Kyo51wJR8l/slOa2wlGwvC9iIQtAkimmNZ/A2fPnSrmLaMRpR/544s5oZI0kdQuZDLVpOEKqE80/VZvaM+rZaOY4HO6EC8OJ1MEKpMgEALfgMuv3X12RkjPWPGcExE8xkUdiiSmP2MxrRWX+1jcP0Sm/d0bmAvyVW+idPP/R5R5Ff/6yjAnpPuYTNzRPdz0lSHKbhADrDdr9A+HbUHP4OjNOZ7k6Ku/P/rNIDLKU89Kd5iUHH5hdJhoEE42vqTFeLWu+JboQ9JCN7R8afqAC8t/wrZhOaN2rhMUJgtGnjhtOL/NZfuL1R8LFupWzipkVW9UctS8sCwsrRo6W7cuDVO5sgSx0wkwASW8ZEN2WMAuPBTyDRfCyrmHeI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,91 +88,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 01:55:54PM -0700, Vinicius Costa Gomes wrote:
-> Hao Li <hao.li@linux.dev> writes:
-> 
-> > When performing objects refill, we tend to optimistically assume that
-> > there will be more allocation requests coming next; this is the
-> > fundamental assumption behind this optimization.
-> >
-> > When __refill_objects_node() isolates a partial slab and satisfies a
-> > bulk allocation from its freelist, the slab can still have a small tail
-> > of free objects left over. Today those objects are freed back to the
-> > slab immediately.
-> >
-> > If the leftover tail is local and small enough to fit, keep it in the
-> > current CPU's sheaves instead. This avoids pushing those objects back
-> > through the __slab_free slowpath.
-> >
-> > Add a helper to obtain both the freelist and its free-object count, and
-> > then spill the remaining objects into a percpu sheaf when:
-> > - the tail fits in a sheaf
-> > - the slab is local to the current CPU
-> > - the slab is not pfmemalloc
-> > - the target sheaf has enough free space
-> >
-> > Otherwise keep the existing fallback and free the tail back to the slab.
-> >
-> > Also add a SHEAF_SPILL stat so the new path can be observed in SLUB
-> > stats.
-> >
-> > On the mmap2 case in the will-it-scale benchmark suite, this patch can
-> > improve performance by about 2~5%.
-> >
-> > Signed-off-by: Hao Li <hao.li@linux.dev>
-> > ---
-> >
-> > This patch is an exploratory attempt to address the leftover objects and
-> > partial slab issues in the refill path, and it is marked as RFC to warmly
-> > welcome any feedback, suggestions, and discussion!
-> >
-> 
-> I was also looking at these regressions, but I went from a different
-> direction, and ended up with 3 patches:
-> 
-> 1. the regressions showed a lot of increase in the cache misses,
->    which gave me the idea that a cache would help (and it seemed to help)
-> 
-> 2. Allowing smaller refills (but potentially more frequent);
-> 
-> 3. A cute (but with small impact) use of prefetch();
+On Wed, 15 Apr 2026 19:40:40 +0200 Jan Kara <jack@suse.cz> wrote:
+
+> Add myself as a page cache reviewer since I tend to review changes in
+> these areas anyway.
 > 
 
-Great!
-Thanks for sharing those infos!
+Cool, thanks.
 
-> The numbers are here (the commentary from the bot are very hit or miss,
-> so don't pay too much attention to them):
-> 
-> https://github.com/vcgomes/linux/commit/c898c39ee8def5252942281353eda6acdd83d4ea
-> 
-> I am re-running the tests against a more recent tree, but if you
-> want to take a look:
-> 
-> https://github.com/vcgomes/linux/tree/mm-sheaves-regression-timerfd
-> 
-> Also, if you feel it's useful, I can send a RFC.
+And let's add this guy:
 
+--- a/MAINTAINERS~maintainers-add-page-cache-reviewer-fix
++++ a/MAINTAINERS
+@@ -19966,6 +19966,7 @@ PAGE CACHE
+ M:	Matthew Wilcox (Oracle) <willy@infradead.org>
+ R:	Jan Kara <jack@suse.cz>
+ L:	linux-fsdevel@vger.kernel.org
++L:	linux-mm@kvack.org
+ S:	Supported
+ T:	git git://git.infradead.org/users/willy/pagecache.git
+ F:	Documentation/filesystems/locking.rst
+_
 
-I also tried stashing leftover objects into the PCS before, but at the time I
-observed that this could quickly drain the node partial list, which then led to
-slab alloc/free churn, and the end result was a performance regression. So I
-gave up this direction :/
-
-I took a quick look at the code and performance report in your GitHub repo, and
-the performance gains you showed there are really interesting to me!
-I'm going to try testing it on my own machine as well.
-
-Also, the idea of a warm_slab looks very interesting. I had previously thought
-about something along similar lines, except that I was considering stashing
-leftover untouched slabs at the per-CPU level. But that would effectively bring
-back the old stale CPU partial list in another form, so I ended up dropping
-that direction. But you direction is really interesting!
-
-I'd be very happy to see a new approach come out of this. If it's convenient
-for you, I'd love to see an RFC. Thanks!
-
--- 
-Thanks,
-Hao
 
