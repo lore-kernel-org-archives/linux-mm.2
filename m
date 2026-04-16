@@ -4,140 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86262F8A145
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 08:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05182F8A145
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 08:55:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E88886B008C; Thu, 16 Apr 2026 04:53:21 -0400 (EDT)
+	id 4A1FC6B0005; Thu, 16 Apr 2026 04:55:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5FD76B0092; Thu, 16 Apr 2026 04:53:21 -0400 (EDT)
+	id 452036B008A; Thu, 16 Apr 2026 04:55:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8DF26B0093; Thu, 16 Apr 2026 04:53:21 -0400 (EDT)
+	id 319F06B008C; Thu, 16 Apr 2026 04:55:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C8BE36B008C
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:53:21 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 737D813B9A4
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:53:21 +0000 (UTC)
-X-FDA: 84663805002.04.AC426D5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 29EC44000F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:53:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=LmFNq4kC;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf01.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776329599; a=rsa-sha256;
-	cv=none;
-	b=Z6CE7NAaYd4UROd6+1WNOsvBBtPUExgUTw3y0v0vUjrNlfOwRkTopePSZORQ4UPRcEzz89
-	oUuQ6neB2LYZZNW/aXOrZpC5xVSkljn+SWJQY9guvRIpnj78fldi8n8TnmFLSS2dgcImbw
-	yHgjOnK9HK1pSw0Gr0Xf8nQfc/kuWjc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=LmFNq4kC;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf01.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B8C86B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:55:55 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A2D2D140798
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:55:54 +0000 (UTC)
+X-FDA: 84663811428.08.876817C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C9793A0006
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:55:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="M/EWIteG";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776329599;
+	s=arc-20220608; t=1776329753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S+Rbl+X0eKNTG8cqOejGKkOulH0HGsQZs6yPGed3wJ4=;
-	b=ZzZbIvoH6YT9MPzS2gTmpZd7xsMqYQgFF5MKEx9b9TC5G6w9z9DVikEyX1zIuy+Wuo5SnD
-	BmYOFQdhb5YNVMbM3HankS3iYt5WLKuzq8ImRBdHKBK5QX3UkgPhyv3kF12zD0Z86Ds471
-	4LndCmPklZKO5ueIQuf+MEsS2dL9NHY=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G3DUVY435815;
-	Thu, 16 Apr 2026 08:53:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=S+Rbl+X0eKNTG8cqOejGKkOulH0HGs
-	QZs6yPGed3wJ4=; b=LmFNq4kCvIjsmA6zjpw01HNzk1mCNOZLxcdT6NngxrLmhh
-	tQAWc8dQSrupZbjR4xKteSoZIgzb9qt63IxfAKzW8JuiroTtcbjOXkvI33RAeLDI
-	5UAyIZtkXRZf8q5IobZ8SSLxMGkQEyomEfYFxWSkmS0FezxRLF2VyY+b/zzcBfz2
-	mMwngpo65vpUuiXNFRO2YQxJu3pvNNEHReYB3pNhWzVLDXlInDRU0wYNRVRhU3Uh
-	2TPBXFXVlE4G29FTXy2CforiIbf3ylIyDutsoiDuw/w/KIi37BOdEQMpQZ9xDL4Z
-	3C9YnJBEs/0Fdprl8VqmP/jBn4xlJG5yizCW6IZQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89kbq56-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 08:53:13 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63G83RSO003253;
-	Thu, 16 Apr 2026 08:53:12 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4djbh93qyd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 08:53:12 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63G8r9wZ36831524
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Apr 2026 08:53:09 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4819B20043;
-	Thu, 16 Apr 2026 08:53:09 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C9E62004B;
-	Thu, 16 Apr 2026 08:53:08 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.42.253])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 16 Apr 2026 08:53:08 +0000 (GMT)
-Date: Thu, 16 Apr 2026 10:53:07 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Ryan Roberts <Ryan.Roberts@arm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] mm/pgtable: Fix bogus comment to
- clear_not_present_full_ptes()
-Message-ID: <65f893a0-bb47-41e3-9251-9e94c9b5c99a-agordeev@linux.ibm.com>
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <fecfcf70436e267968c1c3b6908e51fe49fd9009.1776264097.git.agordeev@linux.ibm.com>
- <844d4076-a250-486e-aa16-fe5149c9d508@kernel.org>
+	bh=cOD5tX59IXhHCZv1zWXdKyfw26oghRJfbQqFR6LoD44=;
+	b=fZxD+qZ4VWEsYJRrBzsgA2ZFLw4RODxQD47DeLvgS8SzOkAZMrvIKMvQSx0mlyXNWVF9Vh
+	Wg4xnlb1u/+PUNmuoJQt63edNCQUfJYX260mJqA2bjuc69dz702UxqeAwp3adjJMXqfPb1
+	phyZOjBrrBdAmKw7FoZJ8EVX3ThJ9aQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="M/EWIteG";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776329753; a=rsa-sha256;
+	cv=none;
+	b=EpkyFaI/LKg/ZJI9A955B0PV8ixGuwKk0G5y0qskvtiiFiiPevkiWHJTSCMC2nxhk4Zrgj
+	IryPhHGSWlpyjkQiL1sR4PfAxiM3fLpXS4zh6AP2Z4EjqCYO70tWUCOtL+DkEAW0tJ+zSJ
+	KKfZc2/hWMWwKvLGfbLP+fdxZuLPb/o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D28A443B04;
+	Thu, 16 Apr 2026 08:55:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE49C2BCAF;
+	Thu, 16 Apr 2026 08:55:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776329751;
+	bh=GSP0xdpLtfh+ShVRtbdWDherB8PF5rGv+/SkLctS+dw=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=M/EWIteGqXP5eb7n5mzxBJhl/Ai0b73YCo5rfNnCY03nyTfrxuAeTUTM5pBSEVsT7
+	 CfcufnXOlw2FSLEY9VgiuIPW6Y99MEM86HFy70QPFYCSq4CV9qAInEmAGf+Gf2cd3R
+	 MgJ1NNoiESY7ko1uVxE615YSbTykElKNz4Zz1bN22Ur7DuR80nKcUu2C3/5987JYfm
+	 dHABSGAxTzsPURXVZJ/88oe1N3Mnv28uJzBQwBQrzKwFc8MRsNymvEgFE7EVBN6Ih4
+	 lE84TpbkaP1EPcM9H+aWSN8C+pAKXPkCwqh40Z1DN7a/azpIBJXr1hVMXUzkDXOeq2
+	 ossBLrJ7WQBJg==
+Message-ID: <aa69f39a-4800-45fa-a0a5-002152f74b1a@kernel.org>
+Date: Thu, 16 Apr 2026 10:55:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <844d4076-a250-486e-aa16-fe5149c9d508@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: knDDruZNWEP89G6YdCKHxfnw_NQeOL_Y
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDA4MiBTYWx0ZWRfX7UdMxaHWCy+5
- rd5H87AheMJJIirSanN6C0vVyQMSA9aBWK+oZSXQm3UH5PCbrkJrIISBO+aX1U/ksZFibDW9bu3
- 6foM24tTIFai2D5BF14DMdB7ZiTYZ96gzU2ub+upi9Yxxb93Ns1u0TFrpN2jW1EIS43sMhwvyri
- AriVOUOdAEEccCvYXNTw/9bf/d5sPvD9pe31Ao/sop23EgKTL4dxfs7spFApAj7y69dnw7UrNhL
- iK1kLdGihLI9ZApenG1AbfuPlWK9prgO4azwyyuJpcfC+C0GEy3PGi4mF2lW23mm94oeWIL02p+
- eAFBki1V7pMJ8YByUtOxGDJ81LRmQ7myuJBAjJqiKAa41tESK37DbvA2fMmWbm69lzZtLSKE1oZ
- 9zXwsk2aHOSxz886OcpJQu0OX4A2hCnSp7kuyNPmUbKfdCdO57QStYjxBnXZwcqv9E5gyYcLAFI
- fQ27qbEk1P5Hvqyi6sw==
-X-Proofpoint-ORIG-GUID: knDDruZNWEP89G6YdCKHxfnw_NQeOL_Y
-X-Authority-Analysis: v=2.4 cv=W60IkxWk c=1 sm=1 tr=0 ts=69e0a379 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=m-HIIqDQ52j1SHMWbkUA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-16_02,2026-04-13_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160082
-X-Rspamd-Queue-Id: 29EC44000F
-X-Rspamd-Server: rspam12
-X-Stat-Signature: h9midm5hh4zyxnomuiowiwfwtisnyr18
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] mm: skip KASAN tagging for page-allocated page
+ tables
+To: Muhammad Usama Anjum <usama.anjum@arm.com>, Arnd Bergmann
+ <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Andrey Konovalov <andreyknvl@gmail.com>,
+ Marco Elver <elver@google.com>, Vincenzo Frascino
+ <vincenzo.frascino@arm.com>, Peter Collingbourne <pcc@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ryan.Roberts@arm.com, david.hildenbrand@arm.com
+References: <20260324132631.482520-1-usama.anjum@arm.com>
+ <20260324132631.482520-4-usama.anjum@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260324132631.482520-4-usama.anjum@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C9793A0006
+X-Stat-Signature: ztp5mikcsbxe1n5e6paaoqfg6iay5i7u
 X-Rspam-User: 
-X-HE-Tag: 1776329598-694928
-X-HE-Meta: U2FsdGVkX1/8kn5XI7Vz3BPuH/HERjidHSNssc4QZHzFySHR1Sf/6jlKcgJOgugCWD/Up7s1xFnZdcDgY5phhU/ljpCfOeB5NSxUGaQmATAfDf4JRIDCBxZ0N0uz3dnJP1J+wEJTlAsjK+OmTc9RQqxFQzHibhR22eKsnibwPK9Pm9/oIGeXU3FbT9pxYbpAfTAt2Yv4fN7FkMpkLtSHUOa2Py8YRx7oVeSeVakcCgs2erodQMfTJcoVQrTeM9VCQuF3hxIR0Kj+I4sCqFz68Wws9rVulIlNrrlHDCGvTsM+4td1AJm3zpZ9g25dN5fQCbEoUi6x52c031GqsZ6s4ODGGhwmLNZ1nZUGoSSUaWkdP/wDt/TNFeNmvjbvwr6XgUv9eIpsOJc48Zax7BpwjZIizZ26yReDyIu5veDnW12kod3K1fsKi58QYa6OU2Ljzod8y4+00XSvCdwD0qJRCgrDGzsU5HfY2CmaZLVGtjuhZeIYABZos/pnHGovr2aHdRcctCuyRxdir0fLcUep3EKP3WWc1Npc+tEcuTw7XwBAtPOfnYoWyf8sNb1cPJMtBiZCLdRB+R7kiAJsdhI+nULYHVXWd5ky9GFwu0Prz61ZxV4JWsBPWVBMo2WI1Hl5K/HP5jMn6T+pGzaBMiFqbBzMQ6Ypjky4k15nhGPZ3uw6Zl+1IBkHrWSQKVGaktRfoBU6sWIIPKUxPxbgpxCmj6FaNflZSFCVCDr6sCVxzbp1s3VJalbCkl8JxG+hYNzjkRDmedCqsxFKXH9tvmoOyx4A8Oq2kqXUzqmkc6dE1A1PhGSqHDw26nykyt+pKpoER4GdBhIVKa6vorwGF68g47St9qCDGktSXoSDJDIXQQdQJjyo12JHOZM4i3p6/g7ra3LeFsSq6eodgd22gxWHGRugiO63fTZmbGJgJskossZgM4ypJHQ6R3OkVbyhSrC5xkuX0UP8hLTzGS9lrIh
- iUz0e6Ty
- oh0H96glkjzO2Twu3kqXJwCM4ApVz2wGcLImkrHpXgIRnoPpxCI93r2BcciBWY6UQkBBSbFDqjLqgg52d4gOh9oN/zpkBJ8JCRqhUCa6fxa39wf2ppyuhpJDjCsSzN2RuvJZsK2bmEqiWte2KsBLnkBs1Lj3L7fHNoTvpngUoowedPtY6vcUelOYpS1u00pZUFJB65bkFopxg/zgc7Vlx++uM7K6jzJgR/pxPvE2u0ky7CkDTbaFpOzP8zYrZKwRWLTgmDA/FfxIvSmraHs/CAXrxsOgLdZbZNyIZTKa+XPq7NaAIvOzg4tmmj4cDWeAkufkv3YNmIvGYodDumNRhXiw2r27hz5PmxfSLH6rl13F3UsI=
+X-HE-Tag: 1776329752-688853
+X-HE-Meta: U2FsdGVkX1/6auhavBtt1hglEvzzRDrqcLi2aeVi4/J49i7unOmhPbGP9XyBQb9Ic43NfxLNIzM047FZMhjoqW1hcRNT42BIOwQxrm0z24svUrR3IP8xVtJa7YJ9WCALW/FTO3tvzEaLMqgMMADW0LcVt/0YlnzVc5stRfSojI443h7Kh/4RbsnuBZnkUGrpezfV0Oa80hAUPP+NiuCj8ly3VW8hAzhDan+wuHUmAArv/x8+r1v+n3cDIp6jAqQC0onDN8kxjOSDITjFYc2sCVIZg1FSctJjVoGqIRbJhn4Uqd9d4mZ+7NYl43uhqSvQx0GK6Si0Wpiec9d209G2qrZ2EohEyNBSBc0PQhbbUn1iFlPS9xlJrkfm3hWdn4jW+bpaxkogUiOFsqvJml+y/L2qBj+jquqMZEg/JGUKIAY2TK2rJZE+xwTP9SAk9LBlgtbDTkobJnJe95M7Gx9uZxE6wP9UQzRvKpfIQb2qFooxNgd3/tXrW+mu9M6bbxGLlYcTIUJETn/HlFHldFPbFZ+cbUcllKw/aj4yC5+2xMwoAhofZXfzP6CwbujC+tlIyZK35wx7jaHHRuYrNKLeV4fSGXxUyQaNh34I+aUcxjtYamdFaVUrz4Zq2opUTUlBYL2ps8yyA/RB/rn+dSsUM1HdszGvyf7suhCqiyjJ3D0zzof1yeuLQN2PObYSxWAnOFCMW5DMZlkSVVHs4ePNnVmf3NjX7d6N4jcQmkapm+OT2a/gQuiHf2ejPHzYUM7RPLsvIgrkUMqfH898+Zj6dmkKaQGf5o0WCobXHW7yw/NfXhtP90spjFuwQFQWjHtpvIz69ZAfq/MyBvVjlw3F5Ml3YMONfHyH1qxOX9DbVPyzci5Nt2ohry0w38EJ+2mk3LXKpuhoUkmw1i+9wgvgAaqHTwKS71LU03uQZ4xJOiyIYaWgfBm+zpyRSgPktCi4jwlXdIMEGP7VztcVdPE
+ mE4iIkVJ
+ SAWbQCO1m2N63hX4fUSkGcNyfLuqyrAOTb7RvEdlUYg8ofuIYPA+GPke30GqHeBl/c5g6LLq9mXa5S5rwWHWV/SM+8qWZCmnF0MMVzIjVzFXAVS/nu4kOtSsDLy2m9cQQpOD0FC+/ao+ggalBKnQH5cv5HCke+zCId+CLMk4j0AM+rjKjUD07C9/5gokkR0wY5HcDzmg2zyCXcBNqOC8bSGuf5NfolKHdM+O+RJ3XdDEn2JoPcOJ1rI3hywrJOzDToNybBEDg9D9jIYK68WtGp8vMq/oAC+e5sgwcbp6s6zQF44DJjSBDZk0H5tu+icFJ6U/oi29kK3PZVlKdLIUPjkVUFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,10 +154,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 09:58:47AM +0200, David Hildenbrand (Arm) wrote:
-> Talking about pages with non-present entries does not make sense. So both changes
-> are wrong. Can you find something better and send that out separately?
-> I don't think this is required for your series, right?
+On 3/24/26 14:26, Muhammad Usama Anjum wrote:
+> Page tables are always accessed via the linear mapping with a match-all
+> tag, so HW-tag KASAN never checks them. For page-allocated tables (PTEs
+> and PGDs etc), avoid the tag setup and poisoning overhead by using
+> __GFP_SKIP_KASAN. SLUB-backed page tables are unchanged for now. (They
+> aren't widely used and require more SLUB related skip logic. Leave it
+> later.)
+> 
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+> ---
+> Changes since v1:
+> - Update description to mention SLUB-backed page tables are unchanged
+> ---
+>  include/asm-generic/pgalloc.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
+> index 57137d3ac1592..051aa1331051c 100644
+> --- a/include/asm-generic/pgalloc.h
+> +++ b/include/asm-generic/pgalloc.h
+> @@ -4,7 +4,7 @@
+>  
+>  #ifdef CONFIG_MMU
+>  
+> -#define GFP_PGTABLE_KERNEL	(GFP_KERNEL | __GFP_ZERO)
+> +#define GFP_PGTABLE_KERNEL	(GFP_KERNEL | __GFP_ZERO | __GFP_SKIP_KASAN)
+>  #define GFP_PGTABLE_USER	(GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
 
-Right.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
