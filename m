@@ -4,128 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CDF1F8A16C
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 12:12:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90B39F8A16D
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 12:25:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B6F36B0005; Thu, 16 Apr 2026 08:12:53 -0400 (EDT)
+	id BF6A16B0005; Thu, 16 Apr 2026 08:25:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 468176B0089; Thu, 16 Apr 2026 08:12:53 -0400 (EDT)
+	id BCE036B0089; Thu, 16 Apr 2026 08:25:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 356F76B008A; Thu, 16 Apr 2026 08:12:53 -0400 (EDT)
+	id ABD826B008A; Thu, 16 Apr 2026 08:25:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FFAE6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:12:53 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A5EC6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:25:21 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DCCEBB77F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:12:52 +0000 (UTC)
-X-FDA: 84664307784.01.D1AE24A
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2583F40015
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:12:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=do1uEFxp;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.219.43 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776341570;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2ED7DBB77F
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:25:21 +0000 (UTC)
+X-FDA: 84664339242.01.9EC5AE6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6FBFF20011
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 12:25:19 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GQGv29sX;
+	spf=pass (imf13.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776342319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xs4hGlZiJqAV9QCGrkSslLomiSfE5gcr4xqzLhglwS4=;
-	b=BGixrj7cvatJ+DyzGk1sMp/1WFXHbLuaNrF8wiXyiWJ4yOYpROzCm90XcsxDJ0SP5u3Y5Z
-	FY58+7Y9rW75z9cWcZPwuLY72VWGYaCTamI879PdM2JHYA+PkV5J2BHg+XtCyp5xfhvMe3
-	z7secTs+RSqye/yeOSkNVXtxw8mImog=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776341570; a=rsa-sha256;
-	cv=pass;
-	b=blCJfVFzOK5ovs5z79yGnMtIuW8eOEagJsCV32xe2FoO072nxbbIlbX3t2wRE3UtV4MZOq
-	PGFGvVGULJO8lvvm+k2qU8dm8aJrHRa5G/dsd11Uo68RNF3L8CNoQCFaDQ1MMC0kigX2PR
-	We5kJgZGLwCEGJWkkIS16hccGai3ow8=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=szeredi.hu header.s=google header.b=do1uEFxp;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of miklos@szeredi.hu designates 209.85.219.43 as permitted sender) smtp.mailfrom=miklos@szeredi.hu;
-	dmarc=pass (policy=quarantine) header.from=szeredi.hu
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8a016799d2cso85057866d6.1
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:12:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776341569; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CcGnM6dY0gIgDBy5V6fyUWDHEj4xNypZmQraUsyOTceCPBt2BsH33muTDK/nsbq1cJ
-         AALWhxEHzRwvx86xVdt3MqBMc9cTsTocm522umKfx1NBQb9htIQcLcQnCHVhpXe1QAZI
-         YAONHmFEAD9nQT8L61v9BxhywHj5LT0BLaF5o4L5WwukSQnPfQ/h+iZLfripZPt2e6i7
-         5c6dT4bE3ZPuaqGU33zYQI6Qu4wr8cq8PWZwFhm75LPSxgAknl0bslShp85OyDwN6Vu+
-         UdA0mtNltldUCV1xTVlGqcOcTf8DTKjzPsrx6SoYOJiDp/dfCDTLNfo9nMP9LBSQwoK6
-         ryrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=xs4hGlZiJqAV9QCGrkSslLomiSfE5gcr4xqzLhglwS4=;
-        fh=Tr+yDhr4X3nfVZoREwn3gm1dB66/BUqH+Qg2Qk6RamI=;
-        b=lySiErLQpK4cNq+UXUaMKqlOx6LwHCP+8zUvzZmH8j+b6bly1Lrao4YD7VqwkOsCa7
-         fnsnFqI1FCeu348Aa2vJeQCbpos8tE2OombGbMgzbVVN21EfQj84KLirL45jKQAHeroU
-         XWbPXd2/AUSdWo4OqKSadmeELY0mcz//XynKi/5dkXsU2HuEN1O2Fj8gLLxpGXHiuHbF
-         Xun9uH0d+gjd5MLxc7/ZGOTpS1Cdm3wVzeLZeWJ1vJOWiTHygUBSuDmo54fC999kaXMo
-         3kL3FRipuYUaxN5L6maOnqDUKfiN+uSczfy9KTlFXrld6b7BxLHQNw/GxPVzHV0WcWZd
-         1RKA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1776341569; x=1776946369; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xs4hGlZiJqAV9QCGrkSslLomiSfE5gcr4xqzLhglwS4=;
-        b=do1uEFxpqUs7pgKiI3ee0NX7A+CXZzVNLyuEa536Zc904FaSE7feSFOTE2obxQ7tc+
-         fHgmUEdFzFm/pgCu+39d3txrBY0MPeazUyHnlSvkJaDkQYXeEqf9+o7pi7rBfdYQRoN/
-         OHDa0sJrVRKBcx9PRIm2/hS6RO97FIKEnuS3I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776341569; x=1776946369;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xs4hGlZiJqAV9QCGrkSslLomiSfE5gcr4xqzLhglwS4=;
-        b=rvO+I79wX2fNrLWIaB5ccJMgaetbIbOyzEobN5EkiPPezx+Uja6Duvb+mDrpj6tKPf
-         Z9P9fFfaoWsd4+vSEG/dEm+knyCmv1/lp9cJuNssbt6rysrx7hhz48+rV7ZN9woQ9ngv
-         R0N7xQHd4dyk+O/c2uG9zUdclWnc56b7IKvcl9EuSmkZQzXXuuKHk+NHse5xQeKAhH9B
-         rVw+Ltzg3CXDySwpwwpy0jctn3fIR8M216eqdpemuDwcQrogY6HQY4kZgCfE0ooEA5yD
-         vuqhHls3KQ5lCeYtClqgA1qXsi9SIBUxZF4mME/HvfvBmJ5sNz3qTsypJDHxKHNGU6df
-         ObYg==
-X-Forwarded-Encrypted: i=1; AFNElJ97TOVja7cSQhwoFmty8nmHzJk8vyjtvjIXxzCZM31DL71KuMiLHUl6fkyPlecqiID3W28i4g4m+Q==@kvack.org
-X-Gm-Message-State: AOJu0YwkEwxVxzXv28qsl9TTbPEfBCRQO7qUR3/L4w03mP7uNaoQzVBu
-	I4jNNFu2wRXmAVyh8SgIR39WLhpFt/zt2BXnNI2fM+3KH+uyQlHga1jml6hsAn68ClV95/LKl77
-	gunNsxa+zEGmO1FH3yWlYBnbNX8xxzBp3lPJDZgzuHg==
-X-Gm-Gg: AeBDieunZzGwSxebEENq7ViOqPLMnPYPbGIa5B6qKydFb3Z2W/vAbhMP+WSa9HDw1OG
-	6yxkHUiUR3Ghjpkr/qVxyFWKIRpepB8mNCaDV4n9/mh93/Bic60ohH8JmnAnuuup02uk+E9/PBW
-	OwdlyiaFvd3N68dBV0zo1vqm5zg954Q3ZULPvV1v4d6rHZicYZ9RepBhwjWEoc7r1MMea90JfFR
-	g48EtEWoQy/XyzWY2a8lhjQ3LzQRb3rAiBjSG5BpXVCvb8r0KLbTaG0lNAJwIlPvEr0bOnRUrf/
-	qOh1EVByNoW1aBALxBSIOO98dtkLGJBqSUQT
-X-Received: by 2002:ad4:5e85:0:b0:8ac:bb62:fe5b with SMTP id
- 6a1803df08f44-8acbb630feemr194285446d6.12.1776341569011; Thu, 16 Apr 2026
- 05:12:49 -0700 (PDT)
+	bh=EW+81uRJG1PkQDI7vy+71C2mKk60lXiMxe7+Z/S5SCE=;
+	b=K2SQEEWfaGsjsLg+is0jZPu7RiP5VL86jp+pulN8XrKyHPVaBblbu9ebs0MoxzwU8D8xda
+	lP3qZsubGjeKE4Iy3Kea1Ey2ZMuEbxFpttgBGVWCUSzzevOsmKhx7Do0PCXdFG1iaTlYJV
+	xfP4Fdk4kNnZPmwF3KxYiiLmIWNUJD8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776342319; a=rsa-sha256;
+	cv=none;
+	b=dy4rAa7iLarGqJ/UTBnX1etYKm6rSVCgZs0mmkzqwjvwJ7WIJNXHbNU58Z2D27yYH1ynJg
+	dx3yOfNgv30RiiDTpgvl7S+/dpze/SDpa6qiopwLZxEwHbjzKhEzAqshPI0Rb+Sv/L6XhF
+	ftObGiujzurWuTsLrx1jIgWMfxVaiyE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GQGv29sX;
+	spf=pass (imf13.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 54A6B60126;
+	Thu, 16 Apr 2026 12:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4797C2BCB3;
+	Thu, 16 Apr 2026 12:25:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776342318;
+	bh=gECMS4EGrtN1lWkNcMdqV1cQaJPbxrgRQTXN3zouHSg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GQGv29sXj5S5z7UPKnXaUJAuD1qc92DQaWs8UXQ6wwBCK62RBOeMuB3RtNcxzLs+n
+	 PPcHL7L8pFqT/h2G0bvvPkUySB8nqp1hX+g8DsxNBEPpxoa8+yXm1bMdZVixBjqxgs
+	 n60V3osh+8lSW6pt2nDmsfqoDHDW6Auv9CDrXKgdtoPlM9Xla54AXl1OSAYSKpcXrA
+	 NmL+fSV7Qk/BTzx5WK8y+vV+U+fxOTS5SiuiemUg0UByoPARoWSlKdZYhXUYnMvTFf
+	 DgJsTYvf1ogHE4V/gC2FO90mA6aK9sVcz0Z1Cm9dDcGVpaCAj1nCKENYb7/YBcL1F4
+	 1oc9q29NjGBrg==
+Message-ID: <1fd72d1b-f5cd-447f-ae11-6f4d4426b8e8@kernel.org>
+Date: Thu, 16 Apr 2026 14:24:57 +0200
 MIME-Version: 1.0
-References: <898a4e10-6193-4671-b3b1-7c7bc562a671@fmap.me> <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
-In-Reply-To: <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Thu, 16 Apr 2026 14:12:37 +0200
-X-Gm-Features: AQROBzBX4a19crGk_XkETxKLhmewGXqK0FtKuy_vUEQL4x7MLk1p9L_bODNm4ek
-Message-ID: <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
-Subject: Re: [fuse-devel] Debugging a stale kernel cache during file growth
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Nikolay Amiantov <ab@fmap.me>, fuse-devel@lists.sourceforge.net, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, Amir Goldstein <amir73il@gmail.com>, 
-	fuse-devel@lists.linux.dev, linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 8dfnbdfg96sz161jh9xsndi9176p5aen
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 55/61] interconnect: Prefer IS_ERR_OR_NULL over manual
+ NULL check
+To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
+ apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
+ cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Cc: Georgi Djakov <djakov@kernel.org>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-55-bd63b656022d@avm.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260310-b4-is_err_or_null-v1-55-bd63b656022d@avm.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 7q47m4e9sjmxnnre7yp5ka6wixr3e59q
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6FBFF20011
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2583F40015
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776341570-296191
-X-HE-Meta: U2FsdGVkX18usZ1onVMDWtwTBYt/FL+zd++C+I6+vVs1oYgl/KpypbYVcIwAF7W+n6VuL8X79TV6mzw6BC+UcLQfJUqOyGqDnylViuzLDhXbf2DoNkZWQNC0gzZpu2C96WUplZf8duHbUkkY09omraCuArkLM6FBAdu/gt5OZ9+EN5mZl5wsdUpOTWJ7bINMoWbA88HRl7kZhC59edGPcBpb1yQO8JdhSFzfZW1pDIhlm626besdFtOhKyAw5bs5gHU8gxv9qaFF+/+6jlp4xzA4ry1DhLhd3co/ugmrt4l+J5aruosqS3Y1c2Mx1sGFfquXpqdSQdPX1ofDwUHZPbKUyKASnGUy4O7UZc5+MwaK/5rakoaqB9/qpUgX+vJeued8A/P+IwMucaAHPxIn5Q/LGyQGud2rGok/giwr2lVPFpgAYGqtfzLzE8BD68niYPqUG0Wm0yTyQ4Pm51X7OZ3UdReHOktcjkN9mw2V/RJjBrn2AVkyiQ0KRXrb24hF+evOlh2Vg3SqjrsJ3FwiupnrWX51rAo/onwE3ng7iTySDD82dYAg3MOR+qnXZor+pc6qrFLSBzvOx/qkGehIo954dnp6uOFD62NGzHU/MQPajMvPe6BxQwdLkIGbq6r5cz68/t22RDctOOviaLfehmn5b3nFTWTeDk76q/+lyhD0WoX/z+ceBZC/5JpfzAjItLhAkJt/YIrM9gsNUG3gEgY6H3FwEqzEitHhtecZJt9PN7hCmQYiOCSi1JDy/AFHSWmvo7aAvScNFPRvgkDuR20NaInYhYi87Y9BQ52SK521xEuP/tJPA8+XwJkeKNOiTI0AdJOy4BOXCqVxXp8ndn5F+X7sDw/i1KOVBs9zmo4VqfUflcOjzTHjp6bQLXnQ0t0CdW5TrOOAFuIjDodXosO3qMZGpBFXQe9jPvVzaAuC+tYO3icQrJktYyXoGSlAKO35skSOGg0xrJa7y5G
- hapyE3Bv
- wdxovhyCYujgrI6ubb5T/RsxqZUggeTtGTRN1yxEFF5nftOVsgmjnB0eny4xC4TbJzgecR1qj+dmS/lrsRR30ynHw+YZUmr9hbsK8axlWbQPf4TNKQCv/60pzQVSV/WxUvVpfuqxnKncIPLG58oKtSjujzyUGTtk9XWzlyAZ+1DAL8ysdNCGBWNBxfNyWsz+zQjZo+/cB7Q/4BeWqokkRVFwOCgX3G3braOxGBcH+8KivNTijuQg55swLFOk0YWbbBo+Z5raRkRjy/NE=
+X-HE-Tag: 1776342319-357259
+X-HE-Meta: U2FsdGVkX19+roR58WDgNYyWtjsZ5WNvgZfdux8Ho2pChu6IV9q1b13yzrTAM6MmhiGwZfqKWeqQnGjVSkWeZTKz+3PGSAT1qV/8LavXDXNjfsIfsTMUXse49H5WohQgJ+2+rIjb4jxGoI4POFE6XwOLc6mtcZSS1qWKEmIScY+T22xHl1TRADuzaXA93sBdLOhtDU56m2WfnA3dWFAMEtjk+52lhLJxNwmyhtSlhtPW0I4BXxL7ZL0DtOjhLANH8rwVCZyz2czo2ulVtXiSCVAqi1P2sXccsUDhgKhiJjmpa/kxJO3j6Ick675yx7Mtq0PjxfKABWKXHL9x3OLquxMtV8u1P7kX1v8fAZYfgVrxv2N5+SZbKWUbWI71XzQzEGDBq0IS2DQu+FuVB3BdWbrogyC2qN4h+pkbVYYik2pDZLXHRpbdIy573QMCUOSJOb57vE4hohCHItYZAePY2DHuEXYKT4tbgy1DFmEULpqZGxwdAKcEzTYEiaQbF9dwqvw6z7By0zudw9XpJrh/mK04UjPWxwLPsFOmfPowGc6O27WPZ5nDpDoBBeZP+Zjr6fbFXcvWRDbLhDcu2NRrgCn+dAucMXYIqcKWf+41+P2Shj6zSCY2LMreYjSASW/aU5dUOovDruSbeuLPiixtIpDBVyRkwjSutG79Rrb5oAZsesyPG8VH/kWVZxhSj5hvKExJ/oMHg2OTxXfs8whG6any8PMcTFB5fcQXzzIewi9WUBdyHaStVJ283UcBlaZBCeszjfNE/3D8bLM9KgMD+jXvBGocWsko47Ja89Ynxx+YNeDHR4j04oI9EssZQDHriFySzNZYhD1QBq24vCBrloUp9xbT3w9+stQCm369K8vftPAVPI7S45OpDkZGTiT1FGTzp/HYfvruHxLX7/Sui5BB8/+tJc9yAwA1I64k6bwJglnV64bwdDtHrkkKY7NfQo0bK51p8t4P35UVlOK
+ dS+VUYmH
+ ywNbN9+dJmyI3I1zJr0+qpWtYpRqDKxtZGkdQ/V5mLmIINQ58U3D/DD2BcOwrKgIWaDodZyx4gZdUD63+UqTlZvS/fdBgTHGSVhOmpyWlUjx2b2aZ/09uAPzdsYekIpjYymFhvuyyFdTub12aEuWqFy0PgrHFvjY43MUUNFbr3oGccipHMF4I7HFU7KsPlmA+AfPwXSubCvVMGU10xHFEd3LfVYGTSNbh6mrViY3U0zL/hWSHP7XCX290W3wBmRjbOmMNFfHlHDKo2AAJiXsc+rBKjAGVgzdwElt42wwidZCT6/XtBQ7rPc1BX5ktSZkCzx3XCo5POkPnFO7gH6LNfiDyjhTCDRf7UAA0BbHcZ/PwqmI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,20 +162,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 16 Apr 2026 at 09:24, Amir Goldstein <amir73il@gmail.com> wrote:
+On 10/03/2026 12:49, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+> 
+> Semantich change: Previously the code only printed the warning on error,
+> but not when the pointer was NULL. Now the warning is printed in both
+> cases!
 
-> > I've recently encountered a weird issue with JuiceFS [1], a network FS
-> > which uses FUSE. tl;dr: when a file was being slowly appended, a reader
-> > of the same file on another host would periodically read a block of zero
-> > bytes instead of the actual data.
+NAK, read the code
 
-Thanks for the report.
+> 
+> Change found with coccinelle.
+> 
+> To: Georgi Djakov <djakov@kernel.org>
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>  drivers/interconnect/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
+> index 8569b78a18517b33abeafac091978b25cbc1acc7..22e92b30f73853d5bd2e05b4f52cb5aa22556468 100644
+> --- a/drivers/interconnect/core.c
+> +++ b/drivers/interconnect/core.c
+> @@ -790,7 +790,7 @@ void icc_put(struct icc_path *path)
+>  	size_t i;
+>  	int ret;
+>  
+> -	if (!path || WARN_ON(IS_ERR(path)))
+> +	if (WARN_ON(IS_ERR_OR_NULL(path)))
 
-I wonder if we could clear PG_uptodate on the page which had its zero
-bytes exposed by the i_size increase?
+IS_ERR_OR_NULL is simply discouraged, but beside of code preference, you
+just added bug here. This is clearly not equivalent and you emit warn on
+perfectly valid case!
 
-Willy?
-
-Thanks,
-Miklos
+Best regards,
+Krzysztof
 
