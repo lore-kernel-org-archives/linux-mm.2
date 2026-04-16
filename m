@@ -4,138 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 672DBF8D758
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 15:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F1A0F8D753
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 15:10:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C98D16B00A4; Thu, 16 Apr 2026 11:06:27 -0400 (EDT)
+	id 01B0F6B0005; Thu, 16 Apr 2026 11:10:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C48FE6B00A5; Thu, 16 Apr 2026 11:06:27 -0400 (EDT)
+	id F0E4E6B0089; Thu, 16 Apr 2026 11:10:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B37636B00A6; Thu, 16 Apr 2026 11:06:27 -0400 (EDT)
+	id DFD2E6B008A; Thu, 16 Apr 2026 11:10:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D78D6B00A4
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:06:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FFB113BB25
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:06:27 +0000 (UTC)
-X-FDA: 84664745214.10.4E5C786
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3A6854000F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:06:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eLCJ9OTF;
-	dmarc=pass (policy=reject) header.from=google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id CD8186B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:10:39 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9430A1B8C8F
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:10:39 +0000 (UTC)
+X-FDA: 84664755798.02.669B73C
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 89416100012
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 15:10:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZHsjKyBk;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=mclapinski@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776351985; a=rsa-sha256;
-	cv=pass;
-	b=GBy8RtqttxVQhPcvhkr66AUCLm/WPwL8bOLdimhbkRReaDVH0UaOQ4e3Pu++Ws92KVhxnp
-	+get3k3Z0SuoTnF3sS8zhiRMsxAh7kFEP5A/nSVmoXtJm79P9VG3G2YK/8t7YfiIddupPY
-	qK24S1csS4dTX4EYnZbQ825LhAr3ZBk=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eLCJ9OTF;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf04.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=mclapinski@google.com
+	spf=pass (imf05.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776351985;
+	s=arc-20220608; t=1776352237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=45BgfgnYSvNFM3E5UxQrEO2kHNtJ//4sETpS6wYzv3E=;
-	b=0HTIMmXM703k+aTwoUc9MTzrqrsKjIkweVnI9w9qxHS4/VJoreBnodQO0dERxEA+a4xsrt
-	VyouKM+PstAIFi8QbuyN/me6dR/ciPWyeuwauTxn5cSRDYlu6AKWg2tv3RezC9qQHHXD9x
-	YeBQg7EVQD0/MtYHh5qaDb/oTMKDTdU=
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-126ea4e9697so7268c88.1
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:06:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776351984; cv=none;
+	bh=d3XEBxqMWUDBsaapxLN2EkFmNDcbcrBGu5uflDyv4hk=;
+	b=jO9xeA3DMQoGWs2uUTB2D4EW2L2x6d3njZCDU5N0cx6Fjfup6cs+dnfjB+ZjXfBqE3K9/V
+	Z/UQwotkZ3kLsb8NodzEh86KVdpSUu3Efqtm9EXWTlCGtg2Bed2uqjnzJNKLG2fW5TPZNl
+	eUnNkCqFnUh62BUpaAJ7mSVMLqhR320=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776352237; a=rsa-sha256;
+	cv=pass;
+	b=g4BcKC5d02NP1kioFB6WkW8AJ2TD/VBcHkEi//7JiSji2I9h+3kbBa2sjJuuOFnqE6iI4y
+	NHFiQjW9uTJnY39a/INzf+V7YUG0phThsXXHX+JOjPAjT1fUuwXx2rHMMaE+L6poiRfihc
+	t3t3vu776XOwrNGf7GmPPk/C8+cFvkU=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZHsjKyBk;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-79a46ebe2beso84876257b3.2
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:10:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776352236; cv=none;
         d=google.com; s=arc-20240605;
-        b=Xfz0dKt58Ck5dPiAnQcXKi8w/OEmTzRqLLNAHXhK7k455JUGe+HsExgm6a5HqurLLH
-         pW/OlIDDccE2pcxqBgY+w971gnvk8vuFa/1Xo2LJbvCpb1Ats9foWdVTSj0LFQPHa1oa
-         3vUoFVU5xcwjYvtOloRwonv7RiPKKY1Sl3qpOhx7qKa6zfKsDiDcuC/pJnNiNAoIc8om
-         eVC1f38qwx8hkgqOEo8e1Ocxcp7MZQRhoeJ6+Kru60vjF/qR8o0Dx8Pnb4iq1roWd4p5
-         mt9iJMPSlo7fHoZzIgNsFnrSPmiS6CyliQKubDBglJ8/C44JdvQNk6t3pBsquQfsJbZT
-         b+Cw==
+        b=JYX3fIiV22oNMu7LXrVlSzEb6vGXs/dzsnJqlLG3/ottScp7lMnqHwDkC8SPFnDH3N
+         Fkx6pcMVvn3iocNJAJ3TJtAdzi28mufrINv79RpA0BVyU0txn1EGxyi/f9lOFmqRD1HX
+         iT28cDqDi6941PNDmzthY/4Ss5iZhoMdSUVDhZ1WeyrB0QJWbhijSTRAWD+CLZvjsy49
+         ROnaczz0g1xl6Hi63Iyp4WghKJMpP2vB9K9tWMjaOgfgNj3lH1qQh8JOBI1qeOcYYq/e
+         ONHdmNrvB3me2JsC9ZGvA2IwfP2Hb+UJxM6V3djeWq4c2WWknWGB/q75SS1SCblmzL+o
+         gOhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=45BgfgnYSvNFM3E5UxQrEO2kHNtJ//4sETpS6wYzv3E=;
-        fh=a0PoJ5//TxKblISYUCXbFQd38hEdxuTQLQX1hXBu9ps=;
-        b=detCviL9I6p/ussrECuq2QkA/LCaGylHth5Cys7HB1q/FTczQJBa/aemEErJIF0I1T
-         2bA4JtURah+Mvwt1wAaE9m+28ibEE2noA5KcAoLcwk8UkzOYpz7MB8hyUP0fTpUixFJZ
-         OcOcs+IOpscX5yor4K/kLDfJAsCatiHulJ9xxdehc034jTgqJ851Fa91kvu7bJwYrIfr
-         9Iu6StvnDsNHHTIDEPOeWfvT1YHJ1vw+w08deF/UEtondtegHioWJgWJiS+OnoFUSghy
-         v82C3RdYp3+ynXW+ZiT+yqz/sdVHgn+J9etlNzcB4exOrO49rfG4fxesqaEzQ0ulb+Qm
-         R/mA==;
+        bh=d3XEBxqMWUDBsaapxLN2EkFmNDcbcrBGu5uflDyv4hk=;
+        fh=S2yND7mb2yGQFggx/GlcnzzR/bHk/R3w8zWODHEoAro=;
+        b=aaKquVzjhjXA9IzCn0nqkfNEaC0aDE3YTnLqUzvpg2fd6/kDHYTwsO/Z/LxsyVOB8w
+         hh0uTxhKti6Els1W9d+Z3E5niBo+3ZXTg2SRTEbOhLG9gkEnuzjbKQHMttd50abk/Y+c
+         hYKgjqUW0EfGub6kMz16+ACaoIymLjec9pkkoUxcybVsyBDC2yqyf091cYnEQKNXjL+8
+         gCVhpHA9TehJc6QVrgZUcRj0ETY5P7QKFGRTq2NgmyAKomWAjmbUXGPKo6XmNMXguEb9
+         sJ90lzqD9q60G3hXH8OOBliPSxGzUNnsNBd0WfKnGB6CvqXv7Nr3dW4QegNLq8VdYDrZ
+         FTaQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776351984; x=1776956784; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776352236; x=1776957036; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=45BgfgnYSvNFM3E5UxQrEO2kHNtJ//4sETpS6wYzv3E=;
-        b=eLCJ9OTFhihD/ZKRzMjIGNYhu6b8xWAhjrXEpr8u28WyyH01Afp22MvLPz8nfzPJ6u
-         5QxzCry/R8zrTwa8yIaLSfKRrMJC6NMArsSFvlo4ByNRPFPf+QNWnHix6BO1WOYmHypy
-         A+8MMuH6AeXvvG7cw3Gsel8l3vYOOtfvMcQAeLr56ozBKqH6+NWR7aacMsjASYj4SKIz
-         dF2KJQl3a60aXxAYqfXa0y804fNcC4cfSJvB9rBEPiL8qHWasxvoBtJlF5r+8g1O3aAy
-         SFXmRosO9BfWBGxTFdeole5nXdEt1xRAGl3hr/mXMH2GJn9OFtpHfkpTlJi6HYgYOkkT
-         Kj4Q==
+        bh=d3XEBxqMWUDBsaapxLN2EkFmNDcbcrBGu5uflDyv4hk=;
+        b=ZHsjKyBkSlP+PdgSPJ1cvbRwZDe8HyJZBaqpdm7yW9jgqTOPXQUUtHFYLlUpUwgHeS
+         GGCk13RUTZq/Ge6kFI8QVJYSCS4SPxNizCVECxnymilXJCqNpIWM8mlXofwPB1AcKvKE
+         tzkbmxtTD8qy1ugemj4dI8uQnu5enF2huLFxOdNi6yOuaXCFQbn1Ygkr9hyZqPLHHp1w
+         uBnEcgXHy6YPVck+ZAKqc9NCFFAOxPozty/orukn00FUKpjX+dC2bmAsEUDpI9zP0wYl
+         xi0OcOa3Ve43k8JJMEYQB8UMRpL5/rEQQp3Mz8xId1yT1KIqDINiFHVQQzJTSqKpa5ow
+         yVSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776351984; x=1776956784;
+        d=1e100.net; s=20251104; t=1776352236; x=1776957036;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=45BgfgnYSvNFM3E5UxQrEO2kHNtJ//4sETpS6wYzv3E=;
-        b=OEsQ/XUVHbHx6tp8b2MlXIK2iH8qIkpzJS8stTBXIzzKSRalh0RBgn+rR/c47aMk8I
-         0ZwpqfUUDC+ELuHciVTA13npOpja5o9QjXItwirC35lQKVcCo5hTsbrskKqFZyI3eVps
-         ZubyroNRIs5qqPbItV0i3oiJXXaNJdtjcs3v7LPviezHTyYF2QyobZ0QSHlgnmIoo1sN
-         n8ONDwuXh10g1RR6UFN3lpNOCAnV1rkH9cqUjpI/R5+/amz5Q29dY0TelYR07ZHZqLKq
-         K6wQz1UwDnlQLCLbMX098WhOZqhXWxpAuen2AV+s0BO2k2W9FKeM2an4EZUEL6uZ6hOQ
-         eDJQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/uxcuDXBOFF8aOcUo6olRhhfAWK0ehgC2XVL8kJ6m33JHZ4Ol/HvkVsh294bh4SCCvG5/nB8Sckw==@kvack.org
-X-Gm-Message-State: AOJu0Ywz41DQBd0ztqCVrXay+HQxp6Awy9tVwB3reYbf5qJ04smjE9m2
-	RZpHWT/KRdiiTEI97akPEToXqMyZ6l/uv/p1jrXfBPSDjCCKlCKe3WEup29N+0OzT5LWv+jpebv
-	X/flefyng6orYVL/+IRI31fgvd/8zkK0/QsAmbkLg
-X-Gm-Gg: AeBDiev3OxtPlsBAmaaBTLGYr0Z+G597YqeMEiKPSt0xRjvh2hivDhjAQJwzNm28/N4
-	1v2L1Vt/rTqfZAHl7Ny6heun/ha76F87CBcH/YIWBUMfa/pwtg71PfiITASdrGJ5h8TV/YUYtJd
-	vhrcO6bUkbShxbfziwyV7mVZDusZt8mwZhOit8ikja0tnr5web9TB2iyFo3lh8GmSFHoVz0A+3t
-	5Wpyrlu/pvrMxvtig9ZFaRRjzTQTDznENyZMfSEp89NLx4rabGkS5FIjjau3gLIcX7yOLKgW7nc
-	K5uWOtVgqpJjSBJLM/FkRwSC3cSeysxo4aopBLBiwEgdfXqj5Tzjigxiqn0=
-X-Received: by 2002:a05:7022:6081:b0:12a:77e6:68d9 with SMTP id
- a92af1059eb24-12c6376e195mr157713c88.16.1776351982854; Thu, 16 Apr 2026
- 08:06:22 -0700 (PDT)
+        bh=d3XEBxqMWUDBsaapxLN2EkFmNDcbcrBGu5uflDyv4hk=;
+        b=oekpXIRt0+mZj8PXjTC5ZKav7npHtOp/lrwMBBaJICnX3nmWB3rn1q9YhK7rh7zrad
+         g+UPehTsd3RKbtXTFTCg2dGh2n2lgZ0wpqIF/blyVMFKBrXW8wCaa6sS6zTDpEX+GeRJ
+         HKsiRZY2m93RYQjbhCBlcy+HKuvQn6xwAkyjodHsgde5myJAWQjQDXKu0it98PMPon0v
+         Z3a3ibMAXbbTGjx7FGIpa2ovAVX6/dOhd2+9pMkhnBIXVJ3FAFfuW3sijWVL1WD797fy
+         vi+uvc0MmdMN0rIhuZ0pa0P9KT2e1l+Wc2Y8yL2BeQQ1LnjnF4KaXsrwixOPm9XV8k7H
+         GKbA==
+X-Forwarded-Encrypted: i=1; AFNElJ/tmtymRqA5p1mqBvuBT6DLMcu2Xkmb9EShdIhPwDFbZELhagCaELmydXgnw91uqTfIvdjuPjU7VA==@kvack.org
+X-Gm-Message-State: AOJu0YxfK/1tty028XtTaOOJAWpTBsymMk59KaPoBwM9nhrojTu2+rPy
+	VzXeC/JPGY8L7b7sSot2Npiix02Sqf11JAVk1Wr8C5B+ylPLDXBY0swuHO/QQ8fyk+ewNuxAYZn
+	CB3PiLZQRzy363WBPLGujF+Uw+jxHsTw=
+X-Gm-Gg: AeBDiesN8WGn3Reyj6mX0ZekUCCdZPUSF8iugA7rRuMd8AtcTRXEEMeqVbSKR69O7Q1
+	fMOclYvcOlGYUr/nwE6sYm4hTG9/QFjWZdSXooB9vYzHjoDCUbXEsAlo/wkNB1rxTunfW3tHGbl
+	5EDH5IG1on+5hQnfbaX5LyBA6MO4qb1GA5J2I5uoaG83GW9dIiPO6+UzDtTufJmzh0vN96zET7Y
+	GIZYSyH4ahutu2Pxa/lUQbKA4bUjwo8ktaz75+MIqFvnlKGzNt3VrYWQV+pfiUp7wMaFUzkvLXB
+	EeFQQhlzSsge1lo=
+X-Received: by 2002:a05:690c:6987:b0:7b6:31e1:7e99 with SMTP id
+ 00721157ae682-7b631e18819mr107266817b3.6.1776352236363; Thu, 16 Apr 2026
+ 08:10:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260416110654.247398-1-mclapinski@google.com>
- <20260416110654.247398-2-mclapinski@google.com> <aeD2Fzr6yr4pu9-X@kernel.org>
-In-Reply-To: <aeD2Fzr6yr4pu9-X@kernel.org>
-From: =?UTF-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Date: Thu, 16 Apr 2026 17:06:10 +0200
-X-Gm-Features: AQROBzARF615Kab2e80dancapvA5l6qTAyjo5RjoXtClPQ7kr5-X60F2Yw6i9FE
-Message-ID: <CAAi7L5d-ujEa7R21Lmd37X9451KBmK8ZhagSKbJde15aQLi2MQ@mail.gmail.com>
-Subject: Re: [PATCH v8 1/2] kho: fix deferred initialization of scratch areas
+References: <20260416102558.575210-1-ekffu200098@gmail.com> <aeDyNm94j7ikZl-A@kernel.org>
+In-Reply-To: <aeDyNm94j7ikZl-A@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Fri, 17 Apr 2026 00:10:25 +0900
+X-Gm-Features: AQROBzCifctjF8HGZ-_gE9TlXJgyb--ZL50_wZrMHz6bkvqVOknwdJc-K7NK-ik
+Message-ID: <CABFDxME=CYj6byBjkSgXq1niC2MobFrUNJTtWHktEZE3VYiu9Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] mm/fake-numa: fix under-allocation detection in
+ uniform split
 To: Mike Rapoport <rppt@kernel.org>
-Cc: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: akpm@linux-foundation.org, djbw@kernel.org, mingo@kernel.org, 
+	linux-mm@kvack.org, Donghyeon Lee <asd142513@gmail.com>, 
+	Munhui Chae <mochae@student.42seoul.kr>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3A6854000F
-X-Rspamd-Server: rspam12
-X-Stat-Signature: akw19a4x6oorygj98cmitqh4wu3dqjfq
+X-Rspamd-Queue-Id: 89416100012
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cqx35ojk7aurww9c4jurc8zpxjn3a4ps
 X-Rspam-User: 
-X-HE-Tag: 1776351985-632110
-X-HE-Meta: U2FsdGVkX18Smooj008tUL9B5Ppa1v7D1c3RzNGWlQoPaH2Rn75vEx71A4JQ0P8j03pEY4RnSPn+owh7siRBgYRhDTXtJLTMe7/cA4hHfm/kUiJjy5OATOdyLjHZvShMmbu5cYkDRyMCiajMWq3Qi9J05Z12a7QxXxwCWXR0uCEGeSlP1fY7+6hhk/0Oymuxct/2CBn1rIwdyepFyqgpgxJPkecqBl7SsWBlf2jd9E0kI6TccN5f5udEz/GlMBl6RCPLRCh6AW8rPLFbG4SjKwafd3fpkZuMh3VbWIrFr5FfT2gtuGd9wkTTSc6A+L4ah+8XsOXszDW1RlPjeSDa61TL5lfdrX6zI6BOiIibPTxGYm7zgMLplI2cGUea4fRuMpcrs6nzBo52PWqFZlSnLp00iQjb6/P3hVYAe+8lCEbpDo0a6XCDSqJkENKO84fSmEFPnsZE1pd1v800ssbMF4poFKExHMWJbEXTsT2GGP8SWrMC8ImMgP+xkDYDYEDtta/bg1iNSMF6gJIJQCqVF8JWiTLYd2GGzVq9rQzmVDFvJMh7ERvkXidLZKKVgCr4nsMWDddiEjyzFuNuW0vX0yhL4Hh2miEt/Swg9DJlpmT0u4Qcb9he3obeZ1O7wXagYP2WxUAm72LQL0Io8DH1g0rWi630+weIZN4qxt/lqcEfWu/VPEFESdoio1n2eO6msZbB3h6zwvCOB6iqIGVzQ9ni28SEs0SQWX+WHCxlEupPmsbkDfW6PSRfSMYHFzcWRBi6zCvJMkyiZuAhU6u6rTMBlozs49LegZipY6dG8/OqocnNE3SQaULHFOH9RJLYtVZ8L7neKaghHiGohMTr2+u52DqS7pldpAD+Czq5lOwZpC4k3HBOOQjsAGdeHmH5MsxJbt1L2xU3qGrQRwC+MoFC0L1TMPR6ASrO9B4uT7TX48WDwSDmJ11iFthBPnxXoZPFJ3O780KyMVxFOXK
- JEz8RqPd
- ufl2aSb8aC6KaiUBe9wv8vpxvY2Nq6j3FKR0FYGWaretwN4DDnnoT/m3aKIxR1PCoSR/OQiKlvrAlEH0vipTaGbUT4HyGPkDBaYBSqBCEDIvTtPSrQl0zDCbjqBET9F1pcHrPCF/jqdK1AlZBv4cqg0DW+vv/P+KpLyHdNM4691gSzwqyoN5Is+fTi1nmH0jhS9InmK8tHPx+NHK+40J8yd8c8V4DCGS3GKdA+YnB1UsaktY6gCzY9R7CVaxErMtGXpMLxKg6zXCPhkwlbE8+xVseufXdPmmqDlGKnGvgz2IEIXBEsUIJ/CfMKsxSHTQlm/CAZ6jxHf955KTFgklX/5ZXMg==
+X-HE-Tag: 1776352237-836517
+X-HE-Meta: U2FsdGVkX1+io7xAQtKkqFz/LcOLlFO98BrbsSvtQg1oHTFWZqaF7pjmWYX5sdqOo1i7A0zM1W1ebjol0xxN+/yrGyQUNkjqJ+eiRHY+Sqe0izmOQw96cxl1xiDCVwZUPkX9MZAIF7+ozgmHWTdV3jsRg1ddtNW8G5VyID8GwDxyqEXmKrTemUOODGv8bjMn9qnUZf3Ta0wCH2CQQ4fNZ/m9Lecnljzq4T50H9KF9XwhGGx8ELndI41tjdmRlfMyPjRRqJ1CqqU4jEovhWLa07z//e/A4GINwZfxV1w8c3uBfI6qBKMUhZPthzojgklRgonMuJCLzUm/2dIHlu0WaIeYyIjoY9ObwESJJruOpd3mS2ZbX74ohNLbs9Ic66HXVDnYXRSvzFmyLL0A+XoLY9qbjz9jCk1RCuY0wC1T8koFvpg8YWdy3LB9/k60zwwTcT+M29fJU8PsHI5BGl2wrRzZkfhcz70MymUUm711BFUAvjnlZiSEXRv3i032xncYh0ne3gRIQ3tPKioGBBBpWgSLlkd2GdAQXFb8KHcxGX2//ohp8EhUlw9ZjRpApXr8yuLt34bC339+KB614c1VxXtjUd6G0FalIsk4+qDs1bto0IynBnyaBBMnEi/dwBgMzkdqn151wQ2kIkEjRgltKF625+q+1Ud/jo83Axv3SH6McGcty+r3Ne1MX9dMs8p10KVXJgnx+W6wsECWrp395CR7ws3X/rgoeIBm0iKptcHZ01qDYNS9r+KYAUUfN1juKBCBtf7h8Yb2WUQoECETPutej0TfLidf4YKfvytQ4J+qw00b1nLfoEdw6lJVabb8FaGFKvMWXxIxA/ce0tp/LwbAXjOyCXNW75UbUNhN/bEJTFb0BDCm2UZCgWg/UdIPrN4VeJg04WessTcbdtvsT7lJWpWuBFcHZ4Bw1SCpopBSTWTqYBmsMW2EAhXkPnisdgVvKVEXYWrBSl6a5Mn
+ pfiyfN/c
+ YbMu9kDh0wZLhCKUGu2ZrSXPuhXUCcoWAMxnJenmnqRw31RjFDCRlB3W0gFnNmx5MGhk9jG543f6gt+ffpesSvGk/3sYPdjXGybliGF4ybqZ6DPC2miOiufeUC2bDQPLhgepqotEPBPeixnJv0/UsHHA7jqeyz+waotwZUbjy5d4WK2hJ+hLvee17RXLczdnq/qWuLERC1DVJza8q5RPYaSLiaChsNxs1jYJBmp45BXVau0S8oZ0+b4QUmvpC0JkGsb/lPwWX3Np3Y+s4/V8FL7hTTKW+6vl6qyIg6QlGVynLRUIuEl9vA+gWZAUDIdekTvhG+v4ijNfwnuwxelDaNrrhwGlNl3HFcYvY0HPHxkkBqxQmAidZst9Uom6XJXwo4iew7QYt2+EYh1wr44Vm45Pjk44f2u69dgiRA2e8PQstoITM8kQk/9Gm0NH1CyasxMlv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,300 +140,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 4:45=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
+Hello,
+
+On Thu, Apr 16, 2026 at 11:29=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wr=
+ote:
 >
-> Hi Michal,
+> Hi,
 >
-> On Thu, Apr 16, 2026 at 01:06:53PM +0200, Michal Clapinski wrote:
-> > Currently, if CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled,
-> > kho_release_scratch() will initialize the struct pages and set migratet=
-ype
-> > of KHO scratch. Unless the whole scratch fits below first_deferred_pfn,
-> > some of that will be overwritten either by deferred_init_pages() or
-> > memmap_init_reserved_range().
+> On Thu, Apr 16, 2026 at 07:25:58PM +0900, Sang-Heon Jeon wrote:
+> > Subject: [RFC PATCH v2] mm/fake-numa: fix under-allocation detection in=
+ uniform split
+>
+> RFC in the subject means you don't intent for the patch to be included, b=
+ut
+> rather want to share it to get an early feedback.
+>
+> I believe this is not the case here :)
+
+You're right. When I sent v1 patch, I wanted to check if the way of
+patch was correct or not.
+Anyway, it seems there are no disagreements on that part now. I'll
+remove RFC in the next patch.
+I really appreciate your attention :)
+
+> > When split NUMA node uniformly, split_nodes_size_interleave_uniform()
+> > returns the next absolute node ID, not the number of nodes created.
 > >
-> > To fix it, make memmap_init_range(), deferred_init_memmap_chunk() and
-> > memmap_init_reserved_range() recognize KHO scratch regions and set
-> > migratetype of pageblocks in those regions to MIGRATE_CMA.
+> > The existing under-allocation detection logic compares next absolute no=
+de
+> > ID (ret) and request count (n), which only works when nid starts at 0.
 > >
-> > Signed-off-by: Michal Clapinski <mclapinski@google.com>
-> > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->
-> Your signed-off should be last here :)
-> https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked=
--by-cc-and-co-developed-by
->
+> > For example, on a system with 2 physical NUMA nodes (node 0: 2GB, node
+> > 1: 128MB) and numa=3Dfake=3D8U, 8 fake nodes are successfully created f=
+rom
+> > node 0 and split_nodes_size_interleave_uniform() returns 8. For node 1,
+> > fake node nid starts at 8, but only 4 fake nodes are created due to
+> > current FAKE_NODE_MIN_SIZE being 32MB, and
+> > split_nodes_size_interleave_uniform() returns 12. By existing
+> > under-allocation detection logic, "ret < n" (12 < 8) is false, so the
+> > under-allocation will not be detected.
+> >
+> > Fix under-allocation detection logic to compare the number of actually
+> > created nodes (ret - nid) against the request count (n).
+> >
+> > Also, fix the outdated comment to match the actual return value.
+> >
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > Reported-by: Donghyeon Lee <asd142513@gmail.com>
+> > Reported-by: Munhui Chae <mochae@student.42seoul.kr>
+> > Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capab=
+ility") # 4.19
 > > ---
-> >  include/linux/memblock.h           |  7 +++--
-> >  kernel/liveupdate/kexec_handover.c | 25 ------------------
-> >  mm/memblock.c                      | 41 ++++++++++++++----------------
-> >  mm/mm_init.c                       | 27 ++++++++++++++------
-> >  4 files changed, 43 insertions(+), 57 deletions(-)
+> >  mm/numa_emulation.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 > >
-> > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> > index 6ec5e9ac0699..410f2a399691 100644
-> > --- a/include/linux/memblock.h
-> > +++ b/include/linux/memblock.h
-> > @@ -614,11 +614,14 @@ static inline void memtest_report_meminfo(struct =
-seq_file *m) { }
-> >  #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> >  void memblock_set_kho_scratch_only(void);
-> >  void memblock_clear_kho_scratch_only(void);
-> > -void memmap_init_kho_scratch_pages(void);
-> > +bool memblock_is_kho_scratch_memory(phys_addr_t addr);
-> >  #else
-> >  static inline void memblock_set_kho_scratch_only(void) { }
-> >  static inline void memblock_clear_kho_scratch_only(void) { }
-> > -static inline void memmap_init_kho_scratch_pages(void) {}
-> > +static inline bool memblock_is_kho_scratch_memory(phys_addr_t addr)
-> > +{
-> > +     return false;
-> > +}
-> >  #endif
-> >
-> >  #endif /* _LINUX_MEMBLOCK_H */
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kex=
-ec_handover.c
-> > index 18509d8082ea..a507366a2cf9 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -1576,35 +1576,10 @@ static __init int kho_init(void)
-> >  }
-> >  fs_initcall(kho_init);
-> >
-> > -static void __init kho_release_scratch(void)
-> > -{
-> > -     phys_addr_t start, end;
-> > -     u64 i;
-> > -
-> > -     memmap_init_kho_scratch_pages();
-> > -
-> > -     /*
-> > -      * Mark scratch mem as CMA before we return it. That way we
-> > -      * ensure that no kernel allocations happen on it. That means
-> > -      * we can reuse it as scratch memory again later.
-> > -      */
-> > -     __for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> > -                          MEMBLOCK_KHO_SCRATCH, &start, &end, NULL) {
-> > -             ulong start_pfn =3D pageblock_start_pfn(PFN_DOWN(start));
-> > -             ulong end_pfn =3D pageblock_align(PFN_UP(end));
-> > -             ulong pfn;
-> > -
-> > -             for (pfn =3D start_pfn; pfn < end_pfn; pfn +=3D pageblock=
-_nr_pages)
-> > -                     init_pageblock_migratetype(pfn_to_page(pfn),
-> > -                                                MIGRATE_CMA, false);
-> > -     }
-> > -}
-> > -
-> >  void __init kho_memory_init(void)
-> >  {
-> >       if (kho_in.scratch_phys) {
-> >               kho_scratch =3D phys_to_virt(kho_in.scratch_phys);
-> > -             kho_release_scratch();
-> >
-> >               if (kho_mem_retrieve(kho_get_fdt()))
-> >                       kho_in.fdt_phys =3D 0;
-> > diff --git a/mm/memblock.c b/mm/memblock.c
-> > index 4224fdaa8918..fab234f732c3 100644
-> > --- a/mm/memblock.c
-> > +++ b/mm/memblock.c
-> > @@ -17,6 +17,7 @@
-> >  #include <linux/seq_file.h>
-> >  #include <linux/memblock.h>
-> >  #include <linux/mutex.h>
-> > +#include <linux/page-isolation.h>
-> >
-> >  #ifdef CONFIG_KEXEC_HANDOVER
-> >  #include <linux/libfdt.h>
-> > @@ -959,28 +960,6 @@ __init void memblock_clear_kho_scratch_only(void)
-> >  {
-> >       kho_scratch_only =3D false;
-> >  }
-> > -
-> > -__init void memmap_init_kho_scratch_pages(void)
-> > -{
-> > -     phys_addr_t start, end;
-> > -     unsigned long pfn;
-> > -     int nid;
-> > -     u64 i;
-> > -
-> > -     if (!IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT))
-> > -             return;
-> > -
-> > -     /*
-> > -      * Initialize struct pages for free scratch memory.
-> > -      * The struct pages for reserved scratch memory will be set up in
-> > -      * memmap_init_reserved_pages()
-> > -      */
-> > -     __for_each_mem_range(i, &memblock.memory, NULL, NUMA_NO_NODE,
-> > -                          MEMBLOCK_KHO_SCRATCH, &start, &end, &nid) {
-> > -             for (pfn =3D PFN_UP(start); pfn < PFN_DOWN(end); pfn++)
-> > -                     init_deferred_page(pfn, nid);
-> > -     }
-> > -}
-> >  #endif
-> >
-> >  /**
-> > @@ -1971,6 +1950,18 @@ bool __init_memblock memblock_is_map_memory(phys=
-_addr_t addr)
-> >       return !memblock_is_nomap(&memblock.memory.regions[i]);
-> >  }
-> >
-> > +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> > +bool __init_memblock memblock_is_kho_scratch_memory(phys_addr_t addr)
->
-> We already have a block under #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH, please
-> add this function to that block.
->
-> > +{
-> > +     int i =3D memblock_search(&memblock.memory, addr);
-> > +
-> > +     if (i =3D=3D -1)
-> > +             return false;
-> > +
-> > +     return memblock_is_kho_scratch(&memblock.memory.regions[i]);
-> > +}
-> > +#endif
-> > +
-> >  int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
-> >                        unsigned long *start_pfn, unsigned long *end_pfn=
-)
-> >  {
-> > @@ -2262,6 +2253,12 @@ static void __init memmap_init_reserved_range(ph=
-ys_addr_t start,
-> >                * access it yet.
-> >                */
-> >               __SetPageReserved(page);
-> > +
-> > +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
->
-> No need for #ifdef here, there's a stub returning false for
-> CONFIG_MEMBLOCK_KHO_SCRATCH=3Dn case.
-
-In all 3 places the #ifdef is there because MIGRATE_CMA might be
-undefined. I already broke mm-new branch in the past because of that.
-
-> > +             if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)) &&
-> > +                 pageblock_aligned(pfn))
-> > +                     init_pageblock_migratetype(page, MIGRATE_CMA, fal=
-se);
-> > +#endif
-> >       }
-> >  }
-> >
-> > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> > index f9f8e1af921c..890c3ae21ba0 100644
-> > --- a/mm/mm_init.c
-> > +++ b/mm/mm_init.c
-> > @@ -916,8 +916,15 @@ void __meminit memmap_init_range(unsigned long siz=
-e, int nid, unsigned long zone
-> >                * over the place during system boot.
-> >                */
-> >               if (pageblock_aligned(pfn)) {
-> > -                     init_pageblock_migratetype(page, migratetype,
-> > -                                     isolate_pageblock);
-> > +                     int mt =3D migratetype;
-> > +
-> > +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
->
-> Ditto.
->
-> > +                     if (memblock_is_kho_scratch_memory(page_to_phys(p=
-age)))
-> > +                             mt =3D MIGRATE_CMA;
-> > +#endif
->
-> memmap_init_zone_range() is called each time for a region in
-> memblock.memory. This means either entire range will be KHO_SCRATHC or no=
-t
-> and we can check for memblock_is_kho_scratch_memory() once for every regi=
-on
-> in memmap_init_zone_range().
-
-Thanks, I didn't notice for_each_mem_pfn_range iterates over regions. Will =
-do.
-
-> > +
-> > +                     init_pageblock_migratetype(page, mt,
-> > +                                                isolate_pageblock);
-> >                       cond_resched();
-> >               }
-> >               pfn++;
-> > @@ -1970,7 +1977,7 @@ unsigned long __init node_map_pfn_alignment(void)
-> >
-> >  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-> >  static void __init deferred_free_pages(unsigned long pfn,
-> > -             unsigned long nr_pages)
-> > +             unsigned long nr_pages, enum migratetype mt)
-> >  {
-> >       struct page *page;
-> >       unsigned long i;
-> > @@ -1983,8 +1990,7 @@ static void __init deferred_free_pages(unsigned l=
-ong pfn,
-> >       /* Free a large naturally-aligned chunk if possible */
-> >       if (nr_pages =3D=3D MAX_ORDER_NR_PAGES && IS_MAX_ORDER_ALIGNED(pf=
-n)) {
-> >               for (i =3D 0; i < nr_pages; i +=3D pageblock_nr_pages)
-> > -                     init_pageblock_migratetype(page + i, MIGRATE_MOVA=
-BLE,
-> > -                                     false);
-> > +                     init_pageblock_migratetype(page + i, mt, false);
-> >               __free_pages_core(page, MAX_PAGE_ORDER, MEMINIT_EARLY);
-> >               return;
-> >       }
-> > @@ -1994,8 +2000,7 @@ static void __init deferred_free_pages(unsigned l=
-ong pfn,
-> >
-> >       for (i =3D 0; i < nr_pages; i++, page++, pfn++) {
-> >               if (pageblock_aligned(pfn))
-> > -                     init_pageblock_migratetype(page, MIGRATE_MOVABLE,
-> > -                                     false);
-> > +                     init_pageblock_migratetype(page, mt, false);
-> >               __free_pages_core(page, 0, MEMINIT_EARLY);
-> >       }
-> >  }
-> > @@ -2051,6 +2056,7 @@ deferred_init_memmap_chunk(unsigned long start_pf=
-n, unsigned long end_pfn,
-> >       u64 i =3D 0;
-> >
-> >       for_each_free_mem_range(i, nid, 0, &start, &end, NULL) {
-> > +             enum migratetype mt =3D MIGRATE_MOVABLE;
-> >               unsigned long spfn =3D PFN_UP(start);
-> >               unsigned long epfn =3D PFN_DOWN(end);
-> >
-> > @@ -2060,12 +2066,17 @@ deferred_init_memmap_chunk(unsigned long start_=
-pfn, unsigned long end_pfn,
-> >               spfn =3D max(spfn, start_pfn);
-> >               epfn =3D min(epfn, end_pfn);
-> >
-> > +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
->
-> No need for #ifdef here as well.
->
-> > +             if (memblock_is_kho_scratch_memory(PFN_PHYS(spfn)))
-> > +                     mt =3D MIGRATE_CMA;
-> > +#endif
-> > +
-> >               while (spfn < epfn) {
-> >                       unsigned long mo_pfn =3D ALIGN(spfn + 1, MAX_ORDE=
-R_NR_PAGES);
-> >                       unsigned long chunk_end =3D min(mo_pfn, epfn);
-> >
-> >                       nr_pages +=3D deferred_init_pages(zone, spfn, chu=
-nk_end);
-> > -                     deferred_free_pages(spfn, chunk_end - spfn);
-> > +                     deferred_free_pages(spfn, chunk_end - spfn, mt);
-> >
-> >                       spfn =3D chunk_end;
-> >
+> > diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
+> > index 703c8fa05048..c1d0a76aef64 100644
+> > --- a/mm/numa_emulation.c
+> > +++ b/mm/numa_emulation.c
+> > @@ -214,7 +214,7 @@ static u64 uniform_size(u64 max_addr, u64 base, u64=
+ hole, int nr_nodes)
+> >   * Sets up fake nodes of `size' interleaved over physical nodes rangin=
+g from
+> >   * `addr' to `max_addr'.
+> >   *
+> > - * Returns zero on success or negative on error.
+> > + * Returns absolute node ID on success or negative on error.
+> >   */
+> >  static int __init split_nodes_size_interleave_uniform(struct numa_memi=
+nfo *ei,
+> >                                             struct numa_meminfo *pi,
+> > @@ -416,7 +416,7 @@ void __init numa_emulation(struct numa_meminfo *num=
+a_meminfo, int numa_dist_cnt)
+> >                                       n, &pi.blk[0], nid);
+> >                       if (ret < 0)
+> >                               break;
+> > -                     if (ret < n) {
+> > +                     if (ret - nid < n) {
+> >                               pr_info("%s: phys: %d only got %d of %ld =
+nodes, failing\n",
+> >                                               __func__, i, ret, n);
+> >                               ret =3D -1;
 > > --
-> > 2.54.0.rc1.555.g9c883467ad-goog
+> > 2.43.0
 > >
 >
 > --
 > Sincerely yours,
 > Mike.
+
+Best Regards,
+Sang-Heon Jeon
 
