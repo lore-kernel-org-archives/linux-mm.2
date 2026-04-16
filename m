@@ -4,78 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25A4FF8A146
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 08:40:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 134CFF8A146
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 08:41:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26CFD6B0005; Thu, 16 Apr 2026 04:40:07 -0400 (EDT)
+	id 771F16B0089; Thu, 16 Apr 2026 04:41:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2173B6B0089; Thu, 16 Apr 2026 04:40:07 -0400 (EDT)
+	id 749CA6B008A; Thu, 16 Apr 2026 04:41:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DED36B008A; Thu, 16 Apr 2026 04:40:07 -0400 (EDT)
+	id 65F8E6B008C; Thu, 16 Apr 2026 04:41:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC73A6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:40:06 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3D979E4548
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:40:06 +0000 (UTC)
-X-FDA: 84663771612.27.37471B6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 528948000B
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:40:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FRGv6TDd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 56BA76B0089
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:41:43 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E560C1A077E
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:41:42 +0000 (UTC)
+X-FDA: 84663775644.12.BC41AA7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 38C71C0008
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 08:41:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m8uzB6ao;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776328804;
+	s=arc-20220608; t=1776328901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XuaF9MfsKfhmQouDFWM+lht7083CLnGsSoDaijTTrbI=;
-	b=FULB7YRDONVOLiMjoQCWpwX8rUGjwtXeFEDv7Mh4rwXuYnv38caOLXmgNDZYlPEBFxHssW
-	yDl0B4OZFPOMUksC1z1+2KVj2JBk2S9CKuETDWHTICT89nYHMXoTAV37iUtQNqa29J728+
-	zVaCnMVdupnxzCXPwOzc9djqoExdCLY=
+	bh=SxYLJPMw/cHOX0IjxfgYAsQLDoqqt1giCCW4+4R3ndk=;
+	b=y5pS3AKottBoEAtXs4NRHU3AqrtF63Jqcubkl8aNJKOnVWOlU4kmmbDwp3PUHZid+VWuWh
+	qU0QtOJqC+coLyqzxX/Cy+osR3QpOEgIcheCwhKp9oZNfN6lBC8oBmhA6wgKK111Clupyx
+	CHgogot/XuLGO5t5VUQf1BdhMDPAcPc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FRGv6TDd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776328804; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m8uzB6ao;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776328901; a=rsa-sha256;
 	cv=none;
-	b=S5jT4ZYvnb8FOe3Fye+jUrc90dKiHU6yEOP8asNaSDttbiPRdX17/94Zyqr0buvSYGofZ6
-	/ZEoOgzDUIKlcwqLVsC9O1P8RKjvp8K9qQqMTICSXdsEo/Edp4gkr2RF2bEkt1ZInhlmLX
-	gTJIELJYjJvPgNhj5sJ9SR1YEPoJPN0=
+	b=aMjA/EVyzG7udoxiw8TZqG6togd70A3gr6btf0YaWF+WbSLs3OC9YGRTt6VkXSWusAkV8W
+	Tvq1dCU7E9vpI6BfkicucBrZ815q/fVwWmtnbwxU2ghbTagktRbFuQgZ8FRK8HLGxc6hoq
+	avOH/XPykiH/qk+9TWrii1jvX5Hs30U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C643F43784;
-	Thu, 16 Apr 2026 08:40:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96C4C2BCAF;
-	Thu, 16 Apr 2026 08:39:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 89CA660127;
+	Thu, 16 Apr 2026 08:41:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B90C2BCAF;
+	Thu, 16 Apr 2026 08:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776328802;
-	bh=qoCcvhCddFl/JRy2cur4v0b/BY7NeK62mPtbEGaij24=;
+	s=k20201202; t=1776328900;
+	bh=c0z/MoObpI8cPfFzZtMALrrcSJEqfu6jvTeJkX5JR3c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FRGv6TDdb/CbTs0XqVEWfWFufNO6r11Sec9GNZCu99m074cH+9gDMKx7EQ9tMQXBr
-	 OnRF/W9n//CCRHlK5PsY0adB2obxDy/gafQUEoS1jqc49gRe9eUslf+dK1p6MCuU8u
-	 tNU8US+6mfWjCUyeg6jrteBEwdQurFTU8bWNXfuqjQApqOwtM3boYCfOqgAsSMhuXX
-	 0xKKg0xcWwkoiM9B9sGTLwNZps5/PB+Z1zmmPL5P/zaNKKUjIXPMhJPRZyC3eK3HPi
-	 7QPSxFZkflveXtdsasyl+8jWzH1UfnZa2eo3fE9f5lHmsNVU9pjx3OAreNFQRhfYiJ
-	 Ru9sNP6eyUrog==
-Message-ID: <a88aaf79-ad64-4529-a86e-b94fc8fa9b27@kernel.org>
-Date: Thu, 16 Apr 2026 10:39:52 +0200
+	b=m8uzB6aontBX9myMaBQgETnsDXUxhNDVlPOYhtHR/Mt8YXc/baoadpkpS95McrUBZ
+	 NeAMZKLon8H/OGIZ701tJ8HOhCe2u/FlReE+KS8mt6vb6ycVjN7LasfUYZzs2oYRnM
+	 uiYNypO9OnVJhUT90uVDQ7xH1Hvgt84/WTTQfB6KITXH/uiC33mVUha/PLd0/weUHW
+	 p6ZOkobE81TK21rC2lnoOXWmuBaiviENshN2v3tlwCMEwcxSUPVwdhXha6G5QcYdVU
+	 kmoVRTUIRtDH89/syJOel/b8rgIkLlcCk7aluHi25oRpoJgq8e9+UJgG5MBlEjOa3/
+	 nJUeVafxtdZ5g==
+Message-ID: <d148375f-fe17-4f28-aec6-9732058fc3ab@kernel.org>
+Date: Thu, 16 Apr 2026 10:41:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] selftests/mm: run the MAP_DROPPABLE selftest
+Subject: Re: [PATCH v4 2/3] selftests/mm: verify droppable mappings cannot be
+ locked
 To: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
  vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
  jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, shuah@kernel.org
 References: <20260416033939.49981-1-anthony.yznaga@oracle.com>
- <20260416033939.49981-4-anthony.yznaga@oracle.com>
+ <20260416033939.49981-3-anthony.yznaga@oracle.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260416033939.49981-4-anthony.yznaga@oracle.com>
+In-Reply-To: <20260416033939.49981-3-anthony.yznaga@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 38C71C0008
+X-Stat-Signature: xffbaaqfwgp6g6bwk4869cdgnecqkcc4
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 528948000B
-X-Stat-Signature: mqm8i1egbyjm43t1wpeuqpps4xrffg84
-X-HE-Tag: 1776328804-332117
-X-HE-Meta: U2FsdGVkX1/jQxli3/YGGb53g4UHVVYm3zb3ZJrKHp0XsrMAlU/4uID2TTXb/U2+5sQrVSe5ibW/N9HTYogJFE31WNhYkifQpkx0q6jnO6mbom+hBcG64JiK3sttEyr1ZUq4VGiZHDqeF0tV1Yp1OjaBZH02GfsrF+5ot+CbIGnSmeghzscfkYtOI/7lWTSeIJdeIFXEuZB0OCUnVsm3wHp0ncrlwbmzDA1063+oSJmOrtPjeYXDOGwXBGYDibR3gIyd3j2cXHFPDyeWGK1YT63A49cvftSbU93UOevqyPrQFIu+/UeiSBCPPgiekJ5DbWE90AeuRQZSB8rpwMqNW+I8B9CFL7uFk0lno21+jTka+CWbwivpv4gH72fnWAtw6WOCdkzaEOSvU/HOl1NRW0EqqcNMVR5xPnuaOTadvVDpyzFQYpiBO1Y0enbqpp/25ztjCxuFQb9rQcx3yRBNAahTGBqdY1zjb44se841UKQSmc49ryJ4R+HhV/jf6GSnLFJ4ClsLQDcnBvY1K9G/xxxeoR/jgTqo7JNqgL5yYb/pTZnkeM+vOua8bM6QdCjdlVrq4pJpG3Z1UIwFQ/fm9atxzRONU3bh5wS9on8wbzKX7naeOCEB0n83C2P26rPUxEB7fJJgt5i+rQqdZxoqkfBSkDUtMSIx3A4GNN+yF7XShrmiuS+KWHTWKqqKzyFwIXO87zVUeKcwNzJzg0Kp3DYuh04CMI1N3GWzx+BbJCQM8sDc2m1k7RmcK5PsqkC//Y3fQ8kMqGfJfIPByt4LXC00p8y+5ng6OjKnyhFg0/jqadPxQ/2SUTSDK3UxqF3hS6FLgpdMLeQzRfmH9j10xaGyaMC0CpI8pZC1aGw8TZI/UYaNDrAx5Rf+ZSnGyQPc0x93Hd2A9xDUYgPw2Rkfmx1oSDH3GYOYvfyo/uAuhdX3PxwcMsFXIQc7g3kjYwJdpuoxGUoaOD4KLpoNNkC
- Iil02Okb
- UqHQReAIDTUbMCp+y46v5ZQ5Dcw1l91qufE8gtOifVboKLjQUOjksKwJ8gx8QikQEfv6DrkbkTD5nlOc0aLVuDdEQgkreq5rhgToYtMCdaNf18RPif+0+0omVIV+LgSYXI5ZDHMaXtvcjuOnctd6r3o6OYZdMZ6xTKdDQcHPwDzO5Fw79reg3yCNQ3Pwak2VEtgkD2KM8Xyc6jWZfs02CudxEP8mQT79qxSMaCWawGP4xuIZFw3ElOVE4HkZwFWxRbNWOtv5lOWGO3iB8vY85lOEl6JSIobo2mz0E239+5/abJMq90n7q7XvCmldVoCa+gU/hviU8KOml3Kz/62MovkouXuLRwvwh8F+T
+X-HE-Tag: 1776328901-114944
+X-HE-Meta: U2FsdGVkX18ozyDu9LEj0JAlcvFcrfwt5obX+JRJm5Xni9Q5KWHNO3RJNjcnWGM6GmY/pm4xUgLvCSeRND7YulEVpA+BjSgAT56SvPL0PK7CdmwcWPiNMilJ02CdosocbWAomRFPDrYUXnGicMNLEoSk1FcXS1cdilLJ5YwqG5PIgYZu2Cx1GLuf20p0JH20xPfH3+/bn/FPhmhuol0e9qMK3426U4H2Rm2cj6YC9nBmB92tqcnAldSCdui+Ekv30tEVWDes7Ojv5eSS2MEOS7Cg8A+lpnwtiVJ8Tp9g1eHZ2ck5z8f4Cm7X79Lzf6WlX5a54DyfLhHv0NV8LGbbWKqEiFjqQeQORCOVWbXfuMOBEJPYw189ozR1Y+7KNj1qC3tXqxo9qrD5GJEggtybY5aSiCnbG9V+czenH9yw4tDHPVju2JEkasULYaO/9YRj5MKj4QGLsiFIAG/4YYKYavclBqFH9PqLeNHDnJRvqkFtXZknYC5ZVCcj1mMXDaTKV3bHsVk3b6JRxoD9PgethDstX7EXD1e6H7d+Bkhr2P7NwmI5HRVq8go7iIhW85edVnoO76HqocEKXhrDgDFImR2kdv+eK+J81bPQcaAaZ/MO+7FmoIkqNXqnJZs6ufEosk14oMF3uDa/DdfYTUYffcsJcO95V1K+2pgoaq13588DUePP42fq7dMx+3Zk2WOxDrvglK/2VbGKptDfuLGAgJadeK8pcxeWkE6/IvIYrgKXv+kxgW22kQQLSiZ8Mj1r9Q5qRvMXXArLFgPpDVazRkFx//VfSs7ZxWH/6Oa1i3G5P1FcEZydAyJsge+amPLNt8r4eAkEN+BV95laXtnAGIs1yc2Bx/oVQW/UR/KTRoQYKxIiVQ+6TmRkoLylIIoPithE5DZFyYXgUKOYvQikA/tFs3kUh+ZwJEnacLsM+6T3KnPIHeIyOrf75297BE+ZLDqxuiQSTjkI8qe8Iz/
+ 7cwMJZld
+ Fs6f/cRzAAmcEBiWy2KRXHkKUH4BfLy2Ko3C5MB6rdlwvaBoGEUmWOH9KKVBg6OoBLA7LWAfQRAa6dCoEi6biXR1CCvBrZdwAHRukabu106yhcJS8EcPVj1NMrWLeMvvmWMPh9FyEVi2FNFLrrh4rqodm0goSJ5T6y4EcbIFD6kbmo2hoNsWe0M2Cnd409s1FLu3FF45X4ysEaMdm5ARijRtuifksP2gy7B/+MVqrikfS8XXRR0EUndrJeVolC9bBtVTYZZ03yRCaQod+Bcl/MaJkNNg9lm2fLKqeyC28Rlu2tsF4AazULB4rF8jlerj4IEuDQxc9HmkyNISMl/qBAYsWtbRnw4GqrPg0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,59 +142,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/16/26 05:39, Anthony Yznaga wrote:
-> The test was not being run by the selftest framework so it was never
-> noticed that it would fail with an assertion failure on configs without
-> support for MAP_DROPPABLE. Update the test so that it is skipped instead
-> when MAP_DROPPABLE is not supported, and add it to the mmap category so
-> that the test is run by the framework.
+> For configs that support MAP_DROPPABLE verify that a mapping created
+> with MAP_DROPPABLE cannot be locked via mlock(), and that it will not
+> be locked if it's created after mlockall(MCL_FUTURE).
 > 
 > Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  tools/testing/selftests/mm/droppable.c    | 9 ++++++++-
->  tools/testing/selftests/mm/run_vmtests.sh | 1 +
->  2 files changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/droppable.c b/tools/testing/selftests/mm/droppable.c
-> index 44940f75c461..30c8be37fcb9 100644
-> --- a/tools/testing/selftests/mm/droppable.c
-> +++ b/tools/testing/selftests/mm/droppable.c
-> @@ -26,7 +26,14 @@ int main(int argc, char *argv[])
->  	ksft_set_plan(1);
->  
->  	alloc = mmap(0, alloc_size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_DROPPABLE, -1, 0);
-> -	assert(alloc != MAP_FAILED);
-> +	if (alloc == MAP_FAILED) {
-> +		if ((errno == EOPNOTSUPP) || (errno == EINVAL)) {
-> +			ksft_test_result_skip("MAP_DROPPABLE not supported\n");
-> +			exit(KSFT_SKIP);
-> +		}
-> +		ksft_test_result_fail("mmap error: %s\n", strerror(errno));
-> +		exit(KSFT_FAIL);
-> +	}
->  	memset(alloc, 'A', alloc_size);
->  	for (size_t i = 0; i < alloc_size; i += page_size)
->  		assert(*(uint8_t *)(alloc + i));
-> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-> index d8468451b3a3..e1e355d50e65 100755
-> --- a/tools/testing/selftests/mm/run_vmtests.sh
-> +++ b/tools/testing/selftests/mm/run_vmtests.sh
-> @@ -382,6 +382,7 @@ else
->  fi
->  
->  CATEGORY="mmap" run_test ./map_populate
-> +CATEGORY="mmap" run_test ./droppable
->  
->  CATEGORY="mlock" run_test ./mlock-random-test
->  
 
-On my older kernel:
-
-$ ./droppable
-TAP version 13
-1..1
-ok 1 # SKIP MAP_DROPPABLE not supported
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+LGTM, thanks!
 
 -- 
 Cheers,
