@@ -4,89 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 251EDF433E2
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF30F433E2
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:28:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B9936B0092; Thu, 16 Apr 2026 01:20:04 -0400 (EDT)
+	id 9D41F6B0005; Thu, 16 Apr 2026 01:28:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 669986B0093; Thu, 16 Apr 2026 01:20:04 -0400 (EDT)
+	id 982566B0089; Thu, 16 Apr 2026 01:28:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57F636B0095; Thu, 16 Apr 2026 01:20:04 -0400 (EDT)
+	id 870DD6B008A; Thu, 16 Apr 2026 01:28:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 441A86B0092
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:20:04 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD4611A0779
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:20:03 +0000 (UTC)
-X-FDA: 84663267486.24.DCAC4C6
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [118.143.206.90])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A1484C0006
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:20:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
-	spf=pass (imf28.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 718436B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:28:01 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DC8948C39B
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:28:00 +0000 (UTC)
+X-FDA: 84663287520.13.CE047A0
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf12.hostedemail.com (Postfix) with ESMTP id F2BC640004
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:27:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UKVBvJdm;
+	spf=pass (imf12.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776316802;
+	s=arc-20220608; t=1776317279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v0PEnlXukZrm7Z+s9KPrQETPAxibKFw1lTW9SYEqsNs=;
-	b=r88ANYx7IpuT1XQRsRXWJUaBQvSq34zQNcAb6wdeEjHvZK/tLFBSwjBDabLt5TfZCCI/Py
-	vZ54JFDaENwVrEvNFHGgAv3WM/jBSPK12mcm/neMQtPN3WeuxF9ApRnNjSvBUrv4ysAj/o
-	HGxn+iG8EGB18qp296XUhcIVVHIafm0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
-	spf=pass (imf28.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776316802; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p72YAJlXun4KRmB4NWfj7l+RbQybeUrM/jVB+1XMQZI=;
+	b=OsJK26dyyMy+gJSTWTev8vcUzkiOyxlq4p1LSWYZwojtppU4bcYbAv/PVE2CeBj+2JnZMm
+	iGUs8NiPV0hTg5qPgm+A03OogIC/PEG74DY66jQxFcB2OxSKk38MPHkY1M/Y9lB5RppSpA
+	F063TXR5hbepTsEUL7ebssvQbzGug1w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776317279; a=rsa-sha256;
 	cv=none;
-	b=s6chFtk6jkWvZT8MolSUHXPcVwcZcq9or6VXOoNTKFkolI5sZBA4T6pdC0glSanDyGEG+3
-	TFxuFgJL0mt02aW6yjuskCj43fvhd5p4Y7ZZreo1pn0xtODN2pkmPOE2WdEjIk9M3dROJB
-	FovX1YPUGTnt6MwqHI1IEYiT4Xo06Nk=
-X-CSE-ConnectionGUID: v/PXY4VhTIWaR96mBjcK3w==
-X-CSE-MsgGUID: s58fslSvSIaaNkgbrIB6UA==
-X-IronPort-AV: E=Sophos;i="6.23,181,1770566400"; 
-   d="scan'208,217";a="146821715"
-From: =?gb2312?B?uN/P6A==?= <gaoxiang17@xiaomi.com>
-To: Donet Tom <donettom@linux.ibm.com>, Xiang Gao <gxxa03070307@gmail.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "vbabka@kernel.org"
-	<vbabka@kernel.org>
-CC: "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
-	<mhocko@suse.com>, "jackmanb@google.com" <jackmanb@google.com>,
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "ziy@nvidia.com" <ziy@nvidia.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: =?gb2312?B?tPC4tDogW0V4dGVybmFsIE1haWxdUmU6IFtQQVRDSF0gbW0vcGFnZV9hbGxv?=
- =?gb2312?B?YzogZml4IHNwYWNlcyB1c2VkIGZvciBpbmRlbnRhdGlvbiBpbnN0ZWFkIG9m?=
- =?gb2312?Q?_tabs?=
-Thread-Topic: [External Mail]Re: [PATCH] mm/page_alloc: fix spaces used for
- indentation instead of tabs
-Thread-Index: AQHczVin8cJ6zIqEdk6/BznFxOZCYrXhJpd+
-Date: Thu, 16 Apr 2026 05:19:57 +0000
-Message-ID: <5456c776468a4cb98fc24fbded24e441@xiaomi.com>
-References: <20260416021945.682234-1-gxxa03070307@gmail.com>,<54b0f31f-6720-4e39-a182-ba11948cb024@linux.ibm.com>
-In-Reply-To: <54b0f31f-6720-4e39-a182-ba11948cb024@linux.ibm.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.237.8.163]
-Content-Type: multipart/alternative;
-	boundary="_000_5456c776468a4cb98fc24fbded24e441xiaomicom_"
+	b=qG8PXzYyzUKLH0flDgG7JyS3i1Ef3UeE010xBcCpDtriJ7Vg6Cv9yHH6cxPaxi8RSwm4DV
+	hzixsYeRWS3w8n1WpBtNFvUO61hVIAmeEUWgvAHE+zuFI39kOL4+OhoszqKT9gxshW1sV3
+	F6uQIxtdxcN/UN4gEuYDsBM3w5D9cPo=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=UKVBvJdm;
+	spf=pass (imf12.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a8fba3f769so34585285ad.2
+        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 22:27:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776317278; x=1776922078; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p72YAJlXun4KRmB4NWfj7l+RbQybeUrM/jVB+1XMQZI=;
+        b=UKVBvJdmzHFKClppC9QX6NZgfxFK4PX7CnY5SjYyv1aYd9zdJ90bi4ZZB+b0HzCNLV
+         +g1Cb622oGVAiYRTMNiYX3HHhMPmRm5kw7x0HLVyQgJF2GVNRvVohrWwEnNEDpn5SHer
+         EajqlQzP4P8Ar4cR2TvwcGWRxA2gMIldUeVgQ4PekNg7989dC4sxpDOarShQWrrA1RNw
+         XoW52Ydm/sdg9g9NI23SArifMrCOyrJodFdCHGM2zF31VPt7x+OGaaaiww5WchMXG1AC
+         vuPAdL79gPfoiQj6f6Wrg6Bv2AGxKnC6fFeRZoWzESLTWGlUh4wG2jYTT1R9xpqKnb5t
+         wp9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776317278; x=1776922078;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=p72YAJlXun4KRmB4NWfj7l+RbQybeUrM/jVB+1XMQZI=;
+        b=kkKy46HZK8drgu+Plf4524Ho1TxQ2GxMb7JH2TU+oSqPoSck2uKPR8MgB7Xrq7YJVG
+         ieTzI7ROXqg6TsOpo/nActUQAGms7fBxoZhKgaKKf7DEqB48GGJgoctcusTlI3mPPlow
+         R9iPj1/HJ+AozWxJR5ASFUl9/TDTWEfrfeYqI3tE2tyEN+pUjwYXA1LuyEDDd6qc18qE
+         nmvic48As04Lb8fYCd4usrQ00OloCLrczFRm4EFzld2dsr+3OMBz0Vg3Aysv0eIeiT7W
+         VZJUYY4RqqtRcQRcELzPVZnwhXQegP0mx4Q+s172zeuanCQ6fK/OdFUJrfJwaaIkVQIb
+         Cg8w==
+X-Gm-Message-State: AOJu0Yx6++3Feoknr6+KUBfg1SoX9SeGj4vqt8UcZv1cABdkwpPjd/cg
+	Tgsur3WAKGPOmsyYjWFm8rzs0vklJoDplejoYWimktBUpTUzGkCdOgyn
+X-Gm-Gg: AeBDiesOgpqgRoB+vRvuYBimbPr8HNkfr8YUmNqpZ/4bjq1dsyy5WNM0eszThKkZNn+
+	YhyCnnwYyyO2iiZx1S9P2+eqjvdKN40ZzhKeTxFSSBB9VNG8Fv7WEQTpxQJiLu4YtN0c9fDNKc6
+	Dzek9y2pDuA+v2Q61j1qxWYNdexJy2EeAHcBzWfiUQNb+BE6DjLzwmesXo0mtDf3OC78Km17LpV
+	NoaA4oJ8H/KI7j4ibeIn6EqwBgIZRQfDvh7KIwvpuxycJ7htDktOIimJWJB/joBxDJGVczpzdfo
+	VuCnWBq9wwouAPKoBSH9O51/R/NzatHhLPthtqfmU5AFtmtthFLkYM4R+KTzHXCvnCuEzjN+FgY
+	PB4Z4bjKDnBPlBo6TqPvG79RDk7nvrV7+l9+E5H5JgrQVzaL89m2QgqZprJNHHx9Ym4uVr/8ZbA
+	fol0KEubPJYqj+1/0/90mqM2A7uKBUkURx
+X-Received: by 2002:a17:903:3c4b:b0:2ae:ac0c:5a2a with SMTP id d9443c01a7336-2b2d59433c5mr255006405ad.6.1776317277602;
+        Wed, 15 Apr 2026 22:27:57 -0700 (PDT)
+Received: from xiao.mioffice.cn ([43.224.245.230])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4780efa5bsm42811275ad.10.2026.04.15.22.27.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 22:27:56 -0700 (PDT)
+From: Xiang Gao <gxxa03070307@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	donet.tom@gmail.com,
+	Xiang Gao <gaoxiang17@xiaomi.com>
+Subject: [PATCH v2] mm/page_alloc: fix spaces used for indentation instead of tabs
+Date: Thu, 16 Apr 2026 13:27:52 +0800
+Message-Id: <20260416052752.713821-1-gxxa03070307@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260416021945.682234-1-gxxa03070307@gmail.com>
+References: <20260416021945.682234-1-gxxa03070307@gmail.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 179y63xn1m6wfc3tqc6pkgcrdsgtwb1e
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A1484C0006
-X-Stat-Signature: u6wuo6ayouoq41ywoznjbd84t9uznkf6
-X-HE-Tag: 1776316800-833419
-X-HE-Meta: U2FsdGVkX1/nL7VPWpio1geD+8xdHqNdRJljbXutSRL6uWye06SpOXdPrwqnO3hakaaBPjQzV1P55mYzL5wUQ4mhtcShiV0a0FHzWv8VLe4TLAOBGpLLcCfPRH52CEgbpssgwjj5xo4nmPf/aU3FZqJMzrRCjyUZNkGJYVAX5J6n/7JPU1HkT57TqPFIEX0YzTVUnvOlyjbsTqPyINET0f7dvqEh6qx9NebpWrbhpzlDc0ePy96cnkQxgD8+abh/4a7ntdrGn76bjXskHEr2WGi62vMUZOYX2v8b4rF1e8sjrR48cYG0jTHP6SqK8unc1X0ko61yjRxW7i0wnJpSKpZAapcR7TELAV5jkMhBIX7KH6S84h5WNFQ2RQrP5K7dphpneNdzMZ3fRA/voFnydjHIkPOluxRY+WB19SaF5JKImkLZyLRmZepquGaLXdKnLS8cGa0X6lPWgdCFz+eJ4su8cLAVDIgtCCNgsSxFZhZO7cLcaWlkDw71jYQBR0DAOWdBiERvsLmc+rhBRxPpKNoCFqIdyIEFwGBEuYXyBy8ASb1kFB7tfpS4y0akvuVtOGQFJTaSMJd4y2/nVwPMTkS5Zae5o2S5Qv8bffR2TeZkXTdIh3rQrzBbZ0Xx9iVB6Dxzjm8Hkzx+TCQdtd1DJshgYPZ6ALiuoqcCGoEd1AayZzTkKy1s/POYbioqkuAvt+DhDij3Vvk6AJRKsKtJBIznYDFKaGNbpZzr7iaQPcGBVUT2Zeqmz3UEAZaI8UcN+Tju6d+puk21xCwCEE4xE00na/thDZvjk8Abq04CoW34ww+zb3I0CT9KBCyfBuf3uE7pAVc+FkH8BHsN02OhSiNcXq2H3Eiyt3oPz8aUzevqmJEN3f2OGFhzeJiZMmqYSXQFV6NYUH3i+YNeJVxafcevDi7x9ayzI5yC+OcAmBnfvLD6ERzehUJLIdPZOCngPi+7cYVcp2oG57Azc7w
- yrDO7DAH
- uunyoTLKkwEFOuD5qLzYAfUubfdKCPH4m27ap1Kz+DSLU0+yi2Szv8afHRzj9EC0ENNP/2t5TngEFVWjHGy83e2/2fLDk/xk4BV03F0IuRwOW8LI1C1udH3YsvPn8s4BSx5V7rSTCbp0FWTaVAzEbV39X+fiSAXCAjZf56S3nluyFtu62PgdcwTELznEXXqjPOg4ZsJkGRJTMa0pvURxAFxm6s+5gd9g9TQLPb4WIgwSJ5mneKKLXxaZd37B6YLntcD0rSAowiBCZCPh/ySOWyvgj5B+YIh/shcVM/efbIUWPPCnRj/963rdkQwqCHYe/1I3lWkkL7mlwPG9qGjuh/FhbRXmxolI3hoczsWcmBKlX9h037iUoJ8j8WsCdUhCGhytgxfrjYaNsAJuDAtda1Yos/yHxt9Kroej788WuMzTfguXaFofsLjxSfdepRKfHWV+Sr4InAF992wTErL2R/9Otu+e/NKiTHSl5R1+QpM7VKePJr+NuGh+BwtBs1pDbq7LMTmWrNPGQA8sCXPZyRIRYR9s1E7PkE95qtJc8g+d5EVQXZ7maPNBhHES9up1QZTfV8IeCMcRhKXOJgXHgg+CO4obW2TNC39vfQlpoN81AZuyaTfztHU8UZ+r/w/q1fD3cqAVuz7rygbIgWBnXjb+jByElLBj5VjU0CUycS72LmCKFuM4MkUrt3ctHkznZsnjPqAqVTN6WCbZGJPNsJxOl4vCRw58cabkiUB1kh4vVi76Aei5jNTHIzFMNqiHc6PgWWUFKgQpEcFk=
+X-Rspamd-Queue-Id: F2BC640004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776317278-888498
+X-HE-Meta: U2FsdGVkX1/Xtk649PwHgR7uMzVbx0Y5/3h7kv51neRusy1PjVczSv5htnL3N5mpjTcj/OuugrVzOn752UndpkVVk9Kq7jISdJ13hwr70UtLCr4DujWa7apP9x3r9E5WqbCse3VAb4qJWAW6Zw74kr11tZ+66ghlDwzakPdRUDtPnqG2q6FoPLzP14VNS/H6ZZ6Qgox1gHfhnAld/HPIf7OcFMXOlRBHcyyV0nUzhndWoR0Hz5ETObiTRe9DKm+3EVP5ujQz0OXGdl8nlVCgFqShF++D2DSiO9Ik/zSw+vIlZkqrxJcsDXh9JMYDIjdAsv5yVLkpcJtN84LEloXIPYbrvzStc28rcmtrfnonJRF4/Q8Cwx6/D5UvRN2Dhtr2dRCwZZslTjQNyZzxurIw5TPnTwveFSog6J7tQ0DMfvP5KFS+K69xwQMREI3dI7jN4PPuyWFANZYpRc4bpa8b2MXl7krkykftPWbs4fd1NW2g7CeHKEiFAQvZecQZsIJa5zNwQuLzi/EDD6rWZH6twnPy4UZnX4l70nxZtYAQf5wpKzsIdaled9Ol19I3RylSMON+moxDG3dJ4Vd4+ktQ7qVsqhKXL7vJMY0teJiRtUrdtwAA2Q1p+olmvhjKfuBoUHjznmCzkBqNlLzNu5egBMtfd0lkHHUnVccCkOItptnJR9t2xkeKJlVSf/VgR94z2MVY3rgBZ8uCE2t+tLxIOplDbvNf5UHP/yh+tT96+XUg3sL4c9vs3QTwji9bL+l/Ss4hshl/EGIMdaNECZIbSodyBJdBo3Ae5fPI/6XRUI77+y7EZ+sQQaq4LiTxCnlGbvrW8hhYfYDid6C1H5OYYiyeG6clZpSl9Z3bjhaEWVaW1GNC8g/pb7hGjS0nR/RcnWgaMdkC7UG+hwPpQ0HoC05Q0E4EPbeOzyOdzKJUKHb1qtDqP/gjcfNpcAaMYF7uBstWZjdQd8wZxLmC3mt
+ b1/J6YKH
+ MkoVtxjHZsB3GcFhLBV2MZRCH6czM3UtKvR3gLPngTGb6fRlsc0CPPjcT6SbgfJkpRFecZL3jmUtMaf0LzA8te6Nyp998yw+WhzTtKpoC4mOXQGDE4bGcACC5yqXvas/2QJl8+2mSP28tahKQVkrPQOsDBy0bkt9EFnf266O7wSi3aRDZHBf8GQpEBWB20oCjp0Rggct6He4zFJ/Apmby0t5QxdAMmbMW9EaKlcifQBVI9KrOr26q1mrA8sP11jumSzkoihtZ0uryh+37DRPVgE80Hg/K7TQg1kEe8QuPsvLjsgMcgioz+jRFTb3AE/ZQ1g0XG0hx15wJNV6l9HI8G9GgHNNZtzavPSDsQNdXZKSbHZHZg/bY+RYPnBBuNF71yHBT+GMYFKLIB+fizsJ1dLll7vKqTmVW25SrI+rKrzKb0KXD1oPkwEUdHyNWvk5gOWmqu4+Vwbpclos43xb56hoc46pqgXgJCafDjKzn8mQOgzM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,231 +118,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---_000_5456c776468a4cb98fc24fbded24e441xiaomicom_
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+From: Xiang Gao <gaoxiang17@xiaomi.com>
 
-DQpIaSwNCg0KVGhhbmtzIGZvciBjYXRjaGluZyB0aGlzLiBJJ2xsIGZpeCB0aGUgU2lnbmVkLW9m
-Zi1ieSBuYW1lIG1pc21hdGNoIGFuZCBzZW5kIGEgdjIuDQoNCkJlc3QgcmVnYXJkcyxYaWFuZyBH
-YW8NCg0KDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0Kt6K8/sjLOiBEb25ldCBU
-b20gPGRvbmV0dG9tQGxpbnV4LmlibS5jb20+DQq3osvNyrG85DogMjAyNsTqNNTCMTbI1SAxMjoy
-MjoxMQ0KytW8/sjLOiBYaWFuZyBHYW87IGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc7IHZiYWJr
-YUBrZXJuZWwub3JnDQqzrcvNOiBzdXJlbmJAZ29vZ2xlLmNvbTsgbWhvY2tvQHN1c2UuY29tOyBq
-YWNrbWFuYkBnb29nbGUuY29tOyBoYW5uZXNAY21weGNoZy5vcmc7IHppeUBudmlkaWEuY29tOyBs
-aW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7ILjfz+gNCtb3
-zOI6IFtFeHRlcm5hbCBNYWlsXVJlOiBbUEFUQ0hdIG1tL3BhZ2VfYWxsb2M6IGZpeCBzcGFjZXMg
-dXNlZCBmb3IgaW5kZW50YXRpb24gaW5zdGVhZCBvZiB0YWJzDQoNClvN4rK/08q8/l0gtMvTyrz+
-wLTUtNPa0KHD17mry77N4rK/o6zH6733yfe0psDtoaPI9LbU08q8/rCyyKvQ1LTm0smjrMfrvavT
-yrz+16q3orj4bWlzZWNAeGlhb21pLmNvbb340NC3tMChDQoNCkhpDQoNCk9uIDQvMTYvMjYgNzo0
-OSBBTSwgWGlhbmcgR2FvIHdyb3RlOg0KPiBGcm9tOiBYaWFuZyBHYW8gPGdhb3hpYW5nMTdAeGlh
-b21pLmNvbT4NCj4NCj4gY2hlY2twYXRjaC5wbCByZXBvcnRzIHR3byBpbmRlbnRhdGlvbiBlcnJv
-cnMgaW4gcGFnZV9hbGxvYy5jIHdoZXJlDQo+IHNwYWNlcyBhcmUgdXNlZCBpbnN0ZWFkIG9mIHRh
-YnM6DQo+DQo+ICAgIEVSUk9SOiBjb2RlIGluZGVudCBzaG91bGQgdXNlIHRhYnMgd2hlcmUgcG9z
-c2libGUNCj4gICAgIzg4NzogRklMRTogbW0vcGFnZV9hbGxvYy5jOjg4NzoNCj4gICAgKyAgICAg
-ICAgVk1fV0FSTl9PTkNFKGdldF9wYWdlYmxvY2tfbWlncmF0ZXR5cGUocGFnZSkgIT0gbWlncmF0
-ZXR5cGUsJA0KPg0KPiAgICBFUlJPUjogY29kZSBpbmRlbnQgc2hvdWxkIHVzZSB0YWJzIHdoZXJl
-IHBvc3NpYmxlDQo+ICAgICM2NjI2OiBGSUxFOiBtbS9wYWdlX2FsbG9jLmM6NjYyNjoNCj4gICAg
-KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN5c2N0
-bF9taW5fdW5tYXBwZWRfcmF0aW8pIC8gMTAwOyQNCj4NCj4gSW4gX19kZWxfcGFnZV9mcm9tX2Zy
-ZWVfbGlzdCgpLCB0aGUgVk1fV0FSTl9PTkNFIGF0IGxpbmUgODg3IHVzZXMgOA0KPiBzcGFjZXMg
-Zm9yIGluZGVudGF0aW9uIGluc3RlYWQgb2YgYSB0YWIuIFRoZSBpZGVudGljYWwgVk1fV0FSTl9P
-TkNFDQo+IGNhbGxzIGluIF9fYWRkX3RvX2ZyZWVfbGlzdCgpIGFuZCBtb3ZlX3RvX2ZyZWVfbGlz
-dCgpIGJvdGggY29ycmVjdGx5DQo+IHVzZSBhIHRhYi4NCj4NCj4gSW4gc2V0dXBfbWluX3VubWFw
-cGVkX3JhdGlvKCksIHRoZSBjb250aW51YXRpb24gbGluZSBhdCA2NjI2IHVzZXMgNg0KPiB0YWJz
-ICsgOSBzcGFjZXMgZm9yIGFsaWdubWVudC4gUmVwbGFjZSB0aGUgZXhjZXNzIHNwYWNlcyB3aXRo
-IDYgdGFicw0KPiArIDEgc3BhY2UgdG8gY29ycmVjdGx5IGFsaWduIHdpdGggdGhlIG9wZW5pbmcg
-cGFyZW50aGVzaXMgb24gdGhlDQo+IHByZXZpb3VzIGxpbmUuDQo+DQo+IFNpZ25lZC1vZmYtYnk6
-IGdhb3hpYW5nMTcgPGdhb3hpYW5nMTdAeGlhb21pLmNvbT4NCj4NCkkgYW0gc2VlaW5nIGJlbG93
-IGlzc3VlIHdpdGggY2hlY2twYXRjaC5wbA0KDQouL3NjcmlwdHMvY2hlY2twYXRjaC5wbCAtLXN0
-cmljdA0KMDAwMS1tbS1wYWdlX2FsbG9jLWZpeC1zcGFjZXMtdXNlZC1mb3ItaW5kZW50YXRpb24t
-aW5zdGVhLnBhdGNoDQpXQVJOSU5HOiBGcm9tOi9TaWduZWQtb2ZmLWJ5OiBlbWFpbCBuYW1lIG1p
-c21hdGNoOiAnRnJvbTogWGlhbmcgR2FvDQo8Z2FveGlhbmcxN0B4aWFvbWkuY29tPicgIT0gJ1Np
-Z25lZC1vZmYtYnk6IGdhb3hpYW5nMTcNCjxnYW94aWFuZzE3QHhpYW9taS5jb20+Jw0KDQotRG9u
-ZXQNCg0KPiAtLS0NCj4gICBtbS9wYWdlX2FsbG9jLmMgfCA0ICsrLS0NCj4gICAxIGZpbGUgY2hh
-bmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEv
-bW0vcGFnZV9hbGxvYy5jIGIvbW0vcGFnZV9hbGxvYy5jDQo+IGluZGV4IDJkNGI2ZjFhNTU0ZS4u
-NzUyNjczYTliNDNjIDEwMDY0NA0KPiAtLS0gYS9tbS9wYWdlX2FsbG9jLmMNCj4gKysrIGIvbW0v
-cGFnZV9hbGxvYy5jDQo+IEBAIC04ODQsNyArODg0LDcgQEAgc3RhdGljIGlubGluZSB2b2lkIF9f
-ZGVsX3BhZ2VfZnJvbV9mcmVlX2xpc3Qoc3RydWN0IHBhZ2UgKnBhZ2UsIHN0cnVjdCB6b25lICp6
-b24NCj4gICB7DQo+ICAgICAgIGludCBucl9wYWdlcyA9IDEgPDwgb3JkZXI7DQo+DQo+IC0gICAg
-ICAgIFZNX1dBUk5fT05DRShnZXRfcGFnZWJsb2NrX21pZ3JhdGV0eXBlKHBhZ2UpICE9IG1pZ3Jh
-dGV0eXBlLA0KPiArICAgICBWTV9XQVJOX09OQ0UoZ2V0X3BhZ2VibG9ja19taWdyYXRldHlwZShw
-YWdlKSAhPSBtaWdyYXRldHlwZSwNCj4gICAgICAgICAgICAgICAgICAgICJwYWdlIHR5cGUgaXMg
-JWQsIHBhc3NlZCBtaWdyYXRldHlwZSBpcyAlZCAobnI9JWQpXG4iLA0KPiAgICAgICAgICAgICAg
-ICAgICAgZ2V0X3BhZ2VibG9ja19taWdyYXRldHlwZShwYWdlKSwgbWlncmF0ZXR5cGUsIG5yX3Bh
-Z2VzKTsNCj4NCj4gQEAgLTY2MjMsNyArNjYyMyw3IEBAIHN0YXRpYyB2b2lkIHNldHVwX21pbl91
-bm1hcHBlZF9yYXRpbyh2b2lkKQ0KPg0KPiAgICAgICBmb3JfZWFjaF96b25lKHpvbmUpDQo+ICAg
-ICAgICAgICAgICAgem9uZS0+em9uZV9wZ2RhdC0+bWluX3VubWFwcGVkX3BhZ2VzICs9ICh6b25l
-X21hbmFnZWRfcGFnZXMoem9uZSkgKg0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgc3lzY3RsX21pbl91bm1hcHBlZF9yYXRpbykgLyAxMDA7
-DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3lzY3Rs
-X21pbl91bm1hcHBlZF9yYXRpbykgLyAxMDA7DQo+ICAgfQ0KPg0KPg0K
+checkpatch.pl reports two indentation errors in page_alloc.c where
+spaces are used instead of tabs:
 
---_000_5456c776468a4cb98fc24fbded24e441xiaomicom_
-Content-Type: text/html; charset="gb2312"
-Content-Transfer-Encoding: quoted-printable
+  ERROR: code indent should use tabs where possible
+  #887: FILE: mm/page_alloc.c:887:
+  +        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,$
 
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dgb2312">
-<style type=3D"text/css" style=3D"display:none;"><!-- P {margin-top:0;margi=
-n-bottom:0;} --></style>
-</head>
-<body dir=3D"ltr">
-<div id=3D"divtagdefaultwrapper" style=3D"font-size:12pt;color:#000000;font=
--family:Calibri,Helvetica,sans-serif;" dir=3D"ltr">
-<p><br>
-</p>
-<meta content=3D"text/html; charset=3DUTF-8">
-<div dir=3D"ltr">
-<div id=3D"x_divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size: 12pt; co=
-lor: rgb(0, 0, 0); font-family: Calibri, Helvetica, sans-serif, EmojiFont, =
-&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, NotoColorEmoji, =
-&quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, EmojiSymbols;">
-<p><span id=3D"x_ms-rterangepaste-start"></span></p>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
-t-size:16px">
-Hi,</div>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
-t-size:16px">
-<br>
-</div>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
-t-size:16px">
-Thanks for catching this. I'll fix the Signed-off-by name mismatch and send=
- a v2.</div>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
-t-size:16px">
-<br>
-</div>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,serif,EmojiFont; fon=
-t-size:16px">
-Best regards,Xiang Gao</div>
-<span id=3D"x_ms-rterangepaste-end"></span><br>
-<p></p>
-</div>
-<hr tabindex=3D"-1" style=3D"display:inline-block; width:98%">
-<div id=3D"x_divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" =
-color=3D"#000000" style=3D"font-size:11pt"><b>=B7=A2=BC=FE=C8=CB:</b> Donet=
- Tom &lt;donettom@linux.ibm.com&gt;<br>
-<b>=B7=A2=CB=CD=CA=B1=BC=E4:</b> 2026=C4=EA4=D4=C216=C8=D5 12:22:11<br>
-<b>=CA=D5=BC=FE=C8=CB:</b> Xiang Gao; akpm@linux-foundation.org; vbabka@ker=
-nel.org<br>
-<b>=B3=AD=CB=CD:</b> surenb@google.com; mhocko@suse.com; jackmanb@google.co=
-m; hannes@cmpxchg.org; ziy@nvidia.com; linux-mm@kvack.org; linux-kernel@vge=
-r.kernel.org; =B8=DF=CF=E8<br>
-<b>=D6=F7=CC=E2:</b> [External Mail]Re: [PATCH] mm/page_alloc: fix spaces u=
-sed for indentation instead of tabs</font>
-<div>&nbsp;</div>
-</div>
-</div>
-<font size=3D"2"><span style=3D"font-size:10pt">
-<div class=3D"PlainText">[=CD=E2=B2=BF=D3=CA=BC=FE] =B4=CB=D3=CA=BC=FE=C0=
-=B4=D4=B4=D3=DA=D0=A1=C3=D7=B9=AB=CB=BE=CD=E2=B2=BF=A3=AC=C7=EB=BD=F7=C9=F7=
-=B4=A6=C0=ED=A1=A3=C8=F4=B6=D4=D3=CA=BC=FE=B0=B2=C8=AB=D0=D4=B4=E6=D2=C9=A3=
-=AC=C7=EB=BD=AB=D3=CA=BC=FE=D7=AA=B7=A2=B8=F8misec@xiaomi.com=BD=F8=D0=D0=
-=B7=B4=C0=A1<br>
-<br>
-Hi<br>
-<br>
-On 4/16/26 7:49 AM, Xiang Gao wrote:<br>
-&gt; From: Xiang Gao &lt;gaoxiang17@xiaomi.com&gt;<br>
-&gt;<br>
-&gt; checkpatch.pl reports two indentation errors in page_alloc.c where<br>
-&gt; spaces are used instead of tabs:<br>
-&gt;<br>
-&gt;&nbsp;&nbsp;&nbsp; ERROR: code indent should use tabs where possible<br=
->
-&gt;&nbsp;&nbsp;&nbsp; #887: FILE: mm/page_alloc.c:887:<br>
-&gt;&nbsp;&nbsp;&nbsp; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VM_W=
-ARN_ONCE(get_pageblock_migratetype(page) !=3D migratetype,$<br>
-&gt;<br>
-&gt;&nbsp;&nbsp;&nbsp; ERROR: code indent should use tabs where possible<br=
->
-&gt;&nbsp;&nbsp;&nbsp; #6626: FILE: mm/page_alloc.c:6626:<br>
-&gt;&nbsp;&nbsp;&nbsp; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp; sysctl_min_unmapped_ratio) / 100;$<br>
-&gt;<br>
-&gt; In __del_page_from_free_list(), the VM_WARN_ONCE at line 887 uses 8<br=
->
-&gt; spaces for indentation instead of a tab. The identical VM_WARN_ONCE<br=
->
-&gt; calls in __add_to_free_list() and move_to_free_list() both correctly<b=
-r>
-&gt; use a tab.<br>
-&gt;<br>
-&gt; In setup_min_unmapped_ratio(), the continuation line at 6626 uses 6<br=
->
-&gt; tabs &#43; 9 spaces for alignment. Replace the excess spaces with 6 ta=
-bs<br>
-&gt; &#43; 1 space to correctly align with the opening parenthesis on the<b=
-r>
-&gt; previous line.<br>
-&gt;<br>
-&gt; Signed-off-by: gaoxiang17 &lt;gaoxiang17@xiaomi.com&gt;<br>
-&gt;<br>
-I am seeing below issue with checkpatch.pl<br>
-<br>
-./scripts/checkpatch.pl --strict<br>
-0001-mm-page_alloc-fix-spaces-used-for-indentation-instea.patch<br>
-WARNING: From:/Signed-off-by: email name mismatch: 'From: Xiang Gao<br>
-&lt;gaoxiang17@xiaomi.com&gt;' !=3D 'Signed-off-by: gaoxiang17<br>
-&lt;gaoxiang17@xiaomi.com&gt;'<br>
-<br>
--Donet<br>
-<br>
-&gt; ---<br>
-&gt;&nbsp;&nbsp; mm/page_alloc.c | 4 &#43;&#43;--<br>
-&gt;&nbsp;&nbsp; 1 file changed, 2 insertions(&#43;), 2 deletions(-)<br>
-&gt;<br>
-&gt; diff --git a/mm/page_alloc.c b/mm/page_alloc.c<br>
-&gt; index 2d4b6f1a554e..752673a9b43c 100644<br>
-&gt; --- a/mm/page_alloc.c<br>
-&gt; &#43;&#43;&#43; b/mm/page_alloc.c<br>
-&gt; @@ -884,7 &#43;884,7 @@ static inline void __del_page_from_free_list(s=
-truct page *page, struct zone *zon<br>
-&gt;&nbsp;&nbsp; {<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int nr_pages =3D 1 &lt;&lt; order;=
-<br>
-&gt;<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VM_WARN_ONCE(get_pageblock=
-_migratetype(page) !=3D migratetype,<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp; VM_WARN_ONCE(get_pageblock_migratetype(p=
-age) !=3D migratetype,<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;page type is %d, passed m=
-igratetype is %d (nr=3D%d)\n&quot;,<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get_pageblock_migratetype(page)=
-, migratetype, nr_pages);<br>
-&gt;<br>
-&gt; @@ -6623,7 &#43;6623,7 @@ static void setup_min_unmapped_ratio(void)<b=
-r>
-&gt;<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for_each_zone(zone)<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; zone-&gt;zone_pgdat-&gt;min_unmapped_pages &#43;=3D (zone_man=
-aged_pages(zone) *<br>
-&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp; sysctl_min_unmapped_ratio) / 100;<br>
-&gt; &#43;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
-bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sysctl_min_unmapped=
-_ratio) / 100;<br>
-&gt;&nbsp;&nbsp; }<br>
-&gt;<br>
-&gt;<br>
-</div>
-</span></font></div>
-</body>
-</html>
+  ERROR: code indent should use tabs where possible
+  #6626: FILE: mm/page_alloc.c:6626:
+  +						         sysctl_min_unmapped_ratio) / 100;$
 
---_000_5456c776468a4cb98fc24fbded24e441xiaomicom_--
+In __del_page_from_free_list(), the VM_WARN_ONCE at line 887 uses 8
+spaces for indentation instead of a tab. The identical VM_WARN_ONCE
+calls in __add_to_free_list() and move_to_free_list() both correctly
+use a tab.
+
+In setup_min_unmapped_ratio(), the continuation line at 6626 uses 6
+tabs + 9 spaces for alignment. Replace the excess spaces with 6 tabs
++ 1 space to correctly align with the opening parenthesis on the
+previous line.
+
+Signed-off-by: Xiang Gao <gaoxiang17@xiaomi.com>
+---
+ mm/page_alloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2d4b6f1a554e..752673a9b43c 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -884,7 +884,7 @@ static inline void __del_page_from_free_list(struct page *page, struct zone *zon
+ {
+ 	int nr_pages = 1 << order;
+ 
+-        VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
++	VM_WARN_ONCE(get_pageblock_migratetype(page) != migratetype,
+ 		     "page type is %d, passed migratetype is %d (nr=%d)\n",
+ 		     get_pageblock_migratetype(page), migratetype, nr_pages);
+ 
+@@ -6623,7 +6623,7 @@ static void setup_min_unmapped_ratio(void)
+ 
+ 	for_each_zone(zone)
+ 		zone->zone_pgdat->min_unmapped_pages += (zone_managed_pages(zone) *
+-						         sysctl_min_unmapped_ratio) / 100;
++						 sysctl_min_unmapped_ratio) / 100;
+ }
+ 
+ 
+-- 
+2.34.1
+
 
