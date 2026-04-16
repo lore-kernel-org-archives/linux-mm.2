@@ -4,102 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 720E8F8A15D
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 11:20:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF345F8A15D
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 11:22:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD2286B0005; Thu, 16 Apr 2026 07:20:24 -0400 (EDT)
+	id 24A2E6B0005; Thu, 16 Apr 2026 07:22:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A83146B0089; Thu, 16 Apr 2026 07:20:24 -0400 (EDT)
+	id 221866B0089; Thu, 16 Apr 2026 07:22:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 971B36B008A; Thu, 16 Apr 2026 07:20:24 -0400 (EDT)
+	id 1384C6B008A; Thu, 16 Apr 2026 07:22:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 82AEE6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:20:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1232413BAEC
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:20:24 +0000 (UTC)
-X-FDA: 84664175568.18.ACFD2F2
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0234F20008
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:20:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=G3lhoHOX;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=+rrM0Y92;
-	spf=pass (imf03.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 02B9C6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:22:17 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91E26C2A46
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:22:17 +0000 (UTC)
+X-FDA: 84664180314.11.545B5ED
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8704640003
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 11:22:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.48 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776338422;
+	s=arc-20220608; t=1776338535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LExLVuqyhTOkOVamJWb5O1XClOyZrMPwBLip8u5VI/0=;
-	b=usEc4OO6Uk6YsFLLVMU7pto6JAwweyBH1DKw9uE5PvzsJvRmuPhLTo3CM88vFYCU+HrLBz
-	Qq09VPXn53Cu3Ff6/IiHoeLEZWrxSy4nhdpGrkacVw2I9lcu0cPUc1DwIDBF8QriOMLgPB
-	QqzmbyRD9d2muqyWLNiAxPdrnr5wHSg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776338422; a=rsa-sha256;
-	cv=none;
-	b=gpvya/A3M5li/XLTSxTOGq/Q6mRpfKCj/IWlMS2vzxy0l3yuJZ4dVnjprbS1VFTfQd4lWt
-	PiLeRhIrSAZPXtGQCoEf+2p+88Tu5LM/PxcqRaqWbmgvee8PyxzbyWqCVMLVGqgBMCBzSB
-	iS0b4OLUWu8yyP52vX4XMaWOyIE1UFw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AptjVPQ97g683jPGYCmYUacoTRTAG/3/TQY5t1TSdkk=;
+	b=tmG5xtlB9lC8MRGBlCbH4gfbGXrpJn23Z1WEINdbN1xJihA0JosR6IqCEIYNtu8tR8Eky2
+	TruN6Hp6XziH2HnMMQbdyu6veMdHb97M2FJrMC2pRmhLVUl305p2GII6NwtYgmEp6r0BtT
+	3YaQYkXfsQyY64a2pVh7pAdjmVitRKU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=G3lhoHOX;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=+rrM0Y92;
-	spf=pass (imf03.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Thu, 16 Apr 2026 13:20:17 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1776338419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LExLVuqyhTOkOVamJWb5O1XClOyZrMPwBLip8u5VI/0=;
-	b=G3lhoHOXFvu2XsLZqqBxwQ2aeouAExJvErpcyfstcq93MsKzpwePMU43HG/7Smdqh2eVLN
-	S9N0K2FkueMkGcd2PERsiyQKO973JEAOFgg0oAlBvsDzprr7kLa5a9NM+XMCfcTefBennr
-	qmIiOoQP7NijCTGdGX1eEkTKFFS605R06xRjKM4Ou+SBXlgyIDE2W6F2moUTXWs0IrLDEw
-	3V8kbH62mWMw2sY2Bd1pCZeayUAgH9h2gSPC6EyZ1hZqZPiKgYlv5atGvLdCBOhKtkLxiR
-	DQfbyjqaHZWOXZ3Vj3+tmppceARSYceRRMmN5egMKyq15GfPaaOgHJlfSCndJA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1776338419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LExLVuqyhTOkOVamJWb5O1XClOyZrMPwBLip8u5VI/0=;
-	b=+rrM0Y92oFfTPzNxgkddAmr7KUd99MKZNko+I6bymlTxZFuEns7sCvL5+MrFsVvu0tp1pB
-	Pc2kkXE0TvQ5xTAQ==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 3/4] arch, mm: consolidate empty_zero_page
-Message-ID: <20260416131914-f20c3a56-bddb-4488-b4bd-560e52ab9416@linutronix.de>
-References: <20260211103141.3215197-1-rppt@kernel.org>
- <20260211103141.3215197-4-rppt@kernel.org>
- <20260416100221-57063053-1c9e-4450-8b0c-d9783657fa47@linutronix.de>
- <aeDBw4O655-pXiHy@kernel.org>
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.48 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776338535; a=rsa-sha256;
+	cv=none;
+	b=fvg9azDY/u41hS8ETanDUJhD1vQ6Tux0QxY6mlYCGn+jjGAavdDEbWGHtJSrFUN1ALP50T
+	X/znDC/jF2WvIJ7QKZXhtQ925KF9QYUJgqrWYgFa1CW7vFtwY9ff6bitYM7ItZ403HADWv
+	zHoo2Voop7K44jF7ifJDNBz4ZcYBlT8=
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-956948531a1so1257792241.2
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:22:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776338534; x=1776943334;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AptjVPQ97g683jPGYCmYUacoTRTAG/3/TQY5t1TSdkk=;
+        b=U/MQZ/YIFgKp5dKkC9Yutnr5DRabW31QQMrDCy0u0Scb0tarrUnNAPDrFpzZPo+Laf
+         jmlyHyBwbEC/rOdnRoagE118rGbWrFtCseZ2OLmiIOMmThsRWEiEE/8xgLZjGeSWLBq1
+         2iY1ZBvY2XqH9dm6QoT2jKyY8OcDbmrCbvKAri/Ky6GD7Ac400kyBQ3JFqGSSaAHHjeH
+         Dwx5Umj/RANnlCx7g3ZsgKVtnP9dXuHxaVUyd7PnsFBRM2tnCf8EFvhfFaOSXBBXLLu3
+         +CqnJIgiQLL0h48+Ar3toesLEDz2zFKLHnbJTt7G3x5cOZHkD8f0mJQZvbgI9XRNmofH
+         u26Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/zBqUmKQHktHSYiKjenoSzqVY60JttiWzOGqjev9xmTv3NmUWhUymOJpD2/hbhtcFBXeolES+iXA==@kvack.org
+X-Gm-Message-State: AOJu0YyuAjnqsJLpglm/fEbl20mkJgmMvXV2u7K1gILr0eVH+ptbqHpM
+	fzs4y30W7F1y3NOZCZK0H0rC/briV6i5EIFsLLwmqJP0Up10n46h2VVGrIFgZsXr
+X-Gm-Gg: AeBDiev1pwXCqVf8B12B1IT9Qwn/Rl8Kln9VNcm1x93YFk5GWCOVri9lZhVBXhQnP9J
+	BLg1+8gdld9v89VuWxMivmie2lAOMo0NIbrp/PitH/SSjX8fV9iMrlg/i342MmW3X0T3K0GqX1s
+	HemLI/n+cUzF0CkGvz71LEoXs/94dnJG5VMXygyL4VU397GR37yZIIPreL+yshzOZIB27MRzuFz
+	Y/wySdi9xMTXRAd5Vd+relvVgrwcd0JbSeR7dQk6gx1+qPRMlURH8tATZGdGpZVxC2/2Sc2DJyI
+	evdUzuHtJiMnDZQdLRI/vgDG2Dh9+B62Q/Ls5fEB1gUPM8i23994lVkPwDSoSNQy+eUe0JEfdyX
+	T5tLDGYCwsxOZ6XhiyO+IwaCaV8hH/wWI8xUvNJq9/XjqLiBJtq1MPQHrY/WcDi6gTuNuxLX3tY
+	l6+EbwXSqZyuT43VyhXFm7Ag9wuseHB35IyxKR+gmUhzSQ7pOrX3QzEUKlEUMYVMF2uP9cGOHwp
+	VsF0JG7gW2ydA==
+X-Received: by 2002:a05:6102:1512:b0:608:a960:c858 with SMTP id ada2fe7eead31-609ff0c0bbamr9516353137.8.1776338534478;
+        Thu, 16 Apr 2026 04:22:14 -0700 (PDT)
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com. [209.85.221.179])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-612c9c349bdsm2339155137.0.2026.04.16.04.22.13
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 04:22:13 -0700 (PDT)
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-56a857578a8so3049419e0c.3
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 04:22:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8lTZUCbI766rrflMSrieKsnGrbQ1ztx9hnKTRbHvp7jkskvSsP6WbxdDwTmAVpkmWrVPnd7VoClQ==@kvack.org
+X-Received: by 2002:a05:6122:788:b0:56f:1ed6:1d29 with SMTP id
+ 71dfb90a1353d-56f3bca6059mr11244615e0c.9.1776338533353; Thu, 16 Apr 2026
+ 04:22:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aeDBw4O655-pXiHy@kernel.org>
-X-Stat-Signature: ihqtpj7eb3bpg879jshymirxzyaod3h3
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0234F20008
+References: <20260410120044.031381086@kernel.org> <20260410120317.910770161@kernel.org>
+In-Reply-To: <20260410120317.910770161@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 16 Apr 2026 13:22:02 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdX1aShz8esbYzJ7T-0Na6++_Yi315aCiUx0Cnsgod5uUg@mail.gmail.com>
+X-Gm-Features: AQROBzBwwjc8yd10cT00Tu5Dl2qrCYQStWr3Lcobhh8coMrpPeCH9vhBSNokYJk
+Message-ID: <CAMuHMdX1aShz8esbYzJ7T-0Na6++_Yi315aCiUx0Cnsgod5uUg@mail.gmail.com>
+Subject: Re: [patch 05/38] treewide: Remove CLOCK_TICK_RATE
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, 
+	Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
+	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+	linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, 
+	David Woodhouse <dwmw2@infradead.org>, Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, 
+	Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
+	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Paul Walmsley <pjw@kernel.org>, linux-riscv@lists.infradead.org, 
+	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8704640003
+X-Stat-Signature: z6ikagahrmta8k7xu6ne951gf3hccupg
 X-Rspam-User: 
-X-HE-Tag: 1776338421-556699
-X-HE-Meta: U2FsdGVkX1+po8OkwRP3kn58fxqkdxq9PBWRupE4JMBfJNmwA9OXOZlDGYza28htiEjVOHujg6D7xg63NsjvXIU5aXOFSKBgokOg5wT8SmJ1QHw7OVrmZVvlHJ4KwXg9C+XaS2GJjlKWtdFEVwrWMVW0u7jLEQIPEfXH8ubdkNzeNowT49PjgQ22IlLIB58VPOuRyqqvLgRJOE4JKZXJquB0VgHsiMrlor+IS7qOqclqaW0uBOA4aFvhsD1T/UbZwLAugukT+n1YUvDbBZE6FD8H0AXrSjqa0tl+tJlioJ+SfkjFq4COMjLHeBxXyuaYkQ+cWShrAg+ycoPWaPRBTwS0iyEsC2tpkJmSInJZpx/5N+VlfRhj+FPB1s7yk4R3UJHxSdouS/9xNyIMnGKjuSGtBadNen9U+b05h0dssBRLHx5z6ou+Vaj6QWZpDBJLIXXaGm9/OBU4aEtFbZ0d5LtmwOLlGOJlg8X61mJZ9BjozLc6nwPpafd2scJO6qwU1LTsmOmh6EOK6igiaPK9cA76/J6o8llddpvDRpk+7kukCnD/lhBww0GSWTUTvorAzDEE6PVDGbVnCtkWkXU/Wbbt7rKZ2b31s+EGh1juWYXeHC7wL+zFzmIg8HV4bAxZg1lCY2tZHUmQFQKh2U+z+q/kR4X7NSh0ep4yj8zmnrCTvvNochZLFrebOVzW8nVnt1ZAJGgPLv5H0K1+3TdGyywLu8qzDbpYsaZQQZZP/diltCwZE/ZGJd8LTy4nszgJBsJnWITnuqL8KgVMyq4rXhhkVGfNlHE+EWRcWWdIzKygmy+k4mjWl21KY0ZakL6Uj9rHes3LatH+X1T05q8DNMAgO/P4xonQQ7by0Mfypo5MCXu1Xw2Pn+QpWbMazSwhPxc9Kys/QlB1WzldZRUkxVgMfSHc7mrcjKDnY0YbpZl6EDzuo9UAY+5BBxO2mgj+Yjj4dPhZnNuEyy+LBjg
- GkXB0MOY
- LYexRoMWCbEv7qfDc8ZDTKx7PPF7engl49kFRBsMDzWQl2ZNRZQ1IXpISN0VN6EQlE1dCH4J/6XBUO2FJNxIlHjjGSnFFREh9QOfgFroML/HmnsjCxhvjBAQajF3J6IJ+SnIuMRhL5EBSXScDdN/rphjyAoONjeAJ5tSAd2BM3EryraaGt3JAxoVvlfn7IbGUreI0EUloZnfylEI0ws9Z1KNyOQZUBc+2RjnT5PcRmftJofZk3Hny3L4AoiZ6BU2koMpjC5ktV9Cu9gE7sdWBhLswn5d7Oa+CVtbiEyNY8KzGV69O/0LMoqZwPEIN8rLZIMs9Mka77lgusua3zIUNtQyPnR9zjWe0JCx0lcQ3DwV+pLpuhBoz+FAaGK2mL3l7eDjCAeMkA3weCh5AKN+4euMH6z6xy64W3FrvrCFzfP8JovK/W4hjLIZvGoSCIw9MF2RpseZJJUokqgizaMtU8TIO/vzIF/j3vx6YOPbDQD6KbVkrkfyY2S5CkRZrcwo0Y8dvXaOWP9C9kzvWeu35gnX3NDwsdWSuc27S
+X-HE-Tag: 1776338535-956561
+X-HE-Meta: U2FsdGVkX19Gm/feMU1tnBFOV454+lZ4DbO/5itdtI2WtXBcmuiF/MkvsBtCLystYqG7FqSMUdqlDOhRjAho8D1RqgErrk2b335gR//tTZz/ilDdN/bht//ux60WSRCQbLGW4wG/LavYJv41rMh5cRND5+Vexy3UtLTkYI2K+t4EfIZcNtc94L383vZpYyLVDt1jXVf8iPDVMG2i878gu+GKp5v60LHXDjiJ/JUV+J8Bck7oed0s5wQ7yWX0/23mZE3T6YVJcrCAbFneovYz6/lBUwy0WpiWKJkyqFqOraQizNwW2NTc6dEwd6NMFRA8tWgL1ZirAhLLFDIxPJxtxG+gBesCj/y7TZSeF4HtjOAGu2SD3hgcg6aJW8tZBXKOD6frykwa9aZyat4Bw6S3QpVq2+2Qx9LayPURh4Hz6yFJgaFm/sYAkX8Tol7sv5Cb44YYow7ijMMmUuneBVB2JakX9KBE6puh6euyppRrNaiR2hnDo7+G71LV0vf7fPF0h+I8GgF8xSfxHd35+ffve6pXcVWzV30FW4sZeCVpI6ZfTJGVj4FHdE/3DLQDVSWyOt/IpF101bkp7iFo64T1Oab0DOpiI+VJ1CjIp4GIjpbdhNZx9rQPHFE4AITBx8mCajpV4KTB1eXylP5/GI4q0p6DxR9QsN5R8aF8oD8WUDkymvX6F+o4ogD+oZ/ewGvYcHMOw+tHpjovb9llMavwL41jU8FoYw9FnQ0tHSc4b1R/OJF1yyKYHnNfWcbcU5uv8PHVRFKczdl3ZeiA+L52UnkOYs502CqBsRWD3q6Ri7w/h9VPwUTYz4y+U9O/wOuqRR9ZZazQdzT1fCYY2oVzR1B6uRq3Dj6eg1LhHE59sHR4aPEWI/LJln3NGXNbC6CCcFxMJegJRvNJXIsmLf0SpgpodTjSUDNdjkGVsAP/7ckLWwnsg9P28kiS98SKXrdQIlf1E1X1SEz/VlbQzRz
+ xN3Ium/v
+ ih5tXa9Lk1AMJLJJDpcUVtFYpdQRuUabezVWrIt/HP/6Twu65HKqXNjiq+z1UcEOG02VlA1ve1LPbzyRk2K2kO5alDVuWieOwRFG9egm+UWDvfHI/XOSVbZehdyHeMpYRq57PgCm8WQ7CG8UmzU3K/5/LuEDWood9TNAL1iOc0fkgnlCLU+hnQHzcTK6fXAE+HKYkaYGmPMu1WnrF/Ic1kRPiQLCu2PexAv3QpS6/kTLDtQlFlHGwW2jlF7phbWQ+jrw9QfMgiOuOd9wQt+gnjxj4bzcOiX1yiugu4UjNn2vU4aCTTZfLiXvnM84Xa439r2NgJkazN2RBqFLbriYkMijn5hOZM+N+SRrm68DAKjkao0t5aDQehu2MTjEySOo9N7UZEJnHR5qq1xDOJIUv5c2pYAiTGQyUwOPLz8ydN2mQuYG3TXaAldO+nSekxVNKXweYvAteMlxyO81TUi2s9cwjJ/7KkDANOuV1AnOTNRQhpILmF/1ZOznsj2StzIGWbue8rOgm1A9RWb+ZGqX9pM+4v/JkM8FYXxoHvV3wkbh2Dtk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,85 +131,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 02:02:27PM +0300, Mike Rapoport wrote:
-> On Thu, Apr 16, 2026 at 10:10:06AM +0200, Thomas Weiﬂschuh wrote:
-> > On Wed, Feb 11, 2026 at 12:31:40PM +0200, Mike Rapoport wrote:
-> > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > > 
-> > > Reduce 22 declarations of empty_zero_page to 3 and 23 declarations of
-> > > ZERO_PAGE() to 4.
-> > > 
-> > > Every architecture defines empty_zero_page that way or another, but for the
-> > > most of them it is always a page aligned page in BSS and most definitions
-> > > of ZERO_PAGE do virt_to_page(empty_zero_page).
-> > > 
-> > > Move Linus vetted x86 definition of empty_zero_page and ZERO_PAGE() to the
-> > > core MM and drop these definitions in architectures that do not implement
-> > > colored zero page (MIPS and s390).
-> > > 
-> > > ZERO_PAGE() remains a macro because turning it to a wrapper for a static
-> > > inline causes severe pain in header dependencies.
-> > > 
-> > > For the most part the change is mechanical, with these being noteworthy:
-> > > 
-> > > * alpha: aliased empty_zero_page with ZERO_PGE that was also used for boot
-> > >   parameters. Switching to a generic empty_zero_page removes the aliasing
-> > >   and keeps ZERO_PGE for boot parameters only
-> > > * arm64: uses __pa_symbol() in ZERO_PAGE() so that definition of
-> > >   ZERO_PAGE() is kept intact.
-> > > * m68k/parisc/um: allocated empty_zero_page from memblock,
-> > >   although they do not support zero page coloring and having it in BSS
-> > >   will work fine.
-> > > * sparc64 can have empty_zero_page in BSS rather allocate it, but it
-> > >   can't use virt_to_page() for BSS. Keep it's definition of ZERO_PAGE()
-> > >   but instead of allocating it, make mem_map_zero point to
-> > >   empty_zero_page.
-> > > * sh: used empty_zero_page for boot parameters at the very early boot.
-> > >   Rename the parameters page to boot_params_page and let sh use the generic
-> > >   empty_zero_page.
-> > 
-> > With this in mainline as commit 6215d9f4470f ("arch, mm: consolidate
-> > empty_zero_page") booting sh on QEMU is now broken.
-> > The machine hangs before any output.
-> 
-> Hmm, looks like sh does not like boot_param_page declared as unsigned char *
-> This fixes the issue for me:
-> 
-> diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
-> index 63c9efc06348..b7c4469cb61e 100644
-> --- a/arch/sh/include/asm/setup.h
-> +++ b/arch/sh/include/asm/setup.h
-> @@ -3,12 +3,13 @@
->  #define _SH_SETUP_H
->  
->  #include <uapi/asm/setup.h>
-> +#include <asm/page.h>
->  
->  /*
->   * This is set up by the setup-routine at boot-time
->   */
-> -extern unsigned char *boot_params_page;
-> -#define PARAM boot_params_page
-> +extern unsigned long boot_params_page[PAGE_SIZE / sizeof(unsigned long)];
-> +#define PARAM ((unsigned char *)boot_params_page)
->  
->  #define MOUNT_ROOT_RDONLY (*(unsigned long *) (PARAM+0x000))
->  #define RAMDISK_FLAGS (*(unsigned long *) (PARAM+0x004))
+On Fri, 10 Apr 2026 at 14:18, Thomas Gleixner <tglx@kernel.org> wrote:
+> This has been scheduled for removal more than a decade ago and the comments
+> related to it have been dutifully ignored. The last dependencies are gone.
+>
+> Remove it along with various now empty asm/timex.h files.
+>
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 
-Seems weird but works.
+>  arch/m68k/include/asm/timex.h       |   15 ---------------
 
-Tested-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 
-Thanks!
+Gr{oetje,eeting}s,
 
-> > Reproducer:
-> > ./tools/testing/kunit/kunit.py run --arch sh --cross_compile sh4-linux- --raw_output=all example
-> > 
-> > > * hexagon: had an amusing comment about empty_zero_page
-> > > 
-> > > 	/* A handy thing to have if one has the RAM. Declared in head.S */
-> > > 
-> > >   that unfortunately had to go :)
-> > 
-> > (...)
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
