@@ -4,106 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA8C9F8808B
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 07:01:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86B32F88092
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 07:15:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E61C6B0089; Thu, 16 Apr 2026 03:01:45 -0400 (EDT)
+	id C21C76B0005; Thu, 16 Apr 2026 03:15:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BDF56B008A; Thu, 16 Apr 2026 03:01:45 -0400 (EDT)
+	id BD2836B0089; Thu, 16 Apr 2026 03:15:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D3126B008C; Thu, 16 Apr 2026 03:01:45 -0400 (EDT)
+	id AC1C46B008A; Thu, 16 Apr 2026 03:15:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CE526B0089
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:01:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC11C16062A
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:01:44 +0000 (UTC)
-X-FDA: 84663523728.07.78157BB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BC1FA40008
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:01:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AaaIMRNg;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9B69B6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 03:15:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 36BACE4751
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:15:30 +0000 (UTC)
+X-FDA: 84663558420.06.586E452
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6223F2000B
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:15:28 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rXz2Je5d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776323728; a=rsa-sha256;
+	cv=none;
+	b=mHRm03X1rM6lXi80QrdUNbPwUeH0C9HqFP6UDJ/DhFhjuN/6ZKNA/9w28ws6A/NK5BUDh9
+	B9mYIlWVWEWjbn4bglYCnolpk7r8BuH5ns/UmvkRtlaSOxaQ41RMxNJnE/+YKLr9ScMbZd
+	IlU68X0ghvd1rBpzGJBTk57zLRMkBL8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rXz2Je5d;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776322903;
+	s=arc-20220608; t=1776323728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kVqU6YK6/SvqF8+LADnJYWkNivQ9TRoFbUusrITLtJY=;
-	b=KHcY0kF+LS5SiK2+zb50i+gkMkDAG0UqEscU2b9KeFPPD8e0aLoN9+othPEv07H0gIchev
-	BDIEoK/TYd2fFmNC1bAQbr1lt+HuiInkDCArHxGes0Waavvl0JTo/BrPrraxnlOkkkq0d6
-	/Ql8SX/poFcom7FVkVyVnnWwicaUL/k=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AaaIMRNg;
-	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776322903; a=rsa-sha256;
-	cv=none;
-	b=ksgXDb0xTibBtXfwYkbEfBfuHzwg/ds2HuWLiDd8/8MRKqljqMoW4LSQwlIylqOU4cf5pd
-	9FxCY+Qi+x+oY7KVSnfqOnulmnjdbAP+Lui5qk0J1ft/iQ4/2s/uhLXpHiCvchPHgHylom
-	U/Q+CutZfPbFitRekvsWlLA7p/qU988=
+	bh=8mNIvSUIVKDUnQ5G0PA0CUvX294O0ipoJJUTFwwtVwM=;
+	b=Pe1sdby/tY1j1HCzus0ZdPSvoWK1hyg2XjLBF/v7qEjxqxHfebVeRFE6Shq6JacV2xc8NE
+	UhtgMHfxlOvHQOt9MffiFarqwhCB8ypLfc0M5IgTYulYALDc6eASqAGZuIrbudlPtPKt5i
+	HQP24LOQ3vNF0/gr7Rm91GB1tN3KgeQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8ED4744465
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:01:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28289C2BCF5
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 07:01:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A6F8F60126;
+	Thu, 16 Apr 2026 07:15:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796B4C2BCAF;
+	Thu, 16 Apr 2026 07:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776322901;
-	bh=9+RKQPJabR6qnebRk19AB48dKeXoK7iWRhmeNz3xeic=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AaaIMRNgFS23xcQ9LwwhgekyUfI1Fp+sre6hG3Ru9NRMztFk31RdCso/tKvqxxl5C
-	 Qo+YhgbLzOdC+YAjBvp0DkmTKLKZWWKmxRnw84C1yymVkO7NgxOvfFloOYWT3FqLA/
-	 nKvi5gWVIaCR0nEhFtAiJBVXHkxuFK9tY/Jsv1rSF5uPSZXq6wDGOmTmjDBA3iLhG8
-	 8NVVm1gTZ4Z2dzKOvGzhoBX67EYUXqfugCDGOZZT2gP6qP+/x0KQ0AztdGrRBTU6MP
-	 IxeEbcXROpS0/yf5vuYvWNXy9MWnTWxo3/0qtJJHfjUQEvVCLh24x0gYcJPmAsfxNZ
-	 UhCkyPbawOHAg==
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-56f3e6bbecdso2309622e0c.2
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 00:01:41 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwTOfln+KS33FmrLwnhHGPwttdL7IzHp8vLq6ac1mPTPjWMzi9f
-	cQsBBka5hf+BcqQUFYwb1jqhgWdWNtKe8NB6Alk+QxBAv8tL8xtvqqMZwdDale/l/Shmbn1cTkT
-	E0rtoiouzqqcCJTLBZE5WVaCbnt3Q45U=
-X-Received: by 2002:a05:6122:80a8:b0:56d:b639:5c0d with SMTP id
- 71dfb90a1353d-56f3bd019aemr11978264e0c.13.1776322898994; Thu, 16 Apr 2026
- 00:01:38 -0700 (PDT)
+	s=k20201202; t=1776323727;
+	bh=B7pQLuMTV7OzMld6R3PvIrferBs+xTuioGsbXveGCz4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rXz2Je5d+2JJ2rgst3dHJKj/SSpuBlkLafEfiM6DTI0iew+qwqdW2RUH4kTPe2OfV
+	 NuMAedt9WPc6PamjvIcGeGs5FsAbpCvwN+z4GzMdvI7jn5p0vN8v+8TbieYkzFiBIi
+	 mhHnQ9ulOcTLqsIuExrCiL3QPX2wkAQfTrTEM+6WDVgWn9CXZ9zUdBPLwxhS6hkKdE
+	 hlLJofyy6du/7/YMgD2y/fB3Ah9hO3GzJS1giz6LWTxU1NWxw4LgFxzLe44smD7xMH
+	 vsu7WTF3WpCsYl5fFJ2k4jksCrQgCCdPX3hoKZ0McvLOBtuLoIdXNuBc6FLiH7lojB
+	 ixXZDSWaFNehw==
+Message-ID: <fa03804e-625f-4152-a119-389282d97902@kernel.org>
+Date: Thu, 16 Apr 2026 09:15:18 +0200
 MIME-Version: 1.0
-References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com> <20260413-mglru-reclaim-v5-5-8eaeacbddc44@tencent.com>
-In-Reply-To: <20260413-mglru-reclaim-v5-5-8eaeacbddc44@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 16 Apr 2026 15:01:27 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yH6v58oD8K56hMPp5bTYGC1Bfo3XSAViW9gWeSwLXgDw@mail.gmail.com>
-X-Gm-Features: AQROBzB-6EBIWS71H_5Uddxj9C3mF8mGUG3_Ds62a2U1zMaS_mFqgMlBaFw4sAk
-Message-ID: <CAGsJ_4yH6v58oD8K56hMPp5bTYGC1Bfo3XSAViW9gWeSwLXgDw@mail.gmail.com>
-Subject: Re: [PATCH v5 05/14] mm/mglru: scan and count the exact number of folios
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: hcbrzynieoyhkkbthuzrc9xmoq4nwe1q
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+To: Wei Yang <richard.weiyang@gmail.com>, Yuan Liu <yuan1.liu@intel.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+ Nanhai Zou <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
+ Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+ Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+References: <20260408031615.1831922-1-yuan1.liu@intel.com>
+ <20260416022351.llek76h5cik3nese@master>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260416022351.llek76h5cik3nese@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: nxetak7xum4m41ewigakh9nhmxczq6nu
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BC1FA40008
-X-HE-Tag: 1776322902-423574
-X-HE-Meta: U2FsdGVkX19UClSSQyGMxLEMY/XgFjzZ9qQue4h1mVS4HWVTkc8N2OunVG3LmRBqF5i6IwedhOPJQq2x2P/g5Qeq4aA5kg41OSjgHfEkxSDX7/ZAU7DC2AsoZSugynr96wn0Khs5tAI2w3GWM/MiWfKBDV3m/SPaf9oG9xB45I1y01gtnqo8RESX5vZ5j9u/ia+K4D46EhdBpn6MD4veOJQ2NdW6o/8d6oejcvtDkNDAxwJkicV0xxtwsE7npXHSqxFfvDJyrlFWE0+knsMH03c0p+Dt/Y83Gf5EuUbMe063+WnYEFngdxAWLUG4aN+QdWQnNboanK8vu2apu0L/XAbpm3xDio4KBmEu503t6BIHnPZezS6xycv6fBCoYwLARaPvKXXB+OyUl5OESawiSEvgUvhbiU9O3g1TcXp5uePHjOeGdyiZ0LumD1B/+zp1GRMbwSUVQygvHBLW5SC6+X9xBMXNp7fCzGfWJVhWb+S+y746xc4bFGxX5tQDVzSqjJDjTysSq2byruodNIyH/n6KqNqGJih5RLP0H5VG3OOZ2+8N5m8kLylNpduoFA1RAv+u/IAd5F3RPcGaim1mjxAFEVMdBmv0V6erImO0e7YpfEn50zNt9J+LM9LVq4Z11Vmf99KRaVxK3XiOtQ35snJGzhgHtbohgINDvuxvilRo22g29qciSPqkphB49YMJ0DDBDN7JIIGxwPJEA5Fnwx4q6oH84jsNU/jxby3O+tCo0g8liFPiN334h+bJJmwt91D7VQw4WpKYvp/tI5fGyeykuBIlLis1U7DZrBmg+SNhwmJOG+NzG27wqWFgWa6DVgUUkiTR7viHNySiIM8WAZYvbiphMyoofSE6pepNsaL+D3bpBpUCivTFYCu8m5P8qW5CJmdd88tpmni5+MsdrC0bczfWpaL0FLaqbvIH5wudwm/pEmOoa4k+dItTJ6FTKnIvkn1wd1Ne9+JWnaj
- bA5VWd2K
- l7Iwh5pPjTuWvgovttjF4nfJD1T9zhuaZf67POLNcWK0k0MOcb+IVEQ9Gh+oe+mnJ7pD1dB5njOGSOhp6RaN8Y8SUwM/F4sV1InWXJJFVV2jW1wqYoEImqMXxV8XC+qwxNYCpSBtqR6vjTQR6upENpNsEhks7+xVe8qUIVPljbAlOYZN+q+ySFeV4b+V2DqaHvO9q6rGYCNagOVtCrxt1vXH9ODC9eaYJkuGyMdAhedBF3qaHpixC7AswVxYQMhnHUt6lgyzESx38PrKV7jPvL9VZH9VMcohm3S+ZZwMz9L9j7UYQMC1Le/o31dfTDdasFtipfOVn7HCVow6H/3gO/OOGS3TYW6Sl2/8+XvlGuk044EcZWhCKs/gTSWLXQSqDlQyR/2dXRUdw1XBPSphE5tYDGqJNMUSrDNNaB8QwZbtPXaF67RLowi5VLe0/Z7ydMxO/
+X-Rspamd-Queue-Id: 6223F2000B
+X-HE-Tag: 1776323728-792020
+X-HE-Meta: U2FsdGVkX19oohkSYeozFDOa/wdA/AHCD9F+n0hP66UwY2na5/UrAGJhymlDwnKHF4Q0vV5eF8xE6We89yIJKw6cOjFbhLDxpDf79NDyANSnfM2KJHlBS4+BPTNoQh7468U6wJcyD6d5vsV1aWQ9SUBHCkwSLjCOtrdE4D+OkcJw1RhNu3qAQc6Kp9g98wK8kk+ymufNFoN1CeEN3miIOPX9pgkm9lmvSqF9QFrKYdPDhK+Mlmu6P2eMv7r72QP1M/PpdOwcbworIhhaxqNDWlCUSP7NkBAKMTwd1bZjAmwP+iJ3SupA19LqlnW6dA3JyhjAG1slYx3St3LEb7oCqoGqgb+vanKXUmpafGI9QqwN9fNTgnNjHUZOYOLGFoPBPZc9pELyTwbuGmh7iJsVXhyQsVk537b09fMuRx6/x+5MhQ8dpozE0eC+S84WP+ZSnAmGtFkvoiWyVba3p+MxFGS186G9QFKh/Lw7e/gw5rmsPt6fXS+4GwVVt5aoqIsMC3+kz3ZJcZcfnRP2GS2dxcuJkmxvAyvrf/mcVYpicgEZtFXFN1TACwQ07uYk0W8TbagV+a3/QnhnBqJqY32f448k08eLnOVtNJCsOq8e41RMEsUsVmD13zwWLfH+7rWqpqCMo7GOprmIIjckrYVB0Fm05ET+exT2lsOUBTuciKmVDA6tWcRGnv/sbQH4WNlQiP2QK4qL3h4fDXizkG7egJPXjVYol/2mx83/Fzv6aUzy2aLsInEL+s9DKVSLFcmLuHGRInePFmBP7UyqQrZV2wgB06gxDusYdscKoX0Ljjbx2d6yklaHeGSUs143zhOWaCHDrzQBqnxwfd8izRXvmPzgr7sjd01YnCtdszmoVxc5+9S+CrZw176HNakFl3U/zjITUfSWGhEBwGUQfFkwVC7TzsN1d5xG/urCCV11isfVhIg2SA1iNgZavGSbzwiFmG0LXBFU5Y8w3ObyuRs
+ A0rzkOE5
+ MaSJpu7tMDp/O2Aojub6SwnzJtlOQCGx5e+vwtxU0Uqnuy60KZ84N/NI3h1W5Ebas9QAiiP5S1ZeT2nHagTzMuNpTvYaKn3Yh0OtIT7CCrM+/fozIHEJARlZco1GjuVOPtxlrxv3D4ZCKtf0hADtJ39l1ZKcAJnufY6eIrUakEX3mo8aF1IZwvEWRoOiVGdsepcMkWFc4wdkrySXw3o7pRpFhXZBHwpXnrbE7j2ol5kmc01SKGeCbliH21qiTvkjTjCGU+NiBWxq/5Tu+tnVT61lsQ14o8eMQdSoQufGFJOKNi/9rmYM9IYJpvDlTDE25+EWXG+/drkMmv8o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,227 +143,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 13, 2026 at 12:48=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Make the scan helpers return the exact number of folios being scanned
-> or isolated. Since the reclaim loop now has a natural scan budget that
-> controls the scan progress, returning the scan number and consume the
-> budget should make the scan more accurate and easier to follow.
->
-> The number of scanned folios for each iteration is always positive and
-> larger than 0, unless the reclaim must stop for a forced aging, so
-> there is no more need for any special handling when there is no
-> progress made:
->
-> - `return isolated || !remaining ? scanned : 0` in scan_folios: both
->   the function and the call now just return the exact scan count,
->   combined with the scan budget introduced in the previous commit to
->   avoid livelock or under scan.
->
-> - `scanned +=3D try_to_inc_min_seq` in evict_folios: adding a bool as a
->   scan count was kind of confusing and no longer needed to, as scan
->   number should never be zero as long as there are still evictable
->   gens. We may encounter a empty old gen that return 0 scan count,
->   to avoid that, do a try_to_inc_min_seq before isolation which
->   have slight to none overhead in most cases.
->
-> - `evictable_min_seq + MIN_NR_GENS > max_seq` guard in evict_folios:
->   the per-type get_nr_gens =3D=3D MIN_NR_GENS check in scan_folios
->   naturally returns 0 when only two gens remain and breaks the loop.
->
-> Also change try_to_inc_min_seq to return void, as its return value is
-> no longer used by any caller. Move the call before isolate_folios so
-> that any empty gens created by external folio freeing are flushed, and
-> add another call after isolate_folios to also flush empty gens that
-> isolation itself may create.
->
-> The scan still stops if there are only two gens left as the scan number
-> will be zero, this behavior is same as before. This force gen protection
-> may get removed or softened later to improve the reclaim a bit more.
->
-> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/vmscan.c | 60 ++++++++++++++++++++++++++++++-------------------------=
------
->  1 file changed, 30 insertions(+), 30 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index d4aaaa62056d..e3b68b008376 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3878,10 +3878,9 @@ static bool inc_min_seq(struct lruvec *lruvec, int=
- type, int swappiness)
->         return true;
->  }
->
-> -static bool try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
-> +static void try_to_inc_min_seq(struct lruvec *lruvec, int swappiness)
->  {
->         int gen, type, zone;
-> -       bool success =3D false;
->         bool seq_inc_flag =3D false;
->         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
->         DEFINE_MIN_SEQ(lruvec);
-> @@ -3907,11 +3906,10 @@ static bool try_to_inc_min_seq(struct lruvec *lru=
-vec, int swappiness)
->
->         /*
->          * If min_seq[type] of both anonymous and file is not increased,
-> -        * we can directly return false to avoid unnecessary checking
-> -        * overhead later.
-> +        * return here to avoid unnecessary checking overhead later.
->          */
->         if (!seq_inc_flag)
-> -               return success;
-> +               return;
->
->         /* see the comment on lru_gen_folio */
->         if (swappiness && swappiness <=3D MAX_SWAPPINESS) {
-> @@ -3929,10 +3927,7 @@ static bool try_to_inc_min_seq(struct lruvec *lruv=
-ec, int swappiness)
->
->                 reset_ctrl_pos(lruvec, type, true);
->                 WRITE_ONCE(lrugen->min_seq[type], min_seq[type]);
-> -               success =3D true;
->         }
-> -
-> -       return success;
->  }
+On 4/16/26 04:23, Wei Yang wrote:
+> On Tue, Apr 07, 2026 at 11:16:15PM -0400, Yuan Liu wrote:
+> [...]
+>>
+>> /*
+>> @@ -956,9 +957,22 @@ static void __init memmap_init_zone_range(struct zone *zone,
+>> 	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
+>> 			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
+>> 			  false);
+>> +	zone->pages_with_online_memmap += end_pfn - start_pfn;
+>>
+>> -	if (*hole_pfn < start_pfn)
+>> -		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
+>> +	if (*hole_pfn < start_pfn) {
+>> +		unsigned long pgcnt;
+>> +
+>> +		if (*hole_pfn < zone_start_pfn) {
+>> +			init_unavailable_range(*hole_pfn, zone_start_pfn,
+>> +					       zone_id, nid);
+> 
+> One question here:
+> 
+> init_unavailable_range(zone_id)
+>   __init_single_page(zone_id)
+>     set_page_links(zone_id)
+>       set_page_zone(page, zone_id)
+> 
+> [hole_pfn, zone_start_pfn) doesn't belong to this zone. Would this be
+> a problem?
+> 
+> But it seems we have already done this for a long time.
 
-I like that you removed those "success" checks;
-they have caused me to fail many times.
+Right, we just want "some" node/zone for holes that are indicated as
+having an online memmap.
 
->
->  static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int sw=
-appiness)
-> @@ -4686,7 +4681,7 @@ static bool isolate_folio(struct lruvec *lruvec, st=
-ruct folio *folio, struct sca
->
->  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->                        struct scan_control *sc, int type, int tier,
-> -                      struct list_head *list)
-> +                      struct list_head *list, int *isolatedp)
->  {
->         int i;
->         int gen;
-> @@ -4756,11 +4751,9 @@ static int scan_folios(unsigned long nr_to_scan, s=
-truct lruvec *lruvec,
->                                 type ? LRU_INACTIVE_FILE : LRU_INACTIVE_A=
-NON);
->         if (type =3D=3D LRU_GEN_FILE)
->                 sc->nr.file_taken +=3D isolated;
-> -       /*
-> -        * There might not be eligible folios due to reclaim_idx. Check t=
-he
-> -        * remaining to prevent livelock if it's not making progress.
-> -        */
-> -       return isolated || !remaining ? scanned : 0;
-> +
-> +       *isolatedp =3D isolated;
-> +       return scanned;
->  }
->
->  static int get_tier_idx(struct lruvec *lruvec, int type)
-> @@ -4804,33 +4797,36 @@ static int get_type_to_scan(struct lruvec *lruvec=
-, int swappiness)
->
->  static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lruve=
-c,
->                           struct scan_control *sc, int swappiness,
-> -                         int *type_scanned, struct list_head *list)
-> +                         struct list_head *list, int *isolated,
-> +                         int *isolate_type, int *isolate_scanned)
->  {
->         int i;
-> +       int scanned =3D 0;
+-- 
+Cheers,
 
-I would prefer to rename this to total_scanned.
-
->         int type =3D get_type_to_scan(lruvec, swappiness);
->
->         for_each_evictable_type(i, swappiness) {
-> -               int scanned;
-> +               int type_scan;
-
-And then we keep this as "scanned".
-
->                 int tier =3D get_tier_idx(lruvec, type);
->
-> -               *type_scanned =3D type;
-> +               type_scan =3D scan_folios(nr_to_scan, lruvec, sc,
-> +                                       type, tier, list, isolated);
->
-> -               scanned =3D scan_folios(nr_to_scan, lruvec, sc, type, tie=
-r, list);
-> -               if (scanned)
-> -                       return scanned;
-> +               scanned +=3D type_scan;
-> +               if (*isolated) {
-> +                       *isolate_type =3D type;
-> +                       *isolate_scanned =3D type_scan;
-> +                       break;
-> +               }
->
->                 type =3D !type;
->         }
->
-> -       return 0;
-> +       return scanned;
-
-Then
-return total_scanned;
-
->  }
->
->  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->                         struct scan_control *sc, int swappiness)
->  {
-> -       int type;
-> -       int scanned;
-> -       int reclaimed;
->         LIST_HEAD(list);
->         LIST_HEAD(clean);
->         struct folio *folio;
-> @@ -4838,19 +4834,23 @@ static int evict_folios(unsigned long nr_to_scan,=
- struct lruvec *lruvec,
->         enum node_stat_item item;
->         struct reclaim_stat stat;
->         struct lru_gen_mm_walk *walk;
-> +       int scanned, reclaimed;
-> +       int isolated =3D 0, type, type_scanned;
->         bool skip_retry =3D false;
-> -       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
->         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
->         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
->
->         lruvec_lock_irq(lruvec);
->
-> -       scanned =3D isolate_folios(nr_to_scan, lruvec, sc, swappiness, &t=
-ype, &list);
-> +       /* In case folio deletion left empty old gens, flush them */
-> +       try_to_inc_min_seq(lruvec, swappiness);
->
-> -       scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
-> +       scanned =3D isolate_folios(nr_to_scan, lruvec, sc, swappiness,
-> +                                &list, &isolated, &type, &type_scanned);
->
-> -       if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GENS =
-> lrugen->max_seq)
-> -               scanned =3D 0;
-> +       /* Isolation might create empty gen, flush them */
-> +       if (scanned)
-
-scanned is not equal to isolated, right?
-Somehow, I feel the comment does not match the if (scanned).
-I assume sort_folio() could also create empty gen?
-
-> +               try_to_inc_min_seq(lruvec, swappiness);
-
-Thanks
-Barry
+David
 
