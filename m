@@ -4,177 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A87F5F433D4
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 01:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C3CF433D0
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 02:06:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C84D66B0089; Wed, 15 Apr 2026 21:52:49 -0400 (EDT)
+	id 45C356B0005; Wed, 15 Apr 2026 22:06:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C35A36B008C; Wed, 15 Apr 2026 21:52:49 -0400 (EDT)
+	id 40D476B0088; Wed, 15 Apr 2026 22:06:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B24D96B0092; Wed, 15 Apr 2026 21:52:49 -0400 (EDT)
+	id 3235D6B0089; Wed, 15 Apr 2026 22:06:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A305B6B0089
-	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 21:52:49 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0162D1B87DB
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:52:48 +0000 (UTC)
-X-FDA: 84662745258.23.D7520E5
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010012.outbound.protection.outlook.com [52.101.46.12])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 17C0F140004
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:52:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eypuGEjk;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776304366;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 20D226B0005
+	for <linux-mm@kvack.org>; Wed, 15 Apr 2026 22:06:52 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C56251A058A
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:06:51 +0000 (UTC)
+X-FDA: 84662780622.15.7DEB5FE
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B005010000A
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 02:06:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J0zA0c7P;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776305210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vVodotFWQhOeR7Iz77FHIev/mfZcU4iG0XRI2/5ILn0=;
-	b=FesDRHijPVjTT9+kuFFEHQ1UAxtDiY9hV447AK7rkvu9734/wZ07tOPbcmaXpYCYtGKRZw
-	mBIb5Ees4uuv62FEs0CBGrvblFZmyav220RKQAYE4H6PWXH0CNbHGHS+DTAdqIaV97xXo6
-	+Nt+XwbUEvbKspf2Ggm6np/xLmD77PQ=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776304366; a=rsa-sha256;
-	cv=pass;
-	b=1cNr9L1KHlbSxhCgMjtmqqUmlCNjfnRtoJDxodZb3Y9FgdtSpHMoKfEtjsFi2+H8DjQ7Aa
-	sJQUsdTz7F3r8fkA87MbSt07XojHqmQXdZ7UkAwgajgzdzpx9LdRtoScEm8zTe6X8kz3oP
-	p8OC63eUYw3rqbB8bdDt4/rrgWTOLHs=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=eypuGEjk;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EujmMRMt7qIuTGvt0WsnzHLPpjfen0+omi2fywXlsnczf5DoE/kMGho90GkKq+c6ZXbJXdNMFengW2T1PbrlNf6fdrCwEgzK3VtlaxAvscWTjNXi17f3WcVd6mBnNWCRWn5nx0QyVn6awk6nuvFbJJ6RWiol0gDRQXHqWD7RpCfbGrvwO7zPCw52DQgJE3fCjPTUZBkwlrS4/N9lfPfPjhfAX3/Jp1NFqJ5jRSfwEbRN72VjxoRCwgmkFhGY14f1mYAjU0yBrZaYZQqO01lpIPz31I3nqR5P9NGYYwOEblEHgCpc2pdN1jbG6qD7gMSBTnBPpQ53PJgwG9ccr87I8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vVodotFWQhOeR7Iz77FHIev/mfZcU4iG0XRI2/5ILn0=;
- b=FnI2MtgdWnZr6XBoYRcA1TfqVFin7z/9U3jmqZmtLInLIpveXD7o6spT5u0nGel5lhuLNg7MQpGBDhvPn3zT6z+0OLI2zL1bYymyyr3p7IoCng3jBnVFiI3VvkFx944kTsOLpcct4R5oIwyp3JfYuEYTrkXEWA6psluSWHdsDvZt4IopHwzvrW2Sl3jDUjHNHFyUXZPYnhXTOJy8twQEvQKH8vrNVFSIocn4eme5sc7SrbKJOOgyurHMukjcv44v9/2Wy1Kcyk/UthQeUTBYtqkJJGjhI0yh5z7/vHZJXt/ClSGrpuCuB7oP2IB2g1W41IS6ZGq+UGYwtx6Uk6RDJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vVodotFWQhOeR7Iz77FHIev/mfZcU4iG0XRI2/5ILn0=;
- b=eypuGEjkbD5H1VQ5qMoh6af2/4j9te+gr1s+UKmcYg/NAZqdCmGsz6fUiUS+W2tVEdw4rjIY41/tROMJxp0wvmu2HlJxyNEsQ79o7P2fUp+h9iH2RiZYmg56wQxDrH/V5OvWF7CyOKTl8bNj5e5xt1P6Lbhnz5RdhZMlvBppQFl8g/PBN/w2FQD3WQtcS5TqJQSaKlmbcyjPT+Uj3ciQN6AZDS5QtPTWtZxAIPMVzO0azddmtj66CIy/YzmjmEZ294338IKJa/soWhHEL1h0PD5o4UacCvOqonYtnQZnSuN+UFuv2NUvhrjIT3athFHbWHX1uKUbgnWrdhAQ/ojTRg==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- SA6PR12MB999202.namprd12.prod.outlook.com (2603:10b6:806:450::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.21; Thu, 16 Apr
- 2026 01:52:41 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9818.017; Thu, 16 Apr 2026
- 01:52:41 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, willy@infradead.org,
- akpm@linux-foundation.org, hughd@google.com, ljs@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: shmem: don't set large-order range for internal
- shmem mount
-Date: Wed, 15 Apr 2026 21:52:38 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <D29FD39A-50FE-4EE5-8D14-A7B40E565074@nvidia.com>
-In-Reply-To: <907b3a20-52b3-4969-8456-bd3a8d2571f2@linux.alibaba.com>
-References: <ef418d0f8c17a949952f1f023bef658041956ecd.1776241278.git.baolin.wang@linux.alibaba.com>
- <c5d0643f-1850-47a2-87ac-a249b2463bb4@kernel.org>
- <e07071fc-15b7-495f-b6d5-96004aa0f8b6@linux.alibaba.com>
- <c88ea567-6b03-4540-8173-7fceeac23f7d@kernel.org>
- <2d138a3f-0006-4a01-852a-4570d7ba781d@linux.alibaba.com>
- <eda13ed2-117a-488b-9120-d64e0fe0b731@kernel.org>
- <1a3cb6b2-94e0-4268-8cd9-1f9a9deb6c6b@linux.alibaba.com>
- <875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org>
- <b3257e56-b202-40b4-94a8-0f4ba5e24cfd@linux.alibaba.com>
- <846B17B0-1BAF-4959-8FC2-42744C44B1D6@nvidia.com>
- <16745f2b-b008-4df1-ac76-f18b4a826dbd@linux.alibaba.com>
- <4AD72E13-C4AE-4ADA-8AB2-DDB3CEE6A527@nvidia.com>
- <907b3a20-52b3-4969-8456-bd3a8d2571f2@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
+	bh=TaDtlDhvpSN1DHQ/+o47EJco+lcgV052hZ9XtkHXQBM=;
+	b=Nx5rF7VquyHud7GxwZ9a/eGZGXyyjA0+iIUlBtK+XY5CPm8FTbM1pzIGP7UDuhSg4bUGC/
+	fdVeoyGHkj+73khFi1V7XkHOv9TdjKrz7lYp6zFmUCAGqVdWMkTUlLx2mpUE4DimDs2CgO
+	6xvUeJY6NzOlIQniTzUkUWmuHxJKF4w=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J0zA0c7P;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776305210; a=rsa-sha256;
+	cv=none;
+	b=OSe/97d/TYMWJX3/GaxAkUqK9Yah0rx8AYiMQ8fJHCnXsW2J26BF8nkPOT4F7Xu0wFz7kc
+	6KVaTKv+QPlM2Wv1dMgrUPeiy7zLEK+vY6VZQQQebYp1gObSLWs8Ld94QnFiwn2DdT8Kni
+	dPjS5HVoG5GIxQjNdpL8f1I5759tByo=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776305207;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TaDtlDhvpSN1DHQ/+o47EJco+lcgV052hZ9XtkHXQBM=;
+	b=J0zA0c7PNrU1/2K6DsccDATXvjS/5EjTLM92uaQLPBY5Bs2V4BcyO2VeGwXmN8w1IQpL8E
+	uiKGZopweljMF01lnCABOKA5JDUkCf3P60EkZYOn4tKQ6HjXEmbJ+l9Aq0NcG3edWqIxxp
+	eVPIu6DatuMk04EV+TM9SasWJSra1zs=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v2 6/6] mm/mm_init: Fix pageblock migratetype for
+ ZONE_DEVICE compound pages
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <ad_EygHWDi19SS9y@kernel.org>
+Date: Thu, 16 Apr 2026 10:06:03 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR01CA0043.prod.exchangelabs.com (2603:10b6:208:23f::12)
- To DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA6PR12MB999202:EE_
-X-MS-Office365-Filtering-Correlation-Id: aeebb3c5-66a3-43c7-196b-08de9b5ad885
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	TFQ/etHo6bIdi9SVNHZxhHbh+cCSkj1t+xzgwQk5Y25YrorMEhaycjJ23ExokYOYjP401K9pDDHckKsM5zF6UovMY5zsT1Cy2f3Brzc1HsT3vHkCncpUIvsSTibVrw7hf5jWuQCE3JHzvAHWkdra9jVHB22QDWqzgC75QrUDz1dNOnoOiowTTyJFEMpMmYxERNCViZzMCgAThtOn3DPROx83KojPzZxGvvG0oVN5Io/46Y04wZrhUEckH6Basvzgbe3piDGGc6ku/MJTJid5QshpVmsLvZC/CVGGQky1HPZPi7WNncFH3vr/QT4Mu+GyBfMl623Hmwa5//UinB/2qJ6F/W9843K4I4oJbm5xR2FDtZqARA2Sxm+Avi6wjxJXoIRHOOBUqXuxt5X0e1O0cRfGnJA2Mbs5Hg59DB7+t1v8g4Wdj7ME7eUyI7uZ8qoobzPEfBvMrwyfallfLq11A/QuUkl9FONOXs9tPVEova4yDXBd5jhV1+eqVNmd6cnKR8eLssbsxRYI9z5WAEb3vK1+hsqv1rR/moRGScgyzsNFNAkI2wFfSU5WYPxoCrkbWoKcBtbkrrmGzurdDX+DFcs9b61eASMB7A2JdaNkrXF99Sbw8sUj9CqXflyeLFtgLkYb8mgkPFCfRnDM5qs4TVeZfVtgWP+p3ARvV50YZ30K4mH0eBI+GzEih1syToD/wpYUQNRUEwKK+cdJQoJA0uzLbvxzrjVievX/taOwM9w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cUhYczhuTE5wdnlwUlJJK0lCYi9vcGhUSnNBYzJlVlcrSm5ZRUF3NzRpMWw4?=
- =?utf-8?B?czFVZUwwUmVuNk5LTlJUaG5DOTFZSWtJZjRkWHJucWRaS0NiYmROUVZGL2th?=
- =?utf-8?B?ZDM4VzNzMzM2aUswUWlGSmdqUVBIMWI1MHlkU2FhV1RCWkdsejFnVVh4REJp?=
- =?utf-8?B?UVZWRDNyaXZsdG54d212UHdaUlJYOUZaeUQvWEVsVENodWU2T20zQ0wyZ1dN?=
- =?utf-8?B?RllSajRZSStKVVg5WmdWNGp2K0Jyb0gwd0R6NE05MVFtdnpqamJkZXc3Y0li?=
- =?utf-8?B?WGs0endtcHl4L0tTeVRzd3UweGhQWFFkMDREWXc4RnVIaDNpSVJ2alFLODE1?=
- =?utf-8?B?ZmcxVnhZbHM4bERLblVSdGNuN0FRanFWV1NUdUtKb0pTcGlpejBLQVdqRkp1?=
- =?utf-8?B?R3VwM2dvMDljVk1MRXNOaVhlM2JoWjJTM2dWeDRKK2xlenhBRWE1VEZxZEZz?=
- =?utf-8?B?eEN5TWQ5clZ0SlNEL1ZIaU9lNVplRTVvd3ZwVVBBVm1TM1hVc05xSGFlSit5?=
- =?utf-8?B?NEFEZjl5MjF2QWpGQ0dqVURXSEF0d1RnV2YvczJhT1ZZOU93bjhtcDdqZ2VN?=
- =?utf-8?B?K1dRVlMrMzVLeWE5N3J1clg3NFFOOUQyR0ludFJjODR3enRkR24zY1BFdzhP?=
- =?utf-8?B?bkpHRUhscmwxQ2hqQTFJOFBYSk5CYXIwWElHdFpHa3R2L0g3VkV5SWJNL2lQ?=
- =?utf-8?B?WU5kQ0E4UDI5Rk02bHQrbW83VmlxVWhpdDZuUE9nWHhzbDZVNldkK2NSTzUx?=
- =?utf-8?B?SG41WWErSW5NdUJDSWVvekxHbi9rWFIrZzhuYzhkSll2RGpyM0FiaUptTU9a?=
- =?utf-8?B?UCtHb1dXai9YTEl3azBYM3FXNXkyTHk1QjJDRHFrZCtsaEVwcGFPemVGMGRi?=
- =?utf-8?B?c2RXQWRTQm1MY1dGMG5xeDlYOTkyeWhhbHFRY0pTU1BXdzU3b3hFYkU3M2U4?=
- =?utf-8?B?dkFXUUVBZ0N6SldPUXo3VVhoMWZ5blhnZXViL1VsM2F2eFR1TzRUMkhQQ0ZD?=
- =?utf-8?B?ZWlvdXdWeHZERlpiMnlxcVBZVEp5Q1FsaHViYVR6bFdiM2FJRXloRmNCZW9r?=
- =?utf-8?B?MmU2UTNKdU15eVVOaHFKekZiMDUrdkJGNHdsbkFuVnM4dWtqY08rU0lCT1VY?=
- =?utf-8?B?bWhIOHRzS2t6aEUxSCtERWY3R2NScXptd1lHSGVDMXpMTWg1bFhQcjBwS0NM?=
- =?utf-8?B?anlSKzAwS3BYYThhbWtpaTZlSkRzNnBycCtZK05hc3ordjNnR2JpVFA0bmE0?=
- =?utf-8?B?cHU1SlFEVXc5eFV5RG1lcnA1dlpEcnVrMFZhZ2VuUUJRRDZMM2plWXN2N0tF?=
- =?utf-8?B?bUd1RkVUQ3AxS1VPR283MUVQaGpGejR2bDE4VVovaWRCaHFnL3YvTVladEEx?=
- =?utf-8?B?U1Z6QjJHaFpoa0wzcmdVUHhOUzNWczZPYUJnZ2NaVkpOb0wyRjVoaURHUG9R?=
- =?utf-8?B?OFFncTRkV0lhYlRNOVZ2TG56UVpYS2tlZUJwTzRjM1Y1UHpUU2tXa2xRMVNm?=
- =?utf-8?B?V0wrajhZNEdra3FpMk9WMzdJZnJPY2k5My9GRkFkQTF2UTU0Sk1BYWkwOTBi?=
- =?utf-8?B?UmttUkp5NDQxNVBDMnFXOFE1cEQycFlpQjk1NEVEdGVxMUNqOWNKTXhHMHRY?=
- =?utf-8?B?Wm1sNVkyYXhtSitoMGtNQnlGZUxsNHBWVTZJM081S1ZZMnRWVHJreGhOUmJ5?=
- =?utf-8?B?RjhXR0xYbURDcEZZOC95UVNSWnByUWNZODg3KzU3dkZ2dUt3VVBXQmVSblpn?=
- =?utf-8?B?MEFsZXRndlNuNTNRUVB4dFRsTGU1THJLTXZkMFFzeXBSYWpmdTdQRVpZZURh?=
- =?utf-8?B?c2xKaUM0N2tXL3JYZURPaEtoQXlHaWlkV3FieGRmdkxEUytMRmYySTE2OE1y?=
- =?utf-8?B?ZzdLeWgzWFMyS3cxbXpSd0FNTzl1LzlIOSt0YXZkS2VIT0xwYzZWdUFKZldM?=
- =?utf-8?B?QS9hQUVWakpJNnZCNStSZEEvbHBXcEV2cm9oRkpYcTE2MldIVE5PK3NDYlM4?=
- =?utf-8?B?d2djWE1XYTkwbGw5VXExRWxJVGxGMmNGMnJwRmhhaytwOXNHQmFqczF2TVlI?=
- =?utf-8?B?NDMwZHdNZHRUTmlnTVhYSjJ5ZDBBckF4V1RaVjZMS1BMT21yQjRjUGNURlFl?=
- =?utf-8?B?MUowZUZ3a1d5RnM0TU1TVGxJU3JtWWJwWDNBWXdBcW8vbjlWcE1zendkUU9M?=
- =?utf-8?B?Uk04bjVwVis5a3BORTFNKzNoelBlcUViSjVUY3RmdEVkT0pneVNJRmg3aWRm?=
- =?utf-8?B?RDZqWkhjKy85M3IrUEhnWGhyb0hRUGxyblEybTUyYVE4enhmNmowTWI2ZjJt?=
- =?utf-8?B?OVZhVW5LYnlnVW1UNDh5V2hrRGgwNjNBOTV3bHEzNVo1dTBKdVA1UT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aeebb3c5-66a3-43c7-196b-08de9b5ad885
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2026 01:52:41.6999
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /Vhv/Bkq2ZGG+4s/i6hshLpmjVRg+146nTGEzl89cxNHYsVj+C7hXEbszEh81Ivh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR12MB999202
-X-Stat-Signature: xmyruf5zzsgksit4jo1io6cfzkhyxuse
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 17C0F140004
+Message-Id: <86523791-2C69-4A43-BD32-3713840A6640@linux.dev>
+References: <20260415111412.1003526-1-songmuchun@bytedance.com>
+ <20260415111412.1003526-7-songmuchun@bytedance.com>
+ <ad_EygHWDi19SS9y@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B005010000A
+X-Stat-Signature: su6jdkzih1mnzd5chmofyn5gfphf3sgq
 X-Rspam-User: 
-X-HE-Tag: 1776304365-268038
-X-HE-Meta: U2FsdGVkX1/ASEifn1Ath0jMqAxnS/DkhOgjoaRSMSaPv39no9j9NNIkNtak1P80DseBge8mR+eYO9venJ5v72lpMjThoE8zftC5B8AIvz+HKFfnBkrK6LD4iNQNw6yHPw8LLTmKRNXg5nnLx9BlwucErDHPXjE0BSkKv+++PCowKQKfKz4UM6Qr+LAgbamijeS6EnB35oIxZ5sl460E8TXSlbIc06yJ6+SLqK4WPSZSwgRuwCAJM+9zFnmImJ8cuYMCr9DQIbekq5wYkt+XaYccnKM+giFtl0hsF0KXScdk7+zyZ5qh65HLuyINUUS9r6+vr/+B+UxHRsVvLWUAu6yf76xFAo86K+Fr+6nZlns8CswcCOPFZBetwo04jqRImykrQz8hheLXPPPq8NEdewUEN4JlzGnSEI1xZKHmMtMN1fBfnyNAvGh3LBuBYPAzH2CIOfqDtAQP+GZkta0BmmHhAwrq8TU4q1XNGa1WflH0fdMm02s/ClLOx/ot3vfY1bs8QbHyryvzrVLKF2LHuT5wRc09UpbIOAVASYAQo9HXyUVw6/xWm9ueUoHE0CqnXoJD8urJ7vEoKSdn1+Qox1eAbq3HTkmrAcr7jsI4DKWaOsMttwMdSMuok5ujBS30uR93lIStuIDcYKZ0H6Et4TwoPKYaE1kRB2axBpFeaW8+dFtwtJJ5O+ygTFAZfKZpZOAq93rgucvUbaAaDdcdNzERGERByEpjNrcq4OPV4yESoD4hGXPNCGCRS2QlMVAO5z4ni9sOzyCW9mUKwmZbiVvWH4WFU1K/VwPGSlugRMjY0Jcp9qZ+z1effLtNpl+YSrzH3i4uSdv7d9cRXQgJxkV6ShPCkkAeNu8nFv7XTOATR2jPG4ycRBfviECVN5/V8WNRGu/cELPTr6P97zgjpfw63Zr3dLLL4vyAU/LU1ikM8xqneq+OErMT5YyvtR1raDd+PwxYxgjCRVSyjKu
- l5zUjwPl
- tFSOcsMWKL3TcL3bsom+lWorA4n0tiAiEGgiBeGsVduwF/EOXwL1RRB50tZgrtNVpdpBfFuJIqp2m+jwsGCuirKqM3Gk3M3YVluJZoOEl2y66kUa4X9YK2+Px6Kv7+5BFTbrGVPg1Y5Lqv/Auf9Hb0UpBDZamAupgFthEfcWuzkmAJe/LV40DKe+fUwoh39GcJAta1fciw3Zqc+SJDHWN5M8R4GNOpInzCpRimXKzNhJR70qLWYWVKpTByEXE6dZNHMUFXCnsqfM34Clc5UdRyeBJn1Ld765+HFhi5ikHF4JXHIcCEEv8sZjwBBOOZf+Y8EP6rqIAV9VSm6WLGgSD7nys4sGXqE5U9/5m9AQxNhN4dlV/8XmgYLpNbiQAMd6KIjzTNFpW1SWfoyrDqyPAJI+kpdzQb1OIEpC+PngkVYNbLYQ=
+X-HE-Tag: 1776305209-643181
+X-HE-Meta: U2FsdGVkX19I+bXUyVf8mwVVfOLnwcsK7IqWFpvkd7+ER1CbcTXq9UOuTdPNph17eMZaTOV/bYDY98rHe8xt8SUA7S47bDZ290C5KcSEEQsJyrYalJvNUg2r2n68Xw8SB7TkPlFj7RM8lzPtlDC6XQgHunz2qdgfA83Ngs/QtH9irWAcTjhCZtQfUYVcN5WN6Z28id3xD4YqLDhuBoutvC4wpx0kuuSS2tR1wKV4kCfy9qJUKnx3wzbwSzPe9JgcGAsH+2A5G9ZjMcofy9YOwWLLzJvIhdVXO08vaCHTcOrXENwDgFh9Wp4eRqB0PD7eMDd0zaCo6C40mZ7XYe08xQJYAb9OsLA4SP0A8iGXqNrcb+tYe1VVfIXjOPgapW5hTg4yObNraOtz7jE2ly6yHGx2xg9qNw/1deL0Krmx3yQzor1yzV13hkcq12UoXp7IRBHaHK32XVxamP9vS+QLF+D+8VeLsBVTKPGNC9QUsfPYzLKtGq9TN4WPJbXABSxdkwmc9MCLVQLEt04gvry6IFPGFcescBmZlgqRooEzyILkiRn6t9gEoR3buuEj/uFE5ecdBLNW0voYCDF4OG6+Fa85E8ADjGmJKF2pnAUOid2VJ56PUkWtj+U7CC3TAhOdRzmNWZ+gTFJdPNw7ghK0K65mBQXNoCAZr0ZWFjoJtPEN2hrtbir59dLPgX1k4lm6yznQ7YBcFR9WbxGeAz42TS3I9UDHuFEbVwLxpkv3GkvP6+mxPLQUnR8aqsp34+TMBht4wReiODrDT6pJ2Smr81/q7YfE9M8ZE6xDelBNPr55O21RpHj45nPwwtR61mVruR6Z416RTPBFTugisyq9ProUFqPBaWR8DSOryPMjiZFpeI6HWARWbuQCWBHbjp4gVh2HElc8IEoQjUtcWVK1NaBm0V/47ZNf46yAyjNUk4wbU5aIZiwjbot6gwyhE/o24GaKDWV2DaJnCjMXhqx
+ oU7RYvdT
+ ZqiK+3Ycwk0L86kzwTYljpywsKk385FlodFhX9BnYCZSOPtKpD/U+GdQOnJjPL4KIsCZkoewe9W3PUpHWqIzSvgwtw7HdGZRHkhSfStjZXj72tiQSvOqHzCRnrb6wOGCEvjCbYPW+j5/X5nw1AkFrIrDnmXbenpihHfgqjABXTLcM5oqF+epOJH/goXxNrhx+maxDf0Di4BJ9/MgjNJ4xsXsKYWk9sprAFimKO1BFukM9QF6NgGuu39T050jKUvUl8fc0IoJF8TD/i3Cuf2bwp9oWkKjj8UKM4YbpqhIs9pzSTKdkQcPrtImVgkF4Nk9YE2ZXnCNSjGEueJ8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,112 +108,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15 Apr 2026, at 21:45, Baolin Wang wrote:
 
-> On 4/16/26 9:36 AM, Zi Yan wrote:
->> On 15 Apr 2026, at 21:22, Baolin Wang wrote:
->>
->>> On 4/16/26 9:11 AM, Zi Yan wrote:
->>>> On 15 Apr 2026, at 21:05, Baolin Wang wrote:
->>>>
->>>>> On 4/15/26 10:36 PM, David Hildenbrand (Arm) wrote:
->>>>>> On 4/15/26 12:05, Baolin Wang wrote:
->>>>>>>
->>>>>>>
->>>>>>> On 4/15/26 5:54 PM, David Hildenbrand (Arm) wrote:
->>>>>>>>>
->>>>>>>>> Yes, that makes sense.
->>>>>>>>>
->>>>>>>>> However, it=E2=80=99s also possible that the mapping does not sup=
-port large
->>>>>>>>> folios, yet anonymous shmem can still allocate large folios via t=
-he
->>>>>>>>> sysfs interfaces. That doesn't make sense, right?
->>>>>>>>
->>>>>>>> That's what I am saying: if there could be large folios in there, =
-then
->>>>>>>> let's tell the world.
->>>>>>>>
->>>>>>>> Getting in a scenario where the mapping claims to not support larg=
-e
->>>>>>>> folios, but then we have large folios in there is inconsistent, no=
-t?
->>>>>>>>
->>>>>>>> [...]
->>>>>>>>
->>>>>>>>>
->>>>>>>>> For the current anonymous shmem (tmpfs is already clear, no quest=
-ions),
->>>>>>>>> I don=E2=80=99t think there will be any "will never have/does nev=
-er allow"
->>>>>>>>> cases, because it can be changed dynamically via the sysfs interf=
-aces.
->>>>>>>>
->>>>>>>> Right. It's about non-anon shmem with huge=3Doff.
->>>>>>>>
->>>>>>>>>
->>>>>>>>> If we still want that logic, then for anonymous shmem we can trea=
-t it as
->>>>>>>>> always "might have large folios".
->>>>>>>
->>>>>>> OK. To resolve the confusion about 1, the logic should be changed a=
-s
->>>>>>> follows. Does that make sense to you?
->>>>>>>
->>>>>>> if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
->>>>>>>    =C2=A0=C2=A0=C2=A0=C2=A0mapping_set_large_folios(inode->i_mappin=
-g);
->>>>>>
->>>>>> I think that's better.
->>>>>
->>>>> Thanks for your valuable input.
->>>>>
->>>>> But has Willy says, maybe we can just
->>>>>> unconditionally set it and have it even simpler.
->>>>>
->>>>> However, for tmpfs mounts, we should still respect the 'huge=3D' moun=
-t option. See commit 5a90c155defa ("tmpfs: don't enable large folios if not=
- supported").
->>>>
->>>> Is it possible to get sbinfo->huge during tmpfs=E2=80=99s folio alloca=
-tion time, so that
->>>> even if all tmpfs has mapping_set_large_folios() but sbinfo->huge can =
-still
->>>> decide whether huge page will be allocated for a tmpfs?
->>>
->>> Yes, of course. However, the issue isn=E2=80=99t whether tmpfs allows a=
-llocating large folios.
->>>
->>> The problem commit 5a90c155defa tries to fix is that when tmpfs is moun=
-ted with the 'huge=3Dnever' option, we will not allocate large folios for i=
-t. Then when writing tmpfs files, generic_perform_write() will call mapping=
-_max_folio_size() to get the chunk size and ends up with an order-9 size fo=
-r writing tmpfs files. However, this tmpfs file is populated only with smal=
-l folios, resulting in a performance regression.
->>
->> IIUC, generic_perform_write() needs to use a small chunk if tmpfs denies=
- huge.
->> It seems that Kefeng did that in the first try[1]. But willy suggested
->> the current fix.
->>
->> I wonder if we should revisit Kefeng=E2=80=99s first version.
->>
->> [1] https://lore.kernel.org/all/20240914140613.2334139-1-wangkefeng.wang=
-@huawei.com/
->
-> Personally, I still prefer the current fix (commit 5a90c155defa). We shou=
-ld honor the tmpfs mount option. If it explicitly says no large folios, we =
-shouldn=E2=80=99t call mapping_set_large_folios(). Isn=E2=80=99t that more =
-consistent with its semantics?
 
-Filesystems wishing to turn on large folios in the pagecache should call
-``mapping_set_large_folios`` when initializing the incore inode.
+> On Apr 16, 2026, at 01:03, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> Hi Muchun,
+>=20
+> On Wed, Apr 15, 2026 at 07:14:12PM +0800, Muchun Song wrote:
+>> The memmap_init_zone_device() function only initializes the =
+migratetype
+>> of the first pageblock of a compound page. If the compound page size
+>> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
+>> subsequent pageblocks in the compound page remain uninitialized.
+>>=20
+>> Move the migratetype initialization out of __init_zone_device_page()
+>> and into a separate pageblock_migratetype_init_range() function. This
+>> iterates over the entire PFN range of the memory, ensuring that all
+>> pageblocks are correctly initialized.
+>>=20
+>> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for =
+compound pages")
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> mm/mm_init.c | 42 +++++++++++++++++++++++++++---------------
+>> 1 file changed, 27 insertions(+), 15 deletions(-)
+>>=20
+>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>> index f9f8e1af921c..30528c4206c1 100644
+>> --- a/mm/mm_init.c
+>> +++ b/mm/mm_init.c
+>> @@ -674,6 +674,19 @@ static inline void fixup_hashdist(void)
+>> static inline void fixup_hashdist(void) {}
+>> #endif /* CONFIG_NUMA */
+>>=20
+>> +static __meminit void pageblock_migratetype_init_range(unsigned long =
+pfn,
+>> +        unsigned long nr_pages,
+>> +        int migratetype)
+>> +{
+>> + 	unsigned long end =3D pfn + nr_pages;
+>> +
+>> + 	for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D =
+pageblock_nr_pages) {
+>> + 		init_pageblock_migratetype(pfn_to_page(pfn), =
+migratetype, false);
+>> + 		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
+>> + 			cond_resched();
+>> + 	}
+>> +}
+>> +
+>> /*
+>>  * Initialize a reserved page unconditionally, finding its zone =
+first.
+>>  */
+>> @@ -1011,21 +1024,6 @@ static void __ref =
+__init_zone_device_page(struct page *page, unsigned long pfn,
+>> page_folio(page)->pgmap =3D pgmap;
+>> page->zone_device_data =3D NULL;
+>>=20
+>> - 	 /*
+>> -  	 * Mark the block movable so that blocks are reserved for
+>> -  	 * movable at startup. This will force kernel allocations
+>> -  	 * to reserve their blocks rather than leaking throughout
+>> - 	 * the address space during boot when many long-lived
+>> -  	 * kernel allocations are made.
+>> - 	 *
+>> -  	 * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
+>> -  	 * because this is done early in section_activate()
+>> -  	 */
+>> - 	if (pageblock_aligned(pfn)) {
+>> - 		init_pageblock_migratetype(page, MIGRATE_MOVABLE, =
+false);
+>> - 		cond_resched();
+>> - 	}
+>> -
+>> /*
+>>  * ZONE_DEVICE pages other than MEMORY_TYPE_GENERIC are released
+>>  * directly to the driver page allocator which will set the page =
+count
+>> @@ -1122,6 +1120,8 @@ void __ref memmap_init_zone_device(struct zone =
+*zone,
+>>=20
+>> 	__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+>>=20
+>> + 	cond_resched();
+>> +
+>=20
+> I don't think we want cond_resched() for every page here too, even =
+it's a
+> compound page :)
 
-You mean tmpfs with huge option set is a FS wishing to turn on large
-folios in the pagecache, otherwise it is a FS wishing not to have large fol=
-io
-in the pagecache. tmpfs with different options is seen as different FSes.
+I'll update it to every PAGES_PER_SECTION, does this make sense for you?
 
-Best Regards,
-Yan, Zi
+Thanks,
+Muchun
+
+>=20
+> Otherwise
+>=20
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>=20
+>> if (pfns_per_compound =3D=3D 1)
+>> continue;
+>>=20
+>> @@ -1129,6 +1129,18 @@ void __ref memmap_init_zone_device(struct zone =
+*zone,
+>>      compound_nr_pages(altmap, pgmap));
+>> }
+>>=20
+>> + /*
+>> +  * Mark the block movable so that blocks are reserved for
+>> +  * movable at startup. This will force kernel allocations
+>> +  * to reserve their blocks rather than leaking throughout
+>> +  * the address space during boot when many long-lived
+>> +  * kernel allocations are made.
+>> +  *
+>> +  * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
+>> +  * because this is done early in section_activate()
+>> +  */
+>> + 	pageblock_migratetype_init_range(start_pfn, nr_pages, =
+MIGRATE_MOVABLE);
+>> +
+>> 	pr_debug("%s initialised %lu pages in %ums\n", __func__,
+>> 	nr_pages, jiffies_to_msecs(jiffies - start));
+>> }
+>> --=20
+>> 2.20.1
+>>=20
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
+
+
 
