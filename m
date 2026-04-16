@@ -4,143 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24FE6F8D763
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 17:40:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95B2FF8D762
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 17:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C46C6B008C; Thu, 16 Apr 2026 13:40:30 -0400 (EDT)
+	id 933256B0096; Thu, 16 Apr 2026 13:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 175466B0093; Thu, 16 Apr 2026 13:40:30 -0400 (EDT)
+	id 8E41E6B0098; Thu, 16 Apr 2026 13:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03D346B0095; Thu, 16 Apr 2026 13:40:29 -0400 (EDT)
+	id 7D2F16B0099; Thu, 16 Apr 2026 13:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E81186B008C
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 13:40:29 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 616025B942
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 17:40:29 +0000 (UTC)
-X-FDA: 84665133378.22.7E0123F
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4E90880010
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 17:40:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WW+GZe4K;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776361227;
+	by kanga.kvack.org (Postfix) with ESMTP id 6CCB86B0096
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 13:58:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1629F160622
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 17:58:43 +0000 (UTC)
+X-FDA: 84665179326.06.79DA7D1
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9B08540006
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 17:58:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=W7vSzFZ0;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776362321; a=rsa-sha256;
+	cv=none;
+	b=nEd3KkuaVUtMrkjFpZoCnuChxsTLGl2sIu3vGR6r3PrQhitHcUoM4laoaw+iprSeQ/EiCM
+	b+t2P3L/6Vg28Yi3GYbPvasoHf5wv+J0Zon9q9XO36rAbMSd8hMunuuqI1PqhLMdVhnFh6
+	s033DUvABPwrBhG6lJ/HVSYEzGTHkcU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=W7vSzFZ0;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776362321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ep0e+oD24wKRfskgqg4nq4PrXdaak/438+06Dgmnlxs=;
-	b=HkgXPsxApMWQzYyenDX+urqCrJbq4XsmufZ6g82Uzpq6rLHMGAnlKfbpD8RzGY7Z7OcjpB
-	Zowv3wNSLlI1mP2Iar0+e4WhCfxlA+bxzpyuBQGhvk+tzPNyeOji1g0tSCq1Kt5Ehlgloa
-	rENnFfxDBbT2pu00YSCF3W6vd8D8SbI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776361227; a=rsa-sha256;
-	cv=pass;
-	b=IH+ySBIb09cPbzBYGDUr85slNS/bxjSfFhaVgwL4Wvue+auLR6eAeqH6uP/53KMr1eeOeT
-	kY36tSCfl/1pl5j4Tm4AbjezVZXvn0X2jJWcUFRC2sUiATkfpfEyNg39YOcJZYQ5M+tqs8
-	f0y3LJcknZkuHWswhPKric+QK9egGqY=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WW+GZe4K;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-671c24f23b1so6494578a12.0
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 10:40:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776361226; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cRuLD8ZPuallZ0r8t/EVzTbWbvy7sD491c1pW/yakXOtZOGbgcfqfZEDe11MRjq+E/
-         6hZduzq5d85zM1jVVaTA3TAEqVtFIk+uW+ErD11J1ucsHkkPHdneZljKmacw1NlfxoBT
-         eJwOnOnADUb9xxIWc0kDjS65EKGA4v9H1rG7WPeVrPLfTg1/8Wk6msvRO/yBlAJyLahs
-         7qJpwalmNooi3KVLBOHe3OmzzFCS0rNeTzmy3qCeMghl/r1XClcotoHYM31Ky+Bi8kai
-         98+SxDWYE5f1v9J+4VvnAHUvLnO2IxyO8OvVGHI5srL9n8K6v81cSYERVTEdDnCi4uPw
-         eRsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ep0e+oD24wKRfskgqg4nq4PrXdaak/438+06Dgmnlxs=;
-        fh=H8awOgofe9e1ujESOU2zM5cTDXjgfwcd8q93/hU1FxQ=;
-        b=aCHo24UyxU6FdfF9FQJvXVKww1iBryCM2m0gQJf6RGGUkctk6dcajnFxPA02Caaz0d
-         PLP59T+C0fjuHSIWNQE9xVLdnyZBU0gjjqyHdCOEHoB44TsdCgxXWQ76Piz/uknt7n+T
-         eGt564qKHhf7oA/uTSlKYVoN2J+Sk83XYGjkEUBVc0QHJmhtoOxZy7Jr+Ano2y9eOGZg
-         0n4DYPlZRONwYZ0e9BFvwv+psiu4PPumQ9gzT/IOZCxVoB/130bdZr60ZCIixcSky45E
-         4Y9f6KGY6i8GKlM44I37riCIpeguRvbsijAnNsg9aAaNPDv41zzsXGUP/062U11oPJSH
-         cN7Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776361226; x=1776966026; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ep0e+oD24wKRfskgqg4nq4PrXdaak/438+06Dgmnlxs=;
-        b=WW+GZe4K47+zOOThxcpApOtLXj7vj+cZJ2mF3s5StWfRDK5goeRM5cBWie4GWpUZK2
-         m0twSK03x7uPfZtiJjjTLkhRXMZetxHrlX40xcFZoiLklkzziBX+wG0ofZsvLyLIboIF
-         l4e4BzAa5SQr4UbuDFoB6+Z8AedIPH7tyJZwxe/EoHy2qA4+Glk7j5qjqfLuF2ypfnPK
-         BhwygSvQ2tDO/WInd+rVwgZg6dQzYKkUTi9YnNyQu5uZa8OQyuaI8PtatzdX4/54rxii
-         YyZV17DvBdufzUZzoR3jmpWJQ6m+A0jfFr0Ps1ZDEphSwDdArKqaNmiONhi/fUQXlezN
-         apTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776361226; x=1776966026;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ep0e+oD24wKRfskgqg4nq4PrXdaak/438+06Dgmnlxs=;
-        b=eQV2fPRksM8CVAPF8VVtzt0czmW9v1xY7+7oaLWY5JyikBIPCDHzttSKZeB3hVbUWz
-         Xj3Gj6fIVqp04be9Q5B+hFe2+PYmIukhPqlscD6P4tOgKStv3czBHmvX4Cr5ph9Sk50z
-         at5O5i7dNWSyNXzRvKPOAOIKxIVVd4kmvT3q8XP4BFsp07xEj7y55VxOa20A0VDsqQfB
-         hFJEHaeXWxBeVjCtSMA3sLyvECAyfft3EXEb75ZzcfLP3vijUmaa46rqFxB2FBnwrDGB
-         wsmKNgKA5lWR/0aN80xR9Q8aGw//z6naguuPxXcWMd4rX/p0TLmGahGu57g4r3K1/dEQ
-         yRpA==
-X-Gm-Message-State: AOJu0YyT57Soz/5KgcP/3PhkLIOlIAfVPmmUue8SzeQiqWdZyCXcv+Lc
-	gXy0oIumADpXBRAX6JeFgGI6UdQXOfoFT7rNKCyc1u/ZS5r1KkA0Q4lXTLokMIZaT+Np0CsiqEm
-	ab8S4iguKV3c2jGEGYeww9aZJEqgC5fM=
-X-Gm-Gg: AeBDieu52nHXMvUkPoMClfIjwuyN9yo+FWKKkxcA6vSLP4NktLvNklRBUsJkKZM6d0Y
-	0w4qnCxW+7WvO5Eoptv5VyG3k6N8FILjJlZ2J7PqSowk7hA7G1hUgGv+lTBK8NM0QzAZjeJDzDx
-	lXNKOF6MqoxXGR8wNYNc99Vsqi/iJ4X8SFaiEI31glG6SnAkLI90QKHalPqxrx/ThQkUQgKRJVe
-	fnJbV8ZUtto8W0yORDunVjT2G++GLVbR01oQ7YPjOfCBo8pBoMSgu+K27/GVFMPA0QmjBhg5sCM
-	vhFLDVU/oZLKywqgEtaiQ4SDBXWMBUt7VT4UBY50fBJ7YBh2s+UdcQqVH4MPgQ==
-X-Received: by 2002:aa7:c4ca:0:b0:66e:7b0:ba0c with SMTP id
- 4fb4d7f45d1cf-672bd740a4fmr9005a12.28.1776361225367; Thu, 16 Apr 2026
- 10:40:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
- <20260413-mglru-reclaim-v5-5-8eaeacbddc44@tencent.com> <CAGsJ_4yH6v58oD8K56hMPp5bTYGC1Bfo3XSAViW9gWeSwLXgDw@mail.gmail.com>
-In-Reply-To: <CAGsJ_4yH6v58oD8K56hMPp5bTYGC1Bfo3XSAViW9gWeSwLXgDw@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 17 Apr 2026 01:39:48 +0800
-X-Gm-Features: AQROBzB7813SZqOe8VUrFkopu87Ga5hwb0SKkKnIicUEBSJwId1p42qs29c4hig
-Message-ID: <CAMgjq7D+ni+t-bLCeEmOHwt8s5+4iszCMdzzek+P-DuZYemcVQ@mail.gmail.com>
-Subject: Re: [PATCH v5 05/14] mm/mglru: scan and count the exact number of folios
+	bh=lJRRddWkYSALa0B6GSWFZ3ZeCBLOx02UZufpyBXheIs=;
+	b=7CYoUIlwEOP7c5yXmZonUY4sSav6N0hrFFIsjto94Rb88m44lnQG+jjdWoSQWCk/y3xkal
+	m1fELSYj37U2EjmJtnsb/L9D4Jfikj9db5KVzbpHLskD25YZeec4p2XQWfYitBfk4/L0Qi
+	Xl7ycUHyGYqNkHJiQMfV/jA+vuPGXL0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lJRRddWkYSALa0B6GSWFZ3ZeCBLOx02UZufpyBXheIs=; b=W7vSzFZ0BBGM7+i+x9PUT7gKhe
+	jPD3siMA85ibGG/JGILBT1ddf3YoQPK7fRTVInbjKF4FQJBc11khwjd23Rp6J2iG/8qt/kh8llS1o
+	ap5pbJLgDrs1IVciGeLTgxin2oNQqMTBYlgbaxrIXbvmPvNxZra5KHy4bBvM+TV8cH6GkcjK3a+4v
+	ZNNM4dmKA3clrYTWt1OQ9Cnb7Z4pOyzPt+avTRg7EQyJ9hi8vLKbaoowF3ds+rKBG8PrqwwGeGYN4
+	/RgycR1C+ELH5qfHtyQUWcBcp4kQnwCFWbuLEKsNdWEfDGMMUsAn2uQ3B1MbL/rp6UAzeu62JEVOL
+	5ge3LqHw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wDQz0-00000001zKZ-2xpR;
+	Thu, 16 Apr 2026 17:58:30 +0000
+Date: Thu, 16 Apr 2026 18:58:30 +0100
+From: Matthew Wilcox <willy@infradead.org>
 To: Barry Song <baohua@kernel.org>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
-	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
-	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
-	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9r3semx66eku1tzin76udpm9tfj5z3au
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4E90880010
+Cc: Anatoly Stepanov <stepanov.anatoly@huawei.com>,
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com, zuoze1@huawei.com, artem.kuzin@huawei.com,
+	gutierrez.asier@huawei-partners.com, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] filemap: use high-order folios in filemap sync RA
+Message-ID: <aeEjRtNbQI71I0wA@casper.infradead.org>
+References: <20260415192853.3470423-1-stepanov.anatoly@huawei.com>
+ <20260415192853.3470423-3-stepanov.anatoly@huawei.com>
+ <CAGsJ_4yBmrFDHLg8Cf7x0dCLELBp+kY6yoMuP_sHt4Z1wuVrBg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGsJ_4yBmrFDHLg8Cf7x0dCLELBp+kY6yoMuP_sHt4Z1wuVrBg@mail.gmail.com>
+X-Rspamd-Queue-Id: 9B08540006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: q14ufetsm58gqg3m5wxgqgbimqm19d4h
 X-Rspam-User: 
-X-HE-Tag: 1776361227-252698
-X-HE-Meta: U2FsdGVkX19gPIIPN4yGnzZgapimLlRJFZX5ObyMLrslAoQ/s2MGhOs1RaBsYt7b0EwAZcfyhXhIplVo57rbt3Ju4QThWad9xoI1Qf7841feyUIYImHBykbtHWrD/dp5ExoIvV3TOXeIwSmsMZNyDzn26dtf+nOFulpa89HSmHOOmVAMvFP+u6JVPTO4im7NMiTv1712MijQZTlIj/Qar637gbtRamtZeSjBjDGc723/deX3JPxEb1fUQx7T1M8WvV5iZhyNLyv+N1UFyi/L3GJdzd9TfiaYBXnRxdaAV6e0UIiUxvAVVbRAS4b55cOP8DB7i7SjmgAvdxBX4p1blLvIoXrIG3hJ2zlcJxOYOTe3IwBNSIa4QIp0EDotHWLwB2mv09RihzfGqeSj6jy5joyOuRxLICie7kp/tECH2ADh58OMp6AeYe5cn+DF3RU4Gs1s6rPzs6FG7Nlxu3ocFMh9L4wJR5CVVowfhRLBXvMYdvsxC2W3BRS737Jtp2ZSY/O0YB/h94AUJwJB51sRTopdI4MshCWrg7otWbg8kN42mAOLxfxnl998hzdPFt0qBuq3xvrewMQl+Em7/puklPKRjWBbUeXBRzZFKZg/nKqCN6k0UfcUXgp3BMFMPHh7kEx4x+YyxJkbW761ZG51jY56N8l+c7ErlEDT5boducVns66RCxDmdWnIH2ZULYWrKg8bqSYH0QuoG+BrAv4cHwlwW2NbVg6qIwMR9/CPsFfPRQn0n6J3JLw8mHzaNZaK3nBm7gVZoWZRes5TX+z1MKf5/kT5JD33g0OI+cAToQ/wlVvDk5e6fQnKReVD6+u5LWl73Tq6OB0wpQQPsoLIwSM/6JHoX46O3/WAb7cXRytNaUMsZ7axPOBLgk0pUWi/g3kxIUL1LPvEoZkZzwp5v7gD4fyunlPCbi8GwS/a5XCjZti5/TAHmIgJ9oofHWlAjgttnAGq+KFOBms3Ii8
- KXqWJz4B
- vd3p1ttoTFaQKH+3CX52aOE3ntZajqTPWPZ9gYG3UhSbd+dNlZr/cU5zIdAGheZWgav0rylUR79VIKS38WMWMVIraCpNfdxyD8E/FhNPSlUT0rjy55G8IzrtthmnSfVel9hpBqqu9FDl/RTvHtLp+scPmMmJf5MiaVvAiLRubWiyP8+h019AQUZIGYsd4KTMzm7GFGb38wqBMjYwkdrEqLwOhlzk2PkxCYAVL0d5CR3taFmKirB/RjsWXlu8aw5v4vin5ezKcfVofMx/F+W0iNeuw2969tyveoF9AT5uReGgQXESBj28EbimasFYumBKr1qe4gC/VJ1YV38ciTF45nkYC0YrX3msKO3R7nivNhu2oiVjVfQhG/7MT/K0jJ8Uup+Pg+kmuNdIdHSkXGjCBHDiCZKCoPrlAq8OcCB9vGaugBBrTGjHEiXY1fiw4RrknDz/1KFJe6iMgzvzcnvccCRgABRUrb0D0FXR24NnUbvWo0EpveH4Fu/1V0w==
+X-HE-Tag: 1776362320-910610
+X-HE-Meta: U2FsdGVkX1+dX6xL4eeBDSboqmCXpTReupx38tWHF/gn4mHRqoawqohvzymRQHA1p1KP3sUPyROJjbGmL7/uWuoGPZmCAnAAcumknWCddQd0cLSdfBr7puFIGx16g2bdhLZYOanL+UqiukHg5Iw3KKyAftn5DNNsrI0JfDF+A/MvI27ynkg+7owVWXqXnawu08OIUj6jUFXBtfLKa52l22L4qyQlvRNadqzHSOVT/4qffFIvT6wO8GPENxylcEOx6K2CsKh6ohEJtMgloBY2qs3LVXfTEgJ6/gqnpK1qGDAHgHFzvRasT0Yq5vpzlK7nk0CdHNcIpBpaMMqa5Xrq7rlQZKBVHwiL1zwWg+8qWzMcxApUqEINTBy0YCNiyEdWZwNMPeTXTAS1rfY1uABCXRebHslqhuTGjnBy1ofuwyOitzieNKreNSgGFPRZUAWCzpL24N8KbyTOHRy+xfoik7irmoU4tStg75rJJQ/S85NuOR+wItTbFqvhwGMNVvs6rrS3MN83C+3XfPXgZz5quh94SR9PO2jEwFwWo9wTyrm1cvwCQRzDVTxZk54eB9MoNHYqd/GWYS9qULAUJXuuLgr+BjDzgDga1bztGSTM0WIikfE+AtHqosPCxr4UxhLi59bHtYlRqNcFDpdGh0HCOUxbh+cEyEh7M4HK8sPnESNBi1VAB38GScTMEd/BwRjtwapTMW4Yua0nC8dB7vysruBBWulp1+vuIvv75h008VonhOib1H9mMJ3VpqyEl8pNwDEDI5lTtxFn3OeRxy5GjZCv2/FcEbJ+4mnng3qVTLF6aYvjm+SmKBMduvcqCtFg91erVy5lKjCGeETP+YDvy66ZGr445dBMmZ7ErC6VyuUy/8OIAFzmNebtuFQPZogl+mkpFwBP1v69vB1F1b+gVtN2aC3p7EZ5O1kL17GDSCmaGc9ukFeHjcFujOjge1ABys9+WApLh5BUMZ9nIS2
+ NiKsyHyC
+ zFAB0u2BBbTrHiPZ3v7HoQo/s+hmkf83P4sAcbvqrObnU2jvtrqZTlr/hcg723O4WqxsOx66g7lcdZpWr1fuIDFlk/enLAu+qfIYGWcl9819+O8U1MJh9VMfvebjaQsmYvzPjbhQ8rNSzBAOM7VGgtC6+/iv6m2TBWT/uaS2mmMNeetMeLy0ciHBlAoaXLGRk0Od1dz5Jb/iEYHepBpW3PKBo0IXlWLe7YrfXXCTtpjnqDS8t3J0ZaNHx1rf0AFiuxBqJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,142 +95,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 3:03=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
->
-> On Mon, Apr 13, 2026 at 12:48=E2=80=AFAM Kairui Song via B4 Relay
-> <devnull+kasong.tencent.com@kernel.org> wrote:
-> >
-> >  static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, int =
-swappiness)
-> > @@ -4686,7 +4681,7 @@ static bool isolate_folio(struct lruvec *lruvec, =
-struct folio *folio, struct sca
-> >
-> >  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruvec=
-,
-> >                        struct scan_control *sc, int type, int tier,
-> > -                      struct list_head *list)
-> > +                      struct list_head *list, int *isolatedp)
-> >  {
-> >         int i;
-> >         int gen;
-> > @@ -4756,11 +4751,9 @@ static int scan_folios(unsigned long nr_to_scan,=
- struct lruvec *lruvec,
-> >                                 type ? LRU_INACTIVE_FILE : LRU_INACTIVE=
-_ANON);
-> >         if (type =3D=3D LRU_GEN_FILE)
-> >                 sc->nr.file_taken +=3D isolated;
-> > -       /*
-> > -        * There might not be eligible folios due to reclaim_idx. Check=
- the
-> > -        * remaining to prevent livelock if it's not making progress.
-> > -        */
-> > -       return isolated || !remaining ? scanned : 0;
-> > +
-> > +       *isolatedp =3D isolated;
-> > +       return scanned;
-> >  }
-> >
-> >  static int get_tier_idx(struct lruvec *lruvec, int type)
-> > @@ -4804,33 +4797,36 @@ static int get_type_to_scan(struct lruvec *lruv=
-ec, int swappiness)
-> >
-> >  static int isolate_folios(unsigned long nr_to_scan, struct lruvec *lru=
-vec,
-> >                           struct scan_control *sc, int swappiness,
-> > -                         int *type_scanned, struct list_head *list)
-> > +                         struct list_head *list, int *isolated,
-> > +                         int *isolate_type, int *isolate_scanned)
-> >  {
-> >         int i;
-> > +       int scanned =3D 0;
->
-> I would prefer to rename this to total_scanned.
+On Thu, Apr 16, 2026 at 01:30:32PM +0800, Barry Song wrote:
+> > Or introduce some dedicated tunable like "sync_mmap_order".
+> 
+> I guess we could benefit from a small order, such as 1 or 2.
+> Order 4 is really too large for many systems, such as Android.
+> 
+> But it seems Matthew never likes new control knobs?
 
-Good suggestion.
+Correct.  It moves the burden to the sysadmin.  And either there isn't
+one (eg Android), or the sysadmin does not have enough information to
+set it correctly, and doesn't have the time to know that it even exists.
 
->
-> >         int type =3D get_type_to_scan(lruvec, swappiness);
-> >
-> >         for_each_evictable_type(i, swappiness) {
-> > -               int scanned;
-> > +               int type_scan;
->
-> And then we keep this as "scanned".
->
-> >                 int tier =3D get_tier_idx(lruvec, type);
-> >
-> > -               *type_scanned =3D type;
-> > +               type_scan =3D scan_folios(nr_to_scan, lruvec, sc,
-> > +                                       type, tier, list, isolated);
-> >
-> > -               scanned =3D scan_folios(nr_to_scan, lruvec, sc, type, t=
-ier, list);
-> > -               if (scanned)
-> > -                       return scanned;
-> > +               scanned +=3D type_scan;
-> > +               if (*isolated) {
-> > +                       *isolate_type =3D type;
-> > +                       *isolate_scanned =3D type_scan;
-> > +                       break;
-> > +               }
-> >
-> >                 type =3D !type;
-> >         }
-> >
-> > -       return 0;
-> > +       return scanned;
->
-> Then
-> return total_scanned;
->
-> >  }
-> >
-> >  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruve=
-c,
-> >                         struct scan_control *sc, int swappiness)
-> >  {
-> > -       int type;
-> > -       int scanned;
-> > -       int reclaimed;
-> >         LIST_HEAD(list);
-> >         LIST_HEAD(clean);
-> >         struct folio *folio;
-> > @@ -4838,19 +4834,23 @@ static int evict_folios(unsigned long nr_to_sca=
-n, struct lruvec *lruvec,
-> >         enum node_stat_item item;
-> >         struct reclaim_stat stat;
-> >         struct lru_gen_mm_walk *walk;
-> > +       int scanned, reclaimed;
-> > +       int isolated =3D 0, type, type_scanned;
-> >         bool skip_retry =3D false;
-> > -       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> >         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> >         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
-> >
-> >         lruvec_lock_irq(lruvec);
-> >
-> > -       scanned =3D isolate_folios(nr_to_scan, lruvec, sc, swappiness, =
-&type, &list);
-> > +       /* In case folio deletion left empty old gens, flush them */
-> > +       try_to_inc_min_seq(lruvec, swappiness);
-> >
-> > -       scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
-> > +       scanned =3D isolate_folios(nr_to_scan, lruvec, sc, swappiness,
-> > +                                &list, &isolated, &type, &type_scanned=
-);
-> >
-> > -       if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_GEN=
-S > lrugen->max_seq)
-> > -               scanned =3D 0;
-> > +       /* Isolation might create empty gen, flush them */
-> > +       if (scanned)
->
-> scanned is not equal to isolated, right?
-> Somehow, I feel the comment does not match the if (scanned).
-> I assume sort_folio() could also create empty gen?
+We need to be self-tuning.  There's no other way.
 
-Yeah, you are right, it should be isolated. Usually one batch scan
-always isolates a few folios so I didn't observe much difference in
-testing, but I should definitely fix this. Thanks!
+Now, that control loop could run in user-space.  And if it does, then
+we'd need the kernel to expose a control knob for the daemon to tweak.
+But then the daemon has to come first, not the control knob with a vague
+promise of a daemon to appear in future.  Preferably it's part of some
+userspace collection of utilities that already exists like util-linux
+or systemd, so we're not relying on people finding & installing some
+new thing (that again they won't know they need).
+
+THPs in particular have accumulated way too much cruft over the years,
+and there's a huge amount of misinformation floating around on random
+webpages about how to configure them.  I think we'd be much better off
+just ignoring all of the knobs that we've put in.
 
