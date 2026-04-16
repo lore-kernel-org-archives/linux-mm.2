@@ -4,123 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1180DF433D1
-	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:15:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF473F433E2
+	for <linux-mm@archiver.kernel.org>; Thu, 16 Apr 2026 05:18:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E6136B0005; Thu, 16 Apr 2026 01:15:43 -0400 (EDT)
+	id EA5E46B008A; Thu, 16 Apr 2026 01:18:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0978A6B0089; Thu, 16 Apr 2026 01:15:43 -0400 (EDT)
+	id E7D046B008C; Thu, 16 Apr 2026 01:18:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC7556B008A; Thu, 16 Apr 2026 01:15:42 -0400 (EDT)
+	id DBC9E6B0092; Thu, 16 Apr 2026 01:18:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DBE036B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:15:42 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1BBCCE429F
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:15:42 +0000 (UTC)
-X-FDA: 84663256524.06.59B0B16
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 47FD7140009
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:15:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qp3wtGgX;
-	spf=pass (imf09.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB6B46B008A
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 01:18:29 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60787C2656
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:18:29 +0000 (UTC)
+X-FDA: 84663263538.26.C3FB696
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BF84F1A0007
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 05:18:26 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf19.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776316540;
+	s=arc-20220608; t=1776316707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yzCPqRfYWNQ3O2cYuHAxJrU/i3tD03jXJbGUMk0bn9A=;
-	b=dLHeJ25yJc/+aGzcouwVe0HfbJrA+Hs825656owYFaTJaX4lfeO3n0C+xTfRaPfeg4EklN
-	0fPGJjA8fT1mh1NxxnwFpOmRHdjySHpEOsYNcKOf+lG8yHU7ECOnSdsfdwLAoLp4PJNM85
-	eyUQw+HviNY1S9G8wraAFc2tHTHxkE0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gADNXXm5DFaouSKtOuSgwISj0PHZoaHDBFUqBLNHaBw=;
+	b=QIP2vZdbPorhwj71xVkqb35tQshn8VTCe6t6biqNwPJ0/OVlUkzwtY8t1iPMMmDlMVWOtw
+	x1324JXncPLJJPyueQ2yjpQgGOxnyjbo2QzKOKp/v9puzolN8sBWjFfk5wzqBruhHSr0x4
+	GTzeBzDuVPCohTS/kQipw/sV3OEEp4g=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qp3wtGgX;
-	spf=pass (imf09.hostedemail.com: domain of gxxa03070307@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=gxxa03070307@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776316540; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com;
+	spf=pass (imf19.hostedemail.com: domain of gaoxiang17@xiaomi.com designates 207.226.244.123 as permitted sender) smtp.mailfrom=gaoxiang17@xiaomi.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776316707; a=rsa-sha256;
 	cv=none;
-	b=b6TJKpba8LD/amvRrveFNG+GA37U7Uu6QJMvE8PaJYTi4tTIFQ2uhS4XOuF+KDpmWR3QVa
-	ig101+Xq9uO7YiCVqSTtxtXw76PZ8YelmJqMnfkImejw74aQQEaYKE4UzAEB0OBYNLrrhh
-	wRbkWN/JTSQmGdQfoM6/y9khKR9teak=
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35fc258aaa4so2347053a91.2
-        for <linux-mm@kvack.org>; Wed, 15 Apr 2026 22:15:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776316539; x=1776921339; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yzCPqRfYWNQ3O2cYuHAxJrU/i3tD03jXJbGUMk0bn9A=;
-        b=qp3wtGgXJgzI5per55M0a5sbO1N1n9SZcwBoNm8v3k3Kq1sVcoNhPw26s1GgqAVWjb
-         zTpDgiEHJfWn843FBK9/Q9SIsXWVdynFDPgDRQrgsOSSHmrSBP1GQfi72M3tIbWaXehs
-         EZRxysKNxU7OnkMhiLTZ1r25Lp0YmORXEWGPYjdUKd48BkqLv64fdicyHrWmCQIHAAj1
-         cGcK28G9FIXdNjjkAiTZIuCYfdC2rPij4aUZAgwINDcImS32YqDWCJHEnb3hPgFRja9B
-         2naP/ZDiXuLM/J5hb1nm97XL5sN0NYuPvLP/L5lwM8yjuJVMpVenlRh9lcfZrpgd+qqH
-         /4FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776316539; x=1776921339;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yzCPqRfYWNQ3O2cYuHAxJrU/i3tD03jXJbGUMk0bn9A=;
-        b=IyEhgQsHMdXp7YXjwi2oDonaSh42K6f1WuDE0QsFl+l2LeaC1V9eYr9hKHNsqTXqW6
-         ht3Yd/ExNiTAjOr77494A5PmRQGzSz7cUHolwsB4lu5Szo+LUgpno5Ay5+HE5h8VJ+QV
-         aHN8dc4cpxwKnlXYb1JkglUol4puU87NPpVq6FIZyTSxoIbKkfO7VkEBo1ixP2BePXng
-         v4u6HTvJmR+gOEzO/tq11AH1jGPxRvW3Ox//apaUcxRCFVzC9yHTe0ec+X/roJ/aY+1O
-         bQlGTzFfK2vvxdjvr6/I3io6GfNKrKyhWa6d8oSLIbHZ0tN4V/Ow1lmXHIdtfajK8nYs
-         UV8A==
-X-Forwarded-Encrypted: i=1; AFNElJ/3FHqTBPoignuwEbNqs+HdXP7iY7nm4Uv1EaV1iyrQva3zi1t0+aUMrj3UMn3BPY+zH5usm1zKqg==@kvack.org
-X-Gm-Message-State: AOJu0YwCXyAEYLht8xTJ9/o44uzKVVmPsvJSx61q1zhZgwJd7EkIhQPM
-	kbgHw1UJyTIJGeUibe9bF9CycdG/cukmoZ3JBbPG382YIpWcvW8jrxP5
-X-Gm-Gg: AeBDieuVInVWZ+GOjNDaLmLrLhGgRkkDIixP9lk604MfTpef+StMx/c+jw68/9WDbnN
-	eyTYQE2Bc3xWexJGNKcvRfQLYvH80ySv+jHF0Vhj2nNZcS0g/7oIfFLq4xSPkDQUA6L7jb+sB00
-	H4Rv2z/vuQ7BAZBTYWKv4NLOE1Q0D/tui9Pj2LYYzfgKhhCgXsDaSF976RJ7wzd05cqHtm/tFOL
-	oONWDguJQ17gYWfQbSLWT9LbYks4h42u+Z7ycXNnh58kCjhVTRkVwOW2bgbFfi/pwC1RpdDzizX
-	Pmson1wLolWjWPwJLrLsbiSsnIEMAI0IZ/JEOQRNYyItwQMr8ibjNWuS7h2WfxLKsYKY4iYKV0F
-	YZ6SFyHZu7P7LhNSOrFsBy4Z58U8Cpp0en9OstFpRC/5EJBvJiGwle6u5rLRle90D1rkY65T71R
-	cpx079Yp0H9asH3njTMuTk3SF0uWAdYq/F
-X-Received: by 2002:a17:903:94f:b0:2b4:6367:7b86 with SMTP id d9443c01a7336-2b463678a27mr136040735ad.37.1776316538890;
-        Wed, 15 Apr 2026 22:15:38 -0700 (PDT)
-Received: from xiao.mioffice.cn ([43.224.245.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4782a89c5sm37570585ad.61.2026.04.15.22.15.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2026 22:15:38 -0700 (PDT)
-From: Xiang Gao <gxxa03070307@gmail.com>
-To: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	hannes@cmpxchg.org
-Cc: weixugc@google.com,
-	david@kernel.org,
-	mhocko@kernel.org,
-	zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	baohua@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xiang Gao <gaoxiang17@xiaomi.com>
-Subject: [PATCH v2] mm/vmscan: fix typos in comments
-Date: Thu, 16 Apr 2026 13:15:33 +0800
-Message-Id: <20260416051533.708909-1-gxxa03070307@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260416024248.687943-1-gxxa03070307@gmail.com>
-References: <20260416024248.687943-1-gxxa03070307@gmail.com>
+	b=CGZssaBVbPuA5QcJIJfn0O5EtvPPmsZxJJ270sh2gRNkNW/ok0eQ8KBZgEJOSgUjFGZ4jT
+	u7wMwUZkph+1JYkDk7y9SSkL+2n3vF3L6CTpWtdsdWE+nRyFGr0SMX4F6Tqhr28lmHHOYK
+	achHHPvQRfU6uPKXfSl42+jbH0CxJGE=
+X-CSE-ConnectionGUID: xd2w+jpGTRuNuo9ilHZQIg==
+X-CSE-MsgGUID: tetVpz57TKerjMw2xHhLoQ==
+X-IronPort-AV: E=Sophos;i="6.23,181,1770566400"; 
+   d="scan'208,217";a="173016833"
+From: =?utf-8?B?6auY57+U?= <gaoxiang17@xiaomi.com>
+To: Barry Song <baohua@kernel.org>, Xiang Gao <gxxa03070307@gmail.com>
+CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "yuanchu@google.com"
+	<yuanchu@google.com>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"weixugc@google.com" <weixugc@google.com>, "david@kernel.org"
+	<david@kernel.org>, "mhocko@kernel.org" <mhocko@kernel.org>,
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
+	"shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, "ljs@kernel.org"
+	<ljs@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: =?utf-8?B?562U5aSNOiBbRXh0ZXJuYWwgTWFpbF1SZTogW1BBVENIXSBtbS92bXNjYW46?=
+ =?utf-8?Q?_fix_typos_in_comments?=
+Thread-Topic: [External Mail]Re: [PATCH] mm/vmscan: fix typos in comments
+Thread-Index: AQHczVyAIejxXce7z0aozMxJjkYTC7XhJhxV
+Date: Thu, 16 Apr 2026 05:18:19 +0000
+Message-ID: <38b45f30fef040fc85e8470a9edf0424@xiaomi.com>
+References: <20260416024248.687943-1-gxxa03070307@gmail.com>,<CAGsJ_4y+6W3v+9cvNzZT68pCwPdk-4sWQT=XJLXCrvDOSiN6uA@mail.gmail.com>
+In-Reply-To: <CAGsJ_4y+6W3v+9cvNzZT68pCwPdk-4sWQT=XJLXCrvDOSiN6uA@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.237.8.167]
+Content-Type: multipart/alternative;
+	boundary="_000_38b45f30fef040fc85e8470a9edf0424xiaomicom_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1eee4dm6yskszz17o7d1ihhn3gp76qb8
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 47FD7140009
-X-HE-Tag: 1776316540-638355
-X-HE-Meta: U2FsdGVkX1+YPgeHYmg6M5hRxOXTZMy6vIw51hkqFFfuLMZtjSFmXtkk29f6pnXx3nGk1kt5YjNqAM7/LbnGWPtuCFrHyqoZPfTpJddiu+ZHDWQVgEwCE3zyOKk9XbUXcckdu4tv7jpQfC+4RUQCh0/w8gtxLKzQnjR1LbsvASqCZ59+dUJMlcKwcr3zBuGGgkegv/VIzs9qmxcViVtutI+PXwC2fgm8VWn7HVSTto/c/lHvOFps1LKgYQbsn7v0I03juGW9G2PgK2YcSuyNVJZIlK8PINbPmDArAVqNd6GfSkj+vZ6W+6PGHpVrhIogKuXxu9/K4JBQ/e7WbtNl9ahFFBFY+AD76XTpYtnYyqLInCIbO07hbzaMbrW2t6NwfOopGwLeLzm3A9JK+pYFF+ECj5IEdSSIxM8iBgu/nZDSjxfXtyDdMptJT6aZOTLiqGUdgSL/4kV/DTYCf847DY1w74kKYEsC4dmY9YibbTAeaK4Pas2sOQZOL9lPKN9rcHCwTGvIfUXBPps3WA01WjLVpEnmY9bs9GSmFLlO2kwgcNVOqN/kBSlEO9vRr3g6oUc2r/6foFqDDli57+HUBsc+U1T4gTbZOmoL8MlRd6W3t5HGOxscTgx5KrYXekZBYfEnjr3qEM9KoNIqL//+Um/K6ByEoC+FebZeOmiwO+pIEKwGcsQQtX+qmvI/BjQ/G7Ts2pCZlurw7OfizMKglz9lMLZWAUuIxrKsnPQvdY5qQljAHUbbri5+ryuTqDR+2VttzVsAdDRSrSiGlgAjdOUJIGvc2UXBA1/vyOVfOkrwhiEUXXCm9vQasDzDqWO0n8qBPmUu7quyhsDsGUOV6wIRlPc0JmBY95JKZV4IQ9HWN8qdTVBY68IOnR6UcEVRY3R6Pv2Y1NkG8n90MZBLsTSQuAxwzrVo+QVAk5cRKmluK3MySw5ZTCSJQ7kK0GPDRshyTfONCi10gHjvbhF
- WbIeY1iL
- KiTofnRIBWR6Wxw4TFfy/K2g6uJEsGt3RqMGBBrLkCOt1Tzi7JoM1dmsWqRMdUyKUDEjQieJ9Ux8rtHVKrJTaag7XNqVKZdY+NpCPCbx3lP9cz+hvGN+SzWLmHAnE3YaqCAxFM8D1rzFsB1JafYT3T0equzBKCqB+bYz3vPhySfZqOTD1wkWM4pnFDYs2JhiLkBCcF+23oWO3gOjW6Z+Tsvk/PhLJj0cD/ugArvlOsfIOx3DZ3z/pKp5XqlRqfNPrFTvgXTgwwQwWwfr6CmUVkSG9+adKPd8Al3ujzOVweMvUH6+WMIDNmCttqVqc0XEzQCyQrfqGvXeQA1S8a1zDd7OIQn9rpByfnnOd5CM22bgktpIkLEGlVBaV7iNSLH1Hm2C+WYP6ZNKejTebaTzIKtMmOg==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BF84F1A0007
+X-Stat-Signature: 1djebunx47g8xg1ik4eg9pk4e7xi1wzs
+X-HE-Tag: 1776316706-411282
+X-HE-Meta: U2FsdGVkX19pxwHchsf91nyf6rBtzytlutsA1+UvsM3es7z8AyYft+0jvCMVFZXMDpBSGMjaLPvFV683Iw/YizLEQSF5pTrpvKzowhaWhCOonYJKnOi077IMzOA0euuJUlf4cxcMTBs+SQAmDJi7/fkH/PidNYig/T/lywxiLasnj8omLuXEaHoqzliNglgyYrJmILtI1sJz6OZsFSvi8vwPz6ZmZFSSaj+6wrTaBbaNCyJjF84rEm3dDtbmBEI0cdOhQBhwEi3eUokfgvxypkVbth4Q2MqvvrMgVql1CT4zkoXBCE134flrMjpoqsJuoPYofUy0vMyv/hGL73Of+spnZ/F4uf/UblhzCc+KPaXGTjqb7B/GEVlX7j8yZd8M5i+4Hp1kwImj80SihNogNp5WPbBkHESN8PyOt2WWWMtZaINhUyoT3Ve+h1Ta8G5umAps1Wh8bYxtNKhwsAamrXRfPaPb7B69QjkdP0hzkJeWDZAgq58HgUNl3HuOFRG8norC0BoPaKE0jZp2PCOBc7ZnygB28KJdKc8O2O9gEtmbMo2YFqxxEzAOHxw1a8GRjQbOb02D+hf4g2SOwpUZwCM61beUTFXQ3PkX64vlEtpIhYjygEygOoZBN7T1lGCgcS2h+KuvI2SpVjV3ZMWZQLULl5xpJtOoiut6zhB8HM6OkwsRD1hkpV+SmTBo2ryXooc+R0TpkrgNlplDYmJirQGDUJCgDvTDmFGeLLHrbifsbzZNcTaJJV0ST0ykXIptIgL88Ru8i3GA1xDokvkQfxj9TBIgztQqOKS+HH4eJ2/JAPAoBDHrNzH/wlCwLPkAwzTd+L+c6bsU1V7kb8hNvANkQDjSAmtlqzGSadwkvb8Igm0E3nYAwkjtJAXmJdTUVqVjT8V8dE3KgWzl7w/A3aM7go9oaM44Wh//xzyeqjJ0klwlyruYqCbGBIEl9u3o2TRN0B7PZpOxoURvy4x
+ X1P61yAz
+ UoWZPvQLbniuFIXcgcWnRZftU4CIW/iUiuQ89G7nhywDc+GvYIrOX1F93z78/hp0JrwVFjKdonehZlVIzMfaPuby71ixU4TfUloUEAI1sfKSoQphCZvwvQwPVOwXpyo/G4juP5wDrCJreuWmxIrSn2EHsw936bO5BoXXRtSfyAX7zJsw1jW1Ikis1US44hSFD4YYZEg5XziAekZpI/pLMQ6B11aNcVtf8g3f+oZXdQI8dqT2BFPUpBGKKyAB8jdxqJiLNNgKxEUoKIrHOYdujNKO3UJIXpBviUAaAMCHc4d3bfn2NnJVXzk4luGKPKvPn6/WF1KCGcv8324ygP6ISvcOkAgHADF6s4VB96DBUxgGYqKzDYcdBgzkYzl/PnUD95oxlhMsC9uNtP3gZxFYmkEvmUjTMDBmqtYO8v1Zt0oiZ3Z2huey1ru4N/pRqOeYIJJedFwopi1yqeqLTmALyvUGYZ7o5VvRQGA9TgE1VxKVekiny/tM/jH0EJRxNNquwKDOir2bP9gFsDQRYi/VaPx+c1isq3CUkz5Yo3mto4GgkplijRwD90VTqyDfzKJoCyxuOETC+8llPxO/ks4kPlwjNrgy2s37kfeqswHHt7R7wd5nt2mDET5LMh2A0j6dpqi0I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,52 +94,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Xiang Gao <gaoxiang17@xiaomi.com>
+--_000_38b45f30fef040fc85e8470a9edf0424xiaomicom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Fix three typos in comments:
+SGksDQoNClRoYW5rcyBmb3IgY2F0Y2hpbmcgdGhpcy4gSSdsbCBmaXggdGhlIFNpZ25lZC1vZmYt
+YnkgbmFtZSBtaXNtYXRjaCBhbmQgc2VuZCBhIHYyLg0KDQpCZXN0IHJlZ2FyZHMsWGlhbmcgR2Fv
+DQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCuWPkeS7tuS6ujogQmFycnkg
+U29uZyA8YmFvaHVhQGtlcm5lbC5vcmc+DQrlj5HpgIHml7bpl7Q6IDIwMjblubQ05pyIMTbml6Ug
+MTI6NDk6NDYNCuaUtuS7tuS6ujogWGlhbmcgR2FvDQrmioTpgIE6IGFrcG1AbGludXgtZm91bmRh
+dGlvbi5vcmc7IGF4ZWxyYXNtdXNzZW5AZ29vZ2xlLmNvbTsgeXVhbmNodUBnb29nbGUuY29tOyBo
+YW5uZXNAY21weGNoZy5vcmc7IHdlaXh1Z2NAZ29vZ2xlLmNvbTsgZGF2aWRAa2VybmVsLm9yZzsg
+bWhvY2tvQGtlcm5lbC5vcmc7IHpoZW5ncWkuYXJjaEBieXRlZGFuY2UuY29tOyBzaGFrZWVsLmJ1
+dHRAbGludXguZGV2OyBsanNAa2VybmVsLm9yZzsgbGludXgtbW1Aa3ZhY2sub3JnOyBsaW51eC1r
+ZXJuZWxAdmdlci5rZXJuZWwub3JnOyDpq5jnv5QNCuS4u+mimDogW0V4dGVybmFsIE1haWxdUmU6
+IFtQQVRDSF0gbW0vdm1zY2FuOiBmaXggdHlwb3MgaW4gY29tbWVudHMNCg0KW+WklumDqOmCruS7
+tl0g5q2k6YKu5Lu25p2l5rqQ5LqO5bCP57Gz5YWs5Y+45aSW6YOo77yM6K+36LCo5oWO5aSE55CG
+44CC6Iul5a+56YKu5Lu25a6J5YWo5oCn5a2Y55aR77yM6K+35bCG6YKu5Lu26L2s5Y+R57uZbWlz
+ZWNAeGlhb21pLmNvbei/m+ihjOWPjemmiA0KDQpPbiBUaHUsIEFwciAxNiwgMjAyNiBhdCAxMDo0
+M+KAr0FNIFhpYW5nIEdhbyA8Z3h4YTAzMDcwMzA3QGdtYWlsLmNvbT4gd3JvdGU6DQo+DQo+IEZy
+b206IFhpYW5nIEdhbyA8Z2FveGlhbmcxN0B4aWFvbWkuY29tPg0KPg0KPiBGaXggdGhyZWUgdHlw
+b3MgaW4gY29tbWVudHM6DQo+DQo+IC0gTGluZSAxMTI6ICJ6b21lX3JlY2xhaW1fbW9kZSIgLT4g
+InpvbmVfcmVjbGFpbV9tb2RlIg0KPiAtIExpbmUgNjIwODogInByaW9pdGllcyIgLT4gInByaW9y
+aXRpZXMiDQo+IC0gTGluZSA3MDY3OiAidGhhdCB0aGF0IGhpZ2giIC0+ICJ0aGF0IHRoZSBoaWdo
+IiAoZHVwbGljYXRlZCB3b3JkKQ0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBnYW94aWFuZzE3IDxnYW94
+aWFuZzE3QHhpYW9taS5jb20+DQoNClNob3VsZCBiZToNClNpZ25lZC1vZmYtYnk6IFhpYW5nIEdh
+byA8Z2FveGlhbmcxN0B4aWFvbWkuY29tPg0KDQpPdGhlcndpc2UsDQoNClJldmlld2VkLWJ5OiBC
+YXJyeSBTb25nIDxiYW9odWFAa2VybmVsLm9yZz4NCg==
 
-- Line 112: "zome_reclaim_mode" -> "zone_reclaim_mode"
-- Line 6208: "prioities" -> "priorities"
-- Line 7067: "that that high" -> "that the high" (duplicated word)
+--_000_38b45f30fef040fc85e8470a9edf0424xiaomicom_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Xiang Gao <gaoxiang17@xiaomi.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
----
- mm/vmscan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
+dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRvciIgY29udGVu
+dD0iTWljcm9zb2Z0IEV4Y2hhbmdlIFNlcnZlciI+DQo8IS0tIGNvbnZlcnRlZCBmcm9tIHRleHQg
+LS0+PHN0eWxlPjwhLS0gLkVtYWlsUXVvdGUgeyBtYXJnaW4tbGVmdDogMXB0OyBwYWRkaW5nLWxl
+ZnQ6IDRwdDsgYm9yZGVyLWxlZnQ6ICM4MDAwMDAgMnB4IHNvbGlkOyB9IC0tPjwvc3R5bGU+DQo8
+L2hlYWQ+DQo8Ym9keT4NCjxtZXRhIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1VVEYtOCI+
+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiIHN0eWxlPSIiPg0KPCEtLQ0KcA0KCXttYXJnaW4tdG9w
+OjA7DQoJbWFyZ2luLWJvdHRvbTowfQ0KLS0+DQo8L3N0eWxlPg0KPGRpdiBkaXI9Imx0ciI+DQo8
+ZGl2IGlkPSJ4X2RpdnRhZ2RlZmF1bHR3cmFwcGVyIiBkaXI9Imx0ciIgc3R5bGU9ImZvbnQtc2l6
+ZToxMnB0OyBjb2xvcjojMDAwMDAwOyBmb250LWZhbWlseTpDYWxpYnJpLEhlbHZldGljYSxzYW5z
+LXNlcmlmIj4NCjxwPjwvcD4NCjxkaXY+DQo8ZGl2IGNsYXNzPSJ4X2FjZS1saW5lIHhfYWNlLWxp
+bmUgeF9vbGQtcmVjb3JkLWlkLWRveGNuMWNOUzVOem14eUtoankwNVNaVWxwaCI+SGksPC9kaXY+
+DQo8ZGl2IGNsYXNzPSJ4X2FjZS1saW5lIHhfYWNlLWxpbmUgeF9vbGQtcmVjb3JkLWlkLWRveGNu
+MWNOUzVOem14eUtoankwNVNaVWxwaCI+PGJyPg0KPC9kaXY+DQo8ZGl2IGNsYXNzPSJ4X2FjZS1s
+aW5lIHhfYWNlLWxpbmUgeF9vbGQtcmVjb3JkLWlkLWRveGNubHZhWmppd0k5VGhiQnpURXFIdGpW
+YiI+VGhhbmtzIGZvciBjYXRjaGluZyB0aGlzLiBJJ2xsIGZpeCB0aGUgU2lnbmVkLW9mZi1ieSBu
+YW1lIG1pc21hdGNoIGFuZCBzZW5kIGEgdjIuPC9kaXY+DQo8ZGl2IGNsYXNzPSJ4X2FjZS1saW5l
+IHhfYWNlLWxpbmUgeF9vbGQtcmVjb3JkLWlkLWRveGNubHZhWmppd0k5VGhiQnpURXFIdGpWYiI+
+PGJyPg0KPC9kaXY+DQo8ZGl2IGNsYXNzPSJ4X2FjZS1saW5lIHhfYWNlLWxpbmUgeF9vbGQtcmVj
+b3JkLWlkLWRveGNuWE1UYzc2ck5UYkFiSXFnS0dOQmNMZCI+QmVzdCByZWdhcmRzLFhpYW5nIEdh
+bzwvZGl2Pg0KPC9kaXY+DQo8c3BhbiBjbGFzcz0ieF9sYXJrLXJlY29yZC1jbGlwYm9hcmQiPjwv
+c3Bhbj48YnI+DQo8cD48L3A+DQo8L2Rpdj4NCjxociB0YWJpbmRleD0iLTEiIHN0eWxlPSJkaXNw
+bGF5OmlubGluZS1ibG9jazsgd2lkdGg6OTglIj4NCjxkaXYgaWQ9InhfZGl2UnBseUZ3ZE1zZyIg
+ZGlyPSJsdHIiPjxmb250IGZhY2U9IkNhbGlicmksIHNhbnMtc2VyaWYiIGNvbG9yPSIjMDAwMDAw
+IiBzdHlsZT0iZm9udC1zaXplOjExcHQiPjxiPuWPkeS7tuS6ujo8L2I+IEJhcnJ5IFNvbmcgJmx0
+O2Jhb2h1YUBrZXJuZWwub3JnJmd0Ozxicj4NCjxiPuWPkemAgeaXtumXtDo8L2I+IDIwMjblubQ0
+5pyIMTbml6UgMTI6NDk6NDY8YnI+DQo8Yj7mlLbku7bkuro6PC9iPiBYaWFuZyBHYW88YnI+DQo8
+Yj7mioTpgIE6PC9iPiBha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnOyBheGVscmFzbXVzc2VuQGdv
+b2dsZS5jb207IHl1YW5jaHVAZ29vZ2xlLmNvbTsgaGFubmVzQGNtcHhjaGcub3JnOyB3ZWl4dWdj
+QGdvb2dsZS5jb207IGRhdmlkQGtlcm5lbC5vcmc7IG1ob2Nrb0BrZXJuZWwub3JnOyB6aGVuZ3Fp
+LmFyY2hAYnl0ZWRhbmNlLmNvbTsgc2hha2VlbC5idXR0QGxpbnV4LmRldjsgbGpzQGtlcm5lbC5v
+cmc7IGxpbnV4LW1tQGt2YWNrLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCiDp
+q5jnv5Q8YnI+DQo8Yj7kuLvpopg6PC9iPiBbRXh0ZXJuYWwgTWFpbF1SZTogW1BBVENIXSBtbS92
+bXNjYW46IGZpeCB0eXBvcyBpbiBjb21tZW50czwvZm9udD4NCjxkaXY+Jm5ic3A7PC9kaXY+DQo8
+L2Rpdj4NCjwvZGl2Pg0KPGZvbnQgc2l6ZT0iMiI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMHB0
+OyI+DQo8ZGl2IGNsYXNzPSJQbGFpblRleHQiPlvlpJbpg6jpgq7ku7ZdIOatpOmCruS7tuadpea6
+kOS6juWwj+exs+WFrOWPuOWklumDqO+8jOivt+iwqOaFjuWkhOeQhuOAguiLpeWvuemCruS7tuWu
+ieWFqOaAp+WtmOeWke+8jOivt+WwhumCruS7tui9rOWPkee7mW1pc2VjQHhpYW9taS5jb23ov5vo
+oYzlj43ppog8YnI+DQo8YnI+DQpPbiBUaHUsIEFwciAxNiwgMjAyNiBhdCAxMDo0M+KAr0FNIFhp
+YW5nIEdhbyAmbHQ7Z3h4YTAzMDcwMzA3QGdtYWlsLmNvbSZndDsgd3JvdGU6PGJyPg0KJmd0Ozxi
+cj4NCiZndDsgRnJvbTogWGlhbmcgR2FvICZsdDtnYW94aWFuZzE3QHhpYW9taS5jb20mZ3Q7PGJy
+Pg0KJmd0Ozxicj4NCiZndDsgRml4IHRocmVlIHR5cG9zIGluIGNvbW1lbnRzOjxicj4NCiZndDs8
+YnI+DQomZ3Q7IC0gTGluZSAxMTI6ICZxdW90O3pvbWVfcmVjbGFpbV9tb2RlJnF1b3Q7IC0mZ3Q7
+ICZxdW90O3pvbmVfcmVjbGFpbV9tb2RlJnF1b3Q7PGJyPg0KJmd0OyAtIExpbmUgNjIwODogJnF1
+b3Q7cHJpb2l0aWVzJnF1b3Q7IC0mZ3Q7ICZxdW90O3ByaW9yaXRpZXMmcXVvdDs8YnI+DQomZ3Q7
+IC0gTGluZSA3MDY3OiAmcXVvdDt0aGF0IHRoYXQgaGlnaCZxdW90OyAtJmd0OyAmcXVvdDt0aGF0
+IHRoZSBoaWdoJnF1b3Q7IChkdXBsaWNhdGVkIHdvcmQpPGJyPg0KJmd0Ozxicj4NCiZndDsgU2ln
+bmVkLW9mZi1ieTogZ2FveGlhbmcxNyAmbHQ7Z2FveGlhbmcxN0B4aWFvbWkuY29tJmd0Ozxicj4N
+Cjxicj4NClNob3VsZCBiZTo8YnI+DQpTaWduZWQtb2ZmLWJ5OiBYaWFuZyBHYW8gJmx0O2dhb3hp
+YW5nMTdAeGlhb21pLmNvbSZndDs8YnI+DQo8YnI+DQpPdGhlcndpc2UsPGJyPg0KPGJyPg0KUmV2
+aWV3ZWQtYnk6IEJhcnJ5IFNvbmcgJmx0O2Jhb2h1YUBrZXJuZWwub3JnJmd0Ozxicj4NCjwvZGl2
+Pg0KPC9zcGFuPjwvZm9udD4NCjwvYm9keT4NCjwvaHRtbD4NCg==
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 0fc9373e8251..710fbe1ee151 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -109,7 +109,7 @@ struct scan_control {
- 	/* zone_reclaim_mode */
- 	unsigned int may_unmap:1;
- 
--	/* zome_reclaim_mode, boost reclaim, cgroup restrictions */
-+	/* zone_reclaim_mode, boost reclaim, cgroup restrictions */
- 	unsigned int may_swap:1;
- 
- 	/* Not allow cache_trim_mode to be turned on as part of reclaim? */
-@@ -6205,7 +6205,7 @@ static void consider_reclaim_throttle(pg_data_t *pgdat, struct scan_control *sc)
- 	if (current_is_kswapd() || cgroup_reclaim(sc))
- 		return;
- 
--	/* Throttle if making no progress at high prioities. */
-+	/* Throttle if making no progress at high priorities. */
- 	if (sc->priority == 1 && !sc->nr_reclaimed)
- 		reclaim_throttle(pgdat, VMSCAN_THROTTLE_NOPROGRESS);
- }
-@@ -7064,7 +7064,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 
- 		/*
- 		 * There should be no need to raise the scanning priority if
--		 * enough pages are already being scanned that that high
-+		 * enough pages are already being scanned that the high
- 		 * watermark would be met at 100% efficiency.
- 		 */
- 		if (kswapd_shrink_node(pgdat, &sc))
--- 
-2.34.1
-
+--_000_38b45f30fef040fc85e8470a9edf0424xiaomicom_--
 
