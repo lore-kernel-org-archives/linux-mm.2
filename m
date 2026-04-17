@@ -4,144 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BFABF8E4A1
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 03:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A605F8E4A1
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 03:25:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E22BE6B0089; Thu, 16 Apr 2026 23:19:50 -0400 (EDT)
+	id 6D8336B0005; Thu, 16 Apr 2026 23:25:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF9F66B008A; Thu, 16 Apr 2026 23:19:50 -0400 (EDT)
+	id 688E96B0089; Thu, 16 Apr 2026 23:25:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0FD86B008C; Thu, 16 Apr 2026 23:19:50 -0400 (EDT)
+	id 59ED26B008A; Thu, 16 Apr 2026 23:25:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C34066B0089
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 23:19:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C94E8CA4B
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:19:50 +0000 (UTC)
-X-FDA: 84666593340.17.A7809DE
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7832E140004
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:19:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dXfDuESW;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776395988;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 482006B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 23:25:54 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6D86160A6C
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:25:53 +0000 (UTC)
+X-FDA: 84666608586.28.E1D65CA
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4CA9F140011
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:25:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bVJTtvE2;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776396352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yM18Ak5+kMBmVuDR0UbI8yoR0xCl6Hm9vDklobqY31M=;
-	b=qvlYQi5nTNtctH6R2nJ2gBneO9kD/JMAfezqWzfvg4GNBQR3oXxt6QdQX2UPNQivwwRQgS
-	BThK1NVLwkqlO1YmLgZd69bH/fdJqTrDhjlPu7FCYWXNNpvrsPL3UtJ7LlTzvMHNJBAMIH
-	biMcpY3VoQa6PvJ0T/7GkMb1zmyJybc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776395988; a=rsa-sha256;
-	cv=pass;
-	b=6aL8tU3oalx621Tu2lr8v1ELU6k+CkmdMeMD/floJtVHZYS6FbuCQMc22SuQB/5RC9L2iE
-	FI5+Gs8CknhdBInzrXdFNKDzgywqGtFOosAJtejUo8Y9cl0PdDYFR9BiwfKHHdHw0ptCYV
-	S6P1wdgGIMosWcrrwivVr4GoHbFHy68=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dXfDuESW;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-671c24f23b1so318482a12.0
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 20:19:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776395987; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IhVa8F94HuXJ9nKlOg1JD5EOgAfpk0JiDW8n6gWmRuz9AqKgC65BYltilZve0HHO6H
-         RKHjjTJOD5R+AnlOrC7hENkpH8DObYxozt5cTGJekBw/BttQO3NaxSgaGoXQE9n+lQcg
-         oaodNVAbMgzZEatdDjf/HB0dF+LT82zU0LSF7Li9S8UwKyvIyseRNl428EvUctzTaRrs
-         NCooE2XI560QF6tzaWaHzFkOUY3zy2L0DUaMbyBdNuLlnQAPz5sl6tlJPQUAaA2HKRw3
-         ZPABtbEpFChpcVmAiG6x6Fkqf5mBwl9ObGpqWlwkmCNz+/kJdoTXBUorUcpPjL05s7wF
-         MsLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yM18Ak5+kMBmVuDR0UbI8yoR0xCl6Hm9vDklobqY31M=;
-        fh=gH/N5PzQOG/ThuUsuz7+WdhoOrzQW3jI8VRtJYkVEO0=;
-        b=M8NXTl9MoyVxxW9f7fVQzwB/MFli/aUGYWxYC9o94t2n5+CVWLJoLpa8Tex5Kx3Im3
-         4ozhEy5XhDomsztGVreS6QpLLA0KCbR2dYlim2MSaTrTgPSuIoEcLZUFB5sCKydVxnfj
-         u0AcRLdVCrovIkZ31+qgsb7u4h9HwrlekFddXRKGcUfzsF+peMqHGP1xS0RKuK+oR558
-         CuuGZnK3is9k3KEDdmV1B+V6+IVeMlVple3yrWFgh/xTRQTnNRyDBOUwgHU2TpgN9SCW
-         nOJSWbm4b96UjnGB5IgWUsd5R1Qg51MNFEb4lAYtpHaj88pwI8e7zz7PpVtGBGm8u0CB
-         J4PQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776395987; x=1777000787; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yM18Ak5+kMBmVuDR0UbI8yoR0xCl6Hm9vDklobqY31M=;
-        b=dXfDuESWMOx9ZyvxaE7bxoXhYAsu48FGorXiGQS4LsKsPhy77ZEM2bSlfQYo9RgaRG
-         0FnKVtcCtCyvgK5wWVLtn5devEh+Sof6Vs+ne7C9Uh9RZiX+4SXeWLcfGNHKHsqPbUxB
-         KvefqKD2ixd8saJpDQuVHH0cAYnpGhbvqFZYfJTgmMYmjdUW4IbdkbeG5ppTD+q2Koga
-         Bq5vdxl4Eo3Ccc7n+Nssv77wh/L3hitWw2bQyjk1EYVkmrATVvac1xGTGrLsFfMBVpRT
-         L9lArH6+8HDdqbnyTqIoJcSWRDJWN9eOmpsT5ArugXLe3peuiTkS7tctpLlvEXKxdvZQ
-         V0GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776395987; x=1777000787;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yM18Ak5+kMBmVuDR0UbI8yoR0xCl6Hm9vDklobqY31M=;
-        b=pyoH4/EWhXJNBmUKSKGK4TaBumnAGVsQ9rLMbT5kYEiMyYRIT30xgtuG6nsYVw9nN4
-         3LAnwuyMv0FpuvCt2iH9K5k5dPlCWT6B5PNs6EUHGOrQcPg/gCcAK68oom4cWBK/dxm2
-         XXWsGRU4vWDbCAwTVmwydbjfwBtvxFCMxH715zmh0u7i9YEf1/pDiLGN8aS0PJ49ycZO
-         swdLbhv5rAxR9yR4AKdPU/vJ3/XohhAGvL1ptnIuI0EZWoxrJ3EFsb8+OCoRhpOXpjtd
-         X4vF5mQLXNagfS3IUvjzPpvPpYtJAmJ2OkL14WRTdyDJOD0r5+dCm0BCtvw8+Zad3HyG
-         ndnQ==
-X-Gm-Message-State: AOJu0YyAzsn+2G05ou8cxousMggKSJaZKBNZhRjph/t8T67ZbctJK5iR
-	SEeK6ExlVtfsEYSDqjN6qKn5//sUaH807W3KvIhCqfsKjMZ4zQJ+a4RuqevsadwcCGtD50d88Wk
-	77q9mn0kbFPu0XD4Iv4vstYCnkbJQB1c=
-X-Gm-Gg: AeBDieuZ2p9MpyJ2aH+dXu6hOMNZims2kVm767KMx5uLkmn8zxr2aVVEqIduYE0iFio
-	q52YpXWdbJMaCyMzd4Xas3Dk8ucJYGmM0cryvNPDGUyE/yTEIC44pupmAFsa8C0emKbOsp8MULN
-	pgE+EJzZ5qpN0YvlMRtAYNVXTjbKElPMLddMGXEl03yWrbvNBOS1eyCD92khxG6wPyXsnUbpxfD
-	LDhSocsvzwqbX0HKEIXPdnrzoZSAU3KJIeXK45C5yy8n2ai5fBa0lPr3h0nazA/f1T/N9TrpVw4
-	KbGWEo77FDymyMZk/W58OPu8b3/UoA63V/XARFM794fZnH81W5w=
-X-Received: by 2002:a05:6402:530e:b0:670:a2a9:fe59 with SMTP id
- 4fb4d7f45d1cf-672bfed7667mr512994a12.25.1776395986572; Thu, 16 Apr 2026
- 20:19:46 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=jIGmtfqQNV3WWdh9M42ndpoJ6WyORofupaAjImOgxKE=;
+	b=mdgf48NsLICpTFPUwTwP00x9u18S9emrafZZlNzx43e9ePWQXKxM/YbiHccPmxWmByyqRf
+	wdT8lh9qyvC1ziL5StDYWzIaWNc9t+12y2n56z9BTQmjKNTvXr2Ji4W889kZ3iKNr9TAwu
+	JgbImpiMLY0wHCqdNs+ORFUqnbhOMMk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776396352; a=rsa-sha256;
+	cv=none;
+	b=uwcY5E5fSvPHWMV8iCA0jHTItIjKvS2txFAhGO3ldmQ80Mg3r6Y+gi5sWaEFanWLSU6JS/
+	xKaFvEr4qsnCWLvtUYdSipwwqDDIUTMjeyK1cYhTyLHkioM7h6F5ZyTqv7sPUVy6OJNyrG
+	3wjiRwbB8+UxWlWeOYgBHN4hCvCrBd4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bVJTtvE2;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776396346; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=jIGmtfqQNV3WWdh9M42ndpoJ6WyORofupaAjImOgxKE=;
+	b=bVJTtvE2lTsUV4O+kHdHyo+GG/wQuoumBkuN5GHuPauRZbKKUsLSOvHA/jNPPAnpRouQ2fxOG/JQwJWBjfuv8qlD7+7MoLfQO1SVSQ9KpeczePn9cOV3Gw0COcW3LrRqxWGEQgARAc+eZUIhUvPRHF27oEChbPTxTx0UE/eJ1qo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X19y9nz_1776396345;
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X19y9nz_1776396345 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 17 Apr 2026 11:25:46 +0800
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: akpm@linux-foundation.org,
+	hughd@google.com
+Cc: willy@infradead.org,
+	ziy@nvidia.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	lance.yang@linux.dev,
+	baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] mm: shmem: always support large folios for internal shmem mount
+Date: Fri, 17 Apr 2026 11:25:31 +0800
+Message-ID: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20260417-swap-table-p4-v2-0-17f5d1015428@tencent.com> <20260417-swap-table-p4-v2-4-17f5d1015428@tencent.com>
-In-Reply-To: <20260417-swap-table-p4-v2-4-17f5d1015428@tencent.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 17 Apr 2026 11:19:09 +0800
-X-Gm-Features: AQROBzDC1qIzgjTfCrL0QSfj2b-Fvn7EnI1uFbve34YiphupQbw1nZbSmw9Wqt4
-Message-ID: <CAMgjq7ANih7u7SJB8uWcQHS8XRJySNRc3ti9V-SVey0nGE3gLQ@mail.gmail.com>
-Subject: Re: [PATCH v2 04/11] mm, swap: add support for stable large
- allocation in swap cache directly
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <qi.zheng@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 1cadr9u3imiikywtixsqgr9izwj4zrxt
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: jz9qe5uf3q4we4zutt1ahte4gbmq3g1t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7832E140004
+X-Rspamd-Queue-Id: 4CA9F140011
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1776395988-718991
-X-HE-Meta: U2FsdGVkX18sjgXfGk2dKYFDBrofSoDwrfmgS6t+A80lHr0RbyMpoM7YtpTYPdmr92xoif8lrLJw9CoGv0yaXVO6fOA6aCLghi46hnNkbzF0OOk4arOVA69FJQG1QLkaeh3MoEwkjhU3fwfwGKVNQpQOT0BP5eo79BHmow9REK08ZSuR7LG2INMJObaL+Cfb5KvO4MouDK9MmxVMftbiyY4J9hn3HqQjTj3M51ZH8hTFIn0zSCEG7TiY4yuotVS7oJlmvEjvlop8J77kvsJbTDFRczObIafttMy7J6637KTgM84i5RYDqlFgFJgg6HrZ73RjlyLv9GKB8//oiLl1yctdSQeygM3PIvLzxKMStGzGyuM+CmN5a+z11HWJvceSg3a1E3XxOOXdNd7fT29/t6Ieem7zw83QGhTUxKQ3KpTN1TR6lnXVAh6iCfrg31oLJKkhsfNiZo8p5T6KV+zIkKLoGujbQm8PngmQVLhu1fpkic7dqW7L0t5YBAFJPl3SExi+r5bxX+wY5ztz1SVq5i4qCbMzwSttFY6hrHMO9AaeCuORbT5ky9sn39Y2QpRq8/1sCLPJ6EVG8sTJxJaE+XQspM37wyy32c8JJDXgfwUpbvscnoJ7vzsWrYFeqcOwgfY83gr15Ec2N+zCgIhexiL94NJ27rPA3ZFD/uwYF0xlTo/W8DCZumaGsx3UkBpGRBH8Y98YvZi5ZGNh3SaixhZCOnnyc0T2shuF6x2Np7GDsA8X+zaile7yxiWZlRmF4lrjFXvzEa5eZ0ZEimuy/Wkqj9GXNqn3D8iDvumRNRrR1WC4HSMbgRTU01dXH+HJXmqvttAHXtc3vW8uCxq00tRhbDqO4xK6rr3q6+G9tXZDM5cgjsnQMqRah3gKhwLvt7f89bBf5uBZR7DUPGKa+8MVi+E5LCwwF1wMH7drnpDYrX3AbyJ6KvOg/0bdm5v+Nz6XoTRvLPM1uppNbFY
- A7Q+9PoO
- mIFMuOVDhIkJ/yEQnvJ4rip4Ho/quExOFvxiWDpFQaNZv2CfxPxbswSXrGlibqvfZvVrmOMyq0KkSerec0pKgloFkfuwV9Vh3A7VdkSqUk1JKw3Pap/vfF7edJEm9nVmxaFxxa3eL27mpPThSUz9xkUWcq1+mNjF8cn5rrsKe9Spsy3b56nCYsFGohfDro4UPb5XONAJ38cDC/TnRQMHNey8dROknPTO8WkBWfhgb7kYlSuwVeIz5xc93FTEkyYTebJfui6dXE3X0k1H0iope6ytwUUBJI2CuWtFakvkLWq98rSW+9Kaf4SZ+WN1q9MeeO5wagya34bVk/aA3HfoNpuoh98rY5y0iPlTz5Vxx0QVaS8sm+aKJ0nuxOZLmuZe9lF4PN6cBUGoGq3+V86cJkTB+qH61CxVkF9Z+lFn7QPNLq90=
+X-HE-Tag: 1776396350-264270
+X-HE-Meta: U2FsdGVkX18TMUTSLBJ5dSXpXegZfzhoSyM9LnAYNjFFhZUNUyHLU3dk1mNccHN5UNyuM49PsxsjSdXBX8+DszX740/hDICj0lNoWS0nHleWpL6A/Sk6iaZIDKuc861fT4LVR6a0L8v+eoVgD7Rey9p+lu1pA6ABMs1EXgfMsReBoBxmH1zYwB9WZOaysFGUxYQFXJxVCNQ3keS3EEezw38JPLKOgCAp6WjxDyCP4QT02SsVPH5gNYmswY0Xy6nYkWuEFuGRXi8Pf/kwI2fxcCGRmS4sCQx/V+EnucjzTd1L5GRLIRtJPjcrlibq52ODWvcjRcb2ITqSWCH6ocQCQFDHdpX0qTCqPLCxAc0Vi7p0hLC2H3MEG3jphDBCf6HNkwcJrpkvyZSFcnsJ2FuKZ+/Gy2ff/hlGsZUmLbWkHbtE/FNrcXAPWdZO2YabwwkCUa5mlO72wQiB8wZDVuJECn+JmlptCnJj4rppm1QcHnGIizjdBPq/wGEnzuTLFRo60FKQYB1U6dJRNXEL9DKHR3Jwleuiq2c0GmhZkPhbFCLQQ36OGN5R8Rrmrzv9GYw5bTjJt78/Un84CEYCKN0NWyCKtZlag+QDh+7UWsvFQNOE22hESsKniNm3RfeZAxfiLwwFq8vzBtkhoWrBW1dAvEORCQpcVoSUd1Wdacn0rPm7QQGqTEgya+07DE9kwj8K5+nl4rQrcDEQ1HouEHztUCBHIkJZtQKOptXFfaYhSJPeJRjWErZFIrwlS//NIM+1UCfpnw5rjEQkKHFWY9ohQ0lohT7nTW2XTImVyE/qjB+VsdZDJXD22u+p9H7P1sszEQ8bnD9gCiEvBjP/e59JlGe0T47kb31TttwpD+uDq0B+AbvTAPQK+pFJgtU6KTxG1RuN0XnDuZrdvB73QDOqrvu8xxMrrl2MU8LdMyE1iScraunaYZBtYUEPOH8OAmY1jd412/jtXWEkPjQGX/p
+ 6Mi9PYc1
+ hMhs16M7n5tkCKi7ykEnMi68uhHMpRohmvmGHvsvML/mCoBsXowbcMGJng6wegG8fkNrcTqTs8GdV/hGkD3c+HUOjpswp5y5x9MOBNbbGq/4I2G8poV53Ys+4wY9OIt6C3olfAJFa+DmLHVgh/v0RY7C40uHwm0DpweQeA6E1i69T4DEHtuvIb7QRfOURy1niX2ry7MD+2edCT+ti2hsfqRUNXehGI/SNVvJvZjwn0uWz/ni2QgL5p1beN6mM6I7yAlHadFxOF0dRA08YVTomR8QNag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,71 +89,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 17, 2026 at 2:38=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
-> +/*
-> + * Try to allocate a folio of given order in the swap cache.
-> + *
-> + * This helper resolves the potential races of swap allocation
-> + * and prepares a folio to be used for swap IO. May return following
-> + * value:
-> + *
-> + * -ENOMEM / -EBUSY: Order is too large or in conflict with sub slot,
-> + *                   caller should shrink the order and retry.
-> + * -ENOENT / -EEXIST: Target swap entry is unavailable or already cached=
-,
-> + *                    caller should abort or try use that folio instead.
-> + */
-> +static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
-> +                                       swp_entry_t targ_entry, gfp_t gfp=
-,
-> +                                       unsigned int order, struct vm_fau=
-lt *vmf,
-> +                                       struct mempolicy *mpol, pgoff_t i=
-lx)
-> +{
-> +       int err;
-> +       swp_entry_t entry;
-> +       struct folio *folio;
-> +       void *shadow =3D NULL;
-> +       unsigned long address, nr_pages =3D 1 << order;
-> +       struct vm_area_struct *vma =3D vmf ? vmf->vma : NULL;
-> +
-> +       entry.val =3D round_down(targ_entry.val, nr_pages);
-> +
-> +       /* Check if the slot and range are available, skip allocation if =
-not */
-> +       spin_lock(&ci->lock);
-> +       err =3D __swap_cache_add_check(ci, targ_entry, nr_pages, NULL);
-> +       spin_unlock(&ci->lock);
-> +       if (unlikely(err))
-> +               return ERR_PTR(err);
-> +
-> +       /*
-> +        * Limit THP gfp. The limitation is a no-op for typical
-> +        * GFP_HIGHUSER_MOVABLE but matters for shmem.
-> +        */
-> +       if (order)
-> +               gfp =3D thp_limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
-> +
-> +       if (mpol) {
-> +               folio =3D folio_alloc_mpol(gfp, order, mpol, ilx, numa_no=
-de_id());
-> +       } else if (vmf) {
-> +               address =3D round_down(vmf->address, PAGE_SIZE << order);
-> +               folio =3D vma_alloc_folio(gfp, order, vmf->vma, address);
-> +       } else {
-> +               WARN_ON_ONCE(1);
-> +               return ERR_PTR(-EINVAL);
-> +       }
+Currently, when shmem mounts are initialized, they only use 'sbinfo->huge' to
+determine whether the shmem mount supports large folios. However, for anonymous
+shmem, whether it supports large folios can be dynamically configured via sysfs
+interfaces, so setting or not setting mapping_set_large_folios() during initialization
+cannot accurately reflect whether anonymous shmem actually supports large folios,
+which has already caused some confusion[1].
 
-Checking sashiko's review, most are false positives but this part need
-an update indeed, this part should be:
+As discussed with David[2], for anonymous shmem we can treat it as always potentially
+having large folios. Therefore, always support large folios for the internal shmem
+mount (e.g., anonymous shmem), and which large order allocations are allowed can be
+configured dynamically via the 'shmem_enabled' interfaces.
 
-if (mpol || !vmf) {
-        folio =3D folio_alloc_mpol(gfp, order, mpol, ilx, numa_node_id());
-} else {
-        address =3D round_down(vmf->address, PAGE_SIZE << order);
-        folio =3D vma_alloc_folio(gfp, order, vmf->vma, address);
-}
+[1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
+[2] https://lore.kernel.org/all/875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org/
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+---
+Changes from v2:
+ - Always support large folios for internal shmem mount, per David.
+Changes from v1:
+ - Update the comments and commit message, per Lance.
+---
+ mm/shmem.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 4ecefe02881d..769ef37b1ea9 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
+ 	if (sbinfo->noswap)
+ 		mapping_set_unevictable(inode->i_mapping);
+ 
+-	/* Don't consider 'deny' for emergencies and 'force' for testing */
+-	if (sbinfo->huge)
++	/*
++	 * Always support large folios for the internal shmem mount (e.g.,
++	 * anonymous shmem), and which large order allocations are allowed
++	 * can be configured dynamically via the 'shmem_enabled' interfaces.
++	 *
++	 * For tmpfs, honour the 'huge=' mount option to determine whether
++	 * large folios are supported.
++	 *
++	 * Note: don't consider 'deny' for emergencies and 'force' for testing.
++	 */
++	if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
+ 		mapping_set_large_folios(inode->i_mapping);
+ 
+ 	switch (mode & S_IFMT) {
+-- 
+2.47.3
+
 
