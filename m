@@ -4,103 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FC01F436B4
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 15:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E517BF8DFE9
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 17:24:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7DB16B012B; Fri, 17 Apr 2026 11:59:39 -0400 (EDT)
+	id D00236B012E; Fri, 17 Apr 2026 13:24:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C550B6B012D; Fri, 17 Apr 2026 11:59:39 -0400 (EDT)
+	id CB0DD6B012F; Fri, 17 Apr 2026 13:24:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6AA56B012E; Fri, 17 Apr 2026 11:59:39 -0400 (EDT)
+	id B9FC56B0130; Fri, 17 Apr 2026 13:24:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A48EE6B012B
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:59:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A54456772
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:59:39 +0000 (UTC)
-X-FDA: 84668508078.20.0BADE49
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 167DB40007
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:59:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dKqzTM+j;
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FAB46B012E
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:24:57 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 328F31602CB
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:24:57 +0000 (UTC)
+X-FDA: 84668723034.11.22E8424
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2FB401C0014
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:24:54 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e06uecD3;
+	spf=pass (imf21.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776446695; a=rsa-sha256;
+	cv=none;
+	b=nZCAFRuDDYM4BtGd++8UaZaP+xzCaSAfcMlQ7bCxhZYtvHcgBguptmf5Vyv/Tx4TuMpYu8
+	EGosovQdm+y/WuuVXCX9GnAJi+UZSTvQ2XINy8bWVMfyPta+L3P86XAu7aqH/J3RNmHv5d
+	sxU+mNHsAwYS+LYXG7XFcFLpaeQA6aU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e06uecD3;
+	spf=pass (imf21.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776441577;
+	s=arc-20220608; t=1776446695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j8FO8PzF0PieyWhQwCeTDRN7VIBMniarhO6pmXOcNmE=;
-	b=mCC2vDknWhvWlRRDuQEnhEYghkRzt7uty/bGzRG3nKGraEFjqOjM9NsRYdvLjqtpx5wLhx
-	U7Kz8uMTemM7/f+loEVAMf6UioWFL/BgfXLNqYuZbu/PscdCEIGdsefffZp/iVmXaNOGLA
-	ne9vnIU41Fb2NO6l0Uc2gLF9+E3zVxw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dKqzTM+j;
-	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776441577; a=rsa-sha256;
-	cv=none;
-	b=LLYvKzpYQk5lc4yzFIMWMsK98EfvEu1MjkIkdZVmIrrsRx/LN4Wm3GJ8B8nbsMgV/2N/Ai
-	bdkHtFisTJh6BVY+VSc5ZfVla3Muev3GA9LOxo1u4+hhSzo7gey4QQ6JbCspHFiL+TgONJ
-	tYnJLrkf6QXCUUZclC36M2LvXQ6DNlE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B11D1DB5;
-	Fri, 17 Apr 2026 08:59:30 -0700 (PDT)
-Received: from [10.57.63.31] (unknown [10.57.63.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 338A23F7D8;
-	Fri, 17 Apr 2026 08:59:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776441575; bh=j8FO8PzF0PieyWhQwCeTDRN7VIBMniarhO6pmXOcNmE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dKqzTM+j4F58kIlpCMfJfslXRAvTIV63Jvs8XKtFPmTHYNKP2Hv8L1yPWqACikmRb
-	 b+TajA/SlxbTw4g2mMiYjf5eL8R/K3voQJzpqhOA7XvIo434idPxeQ4QAJe9tq+kr2
-	 S45xgvtee1/IiZZgthWVd5FLYan71Tu1mwyJ2OjU=
-Message-ID: <913002a5-e002-4001-ad19-037102d1f97d@arm.com>
-Date: Fri, 17 Apr 2026 17:59:26 +0200
+	bh=wyFiZOhvljUSTmlMAtWIZh4RtLHlCzqCjHl9pwEGxDs=;
+	b=EUnB1xUL7VCRjXEE36n2Q6hj8dXw810Gv40b0J62sL/EiVGFvs4eMkF2DwKyibKiM8QrjW
+	O5nkt3JfJPUhM6WimkmIShcEFp2nVjHVeDU8MYYRmo+BDdx6z2xAXLsFtN6EtaaQRcf9za
+	KYCznePQwgTsg0uJt3xS4whnP+mD9XU=
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38e68e4389cso9756921fa.3
+        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 10:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776446693; x=1777051493; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wyFiZOhvljUSTmlMAtWIZh4RtLHlCzqCjHl9pwEGxDs=;
+        b=e06uecD3j4xVfKvpLvrU/qISKL9eAK2vgpccy5JOkdq9Lnc7nLNsIGtkkQd3+wP2zy
+         3VXTWTQhQsgKE9lzj7zcDevwtPnr+GkRAC1vfh2UGj0FcosPE9rR36WYcX2PkUfIXFtn
+         pcnQL5IvgGzF7cyIK5qrrLUiA0OfNQHeyLS5py2vTRCHKhvmX828OI9lgWxEEdgkezop
+         8/NCmqgasqrtPJxOAYR+ciFrneKFS+0W9O7EyF+GOXewGLejzQcoXeOCjU1sv9snbrB5
+         kiH4P2d0ImaHY4uwPFH9Vsf9hUNWc+CuvwwbnSjc1LcmyuKh1d29ts/AdD1uxqN/Zwbk
+         /mtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776446693; x=1777051493;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wyFiZOhvljUSTmlMAtWIZh4RtLHlCzqCjHl9pwEGxDs=;
+        b=pYcOLsPXxw2RezTahV8HZiaFh+cty3IeUgXavwLL0a/AxzLaWtRO7QxOk9K1S512R/
+         ONUv84a3QFiQCB+vtytWWG4Dj4NGlsw2h6WjJ2bVvEvZa8S6LcIXbGJf2zRQLCl2HVyq
+         QDbphOkTf/rSwmGDRY8tZmwitFOGhzPkxq+GJ0OwqUSgeg/TcQDULhl5mjAZgw/tGn4Q
+         1pcBUSKvxfTzT+0cjhLqPgKklhG2jsHSfG7xz5bDPAFm71KCGvBfmDe/jw3+keEenbRj
+         u8rSPxTMJ+H1JXvj9skAEiINuhINtNPIByDTyWRAEi8O9aGrv51oLXs8lC0UPZ6QK9Gv
+         0QBQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8mJkQK+Fq2WlL5XUybccgH8Fr8UnDW4xBUZihqkIQ0JF8rzFEwcfwDRvE9oInxlcSKM+LW6XXa5A==@kvack.org
+X-Gm-Message-State: AOJu0YzF3iUHF1ZU+q62q3e+4jcMyDgI8FPAXHbvpImvxPocQLEJJ1JY
+	DJbI17V/sRJ5TVMc57ZU76lJUEGnhWSoedaHk8KZgE8Q+n+udMlzS4CW
+X-Gm-Gg: AeBDiev9uhFz9kMJFXlxCX7GAl4amrLZYifUNOqBRtx3w25q3qwAMhu7sNkhl9XzKY1
+	V4Sl/+ZZA+I+C8pj3BYMAXP4v+tayhoTrE6GJL6snGN9CR3Ha3BxP37IDzKqFwCepahA9wNk7VF
+	VnXyfyPtq9ftMOK23iNgrowB+398mMDPic0YfHP2ZSoW01m4cbdGpaR0EleuuIuHoSWYsXLd+68
+	zTFdKEvaiqU9g31HTFaEtJuLovXB7tRo3Rp9PqzRWSd0hkHWuDAsOJooFbsOl5NLFIxzNTWqVWA
+	W8wi8QdHnfIp7YQNrAO1MC5X6yYA35bklHwEUa7alIAvM7JIY2czsMjjhBZdRgQGD135pI2ZuUk
+	RurnowRVpBtdFubOoLiIkUW1b4RYqmMpNqR3KfaAWbvb0a6wHuCW5ZKrPTo72SYJTfh4XlrgHHj
+	M=
+X-Received: by 2002:a05:651c:f11:b0:38e:13eb:f0a2 with SMTP id 38308e7fff4ca-38ec7830e30mr13004751fa.8.1776446692888;
+        Fri, 17 Apr 2026 10:24:52 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb4f54ffsm5246531fa.1.2026.04.17.10.24.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2026 10:24:52 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Fri, 17 Apr 2026 19:24:50 +0200
+To: Shivam Kalra <shivamkalra98@zohomail.in>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v10 0/4] mm/vmalloc: free unused pages on vrealloc()
+ shrink
+Message-ID: <aeJs4jmco7BGCNHq@milan>
+References: <20260404-vmalloc-shrink-v10-0-335759165dfa@zohomail.in>
+ <7d16f260-ffd0-4e45-b66e-9e7f71332466@zohomail.in>
+ <ad5yE0sgV1HJsyaC@google.com>
+ <ad_cpqx38LtQPlX8@milan>
+ <85a9f419-7f1e-41a0-9e8e-67aae7a1b0fe@zohomail.in>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/30] mm: Introduce kpkeys
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-hardening@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
-References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
- <20260227175518.3728055-2-kevin.brodsky@arm.com>
- <00b24db8-0063-48d6-8bc4-e8b670d8f0d5@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <00b24db8-0063-48d6-8bc4-e8b670d8f0d5@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xcehk88mn43so76xifogfdb1s1b7awni
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <85a9f419-7f1e-41a0-9e8e-67aae7a1b0fe@zohomail.in>
+X-Rspamd-Queue-Id: 2FB401C0014
+X-Stat-Signature: mtaickkgktrgnpp6kgzienzrt4shfaie
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 167DB40007
-X-HE-Tag: 1776441576-672101
-X-HE-Meta: U2FsdGVkX1+llR6XE5lV3d/Mk+jkCCGzeurirhjx/nRSdATzQ2gp1KcDL6y3VcFoCp1u4rDeg04RghvR+QcHY3HIXhicYw2NenuO84hY0Y6/p48JYJUkGwQLZRX/nN+C2uw/rbUmPAFo6X+697yYw6ah4/PopgatWG7Z7SXZS0NT/jLiEtX1WIT7X/K1O8TA587GzzzbWVi5PgklkLhPEYFMZk1Ksl5eGZ5ESEegqAKpwwUP0IwpVyd4QjPcdzKIJ8n9oz+WV+UGbRqCmAePGn8Ec4zYSH6bIyEThRT7Uj8jzJc2ZRifaPklMvoKMJL10yDkZhTVUYHd2+QW/Sjvfwtl/fe9LjEsYb+yas0R/YR4EdvWmfyR1qhHHaLi2oCR2++XqqHUvoDv78oxr4+sZtytM6NifOpjUY3TcEZCHcrkaIdyF7KDXPdyAmhtWGT/OjYyeNuA7b3v2k66y5adumczZLFcAnYFWCfuKZ2iDv70YkH7y705h6XjRgfxx5ff1FWiNjF/EI9IqiTpvTbQhrOJ/WDlEaciaOWgVlJZVgPgmHbY9+hUWgGW+eBBdrrncUQhmpHRI3dMGfwb5W7ryaTvbQM0pxuGkA8TiRFP2Duw58FtbwMTZm+ey4kE0WZ5dXvCcd60oW1opNccRt8eegfrY6Q4AWarPO4GKP5NZUgGTJQQ8AnHa8vT9F9AwDu3yMN5Mt8GLUCoRMZSY99oOA3xbfBQ/OhXMYxdVEfZ9c4QZqLTDHylaRd09dAOlRRZu/1ju8spv/ZVGCws3yu5bVTX9Ncv92MxxJlwWrj3AoIj/OjX5RhsfsHHk63cZdYpoeym4N72uw+OuM73+2z+8/adLxyLsKS/tCHPsJ2FrrL3UbBb8n2LDAoFSuTwRT5rSzQCfD63xJIfnok0uZuidDrEAw6G/q1S0ycrAhxip0eO7EA+cM642KEzS/dY7eOJ2RAKhs0q6gh6Sk7TRcr
- zT4+RN6w
- VF1nc+O1FTpuLHkm1M6JTpMpbz1INDaG0F5LdhWG0GlVNHGzroH+0Koe+0WH9hfF2K6IBaob8eQBSVER64x9KxZPcKHFNBRMTroucwrA6XuNCWDBqh4BPmHmcUIb2mXg1Ug5SEGRzw+CYvIWIpR5RFJmNBgd7rSGaYbQsEPcduPyJBNBqubWvn71qJgCRKGecp8cXmiWYSEaCHO60Rr4hdUF99ilNyuKpDh0nuioAjFKwvxA=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776446694-971674
+X-HE-Meta: U2FsdGVkX1+caXQGnSs7dW/TPZ5+yYQIy9OZRSnPhgDYjglcus37RE7kuiNM1mCqem2xMXkC0EDczfhN5N2i3pkFEEXrfcFHgHazMrHUmbGayLubHKJugd0blLq5PDI6ZrIHmp34XszKA+L3htTKxOkzfoQzqzzglHF/INiCzeOE+qetaBSl0DLbfWMCmwxQDbyoCTApx8aVSSgZ2as/mTWAM54igKu2KZCB7S6gGErowseIkhDFtYRwROQNBimP6caWYOIPAAa8ECtWvg4o4NXlEW1W0THEV/npfM9MwleiLqdMypbdZqkGnOoNCGG06a8Ufwsh8jrXvlzbFQdJ1BvQrT3d9NR+WCZNzinMrFoLgn9Evn1yPHmQNLA1qsXnc1CCTClHiFtM8MNkYfmZnnizLk85xInSIjuJDP6xksNpgxH5ANMo4DpRjEitsYpVc5EqIDE9IBlPDi4MSfo98yi1mLRXX2Jf7ZEbkF+Qwyq4gSVuFLEO/xD2dcfgqrZkhmOnK8LZddH6/HS5wauemzfeEDSbYGR3WxNMiW47rdsyZpFqdyicgRfTOmArFaDN9dFznI94x04MnqK0OND7KL3igMBKoNwzk6gMNRFDWQBaDYEBq/8EsPFV+i6UCWB7P7o0el1ujNk1TRbb6g+Jn3PUnM8gS76LRVKedOM9joyCAEwop9Al5eBG87jF5vfIaySSsC/QGMs3EBFYpFGHikx+WWvb5tC1xHvoAYRCclN9A0T3N3y6DFoPh5OII9962/ljkRUjCRUJXhgsp9PJ6jN5yhvuk5qHv+dFTK4el3vviUuggV93lrV67CJvT1PoQmPIlcAI0lffxrMrpLqf1Y9Acb2/kZ5edaVtKgBvuYolGHg9za8xAOg7VSE38tq5Az8Wxxctshvp8Wtw/iEQWwV5EYgn7kSc3I4gR6brQSCRIHqDSbeqn3gEdGCcK5XAEQ+WMzaOiFZ3NH4FRsP
+ vxBaUfWm
+ PObtOuLIOB1BNO6T264vm4nx9E7XVIIY9IhTg86Cm1rUS8n1vMFqO2K66Vnhdkt47pbn6xEYutdY0f2slCJU1jOscDJidRVjVELlH7zl43q0z3f32Hbu/3anLP6FUUhrWSDJyZf+gRgkmy1vMeLRS48p7pVMDv4s/fBDuz43cRonvUAgkb+64GHQYJokqChwcuZzw9QcGr5dEYYbFWARVBWu249ScEcEER8nji0pooKQAQg3PuVq79eJDj+8TqL5D2J8E+wYs4CNYC+m5Q5BysYzzJaR89q1pjvbel+przKW1RTyPbr8I8vxeF6HkajEiMY+PzdaCFTNEQRmpOUQ0utdz4UdxqOpfUhdrno++ZCb+2x5xhNN/vPuLjSfayL3dquE4H0IS/gx4RNyas39GuzzN/t/6TsBxPKgo5NtjNeIGuWN/wIC0N01VrMxjwPiCKeJdXVcMuVq18bLxZyhvEbsnPbp7g0o/Y9Et
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,42 +123,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/04/2026 16:37, David Hildenbrand (Arm) wrote:
-> On 2/27/26 18:54, Kevin Brodsky wrote:
->> kpkeys is a simple framework to enable the use of protection keys
->> (pkeys) to harden the kernel itself. This patch introduces the basic
->> API in <linux/kpkeys.h>: a couple of functions to set and restore
->> the pkey register and macros to define guard objects.
->>
->> kpkeys introduces a new concept on top of pkeys: the kpkeys level.
->> Each level is associated to a set of permissions for the pkeys
->> managed by the kpkeys framework. kpkeys_set_level(lvl) sets those
->> permissions according to lvl, and returns the original pkey
->> register, to be later restored by kpkeys_restore_pkey_reg(). To
->> start with, only KPKEYS_LVL_DEFAULT is available, which is meant
->> to grant RW access to KPKEYS_PKEY_DEFAULT (i.e. all memory since
->> this is the only available pkey for now).
->>
->> Because each architecture implementing pkeys uses a different
->> representation for the pkey register, and may reserve certain pkeys
->> for specific uses, support for kpkeys must be explicitly indicated
->> by selecting ARCH_HAS_KPKEYS and defining the following functions in
->> <asm/kpkeys.h>, in addition to the macros provided in
->> <asm-generic/kpkeys.h>:
->>
->> - arch_kpkeys_set_level()
->> - arch_kpkeys_restore_pkey_reg()
->> - arch_kpkeys_enabled()
-> Another thing: why not simply drop the "arch_" stuff from these helpers?
+On Fri, Apr 17, 2026 at 07:05:09PM +0530, Shivam Kalra wrote:
+> On 16/04/26 00:14, Uladzislau Rezki wrote:
+> > Yep, the problem reported by Sashiko regarding area->size and vread_iter()
+> > is correct. V10 does not address this.
+> > 
+> > I am not sure that reducing vma size is a good approach here. It is
+> > widely used and we might end up with fixing even more corner cases.
+> > 
+> > vread_iter() and vm-size calculation there should be fixed.
+> > 
+> > --
+> > Uladzislau Rezki
+> Proposed Change for v11:
+> 
+> long vread_iter(struct iov_iter *iter, const char *addr, size_t count)
+> {
+> 	struct vmap_node *vn;
+> 	struct vmap_area *va;
+> 	struct vm_struct *vm;
+> 	char *vaddr;
+> <snip>
+>  		vaddr = (char *) va->va_start;
+>  		size = vm ? get_vm_area_size(vm) : va_size(va);
+> 		
+> 		if (vm && vm->nr_pages)
+> 	            size = min(size, (size_t)vm->nr_pages << PAGE_SHIFT);
+> 
+> <snip>
+>
+I have some questions to clarify.
 
-The first two are not meant to be directly called, they're the
-arch-specific implementation of kpkeys_set_level() and
-kpkeys_restore_pkey_reg(), and those generic functions handle some
-generic logic.
+Why should we use min()?
+Checking vm->nr_pages, can it be 0?
 
-arch_kpkeys_enabled() is directly used in generic code, so I suppose it
-could be renamed to kpkeys_enabled()? It's actually implemented in an
-arch header so I wasn't too sure about it.
+Can we just do:
 
-- Kevin
+if (vm)
+  /* Can not use get_vm_area_size() because of realloc(). */
+  size = vm->nr_pages << PAGE_SHIFT;
+else
+  size = va_size(va);
+
+or i am missing something?
+
+Thanks!
+
+--
+Uladzislau Rezki
 
