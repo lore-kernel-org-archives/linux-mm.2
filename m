@@ -4,197 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF38F43697
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 12:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1064F4369B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 12:49:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFE956B00FA; Fri, 17 Apr 2026 08:47:36 -0400 (EDT)
+	id 215ED6B00FB; Fri, 17 Apr 2026 08:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD5C36B00FB; Fri, 17 Apr 2026 08:47:36 -0400 (EDT)
+	id 1ED5D6B00FD; Fri, 17 Apr 2026 08:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC58F6B00FC; Fri, 17 Apr 2026 08:47:36 -0400 (EDT)
+	id 103416B00FE; Fri, 17 Apr 2026 08:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 97D176B00FA
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:47:36 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 445691387DC
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:47:36 +0000 (UTC)
-X-FDA: 84668024112.12.480DC9A
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013033.outbound.protection.outlook.com [52.101.83.33])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0B3F7A0004
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:47:31 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=NgyBUidG;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=NgyBUidG;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf25.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.83.33 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776430052;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F11C96B00FB
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:49:32 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD1261B6CCC
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:49:32 +0000 (UTC)
+X-FDA: 84668028984.26.F5A2CFE
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7E9762000A
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:49:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GOI8VT7q;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776430170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
-	b=cdB9IXNfDRbVbNuoShcwa6TrbxGprB52/HoQTKsYVKkFBPPRlFRtvn+hDodTtqQ1sQinKz
-	8UNxq9HALbetiwZYSppy8tcq3HjC3A4rht5nXOxt0vHQpv+axMNAYlanESSSxgyix1+TuS
-	T7lvwcNgeRyVGAD0EviQrMoAQWC3mqU=
-ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1776430052; a=rsa-sha256;
+	bh=6YXc6lmqdJEJYrIiZ/b+NB+dBN9OWboEsbVHUprNV5I=;
+	b=yzt9r/kQc6jdG+j6kU3T5raLbzg73Lr6vzOwSROWUWnRZNMqAHGgILLrtJYibvQ2eS81e0
+	T7VFr9NQvY8Ahm1cfTsZrAG2ETg+G8qZGSeRxC8Cy8eNfrJ4EljUvuhdtWcuw8owhTqxwa
+	7LDZDnjP1SPtCqACp7yEGpuSWD2BD5o=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776430170; a=rsa-sha256;
 	cv=pass;
-	b=zTbY/xe62sMtwmLCbGlEDz0mQmWh60/QNoFpYSiSOZvniOMOHFdYyWdByN1ZaJvQJL5UF/
-	fHDPLWGfONl1FwSmACrt1h8LCWBoQXSNuS5W/AlCobkWAKRVtn6lC87WptwGOj4gIa9hub
-	fs3kgkUQvC8CiqoNzRgVMKEx3pYR58I=
-ARC-Authentication-Results: i=3;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=NgyBUidG;
-	dkim=pass header.d=arm.com header.s=selector1 header.b=NgyBUidG;
-	arc=pass ("microsoft.com:s=arcselector10001:i=2");
-	spf=pass (imf25.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.83.33 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=NB1wH6fF3KQs2UG/rx2e/DDqBdWUINqOkvme0LUIYB+ociTdboyWEkwEZEzWG9/qrPfwCTjWJZiH0HxUf/0Lfc2qYrTOGs8zqZ0w+EGZvQ30itn/Eib+U+DwbJfHB0OrspBrab0UQepkIHGKNEuHowVCGzYrUfeLLbw3rn1TjKU+6Ccs3naF1HoRrYj4OoF84z1q7Lw9MZtEm1WzM9gkDIZi/cyYjkyQ7zTx9VLRBjWyCpy4GiLNkRuxnNRVy8L5WabA1nhUATiN+8jKzE2uNpuoR5mZ56P9ThVhnaaP4ctjLGgPzsn/g2qccM18HiRWmn0CQkKlQPm8NJfN2M2o0Q==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
- b=YxJyZp7VXXo9yf3MVkzLPRUJ4HA4ee1aR+V5vHiy1gfpitfMwDt3qIpP56LATQl+6f+E4TJeJtNBZsbg72YtfqQnhCj7X62M9DklWw0tt2z9N2x1VTNtRSu2jS+1JowZ5wMd8wui/8sr5h4bjgW4xYb2sX4c2WpYg0ykUhGGzMwjcXyBy0x8TonehRCJ/r4xozAw6f/oV+fTnprNuCrnopE2LRdd10smLnC7JlHzotr3Ty18Iu0O7o+ou8xRD9On5gzX8D5ld1JZpYVt+6Bg5rVtihBbusP5VHfB6GU8qbSE/JdEV8u8zNpntVJpL0jPcNj3sINpspS1VVw7oQpGmA==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
- b=NgyBUidG57muSjdLFQn2VJHAsiFV3wPPf8yT3DUtOARR7lkloKNH9ew3hElmpDhhJ+G6zpyod6A3tPZxHvG+z265vhh+IBL+Pwsf7Oq/wdKd7Thgh9lKfSvEPsucC7Du4IjmJ4gso42z4cTcNRgVPmOWKVU/t+eW4aoPJaTRFDc=
-Received: from CWLP265CA0460.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d4::20)
- by AS4PR08MB7656.eurprd08.prod.outlook.com (2603:10a6:20b:4f2::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Fri, 17 Apr
- 2026 12:47:25 +0000
-Received: from AM3PEPF0000A792.eurprd04.prod.outlook.com
- (2603:10a6:400:1d4:cafe::e) by CWLP265CA0460.outlook.office365.com
- (2603:10a6:400:1d4::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.52 via Frontend Transport; Fri,
- 17 Apr 2026 12:47:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AM3PEPF0000A792.mail.protection.outlook.com (10.167.16.121) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.17
- via Frontend Transport; Fri, 17 Apr 2026 12:47:25 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KGJ5Vq68vSW/Qh7CkZAr59UtLNVzGTzGA58tgO6aYNiDLi5frNHH5p9VM5zgrjgjuOYW1yn2AGAY37DS/Ed5DfLD9wBL5T978rs2KxRp9SeDbSEe1iBi0NhqpByNpcOq9re6WfUhc6YUZ5km4Fw62rLeVpQhPglh/h5kaCJBnDNajh+rZsyfoQABkKqU5VMNE+NvLME5y/4aTWoG1me1jex15sTWG7RnNyQ0Y/7VyZH88gg+dT31qXojqZFbrWAnZJn6ndkEdToTaLAjzv9vs5zGVqDbGFttwUf2iZrUNv9FUovYqgUdsswCaoX4c900/qKyyTVdjQCJ/NaK0EaqZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
- b=JOxMLJxfEX6lGMabnNBADtKqXTND/3kBB6Bt9jt/nEixuOxYT/3ZbffPJwQ4rl8WIySoHY+EhUcxfByf3S/NgyBGAU7RYUr5JD6X51xXfjNdfPgfKvR/un7kQMQkg89u7zNMbrxOC9MtHzkI8DSJdmLTN+AxRiAtMPQzRzjBYQJQKzhgd+fuTlI9k5CdM0qvnUAhqOxiOXv7gbOu0hzy4bR+eFJZyOGBTW+rKDpvYevOXXivHe+cCo+jaDPOt0ndZAnAY3x58Ku8FVAmW5ctfXaCZEFT93KcWF0miWYG5TVXTsgPwTrpvmpuVLhbAMAOsXxH3TKXgc4iP5yOypu1Lg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
- b=NgyBUidG57muSjdLFQn2VJHAsiFV3wPPf8yT3DUtOARR7lkloKNH9ew3hElmpDhhJ+G6zpyod6A3tPZxHvG+z265vhh+IBL+Pwsf7Oq/wdKd7Thgh9lKfSvEPsucC7Du4IjmJ4gso42z4cTcNRgVPmOWKVU/t+eW4aoPJaTRFDc=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
- by PA6PR08MB10661.eurprd08.prod.outlook.com (2603:10a6:102:3ce::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Fri, 17 Apr
- 2026 12:46:18 +0000
-Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
- ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9818.023; Fri, 17 Apr 2026
- 12:46:18 +0000
-Message-ID: <a40c3365-ea4b-4158-afd7-59c6175762d9@arm.com>
-Date: Fri, 17 Apr 2026 18:16:09 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/53] selftests/mm: hugetlb-read-hwpoison: add SIGBUS
- handler
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
- Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <20260406141735.2179309-2-rppt@kernel.org>
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-Content-Language: en-US
-In-Reply-To: <20260406141735.2179309-2-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0164.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ba::16) To DU0PR08MB9203.eurprd08.prod.outlook.com
- (2603:10a6:10:417::12)
+	b=59yXSajNSUWsu5e4vbe7ddJOo/mOMsk20en4/Uh+JQXzC3uaqd0UtMVIq2RNv0BcE2BbS6
+	v6i709t/tc4NlnEqYjYQHagR40T/JjjuaLpEb3NRbXNOKSOaq5cM+p+Dsth9RslJwTvu81
+	FKVw+UDY1m2iYgp3NxCW5/+yVoKgxzI=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GOI8VT7q;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf03.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7b41fdf9de2so4240017b3.0
+        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:49:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776430169; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NFJiER7FscMjKJYiOjof0jpsC+D4Eo5cAvlql+devd8Wg7nwMbWotl7HK7HxZZvXre
+         CklNb+63elukyd+aEhfLlAkEriwycAgO/nIfRSdYGE5f1jEDUu1WHn7iKMvh3SDrF1bO
+         IarnSEg5BRr4VM/L/UKYBf4xv/byuCkr+L34/XUMmfAdNkwdnBkvD4YQ7Cs5dtuRxyF9
+         QNp6XzGHw5pMNkaNyw1BxsJQoN7LFOYFJQYNYEpXrVbJ10wmi/uU8l7bg3aO9AjtgS6s
+         y31LvLV90MgYPqJNMqayDnqF1IYNTtI7/HrZBlHkzGnjSQeWTwC9WXwS8gZ0PNuNadR3
+         LHNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6YXc6lmqdJEJYrIiZ/b+NB+dBN9OWboEsbVHUprNV5I=;
+        fh=PX38tVck0k1B0O5o/9FsaJj6D8pDxyavOZT6baTm6Fc=;
+        b=b6V1qVpod9dFuOt2HcEUOI5W3qvel5SD4yMqdsTfefJSXg5ttwImajaIhSWQgR0Eon
+         KD4UcORc99zVm+xO03IrfgG9hf9jmskkLf8oarzh18ECNQmngoGeS2kZlm4d+WR21wIZ
+         InOo9PaUQ1nWl+Jz4+UEiB0FFauWwhKPbZfEOXy/XObb0dR04iu+ieJPqkmdI4t+TeLj
+         99FUrwjfBgP2dnlcFHOeeuWz5TC4NuLhYXpJkjdmm1oi11LTt8eebMC2T6HoPJWbaUOT
+         GiYy67P0WSC9GalHbTdSx3NKglpJVGj1YGZsJj74HY6q5emM/63qdFS6GCfWSSEydbJH
+         YbQg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776430169; x=1777034969; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6YXc6lmqdJEJYrIiZ/b+NB+dBN9OWboEsbVHUprNV5I=;
+        b=GOI8VT7qg43ti7n644bpQxg2ShuDQVdbnq41E0vB5OIfoORrcJIykqj5GS5zRBRb9m
+         wAgfnDAMUdN2RdPhLGHiCDUC6GixStDTyrS/o3H1JhelbSOYX0WQyV6MKsevK9J7bddY
+         4PpX0jUpgvLjC11qZVqQQp4rVO527u9qqteJOdE7L1pae0QYxvlSYlgLAmNWgofq7zRn
+         0POwGwKxqe6F6za7j/nBX96i88OVI8oURovUIK/EKFIu6dDhm72U32LI/1T+me54Owde
+         ILt5J81LVEjB+IS9KZXmd+lgmy8tWeUsOrI2euS+lNv2EuRxrfNsBbBf9dzDMbF2yyy0
+         dPRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776430169; x=1777034969;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6YXc6lmqdJEJYrIiZ/b+NB+dBN9OWboEsbVHUprNV5I=;
+        b=iZiig2mmnC5G+AWeDO5tzezctSCkExMiv7gTFSU8oIIb8duCWGbswV99AEjDPA0LXc
+         +Cl28QZKAxRd9VIsXsmnahRPedZjybchUU4dlxXy/aDh3/0qnTISmmJg6Cc6pDyet66u
+         gK3l3XgIjD+CA9X2m3Ak+FHPEJ7++1Mxxywnu1Pah+Aes8IKjyksxeSYXm4jegyFFjRW
+         iN9GK5XlfTYy7gMFHP0ygMyKAPMktsJgBNzDGh0hl3K7Q2vRZDAAI1TGbYyQIxfO9/o1
+         6sIlWWyPnI/CwIUIS39OmLbBj+YKABnFr37hUK8ivX6ksiWJs2WtTztFDnFKSh1jBtG/
+         JN5w==
+X-Gm-Message-State: AOJu0Yz6fU+SGTydaPLZMik/CAiWvQXdSJ/woFG9tUZQ2CvgnQw+g2Ic
+	ZCIDFOPdhZx9+kN2pgdewGHZKpc6lcUkofb36GEA9SgM9yRTouTPo0w/8gsddjmCXzK2IB67z3I
+	Bf8bHuCdg+ut7ZSX3UR79tPFTx+0DHtQ=
+X-Gm-Gg: AeBDietCF8Em6WsVJV6/sOZMvZV/CExxfNGuFW8ZFpHKP59oRz2MlRhYEaQGyVWznnz
+	oR6AjrJgseYJNHNmJsN088+EGIEtC5ZquoccO3H2SjlU9p36VEcWkB2NGbUQHC/ijwzqkKaMP/F
+	s/e+lrov0MzIThba8ArRJnKGgJ4hmtT49vuo6vfEjIFMOk8jkVAfAxidA1efMbjVa4xy+lWk7x1
+	uDMT/DogtvDQKKegTOsluwKbDOTBzDXYzsvBxY6Gcbi5LOVy31aAaN0DfdPNOJCdemzN2JCX5eP
+	NduWquVxtDs0HFY=
+X-Received: by 2002:a05:690c:e3e3:b0:7af:6075:4e0e with SMTP id
+ 00721157ae682-7b9ecfc8de1mr26403107b3.35.1776430169349; Fri, 17 Apr 2026
+ 05:49:29 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	DU0PR08MB9203:EE_|PA6PR08MB10661:EE_|AM3PEPF0000A792:EE_|AS4PR08MB7656:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15c2029c-ef28-4b9f-6fa5-08de9c7f7a10
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info-Original:
- Gglb9RWZ/Hwd4Ga9butL8AizZ5fCm3NUPGuIvYjaoi8AD7rz6jNg20wV+WgATyqKQFpF/zpn9V/cOgOPq/AgYMSve3C3STlV4Bu8/jJouXlT+YGDFZggpOR8/HpXGuCg7fVU407maHOHWbzAR/W/2xErSEENyJ/2Z8Yj4ynKEnDUujSDmtqZkm+UaQVDbEgwA69imXZGfQ/Qh/ZMHgo/l6RPllvamQ+Q66hBJv3IqfwDZXk1x2XeJLJXztAftNUOMMwTpEfBrzJw7qQO2RNpjfAa6VuPlBZAwM2hlCKXVKavCJHzdgHgnj7OBDnxEyl3clexFa3p3KTYlP+SU9yONZc0jFIJ1H9nUae7FyxyUqGNvEceDEqcjzZxcCW8u5ekag9CO+ftYLcEbNt25Wy0CsyEW1kIxaoRK2ut5ckTiwxAseaafxugSXijNtdnpiTQkM8ecA4ro12fhmI/sMjhUp7imWow2CrEDRf/Q/D+Ep2SCVBoV84DbmYPaHtghPM0CeLc0p4Rfn/uQV81Bd5pSBxtO9N9wLUHDxY0sByryGY/ysVMaSq3dgowYH+t8N+azgeeKrPU8SuV5WetCX2qBasdnLCMtHyrE+dljUVHO83nzyzA2qvbuWbSfLkRkRdNd+FKQ5BdDltStpeXRhNvbyF3CemIHGvuB/eaPBKDvQxsPrrNoaVdTbnGn9GqG8pPzpMTQOXFkVqUUfSDW1n5lHZ1ceZ8AQHtCVIh5F/qBGY=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-Exchange-RoutingPolicyChecked:
- VCawgOH1IlJoALwXNQjnCw0bT3RGSMj07CLSHUnIX6EQzDgmO9kaDzKEp/jLBTAUPIA5+VhMkrlQa3Bj54xqK6Fdm0gqDue6kSG0sNNQWyCQ4rk3iwZ7luIah7is3Bi0dQ8BBt3n0qUb2+3Mf2YGp/VXne+vtib3FDRZJcVlr8XQQ+pbtQmwFuC8Mj2rkX8xbcNJFmH7u6tdye/E6BhIxqNVAJdiqHKH47Yjt8RsRXCD5GWbsX1zFM7a32UrzJtmKAbHljZRUi+2iAW4dOaL4tAYY70wEpj+s6i5BFIQYI7gIxufFCcHr05JWAbX5XZIZIP7W70obRV8JQW9s5QXCQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR08MB10661
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AM3PEPF0000A792.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	13e0f524-d440-4275-65cc-08de9c7f51f5
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|14060799003|1800799024|7416014|82310400026|376014|35042699022|36860700016|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	TrKOhfnpOPcBFMGswNw47nM0HDb4V9fCapivL7AhByLPq0KYHBUh1OFENEAwPVregHtafLrM7f1UMS3CTTdDOXyynXhmZlQ4XZ3XXuI17W4DYat1pQ0wPTZRkdjY3GRtzDHx0V8sYlLpEULlHTRhGDjM+13DC/QW7KcvbwZDjIC04difVnU00ThfBolO8nl3IZ2rWp+3jf84oKrB+rGkIG9zVSYF48wIl1p4prx5atH/YD2pgZJhA1U/Ezr5Jzbiejs0D9eaNqgYkZh1vu2yRhfjZwESyrbWIwhSo0LBiQdUQn9R+so1jIWV4Tpxtj3B4Gqs9GI+3Vkd4BZfiBVoyLUCtlxJ1L+SgPvYjuQidNGTyY/llEkMldoTZ2I4TgX68qRW6qzCkQmWVq7g1p1Y2Cy++mvC+a9n6w7xITKZS0GOKWL4CGRJM7rI6ADEiwNXkNXT5W8aMyCiWD8BhHV1P8gbX0pnLOb+qWRA40lZ+ssEUu6iX1lj9kfTd0pJx6IIhd9PHf7SkqDlX+Hd9zORHQk8qzXsX9QiYV9AB/mxYMOEMZOlUJ6tnGTpPBiZVnyKjjz1nJpYxyTREGn8kBvTtvbXphlVujKGNwgW5MexHAIfL7Y2AXYfbV28YYXc9LVXbJvgSz+Xq3IYwjG6iVzfgCscpwyYWv33HXeHUMQPNeI1Xn7kJEo/hlI4q9LR+qyuifbK38KRilISx7PLDg1aax6zJz07qNKVsFy1TwupYyoxDWFFso27jlIalDjCiaVGBv6T9jHbycJWHvy4ONCxsw==
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(1800799024)(7416014)(82310400026)(376014)(35042699022)(36860700016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	LvGGsISfXAMnmaHbggXzBM4ccll325yGWlpNBIhfe2U2ZA9ENI7hkHsfiLOfVeVb1wWyOjCJgWujxhKUYrxTwgY/ElbNtUMSR1A7IIqstZSNRgsozjFXCNIwNWfd5VvjuFW6GnGKrIevrDQ4KCnNkFWwUCaFVdKC94FoAlGIEgQw++M50M2lcLi9311LW56mTLzth5h9Rj1SBhAMyk/3pgd6573jD14R8PFtdC3Rpro04IkxvxOZEiLf9xEqw8B6hsqMUVfxANOoCpN3cTnCD5jEbFocAJg5uIJ5VcpS6bQjc9NGvWXXj5jAkiQRzCKhQX+8NgzJYZVUSbk3y3uelEMiiHvVCKUMT60ElhPwfREta4b8wfI7ZhmQ0OpaL1fK2j5Ghz1rJx4Z2DEaxCsVx/iuyZvQt9+YgiHIb5GiU9gFyI9MdsA28jY+mvvNJySj
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 12:47:25.4906
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15c2029c-ef28-4b9f-6fa5-08de9c7f7a10
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A792.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB7656
-X-Stat-Signature: pd83eetdefb3ornss71nmtqhgz9e8qsi
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0B3F7A0004
+References: <20260417114127.1664283-1-ekffu200098@gmail.com>
+In-Reply-To: <20260417114127.1664283-1-ekffu200098@gmail.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Fri, 17 Apr 2026 21:49:17 +0900
+X-Gm-Features: AQROBzCDigaZkv_rRIZIn2wGBR5knbzDGUqVWCV3mTzxUxZsNEXrpyFtmD4oNu4
+Message-ID: <CABFDxMEz2=wq_B+ck72MaskPhYpis544KuwdxWjPs43qSMPsgg@mail.gmail.com>
+Subject: Re: [PATCH] mm/fake-numa: fix under-allocation detection in uniform split
+To: akpm@linux-foundation.org, rppt@kernel.org, djbw@kernel.org, 
+	mingo@kernel.org
+Cc: linux-mm@kvack.org, Donghyeon Lee <asd142513@gmail.com>, 
+	Munhui Chae <mochae@student.42seoul.kr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7E9762000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gs3j386jhm5q1mn6ewssbzf97wpeysyk
 X-Rspam-User: 
-X-HE-Tag: 1776430051-804824
-X-HE-Meta: U2FsdGVkX1/6nb7OE9bR2sQyyogzFUtXvy7JphOPgFjvddaoA2L+lWCVsn/8rT/7IRC6nMe/yIth3If0/ibTd+elkzj30qAabp/iMDtqMR8PhYRftN0id01ujmFj1kDoZWCvmQyw4zAH4pvv++HmA8TW0H6l0uA5AYG+gWypRAQTFXByZFvZJdCV2iG51lZeOcAk5ODF2o33LkrBN7tXjEeAyKmNAbbaGA3CcbW6zU/Sn+xLeaE4Hu2vlbUWLKdEgl5+0PL6QQCsoCV6rS37B5VkjE0QMjPo657oHGnZqEtemTZbJek1I4KuGgxG4z2HgA2RQVpaghKFJaLzywvyDMtgdvSP22HAL44rPSBTz2jPUi+Jzu0709xiM81h8l53arJRh73LHDaKCBDd3aiKQZlVUBz+IgrOVlk8V5mkM0Pvn2aFjgd9uNTwzciGYwBbRpQXUjZCWMrAV+Dx8o5KO9v+PH9LVQmgY7O3nlO7Nf8HPiZvDTdb2wtMKDOsF+RvGbIdSn9EGBbZzz5Kiav6hUE21Ii3QBFfsmpEloYnzGGZt1NVBPNs+kUG83slrF0dbPOBb5N0Z3LOmpWqx9vX58ZS1+IUjlpIdljFCEl7NdR98njYOTMFPafVibPjA7Bg/B8nig7DGVWmLfIsI54lsSSJjhkO7goOtIe4WOGnkX3Dm2PMFy4uVqkulInaPCh4sHu1UN9i45a+RAfB9BOE8gM1bMd/nDVfgFI1m99q+zc5kq0BZ1EsDwOyTkHhhhX/2uQruYnceNUtJpTHR2KUd/TaELYXSenD2hDhz8qEKuiqJJuR3YN892tG+hOxfPzA8dwJbkYBiT9rQAP5EFqBVQTW0CaKHwNWCrp2ANEKX7iTuDGklwQ6+SZk/loz2yFyByDeE9eBMvV+WZRx0nLqvZ9zc43dntCUDWOSzABVkT5lMiMVOt4ojLi1e0Qu28VHcNt5zQlmpSCQvGY/0kv
- teuVRucS
- BR2fnczxU/mEcecdAAw4T3O2klaRMHGNQzAJvgkFR2NynWssd67I8v007xPVQdihLcq1NRICwaP0UwElKdV10z0vdp7uG2Sk+pXQBq6zf3m2jArxkkGtdLzMclUYNXVOtAFpmgJcPARrWUYgspw0QuNSCT6CghieLTBYLGCglQj/ndX4YGwyLLiuHuN4jmYtGfhy0i2yNkOrU9/foCmKqpGoZVd3Ez1m8sDeQKpC2ThXdzD2DFM+spdVlIDwFjFvQbU6bMd08eFwmkXHNcwc+D6zklol6qKbGBivPcr2J0L8QvbEIrFM9vH1KrXmZh8tZampZPMlQq2UFJNzkeayY6PD1q+vAD6Z44ySyPiMNbUvNO7l2IFMXUpnjh7oXso0EPZm2+mBzgCBBgrrua0csNpneimS62SQwCkMJGYGBTPOBtXKLD5D0ir0nSJFc/oMp5BAQ4hYFSmqCFkvjeTjnpxLcCxfKendSEo3hfXOwcpW99QGyCwZjQuRi5K++2+2BGW7aaOj+jketxNs+1Xnh4BZbOAEr1bxauZGXAuithSyzP769xv9MzxZSQw==
+X-HE-Tag: 1776430170-876592
+X-HE-Meta: U2FsdGVkX1+Z2St6MtGYH49D83l2T+6DzEfuagkpxQ38GQMTZyc0/kUtMdbmEv6lI6O1QOZ3D4skBThBWAGHyRPlVOYlfVNjdRQM3HeptwnAgxOMZdlmT/TFC6eS2TXUuMxXwIb3oGCa7bxF6/Q85R2FJC2iA9Je4TJeDgSHKV649DiXoCH7Yo9Mdz0ZrR0FbXSSYaREhpmJkpg3eEoZhutXibIJVHyRUBMp57DXHME/bqSrztMPp2fSmHVkqsoekGHB+B9Ii0jA41qcSWqfKaE4tj/LX4ybIfP8DRZe57lTIN71g3mxXXBeeUwp8fEWaQbU17YCm6ALJuY4Y38/O4Ia9OSjmVicT5wjtDh6VEfEnsghFX+Uki4QzALOSBFOjja9X80/s3namanrXp9c9r2d9zflT2ktwbdvp7My6kYitrueHC+a8OGTSrzAPTwrNPUj9AFWoGxTY5yVa45JIlIwgDGqMimJlYtOb9iSPjHIhOBTkjAAmYV35d40LMHspbHNMO/EOBhxbA1hlWQg1lbAT1sW3ttf04z1xgyvMAtljFhd5ow6wx4wpueF7IH9a2aHEAWCKsrcDnSBfwIUWjmYXITaI298Es0Ch77o7qVch0OKBx8cMdNp8uHAmLfgwzFKy+8nicpzPYmzKQ5rwc1dpwTKfx05Iz3XJVI25rrc0G/pqrOaIdyosKlhELz0m/h2fOGQHtTd5xjXAim6xiFizPAd7JjFkQlOLyvjCdwjCwzbnRDZGLnXFWTRxCWd+3MjiXRD7YjxYz/kIEQP2GxFMjX4eUPq4cJ057qm/UnoG+4O5V46AwC7FzEKAG1oF6wunWFnHKF5Ckt1so9vfrB1IYUIEkYb1DuP6FgYBUPVcs+WMc4rtJrFuCzaGQa0vU7ykfChJP/sZzlhITi/5AfAcYix09aZ3viUABMrnguGaZ2GVedg+0uMVOzfzNVqczKG0UGzB1niV0NmQLo
+ ++DWgMuW
+ lfgWbThDFbC41EUwtGq6xNDhTOTdS6PQmsmkYdXQXQjMfu7MWPGRATkul9OV48374HqX3PlAI3zao8Kx94pi0wE1XLheadU+guTg9Jzp3fAEnuyV8Gj8218FGQlvjIMvM90+eXjaAW1j9WkwfFcIRbx1xTPiwFczeTGcC45RHovxnxMwKSA/2Am7mepSeSMeu1aidtiSXJ1rd/VMvKhNCLBqlIkF9QCRXJw68tv0Boi+fSi9qVGyRk4zNpKVOYIFBvFW0LBReRlNpzrFjlxXwwynphiNfW7YCpLnizWom+YWcIwCc8prWhyugbpV5Ya7YNkzFvVTuXrQA7IUEdHLJgNDkADJaberDh4jBD+N0dNUKOsSOGlNaoZTdyZJZnw4ZpbVOZBNIDFoAE7mJbq+KAjQ4cnmayVR8HMoQRUcQSLxK3UuCAaXcgLrP3zO4UbIOeW1Csa88F66ZvH3lakz9BpPomw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -202,63 +138,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 4/6/26 7:46 PM, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Access of poisoned memory causes SIGBUS, which terminates the
-> hugetlb-read-hwpoison test prematurely.
-> 
-> Add a dummy SIGBUS handler to allow the test to continue regardless of
-> SIGBUS.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Fri, Apr 17, 2026 at 8:41=E2=80=AFPM Sang-Heon Jeon <ekffu200098@gmail.c=
+om> wrote:
+>
+> When split NUMA node uniformly, split_nodes_size_interleave_uniform()
+> returns the next absolute node ID, not the number of nodes created.
+>
+> The existing under-allocation detection logic compares next absolute node
+> ID (ret) and request count (n), which only works when nid starts at 0.
+>
+> For example, on a system with 2 physical NUMA nodes (node 0: 2GB, node
+> 1: 128MB) and numa=3Dfake=3D8U, 8 fake nodes are successfully created fro=
+m
+> node 0 and split_nodes_size_interleave_uniform() returns 8. For node 1,
+> fake node nid starts at 8, but only 4 fake nodes are created due to
+> current FAKE_NODE_MIN_SIZE being 32MB, and
+> split_nodes_size_interleave_uniform() returns 12. By existing
+> under-allocation detection logic, "ret < n" (12 < 8) is false, so the
+> under-allocation will not be detected.
+>
+> Fix under-allocation detection logic to compare the number of actually
+> created nodes (ret - nid) against the request count (n).
+>
+> Also, fix the outdated comment to match the actual return value.
+>
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> Reported-by: Donghyeon Lee <asd142513@gmail.com>
+> Reported-by: Munhui Chae <mochae@student.42seoul.kr>
+> Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capabil=
+ity") # 4.19
 > ---
-
-I have tested this patch and it behaves as intended.
-
-Before applying the patch, the HWPOISON test terminated with a Bus error
-when accessing poisoned memory. After applying the patch, the test
-catches SIGBUS, reports it and continues execution without terminating
-prematurely.
-
-Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
-
->  tools/testing/selftests/mm/hugetlb-read-hwpoison.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-> index 46230462ad48..6bbf15f78061 100644
-> --- a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-> +++ b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-> @@ -10,6 +10,7 @@
->  #include <sys/statfs.h>
->  #include <errno.h>
->  #include <stdbool.h>
-> +#include <signal.h>
->  
->  #include "kselftest.h"
->  
-> @@ -261,6 +262,11 @@ static int create_hugetlbfs_file(struct statfs *file_stat)
->  	return -1;
->  }
->  
-> +static void sigbus_handler(int sig)
-> +{
-> +	printf(PREFIX "received SIGBUS\n");
-> +}
+> Changes from RFC v1 [1]
+> - Merge patchset into once.
+> - Change base from linux-next to mm-unstable
+>
+> Changes from RFC v2 [2]
+> - Fix error message to use the number of created node instead of
+>   returned node ID.
+> - Define nr_created variable to explicitly show the number of created
+>   noeds.
+>
+> [1] https://lore.kernel.org/all/20260413154438.396031-1-ekffu200098@gmail=
+.com/
+> [2] https://lore.kernel.org/all/20260416102558.575210-1-ekffu200098@gmail=
+.com/
+> ---
+> QEMU-based test results for the commit message scenario.
+>
+> 1) AS-IS (before fix)
+> [    0.001878] NUMA: Node 0 [mem 0x00001000-0x0009ffff] + [mem 0x00100000=
+-0x7fffffff] ]
+> [    0.001881] Fake node size 255MB too small, increasing to 256MB
+> [    0.001882] Faking node 0 at [mem 0x0000000000001000-0x0000000010000ff=
+f] (256MB)
+> [    0.001883] Faking node 1 at [mem 0x0000000010001000-0x0000000020000ff=
+f] (256MB)
+> [    0.001883] Faking node 2 at [mem 0x0000000020001000-0x0000000030000ff=
+f] (256MB)
+> [    0.001884] Faking node 3 at [mem 0x0000000030001000-0x0000000040000ff=
+f] (256MB)
+> [    0.001884] Faking node 4 at [mem 0x0000000040001000-0x0000000050000ff=
+f] (256MB)
+> [    0.001884] Faking node 5 at [mem 0x0000000050001000-0x0000000060000ff=
+f] (256MB)
+> [    0.001885] Faking node 6 at [mem 0x0000000060001000-0x0000000070000ff=
+f] (256MB)
+> [    0.001885] Faking node 7 at [mem 0x0000000070001000-0x000000007ffffff=
+f] (255MB)
+> [    0.001885] Fake node size 15MB too small, increasing to 32MB
+> [    0.001886] Faking node 8 at [mem 0x0000000080000000-0x0000000081fffff=
+f] (32MB)
+> [    0.001886] Faking node 9 at [mem 0x0000000082000000-0x0000000083fffff=
+f] (32MB)
+> [    0.001887] Faking node 10 at [mem 0x0000000084000000-0x0000000087fdcf=
+ff] (63MB)
+> [    0.001924] NODE_DATA(0) allocated [mem 0x0fffd6c0-0x10000fff]
+> [    0.019852] NODE_DATA(1) allocated [mem 0x1fffd6c0-0x20000fff]
+> [    0.022458] NODE_DATA(2) allocated [mem 0x2dffc6c0-0x2dffffff]
+> [    0.023293] NODE_DATA(3) allocated [mem 0x3fffd6c0-0x40000fff]
+> [    0.028522] NODE_DATA(4) allocated [mem 0x4fffd6c0-0x50000fff]
+> [    0.032397] NODE_DATA(5) allocated [mem 0x5fffd6c0-0x60000fff]
+> [    0.036552] NODE_DATA(6) allocated [mem 0x6fffd6c0-0x70000fff]
+> [    0.038746] NODE_DATA(7) allocated [mem 0x7fffc6c0-0x7fffffff]
+> [    0.040286] NODE_DATA(8) allocated [mem 0x81ffc6c0-0x81ffffff]
+> [    0.041517] NODE_DATA(9) allocated [mem 0x83ffc6c0-0x83ffffff]
+> [    0.043678] NODE_DATA(10) allocated [mem 0x87fd86c0-0x87fdbfff]
+>
+> 2) TO-BE (after fix)
+> [    0.001858] NUMA: Node 0 [mem 0x00001000-0x0009ffff] + [mem 0x00100000=
+-0x7fffffff] ]
+> [    0.001860] Fake node size 255MB too small, increasing to 256MB
+> [    0.001861] Faking node 0 at [mem 0x0000000000001000-0x0000000010000ff=
+f] (256MB)
+> [    0.001861] Faking node 1 at [mem 0x0000000010001000-0x0000000020000ff=
+f] (256MB)
+> [    0.001862] Faking node 2 at [mem 0x0000000020001000-0x0000000030000ff=
+f] (256MB)
+> [    0.001862] Faking node 3 at [mem 0x0000000030001000-0x0000000040000ff=
+f] (256MB)
+> [    0.001863] Faking node 4 at [mem 0x0000000040001000-0x0000000050000ff=
+f] (256MB)
+> [    0.001863] Faking node 5 at [mem 0x0000000050001000-0x0000000060000ff=
+f] (256MB)
+> [    0.001863] Faking node 6 at [mem 0x0000000060001000-0x0000000070000ff=
+f] (256MB)
+> [    0.001864] Faking node 7 at [mem 0x0000000070001000-0x000000007ffffff=
+f] (255MB)
+> [    0.001864] Fake node size 15MB too small, increasing to 32MB
+> [    0.001864] Faking node 8 at [mem 0x0000000080000000-0x0000000081fffff=
+f] (32MB)
+> [    0.001865] Faking node 9 at [mem 0x0000000082000000-0x0000000083fffff=
+f] (32MB)
+> [    0.001865] Faking node 10 at [mem 0x0000000084000000-0x0000000087fdcf=
+ff] (63MB)
+> [    0.001866] numa_emulation: phys: 1 only got 3 of 8 nodes, failing
+> [    0.001867] NODE_DATA(0) allocated [mem 0x7fffc6c0-0x7fffffff]
+> [    0.001940] NODE_DATA(1) allocated [mem 0x87fd96c0-0x87fdcfff]
+>
+> And also there is other scenario tested by Donghyeon. [1]
+>
+> [1] https://lore.kernel.org/all/CAFPTC5e1OLpHa3HqwhtSPjS_PTQz+iG=3DovM2cZ=
+=3DVnOZ_5z7oxg@mail.gmail.com/
+>
+> ---
+>  mm/numa_emulation.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
+> index 703c8fa05048..bc2f163e7c45 100644
+> --- a/mm/numa_emulation.c
+> +++ b/mm/numa_emulation.c
+> @@ -214,7 +214,7 @@ static u64 uniform_size(u64 max_addr, u64 base, u64 h=
+ole, int nr_nodes)
+>   * Sets up fake nodes of `size' interleaved over physical nodes ranging =
+from
+>   * `addr' to `max_addr'.
+>   *
+> - * Returns zero on success or negative on error.
+> + * Returns absolute node ID on success or negative on error.
+>   */
+>  static int __init split_nodes_size_interleave_uniform(struct numa_meminf=
+o *ei,
+>                                               struct numa_meminfo *pi,
+> @@ -398,7 +398,7 @@ void __init numa_emulation(struct numa_meminfo *numa_=
+meminfo, int numa_dist_cnt)
+>          */
+>         if (strchr(emu_cmdline, 'U')) {
+>                 unsigned long n;
+> -               int nid =3D 0;
+> +               int nid =3D 0, nr_created;
+>
+>                 n =3D simple_strtoul(emu_cmdline, &emu_cmdline, 0);
+>                 ret =3D -1;
+> @@ -416,9 +416,11 @@ void __init numa_emulation(struct numa_meminfo *numa=
+_meminfo, int numa_dist_cnt)
+>                                         n, &pi.blk[0], nid);
+>                         if (ret < 0)
+>                                 break;
+> -                       if (ret < n) {
 > +
->  int main(void)
->  {
->  	int fd;
-> @@ -273,6 +279,7 @@ int main(void)
->  	};
->  	size_t i;
->  
-> +	signal(SIGBUS, sigbus_handler);
->  	for (i = 0; i < ARRAY_SIZE(wr_chunk_sizes); ++i) {
->  		printf("Write/read chunk size=0x%lx\n",
->  		       wr_chunk_sizes[i]);
+> +                       nr_created =3D ret - nid;
+> +                       if (nr_created < n) {
 
+sashiko [1] found a false failure point with memoryless nodes, I'll
+fix it and send v2 patch soon.
+
+[1] https://sashiko.dev/#/patchset/20260417114127.1664283-1-ekffu200098%40g=
+mail.com
+
+>                                 pr_info("%s: phys: %d only got %d of %ld =
+nodes, failing\n",
+> -                                               __func__, i, ret, n);
+> +                                               __func__, i, nr_created, =
+n);
+>                                 ret =3D -1;
+>                                 break;
+>                         }
+> --
+> 2.43.0
+>
+
+Best Regards,
+Sang-Heon Jeon
 
