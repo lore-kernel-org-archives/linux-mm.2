@@ -4,107 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF83FF43683
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A1CF43683
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B43C6B00CB; Fri, 17 Apr 2026 05:51:23 -0400 (EDT)
+	id CA2106B00CD; Fri, 17 Apr 2026 05:52:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 264FC6B00CD; Fri, 17 Apr 2026 05:51:23 -0400 (EDT)
+	id C790C6B00CF; Fri, 17 Apr 2026 05:52:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 109886B00CE; Fri, 17 Apr 2026 05:51:23 -0400 (EDT)
+	id B8F956B00D0; Fri, 17 Apr 2026 05:52:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ED7036B00CB
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:51:22 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9ED861A0BAF
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:51:22 +0000 (UTC)
-X-FDA: 84667580004.08.1B193EB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A639B6B00CD
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:52:43 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4655113BB4C
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:52:43 +0000 (UTC)
+X-FDA: 84667583406.26.D270102
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E87ACA0008
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:51:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=axeTsh32;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8D3AD180002
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:52:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RcSHu6Wq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776419561; a=rsa-sha256;
+	cv=none;
+	b=LXoNeGFn+kDw7HXXls2XTDHCADKcHh50yvoksgCPmMoYOqJFKcO0nM+BRm/s+txDlaPEq0
+	xpF6WXvUgbOP6cguMrA5kYx+cgeafxMa+UDdWJB/+UxCR1AEiMONkTbm8fIHVh5Vs2FYY0
+	zwcUO0LXzH/XocaWj2vIRyVLtk+8WhI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RcSHu6Wq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776419480;
+	s=arc-20220608; t=1776419561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BzmzynMP0RSieniwMBz4CmtO50ZPEFjyN9YOZsqikg4=;
-	b=co2EMu1oItlhnivQ7Cq7mlpCgQnYpJ2RUyNsjzINN6BVRWqnAmt4VucOZ7QMTgpam4hMuO
-	rDvbSMuR7hplKDTawnvr0xJf5cma8Nuzgw4d9eda4Ngt8oxSRyy1mgQNbzE+7n0IYwVYuy
-	EIpr5cLNeotwR01zfvhZ5aTRzHkEDxk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776419480; a=rsa-sha256;
-	cv=none;
-	b=mf1X6eOZzFUcwxRvEfoX/fbXrZTNskZDCt6N5wtjzaFURvGunK49afx7xH44P/4bVzMKdh
-	TbhJqrVQPDk+BF95me6wSxvaZZ5fpDF/nVZp7EW/mqpk4OZfTYtZQ0R8U3LtptlT6Y5+Gg
-	yCwaIEAoMjFv+YhOvVz2ALlY9uuTXkY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=axeTsh32;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=YzAmKfJ0lEJCZVu/5sGn/kCGUMojIgqdajX4f/xhCN8=;
+	b=O6jACtQg9+ORE7rZ4E7/iByq3BkOq8KcYTG1QQeoHz5c5KTc8VfnZmFJDxVefODecyCkA/
+	jOaaZV+0DzpCYYZZCZ93NFxJaG7z1Re5PFcX8wZpwi7P5Lv/nFVkcthD8pDJVw6EgpRD4f
+	TMvQMmDfeqV6dS6/Q/EHRFZrnFkxcIY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 01A6160139;
-	Fri, 17 Apr 2026 09:51:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEB9C19425;
-	Fri, 17 Apr 2026 09:51:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F292860138;
+	Fri, 17 Apr 2026 09:52:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C7FC19425;
+	Fri, 17 Apr 2026 09:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776419479;
-	bh=K+ulvf1w3U8a+KN7T54hOG5ryDsrSUTMSLNev+ah4n8=;
+	s=k20201202; t=1776419560;
+	bh=S1dWoomNg7jU2+LlZH898XUljhPwIL130Eucg4xZC/E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=axeTsh32UDz21vorG6qIUZfQps/zki7+NJKe37MM9zm6w5EAS+rFUB6gJtPxVqnsX
-	 FbAq5V+E0dIzK5/ESp44Cli783ETjOJheLC0xDbav7zo4CSAHrPM0WTsbbYl1VZBx0
-	 0CdJ3vhzP7NDO4dO/2MTKX2bqZPFNc3f+Rkwiv1QZgpE49xodyWqhkXIJr0MxwZaRo
-	 MSHzksXcgrnR3KgkVgwU+hveiav8PTVHEwaKQbi1Sv2zBigUqSYh3Qq5GaDtv1YjBN
-	 2X6V8/4f04OqvGXhSyXHu1/ucyYS9RExfftp0iMXlt9wAihcbGdKG3zBvqz6F3I5FO
-	 S4jm5ppN2FiJQ==
-Message-ID: <6d4f702c-5ad6-4f84-a73e-c9e34965be98@kernel.org>
-Date: Fri, 17 Apr 2026 11:50:58 +0200
+	b=RcSHu6Wqh7GfxjLFP0/VIaIK8sPxC/5pSCoKoTaO1OtdwBEtK1Rq8iC6lJY7+G7UF
+	 yMu4MaTe9Ss4SDyRA3OHEB+KaZqikGhh5oxqUOiBH1jQrLQMSxbSJ6vzSQwnJgxpT5
+	 I+wbHAXPf7kGvnpQP1ILZmxclCFkuuSkv5YwYRnNGlyDeiWKYeHTIxstt7q5iSkmqC
+	 OZcIw8o1oBZX3pQkmZTqi7o3AR4r9OIiNSi+93CC7iajjuuLH59XJxSsgQK7nlEsWI
+	 BZL3BYJeFjlr+G4LXHYg9G0MG3Le9UXWQ+nVkoHvJbhyLZS9MqhA5Na73kIHh+SE2K
+	 IwdyUEsgi0PDQ==
+Message-ID: <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
+Date: Fri, 17 Apr 2026 11:52:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-To: Gregory Price <gourry@gourry.net>, Frank van der Linden <fvdl@google.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
- kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
- dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
- ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
- linux@rasmusvillemoes.dk, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
- mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
- pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
- riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
- roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
- zhengqi.arch@bytedance.com, terry.bowman@amd.com
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <3342acb5-8d34-4270-98a2-866b1ff80faf@kernel.org>
- <abwRu1FNqI3dVyqL@gourry-fedora-PF4VCD3F>
- <2608a03b-72bb-4033-8e6f-a439502b5573@kernel.org>
- <ad0iT4UWka3gMUpu@gourry-fedora-PF4VCD3F>
- <38cf52d1-32a8-462f-ac6a-8fad9d14c4f0@kernel.org>
- <ad-r7hwIdnvKsrh9@gourry-fedora-PF4VCD3F>
- <CAPTztWajm_JLpp9BjRcX=h72r25ELrXeGkOXVachybBxLJGS=g@mail.gmail.com>
- <aeA6aNDpQ-U5UJCs@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
+ shmem mount
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+ <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+ <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -151,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aeA6aNDpQ-U5UJCs@gourry-fedora-PF4VCD3F>
+In-Reply-To: <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E87ACA0008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: o6s88b3mbope9pdcaj8gw5zm517a9iaw
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8D3AD180002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 6shb8dwxmtxhh7xy7q8ejmothq3q6tra
 X-Rspam-User: 
-X-HE-Tag: 1776419480-160252
-X-HE-Meta: U2FsdGVkX18ijXu/wg2pnSGcwZtbxfqmh6VIsj9vtqEvCw/Y75J39bViQY9K2Mm3GJ+qw9+rwwSGjhgBwGBKSYNspMtG296Zk8vCU2N/QWDl8pDp32UYV5ibo7kqTR1hDhOHugzqeCutaT0+IloauRA2BFtLD/spKAmyDmrp5QtIGXy18dlaNFzysMIIsOKm8RIZl9x/BYxU/obuHA/aweM7Nzv6Lwm2OuQWn7O4CifeTqIEWoGjytl25z7v4+6mupMQGRfiNgJn6Dw/iDU3eblZ2V24x2XmTliwFNXRmSrco6qwlcWXyFeQZtzEJu07Q678tYcQkGsT8j/4yFdCklHINEqUkpQJXG1xCMb82r7huiIs6tsiJCxIbxrH5FNE/aLfUayCzOvJh0PRRmaQJ4hMQmbHhytoErwiRK3Geo3c6BrpvHmPyVL0LwYyuokA1Vz8Qv+LpEQ1QtHPkFzczBhqqnf69lTJKM6bNT6YNWQInSBEysbFqN5AUoux78lzJnbfrFV5fpcVgd37jBd5lXjKXqIJzvfMRD2jppJRgdatAyV1TufVE5CDzSoi0EyuxSlr9e7lMMWHuT+CcWAaMqjAgIv4w+7f5ncBTRM2qNXDLnvCR8VR914XEJwN0DiQhFU9Ux3KTMFvUUhR/iFCMrg+/gF3L424slRM+QL61uiaWUeKCZ/tQEY8pnFv+Uz4EQwyFCGZ8kgAz77ycyqd9BcYHlkofq9XziTxEBME4uvgVmXRVH6kU0PM52dkLE+Fox0q5PbhJjJABQE/WrA4bV0CwSpJcxyBfpYP0LVnlCumV3vTvhcYMiw0sQuAj2I5ySVlB3+38mxTy5eXfvO14cAR7XP+0Uf4RAN+aIrqnWX1KymRFyyIncuHgLiVps2fj9Hz62N2+ZPWPfhkEdrMxtjhWwaDDJA+LrtlMhntll8Fy6fDIqRv2tLs+h99bQkethIiWRyUyXyiMN2Rdad
- GNeNNvyL
- Js5HJ+MULop4sJW1cSG0IRp5Gvc3yJgDqm4EkdKhbMIUr8vGtaU5TGDFNuFTYKoP7lXTZcJHZdpUi+/6c8nspQSM2LQsa9P0ezlwvj86GeOveQh9L1ObsDQ9q1EMoI51mLtwjPZZU0RxGXedssQNnrZaiCs/WBYoicvKXP0M46KWqwzyOhs7tXuOmwMjTIm8tAjKyVW7g4WPS6UCN/AbJGXdBu1dJyuLjw/4QxS/UkUbH1dz4a17tdvyyPY5LdaOMRjyhyzGPyxIseY9mAW5Vs7oF+C3xEI7bPrbXXSE717Zt63AIsFjr7sIfcV8n/WEi0OpVui6p2M4XLLo=
+X-HE-Tag: 1776419561-946103
+X-HE-Meta: U2FsdGVkX1+qtrDGA9VZOI7W4kQia/nAnRfaI+vL2pwLvJaARiIYsx2Ga6K7570QpaNo3y98obHb3N41Fz5DdvKn1I4ILDcmmzlBW/jk0ShJWMw4uTurbYLsGcOYOv3G3Jvwgc3VKwaEL24trMg93Epde7s+OyuHxyZIZb/gUBhxRJxGw2o/+idzNG7HQgXWmjeyMJZt53BPEBSg9tI5rRfh5cqeV6lQd9of4yls4s6+GIHxTVwDv/nNlgnRyczAwv0z0KYnjVXUgVG8fBEKFnk2CYCcaPPZiP4cUtuiQ30wabTnChKfY/pOz1v/YArX8IZzj+/2/JjdzMTbnXWz6Bl/ftVcOmoMMFVYtG7DNarloeTeqQ9BPwA9c0XG/3zbsr44PmQOdARDVckOhWQWhgkLLMt0xbD1HtZXe0oQy2E253MHughckzcFvYX8rZkZL4+Eo1tHPGO8Itgl/oFS1gLwSWr0NtUJvs52nSHwaCIQiDLFIxs6zLRa7LMyzSOUsfxbo4ieERoB8L/ftGOSFyWF7o6wpNUgH4wdlyy0n8YFg+l4NiS6f7Tysz1Vv0TkiQeMFfMX2VS7FinOIZ9Sxd3K8G858bwYBmufC2SdKlkmwMWFbZk2Jbmd7JrucH3XZBGJyCCEZhJoFaE2RLiZtUB7r7coKCWtKhg/N/4776s5LWTI/tAdAFyPV0tO40E0goVWcgVKhqV4DDFsqIZOM1nrGcl3RhbUD3/OaHR2KQVh3izRE6m98falnZUG4cwp+4XvetmPVKKzife18nzwnX5++sjs19gppzmDOsee7WRs4Xl+4DhrKauJ1wJdVB9Jwv8KNNmIZhoWoyfWZCA+JnmkDcwQIU6hQ5aUca/S0+7zbFHpnWtcp4hfQOESY6WqFqL1ZGh0oY5giVlTtDaPGHM6Fg+b2/2Gw8fLw2mgKkICWuPHKaPgV+TjBM3+51k+DEpGjbaeUBFwWDA6+oQ
+ oMOXuGnu
+ no+gqK3u84eZBVlunnKZPl9mC+cGdlaDJTBZiurgO5aoBslTyU+CX5zfnXca82j1y/XIvEIDUiATkiLUEPYM1CmIfv1Vjr06YliI0HDAtflQjbIuMA+E3ROFudao+xQRAGa1KAB5hoTAsv1Hc2KS4phMi3rA6fwsv07XQsOzzoAJH9xO4oMrcKMLkJCUjQKO1YJHTtajOPNEUWBsWrVhHawvnwIqauNQPp09y6o8AvP6kp/aINGFS4Up8w23MD0smavBP1S5fXV168I/t4pLPZ4PBJ2wbw3KjLuuki/5vbru3n89Gg4UNcGqsmY0lwVb71p64plqdDg9wfek=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,48 +141,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/16/26 03:24, Gregory Price wrote:
-> On Wed, Apr 15, 2026 at 12:47:50PM -0700, Frank van der Linden wrote:
+On 4/17/26 11:27, Baolin Wang wrote:
+> 
+> 
+> On 4/17/26 5:21 PM, David Hildenbrand (Arm) wrote:
+>> On 4/17/26 05:25, Baolin Wang wrote:
+>>> Currently, when shmem mounts are initialized, they only use 'sbinfo-
+>>> >huge' to
+>>> determine whether the shmem mount supports large folios. However, for
+>>> anonymous
+>>> shmem, whether it supports large folios can be dynamically configured
+>>> via sysfs
+>>> interfaces, so setting or not setting mapping_set_large_folios()
+>>> during initialization
+>>> cannot accurately reflect whether anonymous shmem actually supports
+>>> large folios,
+>>> which has already caused some confusion[1].
+>>>
+>>> As discussed with David[2], for anonymous shmem we can treat it as
+>>> always potentially
+>>> having large folios. Therefore, always support large folios for the
+>>> internal shmem
+>>> mount (e.g., anonymous shmem), and which large order allocations are
+>>> allowed can be
+>>> configured dynamically via the 'shmem_enabled' interfaces.
+>>>
+>>> [1] https://lore.kernel.org/all/
+>>> ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
+>>> [2] https://lore.kernel.org/
+>>> all/875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org/
+>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>> ---
+>>> Changes from v2:
+>>>   - Always support large folios for internal shmem mount, per David.
+>>> Changes from v1:
+>>>   - Update the comments and commit message, per Lance.
+>>> ---
+>>>   mm/shmem.c | 13 +++++++++++--
+>>>   1 file changed, 11 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>> index 4ecefe02881d..769ef37b1ea9 100644
+>>> --- a/mm/shmem.c
+>>> +++ b/mm/shmem.c
+>>> @@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct
+>>> mnt_idmap *idmap,
+>>>       if (sbinfo->noswap)
+>>>           mapping_set_unevictable(inode->i_mapping);
+>>>   -    /* Don't consider 'deny' for emergencies and 'force' for
+>>> testing */
+>>> -    if (sbinfo->huge)
+>>> +    /*
+>>> +     * Always support large folios for the internal shmem mount (e.g.,
+>>> +     * anonymous shmem), and which large order allocations are allowed
+>>> +     * can be configured dynamically via the 'shmem_enabled'
+>>> interfaces.
+>>> +     *
+>>> +     * For tmpfs, honour the 'huge=' mount option to determine whether
+>>> +     * large folios are supported.
+>>> +     *
+>>> +     * Note: don't consider 'deny' for emergencies and 'force' for
+>>> testing.
+>>> +     */
+>>> +    if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
+>>>           mapping_set_large_folios(inode->i_mapping);
 >>
->> This has been a really great discussion. I just wanted to add a few
->> points that I think I have mentioned in other forums, but not here.
+>> Two questions from a non-fs person about the semantics here:
 >>
->> In essence, this is a discussion about memory properties and the level
->> at which they should be dealt with. Right now there are basically 3
->> levels: pageblocks, zones and nodes. While these levels exist for good
->> reasons, they also sometimes lead to issues. There's duplication of
->> functionality. MIGRATE_CMA and ZONE_MOVABLE both implement the same
->> basic property, but at different levels (attempts have been made to
->> merge them, but it didn't work out).
+>> a) Can sbinfo->huge be triggered later, for example, through a remount
+>> (staring at shmem_reconfigure())
 > 
-> I have made this observation as well.  ZONEs in particular are a bit
-> odd because they're somehow simultaneously too broad and too narrow in
-> terms of what they control and what they're used for.
-> 
-> 1GB ZONE_MOVABLE HugeTLBFS Pages is an example weird carve-out, because
-> the memory is in ZONE_MOVABLE to help make 1GB allocations more
-> reliable, but 1GB movable pages were removed from the kernel because
-> they're not easily migrated (and therefore may block hot-unplug).
-> 
-> (Thankfully they're back now, so VMs can live on this memory :P)
+> For tmpfs, yes.
 
-Heh, but longterm-pinning would fail on them (making vfio with VMs
-angry). Similar to CMA hugetlb.
+So, we could pass this check here, not setting
+mapping_set_large_folios(), but later someone toggles it and we missed
+to set mapping_set_large_folios()?
 
-In the latter case, we should have a way to identify "this allocation is
-actually from the CMA owner, so longterm pinning is perfectly fine".
-Checking the CMA alloc state would be one approach, but that's rather
-nasty. I guess there would be ways to make that work.
-
-I'd assume that people barely rely on 1GB ZONE_MOVABLE HugeTLBFS Pages
-(iow, mixing kernel-cmdline ZONE_MOVABLE creation with kernel-cmdline
-hugetlb reservation).
-
-I'll note that there was long long ago a proposal of converting
-ZONE_MOVABLE to "sticky-movable" page blocks. It wouldn't really solve
-this problem, though, where the early boot code just does something
-that's rather stupid.
-
+Or would we always go through another __shmem_get_inode() after a remount?
 
 -- 
 Cheers,
