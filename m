@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33362F436B4
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 15:46:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA346F436B7
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 15:47:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 601506B0120; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
+	id EDC876B0121; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D96A6B0121; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
+	id E3E4E6B0123; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 515EC6B0122; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
+	id C692F6B0124; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E5FB6B0120
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AC0536B0121
 	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9439B1A01EB
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:46:57 +0000 (UTC)
-X-FDA: 84668476074.16.4CE7142
-Received: from mail-m82138.xmail.ntesmail.com (mail-m82138.xmail.ntesmail.com [156.224.82.138])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E9705A000F
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:46:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5EDEC57A4F
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:46:58 +0000 (UTC)
+X-FDA: 84668476116.01.4BC50B2
+Received: from mail-m82139.xmail.ntesmail.com (mail-m82139.xmail.ntesmail.com [156.224.82.139])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 22214C0011
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:46:55 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf15.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.138 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	spf=pass (imf10.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.139 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776440815;
+	s=arc-20220608; t=1776440816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=AJkIVB1CVaftz2P3+4AMH+QJO3FnBgXQoGFo5iG5VQY=;
-	b=Qx38ytdpKTvOyuH1JlxFFfMJr+zOfNuPEeNmROqrxIhUFz23XDbGDFSSyGlyPrDjykOx03
-	S9m0LFsL8rDgIcCVAMnS24fr5go9th2TgJTlj8aLNte1tMd6UE6i0TyUv6WfpIF/sPhMJo
-	/QMsmGMKhLZ3ILyRpNrDljQ6XnJQeMA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf15.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.138 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776440815; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=oPkrkSaS1T5GsefqN0Wdmkc9iy9v4Yv2QU8gru5IzWs=;
+	b=kSAeh6AfhxQOkuBC+0Vz18IXF017xSDEZJjHf/vk1GoRXzUrab647EaqxfFSnZdzccGOhE
+	nJ/wiiHXYepAucqiTTiIDj7/8znIYUqt9YJOBt+LyilbRjy7+NfcfqMswvEwPW1F3r7yza
+	yIecB8hEN2MuGM1FxDH0lYma006UN3A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776440816; a=rsa-sha256;
 	cv=none;
-	b=frPAjl8QQoiB5Dl9qNUjQrrPG7mMP0CTuY8NXvyG8s84MhfaFBUrXXyOQWqSWi9DvVVhAg
-	JTKhG7E1naRC8bhX/Cuwg63fvv8URpYnkG6K27JQ7U0XsYuwPSkFtH6Dv/jpVQccwR5vTV
-	Kz5BIeyrLEUtEQho2A9VeYZx1rD9iV4=
+	b=iXYVOoxXfayEZTFHUqNeBK2o2Eba6s3oUIFe/MG4H7ewogerQ0R0lesTo/A93FSoyz/VNd
+	y2BZgxr1YhsCqc6m/WRQAwizJIYJuYt52J3+7cKJdoRaSHZLyY5hzAmBqVKouLVL/PTtNS
+	7ATMv6WX8hKLlNADGgQlfyUoWNB369E=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.139 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 Received: from localhost.localdomain (unknown [IPV6:2409:8a20:ef7:a5b4:8810:8f74:8c26:2])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 190e229f4;
-	Fri, 17 Apr 2026 23:46:47 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 190e229f6;
+	Fri, 17 Apr 2026 23:46:50 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: akpm@linux-foundation.org,
 	vbabka@kernel.org
@@ -61,26 +62,28 @@ Cc: surenb@google.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH 0/3] mm/page_owner: add filter infrastructure for compact mode and NUMA filtering
-Date: Fri, 17 Apr 2026 23:46:35 +0800
-Message-Id: <20260417154638.22370-1-zhen.ni@easystack.cn>
+Subject: [PATCH 1/3] mm/page_owner: add filter infrastructure
+Date: Fri, 17 Apr 2026 23:46:36 +0800
+Message-Id: <20260417154638.22370-2-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260417154638.22370-1-zhen.ni@easystack.cn>
+References: <20260417154638.22370-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d9c1f8ede0229kunm7c3615e318e598
+X-HM-Tid: 0a9d9c1f9a3d0229kunm7c3615e318e59b
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaGkMYVkJJGEpNSRkaT0oeGFYVFAkWGhdVGRETFh
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVlCQktDVkodGRhNTU0dTEtLTFYVFAkWGhdVGRETFh
 	oSFyQUDg9ZV1kYEgtZQVlJT0tCQUMaSUtBHh1MQRpOGU9BQ0NKS0FDHUxPQUMYSU1BSVlXWRYaDx
-	IVHRRZQVlPS0hVSktJT09PS1VKS0tVS1kG
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E9705A000F
-X-Stat-Signature: p48bnq8zdkordo6fjhhkrdfkk8o1tzbm
+	IVHRRZQVlPS0hVSktJT09PSFVKS0tVSkJLS1kG
+X-Stat-Signature: n35ywo8wprumdbob68o3n5b1h174jkpc
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 22214C0011
 X-Rspam-User: 
-X-HE-Tag: 1776440814-982933
-X-HE-Meta: U2FsdGVkX18yKR9fGjYoZhHwACVH7xc1ZD+ySesY4OgFzeRO+VMxWR11cJ/hZFWVTNkaCgPOFX6/Bdp1cBJghRyb8YKTvhqQGMCNkIi3jnvzS3kqsQD7a+AyoZmz8mSW8iAuO1+JlH0BbGTmDd1A5t9KLAQnqA2KrlB4ENkaAYNJ2dIWVMBNz7TSr9CjdhjR4h4TNMWvYdQwG7leKQdgv6kVyCFN76tH5Neog9qNeWHCOz4y5LoRfq/xKQqOyITxZ1qzb/GJDQWbwGNWmddqHe1o5NXcnMUlPnM7Wc+l/4DaZH20qIdupdG5HcxKLxzRdf72CMNAgUjg87SOJZGOEMluVd8LhusGHp4mIMJjkFFXd3+Cr81Wp+8+NYiJOnTNePk+UuGneIF/F/eKC4axtk3NS4G+nrXb8vjo1UuLKjWD8Al+DaNWHxByO1wo6QaVbeXWLtLiTQpHMhN/11poB11Oef22Gmhm+XjrW36pGbY30sTqRwl1WowVQPrafZs8hPbV9uxkzs1aRA3B905dVTMstNK7z1xLb6OoxW0NcBJz1C83VaPvwbJiunUXlCw1btpYzmOI50GWJASc3OSWWj3v8WktGUl0ohO3W9ZX4l18+N+xog3g0kuvToroRZsFdpZcNLkPPFsuf7wCZAKRSVWJL5/QNetZ83iTF00PWR6DCtWYA+S5AWKsyx9ZPkpxzmW4rxR0gozrT8VMtIKHB8LhmSdSi6xGov7TLfPNlcKhW6Wf4Eh/hqkP0cyH/lQMjECaurfG7jLewKBuA3QjaxfifoyXDiihZTrOFKpdCM47wUwyYWjdh4dKhlqRTsY1MfvQ3CC/kzVqmBxbyLCaxiYJVyIydcZzkhyAPzKTOz6pTOWlxcKTy0roi3w9rTiqf4igDOVqrh/xtnpXqGePSMSuATsY70hj5WdfyXOTtnH5Th+GsJgeITwGt2flurYEEzqU2Zwcci+Y7eaLzgd
- z/PuM8Ff
- W3Z+jw7Vfk4c8fHmlJozHaqPUWbcSWKY7Vm3FyCpsoPue3NQlI+Wr3e8dCqNaWWqhjECNrVCZ1YwSBmwZpLAzOE5o+2Bz6Es7pCuJ4rm9K2PoROwZDj6H3eeOX2CWdftYGb96ouwkULedpcKJYET6rX5jgRMujHVECBPwajqAvz8w8UI=
+X-HE-Tag: 1776440815-682638
+X-HE-Meta: U2FsdGVkX1+Mst3ATkaIvv+4WvQr2n4k6bYOly5YFAXQZDONz7gRt47eJKZOCWfN/uXG8seSTIrAbVr6EkZ+PTSS2hoTTjGUGo8trnEIFnR2sQRj1R8q+LC/w8pssvuFZZMUmwD1KXR14kLTPSJ3Q8pj8d6Nsr8VMupCNRr/koLJnILl9gbti1H91CMlQbXKP1uXqL1iLXzR56sXkglHt4rB4s7RE01ZzdQZvcv+lsldTRhRPKkc1kkI68EAX/xaog+ywIEbhmMA+gZX5XO8CJ5a/wOZe4L9IURH73+kMUCXrAMII9yZESwePU5lGHn5if2WzBzuWFM4nq10HT9gxeaaVxa8xXU/hWWcC4NA4vWhMaMBmKnPzetvYYz+Z7c9/vtTmZoYGrC0Hp7NxJ+DGCEB+8ZDKQ867R5QzKtqqa0x82uQlWhUNadW4274xJEnZGKjflsIou0G2GQlnif8E+2f5vlgiZHAuTkEsizyxg3IAywhiF1G5YKBv8Cn5SQx6i17hcDSknfcVFNOy1g07sG8nHKB8cCSai3TfHTvtM4EoeHoW+OqgjhclPCIG9s9RYlXP5xjMCA0nQUyH60xtiv0sNrtyQT2dxwzadKAo1UANY8VLIQYHi1yql8sG6Hx6Rida9ESu0OWIkahu0UcrRXGjEPI7GgGz6rYjpAe2kV+0TLvxd/bRxAGAjrGL8P/TyEdmS2lUxqaV3QOOBupFyXN9RpALxZfMM4Azh6sI2k+3uBXTl59O7SfIiKuCRssvbw8jIHX0lisPnIBqP/MZl2/VYdUotYC+C84nBj0v9HvF3Hzp6rSXQq5iqB2w9B6tKZH8Iax/A44kyw+Kji+Na57Me1Kf/pt3XIKHHcUph4xwLlmT1yCA64gU7+BjXFaZLRa11sRdTjqRyW1uQeTF27cLVXNyZFjiusw+gjF1YkNIYiiI+qJJLT1GvpG5SeHmKPHgJRDIJ8RDXtDIXt
+ ImaNMY1Z
+ iI5wC0pSfLc16Zih0YMft1dGe6vvN9CRygR2hHFNTvG3oEfSMpR5N+D3BmRXGSgpRFYO9vf9EiDQCJJqxPb+Qe0jcD2ljnmQY36a5uOURIZhppaEd50a/C5G2aAVzqDW7ymif+xsojdz5wCEYrPYeIIOpZdWmNBlIeEiKaysKPskeXYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,110 +91,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series introduces filtering capabilities to the page_owner
-feature to address storage and performance challenges in production
-environments.
+Add data structure for page_owner filtering functionality and create
+debugfs directory for filter controls.
 
-Problem Statement
-=================
+This adds:
+- struct page_owner_filter with compact and nid fields
+- Static owner_filter instance initialized with default values
+- page_owner_filter debugfs directory
 
-In production environments with large memory configurations (e.g., 250GB+),
-collecting page_owner information often results in files ranging from
-several gigabytes to over 10GB. This creates significant challenges:
-
-1. Storage pressure on production systems
-2. Difficulty transferring large files from production environments
-3. Post-processing overhead with tools/mm/page_owner_sort.c
-
-The primary contributor to file size is redundant stack trace
-information. While the kernel already deduplicates stacks via
-stackdepot, page_owner retrieves and stores full stack traces for
-each page, only to deduplicate them again during post-processing.
-
-Additionally, in NUMA-aware environments (e.g., DPDK-based cloud
-deployments where QEMU processes are bound to specific NUMA nodes),
-OOM events are often node-specific rather than system-wide.
-Currently, page_owner cannot filter by NUMA node, forcing users to
-collect and analyze data for all nodes.
-
-Solution
-========
-
-This patch series introduces a flexible filter infrastructure with
-two initial filters:
-
-1. **Compact Mode Filter**: Outputs only stack handles instead of
-   full stack traces. The handle-to-stack mapping can be retrieved
-   from the existing show_stacks_handles interface. This dramatically
-   reduces output size while preserving all allocation metadata.
-
-2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node ID,
-   enabling targeted analysis of memory issues in NUMA-aware deployments.
-
-Implementation
-==============
-
-The series is structured as follows:
-
-- Patch 1: Add filter infrastructure (data structures and
-  debugfs directory)
-- Patch 2: Implement compact mode filter
-- Patch 3: Implement NUMA node filter
-
-Usage Example
-=============
-
-Enable compact mode and filter for NUMA node 2:
-
-    # cd /sys/kernel/debug/page_owner_filter/
-    # echo 1 > compact
-    # echo 2 > nid
-    # cat /sys/kernel/debug/page_owner > page_owner_0417.txt
-
-Sample compact mode output:
-
-    Page allocated via order 0, mask 0x0(), pid 0, tgid 0 (swapper),
-    ts 0 ns PFN 0x80000 type Unmovable Block 1024 type Unmovable
-    Flags 0x23fffe0000000000(node=2|zone=0|lastcpupid=0x1ffff)
-    handle: 1048577
-
-    Page allocated via order 0, mask 0x252000(__GFP_NOWARN|
-    __GFP_NORETRY|__GFP_COMP|__GFP_THISNODE), pid 0, tgid 0 (swapper),
-    ts 0 ns PFN 0x80002 type Unmovable Block 1024 type Unmovable
-    Flags 0x23fffe0000000200(workingset|node=2|zone=0|lastcpupid=0x1ffff)
-    handle: 1048577
-
-Future Enhancements
-==================
-
-The filter infrastructure is designed to be extensible. Potential
-future filters could include:
-- PID/TGID filtering
-- Time range filtering (allocation timestamp windows)
-- GFP flag filtering
-- Migration type filtering
-
-Testing
-=======
-
-Tested on a system with multiple NUMA nodes. Verified that:
-- Filters work independently and in combination
-- Compact mode output correlates correctly with show_stacks_handles
-- Default behavior (filters disabled) remains unchanged
+The filter infrastructure will be used to add compact mode and NUMA node
+filtering capabilities in subsequent commits.
 
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-
 ---
+ mm/page_owner.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-Zhen Ni (3):
-  mm/page_owner: add filter infrastructure
-  mm/page_owner: add compact mode filter
-  mm/page_owner: add NUMA node filter
-
- mm/page_owner.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 69 insertions(+), 2 deletions(-)
-
---
+diff --git a/mm/page_owner.c b/mm/page_owner.c
+index 8178e0be557f..6811439bf9e4 100644
+--- a/mm/page_owner.c
++++ b/mm/page_owner.c
+@@ -54,6 +54,16 @@ struct stack_print_ctx {
+ 	u8 flags;
+ };
+ 
++struct page_owner_filter {
++	bool compact;
++	int nid;
++};
++
++static struct page_owner_filter owner_filter = {
++	.compact = false,
++	.nid = -1,
++};
++
+ static bool page_owner_enabled __initdata;
+ DEFINE_STATIC_KEY_FALSE(page_owner_inited);
+ 
+@@ -973,7 +983,7 @@ DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
+ 
+ static int __init pageowner_init(void)
+ {
+-	struct dentry *dir;
++	struct dentry *dir, *filter_dir;
+ 
+ 	if (!static_branch_unlikely(&page_owner_inited)) {
+ 		pr_info("page_owner is disabled\n");
+@@ -981,6 +991,9 @@ static int __init pageowner_init(void)
+ 	}
+ 
+ 	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops);
++
++	filter_dir = debugfs_create_dir("page_owner_filter", NULL);
++
+ 	dir = debugfs_create_dir("page_owner_stacks", NULL);
+ 	debugfs_create_file("show_stacks", 0400, dir,
+ 			    (void *)(STACK_PRINT_FLAG_STACK |
+-- 
 2.20.1
 
 
