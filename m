@@ -4,136 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3541EF43683
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:58:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64C5DF43689
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 10:02:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 751C16B00CF; Fri, 17 Apr 2026 05:58:03 -0400 (EDT)
+	id B505A6B00D2; Fri, 17 Apr 2026 06:02:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 702926B00D1; Fri, 17 Apr 2026 05:58:03 -0400 (EDT)
+	id B01936B00D3; Fri, 17 Apr 2026 06:02:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F1A36B00D2; Fri, 17 Apr 2026 05:58:03 -0400 (EDT)
+	id A175F6B00D4; Fri, 17 Apr 2026 06:02:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D5C26B00CF
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:58:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF95D13C08B
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:58:02 +0000 (UTC)
-X-FDA: 84667596804.30.3A6F18C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F1AE9140002
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:58:00 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mcRcwE+C;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776419881;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vggxilHzi22tupDRPYUzRtQVBVIqyNl3pc0Ir9NVJQg=;
-	b=BrCle5BRr7hb1z8MSF8Q1QnhvdwoD3+IK6iNl5qhVDabjsYtuCHm6re7Z5y30iQf6N/S0E
-	fSc0mzXkONlIrZh1TdsTzv6Z9y1EU41HoEcyF1B3jn6PokBIpFq4O/gEIW+HgTDsD5bArH
-	w3f7LEyVuBMb1oM5VGUpnSa0pB9tWRg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776419881; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 910606B00D2
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:02:34 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A81C01B91C5
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 10:02:33 +0000 (UTC)
+X-FDA: 84667608186.07.D09191F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D35CAA000D
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 10:02:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=U2rmSJJt;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776420151; a=rsa-sha256;
 	cv=none;
-	b=sPJIunpg8xiXM/xpoWQMTNXw1OPBvM9164Xpl/n9+lBSl7vYZFpaDmXJJFVixR5Y6Aps6t
-	ks3VYOGjOC4lCndLlM9l477c1u1TjM8gKWdiMeLViGRXCTKZSdoBtsl+JEEV2oMTb/gZNB
-	zSemAqDUKtApBcthsaQmb7QUDUYcJ3U=
+	b=RjBpO4DonICfFTW7v5fUxiq5i40WXjNEYcJeSOoSlp1M04nOROoL2sYipOnXVRboHO2mLb
+	c6rAhvmxyvr8SjHfNtgHn/y4vCbiRNyDnv2IyC8G/eg2DdyCTywYreQqWWoe26/Ac6B/R6
+	2jYKL+FmQSP1I9t+45QpdtkfRJkJ6Hs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mcRcwE+C;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD5E343E00;
-	Fri, 17 Apr 2026 09:57:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB2FC19425;
-	Fri, 17 Apr 2026 09:57:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776419879;
-	bh=2E5lhUu078wPwmjVrWs1doXuvxv4JvNpcxkCylouaek=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mcRcwE+CDJGe/aiLEO5IT80LYSEA2IjbnkGF+eOe7J/IAKQ00gMrplaNiY8AXfveK
-	 AtZVmL/cTmR9bB0iNBJvhU/3s6Th/qbqSWDWN22LJ5saZlDOMVVdUlW3LbaKtkrbHr
-	 LyDAqavHXgM4s7hDXNqaBUE5znLZn+0f5Bo75HcsQB6W4c/nfTOffVA9krjWSbNwtC
-	 QwROI8t6bNURjQsYgPepNr4xbipF+ca/LikVZhraBhUTFi14RZuRHuQXPVjIH0a9zC
-	 9vFsItX6cawo42YY2M3r0USEgUa84GMSf/d/VLyXIWBkjBxBdalWUmh4BzDTVP3FKf
-	 DY27ct364FT/w==
-Message-ID: <8a0b6d67-121a-4ac8-a74b-737d52d8b7ac@kernel.org>
-Date: Fri, 17 Apr 2026 11:57:54 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/10] mm: introduce pgtable_has_pmd_leaves()
-To: Lance Yang <lance.yang@linux.dev>, luizcap@redhat.com
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- baolin.wang@linux.alibaba.com, ryan.roberts@arm.com,
- akpm@linux-foundation.org, ljs@kernel.org, ziy@nvidia.com,
- Liam.Howlett@oracle.com, npache@redhat.com, dev.jain@arm.com,
- baohua@kernel.org
-References: <b65d560458b2488f715b5afc1603d786e786ccf7.1775679721.git.luizcap@redhat.com>
- <20260410081938.51302-1-lance.yang@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260410081938.51302-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: udsi5airyrwo3qbygg1hmb6sfny8dbgn
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F1AE9140002
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=U2rmSJJt;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776420151;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=Hex+EbXJGejSuOhmB64ekPEq2ZYhYwLjSXWdhSFN71c=;
+	b=Vh6IWGVjsKGpBp2Q6xSyWt83QYk48AD5C7SSwRby9WklAz2blTrUniq+zP7Hd0uexjhasN
+	uxa8CQXKuWXYt/RdwxDOfVAMsoQzoqfyu3d9SypEb013lpVa99kfcTbGAp1y9BDWBynd7V
+	Tb/ExBHvJv8YG1v+MHMLWoQJzHuVy7M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776420151; x=1807956151;
+  h=date:from:to:cc:subject:message-id;
+  bh=dSV6xuUYZ7DtAUwZBTQNUQfsHXf3jKjiBNh2dosyCIE=;
+  b=U2rmSJJt3puWo2FQ56oWf8jugYhcae75vFFlotYNmxo1z17yW/GXHPa0
+   wteZrgLDg9FAaVDtv1WUZqe0mTtX8+C3njz8EA8eCUeCg2MYhrnRJ8bpo
+   7VL0OgUtEJyjCTHIZfEhSV4f8+VCG6CPHfTZRn/utVNhCZMuxX4nvoBkL
+   /ezytrsgPLd2mgQkQcZu/1ajLGV7cAZ+dtC+dSI7YrY/IRJUZlYKpbMQy
+   hqkVhS0O5EexvX21Ark0EyzLNY7N9EfLglwRbFUE79Zxtn1xLIFbqWnWx
+   U+ja1BV9BrvnYt+YJ4MAAsRi/2WaxzCLm4MeRgvRrsG3X5E5MR4XG7nkK
+   g==;
+X-CSE-ConnectionGUID: jUkG2jTJR7qIH7dppCZ2mg==
+X-CSE-MsgGUID: RLJNF1HAR26/e7aY+dya9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="77134589"
+X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; 
+   d="scan'208";a="77134589"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 03:02:29 -0700
+X-CSE-ConnectionGUID: RlwO/DlgQ9a04nH2Gcpwyg==
+X-CSE-MsgGUID: 0qth6167RqKe184jNxLfTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; 
+   d="scan'208";a="226651740"
+Received: from lkp-server01.sh.intel.com (HELO 7e48d0ff8e22) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 17 Apr 2026 03:02:27 -0700
+Received: from kbuild by 7e48d0ff8e22 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wDg1o-000000000D7-2Iwp;
+	Fri, 17 Apr 2026 10:02:24 +0000
+Date: Fri, 17 Apr 2026 18:02:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 163/164] mm/sparse-vmemmap.c:766:35: sparse:
+ sparse: cast removes address space '__rcu' of expression
+Message-ID: <202604171755.GRWIpPjV-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
+X-Stat-Signature: m5j7a7zwxhi6k5tfqo64z1gtciywyfdw
 X-Rspam-User: 
-X-HE-Tag: 1776419880-283754
-X-HE-Meta: U2FsdGVkX1+lMd5cOWrqklcQPjE075HIfF9DqARJI08x0cb2xPpY6aRF3JEFRn13JC3ooYKTYyL/rfTTJIc+OWFvomqCCfcTYdPY8F/VtaGudWHRoqDO8tFpZjZlFxd8rQcwYyTed+PAqc/iSCTIWlRf92nAFQht4Av2g7cqiaarwVGgqoM4pmVRhcrDAbr7Gy1UFQixG6P38TzEi9z54CXji2QpOX+zqTNjl/KslakL9VMbC4bvmZtZMAP6VFCpQuoR33IA9zA9T3PKoQbYVgSj1exhHHoouNW3ZfKZZpzCeUQENDNfQyuyiYN1Ag02LcXZqMrjFv7A5nKK1sxOms9b4+kQMS4VW2tRrZ9siFDom8b5xeRNY6FfpsTMWrNAIRrZqwQlRnjdiHhNl7VBOjlPa543h00ZTodMuahZV/oPkeRr9ugYMkB9RiHmxcHPK4Ag4r0Hv9ShoNpYVcZwv+oag2Fayiv3cYUcKGs7eG2x7x7Kah1ZlwqF7Wjk3nGfprhZ4x6d8i8fRbWI9NPO/FA5mK8SHo61yIkDdzQKjMZCYOTMQCrfczh7aLGjuG0QHKiVmFhpfR0srlG/1LtrzUMJa0o7DEgw3eCYo9SUbaB/fco3tjQOxozrtXyxtLqSlqfAfa1Hjl0hhtzHjLoWR948Xm+Zi6SicViYPVZyfWNRJgf7tTVEkqe/kQhQGT1iP+1DVnbZAQlZxEiGfDHQE05TO+4eCoTmCkjiIsQyqY6D3cp1tvXMcDLhcvnsdKwx2Z4Zy7m+KJAXk4naQu2yJGxZ5tqXyc+DFy9qk2uMJTtSwhNeQJbtaHRrXciHefCRQYQKfS9tU2Xq8uGfRr9kLSbtDh9TU/VuHIvO+675vVsGlQ/j8wlWFBsHpeP/NCyWPW0VlFXi2KDEa/flOPLbCXWL+OY3wEMkHoj24+Jt2ysVYUTJ7GVdXZUzHpN7eoZ/t14J9cFjADi4GbS20EG
- ciV4t2rq
- v+NQuYjOxZ5A0ApMeqzIZQKTAhJc22f2UUrqu8Q/JbElCm9cOEL/+8sSXMrdbikx9mL9zPJKVHZaUeYxoSS1s51SA3I6x7CjPxMzU1iVPDg811AuaJpnRDFRPYoeHZUngs4glAXI4mMRl/BQiyIimhOcx5XSz5XtAG133m6ScY4U6q2quY1R5dMhliPsQvOBGX70FU5Evxj7OurxIo3Tw6t61ubRcuMQ5W+ABPTxBkHgS+PTdRozI8SejR0n2Yr9gkY6OFJKuADcdASFc07bfOHcCd8TU62AUCYCBuMAUAF7xE4A56xtMEXzBvq6Z7WG7Cdgmed0vC4geYQU=
+X-Rspamd-Queue-Id: D35CAA000D
+X-HE-Tag: 1776420150-689334
+X-HE-Meta: U2FsdGVkX1+dkroSfYz9chSPW3UZbqWy8270ft6b7k38XES1vsDXwfbYPoebB6LDHxbi2nynEr66W3LYCb5YAVAAO3uWaUihPH0qCt/K7UISAauO1ylUft+JZdZuBO3P14ykMtTYZMTCQYIYvASZj/h7Ec12ZezC68I6kZa2nCQcofGkn+RmZaR+KExE5nZRTBhKYXZ0aORDQw+l2+oPN5EHw98sjS7iv754fGs0C8zV2mtT3+EvUg1KEIP10+1AZFFlWmuO2+20SKN8QPI3Fi9qZi7EkWrrWQ6V5GfmdVKwo1YfJ09wKRqZqvg03QA0beU70cH8da6c9cLbYS0n7OICp6cLkLNdYddJBLhjFDvSk6SCXtggXgyUdkOr+XP2vQ43CMMDmtpocQOZrN5WGdV3YptlDbi44thoEb6a9FmzIhpi5rOORf92u8HFqynrp9wTE6uMfnu45Aoghif+X4Jvwo33CT495Xd+rkaLVHb8ZS3hbdw8hiUXUdULKr4FxIVKYDmv+frNVvFe2WTsPO92mugjfLhltPjbc/WlfTDfODcsxFrI4JcQdXnZ66ba+Pdtp7UTMOCfDI4yUc0O5d3wjhEATMmrLWLtxjgrIaIdjKhNi6VI4Oywqaed9QAtaAKNdzUYu5PrIPHLkMehzfCWcMo1idxnyJHuNjQrWXBjyT8JgkYDIa8uKfyte448dtq5TEXfNYMrkCWvT04F555dfwKVY4Qz14QnD0MoOBeNPzjCUmqsIu+ut7cfFyTKEfZNrBxViZBYVqVbW/dIYjjLcprG0hbdQGrWf5neZC2QKeXHUmrZkTciftmK7Ff/fcuFYzmqY+xfPReo0n28kISnW2HbpsZgaA5IWPe6cNCqtbl1u6ntcXq+Qq4db+z1gu1X1Ep3FooozcUvW2ZA942cJ4p0Zd4mgRarEF7xfb4A1aL7MQsz37gsMOBpZiKzuGmT4CCV7fxHQQT9zDb
+ 4gFRXuOx
+ GBS42Kl1pwhHm7TxF7ZkQSkjm2VvOucnWR2oYytkKH4ToORewg80JoJuxkfn5zbPuycBquNFnl1AEs4udkGrRTHWNhyd+nQIPOAOo7wlU/e4N77r0X7hhyNtlzzmvzHcXz/xYuDLEow0FOCsOf2oGAq4ifHCTtCo7RYMJYsxMgBk2FimXS/9IXKXzpgQwG2qs/ezPKGsdJNXSVRZ/561TAYqj3159PMPKVqX8j0tcyjoxKo2Fb9mCneY6N9EnUSsJqAwxK1JVJb4I9uKduHhi+ApyTjPcMoxTyNywnnD4lrWaETPSwkgVadaYNW1aWCMQmSRq96IW6NQpoFilTFJSzZedSfiNN/XMm+y6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,108 +102,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/10/26 10:19, Lance Yang wrote:
-> 
-> On Wed, Apr 08, 2026 at 04:22:57PM -0400, Luiz Capitulino wrote:
->> Currently, we have two helpers that check for PMD-sized pages but have
->> different names and slightly different semantics:
->>
->> - has_transparent_hugepage(): the name suggests it checks if THP is
->>  enabled, but when CONFIG_TRANSPARENT_HUGEPAGE=y and the architecture
->>  implements this helper, it actually checks if the CPU supports
->>  PMD-sized pages
->>
->> - thp_disabled_by_hw(): the name suggests it checks if THP is disabled
->>  by the hardware, but it just returns a cached value acquired with
->>  has_transparent_hugepage(). This helper is used in fast paths
->>
->> This commit introduces a new helper called pgtable_has_pmd_leaves()
->> which is intended to replace both has_transparent_hugepage() and
->> thp_disabled_by_hw(). pgtable_has_pmd_leaves() has very clear semantics:
->> it returns true if the CPU supports PMD-sized pages and false otherwise.
->> It always returns a cached value, so it can be used in fast paths.
->>
->> The new helper requires an initialization step which is performed by
->> init_arch_has_pmd_leaves(). We call init_arch_has_pmd_leaves() early
->> during boot in start_kernel() right after parse_early_param() but before
->> parse_args(). This allows early_param() handlers to change CPU flags if
->> needed (eg. parse_memopt() in x86-32) while also allowing users to use
->> the API from __setup() handlers.
->>
->> The next commits will convert users of both has_transparent_hugepage()
->> and thp_disabled_by_hw() to pgtable_has_pmd_leaves().
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->> include/linux/pgtable.h | 15 +++++++++++++++
->> init/main.c             |  1 +
->> mm/memory.c             |  8 ++++++++
->> 3 files changed, 24 insertions(+)
->>
->> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->> index a50df42a893f..c4c5282f795c 100644
->> --- a/include/linux/pgtable.h
->> +++ b/include/linux/pgtable.h
->> @@ -2192,6 +2192,21 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
->> 	}
->> }
->>
->> +#ifdef CONFIG_MMU
->> +extern bool __arch_has_pmd_leaves;
->> +static inline bool pgtable_has_pmd_leaves(void)
->> +{
->> +	return __arch_has_pmd_leaves;
->> +}
->> +void __init init_arch_has_pmd_leaves(void);
->> +#else
->> +static inline bool pgtable_has_pmd_leaves(void)
->> +{
->> +	return false;
->> +}
->> +static inline void __init init_arch_has_pmd_leaves(void) { }
->> +#endif
->> +
->> #endif /* !__ASSEMBLY__ */
->>
->> #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
->> diff --git a/init/main.c b/init/main.c
->> index 1cb395dd94e4..07f2ddbf9677 100644
->> --- a/init/main.c
->> +++ b/init/main.c
->> @@ -1044,6 +1044,7 @@ void start_kernel(void)
->> 	print_kernel_cmdline(saved_command_line);
->> 	/* parameters may set static keys */
->> 	parse_early_param();
->> +	init_arch_has_pmd_leaves();
-> 
-> One more thought here: I don't see why we need boot-time caching.
-> 
-> has_transparent_hugepage() does *not* look expensive on the common
-> archs. On x86, it is just a CPU feature check. MIPS is different, yes,
-> only the first call there is more involved ...
-> 
-> But if we *really* want caching, couldn't we just do it lazily instead
-> of adding another early boot init step?
-> 
-> Something like:
-> 
-> bool pgtable_has_pmd_leaves(void)
-> {
-> 	static int __arch_has_pmd_leaves = -1;
-> 
-> 	if (READ_ONCE(__arch_has_pmd_leaves) < 0)
-> 		WRITE_ONCE(__arch_has_pmd_leaves, has_transparent_hugepage());
-> 
-> 	return READ_ONCE(__arch_has_pmd_leaves);
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   ee03ca7d1cb1223d0e14dfd3b48478545af75253
+commit: 8568f268a5183e0fd5fbd33569b6513038b62f27 [163/164] mm/sparse: fix race on mem_section->usage in pfn walkers
+config: arm64-randconfig-r122-20260417 (https://download.01.org/0day-ci/archive/20260417/202604171755.GRWIpPjV-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260417/202604171755.GRWIpPjV-lkp@intel.com/reproduce)
 
-Would look easier when just using two booleans: "has_pmd_leaves" and
-"probed".
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604171755.GRWIpPjV-lkp@intel.com/
 
-I do like static keys, though. And wonder whether just putting that into
-hugepage_init() would be sufficient?
+sparse warnings: (new ones prefixed by >>)
+   mm/sparse-vmemmap.c:616:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected unsigned long *map @@     got unsigned long [noderef] __rcu * @@
+   mm/sparse-vmemmap.c:616:39: sparse:     expected unsigned long *map
+   mm/sparse-vmemmap.c:616:39: sparse:     got unsigned long [noderef] __rcu *
+   mm/sparse-vmemmap.c:684:17: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected unsigned long *subsection_map @@     got unsigned long [noderef] __rcu * @@
+   mm/sparse-vmemmap.c:684:17: sparse:     expected unsigned long *subsection_map
+   mm/sparse-vmemmap.c:684:17: sparse:     got unsigned long [noderef] __rcu *
+   mm/sparse-vmemmap.c:701:55: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected unsigned long const *src @@     got unsigned long [noderef] __rcu * @@
+   mm/sparse-vmemmap.c:701:55: sparse:     expected unsigned long const *src
+   mm/sparse-vmemmap.c:701:55: sparse:     got unsigned long [noderef] __rcu *
+   mm/sparse-vmemmap.c:714:24: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected unsigned long *subsection_map @@     got unsigned long [noderef] __rcu * @@
+   mm/sparse-vmemmap.c:714:24: sparse:     expected unsigned long *subsection_map
+   mm/sparse-vmemmap.c:714:24: sparse:     got unsigned long [noderef] __rcu *
+>> mm/sparse-vmemmap.c:766:35: sparse: sparse: cast removes address space '__rcu' of expression
+   mm/sparse-vmemmap.c:805:27: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct mem_section_usage [noderef] __rcu *usage @@     got struct mem_section_usage *[assigned] usage @@
+   mm/sparse-vmemmap.c:805:27: sparse:     expected struct mem_section_usage [noderef] __rcu *usage
+   mm/sparse-vmemmap.c:805:27: sparse:     got struct mem_section_usage *[assigned] usage
+   mm/sparse-vmemmap.c:884:59: sparse: sparse: incorrect type in argument 4 (different address spaces) @@     expected struct mem_section_usage *usage @@     got struct mem_section_usage [noderef] __rcu *usage @@
+   mm/sparse-vmemmap.c:884:59: sparse:     expected struct mem_section_usage *usage
+   mm/sparse-vmemmap.c:884:59: sparse:     got struct mem_section_usage [noderef] __rcu *usage
+   mm/sparse-vmemmap.c: note: in included file:
+   mm/internal.h:987:19: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct mem_section_usage [noderef] __rcu *usage @@     got struct mem_section_usage *usage @@
+   mm/internal.h:987:19: sparse:     expected struct mem_section_usage [noderef] __rcu *usage
+   mm/internal.h:987:19: sparse:     got struct mem_section_usage *usage
+
+vim +/__rcu +766 mm/sparse-vmemmap.c
+
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  726) 
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  727) /*
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  728)  * To deactivate a memory region, there are 3 cases to handle:
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  729)  *
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  730)  * 1. deactivation of a partial hot-added section:
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  731)  *      a) section was present at memory init.
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  732)  *      b) section was hot-added post memory init.
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  733)  * 2. deactivation of a complete hot-added section.
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  734)  * 3. deactivation of a complete section from memory init.
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  735)  *
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  736)  * For 1, when subsection_map does not empty we will not be freeing the
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  737)  * usage map, but still need to free the vmemmap range.
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  738)  */
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  739) static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  740) 		struct vmem_altmap *altmap)
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  741) {
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  742) 	struct mem_section *ms = __pfn_to_section(pfn);
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  743) 	bool section_is_early = early_section(ms);
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  744) 	struct page *memmap = NULL;
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  745) 	bool empty;
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  746) 
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  747) 	if (clear_subsection_map(pfn, nr_pages))
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  748) 		return;
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  749) 
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  750) 	empty = is_subsection_map_empty(ms);
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  751) 	if (empty) {
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  752) 		/*
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  753) 		 * Mark the section invalid so that valid_section()
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  754) 		 * return false. This prevents code from dereferencing
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  755) 		 * ms->usage array.
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  756) 		 */
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  757) 		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  758) 
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  759) 		/*
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  760) 		 * When removing an early section, the usage map is kept (as the
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  761) 		 * usage maps of other sections fall into the same page). It
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  762) 		 * will be re-used when re-adding the section - which is then no
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  763) 		 * longer an early section. If the usage map is PageReserved, it
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  764) 		 * was allocated during boot.
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  765) 		 */
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20 @766) 		if (!PageReserved(virt_to_page(ms->usage))) {
+8568f268a5183e Muchun Song             2026-04-15  767  			struct mem_section_usage *usage;
+8568f268a5183e Muchun Song             2026-04-15  768  
+8568f268a5183e Muchun Song             2026-04-15  769  			usage = rcu_replace_pointer(ms->usage, NULL, true);
+8568f268a5183e Muchun Song             2026-04-15  770  			kfree_rcu(usage, rcu);
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  771) 		}
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  772) 		memmap = pfn_to_page(SECTION_ALIGN_DOWN(pfn));
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  773) 	}
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  774) 
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  775) 	/*
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  776) 	 * The memmap of early sections is always fully populated. See
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  777) 	 * section_activate() and pfn_valid() .
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  778) 	 */
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  779) 	if (!section_is_early) {
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  780) 		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  781) 		depopulate_section_memmap(pfn, nr_pages, altmap);
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  782) 	} else if (memmap) {
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  783) 		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  784) 							  PAGE_SIZE)));
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  785) 		free_map_bootmem(memmap);
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  786) 	}
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  787) 
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  788) 	if (empty)
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  789) 		ms->section_mem_map = (unsigned long)NULL;
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  790) }
+738de20c4fafe6 David Hildenbrand (Arm  2026-03-20  791) 
+
+:::::: The code at line 766 was first introduced by commit
+:::::: 738de20c4fafe64290c5086d683254f60e837db6 mm/sparse: move memory hotplug bits to sparse-vmemmap.c
+
+:::::: TO: David Hildenbrand (Arm) <david@kernel.org>
+:::::: CC: Andrew Morton <akpm@linux-foundation.org>
 
 -- 
-Cheers,
-
-David
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
