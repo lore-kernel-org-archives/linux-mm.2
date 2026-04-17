@@ -4,105 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BD87F4369A
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 13:11:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B936F436A3
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 13:35:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73F086B0103; Fri, 17 Apr 2026 09:11:08 -0400 (EDT)
+	id 73C426B0106; Fri, 17 Apr 2026 09:35:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 716176B0105; Fri, 17 Apr 2026 09:11:08 -0400 (EDT)
+	id 6C55F6B0107; Fri, 17 Apr 2026 09:35:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6534D6B0106; Fri, 17 Apr 2026 09:11:08 -0400 (EDT)
+	id 5B4B66B0108; Fri, 17 Apr 2026 09:35:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 54B5E6B0103
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:11:08 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F1C3F138E37
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:11:07 +0000 (UTC)
-X-FDA: 84668083374.12.780720F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0A9FE160009
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:11:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nLP9+NmO;
-	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776431466; a=rsa-sha256;
-	cv=none;
-	b=Cgs+i1Rkf+85g4O4yb7dP7sSfjEkw28RSPJ2AkpJvSSM+t90vacmOJMI53fhghmG62gJPX
-	4av99tkXL6Aj/TkEilGGqfdMMGno8pm2si/S9iKHfo/SPjESnSxpncaJiNWhEXDtcduGhb
-	j/O851WxuxoYrGUOwpmhxcUYysZky3k=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nLP9+NmO;
-	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776431466;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 470726B0106
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:35:39 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A29A5B5C4B
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:35:38 +0000 (UTC)
+X-FDA: 84668145156.06.8D41238
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 48C40100014
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:35:35 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=cdK91qmU;
+	spf=pass (imf14.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776432936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UZ+9QdPmSTx/ezgB1oRSxcs6WFStfM5GyAzSgULBfK0=;
-	b=0pgMb4HiWhnGD6S2N3Y7hytn4Wh8TlhzI4zrupCAzRjAvmCUBCTTw0RY7fP1l5lOLYUzDf
-	FHcP7LwrhnFq3QGDK4da0Ru7P1yHtD84Bfapsaf54GxeXJHVHq+c+H0zqGNRkTkdbTblBQ
-	ZgPHPTfFpQIiL2UTN2YwWFMq9XEixCY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1216A1C2B;
-	Fri, 17 Apr 2026 06:10:59 -0700 (PDT)
-Received: from [10.57.63.31] (unknown [10.57.63.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 312443F7D8;
-	Fri, 17 Apr 2026 06:10:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776431464; bh=UZ+9QdPmSTx/ezgB1oRSxcs6WFStfM5GyAzSgULBfK0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nLP9+NmOP4Js5PxqLmjA9erzChDc1WNxHz0qocmuG+AsyaZz8t5QVQ1Lo5Rct4eL2
-	 KPNqAe7G2utJg38/pHsrTnSjhvBlhhVTbSoisuYuAhC7ve0hNuyJOThpP/YByANyjN
-	 MdbXC7wVzrfGBlCo2N0+cUxzbDtoHJT7TGqJbU94=
-Message-ID: <5adc64e5-d4e3-42f1-8cf2-6e824bad2bf6@arm.com>
-Date: Fri, 17 Apr 2026 15:10:52 +0200
+	bh=TiVTfnuvDojoSoEcAQ5Uy/PD0MLcQeI46LN0hZrAiWM=;
+	b=wJfO5Y6Kumpr7zMjGzRkLHHOUhJA05kvlhmV7N3LQyn8IYeMwm6T/zLOV7wKOJt8Ce+mqO
+	F1eYFcJOK+EOIdxSpimW5YhZp+GmHYDcfSLZZMwNy3si4JWEu45SiCeufAut8ZeH6SsNrT
+	GWpJlIY99z0m5ewi12KOQZzYtfB3o8w=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=zohomail.in header.s=zoho header.b=cdK91qmU;
+	spf=pass (imf14.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass (policy=reject) header.from=zohomail.in;
+	arc=pass ("zohomail.in:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776432936; a=rsa-sha256;
+	cv=pass;
+	b=2uhUoDHGahxuC6FHLpt/et7g1yDUASIMR/VFQRF1R50oCl0K8eHV/7gN2n1kiWuHSh9dCJ
+	lU0mDg8iE/0ycoqo/wyWnW6gOkAFTDK8thcpPlMdH2QIAp3nx738xEImDpbUjiouvkWX2a
+	BXUGW++vmgMVbS4/isQPzOZX7zcFVZc=
+ARC-Seal: i=1; a=rsa-sha256; t=1776432914; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=RNlwWYoA4xm8+AlebNPoPsBmJnAuP1CEfzgsBCNbts4CRijr4hLamDaFHMD1IS0++Dc5a+hzpBxirE8/Enl6jWC09Te+wr8fCF5/AfTnoY5j8OiWRssuR4Ng305tNlrNHvNqUrbUBxacKvieiD67+kpP6He8tcKOBYduKKEkKHw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1776432914; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=TiVTfnuvDojoSoEcAQ5Uy/PD0MLcQeI46LN0hZrAiWM=; 
+	b=GZd4rW6RM1CQuCBXJNJxFUKqiyiyahFQu6akiHwmwLCE34BIpTH1Dfv8ylsYYIFr/ISWDsV68GduBWi08MmN9F+uDTsdClszjBi4ECJsrVbqjHqY6Ne6aT3Wr3Yc7IyKU1pRaht/IpweRKH9+2b8YeWfjyTLgY6g7kMGtIKncLI=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
+	dmarc=pass header.from=<shivamkalra98@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776432914;
+	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=TiVTfnuvDojoSoEcAQ5Uy/PD0MLcQeI46LN0hZrAiWM=;
+	b=cdK91qmUCuvTc5EaFOr14tbQBd9sfyuIid31yCQcmIEWYZJq80eVANbK+1ueeI5L
+	lhNoTmY3LjTlDDJcQTrX0NuHc6iU/Yf0fPxDhjvNESLluwe7TgPKiyTEX4GS/5aICLQ
+	+d1cUc8hCWAp45TU0IR97XB9uUrkPVfuFLR5P+hU=
+Received: by mx.zoho.in with SMTPS id 1776432910895996.0047809156262;
+	Fri, 17 Apr 2026 19:05:10 +0530 (IST)
+Message-ID: <85a9f419-7f1e-41a0-9e8e-67aae7a1b0fe@zohomail.in>
+Date: Fri, 17 Apr 2026 19:05:09 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/30] mm: Introduce kpkeys
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-hardening@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
-References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
- <20260227175518.3728055-2-kevin.brodsky@arm.com>
- <eaca640b-5006-489b-8b2d-148a3c4073da@kernel.org>
- <fea9c939-f955-4020-bed6-427e592f0024@arm.com>
- <cf9da9e0-310b-4dc0-81aa-3154077fff85@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <cf9da9e0-310b-4dc0-81aa-3154077fff85@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v10 0/4] mm/vmalloc: free unused pages on vrealloc()
+ shrink
+To: Uladzislau Rezki <urezki@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+References: <20260404-vmalloc-shrink-v10-0-335759165dfa@zohomail.in>
+ <7d16f260-ffd0-4e45-b66e-9e7f71332466@zohomail.in>
+ <ad5yE0sgV1HJsyaC@google.com> <ad_cpqx38LtQPlX8@milan>
+Content-Language: en-US
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+In-Reply-To: <ad_cpqx38LtQPlX8@milan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0A9FE160009
-X-Stat-Signature: dgmezafydziwo741w37dxz4hrcsa47dw
+X-ZohoMailClient: External
+X-Stat-Signature: n13w5amdzi6ayhmmoh1majertkk68yhy
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776431465-446980
-X-HE-Meta: U2FsdGVkX190XzvjEDrUDLp/9Ra3V1fCyoVhBzJnSskzcHvzhBVanqbC217LsfgBkbom5kgM5LNvBzqe+cRcgDBEuJe5GIkFHJjgcdUbSvfVZgnD/Pgq9IUlYS+2aokE8OEqllyt65lYCZ9cApm+K0QlR7bMpvycAsPA+HqsCWiwKu2uFJbhkPkpKaP5iAU2923tej/hJ97EjXkezAfyVHiEqnHTSvo5CdE4i9i+I/B4YW3Zb2pU7Ao/UTk/SnaA5TFvApr6hgZyRVz7FCWg7iXS6oaCvSy2ER6nair65ym+HXBMIrYlNvpIRX26lotAciN6MWYmFcAHArso9uLCPchjKw9BBs5Z5XT71oVzmD+1UCJrAk7LIjPGy1EyoJ/59pb0A7jH2nN1cg4EHTwH5QNvkMavOWucMfA3Ev2QxFHc0WZ0v9c1JojFuhrEJB6OZX/h6Zt/UY+cLnC84logbmsksrIMoZtXemkgbe+5GRdgXgHEBy6CzlgNgT38zdqSnXXvAmqk8e/m37kQD081nzlE3WpjBAsZv6dsgA3FxaqJfhBBK8v0wShTQ+cr5PCWS3YxjRMhr0e8pPMX8lRtqL/rIqbVs0uFdTI4d7P7eyVSQ05/vom3VzDfpDV2ogDA1y7C0WNyHD00jJHHapq2iIWqjtvBAX762sTwofWPmOwORpMScErIEUG1mSmVwo8kDYjf5RW2/xGGzK2cmcCddLCyAWoz2RQq3/K2lVSpkAG63oR+dCDXoz/BpDxRHNUS887WvmQd7oWqtBKfTla0G3ZtB/gk+YYxItugNYThyIVUIMEQyYIMC7/vxIbxJbdNXcv1SbnZqMZYmvUemzGs5vI2vZTzh+viXy/VolDgGfG4nMVmU5MIoX2yBn5G047khOoD3UULuZFaFbUj7GZYcC/0K8FqPyWBiNoweufrorF4O9zpK6CYX1H4npt3gcxp/OK0/cXdBVMbAv6kYad
- Kw3Xsq/t
- oHCJFfvzatghMuCeneONsurvqb26RVfd+k7thhBOcbvCiM/+ejw9pbMZ4biyPZGFe9LqLu2qejmmk3yAjT+aVSdF0oNJPnZaRTS/TgijUa7eIC1s3zHKvH1lppIb9EeTa6WGFSz4bkbHvf4SLQeeJcW9j8gy2T6A/QxPGele/MWtWndWHJo8fJK7FO0oy+pvkUf+6EqeolZuTge7Kw+KIqM6z2frE0AzUcv1ifUz5/LpWQq0=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 48C40100014
+X-HE-Tag: 1776432935-164982
+X-HE-Meta: U2FsdGVkX18tcQtA2MJ1gMBzjrg2TuhEf5GSIm8VT023NN9AUbeVPH3/631enH25Wc+WpyP0EymdJJca1N7WrUUu79NGxbLKNc1nmgGqic6NmK32r9CKh3BN6RCx3dnlBttenNkikuGkRBnOTVDDaSWzP+Aa+8c5jlqQoy93241s7Qh8DhN9s7STwoS/XqPyyGGFwiq5yaFVBL7Z8y9Fsi70HsS5EWKySA9S/ZqE1tcnuHKnnCzspZybcrJSUW/bfRPmrsMx5/S3uQOhF/Q8LrqAZJ4H66+wPUGMjBHvahnXfH73Uuu/xAFJJk7kuPvs2Ag9f6sAvjrzJHDMEyrkF4Pi84OrueW4VIo5jMcHaY30r+VQ+TKjmkGJrhHXA8QwlUgeq5vv7p3cAfYshiqMKBlfgwRem6hRfE7YIxuNW9uLhIrKQCsUfpSXrxek0ajTpmhVfeylh1LCElC3apE+k0rmPmSTnv2J9fS9gEEmNiNvdofspnobhs/uP7DvSTNVQvQ6d7WYg4WMr0vC87mGChXhHDh6pMzTmQ1o/cQ8HlCb7HqVLrl+hauSOA/rd5N2cyccHZi8QenKw4mdkhRt+OGZx1/7zPDLz+OWfemquRG4zkK9P04eex2q0yd7DAAlF+vMGEh/r07KamMsZhbyYd/RPGjXpOQ4qWCeG+XmXjiK0tKUaSoz+fdAWsqaK5ArMo8vOoNFzfFwleeI+myKGY9GQGcaJOmvh2wQmnUlxpxWfJ0Axgy51VtUAhEPZ9Mr4SnF+GkhiaA1HYnc9CLZ/NT/+OgGq4HPB6jgWCw56zHEvHCE+GYZuNQ3+CpC2yptzj//r4fGuobVGJX2MkALn+OEtnAbrlckhUfs3MFNUnyGrOWzivOYuaDXeK6DUo0sTpvdaSB+7DRr60JuUT5kY2E38H3b2+DUOdwRgQ8BDVjGGQgziQ8RWN6INEpRHDs/jsnJhNt4hkNgGsK/Z1j
+ ysudQjBf
+ IaMit1feMTzZi/5Z2FCjt1FYb1Imb4O5CIdJkakv7ac4P7zuLkduUxfrzFz8w+ET6XCKW/pK17fff/W4r1hwP198sSrKo8xHx7l2NqasJX8x21gwI60lFtkIBTNnLcqBtXurJ5O/fNCArln/P2kL+//QiwF/zgTxmvnjg7h5S4k1usmWdH2PXu2GnPlcnWYv2Wg1BIe0KOIQZrpbfkGbCTaW4gU7W19+ZKc/fqlZ//8dl32M2HUlf30EAkpbd1gQFdRPNgJxje4zs4Ld1ZipwxETnWMuC/Qs2K3bJiArJdepu8yVrAZiittrby2kRYqI/XCgmQUU3przfcD52zyAISOmQRioKg3GPZLUNYvTNSrwyt0Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,75 +104,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 17/04/2026 14:00, David Hildenbrand (Arm) wrote:
-> On 4/15/26 17:50, Kevin Brodsky wrote:
->> On 15/04/2026 15:00, David Hildenbrand (Arm) wrote:
->>> On 2/27/26 18:54, Kevin Brodsky wrote:
->>>> kpkeys is a simple framework to enable the use of protection keys
->>>> (pkeys) to harden the kernel itself. This patch introduces the basic
->>>> API in <linux/kpkeys.h>: a couple of functions to set and restore
->>>> the pkey register and macros to define guard objects.
->>>>
->>>> kpkeys introduces a new concept on top of pkeys: the kpkeys level.
->>>> Each level is associated to a set of permissions for the pkeys
->>>> managed by the kpkeys framework. kpkeys_set_level(lvl) sets those
->>>> permissions according to lvl, and returns the original pkey
->>>> register, to be later restored by kpkeys_restore_pkey_reg(). To
->>>> start with, only KPKEYS_LVL_DEFAULT is available, which is meant
->>>> to grant RW access to KPKEYS_PKEY_DEFAULT (i.e. all memory since
->>>> this is the only available pkey for now).
->>>>
->>>> Because each architecture implementing pkeys uses a different
->>>> representation for the pkey register, and may reserve certain pkeys
->>>> for specific uses, support for kpkeys must be explicitly indicated
->>>> by selecting ARCH_HAS_KPKEYS and defining the following functions in
->>>> <asm/kpkeys.h>, in addition to the macros provided in
->>>> <asm-generic/kpkeys.h>:
->>> I don't quite understand the reason for using levels. Levels sounds like
->>> it would all be in some ordered fashion, where higher levels have access
->>> to lower levels.
->> That was originally the idea indeed, but in practice I don't expect
->> levels to have a strict ordering, as it's not practical for composing
->> features.
->>
->>> Think of that as a key that can unlock all "lower" locks, not just a
->>> single lock.
->>>
->>> Then, the question is about the ordering once we introduce new
->>> keys/locks. With two, it obviously doesn't matter :)
->>>
->>> So naturally I wonder whether levels is really the right abstraction
->>> here, and why we are not simply using "distinct" keys, like
->>>
->>> KPKEY_DEFAULT
->>> KPKEY_PGTABLE
->>> KPKEY_SUPER_SECRET1
->>> KPKEY_SUPER_SECRET2
->>>
->>> Is it because you want KPKEY_PGTABLE also be able to write to KPKEY_DEFAULT?
->> Right, and in general a given level may be able to write to any number
->> of pkeys. That's why I don't want to conflate pkeys and levels. Agreed
->> that "level" might not be the clearest term though, since there's no
->> strict ordering.
-> As discussed offline, maybe the right terminology to use here would be
-> something like a "context".
->
-> You'd be activating/setting a context.
->
-> KPKEY_CTX_DEFAULT
-> KPKEY_CTX_PGTABLE
-> KPKEY_CTX_SUPER_SECRET1
+On 16/04/26 00:14, Uladzislau Rezki wrote:
+> Yep, the problem reported by Sashiko regarding area->size and vread_iter()
+> is correct. V10 does not address this.
+> 
+> I am not sure that reducing vma size is a good approach here. It is
+> widely used and we might end up with fixing even more corner cases.
+> 
+> vread_iter() and vm-size calculation there should be fixed.
+> 
+> --
+> Uladzislau Rezki
+Proposed Change for v11:
 
-Sounds good to me, that's more accurate than "level" if it is possible
-to give access to arbitrary pkeys to each context, which is the current
-assumption.
+long vread_iter(struct iov_iter *iter, const char *addr, size_t count)
+{
+	struct vmap_node *vn;
+	struct vmap_area *va;
+	struct vm_struct *vm;
+	char *vaddr;
+<snip>
+  		vaddr = (char *) va->va_start;
+  		size = vm ? get_vm_area_size(vm) : va_size(va);
+		
+		if (vm && vm->nr_pages)
+	            size = min(size, (size_t)vm->nr_pages << PAGE_SHIFT);
 
-> What is accessible (and how) is defined for each context. For example, I
-> would assume that all context allow for read/write access to everything
-> that KPKEY_CTX_DEFAULT has access to.
+<snip>
 
-Most contexts would, although as I mentioned in the previous email,
-unprivileged contexts such as eBPF programs may be further restricted.
 
-- Kevin
 
