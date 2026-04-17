@@ -4,97 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25460F43683
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:21:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E75BDF43689
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:27:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C94E6B00BD; Fri, 17 Apr 2026 05:21:42 -0400 (EDT)
+	id 10A9E6B00C0; Fri, 17 Apr 2026 05:27:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87A0A6B00BF; Fri, 17 Apr 2026 05:21:42 -0400 (EDT)
+	id 0BBAB6B00C1; Fri, 17 Apr 2026 05:27:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 790AE6B00C0; Fri, 17 Apr 2026 05:21:42 -0400 (EDT)
+	id F13296B00C2; Fri, 17 Apr 2026 05:27:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 676B06B00BD
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:21:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CF937C377C
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:21:41 +0000 (UTC)
-X-FDA: 84667505202.20.C177F66
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3DA874000B
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:21:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DcSVc3kb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776417700; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E3D916B00C0
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:27:52 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BB148CCC2
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:27:52 +0000 (UTC)
+X-FDA: 84667520784.24.95CCD15
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 13568C000F
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:27:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="nIuCsFM/";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776418070; a=rsa-sha256;
 	cv=none;
-	b=rnKePbs1EgRpRENdbzoqZybwgUwQCAfi4Vf5QS68157QM0qO68lsYBlmT8fQZp2EglS1yU
-	SHSz4EEYaGJkpjNxA6OtAUPrejgv0CWIqGeJTnyVXLX9h9s0gfEXBJy7hMxig0dXRI/Ion
-	237F2/vQDXVnsuuqoQ3w1Hi7DKlvSF4=
+	b=sNVrtbnNPZZrNUfIcaUjV4IgcmOKbQdJjs84eMdPiM6ngkZatCoRMp7hg+lgkFRLMbnYlH
+	GSlzJ/80e9Z99tnZqRLc73f2r39AGDl6dHqXFca46afLZDAiEnZM8OjL8Z8AAoI/0/8axJ
+	q7pX9wElu/8ih1bh/anvo00iFq31OsA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DcSVc3kb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="nIuCsFM/";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776417700;
+	s=arc-20220608; t=1776418070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GjSQl5niruLtWePFeeuNzGAlD9Ai/3XrYhsZxBK7+Sk=;
-	b=L2Zy444TRXNlEEHr1KKPlDE8ZFTwj4z6IdrIsNX6DF0RY7yYwaqRh7KhvPXLLe0gbOxTxz
-	GdSF8oi34dhUpakRmkqLJvKHQtIES41/y0RQYIMVm7MzbeiqPnf4FlrQwjQsIn/fe3nZho
-	6iCJkyTy2sJA7/Xi59vWZAgXwv2iXUg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AA9B86012A;
-	Fri, 17 Apr 2026 09:21:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2801C2BCB4;
-	Fri, 17 Apr 2026 09:21:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776417699;
-	bh=rmJzUQzsPyc0NxUkUuOpkygTTYh+y/QYrvawDFLMzk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DcSVc3kb/oCeCw9ntdtcrirK0ELCcQFOeJPS636iSbphduy27yvLI3SemoCwJJAEY
-	 fQ0ULGCuaxbo9tvtulLMgOL0/hQQ+8JK33EC95sJ9rirmctvpwlOCg67QzjQXG6Khi
-	 k6854fsWrob0iFmVYD3CcuO6sVR8TajtaTQdYNHkL2UJZaRvYdAjLiYmeevUFqyl3b
-	 IGlqslqZAxoerQ5BwxZ/xX47XTbRVNqHRSEhMVuctx/EC4C2exQny6YgGNcPSY+Lb1
-	 gz8pkA5CVYHsKXsbadKIswwozRrtSjMPHeB5owoz8ToQ2Z3Gq/MORu2u1NGxudWphV
-	 vP31kmhtFY3JA==
-Date: Fri, 17 Apr 2026 18:21:37 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	stable@vger.kernel.org, Vitaly Wool <vitaly.wool@konsulko.se>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
-Message-ID: <aeH7oeZtDdDUza0W@hyeyoo>
-References: <20260416132837.3787694-1-elver@google.com>
- <aeG6RG41sgZuerYa@hyeyoo>
- <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
+	bh=9ban2GK06J3qXdLSyjEj2d7nc7DweKDpF3MVxWR6RWc=;
+	b=6khJUrTADvi/Hjtz+W02+1GJs3NIqf9IOf1pTCmsjYLmZU0AjwTETAaiMpp/SlBdZjR7UA
+	kzt3m2sPkX3CWa+rTZyDE3EuCWzD5nW0ywYQR/zz6tIQ7QxMeBYqLif45lXNvLv/8Bbbhl
+	fXA3aXq9T0J4BccfuIxWFBMjIHe/AhA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776418066; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=9ban2GK06J3qXdLSyjEj2d7nc7DweKDpF3MVxWR6RWc=;
+	b=nIuCsFM/m0E0iUKUw+m2SPc2HYc9Xy/3LMLj5AdgRUWm/vWQ0wfOQbZdPFGiNm5w8ESHLUIeNK20KjxpWT0MVR/2v8mYn4+3sojbRCy6hvXtcJFS+lr9kWSvE8h9+XMuSK4Ygoy9ByJCnoI3BSEqXG4nJzimceyY7dn6Jk3w5hk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R281e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X1AxuDU_1776418064;
+Received: from 30.74.144.138(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1AxuDU_1776418064 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 17 Apr 2026 17:27:45 +0800
+Message-ID: <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
+Date: Fri, 17 Apr 2026 17:27:44 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
-X-Rspamd-Queue-Id: 3DA874000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
+ shmem mount
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+ <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 13568C000F
 X-Rspamd-Server: rspam12
-X-Stat-Signature: he53tw7p989m696nicgyquifoc7czoxr
+X-Stat-Signature: tmub5gibxudicau8rc3amx8pqpuj9rz5
 X-Rspam-User: 
-X-HE-Tag: 1776417700-449880
-X-HE-Meta: U2FsdGVkX19wibU0oqgdaDtO+aFWfrI74RTWz2UdsF2zxkzTi1JTOzAgVNzEUMCYeIjRIPfMeIulhBazIXi8Hcnn9hgWYBuLlnfqkjxlYncmAX4y/MEt6Kxydca25RJa11AArc7HrKk2poH04IxhSHri9Q9pRRuVINIgQo9eyHidUBSmTxyb2PNoQQ36bK7yJEuBDHRubeLgxgDf1qLlfE4z9p0bSb+YO7mKJ43WmzVLZ0LF27cOpqnq63zPaIiES5hPF7rZboe0a67OwBsz3PL38S/74/sR0ajV10zIOUhrAYRbAVdgGqPlv/TOU51h/GKsRDmo60hxcHDbT+iDRuUbWQs78aoMr5nIyqHQ1S5LHuu7VUai6Hb0P1Fz7VMAIdCUfrWARmrYSVlbMDoJKyNbauVqbe9lE0/gCHUuO4OVFLP4jKTF2f6loXyaHTWqGYFP5h8ekSvDOPIB/Fu0mUYzfupqBxctFGtJYU2ytN3pWx6ZuKSguKoOrd00/3igCyogXFA2tuDR1hyfw0cJbctVZ2uWk8M8u1PISN1BPELi44rL9K3JmHruW3jssdsrV4fmj9dymxwxYJSccbmhou2x+KGJpW/8+Tlb4BJIwCL6R/Xd47wExL0wGg+SmiMeCXTcJY4KJ6FvKftoUFVwfXbUA8N7oVC+kZ5MiaKWf/y7LpxnkGynjxCDROWKO0N7KUKGodyC4QzGnYpdFPQ7GfcB5574ZA3Q6R/nfGULyosGUzks/sVa6aSVVIHEbUpX36vPvR/bFTqSDWNbm3hZDt4tMe4nsUoDMg85VTwz6Q1PURTfmiDXKk76Cwn44XCyVPaY2nLUTuykFhLyNXPuYccAdy3sqk2ykyH9yfs2s+SfhGyg+1A/I/N5KiM9+j1sqkyierERM3iogMviROe2OtCc6y+EOWEaLT+Cgr3JYnQqEOvIDHd1YF7vbehhVwYZBaC5uEKuImnoarVARes
- /3rWpbdb
- cCDpQPV5sWtZy7ee+3P+GAt7KI9b9I0gULrXFPsboi93J+lDews1E+ubT9sm6MKwsLNYgTgbHCgzefOnZ/zzTi/YhLvXXxxpBlP+vs3yHVNpzvzAfrCAPwYIIp8r/JYHNg8YVT/tjuBcT4LBXiR3wBiZ3soSsOifSWtgHL+7dPO6OZmigx+jb9zxHG6bbmKewzYpGc7bwjk4fNDmQagfB8srUMmd8qqYllak5Lwy4ntnJVTwF5h27XubEtlrra0IggWh7wnjWxsRGXIeq5Y+UsP/p5vMXAKIHk3zlfZ87aDmRueaBOnb9vsWpgZEpzou9aQBE0Y261IYXqI/3Q6MsCHzT0c3SRajGtw9jn0/ypbE0F0M=
+X-HE-Tag: 1776418068-291195
+X-HE-Meta: U2FsdGVkX195CMphrMwhOn0nHKcTANc109IDSc8V02sVm6GF2jnbvLgo6b0+XVkXtcY9MCNuYABVxW4vsPuKmeSmtRoV6ZKelHIdfxiEvlZw5QB8gpVFcLoX3WNjqgzYD/VtjC/XKtd39+0RAcvp4+CBu8bj+v/+i8lxbSyo0WE2sNcb9rGN2YMEUQ4guM2yBJ2wVT4mBe/KoWezs+erW38bfZm1XhHC2ykdg4LCFGa1z8iSTfaL7zXfj1mE80CcbA5jfuBzYLrfLIR4H1JWwAfs9P6FRb/iXlSzfsizBDXnSTzMeiHqA39Z045AxwOHkDm7BRhOajBSePflNg9NKNr6P13LooQofO32L6E6NK3xvWjVqqeoOh5VfcLY+woBKPx+RZxLwKLqZHrC8MgeUXueGXLRLMjCHyL0A/qL8RkbPj9X8/PCqbZmQfoO02X8ygmLNEoY3JGVPS6CrBamc2YlA3xB4F8BSNALOxH3v2yZlmch6M5TRymbj77HnKZlsvojDU5+GzmWb66a0dYwhUoSVdz8aCL7qOyLpyD4VdpE2KxMt3iPeu1nRiBBIT6bhlvd04hGvCAZy+uUqf8Xcm+zKFgfs6AiBt4hbJ685JpVO5Mfx4LSNLlyVJVMaqqtJGSf1+3DNZ/wZUSU3lgB9Kd8cOPoGk2E1yQZ6Bab/3UQnE9M8TIVb4NR/NSAIw+LDCXELgBQyGRkWuBr2PCW8XUYAjv3chOPuMD2BJzZ8DM2eFCNsk6yyqtoy00i1Ns+4DSC8nDpamVSzWnsj/TbnuMFZmB6P9rShincRH9cZkFoP4B6IwB8IktXiHhKMsei1nfLQFVAP8YNTqLiHZEegmguUTHND/pGg6SSGfnuQqTKhyXMmZ3vnB+0av0ROZS3yCJJYqmTzEp5xow3loGdqW8YvwSsHJ5Bz9U6wMcYgRdMG320OUjw7OixtJGLlhHHkQDADsUDuYiEakQmtts
+ CGAVKZsf
+ lpbnVdGJCYeKd3NWjmP0TPAoAT3j7Tj4eY4qwMwDUahkrFD4GVVXLxNGiG7COehXhPP7mhhfwd8uKwA0STOO0bGqH2GDXyg1aJeIrOeHgCMJQYano5URCGmy6IBMlobaQTcdoITS0cOFDZGjb8WRW5maZow6K3qlEP7i8sq9K1OnC+Hs0tIJY91umI9gj5f6N1DzILq0fMoVu/AllaYyXVwSgtNmbJA/JLWIMS+ORyRMwRjrgJVH2l+vMqazs3CYFHCUKhT+nrpHkYPZHY3yECVzvlwSPd5pLz/ddYBm1azDlERlRopMufxuSyZ/+T0PDRh5M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,107 +89,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 17, 2026 at 11:05:09AM +0200, Marco Elver wrote:
-> On Fri, 17 Apr 2026 at 06:42, Harry Yoo (Oracle) <harry@kernel.org> wrote:
-> > [+Cc relevant folks]
-> >
-> > On Thu, Apr 16, 2026 at 03:25:07PM +0200, Marco Elver wrote:
-> > > Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
-> > > k[v]realloc") introduced the ability to force a reallocation if the
-> > > original object does not satisfy new alignment or NUMA node, even when
-> > > the object is being shrunk.
-> > >
-> > > This introduced two bugs in the reallocation fallback path:
-> > >
-> > > 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
-> > >    before 'ks' and 'orig_size' are initialized. As a result, the
-> > >    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
-> > >    allocation.
-> >
-> > Ouch.
-> >
-> > > 2. Buffer overflow during shrinking: When shrinking an object while
-> > >    forcing a new alignment, 'new_size' is smaller than the old size.
-> > >    However, the memcpy() used the old size ('orig_size ?: ks'), leading
-> > >    to an out-of-bounds write.
-> >
-> > Right. before the commit we didn't reallocate when the size is smaller.
-> >
-> > > The same overflow bug exists in the kvrealloc() fallback path, where the
-> > > old bucket size ksize(p) is copied into the new buffer without being
-> > > bounded by the new size.
-> > >
-> > > A simple reproducer:
-> > >
-> > >       // e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
-> > >       while (1) {
-> > >               void *p = kmalloc(128, GFP_KERNEL);
-> > >               p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
-> > >               kfree(p);
-> > >       }
-> > >
-> > > demonstrates the issue:
-> > >
-> > >   ==================================================================
-> > >   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
-> > >
-> > >   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
-> > >    memcpy_orig+0x68/0x130
-> > >    krealloc_node_align_noprof+0x1c8/0x340
-> > >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-> > >    lkdtm_do_action+0x3a/0x60 [lkdtm]
-> > >    ...
-> > >
-> > >   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
-> > >
-> > >   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
-> > >    krealloc_node_align_noprof+0x19c/0x340
-> > >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-> > >    lkdtm_do_action+0x3a/0x60 [lkdtm]
-> > >    ...
-> > >   ==================================================================
-> > >
-> > > Fix it by moving the old size calculation to the top of __do_krealloc()
-> > > and bounding all copy lengths by the new allocation size.
-> > >
-> > > Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
-> > > Cc: <stable@vger.kernel.org>
-> > > Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
-> > > Signed-off-by: Marco Elver <elver@google.com>
-> > > ---
-> >
-> > Looks good to me, but I think we still have a similar issue in
-> > vrealloc_node_align_noprof()? (goto need_realloc; due to NUMA mismatch
-> > but the new size is smaller)
+
+
+On 4/17/26 5:21 PM, David Hildenbrand (Arm) wrote:
+> On 4/17/26 05:25, Baolin Wang wrote:
+>> Currently, when shmem mounts are initialized, they only use 'sbinfo->huge' to
+>> determine whether the shmem mount supports large folios. However, for anonymous
+>> shmem, whether it supports large folios can be dynamically configured via sysfs
+>> interfaces, so setting or not setting mapping_set_large_folios() during initialization
+>> cannot accurately reflect whether anonymous shmem actually supports large folios,
+>> which has already caused some confusion[1].
+>>
+>> As discussed with David[2], for anonymous shmem we can treat it as always potentially
+>> having large folios. Therefore, always support large folios for the internal shmem
+>> mount (e.g., anonymous shmem), and which large order allocations are allowed can be
+>> configured dynamically via the 'shmem_enabled' interfaces.
+>>
+>> [1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
+>> [2] https://lore.kernel.org/all/875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org/
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>> Changes from v2:
+>>   - Always support large folios for internal shmem mount, per David.
+>> Changes from v1:
+>>   - Update the comments and commit message, per Lance.
+>> ---
+>>   mm/shmem.c | 13 +++++++++++--
+>>   1 file changed, 11 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 4ecefe02881d..769ef37b1ea9 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
+>>   	if (sbinfo->noswap)
+>>   		mapping_set_unevictable(inode->i_mapping);
+>>   
+>> -	/* Don't consider 'deny' for emergencies and 'force' for testing */
+>> -	if (sbinfo->huge)
+>> +	/*
+>> +	 * Always support large folios for the internal shmem mount (e.g.,
+>> +	 * anonymous shmem), and which large order allocations are allowed
+>> +	 * can be configured dynamically via the 'shmem_enabled' interfaces.
+>> +	 *
+>> +	 * For tmpfs, honour the 'huge=' mount option to determine whether
+>> +	 * large folios are supported.
+>> +	 *
+>> +	 * Note: don't consider 'deny' for emergencies and 'force' for testing.
+>> +	 */
+>> +	if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
+>>   		mapping_set_large_folios(inode->i_mapping);
 > 
-> Good find.
->
-> That's a separate patch, though, since it's in the vmalloc subsystem
+> Two questions from a non-fs person about the semantics here:
+> 
+> a) Can sbinfo->huge be triggered later, for example, through a remount
+> (staring at shmem_reconfigure())
 
-You're right. for this patch:
+For tmpfs, yes.
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> b) Do we cover all cases with the SB_KERNMOUNT where sbinfo->huge cannot
+> be changed later?
 
-> (it's also not confidence-inspiring that vrealloc_node_align_noprof
-> has a bunch of TODOs sprinkled all over...).
-
-;)
-
-looks like one of the TODOs is going to be tacked though. (shrinking)
-https://lore.kernel.org/linux-mm/20260404-vmalloc-shrink-v10-0-335759165dfa@zohomail.in
-
-> Since you found that, do you want to claim it?
-
-I have many stuffs going on my plate now (including re-reviewing the
-typed kmalloc caches patch) so it'd be nice if somebody could claim :)
-
-> Also by the looks of it slub and vmalloc patches go through different
-> trees these days per MAINTAINERS.
-
-Right. slab patches go through the slab tree.
-
--- 
-Cheers,
-Harry / Hyeonggon
+For mounts with the SB_KERNMOUNT flag set, which is essentially the 
+internal shmem mount, as we discussed, we don't care about sbinfo->huge. 
+Because for the internal shmem mount, we always consider it as 
+potentially having large folios.
 
