@@ -4,98 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3C46F43691
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 11:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22300F4368A
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 11:41:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2D346B00DE; Fri, 17 Apr 2026 07:24:33 -0400 (EDT)
+	id EF5566B00E0; Fri, 17 Apr 2026 07:41:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D054A6B00DF; Fri, 17 Apr 2026 07:24:33 -0400 (EDT)
+	id EA5CD6B00E1; Fri, 17 Apr 2026 07:41:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C42326B00E0; Fri, 17 Apr 2026 07:24:33 -0400 (EDT)
+	id D94BF6B00E2; Fri, 17 Apr 2026 07:41:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B190E6B00DE
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 07:24:33 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F46BC0282
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:24:33 +0000 (UTC)
-X-FDA: 84667814826.30.74EB715
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B941240004
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:24:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BmmCFImz;
-	spf=pass (imf27.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C81726B00E0
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 07:41:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 769CE1A013F
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:41:43 +0000 (UTC)
+X-FDA: 84667858086.05.C8E416C
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B53DD1C0007
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:41:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HyR4gEWP;
+	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776425071;
+	s=arc-20220608; t=1776426101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XUGd9sXA3iMVPtDyVAZLMroj7EyV6lWBISQZs0eocik=;
-	b=i1LCXtFowKAymyc2XuguVrbyB/DksKO6Inabf/U9tfon8xq8CQ30+rCk6keIcg3yoCrJtz
-	o/EvpnCjBeqLRARwsJdnawoIs5RlzfirGuYRgmz2zhOVVP8oPY47y23RFh1qkOFMkr8ujM
-	JlKe4A7HKL+yTLdEt1mFFB+vRKXxU1A=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BmmCFImz;
-	spf=pass (imf27.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776425071; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OdeoWNWt+4g6huyrHmNx4JleFuC8aky8d5HWmA1wp+I=;
+	b=FH0muwvieJRNoAAjtdIdZcP/qa+XH+sCuGO3B2JlfAwWPeLSJsZ7u36TJZr9+B3BHV9vun
+	5AdtR2tsfSKKT4O7PnnUhiP123yGP9GKqBa374E38/Z0tw86YR8po1ndMOV0BecXMoZDLO
+	LVpLMoxDFzbLsnkAQIRy/RuEOb2lPvk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776426101; a=rsa-sha256;
 	cv=none;
-	b=ftUg2UU/lwCCDgaPooubj6SlEXm0GaC9krHRUEqjKLyGxMWZXhCLMfIVRzagfqG5kVdnUB
-	QE0stM6tbE8T0d/fPDf12elCPgt6wxobnhJdV2m2Idu335qbcc26eF09eN6f892HHq3G9w
-	4kxEdY+hVtXkpzx9W2w2MAL41DTWoJY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2393260128;
-	Fri, 17 Apr 2026 11:24:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D8FC19425;
-	Fri, 17 Apr 2026 11:24:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776425070;
-	bh=L6qitQy/q2D5JdYnKYv/Txw+aDlW8qjnq+Ex/xEZJBA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BmmCFImzd8rfQeHh6WEjrihCh1bJMjsCsqipim0MpJH3fREzC2oiN+B7ekS3HF6zk
-	 o+EfCbNjbyQJqJg5ns/kRppBMsQGjjP3QXiImsMVaDj552nTiUUAqj8mko91YWwNcs
-	 V5R/WgOxvQ2d6hGRrnWCChbcaKdVQEIOvWmrs44+zIJ9TyqHpMqpWmxdzYvTRMV836
-	 C+ybj+CkhaTwhs+7UK9ysXriW5tkSMu74FSmXXzGORRxQjcIBIb7I+Gv6iH8ifZmz3
-	 CvQUTwh2c8dvFG86D2ylkfhpvSXn4mgVM2z3bt5rR/hstnHcrGTt2e/OsZ8kyIn2VJ
-	 AqUX3+B4MYjVg==
-Date: Fri, 17 Apr 2026 12:24:25 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Aishwarya TCV <aishwarya.tcv@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: Specify requirement for
- PROC_MEM_ALWAYS_FORCE=y
-Message-ID: <8260f624-7ed8-4766-8f80-0d0d4dbb5cb1@sirena.org.uk>
-References: <20260416-selftests-mm-proc-mem-always-force-v1-1-3f5865153c67@kernel.org>
- <17ea54b2-d43f-49a9-9dd4-d2330a8daa92@kernel.org>
- <5357ef55-15c0-4c66-867d-898fa7f51414@sirena.org.uk>
- <aeE4XSuXY8RfphVs@kernel.org>
+	b=SeXLFc16Wo1JKS+HYCOapno+46oMHWEInyj1qbQGVABrOYS4eVwKpR00H3omnD/3Dzq6cO
+	CkAxQKfvOxohPcmbA0PPxiJWNbyw08URBXXBGAzij5QpmaM+ttXIBUy3EPdydCJaJ1AaDl
+	pYwxgpDGHUI8JmySQ/VWejlkBdgOZz0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HyR4gEWP;
+	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ad9516a653so2793025ad.0
+        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:41:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776426100; x=1777030900; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OdeoWNWt+4g6huyrHmNx4JleFuC8aky8d5HWmA1wp+I=;
+        b=HyR4gEWP0fDIT1hXmZPJYPhvy6uhG7GFo4/7nsD4a/ZWOSQqTvd8VLXZ5FsDPhMOV4
+         Mtrz0KH4Hs27aaPf+vo5hk1ZLKHRnwE6fhaq9vOwRchQjqZbhBUVEKFJinWd1oCHjFwp
+         5eKvGfZ+3fS8XVD4F1tUPgfjUCsf0HaYj7G0z0VWf+drkoyjgNKxLNDApLMBis7WXwtW
+         bXAZPJAeflmmtiOqj5oX85lDomUzFf/36o5AQV3XXjmTt+mRLzrEUHot20FJtNQu07D+
+         FBjdbRXVfrGD9ELyLhV19Sg6fkWEmC3YunKOD9quE5m4K6Nc8hlWRlmihpA0LR3s5Ao6
+         BrwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776426100; x=1777030900;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OdeoWNWt+4g6huyrHmNx4JleFuC8aky8d5HWmA1wp+I=;
+        b=jugEjS8nZ4jjNsI40xFK4B66x0JmG3rnte0vh02gTsM63Kmq4TYvNEax8a9PqB2edx
+         3P5t7Ytj9JXjVEUTitlVE9RtQxQPTk1mmxORYc0IRNakg+pzVCFHq+zi+2ncU7s257ME
+         S7zLRPF6Hj8h1hr24b9qyh3EgC9gPqtQowMpkYK0SbLMbQYFJt4K/GR6pa/UK5LT8pvZ
+         Qf5omXrheHu6uOZ8v+8sjR063DbHh7z5kRrWyNQX8QbYGngRfwmrlV569MBUWvtsgpYy
+         40hqwkdzJbX/c+EmsPC0yBtuukGXli0V2AZ7VBpnThbM2TdB/85Ebb65+kCdMum/zS+4
+         X18g==
+X-Gm-Message-State: AOJu0Yz7tq8gIKFmnYRcmCW6ttjtYJY+XGc4fkV3g8Xpne1EsQslPi8U
+	ME2XYAjPLOXVUom8V6bCf6zgQfOyKPG6QTQRXTM9XiycQu1QwnFAbjeV
+X-Gm-Gg: AeBDievcNn4TfAbzzM0opKKtlKJ6hWS0mtYIUzV5kQgNlGQH/iJePaGvO8xEjBUfW3v
+	gIbfGtuuTuiuF/DEilP1j5kpkEWrQ/U9HDkcQfQnoJ/pcc32jML5xT/hjCnRM0wQ3AldxM3fFuf
+	0uWnjfy8Ix7b77eJfpu+Il34kazAWFnF6m9DUMMuE7RwbLvV4X9vxL/+sbV674XvX2RIK21Biqe
+	WqC/ire6di2Vs30ED4FGxkgmWaU8gy41M22oq2V/ShWTQXX/YapLMXWWAp6zvydJKwLZAJPnqBi
+	CEwzmW4oKINsPSCgZKupKHicBPhjm+QT+SAhT56nDMV08AqK3j6iwMsE3iQz++AQ007XSfVcssH
+	k69IAdciWIB1bYQAurPf2Mx7AX4Z+T7A5lw2379Yf1vPjScY26VdHII16UyJFHP41fy9cnaGqt1
+	fscM741dUX8+eYFJ5UEZ4bDnmk+4DLsmh5hrLb9Vs=
+X-Received: by 2002:a17:903:38c4:b0:2b0:6d56:8d29 with SMTP id d9443c01a7336-2b5f9f3b3edmr30511555ad.32.1776426100380;
+        Fri, 17 Apr 2026 04:41:40 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab3a929sm17355605ad.72.2026.04.17.04.41.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2026 04:41:39 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: akpm@linux-foundation.org,
+	rppt@kernel.org,
+	djbw@kernel.org,
+	mingo@kernel.org
+Cc: linux-mm@kvack.org,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Donghyeon Lee <asd142513@gmail.com>,
+	Munhui Chae <mochae@student.42seoul.kr>
+Subject: [PATCH] mm/fake-numa: fix under-allocation detection in uniform split
+Date: Fri, 17 Apr 2026 20:41:26 +0900
+Message-ID: <20260417114127.1664283-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rurjnzOyeXujEi3i"
-Content-Disposition: inline
-In-Reply-To: <aeE4XSuXY8RfphVs@kernel.org>
-X-Cookie: Uh-oh!!  I'm having TOO MUCH FUN!!
-X-Stat-Signature: gg3jk7xtqky7i175857dt3tu3i7actum
-X-Rspamd-Queue-Id: B941240004
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: egzyoa5g73codcoiirkr1dfph9pekmzu
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776425071-339850
-X-HE-Meta: U2FsdGVkX1+KIQCm59NXshFZXuLGEaHV2FO4uUjFVIT9IUnWZowzFe840Jf+rfC5bux4/Sgm1UzYjyDU1I4/HabF9uUaOFXwNlIdtJFzoXsAf3YaOq0r6y3aVxJvPIJdXtR+B08CPpD+sI2V23VylnomnQ+N5Kl6yyX82gQPGLiAB/gSvUs3a4Qyr+llxLoT0N56hi+LuEfv2GVcXXjCcL7yrAmaR/+toLiGz3mxXZ4JmOWMhPDJ7R018NPEchJxTv9nUgVLWmK/nSLnM/74AcLI4854OZg5aWp2agc/hHtlt62dmKQHg2/xWtTor+2aGQj79ywd6d0Tti4gPDkUxwU7J5LIEPg+FwuNrL2rETnz/tUyfO2jNs3cUbTkBh0FUJElWGwbOPsFmOlqVwuyV7Cidcz8jDMsMu2x9Xy7tXKbfJCzgOaecUFDgg1PPluc3rFcHPgM3StMgsmPyhlf2Iv8WhxiprglrBnWdG/YbHzxVmhtmz9SYgJzDF+BD6sh5DBe8gfKepXUdARHT5zg9KjZ2g6A4l/uLBY7rkJSkiuW4KRpz5d1L8NCeik7Zv/FVV05b8OX+9ijxvsiNi0qP4mhmZEZ+Vn7TpDBkBtqeK/70oduQ2x5C83XqrBimPIbvRcnN3dwtOjQgPKXGnPz1eqIQuWBSAVYpeGgD7aHPiXytpDSAXcwtnnrS2Z9JFRv/MBMlr3Qvx4HYVkx8duPXOd0/ijcYHPBnvH951o7vDWM/BVXhxwo2Y6LzeJxQ0MfTo0YY0sm3LubHJtIELMMKE/NUy9CgriFn+yxUh771IwAZDf1DdXgAiIc7uDMAfaC0LHxgLseITc404vlvmfXJU7xUCVUVr4pKDYPCnrbGO2y1pbcj+CwYNZ6+z7iZ9IbIRYHR4eeompvVVMYlmnBHd3Jd1xsjb0NysF/yCMd9O9RFMmaf9wsJAnuwwKHuRliDrOBPUQc5GkKFMXFPQi
- thSdkD8H
- aS7WzwoA9EdmJhmGyHvM7aFJVbtLUglEraau2H599IKU7ptBGdOaiEpytG1cjmmurU5iU2mChqVuBulX+nLwMgHvmMeXgv6+FCaZX0gW9QVHkeY7Uwgm9JWQ5JHDWHipR7621tWOP+JFdMZf90M+Ut2rkWbtmA8k+txFU4whzyp0qqqayCxvsGi5ZNiXwRYtDk6AKQI2PhkeOp4rdn+vzpRB0yIzSSat6gd0LYho13P7lm1+RK8KvvBdjpFFfiOAQmkKICKRCuweuEXzz1KQ9hBXDTA7AM9Upggx3seqaYxd5EBw+x17DetlBWndgdwvyS7co0o427MNNs1idNHvVIhsY3KZPKftIq8chUU+TuMfNEkc=
+X-Rspamd-Queue-Id: B53DD1C0007
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776426101-139595
+X-HE-Meta: U2FsdGVkX18LwIvJ4HU/CNLoGONVvT1YxxnqBgOtWCcXrk+j0M+T1TEV8bB49HX6bY2OvPfZMvmQIosFVUZZoKzdOZfDfaj+P3oFPOtgiBZG0PtCAxxeJFpKAzm2Bk1/xmIsH435WWxtzDF+yHqUcJNPTLeH34As1KaY6JMvZ3RsPQr7NxZzng5zJd9UlQbgQg5B0GK1CPpFBL5R/naiM5hA3fzIcAYZbm+T1eYmKxmRN/8B+FqLm0HUVNF+5pWGiQYz9WHaDUxIU2DIzGbdnvuYV1RShuEs3BNqPJFg1pgtfb9v6qmhn1p6ueInLm6haLxLx6hFpJLfCbvTbPaWVLWV+3ru3TI8yTsEfBDn6r4rLHkh+N5Bir99uPZBxlwrO3pj+1i4jaOTFApQxTACaiqwdElavuRaAcCnQWo/qb879wb34dBrvlIwx3HWQf/A0rXy4ArF3NP5JITS9NwAYx/XopZAd/OT0Akf4G+/CBDs0R6wilBXX4gQ9LtgacPwENtKG2b+0466O8c3/w1BYNlf2duR4sz2i44lcKXpbQrFFBKzw41koxknosV5wZIwSKqu5dmbMEgF3UG1R0PviPikz2eoCvf7/Nu7A2xZkkwurPpFmh+YF7MeIzurAozO6uSkpLakcAusCuZmMk+2GJ6aH4/mA5YV2HXx+ExWlVq4BF1fUwAog3WqsZIu1TsdpUSyuyrgjZmhdKFdsBPWEyai3kt0kw6+HpOUBGlJOL7Y4RrbtWOH46vm124ibFX1X34oMwmwSayFfRoYBFZhkH/Cwr0vcWORStHlzwHupL2jAlnD9DFrYMXXFgJ/tl5Mv6CfehIvC9DdzaPXkq4W9YJyayn9qnUTNa4SKWwsj7JjAnMWNxPvWNHEFPEHeWhWEwBl9suYch1Oli6r9ktIR/lxp7oSmk9acOJ9xb2m0VBHHJBT5yweFOSCzztIAC9B3qWlsfbowTRxWBiCkPy
+ VZ0fiXV4
+ zCPy7XjCVecbWwUlNSFSKKr+NEfgrRI1cU7kK4PxcVj+Ecd8n2sdUIAIU/rEzVGdnkhVpmR9IVGV5V9hIpsqZawEn3vqrVklpqsg7mstsogQwhfuE8A3EAJM1zQqWY2DjxpvN4QjBlkPV9MeVxEmrDyRqitOOayvuX0TQ0gH7lJnrt33Nt5/4j9l7rBGJfPRNQnqMPZVdVFozkeep06LGFM1GIUGtopCbjOC6eY9Kk/xWCWl44Nb0DjzCv9osxQdQIbxAB6pTDaLnPBwipH8uqMwOwPSwX6WaKNEUoa9QpB0U1njsSSFbq3uvY/QV3rIQyAkm82wj4GYmj3EAsNrvafrf3iXSo0zBub13zRFKmQJGlRnu4WovU5VJTGPBSIvqy/3or9cSvPMfOMPSW8SdpOJ99F4ru3VIovdFClR1INWWCsvXnbZj63p+mw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,73 +118,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+When split NUMA node uniformly, split_nodes_size_interleave_uniform()
+returns the next absolute node ID, not the number of nodes created.
 
---rurjnzOyeXujEi3i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The existing under-allocation detection logic compares next absolute node
+ID (ret) and request count (n), which only works when nid starts at 0.
 
-On Thu, Apr 16, 2026 at 10:28:29PM +0300, Mike Rapoport wrote:
+For example, on a system with 2 physical NUMA nodes (node 0: 2GB, node
+1: 128MB) and numa=fake=8U, 8 fake nodes are successfully created from
+node 0 and split_nodes_size_interleave_uniform() returns 8. For node 1,
+fake node nid starts at 8, but only 4 fake nodes are created due to
+current FAKE_NODE_MIN_SIZE being 32MB, and
+split_nodes_size_interleave_uniform() returns 12. By existing
+under-allocation detection logic, "ret < n" (12 < 8) is false, so the
+under-allocation will not be detected.
 
-> But sure graceful skips are better than failing the entire tests. Would be
-> something like this:
+Fix under-allocation detection logic to compare the number of actually
+created nodes (ret - nid) against the request count (n).
 
-> @@ -622,10 +621,17 @@ static void test_prot_none(void)
+Also, fix the outdated comment to match the actual return value.
 
-> +	mem_fd =3D open("/proc/self/mem", O_RDWR);
-> +	if (mem_fd < 0) {
-> +		ksft_test_result_skip("opening /proc/self/mem failed\n");
-> +		return;
-> +	}
-> +
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reported-by: Donghyeon Lee <asd142513@gmail.com>
+Reported-by: Munhui Chae <mochae@student.42seoul.kr>
+Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capability") # 4.19
+---
+Changes from RFC v1 [1]
+- Merge patchset into once.
+- Change base from linux-next to mm-unstable
 
-The string reported in ksft_test_result_*() is the name of the test, it
-should be the same name as is used for pass or fail.  This is used to
-correlate test results between runs.  The error should be logged with a
-separate print, in this case ksft_perror() is probably a good choice.
+Changes from RFC v2 [2]
+- Fix error message to use the number of created node instead of
+  returned node ID.
+- Define nr_created variable to explicitly show the number of created
+  noeds.
 
->  {
-> -	mem_fd =3D open("/proc/self/mem", O_RDWR);
-> -	if (mem_fd < 0)
-> -		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
+[1] https://lore.kernel.org/all/20260413154438.396031-1-ekffu200098@gmail.com/
+[2] https://lore.kernel.org/all/20260416102558.575210-1-ekffu200098@gmail.com/
+---
+QEMU-based test results for the commit message scenario.
 
-Yes, this is a preexisting bug in the test which I see there are more
-instances of :(
+1) AS-IS (before fix)
+[    0.001878] NUMA: Node 0 [mem 0x00001000-0x0009ffff] + [mem 0x00100000-0x7fffffff] ]
+[    0.001881] Fake node size 255MB too small, increasing to 256MB
+[    0.001882] Faking node 0 at [mem 0x0000000000001000-0x0000000010000fff] (256MB)
+[    0.001883] Faking node 1 at [mem 0x0000000010001000-0x0000000020000fff] (256MB)
+[    0.001883] Faking node 2 at [mem 0x0000000020001000-0x0000000030000fff] (256MB)
+[    0.001884] Faking node 3 at [mem 0x0000000030001000-0x0000000040000fff] (256MB)
+[    0.001884] Faking node 4 at [mem 0x0000000040001000-0x0000000050000fff] (256MB)
+[    0.001884] Faking node 5 at [mem 0x0000000050001000-0x0000000060000fff] (256MB)
+[    0.001885] Faking node 6 at [mem 0x0000000060001000-0x0000000070000fff] (256MB)
+[    0.001885] Faking node 7 at [mem 0x0000000070001000-0x000000007fffffff] (255MB)
+[    0.001885] Fake node size 15MB too small, increasing to 32MB
+[    0.001886] Faking node 8 at [mem 0x0000000080000000-0x0000000081ffffff] (32MB)
+[    0.001886] Faking node 9 at [mem 0x0000000082000000-0x0000000083ffffff] (32MB)
+[    0.001887] Faking node 10 at [mem 0x0000000084000000-0x0000000087fdcfff] (63MB)
+[    0.001924] NODE_DATA(0) allocated [mem 0x0fffd6c0-0x10000fff]
+[    0.019852] NODE_DATA(1) allocated [mem 0x1fffd6c0-0x20000fff]
+[    0.022458] NODE_DATA(2) allocated [mem 0x2dffc6c0-0x2dffffff]
+[    0.023293] NODE_DATA(3) allocated [mem 0x3fffd6c0-0x40000fff]
+[    0.028522] NODE_DATA(4) allocated [mem 0x4fffd6c0-0x50000fff]
+[    0.032397] NODE_DATA(5) allocated [mem 0x5fffd6c0-0x60000fff]
+[    0.036552] NODE_DATA(6) allocated [mem 0x6fffd6c0-0x70000fff]
+[    0.038746] NODE_DATA(7) allocated [mem 0x7fffc6c0-0x7fffffff]
+[    0.040286] NODE_DATA(8) allocated [mem 0x81ffc6c0-0x81ffffff]
+[    0.041517] NODE_DATA(9) allocated [mem 0x83ffc6c0-0x83ffffff]
+[    0.043678] NODE_DATA(10) allocated [mem 0x87fd86c0-0x87fdbfff]
 
-> --- a/tools/testing/selftests/mm/mkdirty.c
-> +++ b/tools/testing/selftests/mm/mkdirty.c
+2) TO-BE (after fix)
+[    0.001858] NUMA: Node 0 [mem 0x00001000-0x0009ffff] + [mem 0x00100000-0x7fffffff] ]
+[    0.001860] Fake node size 255MB too small, increasing to 256MB
+[    0.001861] Faking node 0 at [mem 0x0000000000001000-0x0000000010000fff] (256MB)
+[    0.001861] Faking node 1 at [mem 0x0000000010001000-0x0000000020000fff] (256MB)
+[    0.001862] Faking node 2 at [mem 0x0000000020001000-0x0000000030000fff] (256MB)
+[    0.001862] Faking node 3 at [mem 0x0000000030001000-0x0000000040000fff] (256MB)
+[    0.001863] Faking node 4 at [mem 0x0000000040001000-0x0000000050000fff] (256MB)
+[    0.001863] Faking node 5 at [mem 0x0000000050001000-0x0000000060000fff] (256MB)
+[    0.001863] Faking node 6 at [mem 0x0000000060001000-0x0000000070000fff] (256MB)
+[    0.001864] Faking node 7 at [mem 0x0000000070001000-0x000000007fffffff] (255MB)
+[    0.001864] Fake node size 15MB too small, increasing to 32MB
+[    0.001864] Faking node 8 at [mem 0x0000000080000000-0x0000000081ffffff] (32MB)
+[    0.001865] Faking node 9 at [mem 0x0000000082000000-0x0000000083ffffff] (32MB)
+[    0.001865] Faking node 10 at [mem 0x0000000084000000-0x0000000087fdcfff] (63MB)
+[    0.001866] numa_emulation: phys: 1 only got 3 of 8 nodes, failing
+[    0.001867] NODE_DATA(0) allocated [mem 0x7fffc6c0-0x7fffffff]
+[    0.001940] NODE_DATA(1) allocated [mem 0x87fd96c0-0x87fdcfff]
 
->  static void test_ptrace_write(void)
->  {
->  	char data =3D 1;
-> +	int mem_fd;
->  	char *mem;
->  	int ret;
-> =20
->  	ksft_print_msg("[INFO] PTRACE write access\n");
-> =20
-> +	mem_fd =3D open("/proc/self/mem", O_RDWR);
-> +	if (mem_fd < 0) {
-> +		ksft_test_result_skip("opening /proc/self/mem failed\n");
-> +		return;
-> +	}
+And also there is other scenario tested by Donghyeon. [1]
 
-Same with mkdirty.
+[1] https://lore.kernel.org/all/CAFPTC5e1OLpHa3HqwhtSPjS_PTQz+iG=ovM2cZ=VnOZ_5z7oxg@mail.gmail.com/
 
---rurjnzOyeXujEi3i
-Content-Type: application/pgp-signature; name="signature.asc"
+---
+ mm/numa_emulation.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
+index 703c8fa05048..bc2f163e7c45 100644
+--- a/mm/numa_emulation.c
++++ b/mm/numa_emulation.c
+@@ -214,7 +214,7 @@ static u64 uniform_size(u64 max_addr, u64 base, u64 hole, int nr_nodes)
+  * Sets up fake nodes of `size' interleaved over physical nodes ranging from
+  * `addr' to `max_addr'.
+  *
+- * Returns zero on success or negative on error.
++ * Returns absolute node ID on success or negative on error.
+  */
+ static int __init split_nodes_size_interleave_uniform(struct numa_meminfo *ei,
+ 					      struct numa_meminfo *pi,
+@@ -398,7 +398,7 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
+ 	 */
+ 	if (strchr(emu_cmdline, 'U')) {
+ 		unsigned long n;
+-		int nid = 0;
++		int nid = 0, nr_created;
+ 
+ 		n = simple_strtoul(emu_cmdline, &emu_cmdline, 0);
+ 		ret = -1;
+@@ -416,9 +416,11 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
+ 					n, &pi.blk[0], nid);
+ 			if (ret < 0)
+ 				break;
+-			if (ret < n) {
++
++			nr_created = ret - nid;
++			if (nr_created < n) {
+ 				pr_info("%s: phys: %d only got %d of %ld nodes, failing\n",
+-						__func__, i, ret, n);
++						__func__, i, nr_created, n);
+ 				ret = -1;
+ 				break;
+ 			}
+-- 
+2.43.0
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmniGGgACgkQJNaLcl1U
-h9Aq9wf/YXGg0YC6URYjkBzqhPoqyKQtnKLLfLCjk3ZQsGUUQx92Cn17KGkNoADf
-FX1mnlXc8YTLPO/u6fu86GDV9oeOBcE7+fQMiZ+UrGyt8weNg/V2AtZv+YkuOYrs
-aWxdkzKkriB8c3NHFOKmAondmg8Syjv6dVwbmYZsZksrxIdaWXGoFA6FPvvnKl0N
-YAZiWW0RkYB9RgO2zpEMK1icVTnDe2CoqcOglDK1BRF2VVx6j9ZLCkKUdThMH5GS
-CQ0u7m+67zxC0Qxsb3Pv5OWOEkqxD1AAspjnzfYxC9rd/di5Iav0mBLaq8CHoL2R
-cCjF3smz2rEIo1gxF1JpjKLDLMQ+nQ==
-=kWZG
------END PGP SIGNATURE-----
-
---rurjnzOyeXujEi3i--
 
