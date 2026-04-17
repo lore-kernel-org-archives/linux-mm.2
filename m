@@ -4,146 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C1E6F8E4A0
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 02:41:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEDB3F8E4A0
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 02:52:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD5BD6B0005; Thu, 16 Apr 2026 22:41:17 -0400 (EDT)
+	id E94246B0005; Thu, 16 Apr 2026 22:52:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C86B06B0089; Thu, 16 Apr 2026 22:41:17 -0400 (EDT)
+	id E44FF6B0089; Thu, 16 Apr 2026 22:52:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B75C36B008A; Thu, 16 Apr 2026 22:41:17 -0400 (EDT)
+	id D335E6B008A; Thu, 16 Apr 2026 22:52:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A602A6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 22:41:17 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D65FC3320
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:41:17 +0000 (UTC)
-X-FDA: 84666496194.20.4DE2E0D
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3E2624000A
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:41:14 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TOQ7ULbQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776393675;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BF26F6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 22:52:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 55F2013BF29
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:52:19 +0000 (UTC)
+X-FDA: 84666523998.22.6018C32
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf01.hostedemail.com (Postfix) with ESMTP id ACE7440008
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:52:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=F4s+zDqb;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf01.hostedemail.com: domain of wxy2009nrrr@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=wxy2009nrrr@163.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776394337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xE4TThKuYzkhlWIVTCJZ18ghCGkVJD88HoP2yiGEL78=;
-	b=mfha3iMEImzdTfWoJsBM+lnHDK7xRiVvwUZTImnuRFeG5bOYGh58XD7GLGmdOXdVeirjK5
-	gYvpwadPOxGoY/nYUmDS6vLRECoS4p4oRHb+u3KUlDt3ujjHsGHTrYyaIM1eLhh48UeWn1
-	VahYe2f/qHKt4D3A53qaidM+Ku4YEEo=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TOQ7ULbQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776393675; a=rsa-sha256;
-	cv=pass;
-	b=sjlmVtJChXSJk6e9G4LFpOE+5g0iadaDGiKXcgMmSoRLSpQGUuvdk1iA6uDfzEpXdJT5T2
-	c/N9OiBYOal1AxDCccHgL/AGgq+6Pv7Vg13WluCuDTYjJxSZMecmvBnhsUDT0TYKx9Ze++
-	tevP7NpYH/9z8GQKD5Po5ln0aoxG+eM=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43cfd1f9fd1so74330f8f.3
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 19:41:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776393673; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Da1JnCJzAkCiWqHut9g7EEbRtMsBx8Xwh1sYSzLEOg9M2fQ7md1m6/8SqvcxqoaLNf
-         805unZ/aWZG+UbeFIlaiAXWi5XLY4lBZF+blhsvG3790FOMBgH6wLhgqrQy4uOkRlIxy
-         rXm/++aKzn9Z1GCF1yHTjyopPxT/K6WsL71a93jxt+TNLjmnh0bFnveIONvaoZ6JvLyT
-         wZ25rV1YIHzIUOVhIKJqGoCb6woriexklMUomG19n8HvPYsraL1IzVbQxTaijGjXx7cP
-         x3a2dH3XHkZC9OoCN50ipoO1r8hsjImN3AzWKUt3YcRB/SNABALdQLT42Wvm2QytTe1S
-         iHiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xE4TThKuYzkhlWIVTCJZ18ghCGkVJD88HoP2yiGEL78=;
-        fh=QvcH/O1zmB00PMFjqG/h9Ye0+ZZHzPN2K7iy+UekaPw=;
-        b=NRA1qG5PZ+m5wixBdOJVaCBNufZXWBkgzu8MulsCV0Idmo4aoUFGM6hX+Q9Kbs5/Nk
-         EzSDrstsp0o3CKpWHCHHo2GbnchEdi5YYvcPAKkQFO2oUgGmgBxsJTFr/1a2wUT8nmO2
-         cu52Qge7+znO/vljve4Thia/OdTrZnkxib2iYL4bMJqQ0gdW4IFRthxoGpa1gBbcfKVm
-         FLnQC4CE+FcajdretKZdI89b2DDLzrgDJcOfC49oAvrOyvU2coSTPbeU9d0blsxArg5p
-         zMvU0FuAnoOfen/CS3Gl08lPRaBKDiXbQw7AP1P8SpAPLx+F5KFuFYoBKjidrUVZMs4h
-         uTbA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776393673; x=1776998473; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xE4TThKuYzkhlWIVTCJZ18ghCGkVJD88HoP2yiGEL78=;
-        b=TOQ7ULbQIoY8wrUdRKukvnyAxTOGRhY/8jhDSTAjbKlhZ81UsV3sh7SrStHWm3YiRB
-         gkSOGqc1+Oxc5W7UTvVSub41yeOdAkwBh+u9Mz4kjfHRM1by/iTQP0Xk+ewkiCAOPql8
-         SMo1nDe4pA2zpZGdA7rzkO5NkrYFiCHlOmYjcbp6dIYIeHvlGftLZgez3mH+FWGXapx9
-         foeHvW2aElsREAzmOtI8+F0zVGq0h085JxAOqu+OGq+Ri6j1ENKmUH73IkdDlSrCE6Xw
-         0TClzHyD8Mbcou8xdmBOr/Bvysp4Lpg/oNfdPvavqocmKmWh55Pu3FYt1PaCEy6AUeJw
-         vbqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776393673; x=1776998473;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xE4TThKuYzkhlWIVTCJZ18ghCGkVJD88HoP2yiGEL78=;
-        b=P2tXvTpLgttdUjQ1GJBoBfxd7jUcO8gEHHkoJefioDtpbRTDVKiieGDJb4oYMIuBx2
-         FtP/xsuaQ9QIV0C67mQj2NpkjQOAdD8EOmQjSABDE2qwrtX8br/rr00/9CFWXxENWnLk
-         UBf5veYndLMVVrf3azhV3vQC3kVI7+FfzQFF4XA+Ts3eTeJjrf5sDWR1hHqTGW5E+7q1
-         dN/PN82WP08BLTelj4Ms0grVhC2O51ElrBwIoBRSckGdp0Fi586Lq2H01NQ1eQdJ/6zZ
-         pZ29Y679NbcBmbTI0pTNI82hphZZpCSeMq5SnThsvcjBY21wd60MqiTouBfs6CEmsTSW
-         TKfA==
-X-Forwarded-Encrypted: i=1; AFNElJ8KmEvlWT9BFtm1DU1QcEkOD+/l7hZqrasX8O4h+ZaCEFORLwdKtlT9GFOYh6bCAi15Br2L0YSsYg==@kvack.org
-X-Gm-Message-State: AOJu0YztlKW0OemtWVjp/kfCQq3E0UiM0Sp2KmA34AZDromElKRuvipf
-	5U4HfZ/WHsIzvaZM8cV/C5qfLWg96ATcFaYHhcdjF5p/54GsfvTIeT0h7YdQ4kbVLfPnZLfi+5G
-	xHliYiI5FgGtWkYLhSG49M0bqVC6f/p8=
-X-Gm-Gg: AeBDietSQs2tt/F/slzxTdPvDKbUQfI5Q4eUDuOA6ozNhCtM6qa3ayYuyd2uUXZhR1E
-	niL4tOEQ8WMAPcZ64wYUg3ch4nDoxeSuw6UFKdK9v1Fi3qFgdVowkahOo8Lel/blSMjqMH1nqBx
-	bzdTEr2qzkJke6ixkOcH6jmTygYwZFrDAXX9Ov6899KA0G5yklSjErb7tSIxWy5MQ4VRVPSKUIm
-	LBQTIwHLLk1c4gBL5A45tr5KeF9IBUBxNlhVe6XezMKV2NW+M2IpjsnMH8IHkRO9axVaL2aj0lg
-	5jeoi9rCy0lHU0ypicCs51172ZXrIVNDDgpwUTnezcmKA2x5LAHKaTvKeaxLRobYPdI6+uxqL1z
-	ovulmgXClLqAL3HAE4OsXPWiTEelGn2+tlezo
-X-Received: by 2002:a05:6000:22c5:b0:43d:4b00:9ee7 with SMTP id
- ffacd0b85a97d-43fe3e10b0dmr1165369f8f.33.1776393673340; Thu, 16 Apr 2026
- 19:41:13 -0700 (PDT)
+	bh=H6TmoV2gE3VJEa3D5yOVGAWVcsd1rYCp2oHb5lwVG74=;
+	b=HeownR7Wv4/78BtL/awNMy+kmHgML1HvPB/qvE38X2mDO9Ur+iFV7PO/6eY86NN3h5jfJn
+	DekzB6uyEGcnXMUVO43LKbBr/xSOmbAFMO4OI6G12L5r6N5p0denrN9+X47B3od/Bz9j0n
+	QaNANVMzRzTLclsrTxQxK7LwH0fG+4w=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=F4s+zDqb;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf01.hostedemail.com: domain of wxy2009nrrr@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=wxy2009nrrr@163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776394337; a=rsa-sha256;
+	cv=none;
+	b=YjFdqubfjcxB31t9/7Mi3Zy/hZey91apvZcsGw/zjz1RoMiUNZ8y4a0HLe4PgJhXot2xPK
+	UsMsLi0jKalgiUoTLl2wWFVm8FC9A5ny/3p1FbTS9YUIZMkWiTsW0WTkmO4FIP1ckHqDrU
+	22syeE1W6sfry9Ma0mtMgTcyzzVlQFs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=H6
+	TmoV2gE3VJEa3D5yOVGAWVcsd1rYCp2oHb5lwVG74=; b=F4s+zDqbHvLNCPA4lv
+	47jYA/KdWwywMj7jvd9pWqL/rjKozG/6vp//Q89xwvLMxAwrF6V2MdsQmXSzQDUl
+	GnGQPpzcedS7t/fq2UfpPyVTekZRP18HW10TkideCWih/AzO8UjRgwrozDOWuC6q
+	rADvGULacxNt+e4g6L9nnrYqQ=
+Received: from PC-4CV553FH2H.company.local (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgA3ircroOFpEJpeAQ--.145S2;
+	Fri, 17 Apr 2026 10:51:27 +0800 (CST)
+From: wangxinyu19 <wxy2009nrrr@163.com>
+To: devnull+kasong.tencent.com@kernel.org
+Cc: akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	chenridong@huaweicloud.com,
+	chrisl@kernel.org,
+	david@kernel.org,
+	hannes@cmpxchg.org,
+	kaleshsingh@google.com,
+	kasong@tencent.com,
+	laoar.shao@gmail.com,
+	lenohou@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	stevensd@google.com,
+	surenb@google.com,
+	vernon2gm@gmail.com,
+	wangzicheng@honor.com,
+	weixugc@google.com,
+	yuanchu@google.com,
+	yuzhao@google.com,
+	zhengqi.arch@bytedance.com
+Subject: Re: [PATCH v5 00/14] mm/mglru: improve reclaim loop and dirty folio handling
+Date: Fri, 17 Apr 2026 10:51:23 +0800
+Message-Id: <20260417025123.2971253-1-wxy2009nrrr@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
 MIME-Version: 1.0
-References: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz> <aZAWGwZP_Z75YHKt@casper.infradead.org>
- <ad_cqe51pvr1WaDg@hyeyoo> <af3a7fa9-b368-4ffd-964d-9e4fcba863a8@kernel.org>
- <DHUNDMZS4YQ0.24SZXD72JIMCE@gmail.com> <aeDzovGHlFmPFpNt@hyeyoo>
- <CAADnVQLc_6SfF0h+-W+-sa-Qfvn8a02b6sbELJwpQcG7CFNqAA@mail.gmail.com> <aeGcHXmbCuZ8cNis@hyeyoo>
-In-Reply-To: <aeGcHXmbCuZ8cNis@hyeyoo>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 16 Apr 2026 19:41:02 -0700
-X-Gm-Features: AQROBzDG_dK2ysCmE426oeDsAcmTYlt5fDqJLAwW-dFQfRpICr3Cs9eW2BGt56k
-Message-ID: <CAADnVQKLNDitD+WfNCr-nB955GVO7YZeHMjkuOs-=sqnvYyTxw@mail.gmail.com>
-Subject: Re: [RFC] making nested spin_trylock() work on UP?
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Will Deacon <will@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	LKML <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Waiman Long <longman@redhat.com>, 
-	Mel Gorman <mgorman@techsingularity.net>, Steven Rostedt <rostedt@goodmis.org>, 
-	Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3E2624000A
-X-Stat-Signature: gujmrqt3jgzpsy4k9h73f9t5i8kpr3qj
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgA3ircroOFpEJpeAQ--.145S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCry7tw4kJFy8Zw1rJr1DJrb_yoW5GrW5pF
+	Wftrs8AFs7XFna93929w10gryfAw4rGr45Xry5KrW7Aan8Cr92vr4fJ3yUZ34DArn3KFyY
+	vFWqgFykua4DAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UMBTOUUUUU=
+X-Originating-IP: [219.143.13.73]
+X-CM-SenderInfo: hz01jieqzq22ru6rljoofrz/xtbC0A8GRWnhoC-fxwAA3D
 X-Rspam-User: 
-X-HE-Tag: 1776393674-422787
-X-HE-Meta: U2FsdGVkX18ruICshelg7Kuw+HnVNPJfYKN3YqqWh3gtDBiGOYGjsDFISlgY/ypynhwaCm6duz+KI2fbVPnVWQQasOT/W7+Rrqt4j2RQsLJE50l4s4cqXgysKZJkL5zEPGsXLwJMsLvG27u+48CmkWaIwZuC4i+KDwtIkDc5KPVdb+LuVLRRkQcd9HprGdpyT14Db/KNDYdtlW3pnwY9YjR79XMMoFZI2t0C+QE0elMr7eMO6v/smAzVo3VQRw1flZThq7esoLjhcSlu9fPmmY2kU7gL7g1l28e0gANm65LshLatdZag913UQIQN8jLfBOLlBSQJ8zXC9wbKYl63uOLQGeKCKF8o+NJaiji5kYVuZpTuvEzebCm+KX4LAwGYbx/ACnDhCDt/sdaqyywh79IbHzf97/62Z/k9TXR23cl9uwjANKZ5bGqSz68wut3YLyxKDSoaGRvYpzObxBiy87CBt80W64ldnhD7yfDPV4tX9Yw5R8BvJ9llO9OWGGyXHdYh84fmAxdrx8WIItBeus0wb8yDOzU27L+fm4EPfWYp8tSAde8FgvBXJOTPBuIQ3GOmas7ZZovTnb9/8nbR9S++oEScG8Qh6KR5wvEd99nbUtmbc2yV3bgVVL5l3hQ5Ob0J/0H85neKLdSSmvP/FrLNVb/89juKrRLZm8iZ+WEUL2rVPpeyiOM68Tz0OZR+p1JgJFn3jK4ROe8tqp2tlUxACkLfnOaIZ95jSfRO5Kx3V9GXe++qQqaBdbFFI+el2Cq5yud3J4/4vtgwjmmP9X1S9lGvaIaOWPvl7L4ZfPaW6hLlrpZLvJlqhvpG7qPiolQJr1BZIMRCFpIkeVqM6eXClqyD4kskMya4Kz+0U591kiV8kYiqYaGS8qdkT6JYlKVfWy2FnK6dYy4e9xi929PC0x+XOVyOdrP3O7ZlgftZXZ/1rEO8UFmflVbFXl/trV2T/9+1iO9ay9Swxvi
- 78daMEK5
- gOyeg50hUDjTdsswDwtAH5aOanfmVJA9GE8NBOtc7FJzYDS+uY8DARH78GwAh2Vh0BKmS5LeKg6XwaM1crcSLtg2QzAoVg2Z8fOStxSSPk6tNT6KTU85y6dx9LqkOTTsGv403GocRfCTHsb73CZEvgHATyYMWTycXG4Ia1kpuNCYKqFUJqsRaKMfSoM/4Y/tI7iCuph2okq0MOJMpK3M2/6G8wqtEwxSwNVMQbsKf8BGbsPvtG96Zigz+bu+7Janf9FXOO/Mz0+Iw4LjP2i5RGoConn4iWDPRVZazOQCZbz/UQQzB6+M/JMUdNon49TwFDKJPN4TW5cciL3cDtItWVaEqHMUrzga6LUlEw9zW5RK0xNZNRdRGdxXNzigRIzXwBjI1Xx4NB3nkv5HakU4SeV9Mzf2PlBb+DfSOwKA3ze628i+p5TcyXluqPKiM+okfcPIy5vfxnTO+SJKNPOscSYSAxrR9m7a7mJ5QS0bQ2E0crEXkfLx9XIv4diRfNiNtweGFWaSU2LmUl8oZYPgTVLGsRmxadCqT7G1ySqJzYvRNznozB8PAbO7r6zRt7vGZmZQTDQOWMJNqpc4=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: ACE7440008
+X-Stat-Signature: gc4ug9wrrxnwu8fo7m91ybqdyyae1wzs
+X-HE-Tag: 1776394336-85870
+X-HE-Meta: U2FsdGVkX1+iKm+yFiJn2xvTU0B0QXCSipbep4BQsrXAZ01e0YH2TAAcq2bzVvURgrrWSu3tpNMDIEckJUbvpmeauLzMxCff5AHsrYkLDi6YHEaf0Hv43Aq98vvXvSht3YZq+qBjiNIJroHFDq6ktQ9zZCGmswzSP0aY0yHnzaymxUxY8PnD9YeUg3Sv/r5UhSl+NzG2GRPqYTMcxVxoKgliKsm/vUOUqISICMTOKXWzM9egv2XASWYXZhMsY5OwRao3Qgo4or+NPRxEKuCghxJBlNaK6V6UUqHl069TstG+BKrnSWGVhMduzO/2b84jYwqxK3SCqPmvuT/ieAc5PubRhPaPfXjnR9tNPLP5kmQqFn5iwxS8+Eox4pdDshrlEe7ZCetoHVtFdYFDMQB2fIRSk/o9M7CCtW/LbDfEnDW4K+6FCr+7MmN13jpIi2HUc1gIn8rSwT5jX3mv9O0+lGNlAYPOL+8dhSTYzpQN2O756F1N1ek8XL9nrC0zg0ZjqAvIjzo7rqg93d6lKpnl8N8rU5bzWgf2+wDznLE0Tor6ieZ5P2Rf1dZYTiL7X23Rax/QYhMx0OFYYm4t9OEVczM08CxPoR4/WnOgt/Me1MeFYP9VWHzZ1SRprG+K3izWZ2cT5/V49k5FjMDBDEx+nN9vFJpdf9sDf/StzIsTktnxJC8s3eRdoB85rVlfr3jEwFO1iN1f7vDVj4U5ozepOjK+1AJUWjTGvDKfbkVUqvMbMERoKLFpCR0fauXJAW4hC8L3KtQwX2SyQPMQIv3hw8q0NCLc1pyzb5z8p+jOurCK2YuN1iXVNSLUujAN5A8BFbWvEFIlKzlzRWb9J5OwGaiYdudiutVDAwpMT7EsZm7lktjceRR/6jmv2biepXUmZSmwol9jP4KUZ8mnX3wyYN51T1zvXVI7j7DALNFusl3r3ZoChq2m/RlgpJA3oDLsFgj9xVSwMv3ZI4eog22
+ xDX7VyAo
+ n5yucGIGYswHXPQhQ0xEknLxYQxCpdCL5Kl5pAP6uwtc11fmwaXTS8P+oXONLFC5a7a+6vyCeUlVcG2D6ZmcrH1BBRQK2k+htW5W1XvfY2lNj3RvzoUb1LSpK6Tn92pXWcGLYYmXR72tQ6rEun9W/ruejbCqZPIYWZH8bBxaB1nD40cj/oHRG8++iL0X9jVmKMg3x27swgTVBwYp1a2Rn8Y4IWcM3RN0iAqxa0wJ7zoKqLK/foseK0v4I4XEJdJtMujfizgfSZEAUrssM1UAkUfgQj5O6QkfGruhqr3hm9Lg62jUoO6D53hK+YbC3agJ24OOw45/aZYBjz7UHRcSdUWzZd1i8aaMCSrBkj5Mcbx5IF+Uzf7h06Er1tU0ALBHEx7uQdvsK78NHQI1nwDkB3Vl31K45462T4CtIfayiZizj5s8SK2eKJ7gJdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,58 +115,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 7:34=E2=80=AFPM Harry Yoo (Oracle) <harry@kernel.or=
-g> wrote:
->
-> On Thu, Apr 16, 2026 at 07:37:49AM -0700, Alexei Starovoitov wrote:
-> > On Thu, Apr 16, 2026 at 7:35=E2=80=AFAM Harry Yoo (Oracle) <harry@kerne=
-l.org> wrote:
-> > >
-> > > On Thu, Apr 16, 2026 at 07:26:36AM -0700, Alexei Starovoitov wrote:
-> > > > On Thu Apr 16, 2026 at 3:05 AM PDT, Vlastimil Babka (SUSE) wrote:
-> > > > >> I think we need a special spinlock type that wraps something lik=
-e this
-> > > > >> and use them when spinlocks can be trylock'd in an unknown conte=
-xt:
-> > > > >> pcp lock, zone lock, per-node partial slab list lock,
-> > > > >> per-node barn lock, etc.
-> > > > >
-> > > > > Soudns like a lot of hassle for a niche config (SMP=3Dn) where no=
-body would
-> > > > > use e.g. bpf tracing anyway. We already have this in kmalloc_nolo=
-ck():
-> > > > >
-> > > > >         /*
-> > > > >          * See the comment for the same check in
-> > > > >          * alloc_frozen_pages_nolock_noprof()
-> > > > >          */
-> > > > >         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hard=
-irq()))
-> > > > >                 return NULL;
-> > > > >
-> > > > > It would be trivial to extend this to !SMP. However it wouldn't c=
-over the
-> > > > > kprobe context. Any idea Alexei?
-> > >
-> > > I think Vlastimil meant it'd be trivial to do:
-> > >
-> > > if ((IS_ENABLED(CONFIG_PREEMPT_RT) || !IS_ENABLED(CONFIG_SMP))
-> > >                 && (in_nmi() || in_hardirq()))
-> > >         return NULL;
-> >
-> > This one.
->
-> Thanks for clarifying. You mean not covering the kprobe context is fine.
->
-> But I have to ask; how is that fine? Wouldn't this leave a small
-> possibility for a kmalloc_nolock() caller to trigger
-> e.g.) use-after-free bug even without noticing? (yeah, very unlikely
-> for somebody to trigger in practice, but not impossible)
->
-> If it's unlikely to use bpf tracing on UP anyway, it'd be safer to just
-> disallow that to happen to begin with.
+On Mon, 13 Apr 2026 00:48:14 +0800, Kairui Song wrote:
+> This series is based on mm-unstable, also applies to mm-new.
+> 
+> This series cleans up and slightly improves MGLRU's reclaim loop and
+> dirty writeback handling. As a result, we can see an up to ~30% increase
+> in some workloads like MongoDB with YCSB and a huge decrease in file
+> refault, no swap involved. Other common benchmarks have no regression,
+> and LOC is reduced, with less unexpected OOM, too.
+> 
+> Some of the problems were found in our production environment, and
+> others were mostly exposed while stress testing during the development
+> of the LSM/MM/BPF topic on improving MGLRU [1]. This series cleans up
+> the code base and fixes several performance issues, preparing for
+> further work.
+> 
+> MGLRU's reclaim loop is a bit complex, and hence these problems are
+> somehow related to each other. The aging, scan number calculation, and
+> reclaim loop are coupled together, and the dirty folio handling logic is
+> quite different, making the reclaim loop hard to follow and the dirty
+> flush ineffective.
 
-Don't fix what is not broken :)
-I'm sure there are millions of other issues with UP,
-so there is little to zero chance that anyone can repro such a scenario.
+> This series slightly cleans up and improves these issues using a scan
+> budget by calculating the number of folios to scan at the beginning of
+> the loop, and decouples aging from the reclaim calculation helpers.
+> Then, move the dirty flush logic inside the reclaim loop so it can kick
+> in more effectively. These issues are somehow related, and this series
+> handles them and improves MGLRU reclaim in many ways.
+> 
+> Test results: All tests are done on a 48c96t NUMA machine with 2 nodes
+> and a 128G memory machine using NVME as storage.
+
+Hi Kairui,
+
+We have tested this patch series on Android device under a typical scenario.
+
+The test consisted of cold-starting multiple applications sequentially
+under moderate system load (some services running on the background, 
+such as map navigating, AI voice-assistant). Each test round cold-starts
+a fixed set of apps one by one and records the cold start latency.
+A total of 100 rounds were conducted to ensure statistical significance.
+
+Before:
+  /proc/vmstat info:
+    pgpgin 269,224
+    pgpgout 226,078
+    workingset_refault_anon 237
+    workingset_refault_file 27689
+
+  Launch Time Summary (all apps, all runs)
+    Mean 868.0ms
+    P50 888.0ms
+    P90 1274.2ms
+    P95 1399.0ms
+
+After:
+  /proc/vmstat info:
+    pgpgin 223,801                (-16.9%)
+    pgpgout 308,873
+    workingset_refault_anon 498
+    workingset_refault_file 17075 (-38.3%)
+
+  Launch Time Summary (all apps, all runs)
+    Mean 850.5ms (-2.07%)
+    P50 861.5ms  (-3.04%)
+    P90 1179.0ms (-8.05%)
+    P95 1228.0ms (-12.2%)
+    
+--
+Best regards,
+Xinyu
+
+
 
