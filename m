@@ -4,84 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A605F8E4A1
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 03:25:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95EB4F8E4A5
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 03:40:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D8336B0005; Thu, 16 Apr 2026 23:25:54 -0400 (EDT)
+	id B5A266B0005; Thu, 16 Apr 2026 23:40:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 688E96B0089; Thu, 16 Apr 2026 23:25:54 -0400 (EDT)
+	id AE3DB6B0089; Thu, 16 Apr 2026 23:40:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59ED26B008A; Thu, 16 Apr 2026 23:25:54 -0400 (EDT)
+	id 9D2C46B008A; Thu, 16 Apr 2026 23:40:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 482006B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 23:25:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6D86160A6C
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:25:53 +0000 (UTC)
-X-FDA: 84666608586.28.E1D65CA
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4CA9F140011
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:25:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bVJTtvE2;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 879596B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 23:40:04 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C0D413BFAE
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:40:04 +0000 (UTC)
+X-FDA: 84666644328.30.6651373
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 39F6780008
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:40:01 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eOgJkgo+;
+	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776397202; a=rsa-sha256;
+	cv=none;
+	b=7ypNcxHWo53hhDY1R7W3cdN+qj6WvDR7T008JxAGv4aYacXv0mE8d2OcB78PCt0v5qH+MM
+	+5AEzPAvB5neOqdYQ9Igl2Kt2Jv+SjnM926ZcCfaLtRCTp4k7SZjsfyHo4HNEdtYkBJKdj
+	LgunNyawba/bvSda+/pajyT+vjkknVY=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eOgJkgo+;
+	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776396352;
+	s=arc-20220608; t=1776397202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jIGmtfqQNV3WWdh9M42ndpoJ6WyORofupaAjImOgxKE=;
-	b=mdgf48NsLICpTFPUwTwP00x9u18S9emrafZZlNzx43e9ePWQXKxM/YbiHccPmxWmByyqRf
-	wdT8lh9qyvC1ziL5StDYWzIaWNc9t+12y2n56z9BTQmjKNTvXr2Ji4W889kZ3iKNr9TAwu
-	JgbImpiMLY0wHCqdNs+ORFUqnbhOMMk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776396352; a=rsa-sha256;
-	cv=none;
-	b=uwcY5E5fSvPHWMV8iCA0jHTItIjKvS2txFAhGO3ldmQ80Mg3r6Y+gi5sWaEFanWLSU6JS/
-	xKaFvEr4qsnCWLvtUYdSipwwqDDIUTMjeyK1cYhTyLHkioM7h6F5ZyTqv7sPUVy6OJNyrG
-	3wjiRwbB8+UxWlWeOYgBHN4hCvCrBd4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bVJTtvE2;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776396346; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=jIGmtfqQNV3WWdh9M42ndpoJ6WyORofupaAjImOgxKE=;
-	b=bVJTtvE2lTsUV4O+kHdHyo+GG/wQuoumBkuN5GHuPauRZbKKUsLSOvHA/jNPPAnpRouQ2fxOG/JQwJWBjfuv8qlD7+7MoLfQO1SVSQ9KpeczePn9cOV3Gw0COcW3LrRqxWGEQgARAc+eZUIhUvPRHF27oEChbPTxTx0UE/eJ1qo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X19y9nz_1776396345;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X19y9nz_1776396345 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 17 Apr 2026 11:25:46 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	hughd@google.com
-Cc: willy@infradead.org,
-	ziy@nvidia.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	lance.yang@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] mm: shmem: always support large folios for internal shmem mount
-Date: Fri, 17 Apr 2026 11:25:31 +0800
-Message-ID: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.47.3
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xD+vD5Cr8OBOS0rVMmOY3t/SSk4WUPUpW/zHp5Clk1Q=;
+	b=at6bzeGR74D35WfPsGY2er3TM0SknJeJYLWPOXgMhmF67MJaIWwefM06MlPTQomAY5aaFa
+	zLsxEy68mWkerzo9ozjVWXuKaexFLQWhQe1OCldiCEKknzOhdCRYR0ApCTQWbRuD2/HC41
+	gkfc41lIigTE39gnYbJG+H67FEPBMQ4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776397199;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xD+vD5Cr8OBOS0rVMmOY3t/SSk4WUPUpW/zHp5Clk1Q=;
+	b=eOgJkgo+8MgIVGP9e/c1+XjRF086SGxx89CehMr2ZeBy/PNJqWL1lEMq/wEg5vHwOYeQ3C
+	5NQDlxYkWT1sRBk5/CbJgIDST9Vrw834v2ISrJOvHCfq8v52bF2NX1tCbAxfvB572jCg8X
+	XixTiVmg9+BiLDN/MyLDwMEXAuOLtxM=
+From: Baoquan He <baoquan.he@linux.dev>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	usama.arif@linux.dev,
+	baohua@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	youngjun.park@lge.com,
+	linux-kernel@vger.kernel.org,
+	Baoquan He <baoquan.he@linux.dev>
+Subject: [PATCH v4 0/3] mm/swap: use swap_ops to register swap device's methods
+Date: Fri, 17 Apr 2026 11:39:48 +0800
+Message-ID: <20260417033951.1111038-1-baoquan.he@linux.dev>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: jz9qe5uf3q4we4zutt1ahte4gbmq3g1t
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 39F6780008
+X-Stat-Signature: wdwcarkmyz4jrxpoat5ujx5ctxjsbn9e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4CA9F140011
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776396350-264270
-X-HE-Meta: U2FsdGVkX18TMUTSLBJ5dSXpXegZfzhoSyM9LnAYNjFFhZUNUyHLU3dk1mNccHN5UNyuM49PsxsjSdXBX8+DszX740/hDICj0lNoWS0nHleWpL6A/Sk6iaZIDKuc861fT4LVR6a0L8v+eoVgD7Rey9p+lu1pA6ABMs1EXgfMsReBoBxmH1zYwB9WZOaysFGUxYQFXJxVCNQ3keS3EEezw38JPLKOgCAp6WjxDyCP4QT02SsVPH5gNYmswY0Xy6nYkWuEFuGRXi8Pf/kwI2fxcCGRmS4sCQx/V+EnucjzTd1L5GRLIRtJPjcrlibq52ODWvcjRcb2ITqSWCH6ocQCQFDHdpX0qTCqPLCxAc0Vi7p0hLC2H3MEG3jphDBCf6HNkwcJrpkvyZSFcnsJ2FuKZ+/Gy2ff/hlGsZUmLbWkHbtE/FNrcXAPWdZO2YabwwkCUa5mlO72wQiB8wZDVuJECn+JmlptCnJj4rppm1QcHnGIizjdBPq/wGEnzuTLFRo60FKQYB1U6dJRNXEL9DKHR3Jwleuiq2c0GmhZkPhbFCLQQ36OGN5R8Rrmrzv9GYw5bTjJt78/Un84CEYCKN0NWyCKtZlag+QDh+7UWsvFQNOE22hESsKniNm3RfeZAxfiLwwFq8vzBtkhoWrBW1dAvEORCQpcVoSUd1Wdacn0rPm7QQGqTEgya+07DE9kwj8K5+nl4rQrcDEQ1HouEHztUCBHIkJZtQKOptXFfaYhSJPeJRjWErZFIrwlS//NIM+1UCfpnw5rjEQkKHFWY9ohQ0lohT7nTW2XTImVyE/qjB+VsdZDJXD22u+p9H7P1sszEQ8bnD9gCiEvBjP/e59JlGe0T47kb31TttwpD+uDq0B+AbvTAPQK+pFJgtU6KTxG1RuN0XnDuZrdvB73QDOqrvu8xxMrrl2MU8LdMyE1iScraunaYZBtYUEPOH8OAmY1jd412/jtXWEkPjQGX/p
- 6Mi9PYc1
- hMhs16M7n5tkCKi7ykEnMi68uhHMpRohmvmGHvsvML/mCoBsXowbcMGJng6wegG8fkNrcTqTs8GdV/hGkD3c+HUOjpswp5y5x9MOBNbbGq/4I2G8poV53Ys+4wY9OIt6C3olfAJFa+DmLHVgh/v0RY7C40uHwm0DpweQeA6E1i69T4DEHtuvIb7QRfOURy1niX2ry7MD+2edCT+ti2hsfqRUNXehGI/SNVvJvZjwn0uWz/ni2QgL5p1beN6mM6I7yAlHadFxOF0dRA08YVTomR8QNag==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776397201-460686
+X-HE-Meta: U2FsdGVkX1/nXrSvwcKGfw1CA9mMVMlJ5WT9zZ3bbDzJzX0KTyLXuL7pvXNvg8+Mepsrd7BVWmqHHVKQrh0fhkivL2NxRIkx4PWa8VYK9CcFRdc42EAJ+pdiMwQOjYXN01uTW9Z6Zj89V92H07SkYM46lT6fXgGoZWtEyOZatnECu2JyNDmf+llsFRrqkSL3ZJ7EdE+uwmAsF8svtbxvfTI1qBw9fBdbx7yP8fQYwWXKK3ZS2pkDKCPyEUZ9T63Zjha44Z6SrYHHev6rLUT0JENkOLgn22hinzn5/sm//S8ntSVcNdGH1syFiUo3JzRhK96kzi/giGbCiALieBAQ6PL7wmRb16uAdMMz/1HyQRN0WFk6xOMUP59rai7KUZv68KYFEv8jSjug7Z4GJ+S9K63YTzjz35RA1fEpCMrgkmxC+uxv9bmkZ2OJoiL66GmAlWfoa3IFUSbQ97NcqjUGT617e9iMIcFKjT2CCaz1DeyyOZ9jtA4d6fEhgBEbf1m4DNf9/2xReyZgweNWs9YDW6+3Mi/FU+bS1KxAGZS7gtoszGMvNGhOKfcMzGQDawrk3TWYdzOtfAi7Pbutl2Q1KK1Wl2WcBtS4E6He31AqiffLUZ4FGJwURy7X35ThhXLatUY32H3kpRa3eQdWxF3qflVBTGcDiYDbPcpVsTvDjMgm1WnH4JIRFwWRS9yA0al109Llar6RGWnZCn7RQymIdh22yfRe3Rr2P+V2RGuS42Eb9kxnyq2Y1PHqjXZw86y3s0Z2pKDuckKjIBvH0Xaex9pJ1bXLlBBKpHV1A/p2g81hmuoKWZUum6upYhkV4QbEetAwHMpUEU+UPqkHvrlC1Hl+ZgEtbmjsgXgyqFI2MyyePHPUNFSLTAiaxKqYsJplX29kCjThW6LgMStBv0QHD/Hf4cwJlAEbKjbfm35cx8DVb8Zkv7F47z4PY51pw8p9Ng2rNjsCtG+Ll55Q1V8
+ U27Yv9W3
+ dS5APtZnX24W+xggtyzf50vgWoaUV3QO7LNWoUeQEcTYeYzSu9M2aKepti1HoV3Jp5iHVn3zO029aZmoHFjch83v5LjbdCYzJIx3u3PceLpxIErdbqYEceKX1QsHB0AfuwBkRFr69Kgw5Tf7qj8Rs+0CcAHtt2SsTbfmeZbARaLFtR8leJlbxIR/IUdm9Zp5Mq6Vm4pBEtPYcpud40rhOfw7QbbacMgDJQEoEPtzjRaKJZHdFvUCHO3riucIZfh5ARptmWVFqslfIWcYMX3zGZBZskHdNc5qY9EFE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,55 +92,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, when shmem mounts are initialized, they only use 'sbinfo->huge' to
-determine whether the shmem mount supports large folios. However, for anonymous
-shmem, whether it supports large folios can be dynamically configured via sysfs
-interfaces, so setting or not setting mapping_set_large_folios() during initialization
-cannot accurately reflect whether anonymous shmem actually supports large folios,
-which has already caused some confusion[1].
+This can simplify the code logic and benefit any new type of swap device
+added later.
 
-As discussed with David[2], for anonymous shmem we can treat it as always potentially
-having large folios. Therefore, always support large folios for the internal shmem
-mount (e.g., anonymous shmem), and which large order allocations are allowed can be
-configured dynamically via the 'shmem_enabled' interfaces.
+And also do renaming in this patchset:
+-------
+   file renaming:
+   ---
+   mm/page_io.c to mm/swap_io.c
 
-[1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
-[2] https://lore.kernel.org/all/875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org/
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
-Changes from v2:
- - Always support large folios for internal shmem mount, per David.
-Changes from v1:
- - Update the comments and commit message, per Lance.
----
- mm/shmem.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+   function renaming:
+   ---
+   swap_writepage_* to swap_write_folio_* in file mm/swap_io.c
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 4ecefe02881d..769ef37b1ea9 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
- 	if (sbinfo->noswap)
- 		mapping_set_unevictable(inode->i_mapping);
- 
--	/* Don't consider 'deny' for emergencies and 'force' for testing */
--	if (sbinfo->huge)
-+	/*
-+	 * Always support large folios for the internal shmem mount (e.g.,
-+	 * anonymous shmem), and which large order allocations are allowed
-+	 * can be configured dynamically via the 'shmem_enabled' interfaces.
-+	 *
-+	 * For tmpfs, honour the 'huge=' mount option to determine whether
-+	 * large folios are supported.
-+	 *
-+	 * Note: don't consider 'deny' for emergencies and 'force' for testing.
-+	 */
-+	if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
- 		mapping_set_large_folios(inode->i_mapping);
- 
- 	switch (mode & S_IFMT) {
+Changlog:
+===
+-v4:
+ * Fix a typo opeations -> operations
+ * Fix a code bug inside init_swap_ops(). I was taking a change at the
+   time, thought the change is trivial, so I only compiled but didn't
+   run kernel to test in v3. Now fix it and test passed.
+   Thanaks to Usama for catching the above two issues.
+
+-v3:
+ * Rename setup_swap_ops() to init_swap_ops() which reflect the function
+   behaviour a little better
+ * Check if sis->ops, sis->ops->read_folio and sis->ops->write_folio is
+   NULL in init_swap_ops(), but not spread them where they are called.
+   And once the checking failed, fail swapon immediately. This is
+   suggested by Chris.
+ * Call init_swap_ops() before setup_swap_extents() invocation. This
+   doesn't harm anything and can benefit later adding sis->ops->swap_activate
+   method.
+
+-v2:
+ * lots of cleanup for patch 2/3: renaming, moving data
+   structures, and using const properly
+ * collected tags from Kairui, Nhat and Barry
+
+-v1:
+ https://lore.kernel.org/linux-mm/20260302104016.163542-1-bhe@redhat.com/
+
+Baoquan He (3):
+  mm/swap: rename mm/page_io.c to mm/swap_io.c
+  mm/swap: use swap_ops to register swap device's methods
+  mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
+
+ MAINTAINERS                 |   2 +-
+ include/linux/swap.h        |   2 +
+ mm/Makefile                 |   2 +-
+ mm/swap.h                   |  12 ++++-
+ mm/{page_io.c => swap_io.c} | 104 ++++++++++++++++++++----------------
+ mm/swapfile.c               |   5 ++
+ mm/zswap.c                  |   2 +-
+ 7 files changed, 79 insertions(+), 50 deletions(-)
+ rename mm/{page_io.c => swap_io.c} (90%)
+
 -- 
-2.47.3
+2.52.0
 
 
