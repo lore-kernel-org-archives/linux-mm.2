@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3507AF4369B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 12:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4918AF43699
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 12:46:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B0B16B00F5; Fri, 17 Apr 2026 08:45:09 -0400 (EDT)
+	id B11A16B00F7; Fri, 17 Apr 2026 08:46:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 961346B00F7; Fri, 17 Apr 2026 08:45:09 -0400 (EDT)
+	id AE98A6B00F9; Fri, 17 Apr 2026 08:46:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 876ED6B00F8; Fri, 17 Apr 2026 08:45:09 -0400 (EDT)
+	id A266C6B00FA; Fri, 17 Apr 2026 08:46:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 747856B00F5
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:45:09 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 110218857A
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:45:09 +0000 (UTC)
-X-FDA: 84668017938.04.6156AA2
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3A7D1C0011
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:45:06 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=whGWjVmw;
-	spf=pass (imf10.hostedemail.com: domain of alvin.sun@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F2A86B00F7
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:46:00 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52A941390B3
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:46:00 +0000 (UTC)
+X-FDA: 84668020080.30.580F3DB
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5907A20002
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:45:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GayrPppv;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776429907;
+	s=arc-20220608; t=1776429958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FXXbWD5rA/oeQBIHJ+leDmhecsxq7TxiUCheP87Tc9M=;
-	b=Qfn2e9UkncxbvSkSjmhKJHOPnHlv4xM8KN5A+J0yv5sXTQyUpriZQeCR7KQbJyLNV4xc9l
-	CzfITbN35ugP3q6yFa8HbzAgcuHbfTsnFG+TMdXpOdKs215XYi/j6/b8ovukGKNn6g1zoQ
-	hd349MjDDlc9RGhevqAvc7R1W02cVRA=
+	bh=Ta9DM9SDNRcmSJ5h0e+0G8+56tKcA4LQSKmXx7BeWew=;
+	b=BRRX7/wlVdI1+TJVKrwHjJruurGd5DXpn6MpzwEWI1ebJ4xi+qZV0Zjl6I+o5Si2wIxZBs
+	FEYnuB40lL3psHVvkUYKpZYjUSqzjXBOALNzHJBTxL2TONtH5CfIKW3tTJDJwFHhenaJfO
+	joC6ZHJy/Hfh/ix66GS1cXJQscdWAII=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=whGWjVmw;
-	spf=pass (imf10.hostedemail.com: domain of alvin.sun@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776429907; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GayrPppv;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776429958; a=rsa-sha256;
 	cv=none;
-	b=HgjRqH1pVrvxab7nJkaZtPiyMqW2v17Q7zaidIJQpyHyF5TJmHskwiwFYxwyuc06wb6mQl
-	NDJ3q6aUVBDsD78Bms3gQ/k02dMW9ZjQ8eMB9pAMoC32eroJ0YUElWiQKhrJuM70QcdcaH
-	QcPMh4gMc+vkLWWUpiuNOMKijVHlCrY=
-Message-ID: <6d10d3ba-8e0f-440f-9ef5-220b7bad67a1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776429903;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FXXbWD5rA/oeQBIHJ+leDmhecsxq7TxiUCheP87Tc9M=;
-	b=whGWjVmw1fsTxIxkA4IzwDX17B9Yj8gCGGqfbfcRxWvVbpVfafWXhojQqNx2vnuM79ifu1
-	ZWDGOaKLWaJVdTMyZHxIbaQ63/B3k6qMIIAJ2kRpdTpiTgLslP6ZgSEMddAxohOkxWoy+6
-	w2pGQB4ODkXrmrBsnrRFusfR7vuhkLk=
-Date: Fri, 17 Apr 2026 20:44:50 +0800
+	b=21oPLlGsQ7GdsFIIVw7TGwZZBFyLLmpI3rNihZ3awLKWu4Xwws2P4ICqeM1ZM5uKiGahnY
+	JzGnoxnT7UyJktONJO8r1jOipWR9nPwPEPYtEXvo6n+lXT/3UH9qh860aEVjRaoERpQAun
+	IYoiBuT60kGtrrTB51d338K7pctRvNg=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776429953; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Ta9DM9SDNRcmSJ5h0e+0G8+56tKcA4LQSKmXx7BeWew=;
+	b=GayrPppvNYlE6+Fg0A/xt/9fXZH27HvqWeyHCJxBCv0umR148hnjPhXyYeWzVifis9tY0GErhcLzU1F7OXAxGPqHWiWUaYMQtlXlHb3kULwF7rAcvEd8e0S56EH5m61RH2xGLoPfVVVAwlWZO/Zx3aQwbz8GSOedWZ23H0g2q9s=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X1BNHJL_1776429952;
+Received: from 30.32.70.62(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1BNHJL_1776429952 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 17 Apr 2026 20:45:52 +0800
+Message-ID: <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
+Date: Fri, 17 Apr 2026 20:45:51 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/4] rust: Add helper functions and constants for Tyr
- driver
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Tamir Duberstein <tamird@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
- <20260417074348.98280-1-work@onurozkan.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <20260417074348.98280-1-work@onurozkan.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
+ shmem mount
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+ <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+ <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
+ <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3A7D1C0011
-X-Stat-Signature: eqsjryemigqow5f7xgbuc539qjmdarst
 X-Rspam-User: 
-X-HE-Tag: 1776429906-486963
-X-HE-Meta: U2FsdGVkX19/99PklpcE/Zq5+2pH8UiwP93Qgl5a4wpDegRlfj8GFtTI4yDClJCknu5joV9arkTjHHcTfD8GrhI2+fsne9V4HCnqvZpmL1bxbchVs0MWOnT79FFrC8N17HcAbUxyliFhz88k8cEfv4qtjyot4TBPzxTdK1fLozXVU9VQmAaq7AjHlURAQrFOO+Ymj3cM1NujbCyNoLdzDJ+YOnXl8rjWuZb0m0X7lPkiv1n3tg98PEo8sO2U77IUn0S6Q4EyczT1hSXvaWfj+ydmE/tIfD90G+eTNwdS3rehkNalriHerSbz+j6SdBkTTdo7cw+vXbvZ8ShzanwasDioJKOgc3WgpNaVEIyQvrK0pAqdh1YageCTJti91fsFbJbMMQ2ldP8+6knpVBrZvAtPBnpPsSzAePoZ2EazG0icsPeIDkfevdi3fTZ4nWpUmcqamWji7aDGk8t/EqfbpnxSFs/L8P4qcm54CLSfDknqqqvr/Jt8h6xT1QXNv96K/7IrSC+5Dn4WZSq5lEyBtXHlgYyojg2cZp6xI0An4gHbcg8eBvZYzi4KHDfrFVT0B9M1zng7uuhN8pIPmeknK/0fGx10EwqrjMU3AOQ77RIBbqBaTs1YAn/cqjk+Wn+qTg6DPW/n/tttB3HplDd5sQUTm8z704S3tNxR/9ebGH5UQ5xEfVhnEp67A2rcewxpNXIhE11JqQV1W58lugraQ929msRKsG6utzleSIygLvZ4qypBVTXeMnvykmsM6o3U7ZPwwFQ9HcdvvMd37wDuKKE4SiSeRXz6wsPcDTfIyNROss0i7NI9irmtl87wopMpm19fVEbCUr8n4kUB6od99KDl+4NTi1AkRVINQHbVSoZfYOll6/gGd3bSoNdsiiB+j8z4DdceB/W/NXSlbilRxpU18Xlf0SrIJKrT+XkDkWIiFiRb22eT4qkDH5hiMhZF4ppfofbGXDJaHk3bfma
- UpSkRDjb
- lMRWtjHBr1T9KzVmM51u/MDqeAd0bdRV9gYyQDfa6Ies1NdjdcHq4SrP/ZWSu3gZOUpA+oaKnaoRh9/52wwqvNQty9W2ipyQvPpV8U9ZBPlnZUv28rbiaPmMMIX0HBcbpJwKxBZLs14mTLBjuBYzKu0h+y+SlWvzL+R/A8HNWOIuAItxb+saFzQcvEWy5bGo3T/8pAc6+rBwaQprNEaerbZVxFER6t/Ee+f3aAGu0af+lpnYQnJJ5naDUjKC4fEMnva+cKnBtVWNaoDF+G2OSG6xFuS7dttRrxfaKuxq8aAjGHbKUukYPcI1tsKO9WDiKow8v
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5907A20002
+X-Stat-Signature: xcuqxin77hi1mq1wrxuciqjus7qhb7p6
+X-HE-Tag: 1776429956-576101
+X-HE-Meta: U2FsdGVkX18/nW9O5BU9WQcWqGnGCWM9pAwr4Dv9OlyaV9qyBZrgmKU/w4/dwQ3jg/sxXPD1GGZZ2iR9u2BEwkI5nZ7LEhwCguu3M+ZiY5/dW1Bm5sC9J5tQPeGREWv8N8frKAR25N/ZQXJRda1jXS1GLfhxl7wj4iK3Hj1EOQWsiWGjulOc02tgHEMgPX8PwMBpH+NVoFReaAkELXlc7VHglrRNqg9dhV/NnBXBCZqNdEnxT+BnjGjqWQYxcQISZC0F0GiUvARoM9x7t6tpNIIi/BljYAURY4rk1gEtzWFCtqVjnpAryw5mPapiQ7tIhA3jgxXOnDWU9BVfrO/45/BpS2XaGBJXHunlAH1CYhMqqk3ZdI2A5suRlGefffPgSpkoq87MohXtQ0JDrcvlz9ag/3DZ0FuVBQqmX9zWhkyBvBrCQ0PU1KxsMOfydiH3zEunjDrCXRekhkiqu29jMFSmXkpklWjUdLlr9wnYPd7jLsxDRWdJuAlRtIxP7LNKMqXDe263FjcuSZe0jo8tT+e+uaaMcBKt7bdJ2lms29WjCjRVDnXQkm5IFs0D0wDN3FpBCL3KOWdSqPJy/+bR9TWDrx9zmrCM/39tM7YDkiqaXvsTPmMbuHU1+wdrxFRInBqhVRDrzBYE4J/vn+AIj11kEIfM/2hUR/3G9J3msJlwP2bF5w2mfjEmkPrIyg7qewir2XAkIQpXuVd2hq22aNGIXaBHaMdflSCMgC9sB52fniY6Su4tEMv/dH4HNeROQLfr1Oam1qH1s/ycLt7hjX+IajLKzGKzMmcHcOR6bgDiAlUzREGrTUSmQMavW9KmiV5kmi8wafdAfDl6FaVLv9iI9eXG2GZYC1qx4G5gtxIzyPprK9yD4cez6kPOZGGeqyQ215xC63V8DF76v9pREaRdF6brYUN8Yc8o5bZ3efwyF+f+e/5yk4HoURreenfv1ciW4gsstU3Dc65IsWa
+ rfhkJaAF
+ mYrQFWNUWZvsN8Jycn384wKvu+SwM6AhnI29nvWotWczZGC4r1kcK3RfWje2TnfIGO2OgGkMelsdeRAOjaYebTvO13tA/Ovpjfdyvuu5zfOvj6Miu8xNJw13FETWprSCV3Sc21NtyWWpQplIw+Gitx2HjtwJHypDhYeUEXebRMKBs2vZ8mSR1GB0Lv2aPKUa4Yo6AR5ZyacNdTIgRcj84mttKUsKyugOpBNwL/M/4jaSleBclKyMcTDdPuTB08jr9VHWhRkriOd+thJ0nAwhOW1wDwIyFeBatLSmdA1ZKutEpEwuvk97ArsKZXHNJyDBHou6NkTGAzO+scXaxLanqohLyr7hvqnyXtdLWTz76kZ+O2kuROzaaMvCpCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,63 +92,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On 4/17/26 15:43, Onur Özkan wrote:
-> On Fri, 17 Apr 2026 09:05:50 +0800
-> Alvin Sun <alvin.sun@linux.dev> wrote:
->
->> This patchset provides helper functions and constants that will be used
->> by the Tyr driver's VM and BO related ioctl implementations.
->>
->> These patches add:
->> - SZ_4G constant for VA layout calculations
->> - A task_size() method to Mm for determining process VA space size
->> - Updated StoreError comments for alloc() usage
->> - Guard::find() helper for finding the first present entry in XArray
->>
->> This patchset depends on Onur's xa_alloc implementation [1].
->>
->> The complete patchset, including the Tyr driver ioctl implementations
->> can be found at [2].
->>
->> Link: https://lore.kernel.org/rust-for-linux/20251006163024.18473-1-work@onurozkan.dev/ [1]
->> Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/64 [2]
->> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
->> ---
-> FYI, there is v2 exist and I will probably need to send v3 to address some of
-> the review notes. It's good that we have a use case for the series, I will share
-> (probably during the next week) the v3 before sending it to make sure it works
-> for you.
 
-I didn't notice there was a v2 version. No rush - I'll wait for your v3
-version!
+On 4/17/26 5:52 PM, David Hildenbrand (Arm) wrote:
+> On 4/17/26 11:27, Baolin Wang wrote:
+>>
+>>
+>> On 4/17/26 5:21 PM, David Hildenbrand (Arm) wrote:
+>>> On 4/17/26 05:25, Baolin Wang wrote:
+>>>> Currently, when shmem mounts are initialized, they only use 'sbinfo-
+>>>>> huge' to
+>>>> determine whether the shmem mount supports large folios. However, for
+>>>> anonymous
+>>>> shmem, whether it supports large folios can be dynamically configured
+>>>> via sysfs
+>>>> interfaces, so setting or not setting mapping_set_large_folios()
+>>>> during initialization
+>>>> cannot accurately reflect whether anonymous shmem actually supports
+>>>> large folios,
+>>>> which has already caused some confusion[1].
+>>>>
+>>>> As discussed with David[2], for anonymous shmem we can treat it as
+>>>> always potentially
+>>>> having large folios. Therefore, always support large folios for the
+>>>> internal shmem
+>>>> mount (e.g., anonymous shmem), and which large order allocations are
+>>>> allowed can be
+>>>> configured dynamically via the 'shmem_enabled' interfaces.
+>>>>
+>>>> [1] https://lore.kernel.org/all/
+>>>> ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
+>>>> [2] https://lore.kernel.org/
+>>>> all/875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org/
+>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>> ---
+>>>> Changes from v2:
+>>>>    - Always support large folios for internal shmem mount, per David.
+>>>> Changes from v1:
+>>>>    - Update the comments and commit message, per Lance.
+>>>> ---
+>>>>    mm/shmem.c | 13 +++++++++++--
+>>>>    1 file changed, 11 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>>> index 4ecefe02881d..769ef37b1ea9 100644
+>>>> --- a/mm/shmem.c
+>>>> +++ b/mm/shmem.c
+>>>> @@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct
+>>>> mnt_idmap *idmap,
+>>>>        if (sbinfo->noswap)
+>>>>            mapping_set_unevictable(inode->i_mapping);
+>>>>    -    /* Don't consider 'deny' for emergencies and 'force' for
+>>>> testing */
+>>>> -    if (sbinfo->huge)
+>>>> +    /*
+>>>> +     * Always support large folios for the internal shmem mount (e.g.,
+>>>> +     * anonymous shmem), and which large order allocations are allowed
+>>>> +     * can be configured dynamically via the 'shmem_enabled'
+>>>> interfaces.
+>>>> +     *
+>>>> +     * For tmpfs, honour the 'huge=' mount option to determine whether
+>>>> +     * large folios are supported.
+>>>> +     *
+>>>> +     * Note: don't consider 'deny' for emergencies and 'force' for
+>>>> testing.
+>>>> +     */
+>>>> +    if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
+>>>>            mapping_set_large_folios(inode->i_mapping);
+>>>
+>>> Two questions from a non-fs person about the semantics here:
+>>>
+>>> a) Can sbinfo->huge be triggered later, for example, through a remount
+>>> (staring at shmem_reconfigure())
+>>
+>> For tmpfs, yes.
+> 
+> So, we could pass this check here, not setting
+> mapping_set_large_folios(), but later someone toggles it and we missed
+> to set mapping_set_large_folios()?
 
-Best regards,
-Alvin
+Indeed. Good point.
 
->
-> Thanks,
-> Onur
->
->> Alvin Sun (4):
->>        rust: sizes: add SZ_4G constant
->>        rust: mm: Add task_size() method to Mm
->>        rust: xarray: Update StoreError comments for alloc()
->>        rust: xarray: Add Guard::find() helper
->>
->>   rust/kernel/mm.rs     |  7 +++++++
->>   rust/kernel/sizes.rs  |  2 ++
->>   rust/kernel/xarray.rs | 28 +++++++++++++++++++++++++---
->>   3 files changed, 34 insertions(+), 3 deletions(-)
->> ---
->> base-commit: d1d81e9d1a4dd846aee9ae77ff9ecc2800d72148
->> change-id: 20260416-tyr-ioctls-deps-25805eedf332
->> prerequisite-message-id: <20251006163024.18473-1-work@onurozkan.dev>
->> prerequisite-patch-id: c472a9548969ac774d36fead73378961a0d0489c
->> prerequisite-patch-id: 63890b91e911cf96cb42308c056d639580ac0fa0
->> prerequisite-patch-id: 337eb93db35359c611abe9cba299e6ab0525a2b5
->>
->> Best regards,
->> -- 
->> Alvin Sun <alvin.sun@linux.dev>
->>
+> 
+> Or would we always go through another __shmem_get_inode() after a remount?
+
+Not really. There could be files created before remount whose mappings 
+don't support large folios (with 'huge=never' option), while files 
+created after remount will have mappings that support large folios (if 
+remounted with 'huge=always' option).
+
+It looks like the previous commit 5a90c155defa was also problematic. The 
+huge mount option has introduced a lot of tricky issues:(
+
+Now I think Zi's previous suggestion should be able to clean up this 
+mess? That is, calling mapping_set_large_folios() unconditionally for 
+all shmem mounts, and revisiting Kefeng's first version to fix the 
+performance issue.
+
+[1] 
+https://lore.kernel.org/all/20240914140613.2334139-1-wangkefeng.wang@huawei.com/
 
