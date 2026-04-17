@@ -4,95 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62709F8E4A7
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 04:42:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6BE4F8E4A5
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 05:37:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C56B56B0089; Fri, 17 Apr 2026 00:42:50 -0400 (EDT)
+	id 7A0626B0005; Fri, 17 Apr 2026 01:37:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C07966B008A; Fri, 17 Apr 2026 00:42:50 -0400 (EDT)
+	id 7520C6B0089; Fri, 17 Apr 2026 01:37:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1D406B008C; Fri, 17 Apr 2026 00:42:50 -0400 (EDT)
+	id 6405B6B008A; Fri, 17 Apr 2026 01:37:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EA0A6B0089
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 00:42:50 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2D83A140AC6
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:42:50 +0000 (UTC)
-X-FDA: 84666802500.23.093B319
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 63DF88000C
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:42:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pfGQ5i1V;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776400968;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 55B8F6B0005
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:37:57 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B84FE140ADA
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:37:56 +0000 (UTC)
+X-FDA: 84666941352.04.838ABE4
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B82781A0004
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:37:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=b0ZhOcub;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776404274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wpj39TGx/mC1IMxjnHryJvwkINMN0YeHEncMqqCr9og=;
-	b=d5aKIBornsLtySHuJAr88sJFmyoQ3qhRrYq8t573hq6diCALVqcHCQn/BaSfG5dkeQnNgw
-	f8qI6NafXwqOyWCdytmTM1632PMS+tPfB4LBj2eJfI3jzxNtRSLGlsrU66L5QBvTNSiwQK
-	dSfSGwo4a9wMi0J610JriewvJBH6Qfc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776400968; a=rsa-sha256;
-	cv=none;
-	b=0IQ+usD+0EYUWVeHtxuGRwSHjBMAdvc8xYceC1Ft4OwJ2omXWkU/PEfUbpXxBGsNsn2nMb
-	hAq7aTT/+pwD9PaBHD2Vnouz4zTombLgue6ACg0g5ZlLde3mecNBbc3maR+LIh3hjo+D2d
-	LEQXqLm/VKs9dhr0s2d9DcJJHaPWJi8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pfGQ5i1V;
-	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ECCE5444FF;
-	Fri, 17 Apr 2026 04:42:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAF1C19425;
-	Fri, 17 Apr 2026 04:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776400966;
-	bh=+kZcyO2YZoRks810z1foc/yqdqsP8AdQc/GigncPdOY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pfGQ5i1VLFUUh34+/+2ZJ/V44nhKo2xNclSoGPtwovtCwj1cG6ZQf3ti3r2EXSitX
-	 7mJyT9d3TCfs9780go8IhtH920vp4qoBQX/crZM7RcTWAUfaaKUOFLC3mIRX3/KG/L
-	 ACBjM+96sMBelsfvWCPPQ3/PUGHEc0GFrCIlNHk+Vrm0hczq+b6Hq6tKw1KVXkac/3
-	 Vuk31u6o8Z35yuYIwebWWKYd45HalbXTjzQCVp2BGG4GZchpN7iBVY8ZAkEkVQ7WJn
-	 Ghw9ik03Fu3oBmqTiQvABV5dKdd0zntiU0pdUPsA08r7MWtR3DivtjD29SkfohQNsX
-	 3drwy+Ol8BqVA==
-Date: Fri, 17 Apr 2026 13:42:44 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	stable@vger.kernel.org, Vitaly Wool <vitaly.wool@konsulko.se>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
-Message-ID: <aeG6RG41sgZuerYa@hyeyoo>
-References: <20260416132837.3787694-1-elver@google.com>
+	bh=f1nLhiDGr288dsLMSkKVm+dOqBnN5Kc62Jjcy5ZhGdg=;
+	b=kkjLWuyucKJ5kYxUG4p4815QjKgb32Tlr7QPG9C0nkkgugSgj1euG7R2V3j8Deu4aVrLtp
+	atXt3V5gUX8+nxc10q1BqSLMoBX+Z6jYNLTiKj6RLtO8vyg2NSLbatUqwDBoQaBeGPXeky
+	8iqz79crvZClSHONvGb6ct0RNGrWUlk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776404274; a=rsa-sha256;
+	cv=pass;
+	b=PxDO2b7Sn42yvMQ1ukHAQsGjhsErWd+FJAGbHHaB0lby3EUmtdCyogM32HPvuLZbUiOmX2
+	bpUgoQgul+nf7J55Oo9pMVn4GqH0EATjjv4JmwnB4UNUEfgiEMPNRuib0TFDTKxWtHgwPP
+	A8X8IwgE6L9Nq2MnJBT1LMr8hoUhnQw=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=b0ZhOcub;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43d03db7f87so134396f8f.3
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 22:37:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776404273; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cGWS7wsrqoYfdjTB6qfX+/tm7JOWb2er/FMlbxjWovu2K4z/E5cUCYATGCNfOdEMvg
+         eCPuoAlsjwHH2uJAKUfB6VkV0MHYhCl57kQ9BU91VsucQNjYK7e4coRk7UtD/UBTd+22
+         tILFuEGuEuC4cyaleGbdz+9qi42eqW0YkD23kZeZ1ve/fW7APajPalRPxPAUQokO6TT4
+         FI2KMUCqB0Jlojpmc1dwjxrORRn82SLXLLiWbSNQLirEnYPDTNkBOgIHpcUQwjrdKsVf
+         3IAoBRog1TLy7+7tO7KXo+0sVAWJTEeN/F6Wx3XdCrNLhxEaonVB8qk7NtESYGc4d5OC
+         w6VQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=f1nLhiDGr288dsLMSkKVm+dOqBnN5Kc62Jjcy5ZhGdg=;
+        fh=OfP79IYh8IDx1u+r7w4C+6RzDD96PHj2Iwlj4+FiFqI=;
+        b=BgonYggONqt6xeJ40/B5jet0WCZoVDEWW82vtrqpQ+TzmigaTZRzAaddQr+2fqRV1I
+         Alo7526NnmIEIe7ZbGmPa8+YTIucWxIbwr3FvDiWZy1qm6+/ap/5mAJrF88OrVdzIw5f
+         2CSt3HIqzyaKrTWShnHFErFABLeD4K4+kqkea0FLCyr2NylVnYO2u7kWrNb7aIOdb9j5
+         NC4DdDWcRTHfI7luaK7Fe+wOl5izdqfFUXx+e2f4VY+g2jqHX9nZy0SL7xBebQSbBNBp
+         ntg+wifNTM5MVAz2h+HS4Y/CFsQ+a/Ea18UxDCHL5zsfvYFD87ltuyLTynID3A066q53
+         lyEw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776404273; x=1777009073; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f1nLhiDGr288dsLMSkKVm+dOqBnN5Kc62Jjcy5ZhGdg=;
+        b=b0ZhOcub5e6qcUrlh1Esy9Kmja0pevPTCK2gQB0VDvhoShejW8BjFKjC6TjENyI+sO
+         pe49Ll0ZVRanSfg6cvhHPavIR1LBZb4aHhi8CEPMI2VlQXNK5O0jsEwXarVg0LRkGs+Y
+         vnBmMgdmIrvR7Cu4LMv0C5QaYhO0LLEH6r1PyXbd8E92TAuZGh9emkmMeEFXwyB/UfiI
+         a5gNmMEHp2xK69T1G6bNF28cYv784Vjw5ImDS4betKSY5QpPrKNU+47gydY+4EfDGjvd
+         dZoG2C60/hgJKx3k1j/tEKw6fufknzx7dS+LDiEff+CUUODfo76C1yVBerhxd1QwDiAl
+         1VwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776404273; x=1777009073;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f1nLhiDGr288dsLMSkKVm+dOqBnN5Kc62Jjcy5ZhGdg=;
+        b=ObL3rDqYWmRPmEVew0CNgc3f+tN1U0uTrWfQCpWGCh01UFGnWaRpEWJyAgu0U4z3FF
+         uVgLmgp+TkVbmNuACI1yjSl7ygRP4Bks3pQTd5/mhHlIYXZ8E5/Rk8QdjkMmkeHzBtmF
+         /moiSFpjXmEyfKOwSNtJrhI8IKS64MUHW5V5Y8o67CiFtbYC16OiEIN9LvXsZ/9uNObq
+         jSZz0ZN0ZUWLZ4ox1xzO7LWScRQ/Umbdxli8pXTO6Q1EmTyC6+RjIg/zwKTmdc0a5Xfp
+         oGf95gXA8/cbJw0+5aqYWlqWG1RmqigQLHMvQ0LyRXGJNLvTLbqRqlyYTxkpG1NP3ZTq
+         35wg==
+X-Forwarded-Encrypted: i=1; AFNElJ90tCnW6S9SCUARhe5gSd20nQahDwmuhPoYse5LpWraCjD4MGPAkbhxvYZugQVlEetr5dCkzXjvEQ==@kvack.org
+X-Gm-Message-State: AOJu0YyKgVE6m1wkh/aJYQ83+0rVxMDIHaoMZJVUy9/gIe1ltyJbK8rV
+	QAevnyA7ef+5BIs+Sgy55ZqOGXDI6ga9oiixmDDlEb4EstXgu38Kh9i1mNFClM3JggSipDK+P5B
+	Ftwxm0u2pHvGkoXPDBV3mkGapdm19DRQ=
+X-Gm-Gg: AeBDievbK+uv9pN9/zatIaKlqdiT25f9QiXnBtYrMXYnPQWwGkRKS1bQCR/wK1wzb6T
+	ad0QR3RLGyzH2Nu8vK3BHidzJi6BQ8Z7LylZ1aQ08JnZVQHHmASrPExmTk0FNL2bPvwoM1+c97A
+	p85fSmGPHgcnvaEi0lFhoqw8hBlrNacK/sP+R1yhjyctwl0QOuOBLL9Sc7q80v8gN6C3GoFIwwP
+	bxtH+qjTNpLiWmyoxZ6+4UJdUApR3pF1JZMVF8HkXSGlWgiecvMuFo9D06Tb/zv5JD/COtSNNBy
+	oaez/l/Uf6kQ1+o/9ho+NECHb5sii8qZeTo2TKbwFufKvjffVF8HllEJ7PuZ9V/K44jKQCj7JXB
+	kXAGC/pDLxUOd0h+6FDyo7JcrccBXnVu7tfUZ
+X-Received: by 2002:a05:6000:2c0c:b0:43e:b0f7:9ce9 with SMTP id
+ ffacd0b85a97d-43fe3dc49c6mr1888774f8f.14.1776404272723; Thu, 16 Apr 2026
+ 22:37:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260416132837.3787694-1-elver@google.com>
-X-Stat-Signature: i1xu5ci6mcwzf98gxmbzk9q7zmbws1eo
+References: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz> <aZAWGwZP_Z75YHKt@casper.infradead.org>
+ <ad_cqe51pvr1WaDg@hyeyoo> <af3a7fa9-b368-4ffd-964d-9e4fcba863a8@kernel.org>
+ <DHUNDMZS4YQ0.24SZXD72JIMCE@gmail.com> <aeDzovGHlFmPFpNt@hyeyoo>
+ <CAADnVQLc_6SfF0h+-W+-sa-Qfvn8a02b6sbELJwpQcG7CFNqAA@mail.gmail.com>
+ <aeGcHXmbCuZ8cNis@hyeyoo> <CAADnVQKLNDitD+WfNCr-nB955GVO7YZeHMjkuOs-=sqnvYyTxw@mail.gmail.com>
+ <aeGwM6FPL-yJEs1q@hyeyoo>
+In-Reply-To: <aeGwM6FPL-yJEs1q@hyeyoo>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 16 Apr 2026 22:37:41 -0700
+X-Gm-Features: AQROBzAQvF39hzojzzSuwgce4QBcnRomSH3-3FqEI6I-uBX2RL-EggL7IeUZt2E
+Message-ID: <CAADnVQLtZTExAbYFh5GXjvgJoDt+D7_pq_rRVdAQ4anUdhkOZA@mail.gmail.com>
+Subject: Re: [RFC] making nested spin_trylock() work on UP?
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	LKML <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Waiman Long <longman@redhat.com>, 
+	Mel Gorman <mgorman@techsingularity.net>, Steven Rostedt <rostedt@goodmis.org>, 
+	Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: phk77cmdhynr5zu35b1gtzb38qtbd37e
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 63DF88000C
+X-Rspamd-Queue-Id: B82781A0004
 X-Rspam-User: 
-X-HE-Tag: 1776400968-93735
-X-HE-Meta: U2FsdGVkX19ORQDOVy5SbxjAw0q9GPi4W0LKG1nl1giPygReLPxLT4Qi3nCwakvHLfphXhpvdYIPq5IUxQ0Lh40WzkPnv5GLxmL/o/E537f4Z1+QGJjGAIExLRoyXF+BFoPNtgEioSBb4iTSzIV/xqzozW+yDBiljnFyPfj34J1y4afq6uSp7Xtesl/QAQs0M5494YOn6g9kyW4beT6offZKA5hNmRISAZPkw/W0sMltpIAVv5bYoQ1y0grQsP5b5gQTLsuF2lUDp33YrtdIX7shpCSJqTR9wRPgAUYBbkn4Al0ga+t534TL3shJp4tH79Mp3FkbAfdMMHG3gNaOciHXA3cYPAqZZkvsRN9hgTmi1D6kzcHH1OmSpiLVFNF7VIcwGQnvZx7BPhtJEu3w2Iz+4crdSrjGSwWdFuCDM8PhZymD6/zQN7I8wR+B6CooI/hKXVfV8BY5LrmkkNxYtY+PjZqxrI/QHA9w4jt66z7XJDaD8SYFax8oDGsKcqRYJrRM1iRsH9ctEGBJLYdm1qHHxkJ6srzZuaSfXesCFlS8egX46v/03VKkaNApbBN02LaQjTpYaFnxlnkOkZTsSBQhEepEYn2SuOXpx+e83wbeptymAcLXuOnpUcG25hUySz3ViYJu6liyopV2OtjL0//5X1cmcmJXu1ccNETX0ZsHbbwhsKFBaxa4TNoNhyrNRXE8RvIP326eRVizvmroMjsH9YKjEaLkG28moc0teVi6iw8MmOj29p6WEE2rTXpLMiKTFr7DNRQl5LCp3qDXkxpgTIZRZKA8rW4/N2+Er6/tGhhHb/H1Z9qef8xMwD9VNbXMQUfXTI9uUit925/XYVz2+DOoaPSzJPmQQAt171NuyFapKIzXb/mZnQzkqy2WrgjBWcByhkllEVzNl5/wTSomanaAJdWNahaPwXITZEUOdhgf7i5kebzM+b/jfRRDeEiMVCtmscy7WOPwV11
- ILFvRcym
- 2OoZ0ZPYpNxxx7OjEqa6OQQ0C7PO3hEVQ+a7syYAISwaIL0Q6o8u+wUb3O0eb534Qp02NR0DF44jKpZpUnGh4dpXSk4nwUAN8G/OJRApoYfz9gXZVN3/1sK3f4/cfrOpMs00ET0ZP1kI6cFulZiflJvGStcT1phuHyAYi8+88gaSzJkF7dOEEkU1wIUxnDVGxWyZah/pavdBDIpZY5qBvMYdISBDAvkHKmzTg+k8jZHGmfM4wg856rsvM5f+EbZPApg2013ni6+I+HtS5Vt+wY31S6zalR1dJu5FiMpKEZzdEKmsjN1LapCnHN7YfTWFUuZ59KDbKaqi5yE0V2Sb02K+yzc2YRopPYMuhdh3XbsxhpOQ=
+X-HE-Tag: 1776404274-547825
+X-HE-Meta: U2FsdGVkX1+y52CyLoIdFh7xeKS6ApJkZ/yDWDlIh0mEJBgvMiuwiG6CyFaElZ17Zdf+pxUefDv/XcH6AlVWMe5hU/qj5hXYbp9bKn6dg2qSy860iQAhX8yWRPRQXnNV0iRA+lKjRCkjConvyjhMaMhhSnHZLIEltVcd+KbPOdqqiun4IbcOQQ8QQIbtvjkgj3dRbuXruFkRkg1Tq1gmQ7/HdSWaVmW+TXchoW2GAPjQ7K3WBwuHpYtbU1EPi/s1QMIhjqwIZj0Knon5CZz+1gZqhxOi5xgUd/KCJ7ikwtuMWlprDiKXBpJBoIP/JGhcTwO4D8XSJRlgz1IVjB5en8VrWi6wKj1Z/uD1tziI4BobLqsIkPzfHKse7jYJ17x+9/JFwEEo31f1lh2tE6ApJOR96QrIj/LMW3b5D0L98MBpq//4WW/LPj3NAj6ADFS5gnLh6SGP6TFWnN83AsZBOJJZXrT0PiAX5VmkLgoYCTb+SZOaUPSuBt3vlmDxrjNDEc1IDNLLHn72us82GW5jHYmjRf4Y70yFR9zb/hiF+2uSNGIaeGJb2ElodvsmidWDW0cuZOJ++QqbhtjmtuVNWxWXy1ZncMwWYRJ3rPrSvqOetvO57/xi3TisnrChCi8csMfIKjXlg7mPLEHON79zI90jSztTh1N94oIpXo8P2h0KteTYzPUJHdxxilxcLIC4TiNNNbqZ2skc+AcWexvu93luPJrx+05CjQpnRwGPpo3tPNnHHyfFQsexffVAQGFtyr99DHImvYCJ2Zfy1mCutLEs5px0cDnH6966K5fhfkJXe4OupT7ckYg8o19KNNgOshdy9inKiDf5IwiHR7M/3DpOnGAK8jSCs2uZ3ACMr/5Tl+8bSJ2RUbjwqVNor8adcLo9buuM1ElBvyFDgLKhTu7HmKaINy9ya/0LLFIxyMkDXWiRfbgpTcxwgT8qw2UCpX9UpgTVrM7ki5lZW3O
+ mH9daqCC
+ akXu7TdJihfhO8M2klrhkD4C1ALcVJ+c3YdCm4+rBNBlXmSwGRSdU41hzzXCGrOfjX1AMPazkCUYUNpfgo74YnuIBJGx78LMcQUAAAV5WwmRKRZeaXtpw7A1l07ZvFLyhgN6UMMHB6FH/Ofez5rc3o3M4Qn/nFmLBh2fRy5D47JqD0F7dlQMyHvrHiyRfY4YLNBl3xecP+AOF9vGQmdYMlsm/grMa5PUcLNeR1zqsgvCgviRaQlNiykH+TlVe1VYseGW8IRqpJmoXCR5uCVsBJi1lvFZeV4UeKT4AxlIw8uiW38+H3q+vu8H2czjle7II4fes5hcSPUBBen6IUATN1alGQBVkt49jnqvJH4bkmvuHr2GG2qXMgyX11iAARXuQPwS9C4lJrlm4IT2836IvMS7df7YNUjdKy3jfuoowPqe97w0vEpJrm91YF+2R0vO45KOYw7fKCOWk28Iab8su9J7quyBO0WF9N/G7mVHnIyP6TN1VC3Vl5wjroC7PcJ3MdEfIlw36iezglNp4K6fUMUhBLnpT7yfeoOZ69arHFTABB5Jbj+X3ZYHKpK7aExQt1DDzpXNi1jwt2LY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,78 +153,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[+Cc relevant folks]
+On Thu, Apr 16, 2026 at 8:59=E2=80=AFPM Harry Yoo (Oracle) <harry@kernel.or=
+g> wrote:
+>
+> On Thu, Apr 16, 2026 at 07:41:02PM -0700, Alexei Starovoitov wrote:
+> > On Thu, Apr 16, 2026 at 7:34=E2=80=AFPM Harry Yoo (Oracle) <harry@kerne=
+l.org> wrote:
+> > >
+> > > On Thu, Apr 16, 2026 at 07:37:49AM -0700, Alexei Starovoitov wrote:
+> > > > On Thu, Apr 16, 2026 at 7:35=E2=80=AFAM Harry Yoo (Oracle) <harry@k=
+ernel.org> wrote:
+> > > > >
+> > > > > On Thu, Apr 16, 2026 at 07:26:36AM -0700, Alexei Starovoitov wrot=
+e:
+> > > > > > On Thu Apr 16, 2026 at 3:05 AM PDT, Vlastimil Babka (SUSE) wrot=
+e:
+> > > > > > >> I think we need a special spinlock type that wraps something=
+ like this
+> > > > > > >> and use them when spinlocks can be trylock'd in an unknown c=
+ontext:
+> > > > > > >> pcp lock, zone lock, per-node partial slab list lock,
+> > > > > > >> per-node barn lock, etc.
+> > > > > > >
+> > > > > > > Soudns like a lot of hassle for a niche config (SMP=3Dn) wher=
+e nobody would
+> > > > > > > use e.g. bpf tracing anyway. We already have this in kmalloc_=
+nolock():
+> > > > > > >
+> > > > > > >         /*
+> > > > > > >          * See the comment for the same check in
+> > > > > > >          * alloc_frozen_pages_nolock_noprof()
+> > > > > > >          */
+> > > > > > >         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_=
+hardirq()))
+> > > > > > >                 return NULL;
+> > > > > > >
+> > > > > > > It would be trivial to extend this to !SMP. However it wouldn=
+'t cover the
+> > > > > > > kprobe context. Any idea Alexei?
+> > > > >
+> > > > > I think Vlastimil meant it'd be trivial to do:
+> > > > >
+> > > > > if ((IS_ENABLED(CONFIG_PREEMPT_RT) || !IS_ENABLED(CONFIG_SMP))
+> > > > >                 && (in_nmi() || in_hardirq()))
+> > > > >         return NULL;
+>
+> Just realized that it's unnecessarily restrictive to disallow
+> hardirq context on UP.
+>
+> Tried below and it resolves the issue.
 
-On Thu, Apr 16, 2026 at 03:25:07PM +0200, Marco Elver wrote:
-> Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
-> k[v]realloc") introduced the ability to force a reallocation if the
-> original object does not satisfy new alignment or NUMA node, even when
-> the object is being shrunk.
-> 
-> This introduced two bugs in the reallocation fallback path:
-> 
-> 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
->    before 'ks' and 'orig_size' are initialized. As a result, the
->    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
->    allocation.
-
-Ouch.
-
-> 2. Buffer overflow during shrinking: When shrinking an object while
->    forcing a new alignment, 'new_size' is smaller than the old size.
->    However, the memcpy() used the old size ('orig_size ?: ks'), leading
->    to an out-of-bounds write.
-
-Right. before the commit we didn't reallocate when the size is smaller.
-
-> The same overflow bug exists in the kvrealloc() fallback path, where the
-> old bucket size ksize(p) is copied into the new buffer without being
-> bounded by the new size.
-> 
-> A simple reproducer:
-> 
-> 	// e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
-> 	while (1) {
-> 		void *p = kmalloc(128, GFP_KERNEL);
-> 		p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
-> 		kfree(p);
-> 	}
-> 
-> demonstrates the issue:
-> 
->   ==================================================================
->   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
-> 
->   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
->    memcpy_orig+0x68/0x130
->    krealloc_node_align_noprof+0x1c8/0x340
->    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
->    lkdtm_do_action+0x3a/0x60 [lkdtm]
->    ...
-> 
->   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
-> 
->   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
->    krealloc_node_align_noprof+0x19c/0x340
->    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
->    lkdtm_do_action+0x3a/0x60 [lkdtm]
->    ...
->   ==================================================================
-> 
-> Fix it by moving the old size calculation to the top of __do_krealloc()
-> and bounding all copy lengths by the new allocation size.
-> 
-> Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
-
-Looks good to me, but I think we still have a similar issue in
-vrealloc_node_align_noprof()? (goto need_realloc; due to NUMA mismatch
-but the new size is smaller)
-
--- 
-Cheers,
-Harry / Hyeonggon
+Ack. Even better :)
 
