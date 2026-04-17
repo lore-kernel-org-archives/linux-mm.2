@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC11BF8E4A7
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 04:37:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62709F8E4A7
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 04:42:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B1C66B0005; Fri, 17 Apr 2026 00:37:13 -0400 (EDT)
+	id C56B56B0089; Fri, 17 Apr 2026 00:42:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 262246B0089; Fri, 17 Apr 2026 00:37:13 -0400 (EDT)
+	id C07966B008A; Fri, 17 Apr 2026 00:42:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A02C6B008A; Fri, 17 Apr 2026 00:37:13 -0400 (EDT)
+	id B1D406B008C; Fri, 17 Apr 2026 00:42:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 097F56B0005
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 00:37:13 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A42F813BFD2
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:37:12 +0000 (UTC)
-X-FDA: 84666788304.04.F49CF11
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DDB251C0004
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:37:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bVYKLgV5;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EA0A6B0089
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 00:42:50 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2D83A140AC6
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:42:50 +0000 (UTC)
+X-FDA: 84666802500.23.093B319
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 63DF88000C
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:42:48 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pfGQ5i1V;
+	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776400631;
+	s=arc-20220608; t=1776400968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RVyS+mQkhwP5a7tuOzG5TqsYQMmlG1hMkxkwX6WFouA=;
-	b=PNibz7E6WuXeJQ37e1zOwtfrfAqX+cAOGlxLou1xpO3A5l+gTggJdR5/IIxQ4C1QyzRNX8
-	gbf5aohcQMHmkoNYQkg5xfSqYivW7eqvRL0aa/A6bNETwcuXdAU4hL7M1yBdFutpl7yG1o
-	GSNWa4lDb2X6UG7CncU2fCXQ/G2QjYA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776400631; a=rsa-sha256;
+	bh=Wpj39TGx/mC1IMxjnHryJvwkINMN0YeHEncMqqCr9og=;
+	b=d5aKIBornsLtySHuJAr88sJFmyoQ3qhRrYq8t573hq6diCALVqcHCQn/BaSfG5dkeQnNgw
+	f8qI6NafXwqOyWCdytmTM1632PMS+tPfB4LBj2eJfI3jzxNtRSLGlsrU66L5QBvTNSiwQK
+	dSfSGwo4a9wMi0J610JriewvJBH6Qfc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776400968; a=rsa-sha256;
 	cv=none;
-	b=xJmm2oPfj/aQraYgK9D16xAdPo13yn0eVyfH/K3i2XMNxnhNWckrZDrap9ZvZ9sdhkfEkP
-	xP/9Chsa/ymJEJznlACs5TImE008CvNzD9uUmK6XFm7Nx3MGK3+1rMsWdhrbiNNM6Ak9By
-	2vecuO2DJAOxZmb8xlvjAr6j6zNUDtA=
+	b=0IQ+usD+0EYUWVeHtxuGRwSHjBMAdvc8xYceC1Ft4OwJ2omXWkU/PEfUbpXxBGsNsn2nMb
+	hAq7aTT/+pwD9PaBHD2Vnouz4zTombLgue6ACg0g5ZlLde3mecNBbc3maR+LIh3hjo+D2d
+	LEQXqLm/VKs9dhr0s2d9DcJJHaPWJi8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bVYKLgV5;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6FC081E8D;
-	Thu, 16 Apr 2026 21:37:04 -0700 (PDT)
-Received: from [10.164.148.40] (MacBook-Pro.blr.arm.com [10.164.148.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9066C3F641;
-	Thu, 16 Apr 2026 21:37:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776400630; bh=U+PvVVWTwBKNhQRSl1RUbETFIYWroVoewkV9BFEmcmc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bVYKLgV5/Ibm/FJaEhb5pnZ8w2Cij/DsMFDF0lhu68SPQF/hwkDEWdVewd64H/axC
-	 Y2QNAEJ2V5I016LZFd18ZvXPsefvLdpkaKPrxLsGSoH2l2uhXBHEVm5Wz7CTalmiOv
-	 pC59srDHZKS5o9ypWvoFTVhdFZqo07pDAg6qydCM=
-Message-ID: <1edbe2b8-2754-4995-baeb-6b9ecaf05137@arm.com>
-Date: Fri, 17 Apr 2026 10:07:02 +0530
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pfGQ5i1V;
+	spf=pass (imf30.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ECCE5444FF;
+	Fri, 17 Apr 2026 04:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAF1C19425;
+	Fri, 17 Apr 2026 04:42:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776400966;
+	bh=+kZcyO2YZoRks810z1foc/yqdqsP8AdQc/GigncPdOY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pfGQ5i1VLFUUh34+/+2ZJ/V44nhKo2xNclSoGPtwovtCwj1cG6ZQf3ti3r2EXSitX
+	 7mJyT9d3TCfs9780go8IhtH920vp4qoBQX/crZM7RcTWAUfaaKUOFLC3mIRX3/KG/L
+	 ACBjM+96sMBelsfvWCPPQ3/PUGHEc0GFrCIlNHk+Vrm0hczq+b6Hq6tKw1KVXkac/3
+	 Vuk31u6o8Z35yuYIwebWWKYd45HalbXTjzQCVp2BGG4GZchpN7iBVY8ZAkEkVQ7WJn
+	 Ghw9ik03Fu3oBmqTiQvABV5dKdd0zntiU0pdUPsA08r7MWtR3DivtjD29SkfohQNsX
+	 3drwy+Ol8BqVA==
+Date: Fri, 17 Apr 2026 13:42:44 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Marco Elver <elver@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	stable@vger.kernel.org, Vitaly Wool <vitaly.wool@konsulko.se>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
+Message-ID: <aeG6RG41sgZuerYa@hyeyoo>
+References: <20260416132837.3787694-1-elver@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: Specify requirement for
- PROC_MEM_ALWAYS_FORCE=y
-To: Mark Brown <broonie@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>
-Cc: Aishwarya TCV <aishwarya.tcv@arm.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260416-selftests-mm-proc-mem-always-force-v1-1-3f5865153c67@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260416-selftests-mm-proc-mem-always-force-v1-1-3f5865153c67@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: DDB251C0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: exxfhy1ppxchsibkxgxdbj4fch4k55kp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260416132837.3787694-1-elver@google.com>
+X-Stat-Signature: i1xu5ci6mcwzf98gxmbzk9q7zmbws1eo
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 63DF88000C
 X-Rspam-User: 
-X-HE-Tag: 1776400630-187304
-X-HE-Meta: U2FsdGVkX18Pezo8/RR38kMcQB9JhhuRDAxWBJGgDoMzdmr6t/Mf9Yocje/ORWx33K1kXLR3KI1NiQfT2HARVaFgT+/sjY9aULqUYof8oYdBjw1w4rnrNue/3P0iO7orHNr54dPOq6/oMHRm0Z6JSCYiisOQo28fK+MNXdzdLHJ+GzXvT8zS3g3Ko09Fcc/viESxuyrZNU722sG7kaALOhVZoCjXKja3nv7vh4pfdQ9bs9C5kNDFTINoi9WCQzzLl09ftyXpvSx4//M9QN55FwTf3G9LdpgxHRJg5ZLYktb1PJMvatY37e5VZ9R/Blls3eABT+RRIccLJEvnjTpIr/ODDk6O3oYC4A76NPhKuSyu8PhFM+KJmw00MCXR/MvFaOTOYkPCIZEOnQZUTT6/sXOQiOzNkmQcrdSkic42ADO7qO+tK01+Ihefbtu/d9V6MsAj2Vxw0M0gulUZbeoDzifKP7dRNvb9mK2c5yPCw2e6ngGsEVkJFRQOKHn5DSCjkYuG3P2FnNsCOSKzcxUf2CPZJ3+hWWGxBaZ+a2bwnJS0fFsgvx80Meui3aSTaGpe0peRtHPx49V6SNQ/MoqGP4AG+6MCqnvcInG8gRk+/nnoBiBxsp/ty4XYyIJfwpXEJwNr6obzK8mJoxfDWAlpK7Y34pOFUwG8TGCbtvAOYSIxdzqjala6/v9EY67wAmfKVMlrI9LOcw6J1IiMD51sa++iAp9FSVkLKO5DV/i8VnUD6LBCMHTFylXrXl+XYj5pg25Rz03pLbZXKZmcHDjgGloaOVTxZfXAkVWJp37tFS3Ghgk6O55Hwv3ceCmnimerEcyDvHQbFH75VMTIxZaVlMvcVipMVVol+p9S6SfT4LMa4/ILr2QfOPxVDYn5CVnPMGxNV3U4Fu7JhwS71E9BuAl1pAzIchzBQK6vs4QZxnkUEwyIOKELAJIPcrjG56lqVVU33FwpFXCe72T6uOE
- YnhxK9j3
- Jve41fHJOS1f0JY3pzdwfASVr7QmKDPAPgami9I9fyDQKFuPQMnS9ugjxqPDgVokk5sT52gPgjAQpv1ARpinmkBuPkOJ8FOiXHP4XjOgVdwalDQJNbxwOr/RZXqjcJp2qH6Rt3QWRiOb2mxT5dr/B55g6E+jRDYQn6I1xR/Y9BMT44wvy1vjfNvfZUZxtuRFTOSnU2HxbDU6CSwsntw3W1wvUu/+a9lCgdF39xAw6MSHAq+ojenEZeEs1Gc0QSn+GOkhwALEPER0DS6UY85dD6yIvSW42ImHykSU05iqdVkGioh6SQcr26fZrMLnQnNSwt5H5x44/JJ4xIeQIG45BxZkqnSCKjt1oPnTXh0s6YvXoXF8=
+X-HE-Tag: 1776400968-93735
+X-HE-Meta: U2FsdGVkX19ORQDOVy5SbxjAw0q9GPi4W0LKG1nl1giPygReLPxLT4Qi3nCwakvHLfphXhpvdYIPq5IUxQ0Lh40WzkPnv5GLxmL/o/E537f4Z1+QGJjGAIExLRoyXF+BFoPNtgEioSBb4iTSzIV/xqzozW+yDBiljnFyPfj34J1y4afq6uSp7Xtesl/QAQs0M5494YOn6g9kyW4beT6offZKA5hNmRISAZPkw/W0sMltpIAVv5bYoQ1y0grQsP5b5gQTLsuF2lUDp33YrtdIX7shpCSJqTR9wRPgAUYBbkn4Al0ga+t534TL3shJp4tH79Mp3FkbAfdMMHG3gNaOciHXA3cYPAqZZkvsRN9hgTmi1D6kzcHH1OmSpiLVFNF7VIcwGQnvZx7BPhtJEu3w2Iz+4crdSrjGSwWdFuCDM8PhZymD6/zQN7I8wR+B6CooI/hKXVfV8BY5LrmkkNxYtY+PjZqxrI/QHA9w4jt66z7XJDaD8SYFax8oDGsKcqRYJrRM1iRsH9ctEGBJLYdm1qHHxkJ6srzZuaSfXesCFlS8egX46v/03VKkaNApbBN02LaQjTpYaFnxlnkOkZTsSBQhEepEYn2SuOXpx+e83wbeptymAcLXuOnpUcG25hUySz3ViYJu6liyopV2OtjL0//5X1cmcmJXu1ccNETX0ZsHbbwhsKFBaxa4TNoNhyrNRXE8RvIP326eRVizvmroMjsH9YKjEaLkG28moc0teVi6iw8MmOj29p6WEE2rTXpLMiKTFr7DNRQl5LCp3qDXkxpgTIZRZKA8rW4/N2+Er6/tGhhHb/H1Z9qef8xMwD9VNbXMQUfXTI9uUit925/XYVz2+DOoaPSzJPmQQAt171NuyFapKIzXb/mZnQzkqy2WrgjBWcByhkllEVzNl5/wTSomanaAJdWNahaPwXITZEUOdhgf7i5kebzM+b/jfRRDeEiMVCtmscy7WOPwV11
+ ILFvRcym
+ 2OoZ0ZPYpNxxx7OjEqa6OQQ0C7PO3hEVQ+a7syYAISwaIL0Q6o8u+wUb3O0eb534Qp02NR0DF44jKpZpUnGh4dpXSk4nwUAN8G/OJRApoYfz9gXZVN3/1sK3f4/cfrOpMs00ET0ZP1kI6cFulZiflJvGStcT1phuHyAYi8+88gaSzJkF7dOEEkU1wIUxnDVGxWyZah/pavdBDIpZY5qBvMYdISBDAvkHKmzTg+k8jZHGmfM4wg856rsvM5f+EbZPApg2013ni6+I+HtS5Vt+wY31S6zalR1dJu5FiMpKEZzdEKmsjN1LapCnHN7YfTWFUuZ59KDbKaqi5yE0V2Sb02K+yzc2YRopPYMuhdh3XbsxhpOQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,50 +100,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+[+Cc relevant folks]
 
+On Thu, Apr 16, 2026 at 03:25:07PM +0200, Marco Elver wrote:
+> Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
+> k[v]realloc") introduced the ability to force a reallocation if the
+> original object does not satisfy new alignment or NUMA node, even when
+> the object is being shrunk.
+> 
+> This introduced two bugs in the reallocation fallback path:
+> 
+> 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
+>    before 'ks' and 'orig_size' are initialized. As a result, the
+>    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
+>    allocation.
 
-On 17/04/26 12:10 am, Mark Brown wrote:
-> Several of the mm selftests made use of /proc/pid/mem as part of their
-> operation but we do not specify this in the config fragment for them, at
-> least mkdirty and ksm_functional_tests have this requirement.
+Ouch.
+
+> 2. Buffer overflow during shrinking: When shrinking an object while
+>    forcing a new alignment, 'new_size' is smaller than the old size.
+>    However, the memcpy() used the old size ('orig_size ?: ks'), leading
+>    to an out-of-bounds write.
+
+Right. before the commit we didn't reallocate when the size is smaller.
+
+> The same overflow bug exists in the kvrealloc() fallback path, where the
+> old bucket size ksize(p) is copied into the new buffer without being
+> bounded by the new size.
 > 
-> This has been working fine in practice since PROC_MEM_ALWAYS_FORCE was the
-> default setting but commit 599bbba5a36f ("proc: make PROC_MEM_FORCE_PTRACE
-> the Kconfig default") that is no longer the case, meaning that tests run
-> on kernels built based on defconfigs have started having the new more
-> restrictive default and failing. Add PROC_MEM_ALWAYS_FORCE to the config
-> fragment for the mm selftests.
+> A simple reproducer:
 > 
-> Thanks to Aishwarya TCV for spotting the issue and identifying the commit
-> that introduced it.
+> 	// e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
+> 	while (1) {
+> 		void *p = kmalloc(128, GFP_KERNEL);
+> 		p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
+> 		kfree(p);
+> 	}
 > 
-> Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
+> demonstrates the issue:
+> 
+>   ==================================================================
+>   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
+> 
+>   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
+>    memcpy_orig+0x68/0x130
+>    krealloc_node_align_noprof+0x1c8/0x340
+>    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+>    lkdtm_do_action+0x3a/0x60 [lkdtm]
+>    ...
+> 
+>   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
+> 
+>   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
+>    krealloc_node_align_noprof+0x19c/0x340
+>    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+>    lkdtm_do_action+0x3a/0x60 [lkdtm]
+>    ...
+>   ==================================================================
+> 
+> Fix it by moving the old size calculation to the top of __do_krealloc()
+> and bounding all copy lengths by the new allocation size.
+> 
+> Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
+> Cc: <stable@vger.kernel.org>
+> Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
+> Signed-off-by: Marco Elver <elver@google.com>
 > ---
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+Looks good to me, but I think we still have a similar issue in
+vrealloc_node_align_noprof()? (goto need_realloc; due to NUMA mismatch
+but the new size is smaller)
 
->  tools/testing/selftests/mm/config | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tools/testing/selftests/mm/config b/tools/testing/selftests/mm/config
-> index 1dbe2b4558ab..06f78bd232e2 100644
-> --- a/tools/testing/selftests/mm/config
-> +++ b/tools/testing/selftests/mm/config
-> @@ -13,3 +13,4 @@ CONFIG_PROFILING=y
->  CONFIG_UPROBES=y
->  CONFIG_MEMORY_FAILURE=y
->  CONFIG_HWPOISON_INJECT=m
-> +CONFIG_PROC_MEM_ALWAYS_FORCE=y
-> 
-> ---
-> base-commit: 599bbba5a36f6de57ab14c373c25881e2b5273f5
-> change-id: 20260416-selftests-mm-proc-mem-always-force-5ce1b26022c2
-> 
-> Best regards,
-> --  
-> Mark Brown <broonie@kernel.org>
-> 
-> 
-
+-- 
+Cheers,
+Harry / Hyeonggon
 
