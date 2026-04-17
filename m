@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E824DF43686
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:11:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B5FBF43686
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:12:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5AD1D6B00B7; Fri, 17 Apr 2026 05:11:37 -0400 (EDT)
+	id F24336B00B9; Fri, 17 Apr 2026 05:12:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55D486B00B9; Fri, 17 Apr 2026 05:11:37 -0400 (EDT)
+	id EAD3B6B00BB; Fri, 17 Apr 2026 05:12:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44D8B6B00BA; Fri, 17 Apr 2026 05:11:37 -0400 (EDT)
+	id D9C9A6B00BC; Fri, 17 Apr 2026 05:12:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F9486B00B7
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:11:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D146A13C069
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:11:36 +0000 (UTC)
-X-FDA: 84667479792.18.F3164F5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 327F880007
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:11:35 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VtVx276i;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776417095;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pAES0UuR/WntZyJ443ThO/9g6b+V7S3rRAI+p/NoIAY=;
-	b=q1KriI2SwpR8xDi0vZeFv05IeVcDAE7ZqodMzUM1UVYGTr5Z6LSWavq+HfKb7voUWRON7e
-	med3KNCZBDgewGNKW0rimUK+501smqROucPb5pCkpZyYLQB4Po/fJKEXEDSQSeJgI5haP7
-	RpKow6mwMGtssCG4yp7daXEHyg2Yel4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VtVx276i;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776417095; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C5B826B00B9
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:12:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 714111A0B76
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:12:24 +0000 (UTC)
+X-FDA: 84667481808.04.2571047
+Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BCBCD180002
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:12:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf06.hostedemail.com: domain of 3dfnhaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.207 as permitted sender) smtp.mailfrom=3dfnhaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776417142; a=rsa-sha256;
 	cv=none;
-	b=KeBBIexTFpUTMZX8zzJtG+4lOJv5HM2hvkHjhDCIPudcKWg4ZPJz+krKc1UjZ8bryAb77b
-	4JyQC7GUyOmiWFEERb+Ysp4GK9pcyTMDiFzOOC28LVJUkwuqN01dFYVIWL4gr3fe9rHGhM
-	2Em7zDxSN38D3ya838E15L0mH2qo5mg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9422160138;
-	Fri, 17 Apr 2026 09:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FAEC19425;
-	Fri, 17 Apr 2026 09:11:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776417094;
-	bh=b9DebVhvg3kMguhZCy3y+KwHTug2uDLeAd0Plgmcc4s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VtVx276ikd8VY5G/3b9udrxO99gGFLmUPQkhx4AKxGVhfBTcOq4MzDQjajqLfL1bD
-	 PaIJoyjhOB5bqnxjh5DAg/CgM2hxtBYXaiKVfei39lAD4sSf5BACulYZyHjcjNkw25
-	 bcQ5sDPRBh5HuJtiOhMnyqnr1FPB5tM4X8MMfYj2KWoKIIHi19GenyJ4aMnfT6KRmi
-	 v28nyAmseut8Fky0sIJ+x/yWSwFnAxEtsQtIQuuhVaQPkx31nCUGnVA2EU65QJxYC+
-	 JEEG/uH/uxwtcDykSvnfBEaEvgmOw0JKSQv5n868HhcAdWdPnJEDCjSS1RA3s/5n0G
-	 uikaIEBV2EKdw==
-Message-ID: <3a6e90d0-59de-4eb6-ae3d-56aaaf3e5354@kernel.org>
-Date: Fri, 17 Apr 2026 11:11:30 +0200
+	b=nfZm096lGAuVw6YvRLxSItYXvjeSdkruh2aRi1YzPVOknkOwog1KsOFjA2l9CnLTWyRD6V
+	KiTfWJnRW1LChQ2Db5e98swZ7rdpO+MMuRKHh57+deeWlsoxsKGzFhTt2f2V/MBqzSw2pd
+	h+rfgdjEneJMJfyJ39kCcXUCGvgXXcQ=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf06.hostedemail.com: domain of 3dfnhaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.207 as permitted sender) smtp.mailfrom=3dfnhaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776417142;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=a/KbQkE3F+9rowducc7K95ONRIPvyXcoib07wiB0EiI=;
+	b=W44VAMAQ9OJJQ+QyxD0X8E1rN59W7qzQPfyQvSx8fQPfq7UxhzFqHIekcZ1GQb+JLtXMH7
+	AlJ6mpZvuaEn+10rbIIXozcIcOOYtDjXZ1SgAi2MftfyG6KtwN23sHTWL6QkHS4PDsghl3
+	1StVw35+FQnA72bHOOQEMVaQL/fXRGs=
+Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-46ee4a74741so316512b6e.1
+        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:12:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776417141; x=1777021941;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a/KbQkE3F+9rowducc7K95ONRIPvyXcoib07wiB0EiI=;
+        b=Xasn2VfR4q8s+FfraemhT0eQGIC2EiJsCwhqXjLkPbmfAJngzQpmzRk8FXRmGkqeo+
+         F3WXf5vnqFlkUmT0+ZK05eyec+YeWPPDFH5pV+mH2A6NwTroEcQSJUxxQnnFglTCBDMu
+         uoXFSXoNNl4N6S3Gf3wvAxmfWN3UxhmvoJPNLwpT3lJCVYELGIhUfnnHkeP+M5BupixS
+         zpfvA9vYKqY2l+JMRvtiAHJdW053ogbNcJFKAf5xtmCndcfkrslAU3CFeYO9JENbiLoP
+         aGb+suSRqmrlPAutWEeT31Kqqsj6F7Lu2VRLSaQh7t0TlcUxts2OT058kEnS8ZLOxIYC
+         Bwdg==
+X-Forwarded-Encrypted: i=1; AFNElJ/x5az7JiSxltbflwlLUK6qhWbrwCGCJ4jy6IcgnWhQSzOnoJWnTlcAznqmyjezy3D2IuQit0DQCA==@kvack.org
+X-Gm-Message-State: AOJu0YwD7lWa0otRi/uUvrWHzighyU8RZ+ZWQRpZVZQkWrz1cFLRLAte
+	yShk+E5VMFJCfykrsZ03KNEtxZCBV5f0kKpIsxqZPFF4gpjTBOKcHrzLiUnORh35L9HOUU0RPZR
+	H7U5gLX8SeTpFfPXXwQXVU4l+CS4fe8VZnkENYO75dWGk9u1CG2VZIGQravE=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
-Content-Language: en-US
-To: Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- stable@vger.kernel.org
-References: <20260416132837.3787694-1-elver@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260416132837.3787694-1-elver@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 327F880007
-X-Stat-Signature: otpwbsfah9kag9xu9cr33r8zksfsj1gx
+X-Received: by 2002:a05:6820:3092:b0:692:9c90:8e9a with SMTP id
+ 006d021491bc7-69462f2036dmr956132eaf.45.1776417141711; Fri, 17 Apr 2026
+ 02:12:21 -0700 (PDT)
+Date: Fri, 17 Apr 2026 02:12:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e1f975.050a0220.1de265.0009.GAE@google.com>
+Subject: [syzbot] [mm?] KCSAN: data-race in mas_wr_store_entry /
+ mtree_range_walk (2)
+From: syzbot <syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, jannh@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: BCBCD180002
+X-Stat-Signature: sbxhnfigjtnm8u6sbx54bpwchsbu1khz
 X-Rspam-User: 
-X-HE-Tag: 1776417095-326946
-X-HE-Meta: U2FsdGVkX19s6TU3mMHlqnySQi1UNist47VscBWYnn+HdcRyPBtf/LO0tDEvzteZ8bW2RnY0AbEqTlGAp01tJVMX6VYhFyGE84Z8obNf6ykTnxuPBnHJdC34Jp8id7mz+kgHqMoqzzgSvYdHmvr7aE1eTp3LJr5lpTLx7u5QFtKsk76p0RCMkJrHWMvzskWV7eXGrnoS0mYJjzWISeS0hrCN9mDIS7V03qgO0c7qsX0xydmKxFPuo6iy/0ukJ970xXjW+25nyAKPknv4KqJT42OeiOTymkhG9FmcLa06MsjUYlmtpSZKh52F5N8MfrdRhcEYIvzRTYX7zyn1MLN47FcPsV2qgYlFzN4enLtSzcn67KBWCgBRFvVyvWvHRF7K1Sx4AHnnlvx1sQ0OHG09lu6YZeMr0i74r7hpDc7dYfMIKQ9Vh8xDkiIAH5ubQxyxGjujDCONk7xifjp12obeKAdGXecdHMKd09pRsKJ1N+wvsJlfKbvL1V7eKEHS+GLsHQD/71uJ+sdDE7+XcUVEwHrbn1KTBwB0vMbNHLCdYagWzOHbyQQX9CoV7SG1xbEp3QUIq6x0YLQtip4Vabeg1eDqW8jN4IJlsfGdm6wRysPHVVLUi+CsKKmUXOADQp9ffAx/oqJvkuN2/3JwMczMvYG23QiEdnW2D/+D+8WzlwVFWFtyXQjXl/l7zBSSHCoYBUNgeHZI7N6xUWOeEiq1a4eb92FSP6A0j0rMSNsrryjHr8iZrQxo8EMxkYkbtt71OKFx8oo4qiduhQ0y/PTqkJXQixml6Xfj4EOpxy+N5yB5IZi1ADy2xkZQj2ERl6RnqeNIw7BTKZ+IkFMMrylECscvPg7PYBsL0IW6egXqM8VLqF8ahnY3G6VRBouC12iH04FTd9EELdJ2v7cIkAXiuqqrbGx+JnP4angEBQ6K18Ibp7huDfBHFi/DqTqyaBUoRd3khX9xTjNSRLToziN
- HYMGUin1
- eVJZC4iRwLSOYAleMVY6CIXUph7SV74rCeZIXIa41pYDU1i4mHJ/3hGzEY0GyFIos0F04aPcE5Ll/bho7jd+AbIL+HrpIuYKPcPRtuGU0Y6s1aeNw75zX2gIglaJp4GjCpmz5fH9kfu7vxtnQ3pg0RbFfbPaMYOPbUYajcYvSgu7ANlCqG5gT7Sj4CQkSkZSbwMV2wFw0tkJpsrxLVWUIln7vk96hyNoyKCXfl3WnoU8PYudjmnWseJFCd/k/mwk3THXR6cmp8R/NoL2BeT3KlaHa0B1//1P4WkgAHPl8NIlGmlo/OgcnC9N3v88qe901TKaF6ICuODdd/pw96g16edCNv4n7g8luTHxln2faCYCl0Fc=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776417142-704605
+X-HE-Meta: U2FsdGVkX19ZfSA6XLNcVk2Beh9CIcBUz4AurIroAJtXQU2d9Bbez7ES4/BIRklYIa8btgT/Dafi8MSw/e/W9EfK2QGtnoZufd/BbzzmbSKR0Z91GeYyZBcqcmW8mXTkMpyZHubxX+5UawXnbJIq4NAgPV6m+9tokOCg2r9R3ocfGyGoLTNLUoN3JKTMhWZgJ7M94P71djuTDFmX0PVqD64Q9rY/xcRhCHdRJMg5oVziOCZNxQ1UlbUG93Qm2vyKHmmN35lZMQUh4h9HBP5ABzZhDSa3t51O7mVfHHNBGhrlKKjNek7+eTR9Rilj+rATDoxgybfDAWIByp65/u8VbGEwA9FjEeTXQtkSUDADKUz0PJKuZcgI+z7yGRoSdZLo+vVQvrj3X7ZXPkaDsFQ//TPZp4VqNSSkP+CKqCZQZO8t1wPFmUfltf5Dndtv6uLOJ1lg6vyPLcJFVFvFzmaFGOKCc43JAXWjmSRdVO5Z/6AzlAg+pwBi3KtCrOpCI97fJJauxxrx2eSnv/LBtV77UGYXPR4p0QVfz9T41NEdBb3qIlMJ/0rhccJ1lEb9IAOqDbQX8W67SPEcjEsdpkH9vXHuSrAgm8eLE5BmcKInRZjWW+/h4PtLvIjINTq7Vi4cbt8eDF85iloqEuaKSmpPZicaH1C1QW9Er+9TC2G/QYzozb+pqvcxVVkcppa4LaIli8Mv3fzpwXEm8hLtdaWLi9Yv+cdtCQ/WhNhuPhmEiwa1SrfD6GjlCGie6Sv6h59Tcuk37ySs5Xppa+L6s3LQhfP4b9Asqx5WirXjJP17On19t6rhoQ9Mnhqy0BUpAlh0VyOpU6FJwUTxSPPVVQvl6S0RK50t4ZEke6XBqiq04pXk8hJvyfYK14U6giBwe542USpGwt6aNkhvdZo1+dQKksquIrQDfCMgBupQpVIctcz10grlhSQJN4nmVU4W/aFLikhVHpI0iH6D/6UIawd
+ Bl6Bnq3W
+ 2bXnqTKF40/VwtXjhc54penDlprlM0nC80diwxhU4gkgCdIymbJZ1nzh+VjSuUKAeLpLoVlqJudO/FfQYgWiVFu/pDc3kV54+nX4xOI/dGBNSzvQZtk4VCkCuwPE8nJFJh1Kp96QHMw9XLuzvRSTt7I9FfrmkpdzhHXMb8vuLCugr1O09AH4OjaStUsYn5LO4sebB5/aEkovICORtiZQxQShnW9XubYA7Pn2GDwsBQXl171C7IprYojuk4WVHqkvRgUl9gPCeJkVLd3D2TjVZepAHNmFTcoFhqKbAlYp5Yszxm0w6MAghJj60o/r8O5d5I7yURMoDno9S+Hq8pQUsFiVqgL+JG3ofv2iAQXHnQkNcPRJIPPEj71lnW24ZXHGL1+k2LtuGptrlwM0x2y2B++9agAvL8DOVCfVKNbrMenD3SgJgEBribDi5U+moFKASh2/ZNeFg91m/jwXG+9Xyc9sb8tMaEaaDHGUXCcAfgDGKLy70UvYxV/QrqAhOYGnJ6aj/URrjZB49dO/vKFSQoH1GorRho4s11CCPlMxIY4zmC/meX9WF7GQmDb6SklEETASedB4QvPQ2N7khbCrg05ow+t6eiiCwQtE8PElTS3ZEKf/cHoPQ/0gIKAbDVR6gtWvlKnmi4PJPmuI7qIxvpePCceiagOfE+nmlrGbA0iBer7OBHXVWVYLKN+7r7opPpQVJmneV1rlUHAwFYuaL5k5yPgF2dlvd59mQ0w2yRuDgrkSQv5FnGpd6wBo07ZVnjpKa0Y1r39TWmusYlzf0RBEy/UAD37ySa9P1hQcqCPagPqqzgISMhGmwWEqI4tny3MJ5AfIRj4a1duSLkCtG/s+/HMlDGpc9P2Tlk6/n89QaWBhjLCAcGbGVseqZzE2/A+duZDY63cl3N27EF2/DLFSJZ0RMUhWZLWdzN4edF2twM4XCpnFk97IV+agI4LXXmAoiNhhExWG7yiLI2gQWWK160QFq
+ p1UVrJwa
+ +HDo/M+XfULQW0g1CbQc1IiumU4K49uIEMlIsgyODCWj2dXcGGd7eH0a2NSM8wOfF76Ko1WITR6yub57fklQoTnAheuGxvsOHVTyAv2sSR9QD8QOLLfZTNyo7yoXHQa5W6rDKrXW+yG4W4mvr6Vs6QbPh6u02ySmzLkF9eEdfUko3TnDSCeezR9oMaSIQ5wccnHOfe6ZjvKr3e/eQv4h29qxHldvxHgewMBaflB+dYyTeMuC6rAeXKaOx1Bv/RMu3OIJemJs15T2f0mR3GFCCbccwITGOGsBh2FxEhKGBAiURwHmGlcBpnIg8OePX5cN/Kpnbia+UV7dNrg69nyvquwzIArbgYwPp4p7O+snXEMAnpeZQpJ1HUvBmP90EjPM+vJ1VEiyGZ4f33vPWeCf3mNzbj+vypkqEOaMk91firYxLXgMI97weWZeb5NRJd9ZcTMBWZzDByVznhME0nxQx7OJjys4CHmKtr98dJn/91hF6WJHz+a3mQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,129 +96,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/16/26 15:25, Marco Elver wrote:
-> Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
-> k[v]realloc") introduced the ability to force a reallocation if the
-> original object does not satisfy new alignment or NUMA node, even when
-> the object is being shrunk.
-> 
-> This introduced two bugs in the reallocation fallback path:
-> 
-> 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
->    before 'ks' and 'orig_size' are initialized. As a result, the
->    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
->    allocation.
-> 
-> 2. Buffer overflow during shrinking: When shrinking an object while
->    forcing a new alignment, 'new_size' is smaller than the old size.
->    However, the memcpy() used the old size ('orig_size ?: ks'), leading
->    to an out-of-bounds write.
-> 
-> The same overflow bug exists in the kvrealloc() fallback path, where the
-> old bucket size ksize(p) is copied into the new buffer without being
-> bounded by the new size.
-> 
-> A simple reproducer:
-> 
-> 	// e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
-> 	while (1) {
-> 		void *p = kmalloc(128, GFP_KERNEL);
-> 		p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
-> 		kfree(p);
-> 	}
-> 
-> demonstrates the issue:
-> 
->   ==================================================================
->   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
-> 
->   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
->    memcpy_orig+0x68/0x130
->    krealloc_node_align_noprof+0x1c8/0x340
->    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
->    lkdtm_do_action+0x3a/0x60 [lkdtm]
->    ...
-> 
->   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
-> 
->   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
->    krealloc_node_align_noprof+0x19c/0x340
->    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
->    lkdtm_do_action+0x3a/0x60 [lkdtm]
->    ...
->   ==================================================================
-> 
-> Fix it by moving the old size calculation to the top of __do_krealloc()
-> and bounding all copy lengths by the new allocation size.
-> 
-> Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
-> Signed-off-by: Marco Elver <elver@google.com>
+Hello,
 
-Ouch, thanks. Added to slab/for-next-fixes
-Indeed the vrealloc would be separate patch with different Fixes: commit and
-handled in the mm tree.
+syzbot found the following issue on:
 
-> ---
->  mm/slub.c | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 92362eeb13e5..161079ac5ba1 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6645,16 +6645,6 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
->  	if (!kasan_check_byte(p))
->  		return NULL;
->  
-> -	/*
-> -	 * If reallocation is not necessary (e. g. the new size is less
-> -	 * than the current allocated size), the current allocation will be
-> -	 * preserved unless __GFP_THISNODE is set. In the latter case a new
-> -	 * allocation on the requested node will be attempted.
-> -	 */
-> -	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
-> -		     nid != page_to_nid(virt_to_page(p)))
-> -		goto alloc_new;
-> -
->  	if (is_kfence_address(p)) {
->  		ks = orig_size = kfence_ksize(p);
->  	} else {
-> @@ -6673,6 +6663,16 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
->  		}
->  	}
->  
-> +	/*
-> +	 * If reallocation is not necessary (e. g. the new size is less
-> +	 * than the current allocated size), the current allocation will be
-> +	 * preserved unless __GFP_THISNODE is set. In the latter case a new
-> +	 * allocation on the requested node will be attempted.
-> +	 */
-> +	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
-> +		     nid != page_to_nid(virt_to_page(p)))
-> +		goto alloc_new;
-> +
->  	/* If the old object doesn't fit, allocate a bigger one */
->  	if (new_size > ks)
->  		goto alloc_new;
-> @@ -6707,7 +6707,7 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
->  	if (ret && p) {
->  		/* Disable KASAN checks as the object's redzone is accessed. */
->  		kasan_disable_current();
-> -		memcpy(ret, kasan_reset_tag(p), orig_size ?: ks);
-> +		memcpy(ret, kasan_reset_tag(p), min(new_size, (size_t)(orig_size ?: ks)));
->  		kasan_enable_current();
->  	}
->  
-> @@ -6941,7 +6941,7 @@ void *kvrealloc_node_align_noprof(const void *p, size_t size, unsigned long alig
->  		if (p) {
->  			/* We already know that `p` is not a vmalloc address. */
->  			kasan_disable_current();
-> -			memcpy(n, kasan_reset_tag(p), ksize(p));
-> +			memcpy(n, kasan_reset_tag(p), min(size, ksize(p)));
->  			kasan_enable_current();
->  
->  			kfree(p);
+HEAD commit:    1d51b370a0f8 Merge tag 'jfs-7.1' of github.com:kleikamp/li..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=117dc4ce580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7f207c4b1fbf85a3
+dashboard link: https://syzkaller.appspot.com/bug?extid=38a879f4a73497f2dfef
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/e08ff8d2b0e5/disk-1d51b370.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c11d4b098bbf/vmlinux-1d51b370.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6a4691f32e3d/bzImage-1d51b370.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in mas_wr_store_entry / mtree_range_walk
+
+write to 0xffff888104f71d08 of 8 bytes by task 4757 on cpu 0:
+ mas_wr_slot_store lib/maple_tree.c:3232 [inline]
+ mas_wr_store_entry+0x3405/0x5ad0 lib/maple_tree.c:3528
+ mas_store_prealloc+0x43e/0x690 lib/maple_tree.c:4936
+ vma_iter_store_overwrite mm/vma.h:616 [inline]
+ commit_merge+0x6a1/0x720 mm/vma.c:766
+ vma_expand+0x301/0x460 mm/vma.c:1219
+ vma_merge_new_range+0x29c/0x320 mm/vma.c:1112
+ __mmap_region mm/vma.c:2766 [inline]
+ mmap_region+0x1073/0x2110 mm/vma.c:2856
+ do_mmap+0x9b2/0xbd0 mm/mmap.c:560
+ vm_mmap_pgoff+0x183/0x2d0 mm/util.c:581
+ ksys_mmap_pgoff+0xc1/0x310 mm/mmap.c:606
+ x64_sys_call+0x14df/0x3020 arch/x86/include/generated/asm/syscalls_64.h:10
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x12c/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff888104f71d08 of 8 bytes by task 4759 on cpu 1:
+ mtree_range_walk+0x1a6/0x490 lib/maple_tree.c:2032
+ mas_state_walk lib/maple_tree.c:2952 [inline]
+ mas_walk+0x1cc/0x370 lib/maple_tree.c:4366
+ lock_vma_under_rcu+0xc9/0x210 mm/mmap_lock.c:304
+ do_user_addr_fault+0x232/0x1050 arch/x86/mm/fault.c:1325
+ handle_page_fault arch/x86/mm/fault.c:1474 [inline]
+ exc_page_fault+0x62/0xa0 arch/x86/mm/fault.c:1527
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+
+value changed: 0x00007f68dc2a5fff -> 0x00007f68dc284fff
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 4759 Comm: syz.5.348 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
+==================================================================
+netlink: 64 bytes leftover after parsing attributes in process `syz.5.348'.
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
