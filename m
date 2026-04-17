@@ -4,105 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBE4DF436B4
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 14:53:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C054F436B2
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 15:06:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F27FF6B0116; Fri, 17 Apr 2026 10:53:10 -0400 (EDT)
+	id 74D356B0118; Fri, 17 Apr 2026 11:06:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F00166B0117; Fri, 17 Apr 2026 10:53:10 -0400 (EDT)
+	id 6FDC36B0119; Fri, 17 Apr 2026 11:06:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E14F86B0118; Fri, 17 Apr 2026 10:53:10 -0400 (EDT)
+	id 613766B011A; Fri, 17 Apr 2026 11:06:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CB3F86B0116
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 10:53:10 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 95CAD1B711C
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 14:53:10 +0000 (UTC)
-X-FDA: 84668340540.16.B62B795
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9AEBD1C0005
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 14:53:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i4R7wPxq;
-	spf=pass (imf21.hostedemail.com: domain of tamird@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tamird@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D3536B0118
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:06:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 04B7886EED
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:06:29 +0000 (UTC)
+X-FDA: 84668374140.27.A0684A5
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E0C7F100023
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:06:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=P8SRZx91;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of alvin.sun@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776438384; a=rsa-sha256;
+	cv=none;
+	b=QFttEp2Ixn8b8BstmtDYV3x83O6dFcG3JsW6EJ9LbHqzWhvmBM4j6vJbtoGeqe5SEb9QXX
+	06qZozLYSZZKd7cHzXzgbnsBbcVkibTiiI0Nzgmb4D29jk27JX1TG8Uxs9Fl7c1D3lPaCT
+	lFuogmiGWehi5xVC9QETcbo7glR/ZAQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=P8SRZx91;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of alvin.sun@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776437588;
+	s=arc-20220608; t=1776438384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s6KihdDRx6by1Vu2nrUFjFUosglOHD4iIZXI2okMrjg=;
-	b=pOxa8QiSVk5muVh+desxH/0P95QqNIOxbADq7iqOJphjnEm3EtupX9Bw8oajqXCW2dgcDl
-	lduVPpTDbaeIFuNGt7MpqV612SlFcbnQdhgwwUV+jqKvmFso0AszJ0Z/3VwCFRCsU9X7nm
-	lvrCsK9Ul7ANtMD7UbbwvgTNhIzVmo4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i4R7wPxq;
-	spf=pass (imf21.hostedemail.com: domain of tamird@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tamird@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776437588; a=rsa-sha256;
-	cv=none;
-	b=mX2COaX48rpcu5co8YMB9fx2VC1uBRP4emCrcCJNrr4R26Vvzp4XCHLUbb7m2AJvj9xNYX
-	uqKbNlMTpjYQCoVcqIiC0ZNKZRDTOaAomPyYMTlV8ex+BlrprkJ8mx1V51fDFl7/x1Iw02
-	72rIbwycInFFSteKoMVnN8YtRWtqcLU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ADA5760008
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 14:53:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646DFC4AF09
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 14:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776437587;
-	bh=w+jEvMypu34TxF/HMTYPqndABSSFqf1i1DK8TmibBdc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=i4R7wPxq9/JsFzD/V4qumCZo9S+IeAasGjRd+0deehlV6gvGpRIE+U88TlosADVYp
-	 W4Lh1STVbOYq4Aror5X0NlawCH0v/OH6W19pU9dz6xNMYQW57dOrmqIqsWJwboK58k
-	 uIu6eBkelwx3m9Yjd09KHG46cDXUyvECYDIpyzmFP4iEFX10PD+yyPvdzri5MScz5F
-	 bSMe5HsucmsRPfW5i/zKYoOJchoBixixfTfaB9gE5xhpYUuQ+1Z0ASYe3eUGjpbjPt
-	 YlRMnNBcoKH1gzkSFHIDizSIji6rPTUaUIgK2Fz6q5wdkPxIvTxeMEWE46xfqgqYHd
-	 5tAfbOh0i9gQQ==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-38e7b8e3f38so6245781fa.3
-        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 07:53:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/slGR4qVG3BefNW509q6GkdRMpIVU6ZGtXCbcLaFeyhMKkB8ueMOqNbgFK2dxDRydOxDUOlWkiYA==@kvack.org
-X-Gm-Message-State: AOJu0YxZDO41DxALogFlpw65VzUpa/DtgUyl3RIb6E5siZg/Rrny5Vwz
-	7B7guADnSljAUQYfmA857BiHTXHXJ0ULBMapUJ/e7MfSJno6CTaWPu57CSJhEAjVX6e3QfvBISK
-	ir1rXF2tO1e08tPTLKZi7EBG9gp1ywRE=
-X-Received: by 2002:a05:651c:1114:b0:38e:83a6:d4c with SMTP id
- 38308e7fff4ca-38ec77f67a1mr10636321fa.7.1776437586121; Fri, 17 Apr 2026
- 07:53:06 -0700 (PDT)
+	bh=zS07p4gDFB6pdBPpu2rNXcWukXsE2BkNWlsBXyw8e9g=;
+	b=G8wk7uX/UEE9RVYE2n4lKm/8+Io19jvK6ttRt84Rrrb69aLnZz1m2k+3yx35KrIW4m+duZ
+	VUQtfvo1lAhUWMKv7SoPkzycRm2dHrjMQK2W/X8xeffzFSzUJcocqYv1aHPxs0IUDRRTKQ
+	3GlNbOXTHDO07C5JcXK62YsyS2YSLso=
+Message-ID: <dafcb772-cd0c-4771-b418-bf2a09a468a7@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776438380;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zS07p4gDFB6pdBPpu2rNXcWukXsE2BkNWlsBXyw8e9g=;
+	b=P8SRZx91MY45Hnht8g6QGi0CxfNAU6bZHFtcHzFHxQbtXEO/xi3L4iArRBE3qWdaJeBeyZ
+	cpkQiATZJbwNUPKoLvXxUCI+/yX6HsxWA57b1yALzMrh4A+ZP+dKTqhjPSr2kGuPz12JHU
+	oTxbC4BTNOeIgR6/yNIrW8mm3S+OYqo=
+Date: Fri, 17 Apr 2026 23:06:03 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH 1/4] rust: sizes: add SZ_4G constant
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Tamir Duberstein <tamird@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
- <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev> <aeGKTIRFgBqHNI9S@casper.infradead.org>
- <df183bfe-21b9-4393-902d-18835e0bcf48@linux.dev>
-In-Reply-To: <df183bfe-21b9-4393-902d-18835e0bcf48@linux.dev>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 17 Apr 2026 10:52:29 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9=veRG_8SZ7CyzqdR2RhtJ6QZWozyo8oc-xnwoqpCdg6g@mail.gmail.com>
-X-Gm-Features: AQROBzAPLPhYX_Clre1Isbc9aIHCBVWmh5wlFLJ8mxNzXW6XYYnQq98hgG8ihFk
-Message-ID: <CAJ-ks9=veRG_8SZ7CyzqdR2RhtJ6QZWozyo8oc-xnwoqpCdg6g@mail.gmail.com>
-Subject: Re: [PATCH 4/4] rust: xarray: Add Guard::find() helper
-To: Alvin Sun <alvin.sun@linux.dev>
-Cc: Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 8fqy56u4wj9na1gjpusywgkbgp1bg1a1
-X-Rspamd-Queue-Id: 9AEBD1C0005
+ <20260417-tyr-ioctls-deps-v1-1-41c6e9bb061c@linux.dev>
+ <DHV3SQ191564.3FMK513OJUMKV@nvidia.com>
+ <cb3dd598-04f8-486c-ba6b-9965d93170a0@linux.dev>
+ <DHVHKSI90H02.143VLYN9JY4FZ@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <DHVHKSI90H02.143VLYN9JY4FZ@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Stat-Signature: sdxr31qctqqpqqcjb6uhe4nt3y31e4p5
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776437588-318058
-X-HE-Meta: U2FsdGVkX1+b+64eCfGfU104xFZBfc3tVfYMqUWKO2rXzPkiumSY6G0hF+0vK0W6mJjRTXfi6XJYAyZN5wzc7qGLW1n5WTBexYgi/kWWabBPaImSJu2ej6NKYKBlEWdTClM5zRnb3QQF4rathyv/L+xVmDAtc2npamJO4EtXwFg+Y58SyWG62ibkeb0d1n8Y+zrdC6vP1j6gblsn+Eg7uTSvCfdbWDxWNgrVUAx/RgEL69McJ4WquxniAXa+NbOl34ef1hkd4UJb7iycIb5HBtRUCkNUCQxGRA7QvFwS/5ka6o1v9QfqudZcC2S/++mbl4dsurv2lWDylivdK16xIAqdWXXla/ETE/1AEqGdq1nROUTCxfMe0MFB3wEvQfC73V16FEZzPblOmiQRD8vd/2KIQblmsWbhCefR9qUrCDfVgO5VRBCD6wXrhPx7nLrbs0KvuSOHj2HpB5NL/FWRLWnbjAE6sacDAAaf13uhsiQkNah7Hyfk2DSQaqSWIrqOYfXrbnxZTP5cPC3X43QLi/x6CTAeGZpQyhSk5MHNws2jqUT5dKUbnuL6n+h63EstfwEt/ATDLban7n+3Wt2vNbb6wtbLt7jnfcpYUyZowzKImfF7qdYfka2CAold3JmDxyon4PduC8AhxifAogIZmvAq1+LkOeHQspGe45eNv9fyqYByLB7yBCMEMR2M9p0blYzFANjtiNQx2KWOnobj4g/p1jyhOcFHzNyw3tbgA2wq5nwfgcvgme3dOpI5wVQCoQEMyrYqq0wgtq7R+c6Eekog0vpyOR5uCpuO7u89rD8RUiNwDWqxv9eZfmmGUeoO18+97WAm7mfs1W1RwXPFpf55orzBNlU1PvTbwBMXporcyJvhQIELVY9hulv975iTjItlBBEe7fyYxMh7tsnLUpwSVzbYidOunyggREn5CpP5hVNNVVlPn94pjmdtDEkKQsnuDjtRxPDW3gpPhJe
- ibe50zVI
- 0FyCSCZurpCVhHSSB9wkphHqxo3BSG3bFz+4AceXZTq+/iJmeZO6csFtM/hjD/lNwJJDjtBOSSX07ii2btNpQ8jwAae1MRm6j52lpLyXF/gqZgHKzHfSUUnWgc0Z6DwdvhUTPrNOMbhMHlCrCdtTtVimvLW6otJq4dFgcIMihgT3GJHrYLoJj3QnIEO83lXQS/oK4gF9IMUZHIL2Uie0NJV9dGjrGns9n2MeZjQ3RATSWJvN+4PbWecMbX3d5J2DzmRUGXTzdyd35+dNfZlNT3DChK5U9HNkZX7mkYiFA0oL9Szu1BdWLxzMy4A==
+X-Rspamd-Queue-Id: E0C7F100023
+X-HE-Tag: 1776438383-297167
+X-HE-Meta: U2FsdGVkX19woESGQwpeAJNN09wZU693VCZi/JsUpxhSZFUJaEO3PXPuTTP32WxzUuyVbISjlFmGs5POPBqxOkAjuj7xMYsPoj343K6R7ZSlBcCpA1rJd1WFQy5nem9g8QZGhhqP+YdY0hcPIuQqsPLOSTircSwVQyvXH18glKCE6rVUzihLNqpRIaqNMjogL4DgrsttGWxLsK1e9NKQA27E285SFeAP2tphBAxoOi1D9wI2p4DWwH/FJtsgJu5n/NSKfsceUmWgWHW6FBt0weJ9anLm1V4ykeITn4/LJdTahwcrzceFAe6dAzt9L1Hcf9UBPkm8CHAavw2VUWbHXobnPo4vtMAHtjfivLSWavNjcTwjcH9+yRDuE033libKfeWG1DlanOHSxN47RbvtKOoVoiVtVRJEUu7iFK8xOSULX90mdoys23msJu9it+QhMFiEmt/B6nebrfvGtt3iDcacxrHpQtX1lKrpGz8gHGbM2/iUTwrekVocZ5PXp2PgWFBW6jcGHppClgG+tsUotUoLFbqgAZVRTH8gi9t+k0LNI3/v7AuT20fmu3t+1sW56rXSax+o23ISNBB8GOiSUxCwgvdjfoOhKnrMwcuSKI806Lw9nlsmINQHtVOUyJ0AsZ2kCYsL1bncP6uR+n4V4Pli3/IMMAstO87fnr1faJMzzVWuN7CAximS6vDLaQ/bAzSL8et+xcAoZtB0aRSQFV+NPM9R4EX86l4lvHK6SYCbUsWbjgarUd6kvf3ig2/8Qkxxbv+ID+raKwT2e8/S21+vPodVgFPrr4K7B+8nZjKt5eez/IPtyCKvy5Fh/Y3WQUfxsOaPcAk5LM41saC2Y2QWQMnBuLji03++t8ryR9yVCMvyaiQubVhpWh4F7YO+EW+wf0KcCrdnD/WHJiQkRppUG0Qps1r7yfDPg6Vz1WCEZKzkmVy4MmdEPoWjUVBBKDRW6dZIBhK3OTsc+Sn
+ PDmuEBdr
+ 6GQKiLhmHhUYlKTUCRoRrE9J4h79aOZuihtZj4/FvAAA+71maFlx1a0o+6ME0TZGQkcA65UCEjp9HrsMgfwKH7GEFHtiT8AhTTqgziBgTTZD6CfvSujXJW8TIMW9klBXfbW/nh3222V+pBxSesYTK4X3ZqJEHKw/KJLl4CI54qRj9dfEH6RuwD+X3wCUTqrqK0y4nRrW64U2pC/xQ28sgjsKBzR7BjmwNyPAGTFFKsVS8Mm5TZg5bspMQtMTofcan/BGz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,41 +99,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 10:17=E2=80=AFPM Alvin Sun <alvin.sun@linux.dev> wr=
-ote:
->
->
-> On 4/17/26 09:18, Matthew Wilcox wrote:
-> > On Fri, Apr 17, 2026 at 09:05:54AM +0800, Alvin Sun wrote:
-> >> Add a helper to find the first present entry in the XArray.
-> > Why would you expose a function which does striclty less than the
-> > underlying C implementation, rather than exposing all the functionality
-> > that xa_find does?
-> >
-> >> Returns the index of the first present entry, or None if the array
-> >> is empty.
-> > Why not return the value found, like xa_find() does?
->
-> Hi Matthew,
->
-> Thanks for the feedback! I had considered both returning a tuple (key,
-> &value)
-> and an Entry struct, but only returned the key since that's all Tyr
-> currently
-> needs. I'll look at other Rust code to see which approach fits better, th=
-en
-> implement it properly in v2.
->
-> Best regards,
-> Alvin
->
-> >
-> > This is all very troubling.  I don't think Rust should depart from
-> > what C has without good reason.
-> >
 
-More complete wrappers around the C APIs exist in Andreas'
-https://lore.kernel.org/all/20260209-xarray-entry-send-v3-0-f777c65b8ae2@ke=
-rnel.org/.
-Perhaps we can borrow from that series?
+On 4/17/26 22:06, Alexandre Courbot wrote:
+> On Fri Apr 17, 2026 at 8:56 PM JST, Alvin Sun wrote:
+>>> Finally, maybe I missed something but the new value doesn't appear to be
+>>> used by this series?
+>> This patchset is a prerequisite for the Tyr ioctls patchset [2] that I'm
+>> currently developing, which hasn't been submitted to the list yet.
+> Why not have this patch in the series that actually makes use of it?
+> It's a bit confusing to see code merged without any clear user in the
+> same context.
+
+The other patches are currently under review and will likely be posted
+together in the next version. I will handle future patches properly.
+
+>
 
