@@ -4,101 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60747F4369D
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 13:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BD87F4369A
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 13:11:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 912AA6B0101; Fri, 17 Apr 2026 09:10:37 -0400 (EDT)
+	id 73F086B0103; Fri, 17 Apr 2026 09:11:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C32D6B0103; Fri, 17 Apr 2026 09:10:37 -0400 (EDT)
+	id 716176B0105; Fri, 17 Apr 2026 09:11:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D92D6B0104; Fri, 17 Apr 2026 09:10:37 -0400 (EDT)
+	id 6534D6B0106; Fri, 17 Apr 2026 09:11:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C0366B0101
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:10:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4E9A138E37
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:10:36 +0000 (UTC)
-X-FDA: 84668082072.23.A96365D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2CBAD4000D
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:10:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V40DcYvM;
-	spf=pass (imf12.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 54B5E6B0103
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:11:08 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F1C3F138E37
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:11:07 +0000 (UTC)
+X-FDA: 84668083374.12.780720F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0A9FE160009
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:11:05 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=nLP9+NmO;
+	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776431466; a=rsa-sha256;
+	cv=none;
+	b=Cgs+i1Rkf+85g4O4yb7dP7sSfjEkw28RSPJ2AkpJvSSM+t90vacmOJMI53fhghmG62gJPX
+	4av99tkXL6Aj/TkEilGGqfdMMGno8pm2si/S9iKHfo/SPjESnSxpncaJiNWhEXDtcduGhb
+	j/O851WxuxoYrGUOwpmhxcUYysZky3k=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=nLP9+NmO;
+	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776431435;
+	s=arc-20220608; t=1776431466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5WsutlrUDKMCjP/2sUb7I7ucWkl6mhUzjWV+l/nKpe8=;
-	b=LziZYGqSdgfVnBIaYoGfY6aG1O5Gh4amPe/lR/EkGv88ybKRuGZQGbRNt20frbUmszX3HT
-	rZlX5Wz1CsJuKie+4F3o17LDbTP5CUS6f81qwUF3388YocLqgavLeWQZ7DwLDmhdwuuX1y
-	h5QI7Iixsk9186mZysYpE0nr2gKjfeI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776431435; a=rsa-sha256;
-	cv=none;
-	b=xzQVZVk/z+dcvB40ysHjLp8M8prh9EXMOPmDh4G9nXhJc9D/poBPAecgwYtE5aKYXMckmW
-	Wiqb7mEIDXVvQbLHbaPW8KN/QETZxLBIdrLouWhpp8mueZmFLNJF7LzOwt/DGbHF/px+5S
-	+GoMmQ6Hui7wc9mOzkLIKYPAuoScgz0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V40DcYvM;
-	spf=pass (imf12.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E64C60128;
-	Fri, 17 Apr 2026 13:10:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B17C19425;
-	Fri, 17 Apr 2026 13:10:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776431434;
-	bh=S0nMWMkEdOz4BRrhSoV6itAbptEUCdThzYvRAvCodLs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V40DcYvMWWtmCH+5BwCYDlitfg3hbz+z2m6mnpmXeiMX4St7/Uzh+8L/cXyBE9eN1
-	 EsaiLoR99oEwbNkxqmYtmFFSa52g2MedoatY7WSvWBXTtzKgfFJw1oGveYVGAKLdcH
-	 zf4X2c4Eoq55mVYoHAQv0gCO/TpWowi0lCXmVNuqv588RkD6rh9xbm0i7+Yh4AednP
-	 A1KrsDHervl1QTVqTAgtWbdFg6if8GFbaA8KC9LyrqiMMzMkfieqOMS9PYbT8PcoRU
-	 mFaIqeyZsGnx13821FpNj70UzJbUllTIgB3phEkzCwWg2o1lZwig23c4nxhvGcm9F3
-	 l4RBYs8jgDHog==
-Date: Fri, 17 Apr 2026 14:10:28 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Aishwarya TCV <aishwarya.tcv@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: Specify requirement for
- PROC_MEM_ALWAYS_FORCE=y
-Message-ID: <0fef4cd9-e897-4830-9d37-f52ae9a33aa1@sirena.org.uk>
-References: <20260416-selftests-mm-proc-mem-always-force-v1-1-3f5865153c67@kernel.org>
- <17ea54b2-d43f-49a9-9dd4-d2330a8daa92@kernel.org>
- <5357ef55-15c0-4c66-867d-898fa7f51414@sirena.org.uk>
- <aeE4XSuXY8RfphVs@kernel.org>
- <aee4e68c-077f-4056-9d40-69bc849d1538@arm.com>
- <aeIqg0m3YL9OAyH5@kernel.org>
+	bh=UZ+9QdPmSTx/ezgB1oRSxcs6WFStfM5GyAzSgULBfK0=;
+	b=0pgMb4HiWhnGD6S2N3Y7hytn4Wh8TlhzI4zrupCAzRjAvmCUBCTTw0RY7fP1l5lOLYUzDf
+	FHcP7LwrhnFq3QGDK4da0Ru7P1yHtD84Bfapsaf54GxeXJHVHq+c+H0zqGNRkTkdbTblBQ
+	ZgPHPTfFpQIiL2UTN2YwWFMq9XEixCY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1216A1C2B;
+	Fri, 17 Apr 2026 06:10:59 -0700 (PDT)
+Received: from [10.57.63.31] (unknown [10.57.63.31])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 312443F7D8;
+	Fri, 17 Apr 2026 06:10:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776431464; bh=UZ+9QdPmSTx/ezgB1oRSxcs6WFStfM5GyAzSgULBfK0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nLP9+NmOP4Js5PxqLmjA9erzChDc1WNxHz0qocmuG+AsyaZz8t5QVQ1Lo5Rct4eL2
+	 KPNqAe7G2utJg38/pHsrTnSjhvBlhhVTbSoisuYuAhC7ve0hNuyJOThpP/YByANyjN
+	 MdbXC7wVzrfGBlCo2N0+cUxzbDtoHJT7TGqJbU94=
+Message-ID: <5adc64e5-d4e3-42f1-8cf2-6e824bad2bf6@arm.com>
+Date: Fri, 17 Apr 2026 15:10:52 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="edS2AhsUYP5/qUYR"
-Content-Disposition: inline
-In-Reply-To: <aeIqg0m3YL9OAyH5@kernel.org>
-X-Cookie: Uh-oh!!  I'm having TOO MUCH FUN!!
-X-Rspamd-Queue-Id: 2CBAD4000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: cy3ucec9it9gg5r44ps8q7ptd5sbizrg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/30] mm: Introduce kpkeys
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-hardening@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
+ Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
+ Kees Cook <kees@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
+ <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
+References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
+ <20260227175518.3728055-2-kevin.brodsky@arm.com>
+ <eaca640b-5006-489b-8b2d-148a3c4073da@kernel.org>
+ <fea9c939-f955-4020-bed6-427e592f0024@arm.com>
+ <cf9da9e0-310b-4dc0-81aa-3154077fff85@kernel.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <cf9da9e0-310b-4dc0-81aa-3154077fff85@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0A9FE160009
+X-Stat-Signature: dgmezafydziwo741w37dxz4hrcsa47dw
 X-Rspam-User: 
-X-HE-Tag: 1776431435-431053
-X-HE-Meta: U2FsdGVkX18XI9WwTQtG+8vLe8Ha3mA3/LGQj8/72YJ+hmrq7Swkg1zCqJnCC5LOXj3QO2FkHh2nFRV5A8CV4mQpzDR3i9bTS73lXsyRUy+X5gXv7s4XTJyJGO0jwpjbV6IV0QkeyseihXihKdHuZDFuEpoqfSdIaaFFsYVSAhPSF4oStTl0iQTYWE4lHgCEBffFKT6i676Z+w27aPR/kn8fCxht5L5h2fl9b5xhHHP/NE4u2GV6weiC/ALJ74GiQ12fTcCV79ZX8jBWxZuQ+v+lL7AFm8i9on7rN6WaDrSenpEtJdIoAxBQvGiGnpAqK58KVag8O/AkHGPfbnxsKJB6owhKBdEkRyQq8G+qq/vgbW2emBeHBGHw7kzqEJEZgI+MuVdFQcjfcAk4vOfujP6fDjctEMb9rUHXLBGkDFfgX2IUoq/xdrPn7Wpwmm15p7T75PTr2de2A22IuqZZJuctYBVtJUZ3Z2w8wgXjX1WL4CGjFXeMqvWOL6em8/u5NM+9lJKlo1VUSfbLJR820LMYz0QzRE2HwSBhXgB7kZB/UrOGPbRXXBu6uYI/rleh6Y5RkL0ZGR5ueAvvUqbdzSs+aQzKTcGMC0/GnphTw/QU2HoWD9DcS0dXqmDdrY3IbJrqY0/BSxq84QZbtgKyLpe/m8X5grsxs5sZV6b8TNXGYcItqdmV0wAPe92oordIiWbuwazsGf1GqxO8N0QkLxVgMngYy0I/xc46vdtArA28+ze7WMXEvpjej6mFkWMU/aR/QindZK4iwkMWLfzvdAB+N1N+o/vOFN++80joiXt/mpAO10YmWREakvrZrJMiQWpJfTATKWCqAvckBjd9yNzhdGl0yZpBmm7omma9+TnmMNWKdps+FmzZmFOC9cg6E0QkmKRsm+AtJcqhYfWaW7ZhSgSkyPzisSBLUYX392majVP/bSnl8tetbU9jwe281eJeBkx0ASO79wk326y
- dieOCzvL
- btxjwxRneHSrMq3cUCF1jiwuBTOGVelMCD5HR1YffG8BMNHdEYUUqQc0E1K4KkDgfpZBIpqzWJxCxRoP268jCeUjb/zXXs6ejtF7jdNd4uMgDNtikHFHF7SFxTjkPBhryJPpbowAqhgJy9uV2LW6zQ/A5d9A9HG08SkMhOstHiROKiwLV8W0MlWWBUjNtQ3gQwOwAPsprC5wKFT2NGYotIwPDngU7kwQnKjaTdeqwsS8mTZ0Ygw1gYKBchmH9OTp0WdBhx/nvYBUfFuXXylKjjpQZKiilUHzATHbi0PRBkfXBSieIDiluoTmYOeT9SgyQzqmEou2iPp7NCCTKHQIVbCnGG63KeaghQny3gU+aPM7FJr6a6AjZOjop1f1oyPSuSYo0kNPR5KmIWMhJJsgOSdXdjWkpiEce8z5k
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776431465-446980
+X-HE-Meta: U2FsdGVkX190XzvjEDrUDLp/9Ra3V1fCyoVhBzJnSskzcHvzhBVanqbC217LsfgBkbom5kgM5LNvBzqe+cRcgDBEuJe5GIkFHJjgcdUbSvfVZgnD/Pgq9IUlYS+2aokE8OEqllyt65lYCZ9cApm+K0QlR7bMpvycAsPA+HqsCWiwKu2uFJbhkPkpKaP5iAU2923tej/hJ97EjXkezAfyVHiEqnHTSvo5CdE4i9i+I/B4YW3Zb2pU7Ao/UTk/SnaA5TFvApr6hgZyRVz7FCWg7iXS6oaCvSy2ER6nair65ym+HXBMIrYlNvpIRX26lotAciN6MWYmFcAHArso9uLCPchjKw9BBs5Z5XT71oVzmD+1UCJrAk7LIjPGy1EyoJ/59pb0A7jH2nN1cg4EHTwH5QNvkMavOWucMfA3Ev2QxFHc0WZ0v9c1JojFuhrEJB6OZX/h6Zt/UY+cLnC84logbmsksrIMoZtXemkgbe+5GRdgXgHEBy6CzlgNgT38zdqSnXXvAmqk8e/m37kQD081nzlE3WpjBAsZv6dsgA3FxaqJfhBBK8v0wShTQ+cr5PCWS3YxjRMhr0e8pPMX8lRtqL/rIqbVs0uFdTI4d7P7eyVSQ05/vom3VzDfpDV2ogDA1y7C0WNyHD00jJHHapq2iIWqjtvBAX762sTwofWPmOwORpMScErIEUG1mSmVwo8kDYjf5RW2/xGGzK2cmcCddLCyAWoz2RQq3/K2lVSpkAG63oR+dCDXoz/BpDxRHNUS887WvmQd7oWqtBKfTla0G3ZtB/gk+YYxItugNYThyIVUIMEQyYIMC7/vxIbxJbdNXcv1SbnZqMZYmvUemzGs5vI2vZTzh+viXy/VolDgGfG4nMVmU5MIoX2yBn5G047khOoD3UULuZFaFbUj7GZYcC/0K8FqPyWBiNoweufrorF4O9zpK6CYX1H4npt3gcxp/OK0/cXdBVMbAv6kYad
+ Kw3Xsq/t
+ oHCJFfvzatghMuCeneONsurvqb26RVfd+k7thhBOcbvCiM/+ejw9pbMZ4biyPZGFe9LqLu2qejmmk3yAjT+aVSdF0oNJPnZaRTS/TgijUa7eIC1s3zHKvH1lppIb9EeTa6WGFSz4bkbHvf4SLQeeJcW9j8gy2T6A/QxPGele/MWtWndWHJo8fJK7FO0oy+pvkUf+6EqeolZuTge7Kw+KIqM6z2frE0AzUcv1ifUz5/LpWQq0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,39 +110,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 17/04/2026 14:00, David Hildenbrand (Arm) wrote:
+> On 4/15/26 17:50, Kevin Brodsky wrote:
+>> On 15/04/2026 15:00, David Hildenbrand (Arm) wrote:
+>>> On 2/27/26 18:54, Kevin Brodsky wrote:
+>>>> kpkeys is a simple framework to enable the use of protection keys
+>>>> (pkeys) to harden the kernel itself. This patch introduces the basic
+>>>> API in <linux/kpkeys.h>: a couple of functions to set and restore
+>>>> the pkey register and macros to define guard objects.
+>>>>
+>>>> kpkeys introduces a new concept on top of pkeys: the kpkeys level.
+>>>> Each level is associated to a set of permissions for the pkeys
+>>>> managed by the kpkeys framework. kpkeys_set_level(lvl) sets those
+>>>> permissions according to lvl, and returns the original pkey
+>>>> register, to be later restored by kpkeys_restore_pkey_reg(). To
+>>>> start with, only KPKEYS_LVL_DEFAULT is available, which is meant
+>>>> to grant RW access to KPKEYS_PKEY_DEFAULT (i.e. all memory since
+>>>> this is the only available pkey for now).
+>>>>
+>>>> Because each architecture implementing pkeys uses a different
+>>>> representation for the pkey register, and may reserve certain pkeys
+>>>> for specific uses, support for kpkeys must be explicitly indicated
+>>>> by selecting ARCH_HAS_KPKEYS and defining the following functions in
+>>>> <asm/kpkeys.h>, in addition to the macros provided in
+>>>> <asm-generic/kpkeys.h>:
+>>> I don't quite understand the reason for using levels. Levels sounds like
+>>> it would all be in some ordered fashion, where higher levels have access
+>>> to lower levels.
+>> That was originally the idea indeed, but in practice I don't expect
+>> levels to have a strict ordering, as it's not practical for composing
+>> features.
+>>
+>>> Think of that as a key that can unlock all "lower" locks, not just a
+>>> single lock.
+>>>
+>>> Then, the question is about the ordering once we introduce new
+>>> keys/locks. With two, it obviously doesn't matter :)
+>>>
+>>> So naturally I wonder whether levels is really the right abstraction
+>>> here, and why we are not simply using "distinct" keys, like
+>>>
+>>> KPKEY_DEFAULT
+>>> KPKEY_PGTABLE
+>>> KPKEY_SUPER_SECRET1
+>>> KPKEY_SUPER_SECRET2
+>>>
+>>> Is it because you want KPKEY_PGTABLE also be able to write to KPKEY_DEFAULT?
+>> Right, and in general a given level may be able to write to any number
+>> of pkeys. That's why I don't want to conflate pkeys and levels. Agreed
+>> that "level" might not be the clearest term though, since there's no
+>> strict ordering.
+> As discussed offline, maybe the right terminology to use here would be
+> something like a "context".
+>
+> You'd be activating/setting a context.
+>
+> KPKEY_CTX_DEFAULT
+> KPKEY_CTX_PGTABLE
+> KPKEY_CTX_SUPER_SECRET1
 
---edS2AhsUYP5/qUYR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Sounds good to me, that's more accurate than "level" if it is possible
+to give access to arbitrary pkeys to each context, which is the current
+assumption.
 
-On Fri, Apr 17, 2026 at 03:41:39PM +0300, Mike Rapoport wrote:
+> What is accessible (and how) is defined for each context. For example, I
+> would assume that all context allow for read/write access to everything
+> that KPKEY_CTX_DEFAULT has access to.
 
-> Yeah, the issue though is that open() succeeds regardless of PROC_MEM_
-> setting in Kconfig. With restricted /proc/pid/mem the failure happens in
-> write(), and there we don't know what actually went wrong.
+Most contexts would, although as I mentioned in the previous email,
+unprivileged contexts such as eBPF programs may be further restricted.
 
-> We can try checking errno, but it's fragile and it's better to fail the
-> test if write() failed IMO.
-
-Oh, that's unfortunate - you'd have hoped that opening for write would
-fail if you can't write.  In that case you're probably right that we
-can't do much better, possibly adding a log message about the potential
-missing config but not sure that's worth it.
-
---edS2AhsUYP5/qUYR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmniMUQACgkQJNaLcl1U
-h9B8QQf9GBdnFFlhg4G17leX5BmBV6GXASVwvG8Q+tTuwrKGl/PCE1vc7KQY8eCr
-4kAO+GSsVwvxnqz56RE1O92/xU99iiUd6wFbIfpc+ATWTN4jxZk9NIt/FasNFc6b
-8gd/NYDi1rfRGXGxNwmYJCNh4Cx4XM0xe6VZ5dwhyRIXqE6LG89aC9UWROse3Q7n
-TR5nffGMskQ+FhIpjmEHm1UWcKaAj2yIQ9b3HPQBSBMN3nL1jQoH1Q6mjvaOpHOf
-1lw3/0h0AfTPMOhiqRRTORBxnelE8WqAt4JwqwA7p4LgCg0JoNCnGtEQmwDznANJ
-rgPYZ66U8O5kbvDJMzCWk2bdqPCZNg==
-=v96S
------END PGP SIGNATURE-----
-
---edS2AhsUYP5/qUYR--
+- Kevin
 
