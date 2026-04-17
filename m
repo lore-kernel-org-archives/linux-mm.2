@@ -4,132 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B87F43699
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 12:26:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B36F43698
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 12:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 378E06B00EC; Fri, 17 Apr 2026 08:26:39 -0400 (EDT)
+	id 2E80F6B00EE; Fri, 17 Apr 2026 08:33:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329F96B00ED; Fri, 17 Apr 2026 08:26:39 -0400 (EDT)
+	id 2BFB46B00EF; Fri, 17 Apr 2026 08:33:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F17B6B00EE; Fri, 17 Apr 2026 08:26:39 -0400 (EDT)
+	id 1D66B6B00F0; Fri, 17 Apr 2026 08:33:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 09A0A6B00EC
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:26:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAF8BB5C96
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:26:38 +0000 (UTC)
-X-FDA: 84667971276.01.3E18E64
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A0458140009
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:26:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vz7CRyk1;
-	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C5D96B00EE
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:33:44 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF882E276B
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:33:43 +0000 (UTC)
+X-FDA: 84667989126.05.72B2CB5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 18812180002
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:33:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NiHFQsFJ;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776428796;
+	s=arc-20220608; t=1776429222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bPSXhVxdBm3I6+x6yEzFDRC7WnugCEx30Co1vqOIzrQ=;
-	b=lvwkTGx/jof1OK6/kkvpJSdv7/90Dwe81FU2t5mv4/T2UZCmBLQQbnVIqUVfB0C3MshWqj
-	0QfrS1S4pbPtjLqdGLmq8gIDxDW9doD+4TGEcb8cGJhNYyoMfLytI0rh77qBQIcWtTiOfG
-	xa9h6+ju56yplCVd2erSaFtdnwJrh68=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776428796; a=rsa-sha256;
-	cv=none;
-	b=3ctLbGu3WCKA5YDpjGgI3fLZg8PnqmBtgu6T1CFZOZ/eu7epg0/wLi2v+Le87tUCkyUxwk
-	KGSOsmwfvJRkday9P4bVZx8IIHnFAuxJBcsdIaNDCQoUMb0HjdIS7VKlgCLIJEKYJQPqRZ
-	CRb7eDu9TYL5sRMtEgfP5fZpW5w7R68=
+	bh=SVi2OosZIDjN0CWEeqrjWTUINoPWYfAg26511zqWrSU=;
+	b=M0KGW5q5CDgT7LkO+LXqZ2d1kr5fsf5HPIQGfS+FzQyyxx4/kno5vuiBWYpIZ91wMSaJgn
+	0tfHxDlpn/rAhEXRgTkC9vVQPgvwzQNiMcHfxMrphtMIXvXHDQV3JGljqNUq1okGmLJjNA
+	pF2EhPCXAX2YAW/JXttxgMdGeecM0OY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vz7CRyk1;
-	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NiHFQsFJ;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776429222; a=rsa-sha256;
+	cv=none;
+	b=WczAhYHSnaGfpApEbj8JkNUZi44MI51/4GYybjP8p3/Y6eBkfJGj2cl3ziKvDiRIgsmW9w
+	9aHQkskhttRxICJC153+gQ3eETI+SqiKfxcKxvlDNh7A0iM+K3OPfzMIJj3EFdVUxbi/11
+	WvdZ6Y/s9NccQ4o/6StHNVDyaDRFn4M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5CA954072E;
-	Fri, 17 Apr 2026 12:26:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CDEC4AF0B;
-	Fri, 17 Apr 2026 12:26:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E5E360128;
+	Fri, 17 Apr 2026 12:33:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2159C19425;
+	Fri, 17 Apr 2026 12:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776428795;
-	bh=qx+8FJ8jA0NidxGCtpVyMEUiZNEXmPexoJxKiWGCiMA=;
+	s=k20201202; t=1776429221;
+	bh=Wsq49SzVrd9M5pMBi3guh4m0X172usecXFug1UEbII0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vz7CRyk10GE9Y73tyozR48+pEWlhyTxRJNmzGuwOCJIU0ALhdbG/0xIphC16F4qBi
-	 oNvXvLxKGUSvCthYhOYcgTTgM44BCwhVYpDxXCult6wd7QVmrVTg1Q9qS3JM08i+UR
-	 t4DxTL4IozATIHJEWSeyyjwmzG3PPeS5XVYpR9C+MK8uVVLffthgAOojT+B32BwMI/
-	 mkSLqyfmDhdrreMbPB0x2ciWtkcSQcPZknPwYwRLS+ZlSgq6k24foxA9GupBuoBDPt
-	 YTbnFyMxbphWdD5MF2JflguTTF5gNHe8DlU/7GiDQPx9O5b8zVou9+g0qaO9E2PdzF
-	 rP+59js3C17/g==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E3072F4006C;
-	Fri, 17 Apr 2026 08:26:33 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 17 Apr 2026 08:26:33 -0400
-X-ME-Sender: <xms:-SbiaR_NNX29Fol-5tVyTde8Xan6QF1Ql8exi2WW8gRE9IVJ65OtXQ>
-    <xme:-SbiaUPFJt8aEHbBHPLSBJIqS7LkcEfBGX-8lGHKWRz7AXEZntyYOb0qWRrY62iPU
-    -tz1eOj0dqZvXmuBBXYwsHydfPqB4rGDPFwpQkZNR2wnWx2CmqN8g>
-X-ME-Received: <xmr:-SbiaVNocWi5hTKsgUmcf6e2hhxZtWBRl4gFRinEAU4EfM6UrrnMnQLATOyFJw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegleekkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeffffekgeffjefgkedvjeeggedttdeljeekhffhudeiudfhiefgudeugffhheffuden
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
-    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfeei
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
-    pdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopehljh
-    hssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsg
-    grsghkrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthht
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:-SbiaaOpzH-hGXGD8Vnb7wDUjEyPZ2Yzd3P0SNl-CTUuebWkeO-rFw>
-    <xmx:-SbiaUXLDyV9Dfmmz-EoGAYXiK572KSYrME9AJ_atGEPxDlDyLiBmQ>
-    <xmx:-SbiaaqQpl4u3MiQQmUfZ5k6NA6ZhgCUTEF3_1g-aR1_ldmxlbWGjg>
-    <xmx:-SbiaSecBy9UBAKEZg-YbcgBvEHjHQ4PBMISgK9pUxRGppKKv9YiGA>
-    <xmx:-SbiaeBxJahyYoFrTpKPYVuki05v4yhgXwmld2lBZ-Pwdx3KjNYQq4Al>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 17 Apr 2026 08:26:32 -0400 (EDT)
-Date: Fri, 17 Apr 2026 13:26:25 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
- guest memory
-Message-ID: <aeImfRrrvr3UoKtL@thinkstation>
-References: <20260414142354.1465950-1-kas@kernel.org>
- <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
- <ad50rPOseVa-SP_s@thinkstation>
- <aeDoqFWPFxkkNB26@thinkstation>
- <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
- <aeFCuLJXT8VOkzH7@thinkstation>
- <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
+	b=NiHFQsFJ0JSQH92aJZGAJjmwTvmp/lA9hLkHsMmeXEd0LGYrnyK8jqjqOq69LASPO
+	 n9I0HsFk/komPoc4QCYRarbGd+dlffjTZ0Byx5fMQ/u+/Z0fGFUnZ+/KaCRhM6WJ+z
+	 VJGLdWC+/JjnLvihVk8ts9eg4qGGv1nQwbPunKnF8aRcxEDAEUE1HZ6TLx8fJZnjhr
+	 BFghOIzcXt6S1iO4G0HKWA8hKvm5rEI1cpmKQHYCoN7FxUnUtZ5aHuchwpjC/B4lV/
+	 vFLqOuQh4EjNmtKmCcG5R2XBl0L7rpFXPrx39mioKZJXoOkpmf+yvBMXf4LuZQYmtx
+	 jEBe6zjDMA4Wg==
+Date: Fri, 17 Apr 2026 15:33:32 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Aishwarya TCV <aishwarya.tcv@arm.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: Specify requirement for
+ PROC_MEM_ALWAYS_FORCE=y
+Message-ID: <aeIonE2r89VdTJZt@kernel.org>
+References: <20260416-selftests-mm-proc-mem-always-force-v1-1-3f5865153c67@kernel.org>
+ <17ea54b2-d43f-49a9-9dd4-d2330a8daa92@kernel.org>
+ <5357ef55-15c0-4c66-867d-898fa7f51414@sirena.org.uk>
+ <aeE4XSuXY8RfphVs@kernel.org>
+ <8260f624-7ed8-4766-8f80-0d0d4dbb5cb1@sirena.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
-X-Stat-Signature: 45k7ojo3wn4cftwnofucqj4odawbaeqy
+In-Reply-To: <8260f624-7ed8-4766-8f80-0d0d4dbb5cb1@sirena.org.uk>
+X-Stat-Signature: aj1qcpj4s3c9xj7hhe8yawd3899spwbf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A0458140009
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776428796-649540
-X-HE-Meta: U2FsdGVkX1+iRWgKpGqiB4phBKYhkHktxqNai3kCVBkIR+q+relD7MnugNrmLrbjXKilstrzl3IHNkp3Y7qZ0LftO8FUjUVbY2SgEYtnOC8NrLEp7G2WWRSFzZrrPu0ZLtdxlcNbLZrHxj9280faLokYswD0DdjC8sksS3jEnPfy32a6jmRYFax2DT66Fob2p2nyKqGtHErGzkdSX7HrZkedF9dkrKOBvpCmYxs2KKELw6s8mdk3poyKTJhjwv12ld1Tsaj/hly3NAQrEKFS97EIQsB9IvBxDYFpMjmljK40BSxdlV52NFSTmz+MZiQucStttApzOlzBt63nvQF2ywftlJX6QXQFFRBV0POT/ILNNNSXOq8w4m0SrAzCF2Jgu1KojYKTDhJWD6sp5gXmLxGcFXIT4JASh8FmYw6ECG+gAxT1Cox2e0bnkpw/vAD04AoyYWBy5TL6tztKO+feItyAn1xTJ9zt6ZjtETIjUSs8wRTo/sxrvRIX6Z0s+OA0Kz0gFbr23frLQkBq7J3AbWZIqda1ARO0dy94RccpMKTjv2pSuEkKnyuhaVa7e+8z2t9r7184KqyBS82ZOj5AW6/rH/fLWxOAVAinIn49gBUMW8c1YftDZ9dx10rcFB3HwBLocumlczVKxFvBg5lbnmh3FCcDXDh2pIRZLALeVwUDp0CjVrRmrDvHNq5eds9Em6QV+GftV2j1ef3qW+HqMfAb+goAHieQc/GvslHecGO5+UDVGCzeCz7YgEmcnPWZjFQVczIVsQSZRl6TVae0uQBn1hr/8UqG1Bg6AWi3ILFI6Gmsp84BmywLoP4n8abOJVy9jA8ol8Aru0ISNFHM1XpfpdTycVvUoSDy1seTHUTEZYG0yqojaqRgsoKn/wtx8lFGwOreHadBrzKJjryrZlz1OxmjLBcXYfzRGyKbSlViMzlXWsfagEr8Q+cwX43j+z+WgyCsThPMiJoeJvg
- yE3lPkc3
- ZdtLVVP7yt5lkrH0bGM835jgXnAMwmIov/PntolF1uaYsWjyUgxmyD7tfuoa4FA65ZSWdT6vWXDwWRjgQ1anAHZptM/7j3TkjfJZKDP1OdeFE43fT72D0gmuYPCNb0ks2EyU0tUl9cNtc/+A4JG+f40ZNkZY8pyfWEamxE8aLcBUR+S+c0vDNyqtLi4ZU00Dvl02rGyHFtCqPgxr0PLv/4uMDwN4M7kVOiwtjR0BSjuxgrA/8BSb2hELtNAYMKMIk6ry3QpO0KhwJPioZFIVuyTcAp6kLxcFjlbW3IuI8swAF3CY=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 18812180002
+X-HE-Tag: 1776429221-304711
+X-HE-Meta: U2FsdGVkX18rIA8VwAqRwGRKfVbjWFYmKgRwHOZTPgjs6OV3RI+AH1ggb78HEYrMVkysu3qyZJkoEWucbdiiXg1OSa1h0lhPRxpSuppbjrGZ7+BOdnYDcgQE+f7RdMSYhkwKTq4uaFHR+WxwsUYnuPkHb+MFcSH10co2Ue9rEMOOLNvcuvX1TYWSL9D/HCkgUgaKT3Rg1CzaIwXpjAthDVmhic0dGbyuNuOTYSMq2rVRfYPc8z1mi5oJwfnTws/QfQ6wHeYO2MiiIiRIGnRcTgyBclfGJsM4F7TpHw9WPxnt/cURZbaODMD/b0C443bOzieAN9jMziCNgybobmGzW1EdN9n7gTFyNW66fUYysZFX+1/4nWHPgz3p5ZR9kmovUrbS51XLg0JBv49zc9XaN1xBIBKmzpOYLNRNgVT4i4apOl4d3RTI6Ckj84zCPQEqQ6C0PhfcFeQA3bAg5JfpR1l70lePGKeeTSw8uSRxa3/wSNNDjv5DTJRVMnUkJN+PlU6RZ1cnJkfc+I0aVSsgsBMh9rfy0S8Imqvw/yjfgp+QmfN5+VeyMGUQZlABdxRtP07mdKq9Kks6pU34uefMyh1kCf6WfR9BGQpJqePLjxpfQ7NP4ZdSQniy6XwN9boDFVThFjq9xxgxtV7Vy1McZIJJ6qBnoD3WMIQjD665mW1QzsRFeiY6R3vevjYl91ZuLfSLyQ/bcsljCt6y5dvqvaI+HLprUdbrwvQPHb4NkJcUEgeyNskCBCIXP8uSHFVa8mBvq+KVqfVK5XIY04GhUsb9+IJ3thI3SWeG0h1hvCEUu1shawMptZpYfVQh/Fw0kvfnfbFEN/dPM0eBlZw3iMbGOM5zN7sHqjRbxiLiVbkGnjcQGsausuJ7bCJkfIQhhmOtzIRKrWpF0FgFFvgqLl5DJ4ih7J/8TOFzFNIpWrHO4538tLiazTy+cGETxTRrJUB3XVwa5mFKVzy605A
+ anvzWkOf
+ arcM20zbFJh1dE+f/K4WsJt7+ldPvPbKpPDakumL0FHTVl0V694AStyP6NItIGh+fchGf1/5pFyUZpp9Q11Q81lYaZz22xfRq1uL/eKbX+QCuSlulaQC624lND/U6zgCRmIL8MT4HAO96rea7zGSFReLVXlspsOw+SsvzlbKnb/Uggjyc4ynMHm05lbgBCzl334tIC2XjlLt3yevzcl6eC4RoiZQpeHyiDaQTdXjrDfoArIm2n+kxnI7oN7NRltXPxBnKiiA5rsAqxegXkfvSSymj0WZGdjpubRjHpVN5Cr/zz/c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,59 +102,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 17, 2026 at 01:43:36PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/16/26 22:25, Kiryl Shutsemau wrote:
-> > On Thu, Apr 16, 2026 at 08:32:19PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 4/16/26 15:49, Kiryl Shutsemau wrote:
-> >>>
-> >>> Here is an updated version:
-> >>>
-> >>> https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git/log/?h=uffd/rfc-v2
-> >>>
-> >>> will post after -rc1 is tagged.
-> >>>
-> >>> I like it more. It got substantially cleaner.
-> >>
-> >> I don't have time to look into the details just yet, but my thinking was
-> >> that
-> >>
-> >> a) It would avoid the zap+refault
-> > 
-> > Yep.
-> > 
-> >> b) We could reuse the uffd-wp PTE bit + marker to indicate/remember the
-> >>    protection, making it co-exist with NUMA hinting naturally.
-> >>
-> >> b) obviously means that we cannot use uffd-wp and uffd-rwp at the same
-> >> time in the same uffd area. I guess that should be acceptable for the
-> >> use cases we you should have in mind?
-> > 
-> > I took a different path: I still use PROT_NONE PTEs, so it cannot
-> > co-exist with NUMA balancing [fully], but WP + RWP should be fine. I
-> > need to add a test for this.
-> > 
-> > I didn't give up on NUMA balancing completely. task_numa_fault() is
-> > called on RWP fault. So it should help scheduler decisions somewhat.
-> > 
-> > I think an RWP user might want to use WP too.
-> > 
-> > Do you see this trade-off as reasonable?
+On Fri, Apr 17, 2026 at 12:24:25PM +0100, Mark Brown wrote:
+> On Thu, Apr 16, 2026 at 10:28:29PM +0300, Mike Rapoport wrote:
 > 
-> One reason why the PTE bit was added for the WP case was to distinguish
-> it from other write faults.
+> > But sure graceful skips are better than failing the entire tests. Would be
+> > something like this:
 > 
-> I assume without a dedicated PTE bit your design will always suffer from
-> false positive notifications.
+> > @@ -622,10 +621,17 @@ static void test_prot_none(void)
 > 
-> Leaving NUMA-balancing aside, a simple
-> mprotect(PROT_NONE)+mprotect(PROT_READ) would already be problematic to
-> distinguish both cases.
+> > +	mem_fd = open("/proc/self/mem", O_RDWR);
+> > +	if (mem_fd < 0) {
+> > +		ksft_test_result_skip("opening /proc/self/mem failed\n");
+> > +		return;
+> > +	}
+> > +
+> 
+> The string reported in ksft_test_result_*() is the name of the test, it
+> should be the same name as is used for pass or fail.  This is used to
+> correlate test results between runs.  The error should be logged with a
+> separate print, in this case ksft_perror() is probably a good choice.
 
-Hm. I didn't consider this case (miss some uffd lore). Will rework to
-reuse existing PTE bit.
-
-Thanks for the feedback!
+This should be probably added to kselftest.h because it's not obvious.
+ 
+> >  {
+> > -	mem_fd = open("/proc/self/mem", O_RDWR);
+> > -	if (mem_fd < 0)
+> > -		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
+> 
+> Yes, this is a preexisting bug in the test which I see there are more
+> instances of :(
+ 
+Do you mean that ksft_exit_fail_msg() should also print the test name and
+the actual failure message should be ksft_perror() before?
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sincerely yours,
+Mike.
 
