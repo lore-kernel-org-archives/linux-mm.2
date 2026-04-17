@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A55F8E4A7
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 06:20:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA5D1F8E4AD
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 06:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFA5E6B0092; Fri, 17 Apr 2026 02:20:35 -0400 (EDT)
+	id 5C5D26B0095; Fri, 17 Apr 2026 02:24:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAB7A6B0093; Fri, 17 Apr 2026 02:20:35 -0400 (EDT)
+	id 573B66B0096; Fri, 17 Apr 2026 02:24:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC1626B0095; Fri, 17 Apr 2026 02:20:35 -0400 (EDT)
+	id 489426B0098; Fri, 17 Apr 2026 02:24:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B84CC6B0092
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:20:35 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5EA1813BACF
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:20:35 +0000 (UTC)
-X-FDA: 84667048830.22.39535E0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8644240008
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:20:33 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dJ0cuCPI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776406833; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 386B66B0095
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:24:26 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5AC31B9045
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:24:25 +0000 (UTC)
+X-FDA: 84667058490.21.9F81001
+Received: from mx.fmap.me (fmap.me [51.75.121.85])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E8B61A0005
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:24:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=fmap.me header.s=mail header.b=M6LzZe1i;
+	dmarc=pass (policy=reject) header.from=fmap.me;
+	spf=pass (imf25.hostedemail.com: domain of ab@fmap.me designates 51.75.121.85 as permitted sender) smtp.mailfrom=ab@fmap.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776407064; a=rsa-sha256;
 	cv=none;
-	b=eQoq5ktPh9DMEjbIQWIkzty8Iw0GKzsGxTeRyv93qw4thgqA9mOVZCSsKuZQOVsorRqnKR
-	10aJgLdKWAKC1mZKzMNcOdveWSmtzmu0PXs6GfPcsZRa3eAnWZtMXjR1VNPH8MWJCyWgLU
-	CXfl+5WyudkbW+M//mlslZAxA+14yH0=
+	b=vRpQ4g8C3T9TsGkQVdF3JAxsNgjXwz1mMgOIMsIfMRA98nagNwzy7Up6soC3Gcqq/JZmxp
+	clJR7Oe+wJKz+2cpCzEI9cScujqOjy+d9iH86rKkCot5C1kLoldrpi32OvaFdGKxolDh09
+	m59SyB9RRt0CydsRUjbSZNWGEVwehIM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dJ0cuCPI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=fmap.me header.s=mail header.b=M6LzZe1i;
+	dmarc=pass (policy=reject) header.from=fmap.me;
+	spf=pass (imf25.hostedemail.com: domain of ab@fmap.me designates 51.75.121.85 as permitted sender) smtp.mailfrom=ab@fmap.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776406833;
+	s=arc-20220608; t=1776407064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wm0USUqkkGHlxFl8H2+BkV/7X0400yG9aZjphG/IXMU=;
-	b=RABLz7zyrznZiSMpYK6R4+pxkCtCcSQr4YXJrDfrqNQQFO7RIxaQxuF5EzOLPni1pnEncW
-	aJ2Pf79iJYv3Q3D9XC+fL632oOJgifOoLk2VlXlj6RcG8h+iYzBa63btr6itluRQSfURvo
-	JUkGtK3VHBa1zf6k7Gk+VyAoNxhAmvI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6973D43FA3;
-	Fri, 17 Apr 2026 06:20:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12C7C19425;
-	Fri, 17 Apr 2026 06:20:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776406832;
-	bh=HL8SBgsd1DbHhFspQzwB04DyajD9b7vRoL4rZ+XH25c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dJ0cuCPItEytBujWNScwMbow17sgYJP80y4GN45GFHG1ge+NWiuyLVlmtwrCiOwrv
-	 9VlCchDeSL/bbza5hNz5I6iFeU+kpxMamK5S1DpZG/JJfO50qnSOd/He4sISH9e+fx
-	 dMiKA/gaEF6TnXze4xMSb6CIbXxkuw/TaNuhDuHpQdtuFhQcDlRJUyuRmPFPXM9Dpm
-	 JZAf04qGe/7uEkoWQnYa7griK88JH+s/BQPwv9c4igPgfsTEvE1i61nsJoxcJxIJol
-	 2fmK+2jXwOE12GMGcpioHFs4dbGgWcQ8otnAk3ws+CYU/ZyxGXcETYvmcQDt/XvtKS
-	 pGqPKg1r8yVog==
-Date: Thu, 16 Apr 2026 23:20:30 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, brauner@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
-	timmurray@google.com
-Subject: Re: [RFC 0/3]  mm: process_mrelease: expedited reclaim and auto-kill
- support
-Message-ID: <aeHRLv834FCAQlQ8@google.com>
-References: <20260413223948.556351-1-minchan@kernel.org>
- <ad3ldU4DZxga_J2L@tiehlicka>
- <ad6c0DN7AGoOQ_Iq@google.com>
- <ad9AXVYxWCkHmh6J@tiehlicka>
- <aeAeqoJ_acUAza8D@google.com>
- <aeCHvYOKP1exBBns@tiehlicka>
+	bh=RvBM725pvZkYGHsMicUi69obsFFOz0wr4by+//XCUqM=;
+	b=dIXobzaj8Cxk+LVnMfw6i2j++qAmiW0wCX3NTjCQKzA/MpqaZZ3X6l9uS2aBWOCoPXlxX9
+	stKOVBVJOXfflWzDt2ti+fZde9XzA71ruCctt4JQ3fDYCfBYAzwZXJe0omAifV9EYOZbHb
+	cJMI84fwaseKjJBdl5uGLV1m3FHkJ6Q=
+Content-Type: multipart/alternative;
+ boundary="------------S7egC2o6fx6v7bQu7uy3YITQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fmap.me; s=mail;
+	t=1776407061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RvBM725pvZkYGHsMicUi69obsFFOz0wr4by+//XCUqM=;
+	b=M6LzZe1iQxPksIBf/ww99yiB6SWjhIGQ96xDOvwOlUjhQV7KKDBhRi+CJSuQyNv6MnoeOh
+	B8q6U6H1MaZLf38zhF+eVpAq8RkMtGOQLktLSjVj1JNyoLbL0Nkr6ksjnxMbhzGHz8W7oo
+	BHXziNF7m8AG1PCYn/oYqjiV6do2W0g=
+Message-ID: <800fa535-da92-41c0-bea9-40ee27639502@fmap.me>
+Date: Fri, 17 Apr 2026 13:24:16 +0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeCHvYOKP1exBBns@tiehlicka>
-X-Rspamd-Server: rspam10
-X-Stat-Signature: hn1iktyei7iuqe5kxy91fxijbnhwziub
+Subject: Re: [fuse-devel] Debugging a stale kernel cache during file growth
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, fuse-devel@lists.sourceforge.net,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Amir Goldstein <amir73il@gmail.com>, fuse-devel@lists.linux.dev,
+ linux-mm <linux-mm@kvack.org>
+References: <898a4e10-6193-4671-b3b1-7c7bc562a671@fmap.me>
+ <CAOQ4uxjoS-PvnZ2poh0bx0C6ocTYwuEpfV0q5md15SjS620OMg@mail.gmail.com>
+ <CAJfpegvxF7F+XKFKokSH4eOgCA0V2RNm6B54MS9nr9wG=U66OA@mail.gmail.com>
+ <59ab54f6-680e-456e-91f4-0a26889844ef@fmap.me>
+ <aeFuarTL7xBbut0F@casper.infradead.org>
+Content-Language: en-US
+From: Nikolay Amiantov <ab@fmap.me>
+In-Reply-To: <aeFuarTL7xBbut0F@casper.infradead.org>
+X-Rspamd-Queue-Id: E8B61A0005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: jtjutwd46zddgs9z7txcwrzb3946z139
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8644240008
-X-HE-Tag: 1776406833-647414
-X-HE-Meta: U2FsdGVkX19mY7jf/E4InoSnQGrizid4VBGEvzg4yKdb3IEldIQTCBEeqLieotONGPxPT7IqIe/V5qHtRIRhoEUjGlXTa39L/j7YN88CRNoDa8Ah6RwGWyc0KWY2KvGjPeoBAs6t/3VRMmvWeEmpBCFbcdvti6qWw50NMW4SBc/pw0xnnuqsdTFXLPvmHSiFf5aOkvfadcnJYXkJN3uLgXOYPBrKdqc8LWOpZ1Mk3Z1gFDaerI9qr+eXoP0IwYCchG8iWTxyrwZMrBFdy6zPTUvBh/53Zvjd5d1nLoEN1yykhlIKUyPanFvtqJW93O22l2OauP/PvwOsxn7IOQX0upqPK0I8WkteY4CM4pdXLzk4sz7xnsLOhH++W9RB7sCIqvJvoGLaWF/fnyY2RHu39yj/xoRSoIEdHQs1VN9RL6wT1Gv9SCozNt1rJDX6lSH85m3mrDbrb0XKqtjv5158TtOlQ5asD5btWZB0UQxwFsDLkzy/4b3lSRroZXBsjdJd8lOO2LIPq21RmgNrRi0wDTolPotcrVnB9VlJEse7aL29yqYkmW1t+/Qbs1VDV/4SrUEbBPxRa2NVAaHw47PwjgQAMUze0J5AZfj1oBf+0ONgJEytW0vYcqm5sXfA2bn8E3iyu4aSeTv2bYANDCpIciibWaUy8yxtchgdfwiIds7D8lsEHuWhUX4usoTlnJuLrPLqvP3/EJiEehSxwrI30OGdBQ090SxlmW3BTbbu4+ENuI8gY0lw3FmQ8mguTSsVnlx5ItsqZMUOC7Cm0NP7jld01b+nzPwvgUUPrRQZ+5hCLkiDa84h4/TTSZod81cC9WKj9R+Xy9HuWNAj2GkNRW0G3xSIQAzmuBVu8IQaCU73Zh1gM9eeq0tXVqoaVa+EqQsHhDfNYXMgxyoIy947XHI7f6/InILfGajICLTXGV7bWEbL05Qe56EGMoy5NzTR+0UJa8HPR5fyj04ludM
- aEWnvXY7
- S+vbsgNWK8Mwc56z0vEvwVrTs9CG538T/Z3/Cnue9O02/dmo7Iseh9ThMRa3DKBlATkNZkHAJwsfH/ozfAy2emWZ5IiVtDuczUufLKaoqxXsLA8uj9UvSMW/cHXty7LZL/xFcyApgfJpdf4k7Capk7Ys/CLwJ2TqznMTbo9Jo36zS0Li8NANbdN2yC6QsQmS8yJjmjuGY9UlX1TSmXL016Wr2kHy4NLL2SGpfsVj6Wg1obkGHNCz+aFArorpHYM5KuZIoNxD/CSWRj1HaMaWyzDmOUiU7XKmhbAtJ0dBEwAGLHF9yCQQzsbYrtn3X42n77ervtmgwCzlLmxg=
+X-HE-Tag: 1776407063-713449
+X-HE-Meta: U2FsdGVkX18c67A8DONz5d3xBp0v3aT/sdLSaSfvrjMJ1669SSOXc+Nr6gp/jQUeMSvGiTAjq+emsDLPDh8W43ogpmAqHYo9JQz6AZsK6RnnRIAcl6On/eikOOEGjZRMf5ou7st5QUY9OMjcJDmVqTZalrTHIoSrZcx8Iyu3bhaTrzzgENP9//6V3BJeRDfGX7HawfBSCWwhuDF8lbKO4D2H1whU6uy3DYxJQAqn60ormJLuIMf1lJyPi30zGj5XAO98ixXoNtTMxHKm2tzALu9/EjRf51vTsrS4/w0CiW///uECM6oGQzeScTTYS83FFD+CzYBtWwci0lDYbdD6+b6E1dDGtsKddemFR+/rqwjS/46ztu6CSy3Ato0uzW6dimNT5/fikU//gVv15uh4r6rC4kqJSa9V0jsd4RqcsrPklLiKXNQTd+ZNHWFLMbO6mZ7z3aUpDZVKhrmaoGQokVE1v1fXxZ8E0vtOt8bQ3s9DWtL1fLHJjUr3PSRYr2JLEuRnU8SPc1yX7N82QvcKVPj9WnvC/D4xuoiAwJxmn3aMJUS5s1YPMzGIm2nP9X7geeQpuwlkMnR3ykMBNvrpDAMehox2mHlS3HJyd+TThk2KFWIwkv4XAI2MoPXJlVbb9dut7Iq8T7LeaffF1dlcdF+2oDfdy5nO4GeNBo16QbWPQVwPuAkk3aW6+DIkQEhGVLIDyNv/aFhgCSg0b3XVrjIHw4G90kTj0XEsCUluI7YErNCEYtWpNTrEbhC6HvJ8tm8rhD7F2cybcK1G9Qmf5JVS4f7MBw8sJNjMHoAStZLvmW/pUl+Dcj1oRv9MbC+snUBvHugJp44VEy/nuiF9gFFUgF5TNcOX4fuW/H81PFMOqlQsuJROSCwXOKKPRv5YNrnV0MuisXEy2JG5dNQGWJGyqoPJ8DKDOQgew1AkXM0ZZHvmExl1nizoABEAr6Dn41ZIE7JmPT3DcKTzLRb
+ 7m6oEqiu
+ Z4ihjwTe3n2hEPMIR7SxFb176nmOzR9/IA2kPVIrdGxXzkNHcgRDYtCQzNvK/aU35AVcyMJvbZF/AjZlTArIkwnwSKUH06mYayqmyV6dqAO3usZSvGv6yNHpecQvCTMRORBAjoTcalQzGSHFcMxdIoixubgjALIEHt12SS8grjlltiAFFq4+8J9ih8C5qdBDTEIUFD6aaizTMrFfE4TQWWa0yC8MugGwCwtGsJHndA4zypZXDqBv8wyBI/fE3mRsQFE2g2k+0/3pKGK0Yfsb+GPtvyuGHJKGGLmTbMub/di55MwCioxk9wIJHog0/VgALBviixpy3XIaZ0TPnM38yCWHlKCajOmdRidbOQD8Ky/vzGJ9eXsGMt+TX8cGOW7aSwXk0l8PqHPPekQ/9Jgy40nqF5X3WcURoSHZJ0dzsiY4z0kk8pd3oY4r19WkawGgG0I5gluNs3t8u7dEnWQ24+8kJMFnEyuH/b/nv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,148 +91,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 08:54:53AM +0200, Michal Hocko wrote:
-> On Wed 15-04-26 16:26:34, Minchan Kim wrote:
-> > On Wed, Apr 15, 2026 at 09:38:05AM +0200, Michal Hocko wrote:
-> > > On Tue 14-04-26 13:00:16, Minchan Kim wrote:
-> > > > On Tue, Apr 14, 2026 at 08:57:57AM +0200, Michal Hocko wrote:
-> > > > > On Mon 13-04-26 15:39:45, Minchan Kim wrote:
-> > > > > > This patch series introduces optimizations to expedite memory reclamation
-> > > > > > in process_mrelease() and provides a secure, race-free "auto-kill"
-> > > > > > mechanism for efficient container shutdown and OOM handling.
-> > > > > > 
-> > > > > > Currently, process_mrelease() unmaps pages but leaves clean file folios
-> > > > > > on the LRU list, relying on standard memory reclaim to eventually free
-> > > > > > them. Furthermore, requiring userspace to send a SIGKILL prior to
-> > > > > > invoking process_mrelease() introduces scheduling race conditions where
-> > > > > > the victim task may enter the exit path prematurely, bypassing expedited
-> > > > > > reclamation hooks.
-> > > > > > 
-> > > > > > This series addresses these limitations in three logical steps.
-> > > > > > 
-> > > > > > Patch #1: mm: process_mrelease: expedite clean file folio reclaim via mmu_gather
-> > > > > > Integrates clean file folio eviction directly into the low-level TLB
-> > > > > > batching (mmu_gather) infrastructure. Symmetrically truncates clean file
-> > > > > > folios alongside anonymous pages during the unmap loop.
-> > > > > 
-> > > > > Why do we need to care about clean page cache? Is this a form of
-> > > > > drop_caches?
-> > > > 
-> > > > The goal is to ensure the memory is actually freed by the time
-> > > > process_mrelease returns. Currently, process_mrelease unmaps pages, but
-> > > > page caches remain on the LRU, leaving them to be reclaimed later
-> > > > by kswapd or direct reclaim.
-> > > 
-> > > Correct. This was the initial design decision because there is not much
-> > > you can assume about page cache pages which are very often shared. Even
-> > > if they are not mapped by all users.
-> > 
-> > Fair point. However, that's the trade-off:
-> > 
-> > Leaving unmapped caches to be reclaimed asynchronously keeps system memory
-> > pressure high for too long. In Android, this delay forces the LMKD to
-> > unnecessarily kill additional innocent background apps before the memory
-> > from the original victim is recovered.
-> 
-> OK, this is really not clear to me. How come you end up triggering LMKD
-> (or any OOM handling) when there is a considerable amount of clean page
-> cache?
+This is a multi-part message in MIME format.
+--------------S7egC2o6fx6v7bQu7uy3YITQ
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-It's not simple to explain all the heuristics, but basically, LMKD is triggered
-by PSI pressure (usually contributed by kswapd rather than other components
-like refault, kcompactd, or workingset operations).
+On 4/17/26 06:19, Matthew Wilcox wrote:
+> Yes, at this point, you've left the folio in an error state.  I'm sure you
+> didn't mean to do that, but the VFS interprets unlocked && !uptodate as
+> "an error happened" (there is a minor exception to this involving failed
+> readahead, but let's set that aside).
 
-It then checks the current free memory against system watermarks. Depending
-on the free memory size, file cache, and free swap, it decides to start
-killing background apps.
+Thanks, I see!
 
-In other words, LMKD acts as a "userspace kswapd" to assist kernel kswapd's
-reclamation speed. It is smarter than kswapd because it has high-level knowledge
-of which processes are okay to be killed rather than forcing slow, unnecessary
-paing out.
+To save my reasoning somewhere: another way to do this would be 
+NFS/CIFS-style, in a lazy way. They set a flag in `getattr` and 
+invalidate later in `read()` instead. This could avoid relocking the 
+spinlock; I still opted for invalidating inside `getattr` though since 
+FUSE already has invalidation later in the same call, and the cost of 
+relocking feels low to me in this case.
 
-Whenever LMKD is running, kswapd is usually running alongside it. You might
-wonder why LMKD kills background apps even when there are plenty of clean file
-pages. That's because the system cannot predict current memory allocation rates.
-If the allocation is bursty, kswapd can never catch up with the allocation speed.
-This forces the foreground apps into direct reclaim, resulting in visible
-UI jank. Android prioritizes UI smoothness and chooses to kill background apps.
+Any ideas on how to resolve the remaining race condition [1]? If I'm 
+correct it affects any network FS, and can't be fixed without changing 
+the common VFS code somehow. I'd like someone to confirm my conclusions 
+though.
 
-Furthermore, when LMKD kills a background app, it expects immediate memory relief.
-If the clean file pages of the killed process are left on the LRU to be reclaimed
-asynchronously later, the system's memory pressure (PSI) remains high.
-This forces LMKD to unnecessarily kill *additional* background apps before
-the memory from the first victim is fully recovered.
+I'm way over my head here though willing to learn; if someone is willing 
+to mentor me on designing the fix, I'd be happy to. My best uneducated 
+guess is to introduce another flag for a page and check it *after* we 
+get the inode size in `filemap_read()`; if it's set, retry reading.
 
-Again, this is why I want process_mrelease expedite clean file reclamation
-synchronously.
+1: https://github.com/abbradar/nfs_stale_cache_test
 
-> 
-> [...]
-> 
-> > > > The race occurs when the victim process starts its own exit path (after
-> > > > SIGKILL) before the caller can invoke process_mrelease. If the victim
-> > > > reaches the exit path first, the caller might lose the window to apply
-> > > > these expedited reclamation optimizations.
-> > > 
-> > > Isn't this the problem you are trying to solve then? You are special
-> > > casing process_mrelease while you really want to expedite the process
-> > > memory clean up. 
-> > > 
-> > > The same situation happens with the global OOM and your approach doesn't
-> > > really close the race anyway. You send SIGKILL first and the victim can
-> > > hit the exit path right after that before you start processing the rest.
-> > > That is not fundamentally different from doing that in two syscalls,
-> > > race window is just smaller.
-> > 
-> > No, this approach completely close the race.
-> > 
-> > When it invokes do_send_sig_info(SIGKILL) with the KILL_MRELEASE code,
-> > the kernel sets the MMF_UNSTABLE flag on the victim's mm_struct in the signal
-> > delivery path (kernel/signal.c) *before* the task begins processing the signal.
-> 
-> OK, I have missed this part. I haven't really looked into specific
-> patches at this stage. I am still trying to understand the motivation
-> and your reasoning. So effectivelly you want to get SIGOOMKILL more or
-> less.
+--------------S7egC2o6fx6v7bQu7uy3YITQ
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The fundamental problem with signals is their unpredictability. The time
-between sending a signal and when the victim task actually handles it is
-highly non-deterministic. Furthermore, as mentioned earlier, outstanding
-reference counts on the mm_struct can delay the teardown indefinitely.
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 4/17/26 06:19, Matthew Wilcox wrote:<span
+      style="white-space: pre-wrap">
+</span></div>
+    <blockquote type="cite"
+      cite="mid:aeFuarTL7xBbut0F@casper.infradead.org">
+      <pre wrap="" class="moz-quote-pre">Yes, at this point, you've left the folio in an error state.  I'm sure you
+didn't mean to do that, but the VFS interprets unlocked &amp;&amp; !uptodate as
+"an error happened" (there is a minor exception to this involving failed
+readahead, but let's set that aside).</pre>
+    </blockquote>
+    <p>Thanks, I see!</p>
+    <p>To save my reasoning somewhere: another way to do this would be
+      NFS/CIFS-style, in a lazy way. They set a flag in `getattr` and
+      invalidate later in `read()` instead. This could avoid relocking
+      the spinlock; I still opted for invalidating inside `getattr`
+      though since FUSE already has invalidation later in the same call,
+      and the cost of relocking feels low to me in this case.</p>
+    <p>Any ideas on how to resolve the remaining race condition [1]? If
+      I'm correct it affects any network FS, and can't be fixed without
+      changing the common VFS code somehow. I'd like someone to confirm
+      my conclusions though.</p>
+    <p>I'm way over my head here though willing to learn; if someone is
+      willing to mentor me on designing the fix, I'd be happy to. My
+      best uneducated guess is to introduce another flag for a page and
+      check it *after* we get the inode size in `filemap_read()`; if
+      it's set, retry reading.</p>
+    <p>1: <a class="moz-txt-link-freetext" href="https://github.com/abbradar/nfs_stale_cache_test">https://github.com/abbradar/nfs_stale_cache_test</a></p>
+  </body>
+</html>
 
-> 
-> > When the victim gets scheduled and wakes up to process the fatal signal,
-> > the MMF_UNSTABLE flag is already set.
-> > 
-> > This guarantees that the victim's own exit path (do_exit -> exit_mmap) will
-> > utilize the expedited reclamation optimizations automatically, regardless of
-> > whether the reaper or the victim gets scheduled first.
-> > 
-> > For the OOM, we can use the same idea.
-> > 
-> > > 
-> > > All that being said, I do not think those special hacks for
-> > > process_mrelease is the right approach. I very much agree that the
-> > > address space tear down for a dying process could be improved and we
-> > > should be focusing on that part.
-> > 
-> > I think process_mrelease is crucial here because relying on the exit path is
-> > non-deterministic.
-> 
-> I suspect you are missing my point. I am arguing that those special
-> hacks in the address space release path shouldn't be process_mrelease
-
-I am a bit confused now. Do you mean you want to apply these expedited
-reclamation optimizations to ALL dying processes in the common exit path,
-rather than making them specific to process_mrelease?
-
-I don't think so since you mentioned below "process_mrelease might ..
-right syscall" but I wanted to clarify what you means.
-
-> specific. I do recognize the value of the sync tear down need. I am also
-> in favor of something like SIGOOMKILL. process_mrelease might even be
-> the right syscall for that purpose.
-
-I am glad we are aligned on the necessity of this feature.
+--------------S7egC2o6fx6v7bQu7uy3YITQ--
 
