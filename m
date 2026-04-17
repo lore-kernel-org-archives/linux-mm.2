@@ -4,77 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E963F8E49B
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 01:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B146EF8E497
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 01:11:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54B256B0088; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
+	id AAE3D6B008A; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FC266B0089; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
+	id AA4486B0093; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 411AB6B008A; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
+	id 941E26B008C; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 304966B0088
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 853CA6B0089
 	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C4A7B1B8FA5
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:11:33 +0000 (UTC)
-X-FDA: 84666270066.06.7F5AF73
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D30AF40011
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:11:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=korg header.b=xIkx54yG;
-	spf=pass (imf04.hostedemail.com: domain of alvin.sun@linux.dev designates 172.105.4.254 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 40363C3245
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:11:34 +0000 (UTC)
+X-FDA: 84666270108.25.ACD9380
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 64594C000A
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:11:32 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=korg header.b=auTQRiek;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of alvin.sun@linux.dev designates 172.234.252.31 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776388292; a=rsa-sha256;
+	cv=none;
+	b=fEOpCLYIA0ejh+W+Uwm5UO2ubeRiUwOBjOkVIrarHVL5exZQCq7uCgJdePTiHsInmdv3wZ
+	qXPWx0E1I8Qw0ygw3LDt39066fhXsoaosNxpNsUTG5Qs0w0LFJJgH+ZoyObgmYSAs4K4cq
+	Oy8L9BctaMbm44OrMQSynq+JX1qRcyo=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=korg header.b=auTQRiek;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of alvin.sun@linux.dev designates 172.234.252.31 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776388291;
+	s=arc-20220608; t=1776388292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=f+XV3HBVFqmddm0D20zmCWTkKU+KIutrkInxVbGBFbI=;
-	b=O7wPasjyrEYjMn1JvdouvD0VEsqX0s+CpmTOi0bPXStqsqLEtLjocvsolDFGB7nOWr2HzR
-	qiwmDa7ta8/SC51t18q0t1Q9efEViZP8824SjK52E2n09NQK2GILvxUy0XsvoQbvpJN5DI
-	vat8rtgq5UttG2IyXQhxKtkKfFQxV00=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776388291; a=rsa-sha256;
-	cv=none;
-	b=lj/D7DdJOYZGmpYH8J24YwcPNPCPVMe1LgQobHxuouhWHPcHxUMenFnHuOTqcOj61lgSaZ
-	LgpvJHafg/MAKu8CFVLB5tA/isTArJLZD3r4AhEALGdZ4J1TCo/5M49ux0+TWy8O4a+8k4
-	sgixcwv3QrKpbWV3kHe6+zgtouK+FPE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=korg header.b=xIkx54yG;
-	spf=pass (imf04.hostedemail.com: domain of alvin.sun@linux.dev designates 172.105.4.254 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Z8LP3AWG5RHffa4IdxklVZ+g0GiOlSaUEKKAPwulu8o=;
+	b=Kcu/q5r4MroztNN6W8dNKUYSsrLD/5xK19yz/ooyJVUtvbmZn0W1iwoNBiNVMw59NCqJdk
+	9gJsqiiKnfVJhvyRqMLw+hmlQwACBTIfzKB5qlI9YkenHn6tX1s5xLcRCXFFjI1BoACIzk
+	9y/FHYBRWrAJvAZcb5OqqRDlQjE21Rw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0BF5B6012B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 25FAB44589;
 	Fri, 17 Apr 2026 01:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id ADFDAC2BCAF;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EF902C2BCB8;
 	Fri, 17 Apr 2026 01:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1776388290; bh=/Cf9gBkTGs0FZ5AznLGhdvS5YDnnQwX3P349kNzrw9s=;
-	h=From:Subject:Date:To:Cc:From;
-	b=xIkx54yG+l+fsrJO6vtLWeAtvaTYtSLjJiTh4SaFFREUkQgviAL7LUatHnVMRG7RZ
-	 xfFqSStQ1F+zlOtOFmBhQHo8mDu0Nm09l3hfvDoWH6QwTyaXr0rUuIwIJ3o1bubtGk
-	 zxZAApKznDWOfRu9ft97JD4F7ZboQqARVpSQcwto=
+	t=1776388291; bh=CEPawZ6sXIb2An8dSVvX8IrZi7UWboan6QZmQB4W5f4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=auTQRiekRCbbnhehqgsarbiyZ9+MIl9n4mrx4RAyZfmikqaGndZyfXvBi/zIlG10q
+	 eZtHFv8M0FEM0DNguds1lj8Q/j51ee61fZpOGnUg7mJjCLfq+Bl+HRl2DOA1f2i+63
+	 H74dP9IhAzSdnRb9rb9ubnxnrNhJPUxAbijsb8qA=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AF62F8E49C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E131FF8E49C;
 	Fri, 17 Apr 2026 01:11:30 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Subject: [PATCH 0/4] rust: Add helper functions and constants for Tyr
- driver
-Date: Fri, 17 Apr 2026 09:05:50 +0800
-Message-Id: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
+Date: Fri, 17 Apr 2026 09:05:52 +0800
+Subject: [PATCH 2/4] rust: mm: Add task_size() method to Mm
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAG6H4WkC/yXMSw6DIBSF4a0Yxr0GUNSYpuk+GgcUri2xggW1D
- +PeS3X4n+R8CwnoDQZSJwvxOJtgnI3BDglRd2lvCEbHJpzyguasgPHjwTg1PgJoHAJwUVGBqNs
- s4yS+Bo+teW/ipdnb43OK8LiPpMcQ5AbXyTG6glFasCKjPE9ZlZcZMHg5352dnbz7dtKmGufTH
- 7/KgKBc35uxTuYypeCVIM26/gC2CSe8yAAAAA==
-X-Change-ID: 20260416-tyr-ioctls-deps-25805eedf332
+Message-Id: <20260417-tyr-ioctls-deps-v1-2-41c6e9bb061c@linux.dev>
+References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
+In-Reply-To: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -87,23 +84,23 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776388289; l=1591;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776388289; l=925;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=/Cf9gBkTGs0FZ5AznLGhdvS5YDnnQwX3P349kNzrw9s=;
- b=i4mDcseJKhSLM3Wmo9o5QqvFYc2hmQPNSFKc/Hhd8iVYttVa+fm9NC9L6xLaF8ihLeg6DcVOi
- +KGN4DjLo8ZDsRxgNHYvGPC4gGPODD9s7OEi1gcNG4F/w2qfUi/eLj+
+ bh=CEPawZ6sXIb2An8dSVvX8IrZi7UWboan6QZmQB4W5f4=;
+ b=VhjBHoX9OG7AUX3/fgimlEwaBbhq84mQoNYpuucixnpKEzSkynw1I1YDpONyPwQb2ZxJnYiAx
+ xdMwdIPQVOAAqa+DYmSyPAqlc34aXR+M1gMH67k4J5g01IGqgvkMwfx
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
-X-Stat-Signature: i1gcghar7sk39k8icifr819edzh574jh
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D30AF40011
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 7sbrhohwy9g1fxi8anh9oh6scxr4cdce
 X-Rspam-User: 
-X-HE-Tag: 1776388291-215928
-X-HE-Meta: U2FsdGVkX1/5avc6QO4QvmWsfI67+zXBRQN4WHKCg53E5zcFkkPDQMWB9g8cHQ0SOHKQ1lwDYt7IZcAzegc+QJuELDwE4V4qtDPhH5CLCKVNYbBa1pK0pW6eD3J7HFskn5auihmPd6mxVEiYLSeM2WZEvUSUmA+L5nBypAC5NrHURTVhM+hFY6EiYy9CLOIa5yxmVmO0y6007PVXQPJx3ph0kZGBC+OrnBFPusJPC8kPAsmvCaylHkb1foikWScNqYKbR8+Rnh0bcPAlLrmr9CwT47UpJpkM8PO/BNmf3MpHZ/JULy97uiJ2n18x5mBMypez1MynA67EMOPW802FYChkE3SSe6MxT4IUnNrkXKBJHR2kal63T+y/6wkjONBXMYHh17XQKljwpDg7vy2iAjBbKpS209TRv3Ov5bHal9m4xmHkgGU6iMXQ81eNuu3bfDO70LMXhbSRBnk2SmhEXIRjrOnVlJjVBug8E0yFAulpHS2Ar4gXmQK1uKbXkJw9Cykw35y3I0FDQxzhIsC8MKahw6UqqNgkfuL9MN6hFhvQeWTSkuonuEMdlW12ANfLwqNLeysz8L7Th5veVziqgJmWgG1NSD0VxgmcI1mcs1R0IO8frYRRqld8Gq2PhkD422RzVewD6Og4C9NlqNzspNP+zlz0o9X9w6NcW+9Ufhrdne7NFjZpNbHqZeOz8F4N9GWEM3BTzvtfdHY1PZftSc/83dPrbp3ZA6QSTjo2Mb6VAvrySnLRprNZAGGdayyewmZUB1tRpF0c5ouOzNss/J16W+6lDuGFBu7xGxT69mCGAhjtQ0rWspov0FVAm79N+9QpLbCMVl8eFB37y+B1SrABZK+ZeCbet3A6uHceNpXsYNg0IxPi9zbqxhifKW0eJnSEz52Y/12SBQ8ADmcIEaeRGmUBR9q4JvdYAhSf/zis/8mSX4B9ncnqcSNZRGibREc5hYfJ4/exrzwj9Xz
- kL15vyWh
- gDOtQd4rHRjVo+3eMXVqhbfJPdMkkV8uCloDA6B5Tm0IAHA26fTJc+A4H+7kAUIdSsxgS0P6r3npclamblVrCL1nmP/qcAYG430WRseedF7DbKukvjhfwtb/v7TVFI30295zFPZ89SOrPa4peP+AMspV/j+phjhzmei+8N0C5XQ5NgElA88vaKyD6SPcU0AyPflx6MiQ0SsmD4VJx7Ymfiz3UI4+wr/n0MiILin0dvzGLxKNGbSyrJX7RsA==
+X-Rspamd-Queue-Id: 64594C000A
+X-HE-Tag: 1776388292-998170
+X-HE-Meta: U2FsdGVkX18LFLXhMSK9SdY1yqhOPBfmGhAWo1FUVsnWHjb3yHWIcJDonLLd6jWjI2WcpgutU3FFxLgSRD2fNuz6wsBCY3xzqcVmXKvFlxyRXW9ArWOvCteApxc63dLmTJoJzbQNK2oWQ4X6As1IlGqWtDnPKpoww8/9hd+khjWBLeZZi2/Ck7PCGPv75ex4+Y1K6+0QgtSZZA1NF6e0Z+TQyrECVgQyuD+47/SK8sesNGc0TwxZwDLe9DIClypxuk3OiABAZZM/TrM6DTxJTxivxfrOT1d0Zb/xG/F/thaEwCT1m554h0/CTjsZsB22HWY8ytkqjALALIYbVojh/rrVSQRqB1pGHqecxdtmCJL1jS/mqGvQjQCISoalXF+MD3ZsIi2KdieQETAdt6JOcAMU/Ct0LtHhPKUfnK6fq+NyaQXvSsREjer0CkdZeZBfbehdawL2SWhZDQxUuxfoYSNdlCGMM2vjAm25SV937UjrcSu7RQ84lXOn6U0/22lkAUSI67VbQLgr9/yZoeqEJyulb8DgBUMeKGXn2brxyKUT690GqNROzrw1JVPh69yrI9rWzad9XMIO+zjMGELvt+gbdW35QAhhD2zVT1piFxSU+7TmgpM8eeL9ukvcgFw3RTG/W3rb6X0u4ZvCTiWt4epD7F2THttmX1oc5ysgplzpr4++V5kTJLs8aoEUwO+cmZ6LX0A+FHLMF10Hs7FsRMn5QA1aeLbhD2mUUiZ1uVqLIv8HRdvqh4f620kC2ixLFfTXWAS4U7DzbqmGZIwsDvlB+WRyjncGj9rOxGLPPsOfieDP7PlhvGs0xy/CiyAg7pOI3vHZ0DL9xGdAWgmlFqi7PsBZil/IiUwfLJdj2XiMKn4ESr9udjNN8PYWZ26EQJfQaiuNMkigzfK7YOs9Zao9xZugKjDyv+20mrlEcFe1uR/vvVK70A2NNRwB6AWaA2V52P87SPylgPNbW5e
+ If3mW2gF
+ wlWtfnrgUCdlwKx765W9G/56kiUUQSZbS9xXSh8eoUjbGsJ3oCddv2vxyxyAPJ9NPwFJpiYwR/JuaeYgUnM1Qg2u8TmtRYOJ+92pNjpNxnhKO0T3T9r3DpdRwG3HjMf3PYCuB+y2Sq9nT0gFQMQQuxAudLz1HTFCMSjL9dvuh6S4QOp1yP3JRGGJ0a7ujpDsiIetdc/xh59ZG1Fd4P05RjAf8zQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,45 +108,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patchset provides helper functions and constants that will be used
-by the Tyr driver's VM and BO related ioctl implementations.
+Add a task_size() method to the Mm struct to expose the process
+virtual address space size. This is used by the Tyr driver's VmLayout
+to determine the user VA range when VmUserSize::Auto is specified.
 
-These patches add:
-- SZ_4G constant for VA layout calculations
-- A task_size() method to Mm for determining process VA space size
-- Updated StoreError comments for alloc() usage
-- Guard::find() helper for finding the first present entry in XArray
-
-This patchset depends on Onur's xa_alloc implementation [1].
-
-The complete patchset, including the Tyr driver ioctl implementations
-can be found at [2].
-
-Link: https://lore.kernel.org/rust-for-linux/20251006163024.18473-1-work@onurozkan.dev/ [1]
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/64 [2]
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
-Alvin Sun (4):
-      rust: sizes: add SZ_4G constant
-      rust: mm: Add task_size() method to Mm
-      rust: xarray: Update StoreError comments for alloc()
-      rust: xarray: Add Guard::find() helper
+ rust/kernel/mm.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- rust/kernel/mm.rs     |  7 +++++++
- rust/kernel/sizes.rs  |  2 ++
- rust/kernel/xarray.rs | 28 +++++++++++++++++++++++++---
- 3 files changed, 34 insertions(+), 3 deletions(-)
----
-base-commit: d1d81e9d1a4dd846aee9ae77ff9ecc2800d72148
-change-id: 20260416-tyr-ioctls-deps-25805eedf332
-prerequisite-message-id: <20251006163024.18473-1-work@onurozkan.dev>
-prerequisite-patch-id: c472a9548969ac774d36fead73378961a0d0489c
-prerequisite-patch-id: 63890b91e911cf96cb42308c056d639580ac0fa0
-prerequisite-patch-id: 337eb93db35359c611abe9cba299e6ab0525a2b5
+diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+index 4764d7b68f2a7..c6ba4da52688b 100644
+--- a/rust/kernel/mm.rs
++++ b/rust/kernel/mm.rs
+@@ -149,6 +149,13 @@ pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
+             None
+         }
+     }
++
++    /// Returns task size for this mm_struct.
++    #[inline]
++    pub fn task_size(&self) -> u64 {
++        // SAFETY: self.as_raw() is a valid pointer to an mm_struct.
++        unsafe { (*self.as_raw()).__bindgen_anon_1.task_size as u64 }
++    }
+ }
+ 
+ // These methods require `mm_users` to be non-zero.
 
-Best regards,
 -- 
-Alvin Sun <alvin.sun@linux.dev>
+2.43.0
 
 
 
