@@ -4,89 +4,210 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45D60F8E4A7
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 06:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAC79F8E4A7
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 06:35:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A4D16B0098; Fri, 17 Apr 2026 02:30:15 -0400 (EDT)
+	id 18D6E6B009B; Fri, 17 Apr 2026 02:35:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57CD86B0099; Fri, 17 Apr 2026 02:30:15 -0400 (EDT)
+	id 13E606B009D; Fri, 17 Apr 2026 02:35:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B97C6B009B; Fri, 17 Apr 2026 02:30:15 -0400 (EDT)
+	id EFA1E6B009E; Fri, 17 Apr 2026 02:35:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D9676B0098
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:30:15 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C82FB13C01A
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:30:14 +0000 (UTC)
-X-FDA: 84667073148.16.468E7DC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F362C1A0011
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:30:12 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HWOzSIyY;
-	spf=pass (imf19.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776407413;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D6BDD6B009B
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:35:08 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9F30D160B37
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:35:08 +0000 (UTC)
+X-FDA: 84667085496.13.23CC453
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6C1FE1C0007
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:35:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=U7bPHReg;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf20.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776407705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rJQHRY3zhOrSXZ5n3rZl2TXgBt5ljdhzDOpEkWpYj1I=;
-	b=DZlRBMiD77tXK2U9kqPVG76Nv0ecUOxkkS9KN/uWSg9FIGVrBXcawVdk0uHHsEgC46mrTz
-	p++8qHowMrfg6nNj3d0YhlXPr0EK4ex0gtkGu2C4mDTzWqfEd+MdYKYOBQs455e7VVddCh
-	6lstkXMN3LJdfuayRwxtSREidJ2Eanw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HWOzSIyY;
-	spf=pass (imf19.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776407413; a=rsa-sha256;
-	cv=none;
-	b=6/4GGILGenGXVf0wps85IvFTmj6BQKDWdwo7HUiUA6jp3xZOhFxa4Kp9L75qYSyDp7PVeH
-	oR3jFQWuDXQ28EOnKns+GUtNCq466kArrN05RaHHuRkf1xPwz5UaEUhtr0H+odPwxFlJil
-	cTZi75DnQQ3wt6vfccur+mSCb+e571E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EF5FC436DF;
-	Fri, 17 Apr 2026 06:30:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87124C19425;
-	Fri, 17 Apr 2026 06:30:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776407411;
-	bh=gDuRI9gS/dVQ6Jf3ZoMT0FRKjSgGqPUbWj0jrgE778o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HWOzSIyYOi0b/xR3tIGZaNAg6s4efvGhxD6MfRFrd4qOb3N2L4DQTENKFsl8C77Tr
-	 w/UC1xpxI1upPul5yW75k8A4bijhSUMD7vPl/CFr++fbrI8yyb9i3D7gwz7V3A377m
-	 P8UkOqnBh02Uz+4jZvFejO1q7iUNvRm+4Oy6ORXrGoegrTbxRKT7Czn3W6S8MtUT/i
-	 Q9X/NZ2CqGxNXq+amxGDD8TS3m1IacNHOKsFXCBg3NKtAcoKSBG9rgnx0WzD2rOTxq
-	 09wpKlvU/VaMrLL4k9L7qtfGOc/aUP2FyvVvH1PlG5eQ1W8DyVnv4oZBUhCvolnrlk
-	 KZGAnSfsBYkag==
-Date: Thu, 16 Apr 2026 23:30:09 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, mhocko@suse.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
-	timmurray@google.com
-Subject: Re: [RFC 3/3] mm: process_mrelease: introduce
- PROCESS_MRELEASE_REAP_KILL flag
-Message-ID: <aeHTcXfCyCED4WSl@google.com>
-References: <20260413223948.556351-1-minchan@kernel.org>
- <20260413223948.556351-4-minchan@kernel.org>
- <20260416-planktont-abwinken-b9499483b939@brauner>
+	bh=jUdLlzRyWGLY9SmmFGMnYoOcga5FYKruk25ThL1CatU=;
+	b=dpynREeTReHF0BsV0SLo3WPNLVs8MkR2KgWPMeCpJF4M4KakYUsw678uYj0Wze6rM4iKPU
+	qLIVzwzfc8fa0VPKB/4GzEe+wW6stsUH9zf4LU+R5a0V3ggvQLEluUh3VFWy/6fxyV029e
+	lATRSLogspW2rNMK/gpBj6xpnrtUBe0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776407705; a=rsa-sha256;
+	cv=fail;
+	b=imkmnGW/U5/CxHSVjmiyuxYhlIKhaXeNlfPXYxTJwqjfVpnenNir+rDWS3qlKLlO8v4KLj
+	VSrwXEIkSg9Wh9yst8qLLjVHW+vtU13BxozAf4lsEXmscmC0/U8tv4PMppw8ocTQMxklV5
+	DzyrhQMngZETYeoVHETqMZwaEEMdB4k=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=U7bPHReg;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf20.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776407703; x=1807943703;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=jUdLlzRyWGLY9SmmFGMnYoOcga5FYKruk25ThL1CatU=;
+  b=U7bPHRegbN2zY00UqaZ/Cr+bihdX/400jH5jyZaFOGiDxJNoH52208qw
+   7d4Q3xKfdKTxYjBqMJHaEZP9l8SWr10j6EBRRNG1OFLbb4gmKgNlKOE4v
+   CCYFdWJtrsJyPxWXYAii1bLzerPbdAhFp/FfHaPSFmV6DwDmiT+anBQlK
+   CIKzOVZhoKrN+jXCt+PMFC9qYmOcy19YakaKk7QbeMOnSlS/rhZV/DtVz
+   SobmR7PlaPkaUBv8XUC/zPgcrliKJWqMvI+nJe6sSm9+Ols0T3VRye1Wm
+   tcLLKWcwbok52kKodbv+FpNm10odKI3ZEIIX+cdWs/KSQ9eUygGsc10YB
+   Q==;
+X-CSE-ConnectionGUID: EbfbgE2FTba3MrH48oSKEA==
+X-CSE-MsgGUID: NHNRR6iQRteoS96wSbYsFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="77539048"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
+   d="scan'208";a="77539048"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 23:35:02 -0700
+X-CSE-ConnectionGUID: lMmxqIsBQFiD1DEnuX+cJw==
+X-CSE-MsgGUID: O3lxZZTHROKu8dgDkbWEZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
+   d="scan'208";a="254175636"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 23:35:02 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 16 Apr 2026 23:35:01 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 16 Apr 2026 23:35:01 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.63) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 16 Apr 2026 23:34:59 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EI3tuvBzXK/N8aU5/gJdWy1SbfdeXmC+9yN8Iriodbse2XMJjBd29dTBbxipjEfEVlTPDMD+o6cA6xcKsNY2UOhh25zxae9AYVzks0iLPr2qYgl+SZ4tBUrKsY1v/sejD/MEo0PdLOZi6+e/fSZ/UMA4CUogso/uD1GM90VljlRJjL10KPyh5YAQppC74+lLM3WhfCsU83ZXTTR/b0k++bxLmSxFn8iyF2J/S1OFCQckilcpp/zCKXpS6umnryDTbsoR6E5TSm5ySoh7bTAqWBWQ/6o1t1zH0QNKyu4rx9VTgJkkgtXp+Fc9+KPqLNQN3qZxl8iy5S4tn6vHVJLyFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jUdLlzRyWGLY9SmmFGMnYoOcga5FYKruk25ThL1CatU=;
+ b=mhNtZT5k3v/HH6CdeflCoSU5LMN51XxwI+UhViTwRDJlK1hRSOVXVOZ6duGA7Qx9bUFY7ym7WrZNwRonEOhgwsgrvfvbRrCGOwONyLJdmJPV9TbA2FVdOlzTk9ZHO3/kCBRwlhzqJr6mk5qKl0NsrwMHKQmp7qH5Yz71XVOdUVc4qJQUvmTuPf/6Bmngg757egDAfLgrV+xk2tZbI2C+wwKb/Y8Ymok2ph3bHL2utI+0LeYNR8MguH8WuI7UiQmLmsxQaDzjBsFU4tzjVx6PAevojvAO2eb5pKdPWK8z618AH7xw/jfuUbh06BiKbK/8stEsRrNZsVxf/p7zlU4gqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW4PR11MB6936.namprd11.prod.outlook.com (2603:10b6:303:226::16)
+ by PH8PR11MB6950.namprd11.prod.outlook.com (2603:10b6:510:226::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Fri, 17 Apr
+ 2026 06:34:50 +0000
+Received: from MW4PR11MB6936.namprd11.prod.outlook.com
+ ([fe80::96dc:12ef:f56f:dd04]) by MW4PR11MB6936.namprd11.prod.outlook.com
+ ([fe80::96dc:12ef:f56f:dd04%6]) with mapi id 15.20.9818.017; Fri, 17 Apr 2026
+ 06:34:50 +0000
+From: "Liu, Yuan1" <yuan1.liu@intel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>
+CC: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "Hu, Yong" <yong.hu@intel.com>,
+	"Zou, Nanhai" <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
+	"Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>,
+	"Deng, Pan" <pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>, "Chen
+ Zhang" <zhangchen.kidd@jd.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+Thread-Topic: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+Thread-Index: AQHcxwYPPar5wabLkEWQfiO/Xde9s7XUxrUAgAIIwYCAAAfiAIAHUdTQgAAptoCABIITAA==
+Date: Fri, 17 Apr 2026 06:34:50 +0000
+Message-ID: <MW4PR11MB6936E593C865F4E855CED602A3202@MW4PR11MB6936.namprd11.prod.outlook.com>
+References: <20260408031615.1831922-1-yuan1.liu@intel.com>
+ <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
+ <ade6RVeXxDt7ImP4@kernel.org>
+ <e86fee84-08d8-4563-8596-e40d8e196799@kernel.org>
+ <MW4PR11MB6936CA77BF02BF498BBEAB1CA3252@MW4PR11MB6936.namprd11.prod.outlook.com>
+ <12b8ba83-54b1-454e-b787-2d2e967c9b58@kernel.org>
+In-Reply-To: <12b8ba83-54b1-454e-b787-2d2e967c9b58@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW4PR11MB6936:EE_|PH8PR11MB6950:EE_
+x-ms-office365-filtering-correlation-id: 6aa3125a-68cd-43a7-5a3e-08de9c4b6d79
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|18002099003|56012099003|22082099003|38070700021;
+x-microsoft-antispam-message-info: OpKeAf2Uo262ReeF+yH3XNGj4ZrEQiqYjKoAOkllu4CNVlGeYoJLW0ZUtF//93g8yvzsl4oNHeUlAVuj3xltny6/oO3F6u3aFFX0hPHOW5C8euR5rWC7VzYYjWsTluYulzkegqDL04A4XP5c0mRXwi0hE/avtLVEpEbCN5lJrECfe1pkWgl4T3prk2YlcD8e9IO63wWRCdk6jPKblFioo4EMhiaE1TirzlS6YBU2SxzQM80MUs02obDDgg8LGPpeqeg63DIx0jb/7/7I+PkbUU3d4hL5/mNzLNh+6K2nVAu9A/P0d1oSjcGlGGcrhyuRpOe0mw0PAUtlrjS83hhudufENbB+xldIf+qwdpZe7P3np06YoX8dtJMuTr40qTlufT6sDhjfJZrgBjsMeNmE1gjcdVz8N0nfh93YRhqzaGDSgpMX2p9dwnNVK4MC0llGON16GKQ4+BSZSeZnwg2e1hKXTf2qLkCpKRhVBupNnwKri8XPk9G/rITn/Mg3p4NFC9kjMS4HtZEK3b2+cC8T66QrXnkp/4QPb3WNjKIjIcA5R6wNg/YlVhtJEFhVsHblNTKlTaZJZkZ82GrhKqI7kgn0dZ61qL7++0mBOW/Z3o++5gMs97Lhqge1CRk8aBcnxAlJBFXRPn+Bpfno2NgShHHtY2ExPVBAcVS8VEqXN95Du7i8OerNi/SWSKsNWJhgkPWbcAxsN+3IQXN3j3FW1PA2S9s/11R6LQ3xR7WSTCA=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB6936.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(18002099003)(56012099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TktCd1RiSDZLZFFadXpaUUg0V2tIeUhrR1F2aTNYc01tMkozRE1YeVR1NXJ3?=
+ =?utf-8?B?WkkrZjZQUWtDNkxKN1UrQkRWbDVEWWZOQ2RURit6cjZPWWdDZzdmM3VhM0Nu?=
+ =?utf-8?B?eHIvaTdRNzJRL0lkVlE5a0xtTEI2ZGxBRXNNeEJ0S2NTNmlkS3p4aDBrYnp4?=
+ =?utf-8?B?OURjVmE4OUd1SjNERjQzbFh6Y25UQkpKVDhOK0xhMzhQTHhPRlJUNitjOGFJ?=
+ =?utf-8?B?TVhxa0xSdzYrSldGdWlhOXdNbHVJWXpGQ1dieDRraVdjWEVLRksyQVZSZ2h2?=
+ =?utf-8?B?N1lGcXdsMzdQNVd6NTBic25ZeS8xZVBXUmpUT1pyTUtyUGc0OTRoOWRMd0lO?=
+ =?utf-8?B?WXlZNTRiYjY5QW51ME82NVRVNi9kc1dRb3hjSjdZN0NjWU5aNG9VSmdUNUlp?=
+ =?utf-8?B?QUpaOGtzZE83eURqcWRDRm9lYi9vZUxSOW9RVmYzYkIyaVlkVWVQRjJ2TGFw?=
+ =?utf-8?B?Zmt0bkhwMDJqbmczQUo2QXQwQ08ya0dqeTZlbStQQWt0YXpvYStqNWpyVk5X?=
+ =?utf-8?B?SmZNTzJScm92cExMQlM2cFFySmFBSWFoTU94UUFMOEhqeVpzcnd1TEw5R0s4?=
+ =?utf-8?B?Vzl2UmswV0lUcTZ5WDNWM0puVUJpNTljUkxsN0h6ZWhlcnlTalhDMzZUSC9o?=
+ =?utf-8?B?V2pkK1Z0RmxhVmtkQW9DbXZzQlp4Rm5MZXlIa2RRMW95bGtEUmI3K1FJTFIr?=
+ =?utf-8?B?UUd3d0FKZFFQMDhWZ3kyS2FBRUhhL0R2WDlrdE5hRGNWaFUzMzAvcGJKZlJC?=
+ =?utf-8?B?eTUxOFd4SXI4SlhrVDMwRFU0disrOWdTN3BFZW14cXBNc3lORTFyeEpYQm1w?=
+ =?utf-8?B?UW5ncStQUUhhdkM5WUlRWDU1ZTNZaW15ZElBemxoYzIzQ2NhQXhtb2FOT3By?=
+ =?utf-8?B?MndySGFaRFA0QmVUYndSbkttTUV3WUtkbVdZckpTYkE3YVA0ZHRzSUZqR1RI?=
+ =?utf-8?B?TEYvNVdLems4Y0U3ZzUwRzl5TndGWnUzb2hTTkxpeWNTdi83N28rSEk5YlpJ?=
+ =?utf-8?B?d1AyN3RtTmNDK3lDYkxWeklqM2h0ZXZjNVFPb2dUNlFwZ0FLZkg3UFVxWkxk?=
+ =?utf-8?B?Mkl4dEo2emh3VWE3ODdGOCtsOWQyRlZib01EOG84ZE1PMGZWWks2eFhqam9D?=
+ =?utf-8?B?aGd6OEZyVXk4RTdRdnhjaVNTejlVaS9YZnNtQ1BrN3RhZExIZ0R3ditHU0pn?=
+ =?utf-8?B?dUxqMkZId3pyVzZvaFM2NkRLc1lkWmgxQlJUVi9pUzFXaHdDbjlCTzhIazFV?=
+ =?utf-8?B?eVB1Zy9RSVdPUTRzL1l2RW5KSHEzajJBMGp2Nk5mM21Jcml2UEJBa1B4MWY4?=
+ =?utf-8?B?TGVrR2lrL0pkR2FqZUloRWk5bXY1Wk9uQUVkbmFMc1lPUjBnSTJMQVZtdVJz?=
+ =?utf-8?B?ZHppSG5WRUhNR3d4NkhDZjMvZFIvMVJZdjBKRlBOT3FIM3B4dUVJZDVBREJq?=
+ =?utf-8?B?cEEweGs1cHpadDJSYkpRRXEvaExMdW1FQU5KVEp0alAzeUJDU0JTTXVNODBz?=
+ =?utf-8?B?Z1ZqbTVMaXc1TDNYY1ErQzhmS0t4SC9FMkU1MURkVHVSODVFNWZpUk5RVlp5?=
+ =?utf-8?B?d3Z5RmMxYUVmY3djejVHZTR3bFNpVDZTaUQwdjBjU3M3UTdMeXFnc0dxcUFo?=
+ =?utf-8?B?UXQybExrTy94Sk9XNjV3WVQ2NFByaGl1VDl2V09vS1ZUTWV2aG1wbEdSTEpz?=
+ =?utf-8?B?ODlFZHBRZk8vTFJUVm5VYzZONnd3SDVkMzI2K3kwbEh0d3JId3dXMFhmRnho?=
+ =?utf-8?B?VVB6L3NGUm1NenZrWnd5TzZQMUVTTWxPTFFBb3FLNUZtcW8xT3NBSkVOYnVt?=
+ =?utf-8?B?RUtWVklOeHFxblYzR21LaUFwS0M0aWR4alVGMXZCY3RBZ2FRekxlMDdMeDMx?=
+ =?utf-8?B?NmkzYnY3RzM0OEM0MGtGRS9yelJlcTFMVHgvNzRheDc2S1kyTGhRVWZqNzJs?=
+ =?utf-8?B?NEZZU3IzbE9BWHpBaW83dGY0OGwzUDNPc091Y2kxdEEzMFFZM00zMitOMVJu?=
+ =?utf-8?B?VTVla3dwZkxZaXVFNUR0emlHZ3pscXJndnJ5c0NGd2FHQWFkOWR5MlJuQUR2?=
+ =?utf-8?B?ZWdxcWpPQ1o2cjQzOGcrcXBERnpuK3FRY0ViRHZGcjY3MUhrL0NCdUhaNGRl?=
+ =?utf-8?B?V0RQSy9FdE45T0lFREpCaDYxSmNpMFRCb1VRRGRaQXhoT2FVWEJwYW9GWWF6?=
+ =?utf-8?B?Y1V2cFpoVENEenZFSUUyNEg1WjNZR1VCMFg1VitHTWZjNE5PZVFZbHdYNjFv?=
+ =?utf-8?B?OEdrZGNySFc3N1lDazRnSkNIdklRUThHd2lIV21zRlk3WHdIRTYwd3pXLytn?=
+ =?utf-8?Q?klkSoojaXlr5bPD4S/?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260416-planktont-abwinken-b9499483b939@brauner>
-X-Stat-Signature: 8ycdtjdedsk6nk4ufpujq36ydzrmbzcx
-X-Rspamd-Queue-Id: F362C1A0011
+X-Exchange-RoutingPolicyChecked: WL9ikUQO0Plkmguhr+RAhcMPTimvb1wkOxW2Hx1f5WnlbN66VwI8hkav6gcC7zfC1ZYDMoFBiVbf1Ig5vECyNGdcwzn4vQ+ErwPF/xnU1s2FoM5sEhZEpqjCOsY988HhHtN3QvUHCm77pD+1xIjkMgmfVb0TBwdIRc4CJfauj4ghxNwI6MAlfgM0IkHilhw3VifDtgIHRsRoITSHusfWroFxwazjTLiDJfRI5maGAqA1RVZzTCoIsHQ+4orHET4/5nhAe+5Zrogkt0enUsAwS+ny9DpXfkxTDO5QkvrAkFDAFBo0OKxl9QJ3pZsEcmmDLcDnJQpC5yMqA6b5vf/27g==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6936.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6aa3125a-68cd-43a7-5a3e-08de9c4b6d79
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Apr 2026 06:34:50.6006
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VRcioXI1AqBG6o4sxAof+45y+lWyr4ruS1dUOHCgN+JaaNXI9XimrJw+ZvUr9DZn1b5oSJWeAUnoIFzW3tR1Mg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6950
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: 6C1FE1C0007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gxuqmcp5iukrcedpq314mdyi1si6cbjb
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776407412-125749
-X-HE-Meta: U2FsdGVkX1/LHNVb5RC5qbWJDUaG07gSyZ/BWwEvYBc2MoV9A1WeFNZQIMwp16pH7A7EXxCtjJDZlm4x3NbB0rYnJUzvqtPcADXewsncxRC1DHSxs3DUSv/C/SssyEQPDnoGvCd2V39Bz0K8m6NPLYLEzQANOGsVvT5WeOntJDtlPlNq5nBqsRoOMfXOaWr/LAIzow4DsMVTGkoTQs57BuWE/lZzisn7bQBwp7CWABAefGfAekpyn9PpDsRrnDRNwrseRqZp9HYy5tn2dhh8758rmw/Wjm3rgLYMb83f4UvaAYmYOLq9SKzNzGAhgS/Ig75TXqjAq+A91InIIMIZRNET9Mi7fhQBt6u4KVRhNgCLuHv268Gucc8nq5BFQw3NpqUXtkaFqndj7wlgaoJsDz0C3xxXhi0NjN9nS3Ik4ejwNFahXua763KL/zoTYO1suwzNLiXt78oJ8uHCbJJY4CzzEJMk6EqWB31UU+pEYQRzrGusTA1i+yCMtRH5py/PMrDBZ33AIEI4spPfvUa+0r+FMZQlwUGiKcVYoZsXMMW7Jk7vgV3DSs8Kfcra6hd3suQa+2K42s2nkfVns+vLcrIIKB9ok8aAxtun727AMHHY9/FC58rv4KVl16Qz8NlA3gRP1Hv7iK7BdkFarC5dlgfVsafyy3S0SrZjFSrXhTEmgA35oceEHk3AxeEHAImnGgKmlXzcxwli4qAFuMTfVXhR+Hc8NtXCQc3gO0F5/ckRX54CcZz+48kwhA41ccGrBTVnE+qbt8tOOCu4Ajv9kYXSeHUGNvY/kqv5hI3RIa+SwdDQh7I8yHzbCIWTKmletS/iaZEqBGnOeINCU+d0wC8ZIL+DboKoRSltoO25l2/ym/bAWAjtfNlkWWpxfey1josgeEIWFl/Rh6BpcIPS0gP2MQ03itmqjrErGpuBMyon1RE2EYNx7lfVzdPJIugrLeLWoOYoB5tAPlD+oV7
- mT9qNu0t
- ida+Asdu3U9z9I38ZJTct/py8CTlSP4OHNhDU7j1xD/FePpPHXdzwTSPmU0j4PHZRPJ/K8yAT351GNHnyI3cQAslKs20TvWzTzPpHYSYVK1FjQiwhNR0UYXBLjy0eh2J3qxbVYRQsNy5JV26zfpl+g/Mp7bvX5J5go7olQDnv4S0N0aQCOf10r12OajmyMadD8RoSaMLoRgWX9zozyg4Vr/l6Yqw/OFxDkpV69hgDz7eqhQyTWwnLOeomi/f8w+mt4EutVc7j8LqaDJa5kCiCVNKISFVcd8sVZqVTFjtxy9NNJp5XndIaWw9USoFXlP09G+HJ
+X-HE-Tag: 1776407703-711825
+X-HE-Meta: U2FsdGVkX19HpqpDkKViobw3EdWmCP83KcOicj6Qk/Qi9/L6dnwqPZvdBtCxtXttlOvcUGQs5LXce1jL3BNdZNVlSUnocDEwu1yT/eMeGdjj386q/ALLhfAffmfeK9KipuZLYVd5HXgvleEnqg0e4x1eESVlfa0jLLTYs8EMCV1fnM2IZERljTIS+6MOZJSGp6UKaLRzjS0V0qM0li3fXin0L7to5YlTT1Js85Df7okWST3jE/PefVgyojS9ldWrKTV6pbNRTcUieDEZdYqnsbxIv/MWEN7Z5ogMSQG5O3MoUk/nmKv4fzNR46JIwYB60f0tp0cx4ZCnQvpLG2DspEp0xQ7UkM6MF1CSKQ5283rzF/a7Qg9jP0KWGfVO2AW/zJhPKLX6wf01gDsoFnUQmG+5vCmWwkQJLh1Y0NS07G4NCfFBNCQxyebjywuOr6b8LNzHFvn/LjIqkVAiuOpJ24lSh517zP6xtNpHk8lj1oIPVkgQJDSeUCqu5El0IOfTUHGkqTlVPZSYGfs/LA90ICRresSRSwOmkeKljX8oGoLQ3KqElOnAaX/l7vGeGkY3O+F/tWnljYGkRvQn4I5936uMgW8tXNOS7llCTkUtSAXXSN08HXPoat/cRtlYazmcZoEnktpsNJEqWWOE3X/rrKWbwIT8z3axC50DxR4jSyN6evSS2N3X35ZTtauUNfGbHqpwzT1mIbuc2qjeQ04OegAzTTNDafgl57wDz4aGQ/TIDoy2ZUMsvKjoIrbXIsgDo+bbDJfbZx5xLqOXFxxAf08DdUNTpdFTXFPmHsD/+WJFqbg06XqTI1YYgEwS71R6fCQ7VnCMDy2UYnb1n4163yMCrDsFMZME+6G+NlIBU8O10xM5cqKrv8URwKd5y/YlXZG0Y0Zbjyo6B/2ZJIP/McIB7YBuHd5E/HRfomnl2aC8iejaM0ekrGca/kYBerNfILm3Lv3N1xSSXIIy8lC
+ BbBCXFA+
+ 0tYFTtwgE2fleIN/8p/nQCzUrd5veDPG3uQMyi+w5xFK3FON5K9n71i1xFIFYHHiNZtPbOZXjpCJuwBNQMQ58uwwH2p8OdsDLuyZdLhbioyWhJDO6wb0vYm+bcD3gjRKzjZpMgKXdVJsjAGwlm3w5PcIEzEUtmZji6Y+oauKId0o8LzGhWqzG9i2F3INeSK3dSOPNf2wub7Hcx6Jnns/vicY/efkhwqs8OkSqeoxa9vYfpWUb7AtncSTbn5v9j/YPgwF4jyjYFqhS5l00fQUtBL6Dz6iwHqp6dYJWk3JtV1ZoyJwl9Y3ETfu7qzdumB3CjNi4tsed9maX41NKwQj9dgs5F98Q7pcYIIfy49s8o9fR4MaYZrR7IghNjg02sogPMWpL1kpSEMi0/UvuoFZol9LpdC1S2BK9/mig8ZkHSGc+DINOW1EmjbchrD1NbDx6jDGgeBD4EecLl9MfDqCEgHToZe/VleRKxQwErtRgTonhRLcYtKYYHgzy7Robb1CfINHiEMV1oiDRFul9+lb0wnTZgtKQnLF654ZkpGamBZiWo2jADHZwpB4xizaFPSa2pdzlq1CmRCGwUUkU4NKBvxl+M3DsUXybF7+HOWlC17/f3Z53sE8dBf5iyGslyYGJjbfVqODEgOcYV9V6o4CKwxiRPxX2VD4EhZQN3VvSI0tUzw7Ic2Qo895b7BDJ7jzGjE0BxyNq+kmUJcM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,172 +215,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 11:13:35AM +0200, Christian Brauner wrote:
-> On Mon, Apr 13, 2026 at 03:39:48PM -0700, Minchan Kim wrote:
-> > Currently, process_mrelease() requires userspace to send a SIGKILL signal
-> > prior to invocation. This separation introduces a race window where the
-> > victim task may receive the signal and enter the exit path before the
-> > reaper can invoke process_mrelease().
-> > 
-> > In this case, the victim task frees its memory via the standard, unoptimized
-> > exit path, bypassing the expedited clean file folio reclamation optimization
-> > introduced in the previous patch (which relies on the MMF_UNSTABLE flag).
-> > 
-> > This patch introduces the PROCESS_MRELEASE_REAP_KILL UAPI flag to support
-> > an integrated auto-kill mode. When specified, process_mrelease() directly
-> > injects a SIGKILL into the target task.
-> > 
-> > Crucially, this patch utilizes a dedicated signal code (KILL_MRELEASE)
-> > during signal injection, belonging to a new SIGKILL si_codes section.
-> > This special code ensures that the kernel's signal delivery path reliably
-> > intercepts the request and marks the target address space as unstable
-> > (MMF_UNSTABLE). This mechanism guarantees that the MMF_UNSTABLE flag is set
-> > before either the victim task or the reaper proceeds, ensuring that the
-> > expedited reclamation optimization is utilized regardless of scheduling
-> > order.
-> > 
-> > Signed-off-by: Minchan Kim <minchan@kernel.org>
-> > ---
-> >  include/uapi/asm-generic/siginfo.h |  6 ++++++
-> >  include/uapi/linux/mman.h          |  4 ++++
-> >  kernel/signal.c                    |  4 ++++
-> >  mm/oom_kill.c                      | 20 +++++++++++++++++++-
-> >  4 files changed, 33 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/include/uapi/asm-generic/siginfo.h b/include/uapi/asm-generic/siginfo.h
-> > index 5a1ca43b5fc6..0f59b791dab4 100644
-> > --- a/include/uapi/asm-generic/siginfo.h
-> > +++ b/include/uapi/asm-generic/siginfo.h
-> > @@ -252,6 +252,12 @@ typedef struct siginfo {
-> >  #define BUS_MCEERR_AO	5
-> >  #define NSIGBUS		5
-> >  
-> > +/*
-> > + * SIGKILL si_codes
-> > + */
-> > +#define KILL_MRELEASE	1	/* sent by process_mrelease */
-> > +#define NSIGKILL	1
-> > +
-> >  /*
-> >   * SIGTRAP si_codes
-> >   */
-> > diff --git a/include/uapi/linux/mman.h b/include/uapi/linux/mman.h
-> > index e89d00528f2f..4266976b45ad 100644
-> > --- a/include/uapi/linux/mman.h
-> > +++ b/include/uapi/linux/mman.h
-> > @@ -56,4 +56,8 @@ struct cachestat {
-> >  	__u64 nr_recently_evicted;
-> >  };
-> >  
-> > +/* Flags for process_mrelease */
-> > +#define PROCESS_MRELEASE_REAP_KILL	(1 << 0)
-> > +#define PROCESS_MRELEASE_VALID_FLAGS	(PROCESS_MRELEASE_REAP_KILL)
-> > +
-> >  #endif /* _UAPI_LINUX_MMAN_H */
-> > diff --git a/kernel/signal.c b/kernel/signal.c
-> > index d65d0fe24bfb..c21b2176dc5e 100644
-> > --- a/kernel/signal.c
-> > +++ b/kernel/signal.c
-> > @@ -1134,6 +1134,10 @@ static int __send_signal_locked(int sig, struct kernel_siginfo *info,
-> >  
-> >  out_set:
-> >  	signalfd_notify(t, sig);
-> > +
-> > +	if (sig == SIGKILL && !is_si_special(info) &&
-> > +	    info->si_code == KILL_MRELEASE && t->mm)
-> > +		mm_flags_set(MMF_UNSTABLE, t->mm);
-> >  	sigaddset(&pending->signal, sig);
-> >  
-> >  	/* Let multiprocess signals appear after on-going forks */
-> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> > index 5c6c95c169ee..0b5da5208707 100644
-> > --- a/mm/oom_kill.c
-> > +++ b/mm/oom_kill.c
-> > @@ -20,6 +20,8 @@
-> >  
-> >  #include <linux/oom.h>
-> >  #include <linux/mm.h>
-> > +#include <uapi/linux/mman.h>
-> > +#include <linux/capability.h>
-> >  #include <linux/err.h>
-> >  #include <linux/gfp.h>
-> >  #include <linux/sched.h>
-> > @@ -1218,13 +1220,29 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
-> >  	bool reap = false;
-> >  	long ret = 0;
-> >  
-> > -	if (flags)
-> > +	if (flags & ~PROCESS_MRELEASE_VALID_FLAGS)
-> >  		return -EINVAL;
-> >  
-> >  	task = pidfd_get_task(pidfd, &f_flags);
-> >  	if (IS_ERR(task))
-> >  		return PTR_ERR(task);
-> >  
-> > +	if (flags & PROCESS_MRELEASE_REAP_KILL) {
-> > +		struct kernel_siginfo info;
-> > +
-> > +		if (!capable(CAP_KILL)) {
-> 
-> Why? Just call a function that uses check_kill_permission() before
-> firing the signal? What's the rational for doing it this way?
-
-Thanks for pointing that out. I wasn't aware of check_kill_permission().
-
-I took a look at it, and it seems check_kill_permission() handles permissions
-primarily for signals sent from userspace. Since we are injecting the signal
-from the kernel side using a positive si_code (KILL_MRELEASE),
-check_kill_permission() would just return 0 and skip the permission checks
-entirely.
-
-I am open to better ideas if there is a more standard way to handle permission
-checks for kernel-injected signals.
-
-> 
-> Tbh, I really hate that process_mrelease() now has a kill side effect
-> with non-standard permission handling as well.
-> 
-> Seems like bad api design. Why can't you just raise the MMF_UNSTABLE bit
-> before the SIGKILL as that's the problem you're trying to solve.
-
-The problem is that process_mrelease() strictly requires the target process
-to already have a pending fatal signal or be in the exit path before it allows
-any operation.
-
-Therefore, we cannot invoke process_mrelease() to just set the MMF_UNSTABLE
-flag *before* the SIGKILL is sent.
-
-If I send the SIGKILL first to satisfy the process_mrelease() requirement,
-we immediately run into the scheduling race condition where the victim can
-enter the exit path before the reaper can set the flag.
-
-This circular dependency is exactly why I had to integrate the kill operation
-into process_mrelease() to make it atomic.
-
-> 
-> > +			ret = -EPERM;
-> > +			goto put_task;
-> > +		}
-> > +		clear_siginfo(&info);
-> > +		info.si_signo = SIGKILL;
-> > +		info.si_code = KILL_MRELEASE;
-> > +		info.si_pid = task_tgid_vnr(current);
-> > +		info.si_uid = from_kuid_munged(current_user_ns(), current_uid());
-> 
-> This should not be open-coded like this.
-
-Good point.
-Maybe, I can reuse prepare_kill_siginfo.
-
-> 
-> > +
-> > +		do_send_sig_info(SIGKILL, &info, task, PIDTYPE_TGID);
-> > +	}
-> > +
-> >  	/*
-> >  	 * Make sure to choose a thread which still has a reference to mm
-> >  	 * during the group exit
-> > -- 
-> > 2.54.0.rc0.605.g598a273b03-goog
-> > 
+DQo+ID4+PiBzYXNoaWtvIGhhZCBzZXZlcmFsIGNvbW1lbnRzDQo+ID4+PiBodHRwczovL3Nhc2hp
+a28uZGV2LyMvcGF0Y2hzZXQvMjAyNjA0MDgwMzE2MTUuMTgzMTkyMi0xLQ0KPiA+PiB5dWFuMS5s
+aXUlNDBpbnRlbC5jb20NCj4gPj4+DQo+ID4+PiBJIHNraXBwZWQgdGhlIG9uZXMgcmVsYXRlZCB0
+byBob3RwbHVnLCBidXQgaW4gdGhlIG1tX2luaXQgcGFydCB0aGUNCj4gPj4gY29tbWVudA0KPiA+
+Pj4gYWJvdXQgem9uZXMgdGhhdCBjYW4gaGF2ZSBvdmVybGFwcGluZyBwaHlzaWNhbCBzcGFucyB3
+aGVuIG1pcnJvcmVkDQo+ID4+PiBrZXJuZWxjb3JlIGlzIGVuYWJsZWQgc2VlbXMgdmFsaWQuDQo+
+ID4NCj4gPiBIaSBEYXZpZCAmIE1pa2UNCj4gPg0KPiA+IEnigJl2ZSBzcGVudCBzb21lIHRpbWUg
+d29ya2luZyB0aHJvdWdoIHRoZXNlIGlzc3VlcyB0byBiZXR0ZXIgdW5kZXJzdGFuZA0KPiB0aGVt
+Lg0KPiA+IEZvciB0aGUgb3ZlcmxhcHBpbmcgcGh5c2ljYWwgc3BhbnMobWlycm9yZWQga2VybmVs
+Y29yZSksIHNob3VsZCBJIGF2b2lkDQo+IGNvdW50aW5nDQo+ID4gb3ZlcmxhcF9tZW1tYXBfaW5p
+dCBpbiBtZW1tYXBfaW5pdF9yYW5nZSBpbiB0aGUgbmV4dCB2ZXJzaW9uPw0KPiA+IEZvciBleGFt
+cGxlLCBjaGFuZ2UgaXQgYXMgZm9sbG93czoNCj4gPg0KPiA+ICt1bnNpZ25lZCBsb25nIF9fbWVt
+aW5pdA0KPiA+ICttZW1tYXBfaW5pdF9yYW5nZSh1bnNpZ25lZCBsb25nIHNpemUsIGludCBuaWQs
+IHVuc2lnbmVkIGxvbmcgem9uZSwNCj4gPiArICAgICAgICAgICAgICAgdW5zaWduZWQgbG9uZyBz
+dGFydF9wZm4sDQo+ID4gKyAgICAgICAgICAgICAgIHVuc2lnbmVkIGxvbmcgem9uZV9lbmRfcGZu
+LA0KPiA+ICAgICAgICAgICAgICAgICBlbnVtIG1lbWluaXRfY29udGV4dCBjb250ZXh0LA0KPiA+
+ICAgICAgICAgICAgICAgICBzdHJ1Y3Qgdm1lbV9hbHRtYXAgKmFsdG1hcCwgaW50IG1pZ3JhdGV0
+eXBlLA0KPiA+ICAgICAgICAgICAgICAgICBib29sIGlzb2xhdGVfcGFnZWJsb2NrKQ0KPiA+ICB7
+DQo+ID4gICAgICAgICB1bnNpZ25lZCBsb25nIHBmbiwgZW5kX3BmbiA9IHN0YXJ0X3BmbiArIHNp
+emU7DQo+ID4gKyAgICAgICB1bnNpZ25lZCBsb25nIG5yX2luaXQgPSAwOw0KPiA+ICAgICAgICAg
+c3RydWN0IHBhZ2UgKnBhZ2U7DQo+ID4NCj4gPiAgICAgICAgIGlmIChoaWdoZXN0X21lbW1hcF9w
+Zm4gPCBlbmRfcGZuIC0gMSkNCj4gPiBAQCAtODkzLDcgKzg5Nyw3IEBAIHZvaWQgX19tZW1pbml0
+IG1lbW1hcF9pbml0X3JhbmdlKHVuc2lnbmVkIGxvbmcgc2l6ZSwNCj4gaW50IG5pZCwgdW5zaWdu
+ZWQgbG9uZyB6b25lDQo+ID4gICAgICAgICBpZiAoem9uZSA9PSBaT05FX0RFVklDRSkgew0KPiA+
+ICAgICAgICAgICAgICAgICBpZiAoIWFsdG1hcCkNCj4gPiAtICAgICAgICAgICAgICAgICAgICAg
+ICByZXR1cm47DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIDA7DQo+ID4NCj4g
+PiAgICAgICAgICAgICAgICAgaWYgKHN0YXJ0X3BmbiA9PSBhbHRtYXAtPmJhc2VfcGZuKQ0KPiA+
+ICAgICAgICAgICAgICAgICAgICAgICAgIHN0YXJ0X3BmbiArPSBhbHRtYXAtPnJlc2VydmU7DQo+
+ID4gQEAgLTkxMSw2ICs5MTUsNyBAQCB2b2lkIF9fbWVtaW5pdCBtZW1tYXBfaW5pdF9yYW5nZSh1
+bnNpZ25lZCBsb25nIHNpemUsDQo+IGludCBuaWQsIHVuc2lnbmVkIGxvbmcgem9uZQ0KPiA+ICAg
+ICAgICAgICAgICAgICAgICAgICAgIGlmIChkZWZlcl9pbml0KG5pZCwgcGZuLCB6b25lX2VuZF9w
+Zm4pKSB7DQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBkZWZlcnJlZF9zdHJ1
+Y3RfcGFnZXMgPSB0cnVlOw0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbnJf
+aW5pdCArPSBlbmRfcGZuIC0gcGZuOw0KPiANCj4gSXQncyBjb25mdXNpbmcuIENvdWxkIHRoZSBy
+ZW1haW5pbmcgcmFuZ2UgYWxzbyBpbmNsdWRlIG92ZXJsYXBwaW5nIGluaXRzPw0KPiANCj4gTWF5
+YmUgdGhlIHdob2xlICJza2lwIG92ZXJsYXBwaW5nIGluaXQiIHNob3VsZCBhY3R1YWxseSBiZSBo
+YW5kbGVkIG9uIGENCj4gaGlnaGVyIGxldmVsPw0KPiANCj4gSSBndWVzcyB3ZSdkIHdhbnQgdG8g
+c2tpcCBhbnkgbWVtYmxvY2tfaXNfbWlycm9yKHIpIHJlZ2lvbnMgZW50aXJlbHkuDQo+IA0KPiBA
+TWlrZT8NCg0KSGkgTWlrZQ0KDQpEYXZpZCBzdWdnZXN0ZWQgbW92aW5nIHRoZSBvdmVybGFwIGhh
+bmRsaW5nIHRvIGEgaGlnaGVyIGxldmVsIGFuZCANCnNraXBwaW5nIG1lbWJsb2NrX2lzX21pcnJv
+cigpIHJlZ2lvbnMgZW50aXJlbHkuIEkgdGhpbmsgdGhpcyBtYWtlcyBzZW5zZS4NCg0KV291bGQg
+dGhpcyB3b3JrIGZvciB5b3UsIG9yIGRvIHlvdSBoYXZlIGEgZGlmZmVyZW50IHByZWZlcmVuY2U/
+DQoNClNvbWV0aGluZyBsaWtlIHRoaXMNCnN0YXRpYyB2b2lkIF9faW5pdCBtZW1tYXBfaW5pdCh2
+b2lkKQ0Kew0KLi4uDQogICAgZm9yX2VhY2hfbWVtX3Bmbl9yYW5nZShpLCBNQVhfTlVNTk9ERVMs
+ICZzdGFydF9wZm4sICZlbmRfcGZuLCAmbmlkKSB7DQogICAgICAgIHN0cnVjdCBwZ2xpc3RfZGF0
+YSAqbm9kZSA9IE5PREVfREFUQShuaWQpOw0KICAgICAgICBib29sIGlzX21pcnJvciA9IG1pcnJv
+cmVkX2tlcm5lbGNvcmUgJiYgDQoJCQkJIG1lbWJsb2NrX2lzX21pcnJvcigmbWVtYmxvY2subWVt
+b3J5LnJlZ2lvbnNbaV0pOw0KDQogICAgICAgIGZvciAoaiA9IDA7IGogPCBNQVhfTlJfWk9ORVM7
+IGorKykgew0KICAgICAgICAuLi4NCgkgICAgICBpZiAoaXNfbWlycm9yICYmIGogPT0gWk9ORV9N
+T1ZBQkxFKQ0KICAgICAgICAgICAgICAgIGNvbnRpbnVlOw0KDQogICAgICAgICAgIG1lbW1hcF9p
+bml0X3pvbmVfcmFuZ2Uoem9uZSwgc3RhcnRfcGZuLCBlbmRfcGZuLA0KICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICZob2xlX3Bmbik7DQoNCkJlc3QgUmVnYXJkcywNCkxpdSwgWXVh
+bjENCg==
 
