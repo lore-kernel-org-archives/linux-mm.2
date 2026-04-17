@@ -4,86 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35B4DF8E497
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 01:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5C3AF8E49B
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 01:16:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BA7A6B0099; Thu, 16 Apr 2026 21:12:35 -0400 (EDT)
+	id 357436B0088; Thu, 16 Apr 2026 21:16:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 991D86B009B; Thu, 16 Apr 2026 21:12:35 -0400 (EDT)
+	id 32E366B008A; Thu, 16 Apr 2026 21:16:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CF256B009D; Thu, 16 Apr 2026 21:12:35 -0400 (EDT)
+	id 26B6D6B008C; Thu, 16 Apr 2026 21:16:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D02D6B0099
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 21:12:35 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4DF1F8CA40
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:12:35 +0000 (UTC)
-X-FDA: 84666272670.12.2B07E78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 828CC140002
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:12:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SEEDYi8m;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 150C46B0088
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 21:16:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95CF2BC64E
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:16:21 +0000 (UTC)
+X-FDA: 84666282162.03.536F70F
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D7204A000C
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:16:19 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=r2vwZOzA;
+	spf=pass (imf25.hostedemail.com: domain of gality369@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=gality369@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776388353;
+	s=arc-20220608; t=1776388579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IS3oCEzOjZjm2QLUQ8g/kDjt/4+mDdyhiNqj7Y1OdCo=;
-	b=KcrNHJeSOlbsV18+Fbc/+5252j/hKN/tl827iZbHo1rDl57W1MN0tuaB4fC30C5nFVVcPa
-	UrFp8k4IKtwIORvHolrXjYPip9IcN9UhhAxAjxErIz9cDMoFh2+c5gnnJXjBf6AkV0wr+j
-	mtOrbkelP8NPI1oL8lUUMD8FZJcIIm8=
+	 in-reply-to:references:dkim-signature;
+	bh=asg74WJhLQYJ7UIfGwSHS141GuqqTNXs+jX/zqQ3Kx4=;
+	b=QwV08wYslTOy6zaUgjRZdMVyfvuGKwKPDg0AG+NHyW7KOdobQvykC/vXQ9JHRt3KtuMYB+
+	BPOm10YaUv2AMXf6/O8TdSYJBpZiUhydnOcZ4yFHCa7eySuTGdlaZpNTLuE37xNkpfjbRD
+	kaVSUA51m7Ex7eHVd72s4/LKWJ9t3lY=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SEEDYi8m;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776388353; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=r2vwZOzA;
+	spf=pass (imf25.hostedemail.com: domain of gality369@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=gality369@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776388579; a=rsa-sha256;
 	cv=none;
-	b=S6ZsQmEJlRTPJlPhXqA79oY455FazRo1y/142JekjgSxmwK+geaR9me9LagHh5quOZFJ0O
-	daABqmPljN2e6PGeZskI2sJ9gr13BbHuRpiPwYqb0AxtsNYxMYRYmTTP8+EYnxoXhei+vN
-	AaY494pwkV9/8CxYGKI8zEEjMSMVeh0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81F0C44114;
-	Fri, 17 Apr 2026 01:12:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3B8C2BCAF;
-	Fri, 17 Apr 2026 01:12:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776388352;
-	bh=Kl1/BBAo5AN0a7pqkV9e0HsNYs4ybzxNUCF9Q9XUNbY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEEDYi8mLB7BY4EkqX0WdN9j41CWHbU78MAK/bgyMyLWiykG5Kg0s8AdMMWopa+Ss
-	 sRiVV4t9JWu5HYihaKjNpLuxSvyl8T+xo35ClrGEw3XDmHoVwwRZN4rVC61UHI9Ul3
-	 vp8ElM7UQtXx9yWQ5kUVOXCUxLjG/38+vqnyxTiO8OAz5hZcWUatMydEy4IBfx6pNB
-	 CiQHk0hkXnIAiJyxlQaqI1GG7D7GUO6+56t4/h95fI1zV8aL5YBGaLKY8ZkmTxZ9ib
-	 QQUESEtuHnZTaPUtCgqqPblSGvN0VvS6X4zfFyL7md4OoaW3G9wRQo3oBboufh4fkR
-	 cHVQ9dbu4fF8w==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Liew Rui Yan <aethernet65535@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/2] mm/damon: reset thread status parameters upon kdamond termination
-Date: Thu, 16 Apr 2026 18:12:28 -0700
-Message-ID: <20260417011229.75947-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260416062818.949-1-sj@kernel.org>
-References: 
+	b=lb6/btkHg960sEHLVVbfoLCAtxDcCU3uHtCnru8b3y9FBTHUqR2onOy+tIYr6j2VeTRHUI
+	ZAvAkPXxZILN1Q6nZeMf9DUyMeie14eXziU4PHAZgAaoM/WUClcWdQ1QLEBULTYuUo44ta
+	YwxXelA4IkBjSQlNIzw5SAxLlggf1Fo=
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-35fb16e56efso110655a91.2
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 18:16:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776388579; x=1776993379; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=asg74WJhLQYJ7UIfGwSHS141GuqqTNXs+jX/zqQ3Kx4=;
+        b=r2vwZOzA/pdGvgI2Vl9Lf39cBPmtGasotKBtqc9eiyRdRkwTgXaX2hFebqBytAXZkR
+         Nkd1zabMp6KEF99xftatFkDIOWFltvHo+cah66lSR5FEXKKecX6HFFNY07l3GfawMmNH
+         KJugkserfofp3JODDixhfcK8NXB/48cbGxifcLPfcIO01s9qaRdfEoBGU7q3Ilmooiwf
+         0fPHKNH1ehDHNthkwRtqbIqYWcd0UKDu4KINqeaI44Kbj8FiZL4k2KeNXzY4IV/SrRDl
+         MkzoOo4MHjwkb/nSUVjEzwDMSeaJwQ49W6QXOehX4A2E4qHNSaKhC0KlKxScRnR3bUkz
+         qGIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776388579; x=1776993379;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=asg74WJhLQYJ7UIfGwSHS141GuqqTNXs+jX/zqQ3Kx4=;
+        b=JubD9EJ8NKyfPOeBTREE9KUs9a3P5u6DdRAzfYLlEwG/WVRmMXEHS+WUWuLQoPZHIu
+         9usj/yNWUvBuT/9gThcJ3vAUu3XGPpOXMT7fae8Piqjsl0qZeCY5fnA8lpsBBeepzlqb
+         mnLhmq8DiijqNyENtpSFhImZaY2lPxyzzx4qcskf3PoELj3xuaijwq4YA7Shsr0yLP0P
+         br8L5A3m5P8J/9b+zIs2Wi2JR+1/eL7pOaKpm2NX54cGvgcziFj5lNKMH7qE+0AvpwRR
+         CUy75qJ5Nskl10zhVYaodvv7u2SybqvHDkCMtJBUep4t802wHqQ3t+Y+bdZEIv+LQ7rU
+         YU5w==
+X-Gm-Message-State: AOJu0YzoZJFvIaF49D931xaaErVFiNjNhIwqXqyY3KSlCb/P5y5EWodM
+	Yj8AvGng/6od5uW+5tGIcACsuugizy/jRrvFTj3xM/wMvbiIpKsLdDMT
+X-Gm-Gg: AeBDietzc11Q1bIUwqRbloCs+eIEQba2QglSujJwGEazHEQQuKXCN14JQaklwM6EnUU
+	kiyRi2AOxOE7A4WMyDM89sHhU+cwZKQ+/PQ3gZhvz3JHkwfi3AfdDZ5V3Igj29tKKlxP/BriBpf
+	apH7b5GWXdBq5Mo/mKyczxTcRa5LfdpBg7TZAwzF2mMo6MYhjPFP0ulVZcf29VmKaVHxGgYOkEy
+	EvA6pLu8uOoGt19DQaDa9fwB/HevoOvJh1XpLXDBRQ9v3jfGAmgLQYVt4cCJTyzMyZuldGq1vKA
+	eBtU3vPVpK+DMoMYTeg0es2pkdxO0IzB0RvzAbErZPMiTnSs55HrPCZ28EZlC/M8Pa55n94Dc58
+	DqoCMpmOqv6BbI0Zb9nerG7PHbdoezvyuRt6lyd85LKBNYBFqB9DPPFxjQm0qbHuMcZJv3Ndi+5
+	J/szNiLq9kGiXOb7LmwbEN8CzZtc9N+R4TcjFRpUGXTDT+9oGofhbsLGoo3xjlQdAIOgie6Lqqc
+	nxV2ETH7g==
+X-Received: by 2002:a17:90b:5583:b0:35b:8d89:7199 with SMTP id 98e67ed59e1d1-36140468a44mr642291a91.15.1776388578362;
+        Thu, 16 Apr 2026 18:16:18 -0700 (PDT)
+Received: from kernel-fuzz.. ([103.172.182.26])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36141990bb6sm87274a91.17.2026.04.16.18.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2026 18:16:17 -0700 (PDT)
+From: ZhengYuan Huang <gality369@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	willy@infradead.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	zzzccc427@gmail.com,
+	ZhengYuan Huang <gality369@gmail.com>
+Subject: [PATCH] mm: prepare anon_vma before swapin rmap
+Date: Fri, 17 Apr 2026 09:16:06 +0800
+Message-ID: <20260417011606.1089985-1-gality369@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7stfm73zjp3y35ckyjf9psw1iboentkh
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D7204A000C
+X-Stat-Signature: wqmd1wwd7qs17iwxu1daoxpma3a7uzc9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 828CC140002
-X-HE-Tag: 1776388353-32851
-X-HE-Meta: U2FsdGVkX1+Zzkh7QtX/32fslbwONI56VpSdiCQaBNFxHoDjtCbJ4tn/Jfh4HfPuEBx8J5m9DoQ/1T3sXDbCdvAfFp36pLwqbPA0AhpyOEkcfCGTmF54tvjT2bCACae3T13oSX8apqUmkgbIvrHzUrACc0wsNf5wbnb+zNJEMU3/cVfhsh0YbC3NWxghpwRTlkZJNIt55ozsBpgbXQ3UfNtAfcyo5e0cF6YCIIjMAtNCzCCnrYOgDRu+kahMuxx0LqZhQULhsfC21mXxzi98losazC/UE7+XCEWNSs9x6uc1QlRpSUO20IxSY/2pTV2RJ965bAdRn+Ajagk2vdwtmgHo8RbvuXgL/SoXQcjmK8eZwP5MiETIphRlGthNY6LA9RMlPrd8c39TyGqbDPxmtHxnOWi2XwaZuYqdbQD3hhB3VImQ7+wl65FKHQveURuStD4Qj9E2HKI5v8FJ4NzEAMz7j9NNSj9tZi/zQIODnpXBZgPMI7vQjJZJ03ro6DTIr3r8zkR3roYlgMlfDSpF4FWirKUldt0/fhd0t/wdYFZHL4OTVkJ48MnFcz7UraYMUwMqneICFFn9jT6EyKpUa5PMR7Ym3iQfNNQBoKAACligMQseV2iInAJgDQn+spagLaOESFIqdc+zKsHhWmZxn7SyM1NV/O1WphQRjxWc3mOz7zzYuClQEeiAcze8WmmRXDMriRgxoFPGPdo6zOSZ18d2qi2/8oq1H7Z6qVX743G7mzg63LP0Ns+8bpYzJdbP2rsAJ/fIm+4mfU5sNohgIfcng+CPunmq8/MenriLOcDBNngQGfrlXv2t1Wfou1iIqpKcAFmmDrvIEqP8GpEgIAec2F9I1N7b8QTsN8lnKdVNpS2k/TPX7w1K6MEX9O3BBQ3XjPWZQu/KH0i538zDncgwv1+caAx8FwU0ju8jEX0L243GhJ0oKls9lLvxyV2D3bjGQppY0qXEWbJiLAZ
- ISKrdV0m
- DeEgZ2C27EIEBBQhEY/0n/IpKaCH3YrOK3ScsEm2sNpxWazevHLhpv7SokIjQp/HxBvYWg0derVsVItUXJOMMSSJ5x4vqlHuc+5gHYnHu/B6sVIgGA3fHxdelYa3BjogQaRcc+oYh2p4NI/NwUqi426nyXiCplaxSGQIdQTQDl7i5xzvt/IQUpNwyi7mDTeGAUpgU/aqBrQ7aZ4bLWIL46Ydu5taC4l+jiwFYGJzo1cmO3ZPEdWlLn5w9UAMexcvgufuJ
+X-HE-Tag: 1776388579-75791
+X-HE-Meta: U2FsdGVkX1+iML17d0PEi7dU/XuDd+HQBIGckO8ehF+0gPlWjyLNWvHa7bX0j7FeTLLcsluZGPXUx8qUtRNMqgKwD1M01QCcmSOrB4hAvdtx5ZjaZyBoubMa/P6weLmGCN5v7t3msXaZ9Y7AkGIDa5KcsHJweAQLC1VqgyJ9RilH0okxLtXOsAnTyTMlADBPVk9+1fxnm6NS5vw2gUiHvDiFekCEKPr38ZEMaU1RfBas08/8Y9r8PmIMVH+iBDUkdi8gQHnJFFIuvQKuwsmnwVM9M++sqlJgYV2QFOgm7RePcMM5vdeCMt/WczbA2MIbN+EWZiEVAUzpa/v7cRbWXGtxfKDvkAhIHCv49fAh6vsukHUBMzBRGuwzGsi4x+UnS8nwVNQ7PSrdbNJjbcD8zHsbArAUsMxeZstLXktXMAlNZfUBraO9HjMZXpF7BMhYQa7JYEX/yQYljZV23Bbx7kXYwGvnl9Iq6sPeYvhthIhS2m66+5CKLWJvV3cKnRGOAkgKUKrjBhYOqW5zY9NrYO3ukdltSd0SecCnjffYjuhhav82DyQQpsYFxlQyz/0DRg0XFyc6cMMeJD0mULf7nAVBus1m7ONfKzBfiisnQIw7k6Z3O1Dcn7/z6aPNMot6Xody7B2notXvxJm67BzIIDDGCCnc6PJS4Yl3VN0GCzDOpr5B8NnDE/4P4rpF4WNylWVy92Ejymbb46l9S2lqgHoVRK6E1lw7bbFsbxxReaJwScdcVq9jiRB4uMAsi2RFZCX0KuPSEWkz9+kfTYD2pmRmDlcPda/CLmZFsUZsWqW2tN7YjyFDOreJzKMW+3UjYJAKcwh3iCLpLjUasv/wAfgyI2xEoWWvqMSL+unb7uuF9vfGDDSVOhq3qaUbNXm+6odGn8h2v8WXnQ+7FMfLr1l8DY6yuexIm+7/PjeGzhdVO3lnpxDo2Vrd1IYMry13bKd+p1ffXxwG/4frMlW
+ +y29/LoF
+ j7MQwL2VAyyWHw6qyGuT8vgv9kVWi6rpMRrCAUcXo2umR7AjtLLXpJnlXPjofbkt0ArOooufun3tpTwS6oLOhxuM1UppKM938o1eNnygq4Zwd545Nb41NX78Kc/J/Kg6FMEQsWKF+9K/IWDSAo0qhN0noAtpnZxZZ7xIqR7N/5x59r2RSxookEjnDC3J5ixRfEsFXBxiIrAsRSzki4g6B8XFqT1NWrb4Q4lfgmXXGbAbe+OCUckRBsTjGMs31e8oTdFS+sakC4F0EEgVoiuYid5NDmOFaVlvYGCQvy2X4gPIGVMpdTQ7Ti4RHAB09B/SiaZpltGqV/GQvJ4C9QZ10cPOXQ7oB5HAzSTBimta1QciGZH99vSfAf16d/byidPTcOTj/PBYa/uRzhIQ+r3NzKqmf7RK4JlX2kicBpXxyH16mIRCi4YSjj4UEtwMj6m2CP52wXYA0lK98PnE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,358 +126,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 15 Apr 2026 23:28:17 -0700 SeongJae Park <sj@kernel.org> wrote:
+[BUG]
+madvise(MADV_HWPOISON) can fault a swap entry back in through
+get_user_pages_fast() and hit:
 
-> On Wed, 15 Apr 2026 16:55:29 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > On Thu, 16 Apr 2026 02:45:12 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > On Mon, 13 Apr 2026 17:34:34 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > > 
-> > > > On Mon, 13 Apr 2026 17:23:03 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > > > 
-> > > > > On Tue, 14 Apr 2026 02:52:47 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > > > > 
-> > > > > > Problem
-> > > > > > ========
-> > > > > 
-> > > > > Let's align the underline with the subject.  Also, let's add one blank line
-> > > > > after the underline.
-> > > > > 
-> > > > > > When kdamond terminates unexpectedly, 'enabled' remains 'Y' and
-> > > > > > 'kdamond_pid' remains stale. This prevents user from restarting DAMON
-> > > > > > because both writing 'Y' and 'N' to 'enabled' will fail.
-> > > > > > 
-> > > > > > "Unexpected termination" here means the kdamond exits without any user
-> > > > > > request (e.g., not by writing 'N' to 'enabled').
-> > > > > 
-> > > > > Could you please further explain when such termination can happen?
-> > > > > 
-> > > > > > 
-> > > > > > User Impact
-> > > > > > ===========
-> > > > > > Once kdamond terminates this way, it cannot be restarted via sysfs
-> > > > > > because:
-> > > > > > 
-> > > > > > 1. DAMON_LRU_SORT/DAMON_RECLAIM is built into the kernel, so it cannot
-> > > > > >    be unloaded and reloaded at runtime.
-> > > > > 
-> > > > > I think this is quite obvious, so may better to be dropped.
-> > > > > 
-> > > > > > 2. Writing 'N' to 'enabled' fails because kdamond no longer exists;
-> > > > > >    Writing 'Y' does nothing, as 'enabled' is already Y.
-> > > > > > 
-> > > > > > As a result, the only way to restore DAMON functionality is a full
-> > > > > > system reboot.
-> > > > > 
-> > > > > Thank you for clarifying the user impact.  I think this deserves Cc-ing
-> > > > > stable@.
-> > > > > 
-> > > > > I think 'Problem' and 'User Impact' can be unified into one section.
-> > > > > 
-> > > > > > 
-> > > > > > Solution
-> > > > > > ========
-> > > > > > damon_commit_ctx() sets 'maybe_corrupted=true' at the beginning and only
-> > > > > > sets it to false upon successful completion. When 'maybe_corrupted'
-> > > > > > remains true, kdamond will terminate eventually.
-> > > > > 
-> > > > > This seems better to be explained earlier, on the problem section.
-> > > 
-> > > Okay, this is my current commit message:
-> > > 
-> > >     Problem
-> > >     =======
-> > > 
-> > >     When kdamond terminates unexpectedly, 'enabled' remains 'Y' and
-> > >     'kdamond_pid' remains stale. This prevents user from restarting DAMON
-> > >     because both writing 'Y' and 'N' to 'enabled' will fail.
-> > > 
-> > >     "Unexpected termination" here means the kdamond exits without any user
-> > >     request (e.g., not by writing 'N' to 'enabled'). This can happen when:
-> > >     - Internal error of kdamond.
-> > >     - Invalid parameters commit via 'commit_inputs' (e.g., addr_unit=3).
-> > > 
-> > >     The root cause is that damon_commit_ctx() sets 'maybe_corrupted=true' at
-> > >     the beginning and only sets it to false upon successful completion. When
-> > >     'maybe_corrupted' remains true, kdamond will terminate eventually.
-> > > 
-> > >     Once kdamond terminates this way, it cannot be restarted via sysfs
-> > >     because writing 'N' to 'enabled' fails (kdamond no longer exists) and
-> > >     writing 'Y' does nothing ('enabled' is already Y). As a result, the only
-> > >     way to restore DAMON functionality is a full system reboot.
-> > > 
-> > >     Solution
-> > >     ========
-> > > 
-> > >     The problem is that 'enable' parameter value is not trustworthy.
-> > >     Instead of relying on the 'enabled' variable, use damon_is_running(ctx)
-> > >     which reflects the true kdamond state.
-> > 
-> > I don't want to be picky, but ...  I still feels this is easy to make readers
-> > including future myslef be confused for some points.  Given this is a bit
-> > serious bug fix, I feel I have to raise the bar, at least for future myself.
-> > What about below?
-> > 
-> > 	Kdamonds for DAMON_RECLAIM and DAMON_LRU_SORT could stop without
-> > 	properly updating 'enabled' parameter value, when parameters online
-> > 	commit fails due to invalid user inputs or internal memory allocation
-> > 	failures.  The enabled parameter value, which can be stale after
-> > 	certain kdamond stops, is used by the modules' kdamond start/stop
-> > 	logic, to avoid doing unnecessary start/stop works.  As a result, uses
-> > 	cannot restart the kdamonds before the system is rebooted and 'enabled'
-> > 	parameter value is correctly reset.  For example, the issue can be
-> > 	reproduced like below:
-> > 
-> > 	<your reproducer>
-> > 
-> > 	Fix the issue by using damon_is_running(), which should reflect the
-> > 	true kdamond state, instead of the 'enabled' parameter.
-> > 
-> > > 
-> > > > > [...]
-> > > > > So the problem is that 'enable' parameter value is not trustworthy, and this
-> > > > > series is trying to make it trustworthy.  I think it is bit complicated,
-> > > > > especially for stable@ fix.  What about simply using more trustworthy
-> > > > > information, e.g.,
-> > > > > 
-> > > > > '''
-> > > > > --- a/mm/damon/reclaim.c
-> > > > > +++ b/mm/damon/reclaim.c
-> > > > > @@ -390,7 +390,7 @@ MODULE_PARM_DESC(addr_unit,
-> > > > >  static int damon_reclaim_enabled_store(const char *val,
-> > > > >                 const struct kernel_param *kp)
-> > > > >  {
-> > > > > -       bool is_enabled = enabled;
-> > > > > +       bool is_enabled = false;
-> > > > >         bool enable;
-> > > > >         int err;
-> > > > > 
-> > > > > @@ -398,6 +398,9 @@ static int damon_reclaim_enabled_store(const char *val,
-> > > > >         if (err)
-> > > > >                 return err;
-> > > > > 
-> > > > > +       if (ctx)
-> > > > > +               is_enabled = damon_is_running(ctx);
-> > > > > +
-> > > > >         if (is_enabled == enable)
-> > > > >                 return 0;
-> > > > > 
-> > > > > '''
-> > > 
-> > > Thank you for the suggestion. I have tested this implementation and it
-> > > works expected. I agree that its complexity is much lower and more
-> > > suitable for a stable fix.
-> > 
-> > Thank you for testing!
-> 
-> Hmm, and now I think we migt be able to use this kind of trustworthy
-> information for reading part too, for not only enabled but also kdamond_pid,
-> like below.
-> 
-> '''
-> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> index ecfc6b58d07d2..775b33dbc952f 100644
-> --- a/mm/damon/reclaim.c
-> +++ b/mm/damon/reclaim.c
-> @@ -159,15 +159,6 @@ static unsigned long addr_unit __read_mostly = 1;
->  static bool skip_anon __read_mostly;
->  module_param(skip_anon, bool, 0600);
->  
-> -/*
-> - * PID of the DAMON thread
-> - *
-> - * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
-> - * Else, -1.
-> - */
-> -static int kdamond_pid __read_mostly = -1;
-> -module_param(kdamond_pid, int, 0400);
-> -
->  static struct damos_stat damon_reclaim_stat;
->  DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
->  		reclaim_tried_regions, reclaimed_regions, quota_exceeds);
-> @@ -343,12 +334,8 @@ static int damon_reclaim_turn(bool on)
->  {
->  	int err;
->  
-> -	if (!on) {
-> -		err = damon_stop(&ctx, 1);
-> -		if (!err)
-> -			kdamond_pid = -1;
-> -		return err;
-> -	}
-> +	if (!on)
-> +		return damon_stop(&ctx, 1);
->  
->  	err = damon_reclaim_apply_parameters();
->  	if (err)
-> @@ -357,9 +344,6 @@ static int damon_reclaim_turn(bool on)
->  	err = damon_start(&ctx, 1, true);
->  	if (err)
->  		return err;
-> -	kdamond_pid = damon_kdamond_pid(ctx);
-> -	if (kdamond_pid < 0)
-> -		return kdamond_pid;
->  	return damon_call(ctx, &call_control);
->  }
->  
-> @@ -387,10 +371,16 @@ module_param_cb(addr_unit, &addr_unit_param_ops, &addr_unit, 0600);
->  MODULE_PARM_DESC(addr_unit,
->  	"Scale factor for DAMON_RECLAIM to ops address conversion (default: 1)");
->  
-> +static bool damon_reclaim_enabled(void)
-> +{
-> +	if (!ctx)
-> +		return false;
-> +	return damon_is_running(ctx);
-> +}
-> +
->  static int damon_reclaim_enabled_store(const char *val,
->  		const struct kernel_param *kp)
->  {
-> -	bool is_enabled = enabled;
->  	bool enable;
->  	int err;
->  
-> @@ -398,7 +388,7 @@ static int damon_reclaim_enabled_store(const char *val,
->  	if (err)
->  		return err;
->  
-> -	if (is_enabled == enable)
-> +	if (damon_reclaim_enabled() == enable)
->  		return 0;
->  
->  	/* Called before init function.  The function will handle this. */
-> @@ -414,15 +404,48 @@ static int damon_reclaim_enabled_store(const char *val,
->  	return err;
->  }
->  
-> +static int damon_reclaim_enabled_load(char *buffer,
-> +		const struct kernel_param *kp)
-> +{
-> +	return sprintf(buffer, "%c\n", damon_reclaim_enabled() ? 'Y' : 'N');
-> +}
-> +
->  static const struct kernel_param_ops enabled_param_ops = {
->  	.set = damon_reclaim_enabled_store,
-> -	.get = param_get_bool,
-> +	.get = damon_reclaim_enabled_load,
->  };
->  
->  module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
->  MODULE_PARM_DESC(enabled,
->  	"Enable or disable DAMON_RECLAIM (default: disabled)");
->  
-> +static int damon_reclaim_kdamond_pid_load(char *buffer,
-> +		const struct kernel_param *kp)
-> +{
-> +	int kdamond_pid;
-> +
-> +	if (ctx) {
-> +		kdamond_pid = damon_kdamond_pid(ctx);
-> +		if (kdamond_pid < 0)
-> +			kdamond_pid = -1;
-> +	} else {
-> +		kdamond_pid = -1;
-> +	}
-> +	return sprintf(buffer, "%d\n", kdamond_pid);
-> +}
-> +
-> +static const struct kernel_param_ops kdamond_pid_param_ops = {
-> +	.get = damon_reclaim_kdamond_pid_load,
-> +};
-> +
-> +/*
-> + * PID of the DAMON thread
-> + *
-> + * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
-> + * Else, -1.
-> + */
-> +module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
-> +
->  static int __init damon_reclaim_init(void)
->  {
->  	int err;
-> '''
-> 
-> This is much bigger change than your original suggestion.  But I feel this is
-> simpler, because this eliminates the needs to keep the states.  What do you
-> think?
+kernel BUG at mm/rmap.c:1364!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:__folio_set_anon mm/rmap.c:1364 [inline]
+RIP: 0010:folio_add_new_anon_rmap+0x41d/0xc10 mm/rmap.c:1553
+Call Trace:
+ do_swap_page+0x14c5/0x5c30 mm/memory.c:4963
+ handle_pte_fault mm/memory.c:6198 [inline]
+ __handle_mm_fault+0x1512/0x22f0 mm/memory.c:6336
+ handle_mm_fault+0x42f/0x820 mm/memory.c:6505
+ faultin_page mm/gup.c:1126 [inline]
+ __get_user_pages+0x4b3/0x3400 mm/gup.c:1428
+ __get_user_pages_locked mm/gup.c:1692 [inline]
+ __gup_longterm_locked+0x945/0x14b0 mm/gup.c:2476
+ gup_fast_fallback+0x8a3/0x2440 mm/gup.c:3220
+ get_user_pages_fast+0x64/0xb0 mm/gup.c:3298
+ madvise_inject_error mm/madvise.c:1456 [inline]
+ madvise_do_behavior+0x503/0x860 mm/madvise.c:1875
+ do_madvise+0x17e/0x210 mm/madvise.c:1978
+ __do_sys_madvise mm/madvise.c:1987 [inline]
+ __se_sys_madvise mm/madvise.c:1985 [inline]
+ __x64_sys_madvise+0xae/0x120 mm/madvise.c:1985
+ ...
 
-Maybe I suggested too much...  If we decide to take both my suggested commit
-description and the above change direction, maybe it is difficult to say you
-are the main author who should be primarily responsible for any followup issues
-on the patch.  Of course you will still deserve to have credits.  Maybe
-'Co-developed-by:'?
+[CAUSE]
+Commit a373baed5a9d ("mm: delay the check for a NULL anon_vma") moved
+anon_vma preparation out of the generic fault path and into the fault
+handlers that actually need to install anonymous rmap state.
 
-Meanwhile, I feel like the fix of this bug is taking bit unnecessarily long
-time...
+do_swap_page() was left behind. It can still restore anonymous mappings
+via folio_add_new_anon_rmap() or folio_add_anon_rmap_ptes(), but it does
+not call vmf_anon_prepare() first. On a VMA-lock fault this can leave
+vma->anon_vma NULL all the way down to __folio_set_anon(), which BUG_ONs
+on that violated invariant.
 
-If you agree, hence, I'd like to take this over from this point, and finish up
-the remaining works for this patch.  If you also agree, I will also take the
-responsibility (authorship) from you, while keeping keep your credits with
-'Co-developed-by:' tag.  What do you think?
+[FIX]
+Prepare the faulting VMA's anon_vma once do_swap_page() has confirmed it
+is handling a real swap entry, before any swapin path can install
+anonymous rmap state.
 
-By the way, I hope I'm not making you to get me wrong.  I'm not trying to steal
-your credit (authorship).  In my opinion the authorship means the
-responsibility (or, who to blame) more than the credit.  Putting right name to
-the place for the responsibility is important for the long term maintenance and
-evolvement of the community and the product (Linux) in my opinion, so I have to
-say this.
+vmf_anon_prepare() already handles the retry rules for VMA-lock faults,
+and when anon_vma is already present this stays a single likely branch in
+the swap fault hot path.
 
+Fixes: a373baed5a9d ("mm: delay the check for a NULL anon_vma")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+---
+I can reproduce this issue deterministically on v6.18, but I have not
+been able to reproduce it with the same setup on next-20260415.
 
-Thanks,
-SJ
+However, I have not identified a change that clearly explains the
+difference. From code inspection, do_swap_page() still appears able to
+reach folio_add_new_anon_rmap()/folio_add_anon_rmap_ptes() without a
+prior vmf_anon_prepare(), while __folio_set_anon() still BUG_ONs if
+vma->anon_vma is NULL. So although I could not reproduce the issue on
+next-20260415, I also could not confirm that it has been fixed there.
+Recent changes around the swap fault path may have affected the
+reproduction conditions, but I may also be missing another relevant
+change.
+---
+mm/memory.c | 5 +++++
+1 file changed, 5 insertions(+)
 
-[...]
-
-> 
-> 
-> Thanks,
-> SJ
-> 
-> > 
-> > > 
-> > > > > 
-> > > > > > 
-> > > > > > Changes from RFC-v1
-> > > > > > (https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com)
-> > > > > > - Remove RFC tag.
-> > > > > 
-> > > > > When dropping RFC tag, let's start from v1 again, from the next time.
-> > > 
-> > > Regarding the versioning, I have two questions:
-> > > 1. Is version number inhritance only required when converting from
-> > >    non-RFC to an RFC?
-> > 
-> > I'd request such conversion when dropping RFC tag.  E.g.,
-> > 
-> > RFC -> RFC v2 ... -- (drop RFC) -> v1 -> v2 ...
-> > 
-> > > 2. Should my next version be tagged as v3 (since the current one is v2)?
-> > 
-> > The ship is already sailed for this patch series.  Please tag it with v3.  But
-> > please follow the suggestion from next times.
-> > 
-> > > 
-> > > > 
-> > > > Also, I just found the patches don't have Fixes: and Cc: stable@.  Could you
-> > > > please add those appripriately?
-> > > 
-> > > Regarding the Fixes: tags, I will include the following:
-> > > - Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-> > 
-> > This seems correct, but ...
-> > 
-> > > - Fixes: 059342d1dd4e ("mm/damon/reclaim: fix the timer always stays active")
-> > 
-> > Is this correct?  At the point of this commit, there was no commit_inputs
-> > parameter.  Were you able to confirm this issue can and cannot be reproduced on
-> > this commit and its parent commit, respectively?
-> > 
-> > 
-> > Thanks,
-> > SJ
-> > 
-> > [...]
+diff --git a/mm/memory.c b/mm/memory.c
+index ea6568571131..a64bc9826cc5 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4850,6 +4850,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		goto out;
+ 	}
+ 
++	/* Swapin installs anonymous rmap state into the faulting VMA. */
++	ret = vmf_anon_prepare(vmf);
++	if (ret)
++		goto out;
++
+ 	/* Prevent swapoff from happening to us. */
+ 	si = get_swap_device(entry);
+ 	if (unlikely(!si))
+-- 
+2.49.0
 
