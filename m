@@ -4,150 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA631F8DFF9
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 17:39:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D5B5F8DFF9
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 17:53:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CAA66B0132; Fri, 17 Apr 2026 13:39:09 -0400 (EDT)
+	id BCE196B0134; Fri, 17 Apr 2026 13:53:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 180FD6B0133; Fri, 17 Apr 2026 13:39:09 -0400 (EDT)
+	id B7DC56B0135; Fri, 17 Apr 2026 13:53:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06B796B0134; Fri, 17 Apr 2026 13:39:09 -0400 (EDT)
+	id A6CF66B0136; Fri, 17 Apr 2026 13:53:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ED7E06B0132
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:39:08 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB190E3C40
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:39:08 +0000 (UTC)
-X-FDA: 84668758776.23.2645BDB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C35CF40007
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:39:06 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="u2/EyyMb";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776447546;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 949E76B0134
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 13:53:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2BACEB6E68
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:53:36 +0000 (UTC)
+X-FDA: 84668795232.07.E5528F2
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1CCD320019
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:53:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nxhV1d0V;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776448414; a=rsa-sha256;
+	cv=pass;
+	b=iSmTSdUkY65HE23dF7c10+nwk6ODkjm6rkq4GRWSbGatD4USb7yIJv9ZYsuJsKz8dPFzsQ
+	+UGJb20eB8DrEZBqXy+x/884okhcOBIFi4OVBNT1Y/UDawwHknrNZUdKpL/zDkbnmgdjf8
+	Bsvpb9K6jGx0jBsZbbLSbOrN9Jtrd50=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nxhV1d0V;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776448414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7WWr6lypVC8qj5jprz8sxlcynFb0mVf+8b8FtPZZgzk=;
-	b=6emYr6QF1jez8y7+Ki7Vx6HGHwAEH31Pg8lsoaC4rmwi4Uj9oS44KFFoXcBDunhPBLfl0K
-	AykVuZj5+4CtQ1m5ajN117iogsEFn1tdDK6ipv0TK6dgs/bv5pSFi6uvdiNEPIIaozHSsQ
-	LsjNv+60DvOVrh1XsoWm4xjVCpkWCqA=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="u2/EyyMb";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776447546; a=rsa-sha256;
-	cv=none;
-	b=XjxIuUMj4yQeNlc+ELgbee5wtJSjZbk7hEzhazdziX2+V/zn3FdziCdXH9toPy2fDBvXn+
-	+UGQhdCuMwefKI57gt7Q2kaPR99WfbKmhypXJ3U+/HCGpvBTEoGMrBhufCevMxK/kfg1jP
-	UhNlUmSYxFdjtoHJvOVbbW90t5QqblE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B85D439F0;
-	Fri, 17 Apr 2026 17:39:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E384FC19425;
-	Fri, 17 Apr 2026 17:38:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776447545;
-	bh=rtaHgFZXQZ78ik4SRZtEsybXv6W9bNkHH0T25TFSeL0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=u2/EyyMbkNoksqyFV6DhyMLgjgwjvgYI+oEXVsEeJHbk1ckE8Z09qoH0k6nFGQFm9
-	 cY75hCwPK09VXs+Xm520/ICdasDxYK+68y0wlLNPceDO8WaB2iNuZu5lBnyugyK8mH
-	 FtC7u0OpIzmBSwpTZQYHkrrhJLkHKDaQ/uH3RpDJYHzA/vrhG/xwVSk7i4jOMnmtx+
-	 kfIciHnRXI8LXvxbZUpxFSrLKOnTtcOJi+GpcJPKkJzPjyI29rI5qjq57rjoiI3FSj
-	 56GoJa6eh3WUF9kwy5eyLXswYoVwGrq+EKOl7BDlJQuKsL7Catq5Czvt+C9MJ72ICR
-	 qXUGtyz6RjjMQ==
-Message-ID: <cd2bcc09-2507-4ed4-bb92-2d53baedaf04@kernel.org>
-Date: Fri, 17 Apr 2026 19:38:55 +0200
+	bh=UQ/Xl4UCTqHANPQy3R1nGibzID2aX50LAp8wgUs6k2c=;
+	b=IEqz13cH1p2+HeUlSoFOfojv5l5qZTPbAOjGKxGVK2U2WWjrNT6l3QjeAk8UEF3ihZkBkD
+	4JyIgo/UFCbjgabKvgZ6rszBfhtAkJS45C4udbnXqv+iYHIRIxq8KFpShJ5jGUXfbEwS4O
+	45dTzPLrZMA96z7x+tidHnY/wulA5ck=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-66e8cf72a93so1294720a12.0
+        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 10:53:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776448412; cv=none;
+        d=google.com; s=arc-20240605;
+        b=loN/Tm6OoljLnnS5PDNsoH+Z8XAJi3pfeMA8gCP7GawxW0b13tja7cDE9CPnm7KiZH
+         /r/R5n4Hpuk4lxwfJwvH8RZflaz7e09GuimU3dgg1ZG7e3oTqTSd/5mwKJ9WNdbdzMTZ
+         8fVgTeHgbr5q8lica3DLQT8El8oTeWIPn68iSSG0XQLMFJH/cmdYr0guJ4pegbVY0dXG
+         5V55t62iHVJiD4Luvv/vPhvCSOMpr323e4JquFXsbSRzGxIbJ8XqdPAXjmly2I3P642z
+         q0M+CobxPqm9lNTXL/B1Ua+gL0N0utrCQTJPtJ6wALJgCBgjVo5EiB806kAb+p7foGpo
+         +0SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UQ/Xl4UCTqHANPQy3R1nGibzID2aX50LAp8wgUs6k2c=;
+        fh=Vu5UQ0LPT2pxnOyCOqaVwzhhpp76hEnM8VsJlUOnetE=;
+        b=dlYh0e/ZeNnY0sC2pMmIqkHlhx+wv4xAgNZNbX70KJ+3TOUbdWADiOIbF48WjfvOrC
+         /y8z5vv4rXcImZRPzcdKIa1omn3smiOIw6x+vDHfpz0bSELTsYLgWKRL6DCUhPN/h1J2
+         lHCX3m48nx/KflwtN9nEzo7NYz3OdKpW7TunnZsVnHo4Ozf8r7q49dN6y87aF0jx7wv3
+         39WqbnzHvjxUcosM5SoCMq3GUcTy41tGdLet1wJP/KqGy0PMoVkjb36fOrXBLo56MPJJ
+         rGYmof3jAk2akyOMBghlIxte1j+eScWTXGgo7ODrWuKsoqgh3WqdtSSfvk/PaCz/23Zq
+         3Dcw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776448412; x=1777053212; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UQ/Xl4UCTqHANPQy3R1nGibzID2aX50LAp8wgUs6k2c=;
+        b=nxhV1d0VNhsn++cKdhzGZm2Yz09crKVRoHMLE/ger82MSs5rl2rcAFWwV6sGksOJ5D
+         eA4CSOEw0kmK0u9zMAL246fAUzMAULwe1MkyKMUmKc1yidTa1uR/C46NQRALQVUV348N
+         iomReZcm44q+h9TEhrytgBDoIF7UdVAoF8UXgLRdweLcHRri5wiBQOzcXXzId3cK05So
+         PeszcWlv0Rfjo19vtunUpJkoxSc5HV0YyBTuDWeh4K01LS1RqWUKt1IB3fEKMiwDrjxJ
+         6uPaQKlFBVA4myXGY4J+HczJgcMknSwpiVfIjpQP76S4CzE6ZTx1Z4PHuhCqStAoVqAl
+         O6LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776448412; x=1777053212;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UQ/Xl4UCTqHANPQy3R1nGibzID2aX50LAp8wgUs6k2c=;
+        b=KlDplUKKPw3AYD0B6i04UJjqVMxDZoHB04TPZIWoHRK1AzA2wZvb4dsk1b0mKA1jcv
+         jhBMzKL5Ivzch1lLMeJ8q4cLGnvpNhOAZNrCDo+6ZVNE0QEL8HCR90vIo7cK4LlgUVvn
+         IzIj9IIvReVerLnDOVjPaL+NNG9pR4XBJXxqkYOmWUFQAn1mRn1JeV1eGooRjYuRIZnP
+         /cnvmROsu0Fyz2jmsfSBA3GYvFSkTabTJ52BCqK3ngyaqNvYHQWN6pX8RETctl6BOFh6
+         i/6c1A1lUPAfkDrLpJskiVF893Uf+5I70BugyJz3YAEoo61nRA9dYxYjjMFQwK7oGdt5
+         fglg==
+X-Forwarded-Encrypted: i=1; AFNElJ+v/N624ZNymVAn1X68lEVsCRHHB/OKvYvTHK3GiM0EnSPPG07Kvu0ZaCp577sUN4rBSQRVwL05Bg==@kvack.org
+X-Gm-Message-State: AOJu0Yy/AtJiK7CjTK7HypiLPQH75k+9MifE68ol3e5/dRIM5gIikzq7
+	nG+qnwcywo4QcJsnusPI1h/iSVHKehAi6LArPE0tefPvgYxOQ9aPzSYZSAtynGyDDsz6bgGtzcY
+	tzqUKDotJZqrFWTXUoOjdDbSPagqkZD8=
+X-Gm-Gg: AeBDiesdAgpO/tZBv7Wc7pX7BCtpzw8pg7/XPdrAePxrEOgMH0z/uypa5aDhpTGCOCM
+	uS9stDfZuk8u8tMHj+0aKKKXYxhXy/BDXS8hp4GrxtItHjFK4wZbOY4Zljwi05lZKwbqiIP7lWC
+	hiNQHL2D8nQPKp4hb+mGmzPCQ5F0AwOnpRxLL9dD0gDg4ha4Pa0CiRigPDW+GHb3VVLWSp3eIT5
+	D2s61+I+pPUW0iAZYvgHSxdVMyoCrawroUcAtvH9ONFw7x2pEOHWpJjQ9Su7uJu7FxOdLVBDdUV
+	9nE5HAEDIMzI1LQSY8v56SaYUf/Y2/PTiJKJoRkjQuQDJLS3tNQ=
+X-Received: by 2002:a05:6402:2b99:b0:674:28d8:11b9 with SMTP id
+ 4fb4d7f45d1cf-67428d81399mr513143a12.4.1776448412162; Fri, 17 Apr 2026
+ 10:53:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/30] mm: Introduce kpkeys
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
-References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
- <20260227175518.3728055-2-kevin.brodsky@arm.com>
- <00b24db8-0063-48d6-8bc4-e8b670d8f0d5@kernel.org>
- <913002a5-e002-4001-ad19-037102d1f97d@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <913002a5-e002-4001-ad19-037102d1f97d@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mdo7sy4mecampmfcohe3s3efq9zq85py
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com> <20260417025123.2971253-1-wxy2009nrrr@163.com>
+In-Reply-To: <20260417025123.2971253-1-wxy2009nrrr@163.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 18 Apr 2026 01:52:38 +0800
+X-Gm-Features: AQROBzCxzggeda9zzj7lsVXPjjKfOGLVd75FlBgh5DBNICPRHRhJjCLuob2dcgA
+Message-ID: <CAMgjq7B8udNHhEtLr2ecBho8Ev1vf646mrdGKujtAnMSOkV-tA@mail.gmail.com>
+Subject: Re: [PATCH v5 00/14] mm/mglru: improve reclaim loop and dirty folio handling
+To: wangxinyu19 <wxy2009nrrr@163.com>
+Cc: devnull+kasong.tencent.com@kernel.org, akpm@linux-foundation.org, 
+	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	chenridong@huaweicloud.com, chrisl@kernel.org, david@kernel.org, 
+	hannes@cmpxchg.org, kaleshsingh@google.com, laoar.shao@gmail.com, 
+	lenohou@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	stevensd@google.com, surenb@google.com, vernon2gm@gmail.com, 
+	wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, 
+	yuzhao@google.com, zhengqi.arch@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 1CCD320019
+X-Stat-Signature: m7at5ox7rat9gy19ogxntjyjg7ejga6n
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C35CF40007
-X-HE-Tag: 1776447546-585006
-X-HE-Meta: U2FsdGVkX1907j8/pd1YIJzhA377p+76GB7m2PlIbgW1S5n4T/KYN2MqgqrMBIQL6FiZJk9elFHxM3et8y1gtDRsO4FuleqSrFE7z0xg/iQl6aqWWw1Y5QexCGhTKQoZqaP63l+OpF4+xuyoWn6QuJ7H1/aiz7vnwRSoq/RnguGyqQQ4mtoVzxFUTHSxr0W4J4c7iI35Z5e+xNaYTz3IfWaaBGw6WAu5mV+SMy7YROI5oq3J5kepBut6azDAwatlGfvaE2+sm0N37Sk5lIUGCowd/+G/9rXe3NBe/hN66awNE/vqnMqTlw+arLCAcBuzjV2tAv2X7DOk2epeyLyeudSw/Wgardq1x4SLWKfjaBQNHvAqp47qw3QMJ24mFHreecgfYvj/ag5h1D0893Utz/lpxzcsely4YJQU9oHluVuG1ecoMf7bqVpqEKSkyy2e9qV6L+5Kt4POwKVDvd78gKzDsoEe42eZwvnX4YgeVfBNtAmbh85MUqpL1AHF4MO97fphgkoI0pyDWiA5Bh3e3sQxdzHNE9oCKzXzwkmFuI2VWRJsjgjLf7SQgiqN8mPhV7pPY6oAE56Glmvis0vnWNP68X0tDAXcpz3ABiv4KoIu7MtHt/aV+vlYSqnwDOVHN4yLs0Jc/kQ8XbXdbFjLL20n3Rxlnm3Y9vZK+UkjJiu5q9XqzKGRfEzC0Tsj59fxcfz0dWM9J3ifdv99vznaNZ8v7gM8bk2+DQH+0DC9Ux0ZOUVEhXW3yTPiFLqsLzm84JDNDL1Jtzydw5944KXQZXPf+SU0HMuWQhR3B1c1hjgZUQ6u+91EE9w/Y5uYhis1rOQkO+6Al0SpQesrOULo3PMJajikeTGEmorNQmk2EoMMtGkKBgDbBbHRal820Ptv81zRUMiPl/1OQ+57OUuGd+AZQu7SVDenTASC1yWOfNtve9vgdvs2HWYa9upQVRoYsnWrLxOlwF1WjxXHQAW
- d9QyIcCN
- f2ukX8k39fypQYxW49Nmn5jhrhWSmtlNSpDqDJqd7z1JiXomS2r7ezUUz2WgyD0ShxQ3WpEn6aW/vBzS2WgT2kBjw0L2ofKTcEgWOteJMuguaxqKobyqVFNqBLGJbyEqd6+H71tmpSPpxGraJYHe9XQYSCzMckVDF+srJqp4g/dNnm1AM/Z/fvX2cwXx0zPHwa3tWz3J/10A7E52RHBZn319N4EqMPr9IDakuFDGchhZXUPkCtZBx4kFmXIpUkdZPd5AJsMZnuzWWAbCUADc+T7FTHCxB5I3N8sbC
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776448413-630521
+X-HE-Meta: U2FsdGVkX18ZYSoYTSLwD6CxOhn1FH0zXHIiLiPs4V+p9quRdZ/jNHRIBUxoj5LyZUPVrqs/gXe83AQZ1yfsds1hex+6CqsKjcyK3RCYvN85LKGj94PycvQSbsKtuMRjGT+/ZpTlt7f7zMZ7PRNHXtOygiJIHnNPTDBHBBx7Z5WahmT0adclPStJ8s5ZwbgF2WJ7amtclGC4cJO5G4JosmOl9bWED6KDTfnfvdho6/AfDOGf4C3Bptpoo1RB4qxZ/H1BRV5QdOyX7hZkhnYvO2MMUxymk/r+j7VVsazGaZZB42V68rRkvQ/nj1pD7rkWBBo/kpQ1uNgn+JVVSaeG7gwKDWJ+0pmnhqv+uS1KRKnjDwJJ6/v16OemV5L+A7Cs1HR2JPllWxf73g1X3ASt7nbFW+DGhxIxORztEra2ruTRXvydYvrZvd5q6k+Ellt9qvXyLlMHJPqzts/EA5JS3dTo8e13FPBdWkp3rq16rCSXn+ALS189QFg8OP9bVw4KfE0g8godk/MSITkgsXVL+M+q3MSK/ZSONH/LXbrQ2jI633UOas18fE+O68N/AYw6v6jEz+2Z7TAKiFlfwQCOwZnASuLQo//9vVqkTmUBlarI5PLPMsBLuVL2G03t7NuJBe1o9vhltfPQTUozuwaY87XQE7lCXKzdxPn0RcvtzCXlp6xLklOytgFFfBXROmbfsN9f15IAhXcwIShtr9oErhDBL7IrBBoTH+T1nlkvtsgDT8JTt6uKZdXWvJ+1xjIWn51iwQ9EFyXmtZBFqBSGthqQ9lb3hZwk0Q3Da3E6V+YgnPr/RmyFMoL4iI2ZRXoVj0l4j3sKmyu1RnpyF9860ECsPTd1VQwlXg3WXdBL4DtOaP1wOF0DiVTvEJUpmBmHwlgjwjmvTQqCGNWJHJBHbUSBCsEdrM6HbX5Mr0cH84E4bf/VeEBpGYQEh6zzgX2lllouxPpwY5jDONm1vBv
+ gCpb+QAf
+ FsawHPpcAicOWqA6fyqgnfUXf3OlkvoBQ5J9hT9o1RE+cSnuiymUD3oSumUibLesW8S2UNfJjG7TyZUvVpQ7B4ligxoqa4lUTyqUjzQwr0+rC3s3+WTTsA+NFHmwDKKjj6v0bcVEKO/0J4P8rSOSWlgnGOdo4D0L3CLLaoV6eZBo/q0akborHe0ZAI6GCAU5rJfOhg7K3ou5ck5xexlm1+8Bg2S9ii+CFKO0C8HCZIBz+/zUsudlrZ+nEeMdu6XbaYbCZ58a6n+eGMyvD23i2N4/JNgkulTfBByhGasF6CIo3wp6oS86iiF5hKrzakMnoE9pKMTEAIVvyTWIULEYp3IFPK2hh2/2XRa5wNIWxp+hRXje0cFKlEXlNgxUN1kdjq05SUOF/ERcRxQ39IoHCd5h+2x2uLBS23etx7hQAS7qHeDG+QfJ2c/FBQNXzRC9QrELbzCDXQz9PAcb/p01EGODf1Ckn/qa2VeFAToeEWkZGOUf7BW/77W13qC1KInlGdVOYN12BmI5CvR3kFgu08vnr9T0mFXBWtjX9Nk5MPJGit6I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,61 +145,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/17/26 17:59, Kevin Brodsky wrote:
-> On 17/04/2026 16:37, David Hildenbrand (Arm) wrote:
->> On 2/27/26 18:54, Kevin Brodsky wrote:
->>> kpkeys is a simple framework to enable the use of protection keys
->>> (pkeys) to harden the kernel itself. This patch introduces the basic
->>> API in <linux/kpkeys.h>: a couple of functions to set and restore
->>> the pkey register and macros to define guard objects.
->>>
->>> kpkeys introduces a new concept on top of pkeys: the kpkeys level.
->>> Each level is associated to a set of permissions for the pkeys
->>> managed by the kpkeys framework. kpkeys_set_level(lvl) sets those
->>> permissions according to lvl, and returns the original pkey
->>> register, to be later restored by kpkeys_restore_pkey_reg(). To
->>> start with, only KPKEYS_LVL_DEFAULT is available, which is meant
->>> to grant RW access to KPKEYS_PKEY_DEFAULT (i.e. all memory since
->>> this is the only available pkey for now).
->>>
->>> Because each architecture implementing pkeys uses a different
->>> representation for the pkey register, and may reserve certain pkeys
->>> for specific uses, support for kpkeys must be explicitly indicated
->>> by selecting ARCH_HAS_KPKEYS and defining the following functions in
->>> <asm/kpkeys.h>, in addition to the macros provided in
->>> <asm-generic/kpkeys.h>:
->>>
->>> - arch_kpkeys_set_level()
->>> - arch_kpkeys_restore_pkey_reg()
->>> - arch_kpkeys_enabled()
->> Another thing: why not simply drop the "arch_" stuff from these helpers?
-> 
-> The first two are not meant to be directly called, they're the
-> arch-specific implementation of kpkeys_set_level() and
-> kpkeys_restore_pkey_reg(), and those generic functions handle some
-> generic logic.
-> 
-> arch_kpkeys_enabled() is directly used in generic code, so I suppose it
-> could be renamed to kpkeys_enabled()? It's actually implemented in an
-> arch header so I wasn't too sure about it.
-I was skimming over patch #13 and spotted:
+On Fri, Apr 17, 2026 at 10:53=E2=80=AFAM wangxinyu19 <wxy2009nrrr@163.com> =
+wrote:
+>
+> On Mon, 13 Apr 2026 00:48:14 +0800, Kairui Song wrote:
+> > This series is based on mm-unstable, also applies to mm-new.
+> >
+> > This series cleans up and slightly improves MGLRU's reclaim loop and
+> > dirty writeback handling. As a result, we can see an up to ~30% increas=
+e
+> > in some workloads like MongoDB with YCSB and a huge decrease in file
+> > refault, no swap involved. Other common benchmarks have no regression,
+> > and LOC is reduced, with less unexpected OOM, too.
+> >
+> > Some of the problems were found in our production environment, and
+> > others were mostly exposed while stress testing during the development
+> > of the LSM/MM/BPF topic on improving MGLRU [1]. This series cleans up
+> > the code base and fixes several performance issues, preparing for
+> > further work.
+> >
+> > MGLRU's reclaim loop is a bit complex, and hence these problems are
+> > somehow related to each other. The aging, scan number calculation, and
+> > reclaim loop are coupled together, and the dirty folio handling logic i=
+s
+> > quite different, making the reclaim loop hard to follow and the dirty
+> > flush ineffective.
+>
+> > This series slightly cleans up and improves these issues using a scan
+> > budget by calculating the number of folios to scan at the beginning of
+> > the loop, and decouples aging from the reclaim calculation helpers.
+> > Then, move the dirty flush logic inside the reclaim loop so it can kick
+> > in more effectively. These issues are somehow related, and this series
+> > handles them and improves MGLRU reclaim in many ways.
+> >
+> > Test results: All tests are done on a 48c96t NUMA machine with 2 nodes
+> > and a 128G memory machine using NVME as storage.
+>
+> Hi Kairui,
 
-+void·__init·kpkeys_hardened_pgtables_init(void)
-+{
-+›	if·(!arch_kpkeys_enabled())
-+›	›	return;
-+
-+›	static_branch_enable(&kpkeys_hardened_pgtables_key);
-+}
+Hello Xinyu,
 
-The arch_* there can just go IMHO.
+> After:
+>   /proc/vmstat info:
+>     pgpgin 223,801                (-16.9%)
+>     pgpgout 308,873
+>     workingset_refault_anon 498
+>     workingset_refault_file 17075 (-38.3%)
+>
+>   Launch Time Summary (all apps, all runs)
+>     Mean 850.5ms (-2.07%)
+>     P50 861.5ms  (-3.04%)
+>     P90 1179.0ms (-8.05%)
+>     P95 1228.0ms (-12.2%)
 
-I'd also do it for the two ones used by the GUARD macros. If we don't
-expect common code wrappers (arch_kpkeys_enabled() vs. kpkeys_enabled),
-then the arch_ is unnecessary information -- IMHO
-
--- 
-Cheers,
-
-David
+Thanks a lot for testing! Results are looking good, fewer refaults and
+pgin, better performance. pgout is a bit higher, maybe because
+retaining the flags on dirty protected folios helped identify or
+protect more file folios, or maybe anon / cold file reclaim is more
+effective since writeback pending folios are activated to the hottest
+gen instead of stuck on tail gen; or maybe the reclaim loop is better
+structured so there are less wasted loops and unnecessary reclaim to
+slab. In any case, it's a good thing. Will mention this in the next
+update.
 
