@@ -4,144 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA39F43680
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:00:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 750C2F43680
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:05:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7A86B00B2; Fri, 17 Apr 2026 05:00:25 -0400 (EDT)
+	id 88AED6B00B4; Fri, 17 Apr 2026 05:05:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AFC16B00B3; Fri, 17 Apr 2026 05:00:25 -0400 (EDT)
+	id 83BAC6B00B5; Fri, 17 Apr 2026 05:05:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 797266B00B4; Fri, 17 Apr 2026 05:00:25 -0400 (EDT)
+	id 729EC6B00B6; Fri, 17 Apr 2026 05:05:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 66A1B6B00B2
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:00:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DDAD9C3707
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:00:24 +0000 (UTC)
-X-FDA: 84667451568.15.1ABE38D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 293F1180019
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:00:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a3U7XLCB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776416423; a=rsa-sha256;
-	cv=none;
-	b=aq7o9nHSLYnkmgFG7vgDlWgLTC14WMWTiJLaukhcD6McWak+OudN6b/MYNnODueL6SZ+sv
-	Rj82b5jWOk9XPlJ1fLanGY1YIFfgma6SnlNftBlbPfzRBtRlctEFcU8DgqKAzaBvAihW2Z
-	T8kFuFW1F63bg7B9Bya28jywvWhmabg=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a3U7XLCB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776416423;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 614A56B00B4
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:05:51 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11B691B9166
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:05:51 +0000 (UTC)
+X-FDA: 84667465302.02.4A96377
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1C2DB2000A
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:05:48 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="lAm/Is4y";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of elver@google.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=elver@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776416749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=te2tVqUFJ/FRYR/YfXCUmqqp8sYsfIQk/sq9C3ZoUwE=;
-	b=qYtwEWrrk9q0zmVtwdwm7i7eBl3+Uuept90v4byF131MHYkMtelSiUe4tCqn9ehfqwlCoJ
-	BPXGLrFX3OFDl3D15B20qnkbsFy47TqeeXgKxYoM+tTSyXpsOWMGIkAIO9mmLahQ0PpZ/F
-	g6GV/34W3SJ8c0zC2BhJqd3JsnwY7Gs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94F0F60128;
-	Fri, 17 Apr 2026 09:00:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11179C2BCB6;
-	Fri, 17 Apr 2026 09:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776416422;
-	bh=rOVtwKaZuAQojNidWmETlWnlssUeGW/zGYlzgjncuoE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a3U7XLCBn31qXsO1C8KOPjrGtMwRGVzfyoBN8jhTyvQKRTUdvXIFBNQuhZFvyTtPX
-	 5tzUQ1jFJQbwEoSaakSK/GAveRTamoVzrIsVlFaoFuOkO0upnulA0uD4pMEotnKqhu
-	 Lty+Qo6wN5Jy5JJTWlk+6b0SKr0th/SIZVLVfRKuMXIHYLJi/eiFUxCB92P3UsxCMW
-	 GPT3f27Dc2JZaFwUdwHo4fy6BeVIsEjowyvT3sggFlVaiWSkJ7Cs2LQW5qXVvzfFoZ
-	 yQHCTSje+Xt49Qg+hASjiPJcoB+9MqSeAkpXJO9skYrRi0OEyGTkUX4nV2vfGK05I6
-	 ORg83rarT/16w==
-Message-ID: <c03d3d19-a2b2-4566-8922-661b92d06f95@kernel.org>
-Date: Fri, 17 Apr 2026 11:00:15 +0200
+	bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
+	b=vuy1qtvYmQ0NwjPgyaqcFSjJzF/2fMaiwfsOhHO0s+GRGpCghwZnjV8mc3zF4TSbrn0DRS
+	lsQ1OCQKtAYpzfI45NzmLn4GiTNbanrogJga+9vD8alqbonXID7AfgrrqDfzRgwBwKCi64
+	Sp3N17M3G4vSfJ5t8QdurPYnVFn2Wos=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="lAm/Is4y";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf03.hostedemail.com: domain of elver@google.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=elver@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776416749; a=rsa-sha256;
+	cv=pass;
+	b=nZvSozwsQCp1HqJEJCfXqOJ5SHVEJFfyGE+8OrHLUVPDhpDidxaqkniCWd4Pzdn6FI0gHk
+	3j7jooCDRtJoht1OseRnsHcBtczwMuq2bXwkF4VQWkSvfRv56DAcdwfSOTk4x98FpQW2dK
+	uizyZzn6nSILb12StBkuWa1vCfFddcQ=
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12c637089ccso1086473c88.1
+        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:05:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776416748; cv=none;
+        d=google.com; s=arc-20240605;
+        b=W2XKPnBFMXgZ/Ih2nnuNKNfoX8IewxtLN00BVdA0/i6p+AXHQN7GSel6V5t0EL3XQP
+         FnhF2XsIL6DHX8wPt9809M+tebKTkLWfPjHidA2s+0fOR1FiRrBrKJ8D9YNnn04DaNCG
+         NxkG5Ll6C5+6OggK5onTyGX/SiDIHmy/8D2/yRseyWPQVaMZopc/QCw82mC1VngcIn5I
+         QmsFqcbJwJBS11cbfalopGyVAeDamLNjL1VQzsmPr7Lj5/9lEvudtVTWwu444Porwrto
+         JKxp/TbuIC0wC53epbNem5Diz+vcZo8/OUXz9hXgL5GRtF5AG4hWuJh0hd2UAyBAfUAg
+         vj8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
+        fh=7rLTMS8wbmxdNMX5tx1kxOOdXP5cMyIZ8i8KzybgfgQ=;
+        b=L/qyNBy1kSUUPoPyjehxO83OxWsDmuh/Yo7dHj5s0AQyAhxuBOie1LsLbZxjrMFssQ
+         CcQFrTj6or/vWwdwEK1lC/FYWYHlb/ogwEcVABhaQG3H/lyrskYKZAxfOBtM3dWhhuC6
+         YOnss1pMfLjdu4wmho70gpTyaxEl7ZwncYREkUd2El7+rQuF8OXyV/+/M6P3CpOnWqSt
+         +2IFsE1gDa6mGJcZi7r2s2hCUM5u9Q+rks2H7beRhaIcP7l+E1hFWQCRs8s5sdE6wh2u
+         /nDkMlmOQQ2C1iqm8CafVzZuQ9DKSsy815YTKlK3y4MEyu5EPSWzgriHQ8VuTkqc4lTp
+         Uu8w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776416748; x=1777021548; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
+        b=lAm/Is4yZ+YoJfoPeWnKYrD9ifWncFNsXPY/ahigh7I5nmlFngzj02almAqWJCK+l+
+         I231uKI/Xn5CXxQcuDfeAZ1A/dyzjYmT6FFPjJKsvk4qWJUKPKEmha8kSKFnON6+uQ9B
+         PBdd+pzmePutVpPZjbZVSyc8qFIEqN3vYB8SQ24L3YGqmamdGuv2IcGyHmoiu0H4LsaY
+         KUGHNXU6pl82a2OKTuNDrtdR02Yn+4TloRdroNLb9aDcFMvGAweu/SpstP+37wVBZBq4
+         /EESEex/RrSj9KNxd1l60RFJgmF0A3HkwNfwlWQs2MaRwzxtqKnD9dt9xY6XxQo5xrdG
+         zrHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776416748; x=1777021548;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
+        b=DI87peCFE2ydEsOpG+JF3scRQ+LrBUhuvCbHq092+oAZgvPcM5gHFarxnOtIyYpKq2
+         7LhZxx++AufQl+ZRnDdibCR1nbPVHsa/rDyiSlDqAOObMam+spz41g4Wu/uMXdGDpGBW
+         eVKGKsgGw/i6z9EYPB3knuMDxtaQnrsVkavF3/Yghav63zTr9OdDrvA+N45grR1+veK/
+         QIaMJOn0LRmdYJ9jWfeS4pde2qgq/I8SvCGnYvtDMD2JHcKf3h14QMP7tPfPV8j92o/1
+         LlfZq6/PGrfU37Iohd1Rm5XX14TEOZL7ZRfUDVTxdMuWmKRhRwG1LPHcABGw/OJMMbjI
+         pnTw==
+X-Forwarded-Encrypted: i=1; AFNElJ/ONqw+0zC+JAi4gzxQ+A6cC+oYnk3rNt7vFRprM24SPYNqqTpWlNrenGOg44ulZLUJcPRxD9oonw==@kvack.org
+X-Gm-Message-State: AOJu0YwtIKU6BdLxodgN5c4kqGXMnownhVEMV5uleWtmBzdVP8NEAOtj
+	A8mma/WgaKvdA8+pN9EGF68gA+zExfMgunCMqIGPsGcQBzHXT+q9ILQk5jX5yUrs6ow4Ofj/Jxe
+	JpGBXd6Rce/lQ1X+tUmEO9+EyfuxkwVVXm9tOJdS5
+X-Gm-Gg: AeBDietsSMyiKb+EZrcr91gPlMRxRIIlRF9YfQDX+7lnorLKOortGwkHRautvsaXc0k
+	MnKz9OM3ihMc+hT74ud5r3I1Oo50eDrbJNPA8JgQp+Vm/5ESWKlGbaSCtg4XgoApLPB2nT40ySJ
+	ut0oGkufcaGyrUCZhi9TKVXBzSQjGJqKERfpUlRygU144yymVaXZA6p6IYTOVr2hn36lniwslLS
+	MbP9vadONsAf6GKvap4xKfYb2oVYYILUeHe07CEimTNcw0n5PLl7AWdEM6jm5m9R8swjp7iycTQ
+	BGczHiU9zRGTn9LXJfBAxQwcWdHhZd+x4qNw8wDo+iBplAlk3kjWLCCv17NB3ne+d4dRWQ==
+X-Received: by 2002:a05:7022:6085:b0:128:bac0:2edf with SMTP id
+ a92af1059eb24-12c73fb6c49mr915659c88.34.1776416747190; Fri, 17 Apr 2026
+ 02:05:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
- check when changing pfn range
-To: "Liu, Yuan1" <yuan1.liu@intel.com>, Mike Rapoport <rppt@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "Hu, Yong" <yong.hu@intel.com>,
- "Zou, Nanhai" <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
- "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>,
- "Deng, Pan" <pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260408031615.1831922-1-yuan1.liu@intel.com>
- <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
- <ade6RVeXxDt7ImP4@kernel.org>
- <e86fee84-08d8-4563-8596-e40d8e196799@kernel.org>
- <MW4PR11MB6936CA77BF02BF498BBEAB1CA3252@MW4PR11MB6936.namprd11.prod.outlook.com>
- <12b8ba83-54b1-454e-b787-2d2e967c9b58@kernel.org>
- <MW4PR11MB6936E593C865F4E855CED602A3202@MW4PR11MB6936.namprd11.prod.outlook.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <MW4PR11MB6936E593C865F4E855CED602A3202@MW4PR11MB6936.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: x67bfdhb8xhzemxkxphhjk3ijciyko4t
+References: <20260416132837.3787694-1-elver@google.com> <aeG6RG41sgZuerYa@hyeyoo>
+In-Reply-To: <aeG6RG41sgZuerYa@hyeyoo>
+From: Marco Elver <elver@google.com>
+Date: Fri, 17 Apr 2026 11:05:09 +0200
+X-Gm-Features: AQROBzBPHFPjIQbZYgiVCtPkYdTt_jdnGikf9TMYOKgcXpS_D48owm4g6Ox5x3k
+Message-ID: <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
+Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, stable@vger.kernel.org, 
+	Vitaly Wool <vitaly.wool@konsulko.se>, Uladzislau Rezki <urezki@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1C2DB2000A
+X-Stat-Signature: sobek6mei7ge88xpiu8wecdwxxd8f3f9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 293F1180019
-X-HE-Tag: 1776416423-526277
-X-HE-Meta: U2FsdGVkX1+B6U/s73J0RwOgEYL6a1brxmEa++Stzm+pRzzAisBI6LmfeOqt8oMOCAYXe/3ULNO8SJ7PRa/MIliV/KM2YOe39PZvTDtIOuCZQbpMp/+bJtEyYkgPdDvyPEYkL3NuNZb2CbLUiN0Ik5TixRb4xB0LqYxPgwpAGMUUf67pyb6Vwfe4vMui36bN9ewE6rDTsTCWJC3yGLEuMM+J9deEspeZK6VxILcUamNpv1NyoBGQd+WfZ03q/C5wgfGBRi/2rYJuTdHEGPIi/CZtmcVJWtL4+vQh8X/YzSjWE0kKkHTNBeV34c5x/yZNuNuTqzWqYmcDtf7qtXn5CeU2QQxo1bmKbaXv87dgASO/3zx5b4xtRoQHxY6cxUMzHRqZs/XCTtI7EN4rOwRDmjphJRYCMv1PVsyRhoMPnVn6DilvHRX5t6ouBaH6aOeDDkCCbeoOfNV8R8l/MS2nYJ8VNJVyDxUPqqWzRiXQ0JFUXCuA45S1PXEw/nRBmFCJi99ejOIplwHUzpxnDezsbnD3T7yykY+8U4ZEjbzY+uSc4dYz3ey2nMj0ebhKD+ngMk3VT5+xha1o37OKN1kPlfifPqWTDz8OtzoVgRKmjzx4z8ezkKXc5xFHjh4dTweqG1So4oUdu7EGEK2DW3JsQyPhvtgEjJphEuJzNxBDeaVkZffK9bLNM7YNf2h3ZxssZC5ZnBAYrDUVEZBhb6zZu1ICHpzakZZIbsDuyLWztQ6Cp6lnYP5s4tfc5vbya6oNXMhEgfqGBxl1dK86M/f78WXx+AHHNTGOLV5blJ4g0EI26APzsSqQRvVG/ZO85/lDfMlVPhp86OzisLrcF8kbeNrVKNflT1B3zOVk0aCYrB4rj17gnkOMoIz+nz4gpHajeJmUFRLIQV+nBR0Rgrs01S/gVOGMrciQyiJafn25z6kHqkNdO2AsOtkRW7M5WqOb4gqk/eR+EZ2gokOlK+B
- w+h4K8MM
- gkLPRzHaMImoXuC9T52qwvGaAvGEaZarIpiAhMBiqvAYqW5VdyA+QMgbOO2mbdHZyYB55RDnDviHXsHODGV7dB3Wc82JOytBtqwZxVh2JCuzfaqT0N8+m77aVfHFkgQXabwlECIVZy/b7E0m0U+zIOaArlVFNFIN8/WnlZfO7KC69JpX6IYksrg63aIBZKLUO+Ws5We7H72yIbVzkx6U527gNEhU6V1nl0ShAc6umua+ueA2cdj2+ukt6XSG0xSngjlYtyCDvFg/bgijfC3vG8O9eDjkyBFsf3uiakUvqAyB+dtiYnaseaTGVDy9M5l+xD7sIh8EL+T1ZHnj01IVXFHbeiPQDRnXDJZ+iaXPJaDu6jovqd+ros34YgOSWkM5Zr8aRTE5wmrSMT8E=
+X-HE-Tag: 1776416748-977400
+X-HE-Meta: U2FsdGVkX19Fsti4vEetkg/Qm8WDaSwTeZrOXqlwYZzrgfS4CLj+uLH3MfivuCa34TWehk04FSDbiz15DCXhYeW6MVzafJ2QHfvecMwyf4ctP3Qc6Yl3OgdFLT5lHJOVeyt/VsZ8KdNV25jPcfCr62qDmVtzPdryo7BD4ndjpGPW1wAZBvofyxjsDzr//QfZiULoCog/cSBUbr+CrketqZm8Jn4ibNiWJb56cz1uk2VWNI9WbVWr3xYbARG8/znGWLSG3wDjFd0gkqN0JgOnt3ehv+9zFjeaBTzAZI4q/RjKZJbv0+Qm4XIsOUk5SWXSJw5jS2BX9N+d+mmyGnYDGQ+gXR9QyxO3kUdbqGS8qA3p4nIYXKkyaWaKlBTbOkmrYE0laahj87SCg5WN9IknY8AVUwzdX7Epe03Mzbvb2tbQw/812YzYBtrl+iKfppY9iJ5jpzQvkHYEkzhS1EqpnTICs1R9YcQFCHqduV4N5kIew3WGh3i96pgrjzG9HSfgBXZyIL314mhPE6gubb8uwVq0X2p3ni6HVbkyAM8u6sOWw/hgGFP4x+gk+rTmXsAnekA1OnUJ6PyyuHSiCjRzNFYOwaPQmiFlau/IZI6aBKS70zRKLSXPVnhggyYWzQ7fxK8lUPjm0r2BlRhVJWkQqEuL5BYUC7RI9RkHui2AT46RW266BCzt86x648nsIKGWcF+2EWTrJixDFmqXmU41+MmVh3qr83UavmbKWN2XfKFgR25UYYjSBV6Oqk2U7n31lzVaYpdM4DyTu4BbXALctz6cpAJ3FAfRCFqiC2Rp0KG0xjLtLvFp4noPMyY94vPjXfTrb4F1puEugYIMLu2j7J6RtOXb8giXsUBeauYZaxELtnXr6ORZhPnSilaMFWCGMf48WDfR4Q73fnx7RCtoqVsshh1yonXXzIYlubwcvk8IF7QHACo6up0qJHMtz6UJ0RnTA89x9xBQCk5J7QZ
+ 4N9PtPwS
+ OQABcuN65FBmnORFBRAiNuRslW/mF4COIabPV4vVEPEI27N9v3wLu6G5OgRtLiGCLaCHXtmE4RF/4OVgUD9hOLwiqq/f2c+ED8X46PBd3We9M5z3ANxlp9jZ9TYePSmYFgp1jHXG5O1/Hfz4WFo56wvmDiNwj82nQuw4UM93Eye7KKkyjQPORrmaETyhJp9/FCtAct1KeYiiIMaXARppnB0hO/EClo7XTGdeUko5JbGV9kZsA8/F2s3y7YQSUy42gXYjRBNndXdzhUbWxcXPyW0IJZDlu8nf/D89Z50q+QzAb7ZlbiWXNzw5dkB6vPezMAXLX4ilVA93/bq8RcLczELuNrA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,67 +141,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/17/26 08:34, Liu, Yuan1 wrote:
-> 
->>>
->>> Hi David & Mike
->>>
->>> I’ve spent some time working through these issues to better understand
->> them.
->>> For the overlapping physical spans(mirrored kernelcore), should I avoid
->> counting
->>> overlap_memmap_init in memmap_init_range in the next version?
->>> For example, change it as follows:
->>>
->>> +unsigned long __meminit
->>> +memmap_init_range(unsigned long size, int nid, unsigned long zone,
->>> +               unsigned long start_pfn,
->>> +               unsigned long zone_end_pfn,
->>>                 enum meminit_context context,
->>>                 struct vmem_altmap *altmap, int migratetype,
->>>                 bool isolate_pageblock)
->>>  {
->>>         unsigned long pfn, end_pfn = start_pfn + size;
->>> +       unsigned long nr_init = 0;
->>>         struct page *page;
->>>
->>>         if (highest_memmap_pfn < end_pfn - 1)
->>> @@ -893,7 +897,7 @@ void __meminit memmap_init_range(unsigned long size,
->> int nid, unsigned long zone
->>>         if (zone == ZONE_DEVICE) {
->>>                 if (!altmap)
->>> -                       return;
->>> +                       return 0;
->>>
->>>                 if (start_pfn == altmap->base_pfn)
->>>                         start_pfn += altmap->reserve;
->>> @@ -911,6 +915,7 @@ void __meminit memmap_init_range(unsigned long size,
->> int nid, unsigned long zone
->>>                         if (defer_init(nid, pfn, zone_end_pfn)) {
->>>                                 deferred_struct_pages = true;
->>> +                               nr_init += end_pfn - pfn;
->>
->> It's confusing. Could the remaining range also include overlapping inits?
->>
->> Maybe the whole "skip overlapping init" should actually be handled on a
->> higher level?
->>
->> I guess we'd want to skip any memblock_is_mirror(r) regions entirely.
->>
->> @Mike?
-> 
-> Hi Mike
-> 
-> David suggested moving the overlap handling to a higher level and 
-> skipping memblock_is_mirror() regions entirely. I think this makes sense.
-> 
-> Would this work for you, or do you have a different preference?
+On Fri, 17 Apr 2026 at 06:42, Harry Yoo (Oracle) <harry@kernel.org> wrote:
+>
+> [+Cc relevant folks]
+>
+> On Thu, Apr 16, 2026 at 03:25:07PM +0200, Marco Elver wrote:
+> > Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
+> > k[v]realloc") introduced the ability to force a reallocation if the
+> > original object does not satisfy new alignment or NUMA node, even when
+> > the object is being shrunk.
+> >
+> > This introduced two bugs in the reallocation fallback path:
+> >
+> > 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
+> >    before 'ks' and 'orig_size' are initialized. As a result, the
+> >    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
+> >    allocation.
+>
+> Ouch.
+>
+> > 2. Buffer overflow during shrinking: When shrinking an object while
+> >    forcing a new alignment, 'new_size' is smaller than the old size.
+> >    However, the memcpy() used the old size ('orig_size ?: ks'), leading
+> >    to an out-of-bounds write.
+>
+> Right. before the commit we didn't reallocate when the size is smaller.
+>
+> > The same overflow bug exists in the kvrealloc() fallback path, where the
+> > old bucket size ksize(p) is copied into the new buffer without being
+> > bounded by the new size.
+> >
+> > A simple reproducer:
+> >
+> >       // e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
+> >       while (1) {
+> >               void *p = kmalloc(128, GFP_KERNEL);
+> >               p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
+> >               kfree(p);
+> >       }
+> >
+> > demonstrates the issue:
+> >
+> >   ==================================================================
+> >   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
+> >
+> >   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
+> >    memcpy_orig+0x68/0x130
+> >    krealloc_node_align_noprof+0x1c8/0x340
+> >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+> >    lkdtm_do_action+0x3a/0x60 [lkdtm]
+> >    ...
+> >
+> >   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
+> >
+> >   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
+> >    krealloc_node_align_noprof+0x19c/0x340
+> >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+> >    lkdtm_do_action+0x3a/0x60 [lkdtm]
+> >    ...
+> >   ==================================================================
+> >
+> > Fix it by moving the old size calculation to the top of __do_krealloc()
+> > and bounding all copy lengths by the new allocation size.
+> >
+> > Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
+> > Cc: <stable@vger.kernel.org>
+> > Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
+> > Signed-off-by: Marco Elver <elver@google.com>
+> > ---
+>
+> Looks good to me, but I think we still have a similar issue in
+> vrealloc_node_align_noprof()? (goto need_realloc; due to NUMA mismatch
+> but the new size is smaller)
 
-Would that allow for removing overlap_memmap_init() entirely? The more I
-look at that function, the more I hate it with passion :D
+Good find.
+That's a separate patch, though, since it's in the vmalloc subsystem
+(it's also not confidence-inspiring that vrealloc_node_align_noprof
+has a bunch of TODOs sprinkled all over...).
+Since you found that, do you want to claim it?
 
--- 
-Cheers,
+Also by the looks of it slub and vmalloc patches go through different
+trees these days per MAINTAINERS.
 
-David
+Thanks,
+-- Marco
 
