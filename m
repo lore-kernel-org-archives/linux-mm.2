@@ -4,92 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEA5CF8E49E
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 02:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D25F8E4A0
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 02:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CC016B0005; Thu, 16 Apr 2026 22:17:27 -0400 (EDT)
+	id 0BD7A6B0005; Thu, 16 Apr 2026 22:34:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97D256B0089; Thu, 16 Apr 2026 22:17:27 -0400 (EDT)
+	id 06EEE6B0089; Thu, 16 Apr 2026 22:34:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B9FD6B008A; Thu, 16 Apr 2026 22:17:27 -0400 (EDT)
+	id EA1C66B008A; Thu, 16 Apr 2026 22:34:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AB1F6B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 22:17:27 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA11FC3259
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:17:26 +0000 (UTC)
-X-FDA: 84666436092.05.C84A7C0
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A98841C000E
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:17:24 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ePuf2bAf;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of alvin.sun@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D31A96B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 22:34:10 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 53655140A6B
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:34:10 +0000 (UTC)
+X-FDA: 84666478260.08.E3FFF35
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9C83914000B
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:34:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E5Ln9W9Q;
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776392245;
+	s=arc-20220608; t=1776393248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OpE0Ez+CfIoCGnUqity0iKPTIYaJICOJp37vNEf2Pwk=;
-	b=MJPI6Uso9t1F8PxD3fPBktOoDxeIEee7eWE3B3o8lj1qNXdK5IcVOzNWFH9WlA6qNqR6Qy
-	jLoOdZdaMQGCFif2O0bdgg4zZn73VRXjdqQr558qaCMHsz++Yijjn6Y3GnGPwZSsv3kPr8
-	gbO/ttB7g/sM31PV4cL0//Kg38dXtIo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ePuf2bAf;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of alvin.sun@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776392245; a=rsa-sha256;
+	bh=4NA6W2N4lguyRK/G4xeeYi0SNEjDYb0qxWjtPsw5HeY=;
+	b=gt5X/I5X9Wt2uGV+T9ni8GSrVq4o0oSFCIZE4IGekGKfc4x9n5gv19pIBrktjR71wJzsoM
+	oZNNR9bA1BDUv0ToxVZJNOBa9B1Ea86EUxbgxaheeXYhNxuKPoqjY1utKRsZLuUmBOwAjX
+	GfxTvyfFVihMAzk314EpLexzyuxmwUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776393248; a=rsa-sha256;
 	cv=none;
-	b=kBaGQ4odN2XFXLNkjqz05SxqMRL0HqhB8DG6sslSOsmPHIHsCdNIUa7PL/gQJxQqYfgczt
-	zk6Uv/6u+xN6A2dFR2ko4IHZZyQICClQNgAABS7G45bYwKy2X1N9OLT2zmaoNEn+dVVqAO
-	d+frVTEzcuuViYtcDIP8fPyEKwVsPEQ=
-Message-ID: <df183bfe-21b9-4393-902d-18835e0bcf48@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776392242;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OpE0Ez+CfIoCGnUqity0iKPTIYaJICOJp37vNEf2Pwk=;
-	b=ePuf2bAfPWmOfImJwnTQrq5T9bUWrri+n7NIsp9KYnA7oO4nDzM/fUB3u3FeYxVV4Yj8rb
-	rfunkJ4LPwc2adnexxRrsZfpZc7edlQSEbIYcXfKfuVNYxFuMjtjok63FVo/rbLN3G+OLv
-	RsoxMO0TywgV/aDVUFRtorhw0NJoElM=
-Date: Fri, 17 Apr 2026 10:16:57 +0800
+	b=q1dQLJhQZuFHwt6A6iw0NU2YgFv4nR1aN9dJthUfj+6JNdQk/FFi39Iy3xQVKA7MviCm8K
+	g8mgxnBxPmSTCobt8+Pseyem8KCAP07P+8KNB5XmTNVeBD7rbGa6Tr3L3ZuR5AopLdx7x9
+	BedAZBJZABaRbkRm1BeOxV2b25pho5g=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E5Ln9W9Q;
+	spf=pass (imf23.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C32A405F2;
+	Fri, 17 Apr 2026 02:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B72C2BCAF;
+	Fri, 17 Apr 2026 02:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776393247;
+	bh=ygdv9g47ic9ApuOFDxBT5md9T4W1LAkYk/F9rQTlLT4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E5Ln9W9QE/J8EGYSL8qbYK9166EkbeNdXxjBB6QlRraHZfNZYjslaDk7b+7bo1ZvI
+	 cjXIF0KblE5nOyIZGWwcIVwDOk5R/zul41ENTc2xRJKm9DnnJ3Enf7OtMIkTPx8keX
+	 9P+EX8+x2GGnYiQQG4WD+nVqxHInHjVb/m7iRsBukR17nKdQQI67Oc8BfTmVQYxF5m
+	 xO3gCjmMxJ2+0eRdw2jNlI09ANxXUxiVxYLKuGANxTMxfmSN+yd6PakQT1VOARwLGo
+	 zP1zfM+Y1A3Ke0asKnHeopHGrUPQ5m0gE4JgWd2RdjqZ1OYX4vB4eY5d9cI1gebuxl
+	 979LDkPy16BdQ==
+Date: Fri, 17 Apr 2026 11:34:05 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	LKML <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Waiman Long <longman@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Steven Rostedt <rostedt@goodmis.org>, Hao Li <hao.li@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [RFC] making nested spin_trylock() work on UP?
+Message-ID: <aeGcHXmbCuZ8cNis@hyeyoo>
+References: <d762c46b-36f0-471a-b5b4-23c8cf5628ae@suse.cz>
+ <aZAWGwZP_Z75YHKt@casper.infradead.org>
+ <ad_cqe51pvr1WaDg@hyeyoo>
+ <af3a7fa9-b368-4ffd-964d-9e4fcba863a8@kernel.org>
+ <DHUNDMZS4YQ0.24SZXD72JIMCE@gmail.com>
+ <aeDzovGHlFmPFpNt@hyeyoo>
+ <CAADnVQLc_6SfF0h+-W+-sa-Qfvn8a02b6sbELJwpQcG7CFNqAA@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 4/4] rust: xarray: Add Guard::find() helper
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Tamir Duberstein <tamird@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
- <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
- <aeGKTIRFgBqHNI9S@casper.infradead.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <aeGKTIRFgBqHNI9S@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQLc_6SfF0h+-W+-sa-Qfvn8a02b6sbELJwpQcG7CFNqAA@mail.gmail.com>
+X-Rspamd-Queue-Id: 9C83914000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 761hcz4noqqz4isi91s3xxbr53xjnqcj
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A98841C000E
-X-Stat-Signature: idocxmoa4x9uka66s9mxgb5sypxtehc1
-X-HE-Tag: 1776392244-426683
-X-HE-Meta: U2FsdGVkX1/zYa5sysEuFG9SAgS8PWyghi0FRdUWY9sFmR3v3V2Onk7ITpLqyOFVqQVuGVs+IlAEjcJNBOoJC/cL+Vgw3YAaWEnyqaNzELQvWwOBk37KSovNzqwmqYKx2L2ZTOtddd/CW98EttLg42eS0oqFB8/jwY+/jUDRycGlcv6o9YChTzOnV/UX59X6ufkFtlAFZLKG0LEQD6dlDDN16J+p0droi5c2xX9K5peuLpdlAK8EGDOg0KcRxUei0QEA/6rvNg5NU14q6iCFLb/0WrfkuSUAzJ3tEm9rhNIO7wyyJe7hy7VchkM6aMZtJqluvYFfqhmlS12mm8C4Wjan5frZsQpZE89qFElMTM0ddQAtXriq1BPZ6rq+9lE8HuTzCz9cP3VuATIeQoq5WA0ku0iYd8Z5bW+FuNWS+iuTf+TxnJU7V5DDwCEaTLTZ0E7SlLSK4KaiPPtqG6yoBL/XFNCy/wrukwojTfJ4DXNcLI94vvY0vM15rkZD0AlBaCsuyJ9+LwpFuEsJHDSrPsyUrAGrtbFNvbJcXu37kgBm1wOwFWuJWTtudycAy9JIL/ZyVT1JT0Iwkd9fVdiHEHj0DPR8ckC0O1VnUxp9DwErjppNAhHTTeI7tNZuDC/y/XdAqZz0BaWeuSo02YJkEIcV2si6Mo3ye/k+sLyyYC4qN8Acn34Ub4hpRCt0UZCKdvim9bT0e8eJyu5oT4aPnR0tfjsfB9OPcwOLxd8xILePpO8u3Yo4GKg4+/Aqm8xZklx6VdXe2irRN8e/Lw9yXZk+xZ7eEeiuK61DDrXO++ETIrycYZpw2a1KDy0SgBAO9cGmPXpFOv+ShH7Pmq/5WDKoPy50KXq2AGRfdw56ESCP0Sv4a0mFyez3dK75rcLm60fcmGueHagicQ6Rt+cJHRGIFPI+6BxIu9oDZlKNoh0GXFAAA2z9gzCEW76yRkC8aOeQSTanacHSEth2Vec
- V0UG3zp0
- kePkZsVlKae8KoWKdeBPTK9XJxhNRUU23XNAzm1xBKusqbnvvdsnOEAU4Az6fKddcsN+CYkH/PXUGOnd5BXlfSlBirsKxouKGIFdEEXQPaI6F5epQ9agDuy7qJAFFQ5nKqApqkUAJBInTo+/TByTeSi90vztkvxpK7QOdqssJ1QaGjEr7ZtzUa5G5FKqhFzKc2dMZdTw16nRb/nY+UR8tcYXnDQ==
+X-HE-Tag: 1776393248-481203
+X-HE-Meta: U2FsdGVkX1/vHgnK7O9NlMLQkMpbipdt2xlEkDg0OTyC3C11oVaG1+tJZMo9R3zdMBHZXjoWWud3FqJPeKbVC87I3Rc/p1fBfmH5Uh3XwXZyfhn7Qc3SrptZN9GNi9MRIx50ANB4NwCtdARfQmQwjVNIZizCArLnMbljF0/0mOxc31hARVFca8fRIfgfLiWFJAuJ1IsenevtxM/weTsY7H475X9+JKXQYHWD0rY/kdYnfyR0RfgxcOCC9pU77q4csLR/UN0zeG2rCFuwyFZQ3IJEfP1qgJrGZFIT78/LCIDTXxElxH6T4QNpKmiIpvsCylzqZ6ddgvq2mov25XxDJhax16zfN9z+vCGWa+scfd25oU+eNvLhO18Xmzo1et2x3lJ4VfG5XFTPkp3U+U6BsyjysYWzuZSVUXIJ/rVsR/Vk1Qe1YJvd3zsbP8CaGNzyf+hyCUQiWmju0TXvmS879boFfQ5fQAwmoKm8nmgN3B/S0PtvS6pXTNgsiX1l6HLARmGDzP3bLh9iRQgwV5ALuSiQj25or13sfE2XGQ79cGqGe/NjCj2D6BtSRQ3dlqPQ3/H9QipuYMwvL7OKehRP8Vbhve+zrKQUDzdwWFM4PIBsVBwNyvd7LUuWYBnO7N3xEtXbLzSDhdWlvoLKpJ66RYl+0MRhHaW6u1G0sLNnhaghT7F8uWG5nW+hWhAKLQ1vQJJGswryGI7qsWq2WHrpxskT6dJExBzFdLl3w5OnOKmk1y1FXXDsIBZqJjcO1qL4YbT1o4Ke6nKuckqihI8j8xoN/gAlP4RRKVXmj97jOxtgS/R6TS5/DYJM3QZz3CJBd7we10wWdt+kWDCH/bQI/lyqUosWAT10h6TVyx26omRPwVne/8+21RlvLi3DkUIFxSm0NNfnIMKwZRCVt4J2uf37nMlWfNjCmJry1Ufkl+MIQvfj+gL4ut6MshJD4XLWo8vEMXjD4QwuWQyYzys
+ lAyL8DFd
+ tbX+eoRVp2DNlUjf0zx5t7O2R7yFjs/0plKkTbZgdAeVs1sso2KEGsUPWOAnt2GhiMgm4VbGCzn/LEeGcijt+8yGG2b9jLgQazFRW9IPPqjsvV9If2u/dt/FIohE7Xa/UYy9B2KI/CHPeIQ+akDz+9aGduT0LpsD7NFFbT+vKk+F1mUoSdRJjsaiDMEtCGFmxiCUj4RMWHp2RmsuGaMMOI9s0qn19WLnHfdAAUBVQiJCEbXJQaZ/kL+rW735ZQrChrcSOjRYFtic4iBOnKxnackkbuIbwQC5wPzCELaRivwDwpHab/X3h+kpDQxo459yiFQtRyOZLN8DzwlE0jtabGSw5IiJIIAxeEDj0oqWSAvwuemOPc7sRq2j9L8Zkm4bf4Uvu5YP+6Un3iWAPKcBaGJUJGkK70vaXRUYr9QBiKIhjwqCSiOQDBJZjLNsKKvEEOa12DI/d7MQvgwO70YzeAuBGxu3PB6HyYmfHZrh2c7hBTDQPz5kvFyCulw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,32 +116,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Apr 16, 2026 at 07:37:49AM -0700, Alexei Starovoitov wrote:
+> On Thu, Apr 16, 2026 at 7:35 AM Harry Yoo (Oracle) <harry@kernel.org> wrote:
+> >
+> > On Thu, Apr 16, 2026 at 07:26:36AM -0700, Alexei Starovoitov wrote:
+> > > On Thu Apr 16, 2026 at 3:05 AM PDT, Vlastimil Babka (SUSE) wrote:
+> > > >> I think we need a special spinlock type that wraps something like this
+> > > >> and use them when spinlocks can be trylock'd in an unknown context:
+> > > >> pcp lock, zone lock, per-node partial slab list lock,
+> > > >> per-node barn lock, etc.
+> > > >
+> > > > Soudns like a lot of hassle for a niche config (SMP=n) where nobody would
+> > > > use e.g. bpf tracing anyway. We already have this in kmalloc_nolock():
+> > > >
+> > > >         /*
+> > > >          * See the comment for the same check in
+> > > >          * alloc_frozen_pages_nolock_noprof()
+> > > >          */
+> > > >         if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
+> > > >                 return NULL;
+> > > >
+> > > > It would be trivial to extend this to !SMP. However it wouldn't cover the
+> > > > kprobe context. Any idea Alexei?
+> >
+> > I think Vlastimil meant it'd be trivial to do:
+> >
+> > if ((IS_ENABLED(CONFIG_PREEMPT_RT) || !IS_ENABLED(CONFIG_SMP))
+> >                 && (in_nmi() || in_hardirq()))
+> >         return NULL;
+> 
+> This one.
 
-On 4/17/26 09:18, Matthew Wilcox wrote:
-> On Fri, Apr 17, 2026 at 09:05:54AM +0800, Alvin Sun wrote:
->> Add a helper to find the first present entry in the XArray.
-> Why would you expose a function which does striclty less than the
-> underlying C implementation, rather than exposing all the functionality
-> that xa_find does?
->
->> Returns the index of the first present entry, or None if the array
->> is empty.
-> Why not return the value found, like xa_find() does?
+Thanks for clarifying. You mean not covering the kprobe context is fine.
 
-Hi Matthew,
+But I have to ask; how is that fine? Wouldn't this leave a small
+possibility for a kmalloc_nolock() caller to trigger
+e.g.) use-after-free bug even without noticing? (yeah, very unlikely
+for somebody to trigger in practice, but not impossible)
 
-Thanks for the feedback! I had considered both returning a tuple (key, 
-&value)
-and an Entry struct, but only returned the key since that's all Tyr 
-currently
-needs. I'll look at other Rust code to see which approach fits better, then
-implement it properly in v2.
+If it's unlikely to use bpf tracing on UP anyway, it'd be safer to just
+disallow that to happen to begin with.
 
-Best regards,
-Alvin
+> > But it doesn't cover the case where kprobe hooks an arbitrary function
+> > (in the middle of kmalloc() or kfree()) and calls kmalloc_nolock()?
+> >
+> > > Yeah. Totally fine with that.
+> >
+> > So I'm confused exactly what you're fine with. Did you mean this?
+> >
+> > if (!IS_ENABLED(CONFIG_SMP) ||
+> >                 (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq())))
+> >        return NULL;
+> 
+> Doesn't need to be that drastic.
 
->
-> This is all very troubling.  I don't think Rust should depart from
-> what C has without good reason.
->
+-- 
+Cheers,
+Harry / Hyeonggon
 
