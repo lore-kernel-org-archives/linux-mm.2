@@ -4,136 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 750C2F43680
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:05:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90E58F43680
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:11:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88AED6B00B4; Fri, 17 Apr 2026 05:05:51 -0400 (EDT)
+	id B78A76B00B6; Fri, 17 Apr 2026 05:11:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83BAC6B00B5; Fri, 17 Apr 2026 05:05:51 -0400 (EDT)
+	id ADBEE6B00B7; Fri, 17 Apr 2026 05:11:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 729EC6B00B6; Fri, 17 Apr 2026 05:05:51 -0400 (EDT)
+	id 9A3BF6B00B8; Fri, 17 Apr 2026 05:11:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 614A56B00B4
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:05:51 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 11B691B9166
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:05:51 +0000 (UTC)
-X-FDA: 84667465302.02.4A96377
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1C2DB2000A
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:05:48 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="lAm/Is4y";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of elver@google.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776416749;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 875536B00B6
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:11:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1EB091A0BBC
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:11:26 +0000 (UTC)
+X-FDA: 84667479372.19.C17035A
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4363540010
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:11:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nLjA7rCB
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776417084; a=rsa-sha256;
+	cv=none;
+	b=gDpX8DgGVyt4XgB2sDXoPln2P20ym+XymP9a7Qb6TNfEk8vMQPn7ot+SHvDYI8XnSSkrEv
+	C7JQAr8AW7hHMzOs7Oy419/pnmBvby1UKIHecNyWd4TOWRA5DTJUTSzdDozBMOoGoUcVAl
+	UAYq5CDJ/QlaY+IZBfuxQtA07bAFr7M=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nLjA7rCB;
+	dmarc=none;
+	spf=none (imf11.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776417084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
-	b=vuy1qtvYmQ0NwjPgyaqcFSjJzF/2fMaiwfsOhHO0s+GRGpCghwZnjV8mc3zF4TSbrn0DRS
-	lsQ1OCQKtAYpzfI45NzmLn4GiTNbanrogJga+9vD8alqbonXID7AfgrrqDfzRgwBwKCi64
-	Sp3N17M3G4vSfJ5t8QdurPYnVFn2Wos=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="lAm/Is4y";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of elver@google.com designates 74.125.82.45 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776416749; a=rsa-sha256;
-	cv=pass;
-	b=nZvSozwsQCp1HqJEJCfXqOJ5SHVEJFfyGE+8OrHLUVPDhpDidxaqkniCWd4Pzdn6FI0gHk
-	3j7jooCDRtJoht1OseRnsHcBtczwMuq2bXwkF4VQWkSvfRv56DAcdwfSOTk4x98FpQW2dK
-	uizyZzn6nSILb12StBkuWa1vCfFddcQ=
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12c637089ccso1086473c88.1
-        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:05:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776416748; cv=none;
-        d=google.com; s=arc-20240605;
-        b=W2XKPnBFMXgZ/Ih2nnuNKNfoX8IewxtLN00BVdA0/i6p+AXHQN7GSel6V5t0EL3XQP
-         FnhF2XsIL6DHX8wPt9809M+tebKTkLWfPjHidA2s+0fOR1FiRrBrKJ8D9YNnn04DaNCG
-         NxkG5Ll6C5+6OggK5onTyGX/SiDIHmy/8D2/yRseyWPQVaMZopc/QCw82mC1VngcIn5I
-         QmsFqcbJwJBS11cbfalopGyVAeDamLNjL1VQzsmPr7Lj5/9lEvudtVTWwu444Porwrto
-         JKxp/TbuIC0wC53epbNem5Diz+vcZo8/OUXz9hXgL5GRtF5AG4hWuJh0hd2UAyBAfUAg
-         vj8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
-        fh=7rLTMS8wbmxdNMX5tx1kxOOdXP5cMyIZ8i8KzybgfgQ=;
-        b=L/qyNBy1kSUUPoPyjehxO83OxWsDmuh/Yo7dHj5s0AQyAhxuBOie1LsLbZxjrMFssQ
-         CcQFrTj6or/vWwdwEK1lC/FYWYHlb/ogwEcVABhaQG3H/lyrskYKZAxfOBtM3dWhhuC6
-         YOnss1pMfLjdu4wmho70gpTyaxEl7ZwncYREkUd2El7+rQuF8OXyV/+/M6P3CpOnWqSt
-         +2IFsE1gDa6mGJcZi7r2s2hCUM5u9Q+rks2H7beRhaIcP7l+E1hFWQCRs8s5sdE6wh2u
-         /nDkMlmOQQ2C1iqm8CafVzZuQ9DKSsy815YTKlK3y4MEyu5EPSWzgriHQ8VuTkqc4lTp
-         Uu8w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776416748; x=1777021548; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
-        b=lAm/Is4yZ+YoJfoPeWnKYrD9ifWncFNsXPY/ahigh7I5nmlFngzj02almAqWJCK+l+
-         I231uKI/Xn5CXxQcuDfeAZ1A/dyzjYmT6FFPjJKsvk4qWJUKPKEmha8kSKFnON6+uQ9B
-         PBdd+pzmePutVpPZjbZVSyc8qFIEqN3vYB8SQ24L3YGqmamdGuv2IcGyHmoiu0H4LsaY
-         KUGHNXU6pl82a2OKTuNDrtdR02Yn+4TloRdroNLb9aDcFMvGAweu/SpstP+37wVBZBq4
-         /EESEex/RrSj9KNxd1l60RFJgmF0A3HkwNfwlWQs2MaRwzxtqKnD9dt9xY6XxQo5xrdG
-         zrHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776416748; x=1777021548;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m6h+hUT8JrfeVoyladjL7W9cfNjf2SDBTuYVEHwKaoo=;
-        b=DI87peCFE2ydEsOpG+JF3scRQ+LrBUhuvCbHq092+oAZgvPcM5gHFarxnOtIyYpKq2
-         7LhZxx++AufQl+ZRnDdibCR1nbPVHsa/rDyiSlDqAOObMam+spz41g4Wu/uMXdGDpGBW
-         eVKGKsgGw/i6z9EYPB3knuMDxtaQnrsVkavF3/Yghav63zTr9OdDrvA+N45grR1+veK/
-         QIaMJOn0LRmdYJ9jWfeS4pde2qgq/I8SvCGnYvtDMD2JHcKf3h14QMP7tPfPV8j92o/1
-         LlfZq6/PGrfU37Iohd1Rm5XX14TEOZL7ZRfUDVTxdMuWmKRhRwG1LPHcABGw/OJMMbjI
-         pnTw==
-X-Forwarded-Encrypted: i=1; AFNElJ/ONqw+0zC+JAi4gzxQ+A6cC+oYnk3rNt7vFRprM24SPYNqqTpWlNrenGOg44ulZLUJcPRxD9oonw==@kvack.org
-X-Gm-Message-State: AOJu0YwtIKU6BdLxodgN5c4kqGXMnownhVEMV5uleWtmBzdVP8NEAOtj
-	A8mma/WgaKvdA8+pN9EGF68gA+zExfMgunCMqIGPsGcQBzHXT+q9ILQk5jX5yUrs6ow4Ofj/Jxe
-	JpGBXd6Rce/lQ1X+tUmEO9+EyfuxkwVVXm9tOJdS5
-X-Gm-Gg: AeBDietsSMyiKb+EZrcr91gPlMRxRIIlRF9YfQDX+7lnorLKOortGwkHRautvsaXc0k
-	MnKz9OM3ihMc+hT74ud5r3I1Oo50eDrbJNPA8JgQp+Vm/5ESWKlGbaSCtg4XgoApLPB2nT40ySJ
-	ut0oGkufcaGyrUCZhi9TKVXBzSQjGJqKERfpUlRygU144yymVaXZA6p6IYTOVr2hn36lniwslLS
-	MbP9vadONsAf6GKvap4xKfYb2oVYYILUeHe07CEimTNcw0n5PLl7AWdEM6jm5m9R8swjp7iycTQ
-	BGczHiU9zRGTn9LXJfBAxQwcWdHhZd+x4qNw8wDo+iBplAlk3kjWLCCv17NB3ne+d4dRWQ==
-X-Received: by 2002:a05:7022:6085:b0:128:bac0:2edf with SMTP id
- a92af1059eb24-12c73fb6c49mr915659c88.34.1776416747190; Fri, 17 Apr 2026
- 02:05:47 -0700 (PDT)
+	bh=OtUmsssVat6H5uUWOGAgIMHCFf2EzwnMzi7lYMo5hwg=;
+	b=pum1yWQY+Neay/1cWsS1VcPUu0L4jr1EVZNXHAqRBdcrmIMSf4c252JvRZwerEXCP0EROd
+	FuFcG565GcXN7u3UdcWbMl62+A39+6ifiMhJeEu4cPArz7stXKEXjUshX1nqx+fYvFvr5e
+	VKkcNebSgyDTULUtymLl4j75Hj3VRd8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=OtUmsssVat6H5uUWOGAgIMHCFf2EzwnMzi7lYMo5hwg=; b=nLjA7rCB3i9XrrthI/d/2fWiqZ
+	ByYEGdrrSLzqHMI+J9GEf1NxH2Q2a+W2J64WXkJNaYYLfAs9LnwitL/BtKi6FOxWxQ974SbiGUEgb
+	uWoMSAteewAwyGp5kzWuofHPxyUsk2Nff7u5DxzZsUyWkjuF3oYO9s8xK2RlDtdbPiijnfSyEnaqb
+	QAeYC8X//4jAS7helEgl1srQURzS3ArVSDTnjHF/BVNuP7wuDdqc+OnMx2sMvEOsfj4jjejBP1GPM
+	Jy2KbBW9NWcUPSWU2gwVkFiX2GUfLLHuerk3DjalmVCl+keRXqRyv3VGuOb3gDxP+BPGofUE+A6Cd
+	yAKIc4ng==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wDfE5-00FH6o-1a;
+	Fri, 17 Apr 2026 09:11:01 +0000
+Date: Fri, 17 Apr 2026 02:10:51 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v4 0/3] mm/memory-failure: add panic option for
+ unrecoverable pages
+Message-ID: <aeHy3-vQTQYJlGw5@gmail.com>
+References: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
+ <CACw3F51PC0iB6mfbiceQ_Kh242FN8zdXOfTyE5Pa_5+gjTPPGg@mail.gmail.com>
+ <aeD6hpM3t0RZm5mW@gmail.com>
+ <CACw3F50WYH8Vmd9EXx9+3yM=FU5-1WBkNffkGucC+wSjL+=wFQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260416132837.3787694-1-elver@google.com> <aeG6RG41sgZuerYa@hyeyoo>
-In-Reply-To: <aeG6RG41sgZuerYa@hyeyoo>
-From: Marco Elver <elver@google.com>
-Date: Fri, 17 Apr 2026 11:05:09 +0200
-X-Gm-Features: AQROBzBPHFPjIQbZYgiVCtPkYdTt_jdnGikf9TMYOKgcXpS_D48owm4g6Ox5x3k
-Message-ID: <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
-Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
-To: "Harry Yoo (Oracle)" <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, stable@vger.kernel.org, 
-	Vitaly Wool <vitaly.wool@konsulko.se>, Uladzislau Rezki <urezki@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1C2DB2000A
-X-Stat-Signature: sobek6mei7ge88xpiu8wecdwxxd8f3f9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACw3F50WYH8Vmd9EXx9+3yM=FU5-1WBkNffkGucC+wSjL+=wFQ@mail.gmail.com>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 4363540010
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rz8hx8rhuhgef3j6k77qeqri7cs1mr88
 X-Rspam-User: 
-X-HE-Tag: 1776416748-977400
-X-HE-Meta: U2FsdGVkX19Fsti4vEetkg/Qm8WDaSwTeZrOXqlwYZzrgfS4CLj+uLH3MfivuCa34TWehk04FSDbiz15DCXhYeW6MVzafJ2QHfvecMwyf4ctP3Qc6Yl3OgdFLT5lHJOVeyt/VsZ8KdNV25jPcfCr62qDmVtzPdryo7BD4ndjpGPW1wAZBvofyxjsDzr//QfZiULoCog/cSBUbr+CrketqZm8Jn4ibNiWJb56cz1uk2VWNI9WbVWr3xYbARG8/znGWLSG3wDjFd0gkqN0JgOnt3ehv+9zFjeaBTzAZI4q/RjKZJbv0+Qm4XIsOUk5SWXSJw5jS2BX9N+d+mmyGnYDGQ+gXR9QyxO3kUdbqGS8qA3p4nIYXKkyaWaKlBTbOkmrYE0laahj87SCg5WN9IknY8AVUwzdX7Epe03Mzbvb2tbQw/812YzYBtrl+iKfppY9iJ5jpzQvkHYEkzhS1EqpnTICs1R9YcQFCHqduV4N5kIew3WGh3i96pgrjzG9HSfgBXZyIL314mhPE6gubb8uwVq0X2p3ni6HVbkyAM8u6sOWw/hgGFP4x+gk+rTmXsAnekA1OnUJ6PyyuHSiCjRzNFYOwaPQmiFlau/IZI6aBKS70zRKLSXPVnhggyYWzQ7fxK8lUPjm0r2BlRhVJWkQqEuL5BYUC7RI9RkHui2AT46RW266BCzt86x648nsIKGWcF+2EWTrJixDFmqXmU41+MmVh3qr83UavmbKWN2XfKFgR25UYYjSBV6Oqk2U7n31lzVaYpdM4DyTu4BbXALctz6cpAJ3FAfRCFqiC2Rp0KG0xjLtLvFp4noPMyY94vPjXfTrb4F1puEugYIMLu2j7J6RtOXb8giXsUBeauYZaxELtnXr6ORZhPnSilaMFWCGMf48WDfR4Q73fnx7RCtoqVsshh1yonXXzIYlubwcvk8IF7QHACo6up0qJHMtz6UJ0RnTA89x9xBQCk5J7QZ
- 4N9PtPwS
- OQABcuN65FBmnORFBRAiNuRslW/mF4COIabPV4vVEPEI27N9v3wLu6G5OgRtLiGCLaCHXtmE4RF/4OVgUD9hOLwiqq/f2c+ED8X46PBd3We9M5z3ANxlp9jZ9TYePSmYFgp1jHXG5O1/Hfz4WFo56wvmDiNwj82nQuw4UM93Eye7KKkyjQPORrmaETyhJp9/FCtAct1KeYiiIMaXARppnB0hO/EClo7XTGdeUko5JbGV9kZsA8/F2s3y7YQSUy42gXYjRBNndXdzhUbWxcXPyW0IJZDlu8nf/D89Z50q+QzAb7ZlbiWXNzw5dkB6vPezMAXLX4ilVA93/bq8RcLczELuNrA==
+X-HE-Tag: 1776417084-249272
+X-HE-Meta: U2FsdGVkX1+pWPjMOJIg0dnBhTcA7NVinxiYiUbVNqMNAEbxqFyBZA0YaRM52HDTXomsDzXyn03dlBZg7THNaKgMAwZpsCON3GY4QfdJDVAsOOXjM4VcFGOLSlNQU+Ac7l5uVMNhbCvQHcbkuFEHSwxaxgb38awvl8CUUSM8Hfrm2IBfbIPKe82078HbMwvmlTseooc/PH7YVBW72n4oT8qfqotbVLlzVvqenvW3fZ1axq1DBmtmsiE1zmGfdXsKYCix5Bo/He6KcoIiaUTfaAqE31u1RIJ8RJAxmBKHmT3i+YWxdA9C0Xus0QHTKi8uZlfRPXamAbxYKTu0dceW1JMapzqdxwSDpOzTJaKt4zksMzcEllQOwkhK5bM/HBBsGqMQsICTyDpI3jF5Xd0eYdCwdA2ui0x+Ll1g89qagRa03ajXPk1w84ak7XKRsALhKm+Zw3V1AZrHjJ9WUROIm6i9yGYidJoTXiCBNjYjmGXZ4i28BT3YFiivK+nbvbuPXSzxS+Eim/xD4+d6fRUK0ZuN1Qz/ewh3Ui+MjoBiZlnOJEwwZd3y4TQFMB+H/50YzzHD7Gu2bSNcKFcABrXi0zeHSKQweQwdM5XdWIKL6pxEk5spdSayrkgA7Bt3waj0R0a7uxBYWsB8I01OaUFVjEYD1yPSm0pN3l1jp7k8dHFwu1lXnSLCH5MdTtc+CWd+Un9o+I5re9fXFihbgFWQohRXNhxz9Cq/hLE6YQUZrCUFW/P3KH4Jau4JZEAzjgNZLxGfU4cqnTieYIMAnwEde3aH7j4H3lAjFHn0wdy6fJfW7PzX1SqWTry3afKlFIki7BjR5bZRCRrSCMeuPtIOuNQXn2C+emvAtF93y3BY/S0rPk4YgYmBtjhJvNj76puKOk7eXURLEE1WP1eHoFiJFt/gO1LblJV/l+klaVnhxKPIHMJ2Kt9z4oq4hKlflErc53bEjhdX/kPtw0VNjrJ
+ WaFanDdN
+ Dm6hmjbHWXVNE4vlyINSLLSrV+Tr/jNmyG9qNy/5VrwOd2ZG+h3Nn+vkzcfo2KJ+45rBTcJ9BymHphpURgKbQPwLF2C1lyJCKxxW++rwgc2ppKTyhRpBC1Y2+miN0Ou9LIQvsX4sgENSc0X9eokMDOtbKSzoyE1rMQgQi+W1LW6BWP5uRBsRlQ32R9mICXuUeYkQIK4uvSwamOI1HNEFBrbliNb37uMZp4OUn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,88 +102,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 17 Apr 2026 at 06:42, Harry Yoo (Oracle) <harry@kernel.org> wrote:
->
-> [+Cc relevant folks]
->
-> On Thu, Apr 16, 2026 at 03:25:07PM +0200, Marco Elver wrote:
-> > Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
-> > k[v]realloc") introduced the ability to force a reallocation if the
-> > original object does not satisfy new alignment or NUMA node, even when
-> > the object is being shrunk.
-> >
-> > This introduced two bugs in the reallocation fallback path:
-> >
-> > 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
-> >    before 'ks' and 'orig_size' are initialized. As a result, the
-> >    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
-> >    allocation.
->
-> Ouch.
->
-> > 2. Buffer overflow during shrinking: When shrinking an object while
-> >    forcing a new alignment, 'new_size' is smaller than the old size.
-> >    However, the memcpy() used the old size ('orig_size ?: ks'), leading
-> >    to an out-of-bounds write.
->
-> Right. before the commit we didn't reallocate when the size is smaller.
->
-> > The same overflow bug exists in the kvrealloc() fallback path, where the
-> > old bucket size ksize(p) is copied into the new buffer without being
-> > bounded by the new size.
-> >
-> > A simple reproducer:
-> >
-> >       // e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
-> >       while (1) {
-> >               void *p = kmalloc(128, GFP_KERNEL);
-> >               p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
-> >               kfree(p);
-> >       }
-> >
-> > demonstrates the issue:
-> >
-> >   ==================================================================
-> >   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
-> >
-> >   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
-> >    memcpy_orig+0x68/0x130
-> >    krealloc_node_align_noprof+0x1c8/0x340
-> >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-> >    lkdtm_do_action+0x3a/0x60 [lkdtm]
-> >    ...
-> >
-> >   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
-> >
-> >   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
-> >    krealloc_node_align_noprof+0x19c/0x340
-> >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-> >    lkdtm_do_action+0x3a/0x60 [lkdtm]
-> >    ...
-> >   ==================================================================
-> >
-> > Fix it by moving the old size calculation to the top of __do_krealloc()
-> > and bounding all copy lengths by the new allocation size.
-> >
-> > Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
-> > Cc: <stable@vger.kernel.org>
-> > Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
-> > Signed-off-by: Marco Elver <elver@google.com>
-> > ---
->
-> Looks good to me, but I think we still have a similar issue in
-> vrealloc_node_align_noprof()? (goto need_realloc; due to NUMA mismatch
-> but the new size is smaller)
+On Thu, Apr 16, 2026 at 09:26:08AM -0700, Jiaqi Yan wrote:
 
-Good find.
-That's a separate patch, though, since it's in the vmalloc subsystem
-(it's also not confidence-inspiring that vrealloc_node_align_noprof
-has a bunch of TODOs sprinkled all over...).
-Since you found that, do you want to claim it?
+> So we will always get the same stack trace below, right?
+> 
+>           panic+0xb4/0xc0
+>           action_result+0x278/0x340
+>           memory_failure+0x152b/0x1c80
+> 
+> IIUC, this stack trace itself doesn't provide any useful information
+> about the memory error, right? What exactly can we use from the stack
+> trace? It is just a side-effect that we failed immediately.
 
-Also by the looks of it slub and vmalloc patches go through different
-trees these days per MAINTAINERS.
+We can use it to correlate problems across a fleet of machines. Let me
+share how crash dump analysis works in large datacenters.
 
-Thanks,
--- Marco
+There are thousands of crashes a day (to stay on the low ballpark), and
+different services try to correlate and categorize them into a few
+buckets, something like:
+
+	1. New crash — needs investigation
+	2. Known issue — fix is being rolled out
+	3. Hardware problem — do not spend engineering time on it
+
+When a machine crashes at a random code path like d_lookup() 67 seconds
+after the memory error, the automated triage classifies it as a kernel
+bug in VFS/dcache and assigns it to the filesystem team for
+investigation. Engineers spend time chasing a bug that doesn't exist in
+software — it's a hardware problem.
+
+With the immediate panic at memory_failure(), the stack trace is always
+recognizable and can be automatically classified as category 3 (hardware
+problem). The static stack trace is the feature, not a limitation: it
+gives triage automation a stable signature to match on.
+
+The value isn't in what the stack trace and the panic() tells a human reading
+one crash — it's in what it tells automated systems processing thousands of
+them.
+
+> You can still correlate failure with "Memory failure: 0x1: unhandlable
+> page" and keep running until the actual fatal poison consumption takes
+> down the system. Drawback is that these will be cascading events that
+> can be "noisy". What I see is the choice between failing fast versus
+> failing safe.
+
+Correlating the "unhandlable page" log with a later crash is
+theoretically possible but breaks down in practice at scale:
+
+- The crash may happen seconds, minutes, or hours later — or never, if
+the page isn't accessed again before a reboot.
+
+- The crash happens on a different CPU, different task, different context
+
+— there's no breadcrumb linking it back to the memory error.
+
+- Automated triage systems work on stack traces and panic strings, not
+by correlating dmesg lines across time with later crashes.
+
+- The later crash looks completely different depending on the
+architecture. On arm64, you get a "synchronous external abort". On
+x86, it's a machine check exception. On some platforms, it might be a
+generic page fault or a BUG_ON in a subsystem that found inconsistent
+data. There is no single signature to match — every architecture and
+every consumption path produces a different crash, making automated
+correlation essentially impossible.
+
+- Worse, the crash may never happen at all. If the corrupted memory is
+read but the corruption doesn't trigger a fault — say, a flipped bit
+in a permission field, a size, a pointer that still maps to valid
+memory, or a data buffer — the result is silent data corruption with
+no crash to correlate against. The system continues operating on wrong
+data with no indication anything went wrong.
+
+Also, I wouldn't call continuing with known-corrupted kernel memory
+"failing safe" — it's the opposite. The kernel has no mechanism to
+fence off a poisoned slab page or page table from future access.
+Continuing is failing unsafely with a delayed, unpredictable
+consequence.
+
+
+> > Isn't the clean approach way better than the random one?
+> 
+> I don't fully agree. In the past upstream has enhanced many kernel mm
+> services (e.g. khugepaged, page migration, dump_user_range()) to
+> recover from memory error in order to improve system availability,
+> given these service or tools can fail safe. Seeing many crashes
+> pointing to a certain in-kernel service at consumption time helped us
+> decide what services we should enhance, and which service we should
+> prioritize. Of course not all kernel code can be recovered from memory
+> error, but that doesn't mean knowing what kernel code often caused
+> crash isn't useful.
+
+
+That's a fair point — consumption-time crashes have historically been
+useful for identifying which kernel services to harden. But I'd argue
+this patch doesn't prevent that analysis, it complements it.
+
+The sysctl defaults to off. Operators who want to observe where poison
+is consumed — to prioritize which services to enhance — can leave it
+disabled and get exactly the behavior they have today.
+
+But for operators running large fleets where the priority is fast
+diagnosis and machine replacement rather than kernel hardening research,
+the immediate panic is what they need. They already know the memory is
+bad, they don't need the kernel to keep running to find out which
+subsystem hits it first.
+
+Also, the services you mention — khugepaged, page migration,
+dump_user_range() — were enhanced to handle errors in user pages,
+where recovery is possible (kill the process, fail the migration). The
+pages this patch panics on — reserved pages, unknown page types — are
+kernel memory where _no_ recovery mechanism exists or is likely to exist.
+There's no service to enhance for those; the only options are crash now
+or crash later, given a crucial memory page got lost. 
+
+> Anyway, I only have a second opinion on the usefulness of a static
+> stack trace. This fail-fast option is good to have. Thanks!
+
+Thanks for the review! Just to make sure I understand your position correctly —
+are you saying you'd like changes to the patch, or is this more of a general
+observation about the tradeoff?
+
+--breno
 
