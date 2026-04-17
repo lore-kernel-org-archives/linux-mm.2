@@ -4,112 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 184CEF99C6A
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 21:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D42EFF99C63
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 21:59:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A5BD6B014C; Fri, 17 Apr 2026 17:48:25 -0400 (EDT)
+	id C7A2D6B014E; Fri, 17 Apr 2026 17:59:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 255C86B014D; Fri, 17 Apr 2026 17:48:25 -0400 (EDT)
+	id C2AA96B014F; Fri, 17 Apr 2026 17:59:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 143B36B014E; Fri, 17 Apr 2026 17:48:25 -0400 (EDT)
+	id B40526B0150; Fri, 17 Apr 2026 17:59:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EF5D06B014C
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:48:24 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BCC751B7949
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 21:48:24 +0000 (UTC)
-X-FDA: 84669386928.17.D5FA05B
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DB771C000D
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 21:48:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HnBvFr0z;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A46C86B014E
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:59:57 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F04C14037A
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 21:59:57 +0000 (UTC)
+X-FDA: 84669416034.18.8F5FE1B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 48892180006
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 21:59:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Z1bq9x/Z";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776463195; a=rsa-sha256;
+	cv=none;
+	b=QT06DcTugUg+hyuWQw9i3hAH4IRI5m5kl9X8qyJsDc76mksXrbhw7CcSjoyTE973laNDET
+	m4jJqh0ocsJFTFi3oYEh9ECF1xTbNgpDhX6jTUoNOjmQdwLe/qqapYUPy5fe/cIJRrdeMA
+	sHehP0tUXmCdDygae2OXpu+Q3hrklKo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Z1bq9x/Z";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776462503;
+	s=arc-20220608; t=1776463195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nHdL1Ocg1KAYUcmdB/M7wkvLdiK2qMWc0+wVJsX3Xkk=;
-	b=sXHGpsD6xhf9NRs6670OFSDHKIKaQYddIOirN1lXxy/vzNpe+DMu++IM5C/sN1szCvZSgq
-	StKjY/6ByVtR5lIBJwF8O6LHnZgcCPmAhwqp2UeXqoxFYOi0t8hZF9XPCrxwxvK5GBbRUR
-	dep89L/7XXPwwhEu6f6OActJB01L8n8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776462503; a=rsa-sha256;
-	cv=none;
-	b=2qsXdAzW4GnQQWuWPvWay7zbhJ4H4cBF+WCQSZDmBgVNCDpKQDHq/RCNxci9siH1uM+g46
-	KQqbMK7/XuILsiheiuk7yN/1bwfk5aNxW2NvBEjphkFim/FFq0RjuMIKHYYvQZHbKr9+hG
-	Nkb7DrZcWW2MxMUSIjnP63+R7JOyUIY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=HnBvFr0z;
-	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8a210c813f8so8396516d6.0
-        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 14:48:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1776462502; x=1777067302; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nHdL1Ocg1KAYUcmdB/M7wkvLdiK2qMWc0+wVJsX3Xkk=;
-        b=HnBvFr0zWtccVeApqUJ21pW8iQJdCuUbHFhcx+QZPySONGvjyOoCd8Y/KmQrM7YI5u
-         nJKGyWEc/ecuqP2+ASrDwrtd3zD/5av8Ql42cmbcnqr2/qT0aEBwBXKUzxrufkSkdW8q
-         gWt4xCNPo6xbo2p1sTjdDsfxbG2L6BjwW4dCyPZZXKrk0U9MJov+k2IRu0SQDjgl7LY1
-         qdAA78scGWkmavNB6YvJWamvf6K97lBgytOmokUJwggW1FNw+wgL+nOg3I3J9017qXV+
-         eqGbD4N041VDWLb850VAF5X8mdGLVVnkO48uCfsaj7+4WOCR2ciMpVH1eaxEPsvxgNBJ
-         Z5ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776462502; x=1777067302;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nHdL1Ocg1KAYUcmdB/M7wkvLdiK2qMWc0+wVJsX3Xkk=;
-        b=mXKAg/tPL852wIEO28G02+SzsFdGfCAO2j7bzm+IOaLdQ4ulZv+IV/sY/NaK7e6D3k
-         rajib30VCxtG7GcOoYBNKkJCzNq7ig/RoI/3OI5XIrfCLGsXmRb0b3Wqqdwur4f1l7aT
-         /0Laeu6BwxqJw94xbimZ1l6bg7RdxiSh9VfNe5Y21e5QPCeNUyCNNzAQp28K28IDVcxX
-         AYo++k5JSBHZn6ZMP8DuSo+kQiW3fuJKaeg8dOpSMDn6Q1ZU4o4FX+Aw0IO+Br3l3Qb4
-         72rBq1DhHMod+ITnLDNYNvcQs2KlZRgTifbyzBvlG3odZsBzPkFnv/0ziDAHvKDddiz9
-         Uf3g==
-X-Forwarded-Encrypted: i=1; AFNElJ/sl4IVSVlC7X4/m28IhC4jwu//uXC0/akES15T2YpZxTeNT4HDJR2WjL7U2eQ1XNbSoI4DS62BOg==@kvack.org
-X-Gm-Message-State: AOJu0Yx0WkHwbzwV6i5F9+rBzmb/snhCL/j7/i2dyT0TXa7p2+z300V8
-	6fOlzOrkEjJCoqrVba9PGfS2vi43EzmcPsqYvn7pJnwdqtSQqkrhsAZqBLQKqb2zmA4=
-X-Gm-Gg: AeBDiesZVhtVUFCC8CWPzEh5xulLfrqvEogQ1NTB8U8aiBK6lpwbwR0Bu4pQV8e5QyC
-	a/ZhYwvg0MNXfULCkOFQ0jRGxK5DCS3pXZb//7yOevl+xznH9Fr57NyS8SGjOItCED+NR+zXuva
-	KO3+Bu4q0R5H9S8HS/Y1m/vt0wQYd+5zYGDKiag0BhDAmdbTlctc12kwu/1J2pxJHXgaxbIBy1z
-	NFpkuC+pZa2wJkTEJVf+t1X71wspEuvc42KmOp3ncNEMkdtx0rmBxmC6kxLOeMMwrZahb9ssYLC
-	9hcBi+T1/74lTuyFy8IMP0xRImIPNikiGs8G4pS1V/7QKxkdfOLPGMbQtDYtEzQ+9mWO9qbqhK8
-	TKOIKI4Qu5TAF2g7PIBYsHzpVKOGfgpbjBNsJFp2vdcX4Yw3PL325NjaF3XGwQwnEe8B7n1HOMu
-	fS9nMdg+Vtt8ETXb/onMrel3psZ0182bwFP4MIN2PAR15TDhtmy34UvDBLhyrifM+03AEXMZk=
-X-Received: by 2002:a05:6214:4f18:b0:89c:4812:cc2 with SMTP id 6a1803df08f44-8b028065b51mr63135706d6.15.1776462501707;
-        Fri, 17 Apr 2026 14:48:21 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02aebc0f8sm19830736d6.47.2026.04.17.14.48.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 14:48:21 -0700 (PDT)
-Date: Fri, 17 Apr 2026 21:48:19 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: luca.boccassi@gmail.com
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com, 
-	rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
-	brauner@kernel.org
-Subject: Re: [PATCH v2] liveupdate: add LIVEUPDATE_SESSION_GET_NAME ioctl
-Message-ID: <huu6stumzw7ziu7i5qsbpo54hmvd4j4g6fge3acrulhwekw7ez@mjjf6psjty2g>
-References: <20260417003856.1525287-1-luca.boccassi@gmail.com>
+	bh=Nd7qHuCpZjnL95oFwxOOHJ3tWSTbnGkalG4pdfPsSpE=;
+	b=f/7c89IK7rTF1PJ7sdFtVVBt3UcQeKcE1+7IJ+jN6kMxKk9OzZ2sUoKwgfs8kg98DPl68S
+	vvDi/c5QvptFoQKG2nBw1X+sWISz3q7qYmDFfwVsA4dSKUmBOxVtqxj9BrwsMotr5sI3+l
+	s3DFBH8Z2mV1j47hRKX26zqt/CwPkK8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9EEF76013A
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 21:59:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF06C2BCB3
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 21:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776463194;
+	bh=JaCdgcmEUHbDeA2gw7iUfkcJu19kiK3sUUgMzqWDC18=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Z1bq9x/ZiH4MJAoheHkTRVkq4JXTfRg/lftEnj6n88YSLOTjinLLMsKpV34LstEs7
+	 +x4In20NNnbbyk/2txpnLlz8YfcOFlLfw+8sZZhsNm1onZ9xMbaFRLdIEACELoE5CF
+	 aIxsb9ZYbFp7hqk28r1RRGJdCA3dKiPfr466jlsBmWtEJpsTn+Qa4/Zt1ylXIc0Y90
+	 hdHcGZ+s7eqkKC6X23WVLYaV01dzYkv36iKMbqhlQP21GYq1WuK5FOqf1P6T6E9rgU
+	 ih/W9cGMlct7oz86FzDTLDlCpF8/DM0vjzxLXbuhlbprE93o81W0Csq4cukdmba2d6
+	 TGoFWwLM+RVyg==
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8acb09ddbf6so15918046d6.2
+        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 14:59:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8gyW3XiVQa4k8/DVLOV6gwNYxlHrOvBbLRlwhiuh7nlD0eqDxDI99tmEWc7HYxye3MxdATjYvxAQ==@kvack.org
+X-Gm-Message-State: AOJu0YyViZ6rC9IflwjCGFX9YmR/AMlNt26liGVSwkmkFsouY7+irmpA
+	LmavZY8bZ/3v6A7c2tSdz4Jr3dzM78PmT0VhzscsmPEAG/oqOWW/7thzaYg30TNRXZTQPWnheYD
+	6MkT9x6/nhsgW+njAXcCVkxz08oDhHyk=
+X-Received: by 2002:a05:6214:29e9:b0:89c:6bbd:76d8 with SMTP id
+ 6a1803df08f44-8b0280b2f12mr73952556d6.19.1776463193295; Fri, 17 Apr 2026
+ 14:59:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260417003856.1525287-1-luca.boccassi@gmail.com>
-X-Stat-Signature: yhizrabtu1cfbftinbsgawnnzo9uijbq
+References: <20260412060450.15813-1-baohua@kernel.org> <adt3Q_SRToF6fb3W@KASONG-MC4>
+In-Reply-To: <adt3Q_SRToF6fb3W@KASONG-MC4>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 18 Apr 2026 05:59:41 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zSCkDGzvpaBGAqnUSQSWx2ikmrqpihYPBhqdwC-PKDOQ@mail.gmail.com>
+X-Gm-Features: AQROBzC6BuZtWVY0sxybxJ4MxSOu-q_1G8tDdEt1b4FjEKKUjwM1uiPXApMWkwM
+Message-ID: <CAGsJ_4zSCkDGzvpaBGAqnUSQSWx2ikmrqpihYPBhqdwC-PKDOQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] zram: support asynchronous GC for lazy slot freeing
+To: Kairui Song <ryncsn@gmail.com>
+Cc: minchan@kernel.org, senozhatsky@chromium.org, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, axboe@kernel.dk, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kasong@tencent.com, chrisl@kernel.org, 
+	justinjiang@vivo.com, liulei.rjpt@vivo.com, 
+	Xueyuan Chen <xueyuan.chen21@gmail.com>, Wenchao Hao <haowenchao22@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 9uy7teawxstj861ik4wbt98bnx6snj1j
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DB771C000D
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776462502-62956
-X-HE-Meta: U2FsdGVkX19TqPI8apVRiCsnzf3QxlBcGLRaC1F4foUE6+MioSfXdhge99Nn9uJJNTcYRNn6J9vOgaYsczU9afnLZmJMJYHsE/IkrR5k3rBE40RGQcgBBZXLTpirxmyHYfEF3Ods5Oq3YH3fYc+6dXo9bebtMG9b39gEK7u2vc4+WiP9p4DgKjHshkMwed/tWvQD6nndeyIrptIDXNV2QAWJlTgeFVN2FDYA6kEGjEGGBEHFKBRwrRmDJjHBdNWGfNaoA/P00QlGKnTnpkduWfGYtfsj31q6giZJZettkpEXj8ZoUCyuaF3ITCYqWqaOJ+CzLcfQV0bJy0D9rrGhZ/dGIXIUY4ylxOz093l9ANnrOmFRSbR6wQRds7LCUXEA+ww8Z5OwxPtS/8bFnIGseq81vspEEuRu6Ff5r8arQW2fKN0Nig7ug+ufESGoG8gvAlOR9FBY96mhZlix2wRUFS+yh8j5KKFJ7hHiDUBu5xXDy9F4hUjhOdHgNhil4gy1dbxCcIwCpMF+OPgqqf/D491SJvkChtpy1LcTvD7EdhkRcY+ENnhjXFhg83zQuiTx+Br7yPGgz+G85G0WgkvOinCMgIZpPB/jRxFhHinDf+Sjfw9I3HWc3XRSxRiVbMCbqIj0y6Ok/NAkEVDdcNvYb5gY1qGRCNQYc0qZAW5tqxEfOrFJIefoSk6Gt82Urr5Z9vKgBPnhogywCclto0TddYXYXLMpqIV25sudd/l8pNoDm0M33kwQzjzSUtzahgzzi1NI2bDKrX+zZnzFEvFE72zVO21+UpjyHqXkF3YOo8bW2Lc9nvIG171xlzBWdREsANisJQekG24j6n17OIgHM5aQLSPuTdhxXjZ5ncLZ+IO/4Y/djY+fxkvcSLPmWDyxf3tgAig9mj0HtMRfV0cknZ4HEP7z340Vl5opouuDQvBfc+zHtiVQXuQnz7+qeSnwJ/ScE8oLw1ZKQkbxhyK
- YaapLuM4
- AaXG/xjsxJm/2S3ja9Kw7tturaIeS6tz9U2E76rgG6FCiH1uJMpXB/PwNq9TJ1iPLjA9wqbiquM+J2ZcY6J41t+biGWxIbSSzyjVV3ZKOKOagxJcRY9zJUqXFYELTFds0YW7Oz1AxSGEWcSHiaXyixt8YhR8/yntqk86yAjxI5yz6kDTfgsFsvSaLTKTSKAbICeAVY2vHFrsCp9Imj/gaH6jRButgqxjgf3ukd5maHXg/lpGZOheolZfnBwfcraS6zokFDTc9Qr6m6sA03zBgJqiiEZg/uyMduoaVip+K2Hc3g2rzr+6f4oLKTYTTTzGx21vfbjcoQtMOZGbHP9IgwgPehHRtUVhduXzseSKRXVCIl9SK1AEMSx5XpedYmFCCcBw3dSxkSFgIJYK/kI3Cb29V6qcQAhG8qrINrjwnSSJRN9z1zMjPprslVO4KDoKZa/8EJ6WOO6E7rNl+1LPR4dybH18dJ6QZARtBtqRJ4mAqd6Cu58BfRiG1on3OB/hwRuSf
+X-Rspamd-Queue-Id: 48892180006
+X-HE-Tag: 1776463195-347256
+X-HE-Meta: U2FsdGVkX19QAM1fiyLP3c68NihhNEoSgEjC4DnboTyepuh4hdDMY1V8B6EnopEN8ey3ZWzmOm1rLDr6108iiVBD5cdN1spEre7p1T7W8YJ1Fi88m5AUlBYH8zgUjMFVBRB8x61woax+24ScSAO4mR6ZahSSIO2grrsokQNjt1uQnOLeNrEOZqHdpKss/HNBhWRu6Hv6qWbApAIPlsV5nyp0R8viCzjrNujlnZnkVXfPTo706ophEEcyrgPIAhEBfM+zIj437EdrdC4RR+CNhQB/Cw0iXpIm9y2Isq1lm9251tMpPKmX7FZPHlmFI7kAGcvV9LTzCErJyjO9eD+9XFxUpJ+vOHX7mBnEuzvs7trwj+O8vhkocMEsQEkXOoXWm1vbqLEkbFEnzqSdOiu87AZf2P85yQS3cGyfKzmW/WSGZbAuvQ26ngTAJNGmXKJ5Fr2AcJQ944cggK/wewMeRalomP9CbeBH9RIu2cQ+kRNBnvFovPpfFQsx+0WjLnJ74hG32PepI2XCHPT4W+TpnrfNqGSidYB8EeN/9dF4OqeQXU2rZ72f+ykWTvJIkq+7jLgeFvoOstceMib3mu4pQcXQq/SLm9TdnQkBUP6sN0e0511IsSk/7vfBKv3TLDmm9QYo0f26qI02wTVNQOv8577UmCVjaWgfAYBWNE5N8IfsmnAiAeeCFnhtrhoCovQnPbX9FFaiJVpUmAkRySu9E13V6ftr2Q+s9ovBTFtiOPCPTf5Nt8H3SSufSb7hZ2+HMRSWzOGXL76KWQMd9lNzjWg2HtlJhqc5W6R9ceRCXRyZgvBUl6u2g/DGqh/oAyYVYzIEKuI3deb342x8m+G3jb2nBhDwbDjuaENo47AgGoBE7mmfFv/Imh3bByDJEB9iXnZRQNdpABWMGO9XyzehOo5V+xYaWnZbWbFxvWWQFyDMCnGKqRngiF57ge0iaLW7cus9lu/zz6pkv4n+D2o
+ QWzRINyJ
+ vEFqs+bLQjXMeHdvYn7p6ZU1o565GfWilRqTT4UtKNwTVw4KRSyFdQu7hndxjb2dACJhJMNjGo5qFaSUoyUTQTz2VV4hwZevRdSvoIUnYJls7CfaGXSYaxOle4s2gHjCp3dpVeXlpJk9hS+ISlr9DPZh6A/AcpPmSNGTma5C9r+pK7n6gxiBxal7FAcs2hZPa68LH4MZloUfOTt2280VxbChzVJPuIakSj+xmY3RV6LN/5S7qavo8s3QWb5BNqDZ3YPZnRYtQpbmP5p3kjWCD+f6aRwIKSBv8DGmoNDe6YHEOe2nViJhkJ1EVZRsRUtqRcykuDcb0KWtT6co1WEVOujjD5luBkrnOhYzsu6MJmUztWFNhf+e2hRgcwnVSXOAJ4tz0bbp0NaDMyVhOy75ltJduq6VeK5v8KmDptQlcBsmmlos=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,199 +105,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-17 01:36, luca.boccassi@gmail.com wrote:
-> From: Luca Boccassi <luca.boccassi@gmail.com>
-> 
-> Userspace when requesting a session via the ioctl specifies a name and
-> gets a FD, but then there is no ioctl to go back the other way and get
-> the name given a LUO session FD. This is problematic especially when
-> there is a userspace orchestrator that wants to check what FDs it is
-> handling for clients without having to do manual string scraping of
-> procfs, or without procfs at all.
-> 
-> Add a ioctl to simply get the name from an FD.
-> 
-> Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
-> ---
-> This was requested by Lennart and Christian when discussing integration
-> with systemd for LUO management.
-> 
-> v2: apply one fix from bot review about cleanup on error path:
->     https://sashiko.dev/#/patchset/20260415184536.1155220-1-luca.boccassi%40gmail.com
->     the other comments are invalid: luo is not a kmod, and the write hooks are not set up
+On Sun, Apr 12, 2026 at 7:48=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Sun, Apr 12, 2026 at 02:04:50PM +0800, Barry Song (Xiaomi) wrote:
+> > Swap freeing can be expensive when unmapping a VMA containing
+> > many swap entries. This has been reported to significantly
+> > delay memory reclamation during Android=E2=80=99s low-memory killing,
+> > especially when multiple processes are terminated to free
+> > memory, with slot_free() accounting for more than 80% of
+> > the total cost of freeing swap entries.
+> >
+> > Two earlier attempts by Lei and Zhiguo added a new thread in the mm cor=
+e
+> > to asynchronously collect and free swap entries [1][2], but the
+> > design itself is fairly complex.
+> >
+> > When anon folios and swap entries are mixed within a
+> > process, reclaiming anon folios from killed processes
+> > helps return memory to the system as quickly as possible,
+> > so that newly launched applications can satisfy their
+> > memory demands. It is not ideal for swap freeing to block
+> > anon folio freeing. On the other hand, swap freeing can
+> > still return memory to the system, although at a slower
+> > rate due to memory compression.
+> >
+> > Therefore, in zram, we introduce a GC worker to allow anon
+> > folio freeing and slot_free to run in parallel, since
+> > slot_free is performed asynchronously, maximizing the rate at
+> > which memory is returned to the system.
+> >
+> > Xueyuan=E2=80=99s test on RK3588 shows that unmapping a 256MB swap-fill=
+ed
+> > VMA becomes 3.4=C3=97 faster when pinning tasks to CPU2, reducing the
+> > execution time from 63,102,982 ns to 18,570,726 ns.
+> >
+> > A positive side effect is that async GC also slightly improves
+> > do_swap_page() performance, as it no longer has to wait for
+> > slot_free() to complete.
+> >
+> > Xueyuan=E2=80=99s test shows that swapping in 256MB of data (each page
+> > filled with repeating patterns such as =E2=80=9C1024 one=E2=80=9D, =E2=
+=80=9C1024 two=E2=80=9D,
+> > =E2=80=9C1024 three=E2=80=9D, and =E2=80=9C1024 four=E2=80=9D) reduces =
+execution time from
+> > 1,358,133,886 ns to 1,104,315,986 ns, achieving a 1.22=C3=97 speedup.
+> >
+> > [1] https://lore.kernel.org/all/20240805153639.1057-1-justinjiang@vivo.=
+com/
+> > [2] https://lore.kernel.org/all/20250909065349.574894-1-liulei.rjpt@viv=
+o.com/
+> >
+> > Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+>
+> Hi Barry
+>
+> This looks an interesting idea to me.
+>
+> > ---
+> >  drivers/block/zram/zram_drv.c | 56 ++++++++++++++++++++++++++++++++++-
+> >  drivers/block/zram/zram_drv.h |  3 ++
+> >  2 files changed, 58 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_dr=
+v.c
+> > index c2afd1c34f4a..f5c07eb997a8 100644
+> > --- a/drivers/block/zram/zram_drv.c
+> > +++ b/drivers/block/zram/zram_drv.c
+> > @@ -1958,6 +1958,23 @@ static ssize_t debug_stat_show(struct device *de=
+v,
+> >       return ret;
+> >  }
+> >
+> > +static void gc_slots_free(struct zram *zram)
+> > +{
+> > +     size_t num_pages =3D zram->disksize >> PAGE_SHIFT;
+> > +     unsigned long index;
+> > +
+> > +     index =3D find_next_bit(zram->gc_map, num_pages, 0);
+> > +     while (index < num_pages) {
+> > +             if (slot_trylock(zram, index)) {
+> > +                     if (test_bit(index, zram->gc_map))
+> > +                             slot_free(zram, index);
+> > +                     slot_unlock(zram, index);
+> > +                     cond_resched();
+> > +             }
+> > +             index =3D find_next_bit(zram->gc_map, num_pages, index + =
+1);
+> > +     }
+> > +}
+> > +
+>
+> The ideas looks interesting but the implementation looks not that
+> optimal to me. find_next_bit does a O(n) looks up for every gc call
+> looks really expensive if the pending slot is at tail.
 
-Please split into two patches, and also CC to kernel-linux.
-> 
->  include/uapi/linux/liveupdate.h               | 19 +++++
->  kernel/liveupdate/luo_session.c               | 13 ++++
->  .../testing/selftests/liveupdate/liveupdate.c | 71 +++++++++++++++++++
->  3 files changed, 103 insertions(+)
-> 
-> diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
-> index 30bc66ee9436a..41dc44d239dde 100644
-> --- a/include/uapi/linux/liveupdate.h
-> +++ b/include/uapi/linux/liveupdate.h
-> @@ -59,6 +59,7 @@ enum {
->  	LIVEUPDATE_CMD_SESSION_PRESERVE_FD = LIVEUPDATE_CMD_SESSION_BASE,
->  	LIVEUPDATE_CMD_SESSION_RETRIEVE_FD = 0x41,
->  	LIVEUPDATE_CMD_SESSION_FINISH = 0x42,
-> +	LIVEUPDATE_CMD_SESSION_GET_NAME = 0x43,
->  };
->  
->  /**
-> @@ -213,4 +214,22 @@ struct liveupdate_session_finish {
->  #define LIVEUPDATE_SESSION_FINISH					\
->  	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_FINISH)
->  
-> +/**
-> + * struct liveupdate_session_get_name - ioctl(LIVEUPDATE_SESSION_GET_NAME)
-> + * @size:  Input; sizeof(struct liveupdate_session_get_name)
-> + * @name:  Output; A null-terminated string with the full session name.
-> + *
-> + * Retrieves the full name of the session associated with this file descriptor.
-> + * This is useful because the kernel may truncate the name shown in /proc.
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +struct liveupdate_session_get_name {
-> +	__u32		size;
-> +	__u8		name[LIVEUPDATE_SESSION_NAME_LENGTH];
+Agreed. It=E2=80=99s essentially a prototype at this stage to demonstrate t=
+he
+idea.
 
-Add __u32  reserved;
+>
+> Perhaps a percpu stack can be used, something like the folio batch?
 
-Thanks,
-Pasha
+I guess a major difference is that folio batching aims to reduce
+lruvec lock contention. Once a CPU=E2=80=99s slot space is empty, it batche=
+s
+draining folios into the lruvec by checking whether some slots can
+share the same lock. This procedure is synchronous within
+folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
 
+In our case, we might not want a synchronous procedure, so each CPU
+could launch its own workqueue. I=E2=80=99m not sure whether this is actual=
+ly
+beneficial, as it might trigger the zsmalloc lock contention we are
+trying to eliminate.
 
-> +};
-> +
-> +#define LIVEUPDATE_SESSION_GET_NAME					\
-> +	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_GET_NAME)
-> +
->  #endif /* _UAPI_LIVEUPDATE_H */
-> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-> index 25ae704d77873..af9e498206d24 100644
-> --- a/kernel/liveupdate/luo_session.c
-> +++ b/kernel/liveupdate/luo_session.c
-> @@ -289,10 +289,21 @@ static int luo_session_finish(struct luo_session *session,
->  	return luo_ucmd_respond(ucmd, sizeof(*argp));
->  }
->  
-> +static int luo_session_get_name(struct luo_session *session,
-> +				struct luo_ucmd *ucmd)
-> +{
-> +	struct liveupdate_session_get_name *argp = ucmd->cmd;
-> +
-> +	strscpy((char *)argp->name, session->name, sizeof(argp->name));
-> +
-> +	return luo_ucmd_respond(ucmd, sizeof(*argp));
-> +}
-> +
->  union ucmd_buffer {
->  	struct liveupdate_session_finish finish;
->  	struct liveupdate_session_preserve_fd preserve;
->  	struct liveupdate_session_retrieve_fd retrieve;
-> +	struct liveupdate_session_get_name get_name;
->  };
->  
->  struct luo_ioctl_op {
-> @@ -319,6 +330,8 @@ static const struct luo_ioctl_op luo_session_ioctl_ops[] = {
->  		 struct liveupdate_session_preserve_fd, token),
->  	IOCTL_OP(LIVEUPDATE_SESSION_RETRIEVE_FD, luo_session_retrieve_fd,
->  		 struct liveupdate_session_retrieve_fd, token),
-> +	IOCTL_OP(LIVEUPDATE_SESSION_GET_NAME, luo_session_get_name,
-> +		 struct liveupdate_session_get_name, name),
->  };
->  
->  static long luo_session_ioctl(struct file *filep, unsigned int cmd,
-> diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
-> index c2878e3d5ef90..bdc1cedc4f944 100644
-> --- a/tools/testing/selftests/liveupdate/liveupdate.c
-> +++ b/tools/testing/selftests/liveupdate/liveupdate.c
-> @@ -102,6 +102,22 @@ static int create_session(int lu_fd, const char *name)
->  	return args.fd;
->  }
->  
-> +/* Helper function to get a session name via ioctl. */
-> +static int get_session_name(int session_fd, char *name, size_t name_len)
-> +{
-> +	struct liveupdate_session_get_name args = {};
-> +
-> +	args.size = sizeof(args);
-> +
-> +	if (ioctl(session_fd, LIVEUPDATE_SESSION_GET_NAME, &args))
-> +		return -errno;
-> +
-> +	strncpy(name, (char *)args.name, name_len - 1);
-> +	name[name_len - 1] = '\0';
-> +
-> +	return 0;
-> +}
-> +
->  /*
->   * Test Case: Create Duplicate Session
->   *
-> @@ -345,4 +361,59 @@ TEST_F(liveupdate_device, preserve_unsupported_fd)
->  	ASSERT_EQ(close(session_fd), 0);
->  }
->  
-> +/*
-> + * Test Case: Get Session Name
-> + *
-> + * Verifies that the full session name can be retrieved from a session file
-> + * descriptor via ioctl.
-> + */
-> +TEST_F(liveupdate_device, get_session_name)
-> +{
-> +	char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] = {};
-> +	const char *session_name = "get-name-test-session";
-> +	int session_fd;
-> +
-> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-> +	if (self->fd1 < 0 && errno == ENOENT)
-> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> +	ASSERT_GE(self->fd1, 0);
-> +
-> +	session_fd = create_session(self->fd1, session_name);
-> +	ASSERT_GE(session_fd, 0);
-> +
-> +	ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)), 0);
-> +	ASSERT_STREQ(name_buf, session_name);
-> +
-> +	ASSERT_EQ(close(session_fd), 0);
-> +}
-> +
-> +/*
-> + * Test Case: Get Session Name at Maximum Length
-> + *
-> + * Verifies that a session name using the full LIVEUPDATE_SESSION_NAME_LENGTH
-> + * (minus the null terminator) can be correctly retrieved.
-> + */
-> +TEST_F(liveupdate_device, get_session_name_max_length)
-> +{
-> +	char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] = {};
-> +	char long_name[LIVEUPDATE_SESSION_NAME_LENGTH];
-> +	int session_fd;
-> +
-> +	memset(long_name, 'A', sizeof(long_name) - 1);
-> +	long_name[sizeof(long_name) - 1] = '\0';
-> +
-> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-> +	if (self->fd1 < 0 && errno == ENOENT)
-> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> +	ASSERT_GE(self->fd1, 0);
-> +
-> +	session_fd = create_session(self->fd1, long_name);
-> +	ASSERT_GE(session_fd, 0);
-> +
-> +	ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)), 0);
-> +	ASSERT_STREQ(name_buf, long_name);
-> +
-> +	ASSERT_EQ(close(session_fd), 0);
-> +}
-> +
->  TEST_HARNESS_MAIN
-> -- 
-> 2.47.3
-> 
+If we end up wanting to drain all CPUs together, that would make things
+quite complex again.
+
+So I guess a hierarchical bitmap, an XArray, or even a simple array
+could work. If we cap it at 64MB, the array would be at most 128KB on a
+PAGE_SIZE=3D4KB system.
+
+I am CC=E2=80=99ing Wenchao, who may be interested in further measurements
+and also involved in a more efficient implementation.
+
+>
+> > -     slot_free(zram, index);
+> > +     if (!try_slot_lazy_free(zram, index))
+> > +             slot_free(zram, index);
+>
+> What is making this slot_free so costly? zs_free?
+>
+> >       slot_unlock(zram, index);
+> >  }
+> >
+> > diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_dr=
+v.h
+> > index 08d1774c15db..1f3ffd79fcb1 100644
+> > --- a/drivers/block/zram/zram_drv.h
+> > +++ b/drivers/block/zram/zram_drv.h
+> > @@ -88,6 +88,7 @@ struct zram_stats {
+> >       atomic64_t pages_stored;        /* no. of pages currently stored =
+*/
+> >       atomic_long_t max_used_pages;   /* no. of maximum pages stored */
+> >       atomic64_t miss_free;           /* no. of missed free */
+> > +     atomic64_t gc_slots;            /* no. of queued for lazy free by=
+ gc */
+>
+> Maybe we want to track the size of content being delayed instead
+> of slots number? I saw there is a 30000 hard limit for that.
+
+Yep, definitely we want size, not number of pages, since PAGE_SIZE
+is not constant.
+
+>
+> Perhaps it will make more sense if we have a "buffer size"
+> (e.g. 64M), seems more intuitive to me. e.g. the ZRAM module can occupy
+> at most 64M of memory, so the delayed free won't cause a significant
+> global pressure.
+>
+> Also I think this patch is batching the memory free operations, so the
+> workqueue or design can also be further optimized for batching, for
+> example if the zs_free is the expensive part then maybe we shall just
+> clear the handler for the freeing slot and leave the handler in a
+> percpu stack, then batch free these handlers. zsmalloc might make
+> use some batch optimization based on that too, something like
+> kmem_cache_free_bulk but for zsmalloc?
+
+I=E2=80=99m not really sure a per-CPU approach is the right direction, sinc=
+e
+zsmalloc already has a lot of contention we may want to eliminate. If
+we introduce per-CPU workqueues or similar mechanisms, we might end up
+increasing contention rather than reducing it.
+
+A kmem_cache_free_bulk()-like approach might be a good direction to
+investigate for zsmalloc. I guess Xueyuan is also thinking about it?
+Right now, zsmalloc frequently takes and releases multiple locks for
+each individual.
+
+>
+> if zs_free is not all the expensive part, I took a look at slot_free
+> maybe a lot of read / write of slot data can be merged.
+>
+> This patch currently doesn't reduce the total amount of work, but
+> if above idea works, a lot of redundant operations might be be dropped,
+> result in better performance in every case.
+
+Yep, hopefully we can optimize for every case. Of course, that will
+take a lot of time :-)
+
+>
+> Just my two cents and ideas, not sure if I got everything correct.
+> Looking forward for more disscussion on this :)
+
+Thanks for your suggestions=E2=80=94they are always welcome. We may
+discuss this further.
+
+Best Regards
+Barry
 
