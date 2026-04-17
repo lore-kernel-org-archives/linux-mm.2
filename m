@@ -4,94 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E528F436B2
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 15:12:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33362F436B4
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 15:46:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C5BC6B011F; Fri, 17 Apr 2026 11:12:01 -0400 (EDT)
+	id 601506B0120; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 976116B0120; Fri, 17 Apr 2026 11:12:01 -0400 (EDT)
+	id 5D96A6B0121; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B31B6B0121; Fri, 17 Apr 2026 11:12:01 -0400 (EDT)
+	id 515EC6B0122; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C5AC6B011F
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:12:01 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3066F1388E1
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:12:01 +0000 (UTC)
-X-FDA: 84668388042.04.F4C27D0
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 09FCB40014
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:11:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Aq3s/d1Q";
-	spf=pass (imf11.hostedemail.com: domain of alvin.sun@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E5FB6B0120
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:46:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9439B1A01EB
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:46:57 +0000 (UTC)
+X-FDA: 84668476074.16.4CE7142
+Received: from mail-m82138.xmail.ntesmail.com (mail-m82138.xmail.ntesmail.com [156.224.82.138])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E9705A000F
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 15:46:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf15.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.138 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776438719;
+	s=arc-20220608; t=1776440815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hE91+ODNE/cyUlwhydK+2PgiKWGGfc/idUIRysntKY8=;
-	b=AftTkt4noRpUCVKIxsGnqoBq4vXi0j/GiU1frkHYWuLIAYfnlYYDb9s7wKu6clBubHoJn7
-	ZnTnb7Is0Ktu7Bw7QQa7KGF/gJMgxHVOirNcFNk9IbcUUu7rcm88dAvtub0PR8gtYTEWmQ
-	rb5D+kSA7z0XSxU6YK6IkneyiVjDm3o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776438719; a=rsa-sha256;
-	cv=none;
-	b=pua7CLIos/rzeGRg/rU6vwRDbpqa0izwxBbnk21R4MiCLmhY1a9dnZGMa1EUsP40q6K7ir
-	tNf5wf3g88JdDPHodLyeWUV9TkPHqE0NbFqsS/sORX7Vjptbf6Iq8X0BRwNMsgYcO/Wf1e
-	Qa+NfvyOW+xWIj1NIkycfrny+DvoI6o=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=AJkIVB1CVaftz2P3+4AMH+QJO3FnBgXQoGFo5iG5VQY=;
+	b=Qx38ytdpKTvOyuH1JlxFFfMJr+zOfNuPEeNmROqrxIhUFz23XDbGDFSSyGlyPrDjykOx03
+	S9m0LFsL8rDgIcCVAMnS24fr5go9th2TgJTlj8aLNte1tMd6UE6i0TyUv6WfpIF/sPhMJo
+	/QMsmGMKhLZ3ILyRpNrDljQ6XnJQeMA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="Aq3s/d1Q";
-	spf=pass (imf11.hostedemail.com: domain of alvin.sun@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <03096a35-a5de-4fe1-b235-42c1647b8563@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776438716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hE91+ODNE/cyUlwhydK+2PgiKWGGfc/idUIRysntKY8=;
-	b=Aq3s/d1Q35SNh01ElXCno+uaYR8qW6Od0mIGP+Xo6qSBdFYBSI1hAgiWAIfay+xZMx5PAx
-	CIVy9tD1CGrhfK5MwGOhUTn6rYwcrY8SdanxcdkyCfcJ3vghL/Yif8DSlNr6ObYvLVvpNA
-	usH7aSP8muoo+JlFfTyuMxw1DElM3sc=
-Date: Fri, 17 Apr 2026 23:11:35 +0800
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf15.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.138 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776440815; a=rsa-sha256;
+	cv=none;
+	b=frPAjl8QQoiB5Dl9qNUjQrrPG7mMP0CTuY8NXvyG8s84MhfaFBUrXXyOQWqSWi9DvVVhAg
+	JTKhG7E1naRC8bhX/Cuwg63fvv8URpYnkG6K27JQ7U0XsYuwPSkFtH6Dv/jpVQccwR5vTV
+	Kz5BIeyrLEUtEQho2A9VeYZx1rD9iV4=
+Received: from localhost.localdomain (unknown [IPV6:2409:8a20:ef7:a5b4:8810:8f74:8c26:2])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 190e229f4;
+	Fri, 17 Apr 2026 23:46:47 +0800 (GMT+08:00)
+From: Zhen Ni <zhen.ni@easystack.cn>
+To: akpm@linux-foundation.org,
+	vbabka@kernel.org
+Cc: surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Zhen Ni <zhen.ni@easystack.cn>
+Subject: [PATCH 0/3] mm/page_owner: add filter infrastructure for compact mode and NUMA filtering
+Date: Fri, 17 Apr 2026 23:46:35 +0800
+Message-Id: <20260417154638.22370-1-zhen.ni@easystack.cn>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Subject: Re: [PATCH 4/4] rust: xarray: Add Guard::find() helper
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
- <20260417-tyr-ioctls-deps-v1-4-41c6e9bb061c@linux.dev>
- <aeGKTIRFgBqHNI9S@casper.infradead.org>
- <df183bfe-21b9-4393-902d-18835e0bcf48@linux.dev>
- <CAJ-ks9=veRG_8SZ7CyzqdR2RhtJ6QZWozyo8oc-xnwoqpCdg6g@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <CAJ-ks9=veRG_8SZ7CyzqdR2RhtJ6QZWozyo8oc-xnwoqpCdg6g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: w316yjqizpksxbo6oy9fpdfik59hg1pp
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d9c1f8ede0229kunm7c3615e318e598
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaGkMYVkJJGEpNSRkaT0oeGFYVFAkWGhdVGRETFh
+	oSFyQUDg9ZV1kYEgtZQVlJT0tCQUMaSUtBHh1MQRpOGU9BQ0NKS0FDHUxPQUMYSU1BSVlXWRYaDx
+	IVHRRZQVlPS0hVSktJT09PS1VKS0tVS1kG
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E9705A000F
+X-Stat-Signature: p48bnq8zdkordo6fjhhkrdfkk8o1tzbm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 09FCB40014
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776438718-315474
-X-HE-Meta: U2FsdGVkX1//wbSWr3CLWZow7Mq+DwA0cWZWwMAQSwtD9bqGlcsJ2baYUTcb2NYBnGu0GVLEbl67wVaGnbLh9zV7UbXmVVQ+CA5ze61O4dt6mUXd4yZhk5WFYfc6zK/gLpwIqh106l+HiK5R2xIehn/Rx0123oUxGPzyZNI1uyske2HATY4i69RWFSSTDq7fnaNAikCXAxaxjcDXK/Wb+1L8dyh7nwydJemoSEK84rV68FHd4sfC7wUgBNXqR499JT6z3kuSiViVjQ7FNlvZw5wMF2EQNNrKTlj2mGNSb+FqwSmsZKJwibCfL4F54Fo2AvdnKyPTI4HxrJXCvZo8voXzMl6Y3Xr2Ew1M4IowbO5mL3mmm9Rzi5cSa6rCuwZ00AODkJXFR9jVh5+f6+9p2Q5tOw09ld/17/tcHk0zpX+Y9XoJMliJGuyh/RrJhdyK6B22zZ7MKn9o4J2aSeoq93u48qdCkSPrKu9OIPzcKVLSH8CrcE1qVvItMP/PdsuyzKn/74qgWMzuyySVskBYi3QgY20pw/O3GyerjHvMPl8vHoUHaZerO+3PnDw2TPrhLteK57kXI7vGVDSXtBfAEVt/QEaMJL3Dcj6tGTw5ZFav1KVXosDKxXyAG0i9Wrg5MzGkCSDMRQg9CL+VVfAHaPhxaJdOTg1d1d//dH2Z0fHYzD2X5Hc94YKqbg3/AO5Giizjs5k/SgAReKnyQNyRaepw0oEfgul8UzgeWg+3pEBX1CU4+/8xcYwvEMp9guAjdKLXc4v6uUd1mB4Getn8yRcqqAma1A8zGkrdQAEzuQ4qNYW2aOh9u2nURetQUz2CQKi6Dp+gpKFUnAUEJVlAH68f0nlLXhf6kld2VIplEJV5k8cCq2GGz5j2gyCjlYBAuixjpPhjXJKgkLUAjjEBe427693ur8KVQFP6pxbg3/vLHTrxvuw74s7R0NrOu4DVTpjU+e8ogQqD1vtqq02
- VoR5KkfM
- GnJvp/XW89UB80jCMwf9AqChdV1xodRcNnMJOO6javWClNupiNR9RvMtI/W4LeyKEzofycKworT2mYoaKxmNE85Hx+lFnVt/sNNM/GCOhQbrSbreUCaJgfUQgG9xe0ssuweipadamOXoQJKOTG9qVO8kxDI03I3gDPsrvu2d/TCNkf4L+CoklC5YLxSBiV7zAM5AG
+X-HE-Tag: 1776440814-982933
+X-HE-Meta: U2FsdGVkX18yKR9fGjYoZhHwACVH7xc1ZD+ySesY4OgFzeRO+VMxWR11cJ/hZFWVTNkaCgPOFX6/Bdp1cBJghRyb8YKTvhqQGMCNkIi3jnvzS3kqsQD7a+AyoZmz8mSW8iAuO1+JlH0BbGTmDd1A5t9KLAQnqA2KrlB4ENkaAYNJ2dIWVMBNz7TSr9CjdhjR4h4TNMWvYdQwG7leKQdgv6kVyCFN76tH5Neog9qNeWHCOz4y5LoRfq/xKQqOyITxZ1qzb/GJDQWbwGNWmddqHe1o5NXcnMUlPnM7Wc+l/4DaZH20qIdupdG5HcxKLxzRdf72CMNAgUjg87SOJZGOEMluVd8LhusGHp4mIMJjkFFXd3+Cr81Wp+8+NYiJOnTNePk+UuGneIF/F/eKC4axtk3NS4G+nrXb8vjo1UuLKjWD8Al+DaNWHxByO1wo6QaVbeXWLtLiTQpHMhN/11poB11Oef22Gmhm+XjrW36pGbY30sTqRwl1WowVQPrafZs8hPbV9uxkzs1aRA3B905dVTMstNK7z1xLb6OoxW0NcBJz1C83VaPvwbJiunUXlCw1btpYzmOI50GWJASc3OSWWj3v8WktGUl0ohO3W9ZX4l18+N+xog3g0kuvToroRZsFdpZcNLkPPFsuf7wCZAKRSVWJL5/QNetZ83iTF00PWR6DCtWYA+S5AWKsyx9ZPkpxzmW4rxR0gozrT8VMtIKHB8LhmSdSi6xGov7TLfPNlcKhW6Wf4Eh/hqkP0cyH/lQMjECaurfG7jLewKBuA3QjaxfifoyXDiihZTrOFKpdCM47wUwyYWjdh4dKhlqRTsY1MfvQ3CC/kzVqmBxbyLCaxiYJVyIydcZzkhyAPzKTOz6pTOWlxcKTy0roi3w9rTiqf4igDOVqrh/xtnpXqGePSMSuATsY70hj5WdfyXOTtnH5Th+GsJgeITwGt2flurYEEzqU2Zwcci+Y7eaLzgd
+ z/PuM8Ff
+ W3Z+jw7Vfk4c8fHmlJozHaqPUWbcSWKY7Vm3FyCpsoPue3NQlI+Wr3e8dCqNaWWqhjECNrVCZ1YwSBmwZpLAzOE5o+2Bz6Es7pCuJ4rm9K2PoROwZDj6H3eeOX2CWdftYGb96ouwkULedpcKJYET6rX5jgRMujHVECBPwajqAvz8w8UI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,15 +88,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This patch series introduces filtering capabilities to the page_owner
+feature to address storage and performance challenges in production
+environments.
 
-On 4/17/26 22:52, Tamir Duberstein wrote:
-> More complete wrappers around the C APIs exist in Andreas'
-> https://lore.kernel.org/all/20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org/.
-> Perhaps we can borrow from that series?
+Problem Statement
+=================
 
-This looks like a very complete xarray implementation that includes the
-APIs I want. I'll look into how to integrate this with my patches.
+In production environments with large memory configurations (e.g., 250GB+),
+collecting page_owner information often results in files ranging from
+several gigabytes to over 10GB. This creates significant challenges:
 
-Best regards,
-Alvin
+1. Storage pressure on production systems
+2. Difficulty transferring large files from production environments
+3. Post-processing overhead with tools/mm/page_owner_sort.c
+
+The primary contributor to file size is redundant stack trace
+information. While the kernel already deduplicates stacks via
+stackdepot, page_owner retrieves and stores full stack traces for
+each page, only to deduplicate them again during post-processing.
+
+Additionally, in NUMA-aware environments (e.g., DPDK-based cloud
+deployments where QEMU processes are bound to specific NUMA nodes),
+OOM events are often node-specific rather than system-wide.
+Currently, page_owner cannot filter by NUMA node, forcing users to
+collect and analyze data for all nodes.
+
+Solution
+========
+
+This patch series introduces a flexible filter infrastructure with
+two initial filters:
+
+1. **Compact Mode Filter**: Outputs only stack handles instead of
+   full stack traces. The handle-to-stack mapping can be retrieved
+   from the existing show_stacks_handles interface. This dramatically
+   reduces output size while preserving all allocation metadata.
+
+2. **NUMA Node Filter**: Allows filtering pages by specific NUMA node ID,
+   enabling targeted analysis of memory issues in NUMA-aware deployments.
+
+Implementation
+==============
+
+The series is structured as follows:
+
+- Patch 1: Add filter infrastructure (data structures and
+  debugfs directory)
+- Patch 2: Implement compact mode filter
+- Patch 3: Implement NUMA node filter
+
+Usage Example
+=============
+
+Enable compact mode and filter for NUMA node 2:
+
+    # cd /sys/kernel/debug/page_owner_filter/
+    # echo 1 > compact
+    # echo 2 > nid
+    # cat /sys/kernel/debug/page_owner > page_owner_0417.txt
+
+Sample compact mode output:
+
+    Page allocated via order 0, mask 0x0(), pid 0, tgid 0 (swapper),
+    ts 0 ns PFN 0x80000 type Unmovable Block 1024 type Unmovable
+    Flags 0x23fffe0000000000(node=2|zone=0|lastcpupid=0x1ffff)
+    handle: 1048577
+
+    Page allocated via order 0, mask 0x252000(__GFP_NOWARN|
+    __GFP_NORETRY|__GFP_COMP|__GFP_THISNODE), pid 0, tgid 0 (swapper),
+    ts 0 ns PFN 0x80002 type Unmovable Block 1024 type Unmovable
+    Flags 0x23fffe0000000200(workingset|node=2|zone=0|lastcpupid=0x1ffff)
+    handle: 1048577
+
+Future Enhancements
+==================
+
+The filter infrastructure is designed to be extensible. Potential
+future filters could include:
+- PID/TGID filtering
+- Time range filtering (allocation timestamp windows)
+- GFP flag filtering
+- Migration type filtering
+
+Testing
+=======
+
+Tested on a system with multiple NUMA nodes. Verified that:
+- Filters work independently and in combination
+- Compact mode output correlates correctly with show_stacks_handles
+- Default behavior (filters disabled) remains unchanged
+
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+
+---
+
+Zhen Ni (3):
+  mm/page_owner: add filter infrastructure
+  mm/page_owner: add compact mode filter
+  mm/page_owner: add NUMA node filter
+
+ mm/page_owner.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 2 deletions(-)
+
+--
+2.20.1
+
 
