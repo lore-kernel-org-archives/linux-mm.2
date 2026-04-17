@@ -4,86 +4,197 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4918AF43699
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 12:46:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF38F43697
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 12:47:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B11A16B00F7; Fri, 17 Apr 2026 08:46:00 -0400 (EDT)
+	id BFE956B00FA; Fri, 17 Apr 2026 08:47:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE98A6B00F9; Fri, 17 Apr 2026 08:46:00 -0400 (EDT)
+	id BD5C36B00FB; Fri, 17 Apr 2026 08:47:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A266C6B00FA; Fri, 17 Apr 2026 08:46:00 -0400 (EDT)
+	id AC58F6B00FC; Fri, 17 Apr 2026 08:47:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F2A86B00F7
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:46:00 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52A941390B3
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:46:00 +0000 (UTC)
-X-FDA: 84668020080.30.580F3DB
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5907A20002
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:45:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GayrPppv;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776429958;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 97D176B00FA
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:47:36 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 445691387DC
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:47:36 +0000 (UTC)
+X-FDA: 84668024112.12.480DC9A
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013033.outbound.protection.outlook.com [52.101.83.33])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0B3F7A0004
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 12:47:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=NgyBUidG;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=NgyBUidG;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf25.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.83.33 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776430052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ta9DM9SDNRcmSJ5h0e+0G8+56tKcA4LQSKmXx7BeWew=;
-	b=BRRX7/wlVdI1+TJVKrwHjJruurGd5DXpn6MpzwEWI1ebJ4xi+qZV0Zjl6I+o5Si2wIxZBs
-	FEYnuB40lL3psHVvkUYKpZYjUSqzjXBOALNzHJBTxL2TONtH5CfIKW3tTJDJwFHhenaJfO
-	joC6ZHJy/Hfh/ix66GS1cXJQscdWAII=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GayrPppv;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776429958; a=rsa-sha256;
-	cv=none;
-	b=21oPLlGsQ7GdsFIIVw7TGwZZBFyLLmpI3rNihZ3awLKWu4Xwws2P4ICqeM1ZM5uKiGahnY
-	JzGnoxnT7UyJktONJO8r1jOipWR9nPwPEPYtEXvo6n+lXT/3UH9qh860aEVjRaoERpQAun
-	IYoiBuT60kGtrrTB51d338K7pctRvNg=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776429953; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Ta9DM9SDNRcmSJ5h0e+0G8+56tKcA4LQSKmXx7BeWew=;
-	b=GayrPppvNYlE6+Fg0A/xt/9fXZH27HvqWeyHCJxBCv0umR148hnjPhXyYeWzVifis9tY0GErhcLzU1F7OXAxGPqHWiWUaYMQtlXlHb3kULwF7rAcvEd8e0S56EH5m61RH2xGLoPfVVVAwlWZO/Zx3aQwbz8GSOedWZ23H0g2q9s=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X1BNHJL_1776429952;
-Received: from 30.32.70.62(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1BNHJL_1776429952 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 17 Apr 2026 20:45:52 +0800
-Message-ID: <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
-Date: Fri, 17 Apr 2026 20:45:51 +0800
-MIME-Version: 1.0
+	bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
+	b=cdB9IXNfDRbVbNuoShcwa6TrbxGprB52/HoQTKsYVKkFBPPRlFRtvn+hDodTtqQ1sQinKz
+	8UNxq9HALbetiwZYSppy8tcq3HjC3A4rht5nXOxt0vHQpv+axMNAYlanESSSxgyix1+TuS
+	T7lvwcNgeRyVGAD0EviQrMoAQWC3mqU=
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1776430052; a=rsa-sha256;
+	cv=pass;
+	b=zTbY/xe62sMtwmLCbGlEDz0mQmWh60/QNoFpYSiSOZvniOMOHFdYyWdByN1ZaJvQJL5UF/
+	fHDPLWGfONl1FwSmACrt1h8LCWBoQXSNuS5W/AlCobkWAKRVtn6lC87WptwGOj4gIa9hub
+	fs3kgkUQvC8CiqoNzRgVMKEx3pYR58I=
+ARC-Authentication-Results: i=3;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=NgyBUidG;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=NgyBUidG;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2");
+	spf=pass (imf25.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.83.33 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=NB1wH6fF3KQs2UG/rx2e/DDqBdWUINqOkvme0LUIYB+ociTdboyWEkwEZEzWG9/qrPfwCTjWJZiH0HxUf/0Lfc2qYrTOGs8zqZ0w+EGZvQ30itn/Eib+U+DwbJfHB0OrspBrab0UQepkIHGKNEuHowVCGzYrUfeLLbw3rn1TjKU+6Ccs3naF1HoRrYj4OoF84z1q7Lw9MZtEm1WzM9gkDIZi/cyYjkyQ7zTx9VLRBjWyCpy4GiLNkRuxnNRVy8L5WabA1nhUATiN+8jKzE2uNpuoR5mZ56P9ThVhnaaP4ctjLGgPzsn/g2qccM18HiRWmn0CQkKlQPm8NJfN2M2o0Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
+ b=YxJyZp7VXXo9yf3MVkzLPRUJ4HA4ee1aR+V5vHiy1gfpitfMwDt3qIpP56LATQl+6f+E4TJeJtNBZsbg72YtfqQnhCj7X62M9DklWw0tt2z9N2x1VTNtRSu2jS+1JowZ5wMd8wui/8sr5h4bjgW4xYb2sX4c2WpYg0ykUhGGzMwjcXyBy0x8TonehRCJ/r4xozAw6f/oV+fTnprNuCrnopE2LRdd10smLnC7JlHzotr3Ty18Iu0O7o+ou8xRD9On5gzX8D5ld1JZpYVt+6Bg5rVtihBbusP5VHfB6GU8qbSE/JdEV8u8zNpntVJpL0jPcNj3sINpspS1VVw7oQpGmA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
+ b=NgyBUidG57muSjdLFQn2VJHAsiFV3wPPf8yT3DUtOARR7lkloKNH9ew3hElmpDhhJ+G6zpyod6A3tPZxHvG+z265vhh+IBL+Pwsf7Oq/wdKd7Thgh9lKfSvEPsucC7Du4IjmJ4gso42z4cTcNRgVPmOWKVU/t+eW4aoPJaTRFDc=
+Received: from CWLP265CA0460.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d4::20)
+ by AS4PR08MB7656.eurprd08.prod.outlook.com (2603:10a6:20b:4f2::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Fri, 17 Apr
+ 2026 12:47:25 +0000
+Received: from AM3PEPF0000A792.eurprd04.prod.outlook.com
+ (2603:10a6:400:1d4:cafe::e) by CWLP265CA0460.outlook.office365.com
+ (2603:10a6:400:1d4::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.52 via Frontend Transport; Fri,
+ 17 Apr 2026 12:47:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM3PEPF0000A792.mail.protection.outlook.com (10.167.16.121) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.17
+ via Frontend Transport; Fri, 17 Apr 2026 12:47:25 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KGJ5Vq68vSW/Qh7CkZAr59UtLNVzGTzGA58tgO6aYNiDLi5frNHH5p9VM5zgrjgjuOYW1yn2AGAY37DS/Ed5DfLD9wBL5T978rs2KxRp9SeDbSEe1iBi0NhqpByNpcOq9re6WfUhc6YUZ5km4Fw62rLeVpQhPglh/h5kaCJBnDNajh+rZsyfoQABkKqU5VMNE+NvLME5y/4aTWoG1me1jex15sTWG7RnNyQ0Y/7VyZH88gg+dT31qXojqZFbrWAnZJn6ndkEdToTaLAjzv9vs5zGVqDbGFttwUf2iZrUNv9FUovYqgUdsswCaoX4c900/qKyyTVdjQCJ/NaK0EaqZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
+ b=JOxMLJxfEX6lGMabnNBADtKqXTND/3kBB6Bt9jt/nEixuOxYT/3ZbffPJwQ4rl8WIySoHY+EhUcxfByf3S/NgyBGAU7RYUr5JD6X51xXfjNdfPgfKvR/un7kQMQkg89u7zNMbrxOC9MtHzkI8DSJdmLTN+AxRiAtMPQzRzjBYQJQKzhgd+fuTlI9k5CdM0qvnUAhqOxiOXv7gbOu0hzy4bR+eFJZyOGBTW+rKDpvYevOXXivHe+cCo+jaDPOt0ndZAnAY3x58Ku8FVAmW5ctfXaCZEFT93KcWF0miWYG5TVXTsgPwTrpvmpuVLhbAMAOsXxH3TKXgc4iP5yOypu1Lg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZiZIKHOLkFCbkTGGyUQubhZJfXm4yHB+s9NpsSXu9LQ=;
+ b=NgyBUidG57muSjdLFQn2VJHAsiFV3wPPf8yT3DUtOARR7lkloKNH9ew3hElmpDhhJ+G6zpyod6A3tPZxHvG+z265vhh+IBL+Pwsf7Oq/wdKd7Thgh9lKfSvEPsucC7Du4IjmJ4gso42z4cTcNRgVPmOWKVU/t+eW4aoPJaTRFDc=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by PA6PR08MB10661.eurprd08.prod.outlook.com (2603:10a6:102:3ce::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Fri, 17 Apr
+ 2026 12:46:18 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9818.023; Fri, 17 Apr 2026
+ 12:46:18 +0000
+Message-ID: <a40c3365-ea4b-4158-afd7-59c6175762d9@arm.com>
+Date: Fri, 17 Apr 2026 18:16:09 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
- shmem mount
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
- <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
- <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
- <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 01/53] selftests/mm: hugetlb-read-hwpoison: add SIGBUS
+ handler
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lance Yang <lance.yang@linux.dev>, Leon Romanovsky <leon@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260406141735.2179309-1-rppt@kernel.org>
+ <20260406141735.2179309-2-rppt@kernel.org>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+Content-Language: en-US
+In-Reply-To: <20260406141735.2179309-2-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0164.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ba::16) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
+MIME-Version: 1.0
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|PA6PR08MB10661:EE_|AM3PEPF0000A792:EE_|AS4PR08MB7656:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15c2029c-ef28-4b9f-6fa5-08de9c7f7a10
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ Gglb9RWZ/Hwd4Ga9butL8AizZ5fCm3NUPGuIvYjaoi8AD7rz6jNg20wV+WgATyqKQFpF/zpn9V/cOgOPq/AgYMSve3C3STlV4Bu8/jJouXlT+YGDFZggpOR8/HpXGuCg7fVU407maHOHWbzAR/W/2xErSEENyJ/2Z8Yj4ynKEnDUujSDmtqZkm+UaQVDbEgwA69imXZGfQ/Qh/ZMHgo/l6RPllvamQ+Q66hBJv3IqfwDZXk1x2XeJLJXztAftNUOMMwTpEfBrzJw7qQO2RNpjfAa6VuPlBZAwM2hlCKXVKavCJHzdgHgnj7OBDnxEyl3clexFa3p3KTYlP+SU9yONZc0jFIJ1H9nUae7FyxyUqGNvEceDEqcjzZxcCW8u5ekag9CO+ftYLcEbNt25Wy0CsyEW1kIxaoRK2ut5ckTiwxAseaafxugSXijNtdnpiTQkM8ecA4ro12fhmI/sMjhUp7imWow2CrEDRf/Q/D+Ep2SCVBoV84DbmYPaHtghPM0CeLc0p4Rfn/uQV81Bd5pSBxtO9N9wLUHDxY0sByryGY/ysVMaSq3dgowYH+t8N+azgeeKrPU8SuV5WetCX2qBasdnLCMtHyrE+dljUVHO83nzyzA2qvbuWbSfLkRkRdNd+FKQ5BdDltStpeXRhNvbyF3CemIHGvuB/eaPBKDvQxsPrrNoaVdTbnGn9GqG8pPzpMTQOXFkVqUUfSDW1n5lHZ1ceZ8AQHtCVIh5F/qBGY=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ VCawgOH1IlJoALwXNQjnCw0bT3RGSMj07CLSHUnIX6EQzDgmO9kaDzKEp/jLBTAUPIA5+VhMkrlQa3Bj54xqK6Fdm0gqDue6kSG0sNNQWyCQ4rk3iwZ7luIah7is3Bi0dQ8BBt3n0qUb2+3Mf2YGp/VXne+vtib3FDRZJcVlr8XQQ+pbtQmwFuC8Mj2rkX8xbcNJFmH7u6tdye/E6BhIxqNVAJdiqHKH47Yjt8RsRXCD5GWbsX1zFM7a32UrzJtmKAbHljZRUi+2iAW4dOaL4tAYY70wEpj+s6i5BFIQYI7gIxufFCcHr05JWAbX5XZIZIP7W70obRV8JQW9s5QXCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR08MB10661
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM3PEPF0000A792.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	13e0f524-d440-4275-65cc-08de9c7f51f5
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|1800799024|7416014|82310400026|376014|35042699022|36860700016|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	TrKOhfnpOPcBFMGswNw47nM0HDb4V9fCapivL7AhByLPq0KYHBUh1OFENEAwPVregHtafLrM7f1UMS3CTTdDOXyynXhmZlQ4XZ3XXuI17W4DYat1pQ0wPTZRkdjY3GRtzDHx0V8sYlLpEULlHTRhGDjM+13DC/QW7KcvbwZDjIC04difVnU00ThfBolO8nl3IZ2rWp+3jf84oKrB+rGkIG9zVSYF48wIl1p4prx5atH/YD2pgZJhA1U/Ezr5Jzbiejs0D9eaNqgYkZh1vu2yRhfjZwESyrbWIwhSo0LBiQdUQn9R+so1jIWV4Tpxtj3B4Gqs9GI+3Vkd4BZfiBVoyLUCtlxJ1L+SgPvYjuQidNGTyY/llEkMldoTZ2I4TgX68qRW6qzCkQmWVq7g1p1Y2Cy++mvC+a9n6w7xITKZS0GOKWL4CGRJM7rI6ADEiwNXkNXT5W8aMyCiWD8BhHV1P8gbX0pnLOb+qWRA40lZ+ssEUu6iX1lj9kfTd0pJx6IIhd9PHf7SkqDlX+Hd9zORHQk8qzXsX9QiYV9AB/mxYMOEMZOlUJ6tnGTpPBiZVnyKjjz1nJpYxyTREGn8kBvTtvbXphlVujKGNwgW5MexHAIfL7Y2AXYfbV28YYXc9LVXbJvgSz+Xq3IYwjG6iVzfgCscpwyYWv33HXeHUMQPNeI1Xn7kJEo/hlI4q9LR+qyuifbK38KRilISx7PLDg1aax6zJz07qNKVsFy1TwupYyoxDWFFso27jlIalDjCiaVGBv6T9jHbycJWHvy4ONCxsw==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(1800799024)(7416014)(82310400026)(376014)(35042699022)(36860700016)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	LvGGsISfXAMnmaHbggXzBM4ccll325yGWlpNBIhfe2U2ZA9ENI7hkHsfiLOfVeVb1wWyOjCJgWujxhKUYrxTwgY/ElbNtUMSR1A7IIqstZSNRgsozjFXCNIwNWfd5VvjuFW6GnGKrIevrDQ4KCnNkFWwUCaFVdKC94FoAlGIEgQw++M50M2lcLi9311LW56mTLzth5h9Rj1SBhAMyk/3pgd6573jD14R8PFtdC3Rpro04IkxvxOZEiLf9xEqw8B6hsqMUVfxANOoCpN3cTnCD5jEbFocAJg5uIJ5VcpS6bQjc9NGvWXXj5jAkiQRzCKhQX+8NgzJYZVUSbk3y3uelEMiiHvVCKUMT60ElhPwfREta4b8wfI7ZhmQ0OpaL1fK2j5Ghz1rJx4Z2DEaxCsVx/iuyZvQt9+YgiHIb5GiU9gFyI9MdsA28jY+mvvNJySj
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 12:47:25.4906
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15c2029c-ef28-4b9f-6fa5-08de9c7f7a10
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A792.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB7656
+X-Stat-Signature: pd83eetdefb3ornss71nmtqhgz9e8qsi
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0B3F7A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5907A20002
-X-Stat-Signature: xcuqxin77hi1mq1wrxuciqjus7qhb7p6
-X-HE-Tag: 1776429956-576101
-X-HE-Meta: U2FsdGVkX18/nW9O5BU9WQcWqGnGCWM9pAwr4Dv9OlyaV9qyBZrgmKU/w4/dwQ3jg/sxXPD1GGZZ2iR9u2BEwkI5nZ7LEhwCguu3M+ZiY5/dW1Bm5sC9J5tQPeGREWv8N8frKAR25N/ZQXJRda1jXS1GLfhxl7wj4iK3Hj1EOQWsiWGjulOc02tgHEMgPX8PwMBpH+NVoFReaAkELXlc7VHglrRNqg9dhV/NnBXBCZqNdEnxT+BnjGjqWQYxcQISZC0F0GiUvARoM9x7t6tpNIIi/BljYAURY4rk1gEtzWFCtqVjnpAryw5mPapiQ7tIhA3jgxXOnDWU9BVfrO/45/BpS2XaGBJXHunlAH1CYhMqqk3ZdI2A5suRlGefffPgSpkoq87MohXtQ0JDrcvlz9ag/3DZ0FuVBQqmX9zWhkyBvBrCQ0PU1KxsMOfydiH3zEunjDrCXRekhkiqu29jMFSmXkpklWjUdLlr9wnYPd7jLsxDRWdJuAlRtIxP7LNKMqXDe263FjcuSZe0jo8tT+e+uaaMcBKt7bdJ2lms29WjCjRVDnXQkm5IFs0D0wDN3FpBCL3KOWdSqPJy/+bR9TWDrx9zmrCM/39tM7YDkiqaXvsTPmMbuHU1+wdrxFRInBqhVRDrzBYE4J/vn+AIj11kEIfM/2hUR/3G9J3msJlwP2bF5w2mfjEmkPrIyg7qewir2XAkIQpXuVd2hq22aNGIXaBHaMdflSCMgC9sB52fniY6Su4tEMv/dH4HNeROQLfr1Oam1qH1s/ycLt7hjX+IajLKzGKzMmcHcOR6bgDiAlUzREGrTUSmQMavW9KmiV5kmi8wafdAfDl6FaVLv9iI9eXG2GZYC1qx4G5gtxIzyPprK9yD4cez6kPOZGGeqyQ215xC63V8DF76v9pREaRdF6brYUN8Yc8o5bZ3efwyF+f+e/5yk4HoURreenfv1ciW4gsstU3Dc65IsWa
- rfhkJaAF
- mYrQFWNUWZvsN8Jycn384wKvu+SwM6AhnI29nvWotWczZGC4r1kcK3RfWje2TnfIGO2OgGkMelsdeRAOjaYebTvO13tA/Ovpjfdyvuu5zfOvj6Miu8xNJw13FETWprSCV3Sc21NtyWWpQplIw+Gitx2HjtwJHypDhYeUEXebRMKBs2vZ8mSR1GB0Lv2aPKUa4Yo6AR5ZyacNdTIgRcj84mttKUsKyugOpBNwL/M/4jaSleBclKyMcTDdPuTB08jr9VHWhRkriOd+thJ0nAwhOW1wDwIyFeBatLSmdA1ZKutEpEwuvk97ArsKZXHNJyDBHou6NkTGAzO+scXaxLanqohLyr7hvqnyXtdLWTz76kZ+O2kuROzaaMvCpCA==
+X-HE-Tag: 1776430051-804824
+X-HE-Meta: U2FsdGVkX1/6nb7OE9bR2sQyyogzFUtXvy7JphOPgFjvddaoA2L+lWCVsn/8rT/7IRC6nMe/yIth3If0/ibTd+elkzj30qAabp/iMDtqMR8PhYRftN0id01ujmFj1kDoZWCvmQyw4zAH4pvv++HmA8TW0H6l0uA5AYG+gWypRAQTFXByZFvZJdCV2iG51lZeOcAk5ODF2o33LkrBN7tXjEeAyKmNAbbaGA3CcbW6zU/Sn+xLeaE4Hu2vlbUWLKdEgl5+0PL6QQCsoCV6rS37B5VkjE0QMjPo657oHGnZqEtemTZbJek1I4KuGgxG4z2HgA2RQVpaghKFJaLzywvyDMtgdvSP22HAL44rPSBTz2jPUi+Jzu0709xiM81h8l53arJRh73LHDaKCBDd3aiKQZlVUBz+IgrOVlk8V5mkM0Pvn2aFjgd9uNTwzciGYwBbRpQXUjZCWMrAV+Dx8o5KO9v+PH9LVQmgY7O3nlO7Nf8HPiZvDTdb2wtMKDOsF+RvGbIdSn9EGBbZzz5Kiav6hUE21Ii3QBFfsmpEloYnzGGZt1NVBPNs+kUG83slrF0dbPOBb5N0Z3LOmpWqx9vX58ZS1+IUjlpIdljFCEl7NdR98njYOTMFPafVibPjA7Bg/B8nig7DGVWmLfIsI54lsSSJjhkO7goOtIe4WOGnkX3Dm2PMFy4uVqkulInaPCh4sHu1UN9i45a+RAfB9BOE8gM1bMd/nDVfgFI1m99q+zc5kq0BZ1EsDwOyTkHhhhX/2uQruYnceNUtJpTHR2KUd/TaELYXSenD2hDhz8qEKuiqJJuR3YN892tG+hOxfPzA8dwJbkYBiT9rQAP5EFqBVQTW0CaKHwNWCrp2ANEKX7iTuDGklwQ6+SZk/loz2yFyByDeE9eBMvV+WZRx0nLqvZ9zc43dntCUDWOSzABVkT5lMiMVOt4ojLi1e0Qu28VHcNt5zQlmpSCQvGY/0kv
+ teuVRucS
+ BR2fnczxU/mEcecdAAw4T3O2klaRMHGNQzAJvgkFR2NynWssd67I8v007xPVQdihLcq1NRICwaP0UwElKdV10z0vdp7uG2Sk+pXQBq6zf3m2jArxkkGtdLzMclUYNXVOtAFpmgJcPARrWUYgspw0QuNSCT6CghieLTBYLGCglQj/ndX4YGwyLLiuHuN4jmYtGfhy0i2yNkOrU9/foCmKqpGoZVd3Ez1m8sDeQKpC2ThXdzD2DFM+spdVlIDwFjFvQbU6bMd08eFwmkXHNcwc+D6zklol6qKbGBivPcr2J0L8QvbEIrFM9vH1KrXmZh8tZampZPMlQq2UFJNzkeayY6PD1q+vAD6Z44ySyPiMNbUvNO7l2IFMXUpnjh7oXso0EPZm2+mBzgCBBgrrua0csNpneimS62SQwCkMJGYGBTPOBtXKLD5D0ir0nSJFc/oMp5BAQ4hYFSmqCFkvjeTjnpxLcCxfKendSEo3hfXOwcpW99QGyCwZjQuRi5K++2+2BGW7aaOj+jketxNs+1Xnh4BZbOAEr1bxauZGXAuithSyzP769xv9MzxZSQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,101 +204,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 4/17/26 5:52 PM, David Hildenbrand (Arm) wrote:
-> On 4/17/26 11:27, Baolin Wang wrote:
->>
->>
->> On 4/17/26 5:21 PM, David Hildenbrand (Arm) wrote:
->>> On 4/17/26 05:25, Baolin Wang wrote:
->>>> Currently, when shmem mounts are initialized, they only use 'sbinfo-
->>>>> huge' to
->>>> determine whether the shmem mount supports large folios. However, for
->>>> anonymous
->>>> shmem, whether it supports large folios can be dynamically configured
->>>> via sysfs
->>>> interfaces, so setting or not setting mapping_set_large_folios()
->>>> during initialization
->>>> cannot accurately reflect whether anonymous shmem actually supports
->>>> large folios,
->>>> which has already caused some confusion[1].
->>>>
->>>> As discussed with David[2], for anonymous shmem we can treat it as
->>>> always potentially
->>>> having large folios. Therefore, always support large folios for the
->>>> internal shmem
->>>> mount (e.g., anonymous shmem), and which large order allocations are
->>>> allowed can be
->>>> configured dynamically via the 'shmem_enabled' interfaces.
->>>>
->>>> [1] https://lore.kernel.org/all/
->>>> ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
->>>> [2] https://lore.kernel.org/
->>>> all/875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org/
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> ---
->>>> Changes from v2:
->>>>    - Always support large folios for internal shmem mount, per David.
->>>> Changes from v1:
->>>>    - Update the comments and commit message, per Lance.
->>>> ---
->>>>    mm/shmem.c | 13 +++++++++++--
->>>>    1 file changed, 11 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/mm/shmem.c b/mm/shmem.c
->>>> index 4ecefe02881d..769ef37b1ea9 100644
->>>> --- a/mm/shmem.c
->>>> +++ b/mm/shmem.c
->>>> @@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct
->>>> mnt_idmap *idmap,
->>>>        if (sbinfo->noswap)
->>>>            mapping_set_unevictable(inode->i_mapping);
->>>>    -    /* Don't consider 'deny' for emergencies and 'force' for
->>>> testing */
->>>> -    if (sbinfo->huge)
->>>> +    /*
->>>> +     * Always support large folios for the internal shmem mount (e.g.,
->>>> +     * anonymous shmem), and which large order allocations are allowed
->>>> +     * can be configured dynamically via the 'shmem_enabled'
->>>> interfaces.
->>>> +     *
->>>> +     * For tmpfs, honour the 'huge=' mount option to determine whether
->>>> +     * large folios are supported.
->>>> +     *
->>>> +     * Note: don't consider 'deny' for emergencies and 'force' for
->>>> testing.
->>>> +     */
->>>> +    if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
->>>>            mapping_set_large_folios(inode->i_mapping);
->>>
->>> Two questions from a non-fs person about the semantics here:
->>>
->>> a) Can sbinfo->huge be triggered later, for example, through a remount
->>> (staring at shmem_reconfigure())
->>
->> For tmpfs, yes.
+On 4/6/26 7:46 PM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> So, we could pass this check here, not setting
-> mapping_set_large_folios(), but later someone toggles it and we missed
-> to set mapping_set_large_folios()?
-
-Indeed. Good point.
-
+> Access of poisoned memory causes SIGBUS, which terminates the
+> hugetlb-read-hwpoison test prematurely.
 > 
-> Or would we always go through another __shmem_get_inode() after a remount?
+> Add a dummy SIGBUS handler to allow the test to continue regardless of
+> SIGBUS.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
-Not really. There could be files created before remount whose mappings 
-don't support large folios (with 'huge=never' option), while files 
-created after remount will have mappings that support large folios (if 
-remounted with 'huge=always' option).
+I have tested this patch and it behaves as intended.
 
-It looks like the previous commit 5a90c155defa was also problematic. The 
-huge mount option has introduced a lot of tricky issues:(
+Before applying the patch, the HWPOISON test terminated with a Bus error
+when accessing poisoned memory. After applying the patch, the test
+catches SIGBUS, reports it and continues execution without terminating
+prematurely.
 
-Now I think Zi's previous suggestion should be able to clean up this 
-mess? That is, calling mapping_set_large_folios() unconditionally for 
-all shmem mounts, and revisiting Kefeng's first version to fix the 
-performance issue.
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
-[1] 
-https://lore.kernel.org/all/20240914140613.2334139-1-wangkefeng.wang@huawei.com/
+>  tools/testing/selftests/mm/hugetlb-read-hwpoison.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+> index 46230462ad48..6bbf15f78061 100644
+> --- a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+> +++ b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+> @@ -10,6 +10,7 @@
+>  #include <sys/statfs.h>
+>  #include <errno.h>
+>  #include <stdbool.h>
+> +#include <signal.h>
+>  
+>  #include "kselftest.h"
+>  
+> @@ -261,6 +262,11 @@ static int create_hugetlbfs_file(struct statfs *file_stat)
+>  	return -1;
+>  }
+>  
+> +static void sigbus_handler(int sig)
+> +{
+> +	printf(PREFIX "received SIGBUS\n");
+> +}
+> +
+>  int main(void)
+>  {
+>  	int fd;
+> @@ -273,6 +279,7 @@ int main(void)
+>  	};
+>  	size_t i;
+>  
+> +	signal(SIGBUS, sigbus_handler);
+>  	for (i = 0; i < ARRAY_SIZE(wr_chunk_sizes); ++i) {
+>  		printf("Write/read chunk size=0x%lx\n",
+>  		       wr_chunk_sizes[i]);
+
 
