@@ -4,91 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B5FBF43686
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:12:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8E52F43683
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:21:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F24336B00B9; Fri, 17 Apr 2026 05:12:24 -0400 (EDT)
+	id B60E26B00BC; Fri, 17 Apr 2026 05:21:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAD3B6B00BB; Fri, 17 Apr 2026 05:12:24 -0400 (EDT)
+	id B14A66B00BD; Fri, 17 Apr 2026 05:21:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9C9A6B00BC; Fri, 17 Apr 2026 05:12:24 -0400 (EDT)
+	id A023F6B00BE; Fri, 17 Apr 2026 05:21:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C5B826B00B9
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:12:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 714111A0B76
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:12:24 +0000 (UTC)
-X-FDA: 84667481808.04.2571047
-Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BCBCD180002
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:12:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf06.hostedemail.com: domain of 3dfnhaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.207 as permitted sender) smtp.mailfrom=3dfnhaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776417142; a=rsa-sha256;
-	cv=none;
-	b=nfZm096lGAuVw6YvRLxSItYXvjeSdkruh2aRi1YzPVOknkOwog1KsOFjA2l9CnLTWyRD6V
-	KiTfWJnRW1LChQ2Db5e98swZ7rdpO+MMuRKHh57+deeWlsoxsKGzFhTt2f2V/MBqzSw2pd
-	h+rfgdjEneJMJfyJ39kCcXUCGvgXXcQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf06.hostedemail.com: domain of 3dfnhaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.207 as permitted sender) smtp.mailfrom=3dfnhaQkbAEY067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E47F6B00BC
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:21:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2D5485C3B1
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:21:17 +0000 (UTC)
+X-FDA: 84667504194.03.B81A561
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 500E9100016
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:21:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iXCfHYYn;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776417142;
+	s=arc-20220608; t=1776417675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=a/KbQkE3F+9rowducc7K95ONRIPvyXcoib07wiB0EiI=;
-	b=W44VAMAQ9OJJQ+QyxD0X8E1rN59W7qzQPfyQvSx8fQPfq7UxhzFqHIekcZ1GQb+JLtXMH7
-	AlJ6mpZvuaEn+10rbIIXozcIcOOYtDjXZ1SgAi2MftfyG6KtwN23sHTWL6QkHS4PDsghl3
-	1StVw35+FQnA72bHOOQEMVaQL/fXRGs=
-Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-46ee4a74741so316512b6e.1
-        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:12:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776417141; x=1777021941;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=a/KbQkE3F+9rowducc7K95ONRIPvyXcoib07wiB0EiI=;
-        b=Xasn2VfR4q8s+FfraemhT0eQGIC2EiJsCwhqXjLkPbmfAJngzQpmzRk8FXRmGkqeo+
-         F3WXf5vnqFlkUmT0+ZK05eyec+YeWPPDFH5pV+mH2A6NwTroEcQSJUxxQnnFglTCBDMu
-         uoXFSXoNNl4N6S3Gf3wvAxmfWN3UxhmvoJPNLwpT3lJCVYELGIhUfnnHkeP+M5BupixS
-         zpfvA9vYKqY2l+JMRvtiAHJdW053ogbNcJFKAf5xtmCndcfkrslAU3CFeYO9JENbiLoP
-         aGb+suSRqmrlPAutWEeT31Kqqsj6F7Lu2VRLSaQh7t0TlcUxts2OT058kEnS8ZLOxIYC
-         Bwdg==
-X-Forwarded-Encrypted: i=1; AFNElJ/x5az7JiSxltbflwlLUK6qhWbrwCGCJ4jy6IcgnWhQSzOnoJWnTlcAznqmyjezy3D2IuQit0DQCA==@kvack.org
-X-Gm-Message-State: AOJu0YwD7lWa0otRi/uUvrWHzighyU8RZ+ZWQRpZVZQkWrz1cFLRLAte
-	yShk+E5VMFJCfykrsZ03KNEtxZCBV5f0kKpIsxqZPFF4gpjTBOKcHrzLiUnORh35L9HOUU0RPZR
-	H7U5gLX8SeTpFfPXXwQXVU4l+CS4fe8VZnkENYO75dWGk9u1CG2VZIGQravE=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CImWESrDFMuPQ8rbjInBpSHdlOxJxw3BpC83+SuWeCI=;
+	b=JxRq+2pXI40YeH5x2jMr7cM28LGjkqpYK/4TuPszxAWB/blABrANDCcUQKZxE6b1eMpvrt
+	L8L3qPAO7wzmk06tnl9MqO6n/SoSLgpaWX6Jcho7MjpawLvWwJ95W34inP832Z8QGkzLX4
+	BesZCjhKchohH1oHO8gPPKx+GmLXOyk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776417675; a=rsa-sha256;
+	cv=none;
+	b=FsP4NB4Q1jVqusa3tkdy7u8lqy06Xyz0ksK6V/eAKCabscoWEdF5xF5ZcHJ8c3gQd3+FI+
+	jP6hDeqgUPtBYXWV73Z1rE+Vn8FFSsYwfUybVseNphP23JScPeiqDt+NXeOb+/bPKa7Kna
+	i0wQFbdlasgpugGtTpisjl/gG0IBsJM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iXCfHYYn;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 159614453B;
+	Fri, 17 Apr 2026 09:21:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6DEC19425;
+	Fri, 17 Apr 2026 09:21:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776417673;
+	bh=V2RFZAnMgXF+jaCr3USxaHS2Sm7HIfxBEIFGnLB1dN8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iXCfHYYnnyj9s6NhCcO7l7gl/cumQK4oF3UIrfgzRXj7adqBckWo7XULrVRZqzznf
+	 Gq67blHvotz405eP/y1zdXhVY/nOysIjtVy3ZSKf2SoHoxAEQOIXZGxXio/1iG3JFR
+	 HMdZRFlOuVXwvyPRRL3o3XQ/Q5wqwl7/ThCW+pGT7T46qHrrly1AHSu/JArluYqQrb
+	 XxZmA77/3H0YRfR4d1dwpGYqiy1tN3+epSP++AKUAyovNVI5PI/axFTTg+HBE3rXqC
+	 ePqVyC8DgYjz0p968RbcZ8Qi1Ago5TDCc2vNnYf3Etgv+7NQpwO4IrWJHBEf7HXuiO
+	 7lKuAZ3JUH8Qw==
+Message-ID: <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+Date: Fri, 17 Apr 2026 11:21:08 +0200
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:3092:b0:692:9c90:8e9a with SMTP id
- 006d021491bc7-69462f2036dmr956132eaf.45.1776417141711; Fri, 17 Apr 2026
- 02:12:21 -0700 (PDT)
-Date: Fri, 17 Apr 2026 02:12:21 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69e1f975.050a0220.1de265.0009.GAE@google.com>
-Subject: [syzbot] [mm?] KCSAN: data-race in mas_wr_store_entry /
- mtree_range_walk (2)
-From: syzbot <syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, jannh@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: BCBCD180002
-X-Stat-Signature: sbxhnfigjtnm8u6sbx54bpwchsbu1khz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
+ shmem mount
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 500E9100016
+X-Rspamd-Server: rspam07
+X-Stat-Signature: dppprof4e38147pgfoqkqcjbs6fyx376
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776417142-704605
-X-HE-Meta: U2FsdGVkX19ZfSA6XLNcVk2Beh9CIcBUz4AurIroAJtXQU2d9Bbez7ES4/BIRklYIa8btgT/Dafi8MSw/e/W9EfK2QGtnoZufd/BbzzmbSKR0Z91GeYyZBcqcmW8mXTkMpyZHubxX+5UawXnbJIq4NAgPV6m+9tokOCg2r9R3ocfGyGoLTNLUoN3JKTMhWZgJ7M94P71djuTDFmX0PVqD64Q9rY/xcRhCHdRJMg5oVziOCZNxQ1UlbUG93Qm2vyKHmmN35lZMQUh4h9HBP5ABzZhDSa3t51O7mVfHHNBGhrlKKjNek7+eTR9Rilj+rATDoxgybfDAWIByp65/u8VbGEwA9FjEeTXQtkSUDADKUz0PJKuZcgI+z7yGRoSdZLo+vVQvrj3X7ZXPkaDsFQ//TPZp4VqNSSkP+CKqCZQZO8t1wPFmUfltf5Dndtv6uLOJ1lg6vyPLcJFVFvFzmaFGOKCc43JAXWjmSRdVO5Z/6AzlAg+pwBi3KtCrOpCI97fJJauxxrx2eSnv/LBtV77UGYXPR4p0QVfz9T41NEdBb3qIlMJ/0rhccJ1lEb9IAOqDbQX8W67SPEcjEsdpkH9vXHuSrAgm8eLE5BmcKInRZjWW+/h4PtLvIjINTq7Vi4cbt8eDF85iloqEuaKSmpPZicaH1C1QW9Er+9TC2G/QYzozb+pqvcxVVkcppa4LaIli8Mv3fzpwXEm8hLtdaWLi9Yv+cdtCQ/WhNhuPhmEiwa1SrfD6GjlCGie6Sv6h59Tcuk37ySs5Xppa+L6s3LQhfP4b9Asqx5WirXjJP17On19t6rhoQ9Mnhqy0BUpAlh0VyOpU6FJwUTxSPPVVQvl6S0RK50t4ZEke6XBqiq04pXk8hJvyfYK14U6giBwe542USpGwt6aNkhvdZo1+dQKksquIrQDfCMgBupQpVIctcz10grlhSQJN4nmVU4W/aFLikhVHpI0iH6D/6UIawd
- Bl6Bnq3W
- 2bXnqTKF40/VwtXjhc54penDlprlM0nC80diwxhU4gkgCdIymbJZ1nzh+VjSuUKAeLpLoVlqJudO/FfQYgWiVFu/pDc3kV54+nX4xOI/dGBNSzvQZtk4VCkCuwPE8nJFJh1Kp96QHMw9XLuzvRSTt7I9FfrmkpdzhHXMb8vuLCugr1O09AH4OjaStUsYn5LO4sebB5/aEkovICORtiZQxQShnW9XubYA7Pn2GDwsBQXl171C7IprYojuk4WVHqkvRgUl9gPCeJkVLd3D2TjVZepAHNmFTcoFhqKbAlYp5Yszxm0w6MAghJj60o/r8O5d5I7yURMoDno9S+Hq8pQUsFiVqgL+JG3ofv2iAQXHnQkNcPRJIPPEj71lnW24ZXHGL1+k2LtuGptrlwM0x2y2B++9agAvL8DOVCfVKNbrMenD3SgJgEBribDi5U+moFKASh2/ZNeFg91m/jwXG+9Xyc9sb8tMaEaaDHGUXCcAfgDGKLy70UvYxV/QrqAhOYGnJ6aj/URrjZB49dO/vKFSQoH1GorRho4s11CCPlMxIY4zmC/meX9WF7GQmDb6SklEETASedB4QvPQ2N7khbCrg05ow+t6eiiCwQtE8PElTS3ZEKf/cHoPQ/0gIKAbDVR6gtWvlKnmi4PJPmuI7qIxvpePCceiagOfE+nmlrGbA0iBer7OBHXVWVYLKN+7r7opPpQVJmneV1rlUHAwFYuaL5k5yPgF2dlvd59mQ0w2yRuDgrkSQv5FnGpd6wBo07ZVnjpKa0Y1r39TWmusYlzf0RBEy/UAD37ySa9P1hQcqCPagPqqzgISMhGmwWEqI4tny3MJ5AfIRj4a1duSLkCtG/s+/HMlDGpc9P2Tlk6/n89QaWBhjLCAcGbGVseqZzE2/A+duZDY63cl3N27EF2/DLFSJZ0RMUhWZLWdzN4edF2twM4XCpnFk97IV+agI4LXXmAoiNhhExWG7yiLI2gQWWK160QFq
- p1UVrJwa
- +HDo/M+XfULQW0g1CbQc1IiumU4K49uIEMlIsgyODCWj2dXcGGd7eH0a2NSM8wOfF76Ko1WITR6yub57fklQoTnAheuGxvsOHVTyAv2sSR9QD8QOLLfZTNyo7yoXHQa5W6rDKrXW+yG4W4mvr6Vs6QbPh6u02ySmzLkF9eEdfUko3TnDSCeezR9oMaSIQ5wccnHOfe6ZjvKr3e/eQv4h29qxHldvxHgewMBaflB+dYyTeMuC6rAeXKaOx1Bv/RMu3OIJemJs15T2f0mR3GFCCbccwITGOGsBh2FxEhKGBAiURwHmGlcBpnIg8OePX5cN/Kpnbia+UV7dNrg69nyvquwzIArbgYwPp4p7O+snXEMAnpeZQpJ1HUvBmP90EjPM+vJ1VEiyGZ4f33vPWeCf3mNzbj+vypkqEOaMk91firYxLXgMI97weWZeb5NRJd9ZcTMBWZzDByVznhME0nxQx7OJjys4CHmKtr98dJn/91hF6WJHz+a3mQ==
+X-HE-Tag: 1776417675-478618
+X-HE-Meta: U2FsdGVkX19aBc9gma1wO3By6WnX13ZFwmasVRoDt3eMedkNEVAarn2p7w0CcMYUDSHzNWrAa7c59BTfNB+VB1+0lOKNMMB1m4TyshK5JNCJnSO29+Cr0nNPAiAeedGvL/c+KvtgZOFdvclP79mZLUspbsxWp5BNfPkVVFmqCMlzJnb/9e1fAfwt+q1yuPJZqXDjhLsUbaUtawgcxJpvfJt0SzAFUriwj3n398EDJ+lF+SwbgIxR3+lUyCP6kdgJF3XRh3MYPQ50xAMcx/FEXjF3RDHJOqnPXniH27pBUzj4rR9XD7Syi0nLWNdX8lwoXtnyYRFcAZ838f6ZmbDNtAynOHLc+i3GOBGYHFNjYioxWUD6SdmOJJ3gAcaTeZalR/Co1f0L2pW08unGn024duYkk5gdKoAsRCzJz/mNDht2oIKoTeow1b4OuJOlDDZTcL2mXx36AiPngTNTgrh9564K494CU7m4wiIYVl2f+GW73zSmEwKKssKnH3WomuBLDwUX/1hkkx2MdZlIJ6SFU0KZBsCkzVfjuTsZC/oES03cGjil4jDtBo8hEcgC26kWPZPefqAV59mYaN7jiTBDlz+tv5ZIP+WEQFhg4thQju/lzgiUM5dX52aqqH0j5mcIZ/APRGtbY8lIdGAYrB7WcFAX+RWjKUYYcMluEFKbnm8JGgKsmwu7WZsrrNEuvDWmh6uioYDc2/RZu8yEZwdtvSrOPRC2PbZyqDzz951SZcPRKVuNAmtloeEvrgIndhsJRwA/5xMfAHbWjnlR16uaE6XCp2bQWY5hJWMnn97vNj1PiicSwEE9RTRaSL0ISWyVbJ0fHYMMWJUKp776SCNLtHTdnza7qI9diDF33d8bdXCCjNWPtR9W0ZrVMb+q+JqwiJCFA5sA9WX5ynpSde9k3o5ALIHU127y6buVgMfRDzeKyidKfpukKn7lmpTZKBWVyYzAKto/DeGIyL2bVy8
+ aqkUJxm3
+ tCVsVLZ89MqGdKF7EiSHcT2LthByC5vWDX4ZbJ0+qp0qG8UTanFFJ6MTR4AQtqn8Hn386M/UwiNgviJSTH8/ivpWzKViaMHs/uMVDEU7gtNlKjU1aMYOBKQ3JWtkqQ7ht5ZkWgJgOl8Pg0T0CMIe1nAkjSY1IAOkwIJhjASyYUXCCEebyOG+uy9OxgbEQhoL2u0xkl+CwMQVeJDdRVvpA2tE1fwH/PzuT7E+S9eOyQrY62A+ZRdt3IjRPtCMYwKuTR9PziiV+XZSz6Cta5p/jQmw1KWikNhWB6DhmijYy9m4rKdM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,85 +139,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On 4/17/26 05:25, Baolin Wang wrote:
+> Currently, when shmem mounts are initialized, they only use 'sbinfo->huge' to
+> determine whether the shmem mount supports large folios. However, for anonymous
+> shmem, whether it supports large folios can be dynamically configured via sysfs
+> interfaces, so setting or not setting mapping_set_large_folios() during initialization
+> cannot accurately reflect whether anonymous shmem actually supports large folios,
+> which has already caused some confusion[1].
+> 
+> As discussed with David[2], for anonymous shmem we can treat it as always potentially
+> having large folios. Therefore, always support large folios for the internal shmem
+> mount (e.g., anonymous shmem), and which large order allocations are allowed can be
+> configured dynamically via the 'shmem_enabled' interfaces.
+> 
+> [1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
+> [2] https://lore.kernel.org/all/875dc63b-0cd2-49e5-8b0d-3fb062789813@kernel.org/
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+> Changes from v2:
+>  - Always support large folios for internal shmem mount, per David.
+> Changes from v1:
+>  - Update the comments and commit message, per Lance.
+> ---
+>  mm/shmem.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 4ecefe02881d..769ef37b1ea9 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -3088,8 +3088,17 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
+>  	if (sbinfo->noswap)
+>  		mapping_set_unevictable(inode->i_mapping);
+>  
+> -	/* Don't consider 'deny' for emergencies and 'force' for testing */
+> -	if (sbinfo->huge)
+> +	/*
+> +	 * Always support large folios for the internal shmem mount (e.g.,
+> +	 * anonymous shmem), and which large order allocations are allowed
+> +	 * can be configured dynamically via the 'shmem_enabled' interfaces.
+> +	 *
+> +	 * For tmpfs, honour the 'huge=' mount option to determine whether
+> +	 * large folios are supported.
+> +	 *
+> +	 * Note: don't consider 'deny' for emergencies and 'force' for testing.
+> +	 */
+> +	if (sbinfo->huge || (sb->s_flags & SB_KERNMOUNT))
+>  		mapping_set_large_folios(inode->i_mapping);
 
-syzbot found the following issue on:
+Two questions from a non-fs person about the semantics here:
 
-HEAD commit:    1d51b370a0f8 Merge tag 'jfs-7.1' of github.com:kleikamp/li..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=117dc4ce580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7f207c4b1fbf85a3
-dashboard link: https://syzkaller.appspot.com/bug?extid=38a879f4a73497f2dfef
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+a) Can sbinfo->huge be triggered later, for example, through a remount
+(staring at shmem_reconfigure())
 
-Unfortunately, I don't have any reproducer for this issue yet.
+b) Do we cover all cases with the SB_KERNMOUNT where sbinfo->huge cannot
+be changed later?
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e08ff8d2b0e5/disk-1d51b370.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c11d4b098bbf/vmlinux-1d51b370.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/6a4691f32e3d/bzImage-1d51b370.xz
+-- 
+Cheers,
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KCSAN: data-race in mas_wr_store_entry / mtree_range_walk
-
-write to 0xffff888104f71d08 of 8 bytes by task 4757 on cpu 0:
- mas_wr_slot_store lib/maple_tree.c:3232 [inline]
- mas_wr_store_entry+0x3405/0x5ad0 lib/maple_tree.c:3528
- mas_store_prealloc+0x43e/0x690 lib/maple_tree.c:4936
- vma_iter_store_overwrite mm/vma.h:616 [inline]
- commit_merge+0x6a1/0x720 mm/vma.c:766
- vma_expand+0x301/0x460 mm/vma.c:1219
- vma_merge_new_range+0x29c/0x320 mm/vma.c:1112
- __mmap_region mm/vma.c:2766 [inline]
- mmap_region+0x1073/0x2110 mm/vma.c:2856
- do_mmap+0x9b2/0xbd0 mm/mmap.c:560
- vm_mmap_pgoff+0x183/0x2d0 mm/util.c:581
- ksys_mmap_pgoff+0xc1/0x310 mm/mmap.c:606
- x64_sys_call+0x14df/0x3020 arch/x86/include/generated/asm/syscalls_64.h:10
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x12c/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff888104f71d08 of 8 bytes by task 4759 on cpu 1:
- mtree_range_walk+0x1a6/0x490 lib/maple_tree.c:2032
- mas_state_walk lib/maple_tree.c:2952 [inline]
- mas_walk+0x1cc/0x370 lib/maple_tree.c:4366
- lock_vma_under_rcu+0xc9/0x210 mm/mmap_lock.c:304
- do_user_addr_fault+0x232/0x1050 arch/x86/mm/fault.c:1325
- handle_page_fault arch/x86/mm/fault.c:1474 [inline]
- exc_page_fault+0x62/0xa0 arch/x86/mm/fault.c:1527
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-
-value changed: 0x00007f68dc2a5fff -> 0x00007f68dc284fff
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 UID: 0 PID: 4759 Comm: syz.5.348 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
-==================================================================
-netlink: 64 bytes leftover after parsing attributes in process `syz.5.348'.
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+David
 
