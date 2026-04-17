@@ -4,86 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDDE6F8E4A5
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 04:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E352AF8E4A7
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 04:27:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B07A6B008A; Fri, 17 Apr 2026 00:13:45 -0400 (EDT)
+	id C8D106B0005; Fri, 17 Apr 2026 00:27:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43A486B008C; Fri, 17 Apr 2026 00:13:45 -0400 (EDT)
+	id C3E596B0089; Fri, 17 Apr 2026 00:27:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3296E6B0092; Fri, 17 Apr 2026 00:13:45 -0400 (EDT)
+	id B53A66B008A; Fri, 17 Apr 2026 00:27:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E06F6B008A
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 00:13:45 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C22821A0B31
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:13:44 +0000 (UTC)
-X-FDA: 84666729168.18.414059C
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D6E5F18000A
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:13:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mETVZEOu;
-	spf=pass (imf16.hostedemail.com: domain of pankaj.raghav@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A5DE56B0005
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 00:27:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 735C5BC91D
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:27:00 +0000 (UTC)
+X-FDA: 84666762600.08.4BDC442
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 997474000B
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:26:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cHgTN7JI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776400018; a=rsa-sha256;
+	cv=none;
+	b=JY1J16BTJo3DzCujwgwEFoGPSn495vmH+m2dcBo9241gyQqlOWfkKKsDau70ZMAd46leb0
+	ywm52lx7piiH8rX4XG/emebeGhi97Rs2rodyL5DJpVZrBS5TY/5rMUGyC9vSEct8S7I5cM
+	/DiWnVsN0OAgijXqdPgV9gzSQOYNpIo=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cHgTN7JI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776399223;
+	s=arc-20220608; t=1776400018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XUaK1uP+6uJO3z8Fwm4PBPbv5RYUn9z279QbRwk1wDE=;
-	b=Lwuqrt8B5eebdKrO2J0AxboIzJksa9dzrqGaOhVh8Xd5v8HRtcOIrtr0aox0R5RzJnhXMM
-	VpEQu04BMmRQ465XpAVv5OZbRWFNHamUY9z5o8h1TTr+Z3AhpfRJibSWzc1cIGHMQT+Ux6
-	R5G9QcVX9mOszUDHVKia0ux49eXhuow=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mETVZEOu;
-	spf=pass (imf16.hostedemail.com: domain of pankaj.raghav@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776399223; a=rsa-sha256;
-	cv=none;
-	b=iHQdnN0zFgbzxH2XjHRnQ2ISZzqf2wTsFw7rPxR+KQMSB4moLfJjhymLSaDgDNnlRB+rUa
-	3mLEcXrCizIGWCaZU2rBpdF3ThQ/9DMa1MfNFdPQCQWrDVFJczJ1eBj5ONzWxTP+UuuTx5
-	80tnWOvNnIUMbTpsWHCpTNy2T2imxNM=
-Date: Fri, 17 Apr 2026 06:13:31 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776399220;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XUaK1uP+6uJO3z8Fwm4PBPbv5RYUn9z279QbRwk1wDE=;
-	b=mETVZEOuB6FUvW28gEH2W7joKSOQVVwk9uQHP8vGpER0/3RF6zLF0Fh02TiaJ9+zynry00
-	064wsNt5G4t0VMJBo81UcDM0aj0XeAuIPxPQLhU0TBul1ZV7tCB097AWL9XRcKyz0+E0Wn
-	vnc8A8/LBLEIihoRIRj5Pcq+dRP/1Pg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, 
-	ritesh.list@gmail.com, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>, 
-	dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, 
-	brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
- RWF_WRITETHROUGH
-Message-ID: <2dmo4my5rml4ymfuw5afc2fnbcxn2l3w3bz2boj4eevognilni@vgy4vwlikqx7>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
+	bh=sdZwKg7ZqT6fpMDssi0ujHMgVQlDq6enJyNYdZyrVCA=;
+	b=lHCC7z1Qb1/Xeg9d7azjS75Z8IVhn5cnZBW2NExfWJgAPCLmH4VqCQgtmRParBBV0pppO1
+	2RulWvTp8e9hOEdjDPPiZw3ds4KFb6IKLUzo4XJcuUOlRXsBwEyLoWkQmOJKMZn+yJGOuL
+	BK24rCCkILcbbC0kSRAAuXezZNxmCK4=
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c70fb6aa323so76752a12.3
+        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 21:26:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776400017; x=1777004817; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sdZwKg7ZqT6fpMDssi0ujHMgVQlDq6enJyNYdZyrVCA=;
+        b=cHgTN7JIFkFqBk/BsUCoymINrDA/+W+titp3Nlr59mVL1qzKn0REJpN6S2ewsfivJ+
+         Vo/3MQNA8lyYzzt0qx3loO5CKQLDzU8ibwBMg7HQ1q7AIcMzhYfYSwAQXrgWzC+NWY3I
+         7xh7S0zIY0W8m2Ou9ZaqsqnSPi1QRbZFcaQ8S+aZKrVXpM7qpEZYMRBakoRUnuTVoS2L
+         R91+iKhHd72DUZay0kUs6oB/58o9IpOw91OXmnm19nnaOnWIr7wVEHRu75hnzm1uIwOB
+         KprLu2gwWvfdC/PU+1LXaOXJ3BhpuL/fmBX8Z7XpPIEK5ZqEPSVRYiK0jJGoVUHS1GmE
+         SYWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776400017; x=1777004817;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sdZwKg7ZqT6fpMDssi0ujHMgVQlDq6enJyNYdZyrVCA=;
+        b=rYDjgvk3vv7RFLoCMWF7TMR22sqxEQi52Qq+RQyWOa7fCxIQDU+e0JTBTM/hO5olqF
+         4icbUIrfcdjhfdMj8zFpGQQG2yGUs3bG/eDLTaKOcskcoSpfN2VFxv71sHtuMCCLn1PT
+         2mI5bGx8YITnz+DyxgZULjbZnf/4MWmEg5itkrGaO4PHzt3aeMiFjIYTHBlq4vRKMNtZ
+         9nrXwQXOpy5GtiaYk6+qH08ObokmRbchl5QkBfVkbMCIS8EnFnAZ2e7+Zc7LtXMh+2kl
+         bi8kTntq9ijSpD13AAZ2nXS8w3SPTf2WVpsPqS6L/mQE6QHhamrQo5/gNM58hAFEjnOt
+         NuWw==
+X-Forwarded-Encrypted: i=1; AFNElJ8LbWhuS4zDzhvdSgyCB2zJKFk2uW0PPcCP+PujUSItComXXc3cNhr+etFerzoVqeUrfDmIwPiv4w==@kvack.org
+X-Gm-Message-State: AOJu0YxQtq9Tx9S4/JZUcJl5ZWMexcKG4SZk5ajm3BCv+pMvJbflTPfO
+	zy0DrlU1UD76yu/haj6rQps3qFvOC1qD40Ji1xpWgpO/urp7/EPtdSg8
+X-Gm-Gg: AeBDiesGKkkw9rh1ZeU9HHAaolN6MAfXPedL24zNNEkEUUszYo3mTm/mORpxgkRC5SM
+	sOXPLJS1e0s8tXu6yb3TDYIOl/WKUmlUjCjaK6Wbv5Z/QD8u0hcr1+/hl3IEuensc9G1Orc7+Mn
+	1l/N1kUy4blcLpPKUNJ7uM7b3iNEv6H4vfXWa3HmjqGw2oS6lTxtcZLT5SJn8nOB0V7WnW4RtsI
+	4nBCc28Y3KANcwyX3LKqfmpO/+n2DytKETwqzQtmRcu3H/91KsB4KDT0nnSK89tXImuvRScQIkR
+	/W+2ClDJBRFf9AM0ykDCUYLkiMoiMN7cY11KuD6wrC3mPAnx1zJJxUWeJesR0g4jOnZJel2BJ4K
+	KdKRlJdaIDD3GMFVVOBFVnADVuTZ7IH1bKJmeF6Dx6JKvpupDTlhbN04LY81hZ1vJVbbHnMUI78
+	tekY+DCVez+AcjmElzt4J/G9ezOaLSzrLe+8wg46K0uggFwCK0i+L+gbellYcXSh60nQ==
+X-Received: by 2002:a17:903:bd2:b0:2b2:ccfb:8387 with SMTP id d9443c01a7336-2b5f9f534d9mr10448305ad.28.1776400017244;
+        Thu, 16 Apr 2026 21:26:57 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:889a:1f39:d795:a77d:4309:e1bb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab0c17esm4928985ad.41.2026.04.16.21.26.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2026 21:26:56 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2 0/2] mm/damon: reset thread status parameters upon kdamond termination
+Date: Fri, 17 Apr 2026 12:27:01 +0800
+Message-ID: <20260417042701.4077-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260417011229.75947-1-sj@kernel.org>
+References: <20260417011229.75947-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D6E5F18000A
-X-Stat-Signature: 1oeaji9se6yf81s13pb1o83phkz3mmu1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 1mgwkcxk9gsqgjksmoh6tgp3s57pc4hn
 X-Rspam-User: 
-X-HE-Tag: 1776399222-109232
-X-HE-Meta: U2FsdGVkX1+1HRvi7/Z4mNCuTyOfjeXHHWRxJ3THZIKiAIUuYZXkcEXEapWQneN3LZkXzuLCuUkA6Oy9Z0t9D+8nSBavhrchq5RTC4pv7o9eEqHT4pUXfJ2vJ9mWYUXVogLSqmsm2p4L5tTS3DX8fKiom5EcQl38dYEIjKzhDBc3FSmcOOrLXF8jRnHvHK6o85F3rQPFlpTEnOZRmTNHtOHGL3kcVUoUSgZkI4KhdjYKZoOeL3zC1KQNS7qsvOdGJFgfJVC1oeKzTAOvzKoBAEB+aVYCMyk5BShAqdJ3dIEV4zjUEZBEvBYKIuGzUMSg9VRk9CLHXpJoE0pNwhBORlo1taarlGzLJcJgmiOK+ZJg1v8Z0QDSBLkzrP62IfZknN5nOsqBtIzzzzg2oEwtLV19KSvNqBPN5WnBkf+uLUY+Jhze+/YYhfbatzLQ5bY1TSAhemviMsMQYGX9eDaAz9nu4wEl74yj7M3h0drJu8vu7CCvlmoDgluTSWPlQVvR3xTbSza1DIQl1fNbFYobB7YgEL0176e0p83sg/lhJo6pAlPir5h3MoVRiZLvfdtmq7qE9vlLVPQ4doMsbHXvATLEnB4Vd0G53VRXDkmBtUjRyotkAlnBpopaYO0ekgP7mGoVFBPehrfzme4Ws5dSfM8ImzpVTpEoTqcVnDMRuR3DQAGmf5GeAZLleN6r9pCnpFgtU/3DyHBLry4wnxJ6blVqOr21h4gBuJMWKQ0Ki1ExvSKz4eCCb8ErdJSF40YOQFBNkcMqBy/14qzgvsQ/rpYoMTiSq0zVEkwNqmJvUUDE2d6kIELLkO3qTTEZeH4H+dQrhnOoQAPo9+alzk0vbYU5kHNWzDemyhjzVubQVUXvyEH9fiK2sqNf930VvzPcEamX5QQpcQEz8HWBC5czdoB273MDThR6xWFJSh1Gxq3AeYt+oi1GFAa9iMzwHnTx1bNVjAlUkUVor/hFupW
- zxaOnZQw
- 4TGF2Vg16EpLvDiuf+cLIwIHYGpVv2uFHGQ5qpdbipTAA3WOYQED1ZJRjy1wrcd1yZD5CfCeebTc+8A4s5M/oMk0VZeorSpSLe2guarOeEF5AoVfbM1lWtlkNcZ6M1eDLaJkMwoCcOF2PaA0Ov/Gr1nrIe+NeukE3l5pbqXA6hN+WSV5UH3uMGahGavtunEUG85myAPnVHsWZ8gjTUo62HbhwEXIGF87exRHCi3yj/80nd7cL5XgLKhyZghKxtt+uqTtq5LvbDtaEq+7WNJ1bJnTIPKvUUkRsrabra6OTSdWSG/NN5UgYOdghE93ubI1vfeS0+7TpizLvVOE=
+X-Rspamd-Queue-Id: 997474000B
+X-HE-Tag: 1776400018-925135
+X-HE-Meta: U2FsdGVkX1+qJyGcfLfXIIHjklFCIGns0+ss4C41IbzOCvzGT7DWEUtod3C7E2F6kIgJwR/cMzg2bV33gDr0852PucwBM86DqHFmWv442RRXf1ciRlrZO1j7+LU3Ll3Xegz3ebNrbJXcioBpuFlWU6oCJ7/DJKkzAzHrj4zoRjTvrihr5+0qb3lJ7g5/VfItbutpCHXLyb8UKi53LMuTVJF2D3oJyZOP0b+lnIJZ40VbpmEDWgn/y1nK/FOD0WS+3RAr27l32EaNCPfmXxXZ+lh56LPJ0a4//LvGsG9EVljvvJO4AF7rQ6LtsUE0pVwuZ+xn6ZTfaWpBlQbCpWj0HCNjIK3MKGrNb/TFjuUyOrcaJi7jHDz5I9zG8qzundwcchRyfIyLwjNOpBBDUpV4m3SegAC/uTN1DYwzOidAjZomnLCD1Y+Zqoi0RpVfzQwpJMjUKqe8Af3pesRrfh3Z7q9nUIU4dZkz/yQqcCF/dJ8VegsrSE7zzVFXmZW6M/fURCNjIxA0kcNfvz0ezkBFX5cbJcCxCbdS8dXKMVqG5CpWUWChgxjtG97l5R3RxAezxwBQGeK6e3/B79w9VvffaNXxRWlYWLB8XMjfsksnfyr7WrSpoF7zTnAtjU+nanL7XL89YOUAYMJhBFiC/SfBF7yrpxibu6zAtBM8s7MCnwgGP0oAzEWxlGb4FjyWlfZeX88oJQV+beTTx77d0wqzuGDGo09hToBsj29Xx4Crohfpu6voJAuDWmh0iosLD+B2hm1QYcDjliz8n3hta3WSVcNNcSuP14UJdxYJI165oVOql8XlJTQBRpLbkffeWesIKZWCuzo8ngVbc/2aq3AUSlHHFB6tFOhpW7KAwrtrEREYXI3kRqqSyIqu88OzDSsiFRkIZiOnWJZfNMHi0sAuDIOT+jMKXsNDy5DNjGFe4FAGZhuhT6gskBnFqElSnlRGDUuiNNM4q8xcEYbXUna
+ RHrFwqqB
+ iDA7bj63T8Nkk3OyIOEtSNNJzpl8tt3BH+ut/bpCiuLVX1V8//T81ESBv35C80dCW/xKYwmXbkfDZ7dnWQSn1Nm38GYc2HuW634CixxvEUe8oH/XcbgHaGPN+PFi4tHiJefhOuSKQSOFcISmKvcmQOm0Byxp5v3Pn0jHNAXi1OfvazZV8OOgo5p+sGj7a+n9uFzOvL/f9/oCHHtK56Dbba0NN0ZZatAIoxSLSH4BzPNpXFcSXYzCwHkDQU4SymrK++I2+RRMxAWMOc8yPkSB1ZITNXY8kuOMvhMi2dPaplORZDOxCALbZqZVvfmK+TFCxaKSAw3Kpf60plGQkgA7HeKsW/uQEJVB4wzxJt+tq5Oi/GtuwV1Cgbdref3BkWpp5bukcYMft1jj/gsoaVZqATLDymvr+CExJGGO0/jfZPj1Aw8itCO/9PlJNrOlcMVTEH+grjwOKf8/QP1I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,56 +118,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-<snip>
->   3.3. Wait for any current writeback to complete and then call
->        folio_mkclean() to prevent mmap writes from changing it.
->   3.4. Start writeback on the folio
-<snip>
-> +
-> +/**
-> + * iomap_writethrough_begin - prepare the various structures for writethrough
-> + * @folio: folio to prepare for writethrough
-> + * @off: offset of write within folio
-> + * @len: len of write within folio
-> + *
-> + * This function does the major preparation work needed before starting the
-> + * writethrough. The main task is to prepare folio for writeththrough by blocking
-> + * mmap writes and setting writeback on it. Further, we must clear the write range
-> + * to non-dirty. If this results in the complete folio becoming non-dirty, then we
-> + * need to clear the master dirty bit.
-> + */
-> +static void iomap_folio_prepare_writethrough(struct folio *folio, size_t off,
-> +					     size_t len)
-> +{
-> +	bool fully_written;
-> +	u64 zero = 0;
-> +
-> +	if (folio_test_writeback(folio))
-> +		folio_wait_writeback(folio);
-> +
-> +	if (folio_mkclean(folio))
-> +		folio_mark_dirty(folio);
-> +
-> +	/*
-> +	 * We might either write through the complete folio or a partial folio
-> +	 * writethrough might result in all blocks becoming non-dirty, so we need to
-> +	 * check and mark the folio clean if that is the case.
-> +	 */
-> +	fully_written = (off == 0 && len == folio_size(folio));
-> +	iomap_clear_range_dirty(folio, off, len);
-> +	if (fully_written ||
-> +	    !iomap_find_dirty_range(folio, &zero, folio_size(folio)))
-> +		folio_clear_dirty_for_writethrough(folio);
+On Thu, 16 Apr 2026 18:12:28 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-I get the point where you want to prevent mmap writes before the current
-writeback completes. It is not very obvious to me why folio_mkclean
-and folio_mark_dirty had to be moved out and then we call the
-folio_clear_dirty_for_writethrough wrapper. Anyway those calls are made
-after we do folio_wait_writeback right? 
-Is to cover the cases where we do partial write in which case we don't
-end up calling folio_clear_dirty_for_io? If that is the case, then a small
-comment on top of folio_mkclean would make it a bit more clear.
+> Maybe I suggested too much...  If we decide to take both my suggested commit
+> description and the above change direction, maybe it is difficult to say you
+> are the main author who should be primarily responsible for any followup issues
+> on the patch.  Of course you will still deserve to have credits.  Maybe
+> 'Co-developed-by:'?
 
---
-Pankaj
+Yes, I've decide to adopt both your suggested commit description and the
+implementation. Therefore, since you've done the most of the work, you
+should be the main author of this patch.
+
+> 
+> Meanwhile, I feel like the fix of this bug is taking bit unnecessarily long
+> time...
+
+My apologies. I have had limited bandwidth recently.
+
+> 
+> If you agree, hence, I'd like to take this over from this point, and finish up
+> the remaining works for this patch.  If you also agree, I will also take the
+> responsibility (authorship) from you, while keeping keep your credits with
+> 'Co-developed-by:' tag.  What do you think?
+
+I agree to hand over this patch to you. Thank you for your help.
+
+> 
+> By the way, I hope I'm not making you to get me wrong.  I'm not trying to steal
+> your credit (authorship).  In my opinion the authorship means the
+> responsibility (or, who to blame) more than the credit.  Putting right name to
+> the place for the responsibility is important for the long term maintenance and
+> evolvement of the community and the product (Linux) in my opinion, so I have to
+> say this.
+
+Thank you for your explanation. I understand your point that authorship
+implies responsibility, and since most of the core ideas for this patch
+came from you, I fully agree that you should be the main author.
+
+Best regards,
+Rui Yan
 
