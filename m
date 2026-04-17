@@ -4,60 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95EB4F8E4A5
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 03:40:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D696F8E499
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 03:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5A266B0005; Thu, 16 Apr 2026 23:40:04 -0400 (EDT)
+	id A98206B0089; Thu, 16 Apr 2026 23:40:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE3DB6B0089; Thu, 16 Apr 2026 23:40:04 -0400 (EDT)
+	id A47D66B008A; Thu, 16 Apr 2026 23:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D2C46B008A; Thu, 16 Apr 2026 23:40:04 -0400 (EDT)
+	id 95DD16B008C; Thu, 16 Apr 2026 23:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 879596B0005
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 23:40:04 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C0D413BFAE
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:40:04 +0000 (UTC)
-X-FDA: 84666644328.30.6651373
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 39F6780008
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:40:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eOgJkgo+;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776397202; a=rsa-sha256;
-	cv=none;
-	b=7ypNcxHWo53hhDY1R7W3cdN+qj6WvDR7T008JxAGv4aYacXv0mE8d2OcB78PCt0v5qH+MM
-	+5AEzPAvB5neOqdYQ9Igl2Kt2Jv+SjnM926ZcCfaLtRCTp4k7SZjsfyHo4HNEdtYkBJKdj
-	LgunNyawba/bvSda+/pajyT+vjkknVY=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eOgJkgo+;
-	spf=pass (imf30.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 849006B0089
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 23:40:17 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1CA058CAFE
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:40:17 +0000 (UTC)
+X-FDA: 84666644874.17.5282180
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 61488140002
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 03:40:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pKcV3wAV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776397202;
+	s=arc-20220608; t=1776397215;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xD+vD5Cr8OBOS0rVMmOY3t/SSk4WUPUpW/zHp5Clk1Q=;
-	b=at6bzeGR74D35WfPsGY2er3TM0SknJeJYLWPOXgMhmF67MJaIWwefM06MlPTQomAY5aaFa
-	zLsxEy68mWkerzo9ozjVWXuKaexFLQWhQe1OCldiCEKknzOhdCRYR0ApCTQWbRuD2/HC41
-	gkfc41lIigTE39gnYbJG+H67FEPBMQ4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/HAo61uBKpFz6MK3WD95e+rqHXxilBo9frJ5Jqo/JHM=;
+	b=ScOZeqLtvZ2eMgw88v02cuBI7Fqq16N6IO384RgBItMS4Mu5k2Vf3XwpAZnZRBxX5pwd79
+	fPmueqxRd+rtdmwxzlpktWfh8LNCfa0G6zJ2HuWcC2tYnWqh1Ah+wXNsgF95hzSTR2HlcT
+	2VVEHA2axwec5hXm100OXrDDGYIkl0w=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pKcV3wAV;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776397215; a=rsa-sha256;
+	cv=none;
+	b=5GqvxJNmUUPH+DnKUkevJWlT3/Vu85ldMC0ED7X+n1PtR+6twjAehBRgoCmdfZfen/BMrv
+	xBEjOKgHgJRDz3ZlBmtEqM+SwCFVjIeK67IATk1id9L7WNu7aTmzjvq5B/1BGX6UXdyUAl
+	sp9z9pWJiEEyC1yW38qNRyejWi8jhOg=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776397199;
+	t=1776397213;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xD+vD5Cr8OBOS0rVMmOY3t/SSk4WUPUpW/zHp5Clk1Q=;
-	b=eOgJkgo+8MgIVGP9e/c1+XjRF086SGxx89CehMr2ZeBy/PNJqWL1lEMq/wEg5vHwOYeQ3C
-	5NQDlxYkWT1sRBk5/CbJgIDST9Vrw834v2ISrJOvHCfq8v52bF2NX1tCbAxfvB572jCg8X
-	XixTiVmg9+BiLDN/MyLDwMEXAuOLtxM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/HAo61uBKpFz6MK3WD95e+rqHXxilBo9frJ5Jqo/JHM=;
+	b=pKcV3wAVNa2aMZsNf6QIOIGIeLvhbX5oaOMCbSNsF+DiEX1JOmeqYmXUsjBfP3bhu6Hp00
+	3C74ji4TmR7Y04vTi/Ig0/oZ8Fvp98QDmfskN2QnlE2akNsNVNCj356Vz3E6G00IC+C0RN
+	7TvpSzI/Nk7H+hsiSTefYjLcjCz3NLY=
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -70,21 +72,23 @@ Cc: akpm@linux-foundation.org,
 	youngjun.park@lge.com,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <baoquan.he@linux.dev>
-Subject: [PATCH v4 0/3] mm/swap: use swap_ops to register swap device's methods
-Date: Fri, 17 Apr 2026 11:39:48 +0800
-Message-ID: <20260417033951.1111038-1-baoquan.he@linux.dev>
+Subject: [PATCH v4 1/3] mm/swap: rename mm/page_io.c to mm/swap_io.c
+Date: Fri, 17 Apr 2026 11:39:49 +0800
+Message-ID: <20260417033951.1111038-2-baoquan.he@linux.dev>
+In-Reply-To: <20260417033951.1111038-1-baoquan.he@linux.dev>
+References: <20260417033951.1111038-1-baoquan.he@linux.dev>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 39F6780008
-X-Stat-Signature: wdwcarkmyz4jrxpoat5ujx5ctxjsbn9e
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 61488140002
+X-Stat-Signature: i794h5q1hcx69hujmfpc9r9h6w6jphms
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776397201-460686
-X-HE-Meta: U2FsdGVkX1/nXrSvwcKGfw1CA9mMVMlJ5WT9zZ3bbDzJzX0KTyLXuL7pvXNvg8+Mepsrd7BVWmqHHVKQrh0fhkivL2NxRIkx4PWa8VYK9CcFRdc42EAJ+pdiMwQOjYXN01uTW9Z6Zj89V92H07SkYM46lT6fXgGoZWtEyOZatnECu2JyNDmf+llsFRrqkSL3ZJ7EdE+uwmAsF8svtbxvfTI1qBw9fBdbx7yP8fQYwWXKK3ZS2pkDKCPyEUZ9T63Zjha44Z6SrYHHev6rLUT0JENkOLgn22hinzn5/sm//S8ntSVcNdGH1syFiUo3JzRhK96kzi/giGbCiALieBAQ6PL7wmRb16uAdMMz/1HyQRN0WFk6xOMUP59rai7KUZv68KYFEv8jSjug7Z4GJ+S9K63YTzjz35RA1fEpCMrgkmxC+uxv9bmkZ2OJoiL66GmAlWfoa3IFUSbQ97NcqjUGT617e9iMIcFKjT2CCaz1DeyyOZ9jtA4d6fEhgBEbf1m4DNf9/2xReyZgweNWs9YDW6+3Mi/FU+bS1KxAGZS7gtoszGMvNGhOKfcMzGQDawrk3TWYdzOtfAi7Pbutl2Q1KK1Wl2WcBtS4E6He31AqiffLUZ4FGJwURy7X35ThhXLatUY32H3kpRa3eQdWxF3qflVBTGcDiYDbPcpVsTvDjMgm1WnH4JIRFwWRS9yA0al109Llar6RGWnZCn7RQymIdh22yfRe3Rr2P+V2RGuS42Eb9kxnyq2Y1PHqjXZw86y3s0Z2pKDuckKjIBvH0Xaex9pJ1bXLlBBKpHV1A/p2g81hmuoKWZUum6upYhkV4QbEetAwHMpUEU+UPqkHvrlC1Hl+ZgEtbmjsgXgyqFI2MyyePHPUNFSLTAiaxKqYsJplX29kCjThW6LgMStBv0QHD/Hf4cwJlAEbKjbfm35cx8DVb8Zkv7F47z4PY51pw8p9Ng2rNjsCtG+Ll55Q1V8
- U27Yv9W3
- dS5APtZnX24W+xggtyzf50vgWoaUV3QO7LNWoUeQEcTYeYzSu9M2aKepti1HoV3Jp5iHVn3zO029aZmoHFjch83v5LjbdCYzJIx3u3PceLpxIErdbqYEceKX1QsHB0AfuwBkRFr69Kgw5Tf7qj8Rs+0CcAHtt2SsTbfmeZbARaLFtR8leJlbxIR/IUdm9Zp5Mq6Vm4pBEtPYcpud40rhOfw7QbbacMgDJQEoEPtzjRaKJZHdFvUCHO3riucIZfh5ARptmWVFqslfIWcYMX3zGZBZskHdNc5qY9EFE
+X-HE-Tag: 1776397215-328241
+X-HE-Meta: U2FsdGVkX19cfN1+jMhZDDWiYBxCK0zxYNSqyYTOKPmeBDaQsbueoc2/0yC6PU6dJMTGSIx1om248md16Lg0Z5QNEMBgs6aV/RJzkPvu++Xcg6rOYrMcs5hfGqQhjTp1X21GH/z2/l+UD1TPDsKQbHPvkVyIR8FDDQLwIblx9AcAMqSmsERmUC4G3vn63IxwJcCooAYgJsb7KaXUrHYmAyc+0hscIA2mBUEXdh5yi3RK2VcHceOPLzENkHqNiz1RIIl/P7m3n7eMp7QwmMltdpRzniqbiPktDiTELErQZ+M4u/orCaLAdcPhX74AQg8MlfinMhurXTBrANdbD0QvH7uEvb11oAWPKEBGuDfJp3hcqT9yKh5B/nlTV/M0UWHwroIqnCb8FwaV180S9Z3yL1a0UiDyI28EO5CmF01Ay95oxWdpXyMrkK5893BRN5E88IkumEudM2eOKsMcnLMdLLj41aeip+KNZYdZcth3kfQX0rVx/hUotQJnNKy3LAwQOeLb+8c1bLOwDt6dusKd1jqvbLNDoUKde8dXPwSiRHGynCorKQlzHeDfklg4fgWeyGZ11zqjacuU0Hwtep0hxpSYgbFz20PQf1YHgCzchZX1mwsQI8J3M6XVmPTmYgP3530+sA2mwGUUS9PJpMTFx8sgh9qffPTyZ4NoO5PsQhhfeibVpKoCV7ZTwuutoFY8yJVbfUwA7mUMy+Urut26QarZdAJuGvvjG4KBnDkqQTD1qgFVzBZuZALTqBjgtAL+s9L2ntIrGtaITjyAUbXh16Dx+ziQqaLGWZslnNppIR3J3DhADRes2YiRqFJyQrNvBotSjGwyjhxdNspqcF9M1xlRJvwo5asOGbOsaRq3iTgE20yTnaklnuauHBovQZeM7nGzWOpsC99GIUp3Cz4G6FyYvG/hYfsU9XiOdMTJ1LbvgTzwPPpVc+rR74G8v09Gv4+QbojbdF5RW2qe1bW
+ +eDcVtBg
+ 9vajk/uX73/e6/K2pdD/A1qjCn7dSzw9wUa7ano/LkbP2UOg9wYIMJOGeaC9rbEf5mglbgb9eUph5ALd+BiIkW0Eg69Ai+0x8EAHletmYcX11mF6QGcBZe3PznF2b9exzVvRM3fW48rxwJVA2jdNmF893PCf1OHGm4oUPdw7d0SSdeDRiwYkgyK9lQqHtSgQHVoMPu/TT9XLGz2cRkPmh8Ab2bqb1COvjk4+jop9d83f7mFVwII15krePZG7hmvTnt0gOXLo61CK0hcENECt+Q6Ze2vbt0BU7xSLrWczZgQ7jNjO2Ayzk4XUuL0OeDS2prYdj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,62 +96,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This can simplify the code logic and benefit any new type of swap device
-added later.
+Codes in mm/page_io.c are only related to swap io, it has
+nothing to do with other page io.
 
-And also do renaming in this patchset:
--------
-   file renaming:
-   ---
-   mm/page_io.c to mm/swap_io.c
+Rename it to avoid confusion.
 
-   function renaming:
-   ---
-   swap_writepage_* to swap_write_folio_* in file mm/swap_io.c
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Acked-by: Kairui Song <kasong@tencent.com>
+Acked-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+---
+ MAINTAINERS                 | 2 +-
+ mm/Makefile                 | 2 +-
+ mm/swap.h                   | 2 +-
+ mm/{page_io.c => swap_io.c} | 2 --
+ 4 files changed, 3 insertions(+), 5 deletions(-)
+ rename mm/{page_io.c => swap_io.c} (99%)
 
-Changlog:
-===
--v4:
- * Fix a typo opeations -> operations
- * Fix a code bug inside init_swap_ops(). I was taking a change at the
-   time, thought the change is trivial, so I only compiled but didn't
-   run kernel to test in v3. Now fix it and test passed.
-   Thanaks to Usama for catching the above two issues.
-
--v3:
- * Rename setup_swap_ops() to init_swap_ops() which reflect the function
-   behaviour a little better
- * Check if sis->ops, sis->ops->read_folio and sis->ops->write_folio is
-   NULL in init_swap_ops(), but not spread them where they are called.
-   And once the checking failed, fail swapon immediately. This is
-   suggested by Chris.
- * Call init_swap_ops() before setup_swap_extents() invocation. This
-   doesn't harm anything and can benefit later adding sis->ops->swap_activate
-   method.
-
--v2:
- * lots of cleanup for patch 2/3: renaming, moving data
-   structures, and using const properly
- * collected tags from Kairui, Nhat and Barry
-
--v1:
- https://lore.kernel.org/linux-mm/20260302104016.163542-1-bhe@redhat.com/
-
-Baoquan He (3):
-  mm/swap: rename mm/page_io.c to mm/swap_io.c
-  mm/swap: use swap_ops to register swap device's methods
-  mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
-
- MAINTAINERS                 |   2 +-
- include/linux/swap.h        |   2 +
- mm/Makefile                 |   2 +-
- mm/swap.h                   |  12 ++++-
- mm/{page_io.c => swap_io.c} | 104 ++++++++++++++++++++----------------
- mm/swapfile.c               |   5 ++
- mm/zswap.c                  |   2 +-
- 7 files changed, 79 insertions(+), 50 deletions(-)
- rename mm/{page_io.c => swap_io.c} (90%)
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 447189411512..c7b5b6f5fa50 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17002,7 +17002,7 @@ F:	Documentation/mm/swap-table.rst
+ F:	include/linux/swap.h
+ F:	include/linux/swapfile.h
+ F:	include/linux/swapops.h
+-F:	mm/page_io.c
++F:	mm/swap_io.c
+ F:	mm/swap.c
+ F:	mm/swap.h
+ F:	mm/swap_table.h
+diff --git a/mm/Makefile b/mm/Makefile
+index 8ad2ab08244e..a65ac900096a 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -75,7 +75,7 @@ ifdef CONFIG_MMU
+ 	obj-$(CONFIG_ADVISE_SYSCALLS)	+= madvise.o
+ endif
+ 
+-obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o
++obj-$(CONFIG_SWAP)	+= swap_io.o swap_state.o swapfile.o
+ obj-$(CONFIG_ZSWAP)	+= zswap.o
+ obj-$(CONFIG_HAS_DMA)	+= dmapool.o
+ obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o hugetlb_sysfs.o hugetlb_sysctl.o
+diff --git a/mm/swap.h b/mm/swap.h
+index a77016f2423b..161185057993 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -214,7 +214,7 @@ extern void __swap_cluster_free_entries(struct swap_info_struct *si,
+ 					struct swap_cluster_info *ci,
+ 					unsigned int ci_off, unsigned int nr_pages);
+ 
+-/* linux/mm/page_io.c */
++/* linux/mm/swap_io.c */
+ int sio_pool_init(void);
+ struct swap_iocb;
+ void swap_read_folio(struct folio *folio, struct swap_iocb **plug);
+diff --git a/mm/page_io.c b/mm/swap_io.c
+similarity index 99%
+rename from mm/page_io.c
+rename to mm/swap_io.c
+index 330abc5ab7b4..a62c02ab0551 100644
+--- a/mm/page_io.c
++++ b/mm/swap_io.c
+@@ -1,7 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- *  linux/mm/page_io.c
+- *
+  *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds
+  *
+  *  Swap reorganised 29.12.95, 
 -- 
 2.52.0
 
