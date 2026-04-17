@@ -4,108 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B351EF8DFE3
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 08:31:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55E8EF43680
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 08:55:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23C1A6B00AD; Fri, 17 Apr 2026 04:31:22 -0400 (EDT)
+	id 71C566B00B0; Fri, 17 Apr 2026 04:55:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ED1E6B00AF; Fri, 17 Apr 2026 04:31:22 -0400 (EDT)
+	id 6A5F16B00B1; Fri, 17 Apr 2026 04:55:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 102F46B00B0; Fri, 17 Apr 2026 04:31:22 -0400 (EDT)
+	id 56D7F6B00B2; Fri, 17 Apr 2026 04:55:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0126F6B00AD
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:31:21 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7156C3678
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:31:21 +0000 (UTC)
-X-FDA: 84667378362.02.77144C8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C6F0040003
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:31:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tZgojb2e;
-	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 41D976B00B0
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:55:58 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7CC038CD43
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:55:57 +0000 (UTC)
+X-FDA: 84667440354.03.70AE741
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C64EA40007
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:55:55 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcHQJo1n;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776416155; a=rsa-sha256;
+	cv=none;
+	b=gY42roDjsfGKNTSbpZ91fpD45+gRVKa2ZhqHKSQzuMXCFoAgXOaAxKPQqSSRafP/P6dFyp
+	snKWJAW2AtWO87IpItCUapUlX7tlZIKJ1fxrcY7o9Mm5zD3CHuK8sq17M3+jsdHbLONClO
+	43BGWt/EzOX3CICojpEMuZd1m7DEMgw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcHQJo1n;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776414680;
+	s=arc-20220608; t=1776416155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7iudLHxEeLtdzNeFZM32eDp9LSIRdGLwCdrHAKpCQus=;
-	b=6/SL9y7IIrfqj2ePtZpp/2NGDfB9QXCp7jS1QcQy50hCvwWR5DRKbmStIwqUpNnk7exKf0
-	b6Nk8OY9466Lt7SvXnxw5IQJMO25COAIgG3LQcFcVD8vzZc8unQjDx9XB9ZTlGIKp4p7n4
-	VmBCf5mwzybxxO8wpOZY+wYHt/Jm+Y0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776414680; a=rsa-sha256;
-	cv=none;
-	b=UUQE6BW50Jh7opuPwVXcM748x13sEt0PVbv6to3WXfCR+4hjpWROPg4toM1K8zb77RDEqN
-	zRd/NsWBaxOFErJsAUHur0kbucMgmc/iUClr7L+JcgXdQsSgisBmEYhNxRO8UsjO/HjlyI
-	QSzXINBp+tJYu0xmj3Ep0pDO00zibx4=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tZgojb2e;
-	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2FF51E7D;
-	Fri, 17 Apr 2026 01:31:12 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 235843F641;
-	Fri, 17 Apr 2026 01:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776414678; bh=Xf8oSVlSyjbs13J2X0kdO8ZpK0071NFBikk2L1e0ZT0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tZgojb2evQ6/7+DClcXpyLa99zzRDpUS7S0mVhSbZhXIt0RPhE/BPySCWlI6E2NHK
-	 KPE8JCU3bOeXhjZ/k47vt0jDLgArIHpRRZNbU2Ju8E0bWimOItBpxk5rNzeDT8az5m
-	 g7QTTyHdiLu7/ZHOEJT2o8LaOxRwWwqLBwRqKEgY=
-Date: Fri, 17 Apr 2026 09:31:10 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muhammad Usama Anjum <usama.anjum@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Andrey Konovalov <andreyknvl@gmail.com>,
-	Marco Elver <elver@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Peter Collingbourne <pcc@google.com>, Will Deacon <will@kernel.org>,
-	Ryan.Roberts@arm.com, david.hildenbrand@arm.com
-Subject: Re: [PATCH v2 2/3] kasan: skip HW tagging for all kernel thread
- stacks
-Message-ID: <aeHvzh3A0eC-tds9@arm.com>
-References: <20260324132631.482520-1-usama.anjum@arm.com>
- <20260324132631.482520-3-usama.anjum@arm.com>
- <adlCN9sUcQdWbf_i@arm.com>
- <adlDSiuBeSduK0mj@arm.com>
- <aa7c5a29-c8f7-48aa-b0a0-ed147d29fde4@kernel.org>
+	bh=FzF1Mac+dRMVtXrSxsMZiTCJWQW+Iig0RfpjmrikiDg=;
+	b=DYwKioujC6AoaRM7jEki3V5yvr1BnY6kB0FQ4Y0e65f28JVosl0bkg2O39TyEfDble6fHA
+	8Obk6P9wPCDHype7EuAYn3b9pR8MUCBqTScSBvqe00nMcKmrzibvQgMMJMTP/V5CiGNeW0
+	wFrVr8PKGvvG19761YoH5aq5Rov+F8g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0AE5960128;
+	Fri, 17 Apr 2026 08:55:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CBBC19425;
+	Fri, 17 Apr 2026 08:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776416154;
+	bh=5cd38qOiEIyykacoE8rFcS3eTCpor2N3/arRUrsPyQA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KcHQJo1nes/1+iKDfsibdtEC8iQ6iH+dBg9bfefk/Oz7MftUWgI0uTHi3HV4ziZNg
+	 XkiUCA5aWsnN5u1bM9SoH0Ers7DtWNMVMReb3ls7lwMOx9FLH9Obfr4qaw+D4rMSNc
+	 hBh/qY0HYoR2wpL5wrD/SByyGTlQ6sw+fHWvQX4fhlhvwQu0GVv/rnQocBed4sHYij
+	 DGHnme2qRlxZaOD1/EU13ucnVE+SgALZ/5Ip2UiF2d4/1gVdrtnA8WFMCxDPAi3Q+B
+	 snRRqS+FddKQdRZY7dUd+MykIX9OHRdumcnWNtB793wsppvR6dg2klBSDLIULU5BZf
+	 itvlbwdC8jcCQ==
+Message-ID: <82193ab8-e6f6-4664-8b4f-e30d280d8b1c@kernel.org>
+Date: Fri, 17 Apr 2026 10:55:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aa7c5a29-c8f7-48aa-b0a0-ed147d29fde4@kernel.org>
-X-Rspamd-Queue-Id: C6F0040003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ppn71wz1wcmkmtonwh7ntjmpidnyiykb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/migrate_device: Cleanup up PMD Checks and warnings
+To: SeongJae Park <sj@kernel.org>
+Cc: Sunny Patel <nueralspacetech@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260416235252.58831-1-sj@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260416235252.58831-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: C64EA40007
+X-Stat-Signature: sfgwbdguezi8kyczfpbu8orcmqgpdn36
 X-Rspam-User: 
-X-HE-Tag: 1776414679-755626
-X-HE-Meta: U2FsdGVkX1+gUMJAiRmfmJBn334tOfuCmFn7+85AScDAFRQHIQvmwwxTs261eAKUwF4pI469ZoHpDrWqSXnaHqEaBErKiEnSR3pr6JqWhqSposJHVjEgetPCaxHQT0OuwkUu10SlTTb0/19PvrStIsteBukB8/o/4vuiVxlJfdM2A59PeYGfKH3FF+Gb0XTFnvH3xNABiFgC6l7vDI58tJasvA4k4jfOdG5D/FTyn6HqtEmthuTyF/OP3TlojC8s6Vn161KxOKpxrmplH5wBinezCMGkZxGrsJ709IxzuGnDfdivGEaSVrZ9oVtAtgaEGXrDK6+yvEnfpSXl5nv2ckbwsqo7F0O7KQqcUe6nYA2h5MWOo6dUAF+0CY/M3Uw1v2y75Z23CCr5pHL/nlYLE4Xvmiix/udKl8FXbViYix2d0SyF1ciFnOBVqi2wJxynWL4he1pldq/Qu1ldGUFFQv2jzDDBoWIJFPL2QrxwyTBByZRce0uUNidWv72Og4eNLubwmiSwbVZt2uV+6bKq3/xFSD/Apny7MaVMjf66jsgqN1UpRD+G9BcAG9/81yZqHb9QE/DriYAfb955UPe54kmRoV8ZUGWQSixY8RBxRnYMWVvR+eVij9zESiMZaUluiekOr5pCL9MdWArXS0+xIZF6fd+siFOxlidxQwY7nzhsCmnjl0o7GCfDI4fjQbYRifbB4XRk3+vK4O7GOO6JYQftxXqDYajeCAZWO1dzuBFro6TxRWfknmBlprF2b8Rpk59QNjtHp37JDC16XqvCOGzMgFoDw/vqQWxzad/nhmNHpIANbdqfeR9hzlvaMV+icEvIxlSIhfy44wuBHwYqPYlKXOx8DokbKYK9LzfZLq34g5DmaqrDnorhka3jXD2qLqpAiP1UKcdCkfmln2wdzcHL/MpbwCmg8jAyaJruc86xmfFJO/NJWdNXnKE2pvjlbOmvfDQ+Lvoccm+V74A
- CzZgh6MR
- 1aKfFZ4qFXfdyZwWomuYWJQCKqxGZDThiiIk80wQ2QJ1uRFTkFmrUifwolnP5lkAPX584l13q/uqUgvC5JhSIwc1U5gAoylz1xNjwoEsx7sQPwA5N3Tl5y53Su9eycs/FBlj6/X1WXa24W8P3C5ycEBQitGnXDLsOs5WozrMEW/7WxB5tdlRdvMGUsaxcg8NqEDgEOvcr8Lw6WaT0wXnhVM8dQFmtvUSECwTHCvGT0fY2YBs=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776416155-271571
+X-HE-Meta: U2FsdGVkX19CpDt1U0Xh8wKw8XS+Xuwoo4+ZWmZilb4RSvE4pRfoBQiOv2Zr809Al2zETRVVrExQtId06jqce60DgxzAN5u+SDMfMbMmiHbNYYRtUcfJzYqKIwtq8xYc/Vl4n8thd1MFNFtHcdYSvUBn+Ab9otpR3cV19UeyTa8hMf0nsissC/04nWN5lla+K7m5B3udDS2cFNGTuNLSQVglN7cDiP5ck7lSd+up5TXdHhOmCzm7JzM9xrgdYW6muQA6Del3c+gAfOgwAeFKdc6ucvDr5UVwKBGSsYxa2qzqk/1QJV2VOLim3pLcFII6YVtQutdkjn3Ln4BkHz9Jt+31E1Rff30/U9DCW/QZMGafhDnG0QHuIPWsAdsF2nmbU3h8aEcxAiacOwgvoZ/CLZ78OGV5uPO/b4wTJnIooYP1jnqCmfkduuw7S0pCt7JseXoWv0s0PlpP3TJ6CT9D4fjurn3QHyV+/yLQmq+XrVDUt76VupuSZHOUxOszh79ST1+TWBdfJbS7rhR7pxJJsia+ZVFy/k1jmjXHlxgeGuBVCu0x3FTWWBa2Nh1HYOYZ+MeOkQBncWyZ49AtBPKAsJTnXLuROG9lyLFbXrIkUw1P3ogemkXxRNuHQG7oTQdZ/ylJHS3I+RfD+cLhrD8VigLEQL5Ky5SNFlMv8FiyR7Prl8hoR73j7zan1NlHWy59lnTUibZe878YqBEQCaH9elUUuT+eUikT4lB4j/fCKcH0a4HyBl0EbQDHILJT/e9AIbkU8jyhqFTBZWLXJT1NVZmvMuui58+yiB9wkaEwgpM1QGoxkK7KP7CtoOZGIW5J3csKNYgtawvKj1Y4DfR2CfdsWnLcPwu0vyeeYc7b988j9t1o3w+4JV1YftG1TMfijp33UIuqsAWvtK1W+6+mgrXa5UxbkIVtlFlptalxGRB1lFOPh4fxcgKfG8dCCRgmYFBw83X5X9IXvdrqUFd
+ zFrZANB6
+ Hjf+2XyaE245Xjme5z3FeV/QXzZWNVHxVLL1azQSC4MNfCA/vtzjq7pwnfocm/5/yJ7S79zXpkSuVkent/Mjx9/5zInIBw/GcsQoRRLKXv9RsOekioh3ps2PCcy4hfoN7VYFSIPehURM9DbpqSUyBd+me1JXx9dLPfnkKnxcFl/B3/nwST08MBbtNEkQAirvL4NolJDhxyYMrkeLBVp/YCMDeuNph0B4xCvmN5iRysySeDrSHv20M8CZlOHTWr0xek4lo1THgmA42mNPSMkDb3byKU7PbPjUXzOJTY62Gu2EA/NsuG9v28wVTyiTyqbBOyzBZA2CpJTdI3lhRTlwooeMp7xP21QyZIU3prshhmr+bQzt293Lv+kFXXoCmji4eFM5dOzAmtDBb+VlgHrzfwl2Zjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,30 +143,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 11:03:46AM +0200, David Hildenbrand wrote:
-> On 4/10/26 20:36, Catalin Marinas wrote:
-> > On Fri, Apr 10, 2026 at 07:32:23PM +0100, Catalin Marinas wrote:
-> >> What the original approach might help with is use-after-realloc in case
-> >> we had a tagged pointer in a past life of a page and it still works now.
-> >> Oh well, that's I guess for other types of hardening to address like
-> >> delayed reallocation.
-> > 
-> > Another thought (for a separate series) - we could try to map the stack
-> > as Untagged (unless stack tagging is enabled; needs compiler
-> > instrumentation) and enable canonical tag checking (newer addition to
-> > MTE). This way, any stray tagged pointer won't work on the stack since
-> > it needs a 0xf tag (canonical).
+On 4/17/26 01:52, SeongJae Park wrote:
+> On Thu, 16 Apr 2026 21:44:15 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 > 
-> Do you mean mapping it as Untagged in the vmap for CONFIG_VMAP_STACK or
-> also as Untagged in the directmap?
+>> On 4/14/26 16:13, Sunny Patel wrote:
+> [...]
+>>> @@ -865,12 +864,13 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+>>>  	if (userfaultfd_missing(vma))
+>>>  		goto unlock_abort;
+>>>  
+>>> -	if (!pmd_none(*pmdp)) {
+>>> +	if (pmd_present(*pmdp)) {
+>>>  		if (!is_huge_zero_pmd(*pmdp))
+>>>  			goto unlock_abort;
+>>>  		flush = true;
+>>> -	} else if (!pmd_none(*pmdp))
+>>> +	} else if (!pmd_none(*pmdp)) {
+>>>  		goto unlock_abort;
+>>> +	}
+>>>  
+>>>  	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>>>  	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
+>>
+>> is_huge_zero_pmd() checks pmd_present(), so we didn't have a bug before.
+>>
+>> We could also do:
+>>
+>> if (is_huge_zero_pmd(*pmdp)) {
+>> 	flush = true;
+>> } else if (!pmd_none(*pmdp)) {
+>> 	goto unlock_abort;
+>> }
 > 
-> The latter brings in the set of problems with direct map fragmentation.
+> Then we could even further remove the braces and reduce one more line, nice!
 
-Just the vmap, there are a lot more problems with the direct map. Not
-sure how much it does in terms of security, maybe marginally. A
-match-all tag (0xf) would still be able to access the canonically tagged
-memory.
+Indeed :)
 
 -- 
-Catalin
+Cheers,
+
+David
 
