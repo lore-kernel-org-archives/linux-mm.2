@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D104F8E491
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 06:00:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A55F8E4A7
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 06:20:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 503306B008A; Fri, 17 Apr 2026 02:00:35 -0400 (EDT)
+	id DFA5E6B0092; Fri, 17 Apr 2026 02:20:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DA706B008C; Fri, 17 Apr 2026 02:00:35 -0400 (EDT)
+	id DAB7A6B0093; Fri, 17 Apr 2026 02:20:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F0646B0092; Fri, 17 Apr 2026 02:00:35 -0400 (EDT)
+	id CC1626B0095; Fri, 17 Apr 2026 02:20:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5266B008A
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:00:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C64B51B8D4F
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:00:34 +0000 (UTC)
-X-FDA: 84666998388.03.63BC7A0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B84CC6B0092
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:20:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5EA1813BACF
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:20:35 +0000 (UTC)
+X-FDA: 84667048830.22.39535E0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E6CAF140009
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:00:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EOYGFLzv;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8644240008
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 06:20:33 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dJ0cuCPI;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776406833; a=rsa-sha256;
+	cv=none;
+	b=eQoq5ktPh9DMEjbIQWIkzty8Iw0GKzsGxTeRyv93qw4thgqA9mOVZCSsKuZQOVsorRqnKR
+	10aJgLdKWAKC1mZKzMNcOdveWSmtzmu0PXs6GfPcsZRa3eAnWZtMXjR1VNPH8MWJCyWgLU
+	CXfl+5WyudkbW+M//mlslZAxA+14yH0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dJ0cuCPI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776405633;
+	s=arc-20220608; t=1776406833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rZg2Y3q9djQVoBgs/LXcszSFpY14s15DNUlk5Pi1BH8=;
-	b=MnjigJ7a2GBneHcS1I5ebC9Jx3IKIlGrrZjVfT3TO06uFxBs3no684LX3WHKT+P8yN7efb
-	eN++PvckEBnC6zg2HscOyoScJYtYUhdYSxgSi3BsPoLjYgDo3UTeF7LNeTeJCZSk/zWUla
-	tHep84QyNoiS6XmUhIhYkEc0mym62yQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EOYGFLzv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776405633; a=rsa-sha256;
-	cv=none;
-	b=noSI5zaxjKC7w7dJCHbgPKLGOSLauX4DIi2Da0ANjtO68YLwv53it2NqSk/BN5og1qLdse
-	Zb5kapNOKZEfIaUoWq6S2YJXiMY9C7B+tsdzsLdo0fPhEQ+OK60kmcuOo4eUmVS2tFrqDp
-	73DoOXcyvmk6tP+owz8NRlldzNT49QM=
+	bh=wm0USUqkkGHlxFl8H2+BkV/7X0400yG9aZjphG/IXMU=;
+	b=RABLz7zyrznZiSMpYK6R4+pxkCtCcSQr4YXJrDfrqNQQFO7RIxaQxuF5EzOLPni1pnEncW
+	aJ2Pf79iJYv3Q3D9XC+fL632oOJgifOoLk2VlXlj6RcG8h+iYzBa63btr6itluRQSfURvo
+	JUkGtK3VHBa1zf6k7Gk+VyAoNxhAmvI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3BBF43B58;
-	Fri, 17 Apr 2026 06:00:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED4FC19425;
-	Fri, 17 Apr 2026 06:00:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6973D43FA3;
+	Fri, 17 Apr 2026 06:20:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12C7C19425;
+	Fri, 17 Apr 2026 06:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776405631;
-	bh=QK6DE8sd6tIkwDxgDv1WOkd3cmGqQGTM5H0vG8DCnsc=;
+	s=k20201202; t=1776406832;
+	bh=HL8SBgsd1DbHhFspQzwB04DyajD9b7vRoL4rZ+XH25c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EOYGFLzvjTQMdtXtHvRT75tx4Z/INsbD76ZhS2uLHDip/VBaR6Tvl2Ju4MNeMN1LI
-	 U7SF687Sx8J6Hl8++peQyFA5bLbGce+lvsUkYA5NCxFtvSCvMT10WvYqnOFs1RnA+H
-	 dd2sqck0NoY++3jcxadIbVIqTEOogw6D5NHbvrwtK6ZbCLAECrYIvAA0PgMtYIsdIL
-	 tOn7fwQxzInSVrPCIgwG2bkQ32rwBjJyKam5ArCizrllJXozb2nCWO/thSc7xFDb8S
-	 +31/GgwetFJg2Hd+RJrSuuwQD2hj659l+t9iPIMOIFMaNE0gUpUihqhjF3E7uSI4uP
-	 7D/rBzWmJR8Ew==
-Date: Fri, 17 Apr 2026 15:00:29 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: Re: [RFC PATCH] slub: spill refill leftover objects into percpu
- sheaves
-Message-ID: <aeHMfXldGQ0ANL-K@hyeyoo>
-References: <20260410112202.142597-1-hao.li@linux.dev>
- <ad39TJZYLItrEnIM@hyeyoo>
- <bbtmo4fffalhjglohnazrxvplzfxelmuivbonnbfi3gzsm7qj3@bvh42p47dsqa>
- <ad9mZeERenhwh7De@hyeyoo>
- <6k3etcsawcw3zsh5mphc2kj3l2griymug3hvchnwubskwanbc4@gekaw6jn7pi4>
+	b=dJ0cuCPItEytBujWNScwMbow17sgYJP80y4GN45GFHG1ge+NWiuyLVlmtwrCiOwrv
+	 9VlCchDeSL/bbza5hNz5I6iFeU+kpxMamK5S1DpZG/JJfO50qnSOd/He4sISH9e+fx
+	 dMiKA/gaEF6TnXze4xMSb6CIbXxkuw/TaNuhDuHpQdtuFhQcDlRJUyuRmPFPXM9Dpm
+	 JZAf04qGe/7uEkoWQnYa7griK88JH+s/BQPwv9c4igPgfsTEvE1i61nsJoxcJxIJol
+	 2fmK+2jXwOE12GMGcpioHFs4dbGgWcQ8otnAk3ws+CYU/ZyxGXcETYvmcQDt/XvtKS
+	 pGqPKg1r8yVog==
+Date: Thu, 16 Apr 2026 23:20:30 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, brauner@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
+	timmurray@google.com
+Subject: Re: [RFC 0/3]  mm: process_mrelease: expedited reclaim and auto-kill
+ support
+Message-ID: <aeHRLv834FCAQlQ8@google.com>
+References: <20260413223948.556351-1-minchan@kernel.org>
+ <ad3ldU4DZxga_J2L@tiehlicka>
+ <ad6c0DN7AGoOQ_Iq@google.com>
+ <ad9AXVYxWCkHmh6J@tiehlicka>
+ <aeAeqoJ_acUAza8D@google.com>
+ <aeCHvYOKP1exBBns@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6k3etcsawcw3zsh5mphc2kj3l2griymug3hvchnwubskwanbc4@gekaw6jn7pi4>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E6CAF140009
-X-Stat-Signature: 4z7euecbsypcwp5ixp4pr57tkh4x1w5k
+In-Reply-To: <aeCHvYOKP1exBBns@tiehlicka>
+X-Rspamd-Server: rspam10
+X-Stat-Signature: hn1iktyei7iuqe5kxy91fxijbnhwziub
 X-Rspam-User: 
-X-HE-Tag: 1776405632-111156
-X-HE-Meta: U2FsdGVkX1+pPXBoW+qrOBD2Y/KMaC3DX7TjsavhDuVEmKlwXU3Vjbl1jezykh8aBom1fpEemqgHyt6p6jr2i5rJcY5hYCA0kMY85o6Zak5OIUZOZ77Wf6wNqflNZha2nj8jEt+zTip4aYxLORHpFj/Nab/WUa6BPnKkN3CaK7lclAwLHYoNLhnia6PV+ajjIPIAh98HjwwEm/jpcv3TpON1TfyGwk8zhWqvhzXl46BZecc46GYg67h8QGW1XyTJmXRVDxpHpP6dktt5dhNoZ4oRD3xLSDJL5KAag+P+eMQgKoXeX2vPS+CjXpbjLZtVZ5ixwPDNrSmtSLWYZzg0MqGPWrgvN6JHAbQn/p1GLRk9J7OgBoP+9rSIeZPCEnZd5m8ECPBdUI3kJo8mppHm8nXvhZX2eCHMONqK5e/gazI6mj6dHKNsuxNvndzQ6pKvG2D3oepIrcgly/fcHDyrSc8rqtg3GkczYt06pat+j7o4Yl6/kh+UdK5Z2k0t2Jtumdl/qBVL0HcTGGk9W88ds+iORf7fnpslC7ZvVttaLfNGsDUWhGB3IKWqRUNeg4xWjw33DzkXdB+7n0Dl3jI5Q2hZu0ik7w2M6o6/Xh++lCtzT8BRZ9w0AviGPtWjJEHvuBU1EJ22m2lld9KxEnjPRhO1NXiwEBT6+ti396n3h7Rlr6F06xoz54D0oHMynriK8oVMWs5YFO3E/8TXjdGR8tRQWmfMaY381oYq9X0LPzdlykUCfMRMkQkAZWS7USSyOGYRBBMhuqeH2EHWnsY9mGaf+b7YVrBCaPDBOlz2JC83Pfru5cn42reJviXrZBAmKBp1xOL8eQojrOeER0RdYLTQKGi69Jsm8iNiUjoWP5cSRaeXEiozLIY8Bz8mN/kydkj2ybsI1cnHvzIvaa0NmxqjrWR7j6/L2bQAADcFbSYjzNzi0q7YXnv5g5EcZ/kf0z1m6kg3rpFOpXgaXA2
- mPP9GvOL
- +wuZoGvvgIC7BaAGb0CQwtz8Pm4Wojn0/fKcDHScI2OM/0RBBZh7RvlT6aGgXLPI+IK61gbgCTqXb3A8xGN3v/Rm8ii5nUmAcVirbJpwHAlKLvIpQmXwbnW1VKq8+M8i7cvsSiyMg2Eayttk3PMpjXKRIN1WORyW9/OUTAk6hfMLAj0ON5NUdZZkCDUEb7HO/bCPHXtFsqps5iLW/DBPWhVuVQFyrHpi6RmvAOZMvF8nSxuDJd7BPlt+k1q3BGq66xaiN
+X-Rspamd-Queue-Id: 8644240008
+X-HE-Tag: 1776406833-647414
+X-HE-Meta: U2FsdGVkX19mY7jf/E4InoSnQGrizid4VBGEvzg4yKdb3IEldIQTCBEeqLieotONGPxPT7IqIe/V5qHtRIRhoEUjGlXTa39L/j7YN88CRNoDa8Ah6RwGWyc0KWY2KvGjPeoBAs6t/3VRMmvWeEmpBCFbcdvti6qWw50NMW4SBc/pw0xnnuqsdTFXLPvmHSiFf5aOkvfadcnJYXkJN3uLgXOYPBrKdqc8LWOpZ1Mk3Z1gFDaerI9qr+eXoP0IwYCchG8iWTxyrwZMrBFdy6zPTUvBh/53Zvjd5d1nLoEN1yykhlIKUyPanFvtqJW93O22l2OauP/PvwOsxn7IOQX0upqPK0I8WkteY4CM4pdXLzk4sz7xnsLOhH++W9RB7sCIqvJvoGLaWF/fnyY2RHu39yj/xoRSoIEdHQs1VN9RL6wT1Gv9SCozNt1rJDX6lSH85m3mrDbrb0XKqtjv5158TtOlQ5asD5btWZB0UQxwFsDLkzy/4b3lSRroZXBsjdJd8lOO2LIPq21RmgNrRi0wDTolPotcrVnB9VlJEse7aL29yqYkmW1t+/Qbs1VDV/4SrUEbBPxRa2NVAaHw47PwjgQAMUze0J5AZfj1oBf+0ONgJEytW0vYcqm5sXfA2bn8E3iyu4aSeTv2bYANDCpIciibWaUy8yxtchgdfwiIds7D8lsEHuWhUX4usoTlnJuLrPLqvP3/EJiEehSxwrI30OGdBQ090SxlmW3BTbbu4+ENuI8gY0lw3FmQ8mguTSsVnlx5ItsqZMUOC7Cm0NP7jld01b+nzPwvgUUPrRQZ+5hCLkiDa84h4/TTSZod81cC9WKj9R+Xy9HuWNAj2GkNRW0G3xSIQAzmuBVu8IQaCU73Zh1gM9eeq0tXVqoaVa+EqQsHhDfNYXMgxyoIy947XHI7f6/InILfGajICLTXGV7bWEbL05Qe56EGMoy5NzTR+0UJa8HPR5fyj04ludM
+ aEWnvXY7
+ S+vbsgNWK8Mwc56z0vEvwVrTs9CG538T/Z3/Cnue9O02/dmo7Iseh9ThMRa3DKBlATkNZkHAJwsfH/ozfAy2emWZ5IiVtDuczUufLKaoqxXsLA8uj9UvSMW/cHXty7LZL/xFcyApgfJpdf4k7Capk7Ys/CLwJ2TqznMTbo9Jo36zS0Li8NANbdN2yC6QsQmS8yJjmjuGY9UlX1TSmXL016Wr2kHy4NLL2SGpfsVj6Wg1obkGHNCz+aFArorpHYM5KuZIoNxD/CSWRj1HaMaWyzDmOUiU7XKmhbAtJ0dBEwAGLHF9yCQQzsbYrtn3X42n77ervtmgwCzlLmxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,229 +97,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 03:58:46PM +0800, Hao Li wrote:
-> On Wed, Apr 15, 2026 at 07:20:21PM +0900, Harry Yoo (Oracle) wrote:
-> > On Tue, Apr 14, 2026 at 05:59:48PM +0800, Hao Li wrote:
-> > > On Tue, Apr 14, 2026 at 05:39:40PM +0900, Harry Yoo (Oracle) wrote:
-> > > > On Fri, Apr 10, 2026 at 07:16:57PM +0800, Hao Li wrote:
-> > > > Where do you think the improvement comes from? (hopefully w/ some data)
-> > > 
-> > > Yes, this is necessary.
-> > > 
-> > > > e.g.:
-> > > >   1. the benefit is from largely or partly from
-> > > >      reduced contention on n->list_lock.
-> > > 
-> > > Before this patch is applied, the mmap benchmark shows the following hot path:
-> > > 
-> > > - 7.85% native_queued_spin_lock_slowpath
-> > >     -7.85% _raw_spin_lock_irqsave
-> > >         - 3.69% __slab_free
-> > >             + 1.84% __refill_objects_node
-> > >             + 1.77% __kmem_cache_free_bulk
-> > >         + 3.27% __refill_objects_node
-> > > 
-> > > With the patch applied, the __refill_objects_node -> __slab_free hotspot goes
-> > > away, and the native_queued_spin_lock_slowpath drops to roughly 3.5%.
-> > 
-> > Sounds like returning slabs back indeed increases contention on slowpath.
-> 
-> Indeed!
->
-> > > The
-> > > remaining lock contention is mostly between __refill_objects_node ->
-> > > add_partial and __kmem_cache_free_bulk -> __slab_free.
-> > > 
-> > > > 
-> > > >   2. this change reduces # of alloc slowpath at the cost of increased
-> > > >      of free slowpath hits, but that's better because the slowpath frees
-> > > >      are mostly lockless.
-> > > 
-> > > The alloc slowpath remains at 0 both w/ or w/o the patch, whereas the
-> > 
-> > (assuming you used SLUB_STATS for this)
-> 
-> Yes, I enable it.
-> 
-> > That's weird, I think we should check SHEAF_REFILL instead of
-> > ALLOC_SLOWPATH.
-> 
-> Yes, I will compare each metrics for later testing. Maybe we can see more
-> clues.
-> 
-> > > free slowpath increases by 2x after applying the patch.
-> > 
-> > from which cache was this stat collected?
-> 
-> It's for /sys/kernel/slab/maple_node/
-
-Ack. And you also mentioned (off-list) that kmem_cache_refill_sheaf()
-is not on the profile. That's good to know.
-
-> > > >   3. the alloc/free pattern of the workload is benefiting from
-> > > >      spilling objects to the CPU's sheaves.
-> > > > 
-> > > > or something else?
-> > > 
-> > > The 2-5% throughput improvement does seem to come with some trade-offs.
-> > > The main one is that leftover objects get hidden in the percpu sheaves now,
-> > > which reduces the objects on the node partial list and thus indirectly
-> > > increases slab alloc/free frequency to about 4x of the baseline.
-> > > 
-> > > This is a drawback of the current approach. :/
-> > 
-> > Sounds like s->min_partial is too small now that we cache more objects
-> > per CPU.
-> 
-> Exactly. for the mmap test case, the slab partial list keeps thrashing. It
-> makes me wonder whether SLUB might handle transient pressure better if empty
-> slabs could be regulated with a "dynamic burst threshold"
-
-Haha, we'll be constantly challenged to find balance between "sacrifice
-memory to make every benchmark happy" vs. "provide reasonable
-scalability in general but let users tune it themselves". 
-
-If we could implement a reasonably simple yet effective automatic tuning
-method, having one in the kernel would be nice (though of course having
-it userspace would be the best).
-
-> > /me wonders if increasing sheaf capacity would make more sense
-> > rather than optimizing slowpath (if it comes with increased memory
-> > usage anyway),
-> 
-> Yes, finding ways to avoid falling onto the slowpath is also very worthwhile.
-
-Could you please take a look at how much changing 1) sheaf capacity and
-2) nr of full/empty sheaves at the barn affects the performance of
-mmap / ublk performance?
-
-I've been trying to reproduce the regression on my machine but haven't
-had much success so far :(
-
-(I'll try to post the RFC patchset to allow changing those parameters
-at runtime in few weeks but if you're eager you could try experimenting
-by changing the code :D)
- 
-> > but then stares at his (yet) unfinished patch series...
-> > 
-> > > I experimented with several alternative ideas, and the pattern seems fairly
-> > > consistent: as soon as leftover objects are hidden at the percpu level, slab
-> > > alloc/free churn tends to go up.
-> > > 
-> > > > > Signed-off-by: Hao Li <hao.li@linux.dev>
-> > > > > ---
+On Thu, Apr 16, 2026 at 08:54:53AM +0200, Michal Hocko wrote:
+> On Wed 15-04-26 16:26:34, Minchan Kim wrote:
+> > On Wed, Apr 15, 2026 at 09:38:05AM +0200, Michal Hocko wrote:
+> > > On Tue 14-04-26 13:00:16, Minchan Kim wrote:
+> > > > On Tue, Apr 14, 2026 at 08:57:57AM +0200, Michal Hocko wrote:
+> > > > > On Mon 13-04-26 15:39:45, Minchan Kim wrote:
+> > > > > > This patch series introduces optimizations to expedite memory reclamation
+> > > > > > in process_mrelease() and provides a secure, race-free "auto-kill"
+> > > > > > mechanism for efficient container shutdown and OOM handling.
+> > > > > > 
+> > > > > > Currently, process_mrelease() unmaps pages but leaves clean file folios
+> > > > > > on the LRU list, relying on standard memory reclaim to eventually free
+> > > > > > them. Furthermore, requiring userspace to send a SIGKILL prior to
+> > > > > > invoking process_mrelease() introduces scheduling race conditions where
+> > > > > > the victim task may enter the exit path prematurely, bypassing expedited
+> > > > > > reclamation hooks.
+> > > > > > 
+> > > > > > This series addresses these limitations in three logical steps.
+> > > > > > 
+> > > > > > Patch #1: mm: process_mrelease: expedite clean file folio reclaim via mmu_gather
+> > > > > > Integrates clean file folio eviction directly into the low-level TLB
+> > > > > > batching (mmu_gather) infrastructure. Symmetrically truncates clean file
+> > > > > > folios alongside anonymous pages during the unmap loop.
 > > > > > 
-> > > > > This patch is an exploratory attempt to address the leftover objects and
-> > > > > partial slab issues in the refill path, and it is marked as RFC to warmly
-> > > > > welcome any feedback, suggestions, and discussion!
+> > > > > Why do we need to care about clean page cache? Is this a form of
+> > > > > drop_caches?
 > > > > 
-> > > > Yeah, let's discuss!
+> > > > The goal is to ensure the memory is actually freed by the time
+> > > > process_mrelease returns. Currently, process_mrelease unmaps pages, but
+> > > > page caches remain on the LRU, leaving them to be reclaimed later
+> > > > by kswapd or direct reclaim.
 > > > 
-> > > Sure! Thanks for the discussion!
-> > > 
-> > > > 
-> > > > By the way, have you also been considering having min-max capacity
-> > > > for sheaves? (that I think Vlastimil suggested somewhere)
-> > > 
-> > > Yes, I also tried it.
-> > > 
-> > > I experimented with using a manually chosen threshold to allow refill to leave
-> > > the sheaf in a partially filled state. However, since concurrent frees are
-> > > inherently unpredictable, this seems can only reduce the probability of
-> > > generating leftover objects,
+> > > Correct. This was the initial design decision because there is not much
+> > > you can assume about page cache pages which are very often shared. Even
+> > > if they are not mapped by all users.
 > > 
-> > If concurrent frees are a problem we could probably grab slab->freelist
-> > under n->list_lock (e.g. keep them at the end of the sheaf) and fill the
-> > sheaf outside the lock to avoid grabbing too many objects.
+> > Fair point. However, that's the trade-off:
+> > 
+> > Leaving unmapped caches to be reclaimed asynchronously keeps system memory
+> > pressure high for too long. In Android, this delay forces the LMKD to
+> > unnecessarily kill additional innocent background apps before the memory
+> > from the original victim is recovered.
 > 
-> Do you mean doing an on-list bulk allocation?
+> OK, this is really not clear to me. How come you end up triggering LMKD
+> (or any OOM handling) when there is a considerable amount of clean page
+> cache?
 
-Just brainstorming... it's quite messy :)
-something like
+It's not simple to explain all the heuristics, but basically, LMKD is triggered
+by PSI pressure (usually contributed by kswapd rather than other components
+like refault, kcompactd, or workingset operations).
 
-__refill_objects_node(s, p, gfp, min, max, n, allow_spin) {
-	// in practice we don't know how many slabs we'll grab.
-	// so probably keep them somewhere e.g.) the end of `p` array?
-	void *freelists[min];
-	nr_freelists = 0;
-	nr_objs = 0;
+It then checks the current free memory against system watermarks. Depending
+on the free memory size, file cache, and free swap, it decides to start
+killing background apps.
 
-	spin_lock_irqsave();
-	for each slab in n->partial {
-		freelist = slab->freelist;
-		do {
-			[...]
-			old.freelist = slab->freelist;
-			[...]
-		} while (!__slab_update_freelist(...));
+In other words, LMKD acts as a "userspace kswapd" to assist kernel kswapd's
+reclamation speed. It is smarter than kswapd because it has high-level knowledge
+of which processes are okay to be killed rather than forcing slow, unnecessary
+paing out.
 
-		freelists[nr_freelists++] = old.freelist;
-		nr_objs += (old.objects - old.inuse);
-		if (!new.inuse)
-			remove_partial();
-		if (nr_objs >= min)
-			break;
-	}
-	spin_unlock_irqrestore();
+Whenever LMKD is running, kswapd is usually running alongside it. You might
+wonder why LMKD kills background apps even when there are plenty of clean file
+pages. That's because the system cannot predict current memory allocation rates.
+If the allocation is bursty, kswapd can never catch up with the allocation speed.
+This forces the foreground apps into direct reclaim, resulting in visible
+UI jank. Android prioritizes UI smoothness and chooses to kill background apps.
 
-	i = 0;
-	j = 0;
-	while (i < nr_freelists) {
-		freelist = freelists[i++];
-		while (freelist != NULL) {
-			if (j == max) {
-				// free remaining objects
-			}
-			next = get_freepointer(s, freelist);
-			p[j++] = freelist;
-			freelist = next;
-		}
-	}
-}
+Furthermore, when LMKD kills a background app, it expects immediate memory relief.
+If the clean file pages of the killed process are left on the LRU to be reclaimed
+asynchronously later, the system's memory pressure (PSI) remains high.
+This forces LMKD to unnecessarily kill *additional* background apps before
+the memory from the first victim is fully recovered.
 
-This way, we know how many objects we grabbed but yeah it's tricky.
+Again, this is why I want process_mrelease expedite clean file reclamation
+synchronously.
 
-> > > while at the same time affecting alloc-side throughput.
-> > 
-> > Shouldn't we set sheaf's min capacity as the same as
-> > s->sheaf_capacity and allow higher max capcity to avoid this?
 > 
-> I'm not sure I fully understand this. since the array size is fixed, how would
-> we allow more entries to be filled?
-
-I don't really want to speak on behalf of Vlastimil but I was imagining
-something like:
-
-before: sheaf->capacity (32, min = max); 
-after: sheaf->capacity (48 or 64, max), sheaf->threshold (32, min)
-
-so that sheaf refill will succeed if at least ->threshold objects
-are filled, but the threshold better not be smaller than 32 (the
-previous sheaf->capacity)?
-
-> > > In my testing, the results were not very encouraging: it seems hard
-> > > to observe improvement, and in most cases it ended up causing a performance
-> > > regression.
+> [...]
+> 
+> > > > The race occurs when the victim process starts its own exit path (after
+> > > > SIGKILL) before the caller can invoke process_mrelease. If the victim
+> > > > reaches the exit path first, the caller might lose the window to apply
+> > > > these expedited reclamation optimizations.
 > > > 
-> > > my impression is that it could be difficult to prevent leftovers proactively.  > > > It may be easier to deal with them after they appear.
+> > > Isn't this the problem you are trying to solve then? You are special
+> > > casing process_mrelease while you really want to expedite the process
+> > > memory clean up. 
+> > > 
+> > > The same situation happens with the global OOM and your approach doesn't
+> > > really close the race anyway. You send SIGKILL first and the victim can
+> > > hit the exit path right after that before you start processing the rest.
+> > > That is not fundamentally different from doing that in two syscalls,
+> > > race window is just smaller.
 > > 
-> > Either way doesn't work if the slab order is too high...
+> > No, this approach completely close the race.
 > > 
-> > IIRC using higher slab order used to have some benefit
-> > but now that we have sheaves, it probably doesn't make sense anymore
-> > to have oo_objects(s->oo) > s->sheaf_capacity?
+> > When it invokes do_send_sig_info(SIGKILL) with the KILL_MRELEASE code,
+> > the kernel sets the MMF_UNSTABLE flag on the victim's mm_struct in the signal
+> > delivery path (kernel/signal.c) *before* the task begins processing the signal.
 > 
-> Do you mean considering making the capacity of each sheaf larger than
-> oo_objects?
+> OK, I have missed this part. I haven't really looked into specific
+> patches at this stage. I am still trying to understand the motivation
+> and your reasoning. So effectivelly you want to get SIGOOMKILL more or
+> less.
 
-I mean the other way around. calculate_order() tends to increase slab
-order with higher number of CPUs (by setting higher `min_objects`),
-but is it still worth having oo_objects higher than the sheaf capacity?
+The fundamental problem with signals is their unpredictability. The time
+between sending a signal and when the victim task actually handles it is
+highly non-deterministic. Furthermore, as mentioned earlier, outstanding
+reference counts on the mm_struct can delay the teardown indefinitely.
 
-> That could reduce the probability of leftovers, though I think that would be
-> more of a separate optimization of sheaf capacity.
+> 
+> > When the victim gets scheduled and wakes up to process the fatal signal,
+> > the MMF_UNSTABLE flag is already set.
+> > 
+> > This guarantees that the victim's own exit path (do_exit -> exit_mmap) will
+> > utilize the expedited reclamation optimizations automatically, regardless of
+> > whether the reaper or the victim gets scheduled first.
+> > 
+> > For the OOM, we can use the same idea.
+> > 
+> > > 
+> > > All that being said, I do not think those special hacks for
+> > > process_mrelease is the right approach. I very much agree that the
+> > > address space tear down for a dying process could be improved and we
+> > > should be focusing on that part.
+> > 
+> > I think process_mrelease is crucial here because relying on the exit path is
+> > non-deterministic.
+> 
+> I suspect you are missing my point. I am arguing that those special
+> hacks in the address space release path shouldn't be process_mrelease
 
--- 
-Cheers,
-Harry / Hyeonggon
+I am a bit confused now. Do you mean you want to apply these expedited
+reclamation optimizations to ALL dying processes in the common exit path,
+rather than making them specific to process_mrelease?
+
+I don't think so since you mentioned below "process_mrelease might ..
+right syscall" but I wanted to clarify what you means.
+
+> specific. I do recognize the value of the sync tear down need. I am also
+> in favor of something like SIGOOMKILL. process_mrelease might even be
+> the right syscall for that purpose.
+
+I am glad we are aligned on the necessity of this feature.
 
