@@ -4,106 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C16C5F8E499
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 01:24:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46871F8E499
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 02:09:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A3D46B0088; Thu, 16 Apr 2026 21:24:29 -0400 (EDT)
+	id 74E736B0005; Thu, 16 Apr 2026 22:09:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 055416B0089; Thu, 16 Apr 2026 21:24:28 -0400 (EDT)
+	id 6FFA56B0089; Thu, 16 Apr 2026 22:09:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E85E06B008A; Thu, 16 Apr 2026 21:24:28 -0400 (EDT)
+	id 5EED16B008A; Thu, 16 Apr 2026 22:09:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D73B76B0088
-	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 21:24:28 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FA7D8C50B
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:24:28 +0000 (UTC)
-X-FDA: 84666302616.11.A9F1AE9
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7FB55180005
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:24:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CuddANe9;
-	spf=pass (imf06.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776389066;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5173C6B0005
+	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 22:09:20 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE0485BBDA
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:09:19 +0000 (UTC)
+X-FDA: 84666415638.04.2AD2D09
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012009.outbound.protection.outlook.com [40.93.195.9])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 124AC1C0007
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 02:09:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RYpLmHdV;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776391757; a=rsa-sha256;
+	cv=pass;
+	b=c2TCbM84uhLm5AGIOGNjrzEBrHxkWFLAlYfsmoQmNam1j19eMaZ9JANPjCfpKSrtrNk/rr
+	BZhzpBAGx/xADA66QOFsqZefYqad+ZGVJ9Cfrb0tyUhw6LKFOlNo6dfEud2yQZteWSdy4E
+	5aGwo+LXx0QQh7Ek7UCOYRACfeBTww4=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RYpLmHdV;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.195.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776391757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=cpOJeXbfkQGfp2oJxb2u3PSnQNyOEp2e2c25qGS5Duw=;
-	b=QikC1ld5xCSVaABY0rI9cLKyY7E2U+YG/O4VsDv7IhDEub/kZ8meAR5phhT2Ofiqnv0z62
-	i0E8Ntv+tuD5pRAgmJPFUU6YB3FOn+Jo8jOfs/IWD7Ccyjexs/NEQCyMt3cE7hC0UL/TqE
-	8EBFTyO45b5VgGz/KepqLEo6bkIt3i0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CuddANe9;
-	spf=pass (imf06.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776389066; a=rsa-sha256;
-	cv=none;
-	b=E5LXbgsakIZzfSxT94BP0urH8EB0n23a7UyzajgRFZudt3fT6DxM3vG2z+CDDHFBCn04Zh
-	SXoXjvlNoeuBGhEdwNxNhbDelBHcYUj/yRItbjbRChDJ50WwTB9kK5VtHVcltNBh34GbeN
-	jWRnaqZwbX3u/cKcd0m+Sb6+yFS7tuU=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-358e3cc5e7eso93635a91.0
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 18:24:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776389065; x=1776993865; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cpOJeXbfkQGfp2oJxb2u3PSnQNyOEp2e2c25qGS5Duw=;
-        b=CuddANe98fcp20KvuGSi8gO8/PMxzlNYYusJlqmdzvAiXQpecULZuiC2PlFcIPaIII
-         ACCQlb1jabYhg+uSks/wiBEDXykghN+kxe+4QruX+fDn9YWvNpYj5Fv5WucJNx+xbxQH
-         nUo7y6u26c8Eu8+31uac3UPgGjkDujJL82uCGd5JbF11PqC9KcqukX5gs6MA5ymwkpte
-         pIKukGuOUC315C/6wytAdUJ68lysSl0P8YTWp41YRxaxyCrPcuSSMxWYOuPBtZBQ7Ncz
-         UiJr2uoIWHDn+BVNY3h/XIQmfuH8m1EDz8Xwb/vYqxiDCq4+VJo/4a01V5GS/WKKOnCN
-         IJMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776389065; x=1776993865;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cpOJeXbfkQGfp2oJxb2u3PSnQNyOEp2e2c25qGS5Duw=;
-        b=N53t8oaYfiHUKDkS92yw+3AziaqXvMuI/71eiZWPfGK6yGUw+IfQ3xQjTCaPeryaDi
-         wZo0ly00tX6DTVtMOvAXpfn4XMHW1+vPBrsprOZIoKKqduX4fMf6Z8WVvZ7b1JXaV55O
-         2NtHPmSy2Z1CUtDf0XBwHB4N/wY21IbJ164USlL742xEr6lTbazerXNuqFMIzSefidc3
-         PO+PPxwx+zJrSJZ8vjD7g1U2vWFTKTRt3FbtqbWiOSm3X9Q8XjDhYZsZS/FoDzkbOQE9
-         Z4pfxWl1HMPdgZMO+5vdeREtKlSYl/5Rx4OAy3s7crPqh/TCIgmr/PE2/ypJZXwMWUlf
-         76sQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/rM4CbTiJjN3d+Fy4ucVDZEWlDBPm5sdRy8O6IP20drERPltzAHz0QMgpYPc3xBYa2sQZpRF0FOQ==@kvack.org
-X-Gm-Message-State: AOJu0YwxgXC/h4FeY1aEwaFqZiopeVlBkkZLs4rpXW3SuP7zGvhZwdqO
-	FreFBwnUaaQ4T6hE4ZZly8R+VFU2WYkQckslgHD9merKEqpgKkCF8wSnQ9Z/B7VK
-X-Gm-Gg: AeBDieuW+orTSSlhT70ziXXah7f+btkAfH+lO5l6B2CS9sKSQ2MNtcMrdyo5KkV2iJW
-	HaPWfFK5PQawU/Ddkp2RqsBQY9rS4oKWq9t89U4GNjBt5ZYoOoG0akfUm/HyQnyBNy65H4ZLmLj
-	lnfTNaomOjNlY1XjeyzP0fhsjY5By5qQPAsqsnOKII0N8qzoH5x4QZogmsVWMv0k1Bs7YEuxMXF
-	2D7jVnWL5lnMHhgB8490UKYs47LQIJ7Z06E+XVLT44cw+hNRqXpXYy0PMJsWYKAJLUViwIVm6Z1
-	Xzk5xCt6lRCFuMZJ3hb3K4im+jZrZyo5URx8B34ll7+xfSlCsQSQND346Ycs6LFNn8IYhDTJdP0
-	VryPUawUNP+4RuMRkgaJ7tWnxQ0+z5COAyPUc7wnJtnY0dYayOQM0BC9V6wCkMKwdyTf4C/28QA
-	Sk/t4e4iZ8oEK5xv1bAlyIepjyjLZJLixSZMK0GqKUNgE=
-X-Received: by 2002:a17:90b:2fc8:b0:35e:5a4c:9069 with SMTP id 98e67ed59e1d1-3614048a431mr688213a91.14.1776389064664;
-        Thu, 16 Apr 2026 18:24:24 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab20c6asm1525035ad.58.2026.04.16.18.24.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 18:24:23 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>, Salvatore Dipietro <dipiets@amazon.it>
-Cc: linux-kernel@vger.kernel.org, alisaidi@amazon.com, blakgeof@amazon.com, abuehaze@amazon.de, dipietro.salvatore@gmail.com, stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
-In-Reply-To: <5x66n04a.ritesh.list@gmail.com>
-Date: Thu, 16 Apr 2026 20:44:05 +0530
-Message-ID: <ldenszsy.ritesh.list@gmail.com>
-References: <20260403193535.9970-1-dipiets@amazon.it> <20260403193535.9970-2-dipiets@amazon.it> <adCQTF1PQnlbNMO8@casper.infradead.org> <5x66n04a.ritesh.list@gmail.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7FB55180005
-X-Stat-Signature: 9odzda6s3xm1kqpa6gbdpknm3bsjdz8j
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hV6RCifodAOigvYXlOey0D5Qr4Qq7j7sfSsz1qimd6E=;
+	b=3sDIA9ukgyS/xVuiZz/5i1+y4wvoOGcf9QwyLfzzM+J4TimXQgRBbCAT6tj9UdXCooSJFC
+	25KaDTAafi1on+fWQuRA1zBZu6eQc+QcmXCirwbjW2kUwGTBPVu8Bha4G7dcxDCLoakUtc
+	qXDnwETv3sVL/yHQ5u4Z9kjLf4lsWac=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jPF0Gr7GLc0khua1GN7gyDw0L1ghGGn9e750buAcn55RM8ilYgIIZjuHIFnABNqTRGFwYw9F7pY0arjf3PgdIX1API8ved4a+jDlCtWwcvLuiBSN4TMKm1aqzWIdyWLVcdu0n0djpyeBS3fXvS4sR8X/bZX46JVRa2qfrE2C6U/lJyWJltW5TivzJY8Nd4DX73TToo4RGM63aj7Xewbq+CYuECQFx9rJt4Q3npkl1f65mnLIC+yYpK6MsfZr88AnqXF9aPqF0bw9Am4jkoKYc2R1BNOPtlkuZTmvroC4RhrZ+H8O3AnHlKRC5fZLnH8Zfj/zHBpRR1b4XzwiYRJi2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hV6RCifodAOigvYXlOey0D5Qr4Qq7j7sfSsz1qimd6E=;
+ b=iU9nC3KvaogY4xtWAU31pxdGmVrDARExf4ZBPV5NsNywSMERlhp0IX+YcJWaxRJT/+oi7BLXkmKx9jjc6/uGpo291Of1xK3Plh8Z625JDKfu/ura+YOh3JAIIhAyFwa/6uu38abkA9/FL7Y5zXgf2PIOs+SxM2dv0Rwf1N4OwtDfS6Tzmu8GFngHQ0U8toXfAy6d8gVxS/HwsPSvPyfkUP3Sa4SliPrHpmfLMctlKb1myb4O3ooCq1CLfbYZfmug9DEZRlaWgbq4FJFdq5oB5AMZn7YrKv1ZkIjWI5wZH0WmsjqFETh+42nRUgBvGW7mVIJwAVtNK12RVvUw49BjNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hV6RCifodAOigvYXlOey0D5Qr4Qq7j7sfSsz1qimd6E=;
+ b=RYpLmHdV6Fzk2xvfsNZ1evI1HMjHKX0Zmc+jLBUiN6znjpt4nvLnfNhNgPODKfUgk9Vun6c9R1P7ALe3sn5Bgh0atuc4sDaUkyYFnC0uqIqLHRliMdgq08pcGG+CcYG2hKUuXjDc4Mc9Onle1ojfymOGIzLVHeABlV8upLfYroNttsliMr0Q4yoWufDMFW6Dn3ScQ40ZG1B84hkDQQ81pZchCAwe+IDIdSjkN1vKOY3xVbOxrJa6zK2oin0rJOJxG6cWwliIusDabrHHSPBel0RHcGVzvxOlq/bbRJoWdhqiVUt6iEagsADgEclxkxZ15n8fdtJFgNxoncQIS/B+qA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MW4PR12MB7165.namprd12.prod.outlook.com (2603:10b6:303:21b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Fri, 17 Apr
+ 2026 02:09:09 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9818.017; Fri, 17 Apr 2026
+ 02:09:08 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, <linux-btrfs@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH 7.2 v2 02/12] mm/khugepaged: add folio dirty check after
+ try_to_unmap_flush()
+Date: Thu, 16 Apr 2026 22:09:05 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <C83282EC-F3C3-44FB-A8A4-615F67F9CEEC@nvidia.com>
+In-Reply-To: <842D3AD2-32A0-41E1-AC09-08EC793EAF7F@nvidia.com>
+References: <20260413192030.3275825-1-ziy@nvidia.com>
+ <20260413192030.3275825-3-ziy@nvidia.com>
+ <10aadfeb-86c6-47b2-b6ab-b86657aafb88@kernel.org>
+ <842D3AD2-32A0-41E1-AC09-08EC793EAF7F@nvidia.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BL1PR13CA0383.namprd13.prod.outlook.com
+ (2603:10b6:208:2c0::28) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW4PR12MB7165:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3e48bdf-11c1-4fd9-0747-08de9c264f51
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	CNFKmMKJZfINIIRWxF+ZNk52ZmseP3yKvqYsTmKdDDI8MBm4RTWdhCqmAMECuqo8wlRBzmeQ47Ra7mHD12TbumeiFu418R1OFiHxKXn55aR1tBgPcRecrSGlrQ7w8mYWnM/Ia+7dKEmMRfArV8M3f+a9IrP1GE3j36XKqGoN+hYXq6I+f+OD0/rgxPvqfUOrFjcWYLixQeZuR3AKzFJ1QfO+q6CHSoGnIh99j2H4lD9kSLeMIK1sXwRBj49+XNLF6nD9c1zj9jfmdekrynVLwXzJETh88Y6+f+TCfT5x5oX0ZT27XR3Tui6reFXsP/vbbcalNHIUhWGaQpVWSZKRGSu1D+T6PDBBtyiLN5OZVWTzrsgXUonIQjnZx+s4z+FBVTSM0r4SToO1GBBPUiXkXDIJcaguVPiOw+SUpcyaDmrBMjftEw+0Navyrkq4b+2AZnFB/5wNTN/jKwOh28YuA8Ac7fc/LAOtFkQe2gTQfwlZl2RRxBhG1yklr7TPSszNv1QWoXOp1WSNTkefPlebC4AOvdGGy5ZYBqxdN2y6m16IZCVXRS3e+UxzXKlZJO+zpEg2e3BGA2Qz1E+YqMGuAlZFVpY8vGdT0rkBW9DTJYAqby8DoND8iKuW3QlfRIdQakHh1En+GB+RltUa7cOeQ8VxlgVdkc4llykV5wUx7cRXdyXXTmm9Q21Cudem8piK8Kf/j26WCRyAKz9t9XWYZq8ZQJ/t96I51ST8LjaENp8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lIaV24uWW4xv+O3h9TwXVp1lOLl7CeDFc61s2X/m3FM8PcveCk7WGUgEp4/T?=
+ =?us-ascii?Q?0D1amvpABXdkglHBEH7cmxz+/qOkGpipmiBLPC413Y8rjYRanSro3EnsnQQN?=
+ =?us-ascii?Q?IdIpeGHkOiXuS/+NJO/kv61uxzsdx7ON9p3mg1QJQVyWVTc7+wNDEksXJhXe?=
+ =?us-ascii?Q?1BBBgkNJfb9/1EzbDjJrAMsSKk1OH6Rul71f4yu09K7CLkJxc9gS/WCsNy4w?=
+ =?us-ascii?Q?8bpEC5dJiSoJk8FjrOUrpARx4wttZ2Znt2KqRB1eZW66voBGHCpq661exAgM?=
+ =?us-ascii?Q?u70zjf+QR+lKcCXdOToFD7bb6B1me0b2wUr90JDGLMEqrzJVrjm8RA5CBwwq?=
+ =?us-ascii?Q?9Uas5cf/VShwOtu8Qxv5y23UnapY/XYu4RNwu9p3XmAer1WkJOX/d1gj9pNY?=
+ =?us-ascii?Q?5aXSJn+YUjH080YvFWThgDlix0zKhuyJbsVajyLidV4PiJY9+7txO7vzEeG0?=
+ =?us-ascii?Q?f72eFmfrIhvTzZ4Y+FTEutnzFFfN8BT0EDlKhUd7LDKRiHe4wdGu3DCfedav?=
+ =?us-ascii?Q?TgpZXLwPj1oH7pZd1ELtxXoJZkAp0l2ZYkf404Ha6I6T6aWIfjy1nssk9FZq?=
+ =?us-ascii?Q?LYHHFghfhshK6ojF8QzJ5nx5CLshkQXoCyQVhtzaLx1fp/8EquGQux0GeFV2?=
+ =?us-ascii?Q?9meCyrMseVdSKh//gqy1QGHxTbJ7p0IZQswiUbze0zdd35PzCJTALu0TyNkz?=
+ =?us-ascii?Q?n5mQXynbk3ex59heLuFPQKYOksZ8CUqtHn3lxlz9ZJ+DPYx4fvSVGw+i1VoV?=
+ =?us-ascii?Q?ufYCeBPq/HNJ/Z4U/wx7zN3kQl1WPaBIsClbwTnBRxj3/omcsgfL+eL6ecEi?=
+ =?us-ascii?Q?OwqGS92uXB53JIQPz5S3YIcsJZXsMOrWS9AiCtf28W6IGYhxmDc4ski07Pl2?=
+ =?us-ascii?Q?llQFaCkjnVEZfzM9p7Se+iqLDR6B0KUYkhl3JNRYdpkXt15SXSG2IY8fPSdm?=
+ =?us-ascii?Q?lpTCs1s+f0ePsRI8pqZ5ts/QiodABHjkltSzrs6NuLcIVAFUIM+qvXj+tedL?=
+ =?us-ascii?Q?Ge1C+LPT7OdpxGDUV/ftCsu+xz1WusSMATt6rBUneITBBrWAAG2Zm6TGZMCy?=
+ =?us-ascii?Q?jBJGc5Hx44aOfyR7A+hhWh+YxQKgJpSLISUNlqvO1rNeHI9PO9Javzm1XePZ?=
+ =?us-ascii?Q?prdRvmf6tIztWF6KtR3067GtW1Zp9M7B65Y2jsrbNCV1Q10zEgLa7P3hQKke?=
+ =?us-ascii?Q?xwoyFMmrkvyjpabMPeGpV8oRmbhV+qADQexduDAtCFpU8aW8uphhZhNI3M1v?=
+ =?us-ascii?Q?H9RMweu2XH+9wvBWvfyyvte4O5YWhZrIYoBWNflgboC+Kp7eGFzDn+CNR5xd?=
+ =?us-ascii?Q?Lp6SD102tnDlNvf1AfhpMq8QOCwkcW4e0JirWbMOF6nxyGLldcsR+rpL/YkZ?=
+ =?us-ascii?Q?RApZXvun7ub4iN9pzf0TGtzOsnzd3L7ZzhBYT9ssXx6VeRz3mIr/Xc2l737T?=
+ =?us-ascii?Q?QR4CXrASZZFNPTthHl76wFpJzLiW1JOin5WXD2v80bGrgdlZlinDKpEI0KSf?=
+ =?us-ascii?Q?ipjW34km4NAzQkzHCpWvjXhustVgNN0Ufy/cJ1TFAftPvV8Ri1cT1Tza6BcN?=
+ =?us-ascii?Q?HZa8IoYLbK2PIcu3ByRFDUW453kPjjqNdw5rXLTI2VLhZFcsD9bkhy+azCLt?=
+ =?us-ascii?Q?0ghECAypghv1AcAe0MmsGYwIOzk+oAcPF5f346jNjD6Bp46ktglgsPFFZEtT?=
+ =?us-ascii?Q?+6RWBKeGw7E5Jpzl3CrqJhBEsFbF7UiZswObL3tY0iPkpxxi?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3e48bdf-11c1-4fd9-0747-08de9c264f51
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2026 02:09:08.8122
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y4fav+8fdYiwg1lWXkggn4AQfQ7LjC+tHDInr50rWZ5CCmnf293c0ncNQhfM6/6a
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7165
+X-Rspamd-Server: rspam10
+X-Stat-Signature: ssj4wp8sayb7mr79bdt6uymeuwq58xs6
 X-Rspam-User: 
-X-HE-Tag: 1776389066-18882
-X-HE-Meta: U2FsdGVkX18hSAE60jC56MOwhtElssyLDoc7LkTm9Wg4s89v8/QaZoYP82KZljQEzybOc8Eunb9ucD061hHDAlKr+o1YHFL8r3N5FDhsgZ/R2pj6tfw/EIFWhhgrsBL+wKGKmMUsd9TqFWtUh1KXX5+/w0uOD/ncnoduNmrTfWbspR5A27VLJClL00NLcSr6PNA0Ul7bHR+NIeB7GoGyzBwIJITcw/zh2gg/RXKO1Jo8L1MiKsWAyR+VhFyFqSBpCwb8xSajWfqL0bDqDyAoUnVn+xEBVO2Mj4KjfjPv4YcuZ2Dzu7AkhI0P+BohgVLKtbKU0+S3M5W63As43ciONS7cdq7Zidv7If6Tp9JXl8lmlZ/Je5lARVISsRwVnZcRI8S5SJvc7NsxvMJAAe4pNa4iexpbYiVlcrjHlGEZbw364PE6mAi5MMnBlrOnK/veFh8NhGitCasuUPvVu1jggbGQh6nZJoLObP628NPxWYl/zFIcxwr4652YxTicKin459Ov7cLdQFlW429OixwDd4Emt/fiATExIIvy8SlH76Z5JkAsJ60xyxRu2HMBsheygUarEaClB79N3wqfZ0p7bFA19Q5B8uszx5itV+8XZaYKKndlb6vWuC6Ka+PMcTfCSc+afcZaYrhtzm2C+7rKEb9vgSClR6OfhTE3UTBsbPNuzoc6C38cJzYIZ0qq0aSiRA/6UL10IlMFsSSXq+7KhnKZIagGIxvjBLW29UGLh9BQVvrFkWUfz1buP9ghoySENV2a6EuoUXD64xY9M2VxMa49n/OsU4cv/2Hn3Dg6sHi+YR/AW9C3GwQrJVpz0QGuZkNsMq/Lfw8QeSbBs6StgabLgq0lhDa8XmHi+THUDo4pdozOPJH58CAbkqerN8cZsKyS+vWOjXL0zDapEKlCk2U0oP4MUK4iqhaFFRsKPtzoy18jmm0TaUWK+qdT5X7sKDYjzdouD8O2afjZ1LY
- d7gdHIBF
- mmNp8GROSuColpfBCa7t43d3vVMSf2P0KK5keWLCBvIuzu2HYb8u2FTkHu66Xb30kEa5gwdBTeAV3lWYQ4F03HxQjMcJ9YDxsaT7pBjWoKU0IIt7ug45shQv+oX8/SedDp4tcteF3UMp9XWYNRIf8Ufc0rab3GLx3X/GFfLhyo5XDPbH4VWnPYrdrLoqJrmhWFweXbxRR+PmrwSXTSQIqvhMHasC6NyAo8hqq51VNVwTRtIeGuRQLCmMNwXDpS8RQApAFJSIDoW+l5ViUydkEq2lFpKw8SyLtJR+BzSABAgl4co6iToftaXbPgE90nZBVaxhf3ncq/zbA6tCZe+2cEC9AwVsMhztYHqmPwJ0/vH6dhoGoaUNjRqSOTaGS2kQ2uFOuZarkS6DjdZgqoTxhHVC7jXVst8H4238VYHbotEqdbEgf4hre8nPnNsj91cxmRNT+1fYXN3UkVa0X3+pNwd0s+0W2T+qDp7dnLYVDIfUP6+q6JHTck3wHKOxpNMKYKTxFnwwDxhHEPrIFly1rS0nws6JSuA/cw7FtXn118s+KD6k6K0SycE89ERhM/eFa+1ja
+X-Rspamd-Queue-Id: 124AC1C0007
+X-HE-Tag: 1776391756-136741
+X-HE-Meta: U2FsdGVkX18QNZvwww0T579YWZp7kZI5un79IiuRvXTXJfkenN8AM+X2R2jqDwDHbe8jR3ryYx9R34repBaji5CD9wPxx/i/4j87oNcRoITRYwfXtD1aHpxoVkRQ6yWl1QsRtMidRB7euqFxY2CYS0/7gKqamVvx9PeKk/3jQVXarve7I+DybwaRlfamGDRFLMzXwF/VP5HDyygJBC3zmqmY1mBfZjmB1yfTtZ1b1lPr0jK3069Lt30OgXqM6DYZmzs96/XWwRzemd/LIh+naUX5R4Djop9MCMInehiS75G4UDS2DncHtiyyJAbzs64+HysOZS064TPB0yW35OIr33qRQdT5D8Azj0VXRCpVtJ5nhkEEl4WY4nQ2/rn6t9DxVpP1p14FrzidJ5vQwFMBBEn+dQxwNjRknfkjb000IthSzPWxh+rYvGUaihCeoqFlX0uL5Gxa9roFvtTiknQ/b3vUO2iwCqB6RVA/G0NKpRnWp6aqftHTA3IkINjacWqecMiNvV8VbXNAIJsY9eqp61XYg9hVz7RmBps/qPJlvCl+dhjgSvk8KKEzb0fV1VEvnJ572syOXt17xE2ru9cQaFzT/OQiRaXWOc8vEuosQSeRdGiLETiNLIc5jcAKR13XuRoLLDRFp2gj+YWCQcWKezb8pdhwd5cQCFVW+m66WwGblVwSOVD5idkcRYzczBKW663SBf1JkUHbbJB3C/Nuv5RGetarYd6Xvmk2uLwvA07u3NYOi08fDKN8j7F2D9XRu3dvPH7XxOX/G/1URluBkIaCBk16sy7lk7zWaUzYfiIV2NpKaLKbIcdss33qc8I/nNaUhmO62T1uWExjJfCIiicDlmp7MLuauE/gX/BJN/6PsA2NAwUI1VJdankXr7h22M1VSNZCKL3WKAnIlgVZNCAG/SXakI0xnFXcy3hlUTq7kywj0/IUKDeljoSdacy8aCWpQp/ON3HviDELOvr
+ tIhebsN2
+ PnZRSKrhQiyIHFGn9wrGNMaJ58L2Y4RPtk8sIn2vSNC0r/yiLkY0dpRG7hLaoMEbhQ/m+rq1MC/EEQhw9VXg5M7NHsTy470nzt1i2tEGDHkrNylRF7WvvpvUf7+qLDgMVcwHl4zqGjFEaEwkZbrA2j2N1rPYR75Pz3dYS2iKrtNc3Qdfig+SFKgWdzUhRsA9cpf13l9hJTgdn6Z1BM8GxDKxUiBPCnWbPQNiRxW1MEFAxRZw9+0zy16wBSm4bQW6WNm+wOhDfQHgLf60J7ZWsLj7puhs5RJv8NVK7TG9ajQ8e/qtM6JbaGRChpFf0t38UDIB/CQAeD5OAlwfFvzSvsYgLkkrKRczMU+N4+hRwYR2mzCS9H9l8ku7orn+r3TWyl3yxg2IaPo8WvC/XXztxOSGWI8S8UqC7FZg5EABVNw38JdgU+n82OC04VdSejPHsTUVfCPaGO5UbB7zyMoJe7t5S6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,73 +175,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
+On 14 Apr 2026, at 11:55, Zi Yan wrote:
 
-> Matthew Wilcox <willy@infradead.org> writes:
+> On 14 Apr 2026, at 6:38, David Hildenbrand (Arm) wrote:
 >
->> On Fri, Apr 03, 2026 at 07:35:34PM +0000, Salvatore Dipietro wrote:
->>> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
->>> introduced high-order folio allocations in the buffered write
->>> path. When memory is fragmented, each failed allocation triggers
->>> compaction and drain_all_pages() via __alloc_pages_slowpath(),
->>> causing a 0.75x throughput drop on pgbench (simple-update) with 
->>> 1024 clients on a 96-vCPU arm64 system.
->>> 
->>> Strip __GFP_DIRECT_RECLAIM from folio allocations in
->>> iomap_get_folio() when the order exceeds PAGE_ALLOC_COSTLY_ORDER,
->>> making them purely opportunistic.
+>> On 4/13/26 21:20, Zi Yan wrote:
+>>> This check ensures the correctness of collapse read-only THPs for FSe=
+s
+>>> after READ_ONLY_THP_FOR_FS is enabled by default for all FSes support=
+ing
+>>> PMD THP pagecache.
+>>>
+>>> READ_ONLY_THP_FOR_FS only supports read-only fd and uses mapping->nr_=
+thps
+>>> and inode->i_writecount to prevent any write to read-only to-be-colla=
+psed
+>>> folios. In upcoming commits, READ_ONLY_THP_FOR_FS will be removed and=
+ the
+>>> aforementioned mechanism will go away too. To ensure khugepaged funct=
+ions
+>>> as expected after the changes, rollback if any folio is dirty after
+>>> try_to_unmap_flush() to , since a dirty folio means this read-only fo=
+lio
+>>> got some writes via mmap can happen between try_to_unmap() and
+>>> try_to_unmap_flush() via cached TLB entries and khugepaged does not s=
+upport
+>>> collapse writable pagecache folios.
+>>>
+>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>> ---
+>>>  mm/khugepaged.c | 18 ++++++++++++++++++
+>>>  1 file changed, 18 insertions(+)
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index d2f0acd2dac2..ec609e53082e 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -2121,6 +2121,24 @@ static enum scan_result collapse_file(struct m=
+m_struct *mm, unsigned long addr,
+>>>  	 */
+>>>  	try_to_unmap_flush();
+>>>
+>>> +	/*
+>>> +	 * At this point, all folios are locked, unmapped, and all cached
+>>> +	 * mappings in TLBs are flushed. No one else is able to write to th=
+ese
+>>> +	 * folios, since
+>>> +	 * 1. writes via FS ops require folio locks (see write_begin_get_fo=
+lio());
+>>> +	 * 2. writes via mmap require taking a fault and locking folio lock=
+s.
+>>> +	 *
 >>
->> If you look at __filemap_get_folio_mpol(), that's kind of being tried
->> already:
->>
->>                         if (order > min_order)
->>                                 alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
->>
->>  * %__GFP_NORETRY: The VM implementation will try only very lightweight
->>  * memory direct reclaim to get some memory under memory pressure (thus
->>  * it can sleep). It will avoid disruptive actions like OOM killer. The
->>  * caller must handle the failure which is quite likely to happen under
->>  * heavy memory pressure. The flag is suitable when failure can easily be
->>  * handled at small cost, such as reduced throughput.
->>
->> which, from the description, seemed like the right approach.  So either
->> the description or the implementation should be updated, I suppose?
->>
->> Now, what happens if you change those two lines to:
->>
->> 			if (order > min_order) {
->> 				alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
->> 				alloc_gfp |= __GFP_NOWARN;
->> 			}
+>> maybe simplify to "folios, since that would require taking the folio l=
+ock first."
 >
-> Hi Matthew,
+> Sure.
 >
-> Shouldn't we try this instead? This would still allows us to keep
-> __GFP_NORETRY and hence light weight direct reclaim/compaction for
-> atleast the non-costly order allocations, right?
+>>
+>>> +	 * khugepaged only works for read-only fd, make sure all folios are=
+
+>>> +	 * clean, since writes via mmap can happen between try_to_unmap() a=
+nd
+>>> +	 * try_to_unmap_flush() via cached TLB entries.
+>>
+>>
+>> IIRC, after successful try_to_unmap() the PTE dirty bit would be synce=
+d to the
+>> folio. That's what you care about, not about any stale TLB entries.
 >
->  			if (order > min_order) {
-> 				alloc_gfp |= __GFP_NOWARN;
-> 				if (order > PAGE_ALLOC_COSTLY_ORDER)
-> 					alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
-> 				else
-> 					alloc_gfp |= __GFP_NORETRY;
-> 			}
+> Right. I missed the PTE dirty bit to folio dirtiness part.
 >
+>>
+>> The important part is that the
+>>
+>> So can't we simply test for dirty folios after the refcount check (whe=
+re
+>> we made sure the folio is no longer mapped)?
+>>
+>
+> I think so.
 
-Hi Salvatore,
+After more thoughts, this still works but the reasoning is more complicat=
+ed.
 
-Did you get a chance to test the above two options (shared by Matthew
-and me)? And were you able to recover the performance back with those?
+After try_to_unmap(), PTE dirty bit is transferred to folio dirty flag if=
+ exists.
+The code bails out if the folio is dirty. A clean folio means the removed=
 
-So, in a longer run, as Dave suggested, we might need to fix this by
-maybe considering removing compaction in the direct reclaim path. But I
-guess for fixing it in older kernel releases, we might need a quick fix
-,so maybe worth trying the above suggested changes, perhaps.
+PTEs were clean, thus TLB entries caching these PTEs have dirty bit not s=
+et.
+Any write to the folio after try_to_unmap() causes a page table walk and
+a page fault due to invalid PTEs, and they cannot proceed since collapse_=
+file()
+is holding the folio lock. As a result, we can skip marking folio dirty
+after the collapse.
 
-Also, I am somehow not able to hit this problem at my end (even after
-creating a bit of memory fragmentation). So please also feel free to
-share the steps, if you have a setup to re-create it easily.
+If we allow a dirty folio after try_to_unmap(), we need to mark the folio=
+ dirty
+after the collapse like shmem. And a potential optimization is that we on=
+ly
+mark the after-collapse folio dirty if any old folio is dirty after try_t=
+o_unmap().
 
--ritesh
+>
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index b2ac28ddd480..920e16067134 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -2089,6 +2089,14 @@ static enum scan_result collapse_file(struct mm=
+_struct *mm, unsigned long addr,
+>>                         goto out_unlock;
+>>                 }
+>>
+>> +               /* ... */
+>> +               if (!is_shmem && folio_test_dirty(folio)) {
+>> +                       result =3D SCAN_PAGE_DIRTY_OR_WRITEBACK;
+>> +                       xas_unlock_irq(&xas);
+>> +                       folio_putback_lru(folio);
+>> +                       goto out_unlock;
+>> +               }
+>> +
+>>                 /*
+>>                  * Accumulate the folios that are being collapsed.
+>>
+>>
+>> I guess we don't have to recheck folio_test_writeback() ?
+>
+> Right, writeback needs to take folio lock and we are holding it, so
+> others can only dirty the folio but are not able to initiate write back=
+s.
+>
+> Best Regards,
+> Yan, Zi
+
+
+--
+Best Regards,
+Yan, Zi
 
