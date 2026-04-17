@@ -4,113 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E352AF8E4A7
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 04:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D892F8E4A7
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 04:36:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8D106B0005; Fri, 17 Apr 2026 00:27:00 -0400 (EDT)
+	id 5E5D76B0005; Fri, 17 Apr 2026 00:36:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3E596B0089; Fri, 17 Apr 2026 00:27:00 -0400 (EDT)
+	id 599436B0089; Fri, 17 Apr 2026 00:36:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B53A66B008A; Fri, 17 Apr 2026 00:27:00 -0400 (EDT)
+	id 4ABA46B008A; Fri, 17 Apr 2026 00:36:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A5DE56B0005
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 00:27:00 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 735C5BC91D
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:27:00 +0000 (UTC)
-X-FDA: 84666762600.08.4BDC442
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 997474000B
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:26:58 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A3386B0005
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 00:36:47 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B84AFC296A
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:36:46 +0000 (UTC)
+X-FDA: 84666787212.16.54E8D35
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5E07440006
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:36:44 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cHgTN7JI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776400018; a=rsa-sha256;
-	cv=none;
-	b=JY1J16BTJo3DzCujwgwEFoGPSn495vmH+m2dcBo9241gyQqlOWfkKKsDau70ZMAd46leb0
-	ywm52lx7piiH8rX4XG/emebeGhi97Rs2rodyL5DJpVZrBS5TY/5rMUGyC9vSEct8S7I5cM
-	/DiWnVsN0OAgijXqdPgV9gzSQOYNpIo=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cHgTN7JI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+	dkim=pass header.d=arm.com header.s=foss header.b=bsLlHEHH;
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776400018;
+	s=arc-20220608; t=1776400605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sdZwKg7ZqT6fpMDssi0ujHMgVQlDq6enJyNYdZyrVCA=;
-	b=lHCC7z1Qb1/Xeg9d7azjS75Z8IVhn5cnZBW2NExfWJgAPCLmH4VqCQgtmRParBBV0pppO1
-	2RulWvTp8e9hOEdjDPPiZw3ds4KFb6IKLUzo4XJcuUOlRXsBwEyLoWkQmOJKMZn+yJGOuL
-	BK24rCCkILcbbC0kSRAAuXezZNxmCK4=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c70fb6aa323so76752a12.3
-        for <linux-mm@kvack.org>; Thu, 16 Apr 2026 21:26:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776400017; x=1777004817; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sdZwKg7ZqT6fpMDssi0ujHMgVQlDq6enJyNYdZyrVCA=;
-        b=cHgTN7JIFkFqBk/BsUCoymINrDA/+W+titp3Nlr59mVL1qzKn0REJpN6S2ewsfivJ+
-         Vo/3MQNA8lyYzzt0qx3loO5CKQLDzU8ibwBMg7HQ1q7AIcMzhYfYSwAQXrgWzC+NWY3I
-         7xh7S0zIY0W8m2Ou9ZaqsqnSPi1QRbZFcaQ8S+aZKrVXpM7qpEZYMRBakoRUnuTVoS2L
-         R91+iKhHd72DUZay0kUs6oB/58o9IpOw91OXmnm19nnaOnWIr7wVEHRu75hnzm1uIwOB
-         KprLu2gwWvfdC/PU+1LXaOXJ3BhpuL/fmBX8Z7XpPIEK5ZqEPSVRYiK0jJGoVUHS1GmE
-         SYWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776400017; x=1777004817;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sdZwKg7ZqT6fpMDssi0ujHMgVQlDq6enJyNYdZyrVCA=;
-        b=rYDjgvk3vv7RFLoCMWF7TMR22sqxEQi52Qq+RQyWOa7fCxIQDU+e0JTBTM/hO5olqF
-         4icbUIrfcdjhfdMj8zFpGQQG2yGUs3bG/eDLTaKOcskcoSpfN2VFxv71sHtuMCCLn1PT
-         2mI5bGx8YITnz+DyxgZULjbZnf/4MWmEg5itkrGaO4PHzt3aeMiFjIYTHBlq4vRKMNtZ
-         9nrXwQXOpy5GtiaYk6+qH08ObokmRbchl5QkBfVkbMCIS8EnFnAZ2e7+Zc7LtXMh+2kl
-         bi8kTntq9ijSpD13AAZ2nXS8w3SPTf2WVpsPqS6L/mQE6QHhamrQo5/gNM58hAFEjnOt
-         NuWw==
-X-Forwarded-Encrypted: i=1; AFNElJ8LbWhuS4zDzhvdSgyCB2zJKFk2uW0PPcCP+PujUSItComXXc3cNhr+etFerzoVqeUrfDmIwPiv4w==@kvack.org
-X-Gm-Message-State: AOJu0YxQtq9Tx9S4/JZUcJl5ZWMexcKG4SZk5ajm3BCv+pMvJbflTPfO
-	zy0DrlU1UD76yu/haj6rQps3qFvOC1qD40Ji1xpWgpO/urp7/EPtdSg8
-X-Gm-Gg: AeBDiesGKkkw9rh1ZeU9HHAaolN6MAfXPedL24zNNEkEUUszYo3mTm/mORpxgkRC5SM
-	sOXPLJS1e0s8tXu6yb3TDYIOl/WKUmlUjCjaK6Wbv5Z/QD8u0hcr1+/hl3IEuensc9G1Orc7+Mn
-	1l/N1kUy4blcLpPKUNJ7uM7b3iNEv6H4vfXWa3HmjqGw2oS6lTxtcZLT5SJn8nOB0V7WnW4RtsI
-	4nBCc28Y3KANcwyX3LKqfmpO/+n2DytKETwqzQtmRcu3H/91KsB4KDT0nnSK89tXImuvRScQIkR
-	/W+2ClDJBRFf9AM0ykDCUYLkiMoiMN7cY11KuD6wrC3mPAnx1zJJxUWeJesR0g4jOnZJel2BJ4K
-	KdKRlJdaIDD3GMFVVOBFVnADVuTZ7IH1bKJmeF6Dx6JKvpupDTlhbN04LY81hZ1vJVbbHnMUI78
-	tekY+DCVez+AcjmElzt4J/G9ezOaLSzrLe+8wg46K0uggFwCK0i+L+gbellYcXSh60nQ==
-X-Received: by 2002:a17:903:bd2:b0:2b2:ccfb:8387 with SMTP id d9443c01a7336-2b5f9f534d9mr10448305ad.28.1776400017244;
-        Thu, 16 Apr 2026 21:26:57 -0700 (PDT)
-Received: from celestia.taila51cc2.ts.net ([2402:1980:889a:1f39:d795:a77d:4309:e1bb])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab0c17esm4928985ad.41.2026.04.16.21.26.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 21:26:56 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/2] mm/damon: reset thread status parameters upon kdamond termination
-Date: Fri, 17 Apr 2026 12:27:01 +0800
-Message-ID: <20260417042701.4077-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260417011229.75947-1-sj@kernel.org>
-References: <20260417011229.75947-1-sj@kernel.org>
+	bh=fNNlTvzFbP2UmOe34EPpNLkhuJGYi+J4rgNK/FPuUhE=;
+	b=Zxaep4LpE5ancJci5fZzL80R/Ih+UAW44WZ+Ed4LsFjZXPsJDISBOi14TXbqZii2DWB5tn
+	LBrRdynh7tDT6WiM8EeyiCC+k4BX1Fek8C5EMITF4BiSyEDc9ygtPEowTzOFPwA+K5WXe3
+	E5EaFX/kvhYLjASTkQvKZR8QKszj00Q=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bsLlHEHH;
+	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776400605; a=rsa-sha256;
+	cv=none;
+	b=ZFBWiTl1eh/HpHQPoqXwAhHM3VsqNksAsW+GVKNgMCbfu4pcL3l6lIpScna56e1qsviV91
+	mkQfs/IT0/Ln87tmDfER4edAnmnrcc2xEmZEMW+N4apyf+o1zkONHMN+NUrtCiWvE2OJW/
+	Y3fyhYkHbw2Fgq5fWVj6BDzc/vt78AA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 81F841E8D;
+	Thu, 16 Apr 2026 21:36:37 -0700 (PDT)
+Received: from [10.164.148.40] (MacBook-Pro.blr.arm.com [10.164.148.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D4D13F641;
+	Thu, 16 Apr 2026 21:36:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776400603; bh=mx831Os8dYfoqbDqntabhSKcGoZy9kcJenvHhyzZZBc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bsLlHEHH56qecEtqnmNS5H9GCf7snAhPw00IZzlmlqJhwRx98e+SBFMZGyOnaMymr
+	 ThQ3lu3BhAQXJ/NCoKyE25hUepTfqtK+kKiqmoPQ3LnUR/VWz7hT7HELM6S0i9kzcj
+	 eaM9IuN+QeWGSNcLhcFua54RrFXOcf0jMkijHnxE=
+Message-ID: <fcdd3d35-f16d-404d-8870-3361ab873f69@arm.com>
+Date: Fri, 17 Apr 2026 10:06:27 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 1mgwkcxk9gsqgjksmoh6tgp3s57pc4hn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/mm: Specify requirement for
+ PROC_MEM_ALWAYS_FORCE=y
+To: Mike Rapoport <rppt@kernel.org>, Mark Brown <broonie@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Aishwarya TCV <aishwarya.tcv@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260416-selftests-mm-proc-mem-always-force-v1-1-3f5865153c67@kernel.org>
+ <17ea54b2-d43f-49a9-9dd4-d2330a8daa92@kernel.org>
+ <5357ef55-15c0-4c66-867d-898fa7f51414@sirena.org.uk>
+ <aeE4XSuXY8RfphVs@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <aeE4XSuXY8RfphVs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5E07440006
+X-Stat-Signature: p9fkuy3s5niest3eky8zuakt6jj9xsqb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 997474000B
-X-HE-Tag: 1776400018-925135
-X-HE-Meta: U2FsdGVkX1+qJyGcfLfXIIHjklFCIGns0+ss4C41IbzOCvzGT7DWEUtod3C7E2F6kIgJwR/cMzg2bV33gDr0852PucwBM86DqHFmWv442RRXf1ciRlrZO1j7+LU3Ll3Xegz3ebNrbJXcioBpuFlWU6oCJ7/DJKkzAzHrj4zoRjTvrihr5+0qb3lJ7g5/VfItbutpCHXLyb8UKi53LMuTVJF2D3oJyZOP0b+lnIJZ40VbpmEDWgn/y1nK/FOD0WS+3RAr27l32EaNCPfmXxXZ+lh56LPJ0a4//LvGsG9EVljvvJO4AF7rQ6LtsUE0pVwuZ+xn6ZTfaWpBlQbCpWj0HCNjIK3MKGrNb/TFjuUyOrcaJi7jHDz5I9zG8qzundwcchRyfIyLwjNOpBBDUpV4m3SegAC/uTN1DYwzOidAjZomnLCD1Y+Zqoi0RpVfzQwpJMjUKqe8Af3pesRrfh3Z7q9nUIU4dZkz/yQqcCF/dJ8VegsrSE7zzVFXmZW6M/fURCNjIxA0kcNfvz0ezkBFX5cbJcCxCbdS8dXKMVqG5CpWUWChgxjtG97l5R3RxAezxwBQGeK6e3/B79w9VvffaNXxRWlYWLB8XMjfsksnfyr7WrSpoF7zTnAtjU+nanL7XL89YOUAYMJhBFiC/SfBF7yrpxibu6zAtBM8s7MCnwgGP0oAzEWxlGb4FjyWlfZeX88oJQV+beTTx77d0wqzuGDGo09hToBsj29Xx4Crohfpu6voJAuDWmh0iosLD+B2hm1QYcDjliz8n3hta3WSVcNNcSuP14UJdxYJI165oVOql8XlJTQBRpLbkffeWesIKZWCuzo8ngVbc/2aq3AUSlHHFB6tFOhpW7KAwrtrEREYXI3kRqqSyIqu88OzDSsiFRkIZiOnWJZfNMHi0sAuDIOT+jMKXsNDy5DNjGFe4FAGZhuhT6gskBnFqElSnlRGDUuiNNM4q8xcEYbXUna
- RHrFwqqB
- iDA7bj63T8Nkk3OyIOEtSNNJzpl8tt3BH+ut/bpCiuLVX1V8//T81ESBv35C80dCW/xKYwmXbkfDZ7dnWQSn1Nm38GYc2HuW634CixxvEUe8oH/XcbgHaGPN+PFi4tHiJefhOuSKQSOFcISmKvcmQOm0Byxp5v3Pn0jHNAXi1OfvazZV8OOgo5p+sGj7a+n9uFzOvL/f9/oCHHtK56Dbba0NN0ZZatAIoxSLSH4BzPNpXFcSXYzCwHkDQU4SymrK++I2+RRMxAWMOc8yPkSB1ZITNXY8kuOMvhMi2dPaplORZDOxCALbZqZVvfmK+TFCxaKSAw3Kpf60plGQkgA7HeKsW/uQEJVB4wzxJt+tq5Oi/GtuwV1Cgbdref3BkWpp5bukcYMft1jj/gsoaVZqATLDymvr+CExJGGO0/jfZPj1Aw8itCO/9PlJNrOlcMVTEH+grjwOKf8/QP1I=
+X-HE-Tag: 1776400604-364123
+X-HE-Meta: U2FsdGVkX19rkd0ydtoVLPC21hz5TwmRDy7SNBBQD39qbOe7PNuvLOs31N8hCE6lg9bEv7KxsCdMXtIIYfsXAnZhJUeY0tz5pOMT4Sy+FTrmx9S+BQfb/D9RvcZ48zjNJHf1xFjGK5eHBWLhDzWheMwlZrojGtcUC/wOCUOsQkeoSwkTZvzAw/kYA+fQiQ+NCEBZU/LbaJCn4EKll4dsP41c/crrh8cNJ4z/w2s5vIprawdhegkpqDWB/70A93igACzhvsSPAoRsfql1JS0ebzhNyzn3hAtYN9VwqZ/RGFd5HXo5t7XtCXZjo+Za5A8RhBVaHiRfOmU1v+or6w7psXM6f1HP5+vKYeRYPVfvDE+Ir0d9FaSn3I7dYLjfJjVuoryZNXG6JWUc5YYC9SlIiNfnzNRHwwA2JfIW8wD5xkfLsAWkgwJKK5QzRBO1AzV+XWFLHv0ihti++PY3rDWscB6+bcFQdkKYoyNR2jVWa2mYU5p+RxmI7Tfkl8kSvvZQDksdhGzzpLcxuZCa5auP6UO+KP8eb1KZd2UthIivHaetBFDS3ZnXCxnSClZ6BUu+JEGiYhtfvdmjgmx/phJ6FoM+8cTC+iAmAaNMIk6z5lJ9HltGwtwOtpOwb9Iiw8R3B+BeYH+psaAEiIsYplHZA+mm3i5G7hd3wrHlvhk6lAIz7vVHE8uu0O0MzTVjVicf+duhATXRW08TQ2SminsGi+iNZeUA7eipD9mT9LEc9PbocryhC0IKhvFuEIt8yRhaLGyboth4P+UN822vapDxys0QbTnQeWgLwzsNUqVTXbarXSaLLgb5oJEkKNalM/8wWEqJM9XEm/cip11Dp1wv0jePuUtvdR7sjXSzyEMjPrCC50qWKiN+AT6Lo8G6/SBdRVwk/OMWQhlBZAAQMrk8cQl4CbAm8rpEjJXke3Isr0qsx2I0WZNxodYkbkut/Fde8qy680JbmvQl7ghhqzC
+ S4YebvZ6
+ cJUbeykJQZ/AAk3YGoOohsYKH523FIynYP1s36gsxuLdgDGRhvGOp3hzubYSRhwIR69VjVL6ePYR65k0MRdPrsVPoUJ1ALQksLFBE8X/EvClxqIjBppeM9utroExzZ27hJH3jRlyC5ghTKIQwN24uunBmtV3EHjXUklAcP62ZhefKZEFWkjpaUGXEkZrOJAaheyZ33RpaQYo+aDHcW4+hiOIpB4QmKm6gLKIXgl3KvV/KXX3f7UStvFPUoQMi0/zrRKiU6e8yneq/ePS4pJiXhDksEjWn/CEYJiZu+e8S+zIJzf1UuYU6RP7kJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,44 +99,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 16 Apr 2026 18:12:28 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> Maybe I suggested too much...  If we decide to take both my suggested commit
-> description and the above change direction, maybe it is difficult to say you
-> are the main author who should be primarily responsible for any followup issues
-> on the patch.  Of course you will still deserve to have credits.  Maybe
-> 'Co-developed-by:'?
 
-Yes, I've decide to adopt both your suggested commit description and the
-implementation. Therefore, since you've done the most of the work, you
-should be the main author of this patch.
+On 17/04/26 12:58 am, Mike Rapoport wrote:
+> On Thu, Apr 16, 2026 at 08:10:53PM +0100, Mark Brown wrote:
+>> On Thu, Apr 16, 2026 at 09:05:11PM +0200, David Hildenbrand (Arm) wrote:
+>>> On 4/16/26 20:40, Mark Brown wrote:
+>>
+>>>> Several of the mm selftests made use of /proc/pid/mem as part of their
+>>>> operation but we do not specify this in the config fragment for them, at
+>>>> least mkdirty and ksm_functional_tests have this requirement.
+>>
+>>> I guess we could teach most tests to SKIP if /proc/pid/mem is unusable.
+>>
+>> That would be nicer, yes.  I imagine some of these will predate there
+>> being a configuration option here at all, it's possible there's newer
+>> tests that skip cleanly - I didn't look at the skips.
+> 
+> Enabling access to /proc/pid/mem keeps the coverage, not that it's great
+> right now, but still.
+> 
+> But sure graceful skips are better than failing the entire tests. Would be
+> something like this:
+> 
+> diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
+> index 8d874c4754f3..374b5a25f36d 100644
+> --- a/tools/testing/selftests/mm/ksm_functional_tests.c
+> +++ b/tools/testing/selftests/mm/ksm_functional_tests.c
+> @@ -37,7 +37,6 @@ enum ksm_merge_mode {
+>  	KSM_MERGE_NONE, /* PRCTL already set */
+>  };
+>  
+> -static int mem_fd;
+>  static int pages_to_scan_fd;
+>  static int sleep_millisecs_fd;
+>  static int pagemap_fd;
+> @@ -622,10 +621,17 @@ static void test_prot_none(void)
+>  {
+>  	const unsigned int size = 2 * MiB;
+>  	char *map;
+> +	int mem_fd;
+>  	int i;
+>  
+>  	ksft_print_msg("[RUN] %s\n", __func__);
+>  
+> +	mem_fd = open("/proc/self/mem", O_RDWR);
+> +	if (mem_fd < 0) {
+> +		ksft_test_result_skip("opening /proc/self/mem failed\n");
+> +		return;
+> +	}
+> +
+>  	map = mmap_and_merge_range(0x11, size, PROT_NONE, KSM_MERGE_MADVISE);
+>  	if (map == MAP_FAILED)
+>  		goto unmap;
+> @@ -694,9 +700,6 @@ static void test_fork_ksm_merging_page_count(void)
+>  
+>  static void init_global_file_handles(void)
+>  {
+> -	mem_fd = open("/proc/self/mem", O_RDWR);
+> -	if (mem_fd < 0)
+> -		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
+>  	if (ksm_stop() < 0)
+>  		ksft_exit_skip("accessing \"/sys/kernel/mm/ksm/run\") failed\n");
+>  	if (ksm_get_full_scans() < 0)
+> diff --git a/tools/testing/selftests/mm/mkdirty.c b/tools/testing/selftests/mm/mkdirty.c
+> index 68dd447a5454..e4a94638018b 100644
+> --- a/tools/testing/selftests/mm/mkdirty.c
+> +++ b/tools/testing/selftests/mm/mkdirty.c
+> @@ -27,7 +27,6 @@
+>  
+>  static size_t pagesize;
+>  static size_t thpsize;
+> -static int mem_fd;
+>  static int pagemap_fd;
+>  static sigjmp_buf env;
+>  
+> @@ -86,11 +85,18 @@ static char *mmap_thp_range(int prot, char **_mmap_mem, size_t *_mmap_size)
+>  static void test_ptrace_write(void)
+>  {
+>  	char data = 1;
+> +	int mem_fd;
+>  	char *mem;
+>  	int ret;
+>  
+>  	ksft_print_msg("[INFO] PTRACE write access\n");
+>  
+> +	mem_fd = open("/proc/self/mem", O_RDWR);
+> +	if (mem_fd < 0) {
+> +		ksft_test_result_skip("opening /proc/self/mem failed\n");
+> +		return;
+> +	}
+> +
+>  	mem = mmap(NULL, pagesize, PROT_READ, MAP_PRIVATE|MAP_ANON, -1, 0);
+>  	if (mem == MAP_FAILED) {
+>  		ksft_test_result_fail("mmap() failed\n");
+> @@ -124,10 +130,17 @@ static void test_ptrace_write_thp(void)
+>  	char *mem, *mmap_mem;
+>  	size_t mmap_size;
+>  	char data = 1;
+> +	int mem_fd;
+>  	int ret;
+>  
+>  	ksft_print_msg("[INFO] PTRACE write access to THP\n");
+>  
+> +	mem_fd = open("/proc/self/mem", O_RDWR);
+> +	if (mem_fd < 0) {
+> +		ksft_test_result_skip("opening /proc/self/mem failed\n");
+> +		return;
+> +	}
+> +
+>  	mem = mmap_thp_range(PROT_READ, &mmap_mem, &mmap_size);
+>  	if (mem == MAP_FAILED)
+>  		return;
+> @@ -343,9 +356,6 @@ int main(void)
+>  	ksft_print_header();
+>  	ksft_set_plan(tests);
+>  
+> -	mem_fd = open("/proc/self/mem", O_RDWR);
+> -	if (mem_fd < 0)
+> -		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
+>  	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+>  	if (pagemap_fd < 0)
+>  		ksft_exit_fail_msg("opening /proc/self/pagemap failed\n");
+
+Looks fine, but would be better to close the fd before function exit?
+
+I can review if you plan to send a patch : )
 
 > 
-> Meanwhile, I feel like the fix of this bug is taking bit unnecessarily long
-> time...
-
-My apologies. I have had limited bandwidth recently.
-
+>>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>>
+>> Thanks.
 > 
-> If you agree, hence, I'd like to take this over from this point, and finish up
-> the remaining works for this patch.  If you also agree, I will also take the
-> responsibility (authorship) from you, while keeping keep your credits with
-> 'Co-developed-by:' tag.  What do you think?
-
-I agree to hand over this patch to you. Thank you for your help.
-
 > 
-> By the way, I hope I'm not making you to get me wrong.  I'm not trying to steal
-> your credit (authorship).  In my opinion the authorship means the
-> responsibility (or, who to blame) more than the credit.  Putting right name to
-> the place for the responsibility is important for the long term maintenance and
-> evolvement of the community and the product (Linux) in my opinion, so I have to
-> say this.
+> 
 
-Thank you for your explanation. I understand your point that authorship
-implies responsibility, and since most of the core ideas for this patch
-came from you, I fully agree that you should be the main author.
-
-Best regards,
-Rui Yan
 
