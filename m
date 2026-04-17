@@ -4,113 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22300F4368A
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 11:41:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6891EF4368D
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 11:43:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF5566B00E0; Fri, 17 Apr 2026 07:41:43 -0400 (EDT)
+	id CFD046B00E1; Fri, 17 Apr 2026 07:43:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5CD6B00E1; Fri, 17 Apr 2026 07:41:43 -0400 (EDT)
+	id CD5256B00E3; Fri, 17 Apr 2026 07:43:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D94BF6B00E2; Fri, 17 Apr 2026 07:41:43 -0400 (EDT)
+	id BC35F6B00E4; Fri, 17 Apr 2026 07:43:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C81726B00E0
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 07:41:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 769CE1A013F
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:41:43 +0000 (UTC)
-X-FDA: 84667858086.05.C8E416C
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B53DD1C0007
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:41:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HyR4gEWP;
-	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id AB8266B00E1
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 07:43:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 720DCC02B9
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:43:46 +0000 (UTC)
+X-FDA: 84667863252.22.238E835
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8D411180005
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 11:43:44 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rh1kWv/p";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776426101;
+	s=arc-20220608; t=1776426224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=OdeoWNWt+4g6huyrHmNx4JleFuC8aky8d5HWmA1wp+I=;
-	b=FH0muwvieJRNoAAjtdIdZcP/qa+XH+sCuGO3B2JlfAwWPeLSJsZ7u36TJZr9+B3BHV9vun
-	5AdtR2tsfSKKT4O7PnnUhiP123yGP9GKqBa374E38/Z0tw86YR8po1ndMOV0BecXMoZDLO
-	LVpLMoxDFzbLsnkAQIRy/RuEOb2lPvk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776426101; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5XZA8Z7Wwen7bvvhGV+9K7epD3nJl6JbbaIA3EMgD1Q=;
+	b=tGODEP2uAvoBW48/0sFs/A5qhp4bhZlGrHaeEVfOiqVHo6nE5iLNo3kmh7a6DRMOIvYwhJ
+	P2geR0NMyG6MakNtcuYFMnDEGp8lfaf1QcIzISJzOi4oQ4/CsYEYw9ypiGTSgWrM72Krp+
+	3UKlresh/vG/LuWDLHqlYFniarkYFM8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776426224; a=rsa-sha256;
 	cv=none;
-	b=SeXLFc16Wo1JKS+HYCOapno+46oMHWEInyj1qbQGVABrOYS4eVwKpR00H3omnD/3Dzq6cO
-	CkAxQKfvOxohPcmbA0PPxiJWNbyw08URBXXBGAzij5QpmaM+ttXIBUy3EPdydCJaJ1AaDl
-	pYwxgpDGHUI8JmySQ/VWejlkBdgOZz0=
+	b=xTVFLc/wDN5W1XFbxOE/22XqJ5l8v0QsTgHMOYMO2YHr4JdU5kfDyCAagMcAPTrhTPy7/p
+	HwNUq73Ww105eH1nVLPC8E151fcaokvvwRdEOhkZkzN1btwdItxphYd19BGNN8+OSEHx+v
+	cWA0Umct9Dt/OF5Ld3IZSGH4TSCTQ98=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HyR4gEWP;
-	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ad9516a653so2793025ad.0
-        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:41:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776426100; x=1777030900; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OdeoWNWt+4g6huyrHmNx4JleFuC8aky8d5HWmA1wp+I=;
-        b=HyR4gEWP0fDIT1hXmZPJYPhvy6uhG7GFo4/7nsD4a/ZWOSQqTvd8VLXZ5FsDPhMOV4
-         Mtrz0KH4Hs27aaPf+vo5hk1ZLKHRnwE6fhaq9vOwRchQjqZbhBUVEKFJinWd1oCHjFwp
-         5eKvGfZ+3fS8XVD4F1tUPgfjUCsf0HaYj7G0z0VWf+drkoyjgNKxLNDApLMBis7WXwtW
-         bXAZPJAeflmmtiOqj5oX85lDomUzFf/36o5AQV3XXjmTt+mRLzrEUHot20FJtNQu07D+
-         FBjdbRXVfrGD9ELyLhV19Sg6fkWEmC3YunKOD9quE5m4K6Nc8hlWRlmihpA0LR3s5Ao6
-         BrwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776426100; x=1777030900;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OdeoWNWt+4g6huyrHmNx4JleFuC8aky8d5HWmA1wp+I=;
-        b=jugEjS8nZ4jjNsI40xFK4B66x0JmG3rnte0vh02gTsM63Kmq4TYvNEax8a9PqB2edx
-         3P5t7Ytj9JXjVEUTitlVE9RtQxQPTk1mmxORYc0IRNakg+pzVCFHq+zi+2ncU7s257ME
-         S7zLRPF6Hj8h1hr24b9qyh3EgC9gPqtQowMpkYK0SbLMbQYFJt4K/GR6pa/UK5LT8pvZ
-         Qf5omXrheHu6uOZ8v+8sjR063DbHh7z5kRrWyNQX8QbYGngRfwmrlV569MBUWvtsgpYy
-         40hqwkdzJbX/c+EmsPC0yBtuukGXli0V2AZ7VBpnThbM2TdB/85Ebb65+kCdMum/zS+4
-         X18g==
-X-Gm-Message-State: AOJu0Yz7tq8gIKFmnYRcmCW6ttjtYJY+XGc4fkV3g8Xpne1EsQslPi8U
-	ME2XYAjPLOXVUom8V6bCf6zgQfOyKPG6QTQRXTM9XiycQu1QwnFAbjeV
-X-Gm-Gg: AeBDievcNn4TfAbzzM0opKKtlKJ6hWS0mtYIUzV5kQgNlGQH/iJePaGvO8xEjBUfW3v
-	gIbfGtuuTuiuF/DEilP1j5kpkEWrQ/U9HDkcQfQnoJ/pcc32jML5xT/hjCnRM0wQ3AldxM3fFuf
-	0uWnjfy8Ix7b77eJfpu+Il34kazAWFnF6m9DUMMuE7RwbLvV4X9vxL/+sbV674XvX2RIK21Biqe
-	WqC/ire6di2Vs30ED4FGxkgmWaU8gy41M22oq2V/ShWTQXX/YapLMXWWAp6zvydJKwLZAJPnqBi
-	CEwzmW4oKINsPSCgZKupKHicBPhjm+QT+SAhT56nDMV08AqK3j6iwMsE3iQz++AQ007XSfVcssH
-	k69IAdciWIB1bYQAurPf2Mx7AX4Z+T7A5lw2379Yf1vPjScY26VdHII16UyJFHP41fy9cnaGqt1
-	fscM741dUX8+eYFJ5UEZ4bDnmk+4DLsmh5hrLb9Vs=
-X-Received: by 2002:a17:903:38c4:b0:2b0:6d56:8d29 with SMTP id d9443c01a7336-2b5f9f3b3edmr30511555ad.32.1776426100380;
-        Fri, 17 Apr 2026 04:41:40 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab3a929sm17355605ad.72.2026.04.17.04.41.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 04:41:39 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	djbw@kernel.org,
-	mingo@kernel.org
-Cc: linux-mm@kvack.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Donghyeon Lee <asd142513@gmail.com>,
-	Munhui Chae <mochae@student.42seoul.kr>
-Subject: [PATCH] mm/fake-numa: fix under-allocation detection in uniform split
-Date: Fri, 17 Apr 2026 20:41:26 +0900
-Message-ID: <20260417114127.1664283-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rh1kWv/p";
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 88F454370F;
+	Fri, 17 Apr 2026 11:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65EEC19425;
+	Fri, 17 Apr 2026 11:43:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776426223;
+	bh=JGgbvpvWm+Ik8ZBTXf+YL1qrGBJYpDxeijGIxjtDHkQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rh1kWv/pWbdLIgEVHPwauDYHLUIFVZUP6FH3zD4hG9r2CQf6vxykMagcdtJFPSIIh
+	 tvy0ByCX5em5C880qRgnFn/S8aaUQANfgMCf8to2uMjMCmTq2s3rrHdNmb9hInzEHJ
+	 WMIIFTxxRM3gWA7aH/HuEO+uIXvDNsBGHX3agIUwDr2FHjMtyg8Z4+nod8NYhvHVyY
+	 HvA1V02mYmjnHe0YwVr8667tXr1ErTSWKzesTg2Nd0qQHyqrFx43Y8UNCVAvkN9ctn
+	 CF3h766uicbcARhlCRZdj/jdFjB+2gYrJdUX0NPbizpPhrgpBKqOuWk/uv54W/F0xX
+	 OHjknsEsvoAnQ==
+Message-ID: <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
+Date: Fri, 17 Apr 2026 13:43:36 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: egzyoa5g73codcoiirkr1dfph9pekmzu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
+ memory
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org
+References: <20260414142354.1465950-1-kas@kernel.org>
+ <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
+ <ad50rPOseVa-SP_s@thinkstation> <aeDoqFWPFxkkNB26@thinkstation>
+ <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
+ <aeFCuLJXT8VOkzH7@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aeFCuLJXT8VOkzH7@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8D411180005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: crdj5u1m7qoktmmxcebn3jedekrho8mj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B53DD1C0007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776426101-139595
-X-HE-Meta: U2FsdGVkX18LwIvJ4HU/CNLoGONVvT1YxxnqBgOtWCcXrk+j0M+T1TEV8bB49HX6bY2OvPfZMvmQIosFVUZZoKzdOZfDfaj+P3oFPOtgiBZG0PtCAxxeJFpKAzm2Bk1/xmIsH435WWxtzDF+yHqUcJNPTLeH34As1KaY6JMvZ3RsPQr7NxZzng5zJd9UlQbgQg5B0GK1CPpFBL5R/naiM5hA3fzIcAYZbm+T1eYmKxmRN/8B+FqLm0HUVNF+5pWGiQYz9WHaDUxIU2DIzGbdnvuYV1RShuEs3BNqPJFg1pgtfb9v6qmhn1p6ueInLm6haLxLx6hFpJLfCbvTbPaWVLWV+3ru3TI8yTsEfBDn6r4rLHkh+N5Bir99uPZBxlwrO3pj+1i4jaOTFApQxTACaiqwdElavuRaAcCnQWo/qb879wb34dBrvlIwx3HWQf/A0rXy4ArF3NP5JITS9NwAYx/XopZAd/OT0Akf4G+/CBDs0R6wilBXX4gQ9LtgacPwENtKG2b+0466O8c3/w1BYNlf2duR4sz2i44lcKXpbQrFFBKzw41koxknosV5wZIwSKqu5dmbMEgF3UG1R0PviPikz2eoCvf7/Nu7A2xZkkwurPpFmh+YF7MeIzurAozO6uSkpLakcAusCuZmMk+2GJ6aH4/mA5YV2HXx+ExWlVq4BF1fUwAog3WqsZIu1TsdpUSyuyrgjZmhdKFdsBPWEyai3kt0kw6+HpOUBGlJOL7Y4RrbtWOH46vm124ibFX1X34oMwmwSayFfRoYBFZhkH/Cwr0vcWORStHlzwHupL2jAlnD9DFrYMXXFgJ/tl5Mv6CfehIvC9DdzaPXkq4W9YJyayn9qnUTNa4SKWwsj7JjAnMWNxPvWNHEFPEHeWhWEwBl9suYch1Oli6r9ktIR/lxp7oSmk9acOJ9xb2m0VBHHJBT5yweFOSCzztIAC9B3qWlsfbowTRxWBiCkPy
- VZ0fiXV4
- zCPy7XjCVecbWwUlNSFSKKr+NEfgrRI1cU7kK4PxcVj+Ecd8n2sdUIAIU/rEzVGdnkhVpmR9IVGV5V9hIpsqZawEn3vqrVklpqsg7mstsogQwhfuE8A3EAJM1zQqWY2DjxpvN4QjBlkPV9MeVxEmrDyRqitOOayvuX0TQ0gH7lJnrt33Nt5/4j9l7rBGJfPRNQnqMPZVdVFozkeep06LGFM1GIUGtopCbjOC6eY9Kk/xWCWl44Nb0DjzCv9osxQdQIbxAB6pTDaLnPBwipH8uqMwOwPSwX6WaKNEUoa9QpB0U1njsSSFbq3uvY/QV3rIQyAkm82wj4GYmj3EAsNrvafrf3iXSo0zBub13zRFKmQJGlRnu4WovU5VJTGPBSIvqy/3or9cSvPMfOMPSW8SdpOJ99F4ru3VIovdFClR1INWWCsvXnbZj63p+mw==
+X-HE-Tag: 1776426224-117323
+X-HE-Meta: U2FsdGVkX1/8U0Cni5rMeyyoU7Apko2beaBGb1KOc9ne31vQ4WdjvilchE8wxE1lzyRrWdepYPlVW45KT0Z8YCKmsIunoKSd0tiCIzrSnABkPOk7eoNYwK3X8lGDotdNaYu8BqLkdtit2BdDMIqdMjfSenfxJZQmvd62niS5bE88LS7l0lapMOxdBBPw5ZibLf+HfI8fNgOtnr63m+207om9UJGIGAdirD5oNX4mBIf+WRlCPP4XRVXtwHvXfWxL+sS1L70OuIWwvPP2JiPJbA3fFS8F2FWrjbMSxBxc7IzjTV+SP47T5mvTyB73za5X0PXFLyDc7NDlTvCLlcMYeWqVgBP8Y2pDXBNDdZY5a3Cb9Z+giSzGoxtiCGHND8zvF6JxbbMvN7f2d+6PiL2RGkTVzOt4vNG5JQyqgF5rm1MAxJ3OEdKNsLWY2MwHE5dGxtF91OOMDAdI54s+YlUFf8bAAFvO1WQdjab4SYWLSRddcjgDZ1bEjgVG8h+ZcBwhggHAN9Z3IzUlaps5XP1wvU6sssIU1C4IhAnuR1i6+wbpZCeGnQ4qnXFefo7vAvNYDuXiACO8+G/LKrZZwN9Ur9222sUzhMGTSsAUvBAxyiymGauJaTNgX9s+mLI/wI/LjSuSqwhYiPsd8SSMvzYjv0OKGZbxrz2HKd1dZIJ1WRy9Y4GHTT52iPhhZiv08uxe9DPV54/+V0F5b0EdSQLrAc7/HxOobBrLBtn2EkQRxSuG3aDtzMMt9P3cRFYYKrH7ZqycKiEEHfcw/3tGqpEszWND5KOSFjcP5ZEEYtuNj680u9nYSTpxKIikYQiI9mgRd42nqWpMeWN/kg7/aiEB2hXxY+PESDhmIiLZuOremyqRJsJvGdu/remtNjEE+msnpeG8EE5xjx7/J80NzEESYATvczqcH/S931b6bbai1eL/0V78oEVzYaMpt64L7nKASXnlcGtJAFXsTA290oe
+ kYJcjwBV
+ x8KUmBuF+gxBmSlLEmleDLJqELhI2Rfe7Smzxu+rs4G3yQRtm6WGkX7y8CxFhSpLC+QtJA1Qd5yIudL3vhFWT+UVwx5TurmGOBkP2n1mZL1Ftq7v8ENOwCSHp/ayAbsUibGKzk8lE6RZz7XH69hcQweWlH+5NWtOuMDpb0MWiXnO1oMwuEwq+FT3FaYIYyIuaCAdHD+LA5GikQMLo5jpZnBoxg5NknpyCea/3keuKvMCL0SfI4EDEm6PbQVJviECPbFORbTEKDCTkBWHqNvh8K/ygLQXG/Nou5LrH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,137 +149,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When split NUMA node uniformly, split_nodes_size_interleave_uniform()
-returns the next absolute node ID, not the number of nodes created.
+On 4/16/26 22:25, Kiryl Shutsemau wrote:
+> On Thu, Apr 16, 2026 at 08:32:19PM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/16/26 15:49, Kiryl Shutsemau wrote:
+>>>
+>>> Here is an updated version:
+>>>
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git/log/?h=uffd/rfc-v2
+>>>
+>>> will post after -rc1 is tagged.
+>>>
+>>> I like it more. It got substantially cleaner.
+>>
+>> I don't have time to look into the details just yet, but my thinking was
+>> that
+>>
+>> a) It would avoid the zap+refault
+> 
+> Yep.
+> 
+>> b) We could reuse the uffd-wp PTE bit + marker to indicate/remember the
+>>    protection, making it co-exist with NUMA hinting naturally.
+>>
+>> b) obviously means that we cannot use uffd-wp and uffd-rwp at the same
+>> time in the same uffd area. I guess that should be acceptable for the
+>> use cases we you should have in mind?
+> 
+> I took a different path: I still use PROT_NONE PTEs, so it cannot
+> co-exist with NUMA balancing [fully], but WP + RWP should be fine. I
+> need to add a test for this.
+> 
+> I didn't give up on NUMA balancing completely. task_numa_fault() is
+> called on RWP fault. So it should help scheduler decisions somewhat.
+> 
+> I think an RWP user might want to use WP too.
+> 
+> Do you see this trade-off as reasonable?
 
-The existing under-allocation detection logic compares next absolute node
-ID (ret) and request count (n), which only works when nid starts at 0.
+One reason why the PTE bit was added for the WP case was to distinguish
+it from other write faults.
 
-For example, on a system with 2 physical NUMA nodes (node 0: 2GB, node
-1: 128MB) and numa=fake=8U, 8 fake nodes are successfully created from
-node 0 and split_nodes_size_interleave_uniform() returns 8. For node 1,
-fake node nid starts at 8, but only 4 fake nodes are created due to
-current FAKE_NODE_MIN_SIZE being 32MB, and
-split_nodes_size_interleave_uniform() returns 12. By existing
-under-allocation detection logic, "ret < n" (12 < 8) is false, so the
-under-allocation will not be detected.
+I assume without a dedicated PTE bit your design will always suffer from
+false positive notifications.
 
-Fix under-allocation detection logic to compare the number of actually
-created nodes (ret - nid) against the request count (n).
+Leaving NUMA-balancing aside, a simple
+mprotect(PROT_NONE)+mprotect(PROT_READ) would already be problematic to
+distinguish both cases. Zap+refault for shmem would likely have similar
+problems (we'd need a marker).
 
-Also, fix the outdated comment to match the actual return value.
+I don't think a design that allows for false positives is what we really
+want, especially as it would diverge from what we already have for WP.
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reported-by: Donghyeon Lee <asd142513@gmail.com>
-Reported-by: Munhui Chae <mochae@student.42seoul.kr>
-Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capability") # 4.19
----
-Changes from RFC v1 [1]
-- Merge patchset into once.
-- Change base from linux-next to mm-unstable
+Yes, using the PTE bit (that we already have) implies that we could, for
+now, not allow the combination of WP + RWP.
 
-Changes from RFC v2 [2]
-- Fix error message to use the number of created node instead of
-  returned node ID.
-- Define nr_created variable to explicitly show the number of created
-  noeds.
-
-[1] https://lore.kernel.org/all/20260413154438.396031-1-ekffu200098@gmail.com/
-[2] https://lore.kernel.org/all/20260416102558.575210-1-ekffu200098@gmail.com/
----
-QEMU-based test results for the commit message scenario.
-
-1) AS-IS (before fix)
-[    0.001878] NUMA: Node 0 [mem 0x00001000-0x0009ffff] + [mem 0x00100000-0x7fffffff] ]
-[    0.001881] Fake node size 255MB too small, increasing to 256MB
-[    0.001882] Faking node 0 at [mem 0x0000000000001000-0x0000000010000fff] (256MB)
-[    0.001883] Faking node 1 at [mem 0x0000000010001000-0x0000000020000fff] (256MB)
-[    0.001883] Faking node 2 at [mem 0x0000000020001000-0x0000000030000fff] (256MB)
-[    0.001884] Faking node 3 at [mem 0x0000000030001000-0x0000000040000fff] (256MB)
-[    0.001884] Faking node 4 at [mem 0x0000000040001000-0x0000000050000fff] (256MB)
-[    0.001884] Faking node 5 at [mem 0x0000000050001000-0x0000000060000fff] (256MB)
-[    0.001885] Faking node 6 at [mem 0x0000000060001000-0x0000000070000fff] (256MB)
-[    0.001885] Faking node 7 at [mem 0x0000000070001000-0x000000007fffffff] (255MB)
-[    0.001885] Fake node size 15MB too small, increasing to 32MB
-[    0.001886] Faking node 8 at [mem 0x0000000080000000-0x0000000081ffffff] (32MB)
-[    0.001886] Faking node 9 at [mem 0x0000000082000000-0x0000000083ffffff] (32MB)
-[    0.001887] Faking node 10 at [mem 0x0000000084000000-0x0000000087fdcfff] (63MB)
-[    0.001924] NODE_DATA(0) allocated [mem 0x0fffd6c0-0x10000fff]
-[    0.019852] NODE_DATA(1) allocated [mem 0x1fffd6c0-0x20000fff]
-[    0.022458] NODE_DATA(2) allocated [mem 0x2dffc6c0-0x2dffffff]
-[    0.023293] NODE_DATA(3) allocated [mem 0x3fffd6c0-0x40000fff]
-[    0.028522] NODE_DATA(4) allocated [mem 0x4fffd6c0-0x50000fff]
-[    0.032397] NODE_DATA(5) allocated [mem 0x5fffd6c0-0x60000fff]
-[    0.036552] NODE_DATA(6) allocated [mem 0x6fffd6c0-0x70000fff]
-[    0.038746] NODE_DATA(7) allocated [mem 0x7fffc6c0-0x7fffffff]
-[    0.040286] NODE_DATA(8) allocated [mem 0x81ffc6c0-0x81ffffff]
-[    0.041517] NODE_DATA(9) allocated [mem 0x83ffc6c0-0x83ffffff]
-[    0.043678] NODE_DATA(10) allocated [mem 0x87fd86c0-0x87fdbfff]
-
-2) TO-BE (after fix)
-[    0.001858] NUMA: Node 0 [mem 0x00001000-0x0009ffff] + [mem 0x00100000-0x7fffffff] ]
-[    0.001860] Fake node size 255MB too small, increasing to 256MB
-[    0.001861] Faking node 0 at [mem 0x0000000000001000-0x0000000010000fff] (256MB)
-[    0.001861] Faking node 1 at [mem 0x0000000010001000-0x0000000020000fff] (256MB)
-[    0.001862] Faking node 2 at [mem 0x0000000020001000-0x0000000030000fff] (256MB)
-[    0.001862] Faking node 3 at [mem 0x0000000030001000-0x0000000040000fff] (256MB)
-[    0.001863] Faking node 4 at [mem 0x0000000040001000-0x0000000050000fff] (256MB)
-[    0.001863] Faking node 5 at [mem 0x0000000050001000-0x0000000060000fff] (256MB)
-[    0.001863] Faking node 6 at [mem 0x0000000060001000-0x0000000070000fff] (256MB)
-[    0.001864] Faking node 7 at [mem 0x0000000070001000-0x000000007fffffff] (255MB)
-[    0.001864] Fake node size 15MB too small, increasing to 32MB
-[    0.001864] Faking node 8 at [mem 0x0000000080000000-0x0000000081ffffff] (32MB)
-[    0.001865] Faking node 9 at [mem 0x0000000082000000-0x0000000083ffffff] (32MB)
-[    0.001865] Faking node 10 at [mem 0x0000000084000000-0x0000000087fdcfff] (63MB)
-[    0.001866] numa_emulation: phys: 1 only got 3 of 8 nodes, failing
-[    0.001867] NODE_DATA(0) allocated [mem 0x7fffc6c0-0x7fffffff]
-[    0.001940] NODE_DATA(1) allocated [mem 0x87fd96c0-0x87fdcfff]
-
-And also there is other scenario tested by Donghyeon. [1]
-
-[1] https://lore.kernel.org/all/CAFPTC5e1OLpHa3HqwhtSPjS_PTQz+iG=ovM2cZ=VnOZ_5z7oxg@mail.gmail.com/
-
----
- mm/numa_emulation.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/mm/numa_emulation.c b/mm/numa_emulation.c
-index 703c8fa05048..bc2f163e7c45 100644
---- a/mm/numa_emulation.c
-+++ b/mm/numa_emulation.c
-@@ -214,7 +214,7 @@ static u64 uniform_size(u64 max_addr, u64 base, u64 hole, int nr_nodes)
-  * Sets up fake nodes of `size' interleaved over physical nodes ranging from
-  * `addr' to `max_addr'.
-  *
-- * Returns zero on success or negative on error.
-+ * Returns absolute node ID on success or negative on error.
-  */
- static int __init split_nodes_size_interleave_uniform(struct numa_meminfo *ei,
- 					      struct numa_meminfo *pi,
-@@ -398,7 +398,7 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
- 	 */
- 	if (strchr(emu_cmdline, 'U')) {
- 		unsigned long n;
--		int nid = 0;
-+		int nid = 0, nr_created;
- 
- 		n = simple_strtoul(emu_cmdline, &emu_cmdline, 0);
- 		ret = -1;
-@@ -416,9 +416,11 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
- 					n, &pi.blk[0], nid);
- 			if (ret < 0)
- 				break;
--			if (ret < n) {
-+
-+			nr_created = ret - nid;
-+			if (nr_created < n) {
- 				pr_info("%s: phys: %d only got %d of %ld nodes, failing\n",
--						__func__, i, ret, n);
-+						__func__, i, nr_created, n);
- 				ret = -1;
- 				break;
- 			}
 -- 
-2.43.0
+Cheers,
 
+David
 
