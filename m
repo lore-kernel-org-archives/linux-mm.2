@@ -4,30 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC50F8E497
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 01:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F825F8E497
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 01:11:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEC6C6B0092; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
+	id E4C3C6B0089; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C76086B0093; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
+	id E28256B008C; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEFE06B0095; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
+	id CEAD26B008C; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EB4E6B0089
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AA4016B0092
 	for <linux-mm@kvack.org>; Thu, 16 Apr 2026 21:11:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 58274BC57B
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6C2021B8FA6
 	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:11:34 +0000 (UTC)
-X-FDA: 84666270108.23.EB0C45F
+X-FDA: 84666270108.14.EFA0383
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6EDA01C000E
+	by imf27.hostedemail.com (Postfix) with ESMTP id 87BE64000D
 	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 01:11:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=korg header.b=i8AMfNng;
-	spf=pass (imf21.hostedemail.com: domain of alvin.sun@linux.dev designates 172.234.252.31 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=korg header.b=ERVavyNP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of alvin.sun@linux.dev designates 172.234.252.31 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776388292; a=rsa-sha256;
+	cv=none;
+	b=IxkfZCKApiubXXFoenXdYxh41BuJa8GZeBnSl6hKAFbXzFW9ZqfPluNZPY1iBlXfXBMxvf
+	zYhLw4x06VXM36wTuAHF5PMmWQ0RvzaIK8nC9okQthoQj8sFELzjYn6XqbZo2OsUg2NCic
+	OGlChy8f1yU/4esZrGwMgpQx81szmD4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=korg header.b=ERVavyNP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of alvin.sun@linux.dev designates 172.234.252.31 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776388292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,41 +45,31 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wF6BAkaWeZSEzVzHk2UHuLEjOQIP9lDChzxOI4INJVA=;
-	b=Hj0PmjDcaaFhsfpoIt962Y0PxhMSe14v+Y05ohYMFn00LS0t9ExqpN83xj3oei5d/orh+3
-	tOuEIsOolgXpD2YuU2oXabGOUNhEVdui+Vmp+Dq+ZvQS3twft5Fd6Riy2kvSgiIVJroqrO
-	EBRXBX1iYX6/a1xbFk49VLQFLRxqdWA=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=korg header.b=i8AMfNng;
-	spf=pass (imf21.hostedemail.com: domain of alvin.sun@linux.dev designates 172.234.252.31 as permitted sender) smtp.mailfrom=alvin.sun@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776388292; a=rsa-sha256;
-	cv=none;
-	b=hkw1haq2qxj32FjuAnqTPMtPIDJKS6KzHKzOs3HY3O59MHlXBEMwWw/x1UATcvr8fEWmpj
-	Kt9yWQKSC+btjHTVSF4GSfhj7N8aQGIIULRhF0BsC1JsfKFkv9wzWy14eDNpK4JSjMVOfX
-	zHc9RcaVYGvieROMZdmqZt3qP6XPxAk=
+	bh=xAiEZcYNchmuL1Jd3nBt9fblDO68DWEzS74OgrYLB6A=;
+	b=HjEfO3mzkAgemx1eMaHIAinDvkGT1NAy5ed3zmamohny6JgqLJXMIjni6Vl8YIQstD0xOL
+	FueQFB4opPzm8aPdrdJlAgu7s4mnXDW+nfe692FXJ/5yNirHCkAWxjkn7tlPYgaDj604nt
+	cAuWE3hWlGaTXxp2wTpVSLTl0/jKCUs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 148694456F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 42192445AD;
 	Fri, 17 Apr 2026 01:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DCF45C2BCC9;
-	Fri, 17 Apr 2026 01:11:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0A378C2BCB5;
+	Fri, 17 Apr 2026 01:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1776388291; bh=hv4TGP+tCPibLRF/F0RTc2CpoNa3r8c8YYHZgnw/d40=;
+	t=1776388291; bh=F/5SEP+S/zr/1Wvabq3W0ofBAhgKbB5EzANwuYwFetA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=i8AMfNngDCDZb91lDsQvXzYUhSWj58fXjzfjM1iZtDmJP+h/w321m3HW883F2d5hi
-	 o2XeDVryOXExKc8DjjVN/7e4J7vQCaCJY75TDslFIH1dO8q4EWU5PA8lwxqZ0wj7js
-	 JEtHhegt7YplY0sWBY8VQLvQF6DmyJj4K2L7MKos=
+	b=ERVavyNPYzsodTs1O4T0WsRy2gXRbZLrmgkue83UvPa1p2Dfo9uLmg4KsFKSq5W/U
+	 xMh02BOb6fYSgWIUA9fRrXhtTv9DZCNlDdQEv/JGaU/juRxKn2g6BofyuDZNQVx2Ct
+	 GUKi1n3l50ELo9XAxiEj8hUMp/F3In3ar8dWmtIc=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2EBFF8E49B;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F01B0F8E497;
 	Fri, 17 Apr 2026 01:11:30 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Date: Fri, 17 Apr 2026 09:05:51 +0800
-Subject: [PATCH 1/4] rust: sizes: add SZ_4G constant
+Date: Fri, 17 Apr 2026 09:05:53 +0800
+Subject: [PATCH 3/4] rust: xarray: Update StoreError comments for alloc()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260417-tyr-ioctls-deps-v1-1-41c6e9bb061c@linux.dev>
+Message-Id: <20260417-tyr-ioctls-deps-v1-3-41c6e9bb061c@linux.dev>
 References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
 In-Reply-To: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -84,23 +84,23 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776388289; l=622;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776388289; l=1003;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=hv4TGP+tCPibLRF/F0RTc2CpoNa3r8c8YYHZgnw/d40=;
- b=S+iNkF483U9WR+fhQWZU8CgLNpKK5tzKrdQpDfJeKwwAKFnq1eIQG1QE2Vbudm17yD5D1Q1Ah
- LRbBsIrxCZ2AxirhO4muyub2XCtogmNE3/Jmde3gYKeYH9JshdNEVqm
+ bh=F/5SEP+S/zr/1Wvabq3W0ofBAhgKbB5EzANwuYwFetA=;
+ b=mHYTu9uPEnfW/Y/sIW8aE4App2+Eq7VQ+cJKYCM8Ln6csO3vDaC4O7okM3v+6xmI1n7e/ytq8
+ VUnKr8eWYQoCUmsdOOLPgvyM73PSb2biAEBFhMnuYrl1GylM0RFUgRh
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6EDA01C000E
-X-Stat-Signature: whwdmox5bptqchey4jkyor631yw686qr
+X-Rspamd-Server: rspam10
+X-Stat-Signature: i1pgtd15jho1pcn4y7d7ytjjmnydb394
 X-Rspam-User: 
-X-HE-Tag: 1776388292-708991
-X-HE-Meta: U2FsdGVkX1/BbpmMeJScPv3RYSX/pqm/h9mskblb6ByK53Hsff5COD1nXqy5cfcGKW6TJ96IUOrD5Olazjxk+6pQa20Gdui/X5V1JE8SnPqaWLXodRaOOsQdBPkMDobxlM0t5RzxlBa69WI1y1r690n4GMYqu9GK+CO9/7mw2ZEEuy71l2rDrq1uGr5M7KFa70GG8LU1umqHrJY+3egz3IMCMoySAGs0nioP7svSWKQgX6lNh1AzD7EC+cae94OqhIcyNm17JXh5OYMXZrXC7OYzZUoLuoIvt4N6j+wodTHILZ4hLe+L06b57M/A3t5vwXzmrPteb5WHZ5422SvmCQXr7ToattCeQBE9H12FYpsRTN9HYUaNDxDAu+oTLqJOlNcXdp9qEWP867MZDeAtVC0dcfizeDvfNzzF5lCaWiC+8xTAsdUAm7kqk9y/jIHwRFpc4XeT/VFoURRVu4+yIL4uT8fT9z/MBPT2j43Tb+XzHv50B8uPmm8lg5awd1pOrexS8ZLXmxWsL5I0a5b4hwiBHp8wVWekpi7C0USQlULDcGcPWWWWjI/yDMVdd7jEyBKMmFDOjYhdLPw6DtVGR2zRqva+18SmzavpM9StD3jfFETwQ6eMg4ezV1rCq0N5fQd3zc/SQYquE8nIVoq/BN3bWzzZZvhWjFe2UwUhPHneXhEIQ8UwxLz3RY14N7HCgvH4E1qEEbvvOXsWBsaz42GlzI9xl4H80HuWRXXsbRKQXnzyCwZUVgTYSh/bZChPziSJ/KHbZbek/ItkZUzt6vSxDMJ1m+jO9BMlijRLUBnLJ2IDkXCtOX5WlPdU4YdXANwIqASEryW1X4YUqZ5yQGzEWRddnC8VpSsUtzg7+js9iV+YcGiRK6d3Sk1qXTFl3dtm2xwGFs6EW/f16hkpTwOnQAybpHAdLDnWBHsJbRrozRvxEFRaTik8qYu8JMsArAU1ZL6/vfQrggghmI0
- uC7Cupf7
- VdXmql4ULRAlstuFlJp9ffRri2dbwd2UK5iJr17eNnrw65ZR23ZTN0rkx3iXtM0DXxmHZYIBOxrsZwxtmoHsujeC3dOf9NldsuuR896sEcEb24oPmgTmr9D8Ro/pbQeWQ8//VIbF7E9fGpDg7zzonUrz9W077DZloeAlTf+YY0edroFb4t2l6LYi7cikwUtEVyby9whtNstGrVgZ2qSQMFQmPFA==
+X-Rspamd-Queue-Id: 87BE64000D
+X-HE-Tag: 1776388292-685453
+X-HE-Meta: U2FsdGVkX1/3dkABOFvr3cxBwbok3e3uNZwUfGoCsgLxRSJuWLK4BV1Hr1ur6MplSfZ2fomHCWfLHl5/MzyjJqONQN1xPrXCLr6LTk6G++AJGLDuC82h55F7YQ9ll/ZCmum+HXKhaCoTdOfQha83hQSME8d5MWQ9KMPsUJ79E+RR2hXsqP1hNnRhX1vVeW1/3uXY4MuLKCQy8QF9Kq/MSTJ71wRq8E8LT7YpWDbV1A9jdYZuNS5fbrsoEN2Tc2sezBkFNq8YiJmFq2pwAk4MS8+qPIiz7Tw0/Fd0j2/uflJDfcIvJK2vWUpt9fLHTDrCY4bpfnxLqmIC6wM34GYe2Unu/IDQK0ZECO3ah7yJVglM0+TmCUnpthukGJAiECYkxFkAoLtILU3RUWzgn3g8MCMlb0+GeDwb0NnhUwNlugiJQOcUTgmHJn9KuvcEqILMF3unA7Cl9MWm42MwGKM3Y2rbfRPrDgkvghzsNFZc2QV0cxoidL0MUcHEWUJYZm3cIKNiawrqTyRwu9Yotu4PphkWclOyXG6rLBm20N6WZg99jv+r0l62WyGKFTL9Eq0VFn4lT+zOS0x00+L7JUrTKE5WJL/mqIZkNFpp8k7xBTSvufFtzBWF8bRYQIHfRvkLn2+ZXnoY46HadcwYDuAtVDhz7Kko4D8b3FWc+E8ovDXO98sy4BHBuxGp7yZnKYwApQ3hjjshWV+eea+fG8QLn7oecwvTBIBoe2MP2O3YD/5kb3EeZbdTVMRXSlkOLBIjhXELBXI5XTztVPnCQswnJhMjzpaLnODOcRSH4DdWmcdViWdkM1PYRw/gVzJ7SVCJzCvlPEl5Z3cgcmFgKyrQFl7lwaJ/vnaR8ynvAu7fuqTB872dIMffwoEVA9IsOHkMf7CnP+LxT1JBD1FVy98Br2ngXy4GndgOyPxYZfhzfgDcu+6lf/yoPgYcPV0hyPrmVer9XcOhZWiglx3gPsF
+ BEFms4he
+ woC4Zu+0jK9T800ZJbz/2g1BiR6NeZmfa6QHAk0LMpfCr+JPdyzWC9bAtvLndJoJp8SMzUgresBerDNW/76MJ1oqADQDF1o4fEN5p6HE3ySKjdZrlwpVAAB68QoDhStxAqg4TNTahnkiQgP8D5LUdBOr26JsdL4gq3bFK0E2qJN94w0s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,24 +108,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add SZ_4G constant defined as SZ_2G * 2. This constant will be used by
-the Tyr driver for calculating user and kernel VA layout.
+Update StoreError documentation comments to mention alloc() usage since
+this error type will be used by the upcoming alloc() helper.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- rust/kernel/sizes.rs | 2 ++
- 1 file changed, 2 insertions(+)
+ rust/kernel/xarray.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
-index 661e680d93306..872f5bb181ecf 100644
---- a/rust/kernel/sizes.rs
-+++ b/rust/kernel/sizes.rs
-@@ -48,3 +48,5 @@
- pub const SZ_1G: usize = bindings::SZ_1G as usize;
- /// 0x80000000
- pub const SZ_2G: usize = bindings::SZ_2G as usize;
-+/// 0x100000000
-+pub const SZ_4G: usize = SZ_2G * 2;
+diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+index 1b882cd2f58bf..235fda0e394ba 100644
+--- a/rust/kernel/xarray.rs
++++ b/rust/kernel/xarray.rs
+@@ -161,13 +161,13 @@ fn drop(&mut self) {
+     }
+ }
+ 
+-/// The error returned by [`store`](Guard::store).
++/// The error returned by [`Guard::store`] and [`Guard::alloc`].
+ ///
+-/// Contains the underlying error and the value that was not stored.
++/// Contains the underlying error and the value that was not stored or allocated.
+ pub struct StoreError<T> {
+     /// The error that occurred.
+     pub error: Error,
+-    /// The value that was not stored.
++    /// The value that was not stored or allocated.
+     pub value: T,
+ }
+ 
 
 -- 
 2.43.0
