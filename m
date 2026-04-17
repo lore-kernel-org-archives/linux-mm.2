@@ -4,81 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55E8EF43680
-	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 08:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA39F43680
+	for <linux-mm@archiver.kernel.org>; Fri, 17 Apr 2026 09:00:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71C566B00B0; Fri, 17 Apr 2026 04:55:58 -0400 (EDT)
+	id 8F7A86B00B2; Fri, 17 Apr 2026 05:00:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A5F16B00B1; Fri, 17 Apr 2026 04:55:58 -0400 (EDT)
+	id 8AFC16B00B3; Fri, 17 Apr 2026 05:00:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56D7F6B00B2; Fri, 17 Apr 2026 04:55:58 -0400 (EDT)
+	id 797266B00B4; Fri, 17 Apr 2026 05:00:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 41D976B00B0
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 04:55:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7CC038CD43
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:55:57 +0000 (UTC)
-X-FDA: 84667440354.03.70AE741
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 66A1B6B00B2
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 05:00:25 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DDAD9C3707
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:00:24 +0000 (UTC)
+X-FDA: 84667451568.15.1ABE38D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C64EA40007
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 08:55:55 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcHQJo1n;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776416155; a=rsa-sha256;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 293F1180019
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 09:00:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a3U7XLCB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776416423; a=rsa-sha256;
 	cv=none;
-	b=gY42roDjsfGKNTSbpZ91fpD45+gRVKa2ZhqHKSQzuMXCFoAgXOaAxKPQqSSRafP/P6dFyp
-	snKWJAW2AtWO87IpItCUapUlX7tlZIKJ1fxrcY7o9Mm5zD3CHuK8sq17M3+jsdHbLONClO
-	43BGWt/EzOX3CICojpEMuZd1m7DEMgw=
+	b=aq7o9nHSLYnkmgFG7vgDlWgLTC14WMWTiJLaukhcD6McWak+OudN6b/MYNnODueL6SZ+sv
+	Rj82b5jWOk9XPlJ1fLanGY1YIFfgma6SnlNftBlbPfzRBtRlctEFcU8DgqKAzaBvAihW2Z
+	T8kFuFW1F63bg7B9Bya28jywvWhmabg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KcHQJo1n;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a3U7XLCB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776416155;
+	s=arc-20220608; t=1776416423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FzF1Mac+dRMVtXrSxsMZiTCJWQW+Iig0RfpjmrikiDg=;
-	b=DYwKioujC6AoaRM7jEki3V5yvr1BnY6kB0FQ4Y0e65f28JVosl0bkg2O39TyEfDble6fHA
-	8Obk6P9wPCDHype7EuAYn3b9pR8MUCBqTScSBvqe00nMcKmrzibvQgMMJMTP/V5CiGNeW0
-	wFrVr8PKGvvG19761YoH5aq5Rov+F8g=
+	bh=te2tVqUFJ/FRYR/YfXCUmqqp8sYsfIQk/sq9C3ZoUwE=;
+	b=qYtwEWrrk9q0zmVtwdwm7i7eBl3+Uuept90v4byF131MHYkMtelSiUe4tCqn9ehfqwlCoJ
+	BPXGLrFX3OFDl3D15B20qnkbsFy47TqeeXgKxYoM+tTSyXpsOWMGIkAIO9mmLahQ0PpZ/F
+	g6GV/34W3SJ8c0zC2BhJqd3JsnwY7Gs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0AE5960128;
-	Fri, 17 Apr 2026 08:55:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CBBC19425;
-	Fri, 17 Apr 2026 08:55:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 94F0F60128;
+	Fri, 17 Apr 2026 09:00:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11179C2BCB6;
+	Fri, 17 Apr 2026 09:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776416154;
-	bh=5cd38qOiEIyykacoE8rFcS3eTCpor2N3/arRUrsPyQA=;
+	s=k20201202; t=1776416422;
+	bh=rOVtwKaZuAQojNidWmETlWnlssUeGW/zGYlzgjncuoE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KcHQJo1nes/1+iKDfsibdtEC8iQ6iH+dBg9bfefk/Oz7MftUWgI0uTHi3HV4ziZNg
-	 XkiUCA5aWsnN5u1bM9SoH0Ers7DtWNMVMReb3ls7lwMOx9FLH9Obfr4qaw+D4rMSNc
-	 hBh/qY0HYoR2wpL5wrD/SByyGTlQ6sw+fHWvQX4fhlhvwQu0GVv/rnQocBed4sHYij
-	 DGHnme2qRlxZaOD1/EU13ucnVE+SgALZ/5Ip2UiF2d4/1gVdrtnA8WFMCxDPAi3Q+B
-	 snRRqS+FddKQdRZY7dUd+MykIX9OHRdumcnWNtB793wsppvR6dg2klBSDLIULU5BZf
-	 itvlbwdC8jcCQ==
-Message-ID: <82193ab8-e6f6-4664-8b4f-e30d280d8b1c@kernel.org>
-Date: Fri, 17 Apr 2026 10:55:48 +0200
+	b=a3U7XLCBn31qXsO1C8KOPjrGtMwRGVzfyoBN8jhTyvQKRTUdvXIFBNQuhZFvyTtPX
+	 5tzUQ1jFJQbwEoSaakSK/GAveRTamoVzrIsVlFaoFuOkO0upnulA0uD4pMEotnKqhu
+	 Lty+Qo6wN5Jy5JJTWlk+6b0SKr0th/SIZVLVfRKuMXIHYLJi/eiFUxCB92P3UsxCMW
+	 GPT3f27Dc2JZaFwUdwHo4fy6BeVIsEjowyvT3sggFlVaiWSkJ7Cs2LQW5qXVvzfFoZ
+	 yQHCTSje+Xt49Qg+hASjiPJcoB+9MqSeAkpXJO9skYrRi0OEyGTkUX4nV2vfGK05I6
+	 ORg83rarT/16w==
+Message-ID: <c03d3d19-a2b2-4566-8922-661b92d06f95@kernel.org>
+Date: Fri, 17 Apr 2026 11:00:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: Cleanup up PMD Checks and warnings
-To: SeongJae Park <sj@kernel.org>
-Cc: Sunny Patel <nueralspacetech@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260416235252.58831-1-sj@kernel.org>
+Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+To: "Liu, Yuan1" <yuan1.liu@intel.com>, Mike Rapoport <rppt@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "Hu, Yong" <yong.hu@intel.com>,
+ "Zou, Nanhai" <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
+ "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>, "Chen, Yu C" <yu.c.chen@intel.com>,
+ "Deng, Pan" <pan.deng@intel.com>, "Li, Tianyou" <tianyou.li@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260408031615.1831922-1-yuan1.liu@intel.com>
+ <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
+ <ade6RVeXxDt7ImP4@kernel.org>
+ <e86fee84-08d8-4563-8596-e40d8e196799@kernel.org>
+ <MW4PR11MB6936CA77BF02BF498BBEAB1CA3252@MW4PR11MB6936.namprd11.prod.outlook.com>
+ <12b8ba83-54b1-454e-b787-2d2e967c9b58@kernel.org>
+ <MW4PR11MB6936E593C865F4E855CED602A3202@MW4PR11MB6936.namprd11.prod.outlook.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260416235252.58831-1-sj@kernel.org>
+In-Reply-To: <MW4PR11MB6936E593C865F4E855CED602A3202@MW4PR11MB6936.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C64EA40007
-X-Stat-Signature: sfgwbdguezi8kyczfpbu8orcmqgpdn36
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: x67bfdhb8xhzemxkxphhjk3ijciyko4t
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776416155-271571
-X-HE-Meta: U2FsdGVkX19CpDt1U0Xh8wKw8XS+Xuwoo4+ZWmZilb4RSvE4pRfoBQiOv2Zr809Al2zETRVVrExQtId06jqce60DgxzAN5u+SDMfMbMmiHbNYYRtUcfJzYqKIwtq8xYc/Vl4n8thd1MFNFtHcdYSvUBn+Ab9otpR3cV19UeyTa8hMf0nsissC/04nWN5lla+K7m5B3udDS2cFNGTuNLSQVglN7cDiP5ck7lSd+up5TXdHhOmCzm7JzM9xrgdYW6muQA6Del3c+gAfOgwAeFKdc6ucvDr5UVwKBGSsYxa2qzqk/1QJV2VOLim3pLcFII6YVtQutdkjn3Ln4BkHz9Jt+31E1Rff30/U9DCW/QZMGafhDnG0QHuIPWsAdsF2nmbU3h8aEcxAiacOwgvoZ/CLZ78OGV5uPO/b4wTJnIooYP1jnqCmfkduuw7S0pCt7JseXoWv0s0PlpP3TJ6CT9D4fjurn3QHyV+/yLQmq+XrVDUt76VupuSZHOUxOszh79ST1+TWBdfJbS7rhR7pxJJsia+ZVFy/k1jmjXHlxgeGuBVCu0x3FTWWBa2Nh1HYOYZ+MeOkQBncWyZ49AtBPKAsJTnXLuROG9lyLFbXrIkUw1P3ogemkXxRNuHQG7oTQdZ/ylJHS3I+RfD+cLhrD8VigLEQL5Ky5SNFlMv8FiyR7Prl8hoR73j7zan1NlHWy59lnTUibZe878YqBEQCaH9elUUuT+eUikT4lB4j/fCKcH0a4HyBl0EbQDHILJT/e9AIbkU8jyhqFTBZWLXJT1NVZmvMuui58+yiB9wkaEwgpM1QGoxkK7KP7CtoOZGIW5J3csKNYgtawvKj1Y4DfR2CfdsWnLcPwu0vyeeYc7b988j9t1o3w+4JV1YftG1TMfijp33UIuqsAWvtK1W+6+mgrXa5UxbkIVtlFlptalxGRB1lFOPh4fxcgKfG8dCCRgmYFBw83X5X9IXvdrqUFd
- zFrZANB6
- Hjf+2XyaE245Xjme5z3FeV/QXzZWNVHxVLL1azQSC4MNfCA/vtzjq7pwnfocm/5/yJ7S79zXpkSuVkent/Mjx9/5zInIBw/GcsQoRRLKXv9RsOekioh3ps2PCcy4hfoN7VYFSIPehURM9DbpqSUyBd+me1JXx9dLPfnkKnxcFl/B3/nwST08MBbtNEkQAirvL4NolJDhxyYMrkeLBVp/YCMDeuNph0B4xCvmN5iRysySeDrSHv20M8CZlOHTWr0xek4lo1THgmA42mNPSMkDb3byKU7PbPjUXzOJTY62Gu2EA/NsuG9v28wVTyiTyqbBOyzBZA2CpJTdI3lhRTlwooeMp7xP21QyZIU3prshhmr+bQzt293Lv+kFXXoCmji4eFM5dOzAmtDBb+VlgHrzfwl2Zjw==
+X-Rspamd-Queue-Id: 293F1180019
+X-HE-Tag: 1776416423-526277
+X-HE-Meta: U2FsdGVkX1+B6U/s73J0RwOgEYL6a1brxmEa++Stzm+pRzzAisBI6LmfeOqt8oMOCAYXe/3ULNO8SJ7PRa/MIliV/KM2YOe39PZvTDtIOuCZQbpMp/+bJtEyYkgPdDvyPEYkL3NuNZb2CbLUiN0Ik5TixRb4xB0LqYxPgwpAGMUUf67pyb6Vwfe4vMui36bN9ewE6rDTsTCWJC3yGLEuMM+J9deEspeZK6VxILcUamNpv1NyoBGQd+WfZ03q/C5wgfGBRi/2rYJuTdHEGPIi/CZtmcVJWtL4+vQh8X/YzSjWE0kKkHTNBeV34c5x/yZNuNuTqzWqYmcDtf7qtXn5CeU2QQxo1bmKbaXv87dgASO/3zx5b4xtRoQHxY6cxUMzHRqZs/XCTtI7EN4rOwRDmjphJRYCMv1PVsyRhoMPnVn6DilvHRX5t6ouBaH6aOeDDkCCbeoOfNV8R8l/MS2nYJ8VNJVyDxUPqqWzRiXQ0JFUXCuA45S1PXEw/nRBmFCJi99ejOIplwHUzpxnDezsbnD3T7yykY+8U4ZEjbzY+uSc4dYz3ey2nMj0ebhKD+ngMk3VT5+xha1o37OKN1kPlfifPqWTDz8OtzoVgRKmjzx4z8ezkKXc5xFHjh4dTweqG1So4oUdu7EGEK2DW3JsQyPhvtgEjJphEuJzNxBDeaVkZffK9bLNM7YNf2h3ZxssZC5ZnBAYrDUVEZBhb6zZu1ICHpzakZZIbsDuyLWztQ6Cp6lnYP5s4tfc5vbya6oNXMhEgfqGBxl1dK86M/f78WXx+AHHNTGOLV5blJ4g0EI26APzsSqQRvVG/ZO85/lDfMlVPhp86OzisLrcF8kbeNrVKNflT1B3zOVk0aCYrB4rj17gnkOMoIz+nz4gpHajeJmUFRLIQV+nBR0Rgrs01S/gVOGMrciQyiJafn25z6kHqkNdO2AsOtkRW7M5WqOb4gqk/eR+EZ2gokOlK+B
+ w+h4K8MM
+ gkLPRzHaMImoXuC9T52qwvGaAvGEaZarIpiAhMBiqvAYqW5VdyA+QMgbOO2mbdHZyYB55RDnDviHXsHODGV7dB3Wc82JOytBtqwZxVh2JCuzfaqT0N8+m77aVfHFkgQXabwlECIVZy/b7E0m0U+zIOaArlVFNFIN8/WnlZfO7KC69JpX6IYksrg63aIBZKLUO+Ws5We7H72yIbVzkx6U527gNEhU6V1nl0ShAc6umua+ueA2cdj2+ukt6XSG0xSngjlYtyCDvFg/bgijfC3vG8O9eDjkyBFsf3uiakUvqAyB+dtiYnaseaTGVDy9M5l+xD7sIh8EL+T1ZHnj01IVXFHbeiPQDRnXDJZ+iaXPJaDu6jovqd+ros34YgOSWkM5Zr8aRTE5wmrSMT8E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,41 +149,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/17/26 01:52, SeongJae Park wrote:
-> On Thu, 16 Apr 2026 21:44:15 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On 4/17/26 08:34, Liu, Yuan1 wrote:
 > 
->> On 4/14/26 16:13, Sunny Patel wrote:
-> [...]
->>> @@ -865,12 +864,13 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->>>  	if (userfaultfd_missing(vma))
->>>  		goto unlock_abort;
->>>  
->>> -	if (!pmd_none(*pmdp)) {
->>> +	if (pmd_present(*pmdp)) {
->>>  		if (!is_huge_zero_pmd(*pmdp))
->>>  			goto unlock_abort;
->>>  		flush = true;
->>> -	} else if (!pmd_none(*pmdp))
->>> +	} else if (!pmd_none(*pmdp)) {
->>>  		goto unlock_abort;
->>> +	}
->>>  
->>>  	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
->>>  	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
+>>>
+>>> Hi David & Mike
+>>>
+>>> I’ve spent some time working through these issues to better understand
+>> them.
+>>> For the overlapping physical spans(mirrored kernelcore), should I avoid
+>> counting
+>>> overlap_memmap_init in memmap_init_range in the next version?
+>>> For example, change it as follows:
+>>>
+>>> +unsigned long __meminit
+>>> +memmap_init_range(unsigned long size, int nid, unsigned long zone,
+>>> +               unsigned long start_pfn,
+>>> +               unsigned long zone_end_pfn,
+>>>                 enum meminit_context context,
+>>>                 struct vmem_altmap *altmap, int migratetype,
+>>>                 bool isolate_pageblock)
+>>>  {
+>>>         unsigned long pfn, end_pfn = start_pfn + size;
+>>> +       unsigned long nr_init = 0;
+>>>         struct page *page;
+>>>
+>>>         if (highest_memmap_pfn < end_pfn - 1)
+>>> @@ -893,7 +897,7 @@ void __meminit memmap_init_range(unsigned long size,
+>> int nid, unsigned long zone
+>>>         if (zone == ZONE_DEVICE) {
+>>>                 if (!altmap)
+>>> -                       return;
+>>> +                       return 0;
+>>>
+>>>                 if (start_pfn == altmap->base_pfn)
+>>>                         start_pfn += altmap->reserve;
+>>> @@ -911,6 +915,7 @@ void __meminit memmap_init_range(unsigned long size,
+>> int nid, unsigned long zone
+>>>                         if (defer_init(nid, pfn, zone_end_pfn)) {
+>>>                                 deferred_struct_pages = true;
+>>> +                               nr_init += end_pfn - pfn;
 >>
->> is_huge_zero_pmd() checks pmd_present(), so we didn't have a bug before.
+>> It's confusing. Could the remaining range also include overlapping inits?
 >>
->> We could also do:
+>> Maybe the whole "skip overlapping init" should actually be handled on a
+>> higher level?
 >>
->> if (is_huge_zero_pmd(*pmdp)) {
->> 	flush = true;
->> } else if (!pmd_none(*pmdp)) {
->> 	goto unlock_abort;
->> }
+>> I guess we'd want to skip any memblock_is_mirror(r) regions entirely.
+>>
+>> @Mike?
 > 
-> Then we could even further remove the braces and reduce one more line, nice!
+> Hi Mike
+> 
+> David suggested moving the overlap handling to a higher level and 
+> skipping memblock_is_mirror() regions entirely. I think this makes sense.
+> 
+> Would this work for you, or do you have a different preference?
 
-Indeed :)
+Would that allow for removing overlap_memmap_init() entirely? The more I
+look at that function, the more I hate it with passion :D
 
 -- 
 Cheers,
