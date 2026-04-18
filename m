@@ -4,126 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A5BF99C63
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 00:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6590BF99C6D
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 00:15:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BDEB6B015F; Fri, 17 Apr 2026 20:06:48 -0400 (EDT)
+	id 6B6516B0161; Fri, 17 Apr 2026 20:15:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5480E6B0160; Fri, 17 Apr 2026 20:06:48 -0400 (EDT)
+	id 666546B0162; Fri, 17 Apr 2026 20:15:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40F0D6B0161; Fri, 17 Apr 2026 20:06:48 -0400 (EDT)
+	id 57BCD6B0163; Fri, 17 Apr 2026 20:15:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 28F566B015F
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 20:06:48 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF3D2E4297
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 00:06:47 +0000 (UTC)
-X-FDA: 84669735654.15.82A2FB8
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E860D18000B
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 00:06:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bqxekOcb;
-	spf=pass (imf06.hostedemail.com: domain of sef1548@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776470806;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4744F6B0161
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 20:15:19 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B4A1913A939
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 00:15:18 +0000 (UTC)
+X-FDA: 84669757116.11.3848B68
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C948F80013
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 00:15:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=DFoFh3u+;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf02.hostedemail.com: domain of deborah.brouwer@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776471317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XnzlPBGDUvWxUUnLdKcHZKjWamjXrlcano0vZQ/8+jc=;
-	b=1K6DDZZgeaowNALcTEoiHDYydAYxiPcpbJ+rFMXsscYRKYseWZfkn1/cuVYoqPBavxsFP9
-	aCHU9UbQlaZMTaFstex6horsqKwRJ5/WG0jPXKCh3SKLaZi15+IgV7nJQ5hO6cYgdbzp1y
-	iVUzyzE8PM0IXaoLWeca+LPmPMoEo78=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776470806; a=rsa-sha256;
-	cv=none;
-	b=qM57MP3ANAgGWoP9+GEWUl+5SHFdrHa3WlEtxedlDCjdXLkzRllIcABu99X4DN4NfAQGBh
-	htuqSFCESEDScoQkmmTEx1zHG7XIVA2Wd8ow8tYNABMUUeZ7lgnpGIjd498Oryz/5xhfVr
-	rE7GtkdZ4Zhx6WSw1sK9dIdvligEeFI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bqxekOcb;
-	spf=pass (imf06.hostedemail.com: domain of sef1548@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82f8893bff3so591260b3a.2
-        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 17:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776470805; x=1777075605; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XnzlPBGDUvWxUUnLdKcHZKjWamjXrlcano0vZQ/8+jc=;
-        b=bqxekOcbnt5e9VtrHf6yPAw89IjRsNeQWnWWdRI+mL+kLLZK1j+3xAMw0ksf6APP/H
-         e0mnZ6UbDLAUqzoUwgV1uiymGn6lfKHdQMUGtzoj5gfr48H2lHWUzFXeq+P0kuwDZ9N9
-         gcY2PZ87XioKihXizS1eDky/gS8yQsKUmVO191s02i0HlJ+zi7F3kgrcp+E7Qnpla0qv
-         zk0m+ju0nBiwlU7JtYKBOo+cQ69jxahRP40UN9cxaefTAAITU42AtwbFdHqXl8jQjI5N
-         lsAd5Ykf6svOdCvbREIxzpNhlDbS57ID0U8rrA+G2tgMgXcaNIGCdPCRa2K+Jc1pgnBR
-         dynQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776470805; x=1777075605;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XnzlPBGDUvWxUUnLdKcHZKjWamjXrlcano0vZQ/8+jc=;
-        b=pvJLB2RqldOj1x8JxSzmET08VodRlrJVLGzcw8jgoF8HF4zX6dOh4E6AlvIL5l5XyF
-         rG6uAsDZdNMUdalNI0/LSx9zWXi20RTwGszYV3aVxy598Vw/jvoUpRXQ9Ipgdx6TdQxG
-         kvqEc2TsRvfcrcvIbqzk+oJ+tUeqj7G30HK9oxPrMZA1NLlkN0uLn+hyDpVSgRqnc+01
-         m4GdYIz+umrmOuFV0wli/jvbrXmZmsQgqTsjNk8TkvLTxpmmI+OQ7WRKmMA5eK+fyBNs
-         BtcuakWWo7+2x+onq8bRucGkA+mJTtGz3igEfs81OMW6NwdrgXzQHuaOhiSpCbV6x9AQ
-         o8+Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9aXlT9NtEbVzoB0vu/hY1kYK7d5KLyWbLKYFph8Jy+Ajr9xyEQkmeXJrWZ4FdpXqIxjPBeHhVcsA==@kvack.org
-X-Gm-Message-State: AOJu0YxDo5DihWqOMuSx82D2qKVbWsT38eV7IM6ArTpbwhIcHZQ3Y0A3
-	sIjrfrTJ24rQL2FszDgdj5hiIKiaJ1vE5hsHyUw0dupHDwq9qFQWDp+7
-X-Gm-Gg: AeBDietH3fdIo+dTks/+/+kuKy4T8OGghEUSqQAiZqXfY38LlRuXF8DAG+8cdHMfz2E
-	odf1pPLGk5m8z8LJembs+fKdLBJYtLlGD+fZa76oiA7CMVrRhen0oxdlOf+r4cGPUjDYMy95qwO
-	A31jnX9Arkcrbtp+stYy65kfkMf69Mlgb7OsQ+l8y+3g1p+4nDCm2k0MwlAQIHMmonGOaBkviKP
-	JoqpkJHN+q62gYHr1Hww0lo4CAVqsxHgmyUvsEESlaLbTqE7q1UZ07bOJazkSzfDSh2uzuxwuLU
-	m33g832k3CuY6gLctuy9AePPHsMQr7lHy8MGfq4KMjnAiX9rlTYefOqvEXTVwx6X+s8ygDRR6L/
-	+eEoqq6e4A/oDoDA0jSdLu5S1tNhKfuhDes/6nO5Hm8RAfjoxAkxIOWDVhPDUT9vTqPIriduegx
-	geJOoi7/L5JiwrvdS08QRWxtrymmCBfXAvEgBERaYXOUlIam2ViG0X0KAGwMCJqycVn/xgtZF/z
-	DAVZpoAaFz7dSzXSkFBSeh0Hp0smxSg
-X-Received: by 2002:a05:6a00:1c9e:b0:82f:6b6f:13ec with SMTP id d2e1a72fcca58-82f8c9427b4mr4686092b3a.34.1776470804566;
-        Fri, 17 Apr 2026 17:06:44 -0700 (PDT)
-Received: from nickhuang.. (2001-b400-e28d-2380-bd61-3c44-585e-51bb.emome-ip6.hinet.net. [2001:b400:e28d:2380:bd61:3c44:585e:51bb])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e982fd3sm3840200b3a.10.2026.04.17.17.06.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 17:06:43 -0700 (PDT)
-From: Nick Huang <sef1548@gmail.com>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1jWPUsYlvbemv6wULx8VhAx6W3qWmNB/aw/dH7b5KFE=;
+	b=qCo239SFRcUPDyJrV3S/kD+dPTcSI8vQdj4ofASOXs48oTBtSm0s4HUIYiuk/rQ7gW08wJ
+	dcdPaJQPLDjo4BKF/i5Of+c0//wp4xyCxbcayUsdmefZShoi4v9pYN1n3TOS+K9HGfDCZ7
+	KqsUJex1M3iY5K3cvvPzMlsKbz1g3PM=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=zohomail header.b=DFoFh3u+;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf02.hostedemail.com: domain of deborah.brouwer@collabora.com designates 136.143.188.112 as permitted sender) smtp.mailfrom=deborah.brouwer@collabora.com;
+	arc=pass ("zohomail.com:s=zohoarc:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776471317; a=rsa-sha256;
+	cv=pass;
+	b=coX7ta5Fz4ntFcM9jXwkgyVuGWvAFNArSJLb7Y78Xrfm16DdP6RWSfrUfXcmFEnZhVcLcG
+	OQq1s3hS8DM7kJ+CLsoki1sercUOhJpPbk2KTKhvXdWze0CEwLA7rZi04r++5kqAiQlZDE
+	FVOE01Ne5MRVETp6RE1MEMmWoom7FY4=
+ARC-Seal: i=1; a=rsa-sha256; t=1776471290; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Guxlyh80DUt5ICo+KhSeU3676tMSDH9CFL98AfYGyzbs/1quPtnPwJte9LxhfspBKE82m3fqqnYrShlQOwpm41CYfUQR56GY2Es13UYJyECfNBvKIS4bGyMrwN22HkZJzP/+fayfcv2C8cFUqr5c+1537FR15r8CbGFPTxVgI64=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1776471290; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1jWPUsYlvbemv6wULx8VhAx6W3qWmNB/aw/dH7b5KFE=; 
+	b=AITidAhJa7MjgrXI9iIs6qohh+eG/6zs6XkWg8WhIvDhYHCTXe2WhX32FjscRLWOyBr/3ESAxHndu+9TkDCb9Y4e3RaHZh9rlLmkJYDOSAtbAZJgQcWd2C5WyJnp7/xSJ3KrklmiUzCsto+KH9NFshMOa0fC1ze6+GTxJKHvNAg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776471289;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=1jWPUsYlvbemv6wULx8VhAx6W3qWmNB/aw/dH7b5KFE=;
+	b=DFoFh3u+Oy3JSKEGqQgTbR/0ph2NvmBF+topU5NXh0RlMxS1JyAOK7Xoa3ZaKxc4
+	MA3saTdRV/IfhE6D+ofo4448TfIZhsSb9dJA4JOtAtaWYY/En0+hSi8ynXwSLdwQsTW
+	nQPUAQx0H/BtZqDIHF7kQrpbmVjRiiWJOngb4yzQ=
+Received: by mx.zohomail.com with SMTPS id 1776471286964358.79542544682465;
+	Fri, 17 Apr 2026 17:14:46 -0700 (PDT)
+Date: Fri, 17 Apr 2026 17:14:45 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nick Huang <sef1548@gmail.com>
-Subject: [PATCH] docs: Add overview and SLUB allocator sections to slab documentation
-Date: Sat, 18 Apr 2026 00:06:19 +0000
-Message-ID: <20260418000635.17499-1-sef1548@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH 1/4] rust: sizes: add SZ_4G constant
+Message-ID: <aeLM9fB_LtCjbBrw@um790>
+References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
+ <20260417-tyr-ioctls-deps-v1-1-41c6e9bb061c@linux.dev>
+ <DHV3SQ191564.3FMK513OJUMKV@nvidia.com>
+ <cb3dd598-04f8-486c-ba6b-9965d93170a0@linux.dev>
+ <DHVHKSI90H02.143VLYN9JY4FZ@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bz6ixcufj6zf8pwo5wqi4zcnrwc3xhfc
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E860D18000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DHVHKSI90H02.143VLYN9JY4FZ@nvidia.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C948F80013
+X-Stat-Signature: uwim47eb9me1do8eaigyx9jgn5hekns8
 X-Rspam-User: 
-X-HE-Tag: 1776470805-88950
-X-HE-Meta: U2FsdGVkX18mXkIznbjYGCiY4Gk1J/dkQl3KYeQQNeWdjHWQ19jisPgSGua0DGS2xabZiDu3CdOofNblI64Wzhq7pV+lOu9oSQ8h5kfUFu/yPQzBNf5VSI2On5yUavPzGOdMCA6B2425LXdCHp6lNdPJ2mVmTawNUYS+gEVPziXNewapg6IDfHJMaVB5qA7zUPp2QGa9bhC2dmWpCqrKG/HXPnFww17zNjqmqQTslFFvyBAnqsyextPPCfjBXEpLNJ4bOf8zcMuuRuTWrz/rr+nfWK4Dzeev3T1XeV/F0VxEYpvpVllFwp+Bc51mDWWIfu8PsOXdWzkjZFsU2/xPTkR0soVNmSdJy5WQ6MoMhHpN4l11Q/mztR72iAeVJATPUOKceKczyGiZZ0/08REG6pPF5muvjpX0ypcZjeWtaaNOh8PxP7HB9Mt901JiFnTd0WQk8lr37OPCOzDC1dDofeGxeDidbXkdGUqD2EDbPsd1G1KkLLMf1+8JCoEOyM0zHGs5Ojrsl7wfIhuqpfyVOFzIUDFA1hq00oFG1/pWHwOyIOkR2tAMmkZ+Je6XRzovIVfZFN/PZZR9jtjzPvQPdoL3cVKzpKrRJthy35tYqkSyUw+6Pah/dxS2DyXuEjwwTUuLls4laDDecI3PZHACimEiwXR2S3bC/2WbN8oljqNt79UX+BBoO7xILA1nXIitWkQyEC/O0Uy458Cz+MuqqIbJrPc0DNeMZPfd+48jteL8xV5P1EqODDANuZUIlIuJonuaBquts1B0rwCQ2C/tvcTXQhTnnQCiOo8ZquzRV3+HCjOU6LqlRtA7vMibOPt0Q/dw9XBgGKDr0yaSGrZPc1H+CBEGu1cW/uxj/1XaZd4kTCrvZ8z5N8/Fu/cB2WB2OfeBE+8D3Ti6f+rudy01oE4c6vsCcPTUqOiAH1ESZMCFPdtFLSmLCkTut+nOgzD7WoAsFXG+CKBqztuxYfv
- iv5GBYKY
- mDvfu1NJC7YmgmDEccPgrxbDzsRF6f2mEDrTYVgCVpjNyntqfEwumnE5c0EOJx+ax6kSl17xf2YzZTrem0fIMWy/c4sDTTNrGyaASzBAfHndh0Hn1qJ8zHLnh546eTsyCDNyJyDcMT9ID+wZRLVRa3eNBf7cGsamW7e6WatZkkebWqJSe+WC4loXzMHhJqRWnWjx2Kc+i3/+YkQth85TwxJsiYOBwiiZm5tLNwoSspgvmHi9E/pPbqN0lWxJfFjfv0K2zZjTL9FMa1YC5A47di8NajGmhBWhIrD0ZHK7UR1FHtVORzAjd8Bb6qSHSTSSeOx9usyciiVxqiifErg2kgW/btJq2DV4tVxqFeXrIJIGmU1+aDdgJhqC/yH8ViiaRfJ12MYDbXeW0vQQ5ZWAZsVfLjGrTrmk400R6mQKiuevctWY=
+X-HE-Tag: 1776471316-87477
+X-HE-Meta: U2FsdGVkX1+q3r2lyc1P4krAjeq1edVGQ10iWffzPRr2qqh8l1gsadeyBb84BHVASTI3qKstYkHfm85NNlFaxF7b0ydklAcjjeW9boH/VNxSp6TL2PUBVgLsu6NNT8yIZZ9vIih7ow5NUvRKlI/3GID4YDPK4HQZJeIE9uMv/0jGcRuUgDjNrvQPvPWnjLz8i2vSQTCy+YmPacLpSsswlW0kH/eyuZ4duD/YlUlvL+XSRE0i2uFLk5v9BQ72LI9CZO+e6zMSpgeMUZN9k8wu03RfK60FJNP715xVnCDY35nHBEjozZK2YNDdz+u7teIgBkgBSjwW5aMk3xqA7IFU7juGyss+Y78bfRmtc8fnJTNa8ewLQ0AvX7SuXn/7Oukh5gpMHPBJRf1N8iVN7XRTcBq5TpJoJeRjEkiubjY0HdrlS++ft0sN/2lOxlHQy09kMDmWrvm2EkxR1pVxyDvVD34IyWMfjb1MYbaYSNtCJ4ATKYqeTEsOzT/0pDA+QEXF8WX4mrGl1jJPzx49c/mBGzoJe7KI+nKfeu9asKgyWVoS4K1lbjLQ75GZ7J1pfpGbRnnCu+AwfC1qBlMwlBZTkfbJ5O1pO3mfjt9/keh4Ajd17ZhGizqb+d5jqTUoRYG/bupxrTQ/zw4XNpdxfDJxgTKapU41QbZqK9705un/UooewGvR1xGcM8ghslTfs4PUs1bCUM4l5K8PSstydzzfc906pzxIaI2UlJXIcuaQgWs433ICjF+gEhNWztpmTCE5/t44xY23e+53ytlh5yOpck1p/sQbpvSvcwy2iScw9cgrW0RJk8DtqP7W1pNj8Pzvtu6uc6mt7vNaRbpQr8m0n6T0PG+9Ubyqn6W1E41NXFzcupaqCjkIuexA6ilyzXE/C9OuzVBPFnxMxlW6/eqF8Cy49AUNxH6oXHLj7mWurPQW58dMioh/i/Fv4nvyQ1pTawrVaHPYvZJPkn93X0Z
+ 1KbsEl9/
+ LDY+zviG8/ACDod1Kzw/a726gt4SPdFHEJaPP2kEIwi1VfOOzjOm0p8hPcS6aTVeCJCoVWNO12tJtaoWkwygiu5g1cT9dJfTirNc9DTHLm3sBzLeovn9uHaUS+kug5ZYb14rl8QViIgg+EBhla5W7R5xxR23bjn6IsKLG+m8t3hIVpgaRn7nyNo+Kp8UlEUES2kB0j0oXC/6rJdYoHNDuEIx4vAedcxkhdqQ+nHYKdhhSOhWmDxINKycIJ3mfufht7/EJS+sZLcFreu0VJuIGkWZSD7c8mBENWjeLl9lv85SkkXgAk3DTVoZZLTNlCPQPoaHkaP5+lp352paeEWENPUVEa6IB+nKgwDBMpgooNQe32A8ShMblVrv0ighUPsf1XgLU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,57 +112,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-- Add "Overview" section explaining the slab allocator's role and purpose
-- Document the three main slab allocator implementations (SLAB, SLUB, SLOB)
-- Highlight SLUB as the default allocator on modern systems
-- Add "SLUB Allocator" subsection with detailed information:
-- Explain SLUB's design goals and advantages over legacy SLAB
-- Document its focus on simplification and performance
-- Note support for both uniprocessor and SMP systems
+On Fri, Apr 17, 2026 at 11:06:30PM +0900, Alexandre Courbot wrote:
+> On Fri Apr 17, 2026 at 8:56 PM JST, Alvin Sun wrote:
+> >> Finally, maybe I missed something but the new value doesn't appear to be
+> >> used by this series?
+> > This patchset is a prerequisite for the Tyr ioctls patchset [2] that I'm
+> > currently developing, which hasn't been submitted to the list yet.
+> 
+> Why not have this patch in the series that actually makes use of it?
+> It's a bit confusing to see code merged without any clear user in the
+> same context.
 
-Signed-off-by: Nick Huang <sef1548@gmail.com>
----
- Documentation/mm/slab.rst | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Ah sorry I suggested this to Alvin since his Tyr patch series that uses
+SZ_4G depends on so many other patches series that could change out
+from under him. And I thought it was general enough that we could get it
+in place before hand or at least get some early feedback.
 
-diff --git a/Documentation/mm/slab.rst b/Documentation/mm/slab.rst
-index 2bcc58ada302..2d1d093afb7b 100644
---- a/Documentation/mm/slab.rst
-+++ b/Documentation/mm/slab.rst
-@@ -4,6 +4,32 @@
- Slab Allocation
- ===============
- 
-+Overview
-+========
-+
-+The slab allocator is responsible for efficient allocation and reuse of
-+small kernel objects. It reduces internal fragmentation and improves
-+performance by caching frequently used objects.
-+
-+The Linux kernel provides multiple slab allocator implementations,
-+including SLAB, SLUB, and SLOB. Among these, SLUB is the default
-+allocator on most modern systems.
-+
-+SLUB Allocator
-+==============
-+
-+Overview
-+--------
-+
-+SLUB is a slab allocator designed to replace the legacy SLAB allocator
-+(mm/slab.c). It addresses the complexity, scalability limitations, and
-+memory overhead of the SLAB implementation.
-+
-+The primary goal of SLUB is to simplify slab allocation while improving
-+performance on both uniprocessor (UP) and symmetric multiprocessing (SMP)
-+systems.
-+
-+
- Functions and structures
- ========================
- 
--- 
-2.43.0
+But either way is fine of course.
+
+Thanks
+Deborah
 
 
