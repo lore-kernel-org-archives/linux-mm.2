@@ -4,108 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E21B4F99C79
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 11:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB878F99C7C
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 11:20:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 527316B02A0; Sat, 18 Apr 2026 07:01:18 -0400 (EDT)
+	id 125CA6B02A3; Sat, 18 Apr 2026 07:20:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FF736B02A2; Sat, 18 Apr 2026 07:01:18 -0400 (EDT)
+	id 0FDFB6B02A4; Sat, 18 Apr 2026 07:20:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4150F6B02A3; Sat, 18 Apr 2026 07:01:18 -0400 (EDT)
+	id 013A66B02A5; Sat, 18 Apr 2026 07:20:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EBC96B02A0
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 07:01:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF33FE467D
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:01:17 +0000 (UTC)
-X-FDA: 84671384994.30.54AC367
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E499E6B02A3
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 07:20:53 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C4EB58F14
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:20:53 +0000 (UTC)
+X-FDA: 84671434386.03.B4CA833
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 53DD6100013
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:01:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mf5ju1QO;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id E45321C000E
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:20:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rQ5bxRKG;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776510076;
+	s=arc-20220608; t=1776511251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WfVuu7VhyD06W335FVMUaaQUivlN5wadRMCJaI/415s=;
-	b=GJXmHC7sH1vQlSmFJw/9QVHS1/z3vS5pWWZHPWmtLjIDu65D2iCl1/uA/W/QPAzy4mKrh9
-	qB0hhdRzaT4uV3Yml9WZz92A0ZsGjiLen0MfKBJiIb1E+Fjp6+6phshHwb7klJLYOZESVh
-	7z7OE+l1kTxvYDZKWCcxJBcFI3rLEbU=
+	bh=6VtuKZf/eggN2/MWAEQDQyWYTLMau4Z1GjW95A1bjIo=;
+	b=TeDvv7uESFqktSP/VKkp7RNmmtwrus+QbK3POG7QuByl6xqcglIhf8zSRMNMB8Zaar7EEu
+	TrbQxxYlBDaQF+Bhzi+4EgNc2o8kg1BCs4cGtj/l4sQeiqVXoRR3vubX/U2p1CtDpH7fWH
+	wk2qQmaJxOfGbvtYsPFqwy48ahV4kLI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mf5ju1QO;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rQ5bxRKG;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776510076; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776511251; a=rsa-sha256;
 	cv=none;
-	b=7Uik1fkAzL75Da6AxL/x3XBi2FU5dx6YCklrxlm0wLEvUHKWrxjrzdBK011rN1G0C+juPA
-	QKSCkthk/9mO7BjpC4Oq3zPsGuE/F/sQk2pi0DGFZxGK9dp5tyuIJU28IBCtHYqpJEOLLb
-	sgOyA+/y4PE/I1a4dIoMIpeiyxRdhcM=
+	b=KcA6zWEtHat09XFUo8kMbLRA6Y7T3LuDl8EJ3HUCl17qPsu5uMLrILDnAlCmE/+Kz52vq9
+	T3T+Uw1LF2h5f6RlbIsla+TuqxzGjU53Q/xbVFEjhSEO5NZStUN85gYP6AzY9H9pp+Hv9T
+	GhthkQfRWuGtwGIR+3lKrWw4C00SNcc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D04C460145;
-	Sat, 18 Apr 2026 11:01:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF380C2BCB8;
-	Sat, 18 Apr 2026 11:01:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D53A160138;
+	Sat, 18 Apr 2026 11:20:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03C4C19424;
+	Sat, 18 Apr 2026 11:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776510075;
-	bh=sZoUbqG9CxBotaWHnOZiPFKTeBgb66YHvpq2HPRKqX0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mf5ju1QOvH3HlyTG4qnP7elvnF+hxKxb0mLQ2SnKDGm7Bf10EWxGXuIloTNlFzz/L
-	 OWz0UKvhbcNwUGuLtgxz8m0ZQpKdpTKw+udZhHhT6wB1230Xlpraz1JuIlwECZpa3c
-	 QRmCA769jUxCp/PD8zLrAupwbQcKxd8exPDWN1rqw+kNQELjJjvUVRiJrY+d5f4jui
-	 vXANZeneevITQ1NLbQxwZ2iL6JhF6Jv37gX9CQja2OpHXW0UWBPP1dcaFNrIpYjiqn
-	 qi7B4juBsYd0p4lCB7MUMgfR0qxHHZtp1jcf514dvKte9e5wxhB/cQvbI0JJmUSArV
-	 X2wM90vdkgO9Q==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nico Pache <npache@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 53/53] selftests/mm: run_vmtests.sh: drop detection and setup of HugeTLB
-Date: Sat, 18 Apr 2026 13:55:38 +0300
-Message-ID: <20260418105539.1261536-54-rppt@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260418105539.1261536-1-rppt@kernel.org>
-References: <20260418105539.1261536-1-rppt@kernel.org>
+	s=k20201202; t=1776511250;
+	bh=OHIb1c9BBc70WI75peUduOfKkf3hZtDZ+y1C4MSgIn8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rQ5bxRKGs1G5VtMPzCsJkd8rySYpt+Z9a6kF0T9TCytsuks+aLJleV5C2visLQuk/
+	 148GF6lLvzu08n33pqnlteLO6u961kDUdLjAtwgerJqh+UEBzqav/JqRBzz81npYs/
+	 EdgSZRpMfAjzy2TvL1lbj/HVH7bYERuAiI+jF3v8BdBe1W4vlnJS5oYtawBxFbYipf
+	 lnlQPKcLspYfESm13qRMcUGzxo4yImY4tSVMBVbOIIDKMPzw6Ry9Nvsm5eEBLQ6YMP
+	 yYCG2ENmvZTJ1q2uUjBbI2jmgsRJhG0q1DnpGVMDXiumAq3Pe1kYUZa5t3CmA0aGWJ
+	 nI/rtS1PyuztA==
+Message-ID: <75b2b254-2e02-43ca-9109-9812cf3f85b2@kernel.org>
+Date: Sat, 18 Apr 2026 13:20:42 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: Add overview and SLUB allocator sections to slab
+ documentation
+To: Nick Huang <sef1548@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Harry Yoo <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260418000635.17499-1-sef1548@gmail.com>
+ <aeMQ36jFnCKmCSyA@casper.infradead.org>
+ <CABZAGREDHwsXMm65_WxEn=v-zTv7_eVqQzQeCRqU2Gyc0aTETQ@mail.gmail.com>
+ <CABZAGRGFpiiEr7Odd5an1+9Z+sX1C6QT2iadv-0hNhxGj8eEyg@mail.gmail.com>
+ <aeNKDh8S6pXHqRFh@lucifer>
+ <CABZAGRGCwM1PiSxennV-Uy9y1gGKjpcHeq+eOAbqSZcy3Qb55g@mail.gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+In-Reply-To: <CABZAGRGCwM1PiSxennV-Uy9y1gGKjpcHeq+eOAbqSZcy3Qb55g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gozztmk8hh8h4r91gaffyqetz4he3kzo
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E45321C000E
+X-Stat-Signature: cfks346tq6fjbrs7xm7kuze3qefhg8sp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 53DD6100013
-X-HE-Tag: 1776510076-465803
-X-HE-Meta: U2FsdGVkX18RZXnhkHRwbr2foij18Up/x+m89FmWOrD727E2orv1DGcgE0J7734VhSSYcTroMcor6YrM3X95ZcHH3Ow98Zp2qad+EQgRCPZfAMAqaXRnivqQmfCACzMfMv8ZVwm2xvj5O2zNA5qVBoOQBEbHW2lM8Pas1hSea5SJEGhe9XDXCsVe2eJXYXDAaPhqe1phoYAvvH2ZamnN22hXINSPrcKdPk3HVqtNI7dAEpy2iO9OE7xntbhiayZslNDBRt/HynOTBaesPSjZp8MkeabDX1Lo5OKYfbL/F8OezqGl1vovDeoqI+ysee1TJqQr3GgQ8LOeoDZWE5wYC0+oEJR7TZw4FbSZrABDyuw76jFSyzBeGGJI/pAJ68XfAfdoGa3pt8nQbxZsTtus/tZcmiq/UF4Z/xubWtvbJqX2+AeJA+Lr9T1My4rPueVr3VAGQAf4P+S9N0TDXErQ98976CkwP+KMdbCRAtOZ2S9UZJ3tQtztMhg6Czwo+GVCAYC2GjV80HLdm4n+9JuIAYkx06Z3d9CfcI0VH8S3ROt+Fd1rEvUiBKiZ+LGvHN+omrPSssmfdZz/ZM6lk6lBUx9fKZvucyEpGmJnSU6KB47lGGw/xa+JzFtjBL7A23zAfScJDZU7J9BqA5Vz2lFwerczHp3hKcuzEFi+JFRJMtvJhtRQUp/68D8i9R3m1Yz43duyYYxYStk/MXnF+zT3d3W9KIWKx+bJeEAKVvvOFk/ZFLSIseYidV0P7jAn4gNNLPAwyxx50FcOwxFxkhdS8gKbN7AmnZZnKSQP6OKfSxMSuw1U5dNVETY7Vq1W+W0WkP/8m9QCuhoXDJeW2HDjo74OYrQ597fNZGt2fdWKmI4EQAF5pyYPoL5fbsYsB9I2BdkDsrZIbIuB2J1UZKZ57aefZ0DxHruQFwJzeeeTd101a+PgBG3vc27BXhm16TRv07yHJqFKGFWFx1JPvn3
- 9vjyAUPl
- apQwS573zwVAF197NOoKl7WGr7VP97IBZHCjRFuz3v8YRRfTHt+T3116rUSCVHlLrjl4xkycZzktFDLXUEergi+wvQAXix6hqoFuX2skYckMmRQ777+r2J9OOXchr9rGmt0rae39SbwueOyXIpVCzIKDVkDwbw+bBtG/Mz7Ruim3th/iv7f6XBxMNLXFcivrA4naGh5Jd8uhoEDRAqrBS+kqw/nc2l2oHLEPM3QZCiKLjd/vujm0OSV5l9B3rQh2Cz635n/m7lTyjmayt1Veqj9kVj2n8lcS/HcGg
+X-HE-Tag: 1776511251-52806
+X-HE-Meta: U2FsdGVkX19RMHgiG6bgJm5wcDGCRFzR44iYCtvPCbi/quUqfDPYDJgbVxsHiVTvVfIz47aDP67u0sx+bMIBmtypW6lExWSPQNfC34HMv3NwYa3UwmgXi5HcpZWSfslhs0nwUiXsI0Wymg29b6X/VRsCv48MO0UWdNV3s7rVY/OGAA9d7DS8JXfQODljMo29oBQLUYmqs1AadIs3Q9K/HCoG7bphzL25+TGu8oFCUq7Fo/aL/dXMSngMBsCv3GN/iec78unBkZkxIOszR8xyiRUe3dzpn15dOjWgVzUIZ96wh80yQ+ANqUKBn58Yc5CDVjQsihDJkf3oQbuVyiCZpkINPlZQDh5sWOCB5cGbz7NUZpnkslkjzOW3quHJES2AYROwUSRlABoRyDHlLsu9KxrMOn0yZtnVOc/5vkCJCY9xYObv/Npcd4UamWmxZHJMA1HMVyd7g78EY5UZIg/ScwYt2xJd33iqfYbQaV20oXpW8wrKbXUfFAvWAfz0cveDsfSBTRzO00WPSPafQuycqxSr809SzI8aVKAz3rF6XH7b8M4TEX60JwMnJCP6kFEAed1cv95L5Cl+1gJGttRA1Elg3UQ9rrVRE3wCdYXVXe0Y8QnwHr3q2obuWXas2jaJiyzk7je+qKvcHskOk92N8LVx9Z6F/fo5TPf0bk8iJ+mXYy1GG8HoJ8U84G4FHSf6y1TqUBAEL2XDv5bHYdiazGN/B8yw+i357pSly7Dn9tF8OLqIHs2jqbKwaVAnFza37TFD6T0Kg+Iv13uzrBVc1l/s/fltD7gHz1G15q/+Mxb2nOUAAtGl0e3p8jnMQ8shuGzNHgrUwmrK7U2AFb6hV/2unggLZddnonm1YRDVFuR9icXyyRorDOVkLxTgKm0f9iJcnWlWF6CN6NGQumZFbQs3p2gjoh9B1YjzUg5HS7JM3b0a6jYV/3/xKtv/2dztsw1/FQ8TmHU/peCS1y/
+ lU6kqvc3
+ m0X+b6eoG4XinZtzlKg528dI28vUHREUy89TxVDIdF4fZnlZP/G9k5oembU3KR0Zbrm43X5poKaToQEuvYL2wqQRLHMOwFtq6Ruj61Xwbyq2Px+AtZg70TQTX+y2EoMauezzyJWb/4F+jsWJHxI3wuOkiK8RQxnMEGhkZcGRkve8njnmfs4p2pUnZEh6kmcfjVPXelVabPmaPh5nK5vro1848MRY3QiJj94QbbpFCqOPYcMQdhb1mDkA83C5sqG8Rmv11dUwCcN+2ubQcfq8/0O6U/dm/BDpMbEC1zg3MDGtONjx4CrUeeQrqZpJMPjzcANaiXx/1TTpYoSEv06k23ZMo4ngeB+tinjmQHPkoZkpEnfdjCLBhtJN0ev/0kdrnAk/6hLrQO9Bbz4I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,202 +107,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On 4/18/26 1:00 PM, Nick Huang wrote:
+> Hi Lorenzo Stoakes
+> Lorenzo Stoakes <ljs@kernel.org> 於 2026年4月18日週六 下午5:11寫道：
+>>
+>> On Sat, Apr 18, 2026 at 02:12:22PM +0800, Nick Huang wrote:
+>>> Nick Huang <sef1548@gmail.com> 於 2026年4月18日週六 下午1:27寫道：
+>>>>
+>>>> Matthew Wilcox <willy@infradead.org> 於 2026年4月18日週六 下午1:04寫道：
+>>>>>
+>>>>> On Sat, Apr 18, 2026 at 12:06:19AM +0000, Nick Huang wrote:
+>>>>>> - Add "Overview" section explaining the slab allocator's role and purpose
+>>>>>> - Document the three main slab allocator implementations (SLAB, SLUB, SLOB)
+>>> Hi Matthew Wilcox
+>>> I will remove this sentence in the next version:
+>>> “Document the three main slab allocator implementations (SLAB, SLUB, SLOB).”
+>>> I’m not entirely sure I fully understand your point. If I’ve missed
+>>> anything, please let me know what needs to be changed. Thank you.
+>>
+>> No, please don't send any more revisions of this garbage, thanks.
+> 
+> thank you for your guidance. I will correct my work and introduce the
+> more recent `barn`, `sheave`, and `kmalloc_obj`.
+> Do you think this is appropriate?
 
-All the tests that use HugeTLB can detect and setup HugeTLB pages on
-their own.
-
-Drop detection and setup of HugeTLB from run_vmtests.sh.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- tools/testing/selftests/mm/run_vmtests.sh | 128 ++--------------------
- 1 file changed, 9 insertions(+), 119 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index b42d19036182..7e0c379e7af4 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -157,60 +157,6 @@ run_gup_matrix() {
-     done
- }
- 
--# get huge pagesize and freepages from /proc/meminfo
--while read -r name size unit; do
--	if [ "$name" = "HugePages_Free:" ]; then
--		freepgs="$size"
--	fi
--	if [ "$name" = "Hugepagesize:" ]; then
--		hpgsize_KB="$size"
--	fi
--done < /proc/meminfo
--
--# Simple hugetlbfs tests have a hardcoded minimum requirement of
--# huge pages totaling 256MB (262144KB) in size.  The userfaultfd
--# hugetlb test requires a minimum of 2 * nr_cpus huge pages.  Take
--# both of these requirements into account and attempt to increase
--# number of huge pages available.
--nr_cpus=$(nproc)
--uffd_min_KB=$((hpgsize_KB * nr_cpus * 2))
--hugetlb_min_KB=$((256 * 1024))
--if [[ $uffd_min_KB -gt $hugetlb_min_KB ]]; then
--	needmem_KB=$uffd_min_KB
--else
--	needmem_KB=$hugetlb_min_KB
--fi
--
--# set proper nr_hugepages
--if [ -n "$freepgs" ] && [ -n "$hpgsize_KB" ]; then
--	orig_nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
--	needpgs=$((needmem_KB / hpgsize_KB))
--	tries=2
--	while [ "$tries" -gt 0 ] && [ "$freepgs" -lt "$needpgs" ]; do
--		lackpgs=$((needpgs - freepgs))
--		echo 3 > /proc/sys/vm/drop_caches
--		if ! echo $((lackpgs + orig_nr_hugepgs)) > /proc/sys/vm/nr_hugepages; then
--			echo "Please run this test as root"
--			exit $ksft_skip
--		fi
--		while read -r name size unit; do
--			if [ "$name" = "HugePages_Free:" ]; then
--				freepgs=$size
--			fi
--		done < /proc/meminfo
--		tries=$((tries - 1))
--	done
--	nr_hugepgs=$(cat /proc/sys/vm/nr_hugepages)
--	if [ "$freepgs" -lt "$needpgs" ]; then
--		printf "Not enough huge pages available (%d < %d)\n" \
--		       "$freepgs" "$needpgs"
--	fi
--	HAVE_HUGEPAGES=1
--else
--	echo "no hugetlbfs support in kernel?"
--	HAVE_HUGEPAGES=0
--fi
--
- # filter 64bit architectures
- ARCH64STR="arm64 mips64 parisc64 ppc64 ppc64le riscv64 s390x sparc64 x86_64"
- if [ -z "$ARCH" ]; then
-@@ -283,29 +229,13 @@ run_test() {
- echo "TAP version 13" | tap_output
- 
- CATEGORY="hugetlb" run_test ./hugetlb-mmap
--
--shmmax=$(cat /proc/sys/kernel/shmmax)
--shmall=$(cat /proc/sys/kernel/shmall)
--echo 268435456 > /proc/sys/kernel/shmmax
--echo 4194304 > /proc/sys/kernel/shmall
- CATEGORY="hugetlb" run_test ./hugetlb-shm
--echo "$shmmax" > /proc/sys/kernel/shmmax
--echo "$shmall" > /proc/sys/kernel/shmall
--
- CATEGORY="hugetlb" run_test ./hugetlb-mremap
- CATEGORY="hugetlb" run_test ./hugetlb-vmemmap
- CATEGORY="hugetlb" run_test ./hugetlb-madvise
- CATEGORY="hugetlb" run_test ./hugetlb_dio
--
--if [ "${HAVE_HUGEPAGES}" = "1" ]; then
--	nr_hugepages_tmp=$(cat /proc/sys/vm/nr_hugepages)
--	# For this test, we need one and just one huge page
--	echo 1 > /proc/sys/vm/nr_hugepages
--	CATEGORY="hugetlb" run_test ./hugetlb_fault_after_madv
--	CATEGORY="hugetlb" run_test ./hugetlb_madv_vs_map
--	# Restore the previous number of huge pages, since further tests rely on it
--	echo "$nr_hugepages_tmp" > /proc/sys/vm/nr_hugepages
--fi
-+CATEGORY="hugetlb" run_test ./hugetlb_fault_after_madv
-+CATEGORY="hugetlb" run_test ./hugetlb_madv_vs_map
- 
- if test_selected "hugetlb"; then
- 	echo "NOTE: These hugetlb tests provide minimal coverage.  Use"	  | tap_prefix
-@@ -332,44 +262,12 @@ CATEGORY="gup_test" run_test ./gup_longterm
- CATEGORY="userfaultfd" run_test ./uffd-unit-tests
- uffd_stress_bin=./uffd-stress
- CATEGORY="userfaultfd" run_test ${uffd_stress_bin} anon 20 16
--# Hugetlb tests require source and destination huge pages. Pass in almost half
--# the size of the free pages we have, which is used for *each*. An adjustment
--# of (nr_parallel - 1) is done (see nr_parallel in uffd-stress.c) to have some
--# extra hugepages - this is done to prevent the test from failing by racily
--# reserving more hugepages than strictly required.
--# uffd-stress expects a region expressed in MiB, so we adjust
--# half_ufd_size_MB accordingly.
- adjustment=$(( (31 < (nr_cpus - 1)) ? 31 : (nr_cpus - 1) ))
--half_ufd_size_MB=$((((freepgs - adjustment) * hpgsize_KB) / 1024 / 2))
--CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb "$half_ufd_size_MB" 32
--CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb-private "$half_ufd_size_MB" 32
-+CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb 128 32
-+CATEGORY="userfaultfd" run_test ${uffd_stress_bin} hugetlb-private 128 32
- CATEGORY="userfaultfd" run_test ${uffd_stress_bin} shmem 20 16
- CATEGORY="userfaultfd" run_test ${uffd_stress_bin} shmem-private 20 16
--# uffd-wp-mremap requires at least one page of each size.
--have_all_size_hugepgs=true
--declare -A nr_size_hugepgs
--for f in /sys/kernel/mm/hugepages/**/nr_hugepages; do
--	old=$(cat $f)
--	nr_size_hugepgs["$f"]="$old"
--	if [ "$old" == 0 ]; then
--		echo 1 > "$f"
--	fi
--	if [ $(cat "$f") == 0 ]; then
--		have_all_size_hugepgs=false
--		break
--	fi
--done
--if $have_all_size_hugepgs; then
--	CATEGORY="userfaultfd" run_test ./uffd-wp-mremap
--else
--	echo "# SKIP ./uffd-wp-mremap"
--fi
--
--#cleanup
--for f in "${!nr_size_hugepgs[@]}"; do
--	echo "${nr_size_hugepgs["$f"]}" > "$f"
--done
--echo "$nr_hugepgs" > /proc/sys/vm/nr_hugepages
-+CATEGORY="userfaultfd" run_test ./uffd-wp-mremap
- 
- CATEGORY="compaction" run_test ./compaction_test
- 
-@@ -393,14 +291,11 @@ CATEGORY="mremap" run_test ./mremap_test
- CATEGORY="hugetlb" run_test ./thuge-gen
- CATEGORY="hugetlb" run_test ./charge_reserved_hugetlb.sh -cgroup-v2
- CATEGORY="hugetlb" run_test ./hugetlb_reparenting_test.sh -cgroup-v2
-+
- if $RUN_DESTRUCTIVE; then
--nr_hugepages_tmp=$(cat /proc/sys/vm/nr_hugepages)
--enable_soft_offline=$(cat /proc/sys/vm/enable_soft_offline)
--echo 8 > /proc/sys/vm/nr_hugepages
--CATEGORY="hugetlb" run_test ./hugetlb-soft-offline
--echo "$nr_hugepages_tmp" > /proc/sys/vm/nr_hugepages
--echo "$enable_soft_offline" > /proc/sys/vm/enable_soft_offline
--CATEGORY="hugetlb" run_test ./hugetlb-read-hwpoison
-+	CATEGORY="hugetlb" run_test ./hugetlb-soft-offline
-+	echo "$enable_soft_offline" > /proc/sys/vm/enable_soft_offline
-+	CATEGORY="hugetlb" run_test ./hugetlb-read-hwpoison
- fi
- 
- if [ $VADDR64 -ne 0 ]; then
-@@ -464,7 +359,6 @@ if [ -x ./protection_keys_64 ]
- then
- 	CATEGORY="pkey" run_test ./protection_keys_64
- fi
--echo "$nr_hugepgs" > /proc/sys/vm/nr_hugepages
- 
- if [ -x ./soft-dirty ]
- then
-@@ -545,10 +439,6 @@ if [ -n "${LOADED_MOD}" ]; then
- 	modprobe -r hwpoison_inject > /dev/null 2>&1
- fi
- 
--if [ "${HAVE_HUGEPAGES}" = 1 ]; then
--	echo "$orig_nr_hugepgs" > /proc/sys/vm/nr_hugepages
--fi
--
- echo "SUMMARY: PASS=${count_pass} SKIP=${count_skip} FAIL=${count_fail}" | tap_prefix
- echo "1..${count_total}" | tap_output
- 
--- 
-2.53.0
+No, this whole thing is inappropriate from the beginning. We are not
+going to waste more time on development-by-review for something that
+started as undisclosed LLM slop.
 
 
