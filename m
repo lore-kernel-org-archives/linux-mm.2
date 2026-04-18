@@ -4,98 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF28FF99C63
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 02:30:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D316DF99C73
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 02:44:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD80C6B0172; Fri, 17 Apr 2026 22:30:26 -0400 (EDT)
+	id B8C666B0175; Fri, 17 Apr 2026 22:44:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C88D56B0174; Fri, 17 Apr 2026 22:30:26 -0400 (EDT)
+	id B160C6B0176; Fri, 17 Apr 2026 22:44:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B78216B0175; Fri, 17 Apr 2026 22:30:26 -0400 (EDT)
+	id 9B79A6B0177; Fri, 17 Apr 2026 22:44:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A40AE6B0172
-	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 22:30:26 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 861676B0175
+	for <linux-mm@kvack.org>; Fri, 17 Apr 2026 22:44:49 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3327CB9160
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 02:30:26 +0000 (UTC)
-X-FDA: 84670097652.07.98D6F15
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 286B740007
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 02:30:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qf5RI/8q";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776479424; a=rsa-sha256;
-	cv=none;
-	b=bOS2j8Gs9P/o2i54De0VVK8ZAx1rEgX5c8aNhAgZSV6tkht1rD+JPfRnobp6CUOvAtpHMh
-	iEhTfZwcSEFCECJsT1NwJmR7f2oBizDMDwirKQpD1MU5UCuTEGd/cMN+Hqfmzcf7NO8Cu6
-	ui5gbld8yNeEItGy0/mKlmDnLhwsLwE=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qf5RI/8q";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776479424;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 11E01C1BD2
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 02:44:49 +0000 (UTC)
+X-FDA: 84670133898.07.7FD6002
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010027.outbound.protection.outlook.com [40.93.198.27])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 20592C000C
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 02:44:45 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SOY7phTV;
+	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.93.198.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776480286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VW4qVl7GKadzvfqtPtDvpnRac88gpO5boSoxcn1xsSU=;
-	b=ubYiGPa7J1hrB6/DFFYemOnYIWT92Hum+V+c5bxnjxtNga8OXFLyQXIgO9xo7C2KCvJYkf
-	1VbcptuknPwVqd94xeDQvRw8FMzrBHC0rzquZaTRXrYusAOrK9fDlUcKalvFt0fP2GwZ27
-	XUjsE73CyJqEVZE4/TVeIZS+jHX2owM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB3CB435B5
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 02:30:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FF9C2BCB5
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 02:30:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776479422;
-	bh=eToN/1fh8G7TVca5VvDYz2A+dmffiLHNuPrbYY8uLVA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Qf5RI/8qRzWddc5JhF6JyZ6l3zC8lhjvT8r26k6SGRvPRbtSKyG/pyD7Mx4tm3ZKT
-	 uOgfhouyCrTtyhz/ZvHyHuAqqzJ3A3vFJAWJV0A6idlgdjPuGieQLX8qc9jEWucmXc
-	 UfE7ZdbEXOTALH1Z8hWNIKAq5RGCMf6VGzdN7dfoD7kLTYpZfUGEoNkHTPPgaJs1d2
-	 SxwOzicOuJ5ex2796+IgDgHs3hPjLnHEJ3LbOEXNShkMUfdKuMhx956v04b/hdPjhm
-	 NebZufjaL47JkwqpWwqatqVTeMc2OeP8WxdRtfC0Suor8Ffvk7CL/AqTu/kiGYX1uA
-	 5m4lwZkjfzmrw==
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-652f220595fso1417142d50.0
-        for <linux-mm@kvack.org>; Fri, 17 Apr 2026 19:30:22 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwGnErvXfAe1FAZ3e29Nv+of7qmatxOoTiiiD+H1EU1p3/kUQAS
-	aSvdBbUI02UGzzGvjeYAr6spFdfqhBOfQdUZvE1WAi4lVkJ6XtEi4GfkFi0l8P5Ur9Hawd+cySm
-	eeS14uuP87jVszCPuibqyu7GkOOxhTfQjiLHgRrWsag==
-X-Received: by 2002:a05:690e:4849:b0:64e:8d4a:d0c with SMTP id
- 956f58d0204a3-653109b4ea1mr3584850d50.31.1776479421743; Fri, 17 Apr 2026
- 19:30:21 -0700 (PDT)
+	bh=uZy/qpdlaLZdYd0zVi2JmCyMVDZXV1ZmesO1DChhnWI=;
+	b=ke9wDLkTOomDh8gynt+kg/egW8FJUX1MReWcw42J5hHZ2X0DgG9JCFfNCZr5kkEpmNWWjN
+	Z7WxDcDXkpcfvfe/XU9/YwnE9W918QLMsZ+v/A7NW8Oid+q8nt4TsjjdiYBSn6yrfGW8K+
+	7Uk0xqiYit3ciYDslMW+m5de3Xv5KB4=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=SOY7phTV;
+	spf=pass (imf28.hostedemail.com: domain of ziy@nvidia.com designates 40.93.198.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776480286; a=rsa-sha256;
+	cv=pass;
+	b=J3bkZXO/T44nOn2aqq+qeeSYCoVpu9zYyOyDO5TPDYXO7JWf5xk7n23cH5YlOQ9+Pqi3yI
+	xZYKUUJPbQhpJFE3lblrwZkvAd6fNqBWcOw4oC9z7MnZ5mo3lBz4av4ooWaBi0kS//Ug7V
+	2/qM3MGPf/cS/6HPXVivZzksPMno/KM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=im9vtN8Nmk4s+R6NTYf3dJOvbtMfy84FCvqymvZBA/YUk//SrIgGf+4Gr4O302gaRdaeGgMSmuovsZ+AOP9V4jk3/1+kGnMPJ/avPKV/FSQoJEHu2SqX2TW40ovSrB8n1jRDePt7avuNtkNyWt9JesIg9qHaei4hk8WyYglyuGoV2n7YVHzjeJONDNzM50y/Rn68xykJMA47HTrGmKyJqc7i1bLqqSlOwTYKTHKPUIjOz+m1jCV/TxWsa0IMEQKb7Aktzf5McoAfdFqbvcr03nLCpz5gwykv+wmMQD5ntyuaGuEnBLnYei/A0U17pa8G1R4HHcMGZyf60KpxZkYbZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uZy/qpdlaLZdYd0zVi2JmCyMVDZXV1ZmesO1DChhnWI=;
+ b=RZBbO//qbHolz2UIX/cGlxoH5/PkdGiUye77pp77Hmo+kwrhWCGQZvIWjqFfT2KbsQNpyhalL9jT9Pv9UbDZuSCC7zMrOy4au/ayPeoDuU60lxdJ0KCbYhOe5nwlwrk6a0jkqJvcWFF06lDhNDtcOgt63ytc2LYS6yU8injt8VmCatgeXtLAtVsvyH2cQRkQdyk23i1dkrB3qG8NuJpF5J7N/WSh4gpZT8K2hhu2ZGtVndd17u8kZBn5rtR1rZHzf0JqIIjN6m7r4OTLtPKInGjSyXnmRIeVVAy8NBbD+5UbmGhBuhJ5oKYu2Qy4wKAiLHV6qJwB71CnKRR+BiU3hQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uZy/qpdlaLZdYd0zVi2JmCyMVDZXV1ZmesO1DChhnWI=;
+ b=SOY7phTVmvYQEbg6R+bM86+Mf//CDncQYmCRSrY1VNVDpF6sc/lFyivztVVKBpKLC91N9Tgtd+XCacCjft3+R2g7BtX24nnOPnEkoF0UKD8hhT8E8G+vs0HuSboi6jKCxeseUrmzElTD0PMBlbX/w3Rkk3P7dRLDg0IjnZvYFRJyXoE+qhhVJWIhZsfaKrd2Xm51FMfXlVxqj4oVBejDx1YYUWllqfQsHK5fCxXkmylru0oYbXnpUl1qiuFLZfNPZr7jwQkOc4cLggIGsJ/d/f+adpFXnLlg/SbiB4psJHm1TfoGJf3fYc/TcKCzf0q4xQaBw4z9kgzPcK5R0PVodA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ IA1PR12MB6650.namprd12.prod.outlook.com (2603:10b6:208:3a1::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Sat, 18 Apr
+ 2026 02:44:39 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9818.017; Sat, 18 Apr 2026
+ 02:44:39 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Song Liu <songliubraving@fb.com>
+Cc: Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 7.2 v3 01/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS check
+Date: Fri, 17 Apr 2026 22:44:18 -0400
+Message-ID: <20260418024429.4055056-2-ziy@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260418024429.4055056-1-ziy@nvidia.com>
+References: <20260418024429.4055056-1-ziy@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR18CA0008.namprd18.prod.outlook.com
+ (2603:10b6:208:23c::13) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-References: <20260417033951.1111038-1-baoquan.he@linux.dev> <20260417033951.1111038-3-baoquan.he@linux.dev>
-In-Reply-To: <20260417033951.1111038-3-baoquan.he@linux.dev>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 17 Apr 2026 19:30:10 -0700
-X-Gmail-Original-Message-ID: <CACePvbWZO-=Nwho9Hfk-2HpuggZyb+Yt306MdA4X_icAt6+Z9w@mail.gmail.com>
-X-Gm-Features: AQROBzDY_FvI0uUn-g02NhLG5N6XPtNJ50k-mqzMsB7ZoCB-CfBTWFlwBO5ERSo
-Message-ID: <CACePvbWZO-=Nwho9Hfk-2HpuggZyb+Yt306MdA4X_icAt6+Z9w@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, usama.arif@linux.dev, 
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Stat-Signature: reio6mcwfrg7s8x8uj6ehmihr1ob7fxb
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA1PR12MB6650:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8bce3242-309f-41cd-3315-08de9cf46c7c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	9igH6bX6rIGSmO/G2kXCt0yt5P6yIFoz748nGYcXG324uE24bmLD9ktyiwREIJPMpKrAMLF38nrx+ewMPCnH5pznkl0o6LMsMu/u5k012aHFA3ilxNVtZwq7FSxY04gou7rm3/itSVQGHWl6XQvti6v8SSEVKtJC/KWutaS+oGwlwum6l8E/s+hQSVG2gQWUJZgn0yZPNkq6VELYVieU/qsdNXR0gTZQ+P08jekPpUJOoCgpWLr4+TEdrJh7FBqW7JT1z5ka3q7yQIh3cnMXbxbOHYinuBHJMvSy5zFXX06C4xCVAlCBQQ+ngaZe/iAI5xO4LjNQYJOd5JnMT5sBbbtR+DVL8h7f/E+mOPULHM/9yk8EvACD2Sp41uIv/lukMWO/bTFdoFYHYqr2jvMv7Uz3gaXlj7wbZTbdQJUwocum+Qhelf+43/UyV1b/mGOxa7v08Z9XCc2xBeYhtxMO3EKK9CSYDqr86cPrnO7yY1HH9sVwp/sA/MxfGTEdzQcBDScvv4j9xk9cucLvY5Rg1/GttLObiKaNnVas3OFMKLu8s/NUsZaFBjhAv+5qkaOGaLFqEaphf8iSu65aJ6DVyfROw6jssemxHKWA69hi9jlrAhMzEInIlO3DBfbsJamxP8xcUAJ36LmcMLsFNoLVxWVq6h8+MEVlntTPT5oPEPX2A4VRgx+iqMjiTXgyaKz8rRnW/gBmQdo4GgVVQiLFqMtM8WAQ9LcJ9+C1Pj0O0Q0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HqgqsbzBq6xIT6CNGhzkYjJ2K0+ccxXVC9yE+TWas1kbUtJkiJGbxSbJo3Qe?=
+ =?us-ascii?Q?yMHsDsmJvDHZTDgLVzcfwMVBDo6bFR6gg5ztljhL98TmQ015ZuVNP9ndE2W4?=
+ =?us-ascii?Q?pYMH2Hevv++kMnajxGyz55WoyNrG1uSccC8k+pq9+00w7yjXkErSdPFMCfEu?=
+ =?us-ascii?Q?GiXr2I39WsPV7U2S7vB96Zzfo/bAGGzTmxwQjvnHWrynVlJ2W/qB7PbFIdB0?=
+ =?us-ascii?Q?fjPXi0AsaqGe7wv+kLVa2kJSMgNK8R8yejuHxshaMwphN9ABJRMwJmEMwXgr?=
+ =?us-ascii?Q?KR1gz6WSvYq32ogn6tP4FvEgeg5hUTWLkmmcP6IaCacs1MZktP/hHft/0qlI?=
+ =?us-ascii?Q?ybCmw0CRnc5bilnv3ECHKmG+OJ1yoc0sOw24mJHfPeDweYdj6nFmDfY7TTTE?=
+ =?us-ascii?Q?moEvfqQd1qyQJ2H7s0qXolAItPfRQiScPH6t7+GY0ZpCiJrMmkHUiyDXalt1?=
+ =?us-ascii?Q?/BnRGHataW7UPB8spO09i7ELMmXqTCLZKV2fGNt/4lUJXqpG3NoDTe/8GCAW?=
+ =?us-ascii?Q?QS+8WnbTS1ArB87g4st+woNG05H/pYg9zpfnJ1GaxA4BgkqBLAzdrV1f0XYc?=
+ =?us-ascii?Q?Wg+2nUbci02KDEDc1LrKhWOuvLFIX2ca0t7YisqEMs1a/rrFhDqg8ob1GOBs?=
+ =?us-ascii?Q?ngi24oZhnCPGxQPU5I8xoIjKcz+6mVScUKRXbrqbE/VwCgUnP1SPtFdqqUEa?=
+ =?us-ascii?Q?8zY9PfIlyUvYWGRO9fWJCPaPoxtOdBYda33MDLUNhDehBeinI6hTyF0zzqPQ?=
+ =?us-ascii?Q?/Sfi6ygd6jCo3nVPSXR2/UhvWq6c7501lE4KOKmr6/q4c4VOJwncRsyWGn+x?=
+ =?us-ascii?Q?DiBFi+cDastxUFYOHPj3DUYwQn95Dj24phzKOr/KrqFnwhkkbIn48Pkgdp7F?=
+ =?us-ascii?Q?MtLjull9N0+lxC7JOwwWxRDPqA24vjV5cAGZsAqApbkJlVzyYSYRceoF24gR?=
+ =?us-ascii?Q?P30rvJqAwgU41GVwoOTtYl8kaTL/+2w4xCRHM0D8kSpovxikRvFbowEtoHVd?=
+ =?us-ascii?Q?o5v745mBNEGM3hYUSsjISWdzf50YwhO0EoyHQ599nqK0Cad6wpAIezA0K1YN?=
+ =?us-ascii?Q?tAV4gDQbg3WPSL0RVXHjslWB0FBp8hDVC7eHsVivPQh7U+BuUjZTWlH8Ql5R?=
+ =?us-ascii?Q?ggwuVdbHC4lW3ZPxSuWCcKuaXSozinvWPeaJg1aDoSgL0aDQHnSpZvrsu1jS?=
+ =?us-ascii?Q?+9O/hMziKEuxN+NEuXzIEEu76S3dBTx0uPmKceubVXQkor/QIQXVINeprvGn?=
+ =?us-ascii?Q?AHB7G92zrAhdVx42GT6o7WyiOdElxzuQgrK4hcas6MyGzu9RAW91UbYOqIbe?=
+ =?us-ascii?Q?sblYHQCijg6AxNtnZKQ3ii5PU2GrK9sI6QzGNADDq1BHWaoOxIO/t9A3SCOt?=
+ =?us-ascii?Q?OA8s9Q3xHSkrzXIVD9a2hDiqip3+7emA0KoUjLLk/2TIF4AKrNMeBcIWQCjp?=
+ =?us-ascii?Q?/uuHHClI0Uz+KzZ/3JYS0qNygSs+RL5uxYhx4jqMAKmk0Pmt4pJJU3pv/EYP?=
+ =?us-ascii?Q?tKjxzptvnpYjpkDC/x0MUToxhO9swVQvbSPUzBkP2QqBEco28zXGkJrrdoId?=
+ =?us-ascii?Q?fSfLclkoIJdfcv1DMkSIrOwZOL53YCpcmwuGravFXjIGTdWXmrY0EurU1/d/?=
+ =?us-ascii?Q?bt9MAsRhyDN74SSyApejjMPqfRg/6JvgJzU9NimyHnHDeQbPmF3Y+NIfVTC8?=
+ =?us-ascii?Q?E0WTeD5lT2IbWLhTVZwM9ounm/uOaCZsxkUN8UedGuU7YqiD?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bce3242-309f-41cd-3315-08de9cf46c7c
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2026 02:44:34.0189
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FNe9QaG9vc8+hMCgTUCej8W6ymphGgvsBSjh4hdR+vB3lu9LGtEcoxrFpYhseyO2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6650
+X-Stat-Signature: pz54wr5wui1hadmtxm1jbbu8qe7dnkh1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 286B740007
-X-HE-Tag: 1776479423-865613
-X-HE-Meta: U2FsdGVkX1/IO014qdy6swIkgo2CTBbysBsrXXFm0BpfS8T8hebbORICfCZOmFSoYW/CKkYW2vYJn8Z0Zl07vGi5stkSX64v4EM4fh5bdMQw5ppK39HMhjMpNuCy/RWICiiEwJAlDItTso2ioyRVCmSL7oAod7lsM9zFhc7yKNMaryxwkd5K/jjg9ncrh0qWdvDbpE9cWUqWPnD53bzPHzpFxqSKwHQQxH6oQWMRwyFBuOBJrdEHQQ68yOk09PxOQr96li3h9R9An+YwXfxl+5dlsuSCIa8akA0u9T62Hc7qE/TckdGV4roogO5vnIsAzJsV8IaiAjhx3iRTF4kwSsDPkdgATEjypIci+ZJvM/2/tQnj4X2ln28VzvSIdCSPqsnp1gFKeFLFz3MWbjbZidSCl32TK46TlhUqZB9z3H0PYY3j2aXBaERjRC/waCEt+VUxpDex6vFrrSGxsm9adVz/6j0l90nJkruwjC7V+Qgs6Ak3pWeXM1j8OugQBSNa/za1NKa2qPdeqqzk3abEBhvaVY2eI2txgD9qLrD74xall2yeImux3Fm/Hcg50+PW0VEJTHRlj6JT3WewPJwhYHj1SzEysxaF4NTDy6p45dhghzfJ2VQuRKmpWcm0hbVn/hIiGgW40DAA8NyJg2i9FTZrMmiaPWEF76akbFM2FHRgTJ+wpCekxeEpgOJmYZzYnJRLh5Dwk64XjXZP4qYn8Yja5FLc4Ptk57tCm5gjcJrn4br511ny84c3tJdB4qYVnnCrKcIcv6SNKYDM84ERR7GODZn+p4uzfy6+Rgd1rSLTnCZP0+HGmcC3hgLuv5kGisQ/urNx58JXS8Ud/JWrNCXvLMqMDu88a/a+V5uZsbiFfkhkc6s+cvh83pjmq7JeZ7j40M5u8BQvzMYlwzVNyxqZR1pZq+jtjmKYZw/XN/hgEDLvp6i2Nv+KR1CLTlDOBCa+dpyhIkNlSn9j5Lr
- YJBfB0b0
- LYgvJvRIoxcgczCxJbGJ4pZOhOORqLu6hGwKCdQRDq6dXzrB3E+DHZfhBPxqV6ZpIj1W0B96JDCT0Iwdg96rL60JAcJK7Bd01xTi7NGtvALtLutgRSh/lKQ59cULZGWZz5Ar2WZIlynTGOMSceYESUYIAn35IVXPDxNbSzTlGMT9sga1/jkQCPOjqyvH+qKQIXO8+CqRNsL/TF57biQ0y7376QbXEVXm+ZiCXH2flwR+s83tp9i76nQW2AG2VGl4Or4dfKFiQWQklFz3cqDTzRB236TKMDIw+2h0oeOwxN9sNIView5WMR9V/opwcKW7rVxwUYTBjcHuoyNgxiKhaxrVq9Y2y9SL7w7CTlZCiAYyx6dC0yBrA5y/LJHWlLvCNg+ks
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 20592C000C
+X-HE-Tag: 1776480285-78520
+X-HE-Meta: U2FsdGVkX19xujsaKSwQcdDVqN4MWILRT+iZjjhAduRnArbrRapjdfAFJ48uFsM7NFYj8GGLNmkAvuhhBX2CZ98alwDjmAjxIlk5+xwYQJZxV1Dp40XvmBLGkZTEzgtJx5MLt/A+pSroZzsdZxbMoN3XcgN0MgOax+lhk/9642U++ZZ4hRT5IhB8W/+RcCeHFVFEgBbDHQPoroR5Ghj0F1ro3prfoPr42mt7NFCNsz7amOeqncMEedig9l1nuJ1/uNfMoEPJ/Y7UZS1DRkChHCWJzQ//ewLoVVcHgwYfp/GMD8MAIwUbwJ4fhq+LT/hRXvQlJzPlM0gisfAYunxxf223nrvQCNmDbh8Zedfb/StBoUP0+2a1urNk3PJRTOL+iI9bWlTnC5gnHf5Uorz0OYhmeGKDazry+xfv2Fud7rpOvLmDE+aLlz2cZ7x4bH999cRa+sde3uOVje1/+OxM9yURWMInU5XVLWdqKUqAym1xZu4OKAqHKVFNZ39Eyejx1zYLMdHI7on60K5jLHlwTZL/4uVGBRU5Rmlte3HUGNFRrq6gvmCZXmiNWK09TG9XjYU1Ogj0vNRNRcGG2r5ncFMUrxVh0v94+F3/oP7j6Dh3ETYTvSxTi8b51RM//KmuzYdrqIMbyt79xsHAAQgXAUuZUv2LurvRupIzG+ALOh7B8kZuulMNUrdlbADH1mj5ea9PCXxDCpb9KJSMOdwNpaxTq0kKZIuVZxXhRO0wPmg4Z1whzUrpt1Yn/eBPVgo6MiD+JnVwjnqUOaXx8Y/p8YY+5keyK4Ccao2DGh+lXGdlrIyfXNooF5c54Tz94KLAOt6mweuy+O2btiSnh6rTFaoF2ANyYhpIV8UsBckDR4WoFyPsZvCUkkcf+qLPFqwFieraScpQYkRbPiGX/6SpWr6tkkCzsghngkNRIGM+Jt3ywwX7/alfJhUgcb5GEt80/mfRx4tcRS6+F/NOaPg
+ 65GjfZD7
+ SXqYIbQKZBtWsq1/IdER1CtwqlESwGl+94Av8X/IccbxiuN3x7JPohFnfx2gatKdAb9oqXCxMVbCg3D/dUaPA+7bTIW9tQqxn7sHtDTzskbhX3BiApV8d/oG6UrqfzslyHTxn/a2Yb76/1ihaI0ZHNVgk2UHzVFK3xD7eYEAiNde+rnqZp1tiwrkbO3Bj95c7S/kPbGYbC6wQw1GUS+T81ksdtD/SlDv2+aimgRV1L9b3AWS0LeLTfEKf1gYAKJB4xBVuRSXK/JGzStN5IuOmmMcCkr0kmaBD76Z1w1W+X388YUizRTP40pxM1GpiRzqSyAs8R90+NLzF0cQINPjvlBJjW7w9D7nGxccBe8StyPBPWA93yQHo9UGzN6ZfJcSLgHoHQoXMVfYJmtIZHKbrieGqkDkv1csdypKk/T30F7IQXaG/5rjlIWpzLOvn8G1C7wNw606OrMeQGFeMfFlLUOEHOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,348 +184,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 16, 2026 at 8:40=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
-rote:
->
-> This simplifies codes and makes logic clearer. And also makes later any
-> new swap device type being added easier to handle.
->
-> Currently there are three types of swap devices: bdev_fs, bdev_sync
-> and bdev_async, and only operations read_folio and write_folio are
-> included. In the future, there could be more swap device types added
-> and more appropriate operations adapted into swap_ops.
->
-> Suggested-by: Chris Li <chrisl@kernel.org>
-> Co-developed-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+collapse_file() requires FSes supporting large folio with at least
+PMD_ORDER, so replace the READ_ONLY_THP_FOR_FS check with that.
+MADV_COLLAPSE ignores shmem huge config, so exclude the check for shmem.
 
-Overall looks good, I have some nitpick follows.
+While at it, replace VM_BUG_ON with VM_WARN_ON_ONCE.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+Add a helper function mapping_pmd_thp_support() for FSes supporting large
+folio with at least PMD_ORDER.
 
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+---
+ include/linux/pagemap.h | 10 ++++++++++
+ mm/khugepaged.c         |  5 +++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-> ---
->  include/linux/swap.h |   2 +
->  mm/swap.h            |  10 ++++-
->  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
->  mm/swapfile.c        |   5 +++
->  mm/zswap.c           |   2 +-
->  5 files changed, 76 insertions(+), 45 deletions(-)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 4b1f13b5bbad..5fdda26f5c1d 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -242,6 +242,7 @@ struct swap_sequential_cluster {
->         unsigned int next[SWAP_NR_ORDERS]; /* Likely next allocation offs=
-et */
->  };
->
-> +struct swap_ops;
->  /*
->   * The in-memory structure used to track swap areas.
->   */
-> @@ -282,6 +283,7 @@ struct swap_info_struct {
->         struct work_struct reclaim_work; /* reclaim worker */
->         struct list_head discard_clusters; /* discard clusters list */
->         struct plist_node avail_list;   /* entry in swap_avail_head */
-> +       const struct swap_ops *ops;
->  };
->
->  static inline swp_entry_t page_swap_entry(struct page *page)
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 161185057993..29bdc679fa98 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -217,6 +217,15 @@ extern void __swap_cluster_free_entries(struct swap_=
-info_struct *si,
->  /* linux/mm/swap_io.c */
->  int sio_pool_init(void);
->  struct swap_iocb;
-> +struct swap_ops {
-> +       void (*read_folio)(struct swap_info_struct *sis,
-> +                       struct folio *folio,
-> +                       struct swap_iocb **plug);
-> +       void (*write_folio)(struct swap_info_struct *sis,
-> +                       struct folio *folio,
-> +                       struct swap_iocb **plug);
-> +};
-> +int init_swap_ops(struct swap_info_struct *sis);
->  void swap_read_folio(struct folio *folio, struct swap_iocb **plug);
->  void __swap_read_unplug(struct swap_iocb *plug);
->  static inline void swap_read_unplug(struct swap_iocb *plug)
-> @@ -226,7 +235,6 @@ static inline void swap_read_unplug(struct swap_iocb =
-*plug)
->  }
->  void swap_write_unplug(struct swap_iocb *sio);
->  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
-> -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)=
-;
->
->  /* linux/mm/swap_state.c */
->  extern struct address_space swap_space __read_mostly;
-> diff --git a/mm/swap_io.c b/mm/swap_io.c
-> index a62c02ab0551..1b054a122f53 100644
-> --- a/mm/swap_io.c
-> +++ b/mm/swap_io.c
-> @@ -238,6 +238,7 @@ static void swap_zeromap_folio_clear(struct folio *fo=
-lio)
->  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
->  {
->         int ret =3D 0;
-> +       struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
-);
->
->         if (folio_free_swap(folio))
->                 goto out_unlock;
-> @@ -279,7 +280,7 @@ int swap_writeout(struct folio *folio, struct swap_io=
-cb **swap_plug)
->                 return AOP_WRITEPAGE_ACTIVATE;
->         }
->
-> -       __swap_writepage(folio, swap_plug);
-> +       sis->ops->write_folio(sis, folio, swap_plug);
->         return 0;
->  out_unlock:
->         folio_unlock(folio);
-> @@ -369,10 +370,11 @@ static void sio_write_complete(struct kiocb *iocb, =
-long ret)
->         mempool_free(sio, sio_pool);
->  }
->
-> -static void swap_writepage_fs(struct folio *folio, struct swap_iocb **sw=
-ap_plug)
-> +static void swap_writepage_fs(struct swap_info_struct *sis,
-> +                             struct folio *folio,
-> +                             struct swap_iocb **swap_plug)
->  {
->         struct swap_iocb *sio =3D swap_plug ? *swap_plug : NULL;
-> -       struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
-);
->         struct file *swap_file =3D sis->swap_file;
->         loff_t pos =3D swap_dev_pos(folio->swap);
->
-> @@ -405,8 +407,9 @@ static void swap_writepage_fs(struct folio *folio, st=
-ruct swap_iocb **swap_plug)
->                 *swap_plug =3D sio;
->  }
->
-> -static void swap_writepage_bdev_sync(struct folio *folio,
-> -               struct swap_info_struct *sis)
-> +static void swap_writepage_bdev_sync(struct swap_info_struct *sis,
-> +                                    struct folio *folio,
-> +                                    struct swap_iocb **plug)
->  {
->         struct bio_vec bv;
->         struct bio bio;
-> @@ -425,8 +428,9 @@ static void swap_writepage_bdev_sync(struct folio *fo=
-lio,
->         __end_swap_bio_write(&bio);
->  }
->
-> -static void swap_writepage_bdev_async(struct folio *folio,
-> -               struct swap_info_struct *sis)
-> +static void swap_writepage_bdev_async(struct swap_info_struct *sis,
-> +                                     struct folio *folio,
-> +                                     struct swap_iocb **plug)
->  {
->         struct bio *bio;
->
-> @@ -442,29 +446,6 @@ static void swap_writepage_bdev_async(struct folio *=
-folio,
->         submit_bio(bio);
->  }
->
-> -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
-> -{
-> -       struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
-);
-> -
-> -       VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
-> -       /*
-> -        * ->flags can be updated non-atomically,
-> -        * but that will never affect SWP_FS_OPS, so the data_race
-> -        * is safe.
-> -        */
-> -       if (data_race(sis->flags & SWP_FS_OPS))
-> -               swap_writepage_fs(folio, swap_plug);
-> -       /*
-> -        * ->flags can be updated non-atomically,
-> -        * but that will never affect SWP_SYNCHRONOUS_IO, so the data_rac=
-e
-> -        * is safe.
-> -        */
-> -       else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
-> -               swap_writepage_bdev_sync(folio, sis);
-> -       else
-> -               swap_writepage_bdev_async(folio, sis);
-> -}
-> -
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index ec442af3f886..c3cb1ec982cd 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -524,6 +524,16 @@ static inline bool mapping_large_folio_support(const struct address_space *mappi
+ 	return mapping_max_folio_order(mapping) > 0;
+ }
+ 
++static inline bool mapping_pmd_thp_support(const struct address_space *mapping)
++{
++	/* AS_FOLIO_ORDER is only reasonable for pagecache folios */
++	VM_WARN_ONCE((unsigned long)mapping & FOLIO_MAPPING_ANON,
++			"Anonymous mapping always supports PMD THP");
++
++	return mapping_max_folio_order(mapping) >= PMD_ORDER;
++}
++
++
+ /* Return the maximum folio size for this pagecache mapping, in bytes. */
+ static inline size_t mapping_max_folio_size(const struct address_space *mapping)
+ {
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index b8452dbdb043..3eb5d982d3d3 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1892,8 +1892,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	int nr_none = 0;
+ 	bool is_shmem = shmem_file(file);
+ 
+-	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+-	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
++	/* MADV_COLLAPSE ignores shmem huge config, so do not check shmem */
++	VM_WARN_ON_ONCE(!is_shmem && !mapping_pmd_thp_support(mapping));
++	VM_WARN_ON_ONCE(start & (HPAGE_PMD_NR - 1));
+ 
+ 	result = alloc_charge_folio(&new_folio, mm, cc);
+ 	if (result != SCAN_SUCCEED)
+-- 
+2.43.0
 
-Nice
-
->  void swap_write_unplug(struct swap_iocb *sio)
->  {
->         struct iov_iter from;
-> @@ -533,9 +514,10 @@ static bool swap_read_folio_zeromap(struct folio *fo=
-lio)
->         return true;
->  }
->
-> -static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **p=
-lug)
-> +static void swap_read_folio_fs(struct swap_info_struct *sis,
-> +                              struct folio *folio,
-> +                              struct swap_iocb **plug)
->  {
-> -       struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
-);
->         struct swap_iocb *sio =3D NULL;
->         loff_t pos =3D swap_dev_pos(folio->swap);
->
-> @@ -567,8 +549,9 @@ static void swap_read_folio_fs(struct folio *folio, s=
-truct swap_iocb **plug)
->                 *plug =3D sio;
->  }
->
-> -static void swap_read_folio_bdev_sync(struct folio *folio,
-> -               struct swap_info_struct *sis)
-> +static void swap_read_folio_bdev_sync(struct swap_info_struct *sis,
-> +                                     struct folio *folio,
-> +                                     struct swap_iocb **plug)
->  {
->         struct bio_vec bv;
->         struct bio bio;
-> @@ -589,8 +572,9 @@ static void swap_read_folio_bdev_sync(struct folio *f=
-olio,
->         put_task_struct(current);
->  }
->
-> -static void swap_read_folio_bdev_async(struct folio *folio,
-> -               struct swap_info_struct *sis)
-> +static void swap_read_folio_bdev_async(struct swap_info_struct *sis,
-> +                                      struct folio *folio,
-> +                                      struct swap_iocb **plug)
->  {
->         struct bio *bio;
->
-> @@ -604,6 +588,44 @@ static void swap_read_folio_bdev_async(struct folio =
-*folio,
->         submit_bio(bio);
->  }
->
-> +static const struct swap_ops bdev_fs_swap_ops =3D {
-> +       .read_folio =3D swap_read_folio_fs,
-> +       .write_folio =3D swap_writepage_fs,
-> +};
-> +
-> +static const struct swap_ops bdev_sync_swap_ops =3D {
-> +       .read_folio =3D swap_read_folio_bdev_sync,
-> +       .write_folio =3D swap_writepage_bdev_sync,
-> +};
-> +
-> +static const struct swap_ops bdev_async_swap_ops =3D {
-> +       .read_folio =3D swap_read_folio_bdev_async,
-> +       .write_folio =3D swap_writepage_bdev_async,
-> +};
-> +
-> +int init_swap_ops(struct swap_info_struct *sis)
-> +{
-> +       /*
-> +        * ->flags can be updated non-atomically, but that will
-> +        * never affect SWP_FS_OPS, so the data_race is safe.
-> +        */
-> +       if (data_race(sis->flags & SWP_FS_OPS))
-> +               sis->ops =3D &bdev_fs_swap_ops;
-> +       /*
-> +        * ->flags can be updated non-atomically, but that will
-> +        * never affect SWP_SYNCHRONOUS_IO, so the data_race is safe.
-> +        */
-> +       else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
-> +               sis->ops =3D &bdev_sync_swap_ops;
-> +       else
-> +               sis->ops =3D &bdev_async_swap_ops;
-> +
-> +       if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_folio)
-> +               return -1;
-Nitpick:
-
-For int type error return, you should use  -EINVAL or some thing with
-error code. If you don't care about error code, change the return type
-to bool instead.
-
-> +
-> +       return 0;
-> +}
-> +
->  void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
->  {
->         struct swap_info_struct *sis =3D __swap_entry_to_info(folio->swap=
-);
-> @@ -638,13 +660,7 @@ void swap_read_folio(struct folio *folio, struct swa=
-p_iocb **plug)
->         /* We have to read from slower devices. Increase zswap protection=
-. */
->         zswap_folio_swapin(folio);
->
-> -       if (data_race(sis->flags & SWP_FS_OPS)) {
-> -               swap_read_folio_fs(folio, plug);
-> -       } else if (synchronous) {
-> -               swap_read_folio_bdev_sync(folio, sis);
-> -       } else {
-> -               swap_read_folio_bdev_async(folio, sis);
-> -       }
-> +       sis->ops->read_folio(sis, folio, plug);
-
-Nice.
-
->
->  finish:
->         if (workingset) {
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 9174f1eeffb0..af81fa212f1e 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -3518,6 +3518,11 @@ SYSCALL_DEFINE2(swapon, const char __user *, speci=
-alfile, int, swap_flags)
->                 goto bad_swap_unlock_inode;
->         }
->
-
-> +       if (init_swap_ops(si)) {
-> +               error =3D -EINVAL;
-> +               goto bad_swap_unlock_inode;
-> +       }
-
-Assume you return the error code above. Here can be
-error =3D init_swap_ops(si)
-if (error)
-     goto ...;
-
-
-Chris
-
-> +
->         si->max =3D maxpages;
->         si->pages =3D maxpages - 1;
->         nr_extents =3D setup_swap_extents(si, swap_file, &span);
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 0823cadd02b6..b699413a2526 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1061,7 +1061,7 @@ static int zswap_writeback_entry(struct zswap_entry=
- *entry,
->         folio_set_reclaim(folio);
->
->         /* start writeback */
-> -       __swap_writepage(folio, NULL);
-> +       si->ops->write_folio(si, folio, NULL);
->
->  out:
->         if (ret && ret !=3D -EEXIST) {
-> --
-> 2.52.0
->
->
 
