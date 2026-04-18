@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0EDFF99C79
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 10:57:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE1CDF99C79
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 10:57:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C6716B0250; Sat, 18 Apr 2026 06:57:36 -0400 (EDT)
+	id 289DF6B0252; Sat, 18 Apr 2026 06:57:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1767C6B0252; Sat, 18 Apr 2026 06:57:36 -0400 (EDT)
+	id 23A586B0254; Sat, 18 Apr 2026 06:57:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 066186B0253; Sat, 18 Apr 2026 06:57:36 -0400 (EDT)
+	id 129746B0255; Sat, 18 Apr 2026 06:57:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E68906B0250
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 06:57:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B9F80140488
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:57:35 +0000 (UTC)
-X-FDA: 84671375670.14.0F1A630
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 16082140006
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:57:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y0ScbXni;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F13BE6B0252
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 06:57:41 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B74C31B7F71
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:57:41 +0000 (UTC)
+X-FDA: 84671375922.22.F7FF8AE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0C05E80005
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:57:39 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ufi7M6Q5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776509854;
+	s=arc-20220608; t=1776509860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1Wyah5uEA/szF0vhExaGCaoEg301nCZo17UPal1ZOqg=;
-	b=315bcZ5kSQmgHb+ZIjNVkHDF12ifPNNvRX3cKMEdNNojjAuKAd9Yy151HxSVjpz7D5Ai4z
-	f6TsitAhdNfqjkDKMZQaPTUdHkzwG7LiHKGiMJu+BvfGFJdGAo7zwULs0XpefoDSlmXwft
-	kQTXTk57AjKjdmmbtEeS6nibiX/epB0=
+	bh=ba2bx1ktvSwNX6SoKIo+X6Rww3EBMJ5DTjg7QtUu3j8=;
+	b=SnNtmuAShQHrwDAvymVk8a3QQWkADEOJhTYxtOh57uDcWjzxptYnk2W/yRbxDk+BvrYXk2
+	2jMmq0xeMGIvcdZQamWszZhGxk+NwAI0QWqMUSDT7n3+B5IELqfWm2Z1f0chtOARHkxjsS
+	U8gElPuUYiW87jkTnEdo6TMWvPl3wJw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y0ScbXni;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776509854; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ufi7M6Q5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776509860; a=rsa-sha256;
 	cv=none;
-	b=688VH48xzZ62sMcNg6Zbrjxbnq8mP41rTmZRkfdzWDJqz/yoGLtj3rbUguL0rGpoDXqnFs
-	jr2Ck4DXl2ArtSHDFbJhqjqSzka76v6CUxp7RMfJWOrF8Yi/v7wt/1XEM86FW8enS83QVq
-	fcMjJ2M6AciV8pZE6TXa1qd21YUZ0Wc=
+	b=UHljdYCcNJ+U1zaIZw4QdgDmrSGldGjcxIG5GNTcrouMCbhiBOZjVTpQPSZ9FfXSJQM71r
+	gUkSNjsHH1WEEME6aSwJ30qzoaCAD6JTjHZQ/1vCbOKPd1m8pcJmg+52IGZZPKqSHeUfYF
+	LeqEbfFZxlROAmd3BvmQkyzLc5t6LxI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3CFCA40E2A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8949760139;
+	Sat, 18 Apr 2026 10:57:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9816FC19424;
 	Sat, 18 Apr 2026 10:57:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7594BC19424;
-	Sat, 18 Apr 2026 10:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776509853;
-	bh=W/Hu2qsaXpGRyFf0ATC603oNW1zzsqQgst2Eeo+Nd7k=;
+	s=k20201202; t=1776509859;
+	bh=cPpfxgOSD7bZjoMyMc7j1Oq40HSaLE9q0KNGVUUI0uM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0ScbXniyzsFNYebjVotCaILdgbqhAIGBzp2R8i3jCLxPnDtOGD21cCfA9tBWs0GR
-	 +jIRXy/Qdfxxc1K9bUCKDr6Qgxf7gDOUwc6xMe7HDr7sTPCm2e3Xoax3Dm9+dfO7Ve
-	 hq9UyfQQiRBT8KfQY7CxdcAzVi9g4NfUqFPceACf7+9slxElQgo1vfQS5YG6jpOt54
-	 3/YjL80/kSxq/JR9UQJT5O2fstFBK8rXrQz+kolQ/4WxUX4czwr+Dx+lYBhzMXTH85
-	 sK41rg9yavX3dEb0lrTFHntVriZBvO2vej7DA93Fia6wJSvO66To4zvR7h+mUGUNCK
-	 vmxhDQfbJwCyw==
+	b=ufi7M6Q5UMihEJFvIt9l4vG1j0uSMpYr/u1YvdIcYAYw6o3KleOA99Y5lnRrXs0w3
+	 tyKVSVw7hPsg07rXCdfIXbXc5aZZ1OTKot5Nw5gaj34tnBB8ozRu2IFhNZJmOIYy+N
+	 wqdd8Z9iSR+X0ecS/+1A9nPZyQLMzSPSP3sBPgH8kRwTyagvo+atcAaJGdeWOMczof
+	 KHo3VkjMZc6VgWPgUoU2nJS+D/9OxQkFYCN1IcWvyQ6AL3XWV7/6Ev9+Kt7aExnwua
+	 L/66XkCSQHFYuARo3ZNKBGE0T5By++7bmdXRUNiQ3q6b4SEVRiwphhtrAbbqa5bR35
+	 lD4mg0ouRm+4w==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -90,22 +90,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 17/53] selftests/mm: uffd-stress: use kselftest framework
-Date: Sat, 18 Apr 2026 13:55:02 +0300
-Message-ID: <20260418105539.1261536-18-rppt@kernel.org>
+Subject: [PATCH v2 18/53] selftests/mm: uffd-unit-tests: use kselftest framework
+Date: Sat, 18 Apr 2026 13:55:03 +0300
+Message-ID: <20260418105539.1261536-19-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260418105539.1261536-1-rppt@kernel.org>
 References: <20260418105539.1261536-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: z7bu4frwn3z1937xiijwpybrfdcmzk4q
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 16082140006
-X-HE-Tag: 1776509853-130915
-X-HE-Meta: U2FsdGVkX1+u465RtNcNZ8p3ZwkYP+pRfmILg+bY1uP+hqFm10JUnHBT5Lz/kOkW8tPqFEs8qgDXd6kbXFUsh1Sh4GoHL4cWg7RwgXCawG4RKm81vIohW3jHutzcO14KFLw53fAECosAupEfHqVOA9dgR9/+wh+iChojV8F4sIEsbUhla2OLmf8ypEH4GEzvb3U1w5UAbkmuvvEA+ktg+bh/ky1vPeb1rqrSGFYtlYlSZ/DIKcWhnmMSbDRvgEAKKH3TZbuT81GViQvMmkjrNc2+sQzmLMpqmP2Er3uA2M8tUE3PZCekPt6wE8Lqak18FgJyqPTGpf3acuBvirAPRWYe3pXnB+3vVudGzJ7TZJArZ0SAEXJ2TbBEejS8xCvyu9hNr2nJFSIuN5GppVF5juzpWlIHZQGqirw09quYAvZ8PcpQxs/7ztNgsj/4lm/OUcmvXjlShBFVveueD9P0XbtKW7hX1ZEU6CHayvepix/nX278CRXq+kmDz20vblfnD6nEeVc7ZJ4XNUA/hC6LoSIDXOexD5k93xKpHcixjp+07RYsHJx1PuO80XtFT5J/rEyxjW9WU8GyN9A9mH+d6QtX734XJkO4F6XzBgiYuafQ1vhaKBD8P8xn6vNtn+a5PJ0Jnp8s6aMA5oWmC3Jx+IV4bHjCwD9geD4MqajC7Hmg7Cq4Nh3HP/vHl3NqTwEBfFQmMvBw1EbQaX5G6xq6TSBL7lADUUO6+nsE/uE5bqQEPx4EAD3JLvsY9d6EhedhS4Be8wUHgMmwbneY+Q6zE37yqpYUy0+OWCNRhf+pt0+76Exl3FYOmFdUrCKW92G3Gh35aOxqU1XpvYmJ0/sDkWUtH543GfHy3rVVPCcCZcXaeJYA8Me2ndyljY+04lGh8D9Vq/MaP6eXVYlGHuD0/hDmvCthDf3vaFxYKs8YOYiYiUq1TVavYc/IHD/elGzquwHsYG8ohXfbTrSinpy
- nnpOSCum
- rw4BFg8/aG3ZKD4eA34UK1VRLmytpjOPp/uKi19dc57CkSwqbFX+bxYWHgOwJt/N4RSBA52RROBfhy8+M2VHS1p+6Bg8023A+lrBeRfDIKf3O0PyQecUOD+O0upPrpdwk0krj3/e3F+rp2ljxGBEO0s0gYAn6HRdWJwFfOhQK/Nn3q5AUOtMSOaIB5VVTpwlsmPbqw5lA7s+FqPTmxSARYWLJPJ6QZhD+DY89Cw0QvDb7Oy3jgq6OPbQVpK0V9UobBVQA02sViwf/bQs=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0C05E80005
+X-Stat-Signature: x9t5i9g5obn5wgofac3j5j8mdnhbsamk
+X-HE-Tag: 1776509859-46894
+X-HE-Meta: U2FsdGVkX1/f50NwelDxWYSRr4YuxNK1HVErGSyfL1FemQO+nCqzpin1/jnGOFy9VDBHOlvLOG1YQiFyWyDR4dKeSDfORxAIFs67FoKm4mDFyKXL754a1obV1SJxrrhNtjybFD7EkZnLkSW5HpFPH7+8n/kncnzOQg+PNmImifJtYCUv7ug5doJzhZowMapKwrwFLjMwQOAr9hFfkqmLPu63QzQenmcIDQqWOHljPO2fz1yVQqH6m3ub/M14s2gz4JwxxqHk7yxOKU/pTcPvxu8uXZlBhuXLUwRTqXm35PN7R6/IV3q3iarToYXTj6S6sDoT0ACSXVwbflqtRr3qYd9I/lH1R5376oG9yQ2qawrxjxJbRGKykunBo82/GKwkR4v2So4EFx3I1gOESbOATqcg4vyP3koWb1vmjtTOfVuSpTInuffO4fN/t0ZLpXv3aW8jZv7EsjZKa7zCoqG1bSs2feby2bFH1j22FCih3aU7CJTf4/dvsIqpYgbjguiusELp3p2LbPItsgbJpBjiXrenTkz+KuWg5e9+OnYBPFMSlB44t00ImjSrXwtmDU2S2dgK5uL2dbMZ9E137cqzaYZtDtdiZQkHt9rw2EbsIB2r7dzoaIBXL0psj4fuqcCo8qraG7zPNyrYVyY+R1V1rYXvVK3xqUtNQ6YGey0vJ0XwmKZT8ELn5PgqgDNX2CsfjU0RQbPcNGECxER4mnXIdXnQtPYHvDlHD4wCEuMggEOCgzqkMs+MC5OXGkfKrXIvotah90clXxstOU9J/0ftVwAqy3PxokkV4iFTzQNBdSJfBRYu8s79EiAnLHUwYG+vpOJHs4dbnEENL/u6tbdkTUofznLdK19U8knJEutq7B4u4x61ex6rbR2U+Qh40qa9ttTWZqYGz77yUrWHJvFy/Kiv7DjmCxUGATbCwSFSOaxP3zrokUHQ5d3oRf9eDXOyrq48yLeQ4TPNk/Fhpyu
+ fI/uu2Re
+ WSOeE72vA+boHlyQ+cD4Z+HPrU/o6GYGpPs2LGVcFh53Pg7+nyrJdYvq0UD6hpdtQ2bOqqeEWiU1fH8I9pLBAbShq05xKg9NGksmD8jMgMeBmOi4O2cUZIdKSCj9T+CRvdlFSyeq9fZuSxvUrTanaBxfzjtV31TfhBYNvulZpAUGoyMTpLmpJyPuhUTurqeky8orziCcMgfIdtJhKR2mjOxs6RNsrR2HHQXloLg0Mhzi0ZR6GLesqZl8t0TCyrsK0B031
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,88 +115,149 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Convert uffd-stress test to use kselftest framework for reporting and
+Convert uffd-unit-tests to use kselftest framework for reporting and
 tracking successful and failing runs.
 
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/uffd-stress.c | 41 +++++++++++-------------
- 1 file changed, 19 insertions(+), 22 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c | 79 +++++++++++---------
+ 1 file changed, 44 insertions(+), 35 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
-index 700fbaa18d44..e92a85463eb1 100644
---- a/tools/testing/selftests/mm/uffd-stress.c
-+++ b/tools/testing/selftests/mm/uffd-stress.c
-@@ -286,19 +286,12 @@ static int userfaultfd_stress(uffd_global_test_opts_t *gopts)
- 	pthread_attr_setstacksize(&attr, 16*1024*1024);
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 6f5e404a446c..1a33db281f8a 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -86,39 +86,24 @@ typedef struct {
+ 	uffd_test_case_ops_t *test_case_ops;
+ } uffd_test_case_t;
  
- 	while (bounces--) {
--		printf("bounces: %d, mode:", bounces);
--		if (bounces & BOUNCE_RANDOM)
--			printf(" rnd");
--		if (bounces & BOUNCE_RACINGFAULTS)
--			printf(" racing");
--		if (bounces & BOUNCE_VERIFY)
--			printf(" ver");
--		if (bounces & BOUNCE_POLL)
--			printf(" poll");
--		else
--			printf(" read");
--		printf(", ");
--		fflush(stdout);
-+		ksft_print_msg("bounces: %d, mode:%s%s%s%s, ",
-+			       bounces,
-+			       bounces & BOUNCE_RANDOM ? " rnd" : "",
-+			       bounces & BOUNCE_RACINGFAULTS ? " racing" : "",
-+			       bounces & BOUNCE_VERIFY ? " ver" : "",
-+			       bounces & BOUNCE_POLL ? " poll" : " read");
+-static void uffd_test_report(void)
+-{
+-	printf("Userfaults unit tests: pass=%u, skip=%u, fail=%u (total=%u)\n",
+-	       ksft_get_pass_cnt(),
+-	       ksft_get_xskip_cnt(),
+-	       ksft_get_fail_cnt(),
+-	       ksft_test_num());
+-}
++static char current_test[256];
  
- 		if (bounces & BOUNCE_POLL)
- 			fcntl(gopts->uffd, F_SETFL, gopts->uffd_flags | O_NONBLOCK);
-@@ -456,6 +449,9 @@ int main(int argc, char **argv)
- 	unsigned long nr_cpus;
- 	size_t bytes;
+ static void uffd_test_pass(void)
+ {
+-	printf("done\n");
+-	ksft_inc_pass_cnt();
++	ksft_test_result_pass("%s\n", current_test);
+ }
  
-+	ksft_print_header();
-+	ksft_set_plan(1);
+ #define  uffd_test_start(...)  do {		\
+-		printf("Testing ");		\
+-		printf(__VA_ARGS__);		\
+-		printf("... ");			\
+-		fflush(stdout);			\
++		snprintf(current_test, sizeof(current_test), __VA_ARGS__); \
+ 	} while (0)
+ 
+ #define  uffd_test_fail(...)  do {		\
+-		printf("failed [reason: ");	\
+-		printf(__VA_ARGS__);		\
+-		printf("]\n");			\
+-		ksft_inc_fail_cnt();		\
++		ksft_test_result_fail("%s\n", current_test);	\
+ 	} while (0)
+ 
+ static void uffd_test_skip(const char *message)
+ {
+-	printf("skipped [reason: %s]\n", message);
+-	ksft_inc_xskip_cnt();
++	ksft_test_result_skip("%s (%s)\n", current_test, message);
+ }
+ 
+ /*
+@@ -1701,6 +1686,26 @@ static void usage(const char *prog)
+ 	exit(KSFT_FAIL);
+ }
+ 
++static int uffd_count_tests(int n_tests, int n_mems, const char *test_filter)
++{
++	uffd_test_case_t *test;
++	int i, j, count = 0;
 +
- 	gopts = (uffd_global_test_opts_t *) malloc(sizeof(uffd_global_test_opts_t));
- 
- 	if (argc < 4)
-@@ -484,10 +480,8 @@ int main(int argc, char **argv)
- 	 * for racy extra reservation of hugepages.
- 	 */
- 	if (gopts->test_type == TEST_HUGETLB &&
--	   get_free_hugepages() < 2 * (bytes / gopts->page_size) + gopts->nr_parallel - 1) {
--		printf("skip: Skipping userfaultfd... not enough hugepages\n");
--		return KSFT_SKIP;
--	}
-+	   get_free_hugepages() < 2 * (bytes / gopts->page_size) + gopts->nr_parallel - 1)
-+		ksft_exit_skip("Skipping userfaultfd... not enough hugepages\n");
- 
- 	gopts->nr_pages_per_cpu = bytes / gopts->page_size / gopts->nr_parallel;
- 	if (!gopts->nr_pages_per_cpu) {
-@@ -503,9 +497,12 @@ int main(int argc, char **argv)
++	if (!test_filter)
++		count += 2;	/* test_uffd_api(false) + test_uffd_api(true) */
++
++	for (i = 0; i < n_tests; i++) {
++		test = &uffd_tests[i];
++		if (test_filter && !strstr(test->name, test_filter))
++			continue;
++		for (j = 0; j < n_mems; j++)
++			if (test->mem_targets & mem_types[j].mem_flag)
++				count++;
++	}
++
++	return count;
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int n_tests = sizeof(uffd_tests) / sizeof(uffd_test_case_t);
+@@ -1730,24 +1735,31 @@ int main(int argc, char *argv[])
+ 		}
  	}
- 	gopts->nr_pages = gopts->nr_pages_per_cpu * gopts->nr_parallel;
  
--	printf("nr_pages: %lu, nr_pages_per_cpu: %lu\n",
--	       gopts->nr_pages, gopts->nr_pages_per_cpu);
--	return userfaultfd_stress(gopts);
-+	ksft_print_msg("nr_pages: %lu, nr_pages_per_cpu: %lu\n",
-+		       gopts->nr_pages, gopts->nr_pages_per_cpu);
+-	if (!test_filter && !list_only) {
++	if (list_only) {
++		for (i = 0; i < n_tests; i++) {
++			test = &uffd_tests[i];
++			if (test_filter && !strstr(test->name, test_filter))
++				continue;
++			printf("%s\n", test->name);
++		}
++		return KSFT_PASS;
++	}
 +
-+	ksft_test_result(!userfaultfd_stress(gopts),
-+			 "uffd-stress %s\n", argv[1]);
++	ksft_print_header();
++	ksft_set_plan(uffd_count_tests(n_tests, n_mems, test_filter));
++
++	if (!test_filter) {
+ 		has_uffd = test_uffd_api(false);
+ 		has_uffd |= test_uffd_api(true);
+ 
+-		if (!has_uffd) {
+-			printf("Userfaultfd not supported or unprivileged, skip all tests\n");
+-			exit(KSFT_SKIP);
+-		}
++		if (!has_uffd)
++			ksft_exit_skip("Userfaultfd not supported or unprivileged\n");
+ 	}
+ 
+ 	for (i = 0; i < n_tests; i++) {
+ 		test = &uffd_tests[i];
+ 		if (test_filter && !strstr(test->name, test_filter))
+ 			continue;
+-		if (list_only) {
+-			printf("%s\n", test->name);
+-			continue;
+-		}
+ 		for (j = 0; j < n_mems; j++) {
+ 			mem_type = &mem_types[j];
+ 
+@@ -1794,10 +1806,7 @@ int main(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	if (!list_only)
+-		uffd_test_report();
+-
+-	return ksft_get_fail_cnt() ? KSFT_FAIL : KSFT_PASS;
 +	ksft_finished();
  }
  
  #else /* __NR_userfaultfd */
-@@ -514,8 +511,8 @@ int main(int argc, char **argv)
+@@ -1806,8 +1815,8 @@ int main(int argc, char *argv[])
  
  int main(void)
  {
--	printf("skip: Skipping userfaultfd test (missing __NR_userfaultfd)\n");
+-	printf("Skipping %s (missing __NR_userfaultfd)\n", __file__);
 -	return KSFT_SKIP;
 +	ksft_print_header();
 +	ksft_exit_skip("missing __NR_userfaultfd definition\n");
