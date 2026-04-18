@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75F81F99C79
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 12:02:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E63F99C73
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 12:27:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6470D6B02B1; Sat, 18 Apr 2026 08:02:44 -0400 (EDT)
+	id 4E5D06B02B3; Sat, 18 Apr 2026 08:27:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61EA46B02B2; Sat, 18 Apr 2026 08:02:44 -0400 (EDT)
+	id 4BD736B02B4; Sat, 18 Apr 2026 08:27:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55BB96B02B3; Sat, 18 Apr 2026 08:02:44 -0400 (EDT)
+	id 3D3CC6B02B5; Sat, 18 Apr 2026 08:27:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4667A6B02B1
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 08:02:44 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6EA55B98F5
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 12:02:43 +0000 (UTC)
-X-FDA: 84671539806.22.C044129
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9FF4214000B
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 12:02:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qQ83Nuwq;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 27F0A6B02B3
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 08:27:30 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB83CC1F0F
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 12:27:29 +0000 (UTC)
+X-FDA: 84671602218.27.80A7A4A
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EBB01A0004
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 12:27:26 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776513761;
+	s=arc-20220608; t=1776515248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Qetlnm4e+XrEXNG3Zh4y9W22aO5fsOvf9oaAnfoSnoU=;
-	b=5S4p5fO+oO9HLhL9rdSuoX2AXL2nAUQWYuZw6TILfMQuLq7pDTTF75SJ6vNxgnkCFE4tEs
-	rHt4gsZsNQuZ6nsbGxgu/jz0al3XQKnYC1+DsOLU9EPoQkNRcMd5A5d5lg0tlWmsgQ42CI
-	espCldAwEgAyJr+gBFx0vH/PMGk50yw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776513761; a=rsa-sha256;
-	cv=none;
-	b=wxOvkCO+iRuaRXZsMQ4iWWYO4pzGGctq73meu8XSQtWmBwompFAk3vQW5ncgDPfbcoe0qt
-	bMNJa35omUxMstUQ3m18uTOha3B3NkN9IgIC5LrkSES/4ffV8p+OgOMIdjnG83Bn3iHqna
-	bLTEtWBGgFrqMtjapf0xRslf4pQY1qQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AHSunHiaH2wyyOgKq5tcPEEZr/Dbmlo6IUL+Ik2pKzM=;
+	b=0z5ijbf8RYUd/CWRIKMmYEE8ixcK7BqHFiOmJFveGKsuaZhWb5Z0dUNChWrY2Ja/dd+p9K
+	krCiUxpUziv8tFXTOG78V9fFQeNoft1GiOwp5uQ5arggAYWTn9Hp8Ux6iFqWKN5wW0ycnk
+	mw4OPNIB9VlrG7LZWc6mGcrQrMc0o7E=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qQ83Nuwq;
-	spf=pass (imf23.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E70E4098D;
-	Sat, 18 Apr 2026 12:02:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B65C19424;
-	Sat, 18 Apr 2026 12:02:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776513759;
-	bh=V21UBvOvP9U1CNNiWuxT19jVga3l3Si1jOPiw9tClSE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qQ83NuwqB9njQ7mPhF4bpNVfiYQ1WC+RMpv3Ll4wqGImrbkRy3IsYcge8vGLjU+MY
-	 nCE+RGS7QSuTQyb7zqZCeN2In+Z5GsaUFuX/IxunDGt+pKGGFnlvg1jvHRpiR/c6SD
-	 0WwRuE3lgaO6gSuFo2aF/2sw4X8E7BUKnq2seCLXbhQVNm90XnFkuqXR//Mmh2Fd0p
-	 BKl/PSB6TEr5WZinAJp0DI9k6N7eoZskv/sG5qWb0DUXE7Y7wKHBJfb1cyl4L8FIS9
-	 RXur0jR0g+nQ2aEIjgBl/1JulaMcYvdDmW9NnWG8C81V2NVfltNdEeAVGTYDy4AJUJ
-	 qnQbInlN6rbXQ==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776515248; a=rsa-sha256;
+	cv=none;
+	b=oM0NXj2JkvPVuCC2qFcbQC6nBW3Dlp+A71UKt9ex5aER2gXQYJKegHSjrnYZkIJlQU1P0W
+	thG9SkzjFJUyd2IdPRsU8EMX/t21UbCX6ySNwiH1Kz+Vwg+pkfOGhPMEBTbvTF7GZ29KZ7
+	QGfds7iKPJ1pWJ+HQpfP7x7fDRQGNVo=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 18 Apr 2026 21:27:23 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sat, 18 Apr 2026 21:27:23 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>, Hugh Dickins <hughd@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	wangzicheng <wangzicheng@honor.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Lei Liu <liulei.rjpt@vivo.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH] mm/mglru: Use folio_mark_accessed to replace folio_set_active in PF
-Date: Sat, 18 Apr 2026 20:02:33 +0800
-Message-Id: <20260418120233.7162-1-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	Muchun Song <muchun.song@linux.dev>,
+	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>,
+	Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH v2 11/11] mm, swap: merge zeromap into swap table
+Message-ID: <aeN4qzqfyFpWJXYZ@yjaykim-PowerEdge-T330>
+References: <20260417-swap-table-p4-v2-0-17f5d1015428@tencent.com>
+ <20260417-swap-table-p4-v2-11-17f5d1015428@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: og616h4djhawk7ereir94ce3odm6bkr6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260417-swap-table-p4-v2-11-17f5d1015428@tencent.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EBB01A0004
+X-Stat-Signature: ssnu6afnnfn3qta46y1ttf3aj9wn3uak
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9FF4214000B
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776513761-951834
-X-HE-Meta: U2FsdGVkX19XM5IS3L0frXl/L5vrRgCUVPDoLD40Lq/d7x5XEqYAYj9gN/HIJXZrXVyDuLDkr/9DfspGBdGg1CoNVEVqmzOy31X3EH7AIjY5KNmg7iODh3Hmz7aAnqqyki2G+XM7cvYGUwolHecl4g+v2QdSjRw4DVLOeiq4Mc8u+eCB/tl/BRqfoHfeEQLXmUJ2QKYBVDsKatQuPsqwOTMfelft7gihoJKi4dh9QcQnGqPaZqbcxdIKD7eArvqPG1jexVOjldUQwgqy+a998YoI+1R1Y6VaK7VqnDfK01txll/UQeaHjQo7eDdc4Na+MDJo5nJAd98gLx0yh0Ku5jrFEfdWB/NJwUkRjzIIWVYbCJRYpj0A28hHyo54EGvCmJf1I9lX7nXQElJ5JbzTWrzaF/h+oFhK7EZ/0QxIcQEcHuX3hnGIIydCnhsVxNAK6g6acrg98DdRZW9EKvsFHi40rc0xK/pQrE+st+/AMMHJe550vX9JrasoS5WcLww6EVPDUvEYdsN4Kfws3faVLdVPsPdBimLBvw3kkS/VD+IzKe6eqcLHwIKJ915cclZr2OqFKOiLdlfltVMUNV5zvYbhB1c0fm3YaIIiI9PLBDsPpBxsxLdlfP1LACr7v2Uwl4UuBYJJjkrMelcdwTyDdZ/b01yUUVAYXsFGWq4qwbBoyFrRI2dYZ6zNWo1BNUD4ImP462j1b/kZI2TTtQZbodK+kPzNuz/QWp2AYi4vZDaH9OWQ9wKW/da8e1BAZUJb6MOi79Qi0TMrt6PNsZtJZxKdQzax9gmRjtWdDqj95SY8STI/HJgTk2NgQ9HDHk+Qu3q41ddU8kRdU7tnoNBR4AD9SHB2hewtDlfqrzhHB8rRltoxdbDmFBrdESW4ldHcfaPB3FKuC5belKEkLZ6u8oQLCXolSJOEGu3T7wfK655WK9LolR864KuYSW3qpdGkYWWIik9Nab4TUmULbDe
- qClqiZEn
- 4PWLW8Htvkr+3uE5nH1mTZTOjVBKEtN33rUt+5BnadNyeUICFgZA6BwbJIOOqpzhpzjbvLTNa/HCShALFCBPSNork0IgsfxQq1WKP1gYQtSWl50x+65De3I4foWKhMlyVBWsx/PUZwqqMkvifSxL3HjS+DPSSmNBJXUxNrVmTfZlibs64FkTAkuiWBrw6AwNNDsBsRt7T9gtSHNJWli3HhW+OWQ1jQeetqkxai5cVjRP332ovsCbyUNkkE6/ScPUkqFx+677/519iU7AcOlZOxuiC6kWJHIf4LFmysBs0zBHKwyCGlh1jcCBUkzG1QDXTR6Yc1M2vbRzXH6DFfy7XTDbNbNNIEjS4i518mGb1p3rwmdA7JmqA62Cc+NMYgXHuODbMEHkN6AW7mLcgpdG7vneTGXB6scsu2NwTzbhWV7fK5LUYn/DCt7fZsOWmzwXFOvvQ7vlHL/gWm7DEyRThPnika9ccnSn+6eOKmWMKYMVXt3IxRgHGLhlSNMpCyrPd/FH9h8px7OHCmxTspR+W/02iGTv1TepI/uNnt0Rk7tKYC9qGpBa/0R8ROWXF8PCAEvmqelP3aQQYOlyU7p3OdoXwWdvBh6WsqT83
+X-HE-Tag: 1776515246-580
+X-HE-Meta: U2FsdGVkX1/PbuvxrAdAB12YeHR017O8+YCzS/fasT3pjOFOQH4aDJby5hpyH7Dv3QhSV9pd8SI0CQ2KuBGUBM3Oe2ghQZJp8j3u5Zh0ZEwKHH27erSNi7OOgK/xqQkqxAelJ04XXxZHrKDEH3GODY76D/IsBhJjE4HmArzAM3m/R9Epz1nK/CMbOHeYcCWbbKFQf+nTp5oVM+2r8cBvxlrYdHoRG3kj2/Te/jKHYAW4gl9yD/Zw5XU3/4TmtVR5985/ELIoKA4TjM8MGEL0lgwmy5U3H9j3czzPLdbNQZjYkHSIW1tRBkzvo7FbKBaFQWJZLRsTD7EWbC2w04pEEsAamCXto/Vq0TAHwCVKvNsptEr/TJKTb2hNl2xa6bE+Gz+WRm8u6Wb9HGP/mUJwDWSyrIWHin6ED5Inqe7M4tHfayLc39NvgaNnlbD48qoCUNT/s7ZgBrWKZutv4CUCMbj5eDdF3qqpoHJwN3xY99KVK7FAjkBQYXDyq61mQrLnxN57IRA+Bmyi0pHIz6DynlzajT4YMFcN79yQ1qaAlbSf0KKEhRNM/8fyegsY+KdhLaffJ+I7ObIPZruOsTQWWbOFLehjlM3261sadtbbFTx++TNIaauMvh7Vn719UEYB3pkBCBozWF4XK779Bdx5f5lv+CQCku3EH1VTJzr+xy65DzUpmxfWPwC0KEyhpQahivwL54eMmLjYtMziIwewYcdkBZFq+XISsD/K0JWU/xgfQ3GJwXphlxIi4BCe6K7T3DlthvECCXwGTTOVoyj+NPiXeX/VbSWHZlwv8vsa9T6Z+QCrhzbaebx9APQJVLUtoEc1NiYcEToIACaEpn3E6NllWjpmo06dtTAhinYTW/t2E+tnkSuH91BCAO62VwPhRNtFWgybeCNqf5dqs+bXlu+iX2jkeObRLt5ojscVM1wQLIfJKR6Bd/LfETcN1JcUZ1MsCdSutszU8P97v1c
+ 1LpafDcO
+ zX6qeVk1RbDvHUKdrsnNhERDoWpROYSgc2Gqnw3OLClnRoKspCsoIjNXZ9F8OhvtKwMak9La77Ppso4LBhUQaz+zpNVVDzJ1FKlCJsqN/NHA6BS4l8l5vB3xqO+rl+4mEf8ZwtFrIqHqqEAH11VxJm47ufNpUlABVFRZqYIBedIgTG7hh6Rbi1fqDS7j2F1yiEXEqZW+P+tMcEgMwl2gj5r0UFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,159 +95,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MGLRU gives high priority to folios mapped in page tables.
-As a result, folio_set_active() is invoked for all folios
-read during page faults. In practice, however, readahead
-can bring in many folios that are never accessed via page
-tables.
+On Fri, Apr 17, 2026 at 02:34:41AM +0800, Kairui Song via B4 Relay wrote:
 
-A previous attempt by Lei Liu proposed introducing a separate
-LRU for readahead[1] to make readahead pages easier to reclaim,
-but that approach is likely over-engineered.
+>   *
+>   * Usages:
+>   *
+> @@ -74,17 +76,22 @@ struct swap_memcg_table {
+>  #define SWP_TB_PFN_MARK_BITS	2
+>  #define SWP_TB_PFN_MARK_MASK	(BIT(SWP_TB_PFN_MARK_BITS) - 1)
+>  
+> -/* SWAP_COUNT part for PFN or shadow, the width can be shrunk or extended */
+> -#define SWP_TB_COUNT_BITS      min(4, BITS_PER_LONG - SWP_TB_PFN_BITS)
+> +/* SWAP_COUNT and flags for PFN or shadow, width can be shrunk or extended */
+> +#define SWP_TB_FLAGS_BITS	min(5, BITS_PER_LONG - SWP_TB_PFN_BITS)
+> +#define SWP_TB_COUNT_BITS	(SWP_TB_FLAGS_BITS - 1)
 
-Before commit 4d5d14a01e2c ("mm/mglru: rework workingset
-protection"), folios with PG_active were always placed in
-the youngest generation, leading to over-protection and
-increased refaults. After that commit, PG_active folios
-are placed in the second youngest generation, which is
-still too optimistic given the presence of readahead. In
-contrast, the classic active/inactive scheme is more
-conservative.
+Hi Kairui :)
 
-This patch switches to folio_mark_accessed(). If
-folio_check_references() later detects referenced PTEs,
-the folio will be promoted based on the reference flag
-set by folio_mark_accessed().
+Would this break the build on 32-bit arches with 40-bit phys
+addrs (MAX_POSSIBLE_PHYSMEM_BITS = 40)?
 
-The following uses a simple model to demonstrate why the current
-code is not ideal. It runs fio-3.42 in a memcg, reading a file in a
-strided pattern—4KB every 64KB—to simulate prefaulted pages that may
-not be accessed.
+Architectures I checked.
+  - ARM LPAE   (CONFIG_ARM_LPAE=y)
+  - ARC PAE40  (CONFIG_ARC_HAS_PAE40=y)
+  - MIPS XPA   (CONFIG_XPA=y)
 
- #!/bin/bash
+Calculations.
 
- CG_NAME="mglru_verify_test"
- CG_PATH="/sys/fs/cgroup/$CG_NAME"
- MEM_LIMIT="400M"
- HOT_SIZE="600M"
+  SWP_TB_PFN_BITS   = 28 + 2 = 30
+  SWP_TB_FLAGS_BITS = min(5, 32 - 30) = 2
+  SWP_TB_COUNT_BITS = 2 - 1 = 1
 
- # 1. Environment Setup
- sudo rmdir "$CG_PATH" 2>/dev/null
- sudo mkdir -p "$CG_PATH"
- sudo chown -R $USER:$USER "$CG_PATH"
- echo "$MEM_LIMIT" > "$CG_PATH/memory.max"
+The BUILD_BUG_ON looks like the real problem. it needs at
+least 3 count values (free/used/overflow).
 
- # 2. Prepare Data Files
- dd if=/dev/urandom of=hot_data.bin bs=1M count=600 conv=notrunc 2>/dev/null
- sync
- echo 3 > /proc/sys/vm/drop_caches
+  BUILD_BUG_ON(SWP_TB_COUNT_MAX < 2 || SWP_TB_COUNT_BITS < 2);
 
- # 3. Start Workload (Working Set)
- (
-     echo $BASHPID > "$CG_PATH/cgroup.procs"
-     exec ./fio-3.42 --name=hot_ws --rw=read --bs=4K --size=$HOT_SIZE --runtime=600 \
-          --zonemode=strided --zonesize=4K --zonerange=64K \
- 	 --time_based --direct=0 --filename=hot_data.bin --ioengine=mmap \
-          --fadvise_hint=0 --group_reporting --numjobs=1 > fio.stats
- ) &
- WORKLOAD_PID=$!
+Confirmed with a cross build (multi_v7_defconfig + lpae.config).
 
- # 4. Waiting for hot data to warm up
- sleep 30
- BASE_FILE=$(grep "workingset_refault_file" "$CG_PATH/memory.stat" | awk '{print $2}')
+  error: BUILD_BUG_ON failed: SWP_TB_COUNT_MAX < 2 || SWP_TB_COUNT_BITS < 2
+    at __count_to_swp_tb (mm/swap_table.h:227)
 
- # 5. Running workload for 60second
- sleep 60
+I think the right fix is widening swap_tb to 64 bits
+unconditionally (atomic64_t).
 
- # 6. Report refault and IO bandwidth
- FINAL_FILE=$(grep "workingset_refault_file" "$CG_PATH/memory.stat" | awk '{print $2}')
- FINAL_D_FILE=$((FINAL_FILE - BASE_FILE))
- echo "File Refault Delta is $FINAL_D_FILE"
+(Or, uglier, these arches could always route counts through the
+extend table.)
 
- kill $WORKLOAD_PID 2>/dev/null
- sleep 2
- grep -E "READ|WRITE" fio.stats \
- | awk '{for(i=1;i<=NF;i++){if($i ~ /^bw=/) bw=$i; if($i ~ /^io=/) io=$i} print $1, bw, io}'
- rm -f hot_data.bin fio.stats
-
-Without the patch, we observed 12883855 file refaults and a very low
-bandwidth of 58.5 MiB/s, because prefaulted but unused pages occupy
-hot positions, continuously pushing out the real working set and
-causing incorrect reclaim. With the patch, we observed 0 refaults
-and bandwidth increased to 5078 MiB/s.
-
-Note that this patch does not benefit any platform other than arm64,
-since commit 315d09bf30c2 ("Revert "mm: make faultaround produce old
-ptes"") reverted the change that made prefault PTEs “old”, after it
-was identified as the cause of a ~6% regression in UnixBench on x86.
-This was due to reports that x86 uses an internal microfault mechanism
-for HW AF. The hardware access flag mechanism is relatively expensive
-and can lead to a ~6% UnixBench regression when prefaulted PTEs are
-not marked young directly in the page fault path, especially when
-UnixBench runs without any memory pressure[2].
-
-Thanks to Will for raising this for arm64—“Create ‘old’ PTEs for
-faultaround mappings on arm64 with hardware access flag” [3].
-This is also thanks to arm64 microarchitectures, which incur zero cost
-for HW AF handling.
-
-It may be time for x86 and other architectures to revisit
-whether HW AF is truly costly on their platforms, given that
-the original x86 regression was reported 10 years ago.
-
-For those who want to try the model on x86, you will need the
-following in arch/x86/include/asm/pgtable.h.
-
- #define arch_wants_old_prefaulted_pte arch_wants_old_prefaulted_pte
- static inline bool arch_wants_old_prefaulted_pte(void)
- {
- 	return true;
- }
-
-Lance and Xueyuan made a huge contribution to this patch
-through testing. They truly worked over weekends and after
-work hours. If this patch deserves any credit, it belongs to
-them.
-
-[1] https://lore.kernel.org/linux-mm/20250916072226.220426-1-liulei.rjpt@vivo.com/
-[2] https://lore.kernel.org/lkml/20160606022724.GA26227@yexl-desktop/
-[3] https://lore.kernel.org/lkml/20210120173612.20913-1-will@kernel.org/
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: wangzicheng <wangzicheng@honor.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Lei Liu <liulei.rjpt@vivo.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- -rfc was:
- [PATCH RFC] mm/mglru: lazily activate folios while folios are really mapped
- https://lore.kernel.org/linux-mm/20260225212642.15219-1-21cnbao@gmail.com/
-
- mm/swap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/swap.c b/mm/swap.c
-index 5cc44f0de987..e3cf703ccb89 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -512,7 +512,7 @@ void folio_add_lru(struct folio *folio)
- 	/* see the comment in lru_gen_folio_seq() */
- 	if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
- 	    lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
--		folio_set_active(folio);
-+		folio_mark_accessed(folio);
- 
- 	folio_batch_add_and_move(folio, lru_add);
- }
--- 
-2.39.3 (Apple Git-146)
-
+Best regards,
+Youngjun Park
 
