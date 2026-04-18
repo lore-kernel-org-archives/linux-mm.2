@@ -4,139 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7003F8DFFF
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 07:33:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1673BF99C7B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 08:17:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB4676B019F; Sat, 18 Apr 2026 03:33:42 -0400 (EDT)
+	id 3E2846B01A1; Sat, 18 Apr 2026 04:17:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D645A6B01A0; Sat, 18 Apr 2026 03:33:42 -0400 (EDT)
+	id 345286B01A2; Sat, 18 Apr 2026 04:17:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C54096B01A1; Sat, 18 Apr 2026 03:33:42 -0400 (EDT)
+	id 1C0296B01A3; Sat, 18 Apr 2026 04:17:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B3C1C6B019F
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 03:33:42 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E9B51B7F51
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 07:33:42 +0000 (UTC)
-X-FDA: 84670861884.21.4462E91
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D6185C0008
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 07:33:39 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Md4TUMmJ;
-	spf=pass (imf22.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776497620;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0687A6B01A1
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 04:17:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A0159E4629
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 08:17:22 +0000 (UTC)
+X-FDA: 84670971924.04.3A3B5BB
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 91260100007
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 08:17:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jvox7hix;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776500240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J+8x3UTkmDSK/0XW5zoJPfvCfQVWX7N6GA0ekPrt54Q=;
-	b=6Ix84UzJOPxguUyRofMD+J0uJWsYqsLwmN/XRet3+5Jezbca8dBrUGY+SCD9wh1GAPB9Ri
-	xoCgLupRCOc+ocniD/jxMDyKXn4Zvd1VL/KRsorQOD0s1zWHjdJ59bkoUf992AvpFNqorE
-	ZUhctYIeX98ByN86VMlrM7cZzom6bQ4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776497620; a=rsa-sha256;
-	cv=none;
-	b=7oCteXPqGaOzgia+Zt8OlKPgEvtLqux6lhKqLdG+7V66AnLF07RWY3hnZVuyzgdeB6EbzO
-	gEqEWxKzYS6xXgXqMfJpgp7uJVnLV+hm1H9hBd3GymLCMXujM7CbNBjYFBpK8oIK6P0ET9
-	H6LtLmOjCWZtrJQ/0Ur8gKkckCINK2Y=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Md4TUMmJ;
-	spf=pass (imf22.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63I41cPM2687272;
-	Sat, 18 Apr 2026 07:33:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=J+8x3UTkmDSK/0XW5zoJPfvCfQVWX7
-	N6GA0ekPrt54Q=; b=Md4TUMmJX8N0cv1cJnValWJUk37E2iBp8okN3vEs39GUvm
-	/41zIqys+FbhiwUAFWvvjXAo+F+5HYyU4n46zThnuAyGgni5M+95bJexnc0nzW1A
-	GDB/WcN8lV+bBcOCnkGpAP4QKlcOudzFXYN9x35Gx+MXpyxOzXt3+QoNn9s2vIZn
-	20DrrMQtkVhJOyUHQRzAB23+B/aDtfw42Z/xLUl46EoPD6JQZ1Fer/IDa7PZHYeb
-	9iU4JL2CnHlnvBClks2ltjBCpDPH2FZ8KD1Chp5KP6kkj5J129LtVwFCPV3Hly1f
-	A/xTdMQyRULAKCH9+mdzdGvbse4DlgMMhISXqing==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2j68ewf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 Apr 2026 07:33:29 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63I75PDm028404;
-	Sat, 18 Apr 2026 07:33:28 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dm22k0h3h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 Apr 2026 07:33:28 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63I7XQwT13762958
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 18 Apr 2026 07:33:26 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A815220040;
-	Sat, 18 Apr 2026 07:33:26 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD8CC20043;
-	Sat, 18 Apr 2026 07:33:22 +0000 (GMT)
-Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.28.145])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Sat, 18 Apr 2026 07:33:22 +0000 (GMT)
-Date: Sat, 18 Apr 2026 13:03:00 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
-        hch@lst.de, ritesh.list@gmail.com, jack@suse.cz,
-        Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
-        p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
- RWF_WRITETHROUGH
-Message-ID: <aeMzrKNO7SPgjLyc@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
- <2dmo4my5rml4ymfuw5afc2fnbcxn2l3w3bz2boj4eevognilni@vgy4vwlikqx7>
+	bh=osHl21ka+EHE85SfgVEe4S+Jtjdn7o2ijvj352s1WKY=;
+	b=o2nUk6mUJIGSlu8jFNvrf1prYkHKZ6YW+WAGF7WoxNzbJn4QSNTur+of0MNKy/aeZYWLOv
+	Fl+KaTPCHWvt4rWUnm4dyjJzI5YXaikZCMgNR0imjAxKnnobgFq3lPg9r54ZlHF/pJDHSS
+	tk9nX+7GjwXoFFvgDEXlTzxfvP1/0+8=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776500240; a=rsa-sha256;
+	cv=pass;
+	b=mTA7pUfPBqCPBeIPK94FW4HgAd4FQqJJ1IlMC3Cr/v1jOvNCjWiiczzQPW3ROPVdRORGNi
+	1RkcNEvBnwhyt7KfyEwFeTRYDo2Fc6Gq8yzr2nm1Z6UWCHKBYJUPrNT8S4X51gFllgBN3q
+	yNNgPkPGDOIsSh/o4pMJ4R3dD38yTPw=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jvox7hix;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-671c24f23b1so2234621a12.0
+        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 01:17:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776500239; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QXnfPxR42ANRxq7g01TXmiriY80OMqafJDkzjzFNI7CSvFqNxnSoND5yDBlqCf8kMM
+         gO32VK5IQU8ThKBuHOjU4iGIYOsXDwWDjAT+RduCgZaUb0YZNwe9G46v4nzvn8k2q9q0
+         a2vDd7FP7uyRLIM1bI9IBadByWT6DfXOC18rjD+DTcHEM3SsZNLvt6HCiQC5MUJwlvbD
+         5maWjnf29zE4R4Bdna+EYlEGiNDtcb8CO0KSMCcV9l5qXWL+UER5ncGbXIUF4BO79tEE
+         tFwgn82MAPERTftLO06AbJRPd7HEyuDknD4FsUEAKfwdBEyhn4WM277cTF9iHAqjLcwX
+         iCrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=osHl21ka+EHE85SfgVEe4S+Jtjdn7o2ijvj352s1WKY=;
+        fh=zLaRNTu0skg/vKAjwdfRDn5EtfNUP9HnJZvqIYf4pME=;
+        b=CMURhoMudXiYXuwWHwzcN2tkDBcYpyZWkVHEByJMUBYU5FbVufs16e2fEt7COYMQ1i
+         iicqFyMPi2qJD8Ys3RVqrnGxE5S2ltOkkTl1NHjBrzlfmaL4oi7Awv2180H1hsVVutSg
+         kZ4ibQS5DPJdaUmGQwk/p5uB/RX6kw1LRnrxmxdHN64Pj7DAgXgYoUEKa1x7W3qqXb7B
+         ih7veUjXDBOeWOGLXohZUe/B7SOkhvp5eW3vQhmqPlwCmedCru7w7Frm0NDJaDfDpPwX
+         VYuXW+XT3Fffo7qI3iu37PaJAhhZSqxuXnrZDtlhItKAL/YHqM0MOCg+4yHBj873UIAk
+         PJ4w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776500239; x=1777105039; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=osHl21ka+EHE85SfgVEe4S+Jtjdn7o2ijvj352s1WKY=;
+        b=Jvox7hixFbkwcRzaJQxS2vWAJjpszmicWSH4gRTcOh+6m/yIK+7+2+J+KPvy9j3Wcz
+         nyuyOOIb1oWdpFbgAt4XczI7dIpoIJOgEnKWtTTdV0jfXIkCLNHR1RMguQf5092E6f58
+         4QnbLJ9irqrqxgNxbqGaIUMg+Yxesr21uiDDUwxngPc0T5DBVefEsm4bgmOUYzrF4QaH
+         Q+AW8jdQ1xZ1sg91G+LoyCw+tedVFRGN7HntZyaFiOUzyKilJ2uosum63RqCiAtkPPcD
+         RlCT9mk556nB65b6xPVcYegA2T0v3etN2qWsziGl2Pd4V5PoNzMk19Y0BmMWniV6mLMd
+         WqWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776500239; x=1777105039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=osHl21ka+EHE85SfgVEe4S+Jtjdn7o2ijvj352s1WKY=;
+        b=CZTSbAWU4x6OKBQcaIHJmf+xbO8Vb1xHYnwA9AZUirtXPCI5QZt58TUjMvA+giDcIi
+         fPszsfi0ZsRluOuOOA6v2uED+tNh8XE7Fg2HBtDvOaMHgq6UXxsu9LxiLuu7K7Xm/hsn
+         /EMxn0ieaTm7SHCy80elcekC/2Hs6Wjdf683sgBczoHU86hH/1ORI/M4mHAgZkDTxpDb
+         Oo40Q7ZGjKvEncZYT42jMLMpCy0VtmQBtFQAEPPdLheOxDN1ABQrgaTEVu/gp1o4FgSV
+         tgcMn1mFMRCURuGWTFT9ncH7QzIDZG0sITMNE2lAubeGdrhENFqANs3O84wTDAtyUIvC
+         xGxg==
+X-Forwarded-Encrypted: i=1; AFNElJ9Gp8vhVDiCVaiixQDKKbMruWUxdpRgKgo1eRxsDRZVms5NjXVl6TBUA38sfgDNruV2DTEsWOTYgQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywore7rYqW+A3MkSPwFaTOobIgZoc17jpv6dRIWlSnItq4UuURE
+	DdJmJII/n1Jtg0JLW3v8bne2woq3asaE2uaCnVnoCSySrZHnqID+V5gZUQ9C+2PlQ9owMVQoXM2
+	9Xee3NmmLCc3yFnbCDf2h6ZB2mAIBrBM=
+X-Gm-Gg: AeBDieuVB2OEzDa/TkcOzCHfbGkTIASTvRx1MEGP9y1WzFQyYCN+K1V8Sj+zy4AHNkR
+	dD72h7HvZQil+7sfLhW2Hl+57WgMfR7HbJm+cFibfzJ38rNMgTQ7SFF+GosoEl50IxqYMLs9HGu
+	5WOXx7Uy73MBrU5qWThbDQCcmR/WUo/kh3mh8RR1XeSIGhEZqg23dGGSFfUi3g0vP6dnKhTH5/8
+	T9R57zAR0pBFKinp+dzjawuf0Ue5XcHsygBFk2qcaLzH5kuRk2J4sAUgq3q61U+lkF4w1WoLPH4
+	0gU69AUnhZP55b2axMPEVPVrc5kpsy8FJkR3c4sg8JYcLCO0JE9Zh1waPkd1yw==
+X-Received: by 2002:a05:6402:2790:b0:671:4f9a:9e4e with SMTP id
+ 4fb4d7f45d1cf-672bfed76b7mr2741127a12.24.1776500238643; Sat, 18 Apr 2026
+ 01:17:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2dmo4my5rml4ymfuw5afc2fnbcxn2l3w3bz2boj4eevognilni@vgy4vwlikqx7>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE4MDA2NiBTYWx0ZWRfX/TvXlMxHfyfq
- mjqgI2sJREm5linMAn5otpl2Cp8gk5T3mnsNhQWfbd0jC6p30ZEMwGzcpq/bXaKUNLp4zcxn4IR
- VblcCW2ZmaCsMmMEKGQzE0obGxltOZpPzAoI92G4CCXsbmZBvZLu3O1YzRW9NqBR+bNQPu6W8wf
- Rs0iWhSDx6ObytfUPqITj+kbwP+PvlCf8E2b+Sd78+/kC0B0R9fdf62OSAm2LpjQWVKci9liaUJ
- sBQXEGgMa63ruur59OP+nFCBsdxHbnMPf//9WDf8WJqOUJkaOp0XXZdG7Q6weq+5OcgMg5HUNGp
- LiftT+ii/XwXjQS1+U2AGw5Mnd7oyNRtYuyTgy1awNGOd8N3G/b0YvSf+NpI2s9pxobazU71RJ2
- FayHYkh/EjyAR6hbBmICqsjVLRJTfPGGPsNc4ruaAJsBJilsXq/zVCXwEFy8RGEeB4Hc8go9iuN
- q7RgqGJNqgtrb0MIbTw==
-X-Proofpoint-GUID: lZmppBzJlcsLpXL5MluOHtnYPsOuBekb
-X-Authority-Analysis: v=2.4 cv=SOJykuvH c=1 sm=1 tr=0 ts=69e333ca cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=J4mrUdnwTHBwwN0GybQA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: AlFrBinGigvIOFIpwWjlosqGmBosXcyT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-18_02,2026-04-17_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 phishscore=0 suspectscore=0 adultscore=0 impostorscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604180066
-X-Stat-Signature: eiidkyijcjcx5aa3uznn9btj1fh5ohiz
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D6185C0008
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
+ <20260417025123.2971253-1-wxy2009nrrr@163.com> <3a28d9d327d84ae192fb3dcb925a0674@honor.com>
+In-Reply-To: <3a28d9d327d84ae192fb3dcb925a0674@honor.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sat, 18 Apr 2026 16:16:42 +0800
+X-Gm-Features: AQROBzApXlHnX_aFyc1uiRAuKaQO7RJs54KvufAWR5xki9NwlzhY7jkss4rXnOA
+Message-ID: <CAMgjq7BsSMxia=nYA1n7d+sOq8RhRb-F6F7E6tt+R6buf7WZOQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/14] mm/mglru: improve reclaim loop and dirty folio handling
+To: wangzicheng <wangzicheng@honor.com>
+Cc: wangxinyu19 <wxy2009nrrr@163.com>, 
+	"devnull+kasong.tencent.com@kernel.org" <devnull+kasong.tencent.com@kernel.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "baohua@kernel.org" <baohua@kernel.org>, 
+	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>, 
+	"chenridong@huaweicloud.com" <chenridong@huaweicloud.com>, "chrisl@kernel.org" <chrisl@kernel.org>, 
+	"david@kernel.org" <david@kernel.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
+	"kaleshsingh@google.com" <kaleshsingh@google.com>, "laoar.shao@gmail.com" <laoar.shao@gmail.com>, 
+	"lenohou@gmail.com" <lenohou@gmail.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"ljs@kernel.org" <ljs@kernel.org>, "mhocko@kernel.org" <mhocko@kernel.org>, 
+	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
+	"stevensd@google.com" <stevensd@google.com>, "surenb@google.com" <surenb@google.com>, 
+	"vernon2gm@gmail.com" <vernon2gm@gmail.com>, "weixugc@google.com" <weixugc@google.com>, 
+	"yuanchu@google.com" <yuanchu@google.com>, "yuzhao@google.com" <yuzhao@google.com>, 
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, wangzhen <wangzhen5@honor.com>, 
+	wangtao <tao.wangtao@honor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fkembaukdg6jayjipa45ey5i4ukppqfm
 X-Rspam-User: 
-X-HE-Tag: 1776497619-234121
-X-HE-Meta: U2FsdGVkX1+MVn8HsAprN8CGexOYYER8m4B2W6Febc6dksxUYH8MvjFnqxYL0RNPixfEILOy/noTeGhYXtcOzg/8VkXlm10bptsQgz2xiSYUo1VfXmAlNqNOvVWdtMa3gqhCQmxXdOFGd5X5vmdC/1NBAVLHUp9Fty0zLjHr7x22LFAmSOnvP4KrDckJ9jBdxLbBcHi7j7oWg68081IY3XBlUyDybjjCEnkmYBY5uyz599zoWPKHbu6wtz7/xICdyQtUkoqI6zePfNr66GIzM/kp4NnX9X4RNXm+j060OxGGvyN0AuIebmX5V7DSx4i2rJSnD4uG6qRVD/qRnQrKeG3DSbK2/vEgqTDvjh+dHHvAy6MZhhnxlW+AHo+b1S2J7Ho/FRiO1nzZOT2PM6qiUeGZ7b/79cV4UiQ7kmYKbWlIRWRMT3cWc4bpcdQQdoRvB4a78GC5gnZSGtrDfv65Z979j1CCnBls93Oe4YU2sQpbKqUMxTaaUh/IwZrIwboA5dPsIx+FRv+6I3hvPuhpe/OweR2esBluBncvNikgUKSSvthNt0ixR0j54qJwyo9gPUwlWapvs7Fq5GiXoRHGK7rRVmy2mWprFdT+Yd/Uj8qM9eSbq3na9f9Ov5fGx8UwqhL4dl+QrL7G2zE5i2syVhMiPG/bQ0E0tQRUT5yJIo046nZ1i6GQqz9kv4dRGM1XiWkt+Kc4ui4dO3rpWmZnkM/A37SWvTJRszM89v89h6/RnY5Ptf0mKa4j0T3I4/ewzNUY9VDVOPWJw3peXpiPbqY1hoxKdc9jE8gy4M6gGxzj8P8/zc1ngl1jl0LbuZC9wYLJrq3yV0HepmTIxtA7FRasXhWGTNkz0l6dSnNAewqa4amVSPYiRKmcnEIN3ls403sm/ytQSC3HCfcQXOvDJdWD3zquqUY36bdgYJijTg5xhvm5/6X2M0rkG2JrdFv5EGlYqIXa75pVP+98eXU
- EOXmJ+gC
- 64J9dlik54ZcEy7CKXkDb8TKFoh3UkkG46RUfA5PNioo4ZjdWSoXpOBbogSVRljqcPiCslfS1fosSgJ7DlkhrhWiUmesTzQ+qAGksVNKayleE53LbReu3MQAJ3UWIvJ/WNiRRkp2W0YNZuVnUlYs+qsi1549ZNGYFrlPaxn6qY+WMVBdli720oQruGTT+3IenoBCWFWj196nMDHfq7tc/rq6WrWCW0SgCbGDMU3qqKCmYmpExj7ji2e4Jd+g1kp57i3f4aDKI9gYWWa6rf0Eg/c+uAlc+381URnvDG9Cy/e/9hA3YPZqSSHY9eZfVEzlcmVvGChNMswIAztT+xHa2u2zpZ1qvS8TmBwL2lAUa6sgYgnvLnIWxm7h+KAOo+hzQlMvp8CJTxGG7rTpnt+oclMY7bAkXB/WPdNXAEQfcoTHmh9S2BKXAMpzczA==
+X-Rspamd-Queue-Id: 91260100007
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776500240-686592
+X-HE-Meta: U2FsdGVkX18l5yy5MRPRWf9aY3MNVd6R2FxqYekxzaLz6QLPqo1w48Q1WTayI+igra0sv8fn8m9rOwOUtOd3ke+UmpXHRGJMoGbg2+1xt/vGg/tbxh12azSch3F/rGXoPMWkKteNvA85HpHeHyvSz4MK0of5ZP2DAXOZb/dpmMYjGpSFj5lVb9fAH+ZoypqbgDluoHMMs/mabqaaHwmaWPR38MSrqXlYOfpf3W1ZRuzmrvMBMuZdHom/+RBSBqSaFlOInfMhiikn2aAW0iG+sSZtYtheeBSt6rReWDFU5GjlwmzX0afxI39zJPmqtLGkCA6PjTc86+LPcqKyDCicZGlxLXmTLp5jcwja3pu0zaGOU9HQ9oleqV7mltQ0llAXDHr2Xc69QmwKRwnWq9YOhwfrcRN5yHhvYsSrT3wdUQRVBUNtNOb2yrHGurlp2P3PZWcGMFXTHnBlKWVrGBxGbKNRM9YUVd5a2QciHulCzTh0v2HUV8Ae9xyNVi9Mbt43oYbeL5lUToz7354IhQnBH79dzR9MkO1Lo3PrMRtN5PfhlflKl4YDD82FNkOVKPDdJng7Kbby5Kwtiw0VDEm7W6wwfACBtt9dJVOSicMJuPtbLrRq5jrzznCIwIB0dUbYamhtNxizjTGs+WQq7kPd/XmlWepXIFPV6GNGwdOe6CgZx0/vou/Uf40q2hbpKf0gujQwU8LpiIt3a71799ChfUrAq2Rw/rJBN9PortEOFhpaD1k18T9iICYqq58gY37C55/Dy6glZJ8jZpV9K5tAt1/mV4bsUav1OuP/7YlVdkK1fvOqXSSh2GQmt1XPwCI58DGRHbuF6R2kFYSJFvqQIv7cEwihqaXhTGxwnhO+jptg6EyEyzses3wgp1pG/6s/wVQsDvj2v+pKXJGCqSNBRlD1pgtcmNOsxvEUkn1qqnmIntNnEITRabRhT6gV39GbmF9DLj0npapyWfW1/FM
+ yVlrMUSS
+ 6Ur5aRsiRE/zaXoiD+emvncLRnga0mmoqgIomkuCvjwoXC5fAiIrrK4CdcTYUGoNyvjlNm99iC7GD4Ane4qWlr9YEKK4laonZpnMZKHEeswyP3XRZzUq/Z7Az+7hHJLvKJsZ0vuPiIZccDrEdl/7CgRGRBdcmSYh+cObK/Ouh1dESE+eqJ4BNraRQkpOkS1eaB23foef8b3KN+4VzDxO2QVBg/aUtmaInVxdXTd8k3ydRQw0ZY2jeiMnmwdrDsRKGXhgp4tu47cEMx7PzfIN0wNjpFTZpFaLbuRiJd1RR7NFDAE97cMMu5TZy+VKvSjSKREkR0r4gtQSQ9f9DqloWDYpH50SWjdcuN7rcCgWJPeCqJLajHfARsHUMIMqYmSPiWTRYaW60Y8CNNvUA7pmHFKEMLUgEWMMInEebYrtXUpZwv09wg2BJIqXHHbValreTlYiCgDO9kVdefV07C9WSVcfcsJGyyddHOzCwGjqApk59c64vVVQxBoVssGR44orUxSnUiQeGUqFBfxKpyzDkXb3dGAKymufspqadf8GLXTFZFRkJIacY0yWi4Wf839Vp5Y0xHbSWgpOqaBYyKzA3g80q8Krh684RZCgOgxOZOV7mgCuB9V0EN9gIPu3wUUXh7oiW+iKgEF8Foys=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,70 +154,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 17, 2026 at 06:13:31AM +0200, Pankaj Raghav (Samsung) wrote:
-> <snip>
-> >   3.3. Wait for any current writeback to complete and then call
-> >        folio_mkclean() to prevent mmap writes from changing it.
-> >   3.4. Start writeback on the folio
-> <snip>
-> > +
-> > +/**
-> > + * iomap_writethrough_begin - prepare the various structures for writethrough
-> > + * @folio: folio to prepare for writethrough
-> > + * @off: offset of write within folio
-> > + * @len: len of write within folio
-> > + *
-> > + * This function does the major preparation work needed before starting the
-> > + * writethrough. The main task is to prepare folio for writeththrough by blocking
-> > + * mmap writes and setting writeback on it. Further, we must clear the write range
-> > + * to non-dirty. If this results in the complete folio becoming non-dirty, then we
-> > + * need to clear the master dirty bit.
-> > + */
-> > +static void iomap_folio_prepare_writethrough(struct folio *folio, size_t off,
-> > +					     size_t len)
-> > +{
-> > +	bool fully_written;
-> > +	u64 zero = 0;
-> > +
-> > +	if (folio_test_writeback(folio))
-> > +		folio_wait_writeback(folio);
-> > +
-> > +	if (folio_mkclean(folio))
-> > +		folio_mark_dirty(folio);
-> > +
-> > +	/*
-> > +	 * We might either write through the complete folio or a partial folio
-> > +	 * writethrough might result in all blocks becoming non-dirty, so we need to
-> > +	 * check and mark the folio clean if that is the case.
-> > +	 */
-> > +	fully_written = (off == 0 && len == folio_size(folio));
-> > +	iomap_clear_range_dirty(folio, off, len);
-> > +	if (fully_written ||
-> > +	    !iomap_find_dirty_range(folio, &zero, folio_size(folio)))
-> > +		folio_clear_dirty_for_writethrough(folio);
-> 
-> I get the point where you want to prevent mmap writes before the current
-> writeback completes. It is not very obvious to me why folio_mkclean
-> and folio_mark_dirty had to be moved out and then we call the
-> folio_clear_dirty_for_writethrough wrapper. Anyway those calls are made
-> after we do folio_wait_writeback right? 
-> Is to cover the cases where we do partial write in which case we don't
-> end up calling folio_clear_dirty_for_io? If that is the case, then a small
-> comment on top of folio_mkclean would make it a bit more clear.
+On Sat, Apr 18, 2026 at 3:38=E2=80=AFPM wangzicheng <wangzicheng@honor.com>=
+ wrote:
+>
+> > Hi Kairui,
+> >
+> > We have tested this patch series on Android device under a typical scen=
+ario.
+> >
+> > The test consisted of cold-starting multiple applications sequentially
+> > under moderate system load (some services running on the background,
+> > such as map navigating, AI voice-assistant). Each test round cold-start=
+s
+> > a fixed set of apps one by one and records the cold start latency.
+> > A total of 100 rounds were conducted to ensure statistical significance=
+.
+> >
+>
+> Hi Xinyu and Kairui,
+>
+> We have test the patch under a **heavy** load benchmark for camera.
+>
+> > Before:
+> >   /proc/vmstat info:
+> >     pgpgin 269,224
+> >     pgpgout 226,078
+> >     workingset_refault_anon 237
+> >     workingset_refault_file 27689
+> >
+> >   Launch Time Summary (all apps, all runs)
+> >     Mean 868.0ms
+> >     P50 888.0ms
+> >     P90 1274.2ms
+> >     P95 1399.0ms
+> >
+> > After:
+> >   /proc/vmstat info:
+> >     pgpgin 223,801                (-16.9%)
+> >     pgpgout 308,873
+> >     workingset_refault_anon 498
+> >     workingset_refault_file 17075 (-38.3%)
+> >
+> >   Launch Time Summary (all apps, all runs)
+> >     Mean 850.5ms (-2.07%)
+> >     P50 861.5ms  (-3.04%)
+> >     P90 1179.0ms (-8.05%)
+> >     P95 1228.0ms (-12.2%)
+> >
+> > --
+> > Best regards,
+> > Xinyu
+> >
+>
+> We evaluated the backported patches on android16-6.12 using a **heavy**
 
-Hey Pankaj,
+Hi Zicheng
 
-Yes you are right, we need to call folio_wait_writeback() and mkclean()
-for partial or complete writes. However, clearing of foliodirty bit and
-accounting shall only be done when the complete folio becomes clean, and
-hence we call folio_clear_dirty_for_writethrough() only for those cases.
+I'm not sure how you did that, this series applies on mm-unstable and
+there is a large gap between that and 6.12.
 
-I will add a more clear comment for this in v3.
+> mobile workload on a Qualcomm 8850 device (16GB RAM + 16GB zram).
+> (vmscan code in this tree is largely similar to v6.18)
+>
+> The workload simulates real user behavior by sequentially
+> cold-starting 23 apps. For each application we perform the related
+> operations (short=E2=80=91video swiping, background music playback, and
+> navigation). After exiting one application the next is launched
+> immediately in 1s. After all apps complete, the camera is launched
+> and a photo is taken.
+>
+> Baseline and patched kernels were tested under identical conditions.
+> (with a fan kept cooling the testbed)
+> Full system traces were collected for three runs in each
+> configuration, and ten additional traces were recorded for the final
+> camera launch stage.
+>
+> Overall application keepalive behavior shows no noticeable
+> difference. However, we observed performance deviations in some
+> memory=E2=80=91pressure scenarios.
+>
+> Before:
+> Meminfo (100 ms per sample, average result)
+> MemAvailable: 5420
+> MemFree: 1421
+> Cached: 3862
+> AnonPages: 3804
+> Dirty: 62
+> vmstat counters (last sample)
+> pgpgin: 3,701,869
+> pgpgout: 3,545,058
+> workingset_refault_anon: 390,967
+> workingset_refault_file: 79,927
+> Total app launch time (23 apps + launcher =C3=97 23): 7702 ms
+> Camera launch time: 684 ms
+>
+> After:
+> Meminfo (100 ms per sample, average result)
+> MemAvailable: 5058 (-7%)
+> MemFree: 1382 (-3%)
+> Cached: 3213 (-17%)
+> AnonPages: 3637 (-4%)
+> Dirty: 35 (-44%)
+> vmstat counters (last sample)
+> pgpgin: 5,752,429 (+55%)
+> pgpgout: 3,668,788 (+3%)
+> workingset_refault_anon: 1,492,964 (+282%)
+> workingset_refault_file: 590,505 (+639%)
+> Total app launch time (23 apps + launcher =C3=97 23): 8872 ms (+15%)
+> Among the tested apps, 11 improved while 14 regressed.
+> Camera launch time: 980 ms (+43%), which is also the stage with the
+> highest memory pressure.
+>
+> From whole trace analysis, direct reclaim appears to run slower.
+> Before v.s. after
+> total duration: 11659 ms / 57006 ms
 
-Thanks,
-Ojaswin
+Being 5 times slower seems really horrible, but I'm not sure what is
+causing that as there seems to be very few dirty folios in your test
+case. I knew there are some vendor hook for android, and since now
+MGLRU is using the common routine, so these hooks are also affecting
+MGLRU but the modules ain't aware of that which is causing strange
+behavior?
 
-> 
-> --
-> Pankaj
+> total reclaimed: 3953 MB / 6344 MB
+> speed: 0.339 MB/ms / 0.111 MB/ms
+> times: 16117 / 27562
+>
+> The performance might behave differently on devices with smaller memory
+> (e.g. 8=E2=80=9316GB) compared to servers with 100+GB memory, or under
+> moderate to heavy memory pressure.
+> Could this be related to patch 09/14[1] which removes folio_inc_gen()
+> when ` writeback || (type =3D=3D LRU_GEN_FILE && dirty)`?
+>
+> Any comments or suggestions would be appreciated.
+
+Can you share the code you actually tested or maybe test in on
+mm-unstable / mm-unstable + this series? Or how can we reproduce that?
+Or maybe some full log or dump of lru_gen info and vmstat?
+
+>
+> [1] https://lore.kernel.org/linux-mm/20260413-mglru-reclaim-v5-0-8eaeacbd=
+dc44@tencent.com/T/#m568eba84d35d8d5ff519d3e29237de6d64f67659
+>
+> Best,
+> Zicheng
+>
 
