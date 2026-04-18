@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E66A6F99C7C
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 10:55:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16678F99C7C
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 10:56:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BB826B01F9; Sat, 18 Apr 2026 06:55:58 -0400 (EDT)
+	id 768B36B01FB; Sat, 18 Apr 2026 06:56:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 545186B01FB; Sat, 18 Apr 2026 06:55:58 -0400 (EDT)
+	id 6F3546B01FE; Sat, 18 Apr 2026 06:56:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E7146B01FC; Sat, 18 Apr 2026 06:55:58 -0400 (EDT)
+	id 5E1D36B01FF; Sat, 18 Apr 2026 06:56:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 260066B01F9
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 06:55:58 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC56C1404CE
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:55:57 +0000 (UTC)
-X-FDA: 84671371554.15.BB0CD06
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1C96620009
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:55:55 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O5z+Rrvk;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 484976B01FB
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 06:56:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F3F0B92C5
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:56:03 +0000 (UTC)
+X-FDA: 84671371806.26.89C5D77
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8A33D80007
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:56:01 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fU5Wkbz9;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776509756;
+	s=arc-20220608; t=1776509761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aPhewVopcZgyuNnvZor9eUMfbYUXNp7puYe2VCiWTAc=;
-	b=NdC1Sb7c2iYRb6NGqbjUaWXTLUIfKlTE8aIv2lT/sa2m5JaWMS+0tfPc83suwID+VqDTcR
-	YN6uuqcfUvVT8455ZUTgRO8HvzASzoviQMxR5HgBpRY1ISylQI0mvOdMTdknfeSw4G4Tib
-	8MEJbQ2eBq2FeWMUiRfIat64sLsqJyg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776509756; a=rsa-sha256;
-	cv=none;
-	b=M4/xRYdMuZM4MyTjXYFEx3wq/09XbEs3U0A2c4wtJzp2/ZLH3OCz5Ea+552xhAFFkUFmQV
-	uqrVFM3/ySFX3gZUj3pNul1l/5HsU0mbWFzMBZSs9i8l0bSvBZgsZ/nOccIfiRMJIc+p/u
-	Nwm+OPVUofMhKTNqOSTi8afjFSMX7f8=
+	bh=Wx2x2JXLBBS2O+yAPtpskFQseB8I8qXGfT1HXmKX5cs=;
+	b=ZyQCV5PkZM7YHFZ0OfjMCyiPUZ28jIgWV8CefNAMKH0PPJG1TygDj6Wlq044CzF6rqnCWV
+	GKJVIiojRuRKihrEnwjbq536d3k1jkdxA+Z5MIHKSVvyH7v7WtvUESw6YurHjugeFZ+qwa
+	jGM+Tq4r1Ys5kASxWzCeAWzHPpp+1d4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O5z+Rrvk;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fU5Wkbz9;
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776509761; a=rsa-sha256;
+	cv=none;
+	b=LCifk7O0LNKVMseBlKXZy3zshM98YPV+bCnID+GaT1LqgbVhRMakEvrahdZlde/h7sO4sK
+	+Spn7eDp8IpFXyH/yJVFbVpLOqiBDAxBJQvrUUGy2zj3E2OUk30SCc4HtOveBYFoTnjh3q
+	m87oD9+Kb8IQAOCXBPfOV1ju+buggTU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCC0D43376;
+	by tor.source.kernel.org (Postfix) with ESMTP id 144B660180;
+	Sat, 18 Apr 2026 10:56:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212E0C2BCB5;
 	Sat, 18 Apr 2026 10:55:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F184BC2BCB3;
-	Sat, 18 Apr 2026 10:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776509754;
-	bh=9Wa6cmQ8SR+FAIiSEI++oU+tCSCF1FiRlP76nYdhufU=;
+	s=k20201202; t=1776509760;
+	bh=a4vQJGv5oSnYFOAuEaEUtLL2TvNcolXC7zAnBLawpZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5z+RrvkWvpGRd2Oi606nTqAMrStsgmLQogJFcc14oNjX4NOgarAONnFUn1ckpEKM
-	 UHHWJ9WIebiENCdRnp00a03rjG5aGYat7V5qv8Sg+orergh+YDnTclSaqBQbmaRIup
-	 cPHcSHiqOSGcwYdjKzNcvF4FDvTCnYsn7Kc1XXNfvepQWFZn/kxAOrpLN7nLPBZVfN
-	 6Fz8uDbJ+86k/C1x9VkeVcJm+pB7NvkfgYu+qiRVAmsk2o+9yKgIG2VvYlq/Nm43ls
-	 k1WNUOhqGDySXcIGZlIpIyxnib5h5wlHaJVSMllrnUXwz5URq0KdvKHpxkllNi/nZw
-	 s1XvwDbXB6SgA==
+	b=fU5Wkbz9Sja6783ANt39zjljXRh68I8sQh4T5JbPnOi4qhQemlSPv0o9OMbFO447h
+	 RWhwPCIk4pfY8epTLLPBtMea9XNdF+gamIZqp3rcgUrVfLZDR7SYMM4XMAkrd9S58R
+	 tPRj63i2JmHfnJ6Ojwcfo5JtbghLxY+JApLP8qkTYdwkdTvx9jVagYDCmFVtrg8NHx
+	 sUNGaPpQvUdtYus0fKiNYUeRKbSy6PRs/6W6LFFzRiKk0XOpcTnocl2HxPs5nX52OT
+	 wW1njXV2z5eBHq5H8yeRkVRmYEJAnC9Z1A+niQzgD2pzAj6s436a3SO1EaMsVusZMm
+	 mgmJHq+qGq4+w==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -90,22 +90,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 01/53] selftests/mm: hugetlb-read-hwpoison: add SIGBUS handler
-Date: Sat, 18 Apr 2026 13:54:46 +0300
-Message-ID: <20260418105539.1261536-2-rppt@kernel.org>
+Subject: [PATCH v2 02/53] selftests/mm: khugepaged: enable collapse_single_pte_entry_compound for shmem
+Date: Sat, 18 Apr 2026 13:54:47 +0300
+Message-ID: <20260418105539.1261536-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260418105539.1261536-1-rppt@kernel.org>
 References: <20260418105539.1261536-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wod3mc6ip1iq18rjhj1ibq95q6def3r5
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8A33D80007
+X-Stat-Signature: 88gmxeyscu4rbyskugri8hujfwh79opw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1C96620009
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776509755-228601
-X-HE-Meta: U2FsdGVkX1+bqwDf0B6HZRZh28xiZmw2T0UeTnV1xaoFp46xkLm4QWbN3ozxNLZKHJBRFh6jLIfNHezCePPTSi9quMCHaSp9SkDLWEFmlGGKa0Vjh7m+JZcqEAtLz5rts6cvTVbQ0LTJKSzVzGgg9nT5dHVeIWrmxYYxJuvgclUWBs9+uenLNbZcusd8jH/HRZqiHEP6PONZUfstICG8eaLrzZYJTh4Dg3VnuEmaYl83WOHBgrLOOL3HVl0OVFVaSyHUQu4s/Z47R0cTcxdDBEqd7HVMG75Tb4JhpzfitVt+rIIFM0HCHIBauPl1NaJYmoT0+vrGAgEJWxzjp2ndYTsrOVzpu+j+PBwMh0CjjPxjgwcX1yw+P89ddFt34pplaQHNJL3l2ddUEGE2zpDB+eXa8glqeDQEOpryOIrcNaKOzHKfnZfSQSNamCatPA0JPX62sBQ9fwk32P/2Ln3M8lvVU10lFSaYFDhnd0SHauismkC4oeBoAkbLXxoOUrkqZSTcc2N06eQS2GNohzoxYHTAbodsYZmw7mip6i5NXOKeV82bl9qM6taHxJCHVYVxqa+4Zrdj0kTza0GK6on4bslgKhbliQOZfBrfQANY9kZwR3ZBmeQJsiro21lktw8YSCRnjoberledCLyUQPaoBwgUR0HQA9BLy1RObq1bkxTdadIpcXTSsvsQJLodJk99DepFPu3ATJi+s4CTojQJ+VoS66qp0OjcHXeWzf7tPyUOEvjVc2f19+LlszfndIvLVKVLnyxwM1delnSkgVQOrAWWV9AgRNGq52sICvQhXqCQoQMpX8P6S6OqicWmOeS5t7QAuhIAEceVO7XRv/K4yPTc9hKAV2Eh5NcV8K2HCTzd2ZhUmK1dIL2nl0NFgrQmVGUUPPNEzUcIQYA/iHxrQh192UkodiHVEqvPgqljjuxoLrgzgdG0Sx8htE8DBoC5eCc8ZGREohOyp7W57rP
- wahBIpHM
- YoG8K2jnW9FkYmpmqKSS3AU6TrMK33iZDfmmep5tajuWEgmXxEP13l2dgzGPMDX3LYUwHuQVCYuzvSGTq8m5Tk1XlbdS1LU+g8IdX4xfbelFYTnxCWBCVx9mtCl0NT62vCXd2pDRZERbgX/lynpk8I+yd6I+8ISIK0sV0qdz7zXGnRgMZ4WMPJbTzVlnD6+bpBWBc4qs6uLOOME7v623Yku6CWC+wPx3hmxS/YkATycu2r3JA0Cxg4sh60J/tRWA2PW722sChKCGP0/E1lIGiNzy5ZJCu/P866gfO
+X-HE-Tag: 1776509761-427555
+X-HE-Meta: U2FsdGVkX19ZE9dy7fjILpnFO+jrISXTEoj+S0GUQ/Vo+Ii5UTpdQ9PnBR6S7j7YsEXgOiS7Ef0DbK7QM/EDbgoLnSUR9g53VfYXf5FrPlbHS82Kd8FCzIzEW/NqmssKOcGDseMxRlZoLfva/SNRvX/2AZ84NyQcohj0JzfFq/8L+YYjmsaGpd6AnjgdYGejydkXefzETEgPybhZt610AzcK94VkAXfqVp0AWLiuSMdllMWPYc/oCLBIJMQ58Croz39n3u+F55lR0tZzOPKoj0VUQOYT/NbIFFCAupDVvSR0DW7GxSjMfwdsmRPRr9vbx6Z6TSdm0hhzuy/Q7BJT3KK/93n80pHa6ooksx2AAbEAU3RXG0zR799X8hbpMGBPEZ+BN46IhvCKjgzRVYR9m/UG58/A54+kqf2pYgWX0UEzrJk/IS0miW35WNxSsukLEDaLNAyXPAdsEmJs+kN1XzcvuUkrrzUYNqnUUMG3oaZo6BGcdmRhDomPO+MuOp2AVlQLZT+PBxwg/9O/7yKgPnZEx4sLDmUAkq/Ymt19mzN4JKDnaq2fkxN+Vi99kMlea+8G6PSeUHota16ojKsEyDbh1JW7vY1m/5urkXr1rP0d/9jlNg7QDpcFVhb+DZ2kp/ETqZvt5KxXiCDi/vxHWm0fbLKamSl8QBv8Gh8OyId0Vifn1wZZi0N6SdgG26XhN1XUh2Ypq8y/u5wjv0Jx+L7C81XJnis4lKcSmQiwXk6paQVcl049S6rgqAc+IU8lQU2x7ynVpsqL5/TT9xIUcto0aKSLZFRKdV3Pmp7WK15BIDF4JL1X+my15qP8NeSRvtF2ueIMDNEb0FQGiy/u6BdDpHk3eLbY50sZNVz3cdqyxd8UaUmfMWJRW550OXgbb0FDjMRFYpBdhNINiYhUlnbrzSlU9V19T8Y/f/mWBOuBuJq3Vt1IL4XPeS7cF4nJjEtyP4oUFESV3ccMste
+ GqBv57TF
+ ImiE9tuiHxGKu1yO78mo6REJozCQ7SetE1ytFpP/DrY4+dbQx70F4juE2NmdED+p3DSE4egaB+f43HlO+fIhzoJhwA3Lmznnfz6xvsjQmBqVK1dpgilQVW6nl+ibtOiqBGmdDVTTGJIu6HkvY64MzZYoiHCdFLwQXt8r6bVCo9+znt2wXgI2TMstRGqChn0PwAgsjMyjB87TiPBdR3OH63pAobL9juEH2DfXKxsqGrnOVvV5FzrKdQStEmgcoLUR7d9sSBdj5oZACvXzrlSLRFXV3/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,50 +115,66 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Access of poisoned memory causes SIGBUS, which terminates the
-hugetlb-read-hwpoison test prematurely.
+A comment in collapse_single_pte_entry_compound() says it can't run on
+shmem because "MADV_DONTNEED can't evict tmpfs pages".
+But MADV_REMOVE can!
 
-Add a dummy SIGBUS handler to allow the test to continue regardless of
-SIGBUS.
+Use MADV_REMOVE for tmpfs to evict pages and enable
+collapse_single_pte_entry_compound() test for shmem.
 
-Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/hugetlb-read-hwpoison.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/mm/khugepaged.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-index 46230462ad48..6bbf15f78061 100644
---- a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-+++ b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
-@@ -10,6 +10,7 @@
- #include <sys/statfs.h>
- #include <errno.h>
- #include <stdbool.h>
-+#include <signal.h>
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index 3fe7ef04ac62..e6fb01ca44ed 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -783,20 +783,17 @@ static void collapse_max_ptes_swap(struct collapse_context *c, struct mem_ops *o
  
- #include "kselftest.h"
+ static void collapse_single_pte_entry_compound(struct collapse_context *c, struct mem_ops *ops)
+ {
++	int advise = MADV_DONTNEED;
+ 	void *p;
  
-@@ -261,6 +262,11 @@ static int create_hugetlbfs_file(struct statfs *file_stat)
- 	return -1;
+ 	p = alloc_hpage(ops);
+ 
+-	if (is_tmpfs(ops)) {
+-		/* MADV_DONTNEED won't evict tmpfs pages */
+-		printf("tmpfs...");
+-		skip("Skip");
+-		goto skip;
+-	}
++	if (is_tmpfs(ops))
++		advise = MADV_REMOVE;
+ 
+ 	madvise(p, hpage_pmd_size, MADV_NOHUGEPAGE);
+ 	printf("Split huge page leaving single PTE mapping compound page...");
+-	madvise(p + page_size, hpage_pmd_size - page_size, MADV_DONTNEED);
++	madvise(p + page_size, hpage_pmd_size - page_size, advise);
+ 	if (ops->check_huge(p, 0))
+ 		success("OK");
+ 	else
+@@ -805,7 +802,6 @@ static void collapse_single_pte_entry_compound(struct collapse_context *c, struc
+ 	c->collapse("Collapse PTE table with single PTE mapping compound page",
+ 		    p, 1, ops, true);
+ 	validate_memory(p, 0, page_size);
+-skip:
+ 	ops->cleanup_area(p, hpage_pmd_size);
  }
  
-+static void sigbus_handler(int sig)
-+{
-+	printf(PREFIX "received SIGBUS\n");
-+}
-+
- int main(void)
- {
- 	int fd;
-@@ -273,6 +279,7 @@ int main(void)
- 	};
- 	size_t i;
+@@ -1251,8 +1247,10 @@ int main(int argc, char **argv)
  
-+	signal(SIGBUS, sigbus_handler);
- 	for (i = 0; i < ARRAY_SIZE(wr_chunk_sizes); ++i) {
- 		printf("Write/read chunk size=0x%lx\n",
- 		       wr_chunk_sizes[i]);
+ 	TEST(collapse_single_pte_entry_compound, khugepaged_context, anon_ops);
+ 	TEST(collapse_single_pte_entry_compound, khugepaged_context, file_ops);
++	TEST(collapse_single_pte_entry_compound, khugepaged_context, shmem_ops);
+ 	TEST(collapse_single_pte_entry_compound, madvise_context, anon_ops);
+ 	TEST(collapse_single_pte_entry_compound, madvise_context, file_ops);
++	TEST(collapse_single_pte_entry_compound, madvise_context, shmem_ops);
+ 
+ 	TEST(collapse_full_of_compound, khugepaged_context, anon_ops);
+ 	TEST(collapse_full_of_compound, khugepaged_context, file_ops);
 -- 
 2.53.0
 
