@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D65DF99C7C
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 10:56:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB221F99C7C
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 10:56:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E21A46B020C; Sat, 18 Apr 2026 06:56:52 -0400 (EDT)
+	id 3E92D6B020E; Sat, 18 Apr 2026 06:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD1E86B020E; Sat, 18 Apr 2026 06:56:52 -0400 (EDT)
+	id 39EB56B0213; Sat, 18 Apr 2026 06:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC1986B020F; Sat, 18 Apr 2026 06:56:52 -0400 (EDT)
+	id 288E46B0246; Sat, 18 Apr 2026 06:56:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B87506B020C
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 06:56:52 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D6F41A0474
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:56:52 +0000 (UTC)
-X-FDA: 84671373864.16.BB93991
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A32E818000A
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:56:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NAQvloRX;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 140F06B020E
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 06:56:59 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D569113B006
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:56:58 +0000 (UTC)
+X-FDA: 84671374116.20.70020F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 26A071C0002
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 10:56:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=njfDby3R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776509810;
+	s=arc-20220608; t=1776509817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v/D83BcoXHYq18EoAAn29lhJ59t7oTfCwcYKI4oYHfc=;
-	b=zTYE0XNoSubEfbMwbeud/LdWrWOarsqQxLA4M9IygZ7+4z23F9AP8OjKoeQppWk9A0lT5V
-	26c2Cfh2NGdGazIWVkBx+C82MQnvLEW1giLA7LK1a9uYfXHk+CHloj+PiUbjFv3TdoBqwi
-	zBP3BRO7+GWae4X1PHwxLWxSkh6zsqE=
+	bh=wq7KOyoGG5rSzdZE/i533JG3hRgpPVpE76XvvG6Y/gU=;
+	b=ZAg6YOu+LKXnUVnGkAMVppc8SYR3bt5r//9leKWq4PSZaNYkgrwrD7VQld54dnWiWbHXsy
+	AUH+wUNPfb4HNo9pSoGEzRc7ZoWGV0q47JJRKxs7kLWYA86wdMrEHCDxK2cnWG6vB8Zk9f
+	8ZTaadZmeghT7HpFRBtdk5Zam4BLQzA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NAQvloRX;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776509810; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=njfDby3R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776509817; a=rsa-sha256;
 	cv=none;
-	b=2ey/8wSSOIgH0M1c+qX+Ar9zpBJ/QK53b7PeiqUi4B/rsSJUo3tXUK4uomur0I6dL8azb4
-	El4t5BZZO+0kfnZlPp+mgnoEfih8ynurMmriR1XhR3pvhBlHnD5PRZGGMinFbT8WqgJm/h
-	oTPMBdIlK/mb8n9i1bpLPyNjXJzOVNQ=
+	b=wSLDl2Np0uLzVYkEqdp7PLNkuJPjdbC0Hr9q0dmClcwfai8WLd7LUcI/4C2qgq4cXgBvAB
+	bzJ3shC301bzGUrU+EITBrNRkKGRcMfEpYBiVRF8wDOtYFmTGPWkOwOQL+PW8NUNoKRBnv
+	ysN6Of1IIqejulm781Roi1TEaSnVuOw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 34A3F60138;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2DBD9435C8;
+	Sat, 18 Apr 2026 10:56:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D7CC19424;
 	Sat, 18 Apr 2026 10:56:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432E7C19424;
-	Sat, 18 Apr 2026 10:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776509809;
-	bh=sFWBiamU2q7m5/n7ztcBEvw8CqsCL86YPiSGuyhoTb0=;
+	s=k20201202; t=1776509816;
+	bh=oZxt8zBBbGTvdYs1lP1r+GpZXATmjus45JMc8292lqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NAQvloRX0/uXa6RMA9QnDw3IMSL8TO6Abaow3+hJzUQ0wuS/8WzERNsHq+nMLyMcz
-	 G89Ww2hLRA/9l1w/LK8EigH/mD9Vc7jWSHG/fSwwdsgnjRn03xOib/ggyqHEJwpz+8
-	 j5qW0hTXkRRbm1k2KoUrXkb8Rn8pYWXsxi7a/IyvCuDdvqeB+Tzg9oH8E6phhgWAhl
-	 CzLlW2AWi3zfQ6cuWjIkCIWfH9AqXlQLarG841R1T1pV5871XGOeASRyojqfnII30K
-	 fyYePZ81i8NC6V9tUC6ec8JeZW20+TIIsKf16FHjfOIX+hReM1CKUs53iFpjB+7Sjb
-	 g2/YCGjE0lZKQ==
+	b=njfDby3RQ4O+Kd7He1QTqhtFGrrrVM6NmRYHnt7tjUqXmGtdSNyLDpoWfRLREWrRS
+	 OKHxVLXUosEkc6DjnM6p92gsyjJYNH3fegI7DUk0+IkpJ1nDjehJxC4PsHhyKBV76E
+	 IFt9t/XyI84K4dG296e0hNMCV+DXuw1wN8siXSl1BBu7IgAdHmyue3BKMrHMEmVDM6
+	 yMubT1gNT99Vg2Y8Okmz35kX4gmZRTH8URhhLUZfSQkpJ79ySR+zudwoSy9XnhpNNp
+	 cyD4qub05ar2MaGznUtQq9znGgVMT8dwnJ/eOHObXIXz1KPRsuH2prtQhgepsYBYTM
+	 ZxOw0QpjZ1ynw==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -90,22 +90,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 10/53] selftests/mm: hugetlb_madv_vs_map: use kselftest framework
-Date: Sat, 18 Apr 2026 13:54:55 +0300
-Message-ID: <20260418105539.1261536-11-rppt@kernel.org>
+Subject: [PATCH v2 11/53] selftests/mm: hugetlb-read-hwpoison: use kselftest framework
+Date: Sat, 18 Apr 2026 13:54:56 +0300
+Message-ID: <20260418105539.1261536-12-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260418105539.1261536-1-rppt@kernel.org>
 References: <20260418105539.1261536-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pjpirg71ab366mfbmn5hp8nho6yatr95
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A32E818000A
-X-HE-Tag: 1776509810-127453
-X-HE-Meta: U2FsdGVkX19aBjRXaotrvTpFCqoH4EnQ88oIcqz6iFqxjiVHREy8KVK8CA+yhAh0eBI2cqvdP314XdxjIdANtPfbkrtqJz5jFBm2zAoZKN3GnMcxdP3LWRx8DG0fdOXlAlrKOZNG7Y05Y0cz22G2xEE0OjxbxJfdcjfLTGuto/Kh3WsM5oczNRmlXO+VpwZI3lpoSL6jHgm2TdQxRyzKWaDeBoJDDLdtRdNI2bquVKia+fN3/Lr+l0GXk3hDOtJECAe9lh2B4wRH4eAB6muAUsnrWB4fRmXyHIcyYOuyvmoGuUtNAJvPqd0tr4+Q7S5IX6ntBmRoBI8/4oFe/NxWBk/PVxXwRHzFtL+LlxdOmRolYkD49CI2M/fW+WSioxU9tpfEA75fJqn3KAHfRkEtRoptU4pxaxKSrrJMx63ZUkRsy3Lisn9Bf/hy6hLbkhGbJtOFwbizfNdLHluQ86POur/fHlvDc3bVtcX/FtU/zsvifs7bMVRP3hM30ZYG1R15rLeXwY09MZIWxlNyjbVNR4mYrL2MOwBUwpTd0yDqeBFO3U20HzD8fKVBZWu1euRNQ5h+sJNtPe65nuHrCIAnkze/OnNTebEd3c5MMIKgjlQ1G/So2j/A9p3gao9nSzl0EjqGRb4pEb1Nr32dCMja1Y8kFcSYX/agd9fD4gRIcNrs+eRjrm6P1FNkaDUHma6wr51U92H0mEeV0EJIuqvudxkgqGHG3bXpajstMpo+MqMRz4RSi5afKmnPVX4PAPawTt4T4UdPSWaFNIPsPQMAHaeO3y3PqG+7d0Ej4Px3znnH1GlLVANWqNwpiYL+TRonwb9xh+L2NO7r8dTAj5hqeByZfOHeODAB+0zxVWHh7MIkTFEK5j1kb2omN6eNHYHhGkhA5cKEl0jPiKU24wZD1ltYYFSHgb91ecFx3Z0qRn9JM/sr/RAAEwKTp4QaLPD2wpWyjjBM8sMrENvH9WW
- 1O2VU8ZU
- lTgWY65jk3l+DWEgfKXT83tE3QKX8tW1NX7w1OBmT2Htx7I+kbVJNQmscuPo7BHyLN2gk2C+WLc+cGdOgcqw9nMpU2nkt4fJjshqkVTIOXoVc7KOOh8GL/4q5Osso63Z4im0JOMdGY6neE20O1Fgpy3EbnmhDF8p3w+mf7/fMRFOW60KA/zl2/H0VZ6gKSYevJV8C028nEKn8w76wKytEXBx6tKaeYczvdZIQvIwjnt60vrfjpz3ubnhvHBfb6lgN+iKPQL6uPGBWbtbjB3ohs29pfA==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 26A071C0002
+X-Stat-Signature: 875dui8gt5wpo5jn7z31fw8y8hg1844o
+X-HE-Tag: 1776509816-417117
+X-HE-Meta: U2FsdGVkX1+XCypliZn7KIKADaLw40R5vCynIVxc+A/jw6tIpe+Ss6qC2Y1F0bwvR8tjCLFo77IpsTh+topXNgLhWeYeUdYRwNcLgbGIG5ByFF1fFX53Wjxmq/RIB7Y/73d+zAeRrbBDe8mD3nnd05YlP2IoepdiinXxIBWkwvKkL/GifSbl2BQsr6NJEWGh25fe0sHheYfHt7Mjiv2ARLOtjqRn55G8BGZSTc7TqJPckPOLIWqeqJ20ttSRW3e+xqSk2mSUb+TAFPm22Q5gDE/pG+Vxs+Dh66OsCYpuQSKj3jqXxIx+EoSnzTnhcWb386jW2nlo8OTwd8CO5Q3Vxug+gLAPt3ZhMp/0GwrhvfwKW9gnVtPouNcqinsPSTEhB4grBTVyXHGOM6SMOGCyDi4x4PW5RkHH4KgDD6khLDEcQCYapRkyW+5fUgWuGfD/7gNcvD4Kn797+Z4vC3Jk1ZjW4UxoPixt8a+J9P+FRv5FZNEfUIX85iifmAHPoNOCgVkZPYu6HYZghnqMrB2b2TUlFqkRQbv9iC2G6YshXd1FlmspjkZb/sFEuoqwqrM+4BBm7l9SDkg79Lespv4JClDh89W2+Cgy3Sv7cUG48cN4QQpVCYAthBzz1JZt0Wumsuqbd156uatJEMsKDa5MK63sqUn88duidL345O4PWObQ+rrYSnDEAIUCieVEOYAhEKFSs9CFJDpmRrIw+2ucfi7wi/OFhOai3bf0TCGi6LZ3mLVf48BRDQeJz1ALx5uM1Eovc4v5Y8/bmZEtwaM1nnj/D9gzC/Kagi2JHUgk0q79BIy5TlW4jwFsYpJhsdVZV2QeCs61op1a5cwNvCcJZowiOpbexmTcXNA+ugYC5/a3TWEOyCanq42O1w932Ajaw0V1htj69wTzyLWHNzuhsKo6AYLlXNl1k9AV+6NC+yYqM9zI+E7FTF4cE7phEgHXCyFyXpVMVYmYM4dWGkb
+ MNvXjSBZ
+ W5R10EuPtcHd00Haj94VFsGe3NwT4/jLPyIe0iBbQKSYfHYUj/Pm2FY6xK1+92ifeXbt0WKvniMmTrxHnwJsv/KbyIkfFSS9jvUHOGcAUaV/wvd6Ec0IRMkAFVBd8Uxz2i/V9heieDfpNFeYwIGHoxDjnQ9v4BKS5nZ9xk65K5Mx/EkuAJiqu199AtmrIa7nT4KVPkPQo/AnlOxVqXzUVc5HpHkgUNWlXUE+V4IfH4xFbpNgnneoAGgR6/goHz+XEMf2f
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,71 +115,300 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Convert hugetlb_madv_vs_map test to use kselftest framework for
+Convert hugetlb-read-hwpoison test to use kselftest framework for
 reporting and tracking successful and failing runs.
 
 Reviewed-by: Mark Brown <broonie@kernel.org>
+Reviewed by: Donet Tom <donettom@linux.ibm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- .../testing/selftests/mm/hugetlb_madv_vs_map.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ .../selftests/mm/hugetlb-read-hwpoison.c      | 118 +++++++++---------
+ 1 file changed, 57 insertions(+), 61 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-index efd774b41389..c7105c6d319b 100644
---- a/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-+++ b/tools/testing/selftests/mm/hugetlb_madv_vs_map.c
-@@ -25,7 +25,6 @@
- #include <unistd.h>
+diff --git a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+index 6bbf15f78061..01cd5465e0f8 100644
+--- a/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
++++ b/tools/testing/selftests/mm/hugetlb-read-hwpoison.c
+@@ -13,9 +13,7 @@
+ #include <signal.h>
  
- #include "vm_util.h"
--#include "kselftest.h"
+ #include "kselftest.h"
+-
+-#define PREFIX " ... "
+-#define ERROR_PREFIX " !!! "
++#include "vm_util.h"
  
- #define INLOOP_ITER 100
+ #define MAX_WRITE_READ_CHUNK_SIZE (getpagesize() * 16)
+ #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+@@ -26,17 +24,22 @@ enum test_status {
+ 	TEST_SKIPPED = 2,
+ };
  
-@@ -86,12 +85,14 @@ int main(void)
- 	 */
- 	int max = 10;
+-static char *status_to_str(enum test_status status)
++static void report_status(enum test_status status, const char *test_name,
++			  size_t chunk_size)
+ {
+ 	switch (status) {
+ 	case TEST_PASSED:
+-		return "TEST_PASSED";
++		ksft_test_result_pass("%s chunk_size=0x%lx\n",
++				      test_name, chunk_size);
++		break;
+ 	case TEST_FAILED:
+-		return "TEST_FAILED";
++		ksft_test_result_fail("%s chunk_size=0x%lx\n",
++				      test_name, chunk_size);
++		break;
+ 	case TEST_SKIPPED:
+-		return "TEST_SKIPPED";
+-	default:
+-		return "TEST_???";
++		ksft_test_result_skip("%s chunk_size=0x%lx\n",
++				      test_name, chunk_size);
++		break;
+ 	}
+ }
  
-+	ksft_print_header();
-+	ksft_set_plan(1);
-+
- 	free_hugepages = get_free_hugepages();
+@@ -59,8 +62,8 @@ static bool verify_chunk(char *buf, size_t len, char val)
  
--	if (free_hugepages != 1) {
-+	if (free_hugepages != 1)
- 		ksft_exit_skip("This test needs one and only one page to execute. Got %lu\n",
- 			       free_hugepages);
--	}
- 
- 	mmap_size = default_huge_page_size();
- 
-@@ -100,10 +101,8 @@ int main(void)
- 				MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB,
- 				-1, 0);
- 
--		if ((unsigned long)huge_ptr == -1) {
--			ksft_test_result_fail("Failed to allocate huge page\n");
--			return KSFT_FAIL;
--		}
-+		if ((unsigned long)huge_ptr == -1)
-+			ksft_exit_fail_msg("Failed to allocate huge page\n");
- 
- 		pthread_create(&thread1, NULL, madv, NULL);
- 		pthread_create(&thread2, NULL, touch, NULL);
-@@ -115,12 +114,13 @@ int main(void)
- 
- 		if (ret) {
- 			ksft_test_result_fail("Unexpected huge page allocation\n");
--			return KSFT_FAIL;
-+			ksft_finished();
+ 	for (i = 0; i < len; ++i) {
+ 		if (buf[i] != val) {
+-			printf(PREFIX ERROR_PREFIX "check fail: buf[%lu] = %u != %u\n",
+-				i, buf[i], val);
++			ksft_print_msg("check fail: buf[%lu] = %u != %u\n",
++				       i, buf[i], val);
+ 			return false;
  		}
+ 	}
+@@ -76,21 +79,21 @@ static bool seek_read_hugepage_filemap(int fd, size_t len, size_t wr_chunk_size,
+ 	ssize_t total_ret_count = 0;
+ 	char val = offset / wr_chunk_size + offset % wr_chunk_size;
  
- 		/* Unmap and restart */
- 		munmap(huge_ptr, mmap_size);
+-	printf(PREFIX PREFIX "init val=%u with offset=0x%lx\n", val, offset);
+-	printf(PREFIX PREFIX "expect to read 0x%lx bytes of data in total\n",
+-	       expected);
++	ksft_print_msg("init val=%u with offset=0x%lx\n", val, offset);
++	ksft_print_msg("expect to read 0x%lx bytes of data in total\n",
++		       expected);
+ 	if (lseek(fd, offset, SEEK_SET) < 0) {
+-		perror(PREFIX ERROR_PREFIX "seek failed");
++		ksft_perror("seek failed");
+ 		return false;
  	}
  
--	return KSFT_PASS;
-+	ksft_test_result_pass("No unexpected huge page allocations\n");
+ 	while (offset + total_ret_count < len) {
+ 		ret_count = read(fd, buf, wr_chunk_size);
+ 		if (ret_count == 0) {
+-			printf(PREFIX PREFIX "read reach end of the file\n");
++			ksft_print_msg("read reach end of the file\n");
+ 			break;
+ 		} else if (ret_count < 0) {
+-			perror(PREFIX ERROR_PREFIX "read failed");
++			ksft_perror("read failed");
+ 			break;
+ 		}
+ 		++val;
+@@ -99,8 +102,8 @@ static bool seek_read_hugepage_filemap(int fd, size_t len, size_t wr_chunk_size,
+ 
+ 		total_ret_count += ret_count;
+ 	}
+-	printf(PREFIX PREFIX "actually read 0x%lx bytes of data in total\n",
+-	       total_ret_count);
++	ksft_print_msg("actually read 0x%lx bytes of data in total\n",
++		       total_ret_count);
+ 
+ 	return total_ret_count == expected;
+ }
+@@ -113,15 +116,15 @@ static bool read_hugepage_filemap(int fd, size_t len,
+ 	ssize_t total_ret_count = 0;
+ 	char val = 0;
+ 
+-	printf(PREFIX PREFIX "expect to read 0x%lx bytes of data in total\n",
+-	       expected);
++	ksft_print_msg("expect to read 0x%lx bytes of data in total\n",
++		       expected);
+ 	while (total_ret_count < len) {
+ 		ret_count = read(fd, buf, wr_chunk_size);
+ 		if (ret_count == 0) {
+-			printf(PREFIX PREFIX "read reach end of the file\n");
++			ksft_print_msg("read reach end of the file\n");
+ 			break;
+ 		} else if (ret_count < 0) {
+-			perror(PREFIX ERROR_PREFIX "read failed");
++			ksft_perror("read failed");
+ 			break;
+ 		}
+ 		++val;
+@@ -130,8 +133,8 @@ static bool read_hugepage_filemap(int fd, size_t len,
+ 
+ 		total_ret_count += ret_count;
+ 	}
+-	printf(PREFIX PREFIX "actually read 0x%lx bytes of data in total\n",
+-	       total_ret_count);
++	ksft_print_msg("actually read 0x%lx bytes of data in total\n",
++		       total_ret_count);
+ 
+ 	return total_ret_count == expected;
+ }
+@@ -143,14 +146,14 @@ test_hugetlb_read(int fd, size_t len, size_t wr_chunk_size)
+ 	char *filemap = NULL;
+ 
+ 	if (ftruncate(fd, len) < 0) {
+-		perror(PREFIX ERROR_PREFIX "ftruncate failed");
++		ksft_perror("ftruncate failed");
+ 		return status;
+ 	}
+ 
+ 	filemap = mmap(NULL, len, PROT_READ | PROT_WRITE,
+ 		       MAP_SHARED | MAP_POPULATE, fd, 0);
+ 	if (filemap == MAP_FAILED) {
+-		perror(PREFIX ERROR_PREFIX "mmap for primary mapping failed");
++		ksft_perror("mmap for primary mapping failed");
+ 		goto done;
+ 	}
+ 
+@@ -163,7 +166,7 @@ test_hugetlb_read(int fd, size_t len, size_t wr_chunk_size)
+ 	munmap(filemap, len);
+ done:
+ 	if (ftruncate(fd, 0) < 0) {
+-		perror(PREFIX ERROR_PREFIX "ftruncate back to 0 failed");
++		ksft_perror("ftruncate back to 0 failed");
+ 		status = TEST_FAILED;
+ 	}
+ 
+@@ -180,14 +183,14 @@ test_hugetlb_read_hwpoison(int fd, size_t len, size_t wr_chunk_size,
+ 	const unsigned long pagesize = getpagesize();
+ 
+ 	if (ftruncate(fd, len) < 0) {
+-		perror(PREFIX ERROR_PREFIX "ftruncate failed");
++		ksft_perror("ftruncate failed");
+ 		return status;
+ 	}
+ 
+ 	filemap = mmap(NULL, len, PROT_READ | PROT_WRITE,
+ 		       MAP_SHARED | MAP_POPULATE, fd, 0);
+ 	if (filemap == MAP_FAILED) {
+-		perror(PREFIX ERROR_PREFIX "mmap for primary mapping failed");
++		ksft_perror("mmap for primary mapping failed");
+ 		goto done;
+ 	}
+ 
+@@ -202,7 +205,7 @@ test_hugetlb_read_hwpoison(int fd, size_t len, size_t wr_chunk_size,
+ 	 */
+ 	hwp_addr = filemap + len / 2 + pagesize;
+ 	if (madvise(hwp_addr, pagesize, MADV_HWPOISON) < 0) {
+-		perror(PREFIX ERROR_PREFIX "MADV_HWPOISON failed");
++		ksft_perror("MADV_HWPOISON failed");
+ 		goto unmap;
+ 	}
+ 
+@@ -229,7 +232,7 @@ test_hugetlb_read_hwpoison(int fd, size_t len, size_t wr_chunk_size,
+ 	munmap(filemap, len);
+ done:
+ 	if (ftruncate(fd, 0) < 0) {
+-		perror(PREFIX ERROR_PREFIX "ftruncate back to 0 failed");
++		ksft_perror("ftruncate back to 0 failed");
+ 		status = TEST_FAILED;
+ 	}
+ 
+@@ -242,17 +245,17 @@ static int create_hugetlbfs_file(struct statfs *file_stat)
+ 
+ 	fd = memfd_create("hugetlb_tmp", MFD_HUGETLB);
+ 	if (fd < 0) {
+-		perror(PREFIX ERROR_PREFIX "could not open hugetlbfs file");
++		ksft_perror("could not open hugetlbfs file");
+ 		return -1;
+ 	}
+ 
+ 	memset(file_stat, 0, sizeof(*file_stat));
+ 	if (fstatfs(fd, file_stat)) {
+-		perror(PREFIX ERROR_PREFIX "fstatfs failed");
++		ksft_perror("fstatfs failed");
+ 		goto close;
+ 	}
+ 	if (file_stat->f_type != HUGETLBFS_MAGIC) {
+-		printf(PREFIX ERROR_PREFIX "not hugetlbfs file\n");
++		ksft_print_msg("not hugetlbfs file\n");
+ 		goto close;
+ 	}
+ 
+@@ -264,7 +267,7 @@ static int create_hugetlbfs_file(struct statfs *file_stat)
+ 
+ static void sigbus_handler(int sig)
+ {
+-	printf(PREFIX "received SIGBUS\n");
++	ksft_print_msg("received SIGBUS\n");
+ }
+ 
+ int main(void)
+@@ -279,51 +282,44 @@ int main(void)
+ 	};
+ 	size_t i;
+ 
++	ksft_print_header();
++	ksft_set_plan(ARRAY_SIZE(wr_chunk_sizes) * 3);
++
+ 	signal(SIGBUS, sigbus_handler);
+ 	for (i = 0; i < ARRAY_SIZE(wr_chunk_sizes); ++i) {
+-		printf("Write/read chunk size=0x%lx\n",
+-		       wr_chunk_sizes[i]);
++		ksft_print_msg("Write/read chunk size=0x%lx\n",
++			       wr_chunk_sizes[i]);
+ 
+ 		fd = create_hugetlbfs_file(&file_stat);
+ 		if (fd < 0)
+-			goto create_failure;
+-		printf(PREFIX "HugeTLB read regression test...\n");
++			ksft_exit_fail_msg("Failed to create hugetlbfs file\n");
++
+ 		status = test_hugetlb_read(fd, file_stat.f_bsize,
+ 					   wr_chunk_sizes[i]);
+-		printf(PREFIX "HugeTLB read regression test...%s\n",
+-		       status_to_str(status));
+ 		close(fd);
+-		if (status == TEST_FAILED)
+-			return -1;
++		report_status(status, "HugeTLB read regression",
++			      wr_chunk_sizes[i]);
+ 
+ 		fd = create_hugetlbfs_file(&file_stat);
+ 		if (fd < 0)
+-			goto create_failure;
+-		printf(PREFIX "HugeTLB read HWPOISON test...\n");
++			ksft_exit_fail_msg("Failed to create hugetlbfs file\n");
++
+ 		status = test_hugetlb_read_hwpoison(fd, file_stat.f_bsize,
+ 						    wr_chunk_sizes[i], false);
+-		printf(PREFIX "HugeTLB read HWPOISON test...%s\n",
+-		       status_to_str(status));
+ 		close(fd);
+-		if (status == TEST_FAILED)
+-			return -1;
++		report_status(status, "HugeTLB read HWPOISON",
++			      wr_chunk_sizes[i]);
+ 
+ 		fd = create_hugetlbfs_file(&file_stat);
+ 		if (fd < 0)
+-			goto create_failure;
+-		printf(PREFIX "HugeTLB seek then read HWPOISON test...\n");
++			ksft_exit_fail_msg("Failed to create hugetlbfs file\n");
++
+ 		status = test_hugetlb_read_hwpoison(fd, file_stat.f_bsize,
+ 						    wr_chunk_sizes[i], true);
+-		printf(PREFIX "HugeTLB seek then read HWPOISON test...%s\n",
+-		       status_to_str(status));
+ 		close(fd);
+-		if (status == TEST_FAILED)
+-			return -1;
++		report_status(status, "HugeTLB seek then read HWPOISON",
++			      wr_chunk_sizes[i]);
+ 	}
+ 
+-	return 0;
+-
+-create_failure:
+-	printf(ERROR_PREFIX "Abort test: failed to create hugetlbfs file\n");
+-	return -1;
 +	ksft_finished();
  }
 -- 
