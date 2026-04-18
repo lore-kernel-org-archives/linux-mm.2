@@ -4,106 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ACB9F99C89
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 15:30:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8036FF99C72
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 15:50:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F10B6B02C1; Sat, 18 Apr 2026 11:30:40 -0400 (EDT)
+	id 9044F6B02C3; Sat, 18 Apr 2026 11:50:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A2406B02C2; Sat, 18 Apr 2026 11:30:40 -0400 (EDT)
+	id 8B5786B02C4; Sat, 18 Apr 2026 11:50:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B7EF6B02C3; Sat, 18 Apr 2026 11:30:40 -0400 (EDT)
+	id 7CAB86B02C5; Sat, 18 Apr 2026 11:50:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 08E036B02C1
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:30:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72BC01605A3
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 15:30:39 +0000 (UTC)
-X-FDA: 84672063798.24.39B7730
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CC9134000C
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 15:30:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W2Lpe7la;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776526237; a=rsa-sha256;
-	cv=none;
-	b=lNnL942uYAyPhH05/1GOiRZX0OhVh+oD0cgSOIH4eqHD1MM4KbNDMEvGaIg/jxQKrbcTAx
-	8pNqm376jQrHPrtex3lKiQ063lC+8h6pA2/ZpgDBT/KW4cYSFrlDZCl58nHkYTbEvowduH
-	LkIp2QiB9frGl7p9Z+9w5AurKGzmOIs=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W2Lpe7la;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6E9376B02C3
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:50:29 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13C961405AA
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 15:50:29 +0000 (UTC)
+X-FDA: 84672113778.04.21A3586
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1D2CF1C0005
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 15:50:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=PaREwvgQ;
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776526237;
+	s=arc-20220608; t=1776527427;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mC7yPuHu5gpbPHSCXjjbB6rHNjjqgzuWTRPAPgmOAB4=;
-	b=fNKWmExHup8y/zR5MNIcpYDVFL4Ch3i9XZwOp2/fLFkiYNuq1oEm8cojKLqccucprMbdV2
-	3gVMW/VYd6SqqZuZg6XRKI5LWNPYl3nSB5/breFRI/tnFKGuihxPpWzzyoXtKV+Xv1M84o
-	ihyxvlrqXATwFjRwrWRfUeuYaOOQnFc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0460D60138;
-	Sat, 18 Apr 2026 15:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74699C19424;
-	Sat, 18 Apr 2026 15:30:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776526236;
-	bh=ZkqedO1+/KX2dVkAjxmTlTJE7OhLU/Oi+zD52I3fudk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W2Lpe7laQ4FtpTW1u0i+4bKpSZ80WTLPFWjyydgWKSIZMgZhq4aXGnxpdHpsf05Uq
-	 5PUJX/JbgiidwwND4yVJwvC8MdFg86SpRTD5oAAbDvL/OKm2uHeL9P1Iy5QEPS1Ws8
-	 1jYVSiL+zl7MT6NoWc4Ry4Q7bP+Ks45iBExmSpmnRquK3YnFHrEjfjiviZzcPwTiuQ
-	 mshk5ZddhUX3R1K8LYMh75MBcg2ZefkDN21+RmFvgrfObUqeFOb4aYoBgoVcmuXUbj
-	 ZJZPYUBpxLzsJaXvP/AxewXBDfvAb41Hlqy7kCXv8/qrkvFY2TlNGOt9TKo2cTUqHT
-	 Yr+WlTLh2TrtA==
-Date: Sun, 19 Apr 2026 00:30:34 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Nick Huang <sef1548@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: Add overview and SLUB allocator sections to slab
- documentation
-Message-ID: <aeOjmvP2nR6ri9qr@hyeyoo>
-References: <20260418000635.17499-1-sef1548@gmail.com>
- <aeMQ36jFnCKmCSyA@casper.infradead.org>
- <CABZAGREDHwsXMm65_WxEn=v-zTv7_eVqQzQeCRqU2Gyc0aTETQ@mail.gmail.com>
- <CABZAGRGFpiiEr7Odd5an1+9Z+sX1C6QT2iadv-0hNhxGj8eEyg@mail.gmail.com>
- <aeNKDh8S6pXHqRFh@lucifer>
- <CABZAGRGCwM1PiSxennV-Uy9y1gGKjpcHeq+eOAbqSZcy3Qb55g@mail.gmail.com>
- <75b2b254-2e02-43ca-9109-9812cf3f85b2@kernel.org>
+	bh=/XzWNaaP6trt3AVnYC3KX+BGwZlVeHmz05lVckXapB0=;
+	b=5Qvk8kbEQu5TutwVfFZMuROTsT6KeLVRI/O292Fnkk0AdBQQXTc0eEpU73Y7kMIQiqu36K
+	pYhcB6hBEPOlqpOalW6Wpdg44tUGkHLiZTGjGynpXJOHhDk3B7sT7x1L3EkZRCKpdaEbwA
+	KtFxlwxqvtUsGTcl/2132pGuPgfpfF0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776527427; a=rsa-sha256;
+	cv=none;
+	b=L7KhAJ1XpBwCIQBfIg4QyzIIBNnT9ut9jKmVIspiq7KF3MB6SmWJUA9s9KDNLI1GOz0PZ1
+	jj2QunLBLmIq2iQYMyVClctYldnX8hCSZzl9MxBeIHJ2hVBjhfGJlpcbRrLIHjDVYzMtJW
+	nfrokCN3oAs+I+qo1YmpL7Bey6kbS3Y=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=PaREwvgQ;
+	spf=pass (imf21.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-50d876329bbso20655151cf.2
+        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 08:50:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1776527426; x=1777132226; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/XzWNaaP6trt3AVnYC3KX+BGwZlVeHmz05lVckXapB0=;
+        b=PaREwvgQvyCwzmtfwOGOhs3pSqhLnimM5hWhTA4MBSl6o6FnXIEwXOgAxcsOib7/b7
+         /MT7TNtEjNWNr4FAo/x+JzFufl7/2btjSDOTO+z5AtHH6314N3HXd/1oiEkigfyfsK8b
+         GXhDMciR8BHRXwTXNHk9UAbDwrbxAXU98W1vi+c8l6YgnVZU8e231SZA6TVW62qrvusR
+         x6kVaZuDQaFH6q2GLurg5FyX2sJnGzV19y7aCvGWAZMNV0La93fMEDL0EuxLe/kokeJQ
+         9BTtZFmaFt3FI3KV+C6W2b0a8JwuhcSOPo50onEKOQpW4MQ+mP13dueGobWWSetJ4st7
+         gNJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776527426; x=1777132226;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/XzWNaaP6trt3AVnYC3KX+BGwZlVeHmz05lVckXapB0=;
+        b=fvclFpu8QQ1cdhDYp8/mwA0aNgsULEgYx3xJH/P82noCcfA3XbHgdR02a+NRSLTDYB
+         2V+cH2twK+LxgSlJBajQm00F4NrYX+vRPqtEJtN79v4WUAyukImVs55ga8I/oUkRq6ag
+         CoSFslsPL/MOdJUlsCYn+0Be5Sa0Sw0J/1HnJu3uW4LauASHp3+C5nr6rZhvzSiibxW+
+         HxvbxXNrEgm7BHVnMQORSTU26GOzLn9LVCbNoOc/2+UzcdgVKRa+CRzoWUIY8wr1lr2c
+         i5nHLGd7P3kTNTS74f+NRFd9CzmvbtAjFBV/NJ2ZEJ7lVXzYp1DW4Kbyc6ihA5NfeChA
+         iO9w==
+X-Forwarded-Encrypted: i=1; AFNElJ9HxCFbdJW6N5/crLEp8Pu7TpLEkjncM+3mMNDh5LKUpmx2ffTQgfloBtK/+a1oKVgoxpDQw/akXQ==@kvack.org
+X-Gm-Message-State: AOJu0YykW0VkdZN46n0jA0YwrvQpdN8FiVVOIZuJwUDzK5IrfpW/J2Qn
+	apCh2zRNfuzzHzFs/N1gnmjg9OkvuLst+zMOUFSIERmT/OAetOdKxaO0qFFGD+jkMiF+/cZeSLQ
+	a52Pi
+X-Gm-Gg: AeBDietKSiu9HTk4ZQpT1vOUZ+1oXiAaTssmw6Ae+9J+XLH78w2F7JtHX3ZdeOuafvW
+	fYjP0fAT/HHIiaXSkKzuR6tTYV6U5a8zl1oZBdk55W/OnjyTz6InzSAKahfGV2MumA3wJ0YHbeY
+	7GiaSqMLFjqCWrzWRpHDnYHoHdm0isalcCcRS8XhVoYy8uZXNYYi0iwnaftqRWy2RdbPw9/87lq
+	gD0qnw53BX+u5ClYp74orTPVWl3GE3+9XuRGd8F4yWEuv7Lhj51/ML5rFic5Jl76nGSNEjeUeXX
+	UuJn8bC9LCkYsKjTfBuYbPa0tx8tZ47a3xc3v7FxWvZ6i0cQMaRA9HLBgPj3Pbh5K02eIcEm3u4
+	Y2al97WS8VQxqzaRJ8+LO7plTBHELRc7oLKjFg05uw1XOYYGBJ8cUMI4FP1IkVpnH26E8hL2lgE
+	4UnQOx8igQZ/T874BMPE87WEUq5pboIQYa2Uffk3WFocY7IDLsXSjivTu/v/81
+X-Received: by 2002:ac8:594c:0:b0:50d:8727:b1da with SMTP id d75a77b69052e-50e36c48accmr112628991cf.39.1776527426038;
+        Sat, 18 Apr 2026 08:50:26 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e394addfcsm45648821cf.29.2026.04.18.08.50.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Apr 2026 08:50:25 -0700 (PDT)
+Date: Sat, 18 Apr 2026 15:50:22 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: luca.boccassi@gmail.com
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com, 
+	rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	brauner@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 4/4] selftests/liveupdate: add test cases for
+ LIVEUPDATE_SESSION_GET_NAME
+Message-ID: <a4jd64pkvamnwuwzu5k762rgn6sgzp6ldcoknkwhuddsrwcbyv@vxwdpp66x7bl>
+References: <20260418141123.2193917-1-luca.boccassi@gmail.com>
+ <20260418141123.2193917-4-luca.boccassi@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <75b2b254-2e02-43ca-9109-9812cf3f85b2@kernel.org>
-X-Rspamd-Server: rspam10
-X-Stat-Signature: a7xwwd7o46okz5rwoq7sisfssghigfet
+In-Reply-To: <20260418141123.2193917-4-luca.boccassi@gmail.com>
+X-Stat-Signature: 4cjeasud5af5ujo5ymc1aua8a9yujf39
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CC9134000C
-X-HE-Tag: 1776526237-671035
-X-HE-Meta: U2FsdGVkX1/6mzKrxTPBzYmzD2PqCvtB83czPkDJeguswkki2gNSLnfUaLGGZ7cUJKt+qNHC2/NPQ+WpsTzvNl70MCB0Mcv5tBosuFG7ATNtHn6JjnvTVZsT2ipawma1qxFt+/4zK4if/utqVuyN4fBtfw8ZHdhO9ET7rUtphNf2Y8+VPoa6/fqqeg9Ywmu9EslGdky4+18JyNMjH908qLmwxnaNOwPc52BuagAPmsKDv2rbC0G6Y66KvbEKkTffkoe0HEneEmi6RSeghmG5crqUdJbIa+voVUguRcBarkcrhaKzF6LVcVDYc8/hUWFhWezz+4AwQUvNc8bPUaYrQpJpADPVc831woSgWk2l+HfkKZrnRTYF+Mt5gGRbJzuf6paQULNkvs8LplucQbPJemCRT/3GOb9wYtTfrUc7XxBpzS3aXl5NVXjK1T/0jpkqwbAHQNZNzLX0Xb3sY2IEgu1h8mokfz3PPZQjjkT84aVicF8MavMF9kiGqL57gIcAGSsMgPGcWHOOJj4iYgusxb+J+5ngUHXbJLDikKsL0iO7GpkbIwaCFDL1V1CROE+p6vGr7dHHI4aTz6PP7i+0e2u10UhCQYG/iUaZHm+EZYN3qBe7FtrZwrgYn8OdcACUCOoOsiVjUpnALFOdBnVtB2zMj8II9QdUTVhb3f7298wqzbbvJUoaBC/jsTSGiSJ++z7LEePLsgr55ScAAfRTGg2D3X4t4EW+/hqlylI/CKF/b5/xCF071T77xY0Jr6dCSy0wrW7VcZP0694+LrE4rLsG6UFCGk68WhHpF5Hq47oabh9qHOJmVknf6YchePVHKz5ITJhf7yHYDWhSW+T+Q9DnQHV0ceCU/e4wIBSeKZOV5zRmkslMc9oWyixj051iu0cXj0kQ2B5Urk5QgVRxDFmoRNaOdWkV6eIeGXe2jTZgtTtYRL2A529yc8AOpTtHvhPsnkUhQvbZInQSbga
- iRW9wyzd
- is112IjCZsmVQmmnn+CwSDEDSODK/LAbP/b0mON0aBMLr6dhYTKGapajLNue9IA69qaxMm3x3r9pkGdtziMDpEDuNdlXUI5we49k5IEWQOlG1Vdzl+LMjOtXJfw0JTreNCvYxZwlF6AUePVBbP0K82O+QIOMXTGh8lw41L9y9ecW1l6wyNlXBqb1D7BHbdXpUXdoq6a3Rjomikytgg/hg0p9L5Zu1NYK1qSU4JKqnAznluuu+hi3VLNzSxwLva/rQ0J3gloKQe5sIpPddg/YmmYkbMZPer3lVwrvXnHAN+dNlKYZ1QtWsRj71ghHHhq38pO+ZkOavdIrOcWWMg1/cwrPvAKpihv3n1+j5fWwuxJPNOqvdoFXsn5geD4mKpleiUBLL
+X-Rspamd-Queue-Id: 1D2CF1C0005
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776527426-126359
+X-HE-Meta: U2FsdGVkX1/E8kAthB6ODeL7Ob7AR/9hCFJ8l4xlbf9sKFPX/u6Dlht/CaK3EJtFnNyE7cizSkeEUyYR8mWvlRNTltYM2k++lEUEJdxdC+Er3orZ1JtMFdYWcENQa0626L+abQnmIzFCHXfGB0nQg2e0bbQbtrpJmkiF+Q2Q4ihtmyUDQf9AcvjY07kYp/ceLuxbsSCgzC82328UVzeIDdWYRbBV4dk9EtG2mnst1zHaCRcPd4BR1UOgDUsqlJ5XlCiU98QGpTjyIh0ogr66DzSwA3rsVWu3DUD7oC4DvruixLD56wnVNBU7u7gMdi3hp4caR9j8tZZZpF8XWdeDsXD8b54t1MelxaXEQ3Hd3uSgv8arMpbTnhoNd0+iCQhd/7ZPwBBGC7DArUzFaQ83ua2R5vxFq3/Dgh45/dWtomAfW365SrkO9spUjfe1Qm1nNtMlOB4MvdZu+NzctPwd/el7RXxxIOaIeEORitp5Te44OFWK9RQAFwCWLCDtOs1rIwMEOTmA1vCoXL+FuHbnrejTgh/7/77PnNy51HVd+76wYchvvdQRqyr8LTegRKHiy6d1b/w6oYZcYG889iBHX1FlAL85OTExekRjAgvL8skTIz9FnKPlAomMLxYgnjfh9KipAJdBP/t4EAcFsRw5wOmEToylI0ub8W9dlCUvuGm9xcQrqFU6+ClLCU5ylelUCL34f7DnubRNsWZnpMcyPD/sGJi2GzdEFaiucm80xVjvcIhLa638/Jz6Z/teKJDi4W/23HgXyE5j7wcJK3gvR4cMGuFkeccBXBoNRiZMu2uRMRmXBCKhOBtwV2cfZz1Q/OwNxBd82+5kbWgZMCT2Do6/jnI3Zh1A7njPyEGoMVERfgiHAb0bH1pqxvCjA6R4rUhNaJVE5EkOBdcxp4nhco6q8/6vNt98hTV1WzF+1hNw22aIejgt3QZ4PhhaKpOi4TORQUqhMDEoTIaFEmZ
+ rNfC4I1y
+ 6ej1YRHPJQOxtWbpATv5adjQnUYErBqa7sPjcfRYa8L/o+cRrKHk5U1Q0xOvMmCMXMHfeQYy2IREJzRoa4/fXodVRN3V3w/GfaqlV6bSgE+HJp81JERW7qiPD4o1Q/EY5kij1bF7WuqiJcx3Y5BICEL91oC5LnFVUbN3MengN5WwKWJ6kqZCV5JJwn+6bcaGFE2+VgyOI4Erf4S27TikDydlUBh+zxHNyv8OugTt5BvClhmNJGDovIXHpq5BqpTgh1Acqv0mFM6X2w8HIxsj4rzqAvJnUP8Sa7C4+aeTqeSRcS2I7jT25ejMY03EJxS0gQ+SoWSk6O7De2kTcGQkuxzrXLqQ0uS+MksUoLO9ZqjEbh9cEn8nGa+nE6J6Nwm0WpWZaiDG6mgUb9WpnCHio9j7EvEJv5whs1vhARSb+xsz6GHa1TpsdmGwkoZO1IHVbnar6S0TO4uIglfvRZSP1YSPusXZUfTodcW+EoNAJrnSlWGM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,47 +120,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 18, 2026 at 01:20:42PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 4/18/26 1:00 PM, Nick Huang wrote:
-> > Hi Lorenzo Stoakes
-> > Lorenzo Stoakes <ljs@kernel.org> 於 2026年4月18日週六 下午5:11寫道：
-> >>
-> >> On Sat, Apr 18, 2026 at 02:12:22PM +0800, Nick Huang wrote:
-> >>> Nick Huang <sef1548@gmail.com> 於 2026年4月18日週六 下午1:27寫道：
-> >>>>
-> >>>> Matthew Wilcox <willy@infradead.org> 於 2026年4月18日週六 下午1:04寫道：
-> >>>>>
-> >>>>> On Sat, Apr 18, 2026 at 12:06:19AM +0000, Nick Huang wrote:
-> >>>>>> - Add "Overview" section explaining the slab allocator's role and purpose
-> >>>>>> - Document the three main slab allocator implementations (SLAB, SLUB, SLOB)
-> >>> Hi Matthew Wilcox
-> >>> I will remove this sentence in the next version:
-> >>> “Document the three main slab allocator implementations (SLAB, SLUB, SLOB).”
-> >>> I’m not entirely sure I fully understand your point. If I’ve missed
-> >>> anything, please let me know what needs to be changed. Thank you.
-> >>
-> >> No, please don't send any more revisions of this garbage, thanks.
-> > 
-> > thank you for your guidance. I will correct my work and introduce the
-> > more recent `barn`, `sheave`, and `kmalloc_obj`.
-> > Do you think this is appropriate?
+On 04-18 15:09, luca.boccassi@gmail.com wrote:
+> From: Luca Boccassi <luca.boccassi@gmail.com>
 > 
-> No, this whole thing is inappropriate from the beginning. We are not
-> going to waste more time on development-by-review for something that
-> started as undisclosed LLM slop.
+> Verify that the new LIVEUPDATE_SESSION_GET_NAME ioctl works
+> as expected via new test cases in the existing liveupdate selftest.
+> 
+> Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> ---
+> v5: merge with LUO_SESSION_MAGIC series as they both change the same
+>     unit test file, to avoid merge conflicts
+>     split into separate patch
+> v6: add more test cases as suggested
+>     more verbose commit message
+> 
+>  .../testing/selftests/liveupdate/liveupdate.c | 138 ++++++++++++++++++
+>  1 file changed, 138 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
+> index d132b4685f76..ffbcbd465c9b 100644
+> --- a/tools/testing/selftests/liveupdate/liveupdate.c
+> +++ b/tools/testing/selftests/liveupdate/liveupdate.c
+> @@ -105,6 +105,22 @@ static int create_session(int lu_fd, const char *name)
+>  	return args.fd;
+>  }
+>  
+> +/* Helper function to get a session name via ioctl. */
+> +static int get_session_name(int session_fd, char *name, size_t name_len)
+> +{
+> +	struct liveupdate_session_get_name args = {};
+> +
+> +	args.size = sizeof(args);
+> +
+> +	if (ioctl(session_fd, LIVEUPDATE_SESSION_GET_NAME, &args))
+> +		return -errno;
+> +
+> +	strncpy(name, (char *)args.name, name_len - 1);
+> +	name[name_len - 1] = '\0';
+> +
+> +	return 0;
+> +}
+> +
+>  /*
+>   * Test Case: Create Duplicate Session
+>   *
+> @@ -385,4 +401,126 @@ TEST_F(liveupdate_device, session_fstat)
+>  	ASSERT_EQ(close(session_fd2), 0);
+>  }
+>  
+> +/*
+> + * Test Case: Get Session Name
+> + *
+> + * Verifies that the full session name can be retrieved from a session file
+> + * descriptor via ioctl.
+> + */
+> +TEST_F(liveupdate_device, get_session_name)
+> +{
+> +	char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] = {};
+> +	const char *session_name = "get-name-test-session";
+> +	int session_fd;
+> +
+> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
+> +	if (self->fd1 < 0 && errno == ENOENT)
+> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +	ASSERT_GE(self->fd1, 0);
+> +
+> +	session_fd = create_session(self->fd1, session_name);
+> +	ASSERT_GE(session_fd, 0);
+> +
+> +	ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)), 0);
+> +	ASSERT_STREQ(name_buf, session_name);
+> +
+> +	ASSERT_EQ(close(session_fd), 0);
+> +}
+> +
+> +/*
+> + * Test Case: Get Session Name at Maximum Length
+> + *
+> + * Verifies that a session name using the full LIVEUPDATE_SESSION_NAME_LENGTH
+> + * (minus the null terminator) can be correctly retrieved.
+> + */
+> +TEST_F(liveupdate_device, get_session_name_max_length)
+> +{
+> +	char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] = {};
+> +	char long_name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +	int session_fd;
+> +
+> +	memset(long_name, 'A', sizeof(long_name) - 1);
+> +	long_name[sizeof(long_name) - 1] = '\0';
+> +
+> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
+> +	if (self->fd1 < 0 && errno == ENOENT)
+> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +	ASSERT_GE(self->fd1, 0);
+> +
+> +	session_fd = create_session(self->fd1, long_name);
+> +	ASSERT_GE(session_fd, 0);
+> +
+> +	ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)), 0);
+> +	ASSERT_STREQ(name_buf, long_name);
+> +
+> +	ASSERT_EQ(close(session_fd), 0);
+> +}
+> +
+> +/*
+> + * Test Case: Create Session with No Null Termination
+> + *
+> + * Verifies that filling the entire 64-byte name field with non-null characters
+> + * (no '\0' terminator) is handled safely by the kernel. The kernel's strscpy
+> + * truncates to 63 characters, which we verify via get_session_name.
 
-Just to be clear, Nick.
+[...]
 
-I'm no longer willing to answer all of your questions and request for
-guidance sent in private as you keep ignoring questions & feedback
-and still looking for other "interesting" items to contribute.
+> + */
+> +TEST_F(liveupdate_device, create_session_no_null_termination)
+> +{
+> +	struct liveupdate_ioctl_create_session args = {};
+> +	char expected_name[LIVEUPDATE_SESSION_NAME_LENGTH];
+> +	char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] = {};
+> +	int session_fd;
+> +
+> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
+> +	if (self->fd1 < 0 && errno == ENOENT)
+> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +	ASSERT_GE(self->fd1, 0);
+> +
+> +	/* Fill entire name field with 'X', no null terminator */
+> +	args.size = sizeof(args);
+> +	memset(args.name, 'X', sizeof(args.name));
+> +
+> +	ASSERT_EQ(ioctl(self->fd1, LIVEUPDATE_IOCTL_CREATE_SESSION, &args), 0);
+> +	session_fd = args.fd;
+> +	ASSERT_GE(session_fd, 0);
+> +
+> +	/* Kernel should have truncated to 63 chars + '\0' */
+> +	memset(expected_name, 'X', sizeof(expected_name) - 1);
+> +	expected_name[sizeof(expected_name) - 1] = '\0';
+> +
+> +	ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)), 0);
+> +	ASSERT_STREQ(name_buf, expected_name);
+> +
+> +	ASSERT_EQ(close(session_fd), 0);
+> +}
+> +
+> +/*
+> + * Test Case: Create Session with Empty Name
+> + *
+> + * Verifies that creating a session with an empty string name succeeds,
+> + * and that creating a second session with the same empty name fails
+> + * with EEXIST.
+> + */
 
-Let's not waste your and others' time.
-I don't think this is going to work out.
+For the two cases mentioned above, we should implement a fix in the 
+kernel:
 
-Expect NACK on your future slab contributions.
+In luo_session_create(), we should verify that the name is at least 1 
+character long and at most LIVEUPDATE_SESSION_NAME_LENGTH - 1.
 
--- 
-Cheers,
-Harry / Hyeonggon
+size_t len = strnlen(name, LIVEUPDATE_SESSION_NAME_LENGTH);
+
+if (!len || len > LIVEUPDATE_SESSION_NAME_LENGTH - 1)
+   return -EINVAL;
+
+This change should be submitted as a separate patch in your series.
+
+Additionally, please include a cover letter in the next version 
+explaining the overall series. Once the cover letter is included, you 
+can remove the individual patch versions from the stat areas.
+
+Pasha
 
