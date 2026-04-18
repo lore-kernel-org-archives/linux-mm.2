@@ -4,108 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55ADFF99C79
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 11:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1641F99C73
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 11:01:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8F276B0298; Sat, 18 Apr 2026 07:00:59 -0400 (EDT)
+	id 304276B029A; Sat, 18 Apr 2026 07:01:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B66D76B029A; Sat, 18 Apr 2026 07:00:59 -0400 (EDT)
+	id 2DBF86B029C; Sat, 18 Apr 2026 07:01:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7CA76B029B; Sat, 18 Apr 2026 07:00:59 -0400 (EDT)
+	id 1F18F6B029D; Sat, 18 Apr 2026 07:01:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 90BDC6B0298
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 07:00:59 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 637741A049E
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:00:59 +0000 (UTC)
-X-FDA: 84671384238.16.429A96F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AAB4140009
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:00:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WUeH0vhQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776510057;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DCD96B029A
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 07:01:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD1868B99E
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:01:02 +0000 (UTC)
+X-FDA: 84671384364.11.C60BF82
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A1F1FC000C
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:01:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVhUUdTP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf22.hostedemail.com: domain of sef1548@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=sef1548@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776510060; a=rsa-sha256;
+	cv=pass;
+	b=4WOHyMNH+wpZdBnaR1/zKEMXSjPPTmxZ21Q+FrufZm40UWqGK0FJ59baA0TZIPkwVy/Hka
+	6xlVrokApXfC1Z/9iw7ICvfMH+tnPim/OxIjXAaa7tz7w0ylx6fld8RY3plc0zchUw2H/L
+	AOiq9zhmEKSeY/G9qmNoeBkVsNIHJ/k=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OVhUUdTP;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf22.hostedemail.com: domain of sef1548@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=sef1548@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776510060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yd1m2f78yDrXMiqMFIv+S4+GfV+hGzgCDXMBcoxkGss=;
-	b=BtOf4yNkNZWJC7LDp11zt5mIsRy9GZRZsqSvPpoWtTTI0AgyM/HNOUVMfLbGd/tOSzN9ur
-	nkeUDT2tAlc/sOavkCdPe7c0zO4ivj60UF5nTbRxCH06T1sATztSsog3eLBMCtEgGI6OQT
-	wi205wocxWhJlYd5cib78dpeCOST/rs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WUeH0vhQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776510057; a=rsa-sha256;
-	cv=none;
-	b=IIisoi1h59kRfGhIi1K6jGcj9QK9RJf0ozeFZZOmOpMfFQmYvhUDlKwzptDohJaZ/15wlr
-	Z1APMYNV/v3E4I+K2p/wz3SxeEz+Ki8WHMtc6YvDi9SRqhygMnUPe4gSix5wlOWoEyeXjm
-	WklfNHfCpa+RoD3T4TVeCrY5NTUDJf4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DFB1E433D9;
-	Sat, 18 Apr 2026 11:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E2DC2BCB3;
-	Sat, 18 Apr 2026 11:00:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776510056;
-	bh=c9lUlZ2MxGuh/r9cAcf/coqCUPJYBUQSQ+lZzu+qpn4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUeH0vhQ4wYCu+ObVSff+bmAECrRgoug8pM3MKV3tqp8eTn0Kx7G8Rcm6EmJlbrLh
-	 XPSRHVm0MLAIdd7HUZ/PwrFAJAJGTngALMhyrSzNhwmrTmKgtx3AjYeFxdoik6+p0j
-	 p0rcXf9P98z2pi/R0z/K6UhgexZada2bgYHp0G+BRQwy75BoGXWsemnu0xbcVFXsBz
-	 SX9HCnfxD9PeJgX6oWilJIurP0m31yaMbYXDT4944ZyOhT3YtANKTGvSoNlwe8Rz3w
-	 qqq4bALUH+OJRYdykeH9wKaV5rj5I9jwk6dtSN2wfBaILjOpYBizpggY9XGB1l1n53
-	 wOB+ZDS11Z1VQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Nico Pache <npache@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 50/53] selftests/mm: va_high_addr_switch: add setup of HugeTLB pages
-Date: Sat, 18 Apr 2026 13:55:35 +0300
-Message-ID: <20260418105539.1261536-51-rppt@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260418105539.1261536-1-rppt@kernel.org>
-References: <20260418105539.1261536-1-rppt@kernel.org>
+	bh=KY9FDmf/9WVv8g70PDtqy5k3Dg+uSpxFrEmWBPNN6G0=;
+	b=oLKXg3iEyn9zAISHcp5BbK3YVoWaS8/ge+vphhOW7jUIqDiole3m38D/w+2AvabqD7unki
+	jxQM6xhwwQG7ys5E7rw6bP/nQ1fEwWHK4i/PQhHdS+NimakTTzJ8vrVHKT8J3UgHJJ1yAY
+	4zSKFHiuYYXMc3Zflzdlxpf2CmnvkRc=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43d03db7f87so912714f8f.3
+        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 04:01:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776510059; cv=none;
+        d=google.com; s=arc-20240605;
+        b=h5f1M0Y2CRVCeL9/TN9DdC3PT8vKLrdbZn/aXNXXXhJ7EZ7K8TaPt8eOzdfXbMVKuq
+         kOsY93iKC3lOmwMkxciTShiwHbCNjCNvFcaT7mqADvS9oZrKOJiWnSJ+B+Qrx5lVyuBW
+         cc5pC9CHjonNLLfa/mMJSNpXwF+QysgnVfwKOgZ5//JHYzBaNld5cla4WzKCCtRwgrM9
+         0hvZffl72RygbhY85OX1E9n2O73TBlT2ioI80p+6SVBHAlDi7d4CxLynPo3L2lszjUDY
+         GnGsvHjTSI7KLGqY8drfESQa9CpObtzYJeZATBk6v4C8fkXrmPgjKsJqeU0w2nc60UaO
+         lExQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KY9FDmf/9WVv8g70PDtqy5k3Dg+uSpxFrEmWBPNN6G0=;
+        fh=1egOpRjCSJqYLk4pHRe7SXsq+wSBhFy/b27ZZzxqGP4=;
+        b=hjPumUkAXxcP3hvSnk0HpH9reLjjWaiudIKmPz3EJ5CBCOyQ+tupuekDwGY6z98hyJ
+         bGMULoLXwjm33Ei+AsMXeV9hYs1SAUvCv8fq0q4tDFK2hTk4NaEhqIjScLKspEzB/ZzW
+         G33b38eG7zNPjxVR2ObjJeNTqpyqpK+hZpectnhLwJWMfDsmFdwBAL4kq607b9Se+jCH
+         QBqCKPRbzpgrdpOv8U9slK8Yu/rH5SVrKus/0i2THXHZ7MxyEJ2IufSWes9xkwgML+Fa
+         TjfSV2soblrfgk5uOxpYYBvBpB4SYuSqBvCyknb0PUX/7j2Yjjqo4k4isRmP6GLitYH4
+         eRNA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776510059; x=1777114859; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KY9FDmf/9WVv8g70PDtqy5k3Dg+uSpxFrEmWBPNN6G0=;
+        b=OVhUUdTPgOxtr2BkYlayYicyYt+EohwpQ9CMvXTTQUDHcpFApnERYMr2Kf4C90Zshz
+         Q7J/4iHhhIOvwn9shMV8FCy5tKdUg4xtCd3bDwqfRfpzrVtZ1ahjTn7+S/Y36GQSVOah
+         tGMkY9Oy3QrZgL064r1eiGj2WZEbxuOEkjjX+4uQgAd2gSckU+EZcLvrBzfhCxlKrBBH
+         zc050j/ZNynQCthxoRdPPDWVmne7NFGkw1Uo6TQPuus68JO+MK3LcepBBcRCFbm5FPjD
+         Bg/higB2XHnML0e7WBsI2h/ZUGc7+Uu4iXA/lpXEVwyR9Uiot1dGL3lEswoP0te7v2up
+         Og5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776510059; x=1777114859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KY9FDmf/9WVv8g70PDtqy5k3Dg+uSpxFrEmWBPNN6G0=;
+        b=S6SpB2nLBx4TQq0DYC9BVPuSR8kVVGLwFQQMP6X0wcbBPfQpGIe4gEmfriWvyW++Tk
+         85J3IcDwef0OTe8ug51A9Kb8+EQPYkxBOJ/suiULZ19XFr5RoZLfyD25w3ez/3gUQp3k
+         9fWJ2+kLk57pTtJMAIByS5ihb2WM5NfoxepRxBQA+D03T7Mveb+1oeku7y38YwTPTkTM
+         vIIPlxVjP4YShbuk3km69h5RfSfuWigABecn6lDep2hfBiMb3eTcYOuBrnvUtYNFGfm/
+         x794PN6+cAXS7bUMsAdJX5Ye8pkzeOjyU1j4GI0uqIGZaYQLx5z2JWCYq6tnOX4sqhBm
+         9sEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+tfC1EUKFw/T55isJAEYTuxWcQoqrZF6qoFmfnAaIOyFR17NEm+oKVARtvru12OSby26agocug/g==@kvack.org
+X-Gm-Message-State: AOJu0YwTDf4C4zNPnzP+zD3oa64f1wEDebIEbbyteciOnO2meiGq7rI7
+	CGvcpkrXZRH3YRR2k0fSPZTqfHjQZVDTRcDt6EqrVRUIx58zjVUg4xY3b1sbs7y+C2e4vx7yd4B
+	m2WnDGVsRQJROqy71r05U5T9yZVxj/1U=
+X-Gm-Gg: AeBDiet2J2dJ7eTF0g4rHLRVtYf5ibp4txykA7R3W+Fje9AwKeuMANHYlKPNIryQLUF
+	xOad4OVT5vS2/o/A0IonNYLxPgLvttMk6jRIuD07ZoKZcJ+p2MVyv83kuK3+bODoSu6fEtqO1ME
+	Dnbjvd35YT1p2CQTQd0jaer3ib86ZQnHNJ6lkQ4ISdjZ+WKwoTLTNSxEfcIMwXYXzg2ssTogTo6
+	gYadnA3xDjVKdQ5H/Fff7v3M6enC3BJqLQh4UBGylV4wmftt4Yb7vkSotxo93S9h/XySaHGM9XT
+	jFRlrJGvVc6s/HOyuKK1CHgucP7jhAgkq8PMFQQcLNM4dnLL/pVd9cJESvUWa7s=
+X-Received: by 2002:a05:6000:2389:b0:43d:7ea8:62e6 with SMTP id
+ ffacd0b85a97d-43fe3e12691mr10336752f8f.46.1776510058749; Sat, 18 Apr 2026
+ 04:00:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260418000635.17499-1-sef1548@gmail.com> <aeMQ36jFnCKmCSyA@casper.infradead.org>
+ <CABZAGREDHwsXMm65_WxEn=v-zTv7_eVqQzQeCRqU2Gyc0aTETQ@mail.gmail.com>
+ <CABZAGRGFpiiEr7Odd5an1+9Z+sX1C6QT2iadv-0hNhxGj8eEyg@mail.gmail.com> <aeNKDh8S6pXHqRFh@lucifer>
+In-Reply-To: <aeNKDh8S6pXHqRFh@lucifer>
+From: Nick Huang <sef1548@gmail.com>
+Date: Sat, 18 Apr 2026 19:00:46 +0800
+X-Gm-Features: AQROBzAjQEWkZDpqcselXTdf--Plbsz__t87x58mMY0oY0BnRQbcqKaJWjYoYNY
+Message-ID: <CABZAGRGCwM1PiSxennV-Uy9y1gGKjpcHeq+eOAbqSZcy3Qb55g@mail.gmail.com>
+Subject: Re: [PATCH] docs: Add overview and SLUB allocator sections to slab documentation
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A1F1FC000C
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rroms8hfb6ujpqh4mx8ynukx1jzz793b
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AAB4140009
-X-Stat-Signature: eyqe97cqeete7rri5ssbiqbtcn4cqsge
-X-HE-Tag: 1776510057-971390
-X-HE-Meta: U2FsdGVkX19AWuO82VQwqI2hJdnfUnP5T7/O/LTZroliyreRTnYYVYbn6WHme34a9fj34oA5Rht4ztnDN2+1JaW0J+1+X1nCRsrUzdfB8fVpMabFHhvl72FxeHQKC4c4dRwVlS0z0T02dF9lflebafPjf+qQq9Z+vpIx+BExZiLAvvZzz6G4jWOQUtLLuJfHmkBzTjHTtNNNEEXM6n8+mWGaNb8xPnjexGCSA1PAZ/K5sk1cdHCMgTNncned5/bWM/zV65P6PiWYW7Fto1RZCPIJLV5jcEvnFDMRpYf9U8iJ8NciMK3jEMlyFGyBAy4/nNgYQXCM1/N8dPaybs6xQU5aUYEQTEa62A0LhNUbZSjCSv7smlFHQ+TpjaWiahB/AVYdpDIn0bb9dKEYXe0CHN+8gRHCF5EapEgmP0BsjFw4P6uZBUVfSSqoIuZurnYMkT1ArEIjskwt99bH/vDzaqKdxKQTOtEkRYZ9HaLwM3ZnuWhqABxDZg6B4iE6QlIYJmUoXojjql7VvHmYFaV0Gu2gj3eaxZwtBrRTRhPHIr3+lInGTuwW7asAAeM67w1c3HphtYg8i8CKgicuuFF/YB86qMs30lIi/lANXE7bznZszqWDAKbv24iiNtKaRlGX0kshTWGpt+NeqA+xiSK2JjMfkLzzFeY+U+J+9jXbV44w9wsGMxWZeUdNSlFz2M6WLw2BoPbyvW4XxIPzzyVES2KMsvdg4wMKw6a2kyludPUOTSc+DyDnCMkknzwT6nyyW0DiciIw7ftGnguGE4a8Y2TGBuDSLg7SayK+6oXysSl0qBPfcyQvWiUMzbj/zwjfElf4MC37kQ69UKyqOJ+SRbtddGOwhqNQyJmrBXaeb7atlD2fFaRLn1PG38HTWpX+czSPpNJgL5+OmbsqkIQoNlcLr4t4I25LKKCnuWEsRZw9LRodmW7oOD4ca9Ja04NKppLI+gbTIkhvPjhi0Ai
- POy2UejD
- jiliGqLjrAKdS1t7/9TDB7i7DwiX1hKP7PjiFKrncrOCzMdPFxPcZJHCbx4fmdv/X2RITBjhCwQiGJh9Z10t5BwpCmubfuHy7Ej1OsrwCNKy0k1KSKSQCARGWNTGum7AXUkYUM2FIYzRMVg9DyFIokXbqELAem1jKEPW2z/23Loi/8MQ+fOYRML6KUETqfFbvkiI/u+QRh+CzIB/pZFuchnonuqUxGyh5XayXPHyvtWHtd9cSridvTLGJFABO9IEmCFjhnS/G+4OjZV+tY3/J/BRzc0aG19KQ1J+L
+X-HE-Tag: 1776510060-748948
+X-HE-Meta: U2FsdGVkX19Wa4xUGeyhMPuk17AWAeyAb39vXaMxlL2jhb4F6+Q42B8ISZm3H4Hjv8hIkEhDMpNeRby9fI2/noxIrOd1j1XmFEYIZDAABIZckZC5Ov2GRK5nDP5SJfmV5b6aUE9yxOLcQw2Y4mkEKDeCvaTxvZr8ClU64+BZGUjgOq88R/LxdhgOn5E1yO/HnGE7ww/FS19qxwGB+Qz3lKYZipo1A/YmU2e/iA8joxXimxYq9CFl0etV/jQfuBK4m47eBbWA194pLy5B2IhdcmXGTmZwbWFSz3LJ4kUoT74E5M4VI8IodbSGmXEQlKhvnY9bOmZSUz6mdIjpIL8d0yb3RwX+YcKYKP+DYhfFu/BEo5t4WTIh3GToByPDbr+JELMpPPiUueJQEXCG2XhaLx13nYi3mRxZuxfOnk7H6I4vNKW/051vkqZwPFuk9GwJ4torME5eq4w32RMrPEtFWW+Q+uwgw9aTvMLhJX0hYfsUCGybGuU+ZSKNWXJoBmorO1pRgMiB9Un2ZTZPtJsJhKo5/UdgadsN9XDZHj4pngxiDvaG8TUg7IHSv2UGrDpHAR8HAiucyFjrfAsGiLDvMDQ9C3K33kchbQKXSurcdhgA6yExq42sKEuxWGsisFz5VdVv4DMN1IV563EygAaAgBnaC6XR4ZGbO7YnQjVKhXuRxa/hGqFgIGnYUuvGAI07W8fzIXIYMBG/fZYk0QmFEGFfrZSf0RPlxr5hgKgTJKWlzDXzP3Xy1F45+445Ovbi0sfbb8vrj28qK/LmCCdFGZ38Vz3dk+ii5Zu/h5Wumv0TMS6Q1nT8nLkpnfdkD5M5RdmcI3eAnVylF52zJFNzmKQsZUEZt5jEk532fVD4ZQ4TBTxd71A+34/3jmjy5pKc9yQZTL69Uo9sLZdfFXG8wywIHoWnUJyQoZh8fSGoVwqy+Sgk2WzYu5mfHQZHqKHZF/4YQg3qrMkJbgIKPFa
+ 9h47WbHd
+ 25/EpCP9Wy0Lpy/zfHTMvNbSf67rJT3dmV620GmkxVqWrbbTm0G3oRG1rMHeMINNfq5yl/hL0CY4B3qImqyb8O4W7V8AgTJAswASy9qZG5stwDLZz7Dlz/WUzuRB1inFIvlqn9Wt3JWrvEAFzsuAD7e9Lm/BvkEth5W3vAW2cXoJrwrEGcH61vlGo3A/eUhmxG/9f3GCMhqp+v3q+mqbCUW0CfMTy/ntrWGfwqKyuEhF6VMS1wBgval8Odkllhz+X6tPVY8xZqnmsRvoNHQMWIk3HKZMbldglZryjkY7pmFP97vwA2IKNOVIqWwnfc/bRaH0CT7oV4W1rWqqMq3LKlovcxibRZNcfdRReL07ADhgt53Q6plVCVyfZsnz1l8iP/nC+R+inNXBTqorVN0DT9wHrYV6aLH5R8xaLXy2kg1RxR/6fK12MnboTLPfP1RRKNMHvXikwOWBU0HY0UbUQstmEaeA6uzNQhMrlxtn4VAO2IVSxucKfta/lBhHRMGek9sPl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,33 +146,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Hi Lorenzo Stoakes
+Lorenzo Stoakes <ljs@kernel.org> =E6=96=BC 2026=E5=B9=B44=E6=9C=8818=E6=97=
+=A5=E9=80=B1=E5=85=AD =E4=B8=8B=E5=8D=885:11=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> On Sat, Apr 18, 2026 at 02:12:22PM +0800, Nick Huang wrote:
+> > Nick Huang <sef1548@gmail.com> =E6=96=BC 2026=E5=B9=B44=E6=9C=8818=E6=
+=97=A5=E9=80=B1=E5=85=AD =E4=B8=8B=E5=8D=881:27=E5=AF=AB=E9=81=93=EF=BC=9A
+> > >
+> > > Matthew Wilcox <willy@infradead.org> =E6=96=BC 2026=E5=B9=B44=E6=9C=
+=8818=E6=97=A5=E9=80=B1=E5=85=AD =E4=B8=8B=E5=8D=881:04=E5=AF=AB=E9=81=93=
+=EF=BC=9A
+> > > >
+> > > > On Sat, Apr 18, 2026 at 12:06:19AM +0000, Nick Huang wrote:
+> > > > > - Add "Overview" section explaining the slab allocator's role and=
+ purpose
+> > > > > - Document the three main slab allocator implementations (SLAB, S=
+LUB, SLOB)
+> > Hi Matthew Wilcox
+> > I will remove this sentence in the next version:
+> > =E2=80=9CDocument the three main slab allocator implementations (SLAB, =
+SLUB, SLOB).=E2=80=9D
+> > I=E2=80=99m not entirely sure I fully understand your point. If I=E2=80=
+=99ve missed
+> > anything, please let me know what needs to be changed. Thank you.
+>
+> No, please don't send any more revisions of this garbage, thanks.
 
-va_high_addr_switch skips HugeTLB tests if there are no free huge pages
-prepared by a wrapper script.
+thank you for your guidance. I will correct my work and introduce the
+more recent `barn`, `sheave`, and `kmalloc_obj`.
+Do you think this is appropriate?
 
-Add setup of HugeTLB pages to the test and make sure that the original
-settings are restored on the test exit.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- tools/testing/selftests/mm/va_high_addr_switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mm/va_high_addr_switch.c b/tools/testing/selftests/mm/va_high_addr_switch.c
-index d42ad50eb2d3..4a764589f553 100644
---- a/tools/testing/selftests/mm/va_high_addr_switch.c
-+++ b/tools/testing/selftests/mm/va_high_addr_switch.c
-@@ -323,7 +323,7 @@ int main(int argc, char **argv)
- 	if (!supported_arch())
- 		ksft_exit_skip("Architecture not supported\n");
- 
--	if (argc == 2 && !strcmp(argv[1], "--run-hugetlb"))
-+	if (hugetlb_setup_default(6))
- 		run_hugetlb = true;
- 
- 	testcases_init();
--- 
-2.53.0
-
+--=20
+Regards,
+Nick Huang
 
