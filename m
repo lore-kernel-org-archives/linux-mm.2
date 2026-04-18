@@ -4,123 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BADEF99C89
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 21:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C479DF99C9B
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 22:28:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E18B6B02E5; Sat, 18 Apr 2026 17:09:04 -0400 (EDT)
+	id 531B96B02E7; Sat, 18 Apr 2026 18:28:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 490A76B02E6; Sat, 18 Apr 2026 17:09:04 -0400 (EDT)
+	id 4D3666B02E8; Sat, 18 Apr 2026 18:28:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A6C36B02E7; Sat, 18 Apr 2026 17:09:04 -0400 (EDT)
+	id 3D1046B02E9; Sat, 18 Apr 2026 18:28:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 280636B02E5
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 17:09:04 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B4171B9D85
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 21:09:03 +0000 (UTC)
-X-FDA: 84672916566.11.F143B0C
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C6A3CC000B
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 21:09:01 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Gu/XaZnv";
-	spf=pass (imf28.hostedemail.com: domain of thecharlesjenkins@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=thecharlesjenkins@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A79E6B02E7
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 18:28:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B420713B392
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 22:28:11 +0000 (UTC)
+X-FDA: 84673115982.12.07990B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3D462120003
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 22:28:10 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BEJOAkL2;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776546541;
+	s=arc-20220608; t=1776551290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=RWsCREaaQXHmkT2rQHbpRYta5YCd5PFt0VNHNR6AeEo=;
-	b=MMSWb3MN2HMGpX3UDpP/Jt8tUKkIVwHudvjYXE1KUcGkUTIXvjcMbm3FOhAsxvyW8SvSz1
-	ikhcEeMWaVJReEPt/zsrawFI2CqY0WcvvUxij5fQGxvLZAkbDfaibJxR6c89jaux4Fs5ug
-	niHWmjmR8sZ/eWvoMIB4cYUYUgDJIS4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=/GmwVYui1RdcJPKs388g61ETL0Pr3JjclcYDKPx/w64=;
+	b=ORvela7bjYg3fpVvpkqlzBmksdVp5w1Y9EovLBJAgibBvxCi+HtJ8boE09Qb6Ojk5Izyxh
+	J+nPQkzdWXyX3zdO8Hpv3Tg9d2VY7w8yYukHOte80XwMnRtQJm1XFVHfbGC23ZnMoRyWBq
+	12t40yU0MuN2XMlYRefQ/b7CYYrhiWs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Gu/XaZnv";
-	spf=pass (imf28.hostedemail.com: domain of thecharlesjenkins@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=thecharlesjenkins@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776546541; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BEJOAkL2;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776551290; a=rsa-sha256;
 	cv=none;
-	b=ThHvfUwZxPKYUlPZBzmgtRlxACzQctjALMi3VjW69TE/fiQo+i7DP9YOlijXSCPkWY9ppI
-	/HMzI21gBp7BmnIfsNzmWbhXabikNv9LVWuEZh1f8gV0PWDDjIKP3LGWaZM9lNxNDcJuoH
-	RcUcda+mQzEQPBbcK25C7K3lAUW8ORc=
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8cb5c9ba82bso343352285a.2
-        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 14:09:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776546541; x=1777151341; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RWsCREaaQXHmkT2rQHbpRYta5YCd5PFt0VNHNR6AeEo=;
-        b=Gu/XaZnvoDsgigSDyCgNHdqhkZYUKwD2bPII39RZi+BC3FmKl1RBgNRlNFOTFJrTZ/
-         81+qeyFC2B5Tu5/QLrPb31AwN2dmRopcpqRy5a82HiVn7dw2OzxCZU4nTaUtnkDKLg9a
-         R/+7yYl8smrWNqk/OWekN6E/FvUguU++fpQlwYf1853pcxte/znOYlpHmfWZG6y9VLgZ
-         qwHATyW76uz5MzTEYtJ3/MbSGIw5c/nGj4800h8wruCNGJ9p4ZGwFT92pdceEn6Q87/T
-         p9QGob+s86f42jLsT/JrDp5r5rmvbcCECiDlhkN5+mkP2Z1UH5UzRflUpwWFiDPWJ+4a
-         mtoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776546541; x=1777151341;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RWsCREaaQXHmkT2rQHbpRYta5YCd5PFt0VNHNR6AeEo=;
-        b=G5k5iwIi2QZ2hQO1xOlv1ixABR8yMDL/s5dEZDzok4v8+NTGab2kkEyLjU0wFWA6+3
-         FMjf5gk3xMPwZfc5JWE926ZtCNp7eX/D5tvACxAndgm5KSd445iiKJWKOrJy5jMDu1b4
-         mf3wuCuZqcqtgt9GlPF8unaUjhKFJXAi2o5vWGYVbQqm8UhuOKQMxOQ4h45kAAs5qVik
-         b3b9Kr4THDUfJ6UgwYRZ4dVo4Vh29tSNp7pSpMKRxdkcxfmrQUrKHRakmLz4SZRTRvuf
-         c9U0gtqlFGRB91q+CWz8Bk0y14GqMRjPknclO/cce1VkUpbQNZOHAgiYH+4kp/uyKl+C
-         GzlA==
-X-Forwarded-Encrypted: i=1; AFNElJ+7h4/o0QGPqrVuXFBNrsARCS9fTEf7yottmc13fOvaH9FwLjeCt6lWFc1GlWrBII0aohkbwwYQug==@kvack.org
-X-Gm-Message-State: AOJu0YxgWh4NVvA6Cn9NWVv1+YYSqDoAX5Bfl4upky+9EV16ZkWmQwvz
-	B5OEzh8E8TvCbCRDs/dL2W2W0DRDxx+G+9pS3sZRdYHj47OwBHBggtjl
-X-Gm-Gg: AeBDiesujlWcSIxxLYw0T5NjHeffjzJnwUQ1aUJzvc9FDqEsXat2vpiGwLvrBEXtHzS
-	gT2oU8VUWJz6YBsBX9TcrFXoZleJCWXPwPvrisepQggcEYHxmqLu9tr2fYGSJxJP57vvUFAC8OJ
-	1b63DIK8he+8nsFc1rRHI+aeeBHSIv2fL0KNhI1vdPFu+5K6VKwe2wOs2lIO9BsrzbA3nq7czTg
-	FExSwWA2bubxQWll96mjD72o/PsnrUPkjYyaoBU6KuJqTZnquXooTnT95ifgsX3PzHEBxAmL8TH
-	viQCFNHvMj4+3b1O0I9W2YSX2KCxU8uWBfU7g54Y2FiP6S3Cmk65Vurj82mZxEyNB8ecw9TjuWM
-	Riizgcczypg3T1G4MsjShBWc7/NH6HuqsaOMP3fI42b6yY9APR89qZUctBZ15Y4wsIbqsASMBYa
-	lCF5lQnZh/7P4AHxA9c3y2CRm7DjzOcL3y0/z153vd0WdTeQ==
-X-Received: by 2002:a05:620a:4086:b0:8cf:df8b:1e51 with SMTP id af79cd13be357-8e7916b1d26mr1081316885a.28.1776546540876;
-        Sat, 18 Apr 2026 14:09:00 -0700 (PDT)
-Received: from inky.localdomain ([2607:fb91:4c8b:380b::5f0a])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d8edb789sm454851985a.31.2026.04.18.14.08.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Apr 2026 14:09:00 -0700 (PDT)
-From: Charlie Jenkins <thecharlesjenkins@gmail.com>
-Date: Sat, 18 Apr 2026 17:08:49 -0400
-Subject: [PATCH] Documentation/binfmt-misc.rst: Specify aux vector for "O"
- flag description
+	b=B4yBzy9f1NUghpryeSWFBdjXMFmJEGGZkkPpMyJNYxe0apGu0BnfUIRlnFsfYzdWVPqIlY
+	fyDk0+1GAJNbIJPn85aiwwXICaP7v+pkq3CfuB1zvVoeVa7eYBkY5G8bdDqcsf/SiaKbLR
+	TplB6/hT4JR9pNSvQbMKubu5XnFshN8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5BD4C6013A;
+	Sat, 18 Apr 2026 22:28:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E17C19424;
+	Sat, 18 Apr 2026 22:28:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776551289;
+	bh=9yul95wqLl3nq5JfsYt32CCnOA3waACfBiqcOYDFS28=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BEJOAkL2isOzj1cSx/MAnwPS02jMcTkjYOc/ynW/2zTqFPO6Rkk+Xpmj2h9Tnre6u
+	 7DoGXzuHXy+TRHND6/zjS1XnBytUJ95lPXPeLoJVXPCjsajC9kc7MWmjmHqF/16hDL
+	 TUnrW50Ep3mWJuEQ9DYAKWpy1PQGDzadoRZxGHh8guf6YlqVwPz/XJ2o7+aXLN1SDY
+	 HkFMqsLOKUMhBc5ZDf4DF8KIAV7S7YpNZU07h+jL8ADnNaowqUQVB4L/wHXAvK//Iz
+	 TTFTlnTNK9Y3e2dJXK8yb7nztI1MSqbi5OBRDNDgiawdJBcPtak/AJh6ax+v2XAVP3
+	 OTP/lXYsiobQA==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2.1 0/3] mm/damon/modules: detect and use fresh status
+Date: Sat, 18 Apr 2026 15:27:53 -0700
+Message-ID: <20260418222758.39795-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260418-binfmt_misc_doc_update-v1-1-c2e9601ab868@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAODy42kC/x3MSwqAMAwA0atI1hZU/F9FpNQkahZWaasI4t0tL
- t9i5gHPTthDnzzg+BIvu43I0wRwNXZhJRQNRVbUWZm3ahI7b0Fv4lHTjvo8yARWtSEiROrKpoI
- YH45nuf/xML7vB3TRgFloAAAA
-X-Change-ID: 20260418-binfmt_misc_doc_update-6adddccd9475
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <kees@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Charlie Jenkins <thecharlesjenkins@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776546539; l=1815;
- i=thecharlesjenkins@gmail.com; s=2026030; h=from:subject:message-id;
- bh=KKcmkeUM4z+EcMuy0Yw8cx3ZbSSAkBr89XldtPJwLiU=;
- b=zyJK4ZfrkTxgQec+F55cwfQj0VNFTl5OtIIkEkLyMTixglWlA0VNImSbagI/CJSeJAcOBFWmM
- ZduS/nCwAe6DcVKn8kUGyISYLARK6isqB8WUg8ifHrYfUGZeZFx/7qF
-X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
- pk=vpF2USrG+aB6CTbSt34rzJKsAVe/l+GAXo1IomCMETk=
-X-Stat-Signature: ep84ju8ioa6xxdoxgo18pn1cp4xso865
-X-Rspamd-Queue-Id: C6A3CC000B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3D462120003
+X-Stat-Signature: u9rgyam1to5ba13sd4nx3mt573nj63ei
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776546541-44508
-X-HE-Meta: U2FsdGVkX1+TW4YLAO0zqpk6K9bMCeSUtow9ZQfN7cpU/N593Ehqi7SWuZWisv9UWIY/swDtPrkdcQFirY63GsZL6gf1IrJg4Rg0L3ueQb9RBSo/4eL3pTiHebD3rn6RLyJD26UyHpWZXqDdhFQwF0sb/Jb6fchKzVggESlHVSmEljEwqPmIMqGWz5qT6dNQF2lDHSIIox6FwJMp8BQeoZgF+gulVa9+2HD7B3fA7RcIL0Vi/7g3UjcB12u3mMTadvROMj7aIRmHxEHIiVc64yoNyf1R++rsYXnN99kVBnHhlDWX2zfIoc/1k7Uy7lSo/DM8pylPLxETG4mlJFwgnVKexyFdhvJ/rcexk/4cCEF4NCJRAe/XkvDbNh+uIT2WBgaqA8ocNaR+z9ruLPy1Wnfwf2JGKblqbuuiG7xPp3/qWV0ygas9F2LKsO3VPd/KFlR4zkJ4wsjFHfjA+JKhvum2COPjHBwcTy5H4HcT9PZKhZk+zigMHOyi98K7dwYE2aUartZZCXC3SVrjw+0aoPeCFKIZANffqyQ9fF9B+yRT8145ZYMVVVyRG83hVaSPWeIzJ+4ovyY+isogf4gvyg0xdtYCjxNaYIzvr13Th7e7+to2+Yvpqb0GOk2AgEZED03jS0H3HbucEq1UQ01NxzvkaDK5XhfD8f9tjB3tQaM1UKx7kVS7WemYi7dtK//I27nArFBR3AlsbC0a6wlur5Lu0q9XOJFA04rbHD9g5VQSLy3PDfXK2y5jbW4Ea8XWwDNgwv1mnpnYP7QlsJwjkkg8OXypSQJM3FHjfU810bz89C8QgH31VYR0kfAVyIHJ9JDxA2R6Js9ocaMaluUW9hDFwFTdojVDyS+RR/5FIY32cwRMnZAQYm5dD8gVSPByQT0jlF6LYYrTInvdYHFanEgWwmuHh7ZEXGw45iHxBVXUrcbzYRqdml+iz6LMW9xXHyR8e23csuVDnUXbl6J
- ykORx74G
- hUfh5CuvAsRcYBmvSF/rIkHn2/QuUBKIT8tsMOBBBeOju7iW2YHzVk4dvHlEoeULFeC3/MyGDdSTzgOAKmTBBnR31dsx8MTtuDj/5i7wQlWBQytFLULWEHdGOCvBwUx4/tXEWt4BjleWXK0hkb5ejAGI3LLdY5k7oGyvYzYIA9bb2yZzDw1Nt99+grANRgUMhKaJC7fFMQqGhpbcrnnZc+WW2mieMbpgC2KY1iw1N12mw/Ufpi7QGuGNPNerCqI8qtAIsAdZWLl4T5sLD9GU1MH6hveRA+PNA+cHJg/2zMKLZ7VxbOqLCbvNtK2R8XyeKjWhsW0VtJovuqUE4Fhln+HOcEVjZloDyJ11AUzqD+Im4XT2n3hEOTfpQ/0o/3Tl/s9uAhOr18Qep2xORQc2q8KrTSRy64JdFLDWvXC8tVRVA8c8OdJ8vq9owOQ==
+X-HE-Tag: 1776551290-352860
+X-HE-Meta: U2FsdGVkX19T2OhEAZONW7h9MGi2GxSMaagBW1czGWzn4nFAMxWIRdXpMrWGnU4KQcMTBbMp1qjIMylNCELcLEPqBwrsoeF9vmsSVMp2rv4B+WrQDpY0jxI9YpOh8ul5F/jXb4oo3Cz8BUrizV1QS04nhEwh3uMBfhCwJEi6r99qV+DVhk4kMxYH4erhH8xdqHYCBaZwPXd9PRM7M3S1xIWSkKBCVfopK1KmoAGJNaROghqNzvihGVVcvV2/xqVz2MECW9Syu82kQe0QeRhBnD6AWr9zfrnLKrk3uBBNH3t4zl1TyrNdRonV0fDz4I4zGFAc+M5+Ud61Esy8WKeXAapBarjSqcEmpHMpDrZsdzXWz7ZqBgrK6aBxwCifMnt4hs+bTVaJLktB/pHgWfgXTHIuGaSOzfzYn2Pu6fNyf9sb8QNwHw9qkzi1joYe0EA4ukU7lrRv3C/Zp7+cVjFrLW5GHYOdXoDj95r52zm/NxYfww6t2v2nwf/WIJtR1GgQD+swncjZaCixOWWmKaY+zfrL5ALjmIDGs80BOK5K0GLA69kNQzITcabqw3t7hRAqZ2HQlM1PcOXLeU5LZ1tspULCRfF4JZKeHY/juiO2RUnYsYrSgbtthCfiyWd2wYRm+yVXUW69fCGYQNGVE6TQzUhQq+BmkqJ1W2e6iiOeWlrBTM36Klihjj9voQVfV5e5ta2b8HgHnJzz1dsnXJyYVcTilPP81DriQSRAI+YD3W1pgdixVvd+va+arkm02SO60Y+40e6tjkyipW/AU+c8FUQ+9L4DnnG+ObKPCmeH6Bz+ZC3iQdW9cUFPx2TcSHkgNGcs+8XaC0dV6d0MChPH/7vyB5ZCGkZ6z9csmT/cUWzvCeydQLhV+ANLtJVjoKWUMXy1A2CjQXH0tUVUMPeR+SoThWkbkRUpMFMMWaiV92ST01TYEmv1qP2TwqgEyfW/0NCDkONADk9bdALXq9J
+ V2PL7qUv
+ FG8BfXMH0kfr/g1VCIRDIjLPgxD/QEdYgXebUxHy2QZhnIBIhNTJVpwqEU83qNj8PJwjEILhmFbGEqQk/8N8B9XVGg9ebNnVtcn0EYb8dVBSyXLySC49T2kZWZ4xZ7w5I/QjoF/M6twKUp1PUQWmrU8clSg2rrd3NGI/SutUkEUPqN7WltTFg8LjPS5FYttPJLZ9ynPuCDEXvWPwGAvIqEw8XNEjFXcTz/FsKMAuBIsJrxxa7+zM7YWajX6SyDVTgEwfN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,40 +92,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of replacing the file path in the argument vector, the file
-descriptor is passed as AT_EXECFD in the auxilary vector. This appears
-to have been the case at least since the git port, update the
-documentation to reflect this.
+DAMON modules including DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
+commonly expose the kdamond running status via their parameters.  Under
+certain scenarios including wrong user inputs and memory allocation
+failures, those parameter values can be stale.  It can confuse users.
+For DAMON_RECLAIM and DAMON_LRU_SORT, it even makes the kdamond unable
+to be restarted before the system reboot.
 
-Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
----
- Documentation/admin-guide/binfmt-misc.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+The problem comes from the fact that there are multiple events for the
+status changes and it is difficult to follow up all the scenarios.  Fix
+the issue by detecting and using the status on demand, instead of using
+a cached status that is difficult to be updated.
 
-diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-index 59cd902e3549..c0a34fbf8022 100644
---- a/Documentation/admin-guide/binfmt-misc.rst
-+++ b/Documentation/admin-guide/binfmt-misc.rst
-@@ -68,10 +68,10 @@ Here is what the fields mean:
- 	    Legacy behavior of binfmt_misc is to pass the full path
-             of the binary to the interpreter as an argument. When this flag is
-             included, binfmt_misc will open the file for reading and pass its
--            descriptor as an argument, instead of the full path, thus allowing
--            the interpreter to execute non-readable binaries. This feature
--            should be used with care - the interpreter has to be trusted not to
--            emit the contents of the non-readable binary.
-+            descriptor into the auxilary vector with the key "AT_EXECFD", thus
-+            allowing the interpreter to execute non-readable binaries. This
-+            feature should be used with care - the interpreter has to be trusted
-+            not to emit the contents of the non-readable binary.
-       ``C`` - credentials
-             Currently, the behavior of binfmt_misc is to calculate
-             the credentials and security token of the new process according to
+Patches 1-3 fix the bugs in DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
+in the order.
 
----
-base-commit: 028ef9c96e96197026887c0f092424679298aae8
-change-id: ${change-id}
+Changes from RFC v2
+- rfc v2: https://lore.kernel.org/20260418014439.6353-1-sj@kernel.org
+- Set kdamond_pid set callbacks.
+- Support multiple enabled parameters setup on boot commandline.
+- Acknowledge the third patch was discovered by Sashiko.
+Changes from v2
+- v2: https://lore.kernel.org/20260413185249.5921-1-aethernet65535@gmail.com
+- Add RFC tag back, for sashiko review.
+- Detect and use fresh status instead of trying to catch up all scenarios.
+- Change Liew from the responsible author to a credit-deserved co-developer.
+- Move authorship responsibility to SJ.
+- Add DAMON_STAT fix.
+  - RFC of the fix was posted separately
+    (https://lore.kernel.org/20260416143857.76146-1-sj@kernel.org), and
+    only commit message wordsmithing is added in this version.
+Changes from RFC
+- rfc: https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com
+- Remove RFC tag.
+- Remove 'damon_thread_status' structure and damon_update_thread_status()
+  (SJ pointed out this was too much extension of core API for a problem
+  that can be fixed more simply).
+- Add a fallback in damon_{lru_sort, reclaim}_turn() 'N' path. If
+  damon_stop() fails but kdamond is not running, forcefully reset the
+  parameters.
+- Reset 'enabled' and 'kdamond_pid' when damon_commit_ctx() fails in
+  damon_{lru_sort, reclaim}_apply_parameters() (kdamond will terminate
+  eventually in this case).
 
-- Charlie
+SeongJae Park (3):
+  mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
+  mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
+  mm/damon/stat: detect and use fresh enabled value
 
+ mm/damon/lru_sort.c | 85 +++++++++++++++++++++++++++++----------------
+ mm/damon/reclaim.c  | 85 +++++++++++++++++++++++++++++----------------
+ mm/damon/stat.c     | 30 ++++++++++------
+ 3 files changed, 130 insertions(+), 70 deletions(-)
+
+
+base-commit: 710b7b26c423290803f447f5ed2fb264e91cda56
+-- 
+2.47.3
 
