@@ -4,132 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C81F8F99C88
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 16:34:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAF3EF99C88
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 16:58:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28FC36B02D6; Sat, 18 Apr 2026 12:34:46 -0400 (EDT)
+	id 1EAC16B02D9; Sat, 18 Apr 2026 12:58:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2661D6B02D8; Sat, 18 Apr 2026 12:34:46 -0400 (EDT)
+	id 1C4666B02DA; Sat, 18 Apr 2026 12:58:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 155AD6B02D9; Sat, 18 Apr 2026 12:34:46 -0400 (EDT)
+	id 0D9846B02DB; Sat, 18 Apr 2026 12:58:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 003646B02D6
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 12:34:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B6AD61B8100
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 16:34:45 +0000 (UTC)
-X-FDA: 84672225330.26.198177C
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C10A018000F
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 16:34:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="f/Ho2v8Q";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf06.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id EE0AF6B02D9
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 12:58:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9811359000
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 16:58:14 +0000 (UTC)
+X-FDA: 84672284508.07.DD77EB4
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A19AD80004
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 16:58:12 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TNmrB6XC;
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776530083;
+	s=arc-20220608; t=1776531492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2oY/tcRSmcBh5sFFcI4oYCHuxEtlx4elQ3E5wFdMf14=;
-	b=WVN58+y3Y8EMXi/VnjcQKpItDagwCruszJguiXzVP9wFnBTl6PG+ZjSxu3tMbYrAD6WGWd
-	NRH71SdjJMcUJi9vqFmTO3eYXpAnoAGGbq6lRMa6TM2fpC/U96Nuuac3wXHBhrMSN7pgr/
-	4dOUvDSv6WICsSzGysQAFkNPKAJUSgU=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776530083; a=rsa-sha256;
-	cv=pass;
-	b=DbJzzZTen2+w9qMVlfthJnydXm4nGTHvZTXTxkpOZjR949s0zkk36h+5Kfry5GwczO+LYS
-	qYFVraP9ZGIuIxGOp4mdoEStoFERkCQAQ0l2yr83/iHQsK5Nc9IedFgr7y1Rvmv0GchqUW
-	daakHDe4KSPZz5zTOVrLeuIPlQ2SNik=
+	bh=zQ07OjUwoRamTzId+InxzD4WMxRil7WWgRCU0k4aFGg=;
+	b=I6Zd7enSsI4Gm6OfUt9BlWhL2wH8aKr6/O5yq1mvZDlQvmeCktcybiI5Saffd98paonW0v
+	KRVSjX0UFBT/W0SxY0el6vugo2doG8DX0uBERwfsnHPu+7EteY2Ip1zbirYTrCJ9yEV58W
+	uYxe8QwNxTBCs+l/iPo/dxEdQKBFZnM=
 ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="f/Ho2v8Q";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf06.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-652f220595fso1730205d50.0
-        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 09:34:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776530083; cv=none;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TNmrB6XC;
+	spf=pass (imf30.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776531492; a=rsa-sha256;
+	cv=pass;
+	b=U6h5phnx/no2BSVsL+4eqljP3NPFsltkdu27BqVgz+fi03I/gd27IbVRZQJtBB2l4k9B/I
+	fMD0bDusDkjJSxinuU6XalH4Je+eeMYCIJePV3VytlARGpELMp8P4L6ciqecRFyMlQvbKX
+	bTrwp77ir60AM+9wIFXZMM85CeBPpTw=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-82d0b68837aso1053765b3a.2
+        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 09:58:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776531491; cv=none;
         d=google.com; s=arc-20240605;
-        b=fppRPVB+nnVmLAx6ect7F3wMF7Vo1sQw+X5/MER3RHSOWH7/hLf4hAMGohNi0czTWA
-         ADVSgNWA7Bs91wdaXgLuX1aezYWdOO1FmmZvI1oyexbHP1clBtvUnwASFpKOwhBp+RFH
-         /VUU5LKLTNBHwhaDuvupnTESepb5TntAOTDe006l3a/a7LLo6bK4p5giSggfxRlN9I38
-         umtWi8RbeYL54eU19ZjD4ZXtTjzcxcYF681faXv4l1Zvipgz+bMVmHV7cRDZOUon4lQU
-         PZydqaymERsKlcTiSkk15kF/b+mGApDUzWIHy3KeAbkZaEN0dacgxX4Z17PNP7a9gGBV
-         KKBA==
+        b=PwFOBkJYa5NElCFoWPqO8KNRpiKQpyL1+FufUVPJMDodlTl22DxuivMKgJzpVHcxW4
+         owa3QNFvVag78sGdHBnAzKZ44DJ2zHgxsBArARUbYeUXH+/RkqOcTXxwuNXCnITeNeQk
+         XlZihom2fHCfOPTS1MXZokFPvBEADarMj0cGm3uaJ+cabIqwiS3fM/8A/Cu5VhdztceD
+         HwmSn7FfXG0Sz5fOAS44HfFvQBF0D/NI1E9g8+dvYv4z5tJiAh0TMzILOBTYlk0g9jWG
+         jDnsuXBYfTgt/kod25+poZtwVOgr8c3hSQm2lTo4AVn4Jxgj9u+VfELZj1k0Ut+rCJ0G
+         WnmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=2oY/tcRSmcBh5sFFcI4oYCHuxEtlx4elQ3E5wFdMf14=;
-        fh=4KUYc7lTuRu9kyxl0pRAEYTRFgKwV40YP500OVXBmXc=;
-        b=jZNP/FhtUaWeuYLmVzrbdAbNUZOKWvf36aaPFxzcImLRMo8P4BG2x8RvkF6+J/HzSo
-         /cPCEBNkMfw4Wr+oAnIxOZQtA0voPqsRkGpoSDuuiXntQcaWP0xn/DVvxctK0aAGX2+p
-         /fDVnqjVT3awHQZD2V7pQMi5c4AvHBkAZKq7vEGz9U2HdBuMwA+wDBSPliC23a7dH816
-         2qgiDqaZKaSJ8vzWMI59UYzA4EEGDWjIiEZRGSpevb7+3hMg9iD0y/E4Nz7zPanQFcJ1
-         a16HsHV7n8VliuckXcnJb3kPPJWD9ygcwmALAjlmlEBS1vjyXXQYgx/TvxFv/Bz8xbq5
-         OaFQ==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zQ07OjUwoRamTzId+InxzD4WMxRil7WWgRCU0k4aFGg=;
+        fh=3REOVNzYkQ8+arRUXdGjum57Nfv0U5m/3yka4Z4sNSI=;
+        b=jcDiXqyBAB4dcj0fBfM559b0XXWXrTl8SBJ39HC+I6uT9n3NYbtTKd87UZXDCj2GPA
+         1hgPULRuD0yWPNNZmsXxVZ09f1OMeN5JdK6NHtYJEBex9VZnE8D7cf5xFWAs4qT7INtA
+         4Zgmb3+xtp8cqTDCZi3bmXLaLhX8c/sm0fzZdgq0yYPqw0No2RXRkMk8PydU9e7j0Jv8
+         WitYkRsWbPidgiD+oIda4hXANzeyyfi1lTsZN2tMq/WmE0yzmRUAlfqn0iElhtZP5dg7
+         QRKLZSkNE3usFi729exMTuz5lh3uWTH93n7myzqSsCyhP+j6kSPIVV81PMTSG9a/Xpt7
+         kSPw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776530083; x=1777134883; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2oY/tcRSmcBh5sFFcI4oYCHuxEtlx4elQ3E5wFdMf14=;
-        b=f/Ho2v8Q/vyTpzl6xA+R0UBTdHMvXWSmVWSOvdwOZ1g/nosllKmCN/ZhaKhvK+hT/7
-         H5VcQNQp+TDGmUZOUoHkBXzoK6J4EGXEkLOZ/cKSnPnAmNgpy924oWvOqtO8irnvpDKj
-         nW4ATo5XbzrillQ8Ttg6r3ziNFfJwlF+wbTFGLEeG8712gcw/EuMWF7Fclf3CyqDwiUy
-         BPgb97govwEc2A05W/pMW4xwKnYhSqBRbVae/m9SosyTjDFhmrqp3zLzP4gCso6J3Piw
-         PomR4A4jvWnzmdIs1i1HUvfsF5XVK+f+05Lc0UR8mexeMqB7LBruBUGP6fIjVFc8eepj
-         JMLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776530083; x=1777134883;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776531491; x=1777136291; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2oY/tcRSmcBh5sFFcI4oYCHuxEtlx4elQ3E5wFdMf14=;
-        b=tPL3VvD2MDyXNYiuiv33I53ESu4BAqWaQVEZPAcFWGbRYS/1kIxc26sAHwF/QBzDj5
-         sVefjrn0vaCXjr5kGIpxt2Att0pvV5C/TH47vBySDNmkcDV4ltN/ta+t++oE3aaTSkwt
-         kDuT2tzCX+EYBYZOk/++j8pBkHyd9AzuZxZ4G+bzR3hoWuTXLAU3Du+v6u1gbZUfO0us
-         zdhuy6cC5oWowJ/FudgWvvCvnKRQAGNFtS1N7kvv5A1ThDvAApE43pFcImanJQLciMle
-         drsRy2weZzu+wqJ+dyat4F0v0toK1sGsyvknE7hfm8kuv2pTfi9VDdpgTWZb6jZTtR0c
-         xkNg==
-X-Forwarded-Encrypted: i=1; AFNElJ/Ewjy3c1xpbQaiJ9fgURGPS7IuTZlGzD28GBr3g/ktoLhvXE0286ta1BmGDVz5ILHTDL3OoZuTmA==@kvack.org
-X-Gm-Message-State: AOJu0YxJqO4w3mcfbgjViRQELHxyp1sOKX1qjK5gMDtEHlHDa83VzEL3
-	d5M0chl1TSS5ZXeTHq868jCaBdGLpwSxRE7EjoRPH2ubR8nSSPtaWHl2OpzSO2iNBsccUNKbEL7
-	qMjenoUbRi8jqhKKtTdNcvac8nbDTvPQ=
-X-Gm-Gg: AeBDievreV4Qn9KI608Tbl6yQB2WwDAEx2KcTT/9AzqGo49WiPrwN4ZYqYCLmncwfiw
-	iLPRurSgUTQM8IL3sP5DDGCkvpCcQTQ81D7JQBaZM2jOvSOviVgQrBjOsgdJuPk1+FLYDVczQFW
-	hhwzFH2zWttyXxU5qs6QrZSl1+wULcew+/fOlHbxH1J9J9dhHtY2Pdp42+tCt22XfQQ5vurH6Pp
-	gRW5vZakZwF8g25lCd8gTzXtCDOf/+EAJBKLvu3jPLIi4uGidPnrH7NZipJr+x79trslhqgL7mD
-	W803LZcvIM+tgJfRLanYUPnQDKy4NEBjbGU92SEa2KHuckcSaInBj9+kEOEB0Ow=
-X-Received: by 2002:a53:b446:0:b0:651:d0a5:ce2 with SMTP id
- 956f58d0204a3-65310a8a93fmr4803705d50.60.1776530082712; Sat, 18 Apr 2026
- 09:34:42 -0700 (PDT)
+        bh=zQ07OjUwoRamTzId+InxzD4WMxRil7WWgRCU0k4aFGg=;
+        b=TNmrB6XCBaeEv0KKY7LuWIPvmErugDPQoc0NGhB5utoKA4uFV/m9W40hiMTNO9L7uc
+         A2dY+8UQ7RDC7WNab4kVBF8aWWVlSOsAlir4ZvdjcS7xtSm3rUSYlK/eBByUeXM/xP/P
+         JYsbAQL+U1uKbd8FA7t2+gLG6iHbf/kHAZl5dNs9C7zQ2zjyFRo8F+6hNW9oc4CUJdug
+         ka8PxYYo68iwq5nls54fS7iGeftrxkKr/XMK2DqAuM5VCoGXk5IuPixCtaIaSY1XfUol
+         rKO3lXROetUpHGL62fIY1IclaNZF0ueO1Migc8BczJrl824LPf0szQJj7NDtwQ+dUvu5
+         nO1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776531491; x=1777136291;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zQ07OjUwoRamTzId+InxzD4WMxRil7WWgRCU0k4aFGg=;
+        b=odt76FIDALKETyVa5/kn/AzmO66OPQOHuJe3cKjjoQsEelySPXSM9vLWu+ZDDBmdJp
+         2ckhl34RpCdkRjSGC7OBQlYMaYLhmMwfTmxl1mWSNoon3VyWytJjN42gmBNLy6KobVzI
+         w+O96tXzEG1MwacIVZge/wXf078xYgX8SKA00nPWfhFJyxfK6kcL7VGIutbqgN3W2vDp
+         nxu2aqLreYhrq7qpMFAWtMnJkrBkMJ94isaRjiEHVFPoCYZUeTDKksEBF8r4w8+YNSfW
+         rumTUEELugUpXa8yRchOaJkq24BIvciLWeD536rGBTIdO/tlBlCRxnNeouxmPyZNZKeR
+         7ypg==
+X-Gm-Message-State: AOJu0Yw+hXfr7pNfuM3jHbKKLoOH/dUXi9KMgxPoNRHJTcirMTB61dGS
+	4e/HuWNpOzVEb4OSR3XzigzanoS3uSonOuziCyYuRk85CYz2dKEjpV/+v+JCqsL0IaAed/64NEs
+	VRZaTwXIDhO8YXX9U2FCbHLQTJyTVxQE=
+X-Gm-Gg: AeBDies0srpZ36JIDSTMvk1nm5t9a0hrYSCXuMIkpnDVjTaWyrDTiks7TszrUib4Jx+
+	W5IJEPZw/9hCjr12IL9fEICkIWHmLRxPmeabe5C9ALVVwd+b3BjD9ZQbL65Zyu6v6Rxv/jUSeLb
+	8yCFzn6Bi3j0Eu9CCmUy6WOmba/fI+LGJ5E4W8r7HgdI4puymBAf7BG7F9W0CzzrhGpcOVW1s0z
+	XiKjIlb+UHVzUYKqsYm76jkO9FDyW3TnM6JCThvtBZjhz8fknLpJvNFXtxCkmqWyywpwgBuz3u3
+	zA67PVEiopLOhbHrnleAuOjxEoUpVQbXyWL9Vyvdc/9tbrp1ZBY=
+X-Received: by 2002:a05:6a00:2889:b0:82a:12e9:c75 with SMTP id
+ d2e1a72fcca58-82f8c8c5353mr7484810b3a.30.1776531491289; Sat, 18 Apr 2026
+ 09:58:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260418141123.2193917-1-luca.boccassi@gmail.com>
- <20260418141123.2193917-4-luca.boccassi@gmail.com> <a4jd64pkvamnwuwzu5k762rgn6sgzp6ldcoknkwhuddsrwcbyv@vxwdpp66x7bl>
-In-Reply-To: <a4jd64pkvamnwuwzu5k762rgn6sgzp6ldcoknkwhuddsrwcbyv@vxwdpp66x7bl>
-From: Luca Boccassi <luca.boccassi@gmail.com>
-Date: Sat, 18 Apr 2026 17:34:30 +0100
-X-Gm-Features: AQROBzAFi32dl83y4vi-iHBtoXR9NASEP_4UGJj7Oe0Bi3My32Y9WO4b3xObtKU
-Message-ID: <CAMw=ZnS4+TjxYN2KB4sejwwU5n95O4TBVRESq0PxbbdiSP3iKg@mail.gmail.com>
-Subject: Re: [PATCH v7 4/4] selftests/liveupdate: add test cases for LIVEUPDATE_SESSION_GET_NAME
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com, 
-	rppt@kernel.org, pratyush@kernel.org, brauner@kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com> <20260413-mglru-reclaim-v5-14-8eaeacbddc44@tencent.com>
+In-Reply-To: <20260413-mglru-reclaim-v5-14-8eaeacbddc44@tencent.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 19 Apr 2026 00:57:10 +0800
+X-Gm-Features: AQROBzAUGXWkKR7RgvV5vm_jWC6LA0CSMA2gE8dv73LqZoiHwdJHn-rulFH6udM
+Message-ID: <CAMgjq7DCn8p_yMMhiejFjX6sdybZKYOw8qJbq=+OCsZ=AfJnFA@mail.gmail.com>
+Subject: Re: [PATCH v5 14/14] mm/vmscan: unify writeback reclaim statistic and throttling
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: w1d5ga6naei17at4kn4x136gsoktugkf
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C10A018000F
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A19AD80004
+X-Stat-Signature: 5br89dounhx443yy59buxndddhx4cqbb
 X-Rspam-User: 
-X-HE-Tag: 1776530083-378423
-X-HE-Meta: U2FsdGVkX1/GdDuSudNpAv7ugHWJ1UpC3O3+YE51fhdT/UduFe8Du+4831iv9cJVN28up+zV5+8yubrY3OgMuqQkCe9+cCZsnG5qoobuVCEoLUk+JZFKfjwVOE1whyEsTTUhsFsOoZRLeRXoSd8xdmY2/Wuw5KPEeSRB436Gx21q4mtarZxQHyK+x0PSwkNuk3C9YrQ8WjZvnwmV/T4kHxvV3aV9zv22YUZvc5eRTLPjkQgEiySvyJIhzbDRwSEnINXeWIcNGBv6drXHuTZ7IeeKNOga0eWhBrYU6PbcBen8ro5PyDug5Qs/PJgL6/3nKgnBzPF0Zp+qazHrj0OIte8nzYCMQxDh961id4BXclqtlTOb4RSZczzcShemQeMVGDrEh9ksHT2Z0yydsuMBbOp2EDo/WkWINwABpLuSdaPcGvxM0OtU71ijno3oGP4fIE1OWOLPPTDajaHuw0t7rZDIznkuRVw+IWRKbVl5hHSt4uiatP0JahNlRbW2BRQpigKSxOIX8yiIt/zY60xH26lX8v2yrJkzlnYFOfK9gtrs9jWaYCi+Q9uWiyN07BYquHlQtJ3CCboZGKZ/jxZEow6pKEGP/hUmurvKy29Tbu2W+CGpw1mzFvkiSK3PwSSmMbFlVuWOEJep/0gObOk3mmHZbgC3jAlFm3iqklagXkwlSTLA21+ii2B5Fcb/bn7hW5XzGy+VDBensP64kr96gwggjji/eWb8CqZvZ7MIxA29v0Qd90mPKZnolQ57bx/7BtTyc/le8g450t7NnZE6wzO9wITDQ6Qvh7lqTNCYn8b5LlVf+CBMHMZYiZTywAuepqi1dPDDWuqGXsp0jbiFJ9q56NZs6SYtsMBCNjkiLbE85EIO8g3EJBxHaPuyiSylmz+57wdjun8pmeaiSbp7yjBggDs4do84GPolOiMah+QJ0+buLJUi0LOr4RQRp/ZiR8MUe1Y7mW5HT9TWdiF
- Nzbof4Z8
- HW2DxDj9pZsfQJhhTOvb3Z8+/MOcUrKG+YxxdE+CsOvxtaaTwjAO0j2q6WmQuhcgz6wO/GKnm0AmaMQrk0ZXL3Eq4sPbPXYJZKr5H62Xr8laDp9Z6P817oPfuP5nyOxL0wxID6edZVvcqCKhsqpREWrxL/2GLs9M2QR60q4ZiMakTxZuwdoMHPvXloKB3cJUhPlH8ZxUcr0ytjeA/aN66Tn4gVe+g0lishWYN2clvMDG90DZaDHaPmb4oKxtrLG5JPi6iSpNZoTe/10l0gz0YOohpFSwfZzWjXF0orwhBOVYkyWGjOg0QanE0tLMr0tm/ZF5b475a3IBQubrQHkfUruXttxUfBxVXXnpHRDfZQSlK2Nvz3MAcpB4aNNRMvHd3e4CbWz/raLU9wXU6utn4+B3cdPgfkcwE7IFJ7MA6GGZoaHyx6kbrj0p0P2DNFIONrBL1pjmG0D+VkceUMrdDH9ItPNjjyX61h43CIKH886Bw/5f7DVRMaeewWWVGvv65dHgVgr8et+no3zmYV2My8Y+E7GAWlHiRLpZ1GBO8eytUShkl/DWh9IOMoQ==
+X-HE-Tag: 1776531492-535904
+X-HE-Meta: U2FsdGVkX19BEvGlY81V0VwWmITPKzPk2casnD7CaM+wbc6ZVJDj0az/Do2r1GzsaUDhgw3t3shJL+icRXCpPACND3xOn6+SJIjk/YNtNE/dDp2C7kkjkn+xlkEGMuH5dh3erdcjIJCF8SA5YtRcgNtij50oI2Ri+God7SX67fRq/wuJpCT6kZbJsry7dkmNZiEj4NeK7oewB5VXv+vny1IxFpoMo9f1tl0zaKFCkwOOxwrpsSh7jbRgFydz8M8k6/JB/+GdVevBHYB50C5HPMjbvB1ZZCOv3ruNS9T65BJ3vmtP3cBPK2CCurMtl2pV5gYvsspjFvJ0QqVE7sQglmKEGNtQb3MQBYAeYZPerQUioRwdlxPBFmQkI5Y+38gWTWzoGFm4qb2AD6IZ/0LvAnxUZOF4yS36TjhK8ZkN1YIHlBVtS/uxNu7wGBd8rOldqG7MFPDfUzOIC7v+NS1GUwg6f1dhBlukVaQG0jSyGiNERWaTzgNWYmnwm6TI6vubaTO4ev4aabBk2JataiOkZnmYtSN2OPuTEzXY34XVUuPDBWM8mZG6t/9yy5njk+h9UGUOc+f7mnK62YdhoyHFovRNMMZVxANDyM/zmTHNl5lPq6jY8aydoyXp/vgyTdCT9zKZKHEYNLxcbtNTk9/+xx6MlyjWtlcfh7eq6TblZw5RerDAXpCrxMT4Mn16A/8hZdQe+zk+tczA5rvqZKVUb31b3ILUvtl+yrjhUJXvWfoGKepbsW7HbvLYyQ0OXgRPsGZFPHWIcLo5o1CChJn32v3R9fXhs8fdOj0cOmHy1YmIZZcK/zEdnrCl3lYMb1+8FBsQWbVIzffOmcgyhOPBtQjm0+0hjKwX22DReug22UrlHwDj3v96GXccAdirIX4VKv1m6Ap+sIixyPfZQIL24AQ9m/s0Ju7kvhTJF9DceEKfUZzPEjNXOa08A1x0121xiry4F5rMwLK76uFg5aP
+ Ci5x2w0n
+ rPKlSz/q4Wxi+f+4nXHN1NM/oGNvWInF5S0VnGhqvhKjpQuNH+hDCCvszaNeRuGT6UlXYvStjNVEv9eo3+84E+5ccCFrTrK7nrrZahpxvl7gkuXLBWu8IcR5aawAYBs50fzze+Pg8IptDl++RfnzOkZNssj4xBtlFyKan5k0C5qs25rvM36YwLEADA+1CGD4pQYbwoZt94Z/tqocNi3/r5VY/BF3EjXo6OmYTjAIHC2AAngQ1+GR9GddkJIVFVZYwgU4m7HOR/SaLVBaVF/NSzcODcW6nCRSipubhDAvD3TJES7At58/oDkhq5p1OmnLWOlEscKURRGQinsTpXrwfGzXTaTjw34CSp9RyO8uaJxx4T7LgDUk0HYRX3FOGfvtaiDC3U00jlcaWZe/tWg9GgdjMvqN2ljlABZHv1qPsOPO1O9tT2o7kH5eCCjlFSMnQqsD/nJ01a+aYlbuDC4J/TG11Q1KVmTMabecT3jsTBUwiVGQIm9/F0vQBiakXWp2qJhlno8x6JaeYD9yZwYIDCEygwhye5TXlAQGhcSy9CtM7sqT2LGfYD2nojbbMInrbM4lLfemplvqdPEcokGbxxrqGF+/1CnGtHxmKfTw6E1sgku0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,177 +147,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 18 Apr 2026 at 16:50, Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+On Mon, Apr 13, 2026 at 12:53=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
 >
-> On 04-18 15:09, luca.boccassi@gmail.com wrote:
-> > From: Luca Boccassi <luca.boccassi@gmail.com>
-> >
-> > Verify that the new LIVEUPDATE_SESSION_GET_NAME ioctl works
-> > as expected via new test cases in the existing liveupdate selftest.
-> >
-> > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
-> > ---
-> > v5: merge with LUO_SESSION_MAGIC series as they both change the same
-> >     unit test file, to avoid merge conflicts
-> >     split into separate patch
-> > v6: add more test cases as suggested
-> >     more verbose commit message
-> >
-> >  .../testing/selftests/liveupdate/liveupdate.c | 138 ++++++++++++++++++
-> >  1 file changed, 138 insertions(+)
-> >
-> > diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
-> > index d132b4685f76..ffbcbd465c9b 100644
-> > --- a/tools/testing/selftests/liveupdate/liveupdate.c
-> > +++ b/tools/testing/selftests/liveupdate/liveupdate.c
-> > @@ -105,6 +105,22 @@ static int create_session(int lu_fd, const char *name)
-> >       return args.fd;
-> >  }
-> >
-> > +/* Helper function to get a session name via ioctl. */
-> > +static int get_session_name(int session_fd, char *name, size_t name_len)
-> > +{
-> > +     struct liveupdate_session_get_name args = {};
-> > +
-> > +     args.size = sizeof(args);
-> > +
-> > +     if (ioctl(session_fd, LIVEUPDATE_SESSION_GET_NAME, &args))
-> > +             return -errno;
-> > +
-> > +     strncpy(name, (char *)args.name, name_len - 1);
-> > +     name[name_len - 1] = '\0';
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >  /*
-> >   * Test Case: Create Duplicate Session
-> >   *
-> > @@ -385,4 +401,126 @@ TEST_F(liveupdate_device, session_fstat)
-> >       ASSERT_EQ(close(session_fd2), 0);
-> >  }
-> >
-> > +/*
-> > + * Test Case: Get Session Name
-> > + *
-> > + * Verifies that the full session name can be retrieved from a session file
-> > + * descriptor via ioctl.
-> > + */
-> > +TEST_F(liveupdate_device, get_session_name)
-> > +{
-> > +     char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] = {};
-> > +     const char *session_name = "get-name-test-session";
-> > +     int session_fd;
-> > +
-> > +     self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-> > +     if (self->fd1 < 0 && errno == ENOENT)
-> > +             SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> > +     ASSERT_GE(self->fd1, 0);
-> > +
-> > +     session_fd = create_session(self->fd1, session_name);
-> > +     ASSERT_GE(session_fd, 0);
-> > +
-> > +     ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)), 0);
-> > +     ASSERT_STREQ(name_buf, session_name);
-> > +
-> > +     ASSERT_EQ(close(session_fd), 0);
-> > +}
-> > +
-> > +/*
-> > + * Test Case: Get Session Name at Maximum Length
-> > + *
-> > + * Verifies that a session name using the full LIVEUPDATE_SESSION_NAME_LENGTH
-> > + * (minus the null terminator) can be correctly retrieved.
-> > + */
-> > +TEST_F(liveupdate_device, get_session_name_max_length)
-> > +{
-> > +     char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] = {};
-> > +     char long_name[LIVEUPDATE_SESSION_NAME_LENGTH];
-> > +     int session_fd;
-> > +
-> > +     memset(long_name, 'A', sizeof(long_name) - 1);
-> > +     long_name[sizeof(long_name) - 1] = '\0';
-> > +
-> > +     self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-> > +     if (self->fd1 < 0 && errno == ENOENT)
-> > +             SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> > +     ASSERT_GE(self->fd1, 0);
-> > +
-> > +     session_fd = create_session(self->fd1, long_name);
-> > +     ASSERT_GE(session_fd, 0);
-> > +
-> > +     ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)), 0);
-> > +     ASSERT_STREQ(name_buf, long_name);
-> > +
-> > +     ASSERT_EQ(close(session_fd), 0);
-> > +}
-> > +
-> > +/*
-> > + * Test Case: Create Session with No Null Termination
-> > + *
-> > + * Verifies that filling the entire 64-byte name field with non-null characters
-> > + * (no '\0' terminator) is handled safely by the kernel. The kernel's strscpy
-> > + * truncates to 63 characters, which we verify via get_session_name.
+> From: Kairui Song <kasong@tencent.com>
 >
-> [...]
+> Currently MGLRU and non-MGLRU handle the reclaim statistic and
+> writeback handling very differently, especially throttling.
+> Basically MGLRU just ignored the throttling part.
 >
-> > + */
-> > +TEST_F(liveupdate_device, create_session_no_null_termination)
-> > +{
-> > +     struct liveupdate_ioctl_create_session args = {};
-> > +     char expected_name[LIVEUPDATE_SESSION_NAME_LENGTH];
-> > +     char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH] = {};
-> > +     int session_fd;
-> > +
-> > +     self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-> > +     if (self->fd1 < 0 && errno == ENOENT)
-> > +             SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-> > +     ASSERT_GE(self->fd1, 0);
-> > +
-> > +     /* Fill entire name field with 'X', no null terminator */
-> > +     args.size = sizeof(args);
-> > +     memset(args.name, 'X', sizeof(args.name));
-> > +
-> > +     ASSERT_EQ(ioctl(self->fd1, LIVEUPDATE_IOCTL_CREATE_SESSION, &args), 0);
-> > +     session_fd = args.fd;
-> > +     ASSERT_GE(session_fd, 0);
-> > +
-> > +     /* Kernel should have truncated to 63 chars + '\0' */
-> > +     memset(expected_name, 'X', sizeof(expected_name) - 1);
-> > +     expected_name[sizeof(expected_name) - 1] = '\0';
-> > +
-> > +     ASSERT_EQ(get_session_name(session_fd, name_buf, sizeof(name_buf)), 0);
-> > +     ASSERT_STREQ(name_buf, expected_name);
-> > +
-> > +     ASSERT_EQ(close(session_fd), 0);
-> > +}
-> > +
-> > +/*
-> > + * Test Case: Create Session with Empty Name
-> > + *
-> > + * Verifies that creating a session with an empty string name succeeds,
-> > + * and that creating a second session with the same empty name fails
-> > + * with EEXIST.
-> > + */
+> Let's just unify this part, use a helper to deduplicate the code
+> so both setups will share the same behavior.
 >
-> For the two cases mentioned above, we should implement a fix in the
-> kernel:
+> Test using following reproducer using bash:
 >
-> In luo_session_create(), we should verify that the name is at least 1
-> character long and at most LIVEUPDATE_SESSION_NAME_LENGTH - 1.
+>   echo "Setup a slow device using dm delay"
+>   dd if=3D/dev/zero of=3D/var/tmp/backing bs=3D1M count=3D2048
+>   LOOP=3D$(losetup --show -f /var/tmp/backing)
+>   mkfs.ext4 -q $LOOP
+>   echo "0 $(blockdev --getsz $LOOP) delay $LOOP 0 0 $LOOP 0 1000" | \
+>       dmsetup create slow_dev
+>   mkdir -p /mnt/slow && mount /dev/mapper/slow_dev /mnt/slow
 >
-> size_t len = strnlen(name, LIVEUPDATE_SESSION_NAME_LENGTH);
+>   echo "Start writeback pressure"
+>   sync && echo 3 > /proc/sys/vm/drop_caches
+>   mkdir /sys/fs/cgroup/test_wb
+>   echo 128M > /sys/fs/cgroup/test_wb/memory.max
+>   (echo $BASHPID > /sys/fs/cgroup/test_wb/cgroup.procs && \
+>       dd if=3D/dev/zero of=3D/mnt/slow/testfile bs=3D1M count=3D192)
 >
-> if (!len || len > LIVEUPDATE_SESSION_NAME_LENGTH - 1)
->    return -EINVAL;
+>   echo "Clean up"
+>   echo "0 $(blockdev --getsz $LOOP) error" | dmsetup load slow_dev
+>   dmsetup resume slow_dev
+>   umount -l /mnt/slow && sync
+>   dmsetup remove slow_dev
 >
-> This change should be submitted as a separate patch in your series.
+> Before this commit, `dd` will get OOM killed immediately if
+> MGLRU is enabled. Classic LRU is fine.
 >
-> Additionally, please include a cover letter in the next version
-> explaining the overall series. Once the cover letter is included, you
-> can remove the individual patch versions from the stat areas.
+> After this commit, throttling is now effective and no more spin on
+> LRU or premature OOM. Stress test on other workloads also looking good.
 >
-> Pasha
+> Global throttling is not here yet, we will fix that separately later.
+>
+> Suggested-by: Chen Ridong <chenridong@huaweicloud.com>
+> Tested-by: Leno Hou <lenohou@gmail.com>
+> Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/vmscan.c | 90 ++++++++++++++++++++++++++++---------------------------=
+------
+>  1 file changed, 41 insertions(+), 49 deletions(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index a431f94ff3a3..43a3cadbb586 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1942,6 +1942,44 @@ static int current_may_throttle(void)
+>         return !(current->flags & PF_LOCAL_THROTTLE);
+>  }
+>
+> +static void handle_reclaim_writeback(unsigned long nr_taken,
+> +                                    struct pglist_data *pgdat,
+> +                                    struct scan_control *sc,
+> +                                    struct reclaim_stat *stat)
+> +{
+> +       /*
+> +        * If dirty folios are scanned that are not queued for IO, it
+> +        * implies that flushers are not doing their job. This can
+> +        * happen when memory pressure pushes dirty folios to the end of
+> +        * the LRU before the dirty limits are breached and the dirty
+> +        * data has expired. It can also happen when the proportion of
+> +        * dirty folios grows not through writes but through memory
+> +        * pressure reclaiming all the clean cache. And in some cases,
+> +        * the flushers simply cannot keep up with the allocation
+> +        * rate. Nudge the flusher threads in case they are asleep.
+> +        */
+> +       if (stat->nr_unqueued_dirty =3D=3D nr_taken && nr_taken) {
 
-Ok, all done in v8, thanks
+While doing self review, I noticed a small problem here: It should
+return without updating the counters below if nr_taken =3D=3D 0. Currently
+it only skips the flusher.
+
+We might see nr_taken =3D=3D 0 because MGLRU has a retry logic: if
+shrink_folio_list returned some folios for being dirty or writeback,
+and, they became clean during that isolation time period, then MGLRU
+will try call shrink_folio_list again without doing isolation again.
+
+This patch is still fine with the retry here in most cases. But if a
+folio was returned by shrink_folio_list for being dirty, then suddenly
+became clean and triggered the retry, then became dirty again. Now the
+counter below might be skewed since a dirty folio is counted twice.
+Still this is not a big issue, and I couldn't find a way to
+reproduce this even on purpose, since that requires a few really short
+time windows to hit together, and the result is also hardly
+observable. But for a 100% accuracy, I'll update this patch with:
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 71b4ef0e6735..af14efbc0cd8 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1958,7 +1958,7 @@ static void handle_reclaim_writeback(unsigned
+long nr_taken,
+         * the flushers simply cannot keep up with the allocation
+         * rate. Nudge the flusher threads in case they are asleep.
+         */
+-       if (stat->nr_unqueued_dirty =3D=3D nr_taken && nr_taken) {
++       if (stat->nr_unqueued_dirty =3D=3D nr_taken) {
+                wakeup_flusher_threads(WB_REASON_VMSCAN);
+                /*
+                 * For cgroupv1 dirty throttling is achieved by waking up
+@@ -4830,7 +4830,9 @@ static int evict_folios(unsigned long
+nr_to_scan, struct lruvec *lruvec,
+ retry:
+        reclaimed =3D shrink_folio_list(&list, pgdat, sc, &stat, false, mem=
+cg);
+        sc->nr_reclaimed +=3D reclaimed;
+-       handle_reclaim_writeback(isolated, pgdat, sc, &stat);
++       /* Retry pass is only meant for clean folios without new isolation =
+*/
++       if (isolated)
++               handle_reclaim_writeback(isolated, pgdat, sc, &stat);
+        trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+                        type_scanned, reclaimed, &stat, sc->priority,
+                        type ? LRU_INACTIVE_FILE : LRU_INACTIVE_ANON);
+
+Then it should be perfect.
+
+We might better just remove that retry logic completely later, it's
+meant to avoid folio_rotate_reclaimable from missing isolated folios.
+That should be done in a cleaner way. The current retry loop also may
+lead to inaccurate tracepoint data, not a new or major problem so not
+touching that part for now.
 
