@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C37EF99C79
-	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 11:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 834E8F99C79
+	for <linux-mm@archiver.kernel.org>; Sat, 18 Apr 2026 11:00:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96C706B0294; Sat, 18 Apr 2026 07:00:47 -0400 (EDT)
+	id CA1B46B0296; Sat, 18 Apr 2026 07:00:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 943986B0296; Sat, 18 Apr 2026 07:00:47 -0400 (EDT)
+	id C79526B0298; Sat, 18 Apr 2026 07:00:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 859D26B0297; Sat, 18 Apr 2026 07:00:47 -0400 (EDT)
+	id B8F046B0299; Sat, 18 Apr 2026 07:00:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 720B26B0294
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 07:00:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 421931404E1
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:00:47 +0000 (UTC)
-X-FDA: 84671383734.01.BA99255
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A6DEB6B0296
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 07:00:53 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66B511B7FFC
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:00:53 +0000 (UTC)
+X-FDA: 84671383986.27.143DC31
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 68198A0011
-	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:00:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XKwyUbqH;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 919DC1C0006
+	for <linux-mm@kvack.org>; Sat, 18 Apr 2026 11:00:51 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MVA5jPII;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776510045;
+	s=arc-20220608; t=1776510051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LrO7njVxu1EmFkDy0NC95VIXGZ8qqqcrewE7eMpxa0A=;
-	b=JSNjHHWWxhOn7KWH6iir1pT5RMuEeSusJfBrf1FmQco5umbgfglYXRO3wZNiwLius2Ancx
-	haHMlfy7JNkzrG4N7ysKcWxKQCEBgrDLn7LRwGOmiBlaRBEIg9KgIQWPvMLdTT5EqYGMy+
-	I0c/TGVH8q3WXQYtWjBUxNiHvrYZ+4o=
+	bh=Eaw+4OjtWG2scfMcWirjo9PxqwCi8fA0+pBOmGItKy8=;
+	b=cGZSnZ54BljxUVlP0bK0dF6YB+nE400h6njUM90RYbse8X2ZNETmAHxOAOErhGqyzTICoS
+	NsUSvKJD5/mPIF7Ol8rxsM2iL8RflHYzzUNCSM0M6LA+Cn4xCIc5ITBeHb52ZBy/2YTnBY
+	WzlaNRsB6BYURJsH6QZ8hlvAtV3fcyM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XKwyUbqH;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776510045; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MVA5jPII;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776510051; a=rsa-sha256;
 	cv=none;
-	b=snsJXU+vhX9Ffh0Z4oKfSh3Ytm4+HEYfRj1C+dHEt8ZQL5LPZovFJ3l/Pile0+Wtf851cG
-	fjaEKhp2Z+PoVw9lkbmoHX0u9McdBtSWK+YeOHvLbofh7Sda4s+HhJj7E7fiPesinFtgGa
-	Qsr+Io58Y3dWlexxJqp/oYP8QbIjbTs=
+	b=KOlPYP3d5+z480cPbTYxkzBNPN6FwxvP+NfwTTno9Rnhr57hyoZGqe5pdWmRON2SSG2Bte
+	VbNqI5+BR4k7R8pT8yw51WCeN04Fb2sW9cE/DX/Q+qcex/SQ9AwHnI23Zkr7mjtLUcUD6e
+	imzHMgFvayY1s2y+5EK18Yp5n4WJ8i0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 974DD40138;
+	by sea.source.kernel.org (Postfix) with ESMTP id BA65C40E05;
+	Sat, 18 Apr 2026 11:00:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21DEC2BCB3;
 	Sat, 18 Apr 2026 11:00:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF578C19424;
-	Sat, 18 Apr 2026 11:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776510044;
-	bh=C8Qz87BGrLBhc4P4E9wehTmUZkE5iKzjerVbkLBntAU=;
+	s=k20201202; t=1776510050;
+	bh=HtpaUkBbB7ijuw6rctcgEdxPGwj4VxmBP6AvOyp0uHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKwyUbqHgZ/bX7Y6OBcWVUYXSyxiUDS3+xpGqowyE18mZzagnrbL2A1UmjeqHVM/7
-	 v4ddSxBgIhSHaIGze++2hIOND+DNVSL2g2T7Qq5Abb2aSmIPDR5UgEGQznropFfVyT
-	 OydItKL8//TorAe5wK3wJps+jqps92ECffO7l9Y8B085f9Nsn+BrQTy0J0bFRcoQjb
-	 VmMj1MeI4UDEAk2EXbLTLSuoxiCJi2RT5Np7xhJRr1ZLnok+ejSgIaZ9mScWLA2F+G
-	 j6FxbWhJIxIxSn3/KkbXPMGcu9s9346GMUAAaTqhlSekgnEY23ciFm0NKmx/lxheQ5
-	 bBxtCgjr1kGXg==
+	b=MVA5jPIINjA7F3oQghv84OSH2WSMeHnn/YBfm6n14Q9z0tjRkKUGb2q7gaxzMRmUg
+	 o5yi0rCKBCxtl/HhHs1yr+W84697sgcBz0oNnYkqQaZZD9TjIfduUzlscnCGrDX0aB
+	 VPO00MQx69uXOZfy+Yh42H58IVXOT+A2n0wWjEPjGCQzgrNZp8u3kdD74vNr6vMYvx
+	 CAX+dPz4dP0GaqWHm48kwli5oW7KqjpjqbGz2hUBDVRHqn+UuZiZi4uv1CbZedn4wc
+	 R/AlI+NDGTnqKxvPg0IJxenmMcL4MSz4xBKB3pmCzmDskIoHS3yFqmNm5wB2qy/twQ
+	 monjMk+chBMZg==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>
@@ -90,22 +90,22 @@ Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 48/53] selftests/mm: uffd-unit-tests: add setup of HugeTLB pages
-Date: Sat, 18 Apr 2026 13:55:33 +0300
-Message-ID: <20260418105539.1261536-49-rppt@kernel.org>
+Subject: [PATCH v2 49/53] selftests/mm: uffd-wp-mremap: add setup of HugeTLB pages
+Date: Sat, 18 Apr 2026 13:55:34 +0300
+Message-ID: <20260418105539.1261536-50-rppt@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260418105539.1261536-1-rppt@kernel.org>
 References: <20260418105539.1261536-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 68198A0011
-X-Stat-Signature: z94mr87t7q3xb5obu4xfht664n8agjpf
 X-Rspam-User: 
-X-HE-Tag: 1776510045-759466
-X-HE-Meta: U2FsdGVkX18hSB8RE9x7EeZPHRwoc9QpeYmWu3OYGtPhhSjFcih6d65vSWY1XnB9C/qbVFfOcOE+Rg+AlgnAjS6lbLJq3uVZ6Bv8+EKIX/1RpUe4HEL+I83qr2eCBandyKsIxGrvOkHPUos7ehWgEG0Zr+LQZ2bza10HyJlnZ4U3dKP9WJ8eO7X8HKkPFx2JUKzCuZ0D+k9CFbJzHNMFDYgyeMk8F3U8BISdVYNPvnk0O2icxglBDt7gYbxIaHb9/11GWEu3ZbwMJygDSMc8uWqSitgdPrDHU8yUVhIh3qxyoUshXXciFVfj+dZKwLkgsWUmRfs/calCqyH2p8VNaPTNOs9MDmiTdfacTp460kNKhQKMms7dGWQKFpO6jJwnJh8cC2SYjzASjhzCEHeYj3P/tD4nXzMn10FOSGyIfo4YrzNJxNQcoJY3GAUS3IU1jQy8Zrl0pbjnQ3A73qKrYDug8fJWQj2m1g4aN4g2UJA3OeGShR4mUxExxrRUWxDgCdALvnJuUCDjTPESBkWrhJ/p50QRRBHe5slplcRKXzsa+Zz22SDMm8/fQ8EJBKtHbVskXKZwTMvIygwfjKAPerPK5JqXttSR9IwLRk6yMUMZ7v3EAZjkfjvcjACMnWL+UdgPP/EauyDP501pcLFy8fwy3CUOFoxOH08W+yk2S7iR2jKaKVEI4rWSG1TAwGhGTx2q4c5Aq+bVXIahObig7cDuWtwYptt8Oi9Vb2DmSzLtaWdDy9/IrzFhUEiC9qhSXtpBpBOWCfBsVwMgIJfGRE66wXb8dRy3S3A4ubY6/hEkWFJDe6EbvBC0e1KwOWKlT6/7TyAyxFJMclBFJPTdLHzHVKzGcpGY8TbMEXggumH3V4NKWFShQ20kUco3+t8QZs27wwVKZitFBpXQXYYiQP0nhoMvSQHldYToI9fewuzFeWroZ847MJ1C/cffSz1OHH1rFoW7Zq1oZj+aY8A
- 30IwmT3m
- Qz1y27FnTSbGM9OhrN9E7YndIGE+vPElzrn1GSrHUDX1z3RhHexjO+AUWsQ+3AERQi/TzCb2R9My81zFtOhjwHLI2JICDCUCid7SJH9wPF2NBSYooqaxgZ51qcBu68DS33ehwDAXh/rWhdjra0rDGRCQjha4jgosr7GaSp1gdbafpdOpLAdjkV5AQzZsZGD9jIQ7W3EPh8vBQRRaHLq22cUGWsCp108zfOg6K0C44gB817u8=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 919DC1C0006
+X-Stat-Signature: i3hpdh1cagosdt45zefckd1ckijrkhbt
+X-HE-Tag: 1776510051-888563
+X-HE-Meta: U2FsdGVkX1/n7FmY/Jo4UsZhXmY+jUmtn3cs4G3TsFgvOhyDt3094jG0g60cTKbxJQ6lfIwJ/ZH1QJuFjRJOMKPmCmt2jg73r00FBCyAn0Fq31uxbplQb7rHoPd48hntpVBDOeFiAsFd/ByJ/LuNFFmWcfK1FNrKi4cLpEy8vT1eMeuI2l/wkdTFbDXAwsjvuwjr/A9/I6MXzuu3cpM/Txh/GDDvbBT3OZ0FIKSCEdn0NpKQtTuVedaQ705ZkhSD+v6+pKJEpy4IDDI7B00a+XfSd3Yr+NbHEgvT0VPqEarVQFFUqyF4s8tCXDZgbAHe+EkbAJonsFXlfLthdaWJhCbFlgOs1nQ1YCjB3yoGMIf8Gs4WVPBgZftDU1unBMuUf3VltCUGzuma8hZsXMz9sKb6jRR9VWpPwgtiqqzxRUQlbbvRo7weynpZ7HrC5LwUByjkvu0iCMi5sfZVn6OBL/6UzlZiZMl/P6AyBeE2MD3K9RMU0uZahim/hgiSJDFNwYFjZY3yxzdXAYJlc+IxI9/WT4nK402qpCIvYlJO9ldv+XlgWWCb2vWnFpjogSFI4z6uRdvO2wVeML3LxdfgVTGSaLduC7Su5NGPqHIEWmCdZydz7MsBy2B/tnQMESmlRVLKtdLFvncJdmNQOdGuf8Y9+hZTPHdA4cD6nl0XGjQKMNUam6tpnCY3KOGvXEs6dSiZzEtPL9JEGWSzEUMmuoHFdtq7gNOTxbmmq8K7gqDNhDRP8akKMXg7F3tTSoUrDR5CvgpJYHStnwPDqMzlU+ToI5rVMsWme8xBQl7UigugfYXnWoEulSY+ewZWHyWpYOdAnwLaVMRpCC5rykXEjsYQXFbDvSVQk+xffHrG4O0wqAeDT1fd0Huj+0wGuyYxTVyl/BxOGakQJv/xZFxMg1juhGittWr9AHYT++U9kY7duECDJBeHZbkHWs180twEu0UR9q32fa8cCofGMUt
+ 8SbTkSOY
+ S+/fBCju/JdX/jo1hKdirqdpffotNk58GNg6DampOsGJtbMAIISXu2JedJKHTv4snH4AvvxQHrGwlBArzXe/4L4M7gFuhnl27oNr3yZFjfLK7JJn1NWXZDfu5s8g6Xj65GQ4egWShZA88mHcklxYi1dOa3rHzhZP7uIHsG/oVi+1o6jHdr0IqLS1JLTSMD/N0fgOuDVu6mvVBjEjVbmZc2zAwdrMPfQKdGEeKkkZsDkPVfQ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,102 +115,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-uffd-unit-tests skips HugeTLB tests if there are no free huge pages
+uffd-wp-remap skips HugeTLB tests if there are no free huge pages
 prepared by a wrapper script.
 
 Add setup of HugeTLB pages to the test and make sure that the original
 settings are restored on the test exit.
 
-Replace exit() calls with _exit() to avoid restoring HugeTLB settings in
-the middle of test.
-
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- tools/testing/selftests/mm/uffd-unit-tests.c | 31 +++++++++++++++++---
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/uffd-wp-mremap.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 1a33db281f8a..20e1829db91f 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -305,7 +305,7 @@ static int pagemap_test_fork(uffd_global_test_opts_t *gopts, bool with_event, bo
- 		if (test_pin)
- 			unpin_pages(&args);
- 		/* Succeed */
--		exit(0);
-+		_exit(0);
- 	}
- 	waitpid(child, &result, 0);
+diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
+index 9d67b11c2f28..f63fe02f404f 100644
+--- a/tools/testing/selftests/mm/uffd-wp-mremap.c
++++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
+@@ -336,14 +336,14 @@ int main(int argc, char **argv)
+ 	struct thp_settings settings;
+ 	int i, j, plan = 0;
  
-@@ -773,7 +773,7 @@ static void uffd_sigbus_test_common(uffd_global_test_opts_t *gopts, bool wp)
- 		err("fork");
- 
- 	if (!pid)
--		exit(faulting_process(gopts, 2, wp));
-+		_exit(faulting_process(gopts, 2, wp));
- 
- 	waitpid(pid, &err, 0);
- 	if (err)
-@@ -827,7 +827,7 @@ static void uffd_events_test_common(uffd_global_test_opts_t *gopts, bool wp)
- 		err("fork");
- 
- 	if (!pid)
--		exit(faulting_process(gopts, 0, wp));
-+		_exit(faulting_process(gopts, 0, wp));
- 
- 	waitpid(pid, &err, 0);
- 	if (err)
-@@ -1706,11 +1706,32 @@ static int uffd_count_tests(int n_tests, int n_mems, const char *test_filter)
- 	return count;
- }
- 
-+static unsigned long uffd_setup_hugetlb(void)
-+{
-+	unsigned long nr_hugepages, hp_size;
++	hugepage_save_settings(true, true);
 +
-+	hugetlb_save_settings();
-+	hp_size = default_huge_page_size();
-+
-+	if (!hp_size)
-+		return 0;
-+
-+	/* need twice UFFD_TEST_MEM_SIZE, one for src area and one for dst */
-+	nr_hugepages = 2 * MAX(UFFD_TEST_MEM_SIZE, hp_size * 2) / hp_size;
-+	hugetlb_set_nr_default_pages(nr_hugepages);
-+
-+	if (hugetlb_free_default_pages() < nr_hugepages)
-+		return 0;
-+
-+	return hp_size;
-+}
-+
- int main(int argc, char *argv[])
- {
- 	int n_tests = sizeof(uffd_tests) / sizeof(uffd_test_case_t);
- 	int n_mems = sizeof(mem_types) / sizeof(mem_type_t);
- 	const char *test_filter = NULL;
-+	unsigned long hugepage_size;
- 	bool list_only = false;
- 	uffd_test_case_t *test;
- 	mem_type_t *mem_type;
-@@ -1745,6 +1766,8 @@ int main(int argc, char *argv[])
- 		return KSFT_PASS;
- 	}
+ 	pagesize = getpagesize();
+ 	nr_thpsizes = detect_thp_sizes(thpsizes, ARRAY_SIZE(thpsizes));
+-	nr_hugetlbsizes = detect_hugetlb_page_sizes(hugetlbsizes,
+-						    ARRAY_SIZE(hugetlbsizes));
++	nr_hugetlbsizes = hugetlb_setup(1, hugetlbsizes, ARRAY_SIZE(hugetlbsizes));
  
-+	hugepage_size = uffd_setup_hugetlb();
-+
- 	ksft_print_header();
- 	ksft_set_plan(uffd_count_tests(n_tests, n_mems, test_filter));
- 
-@@ -1771,7 +1794,7 @@ int main(int argc, char *argv[])
- 			uffd_test_case_ops = test->test_case_ops;
- 
- 			if (mem_type->mem_flag & (MEM_HUGETLB_PRIVATE | MEM_HUGETLB)) {
--				gopts.page_size = default_huge_page_size();
-+				gopts.page_size = hugepage_size;
- 				if (gopts.page_size == 0) {
- 					uffd_test_skip("huge page size is 0, feature missing?");
- 					continue;
+ 	/* If THP is supported, save THP settings and initially disable THP. */
+ 	if (nr_thpsizes) {
+-		thp_save_settings();
+ 		thp_read_settings(&settings);
+ 		for (i = 0; i < NR_ORDERS; i++) {
+ 			settings.hugepages[i].enabled = THP_NEVER;
 -- 
 2.53.0
 
