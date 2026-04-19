@@ -4,169 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02DC3EA719C
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 13:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51942EA719B
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 13:17:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 256476B0307; Sun, 19 Apr 2026 09:14:19 -0400 (EDT)
+	id A97D76B0309; Sun, 19 Apr 2026 09:17:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E0556B0308; Sun, 19 Apr 2026 09:14:19 -0400 (EDT)
+	id A48E06B030A; Sun, 19 Apr 2026 09:17:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 080AF6B0309; Sun, 19 Apr 2026 09:14:19 -0400 (EDT)
+	id 911206B030B; Sun, 19 Apr 2026 09:17:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E5F456B0307
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 09:14:18 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F9251B88C8
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 13:14:18 +0000 (UTC)
-X-FDA: 84675348996.21.C8F7EEA
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7589116000C
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 13:14:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=bitbyteword.org header.s=google header.b=PySisiO6;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of vineeth@bitbyteword.org designates 74.125.224.42 as permitted sender) smtp.mailfrom=vineeth@bitbyteword.org;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776604456; a=rsa-sha256;
-	cv=pass;
-	b=HjP7J2ytpz1OtbGuc+qOfRkBQgH4TbqhviHloY1RGmNSmC2ybWZJTsU9hwFRk+/cUPz/xL
-	VW0bM7o3/9xI/E/PEbJ9ENTUIDcd/moaXSAK0TulbtHMOVkPva3MMw3ROrTxPuZAivzrqV
-	M4/xaTrMm+U2D5Nwd+BfV3Fqi5tOthg=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=bitbyteword.org header.s=google header.b=PySisiO6;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of vineeth@bitbyteword.org designates 74.125.224.42 as permitted sender) smtp.mailfrom=vineeth@bitbyteword.org;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776604456;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B8E96B0309
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 09:17:27 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1104F13B921
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 13:17:27 +0000 (UTC)
+X-FDA: 84675356934.04.3F5BD87
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7B9FE180006
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 13:17:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="CTB/pcxt";
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776604645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X+WVMuAIY6fuTgPsvbyDiChtmsWhcTJteNRfYOEl4tw=;
-	b=Hnw9udwghfFT+xcvJJAN15xiBFuay5XpZOa7C/jSaGfHA7dIvEVH8q8AMUlmMirwMHhrQY
-	XePR9Vtno2Ee8yzAFBh39Ib9aYBR9oqTx3xHAfgxeYSJkXkVNiAa9dwC8LMLsTvKBHYApD
-	JkCJdjOoPstsDrBdtiKHvSPG3EUmBpk=
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-651b0eb2564so2193182d50.3
-        for <linux-mm@kvack.org>; Sun, 19 Apr 2026 06:14:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776604455; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YmIYvrCWteiiPv974dZKSjEhWDpUH9JRaW0OI7NtdBi50qiSUlknTDwOzNt3O8VzO4
-         6hwwMu6Ll3P3W5KQRGSOKm1rmt4C7wVuUV7o6Jg11KtuRKWUK5AdmAweNVgAAfgAv/jx
-         fz6BvyARD5IPBvm6ZXWo0M4Jpsdwwuuw8uaciqwgxn1vsuB4BEdzTLINaH01SO/mQwgQ
-         zt1c7Gjm/Ab2j1mJGuLrQTd/LGp72tCmszgahzjn+rdSprhvlRdUennsYVJz7M1E1hFM
-         2q/73m0vhFJrDfzMuCqNwH4RdRjIE4kr91PitSP+XCCMT/5WcGMlf2VtB4eidiEGcYP0
-         Lerg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=X+WVMuAIY6fuTgPsvbyDiChtmsWhcTJteNRfYOEl4tw=;
-        fh=xb4Pnxm8uKZ3QAyM+DvF9zrjUCwAGW1JAw5xOrKARIg=;
-        b=inCkYX2627UxoOP4Yr1dWh0bmEfr1xOKhNfOhTSHXlZFodDFBUIafN1W1oaRfqoW4s
-         Y4BjA34cukYh4vuSQudDPwyXzT/l6SY2PnmLFnQwznvPYcToZMQake8Zgsc65ADN2R7R
-         B1x147iL0ZULJ7/HLdQINUqd52gF2FJBwBpfxKDcgrFtedgZ0WoPrGKHxE4hNW3yeKRg
-         8DeE2Vgo+kUIzmBvp4uS6D9tSJg2CaR7zRdc+7IylCdN6+84PpiP3kid+oU4tgBngd88
-         0/Y96Prq3uNvcuPhdzbnGj+Q1whZfbwwdclT68w+a5SZu4D/DiKSHyGR8Sg6tY7jLHH6
-         lF3A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bitbyteword.org; s=google; t=1776604455; x=1777209255; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X+WVMuAIY6fuTgPsvbyDiChtmsWhcTJteNRfYOEl4tw=;
-        b=PySisiO6JS8ypciwAh2P0Lpf6EmEXgnVRF9QZmC2WJMM+pafypru6z2qLjFRLV4mVB
-         Ifv6OqciPC+obypG7AGHPYoRInOPl8twiS7sOZo4eA1wcmaPbSexl3BzH8lgnY1CeIyi
-         jyPHtL820NieXF9Ojrf6Hhq2e+MfbUEpR4yB4yZroI0CX6EayyOhPoCNMKsfyff4SoLt
-         /lpklbkffRo0aitTk5F42uoc3imTKLVh+qzufCpdYKIm2DNylidAD7qUEenhuc2bEY/X
-         0v/bION90bcr6R2SPFLoqn6KUCwf+CY8QeeQoX0MxwAYtX6o/KaHB6sRiSPjREPg+wsw
-         ybMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776604455; x=1777209255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=X+WVMuAIY6fuTgPsvbyDiChtmsWhcTJteNRfYOEl4tw=;
-        b=VBQRcCQSKZssKk/gmqUPTDl1CshBOhRB/9b8b6ctZqnW/Nf9Uy7s1F/oB9DNinyf+z
-         utEa2rOCBWkFEzW/p1MrE7ncz3RGAMAoVauR1xc8T4auzh7tf14R+gzPvEKwM10+zxiK
-         VINgNZlbK6eZanhNagzZoxASAdGhKvcNhiZFOlOiTJj6DS1crpP5cvoInBHHVPpegsba
-         ZUX2wTFmuufows/4Ie32rdsjOjVlujjUSJpdkxUzceWumm3gawxOxsKP+8dgn/mzVSiS
-         sWPyBzXvJlzrNkyFMqk0lOF02jlHbepKXvJvIAFl2unQxky4Z/rApKsoSMkZzFzUqtoH
-         uNJA==
-X-Forwarded-Encrypted: i=1; AFNElJ+lcCeFURZEGB7wt5FIX+fVrmWKxqeaPpArJuAYRB5ZrmhbtIQW1RrC0dLz+6/7R0zGAGSaIBOhyg==@kvack.org
-X-Gm-Message-State: AOJu0Ywvzdc9/dCIr/eQ66baK31ZpasJDazTf2ZbDApK8Z6RcJZclozD
-	iGp0KeOwiftcxUdAJXl4/YGRxzg5oT2mwq8ZLm+VzjqlzrWIGKEZ4JTIYp1IqgENvJy57LtDij3
-	sa4dRUeZoRD0pRWilE5j1pU+yjt7EHplNQGPQPeA1dw==
-X-Gm-Gg: AeBDietZnokAwm4V3Rkoh+O6nu8qhBVd9j0EBeZYqwaNEI8lvagiInCPva4TVX/Zgbz
-	Wbn6ZwCiVUCLgItgclIUp1WH/K7mxwG4wXCziYBYd+UFS/M52oAYnHsYhNdaRWmuSjWmLWVUuIe
-	uN1F7Tbza4N77ms3P+73dnKTQHyk+tdQZnZR1htymoC6x/pvQh9rbtupkveywrhnrA2WtguzA5/
-	q9xSEMAbpPYYnfmm1ov3lbMGo/qVI6ZJ6eXcOM1FIxj/Sw9+PfGwTrrsGRr1VkL4rzIPINFBtw7
-	PIu8pInBrsMQl921m31IZOC/yB87
-X-Received: by 2002:a05:690e:4811:b0:651:bcc9:50cd with SMTP id
- 956f58d0204a3-653107ccddamr6102177d50.5.1776604455299; Sun, 19 Apr 2026
- 06:14:15 -0700 (PDT)
+	bh=UUN93fAuzeZFXGV4K7vMRkWt69B+yFoAaqCdR3Vjac8=;
+	b=FTdFY+ujqhxpcVlwdUedD/IwbmEsJvc927v5gODglaWyPKSK+V5lbDGzO3FKb/bgI0+Mwg
+	cjLMg/8RUZH2FGE5Tot8tHxkWGpAMP7PEmNasLkHSEp4WtSxtOHeRBasLug9fszSg/rppm
+	lzM5RQnw+nX0zqYs+R604clOqIXRj0w=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="CTB/pcxt";
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776604645; a=rsa-sha256;
+	cv=none;
+	b=8f96dVhdPrr1zQnehZZVwDojEmbSjMABhcLzADzofLeFHXHKdamABOFYMOuUyoN0nTuaGx
+	6s+bP6wWYTEb3ulRAJ4jQNoHKlzhDweaJhoeYPAxuVDHm2zjq4OQNBULQxyLKXlXoQIs3u
+	iRKqVNyUw+zWO4D+i3gvrbduuE2bKQc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BEC086013B;
+	Sun, 19 Apr 2026 13:17:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB1DC2BCAF;
+	Sun, 19 Apr 2026 13:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776604644;
+	bh=ohdmWo16vNUrAsv5m1BvZ6YSb/zDYTUqhQnVl/n0QOk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CTB/pcxtd5Y5AgVqa7kH0u50Yh0y17fIweATDD/xLjI/qILdgtSPZ0hb6RwRNrCVu
+	 hP2RTuD8ab8cDa/jxzv9WHZToe0EH3B5htkqov1Q+seanVeW9ut+L3c7F+lqyLXK4d
+	 q4FNrUG+lY9nrb0BXTdN+05RDdP3eCw6iILObkGjIKeVWr3yebJ/2jctVJLFM5vA+n
+	 GwDCxCgUaT3EMQHkUekg423BeMvL+r+WfM/b3LlGJfDr1/ELSg1NRiSy2tyoy+m1bD
+	 RfAz6QZjRHZUtxjqVJXlZNILuwSdK6tB5BwcVlhNjJ08ZEsFHsn999hHuKL8lWeuoe
+	 w6++5U6ZGrVhQ==
+Date: Sun, 19 Apr 2026 14:17:17 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Nick Huang <sef1548@gmail.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: Add overview and SLUB allocator sections to slab
+ documentation
+Message-ID: <aeTTw4gziJigaNbU@lucifer>
+References: <20260418000635.17499-1-sef1548@gmail.com>
+ <aeNGbNyPxJssnkbO@lucifer>
+ <aeOuCH8ydw_yzdXZ@casper.infradead.org>
+ <c113f667-f897-42cc-a0e5-b8a0bbd91be3@kernel.org>
 MIME-Version: 1.0
-References: <20260323160052.17528-1-vineeth@bitbyteword.org> <20260418190456.631df6f3@fedora>
-In-Reply-To: <20260418190456.631df6f3@fedora>
-From: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
-Date: Sun, 19 Apr 2026 09:14:04 -0400
-X-Gm-Features: AQROBzCejbUFLEO14GEr24qqxXnlBQ97NPzS668jjkdcYvI-3kvv1xuemSCQk44
-Message-ID: <CAO7JXPh+__EWsW8fsKi4T+w0jdPxZEfCLQno_ukJk2=d2s0WKA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/19] tracepoint: Avoid double static_branch
- evaluation at guarded call sites
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dmitry Ilvokhin <d@ilvokhin.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
-	Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>, 
-	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
-	Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-sctp@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	dev@openvswitch.org, Jiri Pirko <jiri@resnulli.us>, Oded Gabbay <ogabbay@kernel.org>, 
-	Koby Elbaz <koby.elbaz@intel.com>, dri-devel@lists.freedesktop.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>, Huang Rui <ray.huang@amd.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Len Brown <lenb@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, linux-pm@vger.kernel.org, 
-	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, 
-	Eddie James <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Joel Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alex Deucher <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, 
-	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
-	amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, 
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	SeongJae Park <sj@kernel.org>, linux-mm@kvack.org, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 9nugsktqp98roputj18kjfyw49tmmbkg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c113f667-f897-42cc-a0e5-b8a0bbd91be3@kernel.org>
+X-Stat-Signature: k95uxajwkf4ozhg5h1rubix48kg31fkg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7589116000C
-X-HE-Tag: 1776604456-55630
-X-HE-Meta: U2FsdGVkX198wmljkRNlN3mG3dvqy2t5zVdmCmZLSIekzueLMJlmwRQI9pqYWgVajxFFTxsJRZnm/JleQjKsrE+w5vBzWHsc0lWtI9TQWp6uFzOgH/NiMHjwWCLj9kJjl70QL/QE1rv4zELppWjZh9ja64UGEvUyEh9AHTFIKJWJCObB7nhVdQIHWbjoghqqMdcycy4k2HwvASvxCdvEil5IPoVDXPT7alWrxhWbfu6irBG8W+mMV4BPinqrbzcl2rl5rJ9N+DHh7qGn7o3DAe7SkKOPpXyLh2yax7Hi1oyO+BM23BcSDEXCqhMY7un8GUaXrC5f4MzK9mSOff4H7XatXVTj209FE7aslqFgavRLXabW8yVGj7qY9lzEXwThUvQjy/skB/W/lZ6DN8q8OQ2bd5koGRpuhCTFsbAg9hFqYfiRWh5gUvTmo/t3zRNxW+AlcBWnsiKqpfiBBmH1cMlunr/IuoEW4qEK4l8DVzaS5oP8F9zUp0Iz2OGnCcvkOhFXfVwA+ihCOBnOVzQ9aTy5ozu1p8RZufAXZ1IEKHsKNTG5PMZOwflQx1GF4YyLAdcd4DFaww6pTK5+Hoj8w2E9pzTBhQV6Ty2qPa0wmSUmlmwtMbRPgl6wuFk8+0nUUQEZ8ilFQchB5X9iD+QHSxFMyCReY0DQU+kVmbTIw0pHZvwOpJsul6LhTC2yQ08JwBr9qgNzYeicX2o7Arc84d1xc7wMnxFIXWBP6mqM2OQwolGh2dneXZmfK6e88Iiyvrdp+j5gx1/oCdNigJoV6RzzJmEKvk2APrYPe6qoq9yOMBNS7m8DL7FyJHloItCL+Mt87prPDWp/pwpoJSCGlXp4EOAIVABbuGJtueR771a6Mj5qTLaG0onxLfLBil59AxpHhgCkEdzZoipqhQnFKQbA3yyQPtBvaZe+jhEeNa/Vy5Rb1Djt0R7dGTJZYa68Vq8grjiQa5YZlrKARUz
- HWqDEbd8
- dl8tm05nGqwF1W3UsW1mT9yH2Pf6NyYp3f5/0M3LA40UlIIXitjbwzxcVNTkY3VFvaEskvPLrAP6weDuofWC5VWA7UHmU9DJxQsQpm1w8v8iUTnI4Iu8ocspK2RjmE5ZVQE2j95XLZnlFrmWrF2l2RpFaa6lgU4EoeR0YU8xBUXKP01AoyLJ39eysb14P4l4oQAimioGCTpdj+P2iGG5xZf+H6pwCyfgranPWf0msfvmSDvpqaxaBiat+adb+hhO+MBq1F3kZMOvkhpss5BvsUUHby2n59b17eHxGIkUvh+mj51bK8YHDsXDIG9p3Mt6vKHYFZvmXuj7DM1YOtvlHgIz9TrdFuX4XZaYe7YC5vDM0Bj24FzmUKdLPw7FPe94GvKWzA5q/8n4u6w9Tu1Z3wxNoLbLGTCdUjAPDdd1H2NzKfQ6zXLno5KN0WpOxAKuwZLWpt/yb2VkpsVdoUeUiM+btcLxiFmFPhZ69
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7B9FE180006
+X-HE-Tag: 1776604645-398341
+X-HE-Meta: U2FsdGVkX1/k/isoEqAp93/qDd3Me6x5Uq2KW+YWUDN+42cIvgzzas38zg9J8x8KtyAgNs5tFuGLLoE+Yyd/ucHZjcA/vz3evT1jONj57yIK2bZIYHqxwWEvKysPDrVh9bjql/ANdw6KmHI2muX36hAIosstNVZ1hwldKTapUsM+efoO7IGn9SDoivqzrL3kleoZuleR1WB/Hq4I8xaux5I21HI5PeWjJq0GT+n2RI2Y7Kuqb8aUu8S5vcusfR2KuHNFLy0I5MHugrFHo4b1+YtBsGgXHKQRebclplm7XOI2PpHCY42A6/cgL30lt92Txhn9rLv+jJepWu+ruD1nPVmytZbRd+sCueH8H3HlJ4816/xpaO4fA8gA/4Gaym+OfCdj1n3ZdCjGZXoHNyoGjLT2535eXwGyxOJUYfxJbFw+NO/U5ZgUbn8ryJVXNN6ELfrKEDyYNYpnxwp6ZpMAp5rMA7UmRVuqMyN3df/nmnBe/jCz7f00mNMMC2zqmaPtq/xQQcDw+sNDen75rAKFdrhWqJJ2R2A5dPIe4dVEx6oiZLlo8cE7d9XdkoOD+ebqKFPFJzNs/snbsVK9SH67rnxU1Ldt3C4OQlxU05poYM6A1FnFBTWqw6oYmHrBAIwwU+gO6qSo69B+Zt84D2IhmtJvntbdDFnS8V0pvECu6B8iBcvesJuaPMj27wq/XHow3eUmunHlSy8xkmVWR6PtCZnWbhF3Ter2KyD2jBOOhPWG+QGiIfj4Kmx1pGtZIn6FpSpHN8O6sOVviPExlv0XdreLmVRXKCCwrIYgaLX8SMaGeGs0zaWrWwXVFWEhtjISJ+ejzhoxoE8eOTFiT1shvKOG7LOYccmcZd9Vyyi3WbEXtLKm9jXy2c08oi9XfmgSLS8bz0DrQotuWBGr/dD29qwZ0jT+qzoLhSyBukOjM3ATamohS42cjMVYFv8Fs+KSs/imDDJ69cYi+6F+2Z9
+ IvS9eRzy
+ m587pCa0iz46GQCIFfjg8eSBByvX4cYiIGGmnbG9MoJUsODRxUaUpqs6rfP/TXcvXmZW5+xN3WsniUg9WFlxCpcDSfn7rtb9k8k9CVrdYGxpaGsHxun2LpCXyvVI3CbTSh62up7fu3U2Z7HtJzsM+S6wv0Jc/Y/ZZVi/FuSNqyN+jRrI01ap2fh8dkJRHM4u4auWCFRMNQxX/yF4pYpk4puesT9Jv/IyW6knoaH1qxKsy/6ePcSuGaxfRct/LWyvCTOs1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,30 +100,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 18, 2026 at 7:05=E2=80=AFPM Steven Rostedt <rostedt@goodmis.org=
-> wrote:
->
-> On Mon, 23 Mar 2026 12:00:19 -0400
-> "Vineeth Pillai (Google)" <vineeth@bitbyteword.org> wrote:
->
-> >   if (trace_foo_enabled() && cond)
-> >       trace_call__foo(args);   /* calls __do_trace_foo() directly */
->
-> Hi Vineeth,
->
-> Could you rebase this series on top of 7.1-rc1 when it comes out?
-> Several of these patches were accepted already. Obviously drop those.
-> They were the patches that added the feature, and any where the
-> maintainer acked the patch.
->
-> Now that the feature has been accepted, if you post the patch series
-> again after 7.1-rc1 with all the patches that haven't been accepted
-> yet, then the maintainers can simply take them directly. As the feature
-> is now accepted, there's no dependency on it, and they don't need to go
-> through the tracing tree.
->
-Sure, will do. Thanks for merging this feature.
+On Sun, Apr 19, 2026 at 10:35:44AM +0200, David Hildenbrand (Arm) wrote:
+> On 4/18/26 18:15, Matthew Wilcox wrote:
+> > On Sat, Apr 18, 2026 at 10:07:22AM +0100, Lorenzo Stoakes wrote:
+> >> On Sat, Apr 18, 2026 at 12:06:19AM +0000, Nick Huang wrote:
+> >>> - Add "Overview" section explaining the slab allocator's role and purpose
+> >>> - Document the three main slab allocator implementations (SLAB, SLUB, SLOB)
+> >>
+> >> The fact you're insanely wrong about the current state of slab only makes this
+> >> worse.
+> >
+> > This is actually a new low.  We've always had to contend with people
+> > putting up outdated or just wrong information on web pages, and there's
+> > little we can do about it.  Witness all the outdated information about
+> > THP that's based on code that's been deleted for over a decade.
+> >
+> > But now we've got AI trained on all this wrong/ out of date information,
+> > and, er, "enthusiasts" who are trying to change the correct information
+> > in the kernel to match what the deluded AI "thinks" should be true.
+> >
+> > Let that sink in.
 
-Thanks,
-Vineeth
+Ugh ye gawds. My attitude is nip this in the bud early.
+
+I'm very harsh in response to these things for a reason - firstly, it's rude,
+obnoxious + disrespectful, so a negative response is wholly appropriate.
+
+But more importantly, I want to SET A PRECEDENT that if you send this crap
+you'll get a VERY negative response.
+
+Clueless but good faith or bad faith - it's straight up plagiarism and that's
+totally unacceptable.
+
+> >
+>
+> I think we should make it very clear that we don't want doc updates from someone
+> that is not a renowned expert in that area or wants to become an expert in that
+> area (and already discussed working on the docs with maintainers/experts).
+>
+> Otherwise we'll have this same discussion over and over again.
+>
+> diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+> index 7aa2a88869083..8c5721001c8bb 100644
+> --- a/Documentation/mm/index.rst
+> +++ b/Documentation/mm/index.rst
+> @@ -7,6 +7,11 @@ of Linux.  If you are looking for advice on simply allocating
+> memory,
+>   see the :ref:`memory_allocation`.  For controlling and tuning guides,
+>   see the :doc:`admin guide <../admin-guide/mm/index>`.
+>
+> +A lot of documentation in this guide is still incomplete. If you are not
+> +a renowned expert in the specific area, but you want to contribute bigger
+> +chunks of documentation, talk to the respective MM experts first. LLM
+> +generated slop from non-experts will be rejected without further comments.
+> +
+>   .. toctree::
+>      :maxdepth: 1
+>
+>
+>
+> LLMs are just the tip of the iceberg. It will all be developmend-by review with
+> inexperienced contributors. And we are only willing to put in the effort to
+> teach contributors if the contributors are not actually worth our time: i.e.,
+> LLM kiddies that will actually stick around and help the subsystem in the long run.
+>
+>
+> The whole doc update stuff is similar to people just grepping for TODOs in the
+> kernel and then using an LLM to produce code they have no idea about.
+>
+> It's the evolution of typo fixes: review load without any benefit.
+
+Agree with all of that!
+
+Let's do that, happy to give tags on a patch for the above :)
+
+>
+> --
+> Cheers,
+>
+> David
+>
+
+Cheers, Lorenzo
 
