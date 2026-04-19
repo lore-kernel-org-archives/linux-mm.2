@@ -4,88 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF116EA71A3
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 16:10:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E97FEA7197
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 17:48:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1148D6B032A; Sun, 19 Apr 2026 12:10:16 -0400 (EDT)
+	id 12EDC6B0329; Sun, 19 Apr 2026 13:48:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E55466B0327; Sun, 19 Apr 2026 12:10:15 -0400 (EDT)
+	id 0DFBF6B032C; Sun, 19 Apr 2026 13:48:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C32B46B0329; Sun, 19 Apr 2026 12:10:15 -0400 (EDT)
+	id F10F96B032D; Sun, 19 Apr 2026 13:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A42F76B0327
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 12:10:15 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 633BD1A077E
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 16:10:15 +0000 (UTC)
-X-FDA: 84675792390.17.6E93438
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AE65D80008
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 16:10:13 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V/F6L+rD";
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E00DC6B0329
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 13:48:00 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61272E51D6
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 17:48:00 +0000 (UTC)
+X-FDA: 84676038720.10.DD1AAE0
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A09E0140006
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 17:47:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qJ5pn1ZT;
+	spf=pass (imf23.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776620878; a=rsa-sha256;
+	cv=none;
+	b=VGaa6GMrtNQH1uSu85LCXUBOdteMRyT+Sc9Ye6BleJeqOKnGi/t8T89fusanI4JzvgyRPP
+	+BstOqPNxobUnHlfQN1sCgQJoMTkAHVZz7+/sCrA79W/uItnpQR3cWjkFt8qWD2swZzBYX
+	tprr1tIL855rOIaZorFk17FJksBE3WM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qJ5pn1ZT;
+	spf=pass (imf23.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776615013;
+	s=arc-20220608; t=1776620878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iIZEeCECCM9Q4J4z+BRVGAtzkIdxDF8M2mtwGuAA3ls=;
-	b=SeJKjsqNkgOLEJvOL/CpTdb7B3n/hS41aPze4XeWMf/kGwd5dx0hLlUw0lyEEsb5InzJjy
-	m5UmVUiJ9BqRBclcuuXE72VQ+ZrNdyRZgiZZsYFwI05bnHuMym2BTiWa0FjPlIfYQNxYU/
-	qjwRrmxkupXz8tMVJlO6/Es+O5kkPzc=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V/F6L+rD";
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776615013; a=rsa-sha256;
-	cv=none;
-	b=DMCLzQ3pibCVl8KLQNz2F7Akxz4PdpJ/rv6FcjVg26BlGqNCjZMwP01K8ubINkrXRMVuDf
-	ONnD5nGIJLVtEIT2MD3CsMHEvhOlPf9u4R318GZ5KgYpLFVS3u38jfbHDCHgCigsBhbjA6
-	2FcVMsPLVYYBH87DKPkP25rb3gmcl7U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C63954440C;
-	Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77892C2BCAF;
-	Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776615012;
-	bh=rIOaDq/KHXQ6SzD1AFFL4LR91YKZhChannZeLdJ236k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/F6L+rDzvl2gUnTte2b1pXCBREgpl8MSm54iG5JOxUR3qhDYp4bkHkWohjIP26Bj
-	 gSXNwAalq2hNRlHvoczkAPcqlnAag25yct3Iw6HNGwmO+DCvugOlhNHBJXNyG7mznt
-	 EkOEYKjikzKIa8pruVhZ83xlrwezSNFEX6QBMqA58EwheInlFegTK67SZ4hlu1EV6e
-	 XlAu5Wy8FR/PfGfp/1FCgtlcuqWuB8UegsnP/htRYLRNg6qu2iurV9pjqyzHBxQ13u
-	 gicTsL+a6Eda6RLU2Xe770O28vHYBEj+nDDTt9GiLHXvjfNrM9AX6E1JRy8HXqzYZ1
-	 ZfLPTuCFXFPlQ==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
+	 in-reply-to:references:dkim-signature;
+	bh=SU7IMwjgaaSGvWJIdVbB9YzEzjLEjhjYNgpzlOXz1yk=;
+	b=3CZwR1dszo2PXfaT6KsKAsCgxJCVQEmo10Ld7RpuRnkBCtiUeafQGY2Z3ZA26elt0OULM4
+	kX2HQQMNufyZzTbQ8cbBp3+0gFnfMt7jQ12NbBEyEvHnS9GKGtn5BkjMtGjRChmx6D+T5L
+	klw7qqXeRJ5XGEdYokGaj0zlxNUbBDc=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so1495791a91.0
+        for <linux-mm@kvack.org>; Sun, 19 Apr 2026 10:47:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776620877; x=1777225677; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SU7IMwjgaaSGvWJIdVbB9YzEzjLEjhjYNgpzlOXz1yk=;
+        b=qJ5pn1ZTefgNzeiwIRusLOJXSscIKdJrz5VGhgeNFrLRbxz8YaeoBypwmbPGbqEebQ
+         VzWXUE2jx/C+2wf2h12RrFCr7ojWKpzvCsSgVfb8jQuN32ekZe4ZBXsPrHzD6Ky2ZbzW
+         asLmh1UCqVJV39Pk/Tq3UIB1YZgnJLB+8hMUMb51uRh+Ns1TPHTR1MNlmhFGSEL2UlYA
+         jcFlfh/+cxI7HUlFc3ujFajHmXDY/KGSpSxyGyZger5PD3PsKgRRUSbkX6WqdyESrtRk
+         n8t/a/Q1QQhQmBTGEJRNPKWnUIBAQmC1MtbQrJ/cHjAh+AZmEdX1qBSlEkNZO0Y2M8Ju
+         JuRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776620877; x=1777225677;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SU7IMwjgaaSGvWJIdVbB9YzEzjLEjhjYNgpzlOXz1yk=;
+        b=TlK6Xqj4mHTkC1zMbLfwB6gQwcTTjau1VMWFY0S/4P9vhrKZpBcRWsXj8HrCLyAFsB
+         C8Rx+ZkHt88P4z87JzTJhtgYBVXw9KimeL7uvWKw59UuAGa6k+Q3IyvldyWk9zp1sJCu
+         /KDt/VBidGeTEUyaxvHyHZPnE1VqhIfm06x0M1/8VEJDtwAl9fZKIKVmOCCYekdGI1xy
+         +Xky7yBcPgbNwSCdb6mgDaVyygTpUmqMdgKHCRAcNroZ87/3RSvuJMWhb84LoDWcSBw7
+         wwqjpHiLMJme+be0MuqZsgvbroGtuCcfue3Ulc3rSSNcvCHUBt45eCPravj6H8H7FI/G
+         s6TQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8FAM6eIx2DotAXEYUZON88f6CL4iCl7KQtYmHSpsIrLeNVa8dk3V0XqoZp18rnwUpIBUAzwg434g==@kvack.org
+X-Gm-Message-State: AOJu0YwjgwMCt91MrB4cpBkLByRh1HG9rq7LHWCZRrPoCmwYXv5nT1ha
+	Tej2yNlQzcg9mmsDWBFdUdz5rCZ/aZE6povcDcO6n/B3aR86s6ixlsMdXPXJBA==
+X-Gm-Gg: AeBDieu0zxDy6U+odQBrNSXVSuefkceEY1p0krzh1mJvUKephlLsvXeAo+jQpKcYn4a
+	D4gmQMYem13tyyTVOuq2tccP1DRT7Y4Sd0AMUbs66rLHZAVoAuEyzubcyrRjkQe5Oi793SshfbE
+	ZRtlqDNY2PkRdEUCPzoV/30lnMQB4lY1Zhz0YmfRBYOjBc95tu3z0RpLX/MEhhBd25c15wF71Pz
+	nWeB2X7SM5r+283XuG8AhB1E26lkTXwKBLA+B/h7fR4ZgqkZ52pvfAarnNqbGcIULcqopDCUzGF
+	aOCPhJ+YRdH9xMqs5QpHPBEVOT4vxwr1/kB+CIvTqjf8tQdFoKjaUlKCHARGFH8nBLo+3vNtcBJ
+	1BbLAcNv79l+ZmNbK8Oe8LFAUaBwGSJqgh4v1njMxZaIYMfYVB7c7g2QGEqAmZiOxJuTtmvV1PL
+	2LHQE0b1AjADhh3bT3Nh29XxTO+tWm53NZ00C4MySI08t8+JgZKXuV4EVq
+X-Received: by 2002:a17:90a:fc45:b0:35f:b5df:453 with SMTP id 98e67ed59e1d1-361404a3419mr10556738a91.22.1776620877397;
+        Sun, 19 Apr 2026 10:47:57 -0700 (PDT)
+Received: from tech-Alienware-m15-R6.. ([122.171.16.167])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-361410a7ab7sm9880210a91.10.2026.04.19.10.47.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Apr 2026 10:47:57 -0700 (PDT)
+From: Sunny Patel <nueralspacetech@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 3/3] mm/damon/stat: detect and use fresh enabled value
-Date: Sun, 19 Apr 2026 09:10:02 -0700
-Message-ID: <20260419161003.79176-4-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260419161003.79176-1-sj@kernel.org>
-References: <20260419161003.79176-1-sj@kernel.org>
+	Sunny Patel <nueralspacetech@gmail.com>
+Subject: [PATCH v2] mm/migrate_device: Cleanup up PMD Checks and warnings
+Date: Sun, 19 Apr 2026 23:17:43 +0530
+Message-ID: <20260419174747.10701-1-nueralspacetech@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AE65D80008
-X-Stat-Signature: 5rudp8nsfdu7bb7zpd8g97g4teaeersy
+X-Rspamd-Queue-Id: A09E0140006
+X-Stat-Signature: qb8kxy8ahxy73chrogwhq997g3cswzyo
 X-Rspam-User: 
-X-HE-Tag: 1776615013-746276
-X-HE-Meta: U2FsdGVkX18JY457B+5hKyD/PljpD2p2Y7sKLuNLmh1RCLvCnZeE3ncf7Qvd8dH8XV6lzje15JThmAymiOb/BEfF4Wm3tgLJpxamFLpo2o7H66TAw/TGaoYNpLZg+hW9AJ4SphBXol/l4HQtNQEF2PbW+c7sSKK0gFr7RtYQxi5IsgS7i7PU27RMHfW+gU1d8fATZ/8PiZmDCga5H/JikixnHiRSuTJfIdObKw/QlwkzuRYtrWyxiUOtcz7h/+hdic7+8y78ED0EL56woO+6bAB8FMRXwaf8TomHgry1iEPAhqzn1vQHsSC99qyPz/6FHXijU+lI4S4QvFTMEUergsSrnECBm5WggkUud9jM8oVyh4/m6h9ac7iTgADzWcfd0tVUQNNnyxoZRMHMwQJvvxlfOcfaOdkI/QO7yolUo4Q5/uBP5xla76HnS3g2gKzWIFlKSFWPZf/BiAKRZ8xNICB7zVNvRkonmT1GbJF0/x9L+LahOIUkpy2OJpJ1v6iBuvHNiJmfXY64+z5kX0JJGscQ9z02KjIkjlOstQ33+TCQ2QovnCYZYCa/xTit/LSObxBEGLOC4yDN5duMc6i3GrpRNjr5ZO+RHSLB66eH2iTbxTd8TUnHte0LcnqdzAmB6oeBGmEFTq59NMZI98lTBSbgp0ez1fi/ptqxZbUu3Qu6KBn7tsJjPSdeB2cWD+Iw2q93gu4daVRZ56EC0ucF5Vdi/T4iHOV+mTlxphEaSsXdlhISYX8zXlhyKARkdW9dxM3ZrWottrigZy/L94PIhaZ9H27XNeWpuuyTcBVBiriquOoY1Jg8rTFbgf28Le8b2EkbNN+FlYJV0gfKIbEQFdACsvhwCmkNqC0U3YTeHJ8H2EcHoWCYbE0Uqt26w4VC9L8HYjiMU97M7YZBI8e9yehXH04s2lVlsvAd9EKV/X6nk0sOAq7V7FliMA1HhmEseeHVB5OmHNI7HefhT9e
- 4J6MCMlI
- zPtbai3pxiM9wbZ8u3GKnN6vlztKbgHhbcFDgVVh4PKm52vIST0sbntkxeQUIOzWuIgzsHiY2m7g+lVFe1g0Usl+SJoOsAY9VGDJ4obPdcj24coH8raUAClE0jcW3gUtNeLVtg0kAohKu5rtupJUDZCK+yGCV91Yue/VbwaSo7cglijYaTlgadfApau0qRA8HPag+btV6/xKOm1lTgRIPC6eNr9TaTodaNrh8L7ilrw5pWck=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776620878-225678
+X-HE-Meta: U2FsdGVkX185Xp+T+zPDIEHc1TgiIQvaVX5sXW8lRvP//+KFJ5+XZioFIwc3h5ajtSWXHXUzd06sxXQAkpOCnGn3HKuDNlwytZiAps0+ArmxyqCHjQP8KCaORttndVjSN8GldlT4aLqQnqGI55cIDBKGF+8tzQBikBZ2oieCXV712fZCgyB4beqHux0fEA6dryde4xnabjLs0yZpF1gpLG/Nml2EcFNvlzKjbtqLksKRywUfJEEPy94O7UNp93TGD5MVfywVsYWmtlRhQzqlHDUnXGomy515Bg80o6Pp/gZDhAcXifsSWQbzyFCuhV8bFV343BBjHnUUs+5WTxieV6gwOKhMA93JvOXuASQxQQU24PlY8CEy2poJc9cUVAhsmaWhj0RsrKmExzuLZXYy3hZjTp+cLdMZQjy0EWfquncbTfZ9OMik87IF1iIXGKM3qXyHPEA9Dq/m3zLT5VGSrL2KRDxh62UQjB6Q4UXVIJn7OeuMiKQ6MSByt6S2YWh1tTmItxM2ipFpcAM4e8n1lt5Yydxjl7i40R8mjtm/wrIrGCqJTr0D09h67PHHJTzTHC0qFy0bYV4Z9ZeWYzwD+GG+V/2eX6/gPcO9I1Rp2ULpD8eOEu/Og01iDghEQ30DBK3h7lJy8ZIAjR4NmENCTQ7gKbc6xfR6gspcsPXSLhW6qqHcdoY4eUiHhI4HdOCE/hhP8QwYtRzdNroBRWtVojAca6j9aFjPs4wsuuCScXYL39XOpx7Ss2mm1dq1Vs4K9oba5zJx5NLW1dD46s9hc9+8TB0FyMfM8vQSBUXOi8f9v4JJVaR1JPYzpJr2LkYq3caRyN+WaoJAu5lEqiEAT0FIHfps88VKhK4WU6c3P1tnKDKKKGk3B/nOSBpl12wOi/HVyJdA15Cl80ihuIOXCNGbyfW9VDL9EigKeSSJanDdyPUEMKHDdzbd45tNJVs0TktiuNGpLctHmipndPN
+ AFF6Worg
+ Lsi8HSqdv9azF7umAmJ+j6nGpXFlfniLhFhw7GCzN+2ClE2dhj6eIsOoG5lrrcyaILwiQS9tBGKnz/ytTsYvScfq+0prRy8dB2imHHLQ160O9uLy82LrxcYD2lIdosMK59RATQL7S/gn3o9hQCcZhG7DCClBZfQ/yyUogByhqjPtzNogMURy8FhIFg5VUNGItkOB33b8F6T0hfTqVgwxyPPmf2PJl8csGc//YtUzZRZo8hCHWE8y55BV/cWToyjpL1Aq4kjDD9ftrnj7gVVJxPXTJ5SogTg0wb86yB7+Ue/LsohUVmgrKfwgMYaMBpQfKhUSPYfielez4Rf5L+DzVSB9bWaVXqZHflKdJIAAgQ+SwbA51X4VX2tyOSZgVQa967+U8Ou4+/c+d+1SKbAUbxnk4iQzTB/aeg3aP9ZpixQQbjk/RqADCXf8LwUy5jS49xddOqmB8xle5AQf3ZWfBTPRIEeJqqInbSn8YCEuVHG61YI1E8K3Bki4faEtnPbrmkvxgSYx3vJR02DXsaRbbmzMlsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,111 +124,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_STAT updates 'enabled' parameter value, which represents the
-running status of its kdamond, when the user explicitly requests
-start/stop of the kdamond.  The kdamond can, however, be stopped even if
-the user explicitly requested the stop, if ctx->regions_score_histogram
-allocation failure at beginning of the execution of the kdamond.  Hence,
-if the kdamond is stopped by the allocation failure, the value of the
-parameter can be stale.
+Remove the odd VM_WARN_ON_FOLIO(!folio, folio) usage and replace it
+with a simpler VM_WARN_ON_ONCE(!folio) check.
 
-Users could show the stale value and be confused.  The problem will only
-rarely happen in real and common setups because the allocation is
-arguably too small to fail.  Also, unlike the similar bugs that are now
-fixed in DAMON_RECLAIM and DAMON_LRU_SORT, kdamond can be restarted in
-this case, because DAMON_STAT force-updates the enabled parameter value
-for user inputs.  The bug is a bug, though.
+Drop the redundant VM_WARN_ON_ONCE(!pmd_none(*pmdp) &&
+!is_huge_zero_pmd(*pmdp)).
 
-The issue stems from the fact that there are multiple events that can
-change the status, and following all the events is challenging.
-Dynamically detect and use the fresh status for the parameters when
-those are requested.
+Refactor the PMD checks, making the control flow
+clearer and avoiding duplicate condition checks.
 
-The issue was dicovered [1] by Sashiko.
-
-[1] https://lore.kernel.org/20260416040602.88665-1-sj@kernel.org
-
-Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
 ---
- mm/damon/stat.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index 99ba346f9e325..3951b762cbddf 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -19,14 +19,17 @@
- static int damon_stat_enabled_store(
- 		const char *val, const struct kernel_param *kp);
+Changes in v2:
+  - Removed additional check for pmd_present() as is_huge_zero_pmd()
+  already checks for pmd_present().
+
+Missed it in first version of this patch.
+
+ mm/migrate_device.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 8079676c8f1f..2c7e89a6d1b1 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -807,8 +807,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 	bool flush = false;
+ 	unsigned long i;
  
-+static int damon_stat_enabled_load(char *buffer,
-+		const struct kernel_param *kp);
-+
- static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_stat_enabled_store,
--	.get = param_get_bool,
-+	.get = damon_stat_enabled_load,
- };
+-	VM_WARN_ON_FOLIO(!folio, folio);
+-	VM_WARN_ON_ONCE(!pmd_none(*pmdp) && !is_huge_zero_pmd(*pmdp));
++	VM_WARN_ON_ONCE(!folio);
  
- static bool enabled __read_mostly = IS_ENABLED(
- 	CONFIG_DAMON_STAT_ENABLED_DEFAULT);
--module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
-+module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
- MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
+ 	if (!thp_vma_suitable_order(vma, addr, HPAGE_PMD_ORDER))
+ 		return -EINVAL;
+@@ -865,11 +864,9 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 	if (userfaultfd_missing(vma))
+ 		goto unlock_abort;
  
- static unsigned long estimated_memory_bandwidth __read_mostly;
-@@ -273,17 +276,23 @@ static void damon_stat_stop(void)
- 	damon_stat_context = NULL;
- }
+-	if (!pmd_none(*pmdp)) {
+-		if (!is_huge_zero_pmd(*pmdp))
+-			goto unlock_abort;
++	if (is_huge_zero_pmd(*pmdp))
+ 		flush = true;
+-	} else if (!pmd_none(*pmdp))
++	else if (!pmd_none(*pmdp))
+ 		goto unlock_abort;
  
-+static bool damon_stat_enabled(void)
-+{
-+	if (!damon_stat_context)
-+		return false;
-+	return damon_is_running(damon_stat_context);
-+}
-+
- static int damon_stat_enabled_store(
- 		const char *val, const struct kernel_param *kp)
- {
--	bool is_enabled = enabled;
- 	int err;
- 
- 	err = kstrtobool(val, &enabled);
- 	if (err)
- 		return err;
- 
--	if (is_enabled == enabled)
-+	if (damon_stat_enabled() == enabled)
- 		return 0;
- 
- 	if (!damon_initialized())
-@@ -293,16 +302,17 @@ static int damon_stat_enabled_store(
- 		 */
- 		return 0;
- 
--	if (enabled) {
--		err = damon_stat_start();
--		if (err)
--			enabled = false;
--		return err;
--	}
-+	if (enabled)
-+		return damon_stat_start();
- 	damon_stat_stop();
- 	return 0;
- }
- 
-+static int damon_stat_enabled_load(char *buffer, const struct kernel_param *kp)
-+{
-+	return sprintf(buffer, "%c\n", damon_stat_enabled() ? 'Y' : 'N');
-+}
-+
- static int __init damon_stat_init(void)
- {
- 	int err = 0;
+ 	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
 -- 
-2.47.3
+2.43.0
+
 
