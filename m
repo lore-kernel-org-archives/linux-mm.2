@@ -4,103 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB6E7EA718A
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 11:24:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAB13EA7199
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 11:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D92B6B0301; Sun, 19 Apr 2026 07:24:23 -0400 (EDT)
+	id A2C3C6B0303; Sun, 19 Apr 2026 07:41:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88A3B6B0302; Sun, 19 Apr 2026 07:24:23 -0400 (EDT)
+	id 9DD656B0304; Sun, 19 Apr 2026 07:41:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A01F6B0303; Sun, 19 Apr 2026 07:24:23 -0400 (EDT)
+	id 8CBA26B0305; Sun, 19 Apr 2026 07:41:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 65EA46B0301
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 07:24:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E42DD140749
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 11:24:22 +0000 (UTC)
-X-FDA: 84675071964.30.01005C3
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C634114000C
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 11:24:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kC07JleA;
-	spf=pass (imf09.hostedemail.com: domain of yintirui@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776597860; a=rsa-sha256;
-	cv=none;
-	b=aSwa6cW6c4ROZVL4RK4U6ikEzT3/cEwOzrwr3A58m2YwvgHLeDSYcbBfMJ84fCEzAg8opx
-	yK4M+0MClQ7sk9cpXCEAQe5+0dRz+sUnYaO8qMfbyFXOC6935mZhuU3LRS44ppl9Gf3sC7
-	Y8eFw3UwT+WEAI4g0zx76R1ZoFq43Ws=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kC07JleA;
-	spf=pass (imf09.hostedemail.com: domain of yintirui@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=yintirui@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 761A06B0303
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 07:41:46 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A466140756
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 11:41:46 +0000 (UTC)
+X-FDA: 84675115812.25.BF0CE72
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0CB6E40008
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 11:41:43 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VJCTQ939;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of yintirui@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=yintirui@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776597860;
+	s=arc-20220608; t=1776598904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CVIi4BTXGqRWLbaF1AjKsZST1JQete5I/BbrbNbXtW8=;
-	b=ZWsfVw0iq8lyD3jjfgkSk1E4w1gnf4xNIaK37pjqs7a6vnZdA3QKBSNJegdyp1TIGGdoCy
-	IO5SselyMeoZnmZ0vtiTw9emBgG1g7pseZeaZSBsGDPMka9TJm4n7g+wGFCrnFdLYKdofK
-	0FRNRJqt1oJOf8Q1NBXRX7ozxZiAGIo=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ad617d5b80so11389315ad.1
-        for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:24:20 -0700 (PDT)
+	bh=w/AOOji5H/H94/JhqjPLabF0j7yCM0LUwvT3tEVvAxc=;
+	b=GcUN4LK4GNnl2mUE/fwa547bRfP5zYFGgWI2j9GkYdrHpRsAfUF5djmddPjx+2U79tYtJk
+	UAzUg1lSUptkrPN64B0JsPVnHaQLihknVOvdMlU8EMpAxwxK5TQD74Cma7C8+mvPVRG9V+
+	Ijw5DOW3BYs6ldbIDbfMIqvE7wpIMw4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VJCTQ939;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of yintirui@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=yintirui@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776598904; a=rsa-sha256;
+	cv=none;
+	b=matctDdkJdQUbfg2Ei1xpBg7Ep2Z27KpGA/jAgN6yYMScj03RBg4b4g+ANkXtoXNmV5N9Y
+	N2rC1N5tXcwHsKsjWj3qnKXyIcHxWMXEUZR2tvCP1MwPyafvMqmMSgOwCMAiPfcBzZZmP4
+	VH7BLHwx0qMFMe9nP45QQXXr8uwNG8o=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8296d553142so1271130b3a.3
+        for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:41:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776597859; x=1777202659; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:cc:to:references
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20251104; t=1776598903; x=1777203703; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=CVIi4BTXGqRWLbaF1AjKsZST1JQete5I/BbrbNbXtW8=;
-        b=kC07JleAS4T8VPBTS6r1DqIjSDGJ57vjqbdxlJwwrED2kp7EsvGMDZ/gHZ6ylXbY0p
-         V+JrBEYJss0qE3xyaF1rlfennb5CZEGrzxfx+2s3Ylc06MoLwDOaH8vQfAJrmAq6P3dF
-         vjrbtJqiZUdY3esGm5ylN4clVeYbEjNmcCD4pSOxFgVwCTxGUTArXvxvluB5W812ExcY
-         KwlSa3nvOdOqQ+VJpX/hwT2PZ7nlhcB09rpG0abn+KfHxtMGsaR98oBCvemKxNQu52ex
-         O5cxonaY7Sk0aWSB/mYSHkmdG2UGtOONOMtjyb8ZUS6QjcAMiK44HE9TsRbiwyusIPNq
-         J/Ow==
+        bh=w/AOOji5H/H94/JhqjPLabF0j7yCM0LUwvT3tEVvAxc=;
+        b=VJCTQ939skxwqIVWxc7Wd7twWGwoWQpye253JbCahWcZMOC4xx5vwxmoKUxMfznPgv
+         woiGcfaG2pjJaqrUwGycBtC3l6f9JNuy+3v2FrD/LCZQhgPaECJMUFbwer3j1x0xSn7I
+         0Th4e+gq04xuuRYsoncAd+lvZPsciAyZxFyBGf+UE2LUfuQ8UxaKYMeVT+gdJsXT3XFI
+         YhGZHEmgE0A+gTn4dAvQOp/V+IMglX+e1PYlEfyY4ClORute9sRkq+2cuoY9PK7vNfwC
+         65K5lCKfaErqH123sCSAWR/fU0i/Fr3oWF77tpmn+A0WaM9AZDLh0eae/nWFa7UjpbwO
+         hy3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776597859; x=1777202659;
-        h=content-transfer-encoding:in-reply-to:from:cc:to:references
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20251104; t=1776598903; x=1777203703;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CVIi4BTXGqRWLbaF1AjKsZST1JQete5I/BbrbNbXtW8=;
-        b=XMpMhSud96hTMJZWxVBY0lqu3A8f/nVjUc8WnIntNNQYnp4ON1qT+2l6W7m1fXL8SK
-         KxaVPw46O6/hm4AMO4QRAPnOKCNDSh+n/rU9mvRTS/7j1xESncHfrAjXegea3TuP0631
-         pUu06aiwdOU9k5r1K0m+WcPCGO/BFVWwCndRQCQbL3WiD6raxo9LZWcSbFqfcs9hfJY8
-         2oEo0ZubWeg8tAAh3M6GQv2/tTplK88NbOlRNeYRx5C/CmBayYlNJ5hIZEEoTX7y0530
-         HlGlNN5HLyKYW60IxOhAVKwPgwDOxefRUTABYMXlj136H5K+hOBMfxXn6O9fWbwmCuA+
-         iHsA==
-X-Forwarded-Encrypted: i=1; AFNElJ9inwjTkP65g9mK1orhEpOrHGBddkPSOh8e7P3F6kkFT+Pp4cshYwfrm+eMK9On/609MsHcilHRdA==@kvack.org
-X-Gm-Message-State: AOJu0Yw2bqBisQkblFWrgDqsejvB1iOwUli7MqLLo/cqAdr6UfBwxvtw
-	v3u2c2wfhlZ9XIbegj4tSA3oTFAQF1xKkLYzSUmoGtmhtuKCUFmu2eJF
-X-Gm-Gg: AeBDievUz0JtcvvyrIyllrp8J56vestfbIBCr40C8Hx/dMmuhLUQ54+IA4zviiMz6O8
-	fV/vEFixEST8m2t+x+Lc+/h+rAJbYAfZGfSmFRc4MpU0oyQGuF+A+aHHBEUD+OHiM3MOroTYA0K
-	XtWJ9UMnshdSU/AtL2I7XKg5e0rnlozYB2d5KhMchhDyNUNPyGhw93JPHhIVnalOV+AGgAZ/0Ks
-	CnDdQo/e+sjtu6DxLboF4Fd5+B4+dEJtiTSLN8G9auXVUqEB0QZZMpgGZ//cpstWXGPNtUsT5bz
-	CZZ4U3C+IMlj258/fne1CVEahNIj2jSNCNEcdKDtoON9PLmE0ilLaChIY/gfS94NF8CvwbMwBTN
-	f1sDlGo7pL0wnlvAtAEw7XTNRwdDiwjYhFNi76CM3Om8zxAGG1GBnT66UKEp5wiC1YiTTpI5vvK
-	0SJFdf4iHpyt2WQzWEkx4LsujilZ+ZeRhBZ5WQ3Y4txJfKgU0unQM99P5nJ4K1tGnISMR6O7c0P
-	/fFNXDAHLuDq//jx/7+TW/KmWU8is3t4CVNfSYT2i+z8Ngoj0T7Y7e2Mo3w5xZj
-X-Received: by 2002:a17:903:198c:b0:2b2:90f3:d774 with SMTP id d9443c01a7336-2b5f9e85c92mr103655085ad.2.1776597859436;
-        Sun, 19 Apr 2026 04:24:19 -0700 (PDT)
-Received: from [127.0.0.1] (211-76-176-101.dynamic-ip.pni.tw. [211.76.176.101])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab29398sm72897605ad.66.2026.04.19.04.24.06
+        bh=w/AOOji5H/H94/JhqjPLabF0j7yCM0LUwvT3tEVvAxc=;
+        b=jKmAi42MiFgVfqDqQAh4nn/SfPxfUDLHT7nghGFCeAGF0+Sd2i6v1tPA5ERcs+QO+d
+         8t8eI+iUvluQjLJB2n7w481N3sDmGWKj36YeGVL+YNwp8QLHrdzvUQVINVU61hIBRauj
+         7dtGgLIo55WWYpL8U2IpO626JXOWH0eOWU+48Dn1bfNQl5CJFeC2p6/T0VYrsjfSIzKx
+         +xG2eYJxlwKLlz+w2pBzB2dZIKIOysUuQM86a/HwUGbpoWtZV9xpU7+Oy39SEal1kRdh
+         oOhDfRgWqUcZdtXFxh6aqYG4LsZW8PDF77Op1tY1g3mZDiVhekz8MICbTpisENQR8qJv
+         KBpQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+VuEbzS3yhmQTIlTi56QjrACJcHrZIXpXOPSie+z6jMAAHUfwYBlVIQc9l2qkETpqJVUodCEErVw==@kvack.org
+X-Gm-Message-State: AOJu0YwcASWDpqwmq/d8L5PlThkAe/1uuQy1UIeFQJ0UT9iUXlBcCUQh
+	bBH2Qr44LvGJIjmlrs724ux67U6nuCIyHO28ozx4EN5gpDa4/aaxP5Am
+X-Gm-Gg: AeBDietu6AVH8jYzi5CpoJ4Z34qX3MN0pwEADqGoblGv9IrdHzy7YrkprPIIGcyAdCp
+	ac8AkoFK+Y2qtSCUqCl6RaDABLFYi+XvtDSf6VC73OrfIldasElaqG0V1p7zHoR2Mh1jk/Nq5nR
+	DtmizBy59Z4obapz6ZWeFAs37Ev1rO+i3WT1b2Jo5U5vKNHlOyYfRErzkUZY/18/QGjxlqNqGYE
+	svJAGhhugTs87WEuwjTAVy4ZK1p0z/+OU0uXc0vBJQeFojKMc/XrANzn5kLzyMtX5YrJUtUYOtU
+	0aTiCC5sMMCuxWmbH498HHJ7Z2X4RzGm7h1mE6k8HbJz0jeShow8Zn2lHmLVp/gIWvPZs717ErC
+	HPITOYswE8JxoarzkZFcQu9y1uvgWI6TLB7+qcyxN/riuVYunCdESjw9gWWGWztlz5hWJLW3jnW
+	ff0EWse0bBatmd1PRaiG5h5EpB7q8aRPrcrE1yHbI8AIoDjyb0M4c1A9zzwelKvAQUCtRSJan0u
+	IkMRsHvc8283gZuI6emivYsK09ikFmz18R4OzQf+ALVrXw+4Fg5iQ==
+X-Received: by 2002:a05:6a00:2d28:b0:829:8942:2c93 with SMTP id d2e1a72fcca58-82f8c7d10a9mr9456710b3a.9.1776598902602;
+        Sun, 19 Apr 2026 04:41:42 -0700 (PDT)
+Received: from [127.0.0.1] (211-76-176-103.dynamic-ip.pni.tw. [211.76.176.103])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebb3fa2sm7324521b3a.29.2026.04.19.04.41.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Apr 2026 04:24:18 -0700 (PDT)
-Message-ID: <07686318-dfdc-43d0-bfb4-5635e2eb70da@gmail.com>
-Date: Sun, 19 Apr 2026 19:24:03 +0800
+        Sun, 19 Apr 2026 04:41:42 -0700 (PDT)
+Message-ID: <39dac497-220c-4e71-9d3e-d9cf32357400@gmail.com>
+Date: Sun, 19 Apr 2026 19:41:25 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 4/4] mm: add PMD-level huge page support for
- remap_pfn_range()
-Content-Language: en-US
-References: <5d04929b-576f-4926-9f3b-be9a41a3e010@gmail.com>
+Subject: [RESEND] Re: [PATCH RFC v3 4/4] mm: add PMD-level huge page support
+ for remap_pfn_range()
 To: "David Hildenbrand (Arm)" <david@kernel.org>, lorenzo.stoakes@oracle.com
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
  linux-arm-kernel@lists.infradead.org, willy@infradead.org, jgross@suse.com,
@@ -114,28 +112,33 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
  kevin.brodsky@arm.com, apopple@nvidia.com, ajd@linux.ibm.com,
  pasha.tatashin@soleen.com, bhe@redhat.com, thuth@redhat.com,
  coxu@redhat.com, dan.j.williams@intel.com, yu-cheng.yu@intel.com,
- yangyicong@hisilicon.com, baolu.lu@linux.intel.com,
- conor.dooley@microchip.com, Jonathan.Cameron@huawei.com, riel@surriel.com,
- wangkefeng.wang@huawei.com, chenjun102@huawei.com
+ baolu.lu@linux.intel.com, conor.dooley@microchip.com,
+ Jonathan.Cameron@huawei.com, riel@surriel.com, wangkefeng.wang@huawei.com,
+ chenjun102@huawei.com
+References: <20260228070906.1418911-1-yintirui@huawei.com>
+ <20260228070906.1418911-5-yintirui@huawei.com>
+ <9886b2c6-5516-4be8-ac31-db3133455af2@kernel.org>
+Content-Language: en-US
 From: Yin Tirui <yintirui@gmail.com>
-In-Reply-To: <5d04929b-576f-4926-9f3b-be9a41a3e010@gmail.com>
-X-Forwarded-Message-Id: <5d04929b-576f-4926-9f3b-be9a41a3e010@gmail.com>
+In-Reply-To: <9886b2c6-5516-4be8-ac31-db3133455af2@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C634114000C
-X-Stat-Signature: 834xwf4u3mdecmqidtkdgh6kd9mpdztg
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0CB6E40008
+X-Stat-Signature: 5u76z4y5s4s5zdjw8ynecyhsuif1a3n7
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776597860-353733
-X-HE-Meta: U2FsdGVkX19lPy7DuOAYKKkVkgznnFnlctiCZyhanxbrzWY7vSMJOSaqGhC4fq7JGJVh6sVy1NkG2dHTuCO94HOjiDNltEdVAFoVse5iTD7GziOyC/ODNjQrAKMyAZ7qMYT716a9Mp8ua421/eT54es0XQ52NnkEko8hsBKm7JE8A2jjbmTXMdmx1CC4x21z84JMgYyXoUkeGNjK3m9EfVFTXfDEIEXsJPWduDPL7x5TynpJ368DIqJyKjoFYrcVRiG6QNb9fOEELBcuNwUImaBD/YPzElWh0OJAkqsCnOawwx6hHt7sJtHDm5gNMj7L7K8EzXKFElJvvtdWspASvzmMEQX5Zks48MmSRFzilPIYx96v4JBUNJz/gUcCkNTc96gDGJdIdzKZESunCrbXoosdageNUVAYeny0BbpZutMFlD8f6m6yId833c65bESjPi9NDXSwUB68ZjFauP4E8Tm/cYgCx4B3f+0lDgNxNbyedLQq6/2n1H7Lei76FQbVxvAwBrEzrz0gs/q3Xq7a4OMePflv8vCVoM/HTvY9zbYR2nFyCd07Lrb/5Dls9oXvSx5yTUUujmYT4oLGoG5gFOs/+vl3sRLoM/DVVPIZ5t4eeN0jWYxYxXDOjq60H+J6TldfNsVsJUcQS5xx0hCh/l9ykECnYuwlczLYKKnO1UuuX45tKq+a4MW8MMYcVngdJ7a5dSNXqzq5wv1LJR3ViN731jGLN7WHoNWD/bSwhMkiCSLZWxpTh3c788bHkhp2J5vNPj2fcp2pSqKBZ8g/zY8q9pimNgj7mGNQf7hv0tCNBTTsvEzMBYdUfoZBgkNdcND6BqC4b+98AoEjA0VL9GiEAWPzTM3T+eAoHoRRAW3a5Y3nisV3NjtSMZ2jmUWll7D2HLJHxsBYzi+9/n9soNoAOgUPDIGw/+zoss5iGOrn7pGEJmzoa9449xqgIBLB06bGprUxRDsaLNTXNHn
- 62Be0saI
- 7A52lFku3Rkh7Pq2FeAsp4XTWqQQQRxo7jQmOsuTMRoHSEexa0M/nCRPaLkYR1JLKzBklF1d+ITxq7UnNzS3oQNt8rcQHH518COjilE36D/ifZkvvxsEGv7kJ1sf1OFkssVapsgpsumMUqPMkL9AikWNgBDpDao5YuR9pcudaMMWgLqjzkazi9bXoJPBhdySjs9r4N44PAMolmvkeAHgg+OjqpH+VZRYKdHF9wYgCxOMmWH6x3pijr7QiNQZHaa7N0Hi6bHVRqroDB0ygh04X7hPxNQFiD81NZXCfri6lV1JYcaZIJYkA74Dx603O/pVl5hQxoztYooQ8uiW0GhDocXpFnFyJzj09eFd7e9SyLE/JNYza4lQ5FOvO+spbjy2NOHv6ud0vXcLm6UI0jL7oCy4Lnv4/mvrY3W9clGhh73DfUE3uzZtAOxKoEwcZnn8jIZYqONr51s33+KETlYuz2UveJbBQdSvYH9zbEqqspu4Bc3HCG96fwVAf7Gdl7M2BrMj/FjeDmhN0jPL6Dry0PlzDQ9NnYkAF0tNe1N0ooLjV0FxODljjJ0FqF8S9yq6BlEo6oDugJAtgz/2M28FRfdJcdhRBjKmUDGnq
+X-HE-Tag: 1776598903-667370
+X-HE-Meta: U2FsdGVkX1/TU/m8+kf6pk9XpiS2cmbHK7nYvsZmUBI+Oo/5rv5AKpTIuqLPXKFz7dzQU3EglewrT390bzffJDqUap5+VbN2B/0mdpmK/AYcRxGKUlR/WrGnwkacr8JqDSZ0p4el+ra7n4k+9W1/8FONDH6+HyIIEw9HAFoCMkBghj+Q39fAAoRW8XCvT+Fbc2MARoBSwvHV5LEVyyhR4ZT5/tlDDAo82SzML5hXKSJHwImwBJR27+ufXQecCAnRl3mgXoelW71mWet7WEqHqGSjQRq+HdDYLK8FT1leOqWjs8INq6+9vnHsHXIBqYwqreJPA/gOBgsZLJrfbzETYHn5UgxkTUY6NlJr38bBPrdVjnyebmoSdlsogx4j090vL55r8S+xAim+cK0q+rLwACapXszTZ+cBQh6vMHSIwHM61OzhCxftwvaq3weFMj6UFesBVrEDGSgwcUgbUEFp4PlpoWNrtJtPzGLZZUalh90sq9leMjnZA7wMHW7L5msvnhS2y3N0i44cZHkm/Ahe0hKU6uUgEpF0zebkoZp3j+hn+6cUMwLFffzchCg4h5bH3H7KvtEi4QB/HiFzoTeT7TOgB86hB7t92tyqW1oXrfeoPEk/KlUBDJeYFMjE+2hvlKPPn+togZZlAPF8WCZggdRVNmF6JMtCnXeZgcCJspb/Z6pb3Lq6z4lfFPAUQ5q0MbJQninI2fW6enqkcc8cyMpGQNTgFuBS4/o8ia4QP9ojoL5Ei5bRtkzPtBApx0WcDz0I3y3tCTe36N1ehz+VziKzcfrHbJRURcbenONdHxH6N1W+eHoIMMIj0MZzwZAmwCHnTtmRHeKr0KEYKybGRop07Ks5W+tApMOKOjI+uLEk0imUWE1xqqOhMQnF5SVL4w6O1EIW93re3szkxBR8MVPl90FAr/UgmVPiW7oeHpRCI6AGGhJf8AQFNm5lFIFpkiX0kv1SbR3BTmzsOgY
+ /aEGaUI/
+ T96QQhATZ5ohh2m/c+t36BgCDMQji1TDIzpohy1JMCNHOqufTOkNk0w9Dc+XUal2B7FU6HjnGpsW8ao7vpne1p0ez29u4EhO4EkrwO1UVvbtoEScXlfLs8Dl37T/OB8peeq7rx6CUBIGdL1cz1aBlK7JGk6Q85aFAieKifjuvPKWkzMjYuCVjr6JASke3RYw2tKrqTvmYymgQJ1bddT+x71XJ3oV6mpbc6xmOw4WFDSQfiW6ZF0SzRI7ScPJ5jarMe8fZV0qxxv0WoF5Wz8BN3ILXaSEjArQBnCD6mTTThoro5M+mSa7EPlucTbRe+k6Fw3eplc3+r570jj8NHDcByOYV6+MXp32xum9PLEv1BKghLuJKxrZm0x3c6qRh/vjLbR5NC/QxDzQCiAykzLIdZBxvvOXTipu7lC+hnFbkGcGX3xNl2DQdAwDKilie5YF5t8w5AVd874v6dnAbtIvz/FhjhhtBAQP9Tvd3cgxWo4Ov0e6gRXexalCdncijL+ounkD3R1RZ+tNb987EUguZPgV/odhGUoYOZIf+wdSOUI4Oyy3iWKUPOEoOmZZdGeXZQLg6JWMOo4UQfNPZOMV7G7MA0sXELrt/U9T6wmqSzARSHx8Hvq7RW/3UBHaffPDSOLfH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
+
+(Resending to keep the thread intact, sorry for the noise)
 
 Hi David,
 
@@ -155,26 +158,26 @@ On 4/14/26 04:02, David Hildenbrand (Arm) wrote:
 >>
 >> Signed-off-by: Yin Tirui <yintirui@huawei.com>
 >> ---
-> 
+>
 > [...]
-> 
->>  
+>
+>>
 >>  	if (!vma_is_anonymous(vma)) {
 >>  		old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
 >> +
 >> +		if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
-> 
+>
 > These magical vma checks are really bad. This all needs a cleanup
 > (Lorenzo is doing some, hoping it will look better on top of that).
-> 
+>
 Agreed. I am following Lorenzo's recent cleanups closely.
 
 >> +			pte_t entry;
 >> +
 >> +			if (!pmd_special(old_pmd)) {
-> 
+>
 > If you are using pmd_special(), you are doing something wrong.
-> 
+>
 > Hint: vm_normal_page_pmd() is usually what you want.
 
 Spot on.
@@ -189,8 +192,8 @@ zap_huge_pmd().
 My idea is to flatten both functions into a pmd_present()-driven
 decision tree:
 1. Branch strictly on pmd_present().
-2. For present PMDs, rely exclusively on vm_normal_folio_pmd() to
-determine the underlying memory type, rather than guessing from VMA flags.
+2. For present PMDs, use vm_normal_folio_pmd() as the single source of
+truth.
 3. If !folio (and not a huge zero page), it cleanly identifies special
 mappings (like PFNMAPs) without relying on vma_is_special_huge(). We can
 handle the split/copy directly and return early.
@@ -202,7 +205,7 @@ appended the diffs at the end of this email. Does this direction look
 reasonable to you? If so, I will iron out the implementation details and
 include these refactoring patches in my upcoming v4 series.
 
-> 
+>
 >> +				zap_deposited_table(mm, pmd);
 >> +				return;
 >> +			}
@@ -231,27 +234,28 @@ include these refactoring patches in my upcoming v4 series.
 >> +
 >>  		if (unlikely(pmd_is_migration_entry(old_pmd))) {
 >>  			const softleaf_t old_entry = softleaf_from_pmd(old_pmd);
->>  
+>>
 >> diff --git a/mm/memory.c b/mm/memory.c
 >> index 07778814b4a8..affccf38cbcf 100644
 >> --- a/mm/memory.c
 >> +++ b/mm/memory.c
->> @@ -2890,6 +2890,40 @@ static int remap_pte_range(struct mm_struct *mm, pmd_t *pmd,
+>> @@ -2890,6 +2890,40 @@ static int remap_pte_range(struct mm_struct
+*mm, pmd_t *pmd,
 >>  	return err;
 >>  }
->>  
+>>
 >> +#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
-> 
+>
 > Why exactly do we need arch support for that in form of a Kconfig.
-> 
+>
 > Usually, we guard pmd support by CONFIG_TRANSPARENT_HUGEPAGE.
-> 
+>
 > And then, we must check at runtime if PMD leaves are actually supported.
-> 
+>
 > Luiz is working on a cleanup series:
-> 
+>
 > https://lore.kernel.org/r/cover.1775679721.git.luizcap@redhat.com
-> 
+>
 > pgtable_has_pmd_leaves() is what you would want to check.
 
 Makes sense. This Kconfig was inherited from Peter Xu's earlier
@@ -259,19 +263,19 @@ proposal, but depending on CONFIG_TRANSPARENT_HUGEPAGE and
 pgtable_has_pmd_leaves() is indeed the correct standard. I will rebase
 on Luiz's series.
 
-> 
-> 
+>
+>
 >> +static int remap_try_huge_pmd(struct mm_struct *mm, pmd_t *pmd,
 >> +			unsigned long addr, unsigned long end,
 >> +			unsigned long pfn, pgprot_t prot)
-> 
-> Use two-tab indent. (currently 3? :) )
-> 
+>
+> Use two-tab indent. (currently 3? 🙂 )
+>
 > Also, we tend to call these things now "pmd leaves". Call it
 >  "remap_try_pmd_leaf" or something even more expressive like
-> 
+>
 > "remap_try_install_pmd_leaf()"
-> 
+>
 
 Noted. Will fix the indentation and rename it.
 
@@ -280,40 +284,40 @@ Noted. Will fix the indentation and rename it.
 >> +	spinlock_t *ptl;
 >> +
 >> +	if ((end - addr) != PMD_SIZE)
-> 
+>
 > 	if (end - addr != PMD_SIZE)
-> 
+>
 > Should work
 
 Noted.
 
-> 
+>
 >> +		return 0;
 >> +
 >> +	if (!IS_ALIGNED(addr, PMD_SIZE))
 >> +		return 0;
 >> +
-> 
+>
 > You could likely combine both things into a
-> 
+>
 > 	if (!IS_ALIGNED(addr | end, PMD_SIZE))
-> 
+>
 >> +	if (!IS_ALIGNED(pfn, HPAGE_PMD_NR))
-> 
-> Another sign that you piggy-back on THP support ;)
+>
+> Another sign that you piggy-back on THP support 😉
 
-Indeed! :)
+Indeed! 🙂
 
-> 
+>
 >> +		return 0;
 >> +
 >> +	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
 >> +		return 0;
-> 
-> Ripping out a page table?! That doesn't sound right :)
-> 
+>
+> Ripping out a page table?! That doesn't sound right 🙂
+>
 > Why is that required? We shouldn't be doing that here. Gah.
-> 
+>
 > Especially, without any pmd locks etc.
 
 ...oops. That is indeed a silly one. Thanks for catching it.
@@ -322,7 +326,7 @@ I will fix this to:
 	if (!pmd_none(*pmd))
 		return 0;
 
-> 
+>
 >> +
 >> +	pgtable = pte_alloc_one(mm);
 >> +	if (unlikely(!pgtable))
@@ -330,7 +334,8 @@ I will fix this to:
 >> +
 >> +	mm_inc_nr_ptes(mm);
 >> +	ptl = pmd_lock(mm, pmd);
->> +	set_pmd_at(mm, addr, pmd, pmd_mkspecial(pmd_mkhuge(pfn_pmd(pfn, prot))));
+>> +	set_pmd_at(mm, addr, pmd, pmd_mkspecial(pmd_mkhuge(pfn_pmd(pfn,
+prot))));
 >> +	pgtable_trans_huge_deposit(mm, pmd, pgtable);
 >> +	spin_unlock(ptl);
 >> +
@@ -341,23 +346,22 @@ I will fix this to:
 >>  static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
 >>  			unsigned long addr, unsigned long end,
 >>  			unsigned long pfn, pgprot_t prot)
->> @@ -2905,6 +2939,12 @@ static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
+>> @@ -2905,6 +2939,12 @@ static inline int remap_pmd_range(struct
+mm_struct *mm, pud_t *pud,
 >>  	VM_BUG_ON(pmd_trans_huge(*pmd));
 >>  	do {
 >>  		next = pmd_addr_end(addr, end);
 >> +#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
 >> +		if (remap_try_huge_pmd(mm, pmd, addr, next,
 >> +				pfn + (addr >> PAGE_SHIFT), prot)) {
-> 
+>
 > Please provide a stub instead so we don't end up with ifdef in this code.
 
 Will do.
 
-> 
+>
 
 Appendix:
-
-Based on the mm-stable branch.
 
 1. copy_huge_pmd()
 
@@ -509,6 +513,9 @@ src_vma))) {
  out_zero_page:
  	mm_inc_nr_ptes(dst_mm);
  	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+-- 
+2.43.0
+
 
 
 2. __split_huge_pmd_locked()
