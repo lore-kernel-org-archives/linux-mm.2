@@ -4,123 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8E18EA7197
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 17:53:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F257EA71A1
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 18:58:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 026106B032F; Sun, 19 Apr 2026 13:53:52 -0400 (EDT)
+	id 541EB6B0331; Sun, 19 Apr 2026 14:58:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F19326B0330; Sun, 19 Apr 2026 13:53:51 -0400 (EDT)
+	id 4F2B06B0332; Sun, 19 Apr 2026 14:58:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2F586B0331; Sun, 19 Apr 2026 13:53:51 -0400 (EDT)
+	id 4088B6B0333; Sun, 19 Apr 2026 14:58:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D4EFE6B032F
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 13:53:51 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A7F341A078C
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 17:53:51 +0000 (UTC)
-X-FDA: 84676053462.09.A2E9FD3
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id DBC3740006
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 17:53:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qiB+uK5U;
-	spf=pass (imf12.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FE696B0331
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 14:58:10 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA7D688C9A
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 18:58:09 +0000 (UTC)
+X-FDA: 84676215498.29.33C3D43
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 16737A0005
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 18:58:07 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MeaOdJvr;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776621229;
+	s=arc-20220608; t=1776625088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c2d/obXVwsuJK8mebPGyct8m80fXGvJ/Dq8NoFS/JJ4=;
-	b=yl9ryMFhZ1DH+fUZZJFZZa5eTm2s7XQeauLg4h/XyNzg1sqKecV7tHGTEb0XkU9n0Ffdhy
-	DzcBSFtP14+xRpOyxpDzxFjGpADMvaoEaOTbt4eOxx7uwi4yUHvknNt/mBp292b5HqVrYD
-	GR3+ORvlgp+eBwtlpkiaTJzPk9SxmLY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776621229; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UlcZBMGfFUzKWb2uI23mapL35FR+O1YGeWxPVfru/8U=;
+	b=v87iK9Atu0771WkgFmZkM5zfRNHvX/mWymvPWrnMxOrbvp3vSVQcsb+ib0kwauq07n9NMv
+	KHXeCrsa+3P9JzakVINoE5s/6gTswDHednupYqMvhVeXJbWn+W4b5e+3q7nmIrK0HyA9Yw
+	3r02lAo4WinDQNDTYNl5eTxTgwiz+8U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776625088; a=rsa-sha256;
 	cv=none;
-	b=u5iLgXVT9zxEPwMh7svql3WJNKWrH1SwIguSJayA+cD7VFhr8EOyFKPq5vL4zzYUy8DhIO
-	LUm4lEGY9CHu0u+G8/bwVzfZwJnWNrKtIUeEEao0nE+LZM9mcy+4nkL3zxJXofI1X5sl8j
-	LVoyfq75Lk/6b6IrZC+KymXm9PYeByc=
+	b=ZzKB6tr46a6KSlBzxzmgs5f9YZsd3jgbBKxVFLISvMoNEqUGfFK3RpboOPN09aouaFprGF
+	KWeCZy8xhMqbUZQp31/smtZs6mQ3WdT0b1vp5kwGsn3WaAFpEGRdzRUe8LGs9Q5u6kBwp2
+	9aVLpsCpsSaWmNzSpkZL9prtVlnPY/0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qiB+uK5U;
-	spf=pass (imf12.hostedemail.com: domain of nueralspacetech@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=nueralspacetech@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82f8893bff3so1012987b3a.2
-        for <linux-mm@kvack.org>; Sun, 19 Apr 2026 10:53:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776621229; x=1777226029; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c2d/obXVwsuJK8mebPGyct8m80fXGvJ/Dq8NoFS/JJ4=;
-        b=qiB+uK5UDiBaxBiDTQH63slkF5BSi3M9z/j3RhSmtlsTjieCh2BhUFtZrboCTYRBO3
-         2VY0Pm+S6Bg1Asms5dSocMNgy+eTGTS0yruNa5JzMJnu/MO2zXyGk58yRZM1G2FuHuqr
-         MEuG3UrBnac9j1LAKu7vuvuJ0lomao3VYW3LY3O7lDFZz5laq7wbdv1FnmsDMvG5BI4v
-         QJOGEnnKQyNFIBgvq0fib4j95bIVeHWmuAmMNMEH0Kw51ud/KCKOMC58xbiccMYjUHeG
-         lAyRF4zgzjUzA668LfYzcZLervYrP+NQJprJF10ALlHi4SQWnw2gq5KGumiTiya6R0Su
-         BUMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776621229; x=1777226029;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=c2d/obXVwsuJK8mebPGyct8m80fXGvJ/Dq8NoFS/JJ4=;
-        b=PJ4l79rb0/zyrHjAXNCmoPwq/K7t2LVnSoJM5Gxc+yrqn1cZswCL3oI3DIeo/ChqC8
-         rC+RZ02EGwnZrlQTyjk0aUF7mXLHgLRG6jH1CRCPjyMyrWQwsu/GpxBe6hV4n/MU5Ce1
-         oOLiJxmpI7LsM90hrJInpk1l1+x/B4Oz5a38MiUbuvFIj30+CeF77AiQqIheCy+et0Ah
-         TNFLXdBjZ4hr9VMrJaUjgBzI4Rzg3jjn9dBRCFnzcHByDdinP1CoTiNRNkaBlIa4JdkN
-         f/k/fm9Lnij4CXlvnElNZYlEFsRE0MhmaRwic5iBd6YkxMA3SjVwqJ50OaIdX2AE2yU9
-         Rddw==
-X-Forwarded-Encrypted: i=1; AFNElJ/IZ+4e2aNZCgCWMOR1ASCxvYkTCxFLnjze799lCIjQCPhW1p4Lki4nvD+GDWaVYQRNRIpTdDmDkQ==@kvack.org
-X-Gm-Message-State: AOJu0YxhQLCi+GPKrBtzyiBOspGp9GTriKzwqgJhDAVN4U9Zq1reU3AR
-	e+7W67ljIedr9vL2+R/KQl1qS1ukbC8yxVrTY4ACSlnZ4+vYfJsLbcxx
-X-Gm-Gg: AeBDietD0C4V5lBCNpQqGuoN/5Cvy9PC0cHaWP4Cootw3xD4kJWdYXWMOlcKlJglGDI
-	yjYznQ85MeF7h8HlUVwBScRV72KKtVa0l2THhCE4XaK5/g1NaLjBCHHh2wCg/sN4W7b22eJF+3C
-	xsLlzCYND+ynyGECXgKOFCdej9EDhF90G5o5UJoOQ1bP0ZqFFDmNEOpgMj190YO4VuiyinwLekF
-	BDvX72u4skBsd0JtOz4t0zpozE4/PeLPF2EN4gYVOA5oaTJfBa6Ru7ws26KClaiZ7cOrA4mhFZO
-	IXGkA8DJXut1+VxR2Ki5euftLRJ4r6TnLPte2HwAhGt8WvQwaSV+kUgcYh+bhn8dV07eNdPv4VF
-	oljLUIO4iCWmV70sDwd6H1SvZd/XePZuIyGStmuIqcQYeSt1ubXv5zfHUrr6DsoAZmicTElcqyh
-	iygDubJu+PTkqdyClt01NVr38PXL7HKxn2xGByQGao6+hK1hmMxiEYvL5r
-X-Received: by 2002:a05:6a00:4088:b0:81e:b2ba:5b3a with SMTP id d2e1a72fcca58-82f8c84db9bmr10516298b3a.8.1776621228746;
-        Sun, 19 Apr 2026 10:53:48 -0700 (PDT)
-Received: from tech-Alienware-m15-R6.. ([122.171.16.167])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebbcfd7sm9582489b3a.32.2026.04.19.10.53.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 10:53:48 -0700 (PDT)
-From: Sunny Patel <nueralspacetech@gmail.com>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	apopple@nvidia.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	matthew.brost@intel.com,
-	nueralspacetech@gmail.com,
-	rakie.kim@sk.com,
-	sj@kernel.org,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH] mm/migrate_device: Cleanup up PMD Checks and warnings
-Date: Sun, 19 Apr 2026 23:23:40 +0530
-Message-ID: <20260419175340.12241-1-nueralspacetech@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <c4355c68-4c23-404e-9368-7120f6467ad4@kernel.org>
-References: <c4355c68-4c23-404e-9368-7120f6467ad4@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zd8eciw66gkod8imm6tyzywrcpct8ww9
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DBC3740006
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MeaOdJvr;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 36E6760055;
+	Sun, 19 Apr 2026 18:58:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6C8C2BCAF;
+	Sun, 19 Apr 2026 18:58:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776625086;
+	bh=CAqM4bvw0YeWw9r12e8drmX/Cr6gR/EV7mWkDbWCPAM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=MeaOdJvr6yNYSLhouxj3bvt2us4R072sqt/YzQkN/NPtq9eFOHSzvs6CrSJaaxkxL
+	 bcfTRffRMeu+y0n3Giw+uHYUbNHpQm82gISjcuxQRdrCnwcoNEHAa0le7syt6ShEkb
+	 tuouqFcuONrH4wmeoNymsn+oE3KMXbx3j05M0rU8=
+Date: Sun, 19 Apr 2026 11:58:03 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hotfixes for 7.1-rc1
+Message-Id: <20260419115803.3114199cdc346ba9654958f9@linux-foundation.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 16737A0005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: n6yxhc86ynabm9rrnhbkgssgtfizcnzf
 X-Rspam-User: 
-X-HE-Tag: 1776621229-336573
-X-HE-Meta: U2FsdGVkX1+yeUDg1GOF/ytOdED7nzECYTOp+S7+QmivHOIGV1e+m8Wmecf9XOV4uXjtt1uGVxg2/YVTNZORRK5ONfJ1tQQsjxEkQ7NwZ97cZZPxjQLKfv9Fv/uwgkWfZfoyu3IHWgoKwtlpifDOQuGIPPz30AoFB85UwbqMnTlj8EyT6DAJ8iQK6Zvzqe/QSYtI41SFYTDvQkW/l7v/AZXEQc9DrY/f7LVq25c7oW8T3F4rva5w+w1HnxXKQLjRQoX/Tv8hYqaHQPbYmpnfadsVNwcSDaG0Iui/GovCV+nxso/n9WZN2CwbIiDKvkRbrbM8MIAt8Q8OktgQENxNBUO/nJla2CtzBd+e2NB0fL64rmfIefwN7Vwfq6iiV5BEwWMFISLyqmk8kWfdKxig+HMLL8ojQktClypNgU7MBv+R/ElEtGao2PLhQuywurW1HMeNXVmS2lDej7MU3d/brQKkxwxHRnhEHFzxd2t/Sbfl0zy6xEDhWcLgaLnRfGQ61vCgolelAjSXiL7cVfiVKxraXvtKixuu9L9n8kPYxPposI53/SkkzQDzmEemrGyXNrupKeeJh3wuCdSm9n6AnB8YUtOFoVINZQpzfCET21CL8Ns6XNvhGPX5H/ch/pBvLdqxBnKLx2JY3u3NgbVF+KZ5pcTEzkM/rBp90idYbODUXiWscm9ib5bJcsmvzV4srQNcL1I1ujmI/4K7UltIZ5TM2J6KTcL+ghSIKmoK2k8mghK19c7brfAq9CDfkgzMiqZa0H6z3hS0iK4hb71mUbDKqxelhx6hgeEOd5E+iJRFB26AQMFLYC/qmHDQFEYEEUk/n8hOCWHPtRCbmZOMjeNwmFjvXrOmBWGGGht2LYx5DqPg0UT6hinPXiArumpfbOi3rS/gz+0ty/fNZdgwCW3V03VVRlLOrib/pxu7gj1RRMUEeYXYCWBsmZJ8tu1rV9ymSdEvhlZboIZfjLS
- 92RSOIsQ
- PfOdu9+L9DpK3raIjKzg3a22hKozwfeegRDns3Xg8pU8zfyChS0WGph/KcKsrukG9VwiD3KBKkI3ZO3uGZyQjF8IKzmHZ8u6BPByyt5YfRQZjV/OmM/qzQ/t8WtPC97n3ZPB5wt1plLtw61DSlXFVBYm0V5B9b5OiLn7n7zyjzwaSdTQYrN1clfiR6fXVoVQK5UFSHrkswq4Zx+Tcu0tHhOXdJn9aVj50AruDCOaKkq2a7mg4PjiRwyOgugB3RsyJ5L1Kl/FTD/eFIQmwXo+DzV/xy9D3JNIB5fNV6VhIS1IBBk6qyFPE0YZMBYLH50qs03zok9I9IM7yXMV7Jfril+jXxcAe1KlWLkqhDC15cYntTT5boJ/LCcMNivm469BIi49Qj6NRIWYxo+nxDMzsNcuG/yKyXqdfv0ETfprVG948JECexStKy9jEScNW8SaGT0DN+v8cdqdU3EZXN5LRqhR8b1pc8HsOHryoaSLp5tOv7U4nOaibls4g6iqozTHX5WYQ
+X-HE-Tag: 1776625087-834013
+X-HE-Meta: U2FsdGVkX1+axOmNWSVzO3oa1C62aGwISU40gJL/bcsKwOp1o/r/dmrfP/ANIpcYelNTmx8+012DT3Jp8JMtHnfEFAyX3Xouan7yog/m+gvo9IYARYV79p0lTIbUUC3wJ1VvZ89Gv2bGyAMR9p2O4sl1mUlfJFIiv496AB5Hp6x2mun9fAHz2/wREAL4vR43d5vzYs5a26xdb7j5YcEwWBbxAUqssZYfJuleAn6HLJiq58l9mNFgZYTFFD52I3k4BijI2CtaouOCNoZSuRGGElAN/vsCkzTQJE02va2D3hlSWVe9Qpk1ag7gdhfbft+a60GE1XYDbbBSeGjWcRGAMaNUKiAIZMA9O9RqCHG7HXHRabDD8pNshELMDeh1P87AIij1gW2bq2nhpfVdscHLnufk4hwrT/UBHxWYhSg9pagntip7elmkO3xRZla0LPIN6TMO/wqm6M0SDckl7WKKrnTXiQ5ba6l84vLmAgPRzroN419NoeUEUHszXJ9tL4qnz6OVEtGXaxAGInpyrwZtzSFoh+7tnjMi/dTGrW/1gwMCiiicWgljXLNhrKIzy59vBA30BvNSHWNZlWeBpOprUIaW8fOUc1Z8KSAiU3a49Y5skmevZwu3giJyoZ62H4QSzpwnbB63Vqm1PvNQL5ZSt9I5LoLLWYCjMm5GGc+mWagd64QX4bZSqFj2kANH6ITUql+jutS+akPvQYo/HIkOjSmLwyczBK86HDY+25AefwLfaAk350Fn9x1S2xd1NJOR9xjAALbQMpwk968QW7vJX0wVDeiHOCvOEItT2eMZY2Mis3caz0j5rqmDr2TlGgTq4oXg+pvqypT4lAQz95Lwyk8R1TDvs5txa88i0Kt2yX3Q/1NR9Ud8UZcOq+SLf5m9lAmFCc4ZUgCeyV3Gkd+V/KohcMgbRKz09YJ+PtGiHUGPA0pobwcf7/iscP+qxyk4KbR0bBo05wT9MyZIfCz
+ myXaoEW5
+ +orWNU10jqdS/XaEY3M35Lgyb7Z3jc/RYYhyL8aGyXyXxSw1hzIEaokv4kvfeZm/Sgkp+5swNdMY2jQlRkOYM/XUgpuDPu/s36vk46DJ+RmGRQzh4yqDz45OnWgU+WHVKVb0BUpxUDxq/nkSOEZ9L/gsXKns/pn7fuhEb7Beh1qGQ3nAa1xhcZQ2xs5DIopfUk1XceRvbBbzcccwRYWvPiX68MzQcoKj/j+kq7RRfTAu+HLo28rR+mh3q7lTbV050INDV060MefLe2gQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,9 +86,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-got it. thanks for the pointer. 
-Sent the new version of this patch. please check on it.
+Linus, please merge this batch of hotfixes, thanks.
 
-Thanks,
-Sunny Patel
+
+The following changes since commit 7bc5da4842bed3252d26e742213741a4d0ac1b14:
+
+  ocfs2: fix out-of-bounds write in ocfs2_write_end_inline (2026-04-06 11:13:43 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-04-19-00-14
+
+for you to fetch changes up to 95093e5cb4c5b50a5b1a4b79f2942b62744bd66a:
+
+  mm/damon/core: disallow non-power of two min_region_sz on damon_start() (2026-04-18 23:24:27 -0700)
+
+----------------------------------------------------------------
+7 hotfixes.  6 are cc:stable and all are for MM.  Please see the
+individual changelogs for details.
+
+----------------------------------------------------------------
+Breno Leitao (1):
+      mm: blk-cgroup: fix use-after-free in cgwb_release_workfn()
+
+Joshua Hahn (1):
+      mm/mempolicy: fix weighted interleave auto sysfs name
+
+Matthew Brost (1):
+      mm/zone_device: do not touch device folio after calling ->folio_free()
+
+Matthew Wilcox (Oracle) (1):
+      mm: call ->free_folio() directly in folio_unmap_invalidate()
+
+SeongJae Park (2):
+      mm/damon/core: disallow time-quota setting zero esz
+      mm/damon/core: disallow non-power of two min_region_sz on damon_start()
+
+Uladzislau Rezki (Sony) (1):
+      mm/vmalloc: take vmap_purge_lock in shrinker
+
+ mm/backing-dev.c |  5 +++--
+ mm/damon/core.c  | 13 ++++++++++---
+ mm/filemap.c     |  3 ++-
+ mm/internal.h    |  1 -
+ mm/mempolicy.c   |  8 +++++---
+ mm/memremap.c    |  2 +-
+ mm/truncate.c    |  6 +++++-
+ mm/vmalloc.c     |  1 +
+ 8 files changed, 27 insertions(+), 12 deletions(-)
+
 
