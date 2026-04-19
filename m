@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1A00EA7188
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 04:11:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C25DCEA7188
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 04:12:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DE206B02F4; Sun, 19 Apr 2026 00:11:59 -0400 (EDT)
+	id C91F76B02F6; Sun, 19 Apr 2026 00:12:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F44D6B02F6; Sun, 19 Apr 2026 00:11:59 -0400 (EDT)
+	id BF4DA6B02F8; Sun, 19 Apr 2026 00:12:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BC566B02F7; Sun, 19 Apr 2026 00:11:59 -0400 (EDT)
+	id 9FAF56B02F9; Sun, 19 Apr 2026 00:12:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E78406B02F4
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 00:11:58 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A715E14068F
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:11:58 +0000 (UTC)
-X-FDA: 84673982316.27.F2DC279
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AD129180005
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:11:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Bw8vj30g;
-	spf=pass (imf16.hostedemail.com: domain of thecharlesjenkins@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=thecharlesjenkins@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8706E6B02F6
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 00:12:00 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 20EB659B47
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:12:00 +0000 (UTC)
+X-FDA: 84673982400.25.A0353F5
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1C48D40009
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:11:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DsW+5991;
+	spf=pass (imf04.hostedemail.com: domain of thecharlesjenkins@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=thecharlesjenkins@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776571916;
+	s=arc-20220608; t=1776571918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/hH3x1N0+NvSvzMccwee+vm7y2aHZ5XliR6CKhRwp+o=;
-	b=qqkQ5sNUCgQt4cTtjkVSzuGc8UPzLh/ePEdMuU5fMSzGxcD5Xg3r1ZMa258C11OByz/yGo
-	f0WuBe5KDtiPEOyX5PK/UUn88rcsjZSsRijNhFCFkfe3aolEcA1hO7Hd/Kn4PvQPro/WeE
-	KFr8Gugb5JlvzDUDs+8VGgk2ibXUf70=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Bw8vj30g;
-	spf=pass (imf16.hostedemail.com: domain of thecharlesjenkins@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=thecharlesjenkins@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776571916; a=rsa-sha256;
+	bh=2nvHv9jwSE0jszVR+8lSNwcWk7t4hLfdkLVMWS5L8+Q=;
+	b=o6rES2ehwKGX0YQFbPQs63j7mYjoz4K7nO1M/5Edh7KNNGrjeqGZrY7IiI8cKNC555w7Bn
+	NPUkwqpznd2G0KOHxW45NXaGVDqo0mmppr4KqdPzuazbbqn8L7dZAp93sdFnQCLf5ztf+U
+	ZUKqwSOvrTb+OmgH7z27rdun0cTStVg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776571918; a=rsa-sha256;
 	cv=none;
-	b=2HYtSR98tYYycYKitOzNds+Qgp2b7ImunjIT6Iq73hLKryhdk4kFNA5BEMB5Wifx8Jyoao
-	Jhg6lxeCopF5pger9y8/ndLcwyqy+tyDIoWe7BgDWCuyygqJkuDntk6HE2cgjz8irxe9Hv
-	ycJL0o+jsBGXlSOIXIY+uM3NLBElwdY=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8d6d5e45c43so248550185a.3
-        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 21:11:56 -0700 (PDT)
+	b=eb0SB2UJC14Mzb8hBjemfWJd04htxJZDcpprcoyb58o+3OivXc7lZGSOA+JZrAo5vz9Acj
+	xj99shB1bBrxKTaGlfVCWlrIYirD3X/jRmVBpfALWeiW47/EjyP2HPZc463USNyzMPtSKJ
+	+yvytq/jkAWb+sWRQz8YcjfiBOzqmvQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=DsW+5991;
+	spf=pass (imf04.hostedemail.com: domain of thecharlesjenkins@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=thecharlesjenkins@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cb38e86cf2so188388285a.1
+        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 21:11:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776571916; x=1777176716; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776571917; x=1777176717; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/hH3x1N0+NvSvzMccwee+vm7y2aHZ5XliR6CKhRwp+o=;
-        b=Bw8vj30gAFeQkdFRszTOlawlcrWsH0RM0mxNqOqKVcIuZBIG7jMbiDb5zX+BBivKOD
-         QUXjou4+5px2DyFiNynTm6rb0OtrW08kSujEtvViLYl/5spjqz+RoODVuDj7LFwTikpw
-         dF0P/MQkzddNtUReiNXmbBMFf8JiLfQJhWikBpDGAxpWyQkrCNfp1tr4jMoE1Ob4nN7h
-         jSYuV3ZeaT2eMKQE0k9kruAlgkkVQQVVO7oe/4Bsait6lHivuHF6LgLu98HjW1w8tzzT
-         AegC6gbaZk+F0JJQQn7pPWpOZgYFIHTF5KbRi2Nwfn/tlcs2inzlyhV/Mk3NXYRkSfhL
-         VSpQ==
+        bh=2nvHv9jwSE0jszVR+8lSNwcWk7t4hLfdkLVMWS5L8+Q=;
+        b=DsW+5991R2wDg5fUd4UNc2Y9I0AQdMomfweErNrYEM2JZgWYUZkwvNgVGMn/SppauG
+         HnaviDIjc8XJ/EZ9CtFbghl3nrxh2jhavt24z3uSLwsDoRHu+FrkX7yVFw7GzvdFzHbG
+         GHm9opVRuZjmilTwG+mrGl10GRI9gAbzHzm/YTRyczBffsV/00p/qIVFjO0fuggxCkGS
+         fKV1ahdroKrA3HdyJQSAV8Xb9m5jrDowE13P6oiKMpQcOQfKzBHBLU7tZNaeaLKs2Qk+
+         55b38/CoUjxwUwc5LRq9rxTHpjMWU2KAUX/stHdXUMTgSgeiAOHkr1lNNeMEK92yglnn
+         0P7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776571916; x=1777176716;
+        d=1e100.net; s=20251104; t=1776571917; x=1777176717;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/hH3x1N0+NvSvzMccwee+vm7y2aHZ5XliR6CKhRwp+o=;
-        b=MTtqm2K2lAewseALbMNWVZHsPksLhw4nmbolxyLh3e3XunjoPFUDN2TXg3QET1GY3k
-         uTT01wCLSDE58EZOBbY/D30tqgA/J9kaqopZujjJmH5h5Y4WIp5DtVcaH3YYynkt+gti
-         eNAm0j66aDLIk+ofl06Ay/6uy8jff+djWuCgGULe2g3GiD8Oq7b7anKgbwymkLzu8B4n
-         JujYKU3YGiqGX/iZ348b8Dst7xgw0+FlGgeO30MsNA9PrnJJaJLMU3xkIMCKMXgRuqyq
-         AY/mC+yTFeLozTgxLDYC6KKNo6T81St+n1gVIPtxbW1ZSPNzVGKcUjvluEDuYPa0P3YX
-         BU1w==
-X-Forwarded-Encrypted: i=1; AFNElJ81YEbSUtoHwSpdFhScinZgynRcv47+2iSMGvSNGD0e5rdqIwBsLdtnUjT/PjeNRQH8mcBDm8ZY/g==@kvack.org
-X-Gm-Message-State: AOJu0Yxn23xTh7GwSGdgLl5Hz/1dOm4gUGHOSYYkNmQQvTErzxsUPjqn
-	2kOFl1HanrS/mOFebS1KHuusirNLI7kT4Sv2LsQkhcH2mSDH0qV8Ak1t
-X-Gm-Gg: AeBDiev76vXy5hYz8PShYR4RAk/67SS278VMU0LHWPs/IoZs1YwQSkC1iNww3cAncwd
-	1KpsneSF5dP0PVLexJpTohq9L7xd5mTGpVxN66xMT7ajAHo7+HwrMcGIrczCmQisuYm/LnyB3v4
-	HEswPDvG911+MAeJg8UzscPNoPdMsrSsyYCSD8oQqitoG3l6y8wcp8IGNqswbd50nWqer2WVweo
-	/JTi9lgwHYQqquw9x7PyPfiV8l/rrTPwHVqfb7cTienRjfcMqX2qp5ccntkRHCKOMHjAHtwMaAw
-	EuCxsLH5PC7bAOGjIE+aEZWcMV3/3cx5Zqw2Fft2akvpiyTS6UJ/XfJ/FBIU/BkHEIFoOIWi/zB
-	dO4xiifxBdWOsgKJEDYTSshVaVR6QHCrgqaM1P2laWax70QOcsg6orjxJ5WcKTAQSKlZ+24ccdo
-	o5AAHCVH5/3oVoN+0EEyBnZ8cAy+yrhthxNzLF1waS2Qca4EhR4huM
-X-Received: by 2002:a05:620a:460c:b0:8cf:d5ca:ade0 with SMTP id af79cd13be357-8e78c4c2997mr1287310885a.0.1776571915848;
-        Sat, 18 Apr 2026 21:11:55 -0700 (PDT)
+        bh=2nvHv9jwSE0jszVR+8lSNwcWk7t4hLfdkLVMWS5L8+Q=;
+        b=RKoZAReWZkTsA1piRdH/Tzrl/C4LjNBB1fKnjfoFEF0ubehIXKNYhEkTmWsCWeYi5v
+         25/w8vSWtPcBYc43J8WIgtGAIcpEMDbtLrw1iayFICWn4HD1tnifypq6wW9LYZeOY8Rt
+         K6D8cB6u52xkhlaQcDvmuWqL6vWr0To/dVFnRCalR+8GO+QaMwWvQl9V0weOd1TGU6cb
+         z5j0rQJL/qrckLgbhKo68XxH029PGxQ6Q4gCg4+2rehQ9hIbyfRUbdeoQDcBT3pOfN8p
+         2iEeoJG8nsLw6rYBRHbjHULrviD6aCyZq3zDKMw0PDrf0EaWn0yJ6b36X5bYjZZdObim
+         jCLQ==
+X-Forwarded-Encrypted: i=1; AFNElJ85NUwL4NlS8Oegpn5NX5PqIkw1d6vIpTOzsoniVdNigpyPMBAjeogPNm0FHId4tGVQIT55QkUNuA==@kvack.org
+X-Gm-Message-State: AOJu0YzZUZd8U+pVN1P80bg49iEOpXgmcjhH8NAcM3mNk8HHE6pf+V0K
+	UHSJEUa43oXYp7GkeIFIQr/GoDDbn43/G5zeuEoWLbVsyYXVIYLPS1IJ
+X-Gm-Gg: AeBDietFdnTsjhXkBOzPcDxj09Y6yuNLRp15t7sIesTyErEuMrQwFIgbQ+QkL2gv/0N
+	4KSaAU2R3Agt+pbgni2ukCjGpW4KBCrOwnL0vQkakEOGBOVXjU40zpb7aUgCddu62VMuIaqaWjp
+	5kFTgaw36Jcg8SnaT4DyNTaa4nzThj8DVwkGwpcmAuOYm9avR9O47yzAlXLYZD7cSSI/x5Gvgag
+	Gk6na0+8WablwUfI2Wib0VC+P+mW8tm90W6ZcZCdznVnCAQML36ULvyedJ76KJt5FgQm7TpUvcf
+	WCBtzpuGDF7aGYlZLAQPQLPc+9b9h4XCxuJJCs6Ta+jy/mkKNUVkDajXlxqi08tGF/UOxD7BZCb
+	O47rDW0yUB49zj5T17IoMYNsADIrAJbMmxKaS9QB0o1NuJKVQzZYV9Bst8l5DLutJuEVSKYX0i6
+	Itcby8VqtIfLo194t9XESozyxMDU1rc6MqMgHpPOE1m30x4pRgU9DS
+X-Received: by 2002:a05:620a:7102:b0:8d3:d13e:8ed with SMTP id af79cd13be357-8e791c8e81fmr1234467485a.52.1776571917191;
+        Sat, 18 Apr 2026 21:11:57 -0700 (PDT)
 Received: from inky.localdomain ([2607:fb91:4c8b:380b:91a:9dec:26e7:3d7e])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d5fe98dcsm508388385a.7.2026.04.18.21.11.53
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d5fe98dcsm508388385a.7.2026.04.18.21.11.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Apr 2026 21:11:54 -0700 (PDT)
+        Sat, 18 Apr 2026 21:11:56 -0700 (PDT)
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
-Date: Sun, 19 Apr 2026 00:11:02 -0400
-Subject: [PATCH 1/2] Documentation/binfmt-misc.rst: Include AT_FLAGS info
- in "P" flag description
+Date: Sun, 19 Apr 2026 00:11:03 -0400
+Subject: [PATCH 2/2] Documenation/binfmt-misc.rst: Make "P" flag path desc
+ more precise
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260419-binfmt_misc_doc_update_p-v1-1-757c12f33cc2@gmail.com>
+Message-Id: <20260419-binfmt_misc_doc_update_p-v1-2-757c12f33cc2@gmail.com>
 References: <20260419-binfmt_misc_doc_update_p-v1-0-757c12f33cc2@gmail.com>
 In-Reply-To: <20260419-binfmt_misc_doc_update_p-v1-0-757c12f33cc2@gmail.com>
 To: Jonathan Corbet <corbet@lwn.net>, 
@@ -106,21 +106,21 @@ To: Jonathan Corbet <corbet@lwn.net>,
 Cc: linux-doc@vger.kernel.org, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776571911; l=1743;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776571911; l=2657;
  i=thecharlesjenkins@gmail.com; s=2026030; h=from:subject:message-id;
- bh=vOgkCAJEOBJpW+DNT3lDCOCb/13wAHR1oE/eova4bHk=;
- b=GdILJXyDkjiPFT06nt9j3mMJGZ8zJPsIeTbirlG4obzfAKTqWK8KcylOBCw3+aIEDbtyJ7ffN
- 4W6attiNsIsBEdwSllepGqZDhmthEzFSz+stS7BB7ND+q4wmE5nXwcy
+ bh=1J5HfoqMCRzodR4Puf6pKmINNdR110Co/q3KXdwFaYs=;
+ b=501vNHBhe3+OspE3Q3Cs8UcA5hXy5KFIkKEwHNX/2W4VCemBfhGg/KIpAPUMFqarz4q02X0DT
+ nVoFX9WlA2lAXlrjaDWV4n3Teb0QBImhSDyVda/6Z6KsXYzhZJse4Sr
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=vpF2USrG+aB6CTbSt34rzJKsAVe/l+GAXo1IomCMETk=
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AD129180005
-X-Stat-Signature: awkhb5texrsrrbzf44rgzdckdkg3a8gm
+X-Stat-Signature: sya5tj43q9mcq86imn31rnh1moe11ix8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1C48D40009
 X-Rspam-User: 
-X-HE-Tag: 1776571916-30195
-X-HE-Meta: U2FsdGVkX1/Tk4KKgdaXr56G+Uf7ISWU/7qzxGQgNHwCo0WERgLntvOLr6odRWV93ydYPlCuxmePs57/RZqZjyznPsqB27o7zI00hmNr0/qy2Fl+rBe5I23JWFO69iE1SwsEOkANElz1i+bwWj+qrGQRcZOVBksg6NI2on3JQR72dsF+vL2XqI2HhP0mDuzB0301FHtK4q/0ZNsV1hYigUS8aVU6qae5N/nryObKB8N4Lg6UfOdKE6ihP2vdc3sUN45oqZwUT3Y8pcXetfCXjifIlVtFV38ZOcEjrXRcgg7TddJuFazaP0u34zLmPiiUFCT74eUNuuWSYXEBXf2P7rJAZXQJGvQU/SLGhZJI+ro2dCEDkQhSNp8mVbJlbxlWmBINNG7AnEAlLCTO93uhMiiAijWp5/h3CG2k5+SyzK66KqcCuB9ccBsv6N3NUZ10RsxUNrmtUodzoqPhF8uFV7+qtj26J3Mdi5lr+8EOKjQUGyILDtL1O8GN0a8Owa12GAtsz0xC2tFPmVUsIuHMfQq4FtLuXB6HKNP13BFeounKetwVf5gX7flSxSOv7gNm5YY0s0MHOWcgHwU0wvMZgiAGP0Dl9kK6q6mBr5Cv4aV8YPHLV0qe8SqCzLjoi8qdqWfYWul8m33ODoeKnCFPxBvVWC287DAbp517QNFzv8pD98VKijJ/7G58XiYDOIRTC+qmOFPz7ZPAP1ERXnm8DnEQTEIG1Q5hDFGEBVg2hDeKmkMWqmRmaHuORZpYg9zv+/WGLgl2NSHvRwcnNsSwRzjKmSbkXPoxef8RmgpTHcm/G8tPvpxYyuxaXVJaNlSI8fGbPOJ+Tj3v723sDrRMlxFNf5K/nkY0Ta9qfPQVVGh2+x7vuunbHU9vTeJyCpbiBh/odqslm6dHHNrULF9QbaA7cyUaU9Wn/fVm6bB9BuzGQOhb2SRP9NkBzPXxYk8K9tmy6JA5l9AQzphR8yG
- 9n1fT682
- 29c1TB+Kf8recI89Z2MTeSATU5w5a9nloPOmL14bv14CqHJ+DtL0ADuGyUchOHfz3fW4Zjhtd49TLDOqITnG3NVFc5GHGfDOUjXa41MigiRPPKK2yUP3y7MjLRvcxj92lEGC7egWqn8BJf+P4yV79l4x8Ad1YL80CvoBEw4osU2WBYt8K9Ep35LTVvnBG8WXsuV6icsKjdS1kAzEaZ5/wjdQ5z4U5Y7cYjfz1DkYvYiSgRFGaqeb62fdEAAjO537484XR4DxjGxVNEiHYBmjdaIb8HhatG8VAa3o1eDEvNtzfjvvr7VPs0+HFiX76joFq3JVKaaUsQZoGLSlbqwJPSCx5pWXAzxW7fZ00K/JB92NpnEMfpAxVEeIYyupNN6z+xuj3Vahbl7DO2q4je2rYjeAS/70+rzf+FFigM4lkiKDu+NJV5MbufMRZD7U0AGMxPlesMvNPU4bfFOVFWr7bwuYLO2w+2I+Si2Jo
+X-HE-Tag: 1776571917-489376
+X-HE-Meta: U2FsdGVkX1+y6SFAO9FujuFfojEnkZ1wLZDhLcQV/9PF00vzr8GgnvVwhUM0RNcfWmYounn0nh46OKy3IjDtZr2x6j2fFc7f/0a50rNaz5a5WpaYQfPV8zd5XSwn/U589yx8nf5K3GyWo+sv4SAWo0tZ9sqoBICj9Y+FRkOIKJJ+IheYwbDN7IGzOSoqsQcbKXWhoss8sLsko+PvoPg1kpOAmYHf6euiS5sMy4nv46m1tkvdHD+pQowy2GomsMg6O71g/N9ECMNOujAsCdiI5L6GLAMJ0L5FLwcd1Vehtl/h5TKt3UThrRBJPQzWS3G7nYP/GORXSbjJkj8XxxiPCFeQw+F6/XBccoPoOwWe2Bbbbzx/w7WxOuGno7R9EIWOuTyfymVlr8iJRYrn6ybNbS71BgO2PgKZ+74iyPsewGxkLdzGuPBYgUCt/9HuG/v9SJM/+IRlFPKtwrT1OuFxUFWI5F4SAlFa1fq2c40S4eY5ao5iE3+yLFkXDIH2+VqriokXD42I8V8g2+EpfF3qJCY96gdvZ4oaGrsqu3grjnDjS7h+oO8YT6tYEXkNc00JcRD6PNDC6jFVU10ogIORbqGa4LXpjJ6FI031x3rQDN+rtX9/cAKjXSVBbRmPCtWOHT5q+S7tbad4nKIcxXOpd9EFSQGu0kv+fhcyhBYqUdzvRYTmaRXZBGPUcxGy6P8EfS0+K/+95XsLhtn5d133/2/8ZTNC59W0voaulQ+uGR1JrQjMK2jtAIAKz+umnf+i89evlITMOnx9T5pOlc4eK8renEZrgRlKfDVcvy5fPMQMf1y0OcrgcYiM94ZD4FHRABX+ykvpveZ3qZugTV3mMjvubGEAcaUJlaDWyjEHYEzTOpga6SiCEMgsb6jTOT5KJTRV77adtnF6K0X+GdAr05ZIBXS7iZa/zJm+RAYKrCw/TAmmRupbbq1cL1IHO7o4s1g7viCfnFE8yVqthMY
+ HO3E1Pi8
+ Qq6fN9cha8usbVjOuh3GzvW6Oo0Y4rdk5Y0SXmz7yqwFyMF4FY9q5q08ehuDmGhDwRaesKiweYdcnoMGhBr0nzyhp7TqTM/oEBrIcLycFmcTWReuptGwIwL1zq6V54zBzhYo1OOt0zznvsyTQAzdapCDh9vihS25M3CW3N5aNNJDJxqY47sffNu1EMr9VZJfVfQByE9NgQ23iHy7IQUxiE79/tB2dUpfwhTfs6QTKSoA9Qet3kP8f6c8NLmNpm9odrmPE3yo82vDZtOEVAJyoU89TC/S3Nn11gIbQGcUPQyBIga9nld/UId1H3/6goid+eGOQg0ScTsWK4P7jb/XrJUEVjeEbc6FBYdatigTO+eRhuyb7EdJFy6jdaL6v2tzSX0V0ZRsHBXU9dBIcP8aclv0JwJRU00DqqIYRgcmTdeF+5WDcAOFHQSEVHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,32 +128,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 2347961b11d4 ("binfmt_misc: pass binfmt_misc flags to the
-interpreter") added a bit to AT_FLAGS in the aux vector to notify an
-interpreter that the 'P' flag was set in binfmt-misc. Clarify that the
-interpreter is able to be aware of the 'P' flag by using this bit.
+The "full path" is not passed through to the interpreter, but rather
+whatever path was passed to execve. The user's shell is the mechanism
+that is converting the executable name "blah" into the full path name of
+"/usr/local/bin/blah" instead of the kernel. Clarify this in the
+documentation by noting that the path is found in execve and including
+"shell" in the conversation for locating "blah".
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
 ---
- Documentation/admin-guide/binfmt-misc.rst | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/binfmt-misc.rst | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-index 59cd902e3549..2e2be2922ba6 100644
+index 2e2be2922ba6..aabf6599ac49 100644
 --- a/Documentation/admin-guide/binfmt-misc.rst
 +++ b/Documentation/admin-guide/binfmt-misc.rst
-@@ -61,9 +61,11 @@ Here is what the fields mean:
-             vector for this purpose, thus preserving the original ``argv[0]``.
-             e.g. If your interp is set to ``/bin/foo`` and you run ``blah``
-             (which is in ``/usr/local/bin``), then the kernel will execute
--            ``/bin/foo`` with ``argv[]`` set to ``["/bin/foo", "/usr/local/bin/blah", "blah"]``.  The interp has to be aware of this so it can
--            execute ``/usr/local/bin/blah``
--            with ``argv[]`` set to ``["blah"]``.
-+            ``/bin/foo`` with ``argv[]`` set to ``["/bin/foo",
-+            "/usr/local/bin/blah", "blah"]``.  The interp can be aware of this
-+            by checking if bit 0 in AT_FLAGS in the auxilary vector is set to 1
-+            so it can execute ``/usr/local/bin/blah`` with ``argv[]`` set to
-+            ``["blah"]``.
+@@ -56,16 +56,16 @@ Here is what the fields mean:
+ 
+       ``P`` - preserve-argv[0]
+             Legacy behavior of binfmt_misc is to overwrite
+-            the original argv[0] with the full path to the binary. When this
+-            flag is included, binfmt_misc will add an argument to the argument
+-            vector for this purpose, thus preserving the original ``argv[0]``.
+-            e.g. If your interp is set to ``/bin/foo`` and you run ``blah``
+-            (which is in ``/usr/local/bin``), then the kernel will execute
+-            ``/bin/foo`` with ``argv[]`` set to ``["/bin/foo",
+-            "/usr/local/bin/blah", "blah"]``.  The interp can be aware of this
+-            by checking if bit 0 in AT_FLAGS in the auxilary vector is set to 1
+-            so it can execute ``/usr/local/bin/blah`` with ``argv[]`` set to
+-            ``["blah"]``.
++            the original argv[0] with the path to the binary found in execve.
++            When this flag is included, binfmt_misc will add an argument to the
++            argument vector for this purpose, thus preserving the original
++            ``argv[0]``. e.g. If your interp is set to ``/bin/foo`` and you run
++            ``blah`` (which your shell finds in ``/usr/local/bin``), then the
++            kernel will execute ``/bin/foo`` with ``argv[]`` set to
++            ``["/bin/foo", "/usr/local/bin/blah", "blah"]``.  The interp can be
++            aware of this by checking if bit 0 in AT_FLAGS in the auxilary
++            vector is set to 1 so it can execute ``/usr/local/bin/blah`` with
++            ``argv[]`` set to ``["blah"]``.
        ``O`` - open-binary
  	    Legacy behavior of binfmt_misc is to pass the full path
              of the binary to the interpreter as an argument. When this flag is
