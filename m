@@ -4,143 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED37CEA719A
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 15:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85EA9EA719A
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 16:10:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 606DC6B0321; Sun, 19 Apr 2026 11:56:18 -0400 (EDT)
+	id AAE0F6B0324; Sun, 19 Apr 2026 12:10:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B79E6B0322; Sun, 19 Apr 2026 11:56:18 -0400 (EDT)
+	id A36E56B0323; Sun, 19 Apr 2026 12:10:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A6A26B0323; Sun, 19 Apr 2026 11:56:18 -0400 (EDT)
+	id 925BD6B0326; Sun, 19 Apr 2026 12:10:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3905E6B0321
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 11:56:18 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0D7B016071C
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 15:56:18 +0000 (UTC)
-X-FDA: 84675757236.01.9D79BFE
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 094521C000F
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 15:56:15 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TY7QFakU;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776614176;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7961A6B0323
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 12:10:14 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F051413AB0E
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 16:10:13 +0000 (UTC)
+X-FDA: 84675792306.04.BA3B8CD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6BBEA14000F
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RcSfOb3c;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776615012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bS1cThwHIktcd5p9rJSSzoXzcbmkZO9SdVakwgQGsP4=;
-	b=3FrMYaA/PaNam5uheRzxKFexLFxDu6Qa6KnLakUek3b7ZL9+xA34dc7kN5Yvb6x44MFOSV
-	1NuST7PFP/BPlM2m+VGYcxW+EuOygwojdeRry1pY9FvXwacQVDVPiC2KYOrVb0TSd470+h
-	RZwpugAKbFVgb4E1ZWuZnMVo1qYwkZQ=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TY7QFakU;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776614176; a=rsa-sha256;
-	cv=pass;
-	b=PMTJu8vRXhC+AnL5rAb6oTz8fOPevusJza7mUxg5t+nKgvwuqnf92flvCicUfwkNfP3h9P
-	lpfKL5Ze/CSRde6c9Sa2g7D6PnPhYddYkImDV632Wnra1/8tp2L2KekDrWVYz8uNC9wG9Z
-	36Eeb8Nuv0N81aOUOOhDS5xoGoAAw0o=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6715006f4f7so3451887a12.2
-        for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:56:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776614174; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BwPnaNZ+Ti8I4rzW7vgL4BZUSQB7K5HibR808OPVUMGo+KTId1EkoM4cOE4/mfvzBM
-         NthRYbM44oKLLcJg/3lONkHJEfwNOrNXB8jm1I/geJq+W4w67jxRNPQ3DKS/a8jVssVL
-         CPI2CSeXEALnNBYfENo26rZ/y0chCjZJEbgVd3ekZAXXio1JiHUpsniHWjdUQMBYWFv0
-         UoNP3I4wZflL0Sl85/ye96MrhbQdwOrR2CaG27h2qjxiPVIqmBZihLvnleS45cfSE9Zl
-         fQwzNGh64IWkqufCTj6q9K5HIvU2UaWUB1ikfbOT3gWwVYVS1f6m2uamrQ7A/haHFlCS
-         0QZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bS1cThwHIktcd5p9rJSSzoXzcbmkZO9SdVakwgQGsP4=;
-        fh=KAxxboBNJJnOQ5uGr4jc/iJwjxgD1w8O5mgqjElOD2g=;
-        b=FkFl+qDQ40uANPGMvCLIlCpupX5Hi8k/VIeP+ZoSGmjwNA9wpY4EVYAC69c4fHenaK
-         tkXpvv4klklhuUkD/pfUunLtQAil4sGf0hb/w/3X94SeD7DL/0sbckOiQ9qCND4emWwx
-         a0wOQMfuQgu1p6wBHOkDQc11wCCjC9Xn7F19qBhE+KO+yUhQc1M8SIA2xMXItJmbRwDD
-         g9KQFc8HBjW0dYMBPmriv2r3gh6jmBg/TW7tpsHO4F2itEmZxa4bxTkWc3/sl/F4Dmpk
-         k8M2K0bq11X7b7W/kXu8jBpUvZwvZCZ5mVUuHryFuMJag+YmrZj6y7cLd7yNs7Huof1r
-         hEDQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776614174; x=1777218974; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bS1cThwHIktcd5p9rJSSzoXzcbmkZO9SdVakwgQGsP4=;
-        b=TY7QFakUmDSnFkO9OCueGrxxE3kyULCWCSJseVljtd7/YdGBWg8gSPwfaKPTv71PYr
-         r1/losgZX7D8VP54YTFVLgb3ZK2dEI38SJGlSSVQmmb8gYUgmsrDVS79oROatE/sC8Hc
-         YtxbXCDFcmA+Peqn/sXbAFhKBh85lrNx8d7/aPzAtskwqENxmF0a31H0xZ8sveLqE6Q0
-         L+phaS58QkuVHgoTx8MP59WlEsA7zzqSmvCwbZ86PjjNZDA/RxvDtYfKOjPG4QoUJdYT
-         4g6cM1y8ik2YlLl5QX+e/1vaZJcdEv5EkLMcioYExSGe2B2K6pO0NmWnpx2EkyUGv4gv
-         0DxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776614174; x=1777218974;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bS1cThwHIktcd5p9rJSSzoXzcbmkZO9SdVakwgQGsP4=;
-        b=DWWOKoNOXtNzth9uJ+EnUPpwA5in408utnYksP+isVZkOsxz8X5ego7YcJb+6++3uC
-         nYxcOry1ClRC6LkrCyEP8rp8TYD3Tah08LzEVp032CH89f8nfw7JH9Dy5m//Ruo4SxxD
-         7RSJ9qXY4yyYp/XUcGxUy8YKDffuuCParb8DoyWxsRO83VbckyPZkKvjqaoRkxTh18HE
-         dU9RCusD6qkXQEz6OIJf1RbqfWvo+dhDpryUxZ4UMCHE4nT6s/Cx6oVPj17ip8CZXQac
-         Ss9bd8mMAecV5Tml6Pd+EejvHoczBaGfhSm8L2rl/VV3byQgDKYuXqBiY+B3TBttDcCA
-         86Kg==
-X-Gm-Message-State: AOJu0YwUbkKIwsYIqpNDxkPClqm3skT9xP4ItxicOz8IK/35MV7obLqT
-	4mu6tpsUHHEY/c9U2qTv56LsCCenBxIrQ2K+XDMjyJCJbJGVlVHMnU10/Xd4R+nr2B2ER3NcKc4
-	CiK6/9RyqvuhRlUDOndw89j5eaccG6Fw=
-X-Gm-Gg: AeBDieuHfwS2PdUcfdX66A0TPfTl6SHF41kFNXJR2N6anuI+QmhHIei9kb3rhU/dEpA
-	Z1XN3JfakPkyeNFIsk/qzacBvqiZJSkBc1JqolYrYqKGaTC1cTp/XNdeps7TA2aLTyoTJBei34l
-	xmH6VKAmwOq0oG2FCoyprQvu7iJBMKblXw/iaLNq6Sru7U+KmnFU8q9x1fXonuCSVVBV0VSHTZ8
-	WK0hCjQjKtH2Mwv0zVUfds6jN95/PhQoptRHYYfEhzDIFwTxjeFdBQyHMnPn3+MKKBNwAelY8Br
-	NINKTyeKtPdgbUsCNQIUS1TaxxiW5IKCfOxwPWAaUQ5bmsNXDXw=
-X-Received: by 2002:aa7:da09:0:b0:672:88a7:3888 with SMTP id
- 4fb4d7f45d1cf-672bfd82e36mr3319269a12.5.1776614173974; Sun, 19 Apr 2026
- 08:56:13 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NoNIPxg413G6GYh5eE3OkprcImtU5PYyP2sYlRTcH+4=;
+	b=e67jLr+CEPnxeTDg4/4wjqp/nEDND9T92xlk5ag7FYzs3iGAc4enqlPpvtoG/J69A0Ko4g
+	CUP87XRaH0awBWhyNFvtj39w0HN8J6aXjTdVvAInGvVvnuSZ9D3DldUg58tzYOsMx8MZSJ
+	lw7ntLJUK52jF2xn/IqkDBxK93kOuLo=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RcSfOb3c;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776615012; a=rsa-sha256;
+	cv=none;
+	b=k76k5rm2udQiB5gXX5wuj00juJZSjXpFdN6tDjgZpI76UmMnU7J88ROChEZHEsy79Oa1gK
+	w0tYy2Qu4Gr63SUXrXRAtx04q45T2RSlnlvEm0YhgASkuuLpxZGEo3BAQCxyS36Jn6gzrO
+	beppvSQsZHlxEOZymuGIRHeGjLhl9KY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C76606011F;
+	Sun, 19 Apr 2026 16:10:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45554C2BCAF;
+	Sun, 19 Apr 2026 16:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776615011;
+	bh=ICP4ejP14X/+oD3w9wU26G/JpfDfG6uEmFxcpnMElSw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RcSfOb3cljkpqeIwkHFSmEkODaVwl7Ey6An63tiBa4ncCL5Kcv0z2WQZzreEzxaW/
+	 NBn3ybcy6q5HtCdC77f6fg9Y9RxvotACAgS1GnsekMOW4eM4JpsN3H8iS9LyHbTBcW
+	 w2kqqrOfVQhwJkf5TMB6QWv/gVVMT1H20+cSyZPw1Gys1dBAkqaKtVV5vtvN0uTKao
+	 Mf6NB371qUvXYB3nKfgyex7tJHZgQdS2UimQAFkIZfwOZ9E0fxEaXotPq0GmuHXZF3
+	 dwbU+vpb/0PYKfHYtnwd3PkmteR4W5YfPX8DsH4xcvkwlGyo2bESJFzEugk3OO+XRs
+	 034ZmFWcoQHNw==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/3] mm/damon/modules: detect and use fresh status
+Date: Sun, 19 Apr 2026 09:09:59 -0700
+Message-ID: <20260419161003.79176-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20260417-swap-table-p4-v2-0-17f5d1015428@tencent.com>
- <20260417-swap-table-p4-v2-9-17f5d1015428@tencent.com> <aeOPKlF4qAdM2oMH@yjaykim-PowerEdge-T330>
-In-Reply-To: <aeOPKlF4qAdM2oMH@yjaykim-PowerEdge-T330>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sun, 19 Apr 2026 23:55:36 +0800
-X-Gm-Features: AQROBzAI4J739VXKT-UIynZGa6quQ6SqqMiU-pl0eYmKaSYDrbeDnFMA736To2Y
-Message-ID: <CAMgjq7AmizS9v-F-VTeCwgexYdA42DJDMOPx17_aL3FFyhYSdw@mail.gmail.com>
-Subject: Re: [PATCH v2 09/11] mm/memcg, swap: store cgroup id in cluster table directly
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, 
-	Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, 
-	Michal Hocko <mhocko@suse.com>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 094521C000F
-X-Stat-Signature: 5mzcq7crt1e9mwzakcuouk8k3ck1tdah
+X-Rspamd-Queue-Id: 6BBEA14000F
+X-Stat-Signature: 8fgqkxyw7dm3suac3yohiumrdgis5ptg
 X-Rspam-User: 
-X-HE-Tag: 1776614175-240187
-X-HE-Meta: U2FsdGVkX1/jvF9XFz/tnPKCiPt5Fw7XAbs6wMnXECOqRdYRGQ39pNkGI7UlZGRqcCUZd1RFd80uh0tWHwTjM5kyxcQPiNZmPJySyQQaZQ1ehnCWK0Wy2nkwtfdbsQBYH7e6PlHVAZj197dDzuFW3Ans/zp/TCAzGHhIcsQq6R9fwChQzGAs0dfTMkBLJ9MVgaMs9DtiCisekfr9UfwFtp5KaTAE5+n2XSZ3WiXMDsJh+ZopZC3Y96jlodTJkTpwPM/Tvo1nCKUtTPUKUq+Nrgon5HLWCv/kGGOztzBYZCF6KQ5xiqapN35GGFuPl8+nyJTOXHSWPY5jf+sjF89pJw/mEA8pBjjhEt/y1r2RU3qxsfE+PxMfsQnVa668VJqSyMCiAInf0IcL4yHwUPfgXEESqQqEyvxC3Xw7Hl/gtRTdBvoWUuiVBilvTjv0IKyxsgl9chzFI+vCTLutn6d/pA1ZlRUSRqczZ0n/w187TZOwurgD03uvkaACGine1+ztQzPYHGbHQ2gF9vsj3H058rr1cQqviBM4uQ6be2oQ4LSKcIueU6snDrj+QFG6vyxrxBgDebWqaiKASJ2sWEb4FHhZZIQlgZ0tH5tqZDvsOfTcYgrdQ8dw6V/nj4XAdRL0LmT8d5YhKIVFkl5ELpSo/HvNArqe135axkz3UIB+lHcpfGsirtV3ji3NxMB6P9AWAa2P0v+93f2z4HaAONfg/rVYYTv2SMIBdIQfAYUUUpey4iAvRUqKGDiWQwc/Hk3uiDnY/LlXXe2/b0XJX5GZfWBKUUM0l9U32O694nmoTpEOKYmEqe4jhCbAcebXyZGfD1d9xL29hdeUPO+PrdaR09KzOooOZaG0GLlxFguz7TIlAqZK04rpbpc/oIKbisjzFZ+fTaGvFOXQq4lfVpKZ0gQpgkLYFDiSGYROl4xT4S91gpyxXI6gRNSxTMsWaU8m5p5pAEMFy0WowXgPTN0
- L+baUO+3
- PYFK00L/MKlnwfs238aZ9X1cbUCcVlbj0BhnEF0X0rXvbH8KqvcS5Nn2Jn0m3xpSZO0zUNs5Oodht4NF6d2144ApCTwYdZYTAsVsediDonjJdtnl/fREqTvDTY8d1rn5YZ1pxlJ/xiW3g4rrVPZNs/dVMxOtcu9Ta2JPxbyohppncaIFeCnHFiMB3obfEwOv0+rn8QA9d+wAltOVo3ijwQD0eaMM9QdJ6DPVZvr0B2dcfjPtMn/saKSz9Nntd/tTb3P/AXvBi+oG42VEVblwzn/OyGm2VZpVlTMDF/W3zISC9McJKDEIZPwvvn0Iz3OWMLnAiklUN/c1w7bKM9MRHJM2I5Db2yn9rsnvBOrtZX2VMqFCRWXpj2Vm4UiRNtVO/dqEfh9tAmsbCfDetw1RWa5H62Gs4rbsgtdrpIb4obysHDAE=
+X-HE-Tag: 1776615012-826373
+X-HE-Meta: U2FsdGVkX1+bAa3RF65YDzTQ5n8XAfMB2eaMhCuBvrt3w3L6XetN3twoKAZ2qNgPLsOUdR8+k2FjbwwV/4j9B1GznMprAVc0q+I1CCvX2GHlq76ThSEWOTrsn/OlYF7auY+OlW3VuQH0pJrU+CMzt5qUyYJYMQobomumiLbkme/8yd6H1mGW7OANGinLjNGldFEHW8ZDG0NNylqPAdThGve+EsvTjK8DmlGwF5nzfEPUsJkKgTXczMS2MeYXOxfL3JdxUbhFwRRZaVD6plfeuyKrUSVpmhYqXgOlceK60B1tklYqOiHxUcXxgPx14dZ+GC3Zj941nlk3P39/d6cn1Mqg/FCbA8xNc4/nOtyLE4VFK27jIPu9dIPgGk9fy3QDXs7EA4GOHleVGxUzEtcDgcVuB/HIWqIFsaC5EDHRAKEB3ipvKW5Tk/ckT44OxGZXmcZPr+2CnsL71AJszfyi8Q2xapljMbJF5MKG4mCipmuUxUxQSp/EV/Q6SvvlPpHRA4iB4zRh5B/i42rDDKOrHtIVSCoGe0XxWz6SvIBQsz9IkP3t+Z3xlGd3SpN8EnyqQxS/uNvPXPKgC8dSS2aBBYCvowyndk/sWAbqeWVj3a136mO8Qg1qOjiyzqbaZ8vpHDW2JZe24uKu8U5nGEZ7UvhukIPHD4kgdLia1NKBxyx/7KDyz1XIuoqCGgLmwL1FZwYpohfeaQwyC2AG1VJZLiQ0GMxcwJV0b8duDzXCnJbY38zBOdNHvCyLebO/GcOwvhmloHrkCBlKOkFTaihdbzDEdmFlxODlS6f1U+PKbYK10wVCUradmdsg7bQNj4wAgjhD9WzSld8aSLv/4n5m/m8YQzYAI1kFAzLTQtEwrDn5JmFs2+PDZNR1zufdtGii7srg/E4X9h3AhxynsZpJknL9wTufFDkXAj/GYS80M+OprWyHgHikPUArButOvY+MbwbDF8G9uFT/6OxJf7f
+ 6zAaXcCN
+ qfhIBfrT6p1H+JL1Z0588FB8Mv3vCrdMdHFuik8eEbJw/zgnSZ0Gl0ahYd6hjVHFHpf1fP7RzJm3LLwiMlroYfDs8n2S2raovK5xL2r+YP2g1eCh0j7EeJDZln+OY2E/jYC4CMEwIecgNDDYkAL/0qmMZmxwqAh6Z8yAb6fnoJHyIINDR49KccbGkB+mX7aIbYDgxvMGolWMxwY1x+/iut//GvKftkBkdxOvSdpG1xbk0VwC50jCice1XAtNEQdikX5cm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,59 +91,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Apr 18, 2026 at 10:05=E2=80=AFPM YoungJun Park <youngjun.park@lge.c=
-om> wrote:
->
->
-> > +             if (IS_ENABLED(CONFIG_MEMCG) && !memcg_table) {
-> > +                     swap_table_free(table);
-> > +                     return -ENOMEM;
-> > +             }
->
-> Hi Kairui,
+DAMON modules including DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
+commonly expose the kdamond running status via their parameters.  Under
+certain scenarios including wrong user inputs and memory allocation
+failures, those parameter values can be stale.  It can confuse users.
+For DAMON_RECLAIM and DAMON_LRU_SORT, it even makes the kdamond unable
+to be restarted before the system reboot.
 
-Thanks YoungJun,
+The problem comes from the fact that there are multiple events for the
+status changes and it is difficult to follow up all the scenarios.  Fix
+the issue by detecting and using the status on demand, instead of using
+a cached status that is difficult to be updated.
 
->
-> Nit:
-> (Just a readability nit. purely my preference, feel free to ignore.)
-> the checks around swap_memcg_table_alloc() reduce to two
-> equivalent forms of the same memcg success/failure question:
->
-> (!IS_ENABLED(CONFIG_MEMCG) || memcg_table)   /* success */
-> (IS_ENABLED(CONFIG_MEMCG) && !memcg_table)   /* failure */
->
-> A macro for the failure side would let the call sites read as plain
-> positive/negative:
+Patches 1-3 fix the bugs in DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
+in the order.
 
-Your suggestion is really helpful! I also thought about maybe I should
-do some cleanup of metadata first before adding more metadata cleanup
-for a memcg table. In this V2 it's still not that hard to follow, but
-in V3 if we have an optional zero map bitmap, things may get really
-messy if I just keep piling up things like this.
+Changes from RFC v2.1
+- rfc v2.1: https://lore.kernel.org/20260418222758.39795-1-sj@kernel.org
+- Rebase to latest mm-new.
+Changes from RFC v2
+- rfc v2: https://lore.kernel.org/20260418014439.6353-1-sj@kernel.org
+- Set kdamond_pid set callbacks.
+- Support multiple enabled parameters setup on boot commandline.
+- Acknowledge the third patch was discovered by Sashiko.
+Changes from v2
+- v2: https://lore.kernel.org/20260413185249.5921-1-aethernet65535@gmail.com
+- Add RFC tag back, for sashiko review.
+- Detect and use fresh status instead of trying to catch up all scenarios.
+- Change Liew from the responsible author to a credit-deserved co-developer.
+- Move authorship responsibility to SJ.
+- Add DAMON_STAT fix.
+  - RFC of the fix was posted separately
+    (https://lore.kernel.org/20260416143857.76146-1-sj@kernel.org), and
+    only commit message wordsmithing is added in this version.
+Changes from RFC
+- rfc: https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com
+- Remove RFC tag.
+- Remove 'damon_thread_status' structure and damon_update_thread_status()
+  (SJ pointed out this was too much extension of core API for a problem
+  that can be fixed more simply).
+- Add a fallback in damon_{lru_sort, reclaim}_turn() 'N' path. If
+  damon_stop() fails but kdamond is not running, forcefully reset the
+  parameters.
+- Reset 'enabled' and 'kdamond_pid' when damon_commit_ctx() fails in
+  damon_{lru_sort, reclaim}_apply_parameters() (kdamond will terminate
+  eventually in this case).
 
->
-> #define SWAP_MEMCG_TABLE_ALLOC_FAILED(t) \
->         (IS_ENABLED(CONFIG_MEMCG) && !(t))
->
-> SWAP_MEMCG_TABLE_ALLOC_FAILED(memcg_table)     /* failure */
-> !SWAP_MEMCG_TABLE_ALLOC_FAILED(memcg_table)    /* success */
->
-> Equivalently, the same macro can be expressed by splitting on
-> CONFIG_MEMCG.
->
-> #ifdef CONFIG_MEMCG
-> #define SWAP_MEMCG_TABLE_ALLOC_FAILED(t)  (!(t))
-> #else
-> #define SWAP_MEMCG_TABLE_ALLOC_FAILED(t)  (0)
-> #endif
->
-> What do you think?
+SeongJae Park (3):
+  mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
+  mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
+  mm/damon/stat: detect and use fresh enabled value
 
-Good idea. I also agree this part needs some cleanup. I will take your
-suggestion and do a few more cleanup in a seperate commit. Maybe just
-let the helper return early if MEMCG is not defined or something like
-you suggested.
+ mm/damon/lru_sort.c | 85 +++++++++++++++++++++++++++++----------------
+ mm/damon/reclaim.c  | 85 +++++++++++++++++++++++++++++----------------
+ mm/damon/stat.c     | 30 ++++++++++------
+ 3 files changed, 130 insertions(+), 70 deletions(-)
 
-Thanks for the review!
+
+base-commit: a51b50e60d2dae1f66329f147bde8723e6b1031e
+-- 
+2.47.3
 
