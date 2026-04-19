@@ -4,78 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55B1CEA7192
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 08:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E49EA7188
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 08:20:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FC756B02FB; Sun, 19 Apr 2026 04:12:35 -0400 (EDT)
+	id 7EAA66B02FD; Sun, 19 Apr 2026 04:20:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AD9E6B02FC; Sun, 19 Apr 2026 04:12:35 -0400 (EDT)
+	id 79AC76B02FE; Sun, 19 Apr 2026 04:20:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19C586B02FD; Sun, 19 Apr 2026 04:12:35 -0400 (EDT)
+	id 6896A6B02FF; Sun, 19 Apr 2026 04:20:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B2196B02FB
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:12:35 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 977D613B77D
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:12:34 +0000 (UTC)
-X-FDA: 84674588628.05.F80774E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 55B526B02FD
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:20:12 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD45EBA466
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:20:11 +0000 (UTC)
+X-FDA: 84674607822.19.95D356B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B2D1640007
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:12:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KF9lgz0L;
+	by imf28.hostedemail.com (Postfix) with ESMTP id F00EFC0009
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:20:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jY1BPD2l;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776586352; a=rsa-sha256;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776586810; a=rsa-sha256;
 	cv=none;
-	b=d0e2lnohV6jGZPLBLV/AXDD75jOuc+1xSX1M/fFZNv7YL5lU0cssNNUCSjTYtYYm7Ya1nv
-	HeYTrosIJ4cqonYqH2+ias3GQRMUu/zgxE3sVa9v2tTzj4Z3AkeQcg2ZCvvKUf+1sSFtF9
-	cGB5EMpnKRzyjilqF7KObTCoQjAVXJY=
+	b=u1lz6qurdNF6IO4berExgPdrra/d4mgC1EMEVP5Oj8Qk9i+AD1keE1zGVeZbHvVOIj2Itx
+	qBW/b25Q2z6+StIpmKhAoI+8jOlZFgaxYgxVSd2/8Tkp4lHAxNJLeXtQ/h2/POQYt1RoL6
+	23P9ffX51hufk/9jhgDdMoIY8DaCfII=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KF9lgz0L;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jY1BPD2l;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776586352;
+	s=arc-20220608; t=1776586810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mfjhiCbP/Jj8FjbSI/ahsoc3qMsGWjRLS7m0J89wN2Y=;
-	b=s1GYeHAo5/pDtN8H7J3ru7yHP+Z38NcT9z2Xdb+h3bflZDQNgNPKJohRz3oEOIPQHY3XTj
-	UJSuKZ299RvGdaJlFQOMe7rU7CUijMxR6k5RvYzfaOz9hWnetvzPrhSrAShMBz+ujRAWHv
-	HAL24URJsXPdX8YpdT9u/ZWCAXYo3tg=
+	bh=wYQ9SL0cxa+vrV2T6FOQ8EMQsMy6DaMa6Vfh61bL1vs=;
+	b=2y+fJJAOm6eATvM3RAKinM7kOgnih9Cei7LrrxlTaCTHaagvt5CjTLgnoaXmwHC7zhjwLd
+	snfqx8MsdINUgxKP8JYhWPTfYJJOafw8Y9JJws0lIe4ugJM8eQSf86fHGL2IeApG3kpv/l
+	7cGxLwtKTCnrQ7EaAX/PMzxKf5ZXlxA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4FC9642A91;
-	Sun, 19 Apr 2026 08:12:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BBEC2BCAF;
-	Sun, 19 Apr 2026 08:12:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DAB464450C;
+	Sun, 19 Apr 2026 08:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0B7C2BCAF;
+	Sun, 19 Apr 2026 08:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776586351;
-	bh=ig7jvjkZ1QbRCAw8nCdys/c48+Ls8Xu4gg+weYKcuIk=;
+	s=k20201202; t=1776586808;
+	bh=ULzAcQ+a5yvU6pSydPbcp5Zrd7MaFUBLpohDNl0zto0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KF9lgz0LZGMXEnJIcgltyWgzbLX4A9odPYqujzVbciAfTyZweVjXlmVQRV8J8VjFk
-	 jJW6B2mIlb/YrSeo0eKYKQFebKATSh2h0GOvPyuXrsXeKaimXRwqLJaU9CTP0EFequ
-	 Gw8/FEHQrxkPQGI7mu/4Q+fC8q0LgYcYer2WrSC/r9l7hL5hRLXWY8N4obXN234T+7
-	 vJGo0jBx61PAjWJx8mSFMAmDm5AwlKHMG5CZ2TcenCoC4wTX5ZQaTZneEpwhtTn650
-	 XLM50Nw/DYke8Gu6z1yFfF2Tq0CVB+r4F2sXSfXRDybq1qLjtVLkenndZoTpYI21Cn
-	 eiHE5fpKT5bMA==
-Message-ID: <c4355c68-4c23-404e-9368-7120f6467ad4@kernel.org>
-Date: Sun, 19 Apr 2026 10:12:25 +0200
+	b=jY1BPD2lU1Iqz7fd/hrVI4VR2mnaRy7YSp0qiFqQOF0egxnj5OfsXl3VHc08ncjvI
+	 asjBFqyyeELe0U0CCDnkgUJR0mODASwcvBUzKoES8ge/b+a1qZvz3iIetDqro/3YDu
+	 Zg02sSy2I3l4Su32OyEciZ0z5J59oy8kplSRsUYomBpiTdD3/Q1nwPqfACTsEAVV4p
+	 XZf2q3y2Jd1WUC5Ufo9hi9pJ9nEb1SUQnEOr/PpZKBHbOxRBnCR9+gax7lR7xAtGwR
+	 Z+POE2aqz4butePJg6YNOjC5/d+6Na02UjwzpBHf2MdIdClFBq6oINoybXTMYCZ17B
+	 JlqfByBVk1D3Q==
+Message-ID: <7b983108-4846-46ce-b9f5-2aef319c00dd@kernel.org>
+Date: Sun, 19 Apr 2026 10:19:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: Cleanup up PMD Checks and warnings
-To: Sunny Patel <nueralspacetech@gmail.com>
-Cc: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com,
- gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, matthew.brost@intel.com, rakie.kim@sk.com,
- sj@kernel.org, ying.huang@linux.alibaba.com, ziy@nvidia.com
-References: <82193ab8-e6f6-4664-8b4f-e30d280d8b1c@kernel.org>
- <20260418171806.11615-1-nueralspacetech@gmail.com>
+Subject: Re: [PATCH] mm: prepare anon_vma before swapin rmap
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: ZhengYuan Huang <gality369@gmail.com>, akpm@linux-foundation.org,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, r33s3n6@gmail.com,
+ zzzccc427@gmail.com
+References: <20260417011606.1089985-1-gality369@gmail.com>
+ <66f67e51-819b-4c60-9f61-170db32362a2@kernel.org>
+ <fb80d953-93de-4ce3-80c6-15cd53dd956f@kernel.org> <aeNP7mtx878gynXS@lucifer>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260418171806.11615-1-nueralspacetech@gmail.com>
+In-Reply-To: <aeNP7mtx878gynXS@lucifer>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B2D1640007
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ugnehawfz8strwuf86ku4h7s1eajbsgn
+X-Rspamd-Server: rspam10
+X-Stat-Signature: izb9wsucms4sz5mb4doebopgcgud6enc
 X-Rspam-User: 
-X-HE-Tag: 1776586352-595919
-X-HE-Meta: U2FsdGVkX192OXGjNYZhkKHBl/tsz9IwbycVCNTOHeCIPlbPuxrx+SvCaC/pt23ZyLMBJFDDaSakp5R1XcYHjy/VmQCiBiaSY5Bvh8KrXM4jkzrj1c8s1VrVjEgFK/GU2zsTRf5QnZOMgDzirwSenCxfDax1ez3n2Z+kPq+XeySGZHajMmbXyEd3VxkuIWarDYbvEUA0m64PgQwkUEDJ4O9HUe+iD6Zcnb5ihVCfu47RWeSXCUw5+fuxjh3wTvuFdXds8IKXYo4lHpc2H1zL0ZYMZaYmbGnyZgQwcIA0XF7Ps2cf/JCqQOV2gJEeR1+HmvzD7UlWOY802qENbdglWoGeBj0y7xeRviipL5zRG20kyOVwj+e/JPrU4bq99Svi5pPhQlqPyGyeyaMteexGYmiu65O/p/qz3magsieI9ic0VbnTVrDwbCp3ICTgubgI9y29jEuVOQvUpBjfsmwVOOEkl90sQrCeyDy3EBxLe1UJ/j9onA/2JGuu5XxVBvzVnzu4fWeT4Ck4LHACKcyk7mMpdUCxpEyHB15DtM5wbioeWIQiFDgI4w8JeE6RkIs1JWI9vdg1UGbQEmjJOSG5L/5yYHDn6NHi4EqC0ienzGidXU7l/wpSY4KgrFJTwoL6LK1gQ60dr+K4Fje58PSrWHqfOwQdgRcRFTolQfuNMyItirHvKutCoSGL6fgBw1zhjWVVj6dbPOQDJN3IPMQlGeI/JvwxqSM4GdM0IYEwyRtq0Huwah1M3143v0pqQSlVVQXtm5pBIkPRW4m0eBtWGPpF6BRDJWhN18cS7Rlw+5aTHJFacP4fut8az9iKmDnOcSG8MGjcNUvyFWQC8P00pvTQjFqoT2KPcrlgbU3uRzTB1FDD1rsq91kA94M46npxtyWkHgXxlALJt3NGWEuHFjsF95jBka5YQGZ6VOzbaVWD/uU4SUJPKSs7bAV7RmQxNFVXrxqVWjWt98HTmyL
- dBIigj/K
- aRAAbcCR6jLT2e3nwG5ucEqAH+b8WiA4oOUmTuQdT6getTVRP7R5gcXtgqxBoEAQAxPKSJrgsPn/RZMU/oaKrhZz9kUvMNTqrYhvwZzfj4yCEfzp5NFhGy+O4iReDQBNBl6mprfTCpO8Ci5Ubm64Ptg6hhsTkd2zN1qPPT8oMeKP4gTKWsdsgQ30/toI8MD/dyYN/VjHmQONr86bRQKjNcmDkm8YpzMJpYiMW5ZStkPfDRJABHvGhVeZXAOPw03o9Dnp9GC5oh/x5QCRqoM6tm2tzq3dou33pQwxAWdmhy8nXpOWE7G/28bQrNlC2BeQyE4rSXJgvtT2A2NAlVo8f5TgV+lla9/9kOL8cp9+mcFiBuX8FhUJG9xmf+E+SfzI3v7Qu2i7CL1MkaJsbETd/n1hFOQ==
+X-Rspamd-Queue-Id: F00EFC0009
+X-HE-Tag: 1776586809-914914
+X-HE-Meta: U2FsdGVkX1+0A1LoAxlMkFsZKZfbqvhLRcmteSnJ2C8zXA4Ynfkdizo7M4cQNQ1YXb5xosStvq73RpNjJ2jCX0ZNBr2XsK8/q9HDZ3Wsbl/ZnzMJKvr8bHLcGAHr/OmJ2tFAVgZrfxI6i6onfMjw492SKrLjP/71dVZHRGXtxrd8i7XcfeMl4LL4oRE5kTjKSVQ6gRhTkui7mKniu9BHSv2SL1VMNlwqlWDsKjPsEreef4fGkfcpHGxL3QF087xnI6uDbWYNxJZvOAMxeEbNPSm9O7RLUyZd6zlD4puG37vumfOVKoAWtPD2IHsrGBH41NsVbuDTHtabYPNlLzAZYJ1vp2I53xpUYa8ociC27c0JzmRBk9yYVQQ2GHvLxTMwuiZ6x5xh8MkY0EiTAyzBQXMgjWGBNeDIfNZi74esX3MFvMDrkiBWVSHa6ol8CIp1zRn6jxS0BH9WynTn1axNnDdWpbI9OdprHUanTdzMNPyTD17DSmmydyiHCoyQ66BCisfaDcYXklrSI5XnNI6eQ1eenql2RT2OWi0cgaBpuYCBbEN4suFFYmSpoShS4185MnA20oHYueDv5Yu52XwMX0WUALdoDQrT0vfTyXDcXerjIoIYq7MLO2kkuCAKrAFKgWIz4W4bN/bjjigwSpFfMT8jGzjKqgGSgBrgGctXBTuA+ru/5z28LRU0H//6jaQWCo5tJkn4ZpVQFPX0lYLVNIHsYWvDbX+PViWjxohmhoBIe/yneg/jTNkr2D6d4dCP4H5ZyW6G3hhwjK5Lz1pUkPYg5wZmczIVy2GJ6s/6oWoEcFoKlYU8S5jEq9+tKnFnZSBo/wPuyndmAMD8ppWNnFE1cH+Pk43NCYcmjNK/5X69qfQj6B4U1ev9yWOBtC2kmQxOPpsJ7otb8+kBGBECuLR1U/7h1083NOsG/+pcVJ1eqB1OpGj/wIroYOcAxwf7t5ps+zsOjNNk2AyJLCy
+ /vC0XRoO
+ pqBUxdHwHH082kk5+bOn0592av9Z2pSsF6zTEr2+HXJF3FTlW/8t4KHaHtEkP7z4jA6dsfzqxYTs0dWhZEBDV6dd2jNgJWd8pS3C6RFkHF+UACG9iTB64K2s2iezprxo9LVGfawk4HpfSmxW/CCaVKyrHzTOdG1+cCaQDxr833sCNznIql9PRJeEjqOQLxOVnWNf7cpErAGVY1YIrh4RMSyTxPcqHx5qJ2T5rMiGgKuvhagaNs0AaoL+rdM25H2xEJMe0NIIp8qnjmMZ1Vlob4Ip/0GsD/EA0Nv9wNSIE7XIcxyz+79eF1AwflLjq8719CvI+g3eEoaPOPXc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,31 +141,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/18/26 19:18, Sunny Patel wrote:
-> On 4/17/26 01:52, SeongJae Park wrote:
->> On Thu, 16 Apr 2026 21:44:15 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
->>
->> [...]
->>>
->>> is_huge_zero_pmd() checks pmd_present(), so we didn't have a bug before.
->>>
->>> We could also do:
->>>
->>> if (is_huge_zero_pmd(*pmdp)) {
->>> 	flush = true;
->>> } else if (!pmd_none(*pmdp)) {
->>> 	goto unlock_abort;
->>> }
->>
->> Then we could even further remove the braces and reduce one more line, nice!
+On 4/18/26 11:35, Lorenzo Stoakes wrote:
+> On Fri, Apr 17, 2026 at 01:57:59PM +0200, David Hildenbrand (Arm) wrote:
+>> Maybe there was a scenario where we could have lost vma->anon_vma during
+>> a merge, resulting in a swapped page in an anon_vma.
 > 
-> is_huge_zero_pmd() didn't check for pmd_present as of now as per the current implementation of it so additional check require for pmd_present().
+> Unless there's a bug (and correct me if I'm misinterpreting), VMA merge requires
+> vma->anon_vma to either be equal for merged adjacent VMAs, or one or the other
+> VMA to have NULL vma->anon_vma, in which case we set vma->anon_vma in the merged
+> VMA.
 
-I don't know what you mean. Here is the code in the tree:
-static inline bool is_huge_zero_pmd(pmd_t pmd)
-{
-	return pmd_present(pmd) && is_huge_zero_pfn(pmd_pfn(pmd));
-}
+I think you didn't understand what I was trying to say.
+
+The reporter claimed that it happened on 6.18. Nobody knows on which 
+patch version (stable tree?).
+
+I was wondering whether your fix
+
+commit 3b617fd3d317bf9dd7e2c233e56eafef05734c9d
+Author: Lorenzo Stoakes <ljs@kernel.org>
+Date:   Mon Jan 5 20:11:49 2026 +0000
+
+     mm/vma: enforce VMA fork limit on unfaulted,faulted mremap merge too
+
+that went into 6.19 might have resolved this problem.
+
+Your fix stated "allow an unfaulted/faulted merge with a VMA that has 
+been forked", so I was wondering whether that could have resulted in a 
+situation with anon folios without vma->anon_vma (losing vma->anon_vma 
+during the merge).
+
+But I am not sure if 879bca0a2c4f could have triggered that. Are you 
+aware of other fixes that went into 6.19 that could have fixed such a 
+scenario?
 
 -- 
 Cheers,
