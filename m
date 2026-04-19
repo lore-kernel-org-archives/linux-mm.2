@@ -4,158 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB279EA7197
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 19:02:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEB4FEA71AA
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 21:49:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 176F06B034E; Sun, 19 Apr 2026 15:02:30 -0400 (EDT)
+	id 94DB26B034F; Sun, 19 Apr 2026 17:49:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 150296B0350; Sun, 19 Apr 2026 15:02:30 -0400 (EDT)
+	id 8FF196B0350; Sun, 19 Apr 2026 17:49:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06B2F6B034E; Sun, 19 Apr 2026 15:02:30 -0400 (EDT)
+	id 7EDA76B0351; Sun, 19 Apr 2026 17:49:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB63B6B034E
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 15:02:29 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AD5FD1B8A09
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 19:02:29 +0000 (UTC)
-X-FDA: 84676226418.04.7FD5EF9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AF25BC0009
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 19:02:27 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GcCavZwW;
-	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776625347;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C8D06B034F
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 17:49:14 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6F0995B034
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 21:49:13 +0000 (UTC)
+X-FDA: 84676646586.26.DD3B124
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 652DD140002
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 21:49:11 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VrHDTZ4P;
+	spf=pass (imf26.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776635351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WbaolfbnRxGZaI+LbysHzTSE/a3XUQ1Jm7g+xQscRIs=;
-	b=FVKZ/QYNC+j9CkQL4EA1vjFrJLRC6N8FIDLMydd5yBA4tsD+fJcZNThDO8BOdtZel4hFjy
-	JnJpfN1OKqk4U9oBVQ5qgLzAzJLmP4+Oi73fn1EHQp1PDSuzptYK4huuZ0Pe/8OjsdzhIG
-	0/vDbmyBCK5TDgnZ/mM80J4+5W1aIQE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776625347; a=rsa-sha256;
-	cv=none;
-	b=J1iozkn41XBWIWjcCWW52p/ajnucnuPwyPWdpOzVjDtcU4TTMFBeDei1pLjiQ1Sucmsxxe
-	TlrMA1IwfpoUH9LqnXaannaGnxorKOczd+NpkPbqIgQVfFzp80WB060inc45OJmJ7oDgM+
-	ex/sTb+45Zfm72XBlgVLI0W4Tf4dp54=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=GcCavZwW;
-	spf=pass (imf28.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776625347;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WbaolfbnRxGZaI+LbysHzTSE/a3XUQ1Jm7g+xQscRIs=;
-	b=GcCavZwWuaixIlffAETiFsRwJng4lUvy55zvARHG2bg1wZS+B4flWRlwAVJNdghzJNvLV6
-	sworiXtp7UVM8Tu6sOnhfEzoTvkmAKpmtwOq/jdj8V03mYmNk7z8DtXnBr4oY9zly9D6uj
-	DSW846C0Oxy54mGZ6oLsLJf+niNjUS0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-UGMnA-zLMWSLuwTxBNSd0w-1; Sun,
- 19 Apr 2026 15:02:23 -0400
-X-MC-Unique: UGMnA-zLMWSLuwTxBNSd0w-1
-X-Mimecast-MFC-AGG-ID: UGMnA-zLMWSLuwTxBNSd0w_1776625338
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D016B19560A2;
-	Sun, 19 Apr 2026 19:02:17 +0000 (UTC)
-Received: from p1.redhat.com (unknown [10.22.74.5])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5E2CC195608E;
-	Sun, 19 Apr 2026 19:02:02 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: aarcange@redhat.com,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	Liam.Howlett@oracle.com,
-	ljs@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	npache@redhat.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH 7.2 v16 13/13] Documentation: mm: update the admin guide for mTHP collapse
-Date: Sun, 19 Apr 2026 12:57:50 -0600
-Message-ID: <20260419185750.260784-14-npache@redhat.com>
-In-Reply-To: <20260419185750.260784-1-npache@redhat.com>
-References: <20260419185750.260784-1-npache@redhat.com>
+	bh=cFrGrWFy/krqcVnxXtLhe3ZTOUNcitG9G8OlGBpdvQs=;
+	b=vf2D+HLk9KDMwnv2WmXM+3oXSlDolesZ8NcTNNnNM8xK3djU/pvpwOoFdf+nyVBCOqe4dZ
+	ptJ5D2b8B1OUlZHVFRRg77ea5LPaZ7vpzinrEFzg+6rYqWO6ye0AxYMeC6RO5JeZyZUE3d
+	pEoM1HZv3kNX4SVRGrVLw+LdvYkRE8I=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VrHDTZ4P;
+	spf=pass (imf26.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776635351; a=rsa-sha256;
+	cv=pass;
+	b=Hd3KG1hkpO0b/wJcpAuSoj28mlgCgVfNcxMDieIwSIPLyK7XXiq0t5JPjFCMicyuUnvy+6
+	IGA2lOhf4oUUXciG+RfIUL/xOasHIcFZCnzRCoZkAgfVDfYT5E2ypep1jZ/L5ZpGvfqWIz
+	38vuQZEeeP5f6hnO/BC4vrTr3x86ndw=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43cf7683a28so1544880f8f.2
+        for <linux-mm@kvack.org>; Sun, 19 Apr 2026 14:49:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776635350; cv=none;
+        d=google.com; s=arc-20240605;
+        b=j13ZkAQZKuBB8L3a+nXF1h7D4M67vLPUvqLpo9LD6qCxhMXX1bwQfGJ4XJWeE6FYrf
+         wgBw4BUXSfkLZOu9V0MWCPDdrmNiBP/717XOCzXIjwCT/Q7CyrhrGK+qK6pbP6pe1eBj
+         eIIEMJ5FRimK7+DJqSlQLmHAZsiUAGoF6MRLZsr50oHUZB/n2zHFTareJV9QYMa5GxJ5
+         p37vFsaAAHN4cWNk7O3gqYoNEHuD93GPUjoE3itQvJgfmys8hqNX704ko/E4dYmJQuhU
+         gh60kBcsgCXJeD5RbeH5Em0nxEwXNEYn+fROpqR8TWJ3hIPQ+f9uI3sbGNrdHlfx3tCz
+         4pOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cFrGrWFy/krqcVnxXtLhe3ZTOUNcitG9G8OlGBpdvQs=;
+        fh=9O7wc2LdjTOjucSPGGsqGRdXPZCQv99s2aSuACBbeQo=;
+        b=VdUMOLhCMfK8DKbzWInDZpLzNfJkYCjqTalwsIA7QuB9Y6rbfwYcTd2zW3D7G3XI4q
+         wrNlDucPEYplixHz4uHvSZWehQJyD3fE+D+I9b5/7j3iD90TuhVZCnuYzYpiRsy4wfEj
+         q6ExNCxDShdahkVE0i7Us1O3rUETpxxUqoiQwr7PAEenBxjJL5zSF3Mu19EoP/vvqQov
+         C2s1q0Do+Vjf9UOfXeB8l9tuXv/nLxjdTW1KueAVgZTaTPLkqgZqhSSASJyjweYz5io+
+         A3FrMrVW7x8v6Xn/+7axYmn1gEov4QEjzticgwB9HvmpOAyc3HfVF7LberqohNYjdHMp
+         po5w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776635350; x=1777240150; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cFrGrWFy/krqcVnxXtLhe3ZTOUNcitG9G8OlGBpdvQs=;
+        b=VrHDTZ4PGZ6V+kZ5lglxt6L30We4pRkgvavLa6xxwTF89we6CD+FNxGa/HuoKuW/kc
+         GSKk2PPkW39TQTOXlxg6Q1vF39lQdOSAzLuR5uZhhD9ZJFsvF6+X0NlUAAsaAMzao8uv
+         TW7iaxaH5vi5EE4TxywGSs+D6KRXSg4Fo0BwN+vhrZJ094IPAtMe+DInb/LFs5BrIV6Y
+         ROaeYwgHfBHKsPDfUTCqjEx+V0aDAHl/MaZwX0kYEynG7JA4fXrsVqgd/mveih23iAza
+         fIHlXuBXcLlSUqech06w5xH73xOL8Lb7GO9A00MRmF26KSg0RGgnd4PsZdJXapmvLPJu
+         x5Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776635350; x=1777240150;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cFrGrWFy/krqcVnxXtLhe3ZTOUNcitG9G8OlGBpdvQs=;
+        b=THIx3XMT7pYCOCKhOS4zT8Pzbe7pZNOkvS4GW4eelg4Uep2ZH26QNPQtADvZvwy9C8
+         QKtK36RCjEQlhEd6cFplKY59H+IC8YsqCoUp0g2akSNwOwOUv187N3bBlWRGmqxcdcHI
+         zfJx6+75Ihc2HMxQLnqLNMQ5I/2QYQbOfCpiJNCrj/33kdUoTU2DZ/q1AD+hdTStyeJK
+         vh0iY6qARK6T6IPIeRJ882LE/lxgDlGOoO97d+J2jQ03Tu8CaeRYjKO1vspXGHbPdzPt
+         HZOJ7qCpuYrFnKq57LgFih9jdBUkXyVeESfUW0J9CnL1Zq61QUWSCYrKdL+0RStxAw+n
+         E7Kw==
+X-Forwarded-Encrypted: i=1; AFNElJ99QHc3ZFU9SfsQsE4Z7LwHFqUvRBbZusxnUqItGjeApk6fz7N+cp+NiGCZhID/RzvbuxLK+XFJdw==@kvack.org
+X-Gm-Message-State: AOJu0YxRsiOoSHN8c/BGVIhf+oTo1Xgq2YzPpkU5cCdxNAptRVpmpeJg
+	0PIOdoaSj2QRFRI+sVsSNgeednHwHxTFQEFp/n4sJvOLXh/rocz5i2pysm1Nycxt+DuaAQirAju
+	HXUBJAfeORUt3u8IM5NHrIJ4xlzt0IFk=
+X-Gm-Gg: AeBDieu4y9KCGOL91nfHDz2bQ8Y3DlFR8wABlHl1aq39SnCNyBRBsYk212Xb1F/iSTe
+	zRr7ZcA4kiJMKXQVpdTIoxGSjdBKz2sl9BJ4C2LamhUOqSmrMpJ7v5+aGurCLQSmC3K5awCvpXq
+	RET8SNSJM08Ec0HbQm0svSipgsxvu9rrl0xlGmrVXXhNnarWABKNWfQRLrizvmq3BYHCagI/irE
+	ncYI7gAatTHR+nxodWD7D7f8fydCpxrmnr3TSoD3DmaeoBYQBE7eVNen1qF1NERtTdNyjNl8cJH
+	KsFd9DpHlWUoV3GJaldDe+783Fa8jV2y6zGxW9sdh73716iPgIY2
+X-Received: by 2002:a05:600c:8909:b0:489:1b10:d896 with SMTP id
+ 5b1f17b1804b1-4891b10dd45mr22100635e9.0.1776635349567; Sun, 19 Apr 2026
+ 14:49:09 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: oDDgfzOwdwnSPqbml-9mG-cgJ7OQquZrOpIWrNNY11Y_1776625338
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: fnrek6nfoitdxy4pnjary3nytit97ngr
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AF25BC0009
+References: <20260413-kasan-v1-0-1a5831230821@bootlin.com> <20260413-kasan-v1-1-1a5831230821@bootlin.com>
+ <CA+fCnZfubV6LgRjO3NQvhrG2Q5o0ftkFFupLWVYS50XDnmCaog@mail.gmail.com>
+ <DHSWK17EZUDP.GIJ6BX2NFR6U@bootlin.com> <CAADnVQLJ=fJ7t1i2+_RYqU1gqYqiLP9Zrwo4vdZsgzjK_yzJTQ@mail.gmail.com>
+ <CA+fCnZd31GzdpEqR8VhfK4JtUKyyRMgbBoAbeGACJgm7WvB6Vw@mail.gmail.com> <CAADnVQKv5y+gq=TnOAEXSqgBRpmHNjwqCfxpLaw5XkcbQ+23bg@mail.gmail.com>
+In-Reply-To: <CAADnVQKv5y+gq=TnOAEXSqgBRpmHNjwqCfxpLaw5XkcbQ+23bg@mail.gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Sun, 19 Apr 2026 23:48:57 +0200
+X-Gm-Features: AQROBzBeG23-litRs0f9sM5oKr7DzVV_-wsJjyIfGuOE5YpAx7fmmNXRz9M5Gbk
+Message-ID: <CA+fCnZe-b0Qqbo5gGv3HN20twquQETDfYYkE1r9tPr9zUFbW9Q@mail.gmail.com>
+Subject: Re: [PATCH RFC bpf-next 1/8] kasan: expose generic kasan helpers
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, ebpf@linuxfoundation.org, 
+	Bastien Curutchet <bastien.curutchet@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Xu Kuohai <xukuohai@huawei.com>, 
+	bpf <bpf@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Network Development <netdev@vger.kernel.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	kasan-dev <kasan-dev@googlegroups.com>, linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 43q15t1b3hkujgauhyp8oqtsx787obr5
 X-Rspam-User: 
-X-HE-Tag: 1776625347-425868
-X-HE-Meta: U2FsdGVkX18mlKH5IsIAZBX5mgW++dVPBfh6hOcNp5M4dp/TnKi0lNGLKcXUb7d3IgPE1+D0ztn3Jzhu6JTJ+8uYhoi+CyZPTQEOm7VqJ4tkm1a2K6awJgnC1QpKrLT92WzGnHs4KYyGvjN9I/V/G8BB5vyOvCykcWoBCmLx9+goalsyPw9uVQu/rVeutz/RSGO2CicYmSJL/ykBjmO31euRjJcebrynxurTg3IgxyVxDZ2XgI8ph16b0HhK7plD36Q0VFD2IZTeGBnpZim4j3wmJsQPzMLD5MFLIxdR6XS1VfM9OOkMWLvDS2qlRKlE8yczFdPp1nV9TdSx6keqYBpw7gnpn73gponDr2SzbA5tUHpB1+3Ux7e26ZXoZR5bKcwkemD9n0MwmvrjlFEtWyvPv8O5dK/tCR6Z8QK3+2Nc4uXNPPXv9CD0kgMrLPzeLtPHGk/cj5XcLgtqzcCuH53ld2jlzW5L18ZJoFeXFsAshGo7sZ54KRDYry+JcqohTxNTIKoBhLKGIPgRRvJD4iM5rtoVIFrLw659+qYLhoC1UNGIxzS1rH5yR99L1bup82Lnk4RGCPFnXviswpYqXjgy7Ci2XfYkVoOTDdWnPAVjZNbsgPDA8AH7ezdSHVDkUyZRz9WKyVQB8kC0WH0XJM3qRPtexV7gCvgzSkFzMvZ/qdHa/4NxjSkpfA7AZv1fT/ITVuEvUpyuho3xrYmz8yFFhuE2vRYDY4uWMnAbaCRTtF6s5Q7ZkCCVQ6GEPIlM4FPLgcmORHu46r3L60rGlx5yZ/j9A7UIGC3Q/zqblbg+/Kn1aXNLaIHxtEwrYtt4eJ60Hlr4UQcPid5uD27CK7qNVhPsj+wOSnVq9FssClvZyNY2u9V4PDsVYe1CF8DV8ZcMSAAbl0DG+G67cUE/iR4aCfQOB5Acxmcty6rag8Y+MmgQ9dDX7hFO89GrdmLXoDbPiJNPc617NsieYby
- 5F5jI+6O
- lHwgZjVh1C2VBufxI8FmAW26MY49/c/r/C3Y/O5QceLyG4xm1H/R2EtOTvMKPDC3pfRiQeLIl1WMvQls7+q3OxWbKt/gKBgrzOmtAxOm2D17GpBKQuLvpRSYGHxQZfA5ZaZOjwxKzV29V1z5hh0tUoJW8kwK+xEf4agM8s4p1rXcgBOLomPhbnd1JLVOpAosl0Qc04mCLgO5UMxrOZKHTsp3YrkWf9e05M2O3BzCqU5YLjRcE1AKoTY7CKChftaI9S0a2zFNArh3vdKMowTKelJAKumvMf0QOR6Ha5jYUVf0kpuI0gUtwD56xxwSS7mpiPTlwa4LbJ/YpKLO3n9UIXVdcU21fyWG3TgRliQ7Wxd2MijiaT6BZDmFQ3/dpcNp5nfpZG5fBW5n478PrMFdKb6OwO3qNHmxq7ItBuWWLKwFfIg8V2bUsKFMbcy72nWiXAzeaf9VATyxMUD4=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 652DD140002
+X-HE-Tag: 1776635351-647790
+X-HE-Meta: U2FsdGVkX1+1zEvA1iYQRit2xsbF5tgyW5EiaD6XwCswVVVoV5ryTDhQor+KXRvbcfoTFkGu6+B6chKfn3kMANzSeUu/FaIF4LZ+9AWSS/ChGJl+7h19HPnk2rz2imZiVUa/jLaIPT+W9nlSlXpY4MB3wL2KaIqYMSU5DnfsqI+9TTeCP/rtScQQbkhWJ5YrBF/dWVx8cMefcc3Wxort8YhWtqeRe37CGX+YTkOqzI6SL5iUajxgQJTMV1w7JkK5sP0Fee3vWWpVwORZwdgwlHKSFRL1FUiqPYA27A6Haj7K6GTAyj4sHHfQFuamTSVT1OGxZYCrulqt9PAD8Ov80Uyx8CbljRo24rb3yh/XXlA4asXL8hDCYAc2icOb0mqVHucdk9HGps2JJedqqSBy8Hg0IjQ1vm2b65eZPiVCsUoUBRBVfLQOyFaMoVFffNK7DKA2wbSM1qjLy3PpJOCt/qQQKnBSD7ziT5/vKWVrSrzVrft50xeBOV8TuYlfoA/PuCHbRkKccnxtYftDHTlh7Sqym7r/79ECguegOZ4C5dDZrzEKtqtmV+1c26MaBYpAC1glIdJxIRlt3oPmUVYVm2MI3hVzE2WY3AidKqRN6NP0cSiAR1qRKKErdcY3Bncw09WyYYKlulXaqgd6yP5IhKQiR1hceHuNKJjbMvrpYYkNpGLb1XV6pUtfeDI/mQMfVzkpU2du8ZRWmoWBQajsHCFmELUgC4PdcwWJGq8ItJjga1O2atsut8dak+L0tXuVhyz/1W4yQWzSnr4IEjJY6Aa6J7uvpTSujpJIZKwcp7lYDsgOoknwWWJYlYt3Je9ecUTQXikgPibjs105U8gUThu4XHmF6qyLuwiCEWATGLKlr2vf1yC+ROqOLPVNJwQjgfIiu+/q6xTxLDa1CkjFKUBL2HSEOpaG0wtk2gd04enWVqwlyJpEsTD2cen1sNrhIbJvw3X8s+XYWn+VoBn
+ JkSsQXBK
+ AfkdjLsasBMJMMJ3PYM+wqdacWKkbofFsRG0aVaQ+vJiZWLSuOUAucvzzUp6kU16tGWowUxemx2m9S4MJxYlJknjrFAYpSQS8LlOoAQ67/1mNEyuwwiEnol+eNDhGgi5iMo6ZBrEF8WXue9xnWIM80wnQF1QTzP6r56Mn9sHyJrm+iER21llxB2Ks6Ox2Q8LJMFs6j1tnRlNG0YOcB3/Fc1PzIly1yfo+l4/fRGVR5OkBlhCEpfVxLKDF/ZXM6RyeZpYaUBeFh5yRgK2BCmFnzeaKOzFkQvdsIVHV2Gzk3PwCyAMBmR/ZSNfGm17l7wNPcjfKTPw/pGjzOx/jzvdo1D9yeqARfL2WvB0WhSYF+bBbc4CcyKBP/pCIqzAH9UK8q6LxzSGgG7vILRX5DWrI2ZJSznemGt9ni4k3UdG8NwyN9CHZk3cE+C/wnBmAZXcm/kO1l2Ywr2yEf27Dh/A0oZlbiXZEowofnfjrtdkP804JKqbS6D2DFYhcfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,117 +159,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that we can collapse to mTHPs lets update the admin guide to
-reflect these changes and provide proper guidance on how to utilize it.
+On Tue, Apr 14, 2026 at 5:58=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+>
+> I think we're talking past each other.
+> We're not interested in KASAN_SW_TAGS or KASAN_HW_TAGS.
+> We're not going to modify arm64 JIT at all.
+>
+> This is purely KASAN_GENRIC and only on x86-64.
+> JIT will emit exactly what compilers emit for generic
+> which is __asan_load/store. This is as stable ABI as it can get
+> and we don't want to deviate from it.
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Signed-off-by: Nico Pache <npache@redhat.com>
----
- Documentation/admin-guide/mm/transhuge.rst | 49 +++++++++++++---------
- 1 file changed, 29 insertions(+), 20 deletions(-)
+OK, I supposed that's fair. You did throw me off point with your
+performance comment. But if you decide to add SW_TAGS support at some
+point, I think this discussion needs to be revisited.
 
-diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-index eebb1f6bbc6c..0ef13c451ac8 100644
---- a/Documentation/admin-guide/mm/transhuge.rst
-+++ b/Documentation/admin-guide/mm/transhuge.rst
-@@ -63,7 +63,8 @@ often.
- THP can be enabled system wide or restricted to certain tasks or even
- memory ranges inside task's address space. Unless THP is completely
- disabled, there is ``khugepaged`` daemon that scans memory and
--collapses sequences of basic pages into PMD-sized huge pages.
-+collapses sequences of basic pages into huge pages of either PMD size
-+or mTHP sizes, if the system is configured to do so.
- 
- The THP behaviour is controlled via :ref:`sysfs <thp_sysfs>`
- interface and using madvise(2) and prctl(2) system calls.
-@@ -219,10 +220,10 @@ this behaviour by writing 0 to shrink_underused, and enable it by writing
- 	echo 0 > /sys/kernel/mm/transparent_hugepage/shrink_underused
- 	echo 1 > /sys/kernel/mm/transparent_hugepage/shrink_underused
- 
--khugepaged will be automatically started when PMD-sized THP is enabled
-+khugepaged will be automatically started when any THP size is enabled
- (either of the per-size anon control or the top-level control are set
- to "always" or "madvise"), and it'll be automatically shutdown when
--PMD-sized THP is disabled (when both the per-size anon control and the
-+all THP sizes are disabled (when both the per-size anon control and the
- top-level control are "never")
- 
- process THP controls
-@@ -264,11 +265,6 @@ support the following arguments::
- Khugepaged controls
- -------------------
- 
--.. note::
--   khugepaged currently only searches for opportunities to collapse to
--   PMD-sized THP and no attempt is made to collapse to other THP
--   sizes.
--
- khugepaged runs usually at low frequency so while one may not want to
- invoke defrag algorithms synchronously during the page faults, it
- should be worth invoking defrag at least in khugepaged. However it's
-@@ -296,11 +292,11 @@ allocation failure to throttle the next allocation attempt::
- The khugepaged progress can be seen in the number of pages collapsed (note
- that this counter may not be an exact count of the number of pages
- collapsed, since "collapsed" could mean multiple things: (1) A PTE mapping
--being replaced by a PMD mapping, or (2) All 4K physical pages replaced by
--one 2M hugepage. Each may happen independently, or together, depending on
--the type of memory and the failures that occur. As such, this value should
--be interpreted roughly as a sign of progress, and counters in /proc/vmstat
--consulted for more accurate accounting)::
-+being replaced by a PMD mapping, or (2) physical pages replaced by one
-+hugepage of various sizes (PMD-sized or mTHP). Each may happen independently,
-+or together, depending on the type of memory and the failures that occur.
-+As such, this value should be interpreted roughly as a sign of progress,
-+and counters in /proc/vmstat consulted for more accurate accounting)::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/pages_collapsed
- 
-@@ -308,16 +304,20 @@ for each pass::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/full_scans
- 
--``max_ptes_none`` specifies how many extra small pages (that are
--not already mapped) can be allocated when collapsing a group
--of small pages into one large page::
-+``max_ptes_none`` specifies how many empty (none/zero) pages are allowed
-+when collapsing a group of small pages into one large page::
- 
- 	/sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
- 
--A higher value leads to use additional memory for programs.
--A lower value leads to gain less thp performance. Value of
--max_ptes_none can waste cpu time very little, you can
--ignore it.
-+For PMD-sized THP collapse, this directly limits the number of empty pages
-+allowed in the 2MB region.
-+
-+For mTHP collapse, only 0 or (HPAGE_PMD_NR - 1) are supported. Any other value
-+will emit a warning and no mTHP collapse will be attempted.
-+
-+A higher value allows more empty pages, potentially leading to more memory
-+usage but better THP performance. A lower value is more conservative and
-+may result in fewer THP collapses.
- 
- ``max_ptes_swap`` specifies how many pages can be brought in from
- swap when collapsing a group of pages into a transparent huge page::
-@@ -337,6 +337,15 @@ that THP is shared. Exceeding the number would block the collapse::
- 
- A higher value may increase memory footprint for some workloads.
- 
-+.. note::
-+   For mTHP collapse, khugepaged does not support collapsing regions that
-+   contain shared or swapped out pages, as this could lead to continuous
-+   promotion to higher orders. The collapse will fail if any shared or
-+   swapped PTEs are encountered during the scan.
-+
-+   Currently, madvise_collapse only supports collapsing to PMD-sized THPs
-+   and does not attempt mTHP collapses.
-+
- Boot parameters
- ===============
- 
--- 
-2.53.0
+But please add a comment saying that those functions are only exposed
+for BPF JIT and they are not supposed to be used by other parts of the
+kernel. And in case you do end up adding a new config option, guard
+the public declarations by a corresponding ifdef.
 
+> The goal here is to find bugs in the verifier.
+> If something got past it, that shouldn't have,
+> kasan generic on x86-64 is enough.
+
+FWIW, I suspect HW_TAGS KASAN already just works with JITed BPF code.
 
