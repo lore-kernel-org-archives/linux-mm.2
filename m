@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB717EA7197
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 19:00:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C0BEEA7197
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 19:00:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CFFD6B00B1; Sun, 19 Apr 2026 15:00:35 -0400 (EDT)
+	id 740D66B033E; Sun, 19 Apr 2026 15:00:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A7DA6B00C8; Sun, 19 Apr 2026 15:00:35 -0400 (EDT)
+	id 718F36B0343; Sun, 19 Apr 2026 15:00:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BD826B0113; Sun, 19 Apr 2026 15:00:35 -0400 (EDT)
+	id 62F406B0344; Sun, 19 Apr 2026 15:00:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B7B26B00B1
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 15:00:35 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A6580E5178
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 19:00:34 +0000 (UTC)
-X-FDA: 84676221588.08.6C71F4B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B0ADC180010
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 19:00:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I+KcFfge;
-	spf=pass (imf16.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 52DD36B033E
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 15:00:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0531C5A43F
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 19:00:52 +0000 (UTC)
+X-FDA: 84676222344.05.4F0E225
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0254B4000F
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 19:00:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LS8BbeHb;
+	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776625232;
+	s=arc-20220608; t=1776625250;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0gbD4f/RO2mWPwJriUyvKl0G7J4huajbSVgy4DAT/PQ=;
-	b=tM2AnfPNTZZEXpY6uDWg/gNswBPLVUaPR8Zs7t0or1mXuAJkVQLOXKqq7a9dccu5+VuV3R
-	n38I9SqDDnNzl/ttK0oszVdwc5U64hfZ5jS2TblaK+vsZEQtvVpvAusN9KNPx+7sIdJAxb
-	oikuCSk/gx6Sm9fxHqZVfsiVoR/wHqI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776625232; a=rsa-sha256;
+	bh=5y8r7AkwzRx/e6vsiKDBu5x8M1bLOvW6Rbo+RlaDBGg=;
+	b=XGJ1rOkMMvnSFry5m1Dc/Hyws1K9I/QnjLP7H4zjtEjdi4PtrhGLWpZPGejLBuB1mAHQe1
+	VWdM9CmTHzO1wCx+47Gy/vBE2cFH2DVgPrLqa/cPdrKYyIlDmwJFZUPCwjVyGBr/gk/mHv
+	eWIx89nrGI+0Yseed1W4sZZmEoYwRwA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776625250; a=rsa-sha256;
 	cv=none;
-	b=j+9/9176tEshkKNmU9fSAItYsdJei/zUshH/v3D9WQjBiniCxewrZ/i23GrJZxnkwa4tHo
-	8Hu5p8xny1cJipUyB+YPjP5q0mLzcfKXqeBbmbRXHAaMimBYGzFj+xg+EsQElmAR8vTQ7G
-	s3A/oVZxVTBVakEdcLb2SjOvJ9gzzKY=
+	b=71Rs703J9cKa4i0CERwPEFTk4AMldyKw/IskPViRc6OQ7t7ckU87DKzAbz5mlGD2FAkg/+
+	A20Q5RBT+sf3gTxwGqw2sFL3Bqyzq45SI1QuyTwGV94rdgX+b0QfT8n423+/3YMizONsDe
+	5Gle5L4zbTKU4JpkdVMwCILLwLdUkNU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I+KcFfge;
-	spf=pass (imf16.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LS8BbeHb;
+	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776625232;
+	s=mimecast20190719; t=1776625249;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0gbD4f/RO2mWPwJriUyvKl0G7J4huajbSVgy4DAT/PQ=;
-	b=I+KcFfgetOudcDZ+DKKekMe2yHaL1YBDtiNK3e9hVWMEZ9pk5328+G+VpWTwm9mbCQ8CPb
-	OxWV3RNJJCr5OAVErSG+BpK2uzX8LRYRHdI2a5xXeXiZsIOdigFQbXgQ1NrbYfVpCz8Zjk
-	W7kHKp97U0+0jFYoqnzKfItDW2GeWOQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=5y8r7AkwzRx/e6vsiKDBu5x8M1bLOvW6Rbo+RlaDBGg=;
+	b=LS8BbeHbsLKU9VAUfrW2fcO0Q+rUwmfzWoG9ESlMK8KdZz7WMOR/GnqiNtpy8IOsf5+SJl
+	C6m8LTn3rmGzV7apv604fBq0AFl707EupOkvblwxxmiWrvqpwoRSKrnwPqbgD4mRQrLe4S
+	ceKcAG9X1q5SvaobH1fipbqfme0zJYY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-Obb5KE0ONWCtfDoqPE1u6Q-1; Sun,
- 19 Apr 2026 15:00:30 -0400
-X-MC-Unique: Obb5KE0ONWCtfDoqPE1u6Q-1
-X-Mimecast-MFC-AGG-ID: Obb5KE0ONWCtfDoqPE1u6Q_1776625224
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-191-i8D0uq5eM9KGKhRNoSsvJg-1; Sun,
+ 19 Apr 2026 15:00:47 -0400
+X-MC-Unique: i8D0uq5eM9KGKhRNoSsvJg-1
+X-Mimecast-MFC-AGG-ID: i8D0uq5eM9KGKhRNoSsvJg_1776625242
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6ED1F18003FC;
-	Sun, 19 Apr 2026 19:00:24 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ECFE1195608D;
+	Sun, 19 Apr 2026 19:00:41 +0000 (UTC)
 Received: from p1.redhat.com (unknown [10.22.74.5])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3E2C5195608E;
-	Sun, 19 Apr 2026 19:00:08 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E2286195608E;
+	Sun, 19 Apr 2026 19:00:24 +0000 (UTC)
 From: Nico Pache <npache@redhat.com>
 To: linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -135,26 +135,26 @@ Cc: aarcange@redhat.com,
 	ying.huang@linux.alibaba.com,
 	ziy@nvidia.com,
 	zokeefe@google.com
-Subject: [PATCH 7.2 v16 06/13] mm/khugepaged: skip collapsing mTHP to smaller orders
-Date: Sun, 19 Apr 2026 12:57:43 -0600
-Message-ID: <20260419185750.260784-7-npache@redhat.com>
+Subject: [PATCH 7.2 v16 07/13] mm/khugepaged: add per-order mTHP collapse failure statistics
+Date: Sun, 19 Apr 2026 12:57:44 -0600
+Message-ID: <20260419185750.260784-8-npache@redhat.com>
 In-Reply-To: <20260419185750.260784-1-npache@redhat.com>
 References: <20260419185750.260784-1-npache@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: rQAW0W2hoyqIKQJ05NQyWrAQ4WZ4cYt_PDMjlg4zXvA_1776625224
+X-Mimecast-MFC-PROC-ID: bRFm6dgZbqXhG_y0olUeLeYbKXcZ_KyxHygO3qhcPeY_1776625242
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Queue-Id: B0ADC180010
+X-Rspamd-Queue-Id: 0254B4000F
 X-Rspamd-Server: rspam07
-X-Stat-Signature: jy8jicustpoegf7pa1r5yjg6jm3p5qwn
+X-Stat-Signature: 6ogurpx1mxzwc3owcu6km91rcbxfntzi
 X-Rspam-User: 
-X-HE-Tag: 1776625232-773154
-X-HE-Meta: U2FsdGVkX19cU8Aidwf8AwHUOleiY5hswvn9kprJJzxYTNnF5bOYGqRKzvFDe3igim5HbuDVEeCH21dUDw4sezfliBVk1nQ7NgtfOCQ10OGVUh3jDX12W/FpLkAvQi6XyIphhoDPvhE9nnEJl585GkX/cUdLlNxx37iQbdAn1Eyjz35q5DLh7VYAJ2kkn9gKpAxaJaXB6RDJuSSyLUcYjzMrqOPszgJbaQ2azHSqxYDzPcTNz5yoCf6FyLrRkDOjnpT3snMjqrmWWaaOWDoI7KiHGdQ0IjVjgenqzHZ1zON7OHkK2JIuUiexQCsy9gxHblPs8Y/KeFi3YY4Vkzzfly6wYqwPTB1FmkRHqNFQHqbJXD5h+tZCgw/NrZFh2mZpZ/9RfkIZ4AoxeIX9J0dNxh1cjMlYe4LY3HJnWZ1v0zBoKoDKNFw8kaTM4myO/mSOjXSf57N6fhynlXljWMbTxZBySN/sG8V/C3VwXOQ+HMb+cBVwAD3XG1ZQ529DYoP5Aj9WOo6R3nEjLB1NsbfayZziK7D/BosOlmHkVojc/ZREboSE9gx1o+5h3qCCU9683TXPYlZvCcufCiy3n5gaR8gqTszLRHxg8Wp1tQ1hUfrTG/eJCUpEDYapm0wzBVR6oO0uR8yIyRIYFyRD1Y00c3Rkt81oMuvivrHGk9Wr/AZsCZk9C4oCUqhuhSWKVTcUErrN+qZ8MK8DIfzbKWWkfWLKBXryAjOs7DfbKKZ5EXnjxV3LgTCl28GIN0kBSbbg2cLC+GnGcMVZVRIPhiwS5Z4ujAf9rCngfddiXFH5jEil8tFyUz9+8hosCHeksaAms/SC2FAvivt+04+6SdHr7ddwvo89AIHO0rwbJYsyU9LZO2ogsJTeh6Ok0wKDeTQTJfNcajg+t6ZdEUySg6OKW3u7Vw0LMhCD8MkrSx/g/LOV5zG6gv92k+mF9QuAbaGGZBjEUQ8xDIEN7uIkpBd
- ubFBLIrH
- bElIbtkSTnaba+/Sm5bOVPkGZ1kcxYzyHTMfRVYCQHFa+HKxxApdBZ24JkuVRLwj1UhRqlKHMsNdOuR/LfbStGrNtCKNhf1acy9dK7MvrulRerPJlue3YUhYMYg197FM4ilxJFkYzPOJsp5gPYnouCPi52CZvksVmVZ4z3fqM+nGnufe7iKBjKmKosIm27FURZ+sGiUxRL112Uy1VW/0t8pECQgZeUfsUzgs/jEX4TDoiKjG9JoPSYrJyD5RWrBQy8JEFcRIq50qsksgoI7G6/3/u4g4xB+22E1T6osUaDxRce05HTne94qJWd5N1NgSyux9MobRZ/ToiOG7vADYhOpn+szlwbsUAdTHTiDjnQXRPLKGzc/aLwaGmY46uToUYPx80KcnoX8nIVZQ2bsNbEk8/opGGBYgT4p65XnFnuuGKeErHzrKBFq8QGjx1d74SpzOCY+N0rrazD+5W91N8bwCJ8WqAikWK41TgGpKaU3w6be7xLO0m51UhjNaQA/8o6ov5gQK2sxfrK6c=
+X-HE-Tag: 1776625249-247009
+X-HE-Meta: U2FsdGVkX1+kIJ8xbVB2AYn4mK84bfSPynGt0Y3df90n3OMs60hZpyleqYSKzbwyeeOgNetP39kQqflLXl87K7hj23iPTj5QqIKk9UsN+Hmoibe6VGTELxV73zrZJ8Knb5BcOw7KrplQS2f7d0GiQdkhxKjNZq0IvBV9KPEJPxr3VNcaYeq2thz7D2r4k2LaP3euR33yk3katircSZf6vTbExP8acBnpLK88NKveKnwIERzjcBFB+/e7Hk9qWPWVxTBoLeAe2XXqQ+HANogRD18k+YPfhb1i40NSpa+XhmdxDJjQP7Rf+UCTtOQaAyZ2vOp+rQlvD3ztovU2/6THIKRObXaanbqpcT2Tljt59svuQ8zz6qBucsQM8AA6VCQX4rmBrnG0cLVxK86bIWXMmqofqIEefFNsV6BBuOasIoNneuNsjRsPC/fbC5Tih7FgnJInwfhY6/sZx082RpL3BgXtKfQA3PxlYcXHCAizwtZf3OPYXuLBnDCS4IyTtQxakvTTzMw+ZyftCaNE91R9dNb7iHNhoxOx4BlSXInuSh7B8oBLCIGa3TksD5x62Ct0pBo7U41baZ0vHBcuMuetrf1hqAuuZgq6nR5og0Hs7jkCeEJsNL4Ty8VPMoLV8pE+PBfAqldZXocdnkVBWrR5hpUyStvoqag8xYcM5hJ+sMhIFitXY6Sz70IM2rbI6WZt7KmZFHiIuzRofbJj0BP5clJrklALsbk4Joz+k1V03lOx3F/647yfJsQHw6rXnhZL3RtzBvmcGx2948Io6dXDif2MIKyImerwj05Kw4evtx6OZ6znluNrrvxSIQfCRlUO1TWK8DCz0MbE/hQ8TGKJZDuJISXggk6OvzSlvVDX0XNy6qQO0bW/+Dm8D4/o70iM633NelAup7N4+UC8p+zJbvwoRqNwnT+RotM87DsTQuJgOXzARktnX/BJg3vhvYOlMzpr7lfB0D6YxOjrSsg
+ CUgw7S4S
+ pNWrgpQbbDKKnbiDQ2Bf7tzd2pb0AqngnyUsWmHxJAYkgf9z9VAkOknOBeefmojmLE/IgyvXncZDIAaXI4pJbRodXO7EWoOss+z8fq2XS7CPzuywoDdz3qwJoP49DoBEWiUvNuSLgqXKbzQaXWtAv7I/Z94N7LjPCg0i8o4FqxW+pZFZcDzpjznZXjt43V19wWSw5hYle1GBEl3/FrtXyOkwsfUMwNrJJgtAviglL3F9Np8/KTMSM0CPTD3yOBXABMGWX96VMgK7ZKHfCG4e1hKAUN0395Ylnbsgqj2Q+lfgIYFJeUtTFjm2lkyoe7jaSdWLG15K9z42yFLTF9Jc5E3mCP2dN7s+DPW2BJl0qghaEh5bUOF7qHn47uN3JDkWLvCtbkjVvGAIrsTjspiitFFpwZsnBzcZz4Pv/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,44 +162,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-khugepaged may try to collapse a mTHP to a smaller mTHP, resulting in
-some pages being unmapped. Skip these cases until we have a way to check
-if its ok to collapse to a smaller mTHP size (like in the case of a
-partially mapped folio). This check is also not done during the scan phase
-as the current collapse order is unknown at that time.
+Add three new mTHP statistics to track collapse failures for different
+orders when encountering swap PTEs, excessive none PTEs, and shared PTEs:
 
-This patch is inspired by Dev Jain's work on khugepaged mTHP support [1].
+- collapse_exceed_swap_pte: Increment when mTHP collapse fails due to swap
+	PTEs
 
-[1] https://lore.kernel.org/lkml/20241216165105.56185-11-dev.jain@arm.com/
+- collapse_exceed_none_pte: Counts when mTHP collapse fails due to
+  	exceeding the none PTE threshold for the given order
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org> 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Co-developed-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
+- collapse_exceed_shared_pte: Counts when mTHP collapse fails due to shared
+  	PTEs
+
+These statistics complement the existing THP_SCAN_EXCEED_* events by
+providing per-order granularity for mTHP collapse attempts. The stats are
+exposed via sysfs under
+`/sys/kernel/mm/transparent_hugepage/hugepages-*/stats/` for each
+supported hugepage size.
+
+As we currently dont support collapsing mTHPs that contain a swap or
+shared entry, those statistics keep track of how often we are
+encountering failed mTHP collapses due to these restrictions.
+
+Now that we plan to support mTHP collapse for anon pages, lets also track
+when this happens at the PMD level within the per-mTHP stats.
+
 Signed-off-by: Nico Pache <npache@redhat.com>
 ---
- mm/khugepaged.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ Documentation/admin-guide/mm/transhuge.rst | 24 ++++++++++++++++++++++
+ include/linux/huge_mm.h                    |  3 +++
+ mm/huge_memory.c                           |  7 +++++++
+ mm/khugepaged.c                            | 21 +++++++++++++++++--
+ 4 files changed, 53 insertions(+), 2 deletions(-)
 
+diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
+index c51932e6275d..eebb1f6bbc6c 100644
+--- a/Documentation/admin-guide/mm/transhuge.rst
++++ b/Documentation/admin-guide/mm/transhuge.rst
+@@ -714,6 +714,30 @@ nr_anon_partially_mapped
+        an anonymous THP as "partially mapped" and count it here, even though it
+        is not actually partially mapped anymore.
+ 
++collapse_exceed_none_pte
++       The number of collapse attempts that failed due to exceeding the
++       max_ptes_none threshold. For mTHP collapse, Currently only max_ptes_none
++       values of 0 and (HPAGE_PMD_NR - 1) are supported. Any other value will
++       emit a warning and no mTHP collapse will be attempted. khugepaged will
++       try to collapse to the largest enabled (m)THP size; if it fails, it will
++       try the next lower enabled mTHP size. This counter records the number of
++       times a collapse attempt was skipped for exceeding the max_ptes_none
++       threshold, and khugepaged will move on to the next available mTHP size.
++
++collapse_exceed_swap_pte
++       The number of anonymous mTHP PTE ranges which were unable to collapse due
++       to containing at least one swap PTE. Currently khugepaged does not
++       support collapsing mTHP regions that contain a swap PTE. This counter can
++       be used to monitor the number of khugepaged mTHP collapses that failed
++       due to the presence of a swap PTE.
++
++collapse_exceed_shared_pte
++       The number of anonymous mTHP PTE ranges which were unable to collapse due
++       to containing at least one shared PTE. Currently khugepaged does not
++       support collapsing mTHP PTE ranges that contain a shared PTE. This
++       counter can be used to monitor the number of khugepaged mTHP collapses
++       that failed due to the presence of a shared PTE.
++
+ As the system ages, allocating huge pages may be expensive as the
+ system uses memory compaction to copy data around memory to free a
+ huge page for use. There are some counters in ``/proc/vmstat`` to help
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index ba7ae6808544..48496f09909b 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -144,6 +144,9 @@ enum mthp_stat_item {
+ 	MTHP_STAT_SPLIT_DEFERRED,
+ 	MTHP_STAT_NR_ANON,
+ 	MTHP_STAT_NR_ANON_PARTIALLY_MAPPED,
++	MTHP_STAT_COLLAPSE_EXCEED_SWAP,
++	MTHP_STAT_COLLAPSE_EXCEED_NONE,
++	MTHP_STAT_COLLAPSE_EXCEED_SHARED,
+ 	__MTHP_STAT_COUNT
+ };
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 345c54133c83..5c128cdec810 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -703,6 +703,10 @@ DEFINE_MTHP_STAT_ATTR(split_failed, MTHP_STAT_SPLIT_FAILED);
+ DEFINE_MTHP_STAT_ATTR(split_deferred, MTHP_STAT_SPLIT_DEFERRED);
+ DEFINE_MTHP_STAT_ATTR(nr_anon, MTHP_STAT_NR_ANON);
+ DEFINE_MTHP_STAT_ATTR(nr_anon_partially_mapped, MTHP_STAT_NR_ANON_PARTIALLY_MAPPED);
++DEFINE_MTHP_STAT_ATTR(collapse_exceed_swap_pte, MTHP_STAT_COLLAPSE_EXCEED_SWAP);
++DEFINE_MTHP_STAT_ATTR(collapse_exceed_none_pte, MTHP_STAT_COLLAPSE_EXCEED_NONE);
++DEFINE_MTHP_STAT_ATTR(collapse_exceed_shared_pte, MTHP_STAT_COLLAPSE_EXCEED_SHARED);
++
+ 
+ static struct attribute *anon_stats_attrs[] = {
+ 	&anon_fault_alloc_attr.attr,
+@@ -719,6 +723,9 @@ static struct attribute *anon_stats_attrs[] = {
+ 	&split_deferred_attr.attr,
+ 	&nr_anon_attr.attr,
+ 	&nr_anon_partially_mapped_attr.attr,
++	&collapse_exceed_swap_pte_attr.attr,
++	&collapse_exceed_none_pte_attr.attr,
++	&collapse_exceed_shared_pte_attr.attr,
+ 	NULL,
+ };
+ 
 diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index ff6f9f1883ed..8740d379882e 100644
+index 8740d379882e..0a1c7cc20c0e 100644
 --- a/mm/khugepaged.c
 +++ b/mm/khugepaged.c
-@@ -686,6 +686,14 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+@@ -646,7 +646,9 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 		if (pte_none_or_zero(pteval)) {
+ 			if (++none_or_zero > max_ptes_none) {
+ 				result = SCAN_EXCEED_NONE_PTE;
+-				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
++				if (is_pmd_order(order))
++					count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
++				count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_NONE);
+ 				goto out;
+ 			}
+ 			continue;
+@@ -680,9 +682,17 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+ 
+ 		/* See collapse_scan_pmd(). */
+ 		if (folio_maybe_mapped_shared(folio)) {
++			/*
++			 * TODO: Support shared pages without leading to further
++			 * mTHP collapses. Currently bringing in new pages via
++			 * shared may cause a future higher order collapse on a
++			 * rescan of the same range.
++			 */
+ 			if (++shared > max_ptes_shared) {
+ 				result = SCAN_EXCEED_SHARED_PTE;
+-				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
++				if (is_pmd_order(order))
++					count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
++				count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_SHARED);
  				goto out;
  			}
  		}
-+		/*
-+		 * TODO: In some cases of partially-mapped folios, we'd actually
-+		 * want to collapse.
-+		 */
-+		if (!is_pmd_order(order) && folio_order(folio) >= order) {
-+			result = SCAN_PTE_MAPPED_HUGEPAGE;
-+			goto out;
-+		}
- 
- 		if (folio_test_large(folio)) {
- 			struct folio *f;
+@@ -1129,6 +1139,7 @@ static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm,
+ 		 * range.
+ 		 */
+ 		if (!is_pmd_order(order)) {
++			count_mthp_stat(order, MTHP_STAT_COLLAPSE_EXCEED_SWAP);
+ 			pte_unmap(pte);
+ 			mmap_read_unlock(mm);
+ 			result = SCAN_EXCEED_SWAP_PTE;
+@@ -1412,6 +1423,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ 			if (++none_or_zero > max_ptes_none) {
+ 				result = SCAN_EXCEED_NONE_PTE;
+ 				count_vm_event(THP_SCAN_EXCEED_NONE_PTE);
++				count_mthp_stat(HPAGE_PMD_ORDER,
++						MTHP_STAT_COLLAPSE_EXCEED_NONE);
+ 				goto out_unmap;
+ 			}
+ 			continue;
+@@ -1420,6 +1433,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ 			if (++unmapped > max_ptes_swap) {
+ 				result = SCAN_EXCEED_SWAP_PTE;
+ 				count_vm_event(THP_SCAN_EXCEED_SWAP_PTE);
++				count_mthp_stat(HPAGE_PMD_ORDER,
++						MTHP_STAT_COLLAPSE_EXCEED_SWAP);
+ 				goto out_unmap;
+ 			}
+ 			/*
+@@ -1477,6 +1492,8 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+ 			if (++shared > max_ptes_shared) {
+ 				result = SCAN_EXCEED_SHARED_PTE;
+ 				count_vm_event(THP_SCAN_EXCEED_SHARED_PTE);
++				count_mthp_stat(HPAGE_PMD_ORDER,
++						MTHP_STAT_COLLAPSE_EXCEED_SHARED);
+ 				goto out_unmap;
+ 			}
+ 		}
 -- 
 2.53.0
 
