@@ -4,123 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C25DCEA7188
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 04:12:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ADC1EA7189
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 05:38:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C91F76B02F6; Sun, 19 Apr 2026 00:12:00 -0400 (EDT)
+	id 546FA6B02F9; Sun, 19 Apr 2026 01:38:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF4DA6B02F8; Sun, 19 Apr 2026 00:12:00 -0400 (EDT)
+	id 40DCB6B02FA; Sun, 19 Apr 2026 01:38:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FAF56B02F9; Sun, 19 Apr 2026 00:12:00 -0400 (EDT)
+	id 238176B02FB; Sun, 19 Apr 2026 01:38:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8706E6B02F6
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 00:12:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 20EB659B47
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:12:00 +0000 (UTC)
-X-FDA: 84673982400.25.A0353F5
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1C48D40009
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:11:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DsW+5991;
-	spf=pass (imf04.hostedemail.com: domain of thecharlesjenkins@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=thecharlesjenkins@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 02CB56B02F9
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 01:38:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 28F101606B3
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 05:38:37 +0000 (UTC)
+X-FDA: 84674200674.05.172C553
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 82399120009
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 05:38:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YB74JiBG;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776571918;
+	s=arc-20220608; t=1776577115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2nvHv9jwSE0jszVR+8lSNwcWk7t4hLfdkLVMWS5L8+Q=;
-	b=o6rES2ehwKGX0YQFbPQs63j7mYjoz4K7nO1M/5Edh7KNNGrjeqGZrY7IiI8cKNC555w7Bn
-	NPUkwqpznd2G0KOHxW45NXaGVDqo0mmppr4KqdPzuazbbqn8L7dZAp93sdFnQCLf5ztf+U
-	ZUKqwSOvrTb+OmgH7z27rdun0cTStVg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776571918; a=rsa-sha256;
-	cv=none;
-	b=eb0SB2UJC14Mzb8hBjemfWJd04htxJZDcpprcoyb58o+3OivXc7lZGSOA+JZrAo5vz9Acj
-	xj99shB1bBrxKTaGlfVCWlrIYirD3X/jRmVBpfALWeiW47/EjyP2HPZc463USNyzMPtSKJ
-	+yvytq/jkAWb+sWRQz8YcjfiBOzqmvQ=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=SF71p63NaujqTO07ZDe7uy2SGu6NUAdsmPAWKCZVZwY=;
+	b=3Aw7LS6nElT2096mn6ZR026vr2RrjGCpPfCALZJVuHS22i3vV9d790/5oeC36mPief8xq8
+	UUGpv2JWVIJ4A3Cus+FdvMl8yee9EHL6aandzbuiN1n8YYcFZ5E8qTUPexu8Sw2QFrsUld
+	E88s7Ls5ro7eRVlutmVTq+UbgvUp778=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DsW+5991;
-	spf=pass (imf04.hostedemail.com: domain of thecharlesjenkins@gmail.com designates 209.85.222.175 as permitted sender) smtp.mailfrom=thecharlesjenkins@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cb38e86cf2so188388285a.1
-        for <linux-mm@kvack.org>; Sat, 18 Apr 2026 21:11:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776571917; x=1777176717; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2nvHv9jwSE0jszVR+8lSNwcWk7t4hLfdkLVMWS5L8+Q=;
-        b=DsW+5991R2wDg5fUd4UNc2Y9I0AQdMomfweErNrYEM2JZgWYUZkwvNgVGMn/SppauG
-         HnaviDIjc8XJ/EZ9CtFbghl3nrxh2jhavt24z3uSLwsDoRHu+FrkX7yVFw7GzvdFzHbG
-         GHm9opVRuZjmilTwG+mrGl10GRI9gAbzHzm/YTRyczBffsV/00p/qIVFjO0fuggxCkGS
-         fKV1ahdroKrA3HdyJQSAV8Xb9m5jrDowE13P6oiKMpQcOQfKzBHBLU7tZNaeaLKs2Qk+
-         55b38/CoUjxwUwc5LRq9rxTHpjMWU2KAUX/stHdXUMTgSgeiAOHkr1lNNeMEK92yglnn
-         0P7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776571917; x=1777176717;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2nvHv9jwSE0jszVR+8lSNwcWk7t4hLfdkLVMWS5L8+Q=;
-        b=RKoZAReWZkTsA1piRdH/Tzrl/C4LjNBB1fKnjfoFEF0ubehIXKNYhEkTmWsCWeYi5v
-         25/w8vSWtPcBYc43J8WIgtGAIcpEMDbtLrw1iayFICWn4HD1tnifypq6wW9LYZeOY8Rt
-         K6D8cB6u52xkhlaQcDvmuWqL6vWr0To/dVFnRCalR+8GO+QaMwWvQl9V0weOd1TGU6cb
-         z5j0rQJL/qrckLgbhKo68XxH029PGxQ6Q4gCg4+2rehQ9hIbyfRUbdeoQDcBT3pOfN8p
-         2iEeoJG8nsLw6rYBRHbjHULrviD6aCyZq3zDKMw0PDrf0EaWn0yJ6b36X5bYjZZdObim
-         jCLQ==
-X-Forwarded-Encrypted: i=1; AFNElJ85NUwL4NlS8Oegpn5NX5PqIkw1d6vIpTOzsoniVdNigpyPMBAjeogPNm0FHId4tGVQIT55QkUNuA==@kvack.org
-X-Gm-Message-State: AOJu0YzZUZd8U+pVN1P80bg49iEOpXgmcjhH8NAcM3mNk8HHE6pf+V0K
-	UHSJEUa43oXYp7GkeIFIQr/GoDDbn43/G5zeuEoWLbVsyYXVIYLPS1IJ
-X-Gm-Gg: AeBDietFdnTsjhXkBOzPcDxj09Y6yuNLRp15t7sIesTyErEuMrQwFIgbQ+QkL2gv/0N
-	4KSaAU2R3Agt+pbgni2ukCjGpW4KBCrOwnL0vQkakEOGBOVXjU40zpb7aUgCddu62VMuIaqaWjp
-	5kFTgaw36Jcg8SnaT4DyNTaa4nzThj8DVwkGwpcmAuOYm9avR9O47yzAlXLYZD7cSSI/x5Gvgag
-	Gk6na0+8WablwUfI2Wib0VC+P+mW8tm90W6ZcZCdznVnCAQML36ULvyedJ76KJt5FgQm7TpUvcf
-	WCBtzpuGDF7aGYlZLAQPQLPc+9b9h4XCxuJJCs6Ta+jy/mkKNUVkDajXlxqi08tGF/UOxD7BZCb
-	O47rDW0yUB49zj5T17IoMYNsADIrAJbMmxKaS9QB0o1NuJKVQzZYV9Bst8l5DLutJuEVSKYX0i6
-	Itcby8VqtIfLo194t9XESozyxMDU1rc6MqMgHpPOE1m30x4pRgU9DS
-X-Received: by 2002:a05:620a:7102:b0:8d3:d13e:8ed with SMTP id af79cd13be357-8e791c8e81fmr1234467485a.52.1776571917191;
-        Sat, 18 Apr 2026 21:11:57 -0700 (PDT)
-Received: from inky.localdomain ([2607:fb91:4c8b:380b:91a:9dec:26e7:3d7e])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d5fe98dcsm508388385a.7.2026.04.18.21.11.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Apr 2026 21:11:56 -0700 (PDT)
-From: Charlie Jenkins <thecharlesjenkins@gmail.com>
-Date: Sun, 19 Apr 2026 00:11:03 -0400
-Subject: [PATCH 2/2] Documenation/binfmt-misc.rst: Make "P" flag path desc
- more precise
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YB74JiBG;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776577115; a=rsa-sha256;
+	cv=none;
+	b=5hmUHA7o+gd0VtEUXFrlBLhwmuY3CjOGHaUFSqShQZ+10YKKldahFM4eb97Wuub743WrA4
+	3Xjdk+pnhGTyeiQZL5QMD5+KxikoV1eQFhUI6T+6JjOn+RLE/nM4DeeoMcO/2OIZW3PbMd
+	ILVN67INQjSHNvWNWYkQ/aEk03IvB3M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F6E160055;
+	Sun, 19 Apr 2026 05:38:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7D3C2BCAF;
+	Sun, 19 Apr 2026 05:38:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776577114;
+	bh=0NwBsdA7LZmndbXYN/qCpSAJZ3G6zzFVkjh5OzglQWs=;
+	h=Date:From:To:Cc:Subject:From;
+	b=YB74JiBGVkfvd1XTrJL5caoJu7NNzVg0EoNiNouiunf4dpkV5+XoB0P+FvjsLX5Pe
+	 X2fWjBZxL7WYt6qrsjUwyajQ331xWMB6eayB6TLYyJqpYTfFLRjOBeNsqfXVYNGxVm
+	 ohbHnU8O+564e9lr1X+hWYB/T+xkJlGwpzU/Cs0E=
+Date: Sat, 18 Apr 2026 22:38:23 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ mm-commits@vger.kernel.org
+Subject: [GIT PULL] Additional MM updates for 7.1-rc1
+Message-Id: <20260418223823.b45ef6a83267fa886d182ed7@linux-foundation.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260419-binfmt_misc_doc_update_p-v1-2-757c12f33cc2@gmail.com>
-References: <20260419-binfmt_misc_doc_update_p-v1-0-757c12f33cc2@gmail.com>
-In-Reply-To: <20260419-binfmt_misc_doc_update_p-v1-0-757c12f33cc2@gmail.com>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Kees Cook <kees@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Charlie Jenkins <thecharlesjenkins@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776571911; l=2657;
- i=thecharlesjenkins@gmail.com; s=2026030; h=from:subject:message-id;
- bh=1J5HfoqMCRzodR4Puf6pKmINNdR110Co/q3KXdwFaYs=;
- b=501vNHBhe3+OspE3Q3Cs8UcA5hXy5KFIkKEwHNX/2W4VCemBfhGg/KIpAPUMFqarz4q02X0DT
- nVoFX9WlA2lAXlrjaDWV4n3Teb0QBImhSDyVda/6Z6KsXYzhZJse4Sr
-X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
- pk=vpF2USrG+aB6CTbSt34rzJKsAVe/l+GAXo1IomCMETk=
-X-Stat-Signature: sya5tj43q9mcq86imn31rnh1moe11ix8
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1C48D40009
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 82399120009
+X-Stat-Signature: dzdx7bx178rmgocdkdjnm518ywiino7w
 X-Rspam-User: 
-X-HE-Tag: 1776571917-489376
-X-HE-Meta: U2FsdGVkX1+y6SFAO9FujuFfojEnkZ1wLZDhLcQV/9PF00vzr8GgnvVwhUM0RNcfWmYounn0nh46OKy3IjDtZr2x6j2fFc7f/0a50rNaz5a5WpaYQfPV8zd5XSwn/U589yx8nf5K3GyWo+sv4SAWo0tZ9sqoBICj9Y+FRkOIKJJ+IheYwbDN7IGzOSoqsQcbKXWhoss8sLsko+PvoPg1kpOAmYHf6euiS5sMy4nv46m1tkvdHD+pQowy2GomsMg6O71g/N9ECMNOujAsCdiI5L6GLAMJ0L5FLwcd1Vehtl/h5TKt3UThrRBJPQzWS3G7nYP/GORXSbjJkj8XxxiPCFeQw+F6/XBccoPoOwWe2Bbbbzx/w7WxOuGno7R9EIWOuTyfymVlr8iJRYrn6ybNbS71BgO2PgKZ+74iyPsewGxkLdzGuPBYgUCt/9HuG/v9SJM/+IRlFPKtwrT1OuFxUFWI5F4SAlFa1fq2c40S4eY5ao5iE3+yLFkXDIH2+VqriokXD42I8V8g2+EpfF3qJCY96gdvZ4oaGrsqu3grjnDjS7h+oO8YT6tYEXkNc00JcRD6PNDC6jFVU10ogIORbqGa4LXpjJ6FI031x3rQDN+rtX9/cAKjXSVBbRmPCtWOHT5q+S7tbad4nKIcxXOpd9EFSQGu0kv+fhcyhBYqUdzvRYTmaRXZBGPUcxGy6P8EfS0+K/+95XsLhtn5d133/2/8ZTNC59W0voaulQ+uGR1JrQjMK2jtAIAKz+umnf+i89evlITMOnx9T5pOlc4eK8renEZrgRlKfDVcvy5fPMQMf1y0OcrgcYiM94ZD4FHRABX+ykvpveZ3qZugTV3mMjvubGEAcaUJlaDWyjEHYEzTOpga6SiCEMgsb6jTOT5KJTRV77adtnF6K0X+GdAr05ZIBXS7iZa/zJm+RAYKrCw/TAmmRupbbq1cL1IHO7o4s1g7viCfnFE8yVqthMY
- HO3E1Pi8
- Qq6fN9cha8usbVjOuh3GzvW6Oo0Y4rdk5Y0SXmz7yqwFyMF4FY9q5q08ehuDmGhDwRaesKiweYdcnoMGhBr0nzyhp7TqTM/oEBrIcLycFmcTWReuptGwIwL1zq6V54zBzhYo1OOt0zznvsyTQAzdapCDh9vihS25M3CW3N5aNNJDJxqY47sffNu1EMr9VZJfVfQByE9NgQ23iHy7IQUxiE79/tB2dUpfwhTfs6QTKSoA9Qet3kP8f6c8NLmNpm9odrmPE3yo82vDZtOEVAJyoU89TC/S3Nn11gIbQGcUPQyBIga9nld/UId1H3/6goid+eGOQg0ScTsWK4P7jb/XrJUEVjeEbc6FBYdatigTO+eRhuyb7EdJFy6jdaL6v2tzSX0V0ZRsHBXU9dBIcP8aclv0JwJRU00DqqIYRgcmTdeF+5WDcAOFHQSEVHQ==
+X-HE-Tag: 1776577115-726969
+X-HE-Meta: U2FsdGVkX1/eLceMQ2Bxp4Fgy6bgU7MnqMc0Oyz+OF9+zHDJ5kcevPWlmvPr5KASINAZqNbrFf4ZdkF8vUsugLVp3i9kvnTyLSzaUPK1kFvbMrrfDxyazNGny5w9/h7TibHumW9c2cfs50dWDs2wSKFVVD/cVnjvSgQo50C+N5IUS0xJn+qNNDsvRtX9Ky5uhaIYkQefNPqgOfeE89eZHsaNvFfuexjLQqg0hqXxajQw+bcZ3ntuazqYWaTtdsUilC7nx2zXox9i3y4TS2f3nI0kNmZL540D5H2VnUHZpW0S7uCUpTB8GJ0rfe8c4+dZOjWUwJ2PBQAf3OV5vDDDKJcruP4FNZpyBazunaaMoU0VeiBm0dKIQPOd8hJfyMaPF7DW9SAjfNEU+zYXRFmSY1MOgNF5xqQtoaic5PBzUxpJhXROUwvWm9ij8vkwY0ev2nchPZ5WcW8np+n9MvyFxcc0Q5Azg6AA0gb4eHxG6Wm+sRZcDG1T4eUx0VYMtuuJtscJy/ezjRQpXZnw8T0+w4cNRsxKbcV/jaNabJv5FZNOTYkNDkm+mw+kZept+ByOC9WzYXFWk4vox32ppYlKR4ADuSw5Tit9V1+lRZGCfwEWqGJMJYjgAjvhWKoyTrpTk0hk6ZA9E+qqgXGifyONObkkyRi3jKVx0W+WRChUzxh31dj3fdPdktPWnDe9wwZUVYnKJdnW7TBCmHj53eTh+0phPJnvPib5MBP2cNOtggt1Zxky4uaxsd6YFK7g4sujOP5Exsxcnjgd7p+ZUTkeZsualquCj3YkLBWNKqTQCoxo7qp0HlzpI/jhc+8Nt8puEVJoz4aiUYkXfOkMmp/xn4D1rBFjpnybt7fU9NcNtTOAFWpSl4bWX9r1YsZfuz31eh/DhinJRT7Or9JdNX7oIKJOqZe+37U2YbAzEcTaZwykGkj3C8cXI6C1G80ykoFdU50p4G212ycmeZOskn6
+ n135aP13
+ iSMu5xdy5IGXduoOuiDQw4p3qnRJzAKpndVYZr98FvMPZL0aFc9TW9hBi8+Est1xcYWiviomoObI9NO0M7ya46ZqtcON5pq0OL6IH3E/E4kAi5LfiNgU90ZbhUMYCV09Oom7j4Ww5UYosfftPCQcYV0YZkd0zdKM9LY53AJEyOy9Rxh7m/khphGkDNthCZ666KEMRYnnbbrBhmm3N/YF4I2H89jYRxavxt98YJIOGwk5/hoDBwJa4LnjS/5IufViJbJ9AYPf3LAFOBOJm8yQpQItdnVgy+8KRfjZzkoQv2UH2mg7AMxMJ47uVlNS8uQgdeXyqvFaDBM5z/To=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,51 +86,376 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The "full path" is not passed through to the interpreter, but rather
-whatever path was passed to execve. The user's shell is the mechanism
-that is converting the executable name "blah" into the full path name of
-"/usr/local/bin/blah" instead of the kernel. Clarify this in the
-documentation by noting that the path is found in execve and including
-"shell" in the conversation for locating "blah".
 
-Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
----
- Documentation/admin-guide/binfmt-misc.rst | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Linus, please merge this second batch of MM updates for the current
+merge window, thanks.
 
-diff --git a/Documentation/admin-guide/binfmt-misc.rst b/Documentation/admin-guide/binfmt-misc.rst
-index 2e2be2922ba6..aabf6599ac49 100644
---- a/Documentation/admin-guide/binfmt-misc.rst
-+++ b/Documentation/admin-guide/binfmt-misc.rst
-@@ -56,16 +56,16 @@ Here is what the fields mean:
- 
-       ``P`` - preserve-argv[0]
-             Legacy behavior of binfmt_misc is to overwrite
--            the original argv[0] with the full path to the binary. When this
--            flag is included, binfmt_misc will add an argument to the argument
--            vector for this purpose, thus preserving the original ``argv[0]``.
--            e.g. If your interp is set to ``/bin/foo`` and you run ``blah``
--            (which is in ``/usr/local/bin``), then the kernel will execute
--            ``/bin/foo`` with ``argv[]`` set to ``["/bin/foo",
--            "/usr/local/bin/blah", "blah"]``.  The interp can be aware of this
--            by checking if bit 0 in AT_FLAGS in the auxilary vector is set to 1
--            so it can execute ``/usr/local/bin/blah`` with ``argv[]`` set to
--            ``["blah"]``.
-+            the original argv[0] with the path to the binary found in execve.
-+            When this flag is included, binfmt_misc will add an argument to the
-+            argument vector for this purpose, thus preserving the original
-+            ``argv[0]``. e.g. If your interp is set to ``/bin/foo`` and you run
-+            ``blah`` (which your shell finds in ``/usr/local/bin``), then the
-+            kernel will execute ``/bin/foo`` with ``argv[]`` set to
-+            ``["/bin/foo", "/usr/local/bin/blah", "blah"]``.  The interp can be
-+            aware of this by checking if bit 0 in AT_FLAGS in the auxilary
-+            vector is set to 1 so it can execute ``/usr/local/bin/blah`` with
-+            ``argv[]`` set to ``["blah"]``.
-       ``O`` - open-binary
- 	    Legacy behavior of binfmt_misc is to pass the full path
-             of the binary to the interpreter as an argument. When this flag is
+I'm seeing no conflicts against mainline at this time.  If some do pop
+up, they will hopefully be addressed in the first-round merge at
 
--- 
-2.53.0
+	https://lore.kernel.org/20260413214952.62836ac9df0eb348ee4aeb2b@linux-foundation.org
+
+
+The following changes since commit 3bac01168982ec3e3bf87efdc1807c7933590a85:
+
+  mm: fix deferred split queue races during migration (2026-04-05 13:53:47 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-stable-2026-04-18-02-14
+
+for you to fetch changes up to 0b5e8d7999076ac3c490fc18376a404e2626abff:
+
+  MAINTAINERS: add page cache reviewer (2026-04-18 00:10:56 -0700)
+
+----------------------------------------------------------------
+mm.git review status for linus..mm-stable
+
+Everything:
+
+Total patches:       121
+Reviews/patch:       2.11
+Reviewed rate:       90%
+
+Excluding DAMON:
+
+Total patches:       113
+Reviews/patch:       2.25
+Reviewed rate:       96%
+
+- The 33 patch series "Eliminate Dying Memory Cgroup" from Qi Zheng and
+  Muchun Song addresses the longstanding "dying memcg problem".  A
+  situation wherein a no-longer-used memory control group will hang around
+  for an extended period pointlessly consuming memory.  The [0/N]
+  changelog has a good overview of this work.
+
+- The 3 patch series "fix unexpected type conversions and potential
+  overflows" from Qi Zheng fixes a couple of potential 32-bit/64-bit
+  issues which were identified during review of the "Eliminate Dying
+  Memory Cgroup" series.
+
+- The 6 patch series "kho: history: track previous kernel version and
+  kexec boot count" from Breno Leitao uses Kexec Handover (KHO) to pass
+  the previous kernel's version string and the number of kexec reboots
+  since the last cold boot to the next kernel, and prints it at boot time.
+
+- The 4 patch series "liveupdate: prevent double preservation" from
+  Pasha Tatashin teaches LUO to avoid managing the same file across
+  different active sessions.
+
+- The 10 patch series "liveupdate: Fix module unloading and unregister
+  API" from Pasha Tatashin addresses an issue with how LUO handles module
+  reference counting and unregistration during module unloading.
+
+- The 2 patch series "zswap pool per-CPU acomp_ctx simplifications" from
+  Kanchana Sridhar simplifies and cleans up the zswap crypto compression
+  handling and improves the lifecycle management of zswap pool's per-CPU
+  acomp_ctx resources.
+
+- The 2 patch series "mm/damon/core: fix damon_call()/damos_walk() vs
+  kdmond exit race" from SeongJae Park addresses unlikely but possible
+  leaks and deadlocks in damon_call() and damon_walk().
+
+- The 2 patch series "mm/damon/core: validate damos_quota_goal->nid"
+  from SeongJae Park fixes a couple of root-only wild pointer
+  dereferences.
+
+- The 2 patch series "Docs/admin-guide/mm/damon: warn commit_inputs vs
+  other params race" from SeongJae Park updates the DAMON documentation to
+  warn operators about potential races which can occur if the
+  commit_inputs parameter is altered at the wrong time.
+
+- The 3 patch series "Minor hmm_test fixes and cleanups" from Alistair
+  Popple implements two bugfixes a cleanup for the HMM kernel selftests.
+
+- The 6 patch series "Modify memfd_luo code" from Chenghao Duan provides
+  cleanups, simplifications and speedups in the memfd_lou code.
+
+- The 4 patch series "mm, kvm: allow uffd support in guest_memfd" from
+  Mike Rapoport enables support for userfaultfd in guest_memfd.
+
+- The 6 patch series "selftests/mm: skip several tests when thp is not
+  available" from Chunyu Hu fixes several issues in the selftests code
+  which were causing breakage when the tests were run on CONFIG_THP=n
+  kernels.
+
+- The 2 patch series "mm/mprotect: micro-optimization work" from Pedro
+  Falcato implements a couple of nice speedups for mprotect().
+
+- The 3 patch series "MAINTAINERS: update KHO and LIVE UPDATE entries"
+  from Pratyush Yadav reflects upcoming changes in the maintenance of KHO,
+  LUO, memfd_luo, kexec, crash, kdump and probably other kexec-based
+  things - they are being moved out of mm.git and into a new git tree.
+
+----------------------------------------------------------------
+Alistair Popple (3):
+      lib: test_hmm: evict device pages on file close to avoid use-after-free
+      selftests/mm: hmm-tests: don't hardcode THP size to 2MB
+      lib: test_hmm: implement a device release method
+
+Andrew Stellman (1):
+      zram: reject unrecognized type= values in recompress_store()
+
+Arnd Bergmann (1):
+      mm/vmscan: avoid false-positive -Wuninitialized warning
+
+Baolin Wang (1):
+      mm: vmscan: fix dirty folios throttling on cgroup v1 for MGLRU
+
+Breno Leitao (8):
+      mm: kmemleak: add CONFIG_DEBUG_KMEMLEAK_VERBOSE build option
+      kho: add size parameter to kho_add_subtree()
+      kho: rename fdt parameter to blob in kho_add/remove_subtree()
+      kho: persist blob size in KHO FDT
+      kho: fix kho_in_debugfs_init() to handle non-FDT blobs
+      kho: kexec-metadata: track previous kernel chain
+      kho: document kexec-metadata tracking feature
+      mm/vmstat: fix vmstat_shepherd double-scheduling vmstat_update
+
+Cao Ruichuang (1):
+      selftests: mm: skip charge_reserved_hugetlb without killall
+
+Chenghao Duan (6):
+      mm/memfd: use folio_nr_pages() for shmem inode accounting
+      mm/memfd_luo: optimize shmem_recalc_inode calls in retrieve path
+      mm/memfd_luo: remove unnecessary memset in zero-size memfd path
+      mm/memfd_luo: use i_size_write() to set inode size during retrieve
+      mm/memfd_luo: fix physical address conversion in put_folios cleanup
+      mm/memfd_luo: remove folio from page cache when accounting fails
+
+Chunyu Hu (6):
+      selftests/mm/guard-regions: skip collapse test when thp not enabled
+      selftests/mm: soft-dirty: skip two tests when thp is not available
+      selftests/mm: move write_file helper to vm_util
+      selftests/mm/vm_util: robust write_file()
+      selftests/mm: split_huge_page_test: skip the test when thp is not available
+      selftests/mm: transhuge_stress: skip the test when thp not available
+
+Dave Young (1):
+      MAINTAINERS: update Dave's kdump reviewer email address
+
+David Carlier (1):
+      mm/page_io: use sio->len for PSWPIN accounting in sio_read_complete()
+
+Davidlohr Bueso (1):
+      mm/migrate_device: remove dead migration entry check in migrate_vma_collect_huge_pmd()
+
+Denis M. Karpov (1):
+      userfaultfd: allow registration of ranges below mmap_min_addr
+
+Hao Ge (1):
+      mm/alloc_tag: clear codetag for pages allocated before page_ext initialization
+
+Jackie Liu (2):
+      mm/damon/stat: fix memory leak on damon_start() failure in damon_stat_start()
+      mm/mempolicy: fix memory leaks in weighted_interleave_auto_store()
+
+Jan Kara (1):
+      MAINTAINERS: add page cache reviewer
+
+Kanchana P. Sridhar (2):
+      mm: zswap: remove redundant checks in zswap_cpu_comp_dead()
+      mm: zswap: tie per-CPU acomp_ctx lifetime to the pool
+
+Kevin Brodsky (1):
+      docs: proc: document ProtectionKey in smaps
+
+Li Wang (1):
+      selftests/mm: skip hugetlb_dio tests when DIO alignment is incompatible
+
+Lorenzo Stoakes (1):
+      mm/vma: remove __vma_check_mmap_hook()
+
+Lorenzo Stoakes (Oracle) (2):
+      MAINTAINERS: update MGLRU entry to reflect current status
+      tools/testing/selftests: add merge test for partial msealed range
+
+Mike Rapoport (Microsoft) (11):
+      userfaultfd: introduce mfill_copy_folio_locked() helper
+      userfaultfd: introduce struct mfill_state
+      userfaultfd: introduce mfill_establish_pmd() helper
+      userfaultfd: introduce mfill_get_vma() and mfill_put_vma()
+      userfaultfd: retry copying with locks dropped in mfill_atomic_pte_copy()
+      userfaultfd: move vma_can_userfault out of line
+      userfaultfd: introduce vm_uffd_ops
+      shmem, userfaultfd: use a VMA callback to handle UFFDIO_CONTINUE
+      userfaultfd: introduce vm_uffd_ops->alloc_folio()
+      shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops
+      userfaultfd: mfill_atomic(): remove retry logic
+
+Muchun Song (24):
+      mm: memcontrol: remove dead code of checking parent memory cgroup
+      mm: workingset: use folio_lruvec() in workingset_refault()
+      mm: rename unlock_page_lruvec_irq and its variants
+      mm: vmscan: refactor move_folios_to_lru()
+      mm: memcontrol: allocate object cgroup for non-kmem case
+      mm: memcontrol: return root object cgroup for root memory cgroup
+      mm: memcontrol: prevent memory cgroup release in get_mem_cgroup_from_folio()
+      buffer: prevent memory cgroup release in folio_alloc_buffers()
+      writeback: prevent memory cgroup release in writeback module
+      mm: memcontrol: prevent memory cgroup release in count_memcg_folio_events()
+      mm: page_io: prevent memory cgroup release in page_io module
+      mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
+      mm: mglru: prevent memory cgroup release in mglru
+      mm: memcontrol: prevent memory cgroup release in mem_cgroup_swap_full()
+      mm: workingset: prevent memory cgroup release in lru_gen_eviction()
+      mm: workingset: prevent lruvec release in workingset_refault()
+      mm: zswap: prevent lruvec release in zswap_folio_swapin()
+      mm: swap: prevent lruvec release in lru_gen_clear_refs()
+      mm: workingset: prevent lruvec release in workingset_activation()
+      mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
+      mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios
+      mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
+      mm/sparse: fix preinited section_mem_map clobbering on failure path
+      mm/sparse: fix comment for section map alignment
+
+Pasha Tatashin (14):
+      liveupdate: prevent double management of files
+      memfd: implement get_id for memfd_luo
+      selftests: liveupdate: add test for double preservation
+      liveupdate: safely print untrusted strings
+      liveupdate: synchronize lazy initialization of FLB private state
+      liveupdate: protect file handler list with rwsem
+      liveupdate: protect FLB lists with luo_register_rwlock
+      liveupdate: defer FLB module refcounting to active sessions
+      liveupdate: remove luo_session_quiesce()
+      liveupdate: auto unregister FLBs on file handler unregistration
+      liveupdate: remove liveupdate_test_unregister()
+      liveupdate: make unregister functions return void
+      liveupdate: defer file handler module refcounting to active sessions
+      MAINTAINERS: update kexec/kdump maintainers entries
+
+Pedro Falcato (2):
+      mm/mprotect: move softleaf code out of the main function
+      mm/mprotect: special-case small folios when applying permissions
+
+Pratyush Yadav (Google) (3):
+      MAINTAINERS: update KHO and LIVE UPDATE maintainers
+      MAINTAINERS: drop include/linux/kho/abi/ from KHO
+      MAINTAINERS: drop include/linux/liveupdate from LIVE UPDATE
+
+Qi Zheng (14):
+      mm: vmscan: prepare for the refactoring the move_folios_to_lru()
+      mm: thp: prevent memory cgroup release in folio_split_queue_lock{_irqsave}()
+      mm: zswap: prevent memory cgroup release in zswap_compress()
+      mm: do not open-code lruvec lock
+      mm: vmscan: prepare for reparenting traditional LRU folios
+      mm: vmscan: prepare for reparenting MGLRU folios
+      mm: memcontrol: refactor memcg_reparent_objcgs()
+      mm: workingset: use lruvec_lru_size() to get the number of lru pages
+      mm: memcontrol: refactor mod_memcg_state() and mod_memcg_lruvec_state()
+      mm: memcontrol: prepare for reparenting non-hierarchical stats
+      mm: memcontrol: convert objcg to be per-memcg per-node type
+      mm: memcontrol: correct the type of stats_updates to unsigned long
+      mm: memcontrol: change val type to long in __mod_memcg_{lruvec_}state()
+      mm: memcontrol: correct the nr_pages parameter type of mem_cgroup_update_lru_size()
+
+SeongJae Park (7):
+      mm/damon/core: fix damon_call() vs kdamond_fn() exit race
+      mm/damon/core: fix damos_walk() vs kdamond_fn() exit race
+      mm/damon/core: validate damos_quota_goal->nid for node_mem_{used,free}_bp
+      mm/damon/core: validate damos_quota_goal->nid for node_memcg_{used,free}_bp
+      mm/damon/core: use time_in_range_open() for damos quota window start
+      Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
+      Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
+
+Sergey Senozhatsky (1):
+      zram: do not forget to endio for partial discard requests
+
+Suren Baghdasaryan (1):
+      mm/vmscan: prevent MGLRU reclaim from pinning address space
+
+Thorsten Blum (1):
+      mm/hugetlb: fix early boot crash on parameters without '=' separator
+
+Zhaoyang Huang (1):
+      mm: remove '!root_reclaim' checking in should_abort_scan()
+
+ CREDITS                                            |   8 +
+ Documentation/admin-guide/mm/damon/lru_sort.rst    |   4 +
+ Documentation/admin-guide/mm/damon/reclaim.rst     |   4 +
+ Documentation/admin-guide/mm/kho.rst               |  41 +-
+ Documentation/filesystems/proc.rst                 |   4 +
+ MAINTAINERS                                        |  29 +-
+ drivers/block/zram/zram_drv.c                      |   5 +-
+ fs/buffer.c                                        |   4 +-
+ fs/fs-writeback.c                                  |  22 +-
+ fs/userfaultfd.c                                   |   2 -
+ include/linux/alloc_tag.h                          |   2 +
+ include/linux/damon.h                              |   2 +
+ include/linux/fs.h                                 |   9 +-
+ include/linux/kexec_handover.h                     |  13 +-
+ include/linux/kho/abi/kexec_handover.h             |  20 +-
+ include/linux/kho/abi/kexec_metadata.h             |  46 ++
+ include/linux/liveupdate.h                         |  17 +-
+ include/linux/memcontrol.h                         | 191 +++---
+ include/linux/mm.h                                 |   5 +
+ include/linux/mm_inline.h                          |   6 +
+ include/linux/mmzone.h                             |  42 +-
+ include/linux/pgalloc_tag.h                        |   2 +-
+ include/linux/sched.h                              |   2 +-
+ include/linux/shmem_fs.h                           |  14 -
+ include/linux/swap.h                               |  25 +-
+ include/linux/userfaultfd_k.h                      |  73 ++-
+ include/trace/events/memcg.h                       |  10 +-
+ include/trace/events/writeback.h                   |   3 +
+ kernel/cgroup/cgroup.c                             |   9 +-
+ kernel/liveupdate/kexec_handover.c                 | 158 ++++-
+ kernel/liveupdate/kexec_handover_debugfs.c         |  55 +-
+ kernel/liveupdate/kexec_handover_internal.h        |  15 +-
+ kernel/liveupdate/luo_core.c                       |  11 +-
+ kernel/liveupdate/luo_file.c                       | 112 ++--
+ kernel/liveupdate/luo_flb.c                        | 182 +++---
+ kernel/liveupdate/luo_internal.h                   |   7 +-
+ kernel/liveupdate/luo_session.c                    |  46 +-
+ lib/alloc_tag.c                                    | 109 ++++
+ lib/test_hmm.c                                     | 130 ++--
+ lib/test_kho.c                                     |   5 +-
+ lib/tests/liveupdate.c                             |  18 -
+ mm/Kconfig.debug                                   |  11 +
+ mm/compaction.c                                    |  43 +-
+ mm/damon/core.c                                    |  88 +--
+ mm/damon/stat.c                                    |   5 +-
+ mm/huge_memory.c                                   |  22 +-
+ mm/hugetlb.c                                       |  18 +
+ mm/kmemleak.c                                      |   2 +-
+ mm/memblock.c                                      |   4 +-
+ mm/memcontrol-v1.c                                 |  31 +-
+ mm/memcontrol-v1.h                                 |   7 +
+ mm/memcontrol.c                                    | 632 ++++++++++++-------
+ mm/memfd_luo.c                                     |  34 +-
+ mm/mempolicy.c                                     |  23 +-
+ mm/migrate.c                                       |   2 +
+ mm/migrate_device.c                                |   6 -
+ mm/mlock.c                                         |   2 +-
+ mm/mprotect.c                                      | 218 ++++---
+ mm/page_alloc.c                                    |  10 +-
+ mm/page_io.c                                       |  10 +-
+ mm/percpu.c                                        |   2 +-
+ mm/shmem.c                                         | 176 +++---
+ mm/shrinker.c                                      |   6 +-
+ mm/sparse.c                                        |   1 -
+ mm/swap.c                                          |  59 +-
+ mm/userfaultfd.c                                   | 682 ++++++++++++---------
+ mm/util.c                                          |  10 -
+ mm/vmscan.c                                        | 303 ++++++---
+ mm/vmstat.c                                        |   2 +-
+ mm/workingset.c                                    |  30 +-
+ mm/zswap.c                                         | 187 +++---
+ tools/testing/selftests/liveupdate/liveupdate.c    |  41 ++
+ .../selftests/mm/charge_reserved_hugetlb.sh        |   5 +
+ tools/testing/selftests/mm/guard-regions.c         |   4 +
+ tools/testing/selftests/mm/hmm-tests.c             |  83 +--
+ tools/testing/selftests/mm/hugetlb_dio.c           |  91 ++-
+ tools/testing/selftests/mm/merge.c                 |  88 +++
+ tools/testing/selftests/mm/soft-dirty.c            |   4 +-
+ tools/testing/selftests/mm/split_huge_page_test.c  |  19 +-
+ tools/testing/selftests/mm/thp_settings.c          |  35 +-
+ tools/testing/selftests/mm/thp_settings.h          |   1 -
+ tools/testing/selftests/mm/transhuge-stress.c      |   4 +
+ tools/testing/selftests/mm/vm_util.c               |  24 +
+ tools/testing/selftests/mm/vm_util.h               |   2 +
+ 84 files changed, 2814 insertions(+), 1675 deletions(-)
+ create mode 100644 include/linux/kho/abi/kexec_metadata.h
 
 
