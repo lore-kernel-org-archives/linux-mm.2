@@ -4,82 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E49EA7188
-	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 08:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ED0CEA7188
+	for <linux-mm@archiver.kernel.org>; Sun, 19 Apr 2026 08:35:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EAA66B02FD; Sun, 19 Apr 2026 04:20:12 -0400 (EDT)
+	id 9D69D6B02FF; Sun, 19 Apr 2026 04:35:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79AC76B02FE; Sun, 19 Apr 2026 04:20:12 -0400 (EDT)
+	id 987B36B0300; Sun, 19 Apr 2026 04:35:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6896A6B02FF; Sun, 19 Apr 2026 04:20:12 -0400 (EDT)
+	id 876316B0301; Sun, 19 Apr 2026 04:35:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 55B526B02FD
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:20:12 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD45EBA466
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:20:11 +0000 (UTC)
-X-FDA: 84674607822.19.95D356B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F00EFC0009
-	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:20:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jY1BPD2l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776586810; a=rsa-sha256;
-	cv=none;
-	b=u1lz6qurdNF6IO4berExgPdrra/d4mgC1EMEVP5Oj8Qk9i+AD1keE1zGVeZbHvVOIj2Itx
-	qBW/b25Q2z6+StIpmKhAoI+8jOlZFgaxYgxVSd2/8Tkp4lHAxNJLeXtQ/h2/POQYt1RoL6
-	23P9ffX51hufk/9jhgDdMoIY8DaCfII=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jY1BPD2l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 70F3B6B02FF
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 04:35:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13CFD14070E
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:35:55 +0000 (UTC)
+X-FDA: 84674647470.27.BFC0C9B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 52E674000E
+	for <linux-mm@kvack.org>; Sun, 19 Apr 2026 08:35:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SvlMf0GQ;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776586810;
+	s=arc-20220608; t=1776587753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wYQ9SL0cxa+vrV2T6FOQ8EMQsMy6DaMa6Vfh61bL1vs=;
-	b=2y+fJJAOm6eATvM3RAKinM7kOgnih9Cei7LrrxlTaCTHaagvt5CjTLgnoaXmwHC7zhjwLd
-	snfqx8MsdINUgxKP8JYhWPTfYJJOafw8Y9JJws0lIe4ugJM8eQSf86fHGL2IeApG3kpv/l
-	7cGxLwtKTCnrQ7EaAX/PMzxKf5ZXlxA=
+	bh=3O7gUZVckbvN66uMqVDa6rqw/MphHBnQEMjgNK/arG4=;
+	b=8Yl38NDCAJEDTZaEUmq8WfYaTJ70Sx4IfaY89uThNFHPXdDp6QJ8i7I1kWq5DEQdYOrrsF
+	ITur7jfCqvFFpmHoePJEs48RwU3s3fJ3ZcwCIyMnHShzpKUBdYSPrPmuxMwpmqOxIq04gA
+	omdaY7VS+RwngkgzcwnKgSLsm8/Vq8E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776587753; a=rsa-sha256;
+	cv=none;
+	b=bTEL99rTz6IrWTDJYwdzm/1+U5sB2HKKdbRCGsdwDCt7TnN0X7miprJn0D3S/RIxh4LwHA
+	bRiQ9Dexf7iY2ls+YyVH2RwNlRST5A4bgUw3p5BL4FSbn42MIzAUHjKH2XalN1p7RP0cIN
+	14AeL5AxpC8no7BLSaBktjPNIn0Pcew=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SvlMf0GQ;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DAB464450C;
-	Sun, 19 Apr 2026 08:20:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0B7C2BCAF;
-	Sun, 19 Apr 2026 08:20:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8DB5960055;
+	Sun, 19 Apr 2026 08:35:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47DCC2BCAF;
+	Sun, 19 Apr 2026 08:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776586808;
-	bh=ULzAcQ+a5yvU6pSydPbcp5Zrd7MaFUBLpohDNl0zto0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jY1BPD2lU1Iqz7fd/hrVI4VR2mnaRy7YSp0qiFqQOF0egxnj5OfsXl3VHc08ncjvI
-	 asjBFqyyeELe0U0CCDnkgUJR0mODASwcvBUzKoES8ge/b+a1qZvz3iIetDqro/3YDu
-	 Zg02sSy2I3l4Su32OyEciZ0z5J59oy8kplSRsUYomBpiTdD3/Q1nwPqfACTsEAVV4p
-	 XZf2q3y2Jd1WUC5Ufo9hi9pJ9nEb1SUQnEOr/PpZKBHbOxRBnCR9+gax7lR7xAtGwR
-	 Z+POE2aqz4butePJg6YNOjC5/d+6Na02UjwzpBHf2MdIdClFBq6oINoybXTMYCZ17B
-	 JlqfByBVk1D3Q==
-Message-ID: <7b983108-4846-46ce-b9f5-2aef319c00dd@kernel.org>
-Date: Sun, 19 Apr 2026 10:19:59 +0200
+	s=k20201202; t=1776587752;
+	bh=y597qofYZdSX714IE89e9Oo2LtyecIQOslkgREpFM+Y=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=SvlMf0GQBMk9U13reL2kVKRkLRuZslq2FUTFwBCyGYz/UlxCOgkz4TT2ymfsht95+
+	 hjHLeki7r/Q+wFPRRug3Ij6o44LRnDxF6S2dPK1mB0KVCYzjzUUvt9hhEgMdtBxHte
+	 zsyjjmzBFenTqXqXz+XsRlmIBZ1x6jFKf3l6yOiQLIf0JCCj5+yu2U5L7Vwr4C1atz
+	 Xo78iefJMxoqvJX/I6OUyqnuLfQWgtSVRM84X9eQQusoFOcRDIqLGvfZh35Yv0yUlD
+	 02T6ZkGa9QQUe0hoDaU3hHr0iEP64a3UJUWDUubkNMClAS5Q+zohVgrJB454bhpRFe
+	 9Ak2U9ejiOQ6g==
+Message-ID: <c113f667-f897-42cc-a0e5-b8a0bbd91be3@kernel.org>
+Date: Sun, 19 Apr 2026 10:35:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: prepare anon_vma before swapin rmap
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: ZhengYuan Huang <gality369@gmail.com>, akpm@linux-foundation.org,
- Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, baijiaju1990@gmail.com, r33s3n6@gmail.com,
- zzzccc427@gmail.com
-References: <20260417011606.1089985-1-gality369@gmail.com>
- <66f67e51-819b-4c60-9f61-170db32362a2@kernel.org>
- <fb80d953-93de-4ce3-80c6-15cd53dd956f@kernel.org> <aeNP7mtx878gynXS@lucifer>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH] docs: Add overview and SLUB allocator sections to slab
+ documentation
+To: Matthew Wilcox <willy@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: Nick Huang <sef1548@gmail.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <skhan@linuxfoundation.org>,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260418000635.17499-1-sef1548@gmail.com>
+ <aeNGbNyPxJssnkbO@lucifer> <aeOuCH8ydw_yzdXZ@casper.infradead.org>
 Content-Language: en-US
+In-Reply-To: <aeOuCH8ydw_yzdXZ@casper.infradead.org>
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -123,17 +128,16 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <aeNP7mtx878gynXS@lucifer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: izb9wsucms4sz5mb4doebopgcgud6enc
+X-Stat-Signature: fbshbyqi6ocyhmbajp3esfdt5bdissy7
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 52E674000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F00EFC0009
-X-HE-Tag: 1776586809-914914
-X-HE-Meta: U2FsdGVkX1+0A1LoAxlMkFsZKZfbqvhLRcmteSnJ2C8zXA4Ynfkdizo7M4cQNQ1YXb5xosStvq73RpNjJ2jCX0ZNBr2XsK8/q9HDZ3Wsbl/ZnzMJKvr8bHLcGAHr/OmJ2tFAVgZrfxI6i6onfMjw492SKrLjP/71dVZHRGXtxrd8i7XcfeMl4LL4oRE5kTjKSVQ6gRhTkui7mKniu9BHSv2SL1VMNlwqlWDsKjPsEreef4fGkfcpHGxL3QF087xnI6uDbWYNxJZvOAMxeEbNPSm9O7RLUyZd6zlD4puG37vumfOVKoAWtPD2IHsrGBH41NsVbuDTHtabYPNlLzAZYJ1vp2I53xpUYa8ociC27c0JzmRBk9yYVQQ2GHvLxTMwuiZ6x5xh8MkY0EiTAyzBQXMgjWGBNeDIfNZi74esX3MFvMDrkiBWVSHa6ol8CIp1zRn6jxS0BH9WynTn1axNnDdWpbI9OdprHUanTdzMNPyTD17DSmmydyiHCoyQ66BCisfaDcYXklrSI5XnNI6eQ1eenql2RT2OWi0cgaBpuYCBbEN4suFFYmSpoShS4185MnA20oHYueDv5Yu52XwMX0WUALdoDQrT0vfTyXDcXerjIoIYq7MLO2kkuCAKrAFKgWIz4W4bN/bjjigwSpFfMT8jGzjKqgGSgBrgGctXBTuA+ru/5z28LRU0H//6jaQWCo5tJkn4ZpVQFPX0lYLVNIHsYWvDbX+PViWjxohmhoBIe/yneg/jTNkr2D6d4dCP4H5ZyW6G3hhwjK5Lz1pUkPYg5wZmczIVy2GJ6s/6oWoEcFoKlYU8S5jEq9+tKnFnZSBo/wPuyndmAMD8ppWNnFE1cH+Pk43NCYcmjNK/5X69qfQj6B4U1ev9yWOBtC2kmQxOPpsJ7otb8+kBGBECuLR1U/7h1083NOsG/+pcVJ1eqB1OpGj/wIroYOcAxwf7t5ps+zsOjNNk2AyJLCy
- /vC0XRoO
- pqBUxdHwHH082kk5+bOn0592av9Z2pSsF6zTEr2+HXJF3FTlW/8t4KHaHtEkP7z4jA6dsfzqxYTs0dWhZEBDV6dd2jNgJWd8pS3C6RFkHF+UACG9iTB64K2s2iezprxo9LVGfawk4HpfSmxW/CCaVKyrHzTOdG1+cCaQDxr833sCNznIql9PRJeEjqOQLxOVnWNf7cpErAGVY1YIrh4RMSyTxPcqHx5qJ2T5rMiGgKuvhagaNs0AaoL+rdM25H2xEJMe0NIIp8qnjmMZ1Vlob4Ip/0GsD/EA0Nv9wNSIE7XIcxyz+79eF1AwflLjq8719CvI+g3eEoaPOPXc=
+X-HE-Tag: 1776587753-394855
+X-HE-Meta: U2FsdGVkX1+7mTXBPzKkFEd73RuIeQjeIskm36hD33/W/5hps/sZXXTfgkx6MzDdY3eqIjEHnGGC29380oHZoVJ0bsXGh1mPNj9gmAgSUJgT+/V9BYPzo754I9atgSZvvOwjXjy5+Av2wsoZa4NiwnU7KTaAY6EG+lmoUsGiSLI7qBBALPjH3WL3GmvIerZvbdFTQJ5RC3j9hzBat5Jh/ZSK8pZtliBesRWeJfSvCRSc8Ksu0k4ORFp1OK107+qEUj90CizyW/TAoJisTI0kmJ/ae0/zZvYweM2YngqdWbAeEK5O4tw6ci6wjlp94k/YQ8UiKbFS9Uw0QpQY2D9GdOSu8zEVRDcyJ0IfGGJEi5tfsiC+806pITag2sxcAuogVIzIAD5ShzLVXMjTu9VYS/VEPfktr2+Qv/FHqmEByCMe2pnaqCTAFNEOA7TVmHfcQ2KN/3jKFFnrfXsL3HODPw2co5mpw6v5A+ZZsu7GalydO+U0TwMJHW8ElqR0htnEij38ZauWofyBpsvjgxnA4i4Z4t7tF2z4ENQMMlidnLqhiaHSUqDCDaKXX8d18bzUCXZdRUugh30fXoKF1V2czvDrR519+QhZxLwvxZ9dHgTwDiM7uR7bOLVfwARWEN0PIhs/EsqJW+LOaD8YuwewshpjZEupOa5HglQtV2QrioL+j0qR9JAoCHEYI5JHvZad1dI0yKOlHpbpcKzSPLhFP4iTxJXdM0GwWIoz3DX3+R/OSHf6sC59uRwlGKIX4qkhtUP3sOeRH5pTyRV+1ZI4orXQu61WwtMcSf+jlQUveDEGOaVWMM0qXQbsCE2zBrroy2roO8Vpk3ENSq+W6J7WRNpNTbNpJ7RattRD47EilZJVhdaCnK8kW0vggUmVPOMzkOpEZcEOGYHBxK6IxzMJPhBwGmouaPOjjIG9GThISLQ9nCLiQMrG2DGwtuX6GhIyp82NN/vUWmhFwS2lwpz
+ zH4AHx2r
+ bCr0n0/e+/cb3547xrBcBjmHgEv1DE15T9jpBu8f+a0P9Fe/eVPislG39v1k4EMhzKIcGvRiUA3+0eH5MCUiLDseO4LX0IFcF7pHJDHQjn7J0nWaX+P975ZlNVwDVt2V7dRU0glAhXyuNUnTwQXPra1HsBYkBxMMe+1ujArRb7XJsNjG1FsSDwTtbCGnlC30PgPEJBacOVWO/s1SpGXwlqGTUtFnjyvKGa4Y+2FuBAnxE0c23LXipkGnmPkgQP6YuUE4H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,42 +145,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/18/26 11:35, Lorenzo Stoakes wrote:
-> On Fri, Apr 17, 2026 at 01:57:59PM +0200, David Hildenbrand (Arm) wrote:
->> Maybe there was a scenario where we could have lost vma->anon_vma during
->> a merge, resulting in a swapped page in an anon_vma.
+On 4/18/26 18:15, Matthew Wilcox wrote:
+> On Sat, Apr 18, 2026 at 10:07:22AM +0100, Lorenzo Stoakes wrote:
+>> On Sat, Apr 18, 2026 at 12:06:19AM +0000, Nick Huang wrote:
+>>> - Add "Overview" section explaining the slab allocator's role and purpose
+>>> - Document the three main slab allocator implementations (SLAB, SLUB, SLOB)
+>>
+>> The fact you're insanely wrong about the current state of slab only makes this
+>> worse.
 > 
-> Unless there's a bug (and correct me if I'm misinterpreting), VMA merge requires
-> vma->anon_vma to either be equal for merged adjacent VMAs, or one or the other
-> VMA to have NULL vma->anon_vma, in which case we set vma->anon_vma in the merged
-> VMA.
+> This is actually a new low.  We've always had to contend with people
+> putting up outdated or just wrong information on web pages, and there's
+> little we can do about it.  Witness all the outdated information about
+> THP that's based on code that's been deleted for over a decade.
+> 
+> But now we've got AI trained on all this wrong/ out of date information,
+> and, er, "enthusiasts" who are trying to change the correct information
+> in the kernel to match what the deluded AI "thinks" should be true.
+> 
+> Let that sink in.
+> 
 
-I think you didn't understand what I was trying to say.
+I think we should make it very clear that we don't want doc updates from someone
+that is not a renowned expert in that area or wants to become an expert in that
+area (and already discussed working on the docs with maintainers/experts).
 
-The reporter claimed that it happened on 6.18. Nobody knows on which 
-patch version (stable tree?).
+Otherwise we'll have this same discussion over and over again.
 
-I was wondering whether your fix
+diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+index 7aa2a88869083..8c5721001c8bb 100644
+--- a/Documentation/mm/index.rst
++++ b/Documentation/mm/index.rst
+@@ -7,6 +7,11 @@ of Linux.  If you are looking for advice on simply allocating
+memory,
+  see the :ref:`memory_allocation`.  For controlling and tuning guides,
+  see the :doc:`admin guide <../admin-guide/mm/index>`.
 
-commit 3b617fd3d317bf9dd7e2c233e56eafef05734c9d
-Author: Lorenzo Stoakes <ljs@kernel.org>
-Date:   Mon Jan 5 20:11:49 2026 +0000
++A lot of documentation in this guide is still incomplete. If you are not
++a renowned expert in the specific area, but you want to contribute bigger
++chunks of documentation, talk to the respective MM experts first. LLM
++generated slop from non-experts will be rejected without further comments.
++
+  .. toctree::
+     :maxdepth: 1
 
-     mm/vma: enforce VMA fork limit on unfaulted,faulted mremap merge too
 
-that went into 6.19 might have resolved this problem.
 
-Your fix stated "allow an unfaulted/faulted merge with a VMA that has 
-been forked", so I was wondering whether that could have resulted in a 
-situation with anon folios without vma->anon_vma (losing vma->anon_vma 
-during the merge).
+LLMs are just the tip of the iceberg. It will all be developmend-by review with
+inexperienced contributors. And we are only willing to put in the effort to
+teach contributors if the contributors are not actually worth our time: i.e.,
+LLM kiddies that will actually stick around and help the subsystem in the long run.
 
-But I am not sure if 879bca0a2c4f could have triggered that. Are you 
-aware of other fixes that went into 6.19 that could have fixed such a 
-scenario?
+
+The whole doc update stuff is similar to people just grepping for TODOs in the
+kernel and then using an LLM to produce code they have no idea about.
+
+It's the evolution of typo fixes: review load without any benefit.
 
 -- 
 Cheers,
 
 David
+
 
