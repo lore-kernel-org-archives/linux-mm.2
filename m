@@ -4,95 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6512AF36C26
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 06:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F4A0F36C26
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 06:42:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFB7C6B00FC; Mon, 20 Apr 2026 02:31:53 -0400 (EDT)
+	id C95946B00F8; Mon, 20 Apr 2026 02:42:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAA1E6B0102; Mon, 20 Apr 2026 02:31:53 -0400 (EDT)
+	id C47266B00F9; Mon, 20 Apr 2026 02:42:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC0F96B0103; Mon, 20 Apr 2026 02:31:53 -0400 (EDT)
+	id B5C416B00FA; Mon, 20 Apr 2026 02:42:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A6CDE6B00FC
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 02:31:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A8871A08B6
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:31:53 +0000 (UTC)
-X-FDA: 84677963706.30.F306F54
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D6C0380010
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:31:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IWWcO3sS;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A68A86B00F8
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 02:42:55 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4EEE8BB9A9
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:42:55 +0000 (UTC)
+X-FDA: 84677991510.13.CCBEDE0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BAF4A18000F
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:42:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kIEDycGX;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776666711;
+	s=arc-20220608; t=1776667373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fl4jBlNrsLzHQOt9Xuwu05ZRkyi97MaFfuf5gBZ/Gy4=;
-	b=KmRLEQYaYO/vqbF/rDHLRNIQ0h4jg6l9PCWVwWkDXvb2ISTfnhhGx/anhAi20SX4cYJ3xJ
-	isYMLqRJN7lNpk9bLb90a6c1uLT4EVIu8OJn+CxH4XstASHjvrzJgAMU/eiY3JVJhCpiKH
-	eSHozWBLVwTDMY8oluQy7sV1ZZ2N4S0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776666711; a=rsa-sha256;
+	bh=KaV1/prU4z11uEzJzfnNIiVbut+p73qXQYIX90S8UOU=;
+	b=3Wi1CW6oUd0EwKu0tL0zxvGHU1RbueGFpvyZmnEqcCfdrky6MVdrh8BzOzraqNWzzA0Ms1
+	08igAm8ppww+NAl5PPJkAVP9MUogKaArBB6GRLrwkeLGvm+gJbAK8hv01s6jrjzuWnAUy+
+	UPp82Wh0aZ8yR6IVzCEhzDm/3zfs+F8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776667373; a=rsa-sha256;
 	cv=none;
-	b=dHW7ByLUmHqP9KfKZCN5/dMBmCejnSpqpdYlESn3Q3ZYsrY94kgVLPgubr6JZ5hZT6diTp
-	oZr9DWsxR2auEDJPzkmmng9+k1Tm0OT+Nv3U7GaE1UUio03oN/TOLQ8qgYsGk091yyKD6y
-	t4GQ7YEUO+xczdu6xYh8IAQXcFheTOM=
+	b=AHaYjhmo4lCWEZebSybD8LA5c/JEsAqt0LjwhwU19ArhNxQItuMwbpDZ2FwgTENfD+SUvT
+	RCsIdd+BWqKW/tisT0pm1yEYlGjUU7B6idlAKw8RbWa5TjUVpgxOGahcmlKrHYY1TJUMAW
+	FfC58fyri29QzcackZBFlCxyrYnLV6I=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IWWcO3sS;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776666706; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Fl4jBlNrsLzHQOt9Xuwu05ZRkyi97MaFfuf5gBZ/Gy4=;
-	b=IWWcO3sSpz2W4ZuAIhn5xNY+E8KCMnwuECTvnfe9/NE3Q3xKpYy3r+lfezD3AWLxM+Ex8SYqqVOP6bs52eXmrwW6gjrWEG6EeVtcNAqf4BRYjccdb+wTXHIygyA69o+IQUeLfkrzUyK+KZk54ywlzXHknRRo/+Uf6hWoM0vGtzI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X1I6p8D_1776666704;
-Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1I6p8D_1776666704 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Apr 2026 14:31:45 +0800
-Message-ID: <6797d16b-5db9-4bbf-a7d9-314cd98ac95e@linux.alibaba.com>
-Date: Mon, 20 Apr 2026 14:31:43 +0800
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kIEDycGX;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C5CDD60055;
+	Mon, 20 Apr 2026 06:42:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59964C19425;
+	Mon, 20 Apr 2026 06:42:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776667372;
+	bh=/8oTGofPNIwnGZ/hP8RSwOl+oZ+p6L7gCu2+01kkP70=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kIEDycGXtVBILbo3ZrjYk+ZzVYGUiLxlF+JHSDWmqeSlgLHZDSzvNmHDxVNAHbMSI
+	 0w1xXf6viXXHoYY7jqbYOQcqHKXr6YuFz6YVjbiL/1L6fDcKTIbD1jgXYvBN8q/ZOi
+	 KIODX3tHeiAQQX7nc4YkMvN+PZqz0iPfjrzJXMyYf3Ax42GEeTsWwpN1FJGte1lOHN
+	 UBeOWNFubwZBZPrEVjwcnrgwth61Dq2u+74E4Pt1iEGpKU2QyQuhjN4/Tyja3Me/Yc
+	 NNMgU1ltrUcLfDUssrpXwMjUXkMk+FRQc/m/rsR9vqVHJziuPTWmyi1vxG1dP70Qx4
+	 H7hgUphnx8NhQ==
+Date: Mon, 20 Apr 2026 09:42:42 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Nick Huang <sef1548@gmail.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs: Add overview and SLUB allocator sections to slab
+ documentation
+Message-ID: <aeXK4tjGFUgKDf5-@kernel.org>
+References: <20260418000635.17499-1-sef1548@gmail.com>
+ <aeNGbNyPxJssnkbO@lucifer>
+ <aeOuCH8ydw_yzdXZ@casper.infradead.org>
+ <c113f667-f897-42cc-a0e5-b8a0bbd91be3@kernel.org>
+ <aeTTw4gziJigaNbU@lucifer>
+ <CABZAGRHXtjzGJrgR1NAmVHFMP9eL5zZr3DaTAtAvywv_1sOHdw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v3 03/12] mm/huge_memory: remove READ_ONLY_THP_FOR_FS
- from file_thp_enabled()
-To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260418024429.4055056-1-ziy@nvidia.com>
- <20260418024429.4055056-4-ziy@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260418024429.4055056-4-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: okuki613n6hrqsc13963ckx6eh9rxru7
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D6C0380010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABZAGRHXtjzGJrgR1NAmVHFMP9eL5zZr3DaTAtAvywv_1sOHdw@mail.gmail.com>
+X-Rspamd-Queue-Id: BAF4A18000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: zduacx8k4mtfhnfkohkw6jzjcizdz373
 X-Rspam-User: 
-X-HE-Tag: 1776666710-945320
-X-HE-Meta: U2FsdGVkX19vPnfKoInG6EiqkEr6DtMVFuipX/KzDyUarw2RSrmDSfd8+ccwjcYVROJN54CeIUIQdg4/4fVbMwdbgqok5S/k+9OVDnYXlxOUkcYcWQhi6Kmz6I5i0c4ZJfT5OP4w7Sz25uTCtDWAPLV+LmQykZmTf7Rnd2w3iuJvXjbi1WF5GJ9yZtm3cMBjJiTuiYNHdxGtq1laQdiYOhW6Zu81uc3ZMFQXOY40sFA/4GPZ1kMywDhTpa6yCpezgVoxH+m7sVjpdwbvhJ+1qtJDdcFz27HHsqcnjUDFe2kP5aBUWvlOh49zQslMW8XQXN/VwKABa9YjP6YjYvM7XV3yOPwNDB7ZqWBwHIM5ISCLztBEBMMO0s4vKbBJRljGdftS/LKiosAfn46VYCxZi3SNZV0+SSUSegtRdf9NSsMoAzSsSmRm2n5fb8t7Pz7sT7SY6EKPpPsdoGD5HJ3Wrt4nhyAFVsfahlGVAiSx0ezYju8Nr3YdSAsWcuU1klMoYUILT/G8zWXjeZU24HObK0BIAujAcMbx7z/6dXiT0y3tzfkgVT35kzEeUSmiqCHgtrFFQvSwB/wWhDcRWKNxa8ndIRD8VN1ekmECfyANVbhnwhPabl2eXr/AJs5Ep4w7vnvlUXMRM6m6LLos7HtHJPJ4+/BL0LDpyZ68FfJzPom3omN5rIXJ2DWzUT6rzvu6Ta464at23eyIY6vkxI9PqwRLq/3GBWDZUIDAKlNjWB8J6hw4gElO2HkryWwbUcjvoBJqo6Cmo4ohFyUtI3hBCUWTwuT5XH1/3A6QjQ2+THccyyV2atk6JohXOfGs2JfX3F++PqXHkm44yXFFyEEDcQ4/jAXtxgvjdF/2f0rrioGOehkn3HbcemMp1ZCOHB8bhYTqbgXrQP7jxjGPHCX5H2aO0Qi2qy6/Z8kY0hG8x52MKHWY1if9tU8DSpZsg+/NWY61wp/Pd0U1UENueNf
- fSWb1rmU
- hZR4gTEJdScYUzqY7t6pYB4WHXJmjBwNAY5y0weHg3jXo/N74YOim8b9/EmYfjus+devpcwoh+HHPnu90xtLwxP2JxNma4m1QlR+LBX3cu0WUZmGJFhBxeJ5uPKxh5s9wesGz0Ls/zi/5RDj96f5oKti5/5QKmS3D43hG+FZUSzHJ8Eee3WneEO718l65jylLx5FJgA7u/PbvE+nVHr8YrlHXyGCetSvdtp7XJWMmSKa10kH/MhqRKQXl7hR+okxgpjT9EJidAaiyGoilO5WhCJtHP6OquE8yBQMtQoyEUiLgpLjM4irA6bRnnD+piJNfRD/MdDx9RDxcfzZFl9mWJ2sCGCgeRVorY38DV9Z/Jl3+p7rKmaFki5IOVg==
+X-HE-Tag: 1776667373-867358
+X-HE-Meta: U2FsdGVkX18k4KlG1E0e35NxJlwGLZP9Q7WUqZGseQza2NvLPZWjrIkNUXWos004jdxv2NWaml3LvxZf2Dtjqe9vLePuwVt/Z9TokEtJSn1gZJ3ATc+KZ7RJVpJqv7IlYGE6Ex5DmeONNpjHO4XzSP4QWUlm6wG2uOYyRyZ1nJd6Uzyo6xjZ1TMwb3RXdEJSpM3Ldesvj+vm/aHFVpF1TRlDFScCrQVVKIGA9cgXlqKbTdjHMsIpshG4InqmmyQN5HDOOFE13Cb84WWqS6MX/lzphCkrq1nbR0su0MZ3i8Wy6LXEGLnp50t4UU9JVsv6dWOmfBrFljx7CRLCyvDvs5C/i4Wu7CQRKVsqZpZWan4OZ0w1U4GoRW4xacX8feUNc8UXxVu5FiIYlLJnSzifiKR9WPBluxnDQvfqNv0swkFQA0eSVZuK9awXxYAb9YQjU63Wnn4LsuItikXbe2e8FyvSMMZrawcjDCHoaaZG5qkSTgJbMhFAA09oHxJ8xL9ZU4ewS9cOvclHSfpme3cZiJscL7bC4F7YZPRtyIO30QeXlJ4MpV17wBAndSmLSWbLzTBnm0Qu70pyDWLwbmft7V8ZjIMXc311cM750jvP37vxsMMRGoDT/l+1GOhC2vmeToYZ11iQDeVRfK69uss/KXCwabrgkzU14aWvlvqIAsVR+Yk6CqlDMaoj8uijwMZepn5h7AfJF68GT6OvwijauSB+ezS0yvD3rpfeX2ovANW0j575Br6i8y5BkrGUj9UhTbriXgBK3JtCpXryxhAXkSKBq6KINrUKqgAjgKTwAm4fQqylBiwXTPfawhbKg7HtV2gL2WqLWGQZwtWe5SiGAhhNX6cqWoMV0g1tFWZrlmNXDcsMqfKPJ8zYoBQ3oBeIYyZdTg6xm3Uf639vgHOpmxszv7Ye+q/QO/uJm/q7sG65srrP4sf84kxusmEMSGgo099sEIyFAif3LZVOdEw
+ 5YYUxgXf
+ cUBmv4Oid7OIcltRqfQf/n0yJXxYACMlqlVgt8PI3efB9YpHDuOnthCNvScW6lRZ4qwxX8xfIE7lp++XqBQR2ceNKPeUzdqk01SXIWQzVWvNPFe1baoAJIrGXQrqwybH71quVeY1TdLuNfbNJQa6u5icDdcJZIkLcuPNwvGgUxQbhP1fTL8DOFibH42cL62U+gNhdbNjnfG4i09Rn7hg28DOt3WXEnKWCjSn3q5pgSZGS7h7KXqRwJrHvpcuDba3mtBq8xAN0R5GHKRs45kghepqhP+uvN6bIdXAYGQoIghnQbT5QzZw8Z8RCdpRo0PswCuv9bOIBYvUgxV8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,17 +108,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Nick,
 
-
-On 4/18/26 10:44 AM, Zi Yan wrote:
-> Replace it with a check on the max folio order of the file's address space
-> mapping, making sure PMD THP is supported. Also remove the read-only fd
-> check, since collapse_file() now makes sure all to-be-collapsed folios are
-> clean and the created PMD file THP can be handled by FSes properly.
+On Mon, Apr 20, 2026 at 12:52:25PM +0800, Nick Huang wrote:
 > 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
+> I am really sorry for causing trouble for everyone. I would like to
+> ask which aspect of mine was disrespectful, so that I can be more
+> careful next time.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Maintainers time is valuable and sending LLM generated patch completely
+without understanding what it is about is disrespect for maintainers wasted
+time.
+ 
+> If I want to make this kind of change, should I send an [RFC patch] to
+> ask for everyone's opinion?
+
+If you want to make that kind of change, you should start with researching
+and understanding yourself what the code is doing, double check the LLM
+output and verify it and not just take an LLM slop and send it.
+ 
+> Sorry, I really am not very clear about the process.
+
+Start with reading kernel process documentation:
+https://docs.kernel.org/process/development-process.html
+
+> -- 
+> Regards,
+> Nick Huang
+
+-- 
+Sincerely yours,
+Mike.
 
