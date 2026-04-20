@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 790E5F5A8AA
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 18:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9733F5A8A5
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 18:11:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1AA96B0089; Mon, 20 Apr 2026 14:09:46 -0400 (EDT)
+	id 1FB976B0088; Mon, 20 Apr 2026 14:11:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF1D36B008A; Mon, 20 Apr 2026 14:09:46 -0400 (EDT)
+	id 1AA5C6B008A; Mon, 20 Apr 2026 14:11:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2EE66B008C; Mon, 20 Apr 2026 14:09:46 -0400 (EDT)
+	id 09B916B008C; Mon, 20 Apr 2026 14:11:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B59536B0089
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:09:46 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E94756B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:11:41 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6642A13C00A
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:09:46 +0000 (UTC)
-X-FDA: 84679722372.04.CFC3CED
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 937361B90C4
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:11:41 +0000 (UTC)
+X-FDA: 84679727202.04.042B782
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 92DAD40003
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:09:44 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZbeS0smw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id BA1AE8000F
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:11:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mhuGBP9n;
+	spf=pass (imf30.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776708584;
+	s=arc-20220608; t=1776708699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5lqu7gVxDph9rA+RFSYbNtE6EvF6ZbWBXm7k2cxJnso=;
-	b=CMyaGGyEBU1POOFJhYLNNOocx544bunk0jGxyeCJ0Ou6N/I7j3gUFOsOkckqn8H9ioDFQs
-	FXtzBPvuxsOUw/MRcDqQrnJyA6IwIn3XxEBKVO8Owfr8bqISQIXEVf27TPfKksMBbHY4G5
-	416xDMbleDsnkytmRlHEDNN8+LSYmyc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZbeS0smw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776708584; a=rsa-sha256;
+	bh=/59XhzYLd4tl2wZRJGM/xzTaIZvDgGZoFDmHGkV2iTc=;
+	b=CQ3j7mOY8EO62G+mtBCj0gpFYojgL3yEzdQfX8Gu0CQxdpjG/FYDU6empyOtmSnYn6AElE
+	0vwQom0a2LqIG15kI607xECuZfetudEXrce/yzGrCsT1RoGnRVajZVbIF1SKGn+X8ZXCjn
+	PBBRRe+s3XjpO0NhOzLxKeTNQj+rU/w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776708699; a=rsa-sha256;
 	cv=none;
-	b=ucmZCtwYjfhWThGAez8ZJSJNe7F8BJLYnvC7lRcOKaRPNjOuIS8IqEftjSxCHmu+jqdCvb
-	3UaA8VDd3E+2Van4aTyXAHweVvxjOIRW4Bq74g8hcCT2FKXzmpOhmTYZUMs9cwQ9O/IRX2
-	4VIpuHH8a9XJDwG3NOi4L8SAfK99eoo=
+	b=7BbKjqbFpUkxLy17jA8ou1vYUsCtdQm3C+UWh04flsbXFiU0H8m5FRG5K2OT65NJn/cGCU
+	A4XNhXJL33njxspdedtgzURS0ZRbgMeYMD9QHllaja4DJordktQVCkwBLEfJ/vksNb27ra
+	AZLU0h1nmnhdAKfdcYO1IHGumv17MCg=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mhuGBP9n;
+	spf=pass (imf30.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8B62E44582;
-	Mon, 20 Apr 2026 18:09:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC90AC2BCB8;
-	Mon, 20 Apr 2026 18:09:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F0CB40946;
+	Mon, 20 Apr 2026 18:11:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9165CC19425;
+	Mon, 20 Apr 2026 18:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776708583;
-	bh=5lqu7gVxDph9rA+RFSYbNtE6EvF6ZbWBXm7k2cxJnso=;
+	s=k20201202; t=1776708698;
+	bh=qLOLoMBkDkZ0pB+x3H6AU8n/Y9slQg4Fo0juZWlHZyw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZbeS0smw+nBW+utwOMzphiEHf9/5NOi7pPk40Sh5zyPTfRl7IzKoN8lk5ULyzEM2g
-	 zTdxdFAJ40kTCu4Ub+30mR6f5raGwr7fM2oKq82KUbbm20nw0gCJT4syLQBv6yx+Dc
-	 jsFSI5rbyzkkPyCKwCcebpegMUVCfHCpgpcK0aoLz97ntSJKYrMTyjwozSTtBD9WQs
-	 KftuTZbiVKiM1bw0UTNskULvxbJg/eo/x8ba+xaM9E+yAblx0ug8+zJG4FNHgizDLG
-	 9NUTU9yHEHSBGBoQLXvMI6J34ESlSZaezaUlB021ZObC3hug4tF8sdhhnbHpSqTnn/
-	 OvrCF8uEaCxhw==
-Date: Mon, 20 Apr 2026 19:09:36 +0100
+	b=mhuGBP9n4ebMzQyH46grk6GgVPBNJnYB2pFgplgMMwsLHJyX4v4bVgdT9+q7zw0Jd
+	 i0MOqo1AQfBTbZqghe+Mh6TR3Usiv4vnKRhRaDNwWGsosoBF7l2RY7uHPzw8+4LjX+
+	 6pAfORz6M93b6E6KdsiBnDHmORyZQoXLjxgILuTTRozTuCvB3oE45+i3stCnaTzfKx
+	 O9EiEJAhGirEBvmNkFpQnqpzj9uEd1Yvkt5wemo38rTRsFTsfxYQk1QcRBG52WqSL+
+	 vMf6d3wC6fVudUowFIHYDqadS2ZwWVhgd9FQITKIHT+rhVGuSDPxhblLFXA9q5Pm3V
+	 tiVL1Jd5lQBjQ==
+Date: Mon, 20 Apr 2026 19:11:30 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -83,25 +83,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v2 18/53] selftests/mm: uffd-unit-tests: use kselftest
- framework
-Message-ID: <089df1ee-59ea-4333-af17-f4316a66833d@sirena.org.uk>
+Subject: Re: [PATCH v2 19/53] selftests/mm: va_high_addr_switch: use
+ kselftest framework
+Message-ID: <2abd2a19-08cd-4d6b-800f-24e42a66f00d@sirena.org.uk>
 References: <20260418105539.1261536-1-rppt@kernel.org>
- <20260418105539.1261536-19-rppt@kernel.org>
+ <20260418105539.1261536-20-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9Yx+TiVjhCn0KM6v"
+	protocol="application/pgp-signature"; boundary="MGaPlC4M7Ms405kW"
 Content-Disposition: inline
-In-Reply-To: <20260418105539.1261536-19-rppt@kernel.org>
+In-Reply-To: <20260418105539.1261536-20-rppt@kernel.org>
 X-Cookie: Sales tax applies.
+X-Rspamd-Queue-Id: BA1AE8000F
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8zqr9rksn9r1zg8oqo5gsi7o8cinpguz
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 92DAD40003
-X-Stat-Signature: 3c886ye7haf7b45b6aen1mzj8nsb3rdx
-X-HE-Tag: 1776708584-698166
-X-HE-Meta: U2FsdGVkX18GdBRFOckucz8dt0DuaxdkHK99xZ0dkfpEVUmEFsou0WOW8Zt4MSU5D3MhhGg6mQiyREkQgxy3WZ8Kx1/Xx89QlMHDBP1FiMGl4sJBEZqJ92nUA0ZVttZlHmJgM/vwtTTAR3WSOfDRXK8QVkDmSMpatnz7LyUjHO/48jL8+iYl/5AwJy4s2u5jruspHwxHoafwy7wgspH07XrN2r3D2MFoZ1U7/RMB12KijwmMw92rT+nBuJVfq71VEHqh372YEx4+uckLfBCGlsp7Xw7wXeC1xew8pHIEI8gCZvOrbTrwmYV7KtPgIDwfpXJN0fU5BK/NYrJ7ZMQpLPwKeyoVM6fYbx/G89SRQ1sLC/u4M2udB+0cPLiWM69wHiZB1kUdYYXgpXpMHF2jBaTpJguZuacFNmSyl8TQekum8dw/KcxO1heWNfQy54xngDTzQWECU87roxIzKD++1LoM5t3dQtKEvq+rU6xhEZ0DmpdRXt9Tu+AlJJM9wdB5ZVaCrf9oUniTbO3InXXid72s0hU4n5NrWbbHNeX1b8/Vz/HdpRfsg7Mi9qEtCNy7Xz6BI/sPSiUIq6J13NXv2NF33CtyCC0ZX9/Twne93JCdfEDObN3FBRl36SzeFMesMqIyCObLS+rAlCuuAogDdGFF3qnlXiVMCRZnHw1l9MqccHnxwlezBB+x1/xIiyazngGXiMZp3zp5IdIgzZDDBUKn5Gse+hPsWPc8u/u8Y2nT4gJGq+8mEtAZsFE8oDLiFBSVpCt21gLoXi3EUdyE+NNn8IT9b+Ql1EoofB2ICV7/AOK53ZmjhkcWNcMRzBNuRuAhxsSvWSMVwUzMLGyrpyxwINGfFscciewyraArph8Xxza6/v/K6xt1YSE/A0iIN5m7GBklUfdyPmAPo6y0lHJbsOZHdX52B47H3wyw2izJd+Sdh/xIWPUgdEJE3OrqLw4FStEBkze+Hsu1wQC
- DdhoQnNp
- jxTbb6If8JpfVmHJWCaeKxCmDe4brNBxrCPpa+lOob703AeY7U+47FpCLoA41IQMkatGAsSRP8Fy/MhiQl6yaP0YtALaDzkdHu8fWami+B4G9+9JM9r6/VlOXZ3gbMgdB7aCiyLYgdMwhUvFeJYusvbDZKT+kt8t9xySyp/KCaBnJuL+E5E7crCmE8zYMnifrd6coStMlmCjt5a9PRAzHLPd1xV/o/hmTFXW68TWlIpcFTyz7BZBL3epkDmF0QtZHlj2q1SSRRFisyxbp+3gdLSzJGTaqdExfYuNjdQY87Uvr3aOGCwv2uJSrb6LkEGljJst8Ng5kwZG2rP4wNPoIk04ceODgB0cNOXcZqs/LXuX9D9w=
+X-HE-Tag: 1776708699-926165
+X-HE-Meta: U2FsdGVkX1/PJ2qPpJe3bt2DoiQauPBSkdvyCO4sIzHr44NboyNq5QhP0Ac9O/dCXGtTNlJ/H31ibkEVwS1pcND630Tv/eCo6CZbvkJQCy/DnkYd08mKcafrpNIv8BOnYoegp1ItdZn05bLaji2SpgGTjpFAwxpGivJxN0XjyMIopvfQr/fOAl14KdDMOm+mX8t1QPzBRNCvzUS0WSmuovTgUTQkjirxL0yoe6Eo+LRfzYpqe83BLvzmFg8mSm90xVy+H8Z8Qznj6fynrw9fdeQR7oMEC+1l9iMctnxsKlO9FBTYfocsMQQ49JmZPugbgjVm1gY4VKitGc9knQO1h5fv4g+JTqeoTy6rxF+l6BDpsu5U9D/ujbRWV2rvUvkXGY9yJUrdOQ4IcL6plM1LN/iseAiTpsnH32NGfNq/bqcMn/jM6ynTwDswHfwmrn4PnvTpX52frwyUumlgEAtk+l4q6LRWwTKmNEsY4595yQ4rBWBp8Kwiweb1yQ5zn83Ts9GTx+ai1/ec0PprW4QpycO/GxYXQuAM7zyLAEwkh1PD0fOJVpFsKMaUhzhhcacxYwL62yNB6A/pdrl277AcxSPqqJBQbW+NQwLgoYo4rKdLt+qYmW9D1yU8GyTCG9sxYEU9Pkdatkfr6Zev/xoBAOqyC7O9YUpztloBzaGlA6ZjXFeYgHWJ19WRbTgTue/3scSuUg8gQZPWjnb1euVPAmrNMqGa4ZNroc9jFeI56flhqv3atDSU1QE2oM17CZYJKWf7L4c0AU61hdpGCo5KeawVGZtFaVGdH3wM4119ZE5ssGEB5NaOzID6KwyvMUY3o1OcOZpd7iFPn2iqLgH7hC/MM8zLsoWwYZPFRUvOgWHu2y8/aJurfzhw5RbFjI7HUh4CNpEbqKZGvbUFhStnir7caLzC1aMUPXru00PEflmbc7W2BYohmBHXX4tblyQ77UQbSUcR2f4PlOl7yW0
+ fxHWMcKz
+ 5s+XTbAr4HE0+Zd19JguJMpPUYDIAx8YviReJ+bukXH9zAD8eY5t5T90KHUB9cYT9MFpozaUoidOXfZXnBCFWo57snZ7lzDtyYkfvz737RBloPPM+YOmlCEVUMbNjz8nz632+DCuzMIrGeRLWc9/GTTVkn2TdBYvsgQkWYEEouAb4WdxrhuzeVwh1lkMVq/jeR1DkguTUyjFs17p1oXVuTv5qFKmLGR84cE/TlDeSWoBboEeNNen6CH9vgPZm+c/V/hyT6DdgJBLjU9C0YlHKm94rfhaiTMduL/l0gFg0v24PRwXfqtQfiMU5sQO/Qqxw2Fe2iu4xkC0j+SvJdrwrnmbWhLn+tOIvufOH99RQKAbY0HI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,33 +110,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---9Yx+TiVjhCn0KM6v
+--MGaPlC4M7Ms405kW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 18, 2026 at 01:55:03PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->=20
-> Convert uffd-unit-tests to use kselftest framework for reporting and
-> tracking successful and failing runs.
+On Sat, Apr 18, 2026 at 01:55:04PM +0300, Mike Rapoport wrote:
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
+>  		if (p =3D=3D MAP_FAILED) {
+> -			printf("FAILED\n");
+> -			ret =3D KSFT_FAIL;
+> +			ksft_test_result_fail("%s: MAP_FAILED\n", t->msg);
+>  			continue;
+>  		}
+> =20
+>  		if (t->low_addr_required && p >=3D (void *)(switch_hint)) {
+> -			printf("FAILED\n");
+> -			ret =3D KSFT_FAIL;
+> +			ksft_test_result_fail("%s: %p not below switch hint\n", t->msg, p);
 
---9Yx+TiVjhCn0KM6v
+The test result reports should use a consistent name for each test and
+log any diagnostic information about the source of failure in separate
+prints.
+
+--MGaPlC4M7Ms405kW
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnma98ACgkQJNaLcl1U
-h9DBHwf/XblVSuDksuXGMxVxGmW9m0Ph9Bysu4Tp38cfVfnmD8sze3Bo0lG2K1IL
-dkcpJSTVZXuuXVsgOL3xB71p9wTMsa8fbBUGT+g9HQTjp1QZ/ifqBG8roiCZ49HQ
-l8ot8QLae3oxwK/CTnxdGqd0Uhy4MGyVPDr1Y2n+yGeYDpTLv0P72nlg7E4Sv609
-nccgj3Jq7fBhwE2MzhX7xJIV2oPdssWCc6LpVZW/wSl8YARJuqFVzTBzcv/bAPpY
-huTBAQ/wG4VqeAWIzVc+eu9ni5DwUP/c8c88SKTOMaISZd3whpEed2/otOV8eFwm
-TCcPS2fYQyBNJs9KcX+39OD/eecmVg==
-=WdXE
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnmbFIACgkQJNaLcl1U
+h9Ac7Qf/YbGFkjLXCtCkUkv5NeqyfgkSPz1aVQhRjEfjzZTckZXlnW3Ike7z2Faw
+qJCnzwwp6++nRGTUvo7CnGugOrtXoRfvK86V0rhJ/XpTehOijvxXk97KzKLT6M/P
+iIE8JxxdLpJLVxsGHq51+zl1/wJ/FXQVt6knRVS9g3wy6PRQylMVY3hrxvFmd7pk
+GaZ0sjBt0RC9m6wQVZJtG+aZ4fe5oyTmyhdjecfFKk/ogC28HI6CiizJRMSSNs/W
+n1QQvdv6H1AP/4rMeTRjFe2hyOakCLlHPzI1atxVoXhcmAR7GxrwlszGle8CZIcI
+DewtaLgGJzg7bct+d1fLtNy2RV88DA==
+=5NEU
 -----END PGP SIGNATURE-----
 
---9Yx+TiVjhCn0KM6v--
+--MGaPlC4M7Ms405kW--
 
