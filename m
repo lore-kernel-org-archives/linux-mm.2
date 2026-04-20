@@ -4,137 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0759F36C5C
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:14:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A352F588C1
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:17:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8F296B0096; Mon, 20 Apr 2026 08:14:03 -0400 (EDT)
+	id 0AB4C6B0005; Mon, 20 Apr 2026 08:17:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD9956B009B; Mon, 20 Apr 2026 08:14:03 -0400 (EDT)
+	id 082406B0088; Mon, 20 Apr 2026 08:17:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A41056B0098; Mon, 20 Apr 2026 08:14:03 -0400 (EDT)
+	id F01736B0089; Mon, 20 Apr 2026 08:17:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 77ECF6B0093
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:14:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 12860140A46
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:14:03 +0000 (UTC)
-X-FDA: 84678825966.11.CC3F16F
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C90591C0006
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:14:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=I7a3XXoB;
-	spf=pass (imf21.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E04416B0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:17:13 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AEE361409C2
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:17:13 +0000 (UTC)
+X-FDA: 84678833946.10.9391120
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B052E100012
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:17:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nsk22ECw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776687431; a=rsa-sha256;
+	cv=none;
+	b=x8eWb30gVjWR/GvDLarPlVxSl22jXKCGgERO6iy872jrd4wLJjNlR7rXg8w28YAr5dm6m4
+	SUZaYYKJDXzHW2kgB09wg1rmDDRcQq8kcWqRmMiqtktdEz99hLtZ/dNpdjx4KrSVkIge63
+	mTUnOF26qEPweXxy8BzApbZL8gXTQco=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nsk22ECw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776687240;
+	s=arc-20220608; t=1776687431;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mBqlFV4hXBJ/Lgtn2j4r3k97I2CtmrM8rGPmrJt1ZvQ=;
-	b=7z0QO/zjgv47YSxJtYZOwo2wylV0ENiAWnTA1fIEYWO3PmgSNoGN7xp6moetcR9i0Il1+f
-	/0w3dIozgix1c+YwE68EkFmAsJ1FhkFHso/8vzDuotM36d4fDpDUqQfbgelRIAjT929M76
-	7NrvM4FvDxRfMJQBSah9fqwB/Tl/mnU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=I7a3XXoB;
-	spf=pass (imf21.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776687240; a=rsa-sha256;
-	cv=none;
-	b=m0B2da6kEu0P7FKCxo9sZ8fcnt5XBe3K+AbUXTpFuCyNyNUDVPQrlJB6TBncsvUX43mvPm
-	dQe3hOVA4EiHDqbIWwOSQTG4zVomH9iULYdnAKNXG69KS3eHHugQ5EqwcVPxBYc3CLJfw3
-	teZVQS1fVzS4VDiVMyNQnfLImYMax4k=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63JKstv43466831;
-	Mon, 20 Apr 2026 12:13:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=mBqlFV4hXBJ/Lgtn2
-	j4r3k97I2CtmrM8rGPmrJt1ZvQ=; b=I7a3XXoBIQg3ubMNscT1zvh6OYmwzXhmN
-	PaEQXT9BqJhd+inPCsJ5Itb//c6r1SYnMR2OZornR5xCvWHYW4bqd2YvSJDSjzep
-	erNA1fsUlhmi60VouurAmXNij3MPTWgT3TIDL+ABObYPi9uLYhwFfuiQMW5rCHjC
-	Y4zkzbv+KVpkB8c9GN8LlTnoDWWrIF2hPz9NuMP/Dst3OVytvCkhhcnz9xp5zFgL
-	RXooTu6iN9CtaJtBfRmUwxrsBiN0XRCgRpnYlEhJz/xevplesEqzlvB4hcpOkoIc
-	tnlCmTeILWwATnsDgFctJX5ajhwRngCa3DUkdimO76+9Xw9ZYgJwQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2h9f0fc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Apr 2026 12:13:57 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63KC5KFI020396;
-	Mon, 20 Apr 2026 12:13:57 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmmnvms6r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Apr 2026 12:13:56 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63KCDrVv38666584
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Apr 2026 12:13:53 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26DA72004E;
-	Mon, 20 Apr 2026 12:13:53 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EDAF52004D;
-	Mon, 20 Apr 2026 12:13:52 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 20 Apr 2026 12:13:52 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id D1003E0421; Mon, 20 Apr 2026 14:13:52 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
-Subject: [RFC PATCH 1/2] mm/gup: add missing pXdp_get() conversions
-Date: Mon, 20 Apr 2026 14:13:51 +0200
-Message-ID: <3d0213714273d83c07cb7681119b799ca77984b9.1776684344.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1776684344.git.agordeev@linux.ibm.com>
-References: <cover.1776684344.git.agordeev@linux.ibm.com>
+	bh=drkslkYKwh8bl2BohU7oUu2nJDGY7lLZqg96VgbKXeA=;
+	b=6oSoORkuomhKF8aCI/ectGHPck/XgYDIF7KaqcGGyvB84ZrbfzqwoF91ckO7ys2sufcOl3
+	31nddPST2ogj5W+EmTZAqwGNEKJHg0aQYimZWjvbhOSBr1RtcYoGZtq3q+G/WaLj4uhLC2
+	cYoO/yJegnbb4ZqNYOVewbZ6XARS+Z0=
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a402dea4a5so3374602e87.2
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 05:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776687430; x=1777292230; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=drkslkYKwh8bl2BohU7oUu2nJDGY7lLZqg96VgbKXeA=;
+        b=nsk22ECwURtcLiIz2l2+p5r5ag0qhApuxh73oa8LTt1sFipLkLIDbUhe7WU6MNwV5I
+         T795SetTCajPqQi+OI4Tzeuu+0funchBQ5EDC7W28bOPsIGgpp9xSg0NU1Igf65DpbkN
+         B+1baN7n3mVqE8woiqczzgyv5lgROD3zMCr7SlD29jZRgWihbcLo78/Go5ATqmCF8uwv
+         15lmsGOSkLglxCPi8jPVf4oTT/O4BbBjZXKa2TUK/wfFllee7P1HftUhFqcC8myF1qUo
+         GTnG5GlyMgZt38Icu1joNYdnJt/joyU+gUcLWUC8J3Ux+/Q2uAUaR+hqFRbVAaB0Yqub
+         Zviw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776687430; x=1777292230;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=drkslkYKwh8bl2BohU7oUu2nJDGY7lLZqg96VgbKXeA=;
+        b=T+vhXgCt7Cmeb/k/ywc7oAzc3ZrcLo3Cl355XiMdUWg9+6Y5CMJ9urWfX0Yqg+hjq5
+         JG1Qk5J+iBrjXZUlzuRTwJXdNGCUC3/+0tqW3Ozjcks/PmeTbqd9YqM76/eDz8C4mM60
+         BBGU7wuznmJMFLWy/1RktXcml5h97F/ZEqmFJky8yngUhEf3Ho5/EXmKbNWQ2CBe96Yv
+         aZ9RQ16HFdOlw5w2ZvWc6miOlFhVBa1ilP7HN/w4krbuQSQqeI2UWcBK0/EdSYNUjYdT
+         QipoIveo9ZbzQK6xm6Y02Z8xSR6w5PMsm82qeuDSDEcqoq5JrxYhbz4xSFhDhTfI53pS
+         VH1w==
+X-Forwarded-Encrypted: i=1; AFNElJ8K8VDkDMUDYgxQh56qpBFO6TdU91axcppCV39tpMmf/tC2KiMhU5SETD8hDWX2GGUJ0CTiIiZC6A==@kvack.org
+X-Gm-Message-State: AOJu0YwFjdIiU2Vfl8A6z0ELh66LjpF2QEp8AshSwQTchNEuq3rDTuCu
+	3EQo3bGWiwucOkyG6rYsuh97JhUYf21nR70oqT/WbdkktQfB1BftT/Fb
+X-Gm-Gg: AeBDieswEeaEjZ5pubQJuNatL1G+WS8sicC3Fauxsjf/oPYyW6Yw8DTB9BVMGR9Q4gy
+	zAS/ofPqWoU5szVmH1/JO9a0EjZqW96IXfAeDWHDQ2xL0Q5x6AQhGDhK6OOtwwo7dIu6Rpcqzp4
+	9ITH4TZD9YymiwlsCoYv9kr7F9F4CwmGbpRQsk01qUHIMfHT5vTvJR1AN+N5i5BlyDZVYOWRisb
+	oTZR2CFu8Dt6uqD7kR5jsmnBOLrkIU/m/bDU6D/MN9JIycaGat+H99A7LEwRVToWm+og1/UM64/
+	a8FCFwZo/Ueiz83IDRX7J5RT6UfyicGNI58bfldGYkJCiu3R+VVCh7ObWEVmeGB7Kk/VvQYlkex
+	oOkwQrjUUQwrG4hhifUigOWpwZjr7/9En37pTO4K9jv/U+4YTut6dS+bqtWj1q89POlKPm3Gh2Z
+	c=
+X-Received: by 2002:a05:6512:a8b:b0:5a2:c289:3337 with SMTP id 2adb3069b0e04-5a4172fabccmr4256296e87.42.1776687429463;
+        Mon, 20 Apr 2026 05:17:09 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4185ad2f4sm2965771e87.17.2026.04.20.05.17.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 05:17:09 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 20 Apr 2026 14:17:07 +0200
+To: Marco Elver <elver@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	Vitaly Wool <vitaly.wool@konsulko.se>, stable@vger.kernel.org,
+	"Harry Yoo (Oracle)" <harry@kernel.org>
+Subject: Re: [PATCH] vmalloc: fix buffer overflow in vrealloc_node_align()
+Message-ID: <aeYZQ501gs_OLR8H@milan>
+References: <20260420114805.3572606-2-elver@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: PQwZVy4G3_B9G7fGsiQLWC2lBMTNEpQl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIwMDExNSBTYWx0ZWRfXxlF3paGKZ6ey
- lxGLeUbgPY3NVNrLHMNKVV3tBDJdBTE3usrPEmVJvxbHISS9COzXBI+k8msaGEv+35pHtH8hoGQ
- FiHrAFSC1ro+Ombmw4y/y98rc2IB/eGa/ixum/vMaJvxWnAPrlAx7eIMUFYt2RUSKdB4Aamd8Ag
- o5T+Yah9+ykYn4JLGcXdS+8fu30YTNt73k2LZBsfjTqo3FuA4GbNPUHyddNA6ZQH4gGxWl6Xils
- ebFGFKPmTwq/9ORV4dJrmBVmC50GAJgo4dTNWi/oeVWnBixtVc2xyvsAH+vonwmbCB/VzBkzyF6
- uf1frIC4HjxTNruo1jEQgkdrCbBuH3enxblkAdcV7K4k5V+Y33vlUi7ReI4gh/jTkSqnI7dJwo2
- 7L2ObAGAS+WXQlFmlqfxVO7a7hC12xrhDUMFgondZF3/GXjUVhDPJagbYvC2DyfUNhhTMn7SuMi
- S5ZOI8RU3zyD5t4Ysrw==
-X-Authority-Analysis: v=2.4 cv=XLYAjwhE c=1 sm=1 tr=0 ts=69e61885 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=ngOnC9FdaHMBdyWIK8kA:9
-X-Proofpoint-GUID: PQwZVy4G3_B9G7fGsiQLWC2lBMTNEpQl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-20_02,2026-04-17_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0 adultscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604200115
-X-Stat-Signature: rbt4hds1d5jibfk54wtzd1qs3zatipzo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260420114805.3572606-2-elver@google.com>
+X-Rspamd-Server: rspam10
+X-Stat-Signature: d89r8fzqerk6o4wzs7gxxnsa5yp69a3d
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C90591C0006
-X-HE-Tag: 1776687240-455248
-X-HE-Meta: U2FsdGVkX180zWt2G/uSGAIB7HC8qHCXO234bCUNG5TaQQaK8ASsKo0QPNAHz+h+DmZxRE32BkOvEBCDPxnRC7h2pVTq3R+OTfVDBcx6+Tns+3LC8cEKvaYjOnafy7a9SlCyMaIgjzq52Oej2n8aWvjdcJLubz1sUf02KbJi3U1vSDq1gN7gQH2uMTP1uKKmCidUIA3+YATRW3zQ0+io6he5QBdxWN2uEqI6uGLDGOHmrzeTsgAwJnAePrdN6ArnC8vb+cUed2o9Repg4cKu9RytOp889PNFeiCy8vwBRpHxU7zeQoM5hRkuPj6uxX3GrL2ImkWKYe0EGlJLiCEwarPNrlQAUCixw7bvINTow7hWV/bItu7CzjlbBHLlfC1siSvhrUgVAtTWXSBkzRDL+5ogCxoNSvcQsqu0QDW2SB2PAzyhD/aTE1bOTSZ4VCvJj9HlWKgqTVfzYK9Nru6lXk6ff2GY3h/jMwFkNuLu2B/l3ZBeD8YsAwfqljiA/+8cVnaEpzkf6ftRIFZOkahZcJZMb9H0+kTZw7dW5OXEyRorxhQJ0TBJSiJMYR9TvAICuTPTWCh2jm6H9Wd2FAUcY418J9futTeXvg35GYV6gnHyXilM+IXjbllEuCXJ9kVvs7HL45b9H6rcNuozJWtWsztuYdMZ90YAHU04W0HxFzARWZc24XXUIu6OTEZ7mn3f3pS/4GlG4EpLZhnijD3/ZgIr7yOly1bJVWo+drqORVcmRu69BI1eJIX/J34j2L93o9ldQFOgKIe9B31aBlM/rg7oBHw8QjsAb5KVECkBoen8y/sVgPnakgkV25kr+x6QushZblrzhaAMSAVzbHwxXvxWMx/luBUPdC8z0L2Zin20jGqzX7x7Fo13tqWwu2pC01R+E5pmqUtcWxuibq2K5cJpqkM/d2HnMZ3oxc5Dn5S+jQdzlnHkQB56wGrKvDVCbvbYiA2jBzqdSw2PrZC
- MXbmdBQm
- /lghLImnQN4/kh5+TFy8+oltv4Clgy1EbDJsAA80lF49QQW85hoen+6FbEZcIK1HyP9+1U7DWAksy2oMe/Di3ONEl6gy3j9aOwky1n8vfv8Q5kobTWY5Dkpnp7itjiAUHywB0m36faNYbISF4xAQyFJLva8/tslSk37NhbZVMRd0z7R56Z/BLesIxxojCngehU0Bwu14mH5fLVYoTZi5+hNS+JLFLSdYUjMjigwkarkjuGJrKp4QE41xMSA==
+X-Rspamd-Queue-Id: B052E100012
+X-HE-Tag: 1776687431-759091
+X-HE-Meta: U2FsdGVkX1/M3ypR77KmlLvdD/fPFdC/V1QiNW2Qflo5FFvpqpRl7NwjLG0BCpdnhLeY078kcBiAggXEq8wIzzhBt9CTnzYPA/3ohhQA+iQaUJrEW1/xAxoB9yapM15f80YBFbqQlByE1AlNpBSL8zsVYNRVhFJAD+0ePPcNywmDo3vhgPacJJAq8EyMA1VyvP/c1mc0B0NlWZARfLBq/xMWLEzluk6IHrPL/C1iE3/DMOc9oEKlEfNuZR6qUvnX0+7Oi7QrKerrN5Zlw/NFAIlAkaVi2mjGAmEsG7pbyzumk6N43NfKTuXd2y/MV5CZXZluHOowBDrMV9kM299WKUgSRysKTnwYBuQqAB0dqQBZYD2rtg2B7FWOLXEEZfriil4CPzDv0cP7UISkB+Kxx0s1wP4acZKW7tPWc51YbI34ZIgd/kvXRqFLtzL3WGZXLzPbAdF/wX+W8TrRLi87AVygitW1kJezVkIyIlOsjlFCMxVn+tE4o9zbs4r8iF3CpBiI5B9mtaoX0yvhCurUICFq1W0NdAf2WSM/z5IykM1Opg5xF4HpmyfSNtg1rIgKGNxorkLdoGFxUKD3ifcgxyPA1Lpy2eYh2HGjL4fI9FAn2n1/aVpMi+cmLJyOhrQ5b4dDHNI4HmTutPktY8mcwMm0LvEtAyPvvH2pdhJI7om4QVp1lwXLmwpPNPPCKRokDKUN071eH2lXvaUdkfEdoTD4WfEYwimR9WwBFy1vzWK97B8Rm7mf0BrGLgqw3nGzcHPpZHYQTV39tInjH0EIQoNzl9vRwNZTKy25G+oXpZDn0VD3Lq96D3HNlGTXSBl2V/aF5VRC6C4LERibelRzlWENv+G3h3Dk/MZFC9y6TlYVd1w3tblv3aPqzntThD+SThLlMd5Jj2eg41yq0W9Dk6Mb7s6gKZU2FLHHgTFs1c4AcbTaxAEHmSFUYILphqjuwpZu7ecw3jU3ZVS03Jt
+ V13cI71Q
+ sYKeruuPUGzmi9eSQacCx4WOhXVQFFxqQfEvCMuF6flPNH7LvI/VGNZcCfzqls2Wn2xTvwvO4Un+tgpfBo+QIRZr0tAJGiVlq2KOmDQnGgPnOiVE8wpYg9uQSEVN/pygmJbdLnGieby82RaQkoVRxYRR5cJJ5cgo9l8aGY84EwbqVgMWs/VhApkgLuZk2YajRShELiq8KkqFFDjR9Yst1OqA6CfeTvxk8L1QQ8jAcxzCU5T8sHsASzIrZleipLl6jRw61gR6AHuGo7wFVNVtzkpCXyTNMuw9wQxOjItNi7WwdRNaMzKnWfJ9u3RcfmQ0GOOHbdwMeitRrIToXN8qRXHSm6vio53eQU8Ad99HW04+psQMbzj/HRo1KeMc0ZA7M0D+tgde9RV2xNKb3CK/VJs3APCp6uMLgcw861jaI0nq+j7E2AFBCJ5iSQXKaYDa7Uff7+/dLRm8YJHdL1VBIow1CXkIhkjsAZ2FzmgfhOwo6gqA83jMKeNb5GcixIWvmOGJLhfU/dYxOBXw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,50 +121,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PMD and PUD entries revalidation has the same semantics as
-PTE entry revalidation. Convert the remaining direct entry
-dereferences to the corresponding pXdp_get() accessors.
+On Mon, Apr 20, 2026 at 01:47:26PM +0200, Marco Elver wrote:
+> Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
+> vrealloc") added the ability to force a new allocation if the current
+> pointer is on the wrong NUMA node, or if an alignment constraint is not
+> met, even if the user is shrinking the allocation.
+> 
+> On this path (need_realloc), the code allocates a new object of 'size'
+> bytes and then memcpy()s 'old_size' bytes into it. If the request is to
+> shrink the object (size < old_size), this results in an out-of-bounds
+> write on the new buffer.
+> 
+> Fix this by bounding the copy length by the new allocation size.
+> 
+> Fixes: 4c5d3365882d ("mm/vmalloc: allow to set node and align in vrealloc")
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Signed-off-by: Marco Elver <elver@google.com>
+> ---
+>  mm/vmalloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 61caa55a4402..8b1124158f54 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4361,7 +4361,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  		return NULL;
+>  
+>  	if (p) {
+> -		memcpy(n, p, old_size);
+> +		memcpy(n, p, min(size, old_size));
+>  		vfree(p);
+>  	}
+>  
+> -- 
+> 2.54.0.rc1.513.gad8abe7a5a-goog
+>
+Agree with a problem described in commit message:
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- mm/gup.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 8e7dc2c6ee73..d149a4b0df71 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2865,7 +2865,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmd=
-p, unsigned long addr,
- 		if (!folio)
- 			goto pte_unmap;
-=20
--		if (unlikely(pmd_val(pmd) !=3D pmd_val(*pmdp)) ||
-+		if (unlikely(pmd_val(pmd) !=3D pmd_val(pmdp_get(pmdp))) ||
- 		    unlikely(pte_val(pte) !=3D pte_val(ptep_get(ptep)))) {
- 			gup_put_folio(folio, 1, flags);
- 			goto pte_unmap;
-@@ -2942,7 +2942,7 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmd=
-p, unsigned long addr,
- 	if (!folio)
- 		return 0;
-=20
--	if (unlikely(pmd_val(orig) !=3D pmd_val(*pmdp))) {
-+	if (unlikely(pmd_val(orig) !=3D pmd_val(pmdp_get(pmdp)))) {
- 		gup_put_folio(folio, refs, flags);
- 		return 0;
- 	}
-@@ -2985,7 +2985,7 @@ static int gup_fast_pud_leaf(pud_t orig, pud_t *pud=
-p, unsigned long addr,
- 	if (!folio)
- 		return 0;
-=20
--	if (unlikely(pud_val(orig) !=3D pud_val(*pudp))) {
-+	if (unlikely(pud_val(orig) !=3D pud_val(pudp_get(pudp)))) {
- 		gup_put_folio(folio, refs, flags);
- 		return 0;
- 	}
---=20
-2.51.0
+Thank you for fixing it!
 
+--
+Uladzislau Rezki
 
