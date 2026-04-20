@@ -4,116 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A352F588C1
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:17:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECECBF588C2
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:21:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AB4C6B0005; Mon, 20 Apr 2026 08:17:14 -0400 (EDT)
+	id 3BE7B6B0088; Mon, 20 Apr 2026 08:21:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 082406B0088; Mon, 20 Apr 2026 08:17:14 -0400 (EDT)
+	id 348546B0089; Mon, 20 Apr 2026 08:21:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F01736B0089; Mon, 20 Apr 2026 08:17:13 -0400 (EDT)
+	id 25E8F6B008A; Mon, 20 Apr 2026 08:21:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E04416B0005
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:17:13 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AEE361409C2
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:17:13 +0000 (UTC)
-X-FDA: 84678833946.10.9391120
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B052E100012
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:17:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nsk22ECw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=urezki@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776687431; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1248E6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:21:53 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D36441A09BA
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:21:52 +0000 (UTC)
+X-FDA: 84678845664.22.E0A2277
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 32DFCA0011
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:21:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jh7qhv4G;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776687711; a=rsa-sha256;
 	cv=none;
-	b=x8eWb30gVjWR/GvDLarPlVxSl22jXKCGgERO6iy872jrd4wLJjNlR7rXg8w28YAr5dm6m4
-	SUZaYYKJDXzHW2kgB09wg1rmDDRcQq8kcWqRmMiqtktdEz99hLtZ/dNpdjx4KrSVkIge63
-	mTUnOF26qEPweXxy8BzApbZL8gXTQco=
+	b=qZ+TQiq1CQOlFLWhp/3uZT6b/CTM1e+3LhT3rhbUScoo8g1V7+M5tFGWR7thK2SVJ5vb5c
+	9X4G7OhD82nHuoIz0QqNBbh1gC/FDnOZ7aVcl3LEGtF6d+xg2HlHzUrXEEI5LKmhKtPlG+
+	DYsbYM84DFpaBICdBgjbDEmvRcepmEQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nsk22ECw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jh7qhv4G;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776687431;
+	s=arc-20220608; t=1776687711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=drkslkYKwh8bl2BohU7oUu2nJDGY7lLZqg96VgbKXeA=;
-	b=6oSoORkuomhKF8aCI/ectGHPck/XgYDIF7KaqcGGyvB84ZrbfzqwoF91ckO7ys2sufcOl3
-	31nddPST2ogj5W+EmTZAqwGNEKJHg0aQYimZWjvbhOSBr1RtcYoGZtq3q+G/WaLj4uhLC2
-	cYoO/yJegnbb4ZqNYOVewbZ6XARS+Z0=
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a402dea4a5so3374602e87.2
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 05:17:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776687430; x=1777292230; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=drkslkYKwh8bl2BohU7oUu2nJDGY7lLZqg96VgbKXeA=;
-        b=nsk22ECwURtcLiIz2l2+p5r5ag0qhApuxh73oa8LTt1sFipLkLIDbUhe7WU6MNwV5I
-         T795SetTCajPqQi+OI4Tzeuu+0funchBQ5EDC7W28bOPsIGgpp9xSg0NU1Igf65DpbkN
-         B+1baN7n3mVqE8woiqczzgyv5lgROD3zMCr7SlD29jZRgWihbcLo78/Go5ATqmCF8uwv
-         15lmsGOSkLglxCPi8jPVf4oTT/O4BbBjZXKa2TUK/wfFllee7P1HftUhFqcC8myF1qUo
-         GTnG5GlyMgZt38Icu1joNYdnJt/joyU+gUcLWUC8J3Ux+/Q2uAUaR+hqFRbVAaB0Yqub
-         Zviw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776687430; x=1777292230;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=drkslkYKwh8bl2BohU7oUu2nJDGY7lLZqg96VgbKXeA=;
-        b=T+vhXgCt7Cmeb/k/ywc7oAzc3ZrcLo3Cl355XiMdUWg9+6Y5CMJ9urWfX0Yqg+hjq5
-         JG1Qk5J+iBrjXZUlzuRTwJXdNGCUC3/+0tqW3Ozjcks/PmeTbqd9YqM76/eDz8C4mM60
-         BBGU7wuznmJMFLWy/1RktXcml5h97F/ZEqmFJky8yngUhEf3Ho5/EXmKbNWQ2CBe96Yv
-         aZ9RQ16HFdOlw5w2ZvWc6miOlFhVBa1ilP7HN/w4krbuQSQqeI2UWcBK0/EdSYNUjYdT
-         QipoIveo9ZbzQK6xm6Y02Z8xSR6w5PMsm82qeuDSDEcqoq5JrxYhbz4xSFhDhTfI53pS
-         VH1w==
-X-Forwarded-Encrypted: i=1; AFNElJ8K8VDkDMUDYgxQh56qpBFO6TdU91axcppCV39tpMmf/tC2KiMhU5SETD8hDWX2GGUJ0CTiIiZC6A==@kvack.org
-X-Gm-Message-State: AOJu0YwFjdIiU2Vfl8A6z0ELh66LjpF2QEp8AshSwQTchNEuq3rDTuCu
-	3EQo3bGWiwucOkyG6rYsuh97JhUYf21nR70oqT/WbdkktQfB1BftT/Fb
-X-Gm-Gg: AeBDieswEeaEjZ5pubQJuNatL1G+WS8sicC3Fauxsjf/oPYyW6Yw8DTB9BVMGR9Q4gy
-	zAS/ofPqWoU5szVmH1/JO9a0EjZqW96IXfAeDWHDQ2xL0Q5x6AQhGDhK6OOtwwo7dIu6Rpcqzp4
-	9ITH4TZD9YymiwlsCoYv9kr7F9F4CwmGbpRQsk01qUHIMfHT5vTvJR1AN+N5i5BlyDZVYOWRisb
-	oTZR2CFu8Dt6uqD7kR5jsmnBOLrkIU/m/bDU6D/MN9JIycaGat+H99A7LEwRVToWm+og1/UM64/
-	a8FCFwZo/Ueiz83IDRX7J5RT6UfyicGNI58bfldGYkJCiu3R+VVCh7ObWEVmeGB7Kk/VvQYlkex
-	oOkwQrjUUQwrG4hhifUigOWpwZjr7/9En37pTO4K9jv/U+4YTut6dS+bqtWj1q89POlKPm3Gh2Z
-	c=
-X-Received: by 2002:a05:6512:a8b:b0:5a2:c289:3337 with SMTP id 2adb3069b0e04-5a4172fabccmr4256296e87.42.1776687429463;
-        Mon, 20 Apr 2026 05:17:09 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4185ad2f4sm2965771e87.17.2026.04.20.05.17.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 05:17:09 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 20 Apr 2026 14:17:07 +0200
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	Vitaly Wool <vitaly.wool@konsulko.se>, stable@vger.kernel.org,
-	"Harry Yoo (Oracle)" <harry@kernel.org>
-Subject: Re: [PATCH] vmalloc: fix buffer overflow in vrealloc_node_align()
-Message-ID: <aeYZQ501gs_OLR8H@milan>
-References: <20260420114805.3572606-2-elver@google.com>
+	bh=MywGQWFzkhKz+Znk569VnJbYqhHYfuSPF/UhZaxfcYE=;
+	b=XkaDGKF85Y3K2gKlYYQusQf8yaKJRUy7Z23E9pg0nSeGbRwn764sa/Iizovy8jWE3IZnq/
+	jK0lxj5pUeUO4I0zUEB8O5QcZTRgM7C+eZgYD1X3i+ZJNfN9Rmep8mXerFL5YzcFYA1VRi
+	I9lzlmb5cbSyYit1y7UssX9aSq1HvHY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 369236012B;
+	Mon, 20 Apr 2026 12:21:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F210C19425;
+	Mon, 20 Apr 2026 12:21:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776687709;
+	bh=L9LDa8lva8DgET9ePF+xNKbKYxtkERL5knvaO3eD5ow=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Jh7qhv4G9ma5b299TRCbRaf/U2VwkpsUFEASRJy8uTasa1Ucnz/iiEOWzpNCxm1S2
+	 cngaXjod2Dl5o3xyzEp1AoTOzlfzbZ24otCFDkPHm4pS/YkwrRdp2nemgNYk89dEn2
+	 o0mtRwcpHxBvtdlGPscE9dLHEWwSUgvQL5R+yNdBVcKTcYbt7H+BRbvJd7MCKPZgcL
+	 6AiyfYluWuGLhWzJAg4WBmRaUjzYLy4VTaguXgVJxiYkGi6aRc5TNohGq/WnR8AFjX
+	 uq05qdMTAOnm2HAOV7IFPqW+iCijNiC+EBG4ehhlPBsp8rX25qvnOqF9krzJZtFd3N
+	 Wk/JHNo9NE2Xw==
+Message-ID: <759ccf04-345b-4264-a222-3049a20b0263@kernel.org>
+Date: Mon, 20 Apr 2026 14:21:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vmalloc: fix buffer overflow in vrealloc_node_align()
+Content-Language: en-US
+To: Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ Vitaly Wool <vitaly.wool@konsulko.se>, stable@vger.kernel.org,
+ "Harry Yoo (Oracle)" <harry@kernel.org>
+References: <20260420114805.3572606-2-elver@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 In-Reply-To: <20260420114805.3572606-2-elver@google.com>
-X-Rspamd-Server: rspam10
-X-Stat-Signature: d89r8fzqerk6o4wzs7gxxnsa5yp69a3d
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 32DFCA0011
+X-Stat-Signature: 741opg9atucbjs88sgt7xbosq6z6onqd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B052E100012
-X-HE-Tag: 1776687431-759091
-X-HE-Meta: U2FsdGVkX1/M3ypR77KmlLvdD/fPFdC/V1QiNW2Qflo5FFvpqpRl7NwjLG0BCpdnhLeY078kcBiAggXEq8wIzzhBt9CTnzYPA/3ohhQA+iQaUJrEW1/xAxoB9yapM15f80YBFbqQlByE1AlNpBSL8zsVYNRVhFJAD+0ePPcNywmDo3vhgPacJJAq8EyMA1VyvP/c1mc0B0NlWZARfLBq/xMWLEzluk6IHrPL/C1iE3/DMOc9oEKlEfNuZR6qUvnX0+7Oi7QrKerrN5Zlw/NFAIlAkaVi2mjGAmEsG7pbyzumk6N43NfKTuXd2y/MV5CZXZluHOowBDrMV9kM299WKUgSRysKTnwYBuQqAB0dqQBZYD2rtg2B7FWOLXEEZfriil4CPzDv0cP7UISkB+Kxx0s1wP4acZKW7tPWc51YbI34ZIgd/kvXRqFLtzL3WGZXLzPbAdF/wX+W8TrRLi87AVygitW1kJezVkIyIlOsjlFCMxVn+tE4o9zbs4r8iF3CpBiI5B9mtaoX0yvhCurUICFq1W0NdAf2WSM/z5IykM1Opg5xF4HpmyfSNtg1rIgKGNxorkLdoGFxUKD3ifcgxyPA1Lpy2eYh2HGjL4fI9FAn2n1/aVpMi+cmLJyOhrQ5b4dDHNI4HmTutPktY8mcwMm0LvEtAyPvvH2pdhJI7om4QVp1lwXLmwpPNPPCKRokDKUN071eH2lXvaUdkfEdoTD4WfEYwimR9WwBFy1vzWK97B8Rm7mf0BrGLgqw3nGzcHPpZHYQTV39tInjH0EIQoNzl9vRwNZTKy25G+oXpZDn0VD3Lq96D3HNlGTXSBl2V/aF5VRC6C4LERibelRzlWENv+G3h3Dk/MZFC9y6TlYVd1w3tblv3aPqzntThD+SThLlMd5Jj2eg41yq0W9Dk6Mb7s6gKZU2FLHHgTFs1c4AcbTaxAEHmSFUYILphqjuwpZu7ecw3jU3ZVS03Jt
- V13cI71Q
- sYKeruuPUGzmi9eSQacCx4WOhXVQFFxqQfEvCMuF6flPNH7LvI/VGNZcCfzqls2Wn2xTvwvO4Un+tgpfBo+QIRZr0tAJGiVlq2KOmDQnGgPnOiVE8wpYg9uQSEVN/pygmJbdLnGieby82RaQkoVRxYRR5cJJ5cgo9l8aGY84EwbqVgMWs/VhApkgLuZk2YajRShELiq8KkqFFDjR9Yst1OqA6CfeTvxk8L1QQ8jAcxzCU5T8sHsASzIrZleipLl6jRw61gR6AHuGo7wFVNVtzkpCXyTNMuw9wQxOjItNi7WwdRNaMzKnWfJ9u3RcfmQ0GOOHbdwMeitRrIToXN8qRXHSm6vio53eQU8Ad99HW04+psQMbzj/HRo1KeMc0ZA7M0D+tgde9RV2xNKb3CK/VJs3APCp6uMLgcw861jaI0nq+j7E2AFBCJ5iSQXKaYDa7Uff7+/dLRm8YJHdL1VBIow1CXkIhkjsAZ2FzmgfhOwo6gqA83jMKeNb5GcixIWvmOGJLhfU/dYxOBXw=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776687711-550858
+X-HE-Meta: U2FsdGVkX1/V/cBf9DqsTHA4ruAnkrNlewxpuC+RDSwjdc3YNotjciNW3vQtNCUIOlNxVKbwxeseBnlLtNhVl5l4KmW9yhwbsP/SVJ3cEWb18UPf1yip3yFIh6wkKS9aMKe8VicNHZcHpkKN5owBzkCFtWZl2sal0whJXZS/NAoY9pp1F04LwkchZcgpn2FH4iS47l+3u7+Hv/WxAEF/Ld7bMTUTeHN9TA67vVs6xoy2uLP2+m0BT7BOlO+3bL5FIDRHdKKrEBnvthhYQEsNfefbZaOva5pE6ctcdqR8c09S3oPzyuQW3+KbIphP0ssZ+HNh5LTArtXRndUtyVPwl4rgX32qtqf7GS6W2qmUYgIBWtKWHdl/U4wGiz4X4MFgezSDVBOyCBOPZU/j/dqw56dNVGuIHzRQCeKfd3iPTVOm6fEajUlR1rJ01hhLxc5JzfYCCe03nPV0X62W7KuCT1uN+3LghfUIvncQCo7GbCikwDIG7L9J5DzIj7/6OFD93m84rswpGkhiwRMNJce/rDd5YTPBfJA8tCg0I8l0tNwjwUNlKgK4BGk0LtbILVZNmyAyYGFVb74aH0PqdPHJ38ox0nxjrlAGGT5pwTh1apcfktZk7NTaJ5jE8hT7FA1oCi1sA0w4Pc+M4POc3YwEufRm85c4itBXgwbkCHM4nR/p3Wj3O3oiumZcZ15gJgG22Mruid6nOn9br5b030rinOn7zbdA1RMX4lt2gzRmA/jBw6yU5vtIo1bwHqo1XyyshlMv0E857jDK7OWb+v3Sy7n363awUjrkfG1UT8C8KSnBRUsUQywNXwyF+McHgIdyQynd0bc0diQjwcsgAt37irBJrlzoCbS0elh/vhovCW4hT2igGKrAyv8R/KfLLhK+dcXVTxEZropbvTGwdClLuddtPM62hgsqWtfsWjiGhgGz3mk2a7jFIfSA7HI0caljIujYpH1LbP9OFm8ZedV
+ E1OU3VY6
+ rBXFBTkJSyARPXLzdaQdeFsU/2JSq/acVJJDfapC5HVqji6+4hz2qiWHD8R3huvEneLfr+pLx021k/W2PfOJvWxGIraQxPQ58my7BEYL10IO2OWeLxfYVkA5QRicBRr47hkbyj05V5J6oXTp2TCjNC8eZRmaKZCwxz8kekHe0RiofKYEgVf0jXoUISqR8ivzXlJnzvfWtLkKg2xyWSF7m3crixVkjsXFGvlSU32W1NAXYW8rV1w400EAz7CJ0nEI84jV1uhhZRzFivpyHVDn7OfPUuaWo5ph9sSxYFxM0P7RkC/8DE51NE3B4xZltFDeG24ylQ5R7qE7KKBBMpTX2dYx2JjijnPixzS8UWlyosdvzjhEFiTJxZG+J/PjrM2pc8xKj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,7 +95,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 20, 2026 at 01:47:26PM +0200, Marco Elver wrote:
+On 4/20/26 13:47, Marco Elver wrote:
 > Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
 > vrealloc") added the ability to force a new allocation if the current
 > pointer is on the wrong NUMA node, or if an alignment constraint is not
@@ -138,6 +112,9 @@ On Mon, Apr 20, 2026 at 01:47:26PM +0200, Marco Elver wrote:
 > Cc: <stable@vger.kernel.org>
 > Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
 > Signed-off-by: Marco Elver <elver@google.com>
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 > ---
 >  mm/vmalloc.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -155,15 +132,5 @@ On Mon, Apr 20, 2026 at 01:47:26PM +0200, Marco Elver wrote:
 >  		vfree(p);
 >  	}
 >  
-> -- 
-> 2.54.0.rc1.513.gad8abe7a5a-goog
->
-Agree with a problem described in commit message:
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-
-Thank you for fixing it!
-
---
-Uladzislau Rezki
 
