@@ -4,101 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10186F5581E
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 11:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44A65F36C5C
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 11:55:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4ED066B00A0; Mon, 20 Apr 2026 07:49:20 -0400 (EDT)
+	id 78F1D6B009E; Mon, 20 Apr 2026 07:55:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49D166B00A1; Mon, 20 Apr 2026 07:49:20 -0400 (EDT)
+	id 740846B009F; Mon, 20 Apr 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38BC46B00A2; Mon, 20 Apr 2026 07:49:20 -0400 (EDT)
+	id 655DA6B00A1; Mon, 20 Apr 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 242326B00A0
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:49:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 56EEF6B009E
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:55:32 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE6C7E3677
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:49:19 +0000 (UTC)
-X-FDA: 84678763638.13.AB99E82
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F128718000F
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:49:16 +0000 (UTC)
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0637C5BB1A
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:55:32 +0000 (UTC)
+X-FDA: 84678779304.13.FBD0E5E
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 76494180004
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:55:30 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MjnlEsSO;
-	spf=pass (imf16.hostedemail.com: domain of 3uhLmaQUKCM0x4ExAz77z4x.v75416DG-553Etv3.7Az@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3uhLmaQUKCM0x4ExAz77z4x.v75416DG-553Etv3.7Az@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i0E94qoA;
+	spf=pass (imf16.hostedemail.com: domain of jamesjoseph9795@gmail.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=jamesjoseph9795@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776685757;
+	s=arc-20220608; t=1776686130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=5qBi9ldbtbrcpWyzJP2C0tv/H5iabsIC81OiRN0uJ2k=;
-	b=DFwL6gETR88Zhrle4kpbeUtXCBJQYFJf2aBzuVAQ44Yq9+hNI8zisfqgyrltAic9JGMhQS
-	HJSC6NvRWHxcJ32opHQbaMH55iHuZ1cGOm6mqhOnSsKWITQrTHAbzKWiaWpmvIpWTY6rB7
-	7OZ+S08a8/TcCtpLuntyBgCYUKX1VIQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776685757; a=rsa-sha256;
-	cv=none;
-	b=2zMS+1+nzHpnzYtEpz1LCx8oPVuXHt5TCl5L0f1wTvWcotYSbcAuidYKuUhtq7N/gbpaLI
-	XigzXyeEoApr26kzj0kqwMrCwJUPtH6ht8oDUl3/dW1Frp5s8ML3xyY7MWj5dpnPfvM0Dg
-	LhWLujutLnV99kgahPjOSScm+u46owU=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tJ51D+oqKsra3ITvMX34uEK0amEfKreSNeQ+Y7huTyc=;
+	b=rNAhxWPl+o3YX9iyn1ARuNuiWhW+Tph+6Y8RxuKgphjYhfbZXk4PPpZsXeHRFR1A81C3pW
+	GiYi/D3UqTQPQ331P7o8WQFX7T4XlSTihOYlyarlYwp4cYC495R6vN5G21x5Rf8/pXxGoQ
+	r3Ykc3uItrv8rtzSLIqFOVpkspI/LEU=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=MjnlEsSO;
-	spf=pass (imf16.hostedemail.com: domain of 3uhLmaQUKCM0x4ExAz77z4x.v75416DG-553Etv3.7Az@flex--elver.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3uhLmaQUKCM0x4ExAz77z4x.v75416DG-553Etv3.7Az@flex--elver.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43ff19e54beso842203f8f.2
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 04:49:16 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i0E94qoA;
+	spf=pass (imf16.hostedemail.com: domain of jamesjoseph9795@gmail.com designates 209.85.216.71 as permitted sender) smtp.mailfrom=jamesjoseph9795@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776686130; a=rsa-sha256;
+	cv=none;
+	b=HFD+dk9YZzvRe6BvU8Kjq3OLlsbXzN3GXDaUOlIV5gIu6YwA+P09AjkBxXP11lkzj21xsK
+	QJqptDj9s8dSYgVQer5ABuBRGu3GvmcmDx754pYZo1WtYWbVuXvkA0hSWkh7AClDHtHA2k
+	zdj+mC3c9Da0RKR0/oT7441EeguA4DA=
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-354c44bf176so3481860a91.0
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 04:55:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776685755; x=1777290555; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5qBi9ldbtbrcpWyzJP2C0tv/H5iabsIC81OiRN0uJ2k=;
-        b=MjnlEsSOosazTnT3lb3uf18w7fVjuuDrlVCVpFiwMqo6StRl4kTWYZHC9xyOmg+U4M
-         wK2SP8WJzoODpbpzZhGH/NFVOUEWs7agS9BOLhlSMZ/S+2howJcf0cscu4P2ZibYo/qB
-         iGKxeU0EjQs0loa8M1O3R9086lsA4cUA/7W7B9OzIGYl0rF1EthnxnnPCfxJVQoBeQhT
-         QzflfsaUzli99ym5+X6TAVyeDQEd+NbFbY31y7Hxt3dz+2jiH2zUIR8ohDeLxhL3DgJc
-         89tyhl+waIRtwOjC+ko3Kj9JCtj0IhiPKvinnI281jHiPkPjM/peM0XKX1bV0mMJBqZ+
-         5RZQ==
+        d=gmail.com; s=20251104; t=1776686129; x=1777290929; darn=kvack.org;
+        h=content-transfer-encoding:to:from:subject:date:message-id
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=tJ51D+oqKsra3ITvMX34uEK0amEfKreSNeQ+Y7huTyc=;
+        b=i0E94qoA5W9hSGqFROD5yJ8kjIAy0wBFaTact6xEK4uLkOu8K190Iv3vDs2yTxPaZg
+         JRVOvoz5oxXgqkTDceEduL9YARYP21F+EEKgc+ZhRmYkgZG+W5+lPQqw+z66gDRpILLq
+         tpaNPPLbFOGqE24rjQfD7HNE2Ktq6zoqJZW8i4uJtWFBmsZnLX/JoI3WsoTlKQngf4wy
+         vS7Sw2lgUfXWyO+AV4Vn5RczujlmKg8jw0/Bpkw2C2vCkV1L0l0HIa/2puFgKfTWrPu7
+         mzPovnV7G0WwdGfdpqzx7ijj2pu56A4QSJJ1PgEKTV52ySMt4Tbj/rRe1CdzRd5fB7jU
+         rolA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776685755; x=1777290555;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5qBi9ldbtbrcpWyzJP2C0tv/H5iabsIC81OiRN0uJ2k=;
-        b=nAERuo0S4ly/eBbbg4Zluao0ZBWJKY6BtrcT2q63W6V7z5KnVnaxN/UYL0Nk/LFlQV
-         Tkcs1hMtldKXUjV/9IGzgnJpJc3wEziMHq00Tjq3DyJEXniPTYJuCoiItx8TxDjYQ1nH
-         eMKACFnkqcNqgrg2tuV++JhBrxjbJfNoKm4B1ijcAno+OhOJzb72XzD3f4NKUejpXSMB
-         Vs/0mA3/dwf7N3Rl6DVuRdcmVMH+Qz1p1hfRSgN79HHM4Xf4D8a7oF5dWfd58+ZxIXnn
-         PEUM8w6c3VcR0uNM6vdKFmq2hZdPZZ+gh5H8FryAniZxK8rvdN/kcmFjRvderYmb/4xG
-         2xig==
-X-Forwarded-Encrypted: i=1; AFNElJ/cwMM4E7xA9tXRay4QGr31X2xfFQE5FCKHxac1wFEf/rf72hmSX14bQigyav7hexGLviZYdAUweQ==@kvack.org
-X-Gm-Message-State: AOJu0YwVh6L9kS92GyGQp+rA1XXh7Ky9NvVReVlD9waBuMabRaEqhhU7
-	BgzhAmTlR91qdHHC+3Pq2vnHqn/VDTeS5ew8mUTo4jThBNJjA8yVTtpLwq27eiEtbGB0m1PwPzc
-	bCg==
-X-Received: from wmpv10.prod.google.com ([2002:a05:600c:4d8a:b0:486:fe68:2045])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8901:b0:488:d228:a133
- with SMTP id 5b1f17b1804b1-488fb778d15mr138129125e9.14.1776685754892; Mon, 20
- Apr 2026 04:49:14 -0700 (PDT)
-Date: Mon, 20 Apr 2026 13:47:26 +0200
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
-Message-ID: <20260420114805.3572606-2-elver@google.com>
-Subject: [PATCH] vmalloc: fix buffer overflow in vrealloc_node_align()
-From: Marco Elver <elver@google.com>
-To: elver@google.com, Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kasan-dev@googlegroups.com, Vitaly Wool <vitaly.wool@konsulko.se>, 
-	stable@vger.kernel.org, "Harry Yoo (Oracle)" <harry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: F128718000F
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4mnyqyuxq5xifg44nhsa7n1s8jnz9oyq
+        d=1e100.net; s=20251104; t=1776686129; x=1777290929;
+        h=content-transfer-encoding:to:from:subject:date:message-id
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tJ51D+oqKsra3ITvMX34uEK0amEfKreSNeQ+Y7huTyc=;
+        b=ErEYJPsG/dIFOHs9tjOTSSfZS8HzPqTgHOouXimFmbKQuIg+8q2B4dQyw9DXLTVpec
+         CnaKUjKcGox3yZERsfoBDKr49LId3wbud/aYq81eTwMuLBsj9pXIxVH5Wif9lKAkt+pw
+         1i7ZkM3nrOphOjHdRcm4PFoSkyDVVbKR5jP8jMJPb8er2ZdsprNnHA/GqwuFw3ARy/U8
+         wDp0ojJJPWf+xsymJZ092duU7ayo4qPTtbU9vGkO7q587O0D3e5gy5EGVHpP58E/kVty
+         LfrrrqWb/Fkt84QKDsZXh4dknhd4eN3GvcUySfMb01RoIPTHie98Ic9fn0Us8PaLjamI
+         sz4Q==
+X-Gm-Message-State: AOJu0YxOYkD9XTvw9h4ERyxEtLnSPSJyDYgSOYHPrKYG2QGzAqNbKBdT
+	BoF76tWgsKEZWEdpWkicP4zCpJJIj/Ayz54AEtqSK1gi8EpIfjvFOHG20HyOvNYDpeRFhSVUSz6
+	3fxRfKA==
+MIME-Version: 1.0
+X-Received: by 2002:a17:90a:ec8b:b0:35e:5b19:234d with SMTP id
+ 98e67ed59e1d1-361403f0aefmr13656956a91.7.1776686129444; Mon, 20 Apr 2026
+ 04:55:29 -0700 (PDT)
+Message-ID: <autogen-java-337c61d2-93a9-424c-9bc9-d523ab1ea4b9@google.com>
+Date: Mon, 20 Apr 2026 11:55:29 +0000
+Subject: linux-mm@kvack.org
+From: jamesjoseph9795@gmail.com
+To: linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+X-Stat-Signature: 7kmm8uxymoyunx8yn8s4jr5dduae895h
 X-Rspam-User: 
-X-HE-Tag: 1776685756-245297
-X-HE-Meta: U2FsdGVkX1/Bh9EAA6kStbAN8MMe+5CMlMIMrvzRwjkScoDIjTkDL2/0uMjYkpLr1VTw/hEI3s4IaOYF2/oOerz6uRUPhgjS5hw9wKEo2SH+VPHP/F76jmf4A/AqetDT06gbnTxhqjvYOu0Q7Uz8UQ9JTW9QUQ1Nmhw2CJgtBVQ3L6TR/fvlXTlFKtSBZF5NqdWtOZLJLScgOoMRKE6QSMV7Cb6oNo6kZj0DABkxPwwzlMNLxtuXqCnczW3Oq1RFRpNxnnx9lZluDCv969i1we0ZddxExbbwdjJV8q+47hybmRZfHKrq1GP2qlUDyxLa0dXCJuwSEHTrTkz2fUOaUwYelmscb87G/pkEhgZyb2RPKrmXdn/u60/gJAjXNhJf/21z/blMw0iFKPmkjuIVIXUiyEVgVuHfyAI7H7fvRhRXX90/havzgB0FVB61lzxinJ1nZqyfwp3lmycNt8UwZW2oddUNc5FqlsmhF0QQ7UB6fbmvF3q3RORe1sCnp/Mth3r1rWyibag5CKVKUp7H66V12SzYJUib/UykNMdPddbsBRSQyOr2UURaxaT4Y3DFqxkz7sNXphbCbEGeuN3XuONPnKTPOSFewHIWeGFDoL30p9we9siLL1uXpLq+xrKSIf+7Ssk00kRqcTxAE+4RszOw+WgK9y/7aZL5m+JCfwp+czuhbJW0CCec2P2lW/5O8SPA6eYoqAbbcfPcrOaw8YJdGvDVDtLVJbTDpVQsTC01aFL3i+SlT5F4vavKlI4S/2tH0Qx/QiudqKjPoSluVy/AHper0isesq/CGWyZKnj9QQm1RprnP66nAT1AVFakXDsUSd8kFrOGJXTclU0hOANUhmyu+GMb2IqxpcIMDxvj/h9gL3E2VdEuRTUWc73gPeehXwoQncgZbip6h6V9ojqsm/C/4HrhtzgD3ZpkfJgstafE7sS85YPAklY01D3//GqLdN62dQpGxZWCtgi
- Sf1DbSQ+
- v+BUi0wrL/YWp57GqIz+2qA0SvFgiaShcmlU4pF4EJJwZd5AbHxF4Dj4KrbJNjcY/0/uwdUVE4Z4s+Y26bqBTv69MKgZqbMotq4HT7HBrfl782b4CggsJVoylhsuqxtuOI1WA0ij5gM4nDtYEnVBhac8QNde2svO+NErjL5OOga+B0cMTb6gl0CIz+1zYHNotJr3itg+T+zss63dzEs1EJisEkKv9YwLSdQ89ExkL5RVnoGPAc7OLfMAnAEiMaJsHx6tZUewlFD08utdL725TWN+eN75KfJKQg8XvzY2Bn3YdwQywwerZL+sRRFMcgScTkFIHvx429lc1JZ1NViMPxIIZx8NI82NmQiiB7+m61pe8HdIIgrLR3LPPIn70kU5u0R2QJm1exg1wjAaS/ddriCKtPQFJQZ75Sxw9WlFxhwKEy/TCovRh/jLtBzs6JoKJOviAiTvQe1Z62E+ggpRifXxCXRQUAp0nt6E+ZSOWnYnvHihbPn4i05EAyg9BoeYRboIXx+gZLOSQmgjst/KhwFRz//6a9vkwEkLapqRrLFQWvEnoXIjoNgIYpRCQtPMixogHSkJypOgo0tg2SJ7+SEOqkHTaE+eGN+UXYQYJT+Qw17e+LTIW64nBVJZFnzaYbiIjYZo4yTbLet+ztXT8jNBHnyjrHKPw0Qls5N/yMa3pUIKoMLFqQQTskg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 76494180004
+X-HE-Tag: 1776686130-370214
+X-HE-Meta: U2FsdGVkX18pbB9JPLSSw5HcuiXI4+eX56V/KCDQi3TTIC1zCnNerBgdT5Z3t5mFXz0os4aldte20pG6Ep8RDJHo/DDnu+NMoYPAxc6knnuQD98aVSHLN5mk4IoMHJmXkEErhPTENJTU+Wfl5hMHM3AlW74CXxTmqe/8rZEGSNFDTFsOAkU2MGudUnvIAqi0ZTEAhOCDWlCGIqB4JRGSJiOux5qHZJTN8NOav46n1JG71h0f97jE770JqCH6sTRpLa1xMxF9MdrG55UnVWkjLe0ACoUhKdq3EJUc8XKyy+zOD3Da6DpHRWwWH2ECflcFt5qME4aJq020lotrkofpAdzauf+2et9trar4BCZvgNjdc5wdjmkyv4jMvoMIhbqaVQ6914xa3s7I6Jb1qY9SRSBcgiZX8uqsChg2NLqLLZ1Ydw+c4+cHUsmQ+dhMXCEfQodbUwB0CIQdTXREHESZ5YoGmgGiAUUIo5pIoCe8lMWpFNmRxsd/YPRuJJC7p/A6KKQl7dLulSAFiHGuaDn2SNroxZ1Q5QuwqeJrNBFGOwsFWjmRifjuua5zjooIzy9f/I2HDYBBfLiTjkjxZdZLpJXRMBo+nPDWgrN3i8NAvAgjLjGxq4XaZuYtuiLOtjkT9UlU0fJB00wFMfL4AEfARI4Pjn9Vxc+Tx2HeGn2BnwYyBoQ5Zsky0f5j+sebbyxQzkLQ5zUExxc3UNG283mSunKbrmHbj8XtIzzsj4nHRLQBXjGMcgsZIavPI5pW+djuAwb0YDU2oCl6N/V6yklSS2sxbF1gzJfs2HY5xE0tP0I5UUoRQ6Zdn7oKritq1A1DDru+LRQ3p+w9I5g7zt+ZrHvMxrsoy5fjft2GiGKo94JPfIvd4oMiwBl4fl0yKDvAF0jOrf6SqTkoZYTrLNamhd2ERrNmQ2EwtnYU3BW2ARkBINeIDVlpdXoDwdiecNKRnCmy92Tz6SqMGjVT4ei
+ LRhqD5zF
+ UWflvIjkjPeN2PjpZnoqOdGORG9fEb5IICwjIWb/mI/BLEtLH4MYv1/AjvSCnSFY0ZG5rr4r+IA95d03kkaFi26wY/wELm9Z7wf3BIUEsj3l+vOgyb7E3ZgVjf427K4oPo6GODfpVRXRPt8twRYq6Q0cBNQmPLPtYaX2Y7XGggjI2P+2/6p7PO+lryW1Zym0/tII3FZBTbDkUbts8WVCbkGMuQL/ZOXKb8BNUtHkCDOgpVXVuDEeizyzszuIkp16TRm1uXkyayLgRk2/nuDBudkH+7DERpCQ7orfcLNjqsTL2tHiCM0k0mn/TfX6xPXLJ5KO82gnZT5hBJRlYZfin5zczIbwF6cN2CQw63s0HAl62bmJgKCl5dzIb4/zn9PzC9o8wLuhD8WYsZ3P0e87ua8IvaiCe5QcMhxT8OBGw2VeH864DiUfh69I84BhE6KmvvAJ0ewJcnw/cGXPNo3D3zpIyP/Ng0bkabu33sDEixn+YQPZDZQZzjryh72jFgahiy5DyOu3SxbBwunyKRcPFIgW1tn5X5kXU+wrn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,39 +102,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
-vrealloc") added the ability to force a new allocation if the current
-pointer is on the wrong NUMA node, or if an alignment constraint is not
-met, even if the user is shrinking the allocation.
-
-On this path (need_realloc), the code allocates a new object of 'size'
-bytes and then memcpy()s 'old_size' bytes into it. If the request is to
-shrink the object (size < old_size), this results in an out-of-bounds
-write on the new buffer.
-
-Fix this by bounding the copy length by the new allocation size.
-
-Fixes: 4c5d3365882d ("mm/vmalloc: allow to set node and align in vrealloc")
-Cc: <stable@vger.kernel.org>
-Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
-Signed-off-by: Marco Elver <elver@google.com>
----
- mm/vmalloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 61caa55a4402..8b1124158f54 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4361,7 +4361,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
- 		return NULL;
- 
- 	if (p) {
--		memcpy(n, p, old_size);
-+		memcpy(n, p, min(size, old_size));
- 		vfree(p);
- 	}
- 
--- 
-2.54.0.rc1.513.gad8abe7a5a-goog
+SGkgU2lyLA0KDQpZb3VyIHNpdGUgbG9va3MgZ29vZCwgYnV0IGl04oCZcyBub3QgcmFua2luZy4N
+Cg0KSSBjYW4gZml4IHRoaXMgYW5kIHBsYWNlIGl0IG9uIEdvb2dsZeKAmXMgMXN0IHBhZ2UuDQoN
+ClNoYWxsIEkgc2VuZCBwcm9wb3NhbCBhbmQgcHJpY2luZz8NCg0KVGhhbmtzLA0KDQpWaXNhbA0K
 
