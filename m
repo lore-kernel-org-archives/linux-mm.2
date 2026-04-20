@@ -4,138 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C202AF55810
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 11:37:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1094F36C58
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 11:41:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 835266B00A6; Mon, 20 Apr 2026 07:37:06 -0400 (EDT)
+	id 333116B00A4; Mon, 20 Apr 2026 07:41:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E7506B00A7; Mon, 20 Apr 2026 07:37:06 -0400 (EDT)
+	id 2E42C6B00A5; Mon, 20 Apr 2026 07:41:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D5446B00A8; Mon, 20 Apr 2026 07:37:06 -0400 (EDT)
+	id 1FA296B00A7; Mon, 20 Apr 2026 07:41:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 590F46B00A6
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:37:06 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C7B541409E7
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:37:05 +0000 (UTC)
-X-FDA: 84678732810.04.8BA986A
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 41AEB100012
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:37:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rLiX5nAh;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf14.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EC326B00A4
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:41:49 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 908355BB73
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:41:48 +0000 (UTC)
+X-FDA: 84678744696.24.84F772A
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CFA2EA000F
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:41:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=V9J4oCiY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776685306; a=rsa-sha256;
+	cv=none;
+	b=l1mXzG1/1Osi/4wTNtYMywIbzwt5CtlaAcIP/2YrbH7aaHWCOsEURzIhgANwn8tMYcEOf+
+	wMxXQZdIYNDEQyLW+wKnn/bImvMsgDY/UqDcXB3EtCgEdgOavZdzbnadYGhnNPU7rRfwd7
+	uHtoXmmEfSsi6k6NOX4PBzGSd9RhkU4=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=V9J4oCiY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776685023;
+	s=arc-20220608; t=1776685306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+8fOW2YD2JY70NjQ8mdyH2RvoeYQRNdY/7nhvFwHYhw=;
-	b=IDmPMnSaaJfFP/OzEW0bfycM6JFXl652AlXQhqXv9Mw16y2oIJ3mm7+7YmBkTK/wtUfNDd
-	9tNoVjd4e3rw6jVxPl7qpNdh+r4gelHfVnNV0ZRJcNiY3Y+r7OC25/oxdR+c8J5DS9qu2B
-	AIX75ieFw0EZDGUC5x2BdD0d1SQL5OY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rLiX5nAh;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf14.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776685023; a=rsa-sha256;
-	cv=none;
-	b=NxTdhQ/Wi78lcMU3RAbAwvrs490+R+2PBVM/pI/SqLl0P8Ip2DNNsP/bXtoCHRYCAirM38
-	q9uk1sOsVhJAQoh3yOcF1WBe27BxFbtE0F+ckUbFniyob/7ufl9FkP0qkIM+TMs4+rSZVh
-	wNr6QJLq8dY9hiK8AUYHzy2LjixOazA=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63KAHCC92045745;
-	Mon, 20 Apr 2026 11:37:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+8fOW2
-	YD2JY70NjQ8mdyH2RvoeYQRNdY/7nhvFwHYhw=; b=rLiX5nAheIJkM/4+XdVAiI
-	mf6lNhr1+V3iCLZbspfyTK6bsdbStZeK10BS3PUccXJlAWPvJD0NYnzKzpxU9cCw
-	qSGrFYRnly4tjIz57G8oyPm+AXZwMkOi6AL7K3PZB4HObV4I3KB6dBYGm4yWGKu9
-	xmlU2NeaAIe9NlSNgYFTBRYvmmpzHJGgn+y854ZBbIarXOlCJGQBPa/MfNPiaxlz
-	SxUO6epYHPEPiYBtE5Ua5ayeMZOmMRcmcklmeu0usDjJyGvxpZcIMwp0hcy6n9ce
-	IU5ZruVtk7YhDmRiDKZmZDDs6q+/EK/KOGFOtXzjb++8ZZmkOfC10aNzb2vk8ilg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2j6fhqd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Apr 2026 11:36:59 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63KBZOfP014685;
-	Mon, 20 Apr 2026 11:36:58 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dmpgg4dgg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Apr 2026 11:36:58 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63KBawP532703180
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Apr 2026 11:36:58 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E3A3958053;
-	Mon, 20 Apr 2026 11:36:57 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CF2158059;
-	Mon, 20 Apr 2026 11:36:54 +0000 (GMT)
-Received: from [9.123.6.34] (unknown [9.123.6.34])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Apr 2026 11:36:54 +0000 (GMT)
-Message-ID: <4cdb0539-550b-45c1-8c6d-c21451828458@linux.ibm.com>
-Date: Mon, 20 Apr 2026 17:06:52 +0530
+	bh=2LxKNCVj8zW4SLkH4nmFq3H6C9VGsJhMzrkrSfjf0UM=;
+	b=U+b8j/PID7nHDUX5Z6+uZHJYEAAUbws0BO2PaDlm8WkOi+mr6q5NL0yhr4Klu6+eHTF6vm
+	LTKRjXim7Tim7qtD/X5RDGgNv3/aPsNd/ebNo8rloIL1P2ybdvCmvK9qXJ+Rsd8UOSOLip
+	xzT2qyp2FJucEyR9Q9KyaYvoRZjiVcc=
+Date: Mon, 20 Apr 2026 19:40:55 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776685302;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2LxKNCVj8zW4SLkH4nmFq3H6C9VGsJhMzrkrSfjf0UM=;
+	b=V9J4oCiYSFEKZ39z1ZSxBwGlvbjlM8j9nQKDDaMtG9cpouVFZQO3b5JATMJ7EjXpwSESUU
+	qicY51QEWGw5CLMv7xNRFf6gB8QyURpYVeYmeUtthjh0OyylZdk87E7WUx80s+c09BV0xM
+	lFeqiDASZy9qxMCoAyzEikXStvm+Lrw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Harry Yoo (Oracle)" <harry@kernel.org>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [RFC PATCH] slub: spill refill leftover objects into percpu
+ sheaves
+Message-ID: <ybffdlcvyls3cmen67b3ewno3vwdag6timnqjcoomipd2ei5sg@r3goxchyn3ib>
+References: <20260410112202.142597-1-hao.li@linux.dev>
+ <ad39TJZYLItrEnIM@hyeyoo>
+ <bbtmo4fffalhjglohnazrxvplzfxelmuivbonnbfi3gzsm7qj3@bvh42p47dsqa>
+ <ad9mZeERenhwh7De@hyeyoo>
+ <6k3etcsawcw3zsh5mphc2kj3l2griymug3hvchnwubskwanbc4@gekaw6jn7pi4>
+ <aeHMfXldGQ0ANL-K@hyeyoo>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/sparse: remove unnecessary NULL check before
- allocating mem_section
-To: Sang-Heon Jeon <ekffu200098@gmail.com>, akpm@linux-foundation.org,
-        david@kernel.org, ljs@kernel.org, Liam.Howlett@oracle.com,
-        vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org
-References: <20260419144225.2875654-1-ekffu200098@gmail.com>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260419144225.2875654-1-ekffu200098@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIwMDExMCBTYWx0ZWRfX+5wseoZ1F8bn
- QNLj66QD/TjxCOYD3uyXAmfsd8aMxN3/jb4ubRESOqabeLw2nW8/18MjnwJAhKyXW8YO1bGJf7Q
- KhCyklt817Ewk9on2kBEdCva9zPshv51N3iUwK/APx4kUg43sOL1pL8868jy0oX4kq9aeKINE+x
- OePiEsHTmtYU2GUjGFqVHTVrP1CKeBZ7+IKws/N7b+oYf4r4ygCBs1hGORPCn4UTqFtpEPns/D3
- 4QDAKaM+uCM/yZ68j4xyz6r//+cyH8Qq06go7DxFxbU+qcGi3H0TM4LAL1lFi86nTF111+tZmHc
- WRgTiF9qehZ4OIY1B2K36Xm+UU2Q+ManCuoFm1h9yNVyubBWwxqq+TvJVQuusEAZTJ7MQ60vKAP
- YacsRnSIseyB7T7LUgwR/5jTtJQq/RawZ82sbdenqZO4cjwNzgTnqsp84Mxhl923Rjtk4cv/a9S
- RglgYQgjBvWCgmuxGxA==
-X-Proofpoint-GUID: 7MrMPmNuoN0degy2T3SOvfwEukYvkTgi
-X-Authority-Analysis: v=2.4 cv=SOJykuvH c=1 sm=1 tr=0 ts=69e60fdb cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=pGLkceISAAAA:8
- a=VnNF1IyMAAAA:8 a=NIslptLVQr8rbYoGeSoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: qAmlAQ4nIuYuWS-DpXU3w7hSDqtWMmoV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-20_02,2026-04-17_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 phishscore=0 suspectscore=0 adultscore=0 impostorscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604200110
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 41AEB100012
-X-Stat-Signature: 3iqehkofhyu5c16jccqmzjn7kr5rb894
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aeHMfXldGQ0ANL-K@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Stat-Signature: m1ujtp8nztzu7z96cb1khd6jqm7kkqwt
 X-Rspam-User: 
-X-HE-Tag: 1776685023-605609
-X-HE-Meta: U2FsdGVkX1/alIN6AQ+DL39TBw0zIB8jRoZOkHdLo/2H8q3fLXiSjJiI0WIh0dmeChY74fSwMDagedeknzC3a6SXGQh6+wS4MSW3IsjiCwt1Cntu07wKzZbiqmz0p6Fs8+zke+HVc6tft9tQqk7pfQzcDWaZDD/RUMElYdrurFEt7hw1AwWnGwB1WZ11tTen3LZutkEhdqO7EzqvRW7YrKusY9Pe7EkS3hlXYO8T0z1XrXutF/Brf5ILwN0cNAvZ9UmgCD0R1WQff2hF1hdvewEZeTLB+8AO4oSCCoDqtnAy8j+uQbeXTKzkfngnqjubBrMO4z4rwdpFtZCYoHcKwJDWiOK+PYB/WXtTBGFl3fYL66dPGZR3f7scZDsoDSMHI8ynoiNDt8ri81QdbKQ3FtJ4DR/cnyJG5Ybt99m8gD+x/NXOdOwGlJX8Gof3KwX1ihstXSGcNxndcr69BqYuVnI2/54+GZvPMr4IrUqrwYyteKJwGcdxAisjgjK/iRrWVO2LluxGNhMO7cawk1/mXhXTGCTK2VQbDT38HQwE9PeOkfjQ2vG3enx349hqB0YT8h8EOFEDvjzPpueYfzOZgD9bNhQdMd+CN6mUspc7ExpJErgdrjImqqONyrBTkFYdLUnA39eIZNkSPBnTg41MRwBPE7qpmcUQzuIK/7wMtSvE08Wh5bLAHZ9bjQw+9qAS33eWXViT8V6BMtom6524gYjNckqyhq3CJyONiKAvPNPR1+YiQ2Q+J+/a+giGfDn1PKvTJ8ErNS/DoB+l1h7Dmb/SjfDXa1CO0RXeI9Lh7qV+/xnpAADZUPqkW1Bk5NFF8P3irZ/xqCPQdF2yOcBLSirYWdxB7ogSH1LdRrbXcveeG0y0hznbc3zTXQOrL1Yt8thGQW9JlfPKBO5OCcIciQq9gu+z7DOoTF38niDjdGPmMnSFO5nj91bKURPZoOewZxqFMcSrSgHqDqCKrQi
- PWSBZcSn
- GbZ91q2iwrnYDIx5Zu6b9Ll7Fgina6B/7TXrXRT3+2I/y5ChfBImq40ojpTRKdS0bOeisP66ilfd1TALvIHxIrcRGdHqut2PeeT9Z2NjzVdxfUEGNEJaGbDNbpJN2lWaJ0Bg2V7Fc4IzkTCNuaOvnmZuS4IvkoXmqxTBWbR0b5rZl+sV9/DqfN6gVHmUs2m2u3EVjVTuJ7/ZhtZvWEVv6Bz9RkgeJ8jti0q8pfprR7E05bVUFlnXY25E1H/rQFdBq8t7R2Djt6lij7sZd+iuaS8YoB0czcJAUVk/9WGdXV7q8Cw2Q1wIsRVKeTtUM7kt/25MiaT5LgN2s9m9+kf9jNxz8kTTVHzTT/8GBLUQ4WjVm6Yp0Hxzf4gBp8GDuRxKpDbeWDCMFunyjuzZzWE9mkxKdsZ0GAbfh0FY/
+X-Rspamd-Queue-Id: CFA2EA000F
+X-HE-Tag: 1776685304-147747
+X-HE-Meta: U2FsdGVkX19kXb7dJXJSQYobzggR1/stQeTFwLMqBEkbOwQ+ZAUBqxlDcmldwQv6Erwz0HtsjiIDwBWKdtNp7cWcWgcdzou7C7a8Ekl0XZRmPhLk9F2I51moCcE1tWpJ0TGRDmkASpLZxUqwzklvFNsqWAAe+Ni1MeV9iOzsnLvzBlZMFgrR8g16MU5Ww7yl68bBQcCIqI81Kdis8f/tuNvevAzDKmYRQlnrl0c1cBVoqrav3bPBChPvpiful5b8AcV1ARhjldGi/sfltWhC5ZhxtMuT0831jeDg4JSK6A716SvgVa1kfI0WAorViVFygkyh4PzN/WzA/zDxNFFXhhroazA8FREl+KwPySm5ctW+a03gULP5gx+SyiqRRWW/LESQagEeVT0C1tIj796BavbtOcO3JcQdGxZkdcMpC3b+/8n7veoGO19Mg21yHUMs+Qi+1X8AoBcBeY/PWLg7bQqEkw9Cd5hTFRBAoY5aMVCIZBJXJs99FBXDk3ctFTdkmlVotV9T5axX7uq1Ke3EOSWUzpRWfBpCAA/2wMUgt7X9WxjxCh4fdIrmlUE2vdRmKPaj44IWQq5nmjo6oonDJI92swC9ahpd4SOjtbDYaohBxbS7fOHeEaexnfKJJ+W+jKI0CxVJYTilSTpkD/ykXzPJWfipoyNSA63xxb8O/rCvzhyT9b4TpIHs2bZJksRww4jKhkQG+2Flxpy9WCDH6mZzyzMacoQGcQfWW7QHAVb/O8wR4OGFA8A/1cmj9uBQaMJP7nnS39jl/rGHiD3YyOiK9ERbY90e25mYhJ1rmC1JVzxXgKWAcNcUDjy68qWMGsNZaBpMzLm4nRL/3v61Qy0e2jB16Niiv9ajgYLcMeyimsrlD8/s6BbSIJekOYOUFdgbihn82lZJV2DpFL6PMfWwa1kFJpUN5MG3q97WLKpeeqUi7IdtFoTuQRNX1VmAUVXwEn6K+7WJ9+Pukjh
+ CmnfjG3E
+ hpTb9BmwZlL5HxQjgHHLDnXp05nrp5pDUWjwFAMfmPXNJK1s9PsETwJhIlf4vkq1lgo31hGyrAPeuZRdIwJDlI1pswxq+nrZqEOrm2cuEL6BB7CVJsMGfj2sQdm1LQsE6D4apcw1PuZ0pC4euthcJjK8fih8mF4Ko9feHWY7ioWD31bv6s9u9fOag/L5X/fN6Zh60GW3zsWkq8/g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,68 +93,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
+On Fri, Apr 17, 2026 at 03:00:29PM +0900, Harry Yoo (Oracle) wrote:
+> On Thu, Apr 16, 2026 at 03:58:46PM +0800, Hao Li wrote:
+> > On Wed, Apr 15, 2026 at 07:20:21PM +0900, Harry Yoo (Oracle) wrote:
+> > > On Tue, Apr 14, 2026 at 05:59:48PM +0800, Hao Li wrote:
+> > > > On Tue, Apr 14, 2026 at 05:39:40PM +0900, Harry Yoo (Oracle) wrote:
+> > > > > On Fri, Apr 10, 2026 at 07:16:57PM +0800, Hao Li wrote:
+> > > > > Where do you think the improvement comes from? (hopefully w/ some data)
+> > > > 
+> > > > Yes, this is necessary.
+> > > > 
+> > > > > e.g.:
+> > > > >   1. the benefit is from largely or partly from
+> > > > >      reduced contention on n->list_lock.
+> > > > 
+> > > > Before this patch is applied, the mmap benchmark shows the following hot path:
+> > > > 
+> > > > - 7.85% native_queued_spin_lock_slowpath
+> > > >     -7.85% _raw_spin_lock_irqsave
+> > > >         - 3.69% __slab_free
+> > > >             + 1.84% __refill_objects_node
+> > > >             + 1.77% __kmem_cache_free_bulk
+> > > >         + 3.27% __refill_objects_node
+> > > > 
+> > > > With the patch applied, the __refill_objects_node -> __slab_free hotspot goes
+> > > > away, and the native_queued_spin_lock_slowpath drops to roughly 3.5%.
+> > > 
+> > > Sounds like returning slabs back indeed increases contention on slowpath.
+> > 
+> > Indeed!
+> >
+> > > > The
+> > > > remaining lock contention is mostly between __refill_objects_node ->
+> > > > add_partial and __kmem_cache_free_bulk -> __slab_free.
+> > > > 
+> > > > > 
+> > > > >   2. this change reduces # of alloc slowpath at the cost of increased
+> > > > >      of free slowpath hits, but that's better because the slowpath frees
+> > > > >      are mostly lockless.
+> > > > 
+> > > > The alloc slowpath remains at 0 both w/ or w/o the patch, whereas the
+> > > 
+> > > (assuming you used SLUB_STATS for this)
+> > 
+> > Yes, I enable it.
+> > 
+> > > That's weird, I think we should check SHEAF_REFILL instead of
+> > > ALLOC_SLOWPATH.
+> > 
+> > Yes, I will compare each metrics for later testing. Maybe we can see more
+> > clues.
+> > 
+> > > > free slowpath increases by 2x after applying the patch.
+> > > 
+> > > from which cache was this stat collected?
+> > 
+> > It's for /sys/kernel/slab/maple_node/
+> 
+> Ack. And you also mentioned (off-list) that kmem_cache_refill_sheaf()
+> is not on the profile. That's good to know.
+> 
+> > > > >   3. the alloc/free pattern of the workload is benefiting from
+> > > > >      spilling objects to the CPU's sheaves.
+> > > > > 
+> > > > > or something else?
+> > > > 
+> > > > The 2-5% throughput improvement does seem to come with some trade-offs.
+> > > > The main one is that leftover objects get hidden in the percpu sheaves now,
+> > > > which reduces the objects on the node partial list and thus indirectly
+> > > > increases slab alloc/free frequency to about 4x of the baseline.
+> > > > 
+> > > > This is a drawback of the current approach. :/
+> > > 
+> > > Sounds like s->min_partial is too small now that we cache more objects
+> > > per CPU.
+> > 
+> > Exactly. for the mmap test case, the slab partial list keeps thrashing. It
+> > makes me wonder whether SLUB might handle transient pressure better if empty
+> > slabs could be regulated with a "dynamic burst threshold"
+> 
+> Haha, we'll be constantly challenged to find balance between "sacrifice
+> memory to make every benchmark happy" vs. "provide reasonable
+> scalability in general but let users tune it themselves". 
+> 
+> If we could implement a reasonably simple yet effective automatic tuning
+> method, having one in the kernel would be nice (though of course having
+> it userspace would be the best).
 
-On 4/19/26 8:12 PM, Sang-Heon Jeon wrote:
-> Commit 850ed20539a4 ("mm: move array mem_section init code out
-> of memory_present()") moved mem_section allocation logic
-> into memblocks_present().
->
-> Before that move, memory_present() could be called multiple times, so
-> unlikely() matched the common case, where most calls found mem_section
-> already allocated.
->
-> After that move, memblocks_present() is called exactly once from
-> sparse_init(). Under CONFIG_SPARSEMEM_EXTREME, mem_section is always
-> NULL when it is called.
->
-> So remove unnecessary NULL check before allocating mem_section. No
-> functional change.
->
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> ---
-> Hello,
->
-> While looking into boot information, I found a minor enhancement point.
-> If I misunderstood anything, please feel free to let me know.
->
-> Thank you for taking valuable time to review this work.
->
-> Best Regards,
-> Sang-Heon Jeon
-> ---
->   mm/sparse.c | 10 ++++------
->   1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index effdac6b0ab1..e13f9f5fa090 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -201,13 +201,11 @@ static void __init memblocks_present(void)
->   	int i, nid;
->   
->   #ifdef CONFIG_SPARSEMEM_EXTREME
-> -	if (unlikely(!mem_section)) {
+Yes, I'm gradually feeling that SLUB's flow is so tight and simple that doing a
+one-size-fits-all optimization is super hard.
+It might be better to just export some parameters to userspace and let users
+tune them.
+After all, introducing an auto-tuning mechanism into a core allocator like SLUB
+might make it as unpredictable and hard to control as memory reclaim. :P
 
+> 
+> > > /me wonders if increasing sheaf capacity would make more sense
+> > > rather than optimizing slowpath (if it comes with increased memory
+> > > usage anyway),
+> > 
+> > Yes, finding ways to avoid falling onto the slowpath is also very worthwhile.
+> 
+> Could you please take a look at how much changing 1) sheaf capacity and
+> 2) nr of full/empty sheaves at the barn affects the performance of
+> mmap / ublk performance?
+> 
+> I've been trying to reproduce the regression on my machine but haven't
+> had much success so far :(
+> 
+> (I'll try to post the RFC patchset to allow changing those parameters
+> at runtime in few weeks but if you're eager you could try experimenting
+> by changing the code :D)
 
-LGTM
+Sure thing. I'll run some tests and organize the data.
 
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
+>  
+> > > but then stares at his (yet) unfinished patch series...
+> > > 
+> > > > I experimented with several alternative ideas, and the pattern seems fairly
+> > > > consistent: as soon as leftover objects are hidden at the percpu level, slab
+> > > > alloc/free churn tends to go up.
+> > > > 
+> > > > > > Signed-off-by: Hao Li <hao.li@linux.dev>
+> > > > > > ---
+> > > > > > 
+> > > > > > This patch is an exploratory attempt to address the leftover objects and
+> > > > > > partial slab issues in the refill path, and it is marked as RFC to warmly
+> > > > > > welcome any feedback, suggestions, and discussion!
+> > > > > 
+> > > > > Yeah, let's discuss!
+> > > > 
+> > > > Sure! Thanks for the discussion!
+> > > > 
+> > > > > 
+> > > > > By the way, have you also been considering having min-max capacity
+> > > > > for sheaves? (that I think Vlastimil suggested somewhere)
+> > > > 
+> > > > Yes, I also tried it.
+> > > > 
+> > > > I experimented with using a manually chosen threshold to allow refill to leave
+> > > > the sheaf in a partially filled state. However, since concurrent frees are
+> > > > inherently unpredictable, this seems can only reduce the probability of
+> > > > generating leftover objects,
+> > > 
+> > > If concurrent frees are a problem we could probably grab slab->freelist
+> > > under n->list_lock (e.g. keep them at the end of the sheaf) and fill the
+> > > sheaf outside the lock to avoid grabbing too many objects.
+> > 
+> > Do you mean doing an on-list bulk allocation?
+> 
+> Just brainstorming... it's quite messy :)
+> something like
+> 
+> __refill_objects_node(s, p, gfp, min, max, n, allow_spin) {
+> 	// in practice we don't know how many slabs we'll grab.
+> 	// so probably keep them somewhere e.g.) the end of `p` array?
+> 	void *freelists[min];
+> 	nr_freelists = 0;
+> 	nr_objs = 0;
+> 
+> 	spin_lock_irqsave();
+> 	for each slab in n->partial {
+> 		freelist = slab->freelist;
+> 		do {
+> 			[...]
+> 			old.freelist = slab->freelist;
+> 			[...]
+> 		} while (!__slab_update_freelist(...));
+> 
+> 		freelists[nr_freelists++] = old.freelist;
+> 		nr_objs += (old.objects - old.inuse);
+> 		if (!new.inuse)
+> 			remove_partial();
+> 		if (nr_objs >= min)
+> 			break;
+> 	}
+> 	spin_unlock_irqrestore();
+> 
+> 	i = 0;
+> 	j = 0;
+> 	while (i < nr_freelists) {
+> 		freelist = freelists[i++];
+> 		while (freelist != NULL) {
+> 			if (j == max) {
+> 				// free remaining objects
+> 			}
+> 			next = get_freepointer(s, freelist);
+> 			p[j++] = freelist;
+> 			freelist = next;
+> 		}
+> 	}
+> }
+> 
+> This way, we know how many objects we grabbed but yeah it's tricky.
 
--Donet
+Thanks for this brainstorming.
+If we do an atomic operation like __slab_update_freelist under the lock, I'm
+worried it might prolong the critical section. But testing is the best way to
+know for sure. I'm quite curious, so it's definitely worth a try.
 
+> 
+> > > > while at the same time affecting alloc-side throughput.
+> > > 
+> > > Shouldn't we set sheaf's min capacity as the same as
+> > > s->sheaf_capacity and allow higher max capcity to avoid this?
+> > 
+> > I'm not sure I fully understand this. since the array size is fixed, how would
+> > we allow more entries to be filled?
+> 
+> I don't really want to speak on behalf of Vlastimil but I was imagining
+> something like:
+> 
+> before: sheaf->capacity (32, min = max); 
+> after: sheaf->capacity (48 or 64, max), sheaf->threshold (32, min)
+> 
+> so that sheaf refill will succeed if at least ->threshold objects
+> are filled, but the threshold better not be smaller than 32 (the
+> previous sheaf->capacity)?
 
-> -		unsigned long size, align;
-> +	unsigned long size, align;
->   
-> -		size = sizeof(struct mem_section *) * NR_SECTION_ROOTS;
-> -		align = 1 << (INTERNODE_CACHE_SHIFT);
-> -		mem_section = memblock_alloc_or_panic(size, align);
-> -	}
-> +	size = sizeof(struct mem_section *) * NR_SECTION_ROOTS;
-> +	align = 1 << (INTERNODE_CACHE_SHIFT);
-> +	mem_section = memblock_alloc_or_panic(size, align);
->   #endif
->   
->   	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, &nid)
+I feel that simply increasing the sheaf capacity should generally improve
+overall performance, although we'd likely see more slab alloc/free churn
+compared to the baseline.
+
+One thing I'm wondering about is how we determine if an optimization is truly
+worth doing.
+
+Micro-optimizations like this rarely have purely positive effects; they often
+come with fluctuations or regressions in other metrics-such as more frequent
+slab allocations and frees, which adds pressure to the buddy system.
+So this kind of ties our hands a bit :/
+
+> 
+> > > > In my testing, the results were not very encouraging: it seems hard
+> > > > to observe improvement, and in most cases it ended up causing a performance
+> > > > regression.
+> > > > 
+> > > > my impression is that it could be difficult to prevent leftovers proactively.
+> > > It may be easier to deal with them after they appear.
+> > > 
+> > > Either way doesn't work if the slab order is too high...
+> > > 
+> > > IIRC using higher slab order used to have some benefit
+> > > but now that we have sheaves, it probably doesn't make sense anymore
+> > > to have oo_objects(s->oo) > s->sheaf_capacity?
+> > 
+> > Do you mean considering making the capacity of each sheaf larger than
+> > oo_objects?
+> 
+> I mean the other way around. calculate_order() tends to increase slab
+> order with higher number of CPUs (by setting higher `min_objects`),
+> but is it still worth having oo_objects higher than the sheaf capacity?
+
+Sorry, I just got confused for a second. Why is it a good thing for oo_objects
+to be larger than the sheaf capacity? I didn't quite catch the logic behind
+that...
+
+-- 
+Thanks,
+Hao
 
