@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB9C8F36C51
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 08:02:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E04BF557E4
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 08:36:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9CDD6B0089; Mon, 20 Apr 2026 04:02:04 -0400 (EDT)
+	id EC8396B00E2; Mon, 20 Apr 2026 04:36:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A277C6B008A; Mon, 20 Apr 2026 04:02:04 -0400 (EDT)
+	id E9FEF6B00E3; Mon, 20 Apr 2026 04:36:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DD3A6B0093; Mon, 20 Apr 2026 04:02:04 -0400 (EDT)
+	id DDE0A6B00E4; Mon, 20 Apr 2026 04:36:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A1DF6B0089
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 04:02:04 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 303158C806
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:02:04 +0000 (UTC)
-X-FDA: 84678190968.14.652B5FB
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 23BC31C000F
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:02:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of gorbunov.ivan@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gorbunov.ivan@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776672122; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CCB926B00E2
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 04:36:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 363B813BC98
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:36:27 +0000 (UTC)
+X-FDA: 84678277614.13.AE0E0BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 819FF1C0002
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:36:25 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OyNb3JVH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776674185; a=rsa-sha256;
 	cv=none;
-	b=SLOPrn3Yz5vSG0XhcECADoWtE5ok0mdtwXgUCmgk9+EDUqPnhVJd4UwCDOshUcpLvCfnga
-	6jhbinmchY8RIljnpMs7lYx+b4YBfRDsU5+cXDwvt2cfbQuvNV1xTsrbK5Mjmy4nfGfxZt
-	wawuwp2zTKHO8O35AKNmCHf7WQ0qiFQ=
+	b=gw3nqubAzyk6vt03yCITvHwrFa5y1A6DNIYeUL25v+9Yk6TZoEptJVDMnQNYOphhMoTZYh
+	YgcVpHoPx0e9pDBhBIRxckbMxV1SnamuRfVJ8Ilrjs3KlHd+n1k/8YDKNhFxBFlXmLIT2U
+	ZUdPhVMblNTHJ2pwHQGMpKVPdUmhhKs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of gorbunov.ivan@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gorbunov.ivan@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OyNb3JVH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776672122;
+	s=arc-20220608; t=1776674185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5RaFZFPy3SIJiwVMclRqUEKDDyAcSmOftiMuifnf0Ec=;
-	b=a+TUefr8FjPAVCxFJS+9sg2Ymais1WWScY/HMSrtbvuS4wXyyLH5jNGORt5yApQm04/qfj
-	OchElFWD12eD3A4b7dms6I5DMLY7PuojWbs/8i6eiKPj1nbR+qumCWBJDBFDwrtiLOJeja
-	+obGQhkJf1CMrgoC/7bjEmM6PGEP8uk=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fzdGX5JK7zJ46Bd;
-	Mon, 20 Apr 2026 16:01:08 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id BF04440577;
-	Mon, 20 Apr 2026 16:01:59 +0800 (CST)
-Received: from mscphis04371.huawei.com (10.123.69.39) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Apr 2026 11:01:59 +0300
-From: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-To: <gorbunov.ivan@h-partners.com>
-CC: <david@kernel.org>, <Liam.Howlett@oracle.com>,
-	<akpm@linux-foundation.org>, <apopple@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <gladyshev.ilya1@h-partners.com>,
-	<harry.yoo@oracle.com>, <kirill@shutemov.name>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<lorenzo.stoakes@oracle.com>, <mhocko@suse.com>, <muchun.song@linux.dev>,
-	<rppt@kernel.org>, <surenb@google.com>, <torvalds@linuxfoundation.org>,
-	<vbabka@suse.cz>, <willy@infradead.org>, <yuzhao@google.com>,
-	<ziy@nvidia.com>, <artem.kuzin@huawei.com>
-Subject: [PATCH v2 2/2] mm: implement page refcount locking via dedicated bit
-Date: Mon, 20 Apr 2026 08:01:19 +0000
-Message-ID: <9936cc799ac8b637ee58ae3bf6ec0e5eeb5306e9.1776350895.git.gorbunov.ivan@h-partners.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
-References: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VU1KE2XDGZG9ypBZarFY3mIw53EwZD6ELbSUCOSxzHA=;
+	b=ymMzeoXd91s0etOYtHdgLHwVCcMJTGek5CEUQrbKw7pN9wBsvJXBSBGD88tt7Nke1UEO06
+	vEFAVGoldWkhO5bWOHn+GZ6ITl+8DH6GBax+/Dm1Hm7p3A5Ai7CDoxN0pCBVn9/pgJ/FlG
+	JOY1i0chSx4ByL11Re73CKZ5LVzEYyw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 549F141A41;
+	Mon, 20 Apr 2026 08:36:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775BFC19425;
+	Mon, 20 Apr 2026 08:36:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776674184;
+	bh=ZjSMC1+rQxb7tT18VaXKCGLg1fOlc/Ds+iviih6AekI=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=OyNb3JVH+N9z/VikAd0HqfX471mryIlcQzZylQwIHFI65x6mhe+7d+nG1yxGi/fuf
+	 5c/DE8PeTOXC+JWdmg7y404PGdBuitmEf7920+6jRYRW2Y7wWvokr7u3Q5Nx5Fmqp+
+	 LmMXQJzGZG6LUxWlaXkudra28vhaCjJ4cNuUU4/+7fEPWe7mBZi5VeDOeehMIklUqJ
+	 JrZkqmYZqbv8he/E7QJ/7NiXc/A9e8+eaUyNt/iULeaNH/AEOBicAcnAPi0BZl1Ot/
+	 WuyCAXJ2pPPNqvmfBUXtqWXZ2gaEcKzEQbzvtXAAAeWWdmuCtUr6eFmNyUbCNjGAXU
+	 F7OkKfzODkn3Q==
+Message-ID: <b5848615-c4f9-4d5c-9f17-2a8e63a5651f@kernel.org>
+Date: Mon, 20 Apr 2026 10:36:20 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.69.39]
-X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
- mscpeml500003.china.huawei.com (7.188.49.51)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [mm?] KCSAN: data-race in mas_wr_store_entry /
+ mtree_range_walk (2)
+Content-Language: en-US
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ syzbot <syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com>,
+ akpm@linux-foundation.org, jannh@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, ljs@kernel.org, pfalcato@suse.de,
+ syzkaller-bugs@googlegroups.com
+References: <69e1f975.050a0220.1de265.0009.GAE@google.com>
+ <twv35g3umuktagxixl7q4upjz6hxf2rkep2ophcwz2qzbschrf@dy7lcxu5wrly>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <twv35g3umuktagxixl7q4upjz6hxf2rkep2ophcwz2qzbschrf@dy7lcxu5wrly>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Stat-Signature: c8pykqrxx67a8mmku3rhn4hg9oyfjbs6
+X-Stat-Signature: 6m8dexibkyucsxkbrzznm5u5n4d56aoy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 23BC31C000F
-X-HE-Tag: 1776672121-828517
-X-HE-Meta: U2FsdGVkX19tMN5NBgj1Y7pZlMR9XVLYNKGZme6WCHjajsY3K73ygzrsWVJM8QfAN6udoAS38gT4SMIIhFb5RhYYARmXp/VvEHOqRLdZgND/Pi0Z6COV6opslVs/orLlpiOUbE/Hxef2cJkBHUiMYzM/PKNYAlThVhDy/+G1bASuhKg+J8ZXDwYzuGDnP7FiJu2p+Z6GxKZB7vFZOsUmGsUKQHQw8lHu2bjyPJ09X24xADkOaEiX/jFeeKR6VF7Ty9PvRRpjq3TNRjsLVaoICsIfvKRk3tIvWPn+olva/u4LkbG3YTnlQd5ajJg0C/i+6Vw2Wz6nPkwB33u5WMdzFSZcC6j+qAisplqkgr3YMNsv/XER2n/6HxqMjq5MQAgD3doSgWPfd2kPs5WQCHt611OZiddPbS69Uc44vI0Xx2XZ4gPTykhcLKwa1l2qAd0QfVEgeOz4M+8x/NMBJvMoxoWedSmCHl4hFV3v2kHzkpF8QCqfE6mqpfvxqMTIgVnpQW50y9SG9Dfj6bDIUgIb5WfSNqLQBaAn4sobOiuxljJY1jtcjk/SE7JwASAx2vQ5u1OFYxCCWxAFAYDmIm85QEKp5TXO7D4HhVDMlJyZ2OAflnlwOgnDLquB6OfQN79c30RKWESy+pnsY09bMN8VB2RkfE2SeUsUOrw0sI38Pr1+k0LKYoSnuBGoQKogSWzI5MCnZ3jLT4qwEikRkmZscLAYyf4AiAG/WaIgzJa9CJ8/9cdqhSWq6blxQfdSF2NrvVkTE9XW6wf5YZ1Eqvp6tWnWr/5e36NPxjGueTpe3p9O/PSoo9Id3Hkt7Mhp5yarseBa7R9aOF37sp+wZiLkEq0kiayxKkhh7tb/MejReShcPddNYkV4VdOiiKT18kjlekZa529qizJTosjxPPocXHrFn3+a1iU9RPWVH9528XpnYrEQXCs6g8AewnHzGBC+FRZMyNjWvGjV1sYh1cR
- c1vPd086
- KBIw9Afs5vqSp5Yn42U/imbxaMhOKjqiYIlYzXwF6keYv6p9JHIwGUAWOTxGNyfwAOIbOx82WPc0knoJVAEFjhjCAJwgu8QU9Dyy/iJ6JBQjx/QaWr6QMOLARGmSshEJCP1dwYXWSPeemSpYwDpm9PhwpYiHAmU7K3FMgbyM1EAcRSHNScJmIapNmtuLxY+V9SqHz++GssJ8bQQxugpKDOshuO/RCQBhgkAz+om6jsVmuLhPlI7vfdRXNdPM3dnR+364wJXlGESV8MqjG1OFl+2QqayD5JgaxWgcN
+X-Rspamd-Queue-Id: 819FF1C0002
+X-HE-Tag: 1776674185-827371
+X-HE-Meta: U2FsdGVkX19I5gG/XLge5LiH44bfMjZOfEvR2xtnV9aTmDa/4bMc1V5/uKwQQwIe5q0qWaU61RBZqTDqI0aRvVymgw585Gy8+Tn0PqeenrJEvqYvw32vR99P0HP9Npl7KxkDpjh9lcrifbEpkS6oHQI3Ll7kkgXtdMMQMnlZj7cXYTo+6U4iRPSFIiX14CK7v2UrS9k4unEktziwQJaBUGIdvVkQ5nf5KMD8pucA2tatBLDkr+FnGBTnenWElDGEhxaUd/PoSXCe4MTOxHmNhtrEHX4Ree9IU56v8JkAqKSElcu95Xc/sCgDvy7qYWV2zqzPk5foLzHFJKzIRLm2u9/UUGO9VzEOWdEkAE7KpbPOWZnwj0q0Bu1bXB9Wk+0NGLjqVDxjnQwVT4CbcS94kwGGci7gZiMXQhybHvvnzVq6QAI6MVpAMSdjiezr/fLDkFM5VDFcpYiUM9YYH0PQdgI+kYb6tbi/rLmE4b+C3xOjPxc3Dsdaop9dFv9E527sQ+qc0CCdrry+eae6j2dK4vbKmPR6FvGU3IV7muIPXXwXkf0wDCEtrz/5EkR9Fsgg4D+ZtPt29kgbXvP9xhWCLu0QY9zdz8i70c1lrjP3d7ze5S9mwHqITceILzQONB92FS8j8XHgjjdqyssYiDYOAFldlHYCJiZxPYm2puUD7ermpHusGmRdRD1IB9EmMmHcQRj6F2+vOZUv8Qp+QbRf6cjswFrWXe+PloKjZtsqkcmBQ8ax929YUPej273a19RB5f9R9LKPhNHX9e/ZDu0JKofSEgr9EfPibeBGXhWJ+y0ijW0ZgBWOA/CvYSAZigZ5FmcX6dW4A3WmY1fI/lVfPbdfvlqtOLgV5qLlu+I7/f3Ygyrk861ldl5OiACKnoDGEa9samF8VCf3+aRKT2i2q5lKObcsXHD7Ih5RbI/tlqIVAurZc5XPnIB0T64UWrN5GE5bH+KlOOGHjqG2zlp
+ h6iYiTxr
+ JPcU5hjFXfRsLjY7VDwZI1xbNCM3vcHiGHvH93Z0tpgfK1OZWWUmbmERKSzsD+TmlzGLWNcO2rInH+qc1qp9eSHvmLyMwbaRsX2dvn6AAoEbPa126IvBo3asbxKxPdlbgkqwgSf34kKfGiDPGhu5nt8EA5f9iueFNNJypWa7KsaOsiGr0gI738qxPrqAwMRViuAim/UyR5s65eXs9hL7jJhy7U/buBrRiLZ/4LAeBp5wm5YbynzL0FpIol9NA9Sn0XL3CkVPQjMwLiGG7TFsNi5XDMAsMfoj0CLNsE8OiNxZvONvY6w2CW/tl/sTSayaKgmAPjpudta5YDXU8/U7n0DIUb5QQBnu7x4yjFletYMU5vjFamo3ELaGXGed2EqfTvzgfnpDn/gju0rhTyzKs3UKbaHnqWVHcZWnqsfLVFfuJbxAE+C3hNUgsLowz/H3vEKzx7WQPtgnV8BNCLh3fnT5Qay6ckOvEm27WupYBxEYK3aEk+DREuTtps2MZDSrBfpfQUNWLDrR0jYOWUxE9ySQqJHfhbfZoYOdtfWl8pwOykPsj4lcH6qSRZichGEYwezxtRJbjMNHy9Z0f6tmgCUB5bDBtc8fBs9oYLeoz5O9dVWM127gKr0hAWjm4dGqqvHjdkZLZjovPM/8c7NmLayjiTxrNmfpHFAVr8rZF8Kv+TmiJMWbt3fnE2cLf1PHjp0Xi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,133 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+On 4/18/26 01:50, Liam R. Howlett wrote:
+> * syzbot <syzbot+38a879f4a73497f2dfef@syzkaller.appspotmail.com> [260417 05:12]:
+>> Hello,
+>> 
+>> syzbot found the following issue on:
+>> 
+>> HEAD commit:    1d51b370a0f8 Merge tag 'jfs-7.1' of github.com:kleikamp/li..
+>> git tree:       upstream
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=117dc4ce580000
+>> kernel config:  https://syzkaller.appspot.com/x/.config?x=7f207c4b1fbf85a3
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=38a879f4a73497f2dfef
+>> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+>> 
+>> Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> ... and you won't.  This will work unless we tear aligned unsigned long
+> writes/reads.
 
-The current atomic-based page refcount implementation treats zero
-counter as dead and requires a compare-and-swap loop in folio_try_get()
-to prevent incrementing a dead refcount. This CAS loop acts as a
-serialization point and can become a significant bottleneck during
-high-frequency file read operations.
+Note I think the reproducer here means code that will trigger that KCSAN
+alert deterministically (as opposed to fuzzing), not something that would
+depend on whether the alert is pointing to a "real" problem.
 
-This patch introduces PAGEREF_FROZEN_BIT to distinguish between a
-(temporary) zero refcount and a locked (dead/frozen) state. Because now
-incrementing counter doesn't affect it's locked/unlocked state, it is
-possible to use an optimistic atomic_add_return() in
-page_ref_add_unless_zero() that operates independently of the locked bit.
-The locked state is handled after the increment attempt, eliminating the
-need for the CAS loop.
-
-If locked state is detected after atomic_add(), pageref counter will be
-reset with CAS loop, eliminating theoretical possibility of overflow.
-
-Co-developed-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-Acked-by: Linus Torvalds <torvalds@linuxfoundation.org>
-
----
- include/linux/page-flags.h | 13 +++++++++++++
- include/linux/page_ref.h   | 28 ++++++++++++++++++++++++----
- 2 files changed, 37 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 0e03d816e8b9..b3e3da91a90a 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -196,6 +196,19 @@ enum pageflags {
- 
- #define PAGEFLAGS_MASK		((1UL << NR_PAGEFLAGS) - 1)
- 
-+/* Most significant bit in page refcount */
-+#define PAGEREF_FROZEN_BIT BIT(31)
-+
-+/* Page reference counter can be in 4 logical states,
-+ * which are described below with their value representation
-+ *        state              |         value
-+ * (1)  safe with  owners    |   1...INT_MAX
-+ * (2)  safe with no owners  |         0
-+ * (3)  frozen               |  INT_MIN....-1
-+ *
-+ * State (2) can be only temporally inside dec_and_test.
-+ */
-+
- #ifndef __GENERATING_BOUNDS_H
- 
- /*
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index a7a07b61d2ae..32194e953674 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -64,12 +64,17 @@ static inline void __page_ref_unfreeze(struct page *page, int v)
- 
- static inline bool __page_count_is_frozen(int count)
- {
--	return count == 0;
-+	return count > 0 && !((count & PAGEREF_FROZEN_BIT) != 0);
- }
- 
- static inline int page_ref_count(const struct page *page)
- {
--	return atomic_read(&page->_refcount);
-+	int val = atomic_read(&page->_refcount);
-+
-+	if (unlikely(val & PAGEREF_FROZEN_BIT))
-+		return 0;
-+
-+	return val;
- }
- 
- /**
-@@ -191,6 +196,9 @@ static inline int page_ref_sub_and_test(struct page *page, int nr)
- {
- 	int ret = atomic_sub_and_test(nr, &page->_refcount);
- 
-+	if (ret)
-+		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_BIT);
-+
- 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -nr, ret);
- 	return ret;
-@@ -220,6 +228,9 @@ static inline int page_ref_dec_and_test(struct page *page)
- {
- 	int ret = atomic_dec_and_test(&page->_refcount);
- 
-+	if (ret)
-+		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_BIT);
-+
- 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -1, ret);
- 	return ret;
-@@ -245,9 +256,18 @@ static inline int folio_ref_dec_return(struct folio *folio)
- 	return page_ref_dec_return(&folio->page);
- }
- 
-+#define _PAGEREF_FROZEN_LIMIT	((1 << 30) | PAGEREF_FROZEN_BIT)
-+
- static inline bool page_ref_add_unless_zero(struct page *page, int nr)
- {
--	bool ret = atomic_add_unless(&page->_refcount, nr, 0);
-+	bool ret = false;
-+	int val = atomic_add_return(nr, &page->_refcount);
-+	// See PAGEREF_FROZEN_BIT declaration in page-flags.h for details
-+	ret = !(val & PAGEREF_FROZEN_BIT);
-+
-+	/* Undo atomic_add() if counter is locked and scary big */
-+	while (unlikely((unsigned int)val >= _PAGEREF_FROZEN_LIMIT))
-+		val = atomic_cmpxchg_relaxed(&page->_refcount, val, PAGEREF_FROZEN_BIT);
- 
- 	if (page_ref_tracepoint_active(page_ref_mod_unless))
- 		__page_ref_mod_unless(page, nr, ret);
-@@ -282,7 +302,7 @@ static inline bool folio_ref_try_add(struct folio *folio, int count)
- 
- static inline int page_ref_freeze(struct page *page, int count)
- {
--	int ret = likely(atomic_cmpxchg(&page->_refcount, count, 0) == count);
-+	int ret = likely(atomic_cmpxchg(&page->_refcount, count, PAGEREF_FROZEN_BIT) == count);
- 
- 	if (page_ref_tracepoint_active(page_ref_freeze))
- 		__page_ref_freeze(page, count, ret);
--- 
-2.43.0
 
 
