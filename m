@@ -4,89 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63207F36C5E
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 16:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 086B6F5A8A0
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 16:57:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 922BE6B0088; Mon, 20 Apr 2026 12:51:16 -0400 (EDT)
+	id 338DE6B0093; Mon, 20 Apr 2026 12:57:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D3006B0089; Mon, 20 Apr 2026 12:51:16 -0400 (EDT)
+	id 2E88D6B0089; Mon, 20 Apr 2026 12:57:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E9CC6B008A; Mon, 20 Apr 2026 12:51:16 -0400 (EDT)
+	id 189D26B0093; Mon, 20 Apr 2026 12:57:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C74D6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:51:16 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1AAF613BE6E
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:51:16 +0000 (UTC)
-X-FDA: 84679524552.06.56BCD60
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 42D3C1C0011
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:51:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="F/jR/IpR";
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 06B9A6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:57:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 780401A0A9C
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:57:22 +0000 (UTC)
+X-FDA: 84679539924.22.B3EE838
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 859E140008
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:57:20 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=POh7sWfi;
+	spf=pass (imf07.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776703874;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776704240;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ry6PhxjWb5+thKKcKNV5IxN9CxgPHTnNbYMDBvjayR4=;
-	b=8de2EeFj/axFaN52/wY3U/YQESY4DWwiZE5gDNXlGFo4E97MkzOAS/HMNTQ5Dx9yIU6qDG
-	Ve7L/cX1MniFdtqSXLIijIaklsT//eMblPRzmNoX++93og0fLoh6EVgh92CoaPfxtrhGe4
-	GD19x4JR60GyvUeCh0ZL7zFr92LidOY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="F/jR/IpR";
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776703874; a=rsa-sha256;
+	bh=vv6pxbBldgn/6ph8BGuAi1oLH15Wk/JcrNCDyfkdm2M=;
+	b=LwJjDNGorFSz72l/Eu+theqqDzW0TfnD2awCsc0gq83DTY/WeSQplh85WvYCcZnEcygKkk
+	O1LzJpV1xp6+LkJD+VO6K0lZ2YToZ8Z295enqg98Hhtu4z4AErhUdlnCGmN6VmwIOjG63d
+	2kRt3mF6moaEIgJjztaqYHlNO5EOuSA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776704240; a=rsa-sha256;
 	cv=none;
-	b=3BN2c3wLWZ+Dddn+pfnw7YH+lnP82a3aHZ1NfOSPwgoD3e64pUm090tkw63qusEDpZViSb
-	BcHg1OuwjieKH+zyLmzFVO/5ws71Qh+HfT4r9ICkGxJJNdm4pXByJx3g0ZYe5ZFKRi+sJJ
-	OKxhSb7jKQnqw7I04i8B2kNWk2i0PNs=
+	b=M02qo2ANWJYkQVEg1eo22hMl1mribuC8jJD2OWy2CMs3GvgO7DxWAPhEAVSJDYJDNaxO2+
+	leryaFqq8v44MzaCjPF+B9A9hbOgZ7kiPYMr05t3zYRt5osk2d7Pg4hNDQdDgUl4p6Mazb
+	EQqESSpSFH06HWoJbziHaqlM2M1DLW0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=POh7sWfi;
+	spf=pass (imf07.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D7A5D4412E;
-	Mon, 20 Apr 2026 16:51:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358F7C19425;
-	Mon, 20 Apr 2026 16:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776703872;
-	bh=jv9KBJPeWPD7HQ/S6MXPqVdupIpZZVJJB35zyCJWuOE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=F/jR/IpRjnuPCyTQ/2dwBsw6QpfproLKZqT5GNGgZDHEFWfm2VclIV3GrcLYyBfti
-	 ZT82lfiiz1xenX/v9WRDFbONv9BMa5AbbbQQpSzzGr0uSr7oU3qyrVz3MgxHOQEFjo
-	 UGDOf6ytD+3+LqlmBNFC2NwfwKTdQOBbVhUxqMLo=
-Date: Mon, 20 Apr 2026 09:51:06 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Salvatore Dipietro <dipiets@amazon.it>
-Cc: <linux-kernel@vger.kernel.org>, <ritesh.list@gmail.com>,
- <abuehaze@amazon.com>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
- <brauner@kernel.org>, <dipietro.salvatore@gmail.com>, <djwong@kernel.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-xfs@vger.kernel.org>, <stable@vger.kernel.org>,
- <willy@infradead.org>, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH v2] mm/filemap: avoid costly reclaim for high-order
- folio allocations
-Message-Id: <20260420095106.86ecdb685cd31e0847362512@linux-foundation.org>
-In-Reply-To: <20260420161404.642-1-dipiets@amazon.it>
-References: <20260420161404.642-1-dipiets@amazon.it>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	by tor.source.kernel.org (Postfix) with ESMTP id A08F960018;
+	Mon, 20 Apr 2026 16:57:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5303BC2BCB4;
+	Mon, 20 Apr 2026 16:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776704239;
+	bh=Hxuog2BmUcTqw6bS9yn1IjX0sLkh6OcGVS3NvuQmjvs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=POh7sWfiDFTWSjGmVavICCOIcpMsIzbqU+gIe3gf0zY469ERPsvaHNxGvWFbRznF3
+	 KV+wcwGTh0acakMVWxQIAeJzk8K6A4fTEC6Dq4D/Vbmsm8xy6fsU4clrw1IHJoqwNK
+	 7syHajwgV7Kox9tkohxwyysj3ora02XDy6OsvyI8Fln9PlmK4r3qDW8ACwAM15Nicb
+	 u0K+xrMpBy/KNQumrxEHbmsiFDlJH9zmKh/Umm0YHY7qB6CgJM7oKG0s8Or8+7qSqt
+	 snESboYpdk6SnVxYAlYG0CwxYpVkPeYGWL9mLxgQl1u3OdJvy9UDy5SWt4U3i5ZM0E
+	 3XYjSKCif8mZw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 441E3FC72A4;
+	Mon, 20 Apr 2026 16:57:19 +0000 (UTC)
+From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
+Date: Mon, 20 Apr 2026 22:27:09 +0530
+Subject: [PATCH v11 1/5] mm/vmalloc: extract vm_area_free_pages() helper
+ from vfree()
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 42D3C1C0011
-X-Stat-Signature: 738sqnxqbsypxkmmgkm63cx8qssaxe7h
+Message-Id: <20260420-vmalloc-shrink-v11-1-cad80b00853a@zohomail.in>
+References: <20260420-vmalloc-shrink-v11-0-cad80b00853a@zohomail.in>
+In-Reply-To: <20260420-vmalloc-shrink-v11-0-cad80b00853a@zohomail.in>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Shivam Kalra <shivamkalra98@zohomail.in>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776704237; l=2828;
+ i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
+ bh=qdjFLARIuW0yV59j3BOJKhfJswD1cYSsPkOQAeYYcb0=;
+ b=H+aLkKkXS5ScY3IL1HjHJWS1PLqK1I8XL1RIFNUE+1qoirXLIHM6jy2v0QeVn/yBzOfvsNyZo
+ kiSdXB3lDfuBxdLYE7MOV6MUvzd45zLhHo9DS9BsDG25WkprwYDrrDg
+X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
+ pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
+X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
+ with auth_id=633
+X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
+Reply-To: shivamkalra98@zohomail.in
+X-Stat-Signature: toz5zu1w3t4afghg8ts5rfduyx1mj78u
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 859E140008
 X-Rspam-User: 
-X-HE-Tag: 1776703874-172365
-X-HE-Meta: U2FsdGVkX18YQnnY82Jk8vRPhTPc0k20stXBaNSJQ3RfsgurdLZeHNfIz76064xg8GLWyM3AKYapaLRHuDYPIEXGwSFOZr3qfCQ/fZ4mkOSM43uZ8sLNRo8tdAXeSCRS5jD6KnKZA6W/UCpCbJa9+QljbvWnlGAiu+OaN4P0GoyuRve7SufFyc+N084rxfq9X8/EofeSIP9j6ZbskrKPatuNgBj2L0+y6wlZvA9CSYmR1aOawlIDpo2rKbBoydJ1ISISmB7QUJb3+t96dinwQVx47QJLYKPubQWma4Q/ZeL3cPDrn1Vzk/YzvYOVhjY1/fcEV4JSnW8Nzo8J9S+hVUXCHcKCujsi8rvFU6pnOqrJqG+0YkfH4yfpCu0JVHq/mtrEch3qbZK6uWJGTm5gexLHGUjIxXH0zWKgUUqvSZrAh/7UCKaXhoID0d5M+5jVoaUJNtzSIU+X/a+jYu7tHmXhOFHlNz6ryGHB1ut5pwt8G2nW/vkMORQFmlOeagvBUz9HJfeUyQvCAVMwUgUVF1lobdwkhpddmz8v0H9IWU+FIHCuGlrc5RmOvKafJqVXu3/+DNWApYAHLMRwQsJYEPW0/rabn4gT7Xj0u2Zdwd7UeuHn2JnW0wux6wTcykvDhBdrywHgRRRdt9zBWvzBA7CJLJXv2VISOAAtBYBYUpBHn6j3mqUO5vKD7rxrZ9k03hjryNYxKwWsC9wJNBRgUniVsIZOCeWMPZ629VUxGLiKyJXKp2vz1OMrAZ60VpqwtcFs+4Vl1iA97qnEXC1TSEeqTrET/le4rQClGBpGtPFBw6mJVLFhdWhljXa0f5VHFVC7kSXHL/RoyswieDJ6lOq27hGl0TVDaFjaccyyk48YHdUaB40kvih4HpVPFG6Cmr6jxSfywA7RQ1Qbgxl1eDzQ/DSTCo8ZWW7NtPzQYVPaWZcApVIzRvsSruFhfuDAlO7i6R9cKPh2btIC+VH
- LALL1wfW
- 0wRHB9pKR/eEs359KJzVwlPzTU4wWsBXwRe4dCWrvQcncI3l0d9GJQbsotGtrqAgM2AtLSxsb6Z8SNWVahnzNeSK3dRfK3GDimkOxX6M9DJiJ09wXHoM3RAUTnHWGnIqvgfgMmYQTjNJX1vRLUpCLyn6eENc6M834kwLbvWioNy/rBpXxKjnnlLPNch5zgWhB8QhRiNyCzdCNHMJJNOVZ4dcO3xmZ7oPX4bhBlhhDHje2Cg9dpbJDTdCvlwcX5QWAuJOIT673zi1YdzHey3Tq4YINzAhvsHcQYDMOKeYYEdxTjbFTzVf8p7oWawYSe/26mIIA
+X-HE-Tag: 1776704240-6429
+X-HE-Meta: U2FsdGVkX1+WcfPCJfnbsIwBW7yzvo12WuQZCmIcUBhjUCc4RhOViVfVBJucDyIOziHcIMpH1VzdCo2zcyoeB48lcfx0KXyWwhpvSmpcO6WK7Ix+oJg5VRItR1lai+FKze/iYKTZ19Qttt6TI4j8jxKAR7Elwl7YOy1eGWp6yRzqa/wfGrWj3CEelJMR2wpqeMmsLz1ZgPULNuVgzJGsL3qD5BjaeqnndpjyJxhqe1NkegwKtyKKsXMWQhXcCOgHRxeIqYl8N3dVoyvUIPOWF1Pq0YBUl2U8zpoeESIP4H221u7ba2sHHz/Kkf0NJYslWUSbCRM+Nb1c9TWCJtKnL4ogFb1bYF5C1dl7d7jVPLik5I+zdsN/6ZveXcVUXM5HSWwcUTamXhp15MHkbVHQ+wuFVD+jBabEzPjiNpuKso+2/kl42ZCCAX1Di0wZTcEMJFiDXDAgR7+xnKpX6/bak9CmFe1LfYf9YVYfMNvzxhlvsRrLoqDngYe/cKmQyJMM52jtRwuYYxSX/H12NI2rSvzCTGYb/wtUqJIVb91I6xw6VhnI2E69JcTNHmBq2VHUifJVbYtmMJZFfwAJX0jNHUCZ6JpZl3AHOLWGFDTi03pRGUtDNjNeRhy+rr06RVGT9UVoTUgTQhpt26nkRw/2nOcRfUyuELk8NJ1yppgKKO078siG/m4/sH5kyisI2wfqT7L4N5AwYRCIoqPLejSAbh0tFRK0bA5dtPcclMhZLKmD1SsrTb9AKFa9WW+pxo9Lhiltd7aJoDnUAvYzFBgVo6aEIVXEoLs5GNcBY55cwcj/B+s/FLgmxrU6fNibgnzgmQhKNg4G3G1tnNHM+JUOmJDFA17l9XoicllVKHkEEV0v6BOxnyVf3Ihj0nafyzR7VxLplrJAg1l7iIqvEDUQfuLwEisWtA3iBMdOjq2NY843zv9tlxn6goMKREUH6Jj4G9TIBNN3+ML8Gt2X+Jf
+ IdYctHbg
+ UsT21dByDkMTccPIcs/jfJpQ7VpSJSc0+Ggd4d2sN9RUMoszUpOyHbRUrOM9Jc4E0u2ZUnkCsMaVWy7z66nmhnB0d79tdUo6q4mP+IGHq978EcjMHCCMtqNd7zgTTvMdZ9edZw2Jeye+ZbNxmPYXJw+ulgktxq3HSdiUMvSl0z41x5VcPIbtEsz4QzSCZt2uU6/xK3txXmYf7GYawX0ahnh6bJgJoFbSDLW0V10Ei7V5Fa2zJ5rkyMg2Si24xevRAz+51oTTrHssxtkfwgB4YLASZllHNol36AJfO3fZ0GDyyehOz5CGQlnMAj3jEzUhQwrJbE72FXUVP3far1Nhex24+5vNQMZD+er9/pj0fb3LPk5GLg37imflORFKMFApwqdZ7hCGY8QDWv27YhrbSFygkgmkPFZJCZHkxN7bU6dBmIcxZYn/6EdXuWB/D/cU4OjhcbMk63D+u6vE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,62 +109,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Apr 2026 16:14:03 +0000 Salvatore Dipietro <dipiets@amazon.it> wrote:
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> introduced high-order folio allocations in the buffered write path.
-> When memory is fragmented, each failed allocation above
-> PAGE_ALLOC_COSTLY_ORDER triggers compaction and drain_all_pages() via
-> __alloc_pages_slowpath(), causing a 0.75x throughput drop on pgbench
-> (simple-update) with  1024 clients on a 96-vCPU arm64 system.
-> 
-> In __filemap_get_folio(), for orders above min_order, split the
-> allocation behavior by cost:
-> 
->  - For orders above PAGE_ALLOC_COSTLY_ORDER: strip
->    __GFP_DIRECT_RECLAIM, making them purely opportunistic. The
->    allocator tries the freelists only and returns NULL immediately if
->    pages are not available.
-> 
->  - For non-costly orders (between min_order and
->    PAGE_ALLOC_COSTLY_ORDER): use __GFP_NORETRY to allow lightweight
->    direct reclaim without expensive compaction retries.
-> 
-> With this patch, pgbench throughput recovers to 148k TPS (+67% vs
-> regressed baseline), stable across all iterations.
+Extract the page-freeing loop and NR_VMALLOC stat accounting from
+vfree() into a reusable vm_area_free_pages() helper. The helper operates
+on a range [start_idx, end_idx) of pages from a vm_struct, making it
+suitable for both full free (vfree) and partial free (upcoming vrealloc
+shrink).
 
-"Good money after bad"?  Prove me wrong!
+Freed page pointers in vm->pages[] are set to NULL to prevent stale
+references when the vm_struct outlives the free (as in vrealloc shrink).
 
-Instead of performing weird fragile hard-to-maintain party tricks with
-the page allocator to work around the damage, plan B is to simply
-revert 5d8edfb900d5.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+---
+ mm/vmalloc.c | 47 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 14 deletions(-)
 
-5d8edfb900d5 came with no performance testing results.  Does anyone
-have any evidence that it improved anything?  By how much?
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index aa08651ec0df..f1be263fdc58 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3416,6 +3416,38 @@ void vfree_atomic(const void *addr)
+ 		schedule_work(&p->wq);
+ }
+ 
++/*
++ * vm_area_free_pages - free a range of pages from a vmalloc allocation
++ * @vm: the vm_struct containing the pages
++ * @start_idx: first page index to free (inclusive)
++ * @end_idx: last page index to free (exclusive)
++ *
++ * Free pages [start_idx, end_idx) updating NR_VMALLOC stat accounting.
++ * Freed vm->pages[] entries are set to NULL.
++ * Caller is responsible for unmapping (vunmap_range) and KASAN
++ * poisoning before calling this.
++ */
++static void vm_area_free_pages(struct vm_struct *vm, unsigned int start_idx,
++			       unsigned int end_idx)
++{
++	unsigned int i;
++
++	for (i = start_idx; i < end_idx; i++) {
++		struct page *page = vm->pages[i];
++
++		BUG_ON(!page);
++		/*
++		 * High-order allocs for huge vmallocs are split, so
++		 * can be freed as an array of order-0 allocations
++		 */
++		if (!(vm->flags & VM_MAP_PUT_PAGES))
++			mod_lruvec_page_state(page, NR_VMALLOC, -1);
++		__free_page(page);
++		vm->pages[i] = NULL;
++		cond_resched();
++	}
++}
++
+ /**
+  * vfree - Release memory allocated by vmalloc()
+  * @addr:  Memory base address
+@@ -3436,7 +3468,6 @@ void vfree_atomic(const void *addr)
+ void vfree(const void *addr)
+ {
+ 	struct vm_struct *vm;
+-	int i;
+ 
+ 	if (unlikely(in_interrupt())) {
+ 		vfree_atomic(addr);
+@@ -3459,19 +3490,7 @@ void vfree(const void *addr)
+ 
+ 	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
+ 		vm_reset_perms(vm);
+-	for (i = 0; i < vm->nr_pages; i++) {
+-		struct page *page = vm->pages[i];
+-
+-		BUG_ON(!page);
+-		/*
+-		 * High-order allocs for huge vmallocs are split, so
+-		 * can be freed as an array of order-0 allocations
+-		 */
+-		if (!(vm->flags & VM_MAP_PUT_PAGES))
+-			mod_lruvec_page_state(page, NR_VMALLOC, -1);
+-		__free_page(page);
+-		cond_resched();
+-	}
++	vm_area_free_pages(vm, 0, vm->nr_pages);
+ 	kvfree(vm->pages);
+ 	kfree(vm);
+ }
 
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -2007,8 +2007,13 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
->  			gfp_t alloc_gfp = gfp;
->  
->  			err = -ENOMEM;
-> -			if (order > min_order)
-> -				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
-> +			if (order > min_order) {
-> +				alloc_gfp |= __GFP_NOWARN;
-> +				if (order > PAGE_ALLOC_COSTLY_ORDER)
-> +					alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
-> +				else
-> +					alloc_gfp |= __GFP_NORETRY;
-> +			}
->  			folio = filemap_alloc_folio(alloc_gfp, order, policy);
-
-I don't think it's reasonable to expect a reader to understand why this
-code is as it is.  Hence each clause here should have a comment
-explaining why we're taking that step, please.
+-- 
+2.43.0
 
 
-Look.  I'm being grumpy.  We know that patches which purportedly
-improve performance must come with quality performance testing results.
-How long have we been at this?
 
