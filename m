@@ -4,90 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59A6BF5A8C5
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 21:14:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0715F5A8C5
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 21:16:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DD376B0088; Mon, 20 Apr 2026 17:14:32 -0400 (EDT)
+	id 50C0C6B0088; Mon, 20 Apr 2026 17:16:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68E196B0089; Mon, 20 Apr 2026 17:14:32 -0400 (EDT)
+	id 4BCDD6B0089; Mon, 20 Apr 2026 17:16:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A3116B008A; Mon, 20 Apr 2026 17:14:32 -0400 (EDT)
+	id 3FA3D6B008A; Mon, 20 Apr 2026 17:16:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 458FB6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 17:14:32 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77D59140B4A
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 21:14:31 +0000 (UTC)
-X-FDA: 84680187942.17.49EF3FE
-Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CDECA180003
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 21:14:29 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf24.hostedemail.com: domain of 3NJfmaQkbAFMDJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3NJfmaQkbAFMDJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776719669; a=rsa-sha256;
-	cv=none;
-	b=S+v9bw+AhFvQnpixomqkFwQ7QnhCceAo7J1upXG6SR9IekIygYpHhM9yCrP10WiNsTo75N
-	/ItY9dEOQ2tCZKC7+0ALrrzNmAfVFR0JTciKuc8lKjATsXLhPFoPHDaUE9y0ZGOBm0uxsb
-	/lwozMUAbg9XaK39VOcszhXK5beQOnA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf24.hostedemail.com: domain of 3NJfmaQkbAFMDJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.80 as permitted sender) smtp.mailfrom=3NJfmaQkbAFMDJK5v66zCvAA3y.19916zFDzCx98Ez8E.x97@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3017D6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 17:16:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A392E5C358
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 21:16:57 +0000 (UTC)
+X-FDA: 84680194074.16.ABA3AD9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 95329100006
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 21:16:55 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IuNxAYrN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776719669;
+	s=arc-20220608; t=1776719815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=7317dhF9wsrPDBqyRZOPjIWQZQvZppHM5OBcaxZNfAg=;
-	b=GCfyOWLA7kpotlejvszZgy3dqF6N0ph6TTXS3dxS+kqs/2+DUWgFuSwKmTvp/KO1k5FaZ4
-	0KTkdptkIr1Hj/GMt9KqZopMOk8fKa6JTwR2TiJGvCu6fuue51aEANahkJUnGt47Wc1rSX
-	lNahpFdbgqBludlrUE4Y3hCVkYC+Osk=
-Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-67a1e063795so8148795eaf.1
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:14:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776719669; x=1777324469;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7317dhF9wsrPDBqyRZOPjIWQZQvZppHM5OBcaxZNfAg=;
-        b=tFYCZ2jOB6Jc3jqpOZZp4kpXXQXHJNpKLwc1aE0sWUIy+BVfDx/c1BBlNOQIl2UIXH
-         AitKYaVAhD2G625sXSQJ/ZLjiGZvsdB2QxZSUqYKT1lCVRi6jNMmbh3tFvrO18qDBris
-         jWgJvJ7vSzaHzheKkUxlCMEBKlXHd6PelBnfV+3pb8im9QJuO3+7IUGrZBfrY313bzL3
-         BjHFEgjQqnRXHgnBVl5QrvD/liIjLmBDw6f7F6m9UhVxd7HUaOb3QlosbOx+gOqBZhWZ
-         kL+SEGt8impwFML/tlsmni0kt5G5tpGAfPSeS2LlTH/Mn6LsOnzrIoPE0P9dweGrfgnq
-         L5WQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/2O0tUCP2u1+G3OSd6y4Z/AFJEfnaukjXa/yh9UQAb+eHoXOQfP5U8exisifyc0Fo0zUGdb/pguA==@kvack.org
-X-Gm-Message-State: AOJu0Ywd6Wy9I2wek/Q2j1TGuodoMyyiwaEDU/Hqot2kwf1aEr1nMXnF
-	r2TzxIkJfO0ZHkxMa9N5tbaW9kP0I85eutseD1kt5cMmxTpt4Y3F5NazjMDgmpIPIScqGpVT9eb
-	N9KrT+8Ue+XXeqVPy6OF0UkEWsmGDrMyjbRA9EsNdeNO4mVg2U3ifyKQ0Yek=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Ns1DV6x0fHsLnc3zRjkL0inNdeAPzDm/07YqeMaVlZs=;
+	b=BTZcJqaY3J4Jw6R+5eT5xj5ZOIUreUUhU1MP6XeB0TVG1HBUiJuzvKLvjluu6g0NFCLwP5
+	1fkrw+D8VSfPdl+dJ3L5t7wsGkTGknWWZHgu8mqadVjpQUYCMT/TjS9arafyj93iZf/xXa
+	GyQlYrkBIMuQhuPiTsDIRkJk2WrKXSc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IuNxAYrN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776719815; a=rsa-sha256;
+	cv=none;
+	b=uE540wbeJpEeHJd8LcyOwtk2cGFBgujkZuhBp4D6WbePOU+qv8PZSriLn/O7HJpjSlif+l
+	h10k+a8XXPssOSMeCY3mGFd9vDUENDCfFzEx+v4GNjpHx2wI23hDZ7RwcDlplGVnatKaEx
+	CKrS7GEJ1iZtHpHf6LfkXwCOMja6Gl4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 86C6043E94;
+	Mon, 20 Apr 2026 21:16:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812B1C19425;
+	Mon, 20 Apr 2026 21:16:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776719814;
+	bh=1ICWP0aN3tVVPF3/42lRvuEcmakoBEeZExkl+2SI7Ww=;
+	h=From:Date:Subject:To:Cc:From;
+	b=IuNxAYrNXUb9BmToowo6po+Fxyb9mtPdJmisDUt1BHHZMx7xAEvRO5WOjADqoigxn
+	 mCGqO4Sf4iw34SOxhzT8gxgsxLt+TTFb2Cy2EW7mGxjkMeJUw1FN4MHVuEcZ475lF2
+	 GJnFJyZIPRqVbGDO0vwIrNUYA5ZI2nJ29h+PpsVao10354j+ORUIypyOZCkqMGmgXM
+	 5IhdFIiUQA9JjnKPo/z2nZ23kp9dZG9f0b1TxOlmqbG654sPuNtXTCKsonNpEtjRqI
+	 BQeQ9otxY37/bIYeec8vJ4Ha0RzZzGSCHYxn2g9zL9Skt0cseGJha8UPwMfqEKt7Jb
+	 U0KKMfWexADoA==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Mon, 20 Apr 2026 23:16:46 +0200
+Subject: [PATCH] mm/page_alloc: fix initialization of tags of the huge zero
+ folio with init_on_free
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:188b:b0:694:95ae:c546 with SMTP id
- 006d021491bc7-69495aec7ddmr939021eaf.2.1776719668897; Mon, 20 Apr 2026
- 14:14:28 -0700 (PDT)
-Date: Mon, 20 Apr 2026 14:14:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69e69734.050a0220.24bfd3.0027.GAE@google.com>
-Subject: [syzbot] [mm?] WARNING in vma_mark_detached
-From: syzbot <syzbot+db390288d141a1dccf96@syzkaller.appspotmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, jannh@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	pfalcato@suse.de, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: CDECA180003
-X-Stat-Signature: eyus8feerj3dod81tp5xm5zg9eccp191
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260420-zerotags-v1-1-3edc93e95bb4@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAL2X5mkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDE0Nz3arUovySxPRiXWMT40RjM3PjVEOLFCWg8oKi1LTMCrBR0bG1tQC
+ gW2W7WgAAAA==
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, stable@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.13.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776719669-638500
-X-HE-Meta: U2FsdGVkX19MD7Jr/SW38xyt0yzuo9eLrU25EM1ncshlXuGI4fmmIa06KA5C+H4pRLioNot2BIvlpWnaGg29vg8AidFFDiudq+0Co8ILR+e+A7ID+4HOLjoqc17Byk4cYV3MK9BCUGAB80fmvn/5qxOj6TbLOyBZput8uMfxKWtElFeXHqHkqD9tzi0e34xgO1f0P26jAx/qsLRgpslqfyjLJWaEriG2LoWVrOvTIvK92C6ARoo66Yd0ZZ2qtjrH8vLAkpbbtA89+Kk2ZpS1YPpCN6sHmjIsw2EuA6nYk3Q+a6JI93WyYcz2Z4vzyveNbr1MimzLj9Hm6rkWj7A1V7qymFS9g2vPBWDshwQGQbHqMm3HcIGZqkHT57waN7njORf7aH9ABQ1mwYoEdCq4ekjV3kIf71eeajxGnKznchVepMbyZZmsXvVwQ/mFwgHSyToaCxEJb3oivQF2ohO30gnGraB6qukRWURz2zAsrcs6z9f5VkOXMVT+0aIrkAl0DQpBPYj9WYiyRp+htlbaDFOFYRtGuYONA/foL3Hl8FjfZfhybTAnFN7osC0KIi5tBNMzc2v0ZzcUb88W/pm/HKusyCfwcuqKyeH3qRFNl38gUQOcVV0mswC0NzKs02E8mLmcfiFiUIJGGRkaW1cnvz9UVH85Vhns2c5ShlxWwNiP0X7iW1NUmGlF3RMKGgwNTzCNTkZ+akwwnK+V9o5qfQeK1tpexKFJSH6Y7M9jFkm8Jd4i9r/+pt/fCnojNry7wU1d88ZzVJHWF6MWj05H7bV/GrFZP1CYTaFnncgujrHdVET9aUf2biHXflYg5lpmFWM049VG4v7dKm5IYbRJsguP5B4bsUfwZdH/72BYRIh7Txv8363y63ecfgYDsMuxVeWU3dUtvtj8cWfzsMg3qt9K9DBg+V0HvLDA9hjLrMqGl4ySai95R3+7sw6xZ4mYqXGrHREPj66EJXzNZUY
- U84kkp/E
- oYQqfrzQOQbVsrohbvswSFLCu9F8Kbb+spHKBuuGzaNRWHNU1YaYcmRwhdoZRDiM9muRiVlTGjQMzlD2K6DGNO2R+1Dbbu/bgNVrxetQmlHfEqxbAoolEG3X4PBfdHdcnophpi9WjwNkWjsArKNrjB1hZcQDZiJGWSFDCRoEch0QG9W9yZhUVC7YyMRbzqAbfMAXsVU8LyOnpquaKeC/T1vGxiM7vpDKft8omUI4f17dAFNYp/uPgKVMVGGP9jh/b5S4idPCqcbAFhBwwyE3kjEHVhNqfRmuHCEHAcsAqC1xuB289KWj25Biz5TZ/aofwZDRfvyRPfRACIlx4b4977V5sgLafU3xYmUrjDc8p1RcAiKmBU0EZwZdRpAUTctf0Fc9UapLvaelqPTiWMmMhe6kSekahiuigw6dm7OXHmkYctWGfRWRH3ut4BLcYTcT7e2ICRS9VQJxQ5Lf8KaAJlFdEtd+AU6CToLJkp1XKp+UmA4I6aVr1BtCfKYxmJ9Tt/yEo+q9grzvmaNQTZmTnCV4tGn23RT6K17vX/w81PU7XuMURF5N13BEGTO80LYBmP4e+ISlgd5eAcBgEP5dVoyoUW3HbGKowWOx8k7HHrXNxndF27YM1j6gKvz8Fb1zho03UgBShrSkkIWw5XJMs9fP9sJNw/yOT/ZyFHDBwyPE4Hog3ZbgmRaEUpBNPcHGZbI2WGOOmKV6Tt09/cpswyJwtfe09mydSRza+YP0wjub1oryVp4i03c8TeaUaeVa9ecDFBjsger1WssmGIvyIP5vhHydcssMdbiMOcwe2cYkuLYbh1JEccLOKETn2VIApWfMFP8JhNyvTJtOJ0rx7X2G43+V95SXCcS6oQvj85KsymfhNqR3CpFfdaCNftSTFAnh57cxs5qieKGxdn/AObaiGhR0UAf6dhaJQIJ7VEWaGMw5ctZErhXHDJJ4SNON0w5f/AANLrcWUEMVwkIKC4wOaZbGv
- V0yPsk4B
- ddQMS4TePlblvgvPtxljSvGjQZKzvKenYdOaflDFJ0YZr8Wl3Oj8kSViBo+eefxbtRX11AEKyGfJzM7QqHn/EZgf6HtL2B1SldWvvIG5MXaSCpno9Ep0aHnrdaoBbignTCAP/9SFlsFyP1fMVfAEHvjSfkWGRc7ACZHU0k3MgmmlwW/zHnsERsPmI7hZD6G2a6sWzCjOxDeSgMD5Nbbm7c/FG+LK/QRgi+YxzkuESVzsSRxTxPl2GqTBWBvQhcsbCVNmdwQErdGVT1OdqugnaH95tCdmZxFe+qPti9xUfPxF52WETV9416dDEooDhz1ncvhH+L0TkiPDotEpiY67B4w5m+yUvekNBVLMgQHtUiWIs/cyR6lVnPT0JINZG5Ttgc1tJpSaBhPcJ2jr7bNQF1ReiWEygYY/a+rmDM3pXBkYk6I/m4XYdfhYt2NNsJhtNiaQ56bOM7lMCYWfvwSBidp0nedMqLET
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 95329100006
+X-Stat-Signature: p4ru4339ocbmd6g57hyk1ftkpcsttrxq
+X-HE-Tag: 1776719815-917628
+X-HE-Meta: U2FsdGVkX1856Y23aVg11t1Rg2OKQFiz3l2xNmgNKrkqf1zzDUPRQ80LQ+k2VMU52WxD8bFyHZ11EqNTOVljYgWps+ojrUujOE5Y+ZtMgaley/Oqv/AT8j7InidJ0a8mxHj3k3t0bSJBMM2ER9UL+9xOqhXxb0p/wSYCkCedB+zxV0VVUbYBT+zbc1ivXL6hi74cnP1Aa66R4DGKJ4IzhKM8m2c4O2ysz5FU8pl9D2Wnv2xVljUTB7arrvOalA9SixgHs3cyYCwV6CrbjcWIgBrJ/6bGGkyWDmxqsX2A9M8fQT6f3MFdUdHLHL3fCHl4EqTON5hEwFRflmpqfHT2aa8T6knmwHLMo8u/afdJfHjBeryf7KdNOTliGS1B1E2GgOPq5jFWpqo4kxCYGcSa0SSI3kzQNkuriJpuUtlXEtYlo+d+y9igRpByDFbbcRhKxpSGA0MnAo1ZFZjfBSrGygu+MlpxMznhikvJXfBWmFSIgkWHwS6lPqur/0LHDX9FGppHZWwDeJcsJMA1wHLN8iCIU48PPwEG8EgAitAr8uhK53XtX/KYBZ7eEnndRvVdGrF3UiEhxh83ldsObIFMIBU/nObJBL2IRbMsSrpKymST2l5xYg0lsR3a+lj5SRg3URBp/62YNy/pFC5872Dhqi5+ymD/5jCSWRAkTSL0yoH/ArpP4a4ngEIv52NIQvlQWyzuSPCOk6eXPFgXpOIzK+gEonLEmexcZf5CECQmzuVkEjw0vfOgtNuy2i7ibJ83dQyWDTCAhBMwQw7QGUgJhvJkTr1dYBAVjKgpqsvFh2Wk+mIHsWgwUPdSAj/Zna1PfHttRj9R+GOOLb2nl0O1jnK4fG4Iyx/sgJFXCadPFEQ6wszEEDDuThLoVRGxrQPfmfeqR+xzagowf0fxZV3t7NjzOC3FqXaB1DKxox58P0HDAMcV5pCQ7TfXxDaDrSrfwvQcK4T5KOGiT/ZYj0E
+ D25C9DEC
+ V0y4T8yzXA07rPQDPDiDOBTC8pkt2nRjfgQK1o5CHdMn1gv+XExTltCQTenBWAJ9Qx1DfK9zddKbuiBkZTICsWoVkM+STD1P1kleElPUjLJ/1VPZjGXazHX8ZTPWN/dAP3EdQk9zwfAUFgd/ekk00bjF55ey2Of1wyZSl+ZSRLheDDwrHKD5+VZqYIyiCGNcjGOSugmPocMM/rcQMPqucgzS5Z6AKEDo4/N7Lvp+L9A5i6hn1PoHmEm6a4fZArRWD1tyDa5SOOY5hgT1gyYfXofDTziz/c21WOGZT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,110 +102,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
+flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
 
-syzbot found the following issue on:
+If we run with init_on_free, we will zero out pages during
+__free_pages_prepare(), to skip zeroing on the allocation path.
 
-HEAD commit:    43cfbdda5af6 Merge tag 'for-linus-iommufd' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17711906580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8195c5b22e79c2cf
-dashboard link: https://syzkaller.appspot.com/bug?extid=db390288d141a1dccf96
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14cd78ce580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=161f82d2580000
+However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
+consequently not only skip clearing page content, but also skip
+clearing tag memory.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/848e46852283/disk-43cfbdda.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/24283dbdc318/vmlinux-43cfbdda.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f91b3fadd31d/bzImage-43cfbdda.xz
+Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
+will get mapped to user space through set_pte_at() later: set_pte_at() and
+friends will detect that the tags have not been initialized yet
+(PG_mte_tagged not set), and initialize them.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+db390288d141a1dccf96@syzkaller.appspotmail.com
+However, for the huge zero folio, which will be mapped through a PMD
+marked as special, this initialization will not be performed, ending up
+exposing whatever tags were still set for the pages.
 
-RDX: bbdccba4532b703b RSI: 0000200000000000 RDI: 0000000000000000
-RBP: 00007ffcde93cf30 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007fa5dec15fac R14: 00007fa5dec15fa0 R15: 00007fa5dec15fa0
- </TASK>
-HugeTLB: unable to allocate vma specific lock
-------------[ cut here ]------------
-!vma_is_attached(vma)
-WARNING: ./include/linux/mmap_lock.h:435 at vma_assert_attached include/linux/mmap_lock.h:435 [inline], CPU#0: syz.0.17/6011
-WARNING: ./include/linux/mmap_lock.h:435 at vma_mark_detached+0x198/0x260 include/linux/mmap_lock.h:455, CPU#0: syz.0.17/6011
-Modules linked in:
-CPU: 0 UID: 0 PID: 6011 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/18/2026
-RIP: 0010:vma_assert_attached include/linux/mmap_lock.h:435 [inline]
-RIP: 0010:vma_mark_detached+0x198/0x260 include/linux/mmap_lock.h:455
-Code: 01 00 00 00 89 ee e8 57 5f a4 ff 85 ed 7e 4b e8 0e 5b a4 ff 48 89 df 5b 41 5c 41 5e 41 5f 5d e9 7e db f3 ff e8 f9 5a a4 ff 90 <0f> 0b 90 eb 95 e8 ee 5a a4 ff 90 0f 0b 90 e9 04 ff ff ff e8 e0 5a
-RSP: 0018:ffffc90003396df0 EFLAGS: 00010293
-RAX: ffffffff8220ba17 RBX: ffff8880536f8500 RCX: ffff88802baf3d80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffff8880536f8583 R09: 1ffff1100a6df0b0
-R10: dffffc0000000000 R11: ffffed100a6df0b1 R12: dffffc0000000000
-R13: ffffc90003397130 R14: ffff8880536f8580 R15: 0000000000000001
-FS:  000055555c863500(0000) GS:ffff88812522b000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2fb63fff CR3: 00000000325d8000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- vms_gather_munmap_vmas+0x6ab/0x1380 mm/vma.c:1458
- do_vmi_align_munmap+0x2b4/0x4b0 mm/vma.c:1595
- do_vmi_munmap+0x252/0x2d0 mm/vma.c:1652
- do_munmap+0xf9/0x170 mm/mmap.c:1067
- mmap_action_finish mm/util.c:1422 [inline]
- mmap_action_complete+0x480/0x590 mm/util.c:1491
- compat_vma_mmap+0x243/0x2c0 mm/util.c:1280
- vfs_mmap include/linux/fs.h:2072 [inline]
- shm_mmap+0xda/0x200 ipc/shm.c:607
- vfs_mmap include/linux/fs.h:2074 [inline]
- mmap_file mm/internal.h:168 [inline]
- __mmap_new_file_vma mm/vma.c:2496 [inline]
- __mmap_new_vma mm/vma.c:2562 [inline]
- __mmap_region mm/vma.c:2771 [inline]
- mmap_region+0x1ab2/0x2280 mm/vma.c:2856
- do_mmap+0xc39/0x10c0 mm/mmap.c:560
- do_shmat+0x8d8/0xc10 ipc/shm.c:1662
- __do_sys_shmat ipc/shm.c:1698 [inline]
- __se_sys_shmat ipc/shm.c:1693 [inline]
- __x64_sys_shmat+0x9c/0xf0 ipc/shm.c:1693
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa5de99c819
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcde93cec8 EFLAGS: 00000246 ORIG_RAX: 000000000000001e
-RAX: ffffffffffffffda RBX: 00007fa5dec15fa0 RCX: 00007fa5de99c819
-RDX: bbdccba4532b703b RSI: 0000200000000000 RDI: 0000000000000000
-RBP: 00007ffcde93cf30 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007fa5dec15fac R14: 00007fa5dec15fa0 R15: 00007fa5dec15fa0
- </TASK>
+The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
+that allocation tags are set to 0 when a page is first mapped to user
+space. That no longer holds with the huge zero folio when init_on_free
+is enabled.
 
+Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
+tag_clear_highpages() whether we want to also clear page content.
+
+As we are touching the interface either way, just clean it up by
+only calling it when HW tags are enabled, dropping the return value, and
+dropping the common code stub.
+
+Reproduced with the huge zero folio by modifying the check_buffer_fill
+arm64/mte selftest to use a 2 MiB area, after making sure that pages have
+a non-0 tag set when freeing (note that, during boot, we will not
+actually initialize tags, but only set KASAN_TAG_KERNEL in the page
+flags).
+
+	$ ./check_buffer_fill
+	1..20
+	...
+	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
+	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
+	...
+
+This code needs more cleanups; we'll tackle that next, like
+decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN, moving all the
+KASAN magic into a separate helper, and consolidating HW-tag handling.
+
+Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ arch/arm64/include/asm/page.h |  3 ---
+ arch/arm64/mm/fault.c         | 16 +++++-----------
+ include/linux/gfp_types.h     | 10 +++++-----
+ include/linux/highmem.h       | 10 +---------
+ mm/page_alloc.c               | 12 +++++++-----
+ 5 files changed, 18 insertions(+), 33 deletions(-)
+
+diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
+index e25d0d18f6d7..5c6cbfbbd34c 100644
+--- a/arch/arm64/include/asm/page.h
++++ b/arch/arm64/include/asm/page.h
+@@ -33,9 +33,6 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+ 						unsigned long vaddr);
+ #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
+ 
+-bool tag_clear_highpages(struct page *to, int numpages);
+-#define __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
+-
+ #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+ 
+ typedef struct page *pgtable_t;
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 0f3c5c7ca054..32a3723f2d34 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -1018,21 +1018,15 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+ 	return vma_alloc_folio(flags, 0, vma, vaddr);
+ }
+ 
+-bool tag_clear_highpages(struct page *page, int numpages)
++void tag_clear_highpages(struct page *page, int numpages, bool clear_pages)
+ {
+-	/*
+-	 * Check if MTE is supported and fall back to clear_highpage().
+-	 * get_huge_zero_folio() unconditionally passes __GFP_ZEROTAGS and
+-	 * post_alloc_hook() will invoke tag_clear_highpages().
+-	 */
+-	if (!system_supports_mte())
+-		return false;
+-
+ 	/* Newly allocated pages, shouldn't have been tagged yet */
+ 	for (int i = 0; i < numpages; i++, page++) {
+ 		WARN_ON_ONCE(!try_page_mte_tagging(page));
+-		mte_zero_clear_page_tags(page_address(page));
++		if (clear_pages)
++			mte_zero_clear_page_tags(page_address(page));
++		else
++			mte_clear_page_tags(page_address(page));
+ 		set_page_mte_tagged(page);
+ 	}
+-	return true;
+ }
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 6c75df30a281..fd53a6fba33f 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -273,11 +273,11 @@ enum {
+  *
+  * %__GFP_ZERO returns a zeroed page on success.
+  *
+- * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
+- * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
+- * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
+- * memory tags at the same time as zeroing memory has minimal additional
+- * performance impact.
++ * %__GFP_ZEROTAGS zeroes memory tags at allocation time. This flag is intended
++ * for optimization: setting memory tags at the same time as zeroing memory
++ * (e.g., with __GPF_ZERO) has minimal additional performance impact. However,
++ * __GFP_ZEROTAGS also zeroes the tags even if memory is not getting zeroed at
++ * allocation time (e.g., with init_on_free).
+  *
+  * %__GFP_SKIP_KASAN makes KASAN skip unpoisoning on page allocation.
+  * Used for userspace and vmalloc pages; the latter are unpoisoned by
+diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+index af03db851a1d..62f589baa343 100644
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -345,15 +345,7 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
+ 	kunmap_local(kaddr);
+ }
+ 
+-#ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
+-
+-/* Return false to let people know we did not initialize the pages */
+-static inline bool tag_clear_highpages(struct page *page, int numpages)
+-{
+-	return false;
+-}
+-
+-#endif
++void tag_clear_highpages(struct page *to, int numpages, bool clear_pages);
+ 
+ /*
+  * If we pass in a base or tail page, we can zero up to PAGE_SIZE.
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 65e205111553..8c6821d25a00 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1808,9 +1808,9 @@ static inline bool should_skip_init(gfp_t flags)
+ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 				gfp_t gfp_flags)
+ {
++	const bool zero_tags = kasan_hw_tags_enabled() && (gfp_flags & __GFP_ZEROTAGS);
+ 	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
+ 			!should_skip_init(gfp_flags);
+-	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
+ 	int i;
+ 
+ 	set_page_private(page, 0);
+@@ -1832,11 +1832,13 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 	 */
+ 
+ 	/*
+-	 * If memory tags should be zeroed
+-	 * (which happens only when memory should be initialized as well).
++	 * Clearing tags can efficiently clear the memory for us as well, if
++	 * required.
+ 	 */
+-	if (zero_tags)
+-		init = !tag_clear_highpages(page, 1 << order);
++	if (zero_tags) {
++		tag_clear_highpages(page, 1 << order, /* clear_pages= */init);
++		init = false;
++	}
+ 
+ 	if (!should_skip_kasan_unpoison(gfp_flags) &&
+ 	    kasan_unpoison_pages(page, order, init)) {
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+base-commit: f1541b40cd422d7e22273be9b7e9edfc9ea4f0d7
+change-id: 20260417-zerotags-343a3673e18d
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Best regards,
+-- 
+David Hildenbrand (Arm) <david@kernel.org>
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
