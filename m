@@ -4,148 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 459E8F588E3
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 16:03:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45AB8F588E3
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 16:14:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83DD36B0088; Mon, 20 Apr 2026 12:03:08 -0400 (EDT)
+	id 5DD496B008A; Mon, 20 Apr 2026 12:14:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EE5A6B0089; Mon, 20 Apr 2026 12:03:08 -0400 (EDT)
+	id 58F8A6B008C; Mon, 20 Apr 2026 12:14:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DCBD6B008A; Mon, 20 Apr 2026 12:03:08 -0400 (EDT)
+	id 47D446B0092; Mon, 20 Apr 2026 12:14:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BA686B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:03:08 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 032041B8FC8
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:03:07 +0000 (UTC)
-X-FDA: 84679403256.15.849D21D
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C4A931A0013
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:03:05 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oAzowg3c;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776700985;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 359256B008A
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:14:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA7FFE4A59
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:14:30 +0000 (UTC)
+X-FDA: 84679431900.16.4196404
+Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 67AB61C0002
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:14:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=GZtmEplY;
+	dmarc=pass (policy=quarantine) header.from=amazon.it;
+	spf=pass (imf18.hostedemail.com: domain of "prvs=563a806c7=dipiets@amazon.it" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=563a806c7=dipiets@amazon.it"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776701669;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iBF/huw+jCdmavak8Kfcjpi9kTHcjyw4uzaIxzF9jcE=;
-	b=l13m++y2IT8MspdRR0owU9amOOEBjp9iUXChvFMMC0miXbBZhmtacrjX7sGwMGAbLvNNHD
-	iOAUpS5V5oy1+KSQHi87nrQRNYzi5j6C2ipxCf/ifcsj5AhsQ5uSLVDajjR5EM0GrssMVS
-	P+SJ3EMBIPGevH86tLGwi12KJIW2TRE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776700985; a=rsa-sha256;
-	cv=pass;
-	b=PIlw0/NUDNhSDDe5I8HpYzkIXDcd7IGLHPSQFBVV0uyacSsJR2JgFc+3K3ZdvxttYeKIoV
-	kUGMaSxV3EqcXkNZyj5V1zRXG5jC+jW+9LJ2qzu//kxQytvXo8OfivY8ajSveFUmouQa8Y
-	VZeazng7IpU7Ecuzx4RbmcZ/jelVDK0=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oAzowg3c;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488a88aeec9so46755615e9.2
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:03:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776700984; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cu5avwWrm1iT0gHrKw4Ct377VMspQRhsVh/Io8c3L1ysUgkG/Ej4pJ0pEWJ14I6v1i
-         ddpj836oy9Ppa9r8GykBO9TZGawzxZJ+amt4HhzdaF3IkOZc/XQKjYZ7c/jZoahZvgr9
-         uIlE0EFOhEU6yRlRhzpuz4JW4odM8Cm5mizrUIpkPMkgj0+eZbpfWOm6XJWGCFYOIfo0
-         4xMEHGmIDibSzPdpZYxhXks49s4ZJHNUuqSKufazfPOxwADxoA6kJpZ66bG6Nv6EcmCn
-         bDMkkrW/aygAcKH5ezUgtmcyz5aslyvkWRG9E54Vukymk8xGNzn1+AmnIPcjiscEEYOm
-         zdkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iBF/huw+jCdmavak8Kfcjpi9kTHcjyw4uzaIxzF9jcE=;
-        fh=4Ti/4ImbEowQRD4Jiy51oBw2tHOk8aUOlYhjhrOORBw=;
-        b=WD5slx8twVY+heLGAQLalnyw36TWskQkWRWlIyX8LSKBas9CJ7S6iZhvJR1k4Tw93G
-         vEBWdATXvZU7Yt4v+7h7hyGh8XOuj/CRAUuf8sjsGMQxLfIF66qkjkMmvcLzMl7LNSGz
-         TbSRFNItap0yfz7xrZ9zI1lTwo0LK4w0QRR8LN1ICsSzEhz03mqJghOwAjH0bSJYda2d
-         5OBO4MGv2eQPWPVgdu8UdIJbtcxkambby/3rzWg8QYIVOHr1JngiwUSkfYoCUMiuDUrX
-         9U8Q0UfFPoWFHQrGUobx0QNpCvTPZZmcdpbXvhDph60JioxnJQtdTC6/BaykEy9nHz43
-         hy4A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4O++pW9Xbgus6i0sqISNyUGab6AsMHTSYNj1rQkW9es=;
+	b=MEFxjPSX4yWmH+TgFEdSg1g2+4er2lCTlkVSnoxuJq+8rDzUtcD9fF04m9exdkGbvyRwaV
+	oG0qtuZVllA3jlD5DG+pcF6hQ+IqC8dHbL1WAE9k1Eh8pfTah/KphS4zZBSmx8w6dWU8pL
+	gIVAEEu6oqVj21Ew0LWudV3HQfZ2qhc=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=GZtmEplY;
+	dmarc=pass (policy=quarantine) header.from=amazon.it;
+	spf=pass (imf18.hostedemail.com: domain of "prvs=563a806c7=dipiets@amazon.it" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=563a806c7=dipiets@amazon.it"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776701669; a=rsa-sha256;
+	cv=none;
+	b=i+gLk0FV+ZnfNMVDeoRVZsIq7p/WXr/8lAos5CScqvHSq13dujBm68LewJ02kD7Q/mMtPE
+	CBSLPch034toP38PdmMK9LO/jKrWAo0ZvTXlqddAYaJI2KWGlyL+KFgVrixA0Yc7QNZtpb
+	8IZPnJuuH8EvsfooPBg1m0DWxinvYl0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776700984; x=1777305784; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iBF/huw+jCdmavak8Kfcjpi9kTHcjyw4uzaIxzF9jcE=;
-        b=oAzowg3cbyRT30Hu8Ga3mXmXCqC+bUq+BOoaZls24ngHhHYgn+95A3LDoWISoJJeI8
-         /cIr/hPpqZKDHXd6AP1gnFeCtp6PWKku9eOyIwwIEGVW2iRvJQLyqOpRDoFN5TbieC8r
-         LGC0+ZsiFs3XnuefHXPGSZzpDtoVbq7IqMbhbkXmI661NzDNd3oNBkl6GqRo1WdoDz1u
-         RMp1ivQ1+Mfc+sn3Z//cBzN+qcnfqScGUpJFn31mgxtBQnjkG5oTQoXI6y23UvJGKnhd
-         PihAhwENrwxZKlra5/9ztfA4pfbt9fujsWZRywY9HiiIiS3JQIAe7NPQztlp5JjZIy3m
-         /x8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776700984; x=1777305784;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iBF/huw+jCdmavak8Kfcjpi9kTHcjyw4uzaIxzF9jcE=;
-        b=ltZensveHQhQBDXAHPfQsiRYJsXngEb1owbCASWh25Ev7NymQm0XmGi5nuO82kG2tC
-         o4m9Q0kX8ey4XRK/fO2CDyKL+MZIFSnJOnRTfaSTd0oInkHfJCd2qwTXLIK74udR6rId
-         mx/s3YOoAFCRlpDW8tjuncBQUUMnDjwMHPEzQawFyttGMyJ41ex7OOloAfyrgAjCAptW
-         GlfMWZIfXUzfJU+e69RDmOFTvwYxFq5KrGzwde/GBdu+13ZxlsMEEyqW1lo5b3kWX48D
-         KOhPTUuv1d9uedhnq5vkpMUozTgsWEY2FRUghsxYmvyVAJ9gvvGUpN1v++45xhuH9Y2Y
-         4mBQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8IKsTJjXEbMsmSllMk3oIpBP7NOnHMH1HmrQw7ZmyDGLa16HFIQDLkRI9JDDmN27JPHBgTxB4BgA==@kvack.org
-X-Gm-Message-State: AOJu0YzQoStI/9VQK4ikAPZiyuaJgp0nA+9QJwyutXcglPFs0yzSR10T
-	lDoo1WxiM+FfNwTK/ZpmLCtzKpnFtAWSn5N+6faDcUrHeDk0ip+p3IiVZ4fNS3cKtLs8QGI7qCC
-	vlWH4RWsXON10L6/HrbPCUQZpK9KVrWA=
-X-Gm-Gg: AeBDieud9xaTVBbK5KAGVqYnuwPnXim7AXmKkTM+U2LAzgPOxrmvHuIuKibiaEB/7Ug
-	eoWvF8FUmamb7hRUgg5S4eqZkiSQqJYnr0ruCo2JSvE7SK4eZQSw0qNZdFOcivgMyHLdX8uEJhf
-	IvoD2cHewGblLXG8o5kqnUQrHhHO7s0jV+J5wWai7UwqyPz+snjVoclO6ZRfLPma4gu6e/6A/Av
-	A5MjndkdCeURBkp/YB4xsajh8r0ZUuImgLcengkw4/PHl/4fSilwdn5g53Xvt+akuqPMjJI1PQr
-	AiQSsXzPhi+otg+2xf28PbO0lIdZocFYanQQmU4dRisNAEApkbtJxOinTSjkTG8HVQ==
-X-Received: by 2002:a05:600d:8449:b0:488:a894:b27a with SMTP id
- 5b1f17b1804b1-488fb74a8c2mr175647735e9.8.1776700983794; Mon, 20 Apr 2026
- 09:03:03 -0700 (PDT)
+  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
+  t=1776701668; x=1808237668;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4O++pW9Xbgus6i0sqISNyUGab6AsMHTSYNj1rQkW9es=;
+  b=GZtmEplYTiUqSR/67Alc6QswG8+XPaso74GFQ/TLAc1P5YBhYWl3mNC4
+   RGzHtcl4n3RWmXy6J1VWZudpCgaY3EYwh86xXS4gGm+xgTGIi1mu4ZFhX
+   LMCtZTKlaD6vI77/7hKdsSZQBCwCf03cJ6cq0sv44IAsaQnRG6tsiOQT0
+   sUFhlDyzJhlqdMvka0EiSAhmF6s5XolzAb8oFEizodzL9mfTkXu9qtIJZ
+   UVlQXp5MTNtI1jjLCTnOiavTE+/63YjXvViRo3r6m7EhGrwVOuhB4Zx42
+   NBlAibRmdiJHncihURseR4C/V8NzYPipyBOwatlXPpypY3u1FX6PZ2O7k
+   w==;
+X-CSE-ConnectionGUID: fItFHySZTnKCgGaNsgSP0w==
+X-CSE-MsgGUID: M5YpE+EUQMKeBZiFi0AZ1Q==
+X-IronPort-AV: E=Sophos;i="6.23,190,1770595200"; 
+   d="scan'208";a="17744120"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 16:14:24 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:15252]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.54.92:2525] with esmtp (Farcaster)
+ id 0fb7fa6e-3822-49ea-b8c0-62c3590e6f16; Mon, 20 Apr 2026 16:14:24 +0000 (UTC)
+X-Farcaster-Flow-ID: 0fb7fa6e-3822-49ea-b8c0-62c3590e6f16
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Mon, 20 Apr 2026 16:14:24 +0000
+Received: from dev-dsk-dipiets-2b-fa1865ee.us-west-2.amazon.com
+ (172.22.139.101) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Mon, 20 Apr 2026
+ 16:14:23 +0000
+From: Salvatore Dipietro <dipiets@amazon.it>
+To: <linux-kernel@vger.kernel.org>
+CC: <ritesh.list@gmail.com>, <abuehaze@amazon.com>, <alisaidi@amazon.com>,
+	<blakgeof@amazon.com>, <brauner@kernel.org>, <dipietro.salvatore@gmail.com>,
+	<dipiets@amazon.it>, <djwong@kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-xfs@vger.kernel.org>, <stable@vger.kernel.org>,
+	<willy@infradead.org>, Jan Kara <jack@suse.cz>, Andrew Morton
+	<akpm@linux-foundation.org>
+Subject: [PATCH v2] mm/filemap: avoid costly reclaim for high-order folio allocations
+Date: Mon, 20 Apr 2026 16:14:03 +0000
+Message-ID: <20260420161404.642-1-dipiets@amazon.it>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20260320192735.748051-1-nphamcs@gmail.com> <CAMgjq7AiUr_Ntj51qoqvV+=XbEATjr7S4MH+rgD32T5pHfF7mg@mail.gmail.com>
-In-Reply-To: <CAMgjq7AiUr_Ntj51qoqvV+=XbEATjr7S4MH+rgD32T5pHfF7mg@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 20 Apr 2026 09:02:52 -0700
-X-Gm-Features: AQROBzDxid6PXLYOtsvRL4lA7x1zRB3nMTMN0giu6Su7fE6kLvWGH4GcqL7x9i4
-Message-ID: <CAKEwX=M4nWeAw1-geCwABuv-0okz3-x9SwNswL-1Ks9KEAS6Mw@mail.gmail.com>
-Subject: Re: [PATCH v5 00/21] Virtual Swap Space
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, apopple@nvidia.com, 
-	axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
-	bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
-	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
-	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
-	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
-	lenb@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
-	matthew.brost@intel.com, mhocko@suse.com, muchun.song@linux.dev, 
-	npache@redhat.com, pavel@kernel.org, peterx@redhat.com, peterz@infradead.org, 
-	pfalcato@suse.de, rafael@kernel.org, rakie.kim@sk.com, 
-	roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
-	tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
-	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
-	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
-	riel@surriel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mij6ygpmzgo593k1hsygj6f8pqq63yqd
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C4A931A0013
+X-Originating-IP: [172.22.139.101]
+X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 67AB61C0002
+X-Stat-Signature: tq44m1rtd6ywkfodwsbez7ud4cyo3n4s
 X-Rspam-User: 
-X-HE-Tag: 1776700985-691617
-X-HE-Meta: U2FsdGVkX193HECRoaxwIg+ee5X1jAPecSbu7Q6DPKI+cCadVvBaVRAaq1a54IqlMbaEWxAXOYyf09o9DVbr6BGUsUVBlgosDZ7cx/ErmuV6J+q5K+9+iQ4u7I6m4NDrnocLHGa5ubwNZSxk9/7QEvSc9r9m4JSmgU+pVp7nanR3aPOZWQ7uIQlRySIVujwc6E+K55G7uexYmSnZq9V08fu2wAGkCm+KOMhQ0bW568K2WdqTl4MbDiP7Hc/xBGUaWciaUOz9fJE4EB/rSzRVh8ZvoQBGd8Eaogk7/4JKR1Sw3krCxehPkUgK27ZexrnsSMKPKS88tphwllj9avr5MaYgwMd+rjqy4ga6Ul9IuTehKwMrMRysP/lguNDM42mCSpnXWSUpuUNf5CPOFp5EcNINDogldHCK6+csYEJyYD7Me0254UajQl7nN31ZWPpjARAELQsUi69Z2W6tEckLkGv7GCzrY+BdRvMC3Vk+hisl4N8onkTxAyPSi2PAr/kve3p/dtWaRi7r31EAOuAL2l8r7+aF6oG/ThxEtcgVMqh2LLGHSqmxQy3DuHZizSbJv2I2N+9m/1WYSJedqwCMzkuZ3OOkd/uvqp+CmMwAquPg7MnK2qXKOYzjVDgQSHvNgXqLyvO103CaYFwkkM9TMdyDfR17qcgJa8M5aPH9JqSSVCGaKJgnhGq1+xS3/DvJ69vjPcrFAuB6/taLo89I39Ez57YRAzZCWFG+UmloFOWPxnsYSufhYrqYF5BxFFSW27c7/b5aIn333xJHrHn+itAhgTC+4ivQsBwlqnov2Idz4X9S3Gg/phVHNgKVlMJPLqYwA8okhsYHZPEint64txbuFQ3VqhecwRORbRQ3LZKXABMHBvRtEhzg9qrsyMnlf6FU5KosbMhrLmQJ2ihkp59aW+163Cwlu9J0ekYBh2TxA97NLGkV84p3p0R4FVsGqunMXREQL0WHiGKJdKl
- keq2+HUK
- Mf3i5/C+goHeUrxcyq0uIrTS+nQDIRGJ5CKbI/bpRCrZ1uZ0tRw/Z7kuQwWa+7y1h0L45m2E2gnbSi64Z9GQNNzyxnmTbwQvGAADgH9D+Ez93Bpyg4nR1tO5SCMSyvahIGUBU6epRBEjzo9JoFDxOSraLHlt96g1EbtTNupRAwu3aFujLV0L10CXaIVeTU4AK+uvwvx55BnzFqWka3O/pF6Iw+dfEQEtHK1C3UV9Tt+lZhb/2J2YMtMXPjadjYeEnS2XGk8jmwy/MdcxkV1d+1o8Q3/ziN2n//JQZzJqxmdQyOkNS0RY7N5aIlEHK6l3kuFXtbDwciXUDOdGBXmVSN7ShBrBIBl+5fTvubGJtsUAXwEjk8iQijvOgaWpX9fWubym2FWsqwHrd0bryn4HQnCjF7s9GHciDVl62cCdQ6pZUJaqa2v7zv+PBcks0VW+2zRT3NYVRSoPaz0UAAHLvl9efcsoM3OpxqDtY3Fp+c3bRjESn3NBK+FHkbyWuDibu2uKuWj7xVPNskTXhzUDr6Oiu1UHAHv8VGDttrOVPebTCbBdhkXckEW2lvNFtnNd6Uhdn8Yo42uAJDIQ=
+X-HE-Tag: 1776701668-237983
+X-HE-Meta: U2FsdGVkX18TwYwjdRNeasnBY/mQ6VFOiBbxdmMA5nweC8jmYpkmDeXGRh9RTZdhP5IeFoBbt7oZ1WSHkKyd4uMK52z9dym2KJUYEuMsG/cPGxVDng+xA9hEIFjHMpB64hhp3JcqJBqXOluFyKt/JC2qxWoJMJ3HuDuC4wx9FKXoefMDvDYSSwetjPdMLEiYYL9IvqJncZ61Gl77MWT0Dkrgi927rCO+6YO7u2Z4TNiJK54TNw7l3qHhICHe4fkruOz0HD/24c5ffUFinGVMPA1BtFDyak87mYVqpJIu+KsIZLo1GLFGX0w3AUWYhWfAPgJRgM2814gteagff0LrAH8qv8Nz657rvRynS8yAtZkZYvSAPGClBmzQOmRaNbAoy50vsrJ0mbzRiJyxUkrwxeea7JGAlrwurv1R2bAcglRJEKkOkDLg54cPoEO1hYsa1NrTykTWJurZ5Lwwoa8asft9UtW0qgiJ6R9PqDnau/IBIk1+D7TEdpjkDscGL3q/SJqjUd/6aXHYgQCuUbyHXvkP6oxG0dfwjhlSWhHoUC89zgoLsth+mq8xtF+L7zftdx8m1M6t3j8xUCaZ2/rsdfmV/yUl9GN7T00hOIyQ7i8X5AsOmtGkhHUFMsJUML1VUB4adQnYIfRpG4ggBIX4PxWIYZY/d+pQ3z2p2Zm0VXa8prYtRahjjSEo2AcYfj3wssSKYxKeJZdgBrOXDAvT3M2IxMIEn2pqCXoEkqVs2koD3XWPr4bzFF+pGPUnT6QWT33fm8iFIF9IGglQPLp6O5N+hfQmw9YxAD8x3uX9OvqPk3csc6URCoLllaGnHsDOmDeVwNWJiotfQj81aLOdbGf7VQDWSarhMinLOAwKnEXpQx+vcCFckzn6PN2prEVpLygb73xY9BPxllSB7PpjMPv8ZeWqlyoFRWSfUVnWoEj3/HJjWibZCN7ldQNG7ZqoeaMdpwKPNTZzrRTJCSn
+ mXEzQrwk
+ sI2Sg7kGhQ4DHh0aAkp8r3bLbp1PDrzSAMd+BUZdBV2RSLoGhj4tcoZEznBNkyHHqFW02PXUxWR4JxJ9Qn3QQcn4HC3k8SesSf+qglPQLeHTRBvpc4uyOGkMhCeV2htevY8gd3bbJ/gcRFs3VbXRdeVui7BT2MrGIhm5EsA6sz/XJQEJPv0U9cCQRPhHZZW8Jr8kKSugGqWvdSnnX4wCgxVTwszcrfswyuq+ORKG3Pd0UDL0KZpgo4JzsD+V+jNHRlZV9BNTNuEqOY37CZ9qPu5z63VViPcY+ihFEcm01yL7h9N4Ed2YNMeawy2+Z1pKoa66oFAJQvpE1iKJcRaMU+fjGxidsC4IDLFg8To+jHVTaatiobaMVvgf0co4DImP/ZijNnNJ1K3aUJEYIbxWP5COOytv1Nps3RraKLjF7hZAPs9iGcEcFFcb+J9lpV7KfshgVPzOmNrU67zlSV4krXDpIy+rN+v3iiGpobAkXJvA8grXaXE5WglZTPUPIt6Ojbm2L5zKUj0JGyQXZm7GtX9faTg/axKCBMXPzp5p1c2F1jy6R8PfJIK6j8O5bWBQBwlUMEwZ0060uIjJpKIlPKji9B/+jdiTfqHE3TYw9/zTkBpGni3HL5/iY5Fwd56xXzwqtYUOuassvBnA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,152 +113,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 3:09=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Sat, Mar 21, 2026 at 3:29=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wro=
-te:
-> > This patch series is based on 6.19. There are a couple more
-> > swap-related changes in mainline that I would need to coordinate
-> > with, but I still want to send this out as an update for the
-> > regressions reported by Kairui Song in [15]. It's probably easier
-> > to just build this thing rather than dig through that series of
-> > emails to get the fix patch :)
-> >
-> > Changelog:
-> > * v4 -> v5:
-> >     * Fix a deadlock in memcg1_swapout (reported by syzbot [16]).
-> >     * Replace VM_WARN_ON(!spin_is_locked()) with lockdep_assert_held(),
-> >       and use guard(rcu) in vswap_cpu_dead
-> >       (reported by Peter Zijlstra [17]).
-> > * v3 -> v4:
-> >     * Fix poor swap free batching behavior to alleviate a regression
-> >       (reported by Kairui Song).
->
-> I tested the v5 (including the batched-free hotfix) and am still
-> seeing significant regressions in both sequential and concurrent swap
-> workloads
->
-> Thanks for the update as I can see It's a lot of thoughtful work.
-> Actually I did run some tests already with your previously posted
-> hotfix based on v3. I didn't update the result because very
-> unfortunately, I still see a major performance regression even with a
-> very simple setup.
->
-> BTW there seems a simpler way to reproduce that, just use memhog:
-> sudo mkswap /dev/pmem0; sudo swapon /dev/pmem0; time memhog 48G; sudo swa=
-poff -a
->
-> Before:
-> (I'm using fish shell on that test machine so this is fish time format):
-> ________________________________________________________
-> Executed in   20.80 secs    fish           external
->    usr time    5.14 secs    0.00 millis    5.14 secs
->    sys time   15.65 secs    1.17 millis   15.65 secs
-> ________________________________________________________
-> Executed in   21.69 secs    fish           external
->    usr time    5.31 secs  725.00 micros    5.31 secs
->    sys time   16.36 secs  579.00 micros   16.36 secs
-> ________________________________________________________
-> Executed in   21.86 secs    fish           external
->    usr time    5.39 secs    1.02 millis    5.39 secs
->    sys time   16.46 secs    0.27 millis   16.46 secs
->
-> After:
-> ________________________________________________________
-> Executed in   30.77 secs    fish           external
->    usr time    5.16 secs  767.00 micros    5.16 secs
->    sys time   25.59 secs  580.00 micros   25.59 secs
-> ________________________________________________________
-> Executed in   37.47 secs    fish           external
->    usr time    5.48 secs    0.00 micros    5.48 secs
->    sys time   31.98 secs  674.00 micros   31.98 secs
-> ________________________________________________________
-> Executed in   31.34 secs    fish           external
->    usr time    5.22 secs    0.00 millis    5.22 secs
->    sys time   26.09 secs    1.30 millis   26.09 secs
->
-> It's obviously a lot slower.
->
-> pmem may seem rare but SSDs are good at sequential, and memhog uses
-> the same filled page and backend like ZRAM has extremely low overhead
-> for same filled pages. Results with ZRAM are very similar, and many
-> production workloads have massive amounts of samefill memory.
->
-> For example on the Android phone I'm using right now at this moment:
-> # cat /sys/block/zram0/mm_stat
-> 4283899904 1317373036 1370259456        0 1475977216   116457  1991851
->    87273  1793760
-> ~450M of samefill page in ZRAM, we may see more on some server
-> workload. And I'm seeing similar memhog results with ZRAM, pmem is
-> just easier to setup and less noisy. also simulates high speed
-> storage.
->
-> I also ran the previous usemem matrix, which seems better than V3 but
-> still pretty bad:
-> Test: usemem --init-time -O -n 1 56G, 16G mem, 48G swap, avgs of 8 run.
-> Before:
-> Throughput (Sum): 528.98 MB/s Throughput (Mean): 526.113333 MB/s Free
-> Latency: 3037932.888889
-> After:
-> Throughput (Sum): 453.74 MB/s Throughput (Mean): 454.875000 MB/s Free
-> Latency: 5001144.500000 (~10%, 64% slower)
->
-> I'm not sure why our results differ so much =E2=80=94 perhaps different L=
-RU
-> settings, memory pressure ratios, or THP/mTHP configs? Here's my exact
-> config in the attachment. Also includes the full log and info, with
-> all debug options disabled for close to production. I ran it 8 times
-> and just attached the first result log, it's all similar anyway, my
-> test framework reboot the machine after each test run to reduce any
-> potential noise.
->
-> And the above tests are only about sequential performance, concurrent
-> ones seem worse:
-> Test: usemem --init-time -O -R -n 32 622M, 16G mem, 48G swap, avgs of 8 r=
-un.
-> Before:
-> Throughput (Sum): 5467.51 MB/s Throughput (Mean): 170.04 MB/s Free
-> Latency: 28648.65
-> After:
-> Throughput (Sum): 4914.86 MB/s Throughput (Mean): 152.74 MB/s Free
-> Latency: 67789.81 (~10%, 230% slower)
+Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+introduced high-order folio allocations in the buffered write path.
+When memory is fragmented, each failed allocation above
+PAGE_ALLOC_COSTLY_ORDER triggers compaction and drain_all_pages() via
+__alloc_pages_slowpath(), causing a 0.75x throughput drop on pgbench
+(simple-update) with  1024 clients on a 96-vCPU arm64 system.
 
-For this test case, I took my 16G (a bit less than that technically)
-52 cores host, using zram as the backend and MGLRU, for a spin.
+In __filemap_get_folio(), for orders above min_order, split the
+allocation behavior by cost:
 
-Keeping the same parameters as your usemem command, unfortunately, led
-to massive thrashing (even with baseline kernel) - unfortunately zram
-still used physical memory so the overcommit level is too large
-(especially with random access pattern, i.e the -R flag).
+ - For orders above PAGE_ALLOC_COSTLY_ORDER: strip
+   __GFP_DIRECT_RECLAIM, making them purely opportunistic. The
+   allocator tries the freelists only and returns NULL immediately if
+   pages are not available.
 
-I then tried reducing the 622M part to 480M, but the problem with that
-is VSS5 did not show any regression - probably because the
-overcommitting is too low, or not enough concurrency. I had to push
-the concurrency up to 52 workers, allocating 300M each (which is
-slightly more memory allocated overall than the 480 x 32 case), to
-finally show the regression you reported. Variance was very big with 8
-runs though (what I normally use for usemem these days), so I had to
-do 20 runs per kernel - fortunately these runs are fast:
+ - For non-costly orders (between min_order and
+   PAGE_ALLOC_COSTLY_ORDER): use __GFP_NORETRY to allow lightweight
+   direct reclaim without expensive compaction retries.
+
+With this patch, pgbench throughput recovers to 148k TPS (+67% vs
+regressed baseline), stable across all iterations.
+
+v2: 
+- strip __GFP_DIRECT_RECLAIM to avoid costly reclaim for high-order
+  folio allocations
+- Moved fix from iomap to mm/filemap layer
+
+Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+---
+ mm/filemap.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 4e636647100c..f2343c26dd63 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2007,8 +2007,13 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 			gfp_t alloc_gfp = gfp;
+ 
+ 			err = -ENOMEM;
+-			if (order > min_order)
+-				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
++			if (order > min_order) {
++				alloc_gfp |= __GFP_NOWARN;
++				if (order > PAGE_ALLOC_COSTLY_ORDER)
++					alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
++				else
++					alloc_gfp |= __GFP_NORETRY;
++			}
+ 			folio = filemap_alloc_folio(alloc_gfp, order, policy);
+ 			if (!folio)
+ 				continue;
+
+base-commit: c7275b05bc428c7373d97aa2da02d3a7fa6b9f66
+-- 
+2.47.3
 
 
-Metric      baseline       vss_v5         new_opt_v2     cc_v2
-real (s)    15.0 +/- 0.8   18.3 +/- 1.8   15.1 +/- 1.0   14.7 +/- 1.0
-sys (s)     396.4 +/- 31.1 511.9 +/- 60.3 404.1 +/- 34.5 392.4 +/- 39.9
-tput (KB/s) 28188 +/- 6996 23287 +/- 6629 27999 +/- 6623 28744 +/- 7015
-free (ms)   101.1 +/- 52.4 91.4 +/- 41.5  93.1 +/- 43.8  97.6 +/- 49.5
-% real      n/a            +22.4%         +0.7%          -1.7%
-% sys       n/a            +29.1%         +1.9%          -1.0%
-% tput      n/a            -17.4%         -0.7%          +2.0%
-% free      n/a            -9.6%          -7.9%          -3.5%
 
 
-(I realized I mangled the output last time of the "memory reclaim
-metrics table" table due to auto line break. Let's hope this is
-better).
+AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
 
-Strangely, no free regression. Hmmm.
 
-But real, sys, and throughput regression are real. The optimizations
-do close the gap to within noise level here too.
+
 
