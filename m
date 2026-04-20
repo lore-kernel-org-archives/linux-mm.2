@@ -4,92 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF78F557E8
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 08:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55FE0F557EA
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 08:48:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7B856B00DF; Mon, 20 Apr 2026 04:45:32 -0400 (EDT)
+	id BF8DF6B0005; Mon, 20 Apr 2026 04:48:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B53696B00E0; Mon, 20 Apr 2026 04:45:32 -0400 (EDT)
+	id BCCD66B0089; Mon, 20 Apr 2026 04:48:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8FB16B00E1; Mon, 20 Apr 2026 04:45:32 -0400 (EDT)
+	id B09D76B008A; Mon, 20 Apr 2026 04:48:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B50A6B00DF
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 04:45:32 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 34EE21A07D4
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:45:32 +0000 (UTC)
-X-FDA: 84678300504.15.8A694B5
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 74C41100012
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:45:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=VjShxqIz;
-	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776674730; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A25A86B0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 04:48:50 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 56DAB1B8CDC
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:48:50 +0000 (UTC)
+X-FDA: 84678308820.16.D9E8DFE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AD47E140002
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:48:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9vRxeYx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776674928; a=rsa-sha256;
 	cv=none;
-	b=7wb4JSN0DfSP4kSM95WjpUhzoJcBjYat6vBtTk/UtaLlQbgkKROkAF/HKqSVNQjgJXyfGV
-	wRLnmCgfDLj12KxhwdsUYKqk9Fwj/q9sAyy+tW00GvDUfLw4ejtTaQZeIpnPWLRbgf32i5
-	wx7IbbH7ICAlZyScLAoU9fHjn3LyAvY=
+	b=t5qSg12XOOKO3L609t1M75zXtMZwqR36/b/e6MJRQbyiAdCgDSZTAJUmzFSIxaWto2cmPg
+	4hd/VHN+tglut18usWLvRKgLark0DVGw70HQTM6sN6sQS+G56R3bqRRM/mZ0H2Wg32anYf
+	Mt0ZSpdQJC14pUOjqlmTJ3paJ6IZo/c=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=VjShxqIz;
-	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9vRxeYx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776674730;
+	s=arc-20220608; t=1776674928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ADHqF46w1tMo4iag7Loj+WMyyc0ycxl9bQDzCQwYW90=;
-	b=hT22bQMLu9bPetpIoNKNYaSsPJieQd9gns6Et/7atb8p+/1WMaJ+DJufcj0UXB8c/Z2o2x
-	a+EQU44OtnwFan1xqyIG2T4Q45RATdV5qGtVcx/uXGGoVk2K4sQK4s2puHkC8EB0kt78yU
-	bjkXZSDCn5OUMg0EsK23zsQf+Tz8YSA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A7101516;
-	Mon, 20 Apr 2026 01:45:23 -0700 (PDT)
-Received: from [10.57.63.177] (unknown [10.57.63.177])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 099303F641;
-	Mon, 20 Apr 2026 01:45:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776674728; bh=aslz2yLWAjdD4IGDrGw5HHuwwhSvb0pvA4zxjSBGvVs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VjShxqIz/6pMdOJQItTXiMxAPrFkmVWqvoYYBHd0AMUOhK0k5/62F2MGuWywZJEqs
-	 wfSc/fxt60OjpdpVIgxBXM16uOXIBtA0G7dqIgeBasDbjK/LrEuN0RJ0U4NKryvprH
-	 V9PtftScrn0LGxfrb3BFXmLddSwKvVQZWCibDzXY=
-Message-ID: <4dc47078-0f8b-4388-9715-744c18590a00@arm.com>
-Date: Mon, 20 Apr 2026 10:45:22 +0200
+	bh=9NOeHAESzNyoOLo2eS/PzuPuitQFv2Vq39LTbJUFR2o=;
+	b=b1lgIEv1LSZgh36Rq9bYuaQKpgKUpSH/4UUe+b6BYfh/nO+dNTaEbT0+fEdOQuWqNKGO43
+	YW/t8jQbA3tNnivX0GGuGxzleM8CUvRqSo9bDp8i1fGIY8NtjAoQJk2zNhxNGZCUga/nkM
+	C0pX2V7j4vZmQKs7Cr4MAfiwbBSwM/M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E69F960055;
+	Mon, 20 Apr 2026 08:48:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FBCC19425;
+	Mon, 20 Apr 2026 08:48:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776674927;
+	bh=qLFgeQwJCkpSSOG98sxSdZSktT3hEJUY9FwxAEoEYcs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T9vRxeYxFL9cfHlFph+p4HZ7WoGh85kwA61pnA64hopb3JqkEUHIbig41QikVB0o8
+	 prK8HkTDt/Ffs9L9+yWgpZ8m4vNtm2NtKgvqFrHGKZ0kSrCIaIWiX8XFRWTp4AuE0n
+	 5rRHIYxhoMQxEg92Bznbq5kvvr9NtLFa1+jC88YbV/vcS5Nf256U/iPi/x0/kQMUif
+	 dXVbGPzd1qJz/5dHW5nJNtqHKhuEzPHYOIDMMJ/zgr26bjAhEbAWxN1H9vUvNYGDeQ
+	 R5c4ehGomLkv+Eu4Uh3VAGGXsphT6EG7QRTvQj3L+E424MFl6JzHADE8L5FH6Bs8l9
+	 HaSyWBlFLIDsQ==
+Date: Mon, 20 Apr 2026 09:48:35 +0100
+From: Will Deacon <will@kernel.org>
+To: Yin Tirui <yintirui@huawei.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, willy@infradead.org,
+	david@kernel.org, catalin.marinas@arm.com, tglx@kernel.org,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	hpa@zytor.com, luto@kernel.org, peterz@infradead.org,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	anshuman.khandual@arm.com, rmclure@linux.ibm.com,
+	kevin.brodsky@arm.com, apopple@nvidia.com, ajd@linux.ibm.com,
+	pasha.tatashin@soleen.com, bhe@redhat.com, thuth@redhat.com,
+	coxu@redhat.com, dan.j.williams@intel.com, yu-cheng.yu@intel.com,
+	yangyicong@hisilicon.com, baolu.lu@linux.intel.com, jgross@suse.com,
+	conor.dooley@microchip.com, Jonathan.Cameron@huawei.com,
+	riel@surriel.com, wangkefeng.wang@huawei.com, chenjun102@huawei.com
+Subject: Re: [PATCH RFC v3 2/4] mm/pgtable: Make pfn_pte() filter out huge
+ page attributes
+Message-ID: <aeXoY7lrRJev0P83@willie-the-truck>
+References: <20260228070906.1418911-1-yintirui@huawei.com>
+ <20260228070906.1418911-3-yintirui@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] mm: Make lazy MMU mode context-aware
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 74C41100012
-X-Stat-Signature: i5u4xf5w8g5qzsq4jhcdk63194ofinot
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260228070906.1418911-3-yintirui@huawei.com>
+X-Rspamd-Queue-Id: AD47E140002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 7hxppqzjkn7ua4eh8edy6b733nfgffs4
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776674730-629444
-X-HE-Meta: U2FsdGVkX1/6R3Auzg7ShUZqEUBW2o2e2g+yRJ+5SVPVNIByIxO9oDo5V1xJ9hjJIgmO26teCot8pm2mdtcSatY8UYajcnFQ21vfiFC8hePA2vuuIJHVFrNLqrISO+UpC/7Y/BYP+Xm39B6Cx/YodyzkbVXVXn6GFODz5OF8mkkVH+WCDoOHaD8IPj/+53hBOEfd5n90/gk1RPpTjpk2eeh1KdRJq1YkdrJWdToFygGehVZd1GW771khb/VzbqLqjm190ifpKCM7XJJLjSf+hQpshvOfU011BePL6gx7OsU7qK/4CpyxPGw6288x5n4WVtG2WreABmoUWEt5zGFp1o085wzl6uDm/x2NWfk1RWWQMl43N3VtQL1/j6Jji/gxneu6kq+RYUr1GecjhJmieVje3qf68s7dIOjs7eVO02ODAmJNHe11tGdXQ6zW2yiwgj00MRQ9d5Pu5iiTLL4E+kuhycM1KtoaD6UmuLaTfH0AbOGKcc5JH6LAnjVrD55xAtX1aTE33RePOmHiXfARSVxoX0bIERfQiPrWeWhlnbYpyTSI/M4Wv+CNfikmcpuESNPUCU0seLILTrcjsgOn9uqIQ+CLo8kk9ti9D2h02cxu+Hi3wA4UFt6NZGDPpCTkZdRbG7l1v1aAN8CyRiYTJ53v64YP4BZm9NIvgsnJ3ptllxXHEqdSlBqdUflTmNYbRNzVO3PMn409PnoBS5g9Bvpefh+GhnQ1v6da6N0oFn9kAitLNfdaRAdLTVP3G+bwOWVDdPvnSVyRFNgomyzhkLEFJXk2YStpaUuGJ1rJYzLrjpwyq5juODdJK+rqpUnYLtz+htRuXPVNffCJAAnJWHmoNAF0p5m/FKLJDUX8vV4LHjnmeotI6DOnTipPSS0SIUQ/FqMN//gxiD/TV1yihm+QWx0YVhHw+kc5hdsV/oQNSGTfVuTG2qT09DTehWQjKC4OYIGTPKacHucpfD2
- hqlrUYBb
- 6p0fDJoD3++Cksqp6aYkYZCwWe6BYgHAAzHKHtcgrDNxLTqtBRSWMidjzkaoXcMvVp3cYgchozWx2uhupkbxHorruhdJKE8JKjdJWuEZMRHkDtYDFhjiJUDU0+GJJgMRJAvlsmJKXMC+pE039GolHofvW1dQzvP2B7nW8srg/X+Pq1LUz45TzXPNf0yizyswHbmT3fXx/O2BsH/bkOfm08/NSEOSDGUopiGKkuZSVmzhEFkFH8WqHEH7ECJ41A24jcINRxakOQaIzLcrDJwifEcSqdrRVrEBqd9+Lvxpyhw2tSvblbS5sftxE6PFhfQhVf01F
+X-HE-Tag: 1776674928-600060
+X-HE-Meta: U2FsdGVkX1/6q5RLohVJ1uz4XrKNVtonl32lg4KjWbJB1ATc6BwULvlMMOpni39vErWyi/QGW9y5xuiK7E3wWMDcTNGeS3xxMlioKEmdmyRvEsfujkYPYD8WClrc9++e+rWgr2iChdWulkUrnv5jSXZQlGZ1JvDlD4P1e6BZC8e7bCExWUkJQctImlBfwLcmr43/BNwusIp+XlP/X16Abmd8o7y97rVWW6bsssbww9r4lURhYxG8Bjr3AylUZ7pOrGIIlTChbqa1ElTyCAckbGAV+gl6/BGgemxwDwxsZagjqXECgdHqNwItFEmO9PoVm7zGooehaLYcGj2/n5/r6UvTFgOm0tix4fAwQpGkAcoZ1uzGXa0t2qVs/HVAuQRKtnhOm1YSl3LhPFkzjbL64swb1jVmddOd01YkcPZvcBNDPKbxzhY204RO9jn4Y0jaPUgBVZN5Jaz9odFQAew9DRAaoKkw+mIxUT/4GQQqUQf/tr+sJJT43qEWwN6t/gLBQr0UfrmMtKIYvM+gPlDqvNZycxnhOZkC9OWi7+UP1YxhltNRFlN10R2ztiZ+HIlkocdjHbOkSoWn+LvQmwjR2RFR2Zxfbl4Ol/VUekfa31R99pM1Ssi/Tz1eDzmXW30Skxka4DM6kdDK+i0jKAKlATpNo/VDuaFO8CUIC4kskcTcIqQ8dMLtLRqW54XqMGKX426G4BU4O1odzug+I89XZsff0AAYqQcu5HYXvvLYEQ+9J5oLCnkfQ4ScFe+61iOjdyZHkDroKR+P+rvjkumk/9GjLKHhpqKbXY3WgNd8tvey8406nmzyxoCDVHQdkmoy4vzWKiKPh1HM9fX7b6EOz2YIRGQ6Bk83o7klyYwWEe6+xQc7GKgqxG8QkQJgJvhmex1pjh3XPocOAWm8nFjcXPjBC4DZ3Ndb0UbOEXfYLrMO6xh10wQkWJVN3A6LOhhDULlD3r9PoMEdiMHFAZl
+ pqSry9eY
+ RwvBLBP+p+hpOxIidCa+w0tTQ+BWLc4l0BzlInTJ5EqRcqOsFzlhiOQIZb4WbPnLw7ycIQUTBCzwtzgiynT6kHzN7mHCV9kWXcO+1LwAEHoGNLvk7pFoifHvRfnAGCoZZoIc+pIu6hxFb6AATJGw+xHXeYIdf0qNKW7r5NnIbJ7te70ylZh/Nr89dZu95rRRtZ2RzsQ1+QdRHW237yux72hxbUuRdVE1xT6YJI+c3tGxG4OsAvYZeaFAkq00InQ0BxR4xer+8qn0JRQmc0dHjvWcGxjM159m7ONuMAdcXGdFQ5YnVKpOhTglw4ASZKaZztPvJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,49 +107,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15/04/2026 17:01, Alexander Gordeev wrote:
-> +/**
-> + * lazy_mmu_mode_enable_for_pte_range() - Enable the lazy MMU mode with a speedup hint.
-> + * @mm: Address space the pages are mapped into.
-> + * @addr: Start address of the range.
-> + * @end: End address of the range.
-> + * @ptep: Page table pointer for the first entry.
-> + *
-> + * Enters a new lazy MMU mode section; if the mode was not already enabled,
-> + * enables it and calls arch_enter_lazy_mmu_mode_for_pte_range().
-> + *
-> + * PTEs that fall within the specified range might observe update speedups.
-> + * The PTE range must belong to the specified memory space and not cross
-> + * a page table boundary.
+On Sat, Feb 28, 2026 at 03:09:04PM +0800, Yin Tirui wrote:
+> A fundamental principle of page table type safety is that `pte_t` represents
+> the lowest level page table entry and should never carry huge page attributes.
+> 
+> Currently, passing a pgprot with huge page bits (e.g., extracted via
+> pmd_pgprot()) into pfn_pte() creates a malformed PTE that retains the huge
+> attribute, leading to the necessity of the ugly `pte_clrhuge()` anti-pattern.
+> 
+> Enforce type safety by making `pfn_pte()` inherently filter out huge page
+> attributes:
+> - On x86: Strip the `_PAGE_PSE` bit.
+> - On ARM64: Mask out the block descriptor bits in `PTE_TYPE_MASK` and
+>   enforce the `PTE_TYPE_PAGE` format.
+> - On RISC-V: No changes required, as RISC-V leaf PMDs and PTEs share the
+>   exact same hardware format and do not use a distinct huge bit.
+> 
+> Signed-off-by: Yin Tirui <yintirui@huawei.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h | 4 +++-
+>  arch/x86/include/asm/pgtable.h   | 4 ++++
+>  2 files changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index b3e58735c49b..f2a7a40106d2 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -141,7 +141,9 @@ static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
+>  
+>  #define pte_pfn(pte)		(__pte_to_phys(pte) >> PAGE_SHIFT)
+>  #define pfn_pte(pfn,prot)	\
+> -	__pte(__phys_to_pte_val((phys_addr_t)(pfn) << PAGE_SHIFT) | pgprot_val(prot))
+> +	__pte(__phys_to_pte_val((phys_addr_t)(pfn) << PAGE_SHIFT) | \
+> +		((pgprot_val(prot) & ~(PTE_TYPE_MASK & ~PTE_VALID)) | \
+> +		(PTE_TYPE_PAGE & ~PTE_VALID)))
 
-Does that mean that all PTEs mapping [addr, end) must belong to the same
-PTE page? I think the wording should be more specific.
+Why are you touching arch/arm64? We don't implement pte_clrhuge() afaict.
+What does this actually fix?
 
-LGTM otherwise:
-
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-
-> + *
-> + * There are no requirements on the order or range completeness of PTE
-> + * updates for the specified range.
-> + *
-> + * Must be paired with a call to lazy_mmu_mode_disable().
-> + *
-> + * Has no effect if called:
-> + * - While paused - see lazy_mmu_mode_pause()
-> + * - In interrupt context
-> + */
-> +static inline void lazy_mmu_mode_enable_for_pte_range(struct mm_struct *mm,
-> +		unsigned long addr, unsigned long end, pte_t *ptep)
-> +{
-> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-> +
-> +	if (in_interrupt() || state->pause_count > 0)
-> +		return;
-> +
-> +	VM_WARN_ON_ONCE(state->enable_count == U8_MAX);
-> +
-> +	if (state->enable_count++ == 0)
-> +		arch_enter_lazy_mmu_mode_for_pte_range(mm, addr, end, ptep);
-> +}
+Will
 
