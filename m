@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F362F588DE
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:17:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBC79F588DE
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:18:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF1A46B008C; Mon, 20 Apr 2026 10:17:53 -0400 (EDT)
+	id 52E1B6B0095; Mon, 20 Apr 2026 10:18:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA2BC6B0092; Mon, 20 Apr 2026 10:17:53 -0400 (EDT)
+	id 4DF4C6B0096; Mon, 20 Apr 2026 10:18:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1C626B0093; Mon, 20 Apr 2026 10:17:53 -0400 (EDT)
+	id 41BEE6B0098; Mon, 20 Apr 2026 10:18:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C1F216B008C
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:17:53 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D217E57D2
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:17:53 +0000 (UTC)
-X-FDA: 84679138026.15.1809527
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AE8A380005
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:17:51 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eAd2JN+L;
-	spf=pass (imf02.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FA3C6B0095
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:18:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E18461B8E94
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:18:04 +0000 (UTC)
+X-FDA: 84679138488.28.B7477EB
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 102A640014
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:18:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iHaB+U1W;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776694683; a=rsa-sha256;
+	cv=none;
+	b=7hUEoiFcCwGIC/lOGwn7KtLs4Yc7Cn6CvvXr+7RTa+PJEdxfpr6mE6p0xa4+szinyx1SKU
+	cYTfZP2ShljCH/geLg8oDdXnw8m4ZaTOmtvVCc/2Z0nRnbkqFR4s/GpofR4x342IFhdgWE
+	S89/aDRlgShzBhwd15nDHNLx8CRDQuU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iHaB+U1W;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776694671;
+	s=arc-20220608; t=1776694683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vjAX0smE41BTNjnnRZCLx7DL1jbmxY9+auerdTALqsI=;
-	b=cfR7RN7ZEiVLdrFInC09ChfMbaowou9KLwQ/tGqAL5ksCki3RsrvinYprIBdm+2CWWF//4
-	ynGKvCUzLrcZLCUy5RbQQfvuACT8dLNEBico33+hUq75QuxEiTPR/m9YiiZExXElMlXWOA
-	91TJL4hqoNDb9YARovKYT15V5HFUWzM=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eAd2JN+L;
-	spf=pass (imf02.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776694671; a=rsa-sha256;
-	cv=none;
-	b=gek1Fc9QDgNaJuhTnqket+172DchmsyVOdi4FCGXnjNzS+sLRJj8nQew7WwSIBGwFnQf1w
-	SQ53xKmJAt1rBHVKrHb2FMuUqzBNxRKSYLZwWAT5AGoXqFqI4b//omhT861weTs5w4d1Er
-	jTarX3BJX4R1YayAsdMk2gLQGlyDmww=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso42833075e9.3
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:17:51 -0700 (PDT)
+	bh=MNDqlHkLA3XwzqBTWyzDtldlB60yiBhHVXXXYk5oIQI=;
+	b=7mD6P1YfLZoDxDPkIug13qK4GazdmwXR352Vhaks7LFGzBFL8tFGXiNt/gZq72zp7Sd69p
+	PvohQufnX1U9vsKNAmtzN8Mt08nCIosxAXiomecVuf+VZaKkh73uI1elAzwZ8aIQiBZhZD
+	QTO4HXgkYxzEVZyLfsPr7e9qEB7zess=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-488ab2db91aso41700555e9.3
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:18:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776694670; x=1777299470; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776694681; x=1777299481; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vjAX0smE41BTNjnnRZCLx7DL1jbmxY9+auerdTALqsI=;
-        b=eAd2JN+LlZohZVbcdiPHjBl4SQl5jUBr0MbSNvaJ2Piyjo7EjBwAicaDVjpzEUDMwB
-         BtozSAh9U2rWHf2ONFjwFTOJS3KLgEh0Hgrxg9HIAUe43aRnpkk7PPVYeh9I1PhgOAG8
-         uEMjAEVfIRf6e3VDCgYK/zmV1I9ZkO8ZLGMU0A640Ow244YAN9qgOjHqruvikeFvi9IL
-         bcZwFNUZp/I26MfvA8u1fuzssD5sgBEY2Oiz7GyYgUP4yD3qjJm+lLEMqx/vLbIgJIXC
-         GcePQdEfd46+KIK8YA5ExAnK+y2vrlv/OGUCgNtHOrc9cllKfv59FvhNytwEUddz2XUj
-         4F4Q==
+        bh=MNDqlHkLA3XwzqBTWyzDtldlB60yiBhHVXXXYk5oIQI=;
+        b=iHaB+U1Wym9PRkuGM8bFk2ZWk0zd53Y965uS9MlpBdMMyzZbj08sHAjUQkV8rVD3lT
+         32QmZVpt+YEsoog7eBJY/vJeG775wDcrRumUbxw1SLIE8QeBT9KWge3HpeFLejpjk+sV
+         8MmMFmPDqJnvaaneAUWBdkDynYOwdCqdjzfSzRTOY/jCG9rOpAExaFeEfpHIOshZG/ov
+         qGHpl8xocxJZjRcazXSkeUA1n2trg76KbwzoyWaFxHroHcYd+bFMejpAAEHLt+cSl7+I
+         QeLduZsWu03IA6nbwEpvW7QqMrlTqpfd91itCcVl0whndAJY9TVgLoqUR9HK3CI5qSxx
+         sD+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776694670; x=1777299470;
+        d=1e100.net; s=20251104; t=1776694681; x=1777299481;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=vjAX0smE41BTNjnnRZCLx7DL1jbmxY9+auerdTALqsI=;
-        b=LKQGFncEBdt4LSz57lO6Vj7rmRcXCs3gmUJ2bgwdPpK7nIto4/DAKukPjufs3t+bIU
-         ODr/POf0DN/qEu2fIDuWJAjkBoYnxmZk0Zih7ermA4+N83NLO6j/z9XBZJ0L7PfhkMoE
-         SUkE0S1fL8BI83Z0RiCwE4KaxeE7pEqi+Ulto82qbGkVnjwBACt3qmrbe6FXuQ9wDehU
-         JEI8PfVd449le2/WypDWOtOTtNON3FK1A3bQv/WyoC3GNpyrixHYSy+uMzvAcCHSlG3S
-         9ObLY7N3NGnkTXBTZQ1lx/45rr2Djz8hRemVZYhgLl93L4e2JMu8NnvGwQPs4XRO6qNj
-         j3SA==
-X-Gm-Message-State: AOJu0Yy1s2qQXHDXeNURQjBdLWtvaGUsq92RRoqC/fw8hOtsYw9S/bbA
-	pCA80hPuQT23y9RmfdF6AV1nBzFwz56+4ozuxytkVbfKjwPRZi6sPYZn
-X-Gm-Gg: AeBDievcK5aKQZFQo/NI98OJaHXE/i1lFeaMwip2HDB5Q4tyB4eFI/qgi7XuzGMtZGl
-	AAb6zU2iveIypcYa88RRddFPwkMb+pnkZyGkWKI3qH+L5Zm6Wo/ZlI5pgY8EG0FLdA/a0fRC48D
-	1zH6RLk5flqYPhpIAbMoyFGcopizJaIrw4Swv2Otk5SNSsdQDgOQn6IpPrc9vSjQzHXwzsOWrje
-	qmaVQKzF0cTqIdS1wBFs/y5BR0B2mjh/k6GAEN1mgGS/r6e+7mi8wotxt1mT0wzfNRmHhSo+zAj
-	vbNKLwSGhE8151uF+vra5mwR5btb2i6LR2RoVP1tDF1XypIfuicoG+OvXyUL4izghKAqimT34bw
-	qDXT0SyebyvKe2tTflfOhfRdZ26MIpl5GUadJTnxv2JNJJdBHS2WbJk32ZY7P2i8tKVVcmgd2Ui
-	KCTIzZaqj/js3NdxGMRmpHzDQaErfYvsdjS6Go0D8=
-X-Received: by 2002:a05:600c:8b38:b0:488:b14f:b8ed with SMTP id 5b1f17b1804b1-488fb6e815amr205856885e9.0.1776694669910;
-        Mon, 20 Apr 2026 07:17:49 -0700 (PDT)
+        bh=MNDqlHkLA3XwzqBTWyzDtldlB60yiBhHVXXXYk5oIQI=;
+        b=lUF3C8dY5WJ70rTnHS5ggu4qHAFLCKwy8VUaEPS3f6+556U/CvYBgSxAYOIGujeWoe
+         cq7XkiCyiP2W8AnEbazKKFyzWXhNMiu+10ESAdJYopZvF7iuZj/fkTN/Wf4/Ll7MLKTT
+         oyHUyPjKG3kAq4gzi3xv0tRhYW7lvdzEWzwb6YM7AnCT7CHxnJ7GQL3qUHzteGQMvpLR
+         Saq0ktzuo1R9ApzeUljuxpVZGlMonPNyUkJJg8fH7/NQ5lpSoK+aRznywMAZKGUfr0Gy
+         NYJF1RZTII6l74MJ4cDcVesYdUWS2AzdsGXnsKra+1e/GQQG4OPrA2opDvsI8AmCC687
+         VMjw==
+X-Gm-Message-State: AOJu0YzRyMczuBpQw2sA4Q2tB8tX243Vtmqyj7vIV9Igxm+kkZxf61YB
+	8k10mdUZbz3K8ZfJvAitOGrtpAV/rpblXV71N7XtPgrzwzVTMy8re7C9
+X-Gm-Gg: AeBDieuyZzzVvw3Zp+mS9GRUcWz/fPo5fkmeOC78K70E4qW84sfL7Ce/05U+lAakU33
+	11VUfcH0QsoDwuQfE+9dL0HTozxjolgv7gG2GWcgETwujyVaVBvNFmhi8m7cz4qlufzv1qTfmPJ
+	7EuV6Xdq3pDqPY8TtX9MR+woWXRXlCh7Pl8V9Rg++Xz5iB/bXEaSek2zzGZ6O59NZb5oOlD0xzf
+	AzJH3uIFw3JRV0Wq4p4nLpTPG0Y4AjvZz3lS0/8FavxPDc69/4jszFL+IBZzHRADM/QpGx3tJd+
+	BY2Yb1fTBkk3Jpeubn7CubHP7cTt9UKYL5RBo6Uzbfxf6DAT/G7MYV67D+rP8D4vtT015ePw1OM
+	nBRLmDMdXhB9th59kBcvojCJY5yEu30upGvYw3Wgs0zL53QhkM5UTQuoctVGHQAo7z7LeNmk03V
+	KThbZ745OPBwmca8/StGrycETuU4K2pzJCwSigPls=
+X-Received: by 2002:a05:600d:8447:b0:489:1ff5:edda with SMTP id 5b1f17b1804b1-4891ff5efe1mr30879445e9.6.1776694681215;
+        Mon, 20 Apr 2026 07:18:01 -0700 (PDT)
 Received: from localhost ([2a01:4b00:d036:ae00:355d:3be4:308b:c943])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-489207ebd3asm23410595e9.6.2026.04.20.07.17.49
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48a52d232afsm6942375e9.31.2026.04.20.07.18.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 07:17:49 -0700 (PDT)
+        Mon, 20 Apr 2026 07:18:00 -0700 (PDT)
 From: luca.boccassi@gmail.com
 To: kexec@lists.infradead.org
 Cc: linux-mm@kvack.org,
@@ -99,22 +99,22 @@ Cc: linux-mm@kvack.org,
 	brauner@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Luca Boccassi <luca.boccassi@gmail.com>
-Subject: [PATCH v9 4/6] selftests/liveupdate: add test case for LUO_SESSION_MAGIC
-Date: Mon, 20 Apr 2026 15:15:12 +0100
-Message-ID: <20260420141741.2688371-5-luca.boccassi@gmail.com>
+Subject: [PATCH v9 5/6] liveupdate: add LIVEUPDATE_SESSION_GET_NAME ioctl
+Date: Mon, 20 Apr 2026 15:15:13 +0100
+Message-ID: <20260420141741.2688371-6-luca.boccassi@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260420141741.2688371-1-luca.boccassi@gmail.com>
 References: <20260420141741.2688371-1-luca.boccassi@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uogu7muakwf8qjebbakaui4r8dzd4q8g
+X-Rspamd-Queue-Id: 102A640014
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 6ntywooqrqtfrqbfw9p3a95cnewnrbfa
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AE8A380005
-X-HE-Tag: 1776694671-664887
-X-HE-Meta: U2FsdGVkX1/KOKWmq8mb8u5XBwXH1sl8vY/Ar7/3H5lcDq2ofSP1rFFuLJo1rpcAjPGiqV58jpj9Jkxb75I7xui7gGRoFk5CUDqaUWdqJSsP82ZBf8q88Hwu6VIWy5ZZMrn5BBoQI4KAXTCEgqqCjL2xnQ8zq8wGxVKhb4vJlEgLer4REBt4xRHXahRvXsVodFWEQGwHXGwmtdiS3X0GShDVOuGByKd2ePiGCDsE75GpIyVU7VtWX5928IS7C9iMxwNiHt1oxlBJBiF219cNjvC2X1GE6AfaMz4x0zcBEWIqtUn/epQCiPjtQrFELk215o9FPKkj1sqC0SpuLewFA9Am8SGNtP4MHga7XIzOXHETF8WyrH8vUkQXQPyJK5YQh0zT8XgyENeUmMMiedNby85j93vapUyPT8MmSlEsOhy8eqnOMwwC+bND7wPbNRF+yxFX4jImG+lth1kPK/HmkjdFhA+NjMqUd28CHK55rMz7uiJT8TwNlcRzSdESMLEp5P2FqRyNKDiP1ukQr8RCaF0Bw+sVAJ+h+NL5BkFKVTe8GklmVYyBI6zXtS+hA4BhX+UnsR+txA7epqnou5aKbdeEJLPhdyu8nQuQmE0baJB4+ebitso+e72ZgBa/NkV7qisJJPDiUok9YgCbpsXVfHizOEQ5No17cvH4FQUVWK1UZBfj2hOSE+uSneEPGujUZEFlsmRqU/+yOaxTrlUQFKvd5K/5gfizjiB+wFwzv4rkfVR97lV4FmPAG3JnlmLAxm7pbPh6X+WTTorrLDnH2TOGHyYupI5DLDtpINChrRtufbJaEohMvrUR8j5dUA14gxPllfrgKv/mvgWkKOH2d1NqG8sWlwGUQcUKL0f7s0VA9AW4jeMqBQcEhk6gvyC/A6Znh+PDBRnRkvOFyvjMy6vg/hKeh0kq4oYR58bRryhjteAfl3ZEGVzYgVMwT/TF2eDlkQXR+R554InK1sH
- YVzFxhLb
- 3m8bRHg1P/YTx38FLWHPI3C5FevrTQGvV3sCSEjbnherWAbn8siNeTxFxKTghcfswhwIHiN4Z/DqI8uxWDQZSDVwWQG6bDj9+yakRCBIWCY9UqeGRzjFYyitvLM2DvLCgSLPmZchz984WiG1pl+f/gvD7vSFrULENHhZTTs4IEgQVJd0kZJC3p+N0ARa8vb4dcMtzAxArz51kILnAPQ6ryVCPwVZPgeg+lsNsonvTazTVRp04SZRl0yIC80vu7adYZknmiRWS/BwYHLStieXb1E5igZ3bpTKAcvrTWf973kyLkk34TrPOOquVuSiFfrPhWHTXmavCdHKjrwBZ2uVBWyoBDpfnDv90kqgW61b8dGGWinInCwbBgzR8dWzypotF45+HHhmpRPkzIwd6znEUz4VdJm5rZexnX/vUYe73MzeHle/IKVYz/N+mJK0vNrh0wOitw32NFY45SPvuJjgKZvxz0kZXh+NYcHbd9zQeSC0rmw+0nihuL1ZYj8dqehW3IcsktgfkiwJgZ/6PGUGPvtIn5RDVZTZoz6xrdFEq04czLXnORUQTGMo7QGVUT7Lcdo6t32jnrJurpU1LX20SclkGOb56eno7gWMjRiEREQB8QKA9uG/8Sh+avm9sKeNzC1iSssfn/FuoCdVLPmKtVCAnMuxZp3o0iVq7ll6Vmcrqr8x66RfJ45bRdtQSt/ttc7mAwzjs2sLMaQgEnv9aKrFOYQ==
+X-HE-Tag: 1776694682-565104
+X-HE-Meta: U2FsdGVkX19EZYtBpLCBgMziTIovAkAuD8aTEsg8rLpTUOzDieGJTzliOFJWqykfvvwtdK/jGW0W2g9eOvoFCqVwzO2oWOGi47kj9akztjqm+Gs6Q9Et7a7O1UHNLlCJrNqtbDcRwfM3qin1DSWI2ds40m2ze+uY0pKI9AbU/DrG51LpkWm9jtSO4ktjLabjr2vrPEpO+nVOSFFkE9oHbTLCFhxkl9QEzIotriyl2Nf6grdExV32//yyqIpMRLbY6Q21EOSo5iqG0vf81aD5wp9Rr5QjkISQHswUSChLOKTkNqm/Bt6fDqGCQuVjGr8WDv/7kZ9YMHSiZ7pwptQYye9zNmjksBGqAej1CFER/Gu6l7+7etP8mIlGadlUzT1/cKKiS1NfWSpNDAqDt4uR1+wUa4edHMEOopoY9PMIbVPARH1HBx9oaHMeBflsSuvAhBf6JLAY+YJRQqB9SPfuSVeb8dLpA0kAr4m10A95oPurT42IYnlMHaGm2uOVt6WTseeoAObud3SW+2jKeNzJRPU6nHU7/VoTTg7FWS75b4KpUdUiKR/ol7zQR3hqjEtU8yRPcFlDgk1sPSWfnLu697t5TpH8darzF0VpH2y0CH+TxFjm6ALTTeiGo2c5vg0Rx3cVYgnSAI/O5vMaL+LHK+SM1W6K9Heypk9kn+kSEmmJtrcFVfE/o8TQTkp/DDRC9IhxGVEPN/e8Q65uX/6/Rddtc/Uv+BC1/hSVGH6I0VPxXF+2KUmy3I4P+mHMzYqzQoZ+Sqg+GTLGVyTdpP6sE9GCbxqGn5Ls4p0Su6tJCo448I1eKAFFOFYYEkWoi139+v5pExWwMjqDmgWui2qFW5TxTYBNONJY9jtyNF3iCMGzW85zGCU6wiufuWqbbh/Ad5O+YTMGyuBWIywhpGKKP+4xpxpwTdSrxuBrP02p9q8atJE3YY2iqkeDe7H6WsUHPUaPEUxY9ylwSqyGW3b
+ 9lojf1S7
+ E2HYK8DTQ/Crn1oc+ECYeNm6HFhmWM1NkHJWyu2/FDEHEIem8tUAGoYUcgQxcTE5ZyF8Y2wMj80U3jbNlpClBhKb/x68kS5Q4s8DuNaUTb5yBrg9eVto8WQO8TAiyj5Epea5kpdn+09SvB92wc+BKFhfYB7awQFURIqAlF28PYC/exFpnT/s6eHhEIGX+72hXTWitM++r+20YFZ1ZX92FiFa0ap84NHrMGYjs2wPOFWAE0PDgCv2H3zs3fZdOfuV/uHHGNqC35QzGb1NwBLtpuA2Dth9kLiTU9iDFyQmo8idybxVoPYN1hP91yrgW/kFwpSl9MltRbsvRqVBIQuZgYi75MmPhGKviOlKjFKlReL1e7+jZPEalMs1BhlngyRYuOnufX1BJe5wRxLyOiFMJdEqG0NePn5FH96gzYVBJ7B/vk3ilQLVNjEMDfzz8bfByFPLObZACbC0ZaUtbaV1ebBvQh+fVaCSqUc86tyxfFnPN++iApYNt1ZvGPs4Up0N/NHrrBzhp6HLeU4Uq7ZdQeCXjl4c1BGdoW9LO8UTCgS9Kl7qF1RRg2J1pMAc8R2oMss/TrV3YyoUCxbzgBm0lB5PBQtcGwmrxxXxGs0vD/EFS+wX5nnUllgyw2x5u8vqLRHmyZwJaTbVyQtgGUBYRVPK26e67Kj6fGxQtoz8V04uRe3+NaxbbcBJlfAxSV8kYBW4NLYTAc/29sY0IX7OXSTcE+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,74 +124,94 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Luca Boccassi <luca.boccassi@gmail.com>
 
-Verify that fstat works as expected after the switch from anon_inode
-to the new magic number.
+Userspace when requesting a session via the ioctl specifies a name and
+gets a FD, but then there is no ioctl to go back the other way and get
+the name given a LUO session FD. This is problematic especially when
+there is a userspace orchestrator that wants to check what FDs it is
+handling for clients without having to do manual string scraping of
+procfs, or without procfs at all.
+
+Add a ioctl to simply get the name from an FD.
 
 Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
 Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- .../testing/selftests/liveupdate/liveupdate.c | 40 +++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ include/uapi/linux/liveupdate.h | 21 +++++++++++++++++++++
+ kernel/liveupdate/luo_session.c | 13 +++++++++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
-index f0a8e600c154..5e99af0cc6e9 100644
---- a/tools/testing/selftests/liveupdate/liveupdate.c
-+++ b/tools/testing/selftests/liveupdate/liveupdate.c
-@@ -22,9 +22,12 @@
- #include <fcntl.h>
- #include <string.h>
- #include <sys/ioctl.h>
-+#include <sys/stat.h>
-+#include <sys/vfs.h>
- #include <unistd.h>
+diff --git a/include/uapi/linux/liveupdate.h b/include/uapi/linux/liveupdate.h
+index 30bc66ee9436..3a9ff53b02e0 100644
+--- a/include/uapi/linux/liveupdate.h
++++ b/include/uapi/linux/liveupdate.h
+@@ -59,6 +59,7 @@ enum {
+ 	LIVEUPDATE_CMD_SESSION_PRESERVE_FD = LIVEUPDATE_CMD_SESSION_BASE,
+ 	LIVEUPDATE_CMD_SESSION_RETRIEVE_FD = 0x41,
+ 	LIVEUPDATE_CMD_SESSION_FINISH = 0x42,
++	LIVEUPDATE_CMD_SESSION_GET_NAME = 0x43,
+ };
  
- #include <linux/liveupdate.h>
-+#include <linux/magic.h>
+ /**
+@@ -213,4 +214,24 @@ struct liveupdate_session_finish {
+ #define LIVEUPDATE_SESSION_FINISH					\
+ 	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_FINISH)
  
- #include "../kselftest.h"
- #include "../kselftest_harness.h"
-@@ -387,4 +390,41 @@ TEST_F(liveupdate_device, create_session_empty_name)
- 	EXPECT_EQ(session_fd, -EINVAL);
++/**
++ * struct liveupdate_session_get_name - ioctl(LIVEUPDATE_SESSION_GET_NAME)
++ * @size:  Input; sizeof(struct liveupdate_session_get_name)
++ * @reserved: Input; Must be zero. Reserved for future use.
++ * @name:  Output; A null-terminated string with the full session name.
++ *
++ * Retrieves the full name of the session associated with this file descriptor.
++ * This is useful because the kernel may truncate the name shown in /proc.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++struct liveupdate_session_get_name {
++	__u32		size;
++	__u32		reserved;
++	__u8		name[LIVEUPDATE_SESSION_NAME_LENGTH];
++};
++
++#define LIVEUPDATE_SESSION_GET_NAME					\
++	_IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_GET_NAME)
++
+ #endif /* _UAPI_LIVEUPDATE_H */
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index 9e343b6ce513..885e1f346caa 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -292,10 +292,21 @@ static int luo_session_finish(struct luo_session *session,
+ 	return luo_ucmd_respond(ucmd, sizeof(*argp));
  }
  
-+/*
-+ * Test Case: Session fstat
-+ *
-+ * Verifies that fstatfs() on a session file descriptor reports the
-+ * LUO_SESSION_MAGIC filesystem type, and that fstat() returns consistent
-+ * inode numbers across different sessions (shared singleton inode).
-+ */
-+TEST_F(liveupdate_device, session_fstat)
++static int luo_session_get_name(struct luo_session *session,
++				struct luo_ucmd *ucmd)
 +{
-+	int session_fd1, session_fd2;
-+	struct stat st1, st2;
-+	struct statfs sfs;
++	struct liveupdate_session_get_name *argp = ucmd->cmd;
 +
-+	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
-+	if (self->fd1 < 0 && errno == ENOENT)
-+		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
-+	ASSERT_GE(self->fd1, 0);
++	strscpy((char *)argp->name, session->name, sizeof(argp->name));
 +
-+	session_fd1 = create_session(self->fd1, "fstat-session-1");
-+	ASSERT_GE(session_fd1, 0);
-+
-+	session_fd2 = create_session(self->fd1, "fstat-session-2");
-+	ASSERT_GE(session_fd2, 0);
-+
-+	/* Verify the filesystem type is LUO_SESSION_MAGIC */
-+	ASSERT_EQ(fstatfs(session_fd1, &sfs), 0);
-+	EXPECT_EQ(sfs.f_type, LUO_SESSION_MAGIC);
-+
-+	/* Verify both sessions share the same inode number */
-+	ASSERT_EQ(fstat(session_fd1, &st1), 0);
-+	ASSERT_EQ(fstat(session_fd2, &st2), 0);
-+	EXPECT_EQ(st1.st_ino, st2.st_ino);
-+
-+	ASSERT_EQ(close(session_fd1), 0);
-+	ASSERT_EQ(close(session_fd2), 0);
++	return luo_ucmd_respond(ucmd, sizeof(*argp));
 +}
 +
- TEST_HARNESS_MAIN
+ union ucmd_buffer {
+ 	struct liveupdate_session_finish finish;
+ 	struct liveupdate_session_preserve_fd preserve;
+ 	struct liveupdate_session_retrieve_fd retrieve;
++	struct liveupdate_session_get_name get_name;
+ };
+ 
+ struct luo_ioctl_op {
+@@ -322,6 +333,8 @@ static const struct luo_ioctl_op luo_session_ioctl_ops[] = {
+ 		 struct liveupdate_session_preserve_fd, token),
+ 	IOCTL_OP(LIVEUPDATE_SESSION_RETRIEVE_FD, luo_session_retrieve_fd,
+ 		 struct liveupdate_session_retrieve_fd, token),
++	IOCTL_OP(LIVEUPDATE_SESSION_GET_NAME, luo_session_get_name,
++		 struct liveupdate_session_get_name, name),
+ };
+ 
+ static long luo_session_ioctl(struct file *filep, unsigned int cmd,
 -- 
 2.47.3
 
