@@ -4,139 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB29CF588DE
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:21:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67549F588DC
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:22:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AD126B0088; Mon, 20 Apr 2026 10:21:11 -0400 (EDT)
+	id AD9FC6B0096; Mon, 20 Apr 2026 10:22:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3844B6B0099; Mon, 20 Apr 2026 10:21:11 -0400 (EDT)
+	id A8A966B009D; Mon, 20 Apr 2026 10:22:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29A3A6B00A1; Mon, 20 Apr 2026 10:21:11 -0400 (EDT)
+	id 9C81B6B009E; Mon, 20 Apr 2026 10:22:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D8936B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:21:11 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9314C3205
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:21:10 +0000 (UTC)
-X-FDA: 84679146300.11.2C6D5C3
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E7314A0006
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:21:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kmERDZB5;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776694869; a=rsa-sha256;
-	cv=none;
-	b=jOG82j8ckJw4/T0S4ojxrp3rJLfbS28uDvlWERu4qoj4QmpFwMxnT2a1Tub9NHfHgoQg4H
-	AvihfBr6QY2hjY/7dztEIVs7uvygWBTrjaaQCAfh475+i6IrsJ5RWfdWLmxrjNGeWCKDH9
-	Dm//sMDe56GkjB95Z/FO8htkmRxwvzU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kmERDZB5;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776694869;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F3176B0096
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:22:18 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5845EBBF61
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:22:18 +0000 (UTC)
+X-FDA: 84679149156.30.4D76D2D
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 685E4120009
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:22:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kn7tHoZz;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776694936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zvXNdOlMFU/uewuZYAJBagQMjRJClhViZSSCNL7E9EE=;
-	b=eQf2WKHX1bGUZzILSTraAo6bvtRS+6qBLI9X5FQzz4HT58q3CvxHWXaedlaDSQGKytfSMx
-	kmDsSvEkZh5RYHgll579MTvN4rvUlf4bB1AV7VDwSN3jSLxqLufX9ibZARVigsfOn1ApCd
-	M1poD10EDfqbezUp6B0zb2XRSpy/ci4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776694866;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zvXNdOlMFU/uewuZYAJBagQMjRJClhViZSSCNL7E9EE=;
-	b=kmERDZB5fpic6fpNcgoHoXNyAiM8IQNl1tBv84N+qSvlbUe7sCeeXdnHLiLU8kMKLp7cF1
-	3kM1GF3t7sfE6xKc0eUoWnEFinrDuhX+qZj2DaKmDnK/1aSV2yw5e9r0YX4JnblTkYBDqW
-	ZFqSDKgdM6GdGhPalPqfTPTuF2Ke550=
-From: Usama Arif <usama.arif@linux.dev>
-To: Nico Pache <npache@redhat.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jack@suse.cz,
-	jackmanb@google.com,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	Liam.Howlett@oracle.com,
-	ljs@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com
-Subject: Re: [PATCH 7.2 v16 05/13] mm/khugepaged: generalize collapse_huge_page for mTHP collapse
-Date: Mon, 20 Apr 2026 07:20:54 -0700
-Message-ID: <20260420142057.392263-1-usama.arif@linux.dev>
-In-Reply-To: <20260419185750.260784-6-npache@redhat.com>
-References: 
+	bh=2z5FczK/Y5tDTqGOp8EC8XsAyW5tiySofIU9eAYltsg=;
+	b=Y9Z1oVr+XHgI0sLjNLij4KatYX1ZnNm90nxjPGVqqleOofYGWFkKXy+EjX6IObsPz7zdkT
+	Su3c3i2jYoRiO34ermSyLG6Kmh6Hrxi5DOcrHPo7CJn7ieCOj26YGBElP5KNLPOo2p3hUr
+	Oz3FRG+OleIhcboXGTkBjC+VtsL1+nE=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kn7tHoZz;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of luca.boccassi@gmail.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776694936; a=rsa-sha256;
+	cv=pass;
+	b=1vrQYLWId/SHO68yuI2nMXpipjsoqsVIJgAdyeX5hxiUOdpRsLdivnQGuRImyK8EPdp4ev
+	YbMVe8DoDXIk5dTjVI6WptJhH8+x7czdTOsxNzpvMG3cVW1KsX9ERobhygEM2DQz/wFJtQ
+	kcVP59vVywGDVpM57Ta6N7hMbNdryQU=
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64eaf8aa893so2393807d50.3
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:22:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776694935; cv=none;
+        d=google.com; s=arc-20240605;
+        b=d9bledVs2q5ktkMoYG7nieOgV4oPsbr/gQo8M+d2eVeEYbaAHGaeM4oGSsat90chAB
+         ulYZcIrf0yzI/wUic5mBRzA2wTDk8YUET7i0VfRjSMiUX4YBHDjr+NutHzstui0QitOO
+         kaaqAu2/r+m0NGjI8aAx6LQUcyA6ShoYA+nqRNcwS/2i4bDEWq655PrRFipvOlXHGK11
+         /+q4EN4nEDb3v5CqsCXIHktZtie1vF4/OzUyvEKlBTKyz9WYRD2AJXGtDXTfC07P8b3x
+         blb/OgLefbCg4moU/MyhNQowYFsbTgUBJUE1Msk5svV9ryUdTikqHmyXtU69ocmZAFcm
+         rElw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=2z5FczK/Y5tDTqGOp8EC8XsAyW5tiySofIU9eAYltsg=;
+        fh=dgG7eGGd6n7bs2nWhOfABRMSQaB7+70kOS9so528/Hw=;
+        b=hgoOmqFBMt5ONkR7/VeGAyNxnvJztB5POoCNQsFpxwvSDQBcNk0j9mWmItUdnN9yiU
+         v0p9ydWjVEEjsOaXqz4ymnl0OqaG87nqerdjFLb4vVDHLIFvIgmMzxHqOTeBU0ETmu1u
+         hwWyTEx993nxwk8cS0afGkHAfnaNZ6h1eEa2EmKEVkb23eWrWKwT04Z+eibyIRWeoBaH
+         zJRHObItHZwegWNePXnR1B9aP91tlyZPjPStEyFOYEaoJi1M5N05HBcMn/4Ic9sMjR9u
+         lTtpoCVqEfjshiaZNZYOFxKXdgMQNDMrPh3oTANX3n5/nvZ9K99FLsAFOwOlDp0x2JzF
+         IVyA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776694935; x=1777299735; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2z5FczK/Y5tDTqGOp8EC8XsAyW5tiySofIU9eAYltsg=;
+        b=Kn7tHoZzBNyPGhtoJYBJaMYtfAJd3ZqCLqPxRMwLD5AHdwkXZenTYbAnydqdcjRKDP
+         Ygeuh/yAAXQkKXlbGktuW3GM5HBRJSbnYCbpW8ixNL0kdHMjN3MqlxXQrtWU2QhTxT0v
+         emNyuEn0AzGJexDaKb781OLxDvKmLrt0kCOrmK+PZuSTElL2qIO3FCJfjAZNNvlAxwqZ
+         NTyfp0O4jpOoFZnIyDJbHL/Y2jgAnZfqtBqcH693rFGw8pQzpkXNcvvLX9tInhxn5uob
+         BgM5EFON4ECu5O4Dqi51/NPEKruclDlcMGFZTS50MWZCe5vXfT88waeAl6F9JaBaOfnu
+         RvzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776694935; x=1777299735;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2z5FczK/Y5tDTqGOp8EC8XsAyW5tiySofIU9eAYltsg=;
+        b=CHQjkUEgg2v4eEwO4uxoJRBWwHIU4HOJCzOuzhtvzSXwY4iBfhFfQxCd4TSrCZexk8
+         LqVNTVO+u8z5pRlMHvghHsQJrouASbQwVdoD7UgHLmKXSLF4bvlfCE1E0SupCBAHCXSP
+         d/z8K4pk2UQ1cfo4fxMxHTqBLhY9ENZGNGLm87xXOcyrLuam50HrBzTYOzTNO1Gk08hH
+         GR7yz7Xq5fUEHFYRHHh1O3x8YHZVTlvP8vSnD2qrgsoscBGzEwhx0khjySnpaTOPJsUt
+         qy3SzVtUQ28n1lOX35TLbSh6SEhBXhSHw9tAQt18B0m08qDJhExpspfV8Tpj9ACqHtGJ
+         hqhg==
+X-Gm-Message-State: AOJu0YxC2Hdwgi2sVp1VFwm4KeM7I7DzIE0sUGPMrNzJqjWyfcbz/kPi
+	lU2ZIJh6ayuvqqdRfE4q3yc8kVYdpu2Lw3IqDNzYLBplKrpPLXLNkXWtsgjeWTYGAPoSfndzakr
+	UFtCsPFISUwqUVK6gttRHE4CpVk2sWu4=
+X-Gm-Gg: AeBDiesKRIdpcpg3ma+gydgc22Ve2kAu/nLIz8MeNODIYdcjPtswN50mlU55Bdk/dUX
+	k2LhrMrML5k36Rc2mNrGniqfF/hugJwzesIWgQR6toCW0FCQoC9A0jlaGThz1I2UadpZIMHJobN
+	k0kedMSXBJAtg5sjILZL8wK9BdH/WCnJlwujLqX5KNGeaDq0PA9E6ulW0GWDCiyWvRn03lFy/Qf
+	n1vtT26eQHCgtD8cUcGtzCleX7EYLM3Q8SOtJD9qbkIJATnUj0UlIQ1kkop+WyqucdGzZ01OwAt
+	in1+Pdlm9d+0DJKLaIy+V/WbWxGAaA6pSUMeH6OE4qIgA/drEPYY
+X-Received: by 2002:a05:690e:4808:b0:651:87b5:2cfb with SMTP id
+ 956f58d0204a3-65310a2bd67mr8432622d50.36.1776694935371; Mon, 20 Apr 2026
+ 07:22:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: E7314A0006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zxfysu3q3i5x5rt6r6xf6ntsw4grrx4y
+References: <20260418163358.2304490-1-luca.boccassi@gmail.com>
+ <20260418163358.2304490-4-luca.boccassi@gmail.com> <20260420-unbeeindruckt-besprach-910fd241c32e@brauner>
+In-Reply-To: <20260420-unbeeindruckt-besprach-910fd241c32e@brauner>
+From: Luca Boccassi <luca.boccassi@gmail.com>
+Date: Mon, 20 Apr 2026 15:22:03 +0100
+X-Gm-Features: AQROBzAClrvsk3HyTqUc5DWxyYAnhGz9RpPk9svUhuaCPDSANrlVJfet0hJyIb4
+Message-ID: <CAMw=ZnR0uVrHUNzNGu5BtZuSKDJAYmZGUX-HzSw7c4VnoeQgiA@mail.gmail.com>
+Subject: Re: [PATCH v8 3/6] liveupdate: add LUO_SESSION_MAGIC magic inode type
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-mm@kvack.org, kexec@lists.infradead.org, graf@amazon.com, 
+	rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 685E4120009
+X-Stat-Signature: qwnw9r3155eh1g56w6ab4wmdexaj6ncm
 X-Rspam-User: 
-X-HE-Tag: 1776694868-58747
-X-HE-Meta: U2FsdGVkX19Z0lhTjRl7w4y5J/XHI56lEe+ahylGfC+TbjiM/3n3FlIZ9JZRsOuh7YZhIMvmtsUUleSUCIY7ACpaSOCw+phnsEko2byYKMx0pN91t4zWFywuPFrbk6XoUWHwsnjZswWj3PBaaZqbGlw1PVnVPyi2h2t3DokgvaoHAGWgVAEbyKFDovpGtBJYvh4u+o3e26R7bJl4tAt5EHB6K059Q6CJwRJn7TWOj6Noyl0fw60Lte9AW32NWOTxDZawdAoxJYDumsIKDaHZvp3V7AJYGUB0gdJu6naNg4+M86DYFyDQpYQKIrG0DAtSgGlqaMpqNagVInLNVxgYUHOEnyxy1di1GPFWeofUENMQvua2dEXRlTtFxLN7nygynqtw2KFjMEdvA9keaLGe3FRQVb7Zb/UNDvNzFbYJEDQGLtpcl1P0CqA37LSs6Y53vXAPunsy0BZ4/UljatWB80PdzJiOcIgDq749w3t2RRe3FOhseDDe1btes7mXrnKRrVYMxVlhrrJCKUfnX/avXE4Wvp7oa/z3ho/LXNY3OmUDpWnyTy042Llp4lRUQ9oLWAGCXsZ+yd2NmZbs0vJH7r8nRYBAglC6z0bi4ZWRMHiMwBNyvNi3h2zJwS8vfIQ0Cu8C5GP1301Sin2wwXMsyp7g4wpOVTyC5CCjv4ZOv6byJpI7pC9ZtoTYMJUypQXA/3/21qGfJxoRdWolq0PsJSXodlzoe9ncs+rGuIn2Fz5FZnFkD47hnaut5sD2I/4isebyIMbP5YdrDQkAkPoyLjiKG8cSCe8xo4mNhYch2u2OREG4MP/3stTZSX1Cdxsug+F5VWT69ox6n0kVlb84bSXsoFtP5N6J0qYf98v93KlbSXgPbWzrns/63nDQz3Ombrg6GpdAK8g3Jz0R9HwkWVmWUU9JTxsBjc0iaCBAiN1K7HiL1NDj4s3xBH9wfmweRgG7avG/Vjwld5GSIxn
- +odbJbcY
- vHpkwbnA10VPQUr/CSLPJ0zaq6PjKnAiUeO3AovF4TQ9eIO2dg8k6a94z0LH/drHcfz4HqAMKtysmlfPcd6ZOytpgF4WxJu63aeClAnF9/Hm8+t/UNEN+c0hgqco0LM5zPEkUpRMbsChc2gaBECFp8lR6DEN4cA6Pcc50MNhkijr1fGNF+L5yOG3/FbfYkrfa5j7H+aNN0E1DgaujD9utOMGdsNe67SE/m01+7sMEgbZEYJl5ee3OYxqMmtglr3Bbyl+HdSJ+3rN5EcHTxJmTVSOdHtFC4ExPXKhR3MX01GfYYRt1ckIplJxBQ2aJBeEt96MGbWnU+el7A3y0kAmu5bxr+C1ApiXfM8MKGbiZTvrfwjM5HRcx7yVHzAFja4GCswo6vtStZ4sFmj1Wz0tR2djLlY0oPQAIV3yS
+X-HE-Tag: 1776694936-802500
+X-HE-Meta: U2FsdGVkX198I2MEdYdFga8Xlo+lZJzXoaEMMJmKEZlBLNiBse4ktJmyxpsiGbG4D0JkXVNdAwT9j0+aJ/e6PjAM2qbuh9pbm02ei1z0kHakaoo05Rg3sDqMMO1UeKlUSuaXEltRSk7XVlBoOmAwFa25q/oG6pk9gddA5NlHhVMnydTU3SIv+sl4tfIZW8gfHkuVU63lLWvcma7cupzZK0SECm0gOs1QQf3gIN7Dzm1ysAAOtowjOBpjAs9DbPQeC0WJ3WMh7JFl3VvXIsMQxFbzNJ+TIgxZyCfOctOyfaVADjhHVaMgK8DadLCqHsSzOHGUxEcHaH4CMydlLkC/Xf9aBUoEihj+aUpf3RPnXuEkkVW9nzPTXblqwns3TFQ1skrfePF43By6fUIewJzI84/T213a7pfOiu9P8R9h/5HJnDnGbcpERMtRE8EgHerawR2bAA9qdnR43hslkkJqr6C5K8rwPdSfpIeeEl874mvrN3Tjt3UtlsOtvSN+QQV+nJxIqDHrTQzO9S1D6Fa/opCxnEdwhZEe/Hd3gYygJdAKaOmfXzWgiZPvYiVBq2tiINCe4Mlsfn8cq/xniaHoLWRUpm8mwJa2oLDgEJJPwWlihTizE/aANrf9oH+KrxGFoSTbfR42QQHyzA5nrXa4ngjclF8+2Fmj0v9uYAxTMXmffZMAIesZYZMjhd9P62QCZYMOsTBM04/vr7Uv7qg71x4ItdMUd/t+dWyC/p4pAQ8KjO6xXULaWusvkGe4ZKmodKyXOwcjJVOf6TvyLHTckbOVIbaZOwT8YeOcMb9HVl6gFh1N9zwIU+CHRlBgP5za0KdW3OIP5M0HntFUj3bmFE/mZ58kuwuYA8PnKSy7IEMXjnNqCe5oF+mcfmPMzPZ+deBNAxwgZDUalx6ne3od0gTrOjRg0CUOACuFSTg5oyBJVoByLCwDTUyQheBCk0iopenOargK3CNeyCQJoXP
+ BqIYYYSP
+ c5QN4e7un1//V5vAwQWUFVoaHPMZoexQAELZzQpCFRvYQPKd7Trok8rvj3NCsbG47qfO8Tp9Cx5nwYPpcwTBDxHSipoFHlwhm9HCzhQV+gUnzQWdhgl9UvXW5/qjinfUz3FDLbaSZqKHTo4iFd3DX2reaUidEsJ6+0ZOTyeQtayfxU3u8a+rrMj9A9UvoP20c9w9+XgUxCnZ4QXO5LIEG3Bx9b6ysWIVAkN6SO4pxdL8kCwyZIf+cQHRS2In8pqX4uBobRXq1FeB8xu5lQVzdeJ+Iv3OKA7jsj8NS9FAyipuztKBCFdslktIC991gRr5Wzh4wXzk7HnffxxYLtKvGgSN2C9KZIjTqzPEJOPXHKSx7lEg7MIN6O6xd3NA1QQuHrKcw/N8JYCUQL9F44DyzSCN1n9Ayw8+XEoZik7+Ymbzq6IabYvuMwhn4b/Enxpfm4xi6uHu998Lt82HU8r8hU4G7/N2PWSH9gZ2x1Pqs7i6p949qfu4O+gtxxB4Gc13v58MhZKn4DHp6Quo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,269 +136,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 19 Apr 2026 12:57:42 -0600 Nico Pache <npache@redhat.com> wrote:
+On Mon, 20 Apr 2026 at 13:26, Christian Brauner <brauner@kernel.org> wrote:
+>
+> On Sat, Apr 18, 2026 at 05:28:20PM +0100, luca.boccassi@gmail.com wrote:
+> > +}
+> > +
+> > +static const struct dentry_operations luo_session_dentry_operations = {
+> > +     .d_dname        = luo_session_dname,
+> > +};
+> > +
+> > +static int luo_session_init_fs_context(struct fs_context *fc)
+> > +{
+> > +     struct pseudo_fs_context *ctx;
+> > +
+> > +     ctx = init_pseudo(fc, LUO_SESSION_MAGIC);
+>
+> I'd just call that LUO_FS_MAGIC.
 
-> Pass an order and offset to collapse_huge_page to support collapsing anon
-> memory to arbitrary orders within a PMD. order indicates what mTHP size we
-> are attempting to collapse to, and offset indicates were in the PMD to
-> start the collapse attempt.
-> 
-> For non-PMD collapse we must leave the anon VMA write locked until after
-> we collapse the mTHP-- in the PMD case all the pages are isolated, but in
-> the mTHP case this is not true, and we must keep the lock to prevent
-> access/changes to the page tables. This can happen if the rmap walkers hit
-> a pmd_none while the PMD entry is currently unavailable due to being
-> temporarily removed during the collapse phase.
-> 
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
->  mm/khugepaged.c | 103 +++++++++++++++++++++++++++---------------------
->  1 file changed, 57 insertions(+), 46 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 283bb63854a5..ff6f9f1883ed 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1198,42 +1198,36 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
->  	return SCAN_SUCCEED;
->  }
->  
-> -static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long address,
-> -		int referenced, int unmapped, struct collapse_control *cc)
-> +static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long start_addr,
-> +		int referenced, int unmapped, struct collapse_control *cc,
-> +		unsigned int order)
->  {
->  	LIST_HEAD(compound_pagelist);
->  	pmd_t *pmd, _pmd;
-> -	pte_t *pte;
-> +	pte_t *pte = NULL;
->  	pgtable_t pgtable;
->  	struct folio *folio;
->  	spinlock_t *pmd_ptl, *pte_ptl;
->  	enum scan_result result = SCAN_FAIL;
->  	struct vm_area_struct *vma;
->  	struct mmu_notifier_range range;
-> +	bool anon_vma_locked = false;
-> +	const unsigned long pmd_addr = start_addr & HPAGE_PMD_MASK;
-> +	const unsigned long end_addr = start_addr + (PAGE_SIZE << order);
->  
-> -	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
-> -
-> -	/*
-> -	 * Before allocating the hugepage, release the mmap_lock read lock.
-> -	 * The allocation can take potentially a long time if it involves
-> -	 * sync compaction, and we do not need to hold the mmap_lock during
-> -	 * that. We will recheck the vma after taking it again in write mode.
-> -	 */
-> -	mmap_read_unlock(mm);
-> -
+It's specific for the session fd, so I'd rather keep it as-is. Pasha
+what do you think?
 
-My understanding now is that the caller will need to drop the mmap_read lock?
+> > +     return 0;
+> > +}
+> > +
+> > +static struct file_system_type luo_session_fs_type = {
+> > +     .name = "luo_session",
+> > +     .init_fs_context = luo_session_init_fs_context,
+> > +     .kill_sb = kill_anon_super,
+> > +};
+> > +
+> >  /* Create a "struct file" for session */
+> >  static int luo_session_getfile(struct luo_session *session, struct file **filep)
+>
+> Luo is going full anti-pattern here. This whole return via a function
+> argument completely messes up the later codepths. We don't do manual
+> get_unused_fd_flags() flags and then file in new code, and then fail
+> in-between:
 
-This needs explicit documentation at the start of the function IMO. I think
-there are callers in later patches and its very easy to miss this.
+This is getting a bit too complex for me and it's all existing stuff,
+so I'll leave it for Pasha and the other maintainers to look at later,
+they are CC'ed
 
+> >  {
+> > -     char name_buf[128];
+> > +     char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH + 1];
+> >       struct file *file;
+> >
+> >       lockdep_assert_held(&session->mutex);
+> > -     snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session->name);
+> > -     file = anon_inode_getfile(name_buf, &luo_session_fops, session, O_RDWR);
+> > -     if (IS_ERR(file))
+> > +
+> > +     ihold(luo_session_inode);
+>
+> Right, you're now sharing the same inode among all luo sessions. So
+> you've gained the ability to recognize luo inodes via fstatfs() but you
+> still can't compare two luo session file descriptors for equality using
+> stat() which is a major win and if you're doing this work anyway, let's
+> just go the extra step.
 
-> -	result = alloc_charge_folio(&folio, mm, cc, HPAGE_PMD_ORDER);
-> +	result = alloc_charge_folio(&folio, mm, cc, order);
->  	if (result != SCAN_SUCCEED)
->  		goto out_nolock;
->  
->  	mmap_read_lock(mm);
-> -	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
-> -					 HPAGE_PMD_ORDER);
-> +	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-> +					 &vma, cc, order);
->  	if (result != SCAN_SUCCEED) {
->  		mmap_read_unlock(mm);
->  		goto out_nolock;
->  	}
->  
-> -	result = find_pmd_or_thp_or_none(mm, address, &pmd);
-> +	result = find_pmd_or_thp_or_none(mm, pmd_addr, &pmd);
->  	if (result != SCAN_SUCCEED) {
->  		mmap_read_unlock(mm);
->  		goto out_nolock;
-> @@ -1245,8 +1239,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
->  		 * released when it fails. So we jump out_nolock directly in
->  		 * that case.  Continuing to collapse causes inconsistency.
->  		 */
-> -		result = __collapse_huge_page_swapin(mm, vma, address, pmd,
-> -						     referenced, HPAGE_PMD_ORDER);
-> +		result = __collapse_huge_page_swapin(mm, vma, start_addr, pmd,
-> +						     referenced, order);
->  		if (result != SCAN_SUCCEED)
->  			goto out_nolock;
->  	}
-> @@ -1261,20 +1255,21 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
->  	 * mmap_lock.
->  	 */
->  	mmap_write_lock(mm);
-> -	result = hugepage_vma_revalidate(mm, address, true, &vma, cc,
-> -					 HPAGE_PMD_ORDER);
-> +	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-> +					 &vma, cc, order);
->  	if (result != SCAN_SUCCEED)
->  		goto out_up_write;
->  	/* check if the pmd is still valid */
->  	vma_start_write(vma);
-> -	result = check_pmd_still_valid(mm, address, pmd);
-> +	result = check_pmd_still_valid(mm, pmd_addr, pmd);
->  	if (result != SCAN_SUCCEED)
->  		goto out_up_write;
->  
->  	anon_vma_lock_write(vma->anon_vma);
-> +	anon_vma_locked = true;
->  
-> -	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, address,
-> -				address + HPAGE_PMD_SIZE);
-> +	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, start_addr,
-> +				end_addr);
->  	mmu_notifier_invalidate_range_start(&range);
->  
->  	pmd_ptl = pmd_lock(mm, pmd); /* probably unnecessary */
-> @@ -1286,26 +1281,23 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
->  	 * Parallel GUP-fast is fine since GUP-fast will back off when
->  	 * it detects PMD is changed.
->  	 */
-> -	_pmd = pmdp_collapse_flush(vma, address, pmd);
-> +	_pmd = pmdp_collapse_flush(vma, pmd_addr, pmd);
-
-
-For an mTHP collapse covering, say, 64KiB of a 2MiB PMD, the patch still
-flushes the entire PMD via pmdp_collapse_flush and tlb_remove_table_sync_one.
-That triggers cross-CPU TLB shootdowns for ~1.94MiB of unrelated mappings on
-every successful sub-PMD collapse. Probably acceptable as a first cut?
-
-
->  	spin_unlock(pmd_ptl);
->  	mmu_notifier_invalidate_range_end(&range);
->  	tlb_remove_table_sync_one();
->  
-> -	pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
-> +	pte = pte_offset_map_lock(mm, &_pmd, start_addr, &pte_ptl);
->  	if (pte) {
-> -		result = __collapse_huge_page_isolate(vma, address, pte, cc,
-> -						      HPAGE_PMD_ORDER,
-> -						      &compound_pagelist);
-> +		result = __collapse_huge_page_isolate(vma, start_addr, pte, cc,
-> +						      order, &compound_pagelist);
->  		spin_unlock(pte_ptl);
->  	} else {
->  		result = SCAN_NO_PTE_TABLE;
->  	}
->  
->  	if (unlikely(result != SCAN_SUCCEED)) {
-> -		if (pte)
-> -			pte_unmap(pte);
->  		spin_lock(pmd_ptl);
-> -		BUG_ON(!pmd_none(*pmd));
-> +		WARN_ON_ONCE(!pmd_none(*pmd));
-
-Why was this turned into WARN_ON_ONCE? Would be good to add to commit message
-what the reason is if it has been discussed earlier.
-
-The next line writes a PMD entry over an existing one — that leaks the
-previous page table or PMD-mapped folio and can corrupt VA mappings. BUG_ON
-failed loudly and safely; WARN_ON_ONCE continues into the corruption and falls
-silent after the first hit.
-
-
->  		/*
->  		 * We can only use set_pmd_at when establishing
->  		 * hugepmds and never for establishing regular pmds that
-> @@ -1313,21 +1305,24 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
->  		 */
->  		pmd_populate(mm, pmd, pmd_pgtable(_pmd));
->  		spin_unlock(pmd_ptl);
-> -		anon_vma_unlock_write(vma->anon_vma);
->  		goto out_up_write;
->  	}
->  
->  	/*
-> -	 * All pages are isolated and locked so anon_vma rmap
-> -	 * can't run anymore.
-> +	 * For PMD collapse all pages are isolated and locked so anon_vma
-> +	 * rmap can't run anymore. For mTHP collapse the PMD entry has been
-> +	 * removed and not all pages are isolated and locked, so we must hold
-> +	 * the lock to prevent neighboring folios from attempting to access
-> +	 * this PMD until its reinstalled.
->  	 */
-> -	anon_vma_unlock_write(vma->anon_vma);
-> +	if (is_pmd_order(order)) {
-> +		anon_vma_unlock_write(vma->anon_vma);
-> +		anon_vma_locked = false;
-> +	}
->  
->  	result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
-> -					   vma, address, pte_ptl,
-> -					   HPAGE_PMD_ORDER,
-> -					   &compound_pagelist);
-> -	pte_unmap(pte);
-> +					   vma, start_addr, pte_ptl,
-> +					   order, &compound_pagelist);
->  	if (unlikely(result != SCAN_SUCCEED))
->  		goto out_up_write;
->  
-> @@ -1337,18 +1332,27 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
->  	 * write.
->  	 */
->  	__folio_mark_uptodate(folio);
-> -	pgtable = pmd_pgtable(_pmd);
-> -
->  	spin_lock(pmd_ptl);
-> -	BUG_ON(!pmd_none(*pmd));
-> -	pgtable_trans_huge_deposit(mm, pmd, pgtable);
-> -	map_anon_folio_pmd_nopf(folio, pmd, vma, address);
-> +	WARN_ON_ONCE(!pmd_none(*pmd));
-> +	if (is_pmd_order(order)) { /* PMD collapse */
-> +		pgtable = pmd_pgtable(_pmd);
-> +		pgtable_trans_huge_deposit(mm, pmd, pgtable);
-> +		map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
-> +	} else { /* mTHP collapse */
-> +		map_anon_folio_pte_nopf(folio, pte, vma, start_addr, /*uffd_wp=*/ false);
-
-map_anon_folio_pte_nopf calls set_ptes and modifies pagetable, while holding
-pmd_ptl only. It should be safe as we expect pmd_none. But I think you should
-put a comment about this?
-
-
-> +		smp_wmb(); /* make PTEs visible before PMD. See pmd_install() */
-> +		pmd_populate(mm, pmd, pmd_pgtable(_pmd));
-> +	}
->  	spin_unlock(pmd_ptl);
->  
->  	folio = NULL;
->  
->  	result = SCAN_SUCCEED;
->  out_up_write:
-> +	if (anon_vma_locked)
-> +		anon_vma_unlock_write(vma->anon_vma);
-> +	if (pte)
-> +		pte_unmap(pte);
->  	mmap_write_unlock(mm);
->  out_nolock:
->  	if (folio)
-> @@ -1525,8 +1529,15 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
->  out_unmap:
->  	pte_unmap_unlock(pte, ptl);
->  	if (result == SCAN_SUCCEED) {
-> +		/*
-> +		 * Before allocating the hugepage, release the mmap_lock read lock.
-> +		 * The allocation can take potentially a long time if it involves
-> +		 * sync compaction, and we do not need to hold the mmap_lock during
-> +		 * that. We will recheck the vma after taking it again in write mode.
-> +		 */
-> +		mmap_read_unlock(mm);
->  		result = collapse_huge_page(mm, start_addr, referenced,
-> -					    unmapped, cc);
-> +					    unmapped, cc, HPAGE_PMD_ORDER);
->  		/* collapse_huge_page will return with the mmap_lock released */
->  		*lock_dropped = true;
->  	}
-> -- 
-> 2.53.0
-> 
-> 
+I'm not aware of any use case for this, it wasn't even discussed, so
+I'll leave this out for now, if the need comes up it can certainly be
+revisited later. A singleton is nice as it saves some resources.
 
