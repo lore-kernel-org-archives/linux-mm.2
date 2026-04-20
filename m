@@ -4,81 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374BBF588DC
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:16:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B594CF588DC
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:17:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 727746B0005; Mon, 20 Apr 2026 10:16:40 -0400 (EDT)
+	id 15CFB6B0005; Mon, 20 Apr 2026 10:17:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D8EE6B0088; Mon, 20 Apr 2026 10:16:40 -0400 (EDT)
+	id 10E8F6B0088; Mon, 20 Apr 2026 10:17:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EE616B0089; Mon, 20 Apr 2026 10:16:40 -0400 (EDT)
+	id 04BD66B0089; Mon, 20 Apr 2026 10:17:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CEC56B0005
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:16:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 556C51A096F
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:16:39 +0000 (UTC)
-X-FDA: 84679134918.26.EFB8A1C
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 627FD40016
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:16:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JnZoIHzH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776694597; a=rsa-sha256;
-	cv=none;
-	b=l1v0QVTW2V39Lod8Sbmk7o/6nSqJSDYursbYYZ75X95VKS1iivIGwgMdi2SDz0VhEDYlox
-	nR8MMd/i72hjK2iAPNhJuEqTwMR0E5z/uikmNQ1TBQgzSmKv1QOOtGDiCIQ1rGmXtHbXR8
-	LLvRo6MbQFkg0UhypCIURIaUwzfjMII=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JnZoIHzH;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E91696B0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:17:48 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 824ED13BF8E
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:17:48 +0000 (UTC)
+X-FDA: 84679137816.21.EB8775D
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	by imf06.hostedemail.com (Postfix) with ESMTP id A8EBE180003
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:17:46 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qJ+rN4ol;
+	spf=pass (imf06.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776694597;
+	s=arc-20220608; t=1776694666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=TTlikDogw7UwTtdhEVyGrjLzE4DL6569lusdJfrE8Uc=;
-	b=pS4xUBW9sNrXPrl72l92K/VJ5UHZH2oi5JCsbYjiG7xbfRNj2+GfPtVm8vGxUKn7NhGTU/
-	mpOh/LVXnHVYl3Hh0gu7L14zDj/3JByjVTarkMhecEOEG61Im/S8oM5f+5JtkKiX7fKVcI
-	t38CGHEi7LJZqwViDa82i7LxDOjnH/Y=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776694594;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TTlikDogw7UwTtdhEVyGrjLzE4DL6569lusdJfrE8Uc=;
-	b=JnZoIHzHdTXwbns7zGl5mN+5vA9Ew4wQGGpJYaGtXQquxHAQDvhfQ8GCCpS73xO1Chg7mr
-	AI1zMhqVgxTInrU/S5u6mTDAjp0D729871jeqOaPUWAcEAUvWLWDl/s5+IhbOBrPXOPNu+
-	N4m5rYvv2y8MulxdcCLGUB3EykhgF+M=
-From: Hao Ge <hao.ge@linux.dev>
-To: Suren Baghdasaryan <surenb@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
+	bh=5HAgeJOZaSUjQDMERltKw7poLkmLCttGsEyTv6VLp9I=;
+	b=u5j4ewV5vlxn5pPfeWE2CAH8YM5BnAijPoVW30C/PAa/4QhWh5U4HiYRikTh+/T89L28B8
+	2Tgk6APYMCXPuxwGPki0DKW+H9MaN4huW+e+LmHlDKU6Vn3F6bF5saoW0H5OkfxFMnyn2J
+	OYjigkbXJgmalLxRI94SlRnEiShTkeA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qJ+rN4ol;
+	spf=pass (imf06.hostedemail.com: domain of luca.boccassi@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=luca.boccassi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776694666; a=rsa-sha256;
+	cv=none;
+	b=0WUR3nruAipTtOeVlymljZr3QgWlg8KvNoclVPq0o2PAGKUj0OLo7MxydvW7SPEy4fLopp
+	9Ny1rrFJRvg6hr/mdJ59D9R3IRadXVimaOTa8f2ivDaXpSgzfJR1+bInblYcqV2uyI8Se2
+	7TIzRt2YRtNzF7GMNV9axoWuWi3WeM0=
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48896199cbaso32933295e9.1
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776694665; x=1777299465; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5HAgeJOZaSUjQDMERltKw7poLkmLCttGsEyTv6VLp9I=;
+        b=qJ+rN4olQKgnzw3JHh3gWjq6GpRLoXLceTdG2GbBQYo4I+DYJn6D3M1FmgQk13le7h
+         +OcQFicN68YGiMc4O1RGAFuSlql2hNoEO6vmTVFVFtxg/4sG/MT7IFDBQaDMf6vmEIg4
+         /Yeq4+5FBj6qF1vNXYoY3c3arnm3DYLqHb+kDceZpWo0F1lQBS9o3ZyfX+MwWkO7z83f
+         9eBLIPKBE6SKh+qIMkNnANcV0oVvc9m6kRceJqcfyr9EzmJQEwHsHuehTf0vP83C43WL
+         eHI/3deSunvkT2o6qAkMLxJcDOIxBj99giCWXv0JeW+9hmVhPryy5LHopeuw0D5cJI3U
+         YiKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776694665; x=1777299465;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5HAgeJOZaSUjQDMERltKw7poLkmLCttGsEyTv6VLp9I=;
+        b=AtK4Pr3SFsRI37g3y9BTT6YcDkEVWr+qPqzuBB18v/lNCmx5TU6D5XsZ7aUCHZ34+i
+         nPK+KvhYopyP0+kZCEj8olXGbw5J0Q5nYXfnpBCe+MA0/w1goaRJvSiIh0jMwru9iDX0
+         lS2fKsdEICrmqivpfodEw8wzMZih7m7YvgYeLnK1rExPOGeI7kBo9gppv9xXmS/MdH15
+         AjKuewSbxXZf9/+y1HMgAhNt6b59R774btdW2ETLmtEVXC0BHY4gJhob8+Gm2ULMnR8F
+         qlW7hkuTndiGhqCkalYZ7zr5ZKMF/1Tqv+ikJmQY8SKRPUHemrYuywFD0DZDAZeIZgci
+         C6Ew==
+X-Gm-Message-State: AOJu0YxdSsUo2KPQDxK1ml0QHCya4LfD68V5HsHMZK4gVe3kkx3fbvh9
+	Tw+vtvitL1IfVoI2lVyq9JP64KHJaafy84WHOi7IWBBx8ROTnQ+JZ1Hx
+X-Gm-Gg: AeBDietT3jxwdha/xda4HXnAd8AIhT8OSaBKrEKssUxmAkdZzJ7R7A8X0jGWf6BkdKZ
+	VFZkhCx/5sionLpdebmqg0iAQl33uc8K9i8ZEFiZu3ejg1AUb5CdE98Yclwtl1RWezgZzwn+V3Z
+	FioewEs4L3iDExgqF7gjN8qVatfwYnqg+Skjuet1J/w9/htiv9DZZvk+Dfff395XCUbqWsRiC8P
+	2me2iOFjawm83GGAMeum0ZR5JEcEYHyo+mSv2KGi5luqLlj8Tgyfom1TRawnikv+nzDeae+1ANW
+	aEiXYJAC/2Tggt3KROJrtoYtLg1Kqoh6yfDxbi/zB4e5Nt5vp6gwAkVF6B0SOAUdi3bIfc9T57M
+	kIJ81lxiqUxttFIyyzJiXHK1RkegF124TNERtPYp/8MrAhSs4fojZoK3kF8PCSe1e5G6kW2iFkK
+	G1JG516UGsTGdBSWlQZZRDbWHiPSYNOR01fsWRVFI=
+X-Received: by 2002:a05:600c:859a:b0:48a:53ea:13eb with SMTP id 5b1f17b1804b1-48a53ea15bdmr3192745e9.5.1776694664793;
+        Mon, 20 Apr 2026 07:17:44 -0700 (PDT)
+Received: from localhost ([2a01:4b00:d036:ae00:355d:3be4:308b:c943])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-488fb77b001sm131753195e9.3.2026.04.20.07.17.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 07:17:44 -0700 (PDT)
+From: luca.boccassi@gmail.com
+To: kexec@lists.infradead.org
 Cc: linux-mm@kvack.org,
+	graf@amazon.com,
+	rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	brauner@kernel.org,
 	linux-kernel@vger.kernel.org,
-	Hao Ge <hao.ge@linux.dev>
-Subject: [PATCH] mm/alloc_tag: replace fixed-size early PFN array with dynamic linked list
-Date: Mon, 20 Apr 2026 22:15:34 +0800
-Message-Id: <20260420141534.1009462-1-hao.ge@linux.dev>
+	Luca Boccassi <luca.boccassi@gmail.com>
+Subject: [PATCH v9 0/6] liveupdate: new ioctl, change session inode type, bug fixes
+Date: Mon, 20 Apr 2026 15:15:08 +0100
+Message-ID: <20260420141741.2688371-1-luca.boccassi@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 627FD40016
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dmh3d77gfzin9y6bwipjag3ff1rab6em
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A8EBE180003
+X-Stat-Signature: 5x5s7mfxaqpib3zha1uar13bn4ed5bwa
 X-Rspam-User: 
-X-HE-Tag: 1776694597-47203
-X-HE-Meta: U2FsdGVkX19h8zt2UQxaqlU9dRn/eziUzpNpWcQzQ0v1OYfeVs50xWe1eIuLTIS4phuJLQW5by9DFKXf7uhxffU7qu2T5NgL/MWkFPVe5Yh3hVSXe6Nkrjzm8HmXeHZesRdD7MqEYkiiJfdsEuN033ZTM5DmNRu+ZSbFGZy2yaU+QrqcVuqnRbtOl/6fMFKY5IETWzc00uVg4jC8J65MouCwCB0G24h21x2fHtizYRPprYX/jvBJ3rg3KLwJmigZ98NOo1sfh8wFnvtNMToyQdX5+8kNaMVHVUmEIrx7YpZYtTtIZP4BkPJ9SUg/ogTDAGzOGPAZMF9lkxp4u0mqu9iqNU5cB/gnTqFTa/gVywkweeS3+tB9ZxH8G2b+3CgD9EA4ei/PI6d+a49xcfJsMRmXquAXj2jBCN7mplVY2SFOrJT6+PsY37+S3Jk4ZctyWCSsSVqBLbycqqcAUPMNa1QV3hVTH53sDjN6hBrxHrkjwWxq96qUBdRhX5KK0XtNHWc6HE9D+lW5yGyAgprfKbfX2E0xa825qt8GOhYGB+x3UJMjo/rUuUFtt1qzTiW4lhn9q+ixmBOkDjM1NvyOBNWttnhywQLf/LBnGwoDKDoXE4zK8dFas+4VRZ/q1gsSdZBoSxDan0f3f8sHNrKcaenmlxuVAKIgWT8rZm4+4WOlo3lk1A+IuQ36UDQ3/wziop6qlULIG5/xcB7thy1LK4EqfFs1NmJt2hkjq+JrAqff7GKpZK+dR4vANCriiRupurCX3Nf3VjyAQbtmQ4DvEcM+z/OdLMeH3EZ3IOYOWRhzkIwDMxcVYz2EZAm+IPscB9pCjBkS4qBpWQMBWZ3ks8QsOhgeJwdjcvCJ3ctSUXNjFm1xy+l2gzHpo0m2BQS30sQEqDCK/Ex6mUJT2hwCB+yMhqPozPvuEwY3sNbeYyZKyAIZGYcqULEuTADAW/ddAIR6L3pXndSoseOkOJu
- PKwAVHGH
- OH4D5H/RN0QR8k3xsX/Drugc0znz8KunlGf1cemwh12OgGQ1T5CRFVTbIETIQZ5gPVByE3kXOrqeE+zQ3q7fVEbsSrgePToeGEghsz4nNeRNgIna7LajbPJdvR5Esf1krxI+WIFqy/DPs0CP3IihflWvwmXp4fYGr8UqDswTGDNxu01jJXG5nLzrB0qJA9QDWcZ9yBRDDoRkz35IB/PWd5v4XDL73o/ODrCoWhYmzB77TCZ/O7Geqp00z4A==
+X-HE-Tag: 1776694666-408058
+X-HE-Meta: U2FsdGVkX18lgQDLPpdwlD3mcxvd69jEthSqjlXm4FXN95VoZ73AiDcLijHsEXCGnX6bi9wm6Nw70ZPvhwSxpW5lfLSPL+KMALl1jk2xPpYFjaxmHVzlTR7nMP1Fh7xY0DKiN0m7YAJPOn/UM8V4k7EwzVfxPeIGSjvTVuuixwnQ+f5CHChqoivqUDZobzuIAO4YbNaQbyxYquyNRTgtvUJKGu7AvW7YP0BsWddt3m+S0BgUAPfu1x/IW0qQ5hZ7wTn80M9rYxi0WFb1JmzXZCrWpPaq2QXvm9c3ttJz/9zCLyLukSuHR8xiLhkLrHn3Jr58PZV1lXlu7pwVBy2218gCXzBID+vT2MtpHNzgoLEs+vHI2dH5cVZPLCgBsseHw6MJyvsPhGTDeHPUbLh08ossRVKGzX8jQUgxfQ1OegyVn0Cwx7DXIegFduHfrh4Sat/egPjGY1JRfgXY7H6EzWDQJzaSUo58cMkigvZRK5z2MNdwz8U6A5BoDE+teRRZVE+pu5SpVMBIesHW3vfDXA8r3/K5YyJkoJzAI8sJZfx30N1YxAhP2ri8ysIvuIESPothEBwsRtK0N60Z1qau1wAiigT7FAq98IOX1N78BpLZucDeCJP/ITJY8FGlxVQBF0k+w2Adyv8uhc7R/GyIPXGnj2I3h+Npnr1yE/qRyEUOJ758Wlv5NhtB5u2qPwxC799ROLWDjjXZK+1UW/0jfxppaaBymkNoIVqsSldkeNdP6Z1KkhiJSjnkc2WHQx67bxu3AOfODh8Uv07/+LmzsIGTislv5ztZh8KTYR84r/EiFZYb38tPOLASBABqw0jNxVekba7+I3Wx9eOuvsckoglqJKoUM0T6DAU+xW0qBhfWRgVPr4FFMt6wwgwjwms9gNrdgTp3SzeG7NgdHr1dn0id2xIkVE1bEXD9q0S0jfzoaiFLAX13UXOBYx6N+7I+43CyX1kKGuyHKU72jS3
+ 4R79pfTp
+ e0ziwkCk5vfcPwnfb63k+1Muu25e3IB4/1rswx4WyUxRWqjQ6Wh8M36R/HaogttiOGB7Oa35fd6s+90VLXdqBZEyQxI557nnK6OZnSBIoaIBeILzqOzNLOMeii8ys5K1qqvUQ2flzHxo02zdejvWiajYnVb2/qm7B5RsrlAAI5oM0mNehSAdoFL/Na1UeryHUDkX6fyWScsw5wP77A1mps7+oovh+uS9gp64J3exZEiKpR+lRSE881plmgRAe1yb+J3q2f1d9S8DMaFBLw9Bn1BTFknts0L9lpB1sXteg466puVIx0wC/2e5UjZrCfGF8t7XGBXZbAKMa8dmXPjYJFQPu9iOjZDmeDkcUb4OlCiH3ddtZ5xIFSCSVLAjBwU3HqeMSf0pScrehC3tfxN3rREYnMe/1HvcPN/sIx/u26ra073kYszYvO+wAbaPMAZxyj+g8Hj+Y69gmMEXTBNmZlUp/Tc2idqWCs6nbgswNdS/76exHTk4f+ybmntxjk4SQJjYJib14NA6+Pv+lhQvIWI2BqUSPO2H2UW3tVb9Kk+GrkZsG3E/klyLR1I8gflNZXO/r/uzIfamvNJAITl80Rxv8zb7gji/ERhkft9HNI1G/ZGyzX02CeqsIfYWEldua72nFypoGW4KRKSmMYx/4i8o9/v2kez/D+669b8TFXnD96HA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,272 +119,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pages allocated before page_ext is available have their codetag left
-uninitialized. Track these early PFNs and clear their codetag in
-clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
-warnings when they are freed later.
+From: Luca Boccassi <luca.boccassi@gmail.com>
 
-Currently a fixed-size array of 8192 entries is used, with a warning if
-the limit is exceeded. However, the number of early allocations depends
-on the number of CPUs and can be larger than 8192.
+A series of patches matured while implementing LUO support in userspace
+in systemd.
 
-Replace the fixed-size array with a dynamically allocated linked list.
-Each page is carved into early_pfn_node entries and the remainder is
-kept as a freelist for subsequent allocations.
+- reject session names that are either empty strings or too long
+- change inode type of session FDs to a new singleton magic number,
+  so that userspace can immediately identify them without string
+  parsing in procfs
+- add new ioctl to retrieve session name from FD, so that userspace
+  can query it without string parsing in procfs
 
-The list nodes themselves are allocated via alloc_page(), which would
-trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() ->
-alloc_early_pfn_node() and recurse indefinitely.  Introduce
-__GFP_NO_CODETAG (aliased to __GFP_NO_OBJ_EXT) and pass gfp_flags
-through pgalloc_tag_add() so that the early path can skip recording
-allocations that carry this flag.
+All changes come with a follow-up patch add test coverage via the
+existing selftest.
 
-Signed-off-by: Hao Ge <hao.ge@linux.dev>
----
- include/linux/alloc_tag.h | 18 ++++++++
- lib/alloc_tag.c           | 91 ++++++++++++++++++++++++++-------------
- mm/page_alloc.c           | 27 ++++++++----
- 3 files changed, 97 insertions(+), 39 deletions(-)
+v2: apply one fix from bot review about cleanup on error path:
+    https://sashiko.dev/#/patchset/20260415184536.1155220-1-luca.boccassi%40gmail.com
+    the other comments are invalid: luo is not a kmod, and the write hooks are not set up
+v3: add test case to liveupdate selftest
+v4: split test case in separate follow-up patch
+v5: add r-b tag, merge series with LIVEUPDATE_SESSION_GET_NAME ioctl
+    as they both change the same unit test source file, to avoid merge conflicts
+    add '__u32 reserved' to the UAPI struct
+v6: add more test cases as suggested
+    more verbose commit message
+    fix docstring
+v7: apply suggestion from review bot to stub out setattr ops,
+    like it was done in 22bdf3d6581a
+v8: add new patches to reject session names that are empty or too long
+v9: fixes following review comments on LUO_SESSION_MAGIC
 
-diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-index 02de2ede560f..25374e40e14b 100644
---- a/include/linux/alloc_tag.h
-+++ b/include/linux/alloc_tag.h
-@@ -150,6 +150,23 @@ static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
- }
- 
- #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
-+/*
-+ * Skip early PFN recording for a page allocation.  Reuses the
-+ * %__GFP_NO_OBJ_EXT bit.  Used by alloc_early_pfn_node() to avoid
-+ * recursion when allocating pages for the early PFN tracking list
-+ * itself.
-+ *
-+ * Callers must set the codetag to CODETAG_EMPTY (via
-+ * clear_page_tag_ref()) before freeing pages allocated with this
-+ * flag once page_ext becomes available, otherwise
-+ * alloc_tag_sub_check() will trigger a warning.
-+ */
-+#define __GFP_NO_CODETAG	__GFP_NO_OBJ_EXT
-+
-+static inline bool should_record_early_pfn(gfp_t gfp_flags)
-+{
-+	return !(gfp_flags & __GFP_NO_CODETAG);
-+}
- static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag)
- {
- 	WARN_ONCE(ref && ref->ct && !is_codetag_empty(ref),
-@@ -168,6 +185,7 @@ void alloc_tag_add_early_pfn(unsigned long pfn);
- static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag) {}
- static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
- static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
-+static inline bool should_record_early_pfn(gfp_t gfp_flags) { return true; }
- #endif
- 
- /* Caller should verify both ref and tag to be valid */
-diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-index ed1bdcf1f8ab..6dd6c2966afd 100644
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -766,38 +766,63 @@ static __init bool need_page_alloc_tagging(void)
-  * Some pages are allocated before page_ext becomes available, leaving
-  * their codetag uninitialized. Track these early PFNs so we can clear
-  * their codetag refs later to avoid warnings when they are freed.
-- *
-- * Early allocations include:
-- *   - Base allocations independent of CPU count
-- *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
-- *     such as trace ring buffers, scheduler per-cpu data)
-- *
-- * For simplicity, we fix the size to 8192.
-- * If insufficient, a warning will be triggered to alert the user.
-- *
-- * TODO: Replace fixed-size array with dynamic allocation using
-- * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
-  */
--#define EARLY_ALLOC_PFN_MAX		8192
-+struct early_pfn_node {
-+	struct early_pfn_node	*next;
-+	unsigned long		pfn;
-+};
-+
-+#define NODES_PER_PAGE		(PAGE_SIZE / sizeof(struct early_pfn_node))
-+
-+static struct early_pfn_node *early_pfn_list __initdata;
-+static struct early_pfn_node *early_pfn_freelist __initdata;
-+static struct page *early_pfn_pages __initdata;
- 
--static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
--static atomic_t early_pfn_count __initdata = ATOMIC_INIT(0);
-+static struct early_pfn_node *__init alloc_early_pfn_node(void)
-+{
-+	struct early_pfn_node *ep, *old;
-+	struct page *page;
-+	int i;
-+
-+retry:
-+	old = READ_ONCE(early_pfn_freelist);
-+	if (old) {
-+		if (try_cmpxchg(&early_pfn_freelist, &old, old->next))
-+			return old;
-+		goto retry;
-+	}
-+
-+	page = alloc_page(GFP_ATOMIC | __GFP_NO_CODETAG | __GFP_ZERO);
-+	if (!page)
-+		return NULL;
-+
-+	ep = page_address(page);
-+	for (i = 0; i < NODES_PER_PAGE - 1; i++)
-+		ep[i].next = &ep[i + 1];
-+	ep[NODES_PER_PAGE - 1].next = NULL;
-+
-+	if (cmpxchg(&early_pfn_freelist, NULL, ep + 1)) {
-+		__free_page(page);
-+		goto retry;
-+	}
-+
-+	page->private = (unsigned long)early_pfn_pages;
-+	early_pfn_pages = page;
-+
-+	return ep;
-+}
- 
- static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
- {
--	int old_idx, new_idx;
-+	struct early_pfn_node *ep = alloc_early_pfn_node();
- 
--	do {
--		old_idx = atomic_read(&early_pfn_count);
--		if (old_idx >= EARLY_ALLOC_PFN_MAX) {
--			pr_warn_once("Early page allocations before page_ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
--				      EARLY_ALLOC_PFN_MAX);
--			return;
--		}
--		new_idx = old_idx + 1;
--	} while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx));
-+	if (!ep)
-+		return;
- 
--	early_pfns[old_idx] = pfn;
-+	ep->pfn = pfn;
-+	do {
-+		ep->next = READ_ONCE(early_pfn_list);
-+	} while (!try_cmpxchg(&early_pfn_list, &ep->next, ep));
- }
- 
- typedef void alloc_tag_add_func(unsigned long pfn);
-@@ -820,7 +845,8 @@ void alloc_tag_add_early_pfn(unsigned long pfn)
- 
- static void __init clear_early_alloc_pfn_tag_refs(void)
- {
--	unsigned int i;
-+	struct early_pfn_node *ep;
-+	struct page *page, *next;
- 
- 	if (static_key_enabled(&mem_profiling_compressed))
- 		return;
-@@ -829,14 +855,13 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
- 	/* Make sure we are not racing with __alloc_tag_add_early_pfn() */
- 	synchronize_rcu();
- 
--	for (i = 0; i < atomic_read(&early_pfn_count); i++) {
--		unsigned long pfn = early_pfns[i];
-+	for (ep = early_pfn_list; ep; ep = ep->next) {
- 
--		if (pfn_valid(pfn)) {
--			struct page *page = pfn_to_page(pfn);
-+		if (pfn_valid(ep->pfn)) {
- 			union pgtag_ref_handle handle;
- 			union codetag_ref ref;
- 
-+			page = pfn_to_page(ep->pfn);
- 			if (get_page_tag_ref(page, &ref, &handle)) {
- 				/*
- 				 * An early-allocated page could be freed and reallocated
-@@ -861,6 +886,12 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
- 		}
- 
- 	}
-+
-+	for (page = early_pfn_pages; page; page = next) {
-+		next = (struct page *)page->private;
-+		clear_page_tag_ref(page);
-+		__free_page(page);
-+	}
- }
- #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
- static inline void __init clear_early_alloc_pfn_tag_refs(void) {}
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 04494bc2e46f..3033ab93fd3c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1284,7 +1284,7 @@ void __clear_page_tag_ref(struct page *page)
- /* Should be called only if mem_alloc_profiling_enabled() */
- static noinline
- void __pgalloc_tag_add(struct page *page, struct task_struct *task,
--		       unsigned int nr)
-+		       unsigned int nr, gfp_t gfp_flags)
- {
- 	union pgtag_ref_handle handle;
- 	union codetag_ref ref;
-@@ -1294,21 +1294,30 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
- 		update_page_tag_ref(handle, &ref);
- 		put_page_tag_ref(handle);
- 	} else {
-+
-+		if (task->alloc_tag)
-+			alloc_tag_set_inaccurate(task->alloc_tag);
-+
-+		/*
-+		 * page_ext is not available yet, skip if this allocation
-+		 * doesn't need early PFN recording.
-+		 */
-+		if (unlikely(!should_record_early_pfn(gfp_flags)))
-+			return;
-+
- 		/*
--		 * page_ext is not available yet, record the pfn so we can
--		 * clear the tag ref later when page_ext is initialized.
-+		 * Record the pfn so the tag ref can be cleared later
-+		 * when page_ext is initialized.
- 		 */
- 		alloc_tag_add_early_pfn(page_to_pfn(page));
--		if (task->alloc_tag)
--			alloc_tag_set_inaccurate(task->alloc_tag);
- 	}
- }
- 
- static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
--				   unsigned int nr)
-+				   unsigned int nr, gfp_t gfp_flags)
- {
- 	if (mem_alloc_profiling_enabled())
--		__pgalloc_tag_add(page, task, nr);
-+		__pgalloc_tag_add(page, task, nr, gfp_flags);
- }
- 
- /* Should be called only if mem_alloc_profiling_enabled() */
-@@ -1341,7 +1350,7 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
- #else /* CONFIG_MEM_ALLOC_PROFILING */
- 
- static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
--				   unsigned int nr) {}
-+				   unsigned int nr, gfp_t gfp_flags) {}
- static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
- static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
- 
-@@ -1896,7 +1905,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 
- 	set_page_owner(page, order, gfp_flags);
- 	page_table_check_alloc(page, order);
--	pgalloc_tag_add(page, current, 1 << order);
-+	pgalloc_tag_add(page, current, 1 << order, gfp_flags);
- }
- 
- static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
+Luca Boccassi (6):
+  liveupdate: reject LIVEUPDATE_IOCTL_CREATE_SESSION with invalid name
+    length
+  selftests/liveupdate: add test cases for
+    LIVEUPDATE_IOCTL_CREATE_SESSION calls with invalid length
+  liveupdate: add LUO_SESSION_MAGIC magic inode type
+  selftests/liveupdate: add test case for LUO_SESSION_MAGIC
+  liveupdate: add LIVEUPDATE_SESSION_GET_NAME ioctl
+  selftests/liveupdate: add test cases for LIVEUPDATE_SESSION_GET_NAME
+
+ include/uapi/linux/liveupdate.h               |  21 +++
+ include/uapi/linux/magic.h                    |   1 +
+ kernel/liveupdate/luo_core.c                  |  10 +-
+ kernel/liveupdate/luo_internal.h              |   2 +
+ kernel/liveupdate/luo_session.c               | 108 ++++++++++++-
+ .../testing/selftests/liveupdate/liveupdate.c | 153 ++++++++++++++++++
+ 6 files changed, 289 insertions(+), 6 deletions(-)
+
 -- 
-2.25.1
+2.47.3
 
 
