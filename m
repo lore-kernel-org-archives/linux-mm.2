@@ -4,108 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45AB8F588E3
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 16:14:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 339B5F588F7
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 16:33:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DD496B008A; Mon, 20 Apr 2026 12:14:31 -0400 (EDT)
+	id 5AC0A6B0088; Mon, 20 Apr 2026 12:33:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58F8A6B008C; Mon, 20 Apr 2026 12:14:31 -0400 (EDT)
+	id 55CD46B0089; Mon, 20 Apr 2026 12:33:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47D446B0092; Mon, 20 Apr 2026 12:14:31 -0400 (EDT)
+	id 472FD6B008A; Mon, 20 Apr 2026 12:33:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 359256B008A
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:14:31 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA7FFE4A59
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:14:30 +0000 (UTC)
-X-FDA: 84679431900.16.4196404
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 67AB61C0002
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:14:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=GZtmEplY;
-	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf18.hostedemail.com: domain of "prvs=563a806c7=dipiets@amazon.it" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=563a806c7=dipiets@amazon.it"
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 328B66B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:33:45 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9E6C78C5EB
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:33:44 +0000 (UTC)
+X-FDA: 84679480368.28.72E19C8
+Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 565BE1C0010
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 16:33:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=eaelrQQU;
+	spf=pass (imf21.hostedemail.com: domain of "prvs=563a806c7=dipiets@amazon.it" designates 35.83.148.184 as permitted sender) smtp.mailfrom="prvs=563a806c7=dipiets@amazon.it";
+	dmarc=pass (policy=quarantine) header.from=amazon.it
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776701669;
+	s=arc-20220608; t=1776702822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4O++pW9Xbgus6i0sqISNyUGab6AsMHTSYNj1rQkW9es=;
-	b=MEFxjPSX4yWmH+TgFEdSg1g2+4er2lCTlkVSnoxuJq+8rDzUtcD9fF04m9exdkGbvyRwaV
-	oG0qtuZVllA3jlD5DG+pcF6hQ+IqC8dHbL1WAE9k1Eh8pfTah/KphS4zZBSmx8w6dWU8pL
-	gIVAEEu6oqVj21Ew0LWudV3HQfZ2qhc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=GZtmEplY;
-	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf18.hostedemail.com: domain of "prvs=563a806c7=dipiets@amazon.it" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=563a806c7=dipiets@amazon.it"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776701669; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=X9sWbHxc0NftggCUNc8XH5sYfXjCQ2bDYjxsPR5LFRk=;
+	b=Hj2+1WqJVPi4naJ+/ekvqQO3QE3uIL86aese7RUhlb25cScXHJ8BDQUySDyEdjUBLSVFnW
+	RBFVgg+XedBNyLa9pOo3YCU8m/mRd2fX2d6VJvQRzqUXtP6sUdJBGbrB852HBYrd33jUsX
+	RdwzHdPchMZoG+VkdDSGjxO/VQSoBbk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776702822; a=rsa-sha256;
 	cv=none;
-	b=i+gLk0FV+ZnfNMVDeoRVZsIq7p/WXr/8lAos5CScqvHSq13dujBm68LewJ02kD7Q/mMtPE
-	CBSLPch034toP38PdmMK9LO/jKrWAo0ZvTXlqddAYaJI2KWGlyL+KFgVrixA0Yc7QNZtpb
-	8IZPnJuuH8EvsfooPBg1m0DWxinvYl0=
+	b=nmbKt6R54QUREeoSRFLx/lQM9ZWvhY/o1Z8OzeYADPgwvIRRxMe+P2j+01OakxyZ8DoWd8
+	X27AXUwj2hFkb4qCvyZ1tlPThdQPHOfDd7zkzvADV5QMMT5U27GWKvt5xfUzF3OvquGmT6
+	imKeG4iv7bspfsfL633Cv2Xept2EtN0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=eaelrQQU;
+	spf=pass (imf21.hostedemail.com: domain of "prvs=563a806c7=dipiets@amazon.it" designates 35.83.148.184 as permitted sender) smtp.mailfrom="prvs=563a806c7=dipiets@amazon.it";
+	dmarc=pass (policy=quarantine) header.from=amazon.it
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1776701668; x=1808237668;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4O++pW9Xbgus6i0sqISNyUGab6AsMHTSYNj1rQkW9es=;
-  b=GZtmEplYTiUqSR/67Alc6QswG8+XPaso74GFQ/TLAc1P5YBhYWl3mNC4
-   RGzHtcl4n3RWmXy6J1VWZudpCgaY3EYwh86xXS4gGm+xgTGIi1mu4ZFhX
-   LMCtZTKlaD6vI77/7hKdsSZQBCwCf03cJ6cq0sv44IAsaQnRG6tsiOQT0
-   sUFhlDyzJhlqdMvka0EiSAhmF6s5XolzAb8oFEizodzL9mfTkXu9qtIJZ
-   UVlQXp5MTNtI1jjLCTnOiavTE+/63YjXvViRo3r6m7EhGrwVOuhB4Zx42
-   NBlAibRmdiJHncihURseR4C/V8NzYPipyBOwatlXPpypY3u1FX6PZ2O7k
-   w==;
-X-CSE-ConnectionGUID: fItFHySZTnKCgGaNsgSP0w==
-X-CSE-MsgGUID: M5YpE+EUQMKeBZiFi0AZ1Q==
+  t=1776702822; x=1808238822;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=X9sWbHxc0NftggCUNc8XH5sYfXjCQ2bDYjxsPR5LFRk=;
+  b=eaelrQQUAIybd5jgbc/Q6VBN2vA7+3BB0H/AJThImgNs5ER1o53XfjTn
+   UAuFFimJ/NJNteRtsN8NggfcecvgMiULnbppug4c/40CM8P7f1wv+10Mr
+   begNQaykcQ66ReJ0jYUwDLUlRnbydJOLLwqJi9pcSRmHGTUlK7/dW3nzi
+   S2IXA4Ztn2I11TfOi1BKz5NJFdRD11HxzWh5IMchV69mdWPnhOC9WRmVR
+   VNY5ENO7bcHbg7sf1d8ETe7XZtCYIaXiZEDIr1nrXQPvnxsARktwm+5EG
+   bHvwDM8gLQPnayXrhEKoQrzlwdm2QqcJoTTALNpqZZanc5t6wQtsnn8s5
+   A==;
+X-CSE-ConnectionGUID: LK3GeKKVQGCI5NhP+QU3WA==
+X-CSE-MsgGUID: zR+AVDFsSEiBsgS/xI+5YQ==
 X-IronPort-AV: E=Sophos;i="6.23,190,1770595200"; 
-   d="scan'208";a="17744120"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 16:14:24 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:15252]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.54.92:2525] with esmtp (Farcaster)
- id 0fb7fa6e-3822-49ea-b8c0-62c3590e6f16; Mon, 20 Apr 2026 16:14:24 +0000 (UTC)
-X-Farcaster-Flow-ID: 0fb7fa6e-3822-49ea-b8c0-62c3590e6f16
+   d="scan'208";a="17524416"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2026 16:33:37 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:9653]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.27:2525] with esmtp (Farcaster)
+ id 46b80425-918d-4d73-a66a-caf3b55c19b4; Mon, 20 Apr 2026 16:33:37 +0000 (UTC)
+X-Farcaster-Flow-ID: 46b80425-918d-4d73-a66a-caf3b55c19b4
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Mon, 20 Apr 2026 16:14:24 +0000
+ Mon, 20 Apr 2026 16:33:35 +0000
 Received: from dev-dsk-dipiets-2b-fa1865ee.us-west-2.amazon.com
  (172.22.139.101) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Mon, 20 Apr 2026
- 16:14:23 +0000
+ 16:33:34 +0000
 From: Salvatore Dipietro <dipiets@amazon.it>
-To: <linux-kernel@vger.kernel.org>
-CC: <ritesh.list@gmail.com>, <abuehaze@amazon.com>, <alisaidi@amazon.com>,
-	<blakgeof@amazon.com>, <brauner@kernel.org>, <dipietro.salvatore@gmail.com>,
-	<dipiets@amazon.it>, <djwong@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-xfs@vger.kernel.org>, <stable@vger.kernel.org>,
-	<willy@infradead.org>, Jan Kara <jack@suse.cz>, Andrew Morton
-	<akpm@linux-foundation.org>
-Subject: [PATCH v2] mm/filemap: avoid costly reclaim for high-order folio allocations
-Date: Mon, 20 Apr 2026 16:14:03 +0000
-Message-ID: <20260420161404.642-1-dipiets@amazon.it>
+To: <ritesh.list@gmail.com>
+CC: <abuehaze@amazon.de>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
+	<brauner@kernel.org>, <dipietro.salvatore@gmail.com>, <dipiets@amazon.it>,
+	<djwong@kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-xfs@vger.kernel.org>, <stable@vger.kernel.org>, <willy@infradead.org>
+Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
+Date: Mon, 20 Apr 2026 16:33:28 +0000
+Message-ID: <20260420163328.22104-1-dipiets@amazon.it>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <ldenszsy.ritesh.list@gmail.com>
+References: <ldenszsy.ritesh.list@gmail.com>
 MIME-Version: 1.0
 X-Originating-IP: [172.22.139.101]
-X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
+X-ClientProxiedBy: EX19D035UWA003.ant.amazon.com (10.13.139.86) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 67AB61C0002
-X-Stat-Signature: tq44m1rtd6ywkfodwsbez7ud4cyo3n4s
+X-Stat-Signature: 5f3goeu5hfdd1rc3nd6rge3wuq7zjw9t
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 565BE1C0010
 X-Rspam-User: 
-X-HE-Tag: 1776701668-237983
-X-HE-Meta: U2FsdGVkX18TwYwjdRNeasnBY/mQ6VFOiBbxdmMA5nweC8jmYpkmDeXGRh9RTZdhP5IeFoBbt7oZ1WSHkKyd4uMK52z9dym2KJUYEuMsG/cPGxVDng+xA9hEIFjHMpB64hhp3JcqJBqXOluFyKt/JC2qxWoJMJ3HuDuC4wx9FKXoefMDvDYSSwetjPdMLEiYYL9IvqJncZ61Gl77MWT0Dkrgi927rCO+6YO7u2Z4TNiJK54TNw7l3qHhICHe4fkruOz0HD/24c5ffUFinGVMPA1BtFDyak87mYVqpJIu+KsIZLo1GLFGX0w3AUWYhWfAPgJRgM2814gteagff0LrAH8qv8Nz657rvRynS8yAtZkZYvSAPGClBmzQOmRaNbAoy50vsrJ0mbzRiJyxUkrwxeea7JGAlrwurv1R2bAcglRJEKkOkDLg54cPoEO1hYsa1NrTykTWJurZ5Lwwoa8asft9UtW0qgiJ6R9PqDnau/IBIk1+D7TEdpjkDscGL3q/SJqjUd/6aXHYgQCuUbyHXvkP6oxG0dfwjhlSWhHoUC89zgoLsth+mq8xtF+L7zftdx8m1M6t3j8xUCaZ2/rsdfmV/yUl9GN7T00hOIyQ7i8X5AsOmtGkhHUFMsJUML1VUB4adQnYIfRpG4ggBIX4PxWIYZY/d+pQ3z2p2Zm0VXa8prYtRahjjSEo2AcYfj3wssSKYxKeJZdgBrOXDAvT3M2IxMIEn2pqCXoEkqVs2koD3XWPr4bzFF+pGPUnT6QWT33fm8iFIF9IGglQPLp6O5N+hfQmw9YxAD8x3uX9OvqPk3csc6URCoLllaGnHsDOmDeVwNWJiotfQj81aLOdbGf7VQDWSarhMinLOAwKnEXpQx+vcCFckzn6PN2prEVpLygb73xY9BPxllSB7PpjMPv8ZeWqlyoFRWSfUVnWoEj3/HJjWibZCN7ldQNG7ZqoeaMdpwKPNTZzrRTJCSn
- mXEzQrwk
- sI2Sg7kGhQ4DHh0aAkp8r3bLbp1PDrzSAMd+BUZdBV2RSLoGhj4tcoZEznBNkyHHqFW02PXUxWR4JxJ9Qn3QQcn4HC3k8SesSf+qglPQLeHTRBvpc4uyOGkMhCeV2htevY8gd3bbJ/gcRFs3VbXRdeVui7BT2MrGIhm5EsA6sz/XJQEJPv0U9cCQRPhHZZW8Jr8kKSugGqWvdSnnX4wCgxVTwszcrfswyuq+ORKG3Pd0UDL0KZpgo4JzsD+V+jNHRlZV9BNTNuEqOY37CZ9qPu5z63VViPcY+ihFEcm01yL7h9N4Ed2YNMeawy2+Z1pKoa66oFAJQvpE1iKJcRaMU+fjGxidsC4IDLFg8To+jHVTaatiobaMVvgf0co4DImP/ZijNnNJ1K3aUJEYIbxWP5COOytv1Nps3RraKLjF7hZAPs9iGcEcFFcb+J9lpV7KfshgVPzOmNrU67zlSV4krXDpIy+rN+v3iiGpobAkXJvA8grXaXE5WglZTPUPIt6Ojbm2L5zKUj0JGyQXZm7GtX9faTg/axKCBMXPzp5p1c2F1jy6R8PfJIK6j8O5bWBQBwlUMEwZ0060uIjJpKIlPKji9B/+jdiTfqHE3TYw9/zTkBpGni3HL5/iY5Fwd56xXzwqtYUOuassvBnA=
+X-HE-Tag: 1776702821-204392
+X-HE-Meta: U2FsdGVkX190MI7Ba80Jj8UzlVLu29XYYKhEpb03AbH0fMV7iUnZltILyiJONACRzbaV2oI2dEE7H4VafI1+WUGkthsMqnNe88ENfhkG2Fr77zr2fo6Lzw09N2GrH73sEplZ3TX3bhhmeuCJ4vR7qH75kU/LX/CWvW1a1Ur6DY5JU5AYsFhnSMM/SIhCNwNSNSZ+v0nIhx1OgnVw7qznZpjmHYsclcqEigyZ0MPIo3KNJ3dJIT21mymQt9seNjR/gF5XLppZIJVRkpeYfCDk1UZImpZDazeydrY9+RFGc5ygxSkKcwaDrXaLwibqvCzcRkzjLmFKJw7VH+GKoHsn0FJeeReQLbpla5TXf/6l5rIR2Aua+Yrk/rlK5zV4/nA4O+YPAJsad9QFNnd+sN1svrxLh41hiR/mxCjx9eoEFpfrUzsEV4GYnXsu2BuSQ0J1gCZPkxBqtksBYWaxp9aZ4akIyNk/u9GXvBBvIYHu4A5D5l98RxPQgQGzo/8EHSmhrabknTUFrzaSd+e64HuLYgxMZJWoqtrDjF3Fa0yNC0jhXHJjcpyFEUqM2xk0OIWXAGQlw1O/75A4ZmLd/VSjLkwfnWzm7NWTCvE4Cmumo2pUsAvocjOMZXeSapMwvquMp6OpuHUgyz8GFb60vn2ukKgbdyYA74PRYiICQwTjrZQwsFfgJ2eBu9Yk818HgtT26wjPn8YoFhIWFGNPENsDl0pJvWfkUaUC28bpSHgGK68KEsAwQeALhOmO0fVeLX50xEb2W3hQFHSN2r/3ngh9DXh8sJbmZPns3Qo3+At+y1xO2Pw2/3WODLYxkclzVKukiQiVT5iWc7Ygy/G+YfRgyFbXKbJQTqxX4JS2C4XYrtZgopAlcO00M53tNYvruH8pkbf0lXJ5PUvS4N/MmamNuWjD03b5+pLOmf5kc7IaxIJ0ti/Hpin6UnTQBqiYoYOwbCy2yApWd+tJDplIw/1
+ 18Q6xYV9
+ eHWpOJ0vs+AWVSYHgLlQjbhXbtlB18O+dQy94uKKf6NBMTU8H3o+cPOaORYkUsJHTbpSRkAdGn4LplMHHn7zqlE/vZ92H1L07/05BtB3fCVXuMV4rnR0ySR9HUIo3ds1cKCdS4h0T2bb2R/9PadsroMMFiOSL+Isk8tfjsvCe5X3FBkR60tdEZ27RSEnzAQltGUjiIRmtT0oxWyzuYm0JFGrILSBcVWSNZgOL8hgiNYQiY6njsAKW+dL173xgJqWfkLdPA5IknfEPilXmgkMKW6bHSigBp80ywnt5ABKYvYmxxtWVrqkFD87jE2iI+OnlNf1TdlsbsdkdsangOue75PLJAvEFAMqqsHIJbOeJ256pjUZyu53OAmILe1DrotWiznVCblr8cBZSeJieRJPt5UCOZSyBD8ViA3R6bptCUmedC5ua8OEWsepOSk+URytfYai2dponfMe1u9Yae8fyVr1l5k3CWnA/4oC3iMMTi4AiPWiDS/mXPgrBsSfv8rmfJGoz/XRz31nW8Q8LpEcKLuHeqmpWuR+4vTtUGSSuHuxIu8za5FPsNcElvPn32HyBHbHXTzUEHGYnuEou6Purjgst4LQPyjn0zf/7mlVmm6T5gTa9gF5RdkHuKWn2ZuWNbE07Yggan15dSdw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,65 +115,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-introduced high-order folio allocations in the buffered write path.
-When memory is fragmented, each failed allocation above
-PAGE_ALLOC_COSTLY_ORDER triggers compaction and drain_all_pages() via
-__alloc_pages_slowpath(), causing a 0.75x throughput drop on pgbench
-(simple-update) with  1024 clients on a 96-vCPU arm64 system.
+I have submitted a v2 of the patch based on Ritesh's suggestion.
+https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u
 
-In __filemap_get_folio(), for orders above min_order, split the
-allocation behavior by cost:
-
- - For orders above PAGE_ALLOC_COSTLY_ORDER: strip
-   __GFP_DIRECT_RECLAIM, making them purely opportunistic. The
-   allocator tries the freelists only and returns NULL immediately if
-   pages are not available.
-
- - For non-costly orders (between min_order and
-   PAGE_ALLOC_COSTLY_ORDER): use __GFP_NORETRY to allow lightweight
-   direct reclaim without expensive compaction retries.
-
-With this patch, pgbench throughput recovers to 148k TPS (+67% vs
-regressed baseline), stable across all iterations.
-
-v2: 
-- strip __GFP_DIRECT_RECLAIM to avoid costly reclaim for high-order
-  folio allocations
-- Moved fix from iomap to mm/filemap layer
-
-Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
----
- mm/filemap.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 4e636647100c..f2343c26dd63 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2007,8 +2007,13 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
- 			gfp_t alloc_gfp = gfp;
- 
- 			err = -ENOMEM;
--			if (order > min_order)
--				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
-+			if (order > min_order) {
-+				alloc_gfp |= __GFP_NOWARN;
-+				if (order > PAGE_ALLOC_COSTLY_ORDER)
-+					alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
-+				else
-+					alloc_gfp |= __GFP_NORETRY;
-+			}
- 			folio = filemap_alloc_folio(alloc_gfp, order, policy);
- 			if (!folio)
- 				continue;
-
-base-commit: c7275b05bc428c7373d97aa2da02d3a7fa6b9f66
--- 
-2.47.3
-
+Salvatore
 
 
 
