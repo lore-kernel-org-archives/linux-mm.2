@@ -4,172 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D2CCF588E3
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 15:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38612F588EA
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 15:57:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61D7A6B0089; Mon, 20 Apr 2026 11:38:38 -0400 (EDT)
+	id 131206B0088; Mon, 20 Apr 2026 11:57:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CDAD6B008A; Mon, 20 Apr 2026 11:38:38 -0400 (EDT)
+	id 0E22B6B0089; Mon, 20 Apr 2026 11:57:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BC2F6B008C; Mon, 20 Apr 2026 11:38:38 -0400 (EDT)
+	id F3ACA6B008A; Mon, 20 Apr 2026 11:57:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 39E926B0089
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:38:38 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD9051A0A23
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:38:37 +0000 (UTC)
-X-FDA: 84679341474.25.2F5EBF2
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020114.outbound.protection.outlook.com [52.101.196.114])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 166211C000B
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:38:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=Gsw+Qsne;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	spf=pass (imf18.hostedemail.com: domain of gary@garyguo.net designates 52.101.196.114 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776699515;
+	by kanga.kvack.org (Postfix) with ESMTP id E462F6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:57:57 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8BD52E56D8
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:57:57 +0000 (UTC)
+X-FDA: 84679390194.18.598992E
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A247CC000D
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:57:55 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=VSNiZsff;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776700675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y844hGU6GEmxVpI6CjymvEDZ1pA+jm0vCBeuTVg2Hy0=;
-	b=OOyGqqvPpSsgo9J4amhk/YXNQlyM72U78g3B0JQlxLXb60quGP7dxV1P+88p53RyUig5Kl
-	xvlysiOZqmsZl0ooHBT4meJFpdR1LPPJ0sFgjxmlm2noX9nrfBE0mWUtRDZbDnJgLRi8HC
-	wHxI6sMcN9fuoiEpAm5ZDkiIQCep5K0=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=Gsw+Qsne;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	spf=pass (imf18.hostedemail.com: domain of gary@garyguo.net designates 52.101.196.114 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776699515; a=rsa-sha256;
-	cv=pass;
-	b=rdrj3hTOjGvSu/i52JNVoSW647Vw0UF3efWBSoFJLAagCgJ4wAJOpAsDQcmRjcToFbRPJ8
-	FqSlLta5X/WAl9/cUJh6XhqG+tQFAimNLcUi1LaA1Xg5OnWStpKPnjT2wvKgRoBUSqy71B
-	uh6ZjmRd1eKZqvPWPax5y2jkBLHk8ro=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E+NU6jnnaidbK0Khtd4+BwLCFB5Jh2TRg+Pf5rEV7QFAuJpq33WDCINXRq/nuu6oFgmx9e30iUa8smXd9t8+rfVonculpouv9ZFhIxEBs8x7uJVf4dwHOJIAcFDOj2Pm2fYQTLAaN/0T4vnYcJKBj1kOA6L3Y6IWK7mqsv5wMxmFzLWUmPozyCKKSSB4s737svHWMmB6MiK7DEedm3KbzCOb9cxB2dLgfH+4ubV0AzoD0LEpdBomSFnqAl9Wkyj+9G/740y7yjOoxKnxaPTbXRkCxjaoLa6UKa5yaEPQiToa5Qz6LpdCa3ncR7Kz9PPCtuqJQ9okOfeO5TevKWTNZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y844hGU6GEmxVpI6CjymvEDZ1pA+jm0vCBeuTVg2Hy0=;
- b=TdWEpGPoBxHcV0hvdQXo//nCdJs1AiQurVnCdyIwwv23oqfkMN2XWuUOdxyy9ym/KyfF7qAV1bhuZjvImgAl8VvUnBKXGf2lEUpyROYQ+wojXGY2eiWi5NnyhioXCbH/h4PNbnNUOt4tp/jTrkSJ9OATbGRb9pRtStqirYsF7rjRFfjHMlsAkHVtyjSuOEBrd9O3HKWUs7hH8zB1YjUorSIQ9JCev9steRB5U9HBCL/88rWc+mCbuAke0drkwxrcxwb9TJK6lanMcYkK5sSdvD9GzjY6mzQ8lOM5TJQSlolDFkGuLqxb5em2SPjyTtLh4Lq3yEqksUF4nZWYbXVR3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y844hGU6GEmxVpI6CjymvEDZ1pA+jm0vCBeuTVg2Hy0=;
- b=Gsw+QsneYw2wxU/9rbzwJjNU5cEFSUvGv+021UItinaaaCJ2F/uX8MYmIf6CngITIGhsu7AwA3nnIhI12Az2AKo52ytzSqQbKNWrZsvntQEy7ykMY/iOYcnybTz69M8DXwV5INL6jil6X4Rghixpjt6LVC1EDgNaR2nHQ84me5c=
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOAP265MB9285.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:495::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.32; Mon, 20 Apr
- 2026 15:38:28 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9818.032; Mon, 20 Apr 2026
- 15:38:28 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 Apr 2026 16:38:28 +0100
-Message-Id: <DHY3EUA4LHIE.FAP0QSKIZWYF@garyguo.net>
-To: "Alvin Sun" <alvin.sun@linux.dev>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Tamir Duberstein" <tamird@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH 3/4] rust: xarray: Update StoreError comments for
- alloc()
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260417-tyr-ioctls-deps-v1-0-41c6e9bb061c@linux.dev>
- <20260417-tyr-ioctls-deps-v1-3-41c6e9bb061c@linux.dev>
-In-Reply-To: <20260417-tyr-ioctls-deps-v1-3-41c6e9bb061c@linux.dev>
-X-ClientProxiedBy: LO4P123CA0652.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:296::13) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	bh=lbmNztbEwLmjR0RQpM+PbvDofjBnkY5DWnlmbtfJfNk=;
+	b=8OI75fYPTgVtSIxVztkZYoGpQjYsCeOpbM6jMdVx2nS455oi7mbdtRksYV9RtnTWjUJY34
+	r4P/SoVQLJ9rYZUjHrJZY6ukhrvJE8R+XuqANiU2X5NOvC7IjLVwW4IVYDXZH9nAoVEVub
+	cs3bKPInBnNr7N410i0MGQmyA8tsegY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776700675; a=rsa-sha256;
+	cv=none;
+	b=vRx/w9HR4LSLpRg3Zj6VFrNDch6fW79HYvBbcdBf6AL4zWHXHpVpGWzafbaLcTlqnU/Z9S
+	CB0fbW2K9stud5Ttifqn5L0Wm2WQweySreldoU21BkRF2x9y2RJvp4/qMb6wVMG3zS5ir2
+	cKdVDzFPY2bOCg+Ed3lfsBPStkBiFkI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=VSNiZsff;
+	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a58057d7baso40369216d6.1
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:57:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1776700675; x=1777305475; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lbmNztbEwLmjR0RQpM+PbvDofjBnkY5DWnlmbtfJfNk=;
+        b=VSNiZsffi+T0JOQpC5zEXFYV19XEoj7bbUTb4CgsoZRBInjau79vH94OJ5KGk6N2W+
+         eEtmrtELX0djtPK8j+FvU6s6Qrzt7s3M+SCPgwUDeGNVzyYkPmwmJq7rmTox66T8gw4F
+         bu9QaapS0J833BvrM0E5LTOnCeX5KSZFrQx6vT0XbenPsL5kySz3kt4tVYnf6bZqfyJ9
+         v3d7GNx7VZnPF8Fs/oOBFwJwbUArq5fHikzK6Wd/a+rn+ydU7FWkkfE1sD/xPydiXtXe
+         Ph9q5sfeE4TQF0BbR1BsdeB7Y8Spc007RBE+CxzVnduKkXrNfo1VDahfNWmwX2X8V+Nv
+         6mcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776700675; x=1777305475;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lbmNztbEwLmjR0RQpM+PbvDofjBnkY5DWnlmbtfJfNk=;
+        b=GP5DmS7ZcdxMQQyfth/Pmu2moS3fKv1ojgR+kyBrbm6/8D+3n6NpPdWqbCgZBQCYVY
+         zFTo7fLmw0Ne2893u24IiH2VBSxHWZilafMNf5fvYKS0qLDB0FHIn/f/Po0SKJ2AMvkf
+         ByZ6/soTR67cB9ieHqrtP3all6kUDx8xs+WuuN5vABJInHFZyDMRL3o35Yi43y4NUHAD
+         Lmzus2mmit6+rHoEH9FteePT0e8ADdm3Cp+Y/2ce/vxgbTEdlSQNgCL6A119hM87UdLT
+         Zh7z4oUK97aQbxwqjnaxyrhcgC+iRq5YFZ0pFEkQSmgOkUkP3bNeOFLBKia1FbpnoyXY
+         JCtw==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZNhv3UUaFcyC3RhNbYyMEhnNdVGYzxGexw84QQ0PG1PaAM41SyvA/aaseIEdW4IGeti5Exy7ZMQ==@kvack.org
+X-Gm-Message-State: AOJu0YwiKSMFZG0EYm/Amos2YCBvg7NDty5phzbxZblyoGts/3i0f2Qs
+	OKr2wT13XE3ZJdqCH4zXvC0N21dVRucDp0TfYcWI7UASk9aQIPzIfUDwNxpUeeLj3f4=
+X-Gm-Gg: AeBDiesAA22uCkL9GkONgVm1hHaTsTryDDwETHVE3RAJNOQ7U6Qu6PwvbTIdPkAlZE5
+	4uBdMX9jCNMvGHJ3U6tlvsEiIX992Jc+oBaSIkaqQfJMNgtSSN2h0Y3PUcvw3+tx48YI5mC66JA
+	QRr5FlH1Sgk5BhgNbAZz+5IhOgrFD9z9qh/t4ZWYUH/Y0dt+iV82g9hSJSqxvD1VRUfQti2BTNF
+	BOA+QdTL9ZScE1xbfnXm81MhTL53n/RprfWEv745EBetfk59fPCb0S8larM6nSAq53IocqoJ+6w
+	jEK2ZzBRAPzEM5y7T5ZJJFlcLr7Mn0YsAK7/D1HsKo8ugiajQDVT75+mKtWesEzVUpqj67JvxOn
+	m8rZx5wupVAYmyGTnMMP57sAzddYZp1yxFFubxEHXDYp+el0EipbO82bzVYB9S/8R7h1lqP3fKO
+	XYXFzU1jF+m9nqk/zmXE+bNs7X5xZTkZ2JBXZMSol7bF9wpGpbWVMx+3r4Dpzf
+X-Received: by 2002:a05:6214:4602:b0:89c:4f7f:8479 with SMTP id 6a1803df08f44-8b027ff9872mr248267446d6.6.1776700674494;
+        Mon, 20 Apr 2026 08:57:54 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac7d4e6sm79178796d6.20.2026.04.20.08.57.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 08:57:54 -0700 (PDT)
+Date: Mon, 20 Apr 2026 15:57:53 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, luca.boccassi@gmail.com, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com, rppt@kernel.org, 
+	pratyush@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 3/6] liveupdate: add LUO_SESSION_MAGIC magic inode type
+Message-ID: <fkz5u3nhgdm5k5qc77rioxon5gaxdgu7uuedqtixjq5evqrkzr@g23edpj4vmyo>
+References: <20260418163358.2304490-1-luca.boccassi@gmail.com>
+ <20260418163358.2304490-4-luca.boccassi@gmail.com>
+ <20260420-unbeeindruckt-besprach-910fd241c32e@brauner>
+ <xpi24rt5ek2m2wkhv6celu75hgtgte2x4jhfkjar4gi22r7bdh@ilbxbhfxmm2v>
+ <20260420-buchung-panne-57e262f5057f@brauner>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOAP265MB9285:EE_
-X-MS-Office365-Filtering-Correlation-Id: e541bb14-ed5b-4db1-afd9-08de9ef2de93
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003|921020|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	3ac+nOOBg/ZJXnVYMHEBJTu/BmpOxAwmYk7OcIhLTTUxFvIwUcHeVazC9JDVXZiaRhN4uCahr5xhY5X8KgWyyyG0WOwvnMNN0GKswMCymdIyAvUnFxcLNYimAg+jXfnbatRkT9PJU+vUrav9vKYCib2EBM1h8EEMKkMjnci0BxHVPKEaY/dh0O6AMXbFScnggabgA1OvBeDCgMdY0lqWulCBYY2g5q94bZl3RyYR0yGS3V2Eijyjz+ElBZtGVzl20P4wgMHpcOQGegtr60PPFspw/21zVjrSLul10LNFMI7uNIisJuax2BO2Tbv2icl35XBIh2YsMqkF3bFkZg2VwsE9Yvi7ILn7byfaR9hul8q/xu1fqPW+OLHmLfFRj1ralVscA+rcsz0656UFS6K/KDPvHZXuGL5+W0L/leE5LZDt9DeV4OGCjE24e/qYpiOiBjte5iVrhA3MkpCSs538RXIZM8/NTRNVgrh0tRixINyAFukwFwNXdFMDMTmnSB91Qb3chsloz8CJuVt1xdkcqYGufGy/+3mXpA//Wnyhxm9FPOtr8cMji9E+OQ9grmmZ8O0teqq7ZY0OGI29rcZ/Zq5e4+PIiirA7LftE/mbGWbzJCssbuauc3vm8MSKgsnY/GoHWOfogced4HkeSdk9qbCMguIql9qc3PVC07NaeNEu1DxKndVrUSjvrAbuSJATlWXxlZ1mj/rXU1Jyuu3mJwSLGmDfu7sBDXihhQ3LtdSlCTdtg+X5j8zm0VAES6+S2Fza5XShLcjb0nyk7qN/4A==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003)(921020)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q1hGTCtyRGVwOStVZ00wUnl5U1JyTGR5NlRRa1h0L0l0eGs0Zk92L09WbUE0?=
- =?utf-8?B?ZldTeUlQcDYydFhCMWZNcDI1UkpkUmFtMmk3N1dUaVgyNnV0a0UvcnJJTUhJ?=
- =?utf-8?B?bXVXNThncGxuaHllR2R5dnJOczB5MXlINi9rZmZ2S2xEWmhqSUJBR2l2OGV3?=
- =?utf-8?B?WEpsSEtobmxFVkNuNlo5Rys4Z2FLckR3cllvV2ZBYVdud3lkNTE0V0h1R3la?=
- =?utf-8?B?d0xnbHRnRlR3N2JoQjlzQTg2RThCMEpqT3R5dy9VU1N4c1FpZ0FsT09uTmEr?=
- =?utf-8?B?WHFWR2ZzZGMvUmUwKzJvNi81WnE5WkFCOHVjK1UwMnZ2djZiZU1zeEZTT1o4?=
- =?utf-8?B?cTNKK1hqMUtJMUo2NFdsU2JEdHp3L0ErbU5rc3RiUnBRTGduUWRab1FpbHJH?=
- =?utf-8?B?aDdTcGlxbE1OeVYrMXBoQ0wvOUtNL1RHU1l6V1JleFNqZFVUenNrQmtUSDRW?=
- =?utf-8?B?Um1hSUpiVWRPbVRmOENncWJmR0JtWnBqOXlIRldTUjJqcmMyL3pSMjFLODRI?=
- =?utf-8?B?Z3AwV3dsQko1cjFhSkovTnppTzhlNHdNdXpCU1owRjVYVER4emlvR3UyVU8z?=
- =?utf-8?B?cDMwWWw3UU5KaEp0aks1dXFMUS96UUtFZGdCdk14QXFTWWhMNzJTV0UxaWpL?=
- =?utf-8?B?NFY5RHJSKzhXS0VBNDRVV01ZMFpOMTlQb1FyNDZUSEJnaGwvQkQ3N3MxZk1F?=
- =?utf-8?B?cExPWE5Pa00yNmNMSFpaSnZsM2JhVEZtS0NrVE94U21wbEFoQ29JNEIyZFlz?=
- =?utf-8?B?ckx6QklmV1JUWUhZZ0wyMWJxaFZ0SEtYb0ZvUjVtN3JTYzFveEdmdys3ZFBX?=
- =?utf-8?B?NzZ2RlQxZWJoQ1BMVDZHK3V3UXJhT1A1Y1FPMkJ0RnJOWDZ1djlQaXdodkFm?=
- =?utf-8?B?bHcvaWtBK2VqUDVNM0NjbzQ3ZitVcTAvbXVVYzNsUmVHejFlR2FRSS9lT2Ru?=
- =?utf-8?B?MGlSZUtVeGVnU1JMVkVaRVBneExrT1RoKzJzRXJ3L2gvTzA2TnU1OWRyZ2li?=
- =?utf-8?B?ZHlHNmM2MFgwalF2MkM0cE9jMmxSL1pmaUNNeGlDWmRpbmhEUXRsYWZJTTRk?=
- =?utf-8?B?dWR5elU5aXErd2ZMaFZ1aEpvWjY4a1JyWFJrcWNRV0JJQmxwaG1RSko3d21Q?=
- =?utf-8?B?d2s4SExDMEtVbTVKeDJrYjhSQzY0YnhsQnhuRHR1NmtYRVBPQnZtUGQxdkh5?=
- =?utf-8?B?bzQ2aDRqTk5wNUsrTkJyY25vUmNzMUsxdXJKOXBtTUl1cHVtTkJzNXNTV0pS?=
- =?utf-8?B?KzJUbE9UVmMrSVpmSmtsN2ZRdnZISGFHaXdkcElxKzk3MUFTUjgreGVrS1ZQ?=
- =?utf-8?B?NkwwZGNndzRvRGVXYWszYjExdU1hL2xRTVpWOE4vcXl6WE1YUVJWZWtVY3c0?=
- =?utf-8?B?UzEvc2dxckZZM2pCcUNGRGI3aXJXdUZtd2U0QkdSenBwc2ZXamlORGYvRmF3?=
- =?utf-8?B?ekxzRzM1bVhxbndFcDJRait3L3NjZGxWRjE5NVB4V1ZlMlNXUC81alNqOWlp?=
- =?utf-8?B?OVdXYnRaaFZmUjJPVDFyZmpJOHBEbDI4WmVMTS9rSWFpWm5YNVJKM1czakhr?=
- =?utf-8?B?MVFCQkJCa2ZmQmFzN2F2U2h6UUI1QmFMWlRISjc2U1I3VkgrY2F5dDYveTNR?=
- =?utf-8?B?YTN4cExOSEZwaTR5OXFwNHFHOUR3U25Icy9PQmhKbXNCNWYyQnZuQ1V2TWN0?=
- =?utf-8?B?NGpFK2tRZTBEZDh6enliazlxQ1lJcW1wWHJNTFVGbjBkbjk3UWFTeTI5ak5H?=
- =?utf-8?B?NFZrVU81WTdESUwvUmE3R2dEZmtnakxjNkp4MlVlZG94YjFJTldScXpoQ1VJ?=
- =?utf-8?B?dkZvTi9CRWlUSlFnT1hOK010L0kyZTUybGdrTklBTGtoQWdUcm9SU0FRemo2?=
- =?utf-8?B?YjhZTWlyR1hmOE8vVG0vcmxCOXRhMEtiM0F2akZQeEhJTmtEN1hTdmtZTDRx?=
- =?utf-8?B?c1Q5cjVWMmphWHpPSmtiS25qSXpoOC9pK0dsN01VaWFoMGp3eDRkMjRIQnRM?=
- =?utf-8?B?bnpjMFNFTFRlamlXWjQ4a0lXRDJxTUN4VEJvWit2UjJlYUZCd3ZjSDdmZ1l3?=
- =?utf-8?B?UHc2UWtNVVQ1ZjFMNEIwZjF1d0pqMU5ZaXBzOXNETTBndS9iOGJobC91a21q?=
- =?utf-8?B?N05YYmphZzc3NWlKRjIwYmRUc016WjVnQm1ONWhWSlAycWpSeUFUTTdJaUQ4?=
- =?utf-8?B?YURlWnNtcE94SnljcVA4S0pyTHJIWFN5aWVjbGtrYXJSSlpYNzNaRGtCeG54?=
- =?utf-8?B?ck80ZHUzWVk1RWdNMlFwSHBZV0lJUFdvNDJHVmc1b3dTeUorRi82a01wV0Nx?=
- =?utf-8?B?U0FMc2dUM1NLUms0Mnc5UXVRcW9KclJSNVgzcFlHYUh2ZE9tY2didz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e541bb14-ed5b-4db1-afd9-08de9ef2de93
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 15:38:28.7246
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LFxLSoaLDyCezNmf63qovT3CBqO9YWPan2zKUJYol5oVt2i9Sv/caSilNeHGFqTvGnsFHiLtHpJZLERRI+KaaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOAP265MB9285
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 166211C000B
-X-Stat-Signature: jymmaba5kderak4obe7hc81ww1yqnqw4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260420-buchung-panne-57e262f5057f@brauner>
+X-Rspamd-Queue-Id: A247CC000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7mb9s7z91e9r5b1eimfqpofkqbyj91jw
 X-Rspam-User: 
-X-HE-Tag: 1776699514-372561
-X-HE-Meta: U2FsdGVkX1+faCVOtaEY0pw+wUeMd1Vaz3AcqfJ+82y1dsY5m07/SUiXOVLEf9e0ffrkdCg3y6GMaN/eG03ggcRxF9oqliAE0WZOTIkyDY5rPYNtLXmek0MzbBfc/tegwB8oUj4PsnJFAVMjDofFui5K5S9ci9+5FJehlYbajQ0Ek+0LSflYi1LPuYVHRh5MQnPZQaRpvR1iAvooCJO7p7XvolgTMaGVaF1hNxwbBIGmvLemhTYwdxFki2HJUoJDAx4PmmVU5wJbSDdeLVboy4MoQCq0qWzQm0qlOFtM1V56BekDT9GH/ePdpg9o4XCyBbFxDPBXty8wKRiRdm4fLhV0Mv/DbEAWCluIegng60VPf12JVDro4MC+3LyJuHPm7ieWsHiJgcFEJw4GOEjADSE4D77siYUKAS6IMgrnQEM2iK2Pp/2rea6brVhvHHSH6p1EveTidUd6PnNRyOZaxN3Gb0Mn/kAe1muZO0meERpaw/1unJk3oWAFz3wIy8ht3QwHfZTrGZS+M2i1CjSFpHs+K62HyodniqhLLK1lE+4zPuPhz+1H0lOngyAnkeSQH+37SH2W5wmofxkdXHkKiaYpXbtYs9r3Vz2Id5Mgv8eHF/GEHrs/roSjO2mNkbO63mOuIiOq2SDlYvCWk2V6/aUdgKO6QoCANfNifr9m3SNj8BuGDDk9PGuGh5ItTnwUYvZ7A6SBjYMdKjv3zzvVYzRTpQ0MnrveWGn7HNUZA/25lhcr1kB9Fheb0R5zmrax1o9FVGg8KUDbQ0ZztQb1gTofVlN5SwX2f9Y2yOyb+dcDGIWCv/o5m9Zn9Tq8gHwHUSEURBgt6Uekk5jaNLkBI/dRuu88I1j55dFAfb1Kx/z6zR9vtdQ/Ox9HgM97qtiUKxh2yDoIcn9kUo4kNTRaYrE+R9sKdZN0iTnq2H+NNumZiPeAIHiusBr002bgBR1b1B/IPJDz8O70YReLSum
- Pr4x4ZWq
- P6aLEDVPLTaKUNMWlsW6SupxcPnER+iSRyjyckkSzRTiUX3o7Ve+z138EFV9GWcTEF8od4r3rTGLPqFXh+min67FylycmwzWxwfpWGZKTc2ZeWtkpzXXj6Edp963Y+JimTXqGLrpLAdvv6NlseqC4qJhSzMOMUHl8RqqI8SZ3eCWtgpd7PLYTntKoI4hOcpD+uc9jJg5hs36SPkZfQ15QzSvMIYMzKLZM/RZZo0jWj5ygPsEVf1uqmfkpkPXaA/lGP8kWh0Pp5+Ort864eK8IgLySnIOEWxhwaExxc4q9Om1qeN65GSOLJr4Rfzfw7v+Kxn0nUV62I/mHYk9n8lHpBsNIy307e26vKajW1zir0j2Clq9dlO2cE+kB4w==
+X-HE-Tag: 1776700675-27480
+X-HE-Meta: U2FsdGVkX1/5LlNyilKaRIts52/4NRhBE/EmtpbsbYpVTYdnR01HVwRsgaXZh4Jq4yXf9lJDC4RpBlaKQPKeqvCmR16ZxtQ3fOAax30gNdhqVsyFPwpGOlb40i0xBRorMWDwI414RXjOHJRbDfOfhj1F1/V5DNgY24piCUG9B2czW2wbp7HV1dnztw9iXucyJhPxNkQYif7aP7/XwJ8bicKQqHKbIBrEM0NDIYEvPQLBktKXxofPVSIKpN250eSmKIbfPPRGZEYy1ZJidg45NTFilEVoLO5902ObZDhj2iZ9m/5RFJR2eySn6itTdat3kmTf1RWS1zMq9iTdeDmoABj3byz25WJdwob/lLwpyk3tdnfmoWAst6rVOnwxgH1NOJe3SFvJLRAkuUha1Y2cuK52TSFvhHRemfWjRS9UFwXhXcdxnXkXRWYiTA1eaGX721WNE63tv3r58SEG0VMZ1Hwbope8wIvYqY3L1RMitbl76KhhwElEmXHEsOel1yz8IebNuwhLhblgTayol0Lw43oKPaK0F2Sh2aaoadV8EqeKzet+6I1dsPl7bskjdo7iudRqeneYl1wjM4pv2Q/LpFfpxjtwo25I+78k/ub5KMH01IghqyvyD8o5Nfrh5BSs/bMzjzx3pETzcI0CURxnjDGCeRjc111mDOBJ3+VsJyaFS0DZgGt5NVGmmGiI+ij9n6RSVwnsUjeGN7e2KFI7T/1JFgDI0IdlEtTn0Czt5BeRtcSlOiB9UfpN1oRnRKMYNLcsKc8YUIP1ZRLGPJ7vVPqtd7WVHwt8HgFsdH9b6wwVHpQoKrtEQu1NYMENevmAkizUoDH5pBoij02aG4yhWHv9t7lECAAVktAQFiqobNk7xiWGnm3VXrNQ6vzRnhJVdgnS2LgDkh42ws9Y5//yFu/JpW9Izn2Xqo0o+iw/knjytTJgrs6OBLSJvNp725KEWokPLFd48faL5OFEf9D
+ zsYJgVeg
+ ZlzckGIGd/tjMENJYXGIQZMTSJYtOPaoMMDwuCtKEV9ihs9xdugNACRkIpAmViP8WC2zpXfxLz0PJYuvEF+rm79uJecuXVFvYRBTk6EEfXaGn0NwK1KQEW/yEsNP5jujXRBsTHQgeTyvYfo8V5COEeEAqNSpHDW0gRt6NuPU5jniTo7PaOCzCPySrMrR2H+TmzPDpnh4s2k9VeCIhm0LQo7WvcvHtZx196cAc1mlQ1Wx21JsL6nODsGzRZZvd1jjLPNCCc79EcvA1yrs8a53ER3KMP4Y8jMy0c1gcfPgAozvCi/qw7qDJcRuyncZYZD8v22hBTswlQrbdJGdeWb0l1cJq61/nnOHK2BcNwXWQ1eDM92OZMT74X/hpVObGYN4BFPJhssuT57CRGyExBjuLHr/8NzwbPGyueK8VZYayTK+hWz356DnMGvrMr/wTNbmm8kRHJSk9X82kVaVkaAZeiJn04xw078bLtxdJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,40 +121,249 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Apr 17, 2026 at 2:05 AM BST, Alvin Sun wrote:
-> Update StoreError documentation comments to mention alloc() usage since
-> this error type will be used by the upcoming alloc() helper.
->
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> ---
->  rust/kernel/xarray.rs | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index 1b882cd2f58bf..235fda0e394ba 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -161,13 +161,13 @@ fn drop(&mut self) {
->      }
->  }
-> =20
-> -/// The error returned by [`store`](Guard::store).
-> +/// The error returned by [`Guard::store`] and [`Guard::alloc`].
->  ///
-> -/// Contains the underlying error and the value that was not stored.
-> +/// Contains the underlying error and the value that was not stored or a=
-llocated.
->  pub struct StoreError<T> {
->      /// The error that occurred.
->      pub error: Error,
-> -    /// The value that was not stored.
-> +    /// The value that was not stored or allocated.
->      pub value: T,
->  }
-> =20
+On 04-20 17:28, Christian Brauner wrote:
+> On Mon, Apr 20, 2026 at 02:55:56PM +0000, Pasha Tatashin wrote:
+> > On 04-20 14:26, Christian Brauner wrote:
+> > > On Sat, Apr 18, 2026 at 05:28:20PM +0100, luca.boccassi@gmail.com wrote:
+> > > > From: Luca Boccassi <luca.boccassi@gmail.com>
+> > > > 
+> > > > In userspace when managing LUO sessions we want to be able to identify
+> > > > a FD as a LUO session, in order to be able to do the special handling
+> > > > that they require in order to function as intended on kexec.
+> > > > 
+> > > > Currently this requires scraping procfs and doing string matching on
+> > > > the prefix of the dname, which is not an ideal interface.
+> > > > 
+> > > > Add a singleton inode type with a magic value, so that we can
+> > > > programmatically identify a fd as a LUO session via fstatfs().
+> > > > 
+> > > > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> > > > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > > > ---
+> > > >  include/uapi/linux/magic.h       |  1 +
+> > > >  kernel/liveupdate/luo_core.c     | 10 +++-
+> > > >  kernel/liveupdate/luo_internal.h |  2 +
+> > > >  kernel/liveupdate/luo_session.c  | 89 ++++++++++++++++++++++++++++++--
+> > > >  4 files changed, 96 insertions(+), 6 deletions(-)
+> > > > 
+> > > > diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
+> > > > index 4f2da935a76c..4f51005522ff 100644
+> > > > --- a/include/uapi/linux/magic.h
+> > > > +++ b/include/uapi/linux/magic.h
+> > > > @@ -105,5 +105,6 @@
+> > > >  #define PID_FS_MAGIC		0x50494446	/* "PIDF" */
+> > > >  #define GUEST_MEMFD_MAGIC	0x474d454d	/* "GMEM" */
+> > > >  #define NULL_FS_MAGIC		0x4E554C4C	/* "NULL" */
+> > > > +#define LUO_SESSION_MAGIC	0x4c554f53	/* "LUOS" */
+> > > >  
+> > > >  #endif /* __LINUX_MAGIC_H__ */
+> > > > diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+> > > > index dda7bb57d421..f1a63ebe4fa4 100644
+> > > > --- a/kernel/liveupdate/luo_core.c
+> > > > +++ b/kernel/liveupdate/luo_core.c
+> > > > @@ -197,9 +197,17 @@ static int __init luo_late_startup(void)
+> > > >  	if (!liveupdate_enabled())
+> > > >  		return 0;
+> > > >  
+> > > > +	err = luo_session_fs_init();
+> > > > +	if (err) {
+> > > > +		luo_global.enabled = false;
+> > > > +		return err;
+> > > > +	}
+> > > > +
+> > > >  	err = luo_fdt_setup();
+> > > > -	if (err)
+> > > > +	if (err) {
+> > > > +		luo_session_fs_cleanup();
+> > > >  		luo_global.enabled = false;
+> > > > +	}
+> > > >  
+> > > >  	return err;
+> > > >  }
+> > > > diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+> > > > index 8083d8739b09..d4ac7b4c5882 100644
+> > > > --- a/kernel/liveupdate/luo_internal.h
+> > > > +++ b/kernel/liveupdate/luo_internal.h
+> > > > @@ -79,6 +79,8 @@ struct luo_session {
+> > > >  
+> > > >  int luo_session_create(const char *name, struct file **filep);
+> > > >  int luo_session_retrieve(const char *name, struct file **filep);
+> > > > +int __init luo_session_fs_init(void);
+> > > > +void __init luo_session_fs_cleanup(void);
+> > > >  int __init luo_session_setup_outgoing(void *fdt);
+> > > >  int __init luo_session_setup_incoming(void *fdt);
+> > > >  int luo_session_serialize(void);
+> > > > diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+> > > > index 5e316a4c5d71..21cbe99fc819 100644
+> > > > --- a/kernel/liveupdate/luo_session.c
+> > > > +++ b/kernel/liveupdate/luo_session.c
+> > > > @@ -50,7 +50,6 @@
+> > > >  
+> > > >  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> > > >  
+> > > > -#include <linux/anon_inodes.h>
+> > > >  #include <linux/cleanup.h>
+> > > >  #include <linux/err.h>
+> > > >  #include <linux/errno.h>
+> > > > @@ -62,7 +61,10 @@
+> > > >  #include <linux/libfdt.h>
+> > > >  #include <linux/list.h>
+> > > >  #include <linux/liveupdate.h>
+> > > > +#include <linux/magic.h>
+> > > > +#include <linux/mount.h>
+> > > >  #include <linux/mutex.h>
+> > > > +#include <linux/pseudo_fs.h>
+> > > >  #include <linux/rwsem.h>
+> > > >  #include <linux/slab.h>
+> > > >  #include <linux/unaligned.h>
+> > > > @@ -363,18 +365,73 @@ static const struct file_operations luo_session_fops = {
+> > > >  	.unlocked_ioctl = luo_session_ioctl,
+> > > >  };
+> > > >  
+> > > > +static struct vfsmount *luo_session_mnt __ro_after_init;
+> > > > +static struct inode *luo_session_inode __ro_after_init;
+> > > > +
+> > > > +/*
+> > > > + * Reject all attribute changes on the singleton session inode.
+> > > > + * Without this the VFS falls back to simple_setattr(), allowing
+> > > > + * fchmod()/fchown() to modify the shared inode.
+> > > > + */
+> > > > +static int luo_session_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> > > > +			       struct iattr *attr)
+> > > 
+> > > Don't duplicate, please. Use the generic helper instead:
+> > > 
+> > > int anon_inode_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> > > 		       struct iattr *attr)
+> > > 
+> > > > +{
+> > > > +	return -EOPNOTSUPP;
+> > > 
+> > > 
+> > > 
+> > > > +}
+> > > > +
+> > > > +static const struct inode_operations luo_session_inode_operations = {
+> > > > +	.setattr	= luo_session_setattr,
+> > > > +};
+> > > > +
+> > > > +static char *luo_session_dname(struct dentry *dentry, char *buffer, int buflen)
+> > > > +{
+> > > > +	return dynamic_dname(buffer, buflen, "luo_session:%s",
+> > > > +			     dentry->d_name.name);
+> > > 
+> > > Use the luo_session:[%s] which is the canonical format for this
+> > > (ignoring historcal abberations).
+> > > 
+> > > > +}
+> > > > +
+> > > > +static const struct dentry_operations luo_session_dentry_operations = {
+> > > > +	.d_dname	= luo_session_dname,
+> > > > +};
+> > > > +
+> > > > +static int luo_session_init_fs_context(struct fs_context *fc)
+> > > > +{
+> > > > +	struct pseudo_fs_context *ctx;
+> > > > +
+> > > > +	ctx = init_pseudo(fc, LUO_SESSION_MAGIC);
+> > > 
+> > > I'd just call that LUO_FS_MAGIC.
+> > > 
+> > > > +	if (!ctx)
+> > > > +		return -ENOMEM;
+> > > > +
+> > > > +	fc->s_iflags |= SB_I_NOEXEC;
+> > > > +	fc->s_iflags |= SB_I_NODEV;
+> > > 
+> > >         ctx->s_d_flags |= DCACHE_DONTCACHE;
+> > > 
+> > > static const struct super_operations luo_session_sops = {
+> > >         .drop_inode     = inode_just_drop,
+> > >         .statfs         = simple_statfs,
+> > > };
+> > > 
+> > > 
+> > > > +	ctx->dops = &luo_session_dentry_operations;
+> > > 
+> > >         ctx->ops = &luo_session_sops;
+> > > 
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > +static struct file_system_type luo_session_fs_type = {
+> > > > +	.name = "luo_session",
+> > > > +	.init_fs_context = luo_session_init_fs_context,
+> > > > +	.kill_sb = kill_anon_super,
+> > > > +};
+> > > > +
+> > > >  /* Create a "struct file" for session */
+> > > >  static int luo_session_getfile(struct luo_session *session, struct file **filep)
+> > > 
+> > > Luo is going full anti-pattern here. This whole return via a function
+> > > argument completely messes up the later codepths. We don't do manual
+> > > get_unused_fd_flags() flags and then file in new code, and then fail
+> > > in-between:
+> > > 
+> > >         argp->fd = get_unused_fd_flags(O_CLOEXEC);
+> > >         if (argp->fd < 0)
+> > >                 return argp->fd;
+> > > 
+> > >         err = luo_session_create(argp->name, &file);
+> > >         if (err)
+> > >                 goto err_put_fd;
+> > > 
+> > >         err = luo_ucmd_respond(ucmd, sizeof(*argp));
+> > >         if (err)
+> > >                 goto err_put_file;
+> > > 
+> > >         fd_install(argp->fd, file);
+> > > 
+> > > Restructure the code so it just becomes:
+> > > 
+> > > struct file *luo_session_create(argp->name);
+> > > 
+> > > static int luo_ioctl_create_session(struct luo_ucmd *ucmd)
+> > > {
+> > >         struct liveupdate_ioctl_create_session *argp = ucmd->cmd;
+> > > 
+> > >         return FD_ADD(O_CLOEXEC, luo_session_create(argp->name));
+> > > }
+> > > 
+> > > and get rid of all this state and error handling. Please fix this.
+> > 
+> > We cannot do it this way because we must use copy_to_user() to return fd 
+> > via ioctl(), and since copy_to_user() may fail, we must do it prior to 
+> > fd_install().
+> > 
+> > Unless there is a specific VFS macro you'd prefer for this 
+> > delayed-install pattern, I do not see any other way to do this but 
+> > maintain the get_unused_fd_flags() -> copy_to_user() -> fd_install() to 
+> > prevent the fd being leaked into the process's table.
+> 
+> The usercopy happens in luo_ucmd_respond it's perfectly fine if that
+> fails. FD_ADD() handles all that. It reserves an fd, it opens the file
+> and if that somehow fails it cleans up both the preallocated fd and the
+> file (And if you need to do more stuff in between there's: FD_PREPARE()
+> + fd_publish()).
+> 
+> What I meant is:
+> 
+> 	static struct file *luo_session_open(struct luo_ucmd *ucmd)
+> 	{
+> 		struct liveupdate_ioctl_create_session *argp = ucmd->cmd;
+> 	
+> 		err = luo_ucmd_respond(ucmd, sizeof(*argp));
 
-This should be a review comment to be folded into that patch series.
+The fd is returned in 'argp->fd', not via ioctl() return value. so this 
+response won't contain the fd number that will be returned to usersapce.
 
-Best,
-Gary
+This is similar to how it is done in iommufd for example, see 
+
+iommufd_fault_alloc()
+	cmd->out_fault_fd = fdno;
+	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+	fd_install(fdno, fault->common.filep); 
+	return rc
+
+Pasha
 
