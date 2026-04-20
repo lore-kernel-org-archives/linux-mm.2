@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 319A2F36C2A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 06:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB2BF36C2A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 06:56:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72A7E6B00F9; Mon, 20 Apr 2026 02:55:11 -0400 (EDT)
+	id C83966B0005; Mon, 20 Apr 2026 02:56:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 702056B00FA; Mon, 20 Apr 2026 02:55:11 -0400 (EDT)
+	id C5AC86B0088; Mon, 20 Apr 2026 02:56:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6402D6B00FE; Mon, 20 Apr 2026 02:55:11 -0400 (EDT)
+	id B983F6B0089; Mon, 20 Apr 2026 02:56:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 533546B00F9
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 02:55:11 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0409E160909
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:55:10 +0000 (UTC)
-X-FDA: 84678022422.16.ACCC184
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2E00A80004
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:55:06 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=tn5ztGqB;
-	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AA0B76B0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 02:56:28 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 676181B8C44
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:56:28 +0000 (UTC)
+X-FDA: 84678025656.18.345985D
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 679652000E
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:56:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tlGk+B6c;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776668109;
+	s=arc-20220608; t=1776668186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4wwaB5GIadZhT3WNLdwXoaV7zc2xYRrQwirl3loMrXg=;
-	b=0kSGrXp/lBwHcS2VmyMu/R9ibEk33JEJYsOi/hYQ9Bsv64y0mVHe8o6a1rmLYYgTJ6ns6P
-	Ine7lvYVKQgbf/3YKDqbkA8BxG05+LgxfyKGvUm1D1Ur1GBGVp3IGSRwSkRbXmziG0qAwO
-	R5OyypmT9wM57vZO+e6s+7YWWa2YwFs=
+	bh=xGsb+8op9HfuZM90V1dqEvT2Pz/EwuZxxHDEbjQ1P60=;
+	b=sODxhWnhNCIhaJ43n/ub45ta1llZv5XGnTSlC54Q3piWlcbdr9GkoKJvBUB33pZAPvKAUs
+	uOGr0mYJjAjYxnkNAz5gVujZkhUVXw0ZMxEsPmcdaR585F2Bj350NAl4XpAa+dpTB4qmmF
+	ds63uMD8v643C1TwPq/X9/kwnNXoCNw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=tn5ztGqB;
-	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776668109; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tlGk+B6c;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776668186; a=rsa-sha256;
 	cv=none;
-	b=Kqdj+aco8eLU8icBxjQnUIt/Y2JukMaKujGQMoTLlj48u7yetx5zBEmo8ixpH8KaMl+ItT
-	2/0YTc27oDmtkGhXB67vPdMfmoYzr6h98zADdockETTJuFVD+1Lt6OQ9rjzdrZi/cAfj8b
-	lA2zCrse1L4ohgXuBAkGXa968u7hB9g=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776668103; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=4wwaB5GIadZhT3WNLdwXoaV7zc2xYRrQwirl3loMrXg=;
-	b=tn5ztGqBDQEQ5IfiUVEK2xVgZ/YCJHkN0qgkD+aM9kOI8AAXgXFNe0UQuTsR6cddpknrhwnxkGHeIkJHtuzdqOTzyhPcFTnGMmAdo9KM1uXCOVSZcmz6lSJQMld2IE4xZG7g0wkmMgsw5puxmQheM36PeOLpOQLTmIa8fUcE9zA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R651e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X1IKCmb_1776668101;
-Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1IKCmb_1776668101 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Apr 2026 14:55:02 +0800
-Message-ID: <b228baf2-0dcd-4135-bab9-04d979b6e617@linux.alibaba.com>
-Date: Mon, 20 Apr 2026 14:55:00 +0800
+	b=w0GJ8J853cxMsz4GakQvp8gKtzU+sxfpTkysCX7pJu3KP8/f4WL1SN1uw1w/vG1P3b8HKB
+	tAjN6GAccg9x6CbTATAkqDQ8Gmm5qJCMwYmbZuBcV3X8zmYfWbL/xEDR3Oyy8loxJtjTbp
+	e1EI/MJb5b0OuNLPAb58MxIjJ5BSmgc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776668184;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xGsb+8op9HfuZM90V1dqEvT2Pz/EwuZxxHDEbjQ1P60=;
+	b=tlGk+B6cD2wQoxeTxTQaIM9HgJG1/fOl+TD439S2eSzteQIBtVQoF/qt0Tj5ipd2lKSyoK
+	a2eSdPyMUV2erR1RW8e8FhTveArdfnfmsDUDnpn9TBMKphzzrr6xeUo9Gzw4+q5jECH65z
+	bKOrgBaU6HAeQpddApi0I5zgE6b3f1U=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: lance.yang@linux.dev,
+	luizcap@redhat.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	baolin.wang@linux.alibaba.com,
+	ryan.roberts@arm.com,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	dev.jain@arm.com,
+	baohua@kernel.org
+Subject: Re: [PATCH v3 02/10] mm: introduce pgtable_has_pmd_leaves()
+Date: Mon, 20 Apr 2026 14:55:56 +0800
+Message-Id: <20260420065556.74028-1-lance.yang@linux.dev>
+In-Reply-To: <8a0b6d67-121a-4ac8-a74b-737d52d8b7ac@kernel.org>
+References: <8a0b6d67-121a-4ac8-a74b-737d52d8b7ac@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.2 v3 04/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
- check in hugepage_pmd_enabled()
-To: Zi Yan <ziy@nvidia.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Song Liu <songliubraving@fb.com>
-Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260418024429.4055056-1-ziy@nvidia.com>
- <20260418024429.4055056-5-ziy@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260418024429.4055056-5-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hhwghd5y1aikk8mfrewosncspfe5wpes
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ujfza9gqbeqgchhakaaugiue7pyniwiq
+X-Rspamd-Queue-Id: 679652000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2E00A80004
-X-HE-Tag: 1776668106-506319
-X-HE-Meta: U2FsdGVkX1+FOf2NxSZbmNFGTlYlUgnyW7LUibex7u0Lzo3SXfE6aid+fTOvUhFNBrj6uHUufQOUPvj8dvvDqkfZ1aXzQv3Q0OmPAfwPZYjh8G+ZDNVVJlWrWxYmscuA5jOvMgn4LHynZDyRoCFisNzYdk/wVgcT8vsDjwDtUhf7qnw06RdE4OioC4s4qY1l0yuB1jFIvvh9Ea4asCRP3pA8z9OdEBksdwxZ3VkfWoJk9F4hiSTOAitqLZKBEjaX6v49BINqvWXTgH6RTz2lc9L6Uj7hyG8/7WOmKXgL0ouCIc1oU3/NDHXSgqqDRsT2YOmWaffZgRIMoa/Cm087o5u3DydY14O5US9kyNAymjn71TzZ9XgxT8HPbDVEY9O5uk9fdijBqZhE3MhiMHQoLqKeNEChazuNK+ZAQQ2X1CrUTeZA0a67Yc6PmzEBEQDCHllGLBgEst4u7tzGqcjh95tR2S/LLXq4PgyS1A2DROCna69WM/GrRkWvp2sNGKiq1ZWPsJQtxENrDqt1i8BhMoQmqsPYhgrNpCyxPP9VfH1XorlEAFTHYkOMI1+9SHmc1XJbrtB/bSG16/iP4qDhFZnsAR9aGHHwKEjrsaqvh56C33DIIZRUxxRumreTbtZ3humqWzf/mbEjkmVLHUfYPWA36B1G0qrd5OFX93dlEbY9FGiBSiyj6BNIapglq3pNk7lQSWnvhO8p9xHRdaspymD4Q7bgzeLdnL4VTuKEEtnAKNbIZVJ9v2xglQJEMYwo7SSi3sQ21XUAsyZ/obq0UlG+Fv55Ufh88g8uV6id5xqqnowoJeZWkoO2m+TrkEtrogbXav+zkA6S/0HuiW3iQDEM76Y0V5L1mKHTJ39wf1Au9w4D6XQSVhumFKPG2rzJ62tGiLhQvxCq0mww2ErBV+G6XqMLRMNy12pgZ42Wz3QTGbj/3mUacolHZJ+Bt6ZV3IV85M6DxkuVgArrXYt
- 47sdyaqX
- nodlyp/mXrGXeF/unHLZ8NHtWA/qhRjIf+JbgZ6zWdEIi62zNZhG7TKY+PZlyqK6szVFzO4boM33YdsYBYDO531rPPbHmpJiJebzFFW6nG4Ye9QLVtC1GRCdUTRExwIIQQaZTFv7b9GgudXRxerUm7FFxP9IXPsjbv+5fbaVnLPBLnCcyfLDScqPgrtvlxgpBnsiT7eZxqBhYL2rwU++HUfl63I3bjq5X5AOqTtooIfE+Wgi9svhd2A4LH6UlW5aLAyELKWy/4Tm5xwD/8k1WNcZnlq7fBT5O1nAw9isI4Bs1tOIOoeuLgJVNNbagaU3wJ3AhpVOb1N5jgGP24Uay1eS123VVP5gyYxNO
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776668186-257418
+X-HE-Meta: U2FsdGVkX1+bkRu78QNr0zztkviPlv/kW3H/amlhBePO2vivOFzdZdtaUaFu0COzhOWVrrPZfE0XVj0Dm7CkHXDu26/Xs2bJPDpjs+72DsBDW2mB9JKnThaEk+ZXCrtFUCY/kete1SnzN0SfBTa3/7c0snrBf/jd/RbFD4eu6YarrWoyKVL3CRaCJYYkWBpRaG8m0HEN7aVMOCQeuEOKEQjyeY86YqZ3PI8olkJ/SAWArfsdRnXjVLgTshyJEc0U6FPRSFe2NJI4bfO/VXNJ3immzWhIO2K4CNdsBxP9BBRLZSeD/hBP0r3fjHFyi3jMOrWH13J3wtkwWGpNXLcLnJxQC6OrxCp0Rit1pGZOYbj+0qCkQN0tY5dNUtpQlNxIFgI7oR2hbvZ0JyXRaklFhwNB8/TVj2OHt38aQcT0dudX9BGDJ1fSyZr4nj/vKRNsD1IyfZUGUCzA/PlTXAoNKWcGUCmTV/O/It7d3GMJIWBD1K8Do4pccVeJNe/7geo4aQSje92wqVc5GpDVh83e5epPh9DPokYf9nEZyUvBC/X358Ig/NXegK6xxbStFQGy4h8pTifia7hT8x2pQFrMpRTq5zvp+iVscIP17bcs/sZiG3kgpUQ+c+HyEyd6O2H7zS2phM7tA+GqHrJGpWM3TV+5yndiHdImrKRL+J2DXzs0CMrKcgKYR2XZqqAJL3UaxP7aLpMBWDpECrrFdHa/iX0jXUNyzGn0MEyBPIJeTu5clkkaFVX2dzMaGWqRGDZBbxdaBl58vRKr2Ag6CGVmijxv3BlOqcX/dE0JjOf2eQwtCHEKk/B7n2VRTpck8x2w3XAzUfjR9GcadXpuBEv6WHqFb3lOa+IEvFxpn+uumSE8IvPLK5HZLjoMfoGckfTi7HNvpahTcBpCPlbmrwiFFJ9Xa8zY1MJzl6dsUILvc5iRmCRulb5ET+eIrTk30lGUfrHvbc1UmJah7u2pqXZ
+ ZPVe1zCv
+ ZRrfDz1JGDndccUtajDEphXFwSAza13VIqm0i9XjOz28OTEHNWKDG+uAteQKFir7GokEU7jAev4ArmRuTc2omk5KZurT+5OR0G7LeFIZ2kXFmOn0nfHXlI4fF0xhGuI4h/ULt0S5f9aGFP2IBufnw6R1qB80ec7r5fM+n/CkwiLqY7OnCr8ZxnwredBV5JGNjKxlHHTeGFswR4q+hdKQCVG1EYhI6E6VH4PSEvmLojaVqttQga6KIJH9EqnJ/nPxnNJVy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,90 +100,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On Fri, Apr 17, 2026 at 11:57:54AM +0200, David Hildenbrand (Arm) wrote:
+>On 4/10/26 10:19, Lance Yang wrote:
+[...]
+>>>
+>>> #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
+>>> diff --git a/init/main.c b/init/main.c
+>>> index 1cb395dd94e4..07f2ddbf9677 100644
+>>> --- a/init/main.c
+>>> +++ b/init/main.c
+>>> @@ -1044,6 +1044,7 @@ void start_kernel(void)
+>>> 	print_kernel_cmdline(saved_command_line);
+>>> 	/* parameters may set static keys */
+>>> 	parse_early_param();
+>>> +	init_arch_has_pmd_leaves();
+>> 
+>> One more thought here: I don't see why we need boot-time caching.
+>> 
+>> has_transparent_hugepage() does *not* look expensive on the common
+>> archs. On x86, it is just a CPU feature check. MIPS is different, yes,
+>> only the first call there is more involved ...
+>> 
+>> But if we *really* want caching, couldn't we just do it lazily instead
+>> of adding another early boot init step?
+>> 
+>> Something like:
+>> 
+>> bool pgtable_has_pmd_leaves(void)
+>> {
+>> 	static int __arch_has_pmd_leaves = -1;
+>> 
+>> 	if (READ_ONCE(__arch_has_pmd_leaves) < 0)
+>> 		WRITE_ONCE(__arch_has_pmd_leaves, has_transparent_hugepage());
+>> 
+>> 	return READ_ONCE(__arch_has_pmd_leaves);
+>
+>Would look easier when just using two booleans: "has_pmd_leaves" and
+>"probed".
+>
+>I do like static keys, though. And wonder whether just putting that into
+>hugepage_init() would be sufficient?
 
-On 4/18/26 10:44 AM, Zi Yan wrote:
-> Remove READ_ONLY_THP_FOR_FS and khugepaged for file-backed pmd-sized
-> hugepages are enabled by the global transparent hugepage control.
-> khugepaged can still be enabled by per-size control for anon and shmem when
-> the global control is off.
-> 
-> Add shmem_hpage_pmd_enabled() stub for !CONFIG_SHMEM to remove
-> IS_ENABLED(SHMEM) in hugepage_pmd_enabled().
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->   include/linux/shmem_fs.h |  2 +-
->   mm/khugepaged.c          | 28 ++++++++++++++++------------
->   2 files changed, 17 insertions(+), 13 deletions(-)
-> 
-> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-> index 1a345142af7d..dff8fb6ddac0 100644
-> --- a/include/linux/shmem_fs.h
-> +++ b/include/linux/shmem_fs.h
-> @@ -127,7 +127,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
->   void shmem_truncate_range(struct inode *inode, loff_t start, uoff_t end);
->   int shmem_unuse(unsigned int type);
->   
-> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && defined(CONFIG_SHMEM)
->   unsigned long shmem_allowable_huge_orders(struct inode *inode,
->   				struct vm_area_struct *vma, pgoff_t index,
->   				loff_t write_end, bool shmem_huge_force);
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 1c0fdc81d276..718a2d06d1e6 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -406,18 +406,8 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
->   		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
->   }
->   
-> -static bool hugepage_pmd_enabled(void)
-> +static inline bool anon_hpage_pmd_enabled(void)
->   {
-> -	/*
-> -	 * We cover the anon, shmem and the file-backed case here; file-backed
-> -	 * hugepages, when configured in, are determined by the global control.
-> -	 * Anon pmd-sized hugepages are determined by the pmd-size control.
-> -	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
-> -	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
-> -	 */
-> -	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-> -	    hugepage_global_enabled())
-> -		return true;
->   	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
->   		return true;
->   	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
-> @@ -425,7 +415,21 @@ static bool hugepage_pmd_enabled(void)
->   	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
->   	    hugepage_global_enabled())
->   		return true;
-> -	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
-> +	return false;
-> +}
-> +
-> +static bool hugepage_pmd_enabled(void)
-> +{
-> +	/*
-> +	 * Anon, shmem and file-backed pmd-size hugepages are all determined by
-> +	 * the global control. If the global control is off, anon and shmem
-> +	 * pmd-sized hugepages are also determined by its per-size control.
-> +	 */
+Probably sufficient for the current callers, yes, since they are all
+THP-related :)
 
-Personally, I found the previous comments clearer to me. The statement 
-"Anon, shmem pmd-size hugepages are all determined by the global 
-control" seems somewhat confusing. For example, if 
-hugepage_global_enabled() returns true but the pmd-sized sub-control is 
-set to 'never', that means anon pmd-size hugepages are not allowed.
+But then the helper may return false simply because THP is not built,
+rather than because the CPU lacks PMD leaf support, which does not match
+its semantics very well.
 
-The code changes LGTM.
+To be clear, I like static keys too, as I suggested earlier ;)
 
-> +	if (hugepage_global_enabled())
-> +		return true;
-> +	if (anon_hpage_pmd_enabled())
-> +		return true;
-> +	if (shmem_hpage_pmd_enabled())
->   		return true;
->   	return false;
->   }
+Another boot-time init step that depends on specific init ordering seems
+a bit shaky to me... At the very least, we'd need to document that
+ordering very clearly.
 
+Cheers,
+Lance
 
