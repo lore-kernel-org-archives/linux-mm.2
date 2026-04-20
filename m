@@ -4,135 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43CEAF588C1
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:55:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23643F588C2
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:00:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D3766B00A1; Mon, 20 Apr 2026 08:55:47 -0400 (EDT)
+	id 88A526B0005; Mon, 20 Apr 2026 08:59:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 883A16B00AC; Mon, 20 Apr 2026 08:55:47 -0400 (EDT)
+	id 83C0C6B0089; Mon, 20 Apr 2026 08:59:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74BAD6B00BF; Mon, 20 Apr 2026 08:55:47 -0400 (EDT)
+	id 72A506B0098; Mon, 20 Apr 2026 08:59:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E9A36B00A1
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:55:47 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2019FBC109
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:55:47 +0000 (UTC)
-X-FDA: 84678931134.05.9E497B8
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 369D812000B
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:55:45 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E5fZL2OF;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776689745;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 629336B0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:59:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10726BB874
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:59:59 +0000 (UTC)
+X-FDA: 84678941718.24.DA9F918
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 012B840010
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:59:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MQoIeY4X;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776689997; a=rsa-sha256;
+	cv=none;
+	b=O3XHp180ZQQLFfcColz46XxGl1Rg8mKuyR102Vc/K2EHLUXNYmnCY/3nusGfq96LbhDFtA
+	DOkZgzOoQkZPZYH5n7KHZwPEmIye6uW8Ntf9Q2T657948/XLXzlsqxenRux0gjfvMkllzu
+	eeRWGfZ0trJAu4TSNmF2NX15emHLh1E=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MQoIeY4X;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776689997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MQDz4K1izp3M4WhTLorDD3Rkf0/nzmU6W3n3HppTCoM=;
-	b=SfvC5wqyeK8zoRTOp349WTISgggiJXLFygu8nLeEqPqQxs6FHmokurArEz5ozFTyua55ig
-	VXPeIgMTXVUFMt20dKD3tpeS62PW+GhRYzMVDHugYR8e33E0/A97vuN642xAmU/1oBknKn
-	EqpAQH+Kro3psRWaW+NjFrX0pvhUqos=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E5fZL2OF;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776689745; a=rsa-sha256;
-	cv=pass;
-	b=ZAwZ65ilUw25aKCPWpyWqcsSwGSTjvGaQlzGmeHGn+MqNS0wzfM9+I4dyw6VJYruxNX6LL
-	bYvsYCLK03SmsWdYMc3Z14eSZEhQpXnV7PHLQ71AFWOGIvsoT5BIRY4ys4lHRj3i/bOKHH
-	WcCMey5dZet3V80bJYEoOwyiGwqdiaI=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-794719afcd4so30526807b3.1
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 05:55:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776689744; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ei20Bv/7Uhwog/vUm/1SGjkonWtCzfpObv74mneokJgPAiOncj7bAbCj3uZRdZfQRs
-         fnpQukbiM2YwWOYwYqHEdq8c/9JDT8SI8RFAnWh9Z7yI6S9njVziBBxNvSdNreanzaZL
-         jZXhL2p7FA09Ps70U6Xdbtn7SI5mwpZtPPLc3+pvL/9ck7jsih3KqZFa00l3FikZfdbp
-         irQwJbxf6mp87vbQh9hAyVZWZHw5VvllnfbjgI7ODt453PVm2Sv7T6HLzSt1ivnrbYr4
-         REMRCx4W+/CJV59s8YdzVohYIjDgChjeUwfNsZPNXgNCYXKQVXF+dLyLUpD0FBmgER+A
-         +NLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MQDz4K1izp3M4WhTLorDD3Rkf0/nzmU6W3n3HppTCoM=;
-        fh=h0MbBxqa9KgpT3ccWDwpqD3AvOFCXg0bU7Wkxol1X1s=;
-        b=kb6etrrBS06MAfXNqeWsb3xvJFuaY85Z0t1ygVzB1kV5m0RxAW5WCAaQsRmEvx7YlZ
-         g/c12nBcfw6a8aY8vJsdDRT59jAHTIe5jBbr4QgdN89wCrUDzitpcYoQdC3ehT+sUCMp
-         1sBB09+b1FN7IEWsphS3YgB4jDPzHtYODmT+TBTHvvuuY5/lba9pSsx1yep3dC3YifIT
-         Y0eQ7Rf940gVgKdO40ijfuXZHqvL6fWilORCh12X9EZKR5PkyzXmMS4x7vY3mVVrShpM
-         x7IT4uyhNq4gwe0Y9Y6rUDKb/F7bwzec5MRuGgHH5x+Cc2Gv/+AQ5lw+lxEE3mq+dB60
-         8sKg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776689744; x=1777294544; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MQDz4K1izp3M4WhTLorDD3Rkf0/nzmU6W3n3HppTCoM=;
-        b=E5fZL2OFL7fW+EROqnnodyIyNj7KYoXqPKjyJhq4NMYXaDLvdsfFwdbanrOf7EmEnK
-         pX3ww9rl43tYbTaUeAO76Tt1deZg4+fS/57nFk3OyGBn+E7hAZeTYrny3VEggHiR4K9j
-         bAEf0YGsZNnLzkEM+EI3XevGSF8D3okko6n43yuyZQ2GuOKXGY/CQJ+RE/zGAeJOfQ7L
-         lI/0Dg3/ypoJYfjCXNcdsqUJHXAp5FR0VDgNd1BTx//JhIemPMQpwFr7UV1Y8YvqzXDz
-         wNx83niWUEdvmw32/BwdcVCUjG7QRJUDDRB2Q9yUmRJr3G2DRzqHcr1fS36XGlgDhVN4
-         ub8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776689744; x=1777294544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MQDz4K1izp3M4WhTLorDD3Rkf0/nzmU6W3n3HppTCoM=;
-        b=mdMDzQgEY+tNFFVzuQwg96rJgEFNApsum3IX8SHTbYo+fweuysffkusDCQxw/ZJwQR
-         DeubjHgR0sGGXopDywiUswjhzmi124TC/AqzPeOUSlHHevooNI3Wvokt4YysUF+NoI71
-         nZxlxfRLa2E/MapuqmIBtXbLV9LcM44ESDzOkUA/p3VSVcBCBq8tCEuXUE80bV0jpx2Z
-         1jTyyeM+89aN096zMlhtDTDEtrDmAATfGEo6iSJCfDiZF+gWfrn8EyNuFkMmCJ9z6t9C
-         YlDkYnp046J6/OqKsVQj7L9EeABC3Lp7fyKqBhGrNxkHk+tUK5WQWOkCRQLhiEvok/8B
-         zSvg==
-X-Forwarded-Encrypted: i=1; AFNElJ8zo/dXZN2jKvxxTqNPGwBq7uTUcLfPBFCtaetN/HilW8qO61SoH5wxEku13kYPPb6SIHkhhDvhDg==@kvack.org
-X-Gm-Message-State: AOJu0YzWCLAnf2U/1z3ge+at1UamIwgraLQ4noq0keR3Aw8GyF+0+43T
-	1GI42hgvwTm4sKJ1eb/mC7eOX0lhwDn/8IFlpOKtyprl1COLzIhORHT96iHHxYGWek+RdwfuU6B
-	ScE12qQNiXsW3t5AWn572TDJHJ2dhSXM=
-X-Gm-Gg: AeBDietZCP53dYNm81Emm9Fye0DpsNscfOsm4I5j4w53lxePgKDaMxzbNjkV/Hy+Do1
-	0BBzGcYlPIs5ZyVOCIa5Qi0qc/1bCfZR/IgRuph+OQS7lSXVYip82ouFUW6cB1hvcc+MbFNE+GU
-	WMDgl4F+9XmdPjNwlI505an4MAd/2M40zUJMiS1xHCRvhr6xicSDFpfsc5JYeFln5A6Z1CrmQrn
-	Q+5MEeZyZUGlRltrjKkb6R2lYY6PkpseCpHnh3GRh6I1Sk2N/t2k9kao6rRVvlpYv/ui6E0HFBK
-	bEZpRSkIneyAcPs=
-X-Received: by 2002:a05:690c:289:b0:7b8:3b51:c9b2 with SMTP id
- 00721157ae682-7b9ecf7571bmr132794027b3.23.1776689744164; Mon, 20 Apr 2026
- 05:55:44 -0700 (PDT)
+	bh=mOUWkybK3eiKfeEN3c1AmWJrSYfchS2TwUw3TqjAFDY=;
+	b=QzfmnE4esStQunkVwZsrLMPACWCIV/dv+oXQ8a9Q86E4tcHKWhIbVtUsLGqKkjkis3UPDS
+	J9nUrWEPzHEBhfU+7+oL544KS5J/r6QoznkXmPxhKaDW8BuuDNv8meA15ypiMQUP83IiP3
+	AduC20btLTdphwhQSzz20ZLUtw4JqYo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776689994;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mOUWkybK3eiKfeEN3c1AmWJrSYfchS2TwUw3TqjAFDY=;
+	b=MQoIeY4X5Tdero87dcxHKdE+OYa7VsCpsSJjLcOM1TCiKHbDh2FyVtVy84CraYpnnMGluW
+	ZfgNtlHxHkCKuP9jHjbWOg4ofUkXfWnsh0dP28SEBEzGOYxol1VVySbGKw1K914r6bLOAU
+	OF1M4yVsHuKD6orXWNTNGxPdZWj6LnE=
+From: Usama Arif <usama.arif@linux.dev>
+To: Nico Pache <npache@redhat.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	anshuman.khandual@arm.com,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	byungchul@sk.com,
+	catalin.marinas@arm.com,
+	cl@gentwo.org,
+	corbet@lwn.net,
+	dave.hansen@linux.intel.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	jack@suse.cz,
+	jackmanb@google.com,
+	jannh@google.com,
+	jglisse@google.com,
+	joshua.hahnjy@gmail.com,
+	kas@kernel.org,
+	lance.yang@linux.dev,
+	Liam.Howlett@oracle.com,
+	ljs@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com,
+	mhiramat@kernel.org,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	pfalcato@suse.de,
+	rakie.kim@sk.com,
+	raquini@redhat.com,
+	rdunlap@infradead.org,
+	richard.weiyang@gmail.com,
+	rientjes@google.com,
+	rostedt@goodmis.org,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shivankg@amd.com,
+	sunnanyong@huawei.com,
+	surenb@google.com,
+	thomas.hellstrom@linux.intel.com,
+	tiwai@suse.de,
+	usamaarif642@gmail.com,
+	vbabka@suse.cz,
+	vishal.moola@gmail.com,
+	wangkefeng.wang@huawei.com,
+	will@kernel.org,
+	willy@infradead.org,
+	yang@os.amperecomputing.com,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	zokeefe@google.com
+Subject: Re: [PATCH 7.2 v16 01/13] mm/khugepaged: generalize hugepage_vma_revalidate for mTHP support
+Date: Mon, 20 Apr 2026 05:59:42 -0700
+Message-ID: <20260420125943.3443828-1-usama.arif@linux.dev>
+In-Reply-To: <20260419185750.260784-2-npache@redhat.com>
+References: 
 MIME-Version: 1.0
-References: <20260419144225.2875654-1-ekffu200098@gmail.com> <aeXMZzb_zECfEayR@kernel.org>
-In-Reply-To: <aeXMZzb_zECfEayR@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Mon, 20 Apr 2026 21:55:32 +0900
-X-Gm-Features: AQROBzB1tVXHHOLPdJ_CWIQhP3lrfUl7ID8IyuEaGjHJyd0xcaXhnBb-DShBw_I
-Message-ID: <CABFDxMHOSWTnvXNLy6crt-x=-Mt7VjU5XMo3Z17+zfkkeO5KRw@mail.gmail.com>
-Subject: Re: [PATCH] mm/sparse: remove unnecessary NULL check before
- allocating mem_section
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: q8oqtf9dnb75xbuhxn8tcymojrrwnefd
-X-Rspamd-Queue-Id: 369D812000B
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 012B840010
+X-Rspamd-Server: rspam12
+X-Stat-Signature: p4r8jdtpeuq6jiguyz3ucsa7narctrqz
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776689745-96276
-X-HE-Meta: U2FsdGVkX199RS8HLrYNXfmPfHLVru84ozJuDZqQjpZ5NLxpIWSrpaDaulQg6IVwNEpm0qSTFTIzhsHqQnW2Mar5URR/oPGD0M+vxRmuidOGZZ7krBqC4Hescg9aNM1+1st3tIJNNQQAdluC2KLyF2Ilw/0JuaB+4y2k0l2wOMze18vMILUY7krCtA3eRlNJfcOwif/fKm3i/OuN4qkRsl4B6on2mIthBR5h0w51YCYpIgVQCAfz4h1eJITHyUSMQ1q4u2NZY85PFrV+an6un/FQIDTie/7GHMqzZnENI/ZR08aIhKw1Q9FQISl6gaOil8akmHocgvGtnA1Pqdna5eyj28kPuIYlwRikqEGaWCyFnqGU/vgEYG5rplz5OZC2L239Vloz/iAqv5f5fROACxfjpc2Y88J26AkW6FXDguDLiulXPhkNg+iFBaD/Q7FSBxM+X90LhHOuuUMV8/jEUKSavNeI9KEDVT0mfKSQda89MLiCTw2SLNP6ybtU4CgnXxmj4Za86QOzWziQL3QFzWsPbZMUnbRTInKF4WYjNs9Tx6Vk3CZcX3SQ0JkoddeilIWDROsj2mLjREH5t3I1FYGvPjMoLNi5slPkRs3wYuJvxP1Z/U5012JyhFjiGUdiy24bEAgegsXuOrpQCRmlsfxFokWQTikcvYdrF9YMlnayUlMN9sn3CSmwPM+hbJb/diO195sOM9QJS05H1NVHyAq6yxYU9+s1mxHSP8k+PGxau62zqkQgCYWixAGvrhQPoDsyxEqrJKHfnfrRg84QQF0lo1/a6Px0/bcdJg8m0HCA+oEz5jkGrWDZXB1Kv4Uw7lD8UvTD6UpbI4Q+5VMhfXDxVrjP7/MEJOD2Nb/yUkAY8FpS/vKVgwQPs6LXyRHuvTDotH5W0CNU0286ivyMnCkBVZbSpo9lXTszKjEdV/PY+caE6cnD59WdN3N3Q+x+unPQ4Mg37wWfdUeavES
- UkoEOEHD
- KdH1W/ZkUJdyMBD8h7KE0/hEBepeWaxiNpPZSVOuxRmy4jgM4I5X+BYlmoxwLG56EjVXlIisuaq64mnbbkTME0t2eujsPHqJhruS4OffRiZ2oRc8NkbXQL4grYEbSYEG9spQHr7VnX72Jyvz83WT3a7aKgG+OKVF8eGc8SCWhp7UvhWl3rydFvEs3ZFqt+zIPIjZIJmBAogKbW6Aw34zlYITJhJO4Al2dwGcdNt0l9GN1xCmdtqdTXz2dRfItogFyhjU3aL87QdWjxWaMc3aU9Y6o7ez3kSzDS4+W+mh7Zs7/hpGGZ4cNkoTVT6MDVwx/rfYiH30veGE9i9+qNQ5lSiYBiNpNZatWQbqmJWL1yy8JFG+bFYeCygL7ltmq1gnYZOf8wsFI7zBBj/eBD125cPOw4ZnsqSiJJcSrjpaw5UklsWQTzHjbzVGE71lGJjT1T742QcxChqdNEvdDuLrNth+6IOWNMIf6jn50SQeqkhSNUIPojms069F+uQ==
+X-HE-Tag: 1776689996-121107
+X-HE-Meta: U2FsdGVkX192HqZgKGH1dCo6InebCb7QFyRAD1XToc+s1ilSFO+FprcpeK1WHfMNd6euSvtOpwP3N7N/FE9NTaQD7e7pW2nAg33eI2oj60/uzYTuZBp9dLBlQPvHb4/GRSVXzD1Zu/3DlOZpBwa5iOnwQxlH6taa7HNjHHJx3kX9FXvJfoFd1mAXWUBBEVui2oohf2lt+HfNTvZNTE5JaHugHVd52ybMIKO8yGqfi6fpPMMDYuPhhyD1v88Z9jMephKmKSxVzzN5hR/D0kIYQJCDY33Kiug7J99tL/X5yQ85nhFR7voEhyNETlcwJfGASuFVsIK4VH9Texqfju8law8RH4ef8zoCDr8ZJlGT5qyOeoeueSIMqBMe4/4YaajKAkui9PjkuhkVsK+5nZkcO0go3x4CgZL2+N2DK3R/bwKFcLz9nzm+5KA9vDx4xtpeKp97PjliHNgAC5nKeE1SO5hFgdNYocMJrsbfwQdanjNwxvggW6B4Rml3FHt0IWD/y4ylRU1E11XcMDq1exwiAXGxkWih+CkidRmhYhNNpT0kjK6ggwEOyPBgXrL8dLc3/NIUS3McVzjn0AKzvsUBjolVcvRlUseZYRD83Y/j3ZYviXfTC/+Xl7+xy0RqvpfghZ4BB15Zku0M9HSqLjp3HJHVPQ9EjkYrr2OSsfcFtolZE93+5qxKnsWnz6b8LKe5B+BS1WSTcsts85X04sDaRK5ZxM709qSeKRhThNe8XdUakB8ixP6n7VSqrMW5uPYTWDrY4s7i5jM4u5gh/yuUV0rsrzFVipfHVXi+1OvR0bqeIlyX0zrPvUzUPahpvwhnyJKQq1ahKOidSbMEmljFYOe0XZy1q05nbXVe580NBw9Em+9a0gWh4z2y25Su3WsitwU4k86dvQwMxBG2A9X7oee/1YkUZR38kIk3SyydX6yftey9sZd+vaHB+/Qx87lV/aiCTcBC+dSi1mgc6Oa
+ 6okIJEKd
+ GKYJC4/zrhW+aCjEFRU1u/xr3OtVZ40o7fCBZm2KSBFUlxtu1z1txsh8hn6Vu2YST3C4aUX3+xGc1NJMxAjHVD55Ho4BRWDMONXI8qhl1PQRpJ6Te+sttLC006CmirTo7ukssTHpOJWxYoqgmEAm1C6FoxjByQn/H+mPWjViqxyBeEt4nQO8PIugvOUvLx8DFKU1SGMq3pZGDjmWJN1zUUXlNTjWOtTe5bB+mWWu79wGWLVfjt3VeXG9BPwIsfCbQqJoFxt4OxreiAnfb9vzyAVCjo9GhHYBA84T66YfZE0uSvmYsbgYCh3mOn9G6LNFxvhRISpuCiPv9jAjbcMIvEbHPylCnuf2sw93bK8l9i2MoXKq3RF68J2t76kcP/QAGbKxz94yaNKC15x4sXDFmcRY+fmcUTvcoYw3rtEUYe2Zo89sTbZ5+mUUS4mTMU3r6Kq1CSg24Z4kdqxbVi+eKZo1Eksw+9OqGTEDsYvIgP55YR6w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,81 +142,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
+On Sun, 19 Apr 2026 12:57:38 -0600 Nico Pache <npache@redhat.com> wrote:
 
-On Mon, Apr 20, 2026 at 3:49=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> Hi,
->
-> On Sun, Apr 19, 2026 at 11:42:25PM +0900, Sang-Heon Jeon wrote:
-> > Commit 850ed20539a4 ("mm: move array mem_section init code out
-> > of memory_present()") moved mem_section allocation logic
-> > into memblocks_present().
-> >
-> > Before that move, memory_present() could be called multiple times, so
-> > unlikely() matched the common case, where most calls found mem_section
-> > already allocated.
-> >
-> > After that move, memblocks_present() is called exactly once from
-> > sparse_init(). Under CONFIG_SPARSEMEM_EXTREME, mem_section is always
-> > NULL when it is called.
-> >
-> > So remove unnecessary NULL check before allocating mem_section. No
-> > functional change.
-> >
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
->
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->
-> > ---
-> > Hello,
-> >
-> > While looking into boot information, I found a minor enhancement point.
-> > If I misunderstood anything, please feel free to let me know.
->
-> I would say it's more a cleanup than enhancement :)
+> For khugepaged to support different mTHP orders, we must generalize this
+> to check if the PMD is not shared by another VMA and that the order is
+> enabled.
+> 
+> No functional change in this patch. Also correct a comment about the
+> functionality of the revalidation and fix a double space issues.
+> 
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Nico Pache <npache@redhat.com>
+> ---
+>  mm/khugepaged.c | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
+> 
 
-You're right. Thanks for your kind review. That's my poor english :-(
-
-> > Thank you for taking valuable time to review this work.
-> >
-> > Best Regards,
-> > Sang-Heon Jeon
-> > ---
-> >  mm/sparse.c | 10 ++++------
-> >  1 file changed, 4 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/mm/sparse.c b/mm/sparse.c
-> > index effdac6b0ab1..e13f9f5fa090 100644
-> > --- a/mm/sparse.c
-> > +++ b/mm/sparse.c
-> > @@ -201,13 +201,11 @@ static void __init memblocks_present(void)
-> >       int i, nid;
-> >
-> >  #ifdef CONFIG_SPARSEMEM_EXTREME
-> > -     if (unlikely(!mem_section)) {
-> > -             unsigned long size, align;
-> > +     unsigned long size, align;
-> >
-> > -             size =3D sizeof(struct mem_section *) * NR_SECTION_ROOTS;
-> > -             align =3D 1 << (INTERNODE_CACHE_SHIFT);
-> > -             mem_section =3D memblock_alloc_or_panic(size, align);
-> > -     }
-> > +     size =3D sizeof(struct mem_section *) * NR_SECTION_ROOTS;
-> > +     align =3D 1 << (INTERNODE_CACHE_SHIFT);
-> > +     mem_section =3D memblock_alloc_or_panic(size, align);
-> >  #endif
-> >
-> >       for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, &nid)
-> > --
-> > 2.43.0
-> >
->
-> --
-> Sincerely yours,
-> Mike.
-
-Best Regards,
-Sang-Heon Jeon
+Acked-by: Usama Arif <usama.arif@linux.dev>
 
