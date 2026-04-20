@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 315DBF588C5
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:21:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0273AF588C5
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:21:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74A806B00A3; Mon, 20 Apr 2026 09:21:31 -0400 (EDT)
+	id 6D5DC6B00A4; Mon, 20 Apr 2026 09:21:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FC1E6B00A4; Mon, 20 Apr 2026 09:21:31 -0400 (EDT)
+	id 6B4676B00A5; Mon, 20 Apr 2026 09:21:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 611526B00A5; Mon, 20 Apr 2026 09:21:31 -0400 (EDT)
+	id 5C4276B00A6; Mon, 20 Apr 2026 09:21:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EAD66B00A3
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:21:31 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0677E1B8EA8
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:21:31 +0000 (UTC)
-X-FDA: 84678995982.20.AC24B86
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 624A8160008
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:21:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aUSKQCb5;
-	spf=pass (imf08.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B7636B00A4
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:21:56 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 03EF71409B2
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:21:55 +0000 (UTC)
+X-FDA: 84678997032.04.203A531
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4286220002
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:21:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of 3cSjmaQkbALAiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3cSjmaQkbALAiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776691289;
+	s=arc-20220608; t=1776691314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P0HK7frwjARxKhVL8GqaPdpDlZEZUSrYdIdZd63/Aus=;
-	b=PvTfDoWktqxfZBs+fwTOI3gbKiHjcndRQM07tBh3cu7pPZjdk54gZ1D+wXXZcGVmZuBxg3
-	MfYwQXkXMZvTOrGnSThlBcpF3quFvcjItjAZBY2OGrI96czCqeG/uLWBr4oEEbVegiGo+X
-	/UfeMaCTPQtv9qsrnkbHKgpQZS3i9ko=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aUSKQCb5;
-	spf=pass (imf08.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776691289; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=wiply+2rM/RuN/py8Z9atYEesIGd22oqoTFY+NQwIi4=;
+	b=nRnSUWOKM6lkaa4aLt9hJnzPRyXuYGT9j/0jIgOeDJxybqTJHOMuFkhnXIE9CESMKOA2FM
+	huTZyqYvmJdo+nP2p4ryvzvKguRs/jy6kNjPn2kTcG5YRaB65SHFv615PSPtJeBmtZMCtJ
+	joBJ1zUzxsEA/BuBER1k3JB3kXmyZZU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776691314; a=rsa-sha256;
 	cv=none;
-	b=Z6MtNjlggbOBk5Ns8SEKgoe/hm1spSoU/IXuiC6CJ62R8/umLH0Vz8oaSQVaFDknnY3tAm
-	QxSpY+fzKm3FFjNLPTIpEz270/HJFohxMY6k3giBlDDG4vuu+seoySrH+rkbBjOUvatsm9
-	jdw9YkvJylmNzie7PCFOI2KJ8Fe9zuk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BE3D16012B;
-	Mon, 20 Apr 2026 13:21:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C624CC19425;
-	Mon, 20 Apr 2026 13:21:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691288;
-	bh=P0HK7frwjARxKhVL8GqaPdpDlZEZUSrYdIdZd63/Aus=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aUSKQCb5lzYnc5y9bqT1KdajP7aocbNePFf2Rubb/EhLLP/zYRibCoKU1Z+URFKbr
-	 yYK8uAtOa2Zfsc0aIqb6mS9Ing7BVgUtdlNoIWhnT08JPiJ+FKM5vrcOGR3q0bzc6h
-	 W4hCSFm1rClWBOD0hWSUED19kmU5WgJZhN19/8QPxCisPJihlWfrqs82r42Spw3Rs2
-	 QOmizNrn/o/inREltCzUBPypHsUhPghM+PHkINe7bZcb4nSc3aB9oSoRzsAV2gr9D8
-	 wTWQ1u4HnMgXuDlF5HKEwC/gFzKXDv95AK+rrDuXiSxoqxuWn7JhC7+BfHSwFrmlW0
-	 py+WGwfZLMVgQ==
-From: Sasha Levin <sashal@kernel.org>
-To: Heiko Stuebner <heiko@sntech.de>
-Cc: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org,
-	linux-mm@kvack.org,
-	Oleg Nesterov <oleg@redhat.com>,
-	Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 6.12.y] kernel: be more careful about dup_mmap() failures and uprobe registering
-Date: Mon, 20 Apr 2026 09:21:09 -0400
-Message-ID: <20260420-stable-reply-dup-mmap-uprobe-6-12@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260415180623.199818-1-heiko@sntech.de>
-References: <20260415180623.199818-1-heiko@sntech.de>
+	b=q6+X1YOvfLEQyRVv/Mcxt9zk5V3OpjkEy6hAMRrucWTqRUvzILoz2gEzQ1xlfkPC+zH4YR
+	1l2ly3QHCCUHwHf7vmsWzwaUpRjhvaLRFEDpw/XLswHc7CiFgUW/n9zm5ludHF2i9oBnM5
+	4pY3cZadEdg+CVCDqqdeNRrfhfvZ6QY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of 3cSjmaQkbALAiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.72 as permitted sender) smtp.mailfrom=3cSjmaQkbALAiopaQbbUhQffYT.WeeWbUkiUhSedjUdj.Sec@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-6946e873672so2518471eaf.0
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:21:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776691313; x=1777296113;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wiply+2rM/RuN/py8Z9atYEesIGd22oqoTFY+NQwIi4=;
+        b=poXjqpm99B2JY/F2J1QygJDxiYmDCm8IoHQeVflm9A/G0s3tvg0LgIm+km7iKhV+LZ
+         lRanOdiqjBsmdObgLiA0ZRO8mPHKaSybro1EUbpVKFb5OsTFxFgGP88mUm0G23rb7wCd
+         1/5fBlK5ClsNVlbFHfIuukDuAaV2uiosLd6X0WLt8zNnEXGSVWgshBaZ7cfBNtjUMPoP
+         f1mYdNez5VDsTD/4Gko66+Fe7VYFkWehsMjDoYhCWd9jMx6nGuXawNgnx89bcv5T7JFh
+         vlQzSyZHvDktIrJ7fhRMm6m1vox3ZBAstl6Cu1rnkNV4tQRWaMn1AHcOK8+gX06EKJB6
+         nd0A==
+X-Forwarded-Encrypted: i=1; AFNElJ8Su5S0AenFFZSgVVxLVOWjs4fLxYxzWdrBEVOSqzbfRyJlU+u05V1JyAysnIVmcUFORNALNS7BvA==@kvack.org
+X-Gm-Message-State: AOJu0YyAvoCIj/b1ouNuETEAlsET8sylNjfLY91h1RJ2TLvV3vpmhZUv
+	yYFFBw80gsrkjNmNQGRhBm76x6loS695nx6qEpA6A9Q1gX2+oHgRFUlb84WmgvDYtJXUz75cn1G
+	hC2O05GwR0y5zDASRpDvaPOlCn0KfuSdwx9Qv+8/fp70Q79SXlfzAjVVpttI=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 624A8160008
-X-Stat-Signature: 3tu6qbg8s3s99tyhyioarjqqk8qiguaq
+X-Received: by 2002:a05:6820:4cc7:b0:67e:16b4:aa13 with SMTP id
+ 006d021491bc7-69462f2ee3cmr7688964eaf.58.1776691313329; Mon, 20 Apr 2026
+ 06:21:53 -0700 (PDT)
+Date: Mon, 20 Apr 2026 06:21:53 -0700
+In-Reply-To: <111dabd0-56ed-4a55-bdd5-fd1ed035bc5b@h-partners.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e62871.a00a0220.17a17.0004.GAE@google.com>
+Subject: [syzbot ci] Re: mm: improve folio refcount scalability
+From: syzbot ci <syzbot+cice493d3fc69ae0f8@syzkaller.appspotmail.com>
+To: gorbunov.ivan@h-partners.com, akpm@linux-foundation.org, 
+	apopple@nvidia.com, artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, gladyshev.ilya1@h-partners.com, harry.yoo@oracle.com, 
+	kirill@shutemov.name, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com, 
+	muchun.song@linux.dev, rppt@kernel.org, surenb@google.com, 
+	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
+	torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org, 
+	yuzhao@google.com, ziy@nvidia.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: c1c1osfnuhqytf1kwhtfk11syb7ganrf
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4286220002
 X-Rspam-User: 
-X-HE-Tag: 1776691289-944064
-X-HE-Meta: U2FsdGVkX1/zKvNMdgWUbvxWIfw7e6sEl3nkX9ROn7seeNbt0hJ8uWYhdf4Hjy83izxfyEYICIHO8jWqXYXNQkIC0LsRXtNYBYMtJjTcGc0/bcqdFiC6cSjwa68Twye8zRsg0Z11O6yA4lZyltV6a16r7u8tr4xY+uBPp5Hb6slacal2JyvaTVtwOWI6QF+87sCIncPCpU7LUUpjHkZr3gsTuc62X0YBiUbzu2w49C1NcUFfo5SppxgRBqYECdc3HOH3ZGZlH7XxmE4hM0aWCvjohnsIE8N9o2u/WJJ4s/5KpomXstOShk1Y0HrdoEPSv17YiT39nx6V4qckqT3RKtdYS4rIUvbPKpmO+ubQg2Gw1yXZu9c62izjMqRe3JgCe4v2QuPcEdrZXdeNZ6GbbJQ8aAgsNizPkHGj4HkCEagFkqYfgSvEhKTyJNmEYCIai6aXxtH46vWV1ie3TDV8Xs8JCMcbQBPU/0XurvIcQnOMdge/INhhoPVZfj96b5tyFI9RDVt9OWm/lpyMEHPdUm5zxPPDzk/eygAcEyUHQBwYpP1nFlc5AxZLE/lW0EkTS0CaAhrMlwT1kprV3mcYo6FY1JY21oerDCTLgVKbJ6Ry/9+AjDeFvTZsqMuEBbKndlq2U4YvehdOHz3jUQIwt7/UVYzwdyGB7OziEMGdAnJ6RsUvQAjcTmJNS5sX5r6HmW/IvweXoihQPPZtNTBsjg3tv99stKHi8sa7PQtxMFcLlIMRwhLta9ZXmMeniOk8tgXWiBAc6w54TQ68j/5gfgQYqa1JGMTUOhQ6kmj0LGm5ncK/VoZuxpe1DPpu51IRT/Z/veriNfWa7EdNk6nOgS3hE3idWieX7ug0u50xjzNb0enobSaNcYkwHPd/lE/ugRRlLgvHrlc4autE+zf8Bf284xLuw7uv/8D6h+1R0bQtZGnbI0Wsf0R/QuL1P4FcufMg/Lgz/LLea/Vsk5t
- tzT1Bo1u
- bOOqIXo0/6uMSRvBt16VSXIYQJXqEwTkNEP1oY/I0KUzLzd4/Hh375fdFe0RHH/gu8rOzG3xrZQQezmKHYlj7ryVKaXNCsiWYTnaSEtGP0XP50V+Vova/L64M9AmUKhaeJrC7loZNo1zKK2Hy1C5mZM4qR+81b7bGEgpwnWtfs0f/1nTG8fnMPiz8+ZuJ0VPzUCtF2eEHDS9K7EM1+oxAaxr7jXnkSPhwEGM5tqkvXgvMCm3WJODMZcn2K9bAU6qVzQkK
+X-HE-Tag: 1776691314-608218
+X-HE-Meta: U2FsdGVkX18casuUpppOaCkVaMvYdXDQyJLPvR0R7dAlaZDksEa1Oc/HkEQZ0UBSTIi2QZ5KFwPa+H+Qy09+yXTC7ACJq5TI25QPFZpN1mLdmoPcIyChaSofDKqM+COLoPyGtIfDDb2LU7dcplRKM29YYIKGajT7iMV14ZduVhYeq+VeCACAC6a5AXbWM6FfkleUywJR12udfks1XLVcV+nmJlLnHs3w66gsjLYWnUwsttlJ/jurD8SylK0k4WxFA7xJrKGW3fxGLEG0OxqMXhACvybuTHaQYNrYGaCFOFcbkGlgPd4XP2ND0URRjqsZDo1wGE7m/jqh2idDTLf2/wqBiomP4xeLGrD7W145QjSZR1hUrfxMf17IUZzcWIpg62S4YIyaLHz5pgsr8eHhove2GbmTOMExnx/BBNyn4mWloziM6Ig1IJh8Xx482S7cnXqSswu0Ot6LWQP31UcXo4lDFgV4SqZYRq1Q7000kiY6CtiuTBtC8VwxhAutuoJoI88uIIMh5G/rKo8xY0Qi4fvrXfUpYqNwcSU/bVD0OAiIZhJCxaDKHBuPBNRXaSaI03Sx/IpzJxlx0N2tV8W5OATY2P3WtpdHKeKNtrakTB6gH7jBO6ErYdqL5mSVH++jE98EHf8h6ChkdJgRi85n1kFgaSCMM/KkGnYwa/e7yryzc2TpDmZ9+GyPBxRhI5CIYFxIwPb4E4bDZY2haaWOx5j2CsIImy4Z6+mHuBIsW/88DL9PtB2GYgu4B8NqSvn5o7hCkhSRv2yTpnboVoMHHdhGtq1aAxHHz/Zxsh4naffcMYmuvVRw0o3uPR9kQVP94Cqk4kVhk+V5sdYEiCaPlf3IS8ho7I7kTmfJFLcaU/HhtDPRKtRLWF5MuzOY3a3gxvQNlLJuPCKQNqhMK/014BfnD2YhF6oZlQMEXWrXzv8croXacQ95NsvCzGfrx0wdk7ZW7Gzua4Bew+hDBVD
+ 9WL8pRL+
+ njtkzdk0ysRk3iT0CIBB/orRGqYQlF4NiH/Y9ZckGsDpIRhtwxJef2vJj9327oUyCNO0ZW1qg2+zHcROaIEJePIs771/9vQ6RFFo5PirrLkaIH1EqWntx4iBHSyPYWSMHKRsGwFboo4Qi95L3EomGXTQu3WKbQlwuGczuHKYgYOJltPIoXJndB0hxdNyEo/TnLVbSzefeKO0BdDWzIukH9Ezbn6hVtCgkAIfLhUO/c4gWL3XoVA1lETR4ViRlzTMRtLElullKjZnXpKhyqcRuuvm1AmsWylKP88F1E88jJtVOVBRczYp9VaI1H49dJp/+7edL2E1HsYPWWtbEmSipKFNEOzJivW956Q00sC5BiACY/7Oajvz/U6Y0utGltcQTHuj0WSFFgukYax0spFvK7MbWKphfroz+9jO9MN0SZN+4h1ylLpyeIpw6eXkbHre1Wl/1aJ+hhrkGqJqSFqjyg3Bhj9Lw6W8R5vKQqiW31BPmGAtNbr0Wmd7RrDpFwkykscplcw2jPJC13PbtDN9K70QLHuYUEN9Vk3kswddrtcoQmpV3nx4Ze503TYaK9jHd6RYTO47qiHE4AZn3JUbrOC7Lg/K7YNO5b/pE4Ur9IyrZzsE5dthQnAo1R4R2BIkGHZH8c+pdCWhCcN863ODdkJuhGfZ9S9t7WgV1LkZ+h0sfsXFdNy+ILTlUKAtHZxFn1mRIc+Kl2Owh4BMQXS6TaRqSDtQOtAwA/UXa/ZpC+Y80189jRw6j/zh0UN2hQzh9kjXSGAzJX87Dz60LIczBc3HeZ4UY1VYh6V2r+Y//cCMJTMp6SWEPFoYeM5zvz2PdxAz2145bQk8IrnA+qsxZqINmoDIwWeFbfvQZK7Y0JouFE/isKDfXwenE888pN3BPfKQoWgniRsRkXxCjpsi068tLWgpuZmCLVv/c/gnNETgyAKIyFWEX7WizDpQMpe+kOS9ymbOuMEKqu9++o34TkBmam+Su
+ idh3hxPQ
+ fF77++rnAIMBp2cVjc16HQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,13 +104,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026, Heiko Stuebner wrote:
-> Backport of 64c37e134b12 ("kernel: be more careful about dup_mmap()
-> failures and uprobe registering") to 6.12.y.
+syzbot ci has tested the suggested fix patch on top of the following series:
 
-Queued for 6.12, thanks.
+[v2] mm: improve folio refcount scalability
+https://lore.kernel.org/all/cover.1776350895.git.gorbunov.ivan@h-partners.com
 
---
-Thanks,
-Sasha
+Patch: https://ci.syzbot.org/jobs/1f75dd6a-7a6f-4420-ae4b-67a071622e07/patch
+
+The patch testing request could not be completed:
+Testing failed due to an infrastructure error.
+Testing results:
+* [build 0] Build Patched: error
+
+Full report is available here:
+https://ci.syzbot.org/session/0e12b11a-0902-43fb-b549-6c0cc5ae45eb
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
