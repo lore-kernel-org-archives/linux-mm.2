@@ -4,105 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5F7EF588C2
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:17:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 315DBF588C5
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:21:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FC576B009E; Mon, 20 Apr 2026 09:17:38 -0400 (EDT)
+	id 74A806B00A3; Mon, 20 Apr 2026 09:21:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3BF6B00A4; Mon, 20 Apr 2026 09:17:38 -0400 (EDT)
+	id 6FC1E6B00A4; Mon, 20 Apr 2026 09:21:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E98D6B00A5; Mon, 20 Apr 2026 09:17:38 -0400 (EDT)
+	id 611526B00A5; Mon, 20 Apr 2026 09:21:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DCE96B009E
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:17:38 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CB951160A5C
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:17:37 +0000 (UTC)
-X-FDA: 84678986154.01.BFACEBC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E2326C0007
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:17:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xwydb+Mj;
-	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EAD66B00A3
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:21:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0677E1B8EA8
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:21:31 +0000 (UTC)
+X-FDA: 84678995982.20.AC24B86
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 624A8160008
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:21:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aUSKQCb5;
+	spf=pass (imf08.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776691056;
+	s=arc-20220608; t=1776691289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MFIBw9Ac3UOIXz9JbH70Q6KtsllSHeUJyYBID+nfIPk=;
-	b=KG6dIfzVJo+da20+r76aqgbTcdfQfLcu7iTN2D6RDYj8XlC2tzuYofoYezX7hmZoA6eeix
-	QrFjy7HsV3+Z5ZdwGcDhhgXDNwXFP+i0208w/auDkioZSqgo7yztvY0TeUhWH7UF2BwkYs
-	32j4qaHUNHQryv6LWqrwP+Am5Pdngpc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776691056; a=rsa-sha256;
-	cv=none;
-	b=kuhAtbjSbe7VDR0Y5g9mzPS2JDaEiQDJmCjK9zNjH1g7AR5u2rtUsrGnQ8M2ehxfbSFRJU
-	sQK4r5gXGvgnWEife3XRILWCHN6XttodDhuy/OjrKG3Hbari04J3YB19splkbeZ2+jfFB0
-	rsgEhO1jlRSeQAbW1fZ8ZJvIs92Weco=
+	bh=P0HK7frwjARxKhVL8GqaPdpDlZEZUSrYdIdZd63/Aus=;
+	b=PvTfDoWktqxfZBs+fwTOI3gbKiHjcndRQM07tBh3cu7pPZjdk54gZ1D+wXXZcGVmZuBxg3
+	MfYwQXkXMZvTOrGnSThlBcpF3quFvcjItjAZBY2OGrI96czCqeG/uLWBr4oEEbVegiGo+X
+	/UfeMaCTPQtv9qsrnkbHKgpQZS3i9ko=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xwydb+Mj;
-	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aUSKQCb5;
+	spf=pass (imf08.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776691289; a=rsa-sha256;
+	cv=none;
+	b=Z6MtNjlggbOBk5Ns8SEKgoe/hm1spSoU/IXuiC6CJ62R8/umLH0Vz8oaSQVaFDknnY3tAm
+	QxSpY+fzKm3FFjNLPTIpEz270/HJFohxMY6k3giBlDDG4vuu+seoySrH+rkbBjOUvatsm9
+	jdw9YkvJylmNzie7PCFOI2KJ8Fe9zuk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D8B1D43430;
-	Mon, 20 Apr 2026 13:17:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18BD5C2BCB6;
-	Mon, 20 Apr 2026 13:17:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BE3D16012B;
+	Mon, 20 Apr 2026 13:21:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C624CC19425;
+	Mon, 20 Apr 2026 13:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691054;
-	bh=2SxazbbS9oAi21Q7GCbtTy4MJm0ReOyr2NXSzDd7QZw=;
+	s=k20201202; t=1776691288;
+	bh=P0HK7frwjARxKhVL8GqaPdpDlZEZUSrYdIdZd63/Aus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xwydb+MjE38Yz9wYsZXCGWZYWrHWsEcBXCdCsRZtkpXb41BtpGs6AlBxVvjQ3smkI
-	 xw/QvsEQTRuPfzI7DWy/zEmrmCEg1VqEjcuz4KzbAIQH/VhHdNE7sqIeqo4Ir9DYYJ
-	 bn+j345Wqv90UavNBj0FWgAE4Dq2oECYsudZJYrqQ5QLyrWL5gJB2zDrQGmCgopI8g
-	 kCxReA9D8SGG4ijUdlo6jhYihcoTGJ5cL8ZyVeElzlZcLVBStVXT/C1+zgLWZM9Mi8
-	 wXQ2fRkJqCggDws+bDDgfGcj+9rUDrTBui+tLfsxaNOlWYGfMBjLLi/8fVYIQ8oWbT
-	 vbQIBf8tXZCQA==
+	b=aUSKQCb5lzYnc5y9bqT1KdajP7aocbNePFf2Rubb/EhLLP/zYRibCoKU1Z+URFKbr
+	 yYK8uAtOa2Zfsc0aIqb6mS9Ing7BVgUtdlNoIWhnT08JPiJ+FKM5vrcOGR3q0bzc6h
+	 W4hCSFm1rClWBOD0hWSUED19kmU5WgJZhN19/8QPxCisPJihlWfrqs82r42Spw3Rs2
+	 QOmizNrn/o/inREltCzUBPypHsUhPghM+PHkINe7bZcb4nSc3aB9oSoRzsAV2gr9D8
+	 wTWQ1u4HnMgXuDlF5HKEwC/gFzKXDv95AK+rrDuXiSxoqxuWn7JhC7+BfHSwFrmlW0
+	 py+WGwfZLMVgQ==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	=?UTF-8?q?=EA=B9=80=EC=98=81=EB=AF=BC?= <osori@hspace.io>,
+To: Heiko Stuebner <heiko@sntech.de>
+Cc: Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	linux-mm@kvack.org,
 	Oleg Nesterov <oleg@redhat.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	surenb@google.com,
-	Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH AUTOSEL 6.18] x86: shadow stacks: proper error handling for mmap lock
-Date: Mon, 20 Apr 2026 09:08:53 -0400
-Message-ID: <20260420131539.986432-67-sashal@kernel.org>
+	Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH 6.12.y] kernel: be more careful about dup_mmap() failures and uprobe registering
+Date: Mon, 20 Apr 2026 09:21:09 -0400
+Message-ID: <20260420-stable-reply-dup-mmap-uprobe-6-12@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
-References: <20260420131539.986432-1-sashal@kernel.org>
+In-Reply-To: <20260415180623.199818-1-heiko@sntech.de>
+References: <20260415180623.199818-1-heiko@sntech.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: n51cra3wkitszdbgjryimi6szp8nb9y8
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E2326C0007
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 624A8160008
+X-Stat-Signature: 3tu6qbg8s3s99tyhyioarjqqk8qiguaq
 X-Rspam-User: 
-X-HE-Tag: 1776691055-536692
-X-HE-Meta: U2FsdGVkX1/rBL5eFkYmx6SK2UnM4o3DP262SA04S+7JqV5+nehnIxxl0Jb69NWJQoTz2bVMwDbpHWAyqZAd9251LF73VTGRhNw4Yi1OXU79EIgNbQTyPQ2e4nc4z0Dn/UWEUoxqRNijK3vTOy35ZsVVN90pnWWEIn12Pcp0jsR5YsqPPJKyRtnPube+J8IiUVTJhwPK2rwoV4dROvHV+k3JRD3ZgerSBVhVIqNGJinl5OVuvs73OgEEJxzQQ6nhRBRBwl+s8V9LOY+pyAS84dy82rAjRSbanPxP+ZuFDaN4j6atYNz6uuNysJ2pj3rkURMrZ+xbxP8PJMaCdpML0o+9vsFinVczsQSw6dVZKZ56lUSt2ACQNC/wjpbFRu7JJFGxVlSclUWHwKKnVoERFY1fxn8EUxdqxx58Yw46yyRwzt778rRFHQfsoYzmr8FDCzilSYrIKC/C3nQ0ITH6wsqWhKxfIXj1Cv4gR8kARWtyLj1vTwfQeQLjUX6oZVerdz0PIqp/hUb0wo+gaRi0PwKUhg26witrJr/4dzQV7pZm6koOXJrZ/jNP7bhRI3CtMZIUfg9FIpFnoYUZ0LQka1aHdXv94w93f+HLX5uaGXOBhGfGvqx3Eqth0Eqn8nvBBGpy8oo4FBrLSUoSO6RYREnbU4eDcfy/pDDr/iRwVhwZVfKdQlQkk3TFsP+CCJ4PDAOKdn4URUJM94jUHftAlrDS+JHm/FUfnWs/8wUAnZhlYEW2NGHRsRtGhzEVv7/fjRQ+ISLTownFqqiDjt/iX5/cRJBTP8s3rsoAWtBoKeVkdDMXfKqZf8tfkxYg0fp9b8SRaBLGLhuoGVXJIOW1N95VGLViQxTinBKMk2Ob/ngC77zUXfrO2FhvINX0N5ZSypLi3uxvcU2a1v/aHG5RDs1UXLP20CNhJiO/NaAVmONqSWZBdZLU0SdSMFr34bBqM5+CGXbBGldZqSVDIJ0
- vMd1o8eq
- lZaGaO85gAit4QkSs8qnRtlxGPZKGiKttpW5L3YmRpx/++zPuRlD+QVNSoF9XlwGZMdHLVRrJua18tWuHG94gsMX7lHSjCeFnmdUEDkFz8g54hLFnr79B+JpWQMl80YBZHEcRxDkwICWcaLwwVUj4fpDu+UgYPVxpVwYlSIa6NBWhJ1WIsnm5gtkJazyZTIweyQyqbN4rcEjGEvKhe9f+v1nPvBhROvmPehrJiV07j2B588eFy50WlFW7p5XmgYGNlbJ/Q/NCNzDm/2C+9yZkmduYwiisBWp34hmHHhw9KqaXaQLL7IPig8he3fooPwG6nvUExoFmJ2V8oFBiyISqNNkTW6V/t8lrWCEkvSSgHtjWpyYQ60mKRrUUIBfDYQFSFvr/ERz7xYG/iRGKHgLevk71Eg==
+X-HE-Tag: 1776691289-944064
+X-HE-Meta: U2FsdGVkX1/zKvNMdgWUbvxWIfw7e6sEl3nkX9ROn7seeNbt0hJ8uWYhdf4Hjy83izxfyEYICIHO8jWqXYXNQkIC0LsRXtNYBYMtJjTcGc0/bcqdFiC6cSjwa68Twye8zRsg0Z11O6yA4lZyltV6a16r7u8tr4xY+uBPp5Hb6slacal2JyvaTVtwOWI6QF+87sCIncPCpU7LUUpjHkZr3gsTuc62X0YBiUbzu2w49C1NcUFfo5SppxgRBqYECdc3HOH3ZGZlH7XxmE4hM0aWCvjohnsIE8N9o2u/WJJ4s/5KpomXstOShk1Y0HrdoEPSv17YiT39nx6V4qckqT3RKtdYS4rIUvbPKpmO+ubQg2Gw1yXZu9c62izjMqRe3JgCe4v2QuPcEdrZXdeNZ6GbbJQ8aAgsNizPkHGj4HkCEagFkqYfgSvEhKTyJNmEYCIai6aXxtH46vWV1ie3TDV8Xs8JCMcbQBPU/0XurvIcQnOMdge/INhhoPVZfj96b5tyFI9RDVt9OWm/lpyMEHPdUm5zxPPDzk/eygAcEyUHQBwYpP1nFlc5AxZLE/lW0EkTS0CaAhrMlwT1kprV3mcYo6FY1JY21oerDCTLgVKbJ6Ry/9+AjDeFvTZsqMuEBbKndlq2U4YvehdOHz3jUQIwt7/UVYzwdyGB7OziEMGdAnJ6RsUvQAjcTmJNS5sX5r6HmW/IvweXoihQPPZtNTBsjg3tv99stKHi8sa7PQtxMFcLlIMRwhLta9ZXmMeniOk8tgXWiBAc6w54TQ68j/5gfgQYqa1JGMTUOhQ6kmj0LGm5ncK/VoZuxpe1DPpu51IRT/Z/veriNfWa7EdNk6nOgS3hE3idWieX7ug0u50xjzNb0enobSaNcYkwHPd/lE/ugRRlLgvHrlc4autE+zf8Bf284xLuw7uv/8D6h+1R0bQtZGnbI0Wsf0R/QuL1P4FcufMg/Lgz/LLea/Vsk5t
+ tzT1Bo1u
+ bOOqIXo0/6uMSRvBt16VSXIYQJXqEwTkNEP1oY/I0KUzLzd4/Hh375fdFe0RHH/gu8rOzG3xrZQQezmKHYlj7ryVKaXNCsiWYTnaSEtGP0XP50V+Vova/L64M9AmUKhaeJrC7loZNo1zKK2Hy1C5mZM4qR+81b7bGEgpwnWtfs0f/1nTG8fnMPiz8+ZuJ0VPzUCtF2eEHDS9K7EM1+oxAaxr7jXnkSPhwEGM5tqkvXgvMCm3WJODMZcn2K9bAU6qVzQkK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,79 +93,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+On Wed, Apr 15, 2026, Heiko Stuebner wrote:
+> Backport of 64c37e134b12 ("kernel: be more careful about dup_mmap()
+> failures and uprobe registering") to 6.12.y.
 
-[ Upstream commit 52f657e34d7b21b47434d9d8b26fa7f6778b63a0 ]
+Queued for 6.12, thanks.
 
-김영민 reports that shstk_pop_sigframe() doesn't check for errors from
-mmap_read_lock_killable(), which is a silly oversight, and also shows
-that we haven't marked those functions with "__must_check", which would
-have immediately caught it.
-
-So let's fix both issues.
-
-Reported-by: 김영민 <osori@hspace.io>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Error: Failed to generate final synthesis
-
- arch/x86/kernel/shstk.c   | 3 ++-
- include/linux/mmap_lock.h | 6 +++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index 978232b6d48d7..ff8edea8511b4 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -351,7 +351,8 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
- 
- 	if (need_to_check_vma)
--		mmap_read_lock_killable(current->mm);
-+		if (mmap_read_lock_killable(current->mm))
-+			return -EINTR;
- 
- 	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
- 	if (unlikely(err))
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 2c9fffa58714f..95ee1f224c492 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -322,7 +322,7 @@ static inline void mmap_write_lock_nested(struct mm_struct *mm, int subclass)
- 	__mmap_lock_trace_acquire_returned(mm, true, true);
- }
- 
--static inline int mmap_write_lock_killable(struct mm_struct *mm)
-+static inline int __must_check mmap_write_lock_killable(struct mm_struct *mm)
- {
- 	int ret;
- 
-@@ -369,7 +369,7 @@ static inline void mmap_read_lock(struct mm_struct *mm)
- 	__mmap_lock_trace_acquire_returned(mm, false, true);
- }
- 
--static inline int mmap_read_lock_killable(struct mm_struct *mm)
-+static inline int __must_check mmap_read_lock_killable(struct mm_struct *mm)
- {
- 	int ret;
- 
-@@ -379,7 +379,7 @@ static inline int mmap_read_lock_killable(struct mm_struct *mm)
- 	return ret;
- }
- 
--static inline bool mmap_read_trylock(struct mm_struct *mm)
-+static inline bool __must_check mmap_read_trylock(struct mm_struct *mm)
- {
- 	bool ret;
- 
--- 
-2.53.0
-
+--
+Thanks,
+Sasha
 
