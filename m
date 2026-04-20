@@ -4,81 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7803EF5A8B1
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 19:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55DF7F5A8B6
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 19:33:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C83386B008C; Mon, 20 Apr 2026 15:29:52 -0400 (EDT)
+	id 88DCB6B0088; Mon, 20 Apr 2026 15:33:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5AE06B0092; Mon, 20 Apr 2026 15:29:52 -0400 (EDT)
+	id 83EA36B0089; Mon, 20 Apr 2026 15:33:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6EB96B0093; Mon, 20 Apr 2026 15:29:52 -0400 (EDT)
+	id 72CF36B008A; Mon, 20 Apr 2026 15:33:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A516D6B008C
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:29:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5269C1A0AAF
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:29:52 +0000 (UTC)
-X-FDA: 84679924224.03.0018E6A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 604D96B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:33:11 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D991DC34F2
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:33:10 +0000 (UTC)
+X-FDA: 84679932540.29.D1929A1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 84AB41C000A
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:29:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IxxpSCtm;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id DA0ABC0008
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:33:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhOoLovM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776713589; a=rsa-sha256;
+	cv=none;
+	b=qEa8ulc8rl9tvBDNpRpwGXg5FzhTcfxIG+LlhSSh2HtNfwsC9OhbRllF9yIZedw4fCyaZZ
+	+mmCz0t4QTsaGg8ruqlI6Fj113iW+9xecQoiNbxzI5vE9xzEKZoFA1VEUMO7Rv70XXxFI+
+	zxzC68nrUMkJMKX0aaUxNZjJjmQ31as=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GhOoLovM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776713390;
+	s=arc-20220608; t=1776713589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E9+W9O1t17WZksDlNIod7UMuWgANY0prMHn8cuMjB/0=;
-	b=4xHfw6Miei2pdPc0o+pn3TvdiXV+PLssOuDOV8gWogE8+cpaQYElJD7s9TJMZpO/lAM1tj
-	H9vQKegzWiS0TUBvBtUh3mhHhH4mV//uXkk5QvYkf7llHdXBGK7BFAV+UpCZf2gpcmI4RE
-	ezTTHj+BtojRCtRdQZCVh7D0MQqbUAU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776713390; a=rsa-sha256;
-	cv=none;
-	b=C6Iaz52xYd34HkL3xKNIVRwz+kMq2WE1RsHSpZJb4UfruyxIjzFA2RKS6yNjRZhFNGA/cj
-	P/LLCXaUa0AzrMlxPf4TS7dboRi8Wee384lfaW/TBJ3RZa50ecBpyYhb6a6wLggdpPDCvd
-	6Xmj3d0/F12rCDf8Y0FoJVr6HKqB8Uc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IxxpSCtm;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ugnlLfdeLCy0m/lqbt6jwIC5NiRsjFcFmWE5Wfa57+4=;
+	b=xBdChKOlGlRoZ8Jhhq6YrsfWBokBMNcYf26v1L44KzOXKy6deL3dYZl3+h3ADoYMU1skUn
+	kF56KurFpOJcsNgVjG3hfSzm2N4t3PzxCbVkLAPxLD8Rl/OZqgNdp/nYAV/7j8msoFYVMv
+	2WofG4EiLB3+KURYTdYSSsgKA507KDs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4B3EF444AC;
-	Mon, 20 Apr 2026 19:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5453C2BCB0;
-	Mon, 20 Apr 2026 19:29:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C0BEC40660;
+	Mon, 20 Apr 2026 19:33:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2861EC19425;
+	Mon, 20 Apr 2026 19:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776713389;
-	bh=KEGY4s5L8vddgO3MvEHaS3XpKhUKLKraGKWm1E7ZRm0=;
+	s=k20201202; t=1776713587;
+	bh=ROHURSFqXEmiO9zYHy02vl5zPWT4sGYhRhuV9GrYv88=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IxxpSCtmgQ8r5uOHX3CS8mUlg7Q4a37vM06e/YT73FKCBbUmrQu+4Vj/89P5SYFKT
-	 R5MpM/cwzv9st9kD7vQxzKltEVryMB8H/9LpXQfafBSP2XiUskoWF/R4CFti4AA8cZ
-	 1aNVhMQ2MhbL+Wp1OX5WO1wOAZ/oaxCX4ybz7G/QMEiIlYp4GJvFMSl2wh24uQyfm9
-	 DqIrGGbdLU7k7AbJOcqxjDz01xd7cPHIWo2aPHmLyobKp/mYulTNaKeARvgFb0Q8Gl
-	 6AN9PeobwjlTiEPvZA6wguXZgEUQHoPjKGBA1ba4cjyRlBufdLwuPVrZSkOnnosdyj
-	 XDH+iEPWyU04g==
-Message-ID: <f13fba7c-e279-41d6-abf6-a12e79bad770@kernel.org>
-Date: Mon, 20 Apr 2026 21:29:43 +0200
+	b=GhOoLovMsZtCsOmnmhHkP/J4+H0vf+IXj2J/nxV31EasOGwNROhvhPkOLk+ICpKCG
+	 fKSjJSIOtHXGPeUv2RYS9rUwM3eCA8s45Q2Pa+lvY61jGzi2hH6mIAavgB+iiiyqLq
+	 uSQBg4qUKWoJ/RMp7w5MMN+7U0caNJoNpYua+b0VU4IXp7qcYsGEjd/DtDc2KOB8gF
+	 FnxWl7tLrDNI8x2VbFPhoR0i72oFuDIFeM+Rp/KQde0ORyL7HmkQ9pIQgNNc+17Z5u
+	 2jzX0Z09+ey7ic8IFNt1MdxNxd5j8y39dxp6nsYM2tPPm8UIsqiL8WSGEOzfIN/B/W
+	 uMKnNAnaM1viw==
+Message-ID: <ab6ff538-2829-4308-b805-888e566e33ec@kernel.org>
+Date: Mon, 20 Apr 2026 21:33:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/2] mm/gup: add lockless access semantics on entries
- validation
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, Ryan Roberts <ryan.roberts@arm.com>,
+Subject: Re: [PATCH v2] mm/migrate_device: Cleanup up PMD Checks and warnings
+To: Sunny Patel <nueralspacetech@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>
-References: <cover.1776684344.git.agordeev@linux.ibm.com>
- <55c295e17221dc882e09b4caddc7b3bf4f1309ba.1776684344.git.agordeev@linux.ibm.com>
+Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260419174747.10701-1-nueralspacetech@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <55c295e17221dc882e09b4caddc7b3bf4f1309ba.1776684344.git.agordeev@linux.ibm.com>
+In-Reply-To: <20260419174747.10701-1-nueralspacetech@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 84AB41C000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: c5dd4e7d4h5hpg66y14rsy8uk7oz16sn
+X-Rspamd-Server: rspam10
+X-Stat-Signature: q37w1a9qdghr5aynftdmcnwi5ag1ww9c
 X-Rspam-User: 
-X-HE-Tag: 1776713390-218423
-X-HE-Meta: U2FsdGVkX195MfNwQruxg5LgNSMIxDK5yNyRDmSIzPtqhSCV1C0qXVfzcFGC8vV00vetYEwnFL8xPu5SQZkc0tfARXiY0Eozv1FOZc/ThIzWRUZd4d8tmfDHFw02qkDKl5g4aeq53zOHO6tcZ2x7tasbH1Syzcya8MdlFyYCtOL0++DeYCx8X5jN7AcayfY+zbtmBYlmvZXVONeUABH05BJY3QBzXBJLP+GCRBt/7UOdRJMQkCAjOdmB6lTeRi5ezE9oMRQPqhEW5XVhvnjbZA6cwUW9RHYAai06IvTjlO2dA/GRLPA0ICvRw+L3KfArCmovPC4P1GslgeWKI4APFHlCEa4Y2Vt7zhlApZw8eWFdigRpPZJkCBDebSoeKx1jU/ZRAz4rhv7v8o8qxRo/TqspttsRBEgr5e2I92ARhmm1FHB571KFgblm9KLJcv7iG8cB10t5JN9HcWGvgx6hezCzp+JJdb4egMj2AxnTFwWQXgCNHesDAJz8Lz89UVSYzWdNguS3ZVXKhHqiRtnWJDKd5qAVknSJPqSijX5Otymz3tC40t3fdGsJho9pR97q8MTl7CjLojy0KqOaDXpU+9E6PixwtorDiJiU7iBI9+T1tXLyocoi/FWVumcxwwULxAE5iJGYFLFiStytfTY8UD6C1Fw1KtWCTng/6SNRqmwlRsSi0+tIqkeG3Fi+CV61CMKVmajdqrgbwsOWadpbH8mKmU15j1lFq8Vlyu+j+MgSDHLIgPuKTlVZYYo/SVL3aU3zr/djTU+oxf9ejGVXQ7ASa32u9uy63257gsJR/2pIEi38DgHiywADnxQJ+PyLuxdO45nLqzTmgv6V9i8lEq4ViflOqvtuzhZPOnSprJlVjfiB3SwTYk3Mu72D6MY1l+9YA3u5890KCqQPeVbp02Av9QG53ymgqPW9kAsW+6Ak8Og8Co9h2Mw9tmlyBvdPViS1IM/X4u6LGpmGmCX
- cl1F+LNj
- YgUKBtz11rWG8ekKLdPljzxzpAXBzvTCPMNr2xf5ybvB9bU2IQ/jjhKa5+b+PYiWc8T8HZKEkBEuvzu11T213mNnHVyYs6u41GeEzsfnr4wSUxK/vzcg0z9a0DOyqnhbyafeWN4uerrMwy/LrCoA7g2phNnJ7FWGvwUISASumfkpPN6A1C4deMDMrELGt9ceBIQumm8oyDPGLS77KfyihY6bKo15xWd1A6Qy+04EghOrFzwbmbhYhlhM3pA/OsCs9jSPYZ3oNdUrIAN3M3WJBm1v9fw==
+X-Rspamd-Queue-Id: DA0ABC0008
+X-HE-Tag: 1776713588-447372
+X-HE-Meta: U2FsdGVkX1+2Xr2Uaq+QW+QvAQ82tSyzuLh4QR8YTuOAwy/PHlcScD0//8lb+zagAVQ/SwRmJ9hAwbrOj49KAddkOC3u/L7qC8BAP4b/Fo6Y+HAaKzD08RRsIyIYv125V8Y/jZCvH8ZxRrXQAokXXdNsbb9QZUNP/C7xSLQbsD1h9B2pal+NzI0FUQMg5+giBqt/jKkEse9VC3TNx3j0hIyd5bZApQJZfQ2t7aa2HM4xvFcDXgtWPJjCj4mgdrR8NQGwyrz8WM/2qFu2P4Zph5OAD5vWFoPETqj0Mr9S8AcKNsnY2rjIsyCgcT6v+59S+nAZq5ye94oXfF/SjhM487usAZy/Quu/+nHQoBxXO/ZhddDNX9ogj+eFIHk1ljhrAtHjjExGmRXdyJkjqC9RASBDtUmU3eAxlViiLDiYKTnJeUcKMXwR8juPbcMHXr/rs2nQPrTFWVvz2tK+F5XJvgESgt142s9p998SLgL1JOT1FZFZwDYof0N2Se61N/MaQNzQ8w6Sw8GOCfRHsOaliNA3yPfXnsFSYVdkT63AnjxnBdRIvMXheDclA0on4C74S/gBPaZSL4V3L/usqLV1RfHxGUXrVgW6d8VIy03WiEVulJomy6VLsNGw+MbxJOEa7AGBEUDK4g9QcqlXCZJfT/7e8HkfZHAGaci6ogiJeyV5BikBpYLp3BmoehaF2yFeV6rQcm9Vqw9YNZ7VXWWIBlXrpO8bKh1zsBQ5q7gpn/n+gjrc1IXJ6sA7HcpVlm0UsG1w8PV2+CXzGuq98s8hNjOBrs4Cj8oeqTO6c3gnwBfoXGYibBIwByzOCYkgtmlOpwtWGaazhzq4TTJuuq7c/vMAERavbKwNZYU8UyrGVjefweJZGiDU+OguwXznL5QCqaMaLqlxcdUamb7AqCpIt0H9vqsxGnrubnYj/p1WWzfmn+UemP0EgfVXOMIC4eXqStUm1bkbKaBnC81jt3e
+ HBtHy/ej
+ KIb/oXs0CeI/rttXZuvjEwNIfb1ntyTlzI4PsRWj0X/OZeAPZE98g6JsSLvYBNHPJfs6PIljnnOStdq5N4JfwsNu6lKRg7c3p4x/vdzqKmsVgjuLohQqF6mgf12P0EkZap96x4vBHmxLw6Dva2IHCC+FSfmn1b2gWmpXCgQHUNA+KYJ1BrqVQiaDUrcV4EaLzrjUxxddBCEv8IWttaC1DulhQB2aefroXzBWkUiPcvBOZDpd2N3AeMEDvaX7jd21qlm7KRLgkG7CAklhbXHMAsv+iX4ybruqCYAmlAWjC5KvZHi0FzFGU29WXIPyEcs7GO/Bn7ZlygVbsmOVaByjx8HMlEefJrrzYv+UnExZAx+N11QqYdtZGgYCJ/vyMsCsJjQK9PgRcmgSD22CuZxo/oHx4phVxtXfphL3+Tv+SKGGrmnY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,50 +142,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/20/26 14:13, Alexander Gordeev wrote:
-> The PTE validation in gup_fast_pte_range() is inconsistent with the
-> prior value acquisition in the sense that it drops the lockless
-> access semantics.
+On 4/19/26 19:47, Sunny Patel wrote:
+> Remove the odd VM_WARN_ON_FOLIO(!folio, folio) usage and replace it
+> with a simpler VM_WARN_ON_ONCE(!folio) check.
 > 
-> Although this is highly unlikely, prevent a future scenario in which
-> a semantically mismatching ptep_get() incorrectly yields the same
-> result as the preceding ptep_get_lockless(), while ptep_get_lockless()
-> would otherwise return a different value.
+> Drop the redundant VM_WARN_ON_ONCE(!pmd_none(*pmdp) &&
+> !is_huge_zero_pmd(*pmdp)).
 > 
-> Likewise the PMD validation is inconsistent with the prior value
-> acquisition in gup_fast_pmd_range().
+> Refactor the PMD checks, making the control flow
+> clearer and avoiding duplicate condition checks.
 > 
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
 > ---
->  mm/gup.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index d149a4b0df71..236450feea9a 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2865,8 +2865,8 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
->  		if (!folio)
->  			goto pte_unmap;
->  
-> -		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get(pmdp))) ||
-> -		    unlikely(pte_val(pte) != pte_val(ptep_get(ptep)))) {
-> +		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
-> +		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
->  			gup_put_folio(folio, 1, flags);
->  			goto pte_unmap;
->  		}
-> @@ -2942,7 +2942,7 @@ static int gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp, unsigned long addr,
->  	if (!folio)
->  		return 0;
->  
-> -	if (unlikely(pmd_val(orig) != pmd_val(pmdp_get(pmdp)))) {
-> +	if (unlikely(pmd_val(orig) != pmd_val(pmdp_get_lockless(pmdp)))) {
->  		gup_put_folio(folio, refs, flags);
->  		return 0;
->  	}
 
-Oh, that should be squashed into #1 :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
