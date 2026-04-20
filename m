@@ -4,134 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E34F588E0
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:37:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26D2FF588E3
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:56:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A2C96B0005; Mon, 20 Apr 2026 10:37:27 -0400 (EDT)
+	id 280F76B0005; Mon, 20 Apr 2026 10:56:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17A076B0088; Mon, 20 Apr 2026 10:37:27 -0400 (EDT)
+	id 232346B0088; Mon, 20 Apr 2026 10:56:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 090A26B0089; Mon, 20 Apr 2026 10:37:27 -0400 (EDT)
+	id 1216D6B0089; Mon, 20 Apr 2026 10:56:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC9AA6B0005
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:37:26 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8508B1A0771
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:37:26 +0000 (UTC)
-X-FDA: 84679187292.23.20D2F78
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EB09F80010
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:37:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q4yNSEiY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=n5v8NFJL;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q4yNSEiY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=n5v8NFJL;
-	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0060A6B0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:56:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 92E34E5426
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:56:01 +0000 (UTC)
+X-FDA: 84679234122.07.6288163
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B025214000E
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:55:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Yoo0Bpvc;
+	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776695844;
+	s=arc-20220608; t=1776696959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tq/qTYhc7J99BTb81QiREOxnOQu2KPLsbOcnX3tU/Ak=;
-	b=8T6nmSDxPwz65zn39B6pLd2d9BT5MJm3VmPhBxfZWX4+PCUz8dLHY1SpIqNqOvEkBO8hIg
-	ArDQBJ61DsNVx7Bp+ypcRthiAFdGmyJ+sQRd0XGy6TCqf7PtESxA0LuYKHZcmlQo5yfW0x
-	W8mgYEaaq9VvSW2nIDX6lyrBp8NPBFM=
+	bh=L/2qYMFwJjwqGwHltRGn7Jh51mB0n8KEJgoVpDxZIHs=;
+	b=x40cQ4Wh1dRKvNXmomG++hhpk5TPyaFy5mAXHUb3k9br9TrQWLfdzPweG78DtPtRnfStAw
+	/qOB4YqtO+AdN34V8D5UpNqlxQrqtHBJQHhifmVZYC+8iew+kMR7EULBLKmKObL7phPTE0
+	LgTh/6cV/Tuj+lD02l7iVrAI0WrcJ5U=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q4yNSEiY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=n5v8NFJL;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=q4yNSEiY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=n5v8NFJL;
-	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776695844; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Yoo0Bpvc;
+	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776696959; a=rsa-sha256;
 	cv=none;
-	b=RXdiX5/vGuQFI82diSnV5e8hMvfETurHTpcZe7rPgN2O2ZsT+K72zVDiCeL55Ty3oc8V+o
-	nrFUiMomgPDbiUxLxVkrTOPZmCdPU9LJtoZc4E7sGr9r88dJo79Cs3xTrCxa3HOMo1T7aC
-	CBFajuqN3npyyzXYSU0va3xZgv0Sh2s=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 200656A7E4;
-	Mon, 20 Apr 2026 14:37:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776695842; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tq/qTYhc7J99BTb81QiREOxnOQu2KPLsbOcnX3tU/Ak=;
-	b=q4yNSEiYxtVmWifg6hkkuZBbAxQk27Jc36P0w2PLFNCP8pYAMjBTF2l5r7vu2IX49Q4cMf
-	jQBNFW7JFQEEEB2t6JzB5XuinTQa/mOexKYPEP0t8vePcuhFfietDkstN27e++1RhvWjj1
-	goZlzvLFNTovxg75Aws3kRXECcEWjz4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776695842;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tq/qTYhc7J99BTb81QiREOxnOQu2KPLsbOcnX3tU/Ak=;
-	b=n5v8NFJLalpN8aCtps8nQjNn143pFUK+sg3nUDFXYvbeADZElBnF0+aUCJ+bWjuP41iE0j
-	zsQgp/5upyIs6GCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776695842; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tq/qTYhc7J99BTb81QiREOxnOQu2KPLsbOcnX3tU/Ak=;
-	b=q4yNSEiYxtVmWifg6hkkuZBbAxQk27Jc36P0w2PLFNCP8pYAMjBTF2l5r7vu2IX49Q4cMf
-	jQBNFW7JFQEEEB2t6JzB5XuinTQa/mOexKYPEP0t8vePcuhFfietDkstN27e++1RhvWjj1
-	goZlzvLFNTovxg75Aws3kRXECcEWjz4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776695842;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tq/qTYhc7J99BTb81QiREOxnOQu2KPLsbOcnX3tU/Ak=;
-	b=n5v8NFJLalpN8aCtps8nQjNn143pFUK+sg3nUDFXYvbeADZElBnF0+aUCJ+bWjuP41iE0j
-	zsQgp/5upyIs6GCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 91B8D593AF;
-	Mon, 20 Apr 2026 14:37:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sbiKIyE65mmecgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 20 Apr 2026 14:37:21 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 7B668A0BEE; Mon, 20 Apr 2026 13:28:18 +0200 (CEST)
-Date: Mon, 20 Apr 2026 13:28:18 +0200
-From: Jan Kara <jack@suse.cz>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: Jan Kara <jack@suse.cz>, linux-xfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, 
-	hch@lst.de, ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>, 
-	dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, 
-	brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
- RWF_WRITETHROUGH
-Message-ID: <laegs2jt5ifqmfmdlsl7gsrc64z4nrnwbxazewbr7jk27emdej@l6vhj7pjh3dy>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
- <52wsh6owrtmznt5xuks6ljwy4zbpyid45x5dbxo5xgssxm4zxy@iue2on3llpfb>
- <aeKNHi8GloNgch7X@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+	b=sPy+sETgK5l76+hqgnZXXAY8jm1LZr8hjHAYJ0w9jnwCJfYtmf0AKlff8HqwGDhChb1eMi
+	SCDbFlKmoe0RZSt95o3+NYEU1cT/4yz2jXiYc30LxYG+wXEIdXjRJF0G8wbKxEk5LKlet0
+	xMuCg5x5F6wSctuCS29byS41zdqoqdQ=
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8d65f4073bfso445243985a.3
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:55:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1776696959; x=1777301759; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L/2qYMFwJjwqGwHltRGn7Jh51mB0n8KEJgoVpDxZIHs=;
+        b=Yoo0Bpvc53F9H8R5gB1eDeoiBH1HuWP7wVAKIJR+CbIR34WdmaFQxk9zBmt0kTsYyN
+         ZJ5vIpOSDEbfe44prK66PwO9cT1mhfQB2j1ooGSS1dVWktu+swW3olLaOFAdfPJVf75p
+         U3ZAlj4MPhqkoXUUHGQEw8Q4iFVzus4+PlEPymv0mMOdy0Q6LPcoRqFZzq24BuPX6JRg
+         gyUW6C6I7MGWlb+OEMHC7E7/FfP/OKsnjAeUEcpg7ZSEKNGbSYblx5/0t0Yu256cneGb
+         2HEXf6PdlN1cng5FUE+JXoAPAwcWbqDvRL2e0yEwlH2moqbxBNinwSeN1maAaNnRINR7
+         IUJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776696959; x=1777301759;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L/2qYMFwJjwqGwHltRGn7Jh51mB0n8KEJgoVpDxZIHs=;
+        b=hkoxTcmF91kCXYpcgToUH/nSdgx4OiGjZ6nYWu3cnD1k5ejSWnqjQef4ahs/XDW2r+
+         9hNlHwaDY7alq2hOnlpRJnGTZN0Z6pIN+KrXjOb7kptkSqVxaG15v8QgIOy6HzFFQLOT
+         PvoHy6iE5/ere2qFOLlm9amBlQzbk2B4hK5eRE+n5obFhLN20wH6y1Ek422EnYq1mLym
+         6PZBHdtAnBoJtZGxPd90J/9X/ebs2/pD7gXj1nXvQCrYJaJa+0k7hLFF3EFdE5Y0sVZs
+         o279HBzWd39xN4MDpaXnSeEmfPDDVVEj2zzXm1KSg2qoQ7sDkZjYUUdPpMXouOV89l4/
+         RQWg==
+X-Forwarded-Encrypted: i=1; AFNElJ/0KmgEGMfFGgsiUb6Uov5CRpAAJQo64ZNCT9AhUNN5IheMzxkbtpawL9CzqgovRHVTOOxEVkQsDg==@kvack.org
+X-Gm-Message-State: AOJu0Yw9er4fJPq+MFdP72S+ziPso8VWpZfSG5qS95cmkYcbTZ5/KzNt
+	diZyIYRTJIoo14SujY1BOABiubD72kEWl50AppPvBXo7XTUbuYfdoLo/bLNSJcoIBI8=
+X-Gm-Gg: AeBDieuDZH1YGlEEhPi3fibmP7WVJptHGB+Hu74aepUza1pYA6Ui/4D/DhzZKxazOdI
+	ByuhxHWO8Jh7fi3aFWTkPpqSacEFMMHtJFio610x2czjy8VYSyy0qJETMegx3pfGMQ8ke9MLdGr
+	aYHCFs8Z71Wd9XxlDJJRXMizAjPOmDdsID+1J4L11KwKfuTOZHnH2ctQTNnuzXSv12jNDJqfyKE
+	TEx0DfZ5rqtrLjS40FqbX6Ej7LD51vpHt7sZrF5PbxMc9KrVPHVu46JisqO1b4AQ0GEdAjAG9B1
+	fKT4TTTjwpdYI1dIjW4QbePxmgwHaA3jkO6XIS15o0C1X/kcjp+1Ddq0n8KoWDvta/DUtGEpQJn
+	g5ORz0VUaJYeTteZ2lkD8Wzv3SjpgkXohluTE72YEXqQEyZ8iKgb9D59maCw6UvgxvXOqxNuIwb
+	IvTWZY9Tsz1V9UFgBlTG9+u6t2ha6moWP6a8Z9ZxEqWcqvTNcAys0e5cyiOtm3Ku55ALuPU7U=
+X-Received: by 2002:a05:620a:4014:b0:8d0:a0e:c7f6 with SMTP id af79cd13be357-8e7913c1f71mr1915472885a.38.1776696958490;
+        Mon, 20 Apr 2026 07:55:58 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d5fe9800sm816998685a.5.2026.04.20.07.55.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 07:55:58 -0700 (PDT)
+Date: Mon, 20 Apr 2026 14:55:56 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: luca.boccassi@gmail.com, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	graf@amazon.com, rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 3/6] liveupdate: add LUO_SESSION_MAGIC magic inode type
+Message-ID: <xpi24rt5ek2m2wkhv6celu75hgtgte2x4jhfkjar4gi22r7bdh@ilbxbhfxmm2v>
+References: <20260418163358.2304490-1-luca.boccassi@gmail.com>
+ <20260418163358.2304490-4-luca.boccassi@gmail.com>
+ <20260420-unbeeindruckt-besprach-910fd241c32e@brauner>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aeKNHi8GloNgch7X@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: xodqg9r9eq9seoim4bcqjawhjzfzwoiz
-X-Rspamd-Queue-Id: EB09F80010
+In-Reply-To: <20260420-unbeeindruckt-besprach-910fd241c32e@brauner>
+X-Stat-Signature: xuicxw1h9wud198f356ds9kh1ziidz6y
+X-Rspamd-Queue-Id: B025214000E
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1776695843-173803
-X-HE-Meta: U2FsdGVkX1/FqSonNHBT8XpPDPheJ4gK64a224gsmsMr/4PeUmDwPJ+IR+23/4gSypCv4ec6of2Qlps7/W8929jnpQ/1hiS//NSgw9kA5oOJfNCaVJoulez2uBV664UYW1fnMjGcOpvfDT+mdZCITjSeo4+3x7QT86+8c39WfYFsrz8wEhOCcDW8/YLDjaGNsyXnHXOEK/yIQKped9EFj5Bqk8aFlPpJbGt59Jv3Z0Pi3DJlv+QDS5w3nDRxMpjW8wnMfyTzNEInHeVztZ/+FLfJ8w4buxsf78v5WrwbFPiqzT/GpJ4DLg3HKu0OSQJiGJS8BbS04S9N1fl7sO04LoOk3JwJW2hMaSNCCh2/LVICcoqtAOAakvVPvj54Ex17PNT/GWGF/oLHslqGkOgR7AH4gfp8Zun5NelIT1I3MmofmZ/V2NM9N8OxvT9q1hGmXaSXhjSpeRZpthIOU+sPijn3oRPOEkNv/4GOdEz0Jt77dOowzXqaob+YmQqOM1Tr54JQoGPVq6cxnT9H+6EM1a6z/nT6VxwHLpvEk5KfvxcYRRnM+yRaGYU2Mmf4rsjRT9266zOqUA3tPCB1Rv7RXbsnq95q4NpwuI1N0nzIkICeZ1R/E1xWrT8Ka6tDd1qY2zLurOrw6fWseCyrXJbHsorWg2gXejyf8Y32UI+hNodlZPq7xQOObH5yWcG3DNn0UlPXwozqvSgNqAITKW6/kLca37D48lOxzXs2gGOXlOFStheOM4O4Cb30iT8ihWy1eM7QZ81oO/1QUxlyvrI5mqlU3i/wNU7mswxegoA7hXoEFttTCutGb00To6z9TZ6+MRk7v+kGTx8paitDEKOCah/qXfvrCz8lM39ERmRle04lEGobHdQW6AMVcetC395wap6PoOHB9ivdpBydqund6St78MGP2WGUWL5JVd3hiTWo0G327JOEX7wFqjH3KzV7ZeP87cBEQ4BB4hndlTo
- 9x+8jAel
- 53PaHGjYTL0/do0vXu0fMiuhLNlQIquTUORoWcUGUi6b4l5BGHdDH1ZmZoCL8CF6u8XNlcY76W70Cbh993uUQjAxyWgW3bXUTtavRLdApMk1Gq1L0AGNa0ASrEbflDb46cCLVSzJZMuSX26n/5WJd3L+CRGMYTR7yPR5ap93p5B8hBDSpTfmH1YFM7IsB/kbwAoTq/6MCezwpMaPS1XbXQwq7VH0eRgAawvdvndtZ7K0LDjXlghTPiOHR0SGM9ALbmz35CnpGovxGiTBbad7hSIZO3xDEszW3wYzqmw9r5AOOa1Iwta4kAn1864O8wuZL03G5+MMxfzSZ6Rr17vOyZC0pwUjbkqmEtPo9Ip2JolHnUOm8eofummeGaQqR+Br8IcnVwerCct6SFfJ7D7Vu1c/5sy9ToeV2QElBxM4O6HuUoLCYqcoHTlCpn+5fWKGD0Inz/8DgfmroaR33GEdvL12JPq+Sj0s1i9CP
+X-HE-Tag: 1776696959-363982
+X-HE-Meta: U2FsdGVkX19gVfweLlKbCdXvOXN3u+qKEK7yCo6WsyUiNE5fW44gvVRZLjR2P2EFcYI60wbtlsjf377Jt/mqiBAs9lQhDywEfFViJIBp4iEXFx/zo1in9mSN/ME4KPUF/XylBV2XLx1M8KasOQGsPniez4W4Oqs9xvhlsjTJaYQuXyoU1+8VVF7iMYMa1vcuJL9oafcJSdcV0XVEIL0Hg/C13fcdXbVKWMHFpPhHbUtAodYZhze6AIdnqc9/aCoglbOgTb+y46G2vn5MZL4as9D8Thg+Jc4MvRrNwYXAYGH8P9JvRujhp3yk7ih5bqWqPNRmUxAmSLQ2Dk76xlak1wvzld9RW4RDPRdX8L+HCfk8a1Im2Vmy4A+ucUeY74vmYlR2KvAiaWUv6y8u7Vaot8cM1NnKp6Ivbe7hU/FW3VoCaj55APdChphv9uFPCh6mt03uhpxO6sbJjsFd8RUl1tHO569EVcMuWG+KyHfOm4soo+wSgkB47GVdnlXRGVh253LmS9JJK6i8avNtHEMBUVmbxzIhzpVn7pSRRm+MsVY/1BeuuJQdkK7TPfl8Md+PDUHRCmsu5G/nFoI31tKf2o+Fz1SsmRLUsv3qgqbBPwEhaDe+TqtUD3Bb6aB9bb+MaCzi8DhqPK4h6IW37UhFmxUJFATTyrnD6g2suxK4fwf9POLnOfkh3uXzPMAXs++p0leoIooxtOoJwI078bCgjMnlV9wx631SJFnpm8jwZBUkVuTFyUAIftcQDmP8BvAjTxKqJ8r1x0YvhTLlyqnb0cu1T2V/1F7Q+iPSCMRt8pwjnx9nxh+J6BZjndV/YniRn2zxLrwVchbE4T7JDR3sf5F44Npnc0CIv7RabnErtKMD1BU60284EWmxj7UVo/B3WRYqNxBTS0l3mYyZzIE9fBCAZ4kTLRbe/dp1bGwI4BJ7+NcB81M/Z+/pU36BoYQW8J2dgNnak9ePZjkNZh4
+ GVEfna9w
+ nVnsMYL80u46P7bMuZaMJh/jOMKKFmC+8464/1cA5BT9LWRd8L5Mo+ahDelPI8KEEMSYWfF9kJMO5xcVNL8Ii5rbmUXrUzHahZUORfYT1iRKEBF4TipjhFpYwuKIyUOGZ19k3YwZ6Z09cTvMVLOPSlmW74JkBTryEtYpZ0VHKdHJdpCo7bimHbuCEYwlFZhmZeihRa+dax8313yxmCdsBiPPMFiBB80nqPXMfvudtrdrQwyxhtRA4FZrhBjG6DK8TNt4u5eeUSeVR+CDiZyaTYIklf/eQfZh0F/0IghAzNKOmMbZFblU6asWyI1/xGr1F9zXdU/9Z2+TxcgXYQBEvIDhnZOWiXfK+l0GybzXCgTQC5vQnK3JsU0K90Egg78xa6ak4MxjH/KF7buWezz7Jfuo3JxjWtoOeMmKv3eYh4hvP4ZMoX4rTSyuI64aG78rTOznU2JriKdaZI7YcGSPuKg09AbGhI43wYjPbzm4g2s7LkSe3dSU2y1aoSG4Zu9+mv4lG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,190 +119,379 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 18-04-26 01:12:22, Ojaswin Mujoo wrote:
-> On Thu, Apr 16, 2026 at 02:34:15PM +0200, Jan Kara wrote:
-> > > @@ -1096,6 +1097,276 @@ static bool iomap_write_end(struct iomap_iter *iter, size_t len, size_t copied,
-> > > +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
-> > > +				   struct iomap_iter *iter, struct iov_iter *i,
-> > > +				   const struct iomap_writethrough_ops *wt_ops)
-> > > +
-> > > +{
-> > > +	ssize_t total_written = 0;
-> > > +	int status = 0;
-> > > +	struct address_space *mapping = iter->inode->i_mapping;
-> > > +	size_t chunk = mapping_max_folio_size(mapping);
-> > > +	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
-> > > +	unsigned int bs = i_blocksize(iter->inode);
-> > > +
-> > > +	/* copied over based on DIO handles these flags */
-> > > +	if (iter->iomap.type == IOMAP_UNWRITTEN)
-> > > +		wt_ctx->flags |= IOMAP_DIO_UNWRITTEN;
-> > > +	if (iter->iomap.flags & IOMAP_F_SHARED)
-> > > +		wt_ctx->flags |= IOMAP_DIO_COW;
-> > > +
-> > > +	if (!(iter->flags & IOMAP_WRITETHROUGH))
-> > > +		return -EINVAL;
-> > > +
-> > > +	do {
-> > > +		struct folio *folio;
-> > > +		size_t offset;		/* Offset into folio */
-> > > +		u64 bytes;		/* Bytes to write to folio */
-> > > +		size_t copied;		/* Bytes copied from user */
-> > > +		u64 written;		/* Bytes have been written */
-> > > +		loff_t pos;
-> > > +		size_t off_aligned, len_aligned;
-> > > +
-> > > +		bytes = iov_iter_count(i);
-> > > +retry:
-> > > +		offset = iter->pos & (chunk - 1);
-> > > +		bytes = min(chunk - offset, bytes);
-> > > +		status = balance_dirty_pages_ratelimited_flags(mapping,
-> > > +							       bdp_flags);
-> > > +		if (unlikely(status))
-> > > +			break;
-> > > +
-> > > +		/*
-> > > +		 * If completions already occurred and reported errors, give up
-> > > +		 * now and don't bother submitting more bios.
-> > > +		 */
-> > > +		if (unlikely(data_race(wt_ctx->error))) {
-> > > +			wt_ctx->nr_bvecs = 0;
-> > > +			break;
-> > > +		}
-> > > +
-> > > +		if (bytes > iomap_length(iter))
-> > > +			bytes = iomap_length(iter);
-> > > +
-> > > +		/*
-> > > +		 * Bring in the user page that we'll copy from _first_.
-> > > +		 * Otherwise there's a nasty deadlock on copying from the
-> > > +		 * same page as we're writing to, without it being marked
-> > > +		 * up-to-date.
-> > > +		 *
-> > > +		 * For async buffered writes the assumption is that the user
-> > > +		 * page has already been faulted in. This can be optimized by
-> > > +		 * faulting the user page.
-> > > +		 */
-> > > +		if (unlikely(fault_in_iov_iter_readable(i, bytes) == bytes)) {
-> > > +			status = -EFAULT;
-> > > +			break;
-> > > +		}
-> > > +
-> > > +		status = iomap_write_begin(iter, wt_ops->write_ops, &folio,
-> > > +					   &offset, &bytes);
-> > > +		if (unlikely(status)) {
-> > > +			iomap_write_failed(iter->inode, iter->pos, bytes);
-> > > +			break;
-> > > +		}
-> > > +		if (iter->iomap.flags & IOMAP_F_STALE)
-> > > +			break;
-> > > +
-> > > +		pos = iter->pos;
-> > > +
-> > > +		if (mapping_writably_mapped(mapping))
-> > > +			flush_dcache_folio(folio);
-> > > +
-> > > +		copied = copy_folio_from_iter_atomic(folio, offset, bytes, i);
-> > > +		written = iomap_write_end(iter, bytes, copied, folio) ?
-> > > +			  copied : 0;
-> > > +
-> > > +		if (!written)
-> > > +			goto put_folio;
-> > > +
-> > > +		off_aligned = round_down(offset, bs);
-> > > +		len_aligned = round_up(offset + written, bs) - off_aligned;
-> > > +
-> > > +		iomap_folio_prepare_writethrough(folio, off_aligned,
-> > > +						 len_aligned);
-> > > +
-> > > +		if (!wt_ctx->nr_bvecs)
-> > > +			wt_ctx->bio_pos = round_down(pos, bs);
-> > > +
-> > > +		bvec_set_folio(&wt_ctx->bvec[wt_ctx->nr_bvecs], folio,
-> > > +			       len_aligned, off_aligned);
+On 04-20 14:26, Christian Brauner wrote:
+> On Sat, Apr 18, 2026 at 05:28:20PM +0100, luca.boccassi@gmail.com wrote:
+> > From: Luca Boccassi <luca.boccassi@gmail.com>
 > > 
-> > Shouldn't we zero out the tail of the folio if we are submitting partial
-> > folio for write?
-> 
-> Hmm, so for the folio range we zeroout if needed in
-> __iomap_write_begin(). I think that should take care of this right? 
-
-Yeah, right, that seems to do it.
-
-> > > +		wt_ctx->nr_bvecs++;
-> > > +		wt_ctx->written += written;
-> > > +
-> > > +		if (pos + written > wt_ctx->new_i_size)
-> > > +			wt_ctx->new_i_size = pos + written;
+> > In userspace when managing LUO sessions we want to be able to identify
+> > a FD as a LUO session, in order to be able to do the special handling
+> > that they require in order to function as intended on kexec.
 > > 
-> > I'm probably missing something here but where is i_size update handled? I
-> > don't see new_i_size used anywhere? 
+> > Currently this requires scraping procfs and doing string matching on
+> > the prefix of the dname, which is not an ideal interface.
+> > 
+> > Add a singleton inode type with a magic value, so that we can
+> > programmatically identify a fd as a LUO session via fstatfs().
+> > 
+> > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
+> > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> >  include/uapi/linux/magic.h       |  1 +
+> >  kernel/liveupdate/luo_core.c     | 10 +++-
+> >  kernel/liveupdate/luo_internal.h |  2 +
+> >  kernel/liveupdate/luo_session.c  | 89 ++++++++++++++++++++++++++++++--
+> >  4 files changed, 96 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
+> > index 4f2da935a76c..4f51005522ff 100644
+> > --- a/include/uapi/linux/magic.h
+> > +++ b/include/uapi/linux/magic.h
+> > @@ -105,5 +105,6 @@
+> >  #define PID_FS_MAGIC		0x50494446	/* "PIDF" */
+> >  #define GUEST_MEMFD_MAGIC	0x474d454d	/* "GMEM" */
+> >  #define NULL_FS_MAGIC		0x4E554C4C	/* "NULL" */
+> > +#define LUO_SESSION_MAGIC	0x4c554f53	/* "LUOS" */
+> >  
+> >  #endif /* __LINUX_MAGIC_H__ */
+> > diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+> > index dda7bb57d421..f1a63ebe4fa4 100644
+> > --- a/kernel/liveupdate/luo_core.c
+> > +++ b/kernel/liveupdate/luo_core.c
+> > @@ -197,9 +197,17 @@ static int __init luo_late_startup(void)
+> >  	if (!liveupdate_enabled())
+> >  		return 0;
+> >  
+> > +	err = luo_session_fs_init();
+> > +	if (err) {
+> > +		luo_global.enabled = false;
+> > +		return err;
+> > +	}
+> > +
+> >  	err = luo_fdt_setup();
+> > -	if (err)
+> > +	if (err) {
+> > +		luo_session_fs_cleanup();
+> >  		luo_global.enabled = false;
+> > +	}
+> >  
+> >  	return err;
+> >  }
+> > diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+> > index 8083d8739b09..d4ac7b4c5882 100644
+> > --- a/kernel/liveupdate/luo_internal.h
+> > +++ b/kernel/liveupdate/luo_internal.h
+> > @@ -79,6 +79,8 @@ struct luo_session {
+> >  
+> >  int luo_session_create(const char *name, struct file **filep);
+> >  int luo_session_retrieve(const char *name, struct file **filep);
+> > +int __init luo_session_fs_init(void);
+> > +void __init luo_session_fs_cleanup(void);
+> >  int __init luo_session_setup_outgoing(void *fdt);
+> >  int __init luo_session_setup_incoming(void *fdt);
+> >  int luo_session_serialize(void);
+> > diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+> > index 5e316a4c5d71..21cbe99fc819 100644
+> > --- a/kernel/liveupdate/luo_session.c
+> > +++ b/kernel/liveupdate/luo_session.c
+> > @@ -50,7 +50,6 @@
+> >  
+> >  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> >  
+> > -#include <linux/anon_inodes.h>
+> >  #include <linux/cleanup.h>
+> >  #include <linux/err.h>
+> >  #include <linux/errno.h>
+> > @@ -62,7 +61,10 @@
+> >  #include <linux/libfdt.h>
+> >  #include <linux/list.h>
+> >  #include <linux/liveupdate.h>
+> > +#include <linux/magic.h>
+> > +#include <linux/mount.h>
+> >  #include <linux/mutex.h>
+> > +#include <linux/pseudo_fs.h>
+> >  #include <linux/rwsem.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/unaligned.h>
+> > @@ -363,18 +365,73 @@ static const struct file_operations luo_session_fops = {
+> >  	.unlocked_ioctl = luo_session_ioctl,
+> >  };
+> >  
+> > +static struct vfsmount *luo_session_mnt __ro_after_init;
+> > +static struct inode *luo_session_inode __ro_after_init;
+> > +
+> > +/*
+> > + * Reject all attribute changes on the singleton session inode.
+> > + * Without this the VFS falls back to simple_setattr(), allowing
+> > + * fchmod()/fchown() to modify the shared inode.
+> > + */
+> > +static int luo_session_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> > +			       struct iattr *attr)
 > 
-> So the i_size update happens in endio(), similar to dio. We initially
-> had the update in iomap_writethrough_iter in v1 however based on Dave's
-> feedback [1], moved it to the endio. The idea is for writethrough
-> semantics to be closer to dio hence we either update isize when we
-> succeffuly write, or return an error to user without update isize.
+> Don't duplicate, please. Use the generic helper instead:
 > 
-> [1] https://lore.kernel.org/linux-fsdevel/aa--rBKQG7ck5nuM@dread/
+> int anon_inode_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> 		       struct iattr *attr)
 > 
-> > Also why is it OK to not call pagecache_isize_extended() but that goes
-> > with the i_size update...
+> > +{
+> > +	return -EOPNOTSUPP;
 > 
-> As for pagecache_isize_extended(), (this might be a bit tangential from
-> your comment but) after this email, I started diggin a bit more into why
-> it is needed.  As per my understanding, it tackles 2 things:
 > 
-> Problem 1. mkclean's the old EOF folio so that the FS can fault again. This
-> allows us to allocate new blocks which previously might not be allocated
-> if bs < ps.
 > 
-> Problem 2. Since mmap writes can dirty data beyond EOF, we zero the range from
-> old EOF to end of that folio so that readers dont read junk data after
-> isize extension.
+> > +}
+> > +
+> > +static const struct inode_operations luo_session_inode_operations = {
+> > +	.setattr	= luo_session_setattr,
+> > +};
+> > +
+> > +static char *luo_session_dname(struct dentry *dentry, char *buffer, int buflen)
+> > +{
+> > +	return dynamic_dname(buffer, buflen, "luo_session:%s",
+> > +			     dentry->d_name.name);
+> 
+> Use the luo_session:[%s] which is the canonical format for this
+> (ignoring historcal abberations).
+> 
+> > +}
+> > +
+> > +static const struct dentry_operations luo_session_dentry_operations = {
+> > +	.d_dname	= luo_session_dname,
+> > +};
+> > +
+> > +static int luo_session_init_fs_context(struct fs_context *fc)
+> > +{
+> > +	struct pseudo_fs_context *ctx;
+> > +
+> > +	ctx = init_pseudo(fc, LUO_SESSION_MAGIC);
+> 
+> I'd just call that LUO_FS_MAGIC.
+> 
+> > +	if (!ctx)
+> > +		return -ENOMEM;
+> > +
+> > +	fc->s_iflags |= SB_I_NOEXEC;
+> > +	fc->s_iflags |= SB_I_NODEV;
+> 
+>         ctx->s_d_flags |= DCACHE_DONTCACHE;
+> 
+> static const struct super_operations luo_session_sops = {
+>         .drop_inode     = inode_just_drop,
+>         .statfs         = simple_statfs,
+> };
+> 
+> 
+> > +	ctx->dops = &luo_session_dentry_operations;
+> 
+>         ctx->ops = &luo_session_sops;
+> 
+> > +	return 0;
+> > +}
+> > +
+> > +static struct file_system_type luo_session_fs_type = {
+> > +	.name = "luo_session",
+> > +	.init_fs_context = luo_session_init_fs_context,
+> > +	.kill_sb = kill_anon_super,
+> > +};
+> > +
+> >  /* Create a "struct file" for session */
+> >  static int luo_session_getfile(struct luo_session *session, struct file **filep)
+> 
+> Luo is going full anti-pattern here. This whole return via a function
+> argument completely messes up the later codepths. We don't do manual
+> get_unused_fd_flags() flags and then file in new code, and then fail
+> in-between:
+> 
+>         argp->fd = get_unused_fd_flags(O_CLOEXEC);
+>         if (argp->fd < 0)
+>                 return argp->fd;
+> 
+>         err = luo_session_create(argp->name, &file);
+>         if (err)
+>                 goto err_put_fd;
+> 
+>         err = luo_ucmd_respond(ucmd, sizeof(*argp));
+>         if (err)
+>                 goto err_put_file;
+> 
+>         fd_install(argp->fd, file);
+> 
+> Restructure the code so it just becomes:
+> 
+> struct file *luo_session_create(argp->name);
+> 
+> static int luo_ioctl_create_session(struct luo_ucmd *ucmd)
+> {
+>         struct liveupdate_ioctl_create_session *argp = ucmd->cmd;
+> 
+>         return FD_ADD(O_CLOEXEC, luo_session_create(argp->name));
+> }
+> 
+> and get rid of all this state and error handling. Please fix this.
 
-Correct.
+We cannot do it this way because we must use copy_to_user() to return fd 
+via ioctl(), and since copy_to_user() may fail, we must do it prior to 
+fd_install().
 
-> Another thing I noticed is that most users of
-> iomap_file_buffered_write() do their own eof zeroing in the FS layer
-> (eg, xfs_file_write_zero_eof(), ext4's new changes,
-> ntfs_extend_initialized_size() etc). 
-> I think this FS level zerooing should take care of mkcleaning the eof
-> folio (problem 1), as they call iomap_zero_range() which would flush the
-> eof range anyways. So am I right in assuming that for FSes that do their
-> own zeroing, 1. is already taken care of?
+Unless there is a specific VFS macro you'd prefer for this 
+delayed-install pattern, I do not see any other way to do this but 
+maintain the get_unused_fd_flags() -> copy_to_user() -> fd_install() to 
+prevent the fd being leaked into the process's table.
 
-Well, I don't see anything that would writeprotect the old tail page in
-iomap_zero_range(). I think iomap_zero_range() calls are there mostly to
-address 2. Not only due to mmap but also possibly to clear whatever junk
-there can be in the blocks after EOF.
+> 
+> >  {
+> > -	char name_buf[128];
+> > +	char name_buf[LIVEUPDATE_SESSION_NAME_LENGTH + 1];
+> >  	struct file *file;
+> >  
+> >  	lockdep_assert_held(&session->mutex);
+> > -	snprintf(name_buf, sizeof(name_buf), "[luo_session] %s", session->name);
+> > -	file = anon_inode_getfile(name_buf, &luo_session_fops, session, O_RDWR);
+> > -	if (IS_ERR(file))
+> > +
+> > +	ihold(luo_session_inode);
+> 
+> Right, you're now sharing the same inode among all luo sessions. So
+> you've gained the ability to recognize luo inodes via fstatfs() but you
+> still can't compare two luo session file descriptors for equality using
+> stat() which is a major win and if you're doing this work anyway, let's
 
-> As for 2, I think after the EOF zeroing of the FS, there might be a
-> window before iomap_write_iter() where an mmap writer can still dirty
-> EOF blocks, hence the pagecache_isize_extended() would be needed here.
-> But doesn't that then make the eof zeroing in the FS layer redundant? Am
-> I missing something here?
+Luca, is there a specific use case in userspace where we need to compare 
+LUO sessions for equality?
 
-Hmm, I agree the zeroing looks duplicit (for some users of
-pagecache_isize_extended()). And yes, doing the zeroing from
-xfs_file_write_zero_eof() is somewhat racy (mmap writer can still come and
-write non-zeros before we update i_size) but I'd have hard time to argue it
-really practically matters - you are racing mmap writes with buffered
-writes so any kind of write atomicity guarantees are not there. 
+Christian's proposed solution of using unique inodes provides a standard 
+VFS interface, but it introduces some memory overhead and, more 
+importantly, a performance overhead due to the extra metadata 
+allocations required during the performance-critical kexec blackout 
+window.
 
-> Regardless, for our case I think we will also need to do the
-> pagecache_isize_extended(), mainly to take care of problem 2, but where
-> exactly should we do it now?  We currently change the isize in endio()
-> but for aio, it can run outside inode or folio lock. I think this
-> function needs to be called under inode lock(). Hmm.. its a bit late here so
-> I'll revisit this tomorrow with a fresh mind :)
+I do not mind adding it, but I want to verify if this equality check is 
+actually needed for your userspace agents, once we extend this, there is 
+no way back.
 
-I think mainly to take care of problem 1... You are correct about
-inode_lock but since we are updating i_size, we should be better holding
-it, shouldn't we?
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> just go the extra step. You can mostly mirror pidfs and it's not
+> difficult:
+> 
+> // unique inode numbers for the lifetime of the system instead of using
+> // the shared ino allocator that can overflow
+> 
+> DEFINE_COOKIE(luo_session_cookie);
+> 
+> static u64 luo_alloc_ino(void)
+> {
+>         u64 ino;
+> 
+>         preempt_disable();
+>         ino = gen_cookie_next(&luo_ino_cookie);
+>         preempt_enable();
+> 
+>         VFS_WARN_ON_ONCE(ino < 1);
+>         return ino;
+> }
+> 
+> static struct inode *luo_new_inode()
+> {
+> 	inode = new_inode_pseudo(sb);
+> 
+> 	inode->i_flags	|= S_IMMUTABLE;
+> 	inode->i_mode	|= S_IRWXU;
+> 	inode->i_flags	|= S_PRIVATE | S_ANON_INODE;
+> 	simple_inode_init_ts(inode);
+> 
+> 	inode->i_op	= &luo_session_inode_operations;
+> 	// Make sure to leave inode->i_fop unset so it luo fds cannot be reopened via procfs
+> 
+> 	// Unique 64-bit inode. On 32-bit this will obviously be
+> 	// truncated but a) LUO doesn't support 32-bit b) let's declare
+> 	// anyone that wants LUO on 32-bit insane c) who uses more than
+> 	// 32-bit worth of luo sessions d) if that's really something
+> 	// you want to address you can do so later doing the same thing
+> 	// I did for pidfs (see there for context).
+>         inode->i_ino	= luo_alloc_ino();
+>         inode->i_generation = pidfs_gen(pid->ino);
+> 
+> 	simple_inode_init_ts(inode);
+> 	return inode;
+> }
+> 
+> Now you can do
+> 
+> stat(fd_luo1, &st1);
+> stat(fd_luo2, &st2);
+> 
+> if (st1.st_dev == st2.st_dev && st1.st_ino == st2.st_ino)
+> 		return true; // same luo session
+> 
+> Sooner or later you will want this. Let's do it correctly, right now.
+> 
+> A bigger design question for the LUO people:
+> 
+> How do the lifetimes of the luo session and the luo fd relate to each
+> other? The way the code is structured it looks like the luo session
+> thing that you currently store in the file:
+> 
+>         file->private_data = session;
+> 
+> outlives the file? Why?
+> 
+> Imho, two things should change in addition to the switch to the tiny fs:
+> 
+> (1) The lifetime of the luo session object should be tied to the
+>     lifetime of the session file descriptor so that when the last file
+>     descriptor for that luo session is closed the @session thing gets
+>     cleaned up. I assume that's the case anyway?
+> 
+> (2) Instead of stashing the session in file->private_data store it in
+>     inode->private_data. This has various advantages:
+> 
+>     * You can stash other information in file->private_data.
+>     * You can at some point have multiple files referring to the same
+>       inode/luo session.
+> 
+> > +
+> > +	snprintf(name_buf, sizeof(name_buf), "%s", session->name);
+> > +	file = alloc_file_pseudo(luo_session_inode, luo_session_mnt, name_buf,
+> > +				 O_RDWR, &luo_session_fops);
+> > +	if (IS_ERR(file)) {
+> > +		iput(luo_session_inode);
+> >  		return PTR_ERR(file);
+> > +	}
+> >  
+> > +	file->private_data = session;
+> >  	*filep = file;
+> >  
+> >  	return 0;
+> > @@ -653,3 +710,25 @@ void luo_session_resume(void)
+> >  	up_write(&luo_session_global.outgoing.rwsem);
+> >  	up_write(&luo_session_global.incoming.rwsem);
+> >  }
+> > +
+> > +int __init luo_session_fs_init(void)
+> > +{
+> > +	luo_session_mnt = kern_mount(&luo_session_fs_type);
+> > +	if (IS_ERR(luo_session_mnt))
+> 
+> panic()
+> 
+> > +		return PTR_ERR(luo_session_mnt);
+> > +
+> > +	luo_session_inode = alloc_anon_inode(luo_session_mnt->mnt_sb);
+> > +	if (IS_ERR(luo_session_inode)) {
+> > +		kern_unmount(luo_session_mnt);
+> > +		return PTR_ERR(luo_session_inode);
+> > +	}
+> > +	luo_session_inode->i_op = &luo_session_inode_operations;
+> 
+> Kill all of this now that you allocate inodes on-demand.
+> 
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +void __init luo_session_fs_cleanup(void)
+> > +{
+> > +	iput(luo_session_inode);
+> > +	kern_unmount(luo_session_mnt);
+> > +}
+> > -- 
+> > 2.47.3
+> > 
 
