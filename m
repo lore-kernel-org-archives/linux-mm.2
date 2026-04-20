@@ -4,135 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51836F588CC
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:51:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE39DF588D2
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:56:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 861666B0089; Mon, 20 Apr 2026 09:51:02 -0400 (EDT)
+	id A643C6B0088; Mon, 20 Apr 2026 09:56:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 838A26B0092; Mon, 20 Apr 2026 09:51:02 -0400 (EDT)
+	id A15376B0089; Mon, 20 Apr 2026 09:56:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74E5E6B0093; Mon, 20 Apr 2026 09:51:02 -0400 (EDT)
+	id 9039A6B008A; Mon, 20 Apr 2026 09:56:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 633496B0089
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:51:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C65FB140A67
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:51:01 +0000 (UTC)
-X-FDA: 84679070322.24.0DAB0D8
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C4B12180002
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:50:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MD4zIDsB;
-	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776693059;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 772FE6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:56:08 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E79AE56A7
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:56:08 +0000 (UTC)
+X-FDA: 84679083216.14.3F52E4B
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E551E14000F
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:56:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vLaTKWNN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776693366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3b50RraaIawnD22hSCvT5knVr9IuRnQ6UaMDxGPXyek=;
-	b=JVq7ZO3dYZ4It8V/0XWU0Oh8HTwibj/5XX7HHsIvGPqXXbiEyfHMYCWnYuiLMr4pxvp7io
-	99CvVBhed5rRdwWYt3hhRtoJoZr0oCx7xBPtAb05dkRQFX2C6kOeuB8NNQ+MWrFUi3wS8e
-	xJEdbji3GLjg5CReyc+yR+jReUjSNKI=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MD4zIDsB;
-	spf=pass (imf06.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776693059; a=rsa-sha256;
-	cv=pass;
-	b=5ucSOSh0MvklFZfDP0/Lyspllz+3L5EKmrUsg0iBjHZ88IqOoNBVVXOJslJMXc7vgsQ34z
-	2eUZe9/tOdnFRaB26mYATMp5dBueE5OgHvsu7wgN9PoNJQPpk4DyubmQwntPsg9LNsIMVC
-	s3Y9azDH3r2Gz011X9xU7h8E+EhYh+Y=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7947cf097c1so25320017b3.2
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:50:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776693059; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kNsketFpENLdpXnpl4aSR5Xa7FiHX+yPAy/hU1onsHFUG7KI9Ffmzu6icvkci6YRfl
-         hwpz1b3MgbJeVatSBOOJyIsrU0HEtoQJOP9ON4vwOyKf34ZBkspa4jy6GjOelUFcXm+D
-         pxDd3sJ/WieiiJu7G/mROhYlrG2fu0MheHeABnTliniO2DDcWL3j1oQTmYTYA491Da2S
-         VaAPM4IeJaTDEAWNpGXfjW3Q2O1FPOHa9LDNmfmQgsTtQQYjRhE2Et1MmARYypp/KH7R
-         dcQSnvjRh1AWqm63edD8yvjQx5RPX37SB520HE/U57pY/D5rayERt9wJGivaPKY4qnMf
-         yC1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3b50RraaIawnD22hSCvT5knVr9IuRnQ6UaMDxGPXyek=;
-        fh=PIqsozfJWJYjbxWOF3HadlMvidU/X5SsYzkxmwgozbY=;
-        b=CQPT6/sN5s+ZNkI1rDu5OCUjmjdxbPE7XAFBMyUdz6yvyZyieII8ItrpQo8b4fsrRJ
-         rca+90hORz7Mvxz13anKKRUf4dquuHZi/T2vc9GH1y+fB2xE+LuqNRZlobSYNTKK9wak
-         F/28L/EnD8Ouw3/F3F3Bt62W9nLwgUNEbgSbNKIeem5IBHf9iced9X2uZBi+8KMuABb4
-         IML7Kpwjz2ExMJRKhRY79TuhbOgn0ubrrBQCJmVHfJjz9a54zZYDYp0TmBmNejQ5zGFw
-         XxRvxt+gr4zan02A1Qkl4FMuTl6AgbxfsjHRlhAu4AiQdTYPC6vq4vekj21cUvSlOtM2
-         RDKg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776693059; x=1777297859; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3b50RraaIawnD22hSCvT5knVr9IuRnQ6UaMDxGPXyek=;
-        b=MD4zIDsBdt8lr4ee3+N3tk+OcQplFii3cOZyv6hMm+7lR/cjjWHh8AoabdaoTCOIbZ
-         HZX3eURFx+WIApS/B7qPkNsu/mCCIkFfRC4kweRjXcwRXOQhToordt7QX38rV3HZhUrH
-         Z92eKRyXsPxLIvCxtQaoxC0zupGRbVTMc2+PXxkCE/491porvxwKkcFcxihcq85o9YcF
-         fJQ02OCcvw3qlrY7JdwuT89YXdb391ZECVLmelqgdxD6E5jPdtvSAuSyA9cwL3ypmpxF
-         Jt4Rp49XU8ZO3Dg5o6lHCFtcQ8gH+o83Du6C+siyz/+eOsA4WkPcBUxsyq92Re+hSJhB
-         GwiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776693059; x=1777297859;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3b50RraaIawnD22hSCvT5knVr9IuRnQ6UaMDxGPXyek=;
-        b=QCLsqz6Eqm5IjlHXx8wTE6e/SdEm96HcXcVZu5W+CliyjJGIWuF9WrbgE0IhM8kqxX
-         jw8a4IFX4+dWwekFPJd0t576jg2LR5unSFUvD1ZiyIv4/aBKyYCQHuFvxs3jWlS5bWUI
-         vU7EWMZGYWy4B+Dtpj7oWjWiWr56vmux18YCqc8rBo8hEYYNJDqH/NAWeLpU7RVrGKPF
-         jqnE3rfs2JgYkXmxKL1O+8lpWvc1QO9ugBgxajiOe5eaq+eFqAurfz3JLAwBfXuXUwBp
-         p1V03d7MKgKdAM0XKJWNCHV2Q3G57lwCxh8P8kLAEtw6/u3uhqdXsTesVgjjo/Z9GSbT
-         9GsA==
-X-Forwarded-Encrypted: i=1; AFNElJ9pSrXdFOA4MpzdXk3xe4XF/Sfx4orhVfA2eTbFCCdNElngQqgeE2UuAxvh8YpT+MXEbWRhjQATqg==@kvack.org
-X-Gm-Message-State: AOJu0YwLblF8YGtuv3KVlZtoxFBdoXRFbdtgTyR8MahRirvWFGk0IZkm
-	Bj1QiCdDZBxSyWXTYqB7RamAL/SjSpK7p3a7TdLVu0cGn9tjaO98RkvW3N4lFUQEwZoTFjuFYcx
-	PXphTAUVFqsVpK+0mjpEXLelzYmp+iDuoR7O8
-X-Gm-Gg: AeBDievzaPlD2Nbl7DtoNyl7g4SjT5a2T15CNI88BnVvWho/OdUnx7WECiUPUN9UTii
-	HL42wskmpTXSmfbkaoF2kFsvfxaALCjab5HKV1o7lxGEQ2XGkyC6jHvlBXuKJR0ayrqglVRuYil
-	svvuMl4Tey2uCNB6NyLu86oZ0NDmGcGnekI6zFdaU9KM0jmmh1ZcmK3kKhGbkJCYGztthGXBKDz
-	8hpXZD7ZNa3jr1t9vbf7I9/6CFMqkHv9hCW2cAFLrUssLNhk+J+lX8FqbbPHZ1UepwQi7a+tWqC
-	dhyHi04sOUtCnHg=
-X-Received: by 2002:a05:690c:6e86:b0:7b2:64f4:a2dc with SMTP id
- 00721157ae682-7b9eceb27f8mr130209557b3.9.1776693058738; Mon, 20 Apr 2026
- 06:50:58 -0700 (PDT)
+	bh=iRj72wK+FCQB3Q8xdRrZNsXn0FIfDJ87LTYopLumO9A=;
+	b=1SFYiFN5+X46bGE9fh/j88XR2o8W3e6rThfiYv3zR6P7CrF2fyG8ZtBtZ7LvqDnfIh3OyQ
+	fcl/kwXnNzcRtNFubxPM6xDX3XnTo0c/A7fNzK/p7bCSEuIAxtcZCaHPsb2p/qPBB3v7bs
+	OfUgidsdsaXvpN6QWRt9ANIxvpdoDWg=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vLaTKWNN;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776693366; a=rsa-sha256;
+	cv=none;
+	b=NI9rueSaQJsGnMhDhjPDIJP/W97nDYOhUgOF9Swifg4kPax+VwvmHzrBMSNBWbTMeJuRy0
+	cCh9nRRtqqR36f0CzP1pC5okXN1sM7ccRLKVEUYOCszoKHXDZoEAt2BfE7NLOGnZtJ/eIp
+	wAwcPCNSaj+pqgJwi7HpJnERIgY7KFM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776693363;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iRj72wK+FCQB3Q8xdRrZNsXn0FIfDJ87LTYopLumO9A=;
+	b=vLaTKWNNU6/vG2fZehdj+5Nz+ewgUOFxb0ZpxRe/OFBJIZe+Zs0uk9TbH9AbMSl/0MT/oz
+	3DyN97FMaNdil2vqX2i+OiHo6dTbulwv6e5Vh2NWUFi6qF8FgRZ3nV++jvj0Gc6dmCDZ3H
+	DFxO0c3WxF+agDrZ5qIwyAFlWhsuLoY=
+From: Usama Arif <usama.arif@linux.dev>
+To: Nico Pache <npache@redhat.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	anshuman.khandual@arm.com,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	byungchul@sk.com,
+	catalin.marinas@arm.com,
+	cl@gentwo.org,
+	corbet@lwn.net,
+	dave.hansen@linux.intel.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	jack@suse.cz,
+	jackmanb@google.com,
+	jannh@google.com,
+	jglisse@google.com,
+	joshua.hahnjy@gmail.com,
+	kas@kernel.org,
+	lance.yang@linux.dev,
+	Liam.Howlett@oracle.com,
+	ljs@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com,
+	mhiramat@kernel.org,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	pfalcato@suse.de,
+	rakie.kim@sk.com,
+	raquini@redhat.com,
+	rdunlap@infradead.org,
+	richard.weiyang@gmail.com,
+	rientjes@google.com,
+	rostedt@goodmis.org,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shivankg@amd.com,
+	sunnanyong@huawei.com,
+	surenb@google.com,
+	thomas.hellstrom@linux.intel.com,
+	tiwai@suse.de,
+	usamaarif642@gmail.com,
+	vbabka@suse.cz,
+	vishal.moola@gmail.com,
+	wangkefeng.wang@huawei.com,
+	will@kernel.org,
+	willy@infradead.org,
+	yang@os.amperecomputing.com,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	zokeefe@google.com
+Subject: Re: [PATCH 7.2 v16 04/13] mm/khugepaged: generalize __collapse_huge_page_* for mTHP support
+Date: Mon, 20 Apr 2026 06:55:53 -0700
+Message-ID: <20260420135554.27067-1-usama.arif@linux.dev>
+In-Reply-To: <20260419185750.260784-5-npache@redhat.com>
+References: 
 MIME-Version: 1.0
-References: <20260417135805.1758378-1-ekffu200098@gmail.com> <aeXIKM9BeRmaCZ_d@kernel.org>
-In-Reply-To: <aeXIKM9BeRmaCZ_d@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Mon, 20 Apr 2026 22:50:47 +0900
-X-Gm-Features: AQROBzBqgOURdNojQ-ObGzT9XJLcM5lAqMXI8V9Rsu3KZtGlmAEOrcBadIlLkfs
-Message-ID: <CABFDxMGvGU6Vaq-AX9NXatHA9fTRDfB4yiHZBEQoJf4wsz-XqA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/fake-numa: fix under-allocation detection in
- uniform split
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, djbw@kernel.org, mingo@kernel.org, 
-	linux-mm@kvack.org, Donghyeon Lee <asd142513@gmail.com>, 
-	Munhui Chae <mochae@student.42seoul.kr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: snixxzdkb7dk4qpw5t6j5t6nf9qgfbmm
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C4B12180002
-X-HE-Tag: 1776693059-910855
-X-HE-Meta: U2FsdGVkX1+3Iwb4wVBpuTUOcmm3gW14QAJKQ49uxwVHR6vO9Nbj+TnBUKTsij1WO6zwfLJozValyQOdsQVtSOJb0qfUVbldWppEZ3VMDQ/ezxc0mTLRcrvBPI6FLU6DC046GZvMotno6J6cc6bDgKpwM/WE0RZ1gIair+uWmN65fgphBlLdRmUBIGGew0Re2nckRlFBV57KbIwYgZliwaFEPhHIHHIVbk54RW9R6yha7A00v1mKZ/m5PTLJfHg57nft72PJFa9Cdp9jslPMQEaOdEH69tSPgRu84XuX2zxZqXFG3h7BRlVc4tNNh2niR938zh3Tyiz1Un2At7J3xeHj6U1mu9yPt/pj+pn3OaaCjuvYFgGOYKTJG72yB6uDOTtFxwwzIhkvyRqMiVCRDCX8b0U0wBqavMpRsLnK3hYUCNwYvTbatz0E/tAnxPD4ReMaA8sGDKy9f1zXYCy2/aNCcW+jC1zQuoonGDhMPqKJt3JtxwHaSZBB9q8ZeQlQlqQboB62wwzRMClJLzzXmgmMNhNOaxMmUxyp8DJVlUd3M0lzhfAptmPMsJMxfw1ZAqyGFSkFGssbTJFAfM6/xiSHgVZ8yjbKd69ehdNqyUQICS8GGDbyjWv9NZWzNV4gR2b/7GPnZ33GXHY3/K80OZT2GtfZFA6NluHxsv4855wPn4FKnsoEOQHnV7VGafCDQ3HXhsBMo0Nj4F9Aix8zfS65LlijnlaVXY8slfADZDjriKnNKe50IxUtQQsMoKxLQ4zNI0B7/TEMigCA6Kq98UN61WUljUVCVjMnDNh7pWByKcHcUmAIcl4b8Q0aH/8BVMZaFDALDlflg7NHRWA23qeFmItWuu93d+N0r35XQp0+l3xGYwLhaJwMv8hUU0HuhSrgrQhQXD9Y78wZh3aycEOlWZiIKXLLslUeLuGEnMtGZ/LdSbhTgMKlUK6qrjNHr3iP3vNePwQ1A3J86Ex
- oO2TCCDa
- jEddANlh24hzcFU+BvbZ3YEFeSYRk+yGI3JZz/sTjlAlM0MWo50w9BR1aqQLVnZVM9vFWiTVuaeA8uG9AhwNtetsFh2Q5qcN8IPM/DK3gU80RlElgd1AsWJ7feTkuooOxbBLa1E2eA8cW0rkwLjb76xR9AyCRGiJXzq4X79A/QadlMUtg773PU+SUZfTh64umP858Rw053lmmoKYnIMmN0jXHkdxm3FtwnzSnPeDUJlOiVm4jZ5yRmDuZM8IQslPzoKjhZEYPPD4m5V7AJu7zzT9ZHDbtKB+rSSa4LlVrOlZzcIrKGHfwoYV8e3UpCi1zN9mlOjK1/GL6uGiHkX1ASLmKIqYzQT6xO1sGmKuupJuGs4xBrv6o1vnO3PVKrChV5xN2iOuVc4Z41Ss06TnlE+bEkG89MhRKs6wlA2lZMO/Cc+7RQT9G5mCvbKrGZiPIczXk
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E551E14000F
+X-Stat-Signature: iqnofkhjoptb41pf1dixcmi9ifuuxmh5
+X-HE-Tag: 1776693365-273151
+X-HE-Meta: U2FsdGVkX1+Yo8m86anue7VdJPgVwCcV6SFijquAoMi++IBimhocEmQ9NPmDbsLEjx6UTA4hULa+VPEkk2GUnVKw1BuET0fKZLBgMXhNvFeOzhwVWIlPBDeQo+DjaTgjD/W1Ix+Z7KVcgUcwALmRSvqXIZ9XwNsovniIux4HtsyCVVGc/n4JNlz1DxCngY7rSNJuoigE7tFqidZ9gstEwpbsPBDOW9MlKiiVWl/TtK8rGTyy99InkAdI+csm+VydPcxOjTefxh0B861pLIBueU6ncCznwb/kV+RyBcmZwjvpzVEzk0qe4at1+BCv7jN9NYa8Va7WvFFHpj2AbxF7si9bY3PtvHqylEE2cpgXw8Tr32AoVq3F0z0TZwSOsbl8hReEdp7cnogt9Bh3zun8eY3FKyVmEpSaIWKiuKGSdHCrH2vNFsZoWj0YrGK2gMIlsP3ZabvWmxDbEtzeBYR7jgutCyxbnKKFUQ0zjO1fxKZ+8AKsBR3S6ZTuedIp5SN9vhGLiJsvJsAW0lihzS6tTYAZ5MepKVJgo/XJlNWm6AAPnxGB+vwZuPwW7Ax/evBFttawm53mulz0rDlsFPtDUk6ezwQdd/8NilzBfSB5bMdQv9IqQFA7z6Dq3NCm/ISnv+KwQ9k/HhVARXFLiioxQq1jq8EDRF7kz4/buQWEY+m4GsvclydWX8VNGa2+Jcr+UESJWKlK8UqpF92InlKyE5dUylxCu4dbXx4w7s5qRRkFO7oCJXt/79Pw1y3KXBefCI5cO3bd8OS8Lz7XgHYa5NFdNKQ1DJKwEBzUunAKu9r+FodBXGex8envNKwDPxzqAFdh/Jiz6jFGqEd1p769KIntACNdlltqpCDpZHJWY5byL88uylKIMe9TfSqNKOGkW0nq1Ib0fuUAFnbhKSsLZDaLDypqjAmbfajagY+nlZImw/XjFflDDuaMx1RCVI/6YZMCy0H6KQ9G1SLitsH
+ D3BnAym9
+ XEu+OaX+3RF4PKqv15+tP9lwdjRTwhAkvrPGWVuQiAFMz82gHT4iNbvXJhdslxRKoe7yXdSJvicY9bNyGMRDTSf8tqstPUi3NLeIwCmHalDoxHLUL3eZbxzbVMMKyCnECAp/ITVax6QQiTmPIHWc3hi9lRHkTKxRdViP2efVGakRCjzkkXCNjGb/2Qj+5Tbpyp/k0dI1EWrFw/4UehZLEkyb++rbOMcgpTNU6khHI2TaQRByaVeTY3gg2+mkfUYJma0X1ETgreteaoze1p9eygdBILIhJc7pP5aKCTvUc1BdLqErq247WcNNliI5AEfPybNdJ4MYCppcMATpngHAcv+eH5nI17uJlQ6Wv8Jfp0jr6eRMmcr7M7TP4JhHiiL55QkjA2xvOM13AeQobktXBD3w9Qw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,205 +142,377 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
+On Sun, 19 Apr 2026 12:57:41 -0600 Nico Pache <npache@redhat.com> wrote:
 
-On Mon, Apr 20, 2026 at 3:31=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> Hi,
->
-> On Fri, Apr 17, 2026 at 10:58:05PM +0900, Sang-Heon Jeon wrote:
-> > When split NUMA node uniformly, split_nodes_size_interleave_uniform()
-> > returns the next absolute node ID, not the number of nodes created.
-> >
-> > The existing under-allocation detection logic compares next absolute no=
-de
-> > ID (ret) and request count (n), which only works when nid starts at 0.
-> >
-> > For example, on a system with 2 physical NUMA nodes (node 0: 2GB, node
-> > 1: 128MB) and numa=3Dfake=3D8U, 8 fake nodes are successfully created f=
-rom
-> > node 0 and split_nodes_size_interleave_uniform() returns 8. For node 1,
-> > fake node nid starts at 8, but only 4 fake nodes are created due to
-> > current FAKE_NODE_MIN_SIZE being 32MB, and
-> > split_nodes_size_interleave_uniform() returns 12. By existing
-> > under-allocation detection logic, "ret < n" (12 < 8) is false, so the
->
-> In this example it would be 11, won't it?
-> I'll update when applying.
+> generalize the order of the __collapse_huge_page_* and collapse_max_*
+> functions to support future mTHP collapse.
+> 
+> The current mechanism for determining collapse with the
+> khugepaged_max_ptes_none value is not designed with mTHP in mind. This
+> raises a key design issue: if we support user defined max_pte_none values
+> (even those scaled by order), a collapse of a lower order can introduces
+> an feedback loop, or "creep", when max_ptes_none is set to a value greater
+> than HPAGE_PMD_NR / 2.
+> 
+> With this configuration, a successful collapse to order N will populate
+> enough pages to satisfy the collapse condition on order N+1 on the next
+> scan. This leads to unnecessary work and memory churn.
+> 
+> To fix this issue introduce a helper function that will limit mTHP
+> collapse support to two max_ptes_none values, 0 and HPAGE_PMD_NR - 1.
+> This effectively supports two modes:
+> 
+> - max_ptes_none=0: never introduce new none-pages for mTHP collapse.
+> - max_ptes_none=511 (on 4k pagesz): Always collapse to the highest
+>   available mTHP order.
+> 
+> This removes the possiblilty of "creep", while not modifying any uAPI
+> expectations. A warning will be emitted if any non-supported
+> max_ptes_none value is configured with mTHP enabled.
+> 
+> mTHP collapse will not honor the khugepaged_max_ptes_shared or
+> khugepaged_max_ptes_swap parameters, and will fail if it encounters a
+> shared or swapped entry.
+> 
+> No functional changes in this patch; however it defines future behavior
+> for mTHP collapse.
+> 
+> Co-developed-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Nico Pache <npache@redhat.com>
+> ---
+>  mm/khugepaged.c | 124 ++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 88 insertions(+), 36 deletions(-)
+> 
 
-I think 12 is correct because there is a difference between the
-attached QEMU test log and the scenario which is described in the
-commit message. This is because I missed the reserved memory (~140KB)
-for ACPI table.
+Small nits. Most might not need change.
 
-1) Previous attached QEMU test scenario
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index f42b55421191..283bb63854a5 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -352,51 +352,86 @@ static bool pte_none_or_zero(pte_t pte)
+>   * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for collapse
+>   * @cc: The collapse control struct
+>   * @vma: The vma to check for userfaultfd
+> + * @order: The folio order being collapsed to
+>   *
+>   * If we are not in khugepaged mode use HPAGE_PMD_NR to allow any
+> - * empty page.
+> + * empty page. For PMD-sized collapses (order == HPAGE_PMD_ORDER), use the
+> + * configured khugepaged_max_ptes_none value.
+> + *
+> + * For mTHP collapses, we currently only support khugepaged_max_pte_none values
+> + * of 0 or (KHUGEPAGED_MAX_PTES_LIMIT). Any other value will emit a warning and
+> + * no mTHP collapse will be attempted
+>   *
+>   * Return: Maximum number of empty PTEs allowed for the collapse operation
+>   */
+> -static unsigned int collapse_max_ptes_none(struct collapse_control *cc,
+> -		struct vm_area_struct *vma)
+> +static int collapse_max_ptes_none(struct collapse_control *cc,
+> +		struct vm_area_struct *vma, unsigned int order)
+>  {
+>  	if (vma && userfaultfd_armed(vma))
+>  		return 0;
+>  	if (!cc->is_khugepaged)
+>  		return HPAGE_PMD_NR;
+> -	return khugepaged_max_ptes_none;
+> +	if (is_pmd_order(order))
+> +		return khugepaged_max_ptes_none;
+> +	/* Zero/non-present collapse disabled. */
+> +	if (!khugepaged_max_ptes_none)
+> +		return 0;
+> +	if (khugepaged_max_ptes_none == KHUGEPAGED_MAX_PTES_LIMIT)
+> +		return (1 << order) - 1;
+> +
 
-QEMU command line :
-    qemu-system-x86_64 \
-    ...
-    -m 2176M \
-    -object memory-backend-ram,id=3Dmem0,size=3D2G \
-    -object memory-backend-ram,id=3Dmem1,size=3D128M \
-    -numa node,nodeid=3D0,cpus=3D0-1,memdev=3Dmem0 \
-    -numa node,nodeid=3D1,cpus=3D2-3,memdev=3Dmem1 \
+There are 2 reads of khugepaged_max_ptes_none here.
+A concurrent sysctl write between reads can yield "0 then non-zero" or "LIMIT
+then mid-value".
 
-log :
-[    0.000000] BIOS-provided physical RAM map:
-[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff]
-System RAM
-[    0.000000] BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff]
-device reserved
-[    0.000000] BIOS-e820: [gap 0x00000000000a0000-0x00000000000effff]
-[    0.000000] BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff]
-device reserved
-[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x0000000087fdcfff]
-System RAM
-[    0.000000] BIOS-e820: [mem 0x0000000087fdd000-0x0000000087ffffff]
-device reserved
-[    0.000000] BIOS-e820: [gap 0x0000000088000000-0x00000000feffbfff]
-[    0.000000] BIOS-e820: [mem 0x00000000feffc000-0x00000000feffffff]
-device reserved
-[    0.000000] BIOS-e820: [gap 0x00000000ff000000-0x00000000fffbffff]
-[    0.000000] BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff]
-device reserved
-[    0.000000] BIOS-e820: [gap 0x0000000100000000-0x000000fcffffffff]
-[    0.000000] BIOS-e820: [mem 0x000000fd00000000-0x000000ffffffffff]
-device reserved
+Would be good to just snapshot once at the start of the function and use that
+value?
 
-...
+> +	pr_warn_once("mTHP collapse only supports max_ptes_none values of 0 or %u\n",
+> +		      KHUGEPAGED_MAX_PTES_LIMIT);
 
-[    0.001919] ACPI: SRAT: Node 0 PXM 0 [mem 0x00000000-0x0009ffff]
-[    0.001921] ACPI: SRAT: Node 0 PXM 0 [mem 0x00100000-0x7fffffff]
-[    0.001922] ACPI: SRAT: Node 1 PXM 1 [mem 0x80000000-0x87ffffff]
+IMO, warn_once can get lost quickly in dmesg. Maybe pr_warn_ratelimited?
 
-...
+Not sure what others opinions are..
 
-[    0.001930] Fake node size 15MB too small, increasing to 32MB
-[    0.001930] Faking node 8 at [mem
-0x0000000080000000-0x0000000081ffffff] (32MB)
-[    0.001931] Faking node 9 at [mem
-0x0000000082000000-0x0000000083ffffff] (32MB)
-[    0.001931] Faking node 10 at [mem
-0x0000000084000000-0x0000000087fdcfff] (63MB)
+> +	return -EINVAL;
+>  }
+>  
+>  /**
+>   * collapse_max_ptes_shared - Calculate maximum allowed shared PTEs for collapse
+>   * @cc: The collapse control struct
+> + * @order: The folio order being collapsed to
+>   *
+>   * If we are not in khugepaged mode use HPAGE_PMD_NR to allow any
+>   * shared page.
+>   *
+> + * For mTHP collapses, we currently dont support collapsing memory with
+> + * shared memory.
+> + *
+>   * Return: Maximum number of shared PTEs allowed for the collapse operation
+>   */
+> -static unsigned int collapse_max_ptes_shared(struct collapse_control *cc)
+> +static unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
+> +		unsigned int order)
+>  {
+>  	if (!cc->is_khugepaged)
+>  		return HPAGE_PMD_NR;
+> +	if (!is_pmd_order(order))
+> +		return 0;
+> +
+>  	return khugepaged_max_ptes_shared;
+>  }
+>  
+>  /**
+>   * collapse_max_ptes_swap - Calculate maximum allowed swap PTEs for collapse
+>   * @cc: The collapse control struct
+> + * @order: The folio order being collapsed to
+>   *
+>   * If we are not in khugepaged mode use HPAGE_PMD_NR to allow any
+>   * swap page.
+>   *
+> + * For PMD-sized collapses (order == HPAGE_PMD_ORDER), use the configured
+> + * khugepaged_max_ptes_swap value.
+> + *
+> + * For mTHP collapses, we currently dont support collapsing memory with
+> + * swapped out memory.
+> + *
+>   * Return: Maximum number of swap PTEs allowed for the collapse operation
+>   */
+> -static unsigned int collapse_max_ptes_swap(struct collapse_control *cc)
+> +static unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
+> +		unsigned int order)
+>  {
+>  	if (!cc->is_khugepaged)
+>  		return HPAGE_PMD_NR;
+> +	if (!is_pmd_order(order))
+> +		return 0;
+> +
+>  	return khugepaged_max_ptes_swap;
+>  }
+>  
+> @@ -590,18 +625,22 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
+>  
+>  static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>  		unsigned long start_addr, pte_t *pte, struct collapse_control *cc,
+> -		struct list_head *compound_pagelist)
+> +		unsigned int order, struct list_head *compound_pagelist)
+>  {
+> +	const unsigned long nr_pages = 1UL << order;
+>  	struct page *page = NULL;
+>  	struct folio *folio = NULL;
+>  	unsigned long addr = start_addr;
+>  	pte_t *_pte;
+>  	int none_or_zero = 0, shared = 0, referenced = 0;
+>  	enum scan_result result = SCAN_FAIL;
+> -	unsigned int max_ptes_none = collapse_max_ptes_none(cc, vma);
+> -	unsigned int max_ptes_shared = collapse_max_ptes_shared(cc);
+> +	int max_ptes_none = collapse_max_ptes_none(cc, vma, order);
+> +	unsigned int max_ptes_shared = collapse_max_ptes_shared(cc, order);
+> +
+> +	if (max_ptes_none < 0)
+> +		return result;
 
-So actual node 1 usable memory is [0x80000000-0x87fdcfff] (~127.86MB)
-That's why uniformly splitted memory count is 3 for node 1
+Would a dedicated SCAN_INVALID_PTES_NONE make more sense here instead
+of SCAN_FAIL?
 
-2) Commit message scenario (Log is newly attached)
+>  
+> -	for (_pte = pte; _pte < pte + HPAGE_PMD_NR;
+> +	for (_pte = pte; _pte < pte + nr_pages;
+>  	     _pte++, addr += PAGE_SIZE) {
+>  		pte_t pteval = ptep_get(_pte);
+>  		if (pte_none_or_zero(pteval)) {
+> @@ -734,18 +773,18 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>  }
+>  
+>  static void __collapse_huge_page_copy_succeeded(pte_t *pte,
+> -						struct vm_area_struct *vma,
+> -						unsigned long address,
+> -						spinlock_t *ptl,
+> -						struct list_head *compound_pagelist)
+> +		struct vm_area_struct *vma, unsigned long address,
+> +		spinlock_t *ptl, unsigned int order,
+> +		struct list_head *compound_pagelist)
+>  {
+> -	unsigned long end = address + HPAGE_PMD_SIZE;
+> +	const unsigned long nr_pages = 1UL << order;
+> +	unsigned long end = address + (PAGE_SIZE << order);
+>  	struct folio *src, *tmp;
+>  	pte_t pteval;
+>  	pte_t *_pte;
+>  	unsigned int nr_ptes;
+>  
+> -	for (_pte = pte; _pte < pte + HPAGE_PMD_NR; _pte += nr_ptes,
+> +	for (_pte = pte; _pte < pte + nr_pages; _pte += nr_ptes,
+>  	     address += nr_ptes * PAGE_SIZE) {
+>  		nr_ptes = 1;
+>  		pteval = ptep_get(_pte);
+> @@ -798,13 +837,11 @@ static void __collapse_huge_page_copy_succeeded(pte_t *pte,
+>  }
+>  
+>  static void __collapse_huge_page_copy_failed(pte_t *pte,
+> -					     pmd_t *pmd,
+> -					     pmd_t orig_pmd,
+> -					     struct vm_area_struct *vma,
+> -					     struct list_head *compound_pagelist)
+> +		pmd_t *pmd, pmd_t orig_pmd, struct vm_area_struct *vma,
+> +		unsigned int order, struct list_head *compound_pagelist)
+>  {
+> +	const unsigned long nr_pages = 1UL << order;
+>  	spinlock_t *pmd_ptl;
+> -
 
-QEMU command line :
-     ...
-     -m 2228480K \
-    -object memory-backend-ram,id=3Dmem0,size=3D2G \
-    -object memory-backend-ram,id=3Dmem1,size=3D131328K \ # 128MB + 256KB f=
-or margin
-    -numa node,nodeid=3D0,cpus=3D0-1,memdev=3Dmem0 \
-    -numa node,nodeid=3D1,cpus=3D2-3,memdev=3Dmem1 \
+Shouldn't remove the newline above?
 
-log:
-[    0.000000] BIOS-provided physical RAM map:
-[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff]
-System RAM
-[    0.000000] BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff]
-device reserved
-[    0.000000] BIOS-e820: [gap 0x00000000000a0000-0x00000000000effff]
-[    0.000000] BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff]
-device reserved
-[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x000000008801cfff]
-System RAM
-[    0.000000] BIOS-e820: [mem 0x000000008801d000-0x000000008803ffff]
-device reserved
-[    0.000000] BIOS-e820: [gap 0x0000000088040000-0x00000000feffbfff]
-[    0.000000] BIOS-e820: [mem 0x00000000feffc000-0x00000000feffffff]
-device reserved
-[    0.000000] BIOS-e820: [gap 0x00000000ff000000-0x00000000fffbffff]
-[    0.000000] BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff]
-device reserved
-[    0.000000] BIOS-e820: [gap 0x0000000100000000-0x000000fcffffffff]
-[    0.000000] BIOS-e820: [mem 0x000000fd00000000-0x000000ffffffffff]
-device reserved
+>  	/*
+>  	 * Re-establish the PMD to point to the original page table
+>  	 * entry. Restoring PMD needs to be done prior to releasing
+> @@ -818,7 +855,7 @@ static void __collapse_huge_page_copy_failed(pte_t *pte,
+>  	 * Release both raw and compound pages isolated
+>  	 * in __collapse_huge_page_isolate.
+>  	 */
+> -	release_pte_pages(pte, pte + HPAGE_PMD_NR, compound_pagelist);
+> +	release_pte_pages(pte, pte + nr_pages, compound_pagelist);
+>  }
+>  
+>  /*
+> @@ -838,16 +875,16 @@ static void __collapse_huge_page_copy_failed(pte_t *pte,
+>   */
+>  static enum scan_result __collapse_huge_page_copy(pte_t *pte, struct folio *folio,
+>  		pmd_t *pmd, pmd_t orig_pmd, struct vm_area_struct *vma,
+> -		unsigned long address, spinlock_t *ptl,
+> +		unsigned long address, spinlock_t *ptl, unsigned int order,
+>  		struct list_head *compound_pagelist)
+>  {
+> +	const unsigned long nr_pages = 1UL << order;
+>  	unsigned int i;
+>  	enum scan_result result = SCAN_SUCCEED;
+> -
 
-...
+Same here?
 
-[    0.001870] ACPI: SRAT: Node 0 PXM 0 [mem 0x00000000-0x0009ffff]
-[    0.001871] ACPI: SRAT: Node 0 PXM 0 [mem 0x00100000-0x7fffffff]
-[    0.001872] ACPI: SRAT: Node 1 PXM 1 [mem 0x80000000-0x8803ffff]
+>  	/*
+>  	 * Copying pages' contents is subject to memory poison at any iteration.
+>  	 */
+> -	for (i = 0; i < HPAGE_PMD_NR; i++) {
+> +	for (i = 0; i < nr_pages; i++) {
+>  		pte_t pteval = ptep_get(pte + i);
+>  		struct page *page = folio_page(folio, i);
+>  		unsigned long src_addr = address + i * PAGE_SIZE;
+> @@ -866,10 +903,10 @@ static enum scan_result __collapse_huge_page_copy(pte_t *pte, struct folio *foli
+>  
+>  	if (likely(result == SCAN_SUCCEED))
+>  		__collapse_huge_page_copy_succeeded(pte, vma, address, ptl,
+> -						    compound_pagelist);
+> +						    order, compound_pagelist);
+>  	else
+>  		__collapse_huge_page_copy_failed(pte, pmd, orig_pmd, vma,
+> -						 compound_pagelist);
+> +						 order, compound_pagelist);
+>  
+>  	return result;
+>  }
+> @@ -1040,12 +1077,12 @@ static enum scan_result check_pmd_still_valid(struct mm_struct *mm,
+>   * Returns result: if not SCAN_SUCCEED, mmap_lock has been released.
+>   */
+>  static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm,
+> -		struct vm_area_struct *vma, unsigned long start_addr, pmd_t *pmd,
+> -		int referenced)
+> +		struct vm_area_struct *vma, unsigned long start_addr,
+> +		pmd_t *pmd, int referenced, unsigned int order)
 
-...
+Will probably find out in later reviews, but there is tracepoint in __collapse_huge_page_swapin.
+Would be good to add order in that tracepoint if you are adding order here?
 
-[    0.001888] Fake node size 16MB too small, increasing to 32MB
-[    0.001888] Faking node 8 at [mem
-0x0000000080000000-0x0000000081ffffff] (32MB)
-[    0.001888] Faking node 9 at [mem
-0x0000000082000000-0x0000000083ffffff] (32MB)
-[    0.001889] Faking node 10 at [mem
-0x0000000084000000-0x0000000085ffffff] (32MB)
-[    0.001889] Faking node 11 at [mem
-0x0000000086000000-0x000000008801cfff] (32MB) # (~32.11MB)
+>  {
+>  	int swapped_in = 0;
+>  	vm_fault_t ret = 0;
+> -	unsigned long addr, end = start_addr + (HPAGE_PMD_NR * PAGE_SIZE);
+> +	unsigned long addr, end = start_addr + (PAGE_SIZE << order);
+>  	enum scan_result result;
+>  	pte_t *pte = NULL;
+>  	spinlock_t *ptl;
+> @@ -1077,6 +1114,19 @@ static enum scan_result __collapse_huge_page_swapin(struct mm_struct *mm,
+>  		    pte_present(vmf.orig_pte))
+>  			continue;
+>  
+> +		/*
+> +		 * TODO: Support swapin without leading to further mTHP
+> +		 * collapses. Currently bringing in new pages via swapin may
+> +		 * cause a future higher order collapse on a rescan of the same
+> +		 * range.
+> +		 */
+> +		if (!is_pmd_order(order)) {
 
-So actual node 1 usable memory is [0x80000000-0x8801cfff] (~128.11MB)
-And Node 1 is successfully uniformly splitted into 4 fake nodes.
+Would it be good to introduce this in the patch that activates it? No strong
+preference btw. Just that its dead code in this patch itself.
 
-Sorry for causing confusion due to the wrong example.
-
-> > under-allocation will not be detected.
-> >
-> > Fix under-allocation detection logic to compare the number of actually
-> > created nodes (ret - nid) against the request count (n). Also skip
-> > under-allocation detection logic for memoryless physical nodes where no
-> > fake nodes are created.
-> >
-> > Also, fix the outdated comment to match the actual return value.
-> >
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > Reported-by: Donghyeon Lee <asd142513@gmail.com>
-> > Reported-by: Munhui Chae <mochae@student.42seoul.kr>
-> > Fixes: cc9aec03e58f ("x86/numa_emulation: Introduce uniform split capab=
-ility") # 4.19
->
-> ...
->
-> > @@ -416,9 +416,18 @@ void __init numa_emulation(struct numa_meminfo *nu=
-ma_meminfo, int numa_dist_cnt)
-> >                                       n, &pi.blk[0], nid);
-> >                       if (ret < 0)
-> >                               break;
-> > -                     if (ret < n) {
-> > +
-> > +                     /*
-> > +                      * If no memory was found for this physical node,
-> > +                      * skip the under-allocation check.
->
-> checkpatch complains about trailing white space here.
-> I'll fix it up when applying.
-
-Oops, I missed it. Thank you for pointing it out!
-
-> > +                      */
-> > +                     if (ret =3D=3D nid)
-> > +                             continue;
-> > +
-> > +                     nr_created =3D ret - nid;
-> > +                     if (nr_created < n) {
-> >                               pr_info("%s: phys: %d only got %d of %ld =
-nodes, failing\n",
-> > -                                             __func__, i, ret, n);
-> > +                                             __func__, i, nr_created, =
-n);
-> >                               ret =3D -1;
-> >                               break;
-> >                       }
-> > --
-> > 2.43.0
-> >
->
-> --
-> Sincerely yours,
-> Mike.
-
-I really appreciate your detailed review :)
-
-Best Regards,
-Sang-Heon Jeon
+> +			pte_unmap(pte);
+> +			mmap_read_unlock(mm);
+> +			result = SCAN_EXCEED_SWAP_PTE;
+> +			goto out;
+> +		}
+> +
+>  		vmf.pte = pte;
+>  		vmf.ptl = ptl;
+>  		ret = do_swap_page(&vmf);
+> @@ -1196,7 +1246,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>  		 * that case.  Continuing to collapse causes inconsistency.
+>  		 */
+>  		result = __collapse_huge_page_swapin(mm, vma, address, pmd,
+> -						     referenced);
+> +						     referenced, HPAGE_PMD_ORDER);
+>  		if (result != SCAN_SUCCEED)
+>  			goto out_nolock;
+>  	}
+> @@ -1244,6 +1294,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>  	pte = pte_offset_map_lock(mm, &_pmd, address, &pte_ptl);
+>  	if (pte) {
+>  		result = __collapse_huge_page_isolate(vma, address, pte, cc,
+> +						      HPAGE_PMD_ORDER,
+>  						      &compound_pagelist);
+>  		spin_unlock(pte_ptl);
+>  	} else {
+> @@ -1274,6 +1325,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>  
+>  	result = __collapse_huge_page_copy(pte, folio, pmd, _pmd,
+>  					   vma, address, pte_ptl,
+> +					   HPAGE_PMD_ORDER,
+>  					   &compound_pagelist);
+>  	pte_unmap(pte);
+>  	if (unlikely(result != SCAN_SUCCEED))
+> @@ -1318,9 +1370,9 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
+>  	unsigned long addr;
+>  	spinlock_t *ptl;
+>  	int node = NUMA_NO_NODE, unmapped = 0;
+> -	unsigned int max_ptes_none = collapse_max_ptes_none(cc, vma);
+> -	unsigned int max_ptes_shared = collapse_max_ptes_shared(cc);
+> -	unsigned int max_ptes_swap = collapse_max_ptes_swap(cc);
+> +	int max_ptes_none = collapse_max_ptes_none(cc, vma, HPAGE_PMD_ORDER);
+> +	unsigned int max_ptes_shared = collapse_max_ptes_shared(cc, HPAGE_PMD_ORDER);
+> +	unsigned int max_ptes_swap = collapse_max_ptes_swap(cc, HPAGE_PMD_ORDER);
+>  
+>  	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>  
+> @@ -2371,8 +2423,8 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  	int present, swap;
+>  	int node = NUMA_NO_NODE;
+>  	enum scan_result result = SCAN_SUCCEED;
+> -	unsigned int max_ptes_none = collapse_max_ptes_none(cc, NULL);
+> -	unsigned int max_ptes_swap = collapse_max_ptes_swap(cc);
+> +	int max_ptes_none = collapse_max_ptes_none(cc, NULL, HPAGE_PMD_ORDER);
+> +	unsigned int max_ptes_swap = collapse_max_ptes_swap(cc, HPAGE_PMD_ORDER);
+>  
+>  	present = 0;
+>  	swap = 0;
+> -- 
+> 2.53.0
+> 
+> 
 
