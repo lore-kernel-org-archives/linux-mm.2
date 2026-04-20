@@ -4,97 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A6AF36C26
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 06:43:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84D5DF36C2A
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 06:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 235F86B00FC; Mon, 20 Apr 2026 02:43:12 -0400 (EDT)
+	id CEB306B00FA; Mon, 20 Apr 2026 02:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20D716B00FE; Mon, 20 Apr 2026 02:43:12 -0400 (EDT)
+	id C4E756B00FE; Mon, 20 Apr 2026 02:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14AD06B0100; Mon, 20 Apr 2026 02:43:12 -0400 (EDT)
+	id B3BB56B0100; Mon, 20 Apr 2026 02:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 03ED46B00FC
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 02:43:12 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CE353BB9EA
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:43:11 +0000 (UTC)
-X-FDA: 84677992182.26.7C311E2
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 15BB01C000C
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:43:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=msxtn0YP;
-	spf=pass (imf20.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776667390; a=rsa-sha256;
-	cv=none;
-	b=8V4qn4mgAYHJ/w0MC3m+geofTu++UasdiRE3H873/bJV2rRmIW3teCA9nrKnf7RG0YdJmz
-	Za8u+AMyft1YvJn2R+O5yQG5aWUYLG3ek83eVp+7vOskWXwRHzNg1OzWeGGz6Fw7iviO4T
-	tMyp1q8tWwHS4+KiDM9BWJXlqOUIQlk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=msxtn0YP;
-	spf=pass (imf20.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A1EDE6B00FA
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 02:47:12 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 375955B75C
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:47:12 +0000 (UTC)
+X-FDA: 84678002304.27.AC785CC
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 00B4E120003
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:47:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=j4epmrx6;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776667390;
+	s=arc-20220608; t=1776667630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V5lG/8qmPRfYfae2xaMBCimH8dzHHT9YQ6vuqn5alsA=;
-	b=iT+lmHHmTsD9SXDl5yRbT0YKYjFZAUkSHEHSxAgWXLnVzTIv3M+d6h7wG5n7pIhyPc/rH3
-	jTlj9h8+E6YRISO7C1LPTKGldz7B01mUhIDu9hhdu54RG/LuwotUSl33xo53sw0K79I7sI
-	udYdbs9DDXonnN66DknvSFMOVdLzM1o=
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net B758840B0C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1776667388; bh=V5lG/8qmPRfYfae2xaMBCimH8dzHHT9YQ6vuqn5alsA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=msxtn0YPMQuEkjC0+TmQ7PhHZeony/csdrctHIRBk19ZSiHKHjDmHa5SO504GoGpd
-	 d7bOH1qphYfGLX2JRWeKaY0H7yekdAwV7tbI0M/Jsq4fJ5CWuW5xEkBz25qSJF2fBr
-	 kwWHl5n6rdHnNVBybJu2TAyd8SPcphF7PxPQ2HB6f5/VOdp6PjR67pRLdeKg5mFh5D
-	 buFt/ED6qTq95DxWFkFKn+VUOSC4MMPrVCMfZh4NQk8GT7Mk6oNoQqJ5Uk2+h3bABG
-	 cg9cGKuDm0Hr0w7M2BMgp138sVywE3J94TDR4Y72BJ2FrRwiowWfw3cg670HkTzkcX
-	 pGXZecpQ15y7w==
-Received: from localhost (mdns.lwn.net [45.79.72.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id B758840B0C;
-	Mon, 20 Apr 2026 06:43:06 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Nick Huang <sef1548@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Matthew Wilcox
- <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo
- <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Hao Li
- <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes
- <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, "Liam R
- . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: Add overview and SLUB allocator sections to slab
- documentation
-In-Reply-To: <CABZAGRHXtjzGJrgR1NAmVHFMP9eL5zZr3DaTAtAvywv_1sOHdw@mail.gmail.com>
-References: <20260418000635.17499-1-sef1548@gmail.com>
- <aeNGbNyPxJssnkbO@lucifer> <aeOuCH8ydw_yzdXZ@casper.infradead.org>
- <c113f667-f897-42cc-a0e5-b8a0bbd91be3@kernel.org>
- <aeTTw4gziJigaNbU@lucifer>
- <CABZAGRHXtjzGJrgR1NAmVHFMP9eL5zZr3DaTAtAvywv_1sOHdw@mail.gmail.com>
-Date: Mon, 20 Apr 2026 00:43:03 -0600
-Message-ID: <87jyu2w2rs.fsf@trenco.lwn.net>
+	bh=Fc4cd5bq7sZ2w7++0hS3ePoxG3H95CYNSIueuKwgKCY=;
+	b=OSpvF+0zAKeSaVDbWdy0dFn7meH6zMQTXfHh4+RoVmhYeKXOVmv5lY4E7G3rm+r2z3VnMQ
+	iGvPya0W32DDnxgNJnDGIV/sahCycoMrRDZMwAPlYB5mMHmfpVsTu9H+hjqpkVeGkR41iV
+	dSbZnhkS0EwkYbZtvwAe0mRA3qEkXJI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=j4epmrx6;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776667630; a=rsa-sha256;
+	cv=none;
+	b=ZZYIJVh+IdRF34YvkG574ab0vT4gXYDgI3PbhOjxmSJ/+s1J44K72U2B8wDGcvE7dDCsfJ
+	ix+Da7Jx90vxHlXJCJtU3jp79MyfwtG3Ary2rBsjQFrgrApOGGjDzV8Kmu+QkW/5RPCctq
+	P/HyXRZkwxBmJJ/3dsizukn/Rq9zubA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0650E1516;
+	Sun, 19 Apr 2026 23:47:03 -0700 (PDT)
+Received: from [10.57.63.177] (unknown [10.57.63.177])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 84A3F3F641;
+	Sun, 19 Apr 2026 23:47:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776667628; bh=FOT+rxetMCCm/Vt/n/onmxMCYGq9cNElSNypd+yNhnw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=j4epmrx6ayUafCVEQ7h5jQnxg6ml5eCR2lSQ+K/AG8/lUgNRBeMqJIC9TwDXgnhFL
+	 m4RmLBmEqyihwgMV+Er/qJM7r3qMVW+zoaiWAHClxUtZ0fNTb8Y2Qj6fEA/l8Wldud
+	 UmkwT8YdneFQ678p88xVouNXYqX+mgCG6ljkWgoQ=
+Message-ID: <c78a9048-52a0-4a22-ad69-4bb5e84895b8@arm.com>
+Date: Mon, 20 Apr 2026 08:46:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 15BB01C000C
-X-Stat-Signature: 6ofsejqt7r8d3xz3tkok718a88jrh74s
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/30] mm: Introduce kpkeys
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-hardening@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
+ Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
+ Kees Cook <kees@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
+ <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
+References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
+ <20260227175518.3728055-2-kevin.brodsky@arm.com>
+ <00b24db8-0063-48d6-8bc4-e8b670d8f0d5@kernel.org>
+ <913002a5-e002-4001-ad19-037102d1f97d@arm.com>
+ <cd2bcc09-2507-4ed4-bb92-2d53baedaf04@kernel.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <cd2bcc09-2507-4ed4-bb92-2d53baedaf04@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7sg7sw1rnmkp57udby4t8cufsmdid7ps
+X-Rspamd-Queue-Id: 00B4E120003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776667389-509692
-X-HE-Meta: U2FsdGVkX1/92eMUVvjIQu6BQd+kkP8LZfK40tppU8aunSK4dSBJPh5TIVyvbCC7g2MqxeJ8+okSr67cUBuZuRccUkFF2krO+PgS7u2vskFv30OrYg06gxcXXi+WdGWc9Qk7H0X1YyNrihCCy1q0cPGDgp48Va0Us5neZCDbu7WrcwwqBEIDUtvj9GlrQRemlK+S1wsLcUQZzG1eGln5hcqVOECX4yU6zimCuLxuZU/rs7PpvqSZe9UuhJHo6YP0nJqpXX6iRN2J7uYWnrXAUdOuzJjq+N/sJSCkgCGdwEF+GqPYcr6w4WgNtYs4kVs96n0YDxmpw60yu0WZYPilFFb2g8c/DcvqIPVEnAznZ3djNHkaGoLlvXzs/B4jws4q7lEOOZtUBXKbDy4XWqtUc8JHitBJgDHiy8kyRPHnAe2rjHBdH/LG0SWyKSyOARNAHFes4Dmw6283Mfo/MYxIXaGkBXZENCeHAg+2hoC7ikLlVkfhNDZllTVUs5KrUAE+XFjoFXw8zGQ7ZSgjL0JIr34dAZyBjyP2HcDEWfatNDp0GVq2SjIAbSTxf98imH8FjXCkxpm/AebEDBIFjPsIkS4hdUvqZNMI7H9J0VNYbPnmlg0OdtZPJs04fU1tSKNmXCzxjvf3X5+RP+W9zuCMu9SptNd8j6woq/jnntV7lTsIktWUKQfWt8DG+KO/Z3fy0xhkugMC3/hsFZRDa7IKAhAuJArYZrJAXZoVNCMPvpoZ4lAHoY2xMXeOYZc2uEU8vGwy9HcQdEv9hSV+YEordH9nEUUmRoQakkiMDgdyB0bTdcR76aG/10QxX1Dgr8erYurSRzPN781+H/8AYfNYIiG4DxXlXOyot3AGapBFCJpD/3CRvxtdT2JLK7EUypaD5ahFtIdNQDHiSXCslAol/Mn/g9kNykRnSKz0wbUMwAZJezwrxebZaNKcpUUJDFhjh0nI8kfIx3w9oCXFHdp
- KxDrGlgO
- rc1vqWtQlen0r4WalbY04RRS+NTbwOVhiztd9Gu0Q8HtMwqwiHdTWkmvGLdg6XydL+KEw13Y6ZzDsEV3msl6ZP8Zrd8ZdCavMCjOAuxQzVKzQ0KforXb3TlqYoX9ww3emWxM1AxT8cXh4dcsGFaFpntRxas9BdBWj7JML11iLmXBmnSy7XbWfUp4TTSOu7NF+hIEIIE/pAvIWvsksR1VFH9kf9ATaML9h718oTAJG/i5cQiKz8EH4x/UxGI6KLkZXq8/eLQTlRETQR8t8st9Uctd43jOV0Ts/A2g5eZ3yXEXpoQm2WXOWwF0gu3RVrIrKGSknKr9c1E2JMT2tbNfU//8Uhg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776667629-340536
+X-HE-Meta: U2FsdGVkX182CccKvt6FKRpidhGErPoSqrehzfPTcirB6kPSBTx+Jonr0FUPHKjHMKD3W3EusIJ2nWS3BBur2Xm0voXeloLJbFploMfR06o2m1cc43lK/mnqXSRd8OqSdmiCpZo+fTrgKfPW/4pIM0arMSvEycK7/49GNHVracMBZgfRFuAYnGeq6fu8vq7ew1jWSXj2TrB8f/2CtUOTHs9xp8X+MVDP4+2vJ9+g8l0lM20BvZMDhflvaFgJdJQ2SFDJgZ3bPIHii2eEyUXYWkycLM729OvBTnEgUHRGtAUD6UrARWOR0qr8v5D9tiDVpyAUrMqjQk+OO/2If1AFDaRoEi/fbqJ2RIhzcDoPDLPB3//mbfGcu7hXyjzPlELJkA9dih9hKaq+zpGIFo7oWr5BD94NOE661VDYLHxoolB26M54BC6dRZThMP4v2xm2AJ500t2X7Cqc2ToCraqwoc5l/old6viAXFgeFC8Pn0qHbQUBhMGcUC1oF30cL3sFYXiI15fa1dWf1BgHj82hmU0Ohp8OYCPIrEoqiUsn3eSX1w+b3Y7ly+F4SuEKNAMP+5INCj56ayfazr0POQTKz+ZCX7WKRIhKlopb8h+mWFXLsSC9iSpe2T3SRqkKjpbdlhFJjMZpk9HCUVu6TlMqX7BwY2DT1apBRIOaU3YnhiT/OQXT/htWtl4qWrSoz+aYoK6Qw+yjMp8TM1XEoR7lsB5ZOEHeTWBRZEER06jqGla4SmNSNYy1lHLq8E832fWHC2KOJF0bWQSEn0H/FBhrGlUlIEpgl345JrNC8KZHxABmB2NP9H+8WITscrJ2pxL8h8dLXTUOeVp7tbsaZqt2KbTzOl6PO0akeBu/wGze4uvMJz/G7WMy2ff4g3xw9W7iLIVQVKjrnWXqzjcjdlJSv8M2fSqoULuGAy+ckJ8+i72I0/uArGQs+WHOO7JwUK72WTn4kHPe4efAooZ/WUQ
+ 9z1mMBeG
+ U/LEYZXlMBBS9JT1WdY4Y9aCrKgeWha/CzvupkbHeI/FjnxYDCSTqsnO+dOb1+9VqHmXerslPGjwbA3T0ResGu9jsl4wPdBDPQE0zX9iQrsx/x5f2Nxa0EYGB9A2S1lH7xFRRTzJrwgrejRaHH4heH373TpbgAjc7msp6dyi/FVOFQUJ3azPkgARiHmNQfnBrOexcDPx2j1RVAa0ejePzKDeALksdJuS8Yricm3ENOtmWWhyHTjjp8kKSLPVFichF+P9F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,33 +110,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nick Huang <sef1548@gmail.com> writes:
-
-> I am really sorry for causing trouble for everyone. I would like to
-> ask which aspect of mine was disrespectful, so that I can be more
-> careful next time.
+On 17/04/2026 19:38, David Hildenbrand (Arm) wrote:
+> On 4/17/26 17:59, Kevin Brodsky wrote:
+>> On 17/04/2026 16:37, David Hildenbrand (Arm) wrote:
+>>> On 2/27/26 18:54, Kevin Brodsky wrote:
+>>>> kpkeys is a simple framework to enable the use of protection keys
+>>>> (pkeys) to harden the kernel itself. This patch introduces the basic
+>>>> API in <linux/kpkeys.h>: a couple of functions to set and restore
+>>>> the pkey register and macros to define guard objects.
+>>>>
+>>>> kpkeys introduces a new concept on top of pkeys: the kpkeys level.
+>>>> Each level is associated to a set of permissions for the pkeys
+>>>> managed by the kpkeys framework. kpkeys_set_level(lvl) sets those
+>>>> permissions according to lvl, and returns the original pkey
+>>>> register, to be later restored by kpkeys_restore_pkey_reg(). To
+>>>> start with, only KPKEYS_LVL_DEFAULT is available, which is meant
+>>>> to grant RW access to KPKEYS_PKEY_DEFAULT (i.e. all memory since
+>>>> this is the only available pkey for now).
+>>>>
+>>>> Because each architecture implementing pkeys uses a different
+>>>> representation for the pkey register, and may reserve certain pkeys
+>>>> for specific uses, support for kpkeys must be explicitly indicated
+>>>> by selecting ARCH_HAS_KPKEYS and defining the following functions in
+>>>> <asm/kpkeys.h>, in addition to the macros provided in
+>>>> <asm-generic/kpkeys.h>:
+>>>>
+>>>> - arch_kpkeys_set_level()
+>>>> - arch_kpkeys_restore_pkey_reg()
+>>>> - arch_kpkeys_enabled()
+>>> Another thing: why not simply drop the "arch_" stuff from these helpers?
+>> The first two are not meant to be directly called, they're the
+>> arch-specific implementation of kpkeys_set_level() and
+>> kpkeys_restore_pkey_reg(), and those generic functions handle some
+>> generic logic.
+>>
+>> arch_kpkeys_enabled() is directly used in generic code, so I suppose it
+>> could be renamed to kpkeys_enabled()? It's actually implemented in an
+>> arch header so I wasn't too sure about it.
+> I was skimming over patch #13 and spotted:
 >
-> If I want to make this kind of change, should I send an [RFC patch] to
-> ask for everyone's opinion?
+> +void·__init·kpkeys_hardened_pgtables_init(void)
+> +{
+> +›	if·(!arch_kpkeys_enabled())
+> +›	›	return;
+> +
+> +›	static_branch_enable(&kpkeys_hardened_pgtables_key);
+> +}
+>
+> The arch_* there can just go IMHO.
+>
+> I'd also do it for the two ones used by the GUARD macros. If we don't
+> expect common code wrappers (arch_kpkeys_enabled() vs. kpkeys_enabled),
+> then the arch_ is unnecessary information -- IMHO
 
-If you want to be respectful, start by reading what has been sent to
-you; the problems with your submission were well explained, more than
-once.
+Makes sense. I could just rename arch_kpkeys_enabled() to
+kpkeys_enabled(), but I'm thinking having an arch abstraction could be
+clearer, after looking into protecting sparse-vmemmap page tables. The
+new version would look like this:
 
-To reiterate:
+* <asm/kpkeys.h>:
+    - arch_supports_kpkeys()
+    - arch_supports_kpkeys_early() [can be called before features have
+been detected]
 
-- Do not send LLM-generated material without marking it as such as
-  described in our developer documentation.
+* <linux/kpkeys.h> defines:
+    - kpkeys_enabled() -> arch_supports_kpkeys()
+    - kpkeys_hardened_pgtables_enabled() -> static key
+    - kpkeys_hardened_pgtables_early_enabled() ->
+arch_supports_kpkeys_early() [called when setting up sparse-vmemmap,
+linear map, etc.]
 
-- Do not attempt to document systems that you do not, yourself,
-  understand; you have no hope of getting it right, and you will only
-  succeed in wasting the time of the people who have to review your
-  changes.
+There is extra #ifdef'ing going on in <linux/kpkeys.h>, but
+<asm/kpkeys.h> doesn't need to worry about it. I think this might be
+easier to follow, I don't like too much having an interface function
+like kpkeys_enabled() defined in an arch header (not great for
+kernel-doc comments either). Any thoughts?
 
-The point of documentation is to be informative, accurate, and useful;
-simply filling in a bunch of words is not helpful to anybody.
-
-Thanks,
-
-jon
+- Kevin
 
