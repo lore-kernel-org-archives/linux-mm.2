@@ -4,105 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE3ABF588DE
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 374BBF588DC
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 14:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 083EA6B0005; Mon, 20 Apr 2026 10:03:40 -0400 (EDT)
+	id 727746B0005; Mon, 20 Apr 2026 10:16:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0351F6B0088; Mon, 20 Apr 2026 10:03:39 -0400 (EDT)
+	id 6D8EE6B0088; Mon, 20 Apr 2026 10:16:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB4496B0089; Mon, 20 Apr 2026 10:03:39 -0400 (EDT)
+	id 5EE616B0089; Mon, 20 Apr 2026 10:16:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DDA8F6B0005
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:03:39 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79155BC35D
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:03:39 +0000 (UTC)
-X-FDA: 84679102158.17.2E6E797
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id ABAA0160014
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:03:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bpe+6CmT;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CEC56B0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:16:40 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 556C51A096F
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:16:39 +0000 (UTC)
+X-FDA: 84679134918.26.EFB8A1C
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 627FD40016
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:16:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JnZoIHzH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776694597; a=rsa-sha256;
+	cv=none;
+	b=l1v0QVTW2V39Lod8Sbmk7o/6nSqJSDYursbYYZ75X95VKS1iivIGwgMdi2SDz0VhEDYlox
+	nR8MMd/i72hjK2iAPNhJuEqTwMR0E5z/uikmNQ1TBQgzSmKv1QOOtGDiCIQ1rGmXtHbXR8
+	LLvRo6MbQFkg0UhypCIURIaUwzfjMII=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JnZoIHzH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776693817;
+	s=arc-20220608; t=1776694597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dNgNvY6P366syo0752QeQBx8B2Atm3MzK7wQ6o//uMA=;
-	b=O2nOpvuKdv1iEgo51ZSheEtUvP/sVnNMGiv0ZXZkSzjV7y8W5fomnDEZaEXYGfF8OlOi++
-	baHuxJAT5Rb5uUhpCX3IoU7XJiJgvjESECAddQYt7/NW9klQPohof14+OJd3BlUy8rj1QN
-	+bAJELSjnOmPZ0L6a9QjVIhGy2Ou1MY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bpe+6CmT;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776693817; a=rsa-sha256;
-	cv=none;
-	b=DkDNEofn14Vw49jG50rmwXx1RLa9FHvVcQXkxKM2hivK+8ABuuuygZXT62skAs7mUVicgC
-	LTUdCUZ4p/+oT4XWfVG8e1hGVu6z9d93GUmIDMr15LGX1Kl9Lu2RIGHo1viYeqVNbEFz9G
-	sznb4yDSI6gB83ghex7BQQLUs/+rAmE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFC4060141;
-	Mon, 20 Apr 2026 14:03:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC81C19425;
-	Mon, 20 Apr 2026 14:03:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776693816;
-	bh=OxuN49bK9qrmMSMd11iXbzEzvR4ZpTtBtJ1jENfQcdY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bpe+6CmT+5l2LxfZhErSNVrhTl2np05OftUtbE0d/+4jIZEHNdtkB3Eb9oXCwmh7S
-	 eYPTeAyLFi5DX2ye5zDrqoIU3R+ffediBPC0fHYqmiiU8A8Yi9RJzj8Q0F+2BCBaww
-	 9WXMWw+70oP+sHyb2hLq01uUG/2SlaQqPBhN2LyGGFbvoiXL5rmQhyxC/pc7IUASM3
-	 e8ZL6eM0SRk6Cwd7fDzyM33ZeCJ3mU19eALR84hl+c21G0G/b1XnBVqoV+APUy54IC
-	 7y01hgTX+UNVBJPhwy7VPYSpd3q66lP/2lxDlSJcFic97WYahmu5Mqpso/nJ0qpCsT
-	 56pGO+RzKTEDw==
-Date: Mon, 20 Apr 2026 17:03:28 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Liu, Yuan1" <yuan1.liu@intel.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"Hu, Yong" <yong.hu@intel.com>,
-	"Zou, Nanhai" <nanhai.zou@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	"Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
-	"Chen, Yu C" <yu.c.chen@intel.com>,
-	"Deng, Pan" <pan.deng@intel.com>,
-	"Li, Tianyou" <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] mm/memory hotplug/unplug: Optimize zone contiguous
- check when changing pfn range
-Message-ID: <aeYyMFKvR8MZO6Tq@kernel.org>
-References: <20260408031615.1831922-1-yuan1.liu@intel.com>
- <17b821b6-0176-43d5-92f7-fe2a0c4f70cf@kernel.org>
- <ade6RVeXxDt7ImP4@kernel.org>
- <e86fee84-08d8-4563-8596-e40d8e196799@kernel.org>
- <MW4PR11MB6936CA77BF02BF498BBEAB1CA3252@MW4PR11MB6936.namprd11.prod.outlook.com>
- <12b8ba83-54b1-454e-b787-2d2e967c9b58@kernel.org>
- <MW4PR11MB6936E593C865F4E855CED602A3202@MW4PR11MB6936.namprd11.prod.outlook.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=TTlikDogw7UwTtdhEVyGrjLzE4DL6569lusdJfrE8Uc=;
+	b=pS4xUBW9sNrXPrl72l92K/VJ5UHZH2oi5JCsbYjiG7xbfRNj2+GfPtVm8vGxUKn7NhGTU/
+	mpOh/LVXnHVYl3Hh0gu7L14zDj/3JByjVTarkMhecEOEG61Im/S8oM5f+5JtkKiX7fKVcI
+	t38CGHEi7LJZqwViDa82i7LxDOjnH/Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776694594;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TTlikDogw7UwTtdhEVyGrjLzE4DL6569lusdJfrE8Uc=;
+	b=JnZoIHzHdTXwbns7zGl5mN+5vA9Ew4wQGGpJYaGtXQquxHAQDvhfQ8GCCpS73xO1Chg7mr
+	AI1zMhqVgxTInrU/S5u6mTDAjp0D729871jeqOaPUWAcEAUvWLWDl/s5+IhbOBrPXOPNu+
+	N4m5rYvv2y8MulxdcCLGUB3EykhgF+M=
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH] mm/alloc_tag: replace fixed-size early PFN array with dynamic linked list
+Date: Mon, 20 Apr 2026 22:15:34 +0800
+Message-Id: <20260420141534.1009462-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <MW4PR11MB6936E593C865F4E855CED602A3202@MW4PR11MB6936.namprd11.prod.outlook.com>
-X-Stat-Signature: mdxqnie6wgma9zwpy9phuodzn78tks15
-X-Rspamd-Queue-Id: ABAA0160014
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 627FD40016
+X-Rspamd-Server: rspam12
+X-Stat-Signature: dmh3d77gfzin9y6bwipjag3ff1rab6em
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776693817-693356
-X-HE-Meta: U2FsdGVkX189LlRh8BDwwd0x0XIGIa0nS2YT5QN5+clQ8O5kANhf5I9cBdct+6PG2cAktSvxkgszYIOMD52KbjKateUxgTlwkQb8guLm3R/MUgn2mu6DEYVpUIYccIag1VRBlJKGeeCWQRJGIb2n1HreADuO27fqEWzeEgb2bcDB487hrW54n8wqR5fs60jMPdFn/kr38jSgSP4gZV85w5yvvP762gpokWpgjE8OLkh27CyhqXYnaB9ZcyTV0yRWqQLErQ/dh6prPDF/f52+xx2gawcNNDJlnkN79k50tODx/RHIV/5otaOTUK/0225uM7dPa2ndr+ePyfNuoHm4oX+A/NoCS7uVOoXwwfp6vzsPKcSa57gGFWvHIDtFvyiC0sUj8SXJupGerZ0fjLjYWpVPH4honl26x8LBaOCuw+K8zMc4s8ZswU9dUkYPeIuObo9g5R73F9YzxmYzdJ2Cm8my2MhamZe5MaNy7NORcLyqc7C2nkOoSLINI1TcxFWEB7qpdDORCab1h7XTrR0wMt8StbtIw1apRyhLfpORFW7IKHRIK5KPzecfy0MXiDrKI4CrLcS+yW/9YjNO4KG1Ju5Ogb4VvnRddrGMt5VhztjyyCiXm5PArB5NKNsoPDP5OQK2vraFBUloRtoCk3X749t+K+fkdXKK8w4i/Ju3VRITzBdpHmICXcPlHqoOG1DhZeilRGw2Y9Mbka/TOXE0Og95HiEt/AZFOm5ESQsjkg9rZO0gLzdsyGqrHS/5/hd6WHwYL3x0ee4rIJf4fcNO8kplcpI5OnmllFL7oDJS0/a3GvqYFxGhm2+TD9R1dN60WZBUdPLvwjrmJCiqEik65HhsHAK6WrUKtTWNN1UIdifx0LC3xFCKr1pOXXyATXSamshEfGGB8eALSunpYJP2zHCQllft1Cn64g14kwYXs7huey5pvGhfOtEu12m29DIai7W0a7HbHpPxPjUxtnq
- rplJzilG
- XIT1V2ScImGS/IiwJ4rI7ojsc8Ygd4g1zbL/dz9X63sgquqdB3MqUPGwt4Dp9x2ZxBhQve9FUERQF2IyF3AfUfShwKD6UVRtgS/lKcrkkCr/WT5FLaQpyMhWj/ZIG8DVvvTDStuu+NweOUE+vBQY+ZB8HXigZyfGCBhxo74MY9THla0RYytCj35zh+cIKT3ps6yOUtqI6AQg872KEHRKA1fI4qSqBYmRVcX9x+f/XA9YsF3Dw1fqZ/c3DuQSTvi4aqOte9sxjHDtTiB5wk2dc5pk3L18hLqg3GYSu84h05iPnLmp76jDYZv+UekOSKakm2bn1032Boo+paTS0IYD8WOCjx1ADXFvRIVit32moPmDCa320uv7qjF6OCJHVeQRSZoJ3mbakRQ7Ns31zH6dFP5ZIPRStAMMxq1ycEukbIAKCXoTX+n1YvC4cbVvA9Dn6LsmUMN+G6/7uKMjckUgzNhYPTpMPBeKW1mfJ
+X-HE-Tag: 1776694597-47203
+X-HE-Meta: U2FsdGVkX19h8zt2UQxaqlU9dRn/eziUzpNpWcQzQ0v1OYfeVs50xWe1eIuLTIS4phuJLQW5by9DFKXf7uhxffU7qu2T5NgL/MWkFPVe5Yh3hVSXe6Nkrjzm8HmXeHZesRdD7MqEYkiiJfdsEuN033ZTM5DmNRu+ZSbFGZy2yaU+QrqcVuqnRbtOl/6fMFKY5IETWzc00uVg4jC8J65MouCwCB0G24h21x2fHtizYRPprYX/jvBJ3rg3KLwJmigZ98NOo1sfh8wFnvtNMToyQdX5+8kNaMVHVUmEIrx7YpZYtTtIZP4BkPJ9SUg/ogTDAGzOGPAZMF9lkxp4u0mqu9iqNU5cB/gnTqFTa/gVywkweeS3+tB9ZxH8G2b+3CgD9EA4ei/PI6d+a49xcfJsMRmXquAXj2jBCN7mplVY2SFOrJT6+PsY37+S3Jk4ZctyWCSsSVqBLbycqqcAUPMNa1QV3hVTH53sDjN6hBrxHrkjwWxq96qUBdRhX5KK0XtNHWc6HE9D+lW5yGyAgprfKbfX2E0xa825qt8GOhYGB+x3UJMjo/rUuUFtt1qzTiW4lhn9q+ixmBOkDjM1NvyOBNWttnhywQLf/LBnGwoDKDoXE4zK8dFas+4VRZ/q1gsSdZBoSxDan0f3f8sHNrKcaenmlxuVAKIgWT8rZm4+4WOlo3lk1A+IuQ36UDQ3/wziop6qlULIG5/xcB7thy1LK4EqfFs1NmJt2hkjq+JrAqff7GKpZK+dR4vANCriiRupurCX3Nf3VjyAQbtmQ4DvEcM+z/OdLMeH3EZ3IOYOWRhzkIwDMxcVYz2EZAm+IPscB9pCjBkS4qBpWQMBWZ3ks8QsOhgeJwdjcvCJ3ctSUXNjFm1xy+l2gzHpo0m2BQS30sQEqDCK/Ex6mUJT2hwCB+yMhqPozPvuEwY3sNbeYyZKyAIZGYcqULEuTADAW/ddAIR6L3pXndSoseOkOJu
+ PKwAVHGH
+ OH4D5H/RN0QR8k3xsX/Drugc0znz8KunlGf1cemwh12OgGQ1T5CRFVTbIETIQZ5gPVByE3kXOrqeE+zQ3q7fVEbsSrgePToeGEghsz4nNeRNgIna7LajbPJdvR5Esf1krxI+WIFqy/DPs0CP3IihflWvwmXp4fYGr8UqDswTGDNxu01jJXG5nLzrB0qJA9QDWcZ9yBRDDoRkz35IB/PWd5v4XDL73o/ODrCoWhYmzB77TCZ/O7Geqp00z4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,95 +86,272 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 17, 2026 at 06:34:50AM +0000, Liu, Yuan1 wrote:
-> 
-> > >>> sashiko had several comments
-> > >>> https://sashiko.dev/#/patchset/20260408031615.1831922-1-
-> > >> yuan1.liu%40intel.com
-> > >>>
-> > >>> I skipped the ones related to hotplug, but in the mm_init part the
-> > >> comment
-> > >>> about zones that can have overlapping physical spans when mirrored
-> > >>> kernelcore is enabled seems valid.
-> > >
-> > > Hi David & Mike
-> > >
-> > > I’ve spent some time working through these issues to better understand
-> > them.
-> > > For the overlapping physical spans(mirrored kernelcore), should I avoid
-> > counting
-> > > overlap_memmap_init in memmap_init_range in the next version?
-> > > For example, change it as follows:
-> > >
-> > > +unsigned long __meminit
-> > > +memmap_init_range(unsigned long size, int nid, unsigned long zone,
-> > > +               unsigned long start_pfn,
-> > > +               unsigned long zone_end_pfn,
-> > >                 enum meminit_context context,
-> > >                 struct vmem_altmap *altmap, int migratetype,
-> > >                 bool isolate_pageblock)
-> > >  {
-> > >         unsigned long pfn, end_pfn = start_pfn + size;
-> > > +       unsigned long nr_init = 0;
-> > >         struct page *page;
-> > >
-> > >         if (highest_memmap_pfn < end_pfn - 1)
-> > > @@ -893,7 +897,7 @@ void __meminit memmap_init_range(unsigned long size,
-> > int nid, unsigned long zone
-> > >         if (zone == ZONE_DEVICE) {
-> > >                 if (!altmap)
-> > > -                       return;
-> > > +                       return 0;
-> > >
-> > >                 if (start_pfn == altmap->base_pfn)
-> > >                         start_pfn += altmap->reserve;
-> > > @@ -911,6 +915,7 @@ void __meminit memmap_init_range(unsigned long size,
-> > int nid, unsigned long zone
-> > >                         if (defer_init(nid, pfn, zone_end_pfn)) {
-> > >                                 deferred_struct_pages = true;
-> > > +                               nr_init += end_pfn - pfn;
-> > 
-> > It's confusing. Could the remaining range also include overlapping inits?
-> > 
-> > Maybe the whole "skip overlapping init" should actually be handled on a
-> > higher level?
-> > 
-> > I guess we'd want to skip any memblock_is_mirror(r) regions entirely.
-> > 
-> > @Mike?
-> 
-> Hi Mike
-> 
-> David suggested moving the overlap handling to a higher level and 
-> skipping memblock_is_mirror() regions entirely. I think this makes sense.
-> 
-> Would this work for you, or do you have a different preference?
+Pages allocated before page_ext is available have their codetag left
+uninitialized. Track these early PFNs and clear their codetag in
+clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
+warnings when they are freed later.
 
-Looks about right :)
+Currently a fixed-size array of 8192 entries is used, with a warning if
+the limit is exceeded. However, the number of early allocations depends
+on the number of CPUs and can be larger than 8192.
+
+Replace the fixed-size array with a dynamically allocated linked list.
+Each page is carved into early_pfn_node entries and the remainder is
+kept as a freelist for subsequent allocations.
+
+The list nodes themselves are allocated via alloc_page(), which would
+trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() ->
+alloc_early_pfn_node() and recurse indefinitely.  Introduce
+__GFP_NO_CODETAG (aliased to __GFP_NO_OBJ_EXT) and pass gfp_flags
+through pgalloc_tag_add() so that the early path can skip recording
+allocations that carry this flag.
+
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+ include/linux/alloc_tag.h | 18 ++++++++
+ lib/alloc_tag.c           | 91 ++++++++++++++++++++++++++-------------
+ mm/page_alloc.c           | 27 ++++++++----
+ 3 files changed, 97 insertions(+), 39 deletions(-)
+
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index 02de2ede560f..25374e40e14b 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -150,6 +150,23 @@ static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
+ }
  
-> Something like this
-> static void __init memmap_init(void)
-> {
-> ...
->     for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
->         struct pglist_data *node = NODE_DATA(nid);
->         bool is_mirror = mirrored_kernelcore && 
-> 				 memblock_is_mirror(&memblock.memory.regions[i]);
-
-I'd add a local memblock_region variable.
-
-> 
->         for (j = 0; j < MAX_NR_ZONES; j++) {
->         ...
-> 	      if (is_mirror && j == ZONE_MOVABLE)
->                 continue;
-> 
->            memmap_init_zone_range(zone, start_pfn, end_pfn,
->                                   &hole_pfn);
-> Best Regards,
-> Liu, Yuan1
-
+ #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
++/*
++ * Skip early PFN recording for a page allocation.  Reuses the
++ * %__GFP_NO_OBJ_EXT bit.  Used by alloc_early_pfn_node() to avoid
++ * recursion when allocating pages for the early PFN tracking list
++ * itself.
++ *
++ * Callers must set the codetag to CODETAG_EMPTY (via
++ * clear_page_tag_ref()) before freeing pages allocated with this
++ * flag once page_ext becomes available, otherwise
++ * alloc_tag_sub_check() will trigger a warning.
++ */
++#define __GFP_NO_CODETAG	__GFP_NO_OBJ_EXT
++
++static inline bool should_record_early_pfn(gfp_t gfp_flags)
++{
++	return !(gfp_flags & __GFP_NO_CODETAG);
++}
+ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag)
+ {
+ 	WARN_ONCE(ref && ref->ct && !is_codetag_empty(ref),
+@@ -168,6 +185,7 @@ void alloc_tag_add_early_pfn(unsigned long pfn);
+ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag) {}
+ static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
+ static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
++static inline bool should_record_early_pfn(gfp_t gfp_flags) { return true; }
+ #endif
+ 
+ /* Caller should verify both ref and tag to be valid */
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index ed1bdcf1f8ab..6dd6c2966afd 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -766,38 +766,63 @@ static __init bool need_page_alloc_tagging(void)
+  * Some pages are allocated before page_ext becomes available, leaving
+  * their codetag uninitialized. Track these early PFNs so we can clear
+  * their codetag refs later to avoid warnings when they are freed.
+- *
+- * Early allocations include:
+- *   - Base allocations independent of CPU count
+- *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
+- *     such as trace ring buffers, scheduler per-cpu data)
+- *
+- * For simplicity, we fix the size to 8192.
+- * If insufficient, a warning will be triggered to alert the user.
+- *
+- * TODO: Replace fixed-size array with dynamic allocation using
+- * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
+  */
+-#define EARLY_ALLOC_PFN_MAX		8192
++struct early_pfn_node {
++	struct early_pfn_node	*next;
++	unsigned long		pfn;
++};
++
++#define NODES_PER_PAGE		(PAGE_SIZE / sizeof(struct early_pfn_node))
++
++static struct early_pfn_node *early_pfn_list __initdata;
++static struct early_pfn_node *early_pfn_freelist __initdata;
++static struct page *early_pfn_pages __initdata;
+ 
+-static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
+-static atomic_t early_pfn_count __initdata = ATOMIC_INIT(0);
++static struct early_pfn_node *__init alloc_early_pfn_node(void)
++{
++	struct early_pfn_node *ep, *old;
++	struct page *page;
++	int i;
++
++retry:
++	old = READ_ONCE(early_pfn_freelist);
++	if (old) {
++		if (try_cmpxchg(&early_pfn_freelist, &old, old->next))
++			return old;
++		goto retry;
++	}
++
++	page = alloc_page(GFP_ATOMIC | __GFP_NO_CODETAG | __GFP_ZERO);
++	if (!page)
++		return NULL;
++
++	ep = page_address(page);
++	for (i = 0; i < NODES_PER_PAGE - 1; i++)
++		ep[i].next = &ep[i + 1];
++	ep[NODES_PER_PAGE - 1].next = NULL;
++
++	if (cmpxchg(&early_pfn_freelist, NULL, ep + 1)) {
++		__free_page(page);
++		goto retry;
++	}
++
++	page->private = (unsigned long)early_pfn_pages;
++	early_pfn_pages = page;
++
++	return ep;
++}
+ 
+ static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
+ {
+-	int old_idx, new_idx;
++	struct early_pfn_node *ep = alloc_early_pfn_node();
+ 
+-	do {
+-		old_idx = atomic_read(&early_pfn_count);
+-		if (old_idx >= EARLY_ALLOC_PFN_MAX) {
+-			pr_warn_once("Early page allocations before page_ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
+-				      EARLY_ALLOC_PFN_MAX);
+-			return;
+-		}
+-		new_idx = old_idx + 1;
+-	} while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx));
++	if (!ep)
++		return;
+ 
+-	early_pfns[old_idx] = pfn;
++	ep->pfn = pfn;
++	do {
++		ep->next = READ_ONCE(early_pfn_list);
++	} while (!try_cmpxchg(&early_pfn_list, &ep->next, ep));
+ }
+ 
+ typedef void alloc_tag_add_func(unsigned long pfn);
+@@ -820,7 +845,8 @@ void alloc_tag_add_early_pfn(unsigned long pfn)
+ 
+ static void __init clear_early_alloc_pfn_tag_refs(void)
+ {
+-	unsigned int i;
++	struct early_pfn_node *ep;
++	struct page *page, *next;
+ 
+ 	if (static_key_enabled(&mem_profiling_compressed))
+ 		return;
+@@ -829,14 +855,13 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
+ 	/* Make sure we are not racing with __alloc_tag_add_early_pfn() */
+ 	synchronize_rcu();
+ 
+-	for (i = 0; i < atomic_read(&early_pfn_count); i++) {
+-		unsigned long pfn = early_pfns[i];
++	for (ep = early_pfn_list; ep; ep = ep->next) {
+ 
+-		if (pfn_valid(pfn)) {
+-			struct page *page = pfn_to_page(pfn);
++		if (pfn_valid(ep->pfn)) {
+ 			union pgtag_ref_handle handle;
+ 			union codetag_ref ref;
+ 
++			page = pfn_to_page(ep->pfn);
+ 			if (get_page_tag_ref(page, &ref, &handle)) {
+ 				/*
+ 				 * An early-allocated page could be freed and reallocated
+@@ -861,6 +886,12 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
+ 		}
+ 
+ 	}
++
++	for (page = early_pfn_pages; page; page = next) {
++		next = (struct page *)page->private;
++		clear_page_tag_ref(page);
++		__free_page(page);
++	}
+ }
+ #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+ static inline void __init clear_early_alloc_pfn_tag_refs(void) {}
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 04494bc2e46f..3033ab93fd3c 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1284,7 +1284,7 @@ void __clear_page_tag_ref(struct page *page)
+ /* Should be called only if mem_alloc_profiling_enabled() */
+ static noinline
+ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+-		       unsigned int nr)
++		       unsigned int nr, gfp_t gfp_flags)
+ {
+ 	union pgtag_ref_handle handle;
+ 	union codetag_ref ref;
+@@ -1294,21 +1294,30 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 		update_page_tag_ref(handle, &ref);
+ 		put_page_tag_ref(handle);
+ 	} else {
++
++		if (task->alloc_tag)
++			alloc_tag_set_inaccurate(task->alloc_tag);
++
++		/*
++		 * page_ext is not available yet, skip if this allocation
++		 * doesn't need early PFN recording.
++		 */
++		if (unlikely(!should_record_early_pfn(gfp_flags)))
++			return;
++
+ 		/*
+-		 * page_ext is not available yet, record the pfn so we can
+-		 * clear the tag ref later when page_ext is initialized.
++		 * Record the pfn so the tag ref can be cleared later
++		 * when page_ext is initialized.
+ 		 */
+ 		alloc_tag_add_early_pfn(page_to_pfn(page));
+-		if (task->alloc_tag)
+-			alloc_tag_set_inaccurate(task->alloc_tag);
+ 	}
+ }
+ 
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+-				   unsigned int nr)
++				   unsigned int nr, gfp_t gfp_flags)
+ {
+ 	if (mem_alloc_profiling_enabled())
+-		__pgalloc_tag_add(page, task, nr);
++		__pgalloc_tag_add(page, task, nr, gfp_flags);
+ }
+ 
+ /* Should be called only if mem_alloc_profiling_enabled() */
+@@ -1341,7 +1350,7 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
+ #else /* CONFIG_MEM_ALLOC_PROFILING */
+ 
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+-				   unsigned int nr) {}
++				   unsigned int nr, gfp_t gfp_flags) {}
+ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
+ 
+@@ -1896,7 +1905,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 
+ 	set_page_owner(page, order, gfp_flags);
+ 	page_table_check_alloc(page, order);
+-	pgalloc_tag_add(page, current, 1 << order);
++	pgalloc_tag_add(page, current, 1 << order, gfp_flags);
+ }
+ 
+ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
 -- 
-Sincerely yours,
-Mike.
+2.25.1
+
 
