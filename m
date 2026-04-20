@@ -4,115 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ADE5F588C3
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A2FAF588C6
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 13:48:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B22946B0088; Mon, 20 Apr 2026 09:26:43 -0400 (EDT)
+	id 26B106B008A; Mon, 20 Apr 2026 09:48:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFA326B009D; Mon, 20 Apr 2026 09:26:43 -0400 (EDT)
+	id 21A956B008C; Mon, 20 Apr 2026 09:48:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0FDC6B009E; Mon, 20 Apr 2026 09:26:43 -0400 (EDT)
+	id 0E2966B0092; Mon, 20 Apr 2026 09:48:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 90AED6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:26:43 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A59A1B8F6A
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:26:43 +0000 (UTC)
-X-FDA: 84679009086.21.652C742
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 72F90140010
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:26:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cMhAXxqf;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id F21EC6B008A
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:48:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9E5CCC3198
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:48:56 +0000 (UTC)
+X-FDA: 84679065072.01.E5A4B7D
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 69ABD4000E
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 13:48:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lLOw1NFe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="pS3fKW/B";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lLOw1NFe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="pS3fKW/B";
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776691601;
+	s=arc-20220608; t=1776692934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ZK98ieIRG457WI8zfD0fDHqFblKktpbnpJAvLDPkbM=;
-	b=uHLwWER/Nx0zaolChKnm9DXtYtgqXkBEWFqRthwnQUsYEHcwcZwo74g6vrgyZT6cASjtsI
-	NRlr61SeJ3jCWlJ2UVWW0FWJ/lKocGyuHA8bdRD+rtMlTv/9cV+qQrRKnGo9h3pb43L9NG
-	OrnEQPDMPf0diXy0yNGFY7es9raz0so=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776691601; a=rsa-sha256;
-	cv=none;
-	b=SWP3oirCxXFhlgnlM4Qhzk2rj8i9ie3owGU+T6pUH6Xi/20yotNhR4HN/u92TVlfGSEx6A
-	8g+PKs47wVgKe0I1bAmOFgxPfUpzxARQvX1IOHrJSQ1dCjG2Vfovb9KX+2Ifolzdobw0wl
-	uDmjftwZDYk4OO/bi+wEtEDZW0kYfpQ=
+	bh=c3G7vl254hKLWmCISgkXy81NC1sunGjVh1MU4tFAFiY=;
+	b=YIEeBgtBe+NCNTsiq/1KsByX6sRLe3/j2OMWSklTLS4Un1LDWzde2ORJ5WECL/Lvb0+R/J
+	wQ2wmcB60slAqnsd0O3jC8sI/feyikb989kfuZvdUotQk7CATDQGYbbOa0B0y7GNB7kZFS
+	4CEaexmfHWxgvE8KMywzilP/DhdF5hI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=cMhAXxqf;
-	spf=pass (imf09.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.177 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8d68bcf50fdso363096285a.2
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:26:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1776691600; x=1777296400; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0ZK98ieIRG457WI8zfD0fDHqFblKktpbnpJAvLDPkbM=;
-        b=cMhAXxqfs5nNN0VL7KfA+r1FX0y5QIIz8bq5IA5U12cWmq6dXngJ/6/QxR3MNrI5+v
-         ha3Al0pTtnL7SrtlAEMaof+h4mSNSxLe8rBhzozTvrkBtzhlCG4w+RUdBMlZ8acEuRHD
-         ZJQ7YPsZHePyKzBTepUUVr08U16BKOIdFEHlsWvRSzctPu/G4iEScyxv7h39nD4FJWb1
-         Q+LEi+uvNYgO2FzXnbJZ8YCaTek+o7lTe6tWM8X1YFbWD7btIhrV81cwf+LMI7S2xiHQ
-         YDkIcc0baPkuecKpMJAF/z0XO4mImKIrgvufRY3aEyCl0i21lUV5f0RK+XPNf80GRuOg
-         uEFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776691600; x=1777296400;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0ZK98ieIRG457WI8zfD0fDHqFblKktpbnpJAvLDPkbM=;
-        b=JWzGvl9bKYEvlOUuv1XqYaexBn3eUqN/mViPH8uiZwC9PVB/+qIe4skHbHpyc81ptv
-         RmkYgPunqbvvJPZfv0JQALsoPFOneHFdnA1j+JHO5BfH7NzDeAX55Dz3cCGIk18wM5bd
-         lNh70le6uxATrelfB0s4vzu05SxFlb0k08c7yWMkOhcToGZfC+Pa33ybDIWJmG6Q9VVs
-         4Ke32T/k4N2UqF5cDmN6gq+XgbiZ7Rb1NIaS2QBQas3IJ71Srsh01U3ukXXkTYAVKHNt
-         TWV8qz9JdkxQ/CS0buV8lkMG1cW/2ZauVwkBSLS7B71Sgy5VayGwe4XmVKSUZYmO6VGb
-         1i0g==
-X-Forwarded-Encrypted: i=1; AFNElJ8D9Kuy3/Vuh7f3ZVlq1b0P9/VM0+XUbLl4Hw8X3D3elDlAfE5eBBL0tj1a515DMEwdBDsvSzoOag==@kvack.org
-X-Gm-Message-State: AOJu0YwPM4kdkp7VaIF+6xZ00DJj2EMUKdcM73KlUTy8AgQhmJFHuC5+
-	Wbu6m/FTF6X8mufpmzLJJpHkkNL7H5TqZYkxn3yAldOCJs9Z0JNeUXKKf02gjd74ptk=
-X-Gm-Gg: AeBDieu2Eww25MBlkcmPLBCqmWcY89+58GvadMKZvXwNwXDiug7WyMxOgFutPQN2Nsi
-	vMEoJCGpEdHh5PtXHhZWg4hl7xYrOvqu5I6nHNCXsVAR0q2056gnPdELmqEaTVmWClGwD6AfqC0
-	2zJBHbNeKl6GW+mRflCLxFLA68eBBgo1bSQq01Kendcwurk+biPW1ueGB3rAL4bWb1e6hk62k2g
-	L2RB/8e8KrKDYF8fqcXZ9U65de4mS7zM0IUjaj1KiNZIrTvXpOpRBIZ82O77xb68XMGO7F+lrv9
-	5fSuX4N9xpWB+CMvBihtcDn+Q4An0Qmp0fzHVmfkn6HnYUenimbdY/mnPhe4yGfRumF2EnTJVd+
-	BOtb27Uj5oaFwckUWfqTRXyE+1TLf4WZZSibxtWWHVb00UfeF2i3Rs9CYNBVws8+WwXb2er/w+L
-	hpbF3KG/ykvQ6Qtxa/bedW8w4mOpb1UrwrhZV3OhJSZSfnK7bWw+qiF4YAjmx5
-X-Received: by 2002:a05:620a:410c:b0:8cf:c729:a629 with SMTP id af79cd13be357-8e78fc29218mr1998016685a.20.1776691600368;
-        Mon, 20 Apr 2026 06:26:40 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8eb61bc0d7dsm201476385a.24.2026.04.20.06.26.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 06:26:39 -0700 (PDT)
-Date: Mon, 20 Apr 2026 13:26:38 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	linux-kselftest@vger.kernel.org, shuah@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, dmatlack@google.com, kexec@lists.infradead.org, 
-	pratyush@kernel.org, skhawaja@google.com, graf@amazon.com
-Subject: Re: [PATCH 1/5] liveupdate: Remove limit on the number of sessions
-Message-ID: <ttirtg6trmvhuaubix4ufhv2i7vl37n3ef5rgkpxp56nvfvwmt@ehghcskmjqzo>
-References: <20260414200237.444170-1-pasha.tatashin@soleen.com>
- <20260414200237.444170-2-pasha.tatashin@soleen.com>
- <aeXSEe9Bo-vsSkMH@kernel.org>
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lLOw1NFe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="pS3fKW/B";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lLOw1NFe;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="pS3fKW/B";
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776692934; a=rsa-sha256;
+	cv=none;
+	b=r6GQrFgezEZOrfXz7otavgwKCLw/eLb/L9QpBCj5+bEBxVigo0U+51bZs3NVIKNQQ6htH3
+	PBOOug0loP1HyPi3mdbYPQCt7f2V0gjFRozuJEu/eYCzz5+PcgW0U/oOcz44akr2NQjS+o
+	PcfSO1kvixTyHftiUuRfnOamD4EjWFI=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 883D25BCD1;
+	Mon, 20 Apr 2026 13:48:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776692932; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c3G7vl254hKLWmCISgkXy81NC1sunGjVh1MU4tFAFiY=;
+	b=lLOw1NFeI/E4bVnzlRZvuI38z+UOWMiJ6WCTcpZ7bGOxdHC30NjLoPiW+EgsgZl/Pzst6V
+	qqY5/ua481n4ZfLe9BpQM7lLgTHMduMezIRA5R/zGegZWQ2wkp2XrVz3v9snvhnbPIKdkH
+	AZMDGB1IyMTJ/tZtJPo/Maum0DoAIeU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776692932;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c3G7vl254hKLWmCISgkXy81NC1sunGjVh1MU4tFAFiY=;
+	b=pS3fKW/BmxFU27m5F7wLrXMPhRUqPkVS5iBg7mv0bFsGeCijAraUqYAcOgioByN5iNlbUq
+	OJM/4gggnCadI6AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776692932; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c3G7vl254hKLWmCISgkXy81NC1sunGjVh1MU4tFAFiY=;
+	b=lLOw1NFeI/E4bVnzlRZvuI38z+UOWMiJ6WCTcpZ7bGOxdHC30NjLoPiW+EgsgZl/Pzst6V
+	qqY5/ua481n4ZfLe9BpQM7lLgTHMduMezIRA5R/zGegZWQ2wkp2XrVz3v9snvhnbPIKdkH
+	AZMDGB1IyMTJ/tZtJPo/Maum0DoAIeU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776692932;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c3G7vl254hKLWmCISgkXy81NC1sunGjVh1MU4tFAFiY=;
+	b=pS3fKW/BmxFU27m5F7wLrXMPhRUqPkVS5iBg7mv0bFsGeCijAraUqYAcOgioByN5iNlbUq
+	OJM/4gggnCadI6AA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 61675593AE;
+	Mon, 20 Apr 2026 13:48:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id c5N1FMMu5mnXQwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 20 Apr 2026 13:48:51 +0000
+Date: Mon, 20 Apr 2026 14:48:49 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Huang Shijie <huangsj@hygon.cn>
+Cc: Mateusz Guzik <mjguzik@gmail.com>, akpm@linux-foundation.org, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-fsdevel@vger.kernel.org, muchun.song@linux.dev, osalvador@suse.de, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	nvdimm@lists.linux.dev, zhongyuan@hygon.cn, fangbaoshun@hygon.cn, yingzhiwei@hygon.cn
+Subject: Re: [PATCH 0/3] mm: split the file's i_mmap tree for NUMA
+Message-ID: <hshxzebq5y4gavo7mbrgn7qitz5j5wyun73wy7ooiiehzzpcui@hlknbp34sgja>
+References: <20260413062042.804-1-huangsj@hygon.cn>
+ <76pfiwabdgsej6q2yxfh3efuqvsyg7mt7rvl5itzzjyhdrto5r@53viaxsackzv>
+ <aeWLCxru6cLWsxvQ@SH-HV00110.Hygon.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aeXSEe9Bo-vsSkMH@kernel.org>
-X-Stat-Signature: jhxmm7tyrr9361eiaa9f4wsuhsamszxm
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 72F90140010
+In-Reply-To: <aeWLCxru6cLWsxvQ@SH-HV00110.Hygon.cn>
+X-Rspamd-Action: no action
+X-Stat-Signature: 7wsz8pmt9goi9pqpnrnbu7bfsrowxpz1
+X-Rspamd-Queue-Id: 69ABD4000E
 X-Rspam-User: 
-X-HE-Tag: 1776691601-685379
-X-HE-Meta: U2FsdGVkX19foPnRlSgffT2LhMxmhoHhNAdWaSY2kQziEQmgTihNlHeTQldFAeKBq/ZLEnJHqD6cWOvQ1OTFBrEPdX9zhUdqJByqblrkKfYRyEZNJjjrgj4dLbaWx0ChoByo3CJFiSDQVWe3SuBSVEfQxx2IykBG+vgLzi3sReiEtDaAmM9bc57iPsqmCG6wMKWpPjkzLGvej8Quh1a+fWYovrv+LB8PD2cWHz7Y283cUzLfWAHBqB1WuJLgI9g758nZk/WndpaK009WfteJ0eqU8Ng9eRmn7R+Fizza5raZwxUzkQMBAMuNqDpuFKNxqaaMXfglHvzeHsDisdDeJY5KPkrkR4MhKRhLvp/bkt+Oqg5+E84TdbTZOSy27c9ZNgyg1fGXhV6MJGn1df53dXm7mrsjzAWQHIGchTbad+QWC4lh+YqGUYwYK1BjLu5KsU3Xi6dyPzZjO9hLoOcLbgaCWdLobyejkknkJY15Xed28CFGUI3bS7St0d586g+Yu9vsH3UNAThj5Z9VdgqbmJwwJBZhpA2Q7pyGb7yIWd9QO3PayVz+rtM/3DsW01ksieGqSlmTQsnW5UV2aONFMekGau4svGVEe4utj6ChDIOGR0EFW47VT7GyZWpyqXJHydu0/2iEKAKkgzb2U8iC0cXuYxtjn9KfrTO1Bf5WPFH7UIt1+NTR7wc33MsfOE5W9Hrq6JD8ItA9lcAS5Ak0o9EjGWkTLYQoNGBPuO/GyD6iG4TO61jXChmz8O69y/EMNe3R8b2xjzZp5BmfBHqTvrxt/LPkdhrgH5UKQPTcn7LhzgnQvn4MMLjke1MmNF7QJlkYtMsmRJO998h+I5g4KgdM15a/SnVvQx0op9PrOXwuwD+ZJ22wLH9GM5LHwayK9vtdCMO6rNsoO4wmR5k5CyvxLL7o3ygtEk+7GqyP7EpY2Ek96Qrs+zfiQZ3AFdbZolLIekIDNMBb0F1aKhx
- Oo6IKcfm
- Xm0bknBS5d1m0O7qYp2bWb49e2mP9flQxPeJf+GHXhEZAk7BYqnXsa4E1VosoO2m3GKbyv9Bh+EB/exF0okqKSGpn/tP4PISFpyHxS+IEwgqEeV46aEerC9lXGuzOZtIz8KxON5oG+sBW3tFJ4V8KyMdLjeJfOndJ02y4bOeEBw6JnEuVlE/KcNY1HA8HdykJqxpp3/z67Rg72PGfOgu/ph0WAO40dfvj30+bCW+cxsajHod6EEMxZJ/ZpXv/deOqkqGsqHL0cGn4gZBTpeYwC3X15z56J7VuLt03LqNwjudaxassthqlEW5QdASNteK5ZArGbNXQuXxKAOU=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776692934-48682
+X-HE-Meta: U2FsdGVkX19IhigFM8WqfdgL70Noye2pj2kyNZCb+qbBeAA4w+YbhTshRX9+DInwheDhh/c6DArPruv943VEcS5A6BDIZtNCR2pTf17oEisk5zm5cxR3oBpynwmLFwakYDjGiFLU+Y1lcvJDb7I/8SbdRPcjXnvvjVDyEUAaeAGQ/s5UjI/LopkDWm7JZiql3NYwH3+NiTymREFN9R8ZOMD5Q75HdAtAikj5FXcg8pnqHm1xjLD4NRgf0NutjjPtQwYnQb1dkhYkUExXvJ8vTi6zGuK19cgEDrgpoOiBY4G9HERXJGEY8K/tDahxt28dD0Aa7CWjoNOO++maD2bfJWWQUtfkq+pBjsorHuJCql4TdIMqxgEQI1kI7FoGAUVPzuaAJD9BnskZsVgZE4Ay12IOgxOkSf5e6WxxK/dxfUI+MPR0DYOdocxJu/ymZqDUWsiisVQWk2GkNhZr9I40fLIZKzb3vOM+qll3uyxxNP+W0N2QCy4iOLIALZVJsIITJJv9y2Gc3qglKuZzRbpPtRkTEjKwpfBJ7WkJn7NZM/MAM/5RPgGfpkH9sVlDD3l74HSZXNL6XJA1xSk8RUZ1yuraq/2Aj3sqAF2GTsnUq9LtEQKZ1rd6qJj6E2mSgmx6aGCHCfqYFtkQqh6Vr6M0k/WN1Pm8KcInr7GjdK8Us//8o3ZPSmU2yOXH1VM62PhP0atH6t9tpFFhyuTiHPMzTW+SGbe9vLU0z9NqdWwkyC+okbImmvyzKIt8zm0HJvfgF5dlQK4MsW8xGFzc1sIh8089r1lK+tN2OjFHZXdR+pYaghwvNLp0jdLyhergE2EI960DEruIMJuLYe5T+s72VmAQ6NN5doAGjcvq/0pbzwyxEKvotIsLgQtJkyqHa2wbrIPVVR4zA1CQwjiN2hT5R5dAtEKj5lsJSiB/BfH9sowg3BCDau4YXOf0ACHyPVO0iZotRkpGb2pMvW+zrpo
+ KbQIVU7v
+ rLPgML0af8Wrc0yoaZbrsfsSFYVLcvW/UFTto0JHlinxhyaC2vIpWPVURhH87jqJaqQqqqTA8x1anM+wadl+FoT33Atr883yh3YzcmTubAciBt6RbZsLMebaoNgm+q8rQEIiXXcXRLd+d3lEND0i/ukKldARm8+32NOZc4+nmvhRgEyXt9gsrBnJa3booqpxv04TY3eO46j3bkaRzrUWa2Ro33T8Ovft1wT2/3XdiAz+dbgcdtwZmB5ephTcvGnk52rIfYsCjJIrRPbWS7D9EAk9qHniAR8LrG7AH+iIV/FwTyY5hMhu6RzEAks5ImO7s+Km/KNmOEIdqeE0OPyWrtfZgHGUXxVb+sLF4znVTCa9mUgzBbLIXsbKPLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,119 +136,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-20 10:13, Mike Rapoport wrote:
-> On Tue, Apr 14, 2026 at 08:02:33PM +0000, Pasha Tatashin wrote:
-> > Currently, the number of LUO sessions is limited by a fixed number of
-> > pre-allocated pages for serialization (16 pages, allowing for ~819
-> > sessions).
+BTW you're missing _a lot_ of CC's here, including the whole of mm/rmap.c
+maintainership.
+
+On Mon, Apr 20, 2026 at 10:10:19AM +0800, Huang Shijie wrote:
+> On Mon, Apr 13, 2026 at 05:33:21PM +0200, Mateusz Guzik wrote:
+> > On Mon, Apr 13, 2026 at 02:20:39PM +0800, Huang Shijie wrote:
+> > >   In NUMA, there are maybe many NUMA nodes and many CPUs.
+> > > For example, a Hygon's server has 12 NUMA nodes, and 384 CPUs.
+> > > In the UnixBench tests, there is a test "execl" which tests
+> > > the execve system call.
+> > > 
+> > >   When we test our server with "./Run -c 384 execl",
+> > > the test result is not good enough. The i_mmap locks contended heavily on
+> > > "libc.so" and "ld.so". For example, the i_mmap tree for "libc.so" can have 
+> > > over 6000 VMAs, all the VMAs can be in different NUMA mode.
+> > > The insert/remove operations do not run quickly enough.
+> > > 
+> > > patch 1 & patch 2 are try to hide the direct access of i_mmap.
+> > > patch 3 splits the i_mmap into sibling trees, and we can get better 
+> > > performance with this patch set:
+> > >     we can get 77% performance improvement(10 times average)
+> > > 
 > > 
-> > This limitation is problematic if LUO is used to support things such as
-> > systemd file descriptor store, and would be used not just as VM memory
-> > but to save other states on the machine.
+> > To my reading you kept the lock as-is and only distributed the protected
+> > state.
 > > 
-> > Remove this limit by transitioning to a linked-block approach for
-> > session metadata serialization. Instead of a single contiguous block,
-> > session metadata is now stored in a chain of 16-page blocks. Each block
-> > starts with a header containing the physical address of the next block
-> > and the number of session entries in the current block.
+> > While I don't doubt the improvement, I'm confident should you take a
+> > look at the profile you are going to find this still does not scale with
+> > rwsem being one of the problems (there are other global locks, some of
+> > which have experimental patches for).
 > > 
-> > - Bump session ABI version to v3.
-> > - Update struct luo_session_header_ser to include a 'next' pointer.
-> > - Implement dynamic block allocation in luo_session_insert().
-> > - Update setup, serialization, and deserialization logic to traverse
-> >   the block chain.
-> > - Remove LUO_SESSION_MAX limit.
+> > Apart from that this does nothing to help high core systems which are
+> > all one node, which imo puts another question mark on this specific
+> > proposal.
 > > 
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  include/linux/kho/abi/luo.h      |  19 +--
-> >  kernel/liveupdate/luo_internal.h |  12 +-
-> >  kernel/liveupdate/luo_session.c  | 237 +++++++++++++++++++++++--------
-> >  3 files changed, 197 insertions(+), 71 deletions(-)
-> 
-> ...
-> 
-> > +/**
-> > + * struct luo_session_block - Internal representation of a session serialization block.
-> > + * @list: List head for linking blocks in memory.
-> > + * @ser:  Pointer to the serialized header in preserved memory.
-> > + */
-> > +struct luo_session_block {
-> > +	struct list_head list;
-> > +	struct luo_session_header_ser *ser;
-> > +};
-> > +
-> >  /**
-> >   * struct luo_session_header - Header struct for managing LUO sessions.
-> >   * @count:      The number of sessions currently tracked in the @list.
-> > + * @nblocks:    The number of allocated serialization blocks.
-> >   * @list:       The head of the linked list of `struct luo_session` instances.
-> >   * @rwsem:      A read-write semaphore providing synchronized access to the
-> >   *              session list and other fields in this structure.
-> > - * @header_ser: The header data of serialization array.
-> > - * @ser:        The serialized session data (an array of
-> > - *              `struct luo_session_ser`).
-> > + * @blocks:     The list of serialization blocks (struct luo_session_block).
-> >   * @active:     Set to true when first initialized. If previous kernel did not
-> >   *              send session data, active stays false for incoming.
-> >   */
-> >  struct luo_session_header {
-> >  	long count;
-> > +	long nblocks;
-> >  	struct list_head list;
-> >  	struct rw_semaphore rwsem;
-> > -	struct luo_session_header_ser *header_ser;
-> > -	struct luo_session_ser *ser;
-> > +	struct list_head blocks;
-> 
-> Don't we need some sort of locking for blocks?
+> > Of course one may question whether a RB tree is the right choice here,
+> > it may be the lock-protected cost can go way down with merely a better
+> > data structure.
+> > 
+> > Regardless of that, for actual scalability, there will be no way around
+> > decentralazing locking around this and partitioning per some core count
+> > (not just by numa awareness).
+> > 
+> > Decentralizing locking is definitely possible, but I have not looked
+> > into specifics of how problematic it is. Best case scenario it will
+> > merely with separate locks. Worst case scenario something needs a fully
+> > stabilized state for traversal, in that case another rw lock can be
+> > slapped around this, creating locking order read lock -> per-subset
+> > write lock -- this will suffer scalability due to the read locking, but
+> > it will still scale drastically better as apart from that there will be
+> > no serialization. In this setting the problematic consumer will write
+> > lock the new thing to stabilize the state.
+> > 
+> I thought over again.
+> I can change this patch set to support the non-NUMA case by:
+>   1.) Still use one rw lock.
 
-The rwsem right above the blocks field protects it. New blocks are only 
-created when luo_session_insert() is called, which takes 
-rwsem_write(&sh->rwsem).
+No. This doesn't help anything.
 
-For simplicity, once blocks are created, we never free them. This is 
-safe given that sessions can only be created by a single privileged 
-agent.
+>   2.) For NUMA, keep the patch set as it is.
+
+Please no. No NUMA vs non-NUMA case.
+
+>   3.) For non-NUMA case, split the i_mmap tree to several subtrees.
+>       For example, if a machine has 192 CPUs, split the 32 CPUs as a tree.
+
+If lock contention is the problem, I don't see how splitting the tree helps,
+unless it helps reduce lock hold time in a way that randomly helps your workload.
+But that's entirely random.
 
 > 
-> >  	bool active;
-> >  };
->   
-> > @@ -147,15 +222,6 @@ static int luo_session_insert(struct luo_session_header *sh,
-> >  
-> >  	guard(rwsem_write)(&sh->rwsem);
-> >  
-> > -	/*
-> > -	 * For outgoing we should make sure there is room in serialization array
-> > -	 * for new session.
-> > -	 */
-> > -	if (sh == &luo_session_global.outgoing) {
-> > -		if (sh->count == LUO_SESSION_MAX)
-> > -			return -ENOMEM;
-> > -	}
-> > -
-> >  	/*
-> >  	 * For small number of sessions this loop won't hurt performance
-> >  	 * but if we ever start using a lot of sessions, this might
-> 
-> For ~8.1 million sessions this comment does not seem valid anymore ;-)
+> So extend the patch set to support both the NUMA and non-NUMA machines.
 
-Fair point! However, in all reasonable use cases we expect to have at 
-most hundreds of sessions, so this should still be fine. To extend on 
-this: the O(N^2) complexity mentioned in the comment is really only a 
-problem during restoration, which happens during our performance 
-critical blackout time. However, it is used there only for sanity 
-checking, if we trust the previous kernel, we can remove this 
-duplication check entirely.
+FYI I've discussed some concrete ideas for reworking file rmap with Mateusz.
+I'll be giving them a shot. Note that this needs to be done _carefully_,
+particularly as there are some hidden assumptions wrt forking that aren't
+very clear as to how they work[1].
 
-Let's keep this sanity check for now. If it ever becomes a performance 
-bottleneck, we can remove it during the blackout time and optimize the 
-pre-blackout session creation to use an O(log(N)) search by storing them 
-in a sorted by name data structure.
-
-> 
-> -- 
-> Sincerely yours,
-> Mike.
+[1] https://lore.kernel.org/all/bnukmnuxxuhdfeasjz33miemgr7w35c4aa6pqdmgupx7oxmeeb@gozgc3yxhcdd/
+-- 
+Pedro
 
