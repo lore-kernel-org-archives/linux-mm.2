@@ -4,86 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C3FAF36C5E
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 11:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC40F36C58
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:14:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B60D76B0005; Mon, 20 Apr 2026 07:56:27 -0400 (EDT)
+	id 07E876B0092; Mon, 20 Apr 2026 08:14:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B396E6B0088; Mon, 20 Apr 2026 07:56:27 -0400 (EDT)
+	id 030726B0093; Mon, 20 Apr 2026 08:14:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A767C6B0089; Mon, 20 Apr 2026 07:56:27 -0400 (EDT)
+	id E60746B0095; Mon, 20 Apr 2026 08:14:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 981476B0005
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:56:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D33DC2FF0
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:56:27 +0000 (UTC)
-X-FDA: 84678781614.29.B8A2AA2
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D700B14000C
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 11:56:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BOO3af0g;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of pankaj.raghav@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D3EDC6B0092
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:14:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84408BA9BF
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:14:02 +0000 (UTC)
+X-FDA: 84678825924.09.43DF80C
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4757D100012
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:14:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=gZlCJ5pD;
+	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776686185;
+	s=arc-20220608; t=1776687240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uAqAKYkhN6D96c96Mv9PAQs6rNA7+9Ka0YDLN+X5iC4=;
-	b=hzah5rPOf0cf+VLMLYK6bq+Qq/tmwidSzPnYLw843e3nEd/E/Fw9kIZEVRiIOn9kDFD6s2
-	UtUbMCZpgNi+ZAP0jyb2M0FU88/Frs3cPXjLjpdOVs4EYUsHYIn/XR/FUjfK82vzYXFlhH
-	LzZfQwv9fsBS75veekYUJrwHTkgzA3E=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nJgkI7RbD14lsI+Zd/4+PHkt3gvbu2pFlqS4g1GDZT8=;
+	b=rZUwJhwIEIxnS/H2L7V3qAYuaZJeyNPlYm8IE/1UDmI7FDyoOMbBPPwX8sFEBzD7LPlXvm
+	nTqlSOosFTizOXSZqY+ZSulRNBbNULbbM1AG4N60Oqb+jxNZw5kYRN/rlByHfMG7r5iUiy
+	5Bn27kfwIbAuXcHms7haEkTyOA4rdMU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BOO3af0g;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of pankaj.raghav@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=pankaj.raghav@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776686185; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=gZlCJ5pD;
+	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776687240; a=rsa-sha256;
 	cv=none;
-	b=Ow2U/DC7uMGi798GR8i2otCU77Gm7trIeZQ9o8KzhOIyqpOJVAAfuT0EOt6D+zONUVThBU
-	DSQHfUDOxFGYkx2SsdMRMOvLZrAlOk8+FrMh0xFslHL+cOmfHdm1T/WvSaJf8hc4X+VC2A
-	0wgUDI83oqrneCMt+upjx2v3J5KXAr4=
-Date: Mon, 20 Apr 2026 13:56:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776686180;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uAqAKYkhN6D96c96Mv9PAQs6rNA7+9Ka0YDLN+X5iC4=;
-	b=BOO3af0gd3cgHZ6BarDqfWQl4LroCnTbHD7ZxIa8ukzF4qfyDvi5w9ObOE+3H9L6f284ws
-	MyPfwi3MypvbroQc88CJMHlPh2BxedJNolYfQO4EqQdCoh7AotS0k7bMMjnzBOcD9LXa8j
-	GBifeO6xiuzr5WPOIEakFm1d8dj/ljY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
-To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, hch@lst.de, 
-	ritesh.list@gmail.com, jack@suse.cz, Luis Chamberlain <mcgrof@kernel.org>, 
-	dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, 
-	brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
- RWF_WRITETHROUGH
-Message-ID: <kvxvy26jblhx6sijbhxbpzzwltfoskwkv2suqhop5dq742fn5y@5tlws6pzaol3>
-References: <cover.1775658795.git.ojaswin@linux.ibm.com>
- <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
+	b=LKZUDJX2SybjBY3HIS5r+QtGlb3/qli82T4mE0n1JW0B/L2DvZZpcDS8ll5Fkyuxg3o8ec
+	+LZGgrvZzqFaHehwfcScbBZZhUEuxIpWoLCwnHg5cIMYPuX8unc6NDoJOa1fHI64d0DwTl
+	LC/nzg+o/6WZgFb9LLEOW7+syt1AYRI=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63KBwhMR3108458;
+	Mon, 20 Apr 2026 12:13:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=nJgkI7RbD14lsI+Zd/4+PHkt3gvbu2pFlqS4g1GDZ
+	T8=; b=gZlCJ5pD5kc83eh5zvwSCEi9K3XB+Jhxx/wY6EVtWFO/Vn/0kfi36XFU7
+	2oFHN/Eer94Ep4So2zkdKNr/V7mDWL578U97h91FTPxd44dasc5b8kgRTU/WIKXq
+	JlMqZTiaja/LczxPc8ij8ps29D9Kg1Mo5rI3jt3sD86kU3YkdaWSDbxXvFymbSpw
+	vYrAxJPzCpRsNKd/J6SErc8Tyeladv0t9reudoPsAeaSMF52PQf6ko34L2GVFRHf
+	1tVsvNqyUhHCM9MePI4Qijn7wKmeN6UjZT9aVpMnuu3Iv+PxnZNcte66NQsQ5My/
+	+JOKQJfXBUNKeeWAiE8ZUbrD3eeyA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2h9f0f9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Apr 2026 12:13:57 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63KC5KJP021295;
+	Mon, 20 Apr 2026 12:13:56 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dmm9pvt7m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Apr 2026 12:13:56 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63KCDrKh31130260
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 20 Apr 2026 12:13:53 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 26C0C2004B;
+	Mon, 20 Apr 2026 12:13:53 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EDC5420040;
+	Mon, 20 Apr 2026 12:13:52 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 20 Apr 2026 12:13:52 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id CF88CE0749; Mon, 20 Apr 2026 14:13:52 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+Subject: [RFC PATCH 0/2] mm/gup: pgtable entry acccessors cleanup
+Date: Mon, 20 Apr 2026 14:13:50 +0200
+Message-ID: <cover.1776684344.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3GfFdJNwNXlttYprI9xIIKLTBOuuPMXI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIwMDExNSBTYWx0ZWRfX3+75nW9ikULN
+ mk6WTmIRZda1SiewI32TVpWu8iMVv1xi9G+PVp3buQufIIvXGRvHANLKVyw1kIcUqFpsMcevp5t
+ 5keATs1YycwiEytJOmN8QE86QXE0/HavXDcewGxgcf/1J1Ixxd81jmcbj2vNQpqfOjfgpHHVL/r
+ jNkkgMY7x+G80KXE2g8CCNw3zGvans2JJfYllW/g9oSxoQ2JgBr/WYnw7ph/nD36dbMwBwjlzZM
+ ba2jhjD5MqZbuhlMzjiRHledWj/E/UzWpRTxVp8UvNLn7ltyOAsNFvMPDY/vzt6lsUYXtbfFv3H
+ sEz96nCSGikjzvYDYm3Wq3lMGH1TrvXAC5mJ4sFxGtG9jkdJowIqeha4W9V/RVh6S7fKQ/6MP4k
+ vNi0IGoc8oc7pSqJHDgwYd44+CqNDWyaO1+SJXhGFThfJsUDlLua0cpBEBoOx2AmQj7x4XVk1Ih
+ +/Q2f/3IEg71+sgLu7Q==
+X-Authority-Analysis: v=2.4 cv=XLYAjwhE c=1 sm=1 tr=0 ts=69e61885 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=aTGr7PAGRYz1C1UlONgA:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-GUID: 3GfFdJNwNXlttYprI9xIIKLTBOuuPMXI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-20_02,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
+ definitions=main-2604200115
+X-Stat-Signature: nup5dnnqz8codw4m8t6srjam9j5bhust
+X-Rspamd-Queue-Id: 4757D100012
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D700B14000C
-X-Stat-Signature: nb65m6seqyhj6bnxptfbgarq9dga1s9z
-X-HE-Tag: 1776686183-956845
-X-HE-Meta: U2FsdGVkX18PB0yyrzxJSm7WNk7gGLQCBwspaWj+3wlrUjdr+YOOBPM67sHPi+x2Jb3gux34aGuR7Xzev0t0k83/udIDVl1t22eIyIiTrS36Q3hG/FXyBBh9dwcFgY7TNNPRXtidjUeQ1FoC3bZpkN6mdzbdmd1SdiN3GdST631WZrrblbBNR5un81q+3goIKVKRwr+fDmuOtaSv/NMuF7j8TXyvjNbrOGmrECtbfUZ3/8egzQFbNOdu9kQK8I2nQT/7Aj5/B2DuXV8D5D+Ui9mpRLXiCCIuLlgHtxTY1+rcsokm2rtn5gxTRZMX85cLIxXv0JxfXeZ3getzi5nHPuckPFoqx9kxSzM9pjrfBsnMgGog/7u4lg+2mZAUUu07SDRrEBHk0gRbJS0EazbcjAs0fN4f/c9qrThh+6m9k5GKRgBHYuyXAjUEMdjjTe95iABRya7xbeJlPYvrGMbKU2N2k63ThCnqQQmEa1r7dqs5RMV9AA7O1xCjY1mNK83JMJFI3R86drPuh6DSxJn/0A3lWdKQcNFiOGkkGZYuvqAExFoJrRJ2xjJwY1c1fo5K1Sht0eDFeuOesp8406V7PowgXygsd4qEzT5GXSEr5r06B9t3ZVdFSApoo4yAgb0mrGRmuRKMTRYBTUdP3aUdvPXrDT/tmxr4gikjjEgTyt0NOw+4comOD5FaVmxMOxpHy9mO6jobTdQi9iODLgx9/rVkuQzS9hpFRp3wi5xE6P07e0ri0XxXFaTlOL9z9AjBDJuiNrKEaLvIp3lTj8RjSHIOZQ60Y9mBH4OCwu4Amypln6qmePtjP5Zg1j+/RBQUi3qszWg9N/kJpTqtoeWUsKpiRwLt3p6x22jKrrCFPiIUcSq5FtOOWIJb5d5MRXZIuihFwTq0j5KIDfQTMgKMB1Fw40+dhGrFNtUlSXpjkXdOT3Y4FBAFfGG8wpP/uM9dJDLTyrCZNnOkK0+LzQ7
- dADgC13w
- rXRKng8cUIygJhPkDfMufV+OucHq+zMrEorElVSeQ3zNuljuzyOkf9e6mIle+m6UypxpU5vPkmUlLtdENTH48qRPssxuI7Fa5VRDXjnmdMajxBLpoPShrhGVMIJ5XFT5MPTwYDBBMDSP6h8B6L2E0uaN6hSqXyFKmSNxyfbGPD8l5uSD2wPC9bbfeND1MIMXsq/1Bj+uaamKkMggWBE895qyLdpOm40dgmU/XRpi/EJo40jZYqxkZ6GJShMjun+d7Hf1cs+aNUMv5vm+xr1YPLbE9smPiuoxZzT+x7dghsABcsD9FSM7Cdo5lIqsCR3hGa2hZdns3CjlBJ/U=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776687240-732391
+X-HE-Meta: U2FsdGVkX19gkrW3DXJpM44yOctv5otReYn4jQ15SSkVZ5hu8nyUUFIvvmbaoicNtu8oVqq2GDxXWkHiwWagWho4KjSv7kmKU/KxV/gHqGlqojxcsClfKtpdNdaldUEsDFnLPDICeBjUQtwlBMCGRqAkZ62KIPRElYthJ+4+qQIXWW9EM3WoEoKw/Sx7DOkdW3KZbRzvIzW2rwC0pcG6+6fXBEHKSyPj81pBcsQOpPtoZhpGYsd8/uvDZSpjAPLkRu66eO/nBlkadct3WATlERC4jRT7jkBdMId0k4pXrYYKg9dYNYqh/PafqFhFMTSVY00+ZvSplEPvqT/huyIEzjvkZfDFTMlbdzVHF9s7F1BhMDA2HPm0fg4UXTKukGoQXl2MP+Y89hfkwRhDN72lwlljrBh8oFjfNnJJEo7E6JN7ID3CVX60pslqL/R3sghX0MtNLMNgzUMWgjNZcVoUXhlz6OHuDDE9Mt6grhmx+cO76VOzhe9nk2GHsgpUtsVKykWm2xbOCcBk8cWLz0IA/g9lKxtK0KcqXVrKpfHrH/oSXYW5284LVpvi6XsDfp7tdz1EG/3rOZYmZNcKM2I23HgYQplxNMDMZ/YpmVW6mw631MvpYmpBBooeaDe6xU91ULDMLi+zsLJ12GFWRm8DNElLEF9iaE6gRO9Tm4PUx7hNlQv9+SrIXYOGaR7juXUPn7ZOvaUUO7SJFdJV2klwAo9FDdZH6kzQdG++5ozYfaC1G7W3O2JEu6IHDcpE4UCLdQk3u1iRHfLmVhu5O9QtmmpK4wR8JpfoEoVby2nP3kDC3e97V/mx6wpXlJRxGqPFkqqE07aIvCD+SIAzIUOvK/HTrWdmFqUKFDqJjfjuj5FsG2VIiFMtVJ6EtLTgAdumpWo39ylH8JZHOwKbwC8ZTuwnbsfK9Tm9zaqAaGwzcr7Dc7oq6skGVUKQWZbztuoHnUdrXqi628cb5bEf1oY
+ uTuQJViq
+ p/qxO1LHJBH9fyOClmprWXJZi/GazE3OWXSiaQQ8rXP9Tnv+101YlUSGRWeVg1pyj4OFRwjrz9ZdvUJNFTmaDgZEiHzejuqbcAPz6JvhGC/H8iisGrCTL0E8FVanZ5JgC7tyGU/hn2qDIZK+jJ5P5WgcsC3rsT4Zfg+I9RQwYfEm59y8LUSD0x/JqFOa8bhcR5oMf4Zkupez1kHmdIV7s3AnsZm3IKM3+XgYddGfKnDq+XEqdHC4/tDG+tfYNkxyVQx9OiZHZGW7Q3+s6adO31An8X8NADB2qM63qCeJfP+8aSWg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,107 +140,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> +
-> +	if (wt_ops->writethrough_submit)
-> +		wt_ops->writethrough_submit(wt_ctx->inode, iomap, wt_ctx->bio_pos,
-> +					    len);
-> +
-> +	bio = bio_alloc(iomap->bdev, wt_ctx->nr_bvecs, REQ_OP_WRITE, GFP_NOFS);
+Hi All,
 
-We might want to check if bio_alloc succeeded here.
+This rework is necessary to allow a KASAN PTE access sanitizer
+(so far s390-only) that hits on direct PTE entries dereferences,
+like pte =3D *ptep as opposed to pte =3D ptep_get(ptep).
 
-> +	bio->bi_iter.bi_sector	= iomap_sector(iomap, wt_ctx->bio_pos);
-> +	bio->bi_end_io		= iomap_writethrough_bio_end_io;
-> +	bio->bi_private		= wt_ctx;
-> +
-> +	for (i = 0; i < wt_ctx->nr_bvecs; i++)
-> +		__bio_add_page(bio, wt_ctx->bvec[i].bv_page,
-> +				wt_ctx->bvec[i].bv_len,
-> +				wt_ctx->bvec[i].bv_offset);
-> +
-> +	atomic_inc(&wt_ctx->ref);
-> +	submit_bio(bio);
-> +	wt_ctx->nr_bvecs = 0;
-> +}
-> +
-<snip>
-> +
-> +/**
-> + * iomap_writethrough_iter - perform RWF_WRITETHROUGH buffered write
-> + * @wt_ctx: writethrough context
-> + * @iter: iomap iter holding mapping information
-> + * @i: iov_iter for write
-> + * @wt_ops: the fs callbacks needed for writethrough
-> + *
-> + * This function copies the user buffer to folio similar to usual buffered
-> + * IO path, with the difference that we immediately issue the IO. For this we
-> + * utilize IO submission and completion mechanism that is inspired by dio.
-> + *
-> + * Folio handling note: We might be writing through a partial folio so we need
-> + * to be careful to not clear the folio dirty bit unless there are no dirty blocks
-> + * in the folio after the writethrough.
-> + */
-> +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
-> +				   struct iomap_iter *iter, struct iov_iter *i,
-> +				   const struct iomap_writethrough_ops *wt_ops)
-> +
-> +{
-> +	ssize_t total_written = 0;
-> +	int status = 0;
-> +	struct address_space *mapping = iter->inode->i_mapping;
-> +	size_t chunk = mapping_max_folio_size(mapping);
-> +	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
-> +	unsigned int bs = i_blocksize(iter->inode);
-> +
-> +	/* copied over based on DIO handles these flags */
-> +	if (iter->iomap.type == IOMAP_UNWRITTEN)
-> +		wt_ctx->flags |= IOMAP_DIO_UNWRITTEN;
-> +	if (iter->iomap.flags & IOMAP_F_SHARED)
-> +		wt_ctx->flags |= IOMAP_DIO_COW;
-> +
-> +	if (!(iter->flags & IOMAP_WRITETHROUGH))
-> +		return -EINVAL;
-> +
-> +	do {
-> +		struct folio *folio;
-> +		size_t offset;		/* Offset into folio */
-> +		u64 bytes;		/* Bytes to write to folio */
-> +		size_t copied;		/* Bytes copied from user */
-> +		u64 written;		/* Bytes have been written */
-> +		loff_t pos;
-> +		size_t off_aligned, len_aligned;
-> +
-> +		bytes = iov_iter_count(i);
-> +retry:
-> +		offset = iter->pos & (chunk - 1);
-> +		bytes = min(chunk - offset, bytes);
-> +		status = balance_dirty_pages_ratelimited_flags(mapping,
-> +							       bdp_flags);
-> +		if (unlikely(status))
-> +			break;
-> +
-> +		/*
-> +		 * If completions already occurred and reported errors, give up
-> +		 * now and don't bother submitting more bios.
-> +		 */
-> +		if (unlikely(data_race(wt_ctx->error))) {
+I am not posting the sanitizer itself (yet), since it does not
+fly without the suggested patches, but I am not sure whether
+these changes make sense for the generic case.
 
-In the unlikely scenario where we encounter an error, do we have to also
-clear the writeback flag on all the folios that is part of this
-bvec until now?
+Thus, sending it as a RFC.
 
-Something like explicitly iterate over wt_ctx->bvec[0] through 
-wt_ctx->bvec[nr_bvecs - 1], manually call folio_end_writeback(bvec[i].bv_page)
-on them, and then discard the bvecs by setting the nr_bvecs = 0;
+Thanks!
 
-I am wondering if the folios that were processed until now will be in
-PG_WRITEBACK state which can affect reclaim as we never clear the flag.
+Alexander Gordeev (2):
+  mm/gup: add missing pXdp_get() conversions
+  mm/gup: add lockless access semantics on entries validation
 
-> +			wt_ctx->nr_bvecs = 0;
-> +			break;
-> +		}
-> +
+ mm/gup.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---
-Pankaj
+--=20
+2.51.0
+
 
