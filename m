@@ -4,133 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 821F5F5A8AA
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 19:03:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C616F5A8AA
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 19:12:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E54536B0088; Mon, 20 Apr 2026 15:03:12 -0400 (EDT)
+	id ED6966B0088; Mon, 20 Apr 2026 15:12:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E055A6B0089; Mon, 20 Apr 2026 15:03:12 -0400 (EDT)
+	id E87416B0089; Mon, 20 Apr 2026 15:12:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1AE46B008A; Mon, 20 Apr 2026 15:03:12 -0400 (EDT)
+	id D9D626B008A; Mon, 20 Apr 2026 15:12:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C2F766B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:03:12 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 28A731409C8
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:03:12 +0000 (UTC)
-X-FDA: 84679857024.08.214B561
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 628AB40012
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:03:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UTxb0bxf;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C6F8B6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:12:18 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 65E73E5686
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:12:18 +0000 (UTC)
+X-FDA: 84679879956.27.B65DC19
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7CFBEC0006
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:12:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vgU6OGKK;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776712336; a=rsa-sha256;
+	cv=none;
+	b=HO8m0oHFPSUCF4AfOpRVoQSzARpop7B5ljCPrGAOzvMxkKSIHOU2z3MEI1+WSED1Lh3HA3
+	IbxjiZ0UHgUkbwhJq9Ybdiiei9A+GZBQJJibG+q9JJCzNAWZ0xFSKQxfis4dkjF4+ptgh8
+	aGgs05A5TTh78Tu/qHG18Mys7arCg5s=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vgU6OGKK;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776711790;
+	s=arc-20220608; t=1776712336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oZXTmsrU0/pJ1tebX4gelHJDs4GiWytOzVRnEm7LrNQ=;
-	b=ENQuDSX6AbOAnlqoK5oPTQ3DAthhy9J9GC8mOnEHJdwNOcD2PtTfYI7c9NjZe4sNFSsg18
-	Ipql8lVC5N2iSCpHMK5eH6u03NHhuRDgOkev41TCApZmzaHSqtcmVqTUp64+JcxeA9V2G0
-	FSzrDo2tSyFpo3VAmP0FLS2iTncqaJ0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UTxb0bxf;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776711790; a=rsa-sha256;
-	cv=none;
-	b=JRzlVXVJMJ1ZxuSmBBwdfzEoMpoNnu8D0igN63xJILVLRjvSOpOAU/ePrOgKoLBcwTweKw
-	5ThpoOOZQFLU4/oAZrPFf0BzTNUCM7dhVNsfBFMyTVzBXwPLekg2zBRLEVNO1QoW1E/FPJ
-	A4nkGkZsf+4cwnG1UeQvoog3hMSB3Sw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB50D600AD;
-	Mon, 20 Apr 2026 19:03:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE27C19425;
-	Mon, 20 Apr 2026 19:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776711789;
-	bh=HCf8DsqrqtUoC3kEuRnRvbL+Njp65zOlbz2OuhLRP1E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UTxb0bxf0p9SPGEz9c3QpVnszUtxBZp8b1Ewfcg5N9lAntzEIcDLXzN7AJts++4yy
-	 T4Zqs912LANKgvHFYt2K2Cp4dmiB4jWbjLdg2CP3iSJMLvosJc2dpCsUTqIbCW3Ap8
-	 SykFg4rNgwuL9fA3KwKuxGeiGJNOc6wcS2DR3dpCp7+2mphDlupSbw2QXo4NOZ7qCM
-	 3V4MIhpkKrYSNDNKlHKq0DZHZB4HVyf0HInlsg8aTte2nZyh+ePBBs1sHMbcihbUBO
-	 YTLzFYBgoE63K/l55t22vG6PY6Xvso7AMEPv1bY9x3voVlYzYkt8EWuwmxHUkYkbox
-	 tqGCfkEPFY+eQ==
-Message-ID: <5bebc75d-19e7-4d06-a5c1-d3f0bb5f4e05@kernel.org>
-Date: Mon, 20 Apr 2026 21:03:04 +0200
+	bh=VkzMuMQfcdnmbiI4D9AB8V2Ucb0IPvboF8F0c8KdAw8=;
+	b=dyKnQfrzG3caLJavHvVDgEiDlyc2ueuDU33AnhtcP6AdFEvhxKiU6f39+j07c50QvBSNmH
+	oDGLlwI+jiS+2NFoa7v57Cb26mzhMfPJD1I7f6fU0o2lAdxiqZ38yeEN98NKKzPRXNw7iu
+	dSkm9bTx8A303dh52PcORHPDggB24TU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=VkzMuMQfcdnmbiI4D9AB8V2Ucb0IPvboF8F0c8KdAw8=; b=vgU6OGKKtV1z6cr8YCFIYl0jab
+	svVav+9t3+DNXbKDQ3pXw4PLkD63DkQUz+4XXOKeb09ver8XDUQ5DQiynDb9FTYrP3pExGfIniDyo
+	0nmQvm6+iVI5SO1A7SAnQvKtsUgGHDSXO9qvnLt9yEraGAMxKFvHhhA3Kke5V1Gc/Tbttq+v6GARY
+	tPJic+KrlBKRpsAIKCDnnSnveEBGPhNSNDKhym213FZvY7Pj+QImPB9hy1VCIHfiSVk06yf3RssB6
+	JmbhUiVexUbS1t19gHL2xkVGS8lxcUaqF50TKs6cY+vxOEkSyRgU4kvQTblwbeUE1v6qsenLGRsEd
+	n6Yr4mBA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wEu2Y-00000008uTB-05QR;
+	Mon, 20 Apr 2026 19:12:14 +0000
+Date: Mon, 20 Apr 2026 20:12:13 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: linux-kernel@vger.kernel.org, ritesh.list@gmail.com,
+	abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
+	brauner@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, stable@vger.kernel.org,
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2] mm/filemap: avoid costly reclaim for high-order folio
+ allocations
+Message-ID: <aeZ6jQKL7zSCXNaP@casper.infradead.org>
+References: <20260420161404.642-1-dipiets@amazon.it>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next] mm: make sure freeram is smaller than totalram
-To: Yang Yingliang <yangyingliang@huawei.com>, akpm@linux-foundation.org,
- ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, hucool.lihua@huawei.com
-References: <20260413115736.1237680-1-yangyingliang@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260413115736.1237680-1-yangyingliang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 628AB40012
-X-Stat-Signature: fehd9iicrmtonrq99ymrgncfsowg61po
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260420161404.642-1-dipiets@amazon.it>
+X-Rspamd-Queue-Id: 7CFBEC0006
+X-Stat-Signature: n4njby6f71ptnkpuisbmk4fmhtdj4pos
 X-Rspam-User: 
-X-HE-Tag: 1776711790-719114
-X-HE-Meta: U2FsdGVkX19+BM3OoAyki4fuy55qdOjKi++kJDN87D9eh3IygabshzyzCR5Bg54FANF1u/kP6j/y55yELJE0uiGbQdG6/1L8v+vXb6S3SwP1Fyz+gcukmqHDAZTt+JUXDqPbz7o/pM1HMx/hMNHEI2HTV1YLMGAD7o0SK1NxcB+ownuetk+OPSgMs/uHJ8e37fRksK1fUFdpHr3vJz0LhGrHZCA8yHjS+r0Ij+I8znyCg3ICiu1yDdHia09XEKliplDKXFcwBMJ0jPyPqXlfoGVfS8K0/LvCXZI10oZ1SUzlAmJJjDW1pY7RosG5OpdI54qzWvNKHSuvPsV3u51Iln8Ikc1G8yRmot7H8Z5ITeNH+qNcKWpP0xLaCSSJr53cERihLizhryo7Y2ha14L5rPllt3+a6V30nS4nrCQlSNdWSSW+L1u9Tk4yKzIljpI26odyJiRSP04XxAfdf97+g675cdlKFOel64L90zmHX+8zdhf8OyEEtgxmJN+oyFvq0W/U+gO0FNLB11zlpPPEARdVFDP2Is2rYmJ+U6CutAe3/CBluQ+4E0PC0U7mFT8HME77nbjMlnfRhgfx9JSagXEXLVJdjjm/VcpxkfmPXrHiTTT1pJksof19G0aNdL72SX9dHJ3xzL6BIhsbuttI1zNBur6CKWi+fmHRB0e7lIYh1OidO8ct+WJsuZ594hOFv+TsY9O5s7Sr1eqTjFEkKjLNb9h39qXFwLgY5McoHuLgL02UKzaY2dsJR4JgCaKeVAgifwwKEmmxJ3bbiBDOraAenzYJhhFvLaQ2AGROe5+6XutK90pIRdCTAYXN/1YCEU6PAWamvdZ0tTphSUMNqmyX6RGBgno2O52pwA/k4oJCNSoHOAAvF+V2hVJ3Eg1Y2N4Aq2HGjTzKdESU3xKgLGHsTZDfckOZVHLewiEN9BywAo3M5rLdGo/mHgZsXbTYqxHIJHr61miMv2B67Y4
- 8m4LEkqe
- ZIKanRWpRouqOSCI6Knv7QGX8gYCIl2ByEtAmfS2J54++ixKs9ZRjHUOLT0ce5LHUDOn0R+RzEfxxUjRVeYE5aq+8Fe+RARjnLP5gv7aC+sGSv1tIrtqbuUANps8OSUMOEEdXGXd8tiu/j1i//s5cqBkLWqqGxfSKeCCYiEh9HV3sm9lMbGDYXNMoKIV27kaS4OaQwMDxvrflsTeU4iR/+EcDyfBDp46itN6cK+P+nVBvHj51ObhhhyZHhlyqd1Sg229h
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776712336-102447
+X-HE-Meta: U2FsdGVkX1+X53UUy9ZJa+Gr/tOqd15NjVcSfB6iwJP+H96SaGt9WVTgRaH6ycuuw91zxbBshOVf+Di7Hok0r74w1H98Hq+vaf9nXd+BuWkS4J6HNhRoXNMqAA8ul5zac6jMNvWEK5nH0YVe3cyYrkKliTvr4aThvzew5FjAxTpdtQs8vQIJPqkhyaTUAtxtwvPV5MjeTUbH9JQJBE+NKeUXY/7NRf9/uc0ph6E96vd4v1gvlZCN9csRQrtXvCj88cY3HLj0AQcwjjZg+rFEVPSpQcReCiF7rEeJQMvUOOzic8ukUDi+F5zpLHlovxjy/oa4OcKmeqmd2AHe5SgX2uX1NeaYz3IRgA3B4oJkNJ3nblVCEy84uk3VDf6NkvQYfv/lf8KLDuiB3+k+NI0B8YMqM0c1MoUy3rZxlbwqsjZZV+KGcDS7cS6LkVXCNSCqD7D9dJwU+wrxe4RSG82rMRKqwK+/9w+y50kEsa6y+ZeOaLD0HYnWby8DcZ9af1l0Jw6QHYVf93nrNMZvcjip/qC5yEnUUMp/NT1UKKFEZz1zLm9lQucJ6+Rc3itX+jFhSa/u9GKuz/h6uDioXGyG9VtDwuBR/2oPZBvWK1PpNSnQtSCb1JM7lYcub062kLpR/GqYw9i4nWryssGnJoL9QI6VezkbWYwmhhHuzJKkcS0tUj7ukJ3eo97bLGgTZwVh3ZO0CSbZbphltK7WS4T+ZjdOO/NNpoH3yLK9DjewgpKu4bnslkn3EUxDDt0T1OqwCiQLANZj35KwRN27IRaB7PHaFid2tTiM62czqOXrmU2XcfASsw9+rYkyBK/1PVXTsw6Iu7gh5eRBlElZPkgc1TjIKoiUJoGHoqSttyUaDfsKPzym4KpOlRewhzmm0nuezqGVo1TwfTXJRvF0jids75YoOBCQCSMedXUD4E9Q6J+afoEbJM82MFJXKXUY8Tm4whYXZ5JrIo/Y/25jkub
+ GQPrxTIn
+ r+Q2bkWeNiMH5zMryFD2iKuzHi4VUZFcdntVEctF7HSgVZgiIwckr4cT6CvhKJWElQQG2YAkt5kSnrgWr4wGJuyTv4XIHsWhUnLM/cApuLSbsTDUhsOMft4W0DY3HFWWarhHbjt6C19pKF7SKezMW8dizbjcnYJLxA5Zt6/z/JUXIKoJs8/bnHYDFPEy4XCkhLnQnXbxVa55Bq+5f6xcMffRFnpTCJc4eyq4ZHM4iVoxIANHcaJGEEYwKQC84ni39BjWPIVZsSC0PwvqUoIBjPQAgJYXVZV7mo2EGmJZk5BpQ0S4PWdIamfxYPOaUapWZJxZm27DEjspyHaW+FRGzmXGmQHM8+BH81Gef+/Fjwl1puyqVMtFh3JsgM18Ro+wOJpCbj/NmGtDO1AKc8LdEihwN4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,60 +93,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/13/26 13:57, Yang Yingliang wrote:
-> The memory stat is not done in real time, it have some gap with
-> real value. In CPU-less NUMA node, the values of MemTotal and
-> MemFree can be nearly equal, the gap may cause MemFree bigger
-> than MemTotal, it leads MemUsed is negative which print as a large
-> positive number.
+On Mon, Apr 20, 2026 at 04:14:03PM +0000, Salvatore Dipietro wrote:
+> v2: 
+> - strip __GFP_DIRECT_RECLAIM to avoid costly reclaim for high-order
+>   folio allocations
+> - Moved fix from iomap to mm/filemap layer
 
-How does this interact with CPU-less NUMA node? Some concurrent memory
-hotunplug, or how could be possible get MemFree that is larger than
-MemTotal?
+I don't think filemap is the right place for this.  And neither does
+Dave Chinner, nor Christoph Hellwig:
 
+https://lore.kernel.org/all/adSY3GnLHyQatigQ@infradead.org/
+
+I asked you for performance results with different patches, and you
+didn't reply.  Now you're asking for this patch to be merged instead.
+THIS IS NOT HOW IT WORKS.  You answer the damned questions being asked
+of you by your fellow developers.
+
+>  			err = -ENOMEM;
+> -			if (order > min_order)
+> -				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
+> +			if (order > min_order) {
+> +				alloc_gfp |= __GFP_NOWARN;
+> +				if (order > PAGE_ALLOC_COSTLY_ORDER)
+> +					alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
+> +				else
+> +					alloc_gfp |= __GFP_NORETRY;
+> +			}
+>  			folio = filemap_alloc_folio(alloc_gfp, order, policy);
+>  			if (!folio)
+>  				continue;
 > 
-> cat /sys/devices/system/node/node17/meminfo
-> Node 17 MemTotal:        4194304 kB
-> Node 17 MemFree:         4195552 kB
-> Node 17 MemUsed:        18446744073709550368 kB
-> Node 17 Active:               52 kB
-> Node 17 Inactive:            320 kB
-> Node 17 Active(anon):          0 kB
-> Node 17 Inactive(anon):        0 kB
-> Node 17 Active(file):         52 kB
-> Node 17 Inactive(file):      320 kB
-> Node 17 Unevictable:           0 kB
-> Node 17 Mlocked:               0 kB
-> Node 17 Dirty:                 0 kB
-> Node 17 Writeback:             0 kB
-> Node 17 FilePages:           372 kB
-> Node 17 Mapped:              320 kB
-> Node 17 AnonPages:             0 kB
-> Node 17 Shmem:                 0 kB
-> Node 17 KernelStack:           0 kB
-> Node 17 PageTables:            0 kB
-> Node 17 NFS_Unstable:          0 kB
-> Node 17 Bounce:                0 kB
-> Node 17 WritebackTmp:          0 kB
-> Node 17 KReclaimable:          0 kB
-> Node 17 Slab:                  0 kB
-> Node 17 SReclaimable:          0 kB
-> Node 17 SUnreclaim:            0 kB
-> Node 17 AnonHugePages:     79872 kB
-> Node 17 ShmemHugePages:        0 kB
-> Node 17 ShmemPmdMapped:        0 kB
-> Node 17 FileHugePages:        0 kB
-> Node 17 FilePmdMapped:        0 kB
-> Node 17 HugePages_Total:     0
-> Node 17 HugePages_Free:      0
-> Node 17 HugePages_Surp:      0
+> base-commit: c7275b05bc428c7373d97aa2da02d3a7fa6b9f66
+> -- 
+> 2.47.3
 > 
-> To avoid this exception by refreshing vm_stat, when MemFree
-> is bigger than MemTotal.
 > 
-
--- 
-Cheers,
-
-David
+> 
+> 
+> AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
+> 
+> 
+> 
 
