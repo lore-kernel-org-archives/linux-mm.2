@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98CA5F588C2
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F143F588C4
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:50:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DC9B6B0088; Mon, 20 Apr 2026 08:50:40 -0400 (EDT)
+	id 4D52B6B0089; Mon, 20 Apr 2026 08:50:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B41F6B0089; Mon, 20 Apr 2026 08:50:40 -0400 (EDT)
+	id 40EA76B008A; Mon, 20 Apr 2026 08:50:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE5346B008A; Mon, 20 Apr 2026 08:50:39 -0400 (EDT)
+	id 2D6886B008C; Mon, 20 Apr 2026 08:50:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DFA176B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:50:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94FAEC2FFE
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 10A276B008A
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:50:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB12F8C986
 	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:50:39 +0000 (UTC)
-X-FDA: 84678918198.12.0365CCB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 49B73120003
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:50:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N3R1/G1/";
-	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+X-FDA: 84678918198.23.9E2D047
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 77A92180013
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:50:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M0xJRB5g;
+	spf=pass (imf24.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776689437;
@@ -34,68 +34,68 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l5FdBsp1kGQjyJJvapBdTNqnIIO/0keRRtcyQFKcGwU=;
-	b=mriAl/M2rqBGjgJFOPycgtioKdp1JxnruKjVisAuYIqaTLVDkTHQPfodT3M+WecgNt/gvJ
-	LV/hyGpMeX/0SVdkx7AZrdWDpxt1I5NhBT3hKZL2ZNphZAiUArayKk0/a1NlUEkYenzjxe
-	c2DSKv92Mb5K70NH1T0lAUrFdGQ38BA=
+	bh=L5nC5ya61lMqmOhAB+HMSdub/zT5DYdzZ4+bbmAFmmI=;
+	b=zOUkiOOSNp9uohl4a938yN/iZhAL0v/tLBXlo8UiyaVKwCsDfljzLQY2nZd0rjlYx8t68/
+	+0gmCTNMnceWHB6zvq8OprdMmXgH9ziMqCd3VYbXCmU/fIRU3HyjsdMzTMrfAU82nIT+gT
+	fz0bROZ0jsBwLzkCuYdeSV6FjYiJtnE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=M0xJRB5g;
+	spf=pass (imf24.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776689437; a=rsa-sha256;
 	cv=none;
-	b=qyB29AxcTarf21za+uRwy7qKle+3oVn9a30UTvSz4A8qZoGnzI2ykLiZlWRu+RTc6NSul4
-	GUoCz9kE7CadA7qoR4XsU+9LKxW2Rjy8RRxgWnpC6F3YW3pGKrlEdrD/jbWt2ES13aUZr8
-	C212jdbAKhU8p9wxxw3hEp0WoqBK8tU=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="N3R1/G1/";
-	spf=pass (imf29.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	b=bXqbcGJ/Y9bYkMNBylNncgWZPuJBEKcEom3NgXmgHXiQkrMoApBl4Y2uolo/PjsYkD1R2b
+	8MrqDwAgCABlpS3Aw3+dk91mtLo5drtmH3MypsTeGC6L/tTiuLFalLTAMQhbE6YGP4bPfG
+	qPhwTtyrHqoOleEZtlwmzd+kK5ZwQ18=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776689435;
+	s=mimecast20190719; t=1776689436;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l5FdBsp1kGQjyJJvapBdTNqnIIO/0keRRtcyQFKcGwU=;
-	b=N3R1/G1/fbDEVo1scinpk4T6NhV52fkoKuzUaIUpqsuXdMz5IpjccNO5gvPNuIMF7wJlN+
-	F+LRV2OlxhOPazq+Jg24etEb2fMje9g7wEcHuzfQrcwFUbZu5wf4V/0Bvkp6iewLxlO2yS
-	yNd8DIA1Ji4Cxg+X5nHsM/Sk4RdaWn4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=L5nC5ya61lMqmOhAB+HMSdub/zT5DYdzZ4+bbmAFmmI=;
+	b=M0xJRB5gnCSbvnIyHrO9BdnLKEISOpVZ3D7lfyKY6iPj/TshvV/UC0kyyqqLHnwkeNmGcG
+	YGTtfw59kGaGPFWVynzQ7VV1LD4vphGfgdtTM4OXWwU2ooXGvIpkNmg6XCgxDi9GyGFtWa
+	+rQg4dmPuyVqlpOoA2KZoqIHBInnJps=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-OHUaQ0PaMaaImHdQv0WqjQ-1; Mon, 20 Apr 2026 08:50:32 -0400
-X-MC-Unique: OHUaQ0PaMaaImHdQv0WqjQ-1
-X-Mimecast-MFC-AGG-ID: OHUaQ0PaMaaImHdQv0WqjQ_1776689428
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-488e097a270so22534145e9.1
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 05:50:30 -0700 (PDT)
+ us-mta-315-39UsnpU9PuOUGyV3aGfOjQ-1; Mon, 20 Apr 2026 08:50:34 -0400
+X-MC-Unique: 39UsnpU9PuOUGyV3aGfOjQ-1
+X-Mimecast-MFC-AGG-ID: 39UsnpU9PuOUGyV3aGfOjQ_1776689433
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d780757eeso1755913f8f.1
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 05:50:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776689428; x=1777294228;
+        d=1e100.net; s=20251104; t=1776689433; x=1777294233;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l5FdBsp1kGQjyJJvapBdTNqnIIO/0keRRtcyQFKcGwU=;
-        b=cJsA50ZFN4TsgnRmB5Dv9DiPmYn2sw9SlGNoBG7owJEny8ioCh4/p0pc6PPHlDbQ4E
-         WqunESX+5eqqVct0zCYmdQo65K1lU6hjOxu79eoWoO8Lr4ca4hfsy1RsgOIjtTTKvEjo
-         36yIkATWa9/wxOszRFwRakau4AAM+3btG+ahLcsU0DBWYRf+YOW+zLmKzg4AEfb6mefu
-         fRiwFBXRPhkmrDfO7Ngn80IVQELG+DAZ/YSs7FyFuqaGLL4BaRTisNwILSvQ5N7HgEuO
-         aX5JJaURLKy9BfPGcNuUVokUhoQmz63h8WNJKkYVLfZahY91FHAlxAaXz9KaEaLSNxv5
-         dL/A==
-X-Forwarded-Encrypted: i=1; AFNElJ97UmEJchKFU0o4C5eb3vPZ9JToQqWTjItmMB7J2b9lmMLiR3Ok5vmCPag7r2N43a/bS92sUzwo9g==@kvack.org
-X-Gm-Message-State: AOJu0Yw88MA5wWmTtpiv/NF6Rpnj2Tw/r2J8laC5RurJSvYiJd2sIXGm
-	cp7BRaVkNx/y/LKwnEdLApc9kl5jOz/Mat2K+V0Vl/fYmF8iJbHptWVAKYJrUllhKhPCzIRonoS
-	trQsq2saQlRzgbyGqZti5YNmWdZnlnmIEkMwgrOp3mZzh5tpiKF9K
-X-Gm-Gg: AeBDievrVbs+DcxaZM73AGZu1nUkJGtXhd/LXxG/Y6HP+87agFdenYdsS/2Cx4ongco
-	obDhqvF4YkXpY1vqsoC6g5TNkS6Sd3qhhftFoBO3RYJE01nHH+AkWWzYtxEsp6GGuzm8rlTnivS
-	zJ7CZmxl034ycWVKZRT3PM4A5XDz8wYzpw64vDe0EdCCSW5UNJemncXI/m1vdW6lcshB0htWKgy
-	jhDmtrBaz7AbQaXQZAGu49W2Qv4S+wEu6NbT7PQXha/k7CjaIN22DlIdvnXSMB3O16ZRg80Lby1
-	iu8qTMXeTBUCyJl+BblNAetqdC1kIlHwyNC0nq4t4RULtSTrAcvSyzujaY9bfRSGtzYnckAgsNY
-	lPgFsGGksOYsMUDGNm3B668VP/3hovvuaWqTDsLHNCj59KHqm7F+s0w==
-X-Received: by 2002:a05:600c:c0db:b0:485:2a4b:7bc3 with SMTP id 5b1f17b1804b1-488fb745289mr134427095e9.4.1776689427813;
-        Mon, 20 Apr 2026 05:50:27 -0700 (PDT)
-X-Received: by 2002:a05:600c:c0db:b0:485:2a4b:7bc3 with SMTP id 5b1f17b1804b1-488fb745289mr134426535e9.4.1776689427197;
-        Mon, 20 Apr 2026 05:50:27 -0700 (PDT)
+        bh=L5nC5ya61lMqmOhAB+HMSdub/zT5DYdzZ4+bbmAFmmI=;
+        b=lFnxDK4CNOXJLksknlYTCor4clE9S+R8pSBWl7iPSHRCaUMid5MCkW/w8B8VBhUXgk
+         798rLyf9KZ0b++VG+looYvotjwCVcXw5vYAvYy2usI85xSqWXDjlqnzqOI5L9lxT59YT
+         E3yPy7s8GYK73wv1WwXP4bvLxoACM4TqFUjHV8v8cRcieQhTLafiNgjdmG6Mwg0Hs0dD
+         o05RwHEGLhewkrGqu9/uEUi26jmsL9Wu6g3SGH7oAuXkhY1ddXharjqOUc/frbrwhn3S
+         IeVkSF1atNcOE/IhZBLUHt+bRFRSyaeTCy1r6KPwDuHsSJw5IdwRfB+GT8oSzUxRMv05
+         1XZA==
+X-Forwarded-Encrypted: i=1; AFNElJ+3H9ZOUwU6Dg4op4isrbIWvwaUiSSiHD9rakgzILLIVtBS6RidgaURn5omd65bi8oxKufxY/1L/g==@kvack.org
+X-Gm-Message-State: AOJu0Yz1u0WRfcfA8Sw0mAtw0PTBVh+59ADkLjRpEvjEcXUnBbxgqCDC
+	i3ZsvbfkpX34MrSZSUxxyuH1OTBff/oQinLuYixF0GgmA9DMDfJCua5uHKg1OOrNX43lIkPuMVu
+	n3/OTf/4R1eS10Xm1T85HTtcEbAX4C3TfoWH8nJgSz5OPKPlzuoGX
+X-Gm-Gg: AeBDies2NrX6x7bNrMFFIA0E9JJZFX873E1r5k50m7W7OTHzRBhgQkmM1OUGwCaNG/o
+	AgLh22tGZAH0/hNtinGPEisWvsD/LPzya0j7uIBoePBfGfyeI7lD0sRNCrlvyp+UeIUzKx5SxF7
+	pg0f1ZeDtNDa8Cay52duuiuw5muuPkFhy2lSRLPacNRaTjglazOaoeg4QjIJ51XTqv5FEwS/4ug
+	J78s6XKfVaq5JmfjmpQHAkL+lR/wFaVxgSmX6fEsPqTEhqYjTWV3I6F5Sungoss/kfH0zMQ2gaC
+	pxzSZ53/N2pPh/JW2WXgn7sl7sPxmaPg5+DRzOutHVKwB5ZWo84fpTxySrG6UTvQviJeENoIBcU
+	TzNoOPUqf2z/tIMvXXr/xQsxSU3t3My/+md8s1pLYv5REp4xxl0j8SA==
+X-Received: by 2002:a5d:6f13:0:b0:43e:a703:3675 with SMTP id ffacd0b85a97d-43fe40329ecmr17814954f8f.5.1776689433178;
+        Mon, 20 Apr 2026 05:50:33 -0700 (PDT)
+X-Received: by 2002:a5d:6f13:0:b0:43e:a703:3675 with SMTP id ffacd0b85a97d-43fe40329ecmr17814892f8f.5.1776689432659;
+        Mon, 20 Apr 2026 05:50:32 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-25-21.inter.net.il. [80.230.25.21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4891f4016bbsm17219265e9.4.2026.04.20.05.50.24
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4d112sm32443947f8f.29.2026.04.20.05.50.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 05:50:26 -0700 (PDT)
-Date: Mon, 20 Apr 2026 08:50:23 -0400
+        Mon, 20 Apr 2026 05:50:32 -0700 (PDT)
+Date: Mon, 20 Apr 2026 08:50:30 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -107,37 +107,28 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Jason Wang <jasowang@redhat.com>,
 	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
 	virtualization@lists.linux.dev,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>
-Subject: [PATCH RFC v2 02/18] mm: add pghint_t type and vma_alloc_folio_hints
- API
-Message-ID: <290d615a001cf121dc0c604eb79451bcc7917baa.1776689093.git.mst@redhat.com>
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Subject: [PATCH RFC v2 04/18] mm: page_alloc: track PG_zeroed across buddy
+ merges
+Message-ID: <f3b87e8302b177b305af9f120306fb5292d1b782.1776689093.git.mst@redhat.com>
 References: <cover.1776689093.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1776689093.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MZm1gD9oTIWIJR5-Uu-ByIb7c_vqcNp73OCUaRrqP1c_1776689428
+X-Mimecast-MFC-PROC-ID: Va7cISjQSMlLV8_LPh3_TzRlcAB9oXm2APj-ijIY2Ec_1776689433
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 49B73120003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: a4gjzikip4nyd84ji1g9rt39cb87dt9u
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 77A92180013
+X-Stat-Signature: u5n7hjbsfgcr9d8no46h6xd9gd3uux5p
 X-Rspam-User: 
-X-HE-Tag: 1776689436-66040
-X-HE-Meta: U2FsdGVkX18BcJkgnkkpoYTepS+t0msJcfGIKSlv9L6OyMDG1uHZ87SYfy43QRKlLr+B/m5Wr4M6KsaH6lHW3KTnLn04V53uGvx+NRWZDDYG/dzUpuu+KpmOUy6VgQqAxA/bcSFCrAo607SQFXywNix5O3QSB7eVqqEu7YddgzroIskLwvNP/Eg8PvolUjsP3LRP5svB0ZaGSySKabPaN2dnGqiGT+tQvX7MHRcglflSlA8eq/tqcNnthZkSNfm6Y1fS7SZRj6U6bNCdG3VhYVezJ5GPt3Fb1MkVYH8Duo2xmYLYJ5vfkBQU5TFdX+3RmxRJR7vk0U+4m40MP3RmH+m5qJNBdazPhHoW9+GTsE2L+SarR3Q2Zo8rcPb0hInXNwtfM2FSm55b5DGm2/wJW4moZEgC63lkW1+okp6WRVDOccJXjofKyknYgkHCSx3GmZb29rNKNfJT1ooMKkvg4F+7CEps5srKUJ9v/sTaS1DDg9MXiCuoTvmefFsgXE/8ENJ1xAkFOVQy//flyqVMWJWoMukeXxZfTLApLtaVIoiJVm3YakwmkBNsE7vEXRHubFNzs/HemdQGwYTVTajBNDC0xxZ9wS0RyuNmx+eY8w306ppf/9/tE5njlaIuJsBwf9umw4FfMQp/gLfoqaDayKgmUWwjUZUdwXrxJYESimviXg3hGJ0CHibuOX6zJtMR9l3FFVf81RcIhVGrl0UFCMZV9QSfTJmV8EKg9Ew3zXlJ6zc/7uQEOc1WlADKKDR81VSyHuZZeLcL/dhkes0OfdH6qmigZ3JpJsaZHAtUS8sTxMWqtSvmjwRJDKs+iPvZD4LEcLT+lKp+lKoC3Gn3oiA83+jm3tz7b+KD25o1K2NUqOR0+4jdIUV5GNFD/HVH4eeofCo9ATvffIFxMo17pgo4wYvponpII6LqnWbT69yOp46CjgVnHsZmJK03Ey9RU2o5nN28b0DyPPym+15
- QNYBrKHv
- 52k2ythd0KXi2lLTEL7+pLDOYnrl7rzOKhuBgRtv9K9N1DR7fxZQEFbSSqAMfsfe5G71xTujVKozvziTQt1a19WOcfuF6i54h5Y/JziJXvlOGTHcuI2GF62dk0r5akCG1jSdmRjIU1PN0YjSR0LZuVX8XuZv0buUn+WvPdBRnkl1PMIWOyk3k6GBDG0jBcNM2/BlZz09WKvMkL5F06/8qp9GkT1i0ceSQaFiYW+SXQv52AKSD1Dxeexu65kUwdxHpY6SVGOBlgwsJXxMSgs2qTXM2xWxmPHkFJ1/W3CFeA1K3oiTLsfiZvL8gQmGKjvBP62MsUUeZyn2viltA2yi6q/kroB2AWgTH09k4w+ocmh0Y/aNZdYGqCq8H3VjzCX03UwJVFcPjAYVeBRd+KvksunEPOKuvogHwNS3uo10oJBz1AN0Xdr3dUnVm+3c+s1uwX/Rw
+X-HE-Tag: 1776689437-590732
+X-HE-Meta: U2FsdGVkX1/TGDyNLLd3fM4L7kGt+nNuZ0EU1s6SnE5iTCtGmdpTbInvb0OjkZgxsnhgk7nAXtSeiZQVjQv4AP3CWqgGF3QPwYnxqCQci9RYcmWhG+Tvtuxo163F2ZefcTh4T5uz4tTK40MloReOGieXib0febXW5plyHMZaWGm9V6P6sXwtl1XXStR9Y8lFqcqP0Ku1bEQ1V2rLp5+FbbF5uAAE5ohd4nBJSwt+X2HswwMfPBxi7Li7qQhcDDRjU86B2yIv0heG61j9nB3fKfXUh2Abg/7TW1Nn5c89BIzpaWPIjYE6yW9MPqgCJfbUKixFGpLHeNCqAfP9VcpFjM7yuK24pmkSqJxphJFe7BqDPyoEPFCR2NvW6o6618F9nk1lxiXDvgiGbNJMRgRoeJINxp6rh8TD4B9LecjpyR28ZI41U1lYls/4kjcwEu4zwasaBfmVjkvl613PjxUFsC0AV+iOWkvj2wO1Rl39r5wAFHfTx79g7Fct/H/jZePDT/ZRSgOovVTliq5k9FarkUYO0itTo2Rq12bUsyQs60lEiUAbEeeDIkamc7aOAuxC5HylTZ4bzJu9TTC6uf8sj1DHh5zHttaG/ut6HxCAmRfhBhBVc9iNOj4gPrL2Icv0OVa3Almq07ECFs/vuPS76N/0GIrzeSdB7u7BMlOGCFppFsgsMHQH7TU5KqwQfQf3lj5bySVCvys7wvbVA+Kv+gZEdmYumiAN/ixtGnAXr0bed607aHEL5sZd19yO+A4B7AbsvmS3EHc1yMPSW+6JABY/q+4aYPb+Vvd76M70OfoTT5ACSMYCzOCIqdUtPKmJk8HJ3Em1ugTSX40xVnBfQ9TqG9AyuzbRSWpN15LzC8IZQK8lUhPFluqUU/JgEJw4K3LxevRboDgKj3rU0EryV3yrdFPTEwg+v4y4cHPDzyBqwOI2Rw0517WpNFkEBVpoUleI2cuetIu7vQ3gkzJ
+ trxqRSZ7
+ zsEgFS9U+R3g+kkmV64oB81Lm3KhPOYqY+xix+Bs4GMtUEhbtmabcpDIwmWG2o87l2fXpFZ/uLtXVGlL++NLgE9laJJM6lGzYY2fRPHhL91YNYTEGheJuO8gCxRI6P+7EVqMWNsRmgDhSAEf0o+JQtvRuj1zwVlaD40eBI3FvHcioaQWFM4YIn1F5/vVBn4APJ3eYa/YT33ohYoE5jXESCSWF+a/sMgLUcq9ytYD9gGda46GRsZd3b/PAl7LsfV7Zx0qFA25Kjl7aBB+D4kQq0gOAFcHS/v1pXWxcI2I62xjmplgNrOnLWuNgh8lEmJqlxefcCoTjpgDUzGTwcvxgZErh3d8otbKsEm5s8RYojYbtZz+gz/XvUu164ixDdo6Pe6A9qetxJFb98vu0kk1BJncup8+gbYVj9ya5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,228 +136,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add pghint_t, a bitwise type for communicating page allocation hints
-between the allocator and callers.  Define PGHINT_ZEROED to indicate
-that the allocated page contents are known to be zero.
+Preserve PG_zeroed when two buddy pages merge in __free_one_page().
+Set it on the merged page only if both buddies are known-zero.  A buddy is
+known-zero if it has PG_zeroed set, or if it is reported and the
+host zeroes reported pages.
 
-Add _hints variants of the allocation functions that accept a
-pghint_t *hints output parameter:
-
-  vma_alloc_folio_hints()  -> folio_alloc_mpol_hints (internal)
-                           -> __alloc_frozen_pages_hints()
-
-The existing APIs are unchanged and continue to work without hints.
-For now, hints is always initialized to 0.  A subsequent patch will
-set PGHINT_ZEROED when the page was pre-zeroed by the host.
+Without this, a zeroed page freed via free_frozen_pages_hint could
+merge with a non-zero buddy, and the merged page would falsely
+appear zeroed.
 
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Assisted-by: Claude:claude-opus-4-6
 Assisted-by: cursor-agent:GPT-5.4-xhigh
 ---
- include/linux/gfp.h | 15 ++++++++
- mm/internal.h       |  4 +++
- mm/mempolicy.c      | 85 +++++++++++++++++++++++++++++++++++++++++++++
- mm/page_alloc.c     | 15 ++++++--
- 4 files changed, 117 insertions(+), 2 deletions(-)
+ mm/page_alloc.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 51ef13ed756e..14433a20e60c 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -226,6 +226,9 @@ static inline void arch_free_page(struct page *page, int order) { }
- static inline void arch_alloc_page(struct page *page, int order) { }
- #endif
- 
-+typedef unsigned int __bitwise pghint_t;
-+#define PGHINT_ZEROED	((__force pghint_t)BIT(0))
-+
- struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
- 		nodemask_t *nodemask);
- #define __alloc_pages(...)			alloc_hooks(__alloc_pages_noprof(__VA_ARGS__))
-@@ -325,6 +328,9 @@ struct folio *folio_alloc_mpol_noprof(gfp_t gfp, unsigned int order,
- 		struct mempolicy *mpol, pgoff_t ilx, int nid);
- struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order, struct vm_area_struct *vma,
- 		unsigned long addr);
-+struct folio *vma_alloc_folio_hints_noprof(gfp_t gfp, int order,
-+		struct vm_area_struct *vma, unsigned long addr,
-+		pghint_t *hints);
- #else
- static inline struct page *alloc_pages_noprof(gfp_t gfp_mask, unsigned int order)
- {
-@@ -344,12 +350,21 @@ static inline struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order,
- {
- 	return folio_alloc_noprof(gfp, order);
- }
-+static inline struct folio *vma_alloc_folio_hints_noprof(gfp_t gfp, int order,
-+		struct vm_area_struct *vma, unsigned long addr,
-+		pghint_t *hints)
-+{
-+	if (hints)
-+		*hints = 0;
-+	return folio_alloc_noprof(gfp, order);
-+}
- #endif
- 
- #define alloc_pages(...)			alloc_hooks(alloc_pages_noprof(__VA_ARGS__))
- #define folio_alloc(...)			alloc_hooks(folio_alloc_noprof(__VA_ARGS__))
- #define folio_alloc_mpol(...)			alloc_hooks(folio_alloc_mpol_noprof(__VA_ARGS__))
- #define vma_alloc_folio(...)			alloc_hooks(vma_alloc_folio_noprof(__VA_ARGS__))
-+#define vma_alloc_folio_hints(...)		alloc_hooks(vma_alloc_folio_hints_noprof(__VA_ARGS__))
- 
- #define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index cb0af847d7d9..686667b956c0 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -894,8 +894,12 @@ extern int user_min_free_kbytes;
- 
- struct page *__alloc_frozen_pages_noprof(gfp_t, unsigned int order, int nid,
- 		nodemask_t *);
-+struct page *__alloc_frozen_pages_hints_noprof(gfp_t, unsigned int order,
-+		int nid, nodemask_t *, pghint_t *hints);
- #define __alloc_frozen_pages(...) \
- 	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
-+#define __alloc_frozen_pages_hints(...) \
-+	alloc_hooks(__alloc_frozen_pages_hints_noprof(__VA_ARGS__))
- void free_frozen_pages(struct page *page, unsigned int order);
- void free_unref_folios(struct folio_batch *fbatch);
- 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index cf92bd6a8226..b918639eef71 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2547,6 +2547,91 @@ struct folio *vma_alloc_folio_noprof(gfp_t gfp, int order, struct vm_area_struct
- }
- EXPORT_SYMBOL(vma_alloc_folio_noprof);
- 
-+static struct page *alloc_pages_preferred_many_hints(gfp_t gfp,
-+		unsigned int order, int nid, nodemask_t *nodemask,
-+		pghint_t *hints)
-+{
-+	struct page *page;
-+	gfp_t preferred_gfp;
-+
-+	preferred_gfp = gfp | __GFP_NOWARN;
-+	preferred_gfp &= ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
-+	page = __alloc_frozen_pages_hints_noprof(preferred_gfp, order, nid,
-+						 nodemask, hints);
-+	if (!page)
-+		page = __alloc_frozen_pages_hints_noprof(gfp, order, nid, NULL,
-+							 hints);
-+
-+	return page;
-+}
-+
-+static struct page *alloc_pages_mpol_hints(gfp_t gfp, unsigned int order,
-+		struct mempolicy *pol, pgoff_t ilx, int nid,
-+		pghint_t *hints)
-+{
-+	nodemask_t *nodemask;
-+	struct page *page;
-+
-+	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
-+
-+	if (pol->mode == MPOL_PREFERRED_MANY)
-+		return alloc_pages_preferred_many_hints(gfp, order, nid,
-+						       nodemask, hints);
-+
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-+	    order == HPAGE_PMD_ORDER && ilx != NO_INTERLEAVE_INDEX) {
-+		if (pol->mode != MPOL_INTERLEAVE &&
-+		    pol->mode != MPOL_WEIGHTED_INTERLEAVE &&
-+		    (!nodemask || node_isset(nid, *nodemask))) {
-+			page = __alloc_frozen_pages_hints_noprof(
-+				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
-+				nid, NULL, hints);
-+			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
-+				return page;
-+		}
-+	}
-+
-+	page = __alloc_frozen_pages_hints_noprof(gfp, order, nid, nodemask,
-+						 hints);
-+
-+	if (unlikely(pol->mode == MPOL_INTERLEAVE ||
-+		     pol->mode == MPOL_WEIGHTED_INTERLEAVE) && page) {
-+		if (static_branch_likely(&vm_numa_stat_key) &&
-+		    page_to_nid(page) == nid) {
-+			preempt_disable();
-+			__count_numa_event(page_zone(page), NUMA_INTERLEAVE_HIT);
-+			preempt_enable();
-+		}
-+	}
-+
-+	return page;
-+}
-+
-+struct folio *vma_alloc_folio_hints_noprof(gfp_t gfp, int order,
-+		struct vm_area_struct *vma, unsigned long addr,
-+		pghint_t *hints)
-+{
-+	struct mempolicy *pol;
-+	pgoff_t ilx;
-+	struct folio *folio;
-+	struct page *page;
-+
-+	if (vma->vm_flags & VM_DROPPABLE)
-+		gfp |= __GFP_NOWARN;
-+
-+	pol = get_vma_policy(vma, addr, order, &ilx);
-+	page = alloc_pages_mpol_hints(gfp | __GFP_COMP, order, pol, ilx,
-+				      numa_node_id(), hints);
-+	mpol_cond_put(pol);
-+	if (!page)
-+		return NULL;
-+
-+	set_page_refcounted(page);
-+	folio = page_rmappable_folio(page);
-+	return folio;
-+}
-+EXPORT_SYMBOL(vma_alloc_folio_hints_noprof);
-+
- struct page *alloc_frozen_pages_noprof(gfp_t gfp, unsigned order)
- {
- 	struct mempolicy *pol = &default_policy;
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index edbb1edf463d..f7abbc46e725 100644
+index f7abbc46e725..6adc894748c8 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -5222,14 +5222,17 @@ EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
- /*
-  * This is the 'heart' of the zoned buddy allocator.
+@@ -984,6 +984,8 @@ static inline void __free_one_page(struct page *page,
+ 	unsigned long buddy_pfn = 0;
+ 	unsigned long combined_pfn;
+ 	struct page *buddy;
++	bool buddy_zeroed;
++	bool page_zeroed;
+ 	bool to_tail;
+ 
+ 	VM_BUG_ON(!zone_is_initialized(zone));
+@@ -1022,6 +1024,8 @@ static inline void __free_one_page(struct page *page,
+ 				goto done_merging;
+ 		}
+ 
++		buddy_zeroed = PageZeroed(buddy);
++
+ 		/*
+ 		 * Our buddy is free or it is CONFIG_DEBUG_PAGEALLOC guard page,
+ 		 * merge with it and move up one order.
+@@ -1040,10 +1044,17 @@ static inline void __free_one_page(struct page *page,
+ 			change_pageblock_range(buddy, order, migratetype);
+ 		}
+ 
++		page_zeroed = PageZeroed(page);
++		__ClearPageZeroed(page);
++		__ClearPageZeroed(buddy);
++
+ 		combined_pfn = buddy_pfn & pfn;
+ 		page = page + (combined_pfn - pfn);
+ 		pfn = combined_pfn;
+ 		order++;
++
++		if (page_zeroed && buddy_zeroed)
++			__SetPageZeroed(page);
+ 	}
+ 
+ done_merging:
+@@ -1730,7 +1741,8 @@ struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+  * -- nyc
   */
--struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
--		int preferred_nid, nodemask_t *nodemask)
-+struct page *__alloc_frozen_pages_hints_noprof(gfp_t gfp, unsigned int order,
-+		int preferred_nid, nodemask_t *nodemask, pghint_t *hints)
+ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+-				  int high, int migratetype, bool reported)
++				  int high, int migratetype, bool reported,
++				  bool zeroed)
  {
- 	struct page *page;
- 	unsigned int alloc_flags = ALLOC_WMARK_LOW;
- 	gfp_t alloc_gfp; /* The gfp_t that was actually used for allocation */
- 	struct alloc_context ac = { };
+ 	unsigned int size = 1 << high;
+ 	unsigned int nr_added = 0;
+@@ -1761,6 +1773,8 @@ static inline unsigned int expand(struct zone *zone, struct page *page, int low,
+ 		 */
+ 		if (reported)
+ 			__SetPageReported(&page[size]);
++		if (zeroed)
++			__SetPageZeroed(&page[size]);
+ 	}
  
-+	if (hints)
-+		*hints = (pghint_t)0;
-+
- 	/*
- 	 * There are several places where we assume that the order value is sane
- 	 * so bail out early if the request is out of bound.
-@@ -5285,6 +5288,14 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+ 	return nr_added;
+@@ -1772,9 +1786,11 @@ static __always_inline void page_del_and_expand(struct zone *zone,
+ {
+ 	int nr_pages = 1 << high;
+ 	bool was_reported = page_reported(page);
++	bool was_zeroed = PageZeroed(page);
  
- 	return page;
+ 	__del_page_from_free_list(page, zone, high, migratetype);
+-	nr_pages -= expand(zone, page, low, high, migratetype, was_reported);
++	nr_pages -= expand(zone, page, low, high, migratetype, was_reported,
++			   was_zeroed);
+ 	account_freepages(zone, -nr_pages, migratetype);
  }
-+EXPORT_SYMBOL(__alloc_frozen_pages_hints_noprof);
-+
-+struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
-+		int preferred_nid, nodemask_t *nodemask)
-+{
-+	return __alloc_frozen_pages_hints_noprof(gfp, order, preferred_nid,
-+						nodemask, NULL);
-+}
- EXPORT_SYMBOL(__alloc_frozen_pages_noprof);
  
- struct page *__alloc_pages_noprof(gfp_t gfp, unsigned int order,
+@@ -2333,7 +2349,7 @@ try_to_claim_block(struct zone *zone, struct page *page,
+ 		del_page_from_free_list(page, zone, current_order, block_type);
+ 		change_pageblock_range(page, current_order, start_type);
+ 		nr_added = expand(zone, page, order, current_order, start_type,
+-				  false);
++				  false, false);
+ 		account_freepages(zone, nr_added, start_type);
+ 		return page;
+ 	}
 -- 
 MST
 
