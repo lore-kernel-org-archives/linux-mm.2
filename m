@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB2BF36C2A
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 06:56:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B215FF36C31
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 07:13:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C83966B0005; Mon, 20 Apr 2026 02:56:28 -0400 (EDT)
+	id B3F5D6B00F5; Mon, 20 Apr 2026 03:13:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5AC86B0088; Mon, 20 Apr 2026 02:56:28 -0400 (EDT)
+	id AC8D96B00F6; Mon, 20 Apr 2026 03:13:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B983F6B0089; Mon, 20 Apr 2026 02:56:28 -0400 (EDT)
+	id 9DE276B00F7; Mon, 20 Apr 2026 03:13:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AA0B76B0005
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 02:56:28 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 676181B8C44
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:56:28 +0000 (UTC)
-X-FDA: 84678025656.18.345985D
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 679652000E
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:56:26 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tlGk+B6c;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 89A1E6B00F5
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 03:13:32 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1DDC160946
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:13:31 +0000 (UTC)
+X-FDA: 84678068622.12.0BFB85D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0B9608000B
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 07:13:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W5Km2TZe;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776669210; a=rsa-sha256;
+	cv=none;
+	b=b3T77SVPGrjN3qPICoANmKqKTu66D3EDxV4+CPZt8cSUroJWugNzLu3A3uVHi6cX6jqKVq
+	LG/oZ9KnNJUfZ9VRksmJDzHQM0mFB7+Q49svqn5YUHGKm2j1kN5F+BpM/v1/YFlTzy2qRG
+	L7MEKLcOkuQ8Vojqf/qqYK1ElmNohM0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W5Km2TZe;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776668186;
+	s=arc-20220608; t=1776669210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xGsb+8op9HfuZM90V1dqEvT2Pz/EwuZxxHDEbjQ1P60=;
-	b=sODxhWnhNCIhaJ43n/ub45ta1llZv5XGnTSlC54Q3piWlcbdr9GkoKJvBUB33pZAPvKAUs
-	uOGr0mYJjAjYxnkNAz5gVujZkhUVXw0ZMxEsPmcdaR585F2Bj350NAl4XpAa+dpTB4qmmF
-	ds63uMD8v643C1TwPq/X9/kwnNXoCNw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tlGk+B6c;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776668186; a=rsa-sha256;
-	cv=none;
-	b=w0GJ8J853cxMsz4GakQvp8gKtzU+sxfpTkysCX7pJu3KP8/f4WL1SN1uw1w/vG1P3b8HKB
-	tAjN6GAccg9x6CbTATAkqDQ8Gmm5qJCMwYmbZuBcV3X8zmYfWbL/xEDR3Oyy8loxJtjTbp
-	e1EI/MJb5b0OuNLPAb58MxIjJ5BSmgc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776668184;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xGsb+8op9HfuZM90V1dqEvT2Pz/EwuZxxHDEbjQ1P60=;
-	b=tlGk+B6cD2wQoxeTxTQaIM9HgJG1/fOl+TD439S2eSzteQIBtVQoF/qt0Tj5ipd2lKSyoK
-	a2eSdPyMUV2erR1RW8e8FhTveArdfnfmsDUDnpn9TBMKphzzrr6xeUo9Gzw4+q5jECH65z
-	bKOrgBaU6HAeQpddApi0I5zgE6b3f1U=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: lance.yang@linux.dev,
-	luizcap@redhat.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	baolin.wang@linux.alibaba.com,
-	ryan.roberts@arm.com,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	dev.jain@arm.com,
-	baohua@kernel.org
-Subject: Re: [PATCH v3 02/10] mm: introduce pgtable_has_pmd_leaves()
-Date: Mon, 20 Apr 2026 14:55:56 +0800
-Message-Id: <20260420065556.74028-1-lance.yang@linux.dev>
-In-Reply-To: <8a0b6d67-121a-4ac8-a74b-737d52d8b7ac@kernel.org>
-References: <8a0b6d67-121a-4ac8-a74b-737d52d8b7ac@kernel.org>
+	bh=/OOkxXT314zgkCbMJVgR33WQVdo5yDJLfeSxoAafAnE=;
+	b=z2jfjR2gyN/IRLXmVwDfmqx/6Wp6yZtEHKUF7PRYSbk0HUMC3CrVJqmQwQ7mPT/uxdMbUV
+	InKbq2S8py99B9cRAUQKRyLAwVfhtj0C78GlRSKMcUEh3Yq/mYbXyR97tiNncCHn/2vMG6
+	BYIcRmN3vPOh6SRBN/iXCstf1B55BXY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id F020641A25;
+	Mon, 20 Apr 2026 07:13:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC7FC19425;
+	Mon, 20 Apr 2026 07:13:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776669208;
+	bh=9eukM2C8gRicLu7CaCXCE0c9KR81w7+tGO0F3PmCFCg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W5Km2TZeIdwP4xKxqDr3zA22JtgWHKuj5SC7f1P8o2qQ/+RpiiJTKY0wBk/oVmbdS
+	 UV89bWG569ImZtIfED9Lyi/NcDP1Zd9YBc98hc/TOpngY6F2VbOReUTjjQ7xyCbi1H
+	 Wc6s9x+1rpVRUVPfyG4cSZWb6f/RQQ2gFQn37ORUDhj55ckIP0lhN7y5LFL0z/gVOy
+	 /QVCpveNacFpeWvBaOy/lIVtv7HOMm7WDd2+yESQAOHw+xPoIJGKbJmTRAVDozLFQj
+	 wXBtjEQOT5LuqxXG3IYtez2S/K3Xd6wVpmEP7uuBL3e3c9RsiSCnISfaMu95brIyB/
+	 xwusZV7SuUMZQ==
+Date: Mon, 20 Apr 2026 10:13:21 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kselftest@vger.kernel.org, shuah@kernel.org,
+	akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, dmatlack@google.com,
+	kexec@lists.infradead.org, pratyush@kernel.org, skhawaja@google.com,
+	graf@amazon.com
+Subject: Re: [PATCH 1/5] liveupdate: Remove limit on the number of sessions
+Message-ID: <aeXSEe9Bo-vsSkMH@kernel.org>
+References: <20260414200237.444170-1-pasha.tatashin@soleen.com>
+ <20260414200237.444170-2-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ujfza9gqbeqgchhakaaugiue7pyniwiq
-X-Rspamd-Queue-Id: 679652000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260414200237.444170-2-pasha.tatashin@soleen.com>
+X-Rspamd-Queue-Id: 0B9608000B
+X-Stat-Signature: jtqh14hjbjdq6haek1j67nn6x18oo1gf
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776668186-257418
-X-HE-Meta: U2FsdGVkX1+bkRu78QNr0zztkviPlv/kW3H/amlhBePO2vivOFzdZdtaUaFu0COzhOWVrrPZfE0XVj0Dm7CkHXDu26/Xs2bJPDpjs+72DsBDW2mB9JKnThaEk+ZXCrtFUCY/kete1SnzN0SfBTa3/7c0snrBf/jd/RbFD4eu6YarrWoyKVL3CRaCJYYkWBpRaG8m0HEN7aVMOCQeuEOKEQjyeY86YqZ3PI8olkJ/SAWArfsdRnXjVLgTshyJEc0U6FPRSFe2NJI4bfO/VXNJ3immzWhIO2K4CNdsBxP9BBRLZSeD/hBP0r3fjHFyi3jMOrWH13J3wtkwWGpNXLcLnJxQC6OrxCp0Rit1pGZOYbj+0qCkQN0tY5dNUtpQlNxIFgI7oR2hbvZ0JyXRaklFhwNB8/TVj2OHt38aQcT0dudX9BGDJ1fSyZr4nj/vKRNsD1IyfZUGUCzA/PlTXAoNKWcGUCmTV/O/It7d3GMJIWBD1K8Do4pccVeJNe/7geo4aQSje92wqVc5GpDVh83e5epPh9DPokYf9nEZyUvBC/X358Ig/NXegK6xxbStFQGy4h8pTifia7hT8x2pQFrMpRTq5zvp+iVscIP17bcs/sZiG3kgpUQ+c+HyEyd6O2H7zS2phM7tA+GqHrJGpWM3TV+5yndiHdImrKRL+J2DXzs0CMrKcgKYR2XZqqAJL3UaxP7aLpMBWDpECrrFdHa/iX0jXUNyzGn0MEyBPIJeTu5clkkaFVX2dzMaGWqRGDZBbxdaBl58vRKr2Ag6CGVmijxv3BlOqcX/dE0JjOf2eQwtCHEKk/B7n2VRTpck8x2w3XAzUfjR9GcadXpuBEv6WHqFb3lOa+IEvFxpn+uumSE8IvPLK5HZLjoMfoGckfTi7HNvpahTcBpCPlbmrwiFFJ9Xa8zY1MJzl6dsUILvc5iRmCRulb5ET+eIrTk30lGUfrHvbc1UmJah7u2pqXZ
- ZPVe1zCv
- ZRrfDz1JGDndccUtajDEphXFwSAza13VIqm0i9XjOz28OTEHNWKDG+uAteQKFir7GokEU7jAev4ArmRuTc2omk5KZurT+5OR0G7LeFIZ2kXFmOn0nfHXlI4fF0xhGuI4h/ULt0S5f9aGFP2IBufnw6R1qB80ec7r5fM+n/CkwiLqY7OnCr8ZxnwredBV5JGNjKxlHHTeGFswR4q+hdKQCVG1EYhI6E6VH4PSEvmLojaVqttQga6KIJH9EqnJ/nPxnNJVy
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776669209-915657
+X-HE-Meta: U2FsdGVkX18n1oRvLioJDLD7rbbbrhyI2y76/Sy4O8i5HUbyotDMyQ9dzLzjj244IMN2uzNp8E5aATlz8Aii6w6lMq94e6FQ/EVkN9veN+ESseplF7j4ae4USMsiiipiJsVKmqwFckLbPvzwTgKloyh4GqHIPK5BW9vna/fzPtlKr98nnkklh6tn0/E2DHv6eVN03RndIk/z2Ali1pd3sA+n5TlRjanlXk8uPfk4ZSjNf0wAws1deHj8swoNmbrSAV983Y+YeViMWUvwQpiNPIrI2Tg85O+K7TDWR/u3Hpc/QKwg98KbD+nxXspibAMRkfnWjVSTVxhjsEuK3c/rLUaoX9QBg+IPTZWAPWJeKNY8Arx0V3uRX0TSqYE4ewWAKpFXrEEsil8Uh/ZQxfHoRXerSTEuC8Jyg2oZCApJlrEslLUdgZb3pJ/w0ttn4h6ewnfNDnQFMsFccaILMopOWux9OhDkZVexVPZ8oOnI2zg1XHQ1JnXwLykyISgizdPIKKLAd+g1zzcm8f7tQEn9BmenxiDMMJESmv6bWtRZeBOWibzZGIKrfqvEsgjbV4KJ4CczvJNj3Cyj2MyGiG63w5/1b5KKUf6ZXsjjJqlvVBm55QR8jEOZy+6zPc5wzD04nvTxpgDMmpxx7Y7fT/ADlQHX9qLB/2btPvSmDoOuQEOW1mDJR0UBcarszVPzQ56z+RBYwNlyf3a4glNpWGguDruL4Inu1OuyF4uuKaDiWm7Nfb5cuVzgHlWVz57P5IGdwG5W3OiC3+jmdchPm9IluR9DLXXZDxjCo3/KiMdv96Dxq8gg7T9VbGEnWMuulRbn0DoQWxeXw0QEiybN3+9H0gNg0FGQKsRW2vqeVvKZlaj+3gYIU40hxi/7SmEdUeW4SRGNwXzHTi0BoQJfG/gacIZONMYGGzslrP+84vWl5fKMI7JQ/7iQIRZFc4hNQRgZTfebdwFYmPS0Zb/hC8C
+ S8PIM9LU
+ 693DMfNkTBosTqwM6yARuMGVX4sTNhgTMCXFteUUgUFiiJEjfMQycq3gUZLt+yq1QsPfSlRwa/mjYL2PKLB70LFI+Vlm8+LJZ9sqvNPv2LzIMqrS9EZjKKx9IAszqAUJd0tdO7IQm8H8v/HLvQa5+Qu84urv+ZMWBJSepz0e1o27eO4bKay2DDVFjpxENM+JCeAxQ4yXwP2yriHuue6/eNePY0sEoTOsWk9TZ95dppxaKKYd1JYtvKoMKiBolma6Ks2WK2OcbATFtH7T1FvTzpmVouQjoof8ItX37rA53D1q3g5mBwKTXJUVwWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,61 +94,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 14, 2026 at 08:02:33PM +0000, Pasha Tatashin wrote:
+> Currently, the number of LUO sessions is limited by a fixed number of
+> pre-allocated pages for serialization (16 pages, allowing for ~819
+> sessions).
+> 
+> This limitation is problematic if LUO is used to support things such as
+> systemd file descriptor store, and would be used not just as VM memory
+> but to save other states on the machine.
+> 
+> Remove this limit by transitioning to a linked-block approach for
+> session metadata serialization. Instead of a single contiguous block,
+> session metadata is now stored in a chain of 16-page blocks. Each block
+> starts with a header containing the physical address of the next block
+> and the number of session entries in the current block.
+> 
+> - Bump session ABI version to v3.
+> - Update struct luo_session_header_ser to include a 'next' pointer.
+> - Implement dynamic block allocation in luo_session_insert().
+> - Update setup, serialization, and deserialization logic to traverse
+>   the block chain.
+> - Remove LUO_SESSION_MAX limit.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  include/linux/kho/abi/luo.h      |  19 +--
+>  kernel/liveupdate/luo_internal.h |  12 +-
+>  kernel/liveupdate/luo_session.c  | 237 +++++++++++++++++++++++--------
+>  3 files changed, 197 insertions(+), 71 deletions(-)
 
-On Fri, Apr 17, 2026 at 11:57:54AM +0200, David Hildenbrand (Arm) wrote:
->On 4/10/26 10:19, Lance Yang wrote:
-[...]
->>>
->>> #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
->>> diff --git a/init/main.c b/init/main.c
->>> index 1cb395dd94e4..07f2ddbf9677 100644
->>> --- a/init/main.c
->>> +++ b/init/main.c
->>> @@ -1044,6 +1044,7 @@ void start_kernel(void)
->>> 	print_kernel_cmdline(saved_command_line);
->>> 	/* parameters may set static keys */
->>> 	parse_early_param();
->>> +	init_arch_has_pmd_leaves();
->> 
->> One more thought here: I don't see why we need boot-time caching.
->> 
->> has_transparent_hugepage() does *not* look expensive on the common
->> archs. On x86, it is just a CPU feature check. MIPS is different, yes,
->> only the first call there is more involved ...
->> 
->> But if we *really* want caching, couldn't we just do it lazily instead
->> of adding another early boot init step?
->> 
->> Something like:
->> 
->> bool pgtable_has_pmd_leaves(void)
->> {
->> 	static int __arch_has_pmd_leaves = -1;
->> 
->> 	if (READ_ONCE(__arch_has_pmd_leaves) < 0)
->> 		WRITE_ONCE(__arch_has_pmd_leaves, has_transparent_hugepage());
->> 
->> 	return READ_ONCE(__arch_has_pmd_leaves);
->
->Would look easier when just using two booleans: "has_pmd_leaves" and
->"probed".
->
->I do like static keys, though. And wonder whether just putting that into
->hugepage_init() would be sufficient?
+...
 
-Probably sufficient for the current callers, yes, since they are all
-THP-related :)
+> +/**
+> + * struct luo_session_block - Internal representation of a session serialization block.
+> + * @list: List head for linking blocks in memory.
+> + * @ser:  Pointer to the serialized header in preserved memory.
+> + */
+> +struct luo_session_block {
+> +	struct list_head list;
+> +	struct luo_session_header_ser *ser;
+> +};
+> +
+>  /**
+>   * struct luo_session_header - Header struct for managing LUO sessions.
+>   * @count:      The number of sessions currently tracked in the @list.
+> + * @nblocks:    The number of allocated serialization blocks.
+>   * @list:       The head of the linked list of `struct luo_session` instances.
+>   * @rwsem:      A read-write semaphore providing synchronized access to the
+>   *              session list and other fields in this structure.
+> - * @header_ser: The header data of serialization array.
+> - * @ser:        The serialized session data (an array of
+> - *              `struct luo_session_ser`).
+> + * @blocks:     The list of serialization blocks (struct luo_session_block).
+>   * @active:     Set to true when first initialized. If previous kernel did not
+>   *              send session data, active stays false for incoming.
+>   */
+>  struct luo_session_header {
+>  	long count;
+> +	long nblocks;
+>  	struct list_head list;
+>  	struct rw_semaphore rwsem;
+> -	struct luo_session_header_ser *header_ser;
+> -	struct luo_session_ser *ser;
+> +	struct list_head blocks;
 
-But then the helper may return false simply because THP is not built,
-rather than because the CPU lacks PMD leaf support, which does not match
-its semantics very well.
+Don't we need some sort of locking for blocks?
 
-To be clear, I like static keys too, as I suggested earlier ;)
+>  	bool active;
+>  };
+  
+> @@ -147,15 +222,6 @@ static int luo_session_insert(struct luo_session_header *sh,
+>  
+>  	guard(rwsem_write)(&sh->rwsem);
+>  
+> -	/*
+> -	 * For outgoing we should make sure there is room in serialization array
+> -	 * for new session.
+> -	 */
+> -	if (sh == &luo_session_global.outgoing) {
+> -		if (sh->count == LUO_SESSION_MAX)
+> -			return -ENOMEM;
+> -	}
+> -
+>  	/*
+>  	 * For small number of sessions this loop won't hurt performance
+>  	 * but if we ever start using a lot of sessions, this might
 
-Another boot-time init step that depends on specific init ordering seems
-a bit shaky to me... At the very least, we'd need to document that
-ordering very clearly.
+For ~8.1 million sessions this comment does not seem valid anymore ;-)
 
-Cheers,
-Lance
+-- 
+Sincerely yours,
+Mike.
 
