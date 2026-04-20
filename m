@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F540F36C51
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 08:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AA21F36C51
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 08:02:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 718996B00E9; Mon, 20 Apr 2026 04:01:16 -0400 (EDT)
+	id 4F6EA6B0005; Mon, 20 Apr 2026 04:02:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C9B56B00EA; Mon, 20 Apr 2026 04:01:16 -0400 (EDT)
+	id 4CFAB6B0088; Mon, 20 Apr 2026 04:02:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 606716B00EB; Mon, 20 Apr 2026 04:01:16 -0400 (EDT)
+	id 40C836B0089; Mon, 20 Apr 2026 04:02:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4896D6B00E9
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 04:01:16 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E2047E531C
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:01:15 +0000 (UTC)
-X-FDA: 84678188910.24.3E42058
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6945B14000D
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:01:12 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=u17F74nc;
-	spf=pass (imf26.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C5836B0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 04:02:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD96D140992
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:02:02 +0000 (UTC)
+X-FDA: 84678190884.22.0456762
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BB985180006
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:02:00 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com;
+	spf=pass (imf16.hostedemail.com: domain of gorbunov.ivan@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gorbunov.ivan@h-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776672073;
+	s=arc-20220608; t=1776672121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=buRq9RvF/EF6GKBQx2WyRvyRBOYOt+melvj1U+/4eY0=;
-	b=wpZkDwXLWxyYl7brwHjprKqqgz5vYGboydqnYKfzjQG9+yPV4CjAVeg/SjI+RK114YeQnU
-	ph8P/Oe5COTN6Bm7OlDjBIxRL62jOg9FGPkJh11ZgXx+oRzZyMsR6A2uE2Q6GX9OtWTJmB
-	was7kIl1IIP8wSHHGheKkqbdBFUweHg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=TFRQe2bNCdtZWlf9yGozBQq9Aml3oLMMWcZ33DmMFB4=;
+	b=ZWPD5huzzfm/g2BuWye8yRG7nuasnL/aRwDyJiDFmX46iX/jwW3x/LWD56X0ljfO2OxYKB
+	5XDN/mnWjGoqEIMDyPphCRdQOAtFSiTu3yXVfNEpMxoAxFUSPhrxpy3heg9OJlMY2KiTYZ
+	yIyM5O0YmLu/SbsQn3Vc6ud+T0ebYNU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=u17F74nc;
-	spf=pass (imf26.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776672073; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com;
+	spf=pass (imf16.hostedemail.com: domain of gorbunov.ivan@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gorbunov.ivan@h-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776672121; a=rsa-sha256;
 	cv=none;
-	b=JoA/YCIzBpgGFv20J1IIern8KpCjHgOvDwYVdl/5Hv0eQlTVBxVLurn3fqLoKVPWKVpfcX
-	naWBzx3tmEFyrHA0rA+ughlOPkz3plIb1bXRuYUQFBirjNoraB3V4MdvWSgyvfbHaxHdSu
-	Gi5NNKE6t7a9UYO/kAUfH13OljF4mi8=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776672069; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=buRq9RvF/EF6GKBQx2WyRvyRBOYOt+melvj1U+/4eY0=;
-	b=u17F74ncbXrC2kof5lcm7YZMstRbWgpdd/iKJAkBf9sz0dpiAeRi1TxtQ2ikY+GyC4draUJZrttCsJE8BeHG6XRRP8o81K5QHvY9iOWRI2FcZUb+Wp1wgRU9aHp6oMXaUAMVQgQhy+kw2+1L24V2blzh2X7nrsjDYl/qgsFEneY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X1J0Agi_1776672067;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X1J0Agi_1776672067 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Apr 2026 16:01:08 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Sunny Patel <nueralspacetech@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
- <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,  Rakie
- Kim <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
- <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/migrate_device: Cleanup up PMD Checks and warnings
-In-Reply-To: <20260419174747.10701-1-nueralspacetech@gmail.com> (Sunny Patel's
-	message of "Sun, 19 Apr 2026 23:17:43 +0530")
-References: <20260419174747.10701-1-nueralspacetech@gmail.com>
-Date: Mon, 20 Apr 2026 16:01:05 +0800
-Message-ID: <87tst6hxha.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=tONXK3z0nqlsixjl9LZo2RhOLrv5/DFjDF05m4zb8XIcQUNbtOBzwcScxKVpa6QBW/7/st
+	6TJ/grFkaPVpaChlTYsr0Zh5Bvjh9In5Z3Nrc8oBZRqwPdUijziTyqAoTGihtRHHHfQSLs
+	GhAPH3F8MjptPfOSuJ66nKLFWwI5KOQ=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fzdGy3qsvzHnGjD;
+	Mon, 20 Apr 2026 16:01:30 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2B28440569;
+	Mon, 20 Apr 2026 16:01:55 +0800 (CST)
+Received: from mscphis04371.huawei.com (10.123.69.39) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 20 Apr 2026 11:01:54 +0300
+From: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+To: <gorbunov.ivan@h-partners.com>
+CC: <david@kernel.org>, <Liam.Howlett@oracle.com>,
+	<akpm@linux-foundation.org>, <apopple@nvidia.com>,
+	<baolin.wang@linux.alibaba.com>, <gladyshev.ilya1@h-partners.com>,
+	<harry.yoo@oracle.com>, <kirill@shutemov.name>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<lorenzo.stoakes@oracle.com>, <mhocko@suse.com>, <muchun.song@linux.dev>,
+	<rppt@kernel.org>, <surenb@google.com>, <torvalds@linuxfoundation.org>,
+	<vbabka@suse.cz>, <willy@infradead.org>, <yuzhao@google.com>,
+	<ziy@nvidia.com>, <artem.kuzin@huawei.com>
+Subject: [PATCH v2 0/2] mm: improve folio refcount scalability
+Date: Mon, 20 Apr 2026 08:01:17 +0000
+Message-ID: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: imxzmspfdbmrr133kg8nmbh5heek7yns
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.123.69.39]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BB985180006
+X-Stat-Signature: pgi8d85gtkd56m5uwqdqrerkqmffmemi
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6945B14000D
-X-HE-Tag: 1776672072-139946
-X-HE-Meta: U2FsdGVkX1+bsN6u7sWRY2VPK5W0pu0jZcPfG57jxWw9z4zmOZHKoZQN9m+px32z7aSUQM0OsN5cybwONuhI0ftfwwPnlIZdcNm6+aDjp+pa3JtT+eg51uPzUzi/1DwTwf+/C8gSss5zKKvNjO4m+z5QDySJMAk/3HgTf3iLaoYgl/nm032l4i8O9gGeyUPmrcyxVmvVXfwztj86Gde8eFBRJ6jBJgUP+Yt0zzjn1CAPy0j43dd71TYl+QMwASE3C8yafzwbAA7NKTs8/U8wu0AfHdi1k0DxK7tOXy6IBrMSGbiCN97EIoalvgYPmFAifN5WIDiKxi30yjvFV8IwayoYC15vSuXXENmfD2MIdZebW7rO24FDComjZoa+NPwL8xxzzGXW95vbnIoD1owoN74CDLPiwiMF2rJtN35uTkTDWsqwQ1v8vVVpLq3SuFjGGf67nsozXlXR3x8LhkTR7v37BsIbBWUJg2WzJyXua5hntogmwqIbAE5PQ3BXtahThPf50/kDpM9a++Qnf8b2knBCH0su/7++NubfufTYxkZnybmsr5dzmryzZGBGKl7jPMbsmLzqO1Juf264idk0tFr82I15SUesekuTbFyyu9hSX1z/JuRnUjHsliPqgkN/SdLaurJTIaoc8qjgeiUhWbQ1dGNY89WKFZPTver7/raVEn/x0roy84J0vEgMvmvvMtlbuVu0VyBdu9GHKGOzO+3uc/CsQpb6sb51PT5vBdFL/eW8vPCOzclt7Mc17g4u8J71xwHOyHn0AfUEpUCvjh+/R19c+qDSLYLrYVsfSkAT0Kl5Xy53MrKG2UbibBOwR83F0ZaFodMFEuPFlNudm8zBKkbxNyLNQqNivw+fUBWlkt/Y+MyRD36zQuicXGqyCox3MEt61wQWYy0dLYaBOB2cwRFOy88ui6LbiU0A+q54GhpKfgNQKi4U8eMUlsc8qX1gB+61kBPAj2FcoIr
- MLQ3r7fX
- mB3Bkr0ICcY5n1rWxuBQwYr0Xr/tithViu3ZSYWS5Mn3VTNDI2Hx7kRK2mzUME6onA9bZnEGFIEMIpl0g7QZGluMwvJaJ7OfeJBdv4aAjs4GTskVlz3GaeobYXSAogG9CErwao3gQ0pUUTW0dlVu0x5dSa4GOiZRl/ccCJmLuhd70HiuRpnfGag/yk/15vsA6ot8UKsMyAGFeYZjvjpEd1C0kbDQ41cG9zjX0eis/r7LExJnJU3Ympd1OWypbymPFKqAGE7TNmpLJTeYCITGpHkaR7ORc8X90cDBbHmfSthRsBm/huZ0fm/kRT5+X4LDECnpZwz0GUo/gaY7a2FhbVg0KLkiAwmR12SQ4Aj32BDQgHigYx6J+jCrmg2VHIteFLR7abXIPHjwyG3S7OkG9SLyasA==
+X-HE-Tag: 1776672120-701955
+X-HE-Meta: U2FsdGVkX1+sWAy2wbG1ww/LkBzkVG0aNqlW/xX7Ejdn0gLR7qB0gxUhLCMkLyFUsokNacn0TfY/8POY0yX2SsjqJuPvhXOdGAbvlPLetyXIxwrfTJZ1w6xWgRhhK/4j53GSRzmA/oLQH/gq+J5f6nUWdqKY+c3wBIBP98nUKQ6mKWVzydLXU8ahnPxxo+hXxga8jWLch9H6nOdFlrMN5XV/qurIvfMZhNJao2+0oTWDDdOpg4xMKYoef3qH7w9wotaC0h50A6LlpA0bpCWBI9q4MevvnSIZQaqR2Xcu0jTZffOmRaKF4Mx2SPzoCXSYAJzdDjqccMLTxl78hI66tqb/umYZbKzjilc5DDbx4Mb3ypeW8PIbWih5rNvrY0fXITK0G839HeTMU2QvU7S6gaOa6c/81jAlM9aFb4sYJh67B3MqrD/KYHnuk4xDlEtVdP8sebeYcvBWCBIAhe/EP0UEkEcSSPFxfQxBsC4CUnZKp4G05CoCojT7IAm0NgBug4Sz9/jgLayekAc243zbJLXa0umxVieQ1tcTtuccHfdoEV8IBVBO65kG1w7EKJi5rqMZWvQ5QZE0R1QvlFNGUOarG4TEe8RZ+RBDxncZOL1Mbxg44f+4mUNncuEwb9PjIvkGVD907nqBxw71js/xpCgT+q53epRXARI6afwuwJKgxfq+gDAScF0Po1+INKIpe4Gly0bI4mTJcitXaX7cDVEObLqcHTOUcf7xwngHDp4lVDNS6ihLMYv8UYagAOQoPpRTMowbPfWlIoR2aEdIHu9PmJ+G1LJg6ifbYDUlROh6OE1YsHQkBOHPhuCMCocAuzvMZDnITO7Cx8GDHxA6XPq5UBP9URRrUPFXQrXLtdY6IRDugNAJE4U9bk1kQT0eIxue5cq3fvSudo5XrfljjPu80u6MgzlmObeb6FVcifWZrN620wpAQ3crmj/x4GkoX6OQqTDvjOp+1fJAwSJ
+ NMptfHli
+ hylr8eNz8VZfQBHvwu/UqkxQdqqIc0PGKTsrWQRAZqxpctxxiqs+VikMaH/fEz612tGRQ4ZhJr9aD82s6A/OqbZcJm3CbeLG+ERRH4/jwyuOJivcJNkbzhJlS+gyTeIqWYGV/RFcsVna0EB8q+T5KPuQZXFmEgqgekeFI+cOqUiCJF5xDUqo6hDV/sumO0nb3Jkhzl4YKIjArrSXWx/uGJM/CoTCdOXgImw2EczY199VZT0iyDNZFvqQtjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,65 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sunny Patel <nueralspacetech@gmail.com> writes:
+This is a v2 of the series that aims to improve refcount scalability via
+dedicated bit. [1]
 
-> Remove the odd VM_WARN_ON_FOLIO(!folio, folio) usage and replace it
-> with a simpler VM_WARN_ON_ONCE(!folio) check.
->
-> Drop the redundant VM_WARN_ON_ONCE(!pmd_none(*pmdp) &&
-> !is_huge_zero_pmd(*pmdp)).
->
-> Refactor the PMD checks, making the control flow
-> clearer and avoiding duplicate condition checks.
->
-> Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
-> ---
->
-> Changes in v2:
->   - Removed additional check for pmd_present() as is_huge_zero_pmd()
->   already checks for pmd_present().
->
-> Missed it in first version of this patch.
->
->  mm/migrate_device.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 8079676c8f1f..2c7e89a6d1b1 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -807,8 +807,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->  	bool flush = false;
->  	unsigned long i;
->  
-> -	VM_WARN_ON_FOLIO(!folio, folio);
-> -	VM_WARN_ON_ONCE(!pmd_none(*pmdp) && !is_huge_zero_pmd(*pmdp));
-> +	VM_WARN_ON_ONCE(!folio);
->  
->  	if (!thp_vma_suitable_order(vma, addr, HPAGE_PMD_ORDER))
->  		return -EINVAL;
-> @@ -865,11 +864,9 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
->  	if (userfaultfd_missing(vma))
->  		goto unlock_abort;
->  
-> -	if (!pmd_none(*pmdp)) {
-> -		if (!is_huge_zero_pmd(*pmdp))
-> -			goto unlock_abort;
-> +	if (is_huge_zero_pmd(*pmdp))
->  		flush = true;
-> -	} else if (!pmd_none(*pmdp))
-> +	else if (!pmd_none(*pmdp))
->  		goto unlock_abort;
->  
->  	add_mm_counter(vma->vm_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+Changes since v1:
+  - Fixed frozen pages initialization
+  - Fixed page_ref_count behavior on frozen pages 
+  - Added debug checks to ensure that some modification methods are
+    not called on frozen pages
 
-LGTM, feel free to add my
+[1] https://lore.kernel.org/all/20260228141941.f6fec687aae9d80a161387f4@linux-foundation.org/
+Gladyshev Ilya (1):
+  mm: implement page refcount locking via dedicated bit
 
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+Gorbunov Ivan (1):
+  mm: drop page refcount zero state semantics
 
-in the future versions.
+ drivers/pci/p2pdma.c               |  2 +-
+ include/linux/page-flags.h         | 13 +++++++++
+ include/linux/page_ref.h           | 43 +++++++++++++++++++++++++++---
+ kernel/liveupdate/kexec_handover.c |  2 +-
+ mm/hugetlb.c                       |  2 +-
+ mm/mm_init.c                       |  6 ++---
+ mm/page_alloc.c                    |  4 +--
+ 7 files changed, 61 insertions(+), 11 deletions(-)
 
----
-Best Regards,
-Huang, Ying
+-- 
+2.43.0
+
 
