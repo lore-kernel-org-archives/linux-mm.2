@@ -4,95 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 395CEF5A8AA
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 18:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7536AF5A8AD
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 19:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 566B56B0088; Mon, 20 Apr 2026 14:49:17 -0400 (EDT)
+	id 528C56B0088; Mon, 20 Apr 2026 15:00:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EFBA6B0089; Mon, 20 Apr 2026 14:49:17 -0400 (EDT)
+	id 4D9666B0089; Mon, 20 Apr 2026 15:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3906A6B008A; Mon, 20 Apr 2026 14:49:17 -0400 (EDT)
+	id 3C7906B008A; Mon, 20 Apr 2026 15:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 238346B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:49:17 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D16981B906A
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:49:16 +0000 (UTC)
-X-FDA: 84679821912.04.6DEF35E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D043C8000C
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:49:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ozVwLVWt;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2EA1C6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:00:46 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A4BC8C35AA
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:00:45 +0000 (UTC)
+X-FDA: 84679850850.18.716C559
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B1E7D40005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:00:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RpqJH48R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776711643; a=rsa-sha256;
+	cv=none;
+	b=YoxiFKc+stHHFTOwTX5IOwHoQVxVG5mcNOwNNGX1JviumKgPrMDYIaluZ3OuuzGtBBRI/O
+	ecMR7DlMofK9Sg4z+hARrSZ18znGI2Iu4S1pEhOiKxJ03xx8XuMGm3ZMZ4ef6CcURKJGTn
+	WJFm2/iwwtIJGGFJX9d5xhLqkeShN50=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RpqJH48R;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776710955;
+	s=arc-20220608; t=1776711643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qNcjPWzH/6/oNRqggcjbcb7DOm2Qg8QluDQNeeHntFQ=;
-	b=3YYn9L7MQmMOs1h3mQoBu4bTgVDWl1fcLqetVrGTWWOLlAoQUml05IGGF0kvYc8Bc2pQgn
-	yKtr1CSyJoJeYirIhdznKfxpsFlC2n6JoGhh0GZGbq2jFMrukdqSgY8Gy1mtcOujlJtENL
-	3es7fGXwXhDWk93yujNO2Qax6zouzPE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ozVwLVWt;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776710955; a=rsa-sha256;
-	cv=none;
-	b=sVdtFQYN76qKqVlD3hJX97GquM2SPQoE/gthOt6GzzZjJJcXbuJd4EwgqnbusyMMLeOcIA
-	zLsoS0DjfqfSqqJYXVy8zod4+HXvhcceHfS3ge/at95JChBMkfIdTTX3/XSX3wp2kTZIwP
-	kxwnaxznJT9CTSzKqYIb+pTrzIKwNX0=
+	bh=8Xq40k9Fl/Irpp47r4OhL9ovXTdAOkeNuBp25CrECQk=;
+	b=JAuZBzqtCaHAZTyV08hK6116BNp+PLgcbDW+nmAT0Qg30RWWI9RqUMcGEM3vjn5cqQ5yS7
+	VON9cxwmjxbnZlBs76+VIr6FESftQ0ZKvy/iBeTwnXVnXFVgrsm0Ol8FEevqQa2N3RT8d+
+	WdKjlh1a1MaCZ+18wMWAIuaBxVtuMFs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B2B744435A;
-	Mon, 20 Apr 2026 18:49:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FC9C19425;
-	Mon, 20 Apr 2026 18:49:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0A47660018;
+	Mon, 20 Apr 2026 19:00:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83B2C19425;
+	Mon, 20 Apr 2026 19:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776710953;
-	bh=QHMzHRcLV1R2QvWX77MHFvc7Z/WhIck+SfReGrL2CiA=;
+	s=k20201202; t=1776711642;
+	bh=uRwvGgzHbcEtZK6wo9qKRlNk2GDua1rojl3egr2ZjzM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ozVwLVWtbbv1dAM7yazhYlk9vBe+pKM2xJQmU3CiYqNJsEr7tzkK6TWdMIXiJlWlf
-	 Xi0Gr58XdKl+3sujWzhDdtlzNzkBwE5zzpUG2Ql0vQmCymqK/xC5KY3I8Riknd/8pt
-	 8lkOHH2ydXVU5JhblmB7Rj/oOzBBE4/+qkTHM0WYQxKgAfsglgKPYf59suelKyClVR
-	 cLaIBFMEPbb8ftZykqjauwGJAPzMzHveyDuG+uT4/k8TXjSBUZRmbPtyN98cvN9rky
-	 J8QnLPwrNrYd5t51NQFAXwcftF7jzJsXozYUHNaRxaE8Wp4lrmHOUWSN0S7VgKyALv
-	 3SQB8ubcc9iuw==
-Message-ID: <baf56e3e-27af-4c9e-9dca-4be82e761f60@kernel.org>
-Date: Mon, 20 Apr 2026 20:49:02 +0200
+	b=RpqJH48RXTcs8FJSGZcYmrDP4K9N+qKoXv4m8p/2TWS+HFftLI2zUHPRkboBMdU5f
+	 oOTI8VTShKeZnIJZjA7ac1E137Vk8fnSFyO6rL1NHtW5B1vdbj+46jk+RErGgfQ+Mi
+	 lqkRtnHcFQM7OF5EeBTh6ujPIj+4VgAV9HaASwCKXSZeQs1l3om9o4mkfnXHXVI/aA
+	 OnKH07vr5Au18gKLXZjqXxUD9TCypvgp/3tFzXevu7YYnvLzRZz3prIYHh6NueDiqd
+	 tsF4U9xTAzAkusAt0gqBZQXL1CRUaDpBxVcvdA6DhYYi94dUB929jixXZ8BYKwRt4I
+	 L4SKEeopBx8WA==
+Message-ID: <07e26d39-6155-4661-b3df-c2419535ed43@kernel.org>
+Date: Mon, 20 Apr 2026 21:00:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/30] mm: Introduce kpkeys
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Marc Zyngier <maz@kernel.org>,
- Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Maxwell Bland <mbland@motorola.com>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- Yang Shi <yang@os.amperecomputing.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
-References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
- <20260227175518.3728055-2-kevin.brodsky@arm.com>
- <00b24db8-0063-48d6-8bc4-e8b670d8f0d5@kernel.org>
- <913002a5-e002-4001-ad19-037102d1f97d@arm.com>
- <cd2bcc09-2507-4ed4-bb92-2d53baedaf04@kernel.org>
- <c78a9048-52a0-4a22-ad69-4bb5e84895b8@arm.com>
+Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
+ shmem mount
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+ <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+ <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
+ <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
+ <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -139,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <c78a9048-52a0-4a22-ad69-4bb5e84895b8@arm.com>
+In-Reply-To: <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bs6xxzr5dmup6obhumhj1cdq5qxpwm9n
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: B1E7D40005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: zsghftkrfgoc78dazby3ddmgwcw6zq7m
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D043C8000C
-X-HE-Tag: 1776710954-639075
-X-HE-Meta: U2FsdGVkX18fZvZfs9c2qZSWYf/86p28OixZRTRtvUkLoqdqGzA5j0v7DWOoyUUyN55l++lnEPeTfQ6H+jy6YlR9CpYWsK2dV+RE8JUO451fN/134UhI4PesMz5PUYHyL//GVhR4YeEW77e2xKIhZwKURmVhns+p443fdZhKjCxWq+nOVdyspccTX6imnOeQzCGc/olkPFYJuYoI/XKSU7mwZ1utTtKNX7UP4t1+SrMc3HgODEk8poTS036Leo51MfuomaxNiIKLfHXJuCINA+WlLG+eBFzyOdUfAbqumv/gSuK/25AsroIFCT83Sc8zw3cBvPcJghAvJME+GPnvf3QFE5pG2YmBVDfBiD7dIw/TfDHU+GK2EnFnfB2+69ug781Qd+LsaZM1KB/TTWyFJfjUvV4BS/YXjLJSWf66T+NR3w9CLLKynUi0qSQSra6Be+Qtc3N/it1N0PiN8awrTJL5jS2OA/FKoqo+Nm4FL29HHlAqnXuKScmZ/OyewcWrN3tlKsE4qW0+qWS4PvpfNlFMYKjVJBmOibohPUseng2srPRqNvhdM6wcbVFvEYbxDTbEvtKknqVjdhJje07NzO5keK8aDs11YLFpIQA9vJHmnSGr5s7SlzMcj5wfcjAg5WHfcqsx+hMX6tIImuJ29sEotxDZo0WkkRUGwDqj0/bmEOBunIQgry1/gsiOdbm2CyK6gZL/TmlfxoHYf/vd080Abl+QZhKd1dxJ4NfUM66Dy1cCh0algF8dlKDtDhjY7AoeP9/2/7VCEODkIakcnY5vpNC1MlG4F7pb0/RnMKMAcbJnTlt55cmA56oO+hr/dioP+qCiQJ/80Az4TbZW8m/0AcIQJvceQxX+zMCsLCAaQKPqTREzzFHKx/a2r+um1CQPN0n0qgxfhKtc304EAJSlZAIV4PbWcT9bhOscKfZCPIwyOaci3kD/8RnvT/8mRT5QsUMo6KmpCbxzq94
- 3bcnfnD1
- TsmACjoLFn1FjaMZfOoicj+04nGagfp3uXJKhK9LmK8muqzBtaOl++kKSOwJzYzHMu0P/HYsIRgtR/O7YSnr3kxvs8mWuAOLsHij9YumWfG3uqL73CTOLJLwJywwbHEfuBWPq4VQ6Uaf7i1NNYRHWhsMSSrIzcocawKSNYNZqs7FxqpzlST0pXIGskpZBcNjbnOUXIWHT1v1KVEsVfx/TmfJXsdSZUROltoh64Gfv+S/YM29yp+k7JR1FpfGKZtU7TDYql47U8HwZDMhTpCDQUeIi9klWdq/jy6x/
+X-HE-Tag: 1776711643-960610
+X-HE-Meta: U2FsdGVkX19EOzFUG6WPd56BblFtgTxD1znbPcvskxe32lJTli4qlu2+uuny6QkVX7aRBLvQcTjgFOWA0HAyO/9DNpuZlMH4iBHvX1U7YeDpWrJqu+WH9kZZXVpe1yy28fdnyyxtgjoz0by2Qcurlylr9IQIbCZKjspn45T16GuKwkntFNjsTp4InOUJdAIVQtFUzCRA4a9smWdlK3Qc50nnbGNbp+XlPRG1Y/lNadggf9VYFb5y31zNI9KoMKp3djmA5SNv3wnB518pXLl6ufoNGCLNFK6djXHSHba/PqCYbmvVLSzzffXYf14Q2+xO1m+k2Ec+JMDGnI2GprX1a4qZF7z3XIz+XWFDgZcweL9Z9rPHiP59MEj+0ZI02hLgXzniCarhYVqk6OxC+CckAAszGgP5UbtFGQiHKGTOrr6FMDCLVS0Z7AJvfmmpnuQ3arETwzAsG0LSndzSiMZ4IEeDDcolMkfHUrXvdhpRVFf0Sl3R8um6CsCJkH2brfEUFum2uwxlQzk8+2zc123VXNhYNspzMBat7FPHdpOCXne9yHHCFbA9jmVi6L1j6RgAstyV1O67M/x7GORdxCu9jLBF3bkpT9gs0Xnn0HelqKs/cOdtXlQ4ij92d9E2NEpAZojd7+9Z/REgZDWx/fsFeiIqNRcN1bj02YIB6FUP8lnVvav0cujdKeXFWTr4BTr10bnMOaFPP6WWOJ8FZ8pE+PB+mqhAah0K3aTLuVLLh2aW9lMpHroTtG8DdqpmpDl14rJI2tLiLsS6oa8DgKgKf0f/ho89rquHx9ZsqSG9Dei0t0GdMvnNE5D78a8NlUTpUQx2z1fhydThtLUyffJOCdX/DTsgfGIkUSmDuujFwvGntksI9X+rp93Rp99wbWKdMt885AQeyfi8ZFK5EEfvBv9tG4af8CaN2QyqoA23DYyvyi+2IA6eUcFbSbx1CScHZOoh8DApAVF+Y62JAVb
+ +ohzpM6q
+ ikGJ2f06kgSMwmOXS0nR9hgv5CID1J2kPuNWcnFMkkuIsPQW9LKH0Ftr2thulNynC1sAhjHu0gNAR0pEOY54TkOUwhV+wp6JckIvZF0CNVM3IRm7QJsjjPJbOEBzo41r6aqSFzWELxbQ9uWFVbJbaRRp+s3DVlOFUS6B9pUMPgb2GWiHwoW1sdyX4Bmw1RM2em1180cbEhBhFHsXF5yjXcWosC64OBkorHlRKz0+F9xA6UolKTf4zNGvMLRDwrIC7orewvs3uyzW2NZFUPX2jwH8qrr0CG39HKKFzd6VP+lVHzps=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,58 +143,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/20/26 08:46, Kevin Brodsky wrote:
-> On 17/04/2026 19:38, David Hildenbrand (Arm) wrote:
->> On 4/17/26 17:59, Kevin Brodsky wrote:
->>> The first two are not meant to be directly called, they're the
->>> arch-specific implementation of kpkeys_set_level() and
->>> kpkeys_restore_pkey_reg(), and those generic functions handle some
->>> generic logic.
+On 4/17/26 14:45, Baolin Wang wrote:
+> 
+> 
+> On 4/17/26 5:52 PM, David Hildenbrand (Arm) wrote:
+>> On 4/17/26 11:27, Baolin Wang wrote:
 >>>
->>> arch_kpkeys_enabled() is directly used in generic code, so I suppose it
->>> could be renamed to kpkeys_enabled()? It's actually implemented in an
->>> arch header so I wasn't too sure about it.
->> I was skimming over patch #13 and spotted:
+>>>
+>>>
+>>> For tmpfs, yes.
 >>
->> +void·__init·kpkeys_hardened_pgtables_init(void)
->> +{
->> +›	if·(!arch_kpkeys_enabled())
->> +›	›	return;
->> +
->> +›	static_branch_enable(&kpkeys_hardened_pgtables_key);
->> +}
+>> So, we could pass this check here, not setting
+>> mapping_set_large_folios(), but later someone toggles it and we missed
+>> to set mapping_set_large_folios()?
+> 
+> Indeed. Good point.
+> 
 >>
->> The arch_* there can just go IMHO.
->>
->> I'd also do it for the two ones used by the GUARD macros. If we don't
->> expect common code wrappers (arch_kpkeys_enabled() vs. kpkeys_enabled),
->> then the arch_ is unnecessary information -- IMHO
+>> Or would we always go through another __shmem_get_inode() after a
+>> remount?
 > 
-> Makes sense. I could just rename arch_kpkeys_enabled() to
-> kpkeys_enabled(), but I'm thinking having an arch abstraction could be
-> clearer, after looking into protecting sparse-vmemmap page tables. The
-> new version would look like this:
+> Not really. There could be files created before remount whose mappings
+> don't support large folios (with 'huge=never' option), while files
+> created after remount will have mappings that support large folios (if
+> remounted with 'huge=always' option).
 > 
-> * <asm/kpkeys.h>:
->     - arch_supports_kpkeys()
->     - arch_supports_kpkeys_early() [can be called before features have
-> been detected]
+> It looks like the previous commit 5a90c155defa was also problematic. The
+> huge mount option has introduced a lot of tricky issues:(
 > 
-> * <linux/kpkeys.h> defines:
->     - kpkeys_enabled() -> arch_supports_kpkeys()
->     - kpkeys_hardened_pgtables_enabled() -> static key
->     - kpkeys_hardened_pgtables_early_enabled() ->
-> arch_supports_kpkeys_early() [called when setting up sparse-vmemmap,
-> linear map, etc.]
-> 
-> There is extra #ifdef'ing going on in <linux/kpkeys.h>, but
-> <asm/kpkeys.h> doesn't need to worry about it. I think this might be
-> easier to follow, I don't like too much having an interface function
-> like kpkeys_enabled() defined in an arch header (not great for
-> kernel-doc comments either). Any thoughts?
+> Now I think Zi's previous suggestion should be able to clean up this
+> mess? That is, calling mapping_set_large_folios() unconditionally for
+> all shmem mounts, and revisiting Kefeng's first version to fix the
+> performance issue.
 
-No strong opinion on the indirection as long as we don't call arch_
-stuff from ordinary pkey user code :)
+Okay, so you'll send a patch to just set mapping_set_large_folios()
+unconditionally?
+
+> 
+> [1] https://lore.kernel.org/all/20240914140613.2334139-1-
+> wangkefeng.wang@huawei.com/
+
+Is that really required? Which call path would be the problematic bit
+with the above?
+
+I'd say, we'd check in the large folio allocation code whether ->huge is
+set to never instead?
 
 -- 
 Cheers,
