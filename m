@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF59F557F2
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 09:46:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA03FF557FE
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 10:07:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EFD36B00D1; Mon, 20 Apr 2026 05:46:11 -0400 (EDT)
+	id B0BA26B00CB; Mon, 20 Apr 2026 06:07:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0DF6B00D2; Mon, 20 Apr 2026 05:46:11 -0400 (EDT)
+	id ABC0B6B00CC; Mon, 20 Apr 2026 06:07:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78F0B6B00D3; Mon, 20 Apr 2026 05:46:11 -0400 (EDT)
+	id 9D1C06B00CD; Mon, 20 Apr 2026 06:07:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 648936B00D1
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 05:46:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B6B881B8D8E
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:46:10 +0000 (UTC)
-X-FDA: 84678453300.19.095E104
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8B208120009
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 09:46:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=L1LwmNHa;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf29.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776678369; a=rsa-sha256;
-	cv=none;
-	b=NFkgRwshz7TdtEAT+EvjRPUaXYvghfE3jVPZPwU4TGuJsTre9igCYAt8w/gTOjgEe894B6
-	zCwhZKDkp1K1pX6mPHwAr1n2MLahvjxoBqb1UF4F6kIMPOJe5MW14CMgAOI+in+IYHRw9U
-	oifIptl6f/Rja8eu3yVFKFFXDiguwTI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=L1LwmNHa;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf29.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AB976B00CB
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 06:07:17 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B6611409E3
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:07:17 +0000 (UTC)
+X-FDA: 84678506514.08.F9D8589
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6EEA21C0005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 10:07:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of 30vrlaQkbALUntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=30vrlaQkbALUntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776678369;
+	s=arc-20220608; t=1776679635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gg4pJCLunSYymMpSp/fxPYiT508sB8hvebIpSY6Jcko=;
-	b=hMwARIh92Bnm+ZfY8VFDIMV77sezTbomPncOLuKlYKxPGZooxlauQm8dwyckHrzroGGIFF
-	cTz4oIVa+DFdwpSnJz0fR8E89WmE97+RNOz2yKKrsq2Ne74wDdRoVWA+I4WMAWs7hNoFoS
-	pGtrIK2jZxJ9c1I6KYsxMZOvQJguqUc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A81581516;
-	Mon, 20 Apr 2026 02:46:01 -0700 (PDT)
-Received: from [10.57.89.131] (unknown [10.57.89.131])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82BA13F915;
-	Mon, 20 Apr 2026 02:46:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776678367; bh=0LnwgCKSOKAxCSRRobCz2g3Fg7fEI4umGWE6lQbQdxI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L1LwmNHazBeqgP6sMtuBhEJMafYyFNM7jjZ0Qel4K/ytrAl+aBOWdqbirlIqrhu9E
-	 t3l7UVo2nnaaHUWUcYmUCrdW7+wUVNPQY3UDCvHzMwNUFb4gY1NfZoFw0XGTHgLUHz
-	 +9zhNRSNlLjUvCK43bQB6iqegMvA1nY9I+ygUsqw=
-Message-ID: <1e2f1bdf-dca4-4b0c-90fa-d61a2552835f@arm.com>
-Date: Mon, 20 Apr 2026 10:46:01 +0100
+	 in-reply-to:in-reply-to:references;
+	bh=DjpMJLyJHTl1mKAWHq8djAY85Ht0d1iy4vRhA/ss9Y4=;
+	b=ShW7I86atSXQ/RHHsusFfunfuY875Wvey1vMUwvHIQ6Ah6t6cfHxbfQ2QqdJK8isl7WMqh
+	VioHTWSchBeG95ITEPeGSoZ4JiqmWjuKN4d0Ld5LNCuNYd/MaQzlHeyOB2lfnmBUPiwxPx
+	WDrFvEaTe7jwrErQC4mtfPKeCYcLTBo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of 30vrlaQkbALUntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=30vrlaQkbALUntufVggZmVkkdY.bjjbgZpnZmXjioZio.Xjh@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776679635; a=rsa-sha256;
+	cv=none;
+	b=qIuANQg/ucfsDPJG+oQPS+sXOfOpuKUFNmwpiia/D3FKsz/2ITSgqRPh5Rb9MeRk6ePw7O
+	7mW4BSHayouuKj891Qbf0zzVoqa/nACydILtHLFR5yRbID6xZC6cLum83wLJIYD2P8PjDN
+	rccsWvf7eUzT6W+XKW3DBktNpJTDYew=
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7dbb4a976adso3168597a34.2
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 03:07:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776679634; x=1777284434;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:in-reply-to
+         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DjpMJLyJHTl1mKAWHq8djAY85Ht0d1iy4vRhA/ss9Y4=;
+        b=PpCxyZyt4F1TjjWklRO6YiR/8VYrLamJVFi4RwmXocXbNB+B36LoMpAo/7FwfvcFuN
+         ydez7aAyTBe02DrLTvT6G4p3QGcqEdJjix6M70lE4bgoF9yB+Hsidg4cIHKk5sZ79slC
+         Fmz+wPLulP3grK5IxGn4sYT6zZ4SoCcEk8fIEfpZA0zJ/5KUWardc622NMoWV1oDtnFv
+         Kq/O/5fS+UY08gshUGWcLeq2FSpl2b6jGhnbbQ644ifFIlkboeJB8/sMmajiE9kOpdn6
+         nWTOSIdhOO54SWQuELk/cx08L8YMdv5/N1I6MuFtpiuwxubktu8GqW64BNA185k6lS22
+         hqTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+N3li/HsmPr8iJM2+AsvZuR/m5bPX/D6kVB6RvTZXF+ZiedivBZtUIRcpjAGTZTa24CHG9kHyF7A==@kvack.org
+X-Gm-Message-State: AOJu0YxlSr7jX1rbhiOUl9rT0YdCRUx/RPlUgE2dIHm6x6+o9krqE1s9
+	gY0JzdYTGVsaEfS/Ti3mqBumEBom+yMmiNQdLHmca2eRWCCkhKIb6Trv04q8mZjMqjvXKAD4Zif
+	MpoRRpv7duRisFb7QBSMXjDxb/wOLt1CYgvsL1tEYUPQY9OaP4BgdaZZ+CFY=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/53] selftests/mm: make MM selftests more CI friendly
-Content-Language: en-GB
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
- Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260406141735.2179309-1-rppt@kernel.org>
- <ee6bbac9-b375-4413-a771-6d32c7afda67@arm.com> <aeXvty_LE4v5XLq3@kernel.org>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <aeXvty_LE4v5XLq3@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: ibiw8tdhu719sod7wo6tyup3z48b9qx6
+X-Received: by 2002:a05:6820:4c06:b0:694:8f3a:3f41 with SMTP id
+ 006d021491bc7-6948f3a4683mr251846eaf.41.1776679634403; Mon, 20 Apr 2026
+ 03:07:14 -0700 (PDT)
+Date: Mon, 20 Apr 2026 03:07:14 -0700
+In-Reply-To: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e5fad2.a00a0220.9259.0002.GAE@google.com>
+Subject: [syzbot ci] Re: mm: improve folio refcount scalability
+From: syzbot ci <syzbot+ci8b1ec3de7de22731@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apopple@nvidia.com, artem.kuzin@huawei.com, 
+	baolin.wang@linux.alibaba.com, david@kernel.org, 
+	gladyshev.ilya1@h-partners.com, gorbunov.ivan@h-partners.com, 
+	harry.yoo@oracle.com, kirill@shutemov.name, liam.howlett@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	mhocko@suse.com, muchun.song@linux.dev, rppt@kernel.org, surenb@google.com, 
+	torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org, 
+	yuzhao@google.com, ziy@nvidia.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6EEA21C0005
+X-Stat-Signature: ed3ywghiry6ooubx3n4r7jb447iie35s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8B208120009
-X-HE-Tag: 1776678368-257242
-X-HE-Meta: U2FsdGVkX18sMq/atDiHm1Prcs8vgAzFajXRqIHbLo2MgdIobSnRqa18XfBBy+zEnIHhh/xmv8jYcGTLMnpxyJf2cRmv/KbO2ssT4glNn+kIuWJuy2uuLJQI5LxZ6QN0yYX2/xeUac30DBTuInEF5JW+jSqVo9wJnYEcVcVxVRHyjJ80Fl7fzGHloX5Wxx8YTcSC40xRgnxSZJdGdCPvF9Z8Y6h9+u6o5XNAQZ6+uYuGxZS2RLTWD3c/oqc9PX87c97dBOhhDopyesrOlNHPQZLqufj3QU+Ns1UXWWFsp5cXIMeW4J5Lx/QZ7rGHuN/DWmzijZYz+kvSZfmWr4EMzTLkFnXExgCmvomhVhJJdmDkRNnWqF7K8SPCR67gap81C7+JBuGIRtemGokU4GvnwL3imIEeDZ9GeT3GQvLpPPr14RE3WjACnxSpE9AmHc5dCPp6sq6oOMXu21fn462cuenDUBw2C55t3voMecBPvJouanU6qhra3NFFdz3TCpGkc0c09WtEaVOGUme6qIlvx0MNmhC+rVeVedwyNuBdkd4L4o/RjYuvqNcUOPAtv7bDw6Ie13O0K00M3fpqgtJ9sLqGmXAGKsEf3oMkL+g/lu9T6QLMQWt0KIhSo1nCsqO0rHgV6FQMt0tt8M+HvLWDHMvCwXZW5Wo9o1mO2bNGvg/mq8AA7nlgb5zsFq3+fsseJ2YuYwNd08acjuH0LXDL1WbcSOcWxYKlEmrukMU4j7rU5uT67AR8IdolWyNPZxRcB7zupPYzHjBkjP2ryg04LGIEAgh0zk0nnBXugptZ4JutayUqpHVSdgkUd2EF/ZOdQRJEtKtULS2+1k4txrh6NX2gechpcRHoxZ1MbzRNiFG8KO24GhYHmAmNvFoql3768waCocPaC/mdP0IPFD0qjLPxAyNzjp3go1yKx+Bf9CpTvY5IMJXYnDMHKO+2IrD7oD9nVh+J7aTeuFyFUhJ
- xBld3Ohw
- YTM44PbJ03VkW3SDLifwMyYFAbYWWu6z2iGZBGZ45BE6gdPOevTDVSlZsKlFDNTl/pAhNaCrIOFhEnhD0Azn2Td42G0bdfBlqUwK46mxuDfnZD7tdFeAFrRHinA2BjWBOoDRqCsni7MY5YMJG+FQVFv1p2fKQcjMXT9aUdHd27qW+ERtGYFnIwUR3z6KA5zorKZCBzVjum2/r3fXOCO0dELvIfE0pMS1WgSsk0lr2XhMYdUv7K0gY+YMyk8ehABlVYprxOcSYWeKHRVvmw893Y0yvRKCmxG238q6rjxtr8w4UadFzN14/y80i2CuypJupxH6AbOXFaXbgMn7gMvIYqifI7iQHexXrfigl
+X-HE-Tag: 1776679635-376385
+X-HE-Meta: U2FsdGVkX18sz/jiUD4yBshMu+yRYeI9vyD2FPnJuVcGbW5M+9SCZl4ePTK6WTV7lRHY2PfpM722ZXrFzru6rZlSSv8W6aiYfVHGzvgT+DqC++t6gvW5tYwRO4HqidTZMZFLDRqoKLzWQI8R2M8NK5YIUpVASow2YBfW7SsI2ovBXOVHAMICySiaLiTBawVsKBtNBK9dLCSaXoAyfLfwzEdJWdvAzJebrOUMjYKMWK4O/ATZr+ed7G9gaLbS9XQjDjEFEdOcJWxzJwYhmfLMQJmwqMtM8xiUrOFmvHWXNO883Dh/KTLmCAqElPaL8mAMBiXs2Sfb9cmYM97NqwfVXH1je59T/46s+skXx3a1Th5EZFwQQEfz7U34hcob41JRkH+K5az79WC0zx1Mx+1C0qip8wyqgLGUjf7pumrsnBwxH/nIHmSbj+5jvPdtKNlJv/3STBrsL3yK5jZSoNTLc+7JK2pNmP9k7qMfp97DqeqzhRdS3G9PHKwevu6rS4F/zle7ldD4aNLYEfW814nJfB6VLd0jDP0jThRSCu4DDzEn3ArLHazQEN+m+JV7nMlC5I5Un6Cz62R5nbqqbzTL7TlusbBLIL4yHOUwtqj4ximnFCtN+MeaBzGE7DAg1NZguBpFV9R5cRUDW0HcbTKZSKth1C4bCODvylsB7PZt9CxsEmOcAHjP1raE48yxLwFKzwJbtDTIA0gL2AKjGvd2XPDyePXEuUSZO11bILw3xaDLUnXUg0uFvVwtBXce+h9zXBCzBiftCS17/XYHzIpL3cJp6BXUyNqwgmhGDJCDmvvBw4J4fTAwL26dN4IhH88B2G80lRm55yNeAZj5Be92KCAsIEEv88/0j3XP7+YqU1jJD/Jcrq4kRCBcYLlEdaOEKMFg4qlMWM8JsqOav0G+d2tKNPEesDmZ781VkzCktzvip0j2Cu0MUlxoCEdLvqd6vLUyYhQwIn7OOV5T6MU
+ irISna3l
+ ewBafa6YnlpxFO2wxNY2vEeATq4YH0JTERSevhe9+9ygCnuN1xZR2Wa1bdoo0DS3AVo4oWpRueViL0z71BX7OAElwVbzUvDcWWE0eXVu9l0RQWkEQXVeFh8z42AwN1xvMH7CnKHb72faAeeg7w0b80TlmLPWnCO8bS/T9UATKXc18edSBBdh5cWiVw1MNvLSJ8IkrONQaZELRS5qzBufv9mg2g6l3QDoDqT6hLRMQWw8Ty8Zcp8ViHbJilCCK00dg3kLWyzvCrGYTOfQgtvcW2iN28f1bNPJvKiaFvQQyraZp+I/4b95F4ZQpG2wBRM0H1AGkRiNkmqqojXqaH91N5ESZohKAYtAMuVTgEn3A8KeM4UKCv1UdWRdHOFFdJUaKve1sQ0cbXa59ZBEjfLYyivQarlrOB7MQKNyYFW6GZW72A3FeZqFGno5E1JUhE0zGOiSNqm+NSpz4tQG1O1AIJ2xzsfDkwCmYZRClMPs5fOnQQOjV/KG907qE1ZJK3NFk1Vj7xG2xLuE1GU5skLDlv6nZu7rNVvkKngOeaHj0qHpcZI9lWsSuzNtMl6cJoceAwbexhOuzlJ39QKCaLX7cdbR5jSAhMpuLJHznF62+PIBY/GHJxpqzm8l/FrunG4GqLFSwuzER/IHLRVOIKCPTbhXXl0T36pPgYxMXJlbcvtqiD6zmwhUEazeOABIQstX4CxF+t6S7S1DVEC4Yuz3M2YTwu3waUWzJABQMql1JKwPBMa7tO4IR4mU4/IwSuordRw3tgNUJk//EZ9OD1Cz8EPBg2/JbCKzEnL7JGdml8bQN8t4kOUwQQ+qXS9PdjyLrbd1WsA/y/08GW2Qr23ECp1YhhAUthvgdzVJ/ESu7zh72Q8r8exQ0AyN6tzhkjL6sHPSJfzqwDCLdRJIbGEf5I0PyEh7id+ah2TQwpKa3sV4Doe5wLjPLMUDfr/lUrJpPwLGD93MaZ46L2wXhFyWpxUaMIiPn
+ KQBTAwAQ
+ EO5Y1s+O+Jr0NLAnKsMJlhQudF/UZ8dXeY9gP29qYrr5GdoFsDvRTMQjbP7RaJG9KnFQIJ6BxABDEROmrtvz3JtcmhdmRotItuRVczRakbm23lWa8PI4xbQ1VhHNTvuO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,94 +106,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20/04/2026 10:19, Mike Rapoport wrote:
-> Hi Ryan,
-> 
-> On Mon, Apr 20, 2026 at 09:37:03AM +0100, Ryan Roberts wrote:
->> On 06/04/2026 15:16, Mike Rapoport wrote:
->>> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->>>
->>> Hi,
->>>
->>> There's a lot of dancing around HugeTLB settings in run_vmtests.sh.
->>> Some test need just a few default huge pages, some require at least 256 MB, and
->>> some just skip lots of tests if huge pages of all supported sizes are not
->>> available.
->>>
->>> The goal of this set is to make tests deal with HugeTLB setup and teardown.
->>
->> Hi Mike,
->>
->> I haven't had a chance to review this series properly, but the intent certainly
->> seems extremely valuable!
->>
->> I thought I'd share some configuration magic that I always use when running on
->> arm64. Appologies if I'm teaching you to suck eggs...
->>
->> arm64 supports multiple hugetlb sizes and (at least in the past) the magic in
->> run_vmtests.sh only reserves for the default size. As a consequence, whenever I
->> run these tests on arm64, I always boot with:
->>
->> hugepagesz=1G hugepages=0:2,1:2
->> hugepagesz=32M hugepages=0:2,1:2
->> default_hugepagesz=2M hugepages=0:64,1:64
->> hugepagesz=64K hugepages=0:2,1:2
->>
->> Which reserves 2 pages of each supported non-default size in each of 2 NUMA
->> nodes, and 64 of the default size in each NUMA node. (This would need adjusting
->> if using a different base page size).
->>
->> My recollection is that this effectively overrides what the script was doing and
->> is sufficient to make all hugetlb tests run for all hugepage sizes.
-> 
-> My goal is to let the tests themself set up the right hugetlb configuration
-> without forcing it neither in command line nor in the wrapper scripts.
-> 
-> On x86 I can run all the tests in a virtio-ng VM with two nodes and no
-> kernel command line overrides. I suppose that should work on arm64 too.
-> 
-> There are some additional settings that such a VM would need to avoid
-> skipping tests that presume swap or a real filesystem, but that's more of
-> virtio-ng limitation.
-> 
->> If it's possible to get this non-default hugepage size reservation logic into
->> the tests themselves, this will make the mm selftests much easier to run on
->> arm64 with full coverage.
-> 
-> That's what the second half of series do. E.g for cow tests:
-> 
-> https://lore.kernel.org/linux-mm/ee6bbac9-b375-4413-a771-6d32c7afda67@arm.com/T/#m62f23b835061449bc6249afacf993bb32ea11234
+syzbot ci has tested the following series
 
-Ahh, excellent; you're already considering the non-default sizes. I'll get back
-in my box :)
+[v2] mm: improve folio refcount scalability
+https://lore.kernel.org/all/cover.1776350895.git.gorbunov.ivan@h-partners.c=
+om
+* [PATCH v2 1/2] mm: drop page refcount zero state semantics
+* [PATCH v2 2/2] mm: implement page refcount locking via dedicated bit
 
->  
->> Another observation is that "secretmem.enable" is currently needed on the
->> cmdline to enable secretmem so that the associated tests run. Not sure what can
->> be done to make that simpler?
-> 
-> Looks like you're testing really old kernels :)
-> The secretmem default changed to "enabled" from 6.5 ;-)
+and found the following issue:
+kernel BUG in get_page_bootmem
 
-Good to know; I created my scripts/environment pre-6.5, so that's just
-historical baggage on my part, I guess.
+Full report is available here:
+https://ci.syzbot.org/series/eb14b73a-c461-4be5-b5af-91864e939f4c
 
->  
->> And there are tests that depend on having more than 1 NUMA node; I always run
->> under QEMU with 2 emulated NUMA nodes. I guess that's really just a property of
->> the HW, so nothing to be done from the test harness.
-> 
-> Right, test harness can't do much about it. It's either run in a virtual
-> machines with 2 (or more) nodes or enable NUMA emulation in the kernel
-> configuration and the kernel command line.
+***
 
-ACK
+kernel BUG in get_page_bootmem
 
-Thanks again for this improvement!
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm=
+.git
+base:      f4279f87cd6c82ebdaccdc56f38e7b80ca7fcc03
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp=
+1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/60ced5f4-8c33-43ea-a4ee-92d9b2b8f94=
+9/config
 
-> 
->> Thanks,
->> Ryan
-> 
+ACPI: HPET id: 0x8086a201 base: 0xfed00000
+CPU topo: Max. logical packages:   2
+CPU topo: Max. logical nodes:      1
+CPU topo: Num. nodes per package:  1
+CPU topo: Max. logical dies:       2
+CPU topo: Max. dies per package:   1
+CPU topo: Max. threads per core:   1
+CPU topo: Num. cores per package:     1
+CPU topo: Num. threads per package:   1
+CPU topo: Allowing 2 present CPUs plus 0 hotplug CPUs
+kvm-guest: APIC: eoi() replaced with kvm_guest_apic_eoi_write()
+PM: hibernation: Registered nosave memory: [mem 0x00000000-0x00000fff]
+PM: hibernation: Registered nosave memory: [mem 0x0009f000-0x000fffff]
+PM: hibernation: Registered nosave memory: [mem 0x7ffdf000-0xffffffff]
+[gap 0xc0000000-0xfed1bfff] available for PCI devices
+Booting paravirtualized kernel on KVM
+clocksource: refined-jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_=
+idle_ns: 19112604462750000 ns
+Zone ranges:
+  DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+  DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
+  Normal   [mem 0x0000000100000000-0x000000023fffffff]
+  Device   empty
+Movable zone start for each node
+Early memory node ranges
+  node   0: [mem 0x0000000000001000-0x000000000009efff]
+  node   0: [mem 0x0000000000100000-0x000000007ffdefff]
+  node   0: [mem 0x0000000100000000-0x0000000160000fff]
+  node   1: [mem 0x0000000160001000-0x000000023fffffff]
+Initmem setup node 0 [mem 0x0000000000001000-0x0000000160000fff]
+Initmem setup node 1 [mem 0x0000000160001000-0x000000023fffffff]
+On node 0, zone DMA: 1 pages in unavailable ranges
+On node 0, zone DMA: 97 pages in unavailable ranges
+On node 0, zone Normal: 33 pages in unavailable ranges
+setup_percpu: NR_CPUS:8 nr_cpumask_bits:2 nr_cpu_ids:2 nr_node_ids:2
+percpu: Embedded 71 pages/cpu s250120 r8192 d32504 u2097152
+kvm-guest: PV spinlocks disabled, no host support
+Kernel command line: earlyprintk=3Dserial net.ifnames=3D0 sysctl.kernel.hun=
+g_task_all_cpu_backtrace=3D1 ima_policy=3Dtcb nf-conntrack-ftp.ports=3D2000=
+0 nf-conntrack-tftp.ports=3D20000 nf-conntrack-sip.ports=3D20000 nf-conntra=
+ck-irc.ports=3D20000 nf-conntrack-sane.ports=3D20000 binder.debug_mask=3D0 =
+rcupdate.rcu_expedited=3D1 rcupdate.rcu_cpu_stall_cputime=3D1 no_hash_point=
+ers page_owner=3Don sysctl.vm.nr_hugepages=3D4 sysctl.vm.nr_overcommit_huge=
+pages=3D4 secretmem.enable=3D1 sysctl.max_rcu_stall_to_panic=3D1 msr.allow_=
+writes=3Doff coredump_filter=3D0xffff root=3D/dev/sda console=3DttyS0 vsysc=
+all=3Dnative numa=3Dfake=3D2 kvm-intel.nested=3D1 spec_store_bypass_disable=
+=3Dprctl nopcid vivid.n_devs=3D64 vivid.multiplanar=3D1,2,1,2,1,2,1,2,1,2,1=
+,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,=
+1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2 netrom.nr_ndevs=3D32 rose.rose_ndevs=3D32 s=
+mp.csd_lock_timeout=3D100000 watchdog_thresh=3D55 workqueue.watchdog_thresh=
+=3D140 sysctl.net.core.netdev_unregister_timeout_secs=3D140 dummy_hcd.num=
+=3D32 max_loop=3D32 nbds_max=3D32 \
+Kernel command line: comedi.comedi_num_legacy_minors=3D4 panic_on_warn=3D1 =
+root=3D/dev/sda console=3DttyS0 root=3D/dev/sda1
+Unknown kernel command line parameters "nbds_max=3D32", will be passed to u=
+ser space.
+printk: log buffer data + meta data: 262144 + 917504 =3D 1179648 bytes
+software IO TLB: area num 2.
+Fallback order for Node 0: 0 1=20
+Fallback order for Node 1: 1 0=20
+Built 2 zonelists, mobility grouping on.  Total pages: 1834877
+Policy zone: Normal
+mem auto-init: stack:all(zero), heap alloc:on, heap free:off
+stackdepot: allocating hash table via alloc_large_system_hash
+stackdepot hash table entries: 1048576 (order: 12, 16777216 bytes, linear)
+stackdepot: allocating space for 8192 stack pools via memblock
+------------[ cut here ]------------
+kernel BUG at ./include/linux/page_ref.h:171!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted syzkaller #0 PREEMPT(undef)=
+=20
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16=
+.2-1 04/01/2014
+RIP: 0010:get_page_bootmem+0x188/0x190
+Code: 86 ff 90 0f 0b e8 98 52 86 ff 90 0f 0b e8 90 52 86 ff 48 89 df 48 c7 =
+c6 00 e4 dd 8b e8 51 d7 e8 fe 90 0f 0b e8 79 52 86 ff 90 <0f> 0b 66 0f 1f 4=
+4 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0000:ffffffff8e407e50 EFLAGS: 00010093
+RAX: ffffffff823f42b7 RBX: ffffea00057ffec0 RCX: ffffffff8e494ec0
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
+RBP: 0000000000000001 R08: ffffea00057ffef7 R09: 1ffffd4000afffde
+R10: dffffc0000000000 R11: fffff94000afffdf R12: dffffc0000000000
+R13: 0000000000000000 R14: ffffea00057ffef4 R15: 0000000000000003
+FS:  0000000000000000(0000) GS:ffff88818de62000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88823ffff000 CR3: 000000000e54c000 CR4: 00000000000000b0
+Call Trace:
+ <TASK>
+ register_page_bootmem_info_node+0x88/0x410
+ register_page_bootmem_info+0x77/0xc0
+ mem_init+0x5a/0xb0
+ mm_core_init+0x79/0xb0
+ start_kernel+0x15a/0x3d0
+ x86_64_start_reservations+0x24/0x30
+ x86_64_start_kernel+0x143/0x1c0
+ common_startup_64+0x13e/0x147
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:get_page_bootmem+0x188/0x190
+Code: 86 ff 90 0f 0b e8 98 52 86 ff 90 0f 0b e8 90 52 86 ff 48 89 df 48 c7 =
+c6 00 e4 dd 8b e8 51 d7 e8 fe 90 0f 0b e8 79 52 86 ff 90 <0f> 0b 66 0f 1f 4=
+4 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0000:ffffffff8e407e50 EFLAGS: 00010093
+RAX: ffffffff823f42b7 RBX: ffffea00057ffec0 RCX: ffffffff8e494ec0
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
+RBP: 0000000000000001 R08: ffffea00057ffef7 R09: 1ffffd4000afffde
+R10: dffffc0000000000 R11: fffff94000afffdf R12: dffffc0000000000
+R13: 0000000000000000 R14: ffffea00057ffef4 R15: 0000000000000003
+FS:  0000000000000000(0000) GS:ffff88818de62000(0000) knlGS:000000000000000=
+0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88823ffff000 CR3: 000000000e54c000 CR4: 00000000000000b0
 
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
 
