@@ -4,113 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24E7BF588C1
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43CEAF588C1
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 12:55:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7BE6B00BA; Mon, 20 Apr 2026 08:54:14 -0400 (EDT)
+	id 8D3766B00A1; Mon, 20 Apr 2026 08:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CF866B00BB; Mon, 20 Apr 2026 08:54:14 -0400 (EDT)
+	id 883A16B00AC; Mon, 20 Apr 2026 08:55:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80B9C6B00BC; Mon, 20 Apr 2026 08:54:14 -0400 (EDT)
+	id 74BAD6B00BF; Mon, 20 Apr 2026 08:55:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 75B1D6B00BA
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:54:14 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 494A91A09A5
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:54:14 +0000 (UTC)
-X-FDA: 84678927228.16.22FC205
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5F2B71C0014
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:54:12 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q8W8bT8B;
-	spf=pass (imf21.hostedemail.com: domain of qjx1298677004@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=qjx1298677004@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776689652;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E9A36B00A1
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 08:55:47 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2019FBC109
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:55:47 +0000 (UTC)
+X-FDA: 84678931134.05.9E497B8
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 369D812000B
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 12:55:45 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=E5fZL2OF;
+	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776689745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=21qwcfMPBqAFoGsY5GMYgj3M1yvirBqTjEWNooxl2kM=;
-	b=L9MwmBff57XtAyd9A+S8VwEddaIQAjj1JEYfOPDDbFI7bAEeDLyvyA3PD6UfsVG9syhw2A
-	rcpdc2VrZ2VX8kxgStYD7AJPOCYEZqjpOWnlOWytk48Y0RZOTxr38OmgCYNnpAW34c33Uy
-	L78xkJXfnbjKnn+XR96B5IR6h5Q6nb4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776689652; a=rsa-sha256;
-	cv=none;
-	b=pdirgN3bckuRHCNcu3YVjUoHXdr9zVmMELCdq5EYVcmkIGuQiGuYawpZb8ycNjDFcJlH1k
-	aVZ8CKPYpPBcOdRz5TtSuDMsuwXaLJE/ogY5SAJSX2mlsTidA9U/zl2MyZsfUCQBaiJgMQ
-	GK95NpeWo6w5pRqnuJM5wcSwfgK+uWk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q8W8bT8B;
-	spf=pass (imf21.hostedemail.com: domain of qjx1298677004@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=qjx1298677004@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35fbca04006so1605147a91.1
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 05:54:12 -0700 (PDT)
+	bh=MQDz4K1izp3M4WhTLorDD3Rkf0/nzmU6W3n3HppTCoM=;
+	b=SfvC5wqyeK8zoRTOp349WTISgggiJXLFygu8nLeEqPqQxs6FHmokurArEz5ozFTyua55ig
+	VXPeIgMTXVUFMt20dKD3tpeS62PW+GhRYzMVDHugYR8e33E0/A97vuN642xAmU/1oBknKn
+	EqpAQH+Kro3psRWaW+NjFrX0pvhUqos=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=E5fZL2OF;
+	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776689745; a=rsa-sha256;
+	cv=pass;
+	b=ZAwZ65ilUw25aKCPWpyWqcsSwGSTjvGaQlzGmeHGn+MqNS0wzfM9+I4dyw6VJYruxNX6LL
+	bYvsYCLK03SmsWdYMc3Z14eSZEhQpXnV7PHLQ71AFWOGIvsoT5BIRY4ys4lHRj3i/bOKHH
+	WcCMey5dZet3V80bJYEoOwyiGwqdiaI=
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-794719afcd4so30526807b3.1
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 05:55:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776689744; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ei20Bv/7Uhwog/vUm/1SGjkonWtCzfpObv74mneokJgPAiOncj7bAbCj3uZRdZfQRs
+         fnpQukbiM2YwWOYwYqHEdq8c/9JDT8SI8RFAnWh9Z7yI6S9njVziBBxNvSdNreanzaZL
+         jZXhL2p7FA09Ps70U6Xdbtn7SI5mwpZtPPLc3+pvL/9ck7jsih3KqZFa00l3FikZfdbp
+         irQwJbxf6mp87vbQh9hAyVZWZHw5VvllnfbjgI7ODt453PVm2Sv7T6HLzSt1ivnrbYr4
+         REMRCx4W+/CJV59s8YdzVohYIjDgChjeUwfNsZPNXgNCYXKQVXF+dLyLUpD0FBmgER+A
+         +NLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MQDz4K1izp3M4WhTLorDD3Rkf0/nzmU6W3n3HppTCoM=;
+        fh=h0MbBxqa9KgpT3ccWDwpqD3AvOFCXg0bU7Wkxol1X1s=;
+        b=kb6etrrBS06MAfXNqeWsb3xvJFuaY85Z0t1ygVzB1kV5m0RxAW5WCAaQsRmEvx7YlZ
+         g/c12nBcfw6a8aY8vJsdDRT59jAHTIe5jBbr4QgdN89wCrUDzitpcYoQdC3ehT+sUCMp
+         1sBB09+b1FN7IEWsphS3YgB4jDPzHtYODmT+TBTHvvuuY5/lba9pSsx1yep3dC3YifIT
+         Y0eQ7Rf940gVgKdO40ijfuXZHqvL6fWilORCh12X9EZKR5PkyzXmMS4x7vY3mVVrShpM
+         x7IT4uyhNq4gwe0Y9Y6rUDKb/F7bwzec5MRuGgHH5x+Cc2Gv/+AQ5lw+lxEE3mq+dB60
+         8sKg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776689651; x=1777294451; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776689744; x=1777294544; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=21qwcfMPBqAFoGsY5GMYgj3M1yvirBqTjEWNooxl2kM=;
-        b=q8W8bT8BqXSreHspdAixopjc1fD83IJ1zaewhCfJutIreg1UXJguSXheVlKcw0sDxN
-         sVmmssTcT2s663l3RPGxUXV1tuV4smTGDQf5e5h36r+PVc+bhtCUWtwMoXpX0qyXM9l0
-         8SNXdxPuGdmrtlthCUus3ZDP9u9kSHo7koWJxQcJkQKdf1GrjK0jFxSnEEa6d1UrJCvO
-         0kdqRCPS823l1bmkIzAhzMYnq+9n9yLvlldLoz5rgRQoHh51FpYMdUhyJ54C57KZUy2Q
-         ROdbrLF873A22TJUHSe4NZUKNzjtVWnuJePamsBF1kzEyD3akdFnCprSuKFB4F6PdN0J
-         syrQ==
+        bh=MQDz4K1izp3M4WhTLorDD3Rkf0/nzmU6W3n3HppTCoM=;
+        b=E5fZL2OFL7fW+EROqnnodyIyNj7KYoXqPKjyJhq4NMYXaDLvdsfFwdbanrOf7EmEnK
+         pX3ww9rl43tYbTaUeAO76Tt1deZg4+fS/57nFk3OyGBn+E7hAZeTYrny3VEggHiR4K9j
+         bAEf0YGsZNnLzkEM+EI3XevGSF8D3okko6n43yuyZQ2GuOKXGY/CQJ+RE/zGAeJOfQ7L
+         lI/0Dg3/ypoJYfjCXNcdsqUJHXAp5FR0VDgNd1BTx//JhIemPMQpwFr7UV1Y8YvqzXDz
+         wNx83niWUEdvmw32/BwdcVCUjG7QRJUDDRB2Q9yUmRJr3G2DRzqHcr1fS36XGlgDhVN4
+         ub8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776689651; x=1777294451;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1776689744; x=1777294544;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=21qwcfMPBqAFoGsY5GMYgj3M1yvirBqTjEWNooxl2kM=;
-        b=pmlVWC0eiHkjKkNUHhhM+YeJf1dVn7b8O+iSidmCtN/a6/u3AB0+mfM7UxeEoesf+T
-         Jom+Abt61XeYqESbPFjTjLT+RUz63IPDfxX2Y1Dr4sDdXYTpA2P8N7ygHL8g/kXKKeUe
-         uBB3BKIzj1uRJbMWhObe11GA1zG7IgFCwWcHVmZm3zRoce+bAawREMuvY2V3wlm/mUcA
-         BOaPVsfjVHIxXqlYvviLG+zD58a3InHUe5TOaLu5LA30xdPAdcEjztThXrPIXiBs3CAK
-         Iwr72+CJ058HFnD6sS4CNZWGFCvvri7WLgn8ZmrCHpoD916paXey3rSWZmIW92jw5ypG
-         4MTA==
-X-Gm-Message-State: AOJu0YwcqCtEI93DvGm66uHQTXDlf+uPUgMqGOpd4tSsINLxJHF4JEQI
-	qHMli9LdldDwENh4NmbbZSpeNTBGy2zIDHfiIMMv5FB0MyjA0TJ6d5/3L13VcsgZ
-X-Gm-Gg: AeBDieu8qP/KLYkDTIGF/HmR8Y3cUGQjVUoKnaE90maeH21y3TAt5gkvibCh+Q4SRce
-	TjMSd0NH2BFAF5Uo2V+CdktGchW/7PqiK2WPDE35q9tDP0h2oN+UzF7EizUHpyr14fhqlXMvCCf
-	7bc0wUOzVNeki+tc4PQjg/VgmRr3OZiyhMpxiNCyi3nOOyXTyWdIOvSihaYnCl91AM1Bk7wV6QC
-	2ykewepL1tMdwV6jWkDJEH9fMgfTQdiCAnrO2GT8T87W362zgjx9XcwHC9B4Q4GdGzO5bEqp5u8
-	UilHZvT/IAVOTPew5zS2Pff+LctuEorMHfogB33WAtIUPskLlgvOqYuvBPResg2NpJifubA0kqa
-	OnODXJcs2S/yPSXnpE9rbwVBFajGaG3e4VwLnUoY4HEpoBG4eNos5x/iRYymeFPqMDdIge1IY5l
-	cMxXV2Vgl19TtgRRl7uSLCxJx2fGDgU8Hm3hEIwT3bRwpJJ6tHShRIAQ==
-X-Received: by 2002:a17:902:e746:b0:2b0:60b2:4f8 with SMTP id d9443c01a7336-2b5f9f01725mr164450995ad.15.1776689650901;
-        Mon, 20 Apr 2026 05:54:10 -0700 (PDT)
-Received: from localhost.tail66efb9.ts.net ([240e:3b5:d06f:a890::1000])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab2112csm98517395ad.62.2026.04.20.05.54.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 05:54:10 -0700 (PDT)
-From: Junxi Qian <qjx1298677004@gmail.com>
-To: linux-mm@kvack.org
-Cc: sj@kernel.org,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mm/damon/sysfs-schemes: fix use-after-free on memcg_path and goal path
-Date: Mon, 20 Apr 2026 20:54:05 +0800
-Message-Id: <20260420125405.362137-1-qjx1298677004@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260420085332.178473-1-qjx1298677004@gmail.com>
-References: <20260420085332.178473-1-qjx1298677004@gmail.com>
+        bh=MQDz4K1izp3M4WhTLorDD3Rkf0/nzmU6W3n3HppTCoM=;
+        b=mdMDzQgEY+tNFFVzuQwg96rJgEFNApsum3IX8SHTbYo+fweuysffkusDCQxw/ZJwQR
+         DeubjHgR0sGGXopDywiUswjhzmi124TC/AqzPeOUSlHHevooNI3Wvokt4YysUF+NoI71
+         nZxlxfRLa2E/MapuqmIBtXbLV9LcM44ESDzOkUA/p3VSVcBCBq8tCEuXUE80bV0jpx2Z
+         1jTyyeM+89aN096zMlhtDTDEtrDmAATfGEo6iSJCfDiZF+gWfrn8EyNuFkMmCJ9z6t9C
+         YlDkYnp046J6/OqKsVQj7L9EeABC3Lp7fyKqBhGrNxkHk+tUK5WQWOkCRQLhiEvok/8B
+         zSvg==
+X-Forwarded-Encrypted: i=1; AFNElJ8zo/dXZN2jKvxxTqNPGwBq7uTUcLfPBFCtaetN/HilW8qO61SoH5wxEku13kYPPb6SIHkhhDvhDg==@kvack.org
+X-Gm-Message-State: AOJu0YzWCLAnf2U/1z3ge+at1UamIwgraLQ4noq0keR3Aw8GyF+0+43T
+	1GI42hgvwTm4sKJ1eb/mC7eOX0lhwDn/8IFlpOKtyprl1COLzIhORHT96iHHxYGWek+RdwfuU6B
+	ScE12qQNiXsW3t5AWn572TDJHJ2dhSXM=
+X-Gm-Gg: AeBDietZCP53dYNm81Emm9Fye0DpsNscfOsm4I5j4w53lxePgKDaMxzbNjkV/Hy+Do1
+	0BBzGcYlPIs5ZyVOCIa5Qi0qc/1bCfZR/IgRuph+OQS7lSXVYip82ouFUW6cB1hvcc+MbFNE+GU
+	WMDgl4F+9XmdPjNwlI505an4MAd/2M40zUJMiS1xHCRvhr6xicSDFpfsc5JYeFln5A6Z1CrmQrn
+	Q+5MEeZyZUGlRltrjKkb6R2lYY6PkpseCpHnh3GRh6I1Sk2N/t2k9kao6rRVvlpYv/ui6E0HFBK
+	bEZpRSkIneyAcPs=
+X-Received: by 2002:a05:690c:289:b0:7b8:3b51:c9b2 with SMTP id
+ 00721157ae682-7b9ecf7571bmr132794027b3.23.1776689744164; Mon, 20 Apr 2026
+ 05:55:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5F2B71C0014
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bghh7i34nbyu1g1bc8egsfb3q6qtc51t
+References: <20260419144225.2875654-1-ekffu200098@gmail.com> <aeXMZzb_zECfEayR@kernel.org>
+In-Reply-To: <aeXMZzb_zECfEayR@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Mon, 20 Apr 2026 21:55:32 +0900
+X-Gm-Features: AQROBzB1tVXHHOLPdJ_CWIQhP3lrfUl7ID8IyuEaGjHJyd0xcaXhnBb-DShBw_I
+Message-ID: <CABFDxMHOSWTnvXNLy6crt-x=-Mt7VjU5XMo3Z17+zfkkeO5KRw@mail.gmail.com>
+Subject: Re: [PATCH] mm/sparse: remove unnecessary NULL check before
+ allocating mem_section
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	Liam.Howlett@oracle.com, vbabka@kernel.org, surenb@google.com, 
+	mhocko@suse.com, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: q8oqtf9dnb75xbuhxn8tcymojrrwnefd
+X-Rspamd-Queue-Id: 369D812000B
 X-Rspam-User: 
-X-HE-Tag: 1776689652-611234
-X-HE-Meta: U2FsdGVkX19oFpl9coGCR/fP1r/EPiyi8QlbI8bMOVsITR29b1mlwZ2wruKeDUYktSH8C4jKjy+r1OdxuZUJHru5MorZkhg9z02gvvzw+IVsScS+my7B630lOtQh/Gmn1IaaKpH7A3c78m1QZ/xWXCmBpKiNiOJ8DqJdurDwoQJqtHj70UDlD8CtZ8ixpbC4McPOXUzMVK1xyOI2VYTSxhuXkHmqnWtXCGpScInobbA6p42pfIDw3pCzesbWD1pGOXjKn7oYd6iIP1bLSJZrSf+swdEDBdPkxtK7L39No3qwambVXbBZLaAi0fSlqlOxj9/J97k3LDNOUL16xWY9aHoRowAYIHr+Fbh3z8MCTiXRxVOHRXe6imUmW7hF9GoFCaojs73rCmNHw3mnsG/aBpvVReVVq7oxgM4LT5rV7Mgmc/IFxE5vA5I0XMLRAmXvlSvBteqp6Qkb1kSznlUsHEKhpU/XjIc5HdrdmEw0ikEm20evYxGjkNg5wXsQtMw1UhvAcJD1iqD0vvwqnRcsa0J3GzJDVkQd8LLVyiYpWGoW4zwTY8Ym+f2Q3P47hmH1nD8i9qZi011028d5vKbvMAP9ORCjIVwMt+3mBXQEahiJyObr2uyFEb89d0km3Bv2d+HzgGNXIigtsF31WhphWZBXx8ZjyHLTK5CMkwe1MxInPLgJqxgzcfrEvKSJbFGqZc5SBDYUL/5FHVvDqrXCrPwRhJAksDmP6xxGGDnq9uib8pCIh24ixw1QjTPE52kIVaqCh8kZxXqE5UxsHI+2Y9R1+qXMGoybz0LqfM20xndPAyfw72ysSbC7NVkynCHr476zbmdSi293+Cio8RasXwsizc81S62N9939R91h0igy4ODX37XnyKsqVBGGkka+Q+Hw7TYox9sfmt3xg2nFbdlOvT+GotIKmRxPTYZdo5mWfvY97l4masU6KWJZOQ1WfrHZaL8mA4Tf11TuNEX
- pRLWegk2
- cUk9QXqvtAKlzECGFvdQGxqsj258GxJ9Uw4dqMPXdsWSIV9tlS6PX4Po+AG7d+06O36Pf4zECycmeX+PcmQbcyKPhvT9LfSvoUrn4+tx0G1eVVyRV3KGFLWfok8cwL9vXPoiR0yM4+tvfIF8FwDZVj3k2wToezd07C8INGxdaCKYhEC2cQuzgljZ+D4seGrOebLULxsr7sxIsxkh6yMv313lMuzr4K5nRTNsKr7YWHBVCNZ+GqG0RnLGgDZsDR6vQwtn5/k9Hbtp/GJ1YAgZrgHOVU3WQLWGd0lN7Pej17pwRYncTAPb+OIL+vjbPbQu+NSuwopRIA4HxHiBFNn1/aPBel3VLPsh7c+AFMpYQ8sx9Dnor0F+BP339tapm5ucshJ2fQ45F9w0wBnmy7NONUnWD1APzu8fPPc3l7Avthn7LtOPYjpLhxMzHV8A3glxpdkri4B/zAJSUm1U4m+a3ww4P6A==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776689745-96276
+X-HE-Meta: U2FsdGVkX199RS8HLrYNXfmPfHLVru84ozJuDZqQjpZ5NLxpIWSrpaDaulQg6IVwNEpm0qSTFTIzhsHqQnW2Mar5URR/oPGD0M+vxRmuidOGZZ7krBqC4Hescg9aNM1+1st3tIJNNQQAdluC2KLyF2Ilw/0JuaB+4y2k0l2wOMze18vMILUY7krCtA3eRlNJfcOwif/fKm3i/OuN4qkRsl4B6on2mIthBR5h0w51YCYpIgVQCAfz4h1eJITHyUSMQ1q4u2NZY85PFrV+an6un/FQIDTie/7GHMqzZnENI/ZR08aIhKw1Q9FQISl6gaOil8akmHocgvGtnA1Pqdna5eyj28kPuIYlwRikqEGaWCyFnqGU/vgEYG5rplz5OZC2L239Vloz/iAqv5f5fROACxfjpc2Y88J26AkW6FXDguDLiulXPhkNg+iFBaD/Q7FSBxM+X90LhHOuuUMV8/jEUKSavNeI9KEDVT0mfKSQda89MLiCTw2SLNP6ybtU4CgnXxmj4Za86QOzWziQL3QFzWsPbZMUnbRTInKF4WYjNs9Tx6Vk3CZcX3SQ0JkoddeilIWDROsj2mLjREH5t3I1FYGvPjMoLNi5slPkRs3wYuJvxP1Z/U5012JyhFjiGUdiy24bEAgegsXuOrpQCRmlsfxFokWQTikcvYdrF9YMlnayUlMN9sn3CSmwPM+hbJb/diO195sOM9QJS05H1NVHyAq6yxYU9+s1mxHSP8k+PGxau62zqkQgCYWixAGvrhQPoDsyxEqrJKHfnfrRg84QQF0lo1/a6Px0/bcdJg8m0HCA+oEz5jkGrWDZXB1Kv4Uw7lD8UvTD6UpbI4Q+5VMhfXDxVrjP7/MEJOD2Nb/yUkAY8FpS/vKVgwQPs6LXyRHuvTDotH5W0CNU0286ivyMnCkBVZbSpo9lXTszKjEdV/PY+caE6cnD59WdN3N3Q+x+unPQ4Mg37wWfdUeavES
+ UkoEOEHD
+ KdH1W/ZkUJdyMBD8h7KE0/hEBepeWaxiNpPZSVOuxRmy4jgM4I5X+BYlmoxwLG56EjVXlIisuaq64mnbbkTME0t2eujsPHqJhruS4OffRiZ2oRc8NkbXQL4grYEbSYEG9spQHr7VnX72Jyvz83WT3a7aKgG+OKVF8eGc8SCWhp7UvhWl3rydFvEs3ZFqt+zIPIjZIJmBAogKbW6Aw34zlYITJhJO4Al2dwGcdNt0l9GN1xCmdtqdTXz2dRfItogFyhjU3aL87QdWjxWaMc3aU9Y6o7ez3kSzDS4+W+mh7Zs7/hpGGZ4cNkoTVT6MDVwx/rfYiH30veGE9i9+qNQ5lSiYBiNpNZatWQbqmJWL1yy8JFG+bFYeCygL7ltmq1gnYZOf8wsFI7zBBj/eBD125cPOw4ZnsqSiJJcSrjpaw5UklsWQTzHjbzVGE71lGJjT1T742QcxChqdNEvdDuLrNth+6IOWNMIf6jn50SQeqkhSNUIPojms069F+uQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,178 +140,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memcg_path_store() and path_store() free and replace their respective
-string pointers without holding damon_sysfs_lock. This creates a race
-with the kdamond thread, which reads these pointers in
-damon_sysfs_add_scheme_filters() and damos_sysfs_add_quota_score()
-via damon_call() during a "commit" operation.
+Hi
 
-The race window is as follows:
-  Thread A (commit):  holds damon_sysfs_lock, triggers damon_call()
-  kdamond thread:     reads sysfs_filter->memcg_path in
-                      damon_sysfs_memcg_path_to_id()
-  Thread B (sysfs):   calls memcg_path_store() WITHOUT lock,
-                      kfree(filter->memcg_path), replaces pointer
+On Mon, Apr 20, 2026 at 3:49=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> Hi,
+>
+> On Sun, Apr 19, 2026 at 11:42:25PM +0900, Sang-Heon Jeon wrote:
+> > Commit 850ed20539a4 ("mm: move array mem_section init code out
+> > of memory_present()") moved mem_section allocation logic
+> > into memblocks_present().
+> >
+> > Before that move, memory_present() could be called multiple times, so
+> > unlikely() matched the common case, where most calls found mem_section
+> > already allocated.
+> >
+> > After that move, memblocks_present() is called exactly once from
+> > sparse_init(). Under CONFIG_SPARSEMEM_EXTREME, mem_section is always
+> > NULL when it is called.
+> >
+> > So remove unnecessary NULL check before allocating mem_section. No
+> > functional change.
+> >
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>
+> > ---
+> > Hello,
+> >
+> > While looking into boot information, I found a minor enhancement point.
+> > If I misunderstood anything, please feel free to let me know.
+>
+> I would say it's more a cleanup than enhancement :)
 
-Since Thread B does not hold damon_sysfs_lock, the kdamond thread can
-observe a freed pointer, resulting in a use-after-free when
-damon_sysfs_memcg_path_eq() dereferences it for string comparison.
+You're right. Thanks for your kind review. That's my poor english :-(
 
-Similarly, memcg_path_show() and path_show() read the string pointers
-without holding the lock, so a concurrent store can free the string
-just before sysfs_emit() dereferences it, causing a use-after-free.
+> > Thank you for taking valuable time to review this work.
+> >
+> > Best Regards,
+> > Sang-Heon Jeon
+> > ---
+> >  mm/sparse.c | 10 ++++------
+> >  1 file changed, 4 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/mm/sparse.c b/mm/sparse.c
+> > index effdac6b0ab1..e13f9f5fa090 100644
+> > --- a/mm/sparse.c
+> > +++ b/mm/sparse.c
+> > @@ -201,13 +201,11 @@ static void __init memblocks_present(void)
+> >       int i, nid;
+> >
+> >  #ifdef CONFIG_SPARSEMEM_EXTREME
+> > -     if (unlikely(!mem_section)) {
+> > -             unsigned long size, align;
+> > +     unsigned long size, align;
+> >
+> > -             size =3D sizeof(struct mem_section *) * NR_SECTION_ROOTS;
+> > -             align =3D 1 << (INTERNODE_CACHE_SHIFT);
+> > -             mem_section =3D memblock_alloc_or_panic(size, align);
+> > -     }
+> > +     size =3D sizeof(struct mem_section *) * NR_SECTION_ROOTS;
+> > +     align =3D 1 << (INTERNODE_CACHE_SHIFT);
+> > +     mem_section =3D memblock_alloc_or_panic(size, align);
+> >  #endif
+> >
+> >       for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, &nid)
+> > --
+> > 2.43.0
+> >
+>
+> --
+> Sincerely yours,
+> Mike.
 
-KASAN reports the following on v7.0.0-rc5 with CONFIG_KASAN=y:
-
-  ==================================================================
-  BUG: KASAN: double-free in memcg_path_store+0x6e/0xc0
-
-  Free of addr ffff888100a086c0 by task exp/149
-
-  CPU: 1 UID: 0 PID: 149 Comm: exp Not tainted 7.0.0-rc5-gd38efd7c139a #18 PREEMPT(lazy)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x55/0x70
-   print_report+0xcb/0x5d0
-   kasan_report_invalid_free+0x94/0xc0
-   check_slab_allocation+0xde/0x110
-   kfree+0x114/0x3b0
-   memcg_path_store+0x6e/0xc0
-   kernfs_fop_write_iter+0x2fc/0x490
-   vfs_write+0x8e1/0xcc0
-   ksys_write+0xee/0x1c0
-   do_syscall_64+0xfc/0x580
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-
-  Allocated by task 147 on cpu 0 at 12.364295s:
-   kasan_save_stack+0x24/0x50
-   kasan_save_track+0x17/0x60
-   __kasan_kmalloc+0x7f/0x90
-   __kmalloc_noprof+0x191/0x490
-   memcg_path_store+0x32/0xc0
-   kernfs_fop_write_iter+0x2fc/0x490
-   vfs_write+0x8e1/0xcc0
-   ksys_write+0xee/0x1c0
-
-  Freed by task 150 on cpu 0 at 13.373810s:
-   kasan_save_stack+0x24/0x50
-   kasan_save_track+0x17/0x60
-   kasan_save_free_info+0x3b/0x60
-   __kasan_slab_free+0x43/0x70
-   kfree+0x137/0x3b0
-   memcg_path_store+0x6e/0xc0
-   kernfs_fop_write_iter+0x2fc/0x490
-   vfs_write+0x8e1/0xcc0
-   ksys_write+0xee/0x1c0
-
-  The buggy address belongs to the object at ffff888100a086c0
-   which belongs to the cache kmalloc-8 of size 8
-  ==================================================================
-
-Fix this by holding damon_sysfs_lock while swapping the path pointer
-in both memcg_path_store() and path_store(), and while reading the
-path pointer in memcg_path_show() and path_show(). The actual kfree()
-is moved outside the lock since the old pointer is no longer reachable
-once replaced.
-
-Fixes: 490a43d07f16 ("mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write")
-Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
-
----
-Changes in v2:
-- Also protect memcg_path_show() and path_show() with damon_sysfs_lock,
-  since sysfs show and store callbacks can run concurrently and a
-  lockless read in show can race with the kfree in store. (Sashiko AI)
-
- mm/damon/sysfs-schemes.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
-
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 5186966da..1a890e2a4 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -533,9 +533,14 @@ static ssize_t memcg_path_show(struct kobject *kobj,
- {
- 	struct damon_sysfs_scheme_filter *filter = container_of(kobj,
- 			struct damon_sysfs_scheme_filter, kobj);
-+	ssize_t len;
- 
--	return sysfs_emit(buf, "%s\n",
-+	mutex_lock(&damon_sysfs_lock);
-+	len = sysfs_emit(buf, "%s\n",
- 			filter->memcg_path ? filter->memcg_path : "");
-+	mutex_unlock(&damon_sysfs_lock);
-+
-+	return len;
- }
- 
- static ssize_t memcg_path_store(struct kobject *kobj,
-@@ -543,15 +548,20 @@ static ssize_t memcg_path_store(struct kobject *kobj,
- {
- 	struct damon_sysfs_scheme_filter *filter = container_of(kobj,
- 			struct damon_sysfs_scheme_filter, kobj);
--	char *path = kmalloc_array(size_add(count, 1), sizeof(*path),
--				   GFP_KERNEL);
-+	char *path, *old;
- 
-+	path = kmalloc_array(size_add(count, 1), sizeof(*path), GFP_KERNEL);
- 	if (!path)
- 		return -ENOMEM;
- 
- 	strscpy(path, buf, count + 1);
--	kfree(filter->memcg_path);
-+
-+	mutex_lock(&damon_sysfs_lock);
-+	old = filter->memcg_path;
- 	filter->memcg_path = path;
-+	mutex_unlock(&damon_sysfs_lock);
-+
-+	kfree(old);
- 	return count;
- }
- 
-@@ -1187,8 +1197,13 @@ static ssize_t path_show(struct kobject *kobj,
- {
- 	struct damos_sysfs_quota_goal *goal = container_of(kobj,
- 			struct damos_sysfs_quota_goal, kobj);
-+	ssize_t len;
- 
--	return sysfs_emit(buf, "%s\n", goal->path ? goal->path : "");
-+	mutex_lock(&damon_sysfs_lock);
-+	len = sysfs_emit(buf, "%s\n", goal->path ? goal->path : "");
-+	mutex_unlock(&damon_sysfs_lock);
-+
-+	return len;
- }
- 
- static ssize_t path_store(struct kobject *kobj,
-@@ -1196,15 +1211,20 @@ static ssize_t path_store(struct kobject *kobj,
- {
- 	struct damos_sysfs_quota_goal *goal = container_of(kobj,
- 			struct damos_sysfs_quota_goal, kobj);
--	char *path = kmalloc_array(size_add(count, 1), sizeof(*path),
--				   GFP_KERNEL);
-+	char *path, *old;
- 
-+	path = kmalloc_array(size_add(count, 1), sizeof(*path), GFP_KERNEL);
- 	if (!path)
- 		return -ENOMEM;
- 
- 	strscpy(path, buf, count + 1);
--	kfree(goal->path);
-+
-+	mutex_lock(&damon_sysfs_lock);
-+	old = goal->path;
- 	goal->path = path;
-+	mutex_unlock(&damon_sysfs_lock);
-+
-+	kfree(old);
- 	return count;
- }
- 
--- 
-2.34.1
-
+Best Regards,
+Sang-Heon Jeon
 
