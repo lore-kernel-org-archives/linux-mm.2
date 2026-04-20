@@ -4,81 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7536AF5A8AD
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 19:00:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 821F5F5A8AA
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 19:03:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 528C56B0088; Mon, 20 Apr 2026 15:00:46 -0400 (EDT)
+	id E54536B0088; Mon, 20 Apr 2026 15:03:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D9666B0089; Mon, 20 Apr 2026 15:00:46 -0400 (EDT)
+	id E055A6B0089; Mon, 20 Apr 2026 15:03:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C7906B008A; Mon, 20 Apr 2026 15:00:46 -0400 (EDT)
+	id D1AE46B008A; Mon, 20 Apr 2026 15:03:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA1C6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:00:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A4BC8C35AA
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:00:45 +0000 (UTC)
-X-FDA: 84679850850.18.716C559
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C2F766B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 15:03:12 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 28A731409C8
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:03:12 +0000 (UTC)
+X-FDA: 84679857024.08.214B561
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B1E7D40005
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:00:43 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RpqJH48R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776711643; a=rsa-sha256;
-	cv=none;
-	b=YoxiFKc+stHHFTOwTX5IOwHoQVxVG5mcNOwNNGX1JviumKgPrMDYIaluZ3OuuzGtBBRI/O
-	ecMR7DlMofK9Sg4z+hARrSZ18znGI2Iu4S1pEhOiKxJ03xx8XuMGm3ZMZ4ef6CcURKJGTn
-	WJFm2/iwwtIJGGFJX9d5xhLqkeShN50=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RpqJH48R;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 628AB40012
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:03:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UTxb0bxf;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776711643;
+	s=arc-20220608; t=1776711790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Xq40k9Fl/Irpp47r4OhL9ovXTdAOkeNuBp25CrECQk=;
-	b=JAuZBzqtCaHAZTyV08hK6116BNp+PLgcbDW+nmAT0Qg30RWWI9RqUMcGEM3vjn5cqQ5yS7
-	VON9cxwmjxbnZlBs76+VIr6FESftQ0ZKvy/iBeTwnXVnXFVgrsm0Ol8FEevqQa2N3RT8d+
-	WdKjlh1a1MaCZ+18wMWAIuaBxVtuMFs=
+	bh=oZXTmsrU0/pJ1tebX4gelHJDs4GiWytOzVRnEm7LrNQ=;
+	b=ENQuDSX6AbOAnlqoK5oPTQ3DAthhy9J9GC8mOnEHJdwNOcD2PtTfYI7c9NjZe4sNFSsg18
+	Ipql8lVC5N2iSCpHMK5eH6u03NHhuRDgOkev41TCApZmzaHSqtcmVqTUp64+JcxeA9V2G0
+	FSzrDo2tSyFpo3VAmP0FLS2iTncqaJ0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UTxb0bxf;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776711790; a=rsa-sha256;
+	cv=none;
+	b=JRzlVXVJMJ1ZxuSmBBwdfzEoMpoNnu8D0igN63xJILVLRjvSOpOAU/ePrOgKoLBcwTweKw
+	5ThpoOOZQFLU4/oAZrPFf0BzTNUCM7dhVNsfBFMyTVzBXwPLekg2zBRLEVNO1QoW1E/FPJ
+	A4nkGkZsf+4cwnG1UeQvoog3hMSB3Sw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A47660018;
-	Mon, 20 Apr 2026 19:00:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83B2C19425;
-	Mon, 20 Apr 2026 19:00:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CB50D600AD;
+	Mon, 20 Apr 2026 19:03:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE27C19425;
+	Mon, 20 Apr 2026 19:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776711642;
-	bh=uRwvGgzHbcEtZK6wo9qKRlNk2GDua1rojl3egr2ZjzM=;
+	s=k20201202; t=1776711789;
+	bh=HCf8DsqrqtUoC3kEuRnRvbL+Njp65zOlbz2OuhLRP1E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RpqJH48RXTcs8FJSGZcYmrDP4K9N+qKoXv4m8p/2TWS+HFftLI2zUHPRkboBMdU5f
-	 oOTI8VTShKeZnIJZjA7ac1E137Vk8fnSFyO6rL1NHtW5B1vdbj+46jk+RErGgfQ+Mi
-	 lqkRtnHcFQM7OF5EeBTh6ujPIj+4VgAV9HaASwCKXSZeQs1l3om9o4mkfnXHXVI/aA
-	 OnKH07vr5Au18gKLXZjqXxUD9TCypvgp/3tFzXevu7YYnvLzRZz3prIYHh6NueDiqd
-	 tsF4U9xTAzAkusAt0gqBZQXL1CRUaDpBxVcvdA6DhYYi94dUB929jixXZ8BYKwRt4I
-	 L4SKEeopBx8WA==
-Message-ID: <07e26d39-6155-4661-b3df-c2419535ed43@kernel.org>
-Date: Mon, 20 Apr 2026 21:00:37 +0200
+	b=UTxb0bxf0p9SPGEz9c3QpVnszUtxBZp8b1Ewfcg5N9lAntzEIcDLXzN7AJts++4yy
+	 T4Zqs912LANKgvHFYt2K2Cp4dmiB4jWbjLdg2CP3iSJMLvosJc2dpCsUTqIbCW3Ap8
+	 SykFg4rNgwuL9fA3KwKuxGeiGJNOc6wcS2DR3dpCp7+2mphDlupSbw2QXo4NOZ7qCM
+	 3V4MIhpkKrYSNDNKlHKq0DZHZB4HVyf0HInlsg8aTte2nZyh+ePBBs1sHMbcihbUBO
+	 YTLzFYBgoE63K/l55t22vG6PY6Xvso7AMEPv1bY9x3voVlYzYkt8EWuwmxHUkYkbox
+	 tqGCfkEPFY+eQ==
+Message-ID: <5bebc75d-19e7-4d06-a5c1-d3f0bb5f4e05@kernel.org>
+Date: Mon, 20 Apr 2026 21:03:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
- shmem mount
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
- <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
- <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
- <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
- <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
+Subject: Re: [PATCH -next] mm: make sure freeram is smaller than totalram
+To: Yang Yingliang <yangyingliang@huawei.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, hucool.lihua@huawei.com
+References: <20260413115736.1237680-1-yangyingliang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
+In-Reply-To: <20260413115736.1237680-1-yangyingliang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B1E7D40005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zsghftkrfgoc78dazby3ddmgwcw6zq7m
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 628AB40012
+X-Stat-Signature: fehd9iicrmtonrq99ymrgncfsowg61po
 X-Rspam-User: 
-X-HE-Tag: 1776711643-960610
-X-HE-Meta: U2FsdGVkX19EOzFUG6WPd56BblFtgTxD1znbPcvskxe32lJTli4qlu2+uuny6QkVX7aRBLvQcTjgFOWA0HAyO/9DNpuZlMH4iBHvX1U7YeDpWrJqu+WH9kZZXVpe1yy28fdnyyxtgjoz0by2Qcurlylr9IQIbCZKjspn45T16GuKwkntFNjsTp4InOUJdAIVQtFUzCRA4a9smWdlK3Qc50nnbGNbp+XlPRG1Y/lNadggf9VYFb5y31zNI9KoMKp3djmA5SNv3wnB518pXLl6ufoNGCLNFK6djXHSHba/PqCYbmvVLSzzffXYf14Q2+xO1m+k2Ec+JMDGnI2GprX1a4qZF7z3XIz+XWFDgZcweL9Z9rPHiP59MEj+0ZI02hLgXzniCarhYVqk6OxC+CckAAszGgP5UbtFGQiHKGTOrr6FMDCLVS0Z7AJvfmmpnuQ3arETwzAsG0LSndzSiMZ4IEeDDcolMkfHUrXvdhpRVFf0Sl3R8um6CsCJkH2brfEUFum2uwxlQzk8+2zc123VXNhYNspzMBat7FPHdpOCXne9yHHCFbA9jmVi6L1j6RgAstyV1O67M/x7GORdxCu9jLBF3bkpT9gs0Xnn0HelqKs/cOdtXlQ4ij92d9E2NEpAZojd7+9Z/REgZDWx/fsFeiIqNRcN1bj02YIB6FUP8lnVvav0cujdKeXFWTr4BTr10bnMOaFPP6WWOJ8FZ8pE+PB+mqhAah0K3aTLuVLLh2aW9lMpHroTtG8DdqpmpDl14rJI2tLiLsS6oa8DgKgKf0f/ho89rquHx9ZsqSG9Dei0t0GdMvnNE5D78a8NlUTpUQx2z1fhydThtLUyffJOCdX/DTsgfGIkUSmDuujFwvGntksI9X+rp93Rp99wbWKdMt885AQeyfi8ZFK5EEfvBv9tG4af8CaN2QyqoA23DYyvyi+2IA6eUcFbSbx1CScHZOoh8DApAVF+Y62JAVb
- +ohzpM6q
- ikGJ2f06kgSMwmOXS0nR9hgv5CID1J2kPuNWcnFMkkuIsPQW9LKH0Ftr2thulNynC1sAhjHu0gNAR0pEOY54TkOUwhV+wp6JckIvZF0CNVM3IRm7QJsjjPJbOEBzo41r6aqSFzWELxbQ9uWFVbJbaRRp+s3DVlOFUS6B9pUMPgb2GWiHwoW1sdyX4Bmw1RM2em1180cbEhBhFHsXF5yjXcWosC64OBkorHlRKz0+F9xA6UolKTf4zNGvMLRDwrIC7orewvs3uyzW2NZFUPX2jwH8qrr0CG39HKKFzd6VP+lVHzps=
+X-HE-Tag: 1776711790-719114
+X-HE-Meta: U2FsdGVkX19+BM3OoAyki4fuy55qdOjKi++kJDN87D9eh3IygabshzyzCR5Bg54FANF1u/kP6j/y55yELJE0uiGbQdG6/1L8v+vXb6S3SwP1Fyz+gcukmqHDAZTt+JUXDqPbz7o/pM1HMx/hMNHEI2HTV1YLMGAD7o0SK1NxcB+ownuetk+OPSgMs/uHJ8e37fRksK1fUFdpHr3vJz0LhGrHZCA8yHjS+r0Ij+I8znyCg3ICiu1yDdHia09XEKliplDKXFcwBMJ0jPyPqXlfoGVfS8K0/LvCXZI10oZ1SUzlAmJJjDW1pY7RosG5OpdI54qzWvNKHSuvPsV3u51Iln8Ikc1G8yRmot7H8Z5ITeNH+qNcKWpP0xLaCSSJr53cERihLizhryo7Y2ha14L5rPllt3+a6V30nS4nrCQlSNdWSSW+L1u9Tk4yKzIljpI26odyJiRSP04XxAfdf97+g675cdlKFOel64L90zmHX+8zdhf8OyEEtgxmJN+oyFvq0W/U+gO0FNLB11zlpPPEARdVFDP2Is2rYmJ+U6CutAe3/CBluQ+4E0PC0U7mFT8HME77nbjMlnfRhgfx9JSagXEXLVJdjjm/VcpxkfmPXrHiTTT1pJksof19G0aNdL72SX9dHJ3xzL6BIhsbuttI1zNBur6CKWi+fmHRB0e7lIYh1OidO8ct+WJsuZ594hOFv+TsY9O5s7Sr1eqTjFEkKjLNb9h39qXFwLgY5McoHuLgL02UKzaY2dsJR4JgCaKeVAgifwwKEmmxJ3bbiBDOraAenzYJhhFvLaQ2AGROe5+6XutK90pIRdCTAYXN/1YCEU6PAWamvdZ0tTphSUMNqmyX6RGBgno2O52pwA/k4oJCNSoHOAAvF+V2hVJ3Eg1Y2N4Aq2HGjTzKdESU3xKgLGHsTZDfckOZVHLewiEN9BywAo3M5rLdGo/mHgZsXbTYqxHIJHr61miMv2B67Y4
+ 8m4LEkqe
+ ZIKanRWpRouqOSCI6Knv7QGX8gYCIl2ByEtAmfS2J54++ixKs9ZRjHUOLT0ce5LHUDOn0R+RzEfxxUjRVeYE5aq+8Fe+RARjnLP5gv7aC+sGSv1tIrtqbuUANps8OSUMOEEdXGXd8tiu/j1i//s5cqBkLWqqGxfSKeCCYiEh9HV3sm9lMbGDYXNMoKIV27kaS4OaQwMDxvrflsTeU4iR/+EcDyfBDp46itN6cK+P+nVBvHj51ObhhhyZHhlyqd1Sg229h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,51 +138,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/17/26 14:45, Baolin Wang wrote:
-> 
-> 
-> On 4/17/26 5:52 PM, David Hildenbrand (Arm) wrote:
->> On 4/17/26 11:27, Baolin Wang wrote:
->>>
->>>
->>>
->>> For tmpfs, yes.
->>
->> So, we could pass this check here, not setting
->> mapping_set_large_folios(), but later someone toggles it and we missed
->> to set mapping_set_large_folios()?
-> 
-> Indeed. Good point.
-> 
->>
->> Or would we always go through another __shmem_get_inode() after a
->> remount?
-> 
-> Not really. There could be files created before remount whose mappings
-> don't support large folios (with 'huge=never' option), while files
-> created after remount will have mappings that support large folios (if
-> remounted with 'huge=always' option).
-> 
-> It looks like the previous commit 5a90c155defa was also problematic. The
-> huge mount option has introduced a lot of tricky issues:(
-> 
-> Now I think Zi's previous suggestion should be able to clean up this
-> mess? That is, calling mapping_set_large_folios() unconditionally for
-> all shmem mounts, and revisiting Kefeng's first version to fix the
-> performance issue.
+On 4/13/26 13:57, Yang Yingliang wrote:
+> The memory stat is not done in real time, it have some gap with
+> real value. In CPU-less NUMA node, the values of MemTotal and
+> MemFree can be nearly equal, the gap may cause MemFree bigger
+> than MemTotal, it leads MemUsed is negative which print as a large
+> positive number.
 
-Okay, so you'll send a patch to just set mapping_set_large_folios()
-unconditionally?
+How does this interact with CPU-less NUMA node? Some concurrent memory
+hotunplug, or how could be possible get MemFree that is larger than
+MemTotal?
 
 > 
-> [1] https://lore.kernel.org/all/20240914140613.2334139-1-
-> wangkefeng.wang@huawei.com/
-
-Is that really required? Which call path would be the problematic bit
-with the above?
-
-I'd say, we'd check in the large folio allocation code whether ->huge is
-set to never instead?
+> cat /sys/devices/system/node/node17/meminfo
+> Node 17 MemTotal:        4194304 kB
+> Node 17 MemFree:         4195552 kB
+> Node 17 MemUsed:        18446744073709550368 kB
+> Node 17 Active:               52 kB
+> Node 17 Inactive:            320 kB
+> Node 17 Active(anon):          0 kB
+> Node 17 Inactive(anon):        0 kB
+> Node 17 Active(file):         52 kB
+> Node 17 Inactive(file):      320 kB
+> Node 17 Unevictable:           0 kB
+> Node 17 Mlocked:               0 kB
+> Node 17 Dirty:                 0 kB
+> Node 17 Writeback:             0 kB
+> Node 17 FilePages:           372 kB
+> Node 17 Mapped:              320 kB
+> Node 17 AnonPages:             0 kB
+> Node 17 Shmem:                 0 kB
+> Node 17 KernelStack:           0 kB
+> Node 17 PageTables:            0 kB
+> Node 17 NFS_Unstable:          0 kB
+> Node 17 Bounce:                0 kB
+> Node 17 WritebackTmp:          0 kB
+> Node 17 KReclaimable:          0 kB
+> Node 17 Slab:                  0 kB
+> Node 17 SReclaimable:          0 kB
+> Node 17 SUnreclaim:            0 kB
+> Node 17 AnonHugePages:     79872 kB
+> Node 17 ShmemHugePages:        0 kB
+> Node 17 ShmemPmdMapped:        0 kB
+> Node 17 FileHugePages:        0 kB
+> Node 17 FilePmdMapped:        0 kB
+> Node 17 HugePages_Total:     0
+> Node 17 HugePages_Free:      0
+> Node 17 HugePages_Surp:      0
+> 
+> To avoid this exception by refreshing vm_stat, when MemFree
+> is bigger than MemTotal.
+> 
 
 -- 
 Cheers,
