@@ -4,136 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB2EF5A8AA
-	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 18:21:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47C24F5A8AA
+	for <linux-mm@archiver.kernel.org>; Mon, 20 Apr 2026 18:27:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C1E66B0088; Mon, 20 Apr 2026 14:21:06 -0400 (EDT)
+	id 7B66F6B0088; Mon, 20 Apr 2026 14:27:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 672B06B0089; Mon, 20 Apr 2026 14:21:06 -0400 (EDT)
+	id 767076B0089; Mon, 20 Apr 2026 14:27:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 561A36B008A; Mon, 20 Apr 2026 14:21:06 -0400 (EDT)
+	id 67CBF6B008A; Mon, 20 Apr 2026 14:27:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4406B6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:21:06 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D74B9160B44
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:21:05 +0000 (UTC)
-X-FDA: 84679750890.16.6E6DF76
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CF50040008
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:21:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZJvn7T1M;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A3216B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 14:27:32 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D29EC5C13E
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:27:31 +0000 (UTC)
+X-FDA: 84679767102.02.49198B8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C6E38180005
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 18:27:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kaWAWf0K;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776709264;
+	s=arc-20220608; t=1776709650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mdGs29E0iCEMibZ36Q0lkT8grGNzh+9GN8Yb1MpfN5g=;
-	b=BkfPHuVt2ObivWBBUFO7snsaHKXjh5/pC3hwJCnFRwBKwOuFLWvg9W6Vahvg4ueVpBOp3s
-	F8hI6imt1hXaCZbvf3aSnnaAR7XI0Jwtpl2M4EOE12m3u6JN0auPK/8smY6DXmdbEtN+UR
-	n4Rop2hccIgds2lE8kPumPb1Z2AoLI0=
+	bh=tLIX+xxXAjemUdxSYuHOuwKYeKdsGBn4WrCDh+lQ6mw=;
+	b=ks3HoytR+tdcENIu9+ClyfnHCBpQt7rmh+We9SPlY9mNVUvNQbM67k2wHheeYvRwn7CYrp
+	GcubUPmt/V4lhS1FRlx2RdmmXWempgE9B2/dxfwnuzRSeo++aLqPmeMftXS+Plxef8BwGT
+	5R5QTwABma5cd82B84vCR8ou9PFsMOQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZJvn7T1M;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776709264; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kaWAWf0K;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776709650; a=rsa-sha256;
 	cv=none;
-	b=d/eWUICxq2cHDJwsZYcUVAjDP7j1Jyni52k0ycA92d9p51end3k3892pkak+MYVFJTPJQO
-	TfzThNgWDV8O3irYUg2ExAIRx3qM5b0APMUThtIlcYcxCvZpCtl+L8kXQhJUr81dH3sPbX
-	5aZodRKAIPrjjqteQGcGflqJTA4FLsQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D7E343506;
-	Mon, 20 Apr 2026 18:21:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71268C19425;
-	Mon, 20 Apr 2026 18:20:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776709262;
-	bh=FOAaojl3scYAMf1O14+NiH/97wNiKCNp6Z7bcubMnWI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZJvn7T1Mehfwd58iUr4z6KPmYtrflju6rxnK52vFeCgzwVW7gp5jR12PvRswJf7gG
-	 Ljg0m8Kavna3IcqwA9wmu4GnfXtFuO2az2yNglp1WRKI/5zcz22mwWbJPFX/GudUyV
-	 OUBF5t2BZaTQKLRrdl+8RE6UepWh8pnjsWjHHXWf5XNicGTmFaCsWEBblajths32kb
-	 VHVAHqPSOR05EeNtoaRtf55Fo7tZLoSZx6VzPmVqjCFLJHccAcPT9vD6FxX8hZIxwI
-	 itqcqmieANkMfg2qmbuoznd5f8HTH9isfGD1m4zC79dI5QgNI/aDhXt3umVvGuFdmH
-	 7dv8nMw/AtYrA==
-Message-ID: <c199e47d-b2fd-42f3-9e50-c47c848dc72f@kernel.org>
-Date: Mon, 20 Apr 2026 20:20:57 +0200
+	b=HoviSOU3jjCz16MeyhIAAtFZiNel19rJ8RxP2LtlAvV2onScSaR3Vq0oDyIwsiMAzOSwC1
+	8aRaMuGwR8s/WbVn2E0w94yvBe95E3Rp0EoxdZs0/NcUNrxtFTSTn2ytkVId5sh9CgKy4F
+	B8CoraXXq59EXyIX52yzDx0GX8jmVIY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=tLIX+xxXAjemUdxSYuHOuwKYeKdsGBn4WrCDh+lQ6mw=; b=kaWAWf0KMUTkQbFigTk+u+H8bm
+	0fdGUmtJavbSvVWGggAzL5BiyMtURI1pMB2HaC4UCMrEAAzImymyNZnmlv19BNyh69epGlwMUVzW6
+	FpoTE2a65d8UGLYwYb44iCZYqDoJIfRNQGlKciMyICkLlpU8JeQNzacE9hRTR4FQoF/TaeW//XNk2
+	yFiCo8KQraXB3vwIMKCMssd+Q3GV/2E79ZZfd7KpzNrY0t6A/EvLEPawi9SUHsTEvuJGcRHjJh0gZ
+	L87WP+nPgztOoAN2oUCeZfpHTK1ExYTIUeAIHfiE4dyqEWdXdTeNmq68Kt62uS0gtGz5u1Spr0T1J
+	kjxYX3nw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wEtL1-00000008rF3-3xNc;
+	Mon, 20 Apr 2026 18:27:15 +0000
+Date: Mon, 20 Apr 2026 19:27:15 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jane Chu <jane.chu@oracle.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
+	osalvador@suse.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, hughd@google.com,
+	baolin.wang@linux.alibaba.com, peterx@redhat.com,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/6] hugetlb: open-code hugetlb folio lookup index
+ conversion
+Message-ID: <aeZwAz6PcdlqSnJ2@casper.infradead.org>
+References: <20260409234158.837786-1-jane.chu@oracle.com>
+ <20260409234158.837786-2-jane.chu@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 00/18] mm/virtio: skip redundant zeroing of
- host-zeroed reported pages
-To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-mm@kvack.org, virtualization@lists.linux.dev
-References: <cover.1776689093.git.mst@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <cover.1776689093.git.mst@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: j3z8sd7gcn8w31xowwc1ze6txx4977f5
-X-Rspamd-Queue-Id: CF50040008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260409234158.837786-2-jane.chu@oracle.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776709263-582743
-X-HE-Meta: U2FsdGVkX198mcyJcmKrCrnw1Y7piF/GzaWuf8l9L4tVkqQJHjAWaUjipBraMS13hzpmXL/p0j1LjKE46jFEYOS/h9NASrVHllsiwzJVhmJj77yvKVdbPxOIu9nna2cyeRnI4FgfwYDYVcSXdpseps55GqfJ0Gjn/93ekmYQp+BXdIw5Y1cQFGA9hj/xnvQkr1jnwCAybmt/rOfE1Ze6LHdZwR5E9WrTDClA7214v//l43hxGIb/wG8x9rciIQUzF3eGLCfe/+RHLygy2mARfujf606Alqlw/Ls9B6AaVxunrdif5QVMIvQaeeH0OGlgYp5yM5qaGyPKvoE7dCn9lQVELpKxDnC+N5R5WXRn+nhbe4iXuQxpbVKktj38+rdFZ5DPOtB3hOVwSDF3Iz3//IS0Sf8OFop1CVRiX562/Cn6OIYlk4Usp323eiB7x2oGtVAE5B4gzm3/ZiYc+UvKC3Ne3UJ/QWTZMXKfjZnDp/FpCvUAA4B7c/mrxi2Dzd8zfgJ7GdT/mTH2Ivandqz5C6M5VQG4a9lfORgq/eLxbFO3UB263uGsTgOZKoRh7gB5TZxl6YnEDnbgQJ+1FSoiWm+dYgUHiyx66QUBjiK2xag/DKhhLWoATOSkNLdrHNjaBGLv1wnG/o1xdDc6HVMDjust3J7I6WTvczKN6QXb6UOo+CSs1KeGNgp9tWVkm8LaWL6PBKRd/UDFcK+xusfwzlMC6w3xl6rmR5XYxkp6+xgMYCL4kqIzn2VJ9roOyzElBeWxjT2XuPlBAgdn1uu3JRIwi6/BmzjLQoAWjCxXasm5gr8n7YRmolhcjsHBywUQNP9uZQFPDAsRhXwLR/gtpS31FZrnSuaD041Z1PwqlORdunqd+jeX3+BgVkME0ki0XXn6IZ1eF3kFastgF5LdR/NC9HnvhSIHOgeEOHPPlIIAYWPNTfwrWzMFl91owQOIkPoAD44mj1h32O4kJsx
- P3Knl9O2
- 5Xmooqzren3eE+aaCe0nDdBSLzfTsKcf5xbuJuAcpcUd+EtJPkmVwBEC2cPQQJiKbtOMVtSh4+j+oTbcdrCrjzEHqY9QoeUA2C1osAjlHrmpMFMY1pGd9n2f6exmxFgPSR6srDN35/I5WY2WqK0YWiwFl1pCQ0lmc3dXClvpOc3PA82dRRdbdlhagznEKOS5KEc6XQWKnFOuKL3cP1M3wMBFp815APnjSTOYfkNCHQ9ZNaVkfMfn/ptbdHKCRoaV6vN7WuuEYy/2fwenoH/ql1/xAPw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C6E38180005
+X-Stat-Signature: qo3gpegba4zbm4jre5gde64ecg4rt37d
+X-HE-Tag: 1776709648-187150
+X-HE-Meta: U2FsdGVkX18j1jWOqUQMNgtudhQH6O4OtEqQj23ZXICNZHvbqiY/67jxH8DiFofAID3Ty3QVKaB+lST+Bw9C3cAWOAPlzc6ZZGKYE+Ed0Qbvkf2C+COUxWZCxL3b/FqKwHUITEFdsLTfVSp8jggS64LskDIf5JVpqz3OPrmUQGs/6BSiIi+QZhB6Fe61/W5TzOApFfPCUmrCGO1xizJ2lX2x5csR/sk9C0JA2Ig41n4E1AnSG86bv2d2nWWqA+ZjDDUrUtcqophIbT7XRElfVorh/cdyADmFKwZkWx1Cro9h3DhIux71AARnDN18fREeMVWPk8cYTML+4DmmSTf4gvDHjX+27QOvIA9ZBYx1c4+s+MxUZPtIKwMHQdkNnGSzvwoOWvdw7KSJdRxf8ldwLh5zswo4pnafmCyLhd+SxW+mA8AYxG38UkN4hfjEzT+sfBYL7iDtgpL33IFB8z2sCu1veeZrKnn5ukaEtsra3DgCfs44mj0AmBic36EjedXZQ9JO+I3rfQv/auOMO3FVgSNUDDIfD43eolqS8VSz4ZibJvLBQnY5vre+Ig1GthLsDSLhToMPJ9BhyxvCSo1Bbx/tiWeafMHC3Zmoi23kwV4B13JGPMZrz7wzwnxR64YB1Nw/9gvkjkvVXkM/9Hlmbeuni1kbauiqBj+3s8l6kfjhy7fTjGk0zIGfM4B84o3tnrmBNHl0N0blzYnvitmK9/Wo9dV/SC3GUvcsvZ7UrbkFIzMYVjTly7f6JLiSwIoLV8CfW3dG55g/Fct1/aZF+ChAEwEf+AW6ZDchjc4ERmKFzuVGhLiG1abeOLLkoYDWjcyETEeb77plqUv10jGpWrQO1ARrR7HEcGxW9tPVAXTPky7YnxmjQclSCpKTJQX8k5U6MnbsspkaqLFLxtER3OJXtGPfCiSu5Vt9wR8LBexZbCCRiNI0UzQkjSMdZapRL+x1W2aJyAUbSTU4ygz
+ 564l/cr4
+ X0go4bsvPX0RWK5b1qZDiwiB9sa0diJfbagSTm9QYBaVfsaNNIcaGa+pTscRwmbH/8UMhUdaES+BP+43Y3AAcrZJPYEod5yOSm9q+kXSvnDAhiLm3EGAafVDOTYk949akxDHvdi5OsK58YgrMFDuOsKLLckZQRke8kmQytwHynTvQZzeLiAH1xOLQBz0v00+gnI1Z2iHWD8fzt7BVwYKcjgfD91pTD5ctV2E5E4vbaq3witozIU1+bUMmzp0lZizYKmrT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,56 +96,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/20/26 14:51, Michael S. Tsirkin wrote:
-> 
+On Thu, Apr 09, 2026 at 05:41:52PM -0600, Jane Chu wrote:
+> This patch removes `filemap_lock_hugetlb_folio()` and open-codes
+> the index conversion at each call site, making it explicit when
+> hugetlb code is translating a hugepage index into the base-page index
+> expected by `filemap_lock_folio()`
 
-Hi!
+I think this is too large a piece to break off in a single patch.
+The first thing I did was look at hugetlbfs_read_iter() and wonder
+why we're not able to use generic_file_read_iter() here?  It used
+to be necessary because we used to index the page cache in units
+of hsize, but now we don't, it seems to me that we could use
+generic_file_read_iter() instead.
 
-> 
-> v2 - this is an attempt to address David Hildenbrand's comments:
-> overloading GFP and using page->private, support for
-> balloon deflate.
-> 
-> I hope this one is acceptable, API wise.
-> 
-> I also went ahead and implemented an alternative approach
-> that David suggested:
-> using GFP_ZERO to zero userspace pages.
-> The issue is simple: on some architectures, one has to know the
-> userspace fault address in order to flush the cache.
-> 
-> So, I had to propagate the fault address everywhere.
+Now, what hugetlbfs_read_iter() does have is support for hwpoison
+handling.  I suspect this is something we want in
+generic_file_read_iter(), it's just nobody's done it yet.
 
-As I said, that might not be necessary. vma_alloc_folio() is the
-interface we mostly care about in that regard.
+So perhaps that's patch 1 -- add hwpoison support to
+generic_file_read_iter().  Then patch 2 removes hugetlbfs_read_iter() in
+favour of using generic_file_read_iter().  
 
-> A lot of churn, and my concern is, if we miss even one
-> place, silent, subtle data corruption will result and only
-> on some arches (x86 will be fine).
+Patch 3 is purely this:
+(and you can put my Reviewed-by on it).
 
-Which would *already* be the case of you use folio_alloc(GFP_ZERO)
-instead of magical vma_alloc_folio() + folio_zero_user().
+> @@ -652,10 +652,10 @@ static void hugetlbfs_zero_partial_page(struct hstate *h,
+>  					loff_t start,
+>  					loff_t end)
+>  {
+> -	pgoff_t idx = start >> huge_page_shift(h);
+> +	pgoff_t index = start >> PAGE_SHIFT; 
+>  	struct folio *folio;
+>  
+> -	folio = filemap_lock_hugetlb_folio(h, mapping, idx);
+> +	folio = filemap_lock_folio(mapping, index);
+>  	if (IS_ERR(folio))
+>  		return;
+>  
 
-I don't really see how vma_alloc_folio_hints() -- that also consumes the
-address -- is any better in that regard?
+Now for patch 4 ...
 
-When we just do the right thing with vma_alloc_folio(GFP_ZERO), at least
-vma_alloc_folio() users will not accidentally do the wrong thing by
-forgetting to use folio_zero_user().
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index a786034ac95c..38b39eaf46cc 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -5724,7 +5724,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+>  	 * before we get page_table_lock.
+>  	 */
+>  	new_folio = false;
+> -	folio = filemap_lock_hugetlb_folio(h, mapping, vmf->pgoff);
+> +	folio = filemap_lock_folio(mapping, vmf->pgoff << huge_page_order(h));
+>  	if (IS_ERR(folio)) {
+>  		size = i_size_read(mapping->host) >> huge_page_shift(h);
+>  		if (vmf->pgoff >= size)
 
-> 
-> Still, you can view that approach here:
-> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git gfp_zero
-> 
-> David, if you still feel I should switch to that approach,
-> let me know. Personally, I'd rather keep that as a separate
-> project from this optimization.
-I'd prefer if we extend vma_alloc_folio() to just handle GFP_ZERO for us.
+This points to a horrible problem.  Everywhere else in the VM has
+vmf->pgoff in PAGE_SIZE units, and of course hugetlb works in units of
+hpagesize.  So this is an entirely different piece of work where we
+convert vmf->pgoff to be in units of PAGE_SIZE.  That'll be fun!
 
-But let's hear other opinions first.
+> @@ -6208,7 +6208,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+>  
+>  	if (is_continue) {
+>  		ret = -EFAULT;
+> -		folio = filemap_lock_hugetlb_folio(h, mapping, idx);
+> +		folio = filemap_lock_folio(mapping, idx << huge_page_order(h));
+>  		if (IS_ERR(folio))
+>  			goto out;
+>  		folio_in_pagecache = true;
 
--- 
-Cheers,
+This is a much smaller (more contained) problem.  At least idx is local
+to this function, so you can calculate it using linear_page_index()
+and modify the whole function.
 
-David
+Finally, you can delete filemap_lock_hugetlb_folio():
+
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 9c098a02a09e..c64c6e5e50f5 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -829,12 +829,6 @@ static inline unsigned int blocks_per_huge_page(struct hstate *h)
+>  	return huge_page_size(h) / 512;
+>  }
+>  
+> -static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
+> -				struct address_space *mapping, pgoff_t idx)
+> -{
+> -	return filemap_lock_folio(mapping, idx << huge_page_order(h));
+> -}
+> -
+>  #include <asm/hugetlb.h>
+>  
+>  #ifndef is_hugepage_only_range
+> @@ -1106,12 +1100,6 @@ static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio
+>  	return NULL;
+>  }
+>  
+> -static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
+> -				struct address_space *mapping, pgoff_t idx)
+> -{
+> -	return NULL;
+> -}
+> -
+>  static inline int isolate_or_dissolve_huge_folio(struct folio *folio,
+>  						struct list_head *list)
+>  {
 
