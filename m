@@ -4,90 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E41F8FA79
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 13:31:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75533F8FA79
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 13:39:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5A3F6B0089; Tue, 21 Apr 2026 09:31:05 -0400 (EDT)
+	id A56B06B0089; Tue, 21 Apr 2026 09:39:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0A8B6B008A; Tue, 21 Apr 2026 09:31:05 -0400 (EDT)
+	id A10E56B008C; Tue, 21 Apr 2026 09:39:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D24F6B008C; Tue, 21 Apr 2026 09:31:05 -0400 (EDT)
+	id 8F62E6B0092; Tue, 21 Apr 2026 09:39:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C6A96B0089
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:31:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D66B6B0089
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:39:37 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 429F48D414
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:31:05 +0000 (UTC)
-X-FDA: 84682648890.13.1CA4D72
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 508A01C001A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:31:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NEsAvZlc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC4A3C3FFF
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:39:36 +0000 (UTC)
+X-FDA: 84682670352.13.7D3FAFA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 16B131C0004
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:39:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SpHohVth;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776778263;
+	s=arc-20220608; t=1776778775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EiQ721oSxJL+49kCE3KBrAGEyXh+20S6aF8xBPikaGw=;
-	b=MI4KCFdatY9SRbLiYAx7TFrlwvTb8m5+0BonzPDDJJCQrikpFEpV2dR6CPWNajT3qnlFPj
-	/IEx2plCddmRnUz+CAshgBff6YPxdSQreHVqGY54lM2S6BPCZyI9XBq8j9ytmNppxsO9P+
-	GKojZBD18IaXN8vcvjB8Oyz2OF0ok6E=
+	bh=lEwkpSeJAnZOjyGRSxCkI5UhJB5flz/uxgpdoEj2w68=;
+	b=MpOBhPn/F7Wt9eMl724pu6JNP4bzUGU+Aak2CJCS+q1QAAfv8zkPvbZxRsX226dCGd813Q
+	DsaEzSEwbt9+rDs52JXub08dsbWIyKgu442jS1SLFojDce9sh99JjEP/1m12KSbP3JyRh/
+	E1iqAqHXbJRVShZKGFO16nw2gD/9WAU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NEsAvZlc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776778263; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SpHohVth;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776778775; a=rsa-sha256;
 	cv=none;
-	b=fABFtF0Xubk9lAaJ4kqPOsSpQStwEW73B0eX1gcQSq7rie5ufXZiZ1yRW901voh5YkdWhv
-	3ouNSfgCeUIa4EZcDiQ7lfj4KCgqVAksoYUsAbkADrbmJnEVnVoHxRx31Cn/P6qOLEQkXp
-	H9QZkNhTRkJl8sLvb7nNvmehaLwkLn4=
+	b=s5LvrtoURTsxm8wW5kELM7I1SXSo6GnlDtv2VUvvruuVsMGrrDTPDS4HR7eTsBbKfr1CF4
+	ZzrdPt6+9v54HqHZM+yKsYbGSaEHjKjAb0aRL8G0LXaUbJgCNhsMvtLAfBa0aRX//FnRGK
+	KpmnyiGLMol7GYbySUQRP6YnTDpyM9s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 48F2643BD4;
-	Tue, 21 Apr 2026 13:31:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AADC2BCB0;
-	Tue, 21 Apr 2026 13:30:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E36C600AE;
+	Tue, 21 Apr 2026 13:39:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A332C2BCB0;
+	Tue, 21 Apr 2026 13:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776778262;
-	bh=RAnacQScZk2HHf5w6dSElvYRXNo/zrEXc78IP1F8X0Y=;
+	s=k20201202; t=1776778773;
+	bh=lhzhVWrfpSh5Qp+ByIaNqHmS1c8vpJzymZofhRxC3zs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NEsAvZlcX5SJrk4ZR0PAjMGRcCWJ8os1LWUsvz29bylZrF8QKFGl7xapm9gK4L+fC
-	 xEctGyT4KI+2ilnvqq7+6Ym5FLQv4awJ8NqeA0fcCZYK2QTGr+eP9loiXW3fxlFZUm
-	 BUrR0oaAopEywO4Pd63SLRFcJT+QKK2C8D/kccePJWwNrVVduP25y4+EkgZ1pABrW1
-	 i3prujydQyAbHLpiT5d4Hy+zpLbtx+lIHzfODQc41nLlhtxIc4ti1TsNEAdKOwqeKx
-	 51aZZtdWKJNY9AISWjV3C26bT2UTlukbzYoACMQ8RMZZrV51uI7eAt/+hbMD4zQ3+g
-	 74WXBMT3hHM0g==
-Message-ID: <2a41dd0c-7ad8-4d34-8bab-a713e16c3b29@kernel.org>
-Date: Tue, 21 Apr 2026 15:30:53 +0200
+	b=SpHohVthriLmML5X8wXfsGrBMIj7r9VtWS9QHkajJ745xVMhM1iUGWt49vZOhjCGK
+	 P19Cg5oCFQurRWOLeXVMx++r/4EeOzZpsEAOoGSXqpg9oRFJaCvfTRhYHb1YgNFE2m
+	 Hl7Z4diYbrOkaTL4QCWwcl3Q3IJGUCGWKEj/ulEdK9cXD7hBGfcZ6q2iWp3FZONyde
+	 3N6qXtXxOwZAuF0feZu3g7zP+w+IDtTM0UmrNSG2AhQNA6QKsow/LJfv8AVZkVVTNp
+	 vCEI/de0I0QHejZU6iv3oPvlO21hAW4WFyKTFiOkzVh09xPzIK6Gnja/R15j6+ah4k
+	 1PdueL/If+YHg==
+Message-ID: <bea6080a-850c-4b3f-bcc0-719efc372e72@kernel.org>
+Date: Tue, 21 Apr 2026 15:39:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 17/18] mm: add free_frozen_pages_hint and
- put_page_hint APIs
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-mm@kvack.org, virtualization@lists.linux.dev,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>
-References: <cover.1776689093.git.mst@redhat.com>
- <c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com>
- <5f76af6e-9818-42ea-a305-c0fc1d920dca@kernel.org>
- <20260421091546-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
+ shmem mount
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+ <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+ <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
+ <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
+ <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
+ <07e26d39-6155-4661-b3df-c2419535ed43@kernel.org>
+ <f9508e75-789e-4eb8-b09e-b66a8676a6b0@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260421091546-mutt-send-email-mst@kernel.org>
+In-Reply-To: <f9508e75-789e-4eb8-b09e-b66a8676a6b0@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7drbm7h8tci1zpjhtwp63dq5m4gon6in
+X-Rspamd-Queue-Id: 16B131C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 508A01C001A
-X-Stat-Signature: 8cfqrx4qgmp9fje59gxysnbc9zdz4bw7
-X-HE-Tag: 1776778263-16042
-X-HE-Meta: U2FsdGVkX19r74DXcRw2cKs1cyc2yakuO0X8YwKuIhD9yDNchezNxhU4SresqHSl/cffN1JcxKnSFmtNADpx6X4dgJVFmx7OPcYXSV0845PniptlqX/V1EFetj8nvk8JFNrKXgdfqC5dN3yi4xL2HInVZ09boOMAoKN2W5A42FBRvUsNB1UDGe5D+1Y6AqfgvRP30k0bHT/KYlcLGz4NKXHSudRi0wd/ms4DKTMR334+IVicp88ZJnYcu8IADYHwjtlxKSazQMDxn7D3FwWRkHvA4PTPhZ0ixRBbGg5FVtl8Hv34y/Duwh0Qnyaofv9lS/qh9IAuj1ixVRO/uSnFigvPHMcJCg9Ihy7SLuD8Un4HBX+e7n8Mo1KYiUurE7p0CJKVLnhtDMTQWI5QBtuY+SavJofO47pbPziI3lQ2pmRmilYKIkijtUn32h42LCPeu9fdcyYEsjdnxoo4KgdX6fXqXJpSikSb7fEq7/nxvMH09NGiZEzPymaswkKWrVLVWmep209Oy0t5AlHYDfvN861SPdMw78MA9xeXaryIf5VWPyI6qLeAvrsdWJUw/aSyrFE6ICSml3WyXpCvDmBFMIPi7jQC+isY1rVnUv35xwFRUIMrU5cR2vNMsfSglrw5Lb0bJWB52XUK4u2i70eswxBkLSxji9DnBJ8SHVfof+G8LZku3j/E2ovD4X90xxXREm1jmT+m1qc5O/wRxZj9zjiK06aTcUprT119dBlaV9B8IOjxjb9iadPsvgx9NLTXqRVMzuul++MH/EONTd+yRsn4m++N4M0TI1/EoIjvPfWg2ihBZp2WvSZAb0rYBTtEz27xZ8jqfFXNInarY+MuKUehnUe99omk8wyEGVzapKbz9KZJQMFIEhQEQQcQcFEJ170vZUZtHqMBfAvYdlwFdh5WAvTzisZrzSFa0zfGL1C0AoTiec4Bk+dCGaJOJZ7oagi+VM4zVZufQs9HdyS
- 8VtD3zzE
- lwLMq1t+9sw5nd555n+jL/0Rm8ZZjBG66N7HyoF4WxqiRStY+W+qTMAS6sD6KskeZk5BWgg5aaw/scbu3SHqRYKM2kEpNdtFx0Y0MX9vjDK+6E0rqwRVfC6dzNH0IOHWsKmC71+tBUXfAc87qd/rx9GKP6squFxUz7BX9nd16KD7ezG726enmlE8bCL2EdOZ15LU7+GB7y7XT/K9OcNYtPomBLlqTssZjlyF1rb1HASaek1AuzgfuBZ8sH3HSay/K4b+nbhMbOcugjCjh56dA7ylMyz28WQ+x/phxWd2PXdlgge1Z/UxlW1drYg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776778774-678914
+X-HE-Meta: U2FsdGVkX1+/XKNWek2aOrRQXqGxBCcdWDr/w1ONioqJ4ln5kKDB+DrFh08i8YrNdDwuW6Ozobd3LRb/TCVqTYCiMykl5CtsyMUhPhX1oWRZ3jerWuKBE5yj7D+Jew/End1V2T/fpY+IzwJw5OfepHXmZBwqQ4OCN3JAeUTFtdMYZygGHrFdDz0uLbUDY3NuYc3iUcVdHq0k5/DlrVfjAIGYDjwxML2B8jwRPyeBD1OgEPgGilD7eaR1NcmDQrITCy2P2qCaUWKpR5+BraveFYvbvZ+bXU4GG73PNpU97SHft4OSHHQxXgcQ3dceDyt6tU5tI52HPbwwfHeyPVHB9xJmNWh7D/NZgzc/fxx3OOYB1J78ALJ6kE1tTSAD/ODMu71mldpO06K9rpDFA2mT6p//zEAhQjM++cp35QLHLuAZZcswH3QONrEtLqTbNbmVQF4r5WVBF8M8TjbtpI711YifFyynRJLQZvUHRqdv8r+/glnts77vZquGyYwGPq/aoNwO1FArRGkB+2K1CUYer2pYt7G5eyYQNNM1PS/5egIQkYt4LJ4gHmKPopanKtBMjoY+Whp2jJYrL2d1rBmnJpMiUwf8Ttk7FXIkleLiUFyEveueSNpxIJMr94dFIBy+ZjPvUThk06yKajvpPIgO6KXbXMwu36oys4QPRcVYkQFGaBkIznxJezr+SgjQYtSyM0YCgUtI4ATulGhYznAyKeqar5NZe8QieEwNRhjRCQneZiX3EH4/uL1e2WuNxlFxQXBuGxmS+YjJoQJOA0joZzJZ98+D8Tbht+1P+GojF6IAGnyRU3ERO6pevLTuppm61gANZOu+vLAMHwgDprIsnsMVfXbjoVXIh6VrX+NFvbvN/LGSvPL9F9zZWcL/nPApgSWqtt9ImM+wq2u6Z9ehdiJYGVKe+/diB/h4d3KVRu5V7TENahxfkFWbjGpjoAi8gvTXbsYBecN846YaXBM
+ Y9Cgqoky
+ dDz2sYoJcE66nhC7notLuK7++wWH6f89H1oai3mC4fLI2Ezxlp/01XKkSyIHbWiU8tdswhwjvm9053uG92OvM8GzeCzucNCKs1AJdmkeDQ4M0JXl5q4srOm4u9ntwAud9vdV5d0QzibYQmLHp8y44YUNsG9z4NgHuOWNThBQqC3mXfyJ/DJz+wr/jY7gjoQwwu+n5ZK/ZzpIjdJH3t/HAmQZtfc58ZtVO/WMnZz3Wnm7onEwPO63cnks15/VMeDr0eWHz2nA11Y71cIEqFHhFdjl8p1otz8wLt1gRwB//FUTyQpepqB0RE/hLEM2H1AEI5nbfejREACQWsj4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,30 +145,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 15:16, Michael S. Tsirkin wrote:
-> On Tue, Apr 21, 2026 at 12:56:00PM +0200, David Hildenbrand (Arm) wrote:
->> On 4/20/26 14:51, Michael S. Tsirkin wrote:
->>> Add free_frozen_pages_hint(page, order, hints) to free a page
->>> while marking it as pre-zeroed when PGHINT_ZEROED is set.
->>> The PG_zeroed flag is set after __free_pages_prepare so it
->>> survives on the free list.
->>>
->>> Add __folio_put_hint(), folio_put_hint(), and put_page_hint()
->>> wrappers for the put_page path.
->>
->> Can we defer that change?
+On 4/21/26 08:27, Baolin Wang wrote:
 > 
-> We can - it's a dependency of the balloon deflate, which you asked
-> me to implement. I'm more interested in reporting, myself.
+> 
+> On 4/21/26 3:00 AM, David Hildenbrand (Arm) wrote:
+>> On 4/17/26 14:45, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> Indeed. Good point.
+>>>
+>>>
+>>> Not really. There could be files created before remount whose mappings
+>>> don't support large folios (with 'huge=never' option), while files
+>>> created after remount will have mappings that support large folios (if
+>>> remounted with 'huge=always' option).
+>>>
+>>> It looks like the previous commit 5a90c155defa was also problematic. The
+>>> huge mount option has introduced a lot of tricky issues:(
+>>>
+>>> Now I think Zi's previous suggestion should be able to clean up this
+>>> mess? That is, calling mapping_set_large_folios() unconditionally for
+>>> all shmem mounts, and revisiting Kefeng's first version to fix the
+>>> performance issue.
+>>
+>> Okay, so you'll send a patch to just set mapping_set_large_folios()
+>> unconditionally?
+> 
+> I'm still hesitating on this. If we set mapping_set_large_folios()
+> unconditionally, we need to re-fix the performance regression that was
+> addressed by commit 5a90c155defa.
 
-Just to be clear, I said:
+Just so I can follow: where is the test for large folios that we would
+unlock large folios and cause a regression?
 
-"I'd assume ordinary inflating+deflating of the balloon would also end
-up with pre-zeroed pages. We'd just need a (mm/balloon.c -specific)
-interface to tell the buddy that the pages are zeroed."
+> 
+> But it's hard for me to convince myself to add a new flag similar to
+> IOCB_NO_LARGE_CHUNK for this hack (like the patch in [1] does).
+> 
+>>> [1] https://lore.kernel.org/all/20240914140613.2334139-1-
+>>> wangkefeng.wang@huawei.com/
+>>
+>> Is that really required? Which call path would be the problematic bit
+>> with the above?
+>>
+>> I'd say, we'd check in the large folio allocation code whether ->huge is
+>> set to never instead?
+> 
+> Yes, this is exactly our current logic. When allocating large folios,
+> we'll check the ->huge setting in shmem_huge_global_enabled(), which
+> means large folio allocations always respect the ->huge setting.
 
-So while I think there will be value in that in the futur once we
-figure out a clean interface, I don't recall asking you to implement that?
+Makes sense.
+
+> 
+> But as I mentioned earlier, the ->huge setting cannot keep the
+> mapping_set_large_folios() setting consistent across all mappings in the
+> entire tmpfs mount. My concern is that under the same tmpfs mount, after
+> remount, we might end up with some mappings supporting large folios
+> (calling mapping_set_large_folios()) while others don't.
+
+If we at least always set mapping_set_large_folios(), then there is no
+inconsistency in that regard :)
+
+> 
+> However, I got some insights from Documentation/admin-guide/mm/
+> transhuge.rst. Does this mean that after remount, whether the mappings
+> of existing files support large folios should remain unchanged?
+
+That's the current behavior, right?
+
+> 
+> “
+> ``mount -o remount,huge= /mountpoint`` works fine after mount:
+> remounting ``huge=never`` will not attempt to break up huge pages at
+> all, just stop more from being allocated.
+> ”
+> 
+> Do you think this makes sense?
+
+I suspect that matches existing behavior, so it should be fine.
 
 -- 
 Cheers,
