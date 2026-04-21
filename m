@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B177F94CB7
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 23:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF3FAF94CB7
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 23:29:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64B7B6B0005; Tue, 21 Apr 2026 19:26:29 -0400 (EDT)
+	id 341DF6B0005; Tue, 21 Apr 2026 19:29:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D57A6B0088; Tue, 21 Apr 2026 19:26:29 -0400 (EDT)
+	id 2CBCF6B0088; Tue, 21 Apr 2026 19:29:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C3696B0089; Tue, 21 Apr 2026 19:26:29 -0400 (EDT)
+	id 1BA686B0089; Tue, 21 Apr 2026 19:29:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 381776B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 19:26:29 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E4F5D1A1059
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:26:28 +0000 (UTC)
-X-FDA: 84684149256.05.D592998
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 56F9A180003
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:26:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T6RLxjiS;
-	spf=pass (imf24.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 048916B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 19:29:04 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A47175B9D5
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:29:03 +0000 (UTC)
+X-FDA: 84684155766.22.873EF70
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D5336180003
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:29:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uC9WHgNb;
+	spf=pass (imf06.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776813987;
+	s=arc-20220608; t=1776814142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jgLAbKUsjyL598uT9cpCsbi7VPzdRTqvVv8AUtzu0YY=;
-	b=F7EzsSaaUiiqvcVwNr6ERR7LSzwWji/ojyG44XuP1rPOY/OFOcy2q8H57wUVQ73z8VdGIQ
-	S1GgXRz2g9JOY3kvdjv+gKRb1ma3QWD47zh4VCe7GQ6+SG/vWBLua8JKFDpxFeXS4mj4Ip
-	Tknlb8GaZRPC03EIcS3Sywk6mAOHDTw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776813987; a=rsa-sha256;
-	cv=none;
-	b=j2HTgOgZQS0bi8KqM4j5qjCAhPrDvoqdfyUYdDUr8X42nhE173z7wz4dcCPBKWg1CWacAc
-	iMxIjeh7ybr8yahIll74PdITgV7PPFpOaTwsjDZnHe/27gGAyueKdXlAe807ekc0LM0n9Q
-	iEEl5QISJ4XN4XOmkOpTdKNPT5EydWM=
+	bh=TYKF52HbuWXD2OOfUs6TrDkX3prFZKPFLT7p3BWL6Xg=;
+	b=RV34vYVwO5U8fuGEZRtGTS8F+4ygKJnP77/FwXQ2sZXSjPkmRB2yirTNN6jjCdvYZ7TY/Y
+	vSzCrnbo3pSq7WgmZOtEjCb/Dm6oJ98ySNMCN2Tr+OCJ2Uk89VmDyCF82QRh0k6Yp8qK9v
+	2H1FlaW4fqsHl/FZlQnQZ2wpa1cyaio=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T6RLxjiS;
-	spf=pass (imf24.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uC9WHgNb;
+	spf=pass (imf06.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776814142; a=rsa-sha256;
+	cv=none;
+	b=g+M5XE+LIxJJsmP9LLs0Yn+Scu69lBD4ba0Oz2vnhjkzcGQ5vz7e/Tot/XV5vd0D/KkCFa
+	HRK56PZxGtm2RIUDkKpzI91rO4vDcLNND3Z3qk6wVnYWDQPnrkSeHF8npuIHwn3mBHxVNo
+	BLJRjkrLtBJoUAwmndnb1Zia8BtJPb4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A95DC600AE;
-	Tue, 21 Apr 2026 23:26:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF70C2BCB0;
-	Tue, 21 Apr 2026 23:26:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7190243652;
+	Tue, 21 Apr 2026 23:29:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F137AC2BCB0;
+	Tue, 21 Apr 2026 23:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776813986;
-	bh=/let+R26XmDoHPbQeUMhH4onx0DaQ8ZuXi5VStvneik=;
+	s=k20201202; t=1776814140;
+	bh=yhS4w2iWbQXVD+c51oA2tUzJ48+g97qaeOGGP78n24c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T6RLxjiS4o6mjnOCVvD4kMntKjEJOCJSOR1JKi4YoU6DfFE4cBpr0+umxWHiEzO8U
-	 7oaCcoTHU+TfRcSC4vqI86VffL3oZcXhodcB7zgLkmxdmxEfa0BUM89/b2FkWNLpY1
-	 sLBO+4MUONxrbuqjhMwua7meya1xHf6vgEioxbqY4tiU3lzsi/cB0OqL55DUx/MKAQ
-	 vuYUVx5zTyHiZoOeQwZw8KiWvsHHUx0zCbvUx7Lz4yayLmTcL9XsDamnMzgAM/VIvZ
-	 vMo9GsTxVDb0MogpB0D42zJ7SDnTkv1bAoBgOG0dgolerIxM7G0X6x9nWdhPTH1S2y
-	 HusNDsV6E19HA==
-Date: Tue, 21 Apr 2026 16:26:24 -0700
+	b=uC9WHgNbcrEwpY9K7QCOmayEeQDTWcdMR4d0pcK3UVmff5/XtLW40S0xzobd/nhrv
+	 jlWIZNygRYlxzeKp9DFFQx1gauYTAnLuM9Q0x3bqQv5y6Y6XVez79Dobepvi6dwqIg
+	 QSJImbp7Xp3COjJHMOfHaralVGrOU6HG4/Nt+SJCA/b5ycNpumOHoOXEPIv0AS0Nq5
+	 fhKfMg1MVeydNzMum7k8xWL5CONvVF4XBxiKiPULNQeMIazzQsK7hbS21nFRn9TwZj
+	 dy7487mcln4R7A9mHygWbeooaxi4u4H7zqKdJX5UoDRaoklXiIXuJByTr0A2HST7yd
+	 NQeee9mP3NYSg==
+Date: Tue, 21 Apr 2026 16:28:58 -0700
 From: Dennis Zhou <dennis@kernel.org>
 To: Joonwon Kang <joonwonkang@google.com>
-Cc: dennis@kernel.org, tj@kernel.org, cl@gentwo.org,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, dodam@google.com
-Subject: Re: [PATCH v3 1/3] percpu: Fix wrong chunk hints update
-Message-ID: <aegHoF2_GE3hL4cv@palisades.local>
+Cc: tj@kernel.org, cl@gentwo.org, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, dodam@google.com
+Subject: Re: [PATCH v3 2/3] percpu: Do not trust hint starts when they are
+ not set
+Message-ID: <aegIOh-cC03ZNRPh@palisades.local>
 References: <20260410174417.1450834-1-joonwonkang@google.com>
+ <20260410174417.1450834-2-joonwonkang@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260410174417.1450834-1-joonwonkang@google.com>
-X-Stat-Signature: hyceyznt3bqrrzwq8k5yxu8eerzqbufu
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 56F9A180003
+In-Reply-To: <20260410174417.1450834-2-joonwonkang@google.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D5336180003
+X-Stat-Signature: 96xmq7kenryg6cega39q1cuk1e64du1j
 X-Rspam-User: 
-X-HE-Tag: 1776813987-558235
-X-HE-Meta: U2FsdGVkX19v2enNiOOCU6ZlRjEaElMO7VzdiN7MSuOTSLSYlWnVatcEDbcR3agsfFysP5stqipuBufX3IUwJlb7YULEubY31jGIbgHKmaiifx5iXSPhzb7xTlONvwfQfow2ZyY0PIA8ztT0mYsgsuIjXwRx7vdwhUx7lMoqr/4UBF1rEusd1Mtp8mOaOLRQ8MO+cjlKkZb3IJYJYKmbj8MTBzw8xI2CUygefI2Idlm7foi+z8XDbx/QtUweKUFUrFbFP94omFwtgF1G2HrkOLZxCB66uqsYrsnBBvPkJl7e/EB2hUzjVClAf2Ay4yazzeMPbOaeK9mdM5iqgctc574SlIhT2prRBWEhGPvtVi3tnGqwT7oy7NNx4G0eq9Pen5iOM2UwBdo1zqiGXs/HABsKjZC/NmoM9aAe2elc7l9YrEr4bt910uiw9XcIeu4L3XZHUv6EpL/fNaHXtfsJbLH+kybYhVtr8b0nUYsBMyIx0yMWVEayYrJBucebPxKLfw377HlFv+Nu3kN6FBSsEmD1GRoV4fPBbRMnKb3RQHQQLECeBW1YsyTSidnljJP9MqVDRPmablLq9gQKHqz28MKeTFdIdQuLQqk4cks/TlHutNZnMF4N4IpEnHUokxl8PcKbsoWJmcP6GX2/4+6ePaKsewFpDx6FYdVIT284iI/d2+XPjjeIpgO2TnJPhcXGxWQ6/ETxw6Zrx3lT34SnbXtuIDppV+vfUOJ7k7HR0hkGuifvlOAi6qvFT3dsEL4THTy33mJmCO7+YZp9Z8GuEotJdHL6Uv2m1LBXW63yeMHdW7rk9uwYsMTHfRFkrv2+/7O2Vvnh6+8mho6zAT5mVt7o91+g8DeGqkl448o29re9mquGf39/RnBwmNDTwNM5b2AORHwVdssAqKBMNB6P+Lk0eYqJjPfHyuXC3QjLDXBZqfbVTGKpg8Mzf2YrXktHq6g5WyQvvOrU+IPY7pV
- v/6GmrbU
- U1ERef1VLIiKAzgScR+XUuB9jc7N4Uimef13Ek0ZuaJ1mAsIhSpJLnU3pxpa+TqdUaGWWaFJ0DHF4pZWTAKG4R1P4ShaQOA5oAlQC43u6vHCINlA0sbuQBNeph38v29av14B7GTEC4C9gWF2LcY0gxaVYFOkTVM2gh9P20l3GTRUhh370jPrzJ7utU3TMVmA5PUEgLuy+NSzgH5V4hjlzSaG0aFHaBH4pXYnTfpxMcDDSIT66IDnLnsNpDj/U5grO6rXV
+X-HE-Tag: 1776814141-171934
+X-HE-Meta: U2FsdGVkX19Z7fK73CtFQt1CyRVDS375Xtov20WhSHnoRIqcs+dfmEQobcFRwdFrSd3yJ6GN7xHQnI9/4CGt1GVoFAJg+o28QVZ0EO6yaOqXaIkRFE9gEniF8QQJQ4uKec0XKVfJo5xpztD7Eh0EL+a3Vz0RVx3lmBMZvVaC3r5SYCVPAU9IIGFeEFp4nVeL9AjDFdc2v/7JTRXf/t86aIoK5FnI0Wzo4vVxegstgAuUMhjktCLBk/pNInmEMCoWHAeHNpDWBTdA/nR7AH1BiL2D+EnpQur/A7Zo5c4RkdxVZ14lG5MiZY7JWsFLk8Fa9HWoQSsfDlnW0CtNlXgppfIuy0b5XMVLN67sGOgeSlXmRfeYWBervrZtmImDDsZNd6nK83Sk278G1PqOOB9SAVbApCNn1BmojbDkphyXJ9CvaWW3v6Xlu7P/BOUYfyAwb8Hrup4lhMZJM+d4VY2EhFwSAQyfYag+lYpemRMelrObAIFz98TBBkYe2HGFTNOZQJ1LHf52RnAQtI/44JQCJ1YCN1QksuborqRiQvc35HowBRXu4wObN2/lnT+i172Q0Nln3xoepDCZPD+LM00RMJwDwU0es1p3OC6pSbZuwfWxM9uspQ9CSdHP2JJ+1IgzNdtwkKejgu1kwQ2F2R/f09AYMZjGJS5jpC7R9VuFVZLREPN6oFYq0MPylzcDiw57UnS9up2XJKkPjiRF5qWU/69Y9l6h/hQXA6xddn6JIapSQ0351hUypGOqqdt1dB+CLGKzRc74soO2V5kX0iZT5nk3je/1k4w7yoa5fr/QII9HdvsRGRACOJ3qh84or9w/5ghNykXoWPkS3fdowzuesGBIuWBi9OsesAXz+q/64TfnoPWLUfIDbKtNiOEHQxHf9vpV4enzeFiWjZxTd0PO119xn4HKvLnc8PgiCMc0pAcKwFMl5QeTT2WwMd6jppLgWqsQ1Z3+p0YcIoRaEB6
+ DG5Hq0Rf
+ iWEkJZfSrogdSquUNPyH9VMlDo2nOAMACJGmdCuliwHQIgatj/42rptewjEcURI6Kv9cjVQqVbL5vNuwvkh9+m/8I8kruq1ZideflPysxlIZSLch+FK1w2S0j1Cd01EhXMnQFxyiyEfU2aQJSIDp8EfoJVuGFXAMPGgvVl9W1lZQ+znvTxrCxP7UEArRhlGJfgmxQO/pxnkfqVfFMKHjxOlGEYw6kFonnLOr92manHbYDIu80rKtpTUwd1oB0d6V86FmR4QFiWM3s0vw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,44 +92,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
-
-On Fri, Apr 10, 2026 at 05:44:15PM +0000, Joonwon Kang wrote:
-> Chunk end offset was set to a block end offset, which could prevent
-> chunk hints from being updated correctly. It was observed that the chunk
-> free size gets minus or shorter than the actual free size due to this.
-> This commit fixes it.
+On Fri, Apr 10, 2026 at 05:44:16PM +0000, Joonwon Kang wrote:
+> contig_hint_start can be trusted outside the hint update function since
+> it will be updated everytime contig_hint is broken. On the other hand,
+> scan_hint_start might still be invalid anywhere in the code due to the
+> broken scan_hint not being updated promptly. If those starts are trusted
+> when they are not set, it could lead to false invalidation or update of
+> the hints.
 > 
 > Signed-off-by: Joonwon Kang <joonwonkang@google.com>
 > ---
 > v3: Initial version.
 > 
->  mm/percpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  mm/percpu.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
 > 
 > diff --git a/mm/percpu.c b/mm/percpu.c
-> index 81462ce5866e..3ecd86096641 100644
+> index 3ecd86096641..f16533ed4a49 100644
 > --- a/mm/percpu.c
 > +++ b/mm/percpu.c
-> @@ -1054,7 +1054,7 @@ static void pcpu_block_update_hint_free(struct pcpu_chunk *chunk, int bit_off,
->  	else
->  		pcpu_block_update(&chunk->chunk_md,
->  				  pcpu_block_off_to_off(s_index, start),
-> -				  end);
-> +				  pcpu_block_off_to_off(e_index, end));
->  }
-
-This needs a fixes tag for:
-
-Fixes: 92c14cab4326 ("percpu: convert chunk hints to be based on pcpu_block_md")
-
-Reviewed-by: Dennis Zhou <dennis@kernel.org>
-
-Thanks,
-Dennis
-
+> @@ -638,6 +638,13 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
+>  	if (end == block->nr_bits)
+>  		block->right_free = contig;
 >  
->  /**
+> +	if (block->contig_hint == 0) {
+> +		block->contig_hint = contig;
+> +		block->contig_hint_start = start;
+> +		block->scan_hint = 0;
+> +		return;
+> +	}
+> +
+
+This change isn't described in the commit log. I'd prefer to clean up
+the logic below than adding this additional if empty case.
+
+>  	if (contig > block->contig_hint) {
+>  		/* promote the old contig_hint to be the new scan_hint */
+>  		if (start > block->contig_hint_start) {
+> @@ -845,7 +852,8 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
+>  					PCPU_BITMAP_BLOCK_BITS,
+>  					s_off + bits);
+>  
+> -	if (pcpu_region_overlap(s_block->scan_hint_start,
+> +	if (s_block->scan_hint &&
+> +	    pcpu_region_overlap(s_block->scan_hint_start,
+>  				s_block->scan_hint_start + s_block->scan_hint,
+>  				s_off,
+>  				s_off + bits))
+> @@ -889,7 +897,7 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
+>  			/* reset the block */
+>  			e_block++;
+>  		} else {
+> -			if (e_off > e_block->scan_hint_start)
+> +			if (e_block->scan_hint && e_off > e_block->scan_hint_start)
+>  				e_block->scan_hint = 0;
+>  
+>  			e_block->left_free = 0;
+> @@ -922,7 +930,8 @@ static void pcpu_block_update_hint_alloc(struct pcpu_chunk *chunk, int bit_off,
+>  	if (nr_empty_pages)
+>  		pcpu_update_empty_pages(chunk, -nr_empty_pages);
+>  
+> -	if (pcpu_region_overlap(chunk_md->scan_hint_start,
+> +	if (chunk_md->scan_hint &&
+> +	    pcpu_region_overlap(chunk_md->scan_hint_start,
+>  				chunk_md->scan_hint_start +
+>  				chunk_md->scan_hint,
+>  				bit_off,
 > -- 
 > 2.53.0.1213.gd9a14994de-goog
 > 
