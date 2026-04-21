@@ -4,86 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A54EF5A8D1
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 02:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72C83F5A8A2
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 02:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5EC6B0088; Mon, 20 Apr 2026 22:11:38 -0400 (EDT)
+	id C70606B008A; Mon, 20 Apr 2026 22:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9870B6B0089; Mon, 20 Apr 2026 22:11:38 -0400 (EDT)
+	id C48CB6B008C; Mon, 20 Apr 2026 22:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89C286B008A; Mon, 20 Apr 2026 22:11:38 -0400 (EDT)
+	id B86986B0092; Mon, 20 Apr 2026 22:13:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 758506B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 22:11:38 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F318D160C21
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:11:37 +0000 (UTC)
-X-FDA: 84680936634.19.CA61B06
-Received: from mailgw2.hygon.cn (unknown [101.204.27.37])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6F9A2C000E
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:11:33 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of liuyibin@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=liuyibin@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
+	by kanga.kvack.org (Postfix) with ESMTP id A5AD66B008A
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 22:13:05 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6FB4D140C4B
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:13:05 +0000 (UTC)
+X-FDA: 84680940330.17.295713E
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C09A78000F
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:13:01 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xOcYwync;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776737496;
+	s=arc-20220608; t=1776737583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=GD6D6UP2JUVrIr8EF3zQGbO4YkzrUi9QUe7IsXPZTSY=;
-	b=Nr97ZYZeqqt8+9cQZeDi7cU0blGgKmKyhmxSLk5Atj2y1E30jvSy/98PSB+tn8nP6BVYCI
-	Il1lFU6ML6Gj9V+LMxI4xn8yc3hSHXlUT3AumvC0Zy2cj6GZfXsQ9LFWd6oyefB6a3LVCJ
-	2tKsqb+1wGtlfsRAiu4/IyQIoQYxOjA=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of liuyibin@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=liuyibin@hygon.cn;
-	dmarc=pass (policy=none) header.from=hygon.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776737496; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hA0i3udkMiNuPIN+N6Va5cEC1S96vQmqUF4aWxz/iKc=;
+	b=vMUBPdFOufrD+dTqWfG78NFguK8ceR6gHN+HIdshI/8gAhYwwoL+sJBu8IqRhlK806FNsv
+	AzhyfzUs38J++1MLWx5R6XgQ0ijB3KLV4Z1O+Cy9Cg3ESczJbsnD7tp1rvQQc9qvXBxDOz
+	lsP8ydz/9URpdJwpFMW0wtxM0oZ2sfM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776737583; a=rsa-sha256;
 	cv=none;
-	b=TAxw7vxpAXTHFZC6iZIdrtlWcdzMAoUeMlkXtk+hk66wVGUY7PGCyfUIGdnpStpQcc9/z2
-	12ygcfUJXtnQP8Oyzo/P/rPfHtFwMM5nJCyPdSGqy/e0bq2oGpAywzu5sDyRx45GCwHlep
-	gYFTWpRSdYqu5JCWY2M8JCApCvUEBw8=
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw2.hygon.cn (Postfix) with ESMTP id 4g05SY10zgz1YQpmD;
-	Tue, 21 Apr 2026 10:11:25 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw2.hygon.cn (Postfix) with ESMTP id 4g05SV5qYMz1YQpmD;
-	Tue, 21 Apr 2026 10:11:22 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 02B014B4C;
-	Tue, 21 Apr 2026 10:11:18 +0800 (CST)
-Received: from jianyong.hygon.cn (172.19.20.52) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 21 Apr
- 2026 10:11:13 +0800
-From: Yibin Liu <liuyibin@hygon.cn>
-To: <linux-mm@kvack.org>
-CC: <akpm@linux-foundation.org>, <Liam.Howlett@oracle.com>,
-	<viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <mjguzik@gmail.com>,
-	<wujianyong@hygon.cn>, <huangsj@hygon.cn>, <zhongyuan@hygon.cn>
-Subject: [PATCH] mm: Add RWH_RMAP_EXCLUDE flag to exclude files from rmap sharing
-Date: Tue, 21 Apr 2026 10:09:32 +0800
-Message-ID: <20260421020932.3212532-1-liuyibin@hygon.cn>
-X-Mailer: git-send-email 2.43.0
+	b=gQlSvbHYzIsnTTnjZxKTWRFd9JNsm1wUzHN3FHaDsHhTIx2oq5AlQ+PKkV5icIWOLERgHe
+	nTjXwkXfFU4W40wqCwIpo6pwqLa5awrDR4bCz8p756x76nZxE43MLgZaKRIhYQsHhvqLwx
+	1imn9MOfw5yVh2vO03uMcIoz4+1Urh0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xOcYwync;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776737578; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=hA0i3udkMiNuPIN+N6Va5cEC1S96vQmqUF4aWxz/iKc=;
+	b=xOcYwyncC/0Lnwy6cN6SU+rH1Uo/v1uCq+R56zSKriPaoyqnwWaixsSQlVpvTm1/PbG5A+oQIFb4TJga0ZtW+o04/2KRT8ZgscHgs2hObTVcTdVv7QfErqIR95WmzN/DMA18ee75hPBIADJ57zD15AZ0MlQUJcPtyNV1DTu3sc4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R341e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X1RNv9w_1776737575;
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1RNv9w_1776737575 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 21 Apr 2026 10:12:56 +0800
+Message-ID: <2c88f810-5c5c-4c26-af34-49e90ca2ba93@linux.alibaba.com>
+Date: Tue, 21 Apr 2026 10:12:55 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.2 v3 04/12] mm/khugepaged: remove READ_ONLY_THP_FOR_FS
+ check in hugepage_pmd_enabled()
+To: Zi Yan <ziy@nvidia.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Song Liu <songliubraving@fb.com>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-btrfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260418024429.4055056-1-ziy@nvidia.com>
+ <20260418024429.4055056-5-ziy@nvidia.com>
+ <b228baf2-0dcd-4135-bab9-04d979b6e617@linux.alibaba.com>
+ <E7EBC528-C511-4166-89F3-654171383646@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <E7EBC528-C511-4166-89F3-654171383646@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [172.19.20.52]
-X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
- (172.23.18.114)
-X-Stat-Signature: bpae81fnzysnmjuh8m8src1amydad5ex
+X-Stat-Signature: zb5989xux3zuyqgndnetj1jghiuiaku9
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C09A78000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6F9A2C000E
-X-HE-Tag: 1776737493-843570
-X-HE-Meta: U2FsdGVkX19bNqs117w/qdJfMoYN5I8/DPuhogKVIhG3a4ldvKO37EBSE6JnJxdzfghKDVmJo2Dpfbpaz7sgT8l4Iybbeaz4dV0n1phE/fO/KJYHGIL2ZxcztbVuztqSw7gZsnMBzw8kGmEpuBSfKRdzmgNKIXTzuYTk8bNEeydCOhTBTsxjEJYGSJExcKeKQZIDKyHI8mR/fTH3G51gSGr+mRrmmtoM+dKSQS4XOMHQk4zMZO1R8dt0qOMkD2gUJomvHmuyl9CPH08VNMmsSddQdJB882b0PeK/3SdBNSu6c5gQ8HM4wszShTfp5fifF+ZoxRbn1Wb2kM87HYAd/MruldxRN3jVObDYafNyMtML/wO2xBToqLDTCQMQk4LDMWQsgmXY9KDpcMpAdSkLlfm2fsNduKrb5m8oTgRf73Qt6kLFEm5c1pgNuZxuO6RFTd9mKYlmS72roX16PLN7IGn00NwlZZ7hoWdXLVGPLFLhaSjD4iL3O7bsQKUEfledStOny77orr7vtdRmTxuIonLJkr2W0cswvbpXQHG1EjzacmMaIcj2fTwwE7EgGtrvbHsu3Q7thAkfPLbfi59RwGiJREHoW9KywIaTACM28wUqtQ3M8Cw4PhZgraikjU/v+fUhLlemKwsK9D8Nl+eXrTjQlD49XkWXvH3RWRTr4aBHz6nRBKYHKT28naLmAVD0yHdd6PZaM88T3aqiFUM/o8hBJKKqJ/uCbbde55bpdpDhFVQ0D5dZgcxHDNVMWuYbk/83a5iDejR8c4DOD/E7muabOhCouBV4Vls7MW6jc5FtJTTfc+iUsZw9OWECBKVWszcKkXXempLht/dLbm14VaL+MDctT8XBSRfz3WP1avxPoIxYdUZYxSzwl8Lx8l3eLQy37gvYw7CxMq+xhUYQaKLtmnWbxhhFSdEa+ApWXfHD+ZKP/GOm5YHxLF1jU+bI1F5dmSQVNxJ3oBGJ4mX
- eVWWWhvY
- wXZeixOe+whKVplk8jhb7QDlxharfIGO8R0GFE68pdgt9zvsdLOmXkoG2T8o87jb3Z26BNJdjaW/ewENkrxcVHx5UDoIUvuzVdsNIdpj94ZRnA8JuN8o7RoxJWzoFQdOJw6hgRqzjYZYknonad2xU5gFM6b1P1NfLqOdwPcv/n628kxfkmj+tFBgsp3Y4GAEC6o0UBCA8uzTcFFxVp4qByCvccV85ZIZfWkvu7EWBll3ivdWjThj4Gpl9MPHFyT4oVrPvqNkeCHjZw8dG50N/vesIQsiYbI+8kfA8BRd3SRWc0kmO4bCsjVa09REGLz2PtYVwTfRgp3Ad+dRqb5t6qT8gjBhZ+NXOYVvSgMF1t9vRvqkuS+Za2YgxaGBNLRbptsRoqB+9DqSDppbOogpvbUCWFPr9GKiMEyVeoUBAtHAANESbzFyZ0KYth5O2t3560bq5D4lF3NDXBRE=
+X-HE-Tag: 1776737581-675858
+X-HE-Meta: U2FsdGVkX1+Y0B9GYEuOGkO22P15AJPtVlPNPSFZOdbixwiXedIa8uVwict0PN85pavcCOC7QQBAgzHJBLt5SsQuPvyqvcf1VRqudSmApqrbFH906CpSDIV0/h1IrFky7VeI8MjOJtJfXUqsdC+Na5Kxp6nTMZDRjJgrFXe+tKAEn826QCczoEL26IU5iuMb1MKzQkKZZsYebRWPwPNq9KirkEUF3lqJdxZ+7R+oLKUovuFD8oOAI8Q0iBSUa5FTE8Av1ssiGwenBlS1LdglHI5cpBQFKRmriBQS5iOrOf4Zwd3GnHHKXu0wTecpOCFHt5/UpooYZcN/ndAx4d9imVjHrBbapQWZ45eCjY5RzZPjWBuBVWXSzEDCKadJ+ZadiO3hLh/lk0DtPgOlgjxqsp0BO4Kp46Zhrgy7r53UXrxUgzREpxzNjSTYJQOiZXVHFGKX1alIMAmb2vr+glvgbpk/i0IH25YSKKtv5C1Gtx3JREauFxVG/ukm2ODcWj7qVRAo7NQWmiL9Gn5CfbVLYoy6Z6VZPYnqFS+pBJxgM3gSwBJasMd8xtmlwAMKp27yGPEIIfSa2LcQZICju6V6R2d+tN947+w6b1KoV3FK49kM/gRVzJo8RVRmEB6dvaa3QM++QD8IcB8t5FYHzusuRQhl4KHuNYbBKQle3bOjj45Jh7z3aYhLZq3BAVoUojzScZbwQbhkSPt+bm0gHmYz8n2YAtMgBA+S15zVnIeA45rsjfMDNGYsbgKgp50QViF0nhI7LQ4scp4ST1vAIu9MfYL4IBdr8K+ZQPcaz2LwkbZDmYn3ET2Zex4TRViwjh6E0IyN6rXpiJO38gWU+0/dva0doCt3GftlB5B5ItYcrPlSNkgmf7FGju9FmijK/zUDy1wXBsq3GolcYJjcF0BVesU3ch6WSUZ4eOR/RhFBPgVj6+KbIsu+cfeAZjDSHackyem5ACqJ+mGLDQcP8BZ
+ dNZ/nJgy
+ jujoqtwUDSzWJv5wloUIRGQJT3kgPkLuCNleAe89Ml0lGUEySV3pEPTNMH3JBsmQaPuUvRKHheTloYfH/yBK+Q2XSjhXfJzuk1BHqUvrQ+mRIL60f7fynK3u564LxIQknw0l4NSuisKav0IUJiI9zc0dLbDw/hne3tNQMb0PtqU79MyUSSZZUC5Qa51BgKEd4Vs1TG6Yh9Qh5Ol/gQbrgM+Ra5E0lKwh3K9Qbs0DPMpZho8GbtDi0cvLeFvdf7eLuAhdLiwcNBhBJZFaFHn/o8EfUN0YoxNHFO3wB1vhD6waa2lSQLh8MCh20Dwg1Sljes4Va0FMM4puVyogkUNSb4j4Lllkzgz0xfqMo3wktGeCkxc8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,136 +102,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-UnixBench execl/shellscript (dynamically linked binaries) at 64+ cores are
-bottlenecked on the i_mmap_rwsem semaphore due to heavy vma insert/remove
-operations on the i_mmap tree, where libc.so.6 is the most frequent,
-followed by ld-linux-x86-64.so.2 and the test executable itself.
-
-This patch marks such files to skip rmap operations, avoiding frequent
-interval tree insert/remove that cause i_mmap_rwsem lock contention.
-The downside is these files can no longer be reclaimed (along with compact
-and ksm), but since they are small and resident anyway, it's acceptable.
-When all mapping processes exit, files can still be reclaimed normally.
-
-Performance testing shows ~80% improvement in UnixBench execl/shellscript
-scores on Hygon 7490, AMD zen4 9754 and Intel emerald rapids platform.
-
-Signed-off-by: Yibin Liu <liuyibin@hygon.cn>
----
- fs/fcntl.c                 | 1 +
- fs/open.c                  | 6 ++++++
- include/linux/fs.h         | 3 +++
- include/uapi/linux/fcntl.h | 1 +
- mm/mmap.c                  | 3 ++-
- mm/vma.c                   | 8 +++++---
- 6 files changed, 18 insertions(+), 4 deletions(-)
-
-diff --git a/fs/fcntl.c b/fs/fcntl.c
-index beab8080badf..9b7cc1544735 100644
---- a/fs/fcntl.c
-+++ b/fs/fcntl.c
-@@ -349,6 +349,7 @@ static bool rw_hint_valid(u64 hint)
- 	case RWH_WRITE_LIFE_MEDIUM:
- 	case RWH_WRITE_LIFE_LONG:
- 	case RWH_WRITE_LIFE_EXTREME:
-+	case RWH_RMAP_EXCLUDE:
- 		return true;
- 	default:
- 		return false;
-diff --git a/fs/open.c b/fs/open.c
-index 681d405bc61e..643ab7c6b461 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -46,6 +46,10 @@ int do_truncate(struct mnt_idmap *idmap, struct dentry *dentry,
- 	if (length < 0)
- 		return -EINVAL;
- 
-+	/* Prevent truncate on files marked as RMAP_EXCLUDE (e.g., libc, ld.so) */
-+	if (filp && (filp->f_mode & FMODE_RMAP_EXCLUDE))
-+		return -EPERM;
-+
- 	newattrs.ia_size = length;
- 	newattrs.ia_valid = ATTR_SIZE | time_attrs;
- 	if (filp) {
-@@ -892,6 +896,8 @@ static int do_dentry_open(struct file *f,
- 	path_get(&f->f_path);
- 	f->f_inode = inode;
- 	f->f_mapping = inode->i_mapping;
-+	if (inode->i_write_hint == RWH_RMAP_EXCLUDE)
-+		f->f_mode |= FMODE_RMAP_EXCLUDE;
- 	f->f_wb_err = filemap_sample_wb_err(f->f_mapping);
- 	f->f_sb_err = file_sample_sb_err(f);
- 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 11559c513dfb..d5c9e5a4c2b9 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -189,6 +189,9 @@ typedef int (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
- /* File does not contribute to nr_files count */
- #define FMODE_NOACCOUNT		((__force fmode_t)(1 << 29))
- 
-+/* File should exclude vma from rmap interval tree */
-+#define FMODE_RMAP_EXCLUDE	((__force fmode_t)(1 << 30))
-+
- /*
-  * The two FMODE_NONOTIFY* define which fsnotify events should not be generated
-  * for an open file. These are the possible values of
-diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
-index aadfbf6e0cb3..4969b4762071 100644
---- a/include/uapi/linux/fcntl.h
-+++ b/include/uapi/linux/fcntl.h
-@@ -72,6 +72,7 @@
- #define RWH_WRITE_LIFE_MEDIUM	3
- #define RWH_WRITE_LIFE_LONG	4
- #define RWH_WRITE_LIFE_EXTREME	5
-+#define RWH_RMAP_EXCLUDE	6
- 
- /*
-  * The originally introduced spelling is remained from the first
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 2311ae7c2ff4..3eb00997e86a 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1830,7 +1830,8 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 				mapping_allow_writable(mapping);
- 			flush_dcache_mmap_lock(mapping);
- 			/* insert tmp into the share list, just after mpnt */
--			vma_interval_tree_insert_after(tmp, mpnt,
-+			if (!(file->f_mode & FMODE_RMAP_EXCLUDE))
-+				vma_interval_tree_insert_after(tmp, mpnt,
- 					&mapping->i_mmap);
- 			flush_dcache_mmap_unlock(mapping);
- 			i_mmap_unlock_write(mapping);
-diff --git a/mm/vma.c b/mm/vma.c
-index 377321b48734..f1e36e6a8702 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -234,7 +234,8 @@ static void __vma_link_file(struct vm_area_struct *vma,
- 		mapping_allow_writable(mapping);
- 
- 	flush_dcache_mmap_lock(mapping);
--	vma_interval_tree_insert(vma, &mapping->i_mmap);
-+	if (!(vma->vm_file->f_mode & FMODE_RMAP_EXCLUDE))
-+		vma_interval_tree_insert(vma, &mapping->i_mmap);
- 	flush_dcache_mmap_unlock(mapping);
- }
- 
-@@ -339,10 +340,11 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
- 			 struct mm_struct *mm)
- {
- 	if (vp->file) {
--		if (vp->adj_next)
-+		if (vp->adj_next && !(vp->adj_next->vm_file->f_mode & FMODE_RMAP_EXCLUDE))
- 			vma_interval_tree_insert(vp->adj_next,
- 						 &vp->mapping->i_mmap);
--		vma_interval_tree_insert(vp->vma, &vp->mapping->i_mmap);
-+		if (!(vp->vma->vm_file->f_mode & FMODE_RMAP_EXCLUDE))
-+			vma_interval_tree_insert(vp->vma, &vp->mapping->i_mmap);
- 		flush_dcache_mmap_unlock(vp->mapping);
- 	}
- 
--- 
-2.34.1
 
 
+On 4/20/26 10:57 PM, Zi Yan wrote:
+> On 20 Apr 2026, at 2:55, Baolin Wang wrote:
+> 
+>> On 4/18/26 10:44 AM, Zi Yan wrote:
+>>> Remove READ_ONLY_THP_FOR_FS and khugepaged for file-backed pmd-sized
+>>> hugepages are enabled by the global transparent hugepage control.
+>>> khugepaged can still be enabled by per-size control for anon and shmem when
+>>> the global control is off.
+>>>
+>>> Add shmem_hpage_pmd_enabled() stub for !CONFIG_SHMEM to remove
+>>> IS_ENABLED(SHMEM) in hugepage_pmd_enabled().
+>>>
+>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>> ---
+>>>    include/linux/shmem_fs.h |  2 +-
+>>>    mm/khugepaged.c          | 28 ++++++++++++++++------------
+>>>    2 files changed, 17 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+>>> index 1a345142af7d..dff8fb6ddac0 100644
+>>> --- a/include/linux/shmem_fs.h
+>>> +++ b/include/linux/shmem_fs.h
+>>> @@ -127,7 +127,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+>>>    void shmem_truncate_range(struct inode *inode, loff_t start, uoff_t end);
+>>>    int shmem_unuse(unsigned int type);
+>>>   -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && defined(CONFIG_SHMEM)
+>>>    unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>>>    				struct vm_area_struct *vma, pgoff_t index,
+>>>    				loff_t write_end, bool shmem_huge_force);
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 1c0fdc81d276..718a2d06d1e6 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -406,18 +406,8 @@ static inline int collapse_test_exit_or_disable(struct mm_struct *mm)
+>>>    		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+>>>    }
+>>>   -static bool hugepage_pmd_enabled(void)
+>>> +static inline bool anon_hpage_pmd_enabled(void)
+>>>    {
+>>> -	/*
+>>> -	 * We cover the anon, shmem and the file-backed case here; file-backed
+>>> -	 * hugepages, when configured in, are determined by the global control.
+>>> -	 * Anon pmd-sized hugepages are determined by the pmd-size control.
+>>> -	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
+>>> -	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
+>>> -	 */
+>>> -	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+>>> -	    hugepage_global_enabled())
+>>> -		return true;
+>>>    	if (test_bit(PMD_ORDER, &huge_anon_orders_always))
+>>>    		return true;
+>>>    	if (test_bit(PMD_ORDER, &huge_anon_orders_madvise))
+>>> @@ -425,7 +415,21 @@ static bool hugepage_pmd_enabled(void)
+>>>    	if (test_bit(PMD_ORDER, &huge_anon_orders_inherit) &&
+>>>    	    hugepage_global_enabled())
+>>>    		return true;
+>>> -	if (IS_ENABLED(CONFIG_SHMEM) && shmem_hpage_pmd_enabled())
+>>> +	return false;
+>>> +}
+>>> +
+>>> +static bool hugepage_pmd_enabled(void)
+>>> +{
+>>> +	/*
+>>> +	 * Anon, shmem and file-backed pmd-size hugepages are all determined by
+>>> +	 * the global control. If the global control is off, anon and shmem
+>>> +	 * pmd-sized hugepages are also determined by its per-size control.
+>>> +	 */
+>>
+>> Personally, I found the previous comments clearer to me. The statement "Anon, shmem pmd-size hugepages are all determined by the global control" seems somewhat confusing. For example, if hugepage_global_enabled() returns true but the pmd-sized sub-control is set to 'never', that means anon pmd-size hugepages are not allowed.
+> 
+> You are right.
+> 
+> I will revert back to the old comment without “when configured in” like below.
+> 
+> 	/*
+> 	 * We cover the anon, shmem and the file-backed case here; file-backed
+> 	 * hugepages are determined by the global control.
+> 	 * Anon pmd-sized hugepages are determined by the pmd-size control.
+> 	 * Shmem pmd-sized hugepages are also determined by its pmd-size control,
+> 	 * except when the global shmem_huge is set to SHMEM_HUGE_DENY.
+> 	 */
+
+Thanks. With that, feel free to add:
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
