@@ -4,141 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E87DEF89242
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 10:20:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AA1CF89242
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 10:22:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7D0E6B0088; Tue, 21 Apr 2026 06:20:44 -0400 (EDT)
+	id E30126B0088; Tue, 21 Apr 2026 06:22:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E54346B0089; Tue, 21 Apr 2026 06:20:44 -0400 (EDT)
+	id DE0FA6B0089; Tue, 21 Apr 2026 06:22:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6A3A6B008A; Tue, 21 Apr 2026 06:20:44 -0400 (EDT)
+	id D1F046B008A; Tue, 21 Apr 2026 06:22:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C6AE86B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:20:44 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 675F25C7DB
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:20:44 +0000 (UTC)
-X-FDA: 84682169208.17.EF52AD8
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6653940009
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:20:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JkDLIsxB;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=mclapinski@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776766842; a=rsa-sha256;
-	cv=pass;
-	b=aitW26KdYGGFzlsGV7NZK3++My3OQpIeakv58FgZ1DdDXvTVVuYooX73zh+xJqIjZzATIG
-	z4l64bIDQ7J9t6L2qtIBiNhKxnQsyLt08t5ilr0RNFYrUqdG4TK345/Z+NI/OEOrtITz5l
-	FL4+wrsStxbZ/TQNeUzXihjvDyUzvMI=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JkDLIsxB;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf17.hostedemail.com: domain of mclapinski@google.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=mclapinski@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776766842;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C23CD6B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:22:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F9571B9416
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:22:00 +0000 (UTC)
+X-FDA: 84682172400.20.C1F70DE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E09B720005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:21:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KrwP5ab2;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776766918; a=rsa-sha256;
+	cv=none;
+	b=hSe2VS2E5zwfU5NeIr4xH2LXHqnAj9fgvfmF+FiA5eFE6O6hlbBpFb3zyzlqi3NK8l+Ynm
+	6mD7RF7mflArDXGpZ/3vaQ4NV9Cy1g6zAaSEF5RKYCXsIpRL64423iIBpmG8Tyq8l4PJN/
+	InYPV12fuz+e4PaMC0nM1b7r+g+2scs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KrwP5ab2;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776766918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1UwrSYvYD9ILrCcSxLJXG2HqJQ3UPcUaYWwodyo07Yk=;
-	b=BDy8DmbYV6OzZiix/Af7g21gM5LVTgj7Vm7yJ+S2Fq8uPKpYk4gR1gF/IBtnLf4bmGiP3x
-	8QD+4UWFbvncFnu6qSrKix4gXY1hnnocFcVI5l//lsojrh+caYHhF8v3BQMHB04IeSWWt4
-	5Q9q3nceEh6pciTeDHefPxCOf3mcjtc=
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-126ea4e9697so25433c88.1
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:20:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776766841; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bcc8p9pfzS1/otRjkZ4CtgIbeA5VoqVCDIXR5WGxH97SId6t9CCDRrS85rCiLofgl+
-         SM4NJ5uf2l2DyhmIFlvB61cT1OCNco2YzjEGDnuTDMitxsqkMEpyx5TYR+24N6JrZUYz
-         ghkLn2iJUxZY/ph3bmyD1rZbi+QVtzMnmhUBsSwQhFfP25IANFmGr+KpktyF8SWmO6Sg
-         wBWFRvBPIwoz+VaBXTKV+WBsvZqdWsWQl+8qObzv1fMjIESqbxkghlraXm0vp5VuC3Ci
-         dvCKGd98A/3y5eFV+IHio6kLUdKMWyu3MLCzVTrrsQQE3XYuQ0izgpnf65FMYaj5ICAm
-         wBVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1UwrSYvYD9ILrCcSxLJXG2HqJQ3UPcUaYWwodyo07Yk=;
-        fh=Hau7MBscaDVxTgGKOxRIu0TPZaKTzGTdjHv6XoZQuNA=;
-        b=VEfDJFjy1oNACB2YR6/jW8ZpscpUBy4fp9+l+s4/YJWkmM5ySOBSW9ZAAkJ2BX9WrW
-         8dbITobbo0Po0J2oSmkxkDt/jPhWf/oirveOVlXYiMQSXiQDErGjMlqkgtChQiI63R9g
-         zITIZUOIY+DqKHSNaSFJR6XYn4/nYYPa6SszAVW/ATeI81lAMuP2kGCwz1JUul1LaEmc
-         3R5iA5+fgqjv34HhYod3/zjV1ypyT9svWZi1BYMsORvSavurZ5gcvbZu+nTXrvKfGdfZ
-         TiNFalBxMq65e7qC7laNTM2KV4zFsSXKC8O2h9a+JExqcc2mxCOxZTL8l4NrRP2kVtqe
-         +w6A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776766841; x=1777371641; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1UwrSYvYD9ILrCcSxLJXG2HqJQ3UPcUaYWwodyo07Yk=;
-        b=JkDLIsxB94KCvkIsCwvWsGfui/zOf8VX5Zt9FHpiI92aho1abY3r0XyuiEWkrEj2t9
-         3l5CUTYMgAmvYeeYxvii23IV+WZQxQ8ru0V9Ds1VsH18yeuY+RcjoitCKjdwA7wHe/Rh
-         gsqKuWLgit1RqMX1PSXaIMm5iE1cZi23U3GFfVrQsoxRepdfUCwxqrr4dH13P4axTU2J
-         WdQFgppcypLvkhUKvKpt6P0TLk9tWMsmANGeYgI+zBJqkHj7E3R53lG6zhTMtIuaC8uC
-         /GEI9Cnh19JuLIMttGpV/7BY1/JUTdc7ZB1g6sHUXDwEhqsgkdrIspc+ns/mnEi9DgEK
-         lNmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776766841; x=1777371641;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1UwrSYvYD9ILrCcSxLJXG2HqJQ3UPcUaYWwodyo07Yk=;
-        b=d8Y5hlW50OsVn0rzAxNBwqMPx96ybphNI5Jo8wKTTpoOJRtrCi9C5GFcPhg8B4+C4p
-         pgcegR2Q/wbUQCz3xDO8xmzs62uETiuPlTgY6rY9siWoKv+xVAk/LEzrMKli/ItiKlhM
-         VyQhowMft1BEyL01NO9FvAQjET3FNX+hjZ8rusA81MZEu4eN2IkL+bCI82gJCW0FmUdI
-         qurQ0L3ULq+4WEB2zPJhr79oMoe8To4NMHD9safZE+2r1PHUSW+NhJHmqtpkxEoqGzyI
-         V06C1y1Y3kBdfjN+uNTSv98NefAg/h+x43es0RwJjvk7WJ2qGgxzuVfLPdB1kadWbyeJ
-         BawA==
-X-Forwarded-Encrypted: i=1; AFNElJ8LG/xvIKd8esQ1rx/4g4xBWWDkset36UqKOkgtMd54mu2K+bGYV0qCtADjIKNlnCM2OADUORWUXw==@kvack.org
-X-Gm-Message-State: AOJu0YyCpoqZfWfDviB7HrOforZuRGMSNKEvQl9TR/bRVsvBy8uTPrfY
-	AD6uK1Cmony394lKRacm3xhgyH36tx1vZRSQC/PlSVi7cCiFiffoQwiH1ij+mBbA++CQSvyGTUZ
-	IrDVGdV2IIYbP7EeiNtKFTzytoeA7iaF2RyFUCH13
-X-Gm-Gg: AeBDievdozyc+kX5ycSDiydicIOm6cwsaiMcvvi3W1oyDGs76SAD6LMU6LE7nUjivsF
-	g9Oj/5rOvJDjTJshhxZUppCbwUJuUIDpGgEDBYcV3EHHbYeDcJY074km+BPuZUypR4garHOCLN9
-	vSlN8JSOvH8v+o6fksLwlTow4OsalAdDkpbRjEH7IE0UsPMPyUWFzFmKXQLECmK8TpuugklLNnY
-	lV6g+MHZfWnx1uwSkB9yWUOtyyP43KJRehEZiTda2SGeNrOkiNdUqaJRnRlE4LWsd7l9rMHz61r
-	Q9RBhCQifvETyoEp3+cd2cy9VD0=
-X-Received: by 2002:a05:7022:e1a:b0:12c:8f55:cd0d with SMTP id
- a92af1059eb24-12c8f55d347mr302206c88.8.1776766840115; Tue, 21 Apr 2026
- 03:20:40 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xyBlq4rEnY0XU8hvvVLnxV2Li/KBJ2NJA/oXO2ehp1k=;
+	b=MWTj/i+gq6O4JVHidZ1TdVpekfSbEel+xRzWPRsud1dSHxJ1bxgkCUBJc3HwQSBTnA9a8e
+	Mds1oh3ZC+7eO4BG1SH3G6TLAnjqvwHq8a/7QFq3GYcwdDubXCkcfq80/HbRBJzGc8o8ai
+	zLotQzdKUXL3ioh18yzpaKCh3H2vv3k=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 29ED06013B;
+	Tue, 21 Apr 2026 10:21:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E26C2BCB0;
+	Tue, 21 Apr 2026 10:21:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776766917;
+	bh=YcQeXPBFzLIFxwlgMJlO6QDG9NPFdrQ59e2YKPfIG6s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KrwP5ab2KsfI7Let9L4Q4L7QZUFz3DDfjLL/nqfYqcy49NWC+eDrcRs9U7TyUXik4
+	 o4qObBFGI2WxuVavdsm3kHdmfu2WA+B+SoeNcfH1HGtULWGjXmAyGz+56BxH5ODaZJ
+	 s/SXT3ztJ5mIsVquOvoemzvGgD38HDKa0qGOivFube/NvSs3GBHPklx32YCRsII5G1
+	 IYB4HciYwVSekuwKGXIShXGIz8pm+oDrbXD58I65NNAepMWCqsMNiKgASpwX4I4IZ+
+	 8UW0dKT4Q/ON4uOECWZ2KjnqrovyynQAThcwwDk9Hm5qzB0hLWTJHuegkZXVAmPz/e
+	 7ZkhuN77D9BBQ==
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH mm-hotfixes] mm/vma: do not try to unmap a VMA if mmap_prepare() invoked from mmap()
+Date: Tue, 21 Apr 2026 11:21:50 +0100
+Message-ID: <20260421102150.189982-1-ljs@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20260416110654.247398-1-mclapinski@google.com>
- <20260416110654.247398-2-mclapinski@google.com> <aeD2Fzr6yr4pu9-X@kernel.org>
- <CAAi7L5d-ujEa7R21Lmd37X9451KBmK8ZhagSKbJde15aQLi2MQ@mail.gmail.com>
- <aeEKksfLxQ0A7Jun@kernel.org> <CAAi7L5cp3B0DFEQex5EqFdLDkqVWwRw228-pgp0PnhfgLP=e6Q@mail.gmail.com>
- <aecUW-Xgm5MPMyVr@kernel.org>
-In-Reply-To: <aecUW-Xgm5MPMyVr@kernel.org>
-From: =?UTF-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Date: Tue, 21 Apr 2026 12:20:27 +0200
-X-Gm-Features: AQROBzDs3jAHPn3oOPv3D-suXf1b7CCQl5aO-frumb4b7YD1JXID7aO_RKQeeO4
-Message-ID: <CAAi7L5d8x1MB1f6A_h2acj1CYU1wf7DijS1TENC+Lurx5wLhKw@mail.gmail.com>
-Subject: Re: [PATCH v8 1/2] kho: fix deferred initialization of scratch areas
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Evangelos Petrongonas <epetron@amazon.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Stat-Signature: spn83ptxtx1td9xewdudbwea5kxbwec7
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E09B720005
+X-Stat-Signature: ehhhd6a3gtjpijokxkszkhdsk5zt3yt4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6653940009
-X-HE-Tag: 1776766842-264684
-X-HE-Meta: U2FsdGVkX1+vWUgYJS3YUcGONAcbpSMGWbTVXZiCwe+GkXViJmX1opGi47HuZq4gYd7kkf95eXymnhqJ8WKvWDcMUripDx46Uj6u856o9VuRAUCsutqupNcvmm2OhGn594BKM+c/tflcgOMN8Rp+EL00MuTFbwJB9Eoo+v3CV7uZLzkbMBo/E3fgV8E9y7l5wH5VYQrtAq8IDZy2WyVEE3r4MPlbLrWud/mtxICPICdYwKcM1kNozbm/I+dhCR05ui9szLMPt5PUOrxYNGfSNz3gwREuepbZ3Ft+/clCZEpwYzHEmTP2PLgbX0IvUPoqjoSnA2qB33QuXlNBa+8fRvPN3ZViv0Hyxoar1ey2WWF0Jqq2O2l62F161p4YU+dvZpVIGPRjEai1LfOxgW8wNEQWFt9d5zsT+V7vx91KB17nHerpRKWt1l6x4jK06HAkuoWBmOBTzbNwtdD5LvPIuXGpTEc/3jnkRSdthmReDMybzV0n1osNfvj8ha5KHZoD1NxS0ZA1eSgNiSwIFPIxJ8jAyHouY/5WXE/cI3kFnwl+1ODPadtOMcwV/f9qrYFLL/Ydi0gOvnDd2TBu6MYatnNRlADm7KEaCdBxaPwQVIzc0RFpUEyFNG2QSry13BZY0lJQop7kD8YVgfW8uNucR7LhvFa3LeTxMoEFuBoVANKdG4Wb0cCGtOfTWMePUafG2mJ7Rufx6db+qli+UKN/H8BXkrnk26DUbBz7OfeM106rppnofJVeDrLgaov6uEi6VUr1r9JbgAuz4gfmktFT/3KYe0EcxTdkBOaoLRF64tqS0Ozn2qcqyesuuz0W2HzM7V695SB/yt8zLa9V27D42B55JAKXf1ehtRtxEerTWJ9PDQ9aLA0ZtmnoZP18+PRFLeBqb9w+9NYC23SbsTEAoP1gG64apA1pYZcIfh5jnWsvqWdfjtaFz/YsF8dKyVhOj7eKQwh+cN9NX45vCQ0
- +cspewgM
- vrWchAWluj8e3jFL/eovdYrXco9T9Jt2egf3rG/SrgkA6sdDTLzgKRPNz3ychyZqJSeZ77Usj/+pxPoGNrk4vpmfXSY30FQtPeAuDkL3rDPSVY505CSXv0zt6qzujPHl5NUEZnPfs3u5mOIIqb8KCNPgyX0M5efjHlNgv4w+IDrE9nCH7aW/QnEAi50PCbGc2I3D0mT9QRsF8T+bS7ih1HNjHgjFvQe2RDlgftFcbcIR3wa16z6Jjr7jTXG9kqPjHPicAg2OC/uUiatLbY1M99sSMHdV/D2m9YfMsm0xYA8NBt8S+u92vlxNRK3OwfEgftFKALFc7ZkC7CTc=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776766918-416624
+X-HE-Meta: U2FsdGVkX1/+gzv4lfVdbiOaXQkOM4RpHJK6KE9e+KyPA5ueV9rgd2DrV7Nn05vLLWXEIpLwu27QJFZ34abW8J7iAEr53AmWsrt/UqXIIRVtnmvJT7UJrPLJAMwo8pf4qZNQlET1j9O5ZOG/h/2AMT1HX5mExI+o/iUnzJZXrHapFFbJR04ZMm4LxIYuAr2IUCGJvHwYYbrsjERngwtDNXVKQSSt1Q9Rk1DE2fBKfjGTCVQlI6hA50j3IjN79mR6jPvBFkx8VEy5M4D2N0ME54omjIokuUSP8AmYkYk6plLR2zmLExx9Yo4eqdx4X6Jwz2uj3VTDkv33JmaHar2VcNRXoe7U+VBWqQe5YCZVhRW5vcqkTn69Wb/gq9ShuwiUy8nM89rIPt/aDY3CgOqw8UKCbIODrzxlTp3k1rJGtqX1xyINMGL794YT55edb7O7QBc4x/MFG6DHaRbsEPP+E1LMQudpfpmpnetsVmPey4gXWYXpKGKOsOISgjBfY0l9tBWnipyKFtJgRirp8U9Z8XXuXV8zasYS7TZ/yUAXfKILF3E/DHaKiylHPcIZOHzpPiZC8YSAOKsgEk9B9hgomvzbfZFvq1XV2DSAJEL6H9mHlkIX3BhbyrRbJMydilSHSXKxVV74Pq4sVW3bV+OdMx3nANlR+TIJz7VUFz8T03Y//LwxDYUmomOel/+zUciFNCzF7jheS+2b/IOdjI0m5zugtOmAsckndCNClZHIaQ3/TOEafFOPwc1viq7d+vartp1tMsJlVksG0JPUJvaODYPYL28hsdXHCPDdIaZqc6//RBc+yydbuksa+sA0HDcE70GkFcGxO6PAEi22Fjqoh0uxPb3x7Kj01Pk9uSkUbyqhdnaWnYUp85syYDMUScyCvvdvQMJoO6WyH1dYFy/2KcV8ZlCWUQeHnuAZG28HKByx9rvmMs2pI33Nrgf723qst3/Sh53TQC7GewuMj/J
+ 6JvOm3cO
+ JLV1EKKstGzohOpDPz2WeF0pDUZxHpXVxPiIS9XPCFQCKkvnXNyEz9P+xMawzJu1uoxqNXQkRyxlcYqwPdBidyT2wPU4gKt9ytcVQX640cpoBp3NtULpkMW9vGP6vR1HMfscLt+5cS1v8gjpCjlSg9pWg07LGCXpnZh4KBVl6Dt58GXSjPm36mRXrHIV7aoASkNZtCWqfDejJrX4UWUSKdAiQXafYOEBL2BIIJqNqtAWbl6WTdYT0dPAK4TrfueXjnJ2d58yrNEHzIW+OWptWan1k4M0Gl6drOLGk2mnZxjbeXHaleeDfRwhRxW9piIK7w3OZp7jKqbhbXz6aUZm0dfKXV3WLJqV6GYxs7t7i4YMDhmA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,93 +96,185 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 8:08=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Mon, Apr 20, 2026 at 03:11:03PM +0200, Micha=C5=82 C=C5=82api=C5=84ski=
- wrote:
-> > On Thu, Apr 16, 2026 at 6:13=E2=80=AFPM Mike Rapoport <rppt@kernel.org>=
- wrote:
-> > >
-> > > On Thu, Apr 16, 2026 at 05:06:10PM +0200, Micha=C5=82 C=C5=82api=C5=
-=84ski wrote:
-> > > > On Thu, Apr 16, 2026 at 4:45=E2=80=AFPM Mike Rapoport <rppt@kernel.=
-org> wrote:
-> > > > >
-> > > > > Hi Michal,
-> > > > >
-> > > > > On Thu, Apr 16, 2026 at 01:06:53PM +0200, Michal Clapinski wrote:
-> > > > > > @@ -2262,6 +2253,12 @@ static void __init memmap_init_reserved_=
-range(phys_addr_t start,
-> > > > > >                * access it yet.
-> > > > > >                */
-> > > > > >               __SetPageReserved(page);
-> > > > > > +
-> > > > > > +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> > > > >
-> > > > > No need for #ifdef here, there's a stub returning false for
-> > > > > CONFIG_MEMBLOCK_KHO_SCRATCH=3Dn case.
-> > > >
-> > > > In all 3 places the #ifdef is there because MIGRATE_CMA might be
-> > > > undefined. I already broke mm-new branch in the past because of tha=
-t.
-> > >
-> > > Hmm, that hurts :/
-> > >
-> > > The best I can think of is to add a static inline in memblock.h and i=
-fdefs
-> > > around it.
-> >
-> > Sorry, I don't understand what you mean. What would that static inline =
-contain?
->
-> Something like this:
->
-> #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> static inline enum migratetype kho_scratch_migratetype(unsigned long pfn,
->                                                        enum migratetype m=
-t)
-> {
->         if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)))
->                 return MIGRATE_CMA
->         return mt;
-> }
-> #else
-> static inline enum migratetype kho_scratch_migratetype(unsigned long pfn,
->                                                        enum migratetype m=
-t)
-> {
->         return mt;
-> }
-> #endif
+The mmap_prepare hook functionality includes the ability to invoke
+mmap_prepare() from the mmap() hook of existing 'stacked' drivers, that is
+ones which are capable of calling the mmap hooks of other drivers/file
+systems (e.g. overlayfs, shm).
 
-How would I use it for this code?
+As part of the mmap_prepare action functionality, we deal with errors by
+unmapping the VMA should one arise. This works in the usual mmap_prepare
+case, as we invoke this action at the last moment, when the VMA is
+established in the maple tree.
 
-+#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-+             if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)) &&
-+                 pageblock_aligned(pfn))
-+                     init_pageblock_migratetype(page, MIGRATE_CMA, false);
-+#endif
+However, the mmap() hook passes a not-fully-established VMA pointer to the
+caller (which is the motivation behind the mmap_prepare() work), which is
+detached.
 
-It doesn't invoke init_pageblock_migratetype unless pfn is kho scratch.
+So attempting to unmap a VMA in this state will be problematic, with the
+most obvious symptom being a warning in vma_mark_detached(), because the
+VMA is already detached.
 
-> Can't say I'm happy about the name, but could not think of something
-> better.
->
-> > > > > > +             if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn))=
- &&
-> > > > > > +                 pageblock_aligned(pfn))
-> > > > > > +                     init_pageblock_migratetype(page, MIGRATE_=
-CMA, false);
-> > > > > > +#endif
-> > > > > >       }
-> > > > > >  }
-> > >
-> > > --
-> > > Sincerely yours,
-> > > Mike.
->
-> --
-> Sincerely yours,
-> Mike.
+It's also unncessary - the mmap() handler will clean up the VMA on error.
+
+So to fix this issue, this patch propagates whether or not an mmap action
+is being completed via the compatibility layer or directly.
+
+If the former, then we do not attempt VMA cleanup, if the latter, then we
+do.
+
+This patch also updates the userland VMA tests to reflect the change.
+
+Fixes: ac0a3fc9c07d ("mm: add ability to take further action in vm_area_desc")
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+db390288d141a1dccf96@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e69734.050a0220.24bfd3.0027.GAE@google.com/
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+ include/linux/mm.h                |  2 +-
+ mm/util.c                         | 26 +++++++++++++++++---------
+ mm/vma.c                          |  3 ++-
+ tools/testing/vma/include/dup.h   |  2 +-
+ tools/testing/vma/include/stubs.h |  3 ++-
+ 5 files changed, 23 insertions(+), 13 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0b776907152e..af23453e9dbd 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4391,7 +4391,7 @@ static inline void mmap_action_map_kernel_pages_full(struct vm_area_desc *desc,
+
+ int mmap_action_prepare(struct vm_area_desc *desc);
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action);
++			 struct mmap_action *action, bool is_compat);
+
+ /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
+ static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
+diff --git a/mm/util.c b/mm/util.c
+index 232c3930a662..3cc949a0b7ed 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1232,7 +1232,7 @@ int __compat_vma_mmap(struct vm_area_desc *desc,
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+-	return mmap_action_complete(vma, &desc->action);
++	return mmap_action_complete(vma, &desc->action, /*is_compat=*/true);
+ }
+ EXPORT_SYMBOL(__compat_vma_mmap);
+
+@@ -1389,7 +1389,8 @@ static int call_vma_mapped(struct vm_area_struct *vma)
+ }
+
+ static int mmap_action_finish(struct vm_area_struct *vma,
+-			      struct mmap_action *action, int err)
++			      struct mmap_action *action, int err,
++			      bool is_compat)
+ {
+ 	size_t len;
+
+@@ -1400,8 +1401,12 @@ static int mmap_action_finish(struct vm_area_struct *vma,
+
+ 	/* do_munmap() might take rmap lock, so release if held. */
+ 	maybe_rmap_unlock_action(vma, action);
+-	if (!err)
+-		return 0;
++	/*
++	 * If this is invoked from the compatibility layer, post-mmap() hook
++	 * logic will handle cleanup for us.
++	 */
++	if (!err || is_compat)
++		return err;
+
+ 	/*
+ 	 * If an error occurs, unmap the VMA altogether and return an error. We
+@@ -1451,13 +1456,15 @@ EXPORT_SYMBOL(mmap_action_prepare);
+  * mmap_action_complete - Execute VMA descriptor action.
+  * @vma: The VMA to perform the action upon.
+  * @action: The action to perform.
++ * @is_compat: Is this being invoked from the compatibility layer?
+  *
+  * Similar to mmap_action_prepare().
+  *
+- * Return: 0 on success, or error, at which point the VMA will be unmapped.
++ * Return: 0 on success, or error, at which point the VMA will be unmapped if
++ * !@is_compat.
+  */
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action)
++			 struct mmap_action *action, bool is_compat)
+ {
+ 	int err = 0;
+
+@@ -1478,7 +1485,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
+ 		break;
+ 	}
+
+-	return mmap_action_finish(vma, action, err);
++	return mmap_action_finish(vma, action, err, is_compat);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #else
+@@ -1500,7 +1507,8 @@ int mmap_action_prepare(struct vm_area_desc *desc)
+ EXPORT_SYMBOL(mmap_action_prepare);
+
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action)
++			 struct mmap_action *action,
++			 bool is_compat)
+ {
+ 	int err = 0;
+
+@@ -1517,7 +1525,7 @@ int mmap_action_complete(struct vm_area_struct *vma,
+ 		break;
+ 	}
+
+-	return mmap_action_finish(vma, action, err);
++	return mmap_action_finish(vma, action, err, is_compat);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #endif
+diff --git a/mm/vma.c b/mm/vma.c
+index 377321b48734..d90791b00a7b 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2780,7 +2780,8 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 	__mmap_complete(&map, vma);
+
+ 	if (have_mmap_prepare && allocated_new) {
+-		error = mmap_action_complete(vma, &desc.action);
++		error = mmap_action_complete(vma, &desc.action,
++					     /*is_compat=*/false);
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index b4864aad2db0..9e0dfd3a85b0 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1330,7 +1330,7 @@ static inline int __compat_vma_mmap(struct vm_area_desc *desc,
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+-	return mmap_action_complete(vma, &desc->action);
++	return mmap_action_complete(vma, &desc->action, /*is_compat=*/true);
+ }
+
+ static inline int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index a30b8bc84955..64164e25658f 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -87,7 +87,8 @@ static inline int mmap_action_prepare(struct vm_area_desc *desc)
+ }
+
+ static inline int mmap_action_complete(struct vm_area_struct *vma,
+-				       struct mmap_action *action)
++				       struct mmap_action *action,
++				       bool is_compat)
+ {
+ 	return 0;
+ }
+--
+2.53.0
 
