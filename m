@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09D05F8924D
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 10:25:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE8BAF8924D
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 10:26:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FC606B008A; Tue, 21 Apr 2026 06:25:01 -0400 (EDT)
+	id F217A6B0092; Tue, 21 Apr 2026 06:25:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D9CE6B008C; Tue, 21 Apr 2026 06:25:01 -0400 (EDT)
+	id EF94A6B0093; Tue, 21 Apr 2026 06:25:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 310626B0092; Tue, 21 Apr 2026 06:25:01 -0400 (EDT)
+	id E36996B0095; Tue, 21 Apr 2026 06:25:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21DF06B008A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:25:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3EDDBDB85
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:25:00 +0000 (UTC)
-X-FDA: 84682179960.29.5706475
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D44DB6B0092
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:25:59 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 77747E5BAB
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:25:59 +0000 (UTC)
+X-FDA: 84682182438.04.75A37AA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 23F03140003
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:24:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HCemAdsh;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id CABE516000C
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:25:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d3h4oYPq;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776767099;
+	s=arc-20220608; t=1776767157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VXZpyDtX9d/kueOfhaeSDpVbnDg1k8zMD8iFb/+pE9U=;
-	b=Dbsnst2obGibTxnMC46/zmrKLgd9dpNczRMwdSQbqa5WWSIlAY0HgM6r8eW9R+JzMzvSuL
-	Nzt86+FAj4IPPuBPfz0Fp/qpNSBqJ2DgWKyZy1Udzix/AsCQHsXkJKcHoJR+xGXHhDnfN/
-	3QhbDSwa0x6WzEjK5VWtKTJJneQvZUQ=
+	bh=JEnbnARUnGYOzvOOAfD7bDEij7ZoYspS5aLmbpnF/ZE=;
+	b=ctxvx7LxrN3nqIy3ql3i52YOQtzw1lTVMDU5FdjHPObBzbjqsOeHWAp9UcHw9QEb29TQXV
+	6Wwz/yT0ILpiAZJ276zNlAzWBB4LxL/2JILCrphfTST0E5sXJovtWYqTb0lTgdw/mNF7hp
+	Cy55sttyXFW/z3oaMRHstiDGslDSZns=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HCemAdsh;
-	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d3h4oYPq;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776767099; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776767157; a=rsa-sha256;
 	cv=none;
-	b=gxPHrA6m1HzQAtvK0yn1/KZmsvgkZMH4oE1caFqsg2T81JSZoPsnVMYzN6jZQS/DqqAasB
-	79NKLaZIDmlS72zF6gGb6Q0C1OebkVhUsWGsCKIRFIyaePerWpE0ryUSGjiBZF7x7XNQky
-	oOqnqz/ziWh4Xl67/a2k+gF0+CV+0bw=
+	b=SQk5YtwZGuhyswsBUZCW0FEqwgfqcEGBlCEHZjgT1TvYSJbTkMPOwvRGGzZcHgK9X3ef5v
+	Pby1d9XlQr9Z9/V2CBKr92g6hZ9pY/3gMEFYq7uxGyeCb+4t5JXL5exsSxZfG19HesVWVW
+	cjH07Y9TAmUjTOio3sDXWdT/C5rAUNQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B9B7B43E3B;
-	Tue, 21 Apr 2026 10:24:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5223FC2BCB0;
-	Tue, 21 Apr 2026 10:24:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E7701403D3;
+	Tue, 21 Apr 2026 10:25:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D91BC2BCB0;
+	Tue, 21 Apr 2026 10:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776767097;
-	bh=firh9QIDguLTG6wgrGZbOOkBiLIhh3fjZnBwKL1kIv0=;
+	s=k20201202; t=1776767156;
+	bh=4loqqwmVByZydFOLKx4Df/CNcWTPfKogyfRe2H/uC1g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HCemAdshi4KHRisPS/RvA4gQfws3j/RpyxXKUV0Yegibkt/idynoXy6hFSxswaKj4
-	 yIPog4pFxpsumS1Dzkt0wk2UNZa2ovd/UR1Lta1s4Hedl9r3tkfTF41yQbgCqmU0DZ
-	 BGeA3mT3tF8ULSg2K01WZXOvDNheI+LpdNFt76wb5SEezuZck8GApCkjA9i5gxuNkV
-	 Txlk3Yu9CkOA0rBQPV1OWF5pzbXtA2abcQYSE3FbOx+aJP4Q619/M6hlqrYxA78/t2
-	 PqaRG6eFDhwal6MZKLRSf4F8WNAMknUFX7PgbzwdyLlndysLpFhheB+hn/2TTgwdaU
-	 LTqt+RVzihJ5A==
-Date: Tue, 21 Apr 2026 13:24:51 +0300
+	b=d3h4oYPqihpDwu5jSY38mVpZvUnUftD4h+6bma3bEJMXePM1uyAyqvqpKcJrwoX44
+	 KFvKUNwjb6SdyFGKEnZVVEQeGNKrAicp+kuBGrEk50YddCWx0cx1Ikf0+EldqBmVq2
+	 y4DfQf3+KDm0FgFPMk9pXTsiublJYe4zkXGKBuybI9Z1zprMIyWL2DRXsSJXjztf65
+	 +JJTUzxIrKJ9ZtkqOkBAP8rQEU5aNZijRMUEg4CkYuyDYdXTXnNySYoOTjPIiFnxAq
+	 hmLPaS3U/0RNf+6kxU+Dr1CBJi2hjiHDfRjEKSFa03BAxuMGnWNGMxbq1UlamIGsgc
+	 36Wgw6s5N+4tw==
+Date: Tue, 21 Apr 2026 13:25:50 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: luca.boccassi@gmail.com
 Cc: kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com,
 	pasha.tatashin@soleen.com, pratyush@kernel.org, brauner@kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 1/6] liveupdate: reject
- LIVEUPDATE_IOCTL_CREATE_SESSION with invalid name length
-Message-ID: <aedQc4djj8VvL9xv@kernel.org>
+Subject: Re: [PATCH v9 2/6] selftests/liveupdate: add test cases for
+ LIVEUPDATE_IOCTL_CREATE_SESSION calls with invalid length
+Message-ID: <aedQrhEYmgsSvNuB@kernel.org>
 References: <20260420141741.2688371-1-luca.boccassi@gmail.com>
- <20260420141741.2688371-2-luca.boccassi@gmail.com>
+ <20260420141741.2688371-3-luca.boccassi@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260420141741.2688371-2-luca.boccassi@gmail.com>
-X-Stat-Signature: 4ky7otpb3ye6yqjho1jt1xfmga3fizjb
-X-Rspamd-Queue-Id: 23F03140003
+In-Reply-To: <20260420141741.2688371-3-luca.boccassi@gmail.com>
+X-Stat-Signature: y99kks3gitoxbrnwu7z8kpwdnnci7o8k
+X-Rspamd-Queue-Id: CABE516000C
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1776767098-177202
-X-HE-Meta: U2FsdGVkX1/Ri+aWH10hD4UIMQOACrX/kvHcpASUYe6weITNS3829l2f3yMDBOmzz56qtk/GltocbjzxTtFCCqc7HuDpJTEl1YdgOqfSf/oG5bVVRFeY0kUThOgw1kiav1t7q+1mOxxClCwR0Pknktw3MD5Q3DNGJClNV71YqdFlamNwZ/EyoyR1y75/1BS/mAoQi4SG3bzM0G2jNF8b7BszXmd6hcCCB3I5geQIaGhl4hN7fDaIISAXBUQk0/AS6CuUNLPuS9gQFWIIyTAiNAw6HK7FlpGqGK5o4rRiPkZmf2Ro4wphJe3U7qGTxaYQAZaPcmZexxYr+UGZUE+X931dwdMWqKlYcZwXosaZSUjVznEpxDkrV5bMDfNyggGh7JcSVmpevM3uVvxjyxLWzqBqGTqVBZlfwMKdnO3fFbSewbszHxX6T3gpqEBc/wSGUbkpwzNfWfdaJbBhmBVN7WUUpMbgZKlFtoAW4mYyG5Vjg/wYJcapI676nkGDBjwcIQHhRqK+tm1tiBVpAx3Wp/Nwe9bK0EgM5FbHo9/mtzlaxdRUbSg60V4/XI4GBqjRlpCJFHUwh8CyQINnBtYN16NV5QuhcvZ5maBuC4njtNiaI2Kies605EVoBDTHEGlAFWu40yeiZBGIIoRZROODSYMbMESTBDw4jz8dGCytEcLadzWPTzk7CDLI5jqdyo+KRMnrEmo54uiWUpmUFpHSTdTlSncmJEZG+zooxJ3r1bBq2bTYnkCD8pqibxG8DfXIzX1Tr9FyEiF/Hx87b5/AEkWEbFAJ42/p3E5i7SyNObLmd8BdqQ4aj7Nlpln8bOpzSsP4/+BX4JOK4l2r+mBS0FVZ+uUcIVvyzwxQmbnNyVtt5cbHSml/pU1FS+PC5iO4p2+Gd2KlmgH/OqAh6mnBvACWzIt/i3V8U7iyda/gjYRerFXJMF4GjkWHs7fVBr2HnaeOK5TaFLRSc8ra0wO
- pt36lQna
- x6qHAHctnoQq64U9auF27eodkMMlyx2QPwy7E/FtttZ89jiRoQq0mMm+wa7XMo3nsjbsKqHML8SWZ2xwppuGtLIvFvAwOAEYBdWOTw02jD2JQ8QXdmCyeQ6MidnlAp7fUWL0g5RClgSusWCfIvaqBJknbXXOamxCX1Edpii3vvGVsUVNH/El9QrVF88EOVPPbKbiP62ldes8hmon2mxPEfve4oLFdoVdjM1NOWePqaKEf7F1VQG7wYLSM/c3DAlebt09FqI9BbHCIxlQngLFKQWsLFDI9TDX8x3QnWS3s9I/Ft/0ekzoR30yodKwj7ZVYxZQHcldg95jsv1ZH5rTP4iAftBdHO+w0ZtRMa/aVAU4Wec+bx3squmY5MwlXoqE6PZwlQVGXFZ67r3qtXxPAQk1sHjFtxnDZdRx+uK1SAVM2LUo7j4XIW3uJIxsx7qCJ4H18hr748rJV6X2DeubiR6ZVX1Eoe51e0gmd
+X-HE-Tag: 1776767157-396129
+X-HE-Meta: U2FsdGVkX1/YFDSwQEtslKBLUu4LwpNsRsEn/Vg8ggM1JtMrhlFCLBGZwaroWzZIASpuourDgSg31VgwXypM3UgMdAXk8j9fzI6NSWDuTuOWDeftu0xZ4Jdgvbr8+iNf/IA2pUHAOr5dWg4B0CZoEYzvVyElJkE1Vil0KX1Ve27l/0KNWLi63wM3BTZGL1Nr2HfG2b4KXGDAo8q9zBW2Tr/OnxCJYDfLjKUAuGO3W5behdZCOIk+BQIpC/2DH13iHhpdjftV+WJlV4ST8KNNfnpu+V4utFeIFFKl8LHVvowPubLebUVrw9krtt607+E3OZFuMng0kl3mHjxD8CusDkRp59o34o1bEU9kD0wTnfI67UFWeUO/JuiiYLEYOdVgQa1aEMD20JFpzpT6PbooJJLinhjxm8aOJvnBzgDTw4JAiYhv/iOrZfy5p0tQweDW76cL+wZlyXTPletRgfwsiipfCTX5IWnjaeGi9iOpNHDVmkcqN7lXJsShmMgw4bDMYnAlAOKmVDRQoXHZ/qIzX478NvkjycRFFKQy2FECwaf5MLcvfhktApa0nQLGM8Wjb1wMxqfXU14tVqDEJ8En32Fo6XXliqyuQLrckc8Jmn0l5b3MVsRsrbQbl4/Q/o4mltpds5+f7VnjS77woOsI/4WUcPO3mrqlBQyoS2EH0v9VjdlB+0jSwTHJuI3hQthfifEDRCBiCGST9OM9F8+H5qF0phYqaHW9EkqtZdG97pYXYDmnhyPmwalKt285MC7B5MiEMdp7ZX9y5+t46uA1/adc99Gsy/kfAmkDD12FYhlpClv0hN+ETqjHXjC7dUpgB4XsiCPik4O4TWXuTqCKBnUyvtsDcgKK90QUs7/wqUpci/OcQc4p7m04TsDtntgYzF1VOKrbeadQJKD1nqGZZ8iAmzFoaxCYaxgYT2BEw80RDyLqpWr4Iq1Q5TJFvJVxiPumJSbtgveR7NsUUyC
+ QyXJWZK4
+ cF5wqP7mn1dgg9RKCwVc6Q13BuK/XOYZD5J1LcwfXWz/1qSWgSaVtOWEY+pQBx+qeHDY0zBVvccpQ6Z7c384AkiOHPgBFO/8oqd4E/ln5uCBJ3a58fQcUYoVNEQV3iR5nFyUH4X1faBAS/F/YV29GIR286MgJ/4yJFUeKwjkX7YjqQS10cFIPw9Lt7UWYR777wiSsgb7v7nVU1l57+conL13pt2Hb/Bm3x6sEN+EOMy9ReRaDP/DwoyrkN9D/TSCiYGdP8HiTga1G8N574mTzESbUoXNZgHjHd6EW4R1rurCxz6/RwLqdAjUtSYsAxORAujfXwkVcvRrqggsml94jgNqdVBpPtiDXnfvk4psL9qxGCkWPInorpwk1vvKHgNKcmZRa75nHqNQyzD+P+Bbn6QsKPYoYgbTDv9TllgGWWyVfOt2gSMOazui2epBormGi+PIG45R2RSfuljNf5ySI/ITagadhA/SC98ai
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,13 +93,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 20, 2026 at 03:15:09PM +0100, luca.boccassi@gmail.com wrote:
+On Mon, Apr 20, 2026 at 03:15:10PM +0100, luca.boccassi@gmail.com wrote:
 > From: Luca Boccassi <luca.boccassi@gmail.com>
 > 
-> A session name must not be an empty string, and must not exceed the
-> maximum size define in the uapi header, including null termination.
-> 
-> Fixes: 0153094d03df ("liveupdate: luo_session: add sessions support")
+> Verify that LIVEUPDATE_IOCTL_CREATE_SESSION ioctl which provide a name
+> that is an empty string or too long are not allowed.
 > 
 > Signed-off-by: Luca Boccassi <luca.boccassi@gmail.com>
 > Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
@@ -107,27 +105,60 @@ On Mon, Apr 20, 2026 at 03:15:09PM +0100, luca.boccassi@gmail.com wrote:
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  kernel/liveupdate/luo_session.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  .../testing/selftests/liveupdate/liveupdate.c | 42 +++++++++++++++++++
+>  1 file changed, 42 insertions(+)
 > 
-> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-> index 25ae704d7787..5e316a4c5d71 100644
-> --- a/kernel/liveupdate/luo_session.c
-> +++ b/kernel/liveupdate/luo_session.c
-> @@ -382,9 +382,13 @@ static int luo_session_getfile(struct luo_session *session, struct file **filep)
+> diff --git a/tools/testing/selftests/liveupdate/liveupdate.c b/tools/testing/selftests/liveupdate/liveupdate.c
+> index c2878e3d5ef9..f0a8e600c154 100644
+> --- a/tools/testing/selftests/liveupdate/liveupdate.c
+> +++ b/tools/testing/selftests/liveupdate/liveupdate.c
+> @@ -345,4 +345,46 @@ TEST_F(liveupdate_device, preserve_unsupported_fd)
+>  	ASSERT_EQ(close(session_fd), 0);
+>  }
 >  
->  int luo_session_create(const char *name, struct file **filep)
->  {
-> +	size_t len = strnlen(name, LIVEUPDATE_SESSION_NAME_LENGTH);
->  	struct luo_session *session;
->  	int err;
->  
-> +	if (len == 0 || len > LIVEUPDATE_SESSION_NAME_LENGTH - 1)
-> +		return -EINVAL;
+> +/*
+> + * Test Case: Create Session with No Null Termination
+> + *
+> + * Verifies that filling the entire 64-byte name field with non-null characters
+> + * (no '\0' terminator) is rejected by the kernel with EINVAL.
+> + */
+> +TEST_F(liveupdate_device, create_session_no_null_termination)
+> +{
+> +	struct liveupdate_ioctl_create_session args = {};
 > +
->  	session = luo_session_alloc(name);
->  	if (IS_ERR(session))
->  		return PTR_ERR(session);
+> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
+> +	if (self->fd1 < 0 && errno == ENOENT)
+> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +	ASSERT_GE(self->fd1, 0);
+> +
+> +	/* Fill entire name field with 'X', no null terminator */
+> +	args.size = sizeof(args);
+> +	memset(args.name, 'X', sizeof(args.name));
+> +
+> +	EXPECT_LT(ioctl(self->fd1, LIVEUPDATE_IOCTL_CREATE_SESSION, &args), 0);
+> +	EXPECT_EQ(errno, EINVAL);
+> +}
+> +
+> +/*
+> + * Test Case: Create Session with Empty Name
+> + *
+> + * Verifies that creating a session with an empty string name fails
+> + * with EINVAL.
+> + */
+> +TEST_F(liveupdate_device, create_session_empty_name)
+> +{
+> +	int session_fd;
+> +
+> +	self->fd1 = open(LIVEUPDATE_DEV, O_RDWR);
+> +	if (self->fd1 < 0 && errno == ENOENT)
+> +		SKIP(return, "%s does not exist", LIVEUPDATE_DEV);
+> +	ASSERT_GE(self->fd1, 0);
+> +
+> +	session_fd = create_session(self->fd1, "");
+> +	EXPECT_EQ(session_fd, -EINVAL);
+> +}
+> +
+>  TEST_HARNESS_MAIN
 > -- 
 > 2.47.3
 > 
