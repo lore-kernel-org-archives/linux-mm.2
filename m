@@ -4,95 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4295DF5A8DA
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 03:07:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75196F5A8DA
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 03:15:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47F8A6B0088; Mon, 20 Apr 2026 23:07:13 -0400 (EDT)
+	id 883E86B0088; Mon, 20 Apr 2026 23:15:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4303B6B0089; Mon, 20 Apr 2026 23:07:13 -0400 (EDT)
+	id 834386B0089; Mon, 20 Apr 2026 23:15:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3490B6B008A; Mon, 20 Apr 2026 23:07:13 -0400 (EDT)
+	id 6FC256B008A; Mon, 20 Apr 2026 23:15:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 230C46B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 23:07:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6378C1A0BC6
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:07:12 +0000 (UTC)
-X-FDA: 84681076704.06.3DF3893
-Received: from mailgw2.hygon.cn (unknown [101.204.27.37])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 24BD540006
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:07:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf12.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 58E6E6B0089
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 23:15:11 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2597113C12D
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:15:11 +0000 (UTC)
+X-FDA: 84681096822.10.C5002E0
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1C11416000B
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:15:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="oD/AYqDV";
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776740830;
+	s=arc-20220608; t=1776741309;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7jeNgSeoZ3zAmAlPOOJhAQr0427z7CbVWcmTLavvbLg=;
-	b=7rb2nPBKR0a8V8PgY3DY8iIrqyR4EFrZosviD30tGJBHI1j8l6JtTRy0Qs45YMW1qsHtFR
-	j1M/MibnFINgevhBYE5L4PDDxqMTcn5RpT/aUBkaeOP7Y9YiCdRaGTWJe+C8X/dOb+waIM
-	h/Ib9YbM5kYa9ky0T+ScjQYakiGoPU0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=CeJVbM2OnIQLUXn70ggs8YX5CWpOhskj/Admdwfs5cc=;
+	b=ZVe7Fsy/+OnjVM8GpCdxwqoUIGru9LO/P5S9mlw7zN9wf4QgJ+uc5MnIc6x7ZmVqoDGySP
+	06Cy38UvkdICU8X4bLoZQ7epqULJ/FRrhxm2pJ+dFbNPyVTLP7VoKp8+G59zlVyo+P4/yc
+	Jnq12W3XE/Pe5NQunCrIQ3qbD8bTUVs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf12.hostedemail.com: domain of huangsj@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=huangsj@hygon.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776740830; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="oD/AYqDV";
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776741309; a=rsa-sha256;
 	cv=none;
-	b=y98e4z8xW9DnRrUAahsJlxSCBAW+X+0a/UdzSRmtQpuebJ/mghZZEWNYsXxO+GjeZE8Qai
-	gvK7fmV+LI5nx9/PrSgrKbkTp8uUSw+DIoFlcMIM30dI6es5CF/4fDCJzDmU+SGTwX4W4F
-	NbLF1tHMxPNag6/Tu3eVayR6gBQyvwE=
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by mailgw2.hygon.cn (Postfix) with ESMTP id 4g06hl3478z1YQpmD;
-	Tue, 21 Apr 2026 11:07:03 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by mailgw2.hygon.cn (Postfix) with ESMTP id 4g06hj31Ffz1YQpmD;
-	Tue, 21 Apr 2026 11:07:01 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id A77E933D4F40;
-	Tue, 21 Apr 2026 11:07:00 +0800 (CST)
-Received: from hsj-2U-Workstation (172.19.20.61) by cncheex04.Hygon.cn
- (172.23.18.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 21 Apr
- 2026 11:06:53 +0800
-Date: Tue, 21 Apr 2026 11:06:59 +0800
-From: Huang Shijie <huangsj@hygon.cn>
-To: Pedro Falcato <pfalcato@suse.de>
-CC: Mateusz Guzik <mjguzik@gmail.com>, <akpm@linux-foundation.org>,
-	<viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-fsdevel@vger.kernel.org>, <muchun.song@linux.dev>,
-	<osalvador@suse.de>, <linux-trace-kernel@vger.kernel.org>,
-	<linux-perf-users@vger.kernel.org>, <linux-parisc@vger.kernel.org>,
-	<nvdimm@lists.linux.dev>, <zhongyuan@hygon.cn>, <fangbaoshun@hygon.cn>,
-	<yingzhiwei@hygon.cn>
-Subject: Re: [PATCH 0/3] mm: split the file's i_mmap tree for NUMA
-Message-ID: <aebp06qEMBx3yjHg@hsj-2U-Workstation>
-References: <20260413062042.804-1-huangsj@hygon.cn>
- <76pfiwabdgsej6q2yxfh3efuqvsyg7mt7rvl5itzzjyhdrto5r@53viaxsackzv>
- <aeWLCxru6cLWsxvQ@SH-HV00110.Hygon.cn>
- <hshxzebq5y4gavo7mbrgn7qitz5j5wyun73wy7ooiiehzzpcui@hlknbp34sgja>
+	b=AjKlMSF+PSGe+r30DK+fBDsr2+SbZZsCn5qj4ep9bU2ErKeLm5o2TLeda3th+0n5ID51QQ
+	vgPUaiy8kDaV147raj4d+BPxo3zAn7qewNQ1NG28ho68+hSkd2orezD9KdCWSYffLa/Zqc
+	4A+41qU//SHEAQKYQgSrHSo5rvH6fNI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776741305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CeJVbM2OnIQLUXn70ggs8YX5CWpOhskj/Admdwfs5cc=;
+	b=oD/AYqDVeyHw4CD3dINI4U8xx5+T0AsrWA3adsPEaRgYPoo3MA9k9zQyZP37XnBmlherOQ
+	Ia+SGyYKvaqCnSBe5AcUOI1e0XILwD4z0HO0qFJCYbOo3EoyimSqFLw7YKLrLHlCZG4144
+	wvDnmFxTpm8BgvZa5W78iV5gGI0OA+k=
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH v2] mm/alloc_tag: replace fixed-size early PFN array with dynamic linked list
+Date: Tue, 21 Apr 2026 11:14:06 +0800
+Message-Id: <20260421031406.1189000-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <hshxzebq5y4gavo7mbrgn7qitz5j5wyun73wy7ooiiehzzpcui@hlknbp34sgja>
-X-Originating-IP: [172.19.20.61]
-X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
- (172.23.18.114)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 24BD540006
-X-Stat-Signature: oyq4es4e44cd6ikfg9i79rqrub18tkfu
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1C11416000B
+X-Stat-Signature: zmbkcf15e89tc1ttr76rz3mkpu5d3dz8
 X-Rspam-User: 
-X-HE-Tag: 1776740827-415074
-X-HE-Meta: U2FsdGVkX18cEbOrcxtwBINW9F5Q+OSnwqT00ZTTHOJqagttsvPKmBZKuzpuNcoGSv1zkUUHRn89hN+m3OgB32f6b0bb9vBNA4griWcduDFc0N9BmG/JaW4AF17mCoNCEUdifDKyVCSW2OC8aVLtp/nuufiODmSR7LQ0+pc3ldFEYJE4EByKfvDlaHSDhdViHHji3klkjmkcDM8kldPVp72V+INadjmQ5SX6VlVgs/2oRPF1mN9JfMpUCHHGVU2mbd63HoiI/LJnJDdzviMuFv/qcGPHQrINspJXA7vMU54VOlo0BkyP2mXbwrQ6qLBVwOK1Yv9uwcHUe6arC/eA9CwSlbpXmihEwiMAWfTxe6OfYOHyQeNTQHJvcpPe7TGFiSGArAo91WpZRyFX3o8wzGnpvpG0tMLmU8Ag9nhKbDRqKb9WQKaiD/woYOoY1rMZJ36DKxVAae41aM9psOjuaP+Sv37OtHODwCS7kmaQfYeKjbfr2wRHiX7Wwvo2ZXnKPupdOAkqhu9+nL9htER02J7HAGkWuX+OxaQ6GOGAgM2Xc+TwvErG6TB5QfGaaZum1n9cDa7VKRYgiRTzvSiHIiuFEQp8tWjRRvXVWYKd0/nB38kstrFlvITH/xv0w/DWeYC2BZaLe3M+roVIIyJOIcPjR4oswn9/64LFOjqFl7JKC9mjoA0qvX7HPvJMAtR0vEf6co+yHnD+x963LBMFOnXe1uhKAfW94AoicFfzQbh/6rb5ZdbZXIwN5EQgc9JeQDgde+E1nD0r12Tl+Ij30XuEyDTeYvyDLxTo0YvbUVuwrmpw0CnfHm7txEtnQMJUa3rjhhb63oOdse91YMKYzit6vcEGZt5xsUWHFB5ti374Nx5LBCX6jOxOFsdQdRm6vw33/7Pe1mvOj/l3VcAwV0hJEUh8njadiSRPROfMFaG1Z88PqnccgtvT353A/kAIHQbGvImv8vIwdLm7oDx
- YcPbKQrD
- 8FgWQXIktb+Tbte947oF9rvsQTLBHclXvPgQxxnYQ6PMQYsZOJagnc4ReIf9GLKzItZWgTjEjznyIbBZgQ3E0d9S+D13barGkmOggmwV05u9/kMOyhTVUMbwSRNukI9vEw4jRTzSv/OY+dMPKkB4xf9jiTaxH6/gUMZq8ef2X6hy+l9Pwk6LQ+I2rxeEcYdZXkv5ZMIWWR87ETARN3mPXkCDaVFq9E4R988nGqa66rIlH/zV5nt+75IadNg/n2pdQZerOhseYJenfCwpJ0GGdudoZ/krEzu4koI5eC/yK9eeFXGDOdCy3Vx2bwK2qDUmUDWKWHgxXGeuBICGGbPYNWXc43JtLfulyFvvGv4Uj/EhTbQEMehj85sZLTdgEi5H2e/jrRlaAnkHl8szEr5mQW5LTEoP5SSPQuZMP5voMyNKshTA=
+X-HE-Tag: 1776741307-386291
+X-HE-Meta: U2FsdGVkX18boGE2L0hhjzbGuFRgehnyUvpUAeuVdp0SjJAHKKVqk5ly+sP1MWP7exBgAlHYKamPl/VgVuP2kXTIP95L5sxu7XtEP0XYkE0uIvlcdF26VmB3JrxtYtRt8EDWVsXycH9mniW0EMgqxPwH9q4xAQYlAq9cpYhlO+m0Z/S39V9oiu+Xm85AUC4vh1M8C9YymX+o/ywAA87UitoxZqF5fYiQcma691Rc8suEfSYN9GrzVgR37FnismIVg5bTq0VoTICD5DCYCgM4hqBABmsY4lYBnBizT06VF2v6dO/TQSaiz3VWhPnWhfKu1rGp2q+nFmbTZ8i8g3IFF6VUFDPDcutX6TtGvOgAq4VkqZF28NA6qD83OuWiDYyOSr7XkN1yfXQjly4LzClHQ50rFwmrbGmDIk1e/kmaDJOIaGDCHPPVc4dDlwUbCjBKLv8180Wq3fsmgzFUL+daqTtHNAJAWTjQ0436sopB3m/Xq4DHVUl7gslwvHtXdWbZiKnvB9lMoI+rhRO6zWUDWJ/HApn3qEJPvmMEtQUaB0xabbSOwQl77fGVG8hBq/8U5R+4GFJjKZrPylr+3eLl6ZPnwI2kMujWhQZjZ1tbqLTS14wHCzVnelyx110faRrY+fOhkbnQFZV2vjspVRItnOpwmhcji43gZmVu9FNyJx1nlrs1D5AS1IRdC9oqm5iYiJzNdhuSg6xn1mJJ2uO3UJ9c2aCd1OnpHFhO1+A6LrTGMAlm6zW4ai6RbG2bsoHiX6kdJYABUncPePrNvQSEq14v6EwEbyMlGVLvWGkC3cWPVkBMXYi2Op/iw9oXMhtNxjFur+Pp52yPyx6GDJbVWFOkJY49rVIq+tXqSF2BFL29DSdGcwp4VMd4r9x33NVhcf+TzbhPvhl2g2WeuHn3DJmpF6VvmnjZXE4EBNG8+dgEDXlE0q8Lr+LRWcglCXhCgQ6mILdzWdQffGGE6UC
+ ByveV5Ss
+ 2V5g+tP0aEckhlouC5Y5BWT9glxTJlAF5YJAxCPKqbaEmAJ/yQOea0ezQXCpcJ9+Lv6pC3zYFa4pXGVkkTqMkFNKqznTEV1IIRG5+2+tIrr6pR0Ir5FDJU0MtsHsD4fxzCNMg+Q08mgCwHcJyaly2JTvYQZIQHhDoc/06/ljrRri7awhWgj5b6FSMKx6rGqTXuYJTpwpkeeruPqJYmXi8F9NdYFMHOxJgdli/NcgdAMs7+WDvihHEIOhhJg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,92 +86,306 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 20, 2026 at 02:48:49PM +0100, Pedro Falcato wrote:
-> BTW you're missing _a lot_ of CC's here, including the whole of mm/rmap.c
-> maintainership.
+Pages allocated before page_ext is available have their codetag left
+uninitialized. Track these early PFNs and clear their codetag in
+clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
+warnings when they are freed later.
 
-Thanks, my fault.
+Currently a fixed-size array of 8192 entries is used, with a warning if
+the limit is exceeded. However, the number of early allocations depends
+on the number of CPUs and can be larger than 8192.
 
-> 
-> On Mon, Apr 20, 2026 at 10:10:19AM +0800, Huang Shijie wrote:
-> > On Mon, Apr 13, 2026 at 05:33:21PM +0200, Mateusz Guzik wrote:
-> > > On Mon, Apr 13, 2026 at 02:20:39PM +0800, Huang Shijie wrote:
-> > > >   In NUMA, there are maybe many NUMA nodes and many CPUs.
-> > > > For example, a Hygon's server has 12 NUMA nodes, and 384 CPUs.
-> > > > In the UnixBench tests, there is a test "execl" which tests
-> > > > the execve system call.
-> > > > 
-> > > >   When we test our server with "./Run -c 384 execl",
-> > > > the test result is not good enough. The i_mmap locks contended heavily on
-> > > > "libc.so" and "ld.so". For example, the i_mmap tree for "libc.so" can have 
-> > > > over 6000 VMAs, all the VMAs can be in different NUMA mode.
-> > > > The insert/remove operations do not run quickly enough.
-> > > > 
-> > > > patch 1 & patch 2 are try to hide the direct access of i_mmap.
-> > > > patch 3 splits the i_mmap into sibling trees, and we can get better 
-> > > > performance with this patch set:
-> > > >     we can get 77% performance improvement(10 times average)
-> > > > 
-> > > 
-> > > To my reading you kept the lock as-is and only distributed the protected
-> > > state.
-> > > 
-> > > While I don't doubt the improvement, I'm confident should you take a
-> > > look at the profile you are going to find this still does not scale with
-> > > rwsem being one of the problems (there are other global locks, some of
-> > > which have experimental patches for).
-> > > 
-> > > Apart from that this does nothing to help high core systems which are
-> > > all one node, which imo puts another question mark on this specific
-> > > proposal.
-> > > 
-> > > Of course one may question whether a RB tree is the right choice here,
-> > > it may be the lock-protected cost can go way down with merely a better
-> > > data structure.
-> > > 
-> > > Regardless of that, for actual scalability, there will be no way around
-> > > decentralazing locking around this and partitioning per some core count
-> > > (not just by numa awareness).
-> > > 
-> > > Decentralizing locking is definitely possible, but I have not looked
-> > > into specifics of how problematic it is. Best case scenario it will
-> > > merely with separate locks. Worst case scenario something needs a fully
-> > > stabilized state for traversal, in that case another rw lock can be
-> > > slapped around this, creating locking order read lock -> per-subset
-> > > write lock -- this will suffer scalability due to the read locking, but
-> > > it will still scale drastically better as apart from that there will be
-> > > no serialization. In this setting the problematic consumer will write
-> > > lock the new thing to stabilize the state.
-> > > 
-> > I thought over again.
-> > I can change this patch set to support the non-NUMA case by:
-> >   1.) Still use one rw lock.
-> 
-> No. This doesn't help anything.
-> 
-> >   2.) For NUMA, keep the patch set as it is.
-> 
-> Please no. No NUMA vs non-NUMA case.
-> 
-> >   3.) For non-NUMA case, split the i_mmap tree to several subtrees.
-> >       For example, if a machine has 192 CPUs, split the 32 CPUs as a tree.
-> 
-> If lock contention is the problem, I don't see how splitting the tree helps,
-> unless it helps reduce lock hold time in a way that randomly helps your workload.
-> But that's entirely random.
-We actually face two issues:
-   1.) the lock contention
-   2.) the lock hold time.
+Replace the fixed-size array with a dynamically allocated linked list.
+Each page is carved into early_pfn_node entries and the remainder is
+kept as a freelist for subsequent allocations.
 
-IMHO, if we can reduce the lock hold time, we can ease the lock contention too.
-So this patch set is to reduce the lock hold time, which is much helpful in our
-NUMA server in UnixBench test.
+The list nodes themselves are allocated via alloc_page(), which would
+trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() ->
+alloc_early_pfn_node() and recurse indefinitely.  Introduce
+__GFP_NO_CODETAG (reuses the %__GFP_NO_OBJ_EXT bit) and pass
+gfp_flags through pgalloc_tag_add() so that the early path can skip
+recording allocations that carry this flag.
 
-If we split the lock into small locks, we can also benefit from it. 
-If you or Mateusz create the patch in future, I can test it on our server.
-I wonder if it can give us better performance then current patch set.
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+v2:
+- Use cmpxchg to atomically update early_pfn_pages, preventing page leak under concurrent allocation
+- Pass gfp_flags through the full call chain and use gfpflags_allow_blocking()
+  to select GFP_KERNEL vs GFP_ATOMIC, avoiding unnecessary GFP_ATOMIC in process context
+---
+ include/linux/alloc_tag.h |  22 +++++++-
+ lib/alloc_tag.c           | 102 ++++++++++++++++++++++++++------------
+ mm/page_alloc.c           |  29 +++++++----
+ 3 files changed, 108 insertions(+), 45 deletions(-)
 
-Thanks
-Huang Shijie
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index 02de2ede560f..2fa695bd3c53 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -150,6 +150,23 @@ static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
+ }
+ 
+ #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
++/*
++ * Skip early PFN recording for a page allocation.  Reuses the
++ * %__GFP_NO_OBJ_EXT bit.  Used by alloc_early_pfn_node() to avoid
++ * recursion when allocating pages for the early PFN tracking list
++ * itself.
++ *
++ * Callers must set the codetag to CODETAG_EMPTY (via
++ * clear_page_tag_ref()) before freeing pages allocated with this
++ * flag once page_ext becomes available, otherwise
++ * alloc_tag_sub_check() will trigger a warning.
++ */
++#define __GFP_NO_CODETAG	__GFP_NO_OBJ_EXT
++
++static inline bool should_record_early_pfn(gfp_t gfp_flags)
++{
++	return !(gfp_flags & __GFP_NO_CODETAG);
++}
+ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag)
+ {
+ 	WARN_ONCE(ref && ref->ct && !is_codetag_empty(ref),
+@@ -163,11 +180,12 @@ static inline void alloc_tag_sub_check(union codetag_ref *ref)
+ {
+ 	WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
+ }
+-void alloc_tag_add_early_pfn(unsigned long pfn);
++void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags);
+ #else
+ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag) {}
+ static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
+-static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
++static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags) {}
++static inline bool should_record_early_pfn(gfp_t gfp_flags) { return true; }
+ #endif
+ 
+ /* Caller should verify both ref and tag to be valid */
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index ed1bdcf1f8ab..cfc68e397eba 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -766,45 +766,75 @@ static __init bool need_page_alloc_tagging(void)
+  * Some pages are allocated before page_ext becomes available, leaving
+  * their codetag uninitialized. Track these early PFNs so we can clear
+  * their codetag refs later to avoid warnings when they are freed.
+- *
+- * Early allocations include:
+- *   - Base allocations independent of CPU count
+- *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
+- *     such as trace ring buffers, scheduler per-cpu data)
+- *
+- * For simplicity, we fix the size to 8192.
+- * If insufficient, a warning will be triggered to alert the user.
+- *
+- * TODO: Replace fixed-size array with dynamic allocation using
+- * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
+  */
+-#define EARLY_ALLOC_PFN_MAX		8192
++struct early_pfn_node {
++	struct early_pfn_node	*next;
++	unsigned long		pfn;
++};
++
++#define NODES_PER_PAGE		(PAGE_SIZE / sizeof(struct early_pfn_node))
+ 
+-static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
+-static atomic_t early_pfn_count __initdata = ATOMIC_INIT(0);
++static struct early_pfn_node *early_pfn_list __initdata;
++static struct early_pfn_node *early_pfn_freelist __initdata;
++static struct page *early_pfn_pages __initdata;
+ 
+-static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
++static struct early_pfn_node *__init alloc_early_pfn_node(gfp_t gfp_flags)
+ {
+-	int old_idx, new_idx;
++	struct early_pfn_node *ep, *new;
++	struct page *page, *old_page;
++	gfp_t gfp = gfpflags_allow_blocking(gfp_flags) ? GFP_KERNEL : GFP_ATOMIC;
++	int i;
++
++retry:
++	ep = READ_ONCE(early_pfn_freelist);
++	if (ep) {
++		struct early_pfn_node *next = READ_ONCE(ep->next);
++
++		if (try_cmpxchg(&early_pfn_freelist, &ep, next))
++			return ep;
++		goto retry;
++	}
++
++	page = alloc_page(gfp | __GFP_NO_CODETAG | __GFP_ZERO);
++	if (!page)
++		return NULL;
++
++	new = page_address(page);
++	for (i = 0; i < NODES_PER_PAGE - 1; i++)
++		new[i].next = &new[i + 1];
++	new[NODES_PER_PAGE - 1].next = NULL;
++
++	if (cmpxchg(&early_pfn_freelist, NULL, new + 1)) {
++		__free_page(page);
++		goto retry;
++	}
+ 
+ 	do {
+-		old_idx = atomic_read(&early_pfn_count);
+-		if (old_idx >= EARLY_ALLOC_PFN_MAX) {
+-			pr_warn_once("Early page allocations before page_ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
+-				      EARLY_ALLOC_PFN_MAX);
+-			return;
+-		}
+-		new_idx = old_idx + 1;
+-	} while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx));
++		old_page = READ_ONCE(early_pfn_pages);
++		page->private = (unsigned long)old_page;
++	} while (cmpxchg(&early_pfn_pages, old_page, page) != old_page);
++
++	return new;
++}
++
++static void __init __alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
++{
++	struct early_pfn_node *ep = alloc_early_pfn_node(gfp_flags);
+ 
+-	early_pfns[old_idx] = pfn;
++	if (!ep)
++		return;
++
++	ep->pfn = pfn;
++	do {
++		ep->next = READ_ONCE(early_pfn_list);
++	} while (!try_cmpxchg(&early_pfn_list, &ep->next, ep));
+ }
+ 
+-typedef void alloc_tag_add_func(unsigned long pfn);
++typedef void alloc_tag_add_func(unsigned long pfn, gfp_t gfp_flags);
+ static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
+ 	RCU_INITIALIZER(__alloc_tag_add_early_pfn);
+ 
+-void alloc_tag_add_early_pfn(unsigned long pfn)
++void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
+ {
+ 	alloc_tag_add_func *alloc_tag_add;
+ 
+@@ -814,13 +844,14 @@ void alloc_tag_add_early_pfn(unsigned long pfn)
+ 	rcu_read_lock();
+ 	alloc_tag_add = rcu_dereference(alloc_tag_add_early_pfn_ptr);
+ 	if (alloc_tag_add)
+-		alloc_tag_add(pfn);
++		alloc_tag_add(pfn, gfp_flags);
+ 	rcu_read_unlock();
+ }
+ 
+ static void __init clear_early_alloc_pfn_tag_refs(void)
+ {
+-	unsigned int i;
++	struct early_pfn_node *ep;
++	struct page *page, *next;
+ 
+ 	if (static_key_enabled(&mem_profiling_compressed))
+ 		return;
+@@ -829,14 +860,13 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
+ 	/* Make sure we are not racing with __alloc_tag_add_early_pfn() */
+ 	synchronize_rcu();
+ 
+-	for (i = 0; i < atomic_read(&early_pfn_count); i++) {
+-		unsigned long pfn = early_pfns[i];
++	for (ep = early_pfn_list; ep; ep = ep->next) {
+ 
+-		if (pfn_valid(pfn)) {
+-			struct page *page = pfn_to_page(pfn);
++		if (pfn_valid(ep->pfn)) {
+ 			union pgtag_ref_handle handle;
+ 			union codetag_ref ref;
+ 
++			page = pfn_to_page(ep->pfn);
+ 			if (get_page_tag_ref(page, &ref, &handle)) {
+ 				/*
+ 				 * An early-allocated page could be freed and reallocated
+@@ -861,6 +891,12 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
+ 		}
+ 
+ 	}
++
++	for (page = early_pfn_pages; page; page = next) {
++		next = (struct page *)page->private;
++		clear_page_tag_ref(page);
++		__free_page(page);
++	}
+ }
+ #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+ static inline void __init clear_early_alloc_pfn_tag_refs(void) {}
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 04494bc2e46f..4e2bfb3714e1 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1284,7 +1284,7 @@ void __clear_page_tag_ref(struct page *page)
+ /* Should be called only if mem_alloc_profiling_enabled() */
+ static noinline
+ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+-		       unsigned int nr)
++		       unsigned int nr, gfp_t gfp_flags)
+ {
+ 	union pgtag_ref_handle handle;
+ 	union codetag_ref ref;
+@@ -1294,21 +1294,30 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 		update_page_tag_ref(handle, &ref);
+ 		put_page_tag_ref(handle);
+ 	} else {
+-		/*
+-		 * page_ext is not available yet, record the pfn so we can
+-		 * clear the tag ref later when page_ext is initialized.
+-		 */
+-		alloc_tag_add_early_pfn(page_to_pfn(page));
++
+ 		if (task->alloc_tag)
+ 			alloc_tag_set_inaccurate(task->alloc_tag);
++
++		/*
++		 * page_ext is not available yet, skip if this allocation
++		 * doesn't need early PFN recording.
++		 */
++		if (unlikely(!should_record_early_pfn(gfp_flags)))
++			return;
++
++		/*
++		 * Record the pfn so the tag ref can be cleared later
++		 * when page_ext is initialized.
++		 */
++		alloc_tag_add_early_pfn(page_to_pfn(page), gfp_flags);
+ 	}
+ }
+ 
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+-				   unsigned int nr)
++				   unsigned int nr, gfp_t gfp_flags)
+ {
+ 	if (mem_alloc_profiling_enabled())
+-		__pgalloc_tag_add(page, task, nr);
++		__pgalloc_tag_add(page, task, nr, gfp_flags);
+ }
+ 
+ /* Should be called only if mem_alloc_profiling_enabled() */
+@@ -1341,7 +1350,7 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
+ #else /* CONFIG_MEM_ALLOC_PROFILING */
+ 
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+-				   unsigned int nr) {}
++				   unsigned int nr, gfp_t gfp_flags) {}
+ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
+ 
+@@ -1896,7 +1905,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 
+ 	set_page_owner(page, order, gfp_flags);
+ 	page_table_check_alloc(page, order);
+-	pgalloc_tag_add(page, current, 1 << order);
++	pgalloc_tag_add(page, current, 1 << order, gfp_flags);
+ }
+ 
+ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
+-- 
+2.25.1
 
 
