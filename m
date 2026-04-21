@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DD87F327C4
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 08:40:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C960F327C2
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 08:51:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B1986B0088; Tue, 21 Apr 2026 04:40:44 -0400 (EDT)
+	id AE9276B0088; Tue, 21 Apr 2026 04:51:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 162166B0089; Tue, 21 Apr 2026 04:40:44 -0400 (EDT)
+	id A99B46B0089; Tue, 21 Apr 2026 04:51:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09F856B008A; Tue, 21 Apr 2026 04:40:44 -0400 (EDT)
+	id 9888A6B008A; Tue, 21 Apr 2026 04:51:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EAEFD6B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:40:43 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95449BD576
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:40:43 +0000 (UTC)
-X-FDA: 84681917166.08.3D14BB9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 776C9A0006
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:40:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="m84g/SYw";
-	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 838F36B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:51:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A15313C1F3
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:51:20 +0000 (UTC)
+X-FDA: 84681943920.23.F640DE8
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6AF1DC0003
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:51:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nxozh7iJ;
+	spf=pass (imf28.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776760841;
+	s=arc-20220608; t=1776761478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EgumEJfrYaLcloTARpupOXQw32PxC3gb23jmLt56KT4=;
-	b=8TkZYYALDgbu5PK37DkVJ23P05j7ue7TUoIdVNM/eV7QnWDnocDkROl4hFnXttOhcikqmL
-	U8f2UGn9SkZnT49uAk5a1nimu7S9gD+xD1lvCojRO+qoAv0pLaeSG7JYBUokEQ5YaRCBns
-	9L83TN2sgiFiSTdAEibsKkyWkCWt2Ls=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776760841; a=rsa-sha256;
-	cv=none;
-	b=p1opUJmKIvRE7hm0BGqwndyTKr06ZQdgH6jtuGFrvJuDPOWXv7V1spPBdQu/ToDjXazZ3/
-	X70wGEgchBDG9e1cyhhxVfKvB5VODDETvtfHCUoQzr9x1AJXywDnsrG3/W17DNXbsnN/yP
-	iaRgGqRqadQQCR3xJw9TEbcKwzzzOQg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=e5SgX+YVafdn2U1XYnpSWmBJ2zn5M8P1GrVlF6dB2uo=;
+	b=H4+sgvfyGan85nXKcug5YcR+5QP6Hg34kXfrLtu3YJHD7RJ2tV1R618/J0/5nclaAdjp01
+	sihN1Zv+aR+sEwnBuvS9wbI+Ju+gP78+ZU4tdxSbcbBDx7ZoXruFWB/kGXIJM9dT0vixyZ
+	KEHzsjopGWUX7Y3C117bLt41ybH++s0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="m84g/SYw";
-	spf=pass (imf15.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B260925E0;
-	Tue, 21 Apr 2026 01:40:34 -0700 (PDT)
-Received: from [10.57.63.119] (unknown [10.57.63.119])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5CD263F915;
-	Tue, 21 Apr 2026 01:40:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776760840; bh=EgumEJfrYaLcloTARpupOXQw32PxC3gb23jmLt56KT4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m84g/SYwoTZLaSaOqMPRRzbUY3MObVT2M729SpYBGr2MyrPKhYR9E74+K6sjJ0Vbw
-	 LF/PIYYBuV86V7ZYmhOnDeRF75EDyFh53WYU+XEu+I/4m5IQOMasOzExjCvFK578q9
-	 3wBS81X9Rm/vbkwxQAHT4CFnEaGGnv0jl9C3AWnA=
-Message-ID: <566e7e6b-17be-426f-a3f1-a615d0d61077@arm.com>
-Date: Tue, 21 Apr 2026 10:40:34 +0200
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nxozh7iJ;
+	spf=pass (imf28.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776761478; a=rsa-sha256;
+	cv=none;
+	b=XKg7NK8cISk2qsNi1vjHexrnNFqMVpGy3vri7J+xCtY9FYsvoU17n0oyEbvk0dY21A0kw8
+	L8Tm61VJMYrHSYfH/v0yYQ49ItNRvHbcUmvMwiE95/Nv18htvT3Yo5lJhejIToZbCgdn6t
+	jNNlaaTXxxujx/Qi1RKdHRMnPXGnTCY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776761474;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=e5SgX+YVafdn2U1XYnpSWmBJ2zn5M8P1GrVlF6dB2uo=;
+	b=nxozh7iJhH0uYNAXFWM6wRe3FVGgAOfJ2tTWLn4SmSNO7SRk61ymFb3phZSg4iZBL1cRPH
+	S6ynxJNRzbGOhxmHPbSkq3LRAET6b34F9DWN8A+RgPZ5rJhT4FigS1RejJrlGSPZPul1a8
+	qcOOwzdT/p4NOySUSELC2w2xxZDNIVc=
+From: Ye Liu <ye.liu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Ye Liu <liuye@kylinos.cn>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: handle potential NULL return from anon_vma_name_reuse()
+Date: Tue, 21 Apr 2026 16:50:55 +0800
+Message-ID: <20260421085056.26033-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] mm: Make lazy MMU mode context-aware
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Claudio Imbrenda
- <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
- <4dc47078-0f8b-4388-9715-744c18590a00@arm.com>
- <0dd3a5bf-a98b-4181-a88a-ec9c0203f90a-agordeev@linux.ibm.com>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <0dd3a5bf-a98b-4181-a88a-ec9c0203f90a-agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 33szhdx847gwhdiij8bueawitmwq6oak
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 776C9A0006
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6AF1DC0003
+X-Stat-Signature: zkigspdnoixjeqzjc7tw6m9cg6thooja
 X-Rspam-User: 
-X-HE-Tag: 1776760841-179770
-X-HE-Meta: U2FsdGVkX18BYjQh49rmFPuPuUqkkACgEpoCVSxxq29g398Mnyon+U64BtUAVxKNAn2W2sBeIJbxTBNA/gu83LkZysPLAdF9GftjtM/7rL3QyY6isRujv0zw23oy4ZCAwUSNQfcPxBYOLO3BaN/NBf3J+tbhKFSJe5fPaIbKv9S//rXOPPlDkASpjowf46akx265RXBBIejREpR80jBvsls4ayEFsl/+gjthuXqVfnKKtqFUejJVG4tDMfOrnIILkPdqgBepD6lGfWMIfMryXsaj4ICWipNU2QVFpYe6CV/15f3rXsHzrGmoNs6Br91Y0h5Gcg0mFj7BJOEzU698K7gLyRhewV54S77Xu4uh9NGWASv7xXyM4yLXHOpKsnkGsb82PdFQ+91CpFNBiR9iqE5r/+nzIv/ncxCDVWRnLGfe4abVh30CFlxKOTBc0aNShaH378EPW5KHYFq2fJhriFr55lEzVCXA2nCZd4XMto9HPdyh0f3JHIGeN/o4iZA9m2eoPUUzPUEowTMpvi+ChZzieRCa6EoWf/wJFIQ3iljrzN9IVrVUN6Gbq4v/K1ZX+j5aCKOktGoElSGO7a3QkIWvGx7LzP5X8vTQeZJuYh/5GPEPU60NgGNvkJSRfIhp+Gy39d8orxKCkBAsPcNZjDyZG//fAZwA8UJiRb6OgdNg2z0GTsCM5G1DzfnPrS0WtKhltSVPlmbWVnvcmbkM1LtZPAt9zevLEQhItFPXwQg7Ie564eEDUrCPR7Qq4c0c0xeCwsiAZezaX1kgn6oEO+xwfPZ9HEXa7ecXGkwq0aDb/J2FuzEpJ2K2PPCsBhz0rr46gzNOlImiVryGDPFvPy3D+J6NsbyEPAr/reLGIpUyQDNsGaTwOVWgEpBEFluy1LOxsS3hCV/Sm4zXJRhbaLHnh4Sc1kjmNAhm53gZojYLSRi5C6owpGtqQsNGMhRf+dy7cwjfCHx4hGR9h16
- kj7ppR4c
- anKmQYYwFS6nFTTa/LbhrFMgV9py2ytpqsiC/3ZGmlSXUYMWNw4IIOSpqBTqtFkQg676YhCTHSZppFF1B4TxBOa5IMIo2PKRhMv9u2pC147dg+p52oJKpq74zUKnFi/rmlCvgS0uQNkcE8p59Wv9wdaZ7AdrY+YiEsKvI90DHd3R1NPVwF8Stu+V/ewQmmOQgr/EqjcGTeyF2qAk/43vkLLPF60k8wIiWEetV
+X-HE-Tag: 1776761478-36456
+X-HE-Meta: U2FsdGVkX1/WtMtUb21CKJQItusFpp/YZB6CQEORzSEePm1kqaHF+uVEABOgqaPhLtBIeaPRrIWuYgsuzgzEcvw5m223xi0ds9emBycWuhtdy841xE4sW6jv2U1Et5zzU+8jy+wQC2SgwwgcLWNfxpdaw6DpZ+ZuUpMc+tPKxe6DWPDpEajbMn/xAn67tqrW2J1M10p5hni+oaL3qtpSZ6S+RxAnaMaQUl403pARAqqzj4qEdhJg/Cy4BdB6hKDyDyqO+KlGymfextzPk96r/0aP3H0b5GuaqMFJSVdiblY68fUdNpm17FG5aTaniHzZJGHGRdnPx9WX7TvysSsJajEDF69i6xqBgrl91iTd21lng1oFmMZIOVSnos0fMyFw50/nfHk+4tUfoqV5VJf2sazW9+sPW/XjBKk5c0dmAKZzw8thIP7DfABlmwoVazMtrx6q1nP9hZrHyzwaM0Lj615RKlb48Fu/BN4RPFW84+f4QTNDR8X81zJfqI0N1O9Rina+1SSNtn4MxmFJ4/FCEQJbF0Xgldk4AVH9UFgVelaqfYvoBQAgjA1c7TnlB9F2eBqfHBU3Ze3I2/yxUeiqwzVDEqI563o2I4aDJ2IMnGspSb3vzMn/8NtxLWqQ1RW464dJg2wJDtZDPf/XHeLSg1vf8n6Va7NhboNSI8ms9qrwh7ElWnM7Oj2eaDAeP8c9BEjV0niF/xc0iedphsSEv1p9tr+Q4m0evD9J5zh/qMY0y7tBVLQWbLRve73AXW0gM8T30GGeRRFjjxYnzuNnimztssqrfZ3EUoBo0HmQAFq/C5CIt+6223U2A4SGSxrFTsUCn38cjWI/e8W/3fUjn/g6rjOT73qPH6D993BSsbcuHEsuT5zrUVts9fUvy5IWiXLi+8amA5jkZ+YXehhYG1aL3sMSqnEjLmKhuXgPtM8lShBrDs2DQt6M3EnPUCQWx5DN8SpBXhr+3ZFVvs2
+ 6dILD/9/
+ gh7Q1/Tew48Nc2PCM7JcpAGW46nngDpfJIT1NBA1ykWbnuaxZ8N12XhoRtozxkZr6J3dCBsTPC77u0iR31dKZnPbB5xG9ms9mz/+DBfhu4qUSpIWqxX1vwOvOOmIZQaOfNjsaIUxOmyVdPHub1D9lUPw5n6xatRa46Vy2igfoSy9SSe7dlfcqi6A81LoP3qeDFTv35hCNF7FFGUU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,22 +99,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21/04/2026 06:57, Alexander Gordeev wrote:
->>> + * PTEs that fall within the specified range might observe update speedups.
->>> + * The PTE range must belong to the specified memory space and not cross
->>> + * a page table boundary.
->> Does that mean that all PTEs mapping [addr, end) must belong to the same
->> PTE page? I think the wording should be more specific.
-> I tried to state that end of the range must not exceed pmd_addr_end(addr, end).
-> Any of these sounds better?
->
-> The PTE range must belong to the specified memory space and ...
-> a) the address range must not cross the parent PMD address range boundary
-> b) the PTEs must belong to the same parent PMD
+From: Ye Liu <liuye@kylinos.cn>
 
-I think b) is good, maybe "PMD entry" to be even clearer.  My previous
-suggestion of talking about "PTE page" isn't ideal since some
-architectures have page tables smaller (or larger) than a page.
+The anon_vma_name_reuse() function may return NULL if memory allocation
+fails in anon_vma_name_alloc(). Currently, callers dup_anon_vma_name()
+and replace_anon_vma_name() do not check the return value, which could
+lead to NULL pointer dereferences.
 
-- Kevin
+This patch adds proper error handling:
+- In dup_anon_vma_name(), if anon_vma_name_reuse() returns NULL, emit a
+  warning via WARN_ON_ONCE(1) since this is an unexpected condition.
+- In replace_anon_vma_name(), return -ENOMEM to propagate the allocation
+  failure to the caller.
+
+These changes improve robustness against memory allocation failures.
+
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+ include/linux/mm_inline.h | 12 +++++++++---
+ mm/madvise.c              |  7 ++++++-
+ 2 files changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index a171070e15f0..9bbaf8287806 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -421,9 +421,15 @@ static inline void dup_anon_vma_name(struct vm_area_struct *orig_vma,
+ 				     struct vm_area_struct *new_vma)
+ {
+ 	struct anon_vma_name *anon_name = anon_vma_name(orig_vma);
+-
+-	if (anon_name)
+-		new_vma->anon_name = anon_vma_name_reuse(anon_name);
++	struct anon_vma_name *new_name;
++
++	if (anon_name) {
++		new_name = anon_vma_name_reuse(anon_name);
++		if (new_name)
++			new_vma->anon_name = new_name;
++		else
++			WARN_ON_ONCE(1);
++	}
+ }
+ 
+ static inline void free_anon_vma_name(struct vm_area_struct *vma)
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 69708e953cf5..ccb937a37e70 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -118,6 +118,7 @@ static int replace_anon_vma_name(struct vm_area_struct *vma,
+ 				 struct anon_vma_name *anon_name)
+ {
+ 	struct anon_vma_name *orig_name = anon_vma_name(vma);
++	struct anon_vma_name *new_name;
+ 
+ 	if (!anon_name) {
+ 		vma->anon_name = NULL;
+@@ -128,7 +129,11 @@ static int replace_anon_vma_name(struct vm_area_struct *vma,
+ 	if (anon_vma_name_eq(orig_name, anon_name))
+ 		return 0;
+ 
+-	vma->anon_name = anon_vma_name_reuse(anon_name);
++	new_name = anon_vma_name_reuse(anon_name);
++	if (!new_name)
++		return -ENOMEM;
++
++	vma->anon_name = new_name;
+ 	anon_vma_name_put(orig_name);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
