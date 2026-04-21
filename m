@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828BEF94CB5
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 23:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7680F94CB5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 23:02:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8B756B0088; Tue, 21 Apr 2026 19:02:49 -0400 (EDT)
+	id 27E2C6B008A; Tue, 21 Apr 2026 19:02:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E634A6B008A; Tue, 21 Apr 2026 19:02:49 -0400 (EDT)
+	id 207AB6B008C; Tue, 21 Apr 2026 19:02:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA0046B008C; Tue, 21 Apr 2026 19:02:49 -0400 (EDT)
+	id 0CFB86B0092; Tue, 21 Apr 2026 19:02:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA4C76B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 19:02:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 788441A131B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EE5856B008A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 19:02:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F4B2C43EB
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:02:52 +0000 (UTC)
+X-FDA: 84684089784.29.BBB8364
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4139080010
 	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:02:49 +0000 (UTC)
-X-FDA: 84684089658.25.F539E74
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8B7894000E
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:02:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=k6TVO3CB;
-	spf=pass (imf04.hostedemail.com: domain of minchan.kim@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=minchan.kim@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=kernel.org (policy=quarantine)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZMEHSGGD;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=kernel.org (policy=quarantine);
+	spf=pass (imf30.hostedemail.com: domain of minchan.kim@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=minchan.kim@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776812569; a=rsa-sha256;
+	cv=none;
+	b=zrm7Yj+8SKVRhHnJETjqnnYt/g8pkL57X1/GvcGsc1VTpvNDZKXRzmOBlkU2MelMhE112y
+	MHB9r/YihrSluNf82cIuxOwuUc/mQzhaEJxJ3Z4xL/B0u+DpLx0vEoTHSSdljcgvaK+cBH
+	AKDvChg6NzKx3QYw5uqT6yf2c74yv34=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZMEHSGGD;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=kernel.org (policy=quarantine);
+	spf=pass (imf30.hostedemail.com: domain of minchan.kim@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=minchan.kim@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776812567;
+	s=arc-20220608; t=1776812569;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+O4M27v2Tss7FIEhY4PBkpamm/Ohd33d6CzOiSw8EfE=;
-	b=SYSGtI/MuqsoKFOi4tDddys5ye2sVZtpbv/bu3wKUDnQI9Pxq6uNwoVyRwL7tkd4qbfmww
-	sUlOkrQw7TfbLExUAY/FRQa+2maG6dUDsD8rjstoJXpo41gboJoYMoLnGs+LNSr50s87su
-	6ySorBzuzMGbrCHBgiWOdI1YVpaxHTA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=k6TVO3CB;
-	spf=pass (imf04.hostedemail.com: domain of minchan.kim@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=minchan.kim@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=kernel.org (policy=quarantine)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776812567; a=rsa-sha256;
-	cv=none;
-	b=FKaRT6ihVGK3G0c+S6A6foAzhvaIKrt6EXaka6lgYneAnGUQJndW56yEKWdOILyYB1TeFa
-	17L99LWceeyjT/VdnIyoFuWEccBiCy1pl2BKWqz6oyp0nrvdMdyf/l3YdDAmvOOzj7aLLD
-	qiq2fTrrLGKMDxN+JAtZ/MsZqz649RM=
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12c8f9846c8so3613582c88.0
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:02:47 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mdOzQUx1kuF/ItixYZyEN7MAejmBx2S9M5lxrAx/c7w=;
+	b=Q6wAZpLUWKC9e6aVOi1ghNNL9t4IdzAxPb2EWX536A9wELA9gw9eTcoJCAw65ZQ5ri+YrN
+	q0d3Vv22ZTmfKtAci5Q9IugprBKz2wqEPSyEpeFx5FSDn4N7mXOzo3q5A/dKNCBGUsh7i7
+	H0uCw7XrLT3Csm618IwGdgq8GPlNS34=
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12c8ccc7755so3747729c88.0
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:02:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776812566; x=1777417366; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+O4M27v2Tss7FIEhY4PBkpamm/Ohd33d6CzOiSw8EfE=;
-        b=k6TVO3CBV/rqn0tSfW7TsqWMpDqjOfJelmwGSyywbyeSWR3jT0tZIQ2EyJ/USxUZeT
-         QcfKN7TZacdsVBsLK3I0+G3F+i9iAK5GHQHOgXiflGewqBkKjFwsnn6nb8ku+NkwhQKh
-         RHABF2XUaY0N5tSLH3f3b4se5TXQaAy08gJ7goJrF+PxR2VRP30g8WcHett/sXUYrAZb
-         i7SE0/AXf6RdC30bVzzxwub0M6feA1ieWJV5jdf2hrF49F/LecK22ypgu9GyCMQC9sBU
-         IEnn8JSjIhIK3+O7XYpWQEKLOeq3kF81SuOmFkPq6cipVke4FQXjVaOzX1sZoft7N7m6
-         huYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776812566; x=1777417366;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776812568; x=1777417368; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+O4M27v2Tss7FIEhY4PBkpamm/Ohd33d6CzOiSw8EfE=;
-        b=oAeG0Vcl8oeA9XzTVntuvB/qnowL2O7UdM/a2tHFn6KrkL8qzd8GwaPZT84yj0iRcZ
-         9ZxvgMOvzPUtYdRSd6csM0TFXqVHdyoSPsIpHBwgp/a/rCn466N8h1IK+VlCHZcJef8m
-         aL1MhKwtaO4c2VZq0CHE+003vlNkDhXZO3+a9oex353ucLdIQuhY/BADwOJPalt0PBrm
-         sbRUZu5Xc1LsRQ7k9CMUkWPUhPfdjVuMQiX+i0t9HBMbRTJSOqtMZvJm1GiUvFa5OHtb
-         bzp8L5xGIi1QV/D61AMttf4TSPJTmky/Yt2yWBP7oH63YxJ9Bjr+/VA61GjDTH65k5xT
-         ZkfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+Wf2DM66cr+I3MFndJin43pcgjKv4HtTZO4M3YATwjlhzI2kP2rPy7Inurb7hYkQWHVQmHL6hVXw==@kvack.org
-X-Gm-Message-State: AOJu0YxpNEPJ3na+a1s7/MwPwhowgnBEKPbgz2Yxr01VHsiyazxhvomA
-	KpBO9DL/2GxJD0d4X3tvt0nhhu1f9Kyg5E395FDFph25iUAIWAjyDYV8
-X-Gm-Gg: AeBDievHJ1wN5PzBoCYR6M2ogY93145eptx+8l3iEJZR/IU2udDZ81MWiA2qkPsyPoy
-	bWt9D6gr4wsKDu9+bVVTxTCgalnhwU8SMhatG1OppOnEXgxQC33PA2RmWK01T4ujEZ0TQNCvDt1
-	JsZvS/2jV2q+u/bhWz+k/M0b6j5GzljBx29npEfE3tFkfFmb3EKsFcYKvbcNs71dgz751BWcXGw
-	/VLImwayrziP3eO+TVe4PaVUODN+i13U8XPNnyLFffiwm+MXX5YbgdZ/whn2/Q+tIrWs5jWAyKT
-	beP3b5FeUAN4jrSJs2PIjVjh5rPkPUpGE0YcAMY39BYUaq7WmQ84WMAO8EO1+IUEZxxYHU1jEkT
-	bZGQbezw8+9Qc7Ndbpoyezp8PrPG3Y3IGl0wr+srInaFedgreic7wk11cZOjLrYSeIRTV5rvDAj
-	o4R1b7kdUcK23PjCC4lPEdP0SW8mFihEdP+5vniEURZAS0MSsD6gSTG6C+e85gY1062/Etj+B4l
-	vPMwifwhhxerA==
-X-Received: by 2002:a05:7023:b13:b0:128:e693:b61c with SMTP id a92af1059eb24-12c73fa713emr10677778c88.27.1776812566137;
-        Tue, 21 Apr 2026 16:02:46 -0700 (PDT)
+        bh=mdOzQUx1kuF/ItixYZyEN7MAejmBx2S9M5lxrAx/c7w=;
+        b=ZMEHSGGDvnWfHINLJAT65sXURwo92bJBKPS2w40ys5Mc0aiEk2pWh2U3USVea3+ZK2
+         NhMFSJrZ/kZfU8E0NI5kvngNVJk5JB2BDDj19I+RY897fmFSpDDFTPiXPENr7MnoC+mv
+         ePuIwbIjF5m1XpVVQ1tjf6JuRzcUR9dU15SJxr6dE0ZsFZMqrh807NSkEZMl0rcMF90j
+         R5Tc+47Apm3arlRXfr5nLycVH7Nnifaw1f4T2e37EuFw8KkFxSOyK+4C7mEwyzL56LfN
+         PPIaq6uuNgiIjWaenccHbAigeDDeeEdmndfkxKO+OkMQ+dZw2uLkHGmFiwEY8hf1iH1F
+         Snlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776812568; x=1777417368;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mdOzQUx1kuF/ItixYZyEN7MAejmBx2S9M5lxrAx/c7w=;
+        b=VOxdYYJ8udD3xSpMja6cNe5pfLWeVw7GZhJ8mmx2eeREtqoNPynB8jGb+pXMgdBzd6
+         e5xQ1LYGjTXJ9F5Ozo0/ZouAnAeDDIcWlsYkFIv2/qAxje3kBBiWSpgptpkNNOiwdlg/
+         Fm0qqwVilMdMXZEkOKDl9SJLfUl5T9zZGZWSLQSzbB3SAR013tVBFofI9MqO9/yHKSgy
+         kwUkG0Sez/5lT3Nby5dJ4Lnoixh8o/Aqr8qs5tb9vfnjhNh+QUjdW0XVYiBd3zn5dd9m
+         2yJ+ldHqKQnRqXOCHNFlqagxZkVv7+X0lOD5G0KrxmlYy/lLwp1TdRpuGJwMmkYi547z
+         lcFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9fM8t79VuMlSopFNa6VRI5wFC3wbwo5WFhZ47DWXvEFVjZJF8Nri3WA+TEcQiIHvmMxb6xBnl5Ww==@kvack.org
+X-Gm-Message-State: AOJu0YyGM/icuGfZzkVrJeLMpY1A1erVuSvP9yDBBFZ491HC0XO/3J97
+	Gsm/2c8zRY3Gte1ZnK0JigpwO3SRFbGTV+aciSpgn5OLtHpirCcg4A60
+X-Gm-Gg: AeBDieuc8/fqt9TQ+8A480ecfaEczP0EFbuMbDrAH8SQYNDgJoEEPEBjOL7dmJjmO6u
+	nT313nXiEc7OQSx3aw+nSx8eVdNK9LKzIX0Wieu3kco4J1n6e+0qH/kGo1WiuUZXzD7fxNOutJ9
+	u6XSoto7BvvGZcRi1pHjJ1iKCwe4srWJW7m8k+kNnQb/CDWlp6NTOd2Ttv5EGhqrAOBNMjvMNtk
+	IHUDKejSLPxC6c+Ss/RyHdnJWv6ndeb5qRlpGJ0OA/KqW7Z1tuxXxnmbYqrBeCDUnKvsQkOs4T9
+	aepBLJeVxvoXIZKm9nt+lesGHbi5wq4jofwKEAH+JDJZI9yX23SHEy6GSVHGgnzOQ4GO7o/O95S
+	RyAmHtm24bVCke5gwmywN18UOyybx+U3pPvcuIyJFiYx1LHPLi3R4axdv7Jkn2Eaa8NSkX5nFOX
+	0Q6rMOSgwvf3hjKJ6+MGC671ZcJ67Acsua2AxA+eBhm/NG3znWdpm+4xxlbKbg75f1DJ+93vVW8
+	lJUD3xr7ODcUQ==
+X-Received: by 2002:a05:7022:5f14:b0:12c:87f1:f40a with SMTP id a92af1059eb24-12c87f1f7dbmr3847202c88.18.1776812567826;
+        Tue, 21 Apr 2026 16:02:47 -0700 (PDT)
 Received: from bbox-1.mtv.corp.google.com ([2a00:79e0:2e7c:8:4678:d28b:b946:bcc])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c74a20eb5sm26453546c88.14.2026.04.21.16.02.44
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c74a20eb5sm26453546c88.14.2026.04.21.16.02.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 16:02:45 -0700 (PDT)
+        Tue, 21 Apr 2026 16:02:47 -0700 (PDT)
 From: Minchan Kim <minchan@kernel.org>
 To: akpm@linux-foundation.org
 Cc: hca@linux.ibm.com,
@@ -101,25 +102,28 @@ Cc: hca@linux.ibm.com,
 	linux-kernel@vger.kernel.org,
 	surenb@google.com,
 	timmurray@google.com,
-	Minchan Kim <minchan@google.com>
-Subject: [PATCH v1 0/3] mm: process_mrelease: expedite clean file folio reclaim and add auto-kill
-Date: Tue, 21 Apr 2026 16:02:36 -0700
-Message-ID: <20260421230239.172582-1-minchan@kernel.org>
+	Minchan Kim <minchan@google.com>,
+	Minchan Kim <minchan@kernel.org>
+Subject: [PATCH v1 1/3] mm: process_mrelease: expedite clean file folio reclaim via mmu_gather
+Date: Tue, 21 Apr 2026 16:02:37 -0700
+Message-ID: <20260421230239.172582-2-minchan@kernel.org>
 X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
+In-Reply-To: <20260421230239.172582-1-minchan@kernel.org>
+References: <20260421230239.172582-1-minchan@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8B7894000E
-X-Stat-Signature: asudzess1f5696s1k1krk4cdbfrazbbb
 X-Rspam-User: 
+X-Rspamd-Queue-Id: 4139080010
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8baxuy64qoeffhefg7iuuqtr9hm4uyfb
 X-Rspamd-Pre-Result: action=add header;
 	module=dmarc;
 	Action set by DMARC
 X-Rspam: Yes
-X-HE-Tag: 1776812567-767973
-X-HE-Meta: U2FsdGVkX18PelZi+YYG9fTL9yEo+iNU7W6dXZVq8/eBlF9HYzfZhDLzSHsl6IufeGHGuZZRv69hHMWQ/MmToxhm9OzGYDHCq3j+WZFuJnyXp1u0bwZPIKMejNvbdTw4CacomKImeJxJLM7rharTNxyzpcdSalSC9noHPSvfGR2XhZpBO1pCWh66xEvfrDO0epTpykfMjT560UgvS54LSx+5cwxWg3Cm1WTUHZwotAOVaEyN3129HoVY3mHmc+oRHPU1yzN4uw1omzFgFnXXCnaeYNqmGXaQ42zIXPy4afL1lh3WuHStJEmX3KLaqKj1/hz0/g/98850UrjQ/TA1SU2O/0jGmx67K62o+RCCDlKsNfeEIje0TmDx5G7Cw5P/4xesraxT5bvHFvskFyZGIqm7JuOQB39hO/ZqtYQciMTIBVNYNtbvYVaXP78qH4AF9/MovZ0jB5Pi6WQxZF5bOWANMr3Cz6Vgs3xi6uG4so6WMlF77ZWmGCWR3tKGIWrRsifHuhtBEvjf5ysb+6pAt/AL+pcTJv6jIXISp0ojajJIIdCxaQ4tVgWvN2+WUAmNOJlVZ17qFlfzGk0q/8I2Q5wsIVWuEcGrk+CBDPWwfvtYncMqh4bfr7dw3iHTIaaaygTwTTb+Da0sjCTkhJKfvjMyfdCQEA25180Zp2YzfMa79QCN6OQ5ma62LdNCez/eoROKAgoHTuoiBwjhVwYblc4jjjBAIvQyIqE0te55z1ykvdUVShHwVlkuS2lV83gKkX/1m+OmKMmuXEMqB/rfcwWh6ODnjZOtdfMyLFiwVopo0SxTaHoZ3kjW+5rj7DJAD/s2oMQNwr6yWV0/QrRTW7860TgXkT70THyEwPRGnEyQ1m1twt1hMFsNMuUM4IyenOwX/KGeAfxvvmXUCH4ffs1cIqL3OzHiHCEkL8fFKGJ2g/SyAv8xk4ACxA8j+74rc/Hb3a0Z4gYehMo+KX2
- HXCJUaxk
- TD7kSPNoevomQhat21poDYmEqrKsmMxY7aikNOaGD2mdBpnuFgpaGrRRzN5Y1e9eiyx07INXGr/ZZHXcEJY1wr6PpoCJYIhOO6eLDlrur1Eh7cTx3Jsh2rFeBvWE7MYa47FdzDPfXG0LDFJnEiIv3CH+F0ODexh5nvgDegQxtRbrFy9/rsp/DjvNBeNc8kv3iYJaMMOuzgAcNmZplKUIDWH89o4+/SjmFBwYTQ4brPmurHRDRHbO+VYc/cBIjvkQbChSc/h8/1Zn/ypbFyIuApqjNBvM/DnzoCZ2358EL1793BnRUmRb2G1gNGdbgnKVByKBAb+oGWbswoRJrvNSMmX2sRvSpPL4u64riFuvD6alrXmjinJ3Z31CfBMoShv5riJf3J2NO/NUkIjPFGlCe+lqq6Pzp6plKTL/nJkec9ou21VxJu/9AhUycaER2XZqOHEWMCGGOcHN8cXGeMJMfkSOt4yYRKb9rI1irVwJU65j928oLaABKzH0XQWUk3aParNfkTTcd31/pvElVCIxJpGoEtdD2exuLqNieQV4JF6TYvXzMn+BU3POIBkAaxj6nukLqn3Ft6YDeC6wLb0ZUg5nqh+uIRQzWRVsCyifNt9pAofjKTZdFtmjmY5jRCGM5IWyTg2Cr3ju+44RBIiF+dxQ7xNA35HSLkJqdVYcNboDWzI29khqs6yYHF0+yZtzC27Ag/1a1l8Wrg5/Gtt3JYUplzgyNIEJ0WEI1
+X-HE-Tag: 1776812569-2908
+X-HE-Meta: U2FsdGVkX19y6snY33rPzll0IdmI/8o+bV/nj7/6ot6mb1RCaiAp67A9LW1Iwl9n+v0Uyd8P2J9gbWiJ8Z59cgvo6rs919a8+lSHrWBKoyavSfwURwMqBA+y6w9BzcOHL22Ct33XIO1akqlR75wNHVluhObJtuWn8SMJqEn1ZkZjPRs7UrfOmdJy4/JSmh9ayiSQM20PG8h3CZiAKKnkrG4p/MQ9xj4MjDp+g5AwwZWHWex5ZynUMw25z+q6slw2qVw/maHe036RCUqDhpKKxBl+FW06s0b3cvJEmutqhmbIa121PVb3IObJBgFeDpJ1cixelyVb8KMni6EhPbkEQygmzOU19FQI9TyC5mU4CIjp2I7zlbrfq6fqUUDWjXhsRTdkt5QeW4VMFC9q8+NC2JJX4ISKv/DLCw+U5AP3IaHNRwncQBe5t2q61qQburfAyczfbRkQmj05ZudiA8pF2ORzZpddbD5m+g/jB5TS2PH5Kp7lJdp1KzFVxPJhLUCn+dIJ/Y+qhTlaggGfAW3cHeY0gIJ3wPBCCGUPOO2kO9smOss0OvnozgLPvzyByrOP7HjolsQUYQazG2F1fFkR52epwwKHUIcuvE+wu+WeF7cv4KhCzgMufky2epEgS6zamO6bXT81hj6SjwIse6UM1F4uTqYhP0DEWKAPd5hHmHYkSiQtjH8JjMsUXspiWB0cjbQachOnEUiZxuU+4KJ9umUn0kGKjMahpeptraWaw7mP8C1OpsqQpHSHDSvzOzRhKVMLxnsKXyThUJI1gcu06uPVMveeuJOZZ/SHHOz+yfkzPntleUkLKDZzIR+2I8qcXxwlGfMfzXH7KJ46JEjlBuSrBJGT7Fl4lGzSdMWcmP6fXw1w0OlKPqICqdaTpOWX7M1vVvAmwo2/BoetkLZ8FSVR4HKV3G/FS5AkRNFFjyknKCHcCFGmHTbx8rYdxiaBg2XTJbNfyeXgAcFHwUX
+ 76PpkBxx
+ mPVfBmW0Mt57fMQC44A0s7QtXQ4lQ2RoF7X/L8G3oEEchJYJJ68zFfZ1d9f7lei0vG1DH41q3LogNOaYgF73aEmAcq8Nq/WH/oAFuz07vNu/khK32aUmB+TzokzzS6VrMhUxFII7CQWP3zIFecd81RBSuCYy/M6h0b4Q2VuBFFfuH2oaKBMhJf4YaALngEOs8axGALNI7gShU1pIEFVLPUdJEjDk0h875GpADANf2m3gmHu/lZZ92jm6uInPoIq61t4svOvZPhdV7PxJ657XHApDSIQjwJmxDUUR5k3yHT1r2K8OD24Wg7yi8OGBOiJo1SdCaIP6/NRDCG0jF757ICu9kypbBcFAs6AhRgFTFWU/KA3ZhSDF8EI1YpKSKmZIUw8AvED9E/EwzAltm8468dgrWYduca9q1mwgmfQjh2uUKhJ9smloM/SFBjlSQ1FVFzozZDce/MADHUbB2uEMVu8es/zkbPzLQi5ncmHzmU2M7eI9nWZj9O8gTYJgfKpnn9FjDxTwxhl5n4Bobw/RnPJF7RV6jhLJmRJdTuy1lB6hhQtkfprqNP4zhfNwor6oV6VGyFc6uNrW0p6F0/qaWW5D5QbZ9RmNkJRtjs3ox6ukKvjhuvRZV9s9ihheiB6HuOHHLIPoyrjtHgYE/bdXhXFtlg1pL3XmFDF//J30yC/MLiNeQGck6oLDhbiRbtsceJ5qJhPugFo2PCK0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,50 +131,196 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Minchan Kim <minchan@google.com>
+Currently, process_mrelease() unmaps pages but file-backed pages are
+not evicted and stay in the pagecache, relying on standard memory reclaim
+(kswapd or direct reclaim) to eventually free them. This delays the
+immediate recovery of system memory under Android's LMKD scenarios,
+leading to redundant background apps kills.
 
-This is v1 of the patch series to expedite clean file folio reclamation in
-process_mrelease() and introduce an auto-kill flag to close race windows.
+This patch implements an expedited eviction mechanism for clean pagecache
+folios in the mmu_gather code, similar to how swapcache folios are handled.
+It drops them from the pagecache (i.e., evicting them) if they are completely
+unmapped during reaping.
 
-Currently, process_mrelease() unmaps pages but file-backed pages stay in
-the pagecache, relying on standard memory reclaim to eventually free them.
-This delays memory recovery in memory pressure scenarios (e.g., Android's
-LMKD), leading to redundant kills of background apps. Also, the requirement
-for userspace to send SIGKILL prior to process_mrelease() introduces a
-race window where the victim task clears its ->mm before the reaper can
-act, failing the syscall with -ESRCH and delaying reclamation due to
-arbitrary reference counts (e.g., reading /proc/<pid>/cmdline).
+Within this single unified loop, anonymous pages are released via
+free_swap_cache(), and file-backed folios are symmetrically released via
+free_file_cache().
 
-Summary of v1 changes since last RFC
-(https://lore.kernel.org/linux-mm/20260413223948.556351-1-minchan@kernel.org/)
-- Patch 1:
-  - Unified free_pages_and_caches() in mm/swap.c to handle both CONFIG_SWAP
-    and !CONFIG_SWAP
-  - Clean up description - David
-- Patch 2:
-  - Used !folio_maybe_mapped_shared(folio) instead of folio_mapcount - David
-- Patch 3:
-  - Used mmget() instead of mmgrab() to ensure that memory reclamation is
-    performed synchronously and deterministically by the reaper, avoiding
-    delays caused by non-deterministic scheduling of the victim task.
-  - Dropped the custom KILL_MRELEASE signal code and modifications to
-    siginfo.h and signal.c. Instead, use standard kill_pid(..., 0).
-
-Minchan Kim (3):
-  mm: process_mrelease: expedite clean file folio reclaim via mmu_gather
-  mm: process_mrelease: skip LRU movement for exclusive file folios
-  mm: process_mrelease: introduce PROCESS_MRELEASE_REAP_KILL flag
-
+Signed-off-by: Minchan Kim <minchan@kernel.org>
+---
  arch/s390/include/asm/tlb.h |  2 +-
- include/linux/swap.h        |  5 ++--
- include/uapi/linux/mman.h   |  4 +++
- mm/memory.c                 | 13 ++++++++-
- mm/mmu_gather.c             |  7 +++--
- mm/oom_kill.c               | 56 ++++++++++++++++++++++++++-----------
- mm/swap.c                   | 42 ++++++++++++++++++++++++++++
- mm/swap_state.c             | 26 -----------------
- 8 files changed, 104 insertions(+), 51 deletions(-)
+ include/linux/swap.h        |  5 ++---
+ mm/mmu_gather.c             |  7 ++++---
+ mm/swap.c                   | 42 +++++++++++++++++++++++++++++++++++++
+ mm/swap_state.c             | 26 -----------------------
+ 5 files changed, 49 insertions(+), 33 deletions(-)
 
+diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
+index 619fd41e710e..2736dbb571a8 100644
+--- a/arch/s390/include/asm/tlb.h
++++ b/arch/s390/include/asm/tlb.h
+@@ -62,7 +62,7 @@ static inline bool __tlb_remove_folio_pages(struct mmu_gather *tlb,
+ 	VM_WARN_ON_ONCE(delay_rmap);
+ 	VM_WARN_ON_ONCE(page_folio(page) != page_folio(page + nr_pages - 1));
+ 
+-	free_pages_and_swap_cache(encoded_pages, ARRAY_SIZE(encoded_pages));
++	free_pages_and_caches(tlb->mm, encoded_pages, ARRAY_SIZE(encoded_pages));
+ 	return false;
+ }
+ 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 62fc7499b408..bdb784966343 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -414,7 +414,9 @@ extern int sysctl_min_unmapped_ratio;
+ extern int sysctl_min_slab_ratio;
+ #endif
+ 
++struct mm_struct;
+ void check_move_unevictable_folios(struct folio_batch *fbatch);
++void free_pages_and_caches(struct mm_struct *mm, struct encoded_page **pages, int nr);
+ 
+ extern void __meminit kswapd_run(int nid);
+ extern void __meminit kswapd_stop(int nid);
+@@ -433,7 +435,6 @@ static inline unsigned long total_swapcache_pages(void)
+ 
+ void free_swap_cache(struct folio *folio);
+ void free_folio_and_swap_cache(struct folio *folio);
+-void free_pages_and_swap_cache(struct encoded_page **, int);
+ /* linux/mm/swapfile.c */
+ extern atomic_long_t nr_swap_pages;
+ extern long total_swap_pages;
+@@ -510,8 +511,6 @@ static inline void put_swap_device(struct swap_info_struct *si)
+ 	do { (val)->freeswap = (val)->totalswap = 0; } while (0)
+ #define free_folio_and_swap_cache(folio) \
+ 	folio_put(folio)
+-#define free_pages_and_swap_cache(pages, nr) \
+-	release_pages((pages), (nr));
+ 
+ static inline void free_swap_cache(struct folio *folio)
+ {
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index fe5b6a031717..3c6c315d3c48 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -100,7 +100,8 @@ void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct *vma)
+  */
+ #define MAX_NR_FOLIOS_PER_FREE		512
+ 
+-static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
++static void __tlb_batch_free_encoded_pages(struct mm_struct *mm,
++		struct mmu_gather_batch *batch)
+ {
+ 	struct encoded_page **pages = batch->encoded_pages;
+ 	unsigned int nr, nr_pages;
+@@ -135,7 +136,7 @@ static void __tlb_batch_free_encoded_pages(struct mmu_gather_batch *batch)
+ 			}
+ 		}
+ 
+-		free_pages_and_swap_cache(pages, nr);
++		free_pages_and_caches(mm, pages, nr);
+ 		pages += nr;
+ 		batch->nr -= nr;
+ 
+@@ -148,7 +149,7 @@ static void tlb_batch_pages_flush(struct mmu_gather *tlb)
+ 	struct mmu_gather_batch *batch;
+ 
+ 	for (batch = &tlb->local; batch && batch->nr; batch = batch->next)
+-		__tlb_batch_free_encoded_pages(batch);
++		__tlb_batch_free_encoded_pages(tlb->mm, batch);
+ 	tlb->active = &tlb->local;
+ }
+ 
+diff --git a/mm/swap.c b/mm/swap.c
+index bb19ccbece46..e44bc8cefceb 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -1043,6 +1043,48 @@ void release_pages(release_pages_arg arg, int nr)
+ }
+ EXPORT_SYMBOL(release_pages);
+ 
++static inline void free_file_cache(struct folio *folio)
++{
++	if (folio_trylock(folio)) {
++		mapping_evict_folio(folio_mapping(folio), folio);
++		folio_unlock(folio);
++	}
++}
++
++/*
++ * Passed an array of pages, drop them all from swapcache and then release
++ * them.  They are removed from the LRU and freed if this is their last use.
++ *
++ * If @try_evict_file_folios is true, this function will proactively evict clean
++ * file-backed folios if they are no longer mapped.
++ */
++void free_pages_and_caches(struct mm_struct *mm, struct encoded_page **pages, int nr)
++{
++	bool try_evict_file_folios = mm_flags_test(MMF_UNSTABLE, mm);
++	struct folio_batch folios;
++	unsigned int refs[PAGEVEC_SIZE];
++
++	folio_batch_init(&folios);
++	for (int i = 0; i < nr; i++) {
++		struct folio *folio = page_folio(encoded_page_ptr(pages[i]));
++
++		if (folio_test_anon(folio))
++			free_swap_cache(folio);
++		else if (unlikely(try_evict_file_folios))
++			free_file_cache(folio);
++
++		refs[folios.nr] = 1;
++		if (unlikely(encoded_page_flags(pages[i]) &
++			     ENCODED_PAGE_BIT_NR_PAGES_NEXT))
++			refs[folios.nr] = encoded_nr_pages(pages[++i]);
++
++		if (folio_batch_add(&folios, folio) == 0)
++			folios_put_refs(&folios, refs);
++	}
++	if (folios.nr)
++		folios_put_refs(&folios, refs);
++}
++
+ /*
+  * The folios which we're about to release may be in the deferred lru-addition
+  * queues.  That would prevent them from really being freed right now.  That's
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 6d0eef7470be..7576bf36d920 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -400,32 +400,6 @@ void free_folio_and_swap_cache(struct folio *folio)
+ 		folio_put(folio);
+ }
+ 
+-/*
+- * Passed an array of pages, drop them all from swapcache and then release
+- * them.  They are removed from the LRU and freed if this is their last use.
+- */
+-void free_pages_and_swap_cache(struct encoded_page **pages, int nr)
+-{
+-	struct folio_batch folios;
+-	unsigned int refs[PAGEVEC_SIZE];
+-
+-	folio_batch_init(&folios);
+-	for (int i = 0; i < nr; i++) {
+-		struct folio *folio = page_folio(encoded_page_ptr(pages[i]));
+-
+-		free_swap_cache(folio);
+-		refs[folios.nr] = 1;
+-		if (unlikely(encoded_page_flags(pages[i]) &
+-			     ENCODED_PAGE_BIT_NR_PAGES_NEXT))
+-			refs[folios.nr] = encoded_nr_pages(pages[++i]);
+-
+-		if (folio_batch_add(&folios, folio) == 0)
+-			folios_put_refs(&folios, refs);
+-	}
+-	if (folios.nr)
+-		folios_put_refs(&folios, refs);
+-}
+-
+ static inline bool swap_use_vma_readahead(void)
+ {
+ 	return READ_ONCE(enable_vma_readahead) && !atomic_read(&nr_rotate_swap);
 -- 
 2.54.0.rc1.555.g9c883467ad-goog
 
