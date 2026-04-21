@@ -4,156 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EEA2F8FA64
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 17:41:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DF8BF94CA3
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 18:07:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 836B46B0088; Tue, 21 Apr 2026 13:41:03 -0400 (EDT)
+	id A84236B0088; Tue, 21 Apr 2026 14:07:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E76A6B0089; Tue, 21 Apr 2026 13:41:03 -0400 (EDT)
+	id A346B6B0089; Tue, 21 Apr 2026 14:07:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D63C6B008A; Tue, 21 Apr 2026 13:41:03 -0400 (EDT)
+	id 922DE6B008A; Tue, 21 Apr 2026 14:07:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B11F6B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:41:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 057D38D701
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:41:03 +0000 (UTC)
-X-FDA: 84683278806.01.3A2CEA9
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E1FDA1C0002
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:41:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=l++7zfLX;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776793261; a=rsa-sha256;
-	cv=pass;
-	b=p5YyAb7P0eEB7fpuhjOdIpG987wCwT0QC/bNmFFp/QcGiFQHb10FnYfN+MijliG5luIK4w
-	p2piu6pacijLCGOyoJAejQJE6iy6Q+8hf0gpQr1FBf9uEnOw/mpLFjZAurA4w5ddgJEaNs
-	rZCN9Z6v1l9R2vfAWrX62ne0xBK2X7c=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=l++7zfLX;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776793261;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 813C76B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:07:24 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 388E41B9733
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:07:24 +0000 (UTC)
+X-FDA: 84683345208.03.B28C468
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E000640006
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:07:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=RBZ5lDDk;
+	spf=pass (imf07.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776794842; a=rsa-sha256;
+	cv=none;
+	b=56L+/3koEHZM7J2O1CIsqOmxDCx8A7ZZTlf6uQlGaSNajrHPUV1rHcnuOZtsBoMFu3Nkfb
+	Teqh8FR8xHajr/h89CO2KnVj59VWbk9qN7kLEKLvp5QM49cxA8GJhqkA6Nm7mgx/kEqLXH
+	Rw6CQO+JHFnavFdLByjCkc5pRlSRDr0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=RBZ5lDDk;
+	spf=pass (imf07.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776794842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gAM3zLbl9RAB5ix2RgDFnveQg42iFe43IZ/4vSwL0po=;
-	b=SLwXz0RxeTt2QnxfP4wyuXp0nvvOpK/Hgmb3+lqync1BIEhwk2+I8Gyvm6i37+f2MUvNk7
-	9wXA3FYnTriNDvVSY4IXEuHzp/EaWV1UhqF7MYwD4DONApBdF5XDsvhsErMBLODv7Ogpvz
-	V4uh8RoWbu1umgxaW6/M2LwW0GM6Fuo=
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38e7d983f79so35341671fa.0
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:41:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776793259; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cRkQByRK6WcyK+nRu/9DnWMK8kVUB0gwRm1jueBK/rKP7FeiAi90r3qMClNgKu8l1a
-         8p0PkDN9psnsw6DTWN99EgWL20QkC0LJt3cMdeFdB9kkd+R6LUYKDtKQfvC5CZ+SO/0C
-         NzWHBPIdOIEwmYEvVWOG6YxrzbyWzFVVllgUsU9oMcxcye9nWlt11djhupYgMFXUhtbZ
-         yvbrezmmMLpft8QYUGrtNe9KMlqE6n0JgQSw7VlvPBUt9tnsM0QQX8Ct9pmh4zhHsxss
-         SLucHubgdIPXiHUC2bVAaiew07Gt4lnFxEpHg0xzcJ0W7h6Yyr87pQZ/r6hB1HVaTsOT
-         RlrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gAM3zLbl9RAB5ix2RgDFnveQg42iFe43IZ/4vSwL0po=;
-        fh=amYANGbPkAFAHww541/I31LMrU/Fk15Ig9emUukVev4=;
-        b=DfepRI3rvDTy+xQPN4eLQEXIFcRFbzqdksjCBILiEnccKgD+yNqSOBm9Jwqt056vUV
-         2a2nDdSQyVX2i0HF10WwJdmk9VfXA/Ba/80+aXXkHU8yDxXQOi628bGe0fvuEtqREMes
-         UiJBDCNAecRVpTyqYeAGcBwvCDwEhj7SeYmQ4A3Zea/nMKijLb2zEtVBYFs4Hquca+X3
-         287+BPeXg/NtiVgFR9UTGey/B/iVTzhlVVgjS2TVN3TXrKqMyzFErad4l8E9o16sUYxt
-         x/7p0oapkbyAFJQJScseVhCVneonms91Gl9UAnFQBnZiKZN8F97k4oFbO+DKjyLqsmFY
-         FmGA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776793259; x=1777398059; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gAM3zLbl9RAB5ix2RgDFnveQg42iFe43IZ/4vSwL0po=;
-        b=l++7zfLX3UPehHapFccEqXb8zDeIVAXc1b0hU6ogF+lFhl506lDp5B76Y15qoH6wk5
-         M3yXpuxHYcZq1ZTPu/ANUxiZwFAeBAN8X28ehlwlqDFfTd3X+hb95awYq+ZJ9TgmHFZd
-         +ohCvybE/fb03HTF+B74/YW/2PjCSFvd2dYA7vOcJApJEpfdjP5B+IRKZRjWBr83BC8s
-         foeXLoer8RIvEt+p9zlbWIrhRDYR8HG1P8qhTUOeDJeytNQnK7lh6OTb0noDuQc+av4Q
-         KGMh6GAWZQsBn1Co/38iz6ZIOa8oHj6Sh27GJJzvBs42ihDQeAh4uBd0rmSG1cjdeDf4
-         6oJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776793259; x=1777398059;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gAM3zLbl9RAB5ix2RgDFnveQg42iFe43IZ/4vSwL0po=;
-        b=nQBbUBMkL2bvFhFwHN89qzdFB6Jg05Hghz2xN7J6QCE963liBilWGj81wpU9CTrNBe
-         wI3fR3+aElNjwX6es3u3dOXdvZBTXdGy3BfrkD85nNOxEPYTgiRWYo9+QRS77LqWym1L
-         zmBR8IRyv8fy9xPo1ZYmx4JL+fE00qISMl0eGZLgUbkGQHFPPcW64yPZIIyROKiZjG3o
-         IemLZNCmxlF4gpfw+Su0T53/6+g4xrwgoyoNSSi3NuJp7WiiDz0kSDolMJGRJlmhcR3t
-         up2KM5thA3uSei3Gld4ny6+Ghli/dvP+SJrWsaQXBEN948OFW4fSeY6h0oYA0O/BPHr+
-         H4bQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8iBqhPK0p81oyARMwKjKy+fdetof5BLDLUZNvyKKWLv27CXVHYFw74tm12zk+NH1evU1NDYbEGKA==@kvack.org
-X-Gm-Message-State: AOJu0YyocBxWxYKT+U08W4dKfphrU9SDaETc5VIJiRN5tUkx1dUo4oG6
-	HLARgZ2YwVyueP372OqW3N+YZqnzpQjlyER5XMSjC40pxQ37az93G2sNFiT8cC5B/snlTbryL1i
-	f2hwuHAl7nDCIKKddmz1LKn0ejy3/NxR+XP7eS36U
-X-Gm-Gg: AeBDiesbYS0f4HcffNwtwbHFOz2/rNxW4lioWETvKIU7T4PBp0n9ibkW9tQ+gVdCOAP
-	gNyJHJcOVNuHOjbiJcv8obUErsqE1IPUPXvkSGOG55+nY/nO+/jqZ0DJXSrnzP4Ig+fFTPVo830
-	BUdv/2oqvwCzq8uJfmSG/24vOZp/XED34OLgPztjeP9m7uZ8s5sZmkrIblcs9XXw0Wc3khp+zIz
-	3jwK2o+50K3ISxCIzbVkIa5fr6bNNP6yQb8InyyAWU5kVbKpfjB1Ay36tGgejRsHWzF1jWCB1jR
-	VDQ/9vRPm11HqzQvS/aNLXzGTFofTw==
-X-Received: by 2002:a2e:a594:0:b0:38d:ed62:f1d5 with SMTP id
- 38308e7fff4ca-38ec7aa4a03mr63977601fa.17.1776793258292; Tue, 21 Apr 2026
- 10:40:58 -0700 (PDT)
+	bh=0Pt5l+YeIZm/5ZIBblpz6/ApkaoGzkNTvoXkafxhSeE=;
+	b=bNbz49pV3RhtHp3i84Ta3GDGRaCxYI6c9zbT+B7mXSdTVuyDoKEoBh7FylAKKzv6+2qPTs
+	OYDX7CIIt56DU5Zz+EItHdaCWowEjHVGQ/krLRvr3aHrRzKwX4WL57FaTW51oL3CbcUPiK
+	0m8Y1uHBQ+z9sC4InrKhVAz4BK3gl/0=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LHoghJ555400;
+	Tue, 21 Apr 2026 18:07:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=0Pt5l+YeIZm/5ZIBblpz6/ApkaoGzk
+	NTvoXkafxhSeE=; b=RBZ5lDDkBpFu03Ta/Ehbrp5IJOGzRIMDq8/tYQi0xa9SQB
+	HdAkxziqwa+lj2iZ2G7tQWnVRuhbzHJOyyStjNLtbJhg6C7IpBs2pTxi9YjJYno8
+	LjiJjY6mhFuZYhveHpJJU9HSXfFGTmFjog6NrKiSXDYV13RVfHDsA+uqKx98fd2h
+	U29ZgvUZAAidC/VP1borbg3yFExpwVMF0eOZvtLmgFsomNAiCvEYfReqd5qiWmTh
+	7IvullZ5ks1Debxub3OxVzbZ/Mf8lqAKO1TOXgiDsc5zZ7wpt4DrcZ67KNpJQoDI
+	QDb9i2RYlxl1nasjJ7u45jz9dXJZ7dB+4/gWIXDw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2h9mvj8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 18:07:10 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63LHZVjZ009930;
+	Tue, 21 Apr 2026 18:07:09 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmn9k1sxy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 18:07:09 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63LI777I43319592
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Apr 2026 18:07:07 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C7B222004B;
+	Tue, 21 Apr 2026 18:07:07 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3898A20040;
+	Tue, 21 Apr 2026 18:07:04 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.29.146])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 21 Apr 2026 18:07:03 +0000 (GMT)
+Date: Tue, 21 Apr 2026 23:37:01 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
+        hch@lst.de, ritesh.list@gmail.com,
+        Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
+        p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
+ RWF_WRITETHROUGH
+Message-ID: <aee8xaz_5x-aQ5BK@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <cover.1775658795.git.ojaswin@linux.ibm.com>
+ <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
+ <52wsh6owrtmznt5xuks6ljwy4zbpyid45x5dbxo5xgssxm4zxy@iue2on3llpfb>
+ <aeKNHi8GloNgch7X@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <laegs2jt5ifqmfmdlsl7gsrc64z4nrnwbxazewbr7jk27emdej@l6vhj7pjh3dy>
 MIME-Version: 1.0
-References: <20260323235817.1960573-1-dmatlack@google.com> <20260323235817.1960573-8-dmatlack@google.com>
-In-Reply-To: <20260323235817.1960573-8-dmatlack@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 21 Apr 2026 10:40:29 -0700
-X-Gm-Features: AQROBzAxQqecIHMlVLo5_fKuOniGGCbgFfk1LcXxhbCrQbMNTrTkqomhARN-2eM
-Message-ID: <CALzav=ehpWA=XchL+XLZuaYfYmBTPNWDYt1W3LFY5-6+US4E7w@mail.gmail.com>
-Subject: Re: [PATCH v3 07/24] vfio/pci: Preserve vfio-pci device files across
- Live Update
-To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Mastro <amastro@fb.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>, Askar Safin <safinaskar@gmail.com>, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Chris Li <chrisl@kernel.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	David Rientjes <rientjes@google.com>, Feng Tang <feng.tang@linux.alibaba.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Li RongQing <lirongqing@baidu.com>, 
-	Lukas Wunner <lukas@wunner.de>, Marco Elver <elver@google.com>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Stat-Signature: hgerfzk44kr49fdpz7u4yrewfw8t8cjq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <laegs2jt5ifqmfmdlsl7gsrc64z4nrnwbxazewbr7jk27emdej@l6vhj7pjh3dy>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: dHOxqXuPqUDabJGUbCrDd0E8Lkxm8cBb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE3NyBTYWx0ZWRfX00Qi2ArFdy8g
+ X86YPDh3hHrYDtOGYrAYeUIiu69c4eGoJjnRZ8hQMcE8ycxWxpFFgrA2RdKyA+dkts0lcguDoYA
+ TKSaQAG/UDOl91qcMDhq11SyMh7fkX/q1ehkV5fOX1pui0ZCO+WEYuuFqdrElecmRHIaD4zItqF
+ YAuL0IBuoHNFqenr6VnIpzCD9VS6IfFyb+X65vRlF53JjtvWr1iNrkQkNsjSDBVgWdM7UY75MNk
+ +X/O59LUhRiFpwqFXWzWRwUHo1nE1bxLKicnsYdt58lEqIDqEm3kf+voGoEZ15t79BjgPmzuL/G
+ Jd7ne98rUWIAriYhW3Qws7rTM2bed2/sFfk777XITx+eDzgbr0qbuPGBu8rvgyJPk4KMKt0gmMW
+ ECOhEI9/g25rsV0YMAYOnQB1sLnfMi3Ry70R9rF3wZe4z1GCaX6NUwY8mpmQQod4iWQ7AyJjSES
+ M8j7IBASUfyBaxC41TA==
+X-Authority-Analysis: v=2.4 cv=XLYAjwhE c=1 sm=1 tr=0 ts=69e7bccf cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=iox4zFpeAAAA:8
+ a=DU7pH1NQbppyTea5T5YA:9 a=CjuIK1q_8ugA:10 a=WzC6qhA0u3u7Ye7llzcV:22
+X-Proofpoint-GUID: nfmV67tfxh-RUfv9CeMajdvGriLKC88r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
+ definitions=main-2604210177
+X-Rspamd-Queue-Id: E000640006
+X-Stat-Signature: 1nyt8mmssmb4wwjkdihoi6w1uipjsutn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E1FDA1C0002
-X-HE-Tag: 1776793260-44741
-X-HE-Meta: U2FsdGVkX1/dxQOUNi7AlrXmrOgyacqhVewdW6GO0eSqjrMW4PMxSyWqRWt0OpZntROpsA6eqptNfzaND8DuD60Sq+y/vRoGbPBPIaWM62LigskEiD5p3nUi4hyvQ8zb0UMrNFWmXKphncvLwcYJLvmMGmqAAETJqyE/3UHleS756VJpMkA3+FX3NZvarzzmipA2uJoUhxfwQjvPh61iggRmHerWiujS6YWnLquwVZ862GIvgL+pQxu/rAaHrDTxQlO3vYvjO5vjBPAPybbV1HFaBuWjdRu3hBPNo2EMCevqR+3kQFhJDiMuFEYVZaG051jkQslzePIHg0l+/tzfuZmQS6GoLNrY+l7GdDMXZJTpdKmiWmQriouC/Xtlrkg/bIsGZT9pAlgZt4LwKV/4YfvkOMb3+pwPaOMdfRvpdL/afaGC4+bDSBNA8y4Af2gvDhkb/4eTJ4pjL2YJZKZn4nf/A5OWD0bMSuvXNGmiV/IEbjj4bev4JJiOZXz0FaeP1rmW8fzM/XQMpqVAcoRaPAkGSCYisWMr56Hk0z4V2l5yXvEw0MnAy6awrKSKKXvEYuA1L1Eet9homFcS4/qLYdlnAkRuyGUQPxPobsQh+rwk6g5vVkFxv5VDWordgyO4FSDlmzLFK7WKD5XAtp4kab9NFNEZmjlUy16JZqXQs+Wr1PY+QEL2AfZTtVaEbx6Ry0GtDTKr1bQpz6pjmXZSo2ftfUODaV5u12MJSo/TN7FTEdWTFvQwDzqPBhpQC9ZifoJX6KF2Q7TO1EDyUn1TjvzdM4oFFbPzNEkZflLN99dpfho4WgnahXraJ/eoNfUE6Hxg0L1ljZSkA8VkzD9YzrIMR1gM/1UwLmcrtsjnoUADsX0TIymNdVuO+Z1JSm/iVlCyyXNEZaXzWq9L+DJTruJeIF73b8/t2SV5ghZ9vmaK1r0H46dTsVW3aU5TzQN3PRvc5uf/VXlOy9+jD4H
- Z1uezbrz
- aTug3g/K0CBnihPG7HpmTOYwq+h1sbij+DG1V30rPn9lF4Vv8t7EwNhSvKtEQRb8s09nub3R7w1yRlpTIPMwRp7Z8MLj5KuZ8D14nL4r0pDCg1cZpisM+IFXHaXE1B8uJpgicQ9Q5Ds/PRwoxhoILV8gFG4skjldYTLjw5LItPRZ6geWGzdO+KmwHcgz5BLh/WQkYvITfaWh2jFkLDVTg9wJHid/1FZheEImhqpp7AXTadVFpuQT0TzfzOJYy3e39EQRqhe1WH/POcFydqVAB1KYqhDuvLXp+c0j+5YdTtc2y9tGOEqix4ofnNfZ8ScRZmw1d
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776794841-661878
+X-HE-Meta: U2FsdGVkX18771wbL/vtyAHs7dritZc9Xmva1j5kZmlWXSYtMIsxAKVCcnH0cbJfCDnslSMtYT4fg8XptQ6084qpnmoGVtinBvnS96tt2Y3iQ+AQLcOPPSY1ynyyKaAETSIh3kCOHrpwrZJsXm9/Neadnm3ahEFuHL99TWQMmAqbbetB34GL2OOU+qRX9oCPYf6fFn+rj8Gc1QWdw1r7Dm1/ieXN2NCaz5iUIH4VcxJIk38DEVq63HgifgEuj/kdflcvOf0VPJFiZ5hjUksOpq27pRPa6sV49nTjviplMaxMlZNHCF/vlh8xH2IdAWWglek1TPBYG0s0MJFYXdF/zlVYCvpa96HaEpIs1Eu4kIJlik3dbMZhsphtDu6ZoI1J8/BDHDLAXMvZdPER6X54fZbHgnSVdIP6dvRfpB2kJOAV74yAmC8Xkujzg3Q4hGjFqd5z/R6eye6hSCqIyGmrNtz8Mo9ZcwIP7fz1edzpHKlIhZxdcbAlDmLKPdgIzrMXhpH5Frx1AWX+C8d2tLpktliWvXQNJ1KGdD+V+D7svIM14wWJotpsclfdU0o4LbbF69Iug4ygkFYP7WU63WfUHET+/sbb7yhO4VF9ybMzVULA3l/X38510PnHMLF9KkmNoBhq52VF+PWoxmVu0OGjNDEuW9pzf1H3yOiLoQjNKRiHZ5zcfxU3otObnRklAzGzOMVIS0VqzK8/00nZWJIuoiLDCMGy28nKLlA93FcX1XoDXY9DqqPMRX2ai7AHm9powsn0eoxBTgClfJNLwCS/Ipp/n4S0grKV+tHMSW55Yk31LNTraJkR6flxEqlvZsJkoUlIlTyJTjntFAL0tug0mBfKS4UBYUlzA4CGL5NkQBTXHr3IYjyo2DSc/B5rvZNDPv0AL5tDoAHxlTleKCfpqpH/eKkOEncfJ5kjWRWvmE60ARgJ8GV+df8/IGwEM17ZkeVDPEEPk1NojSGa473
+ ZcqjuUft
+ +1ZY9/Fm5oFQMnsZt+1y4frbxPeeStkzRSTVMoJmq95wQu0G7TtxQeNOQbd9I2gI5kbwISlFln4RixrrjSqb69dpa0y0iDVvHnkXit34AP3wgV85SqN/3V7yciNJr/e3SwiIjdF+BCwHqV16ZbUL2wCeP7pIf/koSWOX5DTh4OgjqoTIJs/KcpZngN0rI1wqHuKCfZmaUOAwQDyxCJmCSVJFuD80ATtxzpGZoP+bFJxK9bwYG4TgRnN/JPVtrcfMspMnvJTw14wLR9TbRDigwPazvfmcdaCDud/wk6qACXq+Bp054F8eaJQIozL0VZ73jRn3Raxo5dHaXA9QgY8V9gjsklTOBFlay4dFvwXGcz+T5hxLcHppbEuDnUdJPp2T+V798LneJDugBgx7Yi3Au32FrUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,58 +146,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 23, 2026 at 4:58=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
+On Mon, Apr 20, 2026 at 01:28:18PM +0200, Jan Kara wrote:
+> On Sat 18-04-26 01:12:22, Ojaswin Mujoo wrote:
+> > On Thu, Apr 16, 2026 at 02:34:15PM +0200, Jan Kara wrote:
+> > > > @@ -1096,6 +1097,276 @@ static bool iomap_write_end(struct iomap_iter *iter, size_t len, size_t copied,
+> > > > +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
+> > > > +				   struct iomap_iter *iter, struct iov_iter *i,
+> > > > +				   const struct iomap_writethrough_ops *wt_ops)
+> > > > +
+> > > > +{
 
-> +static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *ar=
-gs)
-> +{
-> +       struct vfio_device *device =3D vfio_device_from_file(args->file);
-> +       struct vfio_pci_core_device *vdev;
-> +       struct pci_dev *pdev;
-> +       int ret;
-> +
-> +       vdev =3D container_of(device, struct vfio_pci_core_device, vdev);
-> +       pdev =3D vdev->pdev;
-> +
-> +       guard(mutex)(&device->dev_set->lock);
-> +
-> +       /*
-> +        * Userspace must disable interrupts on the device prior to freez=
-e so
-> +        * that the device does not send any interrupts until new interru=
-pt
-> +        * handlers have been established by the next kernel.
-> +        */
-> +       if (vdev->irq_type !=3D VFIO_PCI_NUM_IRQS) {
-> +               pci_err(pdev, "Freeze failed! Interrupts are still enable=
-d.\n");
-> +               return -EINVAL;
-> +       }
-> +
-> +       ret =3D pci_load_saved_state(pdev, vdev->pci_saved_state);
-> +       if (ret)
-> +               return ret;
-> +
-> +       vfio_pci_core_try_reset(vdev);
+<...>
 
-I think a call to pci_clear_master() is needed here to so the device
-stops issuing memory transactions while VFIO is trying to resetting
-it. Otherwise I see these timeouts when running
-vfio_pci_liveupdate_kexec_test with Intel DSA: "timed out waiting for
-pending transaction; performing function level reset anyway".
+> > your comment but) after this email, I started diggin a bit more into why
+> > it is needed.  As per my understanding, it tackles 2 things:
+> > 
+> > Problem 1. mkclean's the old EOF folio so that the FS can fault again. This
+> > allows us to allocate new blocks which previously might not be allocated
+> > if bs < ps.
+> > 
+> > Problem 2. Since mmap writes can dirty data beyond EOF, we zero the range from
+> > old EOF to end of that folio so that readers dont read junk data after
+> > isize extension.
+> 
+> Correct.
+> 
+> > Another thing I noticed is that most users of
+> > iomap_file_buffered_write() do their own eof zeroing in the FS layer
+> > (eg, xfs_file_write_zero_eof(), ext4's new changes,
+> > ntfs_extend_initialized_size() etc). 
+> > I think this FS level zerooing should take care of mkcleaning the eof
+> > folio (problem 1), as they call iomap_zero_range() which would flush the
+> > eof range anyways. So am I right in assuming that for FSes that do their
+> > own zeroing, 1. is already taken care of?
+> 
+> Well, I don't see anything that would writeprotect the old tail page in
+> iomap_zero_range(). I think iomap_zero_range() calls are there mostly to
+> address 2. Not only due to mmap but also possibly to clear whatever junk
+> there can be in the blocks after EOF.
 
-Sashiko also wondered if pci_clear_master() is needed to ensure that
-the device has bus mastering disabled during the kexec but I don't
-think that is actually an issue. vfio_pci_core_enable() makes sure
-that vdev->pci_saved_state has bus mastering disabled, so
-pci_restore_state() below here should guaranteed it is clear during
-kexec.
+Well I was thinking more like if the EOF page was mmap'd it would be
+dirty and blocks beyond EOF would be unmapped, so iomap_zero_range() will
+write it back which shall mkclean() the folio.
 
-https://sashiko.dev/#/patchset/20260323235817.1960573-1-dmatlack%40google.c=
-om?part=3D7
+But I think the same race we discussed for problem 2 can also occur
+here.
 
-> +       pci_restore_state(pdev);
-> +       return 0;
->  }
+Thread 1 (extending write)             Thread 2 (mmap writer)
+
+iomap_zero_range()
+filemap_write_and_wait_range()
+                                       // mmaps & writes EOF range
+iomap_write_iter()
+isize = new_size
+// pagecache_isize_extended() is
+   needed to mkclean() old EOF page.
+
+>
+> > As for 2, I think after the EOF zeroing of the FS, there might be a
+> > window before iomap_write_iter() where an mmap writer can still dirty
+> > EOF blocks, hence the pagecache_isize_extended() would be needed here.
+> > But doesn't that then make the eof zeroing in the FS layer redundant? Am
+> > I missing something here?
+> 
+> Hmm, I agree the zeroing looks duplicit (for some users of
+> pagecache_isize_extended()). And yes, doing the zeroing from
+> xfs_file_write_zero_eof() is somewhat racy (mmap writer can still come and
+> write non-zeros before we update i_size) but I'd have hard time to argue it
+> really practically matters - you are racing mmap writes with buffered
+> writes so any kind of write atomicity guarantees are not there. 
+
+Yeah, seems like it is not enough to take care of either 1 or 2 and
+pagecache_isize_extended() should maybe be enough. I was just wondering
+if we could optimize it away even for normal extend path (no racing mmap),
+we can avoid the expensive folio_zero_range() calls.
+
+Regardless, Ive not looked at this more closely and its a separate issue
+so we can revisit it later. For now I wanted some clarity around
+pagecache_isize_extended() so thanks for that.
+
+> 
+> > Regardless, for our case I think we will also need to do the
+> > pagecache_isize_extended(), mainly to take care of problem 2, but where
+> > exactly should we do it now?  We currently change the isize in endio()
+> > but for aio, it can run outside inode or folio lock. I think this
+> > function needs to be called under inode lock(). Hmm.. its a bit late here so
+> > I'll revisit this tomorrow with a fresh mind :)
+> 
+> I think mainly to take care of problem 1... You are correct about
+> inode_lock but since we are updating i_size, we should be better holding
+> it, shouldn't we?
+
+Yes you are correct. In the aio writethrough codepath, the inode update
+is happening without the inode lock which is wrong. I overlooked the
+fact that even aio dio uses IOMAP_DIO_FORCE_WAIT to force isize update
+under inode lock, and we should do something similar as well.
+
+So in v3, I make the change that for extending writes we shall always
+finish them in "sync" fashion so ->endio() runs under inode lock. Then,
+after ->endio() in iomap_dio_complete(), I will call
+pagecache_isize_extended() to take care of this. Just like isize update
+right now, the isize_extension only runs when the IO was successful
+otherwise we return an error to the user. This gives us semantics like
+dio while handling extension properly.
+
+Does that sound okay?
+
+Regards,
+ojaswin
+
+> 
+> 								Honza
+> -- 
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
