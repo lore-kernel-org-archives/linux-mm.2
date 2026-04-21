@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79E92F327A8
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 06:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AC6EF327A8
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 06:17:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8B066B0093; Tue, 21 Apr 2026 02:16:58 -0400 (EDT)
+	id CC56B6B0096; Tue, 21 Apr 2026 02:16:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D11976B0096; Tue, 21 Apr 2026 02:16:58 -0400 (EDT)
+	id C9BF56B0095; Tue, 21 Apr 2026 02:16:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B65526B0093; Tue, 21 Apr 2026 02:16:58 -0400 (EDT)
+	id AA17C6B0098; Tue, 21 Apr 2026 02:16:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8667D6B0092
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:16:58 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94167140C98
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:16:57 +0000 (UTC)
-X-FDA: 84681554874.26.0E516E4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A824520004
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:16:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YgvFXYTH;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 92DE66B0095
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:16:59 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3663E8CFAD
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:16:59 +0000 (UTC)
+X-FDA: 84681554958.17.D535317
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8DD7B4000A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:16:56 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IyXGjPUq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776752215;
+	s=arc-20220608; t=1776752216;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CbJUJM58LealXyumhOaaFkF87TSRDtnH9RRmJkUR+WE=;
-	b=vbJQl/lAq+1HbhIrvcc344RxWntdWWlEYBhEhZiCxrrPAiSXkcp4UwFCPQHCm7qs8cjvRb
-	fxvIUmbPIhbJS+NHWIV20RV02YKyrgHRFwPL+ddjJxwaxMIIWljC6zJD73XSLnda0c6oJ0
-	L0jYII9lRn9EZE9GYX3r+TwQTqGSt94=
+	bh=ETyMUE/Z7b1xh/23Y0MRw57aN/qiR0riEoKevTUv3mQ=;
+	b=ZboUfljT+GuJIAcCUCQHVLqAN8wOqGND/NkDKWdqAdD+gaceAddh0ZT2wZ25aGBZ/LrEX/
+	YGu/f2y/0+2RztonWQd87p1mmKzxu7JJEhVejhozMn09ynqQ42jRaq3qAPFFVRci3F/kny
+	xYhWiOuYlLXKJteOKs/oNtqw5szcmDQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YgvFXYTH;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IyXGjPUq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776752215; a=rsa-sha256;
+	spf=pass (imf17.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776752216; a=rsa-sha256;
 	cv=none;
-	b=vltMdcO55sQxwPsZQL7NYYLBkDGfdg/2j+M5HLGgIWerDMlsO94kHpnHtIfBVdSjH0wuP4
-	aud+XkxtxTFyYSZ6MN/ESD6K48lLqUY+JwezSDUQ0pCzuQZqynq9rF7NyNYZZySx/QINBH
-	/kXJc+ceIKeHAMzmVi0f0kRLYATIlB0=
+	b=rD3GOCEpdCIFWdkySfDml+DZ1HBtUDAWccUMDQdrxmj4l/XWLkM6UNGoJyxWhVt8utQMvW
+	XcqN0YMnPN/OpAWxRrC7xX+bjLAvJ8oagAXmnX0abIiUKGdrS1aR2efrECpCiDjHdSRLdK
+	QwZrUDe0NwIVURmxipYQNSu/fR2MDXI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7BBA60142;
+	by sea.source.kernel.org (Postfix) with ESMTP id E8A104470F;
 	Tue, 21 Apr 2026 06:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 42154C2BCB9;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8C825C2BD05;
 	Tue, 21 Apr 2026 06:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776752214;
-	bh=ZO7LAiTquAEn3PGOA6qwxWEsw7ehhO84HiuDyH/h6ws=;
+	bh=Apc9Gc6RbHUejQ0QZ/J+CpG/qcB05eyHenvm22YITWo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=YgvFXYTHR0DmaIn1RCcAqriG6JhCY8v93lg1qqf2fsD6b49nk/I+XxeYU6aWeQUJ9
-	 j9T9ZSSEH5E82543hoBP4i6mjnOmAoXqOoGJlRyT69mgChJURTX3inTpDmg3yB7dyq
-	 Bl6kiHRVPPDNnv6m7phAqFevYR3m1Gaa3bNfF+TanzDLbjxkwvOOPK2rYXy3BPZpLk
-	 Ox7LcsUvdBT+s7AUQOLeH3RQE327LWQyaLpMXhvd01e8uaC7Vgk93TKUz9wpRUWfGj
-	 oyTzu4zBGmF/8fjmebDnWrG6HigKVcvQoYM2a67hqyRyd1DXS5//VPt93oiRU5HZ3z
-	 A9Ru4+Qk8LueQ==
+	b=IyXGjPUqYtVLWe317We7sO0uw7Qsc4bHLU9xAGMnrcS44N3v3747zDxWBOn/pcvvO
+	 QUFOmq7pWJkmk9fQOryOMMLvDMD00rr3o/hh16ZAxLBgnGuonB6tIB/a4jFo1hBZBJ
+	 jukE/Eoj/g4PgdHtKbJ/wv3ETVrXULb/BnZmpaQ19pi1jorrXf709LCTaAllsww4rF
+	 P03a4bjbHGAzilnhG+4YoEMtcJV3fz+bcqVhvxaJCBs6/0aM6yAXtVI8umXRk869yb
+	 4paeWAhgYPYZqS2RS81izF8f14DFHdEkww6xBXlt+PTK6iecrukILldBRkJxCc7g0F
+	 kueQqftcERIGA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36C39F327AC;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8295BF327A6;
 	Tue, 21 Apr 2026 06:16:54 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 21 Apr 2026 14:16:47 +0800
-Subject: [PATCH v3 03/12] mm/huge_memory: move THP gfp limit helper into
- header
+Date: Tue, 21 Apr 2026 14:16:51 +0800
+Subject: [PATCH v3 07/12] mm, swap: support flexible batch freeing of slots
+ in different memcgs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260421-swap-table-p4-v3-3-2f23759a76bc@tencent.com>
+Message-Id: <20260421-swap-table-p4-v3-7-2f23759a76bc@tencent.com>
 References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
 In-Reply-To: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
 To: linux-mm@kvack.org
@@ -97,25 +97,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Axel Rasmussen <axelrasmussen@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
  Yosry Ahmed <yosry@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776752211; l=4275;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776752211; l=2431;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=IPzlyWDmmaeqDTMXHOEyi5jkn4VAxM+lz6yxuKwuVaw=;
- b=GZODeebR8D2/w7Dpfs2u+q8o22LymrwzjCZfIIe3QGXCKa19ZCLUURjYJpT9gzSAORXEgXcbn
- dnQ5vrpwaBoCax1TgRPyFE8UqBydLM8bA+RWN8n8Pj7Q94reooD9YFT
+ bh=TF+4v7N3Y0fZu1fBTRYUKMMGHog+xsunCT0x6/UHUK8=;
+ b=jKF0ucmqDotJQCko85mDlllnmWv+qK2so8CaITDB3VOptToZ8ErKzv7GTKqrb6flmdwtc/NBf
+ Yajyzomm9HYDlRgerJnnpKVIJoHb3izF6/uzm34zTZR18PyobcZPRSq
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A824520004
-X-Stat-Signature: qbohziqoz848hyex3xdkh6s3dw3gcdwf
 X-Rspam-User: 
-X-HE-Tag: 1776752215-304222
-X-HE-Meta: U2FsdGVkX191vuJeLIYMslDRKg6das/yYAs7QTbsFTha+EiJ8zPSTsi68G0Q0ZVCX1Bo5ivjHf9kMELeBOBTko6/x8xXdJyk+/9rMmBltW3clYXUqDtQWjpBh4LGpRIMKgt1ITtbYicVDu7yV+aqAKjClc0aurU1kYRUkZdLySEIwgxewPwPy9HuZffaeAUQC1FXX9WZAsUCs8L63aMv0xDIjV7F9uAnmLQnxzWW4emB9i9aA6DXyvTDkA1bc2uZqvzetdKO+iaO2tdVghcwtYdMFPfBSvq4Hb++gQ8vJKbBt4JusIz0J7H9KgUv2iFWKODSq4VJSDJTYrHwZ9cu2lE85aTfYMSeBbdCkfI2sAxy9ODtFcPNKaWirVYkk7m8F/oyBDpexwU7BU0Hu3su/2xHisUMv5w/mDQkPoHO/3PF5k/n33L8nVEKWaPoJXrxKOSfJiEY4PtA0hENawLYdM8PooT3eGt/sef0Li9B7BCyNA5iPDzemei+V+3NVkBUzciZh4/7UMOEoQv34gBhu3wxLKOS0mUa/ZcRPPZrqhzOPEze0Cu4IThcJ9kV+62TbCalge2KzGyy5PSg0bkEgbsHyFqZsD1IBkXIkkW8mvcYWZFtO0Bh3oRNPiH3Vr83MZDKil34/3jJ5Ob//XsugHPpI76XPi4b4aZvbhwkaunVikS3wCooFXgbEZHaWfn04nlOHJuI5fkuoi0vfAZUVsrFzJwf0IZsEfS54ZsQpR+twMAxs4j+flcB3OLyfE1oT2GrrEx84saTQm9vkxyu7qdnx4XaljC2Gr06uBxVNmt093tzNsmMtmc2YjVbOzIaVnGzkZcCtt+1ZG3tm4TkzMc4cWTqql1JFmZGhlLPk4CgiWHKqXT4Ge/BI6bhE3SS8vqx3GD31wMmzlED5v8dy5J3AatR08/xuT2FA9RAW6LFHCDcInwS+dqXai81hCGO5C77JCfQsiFBvjtSb1B
- LFxYpJ38
- 22S6/+EhANp1nBKF0OgkK57R4Ud6eetbmFI0sHaR2L7TgCnT0ttVBtxmWcCjlkifumBsN6ryL2uV6GwJ/Wzd+79BXLKrMFuCS4zcgjboLXTYAeytOpwDDq675YhEDuChk2YBvKlNf5VmsOOwV3LTgJKTSysxfOuOHO7NBnEG3vIQumiVMDK8hUXzyITTYpudq0UvK/2T1OZ+nqLTjEHJfr8kyjVpmaalBofINvEj3OWp4CxYxCTJ9YVGJ2GNX/DG8ksubeiURphY0e+0gZxofqY9WcB3tt+YWS4Kr/3mNc4y4DeKEvTm6WvfX3CgDnXNsJg4kBF7QN/37hNSezyJGFwWQnghhqpX7ZOn92mQvZeg5YBSicajEwR64qz7Go/Vsrnpl0ip8XKHLfl25F3vV+WEM3A3aCTS/9nnvyWOu08SwbOsokh8JmA9PZ5r9XrW7Ozdc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8DD7B4000A
+X-Stat-Signature: iadab19t3mb1k6bhg1uq5eyjjkfw36w3
+X-HE-Tag: 1776752216-88341
+X-HE-Meta: U2FsdGVkX1/s9QUP5GStoZluJsnbaVpJmYcH+HMFBH23Po6QSG8aBYZmVmqXjJ157B+TxmdX3mnOvC3rzz3mW2nMGqSz1i0Q27nQlsjv3Z5yBJQdxsgum0hYQzJrB5JvNfsLQDOus4EdKRibBoMZ1awSZbB1HJOVEsd8lQI/mjHJZ26XKDsQ9QIrkB8XhBjWWl3GKsTflLsOlEd6wGSbIWeXuXQ+wDEYA8LGz0ABNqc1qGM/RSIuqnlknVfJ/UunphWNcgfrs7jwyurii/0BedWGoMX7N7e3X+ioQ2lS0FmPsD1R7e4ygIZ9VP7Se0IpGhqui7NH2V/O8xXPSB3IYht+RK9+ZqU9bPLtt0MU/D8yH3KRVwvamym6Y12Gte3MTFMyEdTPSuHTBT9bkf+T0bRujwbhUNtOi8uVRdFaB0N7EeGVZX2in8Mul6L90p5k/GrvXdPx6VLr0E8aItPK7Po6o1P5vPnlggcr2R6QHoMQEEjguxE02O0IlDSwt8TqYdhF/bHv0yepnAt8U86RKEHZ9szj4vSJ/LKACO89z/lFWqhNij80q8LQeEgybKIHBIGdfPywWV2ha2LA8MllyRngouHEv4ISrzFdt4F0rnM5bSqqpImAcJNgGIdS/y0s+vNUVbWypyGA3IgzXwFJyNwpgKyKjFc8wXCEIxzb+KoctGpX+qj1IYXFnWb9yuXyYyke1DYVDUCKwL9rDcxzisN7ohYzC7B/YN6mbV7GpMZZ3lIp6C2zIhU49xsmW0WViieBiHrjzNOgyhl+jB51U/YHrU4xTScnzXS31ujL9lCx50UUeFsMh/ZcJznDnBCkYKVyKGCPkcXS0XvLeYb8r7zTlw+7AYvYN1t6vR/2/owvOFcgVSuh4Rg9W+dpgzBMVe4qRh0QRqe4A04F6JJ8btj7xrbAV2Q5TlkoKX0DL5nr3pIRvgJM8ne/UWGd5+1b2nAbnue5P6qnwiig07M
+ heE2XzOJ
+ YhZMLamBoiPRwMLbvGi2E6SzABmr5/s44QPqCPJ83Sp6tAZxHbTzGzFIO1jAX5t0xyzG/6j0LqbUDDFhtmWb4ZE9CYiqpaXGZRubJW9p5//NQf9WhYnrnqS1uqMWa746OL/MN5ChvhXnvLkPmhpzWHdVLSewaWMbvSCWYvHz1p9j9zwtPPO6zYpndxS1EmyIUEwsRuS6lWPfxc5DY/pyf77lUDzjapJYdvI2iAQISp6kU+3bpwvZOApq59zbw6CBrtJM497OdrNWSSofrIiOMbKyw8Y37O4YQIO8hWKpdJQ9Hpj3Xl451Yv0pUkdrcBX7fe6VLFnbOwPawny67SZf0W3G8qBEv0wGkpTXXz/y9Pv0BObQdLs6vIHeecQArgPR0Bf+Yj4QFOLf840bfCAIDwalVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,132 +125,75 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Shmem has some special requirements for THP GFP and has to limit it in
-certain zones or provide a more lenient fallback.
+Instead of requiring the caller to ensure all slots are in the same
+memcg, make the function handle different memcgs at once.
 
-We'll use this helper for generic swap THP allocation, which needs to
-support shmem. For a typical GFP_HIGHUSER_MOVABLE swap-in, this helper
-is basically a no-op. But it's necessary for certain shmem users, mostly
-drivers.
+This is both a micro optimization and required for removing the memcg
+lookup in the page table layer, so it can be unified at the swap layer.
 
-No feature change.
+We are not removing the memcg lookup in the page table in this commit.
+It has to be done after the memcg lookup is deferred to the swap layer.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- include/linux/huge_mm.h | 30 ++++++++++++++++++++++++++++++
- mm/shmem.c              | 30 +++---------------------------
- 2 files changed, 33 insertions(+), 27 deletions(-)
+ mm/swapfile.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 2949e5acff35..ffe5a120eee4 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -237,6 +237,31 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
- 	return true;
- }
- 
-+/*
-+ * Make sure huge_gfp is always more limited than limit_gfp.
-+ * Some shmem users want THP allocation to be done less aggressively
-+ * and only in certain zone.
-+ */
-+static inline gfp_t thp_limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
-+{
-+	gfp_t allowflags = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
-+	gfp_t denyflags = __GFP_NOWARN | __GFP_NORETRY;
-+	gfp_t zoneflags = limit_gfp & GFP_ZONEMASK;
-+	gfp_t result = huge_gfp & ~(allowflags | GFP_ZONEMASK);
-+
-+	/* Allow allocations only from the originally specified zones. */
-+	result |= zoneflags;
-+
-+	/*
-+	 * Minimize the result gfp by taking the union with the deny flags,
-+	 * and the intersection of the allow flags.
-+	 */
-+	result |= (limit_gfp & denyflags);
-+	result |= (huge_gfp & limit_gfp) & allowflags;
-+
-+	return result;
-+}
-+
- /*
-  * Filter the bitfield of input orders to the ones suitable for use in the vma.
-  * See thp_vma_suitable_order().
-@@ -581,6 +606,11 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
- 	return false;
- }
- 
-+static inline gfp_t thp_limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
-+{
-+	return huge_gfp;
-+}
-+
- static inline unsigned long thp_vma_suitable_orders(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long orders)
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index e1ad77a69e54..8d3d22c463f3 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -1872,21 +1872,46 @@ void __swap_cluster_free_entries(struct swap_info_struct *si,
+ 				 unsigned int ci_start, unsigned int nr_pages)
  {
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 3b5dc21b323c..5916acf594a8 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1791,30 +1791,6 @@ static struct folio *shmem_swapin_cluster(swp_entry_t swap, gfp_t gfp,
- 	return folio;
- }
+ 	unsigned long old_tb;
++	unsigned int type = si->type;
++	unsigned short id = 0, id_cur;
+ 	unsigned int ci_off = ci_start, ci_end = ci_start + nr_pages;
+-	unsigned long offset = cluster_offset(si, ci) + ci_start;
++	unsigned long offset = cluster_offset(si, ci);
++	unsigned int ci_batch = ci_off;
++	swp_entry_t entry;
  
--/*
-- * Make sure huge_gfp is always more limited than limit_gfp.
-- * Some of the flags set permissions, while others set limitations.
-- */
--static gfp_t limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp)
--{
--	gfp_t allowflags = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
--	gfp_t denyflags = __GFP_NOWARN | __GFP_NORETRY;
--	gfp_t zoneflags = limit_gfp & GFP_ZONEMASK;
--	gfp_t result = huge_gfp & ~(allowflags | GFP_ZONEMASK);
--
--	/* Allow allocations only from the originally specified zones. */
--	result |= zoneflags;
--
--	/*
--	 * Minimize the result gfp by taking the union with the deny flags,
--	 * and the intersection of the allow flags.
--	 */
--	result |= (limit_gfp & denyflags);
--	result |= (huge_gfp & limit_gfp) & allowflags;
--
--	return result;
--}
--
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- bool shmem_hpage_pmd_enabled(void)
- {
-@@ -2065,7 +2041,7 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
- 		     non_swapcache_batch(entry, nr_pages) != nr_pages)
- 			goto fallback;
+ 	VM_WARN_ON(ci->count < nr_pages);
  
--		alloc_gfp = limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
-+		alloc_gfp = thp_limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
- 	}
- retry:
- 	new = shmem_alloc_folio(alloc_gfp, order, info, index);
-@@ -2141,7 +2117,7 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
- 	if (nr_pages > 1) {
- 		gfp_t huge_gfp = vma_thp_gfp_mask(vma);
+ 	ci->count -= nr_pages;
+ 	do {
+ 		old_tb = __swap_table_get(ci, ci_off);
+-		/* Release the last ref, or after swap cache is dropped */
++		/*
++		 * Freeing is done after release of the last swap count
++		 * ref, or after swap cache is dropped
++		 */
+ 		VM_WARN_ON(!swp_tb_is_shadow(old_tb) || __swp_tb_get_count(old_tb) > 1);
+ 		__swap_table_set(ci, ci_off, null_to_swp_tb());
++
++		/*
++		 * Uncharge swap slots by memcg in batches. Consecutive
++		 * slots with the same cgroup id are uncharged together.
++		 */
++		entry = swp_entry(type, offset + ci_off);
++		id_cur = lookup_swap_cgroup_id(entry);
++		if (id != id_cur) {
++			if (id)
++				mem_cgroup_uncharge_swap(swp_entry(type, offset + ci_batch),
++							 ci_off - ci_batch);
++			id = id_cur;
++			ci_batch = ci_off;
++		}
+ 	} while (++ci_off < ci_end);
  
--		gfp = limit_gfp_mask(huge_gfp, gfp);
-+		gfp = thp_limit_gfp_mask(huge_gfp, gfp);
- 	}
- #endif
+-	mem_cgroup_uncharge_swap(swp_entry(si->type, offset), nr_pages);
+-	swap_range_free(si, offset, nr_pages);
++	if (id) {
++		mem_cgroup_uncharge_swap(swp_entry(type, offset + ci_batch),
++					 ci_off - ci_batch);
++	}
++
++	swap_range_free(si, offset + ci_start, nr_pages);
+ 	swap_cluster_assert_empty(ci, ci_start, nr_pages, false);
  
-@@ -2548,7 +2524,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
- 		gfp_t huge_gfp;
- 
- 		huge_gfp = vma_thp_gfp_mask(vma);
--		huge_gfp = limit_gfp_mask(huge_gfp, gfp);
-+		huge_gfp = thp_limit_gfp_mask(huge_gfp, gfp);
- 		folio = shmem_alloc_and_add_folio(vmf, huge_gfp,
- 				inode, index, fault_mm, orders);
- 		if (!IS_ERR(folio)) {
+ 	if (!ci->count)
 
 -- 
 2.53.0
