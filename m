@@ -4,87 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C91F55805
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 04:49:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22F1EEA71A4
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 04:57:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FE8E6B008A; Tue, 21 Apr 2026 00:49:49 -0400 (EDT)
+	id 60CF96B0088; Tue, 21 Apr 2026 00:57:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7624C6B008C; Tue, 21 Apr 2026 00:49:49 -0400 (EDT)
+	id 5BE746B008A; Tue, 21 Apr 2026 00:57:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 677036B0093; Tue, 21 Apr 2026 00:49:49 -0400 (EDT)
+	id 4ACB96B008C; Tue, 21 Apr 2026 00:57:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 36ED26B008C
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 00:49:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E6CE18CF70
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:49:48 +0000 (UTC)
-X-FDA: 84681335256.30.B439396
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1F00A180012
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:49:46 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ULln33mB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776746987; a=rsa-sha256;
-	cv=none;
-	b=LAH4a0E64mbTW4j9bmZVjlusQBQtexz69tMFuGh759bR7Pp7HntwdjZ+8iGIloDEiq1S7Z
-	/f37FBIRBCI1hXJiYbpdkG+ILIJ1nTnfUSNXLChW3bgyfmMCKJjLFyF1ZvsQpzScOIbMP1
-	PFcNaoQOUZs0PW3Gp2nwF2Q3ACSnVUU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ULln33mB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 39B516B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 00:57:35 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B240B1A0C18
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:57:34 +0000 (UTC)
+X-FDA: 84681354828.02.63C3458
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 58EB5100006
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:57:32 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=YTJMGyeB;
+	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776746987;
+	s=arc-20220608; t=1776747452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oxtW6Kli3Sic3XH89y9kl0VVuaLbu/hqqvU3S8hWBqo=;
-	b=FbBR5xhC9jO2w5d321iyK/sgeXr+LYcVXGy4oDomRh9A7fSHORPNrc8HKi8IG2cJvAZ2/Z
-	8CnlqU8+TS93VOWu9p5c7yH9r18EHw2LomAmDqt+xpZQmgzkAXcONJ16Y739/R8u3Gx48B
-	HFY8THuITRETiMRD9L5moFZKD00CjRw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 022B5445AB
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:49:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC367C2BCB3;
-	Tue, 21 Apr 2026 04:49:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776746985;
-	bh=58RqIGxjkE+DGlcSy5aHIfF8jnvuEdtFZZsL+mLllnk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULln33mBNTI3tL5SwpU2ppT2qiQ22TC5bpbiUC5rjOoQj1IpPFMqFMUFXCw6yE/cv
-	 KaG90NotlnowFbXifeKAOAwW2xcmatGracrelf8vM5cRj49xOylnI4IVRJBempzfBt
-	 p3n7uRjBh1eG3WdDuw8r8kGLojkP72NQli8YgW+HLRZyiQRxSiH5hDPJpwq+Ky33D+
-	 AqBrNbQFN0BGmV5qeIsj+kcsoCdSG0DEvtLtHsoe73Op/m2ATggp2KGYDhB1jMwsFA
-	 2NR7UYZnxwm6KZ9HohH8QFJ1+cdEs/X+BLtuZPJ4KhyzJ1m5FqDjggB2eqe7BNfwex
-	 4u3OkwntHcJ5g==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 2/2] Docs/ABI/damon: mark schemes/<S>/filters/ deprecated
-Date: Mon, 20 Apr 2026 21:49:27 -0700
-Message-ID: <20260421044928.141388-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260421044928.141388-1-sj@kernel.org>
-References: <20260421044928.141388-1-sj@kernel.org>
+	bh=5pMSO8+wAaLz3I3JtlaJxOu6EbbRzPLwltj4Fp2D3hw=;
+	b=6snLDy0339jP9LjOPbhkpjgRgjZr98b4M9H1UMKwTAsjuR5LAiSUnpEgGDF1tJEYfpW8Rf
+	8+YYBm1Sl2rmlZ2dkZ1kGyvn6g6xNPbwupY+tcYspDeEzPR+iJjIHuaBDnwVLLx1O7dsL9
+	pZW2fX7gt93UQ8E6pmrw0UGTF9NAKeg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776747452; a=rsa-sha256;
+	cv=none;
+	b=Yymc8e3/WYdadHsTpQfGEvDPy0IseWy2c7HPdgvCDY0+ICFnMfqmcf3svjb1KRKW50VM3x
+	6O1fSWeZWjGz0FLEgBQsOVjiYYWhPijOTMpRO32DUiYzKNCd3hkM41HsPKOARAqLn+t0sQ
+	J0VmD9A63ShVsrgej1CURmkzclhNWj8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=YTJMGyeB;
+	spf=pass (imf05.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63KJgZMl1926167;
+	Tue, 21 Apr 2026 04:57:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=5pMSO8+wAaLz3I3JtlaJxOu6EbbRzP
+	Lwltj4Fp2D3hw=; b=YTJMGyeBFItjEEQ0ROFcwgB8P3yAqbDRcGtk++pxZIW5p9
+	SxZ3qSRq4sElIgc/Pubk8QWL8o/UJrmQXciqLuhaYom9USjnKS3LGBsld/hY5Q/2
+	aFUQoKKX9f3b/vdTjU6Omzy17FLh5TFsHZu+kQx0de/b3Y46isnwX0cTNUiuWf0Y
+	j8VwaQThp17el9j5p/MjoT9MQNB8bhS/frxqa6fEof1DI0AHAxSfdAL2sHoDOubn
+	de5k7/JywHxE7LQvyjgwKO2MJPvYwY9LJiuINGflf4WPqPq0uFzlqHwTZlq2zR+8
+	cE6jYBZGF28YEHcjoxWIq+pL7QElDTwxz5Rc2EWw==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2nf2qen-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 04:57:28 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63L4Zbm1016105;
+	Tue, 21 Apr 2026 04:57:27 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmmnvqfwp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 04:57:27 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63L4vNvP55640394
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Apr 2026 04:57:23 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4FF2920049;
+	Tue, 21 Apr 2026 04:57:23 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AFB4F20040;
+	Tue, 21 Apr 2026 04:57:22 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.156.187])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 21 Apr 2026 04:57:22 +0000 (GMT)
+Date: Tue, 21 Apr 2026 06:57:21 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] mm: Make lazy MMU mode context-aware
+Message-ID: <0dd3a5bf-a98b-4181-a88a-ec9c0203f90a-agordeev@linux.ibm.com>
+References: <cover.1776264097.git.agordeev@linux.ibm.com>
+ <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
+ <4dc47078-0f8b-4388-9715-744c18590a00@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F00A180012
-X-Rspamd-Server: rspam12
-X-Stat-Signature: enqbc6417ian4s4n63wx3irdugdcadqc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4dc47078-0f8b-4388-9715-744c18590a00@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ygna7uQ4-zA1MVdmgRCK6lp-SgwftUTL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDA0NCBTYWx0ZWRfX1WkmMHM346wU
+ LyA13MuTFImlzXMwnyGwZsIHiqJNX4uEK1BlwixjpGham29kANpLEHu+VIHXsWvRUDI3iKCB+cr
+ aSCScNZMW7B37iQ1keqv66QFX8m77ogimXeT5JuvmJM1rgGG9ouNbGUYK7OrQl/f8TI6lhx+D40
+ UeZDpC2TeOQWKO7ici/XAPmGxbStXDz8rFge+imFexJK7lOHbJNwGmflBMxri1+E4WfHbOe62FH
+ gKBMd4boG7QrebeyMBUV3wdqw5d/wB43YvIU+ymD/cRB5+SmmZSvaOH1QOkTjVsOuiXyHOMykGt
+ f27Vr8I6SbX5rg/VjajE+qW5O/7RAtTQX5URs9WjBVQQ5npWGdyJjRawVX2pZ4XczFaGAHVEEFw
+ XPS/bgiwjqV5p0A3gwLHiuEakcr7bb+YA18yf05UkgxeEjjhDy7xRZDldtju3eqLVJiAbPD6onP
+ M857t53+TCqFtxMPCSw==
+X-Proofpoint-GUID: ygna7uQ4-zA1MVdmgRCK6lp-SgwftUTL
+X-Authority-Analysis: v=2.4 cv=B7iJFutM c=1 sm=1 tr=0 ts=69e703b8 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=7CQSdrXTAAAA:8
+ a=cFI7nvt5PXbHyqa3DzEA:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-21_01,2026-04-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210044
+X-Rspamd-Queue-Id: 58EB5100006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gt1c3q4iitkxsixgfy8zby88m1yxwmb4
 X-Rspam-User: 
-X-HE-Tag: 1776746986-997207
-X-HE-Meta: U2FsdGVkX1+JlMUkNsAg3YUwQXKO9uvhr3TL/rB4YluuncoWxgXfw/JSFd0qW6cFPoOpSaNgNN1kAe6sCkTXPZT5LBApZ/N4NuvduHMLzzA05x3QpYtlggjNXXE//XagrtGi+oRvhc3ygd+W6+olN8CaCulLAaqo5NeqpE8QQhZmKk8TC1Xb2IwrjVniJP/ZpCcsAb95fhDhqE14GUJMMYeWEYTnDQYYAB5KhqgEWwbECDMyoVu4sQtvpy12ZCoqu84OWpItZj0DJC8Jo+MgFNKRo609s9M+sZzEWjrG4dDo2VHaY5d/sho/Vm8TIMthlnz6wZunM5iExrsaSpfkoDkL1v8aNYHPA5nHssECwRTFQxZIx72Ax6CGpQfhsvHOG0gwfV8kyUuEuHs7/c6aeRA6PrGFHv48QPRj1KkSEsRAGGFuApiDVkinQhb4yLVIZdCdWCPDFsRooXFsC5thA99qsZPS3b+pSJC/6Hw9NBoFvN+e1VNMyRiG2A9AaAJ2gPnv+X2jS/5VR6a4VAzeUhlxzT0ES3o0Ka7OAU676MkUQuAZfzFDl2JGsG43cnc0pg6huIqfhOkIq4UgvaUxzyFyrmTzrf7XjQR5x0fKvLhg7rIHA+VA184slwE3W7Smm14tkbyucN2ALtfGzwfUYln1xSCqZP6e5Won6rDxr1HTGjUxt8Kh6uraowAA00CMKcOZ2ZQf67wwl+kHaLp5xenA6ZhXIosc8MUh+fNT3tsMRDQJzNYguWJC3DXqr+RPkRZW1Ae3gZRSYfPxP0/Is5pDjxKdppRKE/lq/Nr2giehw21KwzfW0dLYC7BMLrH3rnHDB5Wno25Lpjxy14l/J8WS61JbfLOeyN+/OshoBEmm0Jk0imlzswTnbYKUwH354cOvsNuKIqWcBaHQl/AxruxLPRn1DyEQpMhjBILA3h1Fo/MD7NDgMqa7lBZS89rCyJq7sgoTTd6hlToRwdz
- VbiuymOd
- Teu1ItErg5jXcLG0EAjWkwHkLBiZfLrDYnK4mp1hizz3q8w/IJxPcvVi8HRtNYgOPf+OLWqPaVKmnaMLsrnHnK6ywmn8V/Sj0Z9bYhXKsKO2gBL4JayqlrxnVJJZ/UT9gMUHUxppe72qVDxfh1V84WxCE8QEK6cvmUaWZH25VAGV9OUJU5bU5Laba2CGA7rFmafkm+2HjpgrWEIO+jj8ud/Q2adQdVwqMEjbkO9gFMoO9XYfRa/FyhQh8yRa4VuzGAPELreZzvhNL530q1NbxOvPP5RdxaLgJPn/6Azg/XG0UHxk=
+X-HE-Tag: 1776747452-123500
+X-HE-Meta: U2FsdGVkX1/XxYvxNsQXHAtTgW/0L0lDqKS2LVMJxzvHoVfHN8VUunac/wzTbESskeLca/kCwT32P3DfvWDGPk/EdgrdMTCW4EHarkTMsSbE64We78hpOxb9/rNIjyw++CtrJ77LREZR05xfenFIobALPu/gp8X0tl1Svn8c7Evmmg7tuppSm0EGya1NH1UbecByz7WyDnzqhVkABBwPmECPiwBHKpSukiEM+LO6+tFglQT8Hp3KgirEwbaRcJvwm6iTzrS2I46tzk94IVqxEpSGw068WzDF/wG1XOgI7oSZmjMnFuSBVIdOjI5voNQQTv8ipgRb8Xbv5nPoBnkB5ZbHkTXiAfC2Cjdo/7T8XcH5owgvmgTRR6fqUGwnbzzCBWxCe8HKFSO8y6QgmxE0SrExCPLGWY3e8kuVlncp92fwaNqFRMCyz/4DrNP66JUp6TA2j6ST9ACdtVbAMFH9Qc7vgC2POCShrdceqru2JbfafLPwQPcvQjBCfIyTWuSgUUTEI89g1CjGFtRFhlEQeCYPfXNMZbvjEsXoeHRfkn2aC2XornaJLMg/rRKifIB6uqxwmi7TwGbqPKIeYoVixenf/UemvGBzZOEWg3JCOgwD4owmOYWvtkpcfhUBQ28ie/GvzGUk3A7lKg//yuHdl5LaQZEvo/cF6y+GD4CWiF9hpz2Qb6dAYm5O11yWnWmedjDV82JKuLW9JtLfcOMEYoa6/pNaIZ7AlBDVIOcX8QAkvlwQu8c1uIri3OnnQ637B1EAQXVD6fcDGQd0S9oLoF3Nu72uu4dNq+Uf7AcjN7dYPI3BGy/GxiOud36NCzR2FqhcdpcnHp2h1qwaKtZdrJz7ZrejdN0YdkEhRSyjFKRvunD4nhJX+4GE87YwIBusG0Eh6ntMx6HEM4P4TAf4OjZFcPOog829U5oKVkaVA2+iOVlksUWk5acbgxeDVCJFk/aHGLQH2AlaKspD6Hf
+ sGGb6peL
+ WrWnVCx74KhpUvZs8F4ou4mlNa1S7v3j+wq4GAPiW50Sdb8tVmrC04L/3sPdzR2qAe/fp/0J/OsJXk7y4dXqfngU8dLFLZ+uG5b4yR/LGGwfzP0SeEgpoBvNugD3+ZWBwf8LWYi6Jp/BACWQGoXUJLa1ygyeg7quc3Ghw0pIpYUfCuiEtGU6ASM13tuSZW5VFtNYkZIKYPsnYhXGWRH+uv34dTYtjVf3DbuGeaWTY7pzn2x3862sYnggxpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,148 +143,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now the 'filters/' directory is deprecated.  Update ABI document to also
-announce the fact.  Also update the descriptions of the files to be
-based on 'core_filter/' directory, to make the old descriptions ready to
-be removed when the time arrives.
+On Mon, Apr 20, 2026 at 10:45:22AM +0200, Kevin Brodsky wrote:
+> On 15/04/2026 17:01, Alexander Gordeev wrote:
+> > +/**
+> > + * lazy_mmu_mode_enable_for_pte_range() - Enable the lazy MMU mode with a speedup hint.
+> > + * @mm: Address space the pages are mapped into.
+> > + * @addr: Start address of the range.
+> > + * @end: End address of the range.
+> > + * @ptep: Page table pointer for the first entry.
+> > + *
+> > + * Enters a new lazy MMU mode section; if the mode was not already enabled,
+> > + * enables it and calls arch_enter_lazy_mmu_mode_for_pte_range().
+> > + *
+> > + * PTEs that fall within the specified range might observe update speedups.
+> > + * The PTE range must belong to the specified memory space and not cross
+> > + * a page table boundary.
+> 
+> Does that mean that all PTEs mapping [addr, end) must belong to the same
+> PTE page? I think the wording should be more specific.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- .../ABI/testing/sysfs-kernel-mm-damon         | 62 ++++++++++---------
- 1 file changed, 34 insertions(+), 28 deletions(-)
+I tried to state that end of the range must not exceed pmd_addr_end(addr, end).
+Any of these sounds better?
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-index 971c22e34e722..ee29d4e204ffa 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-@@ -396,15 +396,20 @@ Contact:	SeongJae Park <sj@kernel.org>
- Description:	Writing to and reading from this file sets and gets the low
- 		watermark of the scheme in permil.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/nr_filters
--Date:		Dec 2022
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters
-+Date:		Feb 2025
-+Contact:	SeongJae Park <sj@kernel.org>
-+Description:	Directory for DAMON core layer-handled DAMOS filters.
-+
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/nr_filters
-+Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	Writing a number 'N' to this file creates the number of
- 		directories for setting filters of the scheme named '0' to
--		'N-1' under the filters/ directory.
-+		'N-1' under the core_filters/ directory.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/type
--Date:		Dec 2022
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/type
-+Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	Writing to and reading from this file sets and gets the type of
- 		the memory of the interest.  'anon' for anonymous pages,
-@@ -412,77 +417,78 @@ Description:	Writing to and reading from this file sets and gets the type of
- 		'addr' for address range (an open-ended interval), or 'target'
- 		for DAMON monitoring target can be written and read.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/memcg_path
--Date:		Dec 2022
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/memcg_path
-+Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	If 'memcg' is written to the 'type' file, writing to and
- 		reading from this file sets and gets the path to the memory
- 		cgroup of the interest.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/addr_start
--Date:		Jul 2023
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/addr_start
-+Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	If 'addr' is written to the 'type' file, writing to or reading
- 		from this file sets or gets the start address of the address
- 		range for the filter.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/addr_end
--Date:		Jul 2023
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/addr_end
-+Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	If 'addr' is written to the 'type' file, writing to or reading
- 		from this file sets or gets the end address of the address
- 		range for the filter.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/min
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/min
- Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	If 'hugepage_size' is written to the 'type' file, writing to
- 		or reading from this file sets or gets the minimum size of the
- 		hugepage for the filter.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/max
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/max
- Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	If 'hugepage_size' is written to the 'type' file, writing to
- 		or reading from this file sets or gets the maximum size of the
- 		hugepage for the filter.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/target_idx
--Date:		Dec 2022
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/target_idx
-+Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	If 'target' is written to the 'type' file, writing to or
- 		reading from this file sets or gets the index of the DAMON
- 		monitoring target of the interest.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/matching
--Date:		Dec 2022
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/matching
-+Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	Writing 'Y' or 'N' to this file sets whether the filter is for
- 		the memory of the 'type', or all except the 'type'.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters/<F>/allow
--Date:		Jan 2025
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/allow
-+Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	Writing 'Y' or 'N' to this file sets whether to allow or reject
- 		applying the scheme's action to the memory that satisfies the
- 		'type' and the 'matching' of the directory.
- 
--What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters
--Date:		Feb 2025
--Contact:	SeongJae Park <sj@kernel.org>
--Description:	Directory for DAMON core layer-handled DAMOS filters.  Files
--		under this directory works same to those of
--		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters
--		directory.
--
- What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/ops_filters
- Date:		Feb 2025
- Contact:	SeongJae Park <sj@kernel.org>
- Description:	Directory for DAMON operations set layer-handled DAMOS filters.
- 		Files under this directory works same to those of
--		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters
-+		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters
- 		directory.
- 
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters
-+Date:		Dec 2022
-+Contact:	SeongJae Park <sj@kernel.org>
-+Description:	Directory for DAMOS filters.  Files under this directory works
-+		same to those of
-+		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/{core,ops}_filters
-+		directory.  This is deprecated.  Use the core_filters and
-+		ops_filters instead.
-+
- What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/dests/nr_dests
- Date:		Jul 2025
- Contact:	SeongJae Park <sj@kernel.org>
--- 
-2.47.3
+The PTE range must belong to the specified memory space and ...
+a) the address range must not cross the parent PMD address range boundary
+b) the PTEs must belong to the same parent PMD
+
+> LGTM otherwise:
+> 
+> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+
+Thanks!
 
