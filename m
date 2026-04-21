@@ -4,105 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1F0AF327B4
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 07:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B3B5F327B4
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 07:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 255556B0088; Tue, 21 Apr 2026 03:25:15 -0400 (EDT)
+	id B0F7A6B008A; Tue, 21 Apr 2026 03:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 205DB6B0089; Tue, 21 Apr 2026 03:25:15 -0400 (EDT)
+	id AC0A56B008C; Tue, 21 Apr 2026 03:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F44B6B008A; Tue, 21 Apr 2026 03:25:15 -0400 (EDT)
+	id 9AE686B0092; Tue, 21 Apr 2026 03:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EFAB76B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:25:14 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7CEC55C728
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:25:14 +0000 (UTC)
-X-FDA: 84681726948.01.91A5273
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DD36816000F
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:25:12 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I8nTJuu2;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776756312; a=rsa-sha256;
-	cv=none;
-	b=ZFkxVxQ9FWsLJrVsiiC/J3xdED6EyODkAG8+46qaNlGeja6ULoWhLqdof6seAa1HclRo/p
-	To2TtgNWt4OPGGvO80vlrtjIKETzQsCTiIbtF1XunXzT6pClb3Z+uZDRD1z0LgUrR8waXJ
-	YyHe6jppgh7eJP9bc6iFa3XmPDBao7o=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I8nTJuu2;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8987F6B008A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:29:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14F5613C155
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:29:58 +0000 (UTC)
+X-FDA: 84681738876.24.785A3F3
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D3842A0004
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:29:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xEksfWTK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qUQJoihJ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xEksfWTK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qUQJoihJ;
+	spf=pass (imf15.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776756312;
+	s=arc-20220608; t=1776756596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y8eHb3Hxwcg1BYtEk+yTHPCjUakXuPFeey16dZvr48U=;
-	b=TR41mbkAsG+gX3vQLtg2l1pOz+x5+lGjBJCRRUWIGTT41khBUn/djzEkX3GJVDPCF2Vt+C
-	06xUpABYwj/DQVuod3ohsEd905poQPG7oaXxlAblDLr/2WV/O4ugJ4gu5qtoHu2vTU+Wc9
-	sOlymnlFBjo8OSUJhrnVJJQTD5qBGHU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 318CD6001A;
-	Tue, 21 Apr 2026 07:25:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DB7C2BCB0;
-	Tue, 21 Apr 2026 07:25:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776756311;
-	bh=plEh598qh3qqk54SU3Ya8nDC15W8+JoFU/NOjYwa1eI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I8nTJuu2oMi4lJ75x9Q956MeJBePyfguSJ/RBSrTQ25Gt3s5ppxbBH80i7oy3dj3K
-	 RbWTsqfs1gNdDvPBMn2uwP/dVlzTjk0Uwz3+m7kiHBEhlPkHkErE6EF5ibTyF4wLh5
-	 h56UCXxavN2VNpLCYOobQw52PzrhOeaWDJEPBx2JNO+5eq3TxgJEiMr0yotCaIdqKw
-	 MAsEDAYhcJjuLFE12rmP0VTrtusDg8YKcKYqQ2SKVPOjTXttTnC/bbNTEdlMvZgXuj
-	 Re2OrpiS6J38RE2T/8UB1AKI+dBp2zTIz7O6t3JNAntGr80mm4P32UoSxH/MWZNvJP
-	 8ZpRHsQ6eFJNA==
-Date: Tue, 21 Apr 2026 10:25:02 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
+	b=D0gbC3aAOH4kllVpsFIxw/7q9KVok+/vaZ57pvanohL6oKHCU/PwE0F1ZbATQkMmrWmDwg
+	BWzKTNvQxCov2CmGlCkOqhP8/feAzQvb1t2ZUgNGPXZLCujx8MASUctbOWCq69lbhxV3m6
+	z915BasNOsqnCxvg0wkfoc7vfFEtfso=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776756596; a=rsa-sha256;
+	cv=none;
+	b=TFc20FkPM3SVfuOCmXcj0qk26SZz7X0ITrIMoClg10dMIpyMf+R0RKqJSgc0zCHGLeZu/g
+	SI7mRnMrb0Y2QqTLeQBBt/zebmFwWvc2Au9sG/jGd7lqztCIFQzh2K19Db0qb01J6e32c1
+	PcgjMoY5nHETIxEcNR7rQcOAk6nwgjM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xEksfWTK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qUQJoihJ;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xEksfWTK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qUQJoihJ;
+	spf=pass (imf15.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1D01F5BCDE;
+	Tue, 21 Apr 2026 07:29:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776756594; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
+	b=xEksfWTK1V92y20VMkyzbGQOjYDBcGO/gWhbuEyYcKEa+ycQJF5wp6W1MB99niJpWx84bk
+	W102vN7KyOIr6MqHMYJybMDcZq3J2H9McFMkisag+oyd1sTqcBj297x6+VRYxdvpWNxDqR
+	KE+NO28lRXCJDE79c/TuvwYc7Xv70SQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776756594;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
+	b=qUQJoihJzeuHaNAO0HLLA7EYBdbRP/1+UK8T4zmec7ce/r6WXBask/Hk9tiJ3dN4AMFxNZ
+	FodFjuFZWHSg7QAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776756594; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
+	b=xEksfWTK1V92y20VMkyzbGQOjYDBcGO/gWhbuEyYcKEa+ycQJF5wp6W1MB99niJpWx84bk
+	W102vN7KyOIr6MqHMYJybMDcZq3J2H9McFMkisag+oyd1sTqcBj297x6+VRYxdvpWNxDqR
+	KE+NO28lRXCJDE79c/TuvwYc7Xv70SQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776756594;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
+	b=qUQJoihJzeuHaNAO0HLLA7EYBdbRP/1+UK8T4zmec7ce/r6WXBask/Hk9tiJ3dN4AMFxNZ
+	FodFjuFZWHSg7QAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 29EF1593AF;
+	Tue, 21 Apr 2026 07:29:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id h3awB3En52n4KQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 21 Apr 2026 07:29:53 +0000
+Date: Tue, 21 Apr 2026 09:29:43 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 05/53] selftests/mm: merge map_hugetlb into
- hugepage-mmap
-Message-ID: <aecmTjikgWAvoYTE@kernel.org>
-References: <20260418105539.1261536-1-rppt@kernel.org>
- <20260418105539.1261536-6-rppt@kernel.org>
- <5e4fa215-224c-43cf-a0e6-0d91e09a4a3b@linux.ibm.com>
+	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] mm/mm_init: Fix pageblock migratetype for
+ ZONE_DEVICE compound pages
+Message-ID: <aecnZzXiFf2n70K6@localhost.localdomain>
+References: <20260421022044.1217503-1-songmuchun@bytedance.com>
+ <20260421022044.1217503-5-songmuchun@bytedance.com>
+ <aeb50jwoCBvgEnec@localhost.localdomain>
+ <9343F329-BCD4-4D64-94CB-A94F0E9E4400@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5e4fa215-224c-43cf-a0e6-0d91e09a4a3b@linux.ibm.com>
-X-Rspamd-Queue-Id: DD36816000F
-X-Stat-Signature: hnyjsjdrqbzwoxgt9haop97g7d6axko5
+In-Reply-To: <9343F329-BCD4-4D64-94CB-A94F0E9E4400@linux.dev>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: D3842A0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 61cq4xk1i9w1619zq5w9wuourep63u54
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776756312-887505
-X-HE-Meta: U2FsdGVkX1+27OwJUb6V4NcuRwrT1gQXxKRJwCoZ/cg4GrMBMkW51p8hIaLjIFRwtco90Yilxa/fbAqLi9PHNzv3dj5vAt4mQHGq/UNvSgpVtCUitbxcimkz+6s/urJ0RNeTxIRkoIFw/XTVGzhCT70KIK+jaZgHi+Dv5wH7UowUWlypWnEkGNVSPqKpJemISzNogkJqLz2gXo5pQQ7zWbuVbhGxUJcleU/mrL1nWBoPscjt+8ifj9hMx2VqcXO431umfncan4zJ8s5ylDS/Y+YeCAmRs1/vK1Sql3aaVEEsNQgdMB2i5JIR7wexTVQN7swb6st0XKa1KydIsDYcxLs1ambHrYBWTM9fvALAkHL+k+irvmQ2wMPjtiw2B1Yz8Ti+b+hS3h9ZeKUhHAKfzte5EfiuBMryeTwoqO5nxb/Pib0F0/V+7VQAhHGD/5idI9yuV+9y0ZJ0wNNLL9nWvjlTY3tL3rfch4PJGrcVJiKeiU7zKJ3bFHveJEFfPQ76zdYqfYtbTJ3+PBBF064ZpKDMPJECtkQB7dE3Vz8pjeechvyxsAPCw4EiTb+Yxrg9yv2io2lhzyWkzi0270wDu8M4p8Vt0WTfVF/N11x4DNB1xEf5MiAq5+wR1PnZFgEDoLH+k8Oj7cETH1inafhxmafWggfPynG51w4LZUH9OfwKsTv3jEz0DaYwI9uY8klaexVeVzSNOdY1qxqDTfwQ+3S0HLzGJV6QkaJJ4DDX2fE8R8dk/S59hPSHkFT0zJFfIp9Eaf1gCgDk+Yle4wbyZK0Nfk4NJl6Ul4RWLEqZvzqkBZ3G7tAT8E8yLPf6PJYSdoyHvGJq4UcoOj46FDvPqI+oDjHmVELoLJ+meBnt3q3PVHqQJCxsryyCUAN9kEvR+gm7v7Bjv2cTf0O1m1BXzdWMLUY2zXRJwwQs2osBrhJNAn8tHg5vw6itmAXhkzS/Z0mK4v+HWZzC/TqT1sw
- yz4f6aAc
- 66cHsEWjCGDOZut3wx294tsQZx+Zqgb3Vaon/dhc3aryM7x1wY0GqpKMrn418C2QNvocIIqG7GW48IAX9yRL1hJ/dTRhDHlTdQTza07ecJRUQpAVOeDxiIbxD5zixuq38KaHPKTpFbaUUs94Q53pJGuMkWd1CBImT2UJoUxiC34fPBjZyyTn/uHVJR0f/NPDr5kkYybx2Vo+oWw+TyB6Dki+Y1WLgh0QAEbt/hEIZdM2K6erxiyxfsgmA8UiT65ZtbZl9SVpp+KsPE0sddoh8YsWlpUU80MfbBESzwSujdYD/gY5X30rNsMXdZc319TpZsMrsY26uHzbqow8=
+X-HE-Tag: 1776756595-335178
+X-HE-Meta: U2FsdGVkX1/8guwDlNijWmzwQl6Qgf1SoRwS22Ueq7EX4gC+tIEgQqEHlBzgloM6DcJYXf4ePz7b7CBu/kO5twEfUCg0nBhnhV4iR9hIAsCwmeZARPeuAmB8kB65TxzKmTiTwmf7WNFGeVGhm/KGqjr0u1txxlLH/+nK90jR5zxORJFuL3nZH48+H5A66rLbajEWqf4U59UI9cyg8fo5F4+otO87u49EdQ7kAmyCLL4m2IJUH7Lj5LjzK1PqiwluYdFdGzV3ysjqdjy5Rj72IKPqAhhVROs8rYP5rI4AzCCUAQvvEsg4ud6tC+cCbmmQoekQzhmjWofqOg8WyXHYdz6sZoNUXlJNT0v+K4G+w4NrVgZ+sDaHbLZCz/C01gJS5AZ0bG+O6ztf6PHuduPRYAsrYXojFf2DSZcw9httdRTLEIykGPwOL38LG+uiVbKpls7c9VyIdtqFUi/4r7QVW4NHLypMVvaWGZv5HfB23INoVB1iBrf+uopPWr3hZa2djmRXFRGLuPBW/agU4ROCrKGZxYZFFB/KjyatZl2XtUTPebay8XaMjucb0VjmGaxLypGe3j3/khY9gnWN7r0yz3R1bVZJoreM0PQgT6pDfR17u8x9c4IBnzPhWk1E8fqMBpSwz4hBlkzCD5CZ/kMrLaWFRPYkq4WDH+K4uq5Pwg9usQjwJyASol4vlYlnowk3QfPbvYXV1lctZj2gTLBkZTUm778HILbIJ3jotuF01mAxxwtTiZmbld4KGnthR4Wipyk6PI+4Bu4gbjwuTVD8UK0lQTdtcUYz3OoAlBVw26oMp8342lO57cd57GGVs60KZ8vII5GcyTMtqArFiHfncPsxMWf6rrjebsu6WyF4o4m4R8zyPobvHwLmmx6blI6VRxzW+MUl1tyk5UPnPzOslchjZLrw3PkjUZpDuuiJaq6FPQo7IGYufj1oFQqvS1ykw8pWoH+N5BSAvkMP+L2
+ nniCDph5
+ H/k05MKK/1h/Ox+ayGmQHFvyk2229ira9kg//Afpf5UbIY2cfo1E2+iLFeuPT3JEnTgwdvHYMB1XDPAYEeqR5TMwYPLXZzJAR1r4PAO7zzxy/hS+KOiAErBZYPz6+boWXcjLmOf1Gem41UDHwdJm8RCZVYTzWCEKT9GEzuxXsx9LNg7yzb6BFMNxv5HHNNdhYd+coH19HyjJjbeGlgwE87RnKJfBg4jHFLSfnFug+Zwjyj0XMEH037C5lpND7kf+jwA4+x4wuBQHIWlz1ApFnaMrXlv+vi1VHklwiiKxhhHgq52uh2wxyaoy/lFDLGS0elarVg/2HVv6AiRaF1cCZfvjkTuNJ3ILJsqimAPPWNPBxvuI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,46 +145,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Donet,
-
-On Mon, Apr 20, 2026 at 02:50:49PM +0530, Donet Tom wrote:
-> On 4/18/26 4:24 PM, Mike Rapoport wrote:
-> >
-> > +static void test_file_mmap(size_t length, int shift)
-> > +{
-> > +	const char *test_name = "hugetlb file mmap";
-> > +	int mmap_flags = MAP_SHARED;
-> > +	bool passed;
-> > +	int fd;
-> > +
-> > +	if (shift)
-> > +		mmap_flags |= (shift & MAP_HUGE_MASK) << MAP_HUGE_SHIFT;
-> 
-> From what I understand, selecting an alternative huge page size using mmap
-> flags is typically used along with MAP_HUGETLB. Since we are not using
-> MAP_HUGETLB, would this code still be necessary? please let me know if I
-> might be missing something.
+On Tue, Apr 21, 2026 at 02:54:35PM +0800, Muchun Song wrote:
 > 
 > 
-> 
-> > -	fd = memfd_create("hugepage-mmap", MFD_HUGETLB);
-> > +	fd = memfd_create("hugetlb-mmap", MFD_HUGETLB);
+> > On Apr 21, 2026, at 12:15, Oscar Salvador <osalvador@suse.de> wrote:
 > > 
-> In my test, the default huge page size is 2MB. I passed a shift value of 30
-> (for 1GB huge pages), but the mmap call failed — To support 1GB huge page
-> sizes on a system with a 2MB default huge page size, I used MFD_HUGETLB |
-> MFD_HUGE_1GB. With this change, file-backed mmap using 1GB huge pages
-> started working. Do you think this change would be needed?
+> > On Tue, Apr 21, 2026 at 10:20:44AM +0800, Muchun Song wrote:
+> >> The memmap_init_zone_device() function only initializes the migratetype
+> >> of the first pageblock of a compound page. If the compound page size
+> >> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
+> >> subsequent pageblocks in the compound page remain uninitialized.
+> >> 
+> >> Move the migratetype initialization out of __init_zone_device_page()
+> >> and into a separate pageblock_migratetype_init_range() function. This
+> >> iterates over the entire PFN range of the memory, ensuring that all
+> >> pageblocks are correctly initialized.
+> >> 
+> >> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound pages")
+> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> >> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Yes, I'll update the test to use proper MFD_ flags. Then mmap_flags change
-won't be needed.
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-Thanks for spotting this!
- 
-> -Donet
+> > Would not the call to __init_zone_device_page() from
+> > memmap_init_compound() take care of the subsequent pageblocks?
+> > 
 > 
+> No, it won't handle them automatically, as the page count from
+> compound_nr_pages doesn't cover the following pageblocks.
+
+Ok, I see.
+
+ 
 
 -- 
-Sincerely yours,
-Mike.
+Oscar Salvador
+SUSE Labs
 
