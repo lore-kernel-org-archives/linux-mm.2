@@ -4,138 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5DCBF8FA80
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:26:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22757F8FA84
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:33:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF5226B0089; Tue, 21 Apr 2026 10:26:11 -0400 (EDT)
+	id 65E6B6B0005; Tue, 21 Apr 2026 10:33:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCC236B008C; Tue, 21 Apr 2026 10:26:11 -0400 (EDT)
+	id 635806B0088; Tue, 21 Apr 2026 10:33:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBB326B0092; Tue, 21 Apr 2026 10:26:11 -0400 (EDT)
+	id 525366B0089; Tue, 21 Apr 2026 10:33:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B40276B0089
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:26:11 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 585CD13C3E2
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:26:11 +0000 (UTC)
-X-FDA: 84682787742.05.83D66CB
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BC264C000D
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:26:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rsmOHNUw;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf28.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776781569; a=rsa-sha256;
-	cv=none;
-	b=refLHJCp9DasVFlEDVTUI5YDmM3TgKny9l98iuqQDa2wyfTuHjpzSnY7/0/pKBWBdEr+dg
-	dRM4E79evWTMfi/vhOEacukKrVDkuciGQ5HNjWuhxZOznIQ/DzzRx16NShL6GT0P6Vcbqt
-	MqIQo4eCFG/GUNa7YCnTzgOdfr/LR1o=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rsmOHNUw;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf28.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 43D216B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:33:31 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DBD06BE3A1
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:33:30 +0000 (UTC)
+X-FDA: 84682806180.19.4AD184E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4E6F81C000D
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:33:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eBw3CZJ2;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776781569;
+	s=arc-20220608; t=1776782008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2DP+/uoEmB7VI2NVLNGwr1avjO8rNucbPXI3ldOUbjY=;
-	b=L8Cgwb5kFtmX5cw+xyrbpeWc+A5j42E3Ar6Sw6016FWyykeAs6JylegaOvJ6X76CCgJM3s
-	/1douIHjUMr6wie8sX4c1Lpj+LVcYHJZd84JSk73hDAfFuFTV7/5HzHLwA9hdb79rANhp7
-	uRYcOuqmfK8fO10qNbe1+185hYwQIU4=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LDQ1mH1926157;
-	Tue, 21 Apr 2026 14:26:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=2DP+/uoEmB7VI2NVLNGwr1avjO8rNu
-	cbPXI3ldOUbjY=; b=rsmOHNUwrHpWnCPlkAZqCNyVi8hHOqxsGFDBHr87KVvAhk
-	uNfnBUb03kHoa0+4Na5KlqQSlgZeLElnI4454clRlf9It+Lf3OPlVNoTVZfftgaL
-	a7zsUlTpMdzJcF5CPb6giztkX2JnJ/Hhwh7RK07DD6b5AVZyje5BaokGdXSCKUfR
-	0DCaOemzgLGbe4aMHO6SV4AvEp8Z9F/C6J8T+g8I882LCYazb7iW00aOMtP20Ozi
-	lERj5T8tc7UJ9WLLWnf9pBEqK86yJYZu/ldZmnDZlLAPuKnKKarDEgTjhP1AVdFz
-	t5ToEIxox6aYCvX2qEWcE6gggVT77z1kBIN9HWXQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2nf4rfr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Apr 2026 14:26:02 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63LEKMiW016890;
-	Tue, 21 Apr 2026 14:26:01 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dmm9q15y4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Apr 2026 14:26:01 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63LEPwVT49021218
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Apr 2026 14:25:58 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1D84020043;
-	Tue, 21 Apr 2026 14:25:58 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D2F9620040;
-	Tue, 21 Apr 2026 14:25:57 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.52.215.75])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 21 Apr 2026 14:25:57 +0000 (GMT)
-Date: Tue, 21 Apr 2026 16:25:56 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+	bh=mqcHkExPvGkq0snwna923lTuehOx12xMwfiyZZbc1Dk=;
+	b=nUFNrEXa3rYn0iJhx9Td4YC1YvT/exN0XxJvpHlN6yEdaLs4EWDW4Mzwhg4JHBZ33cNtCw
+	Ra83nHXZpU1cTuZOumMf9m/GH8C7ZeAMnZscQgnHDXskFjxjO2YU6fIJf21fj7du1fe+Gw
+	5eq+2yeWFsFCc3Aq46nv9u5Ji3Kybiw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776782008; a=rsa-sha256;
+	cv=none;
+	b=wysqWaFDr2LpMK2M/ITmF4jclMBIp/jubwMu06r7icIOL8S4xg1UzvEsK1qy88H0Zk1Qmu
+	sv9dBRHkwrVQXY8IJtrX1Yee4gBFcfqbloM79TeI7/dlO7iPwzNUReW8WpYMRSPW7C04IC
+	sFGF8zpDiruVHzP1Db/v2ND6KZtJHN8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eBw3CZJ2;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ADEFC418CE;
+	Tue, 21 Apr 2026 14:33:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070A9C2BCB3;
+	Tue, 21 Apr 2026 14:33:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776782007;
+	bh=zQMA8ZaCRC9pUhrioQYCLGa4/ChgjG5W1LG+7FgiXS0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eBw3CZJ2jjMPXi+oGb1oxww1zSljMOab5cMh2QBn/OvjGjK8oUFmhWXHecmHZwXdk
+	 b6FspRgXSJPJDHbS1o0k5I1nPymXrewV5P1loj172UP8ZgwOmBEJHURsW7ZrNqAjZn
+	 ygqDmeXcbqSks0LDgTOGHjXaBoX3Z5q8d4oKC1uO4BO4V25Hh706p0s5EvtSF1bLJ8
+	 u1+sdjK7LQD1eNZo0hXxz3j4KIJYinbErFA16OrSpXSY/69HXymaInsjjdnwAMOZlm
+	 62qvT+Rv5fFiTPxqB0Li4nvilTFFHwmWaJbn4ETR6O4U3c77fyVY//XrZGPaTYYtca
+	 HwxdVIlYeS6yg==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 05683F4006A;
+	Tue, 21 Apr 2026 10:33:26 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Tue, 21 Apr 2026 10:33:26 -0400
+X-ME-Sender: <xms:tYrnacf678S-ceViOiSMjkY3s80ZkugIXXiThfAcuxqUphjjI5gKig>
+    <xme:tYrnadcx7ZWg7gVaHASteTcu6Vm83Ht38vk8DaSqNVi9_02dG0sq95AnhN3qj8JWo
+    Qsd64yJDtgPEp3ptIgSMLQDnXkhlfHuTUCRze49KK39oHHWd9DsJb8>
+X-ME-Received: <xmr:tYrnaZv3WZMspFXT2eiPG4GC-YuMKhY4VVQOSoT8VhsP8vg06gyaZlQaox76kA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeiudeigecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeffffekgeffjefgkedvjeeggedttdeljeekhffhudeiudfhiefgudeugffhheffuden
+    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
+    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfeei
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
+    pdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopehljh
+    hssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsg
+    grsghkrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthht
+    sehorhgrtghlvgdrtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:tYrnacvnmNqHUpGJg1CNVnosaalW4m7puqzxSiFVCC4_T8mpVgFTHg>
+    <xmx:tYrnabu_wyk-9u1jKaGBdqCDt8MyzdAhnzGTXjs78MhqGXI2dpo4bA>
+    <xmx:tYrnaX3DPa-P4JEXju_5YuH4gQAYH-wno0g4b9bTgd3qnl2yRO3XfA>
+    <xmx:tYrnaYKQ2-TfwFOAPlXXEDSGenclMP-T1YDyi12mtsDVb-EH296OGA>
+    <xmx:tornaR-blBwoPKu9KjJs_32lHsU9xbT903gKlvjt6R3uYrSKtqwiVQMq>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 21 Apr 2026 10:33:23 -0400 (EDT)
+Date: Tue, 21 Apr 2026 15:33:18 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/6] mm: Make lazy MMU mode context-aware
-Message-ID: <8a70c78d-36d2-4da8-9c10-e39a1f69ec2d-agordeev@linux.ibm.com>
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
- <3daccad8-cf08-4543-b9ec-b34711a4ed14@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
+ guest memory
+Message-ID: <aed6fHLrIdahbdY3@thinkstation>
+References: <20260414142354.1465950-1-kas@kernel.org>
+ <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
+ <ad50rPOseVa-SP_s@thinkstation>
+ <aeDoqFWPFxkkNB26@thinkstation>
+ <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
+ <aeFCuLJXT8VOkzH7@thinkstation>
+ <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
+ <aeImfRrrvr3UoKtL@thinkstation>
+ <aeTnlQUOOh-dHG8z@thinkstation>
+ <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3daccad8-cf08-4543-b9ec-b34711a4ed14@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zOGn3bc-uCXJ1VnIwroqLa9JorHBLG9F
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE0MyBTYWx0ZWRfXwK3Au59d/O88
- EFPF+igDeKCgztav8Xi21cxRQbtROvMGXHbwld8sYoyG75Bv59oW854tfEGkfxvYrGwHHTAs+CY
- aWsX+5lzUAAXcJrXsVzNtipZQSDqUfT4zPfG2Wq+kD0rjBOYu3TvZqIJO2mCqBUFfKmVpHWRJM/
- MunIxDJotoO4WCF2XDohTSHsMyCkLTzLuBttGVCVdiTY81ZFKajgnwmNnT9uDWe8iNSq8fEPrFI
- RfZ/W6KliO4NMvtYCd9x7jf7bAY8ydc5uO/hcOq1+nQnhoyNNa7Ph/OIfj12tj9xqrmkyWb23DY
- M4OvGkY6wXnsbOfgKncCR4ZZuzADolUQIc29sm/QqpxYSKDyLX92kDJ8kGv2EfVlOOGV7sknNl+
- GQi5b4ELj8ejwYx5q8GKIdjYitPLgAdAVU5zmnYhHxnEKE1cNS4ry9mZIe6+9PTddyc1P+s3Jsx
- 5JJ4Gr2dyCvTDw6jtmw==
-X-Proofpoint-GUID: zOGn3bc-uCXJ1VnIwroqLa9JorHBLG9F
-X-Authority-Analysis: v=2.4 cv=B7iJFutM c=1 sm=1 tr=0 ts=69e788fa cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=2RKckqcH8cpCXoM4mLcA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-21_02,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0
- bulkscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210143
-X-Rspamd-Queue-Id: BC264C000D
-X-Rspamd-Server: rspam12
-X-Stat-Signature: swkuydb4enq73ke8wm1mn6teh18m7fjo
+In-Reply-To: <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+X-Stat-Signature: 31is9n9ahyret5t6dmtj31u5jtsr3wk8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4E6F81C000D
 X-Rspam-User: 
-X-HE-Tag: 1776781568-342545
-X-HE-Meta: U2FsdGVkX1/5+Hy579jL0jppsDJjZlYT/3bGJWVKF7ZgUtqkYBZ4nW26BJAlQD52ikmN15jLD9cdu8siQclwIdoVBozM4ShSE7OS7QXPGqv7BWmoel/LigAYmYrE/hENJ+0qfo3K7bv0qrbu8F8EVy17UPBFXDg0n/NjZRn+Yx3vCeW8e5jbvRIKfbfyrWRdV+4cKzKgue3AGpFlQ4gj3HEDSHn56vpSP0SyJYcsxv9rRgT5lCpyVdNFHT4mkS/rHTb203ThsGrJpRcyZjPDk2lHp+9LAltwZMmTOvqw/qMmyjR1DgjHjCyCXDq7sF84xpl3dqx4a6ZfY3RSkVZyGpqXNn9Py/YmdNMsJnYyHe2m/wH/BmoTNTr1BKfkBXNQmr6fxQulhYcaGrjA+qoOH21pPC70i7g/ND1VI99ZhYRuOKa1Om7EMdt5R94MkbvfZ7Vj/vgl3GQ6EMsR/qJvujTogu13m7hk5jm+1MQBabAMvxHxxNHtFDYYnxB/C/EGLy4j/+EO5XLbLUG7Hc/alFb3k7x+RP4D4O41ALUE3AnNgMf4QBd9z5NXCWf+V80Dz7NoZCpmRJbLn/DqU19FDBoN500GIgB61QYPyU4cAOIUpTGVTCrRjvxGgnaqNIxlHWmnEylB3PYe6yXA0r0naTh7y6rT2lrKNSEadslwK2Xlnw6K9AfWC1gM7cfPvKuHTy25PxWtpA9lrr8bzd4tDka2MropGwkaEiaLzN/M/+mRH09Baf53n9XBy/S2H9eYuItMTEkeWBfL2lP+6cELP3LobJ0U8gDG02YNNlWRmgWO4rageqSqXHj3rbMZrzPTUex4NGeWBrnMEXnPKR1PcSxaLUUXukVUjIWI1cep6oqhmF3J9/Bzo/cUkKVZRF2GowSLvGnON5SjlrzdKoorkS6vefGuheZrMMy7JrFtQcLhtWE+f9EX7jyhxR1RCfPjyxlakm2LWcT1QTdwJyR
- 1I2zPmoS
- se8x9LI+AiBSWUIwUOu60P1AWrsfAm3LwVJBDpa4A8nFAxAQkpdWUvulRHpH3Od+rrhUvOhyiLFHLbT4IBDwn5rQU8xRExB7z+zADK9/8hlPk7YqP8Q3KfAPg2cCrqy5poY0O2syerTB4edEAr/PxnE6/etGQ0a+Pe8niHaPqMZQEVSBxXhdwvN0PbUI0PTrQQvm4hupmfwC62bxkHnq0KSmuO8mfOIFN3ARbW+UuwoaCFqk1f4nFsgZSCxGwXx3JJUpfQcOo2ckSbQxavps6wC9vRNmaTt9ZqIJ7TGoqUyUw4quB27pXP/n34FC3i4aZ3TRAyvQZKb8WwKg=
+X-HE-Tag: 1776782008-289223
+X-HE-Meta: U2FsdGVkX1/iS5Qt1TuB/VUdsdxtm6k3YhgFlLDZwRpol2JxKOnNaWFrCYsb7tlWqXpPGUWiXWCNPm1bk4cNbUlAmH9Htr+SeXqPeTG0e76fHOG2D2cE6HHoPo2ApVIvYNvQj6hkK50d4vua06jJF+1F5u4QIez3d06Chz6mF51re0TIlEbqF5LsPLb0SJMOd2dFydFd9FawKRrJUS/V/7CbjnqvoXzwUePUKrW2CMmYawz9gjRC2ht61Lol58/bvSRj7se//ueOVwN3sNrUnT1/Cwx5dJulQstXMPnm5dNi4g4szxV8K8wI8HJ/sB5+UbZ0cVsyI4Bf/223BZCNWL95VKt2KhlORDk1j1y/AtOVi6jp2zxPdm0V5K50EETFM+muhfCQHNML7Fiy2V009qO41RFDN+Y/xSygvifNnF8q3LIBAc8fHvBaAzBR+d4kg0z28654rby/8GCaFTF951LQLfKB23WTLe7BmGTed0zR/88pPGioqBt0r7lLWwgVFm6rCwPNlz/B5llAZ9YQ/k2iXFZ2wqkgTfsJVqjwHXRSylZQNQZnfX27B5+QqCvAbcRMJ0wUgsfa/TB/vMVvW9FcgpuI1dVHJpura/CbtW8m1p0tkV9ygDx1KjoLp7zDw7jXHymCUAtZ6FiJpZQugqRZHdH9uoz8+UI03O/VGKVV6E613UoNoTCUJrX0Ui1h5XlHdD0LY1OXqlKYEPFEJMRMHWaen/518IMu3ozjfODUvONddLUR1riTNq6OZ4A2P48VyMv3l2AxUEyyepn0PV3SlOQwmXDnLLP39Gz4i3wbDpTFj9iHyeol9002cSh2RRd/NDLIiIk7qxjJNr87X8mQFKbi6bFwaSllbLWbwxL684oGOMuDTdaIFNAvUILkWS9wQLxu7mmzRMei6ZQCBYP4e5OQiGyHti+6BJZ+N+FtfKgpDi5X4mJtjo6i1Tgk/PBDIwLfT5hbqXHMK7/
+ hKb9x4iX
+ XxhAW2PVr/bQyTVIV5Auqxj3TpLN8LyVbSlvEgvMhSlz0lQgVv1FIHcu1C53Pm9mmq/wOjW90aAL585TTnK3z0QdIvtytWdQ8pevi9xV9e1hl/+xjmBA+4n8Q9SN+xaNjTh6F+UuxrFV+Lzwgnw8tS70rTrFG/JMjNzDPm5hqDMfCij0q37CfC6agG6WVrf1ab273FVHrE5Jz4GNSiNhKLcO6rQZ+JHk7VvUpIBL5NepCZ2jsMHiQ8QjWXfdJJMy73RCStf7gbEQ66TOOzGUNDgvbvUgA5OorICchYmeHQx/PW4Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,30 +140,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 04:15:44PM +0200, David Hildenbrand (Arm) wrote:
-> I'm still wondering about a better name for this. "enable_for" indeed
-> sounds like it's only for that range.
+On Tue, Apr 21, 2026 at 03:03:56PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/19/26 16:33, Kiryl Shutsemau wrote:
+> > On Fri, Apr 17, 2026 at 01:26:34PM +0100, Kiryl Shutsemau wrote:
+> >>> Leaving NUMA-balancing aside, a simple
+> >>> mprotect(PROT_NONE)+mprotect(PROT_READ) would already be problematic to
+> >>> distinguish both cases.
+> >>
+> >> Hm. I didn't consider this case (miss some uffd lore). Will rework to
+> >> reuse existing PTE bit.
+> > 
+> > See https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git uffd/rfc-v3
+> > 
 > 
-> Maybe really something including a hint like you previously proposed
+> Quick feedback from skimming over it:
 > 
-> 	lazy_mmu_mode_enable_with_ptes()
 > 
-> 	lazy_mmu_mode_enable_with_pte_hints()
+> 1) ARCH_SUPPORTS_PROT_NONE needs some thought, because I am pretty sure all 
+> architectures support something like mprotect(PROT_NONE), and the config
+> option might be misleading.
 > 
-> I think lazy_mmu_mode_enable_with_ptes() is neat.
-> 
-> Thoughts?
+> So you very likely want to express different semantics here. You want to
+> know whether pte_protnone()/pmd_protnone() works.
 
-Works for me.
+We do support mprotect(PROT_NONE) everywhere, but we don't always have a
+way to distinguish such entries from others without VMA in hands. Like,
+there are other PTEs that don't have present bit set. In my and NUMA
+balancing context we cannot rely on VMA, because we want to install
+PAGE_NONE entires into accessible VMA.
 
-> In any case, on the general approach + semantics:
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-...
-> -- 
-> Cheers,
-> 
-> David
+So we need two things; pte/pmd_protnone() checks and PAGE_NONE itself.
+The first to test PTE for PAGE_NONE, the second for pte/pmd_modify() to
+make the entry protnone.
 
-Thanks!
+Currently, generic code only use this functionality for NUMA balancing
+and gated by NUMA balancing config option. So I moved it under separate
+config option.
+
+Do you want it to be named differently?
+
+> 2) The other stuff is really just an extension of existing WP handling.
+> I suspect we want to have some reasonable cleanups to not end up in
+> common code with
+> 
+> @@ -1841,7 +1841,7 @@ static void copy_huge_non_present_pmd(
+>  	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>  	mm_inc_nr_ptes(dst_mm);
+>  	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+> -	if (!userfaultfd_wp(dst_vma))
+> +	if (!userfaultfd_wp(dst_vma) && !userfaultfd_rwp(dst_vma))
+>  		pmd = pmd_swp_clear_uffd_wp(pmd);
+>  	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
+> 
+> All the uffd handling should be better isolated (i.e., a single vma check?),
+> and likely the uffd bit should be abstracted away from being called "wp" to
+> something more generic.
+> 
+> Maybe it's simply a "uffd" flag which's semantics depend
+> on the vma flags.
+> 
+> Maybe something like:
+> 
+> @@ -1841,7 +1841,7 @@ static void copy_huge_non_present_pmd(
+>  	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>  	mm_inc_nr_ptes(dst_mm);
+>  	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+> 	if (!userfaultfd_uses_pte_bit(dst_vma))
+>  		pmd = pmd_swp_clear_uffd(pmd);
+>  	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
+> 
+> Not sure, needs another thought. But I think there are some decent
+> cleanups to be had.
+
+That's fair. Maybe userfaultfd_protected() name is better for the VMA
+check?
+
+And about UFFD_WP bit name. Maybe we can just drop _WP: _PAGE_UFFD_WP ->
+_PAGE_UFFD, pte_uffd_wp() -> pte_uffd()?
+
+But it is a lot of changes. Can I do the bit rename as a follow up
+patchset?
+
+> 3) Some other stuff needs a second thought, like
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 8e7dc2c6ee738..08fc18f1290d4 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -695,7 +695,8 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
+>  	/* ... and a write-fault isn't required for other reasons. */
+>  	if (pmd_needs_soft_dirty_wp(vma, pmd))
+>  		return false;
+> -	return !userfaultfd_huge_pmd_wp(vma, pmd);
+> +	return !userfaultfd_huge_pmd_wp(vma, pmd) &&
+> +	       !userfaultfd_huge_pmd_rwp(vma, pmd);
+>  }
+> 
+> How can a pte be writable and prot_none at the same time? Maybe just confused AI
+> output that you should carefully double check before sending that out officially.
+
+Note that this path is for !pmd_write() case to begin with. It serves
+FOLL_FORCE case. I believe this check is correct: we don't want to allow
+to write to such pages even with FOLL_FORCE.
+
+But looking around, I missed gup_can_follow_protnone() modification. It
+has to return false for RWP.
+
+> 4) How do we want to handle PM_UFFD_WP?
+> 
+> We are pretty much out of flags soon. Overloading PM_UFFD_WP means that we will not
+> be able to easily support using a separate bit.
+> 
+> But our internal design will not easily allow that either, and I am not really
+> sure we want to go down that path any time soon.
+> 
+> Maybe we could document this for now as "In WP VMAs, indicated WP PTEs.
+> Otherwise, in RWP VMAs, indicates RWP.". Whenever we would allow both at the
+> same time, we could change the semantics. User space would fail to create one
+> with both protection types for now either way.
+
+Yeah. I think about doing documentation-only update for PM_UFFD_WP for
+now.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
