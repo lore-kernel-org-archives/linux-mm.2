@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9349DF5A8D1
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 00:59:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 176AEF5A8D1
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 01:20:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 804D16B0088; Mon, 20 Apr 2026 20:59:09 -0400 (EDT)
+	id 31B136B0088; Mon, 20 Apr 2026 21:20:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DCCA6B0089; Mon, 20 Apr 2026 20:59:09 -0400 (EDT)
+	id 2CC3B6B0089; Mon, 20 Apr 2026 21:20:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E42B6B008A; Mon, 20 Apr 2026 20:59:09 -0400 (EDT)
+	id 1E2396B008A; Mon, 20 Apr 2026 21:20:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CBEC6B0088
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 20:59:09 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 681C55C53B
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 00:59:08 +0000 (UTC)
-X-FDA: 84680753976.29.127807B
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D978B40010
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 00:59:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RguoVPRK;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B66B6B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 21:20:41 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 99A775C2F1
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 01:20:40 +0000 (UTC)
+X-FDA: 84680808240.09.644E281
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D5E394000A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 01:20:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r0NYO6Qg;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776733146;
+	s=arc-20220608; t=1776734439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7yi+xUZCUd5yeE272YJMQ5iJ3vo6smTP4Z4GqGgtzU4=;
-	b=W1tzYEYMJXMeQ+BX1dTGDQNmFdxv/FhdtB6HLMyTcn1qgDcfUdR2Uvw1djH+OyRhJBIZvK
-	rxKm5VlwtZp8IGUF/64v5/JD3UZODpSmyqyTNWA+Z7xhQa2IlfB4muWMQ2SosnImganoEU
-	9R74/1y0oferAQeKlBMBz1cEw6a174c=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RguoVPRK;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776733146; a=rsa-sha256;
+	bh=q6z8F6iHQcK8WfzMTDdzVV1JwoDk8sTGNPxzTmzDGKg=;
+	b=zX6xW2YhG2U6WtMZ1NIG0eLhioNVuxBZB3JesIixTJURQ3PmCz//qUvQndn/x9atai++PN
+	7H8iZJ7tW+QPxJEw5eY6RoyvI9aM/QyO4LCb81GGljJ8wT1gGgsJ6GN64rv2DDkSG1j9GB
+	sJCMrIFtKjQ5VMN4oV2uT98zwvtuPMs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776734439; a=rsa-sha256;
 	cv=none;
-	b=YbGuNtrgkFMXhymTcDkgasYzIQbWJx3e2+rKxptuREa+ut2OpBTZ2mIjIYD26LWkDr0Q2H
-	pMq41XJYZS6ML7KcLRDrvbNaRU+UJOX3zl7k21qW3WcJMp+FxH0+X+TV+gB5U58qUaTcJF
-	ariqjk3pwxrTFhhBBdOiJIM3Bjz3azk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776733142; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=7yi+xUZCUd5yeE272YJMQ5iJ3vo6smTP4Z4GqGgtzU4=;
-	b=RguoVPRKAQbcH2h0/QWfnQtOzTdRCnmcfM0RzqxiQtcq56cyUN+Ff1svS1CkwBqiozM1adJS1Slu1QBphIA9w2IZkoB49D5GaDsY3gArAdXXc0j2ehL7orVFkAmyXyQUrO7XGToT0nWUHwGrdwpIH/biGAOGJ3vC+aErbpPMEHg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0X1RC5RC_1776733139;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X1RC5RC_1776733139 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 21 Apr 2026 08:59:00 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org,  Andrew Morton
- <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,
-  Vlastimil Babka <vbabka@kernel.org>,  Brendan Jackman
- <jackmanb@google.com>,  Michal Hocko <mhocko@suse.com>,  Suren
- Baghdasaryan <surenb@google.com>,  Jason Wang <jasowang@redhat.com>,
-  Andrea Arcangeli <aarcange@redhat.com>,  linux-mm@kvack.org,
-  virtualization@lists.linux.dev,  Johannes Weiner <hannes@cmpxchg.org>,
-  Zi Yan <ziy@nvidia.com>,  Lorenzo Stoakes <ljs@kernel.org>,  "Liam R.
- Howlett" <Liam.Howlett@oracle.com>,  Mike Rapoport <rppt@kernel.org>,
-  Matthew Brost <matthew.brost@intel.com>,  Joshua Hahn
- <joshua.hahnjy@gmail.com>,  Rakie Kim <rakie.kim@sk.com>,  Byungchul Park
- <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,  Alistair Popple
- <apopple@nvidia.com>
-Subject: Re: [PATCH RFC v2 02/18] mm: add pghint_t type and
- vma_alloc_folio_hints API
-In-Reply-To: <290d615a001cf121dc0c604eb79451bcc7917baa.1776689093.git.mst@redhat.com>
-	(Michael S. Tsirkin's message of "Mon, 20 Apr 2026 08:50:23 -0400")
-References: <cover.1776689093.git.mst@redhat.com>
-	<290d615a001cf121dc0c604eb79451bcc7917baa.1776689093.git.mst@redhat.com>
-Date: Tue, 21 Apr 2026 08:58:59 +0800
-Message-ID: <87pl3ti0x8.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=5RHwBz3AnX1Kwb8SP8UwLkNVMJDc17knDIo8MCiwSHo74ar1G9UjEbDHNbSSBxzPRE1wsn
+	MtI2BopCwjxGWQiJt+mGVzKWVHKxomJPjwUJ4KKyg6+6n3itZ/ctzAECocUERE75Zd/+LM
+	w/h/YU4gLg16BR9bK7yQqsZmTpdE9Oc=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r0NYO6Qg;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A4DD64048F;
+	Tue, 21 Apr 2026 01:20:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F46EC2BCB3;
+	Tue, 21 Apr 2026 01:20:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776734437;
+	bh=kFjPHjdqXPh1vzTeTNAYLlOo6NQK1J4F1ZAd2Ygq2Ms=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=r0NYO6QgOQnz7w0hGW6fe+snBccFuqDWJoNXEh5XR3kO9qkpDi240W2SQeqIiWg7n
+	 VxSvuCD3UHDRTxvB9HlEISY1HtCjI8EKNHdWnN4nhBGWax3+i7Oh2fpFLAoFxL1I/F
+	 WFzcldkI++wq3fxJp0UXiujq1YwUhbt7YTAa7bpKr6JUfNncHcwKv/R/iHsroFU0Rp
+	 on1bUR8C9SU6AfcPxOOCt5eTaQT1zaioluBPSDg+iWQVAahgq+Vnw+TeJISnj0zmAp
+	 L1mE3xskQMApGmmc/1iFqbGOh5s3YqHnPBw5LJzmeTvutQtvch5ASKwEp3N3dFq2KS
+	 dG9qLfd0NQeXA==
+From: SeongJae Park <sj@kernel.org>
+To: Junxi Qian <qjx1298677004@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/damon/sysfs-schemes: fix use-after-free on memcg_path and goal path
+Date: Mon, 20 Apr 2026 18:20:27 -0700
+Message-ID: <20260421012028.67143-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260420125405.362137-1-qjx1298677004@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: 1ieu5girn75raxwc11onyobyn1shm1yi
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: xjq88cu4d8xohe9wa38jee75kewmsxis
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D978B40010
-X-HE-Tag: 1776733144-269157
-X-HE-Meta: U2FsdGVkX19dqButUEtAtihf+mHXuaeS31Ulp1WUdf34lQQE1q0iRs4aaIs0iut1PQl6wdRq4sCVnpIp5fL0WAhlUOMl/NrL0wHaDpdhjJnd4jnJHHHtDKc2DRPYMMdMueBy3ryNW2F4SIrgxeXbSylE+CZfOVZL38MARK3Z6VOnqN2234NdBOBZp8Mf1yViWfCXXyaYB+yPEZrS2k8obz5tq5qFpVagcWow1A5YG3QYtM6mveXH1a4eEvuCm5DxOE6EX0zMsbNuIkMw5qEGZp+whqQ0FC2DMKJyRo8pKkYwP/TH8cCJu7pOOLDzTLEXNanm6ZCeIpod8PRnqjKxCjzE4grvuCb9rYKAgUfLX0GdY3JyM/3uY7t83KGGzI9DqF2RhP6c1Y9mBuVYSpm43jnXGdA4ZVlS25ayo2Go+X4qh7GnUqQQFQjbnhwYN14XQY5nQLi2+BVndnRURX8Ov6HX0nkj9V8ko+rSf1+ucMtSxaR/ZWKzA3KyacsG+c30rdsAQJfhOTKzjDfxWJroxpBEYzSdNojtJMx0oAD3NIBmhuebsumM5k5hsONe5/7HyvFDiFwxZPoZAif7XumPsLSGweWJ6TZ7Ww4zGPkHmWd3m8+w7ceuAYTXhu+tbvrBpN2OYrFC18jtxuh5xLi6gg4A66fxeK11D1BSxrloKl0oB+dk1RBgEfN8g+L1kmcIJYGp3yDLIXFZrWs7r0qMEkywHlbheMCv9ksCcWkkgbnb8P5Qzp7MTcV0ZJMTKmIfDvsoABJuTSkGww+Oxcn9DxG7Syll0611Qwo2Qc8M+mduySfsqntoSPbWD1P9bv4yXFzryjgEccnBwW9o3rV/0rHVTpWqK+wDhHQBYmo6XBWNja3JnkEW07suIhMjIJr6fzI5MnnPnnGYjWcx1NZ307aPhi8bejzxWpIJZ3v7meS1QSt1J9OK8ue4ZdNKQ1OY1N1cN/wl3VWE9thU0re
- wgKQ4ORm
- TjyvRNOPTTArNQ68tSqQLFR4ISWZbeSox91+o5FPAio4JHe6R8nS2KU4FAVJmqlOqqbtYsERYfoWc2ZcbPPAgVDbYcQ7CFNt3y9LC6GZyGgKVBKFlaxS8XU1dBBvl3lTm3uRgNyf0VCjnxHOwSQfDE2gC5Qey/4xgwG5pP5N2KOGEy2vUwD9LR1M2mIY9Sh/K6PBLl5IRrPlA9qZ3gzxpSv3d8NHGpxIKa5UVxaLpfJykflhzpWLZCOyVX1N5K2f5V3PSfow91w1ILI2JVgaC1TmqmUqSoQq96r2vLS3uBvyFBz1mtZlR1DPZeD5hGYpHOFPtq5gIhtbS/5pxYrvs0uaJEIpHRrPnp7cwjlLsqgvZM1Rb8lC7lDqTImRPYvtO/1qBAsGSUzxXKJ53Hz88QEpQOrZaMLXp2OFe
+X-Rspamd-Queue-Id: D5E394000A
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776734438-886710
+X-HE-Meta: U2FsdGVkX1/PHz3DplWJXqvxoNATnGMpI9BFZdX/98KnmOOtX1Bx2T1pVMUQRp2m32Z+uV5k8rLcM1Hl6ukOIWPpMvUsNVh1iQ6irbgbB3dYGr3flmpd7YLZ/RAx9B76MV8cewHQsjTejzU7/mQ5emh5mYvIgpJpBuw5wodlzk+Vp+WRlDJtS9BZaVxjFx//QYQ1bzQ5KilX41xY/k0wW7FB4czyGUwcytTax07ugZxdKvY9fBA3f/ET5FtDz87rRY86lVeYDZ8yHrMM9TpzMxDz01MrOaboAEow6Yxx0iB+/jhEKya1CwnsBwQCjqu22WUKvClPtdIxkIca/WdOMvpsZIUjiqMSnBk5/sZFoYRm5OQ0R9R8CFR0jnzUEw+mQYEXvyE1yy6TwR0MeQpvLP9YpM9mbEW8PWELm6DOM80TIZXgbNQ3N0r3am7K3vuFn+mWoQv6b4L0QR54t9rgVpXtxT5qm4lupwG3CzkMYVBqhYeDPUHDl+DRSpU++o4R6LOG07kLehFg2to597P91Rn/YRVENoHWCmBzRgsuPUF15IYis8kitNeTdBJTdeYsVeHAXbNDxysH+9fa1vYYj0t9wp7LVYCDOp2cPina9QoqaS8U0OwNvXMQ1z+d2ngzmgNCx9n64Qb+whn9RWtABe4qEfxMa6QxIsFZg/kscPqg4fFFgveEo6beMRlOF6TXbah9sdJCvjak/QTCRBgLIt6ee/cVO0eVw1NBgx/OMXPxK4BcLyouAU6Lh6KWRpOUciNkRQYmjAkaoYyXEDFr/RTr5KT6EQjYGNV3kw1Esmg4E5SKBjJTPa+o72Y/16kFJnHB+6YDjTnm7D9ftGSeqYIm1MdJ9ByxkB/zWGqSpswNiSvmrE5fVe7e18gxDXkxzAAGTKb+xiqHdv49sFnKPTNLdZBado/aEliaDJcoFmz5B0gvRt83psS8wm7q2t02FevCsd+ZhNzkOzO1PNP
+ uK9lYlIq
+ 9V90qgREcgpKJnpCjgOU0d0XrN28otMibGY/iEyAS2vitVVwYx0MAOcP0J8UZ3WweJrBelbqVjFyKKr4nXnZYm5BbRuelDz21FH7hkd336NcIvYj3wkgmiFIE0hK7BkwZ3bfVyekoKUwQrdmZiVLsvK6Hf4cSdCsRiUFzGggVeGrOTlNbsguEXf9z9D42dcH5Q/crBHPgJSNMMCXW2VqsHKJtMv26ouA0u+xU7WGxiBogwilArbUEZZatZhpPOQzjMpyS3LpzHRqWKaxadvOSQhKF8XlcsEjm8L8ujNB4p0fcLw5VxW+FdudLRm3NdbopwXDq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +93,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Michael S. Tsirkin" <mst@redhat.com> writes:
+Hello Junxi,
 
-> Add pghint_t, a bitwise type for communicating page allocation hints
-> between the allocator and callers.  Define PGHINT_ZEROED to indicate
-> that the allocated page contents are known to be zero.
->
-> Add _hints variants of the allocation functions that accept a
-> pghint_t *hints output parameter:
->
->   vma_alloc_folio_hints()  -> folio_alloc_mpol_hints (internal)
->                            -> __alloc_frozen_pages_hints()
->
-> The existing APIs are unchanged and continue to work without hints.
-> For now, hints is always initialized to 0.  A subsequent patch will
-> set PGHINT_ZEROED when the page was pre-zeroed by the host.
 
-Why do we need this feature?  Is there any performance impact?  If so,
-please provide some performance data.
+When you send a new version of a patch, please send it as a new mail with
+changes log [1], rather than as a reply to the old version.
 
-[snip]
+On Mon, 20 Apr 2026 20:54:05 +0800 Junxi Qian <qjx1298677004@gmail.com> wrote:
 
----
-Best Regards,
-Huang, Ying
+> memcg_path_store() and path_store() free and replace their respective
+> string pointers without holding damon_sysfs_lock. This creates a race
+> with the kdamond thread, which reads these pointers in
+> damon_sysfs_add_scheme_filters() and damos_sysfs_add_quota_score()
+> via damon_call() during a "commit" operation.
+> 
+> The race window is as follows:
+>   Thread A (commit):  holds damon_sysfs_lock, triggers damon_call()
+>   kdamond thread:     reads sysfs_filter->memcg_path in
+>                       damon_sysfs_memcg_path_to_id()
+>   Thread B (sysfs):   calls memcg_path_store() WITHOUT lock,
+>                       kfree(filter->memcg_path), replaces pointer
+> 
+> Since Thread B does not hold damon_sysfs_lock, the kdamond thread can
+> observe a freed pointer, resulting in a use-after-free when
+> damon_sysfs_memcg_path_eq() dereferences it for string comparison.
+
+Thank you for finding and sharing this bug!
+> 
+> Similarly, memcg_path_show() and path_show() read the string pointers
+> without holding the lock, so a concurrent store can free the string
+> just before sysfs_emit() dereferences it, causing a use-after-free.
+
+Is this correct?  Isn't sysfs prohibiting such concurrent read/write using
+kernfs_open_file->mutex?  Were you able to trigger this?
+
+> 
+> KASAN reports the following on v7.0.0-rc5 with CONFIG_KASAN=y:
+> 
+>   ==================================================================
+>   BUG: KASAN: double-free in memcg_path_store+0x6e/0xc0
+> 
+>   Free of addr ffff888100a086c0 by task exp/149
+> 
+>   CPU: 1 UID: 0 PID: 149 Comm: exp Not tainted 7.0.0-rc5-gd38efd7c139a #18 PREEMPT(lazy)
+>   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+>   Call Trace:
+>    <TASK>
+>    dump_stack_lvl+0x55/0x70
+>    print_report+0xcb/0x5d0
+>    kasan_report_invalid_free+0x94/0xc0
+>    check_slab_allocation+0xde/0x110
+>    kfree+0x114/0x3b0
+>    memcg_path_store+0x6e/0xc0
+>    kernfs_fop_write_iter+0x2fc/0x490
+>    vfs_write+0x8e1/0xcc0
+>    ksys_write+0xee/0x1c0
+>    do_syscall_64+0xfc/0x580
+>    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>    </TASK>
+> 
+>   Allocated by task 147 on cpu 0 at 12.364295s:
+>    kasan_save_stack+0x24/0x50
+>    kasan_save_track+0x17/0x60
+>    __kasan_kmalloc+0x7f/0x90
+>    __kmalloc_noprof+0x191/0x490
+>    memcg_path_store+0x32/0xc0
+>    kernfs_fop_write_iter+0x2fc/0x490
+>    vfs_write+0x8e1/0xcc0
+>    ksys_write+0xee/0x1c0
+> 
+>   Freed by task 150 on cpu 0 at 13.373810s:
+>    kasan_save_stack+0x24/0x50
+>    kasan_save_track+0x17/0x60
+>    kasan_save_free_info+0x3b/0x60
+>    __kasan_slab_free+0x43/0x70
+>    kfree+0x137/0x3b0
+>    memcg_path_store+0x6e/0xc0
+>    kernfs_fop_write_iter+0x2fc/0x490
+>    vfs_write+0x8e1/0xcc0
+>    ksys_write+0xee/0x1c0
+> 
+>   The buggy address belongs to the object at ffff888100a086c0
+>    which belongs to the cache kmalloc-8 of size 8
+>   ==================================================================
+> 
+> Fix this by holding damon_sysfs_lock while swapping the path pointer
+> in both memcg_path_store() and path_store(),
+
+I'd like to avoid use of the lock in long term.  But this sounds good and
+simple for hotfixes.
+
+> and while reading the
+> path pointer in memcg_path_show() and path_show().
+
+As I commented above, I'm not sure if this is really needed.
+
+> The actual kfree()
+> is moved outside the lock since the old pointer is no longer reachable
+> once replaced.
+> 
+> Fixes: 490a43d07f16 ("mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write")
+
+I think this deserves Cc-ing stable@.
+
+Also, this patch is fixing two bugs.  For making backport of the fixes easy,
+could we split this patch into two patches, one for memcg_path_{show,store}(),
+and the other one for path_{show,store}()?
+
+> Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
+> 
+> ---
+> Changes in v2:
+> - Also protect memcg_path_show() and path_show() with damon_sysfs_lock,
+>   since sysfs show and store callbacks can run concurrently and a
+>   lockless read in show can race with the kfree in store. (Sashiko AI)
+
+As I abovely commented, I'm not sure that Sashiko comment is correct.
+
+> 
+>  mm/damon/sysfs-schemes.c | 36 ++++++++++++++++++++++++++++--------
+>  1 file changed, 28 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+> index 5186966da..1a890e2a4 100644
+> --- a/mm/damon/sysfs-schemes.c
+> +++ b/mm/damon/sysfs-schemes.c
+> @@ -533,9 +533,14 @@ static ssize_t memcg_path_show(struct kobject *kobj,
+>  {
+>  	struct damon_sysfs_scheme_filter *filter = container_of(kobj,
+>  			struct damon_sysfs_scheme_filter, kobj);
+> +	ssize_t len;
+>  
+> -	return sysfs_emit(buf, "%s\n",
+> +	mutex_lock(&damon_sysfs_lock);
+
+I read Sashiko is commenting [2] about possible ABBA deadlock, and suggesting
+mutex_trylock().  I think that makes sense.  damon_sysfs_lock is always only
+mutex_trylock()-ed for the reason.
+
+> +	len = sysfs_emit(buf, "%s\n",
+>  			filter->memcg_path ? filter->memcg_path : "");
+> +	mutex_unlock(&damon_sysfs_lock);
+> +
+> +	return len;
+>  }
+
+And I'm unsure if this change for memcg_path_show() is really needed.
+
+>  
+>  static ssize_t memcg_path_store(struct kobject *kobj,
+> @@ -543,15 +548,20 @@ static ssize_t memcg_path_store(struct kobject *kobj,
+>  {
+>  	struct damon_sysfs_scheme_filter *filter = container_of(kobj,
+>  			struct damon_sysfs_scheme_filter, kobj);
+> -	char *path = kmalloc_array(size_add(count, 1), sizeof(*path),
+> -				   GFP_KERNEL);
+> +	char *path, *old;
+>  
+> +	path = kmalloc_array(size_add(count, 1), sizeof(*path), GFP_KERNEL);
+>  	if (!path)
+>  		return -ENOMEM;
+>  
+>  	strscpy(path, buf, count + 1);
+> -	kfree(filter->memcg_path);
+> +
+> +	mutex_lock(&damon_sysfs_lock);
+
+Let's use mutex_trylock().
+
+> +	old = filter->memcg_path;
+>  	filter->memcg_path = path;
+> +	mutex_unlock(&damon_sysfs_lock);
+> +
+> +	kfree(old);
+>  	return count;
+>  }
+
+Same comments for path_show() and path_store() changes.
+
+[1] https://docs.kernel.org/process/submitting-patches.html#commentary
+[2] https://lore.kernel.org/20260420183146.0DA7AC2BCB0@smtp.kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
