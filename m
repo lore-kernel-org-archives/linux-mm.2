@@ -4,71 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65B61F327CA
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25BEAF327CB
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:10:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 955806B0088; Tue, 21 Apr 2026 05:08:33 -0400 (EDT)
+	id 8BC4C6B008A; Tue, 21 Apr 2026 05:10:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DF006B0089; Tue, 21 Apr 2026 05:08:33 -0400 (EDT)
+	id 8931E6B008C; Tue, 21 Apr 2026 05:10:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A6E76B008A; Tue, 21 Apr 2026 05:08:33 -0400 (EDT)
+	id 7D0B86B0092; Tue, 21 Apr 2026 05:10:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6389D6B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:08:33 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B8BEE5B74
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:08:33 +0000 (UTC)
-X-FDA: 84681987306.02.1582676
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4999940004
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:08:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qHrgWQHh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D77A6B008A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:10:11 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1CB60E5C00
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:10:11 +0000 (UTC)
+X-FDA: 84681991422.04.F90942D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7A19218000F
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:10:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sSf9asM5;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776762511;
+	s=arc-20220608; t=1776762609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iCBXrhg7C9/srZBYKXkvWBRwmDURbGGY8aIrv/zoQug=;
-	b=sqouVGxgCOS0QrXENmDM+HKrT/bq6AxQB+uiLHx/KXjNgZ65MfzZHqUTnAoWUsgFaCMV5B
-	m7p56sEKHJwCYGE9LTVkBQAbI4Ck/itneclBPT1JcEy2gPajAG9KhkLEw+OkZqfnhhGYB6
-	9+Jy8VTUxlEG+MQjo2ZS8xTC2mKHo9I=
+	bh=o0q1v4V6PWCZBDK94gxJCrU6RUA4mVYi8ugxGaFE27A=;
+	b=mrCwUfP0PkANaWCZcbJlIuE2kpFW1HjUFnGzdcA5XIDKOGiC3nCF0kOvVYraRSNWTLc6rF
+	F1L7tOSGNcw02B0K8GwX7CyUlc3fIOtQGNN/lglBjuLoDJvZUZYEerKTszcmHby0LAQcF2
+	k5Coco738Ypx1kYv+kpaw3ni6JBxELY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qHrgWQHh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776762511; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sSf9asM5;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776762609; a=rsa-sha256;
 	cv=none;
-	b=yPXbnAUsGO7DTxb/6OdbxcgOACpp8meD94wdjCdMWG9Y+HuxoIxLLRZtxmcurZskEdKTMZ
-	puaYVglsGGT1eQ6qPqCWoUGhHMah0IihLc0LJJRsMbiMBi09tOz+ND5J1Zx4GILNKn8BtN
-	LrD0uVxwIZXS6QYqQrdNqTP7jR1EMHA=
+	b=kJo2Wxi6TlghNE+Dy5QR3FJKoxsqI8xGdTqfZ3BNzZTPB4kLCiKDFRCdk3va59DOOtzbMd
+	yQDHMl4gcemA1q3ER8+GcWcUJQc78SlfIjDtXItv/12JEpBevD2H9DKILu5oVOuvMNA+ru
+	RFyu98RM427amZYm8bUu8UWvnU8sDqE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 12BED40B4C;
-	Tue, 21 Apr 2026 09:08:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4575C2BCB5;
-	Tue, 21 Apr 2026 09:08:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E62A66001A;
+	Tue, 21 Apr 2026 09:10:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0A9C2BCB0;
+	Tue, 21 Apr 2026 09:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776762509;
-	bh=JnjFXHz/DzaxlCC1EjhtvgOWVsZUYZ1qXPlyL5Gg3Mk=;
+	s=k20201202; t=1776762608;
+	bh=EOuIqzkpcmELzfvgEwMB+wOPJGwzb6s9drDlHWs1PX0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qHrgWQHhOHD+v7BkML+OGgs7w/nKJBfA8bmC5rZq1RqPZcVUc4LkU4Tp2G0Xekbsf
-	 T/ngt4IGDVyFGM2c1dXeWNIJzARNeIZZUr3sKEbXj5zohufQJ7YZ0JoSnGqQMzZIAd
-	 wQiCG8b3OuEmQyj/3cAEB6wnRhlkQ64luJuEKnHXe1rf6VTjmscUi4+RwtH1qr6Miz
-	 M37r41MIXPe7jmsjSbOzCjsqmJHZJ2nR5BEdHqulAHA1Gg3/S99IHJRjrJ5JTwCx0l
-	 kVX2E4Z5FhEBG6sMoXScopZXMVgzM5M2UCqUKH36sWcXh6A60qcGA1S01NTwCVQHKT
-	 j8308YPwRtrJw==
-Date: Tue, 21 Apr 2026 10:08:23 +0100
+	b=sSf9asM5BJy4OtU9Ler+mm48ofhrpMopAx5N2doKVLinZiIPOYFvxoZbdgE7DO+rD
+	 TKuInnli9Dp4RphmUAoSN7M6sS607GgWgKTz7LiaRYVRAZjxZYN9z3Kp6DjKJCIWTM
+	 EkZQYTvSldOmUNLEYPHIa5WS8eXkxeJvTPU6EjqnUQUFp1EqpFb+RwFp7WcynOuOmk
+	 SoM7AezHNgMEIfojY7+RFlFgopJw/Ds4ZZoXLKiZ7B82icmpwCECV3ywPtxOwY4VE2
+	 WnNhqbfV+WuqDkER2R1DWlKWSa9K6yJWR3p5ji3JkGQuAvkyc+tlTdTT7C4a/JboAB
+	 jAqYPbpgSRjOw==
+Date: Tue, 21 Apr 2026 10:10:02 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Ye Liu <liuye@kylinos.cn>, Vlastimil Babka <vbabka@kernel.org>, 
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Ye Liu <liuye@kylinos.cn>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
 	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
@@ -76,20 +75,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] mm: handle potential NULL return from
  anon_vma_name_reuse()
-Message-ID: <aec7p15jvsw7XRHz@lucifer>
+Message-ID: <aec-syTrogS07Rm9@lucifer>
 References: <20260421085056.26033-1-ye.liu@linux.dev>
+ <2f4a1999-fbd2-4cbb-8062-5574d3c1e7ce@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260421085056.26033-1-ye.liu@linux.dev>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4999940004
-X-Stat-Signature: mgzwu54raudrbiq7e5u17w7qqmnrwdur
+In-Reply-To: <2f4a1999-fbd2-4cbb-8062-5574d3c1e7ce@kernel.org>
+X-Stat-Signature: fstsfhqs7cwe8iy5maaa19eaj86nhesj
 X-Rspam-User: 
-X-HE-Tag: 1776762511-561291
-X-HE-Meta: U2FsdGVkX1+zXyfMWsSnl0aaQr0f/XDhG1FK7TQMMS86FNNAUbpRwIXlz7bFaXKvPwEHtv4h/wSHQH9/V4DpAMwYr4eg2CLIMV5yWJiESb7JMH3LhW0cf2joHGpGkdnLKaVM8lobKUvJUHG3k2lr52aRqAincDNRy+UyrHl7QYLSZhFmrtVSbK4aOtujt+Ut1xfOmg0JuT3gAB/k47/Q+ofPUzbjUTcz0uiPtjdNIe3Lc3mMjLQ53GeLA0W0Xj4VDi3LMTHI5HG4ZiBnlyghOEz7AP2slTZCqYiOQWRCvHqX2KG3M369iC5iyewrCRVI/FGAuf9Q6BfPyTbqKJJO8bG2CvoOcbqVAK7Ksc2eMAT1CHYibRzZoq57zGxqJNiQs5GfElnZv1+BVUlST6veqCyY9vBmhInHYLWA0EHTIP+y83QeMI2LqULmZLT3IL7u1GUbodIs/mdtRC89hZTc/+fFGRHAJIhU/pChxwZyYVja7BFMp6OrULXXVH9xgjKxKYVmJs4v/Magmf6iqH4s5CV7EiHqxK/x3eGIuNzCCualDdoz4Wpr0qD3LkPtbDoK36YZG4mdBIHSJCdaJqsLwLqgwbgUsdITwdyP/uqeh740NB+TcggB2hlr85sjdBp6aiHbDRKprjZHSOVLr1sOJmjwMcf8E//UG7khu/S+ko8sbf6SxgK8bA7QmajVspZw30/UcblhOS3V+UdUuUxr5Gv+cTDgBZd8pCruanz5rKe2vP6KUxONWCLRTdNxAdExkmzVbQybGpR5TmpbbUr0osBbBc/bc6JInk/ov4k6D+y8NS4e0NHSdxGcbYq3SaNOatuHcADVzdQsx2zdt2SLS+6gItpbkCtYG4GL7MYRO496SHgXSJJQNWovMU+L53QQHXVdwuNd0IgT0mwqLYqMFt1gJOaZLkgr0UeMiXdQcv6Pj10fhDHDKezTW7tRJR/XJ1ZzvxPsCMcuU+mhXHf
- kZbN6/ar
- GYVLpVE2BlXDPA1ICf/n1P7yP5piHzeZ9nnWZrpN5eFKFa3MJRbhNsgZPxFZmQdWPjiHNjnus4TVfpntuMgsvQARuzUcySCG1nIprLC0qPJZxh9HmVdQmAuIGb/ObKAZtU0Hgrf2BMZGsJF9Aj4bQXEE9Jft6/CcTUYxjHsKakQxv5/H43dafc6WtW7HuIKPla8Tg+ku+H4tF2wkPRSjejMEBpF2mCugw53/V6K0bXE9dYrxNq5XTxCmLO68IgwWJ43rTytHdwRsaGYUdY4M6apr+PfmkQXLkP7dSTH+SMitThWA=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7A19218000F
+X-HE-Tag: 1776762609-659168
+X-HE-Meta: U2FsdGVkX1+IhoZ/pMfhoiW9Lpk1iiYx13zV3f7Jo/VgzmJ8Kixr0xsLHOVr2BkL8TDrzQxm6IkwhsH3ivGEOwfVR1IhAP+pR2y8EqZgxVdU4wHMNF7vFb+ao369nwjDTMc4HaP31tWEChhe71dGv4omctYI9Iv096+/qPR28JtPtDFwUz7DCdqJ1yoOcFcG6w59VT3K13hSEvN1k1LCijj+xlHNsnbRMXeRW64Jy378MvCXC3wpxpjjZCcR0S9gov/bzDmAxEOMLS+8L/pUUs/nkUB1FEdsKcSoingpgoQsrxkYuCMsHiKcvv2pYWXuwCdf6D8oNJ5nVAndBZU2EFKg0Ovzd6VidFBYiDrMq76/xh8kB1eJVzPJyRs92OnUEFSd1djZ+Fj7EoN2kNZnViz/jYUCvjywLakTHgsgkTT+fdMY7Dv3OO66Ds2//ijAllKkHrAobXn7bSbh9gQtxc+QG//U1yBA7/xM61M2Kz4FgtoHIrFznO+OpOkcWPl7qsfMAK+OFEpgLX0Ut32eefin5KQgN84E2czx0MUxP3HNjSLq8hWasRriHdej5859NpYoELacWJ1zRD2+U1lLupz+UdMnVLcE/rq/WNlRL1xIeounqu352yLZpb4ks6l3mQq+CQN26gswicuVarHQMl3gERlQVWJN6yO077mRLai+8TbrkoOy36D1M/dlEWLpQm62A8XL8PcSXHsaB3IyuX6Gc8J7xJg0j34uwkhsAfLO0sO8VpzvtrCYT+ypRU4MN9lp6yR83+HC+LRoB1ZcwPB6r3O22ffbJwH1Ck4M9U5pnY37FlA13MabN8mVMtFlfgpYnz1VNql0dF+18fCL9yYLlPaAnA6tgTUXYu6YQu0wxX8SyUnUE7DFogNOQV7yIVjj3u23MsI/kaszuIynwP9yAFPLTD0Wx5ChkbN0RQb2bhnhzDvt4ZHebUQxjQ29eMkwG5Hq+27EgUJjO/k
+ ktHA/LzQ
+ k+K+avPYdLVhXOukOgLPZv1o61jY0oW82fzsBTeSM3PYIxtGCaoqxwEqRThLsi6lJLWACi4eHXskzRlT4NNdHPD4wXYOVsb+tMoluF13Ey0ToY/82i1daevWqQpaFlqwgQX/rPS4t17DRafT8WTBpBN6EpPTjOzF3IaE+mJk0sFOaGPPrZA/3XK1nZUTb3i3tZInzwnj+uP/YT4hTnTid4LP66V65lrlV/GLMbGrgB/qQ3627lNPFZNJN/yNlID0NdHTvbepkc6Z3CT/8U6vNb+F3r8KGLroVOgg6veEIBXaCWYc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,120 +97,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NAK, expected allocation failures (even if practically impossible) should not
-cause arbitrary kernel warnings.
-
-But also this is very silly, you would need INT_MAX references on the anon_name
-to happen first...
-
-On Tue, Apr 21, 2026 at 04:50:55PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On Tue, Apr 21, 2026 at 10:55:16AM +0200, David Hildenbrand (Arm) wrote:
+> On 4/21/26 10:50, Ye Liu wrote:
+> > From: Ye Liu <liuye@kylinos.cn>
+> >
+> > The anon_vma_name_reuse() function may return NULL if memory allocation
+> > fails in anon_vma_name_alloc(). Currently, callers dup_anon_vma_name()
+> > and replace_anon_vma_name() do not check the return value, which could
+> > lead to NULL pointer dereferences.
 >
-> The anon_vma_name_reuse() function may return NULL if memory allocation
-> fails in anon_vma_name_alloc(). Currently, callers dup_anon_vma_name()
-> and replace_anon_vma_name() do not check the return value, which could
-> lead to NULL pointer dereferences.
+> When, where?
+>
+> If we set vma->anon_name = NULL, it just looks like there is no anon
+> VMA, or what am I missing?
+>
+> >
+> > This patch adds proper error handling:
+> > - In dup_anon_vma_name(), if anon_vma_name_reuse() returns NULL, emit a
+> >   warning via WARN_ON_ONCE(1) since this is an unexpected condition.
+> > - In replace_anon_vma_name(), return -ENOMEM to propagate the allocation
+> >   failure to the caller.
+> >
+> > These changes improve robustness against memory allocation failures.
+> >
+> > Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> > ---
+> >  include/linux/mm_inline.h | 12 +++++++++---
+> >  mm/madvise.c              |  7 ++++++-
+> >  2 files changed, 15 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> > index a171070e15f0..9bbaf8287806 100644
+> > --- a/include/linux/mm_inline.h
+> > +++ b/include/linux/mm_inline.h
+> > @@ -421,9 +421,15 @@ static inline void dup_anon_vma_name(struct vm_area_struct *orig_vma,
+> >  				     struct vm_area_struct *new_vma)
+> >  {
+> >  	struct anon_vma_name *anon_name = anon_vma_name(orig_vma);
+> > -
+> > -	if (anon_name)
+> > -		new_vma->anon_name = anon_vma_name_reuse(anon_name);
+> > +	struct anon_vma_name *new_name;
+> > +
+> > +	if (anon_name) {
+> > +		new_name = anon_vma_name_reuse(anon_name);
+> > +		if (new_name)
+> > +			new_vma->anon_name = new_name;
+> > +		else
+> > +			WARN_ON_ONCE(1);
+>
+> Triggering a warning when an allocation fails? Certainly not.
 
-We assign NULL if the allocation failed. And every code path understands
-vma->anon_vma_name being NULL to be a valid situation of that VMA not having a
-name.
+It's pleasing to reply independently and see that we've reached the same
+conclusions here :P
 
-In the case you're failing an allocation that small, the system is under extreme
-memory pressure.
-
-Not propagating an anon_vma_name, which is cosmetic, is totally fine under those
-circumstances.
-
-But also, you'd require the anon_vma_name to be saturated at REFCOUNT_MAX ==
-INT_MAX.
-
-So this is just silly.
+I mean, yeah agreed obviously!
 
 >
-> This patch adds proper error handling:
-> - In dup_anon_vma_name(), if anon_vma_name_reuse() returns NULL, emit a
->   warning via WARN_ON_ONCE(1) since this is an unexpected condition.
-
-It's not? Your whole thesis is that allocation failures can happen here and
-cause a problem, so you can't simultaneously say it's 'unexpected'?
-
-> - In replace_anon_vma_name(), return -ENOMEM to propagate the allocation
->   failure to the caller.
->
-> These changes improve robustness against memory allocation failures.
-
-No, they add a bunch of noise, then make an allocation failure into an
-arbitrary, new kernel warning.
-
->
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  include/linux/mm_inline.h | 12 +++++++++---
->  mm/madvise.c              |  7 ++++++-
->  2 files changed, 15 insertions(+), 4 deletions(-)
->
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index a171070e15f0..9bbaf8287806 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -421,9 +421,15 @@ static inline void dup_anon_vma_name(struct vm_area_struct *orig_vma,
->  				     struct vm_area_struct *new_vma)
->  {
->  	struct anon_vma_name *anon_name = anon_vma_name(orig_vma);
-> -
-> -	if (anon_name)
-> -		new_vma->anon_name = anon_vma_name_reuse(anon_name);
-> +	struct anon_vma_name *new_name;
-> +
-> +	if (anon_name) {
-> +		new_name = anon_vma_name_reuse(anon_name);
-> +		if (new_name)
-> +			new_vma->anon_name = new_name;
-> +		else
-> +			WARN_ON_ONCE(1);
-> +	}
-
-This is horrible code, but as I said above, this is not only wrong it's actively
-bad - you're causing an allocation failure to result in a kernel warning.
-
-We don't mind anon_vma_name not being propagated after billions of references
-and under maximally extreme memory pressure/fatal signal propagation.
-
->  }
->
->  static inline void free_anon_vma_name(struct vm_area_struct *vma)
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 69708e953cf5..ccb937a37e70 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -118,6 +118,7 @@ static int replace_anon_vma_name(struct vm_area_struct *vma,
->  				 struct anon_vma_name *anon_name)
->  {
->  	struct anon_vma_name *orig_name = anon_vma_name(vma);
-> +	struct anon_vma_name *new_name;
->
->  	if (!anon_name) {
->  		vma->anon_name = NULL;
-> @@ -128,7 +129,11 @@ static int replace_anon_vma_name(struct vm_area_struct *vma,
->  	if (anon_vma_name_eq(orig_name, anon_name))
->  		return 0;
->
-> -	vma->anon_name = anon_vma_name_reuse(anon_name);
-> +	new_name = anon_vma_name_reuse(anon_name);
-> +	if (!new_name)
-> +		return -ENOMEM;
-> +
-> +	vma->anon_name = new_name;
-
-This is pointless noise. Billions of references, extreme memory pressure
-(practically impossible anyway).
-
->  	anon_vma_name_put(orig_name);
->
->  	return 0;
 > --
-> 2.43.0
+> Cheers,
 >
+> David
 
-Thanks, Lorenzo
+Cheers, Lorenzo
 
