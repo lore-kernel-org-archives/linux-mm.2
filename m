@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88A9CF94CB4
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 22:01:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AAD1F94CB4
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 22:01:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 023BD6B009E; Tue, 21 Apr 2026 18:01:49 -0400 (EDT)
+	id D43686B00A0; Tue, 21 Apr 2026 18:01:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF0156B009F; Tue, 21 Apr 2026 18:01:48 -0400 (EDT)
+	id CCD196B00A1; Tue, 21 Apr 2026 18:01:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDE196B00A0; Tue, 21 Apr 2026 18:01:48 -0400 (EDT)
+	id B6D976B00A2; Tue, 21 Apr 2026 18:01:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C6E9C6B009E
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:01:48 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F9D8BEB68
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 22:01:48 +0000 (UTC)
-X-FDA: 84683935896.16.64754DF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 465041C0008
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 22:01:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="KVI/5Wsf";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776808906; a=rsa-sha256;
-	cv=none;
-	b=NfpXoHzchHtcFetmRz8aIWAV/wlYvDdP2M/eDGSbir0R/3uFG94b0mhyTpuCpZODEBOCgy
-	XrbbPgTeKsdhUhcupHXGU09iN1NgeH52eBKDnohB7jCmfTn9ysTUbKDP/koLORKuFtHHV/
-	/xC0gjsR52p2fBj9ysQC8FPaRyH4uB0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="KVI/5Wsf";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf20.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A25136B00A0
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:01:52 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B8A814135B
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 22:01:52 +0000 (UTC)
+X-FDA: 84683936064.02.70D3654
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 09FFC180018
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 22:01:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T3Ku1jm7;
+	spf=pass (imf24.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776808906;
+	s=arc-20220608; t=1776808910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MQ6M8fMmd15EsU5jHzG0CofBcVEbXAB28EkZbWFSSyk=;
-	b=65kCBI9EKG4uF9EsSWwsu9XTZkyn2cCL61i8fiMzVqFdhocIwTsIgZ80VdhilIaULTNIVy
-	e1ECI8l1WAMosPigTy1HvkJQpMVIS1HONGZe6pYQeTFG68eTOE4RG6+Y+35rfqEkeAcOCZ
-	xOjrUgM+4Y9RNikzcVWTn99zNdAxTqY=
+	bh=JVwG8S2po1iduREwk8io7PMDE8wG9YqvUAWHOi+D4qs=;
+	b=wvCI8/OiAhFUQrvlDAeUvP3EDgRL8shoJUEwa2/+MSTOSPK8XnO5LKisJJTAO/EGng2zO6
+	8EozNeIQCl1Gxz0jctydOujXo7pnfvy94b4vNOj4yO4g/Wf9GFPeXHBMB1ZssybXsAU9HL
+	EI/offYO4fw/ryEY4qDvtEfHEA01zt4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=T3Ku1jm7;
+	spf=pass (imf24.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776808910; a=rsa-sha256;
+	cv=none;
+	b=4lTgpRJeYKrN8WXaCTtRbwNch+x06Y4l66L9c1BEKnKAP4yoZu+2p9+92liYAzNjPNah4X
+	tJk8bCCFpCa0zHH5z94rIeZxYC3rm0ZNGulbH1oKMJsUO14AJGwljEDxX/PDY6MAUHPUTx
+	FdeHfze3iOMPTAa3Pk2ofUKq7I8QR5g=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776808905;
+	s=mimecast20190719; t=1776808909;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MQ6M8fMmd15EsU5jHzG0CofBcVEbXAB28EkZbWFSSyk=;
-	b=KVI/5WsfoMDWw4SBFyeqnHy3fPl9eDrGTbOxf5ebUi8X4R+G9pP5Oxr1AspDEz9+fZDdgQ
-	iGDRXFONggdyk2uEztZGe5P+vRnWO7D4bwjIXPxIkH9lJVOwZLS9Ogb2X/6S5WJWzesfxr
-	etXoEef5u5YQs3R/Be3huCM9nzSup08=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JVwG8S2po1iduREwk8io7PMDE8wG9YqvUAWHOi+D4qs=;
+	b=T3Ku1jm733ofpBp4NFCYlA7i+sj69T7vm948aMKzIgVWKE19VZbZLcPzkpCOq7ZEZTqkCk
+	FmGRTwtbid+xyNunPg9WXAhw1JyaPBDcHFzsvFnXCyJd5Jn4WwbieAg3ykVahIYkKz+9gu
+	nplNJoI+1mGjOv1V71IS639F8qvMlg4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-4r3oq8lgN6mlFLQQbYmOJg-1; Tue, 21 Apr 2026 18:01:44 -0400
-X-MC-Unique: 4r3oq8lgN6mlFLQQbYmOJg-1
-X-Mimecast-MFC-AGG-ID: 4r3oq8lgN6mlFLQQbYmOJg_1776808903
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-488c2cc0cbaso31079875e9.3
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:01:44 -0700 (PDT)
+ us-mta-306-EWnRIQCrN6y_0ho5hRQlSA-1; Tue, 21 Apr 2026 18:01:48 -0400
+X-MC-Unique: EWnRIQCrN6y_0ho5hRQlSA-1
+X-Mimecast-MFC-AGG-ID: EWnRIQCrN6y_0ho5hRQlSA_1776808907
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-488d1b5bca0so25894765e9.2
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:01:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776808903; x=1777413703;
+        d=1e100.net; s=20251104; t=1776808907; x=1777413707;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MQ6M8fMmd15EsU5jHzG0CofBcVEbXAB28EkZbWFSSyk=;
-        b=EbnPzcEcg/E7aMzprwPcHkmorK2gmwuxOJYcLxQthgX3xtIc9ovicW58IxoWgybl/g
-         dsCNOaCxjOFRKeKKkO+ON8dmRNSj7IUAwRn2PTk3D0mfK0zp1hQFW/HEKWz+0XaE0qnL
-         Q/F9qojOZ1uudCaCH0GnxSm9QQ87SyHiTcp78N+N1lts6ejO8V15HdQW9Z0v5PEmJ28W
-         BZ7oYEdwnf090vfiO9hZrTdWE8UmcudhdtWZTQ0L1cX2olYqX59n8HRnYSGLbIyzihRS
-         Wdx23sKAPTrmc9GJT270X+bJ3l9hjDPZ/bDw361v6B9VURfYIYJ7hcf/TCeSErsQJpwm
-         TKkQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9E5c5kDQGKWMaU7yJKyyAtMjeBPv5bJgINJoE4bNn+j5/qHwlWlRJP9SPbKaoET2gyKMqEHByrqA==@kvack.org
-X-Gm-Message-State: AOJu0YyH2wA3mrJ4te4gzwHcNUQWGqxoN4fACOdqGEhF8sXYf5P+RQvJ
-	ea8DXjG11R/lH3OG+4jECVlrTvQakBJDSFfxINHdva6GJbODhVgfgrT4nc7DKFDVEEfZv4ySSiX
-	d2YWbp5Rk4xPFxojkzuWjI9QdchxVjr/zEFLnsfV4DpG8aXgLCmAt
-X-Gm-Gg: AeBDievT83ABlyJdRBmD5IX3WaVyxjWR6Ry+Sj+9tC+6C/lJLDnlYVaQ2Nj43q7z81I
-	22m1MUaR1AKViaM72oHZpym0sCfqTQjKsTGRoR7KyXFv89HxwsjHijxNaJz69uVVE6ASqmbiom6
-	hlcel7v5pu13fISdmu19yJXLWSFFx7FrkTXrJDdaAnPMHiSHbEon6Mkc/gTsYxtnJRGIG8QmfK3
-	B1F2QBo3Oc/YUwaSHOKknEzSBzFOzN6e0rNRPrUwYolRjyEaATJNZwofueY3zvoRJAeov1K3J5Q
-	5YjWboO7Tv0oceclmi27tAq4wrMj1+0eYyORmResPv6uLASZHa1i7VziUadytIFeBus4hMoSQmF
-	yia35gY/P0Xd6I1P5zDcxaf9Qbsb7ADdjZGkpa+P8GYme4R56tmrGDQ==
-X-Received: by 2002:a05:600c:5294:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a563cd0eemr57313355e9.7.1776808903002;
-        Tue, 21 Apr 2026 15:01:43 -0700 (PDT)
-X-Received: by 2002:a05:600c:5294:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a563cd0eemr57312985e9.7.1776808902531;
-        Tue, 21 Apr 2026 15:01:42 -0700 (PDT)
+        bh=JVwG8S2po1iduREwk8io7PMDE8wG9YqvUAWHOi+D4qs=;
+        b=ZcTf+tTZHQqyjdmGUdBbP7HuDZKUrVjkcSy6QR+yiYLBWxLFKY9h+j1xduTvsQlWpj
+         j85SwZP10hF19Fwe62alXNdLqV16LR94Pv4DDi8B+HXtCYK50UYhITbB2uqahlI5bxoT
+         cefns74oXDo4L1nujZ3x+2DT/wU6b1zZJVPo2jVcr5nICuyRVKKm9ljHndTL2edYKjd7
+         CWv2JZiO5J7UtwMlaCm5JOC18616JUfmy4ixPnkcGbnk136G/q+cOOaCUWBR51rDNnDf
+         6HXNNxec9rT4RiIwdFydBF85aj0PFD8WW3WsAHdB8Y6hYDDzEbHuPyDQMhdBoSHkWaTz
+         Q5Cw==
+X-Forwarded-Encrypted: i=1; AFNElJ82urUIIJQMqYcFpo+X5MgOMUpyawIBzSF/9l2ukSDGPvS8cy4IRSm+z9qQrhhTyRXRDV5uh9SPKw==@kvack.org
+X-Gm-Message-State: AOJu0YwrKOh7LgFD3/yBKkx/ZEcgWxpfxe7HbzBaj/37fBBPfKSaspGb
+	TeHxBKBU4o9KnDGoRI5/SnOk3tZzLNCO5Rh8RHMn3QmmqxmocRIks7d+DFkBZymnMZC8rFL6uJ5
+	+ez2Fq3+8uVXYFbKuOI8ehAuHHcPr+m0q4HIjpsQyb8Cj5hAruewo
+X-Gm-Gg: AeBDiesy1al/6SYF6e1dkLd8+JPxqSXKbZy0Xdq81U3t76EkL3SpjpuC69yn4jhiBSs
+	peKu4ND49D7PaaD3+IvrE6X8qp4PQm/n3bDILVA/u8pQhT6H0k0u+4QVDywGMUK4khEU2UYiJAk
+	v2k9I77bv09uvE0j/48mMhFxp4MTrBbddbt3QeRvMD0fZMm3nueN/A5lsP7ZBOGhVWKSGxqT/w1
+	S+bse5Fvd2X+Ei1KOl4xXzXNfo3wYF4LxO5jBxxpPwuK2kzvd18mfxWVcIhzFVwLonHqH6aQMpu
+	TRUn7khgtQCEBD9qLmeiOrJiMmPcjouZas3PmKo3ly4JhtA6XdwynZA/sgYjeWf2PeOg6EMxMBb
+	3rKxNHjFBxwHHbXXtvgMuqx3OWS3L7x/hKMrB3f09NkGKws9Dt8253w==
+X-Received: by 2002:a05:600c:5294:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a563cd0eemr57316055e9.7.1776808906904;
+        Tue, 21 Apr 2026 15:01:46 -0700 (PDT)
+X-Received: by 2002:a05:600c:5294:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a563cd0eemr57315565e9.7.1776808906442;
+        Tue, 21 Apr 2026 15:01:46 -0700 (PDT)
 Received: from redhat.com (IGLD-80-230-25-21.inter.net.il. [80.230.25.21])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb1365sm42637228f8f.7.2026.04.21.15.01.40
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc0f8193sm361473545e9.1.2026.04.21.15.01.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 15:01:42 -0700 (PDT)
-Date: Tue, 21 Apr 2026 18:01:39 -0400
+        Tue, 21 Apr 2026 15:01:45 -0700 (PDT)
+Date: Tue, 21 Apr 2026 18:01:42 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -107,30 +107,43 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Jason Wang <jasowang@redhat.com>,
 	Andrea Arcangeli <aarcange@redhat.com>,
 	Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
-	virtualization@lists.linux.dev, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH RFC v3 09/19] mm: memfd: skip zeroing for zeroed hugetlb pool
- pages
-Message-ID: <d5bc27ec04ea4d7a9322315fc44c15651e31c53e.1776808210.git.mst@redhat.com>
+	virtualization@lists.linux.dev,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-alpha@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org
+Subject: [PATCH RFC v3 10/19] mm: remove arch vma_alloc_zeroed_movable_folio
+ overrides
+Message-ID: <006f9142e591ba8c340c3b354aee76aec5c285b9.1776808210.git.mst@redhat.com>
 References: <cover.1776808209.git.mst@redhat.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1776808209.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KvkvhonLxCskFTnAtzcPRfa9f3QwGdVyrvoMUGSoOYY_1776808903
+X-Mimecast-MFC-PROC-ID: SCtE_LeZgFN872lJwZ0nSfiur1GGSBA9ivqf1yMQbd4_1776808907
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 465041C0008
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 6t1xspj6gm8uyk777cy84oebdsi99kye
+X-Stat-Signature: wzyish3tzr5a8wbf5rhxift9ner38a3n
+X-Rspamd-Queue-Id: 09FFC180018
 X-Rspam-User: 
-X-HE-Tag: 1776808906-38893
-X-HE-Meta: U2FsdGVkX185LF1yra7/EY8I47E7ChBixsC//6zA0rGG9X/VKiTZty4CkkZZCjuxe9m17B/t17asey0psnReZj6SEhxSg/m2hzUtkwhn9EIY+WZU6vGxpc3To7O73xdsvt5Yhp4+iKV4bzYmsyXMavpHTCdtPqUah776kuTXnFK/IB+uPqrqSzts4yXSgJDbpb2zKMNrn3VIs9FRyDD2lTRP3WuTHu9Rc+n1e0A8H3OYmRHspKl7VVDL9YyaZyABI+tJQI3+YmMEDMI0x0vtFzGBy96eZ88p+TS7TkwCd2FQ+l9b8FCDd2F9oNtO33/1qa6pPCakpndJtbL3Q1obdYDzFN3nEdifxjnmwyPKJRf9akgsIFNerII2mIg3dLT0awbUUZP1zLDhVmWrw5kh2ChgZdvnjZ+jrkWo7qnu6mYSt8BnkcpZdPt9D9aZCEVQzfFjynSZBdjp7tiric4An3CvYsuXHO01C7zDdxJRLuo/Ngdgq/+TZgGNoTbP1HeqLjl7VpiH65ovSaONFFft35ZNW6n5a10jG1BOeFs4LV3YUH4jjwwTkeA2SxH51kfWDvRNV2BDddTwahPQt+lbXkLci5UpeJJkKrn+6cs1m5YYfVBpVWxMwnKWE660/qa2AhyqLWHDwkKboQL4h5qtvHEyasG6kBWEZY3vx/9mYNAG/b1VvUT+UWC60CGa9XNNsLHoyfO38FCgngOX+5Yb1qkcWSJWLnl0gTcV7IrvI5gB0FUT9RZcJ9iLnt1FyCHOKa0iwt0esO+ngzP1qY/jcWgkZ5TNfufCrTby+DLA2jo5bcT8Hrm2B1xef0PsvIa278wd4ImEYUVEkOj1AqDjh29KSj1wECZUXj4uLnBGXejSAiCtfad+F9IqlzcOhBxBHmFbmXlGdXHp9lMrW9XoB4Uh4xDoK0a+oGLPig57XE6q+tsSNay/EmSlXMBI772qhFJVQJrfUvDXXlPRXll
- VnRBSBIv
- MaX9HozUXkh8S1BQcXA9dkNHJW1W5JSE9ierCUe46BV7V4ZA5e+1jcK3CM/Nz71dR+qQ5lXHlI6QjLD7QEaTImsjDMJEJi2D6J++81jfpchOuVqKvANL7Oh1XbGfVow8GiP/PIekj/28jxiyjD/uNOUqyKIEDKEvjZ4/X7TCiBhrx02SS3jk/aXCGvLS3+Q0dSeS+s/DdMYqR7LVp4JHUw0k843fdGmNZ7W9fIHO/M7eo5a0Wob+e8cgmV0YaVocRo7Nf1eaKEHGYo3ebHWsNBAqFiOkiM/mnVTU+07uJyH6752UF3u689hGrnfwCiFtlgKf8KA8+Iv4fLKhJogGSOdIqzK73LhClFuyjMLXPjn9vGyKJNDhGxp7Wcw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776808909-328224
+X-HE-Meta: U2FsdGVkX1+3umf+Q/yvgkhYg4sfUBW2/3TnsXCW0wYeo6/eCAUXyd7p214X00d0dyyPrztbo6dP+T+bNjTHnNe7oK7QBXhRbEiVAHvIKhgtmI81Zj7RbgmzOuu/bFbR2HXZx7iMApLEz2FrlLqEdFKUmfQ7arbWrFBfzyjuPVnO3KssKhSvk8g1AIHnu/avZgDjjwjKQCOuAfZoqiwJg/oahYt+XHIiluDKKg0JaBqeJVcQ2OoGsPN6B9xsMBgx8iP51pcK/QoMPVhZlyM2kgSmBsaQ6KkhvS+q6kOTVHXyKWX6Z+XWeiIkXX2JABaK1o0QYfoxeqRl1VaRQdEsNrfPo3Z4RBELK1M5ULLYLViKfPH8+tnIZYe4I7j23g0hiQumkNOE8Il0uNuyJceo27i2evIsr21y5vB6sj2SIQ9/lDCkAercm8XLCDKHWeWTlxVFAWWVyaP6UZDfYTzASvvqtEFldkIeVsXQJiURYer0zU8i2i3GMQv2Wvzb/KixuZx4t9r37B8M8cG6QCYmj+ktbygfqwxduhmhq8QBoYFBKxK1q6Xa1rzGal8c9hjKMhN9M6hALARqCWhXWb5D4K6FwHeQAUJwLKHSmCDUW8GAdVRerwRWx1gSX3mI8o+Y5dGPZFF8Qa1809j6E4AxhJcNUzj6uQqdlZsmlSrANe9J5p8wfY7zVKaX/cKfg7dA+S8D0VBxV1BMjwdPLCKL8ERhzZZ2iql+MvBD4OxxXfKEjW27uI18t7z5tV0k9zI2+1bD5gEKXCmy/wS7DXtF6NXBlM0e9ChudsC2/sMs5mnsDiAORYmD4cqqz0lubmQuSAuaxPh9kQ7oZP5KrLH0laKd6N91sv+gn6EGYZbhuckMdlcwT+ILqC9usrJ1PDfz3FsZZlG7tfumeVnYAMDDr4f1FeoovYivPhpM4EXouxOufhmVhwA7Dwu/6DmDEFTRAQZAF9Aq36VbsDyt2xX
+ epikF7hH
+ YpITlIK/iT6RpRV1xYWOFgFHVPG/5SYEyV2+a6xS5AUCFHh7UU9//QAwLF3DzoTaGlju5FXcsPoEZw56LYcHQBQr1OHzikpy+pb2L4K8i91Shy9bd0su6VPhx5IW5fcJP474hDSltK+bRE4/6k5muHESYBmNFJ7G4Fq6QGmJNk3PkQm2dWzwO5puaBudM35X8F2g/UYjqBYd8FjkeEOx9u8MhUjSNd23SJLtkmuwM7anYeFhlCMVT2z1sIvwhanVfSuqQYFiYVcEYELQJHfOYXYt+fPsI4awzdQJD+BZNyHNHbepxtcLq187ZM+OnCVZq6kO1TAYmXdc/PnuniSziXLMl1uE4MFflFvVhj6vSfeJld6s4DqdTCTKIArA0zYw6pTe6qfcYstIWJPg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,129 +151,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-gather_surplus_pages() pre-allocates hugetlb pages into the pool
-during mmap.  Pass __GFP_ZERO so these pages are zeroed by the
-buddy allocator, and HPG_zeroed is set by alloc_surplus_hugetlb_folio.
+Now that the generic vma_alloc_zeroed_movable_folio() uses
+__GFP_ZERO, the arch-specific macros on alpha, m68k, s390, and
+x86 that did the same thing are redundant.  Remove them.
 
-Add bool *zeroed output to alloc_hugetlb_folio_reserve() so
-callers can check whether the pool page is known-zero.  memfd's
-memfd_alloc_folio() uses this to skip the explicit folio_zero_user()
-when the page is already zero.
+arm64 is not affected: it has a real function override that
+handles MTE tag zeroing, not just __GFP_ZERO.
 
-This avoids redundant zeroing for memfd hugetlb pages that were
-pre-allocated into the pool and never mapped to userspace.
-
+Suggested-by: David Hildenbrand <david@kernel.org>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
 ---
- include/linux/hugetlb.h |  6 ++++--
- mm/hugetlb.c            | 11 +++++++++--
- mm/memfd.c              | 17 +++++++++++------
- 3 files changed, 24 insertions(+), 10 deletions(-)
+ arch/alpha/include/asm/page.h   | 3 ---
+ arch/m68k/include/asm/page_no.h | 3 ---
+ arch/s390/include/asm/page.h    | 3 ---
+ arch/x86/include/asm/page.h     | 3 ---
+ 4 files changed, 12 deletions(-)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 094714c607f9..93bb06a33f57 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -713,7 +713,8 @@ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
- 				nodemask_t *nmask, gfp_t gfp_mask,
- 				bool allow_alloc_fallback);
- struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
--					  nodemask_t *nmask, gfp_t gfp_mask);
-+					  nodemask_t *nmask, gfp_t gfp_mask,
-+					  bool *zeroed);
+diff --git a/arch/alpha/include/asm/page.h b/arch/alpha/include/asm/page.h
+index 59d01f9b77f6..4327029cd660 100644
+--- a/arch/alpha/include/asm/page.h
++++ b/arch/alpha/include/asm/page.h
+@@ -12,9 +12,6 @@
  
- int hugetlb_add_to_page_cache(struct folio *folio, struct address_space *mapping,
- 			pgoff_t idx);
-@@ -1128,7 +1129,8 @@ static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ extern void clear_page(void *page);
  
- static inline struct folio *
- alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
--			    nodemask_t *nmask, gfp_t gfp_mask)
-+			    nodemask_t *nmask, gfp_t gfp_mask,
-+			    bool *zeroed)
- {
- 	return NULL;
- }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4f0ed01f5b13..f02583b9faab 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2241,7 +2241,7 @@ struct folio *alloc_buddy_hugetlb_folio_with_mpol(struct hstate *h,
- }
+-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+-
+ extern void copy_page(void * _to, void * _from);
+ #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
  
- struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
--		nodemask_t *nmask, gfp_t gfp_mask)
-+		nodemask_t *nmask, gfp_t gfp_mask, bool *zeroed)
- {
- 	struct folio *folio;
+diff --git a/arch/m68k/include/asm/page_no.h b/arch/m68k/include/asm/page_no.h
+index d2532bc407ef..f511b763a235 100644
+--- a/arch/m68k/include/asm/page_no.h
++++ b/arch/m68k/include/asm/page_no.h
+@@ -12,9 +12,6 @@ extern unsigned long memory_end;
  
-@@ -2257,6 +2257,12 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
- 		h->resv_huge_pages--;
+ #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
  
- 	spin_unlock_irq(&hugetlb_lock);
-+
-+	if (zeroed && folio) {
-+		*zeroed = folio_test_hugetlb_zeroed(folio);
-+		folio_clear_hugetlb_zeroed(folio);
-+	}
-+
- 	return folio;
- }
+-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+-
+ #define __pa(vaddr)		((unsigned long)(vaddr))
+ #define __va(paddr)		((void *)((unsigned long)(paddr)))
  
-@@ -2341,7 +2347,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
- 		 * It is okay to use NUMA_NO_NODE because we use numa_mem_id()
- 		 * down the road to pick the current node if that is the case.
- 		 */
--		folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
-+		folio = alloc_surplus_hugetlb_folio(h,
-+						    htlb_alloc_mask(h) | __GFP_ZERO,
- 						    NUMA_NO_NODE, &alloc_nodemask,
- 						    USER_ADDR_NONE);
- 		if (!folio) {
-diff --git a/mm/memfd.c b/mm/memfd.c
-index 919c2a53eb96..b9b44ed54db5 100644
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -90,20 +90,24 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 		if (nr_resv < 0)
- 			return ERR_PTR(nr_resv);
+diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
+index f339258135f7..04020a19a5cf 100644
+--- a/arch/s390/include/asm/page.h
++++ b/arch/s390/include/asm/page.h
+@@ -67,9 +67,6 @@ static inline void copy_page(void *to, void *from)
  
-+		{
-+		bool zeroed;
-+
- 		folio = alloc_hugetlb_folio_reserve(h,
- 						    numa_node_id(),
- 						    NULL,
--						    gfp_mask);
-+						    gfp_mask,
-+						    &zeroed);
- 		if (folio) {
- 			u32 hash;
+ #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
  
- 			/*
--			 * Zero the folio to prevent information leaks to userspace.
--			 * Use folio_zero_user() which is optimized for huge/gigantic
--			 * pages. Pass 0 as addr_hint since this is not a faulting path
--			 *  and we don't have a user virtual address yet.
-+			 * Zero the folio to prevent information leaks to
-+			 * userspace.  Skip if the pool page is known-zero
-+			 * (HPG_zeroed set during pool pre-allocation).
- 			 */
--			folio_zero_user(folio, 0);
-+			if (!zeroed)
-+				folio_zero_user(folio, 0);
- 
- 			/*
- 			 * Mark the folio uptodate before adding to page cache,
-@@ -139,6 +143,7 @@ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx)
- 			hugetlb_unreserve_pages(inode, idx, idx + 1, 0);
- 		return ERR_PTR(err);
- 	}
-+	}
+-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+-
+ #ifdef CONFIG_STRICT_MM_TYPECHECKS
+ #define STRICT_MM_TYPECHECKS
  #endif
- 	return shmem_read_folio(memfd->f_mapping, idx);
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 416dc88e35c1..92fa975b46f3 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -28,9 +28,6 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
+ 	copy_page(to, from);
  }
+ 
+-#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
+-	vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
+-
+ #ifndef __pa
+ #define __pa(x)		__phys_addr((unsigned long)(x))
+ #endif
 -- 
 MST
 
