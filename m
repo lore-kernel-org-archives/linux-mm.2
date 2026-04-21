@@ -4,141 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33CE3F94CA3
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 18:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B438F94CA4
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 18:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E84F6B0005; Tue, 21 Apr 2026 14:08:13 -0400 (EDT)
+	id 624B66B0005; Tue, 21 Apr 2026 14:15:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9990C6B0088; Tue, 21 Apr 2026 14:08:13 -0400 (EDT)
+	id 5D6516B0088; Tue, 21 Apr 2026 14:15:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 887B36B008A; Tue, 21 Apr 2026 14:08:13 -0400 (EDT)
+	id 4C5AF6B008A; Tue, 21 Apr 2026 14:15:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 772776B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:08:13 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A40A8D8A2
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:08:13 +0000 (UTC)
-X-FDA: 84683347266.30.4C2F7DE
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C7820100007
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:08:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lq4xeCbD;
-	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776794890; a=rsa-sha256;
-	cv=pass;
-	b=f/w7GQ3Mprm2iI7VnDnf55gU7U+vmWT+D23/guMHplY3DHmnQ0z0bvV7vokd2OObWVUiXl
-	Vc4dXxcCBhQVzoxSm17XnmdHAmWjFccmsNhLhLF6VHDRdK9ihfeLcjid3Y/B4LHfFa4C7A
-	qNnYQwasvKkOVBs0XpT5CpAfF1T0oBk=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lq4xeCbD;
-	spf=pass (imf05.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776794890;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A2DE6B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:15:57 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9D3DBD886
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:15:56 +0000 (UTC)
+X-FDA: 84683366712.20.DE5DC6D
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 81FD818000F
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:15:54 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="o8/qWa4t";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf24.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776795354; a=rsa-sha256;
+	cv=none;
+	b=6wi7g3HZQZtbfJ1riMOfLbxw+rTIrI9tqtckdd7F0PKtnZQpdlJkBzZbngVFlVUErZ4l1I
+	UBOgjBsSdSHzY9mQeeWP5T0MGZskepDWWIQcj6ocGeAKl0ZQfFRhqbVQPDDdsoQUlB+lMD
+	1dN7KiqaqnP/8F4u+ylspw+cRQNEW34=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="o8/qWa4t";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf24.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776795354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KsgX9m6C8CxQkQ37nZ4Tnr3XLVgFk8OeqKDAsOzJgs4=;
-	b=57Cb87YTqRN7vikz3x4HlQsKrO/qRsSjIAkzj2plhFmzMFik/CgZhsxA6Rl+3jgdJL0a5Q
-	OImUw3g4JMdX6QO+kco4EX4RHdTQTKpGW864DwpDx1XI59ak+6NDWj6s7UCILzfoj2970d
-	Y9ThQJanHqz4SnHkNNTrdgFYlclv4y8=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-488a9033b2cso52235095e9.2
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:08:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776794889; cv=none;
-        d=google.com; s=arc-20240605;
-        b=I2j3tzZXOOV7poyNzoAiKTNr64eOTdWolu9dSO0gRi/fohVocvPWZ0sZr9mLpFy6Yr
-         AxSKnBLYre/a7aDZ/1h7RJhA7oXud72nfOSr77cckuPO/T3nhibMAxUdvK1/kr3Tdp/0
-         CI87Vu6ukNE5VYE/OhwxO7HJC4scoGPonBc4KTM/6Fb+IGnaSYr10imCG0+AGicFFaFx
-         OGor/Z/0fvQMrwbv0J52gftO5klO1ffSoKutg71pU+WWFQy/zbCcQ3fKrm31LWseoBo1
-         r6uUOhO6QtT8SaH8TQwNOod5ZrgFJsZfoZkpIlenKqlPLwSPXUn6ecLIODAFJQRYPNED
-         DBjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KsgX9m6C8CxQkQ37nZ4Tnr3XLVgFk8OeqKDAsOzJgs4=;
-        fh=L4jnk9d6xMzsGUolQ3CbSGKJvhCgYfmO4wKdCBN5E8A=;
-        b=Q9hNW06ZS6uJlC5U2/ovyByRdMMOhnTZLV3MzsvlujLK7h/zgFzukdP/uPDpNfbVpb
-         4a2ebASn9GmdRANC/htez4/m+5DwJ4+bswQUvHPsPTHKPlTsWYeBHEV0b/2pXozxdykX
-         R9/5pRQ3SvWjORbxU+K3ZROD5g1DscElNuETw2i7nv/khoO0qLOyLyv/Tas0pRIdnsVX
-         3Y8uxv1P+MBDs21BFzFM2ddkqRyjIijnZew9GyYcOIoSfgw1mjkONn8nECXCSEdv+lb4
-         LtnVi/Az70X4Zu0M5lNYWm5cmvdJ6uBrauhKsbNk8ohsmJCAxq/AA4Ycb+PKiyKMsopt
-         8eMQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776794889; x=1777399689; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KsgX9m6C8CxQkQ37nZ4Tnr3XLVgFk8OeqKDAsOzJgs4=;
-        b=lq4xeCbDvJ9eR7qtSxcUl5e6vYOcql5W9AhKdvbhesWjJnGzfL56Cm7Dd/02JX+oPN
-         WbfegK7ZMuUHAYA033qrdHX5mhZjVAf9x6BZ/FJuLfyjcZcCklUrqsjODGJczbULZs8D
-         OAurbDudL1mS/mxr2T0twQgXyhPsn9mwVM7egU/E7XJXjp4eCsvDDmr5L9Nt7EqOr8Ur
-         wi5P2KdB5qa4ZM+9e86SCPN2zBiT3WXFiHf1JCvTdRmm/XV0M2b2a8BodHK1dn9hZt1O
-         RNUYbjQt/W6mTlsNYyBtd87d8ckz73zZwUTFCqmPDbKzNh3LfbGBG6O413iF1NgGVR27
-         f4eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776794889; x=1777399689;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KsgX9m6C8CxQkQ37nZ4Tnr3XLVgFk8OeqKDAsOzJgs4=;
-        b=IDiiz0eTV67Xr+pRuJyf1kImNJIN98E9X0K48VefC3FeuNn005M3EqCO+N9YD1DFv9
-         OFcofdIZ5ISNnVBZ+9JGNUgvgJAqIAsUKyJYEy5r6VhDOziJCxXGq6OQjtRaM6YJfc7V
-         Axw9FoGeVvDhNm4qPkcA+1nKl2zMY8DX2FguBXbQx28b4a/gE3fGtmRnnAm5qa9oI+Gd
-         q7B90SIfbg9hLlpcCklvA+Hr7d6wle2Iop0GVxhknkkYuv93jE1USSatK0JEIrYCWUJJ
-         CPLjsJjx7o5ZeZImP99/xs9QMAoCBMnPpDCs+8rdO6L44Eqie67DA7ZNsJbuJX2EUzCb
-         9b0g==
-X-Forwarded-Encrypted: i=1; AFNElJ8NXKRul839Q7/pJqq+HHXukPDBmX5AEjGel0/X5nHURX4pGHRM/qVy7QRWVuNP6xI83ovUolB8lQ==@kvack.org
-X-Gm-Message-State: AOJu0Yye5u/XFWtCgIDYsqsHkkOIFVSjOr1sjVptolBVN4h71W2K8vW0
-	PRNOUpO3TVO8/wxP0MFxFHECp4NIBI0Eb41pB6LliLjLzPOnE8fo05fkcx+X10FLUJkJVv7zLH4
-	kdrA7T2kTFrGDVBbGBrPY7gnXfWs/fSo=
-X-Gm-Gg: AeBDiesTQaMCqbig0NMJ/+gQgEf8CqSf2dTJQNh4FoA1XKy58Jzt0nj8Z8v8SbWJgnr
-	9xSE5nociMbw08dWjoNB/4klij/V9Bl4XKoKLh0e6/JpvPMr0gPSNS15EvXurc1Zyzgl7q641sw
-	k7WPzzG8BQxZ8hFsKVE5fMGHh2r/1uiWg0i58vwKFArRU11rj2EW4fXe52zPpwHGbX5efGQdGZl
-	9LMvxCycFq7AlnA/0TXhD5MgDIWiTE/adBBtybVe4/eZbiZR07NJCx7L4GpAaEi9nhWnODEQ2Q8
-	8a1Lk4z/2ikdfbF2nMYmBnnjxtxv7OQFUBsvrQYYyFB0+qxcBp9PesMuiHG9KlzvhApNmEMLrP7
-	W
-X-Received: by 2002:a5d:4b81:0:b0:43f:e721:76ca with SMTP id
- ffacd0b85a97d-43fe7217864mr16856624f8f.45.1776794888852; Tue, 21 Apr 2026
- 11:08:08 -0700 (PDT)
+	bh=Q/M2ql55deJBXwgrNvuvQcgHfU/E88NoJNIezEXyITc=;
+	b=4G6D20nLcKKaoCF8UFKbpGVHytHDOBHc71I+VcCN/KCFiVvSW1vOZMFO68wpCeqtlEbX7b
+	OrT62lCgJ99jPtox/N0pr/zyANuvPQuOsM3XleJZ9viVGcGW23Qi0ziwJ+3dcluss9Xe8L
+	UGJXxMlBdWzeurTd8fSNAVZ5ZQOMqMU=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LHoB3T753710;
+	Tue, 21 Apr 2026 18:15:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Q/M2ql55deJBXwgrNvuvQcgHfU/E88
+	NoJNIezEXyITc=; b=o8/qWa4tC5O04YnEVrhapsWZRAMvKopusd8ObM2NLb+h05
+	73VB0k+5b9xqsRSH0QgI47hAeNNYA9R+M1yeCxqhdqRAAXLf9qn+xmNAQwLEyCtq
+	tJ8i9xWbXNPVRM8NQgCsXKkdC+RoGSSwIrtwIvHjPyNMRnbA3qU/8TBKPn6OqgPU
+	gtKgFBsa0wb4YOsmaV917/UlMWm37AK4FB96rd8SPpupcLIjqbQlxYUKmrB7zdHI
+	ZrlSUyAgyjiXBeFWnfiruBxxy8IXh9lKDv9b/mhy90slZ/LJNKZVd9l1mbv+6TFi
+	Oc/u/NdnRAdda1wRHqF1d3s59vEzJ6oDvwQZrHKw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2nf5ra9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 18:15:44 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63LHZIcp009830;
+	Tue, 21 Apr 2026 18:15:43 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmn9k1tv9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 18:15:42 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63LIFfuP61669838
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Apr 2026 18:15:41 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E768A20043;
+	Tue, 21 Apr 2026 18:15:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2A03520040;
+	Tue, 21 Apr 2026 18:15:36 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.39.29.146])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 21 Apr 2026 18:15:35 +0000 (GMT)
+Date: Tue, 21 Apr 2026 23:45:33 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: "Pankaj Raghav (Samsung)" <pankaj.raghav@linux.dev>
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
+        hch@lst.de, ritesh.list@gmail.com, jack@suse.cz,
+        Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
+        p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
+ RWF_WRITETHROUGH
+Message-ID: <aee-xaUCWMM4EV7Z@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <cover.1775658795.git.ojaswin@linux.ibm.com>
+ <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
+ <kvxvy26jblhx6sijbhxbpzzwltfoskwkv2suqhop5dq742fn5y@5tlws6pzaol3>
 MIME-Version: 1.0
-References: <20260421121616.3298845-1-haowenchao@xiaomi.com>
- <CAKEwX=M5YpR0cQrryX_y4pm_BuxyUWZ_8MbhWodwbf1Fe=gzew@mail.gmail.com> <CAMgjq7Ae_VH6mLQito5MFnxmp7ScZvF9xw4P-yU-yUBkPZ9_YQ@mail.gmail.com>
-In-Reply-To: <CAMgjq7Ae_VH6mLQito5MFnxmp7ScZvF9xw4P-yU-yUBkPZ9_YQ@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 21 Apr 2026 11:07:56 -0700
-X-Gm-Features: AQROBzDE8Aq5HdmW60NHS0U7vvLQGFi9pUSjLXorhoU341mxwA5GKtAt9XQb5K0
-Message-ID: <CAKEwX=PkFiP+u+ThrzjTKBi+usQf2uuhTZcfB2BNNA8RboOFDQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap
- release path
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Wenchao Hao <haowenchao22@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jens Axboe <axboe@kernel.dk>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Yosry Ahmed <yosry@kernel.org>, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Barry Song <baohua@kernel.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
-	Wenchao Hao <haowenchao@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C7820100007
-X-Stat-Signature: hjzyb79frh7ufdob4sj1eig8wqcoe9rh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <kvxvy26jblhx6sijbhxbpzzwltfoskwkv2suqhop5dq742fn5y@5tlws6pzaol3>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: y36Nuu59mSgnJb-uQq-EDrVFDYuFRljY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE3NyBTYWx0ZWRfX99+kfwP9K8GZ
+ YEvRRYzVFnAXxgPhX+oxgfDX5G0Ygs2AjsgDPKwvyaus27lu73g8pJf2RdL1V9BUluclbuYqv0J
+ JEqN7/xHp+x9l+aiOZcWKXmRwG+J53C2XgqRuU3OfTNkj7ENaE3AzyVmoHSH/Atqhb/iKFDB3s0
+ 5aFmYn9C5kxaMYJ1c1YuCnq0IyTEEcoJvWjA5jtyRk+NNAKlxXEzT0nPF73o8YvrX2BEhy8UBKO
+ C8HGsJNN79s/a8PmjsicfViblBl7PcBdTmK0OUr6rdpV+RBQdDMTYLdAi/tVx4VBX7iyaZNheWh
+ thIUS//th7iID74yWnL1jLykbGhksX0rlqLru0zCqz+VlbwQj69K68WjOOj566HAcESCU7+b+F7
+ EUzW9WYHwJWXry6msY+nsyU8Wl/ptEXwTd4/z1ZywOku+aWBFX3KzHDUOGU+45EhJfP1VcGIjfY
+ Dr1p4apDJ6P+Y1HmR5A==
+X-Proofpoint-GUID: rqpRcvBTBogBp19_f8NgESjUZm6_IUnP
+X-Authority-Analysis: v=2.4 cv=B7iJFutM c=1 sm=1 tr=0 ts=69e7bed0 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=Cl_7ivfH_JflWmaJJIsA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210177
+X-Rspamd-Queue-Id: 81FD818000F
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ae6jashozxgn4xeemf8yoikisu1i3rkq
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776794890-16427
-X-HE-Meta: U2FsdGVkX182FDmlDWbvE0x9Cq+c3MXgIjzHrtYOHZzWBOAD3X6xgkO+P9lcgYCuruKhhfMAeb91J/m7Foxl9tuc0KBLQ0Q5XiK8ZFrw4bl0fHwjGSBmZzPMqDsks+dPzChBcqfGbOyflEH0X2na0R57dX1qCNRcd8/u7MbT5hrsRgag44IvIuI+GD6ZHb0ixKk0oeklZ33Ys4B7hTYnAiLUxe07O72J9MapIfRF2lvjGVLBffnQeMcWII2TKfI8ltzo09ZAbq1GzPzKIJGqKNBm9UJ+QeiZ6zBmv/XLoM95Yg4lLh0DutvOGEkNqBBvVh/sPVr0SBUtlGrygPAjBR2qY3NGjxbjKIa1X4CP4/NhcqBODKLYOl6yN0qt3yBFMdJ1yE/v6OQzzQdypeYIAO8SKJ8HTtIOrbKMMHKs/IlJ0DlRsYEnDawjteN2EbcQMT3IKsrPlgHK7srQCRCbienaTYWGnodlBU/QYl3IGTkStpwHZHidf+H+e94nu9GrhPrT1pvWsfP1drdBYJdsCx7ecUktpULezyCVJ3jw2Zac5qUN/4ehbMWR3IVYoLUI5KwxNgLFExYXqn8KlzQvxNjEl8iWy7r5C/q0/E7900SmkwHs9BUy5UOt/U5ZcR47QIHZurqXws7TLKqBoUxwObS0Xd31dVXK1KDQAoDbUJSseVTgFMAQoWsgoVP84kq89C/mygbKhi+E3AzQL3hBAI0ojEKDUqpZcedj4+QFWJK83GxVQZZJHWYKKodqJFd0GP83UC/rz7nrQlUtzGKRQRb5NqXmP7KAcVIxzy2Ux0/TCTO6XEHR8WI1vWpZozr1qbQhAG6lK0qwwuMsKs0FoKeuAgqcQ856C3Emev7DcglKB0dxkEKt41ko4JF1ylUI3PHdgU/HNMfkOM4Ktg9FNWdJd7ICLTUSjROqjI3w/s423DZ6zIJlUK3Q4g3cAN542J667Uxc7mPOI9WvWns
- K35YHVmw
- jHUkhrvZ9NU6a0AAfgW6VxDFP/2CIuzFCNWdIkD13D1EUjzIwfVeojKaLopooaIcApoNCOtqJCqIESIVQL9h6r8BGkq8m2J1o3a2N6xbi90ZcKc65wqcA9Ep8gpy++PxmOb9zpWVfnRRHgem9ktsH1D8sySDb1ikmWVgofHEut1DFM5+JZATEI3kzZAjULZDgkFUDeESuLT2sx+trBiseq2RWD6GUdHZL+N2Y59EzfK8SYlHysja/Uf6rgfyvhjSJT7JT/Q/UOhYYXKGG5k3x0YsYq4PwUyvJ5w3Jscse1w5TAiRgPPpWtfxm6WxpS7l47SIF7pNWEecv0MLZSn66Io5QTUB0xnDdG1lHiv+4z/gSS/P56phbGC0qUeVEcTQMeHAQJMpE/npJyWuY7kx97SbMHowWHXRWASmY7CoG18dLExEQpPsCBOgiHOZEC65PdS+SJFrtyMfPYKO51vpCbikTSWpzQjITNavUYyqE81L8EVjn/GZu1qNRHCrOUhKAlX5WVfqQVMP4BmIAIlOLf2Fyytz6NtdDuxQ3tex7Zh41RVQAsj2naDG0UQ4bXxFqvOhF
+X-HE-Tag: 1776795354-848691
+X-HE-Meta: U2FsdGVkX1/zh+TJsnqFhTxD5nyJOY+tyBWjpj0sJ52X/Ux9Y9OjS6v9vSY8nJNtBHNYhCQsaxygl8/X8nU80+0ADpEsesAY8HXv1y4aVHGXOQaSR8HIyj7Hlw0flGwil6RQtQTJ4VRV2YhT/UstUp7JKOCMvw3Vq7fSMyg4/Eys3TUx3NhWpbahZuBVrB9j4bgGAH78clnfbsLuIXZRFEs6Ms6LWk6DwNiEonO2xZeU+bPy8/nRlW1TkVLflAB2bVecJY6KjprhfjPeFCXTfPWNbtBrQ/a3jgH5HS8d62e2IbzNl4u3xo/84hiAF3sDP23kgvfwKSgO8ypaHzzXqP46gVvBvWDNxam5+2nQ2s4cNjMTqp/HKEkce6ctfLR58t1xjsJSCf03AesO+LQ/CUBAx9TiNBE4Ba/KQDhDny6BJPKNsV48WarUzj0T+Mt0N35mCFfeUw5KUF6kGYGMpXor/IspVp+nwByuQ62ckZCzax/zIK1UXf0WoWwh2tFrvT3XS5qTM82lIKYUg8/SVjI+mabZLZKn4Ku3ATNWuY/9M77I1Uk8MSYI5TebLysFWYu/zF8MEC5YTGL3F7uQCxLxs0pTqSaJItdS+zkAqB6CUimwiZtMXv5DPoRSSJTdGcaCta1CWecBTLRiblh6QSNOCQ83Nu/bPSknoLXCEURetRyeiynjyIz+WzQznE/xiW590/aQUpw95q1i3uNbIchhq448aBRK8iUp4gLiPtarB+svaSUeu7djhGYbDSRBPlehaF7tW9r+EoSKkiacrNlrif9sMPs+GMDRIsREnhGBmPZAFpwTcw6dxef/ghHPIdNopn/q/1XK+l1JnbJRbOm3sVOcnz77ownkN5PYO7zQAqBx8ZRkXN3Y5nkCqr5KBmQQEBHIvh9O8Mq/yZf+t4c7USIt8E19QUIY8DX7guxUiKwMnhBWInuTh/KUzhgQr8y6QyJj/lFtW4j9di4
+ 7v9/LLPc
+ BkkyuXNO9/UvB72CsPR2bwwKu2DJH2d5u9qMTvBLAi+Z+7QqtNxXxPO1dSmzTEA7H4i1M/GybL1/Qb2JETioHeXc55/lev+G9pjHGsRXxzJHP4jxgfN1HUAV8IU5UoOgOHuVfJyhMs5ZRvsvg9oAb2W1C4teA8HNWxKYWAMJz9Ls21RwGzWLMb73lkL4Rd8CmsUpeKMKDrTNiBR0VpOG4/TNia1JGm49X1mgneTgWpXA3JZ6ZJ2dr2Cq6iNqzFNWGBiG7uZ5SzXAmsOUZE/h4hzGyEu0utXfdj5efSrH8FYb1EMJushi+ERJxuEgEdXxvfyRc64+dXYzroV5nllX9y/6mJcfsWcx+h08q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,125 +143,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 10:18=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> On Tue, Apr 21, 2026 at 11:55=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wr=
-ote:
-> >
->
-> Thanks for adding me to the Cc list :), Barry started this idea with
-> ZRAM, which looks very interesting to me.
->
-> > On Tue, Apr 21, 2026 at 5:16=E2=80=AFAM Wenchao Hao <haowenchao22@gmail=
-.com> wrote:
-> > >
-> > > Swap freeing can be expensive when unmapping a VMA containing
-> > > many swap entries. This has been reported to significantly
-> > > delay memory reclamation during Android's low-memory killing,
-> > > especially when multiple processes are terminated to free
-> > > memory, with slot_free() accounting for more than 80% of
-> > > the total cost of freeing swap entries.
-> > >
-> > > Two earlier attempts by Lei and Zhiguo added a new thread in the mm c=
-ore
-> > > to asynchronously collect and free swap entries [1][2], but the
-> > > design itself is fairly complex.
-> > >
-> > > When anon folios and swap entries are mixed within a
-> > > process, reclaiming anon folios from killed processes
-> > > helps return memory to the system as quickly as possible,
-> > > so that newly launched applications can satisfy their
-> > > memory demands. It is not ideal for swap freeing to block
-> > > anon folio freeing. On the other hand, swap freeing can
-> > > still return memory to the system, although at a slower
-> > > rate due to memory compression.
-> >
-> > Is this correct? I don't think we do decompression in
-> > zswap_invalidate() path. We do decompression in zswap_load(), but as a
-> > separate step from zswap_invalidate().
->
-> It's not about decompression. I think what Wenchao means here is that:
-> freeing the swap entry also releases the backing compression data, but
-> compared to freeing an actual folio (which bring back a free folio to
-> reduce memory pressure), you may need to free a lot of swap entries to
-> free one whole folio, because the compressed data could be much
-> smaller than folio and with fragmentation. And swap entry freeing is
-> still not fast enough to be ignored.
+On Mon, Apr 20, 2026 at 01:56:02PM +0200, Pankaj Raghav (Samsung) wrote:
+> > +
+> > +	if (wt_ops->writethrough_submit)
+> > +		wt_ops->writethrough_submit(wt_ctx->inode, iomap, wt_ctx->bio_pos,
+> > +					    len);
+> > +
+> > +	bio = bio_alloc(iomap->bdev, wt_ctx->nr_bvecs, REQ_OP_WRITE, GFP_NOFS);
+> 
+> We might want to check if bio_alloc succeeded here.
 
-Ah I see yeah. That's the not "as much bang-for-your-buck" as folio
-freeing category. I agree on this point.
+Hi Pankaj, so we pass GFP_NOFS which has GFP_DIRECT_RECLAIM and
+according to comment over bio_alloc()
 
->
-> >
-> > zswap/zsmalloc entry freeing is decoupled from decompression. For
-> > example, on process teardown, we free the zsmalloc memory but never
-> > decompress (if we do then it's a bug to be fixed lol, but I doubt it).
-> >
-> > Zsmalloc freeing might not be worth as much bang-for-your-buck wise
-> > compared to anon folio freeing, but if it's "expensive", then I think
-> > that points to a different root-cause: zsmalloc's poor scalability in
-> > the free path.
->
-> That's a very nice insight. I had an idea previously that can we have
-> something like a zs free bulk? Freeing handles one by one does seem
-> expensive.
-> https://lore.kernel.org/linux-mm/adt3Q_SRToF6fb3W@KASONG-MC4/
->
-> It might be tricky to do so though.
->
-> It will be best if we can speed up everything, doing things async
-> doesn't reduce the total amount of work, and might cause more trouble
-> like worker overhead or delayed freeing causing more memory pressure,
-> if the workqueue didn't run in time. Or maybe a process is almost
-> completely swapped out, then this won't help at all.
->
-> I'm not against the async idea, they might combine well.
+ * If %__GFP_DIRECT_RECLAIM is set then bio_alloc will always be able to
+ * allocate a bio.  This is due to the mempool guarantees.  To make this work,
+ * callers must never allocate more than 1 bio at a time from the general pool.
 
-Completely agree! I was thinking about batching the free operations
-for zsmalloc. Right now seems like even if we have a contiguous range
-of swap slots to be freed, we call one
-zram_slot_free_notify/zswap_invalidate at a time, which then call
-zs_free one at a time? I wonder if there's any batching opportunity
-here. Might be complicated with the pool lock and class lock dance in
-zs_free() though :)
+And we seem to be following this.
 
-And yeah the async stuff is orthogonal too.
+> 
+> > +	bio->bi_iter.bi_sector	= iomap_sector(iomap, wt_ctx->bio_pos);
+> > +	bio->bi_end_io		= iomap_writethrough_bio_end_io;
+> > +	bio->bi_private		= wt_ctx;
+> > +
+> > +	for (i = 0; i < wt_ctx->nr_bvecs; i++)
+> > +		__bio_add_page(bio, wt_ctx->bvec[i].bv_page,
+> > +				wt_ctx->bvec[i].bv_len,
+> > +				wt_ctx->bvec[i].bv_offset);
+> > +
+> > +	atomic_inc(&wt_ctx->ref);
+> > +	submit_bio(bio);
+> > +	wt_ctx->nr_bvecs = 0;
+> > +}
+> > +
+> <snip>
+> > +
+> > +/**
+> > + * iomap_writethrough_iter - perform RWF_WRITETHROUGH buffered write
+> > + * @wt_ctx: writethrough context
+> > + * @iter: iomap iter holding mapping information
+> > + * @i: iov_iter for write
+> > + * @wt_ops: the fs callbacks needed for writethrough
+> > + *
+> > + * This function copies the user buffer to folio similar to usual buffered
+> > + * IO path, with the difference that we immediately issue the IO. For this we
+> > + * utilize IO submission and completion mechanism that is inspired by dio.
+> > + *
+> > + * Folio handling note: We might be writing through a partial folio so we need
+> > + * to be careful to not clear the folio dirty bit unless there are no dirty blocks
+> > + * in the folio after the writethrough.
+> > + */
+> > +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
+> > +				   struct iomap_iter *iter, struct iov_iter *i,
+> > +				   const struct iomap_writethrough_ops *wt_ops)
+> > +
+> > +{
+> > +	ssize_t total_written = 0;
+> > +	int status = 0;
+> > +	struct address_space *mapping = iter->inode->i_mapping;
+> > +	size_t chunk = mapping_max_folio_size(mapping);
+> > +	unsigned int bdp_flags = (iter->flags & IOMAP_NOWAIT) ? BDP_ASYNC : 0;
+> > +	unsigned int bs = i_blocksize(iter->inode);
+> > +
+> > +	/* copied over based on DIO handles these flags */
+> > +	if (iter->iomap.type == IOMAP_UNWRITTEN)
+> > +		wt_ctx->flags |= IOMAP_DIO_UNWRITTEN;
+> > +	if (iter->iomap.flags & IOMAP_F_SHARED)
+> > +		wt_ctx->flags |= IOMAP_DIO_COW;
+> > +
+> > +	if (!(iter->flags & IOMAP_WRITETHROUGH))
+> > +		return -EINVAL;
+> > +
+> > +	do {
+> > +		struct folio *folio;
+> > +		size_t offset;		/* Offset into folio */
+> > +		u64 bytes;		/* Bytes to write to folio */
+> > +		size_t copied;		/* Bytes copied from user */
+> > +		u64 written;		/* Bytes have been written */
+> > +		loff_t pos;
+> > +		size_t off_aligned, len_aligned;
+> > +
+> > +		bytes = iov_iter_count(i);
+> > +retry:
+> > +		offset = iter->pos & (chunk - 1);
+> > +		bytes = min(chunk - offset, bytes);
+> > +		status = balance_dirty_pages_ratelimited_flags(mapping,
+> > +							       bdp_flags);
+> > +		if (unlikely(status))
+> > +			break;
+> > +
+> > +		/*
+> > +		 * If completions already occurred and reported errors, give up
+> > +		 * now and don't bother submitting more bios.
+> > +		 */
+> > +		if (unlikely(data_race(wt_ctx->error))) {
+> 
+> In the unlikely scenario where we encounter an error, do we have to also
+> clear the writeback flag on all the folios that is part of this
+> bvec until now?
+> 
+> Something like explicitly iterate over wt_ctx->bvec[0] through 
+> wt_ctx->bvec[nr_bvecs - 1], manually call folio_end_writeback(bvec[i].bv_page)
+> on them, and then discard the bvecs by setting the nr_bvecs = 0;
+> 
+> I am wondering if the folios that were processed until now will be in
+> PG_WRITEBACK state which can affect reclaim as we never clear the flag.
 
->
-> >
-> > I've stared at this code path for a bit, because my other patch series
-> > (vswap - see [1]) was reported to display regression on the free path
-> > on the usemem benchmark. And one of the issues was the contention
-> > between compaction (both systemwide compaction, i.e zs_page_migrate,
-> > and zsmalloc's internal compaction, but mostly the former).:
-> >
-> > * zs_free read-acquires pool->lock, and compaction write-acquires the
-> > same lock. So the compaction thread will make all zs free-ers wait for
-> > it. I saw this read lock delay when I perfed the free step of usemem.
-> >
-> > * If this lock has fair queue-ing semantics (I have not checked), then
-> > if there a compaction is behind a bunch of zs_free in the queue, then
-> > all the subsequent zs_free's ers are blocked :)
-> >
-> > * I'm also curious about cache-friendliness of this rwlock, bouncing
-> > across CPUs, if you have multiple processes being torn down
-> > concurrently.
->
-> That's interesting, when I mentioned zs free bulk I was thinking that,
-> if we have a percpu queue, at least we may try read lock that on every
-> enqueue, free the whole queue if successful, then release the lock.
-> I'm sure there are more ways to optimize that, just a random idea :)
+Hey Pankaj, yes you are right. I think the error handling is a bit buggy
+and Sashiko has also pointed some of these. I'll take care of this in
+v3, thanks for pointing this out.
 
-Yep! Would be nice to have some perf trace to pinpoint where the overhead i=
-s.
+Regards,
+ojaswin
 
-On my end, I perfed the free phase of usemem. It varies a bit based on
-exact build config, kernel version, or even between runs, but the
-cheapest I've seen for the pool lock contention overhead is about 3%
-of the free phase (this is on baseline, not vswap kernel). That's
-pretty big (bigger than vswap overhead even on the kernels with vswap,
-which is kinda silly). Obviously the host was very overcommitted, so
-compaction was running in the background at the same time, but
-still...
+> 
+> > +			wt_ctx->nr_bvecs = 0;
+> > +			break;
+> > +		}
+> > +
+> 
+> --
+> Pankaj
 
