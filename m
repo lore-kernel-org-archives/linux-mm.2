@@ -4,137 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B313F327B1
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 06:56:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3BB4F327AA
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 07:06:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4EE66B008A; Tue, 21 Apr 2026 02:56:15 -0400 (EDT)
+	id F0B176B0088; Tue, 21 Apr 2026 03:06:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFF516B0098; Tue, 21 Apr 2026 02:56:15 -0400 (EDT)
+	id EBBD26B0089; Tue, 21 Apr 2026 03:06:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C15416B0099; Tue, 21 Apr 2026 02:56:15 -0400 (EDT)
+	id DAA706B008A; Tue, 21 Apr 2026 03:06:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B27036B008A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:56:15 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 498EA8D01B
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:56:15 +0000 (UTC)
-X-FDA: 84681653910.24.AC503F7
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4A0B5A0002
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:56:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dfTBsInn;
-	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776754573;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C55A36B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:06:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D10FC3BC1
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:06:37 +0000 (UTC)
+X-FDA: 84681680034.16.F16AE4F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DC39780013
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:06:34 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=caIkEahP;
+	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776755195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G954RTMVaWHqjwglqt4or66X4ytIZGguQaz2k8xzOuY=;
-	b=MbA/3BUPS+5oQ1rrYH5rtgYdk2K8M917+fGGSLAWUkt0aYCjgyUhJSCBLjas+lc7kNZMwI
-	SS1ILD9IoYEr5nI/aV/jTg4rlGNs1bjY6F6q4tAo5ghZcMljp1rGzwlb5Ys4oKQ3K+fn8+
-	uEMrFs6x0LAQh/iDTAmolPbh7uK6AEI=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dfTBsInn;
-	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776754573; a=rsa-sha256;
-	cv=pass;
-	b=LgbUcw2OyYmqIsSzRsFB48VOhmG7/RfEDIP6ZfF1j3pSVr3nJvTTAoqgimlOLhK1XNSNe0
-	4HnihX+2nBzhue9wuRtfvjkKgxIY+lFq4G4cUsX8Y3d2iYxA77YD1wp+9CK67xlDt//gtv
-	VWxl9+B3Ct+SwzTjFYelQ6D3/tyf+g8=
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-79ab3e26cceso33452407b3.3
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 23:56:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776754572; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gSPN7klx/VkCLAIATnue9+Qj7gTmyUWwdReery+oMpbo8fKxEDRzTGf0Sl2H+T8QVt
-         eJ1NElQ2NQ4HGSYKftJZ0dPfDYICyak8L+pSejsd1k3RU9HOasJHbtdEnE6U/tmtUTsq
-         xmhEbLvokvm8CucFWl7uxaTREiZau2RkMDUQzMyJUPEua3Qm09i4Q+AYyOFlrSF9lQxq
-         PLKluRkkRyNfrvXnXjFdA1yhkxNQRoqLfBmm0wJ6r7l8+0SRiKc6zv5FMRRUIvgUwHz/
-         6jVHrzWcOlSSKrf4csFZ0Rij0uPxRsQr7+uroV5CkTX6bWdT8YnGcCm+o2L88jf6KzUd
-         Ebhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=G954RTMVaWHqjwglqt4or66X4ytIZGguQaz2k8xzOuY=;
-        fh=kD9ka3xWM/t+yAsodllS2u2LDwSqK6CMexVbR/SRkIU=;
-        b=C7xa68j1eET8Svk9gvqCn8qAKIvYwq1Xlw1d3XW6Ly/YqJu4kZTOmsr0OXXUuYEG8P
-         sBhujvHOzyQd7gjvuwCNaAnZbV1CpoOBUk/lruJyhe9xzaHVjmrx9TtoeFs2Ps3YetGn
-         SrfMtX2PxlZUeU+NKeHbnu5VWc6sElYSu5otF86dQWuuDbO5Z1rkFP+VJlHzzQZAj6xf
-         9Y4OOu+Ncd+OaegNC98GH/ySll5iolaN55pVhhOgzFbPoHyiW0CloavmHXSe/ngofCBA
-         g62X1KjTAQGl5TDztQToljhJW9V70WasHiJlYitep15yi9xqLkGpKCCiJME9sVpFL6Y9
-         Zkzg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776754572; x=1777359372; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G954RTMVaWHqjwglqt4or66X4ytIZGguQaz2k8xzOuY=;
-        b=dfTBsInnaKoezx8B8+ys8ufX4Zstrk6PT/vOUAmXqrnZAhHC5r3BF1qnCPOU9QspBV
-         xIMma2o2/otRtgctcpsMvwodTo9cerdSnseI1tC+etSfFJWlwL0RwK+N6gUP9fzxpSqu
-         UjSt02y921igoTrEQG3PL+6HiB89dtCUjRrx3dgmDhOVOXBLucN94b5MkQKeMyq3iOca
-         x7WGicV8zE+Wdv34akQmRwSsP9R+zUc3H3pctXqwVFhPyqm3g9oMckm2B5DuiIQ8md36
-         jKM1Vtzk+xoCI7+6kASj6rycpmp0mIA9tYiT48XNCWZAoNMMXoxxaF+oyPYQwxkI8HMs
-         yy9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776754572; x=1777359372;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=G954RTMVaWHqjwglqt4or66X4ytIZGguQaz2k8xzOuY=;
-        b=SlSzP7/9b4Z7MR3i5qu8tTD2FaXERWBLKnyIqs5hRIxm1iq3QSsG/tNwTOaHrhywYi
-         LJrK0hJYHNvMN++dK5AT0wIJu/mlfzrFz1P7EGqKDEoc73OsKUYClcRa78C6gB0gfFRd
-         o5x8FSU8WoNCjO8cuql6xeH6oCdDOSlVhl2SnJuy4R6+TLkF43gqKqVuHjDxGw3XERFM
-         Ei76r8uBDqi4FG+oCRihCf/dfGXRGzN2ceEX1/1E5EVdXmUIrxEL5UIvErji6SRtqiN5
-         6WI7sqIM2lxcvVIAbD9TQfdGjbNokaiZ1gZyISe2/+EbOSGtRmIlCZ/FQijtN8vZbEh6
-         3pcA==
-X-Forwarded-Encrypted: i=1; AFNElJ89fi3kZCpzbem1H4H7GxuzXHRF+Vi5dWRj7NPVKOgmcWn+Lt/nlsv6YJw0di7CEQAs1yCeSm3K2A==@kvack.org
-X-Gm-Message-State: AOJu0YxuI1Law7Xn6VtQ947ujjsPGT2beJrFhyVNHvYAtREcs0DBOc8A
-	Gz3HYVgxxxa34cXYATM/5N6oqInwKaNR9ni6KIAnGFzYCf9nMKVNXkIABvPbPL6Fk2zEbEm1On8
-	AkLI28EIO9TOCblgQXWdgJZaXaWbOxrg=
-X-Gm-Gg: AeBDieuKstVr7nnqrrr8AGItwCfA2dHRFXzgZHUeQ8n72avpUwde5ifCPS/dn2jQ0C/
-	ostGZM4868nl8B2qVN5HPuzz8wI3z0xzNtf6OyVm/p/6gtNJqq5mGj0wb3e+uz3b9AUohgZz0Eu
-	R2Szf3fkn+uXR2PHggNpAkvvgGOgnHc5gmA8BehhnKk9SykqmR09s7PYN9XrY0jpOJF7/Dezi3Z
-	KBeUoUy5bjHcGJDcYtZYT6NpfUxSIQ61WAV74lryWG/XPP8oUZAEIDqBR2G1RkpwA8bDrlp4tuy
-	vhBZEoiBhhxhGXY=
-X-Received: by 2002:a05:690c:93:b0:7a4:8718:8c73 with SMTP id
- 00721157ae682-7b9ece91691mr161678827b3.9.1776754572269; Mon, 20 Apr 2026
- 23:56:12 -0700 (PDT)
+	bh=tHGyV9JrMyOlPN88c2CyCQ6hiq5IFCOBZ9918+Av9oo=;
+	b=KKaGz2rLb1KAY1kwHTL+jvWor0NQ/0sSZ9E63SrfIb2Y54fNJQ0tjZxuDTHlziZ0wbG+Of
+	ncHRpXMfs+EUE6zkQ8Ack80KSv90IbkF7sGO6zkfDcDRlFdGTu1y/LMONipPTF3xxVpP75
+	p1Y67HTydHIe6Jji227PQMJ7GPrkmgU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776755195; a=rsa-sha256;
+	cv=none;
+	b=df3PJhXl3GAiGHHcyQefwUlIcJD9OUwmfdkMElIy1wh5Z35upLD12IvlaCNJrncyY11R9f
+	AgTyPO28A/5kCuQkWHDDm3H7+NFOCgCXoqnJ5063ayi54G4ks5MDdEabzGdDDyze5izD4f
+	brub8OXA+LPY/XU7A+7zenAdm8UJ/jk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=caIkEahP;
+	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E51D425E0;
+	Tue, 21 Apr 2026 00:06:27 -0700 (PDT)
+Received: from [10.164.148.40] (MacBook-Pro.blr.arm.com [10.164.148.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8CFC63F641;
+	Tue, 21 Apr 2026 00:06:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776755193; bh=3wB7yzrfBlQ4UrzNV+oRyj5dj3pW8qlpw1VT3aYrqNs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=caIkEahP4GTI8WiiBzxI/IgGStQy71u4HnuwQMLiFype1Ov59C3RHKzvHJJ7+Rp5c
+	 p9wZK/GvOMAH/8NpBHH02SxjKMFpzuP3NE5oriiBFINnv1H3o3aBDZUAhfY5UOJb6G
+	 houo3EE1+cc6uDbc+dWbPU2eEaLXqLU+tzYee61s=
+Message-ID: <5463cf34-bd8c-4ecb-b93a-fd8b2bd2976d@arm.com>
+Date: Tue, 21 Apr 2026 12:36:16 +0530
 MIME-Version: 1.0
-References: <20260417135805.1758378-1-ekffu200098@gmail.com>
- <aeXIKM9BeRmaCZ_d@kernel.org> <CABFDxMHT0W-FFuLJwiWMqXueXZvz-2wSsZyRPKJ6ki6FhVPLnA@mail.gmail.com>
- <aecZPdGyF5i1baee@kernel.org>
-In-Reply-To: <aecZPdGyF5i1baee@kernel.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Tue, 21 Apr 2026 15:56:01 +0900
-X-Gm-Features: AQROBzAdg2gdS3KDjvk2aGpa-rV7JJ-7DXvwsEhWWWwN200E8Uy85JIqLoWfXtU
-Message-ID: <CABFDxMGU8DwoG0yYb8gBstntTJ5okY-2bs_2iywBnrSX1H7-Uw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/fake-numa: fix under-allocation detection in
- uniform split
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, djbw@kernel.org, mingo@kernel.org, 
-	linux-mm@kvack.org, Donghyeon Lee <asd142513@gmail.com>, 
-	Munhui Chae <mochae@student.42seoul.kr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 4A0B5A0002
-X-Stat-Signature: 3x4knhndd4a8y4fbt5daiq5kkkaff7x1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: fix initialization of tags of the huge
+ zero folio with init_on_free
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260420-zerotags-v1-1-3edc93e95bb4@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260420-zerotags-v1-1-3edc93e95bb4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: p7hi4auyhi8btazps98tfgugragip9uw
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DC39780013
 X-Rspam-User: 
-X-HE-Tag: 1776754573-424962
-X-HE-Meta: U2FsdGVkX18f3pyYLh/3MP0yffWXz4NfxjPuXcYCqQ+8doBRMYdVIP9gqBhskyXT2nrU22mnBLxpV8o824CTD3kBxubEImJHyGkQcdp99T5Vor/W99nKDD/d+Nfg3LkpqTzTZ+TP5EUUVuHvF7wIHjoEsq5Q3gbbMGbYWEWgYTHM69Enzvo80VcHTI3SGuyUB6lbLj6rjrDHJF3cIsywwiTV+iYd5pkcXXKXnpmyH8BMP6rnZ37Qw8usa4VNboJoLkp5klDS8ujqEz3TB4eRett1RlVEOppsCcLh1Je/Ys8rrEK2OMni1uuegTRpl8odXeOOeT0dRe8e3LYTpa6ypJSSRsl8kFgu/zs3SCzbtvbmdLpHTfT4NY+N9W3geOAYdh+omgilfo+BdDHdVdzrjDqQue7xbrKdL/pn2J1Zk3+MtQrM5XSoOTi+MGrjuhk3uvg/HwmA3lbDFFBuT6GlWG3Rwuv3FhRaVbNR7ajuXymfeeFwoQetDfkmd0YjzRvmPnnLUQk7ncS8S5zxkqWGLuRn49E1bSydZ1zlzvwRp/CguGl2MyTYKuyaPWurAzIZ4U5s0YfjZpN+4F6dRjxwh7PdCbOopOZTNeHjx3oFd1cy/DGNGUTHAas4THdG1Y9s+ab6XLmgerHRhs1/v00idwWm9rYmkHSCcetV+lJySLG7nzF2pL1efZ7zhGpRfr/MPsk59dzxBJB3438OKTydjtodgQE5woNJYtMqXgFcxPD/rQzpZgGXYYkz4gYAL16auANIEhnBiTHbHqx/CUYTd0srG7mooZGRoRpjC0EcqoY071dJL0PZW77oqn0DQ1cBbow2vIyBZqxShcO9oyo422JEYq7NdXDtwChp2ZH+mcLpkfbV7A/MCsTOzLJFY6is1+0XnD5w5jYuY+C2qDVEicd6/gRdTwyzsA+0e6icEBflTGS6ac3bP7/AMCb85GT0ahRP4T2V2LnlphMJ5Ct
- ZsdmiMSI
- 23MM76+602ppixhz2pngsZ+7xqWyZRgFgo05EEdEVzuUAH/BM3NzXiihthq6DJqtWMOsftnm0vPWhTqIJW0Sr9zMZLSXKDlO+Eh5EPnNCulonWZCvdcOXVISi1VMDtmiCHl1JGOJlrATyG42N7jHeCS5FOq4Iv1DSRdn6sg5JQcRO9rcHPWVxV/FxQHJMqQ0XNDkDaRA7RGax62KWnaEXxsrEUHxeKJlYKAJisnsqe2bf7NiBpJOh/iQjuSg3qzm/v7tVMcW9DCvcvgLi6fTC2fkL7TPzDtO9jBk6vWp+ZLCk9jAXvjhw4viE3hPxsXBDHHZ6gGaBFOrmbStepKEQQQ85rlXzXP90MkLdaIMkDUnXztEqmkhSQzQgW0uzuievH4LZx99QUfNB4KKRrJynnM4ZpKIyDT/XDNGRFChATOV/K6c=
+X-HE-Tag: 1776755194-347827
+X-HE-Meta: U2FsdGVkX1+dY7XWh7uUmDoZtTyhGWq8nFJLriEJZZHxMAfeMEMqjS89x39VWmsxNziIEc6ZyL27Vs1cdZMpoT5pWDIaE5TIIEzPqJFxIjxnbu+UJUC7NRYneWz7+eVL/DS93poCu2giFqYm9A7t5j7a2UmUwwdoAd7gez8D50ITly3L6ZSyK3hf3BoyHiwtZqx/Pr25vGUv4MUd7HpX3yJR4rBCb1BKc8aWNFXASIFwvgg6StqMeWcjYQ+BPBkIJzDl7dE3lfGTrcEKW1O1SpJxfEkwuDDNh/megeeedsMWevwBp3wlankCcvaHQ55w1ijZKxyNrZHRJTrj2v3duyiNHTebZgJch95GV+ECLfung4nrlviqfQRqLh+hyi12Uy7TAvA5OsplN2un+ykXKFAOqRVkHb9ZUKYBq88+N1cExHntYOFfGILcZ1yjnJqEOP2PesZe3cL1ITyuNV41yMAZoZGJzxsDEcGz9gv1PlyQ0vGFYyTqVZJXDAVvTwePXWy5GRXlsPaoPRHoJ9VQQ6Hfjy0dwCS/ODM6jJuGONuNLBEmtbIAQFBZTLce0QIz9nXerjQ8Fdd8ZjG1qx9UpLHU3y1bQqDGMkhI/+GEfbkg1vkwT5+7RrvvH4YwxcdsHkAt6sVzaKX9m8b4Qt/qJ+NXZDEazhNg0qLsx+42WBeRQUipXsRMZ5xvHfkJvYVgbMjslnkNDVrBQ++e38R2NlGwcdeuvQDBaWuJlVq419Niswf4mkZbzpUzdweJA0AraymnFYfGu15qBPFPZW/JtkPGVNssMJZrM1wr7HfBK2dZNrOxNr2CkaQinNONfNkENKHlTedBopZ3Dj9Gj3hNEIZ9lCG9IPJk0w2CvULJj97GhO5CH/f5faTmiamhqrSQwKI/lYvXyRFx23/qmGAblC89WupEfJGP7qXe3q/R9WklU6tgwOdldKIFZ+msiCnpWubwzcivIupV/5hATLr
+ ETWeuaMH
+ JHoJWtdlMO489OB+fhwPmm06f90i28LDfuDjXSUjIvUqJoEM+pXQHvc3FhLh/W93vnP05nYLdQG/fGSgK0paWyf8cw1yfEz7DmxYRvrJsPGCFa4Zx+8ZgoLFT2IUdxVVGJjyVn+ke3/CQT+BsN050CoJnUYkNqw0SgrnJjbQNYClJJpp1tU6R7Pp8bdfoCvfGReJ3f0FkxhzYjAnNYlrxT8cg8RDxL10UwrkT+P0slDTmdrTENPcesW6IbVXvLXNTGvBCJUev5s3/e7/h7XRJrwDDx3sAlIksOaS8zZureK1koRfk2/cqyLeiXaWqdzNmrunpGu0kT+nw32BF5skxQwrrrJzC+OHqiWP6riJII2takH8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,64 +99,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
 
-On Tue, Apr 21, 2026 at 3:29=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Mon, Apr 20, 2026 at 11:26:13PM +0900, Sang-Heon Jeon wrote:
-> > On Mon, Apr 20, 2026 at 3:31=E2=80=AFPM Mike Rapoport <rppt@kernel.org>=
- wrote:
-> > > On Fri, Apr 17, 2026 at 10:58:05PM +0900, Sang-Heon Jeon wrote:
-> > > > When split NUMA node uniformly, split_nodes_size_interleave_uniform=
-()
-> > > > returns the next absolute node ID, not the number of nodes created.
-> > > >
-> > > > The existing under-allocation detection logic compares next absolut=
-e node
-> > > > ID (ret) and request count (n), which only works when nid starts at=
- 0.
-> > > >
-> > > > For example, on a system with 2 physical NUMA nodes (node 0: 2GB, n=
-ode
-> > > > 1: 128MB) and numa=3Dfake=3D8U, 8 fake nodes are successfully creat=
-ed from
-> > > > node 0 and split_nodes_size_interleave_uniform() returns 8. For nod=
-e 1,
-> > > > fake node nid starts at 8, but only 4 fake nodes are created due to
-> > > > current FAKE_NODE_MIN_SIZE being 32MB, and
-> > > > split_nodes_size_interleave_uniform() returns 12. By existing
-> > > > under-allocation detection logic, "ret < n" (12 < 8) is false, so t=
-he
-> > >
-> > > In this example it would be 11, won't it?
-> > > I'll update when applying.
-> >
-> > Oops, my previous reply is not the main point of this review. (Please i=
-gnore it)
-> > But 12 is still correct, because split_nodes_size_interleave_uniform()
-> > returns next available node ID.
-> >
-> > IMHO, it would be clearer if both the commit message and the function
-> > comment change into "next available node ID".
-> > If you're okay with it, I'll create v3 patch soon, including minor fix =
-below
->
-> No need for v3, I updated the comment and the whitespace:
-> https://git.kernel.org/rppt/memblock/c/a34436ac05e76bd6634a89fc0a399ab3a4=
-8f509a
 
-Thanks for your help, Mike. However, it seems like '12' was changed to
-'11' in the commit message. I think this change should be rolled back.
-Could you check?
+On 21/04/26 2:46 am, David Hildenbrand (Arm) wrote:
+> __GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
+> flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
+> 
+> If we run with init_on_free, we will zero out pages during
+> __free_pages_prepare(), to skip zeroing on the allocation path.
+> 
+> However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
+> consequently not only skip clearing page content, but also skip
+> clearing tag memory.
+> 
+> Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
+> will get mapped to user space through set_pte_at() later: set_pte_at() and
+> friends will detect that the tags have not been initialized yet
+> (PG_mte_tagged not set), and initialize them.
+> 
+> However, for the huge zero folio, which will be mapped through a PMD
+> marked as special, this initialization will not be performed, ending up
+> exposing whatever tags were still set for the pages.
+> 
+> The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
+> that allocation tags are set to 0 when a page is first mapped to user
+> space. That no longer holds with the huge zero folio when init_on_free
+> is enabled.
+> 
+> Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
+> tag_clear_highpages() whether we want to also clear page content.
+> 
+> As we are touching the interface either way, just clean it up by
+> only calling it when HW tags are enabled, dropping the return value, and
+> dropping the common code stub.
+> 
+> Reproduced with the huge zero folio by modifying the check_buffer_fill
+> arm64/mte selftest to use a 2 MiB area, after making sure that pages have
+> a non-0 tag set when freeing (note that, during boot, we will not
+> actually initialize tags, but only set KASAN_TAG_KERNEL in the page
+> flags).
+> 
+> 	$ ./check_buffer_fill
+> 	1..20
+> 	...
+> 	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
+> 	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
+> 	...
+> 
+> This code needs more cleanups; we'll tackle that next, like
+> decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN, moving all the
+> KASAN magic into a separate helper, and consolidating HW-tag handling.
+> 
+> Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  arch/arm64/include/asm/page.h |  3 ---
+>  arch/arm64/mm/fault.c         | 16 +++++-----------
+>  include/linux/gfp_types.h     | 10 +++++-----
+>  include/linux/highmem.h       | 10 +---------
+>  mm/page_alloc.c               | 12 +++++++-----
+>  5 files changed, 18 insertions(+), 33 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
+> index e25d0d18f6d7..5c6cbfbbd34c 100644
+> --- a/arch/arm64/include/asm/page.h
+> +++ b/arch/arm64/include/asm/page.h
+> @@ -33,9 +33,6 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+>  						unsigned long vaddr);
+>  #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
+>  
+> -bool tag_clear_highpages(struct page *to, int numpages);
+> -#define __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
+> -
+>  #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+>  
+>  typedef struct page *pgtable_t;
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 0f3c5c7ca054..32a3723f2d34 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -1018,21 +1018,15 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+>  	return vma_alloc_folio(flags, 0, vma, vaddr);
+>  }
+>  
+> -bool tag_clear_highpages(struct page *page, int numpages)
+> +void tag_clear_highpages(struct page *page, int numpages, bool clear_pages)
+>  {
+> -	/*
+> -	 * Check if MTE is supported and fall back to clear_highpage().
+> -	 * get_huge_zero_folio() unconditionally passes __GFP_ZEROTAGS and
+> -	 * post_alloc_hook() will invoke tag_clear_highpages().
+> -	 */
+> -	if (!system_supports_mte())
+> -		return false;
+> -
+>  	/* Newly allocated pages, shouldn't have been tagged yet */
+>  	for (int i = 0; i < numpages; i++, page++) {
+>  		WARN_ON_ONCE(!try_page_mte_tagging(page));
+> -		mte_zero_clear_page_tags(page_address(page));
+> +		if (clear_pages)
+> +			mte_zero_clear_page_tags(page_address(page));
+> +		else
+> +			mte_clear_page_tags(page_address(page));
+>  		set_page_mte_tagged(page);
+>  	}
+> -	return true;
+>  }
+> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+> index 6c75df30a281..fd53a6fba33f 100644
+> --- a/include/linux/gfp_types.h
+> +++ b/include/linux/gfp_types.h
+> @@ -273,11 +273,11 @@ enum {
+>   *
+>   * %__GFP_ZERO returns a zeroed page on success.
+>   *
+> - * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
+> - * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
+> - * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
+> - * memory tags at the same time as zeroing memory has minimal additional
+> - * performance impact.
+> + * %__GFP_ZEROTAGS zeroes memory tags at allocation time. This flag is intended
+> + * for optimization: setting memory tags at the same time as zeroing memory
+> + * (e.g., with __GPF_ZERO) has minimal additional performance impact. However,
+> + * __GFP_ZEROTAGS also zeroes the tags even if memory is not getting zeroed at
+> + * allocation time (e.g., with init_on_free).
+>   *
+>   * %__GFP_SKIP_KASAN makes KASAN skip unpoisoning on page allocation.
+>   * Used for userspace and vmalloc pages; the latter are unpoisoned by
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index af03db851a1d..62f589baa343 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -345,15 +345,7 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
+>  	kunmap_local(kaddr);
+>  }
+>  
+> -#ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
+> -
+> -/* Return false to let people know we did not initialize the pages */
+> -static inline bool tag_clear_highpages(struct page *page, int numpages)
+> -{
+> -	return false;
+> -}
+> -
+> -#endif
+> +void tag_clear_highpages(struct page *to, int numpages, bool clear_pages);
+>  
+>  /*
+>   * If we pass in a base or tail page, we can zero up to PAGE_SIZE.
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 65e205111553..8c6821d25a00 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1808,9 +1808,9 @@ static inline bool should_skip_init(gfp_t flags)
+>  inline void post_alloc_hook(struct page *page, unsigned int order,
+>  				gfp_t gfp_flags)
+>  {
+> +	const bool zero_tags = kasan_hw_tags_enabled() && (gfp_flags & __GFP_ZEROTAGS);
 
-> > Best Regards,
-> > Sang-Heon Jeon
->
-> --
-> Sincerely yours,
-> Mike.
+Sashiko:
 
-Best Regards,
-Sang-Heon Jeon
+https://sashiko.dev/#/patchset/20260420-zerotags-v1-1-3edc93e95bb4%40kernel.org
+
+PROT_MTE works without KASAN_HW_TAGS, so probably just retain the
+system_supports_mte() check in tag_clear_highpages(), and document
+that GFP_ZEROTAGS is only for MTE?
+
+
+>  	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
+>  			!should_skip_init(gfp_flags);
+> -	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
+>  	int i;
+>  
+>  	set_page_private(page, 0);
+> @@ -1832,11 +1832,13 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+>  	 */
+>  
+>  	/*
+> -	 * If memory tags should be zeroed
+> -	 * (which happens only when memory should be initialized as well).
+> +	 * Clearing tags can efficiently clear the memory for us as well, if
+> +	 * required.
+>  	 */
+> -	if (zero_tags)
+> -		init = !tag_clear_highpages(page, 1 << order);
+> +	if (zero_tags) {
+> +		tag_clear_highpages(page, 1 << order, /* clear_pages= */init);
+
+							    Micro-nit: ^ space
+
+> +		init = false;
+> +	}
+>  
+>  	if (!should_skip_kasan_unpoison(gfp_flags) &&
+>  	    kasan_unpoison_pages(page, order, init)) {
+> 
+> ---
+> base-commit: f1541b40cd422d7e22273be9b7e9edfc9ea4f0d7
+> change-id: 20260417-zerotags-343a3673e18d
+> 
+> Best regards,
+
 
