@@ -4,140 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75533F8FA79
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 13:39:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C961FF8FA7A
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 13:40:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A56B06B0089; Tue, 21 Apr 2026 09:39:37 -0400 (EDT)
+	id 379616B0092; Tue, 21 Apr 2026 09:40:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A10E56B008C; Tue, 21 Apr 2026 09:39:37 -0400 (EDT)
+	id 3507B6B0093; Tue, 21 Apr 2026 09:40:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F62E6B0092; Tue, 21 Apr 2026 09:39:37 -0400 (EDT)
+	id 2401E6B0095; Tue, 21 Apr 2026 09:40:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D66B6B0089
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:39:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC4A3C3FFF
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:39:36 +0000 (UTC)
-X-FDA: 84682670352.13.7D3FAFA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 16B131C0004
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:39:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SpHohVth;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 11AB66B0092
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:40:27 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CB2F8BE163
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:40:26 +0000 (UTC)
+X-FDA: 84682672452.17.930059F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 10EF9100007
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:40:24 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mM9M+cAM;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776778775;
+	s=arc-20220608; t=1776778825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lEwkpSeJAnZOjyGRSxCkI5UhJB5flz/uxgpdoEj2w68=;
-	b=MpOBhPn/F7Wt9eMl724pu6JNP4bzUGU+Aak2CJCS+q1QAAfv8zkPvbZxRsX226dCGd813Q
-	DsaEzSEwbt9+rDs52JXub08dsbWIyKgu442jS1SLFojDce9sh99JjEP/1m12KSbP3JyRh/
-	E1iqAqHXbJRVShZKGFO16nw2gD/9WAU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SpHohVth;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776778775; a=rsa-sha256;
+	bh=ZuDlrEdh3XGqisGdRKnNi7clwVq5yssRTnD2vmUTl6c=;
+	b=V1yXeCInh8bw+DJQPvZJDhqaZU55vDIoXLSwVj8EOhlv1KgM+4ObXdi/eh33z2SNQrATOZ
+	zcV1EobBvHcD+mnC6v7rr0Eb/BsBn+6r0pSTwv+3J2IhtoceyY9W51MXUhHBADw5dITf38
+	DlWDN/BgB+7lheCpXDBvnAB2DJI1TGg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776778825; a=rsa-sha256;
 	cv=none;
-	b=s5LvrtoURTsxm8wW5kELM7I1SXSo6GnlDtv2VUvvruuVsMGrrDTPDS4HR7eTsBbKfr1CF4
-	ZzrdPt6+9v54HqHZM+yKsYbGSaEHjKjAb0aRL8G0LXaUbJgCNhsMvtLAfBa0aRX//FnRGK
-	KpmnyiGLMol7GYbySUQRP6YnTDpyM9s=
+	b=A/4MPSHoY/jstO9U1xSW10hhAtls2sOWk5i9HDSkpelTBWkNzIISKq4ygS6pfKYZw7f4o6
+	iHLUG3z+iCs5v4v3JFL5BUwiIoBzcK1ZcoVRBOZoOYR7e/mgUksOSie/EHBxanGA6ToFTg
+	zy2CSvBKbwT3YiQgpN04jLe0G0P7WHY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mM9M+cAM;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3E36C600AE;
-	Tue, 21 Apr 2026 13:39:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A332C2BCB0;
-	Tue, 21 Apr 2026 13:39:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C217F43FA7;
+	Tue, 21 Apr 2026 13:40:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960EEC2BCB0;
+	Tue, 21 Apr 2026 13:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776778773;
-	bh=lhzhVWrfpSh5Qp+ByIaNqHmS1c8vpJzymZofhRxC3zs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SpHohVthriLmML5X8wXfsGrBMIj7r9VtWS9QHkajJ745xVMhM1iUGWt49vZOhjCGK
-	 P19Cg5oCFQurRWOLeXVMx++r/4EeOzZpsEAOoGSXqpg9oRFJaCvfTRhYHb1YgNFE2m
-	 Hl7Z4diYbrOkaTL4QCWwcl3Q3IJGUCGWKEj/ulEdK9cXD7hBGfcZ6q2iWp3FZONyde
-	 3N6qXtXxOwZAuF0feZu3g7zP+w+IDtTM0UmrNSG2AhQNA6QKsow/LJfv8AVZkVVTNp
-	 vCEI/de0I0QHejZU6iv3oPvlO21hAW4WFyKTFiOkzVh09xPzIK6Gnja/R15j6+ah4k
-	 1PdueL/If+YHg==
-Message-ID: <bea6080a-850c-4b3f-bcc0-719efc372e72@kernel.org>
-Date: Tue, 21 Apr 2026 15:39:29 +0200
+	s=k20201202; t=1776778823;
+	bh=vIZhXnlC6WemEIo1i/UKx7MP0mQPp/95QfMD/4Qm33E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mM9M+cAMwYtyZ/A/5TpgIRwCop4cQGETyptMq9v/u2ZyABhJIYqmVqEGj6kj7c0mc
+	 xVYYEi62APJ5T0XXKihQl9hGTj5ZtXlke6J/Oqhu0yujsLCZlQ35h7lYIiUHPsp3/Q
+	 MEGMsjCnycG6EP/nstht7LFTGqTG5E3lf4DO2oXz1tQIJHkLI9zm985r40lziN5vJt
+	 ZX6DHRJOKSx9g6w9ICOHxWviHfREB7F9Q1M+sqOjSAaoY8J/F7drcEQGW9bPd+LvjL
+	 hT5ZNQlmw5CPWPkFI+zi0Y6WHB3LXv5kYwCB41ifJu8Dl1sVO7dWr012VlzGKaZwZ4
+	 MXoEiOoy31ijA==
+Date: Tue, 21 Apr 2026 14:40:21 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"luto@kernel.org" <luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>, 
+	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"david@kernel.org" <david@kernel.org>, "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
+	"vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org" <rppt@kernel.org>, 
+	"surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>, 
+	"kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>, 
+	"haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org" <jolsa@kernel.org>, 
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>, 
+	"peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com" <jannh@google.com>, 
+	"pfalcato@suse.de" <pfalcato@suse.de>, "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, 
+	"riel@surriel.com" <riel@surriel.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
+	"jgross@suse.com" <jgross@suse.com>, "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org" <yosry@kernel.org>, 
+	"ajones@ventanamicro.com" <ajones@ventanamicro.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
+	"tabba@google.com" <tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>, 
+	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, "mlevitsk@redhat.com" <mlevitsk@redhat.com>, 
+	"jmattson@google.com" <jmattson@google.com>, "jthoughton@google.com" <jthoughton@google.com>, 
+	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "alex@ghiti.fr" <alex@ghiti.fr>, 
+	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
+	"chenhuacai@kernel.org" <chenhuacai@kernel.org>, "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, 
+	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, 
+	"hca@linux.ibm.com" <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, "shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, 
+	"svens@linux.ibm.com" <svens@linux.ibm.com>, "thuth@redhat.com" <thuth@redhat.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
+	"urezki@gmail.com" <urezki@gmail.com>, "zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>, "jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, 
+	"lenb@kernel.org" <lenb@kernel.org>, "pavel@kernel.org" <pavel@kernel.org>, 
+	"rafael@kernel.org" <rafael@kernel.org>, "yangyicong@hisilicon.com" <yangyicong@hisilicon.com>, 
+	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com" <jackmanb@google.com>, 
+	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack" <jackabt@amazon.co.uk>, 
+	"Itazuri, Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>, 
+	Nikita Kalyazin <nikita.kalyazin@linux.dev>
+Subject: Re: [PATCH v12 00/16] Direct Map Removal Support for guest_memfd
+Message-ID: <aed88qcV6PjEIHnd@lucifer>
+References: <20260410151746.61150-1-kalyazin@amazon.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
- shmem mount
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
- <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
- <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
- <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
- <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
- <07e26d39-6155-4661-b3df-c2419535ed43@kernel.org>
- <f9508e75-789e-4eb8-b09e-b66a8676a6b0@linux.alibaba.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <f9508e75-789e-4eb8-b09e-b66a8676a6b0@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7drbm7h8tci1zpjhtwp63dq5m4gon6in
-X-Rspamd-Queue-Id: 16B131C0004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260410151746.61150-1-kalyazin@amazon.com>
+X-Stat-Signature: xry7axrfjoiux1dyju9s4yhg4wurbxqw
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 10EF9100007
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776778774-678914
-X-HE-Meta: U2FsdGVkX1+/XKNWek2aOrRQXqGxBCcdWDr/w1ONioqJ4ln5kKDB+DrFh08i8YrNdDwuW6Ozobd3LRb/TCVqTYCiMykl5CtsyMUhPhX1oWRZ3jerWuKBE5yj7D+Jew/End1V2T/fpY+IzwJw5OfepHXmZBwqQ4OCN3JAeUTFtdMYZygGHrFdDz0uLbUDY3NuYc3iUcVdHq0k5/DlrVfjAIGYDjwxML2B8jwRPyeBD1OgEPgGilD7eaR1NcmDQrITCy2P2qCaUWKpR5+BraveFYvbvZ+bXU4GG73PNpU97SHft4OSHHQxXgcQ3dceDyt6tU5tI52HPbwwfHeyPVHB9xJmNWh7D/NZgzc/fxx3OOYB1J78ALJ6kE1tTSAD/ODMu71mldpO06K9rpDFA2mT6p//zEAhQjM++cp35QLHLuAZZcswH3QONrEtLqTbNbmVQF4r5WVBF8M8TjbtpI711YifFyynRJLQZvUHRqdv8r+/glnts77vZquGyYwGPq/aoNwO1FArRGkB+2K1CUYer2pYt7G5eyYQNNM1PS/5egIQkYt4LJ4gHmKPopanKtBMjoY+Whp2jJYrL2d1rBmnJpMiUwf8Ttk7FXIkleLiUFyEveueSNpxIJMr94dFIBy+ZjPvUThk06yKajvpPIgO6KXbXMwu36oys4QPRcVYkQFGaBkIznxJezr+SgjQYtSyM0YCgUtI4ATulGhYznAyKeqar5NZe8QieEwNRhjRCQneZiX3EH4/uL1e2WuNxlFxQXBuGxmS+YjJoQJOA0joZzJZ98+D8Tbht+1P+GojF6IAGnyRU3ERO6pevLTuppm61gANZOu+vLAMHwgDprIsnsMVfXbjoVXIh6VrX+NFvbvN/LGSvPL9F9zZWcL/nPApgSWqtt9ImM+wq2u6Z9ehdiJYGVKe+/diB/h4d3KVRu5V7TENahxfkFWbjGpjoAi8gvTXbsYBecN846YaXBM
- Y9Cgqoky
- dDz2sYoJcE66nhC7notLuK7++wWH6f89H1oai3mC4fLI2Ezxlp/01XKkSyIHbWiU8tdswhwjvm9053uG92OvM8GzeCzucNCKs1AJdmkeDQ4M0JXl5q4srOm4u9ntwAud9vdV5d0QzibYQmLHp8y44YUNsG9z4NgHuOWNThBQqC3mXfyJ/DJz+wr/jY7gjoQwwu+n5ZK/ZzpIjdJH3t/HAmQZtfc58ZtVO/WMnZz3Wnm7onEwPO63cnks15/VMeDr0eWHz2nA11Y71cIEqFHhFdjl8p1otz8wLt1gRwB//FUTyQpepqB0RE/hLEM2H1AEI5nbfejREACQWsj4=
+X-HE-Tag: 1776778824-962162
+X-HE-Meta: U2FsdGVkX1/ggGd0gJ/F9LatC67lCQ/VnlkD5TMzLKImaXpVACl9KQWCkGwchxadfVjg0JswP3pRoUbYcHrmxz+kZzQJj+UHMno08nc0dlluxHEkqLXn7ow5A+i4rPQR+VWoX9S5KXtiNDDnJkvHE/YtmUyHocrPcnnS+ajxBaYD59o05s/aKy117bUAEWjuwpIDk5DZ7X6rXBxzHTvt/v3RypFnkRfuwg6AL306r/dM7Vk9o7qrryhYVPKwPIwi0RpVKgHxFFC2xe8TrFnbhKrEmm2RVv6nbBBrbJEY+9iGise/ZXFBQM3lLVbKXj+uG7vn5kFWa9oKtgNUJot8obzXu7rEcFUNYpcv7XTn9RZNdYvE2e3joTMXTRHMxzYC0Lld26JuVBa8qSATxb8cjCyoEu+kgsfwgubuFsLgGit4URa40yCQzPHqwERv8q7oOzKC5t1JAKtxAA680ru25Nq2dDL1btgfGWNVXZHoqZJUEYbLFda7361XbRaLuzVLG9TdmBN33K8xocmle8Fsl5Njvmht4YvxdMwoG3mwKJ+2AwZJmcLmnDs2N9aqbusqBdOKCGm5mjBAWevMJxrRBjd1DfwbZUCKp5jnEjmzXLLDWdkuo/5Es57zSuLhgDwIdQJxherI0coyhhYF0WPBk3ea/UDBpr3d/C4TjIahw25HGcA8k7Ugb+Sm8DT6TMJzy4VUdjRBi3eb5JwQorg3zyoD6ZAiD4PEHFYa5Po/h19qInptNuspKbI2FKyj00BBRMCBm6NDrfVzq7NbbfXf5cPwEdc3zSviFzVa2DeU/Q8aYCRhW9kSdXhJowiG6ede9UDOLIA9MIR0kPdG983cl79tvkP8oLhi26AirVIB20qVHKanPLFfIubqHO7me2BkSQSXNau83/a4t9iY7LuAO7sQEdYkquJh3vAsV1vmXZDJ+mCkirm8YYenSRKHQVFz7hJ3oBp3kgTVZqpc32M
+ hYMcYFYK
+ /9nGIAd+ziLjdbwdBDJR1s8eQGK3NtA7Zp9sM6FJrS8wB4r6AjITlAdhD908zWiXfwtT0mcFQXbCf3vvmt1cEV8R/0b9S7lih6bNAjaK+1hQS2lobIMufNqyW2Zj8PV6kpBkydyVL2QOwwHbosIrUf2wQrQjzp1HBGBXxigp8W1cr6re163rJOyvscKuDlK6jt2e4vkB3RFNyHPSJ3tUoTD/NtYil5NIDmsx72a3R5Z2Z1c2Z7a1Q2UGGYD4K/DvHnGdkZQ5zNbVA11fzF6VoZvNQEvzHKt/B+8oYsg0XqBQRHf2Rg7hF65KzVVO/j2VWt6mvPxvT7ma5Q9/JzscQsPWOqA4iKQv6ReBEsXSDt3rsNgxKfKkhtyOPzTfMfJCqrjiaz+wmLajZvNoLr0C+mZU3rNCbPzzsjJY+o8rv1ioywf3VS37r1aaHSVxj56SBf0BJST4793KxS46vI3lbMFBwau5zNeffedTrhV1aHH4VeJSK80V3iC8Y7vOJdPF5WY8uauSxXXiCjkKtZIWFlQnH0yRdwYfc7fBua45X+EDy0lMYBBgytuassw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,89 +142,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 08:27, Baolin Wang wrote:
-> 
-> 
-> On 4/21/26 3:00 AM, David Hildenbrand (Arm) wrote:
->> On 4/17/26 14:45, Baolin Wang wrote:
->>>
->>>
->>>
->>> Indeed. Good point.
->>>
->>>
->>> Not really. There could be files created before remount whose mappings
->>> don't support large folios (with 'huge=never' option), while files
->>> created after remount will have mappings that support large folios (if
->>> remounted with 'huge=always' option).
->>>
->>> It looks like the previous commit 5a90c155defa was also problematic. The
->>> huge mount option has introduced a lot of tricky issues:(
->>>
->>> Now I think Zi's previous suggestion should be able to clean up this
->>> mess? That is, calling mapping_set_large_folios() unconditionally for
->>> all shmem mounts, and revisiting Kefeng's first version to fix the
->>> performance issue.
->>
->> Okay, so you'll send a patch to just set mapping_set_large_folios()
->> unconditionally?
-> 
-> I'm still hesitating on this. If we set mapping_set_large_folios()
-> unconditionally, we need to re-fix the performance regression that was
-> addressed by commit 5a90c155defa.
+On Fri, Apr 10, 2026 at 03:17:47PM +0000, Kalyazin, Nikita wrote:
+> From: Nikita Kalyazin <nikita.kalyazin@linux.dev>
+>
+> [ based on kvm/next ]
 
-Just so I can follow: where is the test for large folios that we would
-unlock large folios and cause a regression?
+Hm, given this touches a fair bit of mm, I wonder if we shouldn't try to do this
+through the mm tree?
 
-> 
-> But it's hard for me to convince myself to add a new flag similar to
-> IOCB_NO_LARGE_CHUNK for this hack (like the patch in [1] does).
-> 
->>> [1] https://lore.kernel.org/all/20240914140613.2334139-1-
->>> wangkefeng.wang@huawei.com/
->>
->> Is that really required? Which call path would be the problematic bit
->> with the above?
->>
->> I'd say, we'd check in the large folio allocation code whether ->huge is
->> set to never instead?
-> 
-> Yes, this is exactly our current logic. When allocating large folios,
-> we'll check the ->huge setting in shmem_huge_global_enabled(), which
-> means large folio allocations always respect the ->huge setting.
+In any case, we definitely need a rebase on something not-next :) if not mm then
+Linus's tree at least maybe?
 
-Makes sense.
+I'm seeing a lot of conflicts against mm-unstable, it can't b4 shazam even patch
+1 and in Linus's tree it's failing at an mm patch (mm: introduce
+AS_NO_DIRECT_MAP).
 
-> 
-> But as I mentioned earlier, the ->huge setting cannot keep the
-> mapping_set_large_folios() setting consistent across all mappings in the
-> entire tmpfs mount. My concern is that under the same tmpfs mount, after
-> remount, we might end up with some mappings supporting large folios
-> (calling mapping_set_large_folios()) while others don't.
+That and 'KVM: selftests: Add guest_memfd based vm_mem_backing_src_types' won't
+apply, but that one's trivial at least.
 
-If we at least always set mapping_set_large_folios(), then there is no
-inconsistency in that regard :)
+Obviously we're in the merge window right now so maybe best to do any rebasing a
+little after 7.1-rc1?
 
-> 
-> However, I got some insights from Documentation/admin-guide/mm/
-> transhuge.rst. Does this mean that after remount, whether the mappings
-> of existing files support large folios should remain unchanged?
+Cheers, Lorenzo
 
-That's the current behavior, right?
-
-> 
-> “
-> ``mount -o remount,huge= /mountpoint`` works fine after mount:
-> remounting ``huge=never`` will not attempt to break up huge pages at
-> all, just stop more from being allocated.
-> ”
-> 
-> Do you think this makes sense?
-
-I suspect that matches existing behavior, so it should be fine.
-
--- 
-Cheers,
-
-David
+>
+> Unmapping virtual machine guest memory from the host kernel's direct map
+> is a successful mitigation against Spectre-style transient execution
+> issues: if the kernel page tables do not contain entries pointing to
+> guest memory, then any attempted speculative read through the direct map
+> will necessarily be blocked by the MMU before any observable
+> microarchitectural side-effects happen.  This means that Spectre-gadgets
+> and similar cannot be used to target virtual machine memory.  Roughly
+> 60% of speculative execution issues fall into this category [1, Table
+> 1].
+>
+> This patch series extends guest_memfd with the ability to remove its
+> memory from the host kernel's direct map, to be able to attain the above
+> protection for KVM guests running inside guest_memfd.
+>
+> Additionally, a Firecracker branch with support for these VMs can be
+> found on GitHub [2].
+>
+> For more details, please refer to the v5 cover letter.  No substantial
+> changes in design have taken place since.
+>
+> See also related write() syscall support in guest_memfd [3] where
+> the interoperation between the two features is described.
+>
+> Changes since v11:
+>  - Ackerley/Sashiko: fix previously missed __set_pages_* argument update
+>    in __kernel_map_pages (patch 1)
+>  - David: disallow large folios in folio_zap_direct_map (patch 2)
+>  - David/Sashiko: check for folio_is_zone_device if mapping is NULL in
+>    gup_fast_folio_allowed (patch 4)
+>  - Ackerley/Sashiko: kvm_arch_gmem_supports_no_direct_map to return
+>    false for SEV-SNP (patch 8).
+>  - David: replace a redundant check for GUEST_MEMFD_FLAG_NO_DIRECT_MAP
+>    with a WARN_ON_ONCE (patch 10)
+>  - David: assert the folio is locked when zapping direct map (patch 10)
+>  - Ackerley/Sashiko: reorder operations to "zap then prepare" and
+>    "invalidate then restore" (patch 10)
+>
+> v11: https://lore.kernel.org/kvm/20260317141031.514-1-kalyazin@amazon.com
+> v10: https://lore.kernel.org/kvm/20260126164445.11867-1-kalyazin@amazon.com
+> v9: https://lore.kernel.org/kvm/20260114134510.1835-1-kalyazin@amazon.com
+> v8: https://lore.kernel.org/kvm/20251205165743.9341-1-kalyazin@amazon.com
+> v7: https://lore.kernel.org/kvm/20250924151101.2225820-1-patrick.roy@campus.lmu.de
+> v6: https://lore.kernel.org/kvm/20250912091708.17502-1-roypat@amazon.co.uk
+> v5: https://lore.kernel.org/kvm/20250828093902.2719-1-roypat@amazon.co.uk
+> v4: https://lore.kernel.org/kvm/20250221160728.1584559-1-roypat@amazon.co.uk
+> RFCv3: https://lore.kernel.org/kvm/20241030134912.515725-1-roypat@amazon.co.uk
+> RFCv2: https://lore.kernel.org/kvm/20240910163038.1298452-1-roypat@amazon.co.uk
+> RFCv1: https://lore.kernel.org/kvm/20240709132041.3625501-1-roypat@amazon.co.uk
+>
+> [1] https://download.vusec.net/papers/quarantine_raid23.pdf
+> [2] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
+> [3] https://lore.kernel.org/kvm/20251114151828.98165-1-kalyazin@amazon.com
+>
+> Nikita Kalyazin (4):
+>   set_memory: set_direct_map_* to take address
+>   set_memory: add folio_{zap,restore}_direct_map helpers
+>   mm/secretmem: make use of folio_{zap,restore}_direct_map
+>   mm/gup: drop local variable in gup_fast_folio_allowed
+>
+> Patrick Roy (12):
+>   mm/gup: drop secretmem optimization from gup_fast_folio_allowed
+>   mm: introduce AS_NO_DIRECT_MAP
+>   KVM: guest_memfd: Add stub for kvm_arch_gmem_invalidate
+>   KVM: x86: define kvm_arch_gmem_supports_no_direct_map()
+>   KVM: arm64: define kvm_arch_gmem_supports_no_direct_map()
+>   KVM: guest_memfd: Add flag to remove from direct map
+>   KVM: selftests: load elf via bounce buffer
+>   KVM: selftests: set KVM_MEM_GUEST_MEMFD in vm_mem_add() if guest_memfd
+>     != -1
+>   KVM: selftests: Add guest_memfd based vm_mem_backing_src_types
+>   KVM: selftests: cover GUEST_MEMFD_FLAG_NO_DIRECT_MAP in existing
+>     selftests
+>   KVM: selftests: stuff vm_mem_backing_src_type into vm_shape
+>   KVM: selftests: Test guest execution from direct map removed gmem
+>
+>  Documentation/virt/kvm/api.rst                | 21 +++---
+>  arch/arm64/include/asm/kvm_host.h             | 13 ++++
+>  arch/arm64/include/asm/set_memory.h           |  7 +-
+>  arch/arm64/mm/pageattr.c                      | 19 +++--
+>  arch/loongarch/include/asm/set_memory.h       |  7 +-
+>  arch/loongarch/mm/pageattr.c                  | 25 +++----
+>  arch/riscv/include/asm/set_memory.h           |  7 +-
+>  arch/riscv/mm/pageattr.c                      | 17 +++--
+>  arch/s390/include/asm/set_memory.h            |  7 +-
+>  arch/s390/mm/pageattr.c                       | 13 ++--
+>  arch/x86/include/asm/kvm_host.h               |  6 ++
+>  arch/x86/include/asm/set_memory.h             |  7 +-
+>  arch/x86/kvm/x86.c                            |  7 ++
+>  arch/x86/mm/pat/set_memory.c                  | 27 +++----
+>  include/linux/kvm_host.h                      | 14 ++++
+>  include/linux/pagemap.h                       | 16 ++++
+>  include/linux/secretmem.h                     | 18 -----
+>  include/linux/set_memory.h                    | 22 +++++-
+>  include/uapi/linux/kvm.h                      |  1 +
+>  kernel/power/snapshot.c                       |  4 +-
+>  lib/buildid.c                                 |  8 +-
+>  mm/execmem.c                                  |  6 +-
+>  mm/gup.c                                      | 47 ++++++------
+>  mm/memory.c                                   | 45 +++++++++++
+>  mm/mlock.c                                    |  2 +-
+>  mm/secretmem.c                                | 18 ++---
+>  mm/vmalloc.c                                  | 11 ++-
+>  .../testing/selftests/kvm/guest_memfd_test.c  | 17 ++++-
+>  .../testing/selftests/kvm/include/kvm_util.h  | 37 ++++++---
+>  .../testing/selftests/kvm/include/test_util.h |  8 ++
+>  tools/testing/selftests/kvm/lib/elf.c         |  8 +-
+>  tools/testing/selftests/kvm/lib/io.c          | 23 ++++++
+>  tools/testing/selftests/kvm/lib/kvm_util.c    | 59 ++++++++-------
+>  tools/testing/selftests/kvm/lib/test_util.c   |  8 ++
+>  tools/testing/selftests/kvm/lib/x86/sev.c     |  1 +
+>  .../selftests/kvm/pre_fault_memory_test.c     |  1 +
+>  .../selftests/kvm/set_memory_region_test.c    | 52 ++++++++++++-
+>  .../kvm/x86/private_mem_conversions_test.c    |  7 +-
+>  virt/kvm/guest_memfd.c                        | 75 +++++++++++++++++--
+>  39 files changed, 489 insertions(+), 202 deletions(-)
+>
+>
+> base-commit: 24f9515de8778410e4b84c85b196c9850d2c1e18
+> --
+> 2.50.1
+>
 
