@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C96FF327A6
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 06:17:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0487BF327A8
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 06:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E73106B0095; Tue, 21 Apr 2026 02:16:59 -0400 (EDT)
+	id C9E0A6B0098; Tue, 21 Apr 2026 02:17:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DADB86B0099; Tue, 21 Apr 2026 02:16:59 -0400 (EDT)
+	id C75726B0099; Tue, 21 Apr 2026 02:17:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C27556B009B; Tue, 21 Apr 2026 02:16:59 -0400 (EDT)
+	id B15F16B009B; Tue, 21 Apr 2026 02:17:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AA87A6B0095
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:16:59 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41CE75C847
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:16:59 +0000 (UTC)
-X-FDA: 84681554958.11.3CA6E6D
+	by kanga.kvack.org (Postfix) with ESMTP id 92F606B0098
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:17:00 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3DA838D001
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:17:00 +0000 (UTC)
+X-FDA: 84681555000.15.3590CB7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E369F100007
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:16:55 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H99UlQoe;
-	spf=pass (imf05.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 30DE71C0004
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:16:57 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YafV4LNu;
+	spf=pass (imf18.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776752216;
+	s=arc-20220608; t=1776752218;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ek/PeEQsduxil/uVaJ01ryXFolVJ6tOkKQQju3Y2qVo=;
-	b=QzkohZe+SH1ynHKKC4S2+QpHg4SqfjIqh6ZQn9awnIc2tIhxb3PYiIIrxJ24aVrdazsgUB
-	SJsWhH+WhITEe9aUnCnyAehw8+S4mhNmWN9y97n2VnpnZDwMoKbyQ5Z797k8iUDl4uj2U6
-	m+zP6FeBcqcsJMvqV3OE7bEp+nBHIW0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776752216; a=rsa-sha256;
-	cv=none;
-	b=dBO2OTKc+onqjjPe5TwPsIi5AHthFhxY7aBqxZYr38n60bIGFQkuGKa3nwUdkSzNwymP40
-	JQEaPGsVx6jlzbjJ4RXMHUrezNRrkhg3kae+7djgFL1zfVw5U7fIPB7s4wYUuzxLSqy1Ey
-	jhmuaRvUps3sYeUHYFmkHmoNJOFH9EI=
+	bh=RK/OxTjko3OhtSro3ZGRLm0SaHfpfulE1aomhCcdn3A=;
+	b=HqJ3WyeN5Hi/iT+doDHBeiWLG1Hu7fXTHjofK6Tenaec8ed40sIRrasQ20nJUwn+eEve7C
+	1J4p1tQpQ4qa+k8jD4kXgYKt78aEcrPrNaMKCfpwPTzSQCizqgtD4CYZNBm0tJFcwGWTuw
+	qHQqYSWao1vY155FF63NHK4ormiYpNk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H99UlQoe;
-	spf=pass (imf05.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YafV4LNu;
+	spf=pass (imf18.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776752218; a=rsa-sha256;
+	cv=none;
+	b=Yst+gcA8cOsTHTALuRawiNI0PcShEu05vAHhDtPDAQQaeBvli+RyqArsfWFEotmvga1HXe
+	GkJDm4VZsVeVGJSFpm6A0+stHJk8qh13lp+X87F0liEUtT6QedHY7o7Jpbpib5QJWp7aIl
+	5/E/4FOVDCmHtdMqNZ4SnPC7aZ+qT0Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A668344703;
+	by sea.source.kernel.org (Postfix) with ESMTP id E88F94470D;
 	Tue, 21 Apr 2026 06:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 59D3CC2BCB5;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9F3A8C2BCF6;
 	Tue, 21 Apr 2026 06:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776752214;
-	bh=gcY8JAueHpYR2KRxiHj1/0XEZnKwbKMdql9QslJ/nWY=;
+	bh=jUy9oYRs+atgXlFKR438oou9gHp7SspGAlgyZwd9RFg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=H99UlQoex5AJaY4bNDzeHl8X0+tuCJC7oY8pJ5sDn9BmoXiCdBLMFbh0JZE2zU4Q+
-	 oCIwUb7tKYOlC5WbWgH3ZuF336NXqLHwzYn+wehun268nrK9h26eRvN7FaZp3uPPrg
-	 IVl/o370feoEB4c5s30dKiFpQ1u8iSzpElvEpLyuAVuW3gm8S2w7dSqhRbOLuut6gN
-	 ZMyvzgi911DYzVSIS4Uja2EdQoAIl/Z6FoY6ThgVVSzX4PccPdEtSQf8s/ayaqLPPQ
-	 ItzLJH+I5EjhxDfTkYyd0qpNYZ+rb1tQG0KmPC52OSObo1OD3s5MjftduIDNeGYxq6
-	 kCpix6NMT5wTw==
+	b=YafV4LNub9AyD1nXwjKsbp+LSfLSVNyVaSuRnQa1Q8SJKixvid4w3XFkCchDuyYBZ
+	 +Lj3RrqPKfmCVm/hP/3aTLLZQmETmU9PXQMQSsno2/uvxSBQa7xlptnggfN7RbT5tM
+	 N7g9VDKb4qzUCFfFJAswuohfuJ0xHnMFSgWujMjvf5hclromYWqkWBRwFA1pWO3r8e
+	 vit2uia27KsPZUNW9Qvf4d3HYZ2VjA2TD/f3f7lqsyvj1vIznp2J0gDHOjpz7s15rB
+	 E/c5cG2EKNz6bjSKEGQOJeN7obZv6P9J1m7w6M1FcAw2jsYgPBvIbEakQMxVYj0ma4
+	 5S2MAxVecH0cA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 492D3F327AB;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 947DFF327AA;
 	Tue, 21 Apr 2026 06:16:54 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Tue, 21 Apr 2026 14:16:48 +0800
-Subject: [PATCH v3 04/12] mm, swap: add support for stable large allocation
- in swap cache directly
+Date: Tue, 21 Apr 2026 14:16:52 +0800
+Subject: [PATCH v3 08/12] mm, swap: delay and unify memcg lookup and
+ charging for swapin
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260421-swap-table-p4-v3-4-2f23759a76bc@tencent.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260421-swap-table-p4-v3-8-2f23759a76bc@tencent.com>
 References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
 In-Reply-To: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
 To: linux-mm@kvack.org
@@ -97,25 +97,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Axel Rasmussen <axelrasmussen@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
  Yosry Ahmed <yosry@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776752211; l=12878;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776752211; l=7735;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=34EJLSispHC7a0Kc1NZ6Id2l8mcHXDbMTlX6CocNMi0=;
- b=AR8myNq3m0dXHoMlyKDXAhHdRFsisL4hU1Q1LShy16pr1pBCkND0gqqZS9OziGccw4+GjZsBa
- JoSKks8U20KAnbtLyf/DVEyxpFgKYv3t7OFLpc86eQJrP3+emRexmsf
+ bh=vQpLlkYrTuiOXS5UJH0oGm4wufG/sCOPvJMEoPHMsVg=;
+ b=IS4/2XdO5Va2GVkDuTOph7ESuaHNgUmQPboTHfqkIFc54VkkgyUb6hAEOkm0M01J8vMkLsxGw
+ GcOWd6vr4geAlIBYNncl4wGCfx48bIZe8aqAVk0DFH92i54MWve2Qbx
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Rspamd-Queue-Id: E369F100007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: rpceatb5559qq3u8gdbdhm4bijjrz4yn
+X-Stat-Signature: uegqyxmtu5qr7ixbnxs566bpanie8mx6
+X-Rspamd-Queue-Id: 30DE71C0004
 X-Rspam-User: 
-X-HE-Tag: 1776752215-479841
-X-HE-Meta: U2FsdGVkX1/t1S3stmsVgKkttY/fabDh4laXw392JDvfkyUQ4Jr7trxlopc4jTV3t21jAxMBLFgha9woxHaTq3n4/AiCqKbGCCZ3vTON3NbY4D220zgSrgzwM9Wb3i2uKe5pIWAWaqtcXBs+YTu9Wbcp4HtRRGxGGbUFIxHwPpTMAS8n8hK5k36CEAkhcX6MTbFMDjdhDV4w/3WAqg/etFdZeErPeyaHUAAebvrzGwmiuMexgIccEdgNC8trBwC5KBhoSeOokwTyrArgrCj73ZSQUI/Ke0nN/giWRbpnsGXaJS/bkmumtWhdaZ79TEPuw5qgdby3M3fsAwqMJRC9U/9iE2jupKE0cahwgfopqhBV+REUBe18dq1lA/4vi9kCVUgAnoPNX5KvW4038Hhu2yobJo5BqEmnDY4qYxvL0XakgOhytJ0wpn/eeAcJvOSUgtY82bdwX6IngDsrm13BaobZTR8NUWVffNBrWrccoQwkAajjaS4fV5XF2GjhipOJ5x6A3/Qr+L5Xe7RT4/YXYa9IkU2SBh3XuTgGjyD8lfjzsieEWC8ILmu+BXtPeZ1cCZXkeFjqYrR+Xegt8FwetBu6/8LVKkl6DheHeWZrnzZMobzby3xu4BVYB4WzN6cmpl4309dHUnZT6LI5+yLEHlwJL5rMiMlJI1n4D1yRJSN05cn6QC2O/kMHVxtIziXdtV9wQELnlpNzclnzfgq++zawSTeAMZ8uZEnSTEyBTBo7XZGdlUkOlrv6TjsJD19IRtRgGuv/B3t5oZfa05xsp9el8XgoHgPoxJw2wLVEDbw6ORLNYmaAvafIdqi057UhxbDmWHaS6ivRTPNG8JnLYDRCqoBn3QwDmmtcaTQ5Yu0djT4LsxR4kL/GD1YhTQlcbFfHDoHmxYE6y47dvp1p/nClyHh5r+osxV4c3DU6KaDuIRCzH5z9K1otxPaIFegRdfVQ6Xf6dWlCvw6PdXn
- gkGf+uCg
- okvykAvCWiqV1byGyCoVxgeTM+6FZLCGyTFTbQjOnKeh0hAoX///hKH+gIpD7pjtNhQeMXbrvt7nvUwPSPa9KJztovLzutMtI+X9lQbqaRiiTAbg/FWlygIK1cUxHVf9FLm2WKun2SA4YeYDEUMs9k4AyI/dh3CNzxcYXkc6C9888KhgBp5kNiaxsW3TYRXXRtQ0JfsiLLNF3aqV6KUuFbdgPExQZSIcjrTxuE35Zefz1ieUSm9HPcrQzcS9ggbeK6vdCw3ipA6J8KP9+n1owI7ne+jq2MpWizjYCpi8ba9hMx834jU44yHm2VdIhVmhfAH77nZl8BSHKJYtC+wz39tQ4s0psscDusFEQjyDi+GRCJ8p9fJKlh9sHhrR7xCZvIWoE6l8EVVKfR40=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776752217-179698
+X-HE-Meta: U2FsdGVkX1+GbNPmD8cp148l2wyCDHNa5hAgfX2rDCAqwaS8ZL3vxXh8i5iEjL1xXyheU97E9xKWlqID+RpDbJ0i3Dw847oV4GWuS0+OYBug1ficszFIfbvLk6CcppLTeA/Ai6fn+9uIraFo9GIFDrspEkiLw3IuMWqhYLCMeS5T5PJTmkNLuGiDKCeWCqpk3GgLUVOmcPeChekVtob/KK3IBB6EQ3Urvss+YHzHWDIiG+F/z3pq2SbGGuN4OCsnkeNIW9hl65Muzcy+h8Zn0s3i+6Scz1Q/wGtO1CVWcyL5N9rQOBjjOn3PDqHrzVqniX3j8iqHd8uunVF8FhDpuo7Tdz7fUvlsk25WAgzkmv/nmEh45xjafDW8Pl6i4Ico6OS7PC41wgjlWOP5mMfhftWZXoYOHIbBxS9Se5RrsYGeJsIzXxHEBFkOSgAvenNp/ZORCjKbRDyr6FIe53ssXB7cL1gIWtthKekrqMCnLp4AdTFwdzIT4hmuG079n5uTkosd/YMhoEJyajQbYEaMtf5hqXOF9HlY2TmPgGNlS//mUCzAKwcmTiHUIpCzRxTXwUmp1CN+rFgIetYMyBgiA4oOuyAtvxuDYMT/oDkaXp8fVK7RH30z97umWy4ZE4DttXBqCV3XiyG55UyaSx6Kl9eydbbsiN3VMHKpbicLInT2jV+4204kD1idvXwkV0YirhT8kgPZWfa6fxoSGmndHuJtX03bSnsLQDWKuaGR6zEBk2c61Nz41T9ORwdxMn2BfdtkxX69bu3PwGb8CBWG2qAjS8EIP+z0306PY1rKtnqu+FpXi2ioHaZ+R89F17ybvRqb2wklL64agNYiobckgnhfGEOpWo1NirOC3rMzleyszkkcE3yBmlJxqQqrKdxdhcHXqMjrZ9D6TfWcR7S6rW3SxHOf+SAf+bivAsv4qtzUlq2vMQlBlYVCvMnPksIzgN5/f/bkUqKn/I19WJt
+ HFwnCKIP
+ sRuNa2klyI+UxOZH/o5xvSY5TgUAFKkYDYPY0qNyKwx+uhGT7OVbHG3RqENQtVJHH90LdTd53A+dlVUWwLiDJdj2sdUzyFY0MeM1T5KF5buMuAcu30RsqYY9e2DJPqH5Xu6QZrnwvGbc8cqgyPWrbAW9n6IFUh6A0VBXXQ6mCqtmiMaylIsctgNP50crDY+cUO3LTGvnYqoS1opo5LCCOrmRjlR2mAX0B6z7zXDmex6NtMleTkIL+N9Id2MYMbqYJNnGkvoL5Qo/zo0NXKh26iH/9dQIXtqQJP6nF5YunC7kUmcyNjxt/ljdUji4v2uIimmnPyvsoI0/RK1lq9MEau/u1H7TDYzoHf5BOBKw+pYEtGUhJcfDTXAXgUrV1fvJPudXZSKBklzbT+jPI2MAyJrI30w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,352 +125,211 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-To make it possible to allocate large folios directly in swap cache,
-provide a new infrastructure helper to handle the swap cache status
-check, allocation, and order fallback in the swap cache layer
+Instead of checking the cgroup private ID during page table walk in
+swap_pte_batch(), move the memcg lookup into __swap_cache_add_check()
+under the cluster lock.
 
-The new helper replaces the existing swap_cache_alloc_folio. Based on
-this, all the separate swap folio allocation that is being done by anon
-/ shmem before is converted to use this helper directly, unifying folio
-allocation for anon, shmem, and readahead.
+The first pre-alloc check is speculative and skips the memcg check since
+the post-alloc stable check ensures all slots covered by the folio
+belong to the same memcg. It is very rare for contiguous and aligned
+entries across a contiguous region of a page table of the same process
+or shmem mapping to belong to different memcgs.
 
-This slightly consolidates how allocation is synchronized, making it
-more stable and less prone to errors. The slot-count and cache-conflict
-check is now always performed with the cluster lock held before
-allocation, and repeated under the same lock right before cache
-insertion. This double check produces a stable result compared to the
-previous anon and shmem mTHP allocation implementation,  avoids the
-false-negative conflict checks that the lockless path can return — large
-allocations no longer have to be unwound because the range turned out to
-be occupied — and aborts early for already-freed slots, which helps
-ordinary swapin and especially readahead, with only a marginal increase
-in cluster-lock contention (the lock is very lightly contended and stays
-local in the first place). Hence, callers of swap_cache_alloc_folio() no
-longer need to check the swap slot count or swap cache status
-themselves.
+This also prepares for recording the memcg info in the cluster's table.
+Also make the order check and fallback more compact.
 
-And now whoever first successfully allocates a folio in the swap cache
-will be the one who charges it and performs the swap-in. The race window
-of swapping is also reduced since the loop is much more compact.
+There should be no user-observable behavior change.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swap.h       |   3 +-
- mm/swap_state.c | 222 +++++++++++++++++++++++++++++++++++++++++---------------
- mm/zswap.c      |   2 +-
- 3 files changed, 165 insertions(+), 62 deletions(-)
+ include/linux/memcontrol.h |  6 +++---
+ mm/internal.h              | 10 +---------
+ mm/memcontrol.c            | 10 ++++------
+ mm/swap_state.c            | 28 +++++++++++++++++++---------
+ 4 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/mm/swap.h b/mm/swap.h
-index ad8b17a93758..6774af10a943 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -280,7 +280,8 @@ bool swap_cache_has_folio(swp_entry_t entry);
- struct folio *swap_cache_get_folio(swp_entry_t entry);
- void *swap_cache_get_shadow(swp_entry_t entry);
- void swap_cache_del_folio(struct folio *folio);
--struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_flags,
-+struct folio *swap_cache_alloc_folio(swp_entry_t target_entry, gfp_t gfp_mask,
-+				     unsigned long orders, struct vm_fault *vmf,
- 				     struct mempolicy *mpol, pgoff_t ilx);
- /* Below helpers require the caller to lock and pass in the swap cluster. */
- void __swap_cache_add_folio(struct swap_cluster_info *ci,
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 3da285a891b2..f5c77f348bbd 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -139,10 +139,10 @@ void *swap_cache_get_shadow(swp_entry_t entry)
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 7d08128de1fd..a013f37f24aa 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -646,8 +646,8 @@ static inline int mem_cgroup_charge(struct folio *folio, struct mm_struct *mm,
+ 
+ int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp);
+ 
+-int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct *mm,
+-				  gfp_t gfp, swp_entry_t entry);
++int mem_cgroup_swapin_charge_folio(struct folio *folio, unsigned short id,
++				   struct mm_struct *mm, gfp_t gfp);
+ 
+ void __mem_cgroup_uncharge(struct folio *folio);
+ 
+@@ -1137,7 +1137,7 @@ static inline int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp)
+ }
+ 
+ static inline int mem_cgroup_swapin_charge_folio(struct folio *folio,
+-			struct mm_struct *mm, gfp_t gfp, swp_entry_t entry)
++		 unsigned short id, struct mm_struct *mm, gfp_t gfp)
+ {
+ 	return 0;
+ }
+diff --git a/mm/internal.h b/mm/internal.h
+index 5a2ddcf68e0b..9d2fec696bd6 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -451,24 +451,16 @@ static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
+ {
+ 	pte_t expected_pte = pte_next_swp_offset(pte);
+ 	const pte_t *end_ptep = start_ptep + max_nr;
+-	const softleaf_t entry = softleaf_from_pte(pte);
+ 	pte_t *ptep = start_ptep + 1;
+-	unsigned short cgroup_id;
+ 
+ 	VM_WARN_ON(max_nr < 1);
+-	VM_WARN_ON(!softleaf_is_swap(entry));
++	VM_WARN_ON(!softleaf_is_swap(softleaf_from_pte(pte)));
+ 
+-	cgroup_id = lookup_swap_cgroup_id(entry);
+ 	while (ptep < end_ptep) {
+-		softleaf_t entry;
+-
+ 		pte = ptep_get(ptep);
+ 
+ 		if (!pte_same(pte, expected_pte))
+ 			break;
+-		entry = softleaf_from_pte(pte);
+-		if (lookup_swap_cgroup_id(entry) != cgroup_id)
+-			break;
+ 		expected_pte = pte_next_swp_offset(expected_pte);
+ 		ptep++;
+ 	}
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index c7df30ca5aa7..641706fa47bf 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5062,27 +5062,25 @@ int mem_cgroup_charge_hugetlb(struct folio *folio, gfp_t gfp)
  
  /**
-  * __swap_cache_add_check - Check if a range is suitable for adding a folio.
-- * @ci: The locked swap cluster.
-- * @ci_off: Range start offset.
-- * @nr: Number of slots to check.
-- * @shadow: Returns the shadow value if one exists in the range.
-+ * @ci: The locked swap cluster
-+ * @targ_entry: The target swap entry to check, will be rounded down by @nr
-+ * @nr: Number of slots to check, must be a power of 2
-+ * @shadowp: Returns the shadow value if one exists in the range.
+  * mem_cgroup_swapin_charge_folio - Charge a newly allocated folio for swapin.
+- * @folio: folio to charge.
++ * @folio: the folio to charge
++ * @id: memory cgroup id
+  * @mm: mm context of the victim
+  * @gfp: reclaim mode
+- * @entry: swap entry for which the folio is allocated
+  *
+  * This function charges a folio allocated for swapin. Please call this before
+  * adding the folio to the swapcache.
+  *
+  * Returns 0 on success. Otherwise, an error code is returned.
+  */
+-int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct *mm,
+-				  gfp_t gfp, swp_entry_t entry)
++int mem_cgroup_swapin_charge_folio(struct folio *folio, unsigned short id,
++				   struct mm_struct *mm, gfp_t gfp)
+ {
+ 	struct mem_cgroup *memcg;
+-	unsigned short id;
+ 	int ret;
+ 
+ 	if (mem_cgroup_disabled())
+ 		return 0;
+ 
+-	id = lookup_swap_cgroup_id(entry);
+ 	rcu_read_lock();
+ 	memcg = mem_cgroup_from_private_id(id);
+ 	if (!memcg || !css_tryget_online(&memcg->css))
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 12b290d43e45..86d517a33a55 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -142,16 +142,20 @@ void *swap_cache_get_shadow(swp_entry_t entry)
+  * @ci: The locked swap cluster
+  * @targ_entry: The target swap entry to check, will be rounded down by @nr
+  * @nr: Number of slots to check, must be a power of 2
+- * @shadowp: Returns the shadow value if one exists in the range.
++ * @shadowp: Returns the shadow value if one exists in the range
++ * @memcg_id: Returns the memory cgroup id, NULL to ignore cgroup check
   *
   * Check if all slots covered by given range have a swap count >= 1.
-  * Retrieves the shadow if there is one.
-@@ -150,22 +150,38 @@ void *swap_cache_get_shadow(swp_entry_t entry)
+- * Retrieves the shadow if there is one.
++ * Retrieves the shadow if there is one. If @memcg_id is not NULL, also
++ * checks if all slots belong to the same cgroup and return the cgroup
++ * private id.
+  *
   * Context: Caller must lock the cluster.
   */
  static int __swap_cache_add_check(struct swap_cluster_info *ci,
--				  unsigned int ci_off, unsigned int nr,
--				  void **shadow)
-+				  swp_entry_t targ_entry,
-+				  unsigned long nr, void **shadowp)
+ 				  swp_entry_t targ_entry,
+-				  unsigned long nr, void **shadowp)
++				  unsigned long nr, void **shadowp,
++				  unsigned short *memcg_id)
  {
--	unsigned int ci_end = ci_off + nr;
-+	unsigned int ci_off, ci_end;
+ 	unsigned int ci_off, ci_end;
  	unsigned long old_tb;
- 
-+	/*
-+	 * If the target slot is not swapped out, return
-+	 * -EEXIST or -ENOENT. If the batch is not suitable, could be a
-+	 * race with concurrent free or cache add, return -EBUSY.
-+	 */
- 	if (unlikely(!ci->table))
+@@ -169,19 +173,24 @@ static int __swap_cache_add_check(struct swap_cluster_info *ci,
+ 		return -EEXIST;
+ 	if (!__swp_tb_get_count(old_tb))
  		return -ENOENT;
-+	ci_off = swp_cluster_offset(targ_entry);
-+	old_tb = __swap_table_get(ci, ci_off);
-+	if (swp_tb_is_folio(old_tb))
-+		return -EEXIST;
-+	if (!__swp_tb_get_count(old_tb))
-+		return -ENOENT;
-+	if (swp_tb_is_shadow(old_tb) && shadowp)
-+		*shadowp = swp_tb_to_shadow(old_tb);
-+
-+	if (nr == 1)
-+		return 0;
-+
-+	ci_off = round_down(ci_off, nr);
-+	ci_end = ci_off + nr;
+-	if (swp_tb_is_shadow(old_tb) && shadowp)
++	if (shadowp && swp_tb_is_shadow(old_tb))
+ 		*shadowp = swp_tb_to_shadow(old_tb);
++	if (memcg_id)
++		*memcg_id = lookup_swap_cgroup_id(targ_entry);
+ 
+ 	if (nr == 1)
+ 		return 0;
+ 
++	targ_entry.val = round_down(targ_entry.val, nr);
+ 	ci_off = round_down(ci_off, nr);
+ 	ci_end = ci_off + nr;
  	do {
  		old_tb = __swap_table_get(ci, ci_off);
--		if (unlikely(swp_tb_is_folio(old_tb)))
--			return -EEXIST;
--		if (unlikely(!__swp_tb_get_count(old_tb)))
--			return -ENOENT;
--		if (swp_tb_is_shadow(old_tb))
--			*shadow = swp_tb_to_shadow(old_tb);
-+		if (unlikely(swp_tb_is_folio(old_tb) ||
-+			     !__swp_tb_get_count(old_tb)))
-+			return -EBUSY;
+ 		if (unlikely(swp_tb_is_folio(old_tb) ||
+-			     !__swp_tb_get_count(old_tb)))
++			     !__swp_tb_get_count(old_tb) ||
++			     (memcg_id && *memcg_id != lookup_swap_cgroup_id(targ_entry))))
+ 			return -EBUSY;
++		targ_entry.val++;
  	} while (++ci_off < ci_end);
  
  	return 0;
-@@ -244,7 +260,7 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
- 	si = __swap_entry_to_info(entry);
- 	ci = swap_cluster_lock(si, swp_offset(entry));
- 	ci_off = swp_cluster_offset(entry);
--	err = __swap_cache_add_check(ci, ci_off, nr_pages, &shadow);
-+	err = __swap_cache_add_check(ci, entry, nr_pages, &shadow);
- 	if (err) {
- 		swap_cluster_unlock(ci);
- 		return err;
-@@ -399,6 +415,137 @@ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
- 	}
- }
- 
-+/*
-+ * Try to allocate a folio of given order in the swap cache.
-+ *
-+ * This helper resolves the potential races of swap allocation
-+ * and prepares a folio to be used for swap IO. May return following
-+ * value:
-+ *
-+ * -ENOMEM / -EBUSY: Order is too large or in conflict with sub slot,
-+ *                   caller should shrink the order and retry
-+ * -ENOENT / -EEXIST: Target swap entry is unavailable or cached, the caller
-+ *                    should abort or try to use the cached folio instead
-+ */
-+static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
-+					swp_entry_t targ_entry, gfp_t gfp,
-+					unsigned int order, struct vm_fault *vmf,
-+					struct mempolicy *mpol, pgoff_t ilx)
-+{
-+	int err;
-+	swp_entry_t entry;
-+	struct folio *folio;
-+	void *shadow = NULL;
-+	unsigned long address, nr_pages = 1 << order;
-+	struct vm_area_struct *vma = vmf ? vmf->vma : NULL;
-+
-+	entry.val = round_down(targ_entry.val, nr_pages);
-+
-+	/* Check if the slot and range are available, skip allocation if not */
-+	spin_lock(&ci->lock);
-+	err = __swap_cache_add_check(ci, targ_entry, nr_pages, NULL);
-+	spin_unlock(&ci->lock);
-+	if (unlikely(err))
-+		return ERR_PTR(err);
-+
-+	/*
-+	 * Limit THP gfp. The limitation is a no-op for typical
-+	 * GFP_HIGHUSER_MOVABLE but matters for shmem.
-+	 */
-+	if (order)
-+		gfp = thp_limit_gfp_mask(vma_thp_gfp_mask(vma), gfp);
-+
-+	if (mpol || !vmf) {
-+		folio = folio_alloc_mpol(gfp, order, mpol, ilx, numa_node_id());
-+	} else {
-+		address = round_down(vmf->address, PAGE_SIZE << order);
-+		folio = vma_alloc_folio(gfp, order, vmf->vma, address);
-+	}
-+	if (unlikely(!folio))
-+		return ERR_PTR(-ENOMEM);
-+
-+	/* Double check the range is still not in conflict */
-+	spin_lock(&ci->lock);
-+	err = __swap_cache_add_check(ci, targ_entry, nr_pages, &shadow);
-+	if (unlikely(err)) {
-+		spin_unlock(&ci->lock);
-+		folio_put(folio);
-+		return ERR_PTR(err);
-+	}
-+
-+	__folio_set_locked(folio);
-+	__folio_set_swapbacked(folio);
-+	__swap_cache_do_add_folio(ci, folio, entry);
-+	spin_unlock(&ci->lock);
-+
-+	if (mem_cgroup_swapin_charge_folio(folio, vmf ? vmf->vma->vm_mm : NULL,
-+					   gfp, entry)) {
-+		spin_lock(&ci->lock);
-+		__swap_cache_do_del_folio(ci, folio, entry, shadow);
-+		spin_unlock(&ci->lock);
-+		folio_unlock(folio);
-+		/* nr_pages refs from swap cache, 1 from allocation */
-+		folio_put_refs(folio, nr_pages + 1);
-+		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_CHARGE);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	/* For memsw accounting, swap is uncharged when folio is added to swap cache */
-+	memcg1_swapin(entry, 1 << order);
-+	if (shadow)
-+		workingset_refault(folio, shadow);
-+
-+	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
-+	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
-+
-+	/* Caller will initiate read into locked new_folio */
-+	folio_add_lru(folio);
-+	return folio;
-+}
-+
-+/**
-+ * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
-+ * @targ_entry: swap entry indicating the target slot
-+ * @gfp: memory allocation flags
-+ * @orders: allocation orders
-+ * @vmf: fault information
-+ * @mpol: NUMA memory allocation policy to be applied
-+ * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
-+ *
-+ * Allocate a folio in the swap cache for one swap slot, typically before
-+ * doing IO (e.g. swap in or zswap writeback). The swap slot indicated by
-+ * @targ_entry must have a non-zero swap count (swapped out).
-+ *
-+ * Context: Caller must protect the swap device with reference count or locks.
-+ * Return: Returns the folio if allocation succeeded and folio is added to
-+ * swap cache. Returns error code if allocation failed due to race.
-+ */
-+struct folio *swap_cache_alloc_folio(swp_entry_t targ_entry, gfp_t gfp,
-+				     unsigned long orders, struct vm_fault *vmf,
-+				     struct mempolicy *mpol, pgoff_t ilx)
-+{
-+	int order, err;
-+	struct folio *ret;
-+	struct swap_cluster_info *ci;
-+
-+	/* Always allow order 0 so swap won't fail under pressure. */
-+	order = orders ? highest_order(orders |= BIT(0)) : 0;
-+	ci = __swap_entry_to_cluster(targ_entry);
-+	for (;;) {
-+		ret = __swap_cache_alloc(ci, targ_entry, gfp, order,
-+					 vmf, mpol, ilx);
-+		if (!IS_ERR(ret))
-+			break;
-+		err = PTR_ERR(ret);
-+		if (!order || (err && err != -EBUSY && err != -ENOMEM))
-+			break;
-+		count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK);
-+		order = next_order(&orders, order);
-+	}
-+
-+	return ret;
-+}
-+
- /*
-  * If we are the only user, then try to free up the swap cache.
-  *
-@@ -542,51 +689,10 @@ static int __swap_cache_prepare_and_add(swp_entry_t entry,
- 	return ret;
- }
- 
--/**
-- * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
-- * @entry: the swapped out swap entry to be binded to the folio.
-- * @gfp_mask: memory allocation flags
-- * @mpol: NUMA memory allocation policy to be applied
-- * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
-- *
-- * Allocate a folio in the swap cache for one swap slot, typically before
-- * doing IO (e.g. swap in or zswap writeback). The swap slot indicated by
-- * @entry must have a non-zero swap count (swapped out).
-- * Currently only supports order 0.
-- *
-- * Context: Caller must protect the swap device with reference count or locks.
-- * Return: Returns the folio if allocation succeeded and folio is added to
-- * swap cache. Returns error code if allocation failed due to race.
-- */
--struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
--				     struct mempolicy *mpol, pgoff_t ilx)
--{
--	int ret;
--	struct folio *folio;
--
--	/* Allocate a new folio to be added into the swap cache. */
--	folio = folio_alloc_mpol(gfp_mask, 0, mpol, ilx, numa_node_id());
--	if (!folio)
--		return ERR_PTR(-ENOMEM);
--
--	/*
--	 * Try to add the new folio to the swap cache. It returns
--	 * -EEXIST if the entry is already cached.
--	 */
--	ret = __swap_cache_prepare_and_add(entry, folio, gfp_mask, false);
--	if (ret) {
--		folio_put(folio);
--		return ERR_PTR(ret);
--	}
--
--	return folio;
--}
--
- static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
- 					   struct mempolicy *mpol, pgoff_t ilx,
- 					   struct swap_iocb **plug, bool readahead)
- {
--	struct swap_info_struct *si = __swap_entry_to_info(entry);
+@@ -397,6 +406,7 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 	swp_entry_t entry;
  	struct folio *folio;
+ 	void *shadow = NULL;
++	unsigned short memcg_id;
+ 	unsigned long address, nr_pages = 1 << order;
+ 	struct vm_area_struct *vma = vmf ? vmf->vma : NULL;
  
- 	/* Check the swap cache again for readahead path. */
-@@ -594,16 +700,12 @@ static struct folio *swap_cache_read_folio(swp_entry_t entry, gfp_t gfp,
- 	if (folio)
- 		return folio;
+@@ -404,7 +414,7 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
  
--	/* Skip allocation for unused and bad swap slot for readahead. */
--	if (!swap_entry_swapped(si, entry))
--		return NULL;
--
- 	do {
- 		folio = swap_cache_get_folio(entry);
- 		if (folio)
- 			return folio;
+ 	/* Check if the slot and range are available, skip allocation if not */
+ 	spin_lock(&ci->lock);
+-	err = __swap_cache_add_check(ci, targ_entry, nr_pages, NULL);
++	err = __swap_cache_add_check(ci, targ_entry, nr_pages, NULL, NULL);
+ 	spin_unlock(&ci->lock);
+ 	if (unlikely(err))
+ 		return ERR_PTR(err);
+@@ -427,7 +437,7 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
  
--		folio = swap_cache_alloc_folio(entry, gfp, mpol, ilx);
-+		folio = swap_cache_alloc_folio(entry, gfp, 0, NULL, mpol, ilx);
- 	} while (IS_ERR(folio) && PTR_ERR(folio) == -EEXIST);
+ 	/* Double check the range is still not in conflict */
+ 	spin_lock(&ci->lock);
+-	err = __swap_cache_add_check(ci, targ_entry, nr_pages, &shadow);
++	err = __swap_cache_add_check(ci, targ_entry, nr_pages, &shadow, &memcg_id);
+ 	if (unlikely(err)) {
+ 		spin_unlock(&ci->lock);
+ 		folio_put(folio);
+@@ -439,8 +449,8 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 	__swap_cache_do_add_folio(ci, folio, entry);
+ 	spin_unlock(&ci->lock);
  
- 	if (IS_ERR_OR_NULL(folio))
-diff --git a/mm/zswap.c b/mm/zswap.c
-index e27f6e96f003..4fcd95eb24cb 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1000,7 +1000,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 		return -EEXIST;
- 
- 	mpol = get_task_policy(current);
--	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, mpol,
-+	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, 0, NULL, mpol,
- 				       NO_INTERLEAVE_INDEX);
- 	put_swap_device(si);
- 
+-	if (mem_cgroup_swapin_charge_folio(folio, vmf ? vmf->vma->vm_mm : NULL,
+-					   gfp, entry)) {
++	if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
++					   vmf ? vmf->vma->vm_mm : NULL, gfp)) {
+ 		spin_lock(&ci->lock);
+ 		__swap_cache_do_del_folio(ci, folio, entry, shadow);
+ 		spin_unlock(&ci->lock);
 
 -- 
 2.53.0
