@@ -4,103 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D506EF5A8DE
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 04:02:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE841EA7184
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 04:15:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F308B6B008A; Tue, 21 Apr 2026 00:02:30 -0400 (EDT)
+	id BE7826B0088; Tue, 21 Apr 2026 00:15:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE0DB6B008C; Tue, 21 Apr 2026 00:02:30 -0400 (EDT)
+	id B97EB6B0089; Tue, 21 Apr 2026 00:15:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF6476B0092; Tue, 21 Apr 2026 00:02:30 -0400 (EDT)
+	id A86CB6B008A; Tue, 21 Apr 2026 00:15:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CDED66B008A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 00:02:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6ECE28CEB0
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:02:30 +0000 (UTC)
-X-FDA: 84681216060.22.23A960C
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2096BA000A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:02:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=P0xaSkgf;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 965946B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 00:15:22 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 094295C712
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:15:22 +0000 (UTC)
+X-FDA: 84681248484.11.4A822D1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CE44440008
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:15:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uS9iGCHG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=p7mef9cN;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cpuTQ+E+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kOVwBphL;
+	spf=pass (imf04.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776744148;
+	s=arc-20220608; t=1776744920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jMdJRNtKo7iaVl+CsUGo+lqElncIkwLhNwFqakkkUeM=;
-	b=hVnlX05IgB9z2yNXWbyBhHX7AcjBFsAPXT5wOyXVMHid3z0ceYW02yCWXdM9yKqLk8k0mH
-	R3WJslLdQdHxeTg8vne0XYKnCfnHNkmya8U2u0OI0wa4D8BUm5rphhCEwFY+a6USTrz1Vu
-	gFYvfPIM4k+/ZFXmauOqyynR8JsjYwE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776744148; a=rsa-sha256;
-	cv=none;
-	b=npeEjDQjptCc0MDg5M6/nXa19xQQy5aVzHEjUX2i22bQOGtjz2pGXckQB5vVGE4B5FEgz7
-	Y0xhVCDSE8Xqma1t/tFVk4IcVlbV4IG+AOhX0eGB12gc0YP9wuOuLHX1K5RAJ+cx+ukfFP
-	BlFdO2lBQAwygigGTadP18XpCh9zwZw=
+	bh=uYdfvAwxiyPMyDiaQbfwV8KtgdCe2VZI2NMXSwdaNgE=;
+	b=SfEUDIas5IaOHDq9JguXZSp8a7TwFsZyMsJGK+ghdr5twGxYPz5PzJkIsiVTOUcXFKnztf
+	VPsdCKtj2PKT2I4yf2WLqXKG0WeiP0cvxdahsH6/kK5Uw8k5S5JdNaZa3yfy+gYHdE3mJp
+	gRvxTGv2nTrnu/r7kas9QO2dG8XhmEI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=P0xaSkgf;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776744143;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uS9iGCHG;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=p7mef9cN;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cpuTQ+E+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=kOVwBphL;
+	spf=pass (imf04.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776744920; a=rsa-sha256;
+	cv=none;
+	b=SWSscId14sIR/LXalrw1HB+2xzSVKCyER7corc82W3vnPoEG+2Dy6G8TksrPd1fWbwvpu8
+	I4/ezBLDWf2U/tP+aaujq5UCmS/7Bl5LFPKHA7o+pLJq0k0M6daWHJ9L5pFemPzDtPKzRg
+	L0SaOiMYZHeoYgB6K/h/aXXE426x8Nc=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 081445BCDE;
+	Tue, 21 Apr 2026 04:15:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776744918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jMdJRNtKo7iaVl+CsUGo+lqElncIkwLhNwFqakkkUeM=;
-	b=P0xaSkgffkY/VRF9fMqKDRh7+V+gLrQC2wIjEZ6WMNXTbB4slbAyJZcsfbYpBc8bue41Gs
-	uC++PiG4GNvn5/ExS0vNS0mVz2zXeeQ1kIUJ7wtddJaMO0GIWpx0gQHOLUqaQ7IjZOyY0b
-	cV6Lg9OsFyqR52slTe7DWhNESR/Rq/0=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH v3 2/4] mm/sparse-vmemmap: Pass @pgmap argument to memory
- deactivation paths
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <aeb1N2T1rX6GHrXn@localhost.localdomain>
-Date: Tue, 21 Apr 2026 12:01:42 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E9C51B52-F9AD-4D35-9B00-7C21950ABB29@linux.dev>
+	bh=uYdfvAwxiyPMyDiaQbfwV8KtgdCe2VZI2NMXSwdaNgE=;
+	b=uS9iGCHGvQBvNjSEu7edu6oNLt8+F8xuB14yELkLOpQXxsadBzPWYhYrLFMWJ5xeP4RXPy
+	7fK1+lMia3dCqF6jVB1s2fI5UMUZ4ohsPgZkvCopOhhOIWKfQx1tcb/zHmuP0a+DFD3yyP
+	qXGIELXY2L6XxYIpuhKHMEqYU5b2gkg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776744918;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uYdfvAwxiyPMyDiaQbfwV8KtgdCe2VZI2NMXSwdaNgE=;
+	b=p7mef9cNPGGWOlV5QoGVD8FI4gSIyoIfKK84yBtIOL5JQayGTZOAicEdBbzu9La5ub8ohx
+	jo5vIKxwS5L9X5Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776744917; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uYdfvAwxiyPMyDiaQbfwV8KtgdCe2VZI2NMXSwdaNgE=;
+	b=cpuTQ+E+r7kTV8su6DV45tSpkDqiqAmOUrQLPENj4/AZz9HS4NLvUWR3OHW35ULaAeCxPE
+	oKRpodFPNyB6j0ipMhOXQ0/Bh61IgyRSZRnHDMqfwsuXp+Gv5FHQve2aC+hX2NAwU7nI9c
+	StPlzoQgu0KV8rWMEml9gGVzcJwxZw4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776744917;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uYdfvAwxiyPMyDiaQbfwV8KtgdCe2VZI2NMXSwdaNgE=;
+	b=kOVwBphL1mwqz+a1WqHY8SR63zj4AFkCC6JimPdReMUw2CHVWxLTudR1U48kpj8Zu/Dv7g
+	209xASf4ob/zMYAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3596C593AF;
+	Tue, 21 Apr 2026 04:15:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id XgNfCtT55mlKcQAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 21 Apr 2026 04:15:16 +0000
+Date: Tue, 21 Apr 2026 06:15:14 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] mm/mm_init: Fix pageblock migratetype for
+ ZONE_DEVICE compound pages
+Message-ID: <aeb50jwoCBvgEnec@localhost.localdomain>
 References: <20260421022044.1217503-1-songmuchun@bytedance.com>
- <20260421022044.1217503-3-songmuchun@bytedance.com>
- <aeb1N2T1rX6GHrXn@localhost.localdomain>
-To: Oscar Salvador <osalvador@suse.de>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 2096BA000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: c81zqz9r88jgbq1z5j1wztwik3so959u
+ <20260421022044.1217503-5-songmuchun@bytedance.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421022044.1217503-5-songmuchun@bytedance.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CE44440008
+X-Stat-Signature: 5z6xizoia8empbb1o1tt8j17katwbekq
 X-Rspam-User: 
-X-HE-Tag: 1776744146-944022
-X-HE-Meta: U2FsdGVkX1/fVhniKahlIxyy8SNf1NlFcHAWG9GlJ6sbh65E6RF1FrcfeVLYxtafxlAGiun1P27esG7MaWZUytN45KqVqK9zOBXykKbAm/c0tPSuT9VSfQ/6YEwc7mw7m/bInNpC1hgL0rx2f/PQDr3M/oUkeghlz9PPBMj7p095MSySFdnb/MW1EwFekBm/mzIotlVm115kjaJJXIsxD5LcYE0SyO/CiWNVCacUIYqe960f0L25xV/qGPtGMVgP3BMdRGbs6v7aWVyDzAbJxHeBkTF1HMjlGz66mBUsQrvOq0CI88GS+a9D0SSfSl6ZKg0n4Vof5/IzoaE9bAPXGmONs3RxtOlRYILFcSWSgIZS29bsCuYZcEmiSpPRifp8c4F0u/G6vropt17bKj2rk2huTBbhvKlEHR8PMyMLVB75x2jRob6QFiCmGADfvhvXl9sPiyueWfjYvERwemmNctmcGbiVtG2snhi+k2QmTGzj3i7inGKD/YajIDNsiXlq4jYCySxrKwzOU/pUvBeEL1QmYvDkywX2VEktecIb1P4EzJZJeN3jz3/6Hmq/00fGqSvKXoCZjNmvxUJYyRpF0tlefsSMW4waor4AMOCSMWFaNHOcigOehCtILpGAJuHEQSqzCtJou70nLnJv37bRBS79s8Jl95wJTtAaEI2ZXLY4gR3PBuMY10k6VwwgnA5peFK1X6k7bOG+vxY5MpzsYpzu0o733pEnvhKaYngK5CgxuUA9XhsPGzf2hS54j58c5vnsBPYmDgQiOLWqEI8eW5rn/nRNgpqBOtUUGEekwVNGOC8XOIwj1gqunbbcSw92d9T11mjoctc1dn/t/OfoNLhqmY6e3FVm/F3wWqxfm6/hYmv3A05HQ4l8D74YPjAl9ejPQ6zS2HHO8c1gOWEZRU24lvJKKOPlngZi0SnBErcX+CnZJPvWOA8NrJuGPDURL5rPzAka2VsNjJfFYVY
- kagoud+j
- CLlSeg2zgPfm5eIWlDvIMikqnNqYrlpkUL4yobbNw089DNZnwIeFEJEig3w/DTRHlz6xKphSQNlJeDLrTO5gF7UrS8TeZv/ij6IGDGRYOt9g9Ihcr4NXgH0CbOMz2qOnvtuo+faDAMrCmuHDzDhNJQv496vt1UOuPWlQuT8/T9PXR+XpOZCYwGJYFZLyUjFcwa1X7LC89JjSdYSKDFdWHS9KGLPtOSJEyX5fJ3FYYaItXTIA/ZidYfWfqPt5jJKAqqdIgJ1EJjUGZYgsEucwQbs94EBl2lF227boM
+X-HE-Tag: 1776744919-289563
+X-HE-Meta: U2FsdGVkX19FzivgJYHgHhEHtbG+QAckR3vlsbL/Zf2FVf4PHBZ+VuLMbvKPB4W8sp4zl1DE42q/TzBPJIUxA9M2sB7tHbzS1aYUZsk8hBDxicG+g2hJ5GU4nt7qwf4qjyHA6lIxIKpgGTLXgc7TLwjCjl2UwFrDj0+nJu0F0V9mnXcHyDLtyHbGmmmFFIBKFzdIsM09usnTfas5igE+UdiGKQbch2cCYyAuvXpkvxzRiVWd61T5Q/b8VD8fYkyQZ41HpVBjWilkh+hVW0QIfPYM145p+TC3I7L9kN0lgeGpOrWBKMMOeJbrbHIB6Hx979rSZ193G2h1fhTHulZTeAQGLN6rdCS15Sfj+yBTDFBPEnLfHdwyBAGRQfcbaQOVRp4aC0MicOeU5/1L5pHU4j/CG+V8QD2WjqvQxeUNtmX4DKWmMYhK1YIWs4j9qZHd9vGbnoNI7eD8rEHPxCkdNZ2SPIqyuqMzthKt7WhVgEk2bW8oFhK5oHD5WMay9xvJD5YS1JVn6TdBNwYmwV/3mGqz+EdA3OZsxPkig+aqBLYz6Vv/u3zEx10JGbC2bi4D97WYJuQ2Czv7anov9Qf0LOIoycImpQRJRjGIUox8XhChK7pdWTuh49Uj6wSwTtsnI02sMuweJ5jva3BsJW5ucOFTbnp/SUYSY1dOCaPa96ceqts0qseFEOjlxDxMfxKckSLPYYbHfskT3Msy6dyByj/OOMwntobKOU8KxzxHeYY4sN0i/7b2wAbvaYWZFn5mGpD/uNYc48XeRpNvzu1+ouj9idas40v9k5QVKhEXf1IKDfV29zy+Wt9nxHJ/SpaRBqE31Zfbi3NmVjxA0RLtg1Siw0SrHealOU14SUYsfAmwhNKJKOAHE9keofgJypG86sBhIIy8AQXablAZKBmae773XXHlUtxDod8fJi7lf11FDyl27iNgoJ2knuvVHzHPGbUkyg5aMtEHBH/vYbb
+ VQBkOjcM
+ CBCRcHuQXdppLoXLD+coVsh1L5U0ZInxldaNi3VtFaKp8dvnujW2hYUdQAlK1ZEdRMZuLuLhHEmY7H+ejthOZIA5RxIHGnBm9kdkQ8B2jDeNETByoM2VfPwzaeSE2ns93DbrGkvC69kvIpWl//7cQaLZkeH5GGnkKYfDnJo68xP8dPW2im2mTuvFEPpIVHTwIE+ygA9Flup9nWw26j5J/SNHJr5bDmk7PjehkQrScYjlnl6rLXVPr8oV/3WlLZLiBoJNjvJiHgveBj1Z5GO2yCVXKyNHg6+n4OGKb9IP4mqmXMcs0zYn+Os2pHPXX2VFCeFsXbI2w0uw0LhUz2GL7lampK7KasEFEKAfIptQLIsuSJyE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,63 +143,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 21, 2026 at 10:20:44AM +0800, Muchun Song wrote:
+> The memmap_init_zone_device() function only initializes the migratetype
+> of the first pageblock of a compound page. If the compound page size
+> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
+> subsequent pageblocks in the compound page remain uninitialized.
+> 
+> Move the migratetype initialization out of __init_zone_device_page()
+> and into a separate pageblock_migratetype_init_range() function. This
+> iterates over the entire PFN range of the memory, ensuring that all
+> pageblocks are correctly initialized.
+> 
+> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound pages")
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
+Would not the call to __init_zone_device_page() from
+memmap_init_compound() take care of the subsequent pageblocks?
 
-> On Apr 21, 2026, at 11:55, Oscar Salvador <osalvador@suse.de> wrote:
->=20
-> On Tue, Apr 21, 2026 at 10:20:42AM +0800, Muchun Song wrote:
->> Currently, the memory hot-remove call chain -- arch_remove_memory(),
->> __remove_pages(), sparse_remove_section() and section_deactivate() --
->> does not carry the struct dev_pagemap pointer. This prevents the =
-lower
->> levels from knowing whether the section was originally populated with
->> vmemmap optimizations (e.g., DAX with vmemmap optimization enabled).
->>=20
->> Without this information, we cannot call vmemmap_can_optimize() to
->> determine if the vmemmap pages were optimized. As a result, the =
-vmemmap
->> page accounting during teardown will mistakenly assume a =
-non-optimized
->> allocation, leading to incorrect memmap statistics.
->>=20
->> To lay the groundwork for fixing the vmemmap page accounting, we need
->> to pass the @pgmap pointer down to the deactivation location. Plumb =
-the
->> @pgmap argument through the APIs of arch_remove_memory(), =
-__remove_pages()
->> and sparse_remove_section(), mirroring the corresponding *_activate()
->> paths.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->=20
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+ 
 
-Thanks.
-
->=20
-> The change looks good to me, but I was wondering whether we should =
-pass a
-> mhp struct instead to low-level functions like arch_remove_memory and
-> __remove_pages and have __remove_pages then pass the right stuff down
-> the road.
-> That way it would mimic more what we do in hot-add path.
-
-Passing the pgmap parameter is a temporary fix, as I have another
-patchset coming up to remove pgmap entirely [1].
-
-[1] =
-https://lore.kernel.org/linux-mm/20260405125240.2558577-46-songmuchun@byte=
-dance.com/
-
-Thanks,
-Muchun.
-
->=20
->=20
-> --=20
-> Oscar Salvador
-> SUSE Labs
-
-
+-- 
+Oscar Salvador
+SUSE Labs
 
