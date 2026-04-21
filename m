@@ -4,140 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B3B5F327B4
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 07:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8A97F327B5
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 07:38:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0F7A6B008A; Tue, 21 Apr 2026 03:29:58 -0400 (EDT)
+	id D8C706B0088; Tue, 21 Apr 2026 03:38:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC0A56B008C; Tue, 21 Apr 2026 03:29:58 -0400 (EDT)
+	id D16A06B0089; Tue, 21 Apr 2026 03:38:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AE686B0092; Tue, 21 Apr 2026 03:29:58 -0400 (EDT)
+	id C05586B008A; Tue, 21 Apr 2026 03:38:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8987F6B008A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:29:58 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14F5613C155
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:29:58 +0000 (UTC)
-X-FDA: 84681738876.24.785A3F3
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D3842A0004
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:29:55 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xEksfWTK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qUQJoihJ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xEksfWTK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qUQJoihJ;
-	spf=pass (imf15.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id AA3216B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 03:38:55 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58B5913C185
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:38:55 +0000 (UTC)
+X-FDA: 84681761430.17.AD33BE4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C222CA0006
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:38:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="IFA1h/dz";
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776756596;
+	s=arc-20220608; t=1776757133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
-	b=D0gbC3aAOH4kllVpsFIxw/7q9KVok+/vaZ57pvanohL6oKHCU/PwE0F1ZbATQkMmrWmDwg
-	BWzKTNvQxCov2CmGlCkOqhP8/feAzQvb1t2ZUgNGPXZLCujx8MASUctbOWCq69lbhxV3m6
-	z915BasNOsqnCxvg0wkfoc7vfFEtfso=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776756596; a=rsa-sha256;
-	cv=none;
-	b=TFc20FkPM3SVfuOCmXcj0qk26SZz7X0ITrIMoClg10dMIpyMf+R0RKqJSgc0zCHGLeZu/g
-	SI7mRnMrb0Y2QqTLeQBBt/zebmFwWvc2Au9sG/jGd7lqztCIFQzh2K19Db0qb01J6e32c1
-	PcgjMoY5nHETIxEcNR7rQcOAk6nwgjM=
+	bh=DDZawAtyupzt04WjpFZVOHiooNEFBqqZUM/idGuBuRg=;
+	b=Djiwj6ttPST1pbvBxg+FnKlnjQZZ2KFn8VpYt7gS4JUATXZBX2/6arwUVgO65C98i+4GRl
+	NcXRfL/tlCw9AlxzRza95zE9fc/2VQbdq5sz7iaATcHghsSUYs6j6vuXFdjoB299YDAp0a
+	qwOPEkaU54U9Uo/8jTZ5p1A+IjLdL7k=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xEksfWTK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qUQJoihJ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xEksfWTK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qUQJoihJ;
-	spf=pass (imf15.hostedemail.com: domain of osalvador@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=osalvador@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1D01F5BCDE;
-	Tue, 21 Apr 2026 07:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776756594; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
-	b=xEksfWTK1V92y20VMkyzbGQOjYDBcGO/gWhbuEyYcKEa+ycQJF5wp6W1MB99niJpWx84bk
-	W102vN7KyOIr6MqHMYJybMDcZq3J2H9McFMkisag+oyd1sTqcBj297x6+VRYxdvpWNxDqR
-	KE+NO28lRXCJDE79c/TuvwYc7Xv70SQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776756594;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
-	b=qUQJoihJzeuHaNAO0HLLA7EYBdbRP/1+UK8T4zmec7ce/r6WXBask/Hk9tiJ3dN4AMFxNZ
-	FodFjuFZWHSg7QAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776756594; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
-	b=xEksfWTK1V92y20VMkyzbGQOjYDBcGO/gWhbuEyYcKEa+ycQJF5wp6W1MB99niJpWx84bk
-	W102vN7KyOIr6MqHMYJybMDcZq3J2H9McFMkisag+oyd1sTqcBj297x6+VRYxdvpWNxDqR
-	KE+NO28lRXCJDE79c/TuvwYc7Xv70SQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776756594;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VmpWofTIlMRvaJ2R/6EdvLQ0b7yTNFErU+2L4jvVqZ0=;
-	b=qUQJoihJzeuHaNAO0HLLA7EYBdbRP/1+UK8T4zmec7ce/r6WXBask/Hk9tiJ3dN4AMFxNZ
-	FodFjuFZWHSg7QAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 29EF1593AF;
-	Tue, 21 Apr 2026 07:29:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id h3awB3En52n4KQAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 21 Apr 2026 07:29:53 +0000
-Date: Tue, 21 Apr 2026 09:29:43 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>, aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] mm/mm_init: Fix pageblock migratetype for
- ZONE_DEVICE compound pages
-Message-ID: <aecnZzXiFf2n70K6@localhost.localdomain>
-References: <20260421022044.1217503-1-songmuchun@bytedance.com>
- <20260421022044.1217503-5-songmuchun@bytedance.com>
- <aeb50jwoCBvgEnec@localhost.localdomain>
- <9343F329-BCD4-4D64-94CB-A94F0E9E4400@linux.dev>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="IFA1h/dz";
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776757133; a=rsa-sha256;
+	cv=none;
+	b=WTXK7e98NnYYgaAWamDlRrcUpqIcv3yetf7A5XO2krcN3/il+MtB97yhAavWrftbQwPh9q
+	UE2aHBq5uDK2dZYEgYByFt3CawkBhNMkCCbgdzCvqjITzxEjjzPRm2twPLiiyqgZJN87Yw
+	lAZHAbScA+L0h/8nVYz+EXN+1Ca/cmU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 26F99600AE;
+	Tue, 21 Apr 2026 07:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7595C2BCB5;
+	Tue, 21 Apr 2026 07:38:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776757132;
+	bh=HOqa5XPljAtYrq4q19EOWPa+YuGMA5Hz1ufgw3AIi1M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IFA1h/dzV0RBcJx4PXA4CELRa0OQGXDRkqcUCfMgQzFiTJov9bcGWulZl5O6n1KOI
+	 9mdnidumTxrxDukqN4qDlLGxq2cvZfcqYp4rdKefh4Du3Nysqk2ZHru5Z7FQ6fX5Xv
+	 5rcrM5hz+8r3vmKS/Lfvj0v7ZjZPIkcU6s7tj2m4FYUkGV86TkBOR2QsbIWsYdoXGa
+	 ZwnjluIWkMwysyBQZPKG+ew1JLpQnJA558hJn7OHO0ZuYEZOdpImRoXEyYKcI6iUnQ
+	 P73pUEEpGpJiWJf+tlgF+0N91Elrk9ImIBvffEwMuQ9oYQb5P41LTzHhWKBtKgA5po
+	 H/gvzog5XQt6w==
+Date: Tue, 21 Apr 2026 08:38:47 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Harry Yoo <harry@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs/mm: clarify that we are not looking for LLM
+ generated content
+Message-ID: <aecpRyCcT2iKgyrl@lucifer>
+References: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9343F329-BCD4-4D64-94CB-A94F0E9E4400@linux.dev>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: D3842A0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 61cq4xk1i9w1619zq5w9wuourep63u54
+In-Reply-To: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
+X-Stat-Signature: rt7w66bj36pu7cpdk318g99gr9a8i88p
 X-Rspam-User: 
-X-HE-Tag: 1776756595-335178
-X-HE-Meta: U2FsdGVkX1/8guwDlNijWmzwQl6Qgf1SoRwS22Ueq7EX4gC+tIEgQqEHlBzgloM6DcJYXf4ePz7b7CBu/kO5twEfUCg0nBhnhV4iR9hIAsCwmeZARPeuAmB8kB65TxzKmTiTwmf7WNFGeVGhm/KGqjr0u1txxlLH/+nK90jR5zxORJFuL3nZH48+H5A66rLbajEWqf4U59UI9cyg8fo5F4+otO87u49EdQ7kAmyCLL4m2IJUH7Lj5LjzK1PqiwluYdFdGzV3ysjqdjy5Rj72IKPqAhhVROs8rYP5rI4AzCCUAQvvEsg4ud6tC+cCbmmQoekQzhmjWofqOg8WyXHYdz6sZoNUXlJNT0v+K4G+w4NrVgZ+sDaHbLZCz/C01gJS5AZ0bG+O6ztf6PHuduPRYAsrYXojFf2DSZcw9httdRTLEIykGPwOL38LG+uiVbKpls7c9VyIdtqFUi/4r7QVW4NHLypMVvaWGZv5HfB23INoVB1iBrf+uopPWr3hZa2djmRXFRGLuPBW/agU4ROCrKGZxYZFFB/KjyatZl2XtUTPebay8XaMjucb0VjmGaxLypGe3j3/khY9gnWN7r0yz3R1bVZJoreM0PQgT6pDfR17u8x9c4IBnzPhWk1E8fqMBpSwz4hBlkzCD5CZ/kMrLaWFRPYkq4WDH+K4uq5Pwg9usQjwJyASol4vlYlnowk3QfPbvYXV1lctZj2gTLBkZTUm778HILbIJ3jotuF01mAxxwtTiZmbld4KGnthR4Wipyk6PI+4Bu4gbjwuTVD8UK0lQTdtcUYz3OoAlBVw26oMp8342lO57cd57GGVs60KZ8vII5GcyTMtqArFiHfncPsxMWf6rrjebsu6WyF4o4m4R8zyPobvHwLmmx6blI6VRxzW+MUl1tyk5UPnPzOslchjZLrw3PkjUZpDuuiJaq6FPQo7IGYufj1oFQqvS1ykw8pWoH+N5BSAvkMP+L2
- nniCDph5
- H/k05MKK/1h/Ox+ayGmQHFvyk2229ira9kg//Afpf5UbIY2cfo1E2+iLFeuPT3JEnTgwdvHYMB1XDPAYEeqR5TMwYPLXZzJAR1r4PAO7zzxy/hS+KOiAErBZYPz6+boWXcjLmOf1Gem41UDHwdJm8RCZVYTzWCEKT9GEzuxXsx9LNg7yzb6BFMNxv5HHNNdhYd+coH19HyjJjbeGlgwE87RnKJfBg4jHFLSfnFug+Zwjyj0XMEH037C5lpND7kf+jwA4+x4wuBQHIWlz1ApFnaMrXlv+vi1VHklwiiKxhhHgq52uh2wxyaoy/lFDLGS0elarVg/2HVv6AiRaF1cCZfvjkTuNJ3ILJsqimAPPWNPBxvuI=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C222CA0006
+X-HE-Tag: 1776757133-72354
+X-HE-Meta: U2FsdGVkX18eTA/IBbjFXtt/uogT8j4p6RSfdb2uFCRNQMPfNgRYokkrNuUJrDNFknHtyQZ2zKJR+sK2MxSkIohJTxIfZSG3z2uGAY6lDGa65k7T3rORBrDuL/1rjpnHmKuOFSQmtS+1PLoLiTnvD202yv+LGfaJAt/SXHrGhQIl+hQYYqmCWTsQ3NlkCYfcasmYjhCvXQPFLafq+VS6KoqogpyG6/eiyORZbs5yX+vHOF5LZNZ5Oqj6keWl0P8NirMC2mpteIKrxbiQpO6/ICSmByfUV4i/lXullTxgH/eKfzW7gIYWXr0RG1zW+CRPJje8IJEx5Za1pGHhyzX38gK4+TMWzV69/NIKhaoNLANjofeyPQwHByTEQSTCJaX8DVua+isUFM2ZKxNkkN2bS8NpQMqhsHkq+ZfxESiSlGsbNme7H5hKNHZjZIe3X1IMx8Qo4vc1Dm0OVW1Ptdqjp74Vn+DeWW291086a8Pta/lKBiSoM9Zhv1lahY7WbhD88MSKyPoTgqEKFKHBoFYR2KoYe3QMfpF7cBweEB9VPkZHyR3buowz54F6i/qyMsTZkB4PIXxjTHYLBehLvJ3BJJqdNTyK0XTEo472GWSYGhopAns8CYD/UEYlB0UI/RiEhdKngxyrTUd/nQ7HPEF339KGKPOw6zINXqAQhj4CZwDW1kMb5UwLANok78dVra0NxLrLkOxMDojVIqpd9wunjRb4YkZuvvX2GxJs1dSS9HJ6TGRYBrlihIRpeAnpaDHKNo8unuU99taJ4gxPkdNdF2KA5sr9niFnVUJSsGyyqrk+zwLzVe2u4ISDKyjY1xeKuFIHi/UM8eeTM2gd3EgD4P18myzrxEpaR8nkdZND53rrN9EJYRJ2fQr6hkwZkk+ECox0cZWPOZCmCOnqr0Jv4rdjZxhvXuu1mZYRa8Qaa3QrUK8c92JzdDWp6heUNer3SohLDDTD7Sipfu0vaeC
+ xEz8uvw+
+ zkEQkck61JQXAOPNODl9WBjPGjEYP9FlkTZs5DmAcQgzg80cP2yak9cPYxtN7fB5A/sQ4w+zRzFnn0M7ObAWeSw7rDHqOh0yIGc2TLYlrwCKghuMh4L9U2UeCd/+Vf0ZFflXLRs3Nv84/5oTD3DKH1q+xw3Xi3gAdnA4+yqKw9tvS/4L8hSRoyAiDEUqnV5zHdKl13ioQhKN8TBzWDgitiMb0UeFnvo0SbQCEpXWnoX38TlGu4ITOiLSgryq4EyHfwe6ArYA8+0uH51xrzwOndG8JTmyGtXjajlPUKJ345+cVvSBy2pJRX+NdYJmKFWhW6dlAK8FvlvBzO09ydH+3r1B3rQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,40 +95,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 02:54:35PM +0800, Muchun Song wrote:
-> 
-> 
-> > On Apr 21, 2026, at 12:15, Oscar Salvador <osalvador@suse.de> wrote:
-> > 
-> > On Tue, Apr 21, 2026 at 10:20:44AM +0800, Muchun Song wrote:
-> >> The memmap_init_zone_device() function only initializes the migratetype
-> >> of the first pageblock of a compound page. If the compound page size
-> >> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
-> >> subsequent pageblocks in the compound page remain uninitialized.
-> >> 
-> >> Move the migratetype initialization out of __init_zone_device_page()
-> >> and into a separate pageblock_migratetype_init_range() function. This
-> >> iterates over the entire PFN range of the memory, ensuring that all
-> >> pageblocks are correctly initialized.
-> >> 
-> >> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound pages")
-> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> >> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Mon, Apr 20, 2026 at 11:03:16PM +0200, David Hildenbrand (Arm) wrote:
+> Let's make it clear that we are not looking for LLM generated content
+> from contributors not familiar with the details of MM, as it shifts the
+> real work onto reviewers.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+LGTM to me, I think it's important we clear this up. So:
 
-> > Would not the call to __init_zone_device_page() from
-> > memmap_init_compound() take care of the subsequent pageblocks?
-> > 
-> 
-> No, it won't handle them automatically, as the page count from
-> compound_nr_pages doesn't cover the following pageblocks.
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Ok, I see.
-
- 
-
--- 
-Oscar Salvador
-SUSE Labs
+> ---
+>  Documentation/mm/index.rst | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+> index 7aa2a8886908..13a79f5d092c 100644
+> --- a/Documentation/mm/index.rst
+> +++ b/Documentation/mm/index.rst
+> @@ -7,6 +7,19 @@ of Linux.  If you are looking for advice on simply allocating memory,
+>  see the :ref:`memory_allocation`.  For controlling and tuning guides,
+>  see the :doc:`admin guide <../admin-guide/mm/index>`.
+>
+> +.. note::
+> +
+> +  Unfortunately, parts of this guide are still incomplete or missing.
+> +  While we appreciate contributions, documentation in this area is hard
+> +  to get right and requires a lot of attention to detail.  New contributors
+> +  should reach out to the relevant maintainers early.
+> +
+> +  This guide is expected to reflect reality, which requires contributors
+> +  to have a detailed understanding.  Documentation generated with LLMs
+> +  by contributors unfamiliar with these details shifts the real work onto
+> +  reviewers, which is why such contributions will be rejected without
+> +  further comment.
+> +
+>  .. toctree::
+>     :maxdepth: 1
+>
+>
+> ---
+> base-commit: da6b5aae84beb0917ecb0c9fbc71169d145397ff
+> change-id: 20260420-llmdoc-21bf5fadbd6f
+>
+> Best regards,
+> --
+> David Hildenbrand (Arm) <david@kernel.org>
+>
 
