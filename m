@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 382FDF89251
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 10:56:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9112DF89256
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 10:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ACE76B0092; Tue, 21 Apr 2026 06:56:12 -0400 (EDT)
+	id F2A0E6B008A; Tue, 21 Apr 2026 06:58:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75D896B0093; Tue, 21 Apr 2026 06:56:12 -0400 (EDT)
+	id F01CE6B008C; Tue, 21 Apr 2026 06:58:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64CF66B0095; Tue, 21 Apr 2026 06:56:12 -0400 (EDT)
+	id E18126B0092; Tue, 21 Apr 2026 06:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F3416B0092
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:56:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 025851A0D2E
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:56:11 +0000 (UTC)
-X-FDA: 84682258584.29.BDE5018
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 28EE8100003
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:56:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bZGb2Ak9;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id D1BA66B008A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:58:19 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A3D3E5D3C
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:58:19 +0000 (UTC)
+X-FDA: 84682263918.05.639A848
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E15BE1A000E
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:58:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GfPX7xO7;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776768970;
+	s=arc-20220608; t=1776769097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rsemHJ3fDNViSPKxQzPZn5/mznjb9La+x2dQ4Ib6EqQ=;
-	b=IXrcU8xTU1PpVKjM7lDobvq4oGhilmeXonBeE3FJ4jLzqFhrwt11eVTTJfwYLWM4+1xPWh
-	RXoGArx2Aalk+arAmurq3m3UuwPrfxvTpyaFXFnv9y6EYSNX2r1vb42AS73IWZV4ECrPg+
-	hajIWQuxfbAa7K3JBa27zzxjfzdDDiw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776768970; a=rsa-sha256;
-	cv=none;
-	b=XwYjbsMrKAw3Se2x+P9r8MBoNWkffdRBoUkQbgd8lU04Z72jvd1qKAaavHBalojQ5Fcy7i
-	NUO7DlPWluhtxU4ajVhlYovyGeET7XxAwtbz9RztLP3XEDVlimSzu2nTNp/7+TSJJFYExm
-	xNsRszFfAv31Vl4CWAZmiBtj0FGUyAs=
+	bh=zEyZM8/rbDUleahj5R0RBPr/fsqgnIZU7DeBLPbpmwI=;
+	b=Y+ORd6xxXdhaFafvdox+c1fPQYIBGKzD1YNTpTvUUieB0xVKZJ8103Qe1EdE6RqgCOzglI
+	YP4oxHPM5Y4bEQv3+gOA4mNlq23WRapDhFnyKl2XPGYsbEhoSr/u/DWVCZWrDklzanMPeX
+	lL6LqDoLGNUWKRkqIJ+tekrivHz/SX4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bZGb2Ak9;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GfPX7xO7;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776769097; a=rsa-sha256;
+	cv=none;
+	b=kW3oklPcTNYcbll1UxzE/sqJEASfvz5u0PkSrdc5p4AEEvnB9Msb1Wceopm+gWQUQrwobU
+	NzPT7NBXf+zLJ6CIng2LUjrz+15BoxSfMvbdfKtKsvBi6efaOcHLMdE8fMSN68YrAhw/WR
+	/GLQsVUxOHa4kQ807EJnsobbcnqf33o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 308B94438B;
-	Tue, 21 Apr 2026 10:56:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F9CC2BCB0;
-	Tue, 21 Apr 2026 10:56:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3E6A160125;
+	Tue, 21 Apr 2026 10:58:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1815AC2BCB0;
+	Tue, 21 Apr 2026 10:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776768969;
-	bh=28/Re2P3rtxWETUxEDmL+uBIuydZ6Cru3a7eY539SXs=;
+	s=k20201202; t=1776769096;
+	bh=t8tGhKLq59XKo8MiSyis/w2Xu/nbZ8LJlkNLeDD7oDc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bZGb2Ak9fyENYNy7XuwWvO992dL/SDpf5EkNQ0x+kt7nqAf/y6NyobrUgNZ7PbuEU
-	 h81mOWgSnpl8RHh+Gb9/IS+BWGCCW9YOwb71OOF4S7/MB9cCXUMFOPLdJsJrCFFUNc
-	 57AX0ENJKMop/N8T5y2Bly8BmI7X8Jcvrdx4ZidvitfnEmH3nmzvE1/kUoYe1em+ol
-	 cSVs5QJEh9salbgGk72sWVOH7mmWby26YDHqHzkcP5naFpMzdVBZQhXZ0dRPj3alCG
-	 4dqJ9XSYM9T1xiSziwcj4yEk40ids4G1nHwptuxGqa4JICWNJcukY8TS6oQ4yQeTID
-	 10uPBb8BHqVFw==
-Message-ID: <5f76af6e-9818-42ea-a305-c0fc1d920dca@kernel.org>
-Date: Tue, 21 Apr 2026 12:56:00 +0200
+	b=GfPX7xO7qWEA3W1FaagrkCuVWqO23hvMOk/g5VXvc3tyPCglgVtA2SVovEMpppYO1
+	 jlNzP7iEpJBeMl0CDcK4ofJcqaATpxK037YKBke/Sv37LACFY+KZYnJjsatfUO/WgI
+	 8IdCDbg/RNL5BSkkhpmqwFKf3TU8UuYSXiICT0AwHy0H9xYorZctt0/kruvi0DbFjv
+	 3Hn/IpIz1463zxI/Gm2gffBNZa18PvqdMZ1Ey5AtjQeTp9wAI2d9cfIo+OqCTuZJ5A
+	 CbOwayf52P5Kc6tGuN5OzyiHF1/9mTITm7P21YNJy7dYgRgn0YjOkFg9+zXYIjUQcH
+	 MSGcwB3DC1LSQ==
+Message-ID: <b7fc296b-06bc-4d52-b607-2da94c123fa4@kernel.org>
+Date: Tue, 21 Apr 2026 12:58:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 17/18] mm: add free_frozen_pages_hint and
- put_page_hint APIs
+Subject: Re: [PATCH RFC v2 11/18] mm: skip zeroing in
+ vma_alloc_zeroed_movable_folio for pre-zeroed pages
 To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
@@ -77,15 +77,9 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
  linux-mm@kvack.org, virtualization@lists.linux.dev,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>
+ <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>
 References: <cover.1776689093.git.mst@redhat.com>
- <c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com>
+ <39c3c8e647fc4c8e3dcb5c9d12f2e29b5404e8f2.1776689093.git.mst@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com>
+In-Reply-To: <39c3c8e647fc4c8e3dcb5c9d12f2e29b5404e8f2.1776689093.git.mst@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 28EE8100003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: k7ic7841gxh5err1116o5t51dbnfzb6p
+X-Stat-Signature: tkojpxzg7ugww1pwb7r5yna7zxokgdo3
+X-Rspamd-Queue-Id: E15BE1A000E
 X-Rspam-User: 
-X-HE-Tag: 1776768969-387572
-X-HE-Meta: U2FsdGVkX18XlyKuf6rpk1Cc8kUCs6p6DXKD8R8ywqjDFCVyJT9uAKaXm/1pQnz+5zJo24VTObKphcd2FGWXI9SzwaRGHalogjFrlDDUUMpnCsI/sauFCj3JqYoHdGDvm9NwNKK5Gz8RX8flyo2s3RGofpw0MKH5tEUrU7qBiVAqB60ocBjXRu0C+cv9jJvJ5pf4ebm66Fmu12Wfws5g8Tfblqx3rHAzr4KIre9Yy1YqUUM4qDU8BWIN+HfsVVyOm+SrRjeqlS9yX7P9gUz1Qq0EU1pVc3EILq2TRbQBYzmcC2jguPc+vkyBpzE3oWquKyopuYkTbCx1XI4tmewsGs2ogaNWypJ2DsgCHN3PS7upQ9O/0Ls35sGToV+EhMG2bT2Vd+lIW/n2ne99XCaDbeSvYVsCEHs1TFvVtjg8710fTkrVnA2rw2uTgxU05Yg3TXStJGUM+iwJ5cOK3+yTeLjjqFQ+aAtZZQvXL0Ei1OJ/eMBkLNK7EJPpDK9yLMOLqIw+hfjiQ5aVpjKA+QPJHFu3xD2FgAcaSOIxCqW4pq+YYFoOwJVsWeAfrXuDAJBndeht7tMkN3dXCcNXUzDhkN3+4I4B9rgbkgjkSQEVZEuLlFipy3BmcAaGmJJL/q4+hoWw2fPdaMpaBLzw4MtBma4D3Bv1CKroHyzIZEZOA8tuJ4oayPGp2oUek4JWikXNwXbyAYJdECI5PJ/D+kdfjHyvdd/SE5G7jPKkSH1UThft981f+TtkKeVjg2nuhzlLRA8q8EETkzD0v5pHZERLSj6K0AaLrnpgoHefxpDasdoZNYWVj2uqibhUZO84o8LDAnCuzTTrFGmFzNiQtarYbYKhrbXLiBh3X5kYUU4ytPTGX4QigSgSp4JJMjN1cZf/0iDZYNEIh0sH4doJUlR+Yw5q3P5ATRorXwHzRHML5XUHKMJCy3sZdM4fBaajVKnRzzaW0rf9WYP91y2WrIf
- RDD0oZTF
- YykuV3fW8KBo8LyMyaMBSOrK35osSPT34zqp0eqKst4yIPl4WGpQX7FVmWjgxj0414kc9MMsy817DTFJcWGgq7dccmlu0T4Iaj3kJPjuFydsDvg4p6hOqQTsChRJI0NxkIhjZEcSVNsgP8KaTvLY+34cphbS3fGWVGlmp4pUgbtir97Sevia0o23XphGWem7wof1KvktiMtREgvFSrseZ9Z9Y70UhSOAmmNwGT9Rz1SK0nZzWh273aPricxEk1hGG5BOXToFUiddyX2hQRGkBX5X8w4BUIuaD9+JFGasBSWF5U6BkkrzfagxcEw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776769097-670370
+X-HE-Meta: U2FsdGVkX1+YAh8FQyYg/+MmSjHe5zodTJgsEG3NrbU6xc2rfKEA4F8XV+ztdsAxunviX6KomVEjqb6dMXdrJ6nPRZCjfpOV4MRhTd0UUtZdklXQCeK/5tazFlBZxlu8bCKdTewC0lO0Z/Giu++mWBXec2cisszozGMKYMzi7z0xQp8fdm/48eQQN4divu6hsuAONp9IitIXSGnZVv7PZPINCsNCw5fQkjFINJTbcNzajj5uObbkaiwkMpGrVAM2Fx6hcp4bcZV5+RpXjMzun6cECCn3zl+xphfozx49SGhvhD3n7USQSIXQ2TPXz5yeZBdHLuIu7yWiRPeRDbC5ZYL6bReQ/CWPtEYWt0ybwI4b8PudK2FVMki2rh+Wle31wu4HuwJTUM4xgPLcNBQQQCf7eoq8NBSxZztM1CRXL/zFUQv6kF4LqPiT2QUl9wiR7hxWrTDWBbbC6APe/Xl7lY+XQ4GPCBzOOINEjizWu4D1Gk0dhm1YkmjXPKTMUXEJuWPTtLMPoS5DesOR86f7+Bf6iLJj5mSBu8rvFCcH8i/zKPuUk4ANTI+XbTah/T4psluVB/WnNIG6P0Rw76gbdET+uVPxiLVMgtRxWHh2xlvFtGACeVcoBICqBdy98IK/uqHLvgBrRLyqM+0gghRfBF5OUxQYJZbzT2RzhvKDTlUJGEIXS+57xQLQbnbFuIY7i1kGspOwhxLfvJdyfeR2Z7xtGVx/fpuy63Cz96fEd4UYpHH4IsTRjfGJtd/AIMN+ZgT+ZojAjFsS6LH/VszM0bpQ3LJuTK+SZYFa2eG3ZFasakTaJ4AeRsMfJxtgxeGYatTgojaRBh+y3T0Be9jBnn8gzrQa0W3paMMwELtbIOpKU/5OeSuO9K3e5M4ntLj9C8yFgI6ZRSg4Dz+wP6e0nu2c6Q3QTvINfUPQ5dUEd+YBXxBFFNYXDwqpx8opYvhFgco2As1iYkaGdgyfv0T
+ +/CuAUZt
+ hMYLj9xIPJpzqSSUm0SoIbZ2ibfp/ustLMjewWhGkGglKcNiC+KAcWlrKQtIJ0g8c/7JwIigGwR1xMomLj7SjEkJKd3CBGjjdJ36QraZrWeUKsrfFFreqOpsn3A3qgZzT1j1nX2d8mmNb+S5XGe4MSt98CVtSCk58N5opeecflFRG+aOs4Q/KzZAOVjN2GbG4kT4yGaHf8ZLMw85bPT24KGy8Ihz5+fM14szwY+xFI/Ka2iceXfrfmGSlO2gNZecAFiq7n3WEcAqjU+4eDYmopim+bJnwDjWYaExYxF5AAoM5Ptnm/AFNCTZvQq84y9VI1EWnsbw0kqkU3BrIhz8Lj3x5Ao7o57Qe4j3ZBdV7Qr4zwL8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,31 +144,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/20/26 14:51, Michael S. Tsirkin wrote:
-> Add free_frozen_pages_hint(page, order, hints) to free a page
-> while marking it as pre-zeroed when PGHINT_ZEROED is set.
-> The PG_zeroed flag is set after __free_pages_prepare so it
-> survives on the free list.
+On 4/20/26 14:50, Michael S. Tsirkin wrote:
+> Use vma_alloc_folio_hints() and check PGHINT_ZEROED to skip
+> clear_user_highpage() when the page is already zeroed.
 > 
-> Add __folio_put_hint(), folio_put_hint(), and put_page_hint()
-> wrappers for the put_page path.
+> On x86, vma_alloc_zeroed_movable_folio is overridden by a macro
+> that uses __GFP_ZERO directly, so this change has no effect there.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: Claude:claude-opus-4-6
+> Assisted-by: cursor-agent:GPT-5.4-xhigh
+> ---
+>  include/linux/highmem.h | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+> index af03db851a1d..8bb67772c1cb 100644
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -321,9 +321,11 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+>  				   unsigned long vaddr)
+>  {
+>  	struct folio *folio;
+> +	pghint_t hints;
+>  
+> -	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, vaddr);
+> -	if (folio && user_alloc_needs_zeroing())
+> +	folio = vma_alloc_folio_hints(GFP_HIGHUSER_MOVABLE, 0, vma, vaddr,
+> +				      &hints);
+> +	if (folio && user_alloc_needs_zeroing() && !(hints & PGHINT_ZEROED))
+>  		clear_user_highpage(&folio->page, vaddr);
+>  
+>  	return folio;
 
-Can we defer that change?
 
-Putting a page with a hint, when there might still be other users of the
-page is a weird interface.
+For others reading along, the variant on your other branch:
 
-In the long term, all balloon pages (PG_offline pages) will be frozen
-pages, and definitely not folios.
+diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+index af03db851a1d9..ffa683f64f1d1 100644
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -320,13 +320,8 @@ static inline
+ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+ 				   unsigned long vaddr)
+ {
+-	struct folio *folio;
+-
+-	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, vaddr);
+-	if (folio && user_alloc_needs_zeroing())
+-		clear_user_highpage(&folio->page, vaddr);
+-
+-	return folio;
++	return vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO,
++			      0, vma, vaddr);
+ }
+ #endif
 
-Frozen pages don't have a refcount.
-
-It would then be sufficient to have the single owner of the page call
-something like free_frozen_zeroed_page().
-
-Now, to convert balloon pages to be frozen requires some more work,
-primarily to balloon migration handling, unfortunately. I have it on my
-todo list, but it will take a while.
+Looks like an extremely clean interface.
 
 -- 
 Cheers,
