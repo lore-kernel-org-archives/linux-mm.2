@@ -4,77 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09EFFF8FA7B
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:06:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A51F8FA80
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:07:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F9CC6B0089; Tue, 21 Apr 2026 10:06:33 -0400 (EDT)
+	id D142A6B008A; Tue, 21 Apr 2026 10:07:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A9BE6B008A; Tue, 21 Apr 2026 10:06:33 -0400 (EDT)
+	id CC5556B008C; Tue, 21 Apr 2026 10:07:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 571F36B008C; Tue, 21 Apr 2026 10:06:33 -0400 (EDT)
+	id BB3996B0092; Tue, 21 Apr 2026 10:07:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 426AB6B0089
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:06:33 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE2265D5D2
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:06:31 +0000 (UTC)
-X-FDA: 84682738182.10.1866544
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A59F96B008A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:07:02 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 50280160EA7
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:07:02 +0000 (UTC)
+X-FDA: 84682739484.03.6098B9E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EC3D84001B
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:06:29 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M87GVt0o;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 911CE140004
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:07:00 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HXctiPqc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776780390;
+	s=arc-20220608; t=1776780420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z4xGrtscn802UXL6MBpynsI31x4BBY9WiKVH5ZwMOtw=;
-	b=iu5HabFmc30QjUaDCi9DF65+vadClCmVuOXoUUDBdM8oCcH0NdvDShxShmst6vKUpwM1jZ
-	W7W7J1F8v2fD0qgkdlY9mt0LCWWA5jMITCfZTHqUMp5KD+ppLTL3aFIF8oZdk/aDuogjsk
-	+5P1bHNu+d7GpxFKrRNIcPhgsg5BCHA=
+	bh=iChZRsQiNXg+6iyKpig2XKY9Ixjs8tY7PFji4LMnIyI=;
+	b=mKYiTn6THgUXDPGnTpvl6GdvigFAQxyT0jOjvDKcBsfF9IR8THnx+ZqOVwJRClAj7kLyiP
+	qvy0AfTR7VWgwSGPTTM21xtdZYqmEQiRL3N9aqstM5Vw9js6kY9f0939yqUjKSvmG1W1vB
+	KDmISepVYPiZCD9z7BPjZ5zMaPfAMNc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M87GVt0o;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776780390; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HXctiPqc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776780420; a=rsa-sha256;
 	cv=none;
-	b=HZN/jwbUvkI/xMlje+TC3M3z7sMpMmMMzuXrRFgnNAadA4YbmSeJQfB9hjDHDm9iuERFYf
-	p8g3alsjLT5dLIMqrWMC0/576a05agDqUSMFOu9+V+fuhvg1kW1Ma6jupWcbMC2bmXQweQ
-	wX4uXIjG4Tg8uliPG/YR7wJCtwszESc=
+	b=GEemIRthWYgmoSOp8HBujToRV5K2j5t7fuKf1AaoDnE+MidFwEcORzlXPZSS/n7fJdSygs
+	cWIrLOnL35pxPTqvRTKz3kYzP1EzFUqUoQw3q7z5cSB1UoQ3k9I0LzMbk1d2HBgSoz/3Qp
+	O1gqsZFd341akjZhSaPWekncAwhQtIE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51A3E600AE;
-	Tue, 21 Apr 2026 14:06:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C768BC2BCB0;
-	Tue, 21 Apr 2026 14:06:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 23BB46001A;
+	Tue, 21 Apr 2026 14:07:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421BBC2BCB0;
+	Tue, 21 Apr 2026 14:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776780389;
-	bh=KLkU2JaKNWfaB+72rvS+Uc2eWx57bAkCQqfvhEhX1Qc=;
+	s=k20201202; t=1776780419;
+	bh=3hKwDYgfWHkAS2Xie/PyDCZVOfFJ7zz3gi89F6UCldQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M87GVt0op0cOWVFk+tFWcrm8TrcbedF7DeBnwyT8lgMWIsiK4r8n+rXttk73jxkge
-	 d4B4z7Kerd43S3Oc3qwwKqnld3me9RXV9lFBcWya2N37p0Wa9HCbt7qhlsVNrXyUHZ
-	 drv+c2aQB6wyEMm3CoilddIL+FGQdEp0Blt6FLky1zQh8qsNPQUHdq/0d2gkpAUn1p
-	 +QbGZScd0MjKdBHY3+Fbf65nkX3VShTSY0Ph/9jMJK0LYeORR/iiTWq60h1waIffS9
-	 DJ1vAIdM1Vu6Pax9nINvqHUgvW/GpmjYcr6mpJui2LphwLGptjRaWfYhpxrYYGVDGM
-	 D+QcYPRlJKhDw==
-Message-ID: <e48748ff-0fcd-4561-9958-124dd853e70a@kernel.org>
-Date: Tue, 21 Apr 2026 16:06:24 +0200
+	b=HXctiPqcixf5ofRlrw+62WSquXdeg/boIUpGLomwpKVj4626AgypM/t2M8rYDENXj
+	 YOkXcx/yKvz5/s4jyifY2mW1flXNaCsWvSYxmK0gJ7XjQNEiVZzlg2lfZ63gFBIv2E
+	 4Oz02TVBb94YAw/BBhK3vlGdPOyluJGZrqi9pGjW+7sExI2po7aP2cIWvS3/isKdkW
+	 0WFptr0QEHFyxDBlSQ/4PyZYGpJH4yc0808O02A8Xc/Fbe9m9Jc2n1pLypjpfsci9C
+	 J9KNBIVaIVCw2Ro1cSCuSHjrQQnsPTq1cFm9KpqdsnEbU4RAFdSE9UGrr5VIWJf7uh
+	 RUCtDOFmetuaA==
+Message-ID: <eb6a6dcc-9e48-47b2-9805-d14b121278ad@kernel.org>
+Date: Tue, 21 Apr 2026 16:06:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] WARNING in workingset_activation triggered by KVM page
- fault path on Linux 7.0.0-08391-g1d51b370a0f8
-To: Zw Tang <shicenci@gmail.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, hannes@cmpxchg.org
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
- seanjc@google.com
-References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/page_alloc: use batch page clearing in
+ kernel_init_pages()
+To: Zi Yan <ziy@nvidia.com>
+Cc: Hrushikesh Salunke <hsalunke@amd.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rkodsara@amd.com,
+ bharata@amd.com, ankur.a.arora@oracle.com, shivankg@amd.com
+References: <20260421042451.76918-1-hsalunke@amd.com>
+ <C22AEA85-4EF6-458C-A735-9F7E48934C83@nvidia.com>
+ <a6182e60-9b81-43cd-aa25-09e54d20d13f@kernel.org>
+ <23A49388-EF68-4055-B620-54FD92FF2EC8@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
+In-Reply-To: <23A49388-EF68-4055-B620-54FD92FF2EC8@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EC3D84001B
-X-Stat-Signature: fktxznt6i8797p81rwtdgny9kthja9ou
 X-Rspam-User: 
-X-HE-Tag: 1776780389-382455
-X-HE-Meta: U2FsdGVkX1+24ZF+oCdQ6Cd3GP6MQnAGT828aNq2+jr/RFRuD/QEDUMmBMG7iHANecd2LkdZlhKf7OAftJznGueC9yP9I9sAjyRpaRgvn/XmNMXTkCGZaxBoqn81exx9qnG4vYQYlh9IlcD3tiGolP5D2Ph2kLGWHbbsw5EndfbF3UIJDWpP8UtYk4mGNdXl8hAHlUcfz0U8Ya7dOfmZd0SUcrxJWmExAv2leVQ0r2XywYomtFSTQ2hyh/AhnhE9LZP/m6DuxTwS9i9zkat47jdMqOwz6D2Yj9wmaVhlyF2chdpd3+3hqAQufwL5Jfp78Dl46J+0ah3xSvTT3y0qUQW+2uf2HDG4VPPKfGYxoe+/YtguvOkv3vNGLcZbRcaEBThNYxT/0gJOrANlYmlKAawrrqld3/qqGMrW/MQZ34tvlMmj9GFSkgm0DsuBoZy9gFfOfFT8qPA+geTi3loemwPyoIy3M05OYEbb5T5yU+EzoJE53xeqh8WkfA9IguXYjeIBP2YTaAFKB7a5dXHTGzdm3iQOldgPZnkq7HCdOR/0pJjFNtd+Gt0xFyViizCx/u6pvQD6rXvV56tGWlqMbplqRX5YXRQh3mlSr1OctnoAeWFwLa5RHT0K0aovzFHDdxqakRCDQriYe3E3yiyo9BjA+djVtBBceQwKcU7okcy0/+vUAwPC5sH8fjqwXg1IcVh9y0CeoMrolt+GmGrK2C8eEPazTHvtZoo0lOoewGIbDTQM2cU+QFpxIZ39vZ9doVrbn9ScW+wl+7TwuSoN5iDM8izCZbhE30edTw6glvDilRLQW6328UAUv63wM3GWBTeee2XyFrj4Kym6bo9TEFSLrwgS8251OoJVchm0BfvFOpocSGnjigznL1/1QAKutC7JbGlG2mcdE1vXRxY1pzAGRKeYIzVuda/udyxNE6Vp8Skvya8CjUl68qvxWFqCSHM8SD31eSzub2KY0Gf
- q1IqdSR+
- jsgTyn4RCRrhKxzIgriX0cwsWgOMwJxP2wtsve3M/d73BVxpj3OSKoXm3nEodQej6WKXo0Wjz+i8xU733YI0EojrGJU+ZXEaL9tRtz+kZVxhweDwrSGe3S5xWkF9bMD1NHHOqg/LVfI34N2FlQ2VKJPGmHrXWLB1qMsI+MR9cDmFK6UITXZMyDvWIrC6+7Sejhv/mqQRdEmkjrt0ZYFFcBbTX+sECwgrc6EET/xSrdCecc0ssKchB4kcpSM1m0bPp7NIXRlu6K/+g8h41V+GoTN4ilAZ413xswUAaFz6kLaqQGdY00Kbr2Onf/BiHqqqBTlgiiVYNhNaZXwk=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 911CE140004
+X-Stat-Signature: pnmo8bern9ju1qq661rsnzwud5dik5dn
+X-HE-Tag: 1776780420-131090
+X-HE-Meta: U2FsdGVkX1/a89LZ9BVg0mnw7T6OxpCdDCntjRWdrmt0f162e3mfk31txggLmRfFUWWULqdMcWiv6tSMGyj/xB0LU7gWiu5bFkGWaLM/6Zr9IA/zwV649AEf6dSZRqknDNSnxSrO8ZGYjZZwd/2z5OpSgh6Gun1rOoaq5ie+KNdbzDe6v5AdNUahGylo2lMzn/D20aS9O3CXlL4cIr1elME6mFakkyBjLvjQRMH7B9uYmWUxVBYiq7/BHTjFZJKEPWUi2fNu1SD5BfyONIpKCKseuPgQ7a1OD3vSSOgmyPTGqh7VbVtSeHav85N/PHXYjKXa2SL+qGsMVOz/PKdCNmX+UzfOP28ENt6hn65w+IBKqLmOPukmpJTh4BgLsHuPWvwsGpJJikbhNM18e7ArTSeMLsZNkjZbqLZhkRmmIHzWCo0f5Lf/dWAAU8Xa1bjirYLq7d/ONnDWAuzQiCbmzoeEJocnIcTEFSciGfLglqQTG6BGFeFgz8lEqqxTj5vzV0ZUA1vOQ8sw2Dkm0QyPcDbAhw/KWWXR5rbW8kinJTy6bpKAujsa8lsfaa+oQ5+52mvh3+doKSeD2eEoIV7QVOId7UF0rt5sbwUCSejUWq8F45JERXftweS5sFxWRJ28ih8hdAnr62lyyXFiyngrVYK09iw+ym4RMRFJnyWQxxDlLHPEA7Vlh1b1m6bIYyBDLODdAIPZithiP8E05Xg1y4bQfGy5QVXjyuzli/UggMp2LVBFoEXiF1y7Y4Pjy6cZcv/j37IBo0ip94HmOwr7QTymBNoDR4+g8ZRtL9fx6Fg/ga9jSUoQmGFILKCGs7LjIYw9+bV9CUk0+d59ZmGpuWhMuwocJbv+eVvfhEDEk2ui47Im0lNaffkxeYXKV0CGCK91zIT3anFAssGCksMcPje23h9vPIi0A68D64XJ8gnWJlI8KzPhY9zLD9I5rufidvV+qfK2DLRlPqy2D18
+ VuRJS3b5
+ cgxuIfMj7PZ9Wl7BWu9X+Ra3L/bZoPWENkNOkYMNvp8j0GGaG5oAvmk8kNxrsWZFGeWf5S+3hg2ZOt2lVZ0CMHSgcp4SWrA6LI5/mZqw5aST7BNm2dCPTOQCHFfIh/6BNQNVbrbIqiWhYrrcE76emyrYMdOjIwDJgDBjS3NpM4z0iK8/pFpA+Evoc6lEZPmNFAkKGt/2zxbyVj5yT6nd2gWMLerDJpQhABksRXsNpdP9ABlD6noYC9jSiNmZd6KbNuIkejD3oibCsExaXgJP5qRzttnk9o8loMrV8Odn7f0/9GR+U7yXWwno13A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,17 +144,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 13:17, Zw Tang wrote:
-> Hi,
+On 4/21/26 16:03, Zi Yan wrote:
+> On 21 Apr 2026, at 9:57, David Hildenbrand (Arm) wrote:
 > 
-> I am reporting a WARNING in workingset_activation() triggered by a
-> syzkaller C reproducer on Linux 7.0.0-08391-g1d51b370a0f8.
+>> On 4/21/26 15:44, Zi Yan wrote:
+>>>
+>>>
+>>> kasan_reset_tag() here removes the tag from page address, so that
+>>> clear_pages() can use the right kaddr. I thought each page needs
+>>> a kasan_reset_tag(). No need to respond here, as I am reading
+>>> the code and trying to understand how it works.
+>>
+>> It's all confusing. But we really just turn the pointer into an untagged
+>> pointer here, once.
+> 
+> Yes, I realized that after reading kasan_reset_tag() implementation.
+> 
+>>
+>> So I think this is ok.
+>>
+>> I do wonder, though, whether we want to move the
+>> kasan_disable_current/kasan_enable_current into the
+>> clear_highpages_kasan_tagged().
+> 
+> This sounds reasonable to me. And also replace kernel_init_pages()
+> with clear_highpages_kasan_tagged(), since kernel_init_pages()
+> will be a wrapper then.
 
-g1d51b370a0f8 is not a known git commit id.
-
-Do you have an upstream git commit where the line number
-include/linux/memcontrol.h:381 makes sense?
-
+Agreed.
 
 -- 
 Cheers,
