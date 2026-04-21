@@ -4,129 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17A2DF8FA73
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 13:30:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E41F8FA79
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 13:31:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36AA56B0088; Tue, 21 Apr 2026 09:30:53 -0400 (EDT)
+	id B5A3F6B0089; Tue, 21 Apr 2026 09:31:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F50A6B0089; Tue, 21 Apr 2026 09:30:53 -0400 (EDT)
+	id B0A8B6B008A; Tue, 21 Apr 2026 09:31:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BD076B008A; Tue, 21 Apr 2026 09:30:53 -0400 (EDT)
+	id 9D24F6B008C; Tue, 21 Apr 2026 09:31:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 072766B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:30:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A083C13C339
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:30:52 +0000 (UTC)
-X-FDA: 84682648344.04.6691590
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2D35A4001E
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:30:49 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C6T96D3h;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=n2WUAtR4;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BdkAPFh1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RvmRJOdC;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C6A96B0089
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:31:05 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 429F48D414
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:31:05 +0000 (UTC)
+X-FDA: 84682648890.13.1CA4D72
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 508A01C001A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:31:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NEsAvZlc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776778250;
+	s=arc-20220608; t=1776778263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UHY3DhG/PGppNI2DHaG+4zPgwezdbdcDkTtshzKqt0U=;
-	b=Hf14DySpOAJtp9/mhucVW56xdkV8Mtg6D4KLMvwGRYUnyHtOzOBe+BJU5tFsubZ2fqFdpX
-	9A2NTJKPJOfg9p3nJD64kXr1kUbSnq1V7MENfQvZLz5GTuS+WuJCbvA5f7KAqkshIlzq6c
-	OOfC9qnQ95eznCsD6kRi6IrUTlqwR4Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776778250; a=rsa-sha256;
-	cv=none;
-	b=l2wKLu2Bmkdmdx/hutEL+dHtcmzgzAx0QWjyhfiUXRsWNlevctPQk52IXEoDq+tOTsCTjC
-	gxFmhQTMCXgjcY1cpFbXVviWiz2tl1fLL7v1kIA7ZGlNzAEqju8p2K0wsojsyrkKTxjjV2
-	0OrIdJm9q1JY3FB+fQKhNlyTljlWouw=
+	bh=EiQ721oSxJL+49kCE3KBrAGEyXh+20S6aF8xBPikaGw=;
+	b=MI4KCFdatY9SRbLiYAx7TFrlwvTb8m5+0BonzPDDJJCQrikpFEpV2dR6CPWNajT3qnlFPj
+	/IEx2plCddmRnUz+CAshgBff6YPxdSQreHVqGY54lM2S6BPCZyI9XBq8j9ytmNppxsO9P+
+	GKojZBD18IaXN8vcvjB8Oyz2OF0ok6E=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C6T96D3h;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=n2WUAtR4;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=BdkAPFh1;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RvmRJOdC;
-	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4CC8A6A8E7;
-	Tue, 21 Apr 2026 13:30:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776778247; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UHY3DhG/PGppNI2DHaG+4zPgwezdbdcDkTtshzKqt0U=;
-	b=C6T96D3hZvX0V2hGk94OIpFM4xYiHwuXuodoA0vSuDd9ExA/gpUGDQMPRMcVN/L5MIye4k
-	pQPXIsi8tcJkkd06DFxsAjjoD7PedYkzigpFbbhlV5i/p5Xc9awk90GkiwomDGOCU6inSP
-	H8LU/5q2N3QZX/Dx3v088/VeRIsBg+k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776778247;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UHY3DhG/PGppNI2DHaG+4zPgwezdbdcDkTtshzKqt0U=;
-	b=n2WUAtR4pnt2jJy7cvObtZUnncaCyEVDu2gJU+IkXAzEQqAEHeBC0ZSKV2dVu8KJiJJZ7K
-	eeEfzlsxKPYc41Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776778246; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UHY3DhG/PGppNI2DHaG+4zPgwezdbdcDkTtshzKqt0U=;
-	b=BdkAPFh1Tao8QwRcgJd8osFBjMgRyqw80xjtsYeUoPMnI/0+lXvOWU5yTON9f+w/cFyxB1
-	Iz0+Tuq7UST0VxVE9IioWz97QRj+rBG8PrpcSzZ6SIfZfk/AQELo9BW4j4zV9gO3pzrQUq
-	YWDvILqkJhOtUemefhmrM0KI5M+PlPc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776778246;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UHY3DhG/PGppNI2DHaG+4zPgwezdbdcDkTtshzKqt0U=;
-	b=RvmRJOdCU2IF/CQYQOtT4aSFTHjimhR6UDl0fUzpobmOR1fWrmuYe1waPoQraNwTRbZZgW
-	EpmRHUvWRDwZdWAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A09CF593AF;
-	Tue, 21 Apr 2026 13:30:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CGKtIwV852kIEgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 21 Apr 2026 13:30:45 +0000
-Date: Tue, 21 Apr 2026 14:30:43 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: syzbot <syzbot+4cc5bc01fb4a179c4ffa@syzkaller.appspotmail.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, jannh@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Subject: Re: [syzbot] [mm?] BUG: sleeping function called from invalid
- context in __zap_vma_range
-Message-ID: <tq37r4njepyw3gmrihclvqzus5cvpmepvyrjhggb3wpv7cnsmy@naeba6ofwutx>
-References: <69e69c55.050a0220.24bfd3.002a.GAE@google.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NEsAvZlc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776778263; a=rsa-sha256;
+	cv=none;
+	b=fABFtF0Xubk9lAaJ4kqPOsSpQStwEW73B0eX1gcQSq7rie5ufXZiZ1yRW901voh5YkdWhv
+	3ouNSfgCeUIa4EZcDiQ7lfj4KCgqVAksoYUsAbkADrbmJnEVnVoHxRx31Cn/P6qOLEQkXp
+	H9QZkNhTRkJl8sLvb7nNvmehaLwkLn4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 48F2643BD4;
+	Tue, 21 Apr 2026 13:31:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AADC2BCB0;
+	Tue, 21 Apr 2026 13:30:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776778262;
+	bh=RAnacQScZk2HHf5w6dSElvYRXNo/zrEXc78IP1F8X0Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NEsAvZlcX5SJrk4ZR0PAjMGRcCWJ8os1LWUsvz29bylZrF8QKFGl7xapm9gK4L+fC
+	 xEctGyT4KI+2ilnvqq7+6Ym5FLQv4awJ8NqeA0fcCZYK2QTGr+eP9loiXW3fxlFZUm
+	 BUrR0oaAopEywO4Pd63SLRFcJT+QKK2C8D/kccePJWwNrVVduP25y4+EkgZ1pABrW1
+	 i3prujydQyAbHLpiT5d4Hy+zpLbtx+lIHzfODQc41nLlhtxIc4ti1TsNEAdKOwqeKx
+	 51aZZtdWKJNY9AISWjV3C26bT2UTlukbzYoACMQ8RMZZrV51uI7eAt/+hbMD4zQ3+g
+	 74WXBMT3hHM0g==
+Message-ID: <2a41dd0c-7ad8-4d34-8bab-a713e16c3b29@kernel.org>
+Date: Tue, 21 Apr 2026 15:30:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69e69c55.050a0220.24bfd3.002a.GAE@google.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: af5wdsfa4tyuhg9swrw7fzcjsri34tmd
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2D35A4001E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 17/18] mm: add free_frozen_pages_hint and
+ put_page_hint APIs
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-mm@kvack.org, virtualization@lists.linux.dev,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>
+References: <cover.1776689093.git.mst@redhat.com>
+ <c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com>
+ <5f76af6e-9818-42ea-a305-c0fc1d920dca@kernel.org>
+ <20260421091546-mutt-send-email-mst@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260421091546-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1776778249-689266
-X-HE-Meta: U2FsdGVkX1+OdQeU0o5z0oxOSWA8sFDqMBTHNE2U8I2avLta+lwqSR01ZlNlwSYpZI942tX8HYTJUNmDRywCEz8LQTZTXUtW4kcimB8Hwaabt35p5OwAipzBEsK89cSWOQZFT0nJ9jzRpxkk3bZmRQcDJDcES04zfBRn/WNBTlRec4P6y/l2b3nLTWo9brqLg1KXPv7L7fNM4enV73+ju3yUWicEbEeZi06ibXhw8aqYjo4V9nAzllm+0OXJVprP7w267tOP8NNoJUQ1xXd27YqFctw94cb3qr4FAeyhpDR7xpbkYoKwkOBdAiH1Aj+KU5u9XuDipI2cqEENzNJoDe67XY+0lYaMf2+ezvxV9cSbhh9PRD7FQnHgO/Gn66r6Sl6T1B3DYra+jOUwfnrY7n3Wti6bA31oWVDPVMpevKsM2SMwHpKns6lIz218duqKFq+0jc3Ic9cxeyhoWpUdoTfdQlwpyyD1vPCxBrLWL/l6gcOx7RfASWng0SQv26Rga4V/pyHu3OJblJTuANHyJExQL7UY1gtJZuTAW3rjeTEdgIUseFVUeO1UG6NASovSxxLiV9QEPTjkedfKnpwgnyusbtsa1Ds+9PUefaqHDTgwbhgUHzYBPdwYSlYgfDYutXAhupHXRBKdhEP6ZyU0gGYoJZ/CkhILAKKGqr09z0sr2ZxLGIqhBC3sXtR2WYoHXChttEmZBQbB/VnUBUGNk8okwYtso5OXiYYc9YT93jY8x8yazj9RDg0WzrHIYxANx8yhkVSXojCh7M5d+O7bra9TN++z4ByYWrV6aYFK0lAh1qqIFvcSBbiYhcUe2qD3w0soR1jO5iCPud4z28eDCcdW6Ywoy/Epl/tuhSUFGZP4tIEGgNMQW7h9RY142ioQZt/tvYDVOul18RtQ7Rp7nLn4nZEW0MmKrSVnqaPCj+4QRY5HRPO9T7qJhpLvqpaw/mRRfAfkkwqdRRpUinu
- wJBMQdTL
- mw9nm5Qwwp1UF98G6nVtNAoy92AuejbbO5SYEIix7qgseKDMFzj/Ja4s/jpDOVMQTKZHE6sqY4xRr20JhH87xHtqljlQ/vL4UH//z2peXueOr4LY5Q7du12BltliABHG7316YxAcXpc6mKLL/lTn3y1Q2/GPpeeXEpmHieB9QjHApuhpswvx+ghv4lhduahPxJzjjSLI9MDDF1ZN6D9nSZ6khaPtWGSBVcQe14fRjM6prWLxVYXehWim1gB+y8HWWF1K3q/0xYl5lRnuIJ6CV74H2zEFzHhM8mONpvTEmUNYTARGMW2UPVmHtgv9fSfScrL4QXkTPasB4XJF4B2D+bWhTRbbFyqgaBbO499ZTqW/33ojRAAn2oyannUIDaJAOJH/PkASdQRJxTEiGv2smhDjSyPEHfvZGSHTJj1zx/2+VFh2fMheQ4W2HvjI9mOrgwngNG8za5L8/sUQPjh8V7g41xiyigbfKJI6bQVFxjqJI+/iIzOozVB05+HaFiILqfn86qXh3BVjWjRKM57jeuMcf4fJbY2NHW6Dju8tQfg2fAtNRc++JyYt9OkUGl6S2oxARTvjFJNbQkeDkV9v9nBBuZrdADNyXLzoc9geTx9WabWDW3OZ8m/n+7IrNGJQwhk1jttLLyHwnsqvRemekjrfABdBmA8hRCPsTDkB6Ki+q2/rlB/bf258MGekobKVnSy+lPe9GmkuvaFuey1hcpMewGWuJWWIewyXjABfFphgw4NJe0kK9GV1AqRg+NTLIo9fNMAHOFau6fVOMCioWEllSacoOMclqYgiz4RsOiW4R5ppwKR6uGrHumBo8z5OvRbVh9NAe1SeELGxmAczAD9oqj5qYbFSkWXO12xHaB4e7igpuv+ur043rjBa+tSghmEsKcTKJhu37rQr935QFVjXQzvVG7QL8UeiRfak/af+5xDMF7+MwgaHD/Uubtrj3oML9wwaydJoLPpOCsSpZHXUa9SBW
- StvT3Zyq
- 3//KC8X03+A=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 508A01C001A
+X-Stat-Signature: 8cfqrx4qgmp9fje59gxysnbc9zdz4bw7
+X-HE-Tag: 1776778263-16042
+X-HE-Meta: U2FsdGVkX19r74DXcRw2cKs1cyc2yakuO0X8YwKuIhD9yDNchezNxhU4SresqHSl/cffN1JcxKnSFmtNADpx6X4dgJVFmx7OPcYXSV0845PniptlqX/V1EFetj8nvk8JFNrKXgdfqC5dN3yi4xL2HInVZ09boOMAoKN2W5A42FBRvUsNB1UDGe5D+1Y6AqfgvRP30k0bHT/KYlcLGz4NKXHSudRi0wd/ms4DKTMR334+IVicp88ZJnYcu8IADYHwjtlxKSazQMDxn7D3FwWRkHvA4PTPhZ0ixRBbGg5FVtl8Hv34y/Duwh0Qnyaofv9lS/qh9IAuj1ixVRO/uSnFigvPHMcJCg9Ihy7SLuD8Un4HBX+e7n8Mo1KYiUurE7p0CJKVLnhtDMTQWI5QBtuY+SavJofO47pbPziI3lQ2pmRmilYKIkijtUn32h42LCPeu9fdcyYEsjdnxoo4KgdX6fXqXJpSikSb7fEq7/nxvMH09NGiZEzPymaswkKWrVLVWmep209Oy0t5AlHYDfvN861SPdMw78MA9xeXaryIf5VWPyI6qLeAvrsdWJUw/aSyrFE6ICSml3WyXpCvDmBFMIPi7jQC+isY1rVnUv35xwFRUIMrU5cR2vNMsfSglrw5Lb0bJWB52XUK4u2i70eswxBkLSxji9DnBJ8SHVfof+G8LZku3j/E2ovD4X90xxXREm1jmT+m1qc5O/wRxZj9zjiK06aTcUprT119dBlaV9B8IOjxjb9iadPsvgx9NLTXqRVMzuul++MH/EONTd+yRsn4m++N4M0TI1/EoIjvPfWg2ihBZp2WvSZAb0rYBTtEz27xZ8jqfFXNInarY+MuKUehnUe99omk8wyEGVzapKbz9KZJQMFIEhQEQQcQcFEJ170vZUZtHqMBfAvYdlwFdh5WAvTzisZrzSFa0zfGL1C0AoTiec4Bk+dCGaJOJZ7oagi+VM4zVZufQs9HdyS
+ 8VtD3zzE
+ lwLMq1t+9sw5nd555n+jL/0Rm8ZZjBG66N7HyoF4WxqiRStY+W+qTMAS6sD6KskeZk5BWgg5aaw/scbu3SHqRYKM2kEpNdtFx0Y0MX9vjDK+6E0rqwRVfC6dzNH0IOHWsKmC71+tBUXfAc87qd/rx9GKP6squFxUz7BX9nd16KD7ezG726enmlE8bCL2EdOZ15LU7+GB7y7XT/K9OcNYtPomBLlqTssZjlyF1rb1HASaek1AuzgfuBZ8sH3HSay/K4b+nbhMbOcugjCjh56dA7ylMyz28WQ+x/phxWd2PXdlgge1Z/UxlW1drYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,47 +152,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 20, 2026 at 02:36:21PM -0700, syzbot wrote:
-> Hello,
+On 4/21/26 15:16, Michael S. Tsirkin wrote:
+> On Tue, Apr 21, 2026 at 12:56:00PM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/20/26 14:51, Michael S. Tsirkin wrote:
+>>> Add free_frozen_pages_hint(page, order, hints) to free a page
+>>> while marking it as pre-zeroed when PGHINT_ZEROED is set.
+>>> The PG_zeroed flag is set after __free_pages_prepare so it
+>>> survives on the free list.
+>>>
+>>> Add __folio_put_hint(), folio_put_hint(), and put_page_hint()
+>>> wrappers for the put_page path.
+>>
+>> Can we defer that change?
 > 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    c1f49dea2b8f Merge tag 'mm-hotfixes-stable-2026-04-19-00-1..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=142514ce580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=6a29a582d8ced859
-> dashboard link: https://syzkaller.appspot.com/bug?extid=4cc5bc01fb4a179c4ffa
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> 
-> Unfortunately, I don't have any reproducer for this issue yet.
-> 
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c1f49dea.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/402c79548d6e/vmlinux-c1f49dea.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/1bc39526d7f4/bzImage-c1f49dea.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+4cc5bc01fb4a179c4ffa@syzkaller.appspotmail.com
-> 
-> BUG: sleeping function called from invalid context at mm/memory.c:2007
-> in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5913, name: cmp
-> preempt_count: 0, expected: 0
-> RCU nest depth: 1, expected: 0
-> 2 locks held by cmp/5913:
->  #0: ffff88801b8cc078 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_lock include/linux/mmap_lock.h:592 [inline]
->  #0: ffff88801b8cc078 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x124/0xa10 mm/mmap.c:1284
->  #1: ffffffff8e7e5460 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
->  #1: ffffffff8e7e5460 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:838 [inline]
->  #1: ffffffff8e7e5460 (rcu_read_lock){....}-{1:3}, at: __pte_offset_map+0x2f/0x310 mm/pgtable-generic.c:290
+> We can - it's a dependency of the balloon deflate, which you asked
+> me to implement. I'm more interested in reporting, myself.
 
-This first looked to me like some spot where we forgot to unmap the PTE, but a
-closer look suggests that, since we no longer hold the pte lock, something
-forgot to unlock the rcu lock and we're just seeing the lock nesting in action.
+Just to be clear, I said:
 
-Possibly related to the swap rework or so? I dunno. Hard to guess without
-more clues. I tried looking at the mm changes for the cycle but nothing
-seemed to pop out to me.
+"I'd assume ordinary inflating+deflating of the balloon would also end
+up with pre-zeroed pages. We'd just need a (mm/balloon.c -specific)
+interface to tell the buddy that the pages are zeroed."
+
+So while I think there will be value in that in the futur once we
+figure out a clean interface, I don't recall asking you to implement that?
 
 -- 
-Pedro
+Cheers,
+
+David
 
