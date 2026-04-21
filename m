@@ -4,160 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96D75F8FA90
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:15:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA2E0F8FA90
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:25:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C41CF6B0088; Tue, 21 Apr 2026 11:15:25 -0400 (EDT)
+	id 1065E6B0005; Tue, 21 Apr 2026 11:25:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCB7B6B0089; Tue, 21 Apr 2026 11:15:25 -0400 (EDT)
+	id 0B7A36B0088; Tue, 21 Apr 2026 11:25:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6CC46B008C; Tue, 21 Apr 2026 11:15:25 -0400 (EDT)
+	id EE84F6B0089; Tue, 21 Apr 2026 11:25:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 90BAE6B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:15:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1BE2F1A1076
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:15:25 +0000 (UTC)
-X-FDA: 84682911810.20.8E045C6
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012015.outbound.protection.outlook.com [40.107.200.15])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 30821A0013
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:15:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=aWvLjKBS;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776784522; a=rsa-sha256;
-	cv=pass;
-	b=iecOcQS4Ztz6/whK+1UyRTKAFKEdD68N19rX8IUadeIjDLJq+BaPtrZFhsqYkDXtDMDmch
-	F2dUXWETxHDEFSSsBhnBrdXr1s0jgeZjf5OuczoPMYvds89Ah+XIy+eG4MLXEvXdM6k4wE
-	FmGVDF666Xc5+Fw4St6GRG0lNPxJh2Q=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=aWvLjKBS;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf25.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.15 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776784522;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DCAC46B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:25:46 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 88D5713C4FA
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:25:46 +0000 (UTC)
+X-FDA: 84682937892.21.0A89451
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf24.hostedemail.com (Postfix) with ESMTP id F13BC180009
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:25:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=FAs2zFY+;
+	spf=pass (imf24.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776785144; a=rsa-sha256;
+	cv=none;
+	b=WG1iRasEumjyUS+c1uP4i1iPxOhYk1m/+rOuWeVz4GvBIb2uu1b7b1ksH5mavz7CK/Ng4R
+	KyStVgzvNo8lKZ6qwK9SnSpyf9zaObEQiiOwzMsRW0ytWE3ZENZYLfjF3UmVTeILwdItWa
+	mvPlOXIXRPp+K721ccOQ0txGI5OBr5g=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=FAs2zFY+;
+	spf=pass (imf24.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776785144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNGZoRtGzn3pxbozcSKCgGnF7yVJwhh5k9GDhRb7t2c=;
-	b=fAsbwUIFA5p1BupnWsT/WZu1uxQ7hub1yRuQZcoSgnHRTWKMYQxflXJK2eiMb1dx/Y4PDV
-	uaovuRI8WTOL+LzzWR4H7hE23810Ye9NuE5Qz2NB/Ow02WT2wYnpsOKkhPjy+bPypoKXPi
-	CwooZUa7MKL4vFa/prhUlHOegiQygYQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bT2HhKXi0PPWqvXMfCB6TblM38gnqOCb2tfnbqn38YNR8LX7RPwVoX+zUjOV9tMQi211+wAHpZUcqSNfCoXRvSxKr+s2CkonNUDJuSwm6DeashU+9g0blrjgHo9+IOBsHANoNxqyYuJQvw8KI/fYWhuidYLJq6IKkJO0362Q8DHaE8a1E43xTcgYDOiNy2bvWRkLw0QfvxICdXSzPQx6yriXiud0l/N/tmOqXWl6r5gC73wqUY+MqYxT1qeFVh6PS30ZqKOnPdmoSK/rUridUuBWENsNYAL48cep26jEzT+Qc1ouADN9mpulOMFsZEh847lVd/XiGG2Ws0qpDRd6pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NNGZoRtGzn3pxbozcSKCgGnF7yVJwhh5k9GDhRb7t2c=;
- b=VzKwN6PcIdqohqRKnkZ/V09vq04fs9hkMvKhdGLjtIbbAH1PLnPG1ejzZyUPe8OX70GrK04+8AFLDhnBLK4P6ggRc/H7tu6WnLnmo62upCUdECtEUli/7jBtoh5tPRqpkvWl7jHoCcPjyt/PupPoB2D2Mov6gRxAI0ZhvIQ6TbDUnxblVZvR+deYNVqX/nNjKtuZVEUgOc+MJPDwkczqvc4u4OzS0Ywdse1cmygTSlnBf/FkiLo4mph13gS6Ru12M0WE1t3UClBhRcL0vr//uw5w0TBoFjirS0Tp6ciVah3ANA+v2LFfNjRmrmRWwgQE3DOEp4N+ZZFXRtMzOpmy1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NNGZoRtGzn3pxbozcSKCgGnF7yVJwhh5k9GDhRb7t2c=;
- b=aWvLjKBSN/E8QxlEftPDCDQ0JUQgH51aWTwByfBm2uFDuXs8IQmBZ1vBW1KXNCrMNoC4xgbvK+wQ4pkJB3l+LyXNUU4WPMBzoCzAOfJO+uZetlfPEhnfXoPsy1WNzKejutMOBiDfCMkdE8LKabc/Y37tuXMMjif/aLU0dt5B6r85CdOfJs5KtKveHA5nQbZB6dm5R/aIhbfccfem4RpqVYveOqafOovGHbbU0ZKxh6RQ653qUUYvt4EY/pOrfE3z28FfJiKnmytQcAfl/CcwkBY7IhhG9vvCgd06DQ1qkvMa5TtHXb4sto1pjt8kRjS0azK+WWLD8S68vThsR9GXLQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- IA0PR12MB7749.namprd12.prod.outlook.com (2603:10b6:208:432::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.15; Tue, 21 Apr
- 2026 15:15:17 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
- 15:15:17 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Matthew Wilcox <willy@infradead.org>, Harry Yoo <harry@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs/mm: clarify that we are not looking for LLM
- generated content
-Date: Tue, 21 Apr 2026 11:15:14 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <F3B8194C-9068-4D89-BD89-A756497CF05D@nvidia.com>
-In-Reply-To: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
-References: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
-Content-Type: text/plain
-X-ClientProxiedBy: BLAPR03CA0022.namprd03.prod.outlook.com
- (2603:10b6:208:32b::27) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	bh=o1X9HPUunIQebJ9dADNmZa8MGaML1kJb/aSg0TZlqss=;
+	b=Pt5oCFZm1oD5klj0QVjzT4Sx6q9w9xKGPWAw9elif9Z241QV/NQPmtRe3rYPMbjjEofsQe
+	3/RydtW6TlmyMelQisOBtETlm++W00668G6/QvfUfrThJZo0sUCUdlModhwYMu0W/jyXuu
+	3QI485PeF0plMy2oojfcTxN5iA3X+5Y=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LCfPbw2037844;
+	Tue, 21 Apr 2026 15:25:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=o1X9HP
+	UunIQebJ9dADNmZa8MGaML1kJb/aSg0TZlqss=; b=FAs2zFY+seMt5J/wyEvwcX
+	J3Qs8AwdungWDk3ceTc+T4bf52oCVAr6pcSg2BEuFhAbv4HC2tLuNgFyIeZr+QLJ
+	TQnT55zXAcFJmtfxkeJgd9xLQ7/mincVEMir+evb5W0ea9ZUOidUn/zHK+wFDIrw
+	JWAibdWC0syZd+iTkgK8zRTqTNZdMofijb/NY5ONihNSI6ZgTB1MKhkVyx2oWIdj
+	w7uhA2JyL4Jw35Ss+CKEOwng6W5CIb4tItaeiB/gNH7sFF/2SJHfjwtX11FVuBpL
+	VV7EEsGVHIcheQEGKsvOjuFDnwGhD3/gYNi2uhQRLoc+omR3VBZiXbtRYOTrN48w
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2h9m78b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 15:25:17 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63LFKWUP013111;
+	Tue, 21 Apr 2026 15:25:16 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmnsh15y7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 15:25:16 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63LFPGGU23069246
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Apr 2026 15:25:16 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3635D5805A;
+	Tue, 21 Apr 2026 15:25:16 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3EA1258052;
+	Tue, 21 Apr 2026 15:25:05 +0000 (GMT)
+Received: from [9.124.216.216] (unknown [9.124.216.216])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 21 Apr 2026 15:25:04 +0000 (GMT)
+Message-ID: <24cd6a95-1304-4732-9273-43c73ea858b2@linux.ibm.com>
+Date: Tue, 21 Apr 2026 20:55:02 +0530
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA0PR12MB7749:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9ecc049-77a1-49a6-259f-08de9fb8cbb6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|22082099003|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	kUhGz0HCA30n5Y7PtyrqOtzfA/4jJxWH1eyrIA6M7mkG1ERIfL9keearWrPBIPngytdQzShcTBW1K3OQIWdU1oHclmqdljKbwWgYnyhw6I0OCiMys0p30Ocagc+TJcR6mN80wd2+oJQIX0d+Oza0QrrTUSsbmZ5xyhN23nW218Dy52NOCmdiKkY/CWiJIgY5UpgV1Oq72zzpcibQHoqO83Gi9amISOAz7nI/7vi8wb1RzWz/wjWLMG/keYGdHODnLACVWwdqHR6BZpTVFFhNFhGX4pnfWhuJHjaLOaG0M7oX01p/I4HqcqzgEF28d66wr58K765V6tyM9X1bj4jC2/+jDk9JIWGcJEKyoAnpySc9KSkZTH68c8ogoOjlZMGRRrouWrOVKYd5UQ8xzmVRMH9m5swtueFJ0jpXIpf8i6JUfQTk+SJqhDaDP2/pmMMkoXSK0IR9Ca7u4oqATGO0FOgV4oL+SNFhFk45sdZMHHzFJYJhU7qmrMwKBpZrY/PJkfMRHUv9dVdcOwWuiWfakIzwqw9daeohNajfdcnkekw3j3+ixjkOGdJS/576iWvokFteGFKSLc1ckpkbQjKHdQ5XQMvPl8N4/knBgKQ92AbAUty/BFs9V+bhr0cVFO9p3rhTm6KGW8XvP889fY31AjtH2K85H4Xw+AQ/9emfFulFBRJpZosDchqfg+1a2niM0nRBk7sTzOz8WOZZNTiY6XDoN03+cZ12kIzKa3idPNc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hLBeTGFtAwZZYGDHBhyNuY6C0XhxEc+MoTAsK4ncjzV1oQHrd95z0JkJBeTL?=
- =?us-ascii?Q?v1RW7bmBbMoLcmrACtivyUCLRXuEdW9mK9RR6KfUftBRM8q2I75+Rb09UcPw?=
- =?us-ascii?Q?z4j1M1YnSmbsTdZzGkXNlEitbaadMxRdWsa3kOCra08MBTfjjD7QZ2muKo9l?=
- =?us-ascii?Q?XVFR0/FJEmq71Fm8zvwcX/V+W/jQyECcmhjSj+jkg8ExvFMuV+PB1NXjkbtx?=
- =?us-ascii?Q?ob7lFH2FfNLD+IeyWn+bcBaLSLA+0cS28JICVL7C3hLracbRC0w/efKgffNr?=
- =?us-ascii?Q?JBTfXgtMbX09WVMLAG78uexz6byhXOsZwdYgrBR1/1CtuN1RUYa92TQHldDk?=
- =?us-ascii?Q?GJOKsBcXLb/67u+dQrdL/3VqCjydTRoZK7uybMFgOYEKDa9CA7LBJnEXa1Sm?=
- =?us-ascii?Q?mmd4xssWXtkch3cy8C/3+tinF+PkbIHC9wGvv/fR/QkGqwvR2Kqz8cdJQYZF?=
- =?us-ascii?Q?EHWL/EPT3qxlQakwROIOCMXFr7+X3DxF8KFDQiFU7h/xFueNeNENLcY6Zfzx?=
- =?us-ascii?Q?nxkJqHsqjYDMvXkHvsTwkMXfr/7Hqqdgp6/8bCWnOZSSLvANxY1S7Mdib3ng?=
- =?us-ascii?Q?uvqlp16kau+F28YUXmTH3igSuCYBpNuJwiS4GGvfihG6s2IBQXFGBRnk62uJ?=
- =?us-ascii?Q?RZs7UVV5zcVA7PfQagFK/k9n2lTGZWZhJkHlbY/Btxcp573CYb5j/O7p/Kvb?=
- =?us-ascii?Q?dRRGccO+z3wUmfEm9K/F+YnwZA7O0YDwGhgEaprSCPSENtqjEhX5TKTBVtUZ?=
- =?us-ascii?Q?6NHMBA11Yxyq5VIlajpIUVYe0r8Zhl4mzUTSL8bdWmcA+3XPVxVgAR6aINQW?=
- =?us-ascii?Q?uAOTJPmpcWJIAsDiPcD9VPl8CJ/uHtHwcP+A3yu400OqVmGc5Dbl4e/b4SpA?=
- =?us-ascii?Q?TXwjZS+E2nonc6C6tgQU6mL5VIIhgc6shqYycC0pLKnBbmdXMH3sQ3Il3gx2?=
- =?us-ascii?Q?FS4pdoOBhvDYIblWNk4IXDfka2H1l9cDW4nAX/wfxE/vLETQNi8wANOWYdcf?=
- =?us-ascii?Q?loENEEu8fIjq8SXJPgfEi/4AxT/9Q86kpzYLcXuK6gmGeoB3Ll6VEEj5i0pB?=
- =?us-ascii?Q?f0sxvqbQZ9eGshhbVZ20lfsJUjZs5Y6NyRZdnp3WhmpIIzAF7UD7h4WZH60K?=
- =?us-ascii?Q?ZtCPoMKYN+41Sl95vzRTpd29Z651JySfCecLm9D6GtHJEQoxsV/jWGBA+DMn?=
- =?us-ascii?Q?m4nwtQEnGRCLQd2P5s23v1ycjLq9BYniYBPXeuRMPhWFFj6tuEPJy2d6kpKy?=
- =?us-ascii?Q?wao1fafPML2WhD/c8d7vEjP1Pi5O9cMnfBKBNBFiwAXOeydBtK0CXxHGPl88?=
- =?us-ascii?Q?v7PXeqrRxqSzhEhz7CIB4ekYd5mYKfFV3zn9suO7K2NABiLTJLWRlPokEUEH?=
- =?us-ascii?Q?HgwDnG9Aof7F+OUEV5Fg34yjH1Kl/k6+ivm8VmZ7pUVqXxE2s/Kmpta0TXru?=
- =?us-ascii?Q?5kEIIUj+B+r4cisixHb7rHovBHCn9ioH4Cgzy0SUicEm0a7DOHkyj8IcxlSH?=
- =?us-ascii?Q?3mq+ECceQqpfY/MX9/EntgyJFqF69Njcy/JQ0eNvIQV7plkch2EV7ZrHilSG?=
- =?us-ascii?Q?ojjbn4Pzq/vji6pWpjmDPiJfjc0SApzpWzJO+oPXwSDUL9anWWEVzSpOohTa?=
- =?us-ascii?Q?W8sVfbC5abNHBdQ9FYuEepMVRD/AvDn1cb5LdkB6GHAIg0nK8mjvCmr5K54p?=
- =?us-ascii?Q?Ju6u1F3mnGlz+i43As9qwyZvYyspPr1NxoagdMT/YUwNQ8yD225kD7OXxooi?=
- =?us-ascii?Q?pphQ6UkJLA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9ecc049-77a1-49a6-259f-08de9fb8cbb6
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 15:15:17.5329
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JI3SZOsNN4/q8z7RT82Vu2vydz/tuYOKp6Q00TKV0ND1wTfMaf+0GcfSvpuzYAJ4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7749
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 8i8w7rsam9h4d8wyxgjaqqzr81dzh5mp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v6 2/5] mm: migrate: Add
+ migrate_misplaced_folios_batch()
+To: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Cc: Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
+        mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+        raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
+        sj@kernel.org, weixugc@google.com, willy@infradead.org,
+        ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+        nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+        akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+        kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+        balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
+References: <20260323095104.238982-1-bharata@amd.com>
+ <20260323095104.238982-3-bharata@amd.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <20260323095104.238982-3-bharata@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: qy8g05uTAlspSHaPFCbZfBJNS4O0FSOV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE1MyBTYWx0ZWRfX2lvX/8LD+K4d
+ RxWH048hje3Sxp6jwSK9U+ofRWqaJ2KqvssfLkKvBIcoAAZ6VbGYdw99UcNhpmsEaVY+sZZr/5B
+ q+7CxLE9JpALKcgc6JJJq6/lzY4Ipp21AD3fCATiw9eoioquHyE+latF7yEUg5n0H5ufgNI950l
+ rn9rjhI8y/1qf5pFhEOHe8AO3WO5TRiNN7Hjqc1qTz9sf3UJ7zX0zlTP2WhPHrHdMXKpeJA97DK
+ dYkdenDIo/am88ssDl66h6YegxX+lVFVEs68hOu7ND3ECfimi54mnt6Nh4lCSFN5hOjO5OW07dj
+ g/myM9Uag1o0CKslaiYKPUAikeZ63nbJLFvy7xHByWHq/krqUSTr52cZRNO8CJw/XzMkDj5NyV8
+ kSqcgW5ckIm+kiAjPi1YmO99WmYnUeeJMwTIQPC70WCwyrfVpSAWV4md7GbeqoA5m7efu9Fx/LY
+ lF1jCtdn5kuHhlbFu2Q==
+X-Authority-Analysis: v=2.4 cv=XLYAjwhE c=1 sm=1 tr=0 ts=69e796de cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=tHa68p0SAAAA:8
+ a=zd2uoN0lAAAA:8 a=3BaletrFva9TSh3rlm0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=ufIsyHvWW7FwcMbVRpPq:22
+X-Proofpoint-GUID: nRk-v5W9kOPmZ-0ggMcpCYROJyC80wZF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 bulkscore=0 impostorscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
+ definitions=main-2604210153
+X-Rspamd-Queue-Id: F13BC180009
+X-Stat-Signature: jb5tro47zeiah6z3msnbj38wi4g7yhqu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 30821A0013
-X-HE-Tag: 1776784521-581344
-X-HE-Meta: U2FsdGVkX18BiYZl2u5amYmBobEWO7n0WArDLt1kNb2wWFgJ4ujfii/BvaqPE07sMX0WRCRrKkvZ4xDt9xIV8Ta06fajtBaSnHAnS08dbBiYeXfU4qrreeX3PNsNDvucWgnt2C+Hh1z4xt6RPtz5XRp85zYpRaeQOm06Yb1WPAkiruKU7SuqOrBu4idY/3quRWjUvJTvc20y3pS6iWUPDAJi7zS7CL+uEqE0vlegt4qj5UUsc6OwdwBtpdDFdm+1zkoCJWAltINRhEbhsAM31f1vM1XBEaK88+nAvPtDPra3ZZ4nqTcXIks9HoHiGgWjjS+jAmfOHipkXAS/DRdO/hFpxYNRsfdtEl5lbZyYRlhZ+htvTEqGMyqNgKStQ19ihlUD40r3yzQpk9szO65+1Ms4yVgP/DYuUfnKkEpP7YhO6xEx8BL3CP7t14PdPaRzXAZPhjjK16AEev9rs+fTwA++1ZotXytRwsiOp/Pqgzlf6v25Pd7RtY399sN0MxftJcijtKrCoW+ubrq0Ga3a3tHOqpJU0DhocaxeBmpB+wL77Du5CR9rAnuq6CZmOG5F+cBqdgQN0WACHeEiVt8oEYZLZaj7DXnEUuulraDyjWPDuf/R5BU+DUlV8hv2/ktQVOOXBu1WGgRuaAhQCKl0tGrhlvTxUYgKpqSPQgJcc8OHjy95SFJApeiKQoe87KtU2IE7vMdrZeAJMEcSzKIznSDBwpHVJvRIQwW26IjpYaj7TuJhBN7iRQWHr+2IogeayXl1/VZHtDeezIqzizGwK4U+yX+GgcJIIV4E12z859BFL7MyVh6PpVXPRrvRYfF4AriAF6Am47YE8wuS+vq4+7k1ahEVaHsTBYWBTKi8QUVA7N6B4JwuTzH82mV+cB6N/HFoTKxhUkC72Fn7UN1MODWmPX+L88VXMmIGXz654630roqKFImGO+Jnb4L6xHtY0whA/ME2+KaMap9fefO
- BMmIxbq3
- pYy4SAUGvKziIKrH6xPLQtDhxRTKRPixfRVByVSM2ZxXNiSQaVGv/MFN0aNsSsshsYruseZgu4fQEzQvQ7/Mvd5ssgIPrsXqgpWWoU1JeHB04n2qFSIp4aYr3Bueu0suvIvf0QWO6PrEjLBQPkEyVwjArsK5PrN/3KwP+QZ30dtAMbEwu+06XMxEM05GKXrcckKshfr4QCo05SOi4sO6d68Yra0zID8m2PypQ14xqZK9Qi17SaNwkVr+60p3kQEF0ez0l00yPPG9zPxu8N/lDOYJjBCDmwnejebiHTxxSmrN/aH+MLOmFZqbEL6wByh4lsvm0NuC1v59rCwmRhDo8SI84QC2NDggXUdPjkGLKnC9meq8IaJ/hyUwQopIFu6K2xbNzKp7JoyAnkf3t1YyK/jb9SQ==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776785143-172820
+X-HE-Meta: U2FsdGVkX18H3L1mY6D+GZdJgzsdhVuucbJz5FOWqP1rrU0QS74/NN/M6sAE5ZzbnbtxoK3IBVNmsxBm9BAiULR+VoAGHjAbp5dVFWR143Ct5iTZPzK3Zy8se36t4eKrd4HMMLC735KPBc7DaQa1VxV8HHGp9wgGjJUDh7wc0jzAoxl0p1RYxaMmD9wmHKinXNUixShNLxtCP/SO37I2lnwG7dGxmufs7un0MGWSGJjazinf6SPHXSauy2eHTrYEo32EOJdwoqje04v8upt8XceA0B1Ji4c13Ffpe5KNlI28ekhQu7eg/DlE+Hr9OsCDGZu9/c1jYBly9P8oSXSbnXO5aFr3rkkKX0DKT0f9I4h1LGUZT+NB22+6j59fO3TVpUSRA3mrzddRImO3fgWC/sCo8jzoCcCzm6v4GulotFTYRcBRtc97Bo5lEdB8udeeoNi8gWaSBAUDjFO1wZB/wrZ6QyijjT6mB93+svZO4SBk5L1AWul76/xdFzS1MymZ4qUD1aR8c2djDgkpYZililS0szhugP43iMmTHe6R/sKICarmKCnSK7iLsnYKbci6viz9xMRodMFGmC6Rb/1XyhlY01RXdgT06zCeW+6e96LT94F/wWrpDdAjxid8dy7XVfjkM8YE846gRNw1m05gdDVQcbAYNDOneLhSmHCD5bUDmTIt60Qcs3gno8LTQ4Cl4x/+u4hFqzTGzRpfAq7itlGvkqgG8eFJnxefzIPeBW10ZWN5UkwlWTMa124ebhaG5LVB5J8dtCOVaQtompPywZzqwM5TXHwbtw/hU1Ac5rlkHNIfIMBbKNl2bWv5HusDx3m7z025rKNCKhkx+Kt9PwtWrNkzUNn1tsGGrCwS5zHHVkJxoWaE2fBoM+10Pwr0vlAvzHdd+NpaiOFkAb8xotIYGi7w9nMZgRSPOP4Dl0cywFcZ7nGUJ9pwghsJwC4fHGecf5ZUyEsjbKoVL3L
+ g9FjEvn/
+ QEpVitYgGxrQyNEegZm9fCfaPdO40h8mnlUkMbRlJ4ixQg6yO33W74ZSKBIZsybc0kcgt93PVUu6bKyL6M9EwiQjR9jaJFh1FowRg9X+6tGkQtCPMF1664uKSZ47Pro+uVaSF4ig8Nqkzwz8freaGRlGTgJx1VKmZzkoxv4i2sAMG0Gbii27G0XBNGywtKB0SsrCRplXsg5nTOQCNvU8+ZJMGeqWIIsWpbv4+MUQIOXqJ1XmPuYa9NbW1RGQhLxFLV4qYmNLrEIvMJ4YUAY5HL/SA59+Yi3Ro5PcBtabk7wOSSy1SbT2TdjOwN5QzMyKTOIf0+4+8q2b3BovabSKdHvyA1YIUB7Wv4MQCqkATOj3vndxD2XfJ/9PbB1y4xyr474cCmpo6das+8lR1Hl7C/3U4c01pnVULB6t7FLUWw+LUzr8UiLG5QsG5P0b31Jn+BvnmzoczOt0nokkyMN2doLjjmwod6HnUxWVw+kgNhRGbAnw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,54 +152,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20 Apr 2026, at 17:03, David Hildenbrand (Arm) wrote:
 
-> Let's make it clear that we are not looking for LLM generated content
-> from contributors not familiar with the details of MM, as it shifts the
-> real work onto reviewers.
+Hi Bharata
+
+On 3/23/26 3:21 PM, Bharata B Rao wrote:
+> From: Gregory Price <gourry@gourry.net>
 >
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Tiered memory systems often require migrating multiple folios at once.
+> Currently, migrate_misplaced_folio() handles only one folio per call,
+> which is inefficient for batch operations. This patch introduces
+> migrate_misplaced_folios_batch(), a batch variant that leverages
+> migrate_pages() internally for improved performance.
+>
+> The caller must isolate folios beforehand using
+> migrate_misplaced_folio_prepare(). On return, the folio list will be
+> empty regardless of success or failure.
+>
+> This function will be used by pghot kmigrated thread.
+>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> [Rewrote commit description]
+> Signed-off-by: Bharata B Rao <bharata@amd.com>
 > ---
->  Documentation/mm/index.rst | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-
-Acked-by: Zi Yan <ziy@nvidia.com>
-
+>   include/linux/migrate.h |  6 ++++++
+>   mm/migrate.c            | 48 +++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 54 insertions(+)
 >
-> diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-> index 7aa2a8886908..13a79f5d092c 100644
-> --- a/Documentation/mm/index.rst
-> +++ b/Documentation/mm/index.rst
-> @@ -7,6 +7,19 @@ of Linux.  If you are looking for advice on simply allocating memory,
->  see the :ref:`memory_allocation`.  For controlling and tuning guides,
->  see the :doc:`admin guide <../admin-guide/mm/index>`.
->
-> +.. note::
+> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> index d5af2b7f577b..5c1e2691cec2 100644
+> --- a/include/linux/migrate.h
+> +++ b/include/linux/migrate.h
+> @@ -111,6 +111,7 @@ static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *p
+>   int migrate_misplaced_folio_prepare(struct folio *folio,
+>   		struct vm_area_struct *vma, int node);
+>   int migrate_misplaced_folio(struct folio *folio, int node);
+> +int migrate_misplaced_folios_batch(struct list_head *folio_list, int node);
+>   #else
+>   static inline int migrate_misplaced_folio_prepare(struct folio *folio,
+>   		struct vm_area_struct *vma, int node)
+> @@ -121,6 +122,11 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
+>   {
+>   	return -EAGAIN; /* can't migrate now */
+>   }
+> +static inline int migrate_misplaced_folios_batch(struct list_head *folio_list,
+> +						 int node)
+> +{
+> +	return -EAGAIN; /* can't migrate now */
+> +}
+>   #endif /* CONFIG_NUMA_BALANCING */
+>   
+>   #ifdef CONFIG_MIGRATION
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index a15184950e65..94daec0f49ef 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -2751,5 +2751,53 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+>   	BUG_ON(!list_empty(&migratepages));
+>   	return nr_remaining ? -EAGAIN : 0;
+>   }
 > +
-> +  Unfortunately, parts of this guide are still incomplete or missing.
-> +  While we appreciate contributions, documentation in this area is hard
-> +  to get right and requires a lot of attention to detail.  New contributors
-> +  should reach out to the relevant maintainers early.
+> +/**
+> + * migrate_misplaced_folios_batch() - Batch variant of migrate_misplaced_folio
+> + * Attempts to migrate a folio list to the specified destination.
+> + * @folio_list: Isolated list of folios to be batch-migrated.
+> + * @node: The NUMA node ID to where the folios should be migrated.
+> + *
+> + * Caller is expected to have isolated the folios by calling
+> + * migrate_misplaced_folio_prepare(), which will result in an
+> + * elevated reference count on the folio. All the isolated folios
+> + * in the list must belong to the same memcg so that NUMA_PAGE_MIGRATE
+> + * stat can be attributed correctly to the memcg.
+> + *
+> + * This function will un-isolate the folios, drop the elevated reference
+> + * and remove them from the list before returning. This is called
+> + * only for batched promotion of hot pages from lower tier nodes.
+> + *
+> + * Return: 0 on success and -EAGAIN on failure or partial migration.
+> + *         On return, @folio_list will be empty regardless of success/failure.
+> + */
+> +int migrate_misplaced_folios_batch(struct list_head *folio_list, int node)
+> +{
+> +	pg_data_t *pgdat = NODE_DATA(node);
+> +	struct mem_cgroup *memcg = NULL;
+> +	unsigned int nr_succeeded = 0;
+> +	int nr_remaining;
 > +
-> +  This guide is expected to reflect reality, which requires contributors
-> +  to have a detailed understanding.  Documentation generated with LLMs
-> +  by contributors unfamiliar with these details shifts the real work onto
-> +  reviewers, which is why such contributions will be rejected without
-> +  further comment.
-> +
->  .. toctree::
->     :maxdepth: 1
+> +	if (!list_empty(folio_list)) {
 >
->
-> ---
-> base-commit: da6b5aae84beb0917ecb0c9fbc71169d145397ff
-> change-id: 20260420-llmdoc-21bf5fadbd6f
->
-> Best regards,
-> -- 
-> David Hildenbrand (Arm) <david@kernel.org>
+We seem to proceed even when the list is empty. Should we instead return 
+early in that case?
+
+> +		struct folio *first = list_first_entry(folio_list, struct folio, lru);
+> +		memcg = get_mem_cgroup_from_folio(first);
 
 
-Best Regards,
-Yan, Zi
+I had a small question—are we ensuring that a single list contains 
+folios from the same memcg?
+
+
+-Donet
+
+> +	}
+> +
+> +	nr_remaining = migrate_pages(folio_list, alloc_misplaced_dst_folio,
+> +				     NULL, node, MIGRATE_ASYNC,
+> +				     MR_NUMA_MISPLACED, &nr_succeeded);
+> +	if (nr_remaining)
+> +		putback_movable_pages(folio_list);
+> +
+> +	if (nr_succeeded) {
+> +		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
+> +		mod_node_page_state(pgdat, PGPROMOTE_SUCCESS, nr_succeeded);
+> +		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
+> +	}
+> +
+> +	mem_cgroup_put(memcg);
+> +	WARN_ON(!list_empty(folio_list));
+> +	return nr_remaining ? -EAGAIN : 0;
+> +}
+>   #endif /* CONFIG_NUMA_BALANCING */
+>   #endif /* CONFIG_NUMA */
 
