@@ -4,98 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75D44F8FA90
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:39:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56EABF8FA98
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:54:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC57A6B008A; Tue, 21 Apr 2026 11:39:20 -0400 (EDT)
+	id 59E9C6B0005; Tue, 21 Apr 2026 11:54:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9CE26B008C; Tue, 21 Apr 2026 11:39:20 -0400 (EDT)
+	id 54F626B0088; Tue, 21 Apr 2026 11:54:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDA046B0092; Tue, 21 Apr 2026 11:39:20 -0400 (EDT)
+	id 417106B008A; Tue, 21 Apr 2026 11:54:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BA6796B008A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:39:20 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 706CC1B9480
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:39:20 +0000 (UTC)
-X-FDA: 84682972080.15.4638088
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 91F261C0011
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:39:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DolYikg4;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776785958;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E37C6B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:54:46 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 27EE91B9225
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:54:45 +0000 (UTC)
+X-FDA: 84683010930.28.4D310D4
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021132.outbound.protection.outlook.com [52.101.95.132])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 373F9A0011
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:54:41 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b="g//T598h";
+	spf=pass (imf15.hostedemail.com: domain of gary@garyguo.net designates 52.101.95.132 as permitted sender) smtp.mailfrom=gary@garyguo.net;
+	dmarc=pass (policy=none) header.from=garyguo.net;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776786882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=C/zETneSXdt4Qa99E3e+0wvtKf5m0NGH+avSAJ+gITY=;
-	b=q+Qf8jlQ1of8XIfP6CJ2MUv2Bvn69T0qjVqBcMp/1dRPyxxzool6TOYG0kEhcnEn+cfvo+
-	K0FxFc+UUicUl59BujmMZfMQvEJaZsc4OlcgZYU3/cA+ATkhKLeVHpb3+Vx1rrrCRU0OuK
-	X7W3HztP6tH1flFh2WU9KL2cmXbJH0g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776785958; a=rsa-sha256;
-	cv=none;
-	b=03D4jjGcfywkfClTDnX/T4wgRMABGBTy/+5XxOTiZhQ3QUuCy2xQ3EmIKv52bgSxTn6EFA
-	wZaCdLRI2V4ih8vlaDJ1TzAFgVH25T51d8pUXgKwC5IJ3RUjO5dsHlcukIOF2gDT1izxW2
-	iI3HZe8m92tccjPtqKuv4XZ7ZBoOmdM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DolYikg4;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 311CF4151B;
-	Tue, 21 Apr 2026 15:39:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74479C2BCB6;
-	Tue, 21 Apr 2026 15:39:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776785957;
-	bh=Ik9BfKVfhf9yZ3LiURODlQpyNGNrs0AnoKj75WR+DEs=;
-	h=From:Date:Subject:To:Cc:From;
-	b=DolYikg4H+7mnTbsnAlHUOtejFyckSeDJsZa0O/KWPbowntUsHTsFthTt2vYLcUKO
-	 n4ibgl7imYZNrM6J0+PbmHuuRWivxHQXAU3aYCe2Qplntj+ueiR3wkzCABpt+oMNGE
-	 1hvNlZZFJoZSYSsr3804XezMrmndYGYHDcCXhM57Mx3CyLyFOyCGEd+V0qxFAOm447
-	 A5kekRRFZP6GiSY/nwS4uPO2prdRQwW23XzReaDYX1RgrtxB0ifppG3EyoAnVVVJ6I
-	 1xuAQapdwHznNrlaASa1C0jaaKzawk8hZK28N0xA3xJ3eUTFbmTNlHuBwXousJEdPr
-	 j1/sVa5TeUllA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 21 Apr 2026 17:39:07 +0200
-Subject: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge
- zero folio with init_on_free
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4bXP3ae7HJFDeavh+W/ZEX9o+8APAT8iCZlybxLQVUU=;
+	b=mbdtfBVWfPh04HlP5fU5PNT+YKLUO9S/2Mqy6/7a5qmSNZYNlT4vjCcnbqjkx+8cYZEJTX
+	Z5khukujA5SD/aXefQ820Hdtb5D+kggKN9ovbj3hK83l6lCjYITR6tQC14SACBUBerEk6B
+	7uhjuc5LOyEbdrhJUj5sYwRfZfTqgKM=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b="g//T598h";
+	spf=pass (imf15.hostedemail.com: domain of gary@garyguo.net designates 52.101.95.132 as permitted sender) smtp.mailfrom=gary@garyguo.net;
+	dmarc=pass (policy=none) header.from=garyguo.net;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776786882; a=rsa-sha256;
+	cv=pass;
+	b=WoTJJxmbXdKOjdXEb3Eb48+syT4Egy8x+dlw3EVNMTNf0Bzx1v9OOcNpUuYJXKZDwpa6jn
+	6g23ufPEfLprIYVl5X7rjt5ymQRh4TrtgKCXGg2H4xxXsYy8X9HJaSdMf9fszAKr+MiQt9
+	h1CSZxnQhmyOFL3TFc4YhPIYwajADHk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WMZu3G6rERE7Hq7qYzXcDPP+HuxeKAvioyGNX6bUQoLmeLCmwUAG2JhdPU9sSDgwbjXy3pS3BICFkeXoV+1h2L9sOwlv5pdynrwrx3V2HbAXkMYko4xVCF2fc5hqVEaeqJvaG35N9gQWOhWRunHFBjfrl+RETSd+M4eDk+k2Jkwh9MLpokqgX9vaYgLQAZ9+sQgwZhD9DfmKr17ipqaFDZg96OJXPUYYYlEpO6weQp+QPCWWFnPPC9ht22jjVDW1zgtbiCdpNUO7XpSYkBWKteY7QHsTrJhs5vo2pPhuO6zSfePUw5nkiS7oMvHZkChELZaEncmO/mBehBGcpGNBIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4bXP3ae7HJFDeavh+W/ZEX9o+8APAT8iCZlybxLQVUU=;
+ b=By5cqK4ypQV27eB2OwirwgLswpOHfUwU4ueiQMJWrAMhygVwAzsvLEiV/d+g+E9ioQ9RjslFbiJbY4PGnUJZ8L0IHa6IX8BcBMpuw5LM7CKsoKRQ+s7aVB9jB34ioqOqghuY2cgSd+880RJOcao1NbLmpR6pD9cmfHfceWFPakH2y0J+HJzS+xD01I542ujbAq2RzFwkxqID4+LxUVmffDLpaFtNhP2k4yNK6goOSNy1hv1C+LCalKin6wzRywpFdJVtO6zDVA0FIXUX2ugsc0l6KPQ/1H6LBsJ0yLhNlYz0ZLEQB7bdn06xI1y00yZEWx5EScBi4cX4nf/bsajAkA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4bXP3ae7HJFDeavh+W/ZEX9o+8APAT8iCZlybxLQVUU=;
+ b=g//T598hGRGvSLsyPYoPx0VONspBWZ3xfzRYw4N9JWlUC3ZoILMuuIj9irHAVPrm89ZOe2mUhpXFqmNXGVULmbD/7ShtEgTH3KJw6Ulh1ebP7Ujc46VSq4pck6B8G6UCxJ10KdrXlJjGD/tq+RP53ME8gFNSY0BsFMMl0oR5gIs=
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB5405.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:22a::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.33; Tue, 21 Apr
+ 2026 15:54:37 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
+ 15:54:37 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Apr 2026 16:54:37 +0100
+Message-Id: <DHYYDQWP4FZ7.3MK090FH4HWID@garyguo.net>
+To: "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, "Alice Ryhl" <aliceryhl@google.com>, "Andrew
+ Ballance" <andrewjballance@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+Cc: <maple-tree@lists.infradead.org>, <linux-mm@kvack.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH RFC] rust: maple_tree: implement Send and Sync for
+ MapleTree
+From: "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260420201040.1894760-1-joelagnelf@nvidia.com>
+In-Reply-To: <20260420201040.1894760-1-joelagnelf@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0118.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:192::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
-X-B4-Tracking: v=1; b=H4sIABqa52kC/0XMSwrCMBSF4a2UOzaSl6115D6kg7S5pkFJ5KYEt
- WTvxiI4/A+Hb4WE5DHBqVmBMPvkY6ghdw1MswkOmbe1QXLZci069kaKi3GJKa2MajuF4mih3h+
- EV//cqMtQe/ZpifTa5Cy+6w+R/I9kwQRTaKdeYX8YR32+IQW87yM5GEopH77SdXuhAAAA
-To: linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Mark Brown <broonie@kernel.org>, 
- Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, stable@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
-X-Stat-Signature: k3mis5icmb8m44z6f1hue3ciib97p4d1
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 91F261C0011
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB5405:EE_
+X-MS-Office365-Filtering-Correlation-Id: f61d34f4-a05a-4c82-077d-08de9fbe4a6b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024|921020|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	9so6KBPioH5aO0Vj16dqIfGIF9x6IskzvY5haFsBC+F7y1H5gT/svXRISN2dBpQay5/2nGp9RBFNAj+Iuhjweer/oNOQCFUWMuF8oY0ev0yRqS8k+W9CpgcXvw0CPl2KjCHUQ1y8qiR4HcjbkJhJuLHcpoOXA/mCrVl7GJBmgsYFWzhTPFf+NbhXB6RGWCErfcjipKkLcK/l04Kdtoyco/BPVHdhZGK2imHmHMjC4W4MidOe7HtG8mrjYHztPxhqEdAUMXPFk1ADJSI/rZh6cwfXMcYCsYbJV2l991zoNvc5ovrKNhZKtbE251NwA7SarchVZYkHBwkCD3phMdk+kgk1rjl71zlKQktiPtvvNGoxdGgNAB9lF5GBozLXISeJp7BgQ7Xa0H7iDhJxEdHtSGaZT1IrSPXFaRWmbQ+U+IgGBC2M171hIOZ/A6Yf1kxh12D96pfjAAaGHVCHk7/fdTqoG0HKiliqjP53/8Cg34OjlSAzmsIcj9aXpnaPaXW4r1PeyUWhMNlSTyKN0gYPo/VZd/wZ4x7HlwOS4xoL0/CTRQ4kSt/hoLGu5nnitkOrWOKIAu8mkXmKu7RVKAeK3au8o6c0HEUIZ6syjbF7lTrT6G5/Kb/Jz3rbefioWblqr9NjPS1EMVvVh4c0MIkr72aTpwYRn+6VmyKfUKr/YMUK2mubtaiDiTzVRgYozvw5++dA798SGoZz3LizLRwl1hICuDj8OVmm+0kHMfyvLPOkeUqho2PPN91OUPVEyURTCsGQMxJKddywRMw79HNfbg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024)(921020)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RDI2SmhOU3lNSEJxVGRUTjdOV1lPUWtKaVZWMW52UVBUVUtnQUROMFU5MlJX?=
+ =?utf-8?B?dGtrcGRFeGtmTGxDOEVsRFo2bDFMUE5LQjVjYU5iSlAzemhiVGZCdDRLZk1x?=
+ =?utf-8?B?UWEvcTBRUk40ZVlXODd2WEg1UStjZ0VLdFUyMUJHQUtWSFI0cHZveDM3UEhK?=
+ =?utf-8?B?T1J0SzVhZE1xVmhudFlLUDJoT1lxMW92a2U5NzFZUEM2OUYyZzl4NC9iV3lz?=
+ =?utf-8?B?am51ek9adDRZZW9tWjg1ZVdNUkZCTjIxeWtuZEd0SlArNWVTVjhPSXpoZ00y?=
+ =?utf-8?B?a2RkbGp6bEdaN0lMMUVwaC9kMjM0bDZQMGRkZk4wY2hzQWduYkNDeEFUa2N4?=
+ =?utf-8?B?cEZNSWVDazN4dytzZDdNZzRmQjgvV2VSUCtNc2g1QWNMZVN1K1dpV01uTFdM?=
+ =?utf-8?B?U1dIZlNPeklmS1lKOWRIYmZjenFreVpJU0NIbHNFWHpwdzgybkh6MmNCaEFs?=
+ =?utf-8?B?bkszR0VFTlVKVjN6cVVZSUkxWWVHTTFaY3dMTzRDd3MxUDliQmJzdWpCY2FB?=
+ =?utf-8?B?Z0RKUUFuSEF0cndBQTRRd21ic2Znek5uQTQvbVJ1b25NSnBTNlo5NmdmZWps?=
+ =?utf-8?B?ZDczUmxleUw5SzNyaDVlTTdLcG1GSk9uVzA0Q0VhTStnT1Q2a1lLbXdNbFQ5?=
+ =?utf-8?B?RWdyTEtFMDZvR3BmeDJOc0lwR2xBNkJyLzBmUFRDR21YZXIvNVJuSkdnR1Ft?=
+ =?utf-8?B?dHFtYkhDVmFibWdWT29ocjFOSnNQS3RvcGJ0SG9Ec2phOEVBTmN1QVNQakV6?=
+ =?utf-8?B?U2ExaVJPQVVvQk9oMGdRMHllZnN4cVVVYUZuZTBYV0tVSkptNmFHVUU2ZmVX?=
+ =?utf-8?B?d3hCeUgvRVpSVTNuU1dIUm9VM01MSlk3aEI3UVR4eGo2UFRhVGVldEppYmFM?=
+ =?utf-8?B?MytDODN0SmtFRm1rdktjZGo0SExIRzJzQWNvc09uT2syQlFPS2pYdHpxTXp0?=
+ =?utf-8?B?U3J5Qlh5ZGNnLzltK1A4bmhkcUJuMHhYZWtIWDkxZlc1NGdOSW1VdkJiekVz?=
+ =?utf-8?B?TkdxaGF0a3VjYjR1RDBxMUpYNUJ0ekR3dXN5OUFzcW03bmpzb0MybEo0RmZO?=
+ =?utf-8?B?ZGNlK2ZXelM2U1o1cmhVZllhZ0JQcFRPRnJzaHhyOGZyOHBGTE9CbGNHcUxu?=
+ =?utf-8?B?NnpnWk9SWmJ1blpCNWRLRTRIa2xCTWVaSVhWUHpyS0NMRUFHSjh1U2NqTkpz?=
+ =?utf-8?B?b0lVMGUxSnFReldqenJUZEVOdDZmNGF2eGtxOHdGQ3gxaU1NWW9FZTBHRUpI?=
+ =?utf-8?B?cVlwTWxaUmV6WERwdzlhTTR3WGppY2pXV0tObEpQRy9OS0hwUFVqL1VNbGlp?=
+ =?utf-8?B?ZTNDMzhMVzgvbko3L0lXWEtQRXozcjdPZWQ2YUtGVERrYjRnNmliVERJbkU1?=
+ =?utf-8?B?bkptdnlNYnBwcWIzN3JZQXUxMnRxVEgxaGxlZTBiSU5BaWU3Z2NjdDZZbG9n?=
+ =?utf-8?B?aW1RdTR5ME9rY3kzQmVPKzBudTduNGgyRkl1c21JVlFQRkQ1ck84RUpUeGlC?=
+ =?utf-8?B?Q3BuVHlxeng4NWlDWW91dnVjd0lQYWxSb3dNYnF6MmN0RlNlTW9BVjlBclUv?=
+ =?utf-8?B?S3R1eUo3RUlyQnk5VC9nckRkbStyWkowb1oyTlozblBQY2FZRjBlOHlPS1Y4?=
+ =?utf-8?B?ZkR3RWt1Z1RhUWFTTnZKVjN2MzNiQUpFRzlIaU5DTWNIcUVscHFLdHI1SUVP?=
+ =?utf-8?B?S2hUZDdSd2praXNoYnhOaVVaNmtVYlFPSVBDemZsS3BMUER0UEtIdStZYWNw?=
+ =?utf-8?B?U05WQWNETExSMEg4UmFDRUxtUXdpa3pZTkpCaUMvOEdhcjBpMWhrZ1d3Wmgv?=
+ =?utf-8?B?d2RlL0R2Wjhib3Q2NUhIWkE1SkdWN3B4Y1NZVDRHZ2RndFZockV3czZCNWk3?=
+ =?utf-8?B?NkxDN1pEV2g4S3pmbUc4RDB6c3JhYS9UMXNIWFJuMFpJWmlkNXE5NFZCT01i?=
+ =?utf-8?B?dlJtZkE3UnFoZ1VDREJ3Z0IyNFVhY0NnMVRsbjJKTjI0NFNkakJjYXhONjRp?=
+ =?utf-8?B?S0hvVE5iTURpVjNkem1VM0tUYWVNRlFyVHUzdnEwQjg1K3NrZFkvSis2T1hD?=
+ =?utf-8?B?Nk5jR3o4dDRVNjdQYVI3MDNBU2ZXRDBGdGF6b1ZrL2hkb1ZjNTNCazNlRm1o?=
+ =?utf-8?B?RlkrUWxoWWlKYU1PdzhGRzlmeERvNUNNWWVYQjZnZ2YrS3pzRUFLdWpzRFdw?=
+ =?utf-8?B?N3o2RVBXTjA5MGRvNVNlaWlwYlB6cktTcGJUNEsyalR0amM3M2dFeG82YXRh?=
+ =?utf-8?B?bkl2UElSREgvdEViSy9GWkFrbzFqNWdQbGRJVFVGT1ZTQ1VhR2dieWc5T2cz?=
+ =?utf-8?B?cXZheFlOR0pkMVZKU1RxZlJlVGpmR05VR1pHZzFaYTFQVWh4VFc2Zz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: f61d34f4-a05a-4c82-077d-08de9fbe4a6b
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 15:54:37.5108
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GEMFdmv7JIr2qj+jqVFCOmrzKQvFFB8elnpOh4qWF0AwICC/KM1aczEajv8E6rQK8xwfuLyvAjdwU6JKF6mlFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5405
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 373F9A0011
+X-Stat-Signature: 5q9jhoixqukrbfoht8ebbzytrw3tn5nk
 X-Rspam-User: 
-X-HE-Tag: 1776785958-854087
-X-HE-Meta: U2FsdGVkX1+NvV0tV0zrkoL1vMrpFSoJfdfiCGQaXsvc/UmRUII75eEcodS9c4/K8Y7cBJPMr6BFQsDkpMHkVYJnX9tdxrTwDo9O2o4s4tnPwVO/qW0XVMbohyvCPXEwkHPoaRxSLQeTfcHaSgPTR7DDzcU+wO1ag1Y1prjWoSTI0AysTnqlaP1nx646bc9dJ7XKT4sU4gm0xn+0Rmtcpzvyu5UrcJIYTNk29YSBq8Lwway68JyfeHb9g4Zh5lBII5Lai911+QWA3hAu/PT7EbMcRZOwiCA1ifoYQLAv3ixEtVGD3SEUCamYutZNGfNHYu2glxExmz7HIaw+7GtoMvfUask5yxFd1xfIKvv3OT3joF9E2pM41f6ejq/bL1mcGdi8oPTJLdftjINevrWHCypwBiu5AEqzvVXKRiTUrIju2zYfZz3aSNtRBigu8cqTKtQ8yfHfg4868HZPDvGhiGJpcn0w7H0X1WWo3Qgu7UK0sKiutIJj7H9jPZkVoDB4rGx2nYTXeKy1+f913IVy6ap+hkwIEnhEB7sfBISOHTxLBmDN592PtXiKFxtBoZz17neqge7G9ERczwok2vtUoXK1zccpmqwEgN+sYLDJFxV2pBGJ8/IiJVJqsBPf5VnfezRH69tkQuRe3qUDoaGZ29GdlwG8tc0LdacVL5Q8LPjMQN55TqlDMUpzoGeMtEwhZm9rW8dWEsBAoBU86bodb/n1oZ+nknBZXUR/l8TCwuWcWA8Yn9Q8rhX+5AmzUfH/QjKEcnREzwFmsD6u+/JkWz7cjxLxHAdWR1qQEtRPrOnDpwFq8mGryjIiMsdXvOdViBfWswI+PMSzWqTDlF9MAM6b5iSu3RFuGIezSRKvuin+cykBexrmueaCRi3p20/YdTryH1/e6LYFvlXQTbrs1jjIX6AbreNhUPSv+KO/N59ER08cIIW+eB/BWxQeM6KUPgTqdLxf+32bRn0er9T
- atuUO33w
- 9WRUIrYmjnZ6dLtSLpvZhyBcCW0zLPGw8Gubz0QBICsyEa5HnL7Ryq0Ur5wNZNokwcECqq1zxhR3+xWfZ/0T1+Lw3X9XRxqjQHrhDDI753z6veicu/MWD5V+fZNcJb3JI6myhjg+U5fqIcVS3ppV94CGmYjJCcQ69pH2H2cvCZZ1sbkBwkHp+21yBT9Jr8GMcZptlMm4PrU+AZ0jZjw/2CncGCvXQLOIpW+9CHzz2JSugGad88tMkE/vv4REnNBeTOjLCY5NS28rgfk+0BagAziIF+q+UyAno02rp
+X-HE-Tag: 1776786881-628668
+X-HE-Meta: U2FsdGVkX18tv0i6BqCCKcQIDIBg/KXpZwzW6y4WzuaDLSvCIy6obZLHJAr+xEFU3WeeG//9by4jJT2rqEEBYh8IwlmYeV0/EYW7E1ghjJiQWH1wZiRCG/+ZGuxTjt2R/wnR866jx0agc8VNwTg5k85BTETQ90CD13Z89ckcSC6oMZLEcUCZBh8zfeNjWJfMXA0HiyU551Qogksp8z4nKNcpWz15b1AY5JfdUCOoUzs0xqP+GM8w4GuGL389r9q2xKvdcrkpxe20m9hKuX4SfOiIacP7VVw6eAVLOqZtFEZcFRKw7e/jOZTUAnTMtTlKYzb1+UB8tV3ghw+p2R4n615ERRHMwZUakb/xzrOZyllgto7L1mkjLzTU07UNwtZNeIxbLPm3SUQ/lZMgV3LpfsYDcYsMOPT43YmFT2Zp9qlvUD9ERhEyVsXxzbqUvNbENouTQtQiVWb6tGXmrkMP2uQGrOq+Nlx9AklT+SWh8qLoiQqXI1CpJUGKst2w2+R/A33eE70VnaqQflN7rfcq9F8CScRC9UxC0SDds6vSttyvb3jvw/o/oU6FYL0ysNHMfi1nyLWt5mXeWt0RDYKIXfT2Fpe3xTgMW27nDS6n/RMDMrWOoA1wCN8TC+zXyrPvuByJRMdELpeWroyaOCjNx/rTFrb66zwWjE5zIWej7WecKBkkyaNvMXo8n1sdK3EF50HURX1YablpTnoseqfk+fs3kO1Sf9D4e08hg62+mmD3Cg2v7Le/oJ1f/DqrzsY04lk48ezsUqTVj00m0HSMIR1RdUAtHJ1sHSdDcLL3sov23SsOwA/ohg7Xv+iNZEdFRT6lKWfa14tqyTyw5jgx3dWxQbCOdUW3dnOU9YUIlL1d8eGQm8Kn1RgtoH+o4KUONZoiE7aIVjT0n/voaaHF6xrgdm83yqb2Xrgy5Yjin+d+p1L4t2FTqyXDnrJlwbjuHvs9NUBnXW8/F6y6p45
+ 2vkMAkJf
+ iE3sqsWCfl5Nru+/jx9TiqFtkQmaX4iyk9iuVsdFVALJHP56PFxaJwOi++FhklZwfMLYm15hKrf2DA8NRIgGwDORfIwuSE80lngQDhI4Pf0S0WVKhHjo8ZiUIiSiBlVt0h8bp3kvmvlTYBkfTfl0QdVvio6xWAR/lSLhV0W/WPI7laaAahYWJ0cdTHkHl3yADr02w8tXmF/lmXqUE2bS+rf84ek/H+krUkjyTkL1JC16MgznvyrHkWH0jv5Wtqb3/AKAeAkb5zvBthtORJByYE3o5rwcFe7TLl4DkBhoGemIctOQLa3M3n538WE9pDTnbeUZhArgB6yw7HOa3+dJezI28vYKyTK64rC6B3p6jCGemihaB85PNNnabz8S2cAZnCAcOD9ubVpdD06O19zfyvwW9/PhEWHJuYOJ0igj2LR65GtCp032Ooqf3WVWb4Wnw+TZD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,201 +177,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
-flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
+On Mon Apr 20, 2026 at 9:10 PM BST, Joel Fernandes wrote:
+> The C maple_tree struct contains a *mut c_void, which prevents Rust from
+> auto-deriving Send/Sync.
+>
+> Following is an example error message when using MapleTree in nova-core's=
+ Vmm.
+>
+> This propagates up causing NovaCore to fail the Send bound required by
+> pci::Driver:
+>
+>   error[E0277]: `*mut c_void` cannot be sent between threads safely
+>       --> drivers/gpu/nova-core/driver.rs:77:22
+>        |
+>   77   | impl pci::Driver for NovaCore {
+>        |                      ^^^^^^^^ `*mut c_void` cannot be sent betwe=
+en threads safely
+>        |
+>        =3D help: within `MapleTreeAlloc<()>`, the trait `Send` is not imp=
+lemented for `*mut c_void`
+>   note: required because it appears within the type `kernel::bindings::ma=
+ple_tree`
+>   note: required because it appears within the type `Opaque<kernel::bindi=
+ngs::maple_tree>`
+>   note: required because it appears within the type `MapleTree<()>`
+>   note: required because it appears within the type `MapleTreeAlloc<()>`
+>        =3D note: required for `Box<MapleTreeAlloc<()>, Kmalloc>` to imple=
+ment `Send`
+>   note: required because it appears within the type `core::pin::Pin<Box<M=
+apleTreeAlloc<()>, Kmalloc>>`
+>   note: required because it appears within the type `Vmm`
+>   note: required because it appears within the type `BarUser`
+>   note: required because it appears within the type `Gpu`
+>   note: required because it appears within the type `NovaCore`
+>   note: required by a bound in `kernel::pci::Driver`
+>       --> rust/kernel/pci.rs:294:19
+>
+> Implement Send and Sync for MapleTree to fix this.
+>
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+> ---
+>  rust/kernel/maple_tree.rs | 27 +++++++++++++++++++++------
+>  1 file changed, 21 insertions(+), 6 deletions(-)
+>
+> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+> index 265d6396a78a1..1ecf05871e710 100644
+> --- a/rust/kernel/maple_tree.rs
+> +++ b/rust/kernel/maple_tree.rs
+> @@ -16,7 +16,7 @@
+>      alloc::Flags,
+>      error::to_result,
+>      prelude::*,
+> -    types::{ForeignOwnable, Opaque},
+> +    types::{ForeignOwnable, NotThreadSafe, Opaque},
+>  };
+> =20
+>  /// A maple tree optimized for storing non-overlapping ranges.
+> @@ -240,7 +240,10 @@ pub fn lock(&self) -> MapleGuard<'_, T> {
+>          unsafe { bindings::spin_lock(self.ma_lock()) };
+> =20
+>          // INVARIANT: We just took the spinlock.
+> -        MapleGuard(self)
+> +        MapleGuard {
+> +            tree: self,
+> +            _not_send: NotThreadSafe,
+> +        }
+>      }
+> =20
+>      #[inline]
+> @@ -302,19 +305,31 @@ fn drop(mut self: Pin<&mut Self>) {
+>      }
+>  }
+> =20
+> +// SAFETY: `MapleTree<T>` is `Send` iff `T` is `Send`.  All access to th=
+e tree
+> +// goes through the internal `ma_lock` spinlock or via `&mut MapleTree`.
 
-If we run with init_on_free, we will zero out pages during
-__free_pages_prepare(), to skip zeroing on the allocation path.
+I don't think this needs to mention about the internal `ma_lock`. The lock
+sounds like it'll be relevant for `Sync` impl rather than `Send`. Even if
+accesses are completely unsynchronized, it's still okay to implement `Send`=
+,
+just not `Sync`.
 
-However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
-consequently not only skip clearing page content, but also skip
-clearing tag memory.
+For owning containers I think usually you don't need to put too much
+justifications, I think a statement similar to that of `Vec`'s is sufficien=
+t.
 
-Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
-will get mapped to user space through set_pte_at() later: set_pte_at() and
-friends will detect that the tags have not been initialized yet
-(PG_mte_tagged not set), and initialize them.
+    // SAFETY: `Vec` is `Send` if `T` is `Send` because `Vec` owns its elem=
+ents.
 
-However, for the huge zero folio, which will be mapped through a PMD
-marked as special, this initialization will not be performed, ending up
-exposing whatever tags were still set for the pages.
+> +unsafe impl<T: ForeignOwnable + Send> Send for MapleTree<T> {}
+> +// SAFETY: All shared access through `&MapleTree` either acquires `ma_lo=
+ck`.
 
-The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
-that allocation tags are set to 0 when a page is first mapped to user
-space. That no longer holds with the huge zero folio when init_on_free
-is enabled.
+This isn't the full picture. You need to also explain why it's okay for
+`MapleTree<T>` to be `Sync` when `T` is merely `Send`, essentially the reas=
+ons
+that `&MapleTree<T>` doesn't give user ability to have two `&T` that points=
+ to
+the same object across two threads.
 
-Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
-tag_clear_highpages() whether we want to also clear page content.
+> +unsafe impl<T: ForeignOwnable + Send> Sync for MapleTree<T> {}
+> +
+>  /// A reference to a [`MapleTree`] that owns the inner lock.
+>  ///
+>  /// # Invariants
+>  ///
+>  /// This guard owns the inner spinlock.
+>  #[must_use =3D "if unused, the lock will be immediately unlocked"]
+> -pub struct MapleGuard<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);
+> +pub struct MapleGuard<'tree, T: ForeignOwnable> {
+> +    tree: &'tree MapleTree<T>,
+> +    // A held spinlock must be released on the same CPU that acquired it=
+.
+> +    // Prevent `MapleGuard` from auto-deriving `Send` because `&MapleTre=
+e<T>`
+> +    // is `Send` due to `MapleTree<T>` being `Sync`.
 
-Invert the meaning of the tag_clear_highpages() return value to have
-clearer semantics.
+nit: I think you can leave out the "auto-deriving" part, you should be allo=
+wed
+to assume people reading this knows about `Send` and `Sync` are auto traits=
+ :)
 
-Reproduced with the huge zero folio by modifying the check_buffer_fill
-arm64/mte selftest to use a 2 MiB area, after making sure that pages have
-a non-0 tag set when freeing (note that, during boot, we will not
-actually initialize tags, but only set KASAN_TAG_KERNEL in the page
-flags).
+Just the first line is sufficient. (We probably want to be explicit about
+not-thread-safe things even if compiler would get it correct from auto trai=
+t
+inference anyway.
 
-	$ ./check_buffer_fill
-	1..20
-	...
-	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
-	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
-	...
+Best,
+Gary
 
-This code needs more cleanups; we'll tackle that next, like
-decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
-
-Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-Changes in v2:
-- Drop kasan_hw_tags_enabled() handling, as it missed the case of
-  user-space MTE without KASAN.
-- Keep letting_clear_highpages() return a bool and re-instantiate
-  system_supports_mte() handling in the arm64 variant.
-- Rephrase __GFP_ZEROTAGS comment, making it clearer that this is not
-  just a performance improvement.
-- Retested and more excessively build tested
-- Using a new b4 template, hopefully that doesn't mess things up
-- Link to v1: https://lore.kernel.org/r/20260420-zerotags-v1-1-3edc93e95bb4@kernel.org
----
- arch/arm64/include/asm/page.h |  2 +-
- arch/arm64/mm/fault.c         | 11 +++++++----
- include/linux/gfp_types.h     | 10 +++++-----
- include/linux/highmem.h       |  7 ++++---
- mm/page_alloc.c               |  8 ++++----
- 5 files changed, 21 insertions(+), 17 deletions(-)
-
-diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
-index e25d0d18f6d7..58200de8a221 100644
---- a/arch/arm64/include/asm/page.h
-+++ b/arch/arm64/include/asm/page.h
-@@ -33,7 +33,7 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
- 						unsigned long vaddr);
- #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
- 
--bool tag_clear_highpages(struct page *to, int numpages);
-+bool tag_clear_highpages(struct page *to, int numpages, bool clear_pages);
- #define __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
- 
- #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 0f3c5c7ca054..739800835920 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -1018,7 +1018,7 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
- 	return vma_alloc_folio(flags, 0, vma, vaddr);
- }
- 
--bool tag_clear_highpages(struct page *page, int numpages)
-+bool tag_clear_highpages(struct page *page, int numpages, bool clear_pages)
- {
- 	/*
- 	 * Check if MTE is supported and fall back to clear_highpage().
-@@ -1026,13 +1026,16 @@ bool tag_clear_highpages(struct page *page, int numpages)
- 	 * post_alloc_hook() will invoke tag_clear_highpages().
- 	 */
- 	if (!system_supports_mte())
--		return false;
-+		return clear_pages;
- 
- 	/* Newly allocated pages, shouldn't have been tagged yet */
- 	for (int i = 0; i < numpages; i++, page++) {
- 		WARN_ON_ONCE(!try_page_mte_tagging(page));
--		mte_zero_clear_page_tags(page_address(page));
-+		if (clear_pages)
-+			mte_zero_clear_page_tags(page_address(page));
-+		else
-+			mte_clear_page_tags(page_address(page));
- 		set_page_mte_tagged(page);
- 	}
--	return true;
-+	return false;
- }
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 6c75df30a281..d79049291b1a 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -273,11 +273,11 @@ enum {
-  *
-  * %__GFP_ZERO returns a zeroed page on success.
-  *
-- * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
-- * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
-- * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
-- * memory tags at the same time as zeroing memory has minimal additional
-- * performance impact.
-+ * %__GFP_ZEROTAGS zeroes memory tags at allocation time. Setting memory tags at
-+ * the same time as zeroing memory (e.g., with __GPF_ZERO) has minimal
-+ * additional performance impact. However, __GFP_ZEROTAGS also zeroes the tags
-+ * even if memory is not getting zeroed at allocation time (e.g.,
-+ * with init_on_free).
-  *
-  * %__GFP_SKIP_KASAN makes KASAN skip unpoisoning on page allocation.
-  * Used for userspace and vmalloc pages; the latter are unpoisoned by
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index af03db851a1d..d7aac9de1c8a 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -347,10 +347,11 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
- 
- #ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
- 
--/* Return false to let people know we did not initialize the pages */
--static inline bool tag_clear_highpages(struct page *page, int numpages)
-+/* Returns true if the caller has to initialize the pages */
-+static inline bool tag_clear_highpages(struct page *page, int numpages,
-+		bool clear_pages)
- {
--	return false;
-+	return clear_pages;
- }
- 
- #endif
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 65e205111553..71859993dd54 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1808,9 +1808,9 @@ static inline bool should_skip_init(gfp_t flags)
- inline void post_alloc_hook(struct page *page, unsigned int order,
- 				gfp_t gfp_flags)
- {
-+	const bool zero_tags = gfp_flags & __GFP_ZEROTAGS;
- 	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
- 			!should_skip_init(gfp_flags);
--	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
- 	int i;
- 
- 	set_page_private(page, 0);
-@@ -1832,11 +1832,11 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	 */
- 
- 	/*
--	 * If memory tags should be zeroed
--	 * (which happens only when memory should be initialized as well).
-+	 * Clearing tags can efficiently clear the memory for us as well, if
-+	 * required.
- 	 */
- 	if (zero_tags)
--		init = !tag_clear_highpages(page, 1 << order);
-+		init = tag_clear_highpages(page, 1 << order, /* clear_pages= */init);
- 
- 	if (!should_skip_kasan_unpoison(gfp_flags) &&
- 	    kasan_unpoison_pages(page, order, init)) {
-
----
-
-base-commit: f1541b40cd422d7e22273be9b7e9edfc9ea4f0d7
-
-change-id: 20260417-zerotags-343a3673e18d
-
---
-
-Cheers,
-
-David
+> +    _not_send: NotThreadSafe,
+> +}
+> =20
+>  impl<'tree, T: ForeignOwnable> Drop for MapleGuard<'tree, T> {
+>      #[inline]
+>      fn drop(&mut self) {
+>          // SAFETY: By the type invariants, we hold this spinlock.
+> -        unsafe { bindings::spin_unlock(self.0.ma_lock()) };
+> +        unsafe { bindings::spin_unlock(self.tree.ma_lock()) };
+>      }
+>  }
+> =20
+> @@ -323,7 +338,7 @@ impl<'tree, T: ForeignOwnable> MapleGuard<'tree, T> {
+>      pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, =
+T> {
+>          // SAFETY: The `MaState` borrows this `MapleGuard`, so it can al=
+so borrow the `MapleGuard`s
+>          // read/write permissions to the maple tree.
+> -        unsafe { MaState::new_raw(self.0, first, end) }
+> +        unsafe { MaState::new_raw(self.tree, first, end) }
+>      }
+> =20
+>      /// Load the value at the given index.
+> @@ -375,7 +390,7 @@ pub fn ma_state(&mut self, first: usize, end: usize) =
+-> MaState<'_, T> {
+>      #[inline]
+>      pub fn load(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
+>          // SAFETY: `self.tree` contains a valid maple tree.
+> -        let ret =3D unsafe { bindings::mtree_load(self.0.tree.get(), ind=
+ex) };
+> +        let ret =3D unsafe { bindings::mtree_load(self.tree.tree.get(), =
+index) };
+>          if ret.is_null() {
+>              return None;
+>          }
 
 
