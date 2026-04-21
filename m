@@ -4,145 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6763F94CA7
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 19:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E599F94CA0
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 19:20:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D11CF6B0088; Tue, 21 Apr 2026 15:13:51 -0400 (EDT)
+	id 776FC6B0005; Tue, 21 Apr 2026 15:20:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C79996B0089; Tue, 21 Apr 2026 15:13:51 -0400 (EDT)
+	id 725BF6B008C; Tue, 21 Apr 2026 15:20:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8A4C6B008A; Tue, 21 Apr 2026 15:13:51 -0400 (EDT)
+	id 59FDD6B0092; Tue, 21 Apr 2026 15:20:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CE696B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:13:51 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 07A8A8D49C
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 19:13:51 +0000 (UTC)
-X-FDA: 84683512662.15.3B8A209
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0917D180009
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 19:13:48 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e3AEcYKZ;
-	spf=pass (imf24.hostedemail.com: domain of elver@google.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 355726B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:20:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C494FE62F4
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 19:20:50 +0000 (UTC)
+X-FDA: 84683530260.18.C35B252
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012063.outbound.protection.outlook.com [52.101.48.63])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 01F3E4000C
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 19:20:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=bkgn6yz4;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf12.hostedemail.com: domain of jgg@nvidia.com designates 52.101.48.63 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776798829;
+	s=arc-20220608; t=1776799248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J+nBi8NMCSPfGIscPWxKFWQOBdlvlCfORQNm2QzRooQ=;
-	b=F3MRrrZo/k9FcJXmWquq16xXODnqdd/TDI1B5wOFN2NbmxyUhfZv+lbGeDiBzuVqumHhZ9
-	iWrgM93wqJVZagzuP4ojd6mOj3UiF4Cc7JYbXqXb2aPMSDhkgdAc4dTxcz/Mi4VuBQNHWz
-	xveO6PegaPcMxGoffkL3NS+fElorVUs=
+	bh=iT8/t4hqx6YsKjv6GiyYdJPDbRUrv/SDi6uN3iMzbxM=;
+	b=onf7l77RgHjeq1zTWsZtQ4udgI2m22QPkdahip3mcNZ26naZ+KuEBgNbgPz3O17Mtzimon
+	9dihSJzpy+KoUrz8hRDxlcRbq0h8BkuNZjbWEnilYA8mpUpc/Kq4rzBzDBmPKw9Tz+xtrz
+	ZgtEfVSEuIoRE+f1NUS1h0F+5TDM/tw=
 ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=e3AEcYKZ;
-	spf=pass (imf24.hostedemail.com: domain of elver@google.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776798829; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=bkgn6yz4;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf12.hostedemail.com: domain of jgg@nvidia.com designates 52.101.48.63 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776799248; a=rsa-sha256;
 	cv=pass;
-	b=C5Sy2UBgwyE8RoA7sOb9acVK6kdmHsfX9cifAgy/F46+kTzwxP0Q8yWrT5qEyrftQBdSvL
-	Rk/zH3g+Ox9tSRsYMXl2YAmr3N2XsIXZqDWGIPDLjoP1aD2vBpnC40RWgnicCdUyEPp3Xr
-	97OkkUaifjBy64w9aWLPzV2oZdq1GiU=
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-12c45281a06so6206049c88.1
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:13:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776798828; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dGeO2hPg2s1jT8/t0JhbunJMClKSWkNDCA/rNTXQGxddC1tCpKlf9LIjXPvSfMdFt2
-         mGveZFEt1kiXeBhLFwJH/M4AX2+KQ681P6E+kQCCw96Y/jbw2xoJNeT4yirG94HuoolL
-         vf5CZgckoX0qy8fUJkMy0hYm/ljASpl66YeuW3l/HdFqSsuhUwpJ+nSLVdxXQ/zj5++4
-         MbhA+vqXxkj4RwzlKvO9nJTiXD5Em6IMW9SlAtH7NrXzoi5XqHMvQHLWmQkokHDxhKUJ
-         ABzMZmRDImuzYuP4g/tuX9nVTPWX2aRllRy5iysZy8k4TUZMVa0nFqj3cUcTMgSJYH6W
-         hy1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=J+nBi8NMCSPfGIscPWxKFWQOBdlvlCfORQNm2QzRooQ=;
-        fh=SRr+K2XAoSSXWRfxbvb/MRMTqEVv8elwxdRysyr8kA8=;
-        b=P4NwycBUTFZ6TyPtX1GynPiYUwnazmfDylcsS09i4iDIzIFdRjt3vkXLrX3oghsTGg
-         Xs0FeJZJUkwlyL3DnzGrwJSZHhtrFAQ/Kc681iTLIvpkAfAduaoFoawUA2Imc7ZS7vg0
-         XLcjZjhi8JW661I4AgOJl+HbIaoCxdK4uVEuRCuQIVe/TaxvqiJFGxeB6fkrhSteSSaT
-         WZMdszYJ2YJYNNimQNc1VKxIVP9ZzjW7UP13OWPPlro5aGuSkqj/rdrYEHDD6j/f9nOg
-         UVgHgHbcvlb0dI9p4SxHPH6NJicAEvT1g9ELns62O5fuGrQaJZZGgWi5UrQPYK1sxBl6
-         COsg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776798828; x=1777403628; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=J+nBi8NMCSPfGIscPWxKFWQOBdlvlCfORQNm2QzRooQ=;
-        b=e3AEcYKZ6B1IzCi79SoyVqpFwB0MPmPBJkglPaEF19lfLWEFeJ63gcUQkbPfGPEU0n
-         qXr+ZaZ9Sj070gnNDaBl+4O2Y9GuY1bnfAoCptUrdp61LgtmWIw/Nt/UJXFN8GTBXMfm
-         CY9EZXYntxXhfiq6r5XajQSvwC2llqJYy9N0uPQp1eRmuQhQs5tbEEE/RDAfnF2tYMWA
-         U4KOeTdVDsFyWTQcmWx1e/tYsSdW/lJTzWijYEYChDLgpOBiQTIkMARqC3tyH24hgfCl
-         Vr7HpNlAzb52RY1x8ClMgnjwYQ7LYyt4PQlV23J4qpMZAua0jUbUZLZ4m8GYL0+AA0xv
-         TRXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776798828; x=1777403628;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J+nBi8NMCSPfGIscPWxKFWQOBdlvlCfORQNm2QzRooQ=;
-        b=iW1l/AsIALiis7sx8XiODgpqxxVblWj0bS2lydBH16B1pshjJM+iBS4QfWud64wNP9
-         x2tVxgUrLBXna0nOltuFVY3WiNyBST80eYFm03s453KskOe14Rckj2dTY8808+eibl34
-         C2dFG1Sr9Ycxqux6t8TjvXZnLdcoWBxVMlAvvgsiKVwthA8tvQTfD/05YNG/wCwN79JO
-         bm+4gUXC00jZc6xXHycRppiAyejrZuFEzLP7Hr9IV+G9e+c7QWm75o98m4sr1msHn/us
-         b2/aZg7v1LkdSQ07rEiEwqUP89gOv4F93KMDpDcvkEcvf8HoEBt7JAKQCPuNqGl4hUD8
-         q86w==
-X-Forwarded-Encrypted: i=1; AFNElJ8d7kvkBMCJe+wkNvPA0PJ3kuaEAVFQOeyhbCg8mN3wwS4roY3FMIQKtEhpMUzBSJMGHDFA6uPa/Q==@kvack.org
-X-Gm-Message-State: AOJu0Yw6z4tQhhB6x6DB7sJC5FduM8XAGUEpSppZU/0y+jGuyGMgjP7W
-	BvykSHsZ8BB29OAVulakok7Ke7uOSduSrDWIdB58Ii4ZBUNtHHVCgDzYVJQ33irOWKEEwCVHIeF
-	hDbBlnUykLVVVvcCoduQiqeu/Zdziuldzt+bm93tG
-X-Gm-Gg: AeBDietfpUmT4QpzZrfemxE2jfIhqE6jnSbR6eznZrCzbBdCRUiLFCZM5E6WdtdNP1Z
-	8FD7amXA91JzA2Z/IRB07evaPwwWL5FA9oQNaHhKJG9jHg2lPtP5tCavZXTDDRZTFtpPuXbPBiX
-	P011t6pX6WwadGirZ8ZDYb8/msZqiCUBOWZ61Ba3ZlSPh0YOszxA91fsVsMCmnTDGGt5VRfyA74
-	+UtJ/dV3WFg1lSS8THVbdlznVnK7G5drk8uLOrg46jVYezh5JBbz2FHjsu/vBQ06gaEvVTKroc8
-	Kzl0oeEcqmqAAeXMQubybFt5FrYhXTpQdx3LOZL3DlpxDixgPr/y8cNR+k75pcCfjLMF98E=
-X-Received: by 2002:a05:7022:4199:b0:12c:2cf8:2f30 with SMTP id
- a92af1059eb24-12c73f83616mr10488523c88.15.1776798827054; Tue, 21 Apr 2026
- 12:13:47 -0700 (PDT)
+	b=TMOtDqOk64NOjqeeSUoDgW6mv46UA7tjhx+vUBkjXBXLMZdyFMEaO/7gEu/W+wIE6tzlEV
+	cX+zDL6vmlSWeDMr0L3FBgcpgQL5IZZdeRQTQ8vUrZ9TRhmdTp0T6ntNMB/6I5YSNF+ZFg
+	QrUc+y9ON37BL2fkwPTobpvsZ9QAEk8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AB3OwNmNiLq02cV/8f2V4xseVBLLBThFVXBBiLSa/G/kTDy+i/yImomm51X8cJjq28zsxlpNhDCPf/bK8et3hhNQzAD/7JCWj0TaOz9fodvDY6wJy1aDf/dFL4cXhdmhAGAopc2p7LzZkUv13uUtaVbDmATECkGYPOn/k4o9yI9z7cCwLSOkIknkuM8Mq/BS5sJYArypysdEtScdpbm9L2BBUOHZ4JAYCmBRpGa/MOwHvVio/N9vSlry3WApxVyC31tKxm3w0BsuAKbJmaLVIjwD+l2VCkEH0OeQ3H6I3TAvzRtM5ZgtDKcV4EhDj6rpxIVmbUg/g8R80exCitxfhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iT8/t4hqx6YsKjv6GiyYdJPDbRUrv/SDi6uN3iMzbxM=;
+ b=VTVEcQ6yT5LFgtdje7hP7EG6GRbc2jfFn0pE9iZmwbdU5tNw9XuNbqazfsG6c9OaW9s11p8deOVbyppZP8pJqF+OCT09faw/O1aY6uhlz8JyclsZ0aY6gCq5qR4WBmKdkjbaRIsXOfas2nGui1XQU6EPiPzSWXcSexJ6cSo/ahqtA+3sxQttq14tbKH1d62qAwAD+O5UouuRsggcb3NfHoJIGhrVctz5IPCrz11SO5+4mHElkbi3mSecLLBOL4BmmW2soV4ESqCBSUfUlzHYy1GZS5pwurGQrLmja2QAgklg8D0h4kMQDCxfKPmNbLoSWWsRaIWzh50/9fpAUeHb6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iT8/t4hqx6YsKjv6GiyYdJPDbRUrv/SDi6uN3iMzbxM=;
+ b=bkgn6yz4Xveuy6enkf1zsJpS4+8123bGHpuQWNRQ8e6v/xS1YqqSA+tEtOfxHMFjdlViVkyGd5ICiiSGRpigG3lIVLZanrkwGBmvMTUdhcFrj992VYxeh+U5a/bu3ng7B01XQ8PxuA9D8azDx2p60CQuysHpUUW462QLLiszccUDQwIfWc26VsFP5EOVymrRYumK0wLU1S8VbB+cgE9Ylr73zmhJA/UgSA2rNSCzYUnVoZonOziVQOsxfwyB03+jJJUxeY1O6ejoUdot/E1KE+0sCxHpvVa71FCtG4kZJzCCn6ZtQDKG7OGQHA6wY/braERzq7CJ1+n9IxS0x3v7jA==
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by PH7PR12MB7233.namprd12.prod.outlook.com (2603:10b6:510:204::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Tue, 21 Apr
+ 2026 19:20:43 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
+ 19:20:43 +0000
+Date: Tue, 21 Apr 2026 16:20:42 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+	Askar Safin <safinaskar@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Chris Li <chrisl@kernel.org>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kees Cook <kees@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
+	kexec@lists.infradead.org, kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Li RongQing <lirongqing@baidu.com>, Lukas Wunner <lukas@wunner.de>,
+	Marco Elver <elver@google.com>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v3 07/24] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <20260421192042.GH3199414@nvidia.com>
+References: <20260323235817.1960573-1-dmatlack@google.com>
+ <20260323235817.1960573-8-dmatlack@google.com>
+ <CALzav=ehpWA=XchL+XLZuaYfYmBTPNWDYt1W3LFY5-6+US4E7w@mail.gmail.com>
+ <20260421184433.GG3199414@nvidia.com>
+ <CALzav=cFarR4q7NugCxXwCW6wnyU9dJRaaTnxs7MY5ia5SDJWQ@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALzav=cFarR4q7NugCxXwCW6wnyU9dJRaaTnxs7MY5ia5SDJWQ@mail.gmail.com>
+X-ClientProxiedBy: BL1P221CA0012.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c5::6) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 MIME-Version: 1.0
-References: <20260415143735.2974230-1-elver@google.com> <202604210954.84C57E5E0@keescook>
-In-Reply-To: <202604210954.84C57E5E0@keescook>
-From: Marco Elver <elver@google.com>
-Date: Tue, 21 Apr 2026 21:13:10 +0200
-X-Gm-Features: AQROBzBMsDbE7_dyhVt5xWTROldThQNRDRm_VJxxVveH1z3BL1b5nLG0UUHDDRE
-Message-ID: <CANpmjNO8CcR56LXAQf4GQhGcbU4MQkRCa7gVvwuAfvVrzEUhQg@mail.gmail.com>
-Subject: Re: [PATCH v2] slab: support for compiler-assisted type-based slab
- cache partitioning
-To: Kees Cook <kees@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>, 
-	Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com, 
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>, KP Singh <kpsingh@kernel.org>, 
-	Matteo Rizzo <matteorizzo@google.com>, GONG Ruiqi <gongruiqi1@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0917D180009
-X-Stat-Signature: 5uysi45yhgg7oc6stwwmczgoc71qsufz
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH7PR12MB7233:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7aca0a3f-9c7c-4b0d-b39d-08de9fdb14e3
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	Kd8xGL6SFpML6qGGK7qRoCDdftITqEfgQfyjP+QBctPOAzLg+qIbTJuUwW6fsmjnP+yaYV1ooRguGD3Iw4v+YjtkjiGzAAEHux1hEoktfyto+3QV5dDR5veOFobyNtedtfwdyJRrmlGzxq5djEFNKUVgUr7H6Ud13ifzycrddFMrrzpijXGC1RdN6T7qzM5Hr3ygTuhXF3TNkbYcL0eM8ajLSAK16UkoX4fG9eB+KAhCGIQ09ax7ko0/6oE6ypw6Ymnx2ttTLnG+HliqjTDWrOCmeft96LDdB1li8pbPNqTJHt2xpLbQIgX0NFjRfcZiID49HKTOukygjV+59oJRdgINW2d1m+MDGdOGmOHwidxmQgv/NNEPX66cSLCstMpX6EbVF17mTlsmyrDi8XpRAPJjIzh4D0iUQStu2jfaKBCUtPiW/ztLNyD1LP1KHYYRh1/ulnpRM8OFKyBSTPGQgierQsa8pFaeOfy+2DE0NNdOyDGzBehOB8DjgFtepavMkErK7+5UxiznNPbZhTw0xw2tv9ku1P2tWkcrrzELyJMRarbwjP2V6d2yKP0TFkanGjqO7hqJFW1SH2nMBqUmZsBdG4u0QKHYDRc5dL4ZNnZv2t1OJKqux+LLaUfP03/yhVKAUJuemDc/nUCm9/YBb4koe0ikORJ/Id18rg3w+I2k/Va8pF76iOiVrVvtn0PY63JhuV7B3wncQaDTtLVZyh80o0YDWC//tz5E9mSmsoo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?pEfjo0RKO370kJoVQowS1gGNNv2xt7J98af77o/R9gw0pSnF5VlNjQxjTbmu?=
+ =?us-ascii?Q?DRbkRUmWKdU4EFlQ0/1HNY/++GMmdml4cvIXns0OIArRVJqgyRpgXn8vMISh?=
+ =?us-ascii?Q?Z6QKsn23BRvEws6KOnCThapMRsi2nPGpn0yKN2uNVb4/QiP2X3L+jC0c+bLJ?=
+ =?us-ascii?Q?rEcXfi/N+DpgU43MXR7EiAlgiF+VM3F881etdeYnfRQrQIc9+sCjTssCu2Jd?=
+ =?us-ascii?Q?IjRfTfUH+yK66ylslRs+PZiGZVcChOJhoKLmFn1PN/5ps9PXHS9F0FT/9fxo?=
+ =?us-ascii?Q?loLExhsKgCQTJix+OCCJAh1ybMnJ0lw/GpdjrkaTmlRznE8siy+80MglOyts?=
+ =?us-ascii?Q?GhUWl2M+Pwfx4xVgBOtQbDvHfFSUSqjFxEjXdK5bDQWLqoc1quVyPct2kkqU?=
+ =?us-ascii?Q?FErz4LCQwMSXgeS8hTa6ZUWLUSPQvH+DqewYBCXMTZiWdd94DJAikKBCwnqd?=
+ =?us-ascii?Q?j/fCiegmgbz3jErhK/fx6KukvTTOgZlWMi0Dv9/pcKEo2DHRF8b/pCzJIoyH?=
+ =?us-ascii?Q?2NOukZimtLtwjRRMKNdAaAr2EAkhCqMMPVvdPYzezFe9Lc8Ao5PqUsNkjHvw?=
+ =?us-ascii?Q?eeiyfdx+9EUxGs3S9UOovKaSiCi1Q2v2Oo4X72U1UFtXhT/M9EIJNji0R6EI?=
+ =?us-ascii?Q?IP3zwoN5pwY4tg0ByVCLqfMA+1SYbooewvtgsd0GQUyseBDlJPo+xpHEYqZ7?=
+ =?us-ascii?Q?eHeYP0lphMgo+gmcKXiAz7/eeldO9XGpfr2Q1Yjj/aBDUFe45r++UajsAhhI?=
+ =?us-ascii?Q?WFlFpC0jxy6b11+uK0nfa7v2Wf8rQeTaXmbjhrn/bqJsftczYAnks1v7TjlT?=
+ =?us-ascii?Q?xWxD5G1htcym3/hEIoEs4yUk4ins9DJ7bHMnSj/yHicwrGMz+zCLMOucCUg0?=
+ =?us-ascii?Q?GZj/wmtGuHQi58alHv6DwcqAK3G4t9Ecj9QGh6CWyZLgVoNSFeLLa/91Iki2?=
+ =?us-ascii?Q?cutT70sl7g+io4HEE1VCJt/+J5xORsWQnohXy+uUYMlYdfHhdjeeCGqodA0V?=
+ =?us-ascii?Q?sV2qotCXmaoi2eje+zslbxgPRrziQmdLig2Im3ael5eByhBJ7Yhp6ma+55Wu?=
+ =?us-ascii?Q?P+uXPEKL5VkTQJ58D7e9fo7pYt3D1NmEbUbnt+CDI3Ts6FRUZ3Q+ps6xE01O?=
+ =?us-ascii?Q?Q6MwEH8uFiusycwswyc5ciOU0KnetTumR+WDqYJI5u2KC2IsbvvLVbVSu66H?=
+ =?us-ascii?Q?6/2JfsUTS06pkQss0jeSZnvzbh/COx2DxR+EoLg5Rl8L7I+wZ/YsmvIca6Vq?=
+ =?us-ascii?Q?k6xvz9SVhJHoWfjgkgD34MmqxQlcGrSthynIbhR98aHi2L/HUVZq4lS8EWzI?=
+ =?us-ascii?Q?Q2cbCLLgoqNGk9QUpaRjm9tKEKcx+4aq2lWaG4wQM3VnzkY7yVLFhjVeh/K1?=
+ =?us-ascii?Q?ftVEccQu0sIlUz+PF5FdoOPyMKmomc0wd/FapUR5R9WqeulRsRktFnzoL6lv?=
+ =?us-ascii?Q?XnKLlTuobsaTwlFRN22yC+QAbEXd+YlHYEwAHLqoZkKfgMjWUAAU1EJiQDlv?=
+ =?us-ascii?Q?S/qUOWDzLzhjxIPvjc5KGfDZ6SgLPiESC0brfbA0Ic5FQQaj6aFLbogKbi55?=
+ =?us-ascii?Q?SxfIDQYA1o0hwq23XjJS07lK27HpidbiS/AvS1ld8w0EcquTRkelsHSdv3K5?=
+ =?us-ascii?Q?Ls2QhDG+Qrr836r5Uvpk+RZanx9ncJdUjDuARqnPU/5amoZ+gRbTEYNO7JP7?=
+ =?us-ascii?Q?OzcrIPe+2vKyC3/h7QCU5i9/ItAxPRYcnrUYSXwgalZ5XjOd?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7aca0a3f-9c7c-4b0d-b39d-08de9fdb14e3
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 19:20:43.1883
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FCUmHDPBTwPMLW8mmjZLB615OOiAdOwfBMHsvlWVNVTExtSxmzuJehv4Xx9UPN+H
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7233
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 01F3E4000C
+X-Stat-Signature: 8n87zrmphxk34gm6oexfntsza696558w
 X-Rspam-User: 
-X-HE-Tag: 1776798828-992225
-X-HE-Meta: U2FsdGVkX19vbxCqlF93bd6wSLUi7ovJ5pTcIRtn2qnx+oRl4Bk3dlezkxQ/w8VBGK/hjNFHeqxDTBYOX2D6qVuK3PfM46GjT+TIdXddRQz9o8mlabUIE3+ceEKORZ5LVx7Zfx2CsnWhc3VkeYQu2exIh2IykbYQKV89y3GpR7P3BVgmg5UW/IQisZo53FkPcoGiyU35bCKaAmwdXHqcdpy85WU0xJ9SRVTkXdTbJCh0v2cTMyFUh4BZqRgqvoAo/SR9PwPqE6JKgB/s+2h9Zb9o8dyfzXziIDCPcHhrPEmuHKLL6LxxknSN5Sj92FNpailTqeLx4ougLP48KdKorM2yqu3hNaTAC6Um8RDu3O58IgH1ItKQYaWPabGHgOZ+vT5fIewlbyJuiuYaZp3kwbJUhm8opyFOcKf4IT7fTvAENl3hX6uoQUVKmpyXTtnvSHKpa0uCykZX3TnhspYiniq0IK9Xr12grsR0IK7jTlnas0OgOikH4YOH8sdBJ4+59yQo+coBqv16vTiUix8ChyyLTv/YvJm/j5wIqf5Jv8FIovf+x4UkF/RoX+EnDPs43qwwIwZ2zcx8uFSjHNtBe5ktBigEuL+TdCjkQX8k1ejclvKMrk72Wgre7QfuzCMJU/LuV3rjLcHYzjAhmXWsWcsa57ExO9RUXrp+8uzSrvi4MufCw1g/gB7lLU2KZK8h91AXxbh1KVS4PJigckSDSL+4YpHs2ZqlbFxlgvk3q6VjaK2/ka7nV+giSUGOnvY9VzOW5k0gWrKczHvQNTE0/B1RJX6gtbplbuCMOBT1gKOw6pAxY0aeeqba+vGrsV7GSoAqCfFbaG+wEBO4/r37CLv20pXZ5UjCzxp1hT3AlJte34PrYUQDdMh4xIt7QMhhuKoDchWM+Qd15vDMKRsds1rIhAJY/mewz8NTknJ1s36CKfksStF6VbKmR6noIzyA7GqTXgH0d4jjC8ogvdJ
- px+RubWW
- cs2h/FviQCBW/6uEiEy92ASfa1rDxZdJNZgl23mEm6VnrU9C/696tND0s8DOb+uCFmWA2DLKCijW/0vomFUo1Yjho0sMhoVQRJRJ1mwoV+r03obDmaeEY7/w2SvmoTW9e1bqvkIgxC7VeNKqBKtDoxppOEUt7jaO/y9b0Lhf6Q4DEV//0pxYMc7yTfXn1j54fyK8ZDf35M0VCNhpaeA2vnLy9hYh85ncruv6qXI8SV4/1Au1Tm8L3CYxybTE8KcaK9mfEXzLvC8lb1bFmQvKdEqrCcZdU+d5osbW7v8YIxA3y1rfJguyr8w0FlclciSmVBVctDw/1fbn3WMLnyTwp/36G9fDpb5SmFVwNI1au0c9doXlh1wqW2wppPQ==
+X-HE-Tag: 1776799247-575318
+X-HE-Meta: U2FsdGVkX1/kZFz+spp0YeV85Tc75mZCljR8wFXJEAktFPmmHkWAQdncegB5pneIL8jw9G2EM4yOhpajCIN2nAtNS+n81jymw2zCNydin/rUDfOM9ZN9J9gwLboVJyoOYpAYQqjNvtnUAFkWyneQfXSS9Xhw4xF5tTC3rWzu5gV7Xvust5Lr7aTIgXbhZCgnobDrH9RDP2Z7jKzwDxeCww5NaAl7CLk12jWsvTVAC/CYa4JDFqK1NLXgQedPiVGG7T94crTXgU6ctYVSqka5ElKPzyjyrWsrXfs68Ud8H9hJTyKZba69zTvdwe2cEjO1VKd7sFpGxuKIb9uQ1UWzrNTtlxi/IfiTBSwaYE3M5QhahydJEjUQBTdsKGLCUa8pF5MdfkM6TM/COf9XSXiXW1hSoqrBa57nUQw4qaWskQ8QX9DacAMEPMP/U3Nk5zL5hr0BK11Su4eeBdSpy8mkBpsFUkDwxIT9txexh58ma+/YCaDu4o8MDjaCbdhNtzVToQKDT5jQezIMbPIRSezu8vYunGBPqiOSTkZMtWNz2l/i2YGqmvdZnxjfVnKTFOVamzVtHViX386awZQ1nBRSalm6MSTEiSEHkzJpS1dLEpJPgiPX7UjOhFCC7Gc9IWxWpa/WnpZJNO+Cxqk8fSWI/IsG9Y5UuAk42jGW6xA9kF3KIB9lCnSQ58jqUrdwBgZWrnB3yZC1EidiEo19uAsU7YkEDYREOVJxf7gNMbxn65RsD4rNf+IG/99eIiWPS4ycMS7+iyGfjGQ+3qS5jZ9hiSUYE3d312vH9lqoh7d88NwwdVP5v/bNDSD88ypwop6IoYlzyekO9m3CqHPgHINK6G1ei5xnubRN82wPK7FvT6nYOir2X3ctRkv3dMu5MDv6RwN25Ez2ayA2YHMF+fpV5fCB0RnkZKbHRZBcTgKQGmBvTlo4o2WBAWGzA06qahRGKKqeDdFrbqIGolGyk7b
+ IVxI8cGX
+ CWfYTBk4Lsu3homGvpKLrXxuqLgVfqTTSyNIC49Vb83pczijKd/bqbW49OzYm1u9ZF6Nva80QlaHNs7WOYpWK9UKS4UNBbekZpAJ8cqcRF6Lgw9XC2BAolY92VdIMh8C2PZMNXlO+xBKAow4ZF4N9OiFzNaSve6bfjmnnkF8k+Hkb1X+Ie7x5h6UZAR9JUPi8U1EERTdFTY5xniZfVRQLbTwy75otbP1OJ4cl2JDqSPqZ5vRfNvvKU4woDXMNkWMfOuZa3dgNWZmUnBQAwzd8i/O684EFkjiyNqkUoz6yV4cIviGCdf+d8APSG3gLVslAjyV4/HoJwzIo8Sf4KdMPrhqYm9MQKDXs5gCPOM4GQTi16e7afDe29Kk56GLtsJTQU4kkiJQFblHIOfpw1fqn8Loz6x7Vq7HqHFz2FIeSlbDS+whMOm9h4VHsUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,147 +200,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 21 Apr 2026 at 19:22, 'Kees Cook' via kasan-dev
-<kasan-dev@googlegroups.com> wrote:
->
-> On Wed, Apr 15, 2026 at 04:37:05PM +0200, Marco Elver wrote:
-> > The builtin __builtin_infer_alloc_token(<malloc-args>, ...) instructs
-> > the compiler to infer an allocation type from arguments commonly passed
-> > to memory-allocating functions and returns a type-derived token ID. The
-> > implementation passes kmalloc-args to the builtin: the compiler performs
-> > best-effort type inference, and then recognizes common patterns such as
-> > `kmalloc(sizeof(T), ...)`, `kmalloc(sizeof(T) * n, ...)`, but also
-> > `(T *)kmalloc(...)`. Where the compiler fails to infer a type the
-> > fallback token (default: 0) is chosen.
+On Tue, Apr 21, 2026 at 12:02:51PM -0700, David Matlack wrote:
+> > > I think a call to pci_clear_master() is needed here to so the device
+> > > stops issuing memory transactions while VFIO is trying to resetting
+> > > it.
 > >
-> > Note: kmalloc_obj(..) APIs fix the pattern how size and result type are
-> > expressed, and therefore ensures there's not much drift in which
-> > patterns the compiler needs to recognize. Specifically, kmalloc_obj()
-> > and friends expand to `(TYPE *)KMALLOC(__obj_size, GFP)`, which the
-> > compiler recognizes via the cast to TYPE*.
->
-> Great! I'm glad this gets deterministically handled for the kmalloc_obj*
-> cases.
->
-> > Additionally, when I compile my kernel with -Rpass=alloc-token, which
-> > provides diagnostics where (after dead-code elimination) type inference
-> > failed, I see 186 allocation sites where the compiler failed to identify
-> > a type (down from 966 when I sent the RFC [4]). Some initial review
-> > confirms these are mostly variable sized buffers, but also include
-> > structs with trailing flexible length arrays.
->
-> For the call-site-partitioning series[1] I sent before, I had
-> per-site caches for fixed-sized allocations and size bucket caches for
-> variably-sized allocations. I'd like to see something similar for this
-> series. Specifically, I replaced "kmalloc_slab" with "choose_slab" that
-> did O(1) to find the dedicated cache/bucket for the allocation[2].
->
-> In this case, we now have a build-time-constant value that it should be
-> possible to use to look up a _single_ dedicated cache/bucket for the
-> given unique type: there is no need to do hashing.
+> > That doesn't sound right, reset should always work..
+> 
+> pcie_flr() calls pci_wait_for_pending_transaction() which times out
+> and prints an error message. The reset seems to be working fine though
+> after that.
 
-That should be a separate series; I know what you're getting at, but
-it's a significant rework and a different design with different
-properties. This simpler patch is likely ready for the next merge
-window (once I send v3), and in light of recent developments, I'd like
-this to land sooner than later.
+Wow, that doesn't sound right in more ways :)
 
-> > [...]
-> > -config RANDOM_KMALLOC_CACHES
-> > -     default n
-> > +config PARTITION_KMALLOC_CACHES
-> >       depends on !SLUB_TINY
-> > -     bool "Randomize slab caches for normal kmalloc"
-> > +     bool "Partitioned slab caches for normal kmalloc"
-> >       help
-> > -       A hardening feature that creates multiple copies of slab caches for
-> > -       normal kmalloc allocation and makes kmalloc randomly pick one based
-> > -       on code address, which makes the attackers more difficult to spray
-> > -       vulnerable memory objects on the heap for the purpose of exploiting
-> > -       memory vulnerabilities.
-> > +       A hardening feature that creates multiple isolated copies of slab
-> > +       caches for normal kmalloc allocations. This makes it more difficult
-> > +       to exploit memory-safety vulnerabilities by attacking vulnerable
-> > +       co-located memory objects. Several modes are provided.
-> >
-> >         Currently the number of copies is set to 16, a reasonably large value
->
-> The "16" buckets seems to hold for TYPED_KMALLOC_CACHES too? My goal
-> with the earlier type-partitioning was to get _total_ isolation, not
-> simply bucketed: 1 cache (or sizes-bucket) for each type. The "16"
-> limitation from RANDOM_KMALLOC_CACHES was kind of arbitrary due to the
-> hashing.
+pci_reset_function() just calls straight down to that and it is
+directly tied into the sysfs reset file.
 
-The token ID is also a hash, although it can be configured to be
-unbounded to effectively give unique hash per type. As-is, limiting to
-16 keeps it comparable to the RANDOM mode, albeit IMHO with better
-isolation properties with the same overheads. As-is, performance
-properties of RANDOM and TYPED are comparable, and the friction to
-switch between them is minimal.
+Meaning the sysfs doesn't work if the device is actively doing DMA?
+Feels wrong!
 
-Unlike a completely new design, which will have comletely different
-performance and memory usage properties - and wouldn't be comparable.
+However it has been like that since 2008 so I probably wouldn't touch
+it and agree that disabling busmastering appears to be an undocumented
+requirement.
 
-> >         that effectively diverges the memory objects allocated for different
-> >         subsystems or modules into different caches, at the expense of a
-> > -       limited degree of memory and CPU overhead that relates to hardware and
-> > -       system workload.
-> > +       limited degree of memory and CPU overhead that relates to hardware
-> > +       and system workload.
-> > +
-> > +choice
-> > +     prompt "Partitioned slab cache mode"
-> > +     depends on PARTITION_KMALLOC_CACHES
-> > +     default RANDOM_KMALLOC_CACHES
->
-> I think this should be adjusted a bit:
->
-> config CC_HAS_ALLOC_TOKEN
->         def_bool $(cc-option,-falloc-token-max=123)
->
-> ...
-> choice
->         prompt "Partitioned slab cache mode"
->         depends on PARTITION_KMALLOC_CACHES
->         default TYPED_KMALLOC_CACHES if CC_HAS_ALLOC_TOKEN
->         default RANDOM_KMALLOC_CACHES
-
-Sure.
-
-> And actually, perhaps a global rename of the options so the selection
-> naming is at the end of the CONFIG phrase, and bundle the on/off into
-> the choice:
->
->
-> choice
->         prompt "Partitioned slab cache mode"
->         depends on PARTITION_KMALLOC_CACHES
->         default KMALLOC_PARTITION_TYPED if !SLUB_TINY && CC_HAS_ALLOC_TOKEN
->         default KMALLOC_PARTITION_RANDOM if !SLUB_TINY
->         default KMALLOC_PARTITION_NONE
->
-> config KMALLOC_PARTITION_NONE
-> ...
-> config KMALLOC_PARTITION_RANDOM
->         depends on !SLUB_TINY
-> ...
-> config KMALLOC_PARTITION_TYPED
->         depends on !SLUB_TINY && CC_HAS_ALLOC_TOKEN
-
-There was a comment somewhere else that even introducing
-PARTITION_KMALLOC_CACHES might confuse users of RANDOM_KMALLOC_CACHES.
-I think completely getting rid of and renaming RANDOM_KMALLOC_CACHES
-has marginal benefit, and will cause friction for existing users (even
-moreso than already). I see little benefit here, and would prefer not
-to break user configs more than needed: configs that already set
-RANDOM_KMALLOC_CACHES, upon rebuild will be prompted to enable
-PARTITION_KMALLOC_CACHES; if user says Y, then their previous
-selection (RANDOM) would already be picked and they don't have to
-rediscover that it exists under a new name.
-
-I can make this change, but only if you're sure the benefit outweighs
-the downsides here.
-
-Thanks,
--- Marco
+Jason
 
