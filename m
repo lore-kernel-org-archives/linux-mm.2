@@ -4,126 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C7EFF8FA90
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:37:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75D44F8FA90
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:39:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B03996B0088; Tue, 21 Apr 2026 11:37:31 -0400 (EDT)
+	id DC57A6B008A; Tue, 21 Apr 2026 11:39:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB40B6B0089; Tue, 21 Apr 2026 11:37:31 -0400 (EDT)
+	id D9CE26B008C; Tue, 21 Apr 2026 11:39:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A4356B008C; Tue, 21 Apr 2026 11:37:31 -0400 (EDT)
+	id CDA046B0092; Tue, 21 Apr 2026 11:39:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 85EB36B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:37:31 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C2825E292
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:37:31 +0000 (UTC)
-X-FDA: 84682967502.24.D002F37
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CA7D340010
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:37:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Gw+ND6w8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8Ui9Z02f;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Gw+ND6w8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8Ui9Z02f;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776785849; a=rsa-sha256;
-	cv=none;
-	b=jGlO7jjV3NMri7PixPnfsjuRVmf4Z8vuua9m9UZZypk/93m5XYiE8J5wiqc1bfdFnL6z4X
-	ebKZMLceOy0GqmeNkZHJEh6gUIQzu+U1rauOIG5ypfWxUk0bEz3aFE1ySTiiFPy3Ccgnmn
-	Xw7BfcSViijjKkhz2ElEyEpdRGE8/Yg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Gw+ND6w8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8Ui9Z02f;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Gw+ND6w8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=8Ui9Z02f;
-	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id BA6796B008A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:39:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 706CC1B9480
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:39:20 +0000 (UTC)
+X-FDA: 84682972080.15.4638088
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 91F261C0011
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:39:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DolYikg4;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776785849;
+	s=arc-20220608; t=1776785958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uw6IqRgEY+vfODXlHN+dJEEHwH2Tp0tErQxt88DIksk=;
-	b=NRRNx1l4UwgRQWRStZajfTeWLepMD5MGJ8LkaFMMpMTEqqPNNBr2EBnOnq0nopXJ4vqfcc
-	rpHquYWmpAEotkOXT5dVbEMvELZ7CdfiWJ01HT6AhzfjsPPoNV7si+uR090EQNuYUXYc4P
-	wQA+nQOie2HUjtHhgV+m5Q57Xn2mb6g=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 218146A802;
-	Tue, 21 Apr 2026 15:37:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776785847; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uw6IqRgEY+vfODXlHN+dJEEHwH2Tp0tErQxt88DIksk=;
-	b=Gw+ND6w8gPbPHzST4PKoNQC+2YuZUQJtnTjkvOMqRdTnOFpMqZdkRrtjy3tA2d1EFJbwgm
-	ocC2SMaZqAXcAFDwm0VAEb55FQ5lO2EA4GgkQIrs8ZqZyd0xDWXTqaqOBlx/RPLQWy6xCf
-	DN8ZrstU1pgrYfYjWDgrTstVxHIirKk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776785847;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uw6IqRgEY+vfODXlHN+dJEEHwH2Tp0tErQxt88DIksk=;
-	b=8Ui9Z02fzXv6Zg3rbtQ4Cd7jnOMKlzqH/EH27AsbLYw9La9F6+Y1DvzY4tAtCrcKQ209h9
-	pYZd1+PQvfKDshCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776785847; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uw6IqRgEY+vfODXlHN+dJEEHwH2Tp0tErQxt88DIksk=;
-	b=Gw+ND6w8gPbPHzST4PKoNQC+2YuZUQJtnTjkvOMqRdTnOFpMqZdkRrtjy3tA2d1EFJbwgm
-	ocC2SMaZqAXcAFDwm0VAEb55FQ5lO2EA4GgkQIrs8ZqZyd0xDWXTqaqOBlx/RPLQWy6xCf
-	DN8ZrstU1pgrYfYjWDgrTstVxHIirKk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776785847;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uw6IqRgEY+vfODXlHN+dJEEHwH2Tp0tErQxt88DIksk=;
-	b=8Ui9Z02fzXv6Zg3rbtQ4Cd7jnOMKlzqH/EH27AsbLYw9La9F6+Y1DvzY4tAtCrcKQ209h9
-	pYZd1+PQvfKDshCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 63744593AF;
-	Tue, 21 Apr 2026 15:37:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uldnE7aZ52lRDwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 21 Apr 2026 15:37:26 +0000
-Date: Tue, 21 Apr 2026 16:37:24 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Yibin Liu <liuyibin@hygon.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, mjguzik@gmail.com, wujianyong@hygon.cn, 
-	huangsj@hygon.cn, zhongyuan@hygon.cn
-Subject: Re: [PATCH] mm: Add RWH_RMAP_EXCLUDE flag to exclude files from rmap
- sharing
-Message-ID: <rbc5ezm4uuzbcfaah6w6em6ndfbhamiug5jmp6srovqsx7u2zv@nvyvigon4hcw>
-References: <20260421020932.3212532-1-liuyibin@hygon.cn>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=C/zETneSXdt4Qa99E3e+0wvtKf5m0NGH+avSAJ+gITY=;
+	b=q+Qf8jlQ1of8XIfP6CJ2MUv2Bvn69T0qjVqBcMp/1dRPyxxzool6TOYG0kEhcnEn+cfvo+
+	K0FxFc+UUicUl59BujmMZfMQvEJaZsc4OlcgZYU3/cA+ATkhKLeVHpb3+Vx1rrrCRU0OuK
+	X7W3HztP6tH1flFh2WU9KL2cmXbJH0g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776785958; a=rsa-sha256;
+	cv=none;
+	b=03D4jjGcfywkfClTDnX/T4wgRMABGBTy/+5XxOTiZhQ3QUuCy2xQ3EmIKv52bgSxTn6EFA
+	wZaCdLRI2V4ih8vlaDJ1TzAFgVH25T51d8pUXgKwC5IJ3RUjO5dsHlcukIOF2gDT1izxW2
+	iI3HZe8m92tccjPtqKuv4XZ7ZBoOmdM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DolYikg4;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 311CF4151B;
+	Tue, 21 Apr 2026 15:39:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74479C2BCB6;
+	Tue, 21 Apr 2026 15:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776785957;
+	bh=Ik9BfKVfhf9yZ3LiURODlQpyNGNrs0AnoKj75WR+DEs=;
+	h=From:Date:Subject:To:Cc:From;
+	b=DolYikg4H+7mnTbsnAlHUOtejFyckSeDJsZa0O/KWPbowntUsHTsFthTt2vYLcUKO
+	 n4ibgl7imYZNrM6J0+PbmHuuRWivxHQXAU3aYCe2Qplntj+ueiR3wkzCABpt+oMNGE
+	 1hvNlZZFJoZSYSsr3804XezMrmndYGYHDcCXhM57Mx3CyLyFOyCGEd+V0qxFAOm447
+	 A5kekRRFZP6GiSY/nwS4uPO2prdRQwW23XzReaDYX1RgrtxB0ifppG3EyoAnVVVJ6I
+	 1xuAQapdwHznNrlaASa1C0jaaKzawk8hZK28N0xA3xJ3eUTFbmTNlHuBwXousJEdPr
+	 j1/sVa5TeUllA==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Tue, 21 Apr 2026 17:39:07 +0200
+Subject: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge
+ zero folio with init_on_free
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421020932.3212532-1-liuyibin@hygon.cn>
-X-Rspamd-Queue-Id: CA7D340010
-X-Stat-Signature: t97shwwkbxaoqibbhx6tzehdycsk5wk5
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
+X-B4-Tracking: v=1; b=H4sIABqa52kC/0XMSwrCMBSF4a2UOzaSl6115D6kg7S5pkFJ5KYEt
+ WTvxiI4/A+Hb4WE5DHBqVmBMPvkY6ghdw1MswkOmbe1QXLZci069kaKi3GJKa2MajuF4mih3h+
+ EV//cqMtQe/ZpifTa5Cy+6w+R/I9kwQRTaKdeYX8YR32+IQW87yM5GEopH77SdXuhAAAA
+To: linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Brown <broonie@kernel.org>, 
+ Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, stable@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.13.0
+X-Stat-Signature: k3mis5icmb8m44z6f1hue3ciib97p4d1
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 91F261C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776785848-209806
-X-HE-Meta: U2FsdGVkX1+YKpQa+dUnmMJJFuSDZXcsoBiRg4Dku/+KmVR1MD+WQKh//a9nHsXnxIzobNnvbGZqNDXcekDfTZMs9LyTWm4Ax3YnTeHg/3IARbXzMXsiMynBLN7DaeAlgmC97Bj0PP5ZsDo8w7Mery2bPy19DaE9OtSqqLFbs6rZMDq8pAgEnBBYMV6io+kASs+aFnmmvFuuV618+LAL+jkc+s3Le1kgJfhCxP/ckQ21stIQpYmaXpeC1SjBxSX8A+cQPKEuy2+6bwO0ukwTe/ltLsAHWpazYEW0IzqzezKkWRR2cxgkFJ5UzHCGCDMp2qWWlT5J8u5ODXxNALQSPPFV3FvCoAFhsnVT5cqSk6I+N05kZpl7ppFF1bUIZxXCjWxzPlPgSypRk3+CNLxUun2L10PjRnQqPvHyaLnWp76OICuYNPeJGRZEm+Kf4BmOC83qzN9aBaB92hfcbBR0OOy1IYiPn+diCX0KrtxJlNES7fY0cLeHkyY7GbApY+LjeG+a8/kD9/ueHqx0+jneikz/ovHSYCzTgd5VBwhzNhto5HEDS1jpvt12JaQQcQz+a/wx8/pTGY3Q2moCWdnLAZOCwIbWtuFOhsHRz8sq4Wc1Ubh3T9Ppl/iADXbSe7gFa/uxHiQkhS2GBgKbLBF+tsLRlUcD637fRBfbBaIobRWKDVUaLjZkjM3jRNSnsXCp4ehnDHLbz7fxYsFFMuUM219lANt8SBxjIKnrqlP0iCWEsqjZFtvp3sa71cRZhYq0+sRvn+OdXKGmYxpQQhxX5Mw1S2NkDNLmzJ4PUaG5Nl5iJRs0fDQH1mpwhftpmaRMuCIHtWQ0w8bsX1avQDXWO6CWuYgZyQtkgnEO7ez88jyaIjLuBBFUrdOIaBuwha9gwzHjE35kf6CxNn36aLEjkgf/2/YQH/Ui/xe2dxRhAzITlZq57pJiaIW3BnMBhDpU51vXJOFNwuEhZ7exc9i
- NNZIntfR
- Niv/tEgkME/vRrmV/lXaYURg+cO6Rh2Nz6S7uh8p7nBdRY9VXe3PxC/LG1bh0mJzwdr0eNCp8hs8PcM/nynWwdHlbKK5w7EpLodObHwN/E1XNiTuRmUhaGTZDQ148NyCskt2UP4ok8bp3H2HG07CCWuS6KKo5Tml0i3cDT8IxVHML7ibwZpMv3QdTgGlsKLzDq9XKd7R4kBv7qurGLNk73LvIoGjPXSor9pbLW14QMFF/o8l8JQY05CPF02erUdk9yA98x6R25sprfT3frkhpHsKHWOP2WlJTV9U5O+hckpE5lfmGYJLFU32uFL0d56tMnRIwzawjkbjqAMT2rYy+WdzfN5Mke6Hkhcce
+X-HE-Tag: 1776785958-854087
+X-HE-Meta: U2FsdGVkX1+NvV0tV0zrkoL1vMrpFSoJfdfiCGQaXsvc/UmRUII75eEcodS9c4/K8Y7cBJPMr6BFQsDkpMHkVYJnX9tdxrTwDo9O2o4s4tnPwVO/qW0XVMbohyvCPXEwkHPoaRxSLQeTfcHaSgPTR7DDzcU+wO1ag1Y1prjWoSTI0AysTnqlaP1nx646bc9dJ7XKT4sU4gm0xn+0Rmtcpzvyu5UrcJIYTNk29YSBq8Lwway68JyfeHb9g4Zh5lBII5Lai911+QWA3hAu/PT7EbMcRZOwiCA1ifoYQLAv3ixEtVGD3SEUCamYutZNGfNHYu2glxExmz7HIaw+7GtoMvfUask5yxFd1xfIKvv3OT3joF9E2pM41f6ejq/bL1mcGdi8oPTJLdftjINevrWHCypwBiu5AEqzvVXKRiTUrIju2zYfZz3aSNtRBigu8cqTKtQ8yfHfg4868HZPDvGhiGJpcn0w7H0X1WWo3Qgu7UK0sKiutIJj7H9jPZkVoDB4rGx2nYTXeKy1+f913IVy6ap+hkwIEnhEB7sfBISOHTxLBmDN592PtXiKFxtBoZz17neqge7G9ERczwok2vtUoXK1zccpmqwEgN+sYLDJFxV2pBGJ8/IiJVJqsBPf5VnfezRH69tkQuRe3qUDoaGZ29GdlwG8tc0LdacVL5Q8LPjMQN55TqlDMUpzoGeMtEwhZm9rW8dWEsBAoBU86bodb/n1oZ+nknBZXUR/l8TCwuWcWA8Yn9Q8rhX+5AmzUfH/QjKEcnREzwFmsD6u+/JkWz7cjxLxHAdWR1qQEtRPrOnDpwFq8mGryjIiMsdXvOdViBfWswI+PMSzWqTDlF9MAM6b5iSu3RFuGIezSRKvuin+cykBexrmueaCRi3p20/YdTryH1/e6LYFvlXQTbrs1jjIX6AbreNhUPSv+KO/N59ER08cIIW+eB/BWxQeM6KUPgTqdLxf+32bRn0er9T
+ atuUO33w
+ 9WRUIrYmjnZ6dLtSLpvZhyBcCW0zLPGw8Gubz0QBICsyEa5HnL7Ryq0Ur5wNZNokwcECqq1zxhR3+xWfZ/0T1+Lw3X9XRxqjQHrhDDI753z6veicu/MWD5V+fZNcJb3JI6myhjg+U5fqIcVS3ppV94CGmYjJCcQ69pH2H2cvCZZ1sbkBwkHp+21yBT9Jr8GMcZptlMm4PrU+AZ0jZjw/2CncGCvXQLOIpW+9CHzz2JSugGad88tMkE/vv4REnNBeTOjLCY5NS28rgfk+0BagAziIF+q+UyAno02rp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,109 +103,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I'm not sure how you're using get_maintainer.pl, but PLEASE CC people
-correctly.
+__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
+flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
 
-On Tue, Apr 21, 2026 at 10:09:32AM +0800, Yibin Liu wrote:
-> UnixBench execl/shellscript (dynamically linked binaries) at 64+ cores are
-> bottlenecked on the i_mmap_rwsem semaphore due to heavy vma insert/remove
-> operations on the i_mmap tree, where libc.so.6 is the most frequent,
-> followed by ld-linux-x86-64.so.2 and the test executable itself.
-> 
-> This patch marks such files to skip rmap operations, avoiding frequent
-> interval tree insert/remove that cause i_mmap_rwsem lock contention.
-> The downside is these files can no longer be reclaimed (along with compact
+If we run with init_on_free, we will zero out pages during
+__free_pages_prepare(), to skip zeroing on the allocation path.
 
-This does not work.
+However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
+consequently not only skip clearing page content, but also skip
+clearing tag memory.
 
-> and ksm), but since they are small and resident anyway, it's acceptable.
+Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
+will get mapped to user space through set_pte_at() later: set_pte_at() and
+friends will detect that the tags have not been initialized yet
+(PG_mte_tagged not set), and initialize them.
 
-Which ones? ELF executables commonly have a lot of padding. How do you know
-what to mark as !no_rmap? Who has permissions for that? This patch allows
-any user to create a full DoS of the system by simply marking a really large
-file as no-reclaim.
+However, for the huge zero folio, which will be mapped through a PMD
+marked as special, this initialization will not be performed, ending up
+exposing whatever tags were still set for the pages.
 
-> When all mapping processes exit, files can still be reclaimed normally.
-> 
-> Performance testing shows ~80% improvement in UnixBench execl/shellscript
-> scores on Hygon 7490, AMD zen4 9754 and Intel emerald rapids platform.
-> 
-> Signed-off-by: Yibin Liu <liuyibin@hygon.cn>
-> ---
->  fs/fcntl.c                 | 1 +
->  fs/open.c                  | 6 ++++++
->  include/linux/fs.h         | 3 +++
->  include/uapi/linux/fcntl.h | 1 +
->  mm/mmap.c                  | 3 ++-
->  mm/vma.c                   | 8 +++++---
->  6 files changed, 18 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/fcntl.c b/fs/fcntl.c
-> index beab8080badf..9b7cc1544735 100644
-> --- a/fs/fcntl.c
-> +++ b/fs/fcntl.c
-> @@ -349,6 +349,7 @@ static bool rw_hint_valid(u64 hint)
->  	case RWH_WRITE_LIFE_MEDIUM:
->  	case RWH_WRITE_LIFE_LONG:
->  	case RWH_WRITE_LIFE_EXTREME:
-> +	case RWH_RMAP_EXCLUDE:
->  		return true;
->  	default:
->  		return false;
-> diff --git a/fs/open.c b/fs/open.c
-> index 681d405bc61e..643ab7c6b461 100644
-> --- a/fs/open.c
-> +++ b/fs/open.c
-> @@ -46,6 +46,10 @@ int do_truncate(struct mnt_idmap *idmap, struct dentry *dentry,
->  	if (length < 0)
->  		return -EINVAL;
->  
-> +	/* Prevent truncate on files marked as RMAP_EXCLUDE (e.g., libc, ld.so) */
-> +	if (filp && (filp->f_mode & FMODE_RMAP_EXCLUDE))
-> +		return -EPERM;
-> +
->  	newattrs.ia_size = length;
->  	newattrs.ia_valid = ATTR_SIZE | time_attrs;
->  	if (filp) {
-> @@ -892,6 +896,8 @@ static int do_dentry_open(struct file *f,
->  	path_get(&f->f_path);
->  	f->f_inode = inode;
->  	f->f_mapping = inode->i_mapping;
-> +	if (inode->i_write_hint == RWH_RMAP_EXCLUDE)
-> +		f->f_mode |= FMODE_RMAP_EXCLUDE;
->  	f->f_wb_err = filemap_sample_wb_err(f->f_mapping);
->  	f->f_sb_err = file_sample_sb_err(f);
->  
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index 11559c513dfb..d5c9e5a4c2b9 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -189,6 +189,9 @@ typedef int (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
->  /* File does not contribute to nr_files count */
->  #define FMODE_NOACCOUNT		((__force fmode_t)(1 << 29))
->  
-> +/* File should exclude vma from rmap interval tree */
-> +#define FMODE_RMAP_EXCLUDE	((__force fmode_t)(1 << 30))
-> +
->  /*
->   * The two FMODE_NONOTIFY* define which fsnotify events should not be generated
->   * for an open file. These are the possible values of
-> diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
-> index aadfbf6e0cb3..4969b4762071 100644
-> --- a/include/uapi/linux/fcntl.h
-> +++ b/include/uapi/linux/fcntl.h
-> @@ -72,6 +72,7 @@
->  #define RWH_WRITE_LIFE_MEDIUM	3
->  #define RWH_WRITE_LIFE_LONG	4
->  #define RWH_WRITE_LIFE_EXTREME	5
-> +#define RWH_RMAP_EXCLUDE	6
+The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
+that allocation tags are set to 0 when a page is first mapped to user
+space. That no longer holds with the huge zero folio when init_on_free
+is enabled.
 
-Userspace does not know what "rmap" is, nor does it need to know. Even if you
-found a workable solution for the permission side, this is not a good solution,
-and it's not a good interface. It also might solve it for you, but definitely
-does not solve the whole issue with having a lock there (which you are, for
-the record, still acquiring).
+Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
+tag_clear_highpages() whether we want to also clear page content.
 
--- 
-Pedro
+Invert the meaning of the tag_clear_highpages() return value to have
+clearer semantics.
+
+Reproduced with the huge zero folio by modifying the check_buffer_fill
+arm64/mte selftest to use a 2 MiB area, after making sure that pages have
+a non-0 tag set when freeing (note that, during boot, we will not
+actually initialize tags, but only set KASAN_TAG_KERNEL in the page
+flags).
+
+	$ ./check_buffer_fill
+	1..20
+	...
+	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
+	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
+	...
+
+This code needs more cleanups; we'll tackle that next, like
+decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
+
+Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Changes in v2:
+- Drop kasan_hw_tags_enabled() handling, as it missed the case of
+  user-space MTE without KASAN.
+- Keep letting_clear_highpages() return a bool and re-instantiate
+  system_supports_mte() handling in the arm64 variant.
+- Rephrase __GFP_ZEROTAGS comment, making it clearer that this is not
+  just a performance improvement.
+- Retested and more excessively build tested
+- Using a new b4 template, hopefully that doesn't mess things up
+- Link to v1: https://lore.kernel.org/r/20260420-zerotags-v1-1-3edc93e95bb4@kernel.org
+---
+ arch/arm64/include/asm/page.h |  2 +-
+ arch/arm64/mm/fault.c         | 11 +++++++----
+ include/linux/gfp_types.h     | 10 +++++-----
+ include/linux/highmem.h       |  7 ++++---
+ mm/page_alloc.c               |  8 ++++----
+ 5 files changed, 21 insertions(+), 17 deletions(-)
+
+diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
+index e25d0d18f6d7..58200de8a221 100644
+--- a/arch/arm64/include/asm/page.h
++++ b/arch/arm64/include/asm/page.h
+@@ -33,7 +33,7 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+ 						unsigned long vaddr);
+ #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
+ 
+-bool tag_clear_highpages(struct page *to, int numpages);
++bool tag_clear_highpages(struct page *to, int numpages, bool clear_pages);
+ #define __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
+ 
+ #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 0f3c5c7ca054..739800835920 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -1018,7 +1018,7 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+ 	return vma_alloc_folio(flags, 0, vma, vaddr);
+ }
+ 
+-bool tag_clear_highpages(struct page *page, int numpages)
++bool tag_clear_highpages(struct page *page, int numpages, bool clear_pages)
+ {
+ 	/*
+ 	 * Check if MTE is supported and fall back to clear_highpage().
+@@ -1026,13 +1026,16 @@ bool tag_clear_highpages(struct page *page, int numpages)
+ 	 * post_alloc_hook() will invoke tag_clear_highpages().
+ 	 */
+ 	if (!system_supports_mte())
+-		return false;
++		return clear_pages;
+ 
+ 	/* Newly allocated pages, shouldn't have been tagged yet */
+ 	for (int i = 0; i < numpages; i++, page++) {
+ 		WARN_ON_ONCE(!try_page_mte_tagging(page));
+-		mte_zero_clear_page_tags(page_address(page));
++		if (clear_pages)
++			mte_zero_clear_page_tags(page_address(page));
++		else
++			mte_clear_page_tags(page_address(page));
+ 		set_page_mte_tagged(page);
+ 	}
+-	return true;
++	return false;
+ }
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 6c75df30a281..d79049291b1a 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -273,11 +273,11 @@ enum {
+  *
+  * %__GFP_ZERO returns a zeroed page on success.
+  *
+- * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
+- * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
+- * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
+- * memory tags at the same time as zeroing memory has minimal additional
+- * performance impact.
++ * %__GFP_ZEROTAGS zeroes memory tags at allocation time. Setting memory tags at
++ * the same time as zeroing memory (e.g., with __GPF_ZERO) has minimal
++ * additional performance impact. However, __GFP_ZEROTAGS also zeroes the tags
++ * even if memory is not getting zeroed at allocation time (e.g.,
++ * with init_on_free).
+  *
+  * %__GFP_SKIP_KASAN makes KASAN skip unpoisoning on page allocation.
+  * Used for userspace and vmalloc pages; the latter are unpoisoned by
+diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+index af03db851a1d..d7aac9de1c8a 100644
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -347,10 +347,11 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
+ 
+ #ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
+ 
+-/* Return false to let people know we did not initialize the pages */
+-static inline bool tag_clear_highpages(struct page *page, int numpages)
++/* Returns true if the caller has to initialize the pages */
++static inline bool tag_clear_highpages(struct page *page, int numpages,
++		bool clear_pages)
+ {
+-	return false;
++	return clear_pages;
+ }
+ 
+ #endif
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 65e205111553..71859993dd54 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1808,9 +1808,9 @@ static inline bool should_skip_init(gfp_t flags)
+ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 				gfp_t gfp_flags)
+ {
++	const bool zero_tags = gfp_flags & __GFP_ZEROTAGS;
+ 	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
+ 			!should_skip_init(gfp_flags);
+-	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
+ 	int i;
+ 
+ 	set_page_private(page, 0);
+@@ -1832,11 +1832,11 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 	 */
+ 
+ 	/*
+-	 * If memory tags should be zeroed
+-	 * (which happens only when memory should be initialized as well).
++	 * Clearing tags can efficiently clear the memory for us as well, if
++	 * required.
+ 	 */
+ 	if (zero_tags)
+-		init = !tag_clear_highpages(page, 1 << order);
++		init = tag_clear_highpages(page, 1 << order, /* clear_pages= */init);
+ 
+ 	if (!should_skip_kasan_unpoison(gfp_flags) &&
+ 	    kasan_unpoison_pages(page, order, init)) {
+
+---
+
+base-commit: f1541b40cd422d7e22273be9b7e9edfc9ea4f0d7
+
+change-id: 20260417-zerotags-343a3673e18d
+
+--
+
+Cheers,
+
+David
+
 
