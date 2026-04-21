@@ -4,128 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23A7CF89256
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 10:52:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 382FDF89251
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 10:56:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64A436B008A; Tue, 21 Apr 2026 06:52:31 -0400 (EDT)
+	id 7ACE76B0092; Tue, 21 Apr 2026 06:56:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D1E16B008C; Tue, 21 Apr 2026 06:52:31 -0400 (EDT)
+	id 75D896B0093; Tue, 21 Apr 2026 06:56:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49A346B0092; Tue, 21 Apr 2026 06:52:31 -0400 (EDT)
+	id 64CF66B0095; Tue, 21 Apr 2026 06:56:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 335876B008A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:52:31 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BDFA15C73A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:52:30 +0000 (UTC)
-X-FDA: 84682249260.10.EDA5259
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 81BDAC0006
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:52:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fPHBxCFQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NIpVhlJJ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z8U+lhic;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=35EltkHD;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F3416B0092
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:56:12 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 025851A0D2E
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:56:11 +0000 (UTC)
+X-FDA: 84682258584.29.BDE5018
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 28EE8100003
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:56:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bZGb2Ak9;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776768748;
+	s=arc-20220608; t=1776768970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j3gtN4tIM+7Zabo3eLUtfRWVZsBOfY1ub/97nXRsLho=;
-	b=P1sxyFHYFmwWmEg3dmZu5P7InajIGv4AKmF1c+RMlIYHnHeHWqbCk2IcAXj3MrVszMlEU2
-	AWvpjtoakn7XO3KaZ9i1LFRsoH9DOrsPsPR2904OuRNI827XOm2YKCKcq6MX+2hxGm1F5S
-	VQ9Xb8ccIwwSQRB1HplMbYvvTfG3edU=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fPHBxCFQ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NIpVhlJJ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z8U+lhic;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=35EltkHD;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776768748; a=rsa-sha256;
+	bh=rsemHJ3fDNViSPKxQzPZn5/mznjb9La+x2dQ4Ib6EqQ=;
+	b=IXrcU8xTU1PpVKjM7lDobvq4oGhilmeXonBeE3FJ4jLzqFhrwt11eVTTJfwYLWM4+1xPWh
+	RXoGArx2Aalk+arAmurq3m3UuwPrfxvTpyaFXFnv9y6EYSNX2r1vb42AS73IWZV4ECrPg+
+	hajIWQuxfbAa7K3JBa27zzxjfzdDDiw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776768970; a=rsa-sha256;
 	cv=none;
-	b=8h14SMXtnqy0KOTE76FNQ7n2FGBQzz32ryyhNO45OCyRcX0q/owqyQH7oQAEo5pHdl5qxV
-	xb/EZi01pt5V/jK+WNxxIlr2g2lI8d4B/zvPvtOkd44toN0lr71yMCx5nYVg+WJZKnCWGb
-	+ygSS9QND2mBwJMcic/tx6ChSlR649E=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D182A5BD39;
-	Tue, 21 Apr 2026 10:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776768747; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j3gtN4tIM+7Zabo3eLUtfRWVZsBOfY1ub/97nXRsLho=;
-	b=fPHBxCFQmuqvT3K9fBbnhwvlP4adioWI7tZlRsU7aHqA0yNZvH+LlRExlLK1ZEsl7q+PBp
-	fmj9vmxXoe1EVvqSpe/t91bjX7k3r4LdzSZcwAgrF8ZNXNqTR7+oDYHgg73/dVwkTP85+P
-	vEFlP2NpHE6LG6Dvx6YZQpf5j1FpnGI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776768747;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j3gtN4tIM+7Zabo3eLUtfRWVZsBOfY1ub/97nXRsLho=;
-	b=NIpVhlJJoRECmgBu3KTaMttkmDtEsp++VSUpPNLhPnPLKlC0NuU5n5i3M5f7eNPNHazDD7
-	+RzKS4YjUjlmlTAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776768746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j3gtN4tIM+7Zabo3eLUtfRWVZsBOfY1ub/97nXRsLho=;
-	b=z8U+lhicZub+h3n8xRn0YFqk3zUtgA1BjiHkFAbvD/vI5rnW1DgtY4U+rSl/OfTyUC6sen
-	iW9tjYucRHqvBc5uyPC7YGuxv46Ferp2CVfGC2F2ybYKr65xfwZ8qH64fqm4haYc/I4bXp
-	xvJz6+qR0KtK4r+gQeKrsyBtaSJjPVQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776768746;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j3gtN4tIM+7Zabo3eLUtfRWVZsBOfY1ub/97nXRsLho=;
-	b=35EltkHDlys1Rxt9BncLbK8l0agI4wm5+YmKE8kESZX264eIFkfJdxjT8GU2qZ0+UEP/cK
-	eM98LGZhO1jS65CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 14E9C593AF;
-	Tue, 21 Apr 2026 10:52:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gKjLAepW52l7cgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 21 Apr 2026 10:52:26 +0000
-Date: Tue, 21 Apr 2026 11:52:23 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes] mm/vma: do not try to unmap a VMA if
- mmap_prepare() invoked from mmap()
-Message-ID: <l7dsbewodomciockueakhd4d5ncxldhue7ysvs6n3aqbof2wys@revnmkomdpsy>
-References: <20260421102150.189982-1-ljs@kernel.org>
+	b=XwYjbsMrKAw3Se2x+P9r8MBoNWkffdRBoUkQbgd8lU04Z72jvd1qKAaavHBalojQ5Fcy7i
+	NUO7DlPWluhtxU4ajVhlYovyGeET7XxAwtbz9RztLP3XEDVlimSzu2nTNp/7+TSJJFYExm
+	xNsRszFfAv31Vl4CWAZmiBtj0FGUyAs=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bZGb2Ak9;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 308B94438B;
+	Tue, 21 Apr 2026 10:56:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F9CC2BCB0;
+	Tue, 21 Apr 2026 10:56:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776768969;
+	bh=28/Re2P3rtxWETUxEDmL+uBIuydZ6Cru3a7eY539SXs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bZGb2Ak9fyENYNy7XuwWvO992dL/SDpf5EkNQ0x+kt7nqAf/y6NyobrUgNZ7PbuEU
+	 h81mOWgSnpl8RHh+Gb9/IS+BWGCCW9YOwb71OOF4S7/MB9cCXUMFOPLdJsJrCFFUNc
+	 57AX0ENJKMop/N8T5y2Bly8BmI7X8Jcvrdx4ZidvitfnEmH3nmzvE1/kUoYe1em+ol
+	 cSVs5QJEh9salbgGk72sWVOH7mmWby26YDHqHzkcP5naFpMzdVBZQhXZ0dRPj3alCG
+	 4dqJ9XSYM9T1xiSziwcj4yEk40ids4G1nHwptuxGqa4JICWNJcukY8TS6oQ4yQeTID
+	 10uPBb8BHqVFw==
+Message-ID: <5f76af6e-9818-42ea-a305-c0fc1d920dca@kernel.org>
+Date: Tue, 21 Apr 2026 12:56:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421102150.189982-1-ljs@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 17/18] mm: add free_frozen_pages_hint and
+ put_page_hint APIs
+To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-mm@kvack.org, virtualization@lists.linux.dev,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>
+References: <cover.1776689093.git.mst@redhat.com>
+ <c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 28EE8100003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: k7ic7841gxh5err1116o5t51dbnfzb6p
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 81BDAC0006
-X-Stat-Signature: u6jyjfwbjkjp6by9b4szmjp6kixgka8b
-X-HE-Tag: 1776768748-267127
-X-HE-Meta: U2FsdGVkX19EIKcnboPulUff0jF2C5YwFZGsRij44stBeX3wVctcQBg5lCNEff8UR3YLLBenRMT/YLkt8WZycPVU9UrzEOjLySrDvIQMvdTXfCENleaggusPRoeqeL7TLh1kao3O13ClprEigERhr1G2LF/73PqxyARjMBScgMICUOmGdbcQK8T82eqvB9/ml8JfhvSoU8bTABx3GDwMqryf4eS60Vg+g2G+VZrx97EitdMD4H0ddy4DVvljqkypogR3ZvGAnJpEbqcZ1ROeCOPiMW7zhwv1Sms0yL6xsmaoC0q1xCl3gVOnekEWMOcdSJHXZFAU2SqPQ2hwWWY8+Gj7pxgNOQf0V66vVtg4HXSKuot13zurz7U2qIDXuDH5pcRFB497jmxXzj89OtvP64bB116c7XxPcpSPL+Dcdk5Jg/JmUImOCx1Hw9rT1v67QTe9lIgU73s+q7zP4avSCNrL5IHB2GWE6bx6XjEwKapQg6+SdEJQaEO96ZzK2jPTbUujEbVi/tuKOqLHZ4m3be93H65O/ExompHlZ3ZdnJ+kWOUdFv9euCppGN9bLSC4hyCDB0a9wvLmnJwuf1IbjdBBywsKb+OId5QVomcBHhyw2n0DubgjWKR7vKbKHVUNhb9CDbS7587Ama8YrttNZoiWF5Y9kbJkLlh/K57BlDsO1pwsqGivUFPEFfUKpiDAPtmkMmm3zliDBxOe1E3uVPfC69f8+xDJ+xKe6Hm0T4caHFWK7HdyGi0RFDnQBUKCVi6aCH3o/zipyLxGckZGrbXXRWJuEvtAd8bJEEyS9jNTfub6zs7MKSyib3f+znUhmAO4KJhR1oXHAgBJrE6f2wlYIZNTjcUQ8/VvSAm4eBsvlXfq1OEv/mwU9hmw5B7JSUFclGJic0qO8V9jeVCqyXyUVmUSRk+YknPx3JbglWI2PdCIAq8zZZq5HiE8jqFLpsaidx+s331E5Q6dq6X
- /AaFO1FI
- vvH5/Xb1dfzUHxGVOekxcuDoPvlGFlReX+fssTY1JorjqpWh9lPfEwz84KF2bsRta/MZ+GSfpgpRDqyNgVCbZsG07AXbY7n0VPOR2t7nAhsEVNPFKj5mFQ28Z/UCY4/p+GwWbaZA9F6JlVzwsNknlLio87XYPzWcxJ4cyTseLGAMSv0y7w8CZXHCBGQ8FJDJPGlFxRwC9T1ujX5EYjFnZmWl3vS76tLMwqznUHFqbdZ1c0s/Qci8+NnEapig3rbI3+UPfAhiA61D5O7ewIq76hirVdpQocfGk7XqCsvb4k6W5/zKeNa1f720kFw0CDwQUVn6LmdMjpJI9H7KlYrTRA9TJ//QE2OLYFUYM4sUwEiMz7cNihbe4gtUV35TurZqIl+04HCGHfsZLHbzeCu7mppSUCDQqT4QtVp5oszSfvrjiEbjuZGU6yeHb6TO3HLoqBdkaD9ta8YSbBbE=
+X-HE-Tag: 1776768969-387572
+X-HE-Meta: U2FsdGVkX18XlyKuf6rpk1Cc8kUCs6p6DXKD8R8ywqjDFCVyJT9uAKaXm/1pQnz+5zJo24VTObKphcd2FGWXI9SzwaRGHalogjFrlDDUUMpnCsI/sauFCj3JqYoHdGDvm9NwNKK5Gz8RX8flyo2s3RGofpw0MKH5tEUrU7qBiVAqB60ocBjXRu0C+cv9jJvJ5pf4ebm66Fmu12Wfws5g8Tfblqx3rHAzr4KIre9Yy1YqUUM4qDU8BWIN+HfsVVyOm+SrRjeqlS9yX7P9gUz1Qq0EU1pVc3EILq2TRbQBYzmcC2jguPc+vkyBpzE3oWquKyopuYkTbCx1XI4tmewsGs2ogaNWypJ2DsgCHN3PS7upQ9O/0Ls35sGToV+EhMG2bT2Vd+lIW/n2ne99XCaDbeSvYVsCEHs1TFvVtjg8710fTkrVnA2rw2uTgxU05Yg3TXStJGUM+iwJ5cOK3+yTeLjjqFQ+aAtZZQvXL0Ei1OJ/eMBkLNK7EJPpDK9yLMOLqIw+hfjiQ5aVpjKA+QPJHFu3xD2FgAcaSOIxCqW4pq+YYFoOwJVsWeAfrXuDAJBndeht7tMkN3dXCcNXUzDhkN3+4I4B9rgbkgjkSQEVZEuLlFipy3BmcAaGmJJL/q4+hoWw2fPdaMpaBLzw4MtBma4D3Bv1CKroHyzIZEZOA8tuJ4oayPGp2oUek4JWikXNwXbyAYJdECI5PJ/D+kdfjHyvdd/SE5G7jPKkSH1UThft981f+TtkKeVjg2nuhzlLRA8q8EETkzD0v5pHZERLSj6K0AaLrnpgoHefxpDasdoZNYWVj2uqibhUZO84o8LDAnCuzTTrFGmFzNiQtarYbYKhrbXLiBh3X5kYUU4ytPTGX4QigSgSp4JJMjN1cZf/0iDZYNEIh0sH4doJUlR+Yw5q3P5ATRorXwHzRHML5XUHKMJCy3sZdM4fBaajVKnRzzaW0rf9WYP91y2WrIf
+ RDD0oZTF
+ YykuV3fW8KBo8LyMyaMBSOrK35osSPT34zqp0eqKst4yIPl4WGpQX7FVmWjgxj0414kc9MMsy817DTFJcWGgq7dccmlu0T4Iaj3kJPjuFydsDvg4p6hOqQTsChRJI0NxkIhjZEcSVNsgP8KaTvLY+34cphbS3fGWVGlmp4pUgbtir97Sevia0o23XphGWem7wof1KvktiMtREgvFSrseZ9Z9Y70UhSOAmmNwGT9Rz1SK0nZzWh273aPricxEk1hGG5BOXToFUiddyX2hQRGkBX5X8w4BUIuaD9+JFGasBSWF5U6BkkrzfagxcEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,93 +150,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 11:21:50AM +0100, Lorenzo Stoakes wrote:
-> The mmap_prepare hook functionality includes the ability to invoke
-> mmap_prepare() from the mmap() hook of existing 'stacked' drivers, that is
-> ones which are capable of calling the mmap hooks of other drivers/file
-> systems (e.g. overlayfs, shm).
+On 4/20/26 14:51, Michael S. Tsirkin wrote:
+> Add free_frozen_pages_hint(page, order, hints) to free a page
+> while marking it as pre-zeroed when PGHINT_ZEROED is set.
+> The PG_zeroed flag is set after __free_pages_prepare so it
+> survives on the free list.
 > 
-> As part of the mmap_prepare action functionality, we deal with errors by
-> unmapping the VMA should one arise. This works in the usual mmap_prepare
-> case, as we invoke this action at the last moment, when the VMA is
-> established in the maple tree.
-> 
-> However, the mmap() hook passes a not-fully-established VMA pointer to the
-> caller (which is the motivation behind the mmap_prepare() work), which is
-> detached.
-> 
-> So attempting to unmap a VMA in this state will be problematic, with the
-> most obvious symptom being a warning in vma_mark_detached(), because the
-> VMA is already detached.
-> 
-> It's also unncessary - the mmap() handler will clean up the VMA on error.
-> 
-> So to fix this issue, this patch propagates whether or not an mmap action
-> is being completed via the compatibility layer or directly.
-> 
-> If the former, then we do not attempt VMA cleanup, if the latter, then we
-> do.
-> 
-> This patch also updates the userland VMA tests to reflect the change.
-> 
-> Fixes: ac0a3fc9c07d ("mm: add ability to take further action in vm_area_desc")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+db390288d141a1dccf96@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/69e69734.050a0220.24bfd3.0027.GAE@google.com/
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Add __folio_put_hint(), folio_put_hint(), and put_page_hint()
+> wrappers for the put_page path.
 
-How about something like the following:
+Can we defer that change?
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index a308e2c23b82..c29165de6d5c 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -868,6 +868,12 @@ struct mmap_action {
-         * completely set up.
-         */
-        bool hide_from_rmap_until_complete :1;
-+
-+       /*
-+        * Set if this mmap_action is part of compatibility with ->mmap().
-+        * Internal flag.
-+        */
-+       bool compat_mmap :1;
- };
- 
- /*
-diff --git a/mm/util.c b/mm/util.c
-index 232c3930a662..5134f879566d 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1229,6 +1229,7 @@ int __compat_vma_mmap(struct vm_area_desc *desc,
-        err = mmap_action_prepare(desc);
-        if (err)
-                return err;
-+       desc->action.compat_mmap = 1;
-        /* Update the VMA from the descriptor. */
-        compat_set_vma_from_desc(vma, desc);
-        /* Complete any specified mmap actions. */
-@@ -1400,7 +1401,11 @@ static int mmap_action_finish(struct vm_area_struct *vma,
- 
-        /* do_munmap() might take rmap lock, so release if held. */
-        maybe_rmap_unlock_action(vma, action);
--       if (!err)
-+       /*
-+        * If this is invoked from the compatibility layer, post-mmap() hook
-+        * logic will handle cleanup for us.
-+        */
-+       if (!err || action->compat_mmap)
-                return 0;
- 
-        /*
+Putting a page with a hint, when there might still be other users of the
+page is a weird interface.
 
+In the long term, all balloon pages (PG_offline pages) will be frozen
+pages, and definitely not folios.
 
-We have plenty of free bits in mmap_action and this is a little nicer than
-passing is_compat bools down the callchain.
+Frozen pages don't have a refcount.
 
-(that comment over compat_mmap is really... vague and bad, but I couldn't
-think of something else)
+It would then be sufficient to have the single owner of the page call
+something like free_frozen_zeroed_page().
+
+Now, to convert balloon pages to be frozen requires some more work,
+primarily to balloon migration handling, unfortunately. I have it on my
+todo list, but it will take a while.
 
 -- 
-Pedro
+Cheers,
+
+David
 
