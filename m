@@ -4,140 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE779F327C2
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 08:55:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ADE8F327C9
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:02:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C7056B0088; Tue, 21 Apr 2026 04:55:27 -0400 (EDT)
+	id 2BCCA6B008A; Tue, 21 Apr 2026 05:02:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 178226B0089; Tue, 21 Apr 2026 04:55:27 -0400 (EDT)
+	id 294436B008C; Tue, 21 Apr 2026 05:02:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08DD96B008A; Tue, 21 Apr 2026 04:55:27 -0400 (EDT)
+	id 1AA236B0092; Tue, 21 Apr 2026 05:02:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EC6BF6B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:55:26 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8399ABDA9D
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:55:26 +0000 (UTC)
-X-FDA: 84681954252.27.3CA60FF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B4DBE40004
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:55:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=caj96Jq3;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D3D36B008A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:02:53 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 473441A0C41
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:02:52 +0000 (UTC)
+X-FDA: 84681972984.29.81DA226
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1C33A180005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:02:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=AR0qSbNi;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776761724;
+	s=arc-20220608; t=1776762170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PXduyNrJ3varn8E8HT4AlWZI5Nzf3mRezs/q/jCCsN8=;
-	b=GHelmH4hNRcko0M4kp+KwfSIh/IPWm4XZdp0pTPQ+BSzkcd4Y7woEoPxXvmnSaojrXi58K
-	S92RqOchQ2/l8E74rVT18WzyNU3uthhomkkqVnQeuAhLjMYSrkUyafPPd0ApNxYsZJyd+Q
-	6nZIep3bXBW1tQ6y9X0/WraX6NTVVQI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=caj96Jq3;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776761724; a=rsa-sha256;
+	bh=D1tUMNKsUka20XG67YhLFUj+hBxuaCOCgy+TNZlHY/s=;
+	b=MNxHdfvTlMFEBkpcXV2kdd9B0JKFvrGHIM18jN936Ibh/hZ5fWJpVMEOfyQ3AhsMf5vQTl
+	erX/UZLhGOBh+PkZsr8+5G5i/agSJ1s+b4tBxocPrtlSyAwoMzJ6+aGzceOp7S8LSxPj2E
+	e412q7662Yg8OW311UXZ0hyHot1CLy0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776762170; a=rsa-sha256;
 	cv=none;
-	b=UXfZW8ALYXZz1qgNaXM1u9XtzPlHl/lTSerNph8HO9LFone6n84d2oem+6l0SacgdhRpFC
-	LNhMg/oDplHjVtYZB6sJEX4BmFR+JILJ2RvAB3M2D7OtkvJV4tH5jNXGOXi9aY2XKTSKYO
-	PLConZWRK8RPBdvghNTkaZQzvXOQ0mc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB4C843FBF;
-	Tue, 21 Apr 2026 08:55:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A742BC2BCB5;
-	Tue, 21 Apr 2026 08:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776761723;
-	bh=MbGHGAUZtPobdHB5+R/2WAvW/vSfdXeJK/09XVNsJvs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=caj96Jq3tixEPXQiTuBCIJBcoZPlevATza9ys2V6wdv+Ih40LQeRpmFX2v/Uux6Sw
-	 O9YwDqIW7CutMQUeQvIH6lYEcDAEarOrs9lz1f8o2LpAg72cmOO77lgMdpAMGKsdOh
-	 XXHklKVF9y06MYdJhfclQa6Ke9+Xlvi83geMJjECKsqnnpUFEwVBsUrs/CKwoi/78k
-	 akkrKK1CaBeGVT3sKceFmv3ahNhiaB22YmMMF2Tg52AOjvEB5oz6Jz6Zu5oTE2Oqsu
-	 mqnSTClNEKPFuEwcodOO/quWhTSperWMjWqffYDgX6b636+4vnzmUK9wjEt2xJrLvr
-	 v5aIk45OavkkQ==
-Message-ID: <2f4a1999-fbd2-4cbb-8062-5574d3c1e7ce@kernel.org>
-Date: Tue, 21 Apr 2026 10:55:16 +0200
+	b=3ben4H5Cg5GEBzbb2XQSerzwG92daf0mv4LcXEow3ooDobuE773v87kSyCLlIuno5tYWZU
+	VnPyZSzlkNdyXoM8o/Hsg/NRrrh73xYwE5LvjvEp5RqdGKJTLhCOrFm9PA2ibFP1rj0r2D
+	eG8QjbbfdhleIXgj+HTgrtW0ULWMz9I=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=AR0qSbNi;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=vbabka@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43d7146cd1cso268729f8f.1
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:02:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1776762168; x=1777366968; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D1tUMNKsUka20XG67YhLFUj+hBxuaCOCgy+TNZlHY/s=;
+        b=AR0qSbNizmtgmL6apM3NNXJBhIc3NKlyKcVaeuOk4SGFQM7u1udBSs5OXbs1s448Uh
+         EEvp7xvAWHCZhvRIz9i0dXL9/moXRjfKIULF14XkUwy//BInZnkIe9yV+7WJGUFaP0Ml
+         /b5Lrxk2Aj68nFoUsLlBySQJqSYltrkz0A6eGvUgUCG8qYggd+0gkEHR6gBTmjlXPlVT
+         iUFAf2X3uRfw7dh8rXPjNYKdSXjATX5LH0pTXqaY3jBr9owoXzWxVeWt0Hsv/pq9rc8c
+         Hd5XMzrIICexjL1hZ8FInFGyWy9J50XIOxNU6tudEDkPQnbLHDt+T3wd+Q3DK9AbY/dq
+         70ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776762168; x=1777366968;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D1tUMNKsUka20XG67YhLFUj+hBxuaCOCgy+TNZlHY/s=;
+        b=C6uigJOLQ8KjHShndjzlwBKxQsdRC9LfmGtrOa5TjwcL5nfMfSAoWWObY9OrGn1Qdk
+         cogFkM0xUO0szvyEi8pSxSmhH66dl4rvOK35BCUp//OAweQ1eYG2BVzv/oAT7tkxhGMU
+         g1CIOxc1qMsS3+9pmVWuzl3Pi4HaHABoq+yMM38/wn97ls7L/fCWStBjmPFBCYmGCSHy
+         pXqPOjw9Q9B2jMCIN3rE0YZLVWd0fnp1IqnELLvgU7Q6/be/PAu8aHJMm0q9K2o6Zo2x
+         y5SFxZOggq8lIISspQ4Zvow23jtzpurS9HKG3AQTvLx2WCpwf5svPyW0j/I/ONUijSMv
+         as0w==
+X-Forwarded-Encrypted: i=1; AFNElJ+rPN/IS6ArCoPbw4a2Bl5MRFVzHP6XN3VCqS4YeSVZdhThzPbxjyESfzit+h2ovI/dABjwsmWW2Q==@kvack.org
+X-Gm-Message-State: AOJu0YwZASBcSjtHrGyprVXj1DZM3QA6itU9AwU/v5HwD6JZ8eIw/2SS
+	s/nZw3ufw/YdyZBVH2J2tgsKFGIhmBkJgu9NzLa9gZCIZyQpg2suDWbt7cEztUsnALo=
+X-Gm-Gg: AeBDietKNR2iV27bZU+mbluipTO33RPaPwe//HRDgAb3erwyKiyZ4HzzIJ2V37DhKNd
+	vtmr+DAYcV1CdhZFjhYJeJM8h/k80+giylyfh5I0Mjyu0pnFpDuAvPOaidxGJhNP53g3MsqhCtl
+	hp2Oehvj3+/995Qn48HdfUy2SzuVLYXvX56j8K0v7XsjfA6ESDeWjzUjyIX5d/MKvp6j+HVw1VH
+	J22Kpv3wyj+92TZP/ynigkpDFFZVV39WYbfsPeDsq2CqAMLR+3ehaTbTnWPVrCV+MP7QvXcWmGk
+	J0ba+6veFC8uMRbtyeNdjtBQg9UgRA8vDGTrsF0uoe0vSGKy3a89pmWfYncdUNUgHwEqYADQe+4
+	tDbhSTAREV1bpS8H/S0ovIohio2J9fXycFWf2vioLwNaxkExd7AQVGLkkFSip0AlZkL4FIzdMAi
+	/B5nqo3nxprue4ucXNlemSkF8dKXypGw9NgflhdXFJy8Ah4p3UcX7NlgDix0ZQhPBnHn20
+X-Received: by 2002:a05:600c:4746:b0:488:ac4b:59d1 with SMTP id 5b1f17b1804b1-488fb7ab49cmr115940905e9.8.1776762168051;
+        Tue, 21 Apr 2026 02:02:48 -0700 (PDT)
+Received: from ?IPV6:2001:1a48:8:903:1ed6:4f73:ce38:f9d4? ([2001:1a48:8:903:1ed6:4f73:ce38:f9d4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4891c08faffsm269654935e9.1.2026.04.21.02.02.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Apr 2026 02:02:47 -0700 (PDT)
+Message-ID: <1f50ce04-20e6-46a0-9d8a-00a5f7a74967@suse.com>
+Date: Tue, 21 Apr 2026 11:02:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: handle potential NULL return from
- anon_vma_name_reuse()
-To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Ye Liu <liuye@kylinos.cn>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Jann Horn <jannh@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260421085056.26033-1-ye.liu@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order
+ allocation
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260421085056.26033-1-ye.liu@linux.dev>
+To: Dave Chinner <dgc@kernel.org>, Salvatore Dipietro <dipiets@amazon.it>
+Cc: linux-kernel@vger.kernel.org, alisaidi@amazon.com, blakgeof@amazon.com,
+ abuehaze@amazon.de, dipietro.salvatore@gmail.com, willy@infradead.org,
+ stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+ "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, "Ritesh Harjani (IBM)"
+ <ritesh.list@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Michal Hocko <mhocko@suse.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>
+References: <20260403193535.9970-1-dipiets@amazon.it>
+ <20260403193535.9970-2-dipiets@amazon.it> <adLlrSZ5oRAa_Hfd@dread>
+From: Vlastimil Babka <vbabka@suse.com>
+In-Reply-To: <adLlrSZ5oRAa_Hfd@dread>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B4DBE40004
-X-Stat-Signature: 89ez8ecux7ume6zp5erzh97tciw1k69z
+X-Rspamd-Queue-Id: 1C33A180005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: zckcaf5ixkzp5gpktpkahgpa3x89ha4d
 X-Rspam-User: 
-X-HE-Tag: 1776761724-285894
-X-HE-Meta: U2FsdGVkX1+vNgq3qJej0zMXXpjShpPqgcy1i3/itsug/dTFPNlg5DBEauwVNrE2PDa98aGGZgrQQz+lLYuOPHm82c+js/M+YwJh3bjKbLVobJwgyyJdI2nsn0rbrSa0/s+H9cwYjKc2H18ZURtuHsOJJg1fWrw2ndw5AecdgC6PESqqAf4MH8IM0LTtveCwyawyUHBpjkTMY425TRWX7hKbb7muhCObym0JVWyntC3dQ6R5HH3Ef9WtQnwo+mZfnmh/oNVXpFcE+O8W+H2dMbMbye4JiCqkh6r3HYHYTvyIdDEk+VVj2mKv9Fl7CoitTiMt4aJs5YAScwYjRS/xYo9ahcIdJK6IylXSTWBGqbKnNl7Uj6mxcUBaOlZcXWUbGf4bFT6Xptqasu6Ga4LWh5VqlACLx1KcihX+dVlXvJEsB6JWuayWnpJPPolfKjnXLSBRBk2wI/ohFMcsPLPi9hq4dD2JSgkr9M7sisLyh8ikkinFBhC//qlMZTrsZavgk7aAb+l897chCqI7y01nMzp2oVWH7OwghN/Vp4O/mcaJ5qB7oZ/wm9FLCdxpqPQkvrZ6QvyFNMWQaNP3PtopnhzVG2bgdQfWmUDuQJIENj5Wp5ywhz6p6kP3aCEu5WLTzYcjZSqMximGPf7Ealb+sOYCC93ugW8ZSCEv8yrn/3J4njCkv02Qimn9UQdT5jn7VU3wHtTRpGIlcL/JMB3lAS+EjNAXAyXsQVcaeUn/o5VMzhOSWKOgIRnaLc5kv4otnPMrIV2uXMU+OKbk/0dP4Z5nKDR2NMVojvfqF1I3vLvjv66iOw30FojFqmYoHsmSuGgBCg32i7J4NeHDbLP09P9Ia4slw3DqpzZlJq+9o8I6bQ7x88RJBoH0XkbqXMrFrVkBg9eaQ+EV/01qDT7HES/qMHwEYEUWyJ7nBExInBbr6cln9JTCrDH9PYXRjd9Ssy1DCbbQFAs1OhETg7P
- CmCv7kie
- W7E8UafffYgXJX+QCUFoWNv+Xm+ynaXhXNGI3RqoaVdAqvRYpWyI9I4S7kA1hZuLdZ5yxSVl2jzK8KupaSWXY62fWVYgTpN26ep+1ffhJ/FDbX1Km6Jap2ZkBNF4jL+LFpP2yWmrJuijsOhQd8pcjrvB8gx/NV5GGvTJTaXgFEo5ePA6dhfYgbv6mwEME6L2QLsS7ovCSYEzliK6+XeS3JpS1/nDrJWvtvCFzTO9JeLEU2sanz5mkg3CrI29ogjDW47+DbBYgqXOuGlKcVBEup0A9tfns3wQC6xjHQ4/ol2DBOs+vMLVuX6SC5w==
+X-HE-Tag: 1776762169-170653
+X-HE-Meta: U2FsdGVkX18KsKIbj0zyyBi57GRCW08TPUgvgjztkNt2c0toiKJq+dyFY3OsDYYmKoCNuZyi1bgl+uUBqLoQ4I8cfByR6UW0Y1Rovzc/L2mGmJKTgkMfXXno25BI1baOx+NqOMtn+IABE7B8lhhMjiaqHsoeQeF6ginix0sWekLTwuVTsq5esxDePI+OTrp1j89cJQ+Y3UYIZY+Y+v+rT00tsHJdJhUiCYkDkd7VmdksWt6NEKSjx6OxpRvWKxI2l3CDdRtuj9D6Lf5Du0FSfqHlv9uQnA7bckXWjZy9RvyEeyqOz0gpJh2YYW12q1CAmhBWNnTqZjsi5Y8pRKPnzm5SMIjNFqUkXi7EFjpMywVG8LBkruB/hgb1nbiQa1cRw4AXtGi8ihrw4JGfWCqP7zW076HrGFpWEoYzeUqFxSUgzUw93R7KyxBFgTFK3Mi8nmKkBM4VaPXUhyN+YZ3dV7vj8F7iRw/4OKLoiHxDXe5SFXG+JszTnCR1CRBYHzKLtOG5QsNSvweWtaicuCg+Zg0hCDe6FJ+7J10L5l04xNvrTSzqEXe+LrkVT/9RlU2jI3nLrj66f8lJqprP3g5f5L5P78IOMqgCDGSAkbdhiNDDkQBbNC/u1UnVXSLrnKqT+goRYJppQYWME1NuemmhA2wOpQFPnsTRP9I7noyLJ15wscZvLE22dk+XvnR1yic9fQ5UTglMWDpvyVSM+8UffRl1EZVjCfwH/6RZrBqAhd/u9eLMwLvUllztFTyFgnqmmOgro6cUZYxV8/qoWDXZkpwysYTfdayVEkvA0pyyIwaGQwOuj/mBqhvb4V7TCQxcZ8E1LbxbZljDCW9W8xT1aUySmomVj18mhUc2//Wu+9EVKMa0UBG1vU/VyApKfC+5h1JW9K+R5ni0w3Vz32rcxP24MIy0ZyCl9ZEnb9uvJ4rpfF3qZyBbTUcb7jUpn38r2TUbCStQi6sdxPYM8XN
+ MHePSxxz
+ 1UB7PixwqSS7zIOXN/WnezmrdjCIC8pNHInURdo22GR/BZPcu47AhxlKgwcJPiVprIUvcy+l6bt6zaRpr9LBJi7oGq1jCOj+ADnaVyAmyhtkajvph+iQIb+R5amP8rz/8ts7vJo2bh1tNuDq0ZOtGbPuL9DF2eP53uBDbWrhGMITEEukmTS9wMg4Su6BfwXTdhYNGrx+NFsIW67zpLo/D5sh5ToODD9I6zjtdgTuqk8P+xSRPgK0rDBahCAN3B4uNT1JUpSAsD70IXFFklRjrVXqmtUdB70kyP9cA51XG282lwvK1KcmFUJcrv1C9Px4gTQFcO8UNoAPE/s5AQ21B+gkzwkn1KTCeiad0xjXE7XCrEp1JzVvwdTNzSBfBwrKwNueqXyjjU8fJ+c+ed8gFy6D0AiHatEPQqgYBqzI4eA6FSZ0uJyD881NMrGw14FrA5E+OBk3kg7fN3DhEDU+gI+hopzMtYTYzgBEXAR10VCtSnA8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,58 +130,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 10:50, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On 4/6/26 00:43, Dave Chinner wrote:
+> On Fri, Apr 03, 2026 at 07:35:34PM +0000, Salvatore Dipietro wrote:
+>> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>> introduced high-order folio allocations in the buffered write
+>> path. When memory is fragmented, each failed allocation triggers
+>> compaction and drain_all_pages() via __alloc_pages_slowpath(),
+>> causing a 0.75x throughput drop on pgbench (simple-update) with 
+>> 1024 clients on a 96-vCPU arm64 system.
+>> 
+>> Strip __GFP_DIRECT_RECLAIM from folio allocations in
+>> iomap_get_folio() when the order exceeds PAGE_ALLOC_COSTLY_ORDER,
+>> making them purely opportunistic.
+>> 
+>> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+
+BTW, backporting perf regressions fixes to 6.6, when they are only reported
+at the time 7.0 is released, might be too risky. There will likely be a
+different workload that will regress as a result, no matter what we do.
+
+>> ---
+>>  fs/iomap/buffered-io.c | 15 ++++++++++++++-
+>>  1 file changed, 14 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+>> index 92a831cf4bf1..cb843d54b4d9 100644
+>> --- a/fs/iomap/buffered-io.c
+>> +++ b/fs/iomap/buffered-io.c
+>> @@ -715,6 +715,7 @@ EXPORT_SYMBOL_GPL(iomap_is_partially_uptodate);
+>>  struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
+>>  {
+>>  	fgf_t fgp = FGP_WRITEBEGIN | FGP_NOFS;
+>> +	gfp_t gfp;
+>>  
+>>  	if (iter->flags & IOMAP_NOWAIT)
+>>  		fgp |= FGP_NOWAIT;
+>> @@ -722,8 +723,20 @@ struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
+>>  		fgp |= FGP_DONTCACHE;
+>>  	fgp |= fgf_set_order(len);
+>>  
+>> +	gfp = mapping_gfp_mask(iter->inode->i_mapping);
+>> +
+>> +	/*
+>> +	 * If the folio order hint exceeds PAGE_ALLOC_COSTLY_ORDER,
+>> +	 * strip __GFP_DIRECT_RECLAIM to make the allocation purely
+>> +	 * opportunistic.  This avoids compaction + drain_all_pages()
+>> +	 * in __alloc_pages_slowpath() that devastate throughput
+>> +	 * on large systems during buffered writes.
+>> +	 */
+>> +	if (FGF_GET_ORDER(fgp) > PAGE_ALLOC_COSTLY_ORDER)
+>> +		gfp &= ~__GFP_DIRECT_RECLAIM;
 > 
-> The anon_vma_name_reuse() function may return NULL if memory allocation
-> fails in anon_vma_name_alloc(). Currently, callers dup_anon_vma_name()
-> and replace_anon_vma_name() do not check the return value, which could
-> lead to NULL pointer dereferences.
-
-When, where?
-
-If we set vma->anon_name = NULL, it just looks like there is no anon
-VMA, or what am I missing?
-
+> Adding these "gfp &= ~__GFP_DIRECT_RECLAIM" hacks everywhere
+> we need to do high order folio allocation is getting out of hand.
 > 
-> This patch adds proper error handling:
-> - In dup_anon_vma_name(), if anon_vma_name_reuse() returns NULL, emit a
->   warning via WARN_ON_ONCE(1) since this is an unexpected condition.
-> - In replace_anon_vma_name(), return -ENOMEM to propagate the allocation
->   failure to the caller.
+> Compaction improves long term system performance, so we don't really
+> just want to turn it off whenever we have demand for high order
+> folios.
 > 
-> These changes improve robustness against memory allocation failures.
+> We should be doing is getting rid of compaction out of the direct
+> reclaim path - it is -clearly- way too costly for hot paths that use
+> large allocations, especially those with fallbacks to smaller
+> allocations or vmalloc.
 > 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  include/linux/mm_inline.h | 12 +++++++++---
->  mm/madvise.c              |  7 ++++++-
->  2 files changed, 15 insertions(+), 4 deletions(-)
+> Instead, memory reclaim should kick background compaction and let it
+> do the work. If the allocation path really, really needs high order
+> allocation to succeed, then it can direct the allocation to retry
+> until it succeeds and the allocator itself can wait for background
+> compaction to make progress.
 > 
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index a171070e15f0..9bbaf8287806 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -421,9 +421,15 @@ static inline void dup_anon_vma_name(struct vm_area_struct *orig_vma,
->  				     struct vm_area_struct *new_vma)
->  {
->  	struct anon_vma_name *anon_name = anon_vma_name(orig_vma);
-> -
-> -	if (anon_name)
-> -		new_vma->anon_name = anon_vma_name_reuse(anon_name);
-> +	struct anon_vma_name *new_name;
-> +
-> +	if (anon_name) {
-> +		new_name = anon_vma_name_reuse(anon_name);
-> +		if (new_name)
-> +			new_vma->anon_name = new_name;
-> +		else
-> +			WARN_ON_ONCE(1);
+> For code that has fallbacks to smaller allocations, then there is no
+> need to wait for compaction - we can attempt fast smaller allocations
+> and continue that way until an allocation succeeds....
 
-Triggering a warning when an allocation fails? Certainly not.
+So, should we do a LSF/MM session?
 
--- 
-Cheers,
+But I think in any case, the page allocator needs to know which allocations
+do have the fallback. __GFP_NORETRY exists for this. Here it wasn't tried at
+all, in v2 [1] it was, but not alone. I'd start from __GFP_NORETRY alone,
+and then we can look at tweaking what it does if it's currently insufficient.
 
-David
+We could have a helper to encapsulate this "turn this allocation to a
+lightweight fallbackable one", which would add __GFP_NORETRY. It probably
+already exists somewhere but not gfp.h. But I'm not sure we can simply
+change GFP_KERNEL to start failing more for non-costly orders. We've
+discussed that a lot in the past :)
+
+[1] https://lore.kernel.org/all/20260420161404.642-1-dipiets@amazon.it/
+
+> -Dave.
+
 
