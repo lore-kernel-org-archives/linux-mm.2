@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2156F8FA71
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 12:55:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4D3BF8FA6D
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 12:55:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D203F6B0088; Tue, 21 Apr 2026 08:55:12 -0400 (EDT)
+	id C356C6B0089; Tue, 21 Apr 2026 08:55:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCFE96B0089; Tue, 21 Apr 2026 08:55:12 -0400 (EDT)
+	id BEC3D6B008A; Tue, 21 Apr 2026 08:55:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B986A6B008A; Tue, 21 Apr 2026 08:55:12 -0400 (EDT)
+	id 99C576B008C; Tue, 21 Apr 2026 08:55:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A80556B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:55:12 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CDDE1B947A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:55:12 +0000 (UTC)
-X-FDA: 84682558464.22.E8891FD
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9D3131C0002
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:55:09 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LyRz57Qf;
-	spf=pass (imf21.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776776110; a=rsa-sha256;
-	cv=none;
-	b=TRG7tGYHOwHYWlVO7nsDV+K1EZ+bTEHSJ26RdB7TbJ3pZFrGpXdeFY9tkQ94ajYtkVxFbX
-	DYEope5zbahJby8qFHf9YrGuHBcnicORtxMo+3Co+hMn+9F4TsIhDYI7QMGGiYnx8lcHvD
-	QNcCMHK+b1w88TgE3uoJ1dN+FcvHBK8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LyRz57Qf;
-	spf=pass (imf21.hostedemail.com: domain of yuan1.liu@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 83FED6B0089
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:55:13 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B6FFC3C48
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:55:13 +0000 (UTC)
+X-FDA: 84682558506.12.E4CF5FB
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EA1644000D
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:55:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=db5QEeGX;
+	spf=pass (imf27.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776776110;
+	s=arc-20220608; t=1776776111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZxPwV3bJwgy0jf2JUYvIhkKuev1YFX4Tu7JlNW6rr2w=;
-	b=o7LrpKrx5VcPxggvwMT5LO9isRJWMXyybCRfRxoAYR86a5+1aU6x4bl6T1Xxfz2VhclS85
-	1w6tLDYpPMlhYCsRd5sOFSk7VLMhN0POY4+e6AZGRZcOZgAQut0VL2hzwYf8WTG1/p8uvE
-	ogJt9BaqFTnWx+OQ5DS4/g9S5xZUlFI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wi7XnS8EyGDIPzllgXzAw1YBnjuuXF4XkUtArZKKp+k=;
+	b=oBgR0K2kpxiQvR/Q/xip8FT6x4iSxPtlT1GYLZOVoBRs4aWG4dYFX5ixyeTaCh09M9ndKW
+	GHfLJ36bMF7fbsuyavPu6+mFKNqtkVxWjFHAWtrqslAgOLMpEawgWBvnIqAMQAfUJOHO2t
+	ncyVoQdzDvtQjcKWmAGTsdvogDNo8r8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776776111; a=rsa-sha256;
+	cv=none;
+	b=siLnLvDtNmMrJAIBOgdtF87PCm7Nkv7aaLiUM/bLMdxPdttI/UEDKsJJzaKvr4hEJdJKnN
+	A8r0yYLOCc9z9k3KompItG3Kr8aiAmqr2Xt+5b9lgtQbCUXMc/omsdC5w6VpQteGmu0TP3
+	VYamNuc7d/CaZOX6h/Vn50csFDRJUAM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=db5QEeGX;
+	spf=pass (imf27.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776776110; x=1808312110;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bq05xU3PL+CyBthJrCtQ/r4CGnYbkCvNdm1pwmKOzK4=;
-  b=LyRz57Qfg3XSy+6t5tzrOeqfwPjnKEgTnrHdZgd0fw7ZxH7siemRUVhi
-   KLChDISQrcWkamYe5wOwxrYJIIY3vfkelsbIA/8RDOHsaK8suWcQwR/2S
-   v4OFdcwXdCiJt+MDjOtN3aCL0L4WJl0QViz9HN4cCulbOmeg7cVj6Gi0u
-   +X1DzNBbnl05fRE9tMJ/IVfmACTn65kHxs6mOP68WyQY4mNMKrwauwlb+
-   y6Q3IMYIy/K+vjfVqf/wsVyd9k0RN85VgNEUW43xStGwltXBIxW/JjE5I
-   DLMGMWK4kU5txS4ytBrIgMq96PgbzixGOhNW5+XPK/osSvw+9uHdqMN25
-   A==;
-X-CSE-ConnectionGUID: zoDa8anKS46X1ymr4YEQZA==
-X-CSE-MsgGUID: z3b9EuXXQBu7llsxX9nP8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77721574"
+  t=1776776111; x=1808312111;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=la0kE+U18VpZTh/JecOWzTRDqzNAkItoXGtY/DvNqnw=;
+  b=db5QEeGX75jcW7kczf44nxDTKgQQI0ZPj1Jg82TXIfyVIUOCWeNVdVEa
+   tQaAs0GdssXSZBP4wpki/o7urLYKvwaYuIqNJhJ4u3VPiMBafuFD2Tou/
+   Q4eXF5tOAQELr1v7cVUjb/9aPSTovKSMCjrtSC8lzNbqzbo2UmaMW+dma
+   wU7lDKkOmceugs2ARgzdq/LHSGGnlAFxzW0DLqV6hawwsTfzL0nlrHZpN
+   ovjlL0JSozA2VUyjcxg++ETO2LqUIaKCpy04riBH3p57LNiE8hvps1QiM
+   u3c7xMXSd+n4elanEoT/7MfapvHgaR7navs+QopRDTSlKcvo+gBN46mT1
+   Q==;
+X-CSE-ConnectionGUID: RUKqiDnZSki6BPbQkZi6Vw==
+X-CSE-MsgGUID: bg+u50SyT8GPdGM1RbiXrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="80294045"
 X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
-   d="scan'208";a="77721574"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 05:55:05 -0700
-X-CSE-ConnectionGUID: CFmvs+vuREqcNYoLHvmCzg==
-X-CSE-MsgGUID: uYv5bPufTKi7ctkH2oxBlQ==
+   d="scan'208";a="80294045"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 05:55:10 -0700
+X-CSE-ConnectionGUID: xMEVpwGxQwqo+KXyKqoENw==
+X-CSE-MsgGUID: 0HjUGPv1T6qrWSKq25A/SA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,191,1770624000"; 
-   d="scan'208";a="229355498"
+   d="scan'208";a="231138638"
 Received: from spr10.sh.intel.com (HELO localhost) ([10.239.23.75])
-  by fmviesa008.fm.intel.com with ESMTP; 21 Apr 2026 05:55:01 -0700
+  by orviesa010.jf.intel.com with ESMTP; 21 Apr 2026 05:55:06 -0700
 From: Yuan Liu <yuan1.liu@intel.com>
 To: David Hildenbrand <david@kernel.org>,
 	Oscar Salvador <osalvador@suse.de>,
@@ -91,20 +91,22 @@ Cc: linux-mm@kvack.org,
 	Tianyou Li <tianyou.li@intel.com>,
 	Chen Zhang <zhangchen.kidd@jd.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 0/2] mm/memory hotplug/unplug: Optimize zone contiguous check when changing pfn range
-Date: Tue, 21 Apr 2026 08:55:06 -0400
-Message-ID: <20260421125508.2317429-1-yuan1.liu@intel.com>
+Subject: [PATCH v4 1/2] mm: move overlap memory map init check to memmap_init()
+Date: Tue, 21 Apr 2026 08:55:07 -0400
+Message-ID: <20260421125508.2317429-2-yuan1.liu@intel.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260421125508.2317429-1-yuan1.liu@intel.com>
+References: <20260421125508.2317429-1-yuan1.liu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9D3131C0002
-X-Stat-Signature: 9d5q6q4tpycsnkf4um4bdnni83agemjq
+X-Rspamd-Queue-Id: EA1644000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: zhecf3y7w3f6jtbi3nagr39bifx8rdky
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776776109-516505
-X-HE-Meta: U2FsdGVkX19K7Es2Rd4x+j1Bge1aZ1Ej+Wbo8i7GAUuP3xHACcqwY9HhuNkVorGQF5Qv1Mq444neihAGXAuFtiVCd/5awTpCTFAjS+VBUEDBy2nCd2jYb6SaGhSXutonICSzY/i1FoNl3+/Jcf2ZBAaVjlidffY7QSXr33Wv/4LTGERhLm7shVa76Lz/HHpilwEixzszC4w9MNrcWxFl9nLPXZC5vi4LkFR2DdoSj8lOFXtgaRBvt6D6HJ7pAWRaqwj4RIaUEkb9tUP+5r0kZuD4WKEa8PNjGuYqbD/D7ofLI4jdeyUIjqPhOtb1RVeCJq+xzkSaS7kpu4U6Yme1gpXSmh8GLtlYIK0idF1gH9oJBPaR97UYBB/+uLDI56944yfVGRNAkIfwRRZ72/BFRbXny2VF4lzQ3kRAHHTlwn+t0o44SA8KLpiF1b5Z5f1heoJEc4LQ1mviYPXsxbTU3Hz9a+unpQqu2cHU/MLb6LeLcEyRdKs0Z9bZYG8qjCX5y9mSi4GWI3Zhfvjqy3Q+k6MK0yZeeh40P5zmyag0Ua8nyXkNcr/mkTAB15aA8NCXJgISkU3NtnPVQzV2GV8GeR2zLBB7jPPCUnaSmFq2dzUTsZ/2cSxAQ+P4Xvng/xwZIxYOi8IpVExxnAW7YZx1PNeUC7rb7Wa6PhaTN0l2v7fY1lDBhVTpM5qMpSyViEHDi1OMAbvlrL2RFgiUW3smZeqSshbpCUkFuLEhfmdMTS7QPOfIRAGXiffzD1kKkr3Kko6a5RL5ypoJQpnSnTUoZG31Hhy9FHN/DA0YZur1/lmiDd9ycwYP04Y2fM5zgS/k6iGRJJ4vkwQduRSSY/Ys15ms/iwoABcz3UpXKppAExLT1G1i4RCjgderpLX00zoJt9BJDSmqR/WwIyJq190HV9r+toSLDfYOvHWBmFN6KYqKCeAJtwNnllbBGylS8KktoAz1fY65if/UCJfRymu
- 6EpA6RYK
- AJ7PBkaaSuvhdYyP9xGt7xtnZT28fiiNcwQPub8CWgkWzj0TOUShqQcZ89c6p98QKpOQF6DwNnq255+FoaquX4lVDBHJ/j7pQQm9VQSWFuFijVS2kvs31bcHzqQCn94YsvlZucKhN3q7G3KU8cJi8fuxsNu8xqw9DcdiZm7hs/0MGujUuh3Ycusy38aoOkiarpK+BNCZHkkoVUZUGRnGhiJ0suzj06f84qi3bm3BEpnhxAls=
+X-HE-Tag: 1776776110-914126
+X-HE-Meta: U2FsdGVkX1+kZUfAPh2pEKP0xrObhadjnt4mtHSUvhLkqGpCiVb7Px0gFVzKA90orxdvmKIZdhIAJ8bv1GC5az5815Ev0UKOVzTCvFSjosACxXKQGiCqv0t/TOo+YZDGcU5+Stb0Vkk76cpMWLKDfuJv5YOZY1/4KUeFGwPfIWL0j4D8t32hiYcfi+NE1+zCSl6vW5ZFjJM2Tm6sMWFajhavNbAGeJjnVc7T5nuwo1GQ9iVacCsTSwXTyiHBxmhFWFiGILpP7PnN3kqbOYHs+03UWzgKE47aRYMpowDz04LcNn5x1hb9gu9IBNCpPecNrQBTdFgWpm8QR75aZDU5/pcFqwxHSe0EFJCajeXAcrTcGCGYOixrx6j8bLL5Lx5kZCvfQhHFtpo61Zh2fVCOcWtNc1FzUfDa/pOiPtStxA43q93FIl4z6wlMgS/4GjpfKZ3fn2vTA/WBhzEiQwYq6OI98aEKA+DAjV3A+4F+i/qH5BOXdDm7hqRhCxJ6vTP9y/asKGoLyUtTu3FnmT0UsKaIOzmq7pyjbxomsS/6z/HLQytwoCA3x1TER94RKkAKFoh5dtl73MCylEQFmOzOrIAtrPKM9ANcnieaGKHQc+JEuJscjuFPWXH+XOJSskduBrd3nlv9/vpsA0YuebfQwmVkQ24UEFhmKEv5BIQmWG/UBb1meRgjjQC4t4gzjblaeBD6pfnzt+7npcyFrmEYfHJxQrc7pFZjv1/eJLI+hAEKaTuCyyxAwE5D8aJJ2QhVOoh66NBdCUJ5YwIBgn5nmDM10Ta3yFQNu+bSG9ElL7OSGUMq7T36Ys+QFeOVppEbLhVxfShYVGAFMh6p71IBBpwXMbNyxnERuo12LYpYDRm+KtSOn0PpIXU7JdOpyIzmWurNBakCN0lSlKHE7ENuhbhwC2cX3PTY17H+0ImrqHgNgcmUpKG2dQ6Uw1Bh4vviWPiWcGpnEnjwTD7qqWN
+ +b8aX8vf
+ yo6SRHb5DaPBnHZt/5UTdSZUzyx5+LKr2BDkYp63btU+00T/TNwzR2rmyukgLwt4nOtS5iPYAZ3JoCDz6nFEeS+Ow5WtSiNG55vrhWm9vBn9M0vPuX07aq6Uzl+YtZP2YW1cUcrxMoKjMayfTgz1MyWzbm93H/fNesyBHpSyBgp9Yp7IRFsLf35KIGC3dNPCqhh+QWntwlJnOAg4Ld+shvzOlmpOmJpVtqIsCNK1JGBFj6y/dIzGoXINs4P+3AFNKdMQVze7mcuSAIQ4YGDjiTgVzHc+ru6BKOJWsZ3x3RfpwJL9UaPy6T/D3ULuOYgg4AsvK7hiwLs1dyUY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,33 +114,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series cleans up the overlap memory map init check and
-optimizes zone contiguous check when changing pfn range.
+Move the overlap memmap init check from memmap_init_range() into
+memmap_init().
 
-In addition to providing a significant improvement for VM hotplug
-(see the second patch for reference), it brings benefits for CXL
-hotplug as well. The link is as follows
-https://lore.kernel.org/all/20260409023552.GA2807@AE/
+When mirrored kernelcore is enabled, avoid memory map initialization
+for overlap regions. There are two cases that may overlap: a mirror
+memory region assigned to movable zone, or a non-mirror memory region
+assigned to a non-movable zone but falling within the movable zone
+range.
 
-v3 link:
-    https://lore.kernel.org/all/20260408031615.1831922-1-yuan1.liu@intel.com/
+Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+---
+ mm/mm_init.c | 37 +++++++++++++------------------------
+ 1 file changed, 13 insertions(+), 24 deletions(-)
 
-v4 changes:
-    Add a new patch for clean up overlap memory map init check
-
-Yuan Liu (2):
-  mm: move overlap memory map init check to memmap_init()
-  mm/memory hotplug/unplug: Optimize zone contiguous check when changing
-    pfn range
-
- Documentation/mm/physical_memory.rst | 13 +++++
- drivers/base/memory.c                |  6 ++
- include/linux/mmzone.h               | 47 ++++++++++++++++
- mm/internal.h                        |  8 +--
- mm/memory_hotplug.c                  | 12 +---
- mm/mm_init.c                         | 82 +++++++++++-----------------
- 6 files changed, 100 insertions(+), 68 deletions(-)
-
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index df34797691bd..2b5233060504 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -797,28 +797,6 @@ void __meminit reserve_bootmem_region(phys_addr_t start,
+ 	}
+ }
+ 
+-/* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped init */
+-static bool __meminit
+-overlap_memmap_init(unsigned long zone, unsigned long *pfn)
+-{
+-	static struct memblock_region *r;
+-
+-	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
+-		if (!r || *pfn >= memblock_region_memory_end_pfn(r)) {
+-			for_each_mem_region(r) {
+-				if (*pfn < memblock_region_memory_end_pfn(r))
+-					break;
+-			}
+-		}
+-		if (*pfn >= memblock_region_memory_base_pfn(r) &&
+-		    memblock_is_mirror(r)) {
+-			*pfn = memblock_region_memory_end_pfn(r);
+-			return true;
+-		}
+-	}
+-	return false;
+-}
+-
+ /*
+  * Only struct pages that correspond to ranges defined by memblock.memory
+  * are zeroed and initialized by going through __init_single_page() during
+@@ -905,8 +883,6 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
+ 		 * function.  They do not exist on hotplugged memory.
+ 		 */
+ 		if (context == MEMINIT_EARLY) {
+-			if (overlap_memmap_init(zone, &pfn))
+-				continue;
+ 			if (defer_init(nid, pfn, zone_end_pfn)) {
+ 				deferred_struct_pages = true;
+ 				break;
+@@ -971,6 +947,7 @@ static void __init memmap_init(void)
+ 
+ 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
+ 		struct pglist_data *node = NODE_DATA(nid);
++		struct memblock_region *r = &memblock.memory.regions[i];
+ 
+ 		for (j = 0; j < MAX_NR_ZONES; j++) {
+ 			struct zone *zone = node->node_zones + j;
+@@ -978,6 +955,18 @@ static void __init memmap_init(void)
+ 			if (!populated_zone(zone))
+ 				continue;
+ 
++			if (mirrored_kernelcore) {
++				const bool is_mirror = memblock_is_mirror(r);
++				const bool is_movable_zone = (j == ZONE_MOVABLE);
++
++				if (is_mirror && is_movable_zone)
++					continue;
++
++				if (!is_mirror && !is_movable_zone &&
++				    start_pfn >= zone_movable_pfn[nid])
++					continue;
++			}
++
+ 			memmap_init_zone_range(zone, start_pfn, end_pfn,
+ 					       &hole_pfn);
+ 			zone_id = j;
 -- 
 2.47.3
 
