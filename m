@@ -4,92 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60D05F8FA80
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FDBEF8FA80
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:13:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA1F76B0089; Tue, 21 Apr 2026 10:08:03 -0400 (EDT)
+	id 925766B0088; Tue, 21 Apr 2026 10:13:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C78896B008C; Tue, 21 Apr 2026 10:08:03 -0400 (EDT)
+	id 8D6156B0089; Tue, 21 Apr 2026 10:13:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B40D46B0092; Tue, 21 Apr 2026 10:08:03 -0400 (EDT)
+	id 7C5B66B008A; Tue, 21 Apr 2026 10:13:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A26E66B0089
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:08:03 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43BFAC401E
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:08:03 +0000 (UTC)
-X-FDA: 84682742046.14.C4051D7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 918111C0004
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:08:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cvCu5x5u;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B06F6B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:13:02 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EAB8613C351
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:13:01 +0000 (UTC)
+X-FDA: 84682754562.29.829CFB2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EB2DB180017
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:12:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PGyhIjar;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776780481;
+	s=arc-20220608; t=1776780780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kultI54iHJnpJrmX0ijWuDaC7OkdM11j7gCZi36JyiQ=;
-	b=HPZBUtmV+ZzQeWH3bLaRkcA9Onx9Vhm4cIrqjR1bfhvKasou6K4WddxIe45xiv7Vi5h2Cg
-	YUf6bmYLS+SWOBu6sVV13nUWsRCRAgzaw2kAvbkNTHRFSLQLiPIsb2mjP6aTLFplbbadHE
-	dVIJ7R6cwVI9IqPYiBYs1FNTUAOotw0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cvCu5x5u;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776780481; a=rsa-sha256;
+	bh=JPnsjTdYSO3aDa0UA+N8YlPHgvBdNvRosplnwTazfCE=;
+	b=ndVO8VxY7UuG/cexwC1DvraLi4QUCxwkFy8qmb4GtG/F/0OFzcrNJZoQ31Z8t/eU5HBl+Z
+	pVq/+WKt5dHGb/btKKKOTv3YjIJYHsMF6BvTib0WTw93Z/mjNb5k3LXzWTVH85AYoeGzcf
+	DXaSpIZY688Z0mbIhvwj5Sv3zOYO+XA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776780780; a=rsa-sha256;
 	cv=none;
-	b=C9lBcwMADPZM9PFy5xga93Xdmq7jzBhu0aIx4JTxhedNkFBzDoQFzfLABuPu8A9K9BpUJ1
-	IcpJXgqzZLC8FLNVJq3eHuG+RN2ffWFDkfdAmmNP1M8U8N6DmJLXj8wAmG+wLmk620lSqW
-	91L+soFn//avD3pgkDqo7lXox878fG8=
+	b=lmZ5o57+yPEK60Hs1GONhgJU8bl9S1RkTZ6KIotSxfcWqLBj1Q0rb3fXGmp7eWPo/L1Z73
+	V5k0KFd6xrOqw9lWwNaXzvT3m0VXFu+O74IGFrFVdqSJJoDRJEOWd/Al7VVIlfecGBZ7+1
+	pIY1KYVdsfqFe7F+8D3yMwKD1umbXmo=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PGyhIjar;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EF10E6001A;
-	Tue, 21 Apr 2026 14:08:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCC3C2BCB0;
-	Tue, 21 Apr 2026 14:07:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FA484016E;
+	Tue, 21 Apr 2026 14:12:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2CEC2BCB0;
+	Tue, 21 Apr 2026 14:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776780480;
-	bh=C2vjPG7cYBtC/syRejJLvNATQIcMbGjY9iARX4IFuT8=;
+	s=k20201202; t=1776780778;
+	bh=rWrqzKfOOhkPoPF+R0PXlKX/czAIxK0MQ+VDF45+okg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cvCu5x5u/MxJ/rm3ilOI4UDXqGPxauyCd40rpRmMwbVI5/d2Pot2x5NR0WXVloA8M
-	 LehoYO50jgibwIV3D1kPFXLVwWc7UE7e/WfMPWlatCSpvd2epit8xS7Nn8vi+Ht0Xe
-	 SvJpL19Bqo+9lQ0MAOjB0qcKsoLVFBRGDIpewCV9d4EZy6+hAcE0kkRr/63Nix2+0V
-	 vJTR+hyO7F5wgikJ9cJNkO8fzyw9F5XN6AOuNrsVLcI7/WaokgtpFWbZzihIneT6P7
-	 GEaGS3q5y9d7PX9M5Q6+ChQz0Puf5sxANMYOmIel6AUM45UKABKOPLwOxS+/3qRG/b
-	 DYFdFxtw+738w==
-Message-ID: <04a905af-f19e-4595-b8d7-e3c627f140bd@kernel.org>
-Date: Tue, 21 Apr 2026 16:07:51 +0200
+	b=PGyhIjarbZhWJGmZzoyZfOEFX1K1HB8r7leQuD14tOJfy5lSd677Lf2zesDORS9LO
+	 ek2K+6eBdolEAZF+QDuPHZsKz+sf6/1z2ajKAGoJDm2VuJAuOQ4Jkjvs2J+43dELMT
+	 13dWAZXIceCdTr+0oYU7KiOHju4eO/jpZR1Bz9R4EQr5++52IP9KxO70IBhndYUd4o
+	 bbA0O+NRN/g78+FnLpO9D99nCncjFp+x0tp6ClKJyL2cPM4Qz55e0KZn+a7Ta8mj5d
+	 +51sCPR+TAKiXvHiWKdujpg+P41774+4RAn53/vFVxoZssSNCX3PmKqpRomOrSgHP0
+	 uZn9f1fVfjCZw==
+Message-ID: <8044dc3e-5409-4767-b6ba-a75ccc7f1104@kernel.org>
+Date: Tue, 21 Apr 2026 16:12:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 17/18] mm: add free_frozen_pages_hint and
- put_page_hint APIs
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-mm@kvack.org, virtualization@lists.linux.dev,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>
-References: <cover.1776689093.git.mst@redhat.com>
- <c7094de807c0e963526686e1d245bc76193b1a92.1776689093.git.mst@redhat.com>
- <5f76af6e-9818-42ea-a305-c0fc1d920dca@kernel.org>
- <20260421091546-mutt-send-email-mst@kernel.org>
- <2a41dd0c-7ad8-4d34-8bab-a713e16c3b29@kernel.org>
- <20260421094049-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH v2 1/6] mm: Make lazy MMU mode context-aware
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1776264097.git.agordeev@linux.ibm.com>
+ <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
+ <4dc47078-0f8b-4388-9715-744c18590a00@arm.com>
+ <0dd3a5bf-a98b-4181-a88a-ec9c0203f90a-agordeev@linux.ibm.com>
+ <566e7e6b-17be-426f-a3f1-a615d0d61077@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260421094049-mutt-send-email-mst@kernel.org>
+In-Reply-To: <566e7e6b-17be-426f-a3f1-a615d0d61077@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: d1mhbh6nr3anownxtd7cntd4hibi3b75
-X-Rspamd-Queue-Id: 918111C0004
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: md59eea9z6ozpwburg8i6t6zwaxmudm1
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776780481-543091
-X-HE-Meta: U2FsdGVkX1+KO9OBPlmT0cJ0d/K7cTcgIj+0ojlUxAROTL1Ta8rLwhNCwKMFFp77pRNcltqYcZuQhvrT2fNvEGs1l7m7TuWUB/KRLly1KanvDyjACGXVrAjhbV85MTzv9s3POLf4fbL9v8dBw5KJFUGsv8F/2W74TvDmkkycWpWHZ6CmaCpIPhZranoYTt/EBxhyhTYY/QlJZeixZ+Ch70biftpdJEZaQZ+V8X6k+7/rf7cM9eL+g0/ljqJiJGFr6h2Lb9NqZvXFowCzB+O9hmnaxDzkM/YILULR34bPVKhlaw/Ua1fUfauWXbs+eE0IX5z72ZGWSn5Adfu6TbXrCBOqQhokO2SOe+U+tU1nXBBHtaw0gTRSEls2vXeTQmEOM2quN846rSA/Ggq/HyK8/Zx+lK4o9/pAMm6UOv6WNeIZZi7Z2LdZBjrnTm+UJyc7SqK+uJKTgTYPH3HSapn5pl/ps2lBCuR93cztzG7iXwFCtislFJ8XE3ZMPVPCqks1xvdprS4w2I3vMw80vSvDuliivEnrdU95eiVQkTTSUY0MmIUUab8UJYzAy31uWNptVt00TzaYaNEKr3lR206YOG3lEdzNxZ2vm41SU9yjPYCJIgSO3hAsFZHl5iEWcbdoRviu3Ld+f7qwjbxQIfbcXSfrhJ8m5Y2Uo0YKup0USlE4/K6ZFi4kDpbOGXekzeRCObJv7H9ba3qBEDTkEFVO3SUTdks2ROICpVtgnXg99quWQQtnoG5Zb7SjEWiimsW24sJ1GhkIaB6l0hlSg4SvU0WD17h8bPzvE37bQ4DAlqecmhv/qQdsVKL6NFQmpxmrA2DFTFAiYhPWF4tuT/QdIXKNdhWu608mR6Jjj+Lupz/rTJ38crN9hPtcJ94WakjkEHdnLPWR2xNMY2mDVIqHrCD2SYw4FcudT6A2KrY2aJeTG9TYfSo2S0kbNXnWsTEMAfqceZYBlb3YPHRFSTP
- FKj7Ketl
- UtUqwuLoWkHSxFuhysHy3NgtAILldGFjLN0vCxst6l84o+yLt0b1IkGypZaQ3turgHMMWsCWItNZ0cN2Q292JmOPNuj1ntih8/V0cp30bV6XZlxGlpVpW9peTXGp/mKrYkUz6cprMYWD2MXuOvuyuoqS7pCHi/AhgbmpVlKGCtLACa/xbqvLiZv5AjeX+jhZ6AkjTY/Ts8//6QyDp1ETu5JPciFfSINDlDIThw5MhaL2fh79yC6tbzyZ+FeHNMzoNiInytBslGEpP///6waNIxzX9nAu6M82jWlzItfJ2RkF5H5GGDEcZWTPiJg==
+X-Rspamd-Queue-Id: EB2DB180017
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776780779-156764
+X-HE-Meta: U2FsdGVkX1+ePInr0yL+L90eVTe5QMCPhT0WHOtQW+ChgHZ2PldYHgckFzt4E3TBnAy/caiU8Z/eOcxwV5Jh0DArxyyhzrnH6NLhgM5Np8934E+tThiKWWRjnbUc+HjdRysLzx0tK3TltHzVp47irYMDSE6QAuMXVwGv52G90F1GYGseQiVlv5qhBmWEHYq6l41bsDPIzrb0cG7eB3/o4YilzdbKCiQzMRKcPjihDTKv6DX7aV2jcf9SuGR7IuaYxHCG9xrBU/5O5oWJgxhJc/cd0PtqYKNCjNcbancdep/LyJ2GmWgI7ErLvSvyPdH8Va3a9faXo75Rq4UZhBxz+EMD5Aq5OgcwBE2s4VWl8+vodjyvLmV9PPwmMxIyr4zoPus7Q3i0vhWnX88Y1a0HxTr2j02xErGS/s4zH2ibRHoVIqfIg6gO7UwXY5Aq2HQuhSJEr4z6dnpyxe6ddUI3xIClDqur9RAhvc4SLtedCir8wKra/xyRiHjD4YdZbeO38UEW3iZaDRa7JO0u6/RxdaN8e0tAeRXCpgkLXm2WKUkc1gF2T9Cvwrugvc00m52tCHCxBFrF1nupAGSbsu+2oxgykX147xAiO06mIuu/oRRpzLi/GBdRYb3t2afDNamtZwJKUPhCg7V7RjlUkI/joxOMhJnbsEFALuYXJwDe92y+jfNgNNAMvBNqwgiEMXdtZKyvwSpcWwrsIl6m97ZwoysavUQoSqsGCK92jYCzNsRoBM3O5/nmAs1VQlCKWlQBsrljyinpvsutcvNI5astxNM5Xy9xUUT0IpSqp8z5Ivw7NqysztCjhSaKjZ2TypL7pTtFKgn5nKTk/CLjC1WLHls5pC4ctCW7kOUfgQD1T3FVpKGhIPpEiO60rSpZSSgOKSN5RYHtp6CbPPuFZhUEWPw211/ZsmOJapl1Gwcc9ct1f+pFl0xli0MxzYfYpejEzi86nDgYUmpr64Tol7f
+ uamJoKOk
+ g7ZWabwsfhNM+OR6k9kjxlaLaOlS4momtMbHzaELi4RoI5zIl560piuoK+084gk6YnCcHnFS0h+yxjniuurRdhcB2KbMAk2t+LszbTjigDSkaMqPRryKpFrfLzRYclz+GbyrZS01hRjBD9kiY1H9LZFbS/nwj5F0jWkYf4QsJM9/u5OBqaPk6TXZgY99e3VqSFvUFD3NhSKr2gRUwpxqaeIRSmCAKTNXTptFKIER5Hj6RZGjycW3HVNsRQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,35 +147,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 15:44, Michael S. Tsirkin wrote:
-> On Tue, Apr 21, 2026 at 03:30:53PM +0200, David Hildenbrand (Arm) wrote:
->> On 4/21/26 15:16, Michael S. Tsirkin wrote:
->>>
->>> We can - it's a dependency of the balloon deflate, which you asked
->>> me to implement. I'm more interested in reporting, myself.
+On 4/21/26 10:40, Kevin Brodsky wrote:
+> On 21/04/2026 06:57, Alexander Gordeev wrote:
+>>> Does that mean that all PTEs mapping [addr, end) must belong to the same
+>>> PTE page? I think the wording should be more specific.
+>> I tried to state that end of the range must not exceed pmd_addr_end(addr, end).
+>> Any of these sounds better?
 >>
->> Just to be clear, I said:
->>
->> "I'd assume ordinary inflating+deflating of the balloon would also end
->> up with pre-zeroed pages. We'd just need a (mm/balloon.c -specific)
->> interface to tell the buddy that the pages are zeroed."
->>
->> So while I think there will be value in that in the futur once we
->> figure out a clean interface, I don't recall asking you to implement that?
+>> The PTE range must belong to the specified memory space and ...
+>> a) the address range must not cross the parent PMD address range boundary
+>> b) the PTEs must belong to the same parent PMD
 > 
-> 
-> Right. you also said:
-> 
-> 	Not blocking, but I don't want something that is too coupled to
-> 	free-page reporting optimizations in the buddy. The comment above
-> 	MAGIC_PAGE_ZEROED triggered my reaction.
-> 
-> so I interpreted this as meaning "it's nice to have (not blocking), but
-> you either need to implement this to demonstrate that indeed, it is not
-> too coupled, or prove in some other way that it is not too coupled".
+> I think b) is good, maybe "PMD entry" to be even clearer.  My previous
+> suggestion of talking about "PTE page" isn't ideal since some
+> architectures have page tables smaller (or larger) than a page.
 
-Then there was a misunderstanding. I consider it future work and just
-want the internals to easily allow for such a use case :)
+In other code (e.g., get_and_clear_ptes()) we state "The PTEs are all in
+the same PMD."
 
 -- 
 Cheers,
