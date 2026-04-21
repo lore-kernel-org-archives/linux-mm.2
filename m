@@ -4,141 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B12ABF8925F
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 11:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F450F8FA66
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 12:16:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0ACE96B0088; Tue, 21 Apr 2026 07:25:40 -0400 (EDT)
+	id 566FD6B0088; Tue, 21 Apr 2026 08:16:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05E126B0089; Tue, 21 Apr 2026 07:25:40 -0400 (EDT)
+	id 517F66B0089; Tue, 21 Apr 2026 08:16:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8F9B6B008A; Tue, 21 Apr 2026 07:25:39 -0400 (EDT)
+	id 42D6B6B008A; Tue, 21 Apr 2026 08:16:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DA5036B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:25:39 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 72C98E5CA5
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:25:39 +0000 (UTC)
-X-FDA: 84682332798.26.CBF9006
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BCA10C0006
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:25:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oXiNuaqk;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 300CD6B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:16:36 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE2795CA6A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:16:35 +0000 (UTC)
+X-FDA: 84682461150.10.8B58EBF
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DE2A140006
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:16:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i4F6CkfM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776773794; a=rsa-sha256;
+	cv=none;
+	b=kh6eolkuJXhOnEil9hAsSmJxZUDSMIm5vMgV68tunI3enCyj5WL+hcjfTWYYWYuMy4giFn
+	o+YkBQxEMVab6X+bQJw8SV9RqiG0dzJnJAHp4aXC1cAQByq5Q9mUhQU8km2n0CtIYhEsnG
+	lCSMOKbGwyxqKgs6PPcRyGnrgkdnLFs=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i4F6CkfM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776770737;
+	s=arc-20220608; t=1776773793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ywXJT+u3lSugwSN/kTHFOcPcCDaUNLf/ITxBlx8nBM=;
-	b=L/bwE6KQhkyTEvWYc73tZGbuUq32yQjqI9XLiWcqiLpGTg0TGy1CKXlsBOWqtkpQgyZ/hL
-	IpqifSggJ4Mf9nSwig64V3n4P0zCoeTGbo53PVu9B/OVGLf148w4oruKqxQ1teNk9dE9YQ
-	pdoG2kbwqNAqquhmlz2F0xSHznbwg6Q=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oXiNuaqk;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776770737; a=rsa-sha256;
-	cv=none;
-	b=BGE6NqAN+rG0DXswEyzL6vjGkqvHl7aAxdJZIa1v6Q89Xe4jVt0QGSKcwqGlKURDt1SbOT
-	Dm7Bf6PPFgfHO/DOMtl1xLL5y/tTQ1MzFqzMdvDjSAt8RpPQc5eYKVUV+/lt54AIDXDwdo
-	BLBSiP0yweTqiLgw68s4nFsarlVWXe0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1AB7A60123;
-	Tue, 21 Apr 2026 11:25:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F7AC2BCB0;
-	Tue, 21 Apr 2026 11:25:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776770736;
-	bh=/zgzmGNCOYZ1B+8FSXNBeCfsoV+QdAwHLJqkV810FQs=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=oXiNuaqkXGAnHNlr2/CNqYdPMV94W8r0SySgbB4Sd/AzOZNSfrorMyEXJz1t1Kbg8
-	 topuZloklZ6IXxXpm+HFYS+TfPi+rhEv03mdbf35e0k23UJ/tUHPQasPaSUWNPVO2Q
-	 A2AXachdrw1YbC0mG0DPO+Ep8ObtsCZMXgFYT3SH23eY4toKLcfd4/SUAI5cmo/RtF
-	 a5hITbGxw8oBb4ftKTk3dQPvYYuXad/gyG4pqrLw7Z1T7Br8ymE8QCOqJOuO8KxJEv
-	 /rAf/uodPxjhPcOxuUAbvz6JrfELFakT3VcenXf6bWzI50BOnFiAwL6oT/DWniIw5Z
-	 NHPXVV98DeE6Q==
-Message-ID: <def3bab1-b389-47a2-9ef3-4a0c34c674ba@kernel.org>
-Date: Tue, 21 Apr 2026 13:25:31 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XTX90kBWYPlf5c0l3p/5jjfTkLXTd7XpDQpkztEEKcw=;
+	b=3EIcjreXqDsbj4bNo/B/MultV233lWotx42E2l0dMr3M0IhNYZy6CIDLq5ukxvBue50tIh
+	jC3mGER1h5iAYoT/GyVzPkASQvBax1Rje51AdxFNHf/s677nbMwKsP4Vnxu0zHeKD46mIs
+	rQ0epxvqF2OT02ux19Wm9PmRkCHs7Z8=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82fcd0aa2dbso312937b3a.0
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:16:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776773793; x=1777378593; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XTX90kBWYPlf5c0l3p/5jjfTkLXTd7XpDQpkztEEKcw=;
+        b=i4F6CkfM4iqyIyCNFBikaJjs7yiA5z6GjpPQa4ZzQ2ga9DmdDHMHYkbNWdy97T1p3N
+         hy2ql72rnlSXTK7Lhr9CIp/jL/qpA3qhu7gPelB3mSynUnhxjw++R/WX7eWErrTg761g
+         3zlPBNDqrNWAJyQ57WVKKG8YxhPdomX3KBuP85wi4SL98p3w6F0GgMr1o/3lhBneXokD
+         wlo8ZeKjdNLR3SIOtfVhC9Dnvq2402Fy0T9aFpuDZnaQzxASf/K0HIn582na40KFdGvG
+         7RismZ1bVZDQCUZhRjmh705kPlE5MOg2ZphLqulpxJBwtV0WaEspSvq/RuIHLQWIxR4y
+         BNJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776773793; x=1777378593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XTX90kBWYPlf5c0l3p/5jjfTkLXTd7XpDQpkztEEKcw=;
+        b=VYUk6TPuyDo8zcR8tx7wMQdV3b6oM3iPfZmrW6sfxbvtNaORInqNwU/WODVVlLb6fI
+         sWv8+9LghFfOvreYdVnkhzuIHsQRCR1rBn8OF5hodegFeC+I1Bs8DQM8yw13jf84CakX
+         oQR2UgjmdGj500kQE4Ma3bszdYJ5xLe4ExtmdRxxHkC427F9DumAcdbyfJmb5f/2ugud
+         Fd15X9yFI6j+4quUjc4fFvolllWkFsNJbwKCZEfyjsoPlMQapKBpelBm4ZxERhYgp9pt
+         ryxbhoSCFDR8L6Hli8wfOx9p3evhFH/uSuC6pDqLx/dMpoiH6AdhVq/bUmxXZ0Y4YXiA
+         Ktyw==
+X-Forwarded-Encrypted: i=1; AFNElJ+59fgBsTYWJvUwLccOg6NCnLaJ9JNNtwVgF8ugWbuMNg1vimAjN0Lm1CIPttElT0i8Az4v3Hmk4g==@kvack.org
+X-Gm-Message-State: AOJu0YzBovExRlFniei3yeIuanruO0rNpHJTJqZ9WBA+4XoUipo01cad
+	2Q4FgrWTiDrqpYfw+RZLodLWvXLC+AetvM611uvsv5eN/N3ePqhH3Y3/
+X-Gm-Gg: AeBDietn0IH3dB42sznOlvkeHE/0D7eVbnoS3ps8Ml/jRRPG750UVyvRSuO0FFMkLzv
+	3yPgyaTWw8RCsRxjH+szyxbYJTc8dS/DGeqmGpyDtL44Obb5l7VXX3duby2TC6WgA3tVZoGOgbr
+	0hnUlVFxHQU6wMljUaNMViDe9hqRcUyfYUVjNQ5moD0iZQSo+E1zxKFhgAcPnyU9YcEUCC2Uz0U
+	7Zx6YRIvOxBGlZPwe/Fisg5T2tpCpst6s2EdVcz9enU8ru2Uo5NITrTbpKPr7pzGiHkq+1T+ywo
+	05BZOvTQQIfWp+iE+1JHtmMtLnOC2jQqunLJPq31vfz0tmZx73ZPaJCx9y0oAihUdNp/WN58+vK
+	u0A1Td4jcSycYe1PYkh9HpRPxPEYJ2vU0EADbh5PNhlKxYluv0J+zzAeVbIoFT/rZWQZYUFynFM
+	VeNvRNHw3SaFXKPz6r7uefU0D4b4756dEsW1YfFELho4q96YY=
+X-Received: by 2002:a05:6a00:9291:b0:822:69b2:7ed0 with SMTP id d2e1a72fcca58-82f8b370621mr15308948b3a.6.1776773792646;
+        Tue, 21 Apr 2026 05:16:32 -0700 (PDT)
+Received: from ubuntu22.mioffice.cn ([43.224.245.232])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec037e1sm16371071b3a.54.2026.04.21.05.16.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 05:16:32 -0700 (PDT)
+From: Wenchao Hao <haowenchao22@gmail.com>
+X-Google-Original-From: Wenchao Hao <haowenchao@xiaomi.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: Barry Song <baohua@kernel.org>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>,
+	Wenchao Hao <haowenchao@xiaomi.com>
+Subject: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap release path
+Date: Tue, 21 Apr 2026 20:16:12 +0800
+Message-Id: <20260421121616.3298845-1-haowenchao@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 11/18] mm: skip zeroing in
- vma_alloc_zeroed_movable_folio for pre-zeroed pages
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-mm@kvack.org, virtualization@lists.linux.dev,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>
-References: <cover.1776689093.git.mst@redhat.com>
- <39c3c8e647fc4c8e3dcb5c9d12f2e29b5404e8f2.1776689093.git.mst@redhat.com>
- <b7fc296b-06bc-4d52-b607-2da94c123fa4@kernel.org>
- <068cdadf-d979-4170-9ff3-2468f46e9786@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <068cdadf-d979-4170-9ff3-2468f46e9786@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BCA10C0006
-X-Stat-Signature: daqrqwej5wendfnnn6t1xjwqfp1kurzz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: jwssik9erodd374t5tzc5peoudnpguje
 X-Rspam-User: 
-X-HE-Tag: 1776770737-849787
-X-HE-Meta: U2FsdGVkX1+KT7J0UfQuriAk+1ThOrmSUHAXOEkGMMSNyihh1hCAj+6ii4nKDujugTqjyWxKTQ5ChC4dW/n7lwKsYbXSoWlJ9vlDaa/oOGk6ZZ7y/D2gf161uKmtSfTaHcWAcBzfNfxbkdeeZ96Entrw/0MpBXY7f+Mrl3tYnJ3xDQa79MpzRhKXNhWhjpQ3psribXE047LKKQm8y2Q98082aH4YyJiyAbXxln59qPrs1h6JXOwVg/SXEvyOEIek9l2fdCD99fTLvaKv1Lqllp2SueJS5BJWJ2KzpBX+Wg6E8LnT0dcODBmxojiE3MmPGFH6vQ9hWcrZKXtGI1XY62gt9PoWEH3TNCBV0G16OfPkYNr659c/+9Vpippi/nNYEyZ6lnHsmKzEWbVYYsqptH9nmmBzsTEhj9fGeaNElcfdAdweTvv65WXSTzttRGocQTAZwKbCtyMxbRhb4w0xMzzJrwn/2hT2vhlp1fRZOX9fVULn2mI8afXcCAX46Ihqw+sfm9fvM4zMqL6zF9AEGWGnSS2N7Czf6WiaTo5Cb2rKrvNMxtloH8Ohn4NzQJbsC/Zip0/TwEvq6J6cEtu+4Z9S/mbz9up84T4E7jmM4HzGhy29Chos3NN6YJcQzcKaIhZQcEEe4lCqidf66dDz/sG1iQdqy4VJdzrjkkkbsaff2QwR31TXaSHvrGa5Ow7YEDf3nqTI2b7LbmZkSmc8Bx7OQCwgW1Q9j6wX7CgfVZ0WTlcKMOO/taJj8ILcF/OlepowNU+ge2SH2TQ9k/zs4U6QDIKGzgMwyBDnvak6SAts+r1LxqyCgUaeMcHHD1Tand67bAGiirODfHlkvRUHSFlSGmx6xmlKSgBsID0x70kuEL4fhNxkALfoE/SYcj3ZbpG9pFinc3B7itNPjNBsp/wO2qeDcFpwJSwqIUxJaA+VL6J+KNH8DZGAuVOsDjeU/0143+lpfzI3F2TFhNU
- zThImKWZ
- +136Je8TjIdZIgp4JGZFoq4EhwoizIg+8DH37TGb6ne3j8k84ivBC6SKf6uv5fHw0XDR1Fm/I5NFMJES3Ws0u7efyMPfbgwOKY9c0HAT61h6LyJTZKOSN1K9jMuxBEAzktwb+Kf5H1vaw6obJWfLcyoWnJwyQ3AouJDQPj2vy/WHX2H9YVfig8v5yD1BKcWdORU1Lu5HQUTDDDh5OJ9w/cWWJmrkC8G4zJGQ2yRgH1zswd9Vzcf1wbyCs+pntKFUVJLohbaRNZMXSNzmAUwomr/X+PHajTZndCslLmAS2DDMxZPf6T0nCQH08m2fwUL5Wo8Niztg1Mv1vtHQ=
+X-Rspamd-Queue-Id: DE2A140006
+X-HE-Tag: 1776773793-690722
+X-HE-Meta: U2FsdGVkX1+R7+EH2aAnrPl+U64hz4McXcq+x1bvELpkMkBD6ynQzBNn+ZXRbFEeN8/cYKjP0jyKn4sMLsjEAOajgB1vTqe4xOioQ2vWE5/gC4bdQj7XYJ5zrm07v3NQiVMWYoNHqQZBYiUFhQpZH+4JyitDERi7jy3HPjfDEznsnH29sHBBUvuxchAn3QdxqUNuJZxe7hitFkDQYoyhbPXDu8fyLthXFCU4jo1CS85RSxkjDuG87RqBHlohxUPcQx5ux1nQn82CkxY/lzAHWXUmEJ0tIIzsKpvhPj3Nq1VqG8VW7VCbBqT0GaOV9rUo3bJK7tgKZDT2gM5/RqC+tZuhcKynJIdavniK+5hjHgb/yHuwolS1xivmZ5iHFLIDadC8Ut4vsPh0fJqRZlaYRberC4FkUmSKxG6xcBMrA4dUIaS2Qm562UumMwt5QEogyOA9QtKHraPO+IH/vdIZfcY3y/mLl8+1+Jb+qzzkDKmKrBIMgOf1JvjIxOpJ+bbD2u4zY+TGigHnPM9UfF2CuK5NFbsMX7ZfpCRnZKQkBE1QJm/vu/OcJ99VrJ+WdcqDt4Ta3oUIENV2jIMnBf51Rmnu0ecOkqZ+ZfR9iRKI4cJiRNQ1HDZFbr5YvTOFOK1tNzNyuwU86LTMLVraldQbqsBxTFV+a9lvHGYypF6D70dkAf/ozuby1M72AuGmR1mLrDoJRbhfjhVvNVUWQRxTO7vWeU+hw2TQPEFRpBPAs7aOzlnZXZiJCkpNVlaO01ydga4hRjvR/EqJts7Fzp3nn5VyrhwGlANaa9cM4kCWWFoNUoh6l8/2C1/Gt0mUhlvB9nzonVoQFoNjni1EJtiwz6e6qMWguFAIJ08eF4hLqg5oVzGyx92eKhL16odTR0DACfAMtzuLSP1pCO2/sJrWabD8/AFi1jnzf8KgRYFkT4QKzeZtlynVOOPsy7FnKkG3ehJxhWBOCAjiPI/whoD
+ G4FKea3p
+ xdpa5YADGom43EvkZPTf3lHrkEe8EPFS5yGPhK1TyoJV2NIgWw8SUEYbkjkZiu/3UtAZiKa6zvLUzeT0OjPwM8x6VNPwIjvz93BJ9S1BnVajggYOLE+IiJ72oLEmur73fF/DzV9q3QEdDUeGiWTGpp+ytVEa9dVe4bdxGWA5yZpvTFmfOPIUZB9yAD6WoYvpK/+nYMkJLehVDT0uUCPVZ9pytFHvvN326I6Gjc6x3dSZACDaLtqKBmJjVXGh8OH+P3TuaB0sjy3ZFskiL4lEZgLpvhKJa4PqTl+WkynEZxnr+Z3Pg/9cglrffpAE7chwyfDlaj2BdkN7zWNahKw7h4I/HunXUGc6aoVBrErgLKFWI4FVfQGFbR3FYyUl3XAiPSNwmrlDSZ978m4muReW2Kp9OxI0oB2GqM1eXsFZWYWKTd0mhW/t4DIaQb6yyfIWBeK8QoQhGWRpbCDgQzgg8qIAEdnR26ZiHq3A1n0U4MMiZeUoyGAQDLNkjAb8lBbypMzNDacf9sd1foVc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,124 +126,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 13:12, David Hildenbrand (Arm) wrote:
-> On 4/21/26 12:58, David Hildenbrand (Arm) wrote:
->> On 4/20/26 14:50, Michael S. Tsirkin wrote:
->>> Use vma_alloc_folio_hints() and check PGHINT_ZEROED to skip
->>> clear_user_highpage() when the page is already zeroed.
->>>
->>> On x86, vma_alloc_zeroed_movable_folio is overridden by a macro
->>> that uses __GFP_ZERO directly, so this change has no effect there.
->>>
->>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->>> Assisted-by: Claude:claude-opus-4-6
->>> Assisted-by: cursor-agent:GPT-5.4-xhigh
->>> ---
->>>  include/linux/highmem.h | 6 ++++--
->>>  1 file changed, 4 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
->>> index af03db851a1d..8bb67772c1cb 100644
->>> --- a/include/linux/highmem.h
->>> +++ b/include/linux/highmem.h
->>> @@ -321,9 +321,11 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
->>>  				   unsigned long vaddr)
->>>  {
->>>  	struct folio *folio;
->>> +	pghint_t hints;
->>>  
->>> -	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, vaddr);
->>> -	if (folio && user_alloc_needs_zeroing())
->>> +	folio = vma_alloc_folio_hints(GFP_HIGHUSER_MOVABLE, 0, vma, vaddr,
->>> +				      &hints);
->>> +	if (folio && user_alloc_needs_zeroing() && !(hints & PGHINT_ZEROED))
->>>  		clear_user_highpage(&folio->page, vaddr);
->>>  
->>>  	return folio;
->>
->>
->> For others reading along, the variant on your other branch:
->>
->> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
->> index af03db851a1d9..ffa683f64f1d1 100644
->> --- a/include/linux/highmem.h
->> +++ b/include/linux/highmem.h
->> @@ -320,13 +320,8 @@ static inline
->>  struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
->>  				   unsigned long vaddr)
->>  {
->> -	struct folio *folio;
->> -
->> -	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, vaddr);
->> -	if (folio && user_alloc_needs_zeroing())
->> -		clear_user_highpage(&folio->page, vaddr);
->> -
->> -	return folio;
->> +	return vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO,
->> +			      0, vma, vaddr);
->>  }
->>  #endif
->>
->> Looks like an extremely clean interface.
->>
-> 
-> And we could likely just do the following on top I assume.
-> 
-> diff --git a/arch/m68k/include/asm/page_no.h b/arch/m68k/include/asm/page_no.h
-> index d2532bc407ef..f511b763a235 100644
-> --- a/arch/m68k/include/asm/page_no.h
-> +++ b/arch/m68k/include/asm/page_no.h
-> @@ -12,9 +12,6 @@ extern unsigned long memory_end;
->  
->  #define copy_user_page(to, from, vaddr, pg)    copy_page(to, from)
->  
-> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
-> -       vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
-> -
->  #define __pa(vaddr)            ((unsigned long)(vaddr))
->  #define __va(paddr)            ((void *)((unsigned long)(paddr)))
->  
-> diff --git a/arch/s390/include/asm/page.h b/arch/s390/include/asm/page.h
-> index 56da819a79e6..e995d2a413f9 100644
-> --- a/arch/s390/include/asm/page.h
-> +++ b/arch/s390/include/asm/page.h
-> @@ -67,9 +67,6 @@ static inline void copy_page(void *to, void *from)
->  
->  #define copy_user_page(to, from, vaddr, pg)    copy_page(to, from)
->  
-> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
-> -       vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
-> -
->  #ifdef CONFIG_STRICT_MM_TYPECHECKS
->  #define STRICT_MM_TYPECHECKS
->  #endif
-> diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
-> index 416dc88e35c1..92fa975b46f3 100644
-> --- a/arch/x86/include/asm/page.h
-> +++ b/arch/x86/include/asm/page.h
-> @@ -28,9 +28,6 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
->         copy_page(to, from);
->  }
->  
-> -#define vma_alloc_zeroed_movable_folio(vma, vaddr) \
-> -       vma_alloc_folio(GFP_HIGHUSER_MOVABLE | __GFP_ZERO, 0, vma, vaddr)
-> -
->  #ifndef __pa
->  #define __pa(x)                __phys_addr((unsigned long)(x))
->  #endif
-> 
-> 
+Swap freeing can be expensive when unmapping a VMA containing
+many swap entries. This has been reported to significantly
+delay memory reclamation during Android's low-memory killing,
+especially when multiple processes are terminated to free
+memory, with slot_free() accounting for more than 80% of
+the total cost of freeing swap entries.
 
-... and I wonder whether we could then convert the arm64 variant into a
-simple helper that just returns additional gfp flags.
+Two earlier attempts by Lei and Zhiguo added a new thread in the mm core
+to asynchronously collect and free swap entries [1][2], but the
+design itself is fairly complex.
 
-We might even be able to call that from inside vma_alloc_folio(), to
-just get __GFP_ZEROTAGS whenever the VMA has VM_MTE.
+When anon folios and swap entries are mixed within a
+process, reclaiming anon folios from killed processes
+helps return memory to the system as quickly as possible,
+so that newly launched applications can satisfy their
+memory demands. It is not ideal for swap freeing to block
+anon folio freeing. On the other hand, swap freeing can
+still return memory to the system, although at a slower
+rate due to memory compression.
 
-But that's obviously some additional work on top.
+Therefore, we introduce a GC worker to allow anon
+folio freeing and slot_free to run in parallel, since
+slot_free is performed asynchronously, maximizing the rate at
+which memory is returned to the system.
 
--- 
-Cheers,
+This series takes two complementary approaches to reduce zs_free()
+latency:
 
-David
+- Shrink zs_free() class->lock critical section by moving zspage
+  freeing outside the lock.
+- Defer zs_free() to a workqueue via zs_free_deferred(), benefiting
+  both zram and zswap.
+
+The deferred free approach builds on Barry Song's earlier RFC [1] with
+changes based on community feedback: optimization moved to zsmalloc
+layer instead of zram; fixed array storing handles (not indices) with
+O(1) enqueue to avoid memory allocation on the exit path and data
+consistency issues on slot reuse; size-based capacity scaling with
+PAGE_SIZE.
+
+Xueyuan's test on RK3588 with Barry's RFC v1 [3] shows that unmapping
+a 256MB swap-filled VMA becomes 3.4x faster when pinning tasks to CPU2,
+reducing the execution time from 63,102,982 ns to 18,570,726 ns.
+
+A positive side effect is that async GC also slightly improves
+do_swap_page() performance, as it no longer has to wait for
+slot_free() to complete.
+
+Xueyuan's test with Barry's RFC v1 [3] shows that swapping in 256MB of
+data (each page filled with repeating patterns such as "1024 one",
+"1024 two", "1024 three", and "1024 four") reduces execution time from
+1,358,133,886 ns to 1,104,315,986 ns, achieving a 1.22x speedup.
+
+[1] https://lore.kernel.org/all/20240805153639.1057-1-justinjiang@vivo.com/
+[2] https://lore.kernel.org/all/20250909065349.574894-1-liulei.rjpt@vivo.com/
+[3] https://lore.kernel.org/linux-mm/20260412060450.15813-1-baohua@kernel.org/
+
+Xueyuan Chen (1):
+  mm:zsmalloc: drop class lock before freeing zspage
+
+Barry Song (Xiaomi) (1):
+  zram: defer zs_free() in swap slot free notification path
+
+Wenchao Hao (2):
+  mm/zsmalloc: introduce zs_free_deferred() for async handle freeing
+  mm/zswap: defer zs_free() in zswap_invalidate() path
+
+ drivers/block/zram/zram_drv.c |  37 ++++++---
+ include/linux/zsmalloc.h      |   2 +
+ mm/zsmalloc.c                 | 141 ++++++++++++++++++++++++++++++++--
+ mm/zswap.c                    |  16 ++++-
+ 4 files changed, 177 insertions(+), 19 deletions(-)
+
+--
+2.34.1
+
 
