@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A72D5F327C2
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:20:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21A48F327CC
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:22:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E212F6B0088; Tue, 21 Apr 2026 05:20:00 -0400 (EDT)
+	id 6AA1E6B0088; Tue, 21 Apr 2026 05:22:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF8936B0089; Tue, 21 Apr 2026 05:20:00 -0400 (EDT)
+	id 682256B0089; Tue, 21 Apr 2026 05:22:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D36576B008A; Tue, 21 Apr 2026 05:20:00 -0400 (EDT)
+	id 5BE4C6B008A; Tue, 21 Apr 2026 05:22:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C7A936B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:20:00 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6A86713C1F5
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:20:00 +0000 (UTC)
-X-FDA: 84682016160.10.672C2A7
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6031540004
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:19:55 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AzwoozG0;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776763197; a=rsa-sha256;
-	cv=none;
-	b=UW5cE6q8K8tO5W0FQUUwQ+Y9YYXlaG/TT+go5umuD7jHFxVnpPobSJSrw1uhn+KspoBJ7M
-	CdfLuEc7i1W0UN6BlN2aHSyzXabYsmHiVsNKlnZe3B4O2q7Q89HJn2YsCRfqAJ+pL0w7Kk
-	bvYszbsAau4DR6rzS2reuv9IPkJ9f00=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=AzwoozG0;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf07.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CC556B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:22:10 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB1D1E58F4
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:22:09 +0000 (UTC)
+X-FDA: 84682021578.01.E304E7B
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D76BE10000D
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:22:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gsy3gvDo;
+	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776763197;
+	s=arc-20220608; t=1776763327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0DsPOPl9WLRD+9guVWfxhRP62svhcatI0unY0NjcWUA=;
-	b=w4jeaTftA3pi7v/hrs3eL/6DOHgwLwjLANyjviSp1FOVH2I5Z2Dl6BBHNOVSRS9cy5O57p
-	ZuTD63+z//SxcpzOXvxH4UxDH8xNmyIrdUakuQvOEguylPXhcWHxXgkKygZnam+ssfy+2B
-	CVh3O4KQhlrkWPm/6O+Kr2QOxe0/amU=
+	bh=gjhwBOa3I6lJB6O5Zxac6J4WhufkpISfcLSmTDALcd4=;
+	b=CAAUM2qs7/RpuaGaIppJaf5w8u88kMrhQ1UeUdqeqZRl/Ry5C+FLuABuAHdC1EdI4v2DyH
+	dbMubAMLDVtyuIFpHJ6/N6tHDx+3ioNfzOeQV/EIY22VxcncOZltYQV+esobkMq2qJ7iRS
+	UlnkkogM3TBmjWXN3JOYKCCvayd+c3w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776763327; a=rsa-sha256;
+	cv=none;
+	b=TlTTCZq5fLc/goE+QyeEKmV907GvDKOwD72V2cKULj7ohtcLDS5nx1sCZlUE/RHUSDCE20
+	wWL/UA96H9zTkxYX8ztc5IEsD6P/nbmo19ZARZE8AzdssONXgEh7rL6MAl+TouHDdR2oLh
+	iR4hy90ioqbh3Spxsub3jKjlOg48OsI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gsy3gvDo;
+	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1776763193; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=0DsPOPl9WLRD+9guVWfxhRP62svhcatI0unY0NjcWUA=;
-	b=AzwoozG01x7nFwmPnQVV1x+3wA91OCxwm9AFUHuDZ7ctw+GNJWVj5P5E/CW3UrSI61Puz84ct78pI9MmxJVFWB+yNqzNL0z5XXaNOhogaTVEOv3mCbjHRLg+2A+Iv5Vr+sORAtb5XGEBpCjmhHwdeBEh0klKx32mQl3owfUgSto=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R721e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X1SYQHf_1776763179;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X1SYQHf_1776763179 cluster:ay36)
+	t=1776763320; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=gjhwBOa3I6lJB6O5Zxac6J4WhufkpISfcLSmTDALcd4=;
+	b=gsy3gvDolgXdQPPZ/xyieWpPLLQCNTQsjxHTmsOlF11/d0JPcqNdXI/nvLzYj+XIYatkB0ykEqpgzLnghPW+/U9v4Zv3hmqF1zykdLysO6ecpSS8OoxsGED6rUmSZQoFgCvfSDjR40L8QxQoAzfibrWP8crNG6W4tJdXZ39+Pco=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X1SeSXl_1776763305;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X1SeSXl_1776763305 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 21 Apr 2026 17:19:52 +0800
+          Tue, 21 Apr 2026 17:21:58 +0800
 From: "Huang, Ying" <ying.huang@linux.alibaba.com>
 To: John Hubbard <jhubbard@nvidia.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
@@ -73,24 +73,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
  <nphamcs@gmail.com>,  Baoquan He <bhe@redhat.com>,  Barry Song
  <baohua@kernel.org>,  LKML <linux-kernel@vger.kernel.org>,
   linux-mm@kvack.org
-Subject: Re: [RFC PATCH 0/2] mm/migrate: wait for folio refcount during
+Subject: Re: [RFC PATCH 2/2] mm/migrate: wait for folio refcount during
  longterm pin migration
-In-Reply-To: <20260410032333.400406-1-jhubbard@nvidia.com> (John Hubbard's
-	message of "Thu, 9 Apr 2026 20:23:31 -0700")
+In-Reply-To: <20260410032333.400406-3-jhubbard@nvidia.com> (John Hubbard's
+	message of "Thu, 9 Apr 2026 20:23:33 -0700")
 References: <20260410032333.400406-1-jhubbard@nvidia.com>
-Date: Tue, 21 Apr 2026 17:19:36 +0800
-Message-ID: <87h5p4isbb.fsf@DESKTOP-5N7EMDA>
+	<20260410032333.400406-3-jhubbard@nvidia.com>
+Date: Tue, 21 Apr 2026 17:21:43 +0800
+Message-ID: <87cxzsis7s.fsf@DESKTOP-5N7EMDA>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ascii
-X-Rspamd-Queue-Id: 6031540004
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 9b6q1m51w8b8ziw3eeek9r5ucuk1oe5s
+X-Stat-Signature: cg5r7azhptdz5iggc46pmwr77tpdq3ei
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D76BE10000D
 X-Rspam-User: 
-X-HE-Tag: 1776763195-116814
-X-HE-Meta: U2FsdGVkX1+s7dviKxuKZDAxY2PksPkm2TZfaltY6aRejmSB9bgOatY82WNG3ffZJWY6/6resFlDWE0Gly1mcpZN1L2ouJTCrCzEI8p6pitp3ovozs01VFlFBgp0fBgnKtkPr/q3GcIBgEfz4E7+JLwoE+B4+a9eeVGAs0dActjEX/cq4uM6A8/NRpqIK0OclmGKj9zGDhpThomuf6N0aWpbosmmhIXY1iiYMhaucrDBvNWU14P2y3idn/GeeDyP1g5qLa8LKufEbPuDE9uYIHHE0ks76t66LDJ2sjVWCLYlcpUCyRGEnmM7pmw6rUmtV4wtPY/7d4oV23ktAku/hC4Ei7jCcsSrpFmG5waWVPpTaKU1CuefZrc9BNHhOTlGVRfDJwL83cYnyFTgjEVHYKVCRMTh3X019HauLM8w3br/Ic3fuYOBHFGMd1nDqn1ef0f4vpmPJOrUtDaPZGMDkxknEl0yRim4YYwcS5Y+/qm8+HC6IZQsFtZvH/CYAq/RHtn06SENe1obEnIsVjQ3FzcrcRdTuiIiJsbRS5uMu38iX4H6LvbwtCH5jLwnVQfG6Gp+Tp73uG1OCHKsdXDwKOVEavPt2TjZDfpo4NglMDqvb52QT4rmjrQpnVOUczSwjoYBEvw7H6eZhuvIw2TE/VqKoGSUJ33azO1cIZePBwPd+Zec4h8Nv5hI4foszXWvR3gGgF5HbTp/gYjz4evykQXyOK3KF7WM2qFEyKYuogchzxNiHfCoZHWm8pKXNCXOArkP+bbh+Ygloi9MartnE+5YsI1PtBUBbJjBI2/WX0MjZWwV+xjwi16/uS8U7qeSvyNmjztbIs/Lhkrb4LzGnXaX0GXLjZsFNBve++FCQE0l6LRC7sOF2ofBZQ/pE+8+d+IHPI9Y4fZfMlYHMQ+3cmb6T2GGqBnwdbJ8zfZ0ITyMOtSQhwBPqNiHqK5fgQYL1CewgnsHJ7lvNrIeIz8
- zmuLCeLh
- lzOHaUD2CQVc/y1RkQXsksBqpcmzvhswQy/Dj/qsCQtd7iPGKoEGqIOuEWiwfX+Du6s7iwum2C2oN/ddla9dMasI1Wfg6OeY6G7gZke1akzTYFovQurmHJVNpTuEs6PQTzH068j2JNJO/yptzxVzDMc5KWjsq6gAIwQqgjbnVPU3iCeBzRR84srMvCFQEQpIwxsMvfIUFCCmJZ0RN+0oePp+LDx79Ibt/UxjfLHvjxl1zSQYGo+1VJambqeDp0wRrHWSO1CZDjQnzmqV2CmxkXEJwlstgmu1f5jP20G+OMZo6lkfbZqca1afBt6js7E6/rLh+uwCw5lQO5JBmqGEjEgORA2RBm1jdNUD62kHa/5Dyw0SbBgwf1klWsyLNdJX5jhSt2GVonkwZfZr5kPJwgTE2vPBhGn5mHwd8
+X-HE-Tag: 1776763326-234293
+X-HE-Meta: U2FsdGVkX18z1zPAnFG1gsDNyENkBKY2swuHa8IdhyDmg3cUdTHmN9wmpRAjixPnVE0aqjR2kyxCHNceMENYQ5Ecc97l19Rlf6b7qTRZ9F9MfSGtUtj3ICaEIyLDigFRU28meIhP/2fZc2lVv6zePuIFxuTKY5dc16cm0spuv27twGbPA0xHhL4LlWi0Z/A8O65eaMO8UyuGVmuOjtQ+7zE/+IkhXGo6dZhF0e09UiGCzZQczVbhGOLtmb+/Niu5C38Tw70qGAZzUrRJi8uoAS57q9FM+NgLGNSgZsqWxHwBhtJo5VUUVy58ltCIXwIadf/2zyeahTIXILIuKF+uNYoXxE4UaKlPtXm1odPf/jeLbNJPHZz/cQ9xBTxSPN57TEsBWDMSZ5jewFFzrrzjIxkZgFZbFaTTPbKgsN47tR7eV7a9fYB1Tg2HGUdbOZbQ/GNFMK/wykk5VMXuN6z4mlql9DHCeFmfmvYZkGHapwspC7CutJEQ0CuJKnBDDRQRT1yDww3CUQN34wFjddSxDofftkxOCLnVpXUXyQ610zY7LGuVtlZr84EzOFQHHDJYJa66tlzIQWf4EczqALlWeLJrOkHPEYh+6r8bJ0cU8YFXS7CF04GrfWHop1gN/Pw69nWqQyN38D1s4XoFvtxzla7xVYXKpZ7oUDc8ZjcyQLFSgMJEwniRm4BPt4YnYjF42R4jJtxfOysCM1Tj731UpFgovYvSvn4hO/cEMp9EzEXVzZwohS1atcIDJzWh4P5hQUabe04l+wLwWz/V0fVRchZm+b5XElpKdh9+zyIa0q/FRtJj+4V3ddBSuZvbdR4PELjPQ4z3OieTMQkDsRPFr/qSaiJtHoDtatj13TQ9ZXUmyMFmcYdPQXRPup+vqIN8n6dL798INVKADJIBXgMuB7ZfNS9ICx5nPxBLKXB3eGcnHe/ffH1BV3/WaCXRO0sSNw3eY4Gfc0uFRd+dd5+
+ CxjKXGn+
+ XeomuOOCer0nMkPTKwZjpQtir69L4kvMmz2QVCmfyaonIRENTcDAT7NkPbCZmfSOuqGRi3DKYn/n3EqtwZD2YcyOVUgVdxAglZ11dyyvQSd777YoEcWSQ8GCqLrZcimgK2L8eLXXu2flkTDGpJGz+RJyKiYguUcLWHAlKSAjJ6gHLSFaxXg9poDw7zLGmmxr+FwAaZmkSMtDV96n6JgHbgw8ecF+0TIwGPZspInfdLim1k3Wa3e+rsXRQhsH+Mhltku8RpmVvP02iBhRQaPvjZNWh8D6pPL98+eBC1HAYJicmZA/G1DAgUHhpLmMv7Kk7EA4QauFREWm6RhEPSZk4CaWW9T5veup/SyJToSIL/rzM7rCTS4E9ZLBqJ+nhTM6eJy87dHMdmZNYpRgHotnLij8LXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,63 +99,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, John,
-
 John Hubbard <jhubbard@nvidia.com> writes:
 
-> Hi,
+> When migrating pages for FOLL_LONGTERM pinning (MR_LONGTERM_PIN), the
+> migration can fail with -EAGAIN if the folio has unexpected references.
+> These references are often transient (e.g., from GPU operations like
+> cuMemset that will complete shortly).
 >
-> This adds a bounded sleep to migration so that FOLL_LONGTERM pinning can
-> wait for transient folio references to drain, instead of failing after a
-> fixed number of retries. The wait uses a one-second timeout. An
+> Previously, the migration code would retry up to 10 times
+> (NR_MAX_MIGRATE_PAGES_RETRY), but this busy-retry approach failed when
+> the transient reference holder needed more time than the retry loop
+> provides.
+>
+> Fix this by waiting up to one second for the folio's refcount to drop
+> to the expected value before retrying migration. The wait uses
+> wait_var_event_timeout() paired with the wake_up_var() calls added to
+> folio_put() in the previous commit. If the timeout expires, the
+> existing retry loop continues as before. The folio_put_wakeup_key
+> static key is enabled for the duration of migrate_pages() so that
+> folio_put() only wakes waiters when migration is active.
+>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  mm/migrate.c | 30 ++++++++++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
+>
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 2c3d489ecf51..a5d9f85aa376 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -47,6 +47,8 @@
+>  #include <asm/tlbflush.h>
+>  
+>  #include <trace/events/migrate.h>
+> +#include <linux/jump_label.h>
+> +#include <linux/wait_bit.h>
+>  
+>  #include "internal.h"
+>  #include "swap.h"
+> @@ -1732,6 +1734,17 @@ static void migrate_folios_move(struct list_head *src_folios,
+>  			*retry += 1;
+>  			*thp_retry += is_thp;
+>  			*nr_retry_pages += nr_pages;
+> +			/*
+> +			 * For longterm pinning, wait for references
+> +			 * to be released before retrying.
+> +			 */
+> +			if (reason == MR_LONGTERM_PIN) {
+> +				int expected = folio_expected_ref_count(folio) + 1;
+> +
+> +				wait_var_event_timeout(&folio->_refcount,
+> +					folio_ref_count(folio) <= expected,
+> +					HZ);
+> +			}
+>  			break;
+>  		case 0:
+>  			stats->nr_succeeded += nr_pages;
+> @@ -1941,6 +1954,17 @@ static int migrate_pages_batch(struct list_head *from,
+>  				retry++;
+>  				thp_retry += is_thp;
+>  				nr_retry_pages += nr_pages;
+> +				/*
+> +				 * For longterm pinning, wait for references
+> +				 * to be released.
+> +				 */
+> +				if (reason == MR_LONGTERM_PIN) {
+> +					int expected = folio_expected_ref_count(folio) + 1;
+> +
+> +					wait_var_event_timeout(&folio->_refcount,
+> +							folio_ref_count(folio) <= expected,
+> +							HZ);
+> +				}
+>  				break;
+>  			case 0:
+>  				list_move_tail(&folio->lru, &unmap_folios);
+> @@ -2085,6 +2109,9 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
+>  
+>  	memset(&stats, 0, sizeof(stats));
+>  
+> +	if (reason == MR_LONGTERM_PIN)
+> +		static_branch_inc(&folio_put_wakeup_key);
+> +
 
-Is the one-second timeout appropriate for all users?  Do some users
-prefer fail-fast behavior instead?  If so, should we add another FOLL
-flag to support a timed wait?
+This should be done in migrate_pages_sync() before the sync loop.
 
-> alternative approach would be to call wait_var_event_killable() with no
-> timeout, but that doesn't match as well with migration's "this will
-> probably work" API. In other words, a short sleeping wait is more
-> appropriate here.
->
-> When migrating pages for FOLL_LONGTERM pinning, migration can fail with
-> -EAGAIN if a folio has unexpected references. These references are often
-> transient, but the current retry loop gives up too quickly. This series
-> adds wait_var_event_timeout() at the retry points, paired with
-> wake_up_var() in folio_put() to wake the sleeper as soon as the refcount
-> drops.
->
-> The wake_up_var() calls in folio_put() are gated behind a static key,
-> disabled by default, so non-migration workloads pay zero cost.
-> migrate_pages() enables the key on entry when the reason is
-> MR_LONGTERM_PIN, and disables it on exit.
->
-> Toggling the key is not free. folio_put() is static inline, so every
-> compilation unit that calls it gets its own patch site (roughly 500 in
-> vmlinux, plus modules). On x86, jump label patching is batched (256
-> sites per batch, 3 IPI rounds per batch), so enabling the key costs
-> 6-9 IPI broadcasts, a few hundred microseconds on a large machine.
-> That cost is paid twice per migrate_pages() call. Migration itself
-> spends several milliseconds per batch on LRU isolation, TLB flushes,
-> and page copies. Concurrent longterm-pin migrations after the first
-> just do an atomic_inc (no patching).
->
-> Matthew Brost offered to performance-test this series [1], as Intel has
-> tests that stress migration and good metrics to catch regressions.
->
-> [1] https://lore.kernel.org/all/aX+oUorOWPt1xbgw@lstrano-desk.jf.intel.com/
->
-> John Hubbard (2):
->   mm: wake up folio refcount waiters on folio_put()
->   mm/migrate: wait for folio refcount during longterm pin migration
->
->  include/linux/mm.h |  8 ++++++++
->  mm/migrate.c       | 30 ++++++++++++++++++++++++++++++
->  mm/swap.c          | 10 +++++++++-
->  3 files changed, 47 insertions(+), 1 deletion(-)
->
->
-> base-commit: 9a9c8ce300cd3859cc87b408ef552cd697cc2ab7
+>  	rc_gather = migrate_hugetlbs(from, get_new_folio, put_new_folio, private,
+>  				     mode, reason, &stats, &ret_folios);
+>  	if (rc_gather < 0)
+> @@ -2137,6 +2164,9 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
+>  	if (!list_empty(from))
+>  		goto again;
+>  out:
+> +	if (reason == MR_LONGTERM_PIN)
+> +		static_branch_dec(&folio_put_wakeup_key);
+> +
+>  	/*
+>  	 * Put the permanent failure folio back to migration list, they
+>  	 * will be put back to the right list by the caller.
 
 ---
 Best Regards,
