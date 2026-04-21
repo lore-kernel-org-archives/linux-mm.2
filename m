@@ -4,138 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BCBBF8FA90
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:55:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92883F8FA99
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 16:00:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBA536B0088; Tue, 21 Apr 2026 11:55:09 -0400 (EDT)
+	id CAC3E6B0005; Tue, 21 Apr 2026 12:00:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B91D26B008A; Tue, 21 Apr 2026 11:55:09 -0400 (EDT)
+	id C5D516B0088; Tue, 21 Apr 2026 12:00:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA7446B008C; Tue, 21 Apr 2026 11:55:09 -0400 (EDT)
+	id B4C076B008A; Tue, 21 Apr 2026 12:00:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98A836B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:55:09 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB6A48D9C3
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:55:08 +0000 (UTC)
-X-FDA: 84683011896.12.DFEEC83
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EC4E240014
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:55:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Fd15i/B6";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776786907;
+	by kanga.kvack.org (Postfix) with ESMTP id A35436B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:00:43 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD92A5E50D
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:00:41 +0000 (UTC)
+X-FDA: 84683025882.08.F7123A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D7E921C0015
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:00:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D4ElFQay;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776787240; a=rsa-sha256;
+	cv=none;
+	b=QXTH2yTZVOKuE5ra0WVuWokf4dV2u1QmPAnwWo/v+j8bMIVeJ3qHTXRK/rOB5Vukybi46o
+	4TLHEM6BNj/vYjHGCNAyZ+dpMxBjjBtO/jUlmcE2/v/07CR/vqa5x2Orr3RJvmTfvUM3g9
+	HsqC2vjQcjZ9487EplWzHb9ghTtNfTY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D4ElFQay;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776787240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GZJifi5xv/2zNGOHm6PWpOJpaLSfKnpwch9WlPfDXVM=;
-	b=CLBZZ0cGbAP1ltnJ4U2jXXs/5Tod8zyTndmXNXx85ECUJ3oduuITP0zeAhFqYdMvCeO8CI
-	GTSA1PqjR+y4KX+BhhHtquRV3LrFjnmt4swmZUFe5rVzr3EsBgkwK5jQl+hxY0V+iv/PtD
-	MDMBhtUII/sOGystG7AxZLPiwHC/Tfk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776786907; a=rsa-sha256;
-	cv=pass;
-	b=tJbqbIMavHkNjzAjPpE2X4As+BqqK2VsHdX6yV1taRAQANZDoJTd7blSaAtNHJmebVBie8
-	M5K4mIFodqfidXs3+JC06XQo2eB/FtK+/5Xwajut3DZCWgBj2uG1QgT1niXED4VUP9QNX7
-	8n5EV9bENNbs25JByj8lgNE8XHawD+I=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Fd15i/B6";
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf27.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43cfd1f9fd1so2763154f8f.3
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:55:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776786905; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ydp/+6Y8OPW8ZDcdK0/zIcyKKfrmiyE7TMRI5x9Fe34xAOYBFwyMOgAgTTu29KFW0k
-         nJMn51GKd0IrhwR9diEYCLB5C9xwHE7TXdHUdIli4/+zb5QhXNzO1kvKqCqux9SpETVG
-         jYcswzJK7x+MjCfMkvyiNbw6l7YKrxDB9EwRrsPz2i21HwzOas0M4RUAao+9FcBRtek6
-         +htg9zWbfAuJujJhNyXXeVfbzdYbQcdyb1UsSzpNDcHxA4g7BLuSX1xUDjueR/wtuxGX
-         A0G70H3lM7ycif0uxXlPkaGZQneXGIevxnHP+3fAYcAqz1LFaw8m7wabIx34IEWpWZIB
-         D7+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GZJifi5xv/2zNGOHm6PWpOJpaLSfKnpwch9WlPfDXVM=;
-        fh=pigLL3PuZrzDtX0Pxn1IEsDGM2EcHghRXgRtm9cvdhM=;
-        b=S8LsjP2s2r4rkBA7JyGpMlVwZ1L4XvAsmGCoN2IVaKPxb4VuywNnhLvFA5VVHitilf
-         77ob64ojxiWldn7zLPWvaL+T15jtdRJXlbwZIqdzTDkorPzba41mKr6X+0JxY4GOpkRy
-         n59uzqAu8mwf4rl16QPHJNnuRzrpeHkVB9glo36/0Mznql6R/48g3xU1nTFgvyIsfrUU
-         TgW+N1rUvxngvumsdozgHE3Rd6gHuvPy4loKkrrPVKrFhfBiEWou11+0HYurf5uXO2iJ
-         bGHua4rnIYxdVvZ1zRSl0wFcQw3ZHJpkdYOkO2l+cRlWkMzI/DRhH10OXkZ38wl3N9DU
-         moqg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776786905; x=1777391705; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GZJifi5xv/2zNGOHm6PWpOJpaLSfKnpwch9WlPfDXVM=;
-        b=Fd15i/B6rbpK9v0IL+ocjv6ZuwT7DBOzvYeqRvM2QbcGTLzRb4ov7dkd/4LgeMERvq
-         Y9KKVS65ocnzQy0Dmk8WzfDlesNsytVPqB1P5WUzbvt453E+HBsqM/c97aP+wN2zWf+j
-         A8li0+SE8oNSuHgx/oC/Qb0g+GLN3VqqED7vCqCWtA13ABak22rQUp4ISgyPCFs5TeO5
-         wD77qZrX38Czr0OZD3PTHqpoKNWpPvgTjDLbrAwhLRgn+YemIxzwPKx8jc+VTlrsO4KI
-         y8cJMtRYhyiC6wrytuIsTLRCZakjCv14eIjkmcwtl6qw5sVRaLdhdaYqxPLJUtWmvdoP
-         DzHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776786905; x=1777391705;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GZJifi5xv/2zNGOHm6PWpOJpaLSfKnpwch9WlPfDXVM=;
-        b=BIwoC8ohtn/QkCAeHGtYiN2i+Ln/y8RJFR14p5HCWcFma1CSs7PMwK8eTLn8ya5LN1
-         iGBGeuCnHVGOBQMxU+ibcYGwrlpXAeLA9GndNKckwZ8Lloj+LqtZGGl0pqhWD4K86wnT
-         auYXlty9u/oepBgcxvEf/ujesDTFBL8mZzEFEKQ3aGDBC8WVp+xHq8CTUAG0JUOwMMJ6
-         LQMRhXwnt4KjzwjWyfIMokS4c8LAFI7xFQkKW3hjYh4FLvVrU7IVIkmPmJX3vNLd4AQU
-         J5C8dXADS1mrMC+QTY/neQI1W7pe2jPTvckZYkR5M53CVQCmr9gg8Nhel4cTPib0CrG3
-         YkOA==
-X-Forwarded-Encrypted: i=1; AFNElJ9KXOEHkEn14ajGKAz/W2FNiGGoKyes5sQ8EVZtP/UEvFKyzq3DMfcgAH5BgEGlIGIF7i/F2Qex0Q==@kvack.org
-X-Gm-Message-State: AOJu0YyhXnhPtc/Q5lvHKZxFOmG8A6TBlWrVjj5MkOkLMsQ1xbAfZBUI
-	/Tr6rZaMM6xIDVHmZDzNaNhoBJKwmXd2pbf9SKPf0ZHJkhqkGblKXQ1IjTtWKNa6lsYVlw7fwxF
-	gdtTo5E2jEzJXqIpxZ+b5DQbvyHsF0to=
-X-Gm-Gg: AeBDieu+owN7E+GoP78630H8ES7869VWtJl7HFzHJ54acRZK15be+OreOyy+byrvav2
-	eE1+eT7iPAGpEz3hfQp9UkfjItLegoTgGsA9FuChUbW76k9UhsiYmBhKXpOFIZNFY7KkDR14o1O
-	9xu+rF+oCgvF8p0Blyu54p6uwNaE1/lHx7GYejfOOfhZlvBxW++GlTu722igwFSRZQ4dYC93n8v
-	UNMtnFtOpiZsCYGf6W7ahz5qlsc6FfdKXgqbg2zYWatFPAw/s4RDPSGaaoK0+7y/4vRCKxawqP5
-	G2DUQan8wbO6ilP2RyYOKDQi0ayZEbCGYrKHB8IdPVuiUDmuag==
-X-Received: by 2002:a05:6000:2387:b0:43f:dfc3:555f with SMTP id
- ffacd0b85a97d-43fe3e1f3eemr28962901f8f.43.1776786904997; Tue, 21 Apr 2026
- 08:55:04 -0700 (PDT)
+	bh=dpl+gsq/cQftsvD4NwD0nckm1lmBAIYWbi42EZy4D9M=;
+	b=UGM11cut8BqQuGhs68l9tqiwCI/Qffl/GBCPYvmRYmnOU9ungu26HPuFC83sv4kwHb5ncB
+	NA0R4HQooei7VMW1ZoNzRSqGDMzPrRzhcjsY5tPNW81GQgmWQStQt99zT3UVw/Lc8GwgEb
+	zB16ZH3KF/0FvJ9PZhVKm28noK3iDI0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B97EB43B3F;
+	Tue, 21 Apr 2026 16:00:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40DCC2BCB0;
+	Tue, 21 Apr 2026 16:00:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776787238;
+	bh=bipVOkyye5+9x/U593UGsC8WRYcJxQNZu5e1HDOUX8Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=D4ElFQay9oK6FZyanK3dlZltnmmlnlP/5Hzm1k6ZiDvefKvRrJpdbPmcnNdI8faRC
+	 RRROk7QVFL7IwBv7nzjxnRQPBRHm3ae3zPq1821bt1HC3DY9aVHWqb53LD5kEEyrja
+	 z8tVKZJlZI27+qvw4aaoBdOPdSLW6AlPSJ37fT69C1GgsIhDzRvzCXMpcIqA2/71uY
+	 TvDuGtH7DiBVTvjYMZpdYgJN+RvDXjrhndTiKPtySYhrGkRKYOPZyZHicRDrVrN9zp
+	 /l6+eJ0aGKQORiaM/KPuQXj8f2VOuJKbhWCueUkBUSWYq8C6RQIn6owAqH4blVr9A8
+	 r7zHGKrcKO2rw==
+Message-ID: <51168a90-d6ad-4429-8043-3dfdd81cb9a3@kernel.org>
+Date: Tue, 21 Apr 2026 18:00:28 +0200
 MIME-Version: 1.0
-References: <20260421121616.3298845-1-haowenchao@xiaomi.com>
-In-Reply-To: <20260421121616.3298845-1-haowenchao@xiaomi.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 21 Apr 2026 08:54:51 -0700
-X-Gm-Features: AQROBzDF2ZcdhFQzlhJdAP9qpHTl51Ndnh4fL7thLPJceU614blRIDlQ6JBq81w
-Message-ID: <CAKEwX=M5YpR0cQrryX_y4pm_BuxyUWZ_8MbhWodwbf1Fe=gzew@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap
- release path
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Yosry Ahmed <yosry@kernel.org>, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Barry Song <baohua@kernel.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
-	Wenchao Hao <haowenchao@xiaomi.com>, Kairui Song <ryncsn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EC4E240014
-X-Rspamd-Server: rspam07
-X-Stat-Signature: yjj6e3juza9nxgwjqe1oqjq61yrsy6gx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] mm/migrate: wait for folio refcount during
+ longterm pin migration
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>,
+ John Hubbard <jhubbard@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Alistair Popple <apopple@nvidia.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org
+References: <20260410032333.400406-1-jhubbard@nvidia.com>
+ <87h5p4isbb.fsf@DESKTOP-5N7EMDA>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <87h5p4isbb.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: D7E921C0015
+X-Stat-Signature: pq7eqz6xzgxm3kjor3jff4fwnkrbxikc
 X-Rspam-User: 
-X-HE-Tag: 1776786906-365486
-X-HE-Meta: U2FsdGVkX18q7T0cYE/ZL6mBjcy4IB938HuXV65AKnozJVaZfy7dFYFRURtlcr1gQiSzHk7vJCbIpf3QiriGAURpzH3c7oB+0mW/0y5UOiHKQ1MNvjfgp/bnMP+soQEKYwpwRApEguoiC7KcIBKiuZzl95zSghR7A//UWFUw9WmoSqH+o6CJhKAVJBXCEoJH2VhibU0fCgYPmj3zKyAbZ441JTW6+fk+2beTp8J/oZEBADSN8Qb9lhskuaqfRyiNjru5sL4mVRM0iHa0kWN+NDxXBoHeKHYKv7OHZdRNAcQlGZkV30Qx1paENSP5415FuEGhyaFjkzucUeKJVzcxDFahpqbAiv2oRkM3JdCJwPIngLXb8xTOgWbFDmFkSz+HnsPaO3beMxbjhUGDd6CzFyStWSx1ZFGwn7pXOUCyZawRDkagnTRz6m8mGGItE2Jf2Qa5oRLMOcZf+zVwQ36Zz201q9DhrNtoIcEGJqU1URIr6OAbuWItj44m4+rUYxRtXemqR+uH7GXdklHSG2XeRncHfBuKRS9xhokkTlCIZ5qcK/u4f2bS8x2PhaC++s+Ge/U9SpsmhveFt8wXTc2tT5PlxNncZ9mbEq/NmLg4GzzJgJpNPUif4MWZGE86s1K8Is7CEut4OZIx1qubQRxAk8IPkqLW1N2Phzx+u6X6MqFB8GP8pB22FszsWAXxyCsmBzi6iYFzKh9rQI2hnhvPpdPOZqvvlpDGrML+xIyAnlW/xfYG5F++hgKhVwox7O2Q1sE4OPYL9HB00sBw9Cp2ebLuuGHVgiV+tDCAVDI+n7wY41UX22oX4WK35twSemqzKxWssA1V97/pMaOgeZkrW2EVJZmXtv7UfiSt118XoYW4b4A+XabPgIZRjwpXfsnt9lqRC6qx/TefBxAB9M3uFJ5dPP73pnUgpKxlSFR9e02SoIifLebtg6rFRHrrqzEA8IdEV2KM1YMNGwfmvlH
- MFNfzhgz
- EfskGCcPp/xngVenbhvEUIWbiawznjGKs7BrmwTjXuhvlEPXLA1regVffgw1rxCIexpd56mx3gJeyorh177mqfq3thRHHoIk4hMphPACXmaNbISWjjECOMf3CJUkM3M8zL55g6prgoOvU3Z+lRrImaSvB52q9+MHI1MHSOBSJSwvtHW5y7RBeMhjNt64qirZ6PfjKUbf2jNm4P+cRo+K/gVegVil6/LYnGyfAqDGsj5XIAiA7VpxHpQVQbi5NOPmIubgPgC4UdItO63ALvKjrq//qQh278tVzSswq1zzsuUTs7okfyRR5H6xXDpidXZKqA+jzRc4N+7K2DSj0W/OiHDg+aPxIav/cNMw5t5RS/ZgTOzk7UFptL244UeP3yrQghVQUkgEyeNeAgTtayme2lPPEzPfUCnxF+6BfMK9zVSHCFB5+WqjSYcvU2A4B8O9659uqBDmVbKdKk9nVOHCmYNo5YqXaHHgH7BCxIL1Z5W0hlbF936mmMxQnlGKBa9XhaQlxr9ScZYP6Hbl+fIWlgtgnWJAcj3lggHhS
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776787239-588704
+X-HE-Meta: U2FsdGVkX19bdLRoLSH5PraKduqiVT0tjSAsFmTDhpsArgwov1KKMd8Io/HchpjrSCd3ibvsvVxBionFHAdfxvaGbjivYLvCGi7H1JUv9uSrFtb/PIS84Cwy7qjFmxbe7olcm7/bcVl1OtIoCkljNmx3wDmaDWO6feeTL0RDiTf33Xx6GBz5PLWh8ReSqXUTHtna4Q8KyvW1VFcZs6ukbkSQ6lLdlFuJ56N8Y3Sn5cvdvlAJ+suSexFA6sH4TsCYCtzi00oVRKUXcIM+xTtDGDdXLUESpvedHy1G2VsXAbaeZSdtdoD6aUeTaQ+j0B3Rsge4nOGKGtJJW5LsOHYcYabSo1vEEWdXhtkJbkgP1x4zO9hEUgHwDbkHmph7twLOydk0kFGEt6eH//VDgKmbf1//doMg2KiR80TAGuc+/NfCNVKPu9lTzlKdcH8aQQhfgjoBRCTfiZ7souLCaYrCtlboKb0pu31jwe0SSxG25/vw4+Iw86HQGTGcRYA6nnLbswzkBR7mL8+hl1NhdcElJ44u2wG2ULpcm7Ow9/Fs0pb7Y5kbenxJi2ZRxA43AT5EW5ZBs9qvjsOVdgTmb/8L9B6/F/scA/C4Ge8DzBCYEYl5OekPuN9LiE4PcANVk4ET/GmrqZM0H5Fa7xTbpSx64sBQ/wFKrMzTWCvmzBaUdVm6wsDcJEWE/OFpxYmM0txdugkN8kN0I/3aJ4pi4pD6m2u9/lkuxoyG0vKudyjioZXsdP5mipW6jXJSG46WPJs74t6bDPOTv8myogmBo7adXdX6ebFCCZVYoSL3aTYWyb1vLkZgpX2Namg0Y3s4eDIIEEMsC/JSK6pt6yLjAhhKoCz/FwOqFAhNwiHkEt2XbViDQH8kt7nJ808wnb2w8JKFkFLhgz8e78bZ+ZyXqQYPrWI9+HlW7YAi0UqRdxwyLTAbkFnrD+i1mA8V9H+/J+/BSBMUMkT8aHMEm7Ofl11
+ Uu13Mnya
+ nf3X50MTMTchsSyXoRV9MwNDFbrlC8M3r+lNlDpKKIYkPRtq51ipggBsy5dQ1JvXpCQF0DNDt0L6RQYxXJTKj+rqKvlPy6FxzlrNSzK04WPqsK6PBJUp95BkDu6oXF1mXhanfpwkxvVRKs6RGk2xozBVZX84nne7+m1amAx7H9anWGD+5woJcOf/E9NQPNr7Rk2ov++O8a6ZvLpg4O9loa1mhQyfPssQXLCaR/tJjQUSZK3iQ7kGuzXLDn+oKKihFWzDrntC94D90T4WL2/0PfvKFRAxPBsZewIgPmdYQhei9Oe1vxMOS6bJnUkbkOpQD4oB3eXSFDju/hitxh1X4M71OTq3vgD59S84wbJvbUARvmnVelhYWe6dTng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,69 +153,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 5:16=E2=80=AFAM Wenchao Hao <haowenchao22@gmail.com=
-> wrote:
->
-> Swap freeing can be expensive when unmapping a VMA containing
-> many swap entries. This has been reported to significantly
-> delay memory reclamation during Android's low-memory killing,
-> especially when multiple processes are terminated to free
-> memory, with slot_free() accounting for more than 80% of
-> the total cost of freeing swap entries.
->
-> Two earlier attempts by Lei and Zhiguo added a new thread in the mm core
-> to asynchronously collect and free swap entries [1][2], but the
-> design itself is fairly complex.
->
-> When anon folios and swap entries are mixed within a
-> process, reclaiming anon folios from killed processes
-> helps return memory to the system as quickly as possible,
-> so that newly launched applications can satisfy their
-> memory demands. It is not ideal for swap freeing to block
-> anon folio freeing. On the other hand, swap freeing can
-> still return memory to the system, although at a slower
-> rate due to memory compression.
+On 4/21/26 11:19, Huang, Ying wrote:
+> Hi, John,
+> 
+> John Hubbard <jhubbard@nvidia.com> writes:
+> 
+>> Hi,
+>>
+>> This adds a bounded sleep to migration so that FOLL_LONGTERM pinning can
+>> wait for transient folio references to drain, instead of failing after a
+>> fixed number of retries. The wait uses a one-second timeout. An
+> 
+> Is the one-second timeout appropriate for all users?  Do some users
+> prefer fail-fast behavior instead?  If so, should we add another FOLL
+> flag to support a timed wait?
 
-Is this correct? I don't think we do decompression in
-zswap_invalidate() path. We do decompression in zswap_load(), but as a
-separate step from zswap_invalidate().
+We should avoid a FOLL flag to affect that behavior. FOLL_LONGTERM
+already implies that things could take a while.
 
-zswap/zsmalloc entry freeing is decoupled from decompression. For
-example, on process teardown, we free the zsmalloc memory but never
-decompress (if we do then it's a bug to be fixed lol, but I doubt it).
+So we have real examples were failing is even desirable? :)
 
-Zsmalloc freeing might not be worth as much bang-for-your-buck wise
-compared to anon folio freeing, but if it's "expensive", then I think
-that points to a different root-cause: zsmalloc's poor scalability in
-the free path.
+-- 
+Cheers,
 
-I've stared at this code path for a bit, because my other patch series
-(vswap - see [1]) was reported to display regression on the free path
-on the usemem benchmark. And one of the issues was the contention
-between compaction (both systemwide compaction, i.e zs_page_migrate,
-and zsmalloc's internal compaction, but mostly the former).:
-
-* zs_free read-acquires pool->lock, and compaction write-acquires the
-same lock. So the compaction thread will make all zs free-ers wait for
-it. I saw this read lock delay when I perfed the free step of usemem.
-
-* If this lock has fair queue-ing semantics (I have not checked), then
-if there a compaction is behind a bunch of zs_free in the queue, then
-all the subsequent zs_free's ers are blocked :)
-
-* I'm also curious about cache-friendliness of this rwlock, bouncing
-across CPUs, if you have multiple processes being torn down
-concurrently.
-
-Have you perf-ed process teardown yet? Can I ask you for a perf trace
-on this part? I'm not against async zs-freeing (might still be
-required after all), but if it's something fixable on the zsmalloc
-side, we should probably prioritize that :) Otherwise these swap
-freeing workers will exhibit the same poor scalability behavior - we
-might be better off because we manage to get rid of bigger chunks of
-uncompressed memory first, but we will still be slowed in releasing
-the system's and cgroup's (in zswap's case) compressed memory
-
-I'd love to hear more about thoughts from Yosry, Johannes, Sergey and
-Minchan too.
+David
 
