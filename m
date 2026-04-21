@@ -4,129 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E3D7F5A8D1
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 02:21:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27047F5A8D7
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 02:38:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F14966B0093; Mon, 20 Apr 2026 22:21:32 -0400 (EDT)
+	id 4A63F6B0088; Mon, 20 Apr 2026 22:38:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEC996B0095; Mon, 20 Apr 2026 22:21:32 -0400 (EDT)
+	id 456DF6B0089; Mon, 20 Apr 2026 22:38:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E29806B0096; Mon, 20 Apr 2026 22:21:32 -0400 (EDT)
+	id 36CE96B008A; Mon, 20 Apr 2026 22:38:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D7C776B0093
-	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 22:21:32 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3DC7BCDB3
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:21:32 +0000 (UTC)
-X-FDA: 84680961624.02.37C37A2
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C82AB16000B
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:21:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=UebpGI8V;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf08.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776738090; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 27A916B0088
+	for <linux-mm@kvack.org>; Mon, 20 Apr 2026 22:38:25 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B843B13C0F5
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:38:24 +0000 (UTC)
+X-FDA: 84681004128.24.1721E62
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D4C0C180002
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:38:22 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="eEO45W/v";
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776739102; a=rsa-sha256;
 	cv=none;
-	b=1UBNjYlm9zPyAQfkv9Sj2apjZFSi/QK+76iWvf/DycDONHGpPb5g6/489MeMuOxIAR6RaK
-	p2jTLbO8aQ5GYrSmfSMJ4XDUIYIzmMIQBAHqG2bXG0Q5tz/5d+wgr4v5QI2qWOk3QIe1xh
-	6HbDKRdKx/xd3eR8euR8KAGpIjcDXfo=
+	b=jR7Xe/M3OwDzvITYTlH315+Cf+MgDrQGrJzuJ6MTzbOKcZf6gQS/W0PKbeprn7/opmxNy3
+	eVoaHAkJUeeiE79ZHUxf4D19jjLcet82yh+YbsnuwcQ7daZi0oyhcLlvTtd1nZwtAnSziz
+	NR4+psG3jC4akkhzpGtx43vmdZgxjVU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=UebpGI8V;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf08.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="eEO45W/v";
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776738090;
+	s=arc-20220608; t=1776739102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AHmsLfWP4VqB6EidVCtZitT2oU+Ddzspq2XDJx69+hM=;
-	b=lvvSsNa/Y/0vmUP29TBwG3rk7xHsQyaGIWKEZ48CUxBQbZwrop11MdNXCdhTzUieuDt3i4
-	dDEs9GdrwqYtGpHc59zMjvrGkqKK0eEfNTWpk5+RHlhT6/IntiGfuKyMwzQw7iz5gDD8mE
-	EuPaEbb8WUqUztAvBaLVMujcPCMAe2c=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82418b0178cso2274811b3a.1
-        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:21:30 -0700 (PDT)
+	bh=DFzhmNd1adFIkSfM46o3U59L62f2VQ0RrNdAOEaBXO0=;
+	b=O7rGfMlRrpyBudOeFv4scGNBn+m9kR6rW0+fKgYhutRTDLwt3FBLm8Dl9S1rA2UP5xhR5B
+	PDeMxObPRmIC9isxUhk6An+4pzfHdUb4nDekgwfCZaYiQqqPV103Clmd5EnryBJW5NlOoJ
+	Pc0NrvOibo0n9shH/JNF2c6pd2+K2oc=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8dbbc6c16b2so476540985a.0
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 19:38:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1776738090; x=1777342890; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AHmsLfWP4VqB6EidVCtZitT2oU+Ddzspq2XDJx69+hM=;
-        b=UebpGI8VggpQBFqmla0VsX0n4IHoe4rVY5KOItIzEv1JzS3Grs9QzFSktkDcHpYiGt
-         MwiWL/9u4cQVbb5fIZ+HG3OrlJC4cM2w0+0dG1nNl20U+IE7uqgRvRL+IGnFk/I9IoPZ
-         slb0PJ61DEDYmKV45c4y6qu2y4iBAa62B51fh5BUQIZ864wZ8o8R0T1u/g/+mXqm2Lsx
-         jUs2vuGrK7XHK7JtcsJiTjN+FJNRtS3nQrrzjAu+lYSTJnmoFZjOrEGufEHKK0kklxvp
-         //e3g9SLFipTalOAS0KpZ3LX//+zRYETuogVbC2khaPXnrdV6+k8JdgMOBd05UJsY33t
-         efLg==
+        d=gourry.net; s=google; t=1776739102; x=1777343902; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DFzhmNd1adFIkSfM46o3U59L62f2VQ0RrNdAOEaBXO0=;
+        b=eEO45W/vyADSnok58NA3VW8PNMBzAjOZ9mOS6ikMJQ+GJ604eseVnXFChDZBR6wReV
+         WB7hGk/D6ix+Y2VE96e9P+B6M8fHkYCCU1px2gUnguA6cqP3M2Hf/tx1aig6mipQF3Gs
+         yoLhANDdwBcW2UmU5u+12gfqMtnvyUNXd/VyDIB0dH6+3qmglPEBdi/6Ufp/JtqIM/NA
+         +/jQXx7WicuIyA4z9QcnWpf3DmDw7x1fP+j4NFRxAA6yav+pW2sCx7WASxW5faEHhDoT
+         9jg6o0y6vuxrt0qJZ8ZmRunWNiPOlGMd+EQ/Sbts2fCqPra/TJwrjthEBcWTwSddnUZZ
+         xnMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776738090; x=1777342890;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AHmsLfWP4VqB6EidVCtZitT2oU+Ddzspq2XDJx69+hM=;
-        b=RMGRjsbOQ7gczTjmI8kQSFCkcy8DmRSHqqXNRTwQnglNDdkTqmP0/F0zikt1BuiZTZ
-         Pj02QXLKUkibQTl76fb9zQEjkxdOqnlnSDv6HqBYs4iwDULgxPuY5vn0Va1RFzJCIYUl
-         bwTN1NGS51Ea4DQd4UHUyCeq94p9w8qPwx8YJ7Mv+8SKltVGmc4Gznru4HROHUMtlPT7
-         i3WeCfAyYRAT8rPyNTcYPrmt2hccHAN+FQL1v88ycdMSAYF9sC1+BkS2vBOqTp5xbNkW
-         MHL1YYUdumSicDpMgulh4XRd3srsD0RfPjE/6azO3Q5Z0F/V33cMgodT3z0AjGH3TcdW
-         PeyQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9XNa+qfp8LsYC43WKdu9P+4MZzCYsDU2H8tvWz7gI5RePeCnkaBQ5H+gbrb/pdk9IFbk8vupI1AA==@kvack.org
-X-Gm-Message-State: AOJu0Yw6yUggIDQWXqUlDG8V2GzRu6MKfYCQq3nhqQj1xkyBzuuvpFZ5
-	8MvLkVXQ4bIXsvwos/37ZWFL8cKV2uJ82zMPQOndvOc+jqMxsjHwBODiPfIACSoheSo=
-X-Gm-Gg: AeBDieuREkMnsO5zuIqYMIpalKxpWOQBB8eGqUBP7Fwv/b1ZRFqhVOLOCv1NvkKAHFQ
-	lxu4+gYJxvtIfz/0Z9ntkD0BA53apK0l1kSmwHrqdQ9pBlwY8t08kRcbJT+k24mjz50v9ftVGYd
-	rQXFcCNgFQ4SW8JF5rFo6/6tARvs4urerCMwcOnJcieTheMRNjeDBWb6dSN4xIGoIOhvx6HvzlI
-	oWmgO9jkSMvJlcMEvj/Z57hTbSdDS2EcipZpWhc+Uk9B/ANvs/m2fgaCPcRusRdILSlSBSULK/0
-	rArWkNDW5VHdl4iY7Y7STN89vmSzgJUCZMxnL99QxFtttea8JQu7KLD/zu39EKtIRpOUY2Od8ZC
-	47DpkWJ6FFtQBBiEmxXLRIKqC8oI/Ha5BJKd2LHL8kVqaWauwnHHCzDJR7ilRT752BtKZa/k/cA
-	56wDxzQL+mWiuiJkl5aDEG58gtCgPtMJD8+yiR4IA=
-X-Received: by 2002:a05:6a00:2993:b0:82a:6461:6d1e with SMTP id d2e1a72fcca58-82f8c92a5fbmr15190526b3a.46.1776738089510;
-        Mon, 20 Apr 2026 19:21:29 -0700 (PDT)
-Received: from n232-176-004.byted.org ([240e:83:200::340])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f932dabd4sm11538780b3a.51.2026.04.20.19.21.24
+        d=1e100.net; s=20251104; t=1776739102; x=1777343902;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DFzhmNd1adFIkSfM46o3U59L62f2VQ0RrNdAOEaBXO0=;
+        b=OhzArb7hGYeCyvCyEelBoct3xljOD3iPrCuA99X42cBDa8uiQq46Kp/tDwwB8eU6bQ
+         K593WQE/Eu56ZsRWiC/poT53/xr9UmY/IVPRK1uyWh5tLl2/o+g06ODA3eAh5NE4fXJG
+         KD9dC4t7oOO/mt2ZnC4dCWoXQko3bgrHKsvBp66t1m9ml3lg0GIcOyhNzjh4Ts7cOPXu
+         sxI4DoT1EHK3plokowEjQ74fXW8RCWkv9OuF6a2fsSA/ashw1HLk3bTJkwN62rYCI4U+
+         Nv7TibVKx5UwkxXmVx2IjB54tromi2hvLHdX35VNkYcoXnPFBx08BQvbhh1iWSAlnW7c
+         59lA==
+X-Forwarded-Encrypted: i=1; AFNElJ/hgRMAjsF5/zVx1gX+b8LPozK5uSKzujq5tYtT0bdZ5bcp/+SUCP1OgE3qO/+E8BscrB5ltPBptA==@kvack.org
+X-Gm-Message-State: AOJu0Yy3Eh3nF+wOCAt1/xQL5iuLY6t0Xci+c70BtQELOeke2ie9AgXe
+	1YKfub5f8dvLdadNj/5MwRkIq+zPBmQeoVcy0IqJ7Hs+Cte+5BwheKrKS3T1toT/8jg=
+X-Gm-Gg: AeBDietRj5yZTZ48CTAxMhw+iJapVrnEeph0SROMeqlPJl2EbYaByuWTlnjO1wT6RdD
+	Aqek687W4DJqiApNZZO259Ds16k5Mc2EAdKFHbNheP8vaEtDtfifNfFSYW3zRBZnAGsf6xqKIjN
+	vsW4YIeGGxFdidcglDGcFf33qR7WMfiB8XhEInWDQtKBrp00KgFS0iqR3zTJ13feU3oK7C5mlV4
+	s5GZN6PTtN2fWRrJ73ZM35vTc3+SZraMZMqLZJTj2PM6ZrFaCsRaH1ytux1kexktL3xj5AYcgq0
+	h9mBWToLSI2S9MdcbquhmHFFAjMKELlrkDGBN0YSYXHbYY56uK2H563DoDRMSMMh4RQNi3K7PSF
+	yqUPHeMiwVnIeYLZkn0EVyIPUHarRV4o6+dmAmZizC1iYGDO7vIuaAEPKKy0V58DicC5p9yZMuy
+	Jvzz9oLww26b9wO7lYF+ZMzaZcV7zp+oupmH58wGZWKlzaNvtq2qPRSDovzg6FOlLa+ZJSBW92g
+	9lVGJeH8vtXM6oO8niXvuR77pn+jLrO0w==
+X-Received: by 2002:a05:620a:19a6:b0:8cd:88ea:fd21 with SMTP id af79cd13be357-8e78c5c1fe0mr2065685285a.21.1776739101852;
+        Mon, 20 Apr 2026 19:38:21 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-108-51-163-112.washdc.fios.verizon.net. [108.51.163.112])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d5fe90afsm1079220085a.3.2026.04.20.19.38.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 19:21:29 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Mon, 20 Apr 2026 19:38:21 -0700 (PDT)
+Date: Mon, 20 Apr 2026 22:38:19 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/4] mm/mm_init: Fix pageblock migratetype for ZONE_DEVICE compound pages
-Date: Tue, 21 Apr 2026 10:20:44 +0800
-Message-Id: <20260421022044.1217503-5-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260421022044.1217503-1-songmuchun@bytedance.com>
-References: <20260421022044.1217503-1-songmuchun@bytedance.com>
+	Suren Baghdasaryan <surenb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH RFC v2 00/18] mm/virtio: skip redundant zeroing of
+ host-zeroed reported pages
+Message-ID: <aebjG-qMLr0joG61@gourry-fedora-PF4VCD3F>
+References: <cover.1776689093.git.mst@redhat.com>
+ <c199e47d-b2fd-42f3-9e50-c47c848dc72f@kernel.org>
+ <20260420192037-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C82AB16000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260420192037-mutt-send-email-mst@kernel.org>
+X-Rspamd-Queue-Id: D4C0C180002
 X-Rspamd-Server: rspam12
-X-Stat-Signature: qtbrtiqdixrgg313p4bjxmgs58wo4ina
+X-Stat-Signature: 31jb5e1bho9d6u3wttr8x8t8i6bjtrrn
 X-Rspam-User: 
-X-HE-Tag: 1776738090-858371
-X-HE-Meta: U2FsdGVkX1+WIwyoUC99Oix6f4NcNoWpy7DXm18+4zkJs0x/S3qBvU3VecgqIE2z5jFOOIdxqpcuFvBkzCTpHCamXmVrQLJD5YLO9JjqDPxoXo6GtuU6y21ayAByrcCIfyIWhuvFWCohYNqjIaNW9VbFTijefVrWf+raViygKIOOAqRmdxH2X66vjxDVwwrl+UiPqDuY+GUx9Tw4US1FLn6qJoyZyc82j/s57oIydn+sCGaDXa53WjXPlBOGH09q0jmgonNEi0nFY/3PsTSrMXRRnup/XBc4XyCvnFskC4VM63aclaJMssXBavfFgk1Tnx/6u2bWzQRsEIUEYxISmjygdor/VAv8LlxnZn9K1TmFhp0aps+m720di0reKp0KMsBzNIEFCIZi5dBHjCfRuQwibNFZv2dn5xGc1yT4dijuF6GoXSh+H+aMVgSKQkvbmDO9L+eRWkDOL7n/IE4YTc7elL8Pkl7ar07s/Al1JU4lfrBMowca1vupHuu3QA4KExvZDyW2JfUMIauy+u0X0zmEx/elBi+grDZ7a+mAfld1F7Z3R+prAeiJ3bGrFE1aNVtlVcxjdBM/FMJDzzqY7jswKsgfEiwNawY11PH9yEm9UBCSpNALZCYRGHy+hpK+3iTZ3Jo8YWuuyg+jZOyRGZLqIzrwEEjAXLzPneTWYusMe5i3yRyqU5QjUHgfmoiAfBd1aRLMfKNhxJWQ72qt+xKJmI+V17cB4VuDvYII9qtEsrnj1WNj6zvUbTHzWsFeqWvl2HosHwQTfmnwJFYaIlB9YJb0m2F92qgHMYcDH3aleABn8DMwzrpy3jC5eVN/8SfFuycdRJ/Gpf9vxTTL1I9+kJl/n/3ph3+wuNvtjlPQUmn9Boa9nl60ASIULfD96vJthohg/3IMlamIvQL8POx9wLCTHQYWYMr4JIMB+DJgXvqpz0Ha04H52UHp//wtXd9T0gagKLLp0vOtYUe
- IPlbmTYG
- 2+ACrXVZEKbXrppmy3hPP00wEUAtU16rZGjgEcOqldZycb//twA3Xx01g9b27DYekcjBSR7xa89SPOf2NMY5S93Dw5+zp3UBxdV3kYY3ot5cl4PEwVrMXNZTVlgPQ50DYYx5jv8fYholD7/AEVg306Iz6I9C8T70ZgG1haIfAaGi97mVl20C8bbXJ2166vd1Tys/y3ET7SGaoxlf1J5ZKWv6EWupUO5ukvqWvVKDQeWvUTfpK1PSjeiLl4twV3b1rhbIi4h2BWJF/Ezoi7Rr8IB40gI1XiY7U8AMl6W2fjM3xb2lXjcRPvTe+YfwjCDRWm/dDniVDTehMAqr5OO2qViARTO0/5isQRp5HRTMZGdQZO7jLnKKMdcSg1zYn9O6yuSopbpEvSfysJNMtJRCklOyDD1Kxn32Vx00YvFJcCoIedJlB+pfrJC09MDBHyUNJUKVPqQq5snZqqAFZSSha192DzcM/BU10v3gi
+X-HE-Tag: 1776739102-344385
+X-HE-Meta: U2FsdGVkX1+8C0Nuj6V0Dyz2/ToEgJvTUu1smWmP02VqcrdqR9FEU8DvjoPP5YduW/50X04n+OpiQ1tBtzia76CMVhnHbBJr/fCbWXshpwnTkX//Ryc1ndysD6Ai/KXDhUP7F0TRdfs5C+WPIILoir+Eq63AKOG040ijwrkHYsEgdI0uvWTW7PZLN+/coo+lsNi4YT0HnMcQk381o9y6xxb5zjrjNB2mKA6SUiGbbd7KnEF0Vn4QXX2rrengQ7eAWaoB8Ltyt/ESUVhhHZAhXT2Z3mEaJczkyzJ8+vvkRkAnJVil9TtwzOauEJ+6M4PZbdKMomcFcDH415JqW9lE+HassA+32pZr06hCkUyk5D6e+YRpj16lFwrugqBm0YorwmbZFAb/8L4sn5ieAORWVe8za3NZoXc9bLciHfJThUa5tkWt5BY5CtzKgIiQVRQ5GXwuohyG2KvBNCnUX3cb9z+hNbu+WEaHu7jdjGedCe6N8x3ON7U2ityRTz8kb+3xg7A+zKPmiNFO87wf4CYdBFVBoT/NYr1PaO2zBa2ZgATMc2En/7FsQmWQnPpXq6gq2mxvgWVopzXvIxT6+LPKgKM7JmHOJ8woXobCScBbR0JI3HhfVQHMvCmifMF98NAKYdyZOFmuwQFgw3/mo51zK/bNfezIRBtAG7Dv3r7AIhvKhAPb+ooXrSvACgjg37Xnr6cQHdPfOqQznlE0VVMiPh9Jyc/c/mXPc2+AdlM6mxsc9EvASahWSeBk1fOjJT2ZCr3hl9KlA7G0Tkvsx6jxKF5gZwEBDv5wIAC6jKH38L3ZBWUfknSHaIeHi04JLu3iyUE30gKj4h0h8duG0IUEdjYueKK28Y163yiCb076zjbX3Mje8NPso4uI4b0u+k7YISigAKxNXtRH/HNxIo+sY64h2v0gfePu4YQ/BXFIx2RS5wjuz9B/RX5hsInGHv5QxcxGcWgWBjSoLUlxIAM
+ zhlx2YQb
+ wIyBxySUBJY7f6ZO28csN2hn1islQ9FwJcri/7i3edPsM2FF9wrOD8vjjjLcHShQm9jwni7qNntFScYpmftp9QLdhRdh7Xmk6d0L2NA88ChqIj61VF2/rqovaJxmD8dZ9Ip+eD6y/i76KrLt3hm5g4u1l1dxmVbPLnBphgzhkRW0QpHgK8hTcl9U1Ov8jMMKuA1LSrZeUbzVbwTGHpP7Bn7HOMw2n6NCHGkacu9XFSKcKBy5P0PmU040vdlR/JvDILk44SXXXLd+/+vYFGvemO9zjnko0dD/ZCBd7/8pgeZ1Th3EtTwGNRH3rQyGarcDksoMXfBzmX35+Lvg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,99 +128,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The memmap_init_zone_device() function only initializes the migratetype
-of the first pageblock of a compound page. If the compound page size
-exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
-subsequent pageblocks in the compound page remain uninitialized.
+On Mon, Apr 20, 2026 at 07:33:38PM -0400, Michael S. Tsirkin wrote:
+> On Mon, Apr 20, 2026 at 08:20:57PM +0200, David Hildenbrand (Arm) wrote:
+> > On 4/20/26 14:51, Michael S. Tsirkin wrote:
+> 
+> > > A lot of churn, and my concern is, if we miss even one
+> > > place, silent, subtle data corruption will result and only
+> > > on some arches (x86 will be fine).
+> > 
+> > Which would *already* be the case of you use folio_alloc(GFP_ZERO)
+> > instead of magical vma_alloc_folio() + folio_zero_user().
+> > 
+> > I don't really see how vma_alloc_folio_hints() -- that also consumes the
+> > address -- is any better in that regard?
+> 
+> By itself, it is not. But the issue is propagating the address from
+> there all over mm. If we miss even one place - we get a subtle cache
+> corruption on non x86.
+> 
 
-Move the migratetype initialization out of __init_zone_device_page()
-and into a separate pageblock_migratetype_init_range() function. This
-iterates over the entire PFN range of the memory, ensuring that all
-pageblocks are correctly initialized.
+Why does it need to propogate?
 
-Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound pages")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- mm/mm_init.c | 43 ++++++++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 15 deletions(-)
+Can we leave folio_zero_user() callers the same, but add a PG_zeroed
+check in folio_zero_user() that skips the zeroing (but not the cache
+flush) and clear the PG_zeroed bit?
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index f9f8e1af921c..e2d8eae23aa3 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -674,6 +674,19 @@ static inline void fixup_hashdist(void)
- static inline void fixup_hashdist(void) {}
- #endif /* CONFIG_NUMA */
- 
-+static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
-+						       unsigned long nr_pages,
-+						       int migratetype)
-+{
-+	unsigned long end = pfn + nr_pages;
-+
-+	for (pfn = pageblock_align(pfn); pfn < end; pfn += pageblock_nr_pages) {
-+		init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
-+		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
-+			cond_resched();
-+	}
-+}
-+
- /*
-  * Initialize a reserved page unconditionally, finding its zone first.
-  */
-@@ -1011,21 +1024,6 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
- 	page_folio(page)->pgmap = pgmap;
- 	page->zone_device_data = NULL;
- 
--	/*
--	 * Mark the block movable so that blocks are reserved for
--	 * movable at startup. This will force kernel allocations
--	 * to reserve their blocks rather than leaking throughout
--	 * the address space during boot when many long-lived
--	 * kernel allocations are made.
--	 *
--	 * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
--	 * because this is done early in section_activate()
--	 */
--	if (pageblock_aligned(pfn)) {
--		init_pageblock_migratetype(page, MIGRATE_MOVABLE, false);
--		cond_resched();
--	}
--
- 	/*
- 	 * ZONE_DEVICE pages other than MEMORY_TYPE_GENERIC are released
- 	 * directly to the driver page allocator which will set the page count
-@@ -1122,6 +1120,9 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 
- 		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
- 
-+		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
-+			cond_resched();
-+
- 		if (pfns_per_compound == 1)
- 			continue;
- 
-@@ -1129,6 +1130,18 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 				     compound_nr_pages(altmap, pgmap));
- 	}
- 
-+	/*
-+	 * Mark the block movable so that blocks are reserved for
-+	 * movable at startup. This will force kernel allocations
-+	 * to reserve their blocks rather than leaking throughout
-+	 * the address space during boot when many long-lived
-+	 * kernel allocations are made.
-+	 *
-+	 * Please note that MEMINIT_HOTPLUG path doesn't clear memmap
-+	 * because this is done early in section_activate()
-+	 */
-+	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE);
-+
- 	pr_debug("%s initialised %lu pages in %ums\n", __func__,
- 		nr_pages, jiffies_to_msecs(jiffies - start));
- }
--- 
-2.20.1
+Is this feasible?
 
+You don't eliminate the folio_zero_user(), but maybe we shouldn't?
+
+(a bit naive here - i haven't checked the PG_zeroed lifetime, i did
+ see it overloads PG_private - so this might not be feasible)
+
+> 
+> I also note that we need a flag for free in order to implement
+> balloon deflate as you asked. Here, I reused the hints.
+> 
+
+I'd sooner just implement this as
+
+   ___put_folio(folio, gfp_t)
+
+   __put_folio(folio) { ___put_folio(folio, NULL); }
+
+And change the free path to take overloaded gfp flags.
+
+Some of the existing ones might even be useful as-is.
+
+It's essentially the same thing, but prevents a bunch of churn and
+saves us a new concept.
+
+optional gfp flags on free seem like genuinely useful interface for
+certain callers (definitely not all).
+
+~Gregory
 
