@@ -4,147 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA2E0F8FA90
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:25:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F28FF8FA94
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 15:34:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1065E6B0005; Tue, 21 Apr 2026 11:25:47 -0400 (EDT)
+	id 9ECFB6B0005; Tue, 21 Apr 2026 11:34:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B7A36B0088; Tue, 21 Apr 2026 11:25:47 -0400 (EDT)
+	id 99DBB6B0088; Tue, 21 Apr 2026 11:34:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE84F6B0089; Tue, 21 Apr 2026 11:25:46 -0400 (EDT)
+	id 8657B6B0089; Tue, 21 Apr 2026 11:34:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DCAC46B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:25:46 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 726946B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:34:25 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 88D5713C4FA
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:25:46 +0000 (UTC)
-X-FDA: 84682937892.21.0A89451
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F13BC180009
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:25:43 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FAs2zFY+;
-	spf=pass (imf24.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776785144; a=rsa-sha256;
-	cv=none;
-	b=WG1iRasEumjyUS+c1uP4i1iPxOhYk1m/+rOuWeVz4GvBIb2uu1b7b1ksH5mavz7CK/Ng4R
-	KyStVgzvNo8lKZ6qwK9SnSpyf9zaObEQiiOwzMsRW0ytWE3ZENZYLfjF3UmVTeILwdItWa
-	mvPlOXIXRPp+K721ccOQ0txGI5OBr5g=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FAs2zFY+;
-	spf=pass (imf24.hostedemail.com: domain of donettom@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=donettom@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C17513C12E
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:34:25 +0000 (UTC)
+X-FDA: 84682959690.21.0930C2A
+Received: from mail-oa1-f80.google.com (mail-oa1-f80.google.com [209.85.160.80])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5FF8640013
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 15:34:23 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of 3_pjnaQkbACUTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.80 as permitted sender) smtp.mailfrom=3_pjnaQkbACUTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776785144;
+	s=arc-20220608; t=1776785663;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o1X9HPUunIQebJ9dADNmZa8MGaML1kJb/aSg0TZlqss=;
-	b=Pt5oCFZm1oD5klj0QVjzT4Sx6q9w9xKGPWAw9elif9Z241QV/NQPmtRe3rYPMbjjEofsQe
-	3/RydtW6TlmyMelQisOBtETlm++W00668G6/QvfUfrThJZo0sUCUdlModhwYMu0W/jyXuu
-	3QI485PeF0plMy2oojfcTxN5iA3X+5Y=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LCfPbw2037844;
-	Tue, 21 Apr 2026 15:25:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=o1X9HP
-	UunIQebJ9dADNmZa8MGaML1kJb/aSg0TZlqss=; b=FAs2zFY+seMt5J/wyEvwcX
-	J3Qs8AwdungWDk3ceTc+T4bf52oCVAr6pcSg2BEuFhAbv4HC2tLuNgFyIeZr+QLJ
-	TQnT55zXAcFJmtfxkeJgd9xLQ7/mincVEMir+evb5W0ea9ZUOidUn/zHK+wFDIrw
-	JWAibdWC0syZd+iTkgK8zRTqTNZdMofijb/NY5ONihNSI6ZgTB1MKhkVyx2oWIdj
-	w7uhA2JyL4Jw35Ss+CKEOwng6W5CIb4tItaeiB/gNH7sFF/2SJHfjwtX11FVuBpL
-	VV7EEsGVHIcheQEGKsvOjuFDnwGhD3/gYNi2uhQRLoc+omR3VBZiXbtRYOTrN48w
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2h9m78b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Apr 2026 15:25:17 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63LFKWUP013111;
-	Tue, 21 Apr 2026 15:25:16 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dmnsh15y7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Apr 2026 15:25:16 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63LFPGGU23069246
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Apr 2026 15:25:16 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3635D5805A;
-	Tue, 21 Apr 2026 15:25:16 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3EA1258052;
-	Tue, 21 Apr 2026 15:25:05 +0000 (GMT)
-Received: from [9.124.216.216] (unknown [9.124.216.216])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 21 Apr 2026 15:25:04 +0000 (GMT)
-Message-ID: <24cd6a95-1304-4732-9273-43c73ea858b2@linux.ibm.com>
-Date: Tue, 21 Apr 2026 20:55:02 +0530
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=LRuP+kKagoHrTdnYr51EPxRnKXTEHAevj5lSmoWGnQM=;
+	b=YRwjNkiMS8+YYS1DHIG8a4iTj/k7NIkByaorSXJ09w2XF70Z+llDck7rh/m0i66Eav47+T
+	KQ3Lx7SYL+1b52Zdc/4z34AOGn2YwNN+FSiUuqv9EKbP09KFPsMylBodRz9E990Ivb/5+f
+	m09+0yEdI/uiF2W1FLnmWmvOlCYfP9I=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of 3_pjnaQkbACUTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.80 as permitted sender) smtp.mailfrom=3_pjnaQkbACUTZaLBMMFSBQQJE.HPPHMFVTFSDPOUFOU.DPN@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776785663; a=rsa-sha256;
+	cv=none;
+	b=gGhfKqeZ7qtma/2vb+/x20jKO5HKkcNS/ujGGi7/JL5LTYXcX8Zm32aICSjudiEZFmVOZo
+	dizACOWXmkb/qKE30TGXhCotZnB4f+Z4fIqSXW+tvbiXbsG5mIjxw4v7KwV//AKh4vYkM4
+	tb13z6oIbxMZNRDaUrwkqzMp1RvG85s=
+Received: by mail-oa1-f80.google.com with SMTP id 586e51a60fabf-40ad1c724daso6031764fac.3
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:34:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776785662; x=1777390462;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LRuP+kKagoHrTdnYr51EPxRnKXTEHAevj5lSmoWGnQM=;
+        b=MgZ3x2T1EOuv8SeLCBLR9UNP1ML748AlySJ3qIgW+4AYPK1UmgqdnnmtJozS1qODNl
+         JzNjAUHKs7W7NsTynMIK24VmcX6Yz/MF2vWyKbVYNzxPw8ZokhyASS9Xc1owuPEfYNWQ
+         tZ99CQhDmOjUqbu8SXM3sTdHsBKNqL3m2nz8w1BwupI90k6Tku+bmoT0xDWgqdysShXp
+         +3gSTXl7j5CEHPikDfpxHWo1VBiDkOsgBW42PB6498LUbwCcs8S/+LTMYlnnx9hyZ8KH
+         p4+quKgSXE5PKpd6WIcpnAfrfgJQ0qV6IayQHDvm5hC3OsihJY8HyhSU6iLf9lLJzw+m
+         btIQ==
+X-Forwarded-Encrypted: i=1; AFNElJ82rBvLhwLL4oAMGB9SS31shSLFPuSiqVtFqJgO+4VpjLjbiGnO2Fjg41hE0tSot4rzRo1eS2ywng==@kvack.org
+X-Gm-Message-State: AOJu0YxPBHmPQAQ49EOUt7fwDISN8OdDqZmRAcN/R2Dd/O0VH3Xo7+XO
+	UOdODWVf7L7YDZkR8vH7cOXAM3EfyvnWuCB6ORTnJ2cYNIPT70+ij0TK8JeVITXX/uORnTLfYQs
+	YFPxxc/PinXnqUCFZBHEgrN5eE24H4KCIUXAUI4bKMVZ3RgK3irQULRx9ClY=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v6 2/5] mm: migrate: Add
- migrate_misplaced_folios_batch()
-To: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Cc: Jonathan.Cameron@huawei.com, dave.hansen@intel.com, gourry@gourry.net,
-        mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
-        raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
-        sj@kernel.org, weixugc@google.com, willy@infradead.org,
-        ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-        nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-        akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
-        kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-        balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
-References: <20260323095104.238982-1-bharata@amd.com>
- <20260323095104.238982-3-bharata@amd.com>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <20260323095104.238982-3-bharata@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: qy8g05uTAlspSHaPFCbZfBJNS4O0FSOV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE1MyBTYWx0ZWRfX2lvX/8LD+K4d
- RxWH048hje3Sxp6jwSK9U+ofRWqaJ2KqvssfLkKvBIcoAAZ6VbGYdw99UcNhpmsEaVY+sZZr/5B
- q+7CxLE9JpALKcgc6JJJq6/lzY4Ipp21AD3fCATiw9eoioquHyE+latF7yEUg5n0H5ufgNI950l
- rn9rjhI8y/1qf5pFhEOHe8AO3WO5TRiNN7Hjqc1qTz9sf3UJ7zX0zlTP2WhPHrHdMXKpeJA97DK
- dYkdenDIo/am88ssDl66h6YegxX+lVFVEs68hOu7ND3ECfimi54mnt6Nh4lCSFN5hOjO5OW07dj
- g/myM9Uag1o0CKslaiYKPUAikeZ63nbJLFvy7xHByWHq/krqUSTr52cZRNO8CJw/XzMkDj5NyV8
- kSqcgW5ckIm+kiAjPi1YmO99WmYnUeeJMwTIQPC70WCwyrfVpSAWV4md7GbeqoA5m7efu9Fx/LY
- lF1jCtdn5kuHhlbFu2Q==
-X-Authority-Analysis: v=2.4 cv=XLYAjwhE c=1 sm=1 tr=0 ts=69e796de cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=tHa68p0SAAAA:8
- a=zd2uoN0lAAAA:8 a=3BaletrFva9TSh3rlm0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=ufIsyHvWW7FwcMbVRpPq:22
-X-Proofpoint-GUID: nRk-v5W9kOPmZ-0ggMcpCYROJyC80wZF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 bulkscore=0 impostorscore=0 spamscore=0 adultscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
- definitions=main-2604210153
-X-Rspamd-Queue-Id: F13BC180009
-X-Stat-Signature: jb5tro47zeiah6z3msnbj38wi4g7yhqu
+X-Received: by 2002:a05:6820:174b:b0:694:8f3a:3f31 with SMTP id
+ 006d021491bc7-6948f3a4350mr3429084eaf.26.1776785662338; Tue, 21 Apr 2026
+ 08:34:22 -0700 (PDT)
+Date: Tue, 21 Apr 2026 08:34:22 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e798fe.050a0220.24bfd3.0032.GAE@google.com>
+Subject: [syzbot] [mm?] possible deadlock in rhashtable_free_and_destroy
+From: syzbot <syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, axelrasmussen@google.com, david@kernel.org, 
+	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	ljs@kernel.org, mhocko@kernel.org, shakeel.butt@linux.dev, 
+	syzkaller-bugs@googlegroups.com, weixugc@google.com, yuanchu@google.com, 
+	zhengqi.arch@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5FF8640013
+X-Stat-Signature: y1izqydgxrt5qn5xq8f9mym16ku8xejq
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776785143-172820
-X-HE-Meta: U2FsdGVkX18H3L1mY6D+GZdJgzsdhVuucbJz5FOWqP1rrU0QS74/NN/M6sAE5ZzbnbtxoK3IBVNmsxBm9BAiULR+VoAGHjAbp5dVFWR143Ct5iTZPzK3Zy8se36t4eKrd4HMMLC735KPBc7DaQa1VxV8HHGp9wgGjJUDh7wc0jzAoxl0p1RYxaMmD9wmHKinXNUixShNLxtCP/SO37I2lnwG7dGxmufs7un0MGWSGJjazinf6SPHXSauy2eHTrYEo32EOJdwoqje04v8upt8XceA0B1Ji4c13Ffpe5KNlI28ekhQu7eg/DlE+Hr9OsCDGZu9/c1jYBly9P8oSXSbnXO5aFr3rkkKX0DKT0f9I4h1LGUZT+NB22+6j59fO3TVpUSRA3mrzddRImO3fgWC/sCo8jzoCcCzm6v4GulotFTYRcBRtc97Bo5lEdB8udeeoNi8gWaSBAUDjFO1wZB/wrZ6QyijjT6mB93+svZO4SBk5L1AWul76/xdFzS1MymZ4qUD1aR8c2djDgkpYZililS0szhugP43iMmTHe6R/sKICarmKCnSK7iLsnYKbci6viz9xMRodMFGmC6Rb/1XyhlY01RXdgT06zCeW+6e96LT94F/wWrpDdAjxid8dy7XVfjkM8YE846gRNw1m05gdDVQcbAYNDOneLhSmHCD5bUDmTIt60Qcs3gno8LTQ4Cl4x/+u4hFqzTGzRpfAq7itlGvkqgG8eFJnxefzIPeBW10ZWN5UkwlWTMa124ebhaG5LVB5J8dtCOVaQtompPywZzqwM5TXHwbtw/hU1Ac5rlkHNIfIMBbKNl2bWv5HusDx3m7z025rKNCKhkx+Kt9PwtWrNkzUNn1tsGGrCwS5zHHVkJxoWaE2fBoM+10Pwr0vlAvzHdd+NpaiOFkAb8xotIYGi7w9nMZgRSPOP4Dl0cywFcZ7nGUJ9pwghsJwC4fHGecf5ZUyEsjbKoVL3L
- g9FjEvn/
- QEpVitYgGxrQyNEegZm9fCfaPdO40h8mnlUkMbRlJ4ixQg6yO33W74ZSKBIZsybc0kcgt93PVUu6bKyL6M9EwiQjR9jaJFh1FowRg9X+6tGkQtCPMF1664uKSZ47Pro+uVaSF4ig8Nqkzwz8freaGRlGTgJx1VKmZzkoxv4i2sAMG0Gbii27G0XBNGywtKB0SsrCRplXsg5nTOQCNvU8+ZJMGeqWIIsWpbv4+MUQIOXqJ1XmPuYa9NbW1RGQhLxFLV4qYmNLrEIvMJ4YUAY5HL/SA59+Yi3Ro5PcBtabk7wOSSy1SbT2TdjOwN5QzMyKTOIf0+4+8q2b3BovabSKdHvyA1YIUB7Wv4MQCqkATOj3vndxD2XfJ/9PbB1y4xyr474cCmpo6das+8lR1Hl7C/3U4c01pnVULB6t7FLUWw+LUzr8UiLG5QsG5P0b31Jn+BvnmzoczOt0nokkyMN2doLjjmwod6HnUxWVw+kgNhRGbAnw=
+X-HE-Tag: 1776785663-487209
+X-HE-Meta: U2FsdGVkX1/29jODxE9lDw3yAytWxlwXLa+78BtZvxCCwOpVjzqRpm/7teiHT/XcFChPBuR6fIY6I1eT7JCdJkj3lP9cS3cdfX1gRa7lbTrrwhw1SJAAgPlpQ/U+SqpxeJgiwTO40ehU59jaxN3+q2xhEsT200Ic+xCpfUAu2/mANKJmEPYEiNfKBUj7eSg1UNfeclDkFzPUj3hbPxLeXpv1HMKUDmidHvIFvelx0onC8OdCUaG0oiPRTkMDouyG8aw5w3uQlRXdl11N4xOO2TvZi44alHeN/y+gd/34Tcbqeh7kQHB5054KJVvNHdWolZaWVMHS7C52M9RnC9P/gA2wntV4rlhv5EppCke22bPc//aUjElqa528UMLV2+AdmALYl6rpgQMP+BrJxcKAaMzGryxcLmGCDnFZCHjLu+xCUyd2NI6RK4xM1ZxqKJj/lMiUym5UgxCz/QD0ghlkZxTgDGZ+FgFBK/At4N0VyiajaxkO3zXTFXSyWcEamGfedijSHloJnOu2Owjq2VDEC5+OAku3oZj5V0VT/rJ9HSinsgBOwNfTVoFk4TiGM/trEiL/9xEiBxYW4WbRVjm3b1Ktb8/ZZuX7spkxakMIabLUMu++KIQwVGRZLCu7hQX+U0pm05OOOtY01xdxuvkVskv/ecvzxJndeKVKKyBSGiTZUc+ahpftZJg5B2/e+C6Ep4wr5PI3id/XHE2eEQgaM/1nMtTZvntcmTcNXMTnUkILX/MxGEreejD8P1BDEenwTHSfVATlHJsbH/us6W/rwKsNiDVIG3iz8Dynxba0Sue333H8CcnHD7DFMjrgejt0N3y113KV0Kzs+XrB+w5MmNUdpE2wfVGYmDpQjTTcHV23F/yk9Ta/eekLNykgiWYu28X/Z4VR4f7B64WLO+/s5JXGKzpFdpKg5kRFIrJLkrYz3R18TvfQHsgrFL4p6YyvBhyibKCHbO784yNqCm2
+ TxbdxVTe
+ TRCdk4hRS9Tc+tGLsYAlFpoqE0icWeSNU72MySYos/BPsbMo5Pj3K9/WWc7PEhV59fGaiv0r10euodA1VkHb7sGgGB1JB6CZZts1z3baSt8m/WrSksXCuYj2vE4ceRim+LbwSAA9RBGrSg4OgYa4RkyzX8AzdIYsHZefe+CasWpCi4D/32yxWqmiUkESDbhHKoxPzBmFVN4beU4H1tdfTP2hYJMYIDW+1evmVOtezmWBsFm9jZaG89mi5zrbAbAhB1CaXoUfSxIR6fpgeb+y14Rn9YZSHN8ahpNDj+Uo1ww+DRTi5HLc+kjdfU5oTWE+ig7suCQCoHNHDw7rMYEOLYKlmJzgc3m0Kl3RHmFtexq4vqItHqmAk44N/KXxJlh8wmgOmIZoij3LA3bjd0TzKxESk0Bsc38WlSeCpXCnHqnoyozHqKLVN6MA7cL7fKaMQW/4Lhn/2CBivTAsaxvg03JfOK8H91UwzH6ZwrEzjINHfURZmSD/S2xIYYU/dtoJB62k687DYUlg+IlYAEoilOjOlBUKbI4vZd2nC1+hL6qsoB/o8H5ecW/XvEEproJSHSIm2F7/L6MO4Lc0Ygc5oBdbItdCZvjDI7E4it19TTf0qXYUlxD/lGez3lznisos0rddj6FyQ/BjQUDB+l4Dvh29GlsmtqLYRIE2igZNYoGVV+t7CNEF1IySqXTHqzp9S9gKUkRHuSxC3oyxMTx92Cj7zcGGEFtRNDWjlXYsMIKGsiqkyj7JG7gZd7HdYFZaHsoOqaL5cdhA7X7ErKZ9i6/pflTSF6HKJ8dcjkbUsLtNeEK+qJCbhQesMG168mDAU6FODhWUGMPLjOJpzsR14fvkOpatjU/vJygJAymtHmvrYwfvZLkPSCcJDrkG11J+KCTqYQK7wVyaGmy3fL63LsB6Pw5cgcLKLHcj7EGGL2Huo7qoKjtWEKNPOCn5RweFkw9kOmXnu/OOjmxZTnLyzDMBROxXm
+ bWA/tro7
+ stwoq609HYmIHn+4LRsnb+374tLdHsuc5thTcl8+06BLuQ5gNm4z3wiRRARcUG2CkEovyd7KVDEuWOfTBPvjq1VE+dbllQcEX8ZOtPp4twbdAUcPbdtDLUX0gDq70UmReqtJiKkTu3kc+USUzTHadka+RcH09tLrDFdF55wxovfkxiI3nEKoVkJChfYEMtUXd3IPdyyY2qYQWKNsUJHXlJTrgLd6uEPqQuIhaKVM9SNv0cTtaVJrxzEv7FOrWIgel4YZMXxYRdY1/pL1AmArFSNisZy+y4XzzTRRc5nrGs4x2wyoAMFYjyjsQosa69cfDaFSzN5jKWbcERTvlBTo3flw8p7Ox+Zea7e40nVPHW9VKRJjHhkfXdSPfnMdf5RfLuSenN/BbY+CaX8ZTKFLhc75eh6ETXydyE3Nt1S/NM2zEvVrgOULeRKOT1OiPlhP5+dRzy832820W2sqQNlikids9vjJYkPj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,124 +97,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello,
 
-Hi Bharata
+syzbot found the following issue on:
 
-On 3/23/26 3:21 PM, Bharata B Rao wrote:
-> From: Gregory Price <gourry@gourry.net>
->
-> Tiered memory systems often require migrating multiple folios at once.
-> Currently, migrate_misplaced_folio() handles only one folio per call,
-> which is inefficient for batch operations. This patch introduces
-> migrate_misplaced_folios_batch(), a batch variant that leverages
-> migrate_pages() internally for improved performance.
->
-> The caller must isolate folios beforehand using
-> migrate_misplaced_folio_prepare(). On return, the folio list will be
-> empty regardless of success or failure.
->
-> This function will be used by pghot kmigrated thread.
->
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> [Rewrote commit description]
-> Signed-off-by: Bharata B Rao <bharata@amd.com>
-> ---
->   include/linux/migrate.h |  6 ++++++
->   mm/migrate.c            | 48 +++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 54 insertions(+)
->
-> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> index d5af2b7f577b..5c1e2691cec2 100644
-> --- a/include/linux/migrate.h
-> +++ b/include/linux/migrate.h
-> @@ -111,6 +111,7 @@ static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *p
->   int migrate_misplaced_folio_prepare(struct folio *folio,
->   		struct vm_area_struct *vma, int node);
->   int migrate_misplaced_folio(struct folio *folio, int node);
-> +int migrate_misplaced_folios_batch(struct list_head *folio_list, int node);
->   #else
->   static inline int migrate_misplaced_folio_prepare(struct folio *folio,
->   		struct vm_area_struct *vma, int node)
-> @@ -121,6 +122,11 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
->   {
->   	return -EAGAIN; /* can't migrate now */
->   }
-> +static inline int migrate_misplaced_folios_batch(struct list_head *folio_list,
-> +						 int node)
-> +{
-> +	return -EAGAIN; /* can't migrate now */
-> +}
->   #endif /* CONFIG_NUMA_BALANCING */
->   
->   #ifdef CONFIG_MIGRATION
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index a15184950e65..94daec0f49ef 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -2751,5 +2751,53 @@ int migrate_misplaced_folio(struct folio *folio, int node)
->   	BUG_ON(!list_empty(&migratepages));
->   	return nr_remaining ? -EAGAIN : 0;
->   }
-> +
-> +/**
-> + * migrate_misplaced_folios_batch() - Batch variant of migrate_misplaced_folio
-> + * Attempts to migrate a folio list to the specified destination.
-> + * @folio_list: Isolated list of folios to be batch-migrated.
-> + * @node: The NUMA node ID to where the folios should be migrated.
-> + *
-> + * Caller is expected to have isolated the folios by calling
-> + * migrate_misplaced_folio_prepare(), which will result in an
-> + * elevated reference count on the folio. All the isolated folios
-> + * in the list must belong to the same memcg so that NUMA_PAGE_MIGRATE
-> + * stat can be attributed correctly to the memcg.
-> + *
-> + * This function will un-isolate the folios, drop the elevated reference
-> + * and remove them from the list before returning. This is called
-> + * only for batched promotion of hot pages from lower tier nodes.
-> + *
-> + * Return: 0 on success and -EAGAIN on failure or partial migration.
-> + *         On return, @folio_list will be empty regardless of success/failure.
-> + */
-> +int migrate_misplaced_folios_batch(struct list_head *folio_list, int node)
-> +{
-> +	pg_data_t *pgdat = NODE_DATA(node);
-> +	struct mem_cgroup *memcg = NULL;
-> +	unsigned int nr_succeeded = 0;
-> +	int nr_remaining;
-> +
-> +	if (!list_empty(folio_list)) {
->
-We seem to proceed even when the list is empty. Should we instead return 
-early in that case?
+HEAD commit:    8541d8f725c6 Merge tag 'mtd/for-7.1' of git://git.kernel.o..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15380836580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7e54da1916e8d11f
+dashboard link: https://syzkaller.appspot.com/bug?extid=5af806780f38a5fe691f
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 
-> +		struct folio *first = list_first_entry(folio_list, struct folio, lru);
-> +		memcg = get_mem_cgroup_from_folio(first);
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-8541d8f7.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/22dfea2c37c2/vmlinux-8541d8f7.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e2f93ad68fe3/bzImage-8541d8f7.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5af806780f38a5fe691f@syzkaller.appspotmail.com
+
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Tainted: G             L     
+------------------------------------------------------
+kswapd0/108 is trying to acquire lock:
+ffff888056f3c4e8 (&ht->mutex){+.+.}-{4:4}, at: rhashtable_free_and_destroy+0x3d/0x9b0 lib/rhashtable.c:1154
+
+but task is already holding lock:
+ffffffff8e9b0800 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0xb5d/0x1ac0 mm/vmscan.c:7102
+
+which lock already depends on the new lock.
 
 
-I had a small question—are we ensuring that a single list contains 
-folios from the same memcg?
+the existing dependency chain (in reverse order) is:
+
+-> #1 (fs_reclaim){+.+.}-{0:0}:
+       __fs_reclaim_acquire mm/page_alloc.c:4327 [inline]
+       fs_reclaim_acquire+0xc4/0x100 mm/page_alloc.c:4341
+       might_alloc include/linux/sched/mm.h:317 [inline]
+       slab_pre_alloc_hook mm/slub.c:4520 [inline]
+       slab_alloc_node mm/slub.c:4875 [inline]
+       __do_kmalloc_node mm/slub.c:5294 [inline]
+       __kvmalloc_node_noprof+0xcc/0xa00 mm/slub.c:6828
+       bucket_table_alloc.isra.0+0x88/0x460 lib/rhashtable.c:186
+       rhashtable_rehash_alloc+0x68/0x110 lib/rhashtable.c:368
+       rht_deferred_worker+0x1d9/0x1fd0 lib/rhashtable.c:429
+       process_one_work+0xa0e/0x1980 kernel/workqueue.c:3302
+       process_scheduled_works kernel/workqueue.c:3385 [inline]
+       worker_thread+0x5ef/0xe50 kernel/workqueue.c:3466
+       kthread+0x370/0x450 kernel/kthread.c:436
+       ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #0 (&ht->mutex){+.+.}-{4:4}:
+       check_prev_add kernel/locking/lockdep.c:3165 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+       validate_chain kernel/locking/lockdep.c:3908 [inline]
+       __lock_acquire+0x14b8/0x2630 kernel/locking/lockdep.c:5237
+       lock_acquire kernel/locking/lockdep.c:5868 [inline]
+       lock_acquire+0x1b1/0x370 kernel/locking/lockdep.c:5825
+       __mutex_lock_common kernel/locking/mutex.c:632 [inline]
+       __mutex_lock+0x1a4/0x1b10 kernel/locking/mutex.c:806
+       rhashtable_free_and_destroy+0x3d/0x9b0 lib/rhashtable.c:1154
+       shmem_evict_inode+0x1ae/0xc40 mm/shmem.c:1429
+       evict+0x3c2/0xad0 fs/inode.c:841
+       iput_final fs/inode.c:1960 [inline]
+       iput.part.0+0x605/0xf50 fs/inode.c:2009
+       iput+0x35/0x40 fs/inode.c:1975
+       dentry_unlink_inode+0x2a1/0x490 fs/dcache.c:467
+       __dentry_kill+0x1d0/0x600 fs/dcache.c:670
+       finish_dput+0x76/0x480 fs/dcache.c:879
+       dput.part.0+0x456/0x570 fs/dcache.c:928
+       dput+0x1f/0x30 fs/dcache.c:920
+       ovl_destroy_inode+0x3e/0x190 fs/overlayfs/super.c:217
+       destroy_inode+0xcb/0x1c0 fs/inode.c:394
+       evict+0x599/0xad0 fs/inode.c:865
+       iput_final fs/inode.c:1960 [inline]
+       iput.part.0+0x605/0xf50 fs/inode.c:2009
+       iput+0x35/0x40 fs/inode.c:1975
+       dentry_unlink_inode+0x2a1/0x490 fs/dcache.c:467
+       __dentry_kill+0x1d0/0x600 fs/dcache.c:670
+       shrink_kill fs/dcache.c:1147 [inline]
+       shrink_dentry_list+0x180/0x5e0 fs/dcache.c:1174
+       prune_dcache_sb+0xea/0x150 fs/dcache.c:1256
+       super_cache_scan+0x328/0x550 fs/super.c:223
+       do_shrink_slab+0x416/0x1240 mm/shrinker.c:440
+       shrink_slab_memcg mm/shrinker.c:557 [inline]
+       shrink_slab+0xa7d/0x12e0 mm/shrinker.c:635
+       shrink_one+0x398/0x7f0 mm/vmscan.c:4932
+       shrink_many mm/vmscan.c:4993 [inline]
+       lru_gen_shrink_node mm/vmscan.c:5071 [inline]
+       shrink_node+0x2673/0x3dc0 mm/vmscan.c:6059
+       kswapd_shrink_node mm/vmscan.c:6913 [inline]
+       balance_pgdat+0xaaf/0x1ac0 mm/vmscan.c:7089
+       kswapd+0x557/0xb60 mm/vmscan.c:7362
+       kthread+0x370/0x450 kernel/kthread.c:436
+       ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(fs_reclaim);
+                               lock(&ht->mutex);
+                               lock(fs_reclaim);
+  lock(&ht->mutex);
+
+ *** DEADLOCK ***
+
+2 locks held by kswapd0/108:
+ #0: ffffffff8e9b0800 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat+0xb5d/0x1ac0 mm/vmscan.c:7102
+ #1: ffff88801347c0d8 (&type->s_umount_key#76){++++}-{4:4}, at: super_trylock_shared fs/super.c:565 [inline]
+ #1: ffff88801347c0d8 (&type->s_umount_key#76){++++}-{4:4}, at: super_cache_scan+0x98/0x550 fs/super.c:198
+
+stack backtrace:
+CPU: 2 UID: 0 PID: 108 Comm: kswapd0 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_circular_bug.cold+0x178/0x1c7 kernel/locking/lockdep.c:2043
+ check_noncircular+0x146/0x160 kernel/locking/lockdep.c:2175
+ check_prev_add kernel/locking/lockdep.c:3165 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain kernel/locking/lockdep.c:3908 [inline]
+ __lock_acquire+0x14b8/0x2630 kernel/locking/lockdep.c:5237
+ lock_acquire kernel/locking/lockdep.c:5868 [inline]
+ lock_acquire+0x1b1/0x370 kernel/locking/lockdep.c:5825
+ __mutex_lock_common kernel/locking/mutex.c:632 [inline]
+ __mutex_lock+0x1a4/0x1b10 kernel/locking/mutex.c:806
+ rhashtable_free_and_destroy+0x3d/0x9b0 lib/rhashtable.c:1154
+ shmem_evict_inode+0x1ae/0xc40 mm/shmem.c:1429
+ evict+0x3c2/0xad0 fs/inode.c:841
+ iput_final fs/inode.c:1960 [inline]
+ iput.part.0+0x605/0xf50 fs/inode.c:2009
+ iput+0x35/0x40 fs/inode.c:1975
+ dentry_unlink_inode+0x2a1/0x490 fs/dcache.c:467
+ __dentry_kill+0x1d0/0x600 fs/dcache.c:670
+ finish_dput+0x76/0x480 fs/dcache.c:879
+ dput.part.0+0x456/0x570 fs/dcache.c:928
+ dput+0x1f/0x30 fs/dcache.c:920
+ ovl_destroy_inode+0x3e/0x190 fs/overlayfs/super.c:217
+ destroy_inode+0xcb/0x1c0 fs/inode.c:394
+ evict+0x599/0xad0 fs/inode.c:865
+ iput_final fs/inode.c:1960 [inline]
+ iput.part.0+0x605/0xf50 fs/inode.c:2009
+ iput+0x35/0x40 fs/inode.c:1975
+ dentry_unlink_inode+0x2a1/0x490 fs/dcache.c:467
+ __dentry_kill+0x1d0/0x600 fs/dcache.c:670
+ shrink_kill fs/dcache.c:1147 [inline]
+ shrink_dentry_list+0x180/0x5e0 fs/dcache.c:1174
+ prune_dcache_sb+0xea/0x150 fs/dcache.c:1256
+ super_cache_scan+0x328/0x550 fs/super.c:223
+ do_shrink_slab+0x416/0x1240 mm/shrinker.c:440
+ shrink_slab_memcg mm/shrinker.c:557 [inline]
+ shrink_slab+0xa7d/0x12e0 mm/shrinker.c:635
+ shrink_one+0x398/0x7f0 mm/vmscan.c:4932
+ shrink_many mm/vmscan.c:4993 [inline]
+ lru_gen_shrink_node mm/vmscan.c:5071 [inline]
+ shrink_node+0x2673/0x3dc0 mm/vmscan.c:6059
+ kswapd_shrink_node mm/vmscan.c:6913 [inline]
+ balance_pgdat+0xaaf/0x1ac0 mm/vmscan.c:7089
+ kswapd+0x557/0xb60 mm/vmscan.c:7362
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
 
--Donet
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-> +	}
-> +
-> +	nr_remaining = migrate_pages(folio_list, alloc_misplaced_dst_folio,
-> +				     NULL, node, MIGRATE_ASYNC,
-> +				     MR_NUMA_MISPLACED, &nr_succeeded);
-> +	if (nr_remaining)
-> +		putback_movable_pages(folio_list);
-> +
-> +	if (nr_succeeded) {
-> +		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
-> +		mod_node_page_state(pgdat, PGPROMOTE_SUCCESS, nr_succeeded);
-> +		count_memcg_events(memcg, NUMA_PAGE_MIGRATE, nr_succeeded);
-> +	}
-> +
-> +	mem_cgroup_put(memcg);
-> +	WARN_ON(!list_empty(folio_list));
-> +	return nr_remaining ? -EAGAIN : 0;
-> +}
->   #endif /* CONFIG_NUMA_BALANCING */
->   #endif /* CONFIG_NUMA */
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
