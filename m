@@ -4,124 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB07EF8FA6C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 12:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2A8EF8FA6E
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 12:36:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31D0A6B0093; Tue, 21 Apr 2026 08:16:53 -0400 (EDT)
+	id D2BFF6B0088; Tue, 21 Apr 2026 08:36:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CDFA6B0095; Tue, 21 Apr 2026 08:16:53 -0400 (EDT)
+	id CDBE16B0089; Tue, 21 Apr 2026 08:36:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E4036B0096; Tue, 21 Apr 2026 08:16:53 -0400 (EDT)
+	id BCBCB6B008A; Tue, 21 Apr 2026 08:36:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F6FD6B0093
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:16:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB021E5B67
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:16:52 +0000 (UTC)
-X-FDA: 84682461864.14.8CEBC61
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D5F78140017
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:16:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KTZrPZEz;
-	spf=pass (imf09.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776773810; a=rsa-sha256;
-	cv=none;
-	b=3mm7pfS9DcvkmU4TnAsrbzHj25Xv+QvKQ6mScWJSiMKiiCWuuGLLGdWQDYU0NKbdnoayUb
-	tvdKEeg00imO9wzFY5qreKBTYnnT3hv77H8ztwq+BNUoM8D7Ur1TqS9aAFIeHEtpsL4SZ5
-	fMO+AH8iNfhrQrvCsOOX9IdjpYbYcPQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KTZrPZEz;
-	spf=pass (imf09.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A78236B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:36:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05A36C3F41
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:36:33 +0000 (UTC)
+X-FDA: 84682511466.11.67EA338
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EE95E1C0003
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:36:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qQCw2bCn;
+	spf=pass (imf18.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=urezki@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776773810;
+	s=arc-20220608; t=1776774991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FuBH0tSA4QMEqer5rgkERxzfsnQAmO+99E5ku8qz2ok=;
-	b=n8rX1g6KI/OSJkgtn4dn3Sf+lvXPsCRnXxQp6YJbBNkOYhqlvYlPYhI23DRaEuAKKKqnYY
-	BRCv/p+oV/n9ZJKbpD23S0Q4yWVHsxbvrMgedvV+jo4mwqsjzpdYbm/TwGmbNHS+ovNMbv
-	gdwfjx8W3rynvurU349IzIkLxtFK9MU=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82f1f6103afso1882051b3a.1
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:16:50 -0700 (PDT)
+	bh=K2umFNIY/BLyJ91U8ESVwZ5+480SIvdek4DpKYYkBZU=;
+	b=xmMB4OdCx43Pl0WkyI1ijWcgxwRflVkXtXXwtigFyy/N68yYIknHSFOMdBybafBaLScEHc
+	rlpr95YEAbupsplJKlnq+s9TTam5v2MJvP8CqywtUumkhesckxFmv9kRMfofxSOlMktot4
+	+mVgvaTGrLLYvTSvJvzycsMgIpcTvJ0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qQCw2bCn;
+	spf=pass (imf18.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776774991; a=rsa-sha256;
+	cv=none;
+	b=7iGApkfem0o6TXgs4jTYcVM99sxbpg1ykRq0X4YB3EHB1Q5Tq5ET7TT066vlz1BTob6gqS
+	C6ap+FMrlejqYDUMG1+W6id6AvBUC/AEpcJ1ONuh2A3gtW0RC4qCPjNrn1CC1v/yiuIAbA
+	Igtn4t8Su55TzbN0Kiv+WILRzCrmPRQ=
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a40cfab24dso4439973e87.2
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:36:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776773809; x=1777378609; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FuBH0tSA4QMEqer5rgkERxzfsnQAmO+99E5ku8qz2ok=;
-        b=KTZrPZEzcyPC99fYh7HIlv/Vo8OVECeHLCv+NTcx3d2TCP6DKS/MWVNhQWY2BLcZYH
-         IbkYTUtS6PeIwA4sUgTKLuAQi+/qGdxuvL7yp4b3777kswhIyGIxZrM2Ox1tkSWCJIO6
-         M3R6tbwU1r9PAwjNWHUWQlIVZyHAiYAs7brp2gvQF7i+7p8WfeZdG9ACJLDUekHEODm0
-         jLWqu+UEwEIMR9vqX6Ixywwuz12EyiTvFUtAHIqGUC6jHyX7uOAuaCuFnRfijdOUguQY
-         tvfgv/91CnmCdKKMHE+4i1zrf+np3YECD+qYTFJIlad/0sx2qS5W/V0JejnYlJjmuKJ/
-         i8Mg==
+        d=gmail.com; s=20251104; t=1776774989; x=1777379789; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=K2umFNIY/BLyJ91U8ESVwZ5+480SIvdek4DpKYYkBZU=;
+        b=qQCw2bCnvTkWNXMyUoBfDw/RdUPTWV5BzzcZZ1HbIKULZHZaQpnMrGJ5gyLQgSLX3w
+         AA8jGcKNnFu2URL/G+uoI6/DgF+aB7TMmUMbygd20LACmaWXbS5KNosF+2nsNhUaVRwa
+         +l+HjtO2gnIJO7pUwQzz4AWM0nq2hhNF7/XZfJGtaEmQuFMIUcC24RVP8kK7d7F6vqlk
+         9QYm9V57LoH608ZtDeSUTlZXXHIhY9Dpfdi37N0XifFBVgbNg/McidrD8LeEptbWu32B
+         2lA/zOuWt2CYemcRyqQHakNSQYokv2H4Ii4AkZxWUJ7DA6Q4aNZppYUbZtZHk58qluSq
+         rdMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776773809; x=1777378609;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FuBH0tSA4QMEqer5rgkERxzfsnQAmO+99E5ku8qz2ok=;
-        b=YnHdiS/Z10Z0XNjPqaHRjRHWfEKoNCOWJdjovCJlntBvFipVl3zNAwaBNhFU9lIQlI
-         NUSXzKmoTfv8BW3vJVMYJNsR24MtEcfkyZZNCONxSoGakeI7UtL8sxfdELgj17crzXXQ
-         aMCJSPELV/kbpu2JVBXT15zZwfvXy1qJ9xhBRFIC4cVIkSNrzlwotMMED+T1dEP6gYyq
-         Uki+SGU11JXrF5uOOpJU2/BEsMPKEqF/dNUCh4RXK3upHtXYXBB8DPf9E3cmoIvjk8pY
-         /DD+gcF3cVWiYIRpiBrg9gGFROgCntXk5jIgfBKIo4ej9Nif6MfnwcLDQa8Kys8nrdVY
-         eawg==
-X-Forwarded-Encrypted: i=1; AFNElJ832TOjLpVys9MJULBQVFmJv/UMNIOXruuOhUIA+NDop2wFrmkpe2vN1xiLs5bS4ev0sOWiFQqIHA==@kvack.org
-X-Gm-Message-State: AOJu0YyFF+4Mhf0GXwteHfP5zjUhQAbnDjUBrXzrQX0H74l9p9ClsMK/
-	Ir9Sl3fw/9ILIcDh6pNDKySyLijGS/yNWKqGS/k40QLpUYCIFCOtRx3H
-X-Gm-Gg: AeBDies6WC3LQtmH1s1Khf/v8z8IxelxbLYtmbGSLR51qiXXehDwrGZyq7H/ZE4iMAk
-	1fdLAz+5fFSkZZJ9L1KGT+bgiImaz+VUQoqfVSFPzZGOXOGqQ1x/R5c4VsSigzeqKIUHKcR9OFr
-	LqPyRd0VD6JKiXQQiuhSgPN2ATNZjHoNPl6XMcMLkSkkXnjnSIKfJOnLQj7cIYL/mgmlIdvniS9
-	0pcxrnOhV9moUC//iF5eWkfXv4Yq5hKGwgetGcN83a+CU8OxzgBg+kSufaWQOTpDXcB8EyT7/R+
-	c5IaFch9cbO8Mn3r28a0I4W5iKPNkWqOf3vzBaVZNrWWaHJPNLHSH7AQS+l6Ye2tcTIjYzObONj
-	aREMZKbjB+mOEPeEwCKZz5iDOZiT/ZuUSfjDsKtQ8ddnjPVlEVWc18+vdFd50uBaQhHpdPCa05Z
-	Zos8Y97k9j4abxamlEA/mEOt1RMF9O22/sOYI7PnLpM5zVaZY=
-X-Received: by 2002:aa7:88ca:0:b0:82c:d9d0:f482 with SMTP id d2e1a72fcca58-82f8c976ff1mr18659748b3a.46.1776773809369;
-        Tue, 21 Apr 2026 05:16:49 -0700 (PDT)
-Received: from ubuntu22.mioffice.cn ([43.224.245.232])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec037e1sm16371071b3a.54.2026.04.21.05.16.45
+        d=1e100.net; s=20251104; t=1776774989; x=1777379789;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K2umFNIY/BLyJ91U8ESVwZ5+480SIvdek4DpKYYkBZU=;
+        b=Ox4t7g07jjsc5Pf8pN6T9oRZ+/os5fK5KPs4jhjGvi0DRxKi4G+ERk0NadwW9Vwcpx
+         m1iT0IyJXeTVZ2uaY6wpVgaUwIL23cAF5EJ/ch/PTpABvAADI1F0+M0ddH1war5CuCr5
+         F4voPYLVr+d8dKcnT8XJItDmnxtxAoVm5SZQq/edS2uAsLX0VblXCGMkmKPgCckRdFbE
+         1maeRHUkV8WVqvmv3NkRpIDfR5O7Wi29rY1PYrKLt5JYVtI1hP63eT0ojP6gfMeTQq2Y
+         bisLxymHsHUBEtKCWbieNKpu2aw4C9KYyg6l7rJHURhIJx8yvpe54Yf1xYXNeN76ktm+
+         BizA==
+X-Forwarded-Encrypted: i=1; AFNElJ9LmI7KOJxcZZjFpJx7lDNSSfntZFnM7qmP5QrarBmYTcOrireUoOCoNgJ5fPlsPzXIO1LhsgsLyQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx1BNUWXWe8Hzs8FetADPqc92wUHip0nNI5wrhH0FVAOcf76kfY
+	YKp3epeiNwB3g6s1Ox+DrtayOMaCwsxqVtaQ3PexI4ABeRN7NdpWFr1D
+X-Gm-Gg: AeBDiesm9XhF2hkyJWuzOYEqnMYSSO9E2QI4Ue93lD3HH6mT1JJ54pkmmJHAv0vn3Tg
+	YyzCfWYqkpkd89O3ym97FBcAslcqYi4M7ASjZlgYf67EjhUOAmJdmfno0fp6pHM59nnEHGJnK/x
+	9Jf4TTKRZfZgEtLxDCwaQg16aNvvVKgc1zfMFvxhvo1amd6Z0entw0WjdPJBnw79Mv1sYAp34Hm
+	AQOuu7bppg5dv6H3D1FMY4irCp6SNJOYRF/wR1GEWZhk71lYrC4MPI91ViUfM8M+VYsDxkP7BqU
+	OT4lgpxHJja3/ij4njtkgPkLXIYAKAzuko0EHrHq1y4/YNc1zS/g4uhp3eBbuqp6sp/UnR9SGE0
+	RzXhHDqgplTg/T25SOMK6sugb7/CQ51m4WDeoKdoO0KD9Oj/ZefkxERcj5Pwgoxuv0iSzArMEcn
+	tLiYiFuG1alA==
+X-Received: by 2002:ac2:5b05:0:b0:5a4:175d:21a with SMTP id 2adb3069b0e04-5a4175d0239mr4423230e87.2.1776774988560;
+        Tue, 21 Apr 2026 05:36:28 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb6f0bfdsm30395521fa.26.2026.04.21.05.36.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 05:16:49 -0700 (PDT)
-From: Wenchao Hao <haowenchao22@gmail.com>
-X-Google-Original-From: Wenchao Hao <haowenchao@xiaomi.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+        Tue, 21 Apr 2026 05:36:28 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Tue, 21 Apr 2026 14:36:26 +0200
+To: Thomas Graf <tgraf@suug.ch>, Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Uladzislau Rezki <urezki@gmail.com>, oe-lkp@lists.linux.dev,
+	lkp@intel.com, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
 	linux-mm@kvack.org
-Cc: Barry Song <baohua@kernel.org>,
-	Xueyuan Chen <xueyuan.chen21@gmail.com>,
-	Wenchao Hao <haowenchao@xiaomi.com>
-Subject: [RFC PATCH v2 4/4] mm/zswap: defer zs_free() in zswap_invalidate() path
-Date: Tue, 21 Apr 2026 20:16:16 +0800
-Message-Id: <20260421121616.3298845-5-haowenchao@xiaomi.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260421121616.3298845-1-haowenchao@xiaomi.com>
-References: <20260421121616.3298845-1-haowenchao@xiaomi.com>
+Subject: Re: [linus:master] [mm]  c6307674ed:
+ BUG:sleeping_function_called_from_invalid_context_at_mm/vmalloc.c
+Message-ID: <aedvSnhOGM_mauYP@milan>
+References: <202604211323.fac1b29e-lkp@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D5F78140017
-X-Stat-Signature: fefmdhxu776r7uztpdokz895ke11dqyq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202604211323.fac1b29e-lkp@intel.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EE95E1C0003
+X-Stat-Signature: gu64mkmg4mns14mg4qktxxwkxzwarg44
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776773810-106906
-X-HE-Meta: U2FsdGVkX19meTcCZREggZM5437NI2KKZ90ZvjIbg6XMaeaPKhbqEkzp2vYIZ/gA35UZ/tkOkXx8Vt+iPecoGQq3OqbkCxwG/CXUrNsP6XdmJI7Tpnulx/iuENEJ57qLZiH1PK6bXIVmfqJaHP12xsYD6RsT2pcSwcJJ64JpszDYEIIkWgcbrPVaexBtjPHHgqFPUD2PaE5Wvi8sjwPKb2qA3WD71YBYq3YvQMs22Vh30Xst1ij7Z65GjtU5dd3NVohY/IqFemMLuEiDVxGWRGzIm0fjIHueTCbZ6LVOhKlvBebL/yphIslSSr5cxiWoCeCU2lP62uvah8R3HBRP8RNx9vvMzi2DstoA3K0w9ZejIYUqJwlUzPucfsqaOtVyswS8IeiqA5R02fv7KQha9EBCWWHJpY6MmHxdbaX1XKNYAlAiljqZbtAmvhV9XHEnlcBEhW7tUl9HiEosuUSisT/qsDbXwdTFfAvl9NDSV4Tfd4DzTU1gmX9lMCZ5AnJ3BBKTC1zOpvzummtyIa3VcoYFJFKcFRGqR3SS9FhK4zDb05s92lLygMFz9MNZm+LFye8GxyNwdc+z+jrrhB+TslG8ZWSIw2zsE/NNOuBd5wgwC62E+rhqr4GtulzESObTm7YdXtDF2mk7VODLAtN6kdS6DkJCTjv4xHiho0s9Yq0Emo3j2HVZH/qvL4xuYyASQ+oIBLoLhurFwTdKnsA4ndR02fWm1U4oLQvXrt0BK3jYVxMcgnpqc7Y4jGu0tmVm4K9eFIeXkuWtZfPIBEQPGaZ15voKsRnNAIg+wo8NZIuxK19g8lUanc2dnoBWnxbpNl3QrIMqbPC1NvVBts1kTTwrCIj0Bdo3B2wuUVQJemvrXM3gP6JFcuQj2MtKFlBXvmE5ueEvAYeGjNOAgoEw5Ib9Q4sjFZhzzOSdzZJFWl1sB2ud20yLj329K+rqcwuMIRCmM+aTMjdmCMGdH02
- /cDaox3w
- jx7uUhBttlUommCSj3JyfAc1IoBBHSI2vC2DNp4v0uE+xpOU2l/JiKodEldv7+0Y19YvTY1e3TP3h4trLh4NhdeESzEzuEMJSGGulIuZQ/gxOREWuAiHTIuA8EmU2FJUCWYZgGByAWpBvVal96QZxiQfU63nHFP6KPVXDMvoA8hTl9vXHmAVWyGG7ZSpVAvE7RC0CmwXNrGL13y5NfZUuliSSW+pX8vZh4wIwq3PGGAA4M74J59y43MeD0owK2aCGoR/MUd0yVyidnouTiS04GoZuhVhbROcQjeh3MdYcezB8CDLv9lvWc+KbNe0qMnI83OvlcswEHGjoNv7FgkggBMKHMOGTUTEFrZx7Bpxk7ZE1CA5IsWjud+qbnjlQ/p0bN5vbE5OGAodshTkLwMcgk5oFSDQkpdzllV5mt2sIadWdTGcg2Gw+TxUpca4QAIaepDwiKi9QLGQtEKLbdxAHuHlmsfMZd1isHpA2RL5sQRQp3UI=
+X-HE-Tag: 1776774990-107860
+X-HE-Meta: U2FsdGVkX19773T56XvsWGDG86o3JUsqGMx8soLnEKK544nhOc6f7mFjNbRejHyUNhKnLiAs4xotTpv3lqtlVdvPK/9oPNv+dZkGC9lbfagWTLVjHdlDdmrLmXvwCGFPWmseZCXE/TJaKn3zrRW+JEBJUEdroVI8lpvPfkaCYno0SqXkmnrcmD75r1MQ5Y9+oRduE8Fd5Oxpo5A2WxaFYr8Mxq4689nBMMQb/TJNrYuoENEtcAxhSDReQgqvBBET6cLtJQ2Q9Pf7iKV7dwLVmrjN/d3y7J4qyfqlgovcFf3UCmJjo1BdZH5XDAagBHS9+/fcVDHajYUxBnFb4aA4gKtHdBtGby6szz6/tYIKjhaO6LK3ktMPL/lBeYZJF2TZsrg/oIygSq+traH0m7Fc9ussPDNvDvmU/fLFDAS5nZLR3LTtDOc7BUfY5HTtBJ4kBUgKo7iGZLnreJ0MN8Opr1sn/4ebCVdi1WXRRSQ3bskYY4bg1/cIhah3Z8WoAExoi+2iooniPD+3ODDzkuXAG+JfZ6UJHqrD0+xn4uFHaD1hSj1TlE+Ya2Z17JgYsFmVyk8iRySddG1Hklv6MRUwJkrf2o/m44sRhWBg40ozbtIqk5iFvnOG1+ROdsbOy9hQCFQkzrwPYhpO5D6/sSastkL86gzRjFHEZEohfqHXZxWuJEFzW9yP7V/l9GEylEUEWXUhH6/HkzqjT+XIyekePrqFafA0CpcSCUbEhAP04SfAxMfSmmogWHB6zZ1/vNK5h4PM0AOfIyIs2g4erN7NIWOS1eIYimqed5kR+69I2gazXkqK8BFvV5rElZ5JWIGQJ6zvrB/7Rq7c6nEOJH7q4U79VKI6AGx3wkbn8O0Vm+h1TToiZTyzmK7eMDpu89THmuQnoOJplj0U65mBriHRNBGcq4FRIcE9vZwKzPPXThsXKR9KgEwN4dSB8FhcvbAbfDz8AxnQf2qP+bVy6Zn
+ qx2/fh7E
+ wz5/nIIbA8cf3lz57Mse5a0Zb6tWsXMn2CiCEmfbvoHxZ8b2ZiUqz7nowlY+WaX2K2KfGMaeDI7PybX3dFlmF2e6xoqiQcejmoer1Esvvw1zaNbelHaPoQ0zWwuK+xujc6dDgPN0Q7UnWzMdNwqHEYHR8RUoY5YBPcYbqTfcQkZ7aDOBxu9dOwXXsyVOt71fj73PdhbsGDkTOJYblxBedXjK549qH/U3wh402D4I9yu5R3gdnC5SmqqjU6tJQRyB5lsRSj6Y8Ll7/8NcXcTgGZYDKhT4C2ch7jljytvxab44HLCawO1CoQVbO6ViJO6nGTFtJ+tmagFF12UlMBF5LKExcPKOx+Yhc11Xhl6SEIxMNOXHrzSQAuEF04OS16RqYZpldCloDOe05qQTpieBhcOcmQzS34tkyAvON3uN2WYsmbZFKBraXwUSCFqkSc2DpJch3/+gFakkWgkoHcJmzz78B50sLduKjSLZZlAze0oUvzDNd8fUkyul/VBD22DPGGJrd0nNzqz8hXGB2nJhHGbxPHpb+Exmc0IfiSlGgGGONCJ8dsNBXeO9aI8TbP++MW8TrALNkU0ltJkig3hBct6r9hAkH9H3iDJZNwMwptwdmNHV3rW8Etflzp8zLCtmkWYVACi+7UNlrb/ZApStSfqMqBJWD2hmo1QMzhotLcTHejqQMDqKCv5gOEi8SVW2mRXxLoDHzqt0bM18=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,74 +124,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap_invalidate() is called on the same process exit path as
-zram_slot_free_notify(). The zswap_entry_free() it calls internally
-performs zs_free() which is expensive due to zsmalloc internal locking.
-Unlike zram which has a trylock fallback, zswap_invalidate() executes
-unconditionally, making the latency impact potentially worse.
+Hello, Thomas, Herbert Xu!
 
-Like zram, the expensive zs_free() here blocks the process exit path,
-delaying overall memory release. Additionally, zswap_entry_free()
-performs extra work beyond zs_free(): list_lru_del() (takes its own
-spinlock), obj_cgroup accounting, and kmem_cache_free for the entry
-itself.
-
-Use zs_free_deferred() in zswap_invalidate() path to defer the
-expensive zsmalloc handle freeing to a workqueue, allowing the exit
-path to release memory faster. All other callers (zswap_load,
-zswap_writeback_entry, zswap_store error paths) run in process context
-and continue to use synchronous zs_free().
-
-Signed-off-by: Wenchao Hao <haowenchao@xiaomi.com>
----
- mm/zswap.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 0823cadd02b6..7291f6deb5b6 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -713,11 +713,16 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
- /*
-  * Carries out the common pattern of freeing an entry's zsmalloc allocation,
-  * freeing the entry itself, and decrementing the number of stored pages.
-+ * When @deferred is true, the zsmalloc handle is queued for async freeing
-+ * instead of being freed immediately.
-  */
--static void zswap_entry_free(struct zswap_entry *entry)
-+static void __zswap_entry_free(struct zswap_entry *entry, bool deferred)
- {
- 	zswap_lru_del(&zswap_list_lru, entry);
--	zs_free(entry->pool->zs_pool, entry->handle);
-+	if (deferred)
-+		zs_free_deferred(entry->pool->zs_pool, entry->handle);
-+	else
-+		zs_free(entry->pool->zs_pool, entry->handle);
- 	zswap_pool_put(entry->pool);
- 	if (entry->objcg) {
- 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
-@@ -729,6 +734,11 @@ static void zswap_entry_free(struct zswap_entry *entry)
- 	atomic_long_dec(&zswap_stored_pages);
- }
+> 
+> kernel test robot noticed "BUG:sleeping_function_called_from_invalid_context_at_mm/vmalloc.c" on:
+> 
+> commit: c6307674ed82c0c57d6e1e3408e84ac449ab8e94 ("mm: kvmalloc: add non-blocking support for vmalloc")
+> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+> 
+> [test failed on linus/master      40286d6379aacfcc053253ef78dc78b09addffda]
+> [test failed on linux-next/master 936c21068d7ade00325e40d82bfd2f3f29d9f659]
+> 
+> in testcase: kunit
+> version: 
+> with following parameters:
+> 
+> 	group: group-01
+> 
+> 
+> 
+> config: x86_64-rhel-9.4-kunit
+> compiler: gcc-14
+> test machine: 8 threads 1 sockets Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz (Haswell) with 16G memory
+> 
+> (please refer to attached dmesg/kmsg for entire log/backtrace)
+> 
+> 
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <oliver.sang@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202604211323.fac1b29e-lkp@intel.com
+> 
+> 
+> 
+> [  149.217862][ T4054] BUG: sleeping function called from invalid context at mm/vmalloc.c:3435
+> [  149.226291][ T4054] in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 4054, name: rhashtable_thra
+> [  149.235634][ T4054] preempt_count: 0, expected: 0
+> [  149.240353][ T4054] RCU nest depth: 1, expected: 0
+> [  149.245166][ T4054] CPU: 1 UID: 0 PID: 4054 Comm: rhashtable_thra Tainted: G S  B            N  6.18.0-rc5-00047-gc6307674ed82 #1 PREEMPT(voluntary)
+> [  149.245176][ T4054] Tainted: [S]=CPU_OUT_OF_SPEC, [B]=BAD_PAGE, [N]=TEST
+> [  149.245178][ T4054] Hardware name: Dell Inc. OptiPlex 9020/0DNKMN, BIOS A05 12/05/2013
+> [  149.245181][ T4054] Call Trace:
+> [  149.245185][ T4054]  <TASK>
+> [  149.245189][ T4054]  dump_stack_lvl (lib/dump_stack.c:122)
+> [  149.245200][ T4054]  __might_resched.cold (kernel/sched/core.c:8928)
+> [  149.245209][ T4054]  vfree (include/linux/kernel.h:61 mm/vmalloc.c:3435)
+> [  149.245215][ T4054]  rhashtable_try_insert (lib/rhashtable.c:476 lib/rhashtable.c:635)
+> [  149.245223][ T4054]  ? sysvec_apic_timer_interrupt (arch/x86/include/asm/hardirq.h:78 (discriminator 2) arch/x86/kernel/apic/apic.c:1052 (discriminator 2))
+> [  149.245229][ T4054]  ? sysvec_apic_timer_interrupt (arch/x86/include/asm/hardirq.h:78 (discriminator 2) arch/x86/kernel/apic/apic.c:1052 (discriminator 2))
+> [  149.245235][ T4054]  ? __pfx_rhashtable_try_insert (lib/rhashtable.c:592)
+> [  149.245242][ T4054]  rhashtable_insert_slow (lib/rhashtable.c:648)
+> [  149.245247][ T4054] insert_retry+0x257/0x630 test_rhashtable
+> [  149.245260][ T4054] threadfunc (lib/test_rhashtable.c:633) test_rhashtable
+> [  149.245269][ T4054]  ? try_to_wake_up (kernel/sched/core.c:4297)
+> [  149.245275][ T4054]  ? _raw_spin_lock_irqsave (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:111 (discriminator 4) kernel/locking/spinlock.c:162 (discriminator 4))
+> [  149.245281][ T4054]  ? __pfx_threadfunc (lib/test_rhashtable.c:618) test_rhashtable
+> [  149.245289][ T4054]  ? __pfx_autoremove_wake_function (kernel/sched/wait.c:402)
+> [  149.245295][ T4054]  ? __kthread_parkme (arch/x86/include/asm/bitops.h:202 (discriminator 1) arch/x86/include/asm/bitops.h:232 (discriminator 1) include/asm-generic/bitops/instrumented-non-atomic.h:142 (discriminator 1) kernel/kthread.c:290 (discriminator 1))
+> [  149.245301][ T4054]  ? __pfx_threadfunc (lib/test_rhashtable.c:618) test_rhashtable
+> [  149.245309][ T4054]  ? __pfx_threadfunc (lib/test_rhashtable.c:618) test_rhashtable
+> [  149.245317][ T4054]  kthread (kernel/kthread.c:463)
+> [  149.245322][ T4054]  ? __pfx_kthread (kernel/kthread.c:412)
+> [  149.245326][ T4054]  ? __pfx__raw_spin_lock_irq (kernel/locking/spinlock.c:169)
+> [  149.245331][ T4054]  ? __pfx_kthread (kernel/kthread.c:412)
+> [  149.245335][ T4054]  ? __pfx_kthread (kernel/kthread.c:412)
+> [  149.245339][ T4054]  ret_from_fork (arch/x86/kernel/process.c:164)
+> [  149.245344][ T4054]  ? __pfx_kthread (kernel/kthread.c:412)
+> [  149.245348][ T4054]  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+> [  149.245356][ T4054]  </TASK>
+> 
+> 
+> The kernel config and materials to reproduce are available at:
+> https://download.01.org/0day-ci/archive/20260421/202604211323.fac1b29e-lkp@intel.com
+> 
+> 
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+> 
+<snip>
+diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+index 6074ed5f66f3..a892766dcedd 100644
+--- a/lib/rhashtable.c
++++ b/lib/rhashtable.c
+@@ -473,7 +473,7 @@ static int rhashtable_insert_rehash(struct rhashtable *ht,
  
-+static void zswap_entry_free(struct zswap_entry *entry)
-+{
-+	__zswap_entry_free(entry, false);
-+}
-+
- /*********************************
- * compressed storage functions
- **********************************/
-@@ -1655,7 +1665,7 @@ void zswap_invalidate(swp_entry_t swp)
- 
- 	entry = xa_erase(tree, offset);
- 	if (entry)
--		zswap_entry_free(entry);
-+		__zswap_entry_free(entry, true);
- }
- 
- int zswap_swapon(int type, unsigned long nr_pages)
--- 
-2.34.1
+ 	err = rhashtable_rehash_attach(ht, tbl, new_tbl);
+ 	if (err) {
+-		bucket_table_free(new_tbl);
++		call_rcu(&new_tbl->rcu, bucket_table_free_rcu);
+ 		if (err == -EEXIST)
+ 			err = 0;
+ 	} else
+<snip>
 
+Could you please check? The problem here is
+
+rcu_read_lock()
+    rhashtable_insert_rehash()
+        vfree();
+rcu_read_unlokc();
+
+we can just defer freeing via call_rcu().
+
+--
+Uladzislau Rezki
 
