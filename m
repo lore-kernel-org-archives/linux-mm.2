@@ -4,127 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B6D4F8FA9A
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 16:05:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D67F0F8FA90
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 16:31:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D0726B0005; Tue, 21 Apr 2026 12:05:11 -0400 (EDT)
+	id CFEF96B0005; Tue, 21 Apr 2026 12:31:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A85F6B0088; Tue, 21 Apr 2026 12:05:11 -0400 (EDT)
+	id CAFE66B0089; Tue, 21 Apr 2026 12:31:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E56B6B008A; Tue, 21 Apr 2026 12:05:11 -0400 (EDT)
+	id B511D6B008A; Tue, 21 Apr 2026 12:31:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 610FE6B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:05:11 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F14FDBE4D7
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:05:10 +0000 (UTC)
-X-FDA: 84683037180.20.CEF3CB4
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 02976A0008
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:05:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Y9e7uJzF;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.161.48 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776787509; a=rsa-sha256;
-	cv=none;
-	b=OvRfEpP6lDco/nCeioJOp2B3SyHP6Zt4tDPxdnip1lN9cBQG0dfrgi1sCxKnl1NIoIH+Wz
-	nm3RkxQOE1uAdDTdGdmZOCvZsPd49kTtvXUMU4vaNVRIVWQ1gdoZYmQE/HfaKRxjD0z7Wb
-	uqBVubFADI7iFM9m8BHl+D+1/ohliQA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Y9e7uJzF;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.161.48 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FD726B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:31:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61BD1160BEF
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:31:12 +0000 (UTC)
+X-FDA: 84683102784.01.2F388C9
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8A82C2000E
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:31:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QfNohA8+;
+	spf=pass (imf03.hostedemail.com: domain of 3TKbnaQYKCI09vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3TKbnaQYKCI09vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776787509;
+	s=arc-20220608; t=1776789070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DfR8fZwCFFz0FeFXDfTRURMvD1IDFp6drnOSFVLy1EU=;
-	b=5z+MSufQmXlWLfTBwZ8xEg5s5otKkU98nb7AUu6kmoD2g4fJm2q/1zZQsg9K3ONLnjKFb5
-	uNm5HV5wHXVrMsShQFAB2wGdmiGbUMCqJTJPSLQQLMegwBkv19D5Nf1FKwwc4RIXBuBNX1
-	i6P5X+VCpeI1PytJdaKrj79kwo3hXOA=
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-67c22b05346so2252601eaf.2
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:05:08 -0700 (PDT)
+	bh=rjgkwxA0RLtfuWNBMEJF4TxxPjAXkNJh9XTaeAVjQ5Q=;
+	b=XFqs36Lz5+kw8zrgBF8iJNuTfN2ddG0YlMXVy8rxZZtcdgNpJ9yXVNGmr0oEm4qUUWLISA
+	U5WfuIX8ikvBBtqFjiPqMZrvbKiYFvAm+UhzJQyN2siKQU/vTBYGoZXd6Bm5gGF1UY/6Ly
+	NX93yMmBZNNgPJjP1kcAfnS7Faoq2C0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QfNohA8+;
+	spf=pass (imf03.hostedemail.com: domain of 3TKbnaQYKCI09vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3TKbnaQYKCI09vr40tx55x2v.t532z4BE-331Crt1.58x@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776789070; a=rsa-sha256;
+	cv=none;
+	b=LsexM06m5GVGwU+H/h9Q738kE5UU+lDAxOTuV8TFaRLdjjkzadDUa20cyxbDujGOYRJvo8
+	wbZJyt57lkkMGCniVPjysETlznw+/LJKV9bZMo0ejH8XROkS2Aphq/K+B80rXNfZjiSmWN
+	B6sZVGxyYEqMGa6yLPMN0UyPi7XZWFc=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa5ecd760so1848068b3a.0
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:31:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1776787508; x=1777392308; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DfR8fZwCFFz0FeFXDfTRURMvD1IDFp6drnOSFVLy1EU=;
-        b=Y9e7uJzF4EA8TJtrnTEfAlaZ6wWkmaLBLB5N+3QhPtok+Mcat0GTMQqii7v9BYft9A
-         b6H606YWsC3NeM8qUfDfmNvOHhwWKA6pwU54POib468yBx/ljAQVRpu0m2ZXVGNDzrsi
-         u5pBVoN1o27g161zjsBk57/mMIaYipM4QHm8BcLK6nRHPeeNNDa+Xrs4Rh0EhVDJOQBB
-         ZLsMUvdWI8Mu9TIymuCgs6JrBOf9WMxqYNfGV7J7/y3Ybh/OWNQapx28algXxssVyChT
-         Ejl4cdrwuCRsCsi9CoRvAC3mqObWPf5AwgNF/z3zDTJTuMC2/ZbfpS4D2twzh6BcsFjV
-         DFSw==
+        d=google.com; s=20251104; t=1776789069; x=1777393869; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rjgkwxA0RLtfuWNBMEJF4TxxPjAXkNJh9XTaeAVjQ5Q=;
+        b=QfNohA8+N82osA+D87j+5YBLFJ7LPplPcGgsS6weUl9Lb83IXiEQhWalFQQllTHHQT
+         dpt9DYK20jWIgx7RX73Met76sAtA/pPfewcS5xMGIUB5uGw/OI60ByhmF2xO+aCU9phq
+         aE1sPoNT2NpDdECTtW/wMQLuLVMr101AxUpgGVOn82CexILVvUfvKsVdpOjbNriCLxJ/
+         OknGGfRIt4fRQPz59dPlS3UJUMNhWV0oD3geVHKyRibH79HSlLPHZzmsNDPW2KJ+Y5aS
+         /blhu4lqROxHFM64lCl7uT9W4JyP2N2aLIy3YQCLO2zXHlfBq2eyRqf3Y8/kHTGlmLDh
+         vSKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776787508; x=1777392308;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DfR8fZwCFFz0FeFXDfTRURMvD1IDFp6drnOSFVLy1EU=;
-        b=GSoAo9ffC/GG3K7i+hEF772HP64CD0WiaktQco9V0G1YafFGvU2LDgdmVns/aXdo7C
-         PMFIfV3hLYwPGj7eNwzuwqKj8U/UgcTL0sdjmFWgd+zuU5ccetHQtK3ukML5/3H7IWpy
-         Xg6WUk3vH2p9DyjfQMtqWRk6FI4Go9UjVxJwCwbQKIwF7VxLHPkdh/+ZU3clrdbDodKN
-         J0FBdbIeCU1od0annUuwqLUOptCYmgdFciij39LcTupda2LN8lAZycUka+TYQnwNJIOa
-         ijcGURu+pyEyykFNwuP3tHfhqED50Kveu+kQBIluhPwidUBTuratLnN+h6lqAfvFt5Zt
-         B7LQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/I1/mk8NQoT7qbbsX8sZlJvg1xeBQiOeMHj8eSiVF0fCXJm0wL0M+V1SV/2aHavWx9VjVFVAD9QA==@kvack.org
-X-Gm-Message-State: AOJu0YxO4632GDf3sqa6jyB3JJfiBwO45JHYFrU9aMtVCcom1dnazS7g
-	Xw7OPmm+Y9PjttOHFPma0NFd2Zb6trvS9hEMyHJ4b6hRXAVpph4e7sfhEOfTFI+OH0w=
-X-Gm-Gg: AeBDieulag+4y8O8NTmrfjSY2NsZhuwumnznqKlDunfEAaxBRqY1+3qGgJxItQf0p5s
-	1PPzgh3Qq4+UeRzPiaztynDzpbMBozDiKB4W7ud6S//29h+q8Fnyoy9udKCgio7JdcKlWcTX055
-	DX0W2vXbBPO6F65k2miiIcUtsx8KBLQGmE9vsAh0yrcEn8h8m0QjmnzcpmFs2nqyYUVB8lXThs7
-	RG1aLlr6B+vhEJ1sddfvvsj4LcWQ82hSGPMmR9vhudyVk6gwXMK2CVpPYUVdIeXyW04TduZ3Jvw
-	8ATZe17N/l1M35LJJAdX6EFvkPlR8oLKwSmp4aWdL+vkiQ8wG38AJnYZZIlhHYq77+181jC4jGy
-	Amov6SwPu9MsNORz1D2UEVuU1mAfOm94R8MLqR/hEYefEbcWA6SfT8PNVz1mTxE7vgv6I6KRogY
-	dzUsMfNKvImepvTIGEuqZjEst1AJgMeedHav66EvNEitH2fbZs8MdrvBdsIJcuhY+Xg3XrwS9fW
-	kpbTd9HrDLuRXPVCYPq
-X-Received: by 2002:a05:6820:1796:b0:68c:6e:89d1 with SMTP id 006d021491bc7-69462f31c5dmr11175838eaf.41.1776787507683;
-        Tue, 21 Apr 2026 09:05:07 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-71-246-228-50.washdc.fios.verizon.net. [71.246.228.50])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d69ad48asm1059065885a.19.2026.04.21.09.05.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 09:05:06 -0700 (PDT)
-Date: Tue, 21 Apr 2026 12:05:03 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: Bharata B Rao <bharata@amd.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Jonathan.Cameron@huawei.com,
-	dave.hansen@intel.com, mgorman@techsingularity.net,
-	mingo@redhat.com, peterz@infradead.org, raghavendra.kt@amd.com,
-	riel@surriel.com, rientjes@google.com, sj@kernel.org,
-	weixugc@google.com, willy@infradead.org,
-	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
-Subject: Re: [RFC PATCH v6 2/5] mm: migrate: Add
- migrate_misplaced_folios_batch()
-Message-ID: <aeegL2ltmCTfuJiw@gourry-fedora-PF4VCD3F>
-References: <20260323095104.238982-1-bharata@amd.com>
- <20260323095104.238982-3-bharata@amd.com>
- <24cd6a95-1304-4732-9273-43c73ea858b2@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <24cd6a95-1304-4732-9273-43c73ea858b2@linux.ibm.com>
-X-Rspamd-Server: rspam10
-X-Stat-Signature: orpf9r5exwu1ayxpr4oc6otoongt49ey
+        d=1e100.net; s=20251104; t=1776789069; x=1777393869;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rjgkwxA0RLtfuWNBMEJF4TxxPjAXkNJh9XTaeAVjQ5Q=;
+        b=ocdgCh4FJ29gyAu4zytn8IzUoWVUk+Ps4jBt5eOTufln2cfaESeBnw3tnzNsCxgcQf
+         7xgzmJYpUI16gAXMpLui9ktWE16Is6PyvfYSwn2kzgFInpmfDeDr/XjIEsUsVlo5xFRq
+         bf3eiRKc7kwVBFdst4EC79o/EdNYcvN09z8FCwoXjSRmHA1bC2rpP2ZGLrOjkvL3uKwj
+         BhB2lvuzkDqYEqmM3XPcmgdS1xwo5biP++zRDrcPk9aWlJV4gpC2oi6f99x7YyOaHd8h
+         4hPuWrXksbFkdbMMYeTFz2oof00XdHbrh+NqqPfrcHqF2WaHlb35z+mK8p2wFFMqetsG
+         9oMg==
+X-Forwarded-Encrypted: i=1; AFNElJ8C/N+OD3U33cPcwdWT+XESOa4nd0Ms/5OxfaTEDkxzEhZ5BHB6lYbjm71NlPXB8K2BqBB5SdFt+g==@kvack.org
+X-Gm-Message-State: AOJu0YzEyUYn4NKJMjW9wD+0oOqOmjfSTxM6cNl1eZb7B3mVLSQsiiG/
+	wA7KluopiepAd/OwM5qakylKxf6LPmDmVMC3lCTTxnwu8/u8Xr4vkbPlCpmCbMz8Ro42Wpv3+qq
+	ETlrc6w==
+X-Received: from pfbhk7.prod.google.com ([2002:a05:6a00:8787:b0:82f:f2d:5b4d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d8d:b0:82c:1cd0:2f5e
+ with SMTP id d2e1a72fcca58-82f8c96eb30mr20038023b3a.44.1776789068848; Tue, 21
+ Apr 2026 09:31:08 -0700 (PDT)
+Date: Tue, 21 Apr 2026 09:31:07 -0700
+In-Reply-To: <20260410151746.61150-11-kalyazin@amazon.com>
+Mime-Version: 1.0
+References: <20260410151746.61150-1-kalyazin@amazon.com> <20260410151746.61150-11-kalyazin@amazon.com>
+Message-ID: <aeemS2wm38Cm4qAf@google.com>
+Subject: Re: [PATCH v12 10/16] KVM: guest_memfd: Add flag to remove from
+ direct map
+From: Sean Christopherson <seanjc@google.com>
+To: Nikita Kalyazin <kalyazin@amazon.co.uk>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "kernel@xen0n.name" <kernel@xen0n.name>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"ast@kernel.org" <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>, 
+	"andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>, 
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, 
+	"jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>, 
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com" <jgross@suse.com>, 
+	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"coxu@redhat.com" <coxu@redhat.com>, "ackerleytng@google.com" <ackerleytng@google.com>, 
+	"yosry@kernel.org" <yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>, 
+	"maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com" <tabba@google.com>, 
+	"prsampat@amd.com" <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>, 
+	"mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, 
+	"alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>, 
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "dev.jain@arm.com" <dev.jain@arm.com>, 
+	"gor@linux.ibm.com" <gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>, 
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org" <pjw@kernel.org>, 
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>, "svens@linux.ibm.com" <svens@linux.ibm.com>, 
+	"thuth@redhat.com" <thuth@redhat.com>, 
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com" <urezki@gmail.com>, 
+	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>, 
+	"gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>, 
+	"jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>, 
+	"pavel@kernel.org" <pavel@kernel.org>, "rafael@kernel.org" <rafael@kernel.org>, 
+	"yangyicong@hisilicon.com" <yangyicong@hisilicon.com>, "vannapurve@google.com" <vannapurve@google.com>, 
+	"jackmanb@google.com" <jackmanb@google.com>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>, 
+	Jack Thomson <jackabt@amazon.co.uk>, Takahiro Itazuri <itazur@amazon.co.uk>, 
+	Derek Manwaring <derekmn@amazon.com>, Nikita Kalyazin <nikita.kalyazin@linux.dev>
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8A82C2000E
+X-Stat-Signature: sgqj4jdow9g6bkhhyia339fuoki3fg5a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 02976A0008
-X-HE-Tag: 1776787508-581436
-X-HE-Meta: U2FsdGVkX19xLfaV69g3NV15c+pt/8wlbSx7V7hoRveeX/VQc8TtgEP49locKLciW6PwU9n88jbgEmMzCNz57dTG87PllTcmj68DJnONzQp1lPl+jOMdvXDVGSRYJM6+Gy5qhmqsVob3Z6ySD+eT41dSFtJ2AJKA1kbBJT34KaE57xwCVuUqZSAQg1dJYfOwXFkdq3tUnQcynBcwE+Nqs3QJ+mknTywTM6aJxF4ldFfiqzZlq42Sbqa6B5qNLMHUumAho7t/kefASKH/F6PjOuZSeDC95lxSsF5vDQZ93u3mJDZ7ZSrVBPBwOWSVex9s2jUD96ZAJVstHw0Vu/IGYLuTdyvcXpTAbYPDdKBdFTCeFXEpoc8zTUhLvOuG73W/ODfCsxGzIZ6/15/OFsUfy3YwAtTrih57FVQX8y9w8er3ryF+qDPowMlQMH5FFi4hllFmfj9uM75S8FYdnQWmbk0fNqzl+Vy0/6guEEey/snSRb4JMkRIES1Yb1HRcOT9ZHpAfTJP9HC+NiPxXQ4ga/CkPMZFzX6TrXujZPL5AKdat450HdocBVrW8DQal4QFZzlFVqEu8U5vum5OMMQNfp7dnRndyeHFqVdsgmIr+ZlqFubxDsq4GF4+JSbTPRZi4CBqx6uzaNLXa/1EJwmu/IG0GCd3ECTgWKtnGGQ9vfPerfNNAFAGTtX3rNtKop0RLz/mHF6I1/27WTu0LiFJC8IRJQq/WsElDocjPxlqI5Uh37Q0o9uMsKwNZVo3NRfWINog0P1NKVQrOkL9OPMBbXZqnH9U5N3O+am6jhCXG4IbFTefBXaWEkDzctIVVQTbOwmT14eB+xgcrDk3a8BdPkD9ZR15MvpuAM6e4tCx1JcG7BjQuVsdMxSdoE22bNN4B8hHrZkwF2SlOiIqEFaaUAySFW/GuOgik5fQgHh3QZlD84ShdADL7ALwOIga4CuYW8eUcBBb8L9LjpjM0GK
- 9+cKuGXo
- 5mDDdsmGqk6n/UICb+yZmO+8MKs23vEBoM6itfjVlbuNjli4C6cpakQY/gXQ+PqRQAKEkW3/hxUTMa8pxwll3ivURjddq3/L8wiRb1pP7jgbDxWF6OaLAXIGdyYApnuL70fLqS1VDtPNOTn9WkuTAyYoXb6Mvp3vFl0ycQyrPZzjCbvwIbXO4eme+kX6O8l0NG6y/tMOPGVY4WQeywYvknd5LEIB/hIK01UAtRkM+bvcJ8ohP8VOq/SFVMNtHayOyavarpnfYvQE2kXBMMXKkMmFzNlLjegn37Ag53GMIiTcQgP/km0XrITMQJDruAxW+6FROtlcMp6dJL4L1y/u1ICqHI1CxNALaNwRs+m82tVDO/lYFL7AM2G+DYisuUFeW6XyIfPDKfk70J3/Ejoq7zODgPJS+W1P/7D/Y9qU3j6JWYku56H85cA9S3VmZWJiKUupowV/gLmOJnq3jRPFAosBXvpEls9o/ILomg/FEtz2zQ3u+KJ+isneQkhYtzZdT6c6LZbw4HwGDsmMN1CrIMXjq/nCHJ5UIqhzzMfDfr6Kdq0Q=
+X-HE-Tag: 1776789070-94735
+X-HE-Meta: U2FsdGVkX1/yvVqc1s4zV+bouwoiT+2fO3P4SXqscw3f16OgvUWZsFUaoIyocFvsdvE8+raJxcl26TFNseIyqafv/EM5CFMot+PoFwmXBQl3zgl8DIhHnPSvxKbzORuUj3iKazItUvyHZOerdXL28/eO7Sj+3P0sbjIRMP4cnmPBv0JMJSzea6QL/VuZXyMbfWS4fcU30n/6dImABvo1IAicQOOxFEEgJCTlL0a0aE/6yaLISNxlOHaMa2IA6/82A/qdVZ3wepyBXeAjz6+XSv1mXPrMZ99gCoSRTHbH4kBdZlk8cunL1oy9Ojc04Y3HIAMYgmjWYB+TkA/MNOuJJZHrBU3cztzDbXtrDGreLKwF5MEX7evVhnLIjDEkhjNkLDr4mpKNy8Uz1Wyu0V0q/AAEFfCevFMx4w3DAh1XGMFHpwFyXmCJ4oc58KuBQGzjpqOqPiju/mhkZ85z10iCWM7+ROSlyK3eMObCCo3mprhf89BdsyxOiNsQxgsxWVDZtkm0o17vCavgV9UDUPuM5UsjBnF6hV/jXssYt/QV2Zh/KM0XiSw1orjM12IYAawdFF8IjNVRnv63zAw+tGwm5V9KkSrQhrjdpXkEZYZjhmz2uGPg+Tem7xZEb9x4mnM6beJATNZmZGaFh0pfWu/06hriAVjQYUwUlKBWSxosIXDDZkX7W9sS+KSKW2cwqleJI+9OKpDJuS1BkN/NGhgVRZ3ZLQcVXoVpaAOPf2qkCg/+37KYAg9km0gy7fCjnZYWGIpYVgwMlW/Xzw+MC2aaUcKL+mNwZ9SNw4XH85Wn+wmj3cevBRT+v465YgC2DCsfwaKvkhLjNw0uJVp4C5+XNOAB8dwQAJsbxJkOl5IcGHEEbwEfufo1qPh3p7EBXIR4Cv3vk6Bp1fu/TB2bJ4povhmMgR5FNA032QltVh/+FbUHHifZ08Kij53eHjAFmaqJBf0cdYNJFBlXFW1dmrg
+ MJCc8I6V
+ FbiH/T38j/nVoBEcjvyLFzfelZGQTqXiAeVddLA3JNkRCSGzYlFBHA2ZdoxKlmDRrDqHwz9ZwinTidFVIedHUYkI3kICl4GgOOsP+SMAuRAKbUVeB9JU5UL97n6hQIaC2IB3onD7Pp29DutdGtV3FtM1hhmk/3ng5GsZNUDw41+35l/jbGHmB3UTletQWOiqEMrQYIFtEUukM4a4jmy/2HkZ7XMekWphzIbNtc2zJ5B+YzaNviD+TtXfE4yPOudcCSYTlcqYVX+ZbTSyWPN6TAQDrq3ZVezcV2lbSZh3MKyg7nhznk8+DvRh3aH3ZLAExzaWwsEirUqycwm/UToC3LJCFxrqvB/Sm3nYDgRUtaiItHfRti34f2mTCtc8T2dM6tNpTSHBFjxARQWtJ7HZ3TXnZrCxq5GPcz7f0cJN/eCI8xHgw1KaptycphHfuPSmLxhpfsQcMuXEmg0KxbfQy0vALzJefEw4o5BgIa15GWgJDXnSgEGhVajI7WtHaiTmHM4nXrNUbvF08Ur1gzmqaUCKPQr07dimHk6YeqHA3VJ9w6RxCNhxuCJwtsgS0N1lidi1V8iSjZgF9m5TKeCK/moroqE8+o8LgzMWByCVZowxReoIRIUVxhItsqlHhPlhLoXkjET5F3Gmom4bGe1vweDhLnklTHeqBdqX9aNIc065ThuerWGnmE1ahBXHT4Kk/lBrYsTNyhpYl1d0PyNFA0FqJnWNqtc0WOsJPIh/Hj452srJfCnYq+0EzATPiiMGfzL/PCfoQc/hDNRoFXtRnXn2tijHIH3YYVZ/EE26sE60Fy4VzgFfAjpu8p/S6Fc/7ZRJH8atIGi4TvxDBjljkP0ggXoUGQbEsUBT4fr6whp1pjViLAvme5bi7ja1qi98XT+BJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,124 +162,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 08:55:02PM +0530, Donet Tom wrote:
+On Fri, Apr 10, 2026, Nikita Kalyazin wrote:
+> From: Patrick Roy <patrick.roy@linux.dev>
 > 
-> Hi Bharata
+> Add GUEST_MEMFD_FLAG_NO_DIRECT_MAP flag for KVM_CREATE_GUEST_MEMFD()
+> ioctl. When set, guest_memfd folios will be removed from the direct map
+> after preparation, with direct map entries only restored when the folios
+> are freed.
 > 
-> On 3/23/26 3:21 PM, Bharata B Rao wrote:
-> > From: Gregory Price <gourry@gourry.net>
-> > 
-> > Tiered memory systems often require migrating multiple folios at once.
-> > Currently, migrate_misplaced_folio() handles only one folio per call,
-> > which is inefficient for batch operations. This patch introduces
-> > migrate_misplaced_folios_batch(), a batch variant that leverages
-> > migrate_pages() internally for improved performance.
-> > 
-> > The caller must isolate folios beforehand using
-> > migrate_misplaced_folio_prepare(). On return, the folio list will be
-> > empty regardless of success or failure.
-> > 
-> > This function will be used by pghot kmigrated thread.
-> > 
-> > Signed-off-by: Gregory Price <gourry@gourry.net>
-> > [Rewrote commit description]
-> > Signed-off-by: Bharata B Rao <bharata@amd.com>
-> > ---
-> >   include/linux/migrate.h |  6 ++++++
-> >   mm/migrate.c            | 48 +++++++++++++++++++++++++++++++++++++++++
-> >   2 files changed, 54 insertions(+)
-> > 
-> > diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> > index d5af2b7f577b..5c1e2691cec2 100644
-> > --- a/include/linux/migrate.h
-> > +++ b/include/linux/migrate.h
-> > @@ -111,6 +111,7 @@ static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *p
-> >   int migrate_misplaced_folio_prepare(struct folio *folio,
-> >   		struct vm_area_struct *vma, int node);
-> >   int migrate_misplaced_folio(struct folio *folio, int node);
-> > +int migrate_misplaced_folios_batch(struct list_head *folio_list, int node);
-> >   #else
-> >   static inline int migrate_misplaced_folio_prepare(struct folio *folio,
-> >   		struct vm_area_struct *vma, int node)
-> > @@ -121,6 +122,11 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
-> >   {
-> >   	return -EAGAIN; /* can't migrate now */
-> >   }
-> > +static inline int migrate_misplaced_folios_batch(struct list_head *folio_list,
-> > +						 int node)
-> > +{
-> > +	return -EAGAIN; /* can't migrate now */
-> > +}
-> >   #endif /* CONFIG_NUMA_BALANCING */
-> >   #ifdef CONFIG_MIGRATION
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index a15184950e65..94daec0f49ef 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -2751,5 +2751,53 @@ int migrate_misplaced_folio(struct folio *folio, int node)
-> >   	BUG_ON(!list_empty(&migratepages));
-> >   	return nr_remaining ? -EAGAIN : 0;
-> >   }
-> > +
-> > +/**
-> > + * migrate_misplaced_folios_batch() - Batch variant of migrate_misplaced_folio
-> > + * Attempts to migrate a folio list to the specified destination.
-> > + * @folio_list: Isolated list of folios to be batch-migrated.
-> > + * @node: The NUMA node ID to where the folios should be migrated.
-> > + *
-> > + * Caller is expected to have isolated the folios by calling
-> > + * migrate_misplaced_folio_prepare(), which will result in an
-> > + * elevated reference count on the folio. All the isolated folios
-> > + * in the list must belong to the same memcg so that NUMA_PAGE_MIGRATE
-> > + * stat can be attributed correctly to the memcg.
-> > + *
-> > + * This function will un-isolate the folios, drop the elevated reference
-> > + * and remove them from the list before returning. This is called
-> > + * only for batched promotion of hot pages from lower tier nodes.
-> > + *
-> > + * Return: 0 on success and -EAGAIN on failure or partial migration.
-> > + *         On return, @folio_list will be empty regardless of success/failure.
-> > + */
-> > +int migrate_misplaced_folios_batch(struct list_head *folio_list, int node)
-> > +{
-> > +	pg_data_t *pgdat = NODE_DATA(node);
-> > +	struct mem_cgroup *memcg = NULL;
-> > +	unsigned int nr_succeeded = 0;
-> > +	int nr_remaining;
-> > +
-> > +	if (!list_empty(folio_list)) {
-> > 
-> We seem to proceed even when the list is empty. Should we instead return
-> early in that case?
+> To ensure these folios do not end up in places where the kernel cannot
+> deal with them, set AS_NO_DIRECT_MAP on the guest_memfd's struct
+> address_space if GUEST_MEMFD_FLAG_NO_DIRECT_MAP is requested.
 > 
-
-Well that seems utterly reasonable, yes you are right.
-
-> > +		struct folio *first = list_first_entry(folio_list, struct folio, lru);
-> > +		memcg = get_mem_cgroup_from_folio(first);
+> Note that this flag causes removal of direct map entries for all
+> guest_memfd folios independent of whether they are "shared" or "private"
+> (although current guest_memfd only supports either all folios in the
+> "shared" state, or all folios in the "private" state if
+> GUEST_MEMFD_FLAG_MMAP is not set). The usecase for removing direct map
+> entries of also the shared parts of guest_memfd are a special type of
+> non-CoCo VM where, host userspace is trusted to have access to all of
+> guest memory, but where Spectre-style transient execution attacks
+> through the host kernel's direct map should still be mitigated.  In this
+> setup, KVM retains access to guest memory via userspace mappings of
+> guest_memfd, which are reflected back into KVM's memslots via
+> userspace_addr. This is needed for things like MMIO emulation on x86_64
+> to work.
 > 
-> 
-> I had a small question—are we ensuring that a single list contains folios
-> from the same memcg?
->
+> Direct map entries are zapped right before guest or userspace mappings
+> of gmem folios are set up, e.g. in kvm_gmem_fault_user_mapping() or
+> kvm_gmem_get_pfn() [called from the KVM MMU code].
 
-It has been a long while since i originally wrote this commit.
+...
 
-I believe I originally wrote this I used it in the context of
-folio_mark_accessed() driven promotions - trying to get some semblance
-of NUMA balancing for unmapped page cache pages.
+> +#define KVM_GMEM_FOLIO_NO_DIRECT_MAP BIT(0)
+> +
+> +static bool kvm_gmem_folio_no_direct_map(struct folio *folio)
+> +{
+> +	return ((u64)folio->private) & KVM_GMEM_FOLIO_NO_DIRECT_MAP;
+> +}
+> +
+> +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
+> +{
+> +	int r = 0;
+> +
+> +	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+> +
+> +	if (WARN_ON_ONCE(!(GMEM_I(folio_inode(folio))->flags & GUEST_MEMFD_FLAG_NO_DIRECT_MAP)))
+> +		return -EINVAL;
+> +
+> +	if (kvm_gmem_folio_no_direct_map(folio))
+> +		goto out;
+> +
+> +	r = folio_zap_direct_map(folio);
+> +	if (!r)
+> +		folio->private = (void *)((u64)folio->private | KVM_GMEM_FOLIO_NO_DIRECT_MAP);
+> +
+> +out:
+> +	return r;
+> +}
+> +
+> +static void kvm_gmem_folio_restore_direct_map(struct folio *folio)
+> +{
+> +	folio_restore_direct_map(folio);
+> +	folio->private = (void *)((u64)folio->private & ~KVM_GMEM_FOLIO_NO_DIRECT_MAP);
+> +}
 
-These folios got put into a task workqueue that then got processed on
-the way out of the kernel.
+Making guest_memfd responsible for zapping and restoring the direct map on a per-
+folio basis feels wrong given the addition of AS_NO_DIRECT_MAP.  I especially don't
+like that the "rules" for when an AS_NO_DIRECT_MAP folio has a direct map will vary
+based on the owner, and even within an owner (e.g. guest_memfd) will be ad hoc.
 
-I think I made the assumption at the time that the folios would all
-belong to the same memcg - I have since learned that this almost
-certainly is not the case.
+E.g. as per the series to add guest_memfd write() support[*]:
 
-That means a bulk migration may have to first process the folios into
-lists by memcg before migrating them.
+  When direct map removal is implemented [2]
+   - write() will not be allowed to access pages that have already
+     been removed from direct map
+   - on completion, write() will remove the populated pages from
+     direct map
 
-So this commit likely needs to be redone.
+That's pretty gross ABI, because with KVM_GMEM_FOLIO_NO_DIRECT_MAP, userspace can
+write() exactly once.  To re-write memory, I assume userspace would need to do a
+PUNCH_HOLE or truncate.
 
-~Gregory
+What's preventing us from handling this automagically in e.g. filemap_add_folio()
+and filemap_remove_folio()?  Then the usage rules are pretty straightforward: the
+kernel must *always* assume the direct map is invalid for folios from
+AS_NO_DIRECT_MAP mappings.
+
+Then if KVM needs to utilize a kernel mapping, e.g. in kvm_gmem_populate(), KVM
+could use dedicated variants of kmap_local_xxx() to deal with a local mapping for
+a folio/page without a direct map.  Or, KVM could simply disallow the specific
+sequence that would require KVM to do the memcpy (I'm pretty sure we can do that
+with in-place shared=>private conversion support).
+
+I realize that could throw a big wrench into write() performance, but IMO, before
+merging either series, we need a complete story for exactly how this will all fit
+together, in a maintainable fashion and with sane ABI.
+
+[*] https://lore.kernel.org/all/20251114151828.98165-1-kalyazin@amazon.com
 
