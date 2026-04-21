@@ -4,103 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 767CAF327BF
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 08:19:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E29F327B0
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 08:26:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CFA76B0088; Tue, 21 Apr 2026 04:19:48 -0400 (EDT)
+	id B393B6B0088; Tue, 21 Apr 2026 04:26:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97F946B0089; Tue, 21 Apr 2026 04:19:48 -0400 (EDT)
+	id AEA316B0089; Tue, 21 Apr 2026 04:26:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8957F6B008A; Tue, 21 Apr 2026 04:19:48 -0400 (EDT)
+	id 9FFC66B008A; Tue, 21 Apr 2026 04:26:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 770346B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:19:48 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC3FDC3C32
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:19:47 +0000 (UTC)
-X-FDA: 84681864414.26.45C9495
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 401EB120005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:19:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TSwoK5Me;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776759586; a=rsa-sha256;
-	cv=none;
-	b=LZjnAuYlKbHkEuY775n37BsVPuqk/Pvst3k6hh0lYMhrLqNHZS/sYnmaW04Z/q983cO+OL
-	cI6kIO6QTmc+7hSR0i4VDCysay9DUA19dsq/UOCRUYdBZ5ntRyenNPRCScUAvkp3YIxYSb
-	mgAzvAUBU6ITzbyU92fzvd0xONU+m3I=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TSwoK5Me;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 90AC96B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:26:44 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17F4C140D1D
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:26:44 +0000 (UTC)
+X-FDA: 84681881928.09.305190C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6151440008
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 08:26:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C4YWv8EV;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776759586;
+	s=arc-20220608; t=1776760002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pGtVUyKkBa8Y9hW4MvBU7m2QNsNOOCiEej76WnOucvI=;
-	b=cIk+kUy/rjPdV8LKawS8d6EEHgg8eWQSuCtWEtVLd3mrLSTZX0KKswA6+epU5ACENvZUIj
-	Dnng8gK4eGv1h4CtZriJmV47cvKf/U4yvFHfyCEDfCWjq9LqQBIQR9Icgj6GdHZgZMgKCM
-	/Yt87NxVO0t139wD1aVH6chHD3mcho4=
+	bh=Dyc68Ji63qvbg+yr1FuIS96EhLCqxg6XMq3bztr7hMY=;
+	b=ZlH1ZcmAAWXkdZ5Koe6v9qSxEsccw41oEhlQlmOxoUuvNeQ2XYGmqVMVEWWtrPPXOA9777
+	lLLbnPluqkvbcjld62OlT3VgzGp0bgofJjP0J8W3pFUzdNU7ri3QjL1U+xA6vqZIZml33i
+	QYrIaE0sKG3zqEkVqo6/3JLH69j6Jz4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776760002; a=rsa-sha256;
+	cv=none;
+	b=6qvESLerjbq4jryiuL6DT0rcWGAqLbUQb1zt8yKhw3imRPjSGob7bUVgqbjgu6OAiTLSDv
+	RgO5UiQ0Uj4uPeVxLvuKXPFpc4FTO9xbkNi7865c5hqRJLaRtdn6LYxZhsMdPElIUJxj7w
+	5FSxKnccpUh2lppDWdgcOAWRaFnQSN4=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C4YWv8EV;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A4A344005;
-	Tue, 21 Apr 2026 08:19:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4196DC2BCB0;
-	Tue, 21 Apr 2026 08:19:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9F20F60018;
+	Tue, 21 Apr 2026 08:26:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1DA1C2BCB5;
+	Tue, 21 Apr 2026 08:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776759585;
-	bh=V4FX5dzUh+XiqVKzFc5sM27L6b8ZdiTUZUJVvzyyei4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TSwoK5MePptekyp3K7AJ8/o9ZokyocVGKgdP63CY67ERuOQ/iQqkTCd11fahOhxw0
-	 xQYmbGgEgbv57+eDQb59/EgTMRMKJgtlKmba8T7xFhZQrSlH80NXAhn+IzCqBZwxoc
-	 fUivAXeTlReHSyZLvyn59GSoBfKam5OjFsuIG4tJS6+QbNqQtUp5/iter8bVHTYYYJ
-	 ZW8kSxIQUHTNRxxa2Lpen5qu2bgP1k3Q4qtHvCX/hiqD/x1RlsGscjFsOyZhpwB0Tg
-	 CHgxHRvJ+g5KYhnokZVdppn4JrUMYHvkR1L6L5o0TInCMjxNhohYi24DImYbaOgIQ2
-	 G/HCHTF5h2DPw==
-Date: Tue, 21 Apr 2026 11:19:34 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
-	Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 16/53] selftests/mm: protection_keys: use kselftest
- framework
-Message-ID: <aeczFjEs6sqRPy0w@kernel.org>
-References: <20260418105539.1261536-1-rppt@kernel.org>
- <20260418105539.1261536-17-rppt@kernel.org>
- <f8495e44-a34a-4289-90f8-0faa71bf1a71@sirena.org.uk>
+	s=k20201202; t=1776760001;
+	bh=i5m2CUR8QP6u+qST5Zf+eew7jsrxDzkoBpW3jeL85T4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=C4YWv8EVkYKxvs+uYNI7RisIRb0Ryh2Mc/Ha4ptpqfMnOKfdzwr+vvghjhXTF5B/E
+	 /myt1Gg3WpjTQVouyK6ugDFu9ZZJRH/Cm4aPVpT1Xq5nbbACR1lEWiv65vTUP5cCZJ
+	 RC6xtEk7s4XjsOPaLRt50/4EWDnaU3UDAYO1LkSTH7HHwtawIfmN/9tffnaDLYdFuw
+	 1SRBMgD6/9VIZhapfC1YM8uxLZc9gxubUXUySGm1Q8avaVCixc2EyVVqM9emQu0uxg
+	 xHXZ5qIu01kJlqDMN3etpBIW2TH+nlBKnqJVj5PfzV/hpmJdG4r/WQcGQ5Vmm7HHaq
+	 QDbj+vE5aufaA==
+Message-ID: <15109c59-3339-4ef1-8528-7735e674255d@kernel.org>
+Date: Tue, 21 Apr 2026 10:26:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f8495e44-a34a-4289-90f8-0faa71bf1a71@sirena.org.uk>
-X-Rspamd-Queue-Id: 401EB120005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 3qdiag5b4o9spem1q55z7d9b3szq64y4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs/mm: clarify that we are not looking for LLM
+ generated content
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-doc@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Harry Yoo <harry@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6151440008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: kq6xkhme46f9xmrihqi7nuqk7yipzy6i
 X-Rspam-User: 
-X-HE-Tag: 1776759586-156599
-X-HE-Meta: U2FsdGVkX18KSygLcLJIc/2Z/1QuxthYBjoMQYS6vZ7oMKTMA+78YKLhDhdD7wGBjwHfbIO0+teRjpnD8f5EzXSeaBJr2bLM//c/0TeqvhyLWVJumX1enFrZ/obd2p5KuKQzdkrbVHS0p1MFmfxQmxA3zJ+nWIaRAYa2t6UxdtNjYykCkUY3EVTmzF8Tlx3+thvlgCKzwQ6mbQtdqTMaYQma8pmQiS5rlD+lGwsvlpTSDsFu+DJCAPeF1/czy7mRxYbJNqdxxscgq3AJtwmTLZgrtv6aocQqlkxcgg7VwKXinQJqythfG9F42ec18Cm9BVRCpHhVi2RWetJMir6Mjn1uaLZ7EqBsj2ColXNdRs7hDpI/KiQFK06IkrtWC60TcsfuZYGcHfuYyQYojZOl1V2/VYdg9pUuEDV6OPoGkjB6UhIAtLdYBYDaVDv/aZrDOzzZgjpdaC2UIUJha2vt3wxoI6BWEUOMqtZSgjKnWq+sZd6f0eaaTqmSOT0cQPufAl2N+qZcfJN7rNGKVxbThXsMDaIi9Hjg7aiaoh3BAA6iaLbovu8Cg5WpRM1P95ttB1qXcb9PZchPaQCkVxSZRNCRnmijC9VTjUp8+WJoOrZp4l4cE+2uSc/Re+xupTvOIABo3876f0Oz3e0IUE0bXn6Ve+FJD7J8r4TXd+L6i17ySPffaNC+FttTySkVofIEpTZxDElG9XaxDEJvSvhZK7hQjSxHlm8ZjsQrsYYvOyW9J/THvNmjWH+Axd0AKz3J5KrVBMwph9Xoq2TlhWi3vkS7lcMMoo1+lFcSxn1+LbEFE5ks8AZSDZ4iv1gaRZjsurCkzbkYh/+xHyuJ+g5951/nZ+cthEpyliHlIOfUZZgDFC/JyKAa4Li1FTAQEjuT+OOdlk6e+bv02jXPOOliTYLhDU4ccN711RRVqJgTpXjeOCvdNnxm2w+BGFd7DPboGb/i4tzop/zfGWmF0kK
- 3nz5hYTN
- HMLsE4TVN4cXHy97d9JVEIDf7ox7J9bwlyDTe9csktJhJDHS4YGMpb22sUZyl78iAzaeuueIb7pPbejRm8wrlLrWe8zAms+H598AgEZhgoYsBrkKa5+1JxzOYx5lPk/PBS10sjrjxAqCrh3zKsdIYbC93cmBqH5hKKRr/5a8cmKx7v4JB32XnIK1HEqy6cFNPa1GH0d7vBr9EWw6iy3FSFtgwICBhdDc6gqg09xFEDmHjcSjqU8/Anx9ond/dsi9GywqixHrZl1MoDXFy2ubUlxrRJlxuBFN9+yAVPwxoR6aNBTprZWRnAfmZbA==
+X-HE-Tag: 1776760002-465124
+X-HE-Meta: U2FsdGVkX1/s1i1E856N4JVBz25uLw0oJKcCjaL5nbnnhXhjDFlbaCkoN9n/EILlmikaeeNPv0QrrF/+YUdh75XAPCN2yMx1xhM1vOCgFXzSVeAxcVRKn8iRj2t01EsXtBw2+5pvH7HotPzOUtekN8o0ZXdR/9hCKCSClenTFINUuaInYqn1zSBpzTD9h94lUZFAbxzzOMbz/Ul1gj2Obciy9LYvd+hWd5y3N0izpGU+PjWNUNuarro+UT8rXr+wzlxJYVYHna2II0mg1lyXUbRTSlJJtbdS7BWp94afqrHV0pJy7zc90yfrA1KzmwcE4TaD8D3WgPKlNTuf7kss/NlbpYKS0F8QNjkWPEUvejGlQNmTF8MCI9vnkc37HUBAyPsaoX/gvQmEMFuVKzjYqA1vJ0pJYYsl5Ir+MO9P7XEi9Yv6aZHeLemU/Mlm5PN867+EThmE/U0xVgZinJRynxV4tvZKICy/NyNqepdPjvkXOshzPsQuKO8L83sWUGd0z/Y0a+O9hFy/WWOHotdh9tAHBr8QaSK/Rc8ORb8Cz//gnvpEc3qQ1B0dz8OIl7OtarV+PIYTPnYROWRjRPovI3uDwDIkbnp5nWr3Rq06W6vZ6F1BgcMHTvDYj1KYLoafSQtsb0gLeNuUz6NWk3aSg1j8QDiwfe84oAjnKPAvQ25xt+av2IK36rMmf4qFQsD70C4zGtZtdUQ7gw7UoMG67wV5zKKHxg2J0oUWV7+8TytO3MlaEZtwwOYOLRS9UCagJVRNkLr/N99rupeXmxBFEdm9aT+EeTjxPxnFNTWB3M0fB0UKAFQHI2mmk07Tl0Tnx1irIh8HsRMvpvX3LTUO9OdgE30K+eNxm0ECrB2z+CEx+9B9O1zDaC2GxtSEACW5WTLPDLLOXRi8aEDcDJ2+t3pUmMImRxuZQGZrHkr+GUtnUseY2nmBH3QlSRs5VztwRuJfCidhHk8kw4JmJ6w
+ SHU+2pBH
+ DySbVKmfYcbnmCgjw0witGHApMkggNs0dkPrUw0m5GGjw3+yy3NdExBLM+C3DIehj3fZxn/1P0FyOA8y06kc43QFk72JnNx4stIg/Ep+rnMFO2qzoCpi70N9IrnmOsI+kuJvGiPeEXkuF0OOmpjZPDO4cAoKDyJNL9fmDbeqbxKW9F/X6yndoS0YJWmh85H8PR849H0+ZNZhVplQ8SYtyPcdQ8h0/7R4YojD1iiOhSzeYroke4D8wtTtZ4nzxw2adwmdzI+FA/pjWRbbfIw/Q6q15OhT8A7X0KPp/22C/EdbYWIle67/FyDbY3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,23 +99,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 20, 2026 at 06:54:31PM +0100, Mark Brown wrote:
-> On Sat, Apr 18, 2026 at 01:55:01PM +0300, Mike Rapoport wrote:
+On 4/20/26 23:03, David Hildenbrand (Arm) wrote:
+> Let's make it clear that we are not looking for LLM generated content
+> from contributors not familiar with the details of MM, as it shifts the
+> real work onto reviewers.
 > 
-> > Adjust dprintf0() printouts to use "#" in the beginning of the line for
-> > TAP compatibility and add fflush(stdout) in the end of the test to
-> > ensure all the ksft_print_*() messages are really output.
-> 
-> > +	ksft_finished();
-> > +	fflush(stdout);
-> 
-> If that fflush() is needed it should go into the helper, particularly
-> since ksft_finshed() calls exit() so the fflush() will never be reachd.
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Looks like I'm missing prints because of something in my environment, I'll
-just drop the fflush().
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
--- 
-Sincerely yours,
-Mike.
+Thanks!
+
+> ---
+>  Documentation/mm/index.rst | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+> index 7aa2a8886908..13a79f5d092c 100644
+> --- a/Documentation/mm/index.rst
+> +++ b/Documentation/mm/index.rst
+> @@ -7,6 +7,19 @@ of Linux.  If you are looking for advice on simply allocating memory,
+>  see the :ref:`memory_allocation`.  For controlling and tuning guides,
+>  see the :doc:`admin guide <../admin-guide/mm/index>`.
+>  
+> +.. note::
+> +
+> +  Unfortunately, parts of this guide are still incomplete or missing.
+> +  While we appreciate contributions, documentation in this area is hard
+> +  to get right and requires a lot of attention to detail.  New contributors
+> +  should reach out to the relevant maintainers early.
+> +
+> +  This guide is expected to reflect reality, which requires contributors
+> +  to have a detailed understanding.  Documentation generated with LLMs
+> +  by contributors unfamiliar with these details shifts the real work onto
+> +  reviewers, which is why such contributions will be rejected without
+> +  further comment.
+> +
+>  .. toctree::
+>     :maxdepth: 1
+>  
+> 
+> ---
+> base-commit: da6b5aae84beb0917ecb0c9fbc71169d145397ff
+> change-id: 20260420-llmdoc-21bf5fadbd6f
+> 
+> Best regards,
+
 
