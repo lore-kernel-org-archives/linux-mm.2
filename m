@@ -4,100 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9DB3F327C9
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:03:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65B61F327CA
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04CBC6B0092; Tue, 21 Apr 2026 05:03:27 -0400 (EDT)
+	id 955806B0088; Tue, 21 Apr 2026 05:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3F626B0093; Tue, 21 Apr 2026 05:03:26 -0400 (EDT)
+	id 8DF006B0089; Tue, 21 Apr 2026 05:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E56616B0095; Tue, 21 Apr 2026 05:03:26 -0400 (EDT)
+	id 7A6E76B008A; Tue, 21 Apr 2026 05:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D3C3C6B0092
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:03:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6389D6B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:08:33 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A7B0160D21
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:03:26 +0000 (UTC)
-X-FDA: 84681974412.02.05BBAE9
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B577B2000B
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:03:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lWKgmMLr;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776762205; a=rsa-sha256;
-	cv=none;
-	b=NbHontvfwsS7AAWilmaTfXEQSjUq8IY+1kUEwqVtvhakr7AX2q0WjfTzSyOGdSvGgGeReG
-	Tp08NwvEnlaM84nFsfCMXeQGhwlSH814pJ7yNGuoq+HaqZe0IsgbZuhsfsz4gLWeD1HSm3
-	Ca7Rr6RdkpnEOSlUbIGNaQS0phb3iWg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lWKgmMLr;
-	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B8BEE5B74
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:08:33 +0000 (UTC)
+X-FDA: 84681987306.02.1582676
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4999940004
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:08:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qHrgWQHh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776762205;
+	s=arc-20220608; t=1776762511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vcbno30aQf+arGIaZ+mgE/N2zcPrSQwito+V5BR9IcI=;
-	b=YNtC619O1IfTgZLqJ18XkWf4tWZab8QLtuSnvCzTotwebiVGvziP+gFK79STNIr4+SigiH
-	tQ6MYa3QdW9b2G9676dQaQYLaIjd8M/iUUxnXjj/1M1L3ZpNju+3U19Y4v7o+9ARxUytnF
-	fZllbWOAEB7J5tiVD3KHMpm3zGvGhqA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776762200;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vcbno30aQf+arGIaZ+mgE/N2zcPrSQwito+V5BR9IcI=;
-	b=lWKgmMLrHixk3NnTk1fk/bAMn/tWOyeai/Bm2e7om76q1rs5NbaK8iSO4fVO19SlWq4Uzm
-	aCZNOSh2DkRueIyYOODOao4BqcnjX7hFeJ+Zstht2dzhS5zBjHlAFGo/1t0frnKd2jyUeu
-	87YkgtY59xQ0iIuf4au95EFxQBtANZY=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org,
-	dev.jain@arm.com
-Cc: catalin.marinas@arm.com,
-	will@kernel.org,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	ryan.roberts@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: fix initialization of tags of the huge zero folio with init_on_free
-Date: Tue, 21 Apr 2026 17:03:06 +0800
-Message-Id: <20260421090306.45979-1-lance.yang@linux.dev>
-In-Reply-To: <94fdc376-9c43-4334-b293-20a54acbdc3a@kernel.org>
-References: <94fdc376-9c43-4334-b293-20a54acbdc3a@kernel.org>
+	bh=iCBXrhg7C9/srZBYKXkvWBRwmDURbGGY8aIrv/zoQug=;
+	b=sqouVGxgCOS0QrXENmDM+HKrT/bq6AxQB+uiLHx/KXjNgZ65MfzZHqUTnAoWUsgFaCMV5B
+	m7p56sEKHJwCYGE9LTVkBQAbI4Ck/itneclBPT1JcEy2gPajAG9KhkLEw+OkZqfnhhGYB6
+	9+Jy8VTUxlEG+MQjo2ZS8xTC2mKHo9I=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qHrgWQHh;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776762511; a=rsa-sha256;
+	cv=none;
+	b=yPXbnAUsGO7DTxb/6OdbxcgOACpp8meD94wdjCdMWG9Y+HuxoIxLLRZtxmcurZskEdKTMZ
+	puaYVglsGGT1eQ6qPqCWoUGhHMah0IihLc0LJJRsMbiMBi09tOz+ND5J1Zx4GILNKn8BtN
+	LrD0uVxwIZXS6QYqQrdNqTP7jR1EMHA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 12BED40B4C;
+	Tue, 21 Apr 2026 09:08:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4575C2BCB5;
+	Tue, 21 Apr 2026 09:08:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776762509;
+	bh=JnjFXHz/DzaxlCC1EjhtvgOWVsZUYZ1qXPlyL5Gg3Mk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qHrgWQHhOHD+v7BkML+OGgs7w/nKJBfA8bmC5rZq1RqPZcVUc4LkU4Tp2G0Xekbsf
+	 T/ngt4IGDVyFGM2c1dXeWNIJzARNeIZZUr3sKEbXj5zohufQJ7YZ0JoSnGqQMzZIAd
+	 wQiCG8b3OuEmQyj/3cAEB6wnRhlkQ64luJuEKnHXe1rf6VTjmscUi4+RwtH1qr6Miz
+	 M37r41MIXPe7jmsjSbOzCjsqmJHZJ2nR5BEdHqulAHA1Gg3/S99IHJRjrJ5JTwCx0l
+	 kVX2E4Z5FhEBG6sMoXScopZXMVgzM5M2UCqUKH36sWcXh6A60qcGA1S01NTwCVQHKT
+	 j8308YPwRtrJw==
+Date: Tue, 21 Apr 2026 10:08:23 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Ye Liu <liuye@kylinos.cn>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Jann Horn <jannh@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: handle potential NULL return from
+ anon_vma_name_reuse()
+Message-ID: <aec7p15jvsw7XRHz@lucifer>
+References: <20260421085056.26033-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B577B2000B
-X-Stat-Signature: z57oqtt6sw4abbrehk1xcids6pxfhxf5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421085056.26033-1-ye.liu@linux.dev>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4999940004
+X-Stat-Signature: mgzwu54raudrbiq7e5u17w7qqmnrwdur
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776762204-695985
-X-HE-Meta: U2FsdGVkX1+4uL5BhbgQpQ6vQl5DzLfdM3xiBYka2MmXBT9MSgoapVYc2CHubZxqvpQYWiAHINYv7qtNhhSfLWGbce2mJIga7dtKZCWJq9wzwfTF0Vqz4nngbu637U5+dWrX7KXwYL0fdOe9zO3FTMDHVc3yckuyQkxy2vcMqjpQietewN25kZ1vXQlJVsdDvOIF1ZAHbxSLlolgxkP5XJ27IOSgpnNh+HqKWb5UqH996J3NOdtRN51nWYOOkUvKj6gaqBjt5YG/kQWCG+KsTPRcBACttbya8QLcSy+6M+cuEAgtdOalqDelNEQ2y3eRv1PE2NGgLkSE313AMvEoNtRYwmfb1NJqCw1dMhfaMaeJ6omkXRhbWa3UTe6PsHl3cEg4O6FJG5AGRFQISE33eoLLbigdx1xvOHuz3D3WHLEF/llnomsvvtQUjODpr5lYYwWG9R4JMUoYlKa4oNS6WCnZ0xACYr4ZdBCucdIXXTEQzg4T32UCUw0Vl43lZdiv8Xif0CakTLI7ABduaezxVdwZkR9Kfpnp/QXiYIu3X8t8UsrtSd7lx/bqTR2E+FumU5YVCSUv3sIR9981Q0i6OqiqWISDKtigm/MklkX9YXvfzKYASBp6dB5VtrZlHJe7EMnAWALUmhJskp115UUXcY6VBXAb151bdCrNq0FtHmOnkKkn4yYx8KuttssoeDmbce4ze9SZoaUEDuT8xVl51L12HsCFycOg3wUh1VIXHD6tABYjQLocmE2g0ALmJIl+DHImMibIIcFvZSDCfXgxAPjip81pHRvsxHHsdKY3lEZQ3S3pJMYtKEdHtomkR+Bs2z3P46GerSHSfG+srpHIuuJhOd1K8pHNgsbU8ClJqEiRMg6x4plntOPi9vz8U0i6WZFitItHpySPM++lnW76UKxaMcUoHeGGfqGJieikQveqpK6LPehZtoZs6GHpE1vLTdUU/8aFXT/9co34Afc
- 5cgpTUFc
- cCTMeDRcLM5UZOsnKwibhZievv0eaaMcHLnSv7JpYPMcbEOJI8+W1BCg8QIL1NsR4UPWZ3w3yUYdpSL+xyy40xigqm1sJ/QyCyPVKiyv11pVpMwfyCQ9SjAQIij1r/R2Z/+vVkVgDupiyOH56wR5WXwqadv4t8dNWkHR7zzUrObIIV4XwQQbYBXGxevurybWmMxx7YQ+vTXkjHOIpv38/3KgQ9/oBf8T3y1Xwro3Iy/7ODN2TTH8fmctppf2CT5nYn1oJ5S3108EaWflHNx0TZBz+70lAolF640L3b/ne2bcZ/WvlEx33SnLmxSU1UkLzokL8vYl8gZv6iwYEqf0EEZFcAw==
+X-HE-Tag: 1776762511-561291
+X-HE-Meta: U2FsdGVkX1+zXyfMWsSnl0aaQr0f/XDhG1FK7TQMMS86FNNAUbpRwIXlz7bFaXKvPwEHtv4h/wSHQH9/V4DpAMwYr4eg2CLIMV5yWJiESb7JMH3LhW0cf2joHGpGkdnLKaVM8lobKUvJUHG3k2lr52aRqAincDNRy+UyrHl7QYLSZhFmrtVSbK4aOtujt+Ut1xfOmg0JuT3gAB/k47/Q+ofPUzbjUTcz0uiPtjdNIe3Lc3mMjLQ53GeLA0W0Xj4VDi3LMTHI5HG4ZiBnlyghOEz7AP2slTZCqYiOQWRCvHqX2KG3M369iC5iyewrCRVI/FGAuf9Q6BfPyTbqKJJO8bG2CvoOcbqVAK7Ksc2eMAT1CHYibRzZoq57zGxqJNiQs5GfElnZv1+BVUlST6veqCyY9vBmhInHYLWA0EHTIP+y83QeMI2LqULmZLT3IL7u1GUbodIs/mdtRC89hZTc/+fFGRHAJIhU/pChxwZyYVja7BFMp6OrULXXVH9xgjKxKYVmJs4v/Magmf6iqH4s5CV7EiHqxK/x3eGIuNzCCualDdoz4Wpr0qD3LkPtbDoK36YZG4mdBIHSJCdaJqsLwLqgwbgUsdITwdyP/uqeh740NB+TcggB2hlr85sjdBp6aiHbDRKprjZHSOVLr1sOJmjwMcf8E//UG7khu/S+ko8sbf6SxgK8bA7QmajVspZw30/UcblhOS3V+UdUuUxr5Gv+cTDgBZd8pCruanz5rKe2vP6KUxONWCLRTdNxAdExkmzVbQybGpR5TmpbbUr0osBbBc/bc6JInk/ov4k6D+y8NS4e0NHSdxGcbYq3SaNOatuHcADVzdQsx2zdt2SLS+6gItpbkCtYG4GL7MYRO496SHgXSJJQNWovMU+L53QQHXVdwuNd0IgT0mwqLYqMFt1gJOaZLkgr0UeMiXdQcv6Pj10fhDHDKezTW7tRJR/XJ1ZzvxPsCMcuU+mhXHf
+ kZbN6/ar
+ GYVLpVE2BlXDPA1ICf/n1P7yP5piHzeZ9nnWZrpN5eFKFa3MJRbhNsgZPxFZmQdWPjiHNjnus4TVfpntuMgsvQARuzUcySCG1nIprLC0qPJZxh9HmVdQmAuIGb/ObKAZtU0Hgrf2BMZGsJF9Aj4bQXEE9Jft6/CcTUYxjHsKakQxv5/H43dafc6WtW7HuIKPla8Tg+ku+H4tF2wkPRSjejMEBpF2mCugw53/V6K0bXE9dYrxNq5XTxCmLO68IgwWJ43rTytHdwRsaGYUdY4M6apr+PfmkQXLkP7dSTH+SMitThWA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,202 +97,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+NAK, expected allocation failures (even if practically impossible) should not
+cause arbitrary kernel warnings.
 
-On Tue, Apr 21, 2026 at 10:06:54AM +0200, David Hildenbrand (Arm) wrote:
->On 4/21/26 09:06, Dev Jain wrote:
->> 
->> 
->> On 21/04/26 2:46 am, David Hildenbrand (Arm) wrote:
->>> __GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
->>> flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
->>>
->>> If we run with init_on_free, we will zero out pages during
->>> __free_pages_prepare(), to skip zeroing on the allocation path.
->>>
->>> However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
->>> consequently not only skip clearing page content, but also skip
->>> clearing tag memory.
->>>
->>> Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
->>> will get mapped to user space through set_pte_at() later: set_pte_at() and
->>> friends will detect that the tags have not been initialized yet
->>> (PG_mte_tagged not set), and initialize them.
->>>
->>> However, for the huge zero folio, which will be mapped through a PMD
->>> marked as special, this initialization will not be performed, ending up
->>> exposing whatever tags were still set for the pages.
->>>
->>> The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
->>> that allocation tags are set to 0 when a page is first mapped to user
->>> space. That no longer holds with the huge zero folio when init_on_free
->>> is enabled.
->>>
->>> Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
->>> tag_clear_highpages() whether we want to also clear page content.
->>>
->>> As we are touching the interface either way, just clean it up by
->>> only calling it when HW tags are enabled, dropping the return value, and
->>> dropping the common code stub.
->>>
->>> Reproduced with the huge zero folio by modifying the check_buffer_fill
->>> arm64/mte selftest to use a 2 MiB area, after making sure that pages have
->>> a non-0 tag set when freeing (note that, during boot, we will not
->>> actually initialize tags, but only set KASAN_TAG_KERNEL in the page
->>> flags).
->>>
->>> 	$ ./check_buffer_fill
->>> 	1..20
->>> 	...
->>> 	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
->>> 	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
->>> 	...
->>>
->>> This code needs more cleanups; we'll tackle that next, like
->>> decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN, moving all the
->>> KASAN magic into a separate helper, and consolidating HW-tag handling.
->>>
->>> Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>> ---
->>>  arch/arm64/include/asm/page.h |  3 ---
->>>  arch/arm64/mm/fault.c         | 16 +++++-----------
->>>  include/linux/gfp_types.h     | 10 +++++-----
->>>  include/linux/highmem.h       | 10 +---------
->>>  mm/page_alloc.c               | 12 +++++++-----
->>>  5 files changed, 18 insertions(+), 33 deletions(-)
->>>
->>> diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
->>> index e25d0d18f6d7..5c6cbfbbd34c 100644
->>> --- a/arch/arm64/include/asm/page.h
->>> +++ b/arch/arm64/include/asm/page.h
->>> @@ -33,9 +33,6 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
->>>  						unsigned long vaddr);
->>>  #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
->>>  
->>> -bool tag_clear_highpages(struct page *to, int numpages);
->>> -#define __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
->>> -
->>>  #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
->>>  
->>>  typedef struct page *pgtable_t;
->>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
->>> index 0f3c5c7ca054..32a3723f2d34 100644
->>> --- a/arch/arm64/mm/fault.c
->>> +++ b/arch/arm64/mm/fault.c
->>> @@ -1018,21 +1018,15 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
->>>  	return vma_alloc_folio(flags, 0, vma, vaddr);
->>>  }
->>>  
->>> -bool tag_clear_highpages(struct page *page, int numpages)
->>> +void tag_clear_highpages(struct page *page, int numpages, bool clear_pages)
->>>  {
->>> -	/*
->>> -	 * Check if MTE is supported and fall back to clear_highpage().
->>> -	 * get_huge_zero_folio() unconditionally passes __GFP_ZEROTAGS and
->>> -	 * post_alloc_hook() will invoke tag_clear_highpages().
->>> -	 */
->>> -	if (!system_supports_mte())
->>> -		return false;
->>> -
->>>  	/* Newly allocated pages, shouldn't have been tagged yet */
->>>  	for (int i = 0; i < numpages; i++, page++) {
->>>  		WARN_ON_ONCE(!try_page_mte_tagging(page));
->>> -		mte_zero_clear_page_tags(page_address(page));
->>> +		if (clear_pages)
->>> +			mte_zero_clear_page_tags(page_address(page));
->>> +		else
->>> +			mte_clear_page_tags(page_address(page));
->>>  		set_page_mte_tagged(page);
->>>  	}
->>> -	return true;
->>>  }
->>> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
->>> index 6c75df30a281..fd53a6fba33f 100644
->>> --- a/include/linux/gfp_types.h
->>> +++ b/include/linux/gfp_types.h
->>> @@ -273,11 +273,11 @@ enum {
->>>   *
->>>   * %__GFP_ZERO returns a zeroed page on success.
->>>   *
->>> - * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
->>> - * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
->>> - * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
->>> - * memory tags at the same time as zeroing memory has minimal additional
->>> - * performance impact.
->>> + * %__GFP_ZEROTAGS zeroes memory tags at allocation time. This flag is intended
->>> + * for optimization: setting memory tags at the same time as zeroing memory
->>> + * (e.g., with __GPF_ZERO) has minimal additional performance impact. However,
->>> + * __GFP_ZEROTAGS also zeroes the tags even if memory is not getting zeroed at
->>> + * allocation time (e.g., with init_on_free).
->>>   *
->>>   * %__GFP_SKIP_KASAN makes KASAN skip unpoisoning on page allocation.
->>>   * Used for userspace and vmalloc pages; the latter are unpoisoned by
->>> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
->>> index af03db851a1d..62f589baa343 100644
->>> --- a/include/linux/highmem.h
->>> +++ b/include/linux/highmem.h
->>> @@ -345,15 +345,7 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
->>>  	kunmap_local(kaddr);
->>>  }
->>>  
->>> -#ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
->>> -
->>> -/* Return false to let people know we did not initialize the pages */
->>> -static inline bool tag_clear_highpages(struct page *page, int numpages)
->>> -{
->>> -	return false;
->>> -}
->>> -
->>> -#endif
->>> +void tag_clear_highpages(struct page *to, int numpages, bool clear_pages);
->>>  
->>>  /*
->>>   * If we pass in a base or tail page, we can zero up to PAGE_SIZE.
->>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>> index 65e205111553..8c6821d25a00 100644
->>> --- a/mm/page_alloc.c
->>> +++ b/mm/page_alloc.c
->>> @@ -1808,9 +1808,9 @@ static inline bool should_skip_init(gfp_t flags)
->>>  inline void post_alloc_hook(struct page *page, unsigned int order,
->>>  				gfp_t gfp_flags)
->>>  {
->>> +	const bool zero_tags = kasan_hw_tags_enabled() && (gfp_flags & __GFP_ZEROTAGS);
->> 
->> Sashiko:
->> 
->> https://sashiko.dev/#/patchset/20260420-zerotags-v1-1-3edc93e95bb4%40kernel.org
->> 
->> PROT_MTE works without KASAN_HW_TAGS, so probably just retain the
->> system_supports_mte() check in tag_clear_highpages(), and document
->> that GFP_ZEROTAGS is only for MTE?
+But also this is very silly, you would need INT_MAX references on the anon_name
+to happen first...
+
+On Tue, Apr 21, 2026 at 04:50:55PM +0800, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
 >
->Right, we have to clear tags here even without kasan. God, what an ugly
->mess people created here with these GFP flags.
+> The anon_vma_name_reuse() function may return NULL if memory allocation
+> fails in anon_vma_name_alloc(). Currently, callers dup_anon_vma_name()
+> and replace_anon_vma_name() do not check the return value, which could
+> lead to NULL pointer dereferences.
 
-Yeah, with kasan=off, kasan_init_hw_tags() returns early, so
-kasan_hw_tags_enabled() stays false and tag_clear_highpages() is still
-skipped.
+We assign NULL if the allocation failed. And every code path understands
+vma->anon_vma_name being NULL to be a valid situation of that VMA not having a
+name.
 
-With the small debug change below, it still reproduces reliably:
+In the case you're failing an allocation that small, the system is under extreme
+memory pressure.
 
----8<---
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 970e077019b7..d5b6e2474f47 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -225,8 +225,7 @@ static bool get_huge_zero_folio(void)
-        if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
-                return true;
+Not propagating an anon_vma_name, which is cosmetic, is totally fine under those
+circumstances.
 
--       zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
--                                ~__GFP_MOVABLE,
-+       zero_folio = folio_alloc(GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS,
-                        HPAGE_PMD_ORDER);
-        if (!zero_folio) {
-                count_vm_event(THP_ZERO_PAGE_ALLOC_FAILED);
----
+But also, you'd require the anon_vma_name to be saturated at REFCOUNT_MAX ==
+INT_MAX.
 
-Cheers,
-Lance
+So this is just silly.
+
+>
+> This patch adds proper error handling:
+> - In dup_anon_vma_name(), if anon_vma_name_reuse() returns NULL, emit a
+>   warning via WARN_ON_ONCE(1) since this is an unexpected condition.
+
+It's not? Your whole thesis is that allocation failures can happen here and
+cause a problem, so you can't simultaneously say it's 'unexpected'?
+
+> - In replace_anon_vma_name(), return -ENOMEM to propagate the allocation
+>   failure to the caller.
+>
+> These changes improve robustness against memory allocation failures.
+
+No, they add a bunch of noise, then make an allocation failure into an
+arbitrary, new kernel warning.
+
+>
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> ---
+>  include/linux/mm_inline.h | 12 +++++++++---
+>  mm/madvise.c              |  7 ++++++-
+>  2 files changed, 15 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+> index a171070e15f0..9bbaf8287806 100644
+> --- a/include/linux/mm_inline.h
+> +++ b/include/linux/mm_inline.h
+> @@ -421,9 +421,15 @@ static inline void dup_anon_vma_name(struct vm_area_struct *orig_vma,
+>  				     struct vm_area_struct *new_vma)
+>  {
+>  	struct anon_vma_name *anon_name = anon_vma_name(orig_vma);
+> -
+> -	if (anon_name)
+> -		new_vma->anon_name = anon_vma_name_reuse(anon_name);
+> +	struct anon_vma_name *new_name;
+> +
+> +	if (anon_name) {
+> +		new_name = anon_vma_name_reuse(anon_name);
+> +		if (new_name)
+> +			new_vma->anon_name = new_name;
+> +		else
+> +			WARN_ON_ONCE(1);
+> +	}
+
+This is horrible code, but as I said above, this is not only wrong it's actively
+bad - you're causing an allocation failure to result in a kernel warning.
+
+We don't mind anon_vma_name not being propagated after billions of references
+and under maximally extreme memory pressure/fatal signal propagation.
+
+>  }
+>
+>  static inline void free_anon_vma_name(struct vm_area_struct *vma)
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 69708e953cf5..ccb937a37e70 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -118,6 +118,7 @@ static int replace_anon_vma_name(struct vm_area_struct *vma,
+>  				 struct anon_vma_name *anon_name)
+>  {
+>  	struct anon_vma_name *orig_name = anon_vma_name(vma);
+> +	struct anon_vma_name *new_name;
+>
+>  	if (!anon_name) {
+>  		vma->anon_name = NULL;
+> @@ -128,7 +129,11 @@ static int replace_anon_vma_name(struct vm_area_struct *vma,
+>  	if (anon_vma_name_eq(orig_name, anon_name))
+>  		return 0;
+>
+> -	vma->anon_name = anon_vma_name_reuse(anon_name);
+> +	new_name = anon_vma_name_reuse(anon_name);
+> +	if (!new_name)
+> +		return -ENOMEM;
+> +
+> +	vma->anon_name = new_name;
+
+This is pointless noise. Billions of references, extreme memory pressure
+(practically impossible anyway).
+
+>  	anon_vma_name_put(orig_name);
+>
+>  	return 0;
+> --
+> 2.43.0
+>
+
+Thanks, Lorenzo
 
