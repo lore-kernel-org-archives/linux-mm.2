@@ -4,93 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7184F327B2
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 06:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7BA5F327AA
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 06:49:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 241546B0092; Tue, 21 Apr 2026 02:45:28 -0400 (EDT)
+	id 2BBB86B008C; Tue, 21 Apr 2026 02:49:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F24B6B0095; Tue, 21 Apr 2026 02:45:28 -0400 (EDT)
+	id 245D06B0098; Tue, 21 Apr 2026 02:49:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BA176B0096; Tue, 21 Apr 2026 02:45:28 -0400 (EDT)
+	id 10DB76B009B; Tue, 21 Apr 2026 02:49:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F22676B0092
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:45:27 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADF0BBD564
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:45:27 +0000 (UTC)
-X-FDA: 84681626694.18.94A1C2D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 288B380010
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:45:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZFVCtUb;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776753926; a=rsa-sha256;
-	cv=none;
-	b=CGaowCnri09P1v3VVOqnlhtNjgu7t5StyxuIPm5YGBQYdVsqMhCtG5PDRkWT05mUmon8Hv
-	SvL8N/mPkVb8DaW/iZkD3NPTL03nFIe8vxrCNU3Xg8vIOjWfbhinmVikPWjXk+5LWwrMCw
-	5P9Iwet1uzo2liFxpRLhxK3zndnXBcs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZFVCtUb;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F06B06B008C
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 02:49:16 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9535D13C1AB
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:49:16 +0000 (UTC)
+X-FDA: 84681636312.19.28CF577
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B18F4160003
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 06:49:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=A3CwKDs0;
+	spf=pass (imf08.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776753926;
+	s=arc-20220608; t=1776754154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/G8cWVgB2SZRPE9ycGzMJH+8bQwTvDa8dTHAoPol/bc=;
-	b=QFUFf8kF2x3SREyOvsF1bRbRpcRf9OSfRkpqF5q9XMv75DEnTlAxS61NKHcB94xozLXXoa
-	RB5OVWhz4erWbfzrT3B3TrdjehFo5JQUf9k7n83YpP1JYEn5bIshd9LzyTmNsDqyZ+6VIR
-	0TGmGe03706ioV0LHTwptxCncsePzss=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 30E3D6001A;
-	Tue, 21 Apr 2026 06:45:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2BCC2BCB0;
-	Tue, 21 Apr 2026 06:45:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776753924;
-	bh=dx6qSz9cAbPLai93tke4yY9+hgGMAcqbUzp/yIBIdeE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LZFVCtUbH3qyg4P3hgbHvXgvoZzOL/sYNfbd8x9MZz5vBbk5B9GAsDIvYLyttGStA
-	 N8fNTWJAFFrzqgufzVNG2q7RrLB1n4ue4gd/EiaLKebRwiE/qGabSBQzEwo8WH7Eui
-	 Wo781Z+f4WLsDgjkm7Xvny7hh2gBxqgCdGIhCmUOcr0GNsy8hsnanEAFCInyVDKWKK
-	 7+Cl8Zs9Px+aYflCxCjxJmlhKGeVnp52yDnPU47nRLt7ZLgGrnThVo/ayi5MwClI+y
-	 7endUe9ZfsH3U2fRcoIyemegwT+2ryIhSEozG9uJHvKoXn+Z2exhXICRYRF6MAVd1d
-	 IqxXjIafvd1dA==
-Date: Tue, 21 Apr 2026 09:45:17 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-doc@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Matthew Wilcox <willy@infradead.org>, Harry Yoo <harry@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs/mm: clarify that we are not looking for LLM
- generated content
-Message-ID: <aecc_TTRh1517J7X@kernel.org>
-References: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
+	bh=VdNywBu7apdyTFV9cnt3GZxXLndr1pBULjY0WptzCm8=;
+	b=V+FRt7aDFYyUL1YfZPgdm+Nbxd16exiSmMXDlFBmQQDhcnDfzejEfbUjqScLnIcZw7c54A
+	9xFhttw+wK1E+WqmyeYXak+E5AxnYdCFdtrctDuiU7+Ywl8GdAaZfGIotjb+C0A6WJ0MVp
+	7SJ4mQAf9II3QCoYUj94elbKAA5DM6s=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=A3CwKDs0;
+	spf=pass (imf08.hostedemail.com: domain of mkchauras@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=mkchauras@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776754154; a=rsa-sha256;
+	cv=none;
+	b=0hh+I2XffbxYqJ5isM36+HuxXPSde2XwA0eSbad1dgndM2V33ABrG+kbuu73kx1FkTOqhQ
+	BWVNCaqNxQ3FVsIj5VX2R8MsLddtyhadla1F8l8XQiYMPdFCTk24EU4gCT3zfBclot5uKY
+	6UJYH7Bv3/uEFCBszwSSFffW+3whv/M=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35fc0d7c310so2678085a91.1
+        for <linux-mm@kvack.org>; Mon, 20 Apr 2026 23:49:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776754153; x=1777358953; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VdNywBu7apdyTFV9cnt3GZxXLndr1pBULjY0WptzCm8=;
+        b=A3CwKDs0wxf8hvO+C6mhRYzQEGsY3iWU61mJecGiXw846Uoi/CWaytzC2QerpXafgy
+         zf4mvvi8zmEJSm/e2m8SzTcjaT3azzffvj2nxKhsZh2WHfHJ7GjmAy2Sm25ofgDNqql+
+         +LtqyKyreD+TSpvLjKMp0GTfbjwjSIwQLbMFYqxUKw/BxEl6AnS9l4ipbm+mV4z9yL1V
+         IPH8nCaZ8M2qkjgRUKZH6iAgytqHIcsDDDWnvwG4ojeXGMwmsIpYE8p/CJyP7rLpbqXH
+         O3sASLRqEI8QgPKXMXHVI8RrT5CSQQHEUyiAZNU0V9PVNpF8X86sPxa/yWi+LNH9d1OZ
+         m3WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776754153; x=1777358953;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VdNywBu7apdyTFV9cnt3GZxXLndr1pBULjY0WptzCm8=;
+        b=QHWBAq9BWAUh3yyN6oXKxQIt0NX28zjMrhWZWCrcMXYUs5zOtF5KNO4+vGHrZGGOSR
+         n6ZPwLJDmfdk28cTDAMVkwav5kfEJx7ImdsvEhBVQYBgljLqta+h5neDMN4Ue0K5mIJh
+         fL6zGQq+KfeX1z6nMWjrhuxkznGHJfGTP4dpiupGcOIhw57eJcNqdthYlHB2sjVHExtS
+         2PlEaod731/xpPsIkC/I2zKTZD4u69xSSQA+6liTgdAWsJnELZg1XWhOJOw/zhu84Ncb
+         OJSOP1C/bq1j5w//qN6Yzmqti/Xk6ZchhTUUuWB+WtxXRTC4LODFcab96rkLlZUZcWtt
+         Y34w==
+X-Forwarded-Encrypted: i=1; AFNElJ8EfZ554iuEJGCl7DP6T7d92sdotabebQnACfEzJHrE5EM1PJafJOIwkUG5UuULjXATRECIHMlKvQ==@kvack.org
+X-Gm-Message-State: AOJu0YzUH18wG/o6d5hlsgXSBfRc36BC9wO2cZIy9rwqISKH45xU/o46
+	qUie3DrZeQhdVPe4IAg3HYDI1qs61ru36xzdUgDVsrfU8lYZvq3QBgP+
+X-Gm-Gg: AeBDieshrmCNeLwArjl+2GRVNbrdPOUG1x4f3Qp0jz1VGwQeWpR9beH9U666kkFGki3
+	MeIO8RoHlKPiq94LCWEkh9CZmUcsoVNi5JGpw5KQ0JXZIjAYtJxRCiuHKsPqTcskm7zTP8sPXaJ
+	BOJbrHG1WoDFumehbH8gmntLL/QUaPYSkI79DOINgoCc714FnmRdmNIQEfzapOE7cBdf54yVM/S
+	WoXFH+L7rqShWewDwn3KiCwG4ftPmOUgxIBd1+35/CEgZYYjKIgJTBzwYNMdBVy5vhg23Z00evt
+	uLlkEtAxfcZU1Ix+oTgs+0yyT9eSzguK12q5aLyLP6ue1Y2kJsv8S012gCSyXR11D1UuylgRCwC
+	1oFcjyHWKMfHAtR2BllqPNZPgU9/NjP1LKlGI+B2qliGhZY5Gwme2/BY2+0R8iLdtBqWOtPD7sX
+	IpL395EQmjlCfqSrCEftitGHnvTNMyWuiZzDa/ZGsf2nth4b303T0QgRAym73hRmrugnTRXP4OF
+	od4IF6tUDk+Eifi
+X-Received: by 2002:a17:90a:dfd0:b0:35e:30bc:96ed with SMTP id 98e67ed59e1d1-36140402361mr16891174a91.10.1776754153374;
+        Mon, 20 Apr 2026 23:49:13 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([129.41.58.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3614195a8f0sm12278674a91.12.2026.04.20.23.48.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 23:49:13 -0700 (PDT)
+Date: Tue, 21 Apr 2026 12:18:55 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>, 
+	x86@kernel.org, Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev, 
+	Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	Herbert Xu <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org, 
+	Vlastimil Babka <vbabka@kernel.org>, linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>, 
+	Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org, Theodore Tso <tytso@mit.edu>, 
+	linux-ext4@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Thomas Sailer <t.sailer@alumni.ethz.ch>, 
+	linux-hams@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, linux-alpha@vger.kernel.org, 
+	Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org, 
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, linux-openrisc@vger.kernel.org, 
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, Paul Walmsley <pjw@kernel.org>, 
+	linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, sparclinux@vger.kernel.org
+Subject: Re: [patch 32/38] powerpc/spufs: Use mftb() directly
+Message-ID: <aecdpyvTLJOjCdFp@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260410120044.031381086@kernel.org>
+ <20260410120319.723429844@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
-X-Rspamd-Queue-Id: 288B380010
-X-Stat-Signature: q19ao8a9rc9yaeso4srgy6hfkc79raje
+In-Reply-To: <20260410120319.723429844@kernel.org>
+X-Stat-Signature: qx317edcpatxg44fmam78ibrwdb7qzz9
+X-Rspamd-Queue-Id: B18F4160003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776753925-163750
-X-HE-Meta: U2FsdGVkX1+FHzXTArau0S9oNAnthqgW82y8ZSLpvVLCETKfmS5kqebDm37FyN+/Yf6JpVrHF0OJBUZVzCLVNpB/QZAUCvzAZsyRshjL2lnKSp6Qgh/JAVagDbuXK82Eq9HAL367sUXZNZvuXVMNILyUYj/S9zfH7C/l9NeOZZqDe1XjXkPvCvcuQgnsTHOeiVEhZ7/79wpPplJVxWJ22/CGses13XhslIJ6QKgr0ynpyVM2D6d4UNmkVgDf0pu0YGw1C6fwyVQ2oH4zydmh7GqGsCJKDdMeJLFIHxVQhFqpgw/lIvlRqs7CKuZnPsFCFOYBtl6GYfwnOe52p7HrkigXjrij4ViSU/wQ+dPzpUimx4bmM+AoAAgDTCbj9/p8zdB2ih9EQzjamG5cw+Z8Y8hv5xPLDUdC0eUr4RV70FpIs5qmBZ/A83od56v3Jas++H9CdCQf+4ntJQMq57PhgDOJXRncSjUv4xhjjDEKdU2i0Bq0bSl0zkB3VFiLkB1Lmt6t3Omu2mfebPFy/YySirhAfhHz31ri0+ZBa9uNmbTGwjkJNSxuDKDpY3mRanVODOwuzzSleR9bcBtEkWN09Hi+NGrRLYHoUndY9wEk1PCvv3o71C51+ZSNtxoO0ffjBDmPT9kqFsUfsmHoavAFq+ktct+R53dvwdHp+jSjij5q8R5f4TyWB44RI4k3Yucuq+kO4P0a4KEnnrUTEjRqJCHYVfKJ3tprDbpNlcfw+b6OqMKiyqpkqszZi827LeH/N6MMCUohKfOIo5SEXeP9VgJWCr+viX7x4I+P2Cuoqq4CJeJ0yxsdV/KYFhDoce9UtXPjmCP+T1M4axF4bpor3A6qQJJWQCrMYYC7cLtWY9httyfzcVkuvX5qgQ0fQq306aWJqdIw2O1RIE5Ci7m/OADZOZLo+O6sDd1hEl6McjQ/gd2HxdL3XRGsv15s2nGQ5NS4YWczhVqFrLZCnPC
- m1hfBqvh
- RcbkOUZdSGWeICcubzkN5vAqwdDF4zUDc7NKgOJiXb9jioNUavlYh89Q3jvhW7mtT5fZwM3RwsFeqJ6r0iEvR8DznwOZUFSFh0tb9a9zf9VUR+iY+pmqQgHVjQplNI9jYvD/RSEKoq+w2P3JbtffnnK4gybipBEJDYZfJfpmOEirWp0puZqc2ysIr3BncOaDocxOG5lnkQ5z8sbtdMaC0/Ix3TjlBvPfXBKPhgow2P3Qiy2K7HcUg7PPX+74bIjJmON+ZTz3iVo+SNwagJcbFiyBta3y9LaR0Eec8/uhF1FKhVxoP9ju/owjTdCOhCop4LAkNmijLqgRrejYiBNicB6ojBg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776754154-895145
+X-HE-Meta: U2FsdGVkX1/4SyifaJkmTVdC/GRm0nDpR9oMsAA8H54SSBEnpNDfpEUf812DTMP1BbQJUY3X8w02Jw84cXZlmiNZmslsx4cevLfy9T3RAaREdE8we9Q3j45aLpuyI4Jcwak9qnu3BLbD7UpKccOx8CvwWJW7wFstGNTTpEXSqyiTGUjnKMk+f1+d5nveFZDl6Kd5frGCv6m0JRC6LpP1Kd/jWBlcHU3ISDUFxI0foJ85zdazqAqxOzv3kv6aLK4Z6tlzbpkpIICSaJyP5USkYdiETaAXiHYVUm0Ca5ycnnOoNW8UqJaqMVNzBx4/AiJ0+LVz9scqOqw3CSh9Qq8TV0LZDsfpatc31d5Tc9+/UBsZERZiPmNboKuRhFS2TZ0ZrJBYuAzYae/KkwpWVKd83aI+O8hFvC41uWBvrzzyLGE0OnL4Ol+VYtvrR3x5dFOMEZ8DxqTRT5RVklXGUt9Ygs6J9e9iaIbMff5QAUWO7P+RXs/HlkdJ2+mZzR5qn3PP+uPfIbhrP8Fo8Ye/2qm26qRMRl5vu77cztjoXpLFBlIctU/l0Bazr5xwLotsZWIiH0HO7cnXiF4IOvCJU7WkF/rNoqtY2tZNJZzpx1jLoGoxwgiLzbqMqdML7pDHy81WHsMglJL8TNz9thT4Cxo/zjr9WBErpTY9GMsS35NjxvO2gQ+4BkNvloTLFkPvveaTx00EUL117iMPxsQgi40o8j8yKEm1jUmKCM3woeQENNVsvvnl5hig0bTmw+bTjBqGF3+tvaQll5qAIhjfIutOvHv7DpEuvHGDWKtB0a3HTkDz+tmLLlpKHNYBDgsFZ6eiiCnRJ/CStiz153S0OBIJ4UxYHvYTKxSAYfSx7G9Rb6gjQosT0M0Al1oZHkbaV/nTtpsnD5oa9ZmgwRyaWatp6z3TguhcyrmEX0662R3z6t+37pY5AJjvxI7KT6/OldySbbgDBL4uMFp0EQg5R5q
+ rtKq+SWB
+ Fk/n/DiWqedhlzotmpufGmaq4Ow4bijuQmRz75+YepIqtx6GmqHplny/UIBI72R2izjvQSqiAH0ksJlsLbGM9vQJBC7SyWsAxeaVfWjtcfDcnaQOnMwm4gjmShIZxUgdF/y3p8m+wCkOj+p7VGvyr163+NvyzFXQKucPCKZDPNbynhl1wfBXIXEFyYh4QsyHiJUOuRip2zKFkZrKkxGbollZ6nRY5yUAjHnuPoYIqj+yRCPggpJIcx1yhrjm5afMOYRBb5FLiKFz1xR0IbtVSysfX+UCOWT81QwHFXCOKnEx5Fr+W3f8Xpf3OJkZkUVt2TtKb4t6LmLgSRA6ds2Kiq9l2mF9y6p8muv/zRCdHOyBQgSl/yPqPP4s9slYl/0dyxvLjcIbg6trJN8D4ZLfdupHpF5Tb1VKhyxOhpFB36l6RYzjnphtHfjrv44DW8+6/TmLFPXuebdznKR7BZiXoojmuwJ5qEHISPUkNDinp47+lE2NFLFUOrrd4V5dDS2e/td7Dz4hyqCuoyS2W/AJATFkWbi/NzN4gSVONgV5ceT12YdohRERFK6hM5Gw5hsPN2tY5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,54 +136,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 20, 2026 at 11:03:16PM +0200, David Hildenbrand (Arm) wrote:
-> Let's make it clear that we are not looking for LLM generated content
-> from contributors not familiar with the details of MM, as it shifts the
-> real work onto reviewers.
+On Fri, Apr 10, 2026 at 02:21:04PM +0200, Thomas Gleixner wrote:
+> There is no reason to indirect via get_cycles(), which is about to be
+> removed.
 > 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
+> Use mftb() directly.
+> 
+> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
 > ---
->  Documentation/mm/index.rst | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  arch/powerpc/platforms/cell/spufs/switch.c |    5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-> index 7aa2a8886908..13a79f5d092c 100644
-> --- a/Documentation/mm/index.rst
-> +++ b/Documentation/mm/index.rst
-> @@ -7,6 +7,19 @@ of Linux.  If you are looking for advice on simply allocating memory,
->  see the :ref:`memory_allocation`.  For controlling and tuning guides,
->  see the :doc:`admin guide <../admin-guide/mm/index>`.
+> --- a/arch/powerpc/platforms/cell/spufs/switch.c
+> +++ b/arch/powerpc/platforms/cell/spufs/switch.c
+> @@ -34,6 +34,7 @@
+>  #include <asm/spu_priv1.h>
+>  #include <asm/spu_csa.h>
+>  #include <asm/mmu_context.h>
+> +#include <asm/time.h>
 >  
-> +.. note::
-> +
-> +  Unfortunately, parts of this guide are still incomplete or missing.
-> +  While we appreciate contributions, documentation in this area is hard
-> +  to get right and requires a lot of attention to detail.  New contributors
-> +  should reach out to the relevant maintainers early.
-> +
-> +  This guide is expected to reflect reality, which requires contributors
-> +  to have a detailed understanding.  Documentation generated with LLMs
-> +  by contributors unfamiliar with these details shifts the real work onto
-> +  reviewers, which is why such contributions will be rejected without
-> +  further comment.
-> +
->  .. toctree::
->     :maxdepth: 1
+>  #include "spufs.h"
 >  
+> @@ -279,7 +280,7 @@ static inline void save_timebase(struct
+>  	 *    Read PPE Timebase High and Timebase low registers
+>  	 *    and save in CSA.  TBD.
+>  	 */
+> -	csa->suspend_time = get_cycles();
+> +	csa->suspend_time = mftb();
+>  }
+>  
+>  static inline void remove_other_spu_access(struct spu_state *csa,
+> @@ -1261,7 +1262,7 @@ static inline void setup_decr(struct spu
+>  	 *     in LSCSA.
+>  	 */
+>  	if (csa->priv2.mfc_control_RW & MFC_CNTL_DECREMENTER_RUNNING) {
+> -		cycles_t resume_time = get_cycles();
+> +		cycles_t resume_time = mftb();
+>  		cycles_t delta_time = resume_time - csa->suspend_time;
+>  
+>  		csa->lscsa->decr_status.slot[0] = SPU_DECR_STATUS_RUNNING;
 > 
-> ---
-> base-commit: da6b5aae84beb0917ecb0c9fbc71169d145397ff
-> change-id: 20260420-llmdoc-21bf5fadbd6f
-> 
-> Best regards,
-> -- 
-> David Hildenbrand (Arm) <david@kernel.org>
-> 
-
--- 
-Sincerely yours,
-Mike.
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 
