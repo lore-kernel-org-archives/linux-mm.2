@@ -4,82 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4857CF8FA78
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FAA0F8FA80
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:19:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFF6F6B008A; Tue, 21 Apr 2026 10:15:53 -0400 (EDT)
+	id 5104F6B0088; Tue, 21 Apr 2026 10:19:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD68B6B008C; Tue, 21 Apr 2026 10:15:53 -0400 (EDT)
+	id 4E7F06B008A; Tue, 21 Apr 2026 10:19:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ECA16B0092; Tue, 21 Apr 2026 10:15:53 -0400 (EDT)
+	id 3FDD06B008C; Tue, 21 Apr 2026 10:19:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FEA76B008A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:15:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4334DE5DAD
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:15:53 +0000 (UTC)
-X-FDA: 84682761786.13.3374E43
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 33C906B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:19:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD881160EEC
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:19:04 +0000 (UTC)
+X-FDA: 84682769808.30.7F1C3D4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EA740140002
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:15:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i9oQMpZI;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id BB6E980009
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:19:02 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iyIh5/+W";
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776780951;
+	s=arc-20220608; t=1776781142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o1x2h0wvQDBS8Fe01hhrP9Aa7KDi1bMEIo5/RIYJiEE=;
-	b=LEjBZXFhZSf+yKzeHIJRlYZWZdfkK4n4J+HlBG9bua+ktuuiNqC4zvXPe02IcH2dFGkUnY
-	Mcq8RD7kXa4p8wOutZ+Cm2DdBsUBS+aYxEyENGrHeXHNOEbfGLlAPAoFAQzDBfYlMz9DVb
-	ea0MoMXGZ8raUbAjljv2guAufnMS/m0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776780951; a=rsa-sha256;
+	bh=RH/ZB5JHlyuH7Dd10bFZ5FbPZ5gpOqD2FVTKG8vw2sc=;
+	b=rb9k42QhKlgmhGaxnHxA4t2PpWRFea+YXxuSHMVZ0t7g2OQbSKAM+KOsfMTTT+OhT1KK+m
+	NeQKnAE1WHRjRt24r7Cc8IdVOEAn0z72n7P/ZXFWV8fyfIvbcIGCSK41wnNIXvCj7bY63O
+	33a3SRHfl7iLqBjwhEICFQk+K6iyi54=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776781142; a=rsa-sha256;
 	cv=none;
-	b=mcCscAJw0/mfXR6Ec2Dcx7KJOBsXukQloWkSXXW8GiTHXXwK/pna1OqvmM+P42sWPCp/ae
-	p5XjAdG4s23M71QBa604+Ua3oonO1+XZ4LDCM0r0OcnLqgEEpJfMJxhzMDR/n6dYYHIu2w
-	vr44grQp0ULV3yry2/CCydEmbCgrgAs=
+	b=VgwRHU0ZU3sNVbV2FXmVUgiRTv569SUXCDMzK7mNYhQfbQQf79vVLfpzsIBm167uaTpTKy
+	v9khOlZwGUwg0rFqoHJkpwbzy+Q2npdMl3ThNbFk5h+ZoI/0vps4NMirB3jLP0hCP1Bf4m
+	CQxquG42YU655bRT6EhSKZCwS8tnxT4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i9oQMpZI;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="iyIh5/+W";
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6112404EA;
-	Tue, 21 Apr 2026 14:15:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854CEC2BCB0;
-	Tue, 21 Apr 2026 14:15:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 91F5E40251;
+	Tue, 21 Apr 2026 14:19:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9D1C2BCB0;
+	Tue, 21 Apr 2026 14:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776780949;
-	bh=078Y92oKtVm6JEaZesj5rhwZKMHbAna64KrdSsEQIfs=;
+	s=k20201202; t=1776781141;
+	bh=QRmcpe+MQAqB9nlUxSKkEwv4st8u8HzuUYgBhYBnDjg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i9oQMpZIY1uhH0+44ae33445UDB7IEPaoe2usB9oftVTiBX8AcKxOtWv8uH66qByp
-	 XySy4CfY73X8OEb4xzEKEvLyvipLaEFw7NCEIlLzX/Y7EE8N5c5YePSRIGkvJFPR49
-	 evHp/0KXRFY5FuLpU3yi0OwUYfKSh/fiPrAcn7LV4FpGV0u+i8BWXUUK/Mq+M7y+2s
-	 qozO7v8Lm/LBKkeNIqaS3JLEYCg0p3PpyERV+sXgIaLDIuZCNjNsTiSUeViGLhrBGO
-	 DSgnJWiHAdi3rHLNfo6jq3bI4a1Lt/AaAy1QHnF1TMBQcJYpT2s8I+eaS68VakM/Fq
-	 8M3L04tqtNvcA==
-Message-ID: <3daccad8-cf08-4543-b9ec-b34711a4ed14@kernel.org>
-Date: Tue, 21 Apr 2026 16:15:44 +0200
+	b=iyIh5/+WkOyfXBlTbo0XS5HxX+UuKMi937UEPvW+YgcNs3yUKVTwFnMxMR1XB/vBD
+	 3siwv+Eh2GHgdbYaCsxEAA1KhDsSwMDOoLKm2Ni2DK2UWHJiJ+uBWynk5a0JTnDR+z
+	 HcLZo1PPcpoUWYP61kxv/O0+EYTd0XBei7nWzchz+oRWSI6aIHmtW/5FL0X5LoheO3
+	 bSs7Cdt+cT5lat7ASFv+6oRZLE2I2EVni1/I5LLp37ggqEOxfPJYxgqDSThZIT4kA1
+	 FROJLS0AxmU0R+7EH9UZV4pC4/DDqouyViYoHqK8ll2mMvfzp5LemztM5DzD1DTACQ
+	 BHt/wKpNKvsZg==
+Message-ID: <a10a097f-a60a-4609-b678-5ea4e69b13db@kernel.org>
+Date: Tue, 21 Apr 2026 16:18:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] mm: Make lazy MMU mode context-aware
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
+Subject: Re: [PATCH RFC v2 00/18] mm/virtio: skip redundant zeroing of
+ host-zeroed reported pages
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Gregory Price <gourry@gourry.net>, linux-kernel@vger.kernel.org,
  Andrew Morton <akpm@linux-foundation.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
+ Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-mm@kvack.org, virtualization@lists.linux.dev
+References: <cover.1776689093.git.mst@redhat.com>
+ <c199e47d-b2fd-42f3-9e50-c47c848dc72f@kernel.org>
+ <20260420192037-mutt-send-email-mst@kernel.org>
+ <aebjG-qMLr0joG61@gourry-fedora-PF4VCD3F>
+ <0bb2d565-4b3e-4b0b-8e81-57898d8a2a21@kernel.org>
+ <20260421101409-mutt-send-email-mst@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
+In-Reply-To: <20260421101409-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jskibrwt9kiazk4wdbo5561k6kxmxt1q
+X-Stat-Signature: kmmyancedsubqnjqkkqdgnjbyurnmk3w
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EA740140002
+X-Rspamd-Queue-Id: BB6E980009
 X-Rspam-User: 
-X-HE-Tag: 1776780950-732132
-X-HE-Meta: U2FsdGVkX18Oq43vsbwnafAu7xcJhcTZrAVACS1kXSlMvD2B5FmvpY4XbWv/kkqZSCSiEuiu8OUMA6wSw0rrt1i6YCRJ6s4N3hLVfmm7EG9jXooTCGnctvLD/h8pedGwT1qqOWIxd2QHgS04ZDPwNdPYOXr3ShJTGgDgNXK4c4muShTWarRzsIjbJftl1jRNZzApSdjE/n/qDJ58LY0002v8aOxRZOxDM3WzK3nEr6eVJES6JKgT8esd397zWhNhTjh0VGoiYEbwDZ9GbTJH6jsuNfa+d6Jt3evktx6sDa9op8AT0C7GiLrjtgzBE+XfLCczFvraEKg27U3DzswB7KUUCP1u3GX6yVnxVnuCnJSqkCPALGstN6aDYKzFn+Iudpl7ttPK/wkXI1+PJCjYKgS1gnSoEfVFj4GAJLOGDL3zw1GRJVteVkDnTumk2lacFhq78fjeH0IqEFlgdbj4XlzX6lCp9ZFt01ol6rtZt+ThqE8OoDugmWkxde5izXbPhp5zYWyDh5bIA4l/4kY+3LbFTUM3ZykM9Rxb9uSkTC+V0vBbhb0JMNk5cVYPwfK9+Yfq8Vm6bEuu/MWeveVc4o2Zty/xu4szzcMSQZm5P9U5zqUdqIIFY+XQi8xv3/0hUkcWLYA90GmGEaVQiZfet5RVy/y1RXP218OmN9I5OjFLtx/5ZpYagK6960GmrnJ1X1OYiqBlThSLjSy5+yEV05UxATMWZiLI2U0ZvwjvrG+AcRn4MHtC37zjkv7UKf/c1IgqKL4KqNmmY/Gm+5KWXQi6wzWSNSWMAq8JSFU9T+1EugvegeezON83qJvTYHeVAfcF4VcZwDuYo14RuZsXAd79eLs1wlY3b62a8EV/s2dfRHKrnzB73Er2O14RV42FS1JsJ9qfeV/FC8bZkcxH2UMGPFwGPjtBy0giU7qkAJvdKt45T6aD/79cybqi63PAp+VR7LOcyo929l9EB0t
- cmUYpApc
- zBA9qDQ3LyyDNvCqm8wCwEFYXc7CXcc1Kav0qF8gq1w7+uK6q6QWDJQXLF087pmSbez4YgyNoCZO9pnId82AjLssGTatyjk8vSJFCSwP//ESmDOZro32Kkzs8yfq5/QQPyvgziTMNBjQrsu/yWJpXMjstDpV1wBmriKbk0riu7Rl2JoHonMT5W1+XjmFF5D8Z+7yDVBp6QdxKEo73ZWk/fLnkfy6y/psYkClDBiwSY3GsRVOzGhOAt12Se6dzHGqyjuJA33Uj6lZDbxIh69CuPOX+e/qSYiWH5/aiEHSXv8K7GUlsxeSnDJ3+/CSKtI4QOQto
+X-HE-Tag: 1776781142-527416
+X-HE-Meta: U2FsdGVkX19dHMCMY5NrR5EuAG6xKUPhQyiBL2m+VpT1icOgQ7Asqfr98o/XhiZFRT7gF1RsERgmieqs4d0yyij6bBf4xr2Pw2ceJB1wdn/O/wyI2cRxVQvWetL/CPYVRXANyhc5jQj1wmk5GSVYwDcIeZ3UFNFLF7lpa6F3cJhe+RVZrokGv1xYFWHh+3WuqUcnzhoyAjbXFr2c+F/pU8EiQtxorTjAnPP0+BC0lpR/Cw1YlEm0HfwENepalYuOJkDJ5CsGRCjIurFuKVarZk/AX/vesMWfkPpf+Xh4yzSYg5o+ygFt6vyfeWV1ROMvTch1ngQb+3CQcy77rksG3gmXRjAgL1DEMF9m8r/TX8XM1Xn24/ww1M/DLnm+y74OiTfzn82qnmjICEFd9OkEevxDUKfx2hExf6vedZsL6qvnFU8KOEJPSypvCr7+VUGWygsxfgsSJ08G7LD+AAA+wqyPzvndsXt2fbnvaZvvtnaqf05WYp7IzQN2uF8HRW1QAzgvy0JbIojSn86QozeywT+kd4aeOuNxYspSOt4b3oOkmNlYrfwR8AGJ0phOrRVybQi1vH+0VRb2PBDyMMvmXps48SpCr2gpBQGJJ8kIV6qNRfGgmZlyGqZwx3ZzoKQV0jM6wm/JWkADoC505fMR1KgF0WaA+JGOhOwXCS/aVpJo68ssTaGevWsD+3nmsj6jwcP84sZGzWxkyiM8NGu3x4LFO5cfxWE4VucG+cw41XrE2/0+zF0R6Z57ApcysvHIxBqxIOATJxhKPtceN9fmKHiCOyp5cTrL8yHD689LkxZbNLgyzzpmOvGroFXL0WbAbcY03V56iDfgRd4yugrslgo5oRhhu3cUXqIk1YaX27mjtAuikxeGaYjjcDhks2syNUcUbsftcjAv6ExbUk2zw/BOUTMm5mZqhbvk0auo5Rp778dEOv/4MQD6yeQsbD9m+HsipboIVmkrI1Yqf8e
+ u962+t4q
+ VI2fk9HqXZyYFENMErnn8dgh2z2FhCWqcp80t9f5zlKrojTIj44t2WQE+Db9WHJTUmM5L/QfF/ZHtPxmLCZnKeCLhLZNsi9gBfLq38EHrycuzjuI+HyinZrcV8fmID+OUCczzSe9cq+VP1YAHiY9RLCbwxhIMJ1xSK+DWrSsZUtYquhxEFbyVf/fLXkeyUbDxZJ5EJIQsh+PCD1V3+tJgjaP1y7IQD1rcb4j3xroufY0q2+qR14zPNeyL8xVagSDM228V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,63 +147,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> +/**
-> + * lazy_mmu_mode_enable_for_pte_range() - Enable the lazy MMU mode with a speedup hint.
-> + * @mm: Address space the pages are mapped into.
-> + * @addr: Start address of the range.
-> + * @end: End address of the range.
-> + * @ptep: Page table pointer for the first entry.
-> + *
-> + * Enters a new lazy MMU mode section; if the mode was not already enabled,
-> + * enables it and calls arch_enter_lazy_mmu_mode_for_pte_range().
-> + *
-> + * PTEs that fall within the specified range might observe update speedups.
-> + * The PTE range must belong to the specified memory space and not cross
-> + * a page table boundary.
-> + *
-> + * There are no requirements on the order or range completeness of PTE
-> + * updates for the specified range.
-> + *
-> + * Must be paired with a call to lazy_mmu_mode_disable().
-> + *
-> + * Has no effect if called:
-> + * - While paused - see lazy_mmu_mode_pause()
-> + * - In interrupt context
-> + */
-> +static inline void lazy_mmu_mode_enable_for_pte_range(struct mm_struct *mm,
+On 4/21/26 16:15, Michael S. Tsirkin wrote:
+> On Tue, Apr 21, 2026 at 12:04:49PM +0200, David Hildenbrand (Arm) wrote:
+>> On 4/21/26 04:38, Gregory Price wrote:
+>>>
+>>> Why does it need to propogate?
+>>>
+>>> Can we leave folio_zero_user() callers the same, but add a PG_zeroed
+>>> check in folio_zero_user() that skips the zeroing (but not the cache
+>>> flush) and clear the PG_zeroed bit?
+>>
+>> folio_zero_user() is just an abomination, really.
+> 
+> We can't completely replace it with GFP_ZERO though e.g. because hugetlbfs
+> has its own pool and needs to zero that.
 
-I'm still wondering about a better name for this. "enable_for" indeed
-sounds like it's only for that range.
-
-Maybe really something including a hint like you previously proposed
-
-	lazy_mmu_mode_enable_with_ptes()
-
-	lazy_mmu_mode_enable_with_pte_hints()
-
-I think lazy_mmu_mode_enable_with_ptes() is neat.
-
-Thoughts?
-
-In any case, on the general approach + semantics:
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-
-> +		unsigned long addr, unsigned long end, pte_t *ptep)
-> +{
-> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
-> +
-> +	if (in_interrupt() || state->pause_count > 0)
-> +		return;
-> +
-> +	VM_WARN_ON_ONCE(state->enable_count == U8_MAX);
-> +
-> +	if (state->enable_count++ == 0)
-> +		arch_enter_lazy_mmu_mode_for_pte_range(mm, addr, end, ptep);
-
-
-Okay, so the "hint" is ignored for nesting levels, that works.
+Right, hugetlb will have to keep using it for now.
 
 -- 
 Cheers,
