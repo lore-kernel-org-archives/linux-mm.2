@@ -4,111 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 363F5F8FA9A
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 17:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54F2AF8FA9E
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 17:23:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F0746B0089; Tue, 21 Apr 2026 13:22:46 -0400 (EDT)
+	id B9F0A6B008C; Tue, 21 Apr 2026 13:23:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C83E6B008A; Tue, 21 Apr 2026 13:22:46 -0400 (EDT)
+	id B77116B0092; Tue, 21 Apr 2026 13:23:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DDDD6B008C; Tue, 21 Apr 2026 13:22:46 -0400 (EDT)
+	id A665A6B0093; Tue, 21 Apr 2026 13:23:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D2A16B0089
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:22:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A2811B9771
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:22:46 +0000 (UTC)
-X-FDA: 84683232732.19.7543450
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8EA1E180010
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:22:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=APakOZVU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776792164;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9703B6B008C
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 13:23:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D6CE8CD45
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:23:33 +0000 (UTC)
+X-FDA: 84683234706.05.C4D1AC5
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010042.outbound.protection.outlook.com [52.101.201.42])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 48923C0016
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:23:30 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Ac9CoakD;
+	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.42 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776792210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CExu14qwKB/OkgSONz80lVERz1l1eBW9xm8Eu8zKp4w=;
-	b=42cYnq6ekDShLKVRJjlc9b3m7oPXt3j+Bo2jUdVh5ZuiLCXx5j+cXBwuWnKWXpq0NBUYDG
-	2b2V6YHdtrszgLGv2LvXPfwTW0HyHw2CRgJjtBrgEjebjU6F2DqNAJs9WjRjSNv73J4tvA
-	1ol4Mz5VQUQK+8b5K+0Sc9qaNsYnOi8=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=APakOZVU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776792164; a=rsa-sha256;
-	cv=none;
-	b=uXj479BckJP83JX33M0ErC3Y9jvYIhK+YdUSHMN4Yo7mIznAThge8rlxXYqhQV/NvZKswL
-	h1YYYB5Scyny3hgWWAMQyUXliezmlmN5cnOXgtv0qOJKb+604LUL2wO5oUvWZVNngBXQmZ
-	AqZhLmRg73LCCNxjaR0TQpkM0VSCBqE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 86FA760142;
-	Tue, 21 Apr 2026 17:22:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EBAC2BCB0;
-	Tue, 21 Apr 2026 17:22:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776792163;
-	bh=nNMDSilb+/zXGXVw/f0Wvgf6NfzWoClrWzQe893lPEs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=APakOZVU5qkL6vWUVTFAYa7wyo8CQ/+TvO3KSSP5ZRkDiG7GeNDpX9/D3iHleKfe1
-	 MLfTi0udDG+jOpm+5Xn4s1LPuyDV1GjPm5WyWeylmQcPRpTdUr4wN6Wphw9pRBWjvp
-	 AFg73IKKfpBPJxMEn0orz74mE/laLUKi9r0tIzNilLIjUUoRRx6ZmVFNLcpHJ2jhqO
-	 9u6201KZx3sh5Vh5HklBamSzUt8geRNlHbsS29kwq6LjTPzkRABmYgpIHbRj1EegtK
-	 3rpG+i7AR/Kg7ZinHcHxHHk8cKqG2KeeONe/KAX35msVFasIfncY2lD0aiM3rVQyVg
-	 VyqNHsIu0GGSQ==
-Date: Tue, 21 Apr 2026 10:22:42 -0700
-From: Kees Cook <kees@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, kasan-dev@googlegroups.com,
-	llvm@lists.linux.dev, Andrey Konovalov <andreyknvl@gmail.com>,
-	Florent Revest <revest@google.com>, Jann Horn <jannh@google.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Matteo Rizzo <matteorizzo@google.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>
-Subject: Re: [PATCH v2] slab: support for compiler-assisted type-based slab
- cache partitioning
-Message-ID: <202604210954.84C57E5E0@keescook>
-References: <20260415143735.2974230-1-elver@google.com>
+	bh=VjKizhDaVxH6SVaOtD3IKFx9Mu0ZVYHXfGAOHP81juE=;
+	b=ZM48NseGOlsd/KQ+DQbhoNPRRXrmrab5hr8CZBBIXq0OcHjXPv3ABeFqLtmVwdxhkO/Uge
+	J4FD0XIuTM5ICVY+/nVqEANxCdJc5UKtls3bE33bGgXLLLSyLMVIJ76SGDvJoPafNaUizL
+	6EOCLGSXsWpbIkP4MzUi80uv96w7E7Y=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Ac9CoakD;
+	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.42 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776792210; a=rsa-sha256;
+	cv=pass;
+	b=Z4anVcu6RqAuuJmLKMfl5fgssAzXijNPZ+CLfdikbMgCB8fGa8oySp+m3Zz6PjxE7eVcIZ
+	IAnaAesSx1itZLnJ3skvhr/PIlm9XCgDSJ/Zn9cvc5QZ1t4U6CoBBrcx3s/PSm51hblURc
+	eakIB3QO7M9lDICLAFs2ApQdOk3e9b0=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BnzNEeRb32W7z8NYuvc101JcSLx6Wmsx3Zwsy9I0sVtit4U6N1bOOTZjYra5k4uUHH3PdcVRS4BeXxZW8MkbET4rituOG2gC8VGvq2KnRjzU34LhfoQetDuZJHc+cZFwlugduJD4deRpwacRQKSkGDcYIfU+MKygJWvvttIyFHbXpF9W1K6xyQ4SpP7N58Q4FV+ZXeZbmbSJI3Nyaq0f33QfyZU3TqIMiyESZ7Rw0gK0Xi/6ZV2OsZLuJ/4r2jNAmoKWgAKb8loTzyKy4yYj9Adw01ENy525JOpM+f1FbkPIG4OkNe1VrK3SWSkAbcnoOcvJgQgiCxJ3j1NGLDEdHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VjKizhDaVxH6SVaOtD3IKFx9Mu0ZVYHXfGAOHP81juE=;
+ b=XY3cVCywa0hqnI/9YCmIY17pjhZEnw8q9twuVlosdJdLTYcWCrUc/c9pRNmwr4mQjj/lOJihtYN9f3sIwieFlDTkmc+M5iA8qlqtPT9HC76fNdMZKVAXkf+BcC43EScz2VrhKs9WJYMirTUiiV+BlI9I1qux+o9r5AYo3qGkAlG3r0yzss+BlESYKMqIAB4ZJ6EVkAolzozUxNnJqMrMcnpA5tWPZ06ff1VR9maCOFD149TM9pxNooDFdJXC4jtHGPZ04LtjDagxND7mn7ENHND0wsSj92gRIEyqVAoSg/aCM0VN+ot9iSGKSBYfVUD+/02ESbpjUOuLYngMeTqI5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VjKizhDaVxH6SVaOtD3IKFx9Mu0ZVYHXfGAOHP81juE=;
+ b=Ac9CoakDdk5DyvTEv+LMUtDt9EPMN5DtklJMi29zMN+BLAWA+vHFFB9rttJ2nn3C97nz07MAQhbjiEhfVthQ3TfS7io0aQbqoFBkg8R5dY2ZWHWtfmR8DUJP4yngBhk3xg6OAHOWrfgEy50609vze6k+II6s2pinYRx8xCQ/pG6blN3MaCbFFHWY+C+m5NkLPQTWRCjczTrMpRdB/+HBTz+NhDNulGRO5CJD3D2HmtrvyuJuDFYZaU+KD9d/9KtSBTlvy/elM2x2n23ahAd8z72R6X3Uhf1XfhPwNWKeaCuc6zcFwX4cSARIF4NAnK5JnUiww82LcrG1o9cJN97jzw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ MW4PR12MB7264.namprd12.prod.outlook.com (2603:10b6:303:22e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Tue, 21 Apr
+ 2026 17:23:16 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
+ 17:23:16 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Chris Li <chrisl@kernel.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Youngjun Park <youngjun.park@lge.com>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Lance Yang <lance.yang@linux.dev>, Michal Hocko <mhocko@suse.com>,
+ Michal Hocko <mhocko@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Axel Rasmussen <axelrasmussen@google.com>
+Subject: Re: [PATCH v3 03/12] mm/huge_memory: move THP gfp limit helper into
+ header
+Date: Tue, 21 Apr 2026 13:23:12 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <125AABD0-02D5-4656-9F55-4B5BFBD5BD3D@nvidia.com>
+In-Reply-To: <CAMgjq7BDmGWaVWBL+52_c=jgs293bgB+Qe-MafKE7dWZRsmx9A@mail.gmail.com>
+References: <20260421-swap-table-p4-v3-0-2f23759a76bc@tencent.com>
+ <20260421-swap-table-p4-v3-3-2f23759a76bc@tencent.com>
+ <D631DCC9-85F0-4E68-88A0-AD5DE328818E@nvidia.com>
+ <CAMgjq7BDmGWaVWBL+52_c=jgs293bgB+Qe-MafKE7dWZRsmx9A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN0PR04CA0195.namprd04.prod.outlook.com
+ (2603:10b6:408:e9::20) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415143735.2974230-1-elver@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|MW4PR12MB7264:EE_
+X-MS-Office365-Filtering-Correlation-Id: d208b36f-e11f-4766-3da9-08de9fcaacf3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	KqPhUQXuFX4PRDus2f599rfQ6tMC9i7bJVbHPIh/fL0PCb8Aj9biQyPiSRhkIUmpNsHBnnoFefPaOPO3XJN/g4N7sLqGJ0KMiCYn2IYOcopcLMVGVcEJkKpdyh/wxR9rkrrHS7WV6fHJfArmCTH0Rz7LU8+cT/wAnd0QdaTSqwwfnPfOnnLUxIu7zqvRSfNvB/rp5g8Px+K0w8MukLI8Yyg6NjlaB93ysvmRqDRjxowva9eifCMS3DpKY3NyTT/zt4Ylt1ZYyvlF6qxpzq5Q1xBWDIFADl92UXVL4t1mgJrtEaT/OSXT75b0vY9OEtLpmAduZvRH2VGVQKN2D4j8JrbMTVuyqjwejEC7CtZO3QWLDaKQ594fFLk/4wVCdTh9Kvhsr4/ixurfeDboqkTNkW9wTbTdJMIYMpCBfYReWTjgvMHIhpwXqo+0QLC16bszfF0mggPoYtIVm/tiOqfIY294bFYHBawQy6NuEMCriwCZCgaEH/9an27IAC4LExc+aZFw/M+FfYI/mzjTIIlB5RLtigFIrbU70YVRvqa6b9IDMyQ3aZ/iS2PkciYcFlO7DjBciJLEPVbyIeIQbY6NkRfyOjOJ3CA+sVtcEvK7LbnN2LvbzfJiEM1vxTaBiSAYHPW3TJAj9bohzBqf+xwQBUkmq/fRB75+mmxN58keNCRzpuYhWTcK93hhb6R3kaS7oUgvhzgy11eQMPhueP7pfxGwfpDLqb01scurtsx7IyI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SjVnVDBSaWZ2N3pndk5nWlluaVBOYWI0Uysrc2doN1A5UGxMdllwQXBqNmF4?=
+ =?utf-8?B?L3E3UWJwcGoxQXlBd0VpT2tFVVcvRXlKNmVkeWQ3VEV2RTZxUFNzcVV0S2M5?=
+ =?utf-8?B?cCsyazROanFaTFd1d0N4ZCs1N1c4MTE2TlV3Y09wNWhJTngvcGRUM0dxT1NV?=
+ =?utf-8?B?RDlLWUdDQXV3S2swUXdlTTFLSjlTS2dsRFo5S01qc21kU0NwWHVpdjd0Undi?=
+ =?utf-8?B?dnJlMWthSHlHUnFsQkxkdDMvQ1Y5ZzV5NkhlQkNyOXB1b1ZxVWFKMXl6a1Yz?=
+ =?utf-8?B?VmNTV2hDUi83N2hsUnc4Zk9kRDBydXpkOTVZcEFKRWsxbWhSQ0hkYjBaZ0xa?=
+ =?utf-8?B?ZlhuK2Eya296YmNDTlNPVEZwb2pMV2s0WkpCWjFZbmFCQTRaaUVrT1QzVklT?=
+ =?utf-8?B?eG9HNWI0Y1czNDQyNXNtSWsvM2w2WmVzZU1WME50bHlUM0JlWWxwZnRNdFpI?=
+ =?utf-8?B?ODQ2cGlWY0NHbVRyZU5lZys1cUhVY0NYbVFyQjRMTC8vSksrdHlYS3EwY1R1?=
+ =?utf-8?B?MWRxWk9KYVovV0pBTVBtTkdhR2hhMy8xSEFuSkw2Ny9LcnlNYnlCbDcweUtp?=
+ =?utf-8?B?MWxoNzdmeFRPTWhJUXo1bGtvKzJhVjE3aWF3dzVLOG1jQWE3YXRSYmFEZS82?=
+ =?utf-8?B?ZVFET1Z1N3dnakZZRFNHWVVWdGgybk9BT3gwQ3RTUDg0Qno1U253NC96RmhP?=
+ =?utf-8?B?MEt2bXUwajJ1d0NKMXltWnZYTjBGM05IZ2txdFlIbk4vY0Y5ZGFCYlNYOGVM?=
+ =?utf-8?B?cm5yNENjVjNoTnFDOXhnSVAvT2svRlUzV2lYdktOZHY1YXBVOElQaWJLcFFR?=
+ =?utf-8?B?Z1pqNkVYL1lNUDhoM0dhQTgvZkR2SXNJYll3T2txcjlxTk1uSldGdU9EeWVy?=
+ =?utf-8?B?Zk5HQVNzeEtjU1JEVTEweDhLRUtEY0tIZFViOVVMRGVxZXY2bzdMdzdmakJH?=
+ =?utf-8?B?K0tzd0hQZlppWkdNSlMzSGR2L0g4bEExcW9nUXZtWkVmOHdWUDhva2N0MUdy?=
+ =?utf-8?B?Q0tIMlIyZVFIbmhCbW56cWU5SUo0OVBwblhSZEwvVHUrNGFoL2VzNEJzeDVy?=
+ =?utf-8?B?RVZIcHNGVU1UZ1VlbHRROStMMmEvYTIxdXlyTjZjQmVGQWdsWTFXMWVuVVBa?=
+ =?utf-8?B?Sy85djkrUm94MEQ3aytrc0dPTVZvYWFiUy94VXY3bk5IVnpzbmFNV0p2ZThW?=
+ =?utf-8?B?V3gwWTVTYU0wYzVnL2czZFVpd0RZTnc4dFdMUSt2dDc5eDArais2WXdVU1ZK?=
+ =?utf-8?B?em8vN1lENzdveUVwekllUzhEdXVDNEJleVZFMUt6aFIwMWg5bVNRRjlZWmVa?=
+ =?utf-8?B?aXFvaGwxR0RrZ2oxcW5DeUQ2bllrVWY1MDl5STQzRkdQWnpNK29WcGhzVWlZ?=
+ =?utf-8?B?OFRRTHliSGsxOVdveHlFTlJQV0hZRFg4T3VYcjNJVVJaejRac3VId2F4VjZS?=
+ =?utf-8?B?YWVrV3dVdTlrbFc4Mzdtd28yK2FLTnp1elVhdkEyMDBlVlNnK29heVFaa3Qz?=
+ =?utf-8?B?NzZ2bS9sTERGRDdWOXhjOWFnM0UxVGM4djV2K0RsQzBUL2kvdjNmUWZrcUd1?=
+ =?utf-8?B?b0VWMXYzcW91MWJsY2o0T01SeEttb3BITGs3bUJaM2lBcElUVEpxZStCUEZH?=
+ =?utf-8?B?blJDbTNPcEFPVkFjQjQvOEpZaUlWQWdZVDY1REJlMkQwZFlGcjl4cVJMcFdU?=
+ =?utf-8?B?UWF4N1VyaEhWUHhDeWNGY29BN09ac0N5QjBPYjlKQnFPRUg0ZUJFSmNSbjUv?=
+ =?utf-8?B?TzJCQUdnSmRrajVzNEIreFk0N21sb2EzOHVqOUhYUnpud2VCVndJQ1Y0NUZV?=
+ =?utf-8?B?ZzNlaWdjdmRGaXRDMEZqSWZVQkhDZElQVFVBU3BIQTg2cWxxaVdYRTM0VHJG?=
+ =?utf-8?B?bEZGeDZzbVdUb2Uzck1BaEdvVEhJUXNxS25XTDFPTjNoazBrZkV2blA2WTgx?=
+ =?utf-8?B?THRPNnc0ZHdqcWV0L2NJaEZDYVA4VldRWVJ1SU14TDh6RXI0bjlJUGw2QTRa?=
+ =?utf-8?B?MGhndnBRcy91NkxnMnFTVHRHbHpEUXlsbk5zUU9ESU1xa1JMaU1UbUM3Q2s2?=
+ =?utf-8?B?SEUydDZON05UMXJhZHh5VlE5TitaRVkyNUNpSkMwN3NuR2F1cDVyejFUR05B?=
+ =?utf-8?B?dXAxYTRxK2pXd1poV3cvVStNcDIrbGFxNllaRkRlbjc3YWtzZzZxd0kxUG5i?=
+ =?utf-8?B?WHVhdngwcjlzMGdUQkYvV3A5VDBvUmJ5TlpvTTA0aXlCOVY3cFdBOXdtTGRU?=
+ =?utf-8?B?N1kzeG56YitxQzFsbzE1ZVV2d1RWOHpkaGV4L3oxeU5NZ0thaUxIVHdQYk5T?=
+ =?utf-8?Q?X/Nr4PE77LT7AMTvHD?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d208b36f-e11f-4766-3da9-08de9fcaacf3
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 17:23:16.7992
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q0La98lfGxZwIURx+DUGZl3DBgpSNvOCA8BwV5wYinpNdjugHRLqMaS4V7bc9vI4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7264
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 48923C0016
+X-Stat-Signature: qgjxq4ytdd6zwudhsm8rfyswhkg9tso4
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8EA1E180010
-X-Stat-Signature: q9iwr6wzdztur1ao3sig8te6ixqtu7aa
-X-HE-Tag: 1776792164-614042
-X-HE-Meta: U2FsdGVkX182hfNA2LtR26LMZISUyjU9Ey4X/9FQyoQFjwM3v2EkwF9HgLCDjJOOaYBvwiMHaPuyrL3xL/u7jkhLLnT2xDltLjOesSl2erxu6FIAW3PeOp7w3gV84w0N7YUhnnctCeZyrJl3xPO9GV0sijOXq8cPvXrajNAXHy+C51T6eg7p7Er2C7UHu+y91lhvR+YTHil6ENdptcD+QJhmFmu9nBRgjE8a2FK71vjIGwoLaxrsggfcohLKXyT/krmqBBOlWbrnkV36MNRrqGo2XhWWp1fw3wIO4sU/qJ/8eUG/kqDa5NbUW3bpd7HvMg8xP1TLrAvCXJLwnS0RxaDJ049vA6TA3EjB3eVFT7YV/dK17dINEnPN/vOSbX5UE2VRxwj0AYXnCUt1DL+a7dp1Yrfys966i6MOszW1FM2z+HW+tOOIKP8+77oFcD6JViK5jYp67HmCVtNZEJnnc2+3QIMU0hIwdkj8e4AsTH+bFvtxd7T3zM79k6+FBrrGnfX8BcjBFHc3QCpHv0iPQikcFTnT6FUyo9Qd4ot71OA0LvfIjd8MqWvzOdWtRbtdj4h63W7HvWyV7y5cCIbl8qsntGKnqhEDWhNYdVNldEQxXpWO9zbr56Jj3u8G6fKp27vKLzAyocldVmb1iU5digJPEpA5IqLw4hsVeSlYqkPL8hAkPbN3YBqsFsU4Pm/XgUQooyt6DoxU2XKgwAe83x7wIXRExCG4fJYVBqpnZF737WDScgq5M7F2rzijhUoFP3GY4sIfEcT0V2nWSzCgIEWq9f2J45bn9apwDZ97ZpTOGtbSBVVQYxdQk3zC6rGZflnjis3LCztPpfJUiHGGaCxFzjpEnZS0AsFHmnx/7QPJoDMn2a20pneN+Ywv+oQ49GoTwdjl5ugSSiuFgLZzCoYoDQWAstXJ371FQ93dTywtqMylLpjj69pohtM18ZGWp0B14GT5T4pQLQvjJcD
- j3W7y780
- mPCn8V715eKo/9r3IA5n42ne7GGf8vcSwsMf6vPq3xC6EhGssCBScJ5Bk5SlGvZ5kzB4aY6xiLKT1v6Ea68S2zNFMwZG/blYtqMgxDDc2Oeg6nYygS80twplPGvJolHLiiynta3hKgQSKw6+tnTyefNQcqfhoSX4930b8Ql/G97CntpXOcMYVbU9p0yJlHLvzskHsQHMHA4S3Q8qabWGixSBN+Dg30WdKwRRuZ9WneeX642AREgZImYwc1QHnPZpNhpmWl+3vqv6Pj8gO3ZbWA+xvYVK++IpbnJGVl3IYD/NBpYDQYoT9Y58aGwA3JGhuVosp3sGP6um62zKhk56rPvO6kvfB7Zm1oCOI
+X-HE-Tag: 1776792210-289927
+X-HE-Meta: U2FsdGVkX1904OCVT5m+dip4NwnyHw9v/dSOdH09u+u2vw1WbzFwphHilM/IhdNUe6aFJ+t13zvDpyFkUB6ksRhAaUVXtw/MYol9dM85j8m0B6zS5Lew9ZhrZINTtwwHzeYFmzMolgTCOaRYyvKJn2xk1HJHh5xaxuHkIBkWaRK28H+yAD2gaEvSmLXNlXgLqBZl0SWQ14tfRk/Th7VD5HRHLXSMFnPsT6+DCx61TCiYPbjDwhZf5B1wKdJnsC/NPiNoT8JDh99W3JqeNYDhohbFQA0CVTHqybiJ9oal3PR1u8neMGiSHReJHlMxHBXsqnXNNJmBMPfjc68aF2wpiNsJlJIMhPgPtTiLvMtf8lYnQB48oi5nGKx49gvboerr3uI+PRNcRAZcQKrRE+pbjBuNjf67cPuGzsdiKmz/H+OD/GWwhSxCFFITt7/LIqLdZeMVbVafjWstK5o6TJ/RTxGQ65afxI8thH82g/Twx0+xI5eBu1jxysaJEK/LZtePw3HLGPKXrO3eSW7rhRZt0R2Lc5FYDA2w3koBVNfIaouufPg4MjbZrhb4dxuiQ+gn0Ph6F5ECsDoa+/KCfuwsbdUoU4o/EIp8lNMB/B+1fsKrO+v3g54+/iq5GW5N4qneySlMU5dXOB8xR7ICUW1AqW4qF5lCr5YPwX5rILvEAuN6EnWmELZk6yctd+evO9kwNtj1DCgsD5jSDzVxSikuoNH6JX9+9gFtfWceT0GhS7inxtmHTQYTg4ewd91S3QVP0qvL7CTOePg0n5AcJxVm9vCXWWKTACRqwnT3WPp3eiHVTiFpHUsM8KGlT4q6mSiOTrmNX8oKah1yEHFywhTZ9hqZouC9W/TRnQdG9ZI4TLQeW1QZugafrlzfMMmCgtpxCn/3KVvJtnYMC3HEV/FSwiNhhFEyJqfryTOXXkj2i8Pke3XSey/dMlCjASRw/WQTeMJu23GGRDRGXfjPWha
+ zUjh37WM
+ RPKON8vSMJ1kHIvnah1k+k0Wl/9zTZtx5yYByDkBY1MrMWA9ANBIZJ79HnaNh6Z+5cQBncLa5fsKU5bLgIQO5ed5whUnf41tTwO86X68Csnb1YAM87FOfJ0Bnqe909JWNMkMD7vCA+bo87w62mePBq4amsfaWlrGzCPXWkRddi/wXEf6YsDt4ucqBk0M6UGcmXd+ozSPYrmamrqkQ7bSoqGqK6m5ewtFPCLs45VdMwvI9qHgSAWr7VnHqJx2LO7Csot2mCxJSD+1aTczRoNXgeREpraJNSmRsu4PGHtfuL9Z/zkDe461BiJfnY1T1Qk3fxVSbzxUUtZ2sBBvw0gg+eE/m18sg/GrAx0wvg3BZU8hI9eKHLFBDC+VYrGBsUNtOiyylPj6JTD+4luM7R7ZFORny/Cz+gSDyHOIFqgl87Z57kUN3HD9FTLiv66sgADF3sbPWnXdttz3Gn4t2LFNjasMV8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,117 +187,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 04:37:05PM +0200, Marco Elver wrote:
-> The builtin __builtin_infer_alloc_token(<malloc-args>, ...) instructs
-> the compiler to infer an allocation type from arguments commonly passed
-> to memory-allocating functions and returns a type-derived token ID. The
-> implementation passes kmalloc-args to the builtin: the compiler performs
-> best-effort type inference, and then recognizes common patterns such as
-> `kmalloc(sizeof(T), ...)`, `kmalloc(sizeof(T) * n, ...)`, but also
-> `(T *)kmalloc(...)`. Where the compiler fails to infer a type the
-> fallback token (default: 0) is chosen.
-> 
-> Note: kmalloc_obj(..) APIs fix the pattern how size and result type are
-> expressed, and therefore ensures there's not much drift in which
-> patterns the compiler needs to recognize. Specifically, kmalloc_obj()
-> and friends expand to `(TYPE *)KMALLOC(__obj_size, GFP)`, which the
-> compiler recognizes via the cast to TYPE*.
+On 21 Apr 2026, at 13:21, Kairui Song wrote:
 
-Great! I'm glad this gets deterministically handled for the kmalloc_obj*
-cases.
+> On Tue, Apr 21, 2026 at 9:14=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>>
+>> On 21 Apr 2026, at 2:16, Kairui Song via B4 Relay wrote:
+>>
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> Shmem has some special requirements for THP GFP and has to limit it in
+>>> certain zones or provide a more lenient fallback.
+>>>
+>>> We'll use this helper for generic swap THP allocation, which needs to
+>>> support shmem. For a typical GFP_HIGHUSER_MOVABLE swap-in, this helper
+>>> is basically a no-op. But it's necessary for certain shmem users, mostl=
+y
+>>> drivers.
+>>>
+>>> No feature change.
+>>>
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> ---
+>>>  include/linux/huge_mm.h | 30 ++++++++++++++++++++++++++++++
+>>>  mm/shmem.c              | 30 +++---------------------------
+>>>  2 files changed, 33 insertions(+), 27 deletions(-)
+>>>
+>>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>>> index 2949e5acff35..ffe5a120eee4 100644
+>>> --- a/include/linux/huge_mm.h
+>>> +++ b/include/linux/huge_mm.h
+>>> @@ -237,6 +237,31 @@ static inline bool thp_vma_suitable_order(struct v=
+m_area_struct *vma,
+>>>       return true;
+>>>  }
+>>>
+>>> +/*
+>>> + * Make sure huge_gfp is always more limited than limit_gfp.
+>>> + * Some shmem users want THP allocation to be done less aggressively
+>>> + * and only in certain zone.
+>>> + */
+>>> +static inline gfp_t thp_limit_gfp_mask(gfp_t huge_gfp, gfp_t limit_gfp=
+)
+>>
+>> Would it be better to rename it to thp_swap_limit_gfp_mask() or somethin=
+g
+>> more descriptive? I am just worried about misuses in the future due to
+>> the generic thp prefix.
+>
+> Good idea, I wasn't sure if this might be helpful for any other user,
+> but for now naming it more descriptive does help to avoid misuse.
+>
+> How about thp_shmem_limit_gfp_mask? Ordinary swap is fine with thp
+> gfp, only shmem is a bit special.
+>
 
-> Additionally, when I compile my kernel with -Rpass=alloc-token, which
-> provides diagnostics where (after dead-code elimination) type inference
-> failed, I see 186 allocation sites where the compiler failed to identify
-> a type (down from 966 when I sent the RFC [4]). Some initial review
-> confirms these are mostly variable sized buffers, but also include
-> structs with trailing flexible length arrays.
+Sounds good to me. Thanks.
 
-For the call-site-partitioning series[1] I sent before, I had
-per-site caches for fixed-sized allocations and size bucket caches for
-variably-sized allocations. I'd like to see something similar for this
-series. Specifically, I replaced "kmalloc_slab" with "choose_slab" that
-did O(1) to find the dedicated cache/bucket for the allocation[2].
-
-In this case, we now have a build-time-constant value that it should be
-possible to use to look up a _single_ dedicated cache/bucket for the
-given unique type: there is no need to do hashing.
-
-> [...]
-> -config RANDOM_KMALLOC_CACHES
-> -	default n
-> +config PARTITION_KMALLOC_CACHES
->  	depends on !SLUB_TINY
-> -	bool "Randomize slab caches for normal kmalloc"
-> +	bool "Partitioned slab caches for normal kmalloc"
->  	help
-> -	  A hardening feature that creates multiple copies of slab caches for
-> -	  normal kmalloc allocation and makes kmalloc randomly pick one based
-> -	  on code address, which makes the attackers more difficult to spray
-> -	  vulnerable memory objects on the heap for the purpose of exploiting
-> -	  memory vulnerabilities.
-> +	  A hardening feature that creates multiple isolated copies of slab
-> +	  caches for normal kmalloc allocations. This makes it more difficult
-> +	  to exploit memory-safety vulnerabilities by attacking vulnerable
-> +	  co-located memory objects. Several modes are provided.
->  
->  	  Currently the number of copies is set to 16, a reasonably large value
-
-The "16" buckets seems to hold for TYPED_KMALLOC_CACHES too? My goal
-with the earlier type-partitioning was to get _total_ isolation, not
-simply bucketed: 1 cache (or sizes-bucket) for each type. The "16"
-limitation from RANDOM_KMALLOC_CACHES was kind of arbitrary due to the
-hashing.
-
->  	  that effectively diverges the memory objects allocated for different
->  	  subsystems or modules into different caches, at the expense of a
-> -	  limited degree of memory and CPU overhead that relates to hardware and
-> -	  system workload.
-> +	  limited degree of memory and CPU overhead that relates to hardware
-> +	  and system workload.
-> +
-> +choice
-> +	prompt "Partitioned slab cache mode"
-> +	depends on PARTITION_KMALLOC_CACHES
-> +	default RANDOM_KMALLOC_CACHES
-
-I think this should be adjusted a bit:
-
-config CC_HAS_ALLOC_TOKEN
-	def_bool $(cc-option,-falloc-token-max=123)
-
-...
-choice
-	prompt "Partitioned slab cache mode"
-	depends on PARTITION_KMALLOC_CACHES
-	default TYPED_KMALLOC_CACHES if CC_HAS_ALLOC_TOKEN
-	default RANDOM_KMALLOC_CACHES
-
-And actually, perhaps a global rename of the options so the selection
-naming is at the end of the CONFIG phrase, and bundle the on/off into
-the choice:
+>>
+>> Otherwise, LGTM.
+>>
+>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>
+> Thanks!
 
 
-choice
-	prompt "Partitioned slab cache mode"
-	depends on PARTITION_KMALLOC_CACHES
-	default KMALLOC_PARTITION_TYPED if !SLUB_TINY && CC_HAS_ALLOC_TOKEN
-	default KMALLOC_PARTITION_RANDOM if !SLUB_TINY
-	default KMALLOC_PARTITION_NONE
-
-config KMALLOC_PARTITION_NONE
-...
-config KMALLOC_PARTITION_RANDOM
-	depends on !SLUB_TINY
-...
-config KMALLOC_PARTITION_TYPED
-	depends on !SLUB_TINY && CC_HAS_ALLOC_TOKEN
-
--Kees
-
-[1] https://lore.kernel.org/lkml/20240809072532.work.266-kees@kernel.org/
-[2] https://lore.kernel.org/lkml/20240809073309.2134488-5-kees@kernel.org/
-
--- 
-Kees Cook
+Best Regards,
+Yan, Zi
 
