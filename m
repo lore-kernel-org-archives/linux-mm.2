@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21A48F327CC
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:22:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD6E8F327CD
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 09:26:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AA1E6B0088; Tue, 21 Apr 2026 05:22:10 -0400 (EDT)
+	id 10D0C6B0088; Tue, 21 Apr 2026 05:26:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 682256B0089; Tue, 21 Apr 2026 05:22:10 -0400 (EDT)
+	id 094866B0089; Tue, 21 Apr 2026 05:26:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BE4C6B008A; Tue, 21 Apr 2026 05:22:10 -0400 (EDT)
+	id EC5296B008A; Tue, 21 Apr 2026 05:26:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CC556B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:22:10 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB1D1E58F4
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:22:09 +0000 (UTC)
-X-FDA: 84682021578.01.E304E7B
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D76BE10000D
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:22:06 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D8A2B6B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 05:26:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1689D13C220
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:26:03 +0000 (UTC)
+X-FDA: 84682031406.30.A62A7D9
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0EA9B10000A
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:26:00 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gsy3gvDo;
-	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SD3D3SKU;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776763327;
+	s=arc-20220608; t=1776763561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gjhwBOa3I6lJB6O5Zxac6J4WhufkpISfcLSmTDALcd4=;
-	b=CAAUM2qs7/RpuaGaIppJaf5w8u88kMrhQ1UeUdqeqZRl/Ry5C+FLuABuAHdC1EdI4v2DyH
-	dbMubAMLDVtyuIFpHJ6/N6tHDx+3ioNfzOeQV/EIY22VxcncOZltYQV+esobkMq2qJ7iRS
-	UlnkkogM3TBmjWXN3JOYKCCvayd+c3w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776763327; a=rsa-sha256;
+	bh=NzaoaMrVPuNqytuMUronCSujODBOvvcOBPL0ZtXO8I8=;
+	b=VfUigwTMlBfsT0Qw8+FjCqI1GWtUPQo+ku2zFdzhAvhzZGTsprbtgHNv7GJRRNXeQyZtsv
+	tb9BRZH95ObtthlotUaHOC9LaP9owGZH+iNYugnYynPvZyAv2ezf9esdxjwFMbhP7OXgLQ
+	MdFPBwRFhF5JegvFEOb8yAlA8ZbX8do=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776763561; a=rsa-sha256;
 	cv=none;
-	b=TlTTCZq5fLc/goE+QyeEKmV907GvDKOwD72V2cKULj7ohtcLDS5nx1sCZlUE/RHUSDCE20
-	wWL/UA96H9zTkxYX8ztc5IEsD6P/nbmo19ZARZE8AzdssONXgEh7rL6MAl+TouHDdR2oLh
-	iR4hy90ioqbh3Spxsub3jKjlOg48OsI=
+	b=OIwHnQRwWnxff8PjApUJSbJjq+n7/ofuPSmE2ey1DHhqvC19L6XyRsSBn8zeV2FAhmOeqH
+	rnVpxeIF70Z8Htln1ao5UJ/DDzG+6Bmt4mGQBW/1NGZgDDQWFd4dptMPCKYTtVPrs35Lo4
+	xbqAtsSAuJJqrGFBKScbvHorEct/eq4=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=gsy3gvDo;
-	spf=pass (imf05.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776763320; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=gjhwBOa3I6lJB6O5Zxac6J4WhufkpISfcLSmTDALcd4=;
-	b=gsy3gvDolgXdQPPZ/xyieWpPLLQCNTQsjxHTmsOlF11/d0JPcqNdXI/nvLzYj+XIYatkB0ykEqpgzLnghPW+/U9v4Zv3hmqF1zykdLysO6ecpSS8OoxsGED6rUmSZQoFgCvfSDjR40L8QxQoAzfibrWP8crNG6W4tJdXZ39+Pco=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0X1SeSXl_1776763305;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X1SeSXl_1776763305 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 21 Apr 2026 17:21:58 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Lorenzo Stoakes <ljs@kernel.org>,  "Liam R . Howlett"
- <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@kernel.org>,  Mike
- Rapoport <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,
-  Michal Hocko <mhocko@suse.com>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
- <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,  Rakie
- Kim <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
- <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,  Axel
- Rasmussen <axelrasmussen@google.com>,  Yuanchu Xie <yuanchu@google.com>,
-  Wei Xu <weixugc@google.com>,  Chris Li <chrisl@kernel.org>,  Kairui Song
- <kasong@tencent.com>,  Kemeng Shi <shikemeng@huaweicloud.com>,  Nhat Pham
- <nphamcs@gmail.com>,  Baoquan He <bhe@redhat.com>,  Barry Song
- <baohua@kernel.org>,  LKML <linux-kernel@vger.kernel.org>,
-  linux-mm@kvack.org
-Subject: Re: [RFC PATCH 2/2] mm/migrate: wait for folio refcount during
- longterm pin migration
-In-Reply-To: <20260410032333.400406-3-jhubbard@nvidia.com> (John Hubbard's
-	message of "Thu, 9 Apr 2026 20:23:33 -0700")
-References: <20260410032333.400406-1-jhubbard@nvidia.com>
-	<20260410032333.400406-3-jhubbard@nvidia.com>
-Date: Tue, 21 Apr 2026 17:21:43 +0800
-Message-ID: <87cxzsis7s.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SD3D3SKU;
+	spf=pass (imf05.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <af74eb8c-b45f-475c-aa27-7bf067b9a438@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776763558;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NzaoaMrVPuNqytuMUronCSujODBOvvcOBPL0ZtXO8I8=;
+	b=SD3D3SKUPgIj+qrhNP8UR11PcWh6kw6SdyuhxhuNn0ebQLCWAqlwY98c9XHwiFysnJ8hWq
+	45aWzk4gKq8Ql94lOUphOrMTtyvXqtK2qVDockgcF0MR/1VbwRPFuk6BFp4vpbW6rtbCme
+	YA/THdxoYQ0wBEvAdX2zDNi8oZWR6cA=
+Date: Tue, 21 Apr 2026 17:25:38 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: cg5r7azhptdz5iggc46pmwr77tpdq3ei
+Subject: Re: [PATCH] mm: handle potential NULL return from
+ anon_vma_name_reuse()
+To: Lorenzo Stoakes <ljs@kernel.org>, David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Ye Liu <liuye@kylinos.cn>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Jann Horn <jannh@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260421085056.26033-1-ye.liu@linux.dev>
+ <aec7p15jvsw7XRHz@lucifer>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <aec7p15jvsw7XRHz@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: k571trx5sx915wibtauic1cqbript6pb
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D76BE10000D
+X-Rspamd-Queue-Id: 0EA9B10000A
 X-Rspam-User: 
-X-HE-Tag: 1776763326-234293
-X-HE-Meta: U2FsdGVkX18z1zPAnFG1gsDNyENkBKY2swuHa8IdhyDmg3cUdTHmN9wmpRAjixPnVE0aqjR2kyxCHNceMENYQ5Ecc97l19Rlf6b7qTRZ9F9MfSGtUtj3ICaEIyLDigFRU28meIhP/2fZc2lVv6zePuIFxuTKY5dc16cm0spuv27twGbPA0xHhL4LlWi0Z/A8O65eaMO8UyuGVmuOjtQ+7zE/+IkhXGo6dZhF0e09UiGCzZQczVbhGOLtmb+/Niu5C38Tw70qGAZzUrRJi8uoAS57q9FM+NgLGNSgZsqWxHwBhtJo5VUUVy58ltCIXwIadf/2zyeahTIXILIuKF+uNYoXxE4UaKlPtXm1odPf/jeLbNJPHZz/cQ9xBTxSPN57TEsBWDMSZ5jewFFzrrzjIxkZgFZbFaTTPbKgsN47tR7eV7a9fYB1Tg2HGUdbOZbQ/GNFMK/wykk5VMXuN6z4mlql9DHCeFmfmvYZkGHapwspC7CutJEQ0CuJKnBDDRQRT1yDww3CUQN34wFjddSxDofftkxOCLnVpXUXyQ610zY7LGuVtlZr84EzOFQHHDJYJa66tlzIQWf4EczqALlWeLJrOkHPEYh+6r8bJ0cU8YFXS7CF04GrfWHop1gN/Pw69nWqQyN38D1s4XoFvtxzla7xVYXKpZ7oUDc8ZjcyQLFSgMJEwniRm4BPt4YnYjF42R4jJtxfOysCM1Tj731UpFgovYvSvn4hO/cEMp9EzEXVzZwohS1atcIDJzWh4P5hQUabe04l+wLwWz/V0fVRchZm+b5XElpKdh9+zyIa0q/FRtJj+4V3ddBSuZvbdR4PELjPQ4z3OieTMQkDsRPFr/qSaiJtHoDtatj13TQ9ZXUmyMFmcYdPQXRPup+vqIN8n6dL798INVKADJIBXgMuB7ZfNS9ICx5nPxBLKXB3eGcnHe/ffH1BV3/WaCXRO0sSNw3eY4Gfc0uFRd+dd5+
- CxjKXGn+
- XeomuOOCer0nMkPTKwZjpQtir69L4kvMmz2QVCmfyaonIRENTcDAT7NkPbCZmfSOuqGRi3DKYn/n3EqtwZD2YcyOVUgVdxAglZ11dyyvQSd777YoEcWSQ8GCqLrZcimgK2L8eLXXu2flkTDGpJGz+RJyKiYguUcLWHAlKSAjJ6gHLSFaxXg9poDw7zLGmmxr+FwAaZmkSMtDV96n6JgHbgw8ecF+0TIwGPZspInfdLim1k3Wa3e+rsXRQhsH+Mhltku8RpmVvP02iBhRQaPvjZNWh8D6pPL98+eBC1HAYJicmZA/G1DAgUHhpLmMv7Kk7EA4QauFREWm6RhEPSZk4CaWW9T5veup/SyJToSIL/rzM7rCTS4E9ZLBqJ+nhTM6eJy87dHMdmZNYpRgHotnLij8LXg==
+X-HE-Tag: 1776763560-719801
+X-HE-Meta: U2FsdGVkX1/7Xan9p7/v+D1RPDv04EWCQpSw7cAKvkcSyqtg9g5uLZklMrTLOrokMO7urDPs2ny8y5Vv3NbwW9/927+am+UXtTe5dCmurAUW2KR64qwGrLuR1q4AbrOdC5dnv1UrFq20PHwzsZKk6j+j7xPHuYHcd4X1J1sugpWrn0JX12YinPNETevqW1CY7BIZSeyA/lOk79AmwoRDeI71tfQIprt6+EcdfJGNsb7O1gwjyWHF5x2PCUnbv7afxQkR3E5/3kJWkEDSJX2qLnsJCrP66VAQFXyI2EY4IWIMrQ3pNVrHIHZukbER6P5KrP1jBRxs3VSEQ+jS2TgS3mKF7K2Gwaph7owqgdNGrGWCyOcZs7061mBi9tg4mg8wNwvWGY6FktQbD7AdPqtFMokLCk7nHe8mHWqN0uIsc4gq8IDvp72FYLtsYoZBMq+RemyS5lStAe4x/O4a/WdXk5gNJDkHUj48Tq5Nhdon2p8W3pQrCuQOyzO6K2Y3aO6YFdxJeGTPupQ8YX0NQjwHv34zE4oqBVjm41MLF2LqtMrh6DuKcdHlymZXZrU+P94BLiWVztS24SoqfHzhFmPv6YV+aZgqd1Mvn7O95rCfaXZaa/18Gzq+LITDEvp7ktYpDdVJlSEdMSnZEIcUD50z9JZUgYCM4lcwpnSwkbGlmX6x0i7lAuRaPDs3CcCRDpv1XU8YXL+oHQ14ZGbPQeDZdyCblN5MOs9EfzyB9VdCcFEHgEUhqG6DHTtDK7MragN7Fsu5LhWKGBt7gMiiKuzUaGD8kfRoZix1/1Fm7Bx9tBW/FXiDc6wiKT4rjQnm7v9Qxav0jKD+JImW57vX5pYbifYlSmO83HiFhMIMFSlx85pU+7Q+Hl4xxtlcDq5AgY4JVfx7nust4APbNzlzK4094CqkGOhL65/ygKG8qwoHr6GfDYrVvGio2Ck9fcpPITYzbT5cf8kBiGngLyJtdi5
+ xmQ4RDBP
+ 1uz+rSMERwUch2VP1R6VdCJkznu8whDRrjKXwEMcQXT3NIpDvz6f8hKZig48e4dL1ZG4hEL705XjJUoMBfKo4/aV0jFcgxwW5LoxlFbaVLYVxj6DN8LJXH3cOe5Ch0LNaDEhEzXkYr2Clp5VAmockJNzA4m3XBROU4Ps/Z6EhnPiqEZleDZeUfzahsCzy/LBQSlKocopo3gso7p39XMKwClSxEkcY4ZrTalyRf7wACYXDoxF/SblCi+C5Oa6v2YMBmA4fDI5edGuFD3zfzN3DXyfsGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,105 +98,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-John Hubbard <jhubbard@nvidia.com> writes:
 
-> When migrating pages for FOLL_LONGTERM pinning (MR_LONGTERM_PIN), the
-> migration can fail with -EAGAIN if the folio has unexpected references.
-> These references are often transient (e.g., from GPU operations like
-> cuMemset that will complete shortly).
->
-> Previously, the migration code would retry up to 10 times
-> (NR_MAX_MIGRATE_PAGES_RETRY), but this busy-retry approach failed when
-> the transient reference holder needed more time than the retry loop
-> provides.
->
-> Fix this by waiting up to one second for the folio's refcount to drop
-> to the expected value before retrying migration. The wait uses
-> wait_var_event_timeout() paired with the wake_up_var() calls added to
-> folio_put() in the previous commit. If the timeout expires, the
-> existing retry loop continues as before. The folio_put_wakeup_key
-> static key is enabled for the duration of migrate_pages() so that
-> folio_put() only wakes waiters when migration is active.
->
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> ---
->  mm/migrate.c | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 2c3d489ecf51..a5d9f85aa376 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -47,6 +47,8 @@
->  #include <asm/tlbflush.h>
->  
->  #include <trace/events/migrate.h>
-> +#include <linux/jump_label.h>
-> +#include <linux/wait_bit.h>
->  
->  #include "internal.h"
->  #include "swap.h"
-> @@ -1732,6 +1734,17 @@ static void migrate_folios_move(struct list_head *src_folios,
->  			*retry += 1;
->  			*thp_retry += is_thp;
->  			*nr_retry_pages += nr_pages;
-> +			/*
-> +			 * For longterm pinning, wait for references
-> +			 * to be released before retrying.
-> +			 */
-> +			if (reason == MR_LONGTERM_PIN) {
-> +				int expected = folio_expected_ref_count(folio) + 1;
-> +
-> +				wait_var_event_timeout(&folio->_refcount,
-> +					folio_ref_count(folio) <= expected,
-> +					HZ);
-> +			}
->  			break;
->  		case 0:
->  			stats->nr_succeeded += nr_pages;
-> @@ -1941,6 +1954,17 @@ static int migrate_pages_batch(struct list_head *from,
->  				retry++;
->  				thp_retry += is_thp;
->  				nr_retry_pages += nr_pages;
-> +				/*
-> +				 * For longterm pinning, wait for references
-> +				 * to be released.
-> +				 */
-> +				if (reason == MR_LONGTERM_PIN) {
-> +					int expected = folio_expected_ref_count(folio) + 1;
-> +
-> +					wait_var_event_timeout(&folio->_refcount,
-> +							folio_ref_count(folio) <= expected,
-> +							HZ);
-> +				}
->  				break;
->  			case 0:
->  				list_move_tail(&folio->lru, &unmap_folios);
-> @@ -2085,6 +2109,9 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
->  
->  	memset(&stats, 0, sizeof(stats));
->  
-> +	if (reason == MR_LONGTERM_PIN)
-> +		static_branch_inc(&folio_put_wakeup_key);
-> +
 
-This should be done in migrate_pages_sync() before the sync loop.
+在 2026/4/21 17:08, Lorenzo Stoakes 写道:
+> NAK, expected allocation failures (even if practically impossible) should not
+> cause arbitrary kernel warnings.
 
->  	rc_gather = migrate_hugetlbs(from, get_new_folio, put_new_folio, private,
->  				     mode, reason, &stats, &ret_folios);
->  	if (rc_gather < 0)
-> @@ -2137,6 +2164,9 @@ int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
->  	if (!list_empty(from))
->  		goto again;
->  out:
-> +	if (reason == MR_LONGTERM_PIN)
-> +		static_branch_dec(&folio_put_wakeup_key);
-> +
->  	/*
->  	 * Put the permanent failure folio back to migration list, they
->  	 * will be put back to the right list by the caller.
+Thank you both for the thorough review and explanation.                    
+                                                                           
+You are absolutely right. I mistakenly assumed that leaving vma->anon_name 
+as NULL could lead to a NULL pointer dereference in some path, but as you  
+pointed out, the code is designed to treat NULL as "no name", which is     
+perfectly valid.                                                           
+                                                                           
+I also acknowledge that adding a WARN_ON_ONCE in an allocation failure path
+is incorrect and harmful under memory pressure.                            
+                                                                           
+Please disregard this patch. I've learned a valuable lesson about error    
+handling in cosmetic features.                                             
+                                                                           
+Thank you again for the guidance.                                          
 
----
-Best Regards,
-Huang, Ying
+-- 
+Thanks,
+Ye Liu
+
 
