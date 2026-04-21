@@ -4,125 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02CB6F8925C
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 11:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ADDFF8925F
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 11:21:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3399B6B0088; Tue, 21 Apr 2026 07:17:56 -0400 (EDT)
+	id 8E57C6B0088; Tue, 21 Apr 2026 07:21:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EA016B0089; Tue, 21 Apr 2026 07:17:56 -0400 (EDT)
+	id 895D06B0089; Tue, 21 Apr 2026 07:21:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D9076B008A; Tue, 21 Apr 2026 07:17:56 -0400 (EDT)
+	id 7AC706B008A; Tue, 21 Apr 2026 07:21:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A8896B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:17:56 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF9CCBD8A1
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:17:55 +0000 (UTC)
-X-FDA: 84682313310.06.64D84B1
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E617A10000C
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:17:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gQeX7If+;
-	spf=pass (imf14.hostedemail.com: domain of shicenci@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=shicenci@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776770274;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B6426B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 07:21:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8DB068D03C
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:21:38 +0000 (UTC)
+X-FDA: 84682322676.29.CB57EFA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6F9B7180008
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 11:21:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DZ9aeual;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776770495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
-	b=Ncyl2r7FnwlnIlgF5kB32blTnFeMcw7a3eX6AhMOEGuj8/esQuLJLsG/WDDcBUkAzL6Vs9
-	x42vg0trZ/YdRm3cACkOCNbQcYrDo2vPRsFujKhR8y3xfDqknUu4MzCP9SJL+dajUv34pv
-	zK4JrL2Aqo1n582ArrW0ME60XQmb8vk=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gQeX7If+;
-	spf=pass (imf14.hostedemail.com: domain of shicenci@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=shicenci@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776770274; a=rsa-sha256;
-	cv=pass;
-	b=4a4QgT5ynTQo9SQOnWaZqm9hF44K30JvSW+YhNN3+l6OXWRxmKHJrStCyt+HDMlVRb8BM3
-	ORnyrPy/8JDhIWyqvV0/DvUnx80qIc6nurrKtGobI/lxfk80Jf+AZeoFMSAdEk/PWg0zQg
-	0WYILJbHvo6fsJhTug09xyxe1bDdRZ4=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b461310af5so16053755ad.1
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 04:17:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776770272; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lS0WS/MtaoRMywni8tNJROeqqaYat37QM6Y8PRPNe5QoaeXvEr+znZdf6rs+mTqKYv
-         5535bk/chm/3VRSV/qeN0fcoMsN8cfFoZeNTotGThO7uNnbnBN/0vzGW2OXNi3Ux9Qd3
-         3j8WR8fhFOpvv4DT9nNHDjKkZOaWrdpshWQ5VyAam9N8H3CvS2z7Gluq9MLsl5KmQMa3
-         iRTZ9Pv6eW1+2nGcrVqZFMq+B+8X/+oDTsPFmhxIpw6+xhBU1/z3dcs8iRXnU+uMkKzf
-         YSR6Lr06/u+9OsNsLy8QtoCr8SY9X24RXqOzOUyKtW2wmxIah/GlIksu8YHggivt2AUe
-         CpXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
-        fh=SE3zyewpUcCqiPQOMljTuLBzsoq8qqj1t/jNCufcqig=;
-        b=fcwVCFhJhUaU5KalO1LZpN+plO1Tq79MAZUUsl4LQIzOb11lfx9+maUbpX7coNOpdI
-         nByKkrwQJmvV3MQiZb5+BglQtTENBaOGWFgDpWR+1XyiI+4djDOA+a6mcXVQDtYyEN/C
-         i6UA4+oPw/7FO5qUWJrhnANpxQj5r3MFRGlINDto9RfALM8/brPYhYy4SYQhOSo0HSVr
-         n25gbcoZPqXMUKnR4fQkD1rXFAHS1BDRaeZ9ujZKtVjTcljQMFW9MHrrsWch93HWSNI+
-         7g+4wmnaCwRZQQBPyFIpEQpff3qCz5NbS8DQd+F55Jk1GXeqvLwQe+y5tvwBQWMErljL
-         l+FQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776770272; x=1777375072; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
-        b=gQeX7If+Ko51vx3Wf614rVWRt6z9GjR24tSeDdUSFlgsH9kviSuit1zADcTWxqSmCc
-         nXSHTwCVSbnKPsqN9BL1YdTQyyzJOPLw1lUs58jV7UtT1mpO49CIvDvdzhywwEIiC1gc
-         NxCXOvKNI29fde/YUWhf64uSYCFcKubQGAFbrPzHFe+IW1cNklljwpZn2DtXVQcr+3em
-         /XmzP1MtcE6nqL+tTmn2xm0CcZEGzhmWhtECDeOOiZ7GkJbBi9InRdQmCiQ3BNN4Qxj0
-         OmkiVgU+JgnLgGesNxLlKsz+AybXM2g7kRSdzOjptar6/We3+wRqArK2g8zn5szLrEig
-         cjPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776770272; x=1777375072;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UAxfHPswwQ5G31rFFAOLdCIIYxIqmhsNU274XI2LiA8=;
-        b=i9o6TzFdAWWlkskoB0c6bJPR1ceeKfEnje5HvZ9nbUwS+Ff+9kjkfPQFiLSCzaYYNq
-         CfAcG5Q8gydQw0oSv4emW6qUEH1z7prt5T/7gFHaRHDqJU8WOx9WeDHBOZMxGb5WdQud
-         FRZQ+1onORMRFmXXOh3R9fKdlf+IWpi4y75MWpXmyzHKsB6teawnqWVzwbFk5/BQIh2Y
-         srPbnfmvft7OPseeR+dwEA2ewIUulFJaNumTk94DL39DLsuLkyj97IkE4SmxiXVsbaYa
-         TvULwwRsCN2zYFZoS5EEmW76NcmpxlLaEM2bWOT0eJa0TOtPNX2TmTDczuoHrZXaX0i4
-         lQvQ==
-X-Gm-Message-State: AOJu0Yx/arE9xJZvLwxxydPlMgRcTeFtgXmqiW0LRrAo0oIKDHEocD6g
-	S/1vqJu2xTYwAzNetg68kPaHeF/IuFd3Mnki8Gjdt/6PVUCqkCpUJSFIDQ1+V2Srtsps9my6IRx
-	PL+EKJXxjioiXHr3mwBEJQWngJKi2Ul1hfrdZ6rBsOA==
-X-Gm-Gg: AeBDieuEk10Q3hYtu5GnnFamUoMY3uEWclI+Sm4kKfK13X1bo3Galte96BogFu/5SRB
-	RrccShGpLdk9WyeR/sYtqaI/ehJnf6TrAQBe0lOMs/NCL7j/8rtyIMvIIwdSAhyoaCmbG9w89Y7
-	hf145ZIvTlHdOQtDo9/7YwYITkgeI4KlyRg9v3MzmX2s7k3dOUt//VvrlQPhqM+EmoJP7id3hoX
-	zBQxpfl4MoCNQCkQbzRn9VcpQ6G/WW9AhtmqZ7ry2yPjQkbslsx+GkDxjmMAIzRr/vw01iUXgwF
-	pq4Iv6Q2gtposMQFZ/ojYokIzmbE
-X-Received: by 2002:a17:903:166e:b0:2b4:64cf:e8f8 with SMTP id
- d9443c01a7336-2b5f9dbcd22mr166529785ad.2.1776770272491; Tue, 21 Apr 2026
- 04:17:52 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=I5NaQp10fC21czwxYz1OlOt79WdfoTHaXfQ2WZiUuVM=;
+	b=DGVGDLrRuMUjaEatCyt0ls1i0dGbfPPVJmzVhbnnpgzIENIKog6pIQoVizKp1VR6y58Ciz
+	QRiWse4MiSeJtLbVRRenDjsjYQmusrJrdyOjnI/7j1sfDwxn0bDIgZfY1SGLTdiePkzh+O
+	Xb7BUUVR6Ji7Lfj0xDquxXTk+RyAn0A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776770495; a=rsa-sha256;
+	cv=none;
+	b=tVFbBjn1z49UxFa7vgl5MV2mGyFYGLGstvkayjMSMSu8AMmqibKRwamjuV43KXIQ569ZWX
+	5WpVf7i1dk9f/wxeOsWDh/lKZ25xIBFOdmVSzQHUwY3btSjqEDHqiXZOnGKqtHbHsYH2jo
+	SaUBQ5hTqJyO/mF9ilAalp9aKIic0hg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DZ9aeual;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 670A960125;
+	Tue, 21 Apr 2026 11:21:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F2DC2BCB0;
+	Tue, 21 Apr 2026 11:21:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776770494;
+	bh=9SngLDlLSrRZtWzwN1nn6cQq5z3isskMTiIoeHQPXUY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DZ9aeualfrYF8+3WcZLwsJEpJIz2cA51j5ULqOULX1PxTiQg+XOAQTK212j2XfngN
+	 wYQQbLy+bmca0BeeYnHwe/1dOGQ5ZJaAWXiiLJXEH9VIGrncejeND4K3NzDiL3wA4K
+	 zvgd7vFxKb09ENWR8Oov6pCqX2MU8yvfYAB5kpOFXig19tU/qQIlMAVDM49vmEpRC5
+	 9PGbX6lRG22bqjNnvauJQaYqCAIvK6IB9wbh7HxUziTVqKJqWTHWqrhf/tL0Dq4gO/
+	 fRRJeUs7R+8NVUnAtfMw6mxlSI+fWq6JnU6jWG/4lOmmlX1/n4Zg4xqkk7ENA4k4ec
+	 MCzr7KpmpQsNQ==
+Message-ID: <76cec69e-6ee1-4630-847b-80dc1e49d643@kernel.org>
+Date: Tue, 21 Apr 2026 13:21:27 +0200
 MIME-Version: 1.0
-From: Zw Tang <shicenci@gmail.com>
-Date: Tue, 21 Apr 2026 19:17:40 +0800
-X-Gm-Features: AQROBzCvxTzVOatYGD3oQlMzZmTAz5McY1A204T_VliE2k6DNBeXHfpitVDrZ9A
-Message-ID: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
-Subject: [BUG] WARNING in workingset_activation triggered by KVM page fault
- path on Linux 7.0.0-08391-g1d51b370a0f8
-To: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: jr89wwn4jxzjeoh7gz8bfa3gkx8ww617
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/sparse: Fix race on mem_section->usage in pfn walkers
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Charan Teja Kalla <quic_charante@quicinc.com>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org
+References: <20260415022326.53218-1-songmuchun@bytedance.com>
+ <09d1ef13-e02b-41e9-b431-4c3254e42011@kernel.org>
+ <B139F2C1-77CB-43A5-8377-4F4BD44ADC6C@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <B139F2C1-77CB-43A5-8377-4F4BD44ADC6C@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: qsyid3b8gg8cnhfeya97xb6c6n1t8fqw
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E617A10000C
-X-HE-Tag: 1776770273-866111
-X-HE-Meta: U2FsdGVkX1/GBqlsJjYkO0EIisEECrg2BB/RvEfOe6IdZgWj1EHYiKvX1ySD0gQdf9W/PaCk6PxdRw/bW5KSVq2u62iCy015g56wnkvdKP406vIDOHX1wPN+e8xA3Qm8CsZbdFaeA8CQ0kbNMjj7868QVW5QNEOlTn6czOtfrKqqEaz4/YZVxWsVGvoxTIbCFN5x9uGAF8+egfxM3UzX6YefaonxBfplqFdALD28hA69ORuOy98JATudt9PsjpQQZ6Ef8q0BBMHtaASPcteZYjFj2c39pqBBIh2t28B0MnFZ9NFAqr+tZcCWRyJvmS+RBchvB0Qk1vgC5pc0YLtqA8QCofwETWJmTPs5olS7ZuriTLZYzPD7DoqreQkL9pcIGiX/qTmEIthZLK4c+Qi/8TQqu3i7r7jUUVqpvVOKgLGNC2nb/crlwdk09IxyBQMHPHExURrQQP1/TXQeEo/if7KOmPOIULfHxMWUOVdDBMsWSK7D2l7yz/ltZz7SR9pOHt7OBogyvczF3yOmI8lAlkJHomyT1gYGowZToLGpjzOalhg9lq2Yv4pdvIlVACnKmK8N0Kr1vjIJrVaCiRWbW9JdWGSfggymXYv/ctxcfVbhJoeYZuJ+F5UOkETweOgWlrSQ/laKbvX9URH2Try6YWsZdKcGKtZZWUsZY4msmpyeD8jgoxZADQ33grSNVEYU8YQQDja3THTo8pZer90HLy66l/fin0NpS7e9txtq3BJauGrS2/kt0oPzPYB1+VYkWvwWfetzi8t5rUUGhS/hckjxuAvkWkUGucIHlopAo6XMdvaY65RmTj4ychmP4XnLpHTm3PztM0jN80/AMWEq4Rhn8HAC1LGp++WK6934X3aolZ210nCzAIIjVKxg1JuXockrx2MZIN9tteZkJGNoI+9rsmk/XX5soA5k20+P09ycHcGMx1ugsAk+dKeBrI1HSBUI30xZKSSoB142E2j
- 9MYzP2iQ
- WCQiMt23avCwYQeK1XApEobXTX9LsOrR7Sb4E0CLbDA89MiShGVnrrkpw8hmIfRm3I6db4dKL6kfsblqvCuYH18XXHHuwdLkUsGckfVtF7395q1miI2P08vTmB0RpNl+sd0Wp4NZJFt7SQR7KPrLc43VmzfjQwn2MPXVx3ZW0gYv3MmZUZqi68GaFp2JEXVk4MjveTB0ENwz2DptIYuvJJLPILT4fnqJZXnyILe5oCnymmqvcwk+yD8KIZybDydQeHmxc86ObK2tHX+O6wL+GjXvHHYnzyicZo4TI4S4klo/VMJvzCngXNBu+pey/rmnDXEdDybDrwX+7y2xqRTAqDByjG9zc/Lk+p2oSoTOraYsox8s8HUfQ7rbbnhToZwBSCNkqI/NXniaNEndeC+nu5Gop8+t99Y8AyrdFhiuKP8deNQT3+tluAb+yTwJXd/aA0xDDPduCUmtgRBtxxt2Ef48TEQ==
+X-Rspamd-Queue-Id: 6F9B7180008
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776770495-349595
+X-HE-Meta: U2FsdGVkX19+QjwEOvpcVuLpEZOMOzLsqUzsEq9t3PdtAy0EeDdJsCbugyZiNUcvs967ASLK3V2eOzuIhFRkWQjTLkSPS/LjIATMC+FbKph0TOPVN3Ip2u2QfEiMhPsaa68wEWjV4/jlWLSY6j7SlmKu7H1s5Z6VpyyDyEv8Vn2kgi/yFL7vGSZeVSQbUXIwBzgPIX23vwY3QSEWMduSNgGZ27+d4ZvEqXQTdPB/kU/HFOH4XobKkJ5UjAOj3XTDYnoeXLrNQcV3s9FoZEwtglJoipagMM9lpU1Dv05yWpshDxV9iTfTsInuLPOd+E0i4k6H20DQMzFww8+8DfKJX+aW6SDUJsWtxOm2TZXBsM45R43QcveIu0AGCa+3PGOUIHBlIkJfZYgRnzLzhNyHiwtrqxv3VnM8mIBu9mQgRSELPavRxkVtXT6fDwC3sbAMbL4Lv43f7fpKu6YLOY41uMTvUXR70qSzs8gqbpOvWHa+Skb8cP2+G78HA7IZ7nCHTsxPUV1r/4iY34jttsaKM0epDNKeV4eZYl4LVQ3F/JQGySmsMjoQoc9wNKyWooTzjH29MHUtvc8QDhuRcBibWJQbBGeXqI2ej44zlTEjtkBEMYc/6TW+towz8ZVRQNIy2XB0/8/xhdKUGypUyuh4BHIYderGctxEQI70cvres7Wx+dZToLlSPy+ZgXusNS6iDvFVfX66sRDQ3iPKyhLDpJeU7KYhm0khEnD0QTGSOGdzVTZlVE2NqMNdOukaiIYOcIUROuNBugY/Za27Y/JZ9kKSJZvnKm6sLEZ9ZV8GCnTG7mC4Brj57I8eAslGyoo+zBDKCpf1+U4wovSYYGmc+2KKr8RvlrQ1pt1n+vfMNcSmriAcXKh+s1XVpYN2wdTCazVI9oxKeb0ojX1PhC1hW5G06L7nzAUzHWOUvR4gz47cf4RvTwPRMsm51a93Zg6d4zi6v2uU6FqPqUYY2nt
+ AMDFXYkD
+ +GovtwJpZ8nibCpuwZ5NYn4VGaMo1Fe4gguAsA5biYCmUqbxnalYa/XCHLwB7bhh0upxbU4/C8vsj+0cTgbVIDVM/FUYpph+FV/oGbp0eSusu8QnTzYeHsbBTjz8rwupzvpgsH9IzbQustH1Jnn/3mZ8Y/+agGl4x9ILM/vfHm03T3nqPcdPs0eNRvMKTFXpjNcal8v49Z9Mnib0uGNuCSnFqtQqoGAwwctFQG2TIDvu12XvPVjiMGNmpYQSLQoOPxWKVyMztzwjpuMqdFvtq9H9SlWyFyYNEem12/YZYRuJwTs+WEmio0s2tclDNr1jzZu9L6WmadZrIfeE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,64 +148,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On 4/15/26 11:20, Muchun Song wrote:
+> 
+> 
+>> On Apr 15, 2026, at 16:04, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 4/15/26 04:23, Muchun Song wrote:
+>>> When memory is hot-removed, section_deactivate() can tear down
+>>> mem_section->usage while concurrent pfn walkers still inspect the
+>>> subsection map via pfn_section_valid() or pfn_section_first_valid().
+>>
+>> I'll note that it's all racy either way: someone checking pfn_valid() /
+>> pfn_to_online_page() can race with concurrent unplug.
+> 
+> Agree. When I first saw the commit message for 5ec8e8ea8b77, I was curious
+> because the goal of this commit was to fix an access issue with ms->usage.
+> Looking at the race diagram, I realized that while this only addresses the
+> ->usage access, subsequent accesses to struct page will still be problematic.
+> It's just that the former issue happened to be triggered first in this specific
+> commit.
+> 
+>>
+>> We've known that for years; it's hard to fix; it never ever triggers :)
+> 
+> Glad to know my analysis wasn't off! It seems I've just stumbled upon a
+> 'well-known secret' within the community. :)
 
-I am reporting a WARNING in workingset_activation() triggered by a
-syzkaller C reproducer on Linux 7.0.0-08391-g1d51b370a0f8.
+Heh, yes.
 
-The warning is hit from the KVM page fault path:
-kvm_set_page_accessed() -> folio_mark_accessed() -> workingset_activation().
+> 
+>>
+>> So is this really worth it, when we should in fact, work on protecting
+>> the users of pfn_valid() / pfn_to_online_page() with rcu or similar?
+> 
+> I am not sure if it is worth fixing, especially since I just realized the
+> community has been aware of this issue for many years. If we do decide to
+> fix it, I think the most straightforward approach would be to protect it
+> using RCU, something like:
+> 
+> # the user side of pfn_to_online_page():
+> 	rcu_read_lock(); 
+> 	page = pfn_to_online_page();
+> 	if (!get_page_unless_zero(page))
+> 	    goto out_unlock;
+> 	rcu_read_unlock();
 
-At first glance this looks more like an MM/workingset issue than a
-KVM-specific bug, although KVM/SVM is the trigger path.
 
-Reproducer:
-C reproducer: pastebin.com/raw/zzNSd9HK
-console output: pastebin.com/raw/TuipfpyA
-kernel config: pastebin.com/raw/aq1V3cLk
+Right, but we'd have to protect against the sections being marked as
+offline as well here, though. So against a pure concurrent offline_pages().
 
-Kernel:
-HEAD commit: 1d51b370a0f8
-git tree: torvalds/linux
-kernel version: 7.0.0-08391-g1d51b370a0f8 #1 PREEMPT(lazy) (QEMU
-Standard PC, Q35)
+If you're looking for a project, this is really one worth doing! :)
 
-The warning is:
 
-WARNING in workingset_activation
+pfn_to_online_page() is more in need for protection than pfn_valid() I
+think.
 
-Log excerpt:
+-- 
+Cheers,
 
-WARNING: include/linux/memcontrol.h:381 at
-workingset_activation+0x466/0x540, CPU#1: repro/238
-
-Call Trace:
-folio_mark_accessed+0x1d3/0x650
-kvm_set_page_accessed+0x5a/0x70
-kvm_release_page_clean+0x26/0x180
-direct_page_fault+0x553/0x11a0
-kvm_mmu_page_fault+0x35b/0x2020
-kvm_handle_page_fault+0x1aa/0x380
-svm_invoke_exit_handler+0x7a/0xe0
-svm_handle_exit+0x416/0x7f0
-vcpu_enter_guest+0x26ad/0x49c0
-kvm_arch_vcpu_ioctl_run+0x697/0x25e0
-kvm_vcpu_ioctl+0x737/0x1610
-__x64_sys_ioctl+0x192/0x220
-do_syscall_64+0x117/0xfc0
-entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-The reproducer appears to drive KVM into a guest page fault flow that
-marks a folio as accessed, and the warning is then emitted inside
-workingset_activation().
-
-Because the RIP is in workingset_activation() itself, this may
-indicate a problem in workingset/LRU or memcg/lruvec handling, with
-KVM only serving as the trigger path.
-
-Please let me know if I should also send this to additional KVM x86
-maintainers, but mm/workingset.c seems to be the primary fault
-location.
-
-Thanks.
+David
 
