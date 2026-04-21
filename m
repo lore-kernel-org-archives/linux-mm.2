@@ -4,97 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF62F8FA78
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:20:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5DCBF8FA80
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 14:26:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E603F6B008A; Tue, 21 Apr 2026 10:20:16 -0400 (EDT)
+	id DF5226B0089; Tue, 21 Apr 2026 10:26:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E11806B008C; Tue, 21 Apr 2026 10:20:16 -0400 (EDT)
+	id DCC236B008C; Tue, 21 Apr 2026 10:26:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D27E56B0092; Tue, 21 Apr 2026 10:20:16 -0400 (EDT)
+	id CBB326B0092; Tue, 21 Apr 2026 10:26:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C5FC96B008A
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:20:16 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 745C3140EE6
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:20:16 +0000 (UTC)
-X-FDA: 84682772832.23.48FAA37
-Received: from mail-43170.protonmail.ch (mail-43170.protonmail.ch [185.70.43.170])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1877216000C
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:20:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=onurozkan.dev header.s=protonmail header.b=bhVsUTjC;
-	dmarc=pass (policy=quarantine) header.from=onurozkan.dev;
-	spf=pass (imf08.hostedemail.com: domain of work@onurozkan.dev designates 185.70.43.170 as permitted sender) smtp.mailfrom=work@onurozkan.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776781214; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B40276B0089
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 10:26:11 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 585CD13C3E2
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:26:11 +0000 (UTC)
+X-FDA: 84682787742.05.83D66CB
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BC264C000D
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 14:26:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=rsmOHNUw;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf28.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776781569; a=rsa-sha256;
 	cv=none;
-	b=dWyLkxBRGxTl2R56Ze6i1qskkAshDYp+XstMW23WvpehO6q78bnqCJMpspOS/5EIQqjwXb
-	DizyJNliaPQT3jV+eOTrzIsy7Z/V9bK/0+MX1AtVQwmZ9xyK5aqzMdySBLMh4yuo9JG3ZN
-	wx1C6WBr/2hU1Pgzf02Hii2SmdOPrdI=
+	b=refLHJCp9DasVFlEDVTUI5YDmM3TgKny9l98iuqQDa2wyfTuHjpzSnY7/0/pKBWBdEr+dg
+	dRM4E79evWTMfi/vhOEacukKrVDkuciGQ5HNjWuhxZOznIQ/DzzRx16NShL6GT0P6Vcbqt
+	MqIQo4eCFG/GUNa7YCnTzgOdfr/LR1o=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=onurozkan.dev header.s=protonmail header.b=bhVsUTjC;
-	dmarc=pass (policy=quarantine) header.from=onurozkan.dev;
-	spf=pass (imf08.hostedemail.com: domain of work@onurozkan.dev designates 185.70.43.170 as permitted sender) smtp.mailfrom=work@onurozkan.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=rsmOHNUw;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf28.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776781214;
+	s=arc-20220608; t=1776781569;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pC2xjS4E1pQiUh4tsMMIwjbR1MJO5C9qQSohoN0KDzQ=;
-	b=0Tvsq6P/X75t8/Dnlho3U/biVemYRwwJjk5BWd+/a0/BLHeSUlWV6E+RkaGOn6nl/0bwVN
-	rpHU8PrkzoTayemQyveBNP/V0wRZaPFjGNyO2EyU13aZrdF2GJ1CR0s4O/Y/kI1Y7/a0cP
-	xnF+ZJQgYZhb9mpv4Z3vHCuh+luA2fk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1776781204; x=1777040404;
-	bh=pC2xjS4E1pQiUh4tsMMIwjbR1MJO5C9qQSohoN0KDzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=bhVsUTjCi/gzfIiXMhrdBlq7Ye+h2daQT4StuZ+ZgX5v2sh1LwSAOejNEDrZUhiOp
-	 wdUzQpnEMQO1IuQ26Rv0IRJCH+z6e1jvIi/AR1X2YHnYEp0FMmnVy8jG4dMTt04KW4
-	 Tk6kVtMIkBPvLKtbIOsiBu6L48st3NKBmJXJm+7tKyzuykKxecNCJHREffxAP5eFPC
-	 /r+11U6qJMEg1+rAuqTne+8dpIKAMqxBfIooOqXowbX5WWbAXXJrOG0HSGGpCpgu67
-	 QRZlmQEcnDsYdB5DT+Q2+ARFrZMtoG2SUYpQP9iPaPBZ0P1HQNJlyf0/d2I0ohqcIp
-	 t3BWG++i2SDNg==
-X-Pm-Submission-Id: 4g0PdC6n5Hz2ScQM
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RFC] rust: maple_tree: implement Send and Sync for MapleTree
-Date: Tue, 21 Apr 2026 17:19:56 +0300
-Message-ID: <20260421141957.22512-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260420201040.1894760-1-joelagnelf@nvidia.com>
-References: <20260420201040.1894760-1-joelagnelf@nvidia.com>
+	bh=2DP+/uoEmB7VI2NVLNGwr1avjO8rNucbPXI3ldOUbjY=;
+	b=L8Cgwb5kFtmX5cw+xyrbpeWc+A5j42E3Ar6Sw6016FWyykeAs6JylegaOvJ6X76CCgJM3s
+	/1douIHjUMr6wie8sX4c1Lpj+LVcYHJZd84JSk73hDAfFuFTV7/5HzHLwA9hdb79rANhp7
+	uRYcOuqmfK8fO10qNbe1+185hYwQIU4=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63LDQ1mH1926157;
+	Tue, 21 Apr 2026 14:26:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=2DP+/uoEmB7VI2NVLNGwr1avjO8rNu
+	cbPXI3ldOUbjY=; b=rsmOHNUwrHpWnCPlkAZqCNyVi8hHOqxsGFDBHr87KVvAhk
+	uNfnBUb03kHoa0+4Na5KlqQSlgZeLElnI4454clRlf9It+Lf3OPlVNoTVZfftgaL
+	a7zsUlTpMdzJcF5CPb6giztkX2JnJ/Hhwh7RK07DD6b5AVZyje5BaokGdXSCKUfR
+	0DCaOemzgLGbe4aMHO6SV4AvEp8Z9F/C6J8T+g8I882LCYazb7iW00aOMtP20Ozi
+	lERj5T8tc7UJ9WLLWnf9pBEqK86yJYZu/ldZmnDZlLAPuKnKKarDEgTjhP1AVdFz
+	t5ToEIxox6aYCvX2qEWcE6gggVT77z1kBIN9HWXQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2nf4rfr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 14:26:02 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63LEKMiW016890;
+	Tue, 21 Apr 2026 14:26:01 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dmm9q15y4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Apr 2026 14:26:01 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63LEPwVT49021218
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Apr 2026 14:25:58 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1D84020043;
+	Tue, 21 Apr 2026 14:25:58 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D2F9620040;
+	Tue, 21 Apr 2026 14:25:57 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.52.215.75])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 21 Apr 2026 14:25:57 +0000 (GMT)
+Date: Tue, 21 Apr 2026 16:25:56 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] mm: Make lazy MMU mode context-aware
+Message-ID: <8a70c78d-36d2-4da8-9c10-e39a1f69ec2d-agordeev@linux.ibm.com>
+References: <cover.1776264097.git.agordeev@linux.ibm.com>
+ <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
+ <3daccad8-cf08-4543-b9ec-b34711a4ed14@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1877216000C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3daccad8-cf08-4543-b9ec-b34711a4ed14@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zOGn3bc-uCXJ1VnIwroqLa9JorHBLG9F
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE0MyBTYWx0ZWRfXwK3Au59d/O88
+ EFPF+igDeKCgztav8Xi21cxRQbtROvMGXHbwld8sYoyG75Bv59oW854tfEGkfxvYrGwHHTAs+CY
+ aWsX+5lzUAAXcJrXsVzNtipZQSDqUfT4zPfG2Wq+kD0rjBOYu3TvZqIJO2mCqBUFfKmVpHWRJM/
+ MunIxDJotoO4WCF2XDohTSHsMyCkLTzLuBttGVCVdiTY81ZFKajgnwmNnT9uDWe8iNSq8fEPrFI
+ RfZ/W6KliO4NMvtYCd9x7jf7bAY8ydc5uO/hcOq1+nQnhoyNNa7Ph/OIfj12tj9xqrmkyWb23DY
+ M4OvGkY6wXnsbOfgKncCR4ZZuzADolUQIc29sm/QqpxYSKDyLX92kDJ8kGv2EfVlOOGV7sknNl+
+ GQi5b4ELj8ejwYx5q8GKIdjYitPLgAdAVU5zmnYhHxnEKE1cNS4ry9mZIe6+9PTddyc1P+s3Jsx
+ 5JJ4Gr2dyCvTDw6jtmw==
+X-Proofpoint-GUID: zOGn3bc-uCXJ1VnIwroqLa9JorHBLG9F
+X-Authority-Analysis: v=2.4 cv=B7iJFutM c=1 sm=1 tr=0 ts=69e788fa cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=2RKckqcH8cpCXoM4mLcA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-21_02,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210143
+X-Rspamd-Queue-Id: BC264C000D
 X-Rspamd-Server: rspam12
-X-Stat-Signature: o4tcpcfr85uuid5ae7eaxw39crtzqpb5
+X-Stat-Signature: swkuydb4enq73ke8wm1mn6teh18m7fjo
 X-Rspam-User: 
-X-HE-Tag: 1776781213-623759
-X-HE-Meta: U2FsdGVkX18qiseyn21UkjTwIVcfDIqAG+Kt7Sy23Da7k/f1rooymAMn3ZiMzv7EqxDpi0uw5+Bw+pfsoytepLtbsgnxLJfrFWbd1eXlCjxbh3aUMYlvguB2RXonF0s+/8xgBNQA6Ld1fgvEescNrWLE+xBbHlgkSUTiXVWUqADGuleAkw0DOFQ54x3SyuA+1ReKjvp7Cj6M5Wq91gXzrWbnaq73xNWPcBJk910ByfYzPixTPiFbGCHotWJthUlTXniwvxbVAAWRaG+G1I3AB1fnE655/rEsdovCOO3rlDuKdaJUqZTrVWataeulmbtve3IhUeCe9ShiaX20UIEurZsRawSBGQbZaexJRK4Xvd37buTAbxkLMIjmR3Lz5HGsSH5VPbj2ekf1Xrr+jAWs8xRoD2VV37hDtWUiCPUubL5RYNXJElmmK58dhSxTHMpe6zZRGSDYcrXfB+wTX1FHf/fZTDE4P47t1FDuTjDWl6fad9/Ae0Sn2drpk+RYYiMlgGoMpM24VxspJvOWmhPXGmghHOBjzsAOEKz4W0iVrLZT7p08I9Y5I/4ptSso0URR1NlGDXeTjEo/Qbj5DUN82M4n3Xs6jbBJN3A7uUM+7z3gjwRSIzssu3fhkTIUpCqZskbiepjGg8mQvJwMOck4Vvu8AozI6OdPMlXO0eeICaoH0qbehX313mHrRfz3dUKRdl9ajoeoPRmtmetwy+sd902nZ3Y++sxeMMnny0kaWJKW+RIhjrltz+iS0O+19MIJr39SKbckAqca4ofWcTRx8st3FnCLMHee4kd+srC+b5zuuDcaf5WilzU2Y1uHNuSJ3EoKEPO7d9gsBY8rVpUHmGZnCw393Gh9BYvk/BTBWbYlT6fL6mSFB14TYTvaEC9wqeFfV1s2w+ZLi0yR2LQyv5LMALD6u3vckFmEeQqYwB/+21aswGVYctg6JyFVLxRle5Uy5E95mASNaS6JiyO
- df1dVAjh
- bxJxrMx2euYf8Av4Au2PymPcCjLqZGS5K+kulGzjoyrTcLcG1Stm5gO1tMy7kcKJHSu5f7bU4mSbvGXinrbvFTO4St4SUVOfwKFy6qJrAKObjVr2capTAKH6DKNNaI7xNlnKg3u403hlJ7Xa16cJEKUdV/U4aTfeGq/eoS7Amzf1kKhboTS1VaNIVcJTJh6fAwZDMsk752QDx/51MNV6f4W9KT+KM73tCn/2N
+X-HE-Tag: 1776781568-342545
+X-HE-Meta: U2FsdGVkX1/5+Hy579jL0jppsDJjZlYT/3bGJWVKF7ZgUtqkYBZ4nW26BJAlQD52ikmN15jLD9cdu8siQclwIdoVBozM4ShSE7OS7QXPGqv7BWmoel/LigAYmYrE/hENJ+0qfo3K7bv0qrbu8F8EVy17UPBFXDg0n/NjZRn+Yx3vCeW8e5jbvRIKfbfyrWRdV+4cKzKgue3AGpFlQ4gj3HEDSHn56vpSP0SyJYcsxv9rRgT5lCpyVdNFHT4mkS/rHTb203ThsGrJpRcyZjPDk2lHp+9LAltwZMmTOvqw/qMmyjR1DgjHjCyCXDq7sF84xpl3dqx4a6ZfY3RSkVZyGpqXNn9Py/YmdNMsJnYyHe2m/wH/BmoTNTr1BKfkBXNQmr6fxQulhYcaGrjA+qoOH21pPC70i7g/ND1VI99ZhYRuOKa1Om7EMdt5R94MkbvfZ7Vj/vgl3GQ6EMsR/qJvujTogu13m7hk5jm+1MQBabAMvxHxxNHtFDYYnxB/C/EGLy4j/+EO5XLbLUG7Hc/alFb3k7x+RP4D4O41ALUE3AnNgMf4QBd9z5NXCWf+V80Dz7NoZCpmRJbLn/DqU19FDBoN500GIgB61QYPyU4cAOIUpTGVTCrRjvxGgnaqNIxlHWmnEylB3PYe6yXA0r0naTh7y6rT2lrKNSEadslwK2Xlnw6K9AfWC1gM7cfPvKuHTy25PxWtpA9lrr8bzd4tDka2MropGwkaEiaLzN/M/+mRH09Baf53n9XBy/S2H9eYuItMTEkeWBfL2lP+6cELP3LobJ0U8gDG02YNNlWRmgWO4rageqSqXHj3rbMZrzPTUex4NGeWBrnMEXnPKR1PcSxaLUUXukVUjIWI1cep6oqhmF3J9/Bzo/cUkKVZRF2GowSLvGnON5SjlrzdKoorkS6vefGuheZrMMy7JrFtQcLhtWE+f9EX7jyhxR1RCfPjyxlakm2LWcT1QTdwJyR
+ 1I2zPmoS
+ se8x9LI+AiBSWUIwUOu60P1AWrsfAm3LwVJBDpa4A8nFAxAQkpdWUvulRHpH3Od+rrhUvOhyiLFHLbT4IBDwn5rQU8xRExB7z+zADK9/8hlPk7YqP8Q3KfAPg2cCrqy5poY0O2syerTB4edEAr/PxnE6/etGQ0a+Pe8niHaPqMZQEVSBxXhdwvN0PbUI0PTrQQvm4hupmfwC62bxkHnq0KSmuO8mfOIFN3ARbW+UuwoaCFqk1f4nFsgZSCxGwXx3JJUpfQcOo2ckSbQxavps6wC9vRNmaTt9ZqIJ7TGoqUyUw4quB27pXP/n34FC3i4aZ3TRAyvQZKb8WwKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,159 +143,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Joel,=0D
-=0D
-On Mon, 20 Apr 2026 16:10:39 -0400=0D
-Joel Fernandes <joelagnelf@nvidia.com> wrote:=0D
-=0D
-> The C maple_tree struct contains a *mut c_void, which prevents Rust from=
-=0D
-> auto-deriving Send/Sync.=0D
-> =0D
-> Following is an example error message when using MapleTree in nova-core's=
- Vmm.=0D
-> =0D
-> This propagates up causing NovaCore to fail the Send bound required by=0D
-> pci::Driver:=0D
-> =0D
->   error[E0277]: `*mut c_void` cannot be sent between threads safely=0D
->       --> drivers/gpu/nova-core/driver.rs:77:22=0D
->        |=0D
->   77   | impl pci::Driver for NovaCore {=0D
->        |                      ^^^^^^^^ `*mut c_void` cannot be sent betwe=
-en threads safely=0D
->        |=0D
->        =3D help: within `MapleTreeAlloc<()>`, the trait `Send` is not imp=
-lemented for `*mut c_void`=0D
->   note: required because it appears within the type `kernel::bindings::ma=
-ple_tree`=0D
->   note: required because it appears within the type `Opaque<kernel::bindi=
-ngs::maple_tree>`=0D
->   note: required because it appears within the type `MapleTree<()>`=0D
->   note: required because it appears within the type `MapleTreeAlloc<()>`=
-=0D
->        =3D note: required for `Box<MapleTreeAlloc<()>, Kmalloc>` to imple=
-ment `Send`=0D
->   note: required because it appears within the type `core::pin::Pin<Box<M=
-apleTreeAlloc<()>, Kmalloc>>`=0D
->   note: required because it appears within the type `Vmm`=0D
->   note: required because it appears within the type `BarUser`=0D
->   note: required because it appears within the type `Gpu`=0D
->   note: required because it appears within the type `NovaCore`=0D
->   note: required by a bound in `kernel::pci::Driver`=0D
->       --> rust/kernel/pci.rs:294:19=0D
-> =0D
-> Implement Send and Sync for MapleTree to fix this.=0D
-> =0D
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>=0D
-> ---=0D
->  rust/kernel/maple_tree.rs | 27 +++++++++++++++++++++------=0D
->  1 file changed, 21 insertions(+), 6 deletions(-)=0D
-> =0D
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs=0D
-> index 265d6396a78a1..1ecf05871e710 100644=0D
-> --- a/rust/kernel/maple_tree.rs=0D
-> +++ b/rust/kernel/maple_tree.rs=0D
-> @@ -16,7 +16,7 @@=0D
->      alloc::Flags,=0D
->      error::to_result,=0D
->      prelude::*,=0D
-> -    types::{ForeignOwnable, Opaque},=0D
-> +    types::{ForeignOwnable, NotThreadSafe, Opaque},=0D
-=0D
-We usually prefer vertical formatting e.g.,=0D
-=0D
-	types::{=0D
-		ForeignOwnable,=0D
-		NotThreadSafe,=0D
-		Opaque, //=0D
-	},=0D
-=0D
-to avoid merge conflicts as much as possible. The rest of the patch makes=0D
-sense to me.=0D
-=0D
--Onur=0D
-=0D
->  };=0D
->  =0D
->  /// A maple tree optimized for storing non-overlapping ranges.=0D
-> @@ -240,7 +240,10 @@ pub fn lock(&self) -> MapleGuard<'_, T> {=0D
->          unsafe { bindings::spin_lock(self.ma_lock()) };=0D
->  =0D
->          // INVARIANT: We just took the spinlock.=0D
-> -        MapleGuard(self)=0D
-> +        MapleGuard {=0D
-> +            tree: self,=0D
-> +            _not_send: NotThreadSafe,=0D
-> +        }=0D
->      }=0D
->  =0D
->      #[inline]=0D
-> @@ -302,19 +305,31 @@ fn drop(mut self: Pin<&mut Self>) {=0D
->      }=0D
->  }=0D
->  =0D
-> +// SAFETY: `MapleTree<T>` is `Send` iff `T` is `Send`.  All access to th=
-e tree=0D
-> +// goes through the internal `ma_lock` spinlock or via `&mut MapleTree`.=
-=0D
-> +unsafe impl<T: ForeignOwnable + Send> Send for MapleTree<T> {}=0D
-> +// SAFETY: All shared access through `&MapleTree` either acquires `ma_lo=
-ck`.=0D
-> +unsafe impl<T: ForeignOwnable + Send> Sync for MapleTree<T> {}=0D
-> +=0D
->  /// A reference to a [`MapleTree`] that owns the inner lock.=0D
->  ///=0D
->  /// # Invariants=0D
->  ///=0D
->  /// This guard owns the inner spinlock.=0D
->  #[must_use =3D "if unused, the lock will be immediately unlocked"]=0D
-> -pub struct MapleGuard<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);=0D
-> +pub struct MapleGuard<'tree, T: ForeignOwnable> {=0D
-> +    tree: &'tree MapleTree<T>,=0D
-> +    // A held spinlock must be released on the same CPU that acquired it=
-.=0D
-> +    // Prevent `MapleGuard` from auto-deriving `Send` because `&MapleTre=
-e<T>`=0D
-> +    // is `Send` due to `MapleTree<T>` being `Sync`.=0D
-> +    _not_send: NotThreadSafe,=0D
-> +}=0D
->  =0D
->  impl<'tree, T: ForeignOwnable> Drop for MapleGuard<'tree, T> {=0D
->      #[inline]=0D
->      fn drop(&mut self) {=0D
->          // SAFETY: By the type invariants, we hold this spinlock.=0D
-> -        unsafe { bindings::spin_unlock(self.0.ma_lock()) };=0D
-> +        unsafe { bindings::spin_unlock(self.tree.ma_lock()) };=0D
->      }=0D
->  }=0D
->  =0D
-> @@ -323,7 +338,7 @@ impl<'tree, T: ForeignOwnable> MapleGuard<'tree, T> {=
-=0D
->      pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, =
-T> {=0D
->          // SAFETY: The `MaState` borrows this `MapleGuard`, so it can al=
-so borrow the `MapleGuard`s=0D
->          // read/write permissions to the maple tree.=0D
-> -        unsafe { MaState::new_raw(self.0, first, end) }=0D
-> +        unsafe { MaState::new_raw(self.tree, first, end) }=0D
->      }=0D
->  =0D
->      /// Load the value at the given index.=0D
-> @@ -375,7 +390,7 @@ pub fn ma_state(&mut self, first: usize, end: usize) =
--> MaState<'_, T> {=0D
->      #[inline]=0D
->      pub fn load(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {=
-=0D
->          // SAFETY: `self.tree` contains a valid maple tree.=0D
-> -        let ret =3D unsafe { bindings::mtree_load(self.0.tree.get(), ind=
-ex) };=0D
-> +        let ret =3D unsafe { bindings::mtree_load(self.tree.tree.get(), =
-index) };=0D
->          if ret.is_null() {=0D
->              return None;=0D
->          }=0D
-> -- =0D
-> 2.34.1=0D
-> =0D
+On Tue, Apr 21, 2026 at 04:15:44PM +0200, David Hildenbrand (Arm) wrote:
+> I'm still wondering about a better name for this. "enable_for" indeed
+> sounds like it's only for that range.
+> 
+> Maybe really something including a hint like you previously proposed
+> 
+> 	lazy_mmu_mode_enable_with_ptes()
+> 
+> 	lazy_mmu_mode_enable_with_pte_hints()
+> 
+> I think lazy_mmu_mode_enable_with_ptes() is neat.
+> 
+> Thoughts?
+
+Works for me.
+
+> In any case, on the general approach + semantics:
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+...
+> -- 
+> Cheers,
+> 
+> David
+
+Thanks!
 
