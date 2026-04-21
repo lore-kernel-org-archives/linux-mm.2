@@ -4,80 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E93F8FA90
-	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 16:42:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EFC8F8FA9C
+	for <linux-mm@archiver.kernel.org>; Tue, 21 Apr 2026 16:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D372F6B0005; Tue, 21 Apr 2026 12:42:25 -0400 (EDT)
+	id 6DB656B0005; Tue, 21 Apr 2026 12:51:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC1116B0089; Tue, 21 Apr 2026 12:42:25 -0400 (EDT)
+	id 6B2526B0089; Tue, 21 Apr 2026 12:51:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAF8C6B008A; Tue, 21 Apr 2026 12:42:25 -0400 (EDT)
+	id 5C86B6B008A; Tue, 21 Apr 2026 12:51:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A56876B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:42:25 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40BF813C0D0
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:42:25 +0000 (UTC)
-X-FDA: 84683131050.03.2BC3B3F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 729EA8000C
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:42:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ccCwTj2N;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C06F6B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 12:51:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD63D161018
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:51:05 +0000 (UTC)
+X-FDA: 84683152890.28.BFB3DE1
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 105251C000E
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 16:51:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ocRVBGVN;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776789743;
+	s=arc-20220608; t=1776790264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xJ0Xh8/waC9soM/askF1aJThTNpA8kZnktokrlP+h94=;
-	b=GHvSRhwAPAlCtKCCs/iT8WUKbgEqobsZ+o3143MMBJQwx9PvHVVnfH/RzfVMEhYbXeix+/
-	jKx1azbQCTUnCKyo0ZywO+dMM/VEfS0kC7QlT6wcPu30HrkHIZ6SiR2BXVZHtTCbKhEH5O
-	lByLp9eFbW6FOwjIM4C7hq+oLMRaIHA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7kRy357BEYeRJOQyV21O6a1nlzehotRQ1w1skfD7cr0=;
+	b=uj01VPvQR2M7do6b/11lPANkS/6+9AIeC8FaiZDQ0g/uPKPNod2F0nIF0ynHUfoUuq8X+S
+	Muvt+RA3vFajsphUmLGP91GMD9ab3hj1RGBp+OfforBH+C4PGILh+hai2HUTW+dYFmKIXX
+	TIFT78S7rAB/+PmM6r4SKiIG2qzGDbg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ccCwTj2N;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ocRVBGVN;
+	spf=pass (imf18.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776789743; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776790264; a=rsa-sha256;
 	cv=none;
-	b=0Yt7JJTcU4FTUQpZXWQhBFv7pJbU0JnygWQUwMwf7NEQFGeRyuvaEvm2mEKK7H9QvL+Dke
-	ToCSXFIWhbcrgScy4NMts57pCxQ9toG2By+XjQeVFiYzNDgKxGxqz9ku2QLby9LThr26Wr
-	77TGR2a3S4JkBnq9biZPJG9CFfkyv7Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0C71B418CC;
-	Tue, 21 Apr 2026 16:42:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15079C2BCB0;
-	Tue, 21 Apr 2026 16:42:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776789741;
-	bh=JHUdJcWSsSnWxOqPGvR/AgzSfIn9zeu1UZu2j6kDY6Q=;
-	h=Date:From:To:Cc:Subject:From;
-	b=ccCwTj2NJX3R6TH+8LvbJdLqKIecfvBEeWbcxSl3JH+Pz0CBRiyTfibi3mcxpCHBI
-	 QqjkdOqGq+1qnNXzsDyGEd+4AdaP6j6JVlDwv3WI+29w4OYiV709qrkra7GIThh45N
-	 Tr9sz/6/skJU2T9I8Z2ov9smou6rH1yvLBfxtESc=
-Date: Tue, 21 Apr 2026 09:42:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: linux-mm@kvack.org
-Cc: David Hildenbrand <david@kernel.org>
-Subject: [LSF/MM/BPF TOPIC] MM transition
-Message-Id: <20260421094216.8dfe14a8c62f2420fa5aace1@linux-foundation.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sb1ukwc5puc5jhyhh75diwgwxccwqqn3
+	b=Foq+L19OWbNhY6Yapu4Jw+cM9C2SFIs/hARXHGzogMFDScc1NGfev6EqWM1DPstmmKS2dN
+	NzDTPL7gFqVTUvKoLmhMLxefOnYnZrhWEraXZCqhKe4HSr0QpUeY7sr5IDvMSL0YjJJux8
+	3AcaLNRq1N6vmUaEM8P7fCROFnb/C0g=
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8eae9229110so361145585a.1
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 09:51:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1776790263; x=1777395063; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7kRy357BEYeRJOQyV21O6a1nlzehotRQ1w1skfD7cr0=;
+        b=ocRVBGVNa5roaIr1R0VYIj4IKVb4FYn4nGbCwmHos12OZBGlyuccvXPo+Paz48KVDt
+         tlbBMqWqpC0979X5h4BsWfMg0uw2W7i/6zeE9ZJRZZi7IpG6Wc7FkwXqVre5IvNJtGrU
+         rhTOy+9LBLKi/vpbYUrRyqKfLcN3NZQ7R9wp3skSIcw3aYhxyVQrXuOsxRARmrBey5an
+         xwhK/i+37u0/qGFda1yWx8k4FrLVVeGzMWyY3FmAoKHrMYz6mR1e25jbATMS2hQzBbzQ
+         QX2bGCO+uARGr51J3q9HSuJukS6b3l3VyORlro0xQGH/BAwqqXC23OLxAa/E+rNhac+Y
+         p5zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776790263; x=1777395063;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7kRy357BEYeRJOQyV21O6a1nlzehotRQ1w1skfD7cr0=;
+        b=P9q5qbtdpbmCG5Y2n3EtH2nAYfWzNPOh8CHkAzUArbilyWyLH4472PSTJFDtsQM0iw
+         IoERxtbWetNlA3OC7kcVlrHYR2DXNAlytnPz5H2PCME3JKPj+I5k83Ddwj0vYEU9IcT1
+         euCFVo/uVESChb2V6TLJJlsc4ceJAYFvKU9kb6YWbdDLpxud2JqoOXGH4jyqgg9fopDc
+         YSnG7XHeXubSI/B/Sd7zgamDnwu6L6jvdyt0JvbXoWpeKohh9IDhS83ohUR1M7zy5EnB
+         CB+ZO9EuzQZC20/ghh1g5ZoZrLFvP/wOQtwtIUsoJCdRrJkuWbEFqZZKXQUApVF9c4Y2
+         L9vQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Ca34yBbOB+vTB8Q5HvELNE2FGD36+nE2wy7TmKqj2b1QOkZmVHppB3TNQe+UoFacyBWUQsmDOAg==@kvack.org
+X-Gm-Message-State: AOJu0Yx3JzB0Kt2fTivltemMIT+agANadOLQ4KS6G7EigrKUYLXtgX6m
+	T5rxWKGw/YRDzpBSuv5fdpRBxFa6znr7/9by6Lf5JYj8VH5Ffm/TPgFZI79FApegEtQ=
+X-Gm-Gg: AeBDieufqMpd07v51GHDPLiL4doj1pS0eT87oNRULWTYt4hr9BVO0UlkUj9tv9VZpsI
+	7AmmYid8XwZrhjD1lq4zwg5XR/xmELN1/ZRcYXBWNTvkcD3WnIaUxrPGtnf2LJs1T0ERkcpBX1q
+	SKeiHB8VGNxX+maPAEs0SjzGMksjqfe8M/iLp6nF8L4o3qZdA4RqEIloXrCr+zJukc7wF3+QJQz
+	XETELiErEbJfW3XfcnN/LXYJEI+oiIv6G69Z9m7v+/RK8YMUhQxKcGf4nyEYXOOpAZxOLSdq/pH
+	KRkSDuHf6aEVAT/c2mjnKhxLtPWk66zDuAyJyjONy+r+e+cYa1Xemfcu4A0dYnUTTuTuyRTpfoS
+	t2psrNHY+BUQ4xIrw/rTV+qeEDy8HVX2HU10YAXjeHzI6tI/eyfis+Lkn9R8irVLEf70OaXK8Ak
+	Eh8M5N7XqiHsJiKYhD1Xae8ZVGbQ9s932YUXqljSEdaLw1QHwUXiAG0edw6gAeasKPp/1+t3po1
+	1pFKFZJTA/SPM7BMaYTc1KWcBkG9gE=
+X-Received: by 2002:a05:620a:40d2:b0:8c6:b247:4c with SMTP id af79cd13be357-8e78f059609mr2654868085a.2.1776790262990;
+        Tue, 21 Apr 2026 09:51:02 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-246-228-50.washdc.fios.verizon.net. [71.246.228.50])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d93c2fffsm1070867785a.36.2026.04.21.09.51.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 09:51:02 -0700 (PDT)
+Date: Tue, 21 Apr 2026 12:51:00 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH RFC v2 00/18] mm/virtio: skip redundant zeroing of
+ host-zeroed reported pages
+Message-ID: <aeeq9MUrqL6f47Y-@gourry-fedora-PF4VCD3F>
+References: <cover.1776689093.git.mst@redhat.com>
+ <c199e47d-b2fd-42f3-9e50-c47c848dc72f@kernel.org>
+ <20260420192037-mutt-send-email-mst@kernel.org>
+ <aebjG-qMLr0joG61@gourry-fedora-PF4VCD3F>
+ <20260421090341-mutt-send-email-mst@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421090341-mutt-send-email-mst@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 105251C000E
+X-Stat-Signature: 8rsob3uz9psphj9hjrpqe1a9ese5wib6
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 729EA8000C
-X-HE-Tag: 1776789743-47417
-X-HE-Meta: U2FsdGVkX19vCYsO6eR00AuXfcmKGEsbdKq/p4lC2Yn/ryCtnxvKQdqolA4hHqrn3pO0+MRQtsUsi1y8SwpziKZqCsBQ4jmgmgqt0sg475jfRIvGGPXnUjrb5l8cTLPbcuGZwjRqHJSAATKvbv204rucF4vYJ2LNrP0ywSKo1or0UnAgZpGVQ4KZGxPmSf2xJD3lRtnkwyMxD5pgj348FNuPixY7G8fAG0mILe/vvCH7gaB3+EwOVblyTQi8hB0Gar+Tfwd4C1/sJc4i9GUcexgd8JJeevQKdjHrwvhEYhfvuSll/oph7ti1xazd+dfFpRYyjT5TrTOfMX0rcYHZMxatr1vzdFVrL0B8cIR81bBBW2kOzyLrsTsRag8PPsLA3EPsbVDijWJiW0VpqRov0IhDkp4KH6aAalmoSZHzi7jgMmJkvLgjCydnooOZQAOan17x4u9UI5h4+KvaKEulhgzO0KUnM7ZM5Thp58JYs90+M35jWGqkNLIR/qTYsLchSzxm/5kFOqRJGx/AUmGCGqj+gD02aUcTxv5iaVGG44hhNJ4NNEva49WHLQA+6TEJcQKrI21zAOlxGJp/szE859siYRhbSB6iMGzCxXNeDIedWaZ0RtZxTl17/0GF60p5a9NhbFw1hip+5E4l5CnpuWqp75zMRsdDqgJ+skAqUxuT8FiyBN/OK3+ZrILb6e8pUmVTfyE1iayzpFbWV8wicN8Mmit/tDeStZ2QQ7l7ZgV9OCYCJxa0uidSBo58TJYbdqYDf5fILyVFijqonxqPKdU2Egpdt+7BlZqr2xXAtztgq9C3+6ErDODgQuhiN9C7mDYG5AkWcCpM/J8JUo7a12SWYNQ4JKeOMCSIJsvx16wmPPGXE/5qm36TX/hHQoG4FSpZh2lcWaVeEviaoXcpZSikM5A6FL/o/aBUNWmvs+rmPsvWB5xAgbij6eH6iECCHczrbKMCuhzTiOT8Zvu
- IF6KA5j6
- DOE7DYWPCufIXbD7ktHkEdoGnakqej9jPB3G5wD21tVgNUMoVCN0nYctcmEAsvmX2YdH1PE4vDtzeV6Speiucl5k1CgDYesJ6rdbjCaM4IAbWtVSOvUIqyivBdbIrimTg4BarRBB8qGx9PvV5a8Snj66R7XahDTDqXMAMFdNqROIZYQHXiYqsSML93NoNlxP3U9HJ1b32+PfadipOqqS4l4wiC23DBV5RmtNlkeUYWll8Rr8xXZuFu43cyQ==
+X-HE-Tag: 1776790263-715520
+X-HE-Meta: U2FsdGVkX1/eQpufS4QwM1w5Di1TqvL5rDVtEZ39oqDdhsilKv3ix9LUKmKPEL32omm7lbOlQQbShHlNtJCodp5J8Xw/+Sm8uCyTf82242a+Ygzc+Yfs4zSiDlc9db2aa4bJC/PMCwpVKcSDbVYFOwvhyFLcwMidCLDMK4iRM7+P3bXGiwPS5mFnEAumQXXW5vOnigi0QCkXeaPhTEgRxYZ/YTkpJ0cEUnbDV3dnT93Qyy1qmCVt8KopbHOTpKYGJoLW1fB5xNffB5/At+bgscTRUY6nXyk13EjXuJQP5qiz6VzhPkcJqu0VLlYgLkqptY5sX6tygLC/EQ3P0L3rTauC0WsXeA74fR0vLf2Ub6rxiZd/LXcETR34Yjsqq1GvBneis/FYkUZp7zZEZPaDRgdhO5mHiH3DnHxH3US1Ep2+BEoHHo3xlA3v7ydUMOPGVgcMJ5jtRY2hmTw6j3Ea4JAC5+j6TgLxYupOgyybCrmeycbiifkymGZ38ZgClsC5CBLJ7vcf4oDWdhdsUI8jjc5J1sG89+DmVpQQojcD1tMqzSqgb2RfTG6BfyTpGS8Hll5x3u5IEJaGwDtOb9vTHPxOmYOHy9blUJ3tdoOlvJ22834JPnzAmKc3SME/aqTYSq9ZrV39zDSE0lLHzYKMM1rXL37vpcYReMC7lNG2frea++bUHp6B/7uRqX3zULBAQyaa395Ed0/d9PCMQZyyacnPIB9w5cClIFBoUrgTl0nw0klIsR+Qm62vKdrDourrgtB9D4j4z5KW45s3TU1zT/n3E8KooPGV2JqcnculsTtifcMqxoWM9u9kMDn2g2YEvM95cFiSCUAUMkOBfWT6O0DOHaIoB31WIQkJDo41iO+HRg11Xv1Ma8ujVAXCsWzPTWat3rJCIzv+w8+QAq5HPDoe5Qg1wAIaLbtED+7bXB+KJPwW8OcN6VEqEZgL47gQ0HCB/yck0RskymxT9j2
+ UQttNfrY
+ uCVccKIa8nRc5aiL72bDT3cSTLs/Ty4kCLANPbz2OZuWYZYQKfO+MdO7vc1l+N4rtUeXYn1Jch9YdGJSyAudr8Hda2jzFRUyUstn45Z/or8KtoVrob9xuvC4bJsd9Ds1zTXJkKMOj8rVx9xA0jNqHCJD0q7kv4E4MOYTxyip+LXrHk2Lvk6VFiInHDSEN/Vt0rnqTzorboP/MUX9Nyu5JeFONrznLZnh/HtRcpD31KOAo52bh0b0OIDUFlbOWlpEH1ft8m0oM4Vweqgp7aYCRMU3Q66e61c6joZIa6ad0dBkMwCLS8ITtNxpHtnFHnmSceU3t97AriTgDtZo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,72 +130,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 21, 2026 at 09:06:00AM -0400, Michael S. Tsirkin wrote:
+> On Mon, Apr 20, 2026 at 10:38:19PM -0400, Gregory Price wrote:
+> > 
+> > Can we leave folio_zero_user() callers the same, but add a PG_zeroed
+> > check in folio_zero_user() that skips the zeroing (but not the cache
+> > flush) and clear the PG_zeroed bit?
+> > 
+> > Is this feasible?
+> 
+> I do not see how - this would require leaking the page flag out of the
+> buddy allocator.
+>
 
-Hi, all.  Some things I'd like to discuss in the "MM process" slot at
-LSFMM.
+Right, but you're leaking that bit of information out one way or another
+- whether it's a page-flag or something else (pghint_t) you have the
+same lifecycle problems (when does it become invalidated? how long can
+it be trusted for?).
 
-I wish to start unwinding my MM involvement.  Because I'd like to be
-able to retire one day.  And because things feel excessively
-concentrated - I'm doing too much stuff, others have valuable views. 
-I'm healthy (enough), plenty motivated and my mind is still sharp
-(shaddup) but bad things happen to 67 year olds and they can happen
-swiftly.
+I suppose at least with (pghint_t) the data (in theory) falls out of
+scope and doesn't live with the page - but guaranteed it just ends up
+polluting more and more interfaces.
 
-I want this this transition to be gradual, orderly and incremental - no
-sudden changes.  Give ourselves about one year to do one thing at a time,
-re-evaluate at each step, make alterations if needed, on to the next step.
-Of course, we have our ongoing mm/ development work and let's avoid
-disrupting that.
+I'm seeing why David's suggest to plumb __GFP_ZERO correctly makes
+sense, it's really the only feasible approach here that doesn't generate
+a staleness problem with whatever information you try to leak out.
 
-
-The model I wish to move towards is a more conventional top-level
-integration tree (working title "mm-next") which pulls together N
-component[1] trees.  mm-next is the usual source of our mm->linus
-pulls.  mm-next will have a hotfixes branch for that material which
-we're fast-tracking upstream.
-
-David Hildenbrand has kindly agreed to set up and operate mm-next and I
-hope/expect that David will take a leading role in this transition.  
-
-("mm-next" isn't really an appropriate name, but mm.git is being a
-namespace hog - some renaming might be needed)
-
-mm-next will initially contain mm.git and, I hope, any other git trees
-we can find.  slab and memblock at least temporarily, if Vlastimil and
-Mike are agreeable.  I want other trees in there apart from mm.git so
-the tooling, processes etc can be worked out.  An "aggregation" tree
-which aggregates a single tree is a bit silly.
-
-Once mm.next is up and operating and the pulls are flowing smoothly, let's
-introduce one other tree.  This might be "vma" from that component's
-maintainers.  Then another tree and so on.  So mm.git gets smaller and
-smaller.
-
-I expect that as the backup catchall, mm.git will always have a
-significant amount of material.  It will continue to act as a hosting
-service for Maintainers who don't wish to operate their own tree.  MM has
-~38 listed M:aintainers; many of these parts are small, with low change
-rates and M:aintainers have differing levels of engagement, and that's
-fine.  Also, there are parts with no identifiable maintainer, some
-maintainers will sometimes be unavailable, etc.  Also those little changes
-which nobody feels inclined to look at.  MM will continue to need a team
-Mom.
-
-I plan to keep running the mm-nonmm branches.  Kernel-wide team Mom - it's
-pretty quiet.  And maybe mm.git if it's small enough, if I'm not getting
-in the way and if I can't find a sucker^Wkind person to take it over.
-
-For this discussion and in the upcoming meeting please let's not get too
-far down into the weeds of tree structures, workflow, individual's roles,
-etc.  At this time let's focus on the final implementation and upon my
-plan to get from here to there, then we can discuss details.  David will
-be hosting some "transition workgroup" meetings after LSFMM to further
-these matters.
-
-Thanks.
-
-[1] Terminology: MM is a subsystem of Linux, so the various MM
-    subsystems are really subsubsystems.  Confusing!  I propose that we
-    Not Do That, and start referring to the various parts of MM as
-    "components".  So mm-next aggregates component trees.
+~Gregory
 
