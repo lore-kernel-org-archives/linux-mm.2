@@ -4,91 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9589F94CCF
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 06:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ECCAF94CD4
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 06:54:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08B196B0088; Wed, 22 Apr 2026 02:28:40 -0400 (EDT)
+	id 545746B0088; Wed, 22 Apr 2026 02:54:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 015396B008A; Wed, 22 Apr 2026 02:28:39 -0400 (EDT)
+	id 4F66A6B008A; Wed, 22 Apr 2026 02:54:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E46BA6B008C; Wed, 22 Apr 2026 02:28:39 -0400 (EDT)
+	id 3E62A6B008C; Wed, 22 Apr 2026 02:54:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D35BC6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:28:39 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 801FA141069
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:28:39 +0000 (UTC)
-X-FDA: 84685213158.26.444397F
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D187E40008
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:28:35 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yH7B5D5n;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CCA36B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:54:49 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C49101B9982
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:54:48 +0000 (UTC)
+X-FDA: 84685279056.13.85D423E
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A2A641C0006
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:54:46 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.221.174 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776839317;
+	s=arc-20220608; t=1776840886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wyGv40nPvSpN36+krGHiG2gXh1QyZtRuvIHyoCemdlc=;
-	b=SIjdvKdd4rxCvds38VHahBkTfzrBBY22+VwETfWTwkfVuWsWMyCuIMSLJTGWwVQi2ohcS/
-	mRgAsLwI7+IRBQf0686YsSWtWT9xf2yeF/AZTzgZLEPUJglu1oZXnopyfcQur3aww1kBuW
-	LrncWscLKmvVMnzFuu0bbOYUfxPCzTE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776839317; a=rsa-sha256;
-	cv=none;
-	b=HE9XQnhWqfFZEZi8kHkrnL76gygG5aOCIH8rBhODlNvQutwLKXiakbDbkWgzTfi0FZDPzC
-	ybx1N+XgwCLinPRyF+s/I7mywZ4J2D3nDV4sXIkfiHEQrOwCVYyZHOclu3bXXSi1nKxPJS
-	su/6dB472YR1sagNESjV7w92xTKJYls=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zyxMyDKhrlWE+5iCHg59pMAULgdQUBAeBRtLLkE5UPM=;
+	b=52HCl6DU78oXmoGJrhuY3yjxK1F2sDBvyrPNSHL/PabxQjvlS0Jrzs4XFQRdgUNix0AhAN
+	c2V5r5WfEYGMN4PsCv3+bXfYZGOYCcq7MsShKdpJM0HM7vTlPMfbFyOaswSRTqYyy2xy3E
+	npdwpZHZmInV4BUz0+qIOuRC7nDDkuU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yH7B5D5n;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1776839311; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=wyGv40nPvSpN36+krGHiG2gXh1QyZtRuvIHyoCemdlc=;
-	b=yH7B5D5nkzfWfEYD+VQFo41KGF8c5k71X8an9kT3EO4PWu1r+aZkGFY0jFalSXBYMxIrYIF0EM7MoMc7lQosSfYqNYcqbFxEPcu3gzal+mQ2Bvy4Gsy0fGQrFmCKzj2WkXYdHIGujox2v2IHxTEz/HEUIA48cEXWYCtvf/V+my0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X1VDMR9_1776839309;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1VDMR9_1776839309 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 22 Apr 2026 14:28:30 +0800
-Message-ID: <116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com>
-Date: Wed, 22 Apr 2026 14:28:29 +0800
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.221.174 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776840886; a=rsa-sha256;
+	cv=none;
+	b=2VifwYy23d7vA7EgDdUfekZQKZd7xVxY0FQVmKVImJx+dwj25rEGvYHZsi1tPF++fU+tyS
+	qs9OTk2HCbXPcS3bktDDy+aRy83cnD2aCEpBA/zPHS8rxiYrqaHrEnij92SfPqX5/XuwWn
+	VxaIHEIKsBg/R5SReae9u5g0SlADhM4=
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-56a9076813bso2098977e0c.3
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:54:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776840886; x=1777445686;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zyxMyDKhrlWE+5iCHg59pMAULgdQUBAeBRtLLkE5UPM=;
+        b=g3TC9txhzQwfKvE4EMsFNt614+Z++Qgf9LVapaUoNtlab7nF0jlFLA7OEXli4L5OtG
+         sSVqNf1iJ5QKXva/rWvPlpibI+Wh8IzxgeGdSdCyIb8nsAF5oLh6DAgBen4RYq76FzN7
+         GR0sUhR49F69OpePpvbq+EYod0uYCBeqVmwVso8nSrBkf0vXkXSI2O7WJp0USy+IKZHJ
+         XKcVdFZNE4ADfJC73OKGMtZmiy3pRzERpx4LickFa9/A79pC8B6YT3870rf8W2HCC53T
+         0KkhuIFk7cexwYeuGQj2pICUHlLrcx9pS2zUsHeF7M+mXyfow3UHIvajxmbSAVX5aTvn
+         PXoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9RI72OGDkiEWeNYXdgyBoCrryocZvxwG4h+2ABj32LsNibnQ3mhme1MrLcx2eaPGN5SJB0wR4Kgw==@kvack.org
+X-Gm-Message-State: AOJu0YwnGOxmZbpkcXmsvUa8yF6Es/QLw7mBHivodzdc7+Uf1TbKFDaD
+	BeJckhwWibLP2YfF2fr7BDnocfkvmxIDa6BbDM8lL5ukw36RGGBD1QQV4Bqqeog1q3c=
+X-Gm-Gg: AeBDievdYK6gwjce55MA9rwpHVVtmJLt3busj+RWCoP9HWGbZsUSkxq28sInKX9Aa3H
+	7u12IoCp7X6h/va4pJ3/xYdb0navgIOBvCPe6O81e4eT7iKd+lNrAh+gup76RojfKehVlxdg/De
+	4Mm3xiIQUbnK2DnfemySdvi8sMgFO1ZbUq/IXdDtjXCIqk2oGRjXKxzPR1eghu5XmdKyB+zf76f
+	ebTebEUX1i8+kBT6PHUOB2R+uuq/Lm+SC52dVgkjJDYiUps82VKlYOixduuoTUHdAAWebUsTi+T
+	dSCVvqcS1ykXgWvOqKedLHoFT4kLJsOVpk1S3B6mORbu/vILhc1fVUAOIk1TKoY4Qb7iexw+KK2
+	4ounUqMzDIWxfJcTqXphTeCS8qSgfCEj6kDTeuGbmYBdUWS8Dx5huBU+OhBvCaImcMvi2qJAwy7
+	ZAiIDxqPxUYffGk2zv3KYxHwguuYxkWZI7pbtwVHIGf2zLoSXswTuL0CQRfRzOITg2vq5rwmPle
+	n066KxeVY6/dg==
+X-Received: by 2002:a05:6122:4696:b0:56a:9841:9f81 with SMTP id 71dfb90a1353d-56fa583840emr6330243e0c.6.1776840885490;
+        Tue, 21 Apr 2026 23:54:45 -0700 (PDT)
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com. [209.85.221.176])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-56fa91bf120sm9773711e0c.3.2026.04.21.23.54.45
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Apr 2026 23:54:45 -0700 (PDT)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-56d8d479149so1743140e0c.2
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 23:54:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8Y1AMXHrxPF/upD/Jbqb+DRanhjDVlFzdYuKXahzPDRQcCO9maJJFPCSGgtAQ5NnZLNvxaQ1aHfQ==@kvack.org
+X-Received: by 2002:a05:6122:f84:b0:56c:db8b:504e with SMTP id
+ 71dfb90a1353d-56fa59fbc9fmr11532873e0c.13.1776840884876; Tue, 21 Apr 2026
+ 23:54:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
- shmem mount
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Kefeng Wang <wangkefeng.wang@huawei.com>
-References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
- <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
- <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
- <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
- <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
- <07e26d39-6155-4661-b3df-c2419535ed43@kernel.org>
- <f9508e75-789e-4eb8-b09e-b66a8676a6b0@linux.alibaba.com>
- <bea6080a-850c-4b3f-bcc0-719efc372e72@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <bea6080a-850c-4b3f-bcc0-719efc372e72@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: x8humaij4p9sotrqfhrwkimbxs53t5pi
+References: <cover.1776808209.git.mst@redhat.com> <006f9142e591ba8c340c3b354aee76aec5c285b9.1776808210.git.mst@redhat.com>
+In-Reply-To: <006f9142e591ba8c340c3b354aee76aec5c285b9.1776808210.git.mst@redhat.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 22 Apr 2026 08:54:33 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUtNPY1=92H8GZSDkQ5_rNnxL6WkjTF=1ApjwTA4z1TqA@mail.gmail.com>
+X-Gm-Features: AQROBzCgl_wyqpfJ8JAvw4YHU8svwkzmMCs8RMYgDiGFQgsN4z72BoUKVxkZaoc
+Message-ID: <CAMuHMdUtNPY1=92H8GZSDkQ5_rNnxL6WkjTF=1ApjwTA4z1TqA@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 10/19] mm: remove arch vma_alloc_zeroed_movable_folio
+ overrides
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Brendan Jackman <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Jason Wang <jasowang@redhat.com>, 
+	Andrea Arcangeli <aarcange@redhat.com>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org, 
+	virtualization@lists.linux.dev, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Magnus Lindholm <linmag7@gmail.com>, Greg Ungerer <gerg@linux-m68k.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-alpha@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A2A641C0006
+X-Stat-Signature: 3yoi7r4qbhorthty46jnobndwktzt87w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D187E40008
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776839315-78926
-X-HE-Meta: U2FsdGVkX18igFYUO+r89rpAK7X6X1klR9hQ1VHW4IX1jsU1ktj2c2rqeUedjNm2bXns++PxL/PdjJXZPW5yDeqCkCzebr3C7xozhOyDfGVXNyAEmkqFNJeiazqZ2YEkVS1oZSWu7cGtjdYOaZ+kDLc6qkBUg1taXiOV+KHTfTYun9g1MOncTVm1XbWSzh4A0AftgBICwVO6cSveIOB8nLIeM4KCIr1nY5UzAEGAz9GLvb9lAeFNll5vJTwn4bwGHh5CvFOUvskioGDM4IVSfbl3qNN5eiZDr9KsP48xwEqVrPjnFwktkMKvzDVrnk8aiGkUeUKruoZrFoByS5NIa73cvKO/pKH5JqXdgbAfs4929nifhV1z5OI1tv1Ll88wHIsrCTWtzc0uSbQjaz86Tp8TpLMZxVo2eClVpojJazUwum8c89embPJoshid3RZAYb7tFiuKIqde8GoKEZvwuaTL2GM7Azxk0wvDwoFf/pfJ6thXL6ku1pHKs07dRQzwgSxULa18yP8Vsv931WvybeRUgVIEA5jKfiytqkyF5hfHSqWYicf3H6YbSBqXYVTzVf0tBPD7Wc3dSj0qsqDo5Y5bh8dcPYpmK0VaQlP70Tt3haumwhpKHB+LttwJjfGSbEpH7yIjT7ShIdo7h/hdZE/U6g+KKnFVmxG+/l9vJDlUXcGj/6ESwJVdRQQ2EUDlXP0FO6tHt7Wqfz6wWY/APKszfe9bAMpig8nHxm8wQb5cCJMfI/XS7uOw/jnp6gjj/MZ0BB+zUuuGZTC+K40Cel2Z8FTd9wj9Cc8PxARUVV7kPeT2WhG+siRlrjEXEodcaz4Xpa4PzYrPiEoNRx2dBVQ8C5Pr4Jbb+U8CRZclluinBfHQSDU1epj2NJlwVOGImr48B72RVTavgLL/K03g/1m4WsLLlE3ttW5XtoMSXYKWPtA6+oNK/EOppfwCPzbKcqE++iyVIPfOE/PKOrI
- SOnySwpV
- +YAtqp3Yby/JqIS0NGMgXFkXW8bfNdONgK/H/VJE0P1OLALo+vvfdJyeOEvU+i22cVZlHLSa2C5UnznyyVbGDMDoxkBJvHAc6vwkxSnLKmLbm1qeSPN9KgbpJlbfF7mT482iU0rBA4rPetppksblZ0yzt4SkKtDZMN49S3uuZZFWtRya1rydx/sAdeSQEeml1Atatv5H7Mxs4nAlqWrccUKppWqEwdXe7OAJWos8sirsfB+uEN81bj3tOD0s9qLjuKGyyJBN49aMApT9cTCkADgfZMxzg9uJXE3bwSo4r5qQnc4ybGdPsWcetfw3YPMuU9vzp
+X-HE-Tag: 1776840886-917620
+X-HE-Meta: U2FsdGVkX19CTT1Hixei9Vh1fz9TJFGPZqefNQ3eVcai3CoILoU7/yq41+WtfId4YnDhrYQNwGv6xnJ2KmxcR7Ijmmye891JhbHjNgs0Xj8hpjqXQseaiToGav686U11O0Z91D3AtUtSoZm6s3am25u0c05jGvk/LcJr2v06BWQ8KffusLNjANqb/UHu9NJxYzckr/87W5udbWTChT3jmF0wYVuJDMzNp7pHFOIByA/ce0/2tn2kVJeucKAhkXs5CzR3LqPs500LSYdqSlL0Lm3noapUEY37Gd/in59ZEevHKS9oWeNgvWMdUH8Fa/ZQifai4OZvuTTqXOmFLBFKiaF8H7Ku8zECGqd7KUvkCIj+rt5qku4oi5335iqVwqRCaEUzYlgWtYJyJmJIGSRF19PCT33w38ZuLo1llm/KMaVMqo7b243e/AXoE52ynbF+cm7BcVsevyY1foJ4epfBg4eEy//9mjcb+Q3YVGb8p8ylhTm4n6fuMaMPZD+cWztH2013MZ7z2tmTAnHSr6feisvWirhh846QDWjArOjCMQpuJny5HjPZmlyHXqhdFOIx+z1e9e0/oDqRqvkuKhPRPR1j1sZeTgC0jANev1peCrqSVt2X9bQ5WzJEvTMmSBJeduxckWAPWz0Ek2nn6HJWhIh8pLx0wawNIO4vYBGGUw81pTkDntGgJOYdMWJtT1k8x4NWdzYbimvBPWzb0xgFIAAAgThoeyZ0O0iCv7/pk4PYBMGd1buT0jtvA8WZ9Ugsxzyh+RgQ3+dIfyKSJBB1WPterlPR7qc7WQGK6fjSW9QqU3YE3a0lAYKTfYOVqbOmNOu2BwiE4cGWYN1YMjMbUWRX7k07anKLVNOSQKoEmXE/dJKQH16qOL/kAmp10DwPU6lIfoQF4EXHwpyd57e+mDrDKbyh3Dkko31NYxUyggyri9CFCrcaag37y86f8x6r2oLf5QgNudiC/X730kN
+ SZfkxH9Y
+ mtLHK8jsc5ZQjOGQtruGl0sXYaYTS3/X75yoTtocq92CGphrYN6pYIz3DRcPTOJeVzVAIpjt47BOvn8WCeY3NOEfkjpdrB/7ow2MARKUrYdUzQPf/LgqIdOwvQa40xozxQjy5bVAWUy0tzIM/7u1A+Djk9xu3h/BQ5xBXn/+tpYkHRXPGUMl4oyLiWk4PNPo9ZRtZymPlV+ZWsmkLDQOitGk5xfKzDl958NcWG280MZoiW6J3sjoC72yLTt/5aCjqurXJVVJQKnvnFEpiz8hK46sL4YpHvELsU1SCliy3bOYdLg5O6zb01tqzAmOCdeyOuKLcitUdqCRSPW454E1kRgnAoYQm9lx2YgIP/bh/2eTh+15xkv7UK6lBzrKgidEn/zTO7M1FR5B7lJsD7vKYGeFBG0AUFOgGq2QNb+mBgFaSX+gdWuyjEplFHqY5nnG47QwNHxiY4jlMIoeIY0uGuGPYl/eyDZ3QyWK5PUrbbJwaWShFkyeOL/wx0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,85 +125,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CC Kefeng,
+On Wed, 22 Apr 2026 at 00:01, Michael S. Tsirkin <mst@redhat.com> wrote:
+> Now that the generic vma_alloc_zeroed_movable_folio() uses
+> __GFP_ZERO, the arch-specific macros on alpha, m68k, s390, and
+> x86 that did the same thing are redundant.  Remove them.
+>
+> arm64 is not affected: it has a real function override that
+> handles MTE tag zeroing, not just __GFP_ZERO.
+>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-On 4/21/26 9:39 PM, David Hildenbrand (Arm) wrote:
-> On 4/21/26 08:27, Baolin Wang wrote:
->>
->>
->> On 4/21/26 3:00 AM, David Hildenbrand (Arm) wrote:
->>> On 4/17/26 14:45, Baolin Wang wrote:
->>>>
->>>>
->>>>
->>>> Indeed. Good point.
->>>>
->>>>
->>>> Not really. There could be files created before remount whose mappings
->>>> don't support large folios (with 'huge=never' option), while files
->>>> created after remount will have mappings that support large folios (if
->>>> remounted with 'huge=always' option).
->>>>
->>>> It looks like the previous commit 5a90c155defa was also problematic. The
->>>> huge mount option has introduced a lot of tricky issues:(
->>>>
->>>> Now I think Zi's previous suggestion should be able to clean up this
->>>> mess? That is, calling mapping_set_large_folios() unconditionally for
->>>> all shmem mounts, and revisiting Kefeng's first version to fix the
->>>> performance issue.
->>>
->>> Okay, so you'll send a patch to just set mapping_set_large_folios()
->>> unconditionally?
->>
->> I'm still hesitating on this. If we set mapping_set_large_folios()
->> unconditionally, we need to re-fix the performance regression that was
->> addressed by commit 5a90c155defa.
-> 
-> Just so I can follow: where is the test for large folios that we would
-> unlock large folios and cause a regression?
+>  arch/m68k/include/asm/page_no.h | 3 ---
 
-I spent some time investigating the performance regression that was 
-addressed by commit 5a90c155defa ("tmpfs: don't enable large folios if 
-not supported"). From my testing, I found that the performance issue no 
-longer exists on upstream:
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
 
-mount tmpfs -t tmpfs -o size=50G /mnt/tmpfs
+Gr{oetje,eeting}s,
 
-Base:
-dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.2 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.2 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.1 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.0 GB/s )
-dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (3.0 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+                        Geert
 
-Base + revert 5a90c155defa:
-dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.3 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.3 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.2 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.1 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/testbs=3000K count=1398 (3.0 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-The data is basically consistent with minor fluctuation noise.
-
-Later, I continued investigating and found that commit 665575cff098b 
-("filemap: move prefaulting out of hot write path") fixed the write 
-operation performance.
-
-Base + revert 665575cff098b + revert 5a90c155defa:
-dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.0 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (2.9 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (2.6 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (2.6 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (2.5 GB/s)
-dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (2.5 GB/s)
-
-We can see that after reverting commit 665575cff098b, there is a 
-noticeable drop in write performance for tmpfs files.
-
-So my conclusion is that we can now safely revert commit 5a90c155defa to 
-set mapping_set_large_folios() for all shmem mounts unconditionally.
-
-Kefeng, please correct me if I missed anything.
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
