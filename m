@@ -4,129 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52365F94CDF
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 08:15:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C3B9F94CDE
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 08:18:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDA066B0093; Wed, 22 Apr 2026 04:15:15 -0400 (EDT)
+	id 946606B0088; Wed, 22 Apr 2026 04:18:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8A1A6B0095; Wed, 22 Apr 2026 04:15:15 -0400 (EDT)
+	id 8F6C46B0096; Wed, 22 Apr 2026 04:18:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9F806B0096; Wed, 22 Apr 2026 04:15:15 -0400 (EDT)
+	id 80CD16B0098; Wed, 22 Apr 2026 04:18:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9703D6B0093
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 04:15:15 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4EF7216160F
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:15:15 +0000 (UTC)
-X-FDA: 84685481790.26.E4BE96D
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 690EDC0016
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:15:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=FHOszmce;
-	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776845713; a=rsa-sha256;
-	cv=none;
-	b=SJMvOsxSCyYy+mpYVYsnTFBlaoaWDs4o+Z9eeV6aMUIC9vjW6uZzi5KeG/VQEsmwAhEjRb
-	8QB+hJO/bicjwLkne9oEuQV4rAKBcs1us6GFyrhHlxs6YxwVGSJGW6CzW2OerS5KYZifTh
-	ddE8BxXp/6MFzbB1+kayvMo67eIuSl0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=FHOszmce;
-	spf=pass (imf10.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EBDE6B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 04:18:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 39E1C16115F
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:18:40 +0000 (UTC)
+X-FDA: 84685490400.14.B43BB00
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A52F2140003
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:18:37 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=g1IgcTZu;
+	spf=pass (imf23.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776845713;
+	s=arc-20220608; t=1776845918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zoaHiX3AHT0NhATrQNxOKRmMP5bMIl291LjVzN6aqQg=;
-	b=WNg77XSpBVI0AHfyTH2LhmP+UBghUBlWyocS7yrUpPzbCBvXOxFlFUOfOsbOlWEEiJgJh8
-	bMflvxmQRczorAtdBLitzfsKER8Erhyh/d0Obk1aGFUPum3fU0D7C7T7bv5mRRcOCY6gor
-	dEXD/9eo5mzPtvyIjqAtgamkuRIg9dU=
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82fcd0aa2dbso803072b3a.0
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1776845712; x=1777450512; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zoaHiX3AHT0NhATrQNxOKRmMP5bMIl291LjVzN6aqQg=;
-        b=FHOszmcevK/VVggW87GGhpjkv05zAThRqCe5sQrtI7bSeiehV9l8BTgv+8LxeJQm/o
-         VmbvMAKHwhP2VWTLbH0rmF4dEsRLL3L3KAFJWGrwdJD8ivn4/qMrs8sxr+28mylylv+r
-         x7HFwWx9yNzM+snPwroBwIIf1k3SVn3w6k8xRUZEEDWmFYEnqmQN3YwHGG1QBA/30M5R
-         MBxe5KLsC2SDHnyApdEo533Qxj1NNkbhQ5Ja/EJf2fFwTFrJlox9cpvrSX6Ldu6NCXEu
-         jUSPpimvnseWytFuW+P9T5lW5ThxHDGTEjbsjZ8cXdKfMFbKa8lfzXYW7X4CtHN1EPe/
-         Fwbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776845712; x=1777450512;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zoaHiX3AHT0NhATrQNxOKRmMP5bMIl291LjVzN6aqQg=;
-        b=LHiaLXB+8b8vNt+pVYVUmLmeGgRkztWh7GOSHzdEyPhdtTWxgQJKH7wQzevVWcW46m
-         oPfe1a5yIqowLevB55imGS3IiXv7Nbu6UXVDIsr7KzvfBsCP2ysags9kgJi+CX56CCK5
-         Q7sdib7bxqugabI5UEYabiQjUs8L0VArqC+o+l+bzVD7maDOh/bwm4cYUR0mlTFhpJTl
-         Hag2qd3/aDnES4BUG5Nyt1fjMpNQbBZbJKjfzE+nJzVNPAc12DeC0haMrhYE/8KzZ7jh
-         A7vUUettvyEAKN47IzTuwWOgpatkWPS4JbYbYgoCuEt4Vhmay0ktqlEis4PcB8M9/rRL
-         N9Og==
-X-Forwarded-Encrypted: i=1; AFNElJ8lZGUNYer9TvzywP8kLt99Q35Z0uyK2b5NU6dBLqtMXPDgApisyAPzojpiKFvwrP6fi35S249XPQ==@kvack.org
-X-Gm-Message-State: AOJu0YyNzlc5lUdOsl/y0wnHMKL9ubzUzdTB10juD08iZOJtHQ/QKq7H
-	TRf2vtGRsr+K6iDhi91Z90BN+cZfu3UcKcZRdJNjfR9R0U6IULopq7Jrl76ylLcd3qo=
-X-Gm-Gg: AeBDiesoRNo8DOUaxxe/z8/6AXhJzSN6N9h5yDT3AEM0rkrK+FCsEdDnkWQmLTbTJXc
-	lk4oKwHKLe+v3q2yGxpOe740HVlZPHoLX19rdVLIOhIAY2DNh9iU9djKFeUj2OVFBwkJFX3ddmB
-	b1Cc5+1Rp/mTQbp3DuPoGjUIeuTDh5GJ4cghafgT17lS6oIHvqA0qMFyn+KCa5plMTzAZhotgQ0
-	q/6MGzteFTVnCKSxtXFaHby7nZrAU0m1h5hKvXJh88FvWkZZuTkkjns7yR0ytLtc8VTtdizUt0b
-	qS7YiLVf1NgYpFkWM7C6NwFQFTJt9hY9ktoIc72LfEzbZKlGnvH1AqIbKNoMoZ+Nk8jv4O2661N
-	SSIiupmLuG6Yq0MhAosLfCnIDIzhLXN+rB9j65xmbw3wTRRs05pWo04mgVZ14+0g47ZqNBQpvxa
-	CPeaKFwCJyDAs8l9BGOyKhJvkMBYwU
-X-Received: by 2002:a05:6a00:2988:b0:82f:58d4:d348 with SMTP id d2e1a72fcca58-82f8b57510dmr17881058b3a.35.1776845712042;
-        Wed, 22 Apr 2026 01:15:12 -0700 (PDT)
-Received: from n232-176-004.byted.org ([240e:83:200::34f])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec0307esm16522874b3a.53.2026.04.22.01.15.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 01:15:11 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	aneesh.kumar@linux.ibm.com,
-	joao.m.martins@oracle.com,
+	bh=ekQm8ewHAsjUqvi2x2wso40GhX/Yq+kt0EAdT/Gi4pk=;
+	b=CV77n5W6xehcjNjjjwQeR0JNTQgvMYNaQqIn9Ik35b6RdOEK4wZWy2JmnMIFh9dPNKHsiQ
+	2mPYIC4abpt5MwJ+uzUxktJCZ8FHfnL73seckuY376vZzu4drwldkcS16EMiDx4RiD3Ov4
+	MeLqFj5w3WW2DyAaLMAQ6pUSl1PZ41I=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=g1IgcTZu;
+	spf=pass (imf23.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
+	dmarc=pass (policy=quarantine) header.from=apana.org.au
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776845918; a=rsa-sha256;
+	cv=none;
+	b=i6BVaYGq7B74EJTn8O93emUSJSrtl4QC+4s1Iwqrwgk4RU6c5TNNeN3MCzSmNHfIiSx4mT
+	Aj0I72IlFF8Ym+XQi4EcGuxpll+l3yyU8pstSa2p83uLQRujrzlqiLlke0e1gavrxpm+Zg
+	wXMUniYS9BRwKD+SueCMgYkURHN+sGo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=ekQm8ewHAsjUqvi2x2wso40GhX/Yq+kt0EAdT/Gi4pk=; 
+	b=g1IgcTZun4lBHwh65T9FFPl7S9QitLz1C32AgB119ECvS6Y6NtzdSWxpyYaIWI6x911JDdGLgUv
+	UhszjxBpUos+lAUpuFlc9kKViTyXqoEsr5hH4YPUxQ2/r8K2RRUj9riMunkEVy8B6mZek5gsue9y0
+	FbGp3e+CC3P9BBG65ODV8rp3+XDQVnFTwEC0mEY83FIBHEFXSLi3AmIs2BXsshd7Gx1xnEdoGCrx7
+	1CCsFRxInX/mI2ZqvaAUvbvCTjt02Fc/3366u+dbJJ5P0gN/w2nrNcZEhf+nzAMhFH+2Ciqe5SGq8
+	yfepkkiI3zgTOPoEqQQDlWVYYri2wKHsf4Dw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1wFSmm-007uhl-0g;
+	Wed, 22 Apr 2026 16:18:17 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 22 Apr 2026 16:18:16 +0800
+Date: Wed, 22 Apr 2026 16:18:16 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Thomas Graf <tgraf@suug.ch>, oe-lkp@lists.linux.dev, lkp@intel.com,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
 	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 5/5] mm/mm_init: Fix uninitialized struct pages for ZONE_DEVICE
-Date: Wed, 22 Apr 2026 16:14:20 +0800
-Message-Id: <20260422081420.4009847-6-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260422081420.4009847-1-songmuchun@bytedance.com>
-References: <20260422081420.4009847-1-songmuchun@bytedance.com>
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>
+Subject: [PATCH] rhashtable: Check for vmalloc in emergency rehash error path
+Message-ID: <aeiESGghexEuKbEV@gondor.apana.org.au>
+References: <202604211323.fac1b29e-lkp@intel.com>
+ <aedvSnhOGM_mauYP@milan>
+ <aehdcxC14ycvY481@gondor.apana.org.au>
+ <aeh2Ii9CxtgfsX_p@milan>
+ <aeh_2WwIb8nAIcy2@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 690EDC0016
-X-Stat-Signature: pjzzqgwoczbdnqgmzhg4gsobhh3yirm1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aeh_2WwIb8nAIcy2@gondor.apana.org.au>
+X-Stat-Signature: j6uwqi8paq4mbtcymrpeb1s9dhiscb6q
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776845713-456279
-X-HE-Meta: U2FsdGVkX1+N2MQTfusoQ1zfQkxgbrfh/v1XNsQ2ARETWIVIIaQNEB/zVSflg7N+vfamI8QyKsMeU6YOFrpdffj5ErxzL3z7Qt2frZPXQkXJW2vAnEHk5fKnZS7I1OYcjUCNXhbzcBp0zXA2HKFk8Wgg7ZwCNhV2qVfCOGZLq7bjz7OxS3b6AZF21DjzxMw/O9vrDl2SNEqQeD3toORUCq70yDLaIHDF6WdsTm4ySJvhEvU5JmLpS3OQq4tH5+olwgwLJry3682jRpuMGzkH4SqjrILQ5asbfvLiCgy+YVLxFUKjqKG5eavX2gCcQ8X7XAXl4dgaOia/XqMHVHUNL9GoZNX++mVRCgN+4jKTE2o0jSONgDrthsB87vcvwFcnNw43H0Fg3YUr/rcpAIMIVfDBj4/hw9lDCxuhUurGkTaz1XgUAkHOMFGsWKPnH0Z3wK8FItoPEZKZt/a+kqUr/3cvCxETWMQ5pjZDiOAl+aR5EkJrWxhZULZ8yf9t6Xi/SZ0zsZUY0A0tTnnRf5nfaNz0HHF5qoZ11AL94SwGn2QGKmWW2rT3KQvxLIkJWV+O4Y0JsZ+uR2Yj5sohs90KKf2TNMi8fy1oLN0CeaFpUd/zshGI/Igoe+TtjUgn6n2yvXXbGqwOBaO1ZoMTsUREo79H7Fgoa+LjvtLPkKv+tiSfSV+xR6tDzgAUvHbC5cgnq2NYCkYrct4AkG9w7IUzopedtES2qqpk0otoB9BlPFs5OTyt/g+1oh3kRhSDUWZAfUiSye/xLUvec262K5fPlu2wK+xB8ZRHeUCtGkQg9vVyAH3+GX5euiPhmyQBYn8dqiq8zmhOrBOHzT2DKqq2hV/pIUb2e9Zz1FxuJ4SLvAhGd7PQQV4cOTPfjtsRzfL5mtD7ZJNyH+gz/VDsX1C9Nc5XutUb556zu8Hz0MZoe1ygekTc9wIluIbneKS3Li0nNCKNoYtCDx80lb3fohL
- w3x7MMq4
- D8ORrCHrjlqD1I5LMWwU/lwPIhNY5Lnpv1zBn3QAAjnd0Dm/r3Kbyyw/xmuZIFzRLVMBU5xPbpy5dyUt09mH/Gf0DpFORaoqPRbSniCVaOUOd0UuTu7x24S59sbO2nzurWbGoxrrf99lbWIU4XPiDI/WjiORezai4wbWg0+FumUijf2YeGovBBE8ux0n+ijJ0IPF4cLbj3IvCC2nYhzrWLQ9iKd+lKWCSO8uxV+YAiHLmdPsATgpSbAtLgUUJ2bDmV6rCCLqu/U/qhkofBNxh9M8mIR7Q2yO6CPKpXI26Jei9BfKQCSS0c2qr/T2dHH83XyKQrrCAPCG7xV5oXXElm+rXVEYBhFfh9tQ6Fbtvtf+B1sUYJGV8I6VIJQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A52F2140003
+X-HE-Tag: 1776845917-159683
+X-HE-Meta: U2FsdGVkX19UVOdh8CEy76wvf2YrlUh1iOiwAkGMErFA+jBeRUfHYKmYFadjeCDblql502EjS+QA/J8YeCq+QJy/pVdMoJwY3ecK5AK7NvahitN8MLI4Kid7d0gXXazgH1j+H/mKnFMIp+2ET64uAtXeoZI/W5hkiuooFyPuu1AOVxKLYN+9tYwnbbuz4dmMFWvOSqRvipuWDZiE3pQxuuxTPSHX+DD8sgPG2Qx25IW0w2BWlx7KmnhngcjbHKeSDpxDQPwf2X3FOKdn0baAKHqSxxTb6Dws5EncDTlHgrygg2pqOK9ytS1q6paLvCjPaHiNeGdiNxmpwqHIrGKVUnzcqhLFReA29wEyGMHRAVrhwH9f9G8cuqMM1bbqvMSgGY3X+dljpbcfZ+cRR07c/ybwFShs4h2h6NOzTBYpqsJskRKGzfKLs5fbghhOcYCb8KDcs6ogMbeoyb1p//UGpIS6MjArHwmSwdoeApAVnKjBsYigBUHLsTqm9zqHNDyLhJXVFAguzEO5sQaQXNAB39i4IIUwsgTuWnAvAt1T3avn5HR7ozlukIUX22exjX0qnsA5lx1hfMrUk321ZyAWK+cV9fmXEg3E06N/HUged1m8NJ5PZciyqJt0coQj7Dlge2cJnRj8UZusLlzly8OCrh8dYbXjbT6LHrIMwcpBqyz/ha618h1QZR2fRi5Zocd0MDRrFK3didrbFO1ud0OwgoAisyh5NkzRsi8RvGZvF+WxyF6/TPcmIiIb9Uwq/+FtKkaJACC1Skr2mW4aIsfPhQq0YZ8/Nnct56/eWhM4895rrMKW6b1N0h/m1DevRyLnSpfTLOKv8CKGwHpx3F2PvpDHkE8zTzwELsDK5M9ScwHgvOR6ft42BsTTcqtm+s4veICa6GtOya92NfEMzC3kVxU9cI+AFMipTAlA81yzusnQuJ2mAmYy0KQuTfB3WtwHJdZ6VzONHwmhPeYmQjI
+ D2oXqnwI
+ NAMFNIJxExG/xQT6EXtaEQDWfZlLIiGjhSwFm23SVSNxmlxKuyYVd4KkMZ8A6s0dI/3Pp249C/EdTbmnONloTftB03QBLtl9KSjxjBR2MdRveCzn0/LyiwPa1I9/NGtOddWm3VGJXwSw796DtU5osSXj8VMqNzK0Y0M1O8hY0L0o3W3EpTCHzFTAuyBk7eZ7dRd2kreXL+fAOMI+VKXSjcRIgNq25J6izJZa4NsWLyOixkwS2QahXnWOi4mwZxiGiORboWtzZglZfBflywWb3gMDChXJaGzzX5I9/urmy/C8rNDW1HhQQQwMvP5mjb7YROysZJMvK/lUHSWmXOvfqHNMU/EkPMweZSXPCYmRyIfCkQ5XVubIOfnLupewh6BdhPHru
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,56 +100,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If DAX memory is hotplugged into an unoccupied subsection of an early
-section, section_activate() reuses the unoptimized boot memmap.
-However, compound_nr_pages() still assumes that vmemmap optimization is
-in effect and initializes only the reduced number of struct pages. As a
-result, the remaining tail struct pages are left uninitialized, which
-can later lead to unexpected behavior or crashes.
+On Wed, Apr 22, 2026 at 03:59:21PM +0800, Herbert Xu wrote:
+>
+> Why is kvmalloc returning vmalloc memory under GFP_ATOMIC?
+> Is there a new GFP flag to tell it to not return vmalloc memory?
+> 
+> This has been working for over a decade, what changed?
 
-Fix this by treating early sections as unoptimized when calculating how
-many struct pages to initialize.
+Nevermind, I found your commit to add vmalloc support for GFP_ATOMIC.
 
-Fixes: 6fd3620b3428 ("mm/page_alloc: reuse tail struct pages for compound devmaps")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- mm/mm_init.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+---8<---
+As kvmalloc with GFP_ATOMIC can now return vmalloc memory, check
+for it when freeing while in the same context so that vfree isn't
+called in an atomic context.
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 9d0fe79a94de..3d5af40d0943 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1056,10 +1056,17 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
-  * of how the sparse_vmemmap internals handle compound pages in the lack
-  * of an altmap. See vmemmap_populate_compound_pages().
-  */
--static inline unsigned long compound_nr_pages(struct vmem_altmap *altmap,
-+static inline unsigned long compound_nr_pages(unsigned long pfn,
-+					      struct vmem_altmap *altmap,
- 					      struct dev_pagemap *pgmap)
- {
--	if (!vmemmap_can_optimize(altmap, pgmap))
-+	/*
-+	 * If DAX memory is hot-plugged into an unoccupied subsection
-+	 * of an early section, the unoptimized boot memmap is reused.
-+	 * See section_activate().
-+	 */
-+	if (early_section(__pfn_to_section(pfn)) ||
-+	    !vmemmap_can_optimize(altmap, pgmap))
- 		return pgmap_vmemmap_nr(pgmap);
+Use RCU to defer the freeing if the memory came from vmalloc.
+
+Reported-by: Uladzislau Rezki <urezki@gmail.com>
+Fixes: c6307674ed82 ("mm: kvmalloc: add non-blocking support for vmalloc")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+index 6074ed5f66f3..c386f456e417 100644
+--- a/lib/rhashtable.c
++++ b/lib/rhashtable.c
+@@ -119,6 +119,16 @@ static void bucket_table_free_rcu(struct rcu_head *head)
+ 	bucket_table_free(container_of(head, struct bucket_table, rcu));
+ }
  
- 	return VMEMMAP_RESERVE_NR * (PAGE_SIZE / sizeof(struct page));
-@@ -1129,7 +1136,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 			continue;
++static void bucket_table_free_atomic(struct bucket_table *tbl)
++{
++	if (is_vmalloc_addr(tbl)) {
++		call_rcu(&tbl->rcu, bucket_table_free_rcu);
++		return;
++	}
++
++	bucket_table_free(tbl);
++}
++
+ static union nested_table *nested_table_alloc(struct rhashtable *ht,
+ 					      union nested_table __rcu **prev,
+ 					      bool leaf)
+@@ -473,7 +483,7 @@ static int rhashtable_insert_rehash(struct rhashtable *ht,
  
- 		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
--				     compound_nr_pages(altmap, pgmap));
-+				     compound_nr_pages(pfn, altmap, pgmap));
- 	}
- 
- 	/*
+ 	err = rhashtable_rehash_attach(ht, tbl, new_tbl);
+ 	if (err) {
+-		bucket_table_free(new_tbl);
++		bucket_table_free_atomic(new_tbl);
+ 		if (err == -EEXIST)
+ 			err = 0;
+ 	} else
 -- 
-2.20.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
