@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44861F94CC4
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 05:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF5DCF94CCD
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 06:07:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31DDF6B0088; Wed, 22 Apr 2026 01:33:01 -0400 (EDT)
+	id F11396B0088; Wed, 22 Apr 2026 02:07:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CEB66B008A; Wed, 22 Apr 2026 01:33:01 -0400 (EDT)
+	id EC2486B008A; Wed, 22 Apr 2026 02:07:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E4DC6B008C; Wed, 22 Apr 2026 01:33:01 -0400 (EDT)
+	id DD79D6B008C; Wed, 22 Apr 2026 02:07:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 101DA6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:33:01 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3CEAD161097
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 05:33:00 +0000 (UTC)
-X-FDA: 84685072920.25.515307F
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5F4C3140002
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 05:32:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=rxyn6RRg;
-	spf=pass (imf26.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D0C4D6B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:07:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7748E1A1096
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:07:36 +0000 (UTC)
+X-FDA: 84685160112.05.9576E1E
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E174740008
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:07:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=mhQQAfKH;
+	spf=none (imf12.hostedemail.com: domain of BATV+0547bc4a5174ed997a0e+8277+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+0547bc4a5174ed997a0e+8277+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776835978;
+	s=arc-20220608; t=1776838054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oXiySTXnmX0EoYqqPO0CUXpbGPq7kKxCM2FYg6rgL2k=;
-	b=zJacLU7inh9LummGMKCsxl8Uh+0qHgeyhtLvdWHQnQu4zPUDPz1C1F7e655zDt6PhcEBgu
-	PTgKTd+DfV0nEIByvpWI3vw/Tvq6ieFeMWTPgETCOdOb5HA9gQMPfWjXKFTAbZM5rTZ5vl
-	FquJUN3jXZNfYX8+d5hd/TKng3LRPqI=
+	bh=iMW8Vx62O/6nF3nfk6vYcn+eHtMGo9C8VQwZfMzOmSE=;
+	b=e/Ly1MQFMqunHKImIb4RqC1MP/7DkgJLBNvzkwbuCKJL6h9Vojb0m3N8TvM9XbFWiSJn0J
+	9FP83vplOf75+cIk7t9QIlzINAgSUpZUAopCctTWMKeoCsHAtHyjmVqpJkYHjagxvCJHsM
+	77yodKrZq/+cFTEcUu8lVdH5+xxcwCc=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=rxyn6RRg;
-	spf=pass (imf26.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776835978; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=mhQQAfKH;
+	spf=none (imf12.hostedemail.com: domain of BATV+0547bc4a5174ed997a0e+8277+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+0547bc4a5174ed997a0e+8277+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776838054; a=rsa-sha256;
 	cv=none;
-	b=qsC5OOEZcf4Re/p6A9fEVAUwTLmVR3yyk5WOvs4pziecGC9Zt1Nx3YDgDwDqT6ofnMO351
-	3Z4VG6Q9LtED3mNllc67xAlwOEb3Cs79rlN9xcyQBd4X31T0Jv6P+BZ9jzexqwrdnorFO2
-	DVc0/oqUSHGypEPUE+nohVewCCKtUrg=
+	b=QTPQu9sANSAp5fjCTHvkO4HS9LdKcO1ir+RzJ9LuU/J7zF0LpW2cm7ZBecQCCl+UAslAVp
+	gS28Poa7uiJxLaE71F/H9+lgc8VRvwdJuxhCxsGQR3P6DCogONnCQDewmSLFyNjMNKzhvg
+	VHGgsznLQMS51ofo4jyCFi2pSbn0o28=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=oXiySTXnmX0EoYqqPO0CUXpbGPq7kKxCM2FYg6rgL2k=; 
-	b=rxyn6RRgWSMPT8cbt6zpRcqyBuzEnxS/cyiGOeMie87KpSi1IcYD2HmX4NgYvFizq/O2Nadx4fF
-	43urOEB1JJFHyVxq4Pwo1bNyYB50W+5GbZ57uJfSI/ZjdfvsGC43i/1A6MTxbUX0FuhncYJrXsFMX
-	1FhE6Hck6V68uf40tRwmW+icihHrJFU60dfd8gO0kKJglIBTM2WO2MH7XEqJO/AVuPHnUzmlXszFC
-	UbjatM55EsESOXQppEZV38XlZZL0vL7UmoEySz4HiHHsOedu1tG3H/mhZIRuGwVciP91dQu3tekFZ
-	EyGF7Cs7RD5Lb8OZAU+6yJSaAKzxpLdZLuqQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1wFQCR-007szj-06;
-	Wed, 22 Apr 2026 13:32:36 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 22 Apr 2026 13:32:35 +0800
-Date: Wed, 22 Apr 2026 13:32:35 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Thomas Graf <tgraf@suug.ch>, oe-lkp@lists.linux.dev, lkp@intel.com,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
-	linux-mm@kvack.org
-Subject: Re: [linus:master] [mm]  c6307674ed:
- BUG:sleeping_function_called_from_invalid_context_at_mm/vmalloc.c
-Message-ID: <aehdcxC14ycvY481@gondor.apana.org.au>
-References: <202604211323.fac1b29e-lkp@intel.com>
- <aedvSnhOGM_mauYP@milan>
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=iMW8Vx62O/6nF3nfk6vYcn+eHtMGo9C8VQwZfMzOmSE=; b=mhQQAfKH8wq6MdiElxLqzE+Grp
+	5N8rUZoz/v5Ad4W+KwXlBCbOqnKpP3GMR3VmbXI1gRczQIYGeIrziKkQ5qd6LFYa5urpf4o1Z/i1i
+	w5XCkns9AfiRIlEhTa40BVc80ghInlGlWpYSAvlQxa8+zRUjwQfCfwBagKynbTNYsU/RYbqjS4Mpo
+	1hZSCl6G5FP/2UR3x1zkIAbsvxuZ+TNnmJHNNmgdtgtXNPHbcsKCOTpZmRWgt4M4W0RE8zndZQZVr
+	9CGbdfSYhgIOg/TIX1KhQugVpPFEWjsOFMQL48VTDosr/0QOb/Eu0AGuAnZUs7B0UQjqJLpYxyip/
+	ZZsxOZ9g==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wFQkD-00000009e5R-3tOZ;
+	Wed, 22 Apr 2026 06:07:29 +0000
+Date: Tue, 21 Apr 2026 23:07:29 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Salvatore Dipietro <dipiets@amazon.it>,
+	linux-kernel@vger.kernel.org, ritesh.list@gmail.com,
+	abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
+	brauner@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, stable@vger.kernel.org,
+	Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH v2] mm/filemap: avoid costly reclaim for high-order folio
+ allocations
+Message-ID: <aehloU-hKZ3VDhbX@infradead.org>
+References: <20260420161404.642-1-dipiets@amazon.it>
+ <20260420095106.86ecdb685cd31e0847362512@linux-foundation.org>
+ <aeZzP6iQel-tkZOu@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aedvSnhOGM_mauYP@milan>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5F4C3140002
-X-Stat-Signature: 1zqrnsgshfzyxcrdb4nnhzi7ctmrpjzq
+In-Reply-To: <aeZzP6iQel-tkZOu@casper.infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: 1iqf73x353r8eyz7e6w3qrsn4q5fu1pw
 X-Rspam-User: 
-X-HE-Tag: 1776835976-681882
-X-HE-Meta: U2FsdGVkX1+3WzTsPTeFtuRcI6viJHd9JnBETNJd3dceFn4kPXZbvHkzqNO5erd0+hD34YR1nDrMUMJufZVAQSSSoO57vPIRRQsnC9xBUYX0VKIJp/Iq3C3s6dtpSG7+ANoXlvjDivPvydCECkvJB62qncLLd9WI9J8gxeFun7xXherRs7jYGzL/JLu3ObuuxMBk9qJ0P/v3ot5Lfouu0bdCPzW7gmInaKBtBxdEYgWsscn0bpZD/+U2jKpWSifeRmORcmx9fjWkY09HDj/3E4Jw8VIvd57rP8Ug2Y6n9XqsMaXO6wUuOK38XMo8/H8dfY7KSAFiPLszl2HOrBm5lJyNWHTkUUfByXUt6sabz6x7a3J2L5xOf4rtLqoWcu79PQhQmy3wgjpamVOlZKrQFPziGk+pm9bIFn2g8Mwh8CvVfxPJ/lP3EUBPYowKDvXeaHQFD2R2qMNkZGCFY98ytvdKUDvTLdAlbfvLYto2uUsiqPVW1JIlzrjRISIbmT2L67uiTR0GYp2XXre1mDjSYgw1MrOf4EbKdfR4k2RkmaYd5vTfwpEO373qJiI2dFIJvApYrrsEbTR5kTQcnpMtzTrMV6yEp6xj7PGHLDF4WtJH+plCNI0lVOBQ4q+6nWkwmEak48EmCandZItVZ3jKbBy9k5H5QNzLn6S8zJk1JB9QXkWd1gAC29nyX90FEn7HjIsb8C74zFBh/4iFl8w2zPBUqvvWEC0MYD0p3aHeNUvvdUKy8qwoaoLui9Bz8GNN0sm2Q3UENVNrizQUi4maWMkEl7rLnoW0EXsXzo2wG3HDqwHIttLBYax57YkwEXrE/wgZy70z6KbWrOxjN7+CaTUGosHGYJYOvBDonFFuNrqruocJTsbw/0qzj0fXfgB2YVOIgSYcvkT/548xSpeOGiWnr3IDJZIh5lVybPMXScJMnfl5sHxBImgFtt69NdNTFOCThosIXiN25hYvV2e
- T9p0/UWt
- vdxm5S8kLMn4FEUdQYiofIjSEAqEc1DCoDvwXWy6VLKpLcSOEiHGirRhByUghahDRuR3lASU7KYIC2roQl2S/ZKUtJ2u1PcLp7UoumnHvDakYo/gF4S6LrWnSX1vYimvoaM9STqKDMA/50BAWWi9QTGYQAm0x1S766F/dVAbZBKjyBmNzKSXAiG23iW0eoJPoQU8aJgvxTrbjkmxtDWeqWPYi0t32e3SazTCkSHJDWgI1R7Uat0WazhBPThWIu2eR2iU/fwuV76L28xVd1yZYOZ/jp9SEzL1pus1NvjtlIIz8O3XUJ8fcCBVGf5kFi7HpKXWshYhfIGrsLfoRgs43ttroNvpsRl1zDcciE1sXiPVXrzqftryCimex4K+6Cqn3adAZ5DvJHo5U/47QLlNF6d2ttA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E174740008
+X-HE-Tag: 1776838053-425472
+X-HE-Meta: U2FsdGVkX18ovbpL5zneHFbPeX5wP9sdtFyXC0HdSEDHa+uHVIoWxSOXaJw7ve6kZnE6Hud/Mff9yDAHiYZrQKWPF4skCjtTCmRFsWMxE3TMcea4Ec+Bzfa2KCCuqKO/fsozPD3LWbjKs2T99My9tG9b0AzEO52pQGU62mcUvDPOrcHw6z1fbClfYZlSDkF2ngkaJWEaXHlau0qvnwNT/eGBZg6HxFzMLMG2N3oe59uqocOv27UxoSbceYprczzonNxKbgmmFocRU6G2KAkn6DTH8XFYB3GsVNkEmP2dOrRsn8kVncSG8IP93ujtm0V/c9NQndPEUj1/G/rE43NDs1i9d2rnZ7NKLD9OScon+Dj5/uU94yUwDATEsjrl/3+2/xKI5PtF84Db72o4DdrMBWDmkxC5O1zHcOEqztTJxI8Akof2zx8BOgZ/eGcS07ApiQBrFY8jH4wRUEY86se/0zRXd79hvrh6Vf1KAOkXNcrxkjCMUAy7wqTIsH3krvJ3u2Mijf1sMSA4azNxzHJh5qDULm1mCIyJStl7Z/YvdAoaQTgzjUby53UdIoAnnlkHzPwZekyfgIMyQIrx8bu2fcJ3iEVecwz6/2OLRCRPusemiwSuv8s7N8mj8gGki9dgKb01kqDUn6rcJyUCR3qosI79ZQ5ZKNiiZlOcmhHf46IENs7mn9V/PBTkDDXf1+tF5KMp1cAltPHaSdQ9ZTJ7BQrmZ4ObTVYIhNAmlfsqzQ6wKXALIl46a6PItmKLhoEDRYj0Sq0vO8hhHznmOAs6CVXFan74FJP01pyz89bSuMBh5aKnTqmpeMxpVj5NuOdEk29kondEBepwCzSVjtTZkYHmej7XdGBOCzcPRQS7wtBdRVvRaTwUhUwTFBA4YsDIzmh7+4SD5JOhF/ovSAz5gsCJklYqDMwTBBzab2q3utj4ndUCwnPEZySh5iFrrxPyTAqn6K8janEb5ls6aGV
+ a+uWNPy6
+ jlEFUaUKSwvS61PH01npSyeoCAiPYVzYtNMml+xLU2Ti8U6hWgk3LxOCvMT1hvowZGz1A2liv94fZnBJgLydnhTV+pqZzbLnX6tyOv56artyLGLQnmcvyFQ3+h5hnvUJLbHRPXXdWnkURLCPl3/34Zv0cfNIalFYMcfpVq/VOOyUP7nUJMQbsZQzVdk5OokVeFNkX3RaQKCSB5P2SfX9NnV9MX1RWSKOHtyll6w+Ey3U4Rq6uKMOGe5LgQW8W51Ow8IxExUrxxbDhVk2EN54Doe5TEzjzOl2oXlvrk1KNx1+5vacEikTA9pwhIo1LAKq+wX8UbIs7bMaJZ65qZ5JjQBi+GVyvHKT2AkigI/q9anhzULPwrQBvQrwyMbW6z7tQvza2Scvn5LnCMaKfvZnAJhEOiyR+wvN6VZYLNgxH1/3ojP5U+urp9LxmMjoRhynqYQHkFn/Kw/CUzsxSeS7X109f8ASQGSw/gY4RMpnNNynbjz9yH/UzC0D+GZ4y0W43C07oIjtUi3dVuTB3ks5jn+jZ3s8HyHKDr2Zej5suMuADa4J9FNVp6x76hdAnh7x9DkwX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,43 +98,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 02:36:26PM +0200, Uladzislau Rezki wrote:
->
-> <snip>
-> diff --git a/lib/rhashtable.c b/lib/rhashtable.c
-> index 6074ed5f66f3..a892766dcedd 100644
-> --- a/lib/rhashtable.c
-> +++ b/lib/rhashtable.c
-> @@ -473,7 +473,7 @@ static int rhashtable_insert_rehash(struct rhashtable *ht,
->  
->  	err = rhashtable_rehash_attach(ht, tbl, new_tbl);
->  	if (err) {
-> -		bucket_table_free(new_tbl);
-> +		call_rcu(&new_tbl->rcu, bucket_table_free_rcu);
->  		if (err == -EEXIST)
->  			err = 0;
->  	} else
-> <snip>
+On Mon, Apr 20, 2026 at 07:41:03PM +0100, Matthew Wilcox wrote:
+> > 5d8edfb900d5 came with no performance testing results.  Does anyone
+> > have any evidence that it improved anything?  By how much?
 > 
-> Could you please check? The problem here is
-> 
-> rcu_read_lock()
->     rhashtable_insert_rehash()
->         vfree();
-> rcu_read_unlokc();
-> 
-> we can just defer freeing via call_rcu().
+> Christoph reported it doubled write performance with NFS once NFS was
+> converted to use it.
 
-I think we should fix that warning instead.  The memory
-that's being freed here was just allocated in exactly the
-same context through kvmalloc with GFP_ATOMIC.  I can't
-see why you're allowed to call kvmalloc but not kvfree.
+For the right workloads the same is true for local file systems.
 
-That makes no sense.
-
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
