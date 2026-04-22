@@ -4,84 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC931FA1FC0
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 15:41:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A03E5FA1FC5
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 15:43:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7B0A6B0088; Wed, 22 Apr 2026 11:41:09 -0400 (EDT)
+	id 06E0F6B008A; Wed, 22 Apr 2026 11:43:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2C036B008A; Wed, 22 Apr 2026 11:41:09 -0400 (EDT)
+	id 01E586B008C; Wed, 22 Apr 2026 11:43:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91AB66B008C; Wed, 22 Apr 2026 11:41:09 -0400 (EDT)
+	id E4EF16B0092; Wed, 22 Apr 2026 11:43:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 80F706B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 11:41:09 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA7EFB6D43
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:41:08 +0000 (UTC)
-X-FDA: 84686605416.17.C200417
+	by kanga.kvack.org (Postfix) with ESMTP id D704D6B008A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 11:43:57 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A8EB160253
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:43:57 +0000 (UTC)
+X-FDA: 84686612514.08.38F86A8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 25E3A4001C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:41:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="onO0Nlc/";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4AF741C0010
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:43:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pPDUbcDE;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776872467;
+	s=arc-20220608; t=1776872635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sCJlnOFt1PdbXMuFEq2GNM2u7i1pK8jCp2Iw335Qz+A=;
-	b=Hfsxjt/omhsyglIGufIbAy+4g/XBGZkapUzyf4NG5Q7KkQZWtDnCrD4x9l8gvRLnXeduzm
-	fv6BE18e+1aqwzNKiA2rBzeKjFJKuRZysMnvBJZcYQ+5vzYvERhFAH6Io4iSXmq8VP7qNb
-	Hjh1bBfJW2L99kfArOcWNcD9zGT60Jk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776872467; a=rsa-sha256;
+	bh=1TSKq7m9YTiRED0YZs64i570txDyYIEyufBV0KDLLrI=;
+	b=b6qyRnXkbJAWA4q6RCFmJ4QsvByQgmursOd/EG3ebuBzG06mcUKJkxbW8kuWgCnAROmDyE
+	UupaV7pAHyVuiWjD5jL8kyXRd/7XtnRebv/SNzqx/Y76Vm1jWKYgJrwmTjdLCjDP8VW9XL
+	QRqMpT7Mwq4L0+T8UivmqZFK4+q8tXM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776872635; a=rsa-sha256;
 	cv=none;
-	b=VbSd7hh3QC5xQOlgapEYa5Frx3sm1j/okgApJwIqNZCt1Z7efpK+n7QYCOA9MiRw4uRvRd
-	oJ16LFBXtucZzp2PiFc/lQLcdlncQMVLp8rk4meODoB4ls2d3IXkazhy3oHt67+JEewmlN
-	7MtsUPrKN5brFwTOtrta4+VQhbPFzr0=
+	b=OjMAwv7L+lGSyzQe1+8X3npAiUVS5Lkp56Ax/QZgWM5wgs99K33K9yFEI8oZth8L2zga5z
+	rgx0ni+BENG6awlWTLvwaC69G9kbcrwzoR11weQWV1jl3LZvfJbHp5duQIOb/Tv845s2Mz
+	CfrLNhoZhOwCtpAZDaZCfMuIJPokjec=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="onO0Nlc/";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pPDUbcDE;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEC8740960;
-	Wed, 22 Apr 2026 15:41:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AE6C2BCB4;
-	Wed, 22 Apr 2026 15:41:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2308C43E66;
+	Wed, 22 Apr 2026 15:43:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7792EC2BCB2;
+	Wed, 22 Apr 2026 15:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776872465;
-	bh=ln99j809Xlgb1TVVaK781ShvBIpWYucpEq0YmWkv7cg=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=onO0Nlc/nk7YTDIqGbgnXNpJjll12ljJadcE9efFOZ1L6bWS0RwvqQO2tz/b9Dnnr
-	 NiofkzGKgo+YZLGhKHotNT6Lu523l0BYAy4jIo+eLGpDoypAm8MhxQpJZzrNbVMoJc
-	 2Mhs3qR18Exc1sI+0Y8+d5ZvLDcZ3/ECnveEoCZK5s9RHSKtCQF1Q6Z4FfcrPCIps4
-	 90KQVNgcKr9ivqUW0VceMydeOC4jPNmmRSuoVRFmEGAOzGd7CHOVmvIoNqI7gDNk1c
-	 ImpQGOtypVmRbzHDg00h4B1EBw+IjappiousTVo3gJjNDmCFnoq5+v8UAobtFSF44e
-	 ksFom+ZNip7+Q==
-Message-ID: <1a9020b7-bb30-4ccf-a37e-44aae05db05d@kernel.org>
-Date: Wed, 22 Apr 2026 17:40:57 +0200
+	s=k20201202; t=1776872634;
+	bh=bSgDOG6lzfgO/ljMm4bJcNMq6rCw8HqrHHpgHsPDBAk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pPDUbcDET9pLZNa5Bl4xwjZW0E9eclRsEE22rJTrJS4uwljiiJLt9WUyumbsE/6DC
+	 dbve53F2CWb4Bnc+0fGpedvW2gVo0HDefSnSQnaKs1ilKCk0fAmBzpSbm/3bZNA2iK
+	 +FPk/aXDIjCSmDgsdr28ln+jHDHPwTBSSWVPhniHLXuzzmg8RCWhJ8ADwknFwmqDuM
+	 UcvwxrSsM9q/fBf0+lwLr/aPy07xawdL9MUYJAmUq/t3MzkyKk7wX3Z4YDLPF0Ra/r
+	 Kfucg4bDLcbWIZHBtCXm2zpYOO+zXoTt4vpehq2JA2VBBRRjOyUA9X+S2R3mCtMK3y
+	 HvbT0foEMzvmQ==
+Message-ID: <3aebc7f9-478d-4c21-87b2-49bb69cd2de4@kernel.org>
+Date: Wed, 22 Apr 2026 17:43:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/3] mm: Free contiguous order-0 pages efficiently
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+Subject: Re: [PATCH] MAINTAINERS: fix regex pattern in CORE MM category
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Uladzislau Rezki <urezki@gmail.com>,
- Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>,
- Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, david.hildenbrand@arm.com
-References: <20260401101634.2868165-1-usama.anjum@arm.com>
- <0a8ba718-7ff2-4876-9154-9dd5d404df3e@arm.com>
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>
+References: <20260422123726.517220-1-pfalcato@suse.de>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <0a8ba718-7ff2-4876-9154-9dd5d404df3e@arm.com>
+In-Reply-To: <20260422123726.517220-1-pfalcato@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: shppm1fmae5f8ije36tx1dznwetwruk6
+X-Stat-Signature: pfxtunjyw4tqkp9ypwfsoxr9mamzbup7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 25E3A4001C
+X-Rspamd-Queue-Id: 4AF741C0010
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1776872466-508505
-X-HE-Meta: U2FsdGVkX1/LtclUthrWkKnxXBpU59qwugetjbP0YZpMiXE8dVI9pvCn5l5nRpNMXzB9q7FM/NqLTdSRMUL6gKr3iC7N48+nFHSaJ+YbASFhPK32osbTOOfCKhouavvIU8AtmGUsX3sej1KPVnEJy+sCLvBwfbyYJz4FtRw3N/e3E6psBMH5dusnvQQvXw8BaUhGxzE0bv0BEi5cSU9T8CWhtaawR5g4GXaHP+EDshhuRNMd1ew2nIR0rah0Nj8UxUhkTYgkMvR/gkQO4+GKh0dEtt85LfgAQX2BYBOjEBboyLEXXF1jDAvHm2aIOcgvQfbzcg0DoPkhAKa+MlJXOtsyWl4+Olc5zTfsZV1XcQLT+NIJkR+njVCMOLKbknRfpfbexAbiY9NVP6fzte/JgxobQqIFNcYNiOVARwLSeP77F3RKVtg0f6r08tuQOxxAmNqLYWb9tFfHRxlUNrAiGeriAQKPEz6vyq2fAYgQ7WwvTaeFN1ykgTYV0iXXTGEnjtkiSei+DsCfzXYVAvzeV7RSVLz3r7HPbItkBTsqBmBrGdLMWT3sU2bQKBpm+2yVfOXpWOvMGE86B+iyRSR4jsFopTEuC/WLx8pbXpWsXKcgT9hORbg2vCTjR6a3hZCIftW1pIrk9wXfqIvtGnYR3KVerYZrpBXwBuqvYDWuK/wk/A/Wdx+N1RbQGV6v2bwJo6OB0jf9KrBtxJtDNjdcbQ9wHNJhLNS5/Md8UkhmeJK2DyIyS7JXZo0Fz2faxLIk0TJm03pLev8WB8kYKCSnXkv1AcAwcwWLpzSaBmqn1jqhV8/BLMownOeXc65I0P+P9XRF3k4IKzezKW2Nn+HCkc1pleCSNQOsf+ODIBbErJrMiq+EAWjc7yfuPkWwBaGdR7RpvIU85Bs5O4z0/pe9QStbuoeC7fb++ISv1rdODfCrjfY8ZKV/gx9RUJlunNRoWNHkYkqQDWxuPYtWXFH
- UecCvm/f
- lnklfoWU/Mk6vUxT/T9RuPUoUkWalEsPjYI9+nll44CXer/UntwB6G2dZsjXYot/vwFpP0bK7hMzPrv4zr5EfMp+dK/8/wTZRKxFkku5nrN4dSYwAy2U0D2Cw1/OpwjSP9oEKI+ZyNkVve9EqHfwmLTG/rH6HFniVuPQt0hZz8Z0qZfhxYoCrMbIiZjqDAjX5oeT+/aoxvCU/+gQsWPM8aVq++6IHFJ3hwEjLl2wjWXyRjIxZe3tTwSDdqHL51JQAvt4oGrlcGZNiwoBxkMNDK8uH9fzw7GNTcuwdmmHDYZfhG0E3mdv3lk5p+LJHI59IrxySveiYieRF/nQ=
+X-HE-Tag: 1776872635-108334
+X-HE-Meta: U2FsdGVkX18Wpg6AyjaF/eakVFAwu3PtS0wHgiqnFpKRRPrIrgl0f7XDC0qalB3VnL8sNZ/zs24PttLLpICrC6WFCNF7mL0WJID4sYwKzlKA/gmgWoA721+hYIuv2d137/s+PCyNWKmBvnTG8YMuE2697YBhhjqPVskHhfCvT+lOGUUSk+32M42H/nQLj6GBGLO6lJfPph4x2lHqGj3O/3y+ShjyiIs77P4EkNZ7fgDulrmSqVZTn73I9cQ+u+QE7mLtKMf5r/UxN2C7E/KIFXZEqNWN8wgv2Vg0xxudeuFu7xcxmxZF9YB4MDWpjTlHu+S7M5BYZo2V2lkyRdUHYhnkH7Rk7I7kCJmWAu5PFeGgTLThYTWz/oINIxyeXkKmKJShNGSYrB0HcBfI+FykRovE68TrYff75QYbiq5q5H139i3qm4TcSfzbyYkLxTUTUcJOToMXZlSHN5f5Z0IVhizPuntAmrOJ7z4YQQcCYf+BbD8lL5pkDYaYLLFE7NqswIBjfjNSWMvSlbOEkyvnCdEuVHqEOxRNxADeKnsIoXDGflkG139bVuCiJotJO+01q2T48saNpSKhq+TwPotLXTMiutq7sEEzwoU+kr0CEsEC9+vWXvJlyiud3ZO8cKtNN4O243IE+gB+F3ZbB8LIs5ZwR0Co80wMYAaE8X4iMAIBgKQmwlNaMJTK4CWxXbO/ZiA0EbS24+TH4L9gk1e/zWMnTHjsnwIhKA+kcPcHAEev6KoOkIMzWABeW0qXry1rHHT4v5+ZzwoHOAbl0fzRXYgYNIj2aOatG072J59XErzG6PIohvLIi1VAdhrdcx+nHGudODNm4TXAy16n/BSdW0mQRe5YMPYS+Z4wVT/R1tRxD/C1kP7UEG0GF4TP/syWZjlrLDOVN6ISmvgIA2Q36L0iQfuejBNzwB4USZnf4+S7NaGIyDpHWTVUVrfdPckLvRiK10ZyWENBiH/0F2/
+ La4uo8ax
+ XPqveHnA2VRm+JTxR5AwpBtRi0HbS3gvxnLPMLZ34kCsFExiknkz3iXDVy9LoT+mPYwvXBsqYDYZxoGdXiy4DQ0M5128UPIaDpG8U/1GFliP2pz4wBoBtm2jpfclIwHJ676fEfSmslLpW06BtoSoT8jEQIyxAepB3Vk8pY+omQppAsfI2zgUkj2tvm8nzByVWmFwMaMX8PPHTocQneDiCEDLEMXimWXK2eO0U65RNiBXDu+3S3KYqSgMTqU1il/JGlmNMX+SsgpVU2JX250k0QoN2Eg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,14 +140,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/22/26 15:42, Ryan Roberts wrote:
-> Hi Andrew,
+On 4/22/26 14:37, Pedro Falcato wrote:
+> The pattern "include/linux/page[-_]*" matches every file that starts with
+> "page", because it's a regex and not a glob (so it has the meaning of
+> include/linux/page + match [-_] 0+ times).
 > 
-> Small nudge on this series; I believe it has all appropriate A-b/R-b tags and no
-> outstanding actions. Is it ready to go into mm-new?
+> Fix it up into a more regex-correct expression. Doing so reduces CC's
+> drastically in patches that touch pagemap.h (which is maintained as part of
+> PAGE CACHE).
 
-I assume Andrew will pick this up when the merge window closes -- or let use
-know if there are conflicts and he would need a resend :)
+Nice
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
