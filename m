@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA9B0F9B5E3
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 09:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63BB0F9B5F1
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 09:08:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8FF96B0088; Wed, 22 Apr 2026 05:00:08 -0400 (EDT)
+	id 8CB8B6B0088; Wed, 22 Apr 2026 05:08:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C41336B008A; Wed, 22 Apr 2026 05:00:08 -0400 (EDT)
+	id 87C796B008A; Wed, 22 Apr 2026 05:08:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5B256B008C; Wed, 22 Apr 2026 05:00:08 -0400 (EDT)
+	id 7925C6B008C; Wed, 22 Apr 2026 05:08:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A55AE6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 05:00:08 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7010C9A34
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:00:07 +0000 (UTC)
-X-FDA: 84685594854.25.9862A36
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9185D4000C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:00:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=evKnj1hN;
-	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 63FA86B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 05:08:38 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE807161581
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:08:37 +0000 (UTC)
+X-FDA: 84685616274.12.3CE2C66
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 43EA580008
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:08:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3E5DoaQkbACwaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3E5DoaQkbACwaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776848406;
+	s=arc-20220608; t=1776848916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Onr23ZhU90nAAF2Ds/wbFjmbNXeYzOB39lTbfI481a4=;
-	b=n6a0xKlqRvf30wa4eJrUi4h0UzR2Vy7I0Qw89CgWBoDI4g72nxM5aJu7iTwoqQgv8Iccg2
-	DcpZcul2T+N7p8/iorKv+wZB6hUoo3ex4/S0yQbqVrELybpKKmfYUGC6/Li8hxHKnaghJl
-	ThgTiof0P5pkrqc71iFprqFv9lzRyto=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776848406; a=rsa-sha256;
-	cv=none;
-	b=oQKC/QNWEryFihgLj9bE1cjlL0+45i7fkhuA9b1gFGZk2ENtBaKDkoOHIsIX4uoi1838qt
-	81QGm26ResPvn/DhD9XyLm6RX1T8oqf9BM2HQU76drnj6jyJT/LlHXJsbPxSbdRWMTn00n
-	3jkASIf4K+JlRapepQMsnmEnv0i+Bj0=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=LYvPI0TiKk2/nz4aem/zoaIZrTQuz8IPh1+Vsu94j+k=;
+	b=Y0hZxvxSL8yEzlj9BtZaeYxQ/TJw1AIHso9MRU8my1kfW+sAb7qwInL378DZKndbjwcYbO
+	iShayTzWbGQXdvbCCcnh6fkke4Q3CxueXd4SH4hmU9Hj30qI8bAneG2t2Ozhvae7on++lm
+	VkunYsr7zwYEIWKhMbxrkBIBJj8mu8g=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=evKnj1hN;
-	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of 3E5DoaQkbACwaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3E5DoaQkbACwaghSITTMZIXXQL.OWWOTMcaMZKWVbMVb.KWU@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776848916; a=rsa-sha256;
+	cv=none;
+	b=fzhyEvBdQj4uPVfPcoCNyQwe9nowx1AYAOZl614WBSvpiFvGqOIzDRfIyKxRJyUhOP6YQ/
+	lKSGlYMbM4b4GjtE+50IJbWq8jkTDK3pBNNJaAyNCXpVgWbU0WuR2caIDV/tslYgyOKNC3
+	faYbQ1rA/7gQzqp9GeuHjNMelWv8JDE=
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7dcc59fe0d8so3451359a34.2
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:08:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776848915; x=1777453715;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LYvPI0TiKk2/nz4aem/zoaIZrTQuz8IPh1+Vsu94j+k=;
+        b=Clw603sLHNnPd44SioN5SquTE1c2U+JZsGZQPQ/PhuBivCxr2uRMZwGZeMPE/QRkGu
+         Yy7KZ5vi2dC3xBQFo7usqQZYIHCnFaGbNRTAyPhywmBhRU0QUKkHcTUnOSHpho5uCGtf
+         2fHoViY/zB92jAp4cTjmrZHKoHtazuwXje2rE2vDXtDc6b83JLW3t2xyhwcONM6tr8Lp
+         JexKXgz2sdp28tshOpNQwNo3H8u/7Heh84+I1IJh1PxeO2pWpLHI7AmnwloLjfIshrfK
+         z4gTE4qlPxrTq+8D8Be1XYgqgKlTsphq5PtLIoGpUVhq6sqFD6Y5oyyiWPncoBacN/ze
+         9Arg==
+X-Forwarded-Encrypted: i=1; AFNElJ+0qT/Tw3j6j911gclaNVrbe5MNKkSsEMaaI+W8vPedkV8ZOI4Tgm5lgQz6pMvNp+lJ+p40FlKl2g==@kvack.org
+X-Gm-Message-State: AOJu0YypL0vPffSFoRt9k0REyUP0XJfVPcepgA4Ytigp3PpDFOKSdI4O
+	zYjmcjxAsopZGGJDaUeRZx3cwICjXm4SOxDH6mAIDslXMXvw3YUdMA2BhoDWQ6Kul9UDc3HfpkR
+	e7M6rp9yEkCIhIOzCZb8cQbOYBpOXudruvO6p8/Eq1h4tbzoU3SlIxajeieo=
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776848403;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Onr23ZhU90nAAF2Ds/wbFjmbNXeYzOB39lTbfI481a4=;
-	b=evKnj1hNq3/eWjRUGArqwyeb+kwlwPvRvryfqgWTpN2FoeTWQCb1oGTbxam8ULRpY2wlwA
-	lUOzQASbHOn/FgbVKoSQbxDHW/vr99gDyA/YV3jZILoQa8k3W5TXdJ7wzqePDBAJwOlKSj
-	iGZ6EsH2/zkguHEQaQz6DJKSl+Djejg=
-Date: Wed, 22 Apr 2026 09:00:01 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "teawater" <hui.zhu@linux.dev>
-Message-ID: <9871d2cd927f7410e95ddc77ece8b9d00ed5b787@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH mm-stable v3] mm/memcontrol: batch memcg charging in
- __memcg_slab_post_alloc_hook
-To: "Harry Yoo (Oracle)" <harry@kernel.org>, "Shakeel Butt"
- <shakeel.butt@linux.dev>
-Cc: "Johannes Weiner" <hannes@cmpxchg.org>, "Michal Hocko"
- <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Muchun
- Song" <muchun.song@linux.dev>, "Andrew Morton"
- <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Hao Li" <hao.li@linux.dev>
-In-Reply-To: <acv5QCe0qMUUW2xP@hyeyoo>
-References: <20260331091707.226786-1-hui.zhu@linux.dev>
- <acvnjCr26zpQUW0h@linux.dev> <acv5QCe0qMUUW2xP@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: odb8rz1jg1kecsfu5igr6oh5suefx5zk
+X-Received: by 2002:a05:6820:6702:b0:68d:dfd2:8da9 with SMTP id
+ 006d021491bc7-69462e21607mr7968924eaf.1.1776848915201; Wed, 22 Apr 2026
+ 02:08:35 -0700 (PDT)
+Date: Wed, 22 Apr 2026 02:08:35 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69e89013.a00a0220.17a17.0029.GAE@google.com>
+Subject: [syzbot] Monthly mm report (Apr 2026)
+From: syzbot <syzbot+listaebfd2e176cddedda623@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: u3es4u7pc75ij6o53b39njt7mmg87khr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9185D4000C
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776848405-289548
-X-HE-Meta: U2FsdGVkX194hJhy24jWLwvPLBHPsTc70Si6KQy4uNFJyWN2tbiP9xThHY1WV1cFhQ+gPPBhSNfCHWj85EYX/Xma1hTJtQQ3kjNFkFwfw0xRMCw/hhxm3fF+IPXvSFVYZwlr216dlocC2JHzfYekY1Yu9go3XSz/Fm3JTTFdOcdcAlrY5I67S7dI4tCDhtX+lD/Fc2FbFeiOVvsm+LdrHfr8txZpcsYh+6iEAAbRKMmy1XyS9weGxxyjcOlZ6SPqoEXaphgDUHAV3lmgTnz2RDF1CXqXoJeQOa1JpR736RDL6XwrCFM3iXy9IIDcSYS9BVouoi1wGL9ArHdM7ERS/mBOnTuqx6bfDyWLsSleT937UFzW0EpW3qL8ED/SyiRGykpjZXYVriCECe0O2B0LC6gAT3rgg2UNqvjMRUx4tNE10Qag3898vNVEVq4JVLmN/t0n11SuAC+A4adlPSRr4tsvJSsKE90H6zjauZ6qlPwVQet8DsypA6va6v0Q9D4D8saWhHS7B2FMIjVt1siMj6Y9Av0R1bv/l8ROUggUKnriI3EzoQrwFAjBpNC0sBRhd2Ez0nNZlaIWpiuzVugek0alNMQfsjQLJqoh6kwS7NJfi8klfqLyYKsn8hY2k+5qUFByjHsBMRDeVUfWu6958qNEnTUmvlpM/Q+P9Gwk995neJ9/qgzqXZJx3rMe2x+oEoc3RFzvt0IOlVXd1tbSPsKR7vM05u2cwuAp1/icnfsJjuLbRL9Bm9uwJ97O74NCc6+bXiBP9fgLPvRo/aMwUEVDhnr2cjBsdKsreRFG41bUwnCvB3Fz2MZEYmoigf11K1bRYhwwnXKS9uQV+pe7Eg+qHne2EqWX1pDyM6YDwP3MzWaEf7lxTp2nYhQX0Gy+6+T55ShOsCO6d4adrN8nyTWITRyEAarjS5Aelrxx+PqMqdnmy4XxJ2uk0j0/SJBp3st8VCJlFA12xgnxC1Y
- izQGAkBI
- jDixoCAcOMY+Y8KFjyjNVv4TmtOe+ow2gFpTh+MfehVQMvfM2V1fKJr5nGpbGQELh16tC3ugitwu8ixl8xpQxuz8EtU6O+DiRLmSBx+B17cbfkdAM7hM8BcCfqOT/I0f81wZN/9QX1XUUo0koQzBvD54Zptjs6TwqwWpfFthg2jNPaDz2FfRK6nfTuztUyJSg493bTwy3fOvWriIZCRwarUlbKX/bkxAnrEbDmPdV5vdn8AxLuowCa89h6wSM9H81zhMJ
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 43EA580008
+X-HE-Tag: 1776848916-663272
+X-HE-Meta: U2FsdGVkX19iPvhgYbngk40RcyAwlzh865Q/8YUSqVof1rmN64EHdnphXhqURupBkDp7QCoUdbwp0o8WNiC+tkNr/U6SR/Bm2mBLPA9nUMqTmf6GGSx9JakTGDnA/vIX2nIXo1pSN8LpLxw7WJzVKeok13PUxzkbbQzKFYYoMCxHqoR2fdt7DeTn324UzF7Ftu7k3RQZriJ/GELpilR5iRgXNDMDcXdY5dlnHl8VvmYe+cBefs9UL6IvRWStB/j+KP0HY5HVAu7AoQnqi2r0Q2NXR6av5Kab8uzQEloQR2kd1kuBD+E3S5lJFawXo5u1t+FVajbfZETteraoQgHOb9eKmBxbwtmRj0XY3CJhBLARs0Nr75KUuirxEFLBlvqX1D8tCMocWF6dzModabS71XPGhPPnK+it3FnmzQTMN546MpeOs0nIWm75dAX4gy8E14h0jx3yHAJ5nyNSeS5GQXEAtSWn8SNic2tWCoLGzkimMSjiQVJGPZXfk774hGNJH3YbFmIz7+W79l/vCi5gyV98h89njhlV4d/NRxvL0x+yO+NeM7hPKDxd5bQGEzThANmw8+kH3lcFdUNmXcF493E/Q1soydnukhaFUykw5PDYxfccpzCPcxO4PzaLQWNbT2q9oeq/R41b9gVTbgQZVIoml59Nj2zooYna6AGS1MPi1uLmjFiYKvSTQlLLTa/Yrb8yOURx5MlaywZldKb+kEWNxXREqwYD17EyftpKqO3HmcW3E1k1QKn4Sx1DKSxptCrOcKTarnZqWPpiYTwC2hT/KGKpnw2G5tXcngZvjHJbmfUaruONdKkO8HJKL1tsL0t7dkXJCKSZhKRsn7a3eJd+40cizMQUtusxD8Ej7klj1MqiO2WbA0oKn69T7Hon8gt7u5rNOnxmlHFDNX1ZJeuQl448ycZYwKxS+iNdLQk6yAEP+7iY88zgbZGrKKDOpllAy7tnSG6qzMXW21v
+ 8Ab81AUP
+ OAClKlSj9lq3pwL2bQ2jJP3QKqwwLVThX9IKP8tWTJhixf9XRLUMbYjFu/x0Mqc0xZd1tMoD3PDIgxqK51uW4a+b9Vh7CjK6DvL1lUgdHiDoDNh1ZM/LYXRIzjk+Paz9SPw9+cxgddNgLkFnmkJkXfzW4npC9tHwc69MdtB8/8RhIVrpk6cB80y33EyF40WBeGEV5D8VbD/Uj2wWHJTaif7e4HcLGhooUsuR0M2xSzDXrhNmqq44qfZEAzpV36eOQ8gcxOVtdGr69hx4r/CSsdC4WrBO9rRiQEn4TBw2LrUkRjHZ6IrhpO2VnT/iKPCd5p8NfRwviqIkry4PEHiGtp0WhZoLWo+EJb5wZOsBUgc8qRahDVXw4eyH3XDS/w/W9oqeL8R3gE7n7Uisq7be4ymNy2ye//cAnX0xQg3ObA4SUOVDdreyrALJcQW4DHhz3HkYATOXywdhiNqlH7VESuSN4ee1R6qSc74LsDGIarAv41N2JkFDmny+FEIxUnXsjvGlvhUGGhBHH27M3ceV3H5RpkUnQjAHe61Yoief727Ja8EAMOkyKFF6WalwcadrFtZVm6ZQqh18nhcmwkcqbjIBtj9n/UdG06AT0Z+6aIz56UUSGtAvsGyKvpx0gRYuV0bEwzBuWcGqOdIM2bdHxs+WLzH/SUA8IY0qy7ApCIcb6eunY4pT1vYMK85HwTmbjnZbnL3WvBXlsTnXtZU3cn5D7SzSbpVg/pPjr10L5c1zVYjB0PS/YgH3xxEaAu4DRUBMFOhxibw6VO/OrhXLoUUGJqYh971Q0ztaNkP0isExLZUat6+tBlRCZgb47uVpSLOcIV0mdayMfOzXNJYi6s3wJPTZ3l1zfTqhccIvgYGj4PcTNRHADTfF0YdUevytZVopVa5K9u3YHEJjPlosMXb7HnjqAEyMVzo50vaJdrftf48/2604/jWnRaOnQPDyIJr5RZPTuG3iVRU4jCyFw3KhzvZRX
+ tkdMdG/a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,366 +93,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->=20
->=20On Tue, Mar 31, 2026 at 08:32:30AM -0700, Shakeel Butt wrote:
->=20
->=20>=20
->=20> On Tue, Mar 31, 2026 at 05:17:07PM +0800, Hui Zhu wrote:
-> >  From: Hui Zhu <zhuhui@kylinos.cn>
-> >=20=20
->=20>  When kmem_cache_alloc_bulk() allocates multiple objects, the post-=
-alloc
-> >  hook __memcg_slab_post_alloc_hook() previously charged memcg one obj=
-ect
-> >  at a time, even though consecutive objects may reside on slabs backe=
-d by
-> >  the same pgdat node.
-> >=20=20
->=20>  Batch the memcg charging by scanning ahead from the current positi=
-on to
-> >  find a contiguous run of objects whose slabs share the same pgdat, t=
-hen
-> >  issue a single __obj_cgroup_charge() / __consume_obj_stock() call fo=
-r
-> >  the entire run. The per-object obj_ext assignment loop is preserved =
-as-is
-> >  since it cannot be further collapsed.
-> >=20=20
->=20>  This implements the TODO comment left in commit bc730030f956 ("mem=
-cg:
-> >  combine slab obj stock charging and accounting").
-> >=20=20
->=20>  The existing error-recovery contract is unchanged: if size =3D=3D =
-1 then
-> >  memcg_alloc_abort_single() will free the sole object, and for larger
-> >  bulk allocations kmem_cache_free_bulk() will uncharge any objects th=
-at
-> >  were already charged before the failure.
-> >=20=20
->=20>  Benchmark using kmem_cache_alloc_bulk() with SLAB_ACCOUNT
-> >  (iters=3D100000):
-> >=20=20
->=20>  bulk=3D32 before: 215 ns/object after: 174 ns/object (-19%)
-> >  bulk=3D1 before: 344 ns/object after: 335 ns/object ( ~)
-> >=20=20
->=20>  No measurable regression for bulk=3D1, as expected.
-> >=20=20
->=20>  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> >=20=20
->=20>  Do we have an actual user of kmem_cache_alloc_bulk(GFP_ACCOUNT) in=
- kernel?
-> >=20
->=20Apparently we have a SLAB_ACCOUNT user in io_uring.c.
-> (perhaps it's the only user?)
->=20
->=20>=20
->=20> If yes, can you please benchmark that usage? Otherwise can we pleas=
-e wait for
-> >  an actual user before adding more complexity? Or you can look for op=
-portunities
-> >  for kmem_cache_alloc_bulk(GFP_ACCOUNT) users and add the optimizatio=
-n along with
-> >  the user.
-> >=20
->=20Good point. I was also wondering what are use cases benefiting
-> from this beyond the microbenchmark.
->=20
->=20>=20
->=20> Have you looked at the bulk free side? I think we already have rcu =
-freeing in
-> >  bulk as a user. Did you find any opportunities in optimizing the
-> >  __memcg_slab_free_hook() from bulk free?
-> >=20
->=20Probably a bit out of scope but one thing to note on slab side:
-> kfree_bulk() (called by kfree_rcu batching) doesn't specify slab cache,
-> and it builds a detached freelist which contains objects from the same =
-slab.
->=20
->=20On the other hand kmem_cache_free_bulk() with non-NULL slab cache
-> simply calls free_to_pcs_bulk() and it passes objects one by one to
-> __memcg_slab_free_hook() since objects may not come from the same slab.
->=20
->=20Now that we have sheaves enabled for (almost) all slab caches, it mig=
-ht
-> be worth revisiting - e.g. sort objects by slab cache and
-> pass them to free_to_pcs_bulk() instead of building a detached freelist=
-.
->=20
->=20And let __memcg_slab_free_hook() handle objects from the same cache b=
-ut
-> from different slabs.
->=20
->=20--=20
->=20Cheers,
-> Harry / Hyeonggon
->
+Hello mm maintainers/developers,
 
+This is a 31-day syzbot report for the mm subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/mm
 
-Hi Shakeel and Harry,
+During the period, 7 new issues were detected and 1 were fixed.
+In total, 130 issues are still open and 369 have already been fixed.
 
-I ran a couple of benchmarks against the patch and wanted to share
-the results.
+Some of the still happening issues:
 
-The first test exercises the __io_alloc_req_refill bulk-refill path
-directly. It submits POLL_ADD requests against a pipe fd that never
-becomes readable, so requests accumulate in the poll wait queue and
-force repeated refills at high throughput. With the patch applied,
-elapsed time dropped by 8.7% =E2=80=94 a clear win for that code path.
+Ref  Crashes Repro Title
+<1>  24253   Yes   WARNING in path_noexec (2)
+                   https://syzkaller.appspot.com/bug?extid=a9391462075ffb9f77c6
+<2>  7462    Yes   WARNING in ext4_dirty_folio
+                   https://syzkaller.appspot.com/bug?extid=ecab51a4a5b9f26eeaa1
+<3>  1919    Yes   kernel BUG in __filemap_add_folio
+                   https://syzkaller.appspot.com/bug?extid=4d3cc33ef7a77041efa6
+<4>  1762    Yes   KASAN: use-after-free Read in copy_folio_from_iter_atomic (2)
+                   https://syzkaller.appspot.com/bug?extid=6cc93ec9a4035badb85f
+<5>  976     No    KCSAN: data-race in __filemap_remove_folio / folio_mapping (2)
+                   https://syzkaller.appspot.com/bug?extid=606f94dfeaaa45124c90
+<6>  927     No    possible deadlock in lock_mm_and_find_vma (4)
+                   https://syzkaller.appspot.com/bug?extid=709f5ab0e03871dec50a
+<7>  701     Yes   INFO: rcu detected stall in addrconf_rs_timer (6)
+                   https://syzkaller.appspot.com/bug?extid=fecf8bd19c1f78edb255
+<8>  689     Yes   INFO: task hung in _vm_unmap_aliases (3)
+                   https://syzkaller.appspot.com/bug?extid=fe8f8efd070d727de971
+<9>  571     Yes   INFO: rcu detected stall in sys_openat (3)
+                   https://syzkaller.appspot.com/bug?extid=23d96fb466ad56cbb5e5
+<10> 529     Yes   INFO: rcu detected stall in x64_sys_call
+                   https://syzkaller.appspot.com/bug?extid=65203730e781d98f23a0
 
-However, the second test focuses on single-object allocation speed
-under the same ring setup. There, the patch actually regressed
-performance by 5.7%.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-I also tried two targeted mitigations to recover that regression:
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-  1. Replacing `likely` with `unlikely` in the relevant branch.
-  2. Replacing `check_mul_overflow` with a simpler bounds check:
-       size <=3D (size_t)(INT_MAX - PAGE_SIZE) /
-              (KMALLOC_MAX_SIZE + sizeof(struct obj_cgroup *))
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-Neither approach recovered the single-allocation loss in a
-meaningful way.
-
-Given that only the __io_alloc_req_refill call path benefits from
-this patch while the common single-allocation path takes a step
-back, the trade-off doesn't seem worthwhile at this point. I'd
-suggest we hold off on merging until we find an approach that
-improves =E2=80=94 or at least doesn't hurt =E2=80=94 the general case.
-
-Happy to discuss further or run additional benchmarks if that
-would help. The two test programs I used are included at the
-bottom of this email.
-
-Best,
-Hui
-
-#define _GNU_SOURCE
-#include <liburing.h>
-#include <stdatomic.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/resource.h>
-#include <time.h>
-#include <unistd.h>
-
-#define QD		4096	/* SQ depth per ring */
-#define BURST		2048	/* SQEs submitted per round; refills =E2=89=88 BURST/=
-8 */
-#define RING_RECYCLE	32	/* rounds before recycling the ring */
-
-/*
- * Default total number of submissions.  Can be overridden via argv[1].
- * The loop exits as soon as the cumulative submitted count reaches this =
-value.
- */
-#define DEFAULT_TOTAL	(1UL << 24)
-
-int main(int argc, char **argv)
-{
-	unsigned long target =3D argc > 1 ? strtoul(argv[1], NULL, 0) : DEFAULT_=
-TOTAL;
-	unsigned long submitted =3D 0;
-
-	/* Raise nofile/memlock limits; poll requests are heavy on fd table and =
-slab */
-	struct rlimit rl =3D { .rlim_cur =3D 1 << 20, .rlim_max =3D 1 << 20 };
-	setrlimit(RLIMIT_NOFILE, &rl);
-	setrlimit(RLIMIT_MEMLOCK, &rl);
-
-	printf("target=3D%lu QD=3D%d burst=3D%d ring_recycle=3D%d\n",
-	       target, QD, BURST, RING_RECYCLE);
-
-	/*
-	 * A pipe whose read end will never become readable.
-	 * POLL_ADD(POLLIN) requests submitted against pfd[0] will hang
-	 * indefinitely in the poll wait queue without producing a CQE,
-	 * which is exactly what exercises the refill path at high rate.
-	 */
-	int pfd[2];
-	if (pipe(pfd) < 0) {
-		perror("pipe");
-		return 1;
-	}
-
-	struct timespec t0, t1;
-	clock_gettime(CLOCK_MONOTONIC, &t0);
-
-	while (submitted < target) {
-		struct io_uring ring;
-		struct io_uring_params pr =3D { 0 };
-
-		/*
-		 * No SQPOLL: submissions go through io_submit_sqes(), which is
-		 * the code path where refill is invoked.
-		 */
-		if (io_uring_queue_init_params(QD, &ring, &pr) < 0) {
-			perror("io_uring_queue_init_params");
-			break;
-		}
-
-		for (int round =3D 0; round < RING_RECYCLE && submitted < target; round=
-++) {
-			int prepared =3D 0;
-
-			for (int i =3D 0; i < BURST; i++) {
-				struct io_uring_sqe *sqe =3D io_uring_get_sqe(&ring);
-
-				if (!sqe)
-					break;
-
-				/*
-				 * POLL_ADD on an fd that never fires: the request
-				 * is parked on the poll wait queue and does not
-				 * return to the free list until ring exit.
-				 */
-				io_uring_prep_poll_add(sqe, pfd[0], POLL_IN);
-				sqe->user_data =3D i;
-				prepared++;
-			}
-
-			if (!prepared)
-				break;
-
-			int r =3D io_uring_submit(&ring);
-
-			if (r < 0)
-				break;
-
-			submitted +=3D r;
-		}
-
-		/*
-		 * Destroy the ring periodically so that the io_kiocb objects
-		 * accumulated in nr_req_allocated are returned to req_cachep.
-		 * ring_exit() drains all pending poll requests; once the
-		 * percpu_ref reaches zero the slab objects are released in
-		 * bulk, preventing unbounded memory growth.
-		 */
-		io_uring_queue_exit(&ring);
-	}
-
-	clock_gettime(CLOCK_MONOTONIC, &t1);
-
-	close(pfd[0]);
-	close(pfd[1]);
-
-	double dt =3D (t1.tv_sec - t0.tv_sec) +
-		    (t1.tv_nsec - t0.tv_nsec) / 1e9;
-
-	printf("submitted=3D%lu  refills=3D%lu  elapsed=3D%.3fs  (%.2f Mrefill/s=
-)\n",
-	       submitted, submitted / 8,
-	       dt, (submitted / 8.0) / dt / 1e6);
-
-	return 0;
-}
-
-
-#include <linux/module.h>
-#include <linux/kernel.h>
-#include <linux/slab.h>
-#include <linux/ktime.h>
-#include <linux/mm.h>
-
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Hui Zhu");
-MODULE_DESCRIPTION("Benchmark for kmem_cache_alloc_bulk with memcg accoun=
-ting");
-
-/* Default number of iterations */
-static int iters =3D 100000;
-module_param(iters, int, 0444);
-MODULE_PARM_DESC(iters, "Number of iterations");=0D
-
-/*
- * Default bulk size. Set to 32 or 64 to evaluate
- * the effect of bulk allocation optimizations.
- */
-static int bulk_size =3D 32;
-module_param(bulk_size, int, 0444);
-MODULE_PARM_DESC(bulk_size, "Number of objects per bulk allocation");
-
-#define OBJ_SIZE 256
-
-static int __init bench_init(void)
-{
-	struct kmem_cache *cache;
-	void **objs;
-	int i;
-	u64 start, end, delta;
-	int ret =3D 0;
-
-	pr_info("Benchmarking kmem_cache_alloc_bulk with SLAB_ACCOUNT...\n");
-
-	/*
-	 * Create the cache with SLAB_ACCOUNT so that every allocation
-	 * from it triggers the memcg accounting hooks, specifically
-	 * __memcg_slab_post_alloc_hook.
-	 */
-	cache =3D kmem_cache_create("bench_memcg_cache", OBJ_SIZE, 0,
-				  SLAB_ACCOUNT, NULL);
-	if (!cache) {
-		pr_err("Failed to create cache\n");
-		return -ENOMEM;
-	}
-
-	/* Allocate the pointer array to hold bulk-allocated objects */
-	objs =3D kmalloc_array(bulk_size, sizeof(void *), GFP_KERNEL);
-	if (!objs) {
-		pr_err("Failed to allocate pointer array\n");
-		kmem_cache_destroy(cache);
-		return -ENOMEM;
-	}
-
-	/* Warm up once to avoid cold-start overhead on the first run */
-	ret =3D kmem_cache_alloc_bulk(cache, GFP_KERNEL, bulk_size, objs);
-	if (ret)
-		kmem_cache_free_bulk(cache, ret, objs);
-
-	/* Start timing */
-	start =3D ktime_get_ns();
-
-	for (i =3D 0; i < iters; i++) {
-		/* Core measurement: bulk allocation */
-		ret =3D kmem_cache_alloc_bulk(cache, GFP_KERNEL, bulk_size, objs);
-		if (unlikely(!ret)) {
-			pr_err("Allocation failed at iteration %d\n", i);
-			break;
-		}
-		/*
-		 * Free immediately; we only care about the performance
-		 * of the allocation-path hooks.
-		 */
-		kmem_cache_free_bulk(cache, ret, objs);
-	}
-
-	end =3D ktime_get_ns();
-
-	delta =3D end - start;
-	pr_info("Benchmark Result (iters=3D%d, bulk=3D%d):\n", iters, bulk_size)=
-;
-	pr_info("  Total Time:              %llu ns\n", delta);
-	pr_info("  Avg Time per Iteration:  %llu ns\n", delta / iters);
-	pr_info("  Avg Time per Object:     %llu ns\n",
-		delta / (iters * bulk_size));
-
-	/* Release resources */
-	kfree(objs);
-	kmem_cache_destroy(cache);
-
-	/*
-	 * Return -EAGAIN to prevent the module from being fully loaded.
-	 * insmod will report an error and exit, but the benchmark results
-	 * are already recorded in dmesg, so no manual rmmod is needed.
-	 */
-	return -EAGAIN;
-}
-
-static void __exit bench_exit(void)
-{
-}
-
-module_init(bench_init);
-module_exit(bench_exit);
+You may send multiple commands in a single email message.
 
