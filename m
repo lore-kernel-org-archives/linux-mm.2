@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74A33FA1FE4
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 18:50:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D64FA1FE6
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 18:53:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE6C96B0096; Wed, 22 Apr 2026 14:50:10 -0400 (EDT)
+	id 251DD6B0088; Wed, 22 Apr 2026 14:53:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBD846B0098; Wed, 22 Apr 2026 14:50:10 -0400 (EDT)
+	id 202006B0095; Wed, 22 Apr 2026 14:53:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD30A6B0099; Wed, 22 Apr 2026 14:50:10 -0400 (EDT)
+	id 0F13B6B0096; Wed, 22 Apr 2026 14:53:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5166B0096
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:50:10 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5FD5EA0156
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:50:10 +0000 (UTC)
-X-FDA: 84687081780.15.E556147
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F28666B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:53:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A44A58AB58
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:53:31 +0000 (UTC)
+X-FDA: 84687090222.08.C6C69C4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A17ECC0009
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:50:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jAIEDdzG;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id E7537A0011
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:53:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gwyj0THX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776884009; a=rsa-sha256;
+	cv=none;
+	b=KPnH9BpZ82Ma1esC8X1Na9TTecfQNQHXxoqi8/p/LNeyuPu0Sqh92I/KBjGc1cDl1OX+tk
+	Ec5vDPaJXK2CHpbJvNbdRQvV9fISQ4HXIKvIcD9WOjln0H4AbLi9JIR2Wo6Em75Dd//uOU
+	vzdC+0YJAd92IPQLLW2VbCk3MvVWX8U=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gwyj0THX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776883808;
+	s=arc-20220608; t=1776884009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qZaiM8bKBuZYKvp/hTxAUTVFeOQL9tY9dSkdiXcaXBo=;
-	b=qi7xz0qft9e1ZFLI42C4aoVfgBahaHSHwW5cJe7zvik54LCXxjxQ1XbD+6mLEUZLInE8NH
-	FpSRrV+w7Cw3JluGYWv5iw3lymlQvWgrKi2Wpi5uSqNkfrDquwMPc8o8B0JUkJk3xzoCFM
-	IfQnsmWNRLHP43GIwSm/KE52k+b0hj4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jAIEDdzG;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776883808; a=rsa-sha256;
-	cv=none;
-	b=4z/DFENxstUdtMFZIbXbRlIpI1sfQTxmYLHZGWRESWFYypaJIWCF2tYNa9XmMyzWvbxX64
-	+R0GKgTr3SOdx/rjM7VcWlJD/E2iqKTgnrjVov29uZL3ZyoKyMS7Na9ZnhdDiU7+EbrQsL
-	71EgWI+oH2pKv7k5SXueZ1hO/btVzDs=
+	bh=ZMWkNXGb4uRWkmzx2z4SAVEgWBaOlNb/x8aKLsCCEts=;
+	b=7WpEHN56hWdNo54qHVZHscCNf7DNz5oq5YyA78oOe5eWtQi96h1NqDWGnUYsekW3DQ+Qjp
+	KP4BeHXqGm4ifYe4O4zHuky0MUK9AdKKUsU3SIfstqWrSrf0IljFtetwTPaqbboIeXXgG3
+	9Y9Sb7/Lg5LVeDfmRpHh99zLTF80CCk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 114CC61863;
-	Wed, 22 Apr 2026 18:50:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699E5C19425;
-	Wed, 22 Apr 2026 18:50:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C00861863;
+	Wed, 22 Apr 2026 18:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F09C19425;
+	Wed, 22 Apr 2026 18:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776883807;
-	bh=PRcbGxXVn+TWgBm3sJFNt59RhR0CP0MQw5XEPliYcQo=;
+	s=k20201202; t=1776884009;
+	bh=U87fwgfTqFjGiF46tna1zdVOQGR1zoZjFWnweyTJR9w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jAIEDdzGdEaHrvn5Xd7STmKTqm2T2XldfKWf5vr0ekqMtSHo7neA4GPJOpSpAKReh
-	 AVfcLMYPCX3nOo0zR5EXdg1pzyLrIWBnabYXWq3JWmbjCENqcfEYf7r8a4aV6Tm08D
-	 NvDc/HPGXvpY71v1PFiDinN5YTj5l3MecrA6ECCgNmUv4Buj/v/1G4laqTeiuhP59B
-	 WXUgLoMux/zvVz+cg+87dFOgivzib+43+gFcQ6NsGZrZqccbs6i4nZn85v1GrCA8em
-	 Jg9oUKp+p6iv7RIYmUK3oP6XvMH4Bk/5ijGblcim242hF1pOGxXPlMUqmbUMMqA6vV
-	 Heg5sYvMCi5Hg==
-Message-ID: <fc80afb9-6e97-481f-8136-d684ff3690a7@kernel.org>
-Date: Wed, 22 Apr 2026 20:50:00 +0200
+	b=gwyj0THXKUdy3H44NX9JOdYHEuS6oKYDicb8ibWRSEhm2QFkXXBQmuY73naxBVXzh
+	 ZMLtsipa6EuMXndPGtanXm4c/6oUg1AAB/biwri480BwAs4d8IcPvMGJ/gkyg2e5E1
+	 v0u9w6BJktmtP8w6ZAy4ps2kOR1i9MXkPV8naJCcH6BTvkAkrswbQ7JMJ6L8PkvK5G
+	 Mr5P7wVRUUUBbxbywmX26/QySDh6P1ynvwb+Cz9OZw0mnDWr9RtGqv/OnKnFHst6t6
+	 HvuvcE9e1FqZKpv5SEG+09xBDD2czYln9zZmhwCV1O2sYJkMEMDALRPDoUseveVIe2
+	 9dT4SiIRTcttw==
+Message-ID: <168f3ddd-de39-4896-a334-23a6fb8959e8@kernel.org>
+Date: Wed, 22 Apr 2026 20:53:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/5] mm/sparse-vmemmap: Pass @pgmap argument to memory
- deactivation paths
+Subject: Re: [PATCH v4 3/5] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
+ optimization
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
@@ -83,7 +83,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
  aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 References: <20260422081420.4009847-1-songmuchun@bytedance.com>
- <20260422081420.4009847-3-songmuchun@bytedance.com>
+ <20260422081420.4009847-4-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260422081420.4009847-3-songmuchun@bytedance.com>
+In-Reply-To: <20260422081420.4009847-4-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A17ECC0009
-X-Stat-Signature: 9edrob46jjnpsotmaxrwfqn4cjyt4sgx
+X-Rspamd-Queue-Id: E7537A0011
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8ekz1emqho596puyshjhuieqx5s1fdpa
 X-Rspam-User: 
-X-HE-Tag: 1776883808-719223
-X-HE-Meta: U2FsdGVkX1/VQ5nmK4xoVZRFqUBoBKQKvIR+IfQ47t5u+HGxf03CRKChkfay2coYyq/LYh9O/zHfFkTuUn5uQa9l4M3eGCGoXjwAMfeX4dl55WV7hVwYq6I7qoVH20SgFEQ0snCY9CMNg3dq5nBCoPOD2J655x95MsgtsS4VCLjSizjYgvuWIe9wu94kZDvYOvo5l+IvgDncSbbGOrMoeumSlubLH4eoknW5eiOUGWRLVj1YXRY4PrdoFsl0AjjMxkwVpL3Hk0rwlNP+YBujVIkd5gSeWAT5KqVphYNFbB22eNdbF+yxX3RPPnY/zSDKjeBmX/LRs56Rve4G5vOpqrhQaggR7JeLkXcJOziz1Dk2UrvL3qvq4IkAnNuGa9pF4UiaYwkllu2PaX+uiNGLVeaN8Ff9oFDIIuIaawAg4vuqiC4N9zDgGoCBQpAM1wAyvQv2dO1T3q8qi53PIEqTzh6UXr6BIqZkXWf44d+SHUXF8m5BqKhoU0Oxfxb2TMw7Z0FspoIRYSNIbnU4iaL7LbDlfDXunCnrNokf/tU4g9X3XL2CRVay30ex32atuiT1XNY7V5x9jQ3cHav/VAWkd7UYFOYTxs8bC2+fE98YdZnbCnUSIn4buD37e4nbn2a5dwNVGsS2qQZjTXj//QF0TsuurG6q2attR3Z4LW5nO7W8uR4ZtwTdaY1d858Y41u5e2FGeFfplXHympUW8BBQDQM0A/vyQEo7wljlyvqQAkkSaoUU/PgsFH3MmL38chQY4SJhFvzxrsjc4J17e/iQf2e7AMdf9v5JAWG8ffeLJw0aZ5PFVllYnC+EXXqhQKR0Ru6C4xhn8fDsY2iHmgwpUynaM3bo4Xolj/T+fX8i+1hZMfH4ajTbDMgET7oZwFD7J2rdpS5+U3dcnAAKr4xI1DwNprhXMNSyhdQNu4GEbJ0KOrT5G6Rr8xj3AVt5xQdBpDF33FKHPGmdWalzADV
- +foDVtsY
- U9SV2CJjMXqhkxZh7yciSGPpiuagWEhmhfXBxuSbmDVzKHFJBZ3hcKPbHSXCH+Qs3PYxCFea+087G7NgtcN4xPvigZEwhbc8wR0ylb0g8f5NNaKOpJyTK0JLivpxtOW8TTsMdsnV5ajkxd0LbKWEbBDUquPDTpf92Hl8wxuDeF4n5SB52VE4o8qp/SK7JjBH9pPHsS9V6H1pzlcjTRF07Tfgt+PvfySG4C2mvf3pgwglwNLWywUBpNpD40aBgkWLxd6m+u4YNo0g31CRPZAGXqtkO8hI74IvcV31gvxD3i+varu+xxau61bY8Gg==
+X-HE-Tag: 1776884009-402024
+X-HE-Meta: U2FsdGVkX18PKrpz/UMundhxoYvXpHvGXB/v5nKWYzgdKyrz/Gp8cnA+otwxTCpaB9NIEUSEcrQOviVDQTJEPmwBLtOQVI0LZ9MQYTYl0a+6yDj7UqcTklOmAXTRjqDN89GW/SSR8u2c07XS4pMJx5U18f4CqCX192JH5gv3ZoTIzSeEbqLdlwfz81uwujlnjhMhk8ZKlACbyIcTKHXHjDgcobnA74f6ayalehFkOeTRmr+BS+KAAv4DhoxM+g4KKgEqEKnREwEzvo+LuZa0bgOJopCnlGxmP2We5/UmnxA3RW5p8cSlUl2kKRezTB63RgEQaBEqXPqEAJlCrw2j/Ine5tUP+EFFxcZcjpJdfE24iWXo77bNAfJydryKiJOdU7M3oHUu38C1/WMU9oDQNVA7tZOWj2WIrhfeBHL3wZS2ncyfyrW9/tLLw5lSNaY4wZALpCDSmSmcg5FdjthpVBWTpBfphwPaQvVai67cOu6l9qrvjnkXWGO2kYucj+XpCfSmI1cFezjTf/YGOMS+IbH/b+DQg75ro2WeLECdidV21P6+t2qxOKxjt7R7JxY2gL4oiUUv7K9JIl0hXPMmP40nAn4GPJpcU0A5EAgRehAWBivNbHRFxy1AgrBh6z0M9PlMNy8Ti0juuHTGRdjfe0nWvLRxTtQMQjjemzz4AI11hwiT5Wg2FtVxBy46ua5Mb4KPk3HHMis1lf6s3lkPqbyHNte1kT1rMNKs6BIAoKUyF5DnXPOWuFHAItmjYyCsd9XEq1FdsoLnq+uG+QhfJ+uJ1w52dJCDLJL+b6CXNEpDQ4z1QcM1eFWj6WkQZswdSpfBjpLvzfdeQFIAYhY0zmz+tVEbTtXLHhvAgQyUm4lauT9WmmXawnGnigxF9cWzE8ObIOz3b8tkFjr/kOiBgSgkIDGzTt/Xw7Wma1ZpOt1ieA4K6SzJNrPm0rikPsLKvioUhgYHzRryYQv/R5w
+ d/ASY6P4
+ w6XUYNJS6F0ShWNDpvsq01bJx9nhBNnHlLmRCE5iSEt11kI5cJqcbnurt2h7lbTYRwTnQ5D55dqvB2K16qzRaGacPhsq8Z1MIm2o2l3r9MFP/8Hvn2O0lprl/IOmiPekzL6ouT0y6oDtz9QhdF1Ze0FvBoKaVjJJkc01GU99KhR8iO8Oaa+YzT2KrD5E1wk8el4mSnUY3xVJxO+NSVHozoPB2eHzGUDL7lVkIT6ZYI5NjxuoEVwECu7SXfp/96u7YjhMcfGvssUxFh/lcMkAI0Y2pKj201TuRv82EzIGg6NCF9djDiTq6+bouhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,73 +149,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/22/26 10:14, Muchun Song wrote:
-> Currently, the memory hot-remove call chain -- arch_remove_memory(),
-> __remove_pages(), sparse_remove_section() and section_deactivate() --
-> does not carry the struct dev_pagemap pointer. This prevents the lower
-> levels from knowing whether the section was originally populated with
-> vmemmap optimizations (e.g., DAX with vmemmap optimization enabled).
+> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
+> counter in /proc/vmstat is incorrect. The current code always accounts
+> for the full, non-optimized vmemmap size, but vmemmap optimization
+> reduces the actual number of vmemmap pages by reusing tail pages. This
+> causes the system to overcount vmemmap usage, leading to inaccurate
+> page statistics in /proc/vmstat.
 > 
-> Without this information, we cannot call vmemmap_can_optimize() to
-> determine if the vmemmap pages were optimized. As a result, the vmemmap
-> page accounting during teardown will mistakenly assume a non-optimized
-> allocation, leading to incorrect memmap statistics.
+> Fix this by introducing section_vmemmap_pages(), which returns the exact
+> vmemmap page count for a given pfn range based on whether optimization
+> is in effect.
 > 
-> To lay the groundwork for fixing the vmemmap page accounting, we need
-> to pass the @pgmap pointer down to the deactivation location. Plumb the
-> @pgmap argument through the APIs of arch_remove_memory(), __remove_pages()
-> and sparse_remove_section(), mirroring the corresponding *_activate()
-> paths.
-> 
+> Fixes: 15995a352474 ("mm: report per-page metadata information")
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-
-
-[...]
-
->  static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
-> -		struct vmem_altmap *altmap)
-> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
->  {
->  	unsigned long start = (unsigned long) pfn_to_page(pfn);
->  	unsigned long end = start + nr_pages * sizeof(struct page);
-> @@ -746,7 +746,7 @@ static int fill_subsection_map(unsigned long pfn, unsigned long nr_pages)
->   * usage map, but still need to free the vmemmap range.
->   */
->  static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
-> -		struct vmem_altmap *altmap)
-> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
->  {
->  	struct mem_section *ms = __pfn_to_section(pfn);
->  	bool section_is_early = early_section(ms);
-> @@ -784,7 +784,7 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
->  	 * section_activate() and pfn_valid() .
->  	 */
->  	if (!section_is_early)
-> -		depopulate_section_memmap(pfn, nr_pages, altmap);
-> +		depopulate_section_memmap(pfn, nr_pages, altmap, pgmap);
->  	else if (memmap)
->  		free_map_bootmem(memmap);
->  
-> @@ -828,7 +828,7 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
->  
->  	memmap = populate_section_memmap(pfn, nr_pages, nid, altmap, pgmap);
->  	if (!memmap) {
-> -		section_deactivate(pfn, nr_pages, altmap);
-> +		section_deactivate(pfn, nr_pages, altmap, pgmap);
->  		return ERR_PTR(-ENOMEM);
+> Acked-by: Oscar Salvador <osalvador@suse.de>
+> ---
+>  mm/sparse-vmemmap.c | 32 ++++++++++++++++++++++++++++----
+>  1 file changed, 28 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index c208187a4b00..fcc5e0eda9e7 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -652,6 +652,29 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
 >  	}
->  
-> @@ -889,13 +889,13 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
 >  }
 >  
->  void sparse_remove_section(unsigned long pfn, unsigned long nr_pages,
-> -			   struct vmem_altmap *altmap)
-> +			   struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+> +static int __meminit section_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
 
-While at it, could switch to two-tab indent here as well.
+I'd have called this "section_nr_vmemmap_pages"
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> +					   struct vmem_altmap *altmap,
+> +					   struct dev_pagemap *pgmap)
+
+Two-tab indent.
+
+> +{
+> +	unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
+> +	unsigned long pages_per_compound = 1L << order;
+
+1UL
+
+Both can be const.
+
+> +
+> +	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, min(pages_per_compound,
+> +							PAGES_PER_SECTION)));
+
+Maybe simply
+
+	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound));
+	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
+
+Which is more readable?
+
+
+> +	VM_WARN_ON_ONCE(pfn_to_section_nr(pfn) != pfn_to_section_nr(pfn + nr_pages - 1));
+> +
+> +	if (!vmemmap_can_optimize(altmap, pgmap))
+> +		return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
+> +
+> +	if (order < PFN_SECTION_SHIFT)
+> +		return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
+> +
+> +	if (IS_ALIGNED(pfn, pages_per_compound))
+> +		return VMEMMAP_RESERVE_NR;
+> +
+
+I'll have to trust you on these ones :)
+
+> +	return 0;
+> +}
 
 -- 
 Cheers,
