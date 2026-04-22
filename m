@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9ABBF94CB8
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 00:04:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38830F94CA2
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 00:13:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B17316B0005; Tue, 21 Apr 2026 20:04:24 -0400 (EDT)
+	id 6B77D6B0005; Tue, 21 Apr 2026 20:13:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC8FD6B0088; Tue, 21 Apr 2026 20:04:24 -0400 (EDT)
+	id 68F276B0088; Tue, 21 Apr 2026 20:13:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B7326B0089; Tue, 21 Apr 2026 20:04:24 -0400 (EDT)
+	id 5CC736B0089; Tue, 21 Apr 2026 20:13:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 867956B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 20:04:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3545E5EA51
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:04:24 +0000 (UTC)
-X-FDA: 84684244848.01.8CE4FDB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 67D1B18000F
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:04:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZBKpq4Ri;
-	spf=pass (imf06.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B1726B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 20:13:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15C4DE688C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:13:01 +0000 (UTC)
+X-FDA: 84684266562.20.6B286FD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6BEAE100016
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:12:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XbMcuJpX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776816262;
+	s=arc-20220608; t=1776816779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yyFXOnQJD+SE1aXmmpG0tFwtlVbifztAnMEy8oM1Qdk=;
-	b=mLnoI1kPvrHOTOOnMgdJeYpQRLGU1FvOnzQdnJJF1hZQKgcHfG4wkPPKbZZdchSpGSqPq7
-	xOWbCe2TFNHBHmnmkng42pR8/240oG9l8UsNDnF2VKKTh62EvFWnYxIz6gRq1+WViYP1qq
-	F+/wf/y8hxE8eXbv92E9Oc3xbJpSkbM=
+	bh=5lIupYyi8/UC4fLKV0VPuNnShMonTveGg9Q4SBniVJw=;
+	b=F9zwCyFotZPyFmAix7yRvhVY8t11t2qrYUYVomNmExDRBxur7rI5nhJMzmZIDMjcgY6Fex
+	kJiirfqsqS9heTpOOn0cLAuFqZokjrzCBKgbPQPXNOMUa6O0ZIRQ2xZn4tg9FWT8HtuOux
+	e3KU4WHBvMh/audxjz5fBtUsy1Uu7KY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZBKpq4Ri;
-	spf=pass (imf06.hostedemail.com: domain of dennis@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dennis@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776816262; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XbMcuJpX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776816779; a=rsa-sha256;
 	cv=none;
-	b=2MmTyYANjrSsW6U7OzqYVg/P/wahMBUM/T2C0tVrRK5Z1kEpc7OBFolANb4rJfZ8MoJblK
-	ogjGcfiKN0A9TZ924XS7gZ8TUOE2nfBA6fDvgrwsF6ZHCdMiAkJ3pWSXaBmNVVanf+kIJX
-	4e30L556YvEXKFKKzyhf+RLEn8iWXcE=
+	b=TN7goqGMfdJS9V9Y9+YWuUJeLf+ptqgGJRm4eab6145BDJJdWCKt1ugVcLBIlTieK2FuQ6
+	EBiUMK3PC8yyc5U2gncV2xDwGRUdEQfqxSL12TRSbJFpAMkSQ0g6Rvy0Gtxhdp6x/6RxzR
+	UwuGHbSSatXIFtwGdA2RM++vfxMOxXg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B3E44333A;
-	Wed, 22 Apr 2026 00:04:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0DBC2BCB0;
-	Wed, 22 Apr 2026 00:04:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F1F56001A;
+	Wed, 22 Apr 2026 00:12:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C33C2BCB0;
+	Wed, 22 Apr 2026 00:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776816261;
-	bh=9ekNMYG1ueA6DRKcP2+h190TCk2iD3f7GbOIq6R0Rx0=;
+	s=k20201202; t=1776816778;
+	bh=G+o7PWS0hDV5gt4XP8uuA8DpSUV7cX3QjnvzK1fc9eA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZBKpq4Ri8DnC2nEpT43E5G1QGKx9IwTmWUpLqLt1Zk0fbc9m0tAKHCVFd8Jlrj5Yl
-	 eR3lU25f8ufT9WVqbi/Xdap79sa7Crhoo0ghFk2EZ2JO22L6ml96mmYWu2WCHYBr1Z
-	 JM2Ya3lXweqpAlwVK2rs6xUd4B5umt3HO39yoSYTc0lJpKbVaBaKoXrg/3lYikt9Ih
-	 iW2VFh3M9Xs+bm2i5M4L6H64sSWCHVprbEO1ZZgJJTB0RT22npXjbezKHMlN5sMPLC
-	 uYcBh+udE9pu3Pbsi4uHRBN87wKn9u+I/WrkoogNx/YhpQ5mPTJXqb44JkHaqFJFjw
-	 unMzfm49Pel/g==
-Date: Tue, 21 Apr 2026 17:04:19 -0700
+	b=XbMcuJpX46z3bURXgChoSekGUf8tZwFqZu7PlxlXXBk+EBmlO2C91KVu+1RX3a5mo
+	 +/goL/S5o1X9GBboeF+FlijdHmirR+id1hs88XzGwfJsTKmXKxFOaAhwUIg3YmjsS3
+	 Eq7+YpR1m/Ea5E+CWFFBb75hsmwxqrj7I3vNJ3rZnroUIgnp/JIJzbPVloLloXQD1F
+	 VMN3VngqvPy1anVZ0DRPMJONyKc0dLaU4mfqIFnhKMtep6eoNTgvsrttznZZjcYlkq
+	 5Vgx9nl0dy5Rzrr3yeH1IzOgoz0hod+F6oRafKbjSxa1rysFwbCexQTBI/OgJAG6ic
+	 4cBJc3Q6wGcyw==
+Date: Tue, 21 Apr 2026 17:12:55 -0700
 From: Dennis Zhou <dennis@kernel.org>
 To: Joonwon Kang <joonwonkang@google.com>
-Cc: tj@kernel.org, cl@gentwo.org, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, dodam@google.com
-Subject: Re: [PATCH v3 3/3] percpu: Fix hint invariant breakage
-Message-ID: <aegQgyf3KuIZMK9x@palisades.local>
-References: <20260410174417.1450834-1-joonwonkang@google.com>
- <20260410174417.1450834-3-joonwonkang@google.com>
+Cc: akpm@linux-foundation.org, cl@gentwo.org, dodam@google.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org
+Subject: Re: [PATCH] percpu: Fix hint invariant breakage
+Message-ID: <aegSh_pKFkkG3gqh@palisades.local>
+References: <adfrXdWJeuqDLWFM@palisades.local>
+ <20260420123548.2116177-1-joonwonkang@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260410174417.1450834-3-joonwonkang@google.com>
-X-Stat-Signature: o757hf5rkxkiczw834fhjhdeosecj7ub
+In-Reply-To: <20260420123548.2116177-1-joonwonkang@google.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6BEAE100016
+X-Stat-Signature: 76mxqxuexcjrk57uxgyumm1kp3sbdc8e
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 67D1B18000F
-X-HE-Tag: 1776816262-243009
-X-HE-Meta: U2FsdGVkX1+iFIGqRqam+v7CRWXKI2YVLa/qkmU5k11w83sx+VfZgA5A8qrhpj5UoAQM6SBiZ695WZkkVOgAsynEXY6OCzbeM7e1ZTBk2sdqoUh+CZOB/fOmq954QV/bk+xkgZ+3TKc83Ug2gjaP+Q4NiRPfH21EiRFyrgrXhalMSsMjw0xXGNp+L0QqM3aAHh4bg36sH2APrnNDc4eb38JZcrXiliyO+0YDgyvThm4LxVWISRUSGSvWPfk91p0+dUrGB2ESeQs4GRIn3ngwDiBkJgtdn8XtiK668dPfOKO3f8GFdhwFbmfTZ5cbhvOrbuZiIEN/B4AeFw3cEsmY/jA2Erkg88SdX2SEhmB76ezQSus0CQG8KxfER8nIElHaqgY+flFZRu3T5G7JCDTU6naeK5eCVFuKZw0mv9+eY3NnqRveXAIrAEm6XH8gCCtqB/r6qZSK/wfcJgE70JxvqM8AkjH1Bg+2IT8OZUWuE6ikALvQ6bp31OOzCFYLjnq+J7bWO8wIPOxycNk468jhNDWKtknaPPI32II9gqrJ3zhMeK79oVFvaaUMxjnuFu0Z4ag6rEvlDgCzoPtJfTVKwvWWvcmJ9nUh/HV4qP6uEpFr1iV3X1kahwVo338U1K8XDQu5mV4tbJBNAcgdPxXPKbIIBd7TgYSc6/psZsHcRY6JqIZPJX0SrOJ50nq3yvrbHP0h9U1PLLw/dNVN2EdyNkeQjVPbBL42EEiNi1xkGoPVEQA+ghlk9Sgi2Ve34b2/onppfuNE7/H+MZ//k8lh4O/rJdaxcgBoflFpWMcBBl6mNpfUyh71cgJFeNeD430HP2O7h8l08RKG071TUhK/5B1cOM7lvdYMQhTR51wI7DO5weJ9eFkOWREcp2cQ0eOHzqPZXq4KInDfDJtAh1l32RgX8UxpUpJvUYURZmxHgq6mfnawXXbHoux4k8gcP51ph2tW89pEuTCwnD9scju
- lJbAm9aV
- /L5N6YLaPIqYyNqbDHp8aMxKneYaEEFwLddm1t36qOGjvABzH6g/YBBIAkXMso31CirQSoFkbvAeckZR0HfXV4Mxwt+nbdJ2HJ87bwF/osKesBURfxtr8rjgrtD5qwpULCgujwTR4SUolL1t7vt2Rvqhm8vdjkfXOW9uENlXqvH+mpFbVgN6dT8m+g74bTzGOXIS0sKrjdl4FCb7CjxSyKemiC0zoHn9CcVaDKi57O1CupFc=
+X-HE-Tag: 1776816779-303621
+X-HE-Meta: U2FsdGVkX18RTagul4NOnocMT0ffGwR+2F+qp6TpZ9WRPb4CTEQ4fUgJJQ8+XdSqgqSh0KzFGV33VXwlTo9BT28sCYsOoGYsPVxzcRg/oY0d0HsyDH4Xrnoh12T7xZp2F6woW0ErI3bG8OLZpZFOtsK5oFsCXRCj3fjIeMi+gtIKxc79iTlVuf5rYVH3WUXyGy2n+HI3yIAPj15SD8huuQ6rM7ltr0HlJwe070YVRjpzO3lpl1y0BAVQmxquc50kl0bqkKVlQe7Ov/kW64aewq8VZUB57D1diOzWUKxBnFAL9ArocWuHTAHbnNS/fxK2B8x4hVqRLMxabaJcU0AKWRyu90mLBUZZjIfkSjkck2IMebFC9xIuF1P2PQ1j/+u/wYsmmWVPoGMA2tq/TEmiD6q3G5fugmuYsu4OQ7IJaRhZjBp1B6Q0dHd4V7zdfPbjttoSw7TepadVRGTA3L17uoo7vsLliU9LZjxvqLY3CgneZP6MchQDXlGqcuUHqkZHyAvv+Z+JtWbmeRQDD8e5775wQpAU4VNFLQcxcr4zvf7YYPrBwswlSNlXlwRJt9cW7HdIiLGjBdVEzBNmxqk2dFuCVPDb11A4XU8hxlN0XslokmyopKe4QdN0epau4yLEUW695E7iGM87sDuG0WtMasI4d2AF8g8ByWP15NSXSpByTRGOufEmQn4wAtvn62Ga6/+x8sR1KXJKPeNik7TaD6Xxl4HIQYdPcG2Hh45cPoz1C1BS1b1nCJ4eMnf6r+vHKTFuA7muQbQS4IsogddhPT8eBSsAHVLcW654jKT8X7HOfhHCrXOfVtvZvNQj/pbjVpc8egJewEuT/dTbGeD+W70VIKTCJ3IlLIZovEyc1fgzLFYP6NlDpwSi5OkoRM157GHZhFZCqg61mnw2ErHgloZi0XIAfl/+Y9pAgBticucXjWgjAHx51boASvTYMPrqNl3nB492AZUnFTkkdYL
+ rmuSWHIM
+ FLLtdTXNgM9ju2jSTJJ7nj0D1v3Jo23z37vXAiVAWSraMViqeuh8lk0l6jxK6GwgYHq8rM8bh33NoICPaJV7vyL4UkiEXFMcb39VFnKkB/FSv9KZ1ZlVPZO3jkjx2cc1xVtMabUN1m2I83xRysrLzVCtIV8jFSrvmloACCJOzXgCIe7TNq44Tg7WIzN6ddFTgafk4DP5xQkuB+2xVa3UcDGnJ1W7ZKCFnsVlipOtyFzFdp3/nB7aoR3hcyEyxNM/V+A++
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,269 +91,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 05:44:17PM +0000, Joonwon Kang wrote:
-> The invariant "scan_hint_start > contig_hint_start if and only if
-> scan_hint == contig_hint" should be kept for hint management. However,
-> it could be broken in some cases:
+On Mon, Apr 20, 2026 at 12:35:48PM +0000, Joonwon Kang wrote:
+> > Hello,
+> > 
+> > Sorry for the delay, I've been a bit sick.
+> > 
+> > On Mon, Mar 23, 2026 at 02:05:14PM +0000, Joonwon Kang wrote:
+> > > > Hello,
+> > > > 
+> > > > On Fri, Mar 20, 2026 at 11:52:14AM +0000, Joonwon Kang wrote:
+> > > > > The invariant "scan_hint_start > contig_hint_start if and only if
+> > > > > scan_hint == contig_hint" should be kept for hint management. However,
+> > > > > it could be broken in some cases:
+> > > > > 
+> > > > 
+> > > > First I'd just like to apologize. I spent an hour yesterday trying to
+> > > > remember why the invariant exists and the reality is this code is more
+> > > > clever than it needs to be.
+> > > 
+> > > Thanks for taking time for this and sharing more context. While you are at
+> > > it, I have a fundamental question on the invariant. I had deliberation and
+> > > discussion on what benefits the invariant gets to the percpu allocator by
+> > > its existence. My understanding is that if we put contig_hint before
+> > > scan_hint when they are the same, it is more likely that contig_hint is
+> > > broken by a future allocation, which leads to a linear scan after the
+> > > scan_hint for hints update, although we could save scanning upto scan_hint
+> > > when contig_hint is not broken. On the other hand, if we put scan_hint
+> > > before contig_hint instead, it is more likely that scan_hint is broken
+> > > while keeping contig_hint, which does not lead to the linear scan for
+> > > hints update, although we could not save the scanning that could be saved
+> > > in the other case.
+> > > 
+> > > In other words, if contig_hint breaking allocations occur a lot in general
+> > > with the current invariant, the performance may more suffer than without
+> > > the invariant. I also think that there would be no strict reason of having
+> > > the invariant.
+> > > 
+> > 
+> > I think the original premise is that percpu memory is quite expensive, 1
+> > allocation costs nr_cpus * sizeof(allocation). So we do our best to bin
+> > pack at the cost of faster allocations. We could always just break the
+> > contig_hint but then over time we could cause more fragmentation.
+> > 
+> > The case that triggered this was netdev needing 8 byte objects with 16
+> > byte alignment [1].
+> > 
 > 
->   - if (new contig == contig_hint == scan_hint) && (contig_hint_start <
->     scan_hint_start < new contig start) && the new contig is to become a
->     new contig_hint due to its better alignment, then scan_hint should
->     be invalidated instead of keeping the old value.
-> 
->   - if (new contig == contig_hint > scan_hint) && (new contig start <
->     contig_hint_start) && the new contig is not to become a new
->     contig_hint, then scan_hint should be not updated to the new contig.
-> 
-> This commit mainly fixes this invariant breakage and includes more:
-> 
->   - Refactor the percpu block update code to make it more visible on
->     what to consider, e.g. when the new contig overlaps with the old
->     contig_hint or scan_hint.
+> Thank you for sharing the points about the bin packing. Although I did not
+> fully understand the relationship between breakage of the contig_hint and the
+> fragmentation trend, it may be helpful to reference the case you referred to.
+> I guess you may have missed the link for the reference [1]? Could you help to
+> provide the link, if you intended to leave it?
 > 
 
-Could you please split this up between the fixing the scan_hint issues
-and then refactoring. That way this commit isn't doing too much.
+Ah sorry that's my bad.
 
->   - Merge the new contig with other hints when it overlaps with them and
->     treat it as a whole free region instead of a separate small region.
+My intention behind the scan_hint wasn't to use the scan_hint as an
+earlier contig_hint, but to prevent us from scanning if we need to break
+the contig_hint.
+
+[1] https://lore.kernel.org/netdev/CANn89iKb_vW+LA-91RV=zuAqbNycPFUYW54w_S=KZ3HdcWPw6Q@mail.gmail.com/
+
+> > > So, could you clarify the necessity of the invariant? If there is no must
+> > > reason, then I could post another spin-off patch to remove the invariant
+> > > at all so that we could simplify the code and experiment the result. How
+> > > do you think?
+> > > 
+> > 
+> > I can't really recall the exact reasoning for the invariant, but it was
+> > probably along the lines of wanting to not lose information if possible.
+> > 
+> > Say an earlier area becomes free that is the same size as the
+> > contig_hint but with better alignment, we ant to use that as the
+> > contig_hint but then we either have to lose the scan_hint or keep it
+> > with the invariant. Given the premise above, I believe we want to
+> > continue bin packing, I think the general idea of scanning next time
+> > around isn't the worst thing.
+> > 
+> > Sadly because it's already there, and has worked for quite some time,
+> > it's kind of on us today to provide data / reasoning to delete it. I'd
+> > wager that some upcoming work is going to change how percpu gives out
+> > objects either through some sort of slab caching that we can revisit
+> > this more in that context.
+> > 
 > 
->   - Fix the invariant breakage and also optimizes scan_hint further.
->     Some of the optimization cases when no overlap occurs are:
+> Understood and thanks for your detailed explanation. I will keep the invariant
+> as-is unless I have a clear data point to reverse it. I sent the new patch set
+> v3 recently with this in mind. Please help to review it ;)
 > 
->     - if (new contig > contig_hint > scan_hint) && (scan_hint_start < new
->       contig start < contig_hint_start), then keep scan_hint instead of
->       invalidating it.
-> 
->     - if (new contig > contig_hint == scan_hint) && (contig_hint_start <
->       new contig start < scan_hint_start), then update scan_hint to the
->       old contig_hint instead of invalidating it.
-> 
->     - if (new contig == contig_hint > scan_hint) && (new contig start <
->       contig_hint_start) && the new contig is to become a new contig_hint
->       due to its better alignment, then update scan_hint to the old
->       contig_hint instead of invalidating or keeping it.
-> 
-> Signed-off-by: Joonwon Kang <joonwonkang@google.com>
-> ---
-> v2 -> v3: Merge the new contig with other hints when it overlaps with
->   them and treat it as a whole free region instead of a separate small
->   region.
-> 
-> v1 -> v2: Consider cases where the new contig overlaps with the existing
->   contig_hint or scan_hint.
-> 
->  mm/percpu.c | 130 ++++++++++++++++++++++++++++++++++++----------------
->  1 file changed, 90 insertions(+), 40 deletions(-)
-> 
-> diff --git a/mm/percpu.c b/mm/percpu.c
-> index f16533ed4a49..d5b0b4863ffe 100644
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -629,7 +629,27 @@ static inline bool pcpu_region_overlap(int a, int b, int x, int y)
->   */
->  static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  {
-> -	int contig = end - start;
-> +	int contig;
-> +	int scan_hint_cand_1 = 0;
-> +	int scan_hint_cand_1_start = 0;
-> +	int scan_hint_cand_2 = 0;
-> +	int scan_hint_cand_2_start = 0;
 
-I'm not really a fan of this cand_1 and cand_2. Re-reading all this
-code. I think I really should have introduced something like:
-
-struct pcpu_region {
-    int start;
-    int size;
-}
-
-It's really easy to mix contig_hint and contig_hint_start. If you don't
-mind, it would be ideal if we could introduce it but it might be a
-non-trivial amount of refactor.
-
-I'd say the shortest path forward would be to do just to fix the
-scan_hint issues.
-
-> +	bool overlap_with_contig_hint = pcpu_region_overlap(start, end,
-> +		block->contig_hint_start,
-> +		block->contig_hint_start + block->contig_hint);
-> +	bool overlap_with_scan_hint = pcpu_region_overlap(start, end,
-> +		block->scan_hint_start,
-> +		block->scan_hint_start + block->scan_hint);
-> +
-
-This one isn't used again so we should probably just inline it.
-
-> +	if (block->contig_hint && overlap_with_contig_hint) {
-> +		start = min(start, block->contig_hint_start);
-> +		end = max(end, block->contig_hint_start + block->contig_hint);
-> +	}
-> +	if (block->scan_hint && overlap_with_scan_hint) {
-> +		start = min(start, block->scan_hint_start);
-> +		end = max(end, block->scan_hint_start + block->scan_hint);
-> +	}
-> +	contig = end - start;
->  
->  	block->first_free = min(block->first_free, start);
->  	if (start == 0)
-> @@ -646,56 +666,86 @@ static void pcpu_block_update(struct pcpu_block_md *block, int start, int end)
->  	}
->  
->  	if (contig > block->contig_hint) {
-> -		/* promote the old contig_hint to be the new scan_hint */
-> -		if (start > block->contig_hint_start) {
-> -			if (block->contig_hint > block->scan_hint) {
-> -				block->scan_hint_start =
-> -					block->contig_hint_start;
-> -				block->scan_hint = block->contig_hint;
-> -			} else if (start < block->scan_hint_start) {
-> -				/*
-> -				 * The old contig_hint == scan_hint.  But, the
-> -				 * new contig is larger so hold the invariant
-> -				 * scan_hint_start < contig_hint_start.
-> -				 */
-> -				block->scan_hint = 0;
-> -			}
-> -		} else {
-> -			block->scan_hint = 0;
-> +		if (!overlap_with_contig_hint) {
-> +			scan_hint_cand_1 = block->contig_hint;
-> +			scan_hint_cand_1_start = block->contig_hint_start;
->  		}
-> -		block->contig_hint_start = start;
-> +
->  		block->contig_hint = contig;
-> +		block->contig_hint_start = start;
->  	} else if (contig == block->contig_hint) {
->  		if (block->contig_hint_start &&
->  		    (!start ||
->  		     __ffs(start) > __ffs(block->contig_hint_start))) {
-> -			/* start has a better alignment so use it */
-> +			scan_hint_cand_1 = block->contig_hint;
-> +			scan_hint_cand_1_start = block->contig_hint_start;
-> +
-> +			/* Start has a better alignment so use it. */
->  			block->contig_hint_start = start;
-> -			if (start < block->scan_hint_start &&
-> -			    block->contig_hint > block->scan_hint)
-> -				block->scan_hint = 0;
-> -		} else if (start > block->scan_hint_start ||
-> -			   block->contig_hint > block->scan_hint) {
-> -			/*
-> -			 * Knowing contig == contig_hint, update the scan_hint
-> -			 * if it is farther than or larger than the current
-> -			 * scan_hint.
-> -			 */
-> -			block->scan_hint_start = start;
-> -			block->scan_hint = contig;
-> +		} else {
-> +			if (!overlap_with_contig_hint) {
-> +				scan_hint_cand_1 = contig;
-> +				scan_hint_cand_1_start = start;
-> +			}
->  		}
->  	} else {
->  		/*
-> -		 * The region is smaller than the contig_hint.  So only update
-> -		 * the scan_hint if it is larger than or equal and farther than
-> -		 * the current scan_hint.
-> +		 * Consider only when the new contig is larger than or equal to
-> +		 * the old scan hint.
->  		 */
-> -		if ((start < block->contig_hint_start &&
-> -		     (contig > block->scan_hint ||
-> -		      (contig == block->scan_hint &&
-> -		       start > block->scan_hint_start)))) {
-> -			block->scan_hint_start = start;
-> -			block->scan_hint = contig;
-> +		if (contig >= block->scan_hint) {
-> +			scan_hint_cand_1 = contig;
-> +			scan_hint_cand_1_start = start;
-> +		}
-> +	}
-> +
-> +	if (block->scan_hint &&
-> +	    !pcpu_region_overlap(start, end, block->scan_hint_start,
-> +				 block->scan_hint_start + block->scan_hint)) {
-> +		scan_hint_cand_2 = block->scan_hint;
-> +		scan_hint_cand_2_start = block->scan_hint_start;
-> +	}
-> +
-> +	/* Make scan_hint_cand_1 be the best candidate for the new scan hint. */
-> +	if ((scan_hint_cand_2 > scan_hint_cand_1) ||
-> +	    (scan_hint_cand_2 == scan_hint_cand_1 &&
-> +	     scan_hint_cand_2_start > scan_hint_cand_1_start)) {
-> +		int tmp_hint = scan_hint_cand_1;
-> +		int tmp_hint_start = scan_hint_cand_1_start;
-> +
-> +		scan_hint_cand_1 = scan_hint_cand_2;
-> +		scan_hint_cand_1_start = scan_hint_cand_2_start;
-> +		scan_hint_cand_2 = tmp_hint;
-> +		scan_hint_cand_2_start = tmp_hint_start;
-> +	}
-> +
-> +	/*
-> +	 * At this point, it is guaranteed that none of the scan hint
-> +	 * candidates overlaps with the new contig hint while they may overlap
-> +	 * with the old scan hint, and that the first candidate is larger in
-> +	 * size or, it equal, farther than the second one.
-> +	 */
-> +
-> +	if (block->contig_hint > scan_hint_cand_1) {
-> +		if (scan_hint_cand_1_start < block->contig_hint_start) {
-> +			block->scan_hint = scan_hint_cand_1;
-> +			block->scan_hint_start = scan_hint_cand_1_start;
-> +		} else if (scan_hint_cand_2_start < block->contig_hint_start) {
-> +			block->scan_hint = scan_hint_cand_2;
-> +			block->scan_hint_start = scan_hint_cand_2_start;
-> +		} else {
-> +			block->scan_hint = 0;
-> +		}
-> +	} else if (block->contig_hint == scan_hint_cand_1) {
-> +		if (scan_hint_cand_1_start > block->contig_hint_start) {
-> +			block->scan_hint = scan_hint_cand_1;
-> +			block->scan_hint_start = scan_hint_cand_1_start;
-> +		} else if (scan_hint_cand_2 < block->contig_hint &&
-> +			   scan_hint_cand_2_start < scan_hint_cand_1_start) {
-> +			block->scan_hint = scan_hint_cand_2;
-> +			block->scan_hint_start = scan_hint_cand_2_start;
-> +		} else {
-> +			block->scan_hint = 0;
->  		}
-
-
-This seems easier to invert and do something like this:
-
-Probably something like:
-
-bool overlap_contig_hint = pcpu_region_overlap(new_region, scan_hint);
-bool overlap_scan_hint = pcpu_region_overlap(new_region, scan_hint);
-
-if (overlap_scan_hint) {
-    scan_hint = 0;
-}
-
-if (overlap_contig_hint) {
-    contig_hint = new_region;
-    return;
-}
-
-// Now the new_region is distinct from the contig_hint and then can do
-// the standard logic here.
-
-if (new_region > contig_hint) { }
-else if (new_region == contig_hint) {}
-else {}
-
-What do you think? I think makes cand_1 and cand_2 not necessary.
-
->  	}
->  }
-> -- 
-> 2.53.0.1213.gd9a14994de-goog
-> 
+Sorry for the delay. Provided a bit of feedback just now. Let me know if
+you want to discuss more about what we want v4 to look like before
+spending too much time.
 
 Thanks,
 Dennis
