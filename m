@@ -4,86 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38830F94CA2
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 00:13:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA4EFF94CB8
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 00:26:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B77D6B0005; Tue, 21 Apr 2026 20:13:01 -0400 (EDT)
+	id 348D16B0005; Tue, 21 Apr 2026 20:26:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68F276B0088; Tue, 21 Apr 2026 20:13:01 -0400 (EDT)
+	id 2F95D6B0088; Tue, 21 Apr 2026 20:26:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CC736B0089; Tue, 21 Apr 2026 20:13:01 -0400 (EDT)
+	id 20F6A6B0089; Tue, 21 Apr 2026 20:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B1726B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 20:13:01 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15C4DE688C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:13:01 +0000 (UTC)
-X-FDA: 84684266562.20.6B286FD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FD056B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 20:26:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABCFFE6783
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:26:25 +0000 (UTC)
+X-FDA: 84684300330.25.54D72CC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6BEAE100016
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:12:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XbMcuJpX;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 190F7A0006
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:26:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AfWfAYVV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776816779;
+	s=arc-20220608; t=1776817584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5lIupYyi8/UC4fLKV0VPuNnShMonTveGg9Q4SBniVJw=;
-	b=F9zwCyFotZPyFmAix7yRvhVY8t11t2qrYUYVomNmExDRBxur7rI5nhJMzmZIDMjcgY6Fex
-	kJiirfqsqS9heTpOOn0cLAuFqZokjrzCBKgbPQPXNOMUa6O0ZIRQ2xZn4tg9FWT8HtuOux
-	e3KU4WHBvMh/audxjz5fBtUsy1Uu7KY=
+	bh=VXgVxfD/6AUQQ5mE9Z24VsUOMQFaFyEdWv4n29/wpGA=;
+	b=GP4oT3BM33z6pnN9q6vOr35pkZ0K4rNKeut2Ybps+XnUWVOqB2qUHnK7CVwhgeuyIlQRf9
+	VJjDvZX80in2YydCmmruth96P8QlIJU14JjV/9VBXHS/EXmRHWDHbWJNo2ybs4AkJGKdYP
+	hgL08AqxvbB4aBe3bNY1XWkoySmufrU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XbMcuJpX;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AfWfAYVV;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of dennis@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dennis@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776816779; a=rsa-sha256;
+	spf=pass (imf25.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776817584; a=rsa-sha256;
 	cv=none;
-	b=TN7goqGMfdJS9V9Y9+YWuUJeLf+ptqgGJRm4eab6145BDJJdWCKt1ugVcLBIlTieK2FuQ6
-	EBiUMK3PC8yyc5U2gncV2xDwGRUdEQfqxSL12TRSbJFpAMkSQ0g6Rvy0Gtxhdp6x/6RxzR
-	UwuGHbSSatXIFtwGdA2RM++vfxMOxXg=
+	b=HjLR4k10pe0cbW3HR0jkg+/8zMMvvOUOAWaf22juKWRDxf6AnxquPIWvwHPSuePEwX9Ymo
+	S6PjzfWjsE42kX2rwC4TCAaD8+jVozbCM0KWpxMscSCsYqAxe8qgzPj+FVV1b4EKN+Aeux
+	s+vbB9F7Le+zM9nYPyOiKstyG6c4VXk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F1F56001A;
-	Wed, 22 Apr 2026 00:12:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C33C2BCB0;
-	Wed, 22 Apr 2026 00:12:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F7176001A;
+	Wed, 22 Apr 2026 00:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DE9C2BCB0;
+	Wed, 22 Apr 2026 00:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776816778;
-	bh=G+o7PWS0hDV5gt4XP8uuA8DpSUV7cX3QjnvzK1fc9eA=;
+	s=k20201202; t=1776817583;
+	bh=jqBAEzAIAkAs5KK0c26HBfL5HhvElj7G2+7Aq7pEawY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XbMcuJpX46z3bURXgChoSekGUf8tZwFqZu7PlxlXXBk+EBmlO2C91KVu+1RX3a5mo
-	 +/goL/S5o1X9GBboeF+FlijdHmirR+id1hs88XzGwfJsTKmXKxFOaAhwUIg3YmjsS3
-	 Eq7+YpR1m/Ea5E+CWFFBb75hsmwxqrj7I3vNJ3rZnroUIgnp/JIJzbPVloLloXQD1F
-	 VMN3VngqvPy1anVZ0DRPMJONyKc0dLaU4mfqIFnhKMtep6eoNTgvsrttznZZjcYlkq
-	 5Vgx9nl0dy5Rzrr3yeH1IzOgoz0hod+F6oRafKbjSxa1rysFwbCexQTBI/OgJAG6ic
-	 4cBJc3Q6wGcyw==
-Date: Tue, 21 Apr 2026 17:12:55 -0700
-From: Dennis Zhou <dennis@kernel.org>
-To: Joonwon Kang <joonwonkang@google.com>
-Cc: akpm@linux-foundation.org, cl@gentwo.org, dodam@google.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org
-Subject: Re: [PATCH] percpu: Fix hint invariant breakage
-Message-ID: <aegSh_pKFkkG3gqh@palisades.local>
-References: <adfrXdWJeuqDLWFM@palisades.local>
- <20260420123548.2116177-1-joonwonkang@google.com>
+	b=AfWfAYVV308wNpkitQfHp/i3Vv5ItGGWY2XqHA/y9idxCYm3dPzbSK+1q5SSNH6QK
+	 DsOwfy745VLjMiMxHcKCq6uTftlyufiRX44wgFujFSOigdKnuHKMyIYbWJW0dnCZry
+	 gJJe6OSYz8y79D39pR0T8X0/y2Zqr0TkD8jmzC2m9WHa2+j0bD/tngildZbAJ4zUlK
+	 eM2Hg0B3R5Uch2WC4xDPUI0ZVJS+OwSVimBYSur8g0v7HEu7AFTJMa8N7db6oAY7EC
+	 0T/KpkGxdNkaUTu2q/8Lam6bV19HUx2qf8ZYxfd1xFvzAcrzqClGURW5mWc/w1v7Oq
+	 DJ/3mdtpqSKhw==
+Date: Wed, 22 Apr 2026 00:26:19 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: kasong@tencent.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com, cgroups@vger.kernel.org, 
+	chengming.zhou@linux.dev, chrisl@kernel.org, corbet@lwn.net, david@kernel.org, 
+	dev.jain@arm.com, gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, 
+	jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, lenb@kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
+	mhocko@suse.com, muchun.song@linux.dev, npache@redhat.com, pavel@kernel.org, 
+	peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de, rafael@kernel.org, 
+	rakie.kim@sk.com, roman.gushchin@linux.dev, rppt@kernel.org, ryan.roberts@arm.com, 
+	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, tglx@kernel.org, 
+	vbabka@suse.cz, weixugc@google.com, ying.huang@linux.alibaba.com, 
+	yosry.ahmed@linux.dev, yuanchu@google.com, zhengqi.arch@bytedance.com, ziy@nvidia.com, 
+	kernel-team@meta.com, riel@surriel.com
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+Message-ID: <aegUoOiUbjUAH5aT@google.com>
+References: <20260320192735.748051-1-nphamcs@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260420123548.2116177-1-joonwonkang@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6BEAE100016
-X-Stat-Signature: 76mxqxuexcjrk57uxgyumm1kp3sbdc8e
+In-Reply-To: <20260320192735.748051-1-nphamcs@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1776816779-303621
-X-HE-Meta: U2FsdGVkX18RTagul4NOnocMT0ffGwR+2F+qp6TpZ9WRPb4CTEQ4fUgJJQ8+XdSqgqSh0KzFGV33VXwlTo9BT28sCYsOoGYsPVxzcRg/oY0d0HsyDH4Xrnoh12T7xZp2F6woW0ErI3bG8OLZpZFOtsK5oFsCXRCj3fjIeMi+gtIKxc79iTlVuf5rYVH3WUXyGy2n+HI3yIAPj15SD8huuQ6rM7ltr0HlJwe070YVRjpzO3lpl1y0BAVQmxquc50kl0bqkKVlQe7Ov/kW64aewq8VZUB57D1diOzWUKxBnFAL9ArocWuHTAHbnNS/fxK2B8x4hVqRLMxabaJcU0AKWRyu90mLBUZZjIfkSjkck2IMebFC9xIuF1P2PQ1j/+u/wYsmmWVPoGMA2tq/TEmiD6q3G5fugmuYsu4OQ7IJaRhZjBp1B6Q0dHd4V7zdfPbjttoSw7TepadVRGTA3L17uoo7vsLliU9LZjxvqLY3CgneZP6MchQDXlGqcuUHqkZHyAvv+Z+JtWbmeRQDD8e5775wQpAU4VNFLQcxcr4zvf7YYPrBwswlSNlXlwRJt9cW7HdIiLGjBdVEzBNmxqk2dFuCVPDb11A4XU8hxlN0XslokmyopKe4QdN0epau4yLEUW695E7iGM87sDuG0WtMasI4d2AF8g8ByWP15NSXSpByTRGOufEmQn4wAtvn62Ga6/+x8sR1KXJKPeNik7TaD6Xxl4HIQYdPcG2Hh45cPoz1C1BS1b1nCJ4eMnf6r+vHKTFuA7muQbQS4IsogddhPT8eBSsAHVLcW654jKT8X7HOfhHCrXOfVtvZvNQj/pbjVpc8egJewEuT/dTbGeD+W70VIKTCJ3IlLIZovEyc1fgzLFYP6NlDpwSi5OkoRM157GHZhFZCqg61mnw2ErHgloZi0XIAfl/+Y9pAgBticucXjWgjAHx51boASvTYMPrqNl3nB492AZUnFTkkdYL
- rmuSWHIM
- FLLtdTXNgM9ju2jSTJJ7nj0D1v3Jo23z37vXAiVAWSraMViqeuh8lk0l6jxK6GwgYHq8rM8bh33NoICPaJV7vyL4UkiEXFMcb39VFnKkB/FSv9KZ1ZlVPZO3jkjx2cc1xVtMabUN1m2I83xRysrLzVCtIV8jFSrvmloACCJOzXgCIe7TNq44Tg7WIzN6ddFTgafk4DP5xQkuB+2xVa3UcDGnJ1W7ZKCFnsVlipOtyFzFdp3/nB7aoR3hcyEyxNM/V+A++
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 190F7A0006
+X-Stat-Signature: beggysxmx6j678f8s4adc5bmfjzhmana
+X-HE-Tag: 1776817583-936475
+X-HE-Meta: U2FsdGVkX19fWbBdvBEtMT3YKiL/bxpOIFGUgWfxWxgeCiHt0knAa08pX0AeFNJRA2xqFHQV3R6RXHyAt1K3ujdh2twJ5xB/z8ZK9nNal0n9Y8TvUfeeYT2jI++cdg4+moAhz83u8j2AmN/L74te6zMfXJwdXo1/OhxSvXbtbYXaEpA5Kxcv/ZAbSTf9MJ4WtXxDQQOu8S8+P47RK2v0xiCG/axe3Lj3eU2sf4NTM5YKa+Hdl8qF9ufK9XzjTEYFjkmmmW9UXcCO4lzQhtXcQGo9yS1DACstLmI1GFP1crvpKnmNMYlxYWSHD8AqP/GeqMPAG8L+FBkGmDYZWsP4ge9NY9lM2uOl0WS79tKoBTdy17y2sm5Yit4w6s3LTdERgz6rBv9A4u0dbS6YdS/0RKMScUz9vm1gborynczAR5QaaU4uaQjntu/tMEyETxZfG+//gOtyIOE24T1zu/ovWsdNey+5g3q7xVAHuCcXv7yPqRIJ8FDxbH3NjJyRFbSgBg2oVPmHh/E6rCmV0+Sx0BeK+0EXznWAHwSBtV5L7hqsXHKsj3nB7K02IaZAznG5H3ocQG38ZYJXxZ93djpC3A5LDdyq7FTkZEVyd5igamPzS6jm2nUwd3LIizMP9ceP/yR+ZBClj6XIbBtS6CQF+y8omS5Z0vkPNXaBVStUjmGLrX9OSyKI5Ax7KtBQO3TzFw9YqHv1OQyrzunjRQlhdeF96Q1LLjnPBIWbCA263CqPnXQv+plkTtWRQ4bpxDIb/F8SISL3HvXtTPng2pTNFOg8WOrGmUzZlxgF/OFS7308bYmAlsztYIkgJfmI7x4syp+Y1RXOBq2y8eBVHcf2n3LelRmxJhQL6sJzyfGC4/IUbxdznVXVh6kHXM728IwFP818+Y5MpWEU50OXoePdj8pwGm8OFyiEwXFWxP0Fsju3t6RI65b9DsYlakm/zLCr4yvsNNHk+WauZ66k9FO
+ mTjozwMv
+ GwW4A1ryhDmvJ77eBT9R3rzAKC6CTgWbqNCxrQofbIHlq/pmuDPN6Mws9/W/VVjjEA91KoCCpKNB9L+l6lp51O7wF9ufu0b/q5eJiQrQrv2W5JIMax0Ss8p9W6ytYLkyPik0fHw7LKBd2FWx2AhKcM9L3SeD+lOTXQ/9iUqjnFqAVMubvExKuCt4pVhoEn4HcWhXRs8VWfxvf7+E9nZuQ1ljyiLKcX3ZHOBWuUhDolfTQQksF9r7Ak5eSbToABUxc4WYxwlzamSG8QIL/8o+SInOcvsNY9hxdpBAaBoUW4m++uxnsPOpSo0dHUvaRFDBENmSAegHVu+g17UUvp6YMwgVSr8Z9HBMl55cdejkfnVYBDiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,99 +103,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Apr 20, 2026 at 12:35:48PM +0000, Joonwon Kang wrote:
-> > Hello,
-> > 
-> > Sorry for the delay, I've been a bit sick.
-> > 
-> > On Mon, Mar 23, 2026 at 02:05:14PM +0000, Joonwon Kang wrote:
-> > > > Hello,
-> > > > 
-> > > > On Fri, Mar 20, 2026 at 11:52:14AM +0000, Joonwon Kang wrote:
-> > > > > The invariant "scan_hint_start > contig_hint_start if and only if
-> > > > > scan_hint == contig_hint" should be kept for hint management. However,
-> > > > > it could be broken in some cases:
-> > > > > 
-> > > > 
-> > > > First I'd just like to apologize. I spent an hour yesterday trying to
-> > > > remember why the invariant exists and the reality is this code is more
-> > > > clever than it needs to be.
-> > > 
-> > > Thanks for taking time for this and sharing more context. While you are at
-> > > it, I have a fundamental question on the invariant. I had deliberation and
-> > > discussion on what benefits the invariant gets to the percpu allocator by
-> > > its existence. My understanding is that if we put contig_hint before
-> > > scan_hint when they are the same, it is more likely that contig_hint is
-> > > broken by a future allocation, which leads to a linear scan after the
-> > > scan_hint for hints update, although we could save scanning upto scan_hint
-> > > when contig_hint is not broken. On the other hand, if we put scan_hint
-> > > before contig_hint instead, it is more likely that scan_hint is broken
-> > > while keeping contig_hint, which does not lead to the linear scan for
-> > > hints update, although we could not save the scanning that could be saved
-> > > in the other case.
-> > > 
-> > > In other words, if contig_hint breaking allocations occur a lot in general
-> > > with the current invariant, the performance may more suffer than without
-> > > the invariant. I also think that there would be no strict reason of having
-> > > the invariant.
-> > > 
-> > 
-> > I think the original premise is that percpu memory is quite expensive, 1
-> > allocation costs nr_cpus * sizeof(allocation). So we do our best to bin
-> > pack at the cost of faster allocations. We could always just break the
-> > contig_hint but then over time we could cause more fragmentation.
-> > 
-> > The case that triggered this was netdev needing 8 byte objects with 16
-> > byte alignment [1].
-> > 
+On Fri, Mar 20, 2026 at 12:27:14PM -0700, Nhat Pham wrote:
 > 
-> Thank you for sharing the points about the bin packing. Although I did not
-> fully understand the relationship between breakage of the contig_hint and the
-> fragmentation trend, it may be helpful to reference the case you referred to.
-> I guess you may have missed the link for the reference [1]? Could you help to
-> provide the link, if you intended to leave it?
+> This patch series is based on 6.19. There are a couple more
+> swap-related changes in mainline that I would need to coordinate
+> with, but I still want to send this out as an update for the
+> regressions reported by Kairui Song in [15]. It's probably easier
+> to just build this thing rather than dig through that series of
+> emails to get the fix patch :)
 > 
-
-Ah sorry that's my bad.
-
-My intention behind the scan_hint wasn't to use the scan_hint as an
-earlier contig_hint, but to prevent us from scanning if we need to break
-the contig_hint.
-
-[1] https://lore.kernel.org/netdev/CANn89iKb_vW+LA-91RV=zuAqbNycPFUYW54w_S=KZ3HdcWPw6Q@mail.gmail.com/
-
-> > > So, could you clarify the necessity of the invariant? If there is no must
-> > > reason, then I could post another spin-off patch to remove the invariant
-> > > at all so that we could simplify the code and experiment the result. How
-> > > do you think?
-> > > 
-> > 
-> > I can't really recall the exact reasoning for the invariant, but it was
-> > probably along the lines of wanting to not lose information if possible.
-> > 
-> > Say an earlier area becomes free that is the same size as the
-> > contig_hint but with better alignment, we ant to use that as the
-> > contig_hint but then we either have to lose the scan_hint or keep it
-> > with the invariant. Given the premise above, I believe we want to
-> > continue bin packing, I think the general idea of scanning next time
-> > around isn't the worst thing.
-> > 
-> > Sadly because it's already there, and has worked for quite some time,
-> > it's kind of on us today to provide data / reasoning to delete it. I'd
-> > wager that some upcoming work is going to change how percpu gives out
-> > objects either through some sort of slab caching that we can revisit
-> > this more in that context.
-> > 
+> Changelog:
+> * v4 -> v5:
+>     * Fix a deadlock in memcg1_swapout (reported by syzbot [16]).
+>     * Replace VM_WARN_ON(!spin_is_locked()) with lockdep_assert_held(),
+>       and use guard(rcu) in vswap_cpu_dead
+>       (reported by Peter Zijlstra [17]).
+> * v3 -> v4:
+>     * Fix poor swap free batching behavior to alleviate a regression
+>       (reported by Kairui Song).
+>     * Fix assorted kernel build errors reported by kernel test robots
+>       in the case of CONFIG_SWAP=n.
+> * RFC v2 -> v3:
+>     * Implement a cluster-based allocation algorithm for virtual swap
+>       slots, inspired by Kairui Song and Chris Li's implementation, as
+>       well as Johannes Weiner's suggestions. This eliminates the lock
+> 	  contention issues on the virtual swap layer.
+>     * Re-use swap table for the reverse mapping.
+>     * Remove CONFIG_VIRTUAL_SWAP.
+>     * Reducing the size of the swap descriptor from 48 bytes to 24
+>       bytes, i.e another 50% reduction in memory overhead from v2.
+>     * Remove swap cache and zswap tree and use the swap descriptor
+>       for this.
+>     * Remove zeromap, and replace the swap_map bytemap with 2 bitmaps
+>       (one for allocated slots, and one for bad slots).
+>     * Rebase on top of 6.19 (7d0a66e4bb9081d75c82ec4957c50034cb0ea449)
+> 	* Update cover letter to include new benchmark results and discussion
+> 	  on overhead in various cases.
+> * RFC v1 -> RFC v2:
+>     * Use a single atomic type (swap_refs) for reference counting
+>       purpose. This brings the size of the swap descriptor from 64 B
+>       down to 48 B (25% reduction). Suggested by Yosry Ahmed.
+>     * Zeromap bitmap is removed in the virtual swap implementation.
+>       This saves one bit per physical swapfile slot.
+>     * Rearrange the patches and the code change to make things more
+>       reviewable. Suggested by Johannes Weiner.
+>     * Update the cover letter a bit.
 > 
-> Understood and thanks for your detailed explanation. I will keep the invariant
-> as-is unless I have a clear data point to reverse it. I sent the new patch set
-> v3 recently with this in mind. Please help to review it ;)
-> 
+> This patch series implements the virtual swap space idea, based on Yosry's
+> proposals at LSFMMBPF 2023 (see [1], [2], [3]), as well as valuable
+> inputs from Johannes Weiner. The same idea (with different
+> implementation details) has been floated by Rik van Riel since at least
+> 2011 (see [8]).
 
-Sorry for the delay. Provided a bit of feedback just now. Let me know if
-you want to discuss more about what we want v4 to look like before
-spending too much time.
+Unfortuantely, I haven't been able to keep up with virtual swap and swap
+table development, as my time is mostly being spent elsewhere these
+days. I do have a question tho, which might have already been answered
+or is too naive/stupid -- so apologies in advance.
 
-Thanks,
-Dennis
+Given the recent advancements in the swap table and that most metadata
+and the swap cache are already being pulled into it, is it possible to
+use the swap table in the virtual swap layer instead of the xarray?
+
+Basically pull the swap table one layer higher, and have it point to
+either a zswap entry or a physical swap slot (or others in the future)?
+If my understanding is correct, we kinda get the best of both worlds and
+reuse the integration already done by the swap table with the swap
+cache, as well as the lock paritioning.
+
+In this world, the clusters would be in the virtual swap space, and we'd
+create the clusters on-demand as needed.
+
+Does this even work or make the least amount of sense (I guess the
+question is for both Nhat and Kairui)?
 
