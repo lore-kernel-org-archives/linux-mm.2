@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C78F94CA2
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 02:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52499F94CBB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 02:50:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AACE6B0088; Tue, 21 Apr 2026 22:49:21 -0400 (EDT)
+	id BC36E6B0088; Tue, 21 Apr 2026 22:50:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3820B6B0089; Tue, 21 Apr 2026 22:49:21 -0400 (EDT)
+	id B9E2D6B0089; Tue, 21 Apr 2026 22:50:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BEA16B008A; Tue, 21 Apr 2026 22:49:21 -0400 (EDT)
+	id AD7BB6B008A; Tue, 21 Apr 2026 22:50:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C4F86B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 22:49:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A13AFE5374
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:49:20 +0000 (UTC)
-X-FDA: 84684660480.13.66B1A18
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7D438140002
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:49:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Xz2ZZ71U;
-	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D2BD6B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 22:50:58 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 66C30E65F1
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:50:58 +0000 (UTC)
+X-FDA: 84684664596.11.B2673FA
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0B9F81A0003
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:50:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="cPd7jLi/";
+	spf=pass (imf19.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776826158;
+	s=arc-20220608; t=1776826256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JzDqbIKbIFSBf7sqhcVwocNSInW3q3vKEWkmrJICE7w=;
-	b=KwbgMEP9PWL8FpLIZB8fQX4jdxVL+YEesrYI5qk5I8ZsjZtwovDqDIBOBZ+wtTmst4iatR
-	AlY+a2Y6m2H8Tw1mY8cSD6/j73oIyjnTObGhIJazmmtNNXEMxAj0jO5aCP6TqdhAmB2syx
-	35Z0QBpWg/RLiWHzwKnFKJIQJ2Mwcf4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776826158; a=rsa-sha256;
-	cv=none;
-	b=R6F1MwL/v361he+k79LpSBPgW/dNm/Tfgnj9QqrHt1tQ21jNZ0zasnMj8BinYUDroowUO8
-	RLI3Trn/eXyu23tVFqKvbFANBiAmAdDHWd+agM9AInb9O+Hkw4B0honYDZIkIG/dxRyHfR
-	ZMpWHsiaj2zg/wdZ3uGYdcMiswskOGo=
+	bh=zYYrLeSCtlIwWe1v/taaHs6p4N+WULPdk6AZYoEa9eY=;
+	b=LvhlJsIu2jvcBcttBLhwiTy8Dnfu12Jp7ZePvsG7Fiqjp8DcDjBUxXR4/QrEgszT74QP/w
+	oTmWjER0Rk57oeCTRKX49CAIN6zRq2sOffRjE4SUAAhXRW/vb2QDpxRYZckyO79truB2yt
+	qxlXoyD9Wwclb1qGwyXsdfGwedlsHPY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Xz2ZZ71U;
-	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="cPd7jLi/";
+	spf=pass (imf19.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776826256; a=rsa-sha256;
+	cv=none;
+	b=pAfkIS5XSUvikAwW+qpy7m85uCGnRaZKPlGzPivABUy1kWT6WBp3IAEjSicrv0p5X/tJBZ
+	l3kCl4iUwB+RCgUnq3MJDbZImgp5KvR3hX6LuLeP0wWbiBO20P/huZyLBb0XVXwfwpRJrS
+	I+SrGbZVKR0KJdVgTWbn9BnONFbM7WE=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=JzDqbIKbIFSBf7sqhcVwocNSInW3q3vKEWkmrJICE7w=;
-	b=Xz2ZZ71UomY77wBHhzvPxFmV8ZCOpnBnRoyr71FEAt5K+U2wQIngcGVNvpJOP9BwQyVYSYBTw
-	hY9WMDAE2jgjvJRwdaNOvqvR5+bVlJYFK46LtfBbd5zwNeeyu/a9CwWJZqpiGX5d6bgqppOa8Cr
-	4YRlZpqmV/9SMPnVB3qYkTw=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4g0k6G6kc3zpSwY;
-	Wed, 22 Apr 2026 10:42:46 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 231CC40569;
-	Wed, 22 Apr 2026 10:49:11 +0800 (CST)
+	bh=zYYrLeSCtlIwWe1v/taaHs6p4N+WULPdk6AZYoEa9eY=;
+	b=cPd7jLi/JI+BNpF2FcOInnMUj1bgR/zf+GCcJWH44tkf6D+2aN1oVmPTMGYR405U4jIbech9J
+	vH4GSa+JpRx6QadZ0YXtyQpGzeolZ8NYvyrvI8MrkJpI2rTJpeH5R2Qd8yMUpxf6E1tvXlhASWd
+	U4JChYSShKYEgYYZWPmqogg=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4g0k8F1cwHzRhQx;
+	Wed, 22 Apr 2026 10:44:29 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id A358C40573;
+	Wed, 22 Apr 2026 10:50:51 +0800 (CST)
 Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 22 Apr 2026 10:49:10 +0800
+ 15.2.1544.11; Wed, 22 Apr 2026 10:50:40 +0800
 Received: from [10.173.124.160] (10.173.124.160) by
  kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 22 Apr 2026 10:49:09 +0800
-Subject: Re: [PATCH v4 0/3] mm/memory-failure: add panic option for
- unrecoverable pages
+ 15.2.1544.11; Wed, 22 Apr 2026 10:50:39 +0800
+Subject: Re: [PATCH v4 1/3] mm/memory-failure: report MF_MSG_KERNEL for
+ reserved pages
 To: Breno Leitao <leitao@debian.org>
 CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
 	<linux-doc@vger.kernel.org>, <kernel-team@meta.com>, Naoya Horiguchi
@@ -82,27 +82,28 @@ CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>
 References: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
+ <20260415-ecc_panic-v4-1-2d0277f8f601@debian.org>
 From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <299a6968-1813-39f3-de28-3fcec6f3d182@huawei.com>
-Date: Wed, 22 Apr 2026 10:49:09 +0800
+Message-ID: <b4be1fc4-d793-cac8-7de1-dfe279c8ff8f@huawei.com>
+Date: Wed, 22 Apr 2026 10:50:39 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
+In-Reply-To: <20260415-ecc_panic-v4-1-2d0277f8f601@debian.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.173.124.160]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: 7D438140002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: eyy35x5dxcxzetb46bcmj73o58py396w
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0B9F81A0003
+X-Stat-Signature: 9tf71ybtkt98zdfsqx3j8kpwa1j66y9s
 X-Rspam-User: 
-X-HE-Tag: 1776826157-882076
-X-HE-Meta: U2FsdGVkX18qbSALBs+iuG84lIBMesHVjt70eT3e12Gxo6+w1BMRJ5MlY+Uk3h5YuS0ceJKdLcRmlcN8h74mTgi68RcwQDIa2UdAnth3yoaXu+fQ1z/CzpkPMG+wh63QbcTPILgBwN8fVTF6N84RTx0KcFdffY33OvI1WjjfNzGG6yitp8XxhvlG1PubORS9V/dOkrpW25+Ad6jCFGvJqRbfTHm2jRgGYDjts1t7nP3F6eUg1ikeaOldXpHhmRJwk+6RAZ5qVa0U6boNweiRNcarg8h4KStZrKfzrHcvgIUQ8nH3QtWEa7mcdEcerFYR8GRMWhF3pML4SrW379xXBXJ5kYxKphULb2yrt+dnnShv/hNxHdyJxL9N91kwF7iqvieSDiynTgoh+KrXX/3eVMkVT7b+3FGf2tpKdzECE3TATd/ctwjHax8S/l4Wb3WQK77J23DimlJM/fCc4RGL/TOpaqM7/ItkwLRhrYrnnEZD2/zwOxD9SqQkuRCNZLxVZqDqNVOHhMkJhs2/uLaPZt1MXTyYCb0NrNAlzjFY+SwpaHxnRDAlxLkGq3Fw1BqzabOPD3FCWMjGz+QHkgPiKD1tq5bFnM7nSlRpOcxFKjn6PqhLZEhlmDN2dy4mKA4cPccBlog+F/kG8cUI7J0vbeMmFgdCSHRnADplD7HWhfGoxds+fQtzcoKutQzlR5g2RBqd4FkA5TlCm3mCxQqw4x7LFFCzqMb8beBK7ZTJynmvpEoi6Aex6L6uYKRgWfZmt1tIL2wpYXcwGeeJdOVSLmx/nxwdBZPESTteFDTivrK98n4hMlgouBfAci7yRsJbO1yX67IPbgX7AaonmrDvMuBG+R3R5k7FFF1NIv1x+JlnTSDLRj/UbkMVMymzWgtHiMpEquv9X5vPuMocP9J3xmBsC9LqUBE7uqMfZcDh5YWGOcT6EdmvxN6EVroeYwIlURxOsQC0oIOfIojTJoA
- SMp4nY8E
- iW5PsHZ+YmIf6pLt5dLUUvygjqmNGWXJySJAhHYu6S05oAQN+hxz0mMDqp52kYwrfAnanpp78j2uTZao5jQeVXlR9qTyqVe1dlCJEozmqAVsLnRlCbSHUF98s1dSOSr8nJ3TKwmW8lcmK1lpmryBdi+IQ+WNFVPLqDoY6sLxqIHqXCqnfjKv1w4vaEsAZg+KzBJ2ikDlE1u0LIHZ3XZRLgnS4+W0YHHvxKEsCCIGTLxFr2Sl4FpuowD7GDsxMXQDex3I1gKBHTViW+81qHbac3hGsJFP75kYfp2lQfxwv3UUXFFyvzXFM+h1F4xH+shBwdZjHimJ5Evsc95M+oFPm/dDaO1s9QguvXGkhlbLYLPIf9O5M8b8C0WPC6cqrHhB/Gchd2aAgnGDeOvCcUzh1TU3SeXN4hKel4rMmq+6aeq1noaA=
+X-HE-Tag: 1776826255-147061
+X-HE-Meta: U2FsdGVkX1+8OEV0pEnv132B+CU+GxdvGi7OAPzdXT5JMx9sqdOECrPqSm75F731fyFEXY1uQufqtKAvlPRxupZxmYmS+ghNw9UW/DLAaPBcrVNS8W+tDk6MqY7LXVVb/nz5C3aJ0y1Kv33v8zkEoC46ppxNw7/dv3GawD8Vr4u0NjnFRp6cAyvdU578f/s7GGVjsW24zDiQH+rnMPSLtg+Lokq51QyoomnKvRO1v1byLd4EceJe/gMFsRGh2jTLdgggJJgsKdHGFWlvgS23qPYmq832UZ0BBAfkcJg0bTpFPsb3QUvyko7J4KdX6kCL6aXgVVh4ARBm+GGseJMZIWuwxfbN4C9btkzR8jkzploQkD8ydyXTj5+vq7oA7qJUnwprLhnqaCTitKV43/tYX3Pid4ESD5ZSPy57vY8ifVsmexe2rUcxzUTlsZq+lgqql2laIR3+2V8khaShWpd3aHfiIdoWNhUdpkxFmQ8tOO5zhKgpyFC1Zasp6ny4aD7nyl++8zbJ5hhO+ODILgw9dLicbIIpSw4DoGpNVzEZFXW6ejur/WlU4++haCe8UyFBplm3cOEMIcp+9aEeMDoHjkB0Oe/tWkoXm9LzwwDtZUXLMagbOe211Kp4mqwA5ad3bw701+tysyVlbtnpNO7+SMGPW/Zqqra19B4XicIC2K+wAlkCGai5CttTDICVHs1NbQFlOFUnlLZCfD3y8jwOLJLpGslYL6XtFmu4xJgIUP6cYwQdr1yw8PSffe4f6gE1iZFwBQMsPlPbqjG7+TY5Owai1i7zmFYNJuKX3tIIdeo8RZCAAFQWxvIvd06arR/bQ/Ecoqs/35i8BYWQY04Eq7ti7yvTovl8uvi3FNFqS80vPsnnKE9jEkuJnv/Psow01CTdQAXFSbD0tlh6lf7YdPUGTmQHXNqKlEjd6gEdSdyotPMI5gESJ0RYTqes3jSAPVnGIrxdGg3sujqHjUx
+ uKq1HyiP
+ 62uaCfy5JvXDbsn2YkIh4r0EA1MjbZLCgKplwUHFOTXaTc56MtXB8RCVhr/iTYP56Yu53Aq7Qq51b/qxZJ3L1rLstdTlVdUjOrnIq72KUpdTJ2NNPuPa5nhnsBwcW8Toc+bqMD8BCawCY/w5ZXLJ/mnnZfvo+xhOwiHExwVT7Oihq12Ox46ZFyJX6VkA7812O8M/BXVZjThygvXAYkByOluDPDpIuID2lL7rpNBkgjG13TFhLC0NYV5X5S04arrMkBgKHM20m0kPnO2/3s71sJ91PuD002uJnrSVrlePsWyHyD+CuneuRujHq2evjLBkFvezDlNRHgcz61B/oyjDe/1AMxhM7DwqbGC256/eN9d3RH0XKAaYfkmO+c+jQdE2WrOxrw4Teez6OLvVVaQ+sNWIyEOqfKQ4eooYDJwjyCrM8GOLGHdpB7CtJgaUkCrZLE2H9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,54 +111,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/4/15 20:54, Breno Leitao wrote:
-> When the memory failure handler encounters an in-use kernel page that it
-> cannot recover (slab, page tables, kernel stacks, vmalloc, etc.), it
-> currently logs the error as "Ignored" and continues operation.
-> 
-> This leaves corrupted data accessible to the kernel, which will inevitably
-> cause either silent data corruption or a delayed crash when the poisoned memory
-> is next accessed.
-> 
-> This is a common problem on large fleets. We frequently observe multi-bit ECC
-> errors hitting kernel slab pages, where memory_failure() fails to recover them
-> and the system crashes later at an unrelated code path, making root cause
-> analysis unnecessarily difficult.
-> 
-> Here is one specific example from production on an arm64 server: a multi-bit
-> ECC error hit a dentry cache slab page, memory_failure() failed to recover it
-> (slab pages are not supported by the hwpoison recovery mechanism), and 67
-> seconds later d_lookup() accessed the poisoned cache line causing
-> a synchronous external abort:
-> 
->     [88690.479680] [Hardware Error]: error_type: 3, multi-bit ECC
->     [88690.498473] Memory failure: 0x40272d: unhandlable page.
->     [88690.498619] Memory failure: 0x40272d: recovery action for
->                    get hwpoison page: Ignored
->     ...
->     [88757.847126] Internal error: synchronous external abort:
->                    0000000096000410 [#1] SMP
->     [88758.061075] pc : d_lookup+0x5c/0x220
-> 
-> This series adds a new sysctl vm.panic_on_unrecoverable_memory_failure
-> (default 0) that, when enabled, panics immediately on unrecoverable
-> memory failures. This provides a clean crash dump at the time of the
-> error, which is far more useful for diagnosis than a random crash later
-> at an unrelated code path.
-> 
-> This also categorizes reserved pages as MF_MSG_KERNEL, and panics on
-> unknown page types (MF_MSG_UNKNOWN).
-> 
-> Note that dynamically allocated kernel memory (SLAB/SLUB, vmalloc,
-> kernel stacks, page tables) shares the MF_MSG_GET_HWPOISON return path
-> with transient refcount races, so it is intentionally excluded from the
-> panic conditions to avoid false positives.
+On 2026/4/15 20:55, Breno Leitao wrote:
+> When get_hwpoison_page() returns a negative value, distinguish
+> reserved pages from other failure cases by reporting MF_MSG_KERNEL
+> instead of MF_MSG_GET_HWPOISON. Reserved pages belong to the kernel
+> and should be classified accordingly for proper handling.
 > 
 > Signed-off-by: Breno Leitao <leitao@debian.org>
 
-It might be helpful to add some information from [1].
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
 
-Thanks for your work.
-
-[1] https://lore.kernel.org/all/aeHy3-vQTQYJlGw5@gmail.com/
+Thanks.
+.
 
