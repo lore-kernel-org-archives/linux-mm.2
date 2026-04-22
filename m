@@ -4,143 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A6F2F9B60B
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 10:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B17F9B60F
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 10:32:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 684AC6B009F; Wed, 22 Apr 2026 06:28:42 -0400 (EDT)
+	id B6CC06B00A5; Wed, 22 Apr 2026 06:32:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65C5D6B00A3; Wed, 22 Apr 2026 06:28:42 -0400 (EDT)
+	id AF6E26B00A6; Wed, 22 Apr 2026 06:32:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5723D6B00A4; Wed, 22 Apr 2026 06:28:42 -0400 (EDT)
+	id A11E46B00A7; Wed, 22 Apr 2026 06:32:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 453266B00A3
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:28:42 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D00DACA018
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:28:41 +0000 (UTC)
-X-FDA: 84685818042.24.7763846
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012008.outbound.protection.outlook.com [52.101.43.8])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C695E8000C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:28:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=R94DCCTY;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 52.101.43.8 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776853719;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D0496B00A5
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:32:27 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3BB89BE2FB
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:32:27 +0000 (UTC)
+X-FDA: 84685827534.05.94412AF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7582D40002
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:32:25 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776853945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=I8kVcZBUmmhNj1enoE2dDwI+jR2Ywq/12lCmvMaFYJs=;
-	b=fMP3KrhrEYH15b0y3gc7oV3fz7F9b9V9lO3bLJ7wIUZAxGl7wnFCK/2aBuL5osgwrSjnzS
-	ltyqzaHEtLunfDhm/qXyhpdxRa6tCojmDnSkPnmJBqa+IooiXMOp/ArdCYIPCz/kONyAtT
-	SwXq1XNpmId3XYDGtIXcuLU8Wu9FIi8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776853719; a=rsa-sha256;
-	cv=pass;
-	b=e5+j2XdIf6cw6qHRQPg2KT+3hlC4ZcRXXkHf6QuJHwZ/z4rBtUgvzB3E2y+s4VlumDBBBv
-	lIKZiXV9nHW0iJEXH3CK0HecNM1sM4hzPURLr/5N4uKGICtwjH0v3qEvTNYncSb03upIad
-	fNGJbeLJowws7osBBn12eQ7Ti+XMRWE=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=R94DCCTY;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 52.101.43.8 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LlgHjLPQ+sWXGlGLys80FitOmirgXBCcehtRA92v9v2dJDkuEx7QDCv2wfNN6eZc8p+XGS/3Z+bGBhI8tHIkBiOwUm0/I/snRFl9XJMRO3iG0EwEy4qfuj/H+gxoI2F2lc+gNgLGAopKMlFM512OD699XkspTFWTzvqrjLl8XAQ8CQn8vuGm3HWSd7aWzdGRjVfa3DQHaDoJwNd+aC/k6jkKNZ5qsjs+DUmXFBHh+PsJuNq7qzr9PxfU+Y1R7uzdgNwtZlLGmfIoQAmh20I5grnZqsyjCVXrgo/IARbtsS6qMA0yzNSvZ4cURm3AGcVjrgezsY6UcuCsXfY0TzjMyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I8kVcZBUmmhNj1enoE2dDwI+jR2Ywq/12lCmvMaFYJs=;
- b=HOPOnnS0oYcDHlfgwnoQZ476adocHPXPzAVLeuLnt8ZKzk9kJ8ADajhD6ifpDRCHzq1jj3FXHNQCa4Jxr9J40HKM7nG8EhUQX7evjVnaoXkVJkAKpcGXLRqSmPohyVtcygUnQoewgRiBKo78XzpIIC54O6k5GHl6O2Zx9nr5pXLFFRzazdluQ8W0VutLJRuVBV6XJHr3jkxiNgYlNoJH5OG6KziRvNhDHFRiVTAsXAdmXzjGSOaT6wClsg+dBrR3sy8A1m7GSrDkrBxpRxhcA/5HEt5zop7zTVFrdjd0m8IpOQLRFHO5PSYpAEUoT7CSPCjyAJ4v1oEcorn2mj5X2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I8kVcZBUmmhNj1enoE2dDwI+jR2Ywq/12lCmvMaFYJs=;
- b=R94DCCTYWQSLPXI1JfghZP9IqXPXoe0g57ftR11NzvaB7X3KcN+TVNs+K17RVjSAJg7HuxY9FHDHDcEbfeiyGuoxmLdjUJMjaM+K4p3OQGEIwxnHwYb0roYX8pL3hAJR/O3IkCv2O0LZBG+8u8lnhguTaZIdrToSeOylGzTW5YY=
-Received: from IA1P220CA0001.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:461::15)
- by BY5PR12MB4257.namprd12.prod.outlook.com (2603:10b6:a03:20f::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Wed, 22 Apr
- 2026 10:28:33 +0000
-Received: from BL02EPF0001A100.namprd03.prod.outlook.com
- (2603:10b6:208:461:cafe::78) by IA1P220CA0001.outlook.office365.com
- (2603:10b6:208:461::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9791.48 via Frontend Transport; Wed,
- 22 Apr 2026 10:28:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A100.mail.protection.outlook.com (10.167.242.107) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Wed, 22 Apr 2026 10:28:32 +0000
-Received: from kenya-2193host.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 22 Apr
- 2026 05:28:28 -0500
-From: Hrushikesh Salunke <hsalunke@amd.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <ljs@kernel.org>,
-	<Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <jackmanb@google.com>,
-	<hannes@cmpxchg.org>, <ziy@nvidia.com>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <rkodsara@amd.com>,
-	<bharata@amd.com>, <ankur.a.arora@oracle.com>, <shivankg@amd.com>,
-	<hsalunke@amd.com>
-Subject: [PATCH v3] mm/page_alloc: replace kernel_init_pages() with batch page clearing
-Date: Wed, 22 Apr 2026 10:26:58 +0000
-Message-ID: <20260422102729.166599-1-hsalunke@amd.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EBLRoguYPTJkYc4j73JHc0CKxdjDeJCctv0xDRPaXgU=;
+	b=ik2dap9g5JRaCgbZEly46rAlTPH9HA1W0wqSYcjc+ao74YTszcqRox36l+nkCVX39ytDk6
+	N4uwJbt/ESGpsamr3xZjnfsFMTLI0s4HIpDc585rtlk9RgauTAtlVgXIV+F3bCZxIjTok3
+	dWaSgn4GaArGwFszMYMoo8LMdptz7l4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776853945; a=rsa-sha256;
+	cv=none;
+	b=QKLiYk3YYG8vmco5QBaj3QkbO47IFP3PlLZxiZi9SgKp6KuhxPqeeQVyOnhNSkW3f0URPH
+	3FWz3kgy7mMcD9giusg0QUdFdZsUUIkVjiY9dP2lFGLPJY80SlPlOXHEMxHL5AeydZqQKr
+	PURSoQ6w7gYp3UO+huudB/IkuFbXgQs=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of cmarinas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cmarinas@kernel.org;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=arm.com (policy=none)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7921540DA4;
+	Wed, 22 Apr 2026 10:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19ABEC19425;
+	Wed, 22 Apr 2026 10:32:20 +0000 (UTC)
+Date: Wed, 22 Apr 2026 11:32:18 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Brown <broonie@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge
+ zero folio with init_on_free
+Message-ID: <aeiivYFfC_EfGuFC@arm.com>
+References: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A100:EE_|BY5PR12MB4257:EE_
-X-MS-Office365-Filtering-Correlation-Id: 998ca2bc-9135-4d3d-2b14-08dea059e776
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|7416014|82310400026|1800799024|56012099003|18002099003|13003099007|921020;
-X-Microsoft-Antispam-Message-Info:
-	jQ5n5EipiBjIUudh3RWRoWZWqlx+1qgN3QTQNqQwZVM6EdOKLMPP1dlaqPH0wWF9Oh6fT80RETM8QfP8LWyZnCN13AMBEvo6d5zeOSSd1IPvCfIe5g3WhN81FVuzKyg3kOhx7EVeMBxcOif//tuQT2cclZMjPy7WJ/sf/Gu1bb2TLtsrC5J7RmS1FXjClrRW0c9WD4/+vC+XK0IjAzUtf4LrN9n/qH3Wom9ig7/ugZzdwtm7HZ7aG3aX4yysg0+v4JFC5AQDQZW6ZZxDAo7YB/FdVtHQ+6OKFN/2cGofNTDt2uLnkil7Cb2CPvjrw8DK/nUmFEd+vzpAv0FAW9V9PvUtV9sR8/wxGKh3LjU4kI/SpefrZUhB9FOXm4fUraK5mXqOAe8QLMtuCm0nUcW1T5eUtXAAKHdwiw2lnorvhEvsWfEaUAWVdimffQbF9qZqZh8QmnJHov2zd0pS/FbPpimQDq1xop9fh6u7P4LdXNwW6Fy0KwuJKUn0fbFmZrC75nPwNE4nyfqaVJpddcu/X0NI4HG1IN437o/ipA+vHCnJDvuBYgaUEWNjtHj2+TW8UmklV//jhYnXWo7dahaX+xavUu/a/mctKaoYZAzKLWItw4xoN/2kn74LEiByEWxRL/V5Cc0fOi8WmnrCmAfGahAp9pRTZdeWib/Yerd5pjAdroQVi+rQD2rl5+8MpeCeBS3d4l0/FN9GB/vAISh6ZpqQCizXDKov7uVRdOv87QnhbxOjzhTc78G7CNKCC69kNN+WsSbHZrVTI5djk4Fz5To8Mp/F8wO8ng/sxmKAjWFaDv+mzM6tP+gIym0sFsz21UKowESZV5VfwUkX8G+FPQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(82310400026)(1800799024)(56012099003)(18002099003)(13003099007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	h+51q+l5OUNfGcLc7HuGG8WaUr3ewecer/mwCv/yQLcuE5TIoEe33Ro6L5yHgJFCnyaCiMpJ2Ft3risgFuRuc+PB1sLYexhDId/+h1CrpNVYf299xQ8/fxzKUVuedTAXXaQ7Sa28hukqhS+rxCOh+rBMRBE2ylrW5CDhDkaW0cxYfysEtRvUZR1FJgsN3S+D/I8PgffDup82Iq3JwhRSh8Mzh+zlXcBO3waXnJxdqnXAzj83jsOkfLgXFkjME71cw6oLM7/YHj5EQDXJX0cDWFrpf4+jIu8RtRhl9OPyvLmDjAGyrZpBGW3VNW8iXbpgdgJ4TSsdDLt4cXD95bbEJ4n/WbUj/rTIKTAA5nrz8j9x2x+BOFoVkclIdx+m5VqzLrcXYIXcz3aE9JhdM3C23cfRnUGFE1JWXDBsbnLQxMaiaP5Aj06VxNgTnVTdwT9r
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2026 10:28:32.8571
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 998ca2bc-9135-4d3d-2b14-08dea059e776
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A100.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4257
-X-Stat-Signature: aqxj9fsfdiq3opy8xdz9f9uuxd8591ar
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
+X-Stat-Signature: jxt45n6gxdyreesya1ifebjnbu6enedb
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7582D40002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C695E8000C
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776853718-186885
-X-HE-Meta: U2FsdGVkX1/p4KjWM3sWCIJh756DS/ru2RCc0KPXyebCG4vePBXQZRg9ishZeZptTxJbzIEhbSlzwtNkVejyAEsVWMi7jv/SHU/IHkurFOA56fuKF+cMnXYZ80myymRbvRk9O7lvigxEbvswS7DMf9clW7shhInbu0oiS4z8EKIHyQuKrpDT7kV3nOUL6AqtRHYvySvBFhrwz5jIKU1djPU1fe70jpjd/BDoimGuFIWq2FVyZW4RI5rmrt/FJdakf3FfpEm976h+IlF29u55P0+lK5P1ATRaV8C/vDLaJ6VZi9b7J5EJu/bJumVWnArR7bFb49f5YzF74ShT3YTLB36+T2dq1/KtK04itj632fUPbLXAXGIpMxLaPFP8mScrmBNFnzkXm+1YLaEtJZ81ake/sjOGxJeUWMpg3Aoq+W+3y2mSBQa6gmelpS0IpbNpub5Gv0tINBw8NRmjlzNDbvBFQRRyWVlFqx6LreTKiypsLF2OVjxtNJDSenvDRLyVPOuk9WhYYcdyqlOckP0JnsMJrr04fUsOUWXO7FV0qwFyqj6RiMd+0LsMuQeehjFD2kLKGLMME49QH1c7cxplSTKk9GLs/SpfKaSR3v1crdXzCfTewcgwsRC+uFzvPXjSo69AGhey3oJE+OQBjfM0+Dyff/5qC/War9r9mGAOTVPp5tTMUEtspJhFNOCxELwWTN1+g7hbRqvPD0LU52GxLpQz5Rmu2lapfgB3z+jlnOqgVea1PgOfG5T+z4yXcbiOtRxhhzoDTFdkty9vjkAqnP7NRPtqHGYpaD8EPImRsxavbd639YBtWaSqdFA6nJBqKJ+bC/gUVWDipaA2iiKAT0DUICa57UUEVJfgCh17Buq/P72p0fk6ORlvuSF8Op4LpIkN0uNY2E9qkEApa2MuVMTdBZzMUTJN+JyKxlnrjblR1KHQhIOJfn/+zMpGZ5bdWXXv4q1n2aztVGrOaNG
- d8O188QS
- RCF0Ia4QuwAZCZ9BOQApWnGrIuEu027yC2ZxlYdXrBzCtZnyoZGxUpZIITEGfa7lFn3HDJlH3WlVyLJswBnG8FRR1YSGqWL0ixSodQ731vSqhY6dfNvmeHGsQuEF1xl0rOBojj7p+twKNz2wDqVfrEHads4osqpVhNvgcKYZtjvBsLf/9N3FQqbxrQdagzZoXLpzbNaDKtwIGvmJo5ZPLXmcO0DjG1GglK4mZQJZNC9Zbtw6uJYUNHOmi06itRtRMeEstovf2TSk/5l/K5DReeoMAyzuCmZRHQkhIqpomApdGqaWZ8blr/uMSFr1Fj7nhnNCnRC5UjOzRJzr2V6yL1/GVC7K6wH9k5Ag6LONZoJb6fuIq4OWAT2JTKmVrX/4gz5CPoch2RpOKeuu/mKolbq/4e2FeaPNXCkomq9R9Riy8EQi49Lgzdga9/4tr1W6grrlpw1eCe8rn49vyMWxD9TQ3hV1vFjc784PUWIZuNPGnG3cF+9rnjVCqPvNm+F9TDR6FX5axU6viN8iAIiEZyq9RrqR0MkNSXYBSuq11KdbSPjsrWzeYIH2joK883hnxQ+cokb5kQC/QUGEGJCC4RwcGJraRIlaFEB01zI0s6qwVdQiPXuSHTwqQxO77iiZavZq+S8FsdTd/JEGR31dZSTWI3znpdBoifsBQvk2wQkSDAKGvIT80P2n+6t8XtOzLp7Sy
+X-HE-Tag: 1776853945-460279
+X-HE-Meta: U2FsdGVkX1/BM1pzwEpV5DBv9KyCZ5UFGyoZ11Ts6fl3ag+8XE1si1ZBYbYFiq09yk192WJMbKw1ajCyB16ct6DXRrZOYERLq4cXJ2xwR7frffVXUjcxoFzgNkOaBMs1uhS1OENYUNESiugmA35q8g8ngC6gzhYsOdln43V/rO2PVXd+uq3af89XvUKtaC0/PHg9WVLbIm5WJkZpuF99fvfkk4p+vCG4ZAwyahTU8ObRIlyjxQvyKISCJ5knOTVJ/f2fPpg9sLKcRtjyUt+3enx4/ZiwnqXhF5CJJhYyeYem9ohqqHLyt172GoOCcqaGCpLtqkOdZiWyBqXRHwt5NjMGMN84AwauzsImjacY0TDJqL2jWJJDGS8gzK4CIBAkToaLU0ArPTIhhqxuRn27DC9i/n7HxGivnpj3fYHybRsApASuxemXl4sp0JqvxaNgBETIGYXBIkgcuS/T7YYxnKScemG+G84r6GvD3uZpyioh3IEv+heSpo/LIyOYuclNPxeFllXtbM+WVFqOckvPHARpP+hFJ42os0hC9kcBOj6XVDOV9dkUQRvHCg3/0mdAOxCGJjHVPgmT0UCuP81QQd+qyNVp/fVQexiWdL1BKB7ouGXGg4+c8a6s5TKEw6oUHRjui5FFU4UKSaIXP4/xZgHZ4kdChY9YCirtRvncK+2X5jg/Vag8zlDBd9fX9UhySO42R0zfykI3O3Kyz+ZuyYdkTLBMO2MujhF8hmSAmGmvU6lhARYzn+y17IPh3dZq/ikOvJr0tL2aMbFVxDTz2QZPzdmB2QJtcjNQz4xzDRgqdC+mPRi28/Ei5DG3IOIfQ06y9pwBvPqaRUrAMacBIc9mAIuctJ3D+MiWHTjyX17ph2UpZfiWK/32sDqDK3ThpeOCo4eNWkOvXCuv5/63chNsaa5MSw7Q71jKOprS0oDOtKhrPfyeIa+/UxJifYOh265KKWR1Ngq5CX8KECF
+ qa2hcLhT
+ /zV7PRdTeJ0QECLx0hMGwBUvy2f3aP2NO2SbqgQ9UFS+mc+MXOpQLFl8CLN727b1t6abrgz9y6RmiMyk2Sw705+c/ZrAr9VL9z7TQgiPDIVQUNFANgufzJHHo/i54/AfWe5dI0s7oPicTcH1uh/TcFdi5mu2eDC7R0wqPJ1XqMwcPb4iEEfJB1ziFhW4GroeCNsyzk7xfFt6PT2TBt/GpPiLbAv0bWSd+f89Vw05rghmtpLZH5VnaAS7OVZJKGKFHVKehReCfC/EElHvdZPES7CWHs0Re17H4DwNYEymTdKfp2+reCyaPiLri8NiDX9fPUfAsA+0VA8JXsrk6gj0lKc+BeskNnT7KdoEIbycE5DQZNuTdcn+KX6UGHoX160DMUUvNsIjgmatsHiqvCRdvOywjOZ5mOCv+bzX0C5/37n98CXCtY+6iwMo4wPlKnJK1CFca750QWs023L92wjtNee6I2XYrPjGPNok9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,132 +94,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When init_on_alloc is enabled, kernel_init_pages() clears every page
-one at a time via clear_highpage_kasan_tagged(), which incurs per-page
-kmap_local_page()/kunmap_local() overhead and prevents the architecture
-clearing primitive from operating on contiguous ranges.
+On Tue, Apr 21, 2026 at 05:39:07PM +0200, David Hildenbrand wrote:
+> __GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
+> flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
+> 
+> If we run with init_on_free, we will zero out pages during
+> __free_pages_prepare(), to skip zeroing on the allocation path.
+> 
+> However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
+> consequently not only skip clearing page content, but also skip
+> clearing tag memory.
+> 
+> Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
+> will get mapped to user space through set_pte_at() later: set_pte_at() and
+> friends will detect that the tags have not been initialized yet
+> (PG_mte_tagged not set), and initialize them.
+> 
+> However, for the huge zero folio, which will be mapped through a PMD
+> marked as special, this initialization will not be performed, ending up
+> exposing whatever tags were still set for the pages.
+> 
+> The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
+> that allocation tags are set to 0 when a page is first mapped to user
+> space. That no longer holds with the huge zero folio when init_on_free
+> is enabled.
+> 
+> Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
+> tag_clear_highpages() whether we want to also clear page content.
+> 
+> Invert the meaning of the tag_clear_highpages() return value to have
+> clearer semantics.
+> 
+> Reproduced with the huge zero folio by modifying the check_buffer_fill
+> arm64/mte selftest to use a 2 MiB area, after making sure that pages have
+> a non-0 tag set when freeing (note that, during boot, we will not
+> actually initialize tags, but only set KASAN_TAG_KERNEL in the page
+> flags).
+> 
+> 	$ ./check_buffer_fill
+> 	1..20
+> 	...
+> 	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
+> 	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
+> 	...
+> 
+> This code needs more cleanups; we'll tackle that next, like
+> decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
+> 
+> Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Introduce clear_highpages_kasan_tagged() in highmem.h, a batch
-clearing helper that calls clear_pages() for the full contiguous range
-on !HIGHMEM systems, bypassing the per-page kmap overhead and allowing
-a single invocation of the arch clearing primitive across the entire
-allocation. The HIGHMEM path falls back to per-page clearing since
-those pages require kmap.
+The logic looks fine to me. Thanks!
 
-Replace kernel_init_pages() with direct calls to the new helper, as it
-becomes a trivial wrapper.
-
-Allocating 8192 x 2MB HugeTLB pages (16GB) with init_on_alloc=1:
-
-  Before: 0.445s
-  After:  0.166s  (-62.7%, 2.68x faster)
-
-Kernel time (sys) reduction per workload with init_on_alloc=1:
-
-  Workload            Before       After       Change
-  Graph500 64C128T    30m 41.8s    15m 14.8s   -50.3%
-  Graph500 16C32T     15m 56.7s     9m 43.7s   -39.0%
-  Pagerank 32T         1m 58.5s     1m 12.8s   -38.5%
-  Pagerank 128T        2m 36.3s     1m 40.4s   -35.7%
-
-Signed-off-by: Hrushikesh Salunke <hsalunke@amd.com>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Pankaj Gupta <pankaj.gupta@amd.com>
----
-base commit: 2bcc13c29c711381d815c1ba5d5b25737400c71a
-
-v2: https://lore.kernel.org/all/20260421042451.76918-1-hsalunke@amd.com/
-v1: https://lore.kernel.org/all/20260408092441.435133-1-hsalunke@amd.com/
-
-Changes since v2:
-- Moved kasan_disable_current()/kasan_enable_current() into
-  clear_highpages_kasan_tagged(), per David and Zi Yan's suggestion.
-- Removed kernel_init_pages() and replaced its two call sites with
-  direct calls to the helper.
-
-Changes since v1:
-- Dropped cond_resched() and PROCESS_PAGES_NON_PREEMPT_BATCH as
-  kernel_init_pages() runs inside the page allocator and can be
-  called from atomic context, making cond_resched() unsafe. The
-  original code never had a cond_resched() here, and the
-  performance gain comes from batching, not rescheduling.
-
-- Moved the !HIGHMEM/HIGHMEM branching into a new
-  clear_highpages_kasan_tagged() helper in highmem.h, per David's
-  suggestion.
-
- include/linux/highmem.h | 15 +++++++++++++++
- mm/page_alloc.c         | 15 ++-------------
- 2 files changed, 17 insertions(+), 13 deletions(-)
-
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index af03db851a1d..1178b786b5b0 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -345,6 +345,21 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
- 	kunmap_local(kaddr);
- }
- 
-+static inline void clear_highpages_kasan_tagged(struct page *page, int numpages)
-+{
-+	/* s390's use of memset() could override KASAN redzones. */
-+	kasan_disable_current();
-+	if (!IS_ENABLED(CONFIG_HIGHMEM)) {
-+		clear_pages(kasan_reset_tag(page_address(page)), numpages);
-+	} else {
-+		int i;
-+
-+		for (i = 0; i < numpages; i++)
-+			clear_highpage_kasan_tagged(page + i);
-+	}
-+	kasan_enable_current();
-+}
-+
- #ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
- 
- /* Return false to let people know we did not initialize the pages */
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 65e205111553..2908d24dd3e2 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1208,17 +1208,6 @@ static inline bool should_skip_kasan_poison(struct page *page)
- 	return page_kasan_tag(page) == KASAN_TAG_KERNEL;
- }
- 
--static void kernel_init_pages(struct page *page, int numpages)
--{
--	int i;
--
--	/* s390's use of memset() could override KASAN redzones. */
--	kasan_disable_current();
--	for (i = 0; i < numpages; i++)
--		clear_highpage_kasan_tagged(page + i);
--	kasan_enable_current();
--}
--
- #ifdef CONFIG_MEM_ALLOC_PROFILING
- 
- /* Should be called only if mem_alloc_profiling_enabled() */
-@@ -1428,7 +1417,7 @@ __always_inline bool __free_pages_prepare(struct page *page,
- 			init = false;
- 	}
- 	if (init)
--		kernel_init_pages(page, 1 << order);
-+		clear_highpages_kasan_tagged(page, 1 << order);
- 
- 	/*
- 	 * arch_free_page() can make the page's contents inaccessible.  s390
-@@ -1853,7 +1842,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	}
- 	/* If memory is still not initialized, initialize it now. */
- 	if (init)
--		kernel_init_pages(page, 1 << order);
-+		clear_highpages_kasan_tagged(page, 1 << order);
- 
- 	set_page_owner(page, order, gfp_flags);
- 	page_table_check_alloc(page, order);
--- 
-2.43.0
-
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
