@@ -4,147 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F493F9EDF6
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 14:50:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D7BF9EDF6
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 14:59:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7AD6B0088; Wed, 22 Apr 2026 10:50:41 -0400 (EDT)
+	id D98126B0088; Wed, 22 Apr 2026 10:59:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A8856B008A; Wed, 22 Apr 2026 10:50:41 -0400 (EDT)
+	id D48E96B008A; Wed, 22 Apr 2026 10:59:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 796F96B008C; Wed, 22 Apr 2026 10:50:41 -0400 (EDT)
+	id C5ED26B008C; Wed, 22 Apr 2026 10:59:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 587BA6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:50:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E937A56AA2
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:50:40 +0000 (UTC)
-X-FDA: 84686478240.25.113948A
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8D2D9A0005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:50:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dQEiK41B;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776869438; a=rsa-sha256;
-	cv=none;
-	b=MKE9Y7PgXQbzXTjNfBfSmCPKTZHY/02cDKg+8LyezDHhOVELYjJDECG5d59BpTAdemtMpP
-	jkHhAvjtp1IiZBCx3xeiEdQcypgnGTWts3ZY88kB1IMBK/ozPfL1Nxb40BNniQfAFnJJ6+
-	ZEH5blP62gX6X1Nk0Iu8mBGO9zDabg4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dQEiK41B;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf25.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B11D26B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:59:40 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 11A83E33ED
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:59:40 +0000 (UTC)
+X-FDA: 84686500920.29.AF6B7B8
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F2B05180007
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:59:37 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=Lmj0lKMd;
+	spf=pass (imf06.hostedemail.com: domain of skinsburskii@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=skinsburskii@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776869438;
+	s=arc-20220608; t=1776869978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dFunmV8UnJFrvBCFFUDwN5yy8J9lleJQHUZ0ZtV99M0=;
-	b=3RAPhxQc76pDOLg3ImjtKcCW5rGP+MEqn9vABV2fMPXS4hTmBlVS/3Fj+WYHn3B0nsxCXD
-	RIFRFd5DfzSCll5Gt4O7W7Ne81qcxfUK1Frd6HZr/P2/cMn1W77IhuCUh+W3DRztMidN32
-	rJFLneKfuzC+2mBcNk31HY25urpNlpY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776869437;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dFunmV8UnJFrvBCFFUDwN5yy8J9lleJQHUZ0ZtV99M0=;
-	b=dQEiK41BXwil9XgNoedG87nh1VI0Hpwe4RWigD2qHieu0gWgzEgMkAQpTwCHRgGyQdTNP7
-	JnQLcwMzlTjOiQLHS4I8zQI0QjWic322sjZ3mMHLu0M/CrDXPgP7miYYHpPurna04yVHiM
-	XYr1HhdlsgULHlaDEMYA3TVsVEfHtD8=
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com
- [74.125.82.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-ZKoULItUOL6947BXTk5COg-1; Wed, 22 Apr 2026 10:50:34 -0400
-X-MC-Unique: ZKoULItUOL6947BXTk5COg-1
-X-Mimecast-MFC-AGG-ID: ZKoULItUOL6947BXTk5COg_1776869433
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2de07c12745so5450398eec.1
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:50:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776869433; x=1777474233;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=IoDlr13M+1WKRkUHuCCHQTA6Gku/moKFjbS9dPK3sKs=;
-        b=fnY9m0+65iGGkFvVOTORUNGtkmGH+Lm1sa57sn+0VGUOXVtudbzchzDtQtVKe6NRgF
-         5g78drLbRQbu9eoxX7tPvVMTR3AFExzYZpmJk8A2JmxtkHaN+EHQPtkfJ7/geK/sBDfV
-         6QjB/33ZHxkaZJoTSmOQkS+wcV5uN3wEemZ1v8AnV0ioaJYa1w2LBlwrhE7UDx9Ei+pK
-         gr7ZY7MaAssNX0vIGT3f9lpKAnqi3DzcISdlpCGRBPe67Yquh8oN3oNLrU0+yG6WzlzV
-         M3BLh1MBjTB9HlCKa89nOHiDcrwPTdJ6PMQKDMlma7Pqk98QihW7NdtHeBWKkQfK8eEL
-         Y5gw==
-X-Forwarded-Encrypted: i=1; AFNElJ+Zo0ttp962CrfKW+XaR++DgP3w9t6/Z5vLqGlPRLwtWonqFCnh7+YnmBV5WMaquVF7QXpKvD6yWw==@kvack.org
-X-Gm-Message-State: AOJu0YwDXJtB7SvKYegRDj5PF7ygC4HnbOjW2uwEBjFSYHSx+BgZ9d0A
-	LVW3VTz57ozpzIL25ULLzaigvOuZTSeDhH4nwyq7fKN9zD2lJVNLZvZmHmm4kkDyxfQsIpjYgZT
-	B6HtyqfGRYn1vvXwM+t6v+V+MwW1V89zCrNC8we8m3hYCjylivwoq
-X-Gm-Gg: AeBDietz5g8vjWVmk3ccK/ShhXgpc/PWQLe0+gj4jc6Wv2KA7Gjt+JA5dfwM0av3a2i
-	QFX9Hiy79nmAFV5ccEiVvxEQA0uhvVyXWBGSc1soaNjO+hCvRiC3VQ7H0cfg8nMvmQMGqNA9iP/
-	sX3x52SzTEqscl5CM6p01IONcLabnfwx7ajQxI3WiHIXkGsVqfKNancqQnxrMbjjx3395PA0YMR
-	NUz89IglsRRc5/xgVletqk3FwrXxVM1zxlSx9pW3iBaAKjae9V9F7b104Uerwf036myVMcN/qIX
-	qHvBrLFQKuODzQju1yBhtt+isXJqzlp8qM3/uRU3I2Qi30FtXQNUJcqqfeOrS9a3aH0p2EN087y
-	gwa8cUl81jEv6u1vmptYk2yZUYhD7i4Fw9BSNjiYzPjhwAyKjsot8OdUvPF+G795E9u8ng6OGdn
-	5xH0FhXEl9dVQXY7nzBA==
-X-Received: by 2002:a05:7300:e12a:b0:2d1:d434:cfe3 with SMTP id 5a478bee46e88-2e4528c967bmr12802136eec.0.1776869433216;
-        Wed, 22 Apr 2026 07:50:33 -0700 (PDT)
-X-Received: by 2002:a05:7300:e12a:b0:2d1:d434:cfe3 with SMTP id 5a478bee46e88-2e4528c967bmr12802102eec.0.1776869432674;
-        Wed, 22 Apr 2026 07:50:32 -0700 (PDT)
-Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-135-146.abo.bbox.fr. [213.44.135.146])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e539fa5c38sm22845738eec.5.2026.04.22.07.50.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 07:50:31 -0700 (PDT)
-From: Valentin Schneider <vschneid@redhat.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org, "Peter
- Zijlstra (Intel)" <peterz@infradead.org>, Nicolas Saenz Julienne
- <nsaenzju@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Andy
- Lutomirski <luto@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Arnd Bergmann <arnd@arndb.de>, "Paul E. McKenney" <paulmck@kernel.org>,
- Jason Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, Ard
- Biesheuvel <ardb@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- "David S. Miller" <davem@davemloft.net>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
- Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
- Uladzislau Rezki <urezki@gmail.com>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>, Andrew
- Morton <akpm@linux-foundation.org>, Masahiro Yamada
- <masahiroy@kernel.org>, Han Shen <shenhan@google.com>, Rik van Riel
- <riel@surriel.com>, Jann Horn <jannh@google.com>, Dan Carpenter
- <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>, Juri Lelli
- <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>, Tomas
- Glozar <tglozar@redhat.com>, Yair Podemsky <ypodemsk@redhat.com>, Marcelo
- Tosatti <mtosatti@redhat.com>, Daniel Wagner <dwagner@suse.de>, Petr
- Tesarik <ptesarik@suse.com>, Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: Re: [RFC PATCH v8 09/10] context_tracking,x86: Defer kernel text
- patching IPIs when tracking CR3 switches
-In-Reply-To: <ad-Ad44-IyU-yKJf@localhost.localdomain>
-References: <20260324094801.3092968-1-vschneid@redhat.com>
- <20260324094801.3092968-10-vschneid@redhat.com>
- <ad-Ad44-IyU-yKJf@localhost.localdomain>
-Date: Wed, 22 Apr 2026 16:50:02 +0200
-Message-ID: <xhsmh4il33v8l.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+	bh=NzwgEI2rAv+UuV/ojSZXA8oFHB9gGr87UynDh8gLwD4=;
+	b=H2+mzXnUuF1taJPJfYaXjGlbTV998l/AImwmnltOaa0YkoudFKLJfhCWLsEnAGnlTFpATl
+	ofi1Dc2on9I8twUhhfNOm6V7YpOOsV02ps0UhWawmXxdtn0bTJqcqDKOks1Jy6s2u+fJs6
+	6RdESt78kUxxOUS4mx8XhQx17RbT7+M=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=Lmj0lKMd;
+	spf=pass (imf06.hostedemail.com: domain of skinsburskii@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=skinsburskii@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776869978; a=rsa-sha256;
+	cv=none;
+	b=j89Wn0TFvCkg45yng+RIynrjaqPcvvOGCkcIk/w+NjlV6tmkfFSfBshrMmpQgYs1ibRY5J
+	F/LkGxcJPcOyUTQas60mzU/HwSSjc1D6AxNqyCGGqqWExLwZCbK734IjZB3yVdXNjbYrIi
+	BrhZXPYL5kvFfyG8i/S8/4pS256CqGU=
+Received: from skinsburskii.localdomain (unknown [52.148.171.5])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 92DE820B6F01;
+	Wed, 22 Apr 2026 07:59:36 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 92DE820B6F01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1776869976;
+	bh=NzwgEI2rAv+UuV/ojSZXA8oFHB9gGr87UynDh8gLwD4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lmj0lKMdOpIvnPWyIU2lay0uxLVXRJAWkzClONs2kePd9jlsTLs0Hw9wiqnAU/EGz
+	 vPw/n/EcdruQyJMOt7CK19NJSxXdkCNzq0HzSzXh9Oe+OVRtKdMqvIW4D5Aa3YdQ/Y
+	 BXJz9mfVb/jbjHxmlXSSlCk4/y+tndrd2saWochw=
+Date: Wed, 22 Apr 2026 07:59:35 -0700
+From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] mm/hmm: Add userfaultfd support to fault handling
+Message-ID: <aejiV8rQIOgrlCkh@skinsburskii.localdomain>
+References: <177499585916.169073.8313365481186071940.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
+ <286425bc-e2a2-4e29-abdf-666e798e6cf4@kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uvj9DNsbU1POdRV7jEs0_UIMYO5adDqrH8876aw_ymw_1776869433
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8D2D9A0005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: gt1t544ryja16r96gg57k7t7z8fury35
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <286425bc-e2a2-4e29-abdf-666e798e6cf4@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F2B05180007
+X-Stat-Signature: htgyuxedyht8qe7tc8hapb98yqd6c3es
 X-Rspam-User: 
-X-HE-Tag: 1776869438-203792
-X-HE-Meta: U2FsdGVkX19KFu/2n/S8m2ZGjdNThJCaL/xMeO5q2p1CQTDiSackjDuW5H1g6KVLea/SNpZOh+RfbhGLxn5WrcBWGIusCV0iD4m1oZmNSVVPwHhWkYvyGOe4LuQDNLj7PuQwULetiw/FGW7htoxBjXcTZ4MlbyOlfS+tPyUQwp8zdbm3EHLBPxnR/vyi+2Ua06W5jkY/p1AnuXMOZxZq9Zx1jJQ9t514ntF/hg+LjfE2Iaq0H6RDqMZPxGl8t6WQXikFWbkd5IB9m64/cxvDYk4KDTiNWi1MVrGwnGM5wPHyN8j6+phMFTWMWwdVFyUrBaqo/p3QLgaK2LqGXtJEOq+Hq+wKB8rY0MOUFtFxJcu01jyj9SAGTYsVizwoW8x3IZNhDLVmCiY/R4PJ8IXgbN8E6YDATehYSTrEH4NL/yRIIVmbsD+rDvVoqyzhPR/SnRW1F30x4XSalMhO9Y6jrYJGMyfnRUQLvAxlSRxUxb6hu+NykxbLcun03zirknjP/HPqNw+Ub4Ff8S3SkXZHUtvS46EQ2H5IC/BHqT9+pdwK1leEMoMJUHQco7aFhfe++tsUqRfkTg3AE04ojF5DhwTyL8p+c6UXIOv6xSia+fBy0t3PMSmzFr3Km7+LZIqKfRQFt9fo3zYy5jnifweICdD9izVqYAlVMpPkGYmXJJx2c4qxDnVsxTNlK1euKXWmNLY7upVK7EBuqWs3BKQlvAorEk5dzKZZ+/sTRjxTX/ZPlrCFL7zlehvhPsg3XldVhWGD0No6IPFm/+lWHZFROoa6YYF4klPUkSGBIhKo+TSWg28F93Cz1L72i2g82VsfrVJJk0m09SIVTc2zKOwjIaFqTuKduvRkubzabBY5pYJzIsXBQl1XKX49Kell/MmaAp9Ll2MtO7Eb5w60N981GwO0Ry+5M0Qh6Peit8SGKnGUHOAKUr2wUvL20kVJkSKyyM/K7Bbg9iOCIOmib+D
- 1m+beWj2
- ms/HwoBJCFPn3cOZYFsgNlTcCeR+M0+LkD9TJpp5lgzL8qf+YqBAQdn7g8LqE/0JS0H+GV3KH2Wn1RN9IVMAnmMjp319QtBaSTBNtPCGjaZDhe+4lhzL//xoSkoc1NDr3qIrqOTIkKB5/sT2vy6pu++vQ0BJs1Wfe1xbrol50m03yUPSvxrnHWX2dTNN8auoMhWmMOzBoN6DOCxyByfDSvwiHTxyMUQUG9Lw8Jp9aPw7C6VdUWtzWStSWXWcrfl+lOXK2aH0pHWKZCaamUEncBwH2YY1EKdhcsIRN4SqeWaP568n1tbPpTSD+xGDcH+9pecpzyG1Amk2x5SvZVSFTaHpWVqE1c9L1Qh/w6HuHxjh4vyA1lDt/08eGHkM8F/oL6LWbvLJUNqeFMGOfp213sQWIpe9lazj4YfyPilDsm17E39CjgTyhNkT/s8/WOEno2LnWN53SV5HFP2WpZUFvELeJdfioQZr4hkawPzOZf5/4/Kp36lGd29PFJH35Jm6Y3RhAJqG4JWhPOthdK86IbxoxBg==
+X-HE-Tag: 1776869977-52458
+X-HE-Meta: U2FsdGVkX1/aatNNluDjgyEyPQMmz7VrowZy50ID4lBM28qxpckCGK2WX+CxcykHhTjD5r5qFvGFDy+mld/M9MUyw/THQwX5ttXTvSwT8vAntd2Ri+/nwyj4OVLfspVXdePNhnXkrIIFRKZUsBpUvtvuZaRcdMxiMSECcA5mUBcI53OAhDN2ofqqQCJGFeGChwrsO6AP1fzUwS88wo1os5Wi61QWQ+2R53o88WQgvA96R1lXrp7tfG7qGfwZndEos/VR/4mHFEJTruBc6ISX9Zl4OEkYwrPwW/lUT2QuhgoFtmlhEYB88XliVRe7wb+ahpxT3RaTG+vEdKK4TTIxB5IQ/Bu4CRZ5EHBSSAAzss+HzjORvjVgsOcftsAgKVDAu0JpcQf8caTAwUU2PnPNNKfiUwGjXLsjHG6bRMeqsx3jy28Jo1DdqRUSI6E/82WuofiUul4kZ24vhiJgFL6zNaUG5wH4qv2upUuvG8BmZvmdnqsWw34xAGvAB8Eso+LXzsvSnHVellAPsmsIQN9PC8bTwCpRlC+C4R4OdDjNyLNfeidp4nweaMljxWYQOJxD5Bt5fxA66HGudDhxzfZ9viQhcxuCopJKOAN1Dq/pQMLYgYlPsJHBr39lTkPLlpspHjKLUjGcqZ3hZoWFAHIbmGDDN2mikMkw/zwGZ2erKiHaMay5dDm9IKBkfDWoONTkZ7XYG78Fe+PeTjz0T1F3+DgW4gjcXtI4Kdpy2KlscVPPDlk4K9UxE57enI2Ky7xWLQih+WOK1FTNibW07xhDqLA7naL2jkpLzw8AdiFEsWENdhTEFa9iTnPvf7Y9L21HBSsW7s4INbJvrn3TxLKGfWcZfpT3vQ44TouZCojHpHyQRJOoGQe43rV9YKHZS+cR5M6umxJr2MWnw3kGgy+osDTJC3uol4rYB2tMMbXL14FzAMBbe3EhJQIrBhq+b4/ZFDRdM9aa+IbNPOSgEwO
+ 6KJsDlkl
+ q4qkEMv8JIkUApFFZP40LFdpgbLdV3Lbc9OWG6/P7TyLse1L6eILH96l50jm62XfbOgVWOh2dkptiXGuHYc8YMp7u2j3BoOAjayf0f+dIGPv+1lfDvFYkeaUX3vIo+zv1Yt1X+GdXoRBSUKDJYen7YT0FwxvcpDtTgFftiGvcNHuLVx0eA+LDfwwRE+Q+LbaLBLYl36NgD78b7doS1Gb16vNCQLZZwG+y6ZOprRiTpPAFjKA/D3RwrfMD3jM+okIoG6BUjqjrPr3jkAcA3++f9VZLnqqykxXyQKhsMQjc5qQL/YE7TCOMWIahZTAbkjVQcVMBor3rkAmRwGHrNfwB4U9KoAyI7QUndcgL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,68 +89,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15/04/26 14:11, Frederic Weisbecker wrote:
-> Le Tue, Mar 24, 2026 at 10:48:00AM +0100, Valentin Schneider a =C3=A9crit=
- :
->> @@ -2706,11 +2708,29 @@ static void do_sync_core(void *info)
->>      sync_core();
->>  }
->>
->> +static void __smp_text_poke_sync_each_cpu(smp_cond_func_t cond_func)
->> +{
->> +=09on_each_cpu_cond(cond_func, do_sync_core, NULL, 1);
->> +}
->> +
->>  void smp_text_poke_sync_each_cpu(void)
->>  {
->> -=09on_each_cpu(do_sync_core, NULL, 1);
->> +=09__smp_text_poke_sync_each_cpu(NULL);
->> +}
->> +
->> +#ifdef CONFIG_TRACK_CR3
->> +static bool do_sync_core_defer_cond(int cpu, void *info)
->> +{
->> +=09return housekeeping_cpu(cpu, HK_TYPE_KERNEL_NOISE) ||
->> +=09       per_cpu(kernel_cr3_loaded, cpu);
->
-> || should be && ?
->
+On Wed, Apr 22, 2026 at 09:27:44AM +0200, David Hildenbrand (Arm) wrote:
+> On 4/1/26 00:24, Stanislav Kinsburskii wrote:
+> > Add support for userfaultfd-enabled VMAs to the HMM framework.
+> > 
+> > Extract fault handling logic into hmm_handle_mm_fault() to handle both
+> > regular and userfaultfd-backed mappings. The implementation follows
+> > fixup_user_fault() for handling VM_FAULT_RETRY and VM_FAULT_COMPLETED, with
+> > a key difference: instead of retrying or moving forward respectively,
+> > return -EBUSY after reacquiring mmap_read_lock. Since the lock was
+> > released, the VMA could have changed, so defer retry logic to the caller.
+> > 
+> > This approach is inefficient for userfaultfd-backed VMAs, as HMM can only
+> > populate one page at a time, but keeps the framework simple by avoiding
+> > complex retry logic within HMM itself.
+> > 
+> > Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+> > ---
+> >  mm/hmm.c |   40 ++++++++++++++++++++++++++++++++++++----
+> >  1 file changed, 36 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/mm/hmm.c b/mm/hmm.c
+> > index f6c4ddff4bd6..d04d68e21473 100644
+> > --- a/mm/hmm.c
+> > +++ b/mm/hmm.c
+> > @@ -59,6 +59,35 @@ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
+> >  	return 0;
+> >  }
+> >  
+> > +static int hmm_handle_mm_fault(struct vm_area_struct *vma,
+> > +			       unsigned long addr,
+> > +			       unsigned int fault_flags)
+> > +{
+> > +	int ret;
+> > +
+> > +	if (userfaultfd_missing(vma)) {
+> > +		struct mm_struct *mm = vma->vm_mm;
+> > +
+> > +		fault_flags |= FAULT_FLAG_ALLOW_RETRY |
+> > +			       FAULT_FLAG_USER;
+> > +
+> > +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
+> > +
+> > +		if (ret & (VM_FAULT_COMPLETED | VM_FAULT_RETRY)) {
+> > +			mmap_read_lock(mm);
+> > +			return -EBUSY;
+> > +		}
+> > +
+> > +		if (ret & VM_FAULT_ERROR)
+> > +			return vm_fault_to_errno(ret, 0);
+> > +	} else {
+> > +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
+> > +		if (ret & VM_FAULT_ERROR)
+> > +			return vm_fault_to_errno(ret, 0);
+> > +	}
+> 
+> I'm surprised that there is userfaultfd_missing() logic required here at
+> all.
+> 
+> What prevents us from always calling handle_mm_fault() in a way +
+> handling return values, such that we will just do the right thing
+> independent of userfaultfd_missing()?
+> 
 
-You almost got me there, but I think not :-)
+Essentially, the main issue with the current HMM framework is that
+handle_mm_fault() with FAULT_FLAG_ALLOW_RETRY (needed for userfaultfd)
+can drop the mm lock. The framework does not expect or support that yet.
+That is why I had to add the branching.
 
-cond_func() must return true for CPUs that need the IPI. In this case:
-- the IPI is always sent to housekeeping CPUs
-- the IPI may be sent to isolated CPUs, if they have the kernel CR3 loaded
-  (IOW accessing kernel stuff, no longer accessing pure userspace faff).
+The worst part is that handle_mm_fault() can unlock via
+mm_read_unlock(), while svm_range_restore_work() takes the mm write
+lock and this RFC patch doesn't address this problem.
 
-> Also I would again expect full ordering here with an smp_mb() before the
-> check. So that:
->
-> CPU 0                            CPU 1
-> -----                            -----
-> //enter_kernel                   //do_sync_core_defer_cond
-> kernel_cr3_loaded =3D 1            WRITE page table
-> smp_mb()                         smp_mb()
-> WRITE cr3                        READ kernel_cr3_loaded
->
-> But I'm not sure if that ordering is enough to imply that if CPU 1 observ=
-es
-> kernel_cr3_loaded =3D=3D 0, then subsequent CPU 0 entering the kernel is =
-guaranteed
-> to flush the TLB with the latest page table write.
->
+The main question where I’d like feedback is: should userfaultfd be
+supported in the HMM framework at all, given the complexity around
+unlocking and retry handling (similar to other gup helpers) or should
+this complexity be offloaded to the caller side?
 
-For TLB faff that'll be flush_tlb_kernel_cond() but same logic applies. And
-now that you point it out, I think the smp_mb() (or LOCK prefix on the asm
-part) you're suggesting should be enough, but let me ponder on this some
-more.
+If it should be suported, then I see two ways to implement this:
 
-> Thoughts?
->
-> Thanks.
->
-> --
-> Frederic Weisbecker
-> SUSE Labs
+1. Introduce a new HMM_NEED_USER_FAULT flag to tell the framework that
+   the caller needs userfaultfd support, and extend the framework
+   accordingly. This is not intrusive to existing code. But if we want lazy
+   migration for GPU state in the future (and we likely do), GPU drivers
+   will have to be updated to set this flag later. The only real user of
+   this feature right now is the MSHV driver and I'd extend it to set
+   this flag right away and leave GPU HMM users for later.
 
+2. Add retry logic to hmm_handle_mm_fault() to handle VM_FAULT_RETRY and
+   VM_FAULT_COMPLETED, as required for userfaultfd support. This would be
+   transparent to users. But it would require significant changes: mm
+   relocking, VMA lookup, and other parts. Also, before doing that, the
+   kfd_svm driver would need to be changed to downgrade the mm lock to
+   read.
+
+Thanks,
+Stanislav
+
+> -- 
+> Cheers,
+> 
+> David
 
