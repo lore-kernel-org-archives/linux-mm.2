@@ -4,114 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB172FA1FE3
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 19:13:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14EA9FA1FED
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 19:47:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271236B0088; Wed, 22 Apr 2026 15:13:24 -0400 (EDT)
+	id 255736B0088; Wed, 22 Apr 2026 15:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 249926B008A; Wed, 22 Apr 2026 15:13:24 -0400 (EDT)
+	id 22CF76B008A; Wed, 22 Apr 2026 15:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 186576B008C; Wed, 22 Apr 2026 15:13:24 -0400 (EDT)
+	id 143B56B008C; Wed, 22 Apr 2026 15:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 09A266B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:13:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE07FC11FB
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:13:23 +0000 (UTC)
-X-FDA: 84687140286.16.5719B9B
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C51B7C0008
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:13:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ho2tFJxD;
-	spf=pass (imf10.hostedemail.com: domain of joshlaw48@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joshlaw48@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 02A586B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:47:13 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C25CC1786
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:47:13 +0000 (UTC)
+X-FDA: 84687225546.08.7C951E8
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 98919100014
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:47:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=BD4wv9WO;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776885201;
+	s=arc-20220608; t=1776887231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A3dMidoRZcf/RPOcj04rq5SmffBfHuwcMa2j9+ABoHw=;
-	b=OC8YiKeRxB04PvxAEQ5Y8exAn6/wV/GjZggBWpUgtIbAgL4Mt04vQ/hk2YcXH0MhPhHtcN
-	lWfAWfzmNZQAXXRgZLqPhSr5XmIDG+9vblAXd1xUPk8yskEgw6yhtsiZQC96AU/IS66r44
-	7cwHGn32xJ/zVM7J+DnZSaqy19O0BsI=
+	bh=pGdOZjYFd//HiRQ+b4VwV4BRdopXfvmgy3UzEHyg/Zc=;
+	b=qwulT7joinLfq7TNTXp6Hk5/NBzsJLYeVvQpCgjI52NbFO/JwlTV4AE0EClkG01OnTsaeI
+	3avcMoY5N+W02MPSJB0rYAS2YOqfxS2HsbNIDj182vLq6qnx2yZ8H7+Uo48c1UeVPE2+vU
+	+QzcGFBNBZCX7bob6NZaPSqi98oEnYk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ho2tFJxD;
-	spf=pass (imf10.hostedemail.com: domain of joshlaw48@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=joshlaw48@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776885201; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=BD4wv9WO;
+	spf=pass (imf14.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.54 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776887231; a=rsa-sha256;
 	cv=none;
-	b=M6xo6C0Cyb0hzevhI83d0oeOXoi5BXQJEHD1mDqEAmMJxQ7IobuRJ6qY42ltWKT0Bfe04L
-	s2s+95XO0LY97LKCj6HF7ByklxvHfi4VTqKGNYbAyc6xuGImhz/pSdM0MyG+x+7USJz9Db
-	WY77xaNNobH2bIm+Ac/nL+em526qi5A=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48374014a77so76169085e9.3
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:13:21 -0700 (PDT)
+	b=Vn6er3cEnTfIJ2ei2cH+BaYZGchJI8osrqVwM2LXNelB0D+m2yCbsbJ/NZXnmErubNNBxz
+	tIdZz4v8sbyoVyo8uCpYC5xW+420NPGZ5YDTb3PYEOZj4kdiDlHeGjBkUxlMF+uh6LBNYd
+	kqpO7IFTez3gLKewd3n2OnvXrDnIsHs=
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89fc4147f2eso65048376d6.3
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:47:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776885200; x=1777490000; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A3dMidoRZcf/RPOcj04rq5SmffBfHuwcMa2j9+ABoHw=;
-        b=Ho2tFJxDMAMtMUtdClfvjzEMdLmOXND/A3AdOlk5yPnS09zftAZzNdj1JClYGCJTmc
-         kOrdvAEqwA2fnxcUSK/HmS0enjBLKyZueN2RUJ3mAphLP2LB4qCznc1jlhM93ckaCOcE
-         GDm3msh9t3ib7IoZFmmyvuKb3+hBA/NOqtfV4rRtNT42eOBm6WX2Iu0a/u3I7FLaaVqN
-         PUCdHu0zRbntBJUyfWLYBZUTrNwCxVH8M8ioz/r24SJ4lE9VSqYezRxGACUmhhJ1lew5
-         VBA/twtZJIxC1Qd5LHCFd6R4+RccIIcmlu1dF2Ioh7+UtWxrseTaE1wZXy3/EGMdt4SN
-         lpog==
+        d=gourry.net; s=google; t=1776887230; x=1777492030; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pGdOZjYFd//HiRQ+b4VwV4BRdopXfvmgy3UzEHyg/Zc=;
+        b=BD4wv9WOkrQWR7W6WDE19Zj5T/0R+OILAeV8Z4EAQBz9hWYQcEZiRPtgyYwbBQUfmY
+         1+HAGGBPWEbYW8C89FebvsfxRrqcaYhG5NfCmLubfb4qjegzAYKtpbZ6UYL1GCPcG9Ba
+         vmtj14hc30eoGKNCJfi3jkI6FQfuPIs+5sGUKNtbzfT3Z4TLlL0+WTKAp86g7PdqnDbc
+         WQSfuipcwNTfv6AMNEg+unHunCd40ym5FFplCBi1f7JmMnUMy4EDtYLFwxKiYSBsdJE0
+         3sRTBTtC5ZieFLBCFe+O1Y7no0BbU+PidGs//hM7gj9BjJVftBYN7Y8Pum64sXh20XMM
+         0ahg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776885200; x=1777490000;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=A3dMidoRZcf/RPOcj04rq5SmffBfHuwcMa2j9+ABoHw=;
-        b=IuuYaZOYR/QnQIbTydnNLLKciCPsgwL2J5J8hQ9aNy1TUwC+LlWMke+dVbkVkaxNbT
-         Fgmg8yoWN/df+tlY5DD0BxQwXkFaMhBB3Oflj4oLyH8cJVLHUjQOEJW8HK/3CfFQNM9E
-         9aoXM3BhRVQxOKHJZnYfsexsg7ybk+CA7wH1h4yg3cj3h8xPSGBUtOhp/dxP2NVAmL/z
-         /HPZtJojJS44JHFOHcxHq88oYSUAhSVIhoztjzdByOBj8+O+Z///781puqDC9GTnrPa3
-         2oFihkvDHeeKH9Y02MMZVPupzMCOzazdWVgj1gOxBSHvj78ZdIXWk1pW8gWhNnJjE+s5
-         59Vg==
-X-Forwarded-Encrypted: i=1; AFNElJ+590zvrogBJjF5kx5s1fNQKYCJ0TwN6sJLF3YttglblRu2CsX2UpSlnw7m2kZfSEhALvf85pJiyQ==@kvack.org
-X-Gm-Message-State: AOJu0YwFKtUSuTSLZxtCFhQTzoqSXyK0tP7Tu7bPkNK5lsVZkgySFQq9
-	b0OlVtqX6PfNqexED2lvNXD/KMnKo7jiLoqPHCtpom+GYm+XeiVG/TMex1CHV7Z2YEk=
-X-Gm-Gg: AeBDievm9qECjVQE02KLPXXA8fEBwOD3qp1G4foAoLU+Yq6aLqk44kJi/G/f535iXEI
-	1QTLzgL2LvisPwQI2XvD6w1aiSyXJvH6/i3xdWd5EG/UjmJUihYoajh3MtPf1nEcr9nWHLc0Abf
-	RLhs8ACcYwZLwXgDR0EOd3XNwyYMnm4p/tmb8LItVa31O/VKJpCVSMPIGiyS0A9kjLhrbYRjoBs
-	Va18/K1ZRD3oxTFQt44o/X2v8CPS/VXFv6hCumNRRODgoPJhzI5Uu/vooCMolJKhk30mx6x/87I
-	qB64StwGkepEQTz4yIEShQMyQTRSt5/E3Zynbe+wm0NsaLmxEseOuRc1CcmSgpv+QFRB0DFR7K7
-	8KbxFaNMEo1qfgqPMuQiP1/vR4j0ZAJMLtNcqh0bS2ZCV0LkWvo7fAb9dgm8j3T1/AOMPNxFMxS
-	AwiHWt17cJVlN60XhYQ35t8rbGEoCDgi5Zvwrc
-X-Received: by 2002:a05:600c:c4a8:b0:48a:52ee:5776 with SMTP id 5b1f17b1804b1-48a52ee579dmr176982725e9.11.1776885199992;
-        Wed, 22 Apr 2026 12:13:19 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([86.1.69.5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a55dc9f58sm330602485e9.6.2026.04.22.12.13.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Apr 2026 12:13:19 -0700 (PDT)
-Date: Wed, 22 Apr 2026 20:13:19 +0100
-From: Josh Law <joshlaw48@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-CC: akpm@linux-foundation.org, david@kernel.org, linux-mm@kvack.org,
- rostedt@goodmis.org
-Subject: Re: [LSF/MM/BPF TOPIC] MM transition
-In-Reply-To: <aekbhQN9afqMBs4_@casper.infradead.org>
-References: <20260421094216.8dfe14a8c62f2420fa5aace1@linux-foundation.org> <16B7B5A8-EEA7-4580-A565-3A0B4DBB08AB@gmail.com> <aekbhQN9afqMBs4_@casper.infradead.org>
-Message-ID: <7BAB465F-C09A-4C67-B9A9-3C63ADD91AB5@gmail.com>
+        d=1e100.net; s=20251104; t=1776887230; x=1777492030;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pGdOZjYFd//HiRQ+b4VwV4BRdopXfvmgy3UzEHyg/Zc=;
+        b=gX+/lgPms67GOeAtedODLElOlzuMaZb2xZx+BZkKQmn6AYfeJtIBpVchQGGmCqGmWz
+         Y1pE0n1e8oZ4/L+lwAwcnjxYMHaCRCYKlVhr4oGX9p1C4beznW2Of1ambDw7IdRhETVs
+         zM4ItoRQQyZ9Hy6J2rLxDz0amkdqAOsgdLvVO4/RtNoPOIAX7bHVoFli/mvgHKId8GgS
+         9ZKgVEvZfAn5nyx31iSWLsNzqJOPGmhR3hR+e1uIyjrf0aqSQ4H550MsOo7NoZyvi9Lr
+         GUm/Z6FxiqzcEs78y4gAcrcPtq6YtzgzgvUAqtLD65UzfJWXasL6cbmplzQlJl7IMR8F
+         wvtA==
+X-Forwarded-Encrypted: i=1; AFNElJ/lppI5bnnd6E/FN+urMKq0KrEPtpUWMWZBQQA4Hi+YtdtHYwTBEN4cnfF/Y2iAb3rq0Nwov5GwTw==@kvack.org
+X-Gm-Message-State: AOJu0YzrMh6QLkVpoxZd9g2bnE9s99/ZlSwAC6D1Zop+gOF6t0eC4Q1h
+	qs6GKAXcP/L7hi5Fcmw/vEuCeZWN8OBKkOZK6vk1JVR0D4tE0GxoLDI80tVVswrfc8w=
+X-Gm-Gg: AeBDieu2laxnLH8RW8xDPZwGNclsveS5+4jx5A6KG9JeEc3AwITur9RFQhzWxQAfHHl
+	1ZFX1EmULjdJU+8mqoVdcrHmFNv+T4Tk1nDvu8dBCt5VzYUAerW+AnQNqbT3002YNF0hSguU1Sy
+	+KlPHGblNkfroNgQan3hGPSeANKzfgNJLzSoEcOTDauJ2hDtd+wI82ROcj+LY4ugHSW1j487CWb
+	BUSGlz0iKv231YaD60SLu1BslDaLAtP1H8ZpuZDNKT5zepOJHwgOOiDNiaKnjFSnG/ICpe8Q+8s
+	P2mHcgIG8b6R8zVOqQByigT8DAMzHqKL05775Ndz+mL2vfFZH/taa0zCTlH1JQXk2QtGHM/BzuV
+	nnBR8mnS/JZA5pcEKSuedQfNBySQjKFdZcM6DrSHbpuY/5TUK3hq0SihNT5X32xLqVXp83nX9wI
+	qCn4etoalwYAqxBjPuDgMy3/j/yOzIAylBR9T5kAJ5xM7vHA/pl+oLGGO/HKdekfNqx75SRD5gt
+	bl0k/tts3g/T6Fa6b+Z
+X-Received: by 2002:a05:6214:5e08:b0:89c:6a86:e632 with SMTP id 6a1803df08f44-8b028061bf0mr329097316d6.18.1776887230490;
+        Wed, 22 Apr 2026 12:47:10 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-246-228-50.washdc.fios.verizon.net. [71.246.228.50])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02aec3a3bsm138295346d6.49.2026.04.22.12.47.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 12:47:09 -0700 (PDT)
+Date: Wed, 22 Apr 2026 15:47:07 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
+	virtualization@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+Message-ID: <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6e151i19cu159e1xtf5jxay6zpo3h4f4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+X-Stat-Signature: rg5rkgx6ebr1qrt4tn4mmsaptt6txi9z
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C51B7C0008
-X-HE-Tag: 1776885201-361681
-X-HE-Meta: U2FsdGVkX19/s7t4HHbAnhamj6k5enZnuc9QcWWafLlmqmKSgqI9bh0Mpl2zANDeq8UGrbW7wm3+ZU46WFp87TcNJhhbPGYz4qdzEHSCm9VBCA0HzBc3v+cIm/oGui0yZTpm8Hcf7VTYrFSFeejZL2qMHPsp1lpgUzQQ7JiCKYhp0pPQ1ctUfAhFjmWKinSgjeIkSvm3W3Og23OdhzeRhE4LIx/MlTbabUp6nzIURJVvIBDcC209M9zrWRZPNu4uEJ0rfFDWo9+nNNY62arHe7R2BVewroRQrYtTU4CYFhcau6unFAbVDMY8Mo7U6IJe3tGssi6y3cgfRRvroO+qkd3Af0kVTw6Fe8gJBuFQu7GUil4YI3fsiXx4gWLeAjpLpYNBL245KyNWduAttkoVyjKb/E5Jl19abJOq3IMT2Jw++HUEBDOcicYR55SpOsyvesVPg9U8I2msTfZ1aBdC3G+C8Si8aRv3aNiNnMxVXrfBnWsurdvac4Onskh/x1tk1yauZB/KCzznek5r9KP66PuOkt9m7Qq8RUhbiMVYKTFv7RpZHPEc6vBjmPk/1IibXawj62HadWyhCPFx2UaXOwl4Ihm28sxn2QIXMli/EhBDcXRD5mY1jgtZoNHhfBK53iDcKw/HxV+W8Uam67/RsWFJEofVesBD79U7mXuPZp89M5RHJUaQSqmEXs0hF1mnzRlE1yoDwYeZ3DPmsizbdIvZQc+Ji4AYOyrIWT0wWgDF9VUS8injaOt27iG83xymTXCO7aJHqBYT+Gn/2TnW/PS3BjctXY1wZ+yq8H/kD6Lsb0WMNl9xyizQa7L0SiniWP/p0lrnzEoIGYO/waD7BIFNoRZLV/6/+yyLKbsMjwWFjmBAuyKNe3mgc5lvRlPYiXvQC5Es6P5or/vdHt2n09XgKdJQcimKxJR/w+KfjcTUu8gT+eUsWzldKtpZI3ppJkHaU/rLgibCjCBkh3B
- Gf40qms3
- bBzSNmkjnmeya7+KYHt39anQZ9UmOnaW3OFH9v+P+UHMxNDTEUsFFaFPL16cSL0tNKDMLAVpQznGcf2OT9Szz78Dx/D99ANnguXNg0TscQYpgWfE6BvZdym8CYHdJJk6XdmCZe2UeqmE4DUv2lnWW34Qed+cw5oUVFH6ey2KNDyny3rJ6AHbqjvG+eu9nnSsVG/HZgJBhf69BkjNBYAAXbk1JbiRMzpICFfO5WFAQGeNN7SM6sofEuQoy2bGn4icr9b/wuW4bouU5UzJ5Mvtb4EvDyO0nVYL9+NdbtFvgs0DLu7OUtCAv/ItoxIScsKR341BdpPU3u+pthSypR+0tAe+TKvdEp0EnBdXWzuEcm7gLXykq1Tj2yMeObgn3Y1bAAhnSHmS7EJSUChgVByxIX9KSUMpG1SWawyamUmBckrLfEdX016mPNrFz6WbUZqt6edN8145vS9jnqk34OOWZsWViVOF6zAF0419QC23rVf7Auec3q/jMkNNnqCW6HcgR2YeQmwu126AW5vMqmU0YycOf7H6nUGOxPq74uQZHag+mZx4FPQY8WNhcKb4svi8KRiMeqHpHVEuBTS9N9A4LYIR6PFVLilTb9Xc5mkGImFpQ7cPJkpxcWGx8Nw==
+X-Rspamd-Queue-Id: 98919100014
+X-HE-Tag: 1776887231-410967
+X-HE-Meta: U2FsdGVkX18PVc3/ZyI5OmQNxQgkR7Ylo1Y+qvYb34kjufDCLgyg52Z7lYqmhYLmrV3Z/Kv4/Xn5jKW40rqvacRcUfa/g/T3NKpDO2X22YLJs0vvblxR6uM7tyWfS/sZz6RrpS4Owq5+6gZqXRCcSso/ucMYOORWGz/3B6INicakJRMJAGuBqy4BX/7KO0QIhnAy/VLrAPCe7SJ9eVueTASogyjtl51UecupPBK850YEKOUkQ7KKyDHb3KePVziaXIzFUCkCa34LaGNkqpfteDILmeJ9DKyawjOTtOlgq+7VCNq/WG2wFEX9lGSTjjbsYk9xMBSygwGi93IpAEByepVDCxeKpReG6f71fHtHFecKqBG5fO0X70oVoqRIOmq//6M0gyEjLxZwunIFyDJmn2RSbBX0jxjvFsmqBZjuJG+IQeDYL/sRZzNfZaaTWGvt8MhmuWH5JnsiqamRcCRDbu4vEjh7CJupALm2u8p4Y4fLjMtK61uVzB8NLRvuh+kgdgH6HkoXaXGdiJMtE7kCYKGPsTJ5CwvDpN4DW9sx+adc5gL9bh7Xt+Re8qWACgUYmWfoL/+NdEznJtrpjZz1cIminsTwusipDSG0cWBZtseY/IUpS1J5vLbxP+iW6PYrLatuzqEOVtSPc9zvcFnZidp64BPa1VRTu2TUC5U0Np1GLXSCZQWNyPIFEDuKqyKyti41srYN7MNSdoD0bq+efe5wuhCMVqTq44HTh6bIJqgS9K/RUQWs/LF9LCl3jUjO+0qmQrS1ZL+POk4+V2T2F8IAeDoBuW/DCo3VOo0Ubfb+Z24RCV8DUStrB/Q1pe3YbsBhhWAQQKwLf64PcPxC9iyIqmTVr8/wPar3TiCaRzvIoJrBB1IrcYwdGiTjhgV95vaSizGnyf4eFKnF0SHxm9j6gZLvnu2tdr9mJE8aLevqptL8Wke64fA67u1WsskZTnF4jTMecOQz9HgMO9X
+ 7aEW5a/p
+ fkF3NREhhueCWg127SiDMkqJzc/yDsM9OtOO2KgwXQktK58aBOACQ8FVnUqhZOW+YH3QsfT8iO/91lekeXfcNWN6iR+0zbwdAIguoHuDC3lcaj9TWYqBcOs4MJrhRJZSyd//1hd3xaaPF0jTSwUSEPcPgjp4qD9ivISV4V4SRqKjtT0HP5lW5FQPO4QMWg8uIqDidJYtGK5Kw9nCLvHT5WuZz2sr3q5QxJf5pR/fkmafxPYnJI9oSYTVl2kpm/sz2FWWHcmB/ylIXX1cYjKZAT2oWwe+Tzz7cDtyb9T0nQ4TTmNX2pBn51bwINbUmNe5DhZRw+4zh4fVjgQNYhN3fYH7VhVxIgk0iebEacFUeXz1ecjM/i8BdWTAzSMn+1Fv8FGFtL+bjPwU8G4phpPmy0vn0xijmFs+ZymzOcue1w7mTkdoZ1ojGb9iBLuZsLmxueZPA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,51 +150,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22 April 2026 20:03:33 BST, Matthew Wilcox <willy@infradead.org> wrote:
->On Tue, Apr 21, 2026 at 08:25:24PM +0100, Josh Law wrote:
->> Hello, since I'm not coming to LSF/BPF because of my age (aw)
->
->What is this nonsense?  You aren't coming to LSFMM because you haven't
->requested an invitation.  If you had requested an invitation, you would
->have been rejected (because we have limited seats and there are people
->who are far more qualified than you who did not get an invitation).
+On Tue, Apr 21, 2026 at 06:01:10PM -0400, Michael S. Tsirkin wrote:
+> Thread a user virtual address from vma_alloc_folio() down through
+> the page allocator to post_alloc_hook().  This is plumbing preparation
+> for a subsequent patch that will use user_addr to call folio_zero_user()
+> for cache-friendly zeroing of user pages.
+> 
+> The user_addr is stored in struct alloc_context and flows through:
+>   vma_alloc_folio -> folio_alloc_mpol -> __alloc_pages_mpol ->
+>   __alloc_frozen_pages -> get_page_from_freelist -> prep_new_page ->
+>   post_alloc_hook
+> 
+> Public APIs (__alloc_pages, __folio_alloc, folio_alloc_mpol) gain a
+> user_addr parameter directly.  Callers that do not need user_addr
+> pass USER_ADDR_NONE ((unsigned long)-1), since
+> address 0 is a valid user mapping.
+> 
 
-Sorry. Yeah, didn't realise till I googled it.
+Question: rather than churning the entirety of the existing interfaces,
+is there a possibility of adding an explicit interface for this
+interaction that amounts to:
 
+__alloc_user_pages(..., gfp_t gfp, user_addr)
+{
+    BUG_ON(!(gfp & __GFP_ZERO));
 
->You already have a reputation as a liar [1].  Don't compound it.  At this
->point I've tentatively assigned to you some other nasty character traits.
->
->[1]
->https://lore.kernel.org/linux-mm/cea99016-5407-4392-9b7d-2e6a994f550f@lucifer.local/
+    /* post_alloc_hook implements the already-zeroed skip */
+    page = alloc_page(..., gfp, ...); /* existing interface */
 
-The "bot" thing has been disproven [1]
+    /* Do the cacheline stuff here instead of in the core */
+    cacheline_nonsense(page, user_addr);
 
-About the whole trust thing. I'm working hard to get that back, sorry
-but no need to be harsh.
+    return page; /* user doesn't need to do explicit zeroing */
+}
 
-I'm working with Steven here to try and handle the social side, bare
-with me here since I'm not perfect
+Then rather than leaking information out of the buddy, we just need to
+get the zeroed information *into* the buddy.
 
-[1]:
-https://lore.kernel.org/all/20260402093410.040423b1@gandalf.local.home/
+the users that want zeroing but need the explicit user_addr step just
+defer the zeroing to outside post_alloc_hook().
 
->> (And I'm more than aware this post is more mm focused, but I'm
->> representing lib :))
->
->No.  You're not.  You sent a presumptive patch adding yourself as lib
->reviewer, and that was also rejected.  You don't have what we're looking
->for in a maintainer, and you're starting from rather further behind than
->somebody with no record.
+That's just my immediate gut reaction to all this churn on the existing
+interfaces.
 
-No, not in the maintainer way. As in like me being patriotic for the
-directory 
+Existing users can continue using the buddy as-is, and enlightened users
+can optimize for this specific kind of __GFP_ZERO interaction.
 
-Let's please please please not cause a argument here. We can agree to
-disagree on things. 
-
-(Cc: rostedt@goodmis.org because I said his name.)
-
-
-Thanks!
+~Gregory
 
