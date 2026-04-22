@@ -4,75 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C23E8F94CD9
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 07:27:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E36F94CDB
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 07:32:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06E066B008C; Wed, 22 Apr 2026 03:27:53 -0400 (EDT)
+	id 7A1196B0088; Wed, 22 Apr 2026 03:32:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01ED06B0092; Wed, 22 Apr 2026 03:27:52 -0400 (EDT)
+	id 752316B008A; Wed, 22 Apr 2026 03:32:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4F9D6B0093; Wed, 22 Apr 2026 03:27:52 -0400 (EDT)
+	id 6408F6B008C; Wed, 22 Apr 2026 03:32:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D20A66B008C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 03:27:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8589BBE592
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:27:52 +0000 (UTC)
-X-FDA: 84685362384.25.65F25D8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 521956B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 03:32:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 012BD13C24C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:32:53 +0000 (UTC)
+X-FDA: 84685375068.12.55B66EF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A186D40003
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:27:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LSO7R61w;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1B9EDA0004
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:32:51 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UWn5Lipx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776843172; a=rsa-sha256;
+	cv=none;
+	b=qUitN3w9xV8CNkof4HxwFWw2RDfzPmF9TlbJHnxKjJqLUQiuo/m7npffvX4DqmYKC9kh+6
+	xbWQtXF6Ymw2o3YqT24inyRwMwXjut3CZ2Uo79DHgf1cFAE2xutxJqKHB0N9Sdj81letFU
+	hP4mVptNg/1O71QYfAMDpPadA/hU9E8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UWn5Lipx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776842870;
+	s=arc-20220608; t=1776843172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l8CwnswrIF3HDiZpCARJrUz5W8Vb/5OI5Z6IZXW/er8=;
-	b=12pSqzLmYd0nbn9QZp7+5WdoJ26dMX92iJGxTPTwwwoMD+Hw6OK3wUHlg3Wk/+/cDdjqdr
-	Dj118hcAKvuFOVOb8wc42BXjuw8pVEwS6n+4vnPmzlbiqkbZiMr4zyNfdU+rbLXP6AKZIA
-	aDt5N77l9uX2O0RAzU1Fs60EdK53VDg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LSO7R61w;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776842870; a=rsa-sha256;
-	cv=none;
-	b=pC/el3iC4E1BfWN/VRSdjICuljpDZ/k5ZvaT/+pz/6Av0mNsWHkw12o/gGPhpqAdnoRtxz
-	h+gLJQwegWYIpxqS2H80Vs7XWCq54UCKgs3F8jhUGSZC7ND6GI4IU/qnir264vcmRpZQWS
-	uYx2h3O/xvXHJJHEAigT8Mh0VSDpHPM=
+	bh=SG3U5Kc9NnIbl1SNYavcCahtb0w4f/92raszKTt9OvQ=;
+	b=LuWnpXiAwTLbRJ2JFNioeuq0KWlOp+++CnfOGkwuz5fG+GyEFF6DcS18V+/kcz+iuF4Wy9
+	aKS6kbbfCOKHO+280lCPdmBHYeyI09IYHNp0kt9lBs9AvIrBaavnjBtI2tRwQq3NQqmiu8
+	M877cJY1BYIwge8vxZxL0tpQdtZRIBQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 723FA44379;
-	Wed, 22 Apr 2026 07:27:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E814C19425;
-	Wed, 22 Apr 2026 07:27:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BEF74401A;
+	Wed, 22 Apr 2026 07:32:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5DFC19425;
+	Wed, 22 Apr 2026 07:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776842869;
-	bh=kyW/H7rmWbDFYKIRV2cP1lpKsHg1XGw394/LBXDvvCE=;
+	s=k20201202; t=1776843171;
+	bh=tmYp3b+r6xGGwWY4X9h42ZuE85+tMVe7ly8mid2UHH8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LSO7R61wL+aLO6KbAwe0jWoNWM1FAzOzCMNhg8aS2Yo8Z6Sh2e6ZhiEgV6gGZp+7g
-	 TKvjymHtBxm13ODqKbgk/8bN+82kmzGGzou1qqNE8IFrtUtjc1Ov1XSqjTClGDsYki
-	 XidPsUY42Fs64GVSKn80bxAWxBhpjxni5k4O/Ta211VYccQpQpyNpfCvZLZL0f/or1
-	 Sukjag9jvAqv3c941+wWOrAp1H6wCPU01831ivgBotybb7Qoz+CPijLK4zEcLx45KZ
-	 IQldhlbIaJrrhBfppaWGoVfa/I35WQo0MMLtRI5zQtXTHHogdNsefN0FtZkdXhvhV7
-	 Ek8K4hCZDCNpQ==
-Message-ID: <286425bc-e2a2-4e29-abdf-666e798e6cf4@kernel.org>
-Date: Wed, 22 Apr 2026 09:27:44 +0200
+	b=UWn5Lipxf+Sc1LCZpRjv0NROKKlwHt4nvhn6Jbh3rpy+EjEImQpTWKcw4prS4+SfI
+	 /ShG9UPAJu6u1N7JAsS7Y3YjJERZ7bT/uFcp+5rA3pGXfO4+rBoiJvSl4OBsHNfINk
+	 OSOirgRW4F6GVQYKkNTxwZbhZzG3W8uR+wkBsJ2UR7KeGT34fe4Uncqg8+LTOXXuK0
+	 iVzDTXC37AbkRlxsXuXQCRyQMCSSIEeUo74D43jkEY7rR+Q9oOrCvYO9j2ETn+i/gZ
+	 Y/i5NoODH8hLdiT6+2JEfX+Q1KV+I28bq3uh676yDdct4zQeyU3wGGmtI+hKX1aU+c
+	 Q7UDCrUTZn9lA==
+Message-ID: <51c8ef87-761e-4357-a99d-e5d60cf77ca1@kernel.org>
+Date: Wed, 22 Apr 2026 09:32:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/hmm: Add userfaultfd support to fault handling
-To: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>, jgg@ziepe.ca,
- leon@kernel.org, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <177499585916.169073.8313365481186071940.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
+Subject: Re: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge
+ zero folio with init_on_free
+To: linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Mark Brown <broonie@kernel.org>,
+ Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <177499585916.169073.8313365481186071940.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
+In-Reply-To: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A186D40003
-X-Stat-Signature: 1c47q4f6i466ynnqfpt5cdeuksm56ws4
+X-Rspamd-Server: rspam10
+X-Stat-Signature: 73m337h113ag1daz93n9j96izmju48n3
 X-Rspam-User: 
-X-HE-Tag: 1776842870-359436
-X-HE-Meta: U2FsdGVkX1/Vj/YgJrZU7nFuddsF8QXathe23wvQKggIeOyDRw7/NspmtMD1l/Z+kmW2wahaK2o4MJhLGGNiyqLB078XUFPpJxHoTMnmQkVOVD++NDGQ+6TQSvCFmJTV/qthmrgB3ltV9iADjBIjzmZCUsQlL94f3u+1z0nRN+cJY682PlMILY4BWQw+OzSMIMAAnrngjPxvbaZdcE/Qu9E6SYMM5Eg7IWl8PS0i2sbjN131n3K575Wh5TyyIVDt68yhshoI+z8tsFgs0QUqHn5fi5tpseP/xgPtZL63dXQedYz/c3fN29HsZouzOVqMI88fnWS1lfGVk2zRQfmk8lPEqAK3mFwzrjxJjeXSxIk3VkDfj/x/3tuv6EUqDhyon4hBrKL+u6z82DgoVyukQI5NXI854VD5WHiT6c1s2evN5RwnvMFZhhXxnAzK5q/hfKKX22zcpZYV1gRAl2AilL1s/Ukac1J+rh5Bsjt3qrOq564RIfyb0fgoUNzcRzOPgclX7XDBWfAmY4tjszQIDBOGYN2Hed5mQlHliAzHTFZzaKFxFwxK5G62qdmU6R+5t0OZaNQHRi1ICXV4qtCTsSBo/RmEWjvgMiP81VyCnTK0qQoN1YxBDqdF+mmc3RbHzZYYBebL5ORBlPT9lGrGMUcPxEp/ipq2V2wF316yfm9pwF5DFdX0iDKoJk2TrzDngJ6ykUBxMQGshk08OXsu7K6tvkeEIZbue6068HXaZwYDvxsuwoF5LyNNIUqivhU5SnTGwEVnhs2IWgNFrKl9rnlky+bVcKwiQQbmCXrxZSnpQx38ALaKw2lw7FixESTkmoDGbRJ7Zi5USi5pb8aMCnatxIzRb5AAe1Leszhy6tJUzWSAkMEPvYfCjL/V9AKW/qgtvGVFUtVVB1ZZhZIt+RcIUyWuG35BQlcsFzS4Ozkxwxxf0JrbJ3RxiS6Y+C1+he2NKI8EG80NwKtOdrD
- quCyX7oC
- mK4L3QR63yXoELO5lvOTCOHp+IVU4SstoO2syqkgeXNNOp01tEeYjuzK7YVTVLAi/bYK9rrIWXWOCxLvCEH1tATabm4QuI3/GDHfUivWZlg9QAQahaIR/R94uGevDq1g7HC3h7wNR9JBAZREnhGFeDkLTd3EFV+lrCqmZFI3lrZgjwIfe5pZMvqxOQf+zoExS1hV3SsoqmjzP1I380WkXqB2J6fIX15hLeon/Mn0HMlFuE61Vtmbgi4m/FZcTycZKqppJ6u4BCzLIA/kTOegcEralYQ==
+X-Rspamd-Queue-Id: 1B9EDA0004
+X-HE-Tag: 1776843171-27219
+X-HE-Meta: U2FsdGVkX18n89wVpORNByMqkesNxhOuDxrYrlkVMyhetPGbhUG5HPAto+V1KllZKHtmDLnQlHMoiv8C5kAYVk2wHDypquS/R39tldTc7SVyrZdze5OrIS8B4nNzdB4BCObRyMJJyrO9A0vqBk4w8LtfpxOayq+AwQDnnFEJSftBFpSP8JnLLzgoCvP3fE6KzH2PatOrAU+aKQL1C5/D8bEy/Y+KVbKXKPZXSRJ6KWGX2ueOJhDCnFqfSBFmmXCy10U/NYVZf8HQLBOU+f5Pb/6jFP0AKzs201sN09JUmo226nIZRuLmW+NyyW3juIJfewJ1sj6I4V9jq8OaAIs53PRvp2TrjJokFyrNGYWwRKf3iVP4Mi48SEKouRifsg6hQqgkQ6Y7No/J4jbSyMvUSGMIXb6FtEI6jS87qt3J6QgXON0cRq1+B2raHIBQSeY6FeLo4B186pEmytbXLock6XfNS1ewg9SwWXK9X1aarmiHjPNhGUa3AgQWA08SbJZGItYj9fBWtxexLKy/ER4IrSJVbvagLGBxk5lyfsKyJe1LLyptQcvNHbL4DH5wGlbLIbkfMEm4L6Q9bry6vtqrWK//WFss/jVlxRsNFxP1gj/Xn2rsl5KDjOAIeMV+9f33AKTt2JPIkOWSuI/kZFfGKRj0V7wohxPZu/J4QCxwDkpi8CoRN1FvGriS1njOsQXgop4sSZmH1lLvENoe+tv0wy13QWtI5HufYUaKkLWsE9yf2kaIR5tFA3rI2+dTTxwrbUyQ2VMcjMbXtHAUCpPN2aW7A60+OKKnIs9EISXVvInaAt9I6aWtx1mK/417sJ63sx+wbeqAo1UIZWACfkUSvHmOp0QtwuEPC+53rlh33i44gZzviR3Sj0w70c+7LiGkGc+jKpwFoGGMdlQVa4PZb4yuhSV1eJqbk3wAF4zMi6jY7iE6e81OJNu2mN0CaVVpOvFUlnbRRT1WiFHw+jY
+ 3SRTJUvF
+ NYdj7YfkR+Ddkv2Ydk2jRxxEwjHcvS046J415O7TIZ2x45TFZ/eHllrEewVqMqiuqe033vppi30j5jcMMjlv+2xaztquhLvjYS7IIcljEAeOZa/TjIf2aebSn5VQqaspGrcRrahAATdR4alQ5RAH7SU4SWNkEhyhKxMplujkbdk3pKyEbh+e9lYJvRs1wBuG6vG1vPtUpFbpUo6xUjM5EBolKLTG4bGj4W4ts/5YkWtOEbotQQlL89I2etW+RutbLWNKMNCX+i8X4MFJkdLwE4m6iPY4U0vmm33AVqRtQtTCiqlOeTpTOcohJvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,66 +146,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/1/26 00:24, Stanislav Kinsburskii wrote:
-> Add support for userfaultfd-enabled VMAs to the HMM framework.
-> 
-> Extract fault handling logic into hmm_handle_mm_fault() to handle both
-> regular and userfaultfd-backed mappings. The implementation follows
-> fixup_user_fault() for handling VM_FAULT_RETRY and VM_FAULT_COMPLETED, with
-> a key difference: instead of retrying or moving forward respectively,
-> return -EBUSY after reacquiring mmap_read_lock. Since the lock was
-> released, the VMA could have changed, so defer retry logic to the caller.
-> 
-> This approach is inefficient for userfaultfd-backed VMAs, as HMM can only
-> populate one page at a time, but keeps the framework simple by avoiding
-> complex retry logic within HMM itself.
-> 
-> Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
-> ---
->  mm/hmm.c |   40 ++++++++++++++++++++++++++++++++++++----
->  1 file changed, 36 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/hmm.c b/mm/hmm.c
-> index f6c4ddff4bd6..d04d68e21473 100644
-> --- a/mm/hmm.c
-> +++ b/mm/hmm.c
-> @@ -59,6 +59,35 @@ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
->  	return 0;
+
 >  }
->  
-> +static int hmm_handle_mm_fault(struct vm_area_struct *vma,
-> +			       unsigned long addr,
-> +			       unsigned int fault_flags)
-> +{
-> +	int ret;
-> +
-> +	if (userfaultfd_missing(vma)) {
-> +		struct mm_struct *mm = vma->vm_mm;
-> +
-> +		fault_flags |= FAULT_FLAG_ALLOW_RETRY |
-> +			       FAULT_FLAG_USER;
-> +
-> +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
-> +
-> +		if (ret & (VM_FAULT_COMPLETED | VM_FAULT_RETRY)) {
-> +			mmap_read_lock(mm);
-> +			return -EBUSY;
-> +		}
-> +
-> +		if (ret & VM_FAULT_ERROR)
-> +			return vm_fault_to_errno(ret, 0);
-> +	} else {
-> +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
-> +		if (ret & VM_FAULT_ERROR)
-> +			return vm_fault_to_errno(ret, 0);
-> +	}
+> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+> index 6c75df30a281..d79049291b1a 100644
+> --- a/include/linux/gfp_types.h
+> +++ b/include/linux/gfp_types.h
+> @@ -273,11 +273,11 @@ enum {
+>   *
+>   * %__GFP_ZERO returns a zeroed page on success.
+>   *
+> - * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
+> - * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
+> - * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
+> - * memory tags at the same time as zeroing memory has minimal additional
+> - * performance impact.
+> + * %__GFP_ZEROTAGS zeroes memory tags at allocation time. Setting memory tags at
+> + * the same time as zeroing memory (e.g., with __GPF_ZERO) has minimal
 
-I'm surprised that there is userfaultfd_missing() logic required here at
-all.
+As pointed out by AI review s/__GPF_ZERO/__GFP_ZERO/.
 
-What prevents us from always calling handle_mm_fault() in a way +
-handling return values, such that we will just do the right thing
-independent of userfaultfd_missing()?
+I assume this can be fixed up when applying.
 
 -- 
 Cheers,
