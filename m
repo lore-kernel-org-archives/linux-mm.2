@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E36F94CDB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 07:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B196CF94CDC
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 07:44:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A1196B0088; Wed, 22 Apr 2026 03:32:54 -0400 (EDT)
+	id E690B6B0088; Wed, 22 Apr 2026 03:44:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 752316B008A; Wed, 22 Apr 2026 03:32:54 -0400 (EDT)
+	id E1ADE6B008A; Wed, 22 Apr 2026 03:44:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6408F6B008C; Wed, 22 Apr 2026 03:32:54 -0400 (EDT)
+	id D09256B008C; Wed, 22 Apr 2026 03:44:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 521956B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 03:32:54 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 012BD13C24C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:32:53 +0000 (UTC)
-X-FDA: 84685375068.12.55B66EF
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BC4B16B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 03:44:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 738D413C3E2
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:44:09 +0000 (UTC)
+X-FDA: 84685403418.19.5FEC175
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1B9EDA0004
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:32:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UWn5Lipx;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 698F180006
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:44:07 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FtOJQCgk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776843172; a=rsa-sha256;
-	cv=none;
-	b=qUitN3w9xV8CNkof4HxwFWw2RDfzPmF9TlbJHnxKjJqLUQiuo/m7npffvX4DqmYKC9kh+6
-	xbWQtXF6Ymw2o3YqT24inyRwMwXjut3CZ2Uo79DHgf1cFAE2xutxJqKHB0N9Sdj81letFU
-	hP4mVptNg/1O71QYfAMDpPadA/hU9E8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UWn5Lipx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776843172;
+	s=arc-20220608; t=1776843847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SG3U5Kc9NnIbl1SNYavcCahtb0w4f/92raszKTt9OvQ=;
-	b=LuWnpXiAwTLbRJ2JFNioeuq0KWlOp+++CnfOGkwuz5fG+GyEFF6DcS18V+/kcz+iuF4Wy9
-	aKS6kbbfCOKHO+280lCPdmBHYeyI09IYHNp0kt9lBs9AvIrBaavnjBtI2tRwQq3NQqmiu8
-	M877cJY1BYIwge8vxZxL0tpQdtZRIBQ=
+	bh=kmS38NUQHeJeqrUoD5gSFHYpX1o367qouos4Oe2M4/Q=;
+	b=OqqUMsom/TQOYj0DkJKNFhV5PEHkxUcPwS41bvMMobPd/6o7QoEMvKhNLsezV1p1oFFEVn
+	l0ORe35+MBh03+IdMzhUhQYe2OOI9ttE1DbCvDXyGvOgpJWhWCGKPJjAkuxiF3TIiM/msM
+	2fR6K33VRGspepKtL9XLnheG5n1VAw8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FtOJQCgk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776843847; a=rsa-sha256;
+	cv=none;
+	b=LCYz96DVhdR0vKCf/zkXfkgo4k5sMeJ2vbGMEdaZxobp6muEAEBCQNRsWvLr0qLbeoZ0gS
+	hwwDFUkYHW8QB/wyselfdqyaO61ByDwbiLSsdA++uFNaQ1AygIPyW7zxtBtizcb4CHkFpV
+	GGju4Um983CwloDWt1QCyk2aEbNqH0g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BEF74401A;
-	Wed, 22 Apr 2026 07:32:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5DFC19425;
-	Wed, 22 Apr 2026 07:32:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 39E1340B1D;
+	Wed, 22 Apr 2026 07:44:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C9AC19425;
+	Wed, 22 Apr 2026 07:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776843171;
-	bh=tmYp3b+r6xGGwWY4X9h42ZuE85+tMVe7ly8mid2UHH8=;
+	s=k20201202; t=1776843846;
+	bh=vWLjnWt7YlFAE9bRILiFkIEkqtF0XExovSeFfrogYw8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UWn5Lipxf+Sc1LCZpRjv0NROKKlwHt4nvhn6Jbh3rpy+EjEImQpTWKcw4prS4+SfI
-	 /ShG9UPAJu6u1N7JAsS7Y3YjJERZ7bT/uFcp+5rA3pGXfO4+rBoiJvSl4OBsHNfINk
-	 OSOirgRW4F6GVQYKkNTxwZbhZzG3W8uR+wkBsJ2UR7KeGT34fe4Uncqg8+LTOXXuK0
-	 iVzDTXC37AbkRlxsXuXQCRyQMCSSIEeUo74D43jkEY7rR+Q9oOrCvYO9j2ETn+i/gZ
-	 Y/i5NoODH8hLdiT6+2JEfX+Q1KV+I28bq3uh676yDdct4zQeyU3wGGmtI+hKX1aU+c
-	 Q7UDCrUTZn9lA==
-Message-ID: <51c8ef87-761e-4357-a99d-e5d60cf77ca1@kernel.org>
-Date: Wed, 22 Apr 2026 09:32:43 +0200
+	b=FtOJQCgkPikLqgGI3awmAu+n1qOETDl8CpqMIe462CXoOjXsqw8gr9+cVQWpR2zGd
+	 fLipr1uIKIEbW5txQLdqkrZYfGwsVxbLFRbGDziUpKe8bg8x21czlzwDX/PPypX3+C
+	 mdhyg2GiToALg5OZmaQAb33vjIjDYNO5yUDrZWQ3G7mpHZx0r/WC5100WlL/bDqbQc
+	 p8qboliNzdCWFbxNfQRb0hziRMjOvU0xFhlFMX6fVp0m0LcKgZad10aKikqCGp7jYZ
+	 kcGEjng29R2OhnTmny1bwQu5ADqslBUj+xvEWyttmeYiMTP2PJihGk26iExz5Q2pn9
+	 zJe6KEK3DuPYA==
+Message-ID: <177d0a41-5267-41f3-bc77-415b756ea4bb@kernel.org>
+Date: Wed, 22 Apr 2026 09:44:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge
- zero folio with init_on_free
-To: linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Mark Brown <broonie@kernel.org>,
- Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
+Subject: Re: [BUG] WARNING in workingset_activation triggered by KVM page
+ fault path on Linux 7.0.0-08391-g1d51b370a0f8
+To: Zw Tang <shicenci@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "hannes@cmpxchg.org" <hannes@cmpxchg.org>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "seanjc@google.com" <seanjc@google.com>
+References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
+ <e48748ff-0fcd-4561-9958-124dd853e70a@kernel.org>
+ <PS1PPF7E1D7501FEA2B54606827E0DE1805AB2D2@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
+ <CAPHJ_VKsVzyYzZ5ZnBkNbYLEMXDYL5x+7jfyUxhcwT1j4zPXOw@mail.gmail.com>
+ <CAPHJ_V+L92DxzEB=4+Tj+C8MNBW7LM35xWYXAoLhHqU5p2nxfg@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
+In-Reply-To: <CAPHJ_V+L92DxzEB=4+Tj+C8MNBW7LM35xWYXAoLhHqU5p2nxfg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: 73m337h113ag1daz93n9j96izmju48n3
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 698F180006
+X-Stat-Signature: wyhapm4ruxjsxhq743b7yoajaoh8bycf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1B9EDA0004
-X-HE-Tag: 1776843171-27219
-X-HE-Meta: U2FsdGVkX18n89wVpORNByMqkesNxhOuDxrYrlkVMyhetPGbhUG5HPAto+V1KllZKHtmDLnQlHMoiv8C5kAYVk2wHDypquS/R39tldTc7SVyrZdze5OrIS8B4nNzdB4BCObRyMJJyrO9A0vqBk4w8LtfpxOayq+AwQDnnFEJSftBFpSP8JnLLzgoCvP3fE6KzH2PatOrAU+aKQL1C5/D8bEy/Y+KVbKXKPZXSRJ6KWGX2ueOJhDCnFqfSBFmmXCy10U/NYVZf8HQLBOU+f5Pb/6jFP0AKzs201sN09JUmo226nIZRuLmW+NyyW3juIJfewJ1sj6I4V9jq8OaAIs53PRvp2TrjJokFyrNGYWwRKf3iVP4Mi48SEKouRifsg6hQqgkQ6Y7No/J4jbSyMvUSGMIXb6FtEI6jS87qt3J6QgXON0cRq1+B2raHIBQSeY6FeLo4B186pEmytbXLock6XfNS1ewg9SwWXK9X1aarmiHjPNhGUa3AgQWA08SbJZGItYj9fBWtxexLKy/ER4IrSJVbvagLGBxk5lyfsKyJe1LLyptQcvNHbL4DH5wGlbLIbkfMEm4L6Q9bry6vtqrWK//WFss/jVlxRsNFxP1gj/Xn2rsl5KDjOAIeMV+9f33AKTt2JPIkOWSuI/kZFfGKRj0V7wohxPZu/J4QCxwDkpi8CoRN1FvGriS1njOsQXgop4sSZmH1lLvENoe+tv0wy13QWtI5HufYUaKkLWsE9yf2kaIR5tFA3rI2+dTTxwrbUyQ2VMcjMbXtHAUCpPN2aW7A60+OKKnIs9EISXVvInaAt9I6aWtx1mK/417sJ63sx+wbeqAo1UIZWACfkUSvHmOp0QtwuEPC+53rlh33i44gZzviR3Sj0w70c+7LiGkGc+jKpwFoGGMdlQVa4PZb4yuhSV1eJqbk3wAF4zMi6jY7iE6e81OJNu2mN0CaVVpOvFUlnbRRT1WiFHw+jY
- 3SRTJUvF
- NYdj7YfkR+Ddkv2Ydk2jRxxEwjHcvS046J415O7TIZ2x45TFZ/eHllrEewVqMqiuqe033vppi30j5jcMMjlv+2xaztquhLvjYS7IIcljEAeOZa/TjIf2aebSn5VQqaspGrcRrahAATdR4alQ5RAH7SU4SWNkEhyhKxMplujkbdk3pKyEbh+e9lYJvRs1wBuG6vG1vPtUpFbpUo6xUjM5EBolKLTG4bGj4W4ts/5YkWtOEbotQQlL89I2etW+RutbLWNKMNCX+i8X4MFJkdLwE4m6iPY4U0vmm33AVqRtQtTCiqlOeTpTOcohJvQ==
+X-HE-Tag: 1776843847-353842
+X-HE-Meta: U2FsdGVkX1/79jakPHVeCgWkXntTs/vm1viwXt3gxJkiNIRYQbW/S9Ix+qX/rzPUwN6jQnOL1D7f8lblT9U+SydpF9RMqGZ8hueAAG3IZCwILpUVdjyEdTYUeREVc8pi4nqCpowizgUZLt5KG/8rEQHM3ePouWabFsEJgDa1nY6H11mNi0OD1DXA23QVxIKJGtwodsBwJ7abTJn3P2kWw2bAgeTvN+B8djYpjWEnEnb8SmazMJmW4oh63FjS8WPGuTjdpuGRQLK9akM7BfKfmUz3umFfteZ81AoPnpLGNmWE0aZCpIEp+nrkkrTiRvHvaYnjVgLGwze/buiw6bUakIr221h8PEMfu6Ve1v8Geg0NayPjfC9zOycYtk0RIYY7ryKZ2VQvkSPtdwVlNenIcqEfVY9ZVkMka9BtYXhV+Ezn3gWdLHRv9V5Ej+J7l0sLmA3XOBdeUhFqxB014eMEsZEfnAXQtZkzVDNCsi4umQwPMB4PLvyaBkhDzuorVkQjDe1aD/yS/5SigO90KT8hveDAZ75HlH51hS7kLRpW740KV0mIzTyNq2tHsNpGLkFVicFMZUgTGQgZKY146/3ZK5jTBjxlcF/PeVrE72vPcAiAEsPo7GrLI0g2kH8ENp4dfqRA42wBZ4Ywpoe/grQc7F3ek43EmmeD/WS8GOpePd6YLryZOv7ucC9tSB0cBK+dt/fbPUt9YiOZw+kVru7nA+00C5hDb5MunUPcyF395iEd5Dv6tlv3zvfACAgeftiot4Skxfwu+wwdxiZF2udRYl7eN6aUjV9wuoi40gqG2M8p5a/Pq7MMRRNhRZIhZD3A5Iww5uoWnU8vvVCt0Fy6CSiR+suuCCg4xGpjBB7v20pUt5jbV1FgyWyui10pdPKJv7HD4Eg+fSaSmDhGmFwGShyAxvL8N+CJOi+lneKY6smKaQ6NwyXK47yEN/ce3m/RMwFGsAr1SKh0RrDoiOv
+ soPLSCS+
+ cVS+TBdhN21JZxRWwV3lEKzGY7CApxsraMRD9BJy4Q+oDRKBvRXmVstWWMs/WzrYxgqrzmKqfGjrCARy3ORacPUlppZURW9YsRpcm029PM5/XAtlttTZt9EMUHYJpX/AS209SZ8EVQKRNrVguObSiSnIIDE4ywBMjEX2cG7qkXj8V+4+oaZfGAFbmGKIJLuXHqH5Fn1eYdb+0OV7/6IopbeC+axXFRNwvdhu/GoR4nlQr/7QtAlp8BU68nLikgAgH+0/wxBaiXxdWFVtMXTAfIb30qa68EIJHFK0sR8fGY0kxmckSAEn8PN7i00ev1L0g2n9EY7bYuwiztf8yrdbwPSMt1IG5O7uRGsXdYbdinEPxJ+7t28SZtncMMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,27 +146,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 4/22/26 04:06, Zw Tang wrote:
+> Hi David,
+> 
+> Thanks for pointing this out.
+> 
+> You are right. The commit id I sent was incorrect. I mistakenly used the
+> git describe-style suffix g1d51b370a0f8, but the actual git commit is:
+> 
+> 1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2
+> 
+> The short commit id is:
+> 
+> 1d51b370a0f8
+> 
+> Sorry for the confusion.
+> 
+> I am also re-checking whether the kernel image was built from a clean tree
+> and whether there were any local modifications when the crash was reproduced,
+> so that the reported source line numbers match the exact build.
 
->  }
-> diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-> index 6c75df30a281..d79049291b1a 100644
-> --- a/include/linux/gfp_types.h
-> +++ b/include/linux/gfp_types.h
-> @@ -273,11 +273,11 @@ enum {
->   *
->   * %__GFP_ZERO returns a zeroed page on success.
->   *
-> - * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
-> - * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
-> - * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
-> - * memory tags at the same time as zeroing memory has minimal additional
-> - * performance impact.
-> + * %__GFP_ZEROTAGS zeroes memory tags at allocation time. Setting memory tags at
-> + * the same time as zeroing memory (e.g., with __GPF_ZERO) has minimal
+Okay, on that tree include/linux/memcontrol.h:381 points at
 
-As pointed out by AI review s/__GPF_ZERO/__GFP_ZERO/.
+	lockdep_assert_once(rcu_read_lock_held() ||
+	lockdep_is_held(&cgroup_mutex));
 
-I assume this can be fixed up when applying.
+lockdep_is_held() would not trigger a warning like that IIRC, but
+
+lockdep_assert_once() does
+
+	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
+
+
+So likely we are calling obj_cgroup_memcg() without the RCU read lock held?
+
+
+kvm_release_page_clean()->kvm_set_page_accessed()->mark_page_accessed()->folio_mark_accessed()->workingset_activation()
+
+... grabs the RCU lock, though, before calling
+
+	rcu_read_lock();
+	workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
+	rcu_read_unlock();
+
+
+The folio_memcg_charged() only checks folio->memcg_data.
+
+So something does not quite add up here?
 
 -- 
 Cheers,
