@@ -4,120 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D88BF94CDC
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 08:05:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0487F94CDC
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 08:14:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9EE46B008C; Wed, 22 Apr 2026 04:05:09 -0400 (EDT)
+	id EBEE26B0088; Wed, 22 Apr 2026 04:14:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D50046B0092; Wed, 22 Apr 2026 04:05:09 -0400 (EDT)
+	id E6F726B008A; Wed, 22 Apr 2026 04:14:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C657F6B0093; Wed, 22 Apr 2026 04:05:09 -0400 (EDT)
+	id D5DE96B008C; Wed, 22 Apr 2026 04:14:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B76E76B008C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 04:05:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C61CC9608
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:05:09 +0000 (UTC)
-X-FDA: 84685456338.01.FE98730
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 88FAD80005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:05:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XXLVkWLD;
-	spf=pass (imf02.hostedemail.com: domain of wangli.ahau@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=wangli.ahau@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BFF046B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 04:14:48 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 640AF13C848
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:14:48 +0000 (UTC)
+X-FDA: 84685480656.22.FE20A77
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CF2F540008
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:14:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=WxCk5+DN;
+	spf=pass (imf04.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776845107;
+	s=arc-20220608; t=1776845686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EgOoLeHSNRmJRchPxzuYzxkblk+pRJMxNj39oO1u7rM=;
-	b=xp3tRDBXvo1jwkd6qfX6pV0egJLq/Md3JEn0Ta4oacJBpPdfR2x+KM5o6ZVYg+YMyDESbZ
-	l61FCthO9j6JEGSfHHdrzFk+b8ITWqEgJy9AJY0z0U4bYPMypmhczUHfb5k/8G3my2xsBw
-	GvukNoUgWM80Ev6BOQ8Qyv/S5AfQA9A=
+	 in-reply-to:references:dkim-signature;
+	bh=Bl8Z+WQHqHX+qQjnRU0ICkmrP9C1SwKb8blByh5RwmA=;
+	b=DpIpvU3W17w+l02cbK6KGSsItieETGeyXvr1ikHdC3vv0Rua6jTBqjDBW5EjfnxygRAGIP
+	1WQw+2sUSYfdoQKJzaAycnq5oNWNqCRD96uTTIjYD2upSEMwZMqk0GMpqXvxnVTtK1f+3v
+	XtVoI2zQEiMRLogf4ReNSl61xMXaQ7A=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=XXLVkWLD;
-	spf=pass (imf02.hostedemail.com: domain of wangli.ahau@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=wangli.ahau@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776845107; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=WxCk5+DN;
+	spf=pass (imf04.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776845686; a=rsa-sha256;
 	cv=none;
-	b=a04wsgpSeflg+nTBOgKSg4ruhAjn+WsUrsNLhT7jz67h2J7bZpBkP3+DNUzp6sWlyvcd28
-	MhvyaXkf+BKP2xT5fUnvZSX8xPbKPpAsb8VCRkrrUQlYjJ7W7XlWbXatsO8+Qq8lvfUKU0
-	Wmza7UkHchvckLVYf5dTlisG0xysH/w=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3590042fa8eso4064262a91.1
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:05:07 -0700 (PDT)
+	b=lfOe4zCpxZRqyKNZHJWswZyhPzTaSlaZhI5AYcam09ODtc1Dq2EVeYQ0r2WRNRrxSse3Ah
+	56eenmra96ArL3KzwRjbSufO4LPaSqG9Cr0rKtaEYN/o0GRjkTdWPw2GjfOC1NpxtvD7yC
+	cAdf7QrG+5zdPa3pqkd2x3ZJPIMA9y8=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82748257f5fso3304295b3a.1
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:14:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776845106; x=1777449906; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EgOoLeHSNRmJRchPxzuYzxkblk+pRJMxNj39oO1u7rM=;
-        b=XXLVkWLDofXVYqPojNyl9MVhuE9Qsh2Pr12EIBWXYDgOTD1x0kIC2B00oqz/XWi/sK
-         SnXPpzeqx2uu/MJuGwNXLlQBMWkEHmaFhm2cAMwA5JBwhlM0Tqwh0zvq2TvZQ5By0Ye2
-         dJl4+oGL5vLJPcIE/9ufSEIhzDy+5RwdQvZxeFmGpSVmDhveQOqm4S70a339XQamjHh+
-         cBt5dRMlGzzYogyprQH3H9IuSffhAQmaANg4cKc7DoDg/HA5f9JV5LT2WM2MgB1gV0Fr
-         nv/4cebfQTwj0VbvSyf/sMWCvDmz8TJ56g5SeUxp0jZPlL1Fqgq9Wt0/iv4nQWCjDgDE
-         RoDg==
+        d=bytedance.com; s=google; t=1776845684; x=1777450484; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bl8Z+WQHqHX+qQjnRU0ICkmrP9C1SwKb8blByh5RwmA=;
+        b=WxCk5+DNroGo/Lyscdqv27ZkreVsDvuKFvSnPdK94zWX+GIxhHsUVDyuIhlJb47nLy
+         S3nnszTt0CIFlvgybyYRSVp8WRul9fW8B+OC4k/KAPDCQaToeU81YPMr05P4Ihow29lQ
+         Ipg6/33MWzc2d6aDIuSOoVKYoD5DBOPe2fJ3He+seCcs4LkwitBAwm8bij3T3DZjAVGp
+         RUDfDNnydNWa2wLW64t5zJU5jD3JfMIIe2DFXqJt0TaJN9H+YuYd7gMbiLn4b4fhEbB9
+         1YskYdzvn0CVnkwPJ4U9z08n5bGh9bCOirEg6x3SsCcVqMITsvesHY8m9P337SywfxY5
+         IRAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776845106; x=1777449906;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EgOoLeHSNRmJRchPxzuYzxkblk+pRJMxNj39oO1u7rM=;
-        b=Ku+BgEeRVnzN6ZWh9Kh3Fy7Libi+5Fd/gHHaRAnPE+9PUdtJh/9v+x1zR+XoAUKO8O
-         O8OkWWOCC/GZBDOP94xjppkwAvBU9+1qWGP4PZNgi6fbBp5/JAcnEhwqerKTLqFPXMOg
-         cQuexe9rhyqWQyXZwLkFGi+qvz4bSwYsNCz61dD/CZ4T6idkc3qNPtruIA9dWknILk1/
-         kDmRihV3fpF7ccKmU1z52rVQK1n6rNn3rGpiOUD6JzX1L4swNuOabv4f1E5Gvjv0bq5a
-         4z4CMwB1MCLXmhC01lakQcc9tok+VqmZ7fHktkWNqLNPXp4dVmbO+Iga5E9uUBLfUEhP
-         H8rQ==
-X-Gm-Message-State: AOJu0Ywl7TmyLZ7uBa4WQLp4xVLtEG43H4izTvpkN5cYae3G2ce+nGZE
-	t1esynVL2nZVcQoJMZ4VnEq8Am8kUymCd2KJijDbPabABueJD0FLUXE=
-X-Gm-Gg: AeBDieuwTns0ODK1NxtywjgyJUtHTOwGuZNM+YCwDeMJsxTNvOKKoDFeQ1NueHwvlL+
-	Ntdl8/1z3Wxi1Y2ZGvQF6SZYKJbqk0zA37UNJAe0/+ueKglynyTajhjDQeVJV/qrt/aq6QtgyTM
-	h/Wk2SkfnCRP8auGjLS3GcizQYW9Uim6mpKWLRlGQkYXt03pw8ycwzIh4gerAELsriGhV7iK2Zb
-	x2w5HTgkbnRgR8q6RWZT/pXNLVASmTMU89+zVIBZ9x8Wp13ktGyo9t5JHnIXgkvgSU9lKYPIibs
-	8Puf32o0IntaIXEJXDTbhIevLFAPsX1B4JPx8tdlLO8PzM9tVFQLfaOC/Iq2AlMWMIweAFamyv5
-	gOy8NdT17ZYRYdBUBHMDNlJH5cKrGd5/t6ff9ApWzd05wTBy9QlIxfTbhKIlObGioakxbnXWXK6
-	Vlfobl6dYL/NHdPNRPs7TKbdXya3UiBpwt
-X-Received: by 2002:a17:90b:35d2:b0:35f:bbc0:e570 with SMTP id 98e67ed59e1d1-36140228e16mr22584055a91.0.1776845106396;
-        Wed, 22 Apr 2026 01:05:06 -0700 (PDT)
-Received: from thoundrobot ([43.154.64.180])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3613fb9b121sm8508494a91.5.2026.04.22.01.05.02
+        d=1e100.net; s=20251104; t=1776845684; x=1777450484;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bl8Z+WQHqHX+qQjnRU0ICkmrP9C1SwKb8blByh5RwmA=;
+        b=itU6XlarubYPJf0nj76V6CtyCdBzp8IVYYef5oPKBe+oyZW09ev3r2JIt1RW5zQuoD
+         /RYFNm1yiBPFTZDA4MDnhnZ5WcGks1zTeih5ecnWn66Ss6q2eiIbVCrArLHAw4I1cMnk
+         QJXi+1e1OWxBI6wsAU6w2mxV12UA/7+KVdByl2gZZl5ZocNjOKigGmxzF+PyAV59Oaxp
+         pl7jyl2udvw294aottbaXIwpy3jzaqJeT/Whz3ZKQJ8PGI77b++mpAi0kIDa90fYk7A3
+         3BKp5Q3DdkPl11iRM/16ZlJ7et9Ig+VkCluhaBrytqBEhDDFe9Dx5ZWYlFg474sCmUKs
+         uhlg==
+X-Forwarded-Encrypted: i=1; AFNElJ+CKtz2IiBOeZdR/ff3T+Iueyv74Sfxhv6T39+OGWt/y6UHmaVjXOEqeiMRo7f6DOn3aApJGm2Njw==@kvack.org
+X-Gm-Message-State: AOJu0Yzx2TAwk99LFBdT979hZ0KCS6k3uZB2IBxppjLazl9oqnGSXEWl
+	ms95fu2zfuB/2HspZpqDNHZ7j7rziq61hfbpuvmnLJLdX7WV57nefqKXcj0W2fOqVME=
+X-Gm-Gg: AeBDiev94W2IZwD56hg6AA3WgDowe492Zs4q0FAwCffEj/mYzPHU+LQLAB5WWOoeuCI
+	3uAwVrStIHyE/3j8+Rl7H2w+/9czbWkyvqYAp19wTjmrPFHGrQjg0Au9I+vff6ydSneyrkwmnLx
+	5te+NgunOEwAC7MXIevQifnYeM6NOsNJQ2gGCTLV+dyy1L0eQ0/mqz1fJlBneVINguDhK54kUTq
+	+fIeXd4uOTPh6gtIyXZ69kc8Pi8SuLwi4OEZok20NZUKJPeqpop8r9PLV/FwiVq38E7kUiGbsZz
+	GlQZmVodMY4HCgBC2TCcIaVXPSiOvqj4+a0uRg/TwIe2vegPTVr+r7EwQLDeEayodgvtlu6YjA1
+	7tJbpDzmrFR/uz4mvPnL95+subkxQrFrwC2nXo87YZ3/W6yJR542ZryOTvRvVL2tpK9rwbBH9Kg
+	Ko67ESU5A+jkJZbxzT1+2+5A6J4dDS
+X-Received: by 2002:a05:6a00:a254:b0:82f:6d4a:df3e with SMTP id d2e1a72fcca58-82f8b32d44emr16671789b3a.5.1776845684472;
+        Wed, 22 Apr 2026 01:14:44 -0700 (PDT)
+Received: from n232-176-004.byted.org ([240e:83:200::34f])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec0307esm16522874b3a.53.2026.04.22.01.14.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 01:05:05 -0700 (PDT)
-From: Li Wang <wangli.ahau@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
+        Wed, 22 Apr 2026 01:14:43 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] selftests/mm: suppress compiler error in liburing check
-Date: Wed, 22 Apr 2026 16:04:46 +0800
-Message-ID: <20260422080446.26020-3-wangli.ahau@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260422080446.26020-1-wangli.ahau@gmail.com>
-References: <20260422080446.26020-1-wangli.ahau@gmail.com>
+Subject: [PATCH v4 0/5] mm: Fix vmemmap optimization accounting and initialization
+Date: Wed, 22 Apr 2026 16:14:15 +0800
+Message-Id: <20260422081420.4009847-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ftqn5j1o484arqba7ej8mkrdouhm5of1
-X-Rspamd-Queue-Id: 88FAD80005
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CF2F540008
+X-Stat-Signature: jrh3113pey79kzb9kswj3mckyw4cjuxh
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776845107-880389
-X-HE-Meta: U2FsdGVkX19WTdw9E5UY5QCrSMmCmMSNY9KDajzoBNLJXq+lu6V1pjGVEABIQ1HhJkzRIT4x2GvP5bLmBUmsGmH1vMvWta4L0WhQdIKQsilvCMYvhFGj6pZnqQS6GxHD0zn3CZeUagxsJanoQ5HF/EEOJSyo4Cy675WGxvmSqUhIcSTUCvAQ7jOU0zEO0Z0jnr73PBYoc9u30SEM00NbGWVKIVokyf7LaJDP56xkYGTjvDPmHiOU9OZrBlETgR3qB8aBjabpQ4b45kx0+yPp6sxi/XaONhjSZiCMrdUQxkergp7idSqPRRm9FsFXA5iciaWM/Agt1veZju4ZvvGorZZfQBjslAJMQslD/bqyCeqSfQFN5B6kRiIrzLb5T0oSwuqTHd3WRsELjqdR6Ery/+N6+9fDExi5w3OkBDHwIibuaJuc7/u1mSJDDzSX5/wYk9eysqHviWTp32OF0C3A8Xhkaa2jwtcnH5hCw6Y2f8I/XHGTY0e1hBvN6UPajY4QGGEGGG/ZKt+GJSLIv1rnxxvk1fcAHhES1+dAcE0awjfMe0hV5FOtoIet0Rb/H86AYRBhC2D05s9VAirnPSrNHb5xpklqoM44gAF4oKkTOCa0nafYXJ3Ll9dlmiGZ0aQ4REeKboVe1Q4JUqPUeEE8XqjHWuQykTwrI0vvPzpg4kQ5o645zGTkum/TVFc0eQOfCEwOTgCRip5xrv7MoTCPdhhLeXzOyMMl74OlCwEinclGkiyiBl4vOngkW+miV9jpfoQrmf9p0mTfwxwlfHes2ts9Y7HucC45vNKnfSlpOugaNuGER2cY+7v9jfTnNyr5LftwVofqvSBxlFMG9U8LSuFw7x5VNxTBHJgfGx05CCobC724XhAHzx90EaQ3dziDOQtosnuePo4ob36AL63IenteJbGDEocbSeAMM43g3e5ExiLNUejR2Bro0hft/LqLhzTBzPp7uSduhUk2xqG
- OkYz2E1z
- 7LdxjlHljXPbd8vXi64pXML9Hc04jkqemf6fp04lQF/k635KRDXMtKQh7R729Eg/vuTKzeOLT1LY7eamApKF6CmPpO9FNNc15cPDJhbtMJwvF1LlhDRoYHdBnX8uzuACmA42W0UXTOpFMxbFAHNBuSSYLfAYV+AApW+GSYPs1inLg/iQi9WGsl5eI1nALfZCLtim06opQCSNLQuLY7J/MUZ3nV3KkxlF2Yw/zg2ipjQOMfMQWQo/bv+ZdD0KBsotZDe4qkt4TTVNLuuZ+Opnk4bdRYKF6K1tYr6ZkMUnRIdC9x6v3iYajn9h6BuUuQNmQgxrMH4JvDZTGg1GJIAzzDD8iXmOXthB8vC/NzVBhXaoNdF2rSHkTRsTlBbNX2CeGy8T01ndkFq+JIOJsn6vJ1ztn+aoAvHHpFPiHOO/DArOsGRG0vYkyLYnmaxoR2Aybb4jx
+X-HE-Tag: 1776845685-391821
+X-HE-Meta: U2FsdGVkX1+IoQoX9ijyRrVl2LtgbsUPIht6nhjLhfhsU0WudTqohkYTf3KMw/ihvFk3AZSwWOCA71zlyfwy3ZCUzwaQeDpoTKE2uLRfQDX1FA1olk0E6PJJzpbms5+BJApOjK4R1Td29Tg4gx1c0Gl+ZKSfm8Bqt5jIlETFKjH6VOCW/RpToaJPmuR9fdi3RcXSi6R+pcZoYiBnwPvKIpAMvXT/KIGBTninqSFuhBTQaehkRyvE/av681P6vyHpQgjf7vbrP0ekSAD5WG6COROOrFzP1kmPj31UmJtQluKOXBs1GtTfow7tka4/cII9KsSJYM1Jf58RXFzlwzJAM78rzfU5B9NFE27cwUMUvZHZ/1yViRKkjldkYTIoZE/BlD+0PpFkjXmzWF3FO99a6+kV42KhEnm+tDXJcbXuyK7k1x9dAKld6zJfFqAVQMDjnd+HV59N+rAwqImA2RnOAibHZ6H5OS7PgBRIPQb4bBR2LwG1m8/uZtnGiK9DATYZAgzQgBGUyBtEYkljse0fF/BBF+olgYvRTK87xop5Lz18OhEZdRrtf975n6Oxc7EdtTqHHr/YO80499l8jaJbCt7dhH3JcCjm1J+xObQJkjCsQtPOAccNQ1VoS7+taD3mGwe48A+rmcYsXMCxAx9d8wMfygGYN4s7Ubhojv79JrJt0bNiTJ7ruhsCdtBN8/5SBcud6KNxrINkLdhqS777LDWAQY0obIbrt1beMwCXbyv8nVNvooj2xeYmH4s+r0WipmFWY7MkbOpgRkPx51/T3vGqeEQPGfrG8ikST9gCGfp6hlCTIOWKgKj2PoCr6tAHdQi42B0Jrkm81WoxxYK2Q/A7OSONvzzse+bb7BvRba8o42uETnTkxYWx38z3IoDDCmY7wYd7S0iEgIMlvL0vDVFmIAgVorTQfnZ5oM3SMq1kddEbNVrMYxwmR03Sp8eONnBB0A3iT5wxpLrkcYK
+ CTnOoLQx
+ ltEUdPjopnHhgHcC06DaTCsKn8lZVi1BCUgJOYBH1tCuRXWt9Ra6NTGs2MIzxQ9Akb0jEbUXhwTzvuo/S4UR5u3wOucBb4CrBUUbqLtTOA0lZWltgCszUQ9IV3WjDDodfCe8LqEALEcxZh/KrVJ697295eSmS7D4uB9sQiyW73fn+lwVDusFdQygrgNr/Rxn7UXnz1qPajRG+bwQgOjaaKZTm7ZoNuVIycLp1HthdmI5hCaM5wB+Ef5E+fapqWXgw+l5QQhAhsb0qNsrBWXoDlJmDjdV11I2iOXVfGmxO+zURZ+LVij8VYfcNeXaF/g90e25juYOtUVx46eI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,62 +131,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When building the mm selftests on a system without liburing development
-headers, check_config.sh leaks a raw compiler error:
+The series fixes several bugs in vmemmap optimization, mainly around
+incorrect page accounting and memmap initialization in DAX and memory
+hotplug paths. It also fixes pageblock migratetype initialization and
+struct page initialization for ZONE_DEVICE compound pages.
 
-  /tmp/tmp.kIIOIqwe3n.c:2:10: fatal error: liburing.h: No such file or directory
-      2 | #include <liburing.h>
-        |          ^~~~~~~~~~~~
+The first three patches fix vmemmap accounting issues. The first patch
+fixes an accounting underflow in the section activation failure path.
+The second patch passes pgmap through memory deactivation paths so the
+teardown side can determine whether vmemmap optimization was in effect.
+The third patch uses that information to account the optimized DAX
+vmemmap size correctly.
 
-Since this is an expected failure during the configuration probe,
-redirect the compiler output to /dev/null to hide it.
+The last two patches fix initialization issues in mm/mm_init. One makes
+sure all pageblocks in ZONE_DEVICE compound pages get their migratetype
+initialized. The other fixes a case where DAX memory hotplug reuses an
+unoptimized early-section memmap while compound_nr_pages() still assumes
+vmemmap optimization, leaving tail struct pages uninitialized.
 
-And the build system prints a clear warning when this occurs:
+v3 -> v4:
+- Collect Acked-by and Reviewed-by tags from Oscar Salvador.
+- Fix the build issue reported by Sashiko.
+- Add a fix for uninitialized struct pages for ZONE_DEVICE, based on
+  analysis from Sashiko and verified locally.
 
-  Warning: missing liburing support. Some tests will be skipped.
+Muchun Song (5):
+  mm/sparse-vmemmap: Fix vmemmap accounting underflow
+  mm/sparse-vmemmap: Pass @pgmap argument to memory deactivation paths
+  mm/sparse-vmemmap: Fix DAX vmemmap accounting with optimization
+  mm/mm_init: Fix pageblock migratetype for ZONE_DEVICE compound pages
+  mm/mm_init: Fix uninitialized struct pages for ZONE_DEVICE
 
-Because the user is properly notified about the missing dependency, the
-raw compiler error is redundant and only confuse users.
+ arch/arm64/mm/mmu.c            |  5 +--
+ arch/loongarch/mm/init.c       |  5 +--
+ arch/powerpc/mm/mem.c          |  5 +--
+ arch/riscv/mm/init.c           |  5 +--
+ arch/s390/mm/init.c            |  5 +--
+ arch/x86/mm/init_64.c          |  5 +--
+ include/linux/memory_hotplug.h |  8 +++--
+ mm/memory_hotplug.c            | 13 ++++----
+ mm/memremap.c                  |  4 +--
+ mm/mm_init.c                   | 58 +++++++++++++++++++++++-----------
+ mm/sparse-vmemmap.c            | 56 ++++++++++++++++++++++++--------
+ 11 files changed, 114 insertions(+), 55 deletions(-)
 
-Additionally, update the Makefile to use $(Q) and $(call msg,...) for
-the check_config.sh execution. This aligns the probe with standard
-kbuild output formatting, providing a clean "CHK" message instead of
-printing the raw command during the build.
-
-Signed-off-by: Li Wang <wangli.ahau@gmail.com>
----
- tools/testing/selftests/mm/Makefile        | 3 ++-
- tools/testing/selftests/mm/check_config.sh | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 6195770eba6..18779045b7f 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -263,7 +263,8 @@ $(OUTPUT)/migration: LDLIBS += -lnuma
- $(OUTPUT)/rmap: LDLIBS += -lnuma
- 
- local_config.mk local_config.h: check_config.sh
--	CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
-+	$(call msg,CHK,config,$@)
-+	$(Q)CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
- 
- EXTRA_CLEAN += local_config.mk local_config.h
- 
-diff --git a/tools/testing/selftests/mm/check_config.sh b/tools/testing/selftests/mm/check_config.sh
-index b84c82bbf87..32beaefe279 100755
---- a/tools/testing/selftests/mm/check_config.sh
-+++ b/tools/testing/selftests/mm/check_config.sh
-@@ -16,7 +16,7 @@ echo "#include <sys/types.h>"        > $tmpfile_c
- echo "#include <liburing.h>"        >> $tmpfile_c
- echo "int func(void) { return 0; }" >> $tmpfile_c
- 
--$CC $CFLAGS -c $tmpfile_c -o $tmpfile_o
-+$CC $CFLAGS -c $tmpfile_c -o $tmpfile_o >/dev/null 2>&1
- 
- if [ -f $tmpfile_o ]; then
-     echo "#define LOCAL_CONFIG_HAVE_LIBURING 1"  > $OUTPUT_H_FILE
 -- 
-2.53.0
+2.20.1
 
 
