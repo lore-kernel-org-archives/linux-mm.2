@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7583CF9EDC5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 12:44:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A21AF9EDC5
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 12:45:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D7BB6B0088; Wed, 22 Apr 2026 08:44:18 -0400 (EDT)
+	id 5A4E16B008A; Wed, 22 Apr 2026 08:45:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 887BD6B008A; Wed, 22 Apr 2026 08:44:18 -0400 (EDT)
+	id 555FB6B008C; Wed, 22 Apr 2026 08:45:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79E236B008C; Wed, 22 Apr 2026 08:44:18 -0400 (EDT)
+	id 493146B0092; Wed, 22 Apr 2026 08:45:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 678586B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:44:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C8D6E2B0A
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:44:18 +0000 (UTC)
-X-FDA: 84686159796.12.3ADF5C6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 703A820003
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:44:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cAd4B67E;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A91B6B008A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:45:49 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CDD8E1A015D
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:45:48 +0000 (UTC)
+X-FDA: 84686163576.07.6600361
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3905D14000F
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:45:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WgU+ou2S;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776861947; a=rsa-sha256;
+	cv=none;
+	b=Yf6dItdw+eWDWlZSwd61w54upx4jwS7pU0Zmj9X6oyM5oGKEljPYGm0cebthlz/sEk74V5
+	KBIxoMIpxwC7MxrbzP2wwGalnMJaAjw6dR2iPAcyAMTVLqSiq73tjo0lkTPvra8opC4JYl
+	dDTZtRjbn0SZHvWOFNhGgZXITz7IAmA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WgU+ou2S;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776861856;
+	s=arc-20220608; t=1776861947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o/lCen68XHl4PMvA6h4/jwc0Q1Yn8oPk+aLtQahQoBk=;
-	b=pmD71AvXVwBmj5NbKaAFfxDtVR5kU+rD9K4hcZADp9dXRKt0mjnHI3E8lADJCO8B/y7W14
-	IWTZWaenKEt6r8VSln3GfS0baVpyX/YthIb9Thh977p4fAhNbWpvl8w6ojBR4Mw/RddD5n
-	B2hEqeT93qsC/7W9IRqKzzQGlRmKgFw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776861856; a=rsa-sha256;
-	cv=none;
-	b=pQBtFG/KtB6F6xdrXEIqWfwKLI+5BQaKUmSD1H8xBoFkDCWivhCPAYGOLavDEA8aQmzCrg
-	xx4hHnw2i7VenEEsZI1IM1yLhptCTmfzCH/EAIPjigeWHqJFh7RTXEQ2QWUwCT5JqhKGXB
-	uRczAoIGibM+BQ0Ecwiusm2u8ghSGR8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cAd4B67E;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=dKWd2mgwgmf9GIaV8r5YNYUfhtI8Hq8gL9EkZ1yU7CU=;
+	b=U1mhBs+vu+xJTqApsfnT6uEfPm47JZ9bTFkE6/FjBYZvPkss2rs6BCm9etamPlYx629XuN
+	hWFYi3pfFfvD5ot20S+1olVWhyzUDcUg9F5EWLlJVhYpC4nrxj1pEJYTbXxCQTgk7kTD+f
+	BwX/IrYKvtnaqqde4vGp/f7Ml/BOSJU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 888FB43A90;
-	Wed, 22 Apr 2026 12:44:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DEBC2BCAF;
-	Wed, 22 Apr 2026 12:44:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B64B6001A;
+	Wed, 22 Apr 2026 12:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E3EC19425;
+	Wed, 22 Apr 2026 12:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776861855;
-	bh=9cHl0diwcKEB3vKav7ioffl/oS3DH9T9PGGKHFP4t2U=;
+	s=k20201202; t=1776861946;
+	bh=t//Yung63aGvRWFoqirn6gDdFMuw+7zK3Jgv1nSRYs4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cAd4B67Em+JJDgKcyZfqfbJsIn6GwDz4NX21pCWwKw3XPI1UNx1sxeWE+UXws8/Xi
-	 4pH67x6cv7ZhXGsqXFdDIThIyN7gLW6dx3XFjTsl4BKllpD2ONXKnwK/iz4W7eTX+n
-	 FrfB8aDnaetxKdZ/XtrEFyq0CbTazRLtuvXcfeqf0UyIzrPLoFpzku3cQdqIjHNOUN
-	 HJpBv2aKjMVSRy4hgojh5oZ1aOGvXWZmOevAe4iphMxM/JtwYhf2sj4LmlqbMdC74F
-	 nOrfURh7iKZOIne/h1YuMxfmN5ePHGckgEOWNU+GFrxf4UkuBQxScgd0cVzdNyx8lU
-	 V4wOOn7KexChg==
-Date: Wed, 22 Apr 2026 14:44:11 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: lirongqing <lirongqing@baidu.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH] fs/coredump: reduce redundant log noise in
- validate_coredump_safety
-Message-ID: <20260422-naschen-einbog-ed4f52ea472a@brauner>
-References: <20260410080918.2319-1-lirongqing@baidu.com>
+	b=WgU+ou2Srb4sEDAQ/wv5TI8GNIPpd2xHkb1c1E/pU6iAcg+ucm4N3sCyUeXZ1egWE
+	 rXsS607WKx49qkm7L5wfGPojnpq4QfRy78VnFm9bnLeTyWzE+57zWRpE/8GT7cGsjd
+	 3uno13s/eo6mzB/Kv0B/xQDbHEQ2jc2JVI7tf6duujy+B/TC5U2Ia9389dqPIIIlvO
+	 6zHDCpRVrIKulU+3tpP0mETYYQ8eeooLULsBvPIM1/mIn++9Sgw6qWCmy7TJlQ8u6R
+	 ycaBLZdPQfdVlGOpUZg+wTY4gwnOkGzuYn4N8GpZgtXA2vn3E/cQ25xx/KUQS5/cYX
+	 p1lD2Ucvl7vLg==
+Date: Wed, 22 Apr 2026 13:45:39 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH] MAINTAINERS: fix regex pattern in CORE MM category
+Message-ID: <aejC1z-mOd0zQ_GW@lucifer>
+References: <20260422123726.517220-1-pfalcato@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260410080918.2319-1-lirongqing@baidu.com>
-X-Stat-Signature: kbq8dtbs5xxja3g9h7zf5rszuyz3qyxc
+In-Reply-To: <20260422123726.517220-1-pfalcato@suse.de>
+X-Rspamd-Queue-Id: 3905D14000F
+X-Stat-Signature: 7kq7w3cksz419dgi7ptr9yjfzp8e69yd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 703A820003
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776861856-369852
-X-HE-Meta: U2FsdGVkX18sbQin8BT1gQnQy0r83A3/hMGhda9fsLnLL4l/RxXUa0MjrjA69Wo1EYIoTkz82Z2LTE5AmECPnzV/LMCehJ1sQszMcP8joIuCF7VhhEqClNzTmIUNHVLCpCbBsJMkyf0Z0bc4qeh3ukWRz2woVUZ0cSRpDuBR2gPJY09I3vC9KerzWYNsz7PLPulOnFkPp4mrA6PtcM3vvVALNBNCeXKQv/RgvxnTgm24yNA9fF00Y3ia54asJk4Fi6lrw1HK0MPu/ZFSzyx5JF+dAWKKdKB8XyUrtc6aTmwBw0x7EpA/9/20LI/gKKUcH/GSz5I7O9Ke7Rvc5dHvifXr5p5ZWu5M6JpjAK3nBtFeSXJdzCsR9EfjIHb77k+3UEbjmSVSwBtCHHtJzmNM5v9zOuRBPwP7lF84sl7NzvL5Ua+ixueseY4uztYvUkLqG5dLscoJdpTFWuVVQeCMlSzMGIgtBpJ/52lQGaXTsaVgBMFuU3EI4xyFzVypBDt5TopO+x79toWz6SrcAZzRU0SHFDskPkhrarWbagInHuQ1o5HmYDtbQFsHnnkpg05+pVhtyTOCxqFdNLKsGii4r4ErHkp1vKYYjSzyHfSDbnpY/iMPxJ1nVTeD4upR91HnOoj3Jr++VVYRT/nBrDYsNnkqyWAvow8YpNcRG91svy7T71f6icwZ2qXULCcCThrevMnQy9Zvjj6JQL4vMc51IRulgREvPL8xveIQ9H7fIEgG4M2mkOcWpPTewFYXDmgEo4Utr6jev27GZBkqHGSdR+aV+1E0MMR2dfen/vIuxQ6sv9u2GMDhVpSkJduO7TgFUNBOhCkj7GA5aMXUviMJ/Z8b7WUGSoRI3gfJ3bsS8kqaHMvyYpj39ZAnh6Z5j4CLZEc4eLNU844iLmWetS3ptRSmBYweV6LHU5mNLJoHzP6GVVulahFzYhmoIjl4k2ASQql4Ui4+UqcMioTOKZr
- EvwVMzvA
- 4Fe2TdAELgRHOqV+9xg2IVhc+MtM9chGLCRk4oAoLkkHqt3OFQCUpD+48Z3EgtSo5T94wNDqQaB73/vxqNZCkUqoo7DfdHs2yxSpuu+U86cte23j85Slh+jnpFFYCgrUIY2m33Rnn6kFIIdroWGOP7sKul/kGI2coDCylN5iHmpQbZh4qCpMUlhcv+zkp+f7BjBsph0Lc1Y5UtYhwQG9JohuqSDWYiLM6V5wJXSsQ1I3sncB+LfPfKb7BimdWpFlDvoNiZDpaBWD7uqxbD2uwgKWiwEf5xR7tNljU+TB28CaOOAY5zpK1XY6LGdUPBdUM+FPePgmq0olus0CHegaQoIDbMUVHeUpN8blHMVLFYLTJ2H6lUe4Wvq8Hmw==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776861947-986984
+X-HE-Meta: U2FsdGVkX1/pC5qKfiwScJA+ctcuIg5lf48YkHIfSvYkjo0263GZtWmOuf4kHmv3OHDoKhny8y58K6WFdQ2KnVWP+Edxv7PbrNyXkjseMq31yY6j2gCixiIIcKUKMvfJkBVqwugYeLs18ajyXXmH+qBTrmqn18ZpPNqnfEE3T37CJS37v+LyhOzF0/R/KYJ/xHFiBe2/MRV2+PNu+MYeiZojcTWy3kA3z78+r5r34+CSNNkrk77RWZMfscaF+jamm1QwOccZM/s0n6vZqVmQkW1hDoXhe/NGPHOqjm0mr5RNbAreHI3A6fvhqKntPBG+H/zfRgOeLbbJnhQxA5oq95/1TN7WQJxrLXY9USb/Pv4/Be5QVeJJfkrOsl8H6uz6L3ZRRI/ohjplq69ziTKmVhJ1bjzApUB5LnKUfxrMjBoMwAeNruNZccQLOy/VvMkBleQjaBK7n2BcD+NxsRQ7fPH8QoTUvn+TT1zpapBkx1w82uzfn3N0gEf6B9TWvz1a9NkeU/MFLt8l94lRdWCyoEYTgzMz1TBzS6XZArQA9sd5l9lbEC3rgJJT2Dm1SYW4amTxnPwYjQ6dDW5WbPZBHaRit+ytl+Gw5UW5XTpbYnkOBOJjrB3JqB2fXgio9gxkoeYb0NPrYDCwsgc+Ea+pisjRqRyIM+e6G1y3kLLUOlAfWe+lc0Ek6fRXPuBvfkOgTiK7yhQFQevfjhcXtTHlwpQofXf+KRkyPsCgqFBnzCiKTPO8/hUdWwr89IBjfZ0SA7e7dK0oAC4Z4Sn0TmVPkeeGFfB3AXK4XPr+RJ/dr+20cXhmSqYEK9c4jwQFd1w4dzd7uQG5F8NfnDkIbPYRW8zwarwQMPxa4eotMuVb7CW8iukvkKmV54kppD7QfThPXt9F3BJ+sHM11B6loiXu78jSb81ocKNQx02pKdeFjnM8s7oJJyZ6ZNtsIVWs8Q7LEYtjej+Z68j9V7/Dlex
+ ja+Cm/qR
+ 4IO+iCF7Nh3ewHdvUJAV6CSGR83U1uHhIo4S9MMXlF+GULdu8SlIhBR7tdgq2xboAkX/Cuik9wSBpX/LkyL2R3FTKR8lytL7uRhpRlm9cOz4BRezeGtoBkuMk/JBjDuyld1kvrIgQBeDHpT98wswG68h6VOd7tR8hJnmSU3A3A3nU+1489EyedHHbVyZ40vn4tMgTm6nh1LIUmSX/jeFu7czgGyiL17GIlDCrIDN08rPp2NX8D1KutJyQEXOoTrbVkCRLAOeET+W/CO2rLVyCKx3MFOU832Fk7t0v6xWrZx99w52WnXEJXKWtaKMAt/H9oLIk3cU0xNoalQNMuHNbk+sep938AXqbY6Sf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,30 +92,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 10, 2026 at 04:09:18AM -0400, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> Currently, writing to 'core_pattern' or 'suid_dumpable' sysctl nodes
-> always triggers validate_coredump_safety(), even if the values have
-> not changed. This results in redundant warning messages in dmesg:
-> 
-> "Unsafe core_pattern used with fs.suid_dumpable=2..."
-> 
-> This patch optimizes the procfs handlers to only invoke the safety
-> validation when an actual change in the configuration is detected:
-> 
-> 1. In proc_dostring_coredump(), compare the new core_pattern string
->    with the existing one using strncmp().
-> 2. In proc_dointvec_minmax_coredump(), check if the new suid_dumpable
->    value differs from the previous one.
-> 
-> This keeps the kernel log clean from repetitive warnings when
-> re-applying the same sysctl settings.
-> 
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> ---
+On Wed, Apr 22, 2026 at 01:37:26PM +0100, Pedro Falcato wrote:
+> The pattern "include/linux/page[-_]*" matches every file that starts with
+> "page", because it's a regex and not a glob (so it has the meaning of
+> include/linux/page + match [-_] 0+ times).
+>
+> Fix it up into a more regex-correct expression. Doing so reduces CC's
+> drastically in patches that touch pagemap.h (which is maintained as part of
+> PAGE CACHE).
+>
+> As a side-effect, move linux/pageblock-flags.h explicitly under PAGE
+> ALLOCATOR.
+>
+> Link: https://lore.kernel.org/linux-mm/20260422005608.342028-1-fmayle@google.com/
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-That warning should very much serve as a reminder to not use that
-completely unsafe pattern. So no, move to newer coredump infra or use
-absolute paths, please.
+LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
+> ---
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d25342ca8aa1..224c15299acc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16804,7 +16804,7 @@ F:	mm/sparse.c
+>  F:	mm/util.c
+>  F:	mm/vmpressure.c
+>  F:	mm/vmstat.c
+> -N:	include/linux/page[-_]*
+> +N:	include\/linux\/page[-_][a-zA-Z]*
+>
+>  MEMORY MANAGEMENT - EXECMEM
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+> @@ -16961,6 +16961,7 @@ S:	Maintained
+>  F:	include/linux/compaction.h
+>  F:	include/linux/gfp.h
+>  F:	include/linux/page-isolation.h
+> +F:	include/linux/pageblock-flags.h
+>  F:	mm/compaction.c
+>  F:	mm/debug_page_alloc.c
+>  F:	mm/debug_page_ref.c
+> --
+> 2.53.0
+>
 
