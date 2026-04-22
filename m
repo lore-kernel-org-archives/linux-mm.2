@@ -4,133 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26DA1F9B5F5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 09:49:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49E1FF9B600
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 10:00:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 510566B0099; Wed, 22 Apr 2026 05:49:22 -0400 (EDT)
+	id 5BE246B009D; Wed, 22 Apr 2026 06:00:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C1136B009B; Wed, 22 Apr 2026 05:49:22 -0400 (EDT)
+	id 56F5F6B009E; Wed, 22 Apr 2026 06:00:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AFC56B009D; Wed, 22 Apr 2026 05:49:22 -0400 (EDT)
+	id 45DB76B009F; Wed, 22 Apr 2026 06:00:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A5556B0099
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 05:49:22 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C03921413FC
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:49:21 +0000 (UTC)
-X-FDA: 84685718922.06.35C2A51
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BFDAC40007
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:49:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UDnGi4OC;
-	spf=pass (imf17.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776851359; a=rsa-sha256;
-	cv=pass;
-	b=wtAOVKU2CVHJsLChQU78RJ4wBk1xOoU9ym/Ek5jjaO0ahatdua3ZSCCoxU9OQA1wF0cskD
-	ihOBIu0MpBP2gABxoUzCXvagmydrGrFcszhu9Hsv4cmJLC6IEfZM3bNoqHVyZCwkbfT2RS
-	DblHpaOcuvWvrMGWS3cBbQ2g/3I8New=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UDnGi4OC;
-	spf=pass (imf17.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.128.177 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776851359;
+	by kanga.kvack.org (Postfix) with ESMTP id 2EAD06B009D
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:00:40 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C907E16158A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:00:39 +0000 (UTC)
+X-FDA: 84685747398.04.834DB1A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5069280019
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:00:37 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SjVLdPKC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="73x/GLVl";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SjVLdPKC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="73x/GLVl";
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776852037; a=rsa-sha256;
+	cv=none;
+	b=NQyrVudHxdc0O0L3+mpIYdtsdIUaRCZAnGezq+sXWll6pGds3HmQNEkbtCu8udAN7lSBYF
+	YpFJyruroB7y0+Xnkf+UhuKLKw2JweqJQh9meMGCvFaP4L26a+fLiWQLRfNMyFGC3USImU
+	8mQhRQIaZ2apwOpZbq94eUGxZqXzpkI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SjVLdPKC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="73x/GLVl";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SjVLdPKC;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="73x/GLVl";
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776852037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mnEJCn9qcdEo9A9u8FFKwfmqRTtu4QMr0EYD5zgIlGI=;
-	b=7wLlGO7r7Y1n4vEzXzE9knu1K7fr5hukxWq+v2cUbNieg5TD97zvQuPHMz9BFGqjeXQUka
-	oUUs+n5k6qanLi2QGszNMusv4rBInruiZ6OsJTkZdqCJpcgqHVCnrZJTfVQwYo/kdNFvYG
-	KjLhSzKMonIGalJJkl/HdZ5jdvsV3QY=
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-79a74765703so48895987b3.3
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:49:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776851359; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SxE3TPycfmjRG/aM6Stad/LN1seow91V2VAbTjp8ORH8o0adLBKaiZXB9Rt124ImpK
-         FPu3Z+GEIRnydcH6Hm/b+2VxLnpv2FaNq1egrRdTuQ/x+cliVChs+3N4XgtDPeX/eUqu
-         AiZV+vD7oadcLqBrPPoM7taXb3lIfgPouSUViPHXE92zzUNEUW+bXgUmBsJX9n58NioD
-         5tK1vCFaUlJiW4sBKDufL94OYGM4ac2WN4hB/zOcjvnI4ZUBKxSkMD/mYR5AgpnJ9W4x
-         03LugPeVujNYuIrsGKSEUfbjjJ7PUJsJaIQa9yd9OH+UtXc7TICTg0vbU2Q0ZZFm+ieZ
-         RoLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mnEJCn9qcdEo9A9u8FFKwfmqRTtu4QMr0EYD5zgIlGI=;
-        fh=sVmzYMyQNjI2hAUfB+K/lBTm2/mx5cZd3WvvZE1mFl4=;
-        b=gF2nXO2woamUF81gZxuxNJ84DJmiCIusm73/bkXBsuxsmp7T128R7Z9KO4weUKDYT8
-         5vsPgs1axEIk1bd6HpLFXLJayBIXMGFA3Tdj75B1XqAw8OSdzIZGyOB4G03dPv3nJGu1
-         iiz7zySV8nAjX4PthndQpCkrLhJvHW+a6ymGTSIplXJV2KbDHyNj9gQkBFuVV3CiRlte
-         f+Jz+Fas9M6g8Rku3gktgmPb8wths/W/O8WXJ8qhce/RSp0PEY8hdeYigEkMpZs2L4oj
-         rxoUelhyQB/jN2sITdzZyYJRe+7uSHH/g8E/VGE9LXOudVxlQ0lvfXg9OnNcZV1+U+K3
-         IuNg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776851359; x=1777456159; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mnEJCn9qcdEo9A9u8FFKwfmqRTtu4QMr0EYD5zgIlGI=;
-        b=UDnGi4OCmfNnnMUKB5aB93f8ESYb3B52KEyXm/9p8gcvFY58wXnX0v8NOuH6JAsijF
-         MVu0eVrvvEH8qXOFMK2adnvD/8F75IqFDUClIBtyqDUzBEJA8CelKO6dO4a4/Z2q+Acd
-         z5EPLu7Y1w9tSwLh+LkkIzXD7EaWR2cM48rrrTxj+uWY2HjJadpJAz6uH5PsP0SdxGPE
-         x8udjLoM27gxTzxpVBm6NVbcbZzVVnqHU/b99MblePYE1gtkhbE/gw+3WVAfQsHq0cNj
-         4Q2uMvZIcHDAlOwFydVHMVGf8AOKrY3ugsEbU3DY0zkGlf7DzlrmNMrufkc8uAYV7z3q
-         p63A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776851359; x=1777456159;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mnEJCn9qcdEo9A9u8FFKwfmqRTtu4QMr0EYD5zgIlGI=;
-        b=HjmUQANVN014SVHt3arQCwGc3W+fu09O/mhMzV38RNkNN88h/78RxGu1jNrZxq9s8u
-         YazrK5TS6CEKB+bOQeLAb4dEFYBLDNN0n8ksvc3jygpQp5y6fIlpNSgLYCx9I1dYfksi
-         VvPJ+iay2u+/j9FtWa0XYFuYH3WHA8NZwMIJL24splOiBAMPAYLPxqIf2ROels4wSQnU
-         V0FJkCT4P3zDgHmkHAnZ4ESPcoMlIFbl1l/Tx58VkV31oy95695/CwgWMH9ZnBNU3BCc
-         lTFSon78Cv5Z3/P6VqgxGAu8/3Hjw/l+/URjJJbcSlY02y0xzDO629ls1009UbrNjkr3
-         Jzpw==
-X-Forwarded-Encrypted: i=1; AFNElJ8O8N5R5AaLD66k7JvkcdY5+sIWvhpKNCbof3yyIWZXs8j89hlUY92h3f530YFQBl6gdetRJ0SUKg==@kvack.org
-X-Gm-Message-State: AOJu0YynULkAwV6jf4+u5R3aHayqhp5Epj5B6xk1q0D4G3togAXe+WAy
-	p6GxPJD4K1icSqNeC+mnMJXvUMM4Y59vph42T4qf06mumMOJxJHcxQjel5vyFzQOCJrHflX1RDb
-	/mqoWZo+n2caMRzTGSRldGLBZVfGZK2+D3g==
-X-Gm-Gg: AeBDietesLoPckhdQ43YYj+FEWsxD73uHzRepRYxCo8FpnsXhD46xinbH5AOqhlf8lM
-	cBqdG3Ae2ioEaEtIo2nx1EXUcKfwypZRSpSrfVM44Xmm873JDRnTnG9pJ7MvwNmlDfNFlusLxvq
-	sCW9IPvXbIfEoQinyNMUwkCMUT+5ksEYwc/vP0DJ/MOpvTjD+S4KcuyB+/AHr40jDhzn3JrOklk
-	h+lgj3+xFi12MheRQ51sWfaE/HLbmObjc0CReGwwMsNQKLe/nqzWABppYwXA5rLkl+frsCBLWVx
-	txieGhYXLzuxDlM=
-X-Received: by 2002:a05:690c:c4f9:b0:7b2:dad2:5e0d with SMTP id
- 00721157ae682-7b9ecfe760cmr213516377b3.33.1776851358719; Wed, 22 Apr 2026
- 02:49:18 -0700 (PDT)
+	bh=gC49Yb3N46hJVol6vATt4FOJ+QGAh8iwrDdeZTg2tjc=;
+	b=ZhdJMkm+niDuvddJnZushpPwRF/4B8Jki1HLMpgfdwgQBubra3qZb4wI72RY6A5+H3X4wI
+	i5el1tP6zNuEHa06uxSTXEaa4QaI9jxaPnTCxjzbhed7CV6qNR20digVLVRIelLkQHz6jM
+	vfsXmoaKPxc5NDvwMSPxogqK/26VOhQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0C0E66A81C;
+	Wed, 22 Apr 2026 10:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1776852035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gC49Yb3N46hJVol6vATt4FOJ+QGAh8iwrDdeZTg2tjc=;
+	b=SjVLdPKC4/j27kw40iMX2JK0V6VseBXiSUfd+4TOCGS5X4cvfQuuyUD3cNC+z6b3Um5AyW
+	FCZuZqGuOg1rhRbIZovbzw1kz3YFyR9YC7nmD/ZBwVuxw9MarF2IWHQP4W5vF5KaNOJWxu
+	OttKY/agBQ0jd46ecgnZ+V+I7+eWDkI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1776852035;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gC49Yb3N46hJVol6vATt4FOJ+QGAh8iwrDdeZTg2tjc=;
+	b=73x/GLVljcjJrS9pKrvLri7z3sAmhL189LSOcVyD1SuE3XqkSCGmAngQhgrrIp/b1qDNIg
+	Djn5enwMO245HABA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1776852035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gC49Yb3N46hJVol6vATt4FOJ+QGAh8iwrDdeZTg2tjc=;
+	b=SjVLdPKC4/j27kw40iMX2JK0V6VseBXiSUfd+4TOCGS5X4cvfQuuyUD3cNC+z6b3Um5AyW
+	FCZuZqGuOg1rhRbIZovbzw1kz3YFyR9YC7nmD/ZBwVuxw9MarF2IWHQP4W5vF5KaNOJWxu
+	OttKY/agBQ0jd46ecgnZ+V+I7+eWDkI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1776852035;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gC49Yb3N46hJVol6vATt4FOJ+QGAh8iwrDdeZTg2tjc=;
+	b=73x/GLVljcjJrS9pKrvLri7z3sAmhL189LSOcVyD1SuE3XqkSCGmAngQhgrrIp/b1qDNIg
+	Djn5enwMO245HABA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E8291593AF;
+	Wed, 22 Apr 2026 10:00:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id d6ilOEKc6GkRVwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 22 Apr 2026 10:00:34 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id A1C59A0B60; Wed, 22 Apr 2026 12:00:34 +0200 (CEST)
+Date: Wed, 22 Apr 2026 12:00:34 +0200
+From: Jan Kara <jack@suse.cz>
+To: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Cc: Jan Kara <jack@suse.cz>, linux-xfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, 
+	hch@lst.de, ritesh.list@gmail.com, Luis Chamberlain <mcgrof@kernel.org>, 
+	dgc@kernel.org, tytso@mit.edu, p.raghav@samsung.com, andres@anarazel.de, 
+	brauner@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 2/5] iomap: Add initial support for buffered
+ RWF_WRITETHROUGH
+Message-ID: <eqbodkjxxg32ryxsdngx35yhv5fy4p44fmvlnlnoyib6bstlmf@4hzxnfwleynb>
+References: <cover.1775658795.git.ojaswin@linux.ibm.com>
+ <d44171d5a1ec783722019ad7d1a4ede0478cc914.1775658795.git.ojaswin@linux.ibm.com>
+ <52wsh6owrtmznt5xuks6ljwy4zbpyid45x5dbxo5xgssxm4zxy@iue2on3llpfb>
+ <aeKNHi8GloNgch7X@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+ <laegs2jt5ifqmfmdlsl7gsrc64z4nrnwbxazewbr7jk27emdej@l6vhj7pjh3dy>
+ <aee8xaz_5x-aQ5BK@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
 MIME-Version: 1.0
-References: <20260421230220.4122996-1-ekffu200098@gmail.com> <BFB1F124-B599-4832-A9DA-F4931999BAF9@linux.dev>
-In-Reply-To: <BFB1F124-B599-4832-A9DA-F4931999BAF9@linux.dev>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Wed, 22 Apr 2026 18:49:07 +0900
-X-Gm-Features: AQROBzCaZ7Z9Mk91yEqKyDj0Oo6UjkyRQyunFf6C6oUiWpmI3UgnYhfbqW7jaik
-Message-ID: <CABFDxME9-zh_NUJUfygAgWBBd=y51As=-JjUKyGCBLU=MSTCcQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/hugetlb_cma: round up per_node before logging it
-To: Muchun Song <muchun.song@linux.dev>
-Cc: osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: BFDAC40007
-X-Stat-Signature: ou4rmr4qxk5d7tzrj7t47e1411cijkcy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aee8xaz_5x-aQ5BK@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+X-Rspamd-Queue-Id: 5069280019
+X-Rspamd-Server: rspam12
+X-Stat-Signature: x3y457uueqjofwitrm5ppp63yhx6w45z
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776851359-415586
-X-HE-Meta: U2FsdGVkX18VHYMYYaosUAXn+CPuHXDBYss66r6OxouFJZh61QWbkCDL8a+CkJHMCWrsKjAUOp2Kewn4JjhVSqgcLBPBH+aDW68aUM9VnFGxkTdEzjTE/yGaEljlDyEdBVR6Mjxv/TBOnTPyW+RgkQcERya+Ypzr8oQhEyFyXxNEsgdonInxUrUDqZvRpjcLr3HV0Q4LYzJ6kNXWCgupiLuKi4pbQwBLLbFFMJ6xJLDplv2ODRGDHUYJNXrn/7SRwdqNMJKKDxrBU9CjR1Oc/LBzKsKsLGR1fp6Dd4kqEem7vsqQL8DT1avszNhe2KuhMHvkmd+fc6qdMITDP1fevE44oNYVYqgWb1XdbZjfyWygAJnctEmsqVZ2sAkuaWHi3pUO5O2k0mA3qK49rwLAR5wG4Slk9PvitVVivBHe4YaJZzm3o4udzUT8V7nJ4rvBPJ3GYV1NHUJ19stF8cvswxaNuFSUwpnK1oG+2uLjEQFlf8rrYpdkaWTRJ4+zrIIe7WQzltHR/zPJYvOxDV3YTcPP/8yleR6QdNmsOKzd6XsUimtAQPKcsWiKZ/WniKDwL36ZdPb3uBUp2XxE4T0/8lm2zy+egED/kPPlZDOJjiPk2BKRfQxp+hMF1WpN6yUIEnpz2pMEcARVcdKgMkZdUhQz8nJTcjhk/lnTrmOeVQl1PCc4uQGVOUdzMlWarSU5Mx1WnJ26xHeNbS4A57Agtwmtic9Bd3/wJj4DJjSpJ7P0nhMTQ8/KRdto2MP8r8FGYTGFfIw/8KIGFF4JqOcpzN40ZwZkB/Q72h+5PYIc6ARkDK/1mepOCaaQdr0LYdrqYtd0ka5LBG3UEEHRP3aD1kzeRBrlR4bVDAFk6zFFS18d/MR4hUs9hT2nE+DS/MV5LrfHa9doDl8edcghs4QGrKgr96kOEt04xTeEbK6y1s7WDt4Sw5z6vm2yon/CtebvoAzGBQ/2F+BnkxOm6/a
- iqU5PlxA
- gzoBi75Xt5H08RwvatsElaS4iLIjrygceGhZE9kil4ggfZ5y8IChiK3VyysgPFPmU+/dIszogAzTZmmhDMV6RMDrKqlC5P5jVS5FqQ4MtlaaugJ4q6FJXZv0uU/5kvg8VVJUSxrcmkRMbo4bmDIxGNBtLHC6u6sKYcPJ4+V/mu8r/cRY2kpahKGiIvjKKVrmeWiK6JJgsxy8PqYawUUeTsUzSoxaw5naHWmhXMTzMZeKj2nrs47y3AukGRk/uNn5rmT8VlnMdhUBjjE8oKyuVI5wMncq+UNEWMx12Xsu6NURe/+CICdbS0Ky3WGkCKR+fBQLj8KOtkZ22xbjz1jfmpAEvMWzElWZG+XqMT1iKtz8CnHfsJjg0U/+U9m6L8VHdGhf9yyxQRB90Lv40oPltiIkBIuE6f7QAIlYwYJPBSIRgwktiq6iHeLjOj+E3IL5h3E+o7fMljRGkediy/UatrYUWr8tXfBf+E09km+RJoQyLAyw=
+X-HE-Tag: 1776852037-872491
+X-HE-Meta: U2FsdGVkX19DajC9pCmvWjHhGkmTl7rhsavXdB/4ox0/R/ozW2lEdH8EQHeQX13vede2shHe0NE+tkB5Vt08lbCrJFlpkszFNrsBeVIYvMfFeYjkfln6pr77kwCmeqDbcy/UWbM76v1J0X2TphteaypaAgP2MhF2X6kqph3hx3WA7DoNeD9wugYMV3zS3M0bH6mA11zfp1afJRiekMcfjShgC4Dzb3J72TftMRBVv2Qr+Dx43tGcgfyYJT3BhbYdkX48pZnH8fJankTXsPDkfR5T8kleBo5flddM0A9rtqqQCpRTqBzAdXsfcEZUSWbK3spk5vi51n+HkYzZEAalVYVTuwtUWqBzU5CuQLwHGOZHeFf5OFYw5so21SZGeIuTD+jPnlj5Jgt5p7N6FvkhZBNb9GlJyZW3uJM1oyJ6ybVMCBwRFCPynnHXluSNNfupvyA0iymOCfdOopVCfZoi/j9c2Et1RwG0pp0fZ6opWcDblvZenDD+NJBA7vxKohgovuRKSRuEnRPSYRhNZghydBb25eDJZuRRxnXxQOnGKfFDO8GXQ/FaUW7rmP2LLWG7Ka8b/badKxWlc6WUZdzZIOGOhHwnReeL73v/pflu2QwqtHlEUireM71RL2JpPFW2MfrLc7i8ZeIr4vqQKzXieRnHVoGeGxFyZ4dcdePWk/jhYomrXs2eORYUNFQ1rjmb+JtGR8q7ykB6Zu20jEg962l2FkoIbf4s38WJnE6WerTNpebu7hI/oljKKjTyD7SDY3hxzLpTc9fVMFG2bnfw3kRBijOrLl1scm5+CrV7wFP9Tbi7FSxztzI/AW9UqMQiaKzbYXPakVFw+doz+Tn6ng/BLKmDO8qinc+PYuD7t3UWcdWg76kjN0peyc0Y0bvIxCNpHM4OsfQsD58LeVpHp888sRLIXq4n84gs0+wPtJ4O3mmad75BxoqcU9I8n3730TJd1u7EzkxglCI8e7Z
+ 4wPgf5Km
+ Ed3tAxQRoYv3Jhu8lS6zg0pavqZU41iCsFOo3acsoaXR7iCdE5bXQqydSzOS4t/QDzUgebfrZ53l471EUNwjwfwO8lQMb62+EI7FxIJKQXaMArwjDN4oTzm7tXFuYUxKIoh4cTmp9HOYdc8uyPSF8X4yDThv1aY2BunScqR2bS6bj2pPtxyQNoLS7bmapSB1C1r9ATk8z0ReMzcQidkSNBKkac/0hRv/JpyzmRKtNx4Vl7QGjduFKcMne18/u0BvNBfrdcyaUM+6VEV/ZQzIQ9+76IjVadCfmTHEt5fhH5n36iiqSNuaP7NjBFkpn+Vywx04bVBrbvv4bHkYgWiaMgJeiLcc4uFSgy/QlcjhdjS92fA8Gv/fMTTZePJ/W/f8liDgVaCKpZgdpt13srHMxOEhgDCGaqCjOK4C0GIpHyHCT+2mhR0AFgjrSDZALy5Gy8A8QH0JYljcyxvA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,187 +140,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue 21-04-26 23:37:01, Ojaswin Mujoo wrote:
+> On Mon, Apr 20, 2026 at 01:28:18PM +0200, Jan Kara wrote:
+> > On Sat 18-04-26 01:12:22, Ojaswin Mujoo wrote:
+> > > On Thu, Apr 16, 2026 at 02:34:15PM +0200, Jan Kara wrote:
+> > > > > @@ -1096,6 +1097,276 @@ static bool iomap_write_end(struct iomap_iter *iter, size_t len, size_t copied,
+> > > > > +static int iomap_writethrough_iter(struct iomap_writethrough_ctx *wt_ctx,
+> > > > > +				   struct iomap_iter *iter, struct iov_iter *i,
+> > > > > +				   const struct iomap_writethrough_ops *wt_ops)
+> > > > > +
+> > > > > +{
+> 
+> <...>
+> 
+> > > your comment but) after this email, I started diggin a bit more into why
+> > > it is needed.  As per my understanding, it tackles 2 things:
+> > > 
+> > > Problem 1. mkclean's the old EOF folio so that the FS can fault again. This
+> > > allows us to allocate new blocks which previously might not be allocated
+> > > if bs < ps.
+> > > 
+> > > Problem 2. Since mmap writes can dirty data beyond EOF, we zero the range from
+> > > old EOF to end of that folio so that readers dont read junk data after
+> > > isize extension.
+> > 
+> > Correct.
+> > 
+> > > Another thing I noticed is that most users of
+> > > iomap_file_buffered_write() do their own eof zeroing in the FS layer
+> > > (eg, xfs_file_write_zero_eof(), ext4's new changes,
+> > > ntfs_extend_initialized_size() etc). 
+> > > I think this FS level zerooing should take care of mkcleaning the eof
+> > > folio (problem 1), as they call iomap_zero_range() which would flush the
+> > > eof range anyways. So am I right in assuming that for FSes that do their
+> > > own zeroing, 1. is already taken care of?
+> > 
+> > Well, I don't see anything that would writeprotect the old tail page in
+> > iomap_zero_range(). I think iomap_zero_range() calls are there mostly to
+> > address 2. Not only due to mmap but also possibly to clear whatever junk
+> > there can be in the blocks after EOF.
+> 
+> Well I was thinking more like if the EOF page was mmap'd it would be
+> dirty and blocks beyond EOF would be unmapped, so iomap_zero_range() will
+> write it back which shall mkclean() the folio.
+> 
+> But I think the same race we discussed for problem 2 can also occur
+> here.
+> 
+> Thread 1 (extending write)             Thread 2 (mmap writer)
+> 
+> iomap_zero_range()
+> filemap_write_and_wait_range()
+>                                        // mmaps & writes EOF range
+> iomap_write_iter()
+> isize = new_size
+> // pagecache_isize_extended() is
+>    needed to mkclean() old EOF page.
 
-On Wed, Apr 22, 2026 at 3:21=E2=80=AFPM Muchun Song <muchun.song@linux.dev>=
- wrote:
->
->
->
-> > On Apr 22, 2026, at 07:02, Sang-Heon Jeon <ekffu200098@gmail.com> wrote=
-:
-> >
-> > When the user requests a total hugetlb CMA size without per-node
-> > specification, hugetlb_cma_reserve() computes per_node from
-> > hugetlb_cma_size and the number of nodes that have memory
-> >
-> >        per_node =3D DIV_ROUND_UP(hugetlb_cma_size,
-> >                                nodes_weight(hugetlb_bootmem_nodes));
-> >
-> > The reservation loop later computes
-> >
-> >        size =3D round_up(min(per_node, hugetlb_cma_size - reserved),
-> >                          PAGE_SIZE << order);
-> >
-> > So the actually reserved per_node size is multiple of (PAGE_SIZE <<
-> > order), but the logged per_node is not rounded up, so it may be smaller
-> > than the actual reserved size.
-> >
-> > For example, as the existing comment describes, if a 3 GB area is
-> > requested on a machine with 4 NUMA nodes that have memory, 1 GB is
-> > allocated on the first three nodes, but the printed log is
-> >
-> >        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
-> >
-> > Round per_node up to (PAGE_SIZE << order) before logging so that the
-> > printed log always matches the actual reserved size. No functional chan=
-ge
-> > to the actual reservation size, as the following case analysis shows
-> >
-> > 1. remaining (hugetlb_cma_size - reserved) >=3D rounded per_node
-> > - AS-IS: min() picks unrounded per_node;
-> >    round_up() returns rounded per_node
-> > - TO-BE: min() picks rounded per_node;
-> >    round_up() returns rounded per_node (no-op)
-> > 2. remaining < unrounded per_node
-> > - AS-IS: min() picks remaining;
-> >    round_up() returns round_up(remaining)
-> > - TO-BE: min() picks remaining;
-> >    round_up() returns round_up(remaining)
-> > 3. unrounded per_node <=3D remaining < rounded per_node
-> > - AS-IS: min() picks unrounded per_node;
-> >    round_up() returns rounded per_node
-> > - TO-BE: min() picks remaining;
-> >    round_up() returns round_up(remaining) equals rounded per_node
-> >
-> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > ---
-> > Hello,
-> >
-> > While looking into boot information, I found a minor issue.
-> > I am sending this patch as an RFC because of the two additional
-> > questions below (one directly related, the other indirectly related)
-> >
-> > 1. This patch only fixes the log output, not the reservation result its=
-elf.
-> > Do I need to add Fixes tag on this case? (i.e., Does this patch need ba=
-ckporting?)
-> > If so, I'll add below commit.
-> >
-> >  Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepa=
-ges using cma") # 5.7
->
-> Yes, it is recommended to add a Fixes tag. The rule of thumb in the kerne=
-l
-> community is that if a patch fixes an issue (even a cosmetic one like a l=
-og
-> message), it should have a Fixes tag for proper traceability.
->
-> However, please note that having a Fixes: tag **does not automatically me=
-an
-> it will be backported** to stable trees. Backporting usually requires an
-> explicit `Cc: <stable@vger.kernel.org>` tag, which is reserved for functi=
-onal
-> bugs, crashes, or incorrect logic. Since this patch only corrects a log m=
-essage,
-> I would not recommend adding the `Cc: stable` tag unless you believe this
-> misleading log has severe consequences (e.g., breaking userspace scripts =
-that
-> parse it).
+Yes, this race exists and unlike in the case of zeroing where it is mostly
+harmless not guranteeing calling page_mkwrite() with updated i_size can
+lead to filesystem tripping on assertions, data loss or similar.
 
-Thank you for the detailed explanation. Until now I had understood
-`Cc: stable` tag as the explicit backport request and `Fixes` as an
-implicit one. Your clarification is very helpful.
+> > > As for 2, I think after the EOF zeroing of the FS, there might be a
+> > > window before iomap_write_iter() where an mmap writer can still dirty
+> > > EOF blocks, hence the pagecache_isize_extended() would be needed here.
+> > > But doesn't that then make the eof zeroing in the FS layer redundant? Am
+> > > I missing something here?
+> > 
+> > Hmm, I agree the zeroing looks duplicit (for some users of
+> > pagecache_isize_extended()). And yes, doing the zeroing from
+> > xfs_file_write_zero_eof() is somewhat racy (mmap writer can still come and
+> > write non-zeros before we update i_size) but I'd have hard time to argue it
+> > really practically matters - you are racing mmap writes with buffered
+> > writes so any kind of write atomicity guarantees are not there. 
+> 
+> Yeah, seems like it is not enough to take care of either 1 or 2 and
+> pagecache_isize_extended() should maybe be enough. I was just wondering
+> if we could optimize it away even for normal extend path (no racing mmap),
+> we can avoid the expensive folio_zero_range() calls.
+> 
+> Regardless, Ive not looked at this more closely and its a separate issue
+> so we can revisit it later. For now I wanted some clarity around
+> pagecache_isize_extended() so thanks for that.
 
-I also agree with your opinion that this patch is not appropriate for
-the `Cc: stable` tag. I will add the `Fixes` tag only to the next
-patch.
+Well, but pagecache_isize_extended() doesn't guarantee on disk blocks are
+zeroed out as well as it doesn't dirty the page. Also
+xfs_file_write_zero_eof() potentially handles zeroing of more than a tail
+page. So you cannot simply drop one of these.
 
-> > 2. When node_specific_cma_alloc is true, the reservation loop can break
-> > out early due to round_up() before all specified nodes are reserved.
-> > Is this intentional or a bug?
-> >
-> > For example, with hugetlb_cma=3D0:1300M,1:1300M,2:1300M and (PAGE_SIZE
-> > << order) is 1GB
->
-> To me, this is a strange configuration. While the documentation doesn't
-> explicitly forbid this type of allocation, it doesn't clearly state wheth=
-er
-> it's supported either. So I am curious why you have such configuration?
+> > > Regardless, for our case I think we will also need to do the
+> > > pagecache_isize_extended(), mainly to take care of problem 2, but where
+> > > exactly should we do it now?  We currently change the isize in endio()
+> > > but for aio, it can run outside inode or folio lock. I think this
+> > > function needs to be called under inode lock(). Hmm.. its a bit late here so
+> > > I'll revisit this tomorrow with a fresh mind :)
+> > 
+> > I think mainly to take care of problem 1... You are correct about
+> > inode_lock but since we are updating i_size, we should be better holding
+> > it, shouldn't we?
+> 
+> Yes you are correct. In the aio writethrough codepath, the inode update
+> is happening without the inode lock which is wrong. I overlooked the
+> fact that even aio dio uses IOMAP_DIO_FORCE_WAIT to force isize update
+> under inode lock, and we should do something similar as well.
 
-This is an example scenario to describe the situation below. So, it is
-not a real configuration from the real world.
+Yes.
 
-> If we say that upward alignment is allowed=E2=80=94for example, allocatin=
-g 2GB
-> when a user requests 1300MB=E2=80=94you=E2=80=99ll notice the code explic=
-itly fails to
-> support configurations smaller than 1GB (where no upward alignment occurs=
-).
-> These two alignment requirements are contradictory.
->
-> Personally, I=E2=80=99m inclined to view this as undefined behavior. If w=
-e=E2=80=99re going
-> to fix this, I think it is better to restrict user input to strictly foll=
-ow
-> huge-page alignment. This should also help simplify our processing logic.
-> Let me know if anyone sees a downside to this approach!
->
+> So in v3, I make the change that for extending writes we shall always
+> finish them in "sync" fashion so ->endio() runs under inode lock. Then,
+> after ->endio() in iomap_dio_complete(), I will call
+> pagecache_isize_extended() to take care of this. Just like isize update
+> right now, the isize_extension only runs when the IO was successful
+> otherwise we return an error to the user. This gives us semantics like
+> dio while handling extension properly.
+> 
+> Does that sound okay?
 
-Thanks for the detailed description. I think your suggestion is very reason=
-able.
-TBH, I'm not as familiar with hugetlb as you are, but I'd be happy to
-work on this with your guidance.
+Yep, sounds fine.
 
-> >
-> >  hugetlb_cma_size_in_node[0..2] =3D 1300MB
-> >  hugetlb_cma_size =3D 3900MB
-> >
-> > Actual reserved size is rounded up from 1300MB to 2GB
-> >
-> >  iter 1 (node 0): reserved: 2GB, 2GB < 3900MB, continue
-> >  iter 2 (node 1): reserved: 4GB, 4GB >=3D 3900MB, break
-> >
-> > As a result, node 2 was specified but no CMA area is reserved. If this =
-is
-> > unintended, I would be happy to send a follow-up patch to fix it.
-> >
-> > If I misunderstood anything, please feel free to let me know.
-> >
-> > Best Regards,
-> > Sang-Heon Jeon
-> > ---
-> > mm/hugetlb_cma.c | 1 +
-> > 1 file changed, 1 insertion(+)
-> >
-> > diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-> > index f83ae4998990..4a92a9e38500 100644
-> > --- a/mm/hugetlb_cma.c
-> > +++ b/mm/hugetlb_cma.c
-> > @@ -204,6 +204,7 @@ void __init hugetlb_cma_reserve(void)
-> > */
-> >               per_node =3D DIV_ROUND_UP(hugetlb_cma_size,
-> >               nodes_weight(hugetlb_bootmem_nodes));
-> > +             per_node =3D round_up(per_node, PAGE_SIZE << order)
->
-> Missing semicolon at the end of this statement. I'm not sure if you
-> actually tested this patch?
-
-Oops, It's my mistake. I tested with QEMU and I'll attach test result
-to the next patch
-
-> Muchun,
-> Thanks.
->
-> >               pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per =
-node\n",
-> >                       hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
-> >       }
-> > --
-> > 2.43.0
-> >
->
-
-Best Regards,
-Sang-Heon Jeon
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
