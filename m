@@ -4,77 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5505FA1FE1
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 18:14:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3EC8FA1FE1
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 18:18:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B17C76B0088; Wed, 22 Apr 2026 14:14:31 -0400 (EDT)
+	id 466A86B0088; Wed, 22 Apr 2026 14:18:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC8D66B008A; Wed, 22 Apr 2026 14:14:31 -0400 (EDT)
+	id 417386B008A; Wed, 22 Apr 2026 14:18:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B7126B008C; Wed, 22 Apr 2026 14:14:31 -0400 (EDT)
+	id 305F06B008C; Wed, 22 Apr 2026 14:18:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 890D36B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:14:31 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 40A3C1B7075
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:14:31 +0000 (UTC)
-X-FDA: 84686991942.21.D43CF9A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DBBD6B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:18:32 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B23FA1A02BD
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:18:31 +0000 (UTC)
+X-FDA: 84687002022.06.D7A0EAA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 84A9F4000A
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:14:29 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uIQWQrIY;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 005A1A000E
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:18:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BLuYXhst;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776881669;
+	s=arc-20220608; t=1776881910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nluioVjBnPpi3V4ntlzyBb8qLqZAE9QsrJztNkk+29s=;
-	b=wZ41bZlEXLNKc5v2L9QB5yjKZWFLj7NxLvS6s/sPGzz1QABuG5tV/YvaUZu61wie9grd0+
-	i3jV3fXqe9JeI/UUiwcaKJcI45Wg/zc/t42UOMz3m+exSgAXfWqJf5Ja3D0yQnV8OQVPzo
-	Sc8IYkkIU8I8opiOu1JVn58BjlpBUSM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776881669; a=rsa-sha256;
-	cv=none;
-	b=wRt9YzoT20AYfSVjgRHlxroTwk7Kr2JA7OZgLeIaYwkfkSxChwwySzYyb643eaozvq0Jqp
-	dQyWdURDUXSaKQsD9uoEe776FdHpJJhDFYbibeOHY6ySl4rgwKWGanGEP7csiafIn3ldUh
-	GAV8qLDb5HNEaovmWIq/cvoNCnhZbkc=
+	bh=27WplWvkeKWSRnjLRegxjAuHP+5fvroUuyYXvDxXFco=;
+	b=VEzXiQpPE92HARSkXMTLNHE0067O6QQ5xfJHjxped0UYsLImNLCYi66rzbbSdI2bHHNxFW
+	Qm+IEeu7fClfzIgfWZO6Q93Y6yn/9dEJA51fCmq5G9Fm/HfK9vwujK99AbgLksH4dqmOyY
+	A8E5bSOA7P4YjwDDHfvCVJKsrGEr+1A=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uIQWQrIY;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BLuYXhst;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776881910; a=rsa-sha256;
+	cv=none;
+	b=LltyQa22opGIfh9RgcL8v94dfk7W4ar9DWnBl7HfqEParg0b8mGOdVumceqa8N7wmbPmL0
+	IhVe9Bd5a9iXdxdpB7SjmyU+cBlKu5QmVlVSKN2YPx7EK4oDfRYSA+qln69ujdS7g4ZQcR
+	FiD6/WVYl+xG7iKHX8LL2D4SrcdQZWE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E5F8061340;
-	Wed, 22 Apr 2026 18:14:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9A6C19425;
-	Wed, 22 Apr 2026 18:14:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B93F61340;
+	Wed, 22 Apr 2026 18:18:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81D2C2BCB3;
+	Wed, 22 Apr 2026 18:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776881668;
-	bh=JQVpfx37nESej/CYg2Jr9FlOJ9VwGeutbHe3G/GQHcY=;
+	s=k20201202; t=1776881909;
+	bh=poVEk0a4RHNRSGxEyMFp5p6K23A25Mki0TpHQIwqj3M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uIQWQrIYBiwKihiJZXPtqlBzbZQLVjVujHKpiGZBQgZ9gjW8NpKcr+lO0lUN2yf32
-	 bEFoErqevMIPXfZhb1VesZyoNpPyKlzs/qihUucF1PvzWJASTiQ6QY9Uj/kQaLx7sg
-	 gUghyLyfbq7i0bfUVMKpLIonOcSPetnuz4S2SRzi3zFlks6oYkwyArouQ87jRLZDBx
-	 831hNc/wi4b6QcU7yxM3q/sW1VoKyVL2eDBxsibm/PSoFHSgVMesStIvqJDvmk9CRp
-	 sxkHT79vPsg7Q5Sg43iVWE8mVWWFvhKblSvamkWXgm4XoGG5q9P/ho/KpCKPfafA8K
-	 8qugC8DY6Cjeg==
-Message-ID: <b47ba580-2443-482f-8a92-558af82d13f2@kernel.org>
-Date: Wed, 22 Apr 2026 20:14:24 +0200
+	b=BLuYXhst82Ra6+69kvYJLWBXcojI07MMwO6DecW3vDbDdd3sbwI/9M7bbi7SOQkyF
+	 Jn/iYqVD2H6zqCrvvZB6GwCwKQyiKSGjGuuC75RksStFkljQDQx9PUtuRk6t5I/OXc
+	 o2hmJaj7NsSaRjmD7dhH6nUvi+gD0z1hA8ToBBGwa2HWQ04QvNoWbbAggZ/gJNtczL
+	 jvj3IpINnZrrz3d+Zpx0kBdiOD86bLqTqm7qU4TU3hOmobQBqItvUB+RaFvva5fznU
+	 TqMS3EOD4KrADe+SicBsU3SviU4nfdSCLtcagw/Q8zBysWzFo0O3RDh7DB+ZevIrrA
+	 Ltk8sBbu9YU6g==
+Message-ID: <92c3d650-be80-4a64-a962-3586ba753316@kernel.org>
+Date: Wed, 22 Apr 2026 20:18:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/hmm: Add userfaultfd support to fault handling
-To: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
-Cc: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <177499585916.169073.8313365481186071940.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
- <286425bc-e2a2-4e29-abdf-666e798e6cf4@kernel.org>
- <aejiV8rQIOgrlCkh@skinsburskii.localdomain>
+Subject: Re: [LSF/MM/BPF TOPIC] MM transition
+To: Josh Law <joshlaw48@gmail.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org
+References: <16B7B5A8-EEA7-4580-A565-3A0B4DBB08AB@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +118,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aejiV8rQIOgrlCkh@skinsburskii.localdomain>
+In-Reply-To: <16B7B5A8-EEA7-4580-A565-3A0B4DBB08AB@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 84A9F4000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: qzkxgb4zjdtpsrgriwkcnzud5hb45hig
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 58myms5y3jgogh88uk364u4k6yzbjdhb
+X-Rspamd-Queue-Id: 005A1A000E
 X-Rspam-User: 
-X-HE-Tag: 1776881669-112300
-X-HE-Meta: U2FsdGVkX1+gnettHs+nKLRNf5cL2dvhOrI9cOMfdukHiKye9MR3Y6CUNF1L4JnqhsBVBzBjx19MNVi8jpL1tuyfMw9SnatZ/sok86a3UIvEKzHUW6w+bsAfGql4SW4KQdm9bGhY13BH3fxrGrrTZt+o6CVaKjBDMcuvqBaGNripfPK41vkMbYcQ7o/72ZPif7IbL55qK3AI3hejaMiMRvDAXxbv1eb24iRc6a9E2moWrat8MOGv5MtS9T4LL1/aFZdmCURiPko+0DgQbj/TGEOJMuVG/WrN0O2eQu0o8fAEsV462Uly584rEsoi8gBBesc0hLHm0F6LbqDnfQpKBvqwhH9OsBW1Ff3gMl8eMsxcHrai4hJKUy7IlHjgLOyazLUjCkY+SBNnvzC/y3SXId8ptbsVQy3ARc1psQywA5I2Icj0nsWYGyB2o8sIx7fIEzShlWDXbE+5P9K3F9UJk2dfkGXBBcfaeGGUKQ/VG3dHQC/k/uGvJq2iymIGrcEyrx5jkXol61t6pG/0tYp4D2MEDg+oQ+FjyoRi4hUqrEnRB4xWMXDDb7R7P7SVHfsoeJXGd948tnYnkFAfwxdQTmAAXw8znf4h8+z8OZtzHyl9Ls52qchuUPQg5ObcJYl2X1t+Vh+RAopF0QOEtXMjAzHh9R7trOT44JYc8tJtv3dFF043KAgJuUnU7q7pf14ewzA3zAsIr/hOPhz04Z6FsHmXMLupbClmSgzC2a+fpFuAvH7UCC/UfQUqCHOFcnem6Y3dTSD100RsvGHyQrNBrr02WZuCtN3hAi1VzCjucAsrfK/RhBlQbnvIggqxkQ7tnl2Fvx+bwzXMMfl1ppBRWLfX0gmV4EMXqBXkAytsUHEwFtZqRXvEd/mFYYtVqxsyuprrCgAPNNQYuMCnTr0Zm9iarlWA1kdTLucku7UNhIP5KjvqNYUK9e2pfkbefUd9KznhYSYttBsFGS5HpuT
- IMYHm3PA
- SG2jnDuk4lrrWRkDWBruXzrktbmQRljp2Vu/EA6Hsp4H3joA3vvZ+g9hyzwBGexuaJaEq/csFiXQNPbyBzRLH9Fa1LjAPzzvohvSj4Hh1GnINjQcxSLVW9h1dTm8nAVbxaWSqvUjCSRNax99Dk0eHZayTZ/5hIMjsVwovfKEoWVJvhIoNOipKaOE2pHMZEpqjvQQ53A/E7h+EpZvGgbHAp/RKA1FOZV9uKJdvGoFN6Ncs+HOY8+ngz1jLB8hkKPmbErlbU7nz67bAk10o9KKKuQ+JR6Jtt+5i14nmCyIR0+6Yo9A=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776881909-371328
+X-HE-Meta: U2FsdGVkX1+qayhNrQpw/3hSZ8Gh1kq3fjSfvrpGhi05Gxi4Hky7LUb3TP6rvZG67/nmioz5Vu5QYUEZsVn/OFZZx7aCGnKdLwqKMFOYf2rGFvXXivhmyeM+WLZ7Jpf3qYbjg9jZ2xIqC0TJD9Hhx23Xy4b8gga+P/EJjtlV/Zs+CrWLX2Y1JLHcy3Un1TlC6dEnfhtKcveTK81ZETA60i+hu3tV0k9rU5MMGTMvrqwkskxF7/4HJMS2ABKJKaNodLv8N7Kf0tKx0HyeXmz9fpUOoaFFQWhxfhwtNnOk748b7XSUHBAC8VRlk6iOXM2TLtqFkc4LHkW5Z4PjlzPO2gJxbsjm1I+Wmq+hpKu6oHyXXeyj7KqUH/fR08crZZpFzjTl+hJQsqchkJRDBhm0V1B+fpBRqmqMoUU2NSSqRDYJSPYgRMUlj3r/8R1I6TNi2BSh6pUA3+PHAROe+ZsQIqt7e6Q3BQoEbQESZGyJTIcOBlOwtS3TiIh1gIVdWzSuiFEpruO4qIFPdH0bJB1C0WlxfFXYkc9qXyut5HTNp7j/4tZtZak+E8WRJpnThkpVOcrSgc9D1OsqLnh4FrhgKB8WO4+/f+Xiz+KjKDYoBWgmfcKVBOevwDJHMQuhRt21/crUGVwSZpKyHxhZ8D1Hjqj/iMtIJHnR2xc4dl54Hjp0I+bFud+SHxRd5dYeGgWHzSJstxwuMOSij/xd5zmbntpOdKom+IajTtQA+iGGI1CgCSYqSYbVah2b3W4bcWM6zvkkxhFdeo0LirQI32Pndq/AUnjPNs4ivykJ3VGw5Hm1pevZZpcTp24urE2o8uuU8I1Y/lXnoNBNezTNmy30WRTg8yaKC+/E+MxYiSmE1RV9ebE0IbbzZrIn7yGl7kZUSIn5bZBCFOeden8ClnD0qp29KuMKokNMkzJHu59acYqiP2nGvYISMb7iPq56s7OU1YhwLKBCP/lw7NE+RsR
+ RRyQNORP
+ 2b4DHOc4yrMoxv83ZrQbtDmoHl7SUo9swdp/f1yacBP5QRSJ/ydR7nPJyuIeQPwvoBKC0jwsXCOnoGfWaug1pJmmFOdFeSLi+u/CcYe+y0NFc3R7ZoYCyJlKjzU/sCiknH7nccKfCDWa1oXr1OFG/2+FISkXWL8WmYClEkcrd5IiZ0COBP+Wj9EidWAqkfnfdJmzZmJddRgCL30D3Ka5LGd6Dq6aR66EgDI7sG78oNsNngYF6Lv/95s6367wfoHLU3b6G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,118 +136,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/22/26 16:59, Stanislav Kinsburskii wrote:
-> On Wed, Apr 22, 2026 at 09:27:44AM +0200, David Hildenbrand (Arm) wrote:
->> On 4/1/26 00:24, Stanislav Kinsburskii wrote:
->>> Add support for userfaultfd-enabled VMAs to the HMM framework.
->>>
->>> Extract fault handling logic into hmm_handle_mm_fault() to handle both
->>> regular and userfaultfd-backed mappings. The implementation follows
->>> fixup_user_fault() for handling VM_FAULT_RETRY and VM_FAULT_COMPLETED, with
->>> a key difference: instead of retrying or moving forward respectively,
->>> return -EBUSY after reacquiring mmap_read_lock. Since the lock was
->>> released, the VMA could have changed, so defer retry logic to the caller.
->>>
->>> This approach is inefficient for userfaultfd-backed VMAs, as HMM can only
->>> populate one page at a time, but keeps the framework simple by avoiding
->>> complex retry logic within HMM itself.
->>>
->>> Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
->>> ---
->>>  mm/hmm.c |   40 ++++++++++++++++++++++++++++++++++++----
->>>  1 file changed, 36 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/mm/hmm.c b/mm/hmm.c
->>> index f6c4ddff4bd6..d04d68e21473 100644
->>> --- a/mm/hmm.c
->>> +++ b/mm/hmm.c
->>> @@ -59,6 +59,35 @@ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
->>>  	return 0;
->>>  }
->>>  
->>> +static int hmm_handle_mm_fault(struct vm_area_struct *vma,
->>> +			       unsigned long addr,
->>> +			       unsigned int fault_flags)
->>> +{
->>> +	int ret;
->>> +
->>> +	if (userfaultfd_missing(vma)) {
->>> +		struct mm_struct *mm = vma->vm_mm;
->>> +
->>> +		fault_flags |= FAULT_FLAG_ALLOW_RETRY |
->>> +			       FAULT_FLAG_USER;
->>> +
->>> +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
->>> +
->>> +		if (ret & (VM_FAULT_COMPLETED | VM_FAULT_RETRY)) {
->>> +			mmap_read_lock(mm);
->>> +			return -EBUSY;
->>> +		}
->>> +
->>> +		if (ret & VM_FAULT_ERROR)
->>> +			return vm_fault_to_errno(ret, 0);
->>> +	} else {
->>> +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
->>> +		if (ret & VM_FAULT_ERROR)
->>> +			return vm_fault_to_errno(ret, 0);
->>> +	}
->>
->> I'm surprised that there is userfaultfd_missing() logic required here at
->> all.
->>
->> What prevents us from always calling handle_mm_fault() in a way +
->> handling return values, such that we will just do the right thing
->> independent of userfaultfd_missing()?
->>
+On 4/21/26 21:25, Josh Law wrote:
+> Hello, since I'm not coming to LSF/BPF because of my age (aw)
 > 
-> Essentially, the main issue with the current HMM framework is that
-> handle_mm_fault() with FAULT_FLAG_ALLOW_RETRY (needed for userfaultfd)
-> can drop the mm lock. The framework does not expect or support that yet.
-> That is why I had to add the branching.
+> (And I'm more than aware this post is more mm focused, but I'm
+> representing lib :))
 > 
-> The worst part is that handle_mm_fault() can unlock via
-> mm_read_unlock(), while svm_range_restore_work() takes the mm write
-> lock and this RFC patch doesn't address this problem.
+> I'm "virtually" putting my hand up
 > 
-> The main question where I’d like feedback is: should userfaultfd be
-> supported in the HMM framework at all, given the complexity around
-> unlocking and retry handling (similar to other gup helpers) or should
-> this complexity be offloaded to the caller side?
 > 
-> If it should be suported, then I see two ways to implement this:
+> Whats going to happen to lib/?
 > 
-> 1. Introduce a new HMM_NEED_USER_FAULT flag to tell the framework that
->    the caller needs userfaultfd support, and extend the framework
->    accordingly. This is not intrusive to existing code. But if we want lazy
->    migration for GPU state in the future (and we likely do), GPU drivers
->    will have to be updated to set this flag later. The only real user of
->    this feature right now is the MSHV driver and I'd extend it to set
->    this flag right away and leave GPU HMM users for later.
+> I'm aware there are submaintainers for some files
 > 
-> 2. Add retry logic to hmm_handle_mm_fault() to handle VM_FAULT_RETRY and
->    VM_FAULT_COMPLETED, as required for userfaultfd support. This would be
->    transparent to users. But it would require significant changes: mm
->    relocking, VMA lookup, and other parts. Also, before doing that, the
->    kfd_svm driver would need to be changed to downgrade the mm lock to
->    read.
+> E.G: Steven (and Petr) for vsprintf
+> Masami for bootconfig
+> Willy for idr 
+> Liam for maple tree
+> Etc
+> 
+> But let's say, lib/glob.c, or lib/bug.c, even lib/inflate.c! (And/or 
+> all files which only has you set as primary maintainer)
 
-Exactly this. If we want this, it should be done the proper way, by teaching
-calling code that the lock was dropped etc.
+I'd assume that (excluding MM bits, for example) falls in the foreseeable future
+under the "I plan to keep running the mm-nonmm branches.".
 
-There should not be userfaultfd special-casing anywhere, it's just a matter of
-teaching the code that we might get the mmap lock dropped.
-
-Now, that might be a bit of work :)
-
-What we do in mm/gup.c, is letting callers opt-in whether they can handle
-getting the mmap lock dropped -- not opting in to userfaultfd.
-
-See FOLL_UNLOCKABLE. Such an approach enables a step-wise implementation.
-But note that FOLL_UNLOCKABLE is an internal flag. We set it automatically when
-someone passes us a "locked" variable, indicating that they can deal with it.
-
-
-See populate_vma_page_range() as one example.
+What happens when Andrew fully retires is a probably a good question for the
+future :)
 
 -- 
 Cheers,
