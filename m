@@ -4,104 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 098F2F55811
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 08:24:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B829F9B5E0
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 08:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BB436B0088; Wed, 22 Apr 2026 04:24:51 -0400 (EDT)
+	id C67666B0088; Wed, 22 Apr 2026 04:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46C7E6B008A; Wed, 22 Apr 2026 04:24:51 -0400 (EDT)
+	id C18746B008A; Wed, 22 Apr 2026 04:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 382156B008C; Wed, 22 Apr 2026 04:24:51 -0400 (EDT)
+	id B07136B008C; Wed, 22 Apr 2026 04:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 29E6D6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 04:24:51 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC625160F9B
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:24:50 +0000 (UTC)
-X-FDA: 84685505940.22.6C3FB42
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 01492C0008
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:24:48 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cv0wwWgr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ADBD6B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 04:32:22 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5491AE4DA6
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:32:22 +0000 (UTC)
+X-FDA: 84685524924.14.CAC098B
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 57AE91C000F
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:32:20 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QDoXgrxE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776846289;
+	s=arc-20220608; t=1776846740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sYLiGcnW+OQmYUURhujiHWOSX8EBFzucg+U6o17BlWI=;
-	b=O5ZiA0MpV74sDC1X3+1Fp0t+xMVw8nkgWacH1rN9JG0wbFeJ3Kh/zoKqsNxqIwyrIb1Vue
-	fTaoVtKIzBz2AymfkxY9Dr379aDZszRpwjG2tHnqpMAaSY/O/Lv2TIjX+NMauPmYuhVMYu
-	RR1o+nYHoiV1fjIhnjK2bKyn5Vbhec8=
+	bh=NilMrlPz33EGYo1Xi2LZqhviU9wGvBx8IHXWSsnM/W4=;
+	b=ammNS0rIchdlvqfZ4yKEh7Y/nf8zrl5Gn2ro6cjjK25NN+nusqUGCKDtW8GE2+xuFb1WQ6
+	aZDccgffB6efJ00agvA1XH+83vWhtd8LBISUrtCMCDWV7+y3P+LcaXxoADACeuNv/owcsH
+	CHY0rMLdtnNVEewGJv8tA848foFghdU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cv0wwWgr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776846289; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QDoXgrxE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776846740; a=rsa-sha256;
 	cv=none;
-	b=o1yaoSA3Fb5sWHHiWL6NhpuNCPv2hKNKF2JbZ/JRwHt9pnhqGhvum14I/UVStaEdOsVPz7
-	VhX83wSXFZsu/m+4tWSc1qa9GsswvtBCjsQ4g03fx131+Aj/uEyWpYiENYMhltpd0CYqpU
-	DCWZaZIKhd1Eb5AtzqKhjCtp+nENApI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 059BE4069B;
-	Wed, 22 Apr 2026 08:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1779C19425;
-	Wed, 22 Apr 2026 08:24:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776846287;
-	bh=O4CGkWR3yo72+GsjHY8NtS8RkGbc3ZGUxRZULeofgFg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cv0wwWgrynQ5CA3sXK6hAWgNSFWM9M0Zf2+AiJn8U6B9PhZ8P+C4ZcFM2PTWH3/gS
-	 xunfJhdsw6QoZtFJ7iQZ1jD/zF3jHLpWq1U0LzJ1UqK6dYj9WCy5q36v2PwNmOUy92
-	 +ddok9+Sq2osrJYGf7HRLV38oc6lizDVYyDKEbkCaWLBoeXywA/hrW+EJmemlReyHx
-	 A4tFlE44uBAEjEHQbhIY2BImZLll0veiNGSOAJpViaay+cnCilRb/Lf1uj4stLtM/3
-	 yk99yteLjLs3RCIdvQqb8sXfx3R6zXyYAEYIw67qBRxVeD29gSj3H9EYJqOxWNRAEw
-	 bTUUsOhSinHig==
-Date: Wed, 22 Apr 2026 11:24:39 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: =?utf-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	b=OSoq+gH7jni10YYrYWU2lhccr5eiE7gwKTFizVa+1+jLBZT7ZBsoSiqT4hpl+sJXtW5Toy
+	AdN1465m2/DnRHco9xHVRBLfVcoA0pvzHoAU5mZRMfEErTRiZ8w70eUksO4r7vvqKysUVb
+	N8nyIkQ2RNPD3EcMpIRxQoeQ/qG0ww8=
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a413f83226so5561514e87.1
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:32:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776846738; x=1777451538; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NilMrlPz33EGYo1Xi2LZqhviU9wGvBx8IHXWSsnM/W4=;
+        b=QDoXgrxEiIqCKsfPXI+NUJK8rTyBTb6a+qWbMLzIy2F3lxVKspTMVtYxOwyHpCKcH2
+         6QJb4McfFHcTJBsopiinZCuY2dYUwLfDc+6Z3yZ+hzXRexZnbgflFK7qk/xvvERyzkWo
+         0g+BR/wr5WBqvEpBKjYv33/Rw58G/jUbA9479p5ZbMQXw8MIlmpz5fcsMq2wtFiArHS7
+         27Xh68Ij3P97rpt78+de4lHioFE8Ex3fhQR3jM5scp7O45n5tLspJHNyX6F+L+Tm+Ciu
+         IO+PGMHjbXGmdQ0HTQL/HOgorvbt2VCbnAW5iX4U7fs9DeXq7yN0rQoIXbphiZMEICmE
+         GUSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776846738; x=1777451538;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NilMrlPz33EGYo1Xi2LZqhviU9wGvBx8IHXWSsnM/W4=;
+        b=LQ3YnOYLlg9NCqYYNBJ0wUmb8D4DdQ56MAjLvmjETo7+WPTapszR5qYtlrZGAwjYqx
+         ZCB255WyesQUqE/r66RAEqaBEJqJYr9EUAo/IJMdYGiVkWyWvXWciQgN+LST+7OEdK6P
+         Kto2pVLWQguMbHzcy/+Nx6u5DflGh1DNdD/7frUJ7xw2nlx/1OqL7i/qRppAhPt5PwnI
+         UeXDGXDsmOdYDBy1bx4SOa6yK18d2zIAEo4cANgrWwiCxujNx2fK6IYTjel1m7f+xe/D
+         9U05uShtwGZMg0M4lYQd1YUhADLGjS7NFLbHXJnvI85Z4CMSr7GNpKv6A/TnsOb/kG62
+         lsTA==
+X-Forwarded-Encrypted: i=1; AFNElJ+xWXBlEyO+nzmkGdJdBtHvL0JPRISy/XzMWHpIL3yFGlytkqRKAwwgxIYRgwbS2UHrMRCbDJmSUw==@kvack.org
+X-Gm-Message-State: AOJu0Yz3pamHFHtIbyrYxk+8EjfRl0umX1WUIja7QtKPlE4HOZM98dc3
+	Ej4yNopk79Xr3lBmlyeT4LoBjgEFl5i5C7IxmaZCOG61uIqypYc/v/l0
+X-Gm-Gg: AeBDievBRucw+GBNpuPBDjf/yjPNMpRkMjapOo2D0NcR7qYZrl32Y4EcZOGSCxNssXM
+	vlrmozO5TEHwoFsen5pfj9Ru6qlK2Xli03pWzaUAEgj7fXg0I+r4UtGqwux61Q6MmD5gwTpAaxX
+	AzDaugQNsgutUXyYnamrVUA4W2e9hUa4dqV/1MKGl1fK0SfN0+XKMq6I73zgWOc4yMdrZy1mx4s
+	7zsQxaIx7PjETFNlXzTBIfiLrrGdEV4JGAUEI0mkpt8oXh+bv3gHyLdl4k/xICQ0m98EZRSIXa2
+	DPWqiyGtvVBwbu7vuC52VnyT3zkaBMeIVAyn7q/Rgn4zVdrLUWGieJ66aMHAnlZN3mCPc3lRyCD
+	Nbu/e4dCdh/qQkgOq99H36aNId+PoslAtlf4mGMQ4YMD+XfEuMHqMlh+ObxKhTKzZV6Ii1Qe81i
+	c=
+X-Received: by 2002:a05:6512:2396:b0:5a4:143b:3f3e with SMTP id 2adb3069b0e04-5a416f4c297mr6613859e87.0.1776846738105;
+        Wed, 22 Apr 2026 01:32:18 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb6f0b7bsm36262921fa.23.2026.04.22.01.32.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 01:32:17 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 22 Apr 2026 10:32:16 +0200
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Thomas Graf <tgraf@suug.ch>,
+	oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v8 1/2] kho: fix deferred initialization of scratch areas
-Message-ID: <aeiFx8tilasoGzwa@kernel.org>
-References: <20260416110654.247398-1-mclapinski@google.com>
- <20260416110654.247398-2-mclapinski@google.com>
- <aeD2Fzr6yr4pu9-X@kernel.org>
- <CAAi7L5d-ujEa7R21Lmd37X9451KBmK8ZhagSKbJde15aQLi2MQ@mail.gmail.com>
- <aeEKksfLxQ0A7Jun@kernel.org>
- <CAAi7L5cp3B0DFEQex5EqFdLDkqVWwRw228-pgp0PnhfgLP=e6Q@mail.gmail.com>
- <aecUW-Xgm5MPMyVr@kernel.org>
- <CAAi7L5d8x1MB1f6A_h2acj1CYU1wf7DijS1TENC+Lurx5wLhKw@mail.gmail.com>
+	Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
+	linux-mm@kvack.org
+Subject: Re: [linus:master] [mm]  c6307674ed:
+ BUG:sleeping_function_called_from_invalid_context_at_mm/vmalloc.c
+Message-ID: <aeiHkG7X_dieMdw5@milan>
+References: <202604211323.fac1b29e-lkp@intel.com>
+ <aedvSnhOGM_mauYP@milan>
+ <aehdcxC14ycvY481@gondor.apana.org.au>
+ <aeh2Ii9CxtgfsX_p@milan>
+ <aeh_2WwIb8nAIcy2@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAi7L5d8x1MB1f6A_h2acj1CYU1wf7DijS1TENC+Lurx5wLhKw@mail.gmail.com>
+In-Reply-To: <aeh_2WwIb8nAIcy2@gondor.apana.org.au>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 01492C0008
-X-Stat-Signature: semmyyn1g3zz4mc9gfocphy57epgck9y
+X-Rspamd-Queue-Id: 57AE91C000F
+X-Stat-Signature: a98454k6c56bxepwawse599ukc8xzj86
 X-Rspam-User: 
-X-HE-Tag: 1776846288-798457
-X-HE-Meta: U2FsdGVkX19RLY7tOyYec5ul7Ma/x3DaCr7JdeEg08L0dE+QuiP7Qd7JsTeCnXltkSaynga32bd/KBITuFc18Go1Q0TLCVWjfiWGVbWmw05HFcAI+BnR19gmy+u9/tMDYFkb8Im1fyazSt4HN4zJ0syTdIoLHFlprHvYJo86tlYtnF+svESerBf1NKvuEcNSJMpMeqsjXgF6bajSBPt9RIbP5y3/etBmH2xJxraOcp9QbeiNdsLlEh4jaRYHDXGgetK+HyVehuyF5YFqCKqOQpF6IAcMhb6vOx3NMLeWmUva4L8nguP3uExW5KKNl6e8ZKhzIn/Il9Cz8vmLsL2I7KajxPPFudFN9IRweHE+GUtYHwm3AqRkVeaHkuIZh9nJpHIGbQFw/ffzOECBUXLj/wPjitduH1c8cgTx0d9QUrip4WZvSvu01bfkaJmyo4Ius8q9gy+5An8PynbsYJa4+5Oglz/i4wwNPISbqCuXLsQUmActEChJJQGRK04yhbnMYz7xI1rZ4kH+We6DnHOJ3Jc8bvBUUm7MtlUoEW77kbKnQunSQ9M38SLyY4M9SJgiClUP8FTzL20Gfq/b7YJ5KP0whuhgeOdYTcKCpxDprRijDVQa/9YPKYzIqGrhhCwYwlJJwkvZYuxfV0b6f7ErdTH7vU7/3EQLjn0Q9V16dllivRPXvh1wapzxJI6FJIsP7AYUwoRna6K4pvmqis+Ch9NQzG0RLVqO5qzk9G+zQjbntzkTwh/0JP9F/b5X1o9XAns65mKksWwMJE2N6lrPrQsJWrFQTGnwWUZWSm63jnZSVXtvgNGzRGNHeM6fi+2jdrEbd54Fgcj1/ZnL8vY4eNNN8xY9oUyKAn1lKZXJ53wydLgK/5G9c57Qb4rTUZA2JlaT38B1cYqcrZtT9rbm23mNGp8aQBrUV9FbjdTI3Mmi96nzEpP+hn4+cHVN+OGqR3BJbP2x6P67FmjIokE
- DrdOGP/1
- VQrkovQ//Oc/P9DfG1lX5BZqSHJwe4K9/RK3WS36xTFwSSDdsWOGwoS3RkUXT6zFdv9F2GcaqZBL6sKL9gov960t43gGw4S1kDFvjl6a/k4rwvU3s0xHdt7xwzNAUq1/uD6AhAadnKeLcvwDE3ob1aCfiuimyNlVtizm6cg/qtbH54KaFkdOmazx60OUsusFJ3v4VLC0dd5QWxnDZN5yUdnEmYSXff5cJf/muqs+KHzzX6urGs8xySO9Jgd6QXV2bZgMwrpeKniEez9W3NVkfb7ytoDQK/ECzGuJSE3xxZpHMlUo=
+X-HE-Tag: 1776846740-496794
+X-HE-Meta: U2FsdGVkX1/bkhU6uUwKnWVac2FibomMj51Uz827bBmp8Gu1bgcVPfbxeu1i6IN3UFBCLfsztdZIwshgQpdxTR4f3nzlhGN3YFZQQE1FL8hUFLePJqfyjp8wgyKUKCRlusns0unKaY8k46fegR5Y0fsCupAVvh4BlrmFPgPCQuHhDsM//ol9rnKYEIjcTlA1KH/xyN4/MnWI1x/I9ilUnhzokrAers2ghFDwX+qUeiRSRq8gfoDszHKhBV0XVfM/Chq5dgvXYTwwoCa6DK9TSc+vG3L0uiFbaKz/HWi5RIvwEn2cnMBvXZuigz4HvSd7oH9cqROYrS9Z8f7ZSSX697kzSiSRJ+Bv20NvYAs9WZ2n4nV0Y1HR5n+MoOVJZSgmzvmLzjpcQzt+pXPJEOdBkDrxqjo5tTknrdP+Xu24rFVKD50glOZYQvCYjgB3RAzBPFjIM05072QmJjxe5XHt9q6FiiAmsJH+zp8DevLngQ+Ycz+qiuypqmbq65GkA5iANd7ps7g0IMV+pvbe1/rX5ucixor/CZJ7A4XKl3xG+VOXE0MtvoQSm9Jf+ggFCOH9nx8AJTElzHkVB7e+5LhO1TboYynHD/WKIA0U2EEWiixSo5SOKoYtZ7MwQ6j6NP4TgnZM/Lucc5zHGGX62wfEhF0ptlCBlxIXt7Ah9M/HG/xMjwavYlRvbF5F+1G/GbEHdw5UTFNVuQdY/9Sho+i3YR0hLTiwSPtfI4jo7KkAeHxcy3cNCLsqeTQ+sKuZhKq5T5aF/oSl1PaGOH9rclRRVvqz1u/T+igXhEgGHegQJ1ZAjPuTos1xUJasNnJ2CZk92ny47wLKnlC4VJd9qpS2px6ppjUwMTHFkcfxnmMcrAAtzx7dQc7aFkWxZIHw653t+OnyUckEtcbsKhYlwAqgcwkn/wiGTXC9R2hl1neHHxFiZbDa90fQZLyioVD6RpPOG1g4wh0+GQ66st2oKAq
+ ZA9IoNPH
+ 9Z0BXcNK3x2NbHd/QG/NmUH6PK4XEXxltWZL+Z5GxWwGK47ktRSopVl2nCDa+oSKaC6QPjN4QOqAy4knn7uJxdZYU/z2LxlHz1B6gneykrpeH6RU4heGaGrDEp7c72MJkk0YRZhdhT0pdo5KHzmYtP+QhYQLm7FDNESO60LJ2WHrda0cyJu8RzwcCQebVOy5dtyu6k2uSeJk/wutztWE4Q/veaXI0t9+B+hThXEbplLP+q2wO/NFa4D9qZiBxtvRh5QMYe7ho544YyfLROaxxeBYp/c4Vdsq2oqyPd/AGYfYOTfS1RR06BQy58BE3yCToWWPBomPmpkRpF+w8b/X5GDuE3IxndEXcIJ7kjlGSFynaMJ37ULJ95FDOK8Wh4rO1WaykqM6bCBut03lVsZP8qXHHafSVK6Ya9amGdvn5GMriqbcuX0gI6ejiWfOZo9OQokMbGPJo3JgPqYy4KubbealQhIBuhCVS2WF5/5UtjKd5Me52l1zz19sWnkIhyufhCJX2iT44mv2AZXBTem8w7vwEQTjrXtjayFll5j/FFjTQahvYkSkhwuqNZK3H9rvPAFq5C/aAuPfp4onmXIMIoqlyNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,102 +128,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 12:20:27PM +0200, Michał Cłapiński wrote:
-> On Tue, Apr 21, 2026 at 8:08 AM Mike Rapoport <rppt@kernel.org> wrote:
+On Wed, Apr 22, 2026 at 03:59:21PM +0800, Herbert Xu wrote:
+> On Wed, Apr 22, 2026 at 09:17:54AM +0200, Uladzislau Rezki wrote:
 > >
-> > On Mon, Apr 20, 2026 at 03:11:03PM +0200, Michał Cłapiński wrote:
-> > > On Thu, Apr 16, 2026 at 6:13 PM Mike Rapoport <rppt@kernel.org> wrote:
-> > > >
-> > > > On Thu, Apr 16, 2026 at 05:06:10PM +0200, Michał Cłapiński wrote:
-> > > > > On Thu, Apr 16, 2026 at 4:45 PM Mike Rapoport <rppt@kernel.org> wrote:
-> > > > > >
-> > > > > > Hi Michal,
-> > > > > >
-> > > > > > On Thu, Apr 16, 2026 at 01:06:53PM +0200, Michal Clapinski wrote:
-> > > > > > > @@ -2262,6 +2253,12 @@ static void __init memmap_init_reserved_range(phys_addr_t start,
-> > > > > > >                * access it yet.
-> > > > > > >                */
-> > > > > > >               __SetPageReserved(page);
-> > > > > > > +
-> > > > > > > +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> > > > > >
-> > > > > > No need for #ifdef here, there's a stub returning false for
-> > > > > > CONFIG_MEMBLOCK_KHO_SCRATCH=n case.
-> > > > >
-> > > > > In all 3 places the #ifdef is there because MIGRATE_CMA might be
-> > > > > undefined. I already broke mm-new branch in the past because of that.
-> > > >
-> > > > Hmm, that hurts :/
-> > > >
-> > > > The best I can think of is to add a static inline in memblock.h and ifdefs
-> > > > around it.
-> > >
-> > > Sorry, I don't understand what you mean. What would that static inline contain?
-> >
-> > Something like this:
-> >
-> > #ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> > static inline enum migratetype kho_scratch_migratetype(unsigned long pfn,
-> >                                                        enum migratetype mt)
-> > {
-> >         if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)))
-> >                 return MIGRATE_CMA
-> >         return mt;
-> > }
-> > #else
-> > static inline enum migratetype kho_scratch_migratetype(unsigned long pfn,
-> >                                                        enum migratetype mt)
-> > {
-> >         return mt;
-> > }
-> > #endif
+> > since your GFP_ATOMIC context allocated chunk of memory using vmalloc()
+> > sense kvfree() uses vfree(). The simplest fix to free via RCU.
 > 
-> How would I use it for this code?
+> Why is kvmalloc returning vmalloc memory under GFP_ATOMIC?
+> Is there a new GFP flag to tell it to not return vmalloc memory?
 > 
-> +#ifdef CONFIG_MEMBLOCK_KHO_SCRATCH
-> +             if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)) &&
-> +                 pageblock_aligned(pfn))
-> +                     init_pageblock_migratetype(page, MIGRATE_CMA, false);
-> +#endif
-
-Something like this
-
-		enum migratetype mt = kho_scratch_migratetype(pfn, MIGRATE_MOVABLE);
-
-	        ...
-
-		if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)) &&
-		    pageblock_aligned(pfn)) 
-			init_pageblock_migratetype(page, mt, false);
-
-seems better to me than ifdef, even though MIGRATE_MOVABLE is bogus here.
-
-And since we anyway changing init_pageblock_migratetype() callers in
-mm_init.c the entire block in memmap_init_reserved_range() can be dropped
-and the change can be done in __init_page_from_nid().
-
+> This has been working for over a decade, what changed?
 > 
-> It doesn't invoke init_pageblock_migratetype unless pfn is kho scratch.
-> 
-> > Can't say I'm happy about the name, but could not think of something
-> > better.
-> >
-> > > > > > > +             if (memblock_is_kho_scratch_memory(PFN_PHYS(pfn)) &&
-> > > > > > > +                 pageblock_aligned(pfn))
-> > > > > > > +                     init_pageblock_migratetype(page, MIGRATE_CMA, false);
-> > > > > > > +#endif
-> > > > > > >       }
-> > > > > > >  }
-> > > >
-> > > > --
-> > > > Sincerely yours,
-> > > > Mike.
-> >
-> > --
-> > Sincerely yours,
-> > Mike.
-
--- 
-Sincerely yours,
-Mike.
+We have added non-sleeping flags for vmalloc() to extend kvmalloc()
+functionality as folk need those.
+ 
+Another option, would be: always use vfree_atomic() from the kvfree()
+path.
+ 
+Any thoughts?
+ 
+--
+Uladzislau Rezki
 
