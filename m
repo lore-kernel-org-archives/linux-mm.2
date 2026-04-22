@@ -4,93 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A70DF9EDD1
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 13:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39768F9EDE0
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 14:23:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8B9E6B0088; Wed, 22 Apr 2026 09:42:59 -0400 (EDT)
+	id 48E1C6B0088; Wed, 22 Apr 2026 10:23:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3C866B008A; Wed, 22 Apr 2026 09:42:59 -0400 (EDT)
+	id 418186B008A; Wed, 22 Apr 2026 10:23:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B51D06B008C; Wed, 22 Apr 2026 09:42:59 -0400 (EDT)
+	id 303EB6B008C; Wed, 22 Apr 2026 10:23:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A79C96B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:42:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BFF46B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:23:38 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EA634137532
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 13:42:58 +0000 (UTC)
-X-FDA: 84686307636.30.1374D2E
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F35DC04E0
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:23:37 +0000 (UTC)
+X-FDA: 84686410074.30.DD5FE53
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1B9741A0007
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 13:42:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dDlHpjOo;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 94E991C000E
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:23:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MoxMtnak;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776865377;
+	s=arc-20220608; t=1776867815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wHfSybB/9Le2Cbiog8Xe3gYh1JbzR5xtcBcNtHIoo2M=;
-	b=4QXuIJd2g0qKdtNCOxVqK5sFFm2LeJ5GnxD6FzJxSvid1PzopDY+QyEAHbVJ/MENxhXfpo
-	fuQjn65N7YOAKW053gw/cO6dAEBQltCinP7/gs+loU158PGc44qWsnIat9yNOg4LflbCY0
-	NT3eo3l7p2SPm+LsQPiGPWWJrz+VTpw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776865377; a=rsa-sha256;
+	bh=9TPsmFQ39PduZdo/GWt0IEvzvzx2Pmcg2p2k0m9I6Bk=;
+	b=cl5vCH6Cj7qOJCLhoDU3NoGPd2q1JLi0cwv9KK2dZAbFJFNipLawMnhNtMSRtKjSG1EC8d
+	KN4PB19rIDiw+1ARJmyar1zDNq8pyzwfcAujBwZU+2jgxBZ9GEUh+XcTg+zWcNzKaFbN+b
+	wU8m4/Nk13otcjCBKxausig4/H2gaQc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776867815; a=rsa-sha256;
 	cv=none;
-	b=pHnOUJgcpPdqDz/5Keng/LzbsSMkRfpzC9ZiZQ9gV8pQgCQQtrFKOjR+07hjqetwqvOFRA
-	Xm6OGaV8oE16ShDWsGl6F1/AxhM5Gtpu9zdiF2mCmEVGS/FJ4z4grrnCUjfAwbrHgs7OuJ
-	AMB+WirizZ3R73OqmzXiDtqM+chHqk0=
+	b=b2HCpptaBbWsQvw7NA7Hf+/QOucVZPDUEdrodE64klUEH0BaxF2A0qxMtM6F0QrITmJckJ
+	v3oKk4thyX+N5wazUqg0dIjfQc1QRVL+gKMowfQMB3itUQuPUHNjRIsLgWpou7mkBRbQto
+	OcJs/ki05FPWbEZvi47UNRYFmiz/Wj8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dDlHpjOo;
-	spf=pass (imf19.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=MoxMtnak;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7316C22D9;
-	Wed, 22 Apr 2026 06:42:50 -0700 (PDT)
-Received: from [10.57.89.34] (unknown [10.57.89.34])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EDBC23F836;
-	Wed, 22 Apr 2026 06:42:52 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD7AD22C7;
+	Wed, 22 Apr 2026 07:23:28 -0700 (PDT)
+Received: from [10.164.148.46] (MacBook-Pro.blr.arm.com [10.164.148.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA9513FAA1;
+	Wed, 22 Apr 2026 07:23:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776865376; bh=Vx64GZKttVMr0fTXGUstSKBpCcNADw/xlPJ3ED67K7s=;
+	t=1776867814; bh=3NdZd/WuExrdOhjBM6B86YQwKYjqjkYz8aDySCD3Xho=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=dDlHpjOoHba0kXrIfjxHqbOUa3sTKw06GESEAJ79dMzP3hxiA+2YYw2vDGTUtfPPM
-	 kQ9M9hNMP6d51DYOKvtQ4y+N/oPhVDpNERO1kDpUrPRx+wsfKWje1sOFiqcuVl/b0c
-	 GnwQG4aiN5Wk/IiAj+rPtrBuyWwaCjEMLFjw7oPs=
-Message-ID: <0a8ba718-7ff2-4876-9154-9dd5d404df3e@arm.com>
-Date: Wed, 22 Apr 2026 14:42:51 +0100
+	b=MoxMtnakTOjPpUv1jtEfMCfYYkyq+GiFsFE9GNNxiZEHRGpKfpiPW6cEDjFG1lCyx
+	 hp4Ol0qcVbtZv8GPncyKh4QGo+uESHqgKLlw4mq9vIqlzSIgHv2XKXnVp3/EQYw6PH
+	 PnPMavI/LOF2j1uBQ7iCANdL5ciagSMRKl/VXroM=
+Message-ID: <e772bbfc-1f77-478e-b378-7947ca7a8b3f@arm.com>
+Date: Wed, 22 Apr 2026 19:53:16 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/3] mm: Free contiguous order-0 pages efficiently
-Content-Language: en-GB
-To: Muhammad Usama Anjum <usama.anjum@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCH v2 1/3] vmalloc: add __GFP_SKIP_KASAN support
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Uladzislau Rezki <urezki@gmail.com>,
- Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>,
- Vishal Moola <vishal.moola@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, david.hildenbrand@arm.com
-References: <20260401101634.2868165-1-usama.anjum@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20260401101634.2868165-1-usama.anjum@arm.com>
+ Uladzislau Rezki <urezki@gmail.com>, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Peter Collingbourne <pcc@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ david.hildenbrand@arm.com
+References: <20260324132631.482520-1-usama.anjum@arm.com>
+ <20260324132631.482520-2-usama.anjum@arm.com>
+ <727df89e-2069-4a7d-b3c0-88f89cd3dcf8@arm.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <727df89e-2069-4a7d-b3c0-88f89cd3dcf8@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 56444mnoy5rdskzi457i5b8fwapmsibf
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rthutqxt6pbny3kj8yhcu7w3n1gwyaop
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1B9741A0007
+X-Rspamd-Queue-Id: 94E991C000E
 X-Rspam-User: 
-X-HE-Tag: 1776865376-405897
-X-HE-Meta: U2FsdGVkX1/LBgNo7uGkcv6GbawlwzBxlMfSYihgAkrhKi/740a6emSQmCbetP77JoJIlmKR29cPl7KRJT5uFWWC1JLMmZ+E6lFbPch7WhZghAAFv5vyw6FQon3k74bXlDGUlpk9az82FiWWN5bQ/ZSToO08fWNw73vbT+pl7bCoPOE3jlLsEys59XqP7fuzrP7ajgydMrbLEnHHR6XIs64o3/FY/3o0vny5CjwIIsYANV3GEcskAOCgfskkp4wusRuBsSqrkIFHGMlpcLtchF7wJ726LGn9bcYsYTSRag+hzUJOpaDy5JObWVCBD7lJuhO3mFNkc0x8nAaZaljICHVVYs9UwRW8vcQh+y1AVQBuOpRNqMLg6nv31p9RYuFqfOcT4UHngJpEjLI8hcNwVDQu77cVKppdnOStrlAKSVIWIpFCrTaXmzJVm9YBh+QR+JcBvgjcuEb28IviHgpdFzuSxwaJi1gd9QhYHqaOQ7mt7i/IEPV8vEAGjd54kP6N010KH8SkR0tYgdVUbuXYBQF+SVVvwzsG2ATguMQ7wI639OpzPeOGKOWo4cgSYFoE3LEIkXVdgUGrV5dqrMkxogwnlgQbL0PyLnFHnQAAa4OL1ne0kvTyV2UADq4DpD8dhnBA7/hv326aEM0ZHRHy9YCnzlX3R1fXzU426mt5WStD3Oc9sRF4KN/Wgju7BMhH10QSO9dnWQfozuJWuXMZWaHMv+j6OEe3DDKWLvkepBa+IeKeLDHAcTLywlUpXGucTV7xVnjr4BtkLRDIqTibezy/BQjnra9lLOqq48dgPz0n1RhOQ1y+Cs/MArow5zY4L2Wqya4O2CVntDPFb0/rOGGj4hzYZ9FWCsXQ+YBpDoKhvZyowu8oVRU5gFyLlCeioquIHo6a3a2iH8zcLufdAH085pi3II83jKcT2+08PZGwFN+DtaICSlWLpjo5JtUk/iEIekXZPUZ5+8PQPeG
- IJ06aZXw
- FyvG1AxtJv2fu4Ibvh3LQ5DrZLSD8r5gHYbj9C+QUXZJesMct8vwFQUZjBAmCsSu6KsyQqVVZTxxfw8aj1Qctl2GAnPkkReM2RaOBRqeGNLfTECvJTvXuYCCJL4d+JS6iQDeaGFBvq5LA7vrmZtc2xCNYq+uLxMJQ76wrhXkLYH8XPWQxVarV+ZpOezecs71axBpYa05UXE33qCDchNuqm47AGccyOKly2DR6dm01FfwUFCiWyyAbWdX+S9gFnJzfJA3Ut8XSgDRAqNol0+o6Bwf2DV/qjlKdHGSPN7pE6JDzpn8kKno83A1g/Jd8BQIoX5CHjAvlLlmROHKVXEkqsuscmPjrHYKMwUin
+X-HE-Tag: 1776867815-892650
+X-HE-Meta: U2FsdGVkX18vGXt2N/u4t3YuXznGIFrhVxWlq/NqtTccm195tERujVsX5Yh2Ak/QKnhq4fdTyYWq4Ri352jE33ySc0FIk/iJfO/4SrJoC6TPf23NQ2fmqOi1fvw3PFdLOb2RvjbuDJqIcbKV26DGFfJPj0RY/PcqtuqdU2yrqKDYQNG9ww42qBrZngWOLzFCl+PWBLZcO7CAAoBitVo7/Mr7Uub5t9SwFUleSy4w1svTbt6sZHf05Rkytubt0RH8qRr6y8KhPEo7ofDUKEYqkzukQJqdwYLSnOvCB03L/76Km+bFTqXNbLQ5sRZyHc4n96+m28mfwQYhvNz8vzL4N6tc6QaQAPvpaIDELsIgcPLXo+JrObJr4QE6ppCCM1zr5AdTFxtBOC+G72qc/TJv5cSyO6Bi9cETXSO/EILMDTM/hxbPLCZ9nIelOgszA2RbkkfCSFPrZjIpJ5FkEHBkjPWJarcNEeHYkEse1/ZKc+traMIjQMnaOb+rom2jnBIv5q609HDpdvAe1JU2EUY/hMbAMjjz/5JpJjiSvQTJxypopyL8Mg0MsLs8gASCfLh5FI+26D29Oinnv+fbVf38lKjr8wX9TvU3GwrDE7PLmx255Owb9LutZzQsTpYW7fuDIQp7sA0hpC+SsGwg0UV5Qjp6NhWCJeVGcNQyfqFADQ6qAzOOnjeCTnR9+sWPYunCq34hrQ/ZVpeZiVBpLGDVJ1VAvloX8oAu3ZRdgpX5DukIwjExfP9oi4FFSH/uw4yRLjPMqaQNLUE3MECNTtUm+EmKO2Pkcp5OtMVUn5yyh14pzCRATXO9O3qeaUsqx3tW9+S5YcV0t7Sbed6Q+W/35tS4JKrzqvdV2NawFyVwuPTjyTykXiZ4l5bNJL8PPS7PYkWB91dWtHXFtGSeVr395tuVBmXjbT/k8IQsruYp1R8SonpdOeYldURXC15ou25AMSk/UGn/OuxwYrqJjTy
+ IwoG8udY
+ d8PbPxDM7HeSB3LjWi0YudvXcVZQIKQb3oRPKx8gcIbeQAj9RaChS+lcgTEBcDKxq/gQoiWQOUPdOwqRbpGuzFeM2ZXal1KJq/2alC4F5wG+T9A3QVvliIQyCXcn2WftmiXcRCG+ECtfgSyhaemurWyctPM5C1wGrEHJMfaXlSA89s1YXEJ9h5R3vaHmECK/3muWbZlRX3+UjTkmkAa0vIshZDu5ZXsQwP35xhf+Upmf1jFpIyoFfXZQ4htoKK1MFrnNKem3UsMu1lgB7I3Md/D/T+mZPXeRw/G7WEdss405FiGBL9vRCUTgoXi/I2GOF1P35kiQC4bmFmfXlj5fgbZp2y3WyvSyG/Ru16/ywb9NQe2dFeiC7/BPg8fQ9MuMXZte3W4aPK8U6PzA3keSQmhE6eg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,132 +109,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
-
-Small nudge on this series; I believe it has all appropriate A-b/R-b tags and no
-outstanding actions. Is it ready to go into mm-new?
-
-Thanks,
-Ryan
 
 
-On 01/04/2026 11:16, Muhammad Usama Anjum wrote:
-> Hi All,
+On 22/04/26 6:51 pm, Ryan Roberts wrote:
+> On 24/03/2026 13:26, Muhammad Usama Anjum wrote:
+>> For allocations that will be accessed only with match-all pointers
+>> (e.g., kernel stacks), setting tags is wasted work. If the caller
+>> already set __GFP_SKIP_KASAN, don’t skip zeroing the pages and
+>> don’t set KASAN_VMALLOC_PROT_NORMAL so kasan_unpoison_vmalloc()
+>> returns early without tagging.
+>>
+>> Before this patch, __GFP_SKIP_KASAN wasn't being used with vmalloc
+>> APIs. So it wasn't being checked. Now its being checked and acted
+>> upon. Other KASAN modes are unchanged because __GFP_SKIP_KASAN isn't
+>> defined there.
+>>
+>> This is a preparatory patch for optimizing kernel stack allocations.
+>>
+>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>> ---
+>> Changes since v1:
+>> - Simplify skip conditions based on the fact that __GFP_SKIP_KASAN
+>>   is zero in non-hw-tags mode.
+>> - Add __GFP_SKIP_KASAN to GFP_VMALLOC_SUPPORTED list of flags
+>> ---
+>>  mm/vmalloc.c | 11 ++++++++---
+>>  1 file changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index c607307c657a6..69ae205effb46 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -3939,7 +3939,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>>  				__GFP_NOFAIL | __GFP_ZERO |\
+>>  				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
+>>  				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+>> -				GFP_USER | __GFP_NOLOCKDEP)
+>> +				GFP_USER | __GFP_NOLOCKDEP | __GFP_SKIP_KASAN)
+>>  
+>>  static gfp_t vmalloc_fix_flags(gfp_t flags)
+>>  {
+>> @@ -3980,6 +3980,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+>>   *
+>>   * %__GFP_NOWARN can be used to suppress failure messages.
+>>   *
+>> + * %__GFP_SKIP_KASAN can be used to skip poisoning
 > 
-> A recent change to vmalloc caused some performance benchmark regressions (see
-> [1]). I'm attempting to fix that (and at the same time significantly improve
-> beyond the baseline) by freeing a contiguous set of order-0 pages as a batch.
+> You mean skip *un*poisoning, I think? But you would only want this to apply to
+> the actaul pages mapped by vmalloc. You wouldn't want to skip unpoisoning for
+> any allocated meta data; I think that is currently possible since the gfp_flags
+> that are passed into __vmalloc_node_range_noprof() are passed down to
+> __get_vm_area_node() unmdified. You probably want to explicitly ensure
+> __GFP_SKIP_KASAN is clear for that internal call?
 > 
-> At the same time I observed that free_contig_range() was essentially doing the
-> same thing as vfree() so I've fixed it there too. While at it, optimize the
-> __free_contig_frozen_range() as well.
+>> + *
+>>   * Can not be called from interrupt nor NMI contexts.
+>>   * Return: the address of the area or %NULL on failure
+>>   */
+>> @@ -4041,7 +4043,9 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>>  	 * kasan_unpoison_vmalloc().
+>>  	 */
+>>  	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
+>> -		if (kasan_hw_tags_enabled()) {
+>> +		bool skip_kasan = gfp_mask & __GFP_SKIP_KASAN;
+>> +
+>> +		if (kasan_hw_tags_enabled() && !skip_kasan) {
+>>  			/*
+>>  			 * Modify protection bits to allow tagging.
+>>  			 * This must be done before mapping.
+>> @@ -4057,7 +4061,8 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>>  		}
+>>  
+>>  		/* Take note that the mapping is PAGE_KERNEL. */
+>> -		kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
+>> +		if (!skip_kasan)
+>> +			kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
 > 
-> Check that the contiguous range falls in the same section. If they aren't enabled,
-> the if conditions get optimized out by the compiler as memdesc_section() returns 0.
-> See num_pages_contiguous() for more details about it.
+> It's pretty ugly to use the absence of this flag to rely on
+> kasan_unpoison_vmalloc() not unpoisoning. Perhaps it is preferable to just not
+> call kasan_unpoison_vmalloc() for the skip_kasan case?
 > 
-> [1] https://lore.kernel.org/all/66919a28-bc81-49c9-b68f-dd7c73395a0d@arm.com
+>>  	}
+>>  
+>>  	/* Allocate physical pages and map them into vmalloc space. */
 > 
-> v6.18      - Before the patch causing regression was added
-> mm-new     - current latest code
-> this series - v2 series of these patches
+> Perhaps something like this would work:
 > 
-> (>0 is faster, <0 is slower, (R)/(I) = statistically significant
-> Regression/Improvement)
+> ---8<---
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index c31a8615a8328..c340db141df57 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3979,6 +3979,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+>   * under moderate memory pressure.
+>   *
+>   * %__GFP_NOWARN can be used to suppress failure messages.
+> +
+> + * %__GFP_SKIP_KASAN skip unpoisoning of mapped pages (when prot=PAGE_KERNEL).
+>   *
+>   * Can not be called from interrupt nor NMI contexts.
+>   * Return: the address of the area or %NULL on failure
+> @@ -3993,6 +3995,9 @@ void *__vmalloc_node_range_noprof(unsigned long size,
+> unsigned long align,
+>  	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_NONE;
+>  	unsigned long original_align = align;
+>  	unsigned int shift = PAGE_SHIFT;
+> +	bool skip_kasan = gfp_mask & __GFP_SKIP_KASAN;
+> +
+> +	gfp_mask &= ~__GFP_SKIP_KASAN;
+
+Okay so this is so that metadata allocation can keep using normal
+page allocator side unpoisoning.
+
+>   	if (WARN_ON_ONCE(!size))
+>  		return NULL;
+> @@ -4041,7 +4046,7 @@ void *__vmalloc_node_range_noprof(unsigned long size,
+> unsigned long align,
+>  	 * kasan_unpoison_vmalloc().
+>  	 */
+>  	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
+> -		if (kasan_hw_tags_enabled()) {
+> +		if (kasan_hw_tags_enabled() && !skip_kasan) {
+
+Why do we want to elide GFP_SKIP_ZERO (set below) in this case?
+
+>  			/*
+>  			 * Modify protection bits to allow tagging.
+>  			 * This must be done before mapping.
+> @@ -4054,6 +4059,12 @@ void *__vmalloc_node_range_noprof(unsigned long size,
+> unsigned long align,
+>  			 * poisoned and zeroed by kasan_unpoison_vmalloc().
+>  			 */
+>  			gfp_mask |= __GFP_SKIP_KASAN | __GFP_SKIP_ZERO;
+> +		} else if (skip_kasan) {
+> +			/*
+> +			 * Skip page_alloc unpoisoning physical pages backing
+> +			 * VM_ALLOC mapping, as requested by caller.
+> +			 */
+> +			gfp_mask |= __GFP_SKIP_KASAN;
+>  		}
+>   		/* Take note that the mapping is PAGE_KERNEL. */
+> @@ -4078,7 +4089,8 @@ void *__vmalloc_node_range_noprof(unsigned long size,
+> unsigned long align,
+>  	    (gfp_mask & __GFP_SKIP_ZERO))
+>  		kasan_flags |= KASAN_VMALLOC_INIT;
+>  	/* KASAN_VMALLOC_PROT_NORMAL already set if required. */
+> -	area->addr = kasan_unpoison_vmalloc(area->addr, size, kasan_flags);
+> +	if (!skip_kasan)
+> +		area->addr = kasan_unpoison_vmalloc(area->addr, size, kasan_flags);
+
+I really think we should do some decoupling here - GFP_SKIP_KASAN means,
+"skip KASAN when going through page allocator". Now we reuse this flag
+to skip vmalloc unpoisoning.
+
+Some code path using GFP_SKIP_KASAN (which is highly likely given that
+GFP_HIGHUSER_MOVABLE has this) and also using vmalloc() will unintentionally
+also skip vmalloc unpoisoning.
+
+I think we are doing patch 1 because of patch 2 - so in patch 2, perhaps
+instead of calling __vmalloc_node we can call __vmalloc_node_range_noprof and
+shift this "skip vmalloc unpoisoning" functionality into vmalloc flags instead?
+Perhaps this won't work for the nommu case (__vmalloc_node has two definitions),
+just a line of thought.
+
+
+>   	/*
+>  	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
 > 
-> v6.18 vs mm-new
-> +-----------------+----------------------------------------------------------+-------------------+-------------+
-> | Benchmark       | Result Class                                             |   v6.18    (base) |    mm-new   |
-> +=================+==========================================================+===================+=============+
-> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |         653643.33 | (R) -50.92% |
-> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         366167.33 | (R) -11.96% |
-> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         489484.00 | (R) -35.21% |
-> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1011250.33 | (R) -36.45% |
-> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1086812.33 | (R) -31.83% |
-> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |         657940.00 | (R) -38.62% |
-> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |         765422.00 | (R) -24.84% |
-> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        2468585.00 | (R) -37.83% |
-> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        2815758.33 | (R) -26.32% |
-> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        4851969.00 | (R) -37.76% |
-> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        4496257.33 | (R) -31.15% |
-> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         570605.00 |      -8.97% |
-> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         500866.00 |      -5.88% |
-> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         499733.00 |      -6.95% |
-> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        5266237.67 | (R) -40.19% |
-> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         490284.00 |      -2.10% |
-> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |         850986.33 | (R) -48.03% |
-> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        2712106.00 | (R) -40.48% |
-> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         111151.33 |       3.52% |
-> +-----------------+----------------------------------------------------------+-------------------+-------------+
-> 
-> v6.18 vs mm-new with patches
-> +-----------------+----------------------------------------------------------+-------------------+--------------+
-> | Benchmark       | Result Class                                             |   v6.18 (base)    |  this series |
-> +=================+==========================================================+===================+==============+
-> | micromm/vmalloc | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |         653643.33 |      -14.02% |
-> |                 | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |         366167.33 |       -7.23% |
-> |                 | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |         489484.00 |       -1.57% |
-> |                 | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |        1011250.33 |        1.57% |
-> |                 | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |        1086812.33 |   (I) 15.75% |
-> |                 | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |         657940.00 |    (I) 9.05% |
-> |                 | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |         765422.00 |   (I) 38.45% |
-> |                 | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |        2468585.00 |   (I) 12.56% |
-> |                 | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |        2815758.33 |   (I) 38.61% |
-> |                 | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |        4851969.00 |   (I) 13.43% |
-> |                 | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |        4496257.33 |   (I) 49.21% |
-> |                 | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |         570605.00 |       -8.47% |
-> |                 | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         500866.00 |       -8.17% |
-> |                 | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |         499733.00 |       -5.54% |
-> |                 | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |        5266237.67 |    (I) 4.63% |
-> |                 | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |         490284.00 |        1.53% |
-> |                 | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |         850986.33 |       -0.00% |
-> |                 | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |        2712106.00 |        1.22% |
-> |                 | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |         111151.33 |    (I) 4.98% |
-> +-----------------+----------------------------------------------------------+-------------------+--------------+
-> 
-> mm-new vs vmalloc_2 results are in 2/3 patch.
-> 
-> So this series is mitigating the regression on average as results show -14% to 49% improvement.
+> ---8<---
 > 
 > Thanks,
-> Muhammad Usama Anjum
+> Ryan
 > 
-> ---
-> Changes since v5:
-> - Patch 1: Move page_to_pfn() outside the loop free_prepared_contig_range()
-> - Patch 2: Change subject of the patch
-> Changes since v4: (summary)
-> - Patch 1: move can_free initialization inside the loop
-> - Patch 1: Use pfn_to_page() for each pfn instead of page++
-> - Patch 2: Use num_pages_contiguous() instead of raw loop
-> 
-> Chagnes since v3: (summary)
-> - Introduce __free_contig_range_common() in first patch  and use it in
->   3rd patch as well
-> - Cosmetic changes related to comments and kerneldoc
-> 
-> Changes since v2: (summary)
-> - Patch 1 and 3:  Rework the loop to check for memory sections
-> - Patch 2: Rework by removing the BUG on and add helper free_pages_bulk()
-> 
-> Changes since v1:
-> - Update description
-> - Rebase on mm-new and rerun benchmarks/tests
-> - Patch 1: move FPI_PREPARED check and add todo
-> - Patch 2: Rework catering newer changes in vfree()
-> - New Patch 3: optimizes __free_contig_frozen_range()
-> 
-> Muhammad Usama Anjum (1):
->   mm/page_alloc: Optimize __free_contig_frozen_range()
-> 
-> Ryan Roberts (2):
->   mm/page_alloc: Optimize free_contig_range()
->   vmalloc: Optimize vfree with free_pages_bulk()
-> 
->  include/linux/gfp.h |   4 ++
->  mm/page_alloc.c     | 143 ++++++++++++++++++++++++++++++++++++++++++--
->  mm/vmalloc.c        |  16 ++---
->  3 files changed, 146 insertions(+), 17 deletions(-)
 > 
 
 
