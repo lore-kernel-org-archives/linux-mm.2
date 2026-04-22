@@ -4,104 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A05AFA1FFD
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 21:19:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EEC3FA1FFA
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 21:20:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 304FD6B0088; Wed, 22 Apr 2026 17:19:22 -0400 (EDT)
+	id 15AD06B008A; Wed, 22 Apr 2026 17:20:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD4B6B008A; Wed, 22 Apr 2026 17:19:22 -0400 (EDT)
+	id 1325A6B008C; Wed, 22 Apr 2026 17:20:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21A096B008C; Wed, 22 Apr 2026 17:19:22 -0400 (EDT)
+	id 021096B0092; Wed, 22 Apr 2026 17:20:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1134C6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 17:19:22 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA4C78ADBD
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:19:21 +0000 (UTC)
-X-FDA: 84687457722.22.4FF00E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A3171C0016
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:19:19 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWLKGprp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E90A76B008A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 17:20:51 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A7D598B344
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:20:51 +0000 (UTC)
+X-FDA: 84687461502.05.46BFE33
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 67300A000D
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:20:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hPoEnCJH;
+	spf=pass (imf25.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776892759;
+	s=arc-20220608; t=1776892849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4dyh2pqsZK3XgHaNIYiKNX2Zg1KRyIJi0zS0rOrlI+o=;
-	b=R9r5w68qBjQMEk5DcP4z6OlhnTQAEA7C9m50fwCll+1fGQPBgd3d5vyP7VXQh0pAGCrJ+b
-	o7yq6NpLVQ4ZiOPdaNZ6eI83nPykMC19ERVhg2UN5u8LX7d1vAUMt6RrAXKFLPw3GTZnZH
-	L+Yaktx3pbaP8TfR2LKt0jw6PCHlLd4=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BWLKGprp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776892759; a=rsa-sha256;
+	bh=0AuBD0WIXDzq4C1LKbO1zkVvixca9JBQuddXhofRNlk=;
+	b=kizZ5bd1rMRimOSladu7udlN6DSdht1W2dcYixt7E3nVNqA9rM1VdvdzaIMp+QSocR23L+
+	9nxdv7kq6dcKEd0htBQrn8zU0Nh04rfE7zZisXgXaBoK50jQPnN3VfSBw3E2yOPV95nDoA
+	FK+GHJDWR+Xc0XaBiM03Rpox/Gb0O6w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776892849; a=rsa-sha256;
 	cv=none;
-	b=neSnXpOsVFqNYcbR8edOGpELXOmF7OK+wtKxOHR9DkNWEYysOEHK8t0jhJNtvocNQ7VqBt
-	rWZR2qBn/U2TSzvi3uA+TOv8/kK40Dr/8fblpj1fDx0IDZqrvU69dCE8SyoGOQs1Q3ZexG
-	CCSoQivR4wTkQk4uZx2jMxUd+WqVMdE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6855A4471D
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C50AC4AF09
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:19:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776892758;
-	bh=bumJ5LT6XkxvHjcx+8KQvvxNPQmwpdknWft8NJaaegY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BWLKGprpcpNtu6hJgFrBpChV1lghVQIQCL9RM/CwhesEEGEddUlrxaTms5Qma8vnP
-	 7PyycN6rAzqvUNOQ6p1z94+WHpf1Ehz4SqO+0mpWx9jaWLDNq+Agpe6Vk+eJyMcFLf
-	 2ojLbxanjl40ILOPN1I38AtJsmQ0Jyklzcz/L+Ycu69DWjgxU4zKTR22UujrWRHvBv
-	 Bdg/NGFy1ELmGKVYEoKXrU0kYig9E5YGqPQw27W33dp92JchyAPDk6vNGxo6s8fNnT
-	 qmg63dD0+5XWSGb2z+tRbtOoj/6pi7wSBl5v8DsMBmhDBgP3Jju3ZohX5CrDoSJ87R
-	 hmz8qxfxzvTew==
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8a3b0242631so71720546d6.3
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:19:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9KuYajsD4eu/5w8UM0gXk6GnBh+hF71zo7JWLt5Cuud5DQ436o19Pda6reibBgO7EPFATEYl5KWQ==@kvack.org
-X-Gm-Message-State: AOJu0YwmW+0++RFIgE8kh1gsklY6r/sqdf+tVRBQH9Vs1Ku+tJZ2x3KQ
-	r/9/pSsVqqhareNub9DO+BAeU9+kOODPDGA25PAoC7r3aFJbkey9GKEWElAsUh9FQd7raim5udf
-	PchWqBVvJcDdXdDAg2/BXLgapVSIuvjg=
-X-Received: by 2002:a05:6214:4a90:b0:89c:4c6b:4615 with SMTP id
- 6a1803df08f44-8b027fd979fmr384175966d6.8.1776892757234; Wed, 22 Apr 2026
- 14:19:17 -0700 (PDT)
+	b=HSxg0vsqPltUlWBNMqcuaq2Pd7jXwpSkwLeEY5/9pjI3ExIBh2RZioXnJ/WruT8qeCcfZN
+	Qs+NdswFZ+EbPr5mPgKB8zgDA0s+cHWKGtJH1BLbujjQd5vSGz4Bgi42KlM/N4pRDHomHJ
+	suOzlTRyg/oXvlVdIdf3CpIA3O4n9V8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hPoEnCJH;
+	spf=pass (imf25.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776892848;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0AuBD0WIXDzq4C1LKbO1zkVvixca9JBQuddXhofRNlk=;
+	b=hPoEnCJHIeYulyJrfd5Nhj1sopnC0AI+WLv6Wk3s6psKAa8PJ1YpsqpQ6AVGGu0ceogVTG
+	Txc5fADmoH9GzpQZZxTlcRJKpmVlojDYbdl03KGgndsvUy3T0nFPH7oHjAIaZd+Xkidm7c
+	QLG4336WuHNljAhcUzQEl0F1LL0NSLk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-548-wxaS9kLiMIuw5xHdkQUIlA-1; Wed, 22 Apr 2026 17:20:35 -0400
+X-MC-Unique: wxaS9kLiMIuw5xHdkQUIlA-1
+X-Mimecast-MFC-AGG-ID: wxaS9kLiMIuw5xHdkQUIlA_1776892834
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-488c0fcc6deso34769535e9.2
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:20:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776892834; x=1777497634;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0AuBD0WIXDzq4C1LKbO1zkVvixca9JBQuddXhofRNlk=;
+        b=qmgg0dvoEggd8H8o3mXDGDr3YO1uMk9eDvdoDG2pWbLHulngcNBR2AuP7N5CuZIk05
+         vVlqDkpdNnbQveDBejyRxOjW0UkiOgMY63SqpT8k9DIW+x8SR8rHqeLbH7kXXQwQ/T0Z
+         ILLZgyG6/Y9B7nGktJObG9IP9hdo9rklArxItlQJKtGw3jJmAbjaitFGRS58M9A/pCzc
+         8agCTHvpFeiKNELuqMY32P/zJQaYqKSqiz4ieY29S2Dj0zf0TjbifVw8jFfaLrZ+zQdm
+         GkwH4aQFOFk/7QBui9TWnws/vOYsMHHfJXErfq3DPAmXRlcJxHGECXGRSau8qI0OCiKQ
+         ExoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/8ji+0Lwz12Pm7TjIBhLz3UWyOXFPskF5MzpJE5vfvTnkSzaahvSB9Glk4g4HHQOnxWjW6lyIJrQ==@kvack.org
+X-Gm-Message-State: AOJu0YwQVzxwCV1pVUhdMc5Y2QmYh/AYhdf6qQ32u126mYLquebzV1aQ
+	VpTSh7v+aBcLe8Z0Ds50k8ON+t8SrXpEu4WROq+OMJTqwfYJJ1xunGzQFsBEiRxGN1u9Zu2MLoS
+	bE7h25FdmBIkamxssrB4XpaIFD+xQw0rTom6Ae0/TxaWZoDW4YJ0L
+X-Gm-Gg: AeBDiestyWmmQm7JdR1pEIyLzF11fPU53IoInVDHiCz2vEWCSCVYDYNjuGp6PQBxnWB
+	o2lg0v77VOtF2bvQsNw+Bg8vaRZBmCaOJbSfIJ5vYLGCITPXGFEQCUpzxFmOhvBj082W1vh+Vcs
+	k7R1AeYhrGilQWOPZWdaG9iCqGokCj61DqBxtFAdw9Om/0NVtSTcuX2tAgDEhBIM5VuCMt7Hufh
+	078uThykCV5mix0wdBj8Qa8Evaaw4oXollHLgTmTTAsPfA39VTM7a1qjEU5d4nyI2Wf+qx94XL3
+	XEUzigI4YfP1aF6frC7wVJ+YKRC2FkW10zKzQwyxh7bZB+RmTyrCyFglaJnIgmpwiVi5lxpj1WI
+	Qx+EP6cUVoeXrSUOOxVS1p0JH63OPUzXLXy3tqvsN+MLuG16XBpbE3A==
+X-Received: by 2002:a05:600c:8115:b0:488:ac01:72b6 with SMTP id 5b1f17b1804b1-488fb77d7d3mr296536195e9.21.1776892834254;
+        Wed, 22 Apr 2026 14:20:34 -0700 (PDT)
+X-Received: by 2002:a05:600c:8115:b0:488:ac01:72b6 with SMTP id 5b1f17b1804b1-488fb77d7d3mr296535725e9.21.1776892833712;
+        Wed, 22 Apr 2026 14:20:33 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-25-21.inter.net.il. [80.230.25.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc10777csm537060875e9.8.2026.04.22.14.20.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 14:20:33 -0700 (PDT)
+Date: Wed, 22 Apr 2026 17:20:27 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
+	virtualization@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+Message-ID: <20260422171315-mutt-send-email-mst@kernel.org>
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+ <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-References: <20260422021842.78495-1-baohua@kernel.org> <aejtfpBUu7gNV6Tk@cmpxchg.org>
-In-Reply-To: <aejtfpBUu7gNV6Tk@cmpxchg.org>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 23 Apr 2026 05:19:06 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x9vkv2G7d-gANf8kqUJVxQh_P9=AJxr98LFUgQeOTqow@mail.gmail.com>
-X-Gm-Features: AQROBzDreH8s0H2BqHgtnbBa_odbJkPeq8mvT6AzuGwRvcSIIZncCX6HZFsQHiU
-Message-ID: <CAGsJ_4x9vkv2G7d-gANf8kqUJVxQh_P9=AJxr98LFUgQeOTqow@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] mm: Improve pgdat_balanced() to avoid
- over-reclamation for higher-order allocation
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Wang Lian <wanglian@kylinos.cn>, 
-	Kunwu Chan <chentao@kylinos.cn>, Wenchao Hao <haowenchao22@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: pk1yOYEhTL8bcc4ob8GBeKdepkqEv1THLZkQ1KoFGJo_1776892834
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 67300A000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: pepms1jpabq4swrpr9mtzsnp436hoctu
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A3171C0016
-X-Stat-Signature: zq13kj7xaqu9jsafzw698b9du68b4oge
-X-HE-Tag: 1776892759-610539
-X-HE-Meta: U2FsdGVkX1/7GeqmHfzrCup7EegIqeyZUhw9hNwnVyQWzmEAesDBpG1kvbqRvYPnUxAlwYigH4Ghku3vf6qSAoY76Tt28ZQL5CasuPqhiImAF6TTyfEqDiLQfZa7gQqLhGbYBY+Hq63Fje+jx0PbB5kx+pOCGmbE+jMQdMUhBuMoLMOTcLDu0LZewYhPwGI9uyqJednkBOhVyywqehAyxZQFDSDB5sOMCltfF91iIcJbtdCCKSsEiCdv9/JRspKBcc6IlzIJDfCG1KES8PCURVaxQ4OTDse1pFcMjbU5ZQt0zRxnOSehqBK+z9R2abQsIyzgGuCsa1i+J4mm2pL4RY31ytjRDLj11aq4wt+tYibfx9UOkO9V0c26QWqVkwNjwGeMpSy2xr+a5pBl9vrhGL7/7RxGI6Jxozuwemt48emBmIx3m6Fw8G2tdodrTOjJNiouS8m0gQn4mR8A6MTR7XnZdDF4igdC7jVkEOQIoVKZH4GzESf2dZEztpQBn6hwqnlIaJmwVClwVrKa1JUzHe5AB+aVi1BrtxMboMyfLPf2JxIJgV9NNjhzLMXmmSTYzG/SRR+3HymCQJm6/MEvI5658NUfxMPjv+gagQK1QcRpQYX0wldMjIEdq8LiYIdOksmmigd9TEsEWExkgnQFXiesmk+6Guoxtid6RRfuDKVa3HisNug73yMx7jrn5bQHpMKziS572HIJZxw+odWrFaTVHVILhy4ZEAnQPW1qPFAOnD/hbf31vM7gG4E5sGqyCkzq3aQxR0qSqJpSMGqZeF5MCNs2fVmvWAtBoEMysvfObmND8gFAwBnB95z4D0/QwA4lVz6jkPo37CuhC9bUoTys3Og2XzOAz6vk50MCybkVqvIGclsiNUYY9Et3GEbggxamJq0WmE643bQslhFsjLEbHWqVjaUzyXxUHaqOIi4nquynEGCR9UOD0R6jPjET/bxr75Ow1JVQ5jfyJlg
- k3qkgCzs
- msuCCXIa9IZ+JqHGc7BxNEJybs/7OgRzduS/JwpJCgfFApcuRixdas5UdD9JNmWWRgC82/+2YvP6r28J9+/nPLhdN+IvEpJORZ+Lq2JaM2GCW5CKcWHRiaUT7PlFS44HmiWiS51NzRZaVlCmLU7hYSFRHDdlB+RmW+Khux7u+6getfQHEVqyeR6nedNnEVS+AskpSiyDhO3LaxgRpj9+7Ro+tigDvWOehxBJ0KfI7E0uvo+U1Hj0EcLC9VIlQOX0bf1JKHjyBftl0fHMKln7oTiq+SjIAxMXiPZFHmYiC29pY0iIvz84UbRxN4zvu/xbr7pAzBLgvJKqteS7lEkiWsqeqzLMwoOApBu77a1lKh+ocBr0qsV3v5zQ4KHA4ofHdwtQ59H5wHtOg1WkiThuGht2ItqQfssUAA5WdiZBetfqtBlL8aiFecoHUE7IPCS1f1i1WfqZihSwHqHlwv8TtEIpi3OI119U5vx/bkvw0LWgGdKt1NhdB3Esc8zYwnc+XfR7djFV5k3Z+w3NcO1vtI1OdgQ==
+X-HE-Tag: 1776892849-63849
+X-HE-Meta: U2FsdGVkX1/Bg6dGm0CBInku2VeY85BEoSO/UcyEQYljRc8M7HYUwTLmtu3X/bAUmbH1aB34CORVYPqTy17zjnF4wzgj+hfiDJ8B0Is7X/oatNCWMieaZl2KU2q8qDYB+gKylz+QyGw8Cpd/VkhBQMBW0H/SWGv87TbgUiB5uIWJgmM2KyEDW6anp/dYqyvAR9KkbipULJLU7ZNiUPBBOVZtxwDIoR3MTi3NvcWhuRskRGIrBwjEMi+Lq93uPr9MdIDtDZIvhbFnCLYLIq9y4HbabShfcYpC1KGuNJvJolIOP7cCMFyFsSKyHxD7VDA9PoyFPwDAO87+ZBCfmvHQ6GqQ5YSaB8+Kx2pp19WKXlLTPUNOIp1ZOoT+gNsg8LaJvw+sH4r8j68pXWs1vXyGwGZSui51ul0cA6BSQahLzVNE3N3J7JyNDeyj3OChLDKdalORqc9I7yEAgk4NtLK51AfiHqsPv5x2iUe3sfaEeD5Bg92eoVC7TN02dluFOJClhEDJY8itc7jfoqFdQriydbmurrQql0buxrgz4h6/A55rkaHWwzgdmdhaFGF3Osh4DGoXl+WK6CG0OVCZhSZhfKajAdyU21GozEOfl9qcJJdh/mKK2i2sdwNMKgJuaexlXPC1lmKGMBIW6s6i2JDrzV+1F7IF14r3vJs8BiYtasTR1ma0tTMdHOYqwgdXkxgGOqVJoRj1p03hh/NKkwCf8QL+hSLCMIQlUxD0ByCJbVR8ESucFD/pG+LatUrz5fzugoyR2t1ib1DwbzWeeCx+1bQWOXf5I6AfSWPQySfYynqi/zlw7GFDWU3oVgTLPE64JnLposzV+1iHyo6sFduk5xPQz62gg4ZGNtNTnTEpQ+QTJ4DHUMcfutlGdBlumk5Uhchezkb4f9oj0kScmhlMGFIEEm8VdeSRhsIZnO729PRPfXjoGU4X9TGDcm1xq00t/bbVWbu2b79xz81ezAf
+ dim/KGKG
+ S5bIhusa+A0Aa7NcYzp7rKgh+YLoFOGcb6VL+K1WChfEC0Amq6vgzVKsq/l79tMqmInsZE3G6sLxMzcWa3AtHUkyuEkSLIaP27t/VzgnhhyyftrDk7OO8XeWuCK11j3RB4veBYteo/uGXrfNdycruTzpALyegSaDVM9/dE9pA9ONmJlaXiP02w3ALpf+f+av5z4/fvCtpcUlfl44uAbm0hv5Fv3a9y58gMmUNxfY99iqPs7OpSxun7Rp0wlvB5I5wJqt0C5YAhqju6ImPRS73Vi4mFwKS9Y/U+c9tcW1ffZ9F3MiKjqnRMScrX4sZHj4b23KP9gIFkZg8DiIu1DBV5DVRHMK1WzABb5Qy/Pwc3WeXzR5h4Ng4Ty1mIj+NiR+vlPnfoDO+IxLnoP4cSgyTwkgOztzbGnm1Yv3K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,190 +159,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 11:47=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.or=
-g> wrote:
->
-> Hi Barry,
->
-> On Wed, Apr 22, 2026 at 10:18:42AM +0800, Barry Song (Xiaomi) wrote:
-> > We may encounter cases where the system still has plenty of free
-> > memory, but cannot satisfy higher-order allocations. On phones, we
-> > have observed that bursty network transfers can cause devices to
-> > heat up. Baolin and Kairui have seen similar behavior on servers.
-> >
-> > Currently, kswapd behaves as follows: when a higher-order allocation
-> > is issued with __GFP_KSWAPD_RECLAIM, pgdat_balanced() returns false
-> > because __zone_watermark_ok() fails if no suitable higher-order
-> > pages exist, even when free memory is well above the high watermark.
-> > As a result, kswapd_shrink_node() sets an excessively large
-> > sc->nr_to_reclaim and attempts aggressive reclamation:
-> >
-> >  for_each_managed_zone_pgdat(zone, pgdat, z, sc->reclaim_idx) {
-> >       sc->nr_to_reclaim +=3D max(high_wmark_pages(zone), SWAP_CLUSTER_M=
-AX);
-> >  }
-> >
-> > We have an opportunity to re-evaluate the balance by resetting
-> > sc->order to 0 after shrink_node() with the following code
-> > in kswapd_shrink_node():
-> >  /*
-> >   * Fragmentation may mean that the system cannot be rebalanced for
-> >   * high-order allocations. If twice the allocation size has been
-> >   * reclaimed then recheck watermarks only at order-0 to prevent
-> >   * excessive reclaim.
-> >   */
-> >  if (sc->order && sc->nr_reclaimed >=3D compact_gap(sc->order))
-> >       sc->order =3D 0;
-> >
-> > But we have actually scanned and over-reclaimed far more than
-> > compact_gap(sc->order).
->
-> Do you have traces for how much it overshoots?
+On Wed, Apr 22, 2026 at 03:47:07PM -0400, Gregory Price wrote:
+> On Tue, Apr 21, 2026 at 06:01:10PM -0400, Michael S. Tsirkin wrote:
+> > Thread a user virtual address from vma_alloc_folio() down through
+> > the page allocator to post_alloc_hook().  This is plumbing preparation
+> > for a subsequent patch that will use user_addr to call folio_zero_user()
+> > for cache-friendly zeroing of user pages.
+> > 
+> > The user_addr is stored in struct alloc_context and flows through:
+> >   vma_alloc_folio -> folio_alloc_mpol -> __alloc_pages_mpol ->
+> >   __alloc_frozen_pages -> get_page_from_freelist -> prep_new_page ->
+> >   post_alloc_hook
+> > 
+> > Public APIs (__alloc_pages, __folio_alloc, folio_alloc_mpol) gain a
+> > user_addr parameter directly.  Callers that do not need user_addr
+> > pass USER_ADDR_NONE ((unsigned long)-1), since
+> > address 0 is a valid user mapping.
+> > 
+> 
+> Question: rather than churning the entirety of the existing interfaces,
+> is there a possibility of adding an explicit interface for this
+> interaction that amounts to:
+> 
+> __alloc_user_pages(..., gfp_t gfp, user_addr)
+> {
+>     BUG_ON(!(gfp & __GFP_ZERO));
+> 
+>     /* post_alloc_hook implements the already-zeroed skip */
+>     page = alloc_page(..., gfp, ...); /* existing interface */
+> 
+>     /* Do the cacheline stuff here instead of in the core */
+>     cacheline_nonsense(page, user_addr);
+> 
+>     return page; /* user doesn't need to do explicit zeroing */
+> }
+> 
+> Then rather than leaking information out of the buddy, we just need to
+> get the zeroed information *into* the buddy.
+> 
+> the users that want zeroing but need the explicit user_addr step just
+> defer the zeroing to outside post_alloc_hook().
+> 
+> That's just my immediate gut reaction to all this churn on the existing
+> interfaces.
+> 
+> Existing users can continue using the buddy as-is, and enlightened users
+> can optimize for this specific kind of __GFP_ZERO interaction.
+> 
+> ~Gregory
 
-I previously worked for a company that had some data. I=E2=80=99m no
-longer engaged with them, but I=E2=80=99m trying to recollect the data
-on a new platform I recently moved to. My impression is that
-when over-reclamation occurs, the amount of free memory is
-actually much higher than what compaction_suitable() would
-indicate.
 
-Will present the data once recollection is complete with the
-help from Wenchao.
+Hmm. Maybe I misunderstand what you propose, but this seems pretty close
+to what v2 did - each callsite checked whether the page was pre-zeroed
+and called folio_zero_user() itself.  The feedback (both you and David)
+was that threading it through the allocator is better.
 
->
-> > If higher-order allocations continue, we may see persistently high
-> > kswapd CPU utilization coexisting with plenty of free memory in the
-> > system.
-> >
-> > We may want to evaluate the situation earlier at the beginning.
-> > If there is plenty of free memory, we could avoid triggering
-> > reclamation with an excessively large sc->nr_to_reclaim value
-> > and instead prefer compaction.
-> >
-> > Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Cc: Johannes Weiner <hannes@cmpxchg.org>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Michal Hocko <mhocko@kernel.org>
-> > Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-> > Cc: Shakeel Butt <shakeel.butt@linux.dev>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: Kairui Song <kasong@tencent.com>
-> > Cc: Axel Rasmussen <axelrasmussen@google.com>
-> > Cc: Yuanchu Xie <yuanchu@google.com>
-> > Cc: Wei Xu <weixugc@google.com>
-> > Co-developed-by: Wang Lian <wanglian@kylinos.cn>
-> > Co-developed-by: Kunwu Chan <chentao@kylinos.cn>
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  -RFC v1 was "mm: net: disable kswapd for high-order network
-> >   buffer allocation":
-> >  https://lore.kernel.org/linux-mm/20251013101636.69220-1-21cnbao@gmail.=
-com/
-> >
-> >  mm/vmscan.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index bd1b1aa12581..4f9668aa8eef 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -6964,6 +6964,13 @@ static bool pgdat_balanced(pg_data_t *pgdat, int=
- order, int highest_zoneidx)
-> >               if (__zone_watermark_ok(zone, order, mark, highest_zoneid=
-x,
-> >                                       0, free_pages))
-> >                       return true;
-> > +             /*
-> > +              * Free pages may be well above the watermark, but if
-> > +              * higher-order pages are unavailable, kswapd may still
-> > +              * trigger excessive reclamation.
-> > +              */
-> > +             if (order && compaction_suitable(zone, order, mark, highe=
-st_zoneidx))
-> > +                     return true;
->
-> I've tried this in the past, but it was regressing huge page requests
-> under memory pressure and with higher levels of concurrency:
->
-> https://lore.kernel.org/linux-mm/20250411182156.GE366747@cmpxchg.org/
->
-> The compaction gap is sized for a single allocation, but
-> kswapd/kcompactd are a shared resource for potentially hundreds or
-> thousands of incoming requests. So if there is high demand for
-> contiguous memory this isn't enough - kswapd gives up too early,
-> kcompactd efficiency drops, you get storms of direct
-> reclaim/compaction, and still poor allocation success rates. Continued
-> kswapd wakeups mean that there is ongoing unsatisfied demand. The
-> system has to keep moving forward.
+With a wrapper approach, looks like we'd need something like
+__GFP_SKIP_ZERO so post_alloc_hook doesn't zero sequentially, then the
+wrapper re-zeros with folio_zero_user().  But then the wrapper needs to
+know whether the page was pre-zeroed (PG_zeroed), which is cleared by
+post_alloc_hook before return.  So the information doesn't survive to
+the wrapper.
 
-I guess one possibility is to check whether the gap is much
-larger than compaction_gap(), to ensure there are sufficient
-gaps.
+We could return the zeroed hint via an output parameter, but that's
+what v2's pghint_t was, and it was disliked.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 4f9668aa8eef..428ec7266aab 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -6969,6 +6969,7 @@ static bool pgdat_balanced(pg_data_t *pgdat, int
-order, int highest_zoneidx)
-                 * higher-order pages are unavailable, kswapd may still
-                 * trigger excessive reclamation.
-                 */
-+               mark +=3D 2 * num_possible_cpus() * compact_gap(order);
-                if (order && compaction_suitable(zone, order, mark,
-highest_zoneidx))
-                        return true;
-        }
+The user_addr threading through the allocator does add API churn,
+but it's all mechanical (adding one parameter, callers pass
+USER_ADDR_NONE), any mistaked are just build errors.
 
-On the other hand, =E2=80=9Congoing unsatisfied demand=E2=80=9D may not alw=
-ays
-make sense. For example, network code may first try higher
-orders with the kswapd flag but without the direct reclamation
-flag, and then quickly fall back to order-0 allocations if the
-higher-order allocation fails. In many cases, higher orders do
-not improve network performance, while kswapd performs
-unnecessary reclamation and may further trigger more refaults.
+And it makes the zeroing path closer to being correct by
+construction: every allocation either explicitly
+says no address or has a user_addr - and then gets
+cache-friendly zeroing or skip-if-prezeroed, with no possibility
+of a callsite forgetting to handle it.
 
->
-> That said, it's well possible that we're overshooting that progress
-> buffer due to running reclaim scans with a high order. It might be a
-> better idea to look into that?
+Fundamentally, David told me I need to move folio_zero_user into
+post_alloc_hook as a prerequisite to the optimization, so I did that -
+let's stick to it then, shall we?
 
-I could investigate this further, but I suspect it is mainly
-because we set a very large nr_to_reclaim, assuming we want to
-reach the high watermark, while we may already have been above
-the high watermark in kswapd_shrink_node()?
 
-        /* Reclaim a number of pages proportional to the number of zones */
-        sc->nr_to_reclaim =3D 0;
-        for_each_managed_zone_pgdat(zone, pgdat, z, sc->reclaim_idx) {
-                sc->nr_to_reclaim +=3D max(high_wmark_pages(zone),
-SWAP_CLUSTER_MAX);
-        }
+This approach also fixes a pre-existing double-zeroing on architectures with
+aliasing data caches + init_on_alloc, where current code zeros once
+via kernel_init_pages() then again via clear_user_highpage() at
+the callsite. I don't see how that would be possible with the wrapper.
 
-A rough look suggests another place where high-order may affect
-scanning is here:
+-- 
+MST
 
-static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *s=
-c)
-{
-        int i;
-        enum zone_watermarks mark;
-
-        if (sc->nr_reclaimed >=3D max(sc->nr_to_reclaim, compact_gap(sc->or=
-der)))
-                return true;
-       ...
-}
-
-So maybe we set something like the following instead, if we are
-actually above the high watermark and are only short of
-high-order pages?
-
-sc->nr_to_reclaim =3D min(sc->nr_to_reclaim, 2 * compact_gap(sc->order))
-
-Anyway, let me take a closer look.
-
-Thanks
-Barry
 
