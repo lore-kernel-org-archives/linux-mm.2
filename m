@@ -4,125 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1C03F9EDC5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 12:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7583CF9EDC5
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 12:44:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EEF76B0088; Wed, 22 Apr 2026 08:37:35 -0400 (EDT)
+	id 8D7BB6B0088; Wed, 22 Apr 2026 08:44:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19FF36B008A; Wed, 22 Apr 2026 08:37:35 -0400 (EDT)
+	id 887BD6B008A; Wed, 22 Apr 2026 08:44:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 068106B008C; Wed, 22 Apr 2026 08:37:35 -0400 (EDT)
+	id 79E236B008C; Wed, 22 Apr 2026 08:44:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E50486B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:37:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9ED4C14016F
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:37:34 +0000 (UTC)
-X-FDA: 84686142828.23.427DB11
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7B380140002
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:37:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oVmfbDwp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZIuUUQMj;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ipDF8KV6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="we/edbk/";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776861452; a=rsa-sha256;
-	cv=none;
-	b=kapbxt1JHRuZkTFXyBiT/mFPkISSNPhJlY65ZhJOVXwOslqo25TUgSWN/7Ey0wOg7CmTH3
-	P4s0Wgvj7XSbDfBiNM4gOaYAaBXFhp/lsnPFU4LHCcB3P4LKj0f7dMC+d6NAQ1JC6SQkhc
-	bzoP0HKp5TM1GPPZOfFH4nGONPwpwv4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oVmfbDwp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ZIuUUQMj;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ipDF8KV6;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="we/edbk/";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 678586B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:44:18 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C8D6E2B0A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:44:18 +0000 (UTC)
+X-FDA: 84686159796.12.3ADF5C6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 703A820003
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:44:16 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cAd4B67E;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776861452;
+	s=arc-20220608; t=1776861856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=qXcWnkwGhj3F6eVeE5nf5juso1cNhhr6OWW3qzReMLo=;
-	b=GtSNV1I+4eglc+FvXaLDUs7KUviwDV5SPAP5rM0FVfgFe6LsO/coh2kvpTLKKzycOAESiB
-	I3TbdBWKFmqYoaUM3JkiZqdghSXVTSR+ffqgSxR5Oephc7gCdvY1nS5juai7rL33rd1rFt
-	16WGw0boCcEnusuPzuJpWpzmfx6bYag=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CF4FF5BD8E;
-	Wed, 22 Apr 2026 12:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776861451; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qXcWnkwGhj3F6eVeE5nf5juso1cNhhr6OWW3qzReMLo=;
-	b=oVmfbDwpjA5q/PtMH1HnHFzLk3fUfoC9rmKRE5ucjnW4LXkcTwK55yyxqycwtju5o/q6uo
-	rVyXUvktk1sEkTQCQS2cpASAE472Wg24qBAgZvbks77y993rzivcMVjt3Yo+uWY6fwC+xD
-	8jBl+GqDZHpcOhJVo/p+zfcUYjo5hdg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776861451;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qXcWnkwGhj3F6eVeE5nf5juso1cNhhr6OWW3qzReMLo=;
-	b=ZIuUUQMjQCQrIwEsIwqQbNQMXlpW+/xiPZmn2DOIY/7KDOoIsoGUH9vuSnxrjTdhY3E0bn
-	m/htvLAFFjuVliDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776861450; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qXcWnkwGhj3F6eVeE5nf5juso1cNhhr6OWW3qzReMLo=;
-	b=ipDF8KV6d1cC4u3JN5pJuQN2NsB7DxlWOScrDdPpNQ2r1Hz7Nas5hRHEVFSHxWtsYq10fd
-	KDQw1WkGnislqz4C07xU5PHmnj/Tf5zlSmYtzSlj7e8tRuR4GlIrz3p0EksK4ycIuLrgZL
-	hlsElpiFAF14YjOfJ8sLUbOYGZAGn3w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776861450;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qXcWnkwGhj3F6eVeE5nf5juso1cNhhr6OWW3qzReMLo=;
-	b=we/edbk///90SFVwqGvTuJUYRlnbl/omHeOWnldVDm58cqdtRDzJnYPXYb3JqGbpKQq4W5
-	l1a1UR4ns4nAn0Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 23945593AF;
-	Wed, 22 Apr 2026 12:37:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yHlPBQrB6GmncwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 22 Apr 2026 12:37:30 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Pedro Falcato <pfalcato@suse.de>
-Subject: [PATCH] MAINTAINERS: fix regex pattern in CORE MM category
-Date: Wed, 22 Apr 2026 13:37:26 +0100
-Message-ID: <20260422123726.517220-1-pfalcato@suse.de>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=o/lCen68XHl4PMvA6h4/jwc0Q1Yn8oPk+aLtQahQoBk=;
+	b=pmD71AvXVwBmj5NbKaAFfxDtVR5kU+rD9K4hcZADp9dXRKt0mjnHI3E8lADJCO8B/y7W14
+	IWTZWaenKEt6r8VSln3GfS0baVpyX/YthIb9Thh977p4fAhNbWpvl8w6ojBR4Mw/RddD5n
+	B2hEqeT93qsC/7W9IRqKzzQGlRmKgFw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776861856; a=rsa-sha256;
+	cv=none;
+	b=pQBtFG/KtB6F6xdrXEIqWfwKLI+5BQaKUmSD1H8xBoFkDCWivhCPAYGOLavDEA8aQmzCrg
+	xx4hHnw2i7VenEEsZI1IM1yLhptCTmfzCH/EAIPjigeWHqJFh7RTXEQ2QWUwCT5JqhKGXB
+	uRczAoIGibM+BQ0Ecwiusm2u8ghSGR8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cAd4B67E;
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 888FB43A90;
+	Wed, 22 Apr 2026 12:44:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DEBC2BCAF;
+	Wed, 22 Apr 2026 12:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776861855;
+	bh=9cHl0diwcKEB3vKav7ioffl/oS3DH9T9PGGKHFP4t2U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cAd4B67Em+JJDgKcyZfqfbJsIn6GwDz4NX21pCWwKw3XPI1UNx1sxeWE+UXws8/Xi
+	 4pH67x6cv7ZhXGsqXFdDIThIyN7gLW6dx3XFjTsl4BKllpD2ONXKnwK/iz4W7eTX+n
+	 FrfB8aDnaetxKdZ/XtrEFyq0CbTazRLtuvXcfeqf0UyIzrPLoFpzku3cQdqIjHNOUN
+	 HJpBv2aKjMVSRy4hgojh5oZ1aOGvXWZmOevAe4iphMxM/JtwYhf2sj4LmlqbMdC74F
+	 nOrfURh7iKZOIne/h1YuMxfmN5ePHGckgEOWNU+GFrxf4UkuBQxScgd0cVzdNyx8lU
+	 V4wOOn7KexChg==
+Date: Wed, 22 Apr 2026 14:44:11 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: lirongqing <lirongqing@baidu.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH] fs/coredump: reduce redundant log noise in
+ validate_coredump_safety
+Message-ID: <20260422-naschen-einbog-ed4f52ea472a@brauner>
+References: <20260410080918.2319-1-lirongqing@baidu.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B380140002
-X-Rspamd-Server: rspam12
-X-Stat-Signature: f1dquszfjqz6h64gzwn1my1uhg7te37h
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260410080918.2319-1-lirongqing@baidu.com>
+X-Stat-Signature: kbq8dtbs5xxja3g9h7zf5rszuyz3qyxc
 X-Rspam-User: 
-X-HE-Tag: 1776861452-555896
-X-HE-Meta: U2FsdGVkX186JuLPDruKDc5YIWPM8nzPQYimD2qWp1DOC06h6aLbg+hB3ILdHDhO5bvbFQNf2C7sVDOr67gfEs/yHuZnLLlupP6K1PKufpUUDThxxBQdLRwodEilZ6pD26n7PT5Al10ZjhlOKNzu7jo0h4l7dKYUrVAiSBcZeFnpqwTL9Pfm+HKflzTskwqHX+7CtdnAnWOQEQOhidYEFRgJz+TMzBepEFVUF92KwyGzb0QKFpIcCVDGl0bVKWAQxQfMwDQ+3yFmqXdATWsjVoGHwCyiGHubKSIxG2GWJmE84wUg5Yj6otxfPYp/jpC0KGfDsBgvvxittJUBFDAoTWn04tVHC7WHQiB3QmILqk7ViT4DrxyG69N6OctEtMdprmPQ42Qoh3gd6TVxnCqXEAAPZ2pVqLJsL6BvcQO4ZVcLJnu151yoW/gnhp7cpc4xUBVU2uFXYs+3B2g8kA6dtyGZ96KqPti1zwiaoM0Q0V739+qR7pJ93sat54XswEU+KQXDhkHu9aUR0EP9loVCSzso9UUFbXFsCZoNkhclpt8WcKl8eNnKb0PhfaLGpTwFSWQhYud34Cho6qfiV0VVITPopv/c50S16vbeS+w4WG4BXOMehJRhbAhMUH4oL/CKUVoXaoUhtDfw4BHSscsHxflzAD9SiK5civno/8bhpdr6KziMl2n3OAsjaPkbrQoMnSCrO+ZYQpA9d2q7jbIYy2+YefRBo4JOKp4pjQ40i76nOnPrv7X/Lkk3s+45+IHbkRfhapofFg74mkdPhJL4eo9Vbmo3DqFeRK3i+tDhfLTtZMwWVE4THtXv/GYmVjmPe3RENyJN141QnlG2GPilpNOm1qJIfpR3loZ8R24wD/c/MnA792pfSvqjGKdVW/iY8huiP7W24KAGVRxoqI2xFozi5y6RPFVIjXuwdayOTtjpK6Q9XrqnCJDF6P78PvN1XLmn573H64yj8Tbu/W1
- ds1PHQVa
- 7xy5EJZa46G7PZO8dHoJ9ZbAxhHFs8lBZjBHm0eTp4NjvrJnYZhQgcAldCPIrQ3m1bhcl0KmvahHgf7sQyvZG9/+pQFKovbblF7pNNLaiHOu9dn4OylD2hNd/+XI7G/JE37wz7Sq3CfJoAqk8uB/K1GA36eud7czhrNqnr0s8+rPGrgHvxDh5UtRNNyQXB/MlCx2rYOdWQYZv4qUSad2KI9n5lkvskjM/vrbdJTGW/DF+Sc24KXCIaegFh0HFafhb9GdONU/GTION2jkCXP8ChGIk4gBqFJGHJHgFZ7/tD4hsVnXOGKeefMTc6zXDA5WZ/S18lU2J+A07MTyxhG/00Pwy6EIc/rswS4UaEZGFUMcOkjE=
+X-Rspamd-Queue-Id: 703A820003
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776861856-369852
+X-HE-Meta: U2FsdGVkX18sbQin8BT1gQnQy0r83A3/hMGhda9fsLnLL4l/RxXUa0MjrjA69Wo1EYIoTkz82Z2LTE5AmECPnzV/LMCehJ1sQszMcP8joIuCF7VhhEqClNzTmIUNHVLCpCbBsJMkyf0Z0bc4qeh3ukWRz2woVUZ0cSRpDuBR2gPJY09I3vC9KerzWYNsz7PLPulOnFkPp4mrA6PtcM3vvVALNBNCeXKQv/RgvxnTgm24yNA9fF00Y3ia54asJk4Fi6lrw1HK0MPu/ZFSzyx5JF+dAWKKdKB8XyUrtc6aTmwBw0x7EpA/9/20LI/gKKUcH/GSz5I7O9Ke7Rvc5dHvifXr5p5ZWu5M6JpjAK3nBtFeSXJdzCsR9EfjIHb77k+3UEbjmSVSwBtCHHtJzmNM5v9zOuRBPwP7lF84sl7NzvL5Ua+ixueseY4uztYvUkLqG5dLscoJdpTFWuVVQeCMlSzMGIgtBpJ/52lQGaXTsaVgBMFuU3EI4xyFzVypBDt5TopO+x79toWz6SrcAZzRU0SHFDskPkhrarWbagInHuQ1o5HmYDtbQFsHnnkpg05+pVhtyTOCxqFdNLKsGii4r4ErHkp1vKYYjSzyHfSDbnpY/iMPxJ1nVTeD4upR91HnOoj3Jr++VVYRT/nBrDYsNnkqyWAvow8YpNcRG91svy7T71f6icwZ2qXULCcCThrevMnQy9Zvjj6JQL4vMc51IRulgREvPL8xveIQ9H7fIEgG4M2mkOcWpPTewFYXDmgEo4Utr6jev27GZBkqHGSdR+aV+1E0MMR2dfen/vIuxQ6sv9u2GMDhVpSkJduO7TgFUNBOhCkj7GA5aMXUviMJ/Z8b7WUGSoRI3gfJ3bsS8kqaHMvyYpj39ZAnh6Z5j4CLZEc4eLNU844iLmWetS3ptRSmBYweV6LHU5mNLJoHzP6GVVulahFzYhmoIjl4k2ASQql4Ui4+UqcMioTOKZr
+ EvwVMzvA
+ 4Fe2TdAELgRHOqV+9xg2IVhc+MtM9chGLCRk4oAoLkkHqt3OFQCUpD+48Z3EgtSo5T94wNDqQaB73/vxqNZCkUqoo7DfdHs2yxSpuu+U86cte23j85Slh+jnpFFYCgrUIY2m33Rnn6kFIIdroWGOP7sKul/kGI2coDCylN5iHmpQbZh4qCpMUlhcv+zkp+f7BjBsph0Lc1Y5UtYhwQG9JohuqSDWYiLM6V5wJXSsQ1I3sncB+LfPfKb7BimdWpFlDvoNiZDpaBWD7uqxbD2uwgKWiwEf5xR7tNljU+TB28CaOOAY5zpK1XY6LGdUPBdUM+FPePgmq0olus0CHegaQoIDbMUVHeUpN8blHMVLFYLTJ2H6lUe4Wvq8Hmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,45 +92,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pattern "include/linux/page[-_]*" matches every file that starts with
-"page", because it's a regex and not a glob (so it has the meaning of
-include/linux/page + match [-_] 0+ times).
+On Fri, Apr 10, 2026 at 04:09:18AM -0400, lirongqing wrote:
+> From: Li RongQing <lirongqing@baidu.com>
+> 
+> Currently, writing to 'core_pattern' or 'suid_dumpable' sysctl nodes
+> always triggers validate_coredump_safety(), even if the values have
+> not changed. This results in redundant warning messages in dmesg:
+> 
+> "Unsafe core_pattern used with fs.suid_dumpable=2..."
+> 
+> This patch optimizes the procfs handlers to only invoke the safety
+> validation when an actual change in the configuration is detected:
+> 
+> 1. In proc_dostring_coredump(), compare the new core_pattern string
+>    with the existing one using strncmp().
+> 2. In proc_dointvec_minmax_coredump(), check if the new suid_dumpable
+>    value differs from the previous one.
+> 
+> This keeps the kernel log clean from repetitive warnings when
+> re-applying the same sysctl settings.
+> 
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> ---
 
-Fix it up into a more regex-correct expression. Doing so reduces CC's
-drastically in patches that touch pagemap.h (which is maintained as part of
-PAGE CACHE).
-
-As a side-effect, move linux/pageblock-flags.h explicitly under PAGE
-ALLOCATOR.
-
-Link: https://lore.kernel.org/linux-mm/20260422005608.342028-1-fmayle@google.com/
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
----
- MAINTAINERS | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d25342ca8aa1..224c15299acc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16804,7 +16804,7 @@ F:	mm/sparse.c
- F:	mm/util.c
- F:	mm/vmpressure.c
- F:	mm/vmstat.c
--N:	include/linux/page[-_]*
-+N:	include\/linux\/page[-_][a-zA-Z]*
- 
- MEMORY MANAGEMENT - EXECMEM
- M:	Andrew Morton <akpm@linux-foundation.org>
-@@ -16961,6 +16961,7 @@ S:	Maintained
- F:	include/linux/compaction.h
- F:	include/linux/gfp.h
- F:	include/linux/page-isolation.h
-+F:	include/linux/pageblock-flags.h
- F:	mm/compaction.c
- F:	mm/debug_page_alloc.c
- F:	mm/debug_page_ref.c
--- 
-2.53.0
-
+That warning should very much serve as a reminder to not use that
+completely unsafe pattern. So no, move to newer coredump infra or use
+absolute paths, please.
 
