@@ -4,86 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3788FA1FE7
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 19:12:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDF75FA1FE9
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 19:13:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1ACAE6B0088; Wed, 22 Apr 2026 15:12:24 -0400 (EDT)
+	id 668A46B008A; Wed, 22 Apr 2026 15:13:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15D4C6B008A; Wed, 22 Apr 2026 15:12:24 -0400 (EDT)
+	id 640266B008C; Wed, 22 Apr 2026 15:13:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04B606B008C; Wed, 22 Apr 2026 15:12:24 -0400 (EDT)
+	id 555A16B0092; Wed, 22 Apr 2026 15:13:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E7F2C6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:12:23 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8A5E81C00B1
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:12:23 +0000 (UTC)
-X-FDA: 84687137766.26.CA4DD7C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C2288C000B
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:12:21 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I/r2+Oco";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 476BC6B008A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:13:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1428A0149
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:13:32 +0000 (UTC)
+X-FDA: 84687140664.23.ED4A417
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0E51FA0005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:13:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZJgKXsis;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776885211; a=rsa-sha256;
+	cv=none;
+	b=a+8WjwSQ8xZCtstHVXl+nl3cBgjEj25sxzwA/4AJV21yN54t3SwYib8UwkqNZOcxZXxjrO
+	iq9eE9VDfUpQO0sclAfQ0IFVXOZkC6//Yf995Q4p48ZJrYcCLMfCt85cPvt5bLrYZ/mQLU
+	ZXLKQuoKPzzgxNDXg0hCD5XudU4xM8g=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZJgKXsis;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776885141;
+	s=arc-20220608; t=1776885211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mGVKYKKpt3fqUJPzWGuT7XPO04NRkoaxLUpzTEEjFIQ=;
-	b=fvjZH8LvplYoTDu9+FD+cLccsuDc2Qin5bRV42mFBOLbJAuabuA//3DOmF0LJ/yEN5NA7T
-	gSttfvI440TDx4R7Rp6nDyck01UXsL+dkqZ2ZMll+Ernaw415e/NlTu8Pk3SREfTEBMAEO
-	Oyyy8P1mTO+SJAqMn2uA6rZR3MJtA1s=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I/r2+Oco";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776885141; a=rsa-sha256;
-	cv=none;
-	b=iGVHCKcwkFwr3gx69gTPT1vZuCUqZh5s1mDbV3+Z2xsyIBBvJDVo1xEPI85LDiWkMNlZjR
-	Io6yrls9sbvYuFYOgWD/pBjQiiXcGg05HIH/l9S6Xv+jtH1erYpeIz6In45WnbffgIBkpN
-	TJAcP5rPr3AOk8OZEnwMvH7RYXEKKs8=
+	bh=1MNSGbgRGH2TwbMCD1iAzgq26xIxtY2tCe9pYp7sG6k=;
+	b=FAjgB2JeR8wWTAmo0rxVVzP23cHugx9CFE+jSU1fpT9w6DJN7exIgPrtcRr+YAxYBgwtcz
+	YMO96RljZqSD0nuwA0p/qethvfZ47svoRzjlghZhwE+Wq8eT3lB3l65ZMhBGnLPyjgKOyO
+	447qVauBfH+46b4BPj5f0geLTMP5sDc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2559C61863;
-	Wed, 22 Apr 2026 19:12:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41490C19425;
-	Wed, 22 Apr 2026 19:12:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B0C034185F;
+	Wed, 22 Apr 2026 19:13:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEA9C2BCB4;
+	Wed, 22 Apr 2026 19:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776885140;
-	bh=soo6QUGKM77sfvtH8onoPyYjoKLrihsrqjzIxYqu+FA=;
+	s=k20201202; t=1776885209;
+	bh=oLyo2UmbSk6yK12XQH1NDZGAAWxM/MNUH+J5zgzMcAY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=I/r2+Ocol0HVb6piUtmzScYnaDu6PTEfqHd1Ph8H0LIzUEXxcGrm3jONjMYaoW+x7
-	 VlldFwjZWbZwe+dwXs2BmDRzMib1sV0yrkmpbtg6h7xK1U5TQfkY8F/OwcSiO2Hdcz
-	 gCYCcs0m+kIBWh70H5m/ELxl8dpZxrIV/PwPXtxKbGhtCiVtqV5cTVj8nueQTprsLM
-	 7+CazLdNqTpMdp4HI+VArEHAncvIsQ9OctzbWOxDFRGgQspQCtklZw8XX5vI+rCwhH
-	 9wH3U7OK/0H5ADnjadagi2LpyhIaIM88uWjtb98kVuRwiu9Ci0DGr62tqCPhiDHbpj
-	 CcK6cXwu0e87g==
-Message-ID: <229d2191-afd3-4206-8ccb-002f93d2c4c0@kernel.org>
-Date: Wed, 22 Apr 2026 21:12:13 +0200
+	b=ZJgKXsisnKGfY0W43w0RGoH2VvTWTp548jVKfmeOvUSuLlnOItkB+ZNLDwfeYuhqG
+	 7T8Igq3bKQE7XTogkAaewJPWypOZMhYjucKo/eBDB4pYJQ6UvIoymZcj+bXq/s/g+Y
+	 362jasf3oGrSFKUvIcXb6k1OBhuUV3JA5FQ6d2dhKg8nFDlpVeQhmZd285m9/sS8xx
+	 2G3Eey/y6C179ATEJ3HaEeItXdwoDKITvz9m+lnfNnGyxxu+RpedCtLXhnXsS4ZkPo
+	 LlJZQsDmGTPwIKl5GL13N9aOwlShCK9lOioUJWLltaY/ZSsMGTr3TPLhOGhlQkQbi6
+	 N0o5eHM/rE2Ow==
+Message-ID: <fe573e15-0ce3-40ac-957b-03d63fd7a5db@kernel.org>
+Date: Wed, 22 Apr 2026 21:13:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/5] mm/mm_init: Fix uninitialized struct pages for
- ZONE_DEVICE
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20260422081420.4009847-1-songmuchun@bytedance.com>
- <20260422081420.4009847-6-songmuchun@bytedance.com>
+Subject: Re: [PATCH v4 0/2] mm/memory hotplug/unplug: Optimize zone contiguous
+ check when changing pfn range
+To: "Liu, Yuan1" <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, "Hu, Yong"
+ <yong.hu@intel.com>, "Zou, Nanhai" <nanhai.zou@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
+ "Chen, Yu C" <yu.c.chen@intel.com>, "Deng, Pan" <pan.deng@intel.com>,
+ "Li, Tianyou" <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260421125508.2317429-1-yuan1.liu@intel.com>
+ <2fef4fae-b7fd-4c27-9a76-994076e27b5f@kernel.org>
+ <MW4PR11MB69364107F48CFD6D35AA9771A32D2@MW4PR11MB6936.namprd11.prod.outlook.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260422081420.4009847-6-songmuchun@bytedance.com>
+In-Reply-To: <MW4PR11MB69364107F48CFD6D35AA9771A32D2@MW4PR11MB6936.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: hgdt1mezs7149srzffixfde3fsbxtzp6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C2288C000B
-X-Stat-Signature: nfr493cjfp4aipaei65bd9fhdrexw5tg
-X-HE-Tag: 1776885141-858540
-X-HE-Meta: U2FsdGVkX1/5vyiCgerLu6iojMkb5x5eSakuKYAGoTYsB6Gv1MZwqMg1376MaEzvfEr3bXldUc6j86P7jxrTXYXMli/iDLxrl9fPCfsR1j0pCMc86Gb6t+xvSpzcTZVpMlr9glXZIjCJcD2PNcE4izqAVH4wM9VsyUVVfwQo92OzxYL1IYOLrGYR4a9rYnvfEAgKBOqfxU2uqWr4OeL6yACs4UrDM3XcdH17WzYjuL176dsz0X+RuVxIwL9kAfiQvh3YnFpWU+fbU0+CimNg5dgbQV/kfyT25fu6DX+Qn+AdolIWtMU9Fv5KyX5jv1CvMbZoVGvDFJouVM+Mpzs7fReW0tL5EhPelKHMDX83peli3mpmyaYP9crG/2tiMvC6bB+/Af6twm4+uZxwegkSeCJ9jMdIZs7sYUVVCFvBW86n96dTMiWkfRknV3xopVbyCfpFT7oVG7Ik8aMT2VsZCtfaubEgeS3XNBGD3IrYcM6/sRWjI6X2WaEQVBhu5ggvWQvGWMONXvEqytEbMnMn8HM5anufnG6rT0pW5JZDFe+X0uE6q3KBXbg/hF4DdB2o3XJc7C15LryfFkypMzBZcpujpgRWgNv0gnhmlme15JYYSZeEH0ULiCUFkyn/MOKPYyAbNl2Ch/Y7IpT0Dxe+cecm5K6g8Q9El2H3dMyfNBGhwyiOm+S9ly9jX1sKY7HhIkBTcVCl+tIv3YBYLDXL1r7EpfG/cUxT85v58ISulAYW8f76O571OACxq2VO61hbeUcsSfs8NTi6lWEtRKtc8wXnmrpaN1jNUgy/Q0KcBLVqHD+/ZzDmfpHQTmbN4t+Qt0GItc8zQ73mQR0NEAoc5ALLHa/dLExj3jVBiID1ilaqvVqPXPobFvhz4vCzEmmQL4VX7+SHQQoavW9v3Yob9qWMX8x6gOiJTCVq9pYQi5y7Ad4IjHHR/TekfV2RTkcz2NhEasxsey9Pi8h71j3
- lasrxAdM
- mPjjTozuMgSFd7F3UMjt/mxoOZVGBYuwjapmXy9uGtVETiZ5sIMAcWtPhx6eYVELyeNHIem7AC3uUfvb/SPZ8tgKu4KW54G0KFC5lSVswaRUA4EMr8BBTkUsMyHZTSxIJKniidVgnGH5d71ePUiD4dWUCPa1cCoGrrfCE9FBq+xcWLdi6Wt+8vAfIAbYg0LPNSoKnoQcwJa+J8kB8JTEP0sGj+NTCraKsyE3mMWoGdG1f/+g00pUhJIRyRG3Cu9/y4n53KM/TmF11uDdLGp7xjDUqHbT/lMSjowjVThV51jIISjeW+ZmSby2SIbS2PnSWX/UD8IhosCiysIcyOg5cOJEarVuufKvOngjQ
+X-Rspamd-Queue-Id: 0E51FA0005
+X-HE-Tag: 1776885210-799173
+X-HE-Meta: U2FsdGVkX1/x7QeHZLsZKz5+51lZSk6F5ULG/WH0p5YX6hGMPI7nrVQC9mmlAd005Z61SSCGZFeIjM4X9f6wpkdb35kcPI8TZTBdKydQ3S8oDpO3QWhbJKX8BgWlbsOjo4oCEiyQS+LXGvPtncUWZp983UXENtsDTCJ4Zip+FbyGXTjCUGzcWZoJeaNLX+HvpSPQbnmFRCXS6MhetjsoSV/laUgs0pyBKKzVfDpsN4/Yzm1dSshl93BTu5QElabvF93H/hVspB+3cMxJub9S6r6wP+169+eys85LxntkiGTWJUX0Nk70XazFz1vBr6XHCe2EsteCNA8XN8WtTARngXpUsnROyzL980zQ1MbSpjOlY8qQjx9TnKGvqK1X3Q+Az6icd9UXqwtROPQsAmKmnwRewfgoIwcBtQm6XGa4hDoTa6XWQDX0YT6q4x9vR4Dc1YWn5ig6aX51j8sE14yRpRxsfrC8OnYuYlnDAqqoc1muJPvQe04opPO2/kQrgGsFGeX8YDjA5xmoSFPlpG1dT0Rrqj26DA8+07+X/WKFJhAz/7l49VFQ8j4B1Quxe+Ek0q73S1aDXrpNUdV73WrBNSqNipHKlGn4HoaWafyyYs7jVpXdckSPlvbp6xbL0USjH0HS83ARH3qRijRVVLQdenYI1jcV5f5ItRjQ2Uw4ubHq7tDjUmqHHI2n+uSmIMI8a0TAzFgseEXtENmCUwLQ/4OztJ+C/tjkZ/EBNQPTohf85bR6pF6qh3ImggiW7bhCsc4wEWX1540Qj9yyyN6bb60L5tktL7e1LeVSGvRfmY/KNiElSUo5XfqsRznKYQjQJJSZC0OUPdM+cVzKP+7F0hXV1q18p0viKUuONgLBNsZMsMKjV9GH/J+XqkzJZ3catFdjwjPilqjayO2e3q+oTZyuuRGERNTE4lte+B5WO3sCej6w0+pDxSiZkFyC8snFYwnbiVggwE0BRmwbcKC
+ BipYJSRj
+ OLxpCvR+ecj/WDCVsPcnryy0xK0WAorrt7TkkwkiFaUPIxObkx0U1Y/42eol3gFlfBfFdLQR64ZFVXhFReCJkOF7l8XnNak7V5u3M0+IX2u5LgqZQfem2x9tFUt0YB/haeZUi2MP+fKbAFBnvImqwv5U/Bm3xCnXVNQo4wwqVrm3ng8+eOopgupfz3GsGC76NVJbvB4quO6mTk5j6c3X+OFeFaqdqTKct7q/HnjxBkhDNirQR1bVbnSGPXhT08/mmrokjDipnbzbiCB2u+bxXM0gusmGwauxpCtnUGpFfzjKJP4We9ajulaTBWOAMKB5+Emvue/xqk1vPofjSuMOTs/JMzL2ja7hdX8PORS0S4vOmqoioeGP3ls6wDi9Oy9XsRFamw0gjW3L7BL3+Gk+/gjpIfwm2+yLhy8ErdV/RDZSZWrBhdikw1bQUrBukis9X0Os0dySrF4bgTjGr6Fo3MHP2gwmmCTqSdFupdDbeNYw1Vvg7VH2PA/AewQ/ZASzryNfWMzxXHpUkZfg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,60 +145,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/22/26 10:14, Muchun Song wrote:
-> If DAX memory is hotplugged into an unoccupied subsection of an early
-> section, section_activate() reuses the unoptimized boot memmap.
-> However, compound_nr_pages() still assumes that vmemmap optimization is
-> in effect and initializes only the reduced number of struct pages. As a
-> result, the remaining tail struct pages are left uninitialized, which
-> can later lead to unexpected behavior or crashes.
+On 4/22/26 09:56, Liu, Yuan1 wrote:
+>> -----Original Message-----
+>> From: David Hildenbrand (Arm) <david@kernel.org>
+>> Sent: Wednesday, April 22, 2026 3:47 PM
+>> To: Liu, Yuan1 <yuan1.liu@intel.com>; Oscar Salvador <osalvador@suse.de>;
+>> Mike Rapoport <rppt@kernel.org>; Wei Yang <richard.weiyang@gmail.com>
+>> Cc: linux-mm@kvack.org; Hu, Yong <yong.hu@intel.com>; Zou, Nanhai
+>> <nanhai.zou@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>; Zhuo, Qiuxu
+>> <qiuxu.zhuo@intel.com>; Chen, Yu C <yu.c.chen@intel.com>; Deng, Pan
+>> <pan.deng@intel.com>; Li, Tianyou <tianyou.li@intel.com>; Chen Zhang
+>> <zhangchen.kidd@jd.com>; linux-kernel@vger.kernel.org
+>> Subject: Re: [PATCH v4 0/2] mm/memory hotplug/unplug: Optimize zone
+>> contiguous check when changing pfn range
+>>
+>> On 4/21/26 14:55, Yuan Liu wrote:
+>>> This series cleans up the overlap memory map init check and
+>>> optimizes zone contiguous check when changing pfn range.
+>>>
+>>> In addition to providing a significant improvement for VM hotplug
+>>> (see the second patch for reference), it brings benefits for CXL
+>>> hotplug as well. The link is as follows
+>>> https://lore.kernel.org/all/20260409023552.GA2807@AE/
+>>>
+>>> v3 link:
+>>>     https://lore.kernel.org/all/20260408031615.1831922-1-
+>> yuan1.liu@intel.com/
+>>>
+>>> v4 changes:
+>>>     Add a new patch for clean up overlap memory map init check
+>>
+>> Didn't you also wanted to add a patch to improve shrink_zone_span to check
+>> both
+>> sides of the PAGES_PER_SUBSECTION block for fitting nid+zid?
 > 
-> Fix this by treating early sections as unoptimized when calculating how
-> many struct pages to initialize.
+> Hi David
 > 
-> Fixes: 6fd3620b3428 ("mm/page_alloc: reuse tail struct pages for compound devmaps")
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->  mm/mm_init.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 9d0fe79a94de..3d5af40d0943 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1056,10 +1056,17 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
->   * of how the sparse_vmemmap internals handle compound pages in the lack
->   * of an altmap. See vmemmap_populate_compound_pages().
->   */
-> -static inline unsigned long compound_nr_pages(struct vmem_altmap *altmap,
-> +static inline unsigned long compound_nr_pages(unsigned long pfn,
-> +					      struct vmem_altmap *altmap,
->  					      struct dev_pagemap *pgmap)
->  {
-> -	if (!vmemmap_can_optimize(altmap, pgmap))
-> +	/*
-> +	 * If DAX memory is hot-plugged into an unoccupied subsection
-> +	 * of an early section, the unoptimized boot memmap is reused.
-> +	 * See section_activate().
-> +	 */
-> +	if (early_section(__pfn_to_section(pfn)) ||
-> +	    !vmemmap_can_optimize(altmap, pgmap))
->  		return pgmap_vmemmap_nr(pgmap);
->  
->  	return VMEMMAP_RESERVE_NR * (PAGE_SIZE / sizeof(struct page));
-> @@ -1129,7 +1136,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
->  			continue;
->  
->  		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
-> -				     compound_nr_pages(altmap, pgmap));
-> +				     compound_nr_pages(pfn, altmap, pgmap));
->  	}
->  
->  	/*
+> My apologies for missing this. I will include it in the next version.
 
-Nasty, but yes, we cannot really optimize in that case.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+And isn't there also the problem with the subsection pfn_valid() handling etc
+where I proposed a change?
 
 -- 
 Cheers,
