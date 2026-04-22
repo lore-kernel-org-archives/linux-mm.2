@@ -4,84 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D7BF9EDF6
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 14:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBB03F9EDEC
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 15:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D98126B0088; Wed, 22 Apr 2026 10:59:40 -0400 (EDT)
+	id 204AA6B0088; Wed, 22 Apr 2026 11:03:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D48E96B008A; Wed, 22 Apr 2026 10:59:40 -0400 (EDT)
+	id 1DC3A6B008A; Wed, 22 Apr 2026 11:03:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5ED26B008C; Wed, 22 Apr 2026 10:59:40 -0400 (EDT)
+	id 118D06B008C; Wed, 22 Apr 2026 11:03:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B11D26B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:59:40 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 11A83E33ED
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:59:40 +0000 (UTC)
-X-FDA: 84686500920.29.AF6B7B8
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F2B05180007
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:59:37 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=Lmj0lKMd;
-	spf=pass (imf06.hostedemail.com: domain of skinsburskii@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=skinsburskii@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F32CC6B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 11:03:23 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8AE5A898DA
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:03:23 +0000 (UTC)
+X-FDA: 84686510286.05.EC92160
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 93C9318001C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 15:03:17 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=mCxq2pFV;
+	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776869978;
+	s=arc-20220608; t=1776870201;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NzwgEI2rAv+UuV/ojSZXA8oFHB9gGr87UynDh8gLwD4=;
-	b=H2+mzXnUuF1taJPJfYaXjGlbTV998l/AImwmnltOaa0YkoudFKLJfhCWLsEnAGnlTFpATl
-	ofi1Dc2on9I8twUhhfNOm6V7YpOOsV02ps0UhWawmXxdtn0bTJqcqDKOks1Jy6s2u+fJs6
-	6RdESt78kUxxOUS4mx8XhQx17RbT7+M=
+	bh=xgW+47Jv/ylGNBGjB8siOtex/NYpwe6kH9Qi/e5jtU8=;
+	b=y4T02JVTiEdC9nVMZx8Sz0Tp6Y7pHDiRfiWEcMbBzV5oUkzQ+eHxolgZtflF6wvsb0aLg1
+	UXpS4fEVe+k8KoUipAkEXJF9ab7Gr0ueFISjSVOg1YKQmhBCwrApzmSplghOH5gY1qk83u
+	ewzAKEjM6iRmsRSXiTH2HCH+XkeUQXY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=Lmj0lKMd;
-	spf=pass (imf06.hostedemail.com: domain of skinsburskii@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=skinsburskii@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776869978; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=mCxq2pFV;
+	spf=pass (imf16.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776870201; a=rsa-sha256;
 	cv=none;
-	b=j89Wn0TFvCkg45yng+RIynrjaqPcvvOGCkcIk/w+NjlV6tmkfFSfBshrMmpQgYs1ibRY5J
-	F/LkGxcJPcOyUTQas60mzU/HwSSjc1D6AxNqyCGGqqWExLwZCbK734IjZB3yVdXNjbYrIi
-	BrhZXPYL5kvFfyG8i/S8/4pS256CqGU=
-Received: from skinsburskii.localdomain (unknown [52.148.171.5])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 92DE820B6F01;
-	Wed, 22 Apr 2026 07:59:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 92DE820B6F01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1776869976;
-	bh=NzwgEI2rAv+UuV/ojSZXA8oFHB9gGr87UynDh8gLwD4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lmj0lKMdOpIvnPWyIU2lay0uxLVXRJAWkzClONs2kePd9jlsTLs0Hw9wiqnAU/EGz
-	 vPw/n/EcdruQyJMOt7CK19NJSxXdkCNzq0HzSzXh9Oe+OVRtKdMqvIW4D5Aa3YdQ/Y
-	 BXJz9mfVb/jbjHxmlXSSlCk4/y+tndrd2saWochw=
-Date: Wed, 22 Apr 2026 07:59:35 -0700
-From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] mm/hmm: Add userfaultfd support to fault handling
-Message-ID: <aejiV8rQIOgrlCkh@skinsburskii.localdomain>
-References: <177499585916.169073.8313365481186071940.stgit@skinsburskii-cloud-desktop.internal.cloudapp.net>
- <286425bc-e2a2-4e29-abdf-666e798e6cf4@kernel.org>
+	b=L7avASemAMEZqUmlxpTDG7DcpK9YbUDhTxVT7+19cEto8PwJ7qWpvrc5Fvo8NegO4yVN30
+	VTKeduJn+8KnJSyEICI0ZUWj3NkseirxukLsH8rp3Tyehwrdx32MyyCKbT3mRDbU4oQR6F
+	blGRZLR6dRhVtg32NAeixtcvCrgw0GI=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=xgW+47Jv/ylGNBGjB8siOtex/NYpwe6kH9Qi/e5jtU8=;
+	b=mCxq2pFVcDbRoLzB4u+FHEoJSVYkCatnbfup/6NCAJ9o92CbkIYDPUx0CCQEdX1Ir+btXrNsi
+	sNblvTMnprDTcvTKpw8zJPqylh5h1axy2wb/7eNAcFAlZPt/KBbQn6qwakFc4eHHsbVoNRK1F8O
+	2/dMEm9p/1+4Cw/inuhPCZc=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4g12P93jxCzpStt;
+	Wed, 22 Apr 2026 22:56:45 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9380D40538;
+	Wed, 22 Apr 2026 23:03:10 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 22 Apr 2026 23:03:09 +0800
+Message-ID: <12bdade5-b239-4456-bb5a-f2648c867db8@huawei.com>
+Date: Wed, 22 Apr 2026 23:03:08 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
+ shmem mount
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, "David Hildenbrand (Arm)"
+	<david@kernel.org>, <akpm@linux-foundation.org>, <hughd@google.com>
+CC: <willy@infradead.org>, <ziy@nvidia.com>, <ljs@kernel.org>,
+	<lance.yang@linux.dev>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+ <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+ <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
+ <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
+ <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
+ <07e26d39-6155-4661-b3df-c2419535ed43@kernel.org>
+ <f9508e75-789e-4eb8-b09e-b66a8676a6b0@linux.alibaba.com>
+ <bea6080a-850c-4b3f-bcc0-719efc372e72@kernel.org>
+ <116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <286425bc-e2a2-4e29-abdf-666e798e6cf4@kernel.org>
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F2B05180007
-X-Stat-Signature: htgyuxedyht8qe7tc8hapb98yqd6c3es
+X-Rspamd-Queue-Id: 93C9318001C
+X-Stat-Signature: y73hr9oojqac865iwhgyhxrj181rurhz
 X-Rspam-User: 
-X-HE-Tag: 1776869977-52458
-X-HE-Meta: U2FsdGVkX1/aatNNluDjgyEyPQMmz7VrowZy50ID4lBM28qxpckCGK2WX+CxcykHhTjD5r5qFvGFDy+mld/M9MUyw/THQwX5ttXTvSwT8vAntd2Ri+/nwyj4OVLfspVXdePNhnXkrIIFRKZUsBpUvtvuZaRcdMxiMSECcA5mUBcI53OAhDN2ofqqQCJGFeGChwrsO6AP1fzUwS88wo1os5Wi61QWQ+2R53o88WQgvA96R1lXrp7tfG7qGfwZndEos/VR/4mHFEJTruBc6ISX9Zl4OEkYwrPwW/lUT2QuhgoFtmlhEYB88XliVRe7wb+ahpxT3RaTG+vEdKK4TTIxB5IQ/Bu4CRZ5EHBSSAAzss+HzjORvjVgsOcftsAgKVDAu0JpcQf8caTAwUU2PnPNNKfiUwGjXLsjHG6bRMeqsx3jy28Jo1DdqRUSI6E/82WuofiUul4kZ24vhiJgFL6zNaUG5wH4qv2upUuvG8BmZvmdnqsWw34xAGvAB8Eso+LXzsvSnHVellAPsmsIQN9PC8bTwCpRlC+C4R4OdDjNyLNfeidp4nweaMljxWYQOJxD5Bt5fxA66HGudDhxzfZ9viQhcxuCopJKOAN1Dq/pQMLYgYlPsJHBr39lTkPLlpspHjKLUjGcqZ3hZoWFAHIbmGDDN2mikMkw/zwGZ2erKiHaMay5dDm9IKBkfDWoONTkZ7XYG78Fe+PeTjz0T1F3+DgW4gjcXtI4Kdpy2KlscVPPDlk4K9UxE57enI2Ky7xWLQih+WOK1FTNibW07xhDqLA7naL2jkpLzw8AdiFEsWENdhTEFa9iTnPvf7Y9L21HBSsW7s4INbJvrn3TxLKGfWcZfpT3vQ44TouZCojHpHyQRJOoGQe43rV9YKHZS+cR5M6umxJr2MWnw3kGgy+osDTJC3uol4rYB2tMMbXL14FzAMBbe3EhJQIrBhq+b4/ZFDRdM9aa+IbNPOSgEwO
- 6KJsDlkl
- q4qkEMv8JIkUApFFZP40LFdpgbLdV3Lbc9OWG6/P7TyLse1L6eILH96l50jm62XfbOgVWOh2dkptiXGuHYc8YMp7u2j3BoOAjayf0f+dIGPv+1lfDvFYkeaUX3vIo+zv1Yt1X+GdXoRBSUKDJYen7YT0FwxvcpDtTgFftiGvcNHuLVx0eA+LDfwwRE+Q+LbaLBLYl36NgD78b7doS1Gb16vNCQLZZwG+y6ZOprRiTpPAFjKA/D3RwrfMD3jM+okIoG6BUjqjrPr3jkAcA3++f9VZLnqqykxXyQKhsMQjc5qQL/YE7TCOMWIahZTAbkjVQcVMBor3rkAmRwGHrNfwB4U9KoAyI7QUndcgL
+X-HE-Tag: 1776870197-489860
+X-HE-Meta: U2FsdGVkX1+8aW7a0/XVYu2LmNL1sZlnrCm/o0U8co1YaSxR6yz5HNrT83gFUENbTEeF4XDKiLNu3SILdquKUgeRgG268AUR0jlNUbpRVczs04LVBSwHb2pEgdZe24jZQYD3yA9oWLr2++XLqHdIEFxFpuVUJJzT3E5Xvyr2t+vPHR07UJ4PUXWTKwQJyQvN7LXlInv35eOZ/HDLJK4+k5pRI2XD965oh9RKGEXkktx1B5QxdBJfQg9meOLdFfTAYJjYQ6fJ7xRHszVNB4aCXE/x1IQmpozHMcXdjQBi7xtnG3xpjULy27Yh5Z0xaunx28pf3wlejSXk2usFRktRXg7Zbg2guNjz0t/Sxxvqmm07wf0p85C0mnaaudFSuD4waXuMWik3CyeiztexP+Rc/J6cPUrVElTSyQFLWd9y20CEVZ75u7Rfgq4ZHIf3axxgHgnCLyMuvlHwQx3jtIcTAiJlny4F6MtuNB1y+nR89BiaX2E3A2HOoZODFxGkj8QFjo8EvPm40DlTD3XYY3oWb+eKmByfmcfugMigKJMzidXGcZu+seE7KjFUM0SceZBb8qk8Z4+j3lNEGN9F4+/+fRncO5mK2/BgmGXGX9WdF376Vyr6KXvIP5z8FCfBrHSyismaIkApNKabPIAcznmsHsHSkViVmuYg4i30mO/sYSB23T9vJKc8iB5XZvRMeF1OG2Mt3wyTYLTtQrFkO4FyxfzYoVt9s5U3xaFRCoh2OEimZZFJ+0E0NJ+TCgTFtFQLAKu+OhOSCnYC69lT1tKpn8l33crq4YOPpcF6hHK9XB5DOAheYBzuWqBlIo95ADLxIIFNOrViJH1imJNC5Y1qOFYm7Z26+bZGBzswAGocPVUCZW1RTX5frFmwGuSQJ/0j+MUVRB+1P9uOM1QQVNFoqvrMHSDPL5riNPxfSzPj9zP4Dt0c7fkeMZ5cGH03f2jorIaJ/O5n26PFn0k//nW
+ +B3Pwulu
+ Z33aYrPp2RViGxAidWvzbbVRJrrLIv0H46ZFEmAO0rw5wd8Zbi8sHgbIeQUX+XIzXt80pLiN5QYQOq7Q8bL2R5NAvdugGIS+4j1D/yQLQM0Ot9cz40Ucp6iuuPQH4WAaMfzSgKqU5C7SHOPURuOrF6LvJpog+7DbVtdoWrhqOlOLwJkDBj1fscVYpFwPyQZuWub56msVZfsCIjk4fr/WgbE5XKHz0NVEGDF3Ad/0JswuXGZHwDHhPj/r/GMtC+xKDZ++g+R8oKb/4mTERSipnMXUJnU0SdrzjDpEVkgRFG9ZH3i8wxK3TBLI5ZsXg8MNkxLx3hqL5qkKTfS1Ns7eLyryfw6GBgxdMYNguRQ2rFbEVvpcKBmgSQCYi4WbQzR5h+DES/zzsjy1iPDSs6ij1F4P3bTcwlC6v8SozLMj43Y9E5IM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,105 +109,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 09:27:44AM +0200, David Hildenbrand (Arm) wrote:
-> On 4/1/26 00:24, Stanislav Kinsburskii wrote:
-> > Add support for userfaultfd-enabled VMAs to the HMM framework.
-> > 
-> > Extract fault handling logic into hmm_handle_mm_fault() to handle both
-> > regular and userfaultfd-backed mappings. The implementation follows
-> > fixup_user_fault() for handling VM_FAULT_RETRY and VM_FAULT_COMPLETED, with
-> > a key difference: instead of retrying or moving forward respectively,
-> > return -EBUSY after reacquiring mmap_read_lock. Since the lock was
-> > released, the VMA could have changed, so defer retry logic to the caller.
-> > 
-> > This approach is inefficient for userfaultfd-backed VMAs, as HMM can only
-> > populate one page at a time, but keeps the framework simple by avoiding
-> > complex retry logic within HMM itself.
-> > 
-> > Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
-> > ---
-> >  mm/hmm.c |   40 ++++++++++++++++++++++++++++++++++++----
-> >  1 file changed, 36 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/mm/hmm.c b/mm/hmm.c
-> > index f6c4ddff4bd6..d04d68e21473 100644
-> > --- a/mm/hmm.c
-> > +++ b/mm/hmm.c
-> > @@ -59,6 +59,35 @@ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
-> >  	return 0;
-> >  }
-> >  
-> > +static int hmm_handle_mm_fault(struct vm_area_struct *vma,
-> > +			       unsigned long addr,
-> > +			       unsigned int fault_flags)
-> > +{
-> > +	int ret;
-> > +
-> > +	if (userfaultfd_missing(vma)) {
-> > +		struct mm_struct *mm = vma->vm_mm;
-> > +
-> > +		fault_flags |= FAULT_FLAG_ALLOW_RETRY |
-> > +			       FAULT_FLAG_USER;
-> > +
-> > +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
-> > +
-> > +		if (ret & (VM_FAULT_COMPLETED | VM_FAULT_RETRY)) {
-> > +			mmap_read_lock(mm);
-> > +			return -EBUSY;
-> > +		}
-> > +
-> > +		if (ret & VM_FAULT_ERROR)
-> > +			return vm_fault_to_errno(ret, 0);
-> > +	} else {
-> > +		ret = handle_mm_fault(vma, addr, fault_flags, NULL);
-> > +		if (ret & VM_FAULT_ERROR)
-> > +			return vm_fault_to_errno(ret, 0);
-> > +	}
+
+
+On 4/22/2026 2:28 PM, Baolin Wang wrote:
+> CC Kefeng,
 > 
-> I'm surprised that there is userfaultfd_missing() logic required here at
-> all.
+> On 4/21/26 9:39 PM, David Hildenbrand (Arm) wrote:
+>> On 4/21/26 08:27, Baolin Wang wrote:
+>>>
+>>>
+>>> On 4/21/26 3:00 AM, David Hildenbrand (Arm) wrote:
+>>>> On 4/17/26 14:45, Baolin Wang wrote:
+>>>>>
+>>>>>
+>>>>>
+>>>>> Indeed. Good point.
+>>>>>
+>>>>>
+>>>>> Not really. There could be files created before remount whose mappings
+>>>>> don't support large folios (with 'huge=never' option), while files
+>>>>> created after remount will have mappings that support large folios (if
+>>>>> remounted with 'huge=always' option).
+>>>>>
+>>>>> It looks like the previous commit 5a90c155defa was also 
+>>>>> problematic. The
+>>>>> huge mount option has introduced a lot of tricky issues:(
+>>>>>
+>>>>> Now I think Zi's previous suggestion should be able to clean up this
+>>>>> mess? That is, calling mapping_set_large_folios() unconditionally for
+>>>>> all shmem mounts, and revisiting Kefeng's first version to fix the
+>>>>> performance issue.
+>>>>
+>>>> Okay, so you'll send a patch to just set mapping_set_large_folios()
+>>>> unconditionally?
+>>>
+>>> I'm still hesitating on this. If we set mapping_set_large_folios()
+>>> unconditionally, we need to re-fix the performance regression that was
+>>> addressed by commit 5a90c155defa.
+>>
+>> Just so I can follow: where is the test for large folios that we would
+>> unlock large folios and cause a regression?
 > 
-> What prevents us from always calling handle_mm_fault() in a way +
-> handling return values, such that we will just do the right thing
-> independent of userfaultfd_missing()?
+> I spent some time investigating the performance regression that was 
+> addressed by commit 5a90c155defa ("tmpfs: don't enable large folios if 
+> not supported"). From my testing, I found that the performance issue no 
+> longer exists on upstream:
 > 
-
-Essentially, the main issue with the current HMM framework is that
-handle_mm_fault() with FAULT_FLAG_ALLOW_RETRY (needed for userfaultfd)
-can drop the mm lock. The framework does not expect or support that yet.
-That is why I had to add the branching.
-
-The worst part is that handle_mm_fault() can unlock via
-mm_read_unlock(), while svm_range_restore_work() takes the mm write
-lock and this RFC patch doesn't address this problem.
-
-The main question where I’d like feedback is: should userfaultfd be
-supported in the HMM framework at all, given the complexity around
-unlocking and retry handling (similar to other gup helpers) or should
-this complexity be offloaded to the caller side?
-
-If it should be suported, then I see two ways to implement this:
-
-1. Introduce a new HMM_NEED_USER_FAULT flag to tell the framework that
-   the caller needs userfaultfd support, and extend the framework
-   accordingly. This is not intrusive to existing code. But if we want lazy
-   migration for GPU state in the future (and we likely do), GPU drivers
-   will have to be updated to set this flag later. The only real user of
-   this feature right now is the MSHV driver and I'd extend it to set
-   this flag right away and leave GPU HMM users for later.
-
-2. Add retry logic to hmm_handle_mm_fault() to handle VM_FAULT_RETRY and
-   VM_FAULT_COMPLETED, as required for userfaultfd support. This would be
-   transparent to users. But it would require significant changes: mm
-   relocking, VMA lookup, and other parts. Also, before doing that, the
-   kfd_svm driver would need to be changed to downgrade the mm lock to
-   read.
-
-Thanks,
-Stanislav
-
-> -- 
-> Cheers,
+> mount tmpfs -t tmpfs -o size=50G /mnt/tmpfs
 > 
-> David
+> Base:
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.2 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.2 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.1 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.0 GB/s )
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (3.0 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+> 
+> Base + revert 5a90c155defa:
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.3 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.3 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.2 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.1 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/testbs=3000K count=1398 (3.0 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+> 
+> The data is basically consistent with minor fluctuation noise.
+> 
+> Later, I continued investigating and found that commit 665575cff098b 
+> ("filemap: move prefaulting out of hot write path") fixed the write 
+> operation performance.
+> 
+> Base + revert 665575cff098b + revert 5a90c155defa:
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.0 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (2.9 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (2.6 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (2.6 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (2.5 GB/s)
+> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (2.5 GB/s)
+> 
+> We can see that after reverting commit 665575cff098b, there is a 
+> noticeable drop in write performance for tmpfs files.
+> 
+> So my conclusion is that we can now safely revert commit 5a90c155defa to 
+> set mapping_set_large_folios() for all shmem mounts unconditionally.
+> 
+> Kefeng, please correct me if I missed anything.
+
+Hi Baolin，I found my testcases "bonnie Block/Re Write"
+
+./bonnie -d /tmp -s Size (size is from 100,256,512,1024,2048,4096).
+
+But the dd test is similar as well, and as commit 4e527d5841e2
+("iomap: fault in smaller chunks for non-large folio mappings") said,
+the issue is,
+
+"If chunk is 2MB, total 512 pages need to be handled finally. During this
+period, fault_in_iov_iter_readable() is called to check iov_iter readable
+validity. Since only 4KB will be handled each time, below address space
+will be checked over and over again"
+
+But after 665575cff098b, fault_in_iov_iter_readable() is moved, so the
+issue should be fixed.
+
+
++CC Dave，
+
+Since 665575cff098b is works well in generic_perform_write(), I think we
+could do the same optimization in iomap_write_iter()? but it seems 
+maintainer forget pickup them[1].
+
+[1] 
+https://lore.kernel.org/all/20250129181753.3927F212@davehans-spike.ostc.intel.com/ 
+
+
+
+
 
