@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54761F9EDC6
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 13:01:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D931F9EDC5
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 13:03:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A7D46B0088; Wed, 22 Apr 2026 09:01:55 -0400 (EDT)
+	id 9DF846B008A; Wed, 22 Apr 2026 09:03:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6588A6B008A; Wed, 22 Apr 2026 09:01:55 -0400 (EDT)
+	id 9B6CD6B008C; Wed, 22 Apr 2026 09:03:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56DCE6B008C; Wed, 22 Apr 2026 09:01:55 -0400 (EDT)
+	id 8CD226B0092; Wed, 22 Apr 2026 09:03:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 43EE46B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:01:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E0C841389E1
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 13:01:54 +0000 (UTC)
-X-FDA: 84686204148.29.2CBD8A3
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0B1591A0018
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 13:01:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NFdTkj1H;
-	spf=pass (imf19.hostedemail.com: domain of 3v8boaQYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3v8boaQYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CAB06B008A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:03:37 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15CC91601AE
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 13:03:37 +0000 (UTC)
+X-FDA: 84686208474.20.9D6FF67
+Received: from mailgw2.hygon.cn (unknown [101.204.27.37])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1312FA000A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 13:03:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of liuyibin@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=liuyibin@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776862913;
+	s=arc-20220608; t=1776863015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5+12Isrg19MaOCC4LV9S11q3fZdSarqpUEBnPPaS2+4=;
-	b=rnN4ZXZ/LMCnksaL9kS5bjQ7dZPspe/njtnQDFl0w9sTe8WS8IcZ9vRwI2rJEM9x2PQU+d
-	0mGf9+2uYvVYVxcSww2pxmadc+/eExyWQkq14Qq7yIZyxXY0jShMb7o61JMJW2wfz/c2KG
-	IV+6bHb+j6eCuMEJRmaJDfXI/svjNLA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NFdTkj1H;
-	spf=pass (imf19.hostedemail.com: domain of 3v8boaQYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3v8boaQYKCEY0mivrkowwotm.kwutqv25-uus3iks.wzo@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776862913; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UCVUeGdlFfGlA93XmYUteXT3qdaKxKb/nR4f2YXDczw=;
+	b=hVJ+JaKP4dNAJaMccvsT9um4EOwh5cXp7Vt80fIX84wB4YnhhtNXRhFvk7OmU1ToM4aCji
+	A1+7oVybOQdX/1Z4Ep7efIILb4SlhUtyeI2fk67OIygaUSFIY0BON0BTfjJ5DLe0maGayn
+	GsAmRTZgFgRYX4pLftqpWQbKSEr/oo4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776863015; a=rsa-sha256;
 	cv=none;
-	b=HEnXjw+o50DVnesDoaIlA8tBwRydwyslIq70qVvm5mfB7o2x5QFhmrzGJ0d7QQ+G+UfkaZ
-	nrE5Zuxdqj53aAXO3YkLf+ewav+8ss6jxbUKmaSoyqSrKsPX1WM0+v9XeEY+i98qljZacN
-	WnmFuN3RPhtbtJNCzg2crf/zmEG4hRI=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4654f9bb6so57092725ad.2
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 06:01:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776862912; x=1777467712; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5+12Isrg19MaOCC4LV9S11q3fZdSarqpUEBnPPaS2+4=;
-        b=NFdTkj1HQSXJ3jofLG8YqSujQWTuEXDRtKR+yVNf4HmmWeNwDV5FtBB0SjqmKu9LgX
-         PKdwrx9bmS6qB+7qfgPHcfogx9OPKcEDBlvjJlXmTDEPO7gIteu63H5e9u2WsUWVJ1mL
-         +0mZd6kbmrYPXTPpjGJD2jjYiaxKDX4+tNMm9i9aa1Cjsjw/U6d0GWNQMLq/oeA+MPB3
-         KzCpWs76QVdAUUMMLxKHwLrJ6FH6ObZQ9QqHdNtXuQQsHjTdkZUuaG1tx+KIM6SrnCpK
-         dD+l3GdFUgl1GCtmlxukBRoaEpx3mWc3YE3P2XsQqy73FXsJtMfppP9pkzkKhljxrus5
-         Csew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776862912; x=1777467712;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5+12Isrg19MaOCC4LV9S11q3fZdSarqpUEBnPPaS2+4=;
-        b=J5QLj01b1aLH6+rzTXzkO6lkWcxDB/3gUTXXa+gBs0ta3+kl4WJPI1+xJQCeSQnW9i
-         nAOtHD3Bw4RIG7rVd5/equAzWyVswBXPcrxklOG/5oWa8cHDmBp6zyzX4d0MwwxyQ3c/
-         9kegFb8mK90Jv1GbTK7/EgKWTC8cyMgZefMpXEFNeMH18md6lvOZvdwS4e36PJUhG1no
-         9TJEkfZNKWgM/h9ghVHY6X9FjFJC5gadNZS62YvThpefVtqfiYgz1nIC1dzk6XSkXVtD
-         2rp8JQg5cMY9R5khnmWv4bRKgrDbDMAu602HPPIHWE8KlyxbTk+BFzfqKP2bjO5uvDbH
-         /Hiw==
-X-Forwarded-Encrypted: i=1; AFNElJ9QvX91dUezn6vU8xu2qsQVfRqoSQuMDLNXZ3ewWmnGSzBsWedBQGD8jnYmnpfZAXLrbnUTsFsakQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyy8y61ivFAB/NdQyy0fQ1DRfnaNNgNz2lOm6oFtDZ42IvQfTWT
-	X+C70G+hh4NK9gRlxlFykp6PqZKAa8rAj42pMbk2lrgPLEReNKmHmi7gOxWZqbGTA/sDWbqzS+T
-	Xl9AjFQ==
-X-Received: from plsp12.prod.google.com ([2002:a17:902:bd0c:b0:2b2:4270:9f7c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3dad:b0:2b4:5dff:310f
- with SMTP id d9443c01a7336-2b5f9fcf868mr138652695ad.34.1776862911351; Wed, 22
- Apr 2026 06:01:51 -0700 (PDT)
-Date: Wed, 22 Apr 2026 06:01:44 -0700
-In-Reply-To: <177d0a41-5267-41f3-bc77-415b756ea4bb@kernel.org>
-Mime-Version: 1.0
-References: <CAPHJ_VJGTsRDc7_Kv0oDObuDX2pJ0evcAvH-mnD_RYMX536+mw@mail.gmail.com>
- <e48748ff-0fcd-4561-9958-124dd853e70a@kernel.org> <PS1PPF7E1D7501FEA2B54606827E0DE1805AB2D2@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
- <CAPHJ_VKsVzyYzZ5ZnBkNbYLEMXDYL5x+7jfyUxhcwT1j4zPXOw@mail.gmail.com>
- <CAPHJ_V+L92DxzEB=4+Tj+C8MNBW7LM35xWYXAoLhHqU5p2nxfg@mail.gmail.com> <177d0a41-5267-41f3-bc77-415b756ea4bb@kernel.org>
-Message-ID: <aejGuMRQjeEEH-V3@google.com>
-Subject: Re: [BUG] WARNING in workingset_activation triggered by KVM page
- fault path on Linux 7.0.0-08391-g1d51b370a0f8
-From: Sean Christopherson <seanjc@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zw Tang <shicenci@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "hannes@cmpxchg.org" <hannes@cmpxchg.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Stat-Signature: n9bm5agngnrmuxjuxee1wjbwzmxxgs97
+	b=jzx88JSXAXl/k9g6YuFcveWE/+/vmEkbTJEHS2EKYGHJvlLFh4uCz1tvjT5Tsay18cs6Zf
+	tFH71qX4LfpyiDQwdjrT7mNtmZnjHvjqYE8st7oJemjdrlnGCjiCy1U3lheAinht5y7H+3
+	VUTFrKBbWN0/LZAYXWy/o2Uar1waIeo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of liuyibin@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=liuyibin@hygon.cn;
+	dmarc=pass (policy=none) header.from=hygon.cn
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw2.hygon.cn (Postfix) with ESMTP id 4g0ztT6lWXz1YQpmJ;
+	Wed, 22 Apr 2026 21:03:29 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw2.hygon.cn (Postfix) with ESMTP id 4g0ztS3Mx8z1YQpmJ;
+	Wed, 22 Apr 2026 21:03:28 +0800 (CST)
+Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id E658932B354C;
+	Wed, 22 Apr 2026 21:03:24 +0800 (CST)
+Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
+ (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 22 Apr
+ 2026 21:03:19 +0800
+Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
+ cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
+ 15.02.1544.036; Wed, 22 Apr 2026 21:03:19 +0800
+From: Yibin Liu <liuyibin@hygon.cn>
+To: Mateusz Guzik <mjguzik@gmail.com>
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "viro@zeniv.linux.org.uk"
+	<viro@zeniv.linux.org.uk>, "brauner@kernel.org" <brauner@kernel.org>,
+	Jianyong Wu <wujianyong@hygon.cn>, Huangsj <huangsj@hygon.cn>, Yuan Zhong
+	<zhongyuan@hygon.cn>, "jack@suse.cz" <jack@suse.cz>, "jlayton@kernel.org"
+	<jlayton@kernel.org>, "chuck.lever@oracle.com" <chuck.lever@oracle.com>,
+	"alex.aring@gmail.com" <alex.aring@gmail.com>, "vbabka@kernel.org"
+	<vbabka@kernel.org>, "jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
+Subject: =?utf-8?B?562U5aSNOiBbUEFUQ0hdIG1tOiBBZGQgUldIX1JNQVBfRVhDTFVERSBmbGFn?=
+ =?utf-8?Q?_to_exclude_files_from_rmap_sharing?=
+Thread-Topic: [PATCH] mm: Add RWH_RMAP_EXCLUDE flag to exclude files from rmap
+ sharing
+Thread-Index: AQHc0ceWdlrDL8nbPE+Fpw0BQ/z5wrXrCmTg
+Date: Wed, 22 Apr 2026 13:03:19 +0000
+Message-ID: <67a71b489eb3413ab0907351d3c56d31@hygon.cn>
+References: <20260421020932.3212532-1-liuyibin@hygon.cn>
+ <CAGudoHHki3gv-HXXMALePDoC+tmao4oWcYgCo9kXNDkEhW4E4g@mail.gmail.com>
+In-Reply-To: <CAGudoHHki3gv-HXXMALePDoC+tmao4oWcYgCo9kXNDkEhW4E4g@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.22.229]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 1312FA000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: acrars7hry8jawatxs5me6hrcbukdwji
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0B1591A0018
-X-HE-Tag: 1776862912-586716
-X-HE-Meta: U2FsdGVkX1/auPffHkzjEApOqv/7pxiT4odEu/tppfHaF0OsBFynUTqT+tuIoVQc+rvL26XXrxk19R3yW3wBP4RVN0DwPip103RH1epkVILnW3Ec0FV2xu+ujXxktkwBAQPfvf67FJONDc13fOd17BmaF1BYNCVEdp227ReiYK5f8ogMq4CDvMsfPJ3NJFfEe94oyCnaBgzG1E0IOOZ0y6T4FvgLZwyDULRL6SzBb3WvIVAnPW9WrGabDxO7yJM4fVbKll5qxv1stUmH65uW3+qkB5cJkWcScbYsXZqX7m61DlGeIDi75/WfgdKnPj0xkmw4B8XKtNMMtPnMqWg1MRxe1vpiBZNYaEbJP/qgaOPPW+m/CLqEG8ef5uNAqwo/cxrGZ+/kgrtaqnY6oo8g3sXF/elM0lsjwjDpwjt2n6P+49xRkt6UN4gzZ4PwtFpGq7kRVGfHSjlmEMa1qAqtFy6QxYF+5KEEMGqo4OnV+Jxpinx3hCr2pyUht2kZZd3uAe9/buibeZzXQLfDFm+7UsDNApyZbFYC7qbL9SDoEhHuGVahY28aMfbT32jO+uCu3jbsQLNbihoh1g8tLHNEH9Kc4Nux622seyb0jzYjGJ1DMw/UGDQWKwEj3ewGwJx0dVtRdYaX/qFGk/hxrgvqnVrT5X68paKjdF08ruAnkYONAqgxwSHbREKqQO5cuD0XkSJtLko2EK8sU+2R+TbO/pB8ffybacKoYzF7YTQsvldlMw8LChE6WtABP8//P9UH2QvUJdfcbxkCEPYQMkN4hHMvrDb9hxjoYiaFhPONt2iBtCn4CjmKw/5R7F8xZWa2Fp+kiN/ptJDLUcIs8LPcn+GJu8Zfy204yaRFfuX+xgN4J8aZ9LYvyYijcs5zJM4X1Rm9wZ2mB/urXlHucCzZ1bJPJ79Sr7fAVI29LJ6of9oG70M57rvVxebsT/PBqnwatLqoivOcREDLHAbJ3F6
- RB9DX6Ko
- Q6qOKatzHWZclum7iZV9NYSNg9MCDhwpjSjoG/HIBWn6FBPZt/au3k0nEmn2IChZvyXqLqexauwI0j385AZS2vE0716YNHelAOIL/Jegk59CM4ElCjgtKiCmbMoHt8fUA1fg54sB7s2IdNLR73xLhWxl2+5z5JsWHHjyseD2N2e8BbEykoOMpqqdu/8+FHwJBy5RUXQu0AIlGQ9NPYlcGrYawT6jYI2JN/DweezWjB7SnEgcxtRfINWMD/DzIUpDARc3EK+s3W+y7D5TnGgzkZmqU0eqjdTlBy6OlizKD10zT7FrzztJmvnGVIpjAA3y0PzEWXUOSOXzrxaoaLMShadm8YE1fco+mSeyI6G7U8bDvIDOxQotzVwGNUrceYtZKHgf+Qi1kO+2TUhUs3IzdmVCNN5GuR3keWeynE2+QB74VNfhQSQp9l9HpY8i/kC6Tlboef+4Whe95MfJHPqIvoq3UX9UwVOxkuuKRIbEsgBU1gW9PtC1yaON5iurk8q8XsVMqtQgK9eL9Hc1AOOdvJKfOdyEZ0VwjBR4qiU8E101g6xPYt+t2RV4Ywy9DSc1VFt7RL7WSuK36TUYvMVoL6R7R5HbsOYFqTa8nyAweY/zkeBQ9lNpILopsF7P3dsI8Y6mNqCsLsSeGvTrGpUGIkgLnXhJVZH9CB1vKCNwmPPFBLpGbQbJQ7eZMdbkuXxRY7Z1dK/ghruMp4x5ckOXlEIjqXML0tVenAROdGJS5gZq/47gkjg481bnfuU7+QONpOmdUJjbOGxHYItU0SwA3SGue6ESQOJosUKY6
+X-HE-Tag: 1776863012-681584
+X-HE-Meta: U2FsdGVkX19YUvrEVUwS/HXIiE4xCMeL8tGJVMTXifleCM0w5GouKQHw93YFYNCEa+IwSojXw8zOOZYrb3scZqLwnjK76ObzQ6AH1UPc3xEoihfma88aCK52rXKN8N+/vID+NQ4V76yZFXlqPcJytMRcfbGqccwn5u2OQlNs3+pvPioAHuwvDqJCfPy5fPRIPuF4130GLrART8Ji20K+eDdtVpAjVghjAAkCMsE9Ony/HT9jL/gHmHsbHhIbYNhXQXkMv+VMDIip1zxbFHdMgiWazYAMvGRuVsVQbS2BKW0yVyDHvNSdV8b66mYP9ODyRA8QILh200IyYKaHexPsARjFR6sAAdkTETfG4m3XhEFVINYoErrOtzUKl9ByvGvPuwTasbOqVp+gxYKIHI5j2K/3TGkdC/NdmZduTiqUK1iut2tcd6UVTVNAWr5cQc3QiBwETF1mNkKLgwFmD605+husDuM/Oe4+f8mxLtzXGPhxyFXH1Mlun2dES8GVdHoZXI6HU5UCR7Sj/r6568k2avidG1ReY+LPplu5aj8XftDrpPFmJ69ycS3++C94DqutRbCOnXxJz9DD7T376uf+vIM+uaE8dB7Z3h9x+al+YJAFZmAUHIVaHjnc6bHZdyt5esLyZ/URwrJTwKi9bQz5qV1F0PlxB9ax0k1Bv/ieA5E4kGnpBY3Tyfh2mTpyfqVIkmPf0fHyl2+6idH4tMoF1qLCagI4+ilRmO7BAQA8TVUdPJKIazP+Ge2Youc7nq6Uy0Xt/WZ0tTsOmlbUXjPGzRFhJaDQfRy1D6xmchd5at/wtgvXeibJex7XY4E7en6yt/YNJtlZ59W1X+vZGSBKbAM9s6+Jx2jlRYCr81Dgn1LX39h0M30skcrFH0ZmDLG3GkEVYVVhMzT8/shbgMsdxIvgZLqFhKjFGnDTei5MRtnb9c/qux8UQmjIFMPmNt82ws5Gmx8ZJ+742V0VZNL
+ JjBFWuSa
+ MslaCjPLGMXug7NPT7+95BExm4jChE1CDBD78L1iYDShsmEFiGvzd8+JEbjFNdqw9XnzDohHfyg8A66ruUPx6vUT2Qka7MiAUjYJ23NJx00spgVMxVdrNODTQrLrCFVe4JfHARvq4CWZ88DND10btAIS/STsnDv8RVjYdrhglQI8pm8z9Pr/Z6BSBm6slC0P3CsYeIwjjFWbntLZ3aeXdqA61wcIO7bsN9j/3Xg1yDhOCsPJ/BmVp0Qpdfy7QHd4WAPlJuAupYkmtBc+yrlptDvszRCLOTej4tcObQFNbFjYXB53oWHZrHFc9LUY/yJVgWgNQ+I3Q3iER0nh+bAAspQIxQvALWU30B2iiPu74FrVt9dfoC3smYG8umockt0szrd2pSS817VwgH5JQLamYiF4UIsT6/A6T6bkfSyVD+oHfPTtGdvapmlLNZDVA/bNxeyoRtuKw2oQjpnGwNFXesL+fDK5UIn9McrZ7yWOgwiQIxnIIBafCvHnIfCezAd5SFY7qx/2W+qEXzHBiQDrEqVbfDt6Ch9RVqdb4wlot2QZHgsiraN+6U/EwhPwwcrpiE9MI7mLBZ1OB+/E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,73 +112,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026, David Hildenbrand (Arm) wrote:
-> On 4/22/26 04:06, Zw Tang wrote:
-> > Hi David,
-> > 
-> > Thanks for pointing this out.
-> > 
-> > You are right. The commit id I sent was incorrect. I mistakenly used the
-> > git describe-style suffix g1d51b370a0f8, but the actual git commit is:
-> > 
-> > 1d51b370a0f8f642f4fc84c795fbedac0fcdbbd2
-> > 
-> > The short commit id is:
-> > 
-> > 1d51b370a0f8
-> > 
-> > Sorry for the confusion.
-> > 
-> > I am also re-checking whether the kernel image was built from a clean tree
-> > and whether there were any local modifications when the crash was reproduced,
-> > so that the reported source line numbers match the exact build.
-> 
-> Okay, on that tree include/linux/memcontrol.h:381 points at
-> 
-> 	lockdep_assert_once(rcu_read_lock_held() ||
-> 	lockdep_is_held(&cgroup_mutex));
-> 
-> lockdep_is_held() would not trigger a warning like that IIRC, but
-> 
-> lockdep_assert_once() does
-> 
-> 	do { WARN_ON_ONCE(debug_locks && !(cond)); } while (0)
-> 
-> 
-> So likely we are calling obj_cgroup_memcg() without the RCU read lock held?
-> 
-> 
-> kvm_release_page_clean()->kvm_set_page_accessed()->mark_page_accessed()->folio_mark_accessed()->workingset_activation()
-> 
-> ... grabs the RCU lock, though, before calling
-> 
-> 	rcu_read_lock();
-> 	workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
-> 	rcu_read_unlock();
+PiBPbiBUdWUsIEFwciAyMSwgMjAyNiBhdCA0OjEx4oCvQU0gWWliaW4gTGl1IDxsaXV5aWJpbkBo
+eWdvbi5jbj4gd3JvdGU6DQo+ID4NCj4gPiBVbml4QmVuY2ggZXhlY2wvc2hlbGxzY3JpcHQgKGR5
+bmFtaWNhbGx5IGxpbmtlZCBiaW5hcmllcykgYXQgNjQrIGNvcmVzIGFyZQ0KPiA+IGJvdHRsZW5l
+Y2tlZCBvbiB0aGUgaV9tbWFwX3J3c2VtIHNlbWFwaG9yZSBkdWUgdG8gaGVhdnkgdm1hDQo+IGlu
+c2VydC9yZW1vdmUNCj4gPiBvcGVyYXRpb25zIG9uIHRoZSBpX21tYXAgdHJlZSwgd2hlcmUgbGli
+Yy5zby42IGlzIHRoZSBtb3N0IGZyZXF1ZW50LA0KPiA+IGZvbGxvd2VkIGJ5IGxkLWxpbnV4LXg4
+Ni02NC5zby4yIGFuZCB0aGUgdGVzdCBleGVjdXRhYmxlIGl0c2VsZi4NCj4gPg0KPiA+IFRoaXMg
+cGF0Y2ggbWFya3Mgc3VjaCBmaWxlcyB0byBza2lwIHJtYXAgb3BlcmF0aW9ucywgYXZvaWRpbmcg
+ZnJlcXVlbnQNCj4gPiBpbnRlcnZhbCB0cmVlIGluc2VydC9yZW1vdmUgdGhhdCBjYXVzZSBpX21t
+YXBfcndzZW0gbG9jayBjb250ZW50aW9uLg0KPiA+IFRoZSBkb3duc2lkZSBpcyB0aGVzZSBmaWxl
+cyBjYW4gbm8gbG9uZ2VyIGJlIHJlY2xhaW1lZCAoYWxvbmcgd2l0aCBjb21wYWN0DQo+ID4gYW5k
+IGtzbSksIGJ1dCBzaW5jZSB0aGV5IGFyZSBzbWFsbCBhbmQgcmVzaWRlbnQgYW55d2F5LCBpdCdz
+IGFjY2VwdGFibGUuDQo+ID4gV2hlbiBhbGwgbWFwcGluZyBwcm9jZXNzZXMgZXhpdCwgZmlsZXMg
+Y2FuIHN0aWxsIGJlIHJlY2xhaW1lZCBub3JtYWxseS4NCj4gPg0KPiA+IFBlcmZvcm1hbmNlIHRl
+c3Rpbmcgc2hvd3MgfjgwJSBpbXByb3ZlbWVudCBpbiBVbml4QmVuY2ggZXhlY2wvc2hlbGxzY3Jp
+cHQNCj4gPiBzY29yZXMgb24gSHlnb24gNzQ5MCwgQU1EIHplbjQgOTc1NCBhbmQgSW50ZWwgZW1l
+cmFsZCByYXBpZHMgcGxhdGZvcm0uDQo+ID4NCj4gDQo+IFRoZSBvdGhlciByZXNwb25kZXJzIGhh
+dmUgYmVlbiBhIGxpdHRsZSBoYXJzaCBhbmQgZGVzcGl0ZSByYWlzaW5nDQo+IHZhbGlkIHBvaW50
+cyBJIGRvbid0IHRoaW5rIHRoZXkgZ2F2ZSBhIHByb3BlciByZXZpZXcuDQo+IA0KPiBUaGUgYmln
+Z2VyIHBpY3R1cmUgaXMgdGhhdCB0aGUgcHJvYmxlbWF0aWMgcndzZW0gaXMgdGFrZW4gc2V2ZXJh
+bA0KPiB0aW1lcyBkdXJpbmcgZm9yayArIGV4ZWMgKyBleGl0IGN5Y2xlLiBOb3JtYWxseSB5b3Ug
+ZW5kIHVwIHdpdGggNQ0KPiBkaXN0aW5jdCBtYXBwaW5ncyBwZXIgYmluYXJ5L3NvLCBlYWNoIGNy
+ZWF0ZWQgd2l0aCBhIHNlcGFyYXRlIGxvY2sNCj4gYWNxdWlyZS4NCj4gDQo+IFNvbWUgdGltZSBh
+Z28gSSBwYXRjaGVkIGV4aXQgdG8gYmF0Y2ggcHJvY2Vzc2luZywgbGVhdmluZyAxIGFjcXVpcmUg
+aW4NCj4gdGhhdCBjb2RlcGF0aC4gZm9yayBjYW4gYW5kIHNob3VsZCBiZSBwYXRjaGVkIGluIGEg
+c2ltaWxhciB2ZWluLCBidXQgSQ0KPiBkb24ndCBrbm93IGlmIHVuaXhiZW5jaCBydW5zIGl0IGlu
+IHRoaXMgYmVuY2htYXJrIChpLmUuLCByZWFsDQo+IHdvcmtsb2FkcyBjZXJ0YWlubHkgc3VmZmVy
+IGZyb20gaXQsIEkgZG9uJ3Qga25vdyBpZiB0aGlzIHBhcnRpY3VsYXINCj4gYmVuY2ggaW5jbHVk
+ZXMgdGhhdCBhc3BlY3QpLiBUaGlzIGlzIG9uIHRvcCBvZiBmb3JraW5nIGl0c2VsZiBiZWluZw0K
+PiBhdm9pZGFibGUgc2hvdWxkIHRoZSBrZXJuZWwgZ3JvdyBhIGJldHRlciBpbnRlcmZhY2UgZm9y
+IGV4ZWN1dGluZw0KPiBiaW5hcmllcy4NCj4gDQpUaGFuayB5b3UgZm9yIHlvdXIgb3BuaW9ucyBh
+bmQgYWR2aWNlcywgSSdsbCB0cnkgdGhpcyB3YXkNCj4gVGhpcyBsZWF2ZXMgdXMgd2l0aCBtYXBw
+aW5nIGNyZWF0aW9uIG9uIGV4ZWMuIFRoaXMgcHJvYmxlbSBpcw0KPiB1bmZpeGFibGUgd2l0aG91
+dCBpbnRyb2R1Y3Rpb24gb2YgYmV0dGVyIEFQSXMgZm9yIHVzZXJzcGFjZSwgd2hpY2gNCj4gY29u
+c3RpdHV0ZXMgcXVpdGUgYSBjaGFsbGVuZ2UuDQo+IA0KPiBUaGUgZW5kIHJlc3VsdCBpcyB0aGUg
+YWJzb2x1dGVseSBob3JyaWJsZSBjYXNlIG9mIG11bHRpcGxlIGFjcXVpcmVzIG9mDQo+IHRoZSBz
+YW1lIGxvY2sgcGVyIGl0ZXJhdGlvbi4NCj4gDQo+IE9uZSBjb21tb24gaWRlYSBob3cgdG8gcmVk
+dWNlIGNvbnRlbnRpb24gYm9pbHMgZG93biB0byBzaG9ydGVuaW5nIGxvY2sNCj4gaG9sZCB0aW1l
+LiBUaGlzIGhhcyB2ZXJ5IGxpbWl0ZWQgZWZmZWN0IGluIGZhY2Ugb2YgdGhlIGFmb3JlbWVudGlv
+bmVkDQo+IG11bHRpcGxlIGFjcXVpcmVzIGFuZCBpcyBhdCBiZXN0IGEgc3RvcCBnYXAgLS0gbm8g
+bWF0dGVyIHdoYXQsIHRoZQ0KPiBjZWlsaW5nIGlzIGRpY3RhdGVkIGJ5IHRoZSBleHRyYSBhY3F1
+aXJlcyBhbmQgaXQgaXMgaW5jcmVkaWJseSBsb3cuDQo+IA0KPiBZb3VyIHBhdGNoIGtlZXBzIHRo
+ZSBwcm9ibGVtYXRpYyBhY3F1aXJlIHBhdHRlcm4gaW50YWN0IGFuZCB3aGlsZSB0aGUNCj4gODAl
+IHdpbiBtaWdodCBzb3VuZCBlbmNvdXJhZ2luZywgdGhlIGVuZCByZXN1bHQgaXMgc3RpbGwgc2V2
+ZXJlbHkNCj4gdW5kZXJwZXJmb3JtaW5nIGV2ZW4gYSBzdGF0ZSB3aGVyZSB0aGUgbG9jayBpcyB0
+YWtlbiBvbmNlIGluIHRvdGFsDQo+IGR1cmluZyBleGVjLg0KPiANCj4gQmVzaWRlcyB0aGF0LCB0
+aGUgaW50ZXJuYWxseS12aXNpYmxlIHNpZGUgZWZmZWN0IG9mIG5vbi1mdW5jdGlvbmFsDQo+IHJt
+YXAgaXMgcHJldHR5IGJhZCAoYW5kIHRodXMgZS5nLiwgdHJ1bmNhdGUpIGlzIHByZXR0eSBiYWQg
+aW4gaXRzIG93bg0KPiByaWdodCwgYnV0IGxldCdzIGlnbm9yZSBpdC4gVGhlIHByaW1hcnkgcHJv
+YmxlbSBoZXJlIGlzIHRoYXQgdGhlIHBhdGNoDQo+IGV4cG9zZXMgYSBtZWNoYW5pc20gZm9yIHVz
+ZXJzcGFjZSB0byBkaWN0YXRlIHRoaXMgaW4gdGhlIGZpcnN0IHBsYWNlLg0KPiBFdmVuIGlnbm9y
+aW5nIHRoZSBxdWVzdGlvbiBvZiB3aG8gc2hvdWxkIGJlIHVzaW5nIGl0IGFuZCB3aGVuLCB0aGUN
+Cj4gcmVhbCBzb2x1dGlvbiB0byB0aGUgcHJvYmxlbSB3b3VsZCBiZSBjb25maW5lZCB0byB0aGUg
+a2VybmVsLiBTdXBwb3NlDQo+IHRoaXMgcGF0Y2ggbGFuZHMgYW5kIHN1Y2ggYSBzb2x1dGlvbiBp
+cyBpbXBsZW1lbnRlZCBsYXRlciAtLSBub3cgdGhlDQo+IGtlcm5lbCBpcyBzdHVjayBoYXZpbmcg
+dG8gc3VwcG9ydCBhIG5vdy11c2VsZXNzIChpZiBub3Qgb3V0cmlnaHQNCj4gaGFybWZ1bCkgZmVh
+dHVyZS4NCk9LLiBJIHVuZGVyc3RhbmQgaXQgbm93Lg0KPiANCj4gV2hhdCB3aWxsIGZpeCB0aGUg
+cHJvYmxlbSBpcyBzaGFyZGluZyB0aGUgc3RhdGUgaW4gc29tZSBjYXBhY2l0eSwNCj4gcHJvdmlk
+ZWQgbm8gdW5maXhhYmxlIHN0b3BnYXAgc2hvd3MgdXAuDQo+IA0KPiBBbnkgb3RoZXIgYXBwcm9h
+Y2ggaXMgcHV0dGluZyBzbWFsbCBiYW5kYWlkcyBvbiBpdCBhbmQgY2FuIGJlIGENCj4gY29uc2lk
+ZXJhdGlvbiBvbmx5IGlmIHRoZSBkZWNlbnRyYWxpemluZyBsb2NraW5nIGlzIHByb3ZlbiB0b28N
+Cj4gcHJvYmxlbWF0aWMuDQo+IA0KPiBQZWRybyBhcHBhcmVudGx5IHZvbHVudGVlcmVkIHRvIGRv
+IHRoZSB3b3JrLCBzbyBJIHRoaW5rIHdlIGNhbiB3YWl0IHRvDQo+IHNlZSB3aGF0IGhlIGlzIGdv
+aW5nIHRvIGVuZCB1cCBjb29raW5nLg0KPiANCj4gSSBob3BlIHRoaXMgaGVscHMuDQo+IA0KDQo=
 
-No?  Since commit 906c38ff52e9 ("memcg: workingset: remove folio_memcg_rcu usage"),
-I see:
-
-void workingset_activation(struct folio *folio)
-{
-	/*
-	 * Filter non-memcg pages here, e.g. unmap can call
-	 * mark_page_accessed() on VDSO pages.
-	 */
-	if (mem_cgroup_disabled() || folio_memcg_charged(folio))
-		workingset_age_nonresident(folio_lruvec(folio), folio_nr_pages(folio));
-}
-
-But for the life of me, I can't figure out how obj_cgroup_memcg() is being reached,
-and I haven't been able to reproduce the splat to add instrumentation (though I
-haven't tried very hard).
-
-> The folio_memcg_charged() only checks folio->memcg_data.
-> 
-> So something does not quite add up here?
-> 
-> -- 
-> Cheers,
-> 
-> David
 
