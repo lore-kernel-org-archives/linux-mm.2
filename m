@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B8DF94CDF
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 08:05:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D88BF94CDC
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 08:05:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E89E56B008A; Wed, 22 Apr 2026 04:05:05 -0400 (EDT)
+	id D9EE46B008C; Wed, 22 Apr 2026 04:05:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E60F36B008C; Wed, 22 Apr 2026 04:05:05 -0400 (EDT)
+	id D50046B0092; Wed, 22 Apr 2026 04:05:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D76B26B0092; Wed, 22 Apr 2026 04:05:05 -0400 (EDT)
+	id C657F6B0093; Wed, 22 Apr 2026 04:05:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C8D546B008A
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 04:05:05 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7EB68E6468
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:05:05 +0000 (UTC)
-X-FDA: 84685456170.20.042C560
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AF96D40005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:05:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WxQrHWxH;
-	spf=pass (imf07.hostedemail.com: domain of wangli.ahau@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=wangli.ahau@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B76E76B008C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 04:05:09 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C61CC9608
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:05:09 +0000 (UTC)
+X-FDA: 84685456338.01.FE98730
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 88FAD80005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 08:05:07 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XXLVkWLD;
+	spf=pass (imf02.hostedemail.com: domain of wangli.ahau@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=wangli.ahau@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776845103;
+	s=arc-20220608; t=1776845107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7P3WPkfA1Saa+jmrVSo3FMd6D9WCAJMGXoYkKyQ3YxY=;
-	b=IwnoOlcMEhkCh1rj8ikJOXF6mcVTKCe7PK1ho10sZe6btqsPUTeg4grZ7hh8w0RcLhzOJN
-	tMJEnT3yRIJOXzDKFrixx2wxgoiUcClGJVGCRh8e2sv7g8x4zzIJMRBsmvzwf1XhjfWg80
-	A01MxH5otUyKKq419+KfVn4M4S3BFDA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776845103; a=rsa-sha256;
-	cv=none;
-	b=M+m7owr2MjgREwO/fNJ/gmZN6NTnzFG2H12uffEvm3SIrtzGKA03fTRtW2pEEUn5Li/Xsz
-	+Ew/e8/Gv0fldLHF+Vdm+W8Ei0SIMJ06BAyX8erhsHEXwzZhgYeDzy2nS3cndelAisJSGX
-	qQ/Rb8Un4tPJJw85J63Oypl+F2aPixg=
+	bh=EgOoLeHSNRmJRchPxzuYzxkblk+pRJMxNj39oO1u7rM=;
+	b=xp3tRDBXvo1jwkd6qfX6pV0egJLq/Md3JEn0Ta4oacJBpPdfR2x+KM5o6ZVYg+YMyDESbZ
+	l61FCthO9j6JEGSfHHdrzFk+b8ITWqEgJy9AJY0z0U4bYPMypmhczUHfb5k/8G3my2xsBw
+	GvukNoUgWM80Ev6BOQ8Qyv/S5AfQA9A=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=WxQrHWxH;
-	spf=pass (imf07.hostedemail.com: domain of wangli.ahau@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=wangli.ahau@gmail.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XXLVkWLD;
+	spf=pass (imf02.hostedemail.com: domain of wangli.ahau@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=wangli.ahau@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35d971fb6f1so4033282a91.0
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:05:03 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776845107; a=rsa-sha256;
+	cv=none;
+	b=a04wsgpSeflg+nTBOgKSg4ruhAjn+WsUrsNLhT7jz67h2J7bZpBkP3+DNUzp6sWlyvcd28
+	MhvyaXkf+BKP2xT5fUnvZSX8xPbKPpAsb8VCRkrrUQlYjJ7W7XlWbXatsO8+Qq8lvfUKU0
+	Wmza7UkHchvckLVYf5dTlisG0xysH/w=
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3590042fa8eso4064262a91.1
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:05:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776845102; x=1777449902; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776845106; x=1777449906; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7P3WPkfA1Saa+jmrVSo3FMd6D9WCAJMGXoYkKyQ3YxY=;
-        b=WxQrHWxHrvf3qCmNTVYJhU+z2Wbi1MbNhBSuL/v/ctFNYglfvNzJOZUJ7F9Xi/Ol7/
-         LLFIV01k7PX0MJKG3/3Q6Aki5VCFQbF+iPrZFOTGjvMjqAoR5SpvOlZCCnwIuS+Pgbf8
-         MwAsjnsU9UIgTrKfYp39LiT2nVLgHvSwn3bV8lzY4wQpEH1gcEoMsWlHbB3Olw4FN3RV
-         rCtFNfYlVR3rvf30PshDs+44xHVM15R7qPwy0GsMIj9pqH2nbcGpRGeU7RKbx+T+ICVk
-         8joVvJLPgW57SrrFD9jCW27YSbsUW7TwhuYg8AEKtJhXE2SvP8xgYy8daq6fmd3k9WEm
-         xDLg==
+        bh=EgOoLeHSNRmJRchPxzuYzxkblk+pRJMxNj39oO1u7rM=;
+        b=XXLVkWLDofXVYqPojNyl9MVhuE9Qsh2Pr12EIBWXYDgOTD1x0kIC2B00oqz/XWi/sK
+         SnXPpzeqx2uu/MJuGwNXLlQBMWkEHmaFhm2cAMwA5JBwhlM0Tqwh0zvq2TvZQ5By0Ye2
+         dJl4+oGL5vLJPcIE/9ufSEIhzDy+5RwdQvZxeFmGpSVmDhveQOqm4S70a339XQamjHh+
+         cBt5dRMlGzzYogyprQH3H9IuSffhAQmaANg4cKc7DoDg/HA5f9JV5LT2WM2MgB1gV0Fr
+         nv/4cebfQTwj0VbvSyf/sMWCvDmz8TJ56g5SeUxp0jZPlL1Fqgq9Wt0/iv4nQWCjDgDE
+         RoDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776845102; x=1777449902;
+        d=1e100.net; s=20251104; t=1776845106; x=1777449906;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7P3WPkfA1Saa+jmrVSo3FMd6D9WCAJMGXoYkKyQ3YxY=;
-        b=QxDs60BVP/1ahbVBqDB3u0FyeqJ8nGBVHqQC9cuLqDZZEKLtJIIWoglZTwr5jIVHeH
-         fQEziiGqYc3p/+/6XKy4HfoddFBHXbglJsYrVoPCOkgT1SRDI3WZv5CBVaOXZhOA6zyb
-         YZVYvfRgz3IIcqBu1j1Xnvy2y5zWiDZSetqQp7jaDV+v/WVeY4dv9FXSqkrqi/KutDn0
-         FbvXPmnj1W0q0snY5Am8/fOmX3rpuLaK9ojj0/PojZSu+xt2vYWhNF0pbiQOeFUGm9YE
-         2nuNvytSubbByY+YPj6Tuq6ASs/bx8hIrB72Ca33IsMZlBCoLvm52Ho1uG8KtqOvL44s
-         zzKQ==
-X-Gm-Message-State: AOJu0YzaRdnXrzO8hQSVljkJ/mXH+2onBuCUPCsGCxmrq+8CFK929H1o
-	InhOI+VyGw1UE9s3rd78iai6NqD1pjnfck/R0zMmQYy6O0K/zgCxiPE=
-X-Gm-Gg: AeBDietRfnDpQvnr/36lm1raXc41bMfGG8Mujf2zQjDmyOWL2ihgsdkkZZLRWIklNdV
-	ER7HD8bKk99jqKLsYxUeto2fyUc4mS24WCtqWcEzEV0fVJYisdoqPOt15VxjykBA7oz7+sGu/i1
-	4IR1+mIxOheb2w16hQPQHLZTiq8KcKDyU3642MQOrrwWSSAUTO1YU2RGubyx3k3gvnSlkB1yd00
-	7bn4kduuV4DLYpNZffskHd5Vyv4pL5IvqvDXReZIM9JW19gCfQ+qs0rIvcQK4ZEGOrLISFs273s
-	YDE+lWJSiTOHwA7RlcDFZMzKyehip4frwBdwbr76mImJbjfd0suKDf/IA7zrrd+srZIB9ati3u8
-	XXILZkGY5lkxggNzy1Sl9HSPsfsvurn5K5FGreQVHMNnjrChhl/Ks7maPNYB/JBlMy1wG/dnXA8
-	SEmxKTIToxKbmzX1MWw6SYfptz6adv+Jl4
-X-Received: by 2002:a17:90b:4b44:b0:361:3224:2f65 with SMTP id 98e67ed59e1d1-361403bdd07mr21489530a91.3.1776845102478;
-        Wed, 22 Apr 2026 01:05:02 -0700 (PDT)
+        bh=EgOoLeHSNRmJRchPxzuYzxkblk+pRJMxNj39oO1u7rM=;
+        b=Ku+BgEeRVnzN6ZWh9Kh3Fy7Libi+5Fd/gHHaRAnPE+9PUdtJh/9v+x1zR+XoAUKO8O
+         O8OkWWOCC/GZBDOP94xjppkwAvBU9+1qWGP4PZNgi6fbBp5/JAcnEhwqerKTLqFPXMOg
+         cQuexe9rhyqWQyXZwLkFGi+qvz4bSwYsNCz61dD/CZ4T6idkc3qNPtruIA9dWknILk1/
+         kDmRihV3fpF7ccKmU1z52rVQK1n6rNn3rGpiOUD6JzX1L4swNuOabv4f1E5Gvjv0bq5a
+         4z4CMwB1MCLXmhC01lakQcc9tok+VqmZ7fHktkWNqLNPXp4dVmbO+Iga5E9uUBLfUEhP
+         H8rQ==
+X-Gm-Message-State: AOJu0Ywl7TmyLZ7uBa4WQLp4xVLtEG43H4izTvpkN5cYae3G2ce+nGZE
+	t1esynVL2nZVcQoJMZ4VnEq8Am8kUymCd2KJijDbPabABueJD0FLUXE=
+X-Gm-Gg: AeBDieuwTns0ODK1NxtywjgyJUtHTOwGuZNM+YCwDeMJsxTNvOKKoDFeQ1NueHwvlL+
+	Ntdl8/1z3Wxi1Y2ZGvQF6SZYKJbqk0zA37UNJAe0/+ueKglynyTajhjDQeVJV/qrt/aq6QtgyTM
+	h/Wk2SkfnCRP8auGjLS3GcizQYW9Uim6mpKWLRlGQkYXt03pw8ycwzIh4gerAELsriGhV7iK2Zb
+	x2w5HTgkbnRgR8q6RWZT/pXNLVASmTMU89+zVIBZ9x8Wp13ktGyo9t5JHnIXgkvgSU9lKYPIibs
+	8Puf32o0IntaIXEJXDTbhIevLFAPsX1B4JPx8tdlLO8PzM9tVFQLfaOC/Iq2AlMWMIweAFamyv5
+	gOy8NdT17ZYRYdBUBHMDNlJH5cKrGd5/t6ff9ApWzd05wTBy9QlIxfTbhKIlObGioakxbnXWXK6
+	Vlfobl6dYL/NHdPNRPs7TKbdXya3UiBpwt
+X-Received: by 2002:a17:90b:35d2:b0:35f:bbc0:e570 with SMTP id 98e67ed59e1d1-36140228e16mr22584055a91.0.1776845106396;
+        Wed, 22 Apr 2026 01:05:06 -0700 (PDT)
 Received: from thoundrobot ([43.154.64.180])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3613fb9b121sm8508494a91.5.2026.04.22.01.04.59
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3613fb9b121sm8508494a91.5.2026.04.22.01.05.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 01:05:02 -0700 (PDT)
+        Wed, 22 Apr 2026 01:05:05 -0700 (PDT)
 From: Li Wang <wangli.ahau@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -102,22 +102,22 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/2] selftests/mm: respect build verbosity settings for 32/64-bit targets
-Date: Wed, 22 Apr 2026 16:04:45 +0800
-Message-ID: <20260422080446.26020-2-wangli.ahau@gmail.com>
+Subject: [PATCH v3 2/2] selftests/mm: suppress compiler error in liburing check
+Date: Wed, 22 Apr 2026 16:04:46 +0800
+Message-ID: <20260422080446.26020-3-wangli.ahau@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260422080446.26020-1-wangli.ahau@gmail.com>
 References: <20260422080446.26020-1-wangli.ahau@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AF96D40005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ax41snzohgcehg1ika84r615g3ewz9yx
+X-Stat-Signature: ftqn5j1o484arqba7ej8mkrdouhm5of1
+X-Rspamd-Queue-Id: 88FAD80005
 X-Rspam-User: 
-X-HE-Tag: 1776845103-357201
-X-HE-Meta: U2FsdGVkX1/8Xe/LxEHROBiagTxH6ckXV58L2wDxUmYwtP3iFsYG3F/kBCFEqMX8HpxXihK9KXFg+yGnIxzie1cE79xYIhlOMMTl+utYrbKYy9/LmIEd4BPAhnhW5vee4BQ5JWHlRKMtUyQeod23RQ4hD2idU0e+c/vEdIezCedZ4JtTGB5qCNVzcb9xNwuqzoKhzn1ybwtsNiHXJxdbFVgvOWcs+eO5Z5i6NWFNv88RPwk8ehT7yssF1LIMbB2X7yTBVkd6y3/sYruQ2S25Y9Aaip4f6kn3r/nA4yenyS3A/Y9+8XY0ucakB1kJxn0+VKHn5tADaNiThBS+DGcEjF4PugvbyAnCzYkkGy3NZ4liBi5FwIpCi67gn9/+gBIY/uTlxOcVduQwpltirvvHBkYNc2tZAa+NmBRnrAok4/Q5mdiEUCJCOcFijy0Dd+j3nDGMn1Wg619VndO72sEL0JJWTu6MRGVccUjMSKfWCBHatTIgeVGJgyPI5Qox1zkNi0Vba3PU+N9zz58vKmYKYWZBov7ZHdWEahUsPpVOZ5OAIbDqLtoJ0TD3prFMlLiRfFiw47qziMhkPSkDxk1UodfHLb9uJ0mqoxaoo2G0XNzzkJQUU513ydg8JNsUJtjvyJyC+oXoFQMqNgfs0+AVpuKQiEuwkoK0855dMR0Yl1rbYR40c1DXozri3F+cwMMoxERvbVL7IwEkWxf61mVVwTRSk+Bx6hoUzaUPVCrV3tgS2scrZalCExzGSB5oijdLb/IUGQaOCmKIEw3KsOTFfXLJnjR3xhX4NYaDVKznF4efTIiUsKVigpZYDRk/v/rg7JxPdCJhJvSnE2E+myxnYV2c2Cgm/Z1teqXT02xX49e3XL5wd3A/7oPYei6mQYgavQhbxlckms8rQP4KLyA3Xn8E9fVMqF4lAh2GbXBFLYbr5kRelymtZqFZB72A+1xHBo3/qHic+8QbHluNAfo
- l6jXoXT7
- PWOGmPov4EL/h17LPAjTXzQfKfMuoJx6+wNXo3KjyR/UdVgw9yPIviAI6ANipoXhvLo28g50xW/SQPin20j7VBVoZDSkBZ+fLo2FKQgWaZQtjeebtlITAry3PIMDezTofzjxLAnWHv9Jy41CLpyrDoNPPHfA7g63UKNbcnqEmnQ1nSa0OJ4YgqJkIi5rwxjjiAvhaff04nrTy2hayknnSwWSnCbo4J6jLo0Sv2C6gYlPGDmIkJaN3LhtUNT/p2xwJ//bdQAzjcafyXLTngBPprM2UGJ8VAdh92N8xKJEM60MDgs9RVnQdd3KuQcu/3bsD7ZRcarDC5BqYQgyNWHU6aO5dk2o95nVbkZZB03Xu8J8xu3f/Qdb5twEgJJu/aTmxQRDSofNCg/HKrneep12tl/pMduP2SWQyvOmW7oVl+A+56V7r7KFKZnc2g4he0+QDEkBJgQwx4eHJmvNnQoQ068+5hgfiz4eTRlXL42slPaAgiWX7RZdEqHIn7UBodK2aq3vC
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776845107-880389
+X-HE-Meta: U2FsdGVkX19WTdw9E5UY5QCrSMmCmMSNY9KDajzoBNLJXq+lu6V1pjGVEABIQ1HhJkzRIT4x2GvP5bLmBUmsGmH1vMvWta4L0WhQdIKQsilvCMYvhFGj6pZnqQS6GxHD0zn3CZeUagxsJanoQ5HF/EEOJSyo4Cy675WGxvmSqUhIcSTUCvAQ7jOU0zEO0Z0jnr73PBYoc9u30SEM00NbGWVKIVokyf7LaJDP56xkYGTjvDPmHiOU9OZrBlETgR3qB8aBjabpQ4b45kx0+yPp6sxi/XaONhjSZiCMrdUQxkergp7idSqPRRm9FsFXA5iciaWM/Agt1veZju4ZvvGorZZfQBjslAJMQslD/bqyCeqSfQFN5B6kRiIrzLb5T0oSwuqTHd3WRsELjqdR6Ery/+N6+9fDExi5w3OkBDHwIibuaJuc7/u1mSJDDzSX5/wYk9eysqHviWTp32OF0C3A8Xhkaa2jwtcnH5hCw6Y2f8I/XHGTY0e1hBvN6UPajY4QGGEGGG/ZKt+GJSLIv1rnxxvk1fcAHhES1+dAcE0awjfMe0hV5FOtoIet0Rb/H86AYRBhC2D05s9VAirnPSrNHb5xpklqoM44gAF4oKkTOCa0nafYXJ3Ll9dlmiGZ0aQ4REeKboVe1Q4JUqPUeEE8XqjHWuQykTwrI0vvPzpg4kQ5o645zGTkum/TVFc0eQOfCEwOTgCRip5xrv7MoTCPdhhLeXzOyMMl74OlCwEinclGkiyiBl4vOngkW+miV9jpfoQrmf9p0mTfwxwlfHes2ts9Y7HucC45vNKnfSlpOugaNuGER2cY+7v9jfTnNyr5LftwVofqvSBxlFMG9U8LSuFw7x5VNxTBHJgfGx05CCobC724XhAHzx90EaQ3dziDOQtosnuePo4ob36AL63IenteJbGDEocbSeAMM43g3e5ExiLNUejR2Bro0hft/LqLhzTBzPp7uSduhUk2xqG
+ OkYz2E1z
+ 7LdxjlHljXPbd8vXi64pXML9Hc04jkqemf6fp04lQF/k635KRDXMtKQh7R729Eg/vuTKzeOLT1LY7eamApKF6CmPpO9FNNc15cPDJhbtMJwvF1LlhDRoYHdBnX8uzuACmA42W0UXTOpFMxbFAHNBuSSYLfAYV+AApW+GSYPs1inLg/iQi9WGsl5eI1nALfZCLtim06opQCSNLQuLY7J/MUZ3nV3KkxlF2Yw/zg2ipjQOMfMQWQo/bv+ZdD0KBsotZDe4qkt4TTVNLuuZ+Opnk4bdRYKF6K1tYr6ZkMUnRIdC9x6v3iYajn9h6BuUuQNmQgxrMH4JvDZTGg1GJIAzzDD8iXmOXthB8vC/NzVBhXaoNdF2rSHkTRsTlBbNX2CeGy8T01ndkFq+JIOJsn6vJ1ztn+aoAvHHpFPiHOO/DArOsGRG0vYkyLYnmaxoR2Aybb4jx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,69 +125,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The 32-bit and 64-bit compilation rules invoke $(CC) directly, bypassing
-the $(Q) quiet prefix and $(call msg,...) helper used by the rest of the
-selftests build system. This causes these rules to always print the full
-compiler command line, even when V=0 (the default).
+When building the mm selftests on a system without liburing development
+headers, check_config.sh leaks a raw compiler error:
 
-Wrap the commands with $(Q) and $(call msg,CC,,$@) to match the
-convention used by lib.mk, so that quiet and verbose builds behave
-consistently across all targets.
+  /tmp/tmp.kIIOIqwe3n.c:2:10: fatal error: liburing.h: No such file or directory
+      2 | #include <liburing.h>
+        |          ^~~~~~~~~~~~
 
-==== Build logs ====
-  ...
-  CC       merge
-  CC       rmap
-  CC       soft-dirty
-  gcc -Wall -O2 -I /usr/src/25/tools/testing/selftests/../../..
-                -isystem /usr/src/25/tools/testing/selftests/../../../usr/include
-                -isystem /usr/src/25/tools/testing/selftests/../../../tools/include/uapi
-                -Wunreachable-code -U_FORTIFY_SOURCE -no-pie -D_GNU_SOURCE=
-                -I/usr/src/25/tools/testing/selftests/../../../tools/testing/selftests
-                -m32 -mxsave  protection_keys.c vm_util.c thp_settings.c pkey_util.c
-                -lrt -lpthread -lm -lrt -ldl -lm
-                -o /usr/src/25/tools/testing/selftests/mm/protection_keys_32
-  gcc -Wall -O2 -I /usr/src/25/tools/testing/selftests/../../..
-                -isystem /usr/src/25/tools/testing/selftests/../../../usr/include
-                -isystem /usr/src/25/tools/testing/selftests/../../../tools/include/uapi
-                -Wunreachable-code -U_FORTIFY_SOURCE -no-pie -D_GNU_SOURCE=
-                -I/usr/src/25/tools/testing/selftests/../../../tools/testing/selftests
-                -m32 -mxsave  pkey_sighandler_tests.c vm_util.c thp_settings.c pkey_util.c
-                -lrt -lpthread -lm -lrt -ldl -lm
-                -o /usr/src/25/tools/testing/selftests/mm/pkey_sighandler_tests_32
-  ...
+Since this is an expected failure during the configuration probe,
+redirect the compiler output to /dev/null to hide it.
 
-Reported-by: Andrew Morton <akpm@linux-foundation.org>
+And the build system prints a clear warning when this occurs:
+
+  Warning: missing liburing support. Some tests will be skipped.
+
+Because the user is properly notified about the missing dependency, the
+raw compiler error is redundant and only confuse users.
+
+Additionally, update the Makefile to use $(Q) and $(call msg,...) for
+the check_config.sh execution. This aligns the probe with standard
+kbuild output formatting, providing a clean "CHK" message instead of
+printing the raw command during the build.
+
 Signed-off-by: Li Wang <wangli.ahau@gmail.com>
-Tested-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- tools/testing/selftests/mm/Makefile | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/Makefile        | 3 ++-
+ tools/testing/selftests/mm/check_config.sh | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index cd24596cdd2..6195770eba6 100644
+index 6195770eba6..18779045b7f 100644
 --- a/tools/testing/selftests/mm/Makefile
 +++ b/tools/testing/selftests/mm/Makefile
-@@ -216,7 +216,8 @@ ifeq ($(CAN_BUILD_I386),1)
- $(BINARIES_32): CFLAGS += -m32 -mxsave
- $(BINARIES_32): LDLIBS += -lrt -ldl -lm
- $(BINARIES_32): $(OUTPUT)/%_32: %.c
--	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
-+	$(call msg,CC,,$@)
-+	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
- $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-32,$(t))))
- endif
+@@ -263,7 +263,8 @@ $(OUTPUT)/migration: LDLIBS += -lnuma
+ $(OUTPUT)/rmap: LDLIBS += -lnuma
  
-@@ -224,7 +225,8 @@ ifeq ($(CAN_BUILD_X86_64),1)
- $(BINARIES_64): CFLAGS += -m64 -mxsave
- $(BINARIES_64): LDLIBS += -lrt -ldl
- $(BINARIES_64): $(OUTPUT)/%_64: %.c
--	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
-+	$(call msg,CC,,$@)
-+	$(Q)$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
- $(foreach t,$(VMTARGETS),$(eval $(call gen-target-rule-64,$(t))))
- endif
+ local_config.mk local_config.h: check_config.sh
+-	CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
++	$(call msg,CHK,config,$@)
++	$(Q)CC="$(CC)" CFLAGS="$(CFLAGS)" ./check_config.sh
  
+ EXTRA_CLEAN += local_config.mk local_config.h
+ 
+diff --git a/tools/testing/selftests/mm/check_config.sh b/tools/testing/selftests/mm/check_config.sh
+index b84c82bbf87..32beaefe279 100755
+--- a/tools/testing/selftests/mm/check_config.sh
++++ b/tools/testing/selftests/mm/check_config.sh
+@@ -16,7 +16,7 @@ echo "#include <sys/types.h>"        > $tmpfile_c
+ echo "#include <liburing.h>"        >> $tmpfile_c
+ echo "int func(void) { return 0; }" >> $tmpfile_c
+ 
+-$CC $CFLAGS -c $tmpfile_c -o $tmpfile_o
++$CC $CFLAGS -c $tmpfile_c -o $tmpfile_o >/dev/null 2>&1
+ 
+ if [ -f $tmpfile_o ]; then
+     echo "#define LOCAL_CONFIG_HAVE_LIBURING 1"  > $OUTPUT_H_FILE
 -- 
 2.53.0
 
