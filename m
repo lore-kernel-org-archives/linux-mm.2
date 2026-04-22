@@ -4,122 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A51FBF94CBA
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 01:11:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 082CAF94CB7
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 01:16:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A7096B0005; Tue, 21 Apr 2026 21:11:33 -0400 (EDT)
+	id 2FF7B6B0005; Tue, 21 Apr 2026 21:16:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 930F86B0088; Tue, 21 Apr 2026 21:11:33 -0400 (EDT)
+	id 2D0466B0088; Tue, 21 Apr 2026 21:16:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F8616B0089; Tue, 21 Apr 2026 21:11:33 -0400 (EDT)
+	id 1E67F6B0089; Tue, 21 Apr 2026 21:16:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 683B96B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 21:11:33 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 01304BEC41
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:11:32 +0000 (UTC)
-X-FDA: 84684414066.13.6F879B1
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 13EE1120009
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:11:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mGb3tgv8;
-	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DE0D6B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 21:16:46 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 763FAC82B1
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:16:45 +0000 (UTC)
+X-FDA: 84684427170.24.B041A72
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CA082180005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 01:16:43 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=If8Mq5F7;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776820291;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776820603;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/dKQLlIMovlF4MngYnXStTFl6ju+hBStgqEHpripIAU=;
-	b=OPtjoB7749Iu17gaYY7I+/kopqvMOf559jMZUDACs6KhQB1XyuX/b4ZqXXRo781s1ZII/s
-	a/enEKyyDYc9k/GOTbGfuTVKUoacqlhQLAS4AAvLN3ugU+MhhV85iam7DZTwOVkpT3dTWo
-	9FyF2qztISWqm2wle516SSInZFugCR8=
+	bh=A0RSxpv1ENe+SXqHVSEBPD56i8FmYqixReCgH6RAPDM=;
+	b=aCF/9yoh+odXw75cDira/6Uzrejdoox3r47cakELFI8VrX/Wo1qrOwEOchhzB/4afnOTg3
+	1UBLGTV2/eQSHBxqpaj8iMJEL44KlVcx8Nw28eNW9LQrFi9C0waZfPKUWMQkmaPUv9rjZM
+	VYUE9372llvCCtShISKNSgEX/NQyY7Q=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=mGb3tgv8;
-	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776820291; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=If8Mq5F7;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776820603; a=rsa-sha256;
 	cv=none;
-	b=J31zsVuZUZOxLsNFr7+W/94rTZKZmq9a6vsuF1/7x26q0KRb3xU0ZxC5+3QslWOHiOCwGo
-	18N/0DeDUigAntwzlm/76X8/fiUYauoE7fTavyBovyUL9BtePtZXqPNUDKxY0Wu5U9AVs/
-	KFBxJmDCIyxKgOlIOWunnXokKuyL/aI=
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b9c603ec2dfso638348266b.1
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 18:11:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776820289; x=1777425089; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/dKQLlIMovlF4MngYnXStTFl6ju+hBStgqEHpripIAU=;
-        b=mGb3tgv8KuyMBjeBZGeEtWlqiXLFY9UNBif+sx2ajcKRzrSQIM8EAex6ZK8L8rS/WT
-         Di9Qu2Jm3oJ1iD5jNfJq43vLssTlwObwmsQeC2Ga1PZrF4HwjMCMgsBiQP1GJ9tyuR5G
-         AP1P47jmVmpjfCCX1s02spQX0nnRTrOmbLrcTKhkiMB5l8+0Lol8ZmYDn+vNNopHhHzj
-         njerH3dBbJp/eS1atkRq16qkRivw8+LedTd5BmCvx3nKfHpZ5qiHKzQq16MNUiQ4wluQ
-         5onuYPE/591duTlvewMSTTl2CQTezFN1XjAlY/Tjfv1Tu7jucP4T0TqR2dwGbDOkGx+9
-         ak1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776820289; x=1777425089;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/dKQLlIMovlF4MngYnXStTFl6ju+hBStgqEHpripIAU=;
-        b=HjTLb/ELyY5jziNyvrSyPdqifJrO0d+sUzj2zzLAGHQqwCY8IiGS6/W3BwJrruCBkI
-         tcohk1WpUSnMb7JUNdrKX2qWREGg9WjNdPnYiF+DgZm0Tn70oWeh7ykwIpmXeW+Fgoo2
-         rSwOQhEWZx7+YE8Bh2ejFRkAOJOZ1Ya90mjvI3NDUDG3YdwlvUmyEYxdwo1PTmbLJL+S
-         ENFyyo6JfGHcBST/B9fDLHGnx++qfhj6/8j6sL8Twp+X+h+wpXHIRjMNYx6Qvn/IV1ky
-         loJE0V4rig+gDK6LEjm7n0DwZUByQOA4qxuTwBVH1FAjb80REP+4FvgNoitoe019RX3k
-         QM8Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/3jkB9Lz8YJLQ18dUVP8TQK/WIAAKYxEx2YQ9T9umYUZr9Be8pQHAtGz1bFWmdqUj1wvQacEFryA==@kvack.org
-X-Gm-Message-State: AOJu0YyYCHCmtrHjtrTgqPsNwV5AvLhm8QmTjVctQ6jyyXmvzdiJ0n6N
-	a/Gc/6FldBpw8VR+wfqljhLVKtH0sLJWdxVEztRlP3OthJeKBk9RZqnI
-X-Gm-Gg: AeBDiet5YZeUVaJHv29/vIsjEfVmtz3Ia9O6DMmAOy5AYYkFhnU5ypamidW4xLR3qhJ
-	E8uzxDGJXDVZH/Md9dHG57G7aVpBctGwoajlLGmILqNDguFxE2exoQ9Xz9Pb9tTWuwNW35NHyPf
-	yxBxVYySs1xC/xgnWJgjCW5fOnAtrfKDDsccwp28NolpMCj600ZIZT60iicbQzQSFtEIR2DaNEu
-	c7iO+vuTSkFDPhbNSZCMKEUVLCh4Byev+XtRCuyjM+IAGgni2rlAaxGtsqpKXi3zXdRn0W8BIW7
-	dkC3X+1EJ8YTenT+NFP1g2aAa+Nvq3q9ccu5H7GdGZ3WWeuYQEtDwr47oyromcyXU25t+9jwBFo
-	p7Ny+LatZtyLHBOLeqf88/4LTBoU7DmO/wRpx+Vuyv7vtqBq3uA8fsrCYNzYnYxAEIDeNbXaltG
-	n0DUL+r0trsL/YduoUXAilqE1G7LI3XsNY
-X-Received: by 2002:a17:906:eec4:b0:ba7:79ef:8695 with SMTP id a640c23a62f3a-ba779ef8d42mr565070766b.49.1776820289152;
-        Tue, 21 Apr 2026 18:11:29 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba4520c93c7sm481983466b.27.2026.04.21.18.11.27
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 21 Apr 2026 18:11:28 -0700 (PDT)
-Date: Wed, 22 Apr 2026 01:11:26 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Yuan Liu <yuan1.liu@intel.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] mm: move overlap memory map init check to
- memmap_init()
-Message-ID: <20260422011126.thu67icgj5qfbecj@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260421125508.2317429-1-yuan1.liu@intel.com>
- <20260421125508.2317429-2-yuan1.liu@intel.com>
+	b=xENGmiM7WAsimySSMmfLvJ+WuaZUWuslFA+3QDAvLTjaBV7KIbpmRTXsm+DP0YudpiHIyl
+	LWTt9Xk1Dz6bo3WvURWUVlggZH0oj28MYvt/2nveklPWfZGXbXp00EoRg9OutdJ/KBb+Af
+	l2+qferCw4lZrxA6nydk7LNKuAe69A0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A2AF74424E;
+	Wed, 22 Apr 2026 01:16:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245A7C2BCB0;
+	Wed, 22 Apr 2026 01:16:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776820602;
+	bh=iCRI6Vw9mtwmyRKI+DMnjzpiQb/k2Wa71IR5f/lqDhY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=If8Mq5F7eh58pV1iYu+Mb/FJJ7WLmRsqjfIBYcpy4kDo90dfrb+5a8Ovglcz6Btn7
+	 yar9YYJucxBLeDZG3SC4fSkrA0tIQZJkYhvPYeUk+zgavB1jpqC973fdZGLil5bFpe
+	 09zP56rDorwiGekgO2T10ObEoR9CsIsCkpAVBYneV3slDnbGjnKDq9bqkgxlUZJf+M
+	 E8TJxmXcT6xlPtOaLzOdpsFym+5nm2n9waY74DVmIpLzu1o1oZt4CqSQqDOFO9M6te
+	 H6KLDoWMJjiPNOmltQ3hJzI3dsbZt7iPZkm+hnWgsTXTBnj4DK09VdO6mHevaIifYk
+	 EyCJ/TL441yhA==
+Date: Wed, 22 Apr 2026 10:16:40 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
+	linux-mm@kvack.org, Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH 2/8] fs/dcache: use rcu_ptr instead of rcu_head for
+ external names
+Message-ID: <aeghePMTwTof8uzj@hyeyoo>
+References: <20260416091022.36823-1-harry@kernel.org>
+ <20260416091022.36823-3-harry@kernel.org>
+ <20260421202151.GF3518998@ZenIV>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260421125508.2317429-2-yuan1.liu@intel.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: 3i3wthydfr3gy4y7n8cmfarbwssu1pcy
+In-Reply-To: <20260421202151.GF3518998@ZenIV>
+X-Stat-Signature: d16chyet6cntdo9zisdtm9oen9qwb96o
+X-Rspamd-Queue-Id: CA082180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 13EE1120009
-X-HE-Tag: 1776820290-683226
-X-HE-Meta: U2FsdGVkX18N4+X6HuHUfG/vCm95O/SOeklHokZY08c88MDq8psVD/asx2ASPPyBAgWvbncFt7claGd474wZomGCJgOmEsyCAbwUukHiM6BD2XH5AvvmrgtQ93yYF/SJKlR+5juO610E+cRhj8S2XNyVSJKY7kO9rJbjXXei3s7zY2DazpH77m9bk/G1/lf7NhD3Y5ozBK4QPYF0NuZUVoHOxERmu+CxJrHvTxAyQQytMiBwCvcj76RklKMRQGomjMLso4cRXwNcD62JKafq3E/Drkssg4Wejy+5cKwLmLdaRFLW7NsKMOnSV9kutSIAA3FRXYIFTTFqYbzN5XRqyPiCRa7cH7wZYsViUxQ6xc1NryOuyrclFplZ9jEmQkeGIBtmBsZXEdX9NjTDis3EffXyKEsqY8lr242qC8fxJ4R7gbjFxIqk2tX+dFIIxm4wXuXHQYp+Qkoo5Hos63uJNgJiM7kZ7P6qQAzwc4W2n7tSqSdRzId1f3WI+YxVDbX+bzRXsubuTgRwcOoOLqLKWbgIYIhAU+V/KX3jiHigFPW4T/OawoV2XQcESOB+3bDk/xAjKkhS4iYDVo9M9er2NrIQwtpdAleagEmShYAdmhFc0wc1oTqqgyCg/jN2xoJQSX4zcW9gLKCgh/XVxKgHxXFbEcEyzQ3VXL3QUijp6l9YUoyVJx3x/e8ibf8VoKuFZ8DNxd7Yu1AV5G5dcYyEosrq2qV2Ph0Npx8VZ2FMwA8Y9V4rdnHy2ZgMuk263eEqEVAYfA8JuPWwT9pgvy5p8Nl2kFOe7Vh9WqXkYap4W2D75vPwvV8XXASWa4aIiNbtoeCJkkQNEqYLXmJJanE1JcUWXGtYIseL+BahPFjGSeHwfRy90GFJ5D3Td56uawWSRndI/81UChm0PIzhQZEw30CDAjKjs/xh6x5YKbPt2KoB567JTCdlQtZsBf2qjotzfGpViyTSr3VK7mci3no
- BQIpSYGo
- 05I2i06aarANoK1EJ2zolYsYCrpkuMfQxa0/+87EGKMLqTZsSHFiw7he4UNRTzWDsv6A62CTNFaGxd8T8hGLdjK50k8i3bRHXf0MNJadIXkCyhKgqUDg/igMsHGC5WequH3zj+qBZRj0d1k69axqv93J7hKO+79MkvZGtVKNH4bcRhWiR1pDXhaBk+foIBgWZZcOJ9HIsoXKdEmD3n53bXeJc9SrxoAMUMBvo4C8y+LVpDwh0FPtUIN17CjVub/TGHC3sJ/ecqiRx1+CXhuuVDM08coYLpvkoVmqF220WlKpQQacUHFRn8KahiyqeqZuuDLWtBhxK/rWeDjFGSDfI490zOyx+Rdy+TrJQ50CDtS7K9a7U/TkmlY65w/8uWYyKezT9/+lm0T0yFBCizVecp1H3MmG/wVLQ2n7M4hk00mXaHoFEKMvs4mSa067E1hC167scS0I/CwfzEkYDncNTSySyvJQaxmDvKcpc6/S6k565/+U3CnLOaA15Da4sHxqecuK6KIjc8ABPK4g1ZJP0gbfMWJhCKtDSBtjps9Vq4jdhVqeeZYkxQ5Mx20+mI0IbXdFNr3MFk4DrCdjoUdtmKsD5+4uZ2MOuKmiFvSv5CQYem2njOlnq+uwiRq5pV4B5wxCE/7esQZxNxCIlYW7EnZKh9oKq4H+J4iJ1zR0PdAy9itzCnVTXquDn4ncPZp6zh6w0ztzms9naK+EhtHOLG83hAHuTJpIBVEICYMKkwpDJRqQGgmJIgjVJbwzhwHSMP47sOJrMZfIpAjVjyrRWwHdYlg==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1776820603-656942
+X-HE-Meta: U2FsdGVkX1/WHQf2fwBvAay58y0zow7grF4p7L3b7hFZ2hrR/JPtu0JrMqNABANiKBL18bI+H84Rmexy8T1QCc2jSCc65Jdw6CyccoKQSinShAQtQc/7wrah4Y+cQXwnDf01ITeDLn/JCRLm8mSWtOSQRazWJSNTsza/90L8DXtK/K83jNJUKKSbK1+vlAXUhMFwDFg3e6ZvksYdwOJeJTIA7LbFlPtZOd753svM6CmoQMaL4hE5tzcLRPDMVFpkReaPzMXzxDT7aIYUqPbCFqGdUCVQtNp//ftJN/qW9soSS1bHjatUkoZP1Ii7MpKsRWb8ocLFnG8aU8b8c8Zu4TsFSfyuGbOfQSYCJ+HAW9SDWmiV6w8tcNFXMvQnvENtCnKQbVHktxDYhMsQWld1aHoyB0d+kwY6P3PqbSdnBh+MX/c20anTeUZW1LVDJ+GHIePEZ6FJ3OC26ghXZEe04GBf4ifKpVQjBnlBgbdARK5gZ43L1j1qhGfsVjATqY9pKWdmb13l2oyUu2S/bCdLmSrnZywXJDNaN32H+8hqovtBjVZevbebLL+7KMLKA4G3LyOm1l6uOX9uX6EKFisv1ZGplRcgUTj6AAq33hTicMuV8CHFbzdGdg/jEhlm3x5NG/INAMLIPl6Ynn+lJFBViWvYPti/lMKomxl5nR9KGdR+kkupChXFFINzgpBItZ+9uv9tQbgtGQN/h9WQpgRK5J7rIlgG5U8tMw/Gp+vXB9jzpSXwZfcE7prFgUYDf47fJLSYWZd0205e7ucKNezYsM9OaBItWF5JlqbYtk4hJ8AqcCoR2g3GZOtHjIjb+yfn1ih65WYjX3ht2bNmFPyWt3mv7X1PNsVeUZISEoraQ/8J1fI+Ra9jQwj54KXMQ/s8p/FuqKkDDWoB1VGX8FGxosamQq/zuzJUvuZ4L6SttY5aj0SYR7oZjqbUdZP2rCK1jOXkx4I4FEhFKbgQul8
+ UAOv14Dk
+ MpKbWp+Fb8VtDvG2PTPGWL13nIGlC3/s6QWgsMvwiDQu0eEJO/YEVWejKLgiUx7kvJMWTRpxMJN2E9zIuDXxrtCxNU90zglVyJ4jv3kD717vh6pjb32ZHHsonjwiYgxT6X5cYsiVMsZ93pVwabFeNm66yfXF8wr+pEAGbpCsu0i6/rbZbCMasMYIV0xnPbLhP051Y6JgAyHqQpc995vn8zvg808ZUKtSJIhBS0cf7/t/IC0u+sSQWKQlWfkXGV6udzXvbUpE6BgG0OCcB4g/qFvoTuZv+OMxNgBmi2ea55TJnmpk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,100 +109,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 08:55:07AM -0400, Yuan Liu wrote:
->Move the overlap memmap init check from memmap_init_range() into
->memmap_init().
->
->When mirrored kernelcore is enabled, avoid memory map initialization
->for overlap regions. There are two cases that may overlap: a mirror
->memory region assigned to movable zone, or a non-mirror memory region
->assigned to a non-movable zone but falling within the movable zone
->range.
->
->Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
->---
-> mm/mm_init.c | 37 +++++++++++++------------------------
-> 1 file changed, 13 insertions(+), 24 deletions(-)
->
->diff --git a/mm/mm_init.c b/mm/mm_init.c
->index df34797691bd..2b5233060504 100644
->--- a/mm/mm_init.c
->+++ b/mm/mm_init.c
->@@ -797,28 +797,6 @@ void __meminit reserve_bootmem_region(phys_addr_t start,
-> 	}
-> }
-> 
->-/* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped init */
->-static bool __meminit
->-overlap_memmap_init(unsigned long zone, unsigned long *pfn)
->-{
->-	static struct memblock_region *r;
->-
->-	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
->-		if (!r || *pfn >= memblock_region_memory_end_pfn(r)) {
->-			for_each_mem_region(r) {
->-				if (*pfn < memblock_region_memory_end_pfn(r))
->-					break;
->-			}
->-		}
->-		if (*pfn >= memblock_region_memory_base_pfn(r) &&
->-		    memblock_is_mirror(r)) {
->-			*pfn = memblock_region_memory_end_pfn(r);
->-			return true;
->-		}
->-	}
->-	return false;
->-}
->-
-> /*
->  * Only struct pages that correspond to ranges defined by memblock.memory
->  * are zeroed and initialized by going through __init_single_page() during
->@@ -905,8 +883,6 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
-> 		 * function.  They do not exist on hotplugged memory.
-> 		 */
-> 		if (context == MEMINIT_EARLY) {
->-			if (overlap_memmap_init(zone, &pfn))
->-				continue;
-> 			if (defer_init(nid, pfn, zone_end_pfn)) {
-> 				deferred_struct_pages = true;
-> 				break;
->@@ -971,6 +947,7 @@ static void __init memmap_init(void)
-> 
-> 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
-> 		struct pglist_data *node = NODE_DATA(nid);
->+		struct memblock_region *r = &memblock.memory.regions[i];
-> 
-> 		for (j = 0; j < MAX_NR_ZONES; j++) {
-> 			struct zone *zone = node->node_zones + j;
->@@ -978,6 +955,18 @@ static void __init memmap_init(void)
-> 			if (!populated_zone(zone))
-> 				continue;
-> 
->+			if (mirrored_kernelcore) {
->+				const bool is_mirror = memblock_is_mirror(r);
->+				const bool is_movable_zone = (j == ZONE_MOVABLE);
->+
->+				if (is_mirror && is_movable_zone)
->+					continue;
->+
->+				if (!is_mirror && !is_movable_zone &&
->+				    start_pfn >= zone_movable_pfn[nid])
->+					continue;
+On Tue, Apr 21, 2026 at 09:21:51PM +0100, Al Viro wrote:
+> On Thu, Apr 16, 2026 at 06:10:16PM +0900, Harry Yoo (Oracle) wrote:
+> > When a file name length exceeds 31 (DCACHE_INLINE_LEN-1),
+					^ Now I see a typo here
 
-IIUC, when mirrored_kernelcore is set but !memblock_has_mirror() or
-is_kdump_kernel(), zone_movable_pfn[nid] is kept to be 0.
+> #ifdef CONFIG_64BIT
+> # define DNAME_INLINE_WORDS 5 /* 192 bytes */
+> #else
+> # ifdef CONFIG_SMP
+> #  define DNAME_INLINE_WORDS 9 /* 128 bytes */
+> # else
+> #  define DNAME_INLINE_WORDS 11 /* 128 bytes */
+> # endif
+> #endif
+> 
+> Where do you get that 31 from?
 
-This means it will skip all memory regions.
+Oh god, I blindly got it from the wrong file:
 
->+			}
->+
-> 			memmap_init_zone_range(zone, start_pfn, end_pfn,
-> 					       &hole_pfn);
-> 			zone_id = j;
->-- 
->2.47.3
+$ csdef DNAME_INLINE_LEN # my custom alias for cscope
+tools/testing/selftests/bpf/progs/find_vma.c DNAME_INLINE_LEN 14 #define DNAME_INLINE_LEN 32
+include/linux/dcache.h DNAME_INLINE_LEN 82 #define DNAME_INLINE_LEN (DNAME_INLINE_WORDS*sizeof(unsigned long ))
+
+Thanks for pointing it out.
+
+Should have been 39.
+Will fix.
 
 -- 
-Wei Yang
-Help you, Help me
+Cheers,
+Harry / Hyeonggon
 
