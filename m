@@ -4,101 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C99DF94CA2
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 02:47:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C78F94CA2
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 02:49:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 443F16B0088; Tue, 21 Apr 2026 22:47:53 -0400 (EDT)
+	id 3AACE6B0088; Tue, 21 Apr 2026 22:49:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41B916B0089; Tue, 21 Apr 2026 22:47:53 -0400 (EDT)
+	id 3820B6B0089; Tue, 21 Apr 2026 22:49:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 358546B008A; Tue, 21 Apr 2026 22:47:53 -0400 (EDT)
+	id 2BEA16B008A; Tue, 21 Apr 2026 22:49:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 234F66B0088
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 22:47:53 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9FF815EC1A
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:47:52 +0000 (UTC)
-X-FDA: 84684656784.30.119D7D8
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9B1FC180006
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:47:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cGZM44r4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C4F86B0088
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 22:49:21 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A13AFE5374
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:49:20 +0000 (UTC)
+X-FDA: 84684660480.13.66B1A18
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7D438140002
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 02:49:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Xz2ZZ71U;
+	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776826070;
+	s=arc-20220608; t=1776826158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GZQT0s2wUO2WZ6VaxUd4q0Cex0JTnd7JiwzgE6NWCYE=;
-	b=iG6hAIgIWw/TNUWsTx2BF64ktkyH3MySW3/o699oukevz98ayYA0tOhEIuggIxnVJJWEAU
-	7BQoswF8OkmTqAxNfHlMjjONwGmMwpdtHlJaVBPv1HlPWv9oBcn5ZM0njx7YRfI8ZKypHv
-	AkS+U5SstcRwsn3aHZ13yNmiKaILGEU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cGZM44r4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776826070; a=rsa-sha256;
+	bh=JzDqbIKbIFSBf7sqhcVwocNSInW3q3vKEWkmrJICE7w=;
+	b=KwbgMEP9PWL8FpLIZB8fQX4jdxVL+YEesrYI5qk5I8ZsjZtwovDqDIBOBZ+wtTmst4iatR
+	AlY+a2Y6m2H8Tw1mY8cSD6/j73oIyjnTObGhIJazmmtNNXEMxAj0jO5aCP6TqdhAmB2syx
+	35Z0QBpWg/RLiWHzwKnFKJIQJ2Mwcf4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776826158; a=rsa-sha256;
 	cv=none;
-	b=Iqa9PBsbWYuOuheLxCe/iBBfBQO4XxhndcGYAvuRJVKSnzHnsOQ36E+ttWOFVMUPEB0xJs
-	lKpNbPAKIrPkG11X5WQDu1Bnn2SYQP3mO0Xq+N7733XDMfwduy5f4x9anh95KV9czAlCbK
-	7cz9fp6ykaq2jN8S64hKqJYoXBTTxxw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776826068;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GZQT0s2wUO2WZ6VaxUd4q0Cex0JTnd7JiwzgE6NWCYE=;
-	b=cGZM44r49NJUlLAuQ8Aw4WQthcwoCIfYOTdFUY/tOEqlyLmYeIQaniKeQUZ40a4/uPKL23
-	ZKmWPRhyBQ0+zHs2xqUsv61Pg9+2NPLCnnWS80pkxlYxtLKg1D7OSRkW9qy6+8zhbw9Pg9
-	vOmcRT9UVY5pER/ELSwk++RheXdwOfk=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	ryan.roberts@arm.com,
-	broonie@kernel.org,
-	dev.jain@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge zero folio with init_on_free
-Date: Wed, 22 Apr 2026 10:47:33 +0800
-Message-Id: <20260422024733.70662-1-lance.yang@linux.dev>
-In-Reply-To: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
-References: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
+	b=R6F1MwL/v361he+k79LpSBPgW/dNm/Tfgnj9QqrHt1tQ21jNZ0zasnMj8BinYUDroowUO8
+	RLI3Trn/eXyu23tVFqKvbFANBiAmAdDHWd+agM9AInb9O+Hkw4B0honYDZIkIG/dxRyHfR
+	ZMpWHsiaj2zg/wdZ3uGYdcMiswskOGo=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Xz2ZZ71U;
+	spf=pass (imf09.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=JzDqbIKbIFSBf7sqhcVwocNSInW3q3vKEWkmrJICE7w=;
+	b=Xz2ZZ71UomY77wBHhzvPxFmV8ZCOpnBnRoyr71FEAt5K+U2wQIngcGVNvpJOP9BwQyVYSYBTw
+	hY9WMDAE2jgjvJRwdaNOvqvR5+bVlJYFK46LtfBbd5zwNeeyu/a9CwWJZqpiGX5d6bgqppOa8Cr
+	4YRlZpqmV/9SMPnVB3qYkTw=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4g0k6G6kc3zpSwY;
+	Wed, 22 Apr 2026 10:42:46 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 231CC40569;
+	Wed, 22 Apr 2026 10:49:11 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 22 Apr 2026 10:49:10 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 22 Apr 2026 10:49:09 +0800
+Subject: Re: [PATCH v4 0/3] mm/memory-failure: add panic option for
+ unrecoverable pages
+To: Breno Leitao <leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <kernel-team@meta.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam
+ R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+References: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <299a6968-1813-39f3-de28-3fcec6f3d182@huawei.com>
+Date: Wed, 22 Apr 2026 10:49:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9B1FC180006
-X-Stat-Signature: mh1srjeif438o5m9uhra6ybxtrzxosrp
+In-Reply-To: <20260415-ecc_panic-v4-0-2d0277f8f601@debian.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Queue-Id: 7D438140002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: eyy35x5dxcxzetb46bcmj73o58py396w
 X-Rspam-User: 
-X-HE-Tag: 1776826070-713334
-X-HE-Meta: U2FsdGVkX18qf+zEBiOtQYuzPC0g2UogwplxnrX6syBukh+k3hdaghsR61LOEe5HSd0hLtxsp1ju/vWBvG1TsI0GEZa1HNJdnzWjij60SwyfM1G+69AhBM3mw6jto7hkMqxnr5TbMLDTjdo0zZ+M2WANjYGPkkewTBtxNmJ9vF45bqqWQokEpIKfxwMzEU7AuDj8w008M2WkA+u05d8au7fHPgEAtOtbLUoa4EXW7f+/AchlcyeZoVIXW9qe3W1m+empc4RvaOUhgtXerx5YhkwI86e3cCS47QqBQ/oTD7YgrXcLJPkmAk5akSbwHFhc/U6+MxkWyPqU/225JRhyQJYSNXyV924qWZ9aFyspGogBeCmMgT/eZ1fEwGPABuiSytjCrnNUz8us3jk69VCoIaUg4Et4P1b4oGwiTCM6DaqzBVywmMXwDTTW98FDTg3Nk2YSjjpCB7oX+VEUJ6suSFBQLMdSisGR1r8xhgCT1yDWyredcaoyjhmYov80RI8cTnrM19cXZqOFxP2I+2j7sdY/HKJ4Wn2asPWxnLzKjWUFQy7Zrlbdh7on1Dl9Wuo/ONAAiIj/6caZfoVH7b+UDBKGW9HPwVDTSwqKJHw0erFr6puVNDvnkmPYiDN0wWxHLRXsQYlB3tC6VEA/SJE7hd6vBSfpv8FzIazWTnn1UEPwIqPduyF9CuPM0+VgsA6vXtj6h+bFglzCM9oW4oNDP9QYn2F/1S9IHerlheAN4aWBiLGr/O5n5vrxSfmQGNdSbWHc45T2f9gs/ShTdpuW9y7gb8KrtpBU07civP5AEILTRaMMXu9VVc4WH9xiekbhadMCLZVgUkMqx0wy1nAtQ/+Mj9upOdLQiLQgZzpFgfdK+EaIQeZ2zm56GPX67WxRdun5roWp2bp7KMMOIjM81yhxM6iwNeK0HsarDq51dl19205S5ryvJIYeu8/Dd3jYD5Xccv/cH0/b/+S0T9B
- peBgrecL
- fnsDujrHkXpYdksHocrHGhlMRkAlfry1yglv1GCxJDnS2x4ru9opr7oMQmcVThX/xx2J8I9LXHrGy+XTPguxd7mVT0wMhkkYXxI/p99KbyvIxRXz0f/c1bFmH8ZWER9Og/F/gFcJHOICMhbWdooFs0XERu+CAQRUwKq0g1rZUhk+EJaX6dmOHPTvUCcu8pKKxOgL+eWefLVzamQWm/ysVsdClnpvgDZfNyiucAZYVYtRlyZlX7Ho94BDHtISWNhDRGvAZTsvf5rfHQpZfALrQf5TW0g==
+X-HE-Tag: 1776826157-882076
+X-HE-Meta: U2FsdGVkX18qbSALBs+iuG84lIBMesHVjt70eT3e12Gxo6+w1BMRJ5MlY+Uk3h5YuS0ceJKdLcRmlcN8h74mTgi68RcwQDIa2UdAnth3yoaXu+fQ1z/CzpkPMG+wh63QbcTPILgBwN8fVTF6N84RTx0KcFdffY33OvI1WjjfNzGG6yitp8XxhvlG1PubORS9V/dOkrpW25+Ad6jCFGvJqRbfTHm2jRgGYDjts1t7nP3F6eUg1ikeaOldXpHhmRJwk+6RAZ5qVa0U6boNweiRNcarg8h4KStZrKfzrHcvgIUQ8nH3QtWEa7mcdEcerFYR8GRMWhF3pML4SrW379xXBXJ5kYxKphULb2yrt+dnnShv/hNxHdyJxL9N91kwF7iqvieSDiynTgoh+KrXX/3eVMkVT7b+3FGf2tpKdzECE3TATd/ctwjHax8S/l4Wb3WQK77J23DimlJM/fCc4RGL/TOpaqM7/ItkwLRhrYrnnEZD2/zwOxD9SqQkuRCNZLxVZqDqNVOHhMkJhs2/uLaPZt1MXTyYCb0NrNAlzjFY+SwpaHxnRDAlxLkGq3Fw1BqzabOPD3FCWMjGz+QHkgPiKD1tq5bFnM7nSlRpOcxFKjn6PqhLZEhlmDN2dy4mKA4cPccBlog+F/kG8cUI7J0vbeMmFgdCSHRnADplD7HWhfGoxds+fQtzcoKutQzlR5g2RBqd4FkA5TlCm3mCxQqw4x7LFFCzqMb8beBK7ZTJynmvpEoi6Aex6L6uYKRgWfZmt1tIL2wpYXcwGeeJdOVSLmx/nxwdBZPESTteFDTivrK98n4hMlgouBfAci7yRsJbO1yX67IPbgX7AaonmrDvMuBG+R3R5k7FFF1NIv1x+JlnTSDLRj/UbkMVMymzWgtHiMpEquv9X5vPuMocP9J3xmBsC9LqUBE7uqMfZcDh5YWGOcT6EdmvxN6EVroeYwIlURxOsQC0oIOfIojTJoA
+ SMp4nY8E
+ iW5PsHZ+YmIf6pLt5dLUUvygjqmNGWXJySJAhHYu6S05oAQN+hxz0mMDqp52kYwrfAnanpp78j2uTZao5jQeVXlR9qTyqVe1dlCJEozmqAVsLnRlCbSHUF98s1dSOSr8nJ3TKwmW8lcmK1lpmryBdi+IQ+WNFVPLqDoY6sLxqIHqXCqnfjKv1w4vaEsAZg+KzBJ2ikDlE1u0LIHZ3XZRLgnS4+W0YHHvxKEsCCIGTLxFr2Sl4FpuowD7GDsxMXQDex3I1gKBHTViW+81qHbac3hGsJFP75kYfp2lQfxwv3UUXFFyvzXFM+h1F4xH+shBwdZjHimJ5Evsc95M+oFPm/dDaO1s9QguvXGkhlbLYLPIf9O5M8b8C0WPC6cqrHhB/Gchd2aAgnGDeOvCcUzh1TU3SeXN4hKel4rMmq+6aeq1noaA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,63 +110,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026/4/15 20:54, Breno Leitao wrote:
+> When the memory failure handler encounters an in-use kernel page that it
+> cannot recover (slab, page tables, kernel stacks, vmalloc, etc.), it
+> currently logs the error as "Ignored" and continues operation.
+> 
+> This leaves corrupted data accessible to the kernel, which will inevitably
+> cause either silent data corruption or a delayed crash when the poisoned memory
+> is next accessed.
+> 
+> This is a common problem on large fleets. We frequently observe multi-bit ECC
+> errors hitting kernel slab pages, where memory_failure() fails to recover them
+> and the system crashes later at an unrelated code path, making root cause
+> analysis unnecessarily difficult.
+> 
+> Here is one specific example from production on an arm64 server: a multi-bit
+> ECC error hit a dentry cache slab page, memory_failure() failed to recover it
+> (slab pages are not supported by the hwpoison recovery mechanism), and 67
+> seconds later d_lookup() accessed the poisoned cache line causing
+> a synchronous external abort:
+> 
+>     [88690.479680] [Hardware Error]: error_type: 3, multi-bit ECC
+>     [88690.498473] Memory failure: 0x40272d: unhandlable page.
+>     [88690.498619] Memory failure: 0x40272d: recovery action for
+>                    get hwpoison page: Ignored
+>     ...
+>     [88757.847126] Internal error: synchronous external abort:
+>                    0000000096000410 [#1] SMP
+>     [88758.061075] pc : d_lookup+0x5c/0x220
+> 
+> This series adds a new sysctl vm.panic_on_unrecoverable_memory_failure
+> (default 0) that, when enabled, panics immediately on unrecoverable
+> memory failures. This provides a clean crash dump at the time of the
+> error, which is far more useful for diagnosis than a random crash later
+> at an unrelated code path.
+> 
+> This also categorizes reserved pages as MF_MSG_KERNEL, and panics on
+> unknown page types (MF_MSG_UNKNOWN).
+> 
+> Note that dynamically allocated kernel memory (SLAB/SLUB, vmalloc,
+> kernel stacks, page tables) shares the MF_MSG_GET_HWPOISON return path
+> with transient refcount races, so it is intentionally excluded from the
+> panic conditions to avoid false positives.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-On Tue, Apr 21, 2026 at 05:39:07PM +0200, David Hildenbrand (Arm) wrote:
->__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
->flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
->
->If we run with init_on_free, we will zero out pages during
->__free_pages_prepare(), to skip zeroing on the allocation path.
->
->However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
->consequently not only skip clearing page content, but also skip
->clearing tag memory.
->
->Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
->will get mapped to user space through set_pte_at() later: set_pte_at() and
->friends will detect that the tags have not been initialized yet
->(PG_mte_tagged not set), and initialize them.
->
->However, for the huge zero folio, which will be mapped through a PMD
->marked as special, this initialization will not be performed, ending up
->exposing whatever tags were still set for the pages.
->
->The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
->that allocation tags are set to 0 when a page is first mapped to user
->space. That no longer holds with the huge zero folio when init_on_free
->is enabled.
->
->Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
->tag_clear_highpages() whether we want to also clear page content.
->
->Invert the meaning of the tag_clear_highpages() return value to have
->clearer semantics.
->
->Reproduced with the huge zero folio by modifying the check_buffer_fill
->arm64/mte selftest to use a 2 MiB area, after making sure that pages have
->a non-0 tag set when freeing (note that, during boot, we will not
->actually initialize tags, but only set KASAN_TAG_KERNEL in the page
->flags).
->
->	$ ./check_buffer_fill
->	1..20
->	...
->	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
->	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
->	...
->
->This code needs more cleanups; we'll tackle that next, like
->decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
->
->Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
->Cc: stable@vger.kernel.org
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
+It might be helpful to add some information from [1].
 
-Tested this fix on MTE with both kasan=on and kasan=off. Works as
-expected in both cases.
+Thanks for your work.
 
-Nothing jumped out at me, LGTM!
-
-Tested-by: Lance Yang <lance.yang@linux.dev>
+[1] https://lore.kernel.org/all/aeHy3-vQTQYJlGw5@gmail.com/
 
