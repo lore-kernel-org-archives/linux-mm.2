@@ -4,104 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 112E1F9EDF9
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 22:41:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EDFDFAD3E2
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 23:57:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA4586B0005; Wed, 22 Apr 2026 18:41:34 -0400 (EDT)
+	id 4B1576B0005; Wed, 22 Apr 2026 19:57:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C568B6B008A; Wed, 22 Apr 2026 18:41:34 -0400 (EDT)
+	id 462086B008A; Wed, 22 Apr 2026 19:57:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6C336B008C; Wed, 22 Apr 2026 18:41:34 -0400 (EDT)
+	id 378706B008C; Wed, 22 Apr 2026 19:57:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A4EE66B0005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:41:34 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E37498AB7A
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 22:41:33 +0000 (UTC)
-X-FDA: 84687664866.09.074AE07
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 22E63140010
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 22:41:31 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jVsFPXe0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of "SRS0=hVWM=CV=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=hVWM=CV=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776897692; a=rsa-sha256;
-	cv=none;
-	b=SrLTFMK43gJczV+RUYAfiPrrD9QZio9uVKfq4ViN7rbaPRAPUqIYDga+Z/ZvnnE4xWbdRE
-	utZxOVZcrGhzIgkitBaoMJHBbOF0VIIBMvmonDwZ4NXmqOIYGCAN9SOmC5oT9yKZhZ/7WW
-	MYq3cDAhNy3JsmRDmGs55cPICNn8s9E=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jVsFPXe0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of "SRS0=hVWM=CV=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=hVWM=CV=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org"
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 27DFB6B0005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 19:57:17 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BF182140376
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 23:57:16 +0000 (UTC)
+X-FDA: 84687855672.08.43D12AA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 091521C000C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 23:57:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mNFB+xdW;
+	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776897692;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776902235;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FxcUPO4equ3YjCkaPjz6cR8CN+AW5BC+3S72FPsJ/M0=;
-	b=dbid5DiFRv85dtkHTxFXUnkqfgZsXt8ivGw8TyER214GH9R+XlbiC0CQKFK1B7Tlh7fLcd
-	NmC2YEhiQPNW8Wi8g2K4AT3iXgDp7/28iMilJ7vxv0Hln5K2JdCy4BEMSWv1wgPGyC9F1p
-	sgskwJHBYNBia+FWb+hQEiVGztCZv0M=
+	bh=yJBRG6KDMW+yq2D5qxmZxyG7uq7dTMoiUt0GCZhykPk=;
+	b=6yW3EsdMma7TSa7Z+IN3r/uC4WGJID7k/3I2NeRTLWcBFNicYNG+8UrurKqAW4dQgRTwSw
+	QNMU6fBLYMR75t5BMiRzbm777h3UHmkruHPgu1txIPNHxfd7YaHpj/qNjWvVZKseecbPrw
+	pVsZLl+SgYFyFSLqGuLpati4EgUdTu8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mNFB+xdW;
+	spf=pass (imf20.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776902235; a=rsa-sha256;
+	cv=none;
+	b=ufRiNAuiwGTW4IkPJPHWOFue1CGaJvcSwgwS7RXGSn6TJA3rjIUstbDFVYivSdN3iT32sp
+	620IlUSLK4Poeu7d0tUcDkpW5rt55MGmbypiuKz03U4GncUe+/CeET+MV5wXsvGUMB/b/+
+	3EqkyxN8AnIZKl/ELcdyR3mr4AqY7v4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2731361334;
-	Wed, 22 Apr 2026 22:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D1EC19425;
-	Wed, 22 Apr 2026 22:41:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BED7744492;
+	Wed, 22 Apr 2026 23:57:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDB8C19425;
+	Wed, 22 Apr 2026 23:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776897690;
-	bh=gUEK152lwoAI8GlkDU0asgwfk5vJmlbdfCMd5yE1mWI=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=jVsFPXe0khsDOZDfOQ+bRAR84cRTacJtOLZZQutTo2qDX+EN0fm28b7fxoVRqxBj4
-	 pQxBC8IycM8qZcApMlBirU+WSma8HFjtRP3g7fAeGHr8a8uSirwpxrRRy+7zHgqH0x
-	 Qx+du/HEepHE4dQH/OyJ4MUBW5Sk7u9oSyI+GZQfYZv/Ah8Io76ofNDMHynqNIDVpR
-	 DsDbf5DjF14ejzWupQM+vSQAVmgZs/gcSA0oQ0KTVqkHoC3yPMSw1o2s9uME/3FhZC
-	 tatpnlqShTcBapfl+ujtXTQqZtTyDTSaRVDy6WWnmyMfIq2b5evJL2CX3AUTxdENjc
-	 enKVgqr8rO7Fw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 6987BCE129B; Wed, 22 Apr 2026 15:41:30 -0700 (PDT)
-Date: Wed, 22 Apr 2026 15:41:30 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
-	linux-mm@kvack.org, Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [RFC PATCH v2 0/8] kvfree_rcu() improvements
-Message-ID: <db93f3ad-0446-41ea-b460-40b7fe24a4cb@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260416091022.36823-1-harry@kernel.org>
- <214ca3ac-45b7-4131-86e5-ac134ab0bcbd@kernel.org>
+	s=k20201202; t=1776902233;
+	bh=h6ggrtCedybWSPNMwswG0DZDcNwcm7cnvs/LOyD/wNQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=mNFB+xdWLZKpCxXZm4/ECJ7c866xDmRQuYKee2ZmooLdAboj4IF919Yq3Iw0bINsX
+	 RA4s2JA6QITi2C8+PeIS8/KussEZgcuvkC/xnNNHlYcTPzfY/A3b0ztWYGAPRFwI7q
+	 dFrML80TrDtSrx81rSV0kIXhdCtQo7zA0q26ALnYgDR5M/YJ++seIkDSgNLESZuZoO
+	 x0ElHg5+r32UBFskPnb1kuB1/kBSU2lIvB4V/c0IfQCt5g8Tm+EL2o7hCU8m71CPuJ
+	 558uJ+lGCcjFbOFFld46ZXtKgYDBP2LW5O7Tcc5SS8XOXouVemuXDANtK9uPhHYsdE
+	 QBLGa3JPbkmZQ==
+Date: Wed, 22 Apr 2026 16:57:11 -0700
+From: Kees Cook <kees@kernel.org>
+To: Marco Elver <elver@google.com>
+CC: Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>,
+ Hao Li <hao.li@linux.dev>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-hardening@vger.kernel.org,
+ kasan-dev@googlegroups.com, llvm@lists.linux.dev,
+ Andrey Konovalov <andreyknvl@gmail.com>, Florent Revest <revest@google.com>,
+ Jann Horn <jannh@google.com>, KP Singh <kpsingh@kernel.org>,
+ Matteo Rizzo <matteorizzo@google.com>, GONG Ruiqi <gongruiqi1@huawei.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_slab=3A_support_for_compiler-?=
+ =?US-ASCII?Q?assisted_type-based_slab_cache_partitioning?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <aejopk23CsntyFOB@elver.google.com>
+References: <20260415143735.2974230-1-elver@google.com> <202604210954.84C57E5E0@keescook> <CANpmjNO8CcR56LXAQf4GQhGcbU4MQkRCa7gVvwuAfvVrzEUhQg@mail.gmail.com> <aejopk23CsntyFOB@elver.google.com>
+Message-ID: <D3E316B3-9909-408E-85BF-647383810CFF@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <214ca3ac-45b7-4131-86e5-ac134ab0bcbd@kernel.org>
-X-Rspamd-Server: rspam10
-X-Stat-Signature: wbdgqqe1oqr96654z6fbw19a5ebkc74f
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 091521C000C
+X-Stat-Signature: ndd1a91ahqrrtr835m9nc7wh4ayhsy1h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22E63140010
-X-HE-Tag: 1776897691-271362
-X-HE-Meta: U2FsdGVkX181yl2ZCYddajj03yUtR87vbSH6Qysan/9Q0BsbBWRf1yEv13tPrlNr9hRKQmQPK+ZCl5GMhiLvurKvJXVEaDeXWjm+GdTNncqEQ0o7TYUvHeoRol3fLrq03qvAAu/vJjyW4K28fYGRjiDOsBiBsMKq1zQSE1nAAEQNTok36/3WPfiNnkveQV5L9ogl83nYgGTKxEGVUBA+W+8U2lKHjJrI1tt/R0mt1qvcNMn2zKtYfd1wd/fiYuPeYbFhhu/abHz3BmM/qcq4kaUzen2xUWH3RT3pYUtv3rTz0twu9F8W8DBbzYc6SJEh664BB1eaRACOIxCP+q7JfBIbJ/+H1/N7G7PlOW5YXvNGr9Fo5MGiKYg53IscX16pqqi2kdgxykPGlVHDP72PYKk8TGf/ch7MavxwtwqshO8fXkBy3TvPG01/Yl160M/f5uvLV9NEYdWJb7A1ZYOz58foMf4nuP0lhRbJJkRYXyHpmkjfnmbjUF2RrS3g9MWEaLlLaX2uJ8k429TdNh3cpB78gNOrJh6WN5ggd6EvqQZB0rr6YZG+z+1Bv2vWhuDe+xeQ4xuVggu9BkZ9/5DwYYXjMWCDbW5flXZ2AgjsMnHmiFlO7gbbveuDlu1jDf85J21VAXtTg9bXE/97fOget8vibd0QaiN7BTxOo0FQZt/PavaMSZ/rx3p7CXzGvjptXSrXRcDdYRuvyv9efzk2JCS9/9rUibBkcuydn/OOQCTlBpcI2CmbFePsZcya/oj10JBpvNzMLV8k2GoT+hqfxTmg9dMt58RIOf7Xh1+mfdyqLZjn970AL9ElkxexIpfpUyPRQ1x8jPnFVFpo+NeFZFH+JI9hciuSts9agaE+iDrdduNJcXWv/T2kfjAd13V//oWM8LxpDpoAmeGZuBI1mBN+qz1FG6UiJSfQnGVKLryLO8LZVMsoq4TaNNBR9uJHcq9BKwC+kV4h9zeOubW
- 3O2UWVsI
- 9IRsYISQ25yqHiUHQxPtcWwa2nYib3Wbslb5K9TMh+VvtL7cTkkz4dZqDA+40QDb6vw5YC5gwz0xDobTl3bLG9Xkzo0qkwePK+3C1OUBHUB6PLXeYTmBdtrs6D4GplukqG1Z71EfqhBHiep2iIqtvACcz27PQx882Th/vRdaL2P7t/du+/laKRQYxOhGKiECIgeCflmK28FQPjxAyNdznk2zQqeQcUVU8VVobd+Mnf02oH0nb+Nwy1YbSyJxnooabKdFJ2R/1lKLoYLvnAA91ttXNUDPDIip2SaWQ4TH5RTss+Rc3CCK0ZccJR4Bx1BEfSX5epHyfDfRX3eYjh9hWEMX00bY6pwoHNyzZUZy1xmjOfVtPSOUo07xGDGCco64M5eTY9UublDX0tFkiFafy2a9dcEszypYNunAW5RbWkAr1Lx7dWKH6muStihHd0wJ0IqkQb56KwtkgXU0qkn+6DYGBRKFTfPY15qOR8Pb2WyX/5jYCFoxMMfGjH8RiwtyOJdTZptcQwhUw/gPyOSH2/7Rp0hdf4Ng59NNJOSb0Bw2WXu3LyEP1jeiy569kqNMFm2057SsCA/TnKBKptIEyj1n1kRxvdBikPdLtoVANu9sb5ZqpW6dUKczt3ZE1R3o6HX0xG+HDXdYsOtY9Ma/CxN0+lC/f/I+pEZve3Dl6wbbdhQ6qeeQqTufLQ+FZ9+RtxlVO
+X-HE-Tag: 1776902234-977654
+X-HE-Meta: U2FsdGVkX1+S6Yr+LG0y9JlGMNZUfTDvGWpyzSyLn1x5vcSikWCpNjG3o/U5D/p87+HnSqvV8UPra9u7PmBoI2uM9olyK8RC+5Z9YdTedcyJKCf7EeexAYaJmkasNc6V403D2+lI8F3+GnpSj6kAF6+vRDP6Bq9F6/2I+ae150s2cujM2JcQuN+CoYXJeiQkVda4et/th/7UmPMXUubVon5Ulc+l/CYOkW4zHvc+tCF9hPSlWjYgU/m9J2Jn1A9IiXzdZHl5K7bkyqPukJoK9DJFKSo0HTi8gm2VJ5XEmgaop+Sfkvq6ILn/5JIHc4Mk35OQbLuFdrdruRWbmjT+fvCJzz0KdtTWZadR/cMwDz6fcxfdzKGm2wqQIkMrRsaB1fTucpRdTjTjLfQhuVUoW8VUYDr3x0tI7BXjynPVvZY50yyN3e5dx27Pyr+OZGH4DsV3OvzQr1rlUUqFsUaMGiO3MIT+GnqhXeKh4yMm15xpwZ7RQdbqu58PAuzkNJaY+Dgp62zvXRSM1s3PbbwpriUsZTDvWw8ezqm0zR1WPYdGLJQHEyrtKeoxhXspj6/MmSoCvKtsjaBdxTSsJ6W8Q/Fc036evwVNHtH1fy0feDEMIGU1oBfTQbv5Q3Qvj85+Hyha5CitB7grPHE8zUrFLa4jNyEKrH1UBZi9C8ZKC18FzOw+CHbUtnz8Rt/rg+S+wVT7V1ZNGZeymdW0rDHNJEUe6hWFS90F0urGkBMK3kJ/+pCXotEiAWZiS+tHuJQn8hB7P3YTm9lPQtC245yR2k/A4UToZLF0FkIEAHAUxK+fbtSYCG+hrScDjxkWBnsDL2n6igFLjC3W1fouYD9/U3w9nNzzVz35bA3n59aeeeXHYZP7v2LSjOgR3lzSXC539HMa+Y2/xemW6GFysEIX/KG4m5Um50wCS+Zw5fD8a6W5FglSX5TugMmqKMXDnbhhtuls+T5F68+t5HIbXe/
+ 2C97OsWb
+ ckXBcLsdUKA80X7jbMPPOjAf6KOBmocrxC91D5JxESgr6s4qwcn4j+oQb0mlYPhdE2L/iJQzwiQ/L626IJ1847a3kMD6lk2SIzmJDj8leMupU9sFWFsJZ1rWA+hHjKLTRDMfl9XiS7v5E9uaKIYh6GyED4L1TpTEDxI0vXPd26IN9RHbJieMDZdr9l34G+fNmYAHhGRAqCilHgqcH9Sm/ymDTcWU0htap890C48KXhAD6AdmG3tRuxfPjhUb70h5eROGQG0YvkUD1bXYEzXS3K47wownVtssjGg2e140S/yvCpAMO00/BzhDUdsfDSFhMQ/2uIaMyCNp/Azno0SFkTNTFUqAGjHLY+I4Phd+oBkzcNJcs4C195/iWqkai2W2b0wvw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,32 +112,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 04:30:07PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 4/16/26 11:10, Harry Yoo (Oracle) wrote:
-> > # Part 1. Allow an 8-byte field to be used as an alternative to
-> >   struct rcu_head for 2-argument kvfree_rcu()
-> >   (patches 1-2)
-> > 
-> > Technically, objects that are freed with k[v]free_rcu() need
-> > only one pointer to link objects, because we already know that
-> > the callback function is always kvfree(). For this purpose,
-> > struct rcu_head is unnecessarily large (16 bytes on 64-bit).
-> > 
-> > Allow a smaller, 8-byte field (of struct rcu_ptr type) to be used
-> > with k[v]free_rcu(). Let's save one pointer per slab object.
-> > 
-> > I have to admit that my naming skill isn't great; hopefully
-> > we'll come up with a better name than `struct rcu_ptr`.
-> 
-> "rcu_ptr" sounds too generic to me. Things like rcu_dereference() talk about
-> "RCU-protected pointer" and it could be misleading that "rcu_ptr" has
-> something to do with this. Only if Paul think it's ok :)
-> But maybe just "kvfree_rcu_head"? As IMHO It's an rcu_head specialized for
-> kvfree.
 
-What is in a name?  ;-)
 
-I do have a slight preference for kvfree_rcu_head.
+On April 22, 2026 8:26:30 AM PDT, Marco Elver <elver@google=2Ecom> wrote:
+>On Tue, Apr 21, 2026 at 09:13PM +0200, Marco Elver wrote:
+>[=2E=2E=2E]
+>> > And actually, perhaps a global rename of the options so the selection
+>> > naming is at the end of the CONFIG phrase, and bundle the on/off into
+>> > the choice:
+>> >
+>> >
+>> > choice
+>> >         prompt "Partitioned slab cache mode"
+>> >         depends on PARTITION_KMALLOC_CACHES
+>> >         default KMALLOC_PARTITION_TYPED if !SLUB_TINY && CC_HAS_ALLOC=
+_TOKEN
+>> >         default KMALLOC_PARTITION_RANDOM if !SLUB_TINY
+>> >         default KMALLOC_PARTITION_NONE
+>> >
+>> > config KMALLOC_PARTITION_NONE
+>> > =2E=2E=2E
+>> > config KMALLOC_PARTITION_RANDOM
+>> >         depends on !SLUB_TINY
+>> > =2E=2E=2E
+>> > config KMALLOC_PARTITION_TYPED
+>> >         depends on !SLUB_TINY && CC_HAS_ALLOC_TOKEN
+>>=20
+>> There was a comment somewhere else that even introducing
+>> PARTITION_KMALLOC_CACHES might confuse users of RANDOM_KMALLOC_CACHES=
+=2E
+>> I think completely getting rid of and renaming RANDOM_KMALLOC_CACHES
+>> has marginal benefit, and will cause friction for existing users (even
+>> moreso than already)=2E I see little benefit here, and would prefer not
+>> to break user configs more than needed: configs that already set
+>> RANDOM_KMALLOC_CACHES, upon rebuild will be prompted to enable
+>> PARTITION_KMALLOC_CACHES; if user says Y, then their previous
+>> selection (RANDOM) would already be picked and they don't have to
+>> rediscover that it exists under a new name=2E
+>>=20
+>> I can make this change, but only if you're sure the benefit outweighs
+>> the downsides here=2E
+>
+>Upon further reflection, since the transition isn't smooth anyway, I'm
+>probably going to rename, but have them all use the PARTITION_KMALLOC_*
+>prefix so it's easy to just search for "CONFIG_PARTITION_KMALLOC_"=2E I
+>don't see the need for a "NONE" variant - I've seen this pattern
+>elsewhere, and then you end up with users reading the =2Econfig and
+>concluding "CONFIG_PARTITION_KMALLOC_CACHES is enabled =2E=2E=2E but oh n=
+ever
+>mind actually it isn't" which I find confusing=2E This could be useful if
+>we had a dynamic on/off toggle and the default is NONE, but that's not
+>the case here=2E
 
-							Thanx, Paul
+There is now the "transitional" Kconfig keyword too, which should make it =
+easy to move to the new name=2E
+
+For the naming, I tend to prefer the noun-verb (e=2Eg=2E timer_start()) an=
+d noun-feature-option ordering (e=2Eg=2E CONFIG_SLAB_FREELIST_RANDOM)=2E Th=
+is feature isn't about partition tables, so I don't think the first word sh=
+ould be "partition"=2E :)
+
+As far as doing the full isolation later, yeah, that's fine, and I think w=
+ith this Kconfig change it's easy to add a new mode=2E
+
+-Kees
+
+--=20
+Kees Cook
 
