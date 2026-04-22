@@ -4,100 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8CC6F9EDDB
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 14:30:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B82C9F9EDE8
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 14:34:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E57276B0088; Wed, 22 Apr 2026 10:30:18 -0400 (EDT)
+	id 29D0B6B008C; Wed, 22 Apr 2026 10:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E08806B008A; Wed, 22 Apr 2026 10:30:18 -0400 (EDT)
+	id 24E4D6B0092; Wed, 22 Apr 2026 10:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1DB36B008C; Wed, 22 Apr 2026 10:30:18 -0400 (EDT)
+	id 164326B0093; Wed, 22 Apr 2026 10:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BDF186B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:30:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6EFF81601E3
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:30:18 +0000 (UTC)
-X-FDA: 84686426916.05.417DF19
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 141B4100006
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:30:14 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XsS4Z1Mk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776868215; a=rsa-sha256;
-	cv=none;
-	b=Mo6b4lfmTaybaAlIwTgFc/12EMc8ikzt6Ay/QtF5h4p2BE45EGWCZ9iIGn+wTmuGdOZ7+8
-	gQQlewUHMgDP6o8/EgKdXMo0/lPiy6WwjFdB0GGWobG9D16ByUVIPhhCExZFGbBjCiQ4WI
-	HjORaqVFhxfr0kXrCleWZfMR3v+pHUo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XsS4Z1Mk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 087296B008C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 10:34:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF55E138C11
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:34:01 +0000 (UTC)
+X-FDA: 84686436282.24.0D8556B
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0B41540012
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:33:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q2zrwb6Y;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776868215;
+	s=arc-20220608; t=1776868440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gxmvri1vydfPT1cQguH0c/J39KhdX4jCvPohLNl42p4=;
-	b=m4k61ONZ8ICLFPx1tWJdIkLN37kPVXPvM9SXTVslzphyXzeg8BW4fs0FrVEXdp/WZdavqJ
-	pp1Zxtg1r4JbZxNfWKCuNDy6KpbyWKn81pR81N0SqjWmLX0Tjv5oREpfgB5VwPlBCB0qjj
-	WdKA/2pm36PDBiGzDgn9YQc5677Qifc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C8956442D8;
-	Wed, 22 Apr 2026 14:30:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91268C19425;
-	Wed, 22 Apr 2026 14:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776868213;
-	bh=+AApuSx3VUN8zmQL3aTVwqVWL1Kh6nlC5CEFRlMZEpE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XsS4Z1MkUUltQ9hnKB98bBEiDYfF1hFZ1JtMBSsNSRkS0ws1n3u+JLIYk+aKCoxrw
-	 tMTbC/XcvqfEs8c5MLPIqgTD1uQnP90JwuT/Ys3zJd/lRDS+aj6qMZQHlynSYdD7Qj
-	 hO2IDF8sG1Pz2bjCly+NVZn0qHGTVHishJIzjEwdpsx+e/PdmO8I+k/TF7lJtbhBpy
-	 WppBjFM7VWAY8p2BReqnSNdMqu8t41/+iVe0IexXJpNMYI8fGHAOe1E7RSL59Dl+sl
-	 zq3Fs+rLGdE6pylbwsxdjOaBPRzSBu0ch7KaS2ZacFkLJ8UVZ3HftBh38fMtWIrNE7
-	 eNIBhZfBQ7UUg==
-Message-ID: <214ca3ac-45b7-4131-86e5-ac134ab0bcbd@kernel.org>
-Date: Wed, 22 Apr 2026 16:30:07 +0200
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=N4yIt8RCBj5FwRKwlPkkY/fC9xE/AMrCTI7LW9npa5s=;
+	b=gK3z+5oM6tocMeku7nRjKpF3W87UeFjWVd5V3A/sFwzDgVGsj1EUWWfSB3s1aCAA72N4Bs
+	gZgDVUbLRtctWftTt1J/sjMyyFEp0f7qEOtFr4OohJI+/IV+yJhIzmtHTMqpMwkMZT4xm0
+	kiWemHvazGGf6XvMF3LQy+EELOpVjU8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Q2zrwb6Y;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776868440; a=rsa-sha256;
+	cv=none;
+	b=8FIDNTvlba8KQyVoU5k18nkdSG3drjwjPD8HW3mMLUQtbP/3YaNiFC6KWNF3IipVtLQ3eN
+	6mlHLF6VfS3q8y16lcw5lS2NfjftZEbrMwARub+FEayJkxamXvLTvnBSfHB2j2jtCTWfz9
+	h+XQiFEIMa5K4xW88dUucZsGUrqPqQ8=
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35d9f68d011so3657736a91.2
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 07:33:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776868439; x=1777473239; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N4yIt8RCBj5FwRKwlPkkY/fC9xE/AMrCTI7LW9npa5s=;
+        b=Q2zrwb6Y/NYTqzhUQswm0kjUxCwGqJNpASd9Mv2L7JHQdVKBURJF66ewE6tXjflItS
+         cRTht5BZMobmdjsqkLrmiHbKXpTPZXv8okqfZ6k23TDRAvmYbIQMYZod9wuPoUpOUxGx
+         sftNA/+Hg/2t9bCWdLm77P3ysFcGVJHEGHq+BGl5qTrb1znol1BYYHWx+hlPD8j/wb1k
+         ycx8MuyJXfqfZBzVpCl/UZEA8SFU0ydeWoFZ3+aThuHLIs8MOV4/lraWDGwBxIBHje4L
+         N8dwQvgmzObYVltt0uXYfPsldBOOdJaL9U2pTV9Q19PnMWp+JOByYj0nkNAp7Iq1rx4w
+         No9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776868439; x=1777473239;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N4yIt8RCBj5FwRKwlPkkY/fC9xE/AMrCTI7LW9npa5s=;
+        b=a0Bksnfm+u3WSRPwmTgclgO/AZv7zWpwMJbWlot8slo/w8tM2BnKMPH9J2b5NuoUG6
+         WX7t2E6IVyejTfazQtSyMcNKaOYdPBDVyXMg+2SgxHorblnimgQJyedBZn6OXv86G6AF
+         d6527BZ7flLTITQQ5Ra4CziWljCEfRNKbHUn+Pm7MSgKnIh1UfdwU1HIIl61Fn46cJWj
+         1fF8UMIFJkc8XzeGFJQJC863zdMpQ136grcUOaAsa5m9PKskSUN1sarkqygLqgqt8Bv9
+         z23RJC5rG7rMAVoGsT3EoiuACd4RhEmIbA85bdOzikTo7v3Z9Wip5YJn09tWKLLObyaw
+         0OSg==
+X-Gm-Message-State: AOJu0YymrapzZR771SGCHJUOaklCmH85GIr4e5S7JLy6dnx414XxW83+
+	bWEr9pIV2wFv64BH3cM+wzWBtGdp26b6KGRtPQaZ8S+OzwT2twfZF/DG
+X-Gm-Gg: AeBDieviubK+IZWbjKaqlPgcu9AeumDcxM8OcQZIuY9yNpJf5z4FprnE1mS8vBGADGf
+	SSUEGMqL38/LyV67cFw0v5tY35fq3wzHhx0cYDk+QiDZMTEZo0/zX84TVcuUzDlZJJwk+WLcP/c
+	hJJP5wJOj8XwbEgnDlyjqFBP6ykSOys8/CW83+f6wzH4t99iAZP2RiY+ZkG4KYpyS0VqfY9S7Pw
+	jfn1ZS3l4Zh4t/M3brALt/6pPon4BcBNfckhyUAscyf0UB4f4SCRGZrpMQov1xELI523JuLhaHh
+	OLAljobMspcaanEEQoQtn8dgEnKGo8efFNu8HnyHbbq2BWI1rRxmXrJGKILplfK7SAisYfoy+ks
+	klavZEz9Ag5D9UBo09P6Z7vQtlFtC7GYa2iGWCsJpWfxccfCyFyGjYQvige6ljCTCTuFTqLqAb6
+	d5RlbpGCYroIFQaQjYjPH3cmYE3Jf1JMYbe9ShkRA=
+X-Received: by 2002:a17:90b:5383:b0:35f:b7c1:faad with SMTP id 98e67ed59e1d1-361404a727fmr22527873a91.25.1776868438587;
+        Wed, 22 Apr 2026 07:33:58 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-362c69b8257sm2569913a91.7.2026.04.22.07.33.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 07:33:57 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	Sang-Heon Jeon <ekffu200098@gmail.com>
+Subject: [PATCH] mm/hugetlb_cma: round up per_node before logging it
+Date: Wed, 22 Apr 2026 23:33:53 +0900
+Message-ID: <20260422143353.852257-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/8] kvfree_rcu() improvements
-Content-Language: en-US
-To: "Harry Yoo (Oracle)" <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
- "Paul E . McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Zqiang <qiang.zhang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
- linux-mm@kvack.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>
-References: <20260416091022.36823-1-harry@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260416091022.36823-1-harry@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 141B4100006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 1qme57csn15kjb5ngo6k33jans3n6jgp
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0B41540012
+X-Stat-Signature: 588sh6pm5bi3qmiex1thngf6a653pd3g
 X-Rspam-User: 
-X-HE-Tag: 1776868214-319654
-X-HE-Meta: U2FsdGVkX1+S1IOUi3IYsOteqSTbAUGKRh3BMDl6NO6gCT9HUzVrT6IKz3XSwDLV87jt3CFVKpVGnEECGlTVBc+KM7he3pzyUpQcQLM4RKM+aABitxBmXY0fiI9DC8VmpqiPV3V/BUmRy99CSXg5sNzv0qCTbdp/AAvZJOvyoFf6ZUln/HYA8Y2fOMRzuR780P3Kce9hWp+qy415huNB4p+INNAkqaVMn1quA0r3WlrN+3rPoRZkWICuTlEql+LkuEQbEsDOXc7HItekBiKH7QYl4LZeC0KWToyjwzWwopt0RhtrEiPP6rA9BhB0v0vEibdBvIFkK4mMjWzgeruUQ/thCmOi2X20brl8Rk8jKXkU1V+pxMEnu5IEspFa962v8+gmWJepCQ5O6it/L7Ch3VhVhi3xU8ejaACjJsEvK4iBYFFwR/6/jbGclYlrmHrYV5sSB67B/swcNUGMjoRG6U0/en884+e8X35F6r62gQo5RqtjwvMGbSSPLXVu5IkZIa6Jtf9QXmzny3DdUySMztGeUbs50r6fe5Qq0HdfASIH7E1Z+GuxDM9il+OWYgVCqGozvWvJVmo1fM/x74UVh8DyZyf/MXdC1Ab5kmrahST6gJd+yH8ZJFHY7WIWuFdkjt3lCx3/mXU4vtud8dOpKHLZhYucTSdJJdLLTcSm0IWJWfmnVKPtCIsrZVLqczkjqe4RHouCrCIHc7w0g3u39+mwUVs4l3lO8ktfXwC0adq2C2mk5fZH4gjSJcxn2/Davu616UY/fZ9az0QZ1Ly6mMGpWTeWWo59O+zMM1NPQOR390Oz/UzHo4EGGuzu1z4lTt+Kv+nSw2SAjDYlKsgvhXHEsW55ffXCLz1/sc9TspyzHfNBvkeLke0tcSOjD/XzfwrqA2AmJYTRkyStCP25MuETzdE/lIQbk23Hg0sQCDwTrzzezPfYg6gCEdYhIG74UEgI0U1yUDg68vWcvP+
- yUJdFIxJ
- PxpRRX5cwH7PRzwHWEeno0zNM4SeN0Oop74qw+4nvTdeKaQPXB1L9UYNXI+QGoe2HWyOSSJrn1Pu/5lO1TKhwyPZp/x+Ml53Aj4LvWDHOt9hUuXYb8UifvgmZLUYG+52BEZtTsUIIo0ac9K+seF1r3G7ocSg/Kl8xByQIkCJd0e8VjjQaF8SFWZ6ptJfw2iFjPIlobEjy/FSHqhREZBWiQESrsHGUesh4qkyrIGa76WToBTdzQ+2zk7kZ0+qdeS08QrxWwpVFY7vC8S5AfwYHwFjey/3RSsP8I+RcGnTeNln4IkUSCsBRG8267A==
+X-HE-Tag: 1776868439-693496
+X-HE-Meta: U2FsdGVkX1/EfBEoW8zJI3RvIRibqxJbxVXFcycvejCXNnshhg+cbCumjv9T1vqUThDBD1lb3NX4fDPkaC10sNR4qWRxztgteNQPtaTfuJ59vBLpFC/fBrGDtb4THHJiAmWLb+YHK5Lie6PgxrQRTzhxkD2ZOXGM3xRkR5aIWKlWsI/IDoV3cf1fw91NptwDDIUS68OGobCVSujTUeG/zafjb74dm99G9X36PaAP8Dz8CdtIzo1VLnwTZzs1cuIcCVNUmwabynBU6rRv0o7fEhVqdeTouCfHadOBCB1Bt1htdBLnlAMjxPTzB4Nna5I4J2LGzYEk543EeJ3TEHl63zpCDZ/WLPlbkr/FlWKShd4Sgoa5jdnJvcNOCe2xxDvpZcrOYbm2yTF2WUCQfjC5dbh6ADpGXCouS8ohfVit0eHYM55o4MliWj399gUZSPFkWMtkc+j+JSf0qTBedsv10WuOLE8RbCU8kjuaRKmB52xzASjZO8eRgmRHg3YmQ8/VGhpb5pTapknoTIGyku3LIRRgb0uEQvQ1MbJXPlWzhT4tAMTrVVsS7tdUxjjuf6XJgac2gPClSTA4G4fZ6kss5yNX0EbRrk+AbvAXXbw6YcSA+qfFSS+lyMb0ImGZnPEGiB4DmzL3XG9wix6LzvLLUFH3UqQq8KvrhaBqd/OIQx62wx1VrTfkgJuNW8HbReGlGbcBQjT1jXXpcizRSRJboNf058v12t6oSSwfWlami4DtP/wt3r4slLz7sGyLhML8sYKu2/d52DPlKqLrlE32+zyvrdev9BP28NBnBXpiM52ZhkhlB0q5w9CeZuikoEBwXP2qDsHp+MUzs83WDvPh+D3Szh2TST47f5mi8ykZK1K0g1Q5F6ORFeRdbdui0V0eSPpeeAoJXw+ZdFcIiPmLyEnUiYtW5z5kzEnos2ALfTJkhhqtH/MFc1Fv3/aNe5tWHZgsqk344gEA1hL5//w
+ GJlTa99x
+ /HxCH5F68Zd3wjsxc6SMtXZx7wPoTgNu5JEuVwMokjd53zRXI4Qq30vIjGvmR3ZDYnmJEnYF4ZR0AdWK95P8a09Lcr7SH/EJtXtrrkIuyiYPj494ZXOu3k3M8ITAq3bXDefhy6vtnV20ocpRW7CPssOr9OoKVxXvx1xQMzsM6nsPWbfkV7sObcDgbwtz5QakpxAbDAIbVwP4Jm515xT2nRRW3pw04ACUslUZAgO65B9xPuDY5wLnN0fqjUkSiH3sMbEKFOhGkhXk7T6uC9B7dUe+JSDxUg7SxyqETjMTanSHYcfiU0aHIgPVfN6LCCZoJQLxUqq6pO/kmOFn+lg1LW3HHzh62tG7W9tN1cE7pQhUDpPq+kxLA6zxxk0tctQbqd9BlCeqK/8cMbZSDSP7dQgXrBlmZ49aFQqvZAvX6o/+rKlVMVu0go04D3Nr2acWRo4BzFGhLKOQk35jfSbdD4bjCTPZhkjBPdrCt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,25 +116,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/16/26 11:10, Harry Yoo (Oracle) wrote:
-> # Part 1. Allow an 8-byte field to be used as an alternative to
->   struct rcu_head for 2-argument kvfree_rcu()
->   (patches 1-2)
-> 
-> Technically, objects that are freed with k[v]free_rcu() need
-> only one pointer to link objects, because we already know that
-> the callback function is always kvfree(). For this purpose,
-> struct rcu_head is unnecessarily large (16 bytes on 64-bit).
-> 
-> Allow a smaller, 8-byte field (of struct rcu_ptr type) to be used
-> with k[v]free_rcu(). Let's save one pointer per slab object.
-> 
-> I have to admit that my naming skill isn't great; hopefully
-> we'll come up with a better name than `struct rcu_ptr`.
+When the user requests a total hugetlb CMA size without per-node
+specification, hugetlb_cma_reserve() computes per_node from
+hugetlb_cma_size and the number of nodes that have memory
 
-"rcu_ptr" sounds too generic to me. Things like rcu_dereference() talk about
-"RCU-protected pointer" and it could be misleading that "rcu_ptr" has
-something to do with this. Only if Paul think it's ok :)
-But maybe just "kvfree_rcu_head"? As IMHO It's an rcu_head specialized for
-kvfree.
+        per_node = DIV_ROUND_UP(hugetlb_cma_size,
+                                nodes_weight(hugetlb_bootmem_nodes));
+
+The reservation loop later computes
+
+        size = round_up(min(per_node, hugetlb_cma_size - reserved),
+                          PAGE_SIZE << order);
+
+So the actually reserved per_node size is multiple of (PAGE_SIZE <<
+order), but the logged per_node is not rounded up, so it may be smaller
+than the actual reserved size.
+
+For example, as the existing comment describes, if a 3 GB area is
+requested on a machine with 4 NUMA nodes that have memory, 1 GB is
+allocated on the first three nodes, but the printed log is
+
+        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
+
+Round per_node up to (PAGE_SIZE << order) before logging so that the
+printed log always matches the actual reserved size. No functional change
+to the actual reservation size, as the following case analysis shows
+
+1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks rounded per_node;
+    round_up() returns rounded per_node (no-op)
+2. remaining < unrounded per_node
+ - AS-IS: min() picks remaining;
+    round_up() returns round_up(remaining)
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining)
+3. unrounded per_node <= remaining < rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining) equals rounded per_node
+
+Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+Changes from RFC v1 [1]
+
+- Fix missing semicolon
+- Add Fixes tag
+- Remove RFC tag 
+
+[1] https://lore.kernel.org/all/20260421230220.4122996-1-ekffu200098@gmail.com/
+---
+QEMU-based test results
+
+- arm64, 4GB per 4 NUMA nodes
+- cmdline: hugetlb_cma=3G
+
+1) AS-IS (beforce fix)
+[    0.000000] psci: SMC Calling Convention v1.0
+[    0.000000] hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
+[    0.000000] cma: Reserved 1024 MiB in 1 range
+[    0.000000] hugetlb_cma: reserved 1024 MiB on node 0
+[    0.000000] cma: Reserved 1024 MiB in 1 range
+[    0.000000] hugetlb_cma: reserved 1024 MiB on node 1
+[    0.000000] cma: Reserved 1024 MiB in 1 range
+[    0.000000] hugetlb_cma: reserved 1024 MiB on node 2
+[    0.000000] Zone ranges:
+
+2) TO-BE (after fix)
+[    0.000000] psci: SMC Calling Convention v1.0
+[    0.000000] hugetlb_cma: reserve 3072 MiB, up to 1024 MiB per node
+[    0.000000] cma: Reserved 1024 MiB in 1 range
+[    0.000000] hugetlb_cma: reserved 1024 MiB on node 0
+[    0.000000] cma: Reserved 1024 MiB in 1 range
+[    0.000000] hugetlb_cma: reserved 1024 MiB on node 1
+[    0.000000] cma: Reserved 1024 MiB in 1 range
+[    0.000000] hugetlb_cma: reserved 1024 MiB on node 2
+[    0.000000] Zone ranges:
+
+---
+ mm/hugetlb_cma.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index f83ae4998990..7693ccefd0c6 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -204,6 +204,7 @@ void __init hugetlb_cma_reserve(void)
+ 		 */
+ 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
+ 					nodes_weight(hugetlb_bootmem_nodes));
++		per_node = round_up(per_node, PAGE_SIZE << order);
+ 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
+ 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
+ 	}
+-- 
+2.43.0
+
 
