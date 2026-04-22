@@ -4,94 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA353F94CBA
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 00:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB110F94CA2
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 00:35:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BC4A6B0005; Tue, 21 Apr 2026 20:34:15 -0400 (EDT)
+	id EC8286B0089; Tue, 21 Apr 2026 20:35:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06D5F6B0088; Tue, 21 Apr 2026 20:34:15 -0400 (EDT)
+	id E79326B008A; Tue, 21 Apr 2026 20:35:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC5EC6B0089; Tue, 21 Apr 2026 20:34:14 -0400 (EDT)
+	id DB5E86B008C; Tue, 21 Apr 2026 20:35:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DE30E6B0005
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 20:34:14 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8899416146D
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:34:14 +0000 (UTC)
-X-FDA: 84684320028.05.0E48B0D
-Received: from outbound.baidu.com (mx15.baidu.com [111.202.115.100])
-	by imf19.hostedemail.com (Postfix) with SMTP id 8E5BD1A000C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:34:09 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=NyoCETLu;
-	spf=pass (imf19.hostedemail.com: domain of "prvs=md1566FE5EBB=lirongqing@baidu.com" designates 111.202.115.100 as permitted sender) smtp.mailfrom="prvs=md1566FE5EBB=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C8CFC6B0089
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 20:35:34 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D7EA8DA94
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:35:34 +0000 (UTC)
+X-FDA: 84684323388.25.CBA4A41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8452540005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:35:32 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EaB5mkUt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776818132; a=rsa-sha256;
+	cv=none;
+	b=3hppy+fWkUwKEn0d2NCt2oGB2F7Jxk++5gZGcXLM8C7tlDEGwGxiI74aHVN6a8BRe5gEWy
+	iAh+31h22VkSYff6k+WOYXammqmkKn05+T7f3jmfhQWzY5DR3TDMpZckPn30P0c7w02BBe
+	V9QJpuWQPcl0Y8LyDNGI2wFGfnOemII=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EaB5mkUt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776818052;
+	s=arc-20220608; t=1776818132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D1YnZDXM8ZdkVqdMf5R+9TKGz9uGHadQlJqwwH2++Fw=;
-	b=hFol9Xj6arVXb84EkeIZXi/nJTeWdgEg0vN1NH4w+wS7j7uWfOrvKXhSdb8ygP7vaERE6/
-	rVb0TxjsnSXEDmH1DXlN6LGJA+9+kww5LH4WJfMkAxwrlOgUc4qdTAjlmLjDx9+z4vV/Cc
-	yuHHxahJM8ZraNJApDZCdLjIC16nHpE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776818052; a=rsa-sha256;
-	cv=none;
-	b=rNw/IqDhtyowDPwViJ/DBhpeXvf/VGAjM2p8C2TmuSZBjPPuwdQIvVqAWXraxXX3V6mWik
-	ebkekyDxQQ2MTMtRPioPk/+SxLAaftyIfGmI6jpzU4TTgxkvKe/9kfsiTzvPeqZssHcqjB
-	JNDARsdcpl0yH+Wl81j4TsNEIqmvoiw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=NyoCETLu;
-	spf=pass (imf19.hostedemail.com: domain of "prvs=md1566FE5EBB=lirongqing@baidu.com" designates 111.202.115.100 as permitted sender) smtp.mailfrom="prvs=md1566FE5EBB=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.3.14
-From: "Li,Rongqing(ACG CCN)" <lirongqing@baidu.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
-	<brauner@kernel.org>, Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: =?gb2312?B?tPC4tDogW1BBVENIXSBmcy9jb3JlZHVtcDogcmVkdWNlIHJlZHVuZGFudCBs?=
- =?gb2312?B?b2cgbm9pc2UgaW4gdmFsaWRhdGVfY29yZWR1bXBfc2FmZXR5?=
-Thread-Topic: [PATCH] fs/coredump: reduce redundant log noise in
- validate_coredump_safety
-Thread-Index: AQHcyMFY/cw3SV8CfU6IGStSPD3DzrXqTV4g
-Date: Wed, 22 Apr 2026 00:34:03 +0000
-Message-ID: <7cb39b3d208649fa984ce5c9b4f7f5b4@baidu.com>
-References: <20260410080918.2319-1-lirongqing@baidu.com>
-In-Reply-To: <20260410080918.2319-1-lirongqing@baidu.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.31.62.13]
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	bh=lVYBYcbMKP9T66v2BVVHPkUpnYU8ZtQu2qMfVc8wIjw=;
+	b=1iimAI0RHRckB6v6R/0cAulmS2ZSKuWeBmGokSGfUQwzRQ0b8Msz6t5FXsMYQ8uPa91YlP
+	1TYXfnIG8Ju8XRhBitYTterr121diPCfYrAnCgsLUM+q+ShOGWuhqq/OlYPnl8reNoEh9Z
+	WjwRWN1VXfPR2/2dd2TGul3fwhmbaWA=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35e57611113so978036a91.0
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:35:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776818131; x=1777422931; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lVYBYcbMKP9T66v2BVVHPkUpnYU8ZtQu2qMfVc8wIjw=;
+        b=EaB5mkUtzed1153UgR40DXW0LF8T55wJxepRU0prVlSVWYC8perzgqcvJZhi7wyZMa
+         AygOuTyg1ogHJ2LtLakidmishZdw/r408DR0lv03YH3geYXNnEUo96bDJRvdz4Z2sFZ5
+         jUmtMqlFC1HXBvFPmDlqaSidcNvHDy/PkirMfhWfT7GODJpbScUbFZK64xHo2oNY5Qvr
+         l3xs9+gEBoapWcLDMibLXLJDvT2gyjfd9VtHntO+cBqrzA/8npDD5Z7XW+r9WWe0B5y3
+         M1LfCvxmcC5e6MXCGq46yZfZhYq7NO/fo2QJuG7OKLL55Wh2ij0L0P+1E7CRU5ZbybMC
+         aI5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776818131; x=1777422931;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lVYBYcbMKP9T66v2BVVHPkUpnYU8ZtQu2qMfVc8wIjw=;
+        b=AXWjm5bxWwn9xv4hlQdeMHIx5y8SHvlmwyFTFBbc89n+z6PnWXir/Dqc8ACpM8WI86
+         XOg6aMj7hJxq1qzaKpcK57ONjgzxDMxeuEi5RaBp9pBgKXddnCvRXcUun2nWXerFM0lS
+         3nbhS5vUrp1B0zTks5xr8XORF8lWfPWdYiPG0n1YQPgvcnbQkGSHO7g9NEku/QccdECN
+         zAZufuCatlljfQvlhokJ2mXTlPnvZOJ198+fAcBHE8JtMNnGq8Lki/Dn4hFS7WVmErzN
+         MRqGqMLpzVsALwT2lJI+URmuIahIUTrvoB1WcbCNHvJY3uFi15tW+K3owGA6DYyRW75e
+         6pYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/Uj23/cM8gcEWLvOfJUlNXQ6m+CdXJmc66AcV0/SxClIEN1lbgyIJXT2FZk10kosJCf0uQr0/4TQ==@kvack.org
+X-Gm-Message-State: AOJu0YzQ2ULdsxt/AdLwpYzT62zsVsHB7XAt1aS/pyvhzhW1pL3xMEUe
+	kA4n4kp1XmfQFZzEKGKnePP67V8eWGNISdEkYoQhFKIUQrwvXs09daHf
+X-Gm-Gg: AeBDiespQCMj3fZdtmGhNvyJ2xaeQZ6EHYRWKrULZjD+SEDjKmGkwpLpEkbe1jBmzI9
+	V1qOz8+n8z9BqwA+cRK/T95kuhiAAff18927HPY19NzXBhuhMsrWSxtO6f2ItU+iTx7N6Z/dni5
+	DM5RX7JcDwuMZcosdw0ivpr4pQaoLXDf0OWMeiHxaFCqAPoa27UDqrXi892DMguL3AQRNdfjl5n
+	p3Q5HSSORb/lLKKPNyCaf4mZQuwnt3e8kwNDLcy6DswtZ4RlP88GUaKxOqQ2PU9U/3cTIrTt4CF
+	5XNoZ6Bbo3mDVD8+xUfjcj9qWG/860tLcXmfJznlDALaIHpvAe1NuTWPZ0w5D97RaucvYLvV8sq
+	zov6GId9ZTQl9MAhuIZ/kq9a+h/5SYOvK/Rvo38htAqyJ6XK27oCc3lJqUg7X2bsFgMLxVINazc
+	ZisgRwoL32uB7K8xxb4WV8qMRJ8SOsx3ZggAvRtu4+HlI1AX5YP2rtR69eXIsSYi4ItDcy0wJXk
+	fYeuLcmXDL2RxZV0Uo9MQ==
+X-Received: by 2002:a05:6a21:62cc:b0:39b:91d1:6c10 with SMTP id adf61e73a8af0-3a08d916aa1mr11415454637.4.1776818130499;
+        Tue, 21 Apr 2026 17:35:30 -0700 (PDT)
+Received: from fedora ([188.253.4.228])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c79770512afsm11597247a12.31.2026.04.21.17.35.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 17:35:30 -0700 (PDT)
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: nphamcs@gmail.com
+Cc: ryncsn@gmail.com,
+	haowenchao22@gmail.com,
+	akpm@linux-foundation.org,
+	chengming.zhou@linux.dev,
+	axboe@kernel.dk,
+	hannes@cmpxchg.org,
+	minchan@kernel.org,
+	senozhatsky@chromium.org,
+	yosry@kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	baohua@kernel.org,
+	xueyuan.chen21@gmail.com,
+	haowenchao@xiaomi.com
+Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap release path
+Date: Wed, 22 Apr 2026 08:34:12 +0800
+Message-ID: <20260422003412.11678-1-xueyuan.chen21@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <CAKEwX=P6L=CeJCXkC+cKbZKYk_ORho3pLy476c8=BbDianx=vg@mail.gmail.com>
+References: <CAKEwX=P6L=CeJCXkC+cKbZKYk_ORho3pLy476c8=BbDianx=vg@mail.gmail.com>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1776818046;
-	bh=D1YnZDXM8ZdkVqdMf5R+9TKGz9uGHadQlJqwwH2++Fw=;
-	h=From:To:Subject:Date:Message-ID:Content-Type;
-	b=NyoCETLuw40NJbDLJZUAXcCzw3idY4usI39LwM9KcgoupYN8OMdEi9q5b15LK6Zbt
-	 OQQCRorqQ6Zmpwh9H/sMQJYNzRRq2ifDnC+ARiDwZzQ1uBLQ0rI23i63UM5C/MLiDD
-	 lcHZ0IVuKs25dQm2kw8wEmcu3FH9IeFmIERR9dDrIKKY3DYkBraPYfRFTg+I6w8u+e
-	 P6gWPpEaHgbjKhgdSB0ZFftaucxbkhGkFRQGgSYWoGvahVh6X3xQavjSV/rcSEEWlj
-	 c2rkZLGsanByZYCV/0toOKq6Pp27pO1sjV2PGbSQOC5pc35B8S4eaKu3kGcCTpUUvt
-	 DQTdZg9aeN0Lg==
-X-Rspamd-Queue-Id: 8E5BD1A000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: fmrr7647esze8tu5bz4fykst9t31oc7z
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8452540005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: w7mot9m5uxiyfrrjgep1q37y6oox5mgr
 X-Rspam-User: 
-X-HE-Tag: 1776818049-819934
-X-HE-Meta: U2FsdGVkX1/+OUXm8rwA0mHBiZruh2pljNLX0REV4CkvhxFcibjmir0XrAHyXnZLQ4FJR4+biGSBqCUdqV7VfSLsMMcb+frqEh7qhEOA0GzR1d2Z+BNuW39oyxl/JF1hnJuTu8wFv2Tv2m8KS68svdNLcOJUTmQTd8RbXn1P25HE7K0Oov34j1/Gu77iecAsohhXL6WOh8bdhY0iCKzpOUBrUyzeqHHbAFCRZ1N33z9X08WM8QIX0RG+3RgljIsEW7UNmn9pwrlqQzvaOW+0F7RZD0RQZG4ba9NalSK9g0GgCraF/lRQ0uM0Z9SrfWYu8/0ZTYndiZJuV/80xZF3J8Lt7Vc45AfPodTo8fE92ytNdMPgTHvo53BDJMJtvObXisPZfGVFcfCD2+su04TBxx91pSTtwcHrBD9f8JSbTy6ESvPCmwPSYKyjNZoFKsKsCvQfkpBdqu77iAmn3s2jqi5kMjaiDtzTF4fzBIFAOvQLSyARxf87fVLa0uAF1ghr2aV6xHhbN7jF54LKWkQpFg58YjeLiPVORBX0sCUMUKdhxTKsZ8b4buCdfQTkrmvE9WO0fEb+j1eCX+VVKOD/FL4f8tpj6s83IaSJ99VkAZs1sjlWPtjCBFaJqE8YY8jWiIld1cfnNhsveW8DB7PoaK/N1RVrJLrtQFxHJst3egnep0zRRVfLtIRGxsI5H62wVxjC6KDvhHux/rlR+kZptB2dtzHq2YPh0y6tQOZH02M89EkL6axO5uEzpY06NpsZp/VovZxtw28x6cDKSX4Sa+wqQU06ZPS4EZs8bp4gZuXuAIVEyX09RrObo7aaDo9wiPSu6pue0ggUWja0ACU+/oJ2B2igVEvasGS7URRfAq+zoCefiNPCaYCunL77lJm6IS++BkjYTxsIBjSiNrL2rKHrDve/YQDl7ILca2sTiPz8jeKTphK+aUMf1+VlSAofRK7WHA7AcsBmaZMF9jk
- JFvvob+x
- FyFBTM8Vxu5fHa6Bk3i/BruA5EgJNCLhiaoHkIkI0JDlnmt4gYQOV93UzRN1M6P3amfGhO1P0GqP+p0rIqUnSmPr7kbNEWsR/pVN/LQRxZSzk5iY0GBKcPsF4PeK0QQVc5ULN1/F1suHxDbjDMkxK7GRC6gOXq2Rwg630Tcqy7kLcXFD7kgKql/qb0aLMYa/3TjahaNhpIYVAtsSXJT4lDHomsxq7kKeCNeF8F2/ukWFJJUt7KCd8pY4h0/ILVM8e99gq24pTxgEhOfKk0V9RfIYuW4oO6/tnXeZutESQ4jaZ4lo4X9QAi7dHOlHj5UUAMDpLhrIkB3yDycZf9taDk0vUCvCkoCdMlchzBzE01Bf+j5KNebr/lqij49p9QemyH2Cgcucs2nhhyvGKVhISOaccNmIdmok9H5OyTO2huNsCziFR03Qq9LEWomuS43z9Xymvxda3jAJTJlpVUEyC1fmeEk+k4FJ0vtjVQeihLBceEVaqGiJm3ZzqNqVC3Q1tLTEXWSlna4zkwkZcJ4P1wd1fsXGCVbClrNEUlqhYpMqCK5rgOdqBOySMpXpiPLjdh59UGmCivNsy/olPRBUty9EXHLh9lJg9SEa72PteyWL2n/tdeT3LeYmRCzX2G7ciHkaLyh7rM68hDAZ16TKVU6ZXWg==
+X-HE-Tag: 1776818132-560258
+X-HE-Meta: U2FsdGVkX18SEqwYmANNFOPb2pmNrt3Wt93FIou0TOtayUVCvLgL4CBMebymFpCLLm3f7vBtd8cTXuqtMdumO/4V2a1J4PCcR79A7MyqTTtP901FQ7D3VGJ59NVAUQ4pwKxIE13gBeWtexHIfkeAFNF5M/329YNca8dcjQ1jn0pOAt7R4GHPJxJyJflRCXZTB9vCFd/SECi4y55Rp9FDFvXXDxkYAxoqGNMdhohLcZDbtfUMp6m93ou52VEL9JvRYL4LJg0QLSjvx+wJFkyCqNNZ9LhjYUD/z6hhIX5O+f8wzmQJgKyE9uVBFxtJuhgnxogHxNUj4kZkV9yIzB+OywxcJLZkAIGAKsjMp+WGIqqyUWC56hGpdU7czLe5yk5rNqEvAnDVhQ6w/ZHpW9ZIqUSRY3zDaHWDyv8X4wL9DTNBquHib0U+LKHe7BJDgZPI63QPR6tkNoMrr95ZiFmjvJrHkc2OQkq0BbM5qzeKVC05yEsZ6Wq9yfQv2Wj8p5I5I2qYDQ4f33RXOaXTPUna+j/s3uCt5OYu1eABnQHfQGl+a0eR2b30KldFn87QlXIbNyREzsYD//DIOFZUpYgDi8+ZPQRVjUv+C7rAcPkYkUDA90fQ2TledNA595SrhHMWQU0cbdbqP1iBSV8n7fC8wLxXN15nAnf2wLSEDwGYhbRxIHFzVVsNB27TD31VkDcjJwqx11BC7W+nmAYMTCVXihzeM6FpdX8arzzTa/yTuXseSzDJUdpxqG6NKUP1D14+kHzK+RyIQJsNBXGfveQiZEAsd3PDfinSnJbXAYfvRqTQuyDc02yxFIgOiQM+0WVr8GuZPqNvbbO2aWhtioLuVhqMO66TNNVN1bCfNs64WvpvG3XfIZQKNN7rFkfDmYj0HB3iCF+7XEU7JJH31AB/0DszDV+1/kzCPAAJGyT7eRPngRcV6SNxrCWThrHJ6HUHj+hlo9nnKOknYztiUFd
+ GeEeMwKY
+ ksyimupWMmsss8plMaBAYSFDAG4l3l8Ba0+xGa7grndKVn2pJaEqw3ynNX6bkHfv/omTj3arYrstLdTCMgyOfKB26l1HuhquuoJJcFTyEi6JmlGtLSbAWwJr6pMErkw2sM5Kr2GXxRY7T7wrpOr9w1OYiog+RkKathOuGSau4OjbLI6jOMET/54tsKCrpwBJM93VJ+j9XwWNBrWn0YuYi3RmZnjV1klxWdN+v5EDPGGRaJBDTQsHQPgN13uwSKKezR7ZVMajns6tx8ltQF5gz8kH3zZyookGmpdM/b3BhMypGpt2qEJ7H5KsXnc0urWinwwyCMpjb9hramDupQcKaL/M7jvGsV+DXkeMkDhdS9r7DLrJ0o1FxaFMp7qAauzJiVpTDX86auSQvL7Jlh6EYExWYCSB5cNoElhQLPT8EwHi2+Pgk8GFTPgtiJNmUAoXkkIGFj1teuhRwCDjIYEPB2gIzZb/TqBOOFOco5mhEvGn5NNl+PphBnqhrOo61wOMjReYq5Ujb0GzvzU8GA+A6ArPx9RBFVSjh2KM606SuPhAqACY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,42 +133,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DQo+IEZyb206IExpIFJvbmdRaW5nIDxsaXJvbmdxaW5nQGJhaWR1LmNvbT4NCj4gDQo+IEN1cnJl
-bnRseSwgd3JpdGluZyB0byAnY29yZV9wYXR0ZXJuJyBvciAnc3VpZF9kdW1wYWJsZScgc3lzY3Rs
-IG5vZGVzIGFsd2F5cw0KPiB0cmlnZ2VycyB2YWxpZGF0ZV9jb3JlZHVtcF9zYWZldHkoKSwgZXZl
-biBpZiB0aGUgdmFsdWVzIGhhdmUgbm90IGNoYW5nZWQuIFRoaXMNCj4gcmVzdWx0cyBpbiByZWR1
-bmRhbnQgd2FybmluZyBtZXNzYWdlcyBpbiBkbWVzZzoNCj4gDQo+ICJVbnNhZmUgY29yZV9wYXR0
-ZXJuIHVzZWQgd2l0aCBmcy5zdWlkX2R1bXBhYmxlPTIuLi4iDQo+IA0KPiBUaGlzIHBhdGNoIG9w
-dGltaXplcyB0aGUgcHJvY2ZzIGhhbmRsZXJzIHRvIG9ubHkgaW52b2tlIHRoZSBzYWZldHkgdmFs
-aWRhdGlvbg0KPiB3aGVuIGFuIGFjdHVhbCBjaGFuZ2UgaW4gdGhlIGNvbmZpZ3VyYXRpb24gaXMg
-ZGV0ZWN0ZWQ6DQo+IA0KPiAxLiBJbiBwcm9jX2Rvc3RyaW5nX2NvcmVkdW1wKCksIGNvbXBhcmUg
-dGhlIG5ldyBjb3JlX3BhdHRlcm4gc3RyaW5nDQo+ICAgIHdpdGggdGhlIGV4aXN0aW5nIG9uZSB1
-c2luZyBzdHJuY21wKCkuDQo+IDIuIEluIHByb2NfZG9pbnR2ZWNfbWlubWF4X2NvcmVkdW1wKCks
-IGNoZWNrIGlmIHRoZSBuZXcgc3VpZF9kdW1wYWJsZQ0KPiAgICB2YWx1ZSBkaWZmZXJzIGZyb20g
-dGhlIHByZXZpb3VzIG9uZS4NCj4gDQo+IFRoaXMga2VlcHMgdGhlIGtlcm5lbCBsb2cgY2xlYW4g
-ZnJvbSByZXBldGl0aXZlIHdhcm5pbmdzIHdoZW4gcmUtYXBwbHlpbmcgdGhlDQo+IHNhbWUgc3lz
-Y3RsIHNldHRpbmdzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogTGkgUm9uZ1FpbmcgPGxpcm9uZ3Fp
-bmdAYmFpZHUuY29tPg0KPiAtLS0NCj4gIGZzL2NvcmVkdW1wLmMgfCAzICsrLQ0KPiAgZnMvZXhl
-Yy5jICAgICB8IDYgKysrKy0tDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwg
-MyBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9mcy9jb3JlZHVtcC5jIGIvZnMvY29y
-ZWR1bXAuYyBpbmRleCAyOWRmOGFhLi45YjM1N2QyIDEwMDY0NA0KPiAtLS0gYS9mcy9jb3JlZHVt
-cC5jDQo+ICsrKyBiL2ZzL2NvcmVkdW1wLmMNCj4gQEAgLTE0ODMsNyArMTQ4Myw4IEBAIHN0YXRp
-YyBpbnQgcHJvY19kb3N0cmluZ19jb3JlZHVtcChjb25zdCBzdHJ1Y3QNCj4gY3RsX3RhYmxlICp0
-YWJsZSwgaW50IHdyaXRlLA0KPiAgCQlyZXR1cm4gLUVJTlZBTDsNCj4gIAl9DQo+IA0KPiAtCXZh
-bGlkYXRlX2NvcmVkdW1wX3NhZmV0eSgpOw0KPiArCWlmIChzdHJuY21wKG9sZF9jb3JlX3BhdHRl
-cm4sIGNvcmVfcGF0dGVybiwgQ09SRU5BTUVfTUFYX1NJWkUpKQ0KPiArCQl2YWxpZGF0ZV9jb3Jl
-ZHVtcF9zYWZldHkoKTsNCj4gIAlyZXR1cm4gZXJyb3I7DQo+ICB9DQo+IA0KPiBkaWZmIC0tZ2l0
-IGEvZnMvZXhlYy5jIGIvZnMvZXhlYy5jDQo+IGluZGV4IDllYTNhNzcuLjMyYjQ2ZTQgMTAwNjQ0
-DQo+IC0tLSBhL2ZzL2V4ZWMuYw0KPiArKysgYi9mcy9leGVjLmMNCj4gQEAgLTE5NzUsOSArMTk3
-NSwxMSBAQCBDT01QQVRfU1lTQ0FMTF9ERUZJTkU1KGV4ZWN2ZWF0LCBpbnQsIGZkLA0KPiBzdGF0
-aWMgaW50IHByb2NfZG9pbnR2ZWNfbWlubWF4X2NvcmVkdW1wKGNvbnN0IHN0cnVjdCBjdGxfdGFi
-bGUgKnRhYmxlLCBpbnQNCj4gd3JpdGUsDQo+ICAJCXZvaWQgKmJ1ZmZlciwgc2l6ZV90ICpsZW5w
-LCBsb2ZmX3QgKnBwb3MpICB7DQo+IC0JaW50IGVycm9yID0gcHJvY19kb2ludHZlY19taW5tYXgo
-dGFibGUsIHdyaXRlLCBidWZmZXIsIGxlbnAsIHBwb3MpOw0KPiArCWludCBlcnJvciwgb2xkID0g
-UkVBRF9PTkNFKHN1aWRfZHVtcGFibGUpOw0KPiANCj4gLQlpZiAoIWVycm9yICYmIHdyaXRlKQ0K
-PiArCWVycm9yID0gcHJvY19kb2ludHZlY19taW5tYXgodGFibGUsIHdyaXRlLCBidWZmZXIsIGxl
-bnAsIHBwb3MpOw0KPiArDQo+ICsJaWYgKCFlcnJvciAmJiB3cml0ZSAmJiAob2xkICE9IFJFQURf
-T05DRShzdWlkX2R1bXBhYmxlKSkpDQo+ICAJCXZhbGlkYXRlX2NvcmVkdW1wX3NhZmV0eSgpOw0K
-PiAgCXJldHVybiBlcnJvcjsNCj4gIH0NCj4gLS0NCj4gMi45LjQNCg0KUGluZyANClRoYW5rcw0K
-DQpbTGksUm9uZ3FpbmddIA0KDQo=
+
+On Tue, Apr 21, 2026 at 11:25:17AM -0700, Nhat Pham wrote:
+
+[...]
+
+>Hmm, free_zspage() and kmem_cache_free().
+>
+>* kmem_cache_free() is just handle freeing. Bulk-freeing?
+>
+>* free_zspage() looks like just ordinary teardown work :( Seems like
+>we're not spinning any lock here - we just try lock the backing pages,
+>and the rest is normal work. Not sure how to optimize this - perhaps
+>deferring is the only way.
+>
+>
+
+Hi Nhat,
+
+Currently, free_zspage() is called while holding the class->lock. 
+However, free_zspage() eventually invokes folio_put(), which may acquire
+the zone->lock.
+
+This creates a nested lock dependency. If multiple CPUs contend for the
+same class->lock and the current holder is stalled waiting for the
+zone->lock, it significantly extends the hold time of the class->lock.
+This causes other CPUs to wait much longer.
+
+Here is the ftrace data showing the severe contention on class->lock.
+Under contention, the time spent in queued_spin_lock_slowpath() jumps 
+from ~1.3us to over 30us, significantly increasing the total latency
+of zs_free().
+
+  7)               |  zs_free() {
+  7)   0.220 us    |    _raw_read_lock();
+  7)               |    _raw_spin_lock() {
+  7)   1.320 us    |      queued_spin_lock_slowpath();
+  7)   1.820 us    |    }
+  7)   0.170 us    |    _raw_read_unlock();
+  7)   0.170 us    |    obj_free();
+  7)   0.190 us    |    fix_fullness_group();
+  7)   0.150 us    |    _raw_spin_unlock();
+  7)   0.170 us    |    kmem_cache_free();
+  7)   4.610 us    |  }
+
+---------------------------------------------------------
+
+  7)               |  zs_free() {
+  7)   0.230 us    |    _raw_read_lock();
+  7)               |    _raw_spin_lock() {
+  7) + 30.100 us   |      queued_spin_lock_slowpath();
+  7) + 30.600 us   |    }
+  7)   0.200 us    |    _raw_read_unlock();
+  7)   0.170 us    |    obj_free();
+  7)   0.170 us    |    fix_fullness_group();
+  7)   0.170 us    |    _raw_spin_unlock();
+  7)   0.210 us    |    kmem_cache_free();
+  7) + 33.850 us   |  }
+
+Best regards,
+Xueyuan
 
