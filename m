@@ -4,97 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21C3BFA1FD0
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 16:16:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8597FA1FD7
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 16:40:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 531EE6B0088; Wed, 22 Apr 2026 12:16:24 -0400 (EDT)
+	id D95846B0088; Wed, 22 Apr 2026 12:40:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E2B16B008A; Wed, 22 Apr 2026 12:16:24 -0400 (EDT)
+	id D46016B008A; Wed, 22 Apr 2026 12:40:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F8646B008C; Wed, 22 Apr 2026 12:16:24 -0400 (EDT)
+	id C5B7A6B008C; Wed, 22 Apr 2026 12:40:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DE456B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:16:24 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE62CB75F3
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 16:16:23 +0000 (UTC)
-X-FDA: 84686694246.21.31EA1F1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C39FC40015
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 16:16:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=grwWin7u;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B52E76B0088
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 12:40:30 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ED46912036B
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 16:40:29 +0000 (UTC)
+X-FDA: 84686754978.02.A116177
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 49AB51C000A
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 16:40:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sgWr7Be6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776876028; a=rsa-sha256;
+	cv=none;
+	b=bBUk3RHmXK4zm5ApHFyh3KpV4xDjck+xMrz4vXS7gF10andX0SmQ1Z6mSM9zb3zidM6M+e
+	Bdd1OrdWhAoIi3cfdcgavSpjfKqWODYRC0+pNiL4tOntmHbDS35vgoi+7PppjQp8mnN/7l
+	uLiUyoVHLOh9wG8urkU9ELzsYpp3nJk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sgWr7Be6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776874582;
+	s=arc-20220608; t=1776876028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h4eanJxpXrlVIm1nqyyHsFboSSOCzHcJax3wSI6MyVc=;
-	b=4sXiueIvIv1mjuebpov1UWVnV62lwal3R+PbVVqYzUfbtriDCDzcOlzyUJNRefEmi9iIAo
-	65R4GBj+yJZOgCj0MTwT7yiJVjdd/PRu7jOfgSUGfDYf7mjOWK09SvofZtDs92IZqAXL1t
-	MUK6mZOCMRKuru+eXKjvs3LlZYCBJcs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=grwWin7u;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776874582; a=rsa-sha256;
-	cv=none;
-	b=Y/fOddOYJdmVh7M5Wrz30uONA8Johce5n8P5jPItP7aoPDIzkR2QcSd702ZiPzxOYJkQK3
-	v/BGI6SAbsHmibL3sfFURHuEpm0dYy2IZlV3XYIpnPYP3qzEUPQzgsCWjAXiot5u8VoLnP
-	+bPfslmBYnoU/o1Sx/wGE/QIG5mFH4k=
+	bh=uXCZ9liny0ibaRRmg5MRNArL0gN+gBKBflsqo0kXWSg=;
+	b=ZsHYDDTHG1G1/2dSNr54N3ePEGRG0np5eIkWi01/mhUzFxf4njirOQqwAEBupXtb02EWwD
+	F1V1Xjtbt4y1oCJWmTonvA2YaVVMvfOekMSQyvKEzA1IjLQuE+5Vo0+/uUSVF8WQ1i6CVA
+	oFCXYJPTs7ov97+OqFj470Dyvx5pe5M=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A127A442E3;
-	Wed, 22 Apr 2026 16:16:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A938C19425;
-	Wed, 22 Apr 2026 16:16:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 331AB61332;
+	Wed, 22 Apr 2026 16:40:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28124C19425;
+	Wed, 22 Apr 2026 16:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776874580;
-	bh=h4eanJxpXrlVIm1nqyyHsFboSSOCzHcJax3wSI6MyVc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=grwWin7uGtk1gv9Nd1Kir0V4xj0jvFveBwjVZTD3oGvKd49DvP5u6v8pEMgDFDEjK
-	 8nYa2WCbvWrBg5cb74IPu+2P+U9wU/yhdPaOqzO5cUzFvd4PzavFN7L28PfJEZDPiF
-	 oLViFud9JXn9Npa9J8F2Ld3c1PGSx5TEwas8y8pU98z9/7dYZBSIakuK52Nf4yFlCG
-	 mQxzHhQt3J/6+cF0isxEoI5Mt2wE37hXmACmFH/xwAwXC6Hm1OvzorlgTf3QipY+1O
-	 gOIhrL6N3RePh9Xdb1iRqXASSdxlfTFU4c25o88bdWKKIH5xF04Of98tB7atP/5Bdu
-	 3Uczsh5tPB6AA==
-Date: Wed, 22 Apr 2026 17:16:12 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Yibin Liu <liuyibin@hygon.cn>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
-	"viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "brauner@kernel.org" <brauner@kernel.org>, 
-	"mjguzik@gmail.com" <mjguzik@gmail.com>, Jianyong Wu <wujianyong@hygon.cn>, Huangsj <huangsj@hygon.cn>, 
-	Yuan Zhong <zhongyuan@hygon.cn>, "jack@suse.cz" <jack@suse.cz>, 
-	"jlayton@kernel.org" <jlayton@kernel.org>, "chuck.lever@oracle.com" <chuck.lever@oracle.com>, 
-	"alex.aring@gmail.com" <alex.aring@gmail.com>, "vbabka@kernel.org" <vbabka@kernel.org>, 
-	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: =?utf-8?B?562U5aSNOiBbUEFUQ0hdIG1tOiBBZA==?= =?utf-8?Q?d?=
- RWH_RMAP_EXCLUDE flag to exclude files from rmap sharing
-Message-ID: <aejzSsiXZBK1emv7@lucifer>
-References: <20260421020932.3212532-1-liuyibin@hygon.cn>
- <aeikm2e5Gh5reJ30@lucifer>
- <bc514883d6154420b3cfde4ab25a20c7@hygon.cn>
+	s=k20201202; t=1776876026;
+	bh=DD9wR0CVcjkt1o1rnlcqO3CHhefCQ8vj0jVoRmhcPrk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sgWr7Be6YLxsr2RHnnSdgwLMmawN1WI0MHvXxzUcElKlJ4mjBd2EeIIGG/I7RRAoq
+	 T3JBuMnGuwZMqTBFciw+yOqhfaz1RNpn/O/PXJWZoM6CpeKVTk108UHCQ99hoFXwjK
+	 nrrYs6byef69lX+NDLIDhyIxb4myvhtSTFMjuChlcZ+pDT/WNp/P/94WBzOhZi9V46
+	 IHez9Xg2fgEmUVkuSsDD6NpDwhwht+eTobaeLZhIzVcx7fc3/E/vtp6JDsJuhfQ714
+	 QSp7sspx0JrvcQTMQmk2k9vOPZ+FGpSZNrNpryPap0hLgasQtb5VSr44dugEYMkssG
+	 Ce1u11MbX48aA==
+Message-ID: <a6f17c2d-147f-4d32-b7e4-181f3e002942@kernel.org>
+Date: Wed, 22 Apr 2026 18:40:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bc514883d6154420b3cfde4ab25a20c7@hygon.cn>
-X-Stat-Signature: h8gzxaaryh66sc87bm1yktfhtr1sjzn6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: fix regex pattern in CORE MM category
+Content-Language: en-US
+To: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>
+References: <20260422123726.517220-1-pfalcato@suse.de>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260422123726.517220-1-pfalcato@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: pct7zoewi45qa4nhzo6c3m8ff5aqwiwk
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C39FC40015
-X-HE-Tag: 1776874581-378328
-X-HE-Meta: U2FsdGVkX1+LBdtVZsWoslGvmAztoBM0TK54lvmCmsAmW1rDWxnO+sicfqJuHdwDCX2fANmkvRY7anbdA1Yap5tSN20HFVtptWLAS+xE3TxkBCrRq64XeuPvAK6hOdnCBduXC2F9mIsBtvTvWWgtV9g2r2Pzrh4xgZaIqaPvm1S3t9F1YGUGtAbJLv2UkU0Fm6hKEAi7IMA6SgJVIUksg55M3dnlbCmdszcRDaoftH1FpbdQRmyLX9plheUKgsgxncSUBOD0K1FbJ0IhcHZrsOEXXb3DbRDV8paMVg4+x/2ZTRtpJSgPoOQ3ulW5rp+ozd1i3xMUR3PPiYrsp6IkoR/nQ7d/6Ty58ZH07edXGz/Luf5sg9Rkzgi8550myXuQjn6BmTKSm27IEqnZh86XssrsyzB5SvZ9yJB5WdhszQOdnMxLJ2KNnIX3WYdoJXxUjkgdzneIwyQxoxKThUQS+3LSI4m6LGBvdeDz8aszDwB7JbCfcsg0scQWTwzjgC0I5qFNW3ZrDOh1qYcUHO0tz9t4mMTtNNc01u8Mx6L2xMoer+DFjHQYX8O01XM9LRoFsmApVKTTbnSTWJXtz9N8ibrTJoudfB6lIOEAd5qmvZyeIoW2hEjsJQnyrAb1QMvkO+UzjM8IxMeJ9JuXOVHFV05vcAWARa3ZOl8352SP/stsjCVG4py7FfM8aTtHq5n2mGUJEvASWPIUYnwo0W5MfdBKwAcQI5iu09TCX2a0ppROwcrFjy5V+BHX9VjW98+qiWGQHIvAilD5QOOeQd3YqLPL/zxJY7esElNrid/I0sylKaEvxveYCxbAObMTyDSzY4YlSp0xjiA37urx8N0+YOK5bbwm+3z+iFjD8laiD/azIijsARRVOz8c3mkLxLOGpIDACPSK7ckFSyeuNfD10NdGq3ByTI1fmfcJYFr6BIWKJ9SYuitAL0g3iPV8aPXdzj6hi+UNSBfqAxdVUzn
- SQYzquTn
- VCZwCpn7EM7ty/kEyNABjF26ZVmayfGQXUv5WiUWkvo6bwHfiW+X2OCqQUShhBeu4Zkgi9Q0tKRx+6aL1Q4eBVuwny/Kt3w5gpW4oAiQ8uznU12vnoggIyHkFZ3XO+q06qz3B/6w42WGewoLvhf4TkOXALeQRdpbs89M+VTbNmMsNbOWtRUlXrYAbqYKycHv/k+6OKPlm5s5VIUtpNAd8k+cTJRxlUAv5wlu4XvlEqpsCzBLFN5fbib95JjA4DZ4NIV8Uw5Ag7zFjkJpBA9MIb/5ULObpS9qMdjokUzbge2U/kxAMw/1RhRhwY/6dzHQQxMmUGqxlmc9EIoxq5r+HYK0IrM98+jsTWe7b9IBgzAfV1U3vZxSGHM+OM0ChF92zdpGew5ed2vF5PtGJL39Fd1tg8T+zDRZksDCdtrnuzYLUp9+nVXBi5zkjMnjsK6XLOtdkcNCHFLYQ6ggoLBAifiID2cE+IBdviRrUwAZLX3XNp2rDiqJROjZxAUl+u6xSDbLw
+X-Rspamd-Queue-Id: 49AB51C000A
+X-HE-Tag: 1776876028-77276
+X-HE-Meta: U2FsdGVkX1++/B1/GUMqZaoOWGPX5Pdq1kEXrzSd3E9MCj8hmC7VM9EIDkTdlmlMtSiR1+kDuC/fBoMlowT0UN6G0jEBSZpF5A6aKVlps4mUAggVLQmmsmQNaKHykcPpYSExlMA13TVl3b2spC83sdVZAiab2OtOWdN/Gujh1rmS//A0wQ0RTub16he6en0ydYhw/kA26iAMYM1/MU0hI+k6okbH42ZD0sxMpe1iLdscv67Vv8zyADR/wnzZC9FSKzzCMdV7U38T52lNROwIdZLMBjPtLDF3FOfSsPuvw0z/bdNkdOQ3BIM8gRfGXi8lcZu58NnvogIfq9y3Uim333XPSVCH9B3WpttRXPPVrqSQMi9KhWBceC09dJc44z+HXkVdw8Wqh7dj/1QvpvilAHZbCkPSaHpOTY3clgvtLQvRdV5qe0vbdWAMhkBk7A1JcDawf/yUsPtyBcT3WSKqsokgRS4iaIxjcbMNvWp1GOPgxJibjgvAGTCMfgIT0FZN1UQoDozuLfrfCXOCuAIG09l/x+2+w/NnFMnKcYxYxBZfl4qKZNGwQQRMkt0yszNzhftsq7zqxaefTwY60gUpXqKwiqIYLOMfUSdaxUmqqyIvS0Jq9p99gU0IpfD7ar1qIOIQFHqa20sCu0YP5S3mbSfHQfqNYeTjz2m0/2tk3tmmXXPzq+f+TvxSQcbqrlyXlhqoW9jUUwjN55f6UWuKVNmuNhe1vrjCi0VO1W1QvxO0gjZP8S4P1XP0dgo9BMWENOiZxf0qAFkNT7FCN+yrJRdQUJgxCHR8V3KFto0KZI8y/yPy2bKTvJSedI1/4p3BAT9A7XrJyLExUlWizIS9Zk/a5oC2QHC1oCgH7ZZpfV7MXGQI3FZxxfG9EtwWrDt5eFq2CO9m32EgFn0w0CrEd6K59FqjWlkzFTt8EElS+kZAsQN+5ho90d4Y4tCldbLjMnwlC6r3MXmUjq0IU8l
+ /MjH4I9H
+ pVFtF5ro9S92jbiiSWGcEJl6xHyP3nbqP+QGzkVACcwnMjVHGUOz5bdGfOt5hl/VwuZ/nn9C1R1Fyj2GCeZyPJsLrKStTykPXztsgp7o7xevt4PIWFe4R8hLqKvjcl0kxYvkDjhd8XmzTynA6MxTjGjcBbBWB2bOHDUmJoO31l03G6pIchvxa+DDequDqrkE/c1SxeVRoYzK5C3WMbHVqeDOSNdem+mleq3FQDMtaTUNZMSOMq3UeJrywRMQZ8ULyKDdkE9gxcSmMEgaPo43gegZgfrSxqxVO2Ov4kbEHIn7EILOu6m6dX8X3nQjsB0sGI9zATNCe1E+fJBxs0fJHhRiaXI2/DXKO/ZBKojDcoTSIYaE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,49 +96,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 12:51:06PM +0000, Yibin Liu wrote:
-> First of all, I am truly sorry for not using RFC.
-> Secondly, I omitted many maintainers because I wanted to “not disturb too many people”,
-> and I apologize deeply for that. I will fully follow these two rules from now on.
->
-> As for this patch, indeed, as Matthew said, the truncate part is not feasible.
-> My original intention was to apply this to frequently used library files like libc and ld.
-> Contention on the i_mmap_rwsem lock (which eventually turns into osq_lock) caused by
-> these two files alone reaches up to 70% in the “256-core execl” case, as observed from
-> flame graphs. Besides, no one performs truncate operations on libc and ld anyway.
+On 4/22/26 14:37, Pedro Falcato wrote:
+> The pattern "include/linux/page[-_]*" matches every file that starts with
+> "page", because it's a regex and not a glob (so it has the meaning of
+> include/linux/page + match [-_] 0+ times).
+> 
+> Fix it up into a more regex-correct expression. Doing so reduces CC's
+> drastically in patches that touch pagemap.h (which is maintained as part of
+> PAGE CACHE).
+> 
+> As a side-effect, move linux/pageblock-flags.h explicitly under PAGE
+> ALLOCATOR.
+> 
+> Link: https://lore.kernel.org/linux-mm/20260422005608.342028-1-fmayle@google.com/
+> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 
-Interesting, would be good to see these? And more details on the scenario?
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-What workloads are contending that exactly?
+> ---
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d25342ca8aa1..224c15299acc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16804,7 +16804,7 @@ F:	mm/sparse.c
+>  F:	mm/util.c
+>  F:	mm/vmpressure.c
+>  F:	mm/vmstat.c
+> -N:	include/linux/page[-_]*
+> +N:	include\/linux\/page[-_][a-zA-Z]*
+>  
+>  MEMORY MANAGEMENT - EXECMEM
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+> @@ -16961,6 +16961,7 @@ S:	Maintained
+>  F:	include/linux/compaction.h
+>  F:	include/linux/gfp.h
+>  F:	include/linux/page-isolation.h
+> +F:	include/linux/pageblock-flags.h
+>  F:	mm/compaction.c
+>  F:	mm/debug_page_alloc.c
+>  F:	mm/debug_page_ref.c
 
->
-> So I wanted to try skipping rmap for them. Since they are small, even if they cannot
-> be reclaimed or migrated, I assumed it would not cause much trouble. Of course,
-> this idea was totally wrong, and I will definitely mark such insane proposals with RFC in the future.
->
-> These ideas are inspired by Mateusz’s work and thoughts
-> (https://lore.kernel.org/linux-mm/CAGudoHEfiOPJ2VGEV3fDT9cDsuoHB-wk8jg-k-EK6JhWgiHkWw@mail.gmail.com/),
-> so I specifically CC’d him to seek more opinions and insights.
-
-I think the best thing in general going forwards is to bring up this issues in
-advance, we're more than happy to look into things and very interested in issues
-with lock contention, latency, etc.
-
-And that way you can discuss ideas you might have to tackle up front and we can
-give you early feedback, which should save time all round and help get us to a
-good solution :)
-
-Just send with a [DISCUSSION] preface and cc- people you feel are relevant (use
-MAINTAINERS to figure out e.g. maintainers of relevant things, like rmap, mmap,
-etc.)
-
->
-> Lastly, I sincerely apologize for the trouble I have caused the community.
-> I will strictly follow community conventions when sending patches in the future.
-
-It's no problem, better to be direct about this - it's more useful to discuss
-rather than to jump to a solution without community involvement, which might not
-work out/conflict with other stuff etc.
-
-Thanks, Lorenzo
 
