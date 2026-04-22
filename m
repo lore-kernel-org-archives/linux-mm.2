@@ -4,128 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB110F94CA2
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 00:35:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B8FF94CA2
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 00:56:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC8286B0089; Tue, 21 Apr 2026 20:35:34 -0400 (EDT)
+	id 17BBB6B0005; Tue, 21 Apr 2026 20:56:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E79326B008A; Tue, 21 Apr 2026 20:35:34 -0400 (EDT)
+	id 1521A6B0088; Tue, 21 Apr 2026 20:56:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB5E86B008C; Tue, 21 Apr 2026 20:35:34 -0400 (EDT)
+	id 0406B6B0089; Tue, 21 Apr 2026 20:56:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C8CFC6B0089
-	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 20:35:34 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D7EA8DA94
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:35:34 +0000 (UTC)
-X-FDA: 84684323388.25.CBA4A41
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8452540005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:35:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EaB5mkUt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776818132; a=rsa-sha256;
-	cv=none;
-	b=3hppy+fWkUwKEn0d2NCt2oGB2F7Jxk++5gZGcXLM8C7tlDEGwGxiI74aHVN6a8BRe5gEWy
-	iAh+31h22VkSYff6k+WOYXammqmkKn05+T7f3jmfhQWzY5DR3TDMpZckPn30P0c7w02BBe
-	V9QJpuWQPcl0Y8LyDNGI2wFGfnOemII=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EaB5mkUt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E2D346B0005
+	for <linux-mm@kvack.org>; Tue, 21 Apr 2026 20:56:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 88CFEC783E
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:56:25 +0000 (UTC)
+X-FDA: 84684375930.11.AED56EF
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CBEAB1A0006
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 00:56:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ny3phrGC;
+	spf=pass (imf19.hostedemail.com: domain of 3thzoaQYKCOUMTHfSLNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--fmayle.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3thzoaQYKCOUMTHfSLNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--fmayle.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776818132;
+	s=arc-20220608; t=1776819383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lVYBYcbMKP9T66v2BVVHPkUpnYU8ZtQu2qMfVc8wIjw=;
-	b=1iimAI0RHRckB6v6R/0cAulmS2ZSKuWeBmGokSGfUQwzRQ0b8Msz6t5FXsMYQ8uPa91YlP
-	1TYXfnIG8Ju8XRhBitYTterr121diPCfYrAnCgsLUM+q+ShOGWuhqq/OlYPnl8reNoEh9Z
-	WjwRWN1VXfPR2/2dd2TGul3fwhmbaWA=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35e57611113so978036a91.0
-        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:35:32 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fSPQPWpwMUWLrSIOukQG9uvEUqsfb3QUUQ/25v9V8fQ=;
+	b=gsBVN7fKLZHQXRnPf3UyzIoZe6ZsMvk0EMZ6gtxqgzDFU5rZoosH6uk/ZwXicLUHZYsv11
+	5xlPKJyMG0B122wdsVIT6BgW+p4KRFT6GGS7RBYeUi01tavwoaw4k4Aef10ewae7hci1mW
+	ly7qD0czGhU1hEUG+IzgLx2VIcKb+UM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776819383; a=rsa-sha256;
+	cv=none;
+	b=CletyJYAk1deyXPVEIdfOddMaNeO2gvPzW3EZp+JA7F3qGfFzxBOsCktjPoXGqavycznk3
+	lA2Ycuo7CkpgBXDTP7L1HjhyJIgo5+DfZDg8Vm78amV1zc2V03PuJEJDKsNf0KGrq/vQ6E
+	dTkrX1+RccWyT3tvFU4n7yvuSYPnTiE=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ny3phrGC;
+	spf=pass (imf19.hostedemail.com: domain of 3thzoaQYKCOUMTHfSLNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--fmayle.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3thzoaQYKCOUMTHfSLNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--fmayle.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2c0f6593ef5so5737732eec.1
+        for <linux-mm@kvack.org>; Tue, 21 Apr 2026 17:56:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776818131; x=1777422931; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lVYBYcbMKP9T66v2BVVHPkUpnYU8ZtQu2qMfVc8wIjw=;
-        b=EaB5mkUtzed1153UgR40DXW0LF8T55wJxepRU0prVlSVWYC8perzgqcvJZhi7wyZMa
-         AygOuTyg1ogHJ2LtLakidmishZdw/r408DR0lv03YH3geYXNnEUo96bDJRvdz4Z2sFZ5
-         jUmtMqlFC1HXBvFPmDlqaSidcNvHDy/PkirMfhWfT7GODJpbScUbFZK64xHo2oNY5Qvr
-         l3xs9+gEBoapWcLDMibLXLJDvT2gyjfd9VtHntO+cBqrzA/8npDD5Z7XW+r9WWe0B5y3
-         M1LfCvxmcC5e6MXCGq46yZfZhYq7NO/fo2QJuG7OKLL55Wh2ij0L0P+1E7CRU5ZbybMC
-         aI5g==
+        d=google.com; s=20251104; t=1776819382; x=1777424182; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fSPQPWpwMUWLrSIOukQG9uvEUqsfb3QUUQ/25v9V8fQ=;
+        b=Ny3phrGC2X1S25Rc1ACYOlSL3REzM8zHZeVLiHQnXwWI+X7KsfaNRGPUHgWD09Cb0k
+         8FmN2cIKX1osbPrj6+xRSkREodrgTbadsusjdmLp9dfRl3c/KTjyMfyFY9quo+qw0H/u
+         bEP/1wu8MnebVfaxeRQlNx84lQ7S8UMM0c4ddLF0AtQ6qVVqk3pY8pK+LzdVfTatuY9V
+         vFhpJOb5DHZFAblW7OLZlmIfBklKMVtNc5Ot+AaFFQbZOrYXRe/nzQUoFUyT9y9bBNmV
+         mpje9hjy1OX2nSV4vu8vLrN5nMRbasMxaLmFteVEFFvn4VWaKJBIlBUPr58ohzfofot6
+         XkYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776818131; x=1777422931;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lVYBYcbMKP9T66v2BVVHPkUpnYU8ZtQu2qMfVc8wIjw=;
-        b=AXWjm5bxWwn9xv4hlQdeMHIx5y8SHvlmwyFTFBbc89n+z6PnWXir/Dqc8ACpM8WI86
-         XOg6aMj7hJxq1qzaKpcK57ONjgzxDMxeuEi5RaBp9pBgKXddnCvRXcUun2nWXerFM0lS
-         3nbhS5vUrp1B0zTks5xr8XORF8lWfPWdYiPG0n1YQPgvcnbQkGSHO7g9NEku/QccdECN
-         zAZufuCatlljfQvlhokJ2mXTlPnvZOJ198+fAcBHE8JtMNnGq8Lki/Dn4hFS7WVmErzN
-         MRqGqMLpzVsALwT2lJI+URmuIahIUTrvoB1WcbCNHvJY3uFi15tW+K3owGA6DYyRW75e
-         6pYQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/Uj23/cM8gcEWLvOfJUlNXQ6m+CdXJmc66AcV0/SxClIEN1lbgyIJXT2FZk10kosJCf0uQr0/4TQ==@kvack.org
-X-Gm-Message-State: AOJu0YzQ2ULdsxt/AdLwpYzT62zsVsHB7XAt1aS/pyvhzhW1pL3xMEUe
-	kA4n4kp1XmfQFZzEKGKnePP67V8eWGNISdEkYoQhFKIUQrwvXs09daHf
-X-Gm-Gg: AeBDiespQCMj3fZdtmGhNvyJ2xaeQZ6EHYRWKrULZjD+SEDjKmGkwpLpEkbe1jBmzI9
-	V1qOz8+n8z9BqwA+cRK/T95kuhiAAff18927HPY19NzXBhuhMsrWSxtO6f2ItU+iTx7N6Z/dni5
-	DM5RX7JcDwuMZcosdw0ivpr4pQaoLXDf0OWMeiHxaFCqAPoa27UDqrXi892DMguL3AQRNdfjl5n
-	p3Q5HSSORb/lLKKPNyCaf4mZQuwnt3e8kwNDLcy6DswtZ4RlP88GUaKxOqQ2PU9U/3cTIrTt4CF
-	5XNoZ6Bbo3mDVD8+xUfjcj9qWG/860tLcXmfJznlDALaIHpvAe1NuTWPZ0w5D97RaucvYLvV8sq
-	zov6GId9ZTQl9MAhuIZ/kq9a+h/5SYOvK/Rvo38htAqyJ6XK27oCc3lJqUg7X2bsFgMLxVINazc
-	ZisgRwoL32uB7K8xxb4WV8qMRJ8SOsx3ZggAvRtu4+HlI1AX5YP2rtR69eXIsSYi4ItDcy0wJXk
-	fYeuLcmXDL2RxZV0Uo9MQ==
-X-Received: by 2002:a05:6a21:62cc:b0:39b:91d1:6c10 with SMTP id adf61e73a8af0-3a08d916aa1mr11415454637.4.1776818130499;
-        Tue, 21 Apr 2026 17:35:30 -0700 (PDT)
-Received: from fedora ([188.253.4.228])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c79770512afsm11597247a12.31.2026.04.21.17.35.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 17:35:30 -0700 (PDT)
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: nphamcs@gmail.com
-Cc: ryncsn@gmail.com,
-	haowenchao22@gmail.com,
-	akpm@linux-foundation.org,
-	chengming.zhou@linux.dev,
-	axboe@kernel.dk,
-	hannes@cmpxchg.org,
-	minchan@kernel.org,
-	senozhatsky@chromium.org,
-	yosry@kernel.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	baohua@kernel.org,
-	xueyuan.chen21@gmail.com,
-	haowenchao@xiaomi.com
-Subject: Re: [RFC PATCH v2 0/4] mm/zsmalloc: reduce zs_free() latency on swap release path
-Date: Wed, 22 Apr 2026 08:34:12 +0800
-Message-ID: <20260422003412.11678-1-xueyuan.chen21@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAKEwX=P6L=CeJCXkC+cKbZKYk_ORho3pLy476c8=BbDianx=vg@mail.gmail.com>
-References: <CAKEwX=P6L=CeJCXkC+cKbZKYk_ORho3pLy476c8=BbDianx=vg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8452540005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: w7mot9m5uxiyfrrjgep1q37y6oox5mgr
+        d=1e100.net; s=20251104; t=1776819382; x=1777424182;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fSPQPWpwMUWLrSIOukQG9uvEUqsfb3QUUQ/25v9V8fQ=;
+        b=qfKYRvLgFGkmneJVWqVA3lHUEBh3eOB9pCbJiBmX6XjtWnCO39Kg4HCMah3qyQvINt
+         9UG08pGzlvV9iXqtnnoRp2X+GJ5boEC/YrecwaUXZNI5uIT/PAA40WepDsyEk2djDtrt
+         zh/MxhigEupkWxozFmgK+e+N1aqHY2aDETkZidWkSa90xFoSg4Mwr8Bkx13mO2fEZEN7
+         MZIJ21j/9rqmuJzE9z7if5BPCxQaNRoMFFh+vi1ghK9xWdpLesk8zE8VPlYnfY/3aAK+
+         NuACb6e9EVWcYVK9MYEiI5LFyvcApIkLReoWqLVMIdd7qvFk3fCeu3kKPM5jbV7KxxVt
+         AubA==
+X-Forwarded-Encrypted: i=1; AFNElJ9fNXHvAbZPZXRdVFLtMfzzuRTEP0S3FhYYB/TbZ0s1xD4b2meWAIPZ/X5pTulqdEr+A0zb/9GIuQ==@kvack.org
+X-Gm-Message-State: AOJu0YzEyvsHhYDujwHvpXZgGxDk4Ji638SxziNpfWYl4+x3vyY9MFBU
+	EI0DbWW/48Fn2eiALcS4+mcFGktJxwEjulfh8TokUQdA6N3CMIVrJiVoDOBiGBwJX3aMjrJsf8a
+	wD+rGJA==
+X-Received: from dyer22.prod.google.com ([2002:a05:7300:2316:b0:2d9:e328:e0db])
+ (user=fmayle job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:3d19:b0:2d1:9b35:4ed3
+ with SMTP id 5a478bee46e88-2e4874ea1f2mr12199282eec.28.1776819382219; Tue, 21
+ Apr 2026 17:56:22 -0700 (PDT)
+Date: Tue, 21 Apr 2026 17:56:07 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
+Message-ID: <20260422005608.342028-1-fmayle@google.com>
+Subject: [PATCH] mm: limit filemap_fault readahead to VMA boundaries
+From: Frederick Mayle <fmayle@google.com>
+To: David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>
+Cc: Frederick Mayle <fmayle@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>, android-mm@google.com, 
+	kernel-team@android.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: swfko5ehc5mqib3kqekf6qkoqtat98hm
 X-Rspam-User: 
-X-HE-Tag: 1776818132-560258
-X-HE-Meta: U2FsdGVkX18SEqwYmANNFOPb2pmNrt3Wt93FIou0TOtayUVCvLgL4CBMebymFpCLLm3f7vBtd8cTXuqtMdumO/4V2a1J4PCcR79A7MyqTTtP901FQ7D3VGJ59NVAUQ4pwKxIE13gBeWtexHIfkeAFNF5M/329YNca8dcjQ1jn0pOAt7R4GHPJxJyJflRCXZTB9vCFd/SECi4y55Rp9FDFvXXDxkYAxoqGNMdhohLcZDbtfUMp6m93ou52VEL9JvRYL4LJg0QLSjvx+wJFkyCqNNZ9LhjYUD/z6hhIX5O+f8wzmQJgKyE9uVBFxtJuhgnxogHxNUj4kZkV9yIzB+OywxcJLZkAIGAKsjMp+WGIqqyUWC56hGpdU7czLe5yk5rNqEvAnDVhQ6w/ZHpW9ZIqUSRY3zDaHWDyv8X4wL9DTNBquHib0U+LKHe7BJDgZPI63QPR6tkNoMrr95ZiFmjvJrHkc2OQkq0BbM5qzeKVC05yEsZ6Wq9yfQv2Wj8p5I5I2qYDQ4f33RXOaXTPUna+j/s3uCt5OYu1eABnQHfQGl+a0eR2b30KldFn87QlXIbNyREzsYD//DIOFZUpYgDi8+ZPQRVjUv+C7rAcPkYkUDA90fQ2TledNA595SrhHMWQU0cbdbqP1iBSV8n7fC8wLxXN15nAnf2wLSEDwGYhbRxIHFzVVsNB27TD31VkDcjJwqx11BC7W+nmAYMTCVXihzeM6FpdX8arzzTa/yTuXseSzDJUdpxqG6NKUP1D14+kHzK+RyIQJsNBXGfveQiZEAsd3PDfinSnJbXAYfvRqTQuyDc02yxFIgOiQM+0WVr8GuZPqNvbbO2aWhtioLuVhqMO66TNNVN1bCfNs64WvpvG3XfIZQKNN7rFkfDmYj0HB3iCF+7XEU7JJH31AB/0DszDV+1/kzCPAAJGyT7eRPngRcV6SNxrCWThrHJ6HUHj+hlo9nnKOknYztiUFd
- GeEeMwKY
- ksyimupWMmsss8plMaBAYSFDAG4l3l8Ba0+xGa7grndKVn2pJaEqw3ynNX6bkHfv/omTj3arYrstLdTCMgyOfKB26l1HuhquuoJJcFTyEi6JmlGtLSbAWwJr6pMErkw2sM5Kr2GXxRY7T7wrpOr9w1OYiog+RkKathOuGSau4OjbLI6jOMET/54tsKCrpwBJM93VJ+j9XwWNBrWn0YuYi3RmZnjV1klxWdN+v5EDPGGRaJBDTQsHQPgN13uwSKKezR7ZVMajns6tx8ltQF5gz8kH3zZyookGmpdM/b3BhMypGpt2qEJ7H5KsXnc0urWinwwyCMpjb9hramDupQcKaL/M7jvGsV+DXkeMkDhdS9r7DLrJ0o1FxaFMp7qAauzJiVpTDX86auSQvL7Jlh6EYExWYCSB5cNoElhQLPT8EwHi2+Pgk8GFTPgtiJNmUAoXkkIGFj1teuhRwCDjIYEPB2gIzZb/TqBOOFOco5mhEvGn5NNl+PphBnqhrOo61wOMjReYq5Ujb0GzvzU8GA+A6ArPx9RBFVSjh2KM606SuPhAqACY=
+X-Rspamd-Queue-Id: CBEAB1A0006
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776819383-633526
+X-HE-Meta: U2FsdGVkX1/vfUTpYPyz1Dsch/rx5T8rp3L6AlMscpQIB08ZRkfnzyxNSJZlGs9dPT6GnlRLeH3qf+vRPjfuQjpoDuTiOa8mlYcXPPrNoVepBf2sFvlOVp/R+arrWCUSlbPEsTPT+NomX/GxMA4DKmsWaeuS6hKuw6gqlR1pwllYPwKuKgPukgxYL8tO3AqVsJs+tY8kNxzXtlSKfO1Ol6yBrvzrTuqGR5WoTO/f61WnNFqz8YLnWDQarVk6vcRHDdeT/yjRQbA5S+noIQbTCqmne59JRyUrQ9F50I/ZczVEIzSbje8HPGN+N7+Kz2gVTRQD5YH6NOENkTlupthR2pQSEOSopfPU43PsnNUvagw1IqAaRiYrLDdHATvPrDSkhH6TYEPGlJOxvqkgNUSDnKGP3Vnk/E1Ojwau9SraVX7dYacqqLOuhlZh//p5bQ2FOu04LwxdGa9EYmyMSDUXbtbfa1Wzy3SiMKMfICyn3rcPXun7p1H3/fMAX7gn1Ry9uA8wQHexEmUJxM8lIV8r6J4STe2DMiFemaUn57ZzttAdCJh7tNr7Tl0zxyAbXIlHrdfViwC61MRAReErv4PJMATKum9J2PhNjNjWrx3EvD2lfqIJERw31f9Uf5RKNsO/uQOis/SIZQKQ9kPhe1t6LUzFt7+PYcq6QGi3i5cMsNUbDEvkMVP4y7uQ5TvFkRspdP8q1MCpiDLw3D0a8Lp2+hhD3u3FnLj33/+fUxTgCMUfi0OYukvQgbHe6KK6p0bpF8fZP7YYwckjdyyiIa060Npur5XF38CsbDKxjpsIT5x9eaQJZXV3BrqMYPcM7xIOdrxlp68HFQtwLT4uMlVNKMUSh0vUlVTHNkturqdIyCOoTR3hjIJ46NNTzTkYxMwtXge4YxPw2sNIUFIy6EXQyG2zcsgGxhkcb4l9jNJVTokfjRQSFQVDzNb/0bQJa6l+S6/eqV8jtJphuQ+ZSgf
+ 2+83Etkg
+ Pwuu9j8E7e6XajZQOkNRp7RPDp4XzZs02Ll0ncbrNu2rA4cNiw7ILQpRpRTEIGKiZ6M+zQocTrmhUI7z7Hf60s0aT4L/0b53PZ8pazjbtiV8hfC/KhI5KbWPfufbNAPrpEbj8sYLtSj8OGRc7eJcITArEnv/sXqfg8gxUVdxcXDfn18ZRKO79eOVIMemHaEDGJwz3ybBBqrMOQlurCB3xmxzPyJYK50tzT4tK2YtbbHVKNwCnkpBDBmCpYZs6LPwYveIHKeqYYBsfcm9+Eg9v2WEoykOtYkRh9Oc2VbRgKGYJzDdzoJky6y4mixOdq6A8anNTJdSAzOXJ55GoK4gYFGq2vZN++UcX4VcY/eG5gD0WurPvUaPNTbaaB5Kvy+/23ANXFw7zdtYGqmMr7BNxdjvx97szGev+a//yJGkA4tBnZ89SFCc9+VE8WGKUu01xPsdjxOfVdFWUL4bLcEgnbcE87r0j1cQchiTHQbseXTFYVl5HKpUAKa7OSj5UWHxrqaPCkh3guL+7+nULc6mK9ZcQyBn5lqniGiDGA8r5xyeDqjeSq1bsCgUq78CQY4yhsd9BTzKJ7b2AJoLzRqM5u+doAoy1igO+6qQ4iZp0+ixX2tGTkrJdZWfRavrgwpSarZkWiEnND0P0ozSGy3j29DYm2zy7k2KHx4mxiXGKkTtF1GPxa3TuTST8X9BJbeZi8N8rvRpKKWpuaUtx9sC0Z6tFw7r+/J+pJJz/t7WRAEGmFlAphcy3XJAabWfTwTgMqS5SCFVEfxrjQxwISRDom7CKDIG0WWfYh8q3xtsiO+5ACHulyhJb8XpxgqSQd5/N8tx7F5h9uY4f/kF0Cjfehzgstw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,64 +109,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+When a file mapping covers a strict subset of a file, an access to the
+mapping can trigger readahead of file pages outside the mapped region.
+Readahead is meant to prefetch pages likely to be accessed soon, but
+these pages aren't accessible via the same means, so it fair to say we
+don't have a good indicator they'll be accessed soon. Take an ELF file
+for example: An access to the end of a program's read-only segment isn't
+a sign that nearby file contents will be accessed next (they are likely
+to be mapped discontiguously, or not at all). The pressure from loading
+these pages into the cache can evict more useful pages.
 
-On Tue, Apr 21, 2026 at 11:25:17AM -0700, Nhat Pham wrote:
+To improve the behavior, make three changes:
 
-[...]
+* Introduce a new readahead_control option, max_index, as a hard limit
+  on the readahead. The existing file_ra_state->size can't be used as a
+  limit, it is more of a hint and can be increased by various
+  heuristics.
+* Set readahead_control->max_index to the end of the VMA in all of the
+  readahead paths that can be triggered from a fault on a file mapping
+  (both "sync" and "async" readahead).
+* Limit the read-around range start to the VMA's start.
 
->Hmm, free_zspage() and kmem_cache_free().
->
->* kmem_cache_free() is just handle freeing. Bulk-freeing?
->
->* free_zspage() looks like just ordinary teardown work :( Seems like
->we're not spinning any lock here - we just try lock the backing pages,
->and the rest is normal work. Not sure how to optimize this - perhaps
->deferring is the only way.
->
->
+Note that these changes only affect readahead triggered in the context
+of a fault, they do not affect readahead triggered by read syscalls. If
+a user mixes the two types of accesses, the behavior is expected to be
+the following: if a fault causes readahead and places a PG_readahead
+marker and then a read(2) syscall hits the PG_readahead marker, the
+resulting async readahead *will not* be limited to the VMA end.
+Conversely, if a read(2) syscall places a PG_readahead marker and then a
+fault hits the marker, the async readahead *will* be limited to the VMA
+end.
 
-Hi Nhat,
+There is an edge case that the above motivation glosses over: A single
+file mapping might be backed by multiple VMAs. For example, a whole file
+could be mapped RW, then part of the mapping made RO using mprotect.
+This patch would hurt performance of a sequential read of such a
+mapping, the degree depending on how fragmented the VMAs are. A usage
+pattern like that is likely rare and already suffering from sub-optimal
+performance because, e.g., the fragmented VMAs limit the fault-around,
+so each VMA boundary in a sequential read would cause a minor fault.
+Still, this would make it worse. See a previous discussion of this topic
+at [1].
 
-Currently, free_zspage() is called while holding the class->lock. 
-However, free_zspage() eventually invokes folio_put(), which may acquire
-the zone->lock.
+Tested by mapping and reading a small subset of a large file, then using
+the cachestat syscall to verify the number of cached pages didn't exceed
+the mapping size.
 
-This creates a nested lock dependency. If multiple CPUs contend for the
-same class->lock and the current holder is stalled waiting for the
-zone->lock, it significantly extends the hold time of the class->lock.
-This causes other CPUs to wait much longer.
+In practical scenarios, the effect depends on the specific file and
+usage. Sometimes there is no effect at all, but, for some ELF files in
+Android, we see ~20% fewer pages pull into the cache.
 
-Here is the ftrace data showing the severe contention on class->lock.
-Under contention, the time spent in queued_spin_lock_slowpath() jumps 
-from ~1.3us to over 30us, significantly increasing the total latency
-of zs_free().
+A comprehensive performance evaluation hasn't been done, but, in
+addition to the anecdontal memory savings mentioned above, a benchmark
+was run with fio 3.38, showing neutral looking results:
 
-  7)               |  zs_free() {
-  7)   0.220 us    |    _raw_read_lock();
-  7)               |    _raw_spin_lock() {
-  7)   1.320 us    |      queued_spin_lock_slowpath();
-  7)   1.820 us    |    }
-  7)   0.170 us    |    _raw_read_unlock();
-  7)   0.170 us    |    obj_free();
-  7)   0.190 us    |    fix_fullness_group();
-  7)   0.150 us    |    _raw_spin_unlock();
-  7)   0.170 us    |    kmem_cache_free();
-  7)   4.610 us    |  }
+    /data/local/tmp/fio --version
 
----------------------------------------------------------
+    fio --name=mmap_test --ioengine=mmap --rw=read --bs=4k \
+        --offset=1G --size=1G --filesize=3G --numjobs=1 \
+        --filename=testfile.bin
 
-  7)               |  zs_free() {
-  7)   0.230 us    |    _raw_read_lock();
-  7)               |    _raw_spin_lock() {
-  7) + 30.100 us   |      queued_spin_lock_slowpath();
-  7) + 30.600 us   |    }
-  7)   0.200 us    |    _raw_read_unlock();
-  7)   0.170 us    |    obj_free();
-  7)   0.170 us    |    fix_fullness_group();
-  7)   0.170 us    |    _raw_spin_unlock();
-  7)   0.210 us    |    kmem_cache_free();
-  7) + 33.850 us   |  }
+        Before: 4366.6 MiB/s (avg of 3459, 4592, 4613, 4697, 4472)
+        After:  4444.0 MiB/s (avg of 4633, 4655, 4511, 4571, 3850)
+                +1.7%
 
-Best regards,
-Xueyuan
+    Same, with --ioengine=mmap --rw=randread
+
+        Before: 445.6 MiB/s  (avg of 446, 447, 442, 452, 441)
+        After:  447.0 MiB/s  (avg of 447, 446, 446, 451, 445)
+                +0.3%
+
+    Same, with --ioengine=psync --rw=read
+
+        Before: 3086.6 MiB/s (avg of 3122, 3094, 3066, 3094, 3057)
+        After:  3084.6 MiB/s (avg of 3039, 3103, 3103, 3084, 3094)
+                -0.06%
+
+    Same, with --ioengine=psync --rw=randread
+
+        Before: 2226.4 MiB/s (avg of 2256, 2183, 2207, 2265, 2221)
+        After:  2231.4 MiB/s (avg of 2236, 2241, 2236, 2193, 2251)
+                +0.2%
+
+[1] https://lore.kernel.org/all/ivnv2crd3et76p2nx7oszuqhzzah756oecn5yuykzqfkqzoygw@yvnlkhjjssoz/
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: android-mm@google.com
+Cc: kernel-team@android.com
+Signed-off-by: Frederick Mayle <fmayle@google.com>
+---
+ include/linux/pagemap.h | 2 ++
+ mm/filemap.c            | 4 ++++
+ mm/readahead.c          | 5 ++++-
+ 3 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index ec442af3f886..cc628050bc5e 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1366,6 +1366,7 @@ struct readahead_control {
+ 	bool dropbehind;
+ 	bool _workingset;
+ 	unsigned long _pflags;
++	unsigned long max_index; /* limit readahead to i<=max_index */
+ };
+ 
+ #define DEFINE_READAHEAD(ractl, f, r, m, i)				\
+@@ -1374,6 +1375,7 @@ struct readahead_control {
+ 		.mapping = m,						\
+ 		.ra = r,						\
+ 		._index = i,						\
++		.max_index = ULONG_MAX,					\
+ 	}
+ 
+ #define VM_READAHEAD_PAGES	(SZ_128K / PAGE_SIZE)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 4e636647100c..d2f6bef12f58 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3314,6 +3314,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 	bool force_thp_readahead = false;
+ 	unsigned short mmap_miss;
+ 
++	ractl.max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
++
+ 	/* Use the readahead code, even if readahead is disabled */
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    (vm_flags & VM_HUGEPAGE) && HPAGE_PMD_ORDER <= MAX_PAGECACHE_ORDER)
+@@ -3396,6 +3398,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 		 * mmap read-around
+ 		 */
+ 		ra->start = max_t(long, 0, vmf->pgoff - ra->ra_pages / 2);
++		ra->start = max(ra->start, vmf->vma->vm_pgoff);
+ 		ra->size = ra->ra_pages;
+ 		ra->async_size = ra->ra_pages / 4;
+ 		ra->order = 0;
+@@ -3438,6 +3441,7 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
+ 	}
+ 
+ 	if (folio_test_readahead(folio)) {
++		ractl.max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
+ 		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+ 		page_cache_async_ra(&ractl, folio, ra->ra_pages);
+ 	}
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 7b05082c89ea..95a424b2f3a3 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -324,6 +324,8 @@ static void do_page_cache_ra(struct readahead_control *ractl,
+ 		return;
+ 
+ 	end_index = (isize - 1) >> PAGE_SHIFT;
++	if (end_index > ractl->max_index)
++		end_index = ractl->max_index;
+ 	if (index > end_index)
+ 		return;
+ 	/* Don't read past the page containing the last byte of the file */
+@@ -471,7 +473,8 @@ void page_cache_ra_order(struct readahead_control *ractl,
+ 	pgoff_t start = readahead_index(ractl);
+ 	pgoff_t index = start;
+ 	unsigned int min_order = mapping_min_folio_order(mapping);
+-	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
++	pgoff_t limit = min_t(pgoff_t, (i_size_read(mapping->host) - 1) >> PAGE_SHIFT,
++				       ractl->max_index);
+ 	pgoff_t mark = index + ra->size - ra->async_size;
+ 	unsigned int nofs;
+ 	int err = 0;
+
+base-commit: db2a1695b2b6feb071b47b72e61d0359bf1524bf
+-- 
+2.54.0.rc1.555.g9c883467ad-goog
+
 
