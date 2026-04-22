@@ -4,79 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B326BFA1FE1
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 18:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD78DFA1FE1
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 18:27:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 117B36B0088; Wed, 22 Apr 2026 14:25:59 -0400 (EDT)
+	id 4C24C6B008C; Wed, 22 Apr 2026 14:27:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7DE6B008A; Wed, 22 Apr 2026 14:25:59 -0400 (EDT)
+	id 44C366B0092; Wed, 22 Apr 2026 14:27:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF8196B008C; Wed, 22 Apr 2026 14:25:58 -0400 (EDT)
+	id 2ECA36B0093; Wed, 22 Apr 2026 14:27:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DA40C6B0088
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:25:58 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 83F381B7457
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:25:58 +0000 (UTC)
-X-FDA: 84687020796.16.163D333
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A4E83C000D
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:25:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="e/+NyOPv";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776882356; a=rsa-sha256;
-	cv=none;
-	b=fuS2ppLp0/+TRGIACMbYuGdR0hOZS2lpTBTuzI4mTj0lr0r9lAYlpAFWfG40OViK0dBuQp
-	xZ1nF/weG6Oo02kEnBgDU5lpGJGI8j8VNkUOQlJpWZLMpLVHJat9WPz5QBlBXZYUVmZO5n
-	TLPEdKau4VvApZFeIWzijM9UnBjRi2I=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="e/+NyOPv";
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A30A6B008C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 14:27:44 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C5F21C015C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:27:43 +0000 (UTC)
+X-FDA: 84687025206.25.CF0C1D6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 88E0214000F
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 18:27:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrd+KDpJ;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776882356;
+	s=arc-20220608; t=1776882461;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eJJjbkaNqXwn+guaj4W42BUnWH3LVJ85xVUl0ifV0K8=;
-	b=ZcgWg266nN3C6Iz1+vy6TFzkn8J+FFvFFgc672m/W54DHQeN0VKIgBFTnEsoWfBabT08Gf
-	6yEGQzKpj9O9IV3WcUavyjRo0Wiir4dBDQF46C5vl2KlrN49E4vVRxLmNOH+SqTz0jIGGG
-	vLMcAmOMfCDSRrFlmrmgR1q7uDJCnVI=
+	bh=cF+5b/cAouYBViXJJg8Vz0VQ2D5gKwV3exO0uGnVmfA=;
+	b=k+3plAw3myYGDKujsDhWDnunNpS8WbjoOPBBdv5qZfAz/Q+DBQFDG/Asgt1NJYKOige3KT
+	23eJ2W2/1LqqU7s4ZEi1P5qx2Zzy1kUUGzrvh0wNGR3YUEYtJNUIBfxP9GUICbT0K/cmOn
+	JsSCSism5ineaxRCi3DPTceq99L2W+s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776882461; a=rsa-sha256;
+	cv=none;
+	b=y4TNuWNcRxsXpHU/MOK53rAbW2sDzutpQrKxrqe/ReQtvyHQWq1WszfK1USegDChccmJ+w
+	4k/9b0/6qtUHXtpK4nu8L2+bNcySJTHBkT6IgZyVhibVh+ycER3vCq8HjrmJq8i0DYrpzt
+	hYynHMbwr4GWEU3Y0vVIgNh6WwSutlQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrd+KDpJ;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A5AB74373E;
-	Wed, 22 Apr 2026 18:25:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD1EC19425;
-	Wed, 22 Apr 2026 18:25:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C79D76184C;
+	Wed, 22 Apr 2026 18:27:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C15AC2BCB4;
+	Wed, 22 Apr 2026 18:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776882355;
-	bh=xiGG7jgIF7pLqLmsu6Dker8kDFGD8xhSO9MbaoWa4Qc=;
+	s=k20201202; t=1776882460;
+	bh=33nEStdYJu2p7JAJnFtCQC+AQD0fSDhILvplFUmzfpg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e/+NyOPvnKLr2hmkxcEGLNU2AwVc8jV0jl2N4Y46EsujQ+RIyuK6tNdYh3/T0rfyi
-	 7FT8eo6BT3t0ej/WKd44pEToKZcGwEfvOs/x1Nyt86vjWYLnbNBrS8LPxjiUG/Fe0d
-	 6F0HGTCMdJzbq9xjP/2hh5qNkxxbbaSiYwtlmaUc2sxJFBDNPDds8D7p9dFdSzdLiC
-	 ilYeBoSaSxmLbx+8OrwNt+lDiRC9W02dc/yaocFn85e6zD/gDbp5X1sakqLckC2wVf
-	 QgvWgZbJPrEN9E4ifdUyySZ4nfHEpNiRCMFxGj4Zi9ln+GE+9MOFhXQTsEZ05z+6Kw
-	 3AjCdTwQBF13g==
-Message-ID: <be256a32-dd9f-4dcb-b9b4-3f2a7fcde70c@kernel.org>
-Date: Wed, 22 Apr 2026 20:25:48 +0200
+	b=rrd+KDpJxkq6drKUWtNHeio/xx3jrIcl5z+Njs3jkOaybiD48Fw0SCODunG/GvCuc
+	 X7nEnyGn+38O7E8QEUkmrnWvV8uQ4SXEohfH5yTWYuXa1a0jRsoJWZHY6GYKw+Yz0s
+	 38lEcTergBhV1ExWix5sElq9LaRjVoJr8DeSRZY2SARVPmIuVHvE58v383U6W8aLaE
+	 K/DiLI3eirYS4oaDHNr6gh177X7BJTNFYGghsoktYk+BPFkI3iVtE9RIcB1drM61ek
+	 MolaToXCfBakcgXmk9aBrMIsyAE1DLryexYkGznzEmX0tsQj4HZcizbE2glrf2qkU+
+	 bcKZ2DZvEh0pw==
+Message-ID: <290e59cb-920e-483f-aba3-6c4bed5bd291@kernel.org>
+Date: Wed, 22 Apr 2026 20:27:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/page_alloc: replace kernel_init_pages() with batch
- page clearing
-To: Hrushikesh Salunke <hsalunke@amd.com>, akpm@linux-foundation.org,
- ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, rkodsara@amd.com,
- bharata@amd.com, ankur.a.arora@oracle.com, shivankg@amd.com
-References: <20260422102729.166599-1-hsalunke@amd.com>
+Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
+ memory
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org
+References: <55019037-4f1c-4d9c-83ee-3a844d8f3d5e@kernel.org>
+ <ad50rPOseVa-SP_s@thinkstation> <aeDoqFWPFxkkNB26@thinkstation>
+ <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
+ <aeFCuLJXT8VOkzH7@thinkstation>
+ <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
+ <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
+ <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
+ <aed6fHLrIdahbdY3@thinkstation> <aeiUGtFgmYB9M18L@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260422102729.166599-1-hsalunke@amd.com>
+In-Reply-To: <aeiUGtFgmYB9M18L@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A4E83C000D
-X-Stat-Signature: czi9dg6f1iufr3tuyryiaqhzjeu4kjxc
+X-Stat-Signature: migg3ddphwyk1apiy34s3tnb94wkiguu
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 88E0214000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776882356-942460
-X-HE-Meta: U2FsdGVkX1+CTwtSM9U1/AMpWam05HmpiAfz1X3qY5EKYvT/6p58V/3RtN5NdgFcKBUxpYN/9SaTY6oz9DDrm369PWg+TNoJnOYYjFP62kBeXFxuCacVjiFuPDL9RX7LiArJ84skOhQ6Wka6rNxnP2CjcXGJedG3PTp7Prxf/sOEXoyklh/+3CPxGoc6a2Nbnu8HCGGCSSWnY1RI0S2xpKvcg/tHiC8NXqHj4e4lTj9oF7VwL1ut35e5kbIr/Q7Stub6p7h4Lv4ETO+yawQo3CbLvGwrkg102VrZiQdH4WIwBpTeBs7XVjCYdMilOhiv3ciF7mxJPXvq+Lr+6FdtwKCOSYX/ywfdZY+95KryAb00W66qlKYKA5UJHlKIWBfmSDMjTTKcjc3BjoZAIByFYFiPAAPm35CJdT6aSje+8TZ59rIil/N+uSBt1it3NDXVju7moN5KPUJy37L/ev+8s6wjRsFgeTlNPebjk5GbPMkZAWFhhF/TSVhon5JlnWKJ0Mu1KAff9ZIVGCzxX26heqjo+XA2Fv2Dg478P2m4tEnI+OuPrZ8K20xRWQcgwFfixAx8Gt1hi9xKfEBAHUJEKWXOvDZPA8xlXUXCMMNpz9S6jUCmTsFDY2zhWa0T4wFCodHUPBqb+Xn1/epy6/T93ZXgRE/p3CfX5ez1W8aN+MqnB366saf6YJKMJb3ER5xh4RVdDfuwt6+/N3vMg2C4GwZNRFVtluYQKX88j38s1ShpxULgMc8X2N7jG4F+jfslewTC8uKRygUGHI1YkQB91DMir0dxmzjbSSueuLgWtLnL2jYA/Btue45gCYIUzs7qOkg6ef2F6gMb8+RKSmxxEKHBIsJjfzy7PdGYbYhsd6b3bLUWuQ4uDL6ofZpJj0gVk8N7xe43ENi1+mAxTj0gCnWfwMV2XcDjbuAr0qqWSasVAszrNX6TzPS0rdU05ZStx5MOOYNILpSJV2ygUZC
- dGwLd7+c
- aNuhRYGN+K6Tg4GSGhGZSIQpEdGmAuGUfL7Odz+Dt/wnDBUfnijy0qKsw1lTZre0MexAVdtj3TghSuoVkBVxgRNqiCYfwUq+t+oE7XJiku8syBCp3GprfIfipYzsM+X2/3tAE9cJTBkIBtXg6YuM9cJaulk/KEOoAeAjn+mmygSp737vc9XXOkC6+AcdApXCyFivMmUL8SeVmcF5dR3kWPj0EmYSF1OXPhmiQDTW4ci+GesPUPL//waav4dE14qGbHndeaSIe7j8L1qSo/omBzKleveIeW+PA4HclTjkLMr159wYkQ93gzvouW/m9nRJA7aBEMaJi4A2OEUA=
+X-HE-Tag: 1776882461-479725
+X-HE-Meta: U2FsdGVkX1+bEzR5ugefEgOwkdr9vPfHc6jSvqie8TEDVlhAltR40SqCkm9ZoO3r6ZUUf0PimnktTDe0X53Wd8yJNU8A5u1DsBgQz9MoHRCrkJi2FZ1CUUuHg6I9TLOdsZ894Jm5Y/+X7omGp8xQ92GGEiMD3UyyPEpvJzaxkwJU8r6TRMD3ZziXYMgvnS9daRFuUVdmIhnoIRuisXgMLd4klLD95QFXQVwokEYRjjbr2TzRaqXS6CYSTxdtGkgIiUiE4FE0n3eSRbBzMxy7NhpIWoQYCWTNcwzrtmesabFUdV5bfjfGeYy+0Gr/AIguwwzfwa2xan6QLfIGY0wETq3TGs3FSivr5OaxDTsHrzQsF/aIN2giPntoOQvGoBifH6xm5ILf4jR0M2l7rR7+KT07CmfJMItR3+wrlWnu3uh0QlfghoTeXNXY+GUQfIqs81ghoMLXWhoDqeWY5UZ1SECIMxc3rUEKXwUS+xnk6Wvb1ig5C7WfJm2Lv2h3D4LLH18LSoK2cGWLRLQLll7w1u/uVUB0dFnGxbdcBVxfOE3N7CKdRp/Hya2pyRJDy7cUq+BwfkGZQMDk2arg8jnC23Xts3A7vobbcHYg6sS2Bppkb/vNkRlXAA49YMqK7YcR6qnqtyZ0kKKI+RkFqXRnGL1LmyR15wD1SIcCKmWBQwx/SWBqVCaYkc1UL6LXUh+N0TTx2rG6EXXRHGY1NZEuYS+XbBzGvfZluobGy47gJu0C9vkPzTyHLJTdpB4LyBhLwvAeNWcbnRbpEnhlo4GrYfF+T1LgewnHhJYevidQX0l+VUmrrOIK1xL008TIuzVyuDe4SqumnHYtUlCpbu+7m8xxVQdQYuOxe/gTy0RcA+BMFw6hmPSIA+6QuVNflEjIYeW8PA1x7UhhhgA0vj5QLbHVazV0khY6sux1fcCQhEnIYrKRfETn8+eZyWFYZcxHIfyiueZN02aoZZSv+oR
+ CcPW+9uF
+ Abxdm2qE3AIDPOfdnXJvswkh4HrzOSjhr9/mSsrPoVekAaU9rH7CsohKGYVwY7bTS2lcErSkziKDLleclBjxDJ9ZC5/oRk8d6q+fYvLj23LdwY57s4U0+LU5U7s/o/blC+f6mWjpguINhVXtB9bCgrwrV2M1PyCnzKA9eHyyyj3GeBss8BjyDNUwQQGxVPX6m3evcPoT4AgtR+2XZtEk9X6P2LDdn+yJ3ZYSza2XiHMwWV+DkXgRK04QF+CuYg1pT000b
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,47 +152,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/22/26 12:26, Hrushikesh Salunke wrote:
-> When init_on_alloc is enabled, kernel_init_pages() clears every page
-> one at a time via clear_highpage_kasan_tagged(), which incurs per-page
-> kmap_local_page()/kunmap_local() overhead and prevents the architecture
-> clearing primitive from operating on contiguous ranges.
+On 4/22/26 11:27, Kiryl Shutsemau wrote:
+> On Tue, Apr 21, 2026 at 03:33:27PM +0100, Kiryl Shutsemau wrote:
+>>> 3) Some other stuff needs a second thought, like
+>>>
+>>> diff --git a/mm/gup.c b/mm/gup.c
+>>> index 8e7dc2c6ee738..08fc18f1290d4 100644
+>>> --- a/mm/gup.c
+>>> +++ b/mm/gup.c
+>>> @@ -695,7 +695,8 @@ static inline bool can_follow_write_pmd(pmd_t pmd, struct page *page,
+>>>  	/* ... and a write-fault isn't required for other reasons. */
+>>>  	if (pmd_needs_soft_dirty_wp(vma, pmd))
+>>>  		return false;
+>>> -	return !userfaultfd_huge_pmd_wp(vma, pmd);
+>>> +	return !userfaultfd_huge_pmd_wp(vma, pmd) &&
+>>> +	       !userfaultfd_huge_pmd_rwp(vma, pmd);
+>>>  }
+>>>
+>>> How can a pte be writable and prot_none at the same time? Maybe just confused AI
+>>> output that you should carefully double check before sending that out officially.
+>>
+>> Note that this path is for !pmd_write() case to begin with. It serves
+>> FOLL_FORCE case. I believe this check is correct: we don't want to allow
+>> to write to such pages even with FOLL_FORCE.
+>>
+>> But looking around, I missed gup_can_follow_protnone() modification. It
+>> has to return false for RWP.
 > 
-> Introduce clear_highpages_kasan_tagged() in highmem.h, a batch
-> clearing helper that calls clear_pages() for the full contiguous range
-> on !HIGHMEM systems, bypassing the per-page kmap overhead and allowing
-> a single invocation of the arch clearing primitive across the entire
-> allocation. The HIGHMEM path falls back to per-page clearing since
-> those pages require kmap.
-> 
-> Replace kernel_init_pages() with direct calls to the new helper, as it
-> becomes a trivial wrapper.
-> 
-> Allocating 8192 x 2MB HugeTLB pages (16GB) with init_on_alloc=1:
-> 
->   Before: 0.445s
->   After:  0.166s  (-62.7%, 2.68x faster)
-> 
-> Kernel time (sys) reduction per workload with init_on_alloc=1:
-> 
->   Workload            Before       After       Change
->   Graph500 64C128T    30m 41.8s    15m 14.8s   -50.3%
->   Graph500 16C32T     15m 56.7s     9m 43.7s   -39.0%
->   Pagerank 32T         1m 58.5s     1m 12.8s   -38.5%
->   Pagerank 128T        2m 36.3s     1m 40.4s   -35.7%
+> With gup_can_follow_protnone() fixed, the checks in
+> can_follow_write_pmd/pte() are redundant. Will drop them.
 
-We do have some elaborate handling in clear_contig_highpages() to chunk it up
-(and to call cond_resched()). But that function can get called with much bigger
-ranges.
-
-I'm not concerned about the cond_resched() -- we wouldn't do one here before --
-but I'm wondering whether we could end up triggering a HW instruction that is
-uninterruptible and takes a rather long time.
-
-But clear_contig_highpages() breaks it into 32MiB chunks, and only x86 supports
-it so far. So we won't exceed that with the maximum buddy order of 4MiB on x86.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Yes, that sounds better.
 
 -- 
 Cheers,
