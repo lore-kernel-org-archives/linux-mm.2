@@ -4,198 +4,197 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D27F9B5F5
-	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 09:29:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32207F9B600
+	for <linux-mm@archiver.kernel.org>; Wed, 22 Apr 2026 09:39:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBA3B6B0093; Wed, 22 Apr 2026 05:29:02 -0400 (EDT)
+	id 74BA56B0096; Wed, 22 Apr 2026 05:39:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6AC96B0095; Wed, 22 Apr 2026 05:29:02 -0400 (EDT)
+	id 6AE406B0098; Wed, 22 Apr 2026 05:39:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B59F86B0096; Wed, 22 Apr 2026 05:29:02 -0400 (EDT)
+	id 54F1F6B0099; Wed, 22 Apr 2026 05:39:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A430F6B0093
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 05:29:02 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7133CE68CA
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:29:02 +0000 (UTC)
-X-FDA: 84685667724.16.9648FB2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 092B3C000B
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:28:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SAXLS0a8;
-	spf=pass (imf28.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776850138;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 42DC36B0096
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 05:39:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EC3FD160C5C
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:39:28 +0000 (UTC)
+X-FDA: 84685694016.29.EA41790
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012069.outbound.protection.outlook.com [52.101.66.69])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C8BBCC0008
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 09:39:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Vm7s8xnS;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Vm7s8xnS;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf10.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.66.69 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776850765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7b83AXvYn2YXGDbMPSPmSmdze0amh7xDbZ68YoN+KE8=;
-	b=u3IvT1UaeEv5/1Q2vf+B2D9Ph2B7aLvt2Ih+rraamAcjVgvsKDOr7KaabSTYLd79MFQf5N
-	iGFZQf1bC0QlQFjDmLJz/S1r5dFvKkfJsCHwHDwNJ02OF8yfyJZN0ghN/i0YhIsnilstdW
-	F2MmYYvA8NocHviyzwPk9Ch7RmH5Pjg=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SAXLS0a8;
-	spf=pass (imf28.hostedemail.com: domain of yuan1.liu@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=yuan1.liu@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776850138; a=rsa-sha256;
-	cv=fail;
-	b=2L+63/oUYuzWeVar6pBI1hQGZsGplKbfGDdvggo1aTg09m8nkkIE5uWxJ4vUfoFm+hw7lJ
-	tjDmkZUk3EPAN/A6dJocKSl8Xr155dktK+KxeB+YIKU7g7x7mHl6TRDt5+KH8YSF+lIf9f
-	jVUEzl8FxfJV1XCt+soXNT9ZmVCRyfA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776850138; x=1808386138;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=N8IElkeHZb+X2c2PSkgXwnZhDK1B7PZ9lKTZrtrwRFQ=;
-  b=SAXLS0a8C6tXs92rp0eJepvIIIg2o0WemiWkfCsOMFkfrxWxa0QxTl7n
-   JIBvEK0c8ge7GkJxs2jLnQgggAC5knR+nP+F86pNydbD32JjQOpWGyrFj
-   bzAej8W5aTfNVoZ9Vd5BglDahIgTn2pBqlEyn4F5LOZH7qrsMF/rCmrCc
-   yrnpTAJWWQkED07SUSvkTZJIIvQuVZpavSxRzgSG7X1hnmj/Zf7P6a70M
-   QbY7C4SGGQNW+DXa9083IWS1Ld8MzQ3PQ4b7icKrLxvK4OufpgIez0csI
-   vLAUYah8VlseUQZcsr81C4DxQ9XMKxlurK8M1XAjwpDKlouqyOk5e3F6C
-   w==;
-X-CSE-ConnectionGUID: ii7IuBHBR5u0Ac7rVPQXJQ==
-X-CSE-MsgGUID: N0I52+UhRFyjQ/A98XtJnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="80385875"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="80385875"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 02:28:56 -0700
-X-CSE-ConnectionGUID: ewtTQL0zRkekK2Mvzipcxw==
-X-CSE-MsgGUID: qVqOtcOpSXmH0VQCrkbONA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="227971904"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 02:28:56 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 22 Apr 2026 02:28:55 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 22 Apr 2026 02:28:55 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.11) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 22 Apr 2026 02:28:55 -0700
+	bh=mnlWvWHIN7cTZ+c2NoLEk/vLzJqJRVUAF9d9s6hmhHI=;
+	b=oaJ7l2nWzmaH44kgSkhX0H6+6fltnu45wu9lmscfl2TUmtjQOL5F6yXufxWo8NJgXHVDlo
+	vEI4BmGCYnsFim1p2XvGDMHV3SvIk7egVQU/fFGwVdGlPyEaugsiLcNU9YeKDG1YnIDHIS
+	O2Ww3rijPTzm6C5Xpg6NscYk+uR0Kg8=
+ARC-Authentication-Results: i=3;
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Vm7s8xnS;
+	dkim=pass header.d=arm.com header.s=selector1 header.b=Vm7s8xnS;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf10.hostedemail.com: domain of Sarthak.Sharma@arm.com designates 52.101.66.69 as permitted sender) smtp.mailfrom=Sarthak.Sharma@arm.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=2")
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1776850765; a=rsa-sha256;
+	cv=pass;
+	b=RZWQWiuhkDN4qrFZqi9bLchjmmzc3nzDF1p3juDIuRcxJv5xQ1vRWkDZdejrBAft/7M+Gq
+	PLfaIv0Uq8UGG8A0i0ZoV4t1o7uozpeIzab05jAuw8mNCOpgW3UDaOLc3UpXPl+pt+DG+N
+	DNIs9W0CUFP54OhQxLFP18zrSWekXh0=
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=NdK3ho+/H3jv5+ZKQ7Yq7cxrkdazdZBp6Smqj5P/6/L6vcThQq5WQY2MF0lA/1gBMwDQZYLSuVoeZATq0jgsNDav6VuEtXNOCKYhxEC0pgYWch5fkTYCC9ntrRUQ5vlU4J9UTSxdE2nFPbbNpAQOmdoOxfXArCzgijDBhJyrk25sKyVgweHJLCXOTVOLlPaXdlA357iyTeCEMtTNVZLbiK68YKzkvxKjvgMN5xNDxLqfzVOaBTWUy00SRzA528a2qWsqVAN9IRBbdYjMeQOjMWlBUHLfHOuVmNkYplf2n58YXTOzNhW9Rp1fi3DB2kTBqW7aKfjLcW3kqgFtxQ605Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mnlWvWHIN7cTZ+c2NoLEk/vLzJqJRVUAF9d9s6hmhHI=;
+ b=qaCRi4icN0z1QyqqRTKdHiCcBDsZ3amZtWFRefrJZ+qx2jxyT/KIijCaEsqG8F33b/DdfDcF0hiHYgtprzyEkzvZK+4CsuHZ/7VW+K/ilA5SBKNKTNnLpAK0td/koohrFrjoV2gf4flzl5rQHNnE75L/QhHS9tadr6VIDYvkELvnxU4/PmyetmrgpklnkTvbXuLFlPBXVYd85o1fsCxbMzaG/GHIPXiJez9snnBPq9/MYaE9bpvV6/N9aRFaB1jccJMVB0JLsOG/mgvmV2VfzB3IPQZjjqeTjBTbNMzJmOs4uvLFP16sQCVFEGoC/xs+K6NA+OO+ukSR/0lBn1j6sQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mnlWvWHIN7cTZ+c2NoLEk/vLzJqJRVUAF9d9s6hmhHI=;
+ b=Vm7s8xnSC/VQojmM5pV9canyiQ3D3U7j8DiKmV+quTBONO1I2qeISMTYvtY0solZWDvnr2CYUZCx5E/Dj2Mvkppglle3FYIdjfMkz7elPdJtphNIsGvB2WVOG32HQtBihubYNIUEvwhN3moh3+gGHMBsT1WyM9AYEGPaaHYC+Sg=
+Received: from DUZPR01CA0349.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b8::14) by AS2PR08MB9367.eurprd08.prod.outlook.com
+ (2603:10a6:20b:595::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.18; Wed, 22 Apr
+ 2026 09:39:17 +0000
+Received: from DB1PEPF000509FB.eurprd03.prod.outlook.com
+ (2603:10a6:10:4b8:cafe::89) by DUZPR01CA0349.outlook.office365.com
+ (2603:10a6:10:4b8::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9791.48 via Frontend Transport; Wed,
+ 22 Apr 2026 09:39:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB1PEPF000509FB.mail.protection.outlook.com (10.167.242.37) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9791.48
+ via Frontend Transport; Wed, 22 Apr 2026 09:39:17 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FDsydhs9FvPt7abezrBUcM5noYJLMtqkx5HB7PL+Ig7IVp7ZrnlCz0ctcYBLYhZSIRqWyNf19lh+N6MqME0znZRYLVUrvE4UtW6Ht7XeU0knwaFa0VnD1ktNRc4hFx6qv8LLEv3914lTIkI6gWSSJNMsorGRiZmPQCrmQNpsvUr0ENSQE42k9vW4P0cM/fjKRtn1ZaeJkYtY/m8RxWYoJMcCabP6DRdeSJTLNpIBlsnUfRq3uVWMrq5gg3JLuKs9JP9ygFmD0LBIjJBjpV5AJtz3kjtTULGQrUN9QHUj5S4xCznuMPmjJZC99MxViZHrAe+8xYzbEgkIB9yuEljSpQ==
+ b=N5T2uVT+PzGD+kw38tLIulXy7srhxorTyfi/OTBalnsRNxxMlPGevIOwatixZmgBRR5JHFAoNTvVRVj5iA7MHk6ctlZ/4AoN740YPyzdygx0UqKrcpz44LVV7MVz8pMkHbGPvU1qXQLYrOSgQG2/AxP4M7HZreK0pbCU5Gy+GkSESXtRijlyHTv5JuOwyBUVDfpt2QYKr2f3R/ODoKmYAYV+Aa4qxONg/Aioj1fxJtJPC6JdH7QFahALZU3hVVP6KTnhj8sOlY69uhJpxKnQNyT43yfkMCgk2UFlGGoExCmoLS1ammSw5f0ZupSoJ0n/2JZVX+/FtK28hdLcyYb4TA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7b83AXvYn2YXGDbMPSPmSmdze0amh7xDbZ68YoN+KE8=;
- b=gPQxgSngtu9CRSV8Ffl+G1drTHDfCNS6Ws0XOoA3DTyKa7+6QZXFISGDDNr5gU0LLFKIMDwjTmW1/Fh/pjhtV7NfaZ53O36IoBW7choE4NXi7rPDjSP9/fj3GoWJeWd4mHXgF3ItP6N+0Ti5KCRusdxX+cOeOJulw6xIL6IodQT3GC/rtiirghgSPC0yF5qa5Nf2qetCoZe9XAXLZs4pzjhartIeQvaoKnzTeAe8Iuk50YD9QYHda/zDaD7nPMDp1DkWmL5Z10k+2QyLk4Z3cZSyd8s+iL6LCkZfaTuI/j2FJws4sI9qwHcy+f+YbjFK4iJC100dl1ZipiSvZlJTzA==
+ bh=mnlWvWHIN7cTZ+c2NoLEk/vLzJqJRVUAF9d9s6hmhHI=;
+ b=vmplVdZ/sH/iZn6v6LtQH/xJYiCSsDj8TKP4SFzc/8IeN9Yha6s7DN09LtwFZrD71L5vfPpespUXY9SUhdwnrhzDqaY1l1GVpRuZdxNVqV+h2FcGCiMidaeO3rOBOdoP7BFcA1n/+gpLqIG9rtbATJZLfQ70wEG13DRTyPtgrqp5/jJrQP12M70dDyxwYVrSgK9zW28xaLECs5SBwp6iWnSeNV/T1onva0HzDOKfj19O13sRuAc2Khw06GAaLhkvpRBVxaxyfZvIKeOD/1Lmg4OBQzuF8pLlgUCq2uZsf0lgN0G+Wwyrm7ri8NY/d8oFpwT65tvMEYj2Em52areltg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB6936.namprd11.prod.outlook.com (2603:10b6:303:226::16)
- by SJ2PR11MB8298.namprd11.prod.outlook.com (2603:10b6:a03:545::19) with
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mnlWvWHIN7cTZ+c2NoLEk/vLzJqJRVUAF9d9s6hmhHI=;
+ b=Vm7s8xnSC/VQojmM5pV9canyiQ3D3U7j8DiKmV+quTBONO1I2qeISMTYvtY0solZWDvnr2CYUZCx5E/Dj2Mvkppglle3FYIdjfMkz7elPdJtphNIsGvB2WVOG32HQtBihubYNIUEvwhN3moh3+gGHMBsT1WyM9AYEGPaaHYC+Sg=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com (2603:10a6:10:417::12)
+ by DU0PR08MB8254.eurprd08.prod.outlook.com (2603:10a6:10:412::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Wed, 22 Apr
- 2026 09:28:52 +0000
-Received: from MW4PR11MB6936.namprd11.prod.outlook.com
- ([fe80::96dc:12ef:f56f:dd04]) by MW4PR11MB6936.namprd11.prod.outlook.com
- ([fe80::96dc:12ef:f56f:dd04%6]) with mapi id 15.20.9846.019; Wed, 22 Apr 2026
- 09:28:52 +0000
-From: "Liu, Yuan1" <yuan1.liu@intel.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-CC: David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"Hu, Yong" <yong.hu@intel.com>, "Zou, Nanhai" <nanhai.zou@intel.com>, "Tim
- Chen" <tim.c.chen@linux.intel.com>, "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>,
-	"Chen, Yu C" <yu.c.chen@intel.com>, "Deng, Pan" <pan.deng@intel.com>, "Li,
- Tianyou" <tianyou.li@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v4 1/2] mm: move overlap memory map init check to
- memmap_init()
-Thread-Topic: [PATCH v4 1/2] mm: move overlap memory map init check to
- memmap_init()
-Thread-Index: AQHc0Y4h66ZJRC45aEeUdFXXLFyV9bXqRsUAgAAl0ACAAFy7IA==
-Date: Wed, 22 Apr 2026 09:28:52 +0000
-Message-ID: <MW4PR11MB6936682EB5EF1993DE7BDAEEA32D2@MW4PR11MB6936.namprd11.prod.outlook.com>
-References: <20260421125508.2317429-1-yuan1.liu@intel.com>
- <20260421125508.2317429-2-yuan1.liu@intel.com>
- <20260422011126.thu67icgj5qfbecj@master>
- <20260422032646.vtkdoliudlxgtpv3@master>
-In-Reply-To: <20260422032646.vtkdoliudlxgtpv3@master>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.18; Wed, 22 Apr
+ 2026 09:38:12 +0000
+Received: from DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047]) by DU0PR08MB9203.eurprd08.prod.outlook.com
+ ([fe80::f1e:73f2:57df:4047%2]) with mapi id 15.20.9846.016; Wed, 22 Apr 2026
+ 09:38:12 +0000
+Message-ID: <e5098a53-32f9-4155-a935-de1ee09b42e5@arm.com>
+Date: Wed, 22 Apr 2026 15:08:03 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/53] selftests/mm: rename hugepage-* tests to
+ hugetlb-*
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Donet Tom <donettom@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lance Yang <lance.yang@linux.dev>,
+ Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+ Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+References: <20260418105539.1261536-1-rppt@kernel.org>
+ <20260418105539.1261536-7-rppt@kernel.org>
+From: Sarthak Sharma <sarthak.sharma@arm.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR11MB6936:EE_|SJ2PR11MB8298:EE_
-x-ms-office365-filtering-correlation-id: 66105994-d4e2-41ea-3906-08dea051914c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700021|22082099003|18002099003|56012099003;
-x-microsoft-antispam-message-info: pH5/1CwLz9l95S9zFt+7wYu/e/aYUFER98jqaxZYokZOoQJHjYNaZfpCge3USCwdpV/enOT5Uw80KwwVug7JNRMlYTiPiiKqtMdwsg7XGQWtVtQsXVJhYphwB9F3Y8IyQ3Gvq9yKU0zIqbjgyonOwangxTEfCLTnR7KcORpaXjlPsch5jH71grAzly9htBLSxbzF5YAJF53bQ9rqe9IMdbGWOjIVAgZMCjqZHlQBNJFDeJajwgefmRglPX6kJwSpKXJd6/HzUMhqLHH7eqAK84VG7i78JRViCiF14eVfK/wkdku87Jvd3NaTfenjCOjEklAV8ravahfQdhgmGBsxsuAUEYY039eFZexi8TeNfZzu94vOW0iPp50aXP8BFNqfXRKfc0MWpHrD0stlDvU/uDdGk5lF7jHnr4JNYc2CEDfJKkMZ8EOMhY5SW+3n6esXz4yBQGyFqLmLk8WOnKKyOMI9aEJtWMTw7IVBuIGG+ZAaWaTj7wDhGCBs4o5uxApQRVfHGxK8fb3ZkxwKfhJTdKM1xqYCF6lVcIHjNCiZmSmbE0HvoB9gSkK5LQdl9rXXs5Zwf5okLLnM4wdn3WcMPG9w9qxzIta0Xwwo/YW6QTg4b23D88lkZ4qZM+klbu/3GbaNDbSTzTqSN7u5iqYY2ZlFSy9HdS6cnpK1S6KUJvcSd7Z1NIIVKQYgh9TTEGMmvbxkNYx7LbiqR/5xKuMEIuwMqPsjFyT5Ts+LFYjHawXchfIvf/E4MskW18WdLTUUPUWVYSXQUSLX21zN0JLMXNTZuLKi6dahBngn721uyEI=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB6936.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700021)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Ll40cSm5RwgsNR6QktscfMoFkBpTYLaWAXzVLXXcAjZPtbf9LzRPCUij8Gx0?=
- =?us-ascii?Q?iTI1gek+Ew2p4r9mfWGd+eXNSxjMWGUlrB0jToR+A5s5TVZ/vYt7PisGhEIJ?=
- =?us-ascii?Q?g7Jw5xHAh+OHidxTiww6xyGbp8ksWPXQvF0GopUo/KMf4VE6UW1oxEhV52Y6?=
- =?us-ascii?Q?HSDsXMJCrWfAY5gePiuh67twsk9vfiN58mmLB+442ALsUbGWCt0/flnD6wEB?=
- =?us-ascii?Q?lH9YSIndIP1KIN2cjWNwqh9GltgTByKeT2iRRyLELaxIQqpXzA87xkBXkGRx?=
- =?us-ascii?Q?C98xbgy9Zxw/SkaSlCaO84CV6q0kjLcqMbyczLU6RMluk3triEdluC1A4rYv?=
- =?us-ascii?Q?B6V2nAwIT8wXT15dmhbmb52QvE/q2yUFmRamF79Qqk+ZjCyy3eF+p96IbJLa?=
- =?us-ascii?Q?BiBy9ufV69ViIQRaSIsRMmMu4ycravpIX5+LA9Z3LJRVGvck/j2xb2Xvl1at?=
- =?us-ascii?Q?eRekqLxofkJyJExvK63mObNRNujpSpXRAm2n3Hu15t+iUF6TkcsIAc6oLfGD?=
- =?us-ascii?Q?1E0XThHgCZDrTQEg3QMkIryhd0cfE71POcj0wwVTp6OEbvFC1647M2FPspMG?=
- =?us-ascii?Q?VHJyBkavM7+J+GJaDZBP4q4XPIsJblsvT2x9kY9OaS/xw7BDzrQM1srillJl?=
- =?us-ascii?Q?JxuRdCyONLDXIMikourH6sJngPz5KW7w/Uvn05nf4j2t5dgfZA4FNBi5lYmJ?=
- =?us-ascii?Q?52V7XrfwOJyB/YU1ZI7cZUkitcLj+D/WC/JlPzWP8Hg2gT9CGKOyig1Qdaia?=
- =?us-ascii?Q?/oCjIVj6uBS6z888luV9RAsCbFFrYfOM6nTxcHM72kt2MQSXjX6ECeBqDOJ9?=
- =?us-ascii?Q?tcZ1KCT8oru2b+4NZVuI+huwpVoBpGmA5H7b3S6b0kwDjshpzWdGB7WuGTVZ?=
- =?us-ascii?Q?WwTk+OxHC1QlX2P8jCz1XCcIzO20SSpU82vyOKwiokefIFRhwNT19hIy/gBx?=
- =?us-ascii?Q?/RLKASXXpKM42TytMqX1Bj0kqZqjuAtndBsZTh3kQaK0xFc+7KZF7iUXB0kp?=
- =?us-ascii?Q?TFDdAHIgiXjXkBxp+3aYMbY2q59+Ukuu0ek73cEnzIhSzGSJ9UGiqz+0ER/8?=
- =?us-ascii?Q?c3o5dsZp+R15CwPe0cbgPmkisXjWfDRExjIp4aTwzXXYDvEH0ay4zEHEWmZ4?=
- =?us-ascii?Q?l4vWgzJYmh0WM7dc6n8J8ncwqw8Psuf3grlmm/rbIRYd3BBlW0HohnJVBfSq?=
- =?us-ascii?Q?1XrtVoZ6PVE/LFw8bWyTCQL2UnZH6IM5ZVzNkft44Pu9fFQEiOhegKDnuh5q?=
- =?us-ascii?Q?LTX71G5QDq6bJUPCBGqBj0IHuEXZpysuR+xvGQq8o+Xaaxb+rAZM9e6KE8RP?=
- =?us-ascii?Q?OXILZcthMtNrHFgHNMyCNp8clqA/R9C6ExSDthqNXb+m+Yyqu6j1fOWM+58z?=
- =?us-ascii?Q?qOrv9k7DVAy83bzV5p4J+Vsy/J5T2/CI8FTAyQ0Gdc+T7C/ayAYPTKdTqc8+?=
- =?us-ascii?Q?aRtkpm9kGnUJYI8uARTnaaJ6uaMfMQswpBT7Iw4WtGMMcygshgoES7iQ55DY?=
- =?us-ascii?Q?TgDGsdZ4fpQCqwQJgPCZUgVea7YQ+m3WQ5U78lFLXmtBjNx0AUxKZfoOX3kP?=
- =?us-ascii?Q?/Lxzt48iKUWY0jR/5gDIIZORVxR+BnDa467Gn+Q49K46j7fyJgwRHhPhtYWH?=
- =?us-ascii?Q?9KGHpnbU4V4dPq6U9CwlGMGNkrwuTUFs441Tb+q4tLyTYqauR4kYzAntA9aq?=
- =?us-ascii?Q?msmczBI5da5XQFsfY3+Q4iEZhe4RNx2a+QKIq9Y7Ypbja06TPVknec6qcCM0?=
- =?us-ascii?Q?W7D78IDNew=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260418105539.1261536-7-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0091.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ae::14) To DU0PR08MB9203.eurprd08.prod.outlook.com
+ (2603:10a6:10:417::12)
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: Kf0VX0XNsUjHTBy1hzPP9hmIiMSvAMKt/uxxoFi0JfTWLIvLbCBAMO6csm9R64h6wu0OMFocuzebWhH8D3AaYOIlnOE0gmeI3Pyd3dPU9zKomJuqbRtXYHlrKcNpqPfLx0JQk/YKb1NrybLUCel0VqCzNZBc4OJrbEk/iKy2woqrGrsft4OlDy21pPfNb7vZq4M7xBY/tQDkP7EeX3rrdBdEvNgsb7v2EUoHwqnTaTLkGjMgYCQYoI3AB+5IXoxeD2wrVSH85jaVHJukF/0XFllABFb5T2F/btieCIJkqrMmsEgTP1d+RRugK6lcxAveuGpK/xPQ+ttsCECqCB3pZw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6936.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66105994-d4e2-41ea-3906-08dea051914c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Apr 2026 09:28:52.3158
+X-MS-TrafficTypeDiagnostic:
+	DU0PR08MB9203:EE_|DU0PR08MB8254:EE_|DB1PEPF000509FB:EE_|AS2PR08MB9367:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5531a25c-aec9-4f3c-c26b-08dea05305f4
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ T4CwtaWCtQE51BwD23TZScB7U4TYVq8S9e+uno5njrqbJ2kIQL2qnkWfF28WrIPGxgnlfhmSF0OUlRxI2i+QfVbtSC5RWZhMTyhkkseFjdJvRFRePHV4HdSIt6r16jLscClJy7X0pKBye2P/2tAKkNTz5sMneCl2cTcmPfM0KFpgarYnS6PihhzFtxSrod2HJYdcRZ0agOOTC/bcGMbgMxIgpi+MZPe1MF6rd2ON3uV0SZqdRfDz8vQtg8sJZb0fZN6h06Q8tS55JylTxrRnvmcwaPYSYsAgk5Q2/UOxTWlyyzN2C7xmrGB1uYnogymxUQ7hhU80tBpqGe74R5AQRjRLBQMiY2xsQ9tDcXCUTmP3I/5DAu7CsbcjyqRVeYwq+1y2RpeRYxQOYWTSRPgvwEcsb6c/Eqne0AeMlVwr71RCaS5jIM7BTl8zCJyQ1VDn7t3kSMig9fG90+PNFLsSHDLgOxIfJEoFRQD1JFV7t7lN0fiU2d+4QSgXxDf48/WxR0E5hngI0nPPO+6eL1obvWSuqtruI5xES9S95YSHT54VVjy8z78c91deQkb4JCPjzg4FQh/iRb74HrPLD6E9nUAjpX47bgiiiJfIpf2cDuTYhOcLAMTSohZXwniK2Qjx719EBGY8apQ9MtOoOdBV6ptvUsXGUxzJTqrAw3+V5rnpLmAZJtgO1/G5Vz9oa5jlHEFPAEktm0PNNpyN5tvliHIGo9Is9DxpMOLauLN/FVc=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9203.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ ArcWHbT9e0pzlP9TugDokWJ/8jLCuTAVv1+tS9u+q0bpdbZgGjnIqdHHtdMo00esLUoFbIPhroDQZLdkMHQmd67ife02BpXSIkgSxxCOiep5WoMaN56E4OrQ4ZwxJx3yjwhMDp08TuUphOO9MGeRQX2W4BUUKhW4e3i1xy4sWA17yqLfe78GjyZBmz0Ufx7O+2rJCtGjo7ANopumivy2Xp1MJIvn0hDOhALCx5rZE+Qzbxe0KRvpcsPvKZDVcLLC3wETvQRgh6PebAKcgPwCmyK/S8FZPDAORaTSSICr3nX4YXtgqlZCYgAw7PLhvLbtNa60DLpv/FeDWXHeojJMDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB8254
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB1PEPF000509FB.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	57da6710-aee8-442d-a09d-08dea052de99
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|14060799003|36860700016|376014|7416014|35042699022|82310400026|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	QiB5jFMzklReean4/wo1SV136Rvcyl2aXrMy27G4U7VYBLpbSaUC3HlCLicC2D+VozmiIaV/KBomun7pw36z+wenAtVGTBfdU1AsMxSXICQqt/bj7S+pCXLC01o27kka5XGPbVwd1vX1V4pBTB1dDDoEFvYktBryrdBob/M7AEUYBghSuAPDAbyGSCrlmbtT5RAogGzbXE4gl3wrnmDcvqWqP03Sq/E3EHdBK9+3lflwd+4mANtkLhsDQYXolZMm/wO+TtAeIy/030cO39mlDyP/E3y8/Ksa0aQAzvf4CeWx0UG4NW5rLyimIUAyxpayUlR/+OXC+xoa00H6TGd4A34ssDf0EsMH6XikvudGwqMic11BSVIZ34798BTLWLgXR8gAN7ksIK8QMC6gGXeC7167F/1QBfqbd92SeaIbBwgkmC8+yhSP0zAna3s6lysOqEOI79luJ63DN9ZMpeVEXzG1EefkVGbTMQZprKmrEJL7+zZKblAC+NQEGkHAYVhl4t6bl6dv9RQYjQRue74j5+Di2S1uJeHhkqaAAuFjTJ/fc2WS0H4GE16Y+u9XWqUOf749VsrddJ2mSBd9u57rbU2FznCSoMORk8F06HcmKj5x80c9VBnafL49iMlRgdH0vNvkKs8cMqmayHDLB7Wh1wrm3SvwQyGOai+QiCtSfb9kNN82AXMt3xG2yQpoUBf1P88WK/V9D1DfjQW6BaGjnLX1u15UxAlwisxPtnGM46ntBAvt98QUMhXTW4ARmd4M+8NGX7jf+IwdPO/Fo6jnSA==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(14060799003)(36860700016)(376014)(7416014)(35042699022)(82310400026)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Q4Yutxh6s4hOVRwSr0O75sWvsZwTOb8cpCQyU/5sC1G8dbsSBH7hBUNf7p7/EE6w6gPypGRUOvy+rWpISphgCnQiIHUhsxsyqPh57RU8kSnKghjcamFOkhNB6N8LrTwk/04R6svKU62QmLGVrugCNyYj5MHrSia5gZfMNaTljxJ3LhxPvTmrbG0iAhJgd3mj5+5/qvPTx1c21M6UZLZ/Dxd566RpvIElsgTl/6pH01sV1FEdnFoQd+B9l10lz3bjc4jqmYbqPm1wnQOc+j88ks6micb0eHnN7Ov34eyP/p2kbVMI4qFEefFi9UkuWXONyZIpyez13pHu2/R1ZsEFMZeALt76jCL/WAL2HvepoBgK15VUjUdHt0WrS8gTJYRKpMiSyWNTg6wI6dmjB5cBLBaNMaJGp4+x65HsMW4coebm00/ztCWAA/PRu4XhNGx9
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2026 09:39:17.4716
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zaB2E3SVdTyqSpkhixbDzZiu+APJuNZku790XB/mLrO6FzKou/++j27Ley8T3vj9jLXB7KP56XBeHwqtHXnw+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8298
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 092B3C000B
-X-Stat-Signature: yrpbec5awdd9auszncemr67ictxz6od7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5531a25c-aec9-4f3c-c26b-08dea05305f4
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509FB.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9367
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C8BBCC0008
+X-Stat-Signature: rajhsojdt8wsq1sa8c6ysotjcky8rxn1
 X-Rspam-User: 
-X-HE-Tag: 1776850137-452120
-X-HE-Meta: U2FsdGVkX19qL4a1yTNcW/5ovQh/xtyCuxas2H9uNGEL2vtjL2ItDHCAnnFxDmNQklaCzDOfSYrx4PUuHLQV8Icbwfam5E5o05/4qgkbGmC7rIj9nFzwXf8Zfk1a37P8H1YCT4pTSUZCBLyXoPtLREnUOwsgUtrY6y6XWjFM1hIcaKtnsL++VV80yb9drIy4oKyozs4X5koK+O7DibNtgEC0ezpP+NyikYy/xWEZZlFM3TsaBPFKvfQEInCswNcPDFYKlzmDsuFIWGG31TIiUZRf1Or9r6Yd0vWZlelAjmnrpyeydfAKVMIlqGrTxmXTBvc6tjUlsRInyS+6XIb+D192aShT9Wc2gAp4W57ClrzjE0KrfUpTHXvlFfl2pZrUR5tN+sgiXFsYh7WLl0tWXtcWtX6kIGVYJp64ABwTpRmRwaEzeFioYKlPFOCCXVuBDKoPqk8BnZh0hWBfjp+OSicfnggrpH0T15UtOzRka/HBnzgucBs13Lvmi3zDsg9Vq8UH90uyBtgz1vRyW3vI7JwGAoI83ppJuFL1AUNAvwlDTmuq4NJ6yrQLzkNz/llNHeLMYssp+rz9N78DeA7R5n8FpZqSC2RJxpcHLLpo6/sN2M8LcUz6CNzDlgwtiulB9oWQbPxP7utYGs2nnoo34g/fJoOziGNHe3sYKlyAmAQK5l3QtLMiCg/BRbm1CTEKHH3ZvZMAwWH54Olg9Ha1H0JV9kcHhaUiae+cTie/JjEPk637Sm2np77BRqMvmSADy2T7o9lqEeZdz92Txrlc3Ky/CtHIGpVUR3Fnhu4jl9JVE1tze8/nwtIiHRngjzog+0PHt7sU1NmA4lUL9f8vJgwuQPUnUMhF1yUhSOTOSqXWpJ0m+4ytqZw/XzUVkVHOhi2X8s8K74FevbaWAvd0Kr0hoTlQ8L4DDxeJoFfpBgil1brGlyN85IbyJ3NBLG2qRNjQYikp8mZgjIpRsA2
- 6QGx4ISz
- aq40h6ctJKtHiq/WPv3gTUDC80oiPZBeTL3gQw2rZM6GdYJ5Y2z2UCRCUqAC6Az8gOr5CztWEAvWI/Jc5h9iPMv/vTRpgbhNVnlL6cgWXMrlD2QBjCvo3RCLj9oK7vgn6umeHpQzPze80tKUkN8i3i2AXbg4uMeCxOHYGttH/TIdb+0q0FeqN49bl2NC8UI1vaP/WvwKpPvBVFlAOFh9kgSHQAhsg5bawZt/3wmYyD2vvj6/gvfaQSvMLXq+paAWb7oLVIzvWe2Iu31JKoxggDslJjwNJ34hL1jnvsSM7EbkXVjGVs22l/8siowTCWaRixmGZyz5m5ZjXa4hbdPDO2iZNjMxEoenuQPlHN8BsCOx7TkR3jn07B/VoKIB+CIyN6QkTyTtB0fzik9Tc8YWUL0taqO18JtmPFpbbAjmnTE6fi/ayAjuHKrGhtMiVQuAqWFDHvsc8FUETV4na2wlxofzf+OYMHYu+P3/I8+yRPZSYaNmsMYxGi8Azsf7Gs4kPSeRhwv2nLNeiAmn5CrzFEpljjpLWxJnhPIh0ssNNydmLYvTHt5TFm7qH8topPc1p2lyYpPcGjVfZb8GZBziFD2tNkzFnDIfS/Sl+ASkrfbGB4U/u7s0HpICa8G1dRcEHBWisxISSRXygH6IFx6tuAFg3GT9bw4u57JADjU+O33XcK9dx+6ajfcpl5EQGMHsCQd5e7zeE3l5NGjzG7eg7nUBGPhSLxrRfLnhZHWjFD5OC3N6AqM7RdM2whPOzh8o5LbCMODKhy4M+OB/EkDbMAOACl85FFF7zNLK3
+X-HE-Tag: 1776850764-987084
+X-HE-Meta: U2FsdGVkX1+eGJZ8P7Q4U7uY+NUo7B6ic1ezg6XPAIP37SMA0li7OFHyUUbpiPVhmGpIQAqjFnivUuX1zbIhJtLiz/viu3LDREnpTWy2F834/Fmv8AJ88Xj632aUXEG3TxN7sYFXBk8olyDb7fAkZ5yuQwLBSihG5VGjOMyMi3gh8vlYGpvsSg9+iBLlRkvj5qSfcjVBtAbvzWXZn/AKaJp2ppZZOtAjbpetzO9MynaBV0wLLzpNEzg6KCvdPlSPPlHHRY7SXqiCDC/NrHdzj0JOjwhvbgiAicuTN3qbtg3y5rPAIoHCeaE83LgorrJ/0J+6g3gd+jIZ6NyzxEhJgwhhI8Vm6PEHHJI4RFyqJqCdAoX9meF7hvNwiGy4X6PcdVEnpXHjWl6WuqLCG6r1Kcf3cujUxpmFDipMrNmFaPNULqqp4VG7UDU2wV8WM8jZrIl/SzMR5ZwMVoSR9D1SG3uX6QobJ+Eikh73b+f/tqvdCYNAOMsAQuoMVP1+eauGfCmxEqMkBWvKZehYAi4cMvFP3E17EQ0d4VyPnc+6CN8bY1KveKfs9QNtJR+FoElqls2k2E4PAAOpLPkq4Ipz8ZqqqPDb3IsSMRG5z0MHYmfgYU6xk5Foqgnn5pLCRj/zA/7NXtotiDKKdazIwogSC3rZ/MfdSSkIpBQaKtOSWG0hcYIMPK49eWUZwM3U67bUk9gL13c6LAsPDaWEgjBf1b8e3Vdcl7NxTpPST3AKJs1mh5eWro0XBTpk1jMh2dsy/+pvQwicZZ5CqqAtPo8g+KqZDFnYVQA5Au34gwUJSt5Z6cd3Jlz7KZV4xnR/VN/2Lh+JmCeAwG5mniGni4JWWyme69tV7fFwkfBzZBBuiNMwOqWGnUHRv0cmDy42hxagd1Q/miAZJcxdgAxGCAu77x5n/GvJOcyvsBJ7RJikb/3r9l/98+erEXEA3lH2FC9vnID93tFFnxiY/r5rL97
+ FY81upB5
+ pgiD0AaqXxOpxMwKt8huTNIM55KOc6XwnMl5OwzxSAtF8Ri8qivV863n+znFwxGVptbcBAWwf90ivBQGPlr0wJSQPRoXs4VR6ywFc56YB0+fmNcOuCvTC5TfVGSHlPcwQOPRCqqSnJjmbYDNzcf/OwmMnSYi2aSia06PqFG+8d8xShbwkfhzWBFQWVw9T0fQ6u8eJ7/q6NiuPZFLLwlhL16UVt5Eguf0exZog9FrZj/efLIkOuX6szTDxdaSpScOErKtyF1VME74MmFx1lR22c/be53CW4qMU7B0dAn9x5zS7tVmjHB/MqfkPuYPk4ExNCvT6mPDKVjPyuYXcZp9Ae49+WCZd7lYJIUsq5CTCuQS5rMDe3HDdp5pL8S64nLxte3eJyYYZfMaUi0QKso5Nb7RGXBd7gZrUw59eR+/8US4XfhZKv4R22gobTppgCgIg2nVHskWrwViuULcDoP8zmO/EqfP3/JurIIPl89b78qFO8K9tuDeEMUt83r58+prufGPRpFpQnQVFk2hYUK3P7VQEBYPCkDssH9dEKbVQ6NgjVn2aCH4VnSDRD/lPsRxhTeQwjW3dvJ0/zfU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -203,246 +202,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> -----Original Message-----
-> From: Wei Yang <richard.weiyang@gmail.com>
-> Sent: Wednesday, April 22, 2026 11:27 AM
-> To: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Liu, Yuan1 <yuan1.liu@intel.com>; David Hildenbrand
-> <david@kernel.org>; Oscar Salvador <osalvador@suse.de>; Mike Rapoport
-> <rppt@kernel.org>; linux-mm@kvack.org; Hu, Yong <yong.hu@intel.com>; Zou,
-> Nanhai <nanhai.zou@intel.com>; Tim Chen <tim.c.chen@linux.intel.com>;
-> Zhuo, Qiuxu <qiuxu.zhuo@intel.com>; Chen, Yu C <yu.c.chen@intel.com>;
-> Deng, Pan <pan.deng@intel.com>; Li, Tianyou <tianyou.li@intel.com>; Chen
-> Zhang <zhangchen.kidd@jd.com>; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH v4 1/2] mm: move overlap memory map init check to
-> memmap_init()
->=20
-> On Wed, Apr 22, 2026 at 01:11:26AM +0000, Wei Yang wrote:
-> >On Tue, Apr 21, 2026 at 08:55:07AM -0400, Yuan Liu wrote:
-> >>Move the overlap memmap init check from memmap_init_range() into
-> >>memmap_init().
-> >>
-> >>When mirrored kernelcore is enabled, avoid memory map initialization
-> >>for overlap regions. There are two cases that may overlap: a mirror
-> >>memory region assigned to movable zone, or a non-mirror memory region
-> >>assigned to a non-movable zone but falling within the movable zone
-> >>range.
-> >>
-> >>Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> >>---
-> >> mm/mm_init.c | 37 +++++++++++++------------------------
-> >> 1 file changed, 13 insertions(+), 24 deletions(-)
-> >>
-> >>diff --git a/mm/mm_init.c b/mm/mm_init.c
-> >>index df34797691bd..2b5233060504 100644
-> >>--- a/mm/mm_init.c
-> >>+++ b/mm/mm_init.c
-> >>@@ -797,28 +797,6 @@ void __meminit reserve_bootmem_region(phys_addr_t
-> start,
-> >> 	}
-> >> }
-> >>
-> >>-/* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped
-> init */
-> >>-static bool __meminit
-> >>-overlap_memmap_init(unsigned long zone, unsigned long *pfn)
-> >>-{
-> >>-	static struct memblock_region *r;
-> >>-
-> >>-	if (mirrored_kernelcore && zone =3D=3D ZONE_MOVABLE) {
-> >>-		if (!r || *pfn >=3D memblock_region_memory_end_pfn(r)) {
-> >>-			for_each_mem_region(r) {
-> >>-				if (*pfn < memblock_region_memory_end_pfn(r))
-> >>-					break;
-> >>-			}
-> >>-		}
-> >>-		if (*pfn >=3D memblock_region_memory_base_pfn(r) &&
-> >>-		    memblock_is_mirror(r)) {
-> >>-			*pfn =3D memblock_region_memory_end_pfn(r);
-> >>-			return true;
-> >>-		}
-> >>-	}
-> >>-	return false;
-> >>-}
-> >>-
-> >> /*
-> >>  * Only struct pages that correspond to ranges defined by
-> memblock.memory
-> >>  * are zeroed and initialized by going through __init_single_page()
-> during
-> >>@@ -905,8 +883,6 @@ void __meminit memmap_init_range(unsigned long size=
-,
-> int nid, unsigned long zone
-> >> 		 * function.  They do not exist on hotplugged memory.
-> >> 		 */
-> >> 		if (context =3D=3D MEMINIT_EARLY) {
-> >>-			if (overlap_memmap_init(zone, &pfn))
-> >>-				continue;
-> >> 			if (defer_init(nid, pfn, zone_end_pfn)) {
-> >> 				deferred_struct_pages =3D true;
-> >> 				break;
-> >>@@ -971,6 +947,7 @@ static void __init memmap_init(void)
-> >>
-> >> 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid)
-> {
-> >> 		struct pglist_data *node =3D NODE_DATA(nid);
-> >>+		struct memblock_region *r =3D &memblock.memory.regions[i];
-> >>
-> >> 		for (j =3D 0; j < MAX_NR_ZONES; j++) {
-> >> 			struct zone *zone =3D node->node_zones + j;
-> >>@@ -978,6 +955,18 @@ static void __init memmap_init(void)
-> >> 			if (!populated_zone(zone))
-> >> 				continue;
-> >>
-> >>+			if (mirrored_kernelcore) {
-> >>+				const bool is_mirror =3D memblock_is_mirror(r);
-> >>+				const bool is_movable_zone =3D (j =3D=3D ZONE_MOVABLE);
-> >>+
-> >>+				if (is_mirror && is_movable_zone)
-> >>+					continue;
-> >>+
-> >>+				if (!is_mirror && !is_movable_zone &&
-> >>+				    start_pfn >=3D zone_movable_pfn[nid])
-> >>+					continue;
-> >
-> >IIUC, when mirrored_kernelcore is set but !memblock_has_mirror() or
-> >is_kdump_kernel(), zone_movable_pfn[nid] is kept to be 0.
-> >
-> >This means it will skip all memory regions.
-> >
->=20
-> Did some tests. When mirrored_kernelcore && !memblock_has_mirror(), which
-> means there is no is_mirror memblock. This will leave
-> zone_movable_pfn[nid] 0.
->=20
-> So for all memory regions, the above logic will skip them.
->=20
-> Adjust the code as below, my local test could pass and kernel bootup as
-> expected.
->=20
-> From 6351ac79a17edbfd830510fba2959ddc47b17258 Mon Sep 17 00:00:00 2001
-> From: Wei Yang <richard.weiyang@gmail.com>
-> Date: Wed, 22 Apr 2026 09:13:24 +0800
-> Subject: [PATCH] skip overlap region higher level
->=20
+
+
+On 4/18/26 4:24 PM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> hugepage could mean both THP and HugeTLB these days.
+> 
+> Rename hugepage-* tests for HugeTLB to hugetlb-* to avoid confusion.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed by: Donet Tom <donettom@linux.ibm.com>
+
+I ran
+
+./run_vmtests.sh -t "hugetlb"
+
+before and after applying the patch. Tests pass/skip identically, only
+the test binary names changed as intended. No unintended behavioral
+changes were observed.
+
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+
 > ---
->  mm/mm_init.c | 29 ++++++++++++++++++++++-------
->  1 file changed, 22 insertions(+), 7 deletions(-)
->=20
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 79f93f2a90cf..7a85ba58e87f 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -916,8 +916,8 @@ void __meminit memmap_init_range(unsigned long size,
-> int nid, unsigned long zone
->  		 * function.  They do not exist on hotplugged memory.
->  		 */
->  		if (context =3D=3D MEMINIT_EARLY) {
-> -			if (overlap_memmap_init(zone, &pfn))
-> -				continue;
-> +			// if (overlap_memmap_init(zone, &pfn))
-> +			// 	continue;
->  			if (defer_init(nid, pfn, zone_end_pfn)) {
->  				deferred_struct_pages =3D true;
->  				break;
-> @@ -974,6 +974,17 @@ static void __init memmap_init_zone_range(struct zon=
-e
-> *zone,
->  	*hole_pfn =3D end_pfn;
->  }
->=20
-> +static bool __init region_overlapped(struct memblock_region *rgn,
-> unsigned long zone_type)
-> +{
-> +	if (zone_type =3D=3D ZONE_MOVABLE && memblock_is_mirror(rgn))
-> +		return true;
-> +
-> +	if (zone_type =3D=3D ZONE_NORMAL && !memblock_is_mirror(rgn))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->  static void __init memmap_init(void)
->  {
->  	unsigned long start_pfn, end_pfn;
-> @@ -985,10 +996,15 @@ static void __init memmap_init(void)
->=20
->  		for (j =3D 0; j < MAX_NR_ZONES; j++) {
->  			struct zone *zone =3D node->node_zones + j;
-> +			struct memblock_region *r =3D &memblock.memory.regions[i];
->=20
->  			if (!populated_zone(zone))
->  				continue;
->=20
-> +			if (mirrored_kernelcore && zone_movable_pfn[nid] &&
-> +			    region_overlapped(r, j))
-> +				continue;
-> +
->  			memmap_init_zone_range(zone, start_pfn, end_pfn,
->  					       &hole_pfn);
->  			zone_id =3D j;
-> @@ -1257,13 +1273,12 @@ static unsigned long __init
-> zone_absent_pages_in_node(int nid,
->  			end_pfn =3D clamp(memblock_region_memory_end_pfn(r),
->  					zone_start_pfn, zone_end_pfn);
->=20
-> -			if (zone_type =3D=3D ZONE_MOVABLE &&
-> -			    memblock_is_mirror(r))
-> -				nr_absent +=3D end_pfn - start_pfn;
-> +			if (start_pfn =3D=3D end_pfn)
-> +				continue;
->=20
-> -			if (zone_type =3D=3D ZONE_NORMAL &&
-> -			    !memblock_is_mirror(r))
-> +			if (region_overlapped(r, zone_type))
->  				nr_absent +=3D end_pfn - start_pfn;
-> +
->  		}
->  	}
+>  tools/testing/selftests/mm/.gitignore                     | 4 ++++
+>  tools/testing/selftests/mm/Makefile                       | 8 ++++----
+>  tools/testing/selftests/mm/hugetlb-madvise.c              | 2 +-
+>  .../selftests/mm/{hugepage-mmap.c => hugetlb-mmap.c}      | 2 +-
+>  .../selftests/mm/{hugepage-mremap.c => hugetlb-mremap.c}  | 2 +-
+>  .../selftests/mm/{hugepage-shm.c => hugetlb-shm.c}        | 2 +-
+>  .../mm/{hugepage-vmemmap.c => hugetlb-vmemmap.c}          | 0
+>  tools/testing/selftests/mm/run_vmtests.sh                 | 8 ++++----
+>  8 files changed, 16 insertions(+), 12 deletions(-)
+>  rename tools/testing/selftests/mm/{hugepage-mmap.c => hugetlb-mmap.c} (99%)
+>  rename tools/testing/selftests/mm/{hugepage-mremap.c => hugetlb-mremap.c} (99%)
+>  rename tools/testing/selftests/mm/{hugepage-shm.c => hugetlb-shm.c} (99%)
+>  rename tools/testing/selftests/mm/{hugepage-vmemmap.c => hugetlb-vmemmap.c} (100%)
+> 
+> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+> index b0c30c5ee9e3..9ccd9e1447e6 100644
+> --- a/tools/testing/selftests/mm/.gitignore
+> +++ b/tools/testing/selftests/mm/.gitignore
+> @@ -4,6 +4,10 @@ hugepage-mmap
+>  hugepage-mremap
+>  hugepage-shm
+>  hugepage-vmemmap
+> +hugetlb-mmap
+> +hugetlb-mremap
+> +hugetlb-shm
+> +hugetlb-vmemmap
+>  hugetlb-madvise
+>  hugetlb-read-hwpoison
+>  hugetlb-soft-offline
+> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+> index cbda989f6b6a..a6955660a806 100644
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -63,10 +63,10 @@ TEST_GEN_FILES += hmm-tests
+>  TEST_GEN_FILES += hugetlb-madvise
+>  TEST_GEN_FILES += hugetlb-read-hwpoison
+>  TEST_GEN_FILES += hugetlb-soft-offline
+> -TEST_GEN_FILES += hugepage-mmap
+> -TEST_GEN_FILES += hugepage-mremap
+> -TEST_GEN_FILES += hugepage-shm
+> -TEST_GEN_FILES += hugepage-vmemmap
+> +TEST_GEN_FILES += hugetlb-mremap
+> +TEST_GEN_FILES += hugetlb-shm
+> +TEST_GEN_FILES += hugetlb-vmemmap
+> +TEST_GEN_FILES += hugetlb-mmap
+>  TEST_GEN_FILES += khugepaged
+>  TEST_GEN_FILES += madv_populate
+>  TEST_GEN_FILES += map_fixed_noreplace
+> diff --git a/tools/testing/selftests/mm/hugetlb-madvise.c b/tools/testing/selftests/mm/hugetlb-madvise.c
+> index 5b12041fa310..898cc90b314f 100644
+> --- a/tools/testing/selftests/mm/hugetlb-madvise.c
+> +++ b/tools/testing/selftests/mm/hugetlb-madvise.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+> - * hugepage-madvise:
+> + * hugetlb-madvise:
+>   *
+>   * Basic functional testing of madvise MADV_DONTNEED and MADV_REMOVE
+>   * on hugetlb mappings.
+> diff --git a/tools/testing/selftests/mm/hugepage-mmap.c b/tools/testing/selftests/mm/hugetlb-mmap.c
+> similarity index 99%
+> rename from tools/testing/selftests/mm/hugepage-mmap.c
+> rename to tools/testing/selftests/mm/hugetlb-mmap.c
+> index f4fcc7c45875..c0d58dd7cbf6 100644
+> --- a/tools/testing/selftests/mm/hugepage-mmap.c
+> +++ b/tools/testing/selftests/mm/hugetlb-mmap.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+> - * hugepage-mmap:
+> + * hugetlb-mmap:
+>   *
+>   * Example of using huge page memory in a user application using the mmap
+>   * system call.  Before running this application, make sure that the
+> diff --git a/tools/testing/selftests/mm/hugepage-mremap.c b/tools/testing/selftests/mm/hugetlb-mremap.c
+> similarity index 99%
+> rename from tools/testing/selftests/mm/hugepage-mremap.c
+> rename to tools/testing/selftests/mm/hugetlb-mremap.c
+> index b8f7d92e5a35..1c87c39780c5 100644
+> --- a/tools/testing/selftests/mm/hugepage-mremap.c
+> +++ b/tools/testing/selftests/mm/hugetlb-mremap.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+> - * hugepage-mremap:
+> + * hugetlb-mremap:
+>   *
+>   * Example of remapping huge page memory in a user application using the
+>   * mremap system call.  The path to a file in a hugetlbfs filesystem must
+> diff --git a/tools/testing/selftests/mm/hugepage-shm.c b/tools/testing/selftests/mm/hugetlb-shm.c
+> similarity index 99%
+> rename from tools/testing/selftests/mm/hugepage-shm.c
+> rename to tools/testing/selftests/mm/hugetlb-shm.c
+> index ef06260802b5..de8f5d523084 100644
+> --- a/tools/testing/selftests/mm/hugepage-shm.c
+> +++ b/tools/testing/selftests/mm/hugetlb-shm.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+> - * hugepage-shm:
+> + * hugetlb-shm:
+>   *
+>   * Example of using huge page memory in a user application using Sys V shared
+>   * memory system calls.  In this example the app is requesting 256MB of
+> diff --git a/tools/testing/selftests/mm/hugepage-vmemmap.c b/tools/testing/selftests/mm/hugetlb-vmemmap.c
+> similarity index 100%
+> rename from tools/testing/selftests/mm/hugepage-vmemmap.c
+> rename to tools/testing/selftests/mm/hugetlb-vmemmap.c
+> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> index 61b450032af8..b9e520194634 100755
+> --- a/tools/testing/selftests/mm/run_vmtests.sh
+> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> @@ -282,18 +282,18 @@ run_test() {
+>  
+>  echo "TAP version 13" | tap_output
+>  
+> -CATEGORY="hugetlb" run_test ./hugepage-mmap
+> +CATEGORY="hugetlb" run_test ./hugetlb-mmap
+>  
+>  shmmax=$(cat /proc/sys/kernel/shmmax)
+>  shmall=$(cat /proc/sys/kernel/shmall)
+>  echo 268435456 > /proc/sys/kernel/shmmax
+>  echo 4194304 > /proc/sys/kernel/shmall
+> -CATEGORY="hugetlb" run_test ./hugepage-shm
+> +CATEGORY="hugetlb" run_test ./hugetlb-shm
+>  echo "$shmmax" > /proc/sys/kernel/shmmax
+>  echo "$shmall" > /proc/sys/kernel/shmall
+>  
+> -CATEGORY="hugetlb" run_test ./hugepage-mremap
+> -CATEGORY="hugetlb" run_test ./hugepage-vmemmap
+> +CATEGORY="hugetlb" run_test ./hugetlb-mremap
+> +CATEGORY="hugetlb" run_test ./hugetlb-vmemmap
+>  CATEGORY="hugetlb" run_test ./hugetlb-madvise
+>  CATEGORY="hugetlb" run_test ./hugetlb_dio
+>  
 
-Hi Wei Yang
-
-I ran some tests based on this patch and didn't observe any issues.=20
-Thanks for the patch.
-
-> Want to confirm, the logic in zone_absent_pages_in_node() only handle
-> ZONE_NORMAL and ZONE_MOVABLE. So the assumption is ZONE_MOVABLE only coul=
-d
-> overlap with ZONE_NORMAL?
-
-I think memory below 4GB does not include mirrored memory and 4GB is also=20
-the upper boundary of DMA32, ZONE_MOVABLE may only overlap with ZONE_NORMAL
-
-This is just my understanding, so it would be good to get a clearer confirm=
-ation
-from David and Mike.
-
-void __init arch_zone_limits_init(unsigned long *max_zone_pfns) {
-...
-    /* 4GB broken PCI/AGP hardware bus master zone */
-    #define MAX_DMA32_PFN (1UL << (32 - PAGE_SHIFT))
-...
-}
-static void __init find_zone_movable_pfns_for_nodes(void) {
-...
-    if (usable_startpfn < PHYS_PFN(SZ_4G)) {
-        mem_below_4gb_not_mirrored =3D true;
-	  continue;
-    }
-...
-}
-
-> When kernelcore=3D[nn]M is used, the "highest" populated zone is picked u=
-p
-> to be
-> ZONE_MOVABLE, as indicated by find_usable_zone_for_movable(). So looks it
-> is
-> possible to choose ZONE_DMA32 as ZONE_MOVABLE.
->=20
-> For kernelcore=3Dmirror, we want to eliminate the complexity?
->
-> --
-> Wei Yang
-> Help you, Help me
 
