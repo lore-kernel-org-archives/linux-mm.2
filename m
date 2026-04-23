@@ -4,118 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBD7BF99340
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 07:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 080B9F99342
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 07:19:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AEE46B0005; Thu, 23 Apr 2026 03:17:46 -0400 (EDT)
+	id 6F2B56B0005; Thu, 23 Apr 2026 03:19:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05FAD6B008A; Thu, 23 Apr 2026 03:17:45 -0400 (EDT)
+	id 6A47C6B008A; Thu, 23 Apr 2026 03:19:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E90A26B008C; Thu, 23 Apr 2026 03:17:45 -0400 (EDT)
+	id 592A36B008C; Thu, 23 Apr 2026 03:19:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D8EFD6B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 03:17:45 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7108EA03B2
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:17:45 +0000 (UTC)
-X-FDA: 84688965690.29.0F62564
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7A049120003
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:17:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=S4DSIbVq;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 434D56B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 03:19:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D9F31B819C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:19:25 +0000 (UTC)
+X-FDA: 84688969890.19.E6D965E
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E9C6F4000F
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:19:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=fzJDdvpF;
+	spf=pass (imf17.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776928663;
+	s=arc-20220608; t=1776928763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7pt8k19vyvcqDIr8XmsEkmZnWHbLVSULR09dmEZb914=;
-	b=ein8C3U6+YmeROoQjh7J1Ttb3EfVruUBk7v517v9T13VPyaZ/SPdxNC9DtyJqVPNtogrBA
-	hUIHXU6YFXGj7tp7jjuTIvJg4MOckp8bwwdcbW/hnEfINHdfa1kFO+P+/gFw8iwaC/RGZb
-	p5hF/ZGXME60fFZAtRDZ4YpAGCKnwz4=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=b5ucw1jsaiC+LU7Zn1moEYy2AT2i3WtwhP+YNxCDsCQ=;
+	b=S23SOrODe3wk8hzyd4K0uOcJWffqgxg5w1IvY5PFS4CFI5dHGDpgB4ZBiTEMe/tGwxTul1
+	N5jBNvPRiq0HcBKslglOLThqLqLQDUrnQv8lSD7NsLT8LAO/I89Mk3y4naE4rCxGB73Dmm
+	3w5iemWBqR2H8Bs0nMw1IdKnKoxJxYs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=S4DSIbVq;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776928663; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=fzJDdvpF;
+	spf=pass (imf17.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776928763; a=rsa-sha256;
 	cv=none;
-	b=t4CspWqtpuHeJwcDIMTj02g6/ZFt3JbE+VamK9pU/kt+YOFYfEUJap+AVu6OivVEak721n
-	8zwcpmaC2cJxeVT4F4uYMev38oLLQh+ZHPZF4Y8cIe9IEhXSQTzbUTcUVNXcD9MVhuohbr
-	e67m9P3XC1TeKZ8BVCHYzAlFkgv8JQQ=
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4891b0786beso37815635e9.1
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:17:43 -0700 (PDT)
+	b=kpr8yjvQ9GbUBbAk5EmH6W158k7GYRbNWZw3YEECbxxYU/c+Ba2vvA8C9+MNqbAju0lG/P
+	e3H1PojBgRlyxxck0qgu155QH7NC0ZUgWcRTHkSIm+d/+N72cQgMss3NHxuGZvfKMt/hts
+	f2eS0z3nmhos8hYBT859bupequPwW3o=
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-35d99bae2ebso5736792a91.3
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776928662; x=1777533462; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7pt8k19vyvcqDIr8XmsEkmZnWHbLVSULR09dmEZb914=;
-        b=S4DSIbVqsD/TDINKMIFqPcPebi9T02yg1xHAQMtp08XB1PhmDYE5PNIh1jsHDtSRY7
-         3KkXuAMC8NwLkqJY3aCVgBo9qfrTOlamnWZ2R+LbEwHv9L+B4WT34/lO/7zRzarIebUr
-         3AZr5Z1MSjXdOV2svkM7DKpWGUUj5UrwlBUCyE9PydAPgtdCG2PtspysIIkZowL1uVB4
-         XzEBiea9P3Rcbh5RN1DKtDgqpz09g7WqAIIwR6S26M4h/g0blS0QILEyEtCGA17Qs0+f
-         XnBZQWGsTE4mTXgYUt+UUSKwW5hikQw27yvkS2PcheL5n5vLqqmzSAcss0xGTQ/LOoRa
-         IwfQ==
+        d=bytedance.com; s=google; t=1776928761; x=1777533561; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b5ucw1jsaiC+LU7Zn1moEYy2AT2i3WtwhP+YNxCDsCQ=;
+        b=fzJDdvpFr41r0OLN3y4VPgSUAWcaGGCmfam4W3Cn3OXPhp7HsVNLqxrS8oUqNCE2X8
+         w+OQnHfWEpR4B0DmbuS2KKGlp008FZ1ygp17nxPl4gt0fm77OGmxViMnSA2QjseUdaGI
+         bA66WSWR0/d8+j7JWaerHa/IgpyUl5IzS8O7byKARO+yarMKbkX+3mVVMUTRPSeHLCco
+         6RvaCc7bn3AjwqQxFSNFrY6yUWUjeRpreF/8dMyrbeCTJsJc2xhmvg64vDDnLfbezIMX
+         U/yKlURWg4UbSCyAjjxZ+hl2te9qpv2AxjrL2NhK9k6K+4riM/VdlO7mqVzcAbND/ySy
+         FwCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776928662; x=1777533462;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7pt8k19vyvcqDIr8XmsEkmZnWHbLVSULR09dmEZb914=;
-        b=bdBupkPtWI16qI9zEkTRTbSAAMNbtLQEDrwUwe2tlJ8XYeQtLLvlRV16pjRKbbe6R3
-         qWHGSo5jXFF4GUUCYSjXbPgIiF4yR5QXFNvIOhBhDyw3uGyJWC6B9ZdwufmH64/m4z0I
-         s00TlneVDQMfqks55V+BeqmuznOIKlHdE2aAhYdTGQpeezN+Hi4zn/+JsfYNJ3eu3Djt
-         7/gp+jfOjQxumqACKM3SX2nZywLv7PhXbmpNten9n8zKMx5sGsG5k5N7WXAZT3Hrst2b
-         TJ00tPzze+RE6NSO1GVQdGPsMuVHZqrELkzIXfzvesd0nWtVW08MmJxXmKSASB47a++T
-         kV5A==
-X-Forwarded-Encrypted: i=1; AFNElJ/3co1v3GFZkavYvny5jGQcX/iUkGFYPvMMMgtk1f2+C4BUfXf25kbhaFA87hBYi/4aDV9zEOVG9Q==@kvack.org
-X-Gm-Message-State: AOJu0Yz6OoVyg5ReHxqR7rYI9DvIHtiRMfGzxR00qzmqh8ag013csnct
-	jp4CCOOTFvhAc93cuWl73UB5Y+29MRFaPpPXk5w7YKCtv12wFWEVqPyssO5L49pdyYI=
-X-Gm-Gg: AeBDieuNvp6Az+h5xLhW7W8BZB9tBWFFzWWq3IQJbsAAdCb4koJ0ABl2h3/rSYbq5sq
-	FhEL+92Z988OZFJyj0T4Sg4KLBIIfqbsqYVZbgfX9M55BAO7hjzgW6YTDtS+XL9KkM+3WYuHZJY
-	sknZQkNa3GDDXNzEKOcqpRLUJAVPR1fXmTLZQi6JMe/MPANU2bHKyWwxFLyxiNYyZAIRtU1DMwS
-	5B8AR7Wht2uj16/zyESIvI8jTOmYmiqKtKfWmkJvOljj9noUKNphx2ZZN5HZc8mu2GYsD+67vvP
-	tuv1Ads43K8ZfAGztB5ZRe9Ra2IYJq3NqWPF+hkPhJHvVqJ7CRxsP1BlbFYX6oJi8jhEHPrts3K
-	pb+stCgmjk+9FL59dDhzz9yv/u6mHC3GfcQNNBlkvkutR40dZe/guvB1Fj8jjG6dyO1M9iYY8r8
-	WSfNNLTWCtPynooeGqv7msImMU8mh+aYXNmnrq/G0ej/J0+Lvoudv4/wfa/A==
-X-Received: by 2002:a05:600c:37c4:b0:48a:5501:7995 with SMTP id 5b1f17b1804b1-48a55017b71mr161954475e9.18.1776928661638;
-        Thu, 23 Apr 2026 00:17:41 -0700 (PDT)
-Received: from localhost (109-81-17-171.rct.o2.cz. [109.81.17.171])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a5499b0edsm187793265e9.14.2026.04.23.00.17.40
+        d=1e100.net; s=20251104; t=1776928761; x=1777533561;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b5ucw1jsaiC+LU7Zn1moEYy2AT2i3WtwhP+YNxCDsCQ=;
+        b=pCl3JTDaBVehAbpGViWgABFEyLk6wwfJFmmJDpkrwjoivTJ3zjgYKXXi5lVETkZLH2
+         N4Z6Mk16Lj8IXVV/R68fXHDyfoRP5THBgohxs4KzKscZv0bterB9iEu6h/WzPHI+8Mem
+         QVHRS2X2POOzd5YOMtpMPh1bgpEj2bc5mrs+LJn2mhxdT6S5y9rs+qVLD3Pr5N3er7AC
+         1Z2Z0rmbB95rBc/I/H5poyb4B3efnLCu+4iO/dMf50KqiqmGKd2E9iBxZxpv0+Fx7o2C
+         VHP+3jW8L9TTrrA8Hjt6PxB4bKYGNuF3Cxp647tp/P89ZqqKOcCbXbgp+8V/8Tygy94k
+         NRsw==
+X-Forwarded-Encrypted: i=1; AFNElJ9A9ZMVZMCh6tn3ml4eB5lXoe/rR65vEPMlN4gItYLOAwZxybur0oAM8k2LS5tTd/WvuY+fbrBBbQ==@kvack.org
+X-Gm-Message-State: AOJu0YwjlqPR/J+ckxEYIGFdAwszkHb3Z8H/gDxuMRt07vfP+hBdAgfo
+	RJY73H+MzJcx4tqgUcmtdckG/coNiKtYgzrfZ7icpSyrIFHEPmzjHSFIfZ1zK3yLuRk=
+X-Gm-Gg: AeBDiesC6tuTUmge9dRk4nBcD96Tt3yaqESF+80ADBvoxJhHoNfvlntyP2SAvaEYP0r
+	T4nhIyKDKjskXWad7OcLAcW2Sby0V7Gc44TIQ1OL0S4qBZ7UfBUZak+YOMV9M71OUF9iAgASCxY
+	7EGnHv9HuZbY/SWQPXe22Wib+kLsjF/muZicxUCaNQl3f7+z3aW4TxC4Xe0mqpbmMB7IU5rTJ9X
+	pLcsyz7Ighlc1Tn+IgvS3ch1K5CL6fUO5ZsbowcRRo2QGwgQWYNnJGhxrvIHAbeeuYQE8ph6ttb
+	Vw0I0O69hXslSfOh46UQcNvG0JT1wAZ+/FGNzAOyO9Rpnx7vJjWuhNO4TOMaIqICHPn25sqYdjM
+	O7+69HHc3O/pLfPe2o3CtuWd9sNw2uN6e/RJm6SQxJZrRkPHvSTD4CT4A41Iq8W5efWxoBjOJF3
+	+8ZGGkhOUDbYnyFtAA3pS0SazgphRb4lWBUtIDEIfGtho6wUqTwuIjAw==
+X-Received: by 2002:a17:90b:5543:b0:35f:b227:db86 with SMTP id 98e67ed59e1d1-361403af6a5mr26477355a91.2.1776928761356;
+        Thu, 23 Apr 2026 00:19:21 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3613fbd970fsm7092372a91.14.2026.04.23.00.19.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 00:17:41 -0700 (PDT)
-Date: Thu, 23 Apr 2026 09:17:39 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Minchan Kim <minchan@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, akpm@linux-foundation.org,
-	david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	surenb@google.com, timmurray@google.com
-Subject: Re: [RFC 3/3] mm: process_mrelease: introduce
- PROCESS_MRELEASE_REAP_KILL flag
-Message-ID: <aenHk3E-1ZIRI2YU@tiehlicka>
-References: <20260413223948.556351-1-minchan@kernel.org>
- <20260413223948.556351-4-minchan@kernel.org>
- <20260416-planktont-abwinken-b9499483b939@brauner>
- <aeHTcXfCyCED4WSl@google.com>
- <aeHbf7joGitRz7rB@tiehlicka>
- <aeae2Cl4ybcx0fHA@google.com>
+        Thu, 23 Apr 2026 00:19:20 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	aneesh.kumar@linux.ibm.com,
+	joao.m.martins@oracle.com,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v5 0/6] mm: fix vmemmap optimization accounting and initialization
+Date: Thu, 23 Apr 2026 15:19:05 +0800
+Message-Id: <20260423071911.1962859-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeae2Cl4ybcx0fHA@google.com>
-X-Stat-Signature: 8japzxzbigxxe43ig94mjah38febijes
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zqbbdb1ck9kw58tdyj4amyqanjr5rqxi
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7A049120003
-X-HE-Tag: 1776928663-317917
-X-HE-Meta: U2FsdGVkX1/tC7f4sFORXLU1lQ+ZUTFEYiXUXE2t/XRlz97AgBtvr+jP8POlHAxdzNAwPXGL07O1mS0Zq1EOrwM/OWpnkHSNUXt48CaduVJwSdKxb+GXGoiwnzaHTRD55Tic/Ns5nYom5F1OM7eKC4cfbqPJLKOQ/gds9Mb9Knv8pPaoFR7G9YDl1FJFNS/xppVeG2mQ39H4ueRNdg80DKykxfV1PbtSb8b2g2z5murIQGbyInTBqTpK/OWZ+xowLoMh6oiZh1v6wgCDMmZ6WAuDmg+TjnFlk/oFCkFDOKPgBirbtLEMPDiz1XuORPW8/fCriwZqujayfyA3XgmsxfaW81h2CXMP3W11cruxey5z/rdHkPL3NQKqT11mx51+73w1GtcScucNiZCkz6v68O0KPTtT3DPxHW1kl655TAmPc/ONkBFY8tfW5obU7XfD7GW6VbnNMuqH0kTMvlitsOMEzcwCCnlLyoRoyHBadgcsD9Mb9BkrFEsQJIipSnHvkm6IB6dqQLRa33wWMy5nad4F/CWumv/wFMStVxtW+yN0Qo8FulBwAHO6D0h1IADkprE/drHcSkG97XExXxndwD5ONxNXZyQhGiiuUvP9IBw/DOOdlTf2AyScgzQENBx2tsbJ/NNTP2NNssLtqeIxFr5aMWp0HVTDnPlxLk5DKWoq6zb1lX4BCk3puLE88+Zh9xWlhVdBHXwRWNVi1pQULOat+nMfEjj4+0AYP/iS7B1VjG5E1tCwjn+30+JvfUEEFTc4lHXz1pj3e3XLUtUvrHNCBV8f8clZJht+tkc5DjiRyvgE5FfSTgDINWeZm8mw1RRnKPlTDrAzOK7vHlgA3nBBpGSUG5ua9zHunJJ2bjwI0+DYTVpkT2oSdBch9ZyCnOk8pnBSYNUCqKvHjqw/LQmvfhEW3xzLRtuHrST31qNemax8F302q3VI/fDb+IZmOFhf3qmd90zARfDZT0T
- JYunQr6O
- pj+SlpJWHnsTIWd0GN3Hb/0dAD2VvQfAToMr7D6Ej5gGf6RenG32pHZWlwtwoh3vURsm56iFL0UuKDGjVdKOIYi9PZkc1NttOaPQBFvVYoSJxfhr/3KN0Fj1aiuYxtGIs8e+SMcnH8azTnN/Q50P+/xbRIaTPviPsKpDmoNaM53M1XW4OTdTB1dsvA7jqjkn2A3Nv7Ozh8fj4McY98AyCTKbu4U//MNVwSrfNv4oX2MMS+X+4Pr3siV5riSJp7Yt2YZOwm8F5nrw+7gLdcfT+6il1wXj5a/GUlpchpZMDQjQ3OVPpmETqhWk5y1Q5slmb/rCmoUHKP0LGmepVR1/41vh0KFT7RH9JI7M3j1ZGRAbqrW7Op7RKe9dkW1MPUwXGoHxvx81X6CneSyGgcIgCVkP1Fw==
+X-Rspamd-Queue-Id: E9C6F4000F
+X-HE-Tag: 1776928762-806056
+X-HE-Meta: U2FsdGVkX19BZummF7qCx/wutnNPOO5X0HW4n+2MQUvXDHsnUU6RaBJ+Fy4ybXb+SOqzp0FCUkEAwq093GxhJ11ZCbsCrdq6q1xbEJRE27hD13SWnC2i5eiYR9hYFuIg689JmuSSbH7S4pBFHk039yjspmGQAT9KT05m5tyQUs/jVb+RbfncQzxzp1vdxVtIQbKPyN8hUeqyvOwBe4m83HSK1fOwIIF+MEz1XZt15SStCAeLXnbigwbbw4jgr3FUgZ66htW1yAPjBpoVRgtbbsDrMfV8BsIL6V6BzqZV5OAZ5QtHN5ufGnJsLlTyTwPeNdRcFf/gVYBscLd07IEIle7QNwCwt03PlODgqny1MUFSEnaiXnAPtPfxpr13L3LQr9YqZcUU9W6g6nwVRjjaieSHy832XiJm/UxOM3zPHetkjtf7dMO2UaHMK04Aj28Zk3wGTzUokU8wO1+fE2WLiLlWQjoFBg8bPwXUWHpwwqXPIebNe3N5jxuIaHwkhHbsKSNq8EGU2UuxYdKr7Z1jC4bJQGW+0Pb7a5NK/Fgx2td858rkj0SjvDk5XWsXxx842hUQLCq4xjuGUrwLQeGagVbrAuhaS0uvqDgnRXjEUK3sM2OEeF2FAIVGfZsqARKbQkxwQNIMmFqS9WJ7gZOSrIQqVkHasKqPi8j3MO9BNHIEEyI4MoeBisTXBMt2jVd2THkPs/16OIxUbsqB2iuPitIKN7dkhkIf2/kFGTJSVprusrQcSr+a15W61kmpoV0RJIPVMIdJ2FbTdqujUbj8+L+AELBARCslXH9BYEE1uKj/Zon+OrekS7U2ta8I1dI/s/z5oa97XpBB6P6/mxthoquRqB/ivPK+jEppZUk2hIKo6ZpnPh1bT9WfUTyWrXVZ7YOJvB16CsBPNTPnH6FuEFKHU7oQ4miMLab5Cj5L0/zKVewlXXI3S+Biitkupt5PRtFey7XY++iUSujoLUG
+ M8Ij/SrA
+ 2C8S1nYAB8QmisbBsrX1ZP2NorRqHkg/fmoawLOu0plYIFl+K//fk/cHKyLpf5oaraPWkxS+FZtC8qXb0fN2Ik5DISsngENmgaa0phY89vko/O3TapwcsIfD5/vftQlQpkdpS+iOUKN92qOdXk+GfbhxRVUncD29H+cKccxpaw4yVb99rBr3WvGQ9F+iUfm4IsnU988MHMwuq7T1v/FkFoqXfPGOTfhk2v4dbD+M1tYvxTcm3qqv2skAsCrUsmZBIyKiyJ3g05NtvP69Wm9/6ce9YxCOwVNSYRELh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,54 +131,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 20-04-26 14:47:04, Minchan Kim wrote:
-> On Fri, Apr 17, 2026 at 09:04:31AM +0200, Michal Hocko wrote:
-> > On Thu 16-04-26 23:30:09, Minchan Kim wrote:
-> > > If I send the SIGKILL first to satisfy the process_mrelease() requirement,
-> > > we immediately run into the scheduling race condition where the victim can
-> > > enter the exit path before the reaper can set the flag.
-> > 
-> > Why don't you just grab the mm before you send the signal and then continue
-> > with reaping? You just want to avoid a race where the victim manages to
-> > process fatal signal, start its exit path and mrelease path losing that
-> > race so you rely on the exit path, right?
-> 
-> The problem is that process_mrelease() operates on a task obtained from a pidfd.
-> 
-> Once the victim process receives the SIGKILL and enters the exit path (exit_mm),
-> the kernel sets task->mm to NULL.
-> 
-> Even if we could somehow hold a reference to the mm_struct beforehand,
-> process_mrelease() would still fail because mm_struct via task returns NULL
-> after exit_mm() has been called.
-> 
-> Therefore, we cannot simply "grab the mm" before sending the signal and expect
-> process_mrelease() to work after the victim starts exiting.
+The series fixes several bugs in vmemmap optimization, mainly around
+incorrect page accounting and memmap initialization in DAX and memory
+hotplug paths. It also fixes pageblock migratetype initialization and
+struct page initialization for ZONE_DEVICE compound pages.
 
-I do not follow. Why cannot you simply do this
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 5c6c95c169ee..b80a96f5460a 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -1241,9 +1241,14 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
- 	if (task_will_free_mem(p))
- 		reap = true;
- 	else {
-+		if (flags & PROCESS_MRELEASE_REAP_KILL) {
-+		} else {
-+			/* send SIGKILL */
-+			reap = true;
- 		/* Error only if the work has not been done already */
--		if (!mm_flags_test(MMF_OOM_SKIP, mm))
--			ret = -EINVAL;
-+			if (!mm_flags_test(MMF_OOM_SKIP, mm))
-+				ret = -EINVAL;
-+		}
- 	}
- 	task_unlock(p);
- 
+The first four patches fix vmemmap accounting issues. The first patch
+fixes an accounting underflow in the section activation failure path.
+The second patch fixes incorrect altmap passing in the error path.
+The third patch passes pgmap through memory deactivation paths so the
+teardown side can determine whether vmemmap optimization was in effect.
+The fourth patch uses that information to account the optimized DAX
+vmemmap size correctly.
+
+The last two patches fix initialization issues in mm/mm_init. One makes
+sure all pageblocks in ZONE_DEVICE compound pages get their migratetype
+initialized. The other fixes a case where DAX memory hotplug reuses an
+unoptimized early-section memmap while compound_nr_pages() still assumes
+vmemmap optimization, leaving tail struct pages uninitialized.
+
+Changelog:
+v4 -> v5:
+- mm/memory_hotplug: Fix incorrect altmap passing in error path (new bugfix
+  suggested by Sashiko).
+- mm/sparse-vmemmap: Rename section_vmemmap_pages() to
+  section_nr_vmemmap_pages() and use two-tab indent (suggested by David).
+- mm/sparse-vmemmap: Use 1UL for pages_per_compound and use const for
+  order and pages_per_compound (suggested by David).
+- mm/sparse-vmemmap: Simplify VM_WARN_ON_ONCE checks for better readability
+  (suggested by David).
+- mm/mm_init: Use two-tab indent and const for @end in
+  pageblock_migratetype_init_range() (suggested by David).
+- Collect Acked-by tags from David.
+
+Muchun Song (6):
+  mm/sparse-vmemmap: Fix vmemmap accounting underflow
+  mm/memory_hotplug: Fix incorrect altmap passing in error path
+  mm/sparse-vmemmap: Pass @pgmap argument to memory deactivation paths
+  mm/sparse-vmemmap: Fix DAX vmemmap accounting with optimization
+  mm/mm_init: Fix pageblock migratetype for ZONE_DEVICE compound pages
+  mm/mm_init: Fix uninitialized struct pages for ZONE_DEVICE
+
+ arch/arm64/mm/mmu.c            |  5 +--
+ arch/loongarch/mm/init.c       |  5 +--
+ arch/powerpc/mm/mem.c          |  5 +--
+ arch/riscv/mm/init.c           |  5 +--
+ arch/s390/mm/init.c            |  5 +--
+ arch/x86/mm/init_64.c          |  5 +--
+ include/linux/memory_hotplug.h |  6 +--
+ mm/memory_hotplug.c            | 15 ++++----
+ mm/memremap.c                  |  4 +-
+ mm/mm_init.c                   | 34 +++++++++-------
+ mm/sparse-vmemmap.c            | 37 ++++++++++++++----
+ 11 files changed, 81 insertions(+), 45 deletions(-)
 
 -- 
-Michal Hocko
-SUSE Labs
+2.20.1
 
