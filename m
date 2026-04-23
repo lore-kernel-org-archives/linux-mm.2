@@ -4,134 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46243FDEE27
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:07:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33F26FDEE2B
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:10:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D23C6B0088; Thu, 23 Apr 2026 13:07:27 -0400 (EDT)
+	id 821AD6B0088; Thu, 23 Apr 2026 13:10:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 583586B008A; Thu, 23 Apr 2026 13:07:27 -0400 (EDT)
+	id 7D2776B008A; Thu, 23 Apr 2026 13:10:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 471DE6B008C; Thu, 23 Apr 2026 13:07:27 -0400 (EDT)
+	id 6C1366B008C; Thu, 23 Apr 2026 13:10:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 35DC16B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:07:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD4F01A039B
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:07:26 +0000 (UTC)
-X-FDA: 84690451692.10.21172BD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AC118100010
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:07:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dhpe7vYk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776964044;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 59BE66B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:10:32 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDF4A1403A1
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:10:31 +0000 (UTC)
+X-FDA: 84690459462.25.1C8BEB6
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E054C12000B
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:10:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kO5zNLgK;
+	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776964230; a=rsa-sha256;
+	cv=pass;
+	b=xxENxVe4eQksrM4YFvclHoeOWnIjkEmjORygGlP0z5J2bMdIiVDcrWfaet7HlATLO9sh3n
+	9uBNsoo+FVAVgdaE9y10E/dJ8Q5R/hxaEb0761yznMLquRJA8mURRmq6RU8PEJWO2j3UN9
+	F46K3XQC4mOcShxXsCy+cL0NbZPRbZI=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kO5zNLgK;
+	spf=pass (imf29.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776964230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3I6tH1K2LZqlufSuXP6tj3OhMPP7NY3Zvi4kdZfFVdo=;
-	b=O1thLOybluU+d2qdrACTf6CY2XDMHpObbqX5kmnmHbQmjzcXxKGj33YZqGHr1SJcR5bkFL
-	dXhXmWEEWZ4S2foLMU8q7QO+pqOQSkAPDlT/DKxuWmDk6HxhBs96PtKTyeSuQduNBkntC9
-	v9k23+H8YzlJQu2a8XRC6slJluvDvWw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dhpe7vYk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776964044; a=rsa-sha256;
-	cv=none;
-	b=58CaMqkqdNuvR9rrUTTQWjSjyeASIdGnFmv8Kr9zWCmUkYbvKVtQ+XYH7i7Zkb8IJtQK3K
-	EYkLiOMZLu43WzsBovbhOY8OBVQJRh37jmN2wpt8Q4j6zXRwTNEHkDrcu9dDFWWfu8eSGu
-	b/zZPhTQJ1RIrNII9qUtuZ8ZNMutLI8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C2A3860139;
-	Thu, 23 Apr 2026 17:07:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2351C2BCAF;
-	Thu, 23 Apr 2026 17:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776964043;
-	bh=Od5rIDJoLXjhMgFvJFtK+2TZl45gHONpbL19GnF0G+M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dhpe7vYk/JqpgDEqiWhM3OH5iR/5fSGBbpzjJi5NIcZPAsKvc8rYiOPwg1JG+6rKk
-	 q4zk9a4X7wInOcqyhRNVjTJDWfMQDF4EDMg0EVfIWA1Sl1qcVelRJ0h7HEuVabxdBw
-	 nxaoKR4bAmbk/abX3qnzp1UwTJWbF1E1NIdVfT2jXmLWjx0x13PtF8Vo6wdiFK88Ti
-	 WIva38uLD10/9NAfrNnBrj6lPKcdaayJDm0X7y7THTNBrB72XP1B9vvAeQuD5odThh
-	 k9Y5+DL0oee6R22sAA/8PWu0WQ53I8BEcIC1XenS9XIHY5F8+4YiCGyJw3+wY7z9Hx
-	 g13MjnPP4OZKg==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D4CA8F40068;
-	Thu, 23 Apr 2026 13:07:21 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Thu, 23 Apr 2026 13:07:21 -0400
-X-ME-Sender: <xms:yVHqaUKxKRh28AnA77MfEsDvy8Hrk0ARcYOGtkVvN0ql0991gEOCAw>
-    <xme:yVHqabNbNSR1GkknYCzXAnHX_wiHr9em7Ak37t1GN8lOTDJcmyfI6TFim8Wfh0DCH
-    kNaC6WeRuelqORPCnIcv8dMCGkyqxn5yCqksoPcozarrL23sv0oikI>
-X-ME-Received: <xmr:yVHqacb-6CcVEv_L6gMhVssRYKaYlhsdId-brAAXYfkQg-djOMtnpgJer6qnzvGMT4zWho3adaAM9QHOShlhIi_fNrpo-BDh>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeijeejudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnheple
-    evhedtudfgfffgffehtdetjeeugfegfeetueeiieeiudehudehkeeitdejgedvnecuffho
-    mhgrihhnpehtrhgvvgdrmhgrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihht
-    hidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrhhnvghlrd
-    horhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehjohgvlhgrghhnvghlfhesnhhvihguihgrrdgtohhmpd
-    hrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtph
-    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegrnhgu
-    rhgvfihjsggrlhhlrghntggvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurg
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-    pdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtg
-    hpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:yVHqaXwSsa-EC2yJb4kePyKBURNtWROSm2Y68-wQ_Jmcycxfh73ykg>
-    <xmx:yVHqaYFUCvYL6V-pQWE_ax2xz5i65aLFWrLaW5yqWy7dNHZQ0_x-3Q>
-    <xmx:yVHqaSqSD20Rqon3yXtaTvyrCoppcdsW3s6BxLBHhGdK-slV3Ck2Uw>
-    <xmx:yVHqaWz82TIirpMlXrybiOvnf9SNW2D03U_jv_ROpBwbm3lp5XOT9A>
-    <xmx:yVHqacwp5YVvJNqeoU3Z_Omk-3Xas5FVdsCKNeDccpOrD75PzvLuqN0U>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Apr 2026 13:07:20 -0400 (EDT)
-Date: Thu, 23 Apr 2026 10:07:19 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: linux-kernel@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, maple-tree@lists.infradead.org,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] rust: maple_tree: implement Send and Sync for
- MapleTree
-Message-ID: <aepRx2jgIKmoRp-r@tardis.local>
-References: <20260422202813.2990181-1-joelagnelf@nvidia.com>
+	bh=A3cxCPTcX43DT+WsUicUeZrNCHdgluMNK5uUzSlgybk=;
+	b=G3R2PhLX6sm4/leq0N/NMcNRsTwAEzsNJ6oYGNg4mWKFBTc09mozlLSPsP7h2RFF7Lb4s3
+	aelmtdYZTnsD8kHOKIzP1A710hEO4eq0nQCklVHi1LKcmAosYpnjYYdFv1cdqMMPHby8sn
+	N4uRuR0zoRH3IndAQOwDRYchu+PojHo=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so339221a12.1
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:10:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776964228; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DPCi9mNDLRs47HZ/Y5TziC73b271F9VpCqoMOT/BDG6Rcw3elu3iBMXZCEfpsuOMRi
+         8HV/dkoYRozejdE59lZKrIZJbWEqaAI26wR8XsVkdbrWQvoxjMm9tLF+R0OfZecHi7Ya
+         aiZRPBIS87Bc0lP+6SnhvQKVoKP794kqu9egkFyc26L7fCTOai0o9wa4CGfQXPhwPDyA
+         Itbk+2NjFXKinFKAwTpnzjYFoz1QwvrkQ9nuhRDLutO+0gxMV1ec3BlP8agqzltIQik1
+         wiyL2eayRIYsw23sMIU1FjeVVcxA3+AcdQwzwp0uh6oays1nAO1oHwbKT8WPXCKANcmF
+         jAzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=A3cxCPTcX43DT+WsUicUeZrNCHdgluMNK5uUzSlgybk=;
+        fh=H8awOgofe9e1ujESOU2zM5cTDXjgfwcd8q93/hU1FxQ=;
+        b=Ol8C40Ud3LOAmjhEKe/MrEk/FrXax/KkzIb4G5WOT7Scew4/50Gy/xJ0Qv08U4zZMf
+         oBjZYlK6ryu4aS8ADqdQOlVouzVeI8/8bbGhmr/6akNTb9sffTehCcCtTVwXHPQfnaVt
+         YPDsHj5NmtWtamuX9jsFNnNvAKNdEgbxnaVoOh0P3WVujDo4DW2lVs3mms8B2baVG27k
+         +im7UV3BlR2Q/onOkXRwpkWnljtaVzzZrWpYhmEbATivR0Q3FEiuNmoTNP7hDArAGlXV
+         bj7A/1xL18OTDmVMOiwJvGjwEmL4BkQPf4to8KH4AQk4CExMCZLxjnFpE7Nyo8F9bVCP
+         xShw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776964228; x=1777569028; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A3cxCPTcX43DT+WsUicUeZrNCHdgluMNK5uUzSlgybk=;
+        b=kO5zNLgKmVJJtPq7FWgHlNz9asNTxbewNignHu9aa4HsVAKhVSLIDmgMh1wX7+6YTp
+         YoZuzYw5DlSNg412FgGhtWw5dkcslzI0aAZ2XTuT3YvXLRX/CNW+/1/oYViXTVudFPZB
+         7wiMhDnLn8b25NVs58Eo+YH4hzrCImXFVPSX5MOaBf4sk/TiPFjQbPJEWGMplw6qTMQV
+         ZhJ0eCge7n7JGSd26Yzix70LFd8l6Nw3QuJwPbCD0ryl1LQ8J3fs4AZTafmVROQLKGXC
+         Jj7YcuWt0QHy4tEKATXhMe9aQ71Fd4U+pnoPW3hgvjkHU1WQuvTIrAuSaxZeC4m1UvOR
+         qxPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776964228; x=1777569028;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=A3cxCPTcX43DT+WsUicUeZrNCHdgluMNK5uUzSlgybk=;
+        b=V7bVny1NFo5n305TfsCWpRLzDExtsugOGhtc71WUoZsbGLUGmi5OOyP2nVqxXa76S4
+         aTJ39FCWlUj18w2mGqKPlHsP50ZUwS3RiCMcPDyh6as0zcfBF/SRDvztI7Eztnpx8O5j
+         7Cidh6dKtUMXwNlGbu28W7dTZ/DkuzMTAwc3tHG/lW+MDBQFANPIZOAiHPFpR2ZYKdpk
+         lrXNkn7xgp9nP3TIuJXE00jtqQUQFto7cud4BBOjjtTOmdpOe0a5IpasiXSrgZ2MQ0bf
+         e+TM85gQVLhzADl5Rnhm1c+EnPz+CcQ+5O8YOxCKpTPkw0k6mH9ObPcqsDjluNpmQTu+
+         Jrjw==
+X-Gm-Message-State: AOJu0YwGlg8K+tzXOODBumenJOCke9qaMFn0sbt7pVGyCX53TznHIHv4
+	u8aD5y+SqOAasP0Y6HpuYkybkrKr7ln86cnGHTmbxDsaXrZUemZ3ai4mg6RKHvVvXcIenooEEic
+	jMHlWXIMNyisO8lO2712Yv5sQy+Uwm4c=
+X-Gm-Gg: AeBDiev+ElWtiniKwRjrbRj0i+IuGNUtnvyj0eoQnHCdzckI93/R0QxCC0oLRl2t6eL
+	D9bc7BnQJ23pd2S/Z4YsQccm997sIL/eD1nCd2c/AdqYGGC46rJ6E4FhBc3OeJlcK8KzijALGU/
+	PXOCnAUJqy6tW514CsC9jot9ND/w+EKgOhCIM/5azTCqHs9gz3nwULr5BuEAMs1DNCPgkJcvCHT
+	ifbf1Fi+FMTS/M+e4OHuHQbHecnnCADU+0v68oisLns+0FeDQBUqnPRxDezK0eSCzGmbyX5aDtN
+	RE0mbuIsAYjBaNKaOK1/lokMRQhl5SUaZ0S4wzsb+u6AECKR1FE=
+X-Received: by 2002:a05:6402:454b:b0:670:a28c:4604 with SMTP id
+ 4fb4d7f45d1cf-672c12b321cmr8265107a12.9.1776964227886; Thu, 23 Apr 2026
+ 10:10:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260422202813.2990181-1-joelagnelf@nvidia.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AC118100010
-X-Stat-Signature: 7wojxazktmhoupxde874pxycr4qoq4d3
+References: <20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com>
+ <20260413-mglru-reclaim-v5-5-8eaeacbddc44@tencent.com> <CAGsJ_4yH6v58oD8K56hMPp5bTYGC1Bfo3XSAViW9gWeSwLXgDw@mail.gmail.com>
+ <CAMgjq7D+ni+t-bLCeEmOHwt8s5+4iszCMdzzek+P-DuZYemcVQ@mail.gmail.com>
+In-Reply-To: <CAMgjq7D+ni+t-bLCeEmOHwt8s5+4iszCMdzzek+P-DuZYemcVQ@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 24 Apr 2026 01:09:50 +0800
+X-Gm-Features: AQROBzCFObP6MfKOFDr6DeGk8s4S2K6O6Mkn-kXgXzveisSr5L_OA05g-5_yvac
+Message-ID: <CAMgjq7BWVLRiJBXv4_+0E=SNUcH6TLFmhdJh46WECKiAZNiDeQ@mail.gmail.com>
+Subject: Re: [PATCH v5 05/14] mm/mglru: scan and count the exact number of folios
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Lorenzo Stoakes <ljs@kernel.org>, David Stevens <stevensd@google.com>, 
+	Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+	Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, Vernon Yang <vernon2gm@gmail.com>, 
+	linux-kernel@vger.kernel.org, Qi Zheng <qi.zheng@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E054C12000B
+X-Stat-Signature: 5963w9iwphjie1qdhauut8kn8pisuc3j
 X-Rspam-User: 
-X-HE-Tag: 1776964044-865178
-X-HE-Meta: U2FsdGVkX18kbj8tYNJqnSKJwNZV4Rv+qaCZhhr8H4joSlQhSvMpA3+ZNgFKETcf3WZWJ7zSBO2hriKxih/nqdWl9nDmQokH1SVP/oURIrSZPnWCCU8fSN5Xv6M+pBb36+HztlEJ6rdnqamWKGYLvqAHLZtctwjwu4AFQ41GkQoqW++mPgH12KYqsdk4+Cv2qevbxbRbrXAlJmTfgAiVBzDi0TrgnyassccZ9lm3zon1bFWPTcj7I9WlEEeXbfKms5Ub5a64rR/hK2RmnMYeT6lcpOBGMIOVCrvkwUq8wpnWz6uaIvlahFPlEzCnJBR8hD9jdPaXtN9SuuTVbY2nibfsrlTTIKMjVHzlZbBoHTZuxGuQ2NP6lq3ZcTwHJkU3tRNho2H28toNmJm7j4M/Kx+caTmPtDXvHFiVQSVHtQThYdzftovIDPrG0NpfSQi+nS+scJ/wS3NfEqE+D0jcSoIwLCScjwULJfqA6Q5v+2v+FFQNjlzh6Icx0vB/RgcYGE796wrmWvRMj/XOifQoUSsGkLGxUT6auBXNyUT1j10r4IadAHwYpEutpwJsqXVnuAh32JOoKj9T2+pG/Y5hAo8qRX6Mh0tGse9OtoXjjUUxCiOxianhyvWJAFI3EYLAedFuyK/EQ4vnz8bxqxIilefaK2fjjWo6mDN3pGDw0ydMw44NnE3ejtxvyiLvn2y/W+Ecsof2y6EWRTnk2p0oJHaIRI66+7UJ4tdbxDyGgGcbJfyWlRU6KI6EqvsJykJwFDP5KxZb+eZFYJFPXpjNPsWyxnQYU9BmFTiPVru5k7V1sitjzl5XvWwI99/4/vWZuXeE6akp80DhR3oysGd/PRmq7WBtrI5MwDOanT+H6A4u2olYsrVqmywYHfA3f0USwW+8UA3pg3GQV+dxuEmlMawRvJTPAHgaMYI2o7eO3V6yVygva8sYbA0KaRjxKztYflPg4dUwYWszK0xOwr9
- CMVzWDRF
- HIvF2pj7pXg8pDrJdY9gPynZj+dj7vgWhHWwbaxW5JklH0v10FG7hDSHCmB1uV60OZaigcsPGzc1OhLsn5CeyzDzGWCXn3zLuYtRcU8jP5RkhWfZIXnpRjw0wztbWa91yaD8ODrkyODFVKzsDSbnN1xciqJAB2+WJGExeg56NbmL4GqSmSYqPILyptiGDUN6mZnxzHDeeygWnUkpS2Ot2u6xK9+eAp0ZvJ5ztEYKsgZT2Gs7AtOkVDHC82CnUVgYFFmbaTN8gVBz92OzxpO9xMPwXZMCh1IqDbGGJpNyvpQb3t+d43ZqBYrBUKA==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776964229-532291
+X-HE-Meta: U2FsdGVkX19YhtiHOM2+OMHP3j64cYcQ9+3iTl9SpLbKvzbo61ROZgGhwCCvCy+N5z+MkWKhwt5NV7cGpGJOKAcY3Q2MQ1boF3O7eTMrp4tmfVXhLR8Wp3+gL9n/AwCtNrY/pI0UMMzrTCEyAAT10TSgc2UlGZx3Om9XVh/1rZI0nNAeJJlu5omuVFmRL0IevLzT6g6vkZysVyBTGO0l7gudqYSEq1H0cfGC2mgQqVyKc+w1bk1UEFtzloOpmfbH7pWwEy217O1ymyE4BaHhXcfl9PMNqmlhqLwukOdlea/Aovd+IR5HC3+iLL3PAa99h+BFSwKmwpaqzlsW5sMMFXqgeHLZ9LnnhaViIypgxt40AvFNRsHWVf4xOWbzBha0DINp0B6ieFaczjNJ1WGeTwbCZcbgRHDrUTkEf2ya7yRWJ5ey2X/rTDI7enN8PkWyRiRJqPI+kqe1w+t2QGeH/17b7zardANuAiKSSDASfTnYsMEA9j0q1ZuwKtyVouMK0t75BHBK+XWezWMpmug50uMiUK4vrsiAnd7/OUMalNmfaz+AOJrgwNC+STMSSWxLIfotPOo7akEg92NwMyNJIkiI9s+yK7SA48sCzNXYxTdA2MJEXnTnQmUvsSjYpSTylxG1YRMUIHeDmVD4eLhW0TsLijWieb7rD5kIAx+eDUO5/4iLqsCHb7H2CjGPR74DpNh1PWulmXBYgGli8ADGboaTDm/r8yghy+PF+f26nwS/v39oZl1MBbXkrmlyuKPa3RdiNDn82jMarA4A2jkwslfVyM0pYrYqCWKAbLzKVxKBxWds9Sh/74HwIyaMdjVV1LB32h47OFGorke2LM7Rimz0aQZJRUzqtjd19gyrPZDdp7E+3xVlF/Rc3wds6YTS9NYW6KEbs4o6LoIfrMXe/6TNXKcc1dzTGYvDzyKsAWs59HjJyVspu5McI4cZnE3YEYk1Ubv/REvtMgZ7CjP
+ XNDAQcrT
+ SY37U+O87wJJVR9/fQfpIC5DNtIQXZQsUk/b/F3qnOdyFxF2DJP92Es0lQWTUKn/VPIM6fQFcH+oXWxK1HTdmAOYkSXdC1TJFe/N+rkPO89TPqZ9DquLPgB7U5dNd9vDQiV83MdAYEweLd2ulgP4qERdisjQSOG+jsucSpEh3cH2GctJNpkHh+8+5BCgNtkb+fB73BxGxPjaHKrHnrvxuVBUPJobN1qp80ZUlc4he0pA8d5fht2PjNnbsZ+zqDNmeaIB6eHQYBUaG11dWhU13UKG4FRE1IEgXdVLTSPo61BSdTYO5lMNQYw+L39Mi+sBnzKKpB3Qy01FKkWr0olI2WzksSajJ70y7HQhcqFnlA5VIwB4ajCdHXSu0u8z4gGVuav5He1w5uJ75fs9fTj8B0OC5+wlpiziq51pUiP0EggDThR3FKhdSg9T5rpB25v6wNiuxqAt1i4mNJFXhEAEW+WRb6Rq2Q1p+BnwTYGuMy6frMu06BDUf7fqo76LcKx+RW4q3tSsGAfyDvtg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,135 +149,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 04:28:12PM -0400, Joel Fernandes wrote:
-> The C maple_tree struct contains a *mut c_void, which prevents Rust from
-> auto-deriving Send/Sync. Following is an example error message when using
-> MapleTree in nova-core's Vmm.
-> 
-> This propagates up through MapleTreeAlloc to Vmm, BarUser, Gpu, and NovaCore,
-> causing NovaCore to fail the Send bound required by pci::Driver:
-> 
->   error[E0277]: `*mut c_void` cannot be sent between threads safely
->       --> drivers/gpu/nova-core/driver.rs:77:22
->        |
->   77   | impl pci::Driver for NovaCore {
->        |                      ^^^^^^^^ `*mut c_void` cannot be sent between threads safely
->        |
->        = help: within `MapleTreeAlloc<()>`, the trait `Send` is not implemented for `*mut c_void`
->   note: required because it appears within the type `kernel::bindings::maple_tree`
->   note: required because it appears within the type `Opaque<kernel::bindings::maple_tree>`
->   note: required because it appears within the type `MapleTree<()>`
->   note: required because it appears within the type `MapleTreeAlloc<()>`
->        = note: required for `Box<MapleTreeAlloc<()>, Kmalloc>` to implement `Send`
->   note: required because it appears within the type `core::pin::Pin<Box<MapleTreeAlloc<()>, Kmalloc>>`
->   note: required because it appears within the type `Vmm`
->   note: required because it appears within the type `BarUser`
->   note: required because it appears within the type `Gpu`
->   note: required because it appears within the type `NovaCore`
->   note: required by a bound in `kernel::pci::Driver`
->       --> rust/kernel/pci.rs:294:19
-> 
-> Implement Send and Sync for MapleTree. The tree contains no thread-local
-> state, and all shared access goes through the internal ma_lock spinlock.
-> 
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> ---
-> v1->v2: Adjusted comments and imports.
-> 
->  rust/kernel/maple_tree.rs | 29 +++++++++++++++++++++++------
->  1 file changed, 23 insertions(+), 6 deletions(-)
-> 
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> index 265d6396a78a1..2400c905270da 100644
-> --- a/rust/kernel/maple_tree.rs
-> +++ b/rust/kernel/maple_tree.rs
-> @@ -16,7 +16,11 @@
->      alloc::Flags,
->      error::to_result,
->      prelude::*,
-> -    types::{ForeignOwnable, Opaque},
-> +    types::{
-> +        ForeignOwnable,
-> +        NotThreadSafe,
-> +        Opaque, //
-> +    },
->  };
->  
->  /// A maple tree optimized for storing non-overlapping ranges.
-> @@ -240,7 +244,10 @@ pub fn lock(&self) -> MapleGuard<'_, T> {
->          unsafe { bindings::spin_lock(self.ma_lock()) };
->  
->          // INVARIANT: We just took the spinlock.
-> -        MapleGuard(self)
-> +        MapleGuard {
-> +            tree: self,
-> +            _not_send: NotThreadSafe,
-> +        }
->      }
->  
->      #[inline]
-> @@ -302,19 +309,29 @@ fn drop(mut self: Pin<&mut Self>) {
->      }
->  }
->  
-> +// SAFETY: `MapleTree<T>` is `Send` if `T` is `Send` because `MapleTree` owns its elements.
-> +unsafe impl<T: ForeignOwnable + Send> Send for MapleTree<T> {}
-> +// SAFETY: `&MapleTree<T>` never hands out `&T`; all entry access is serialized
-> +// by `ma_lock` or `&mut Guard`, so `T: Send` suffices (`T: Sync` not required).
-> +unsafe impl<T: ForeignOwnable + Send> Sync for MapleTree<T> {}
+On Fri, Apr 17, 2026 at 1:39=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Thu, Apr 16, 2026 at 3:03=E2=80=AFPM Barry Song <baohua@kernel.org> wr=
+ote:
+> >
+> > On Mon, Apr 13, 2026 at 12:48=E2=80=AFAM Kairui Song via B4 Relay
+> > <devnull+kasong.tencent.com@kernel.org> wrote:
+> > >
+> > >  static bool inc_max_seq(struct lruvec *lruvec, unsigned long seq, in=
+t swappiness)
+> > > @@ -4686,7 +4681,7 @@ static bool isolate_folio(struct lruvec *lruvec=
+, struct folio *folio, struct sca
+> > >
+> > >  static int scan_folios(unsigned long nr_to_scan, struct lruvec *lruv=
+ec,
+> > >                        struct scan_control *sc, int type, int tier,
+> > > -                      struct list_head *list)
+> > > +                      struct list_head *list, int *isolatedp)
+> > >  {
+> > >         int i;
+> > >         int gen;
+> > > @@ -4756,11 +4751,9 @@ static int scan_folios(unsigned long nr_to_sca=
+n, struct lruvec *lruvec,
+> > >                                 type ? LRU_INACTIVE_FILE : LRU_INACTI=
+VE_ANON);
+> > >         if (type =3D=3D LRU_GEN_FILE)
+> > >                 sc->nr.file_taken +=3D isolated;
+> > > -       /*
+> > > -        * There might not be eligible folios due to reclaim_idx. Che=
+ck the
+> > > -        * remaining to prevent livelock if it's not making progress.
+> > > -        */
+> > > -       return isolated || !remaining ? scanned : 0;
+> > > +
+> > > +       *isolatedp =3D isolated;
+> > > +       return scanned;
+> > >  }
+> > >
+> > >  static int get_tier_idx(struct lruvec *lruvec, int type)
+> > > @@ -4804,33 +4797,36 @@ static int get_type_to_scan(struct lruvec *lr=
+uvec, int swappiness)
+> > >
+> > >  static int isolate_folios(unsigned long nr_to_scan, struct lruvec *l=
+ruvec,
+> > >                           struct scan_control *sc, int swappiness,
+> > > -                         int *type_scanned, struct list_head *list)
+> > > +                         struct list_head *list, int *isolated,
+> > > +                         int *isolate_type, int *isolate_scanned)
+> > >  {
+> > >         int i;
+> > > +       int scanned =3D 0;
+> >
+> > I would prefer to rename this to total_scanned.
+>
+> Good suggestion.
+>
+> >
+> > >         int type =3D get_type_to_scan(lruvec, swappiness);
+> > >
+> > >         for_each_evictable_type(i, swappiness) {
+> > > -               int scanned;
+> > > +               int type_scan;
+> >
+> > And then we keep this as "scanned".
+> >
+> > >                 int tier =3D get_tier_idx(lruvec, type);
+> > >
+> > > -               *type_scanned =3D type;
+> > > +               type_scan =3D scan_folios(nr_to_scan, lruvec, sc,
+> > > +                                       type, tier, list, isolated);
+> > >
+> > > -               scanned =3D scan_folios(nr_to_scan, lruvec, sc, type,=
+ tier, list);
+> > > -               if (scanned)
+> > > -                       return scanned;
+> > > +               scanned +=3D type_scan;
+> > > +               if (*isolated) {
+> > > +                       *isolate_type =3D type;
+> > > +                       *isolate_scanned =3D type_scan;
+> > > +                       break;
+> > > +               }
+> > >
+> > >                 type =3D !type;
+> > >         }
+> > >
+> > > -       return 0;
+> > > +       return scanned;
+> >
+> > Then
+> > return total_scanned;
+> >
+> > >  }
+> > >
+> > >  static int evict_folios(unsigned long nr_to_scan, struct lruvec *lru=
+vec,
+> > >                         struct scan_control *sc, int swappiness)
+> > >  {
+> > > -       int type;
+> > > -       int scanned;
+> > > -       int reclaimed;
+> > >         LIST_HEAD(list);
+> > >         LIST_HEAD(clean);
+> > >         struct folio *folio;
+> > > @@ -4838,19 +4834,23 @@ static int evict_folios(unsigned long nr_to_s=
+can, struct lruvec *lruvec,
+> > >         enum node_stat_item item;
+> > >         struct reclaim_stat stat;
+> > >         struct lru_gen_mm_walk *walk;
+> > > +       int scanned, reclaimed;
+> > > +       int isolated =3D 0, type, type_scanned;
+> > >         bool skip_retry =3D false;
+> > > -       struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
+> > >         struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+> > >         struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
+> > >
+> > >         lruvec_lock_irq(lruvec);
+> > >
+> > > -       scanned =3D isolate_folios(nr_to_scan, lruvec, sc, swappiness=
+, &type, &list);
+> > > +       /* In case folio deletion left empty old gens, flush them */
+> > > +       try_to_inc_min_seq(lruvec, swappiness);
+> > >
+> > > -       scanned +=3D try_to_inc_min_seq(lruvec, swappiness);
+> > > +       scanned =3D isolate_folios(nr_to_scan, lruvec, sc, swappiness=
+,
+> > > +                                &list, &isolated, &type, &type_scann=
+ed);
+> > >
+> > > -       if (evictable_min_seq(lrugen->min_seq, swappiness) + MIN_NR_G=
+ENS > lrugen->max_seq)
+> > > -               scanned =3D 0;
+> > > +       /* Isolation might create empty gen, flush them */
+> > > +       if (scanned)
+> >
+> > scanned is not equal to isolated, right?
+> > Somehow, I feel the comment does not match the if (scanned).
+> > I assume sort_folio() could also create empty gen?
+>
+> Yeah, you are right, it should be isolated. Usually one batch scan
+> always isolates a few folios so I didn't observe much difference in
+> testing, but I should definitely fix this. Thanks!
 
-If the design of MapleTree API is to support having multiple readers, I
-think we should add `Sync` bound as well for future-proof. I.e.
-
-unsafe impl<T: ForeignOwnable + Send + Sync> Sync for MapleTree<T> {}
-
-Thoughts? Unless you have an usage that be broken because of this.
-
-Regards,
-Boqun
-
-> +
->  /// A reference to a [`MapleTree`] that owns the inner lock.
->  ///
->  /// # Invariants
->  ///
->  /// This guard owns the inner spinlock.
->  #[must_use = "if unused, the lock will be immediately unlocked"]
-> -pub struct MapleGuard<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);
-> +pub struct MapleGuard<'tree, T: ForeignOwnable> {
-> +    tree: &'tree MapleTree<T>,
-> +    // A held spinlock must be released on the same CPU that acquired it.
-> +    _not_send: NotThreadSafe,
-> +}
->  
->  impl<'tree, T: ForeignOwnable> Drop for MapleGuard<'tree, T> {
->      #[inline]
->      fn drop(&mut self) {
->          // SAFETY: By the type invariants, we hold this spinlock.
-> -        unsafe { bindings::spin_unlock(self.0.ma_lock()) };
-> +        unsafe { bindings::spin_unlock(self.tree.ma_lock()) };
->      }
->  }
->  
-> @@ -323,7 +340,7 @@ impl<'tree, T: ForeignOwnable> MapleGuard<'tree, T> {
->      pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, T> {
->          // SAFETY: The `MaState` borrows this `MapleGuard`, so it can also borrow the `MapleGuard`s
->          // read/write permissions to the maple tree.
-> -        unsafe { MaState::new_raw(self.0, first, end) }
-> +        unsafe { MaState::new_raw(self.tree, first, end) }
->      }
->  
->      /// Load the value at the given index.
-> @@ -375,7 +392,7 @@ pub fn ma_state(&mut self, first: usize, end: usize) -> MaState<'_, T> {
->      #[inline]
->      pub fn load(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
->          // SAFETY: `self.tree` contains a valid maple tree.
-> -        let ret = unsafe { bindings::mtree_load(self.0.tree.get(), index) };
-> +        let ret = unsafe { bindings::mtree_load(self.tree.tree.get(), index) };
->          if ret.is_null() {
->              return None;
->          }
-> -- 
-> 2.34.1
-> 
+On second thought - it should be "scanned", not "isolated". MGLRU
+might move or protect folios to the second oldest gen without
+isolating them, we have scan > 0 but isolated =3D=3D 0, while an empty gen
+might be created. Ideally isolate_folios can detect this internally,
+which might require some other refactor first. So let's keep it
+unchanged here. I'll update the comment about that.
 
