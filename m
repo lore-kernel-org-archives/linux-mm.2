@@ -4,88 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68783FDEE31
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:36:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D63FDEE32
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:42:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 936166B0088; Thu, 23 Apr 2026 13:36:58 -0400 (EDT)
+	id 595006B0088; Thu, 23 Apr 2026 13:42:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E6CD6B008A; Thu, 23 Apr 2026 13:36:58 -0400 (EDT)
+	id 546006B008A; Thu, 23 Apr 2026 13:42:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FCCA6B008C; Thu, 23 Apr 2026 13:36:58 -0400 (EDT)
+	id 45BD26B008C; Thu, 23 Apr 2026 13:42:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B2F16B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:36:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 048C98B766
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:36:57 +0000 (UTC)
-X-FDA: 84690526116.08.7C3C378
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 51ACC180010
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:36:56 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 347CF6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:42:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D90501603B7
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:42:11 +0000 (UTC)
+X-FDA: 84690539262.17.AE8FD71
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 16FB018000A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:42:09 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="0b1tYMt/";
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776965816; a=rsa-sha256;
-	cv=none;
-	b=SPpcIRd+wTagoMcuFiwUutLRub4qKTbWT6rTRE5iuyulhChBRhdVUcEUg4XPn3ePbM+NK8
-	RLxQwgViVx/t3IyhdShbA1jNTlqxKq35UlFbN9bZnZLKj58aRJJo8voSiOoxJ6iVQzLzaj
-	7b3eKMVZqG3zD1p1l7J7g9BYUgZP6+I=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="0b1tYMt/";
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=soleen.com header.s=google header.b=i7kLlABe;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776965816;
+	s=arc-20220608; t=1776966130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1C2l+OcmYfnneeXpsJ2TY1+6owz0akX/v1aqf8NZ2rM=;
-	b=OotExA8AeU/e5jVt3aF0locUDf9xKgGEgXAUFtKmVVOHiKJCnIINdKKUBD86f9IsJGpJX9
-	s6xu8FM2XfnXRh+MstwVG/Nhe/K1QesB0SRmyAteS0rcdN/8e8Bm3KEFV8hXDlWFori44p
-	TTZ5tvxEY4+eIJwI92isfTHiVKcqLsI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9C3EF60181;
-	Thu, 23 Apr 2026 17:36:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CECC2BCB2;
-	Thu, 23 Apr 2026 17:36:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776965815;
-	bh=aq2g+jZWsNZTJkO5FPtIHFH3eDsNeBvnwajJo5P/d58=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=0b1tYMt/GK8QB4PkPymnjth2zN8Z7LqgiIWyLc+uhtf6zscCH+7qdas+u7xRLSNCf
-	 vCitMdwlb8AKylRSZa00dVMdJxe8a/X4LLoqatsw9zJ3Lkchtcjitllj5U+VsdRLWH
-	 o8p2v1PfaSn++f/kpFXY7c6WdQvHT8beO/NLVDTM=
-Date: Thu, 23 Apr 2026 10:36:54 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: shivamkalra98@zohomail.in
-Cc: Shivam Kalra via B4 Relay
- <devnull+shivamkalra98.zohomail.in@kernel.org>, Uladzislau Rezki
- <urezki@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Alice
- Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v11 1/5] mm/vmalloc: extract vm_area_free_pages() helper
- from vfree()
-Message-Id: <20260423103654.2b50501df33f9fd03d48eb34@linux-foundation.org>
-In-Reply-To: <20260420-vmalloc-shrink-v11-1-cad80b00853a@zohomail.in>
-References: <20260420-vmalloc-shrink-v11-0-cad80b00853a@zohomail.in>
-	<20260420-vmalloc-shrink-v11-1-cad80b00853a@zohomail.in>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 51ACC180010
-X-Stat-Signature: 3uaj5ufpj7yb977umjdoytgji1rs17h9
+	bh=q8pH7aIhkAAd4FmOdPYp3EielDOR+Hmc79iCFACzh0o=;
+	b=mbLjuwJnWpKzOhc0LhonRYUhFU5xgRoyZ30CnTuk2O5XomPZ2fNnxRdV+bCQcrrVb/AZHv
+	ysw6pvam2J6B5RiqS1guMHb4YJJ61Sf/w6ihnr9rvgNAe4AZ+KVjQRmnKNPcnonXFgrVlY
+	7cqYZfwfsH/sINBKEm5+XV4OpSYhxb0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776966130; a=rsa-sha256;
+	cv=none;
+	b=rtHP/v0zPP9njjXVV3iX+cm4LATs+JkxIHrDIELDdAYdylOMW2s+ZFmwB36bz15Yko5mST
+	xNv4NJ0MVnpWbYtJhAtrobpT1CidjNB8JkB/fT+W0LFuQHqMg6p7KjNC7CtECsJLtU5YEP
+	ExPaYNDgM5YXY1f7vpLicdjj6nweT/E=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=i7kLlABe;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a5800772f3so51112686d6.2
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:42:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1776966129; x=1777570929; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q8pH7aIhkAAd4FmOdPYp3EielDOR+Hmc79iCFACzh0o=;
+        b=i7kLlABeePbZu+L/YJyjbMDDloUr+WRKR0srW2lIxNNkUueCiM0rNmRCko6UF/DIyb
+         d51RX5y2C/KbiFSGueqE7s0GLjWuZug/PnRfM3+6MRuNds22sp4FgFIXxYmRRI4UnNRS
+         wHDNwlgpmTQMDLFRb67ZOw9j/GH/pRunGQUa5Th0hmReuxRL5XeWUa0PeMMw2ouuXjBY
+         1crgt35cDzVVzCp+qFKTB6jMNx33hgcD/nZnQ4FhQLJHrnejJ7FGZyRiP/G5r1WYwFBK
+         z+Zpz977H7om9GeYqMShoF6Kw583hNHgDpJFmqrQXby6HLyoS3FB0zcE5mLX92vAD28/
+         v2XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776966129; x=1777570929;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q8pH7aIhkAAd4FmOdPYp3EielDOR+Hmc79iCFACzh0o=;
+        b=YXbDZuGLV2IWw7ZvgAk+ubMfXlUikJ7/t1ff54CBioQdlRVwvgHp/wDwBN0+CPReN5
+         0RbCCHJSGpazybMUda9n/Mk7h9cfhsXZYn3Vtvjnwx3ou8AnIX2olDsYnNvT9gGEEDZ5
+         iWAzSpTpFZQlrJKB3pMlW8IqAaBxAC6URnyStRow5iW6d2ciwfhNXycrQTfyWCnCosau
+         kiOTtOKSEmjF77B1ai6Rh/VXspvDgJKrEqR99o3LSf4+I2hzCOrJCXAoBE9li47NGzaS
+         deDiRi2zL/8rWCEJMuj2tGPIvHu5vqfJ4gJflx8rN+v+RzEddsI3VOBObX2G2WA4vqWT
+         V2oA==
+X-Forwarded-Encrypted: i=1; AFNElJ/3MoxJdJeUWaMwvfQhKpHLFnX7vIGS5gBU4YRKnC3rRF2hR/K7ytEJOT8OXedBm1bLWSPA7CzufQ==@kvack.org
+X-Gm-Message-State: AOJu0YwqUML/OnIx+DTEUgRV5Gc2GdH9vE822XxXXLtlGjw4UMFfnNwy
+	IM+KySK73M370mE4BE4x705VGUwKMi/OhQnnpdpXNI4L2XZi7JxTB2qvp5Dc2mqC9Jg=
+X-Gm-Gg: AeBDieutPQ7kBJTMKd6dnmQxSHS4CMCcuAK9XNtFD0XUa6dIPTogYSECELrsQbn522G
+	pqcMjJ+2YBeriTH24po+9jzxYZbTUUqFpuQk9Zm1bBERKWZUrJDNPMRDxlF+FjWFLcldrUw9opm
+	2crnvGUwHp9/I1+U2KIBsEYBRT2J7V86TqVrEWwx3q4Eg7h44NDBCy8gHvCgRTn/3UUsK3mcEwT
+	QZLDDATcG528jYd+Z95k2QI1X95r+C1md9nKLCbwd6XDajcYAh0dpGj74pcMHbhMqZCAkBM07qO
+	2AzAxIBFqPHZZg3VaD069Mo7iqvNCjIq2PFSb5yZYoehxgru+3Y9yGM9e3krNBORBY3OtbOEsTl
+	kOU7WdS4s3k8JrozAPdS5JiK2YH5LME7u303etBnFSShe/KMmvPTpi2cXkjg/1YIBbe5Y/YIjVr
+	MeDzBu5FAw85AqN4vmvXcMtvVQj66ne7nhqh89OhRAkJSW1uygIZvT0YkfVbjkcA==
+X-Received: by 2002:a05:6214:8016:b0:8ac:b328:1314 with SMTP id 6a1803df08f44-8b028012885mr364606876d6.10.1776966128995;
+        Thu, 23 Apr 2026 10:42:08 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac78513sm164398756d6.19.2026.04.23.10.42.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 10:42:08 -0700 (PDT)
+Date: Thu, 23 Apr 2026 17:42:07 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Michal Clapinski <mclapinski@google.com>
+Cc: Evangelos Petrongonas <epetron@amazon.de>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v9 1/3] kho: fix deferred initialization of scratch areas
+Message-ID: <aepZ4BAmfJ6_CtlG@plex>
+References: <20260423122538.140993-1-mclapinski@google.com>
+ <20260423122538.140993-2-mclapinski@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260423122538.140993-2-mclapinski@google.com>
+X-Stat-Signature: hn4yffjgisywmy6nwu8os9mk88h6gy9h
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 16FB018000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776965816-899278
-X-HE-Meta: U2FsdGVkX18DMSqB8pU7bxR2vzYw2UvPCqJ6fMlSd0o8Jc5etXS23R1moIh/QUhWBzFJNrh8/ifJnUeUN4WxEJZDc3DkEoMU6wgYQz6QZlL+5RAM5k5h/5aIKbsrLCqE+u4r5O0lYOTRGcuatLBps6kQ2Q7LkegTw4uLNv9mpiaBxBWDaAAOpzJ6IA7jsU9t5mqlahm1ZGCr00sp2qCJzl72jFwk37rcGXTDQWWUkyFLg2bT0pBx6LdSiR/z35+ttiXSTRtcTywsPcgERPqpuHkuXnQh09vZofkcg3fVng2HQbuA7p6cHr66OcgboimqSxKn9AAWC7IYsjrhdQ0HXjBYSZc7T31FDg/OycDBoxILZj/U8RPpcq6HraawV3WxtCf/izwCKpvNYCbacbGmFZ6fUnXlheQ0BZEn6Xu5YnlSp56F0oKwLQMqpUJTBJR568rVsH+kQrvCdmDsutHGFG7HaIbfT6xs0GBX+bKzzMLTmnTjra5NCUzprCwVvz6xMVHX1Slb+Bs5h7e17JmZSw4VzLpYaiwDPwB6+OxlR9/tUysG5IKBEinIXEn2ReISQFOXHPBh6sWXtteGVeThaJ2JzwX+e5/Qi/CxOMgUQPm6e4L4n7po2Yj7BXFxuCnMykDPCnfOMxE9LD+HtLxJ9PKr+ebNyDmz4fBl+446VDE0QYz+fvDon927PyKjnwmubRSuoPmW4Z0cyL/JQnscxs5nfSNue/choqoTpunjn0sMeS7J/d+arkA6ZilOqQG5GLtDipBEoi8VmWz0KEFTHFHfRXzht73TPiP1kKos30hkl70/lZaAjanmrO1TKZpoUPmX9AEs96OFp7jpOtogEFuiPDfi9n3I+HKaAvILx20RFEiQAcgbHfRcuWjWScoxiJfxKU68KqNqtZDQMLz3wKadaC+a6w1a4KiuPBL5TWqMD01MchMuIsVR2rczmhiWpAcVTVSPtAg0HhzWk/i
- flm53tjn
- q8aJY60wk36ZfL7Z43tZPReWsHenxbbuQqTEoykC2wTE/xa2C6OeQdbGxTeyRIDtZ1F4Ea/GuFkWbvtbxu9IRllIwa7Ldc0gQy7+1CiqB86B5D/i4zzJTlxFXTOn18JtH+2aXG6PWMpqxycd88680zQwA9wHSfl95eig4vnnbyNwhRQu67c00PgJPgCbCXUCj9c65G3gRWbWnhgeV4EmmqRapdmHHWhBJcBCSxu1pLewvWr/uHjh5Wpfjsay0Os0nOVXZCNEqIKwSsXjNPTGL6qWe1vaaI6pReJKjEc3/PUWf64zko2kbicSP0T5yUV7s7aCC7d2SB7xV7qP56fEM7PRPCZvSeCSgcXOaJvicyRkbU4mnpLukxcX4cMMvigpmsiLuQg/zI0kyvbJ5dQPInNN6BMfsI2fvKthqBZTcAzmAPerWstyL7FQz7QvPGCJg4BPHwQndzNM0GI0=
+X-HE-Tag: 1776966129-480377
+X-HE-Meta: U2FsdGVkX1+ELOU/TVI7L/7JOsiYyfty+rOiFi7jEHmozKFv1nI7kFflCvECSYOHy4Tg5h6GHv1vcDclrcaOeYEVSITgGipDAEXRCYnC7bhyShNOR42nPACYzjI+GlRNzwSAKCauyNp6f+l6wSo8O1zCEgMZ3+VwuerbB9dBzz8jsEAQV8eD/8GT8Mdc13r55Bl4sPdvLOssGwtdTw0Qu0Cmg/6FZ6FQtpOEu3RJAyqx9MYLl7lyACUbL0qPp6+qZ4sczJi92B+Cv2p35zPhWvYuDL4H8ECw/EqVdsXM7iajhM4H5mqmeIw1VUWrpdoNp/OW9YNRnGAfbLi6o2ED43nC5emzi4nrR9ogvHsazWR7qpP86KwWJ2O6K3tQiZUDtgKFCOaQYOKf/P13I7UzA52D6nFXXKtklrQGkWtwP+7CM30AEsAl68ZvI1iSMC00i3hfaqBgpegBkUFmiJEh7KR0HDGKO9liw+YMVtWK/8i3G7h4hqDYFqWoZF1iznq9C1mJ3wvEA6LLVr9DmBH8ZnSIYH903FhtMItjIlPN78RvfVE1nAVkBTQkCdbP1AaSQ6cUp6FPWbmgxkG+HmNC2d4PfvZysDAkkajg1x+4apd3fdo/jJ8VnNekX9durQ9lNyeSgzFZCSscuCMtf11HKKLIwNIBDAKzisSZ8rnFwzz74kRTESMnQsJ8rxWaklVbYCZp+a+k7UGCCWfx7CzM+ro5QQk6ctdpEL4YzIIR3vZSmjHzZhenn2/U04M5jRroAngDx1+8RweNvK9bQcbra9CUN7WnoQm7hvI+c7d28kQV6SkUe6t6CWudlQHxDZRavHk/QpbAVsUu7C4xsdlYnvHCj7o6ylqKsKYQwDrmWM8ITAqacRtv0LV/Mbg1BdfZklkwKrlJw0MB8aFkJxmPLyG7KsDIiV/PfATuomAO49SSzo85UWB2+D/N3hgX2aqvowKh/BcHMPkBoGRsrj7
+ x+O5wbJI
+ sHRV+lMAm0/bX5ltavDuT6qnoj4jVb47/yGAoitBHZLLj+70/PT5B7SUYrDLeHN3f6Bn697t90tc9yHcErW8VOo4dfQqSpCdD83t6PrgIe9lAZubPsfpTlte7ZGFDfgNvlr33co//Axi3VzyMHHZMkg3SlkpFC99BYRFQuwyGMapCaJeIkbstK5YbqOOLTIsoS1qLoJo534h5XM8UviFE6vGuiuL8gDDq+O3H5AG99/p2xiagKuEk8eMh2mjtahI+rdQNM3bD65nBAiAJQt0vk1UioPA2onhsdNFywicZItcAj/T+yGwH7vOYSyoq2q/IYb3tafjVBF+ayvaYFBfujHk5aDOQ2Swhqu68JnozQlR/d64PIPvJjfduT/w4WbIzAU1Saq/nlFVARjAmHRGRsgVMldvT32XJiWXs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +123,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Apr 2026 22:27:09 +0530 Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
-
-> From: Shivam Kalra <shivamkalra98@zohomail.in>
+On 04-23 14:25, Michal Clapinski wrote:
+> Currently, if CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled,
+> kho_release_scratch() will initialize the struct pages and set migratetype
+> of KHO scratch. Unless the whole scratch fits below first_deferred_pfn,
+> some of that will be overwritten either by deferred_init_pages() or
+> memmap_init_reserved_range().
 > 
-> Extract the page-freeing loop and NR_VMALLOC stat accounting from
-> vfree() into a reusable vm_area_free_pages() helper. The helper operates
-> on a range [start_idx, end_idx) of pages from a vm_struct, making it
-> suitable for both full free (vfree) and partial free (upcoming vrealloc
-> shrink).
+> To fix it, make memmap_init_range(), deferred_init_memmap_chunk() and
+> __init_page_from_nid() recognize KHO scratch regions and set
+> migratetype of pageblocks in those regions to MIGRATE_CMA.
 > 
-> Freed page pointers in vm->pages[] are set to NULL to prevent stale
-> references when the vm_struct outlives the free (as in vrealloc shrink).
-> 
-> ...
->
->   * vfree - Release memory allocated by vmalloc()
->   * @addr:  Memory base address
-> @@ -3436,7 +3468,6 @@ void vfree_atomic(const void *addr)
->  void vfree(const void *addr)
->  {
->  	struct vm_struct *vm;
-> -	int i;
->  
->  	if (unlikely(in_interrupt())) {
->  		vfree_atomic(addr);
-> @@ -3459,19 +3490,7 @@ void vfree(const void *addr)
->  
->  	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
->  		vm_reset_perms(vm);
-> -	for (i = 0; i < vm->nr_pages; i++) {
-> -		struct page *page = vm->pages[i];
-> -
-> -		BUG_ON(!page);
-> -		/*
-> -		 * High-order allocs for huge vmallocs are split, so
-> -		 * can be freed as an array of order-0 allocations
-> -		 */
-> -		if (!(vm->flags & VM_MAP_PUT_PAGES))
-> -			mod_lruvec_page_state(page, NR_VMALLOC, -1);
-> -		__free_page(page);
-> -		cond_resched();
-> -	}
-> +	vm_area_free_pages(vm, 0, vm->nr_pages);
->  	kvfree(vm->pages);
->  	kfree(vm);
+> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Michal Clapinski <mclapinski@google.com>
 
-Ryan's "vmalloc: optimize vfree with free_pages_bulk()" just altered
-all of this.
-
-Can you please redo this series against mm.git's mm-new branch?  I'll
-be pushing that out later today.
-
-Thanks.
-
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
 
