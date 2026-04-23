@@ -4,147 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD14FDEE3F
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 19:25:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0BD0FDEE46
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 19:32:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 631296B0088; Thu, 23 Apr 2026 15:25:41 -0400 (EDT)
+	id DB5F36B0088; Thu, 23 Apr 2026 15:32:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 607E56B008A; Thu, 23 Apr 2026 15:25:41 -0400 (EDT)
+	id D65E96B008A; Thu, 23 Apr 2026 15:32:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51E576B008C; Thu, 23 Apr 2026 15:25:41 -0400 (EDT)
+	id C55636B008C; Thu, 23 Apr 2026 15:32:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4212E6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:25:41 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFDEEA035B
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:25:40 +0000 (UTC)
-X-FDA: 84690800040.23.B34C01E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EE16640017
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:25:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FVX7LR5V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776972339; a=rsa-sha256;
-	cv=none;
-	b=yT9JoLA/wCYW1Pvw5jo8b+UVMqKvPJEHLaOaHhkqsBQ0Mo8o6zTmWaWUMOWkfM0iGKRysH
-	vOcUqOv/EWAV0bv7S10bcePlxeBnhPSPo+HgXWo5SWh4wn9hzruXvvwky2D8bAUFRWA6P0
-	QM5z1Yv80dtE285ObQh9KEEjSR+Gji8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FVX7LR5V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776972339;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B1D216B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:32:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5726C8B41C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:32:40 +0000 (UTC)
+X-FDA: 84690817680.13.E5654D3
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010047.outbound.protection.outlook.com [52.101.85.47])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 72145100002
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:32:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Zop6Mngl;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776972757; a=rsa-sha256;
+	cv=pass;
+	b=gtr++ZTcsL5XFInSc4UnfJuFagAFxd5hBc1seAym1Bvt19KrMAZZiWzLZ+a6B7Oreu5HOx
+	NGDtxvW1pP6ZlHv7VPXvVqsx4qJ8Dnn/6HlqOGJBKk9uidc/q2K719hhPVhrsJd29kR40C
+	cg1WFyXJlpgnV7vEz0TQ+jJcxBb+Vj0=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Zop6Mngl;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776972757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=enbskP1Wr8MSKLZfmzCeLIVxZaEVj7jBjVJ+H2o3mm0=;
-	b=V+4muwjSRonD2Ha5MbzaMUEOWIVE7GjX4qjqhlzEeNofsIvMtMuoEG/nZYRCWWC0/NzIZN
-	L+9xulOwrPGTIHZZdW8Ey781w2SL4C0FVRtvYTsAoZlDGRbpJcFzWN1LvgpYYTemb2Ywdz
-	3CUC1Y4MtuELTtLoCgYxA+sTtFNAzR0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C68AB4347B;
-	Thu, 23 Apr 2026 19:25:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4E7C2BCAF;
-	Thu, 23 Apr 2026 19:25:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776972337;
-	bh=mEhSNzw438eFSo2SttGbiPSYg2mHMQZBVE1dKmzNCRM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FVX7LR5VfT9r+KDdUIYNaKW4g1qbwcNTMrf1WWtlqrxX2N6+4OFX2vTsYp1PuTRpn
-	 mveZ91DqGnBIL7zSKFKil5s5fMsAEY5uHjZ+eXPw5qMGJyxWJbHz6fJXEK0E5czucz
-	 O2wxGgqwuGJnt88RUqCa5l4hRyybxiGh0U+sxVJpxmLvatbj0FwdWzl3o2KZYl0OVj
-	 JhRVlG9Xr6AMize3o3Bbpikvp+LKEg5E1NQHZykdlqvZ509ULoXZ/H85A5eYVLRt+I
-	 r0AOAmna18dl5Es84/sYgSuoBB8GoR7vPYRr7NvfgjlQbhkdk2GNqhrPQQNgY6vTgh
-	 ctogcTdfyfZZg==
-Message-ID: <17b0dc02-eee3-46d6-9afb-5f81a3a20216@kernel.org>
-Date: Thu, 23 Apr 2026 21:25:30 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM guest
- memory
-To: Peter Xu <peterx@redhat.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org
-References: <aeFCuLJXT8VOkzH7@thinkstation>
- <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
- <aeImfRrrvr3UoKtL@thinkstation> <aeTnlQUOOh-dHG8z@thinkstation>
- <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation>
- <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
- <aeorZMvKwu8zKX5i@thinkstation> <aeoxnuGKO3uqS2kG@x1.local>
- <aeo5IPpQi7onyjTF@thinkstation> <aeprnnccJeyHB2rt@x1.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aeprnnccJeyHB2rt@x1.local>
+	bh=aHOqHBlD9vBnEzLwMzIA9CTuO024D1xoVLeEMO9breE=;
+	b=8Hbu5L8tGZLqLhqJWcSR9bhoySvRQbFKqg93BtqeGt4ZsEK4xI/YWq/bogGdRQAImx0Yrv
+	ZCmrxazQ61Yp9JBVQ6nf/9txN5XT8OoDptBkYFQh2mnWrepEgVnntyuIj9oeJL3NrZ7Rn/
+	CbhIMGNfVCf1Qqxmml5EVvkBnM7sx18=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nftWFB+Fu3Cck+9DfQCOIVZ84aI93g83vrw5vccgF8Skga4hWVqNdBN08uZBysn0PVJx9wwzc5PNi4V0w0TE3deX2koHVeWEIl3ku6Grcxbf/LmT0yZZxey4sJiLKydykIuSm4Zt3CwQ9YCASoV1SiZKDOzxoaJjIaWDb8K9Rv9OQu/hmaKwCV1iGeucsVjR9vhVW48bxP6cFH2mm49sjD3pOyPANBoBotwkITKS/f7q4yhh4Faf3fY3NsrtYrehg8PYfVoDeKGJ7jSbUaZvR23d93R/1nSRXQKuxJwfJdqcoikqDeWUjPyy5DuzOnpYYyXW8YLwANeTJZt5b+k2nQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aHOqHBlD9vBnEzLwMzIA9CTuO024D1xoVLeEMO9breE=;
+ b=f67dTdD0MLH28mnXvs21mbQz3VzN+wdDb3EF6zaaUeHWNK5Of1td4Pweov2SXZCzL1pZKbaM7/YxlB+Q1ocI5r2BGQF8RshNi9e7AGJvZgwtVF/8LkVTkzEBRRpQwv4tEdQ5HZJ/3Pxmd44dXNj+Y+w3eM5IasXAA9c/JnSoSVchJ0r3jgtqz0LTVOrvS3UKlGDagwy7rCgwxxe7VgyU8h9Sc48xusk6/tb5yUC7hOAQYuDlUaspXoMyVdT0K9ZtksAriaz4g+Tp7hdK2v15/7HmjUtj/Z/WIYMY+LL7B9SxPwuJqzjpXHCOtDMZUevuqCeX1dlYyDn03xHhC9cOsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aHOqHBlD9vBnEzLwMzIA9CTuO024D1xoVLeEMO9breE=;
+ b=Zop6Mngl8h2CfxyokWUD0M8lppuEYHoRj0g1yZ8MtVpuL8cd50LWX0uLQAZvl3c2u/4aQ3UK1hBdLEwc/0qemkBYQjD5rBZh0m0ddDV7PHWlAoRIhhJExhy5bBRSY3XOB7q+ktmAv2yLYBK0RcSDwU2WuhG38L7V/m8P69IdwYBx8bKltzrJVQDq8LGmtnhiCb2iOAfIb8/aj0uv4NQjUkXoLPM1ASVCN2LkO4cJXsuQfWXN72tDnQoAAKO3+zCCgoVmlEMVIpDbjZKkGhxzxasC1JQpgtDXKve0LFvyRN52/fScUdvsYtBNIeh97RGiz8Pe6a+BT6ESz3+ZEyuOVQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS0PR12MB7849.namprd12.prod.outlook.com (2603:10b6:8:141::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.20; Thu, 23 Apr 2026 19:32:29 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9846.021; Thu, 23 Apr 2026
+ 19:32:29 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+Cc: david@kernel.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ apopple@nvidia.com, baolin.wang@linux.alibaba.com,
+ gladyshev.ilya1@h-partners.com, harry.yoo@oracle.com, kirill@shutemov.name,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com,
+ mhocko@suse.com, muchun.song@linux.dev, rppt@kernel.org, surenb@google.com,
+ torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org,
+ yuzhao@google.com, artem.kuzin@huawei.com
+Subject: Re: [PATCH v2 1/2] mm: drop page refcount zero state semantics
+Date: Thu, 23 Apr 2026 15:32:23 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <53FA8505-E7C0-404B-B7F5-3EBE89B64E0C@nvidia.com>
+In-Reply-To: <9fd8ebbc0f4f45be611bae0d03dd25dd994233c0.1776350895.git.gorbunov.ivan@h-partners.com>
+References: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
+ <9fd8ebbc0f4f45be611bae0d03dd25dd994233c0.1776350895.git.gorbunov.ivan@h-partners.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: EE16640017
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN9PR03CA0781.namprd03.prod.outlook.com
+ (2603:10b6:408:13f::6) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB7849:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0943c882-7d55-4323-44ec-08dea16f0e65
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	FlTWEHc/wqam5tyTDjkuk7+NhkiHclnRO5dSIIciD9wq8n9MVA7w64xELkMB8/q4HXk5zDu6nXz1jP6A/SCNzOiV7PzYGDY7kcxY/PFfU23TGAXm2O49OeIjqDvjdYxa4PBXy3zW9qTCbwWrFQm/U9Jkk2nXGIBPSA65jhpHuatKC7EL9wLTjSxO37QjN0f4wKvnjPZnNN3d8FXCKCQihtwpwvZnKFubNaRti0BwolXVXzAWFmzdBPA6VgTiCIZnRo+pRficpN24VnXwgFr8XY/6m0UakN9S0oXhFckMSqMBa2B25r6zLHFaMYhPxI1bblELCPV7+p1K8zMgAIOA4owwMTnby5XPvDfw+8ImbsigH9tNX32JiERN9xX1A7VE9OARFh0rSkPcVpmqT6SMGyW8WQbFc8EMMKUv8M0ym8YJPfbpLYhDKYjW8G29+gM3WMuZzMpcsEdjhf3aHTMrgJDgHy6cRrxup8IVu+aa+r5EEDoD5lW57cc33NdArKP+mvKA2LGBJzRF2dS0ZAtBrIXmc1aZCkkIOFB0QOqkByWmTSWbV46/1yMFuxhOgnhceq2LhHIkMGXZ6/HGjPWCqdi3S+ewKx5sviXIAM9JSEjta3LzewqCsWgPfkKHWP7btkirPuwZRqOjUpzyg/FTwvEdSKvvgP8gKESRyL608OuqmiaUXSmGMkGTKBCY8PbNXzjmIgbach3EH8lcwyc8T36O0/FwbXMB/J+jNLrDukI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ek9KcEFnSmVtbFpUVzhLTnFoT0FYRTlzNXMzNlR1UHdVcGFIZktRc2NJVlRq?=
+ =?utf-8?B?OHE5UFVleU1TVTdwZ2gya0FiTUxzT2M4TldMWDBvemk5MnN5Q1lHbzZXR0VS?=
+ =?utf-8?B?czFTWVVNYVJaR1BzZERpWWRPS0ZFM3k1dnhlNDJsYXJkZmd4WUx5aWhqeW8v?=
+ =?utf-8?B?RWl3MzAzSXV1VmtjeFNQQ3MwUHpJU0VRYTM2akMyNXFJb0FvOUZRZit3MUhK?=
+ =?utf-8?B?QXhTdWdRNnpCbGxVTVFOd3JudEZVVnlZci91UlJoUzFEaUxrZ3p6UWpTWDdW?=
+ =?utf-8?B?L2JSMzhvdENIcjNjNTdCY0hjN1NSR1VYOHplS1JrNG5YdDhzcEpZU1JaeWtQ?=
+ =?utf-8?B?b2dtM0FQdkdILzBMYnpPWTI1cFFQNlU3aFJXaHJDUjcyQlNCemNvaXlXaEEv?=
+ =?utf-8?B?cVU2WlB6ZVFpZXBHdldLd1dtc2swU1VseWJJRTJoWElORVlEVFpESW92QzJm?=
+ =?utf-8?B?MFpvV3BwZ0tkRmhIVUFBS040VE5EbnlZNVk2T1lKTG40VExWeDNIM0lBQVdB?=
+ =?utf-8?B?YkRzMWxUS0RqZzdGWXdlcUJDUzRjL2FTd0g2SlBNWW5KYkFRWTYvZ1B1ZEZC?=
+ =?utf-8?B?aEMxSVdPR2pVbEJGbWdnVXhwcWZmWDJNK1VoMGNrdFBJL1pGMGxQbmJPOGV0?=
+ =?utf-8?B?eFJjcU9za1N2K2s5UzRkUDhPTnFNeks4aC8zR0Vtekc1MW54S3lDR254Y0tw?=
+ =?utf-8?B?UWYyMlVMR0REMXJGWlNpdWtXZTIxUzNsdWtzRTFqaFJQY1Z3dmYvSVJha3Y1?=
+ =?utf-8?B?T0lqeVBteW5GTWMzM1VPMk50V1VCdzVIT2ZIS0xHYUN5cXlWU01Xald2V1Zw?=
+ =?utf-8?B?Z0h0dkUrTGRaMXpFWldRbUtkZzJnanU2WDVURTVRd28zeDRjQ29hQTk4K0Uy?=
+ =?utf-8?B?VHBlZ0UxVVV0SVNnSTNXZlE1QlUxSDkrTjZjNlJrN0p5ODhWUUZlMWNTSWZv?=
+ =?utf-8?B?Mk9Pb0t0WndnY0NtbVVGTVV3YXN6OEJrY3RlaVYvaVhaNGIzaFZsVStpR2NY?=
+ =?utf-8?B?cnJwN0tPUFpZY3V6ejhmTkljUElQcFNxUjQ1SVBCOGIwbWZicWRVa0FPNHds?=
+ =?utf-8?B?S2t0WVRkK0Vqb01pZkF1SXZZdG8xS3QrMDFsRjROd3pHM1hEc2xJUy9KZUp5?=
+ =?utf-8?B?MEVqNVZpZWt2R0wxRlUrTEh3UWsxTWdKbEQxTzlkMmovdEJ3UDRPTTZWcVlp?=
+ =?utf-8?B?VSthWWZYblN2V1VORjVJNGVYOG1LWXMwZDNwenB2QU9XWE8vd0d6TDZBOXUw?=
+ =?utf-8?B?K1VkKzZmSW5IaVdUdEZxN2QrTXpZQXo1d2piamZ2ZlY1UzlIaFppYmZQemRo?=
+ =?utf-8?B?NThuK1ppanVHcDIwUnlXVFh4L0phWHdTOFZ2TmVneVBPbkZwaGVkSjU2WWxR?=
+ =?utf-8?B?RVpEZTljVzN2OXRxZEhIN2d3MTZyK3IwU2U2eUU3RWlPc2ZTcm11OWZ6Rkdt?=
+ =?utf-8?B?Qk9qMU1ENDRic3R1eDBVeEVxZWxpdWl2YjlYYk1WNDFrS2dBL05iSi9PYTZi?=
+ =?utf-8?B?V0ljN0Rza0h6Q055N3hXSUF5eWEyNmlsWjZ3TXJpNVVzNUR0NUdjclE5Q0xm?=
+ =?utf-8?B?M1ZqZE5FRmpreDQvSTJPM0I2N0FtQlplYlZGY0Znc3lBUzNST2ZmZWhFMFFt?=
+ =?utf-8?B?d21zdENMYnIyMVM4YVN4S2xaVGlGUXFiOEJNbW5MYVZ2MEFKUE5LYS9LZ0FX?=
+ =?utf-8?B?VWllVDZ0UzBXU09qeUw1c0pGSjZDbFlVTUV6LzhnRExkY01zaXRrUzM4c09t?=
+ =?utf-8?B?ay9PSjhEOFB5dnI4U1k2UXliMXFSQ1BMdFlySnZUdTVQb3hVWmNVYm42aFE2?=
+ =?utf-8?B?QWFEVkNJa2VhenFHbGYxSkRFaXRTMTdpdmZMdmVDLzFuZlNVNlhhUXc4VmtC?=
+ =?utf-8?B?UWpSS1hoZXI0MFZWOG1zNUpLUjNCK1h4YnBsUUV4cHRoRVpHUmRBQ0lVNTNn?=
+ =?utf-8?B?aGNST2huZ0NvdTVZOTJqdWVrZGNQUDM3ZVd5K2F6TllGYlB2di9ET2l1ZlZp?=
+ =?utf-8?B?eHVnQmQ1MUczaEQ2U2lVVWFRc0hYWnoxcEMxK3ZqcmpWcXB5alR5R283b3ZO?=
+ =?utf-8?B?SzZGNmZUVjBxbGNzRHRKcHNUYjJmVlVjK1ozOWsxUExRTWdySTVvcEZ4TEJE?=
+ =?utf-8?B?b3VqWGtWQUx1Kyt2K0NEbEcvaklpMDdhSjVDRmJ5dzJNSnBjNUxiU05ENmRv?=
+ =?utf-8?B?UU5rdmJ5VlhZcTFwNHkyR3FoTytFVXcreW1lcnRIUjVmTlB1elVWUGsvdFBF?=
+ =?utf-8?B?ZWJQTzRTNFJTWmNkV3BKMTEyK3dKU1VsemY2YmtrQ1hMK3hvUTJEZDI3UW1t?=
+ =?utf-8?Q?Cf7oSb66trYg17JswC?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0943c882-7d55-4323-44ec-08dea16f0e65
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 19:32:28.9867
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3/obaxAnM9yMGFyAIIoafsFC+DUjM80KnesCYeZEUwR/WW0/S0nnzCw+89T+7Asb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7849
+X-Rspamd-Queue-Id: 72145100002
 X-Rspamd-Server: rspam12
-X-Stat-Signature: bomud8jt39xy7o13sz6yuwk5ag1urja8
+X-Stat-Signature: dzq53r8brmrrs5bmsbu5nctpb7icxqi7
 X-Rspam-User: 
-X-HE-Tag: 1776972338-60800
-X-HE-Meta: U2FsdGVkX1/yV1NFp+eqTsTlz1yYl1SwYvw1jcpUF0EpUju8y4fMua5PC2Oyfyh1Q2WqBOyGnnxMC/RuH6CedC6mX+xrQwxFZC3XHDvbpqD0HdwsLk+xr9qQDxRQ1C/v4tDPqhNQaO9+wYnkKv4SgjfUpDC4aIrg1FUe26FrU/9YTsGUq+xycchWwQLI2wDm5uzjMjextW/W1Xq2ZzERunGawScw8mb7hd2dnDqofN9zlUWVbIKpMFvaAb2IYdd48EtAX7yUv7AbbJOv2TV+miA2OMGGtSVvYpcRBKesOQRPSFyLg83NgW4yVD2uDVErMI28bvLeCxdwxdshktAdaYFpnvTuf72RIe87IGIyrYkQE7RZnGcTmO6aslrCOSS+AJ4XdAJT/F7wXJQ5jPx2Y8qJQYmU9CLr5Gkr5qqzhyGSjhxPJPYITyaAcoZouXdUQwCvP1QSl+caYZFV96lXlcXGflDeb1LUS5vl8weoEwG6k69fPq8arlBKpThYZZT1cGJ5JIWnhoLMS2vq49t4U7FT9POoe5nV/2DXkO6urBvGYinYZyKXTPjbFQg5rdjyT6sXapEJkRaKvasvs6jrx3ykss/9C6rdNl0RFWfZdDjIZlmOW0CS66hh938PXoG8UCQHeqjFP7gkmYMfMiJMra92dqw/7sXTwSfAChVAabW/kfe2PfvyH72TNX9BJpo4pBGrgZBLF3S38RZn9FbExkM+9ZSAPgMGSL257GLIc+Yr3MsxPTFljJNqzaR813HqKd0GwDuqv+obrTEhNlHcOf64WVHUR5zIfXqfsAtdJ8MqjjJEZY82y6IiwfKQeBx9J+yLQI2Mfg4fkXcFfcOQvuGOBlkjuvauPoJFdYv5DCeZ12x7kCRUTNVoAesu5aP44oqyfjhEPdZqtgrvcNHp44V83TDuU4lPNYgTbvZOPohtwkKJxZOlB1SMHV/fKOSrqnNEGnOcIwEVUOse+WR
- 3CfZWNiZ
- tPsGTBL2RBeO7sc2FgRVAVhYFxI0zKt369+0QsieOzSVYQCbk94QHIzN3B4n8BAAU0JOPI9Vo0THP/iAuiDyCybT00qul2Ecgj3kMeEAlz6ideLAxfZ8w0t/3u6Bg/ed2qlMJtNBtfT/+qsOSv/1dv1+cxVHFH0nD3DTED+A6u1Hr8WAAjqHn+CPtYx8QRCfpUZvtzXM/hsrZeNwMvwqtRTLsSTL8n/ZpqsNmdmTt8TOLS8eVni/VtAEAR91HuCevxP2GIZws3zA/1CRlPsSgnrwvMk06Z0m8DZtl
+X-HE-Tag: 1776972757-155835
+X-HE-Meta: U2FsdGVkX1+O1zI1liRLQQlSST2+wH2+dCdRyk7uR6dRy+vB5bYxHNQTSksnYfA+VRr3IBTTBSMm3UWFyNt2Df5ePKA7gAoh/toybgmWgClUl1tcT7wBzxx7ox7bQORISYqyWZ3l6E9nL3yrQfWFglfYwA3FvXGEGbC5XyK87g/Uc6aksOUbCkXkq8ByAHaBn2WKL4IDSM/GBFnXMDQ2D4k4Xh/46dLNoz5YjLI5Qt9qVehj+KCL0jQp4h5YlQJCOPh6iCLyyjbRwrCLiRy026sBzHuCecigiz6tknIy6R0MvI5VLpg/pihdMxJF50aOAOgANHLFH351U2PgVGqckseVtxs/phL/+/vwfP5bqHnlQlvMCnOr6/1PUvN++m5Ihf+SG6YlRqr4PZwIur11AVdvOaBmMSyA0Z89rnyylc/xAEViFzXbtgPMpGeoIH9kbkxtcnii9Bl/kt7ls5yrdyp4K66LNtR24nystF+pMTXNNcPhNSGOrLExGNCxuUqIjNw6n38xlr1ku9c8ZVR/nqFpxMS8GbcN8NXwmDm8Df3MerqtMxAmBSA/oiK5l/MZUVC5RurcBJf7dzSTIycwXzjl4+UJo82S9L4vyYFO+wocb3loxs8wTLPE613eRB+emkQ9j+qaGXPotdvdGFhqgqkanTK2FgZpmwvPnSSbuT73AuVTYeIaVg/TZHgadLBNVW6QCdMas6Ix6e5/X9m/pSnGw3sJqgVLOLIEfp5wDq8BTFU9ZTI88NSqs5wEd4JrHMNoIfOJF84IhDme9FujD3y4f/gx97OpB0QSAiCHhs2yaI+BnKGI/REu9h+m6A7SQgzGE3/oNvSvHRYWBYnkh4YB/U+LDRHRTAxYSpn8q48FnzgN6rs5Kx1ZwYN380du85g8efRAId2NfE6rs20YZzdDQR50VUHWN3vd8cA6qeDcMdOBfJbtPxy5a1giz4Hxkry2GnO9rP+95V90B7z
+ 4GH/QgxV
+ t8kp5KPEZxXF6Y+XYq1IWBKWCO+LrY/oxv2I4hhcHTj+UgC6WZg3degVL1HJ96WAWnlV5P2NuCpsJSe/svNC1zb2y5LzMMv5Bru16R0qTwBmcbhqXHw+J864/d+b9t5+uB4KjFrX1uGe0IU8IyCoKQmCxGtk8e2QquRTzxg3KNyNZFvBX7HFIT7/sorluIoTR5twQg6M+VIgmCpZxBx+9jpy3S0g1sKDdtNlOB/hLtDYUJDD6e7fnj9bLAl7dAEkf0nHI3vMNvtQFTMFcDGZwxSsV2MxbTp0JvVjeaUeP466HJVk0tf96d33e7UqX+D9YXvYWg8nl1kLgh8AqIfVLrbU4J/wBRv0y58mdAr/HZ1SQjz+GtFbIkduJRm/k7ORqtdvFYmtsJdn13Nc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,21 +174,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 
-> The other thing is, as I mentioned in the other email, I still don't know
-> how the current RW protection would work for anonymous.  I don't yet think
-> the user swapper can read the anon page with RW-protected pgtables.  So far
-> my understanding is maybe you only care about shmem so it's fine, but it'll
-> always be great to confirm with you.
+On 20 Apr 2026, at 4:01, Gorbunov Ivan wrote:
 
-I wonder if uffdio_move could be used for a swapper implementation instead?
+> Right now 'zero' state could be interpreted in 2 ways
+> 1) Unfrozen page which right now has no explicit owner
+> 2) Frozen page
+>
+> This states can be 'logically' distinguished by operations such as
+> page_ref_add, page_ref_inc, etc. In the first we would want the counter t=
+o
+> increase.
+>
+> For example one can write
+>
+> page =3D alloc_frozen_page(...);
+> page_ref_inc(page, 1);
+>
+> But in the second state increasing a counter of a frozen page, shouldn't =
+be valid at all.
+>
+> Another reason for change is our other patch (mm: implement page refcount=
+ locking via dedicated bit)
+> in which frozen pages do not have 0 value in refcount when frozen.
+>
+> This patch proposes 2 changes
+> 1) Deprecate invariant that the value stored in reference count of frozen=
+ page is 0
+> (Getter functions folio_ref_count/page_ref_count must still return 0 for =
+frozen pages)
+> 2) Allow modification operations like page_ref_add to be used only with
+>    pages with owners
 
-If we ever have to read from a protnone page, maybe we could teach ptrace access
-to do it, or have something that can read from prot_none areas -- like
-uffdio_copy, which can write to prot-none areas.
+Should we also ban calling set_page_count() except init_page_count() and
+set_page_count_as_frozen()? So that no one can manipulate page refcount
+randomly. The same applies to folio_set_count().
 
--- 
-Cheers,
+All set_page_count(..., 0) are converted to set_page_count_as_frozen().
+All set_page_count(..., 1) are converted to init_page_count().
 
-David
+We might need an init_folio_count() for folio_set_count(..., 1) users
+and folio_set_count() has no other use.
+
+I see set_page_count(page, PAGE_FRAG_CACHE_MAX_SIZE + 1); from
+mm/page_frag_cache.c and it could be converted to page_ref_unfreeze(),
+since above it there is free_frozen_page(), which makes me think the
+page is frozen.
+
+>
+> We've looked at places where pages are allocated, and they are
+> always initialized via functions like set_page_count(page, 1). However, f=
+or
+> clarity, we've added a debug BUG_ON inside modification functions to ensu=
+re
+> that they are called only on pages with owners. In future those
+> checks can be improved by replacing operations with their results
+> returning analogs, if needed.
+>
+> Co-developed-by: Gladyshev Ilya <gorbunov.ivan@h-partners.com>
+> Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+> Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+> ---
+>  drivers/pci/p2pdma.c               |  2 +-
+>  include/linux/page_ref.h           | 17 +++++++++++++++++
+>  kernel/liveupdate/kexec_handover.c |  2 +-
+>  mm/hugetlb.c                       |  2 +-
+>  mm/mm_init.c                       |  6 +++---
+>  mm/page_alloc.c                    |  4 ++--
+>  6 files changed, 25 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> index e0f546166eb8..e060ae7e1644 100644
+> --- a/drivers/pci/p2pdma.c
+> +++ b/drivers/pci/p2pdma.c
+> @@ -158,7 +158,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struc=
+t kobject *kobj,
+>  			 * because we don't want to trigger the
+>  			 * p2pdma_folio_free() path.
+>  			 */
+> -			set_page_count(page, 0);
+> +			set_page_count_as_frozen(page);
+
+This should be page_ref_dec(page), since the comment says =E2=80=9CWe don=
+=E2=80=99t use put_page()=E2=80=9D,
+meaning the code is intended to drop a ref and set_page_count(page, 0) is
+just a shortcut.
+
+>  			percpu_ref_put(ref);
+>  			return ret;
+>  		}
+> diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
+> index 94d3f0e71c06..a7a07b61d2ae 100644
+> --- a/include/linux/page_ref.h
+> +++ b/include/linux/page_ref.h
+> @@ -62,6 +62,11 @@ static inline void __page_ref_unfreeze(struct page *pa=
+ge, int v)
+>
+>  #endif
+>
+> +static inline bool __page_count_is_frozen(int count)
+> +{
+> +	return count =3D=3D 0;
+> +}
+> +
+>  static inline int page_ref_count(const struct page *page)
+>  {
+>  	return atomic_read(&page->_refcount);
+> @@ -115,8 +120,14 @@ static inline void init_page_count(struct page *page=
+)
+>  	set_page_count(page, 1);
+>  }
+>
+> +static inline void set_page_count_as_frozen(struct page *page)
+> +{
+> +	set_page_count(page, 0);
+> +}
+> +
+>  static inline void page_ref_add(struct page *page, int nr)
+>  {
+> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
+>  	atomic_add(nr, &page->_refcount);
+>  	if (page_ref_tracepoint_active(page_ref_mod))
+>  		__page_ref_mod(page, nr);
+> @@ -129,6 +140,7 @@ static inline void folio_ref_add(struct folio *folio,=
+ int nr)
+>
+>  static inline void page_ref_sub(struct page *page, int nr)
+>  {
+> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
+>  	atomic_sub(nr, &page->_refcount);
+>  	if (page_ref_tracepoint_active(page_ref_mod))
+>  		__page_ref_mod(page, -nr);
+> @@ -142,6 +154,7 @@ static inline void folio_ref_sub(struct folio *folio,=
+ int nr)
+>  static inline int folio_ref_sub_return(struct folio *folio, int nr)
+>  {
+>  	int ret =3D atomic_sub_return(nr, &folio->_refcount);
+> +	VM_BUG_ON(__page_count_is_frozen(ret + nr));
+>
+>  	if (page_ref_tracepoint_active(page_ref_mod_and_return))
+>  		__page_ref_mod_and_return(&folio->page, -nr, ret);
+> @@ -150,6 +163,7 @@ static inline int folio_ref_sub_return(struct folio *=
+folio, int nr)
+>
+>  static inline void page_ref_inc(struct page *page)
+>  {
+> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
+>  	atomic_inc(&page->_refcount);
+>  	if (page_ref_tracepoint_active(page_ref_mod))
+>  		__page_ref_mod(page, 1);
+> @@ -162,6 +176,7 @@ static inline void folio_ref_inc(struct folio *folio)
+>
+>  static inline void page_ref_dec(struct page *page)
+>  {
+> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
+>  	atomic_dec(&page->_refcount);
+>  	if (page_ref_tracepoint_active(page_ref_mod))
+>  		__page_ref_mod(page, -1);
+> @@ -189,6 +204,7 @@ static inline int folio_ref_sub_and_test(struct folio=
+ *folio, int nr)
+>  static inline int page_ref_inc_return(struct page *page)
+>  {
+>  	int ret =3D atomic_inc_return(&page->_refcount);
+> +	VM_BUG_ON(__page_count_is_frozen(ret - 1));
+>
+>  	if (page_ref_tracepoint_active(page_ref_mod_and_return))
+>  		__page_ref_mod_and_return(page, 1, ret);
+> @@ -217,6 +233,7 @@ static inline int folio_ref_dec_and_test(struct folio=
+ *folio)
+>  static inline int page_ref_dec_return(struct page *page)
+>  {
+>  	int ret =3D atomic_dec_return(&page->_refcount);
+> +	VM_BUG_ON(__page_count_is_frozen(ret + 1));
+>
+>  	if (page_ref_tracepoint_active(page_ref_mod_and_return))
+>  		__page_ref_mod_and_return(page, -1, ret);
+
+VM_WARN_ON_ONCE() might be better?
+
+
+<snip>
+
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 65e702fade61..27734cf795da 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1639,14 +1639,14 @@ void __meminit __free_pages_core(struct page *pag=
+e, unsigned int order,
+>  		for (loop =3D 0; loop < nr_pages; loop++, p++) {
+>  			VM_WARN_ON_ONCE(PageReserved(p));
+>  			__ClearPageOffline(p);
+> -			set_page_count(p, 0);
+> +			set_page_count_as_frozen(p);
+>  		}
+>
+>  		adjust_managed_page_count(page, nr_pages);
+>  	} else {
+>  		for (loop =3D 0; loop < nr_pages; loop++, p++) {
+>  			__ClearPageReserved(p);
+> -			set_page_count(p, 0);
+> +			set_page_count_as_frozen(p);
+>  		}
+>
+>  		/* memblock adjusts totalram_pages() manually. */
+> --=20
+
+Not sure about these two, they freeze p and p goes into buddy without
+unfreeze to refcount=3D=3D0. But at the beginning, you said there are two
+states:
+1) Unfrozen page which right now has no explicit owner
+2) Frozen page
+
+1) means free pages in buddy. But the above change brings frozen pages
+into buddy, mixing the two states into one. Is that intended?
+
+
+Best Regards,
+Yan, Zi
 
