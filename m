@@ -4,84 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2951FAD3E6
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 01:13:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05696FAD3E1
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 01:31:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 658B96B0005; Wed, 22 Apr 2026 21:13:30 -0400 (EDT)
+	id DEDC96B0005; Wed, 22 Apr 2026 21:31:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 609A36B008A; Wed, 22 Apr 2026 21:13:30 -0400 (EDT)
+	id D9E6A6B008A; Wed, 22 Apr 2026 21:31:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 520D96B008C; Wed, 22 Apr 2026 21:13:30 -0400 (EDT)
+	id C8CCF6B008C; Wed, 22 Apr 2026 21:31:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E24D6B0005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:13:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6D441B7E8C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:13:29 +0000 (UTC)
-X-FDA: 84688047738.12.722F163
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 22C2D80005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:13:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxvJ3rFp;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id B5E586B0005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:31:22 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 62BBC1C00E0
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:31:22 +0000 (UTC)
+X-FDA: 84688092804.01.D67B86C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9BC6220014
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:31:20 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZEJZWo7I;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776906808;
+	s=arc-20220608; t=1776907880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=a3WOFOESMx+QV4oqhIOQnW22LGGFKLoylynJC8e8rOg=;
-	b=1Z+bGdMekfjXiYEcFAgN0K2oTi7vKcJrDOTWLi+jR7ZmHoa2fYBdspLorxO+d0YRtOHTWv
-	ccHj1ffd/zwt8Xo6xoUUFDOt5/Oxd3mGa9GtNRzwk0BV1+J1quIZWLgkzXbM7a1SJZmxyQ
-	My17JIzseJROEXL+Dvi1lcGLjv0GV2U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776906808; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5xw8K/3N0pnimoWlJLILrq6OleBdTSLVFDh7+6+ZA8c=;
+	b=nlVCWnaMeROcxmqzk+FmvY47xyCH9E+MZPEoxFiM9WExav5gUywrN5GBIQbFi/p6HCw12c
+	e2PyfCpIPe9U4wFwRa7zOv4rPzfbF7gvf0GqXHq+cfKOIFfyrH17K3mha8sjYusgIuMFun
+	Jq4dYgbHPzzhm5d2SIM/yd+KkM6zrkw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776907880; a=rsa-sha256;
 	cv=none;
-	b=cm+SUu9NMOKxA231aVDg8jIlG9MzTCugSWNOX5yyRUsc2R7Jlt/tVu0IPhcV6IKl6v6uZG
-	ogpnLNjCZ+iDWWnstpKMUVJaDssIGYQNQORHSax5hXlsZEExo6qXtF08n43IXEuX497r7D
-	/7mPkKVkkQmge//kN8cxaKqdb+pibwM=
+	b=WJHE61NyltXgLZEmy6VJag4JPZtMRMqtPSltQd+ij0d52vuI7NWUOga7OzUbsPv3dqPUUn
+	SpbZty5plAZAABCO5uI2NvC1cdKH4U0WVSS46D9rncp2KgBOqlddrKH71mGhd6KKhnHSkH
+	Cv/f4KfQbh0Z0Uki20DQqMJRcCKMleQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxvJ3rFp;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZEJZWo7I;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 218704391E
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:13:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DF5C19425;
-	Thu, 23 Apr 2026 01:13:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BD25260008;
+	Thu, 23 Apr 2026 01:31:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFCAC19425;
+	Thu, 23 Apr 2026 01:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776906807;
-	bh=9PlMEv0oWcsxNV7gLe9VCQFtma4kLf2XofnBhTskP5Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fxvJ3rFpRZEP/uYy2ouXLhPPyRpvamrDwiryvCxHFlVTyR9GhOo6MnAhVqkMLH39X
-	 JjIvph9JqkPz1CgqOj4NjJtTO/MDJLHZPGIRwx8Pyc4QB6T61t6T1SQPJk3yMtaj5u
-	 GqzxoJ0GL+Dfni1BJSrzHOl/Z6z62ma0xS91taABFe9kImfNUBGZEy9o+E7WPyhkMV
-	 jYt6LLMkntzrHM5RvDKn6EdoFF3Jq0s/fcwRgfIXMUsbBjY4i8fkD5EQcF3HWje/V3
-	 EQ8b/4yTpuH8whviWcUH00VcgDYyS2TYXIemc085u8Nn1IGm1X1P29JMs+flwAj0eD
-	 jWZa63uIUe0GQ==
-From: SeongJae Park <sj@kernel.org>
-To: damon@lists.linux.dev
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-04-27
-Date: Wed, 22 Apr 2026 18:13:18 -0700
-Message-ID: <20260423011319.32122-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	s=k20201202; t=1776907879;
+	bh=jlAGtqvwrlvzYzSmfvFrSnoSFtUA9CDJqYVY/DrcyQE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZEJZWo7IQJuIGCKRZDR/ii0H6m9xm9EV9uOtNDrN0f8QCeqLoedks257e0Mte/UCw
+	 K5+jGRaevfQ5qE+RMQzQ+nXMSoOHIhQC7rwC4oXhV1gxV4htVQUfw743nLlosIzf9g
+	 vYk53ptKBWwJ20msbQngDer/b42Yew2NBQhJezXnlYq4uckN2HOunUPC4eYb3XrTMV
+	 5SjtxITuoDs3apa4uPiphxFQvVF7ggKuZMx3jaQmLSbibTgethbcUWXDK9PNxtIhOs
+	 V2entigvS7oOgS4YQ/hwA1sJI9gh76lTD8zXpFw7HpVIDrG28elz6SfcTk7WrXLne4
+	 p5tFoFwXqPwJA==
+Date: Thu, 23 Apr 2026 10:31:17 +0900
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
+	linux-mm@kvack.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [RFC PATCH v2 0/8] kvfree_rcu() improvements
+Message-ID: <ael2ZUl2neBh2VGa@hyeyoo>
+References: <20260416091022.36823-1-harry@kernel.org>
+ <214ca3ac-45b7-4131-86e5-ac134ab0bcbd@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: j3ug9nnokm8ste1fua7ibpk85pxht3ae
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <214ca3ac-45b7-4131-86e5-ac134ab0bcbd@kernel.org>
+X-Stat-Signature: i7b8ztapad54kxtzdfz7jhyrwwzrqucm
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9BC6220014
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22C2D80005
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776906807-721964
-X-HE-Meta: U2FsdGVkX184xLYIRwnbn1SLQDZxklUiYI3QwFX/SuVvcGG3xdL4sT8onuERJlTWj6rnnNHx/k8f3XlDGX/wAPz5K0KxVE23SoiZdefFkrJtcOH+86xW0cyTwLhTPCVCqB9khxX4l4ed2swMDJb81A7Ev8p67AxWcw61UVhrxuj5sS6KgwgX4JOT3MLzITo3lPPer4Jfokvg0d5JgN5EPE3K2I3a9FM4zu4omd5LBr0tNT7nZ3YhSSsddrenNz4NfZfCm2pH5n1jsXnsoA/mBIbgwx4vNoP1INcjIZlFKnHmbvENtTpB+pJiAfKqtURKtb2zridho4GARSZHOsR7mWxfoUf9k0fwlEVZJL36WIEnL3Rjbnv0n05Ejr0ACf3iuDzMSDCu64V13RinwVa7xb6dGnBhx4IMvzHOIs27KLkP7tlbpf/JkcMnicCUPk1ZuDds+0q21DDPmaBmw8xZ1qxWUwrNaCsAfDAp2CAvD3pYb/SInDEYiEOdBLMTiG7SoQBbNp5HNKG6c2PkcD9rcICF5uUfuCCZNrB/WkKzer/AtSihmQJUjn+S8NCf9RPp0Fwg10g8BqOann4wnfREeKj3H9Y/pEV3ivuWXqRAsJ1pTTqBip0dTIiJa7cmt4ZV5d+rETJG5Hj2zpGNOzgUMkmlkr36EossEV1JkkF9gz1FsTeOoWcyb3brxWNcc+1CYaGahVquwSf9iAjxwUFkkJFSMZqVEDckW25pnxC07KN7feep7a1ERb6LFh1nTEL/wPZ0flkN5ohTEVEv1SbVgUoxWobr05qtc13sWxMZu4DM+yVf/L7p5B1sVR3z9T8zq8jYvpgM15Kiv64PRM+9GL/xCw4SUdPms3s8ky41vd8aDA7BoBABGLM+W1ZHVb6MALaa8nPhj2byoTAJY7sRbQEVxWygRfX+RFLYPRC2jlW3s+1ovMMuhlVgOSjkptD4Mh6UX876f5xVdJqWfDT
- UdkEVMys
- QHdTdT1pyDz3MJyx+TVxJrz8DRrvZMo0uTSrNwtR01ad3ylSe0KM08r/JLBq4kJ/7xTm6++g7nhwRqcm8eTCq2AuKqHIIaObuvSglggUkAv9BvIuxDDUaYQQSbIHpNa3RNq2od0CZPlVjn5vKa+KS8+hKVj7m9ce3PCRiq1cBidw6pTMZb/hUGNh/guRpw+A7JX7rkBvaqPQUJTQjFhDM4fBfL5FmGxf8LQt65cvlGKRoLtDVxY/XY6o2L5LPCM+2xI3hUIxtE5QgeEBL3tb7f6Dv4A1prFXyLFsX6l7ZDUQr7w6U5Wqgfk5COw==
+X-HE-Tag: 1776907880-813036
+X-HE-Meta: U2FsdGVkX184jWLk3XtsmvZ7RT+9NaOJxBqu9Ag6m+msgaSlQAuVevcNFOYCvp/okyRsSX2Ufrn9NdtlLTUEWoNMyQpPQtzsTsD1PAlbyTSakAfBHbKxry6dN7JwXWVWzpCaYcjHFE2LJWOjKXeY287yYKGudOzVX7CkJK5suZJXNj2ArO8A0FNG+xNIqAn0t09b+GBA1VNW5YMqaZVplibBzkWzsIOe74UvvPcrVpVBnG3clD1cDnzaQGNfvQ0u180FP/gu3TEcZlxQBszPdp3XYPpeTMoNopF8u7hK6QPHJFDX1GVWaHhYlXcksTYthlseiPG3loe8wo9GcHpHhgCa77kFJs06WYLUJFi/4FQi90UGjDwb+WIu7ltSEMIRQJiOM+jduDLX7RRuVsqih6QdtQGzF9RTWPVaM12MjaQ0ULkRlcjcFe/CtDSpgneP3E5GhSUXzB0+5XjdhZiA+T6UHhXsem+csJm1ec0JXgwFrOau90xVOv4outNAow50ZjDbD2b2sN3VD5Xi4ancWny7w/qvrbsYXEXKqkrKc4qb/ze83PI3oJFuLIAdRPIbmxkq35uOLLWFEvTSc2O5CUNt+cT8S/YVUN3LOgjurwb/UhRGUcLtnhaJ+l8E3VHoCs9pwa3/rbRA5rCrB38Y+a8koypevE6zSaeAly6sLgiBSTpTgQXEyLvynY18sADuNPbCJVJ1iF0Ye7QMpGX1VOoJV0P+ZdZOw2HLIZc+7YNI2KjZzLIk3+GvqTcznocvgB7urjvjYYxppoIthVKYgZhy6Gu0PrNdefnSSNWDL7Iu60mQ3cxxq7ZOWf83dYZaUvchxlpcwFeGgF12Ze9rOY4VuJu/D7tntya32NrHCgDtxj415iP+t8YcPosFCpJo3nE/x6wY+K5tiq841UQn+8ZD1cFMgv3o6rMqIlAMdPe4djGTM6U+3h3VsyrC5YYAvcdn1uvtao0M/ywEq7G
+ e6NTlsd7
+ TZyZFEwjNS3SYGPeSHOIwQY2en6J8YoTsKXO584rU4SCiT/FNtrlxfqjvCdgJ/uZPoyn5BTODyh3aqcUB86gwW/MTnBilVU9XX7zmrGcUkY9lHkF3sJeOnq+DIMeWdK4PvQ7YQ2K+mvfnLj0NA0ujryabaYetclxZzH7W6QA3mVT15HUdDhfixpbMXxL270Tiw4Wi5YbJCLbl4aI+wGj9iJiXKzvnMjVifo/hpfGIiw76/9KbHqa/K6qCbL5uGrmGw3muKTOFR8IDnVuZGRrP5+/R18Y186mRjAZ2Zl4ksZz/1K8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,41 +106,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Wed, Apr 22, 2026 at 04:30:07PM +0200, Vlastimil Babka (SUSE) wrote:
+> On 4/16/26 11:10, Harry Yoo (Oracle) wrote:
+> > # Part 1. Allow an 8-byte field to be used as an alternative to
+> >   struct rcu_head for 2-argument kvfree_rcu()
+> >   (patches 1-2)
+> > 
+> > Technically, objects that are freed with k[v]free_rcu() need
+> > only one pointer to link objects, because we already know that
+> > the callback function is always kvfree(). For this purpose,
+> > struct rcu_head is unnecessarily large (16 bytes on 64-bit).
+> > 
+> > Allow a smaller, 8-byte field (of struct rcu_ptr type) to be used
+> > with k[v]free_rcu(). Let's save one pointer per slab object.
+> > 
+> > I have to admit that my naming skill isn't great; hopefully
+> > we'll come up with a better name than `struct rcu_ptr`.
+> 
+> "rcu_ptr" sounds too generic to me.
 
+to me too ;)
 
-This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
-(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
-for the week of 2026-04-27.
+> Things like rcu_dereference() talk about
+> "RCU-protected pointer" and it could be misleading that "rcu_ptr" has
+> something to do with this.
 
-As usual, we have two time slots for meetings in the week.
+Agreed.
 
-Next time slots including six virtual-only ones are as below.
+> But maybe just "kvfree_rcu_head"? As IMHO It's an rcu_head specialized for
+> kvfree.
 
-2026-04-27 (Mon) 18:00 PT (not yet reserved)
-2026-04-29 (Wed) 09:30 PT (not yet reserved)
-2026-05-11 (Mon) 18:00 PT (not yet reserved)
-2026-05-13 (Wed) 09:30 PT (not yet reserved)
-2026-05-25 (Mon) 18:00 PT (not yet reserved)
-2026-05-27 (Wed) 09:30 PT (not yet reserved)
+I like the name better and will rename it, thanks!
 
-Please reach out to me (sj@kernel.org or whatever) to reserve the
-not-yet-reserved time slots for your topics.  The reservation is made in a
-First-Come First-Served way, and I will send a Google Meet link to
-reservation-confirmed attendees.
-
-Please note that other time slots are also available on demands.
-
-Shared Calendar
----------------
-
-You can get the schedule via this shared Google Calendar:
-https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
-
-You can also get the past and upcoming schedules via
-https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
-
-
-Thanks,
-SJ
+-- 
+Cheers,
+Harry / Hyeonggon
 
