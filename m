@@ -4,134 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 918A8F589AD
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 12:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE07F589B0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 12:48:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCB266B0005; Thu, 23 Apr 2026 08:47:30 -0400 (EDT)
+	id DA10C6B008C; Thu, 23 Apr 2026 08:48:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7BDF6B008A; Thu, 23 Apr 2026 08:47:30 -0400 (EDT)
+	id D78476B0092; Thu, 23 Apr 2026 08:48:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6B4D6B008C; Thu, 23 Apr 2026 08:47:30 -0400 (EDT)
+	id CB5506B0093; Thu, 23 Apr 2026 08:48:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 94FF66B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 08:47:30 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B18FC0506
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 12:47:30 +0000 (UTC)
-X-FDA: 84689796660.15.DB2B179
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 70B2240010
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 12:47:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FM34rKm0;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD2E46B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 08:48:12 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5DA25C0506
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 12:48:12 +0000 (UTC)
+X-FDA: 84689798424.30.BBC05E7
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 73B10140008
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 12:48:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eCIMj6Zf;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776948490; a=rsa-sha256;
+	cv=none;
+	b=UWy1UMTyrC+yf0Wsmcox4MdZlNOD1YRbYtXqU7D5Ve/H2d/Q/ajmlCuZuGWWV4+BS1e5An
+	vA5N+DVmA1OYgqaoCoBQRtOiylr75imFi2JnGLb8871teNaRRyDWeOuYYhurRumKeseZJA
+	rm/JngWmKWSTP/uYFTt3aRMP8vWHHRw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eCIMj6Zf;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776948448;
+	s=arc-20220608; t=1776948490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R7tMtHpLxvIj79/pcrqQ/Wgt4Q6MffZmC8I5a/JMEGE=;
-	b=RN/pO/I6jsog1YP1x1RsDJujoxbeemAesJP6tEXIjT0oX+QNkaZm/3oKZPg35AdOwX2An5
-	AGxjyfKi2fsMo4HIMDjAcLwSu9OJqgwaMatsKdEHbSOVOhEt2lT1bbox+D3ER2daZGsBen
-	6bbw+tHN3gYBC79tCwxBo4ZHKWuUOao=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776948448; a=rsa-sha256;
-	cv=none;
-	b=A+SrAQGWVUzkw6JsMaMdAnvxgLtfH68KNMGsLEGLcgx8/K+eX/42SFGAfHBaThj5qjmtVv
-	Qry4AdCY0Ku+ZiMpeHM4MAey3TBRN8PLMuq/U9C7OdHjv9cdcwoc52+sO1+tgFvS52UMGR
-	LkNytbN8c+HSi8ZeXxz8lKjWcj4fHDQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FM34rKm0;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E562D6013B;
-	Thu, 23 Apr 2026 12:47:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E6BC2BCAF;
-	Thu, 23 Apr 2026 12:47:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776948447;
-	bh=BvepwwNd0J+yd//IBNL4vgYlnVadtAqRJ+ts3qFctMk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FM34rKm022qsNqEJyh/tZT+Bey1v/VykVSzsV/EbwIuH2x3+upga4IRqgSl+FiX8R
-	 1a0dVDZOslXJNwLpIFxa3SLGWunSUYa7QNnXT96D1VOZHE11Gu5IiVtekw25TkQeQt
-	 WRRKRX1b1akRoeKiX0+3KiilHmKc6RH4FCBkYt91sTkx4QERBWCXilfjY2CFqhK7mv
-	 zA5Kp0AsOf/JJoVCE8HEWHCY0TWlGYfyXb1XYuMQ209ABgwPIdhCTt/3bUwSSbvU04
-	 Fm041OhduNyQrQ9QUIvsUBqzvJ7VS1oqtml2GNEEezH9iPtwJW4UpxCvAdHZwyiX6L
-	 nl8POOqP7EwqA==
-Message-ID: <dee5b7e8-864d-48b5-99cf-282eedaba927@kernel.org>
-Date: Thu, 23 Apr 2026 14:47:23 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/gup: honour FOLL_PIN in NOMMU
- __get_user_pages_locked()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>
-References: <2026042334-acutely-unadorned-e05c@gregkh>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2026042334-acutely-unadorned-e05c@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 70B2240010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bf1wyys31rgqxo9oitrztheciq6ofgza
+	bh=mzyqTkwD3Tq3eWJj43nY/4NCn6uElngPKF2N7BctSd4=;
+	b=dvmSyU1Udy8Tj/xQpM5Wj+9kCNRYtGp/X/ft8xUPfqHgaWIRTm9adlvRBl+7CtfMgxQjra
+	x1KD1QQFfO0UuNLFDb2lgfLeqMeeVM9o6dZqrF1amBpQwhFH54VppA5wbgdge19J2mOb87
+	Fr0ZdX8SmtSmpd9lhSbbYn8J7EVY360=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776948488;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mzyqTkwD3Tq3eWJj43nY/4NCn6uElngPKF2N7BctSd4=;
+	b=eCIMj6ZffdfaEQ/eCdUmx55xZEnSNjMOWnXKRPikt4j4906Q1SttxKiVjKU8rlNbvJpCby
+	erUQIBtSxfqPziAXNQuEfEecz4uegx50F+rqJgqHbsujB4xw/yqILQ/i2jg0Vq6Ad0Vpcj
+	qd6Rxnai0Y+qvbwrtDxUe9CV+iyEcm4=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v5 v5 4/6] mm/sparse-vmemmap: Fix DAX vmemmap accounting
+ with optimization
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260423053237.a44b68034673bb35a1e042cd@linux-foundation.org>
+Date: Thu, 23 Apr 2026 20:43:02 +0800
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Muchun Song <songmuchun@bytedance.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D642D89B-CC3C-46A0-B1D6-3DC2C4DDB874@linux.dev>
+References: <20260423071911.1962859-1-songmuchun@bytedance.com>
+ <20260423071911.1962859-5-songmuchun@bytedance.com>
+ <1cbae635-a115-4270-bae2-64145d16f936@kernel.org>
+ <1ADE7CE5-F02D-42B2-B7AC-FE0D6E86042D@linux.dev>
+ <20260423053237.a44b68034673bb35a1e042cd@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 73B10140008
+X-Stat-Signature: zdfsyqaggfqsrn9h5brkwidseyuhkk1d
 X-Rspam-User: 
-X-HE-Tag: 1776948448-352460
-X-HE-Meta: U2FsdGVkX185XJdQO4P132bkSG2mlox+8ZVK34cbeqKXfEL/Lbb7fwvxepz9SzfQLenemFC8T0Dpq8IeVl7f37b/VU4StEEKHC5rD2Mi/A5qquYQAMfS3rbPQQsQDVpvYkB65Mx3JLhHkhNTwCSKvcEmDiKv6TVRns3xMmUU4cKxygGaLcS+ZIZJDll97v4XzVtsMSWNVd12TGS6RDH/c5NU/DpoM5ojHYTg5XJrEl4ZX6MY7KAw6MxW/uos1zEMLpi/7EctkJSV4i31M2TLh59kjoWraqpKOLhCFcsiLnUh8u7fozj5kE0TJUAVwh6Ci0ZwKzxwOI38mNMSfve5zpG3VwdBhLPca3m8GTtuIn8Lk0I4g3ZEvGLB0SbpHbUkQRpsq+VaujMIziMTzYvl2FBmL2X8KXfqRcI1Vqbkeuev0jh2JkCps1VSiMQQ6xcDxOVwwJcKW6HkKa7HSUGre6DVrV+2fk4sZb91HiJREPkLbKCj1QUq+EUsWWTracF5Z2Fo1JCMgeMaVvqz7q0vRLshdRNieqY5OuwVS6XkMyiTEuhaaW/Beoq95j9fIOM055P8YLVeX5SzqNlFZFY0nIbaHAusawJWIDRCZvIG1maQ93b1K9ummgDoa62AGYkzc1lWTy5Cem6+4JPbQu9e/Z0tPhn6COW7dE/4bbasIbrVSFw/NtgDC5fDqNhPQsvQ1ulwdwQ+L05ll0qWktgKNHMU5z4yO/C1DpC28fxg9elxBPX7NS9ycqGznjxMHbK9/SRPH0ALP9NiRUjFBHkXQgzWPP4caXMaAx+u54RwW6fiIGSgJ3ZWoniwNpnYUYo+hr2iXXig3uFyX4tjlniTKbMXIrW/VObvlI1WHasNTbZp23ujIK9pZfYPRE3owluE22nGlMTjVLq96ivHLPVWPjD1HzbLreu4bvK0rZIn/SHXij/lAnp6rKa2rLnQ4bcFr8FFgbwZaTUdlt5i3pL
- 9Kx4Go8s
- +yNcCT6Z3kkibDQL3qBqL48eaPYHPfFD8xwMGMJV/+IalXeQ14S1f+GoN3T0fj5tVvp9hRlY1dtXPPnPX9UYJfxAS38Ct7B/6liZOyXdAqmsdVB6jaqr2W2FI0qFRAPYXfVv5sJdhLMsvzbZxE18BWyxk6Jd4ok7s4GT2eyLfAsKGD6UmTNSnNxdcnWMfeUF1GpESKy2fv6IpQerF9xF0hvBEXWPV8DJD04edtllLMXRfOUgc6zMqb/WFsbItvy9QYJApQ/eWGyVsp5vuYbYQBf0suV2SXjeq3ymJy4TE3bXLlEumfaH02AeFVH9S3k2Ov2zzW48Wtn6oTAjNBpd0q6rsuH41GOnEogmluwYt8SfNco5TkqqV+BfwxRjoXpw8hiYkWl6CTeXo9uiQ5wrNenrzif5uRzXXidw1F2kOuU9vDKRet1mtfNn/lE6elwAJ0uXYSqh8TsoVJDJUhwmWCBa3rvg7h58ZrnnJLu0pscsRluxhJvmw/mM3T6YEh6Zk8qKKvSGgs9dYwJy2z/YCGPmRr70Ta8IgMRVoOx4DKEynuHg=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776948490-334425
+X-HE-Meta: U2FsdGVkX1/YTZxb/ckoYOvYfYfvzYDzet8C2RYBn64VVTgzpfXRSlOuSeddFofH4l0O4Lv2phibmaiCE0KBB58ZldVAs9S7FxsI8AtrnB+rWPhhqPr67JMXphVkWtOPfli6IdNdDkFWvSs1Yr1oIHqTCwyh0Otu89zKoTr/7/0slk+MLnSiYH/VxswyaQZ7ZsvZzOQBIKzvq7Mhe9u0lL95B4TCRm1mb3XY0FTGz4QiCgwSVDxaWtwFIsqr0PYs0AekqYZuM+x3f5VB8taafIlNwE+8H7rkrrr185jzyLsnkwhJPmspwowM3A6EtEYvsUwj38rC8an+Wmns2aE/cegcAZZBKK7yolhelQHI69wxejENJS/nStRAJl9PDZ67ZnahWfGZTjCbE5tInS0b+bCmzxs3eBud0iTDnWzVFLbTymeN8LeNGXopybJSr6S5SH9bqU/mh2BxmNntgNIWLzRQgS9Ntbfkb+OJ/FCWxQOOJSAevqpQwj9Fn8rZBPNP+vAImff/ZLX9LjCg7OxDtNrrm9jvZv4w4Q43Lf7fvx8lf+rHAsX0XV7DO+AnTtt94BS2v/NuoIW9oWmuGAXBVbhPE4oya6QRSjLO2xNYUe14C9/5S5Q24uiNF4YETcQObE0NBCsy4Zeh/qeLqKH1yrkRiDdlEukZV10lhCOKz3roV1fNK0Ch0PPYQiKJCKSq0mrpLefwOECDeAcVfMLAvlBt27WHDCfOREzgC7kdKJ0nrGqM5MRSN7FDMOqNhOjCNTukjy4veXDcKTkRzeP5sTpHwpoH0fmvk2wsTUUL9rNq/IZk9OFnjhcyMbsk5/rAlb3kyFoDlg6u9q3Af1Somfjqm91ZZvo/eyk0UTkJaapmSTgi417OLOTD4SJjiHyPksX3311nmseGEC3609gP74AhiKyLOL+Ks212wTwhaM1+MotusSUPLpnE8eqLIHH4KeFNjezUdJ0JPyc0RRQ
+ W+ZJ6329
+ uY4xgQzHc5pvYs2SsHvmSnC76iEQEmPw6mMxIz2JjlMUeAcX3ngC/8/xYX/J+XeJpcrLe71lmmC/HsHTTm4yoClyQsQomH8bPu+i9H35xFhul6+iMfXetZBtLyjFQq2f+Kf4kYmjf1FF3b1bxA5UUKqFpawOvVmjG7kqivZ0PIqhTpKbdvohmQhmuS9EZxeGQlXpribdqgEFEkvOao5F8oMz7eKsXZLTlXMVuhiP5CCWu/tiThiAQo1fixEyxGv+e6w7YjdwmDLkyBZxONZG6N0Rh2ZQ4jDPiKk6zplfyNN7MkfU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,92 +110,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 14:31, Greg Kroah-Hartman wrote:
-> The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
-> get_page() reference for each page regardless of foll_flags:
-> 	if (pages[i])
-> 		get_page(pages[i]);
-> 
-> This is reached from pin_user_pages*() with FOLL_PIN set.
-> unpin_user_page() is shared between MMU and NOMMU configurations and
-> unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
-> GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
-> 
-> This means that pin adds 1, and then unpin will subtract 1024.
-> 
-> If a user maps a page (refcount 1), registers it 1023 times as an
-> io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
-> unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
-> the page is freed and returned to the buddy allocator.  The remaining
-> 1022 unpins write into whatever was reallocated, and the user's VMA
-> still maps the freed page (NOMMU has no MMU to invalidate it).
-> Reallocating the page for an io_uring pbuf_ring then lets userspace
-> corrupt the new owner's data through the stale mapping.
-> 
-> Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
-> for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
-> symmetric.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Reported-by: Anthropic
-> Assisted-by: gkh_clanker_t1000
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
-> My first foray into -mm, eeek!
-
-Oh, nommu ... what a great use of our time.
-
-I was briefly wondering if we want to add a Fixes: ... but then, this was likely
-broken for years and nobody cared so far in practice.
-
-> 
-> Anyway, this was a crazy report sent to me, and I knocked up this
-> change, and I have a reproducer if people need/want to see that as well
-> (it's for nommu systems, so be wary of it.)
-
-[...]
-
-> -				get_page(pages[i]);
-> +			if (pages[i]) {
-> +				/*
-> +				 * pin_user_pages*() arrives here with FOLL_PIN
-> +				 * set; unpin_user_page() (which is not
-> +				 * !CONFIG_MMU-specific) calls
-> +				 * gup_put_folio(..., FOLL_PIN) which subtracts
-> +				 * GUP_PIN_COUNTING_BIAS (1024).  A bare
-> +				 * get_page() here adds only 1, so 1023 pins on
-> +				 * a fresh page bring refcount to 1024 and a
-> +				 * single unpin then frees it out from under the
-> +				 * remaining 1022 pins and any live VMA
-> +				 * mappings. Use the same grab path as the MMU
-> +				 * implementation so pin and unpin are
-> +				 * symmetric.
-> +				 */
-
-Yeah, drop all that. Especially the hardcoded 1024/1022 is just screaming for
-trouble longterm.
-
-It just follows what we do everywhere else (e.g., follow_page_pte()).
 
 
-> +				if (try_grab_folio(page_folio(pages[i]), 1,
-> +						   foll_flags)) {
-> +					pages[i] = NULL;
-> +					break;
-> +				}
-> +			}
+> On Apr 23, 2026, at 20:32, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>=20
+> On Thu, 23 Apr 2026 20:04:21 +0800 Muchun Song <muchun.song@linux.dev> =
+wrote:
+>=20
+>> Ah, looks like I need to update the patch to fix this.
+>=20
+> OK.  Please have a think about which patches we should backport into
+> -stable.  Possibly all 6!  And the timing of this backport.
 
-If it fails on the first iteration, we return -EFAULT instead of -ENOMEM.
+In theory, I think all of these require backporting, and each carries a =
+certain
+level of potential impact.
 
-I know, I know, nobody cares. But if we touch it, we might just want to return
-the error we get from try_grab_folio().
+>=20
+> Ideally, split the series up into one series for 7.1-rcX+stable, =
+another
+> series for 7.2.rc1.
 
--- 
-Cheers,
+Given that these issues have existed for a long time and the trigger
+frequency is very low, I suggest we take a more conservative timing.
 
-David
+We can prioritize getting the series into 7.2-rc1 first. Once they have
+'baked' in the mainline for a while without issues, we can then proceed
+with the backport to -stable (7.1.x). This avoids rushing risky changes
+into stable branches.
+
+Thanks,
+Muchun
+
+
+
 
