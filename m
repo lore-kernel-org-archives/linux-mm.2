@@ -4,141 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C33EEF99362
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:54:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D69B0F9936E
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 11:12:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10DC96B0005; Thu, 23 Apr 2026 06:54:24 -0400 (EDT)
+	id 03F1E6B0005; Thu, 23 Apr 2026 07:12:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BE986B008A; Thu, 23 Apr 2026 06:54:24 -0400 (EDT)
+	id F32006B008A; Thu, 23 Apr 2026 07:12:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEF526B008C; Thu, 23 Apr 2026 06:54:23 -0400 (EDT)
+	id E47C96B008C; Thu, 23 Apr 2026 07:12:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4526B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:54:23 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9304E1B838A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:54:23 +0000 (UTC)
-X-FDA: 84689511606.01.66CDA8E
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2EBE91C0006
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:54:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=KIZHBZAX;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776941661; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D11ED6B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:12:53 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D17D1605AC
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:12:53 +0000 (UTC)
+X-FDA: 84689558226.23.ACA5C9B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A597A14000B
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:12:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vULEhAPo;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776942771; a=rsa-sha256;
 	cv=none;
-	b=EQ3BnSh0za0szziXmqiK9/+7gQA2OHe8/tPVj0ms85drvlsUheU5GYNfADM81FO7p72Jiv
-	CDakCIYTJ6MkTS2Bh/Sx+YwNTkLgE06/29G1JsnKNLUQbhW9Wx6EVJWae/qu+d2oeIwZnQ
-	BIqYGIcXM+A2qXVzu++/mtolDAo9zzY=
+	b=Q7PyzadwoPTi8aOEm/e0gKgxiB50KecF79CE23+Xv7mesr5TWTxMy9w4bwGHb+SNEtQMz4
+	TyOYXlJBowUDUXQoKIJ7h4wXdGGBlbxYx1vnPSQGBsYiHCGlUrqvmHE5t9nqGc8/sgSNbY
+	UGYmdgIxGPUWbAxhuGB2IRGhXGQawu0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=KIZHBZAX;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=vULEhAPo;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776941661;
+	s=arc-20220608; t=1776942771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hPfzzLEnCkfwTfx2ZbFAbPEPqrheLL97qiHOGhGTitI=;
-	b=z+fg0Gws9hN04IedoyYA6393rM8N8TwoeBfCfSBIx4PcP9RMB3lOkliG/PtwlVUpVy99+2
-	/mAYJ3RdJeaZG6D20XwZn4bXuPij/g7VZBVKp7RTxfmEjKa+JxiNI3+P08m9eC1S5XXCvT
-	fbEn6ljaEKMcI8nHp2SqrNNI3xgLXoc=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N6wv603229030;
-	Thu, 23 Apr 2026 10:54:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hPfzzL
-	EnCkfwTfx2ZbFAbPEPqrheLL97qiHOGhGTitI=; b=KIZHBZAX5F6DP77sMLvNux
-	FZl39+tfKMVUGd4MOPNxcFlmh3lMzCcEiXY7GQJA24uKavOpJtR86lXSr2V2ajF+
-	uW3OyBeFmFw9Ukm3sO4JG2Bfk02ksmABl23Xpc4dPyPnTpYh0ka3Lbh3JHb4d/Ny
-	X9R3a3V7EY0V3OFaHmuoBTE6RobIuvuaGXgvDN4WZCOcPr9isTH6wOGF9rh/xh8X
-	oyb3oB8VSXP7J4leHBJOv+AMa1o2pJgvt/kvLhaQ1aclk8/rnY+paiL+KRKLrwKS
-	PsSLswecLgeQpd5KCcLE96doqla6hbqm2GvZGxZZm0fPIT3IccLCuHPQsmg3hChg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu287sx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Apr 2026 10:54:17 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NAZOVw011202;
-	Thu, 23 Apr 2026 10:54:16 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjky699k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Apr 2026 10:54:15 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NAsCMp31588740
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Apr 2026 10:54:12 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1B82F20040;
-	Thu, 23 Apr 2026 10:54:12 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E5FA22004E;
-	Thu, 23 Apr 2026 10:54:11 +0000 (GMT)
-Received: from osiris (unknown [9.52.214.206])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 23 Apr 2026 10:54:11 +0000 (GMT)
-Date: Thu, 23 Apr 2026 12:54:09 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] s390/mm: Make PTC and UV call order consistent
-Message-ID: <20260423105409.10371Da2-hca@linux.ibm.com>
-References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <7b0e73e3c6f4000f9bf7cb161d8ca9a9f2312d70.1776264097.git.agordeev@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7b0e73e3c6f4000f9bf7cb161d8ca9a9f2312d70.1776264097.git.agordeev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GLLWoXTr8z_IeoG4--Vv7oyWzsfXxGBf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDEwNyBTYWx0ZWRfXwT8Lczbqy7xY
- OGvraXKfJPG7z9DAO+DoJqu8R0ugjPMYivAs1rA3UYYx55v7PmVxQ4f/WNsz57v2P/YNXhjN58L
- fRx2y/+gsCFjyC3pRWtjiCn6z6gnvMH4Ko0/YUZut+N61esL8qRYtZTer1zyVqjO05jcupUwijF
- YNNJYYqs2WuI4RMWJrCxrycaQCoYPKFqNhnlHD3x5rCVCNWKw/PnrYcc4QtnLsPZBaBGX1Xj7QQ
- Kbgn6iH0ky8G/nobsYG2jgib55Bu7uSazMiUZQb6niXRRltdhBsDPifZCNc2IGjbQVLvLBU4Sv2
- D94XV6tzXEmdgz3Wf2O2+wFpf3LOCmWTS6mJpSPj/ywxPxbw6cnsalqMckvLhzoigVSRZ3TTikM
- hy8/VAdlowWqZbU023IkR+NiwJtpY4h5/SyTmkB6teCY8RmHH6gSKjOzdNpF8cGm8gECSzGEhuC
- p1QS+tnHnKw2fTOCuiQ==
-X-Authority-Analysis: v=2.4 cv=C8LZDwP+ c=1 sm=1 tr=0 ts=69e9fa59 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=E1xz_aSQ8MwAHGTOyykA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: GLLWoXTr8z_IeoG4--Vv7oyWzsfXxGBf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604230107
-X-Rspamd-Queue-Id: 2EBE91C0006
+	bh=HZpgQ6720MFa5Y5hFI8nEZItxyxiMa046Rsu6g7exts=;
+	b=pbVrZpRB2y3239SolsYO41TQM/c0iZ5EGuogAMkrwYXX2wp9PPSChftLD0ycE1u0nFYeqL
+	z3d9t2Vn0jFtOSJIbFVp/fblzyeNhycrTCkkbUOMRJqxfrBrMVYwuhVXvv+xXqqjhIQh4w
+	zWiGaj/MzEo9nPcP5Kg8TqbV0FmS/Z4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B25844302;
+	Thu, 23 Apr 2026 11:12:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4A6C2BCB2;
+	Thu, 23 Apr 2026 11:12:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776942770;
+	bh=aG4UEfRKsS91O3VxSN0LQyWp1NS50airK/bhwBveSOc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=vULEhAPopc8qt2HKcJ+ZpRi46sD2pitq3K9i3RNrzavSVfWwwfEn18780bqNu9Xok
+	 bI22VPL19Ky42B1brpsaJkaLMfz8fIBtfPEjeyLgb6z61B8EF5oI/IKR7Wg47POe+e
+	 akDmnid3ESV01CXGb4b7NGUwntsyB4dR4oSJL9No=
+Date: Thu, 23 Apr 2026 04:12:49 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hrushikesh Salunke <hsalunke@amd.com>
+Cc: <david@kernel.org>, <ljs@kernel.org>, <Liam.Howlett@oracle.com>,
+ <vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+ <mhocko@suse.com>, <jackmanb@google.com>, <hannes@cmpxchg.org>,
+ <ziy@nvidia.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <rkodsara@amd.com>, <bharata@amd.com>, <ankur.a.arora@oracle.com>,
+ <shivankg@amd.com>
+Subject: Re: [PATCH v3] mm/page_alloc: replace kernel_init_pages() with
+ batch page clearing
+Message-Id: <20260423041249.156eb95889696ccfaf23dca1@linux-foundation.org>
+In-Reply-To: <20260422102729.166599-1-hsalunke@amd.com>
+References: <20260422102729.166599-1-hsalunke@amd.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A597A14000B
 X-Rspamd-Server: rspam12
-X-Stat-Signature: ujyidi1awyfbs67muz6iubo7naummwcb
+X-Stat-Signature: 68pkbd9sob3co5mg7x6kn1hnzo5mykkj
 X-Rspam-User: 
-X-HE-Tag: 1776941660-391302
-X-HE-Meta: U2FsdGVkX185X+qodDPSoBLtWh11vdGvudjfV4F93W2gcmTV7JB4uRsMEmtCVhRJXfLu5Q04T6Kaw+t+rs+48iE3vBxpFIUV3UFzDCj9zV3rzw3/mXRaP4iNLoN2NaHr0yyMqLeHH2zrfIXPQf9rATdMqqPIeE7mgVcDpaTDdK42D8xUre7lu2jSWkn02xfefqzZA4KKDCKFArt3g7Aaqp0ezsDIJr8w0mvLqC3QiBnz5h/mFp/NqVmja2CYhuU6Q7BjtaYSaOe4y/jRdFgVNUMiFgkjWQV+i4fP7omHniQxgn8zEXQj80sNWZq8pV+MCdcndrAm9JFUL7jdmCXTTo7AiqoXDMAEGAfU8Tukw1zTiZRiPkwKLvcz1D7JmoZ+kCguomsQBMQlOvXMEE6TmpuQXg/GmQQLN9LXfPwF0Y19R2mHgv3if9WgQD3ZqfAIYt3IEtcsEI8LQWFINxDKdXKn8kRrPRUbxoeztkLWC+u8C0ok4DewMySwXs5E5FExNn20pPs6z/YqyhsPvwf47gdccIfdrvyvpItYct1HLAO1fwLe10G3ONbwlN+PbD1kp2DonNuPjBrBeu3OT60JCR3/4ahpz5ryH27l2cUAX7PQeTDfgDOXsOfrO3hcAG/h9mlNYtJC5Lh9Be2jApBAYsWt/zBxrS5e0zAaenBHDCHQsDZZoR2+6Te4WgoMFSTX5F2h82Dysp5e7s+UZH6in36FNilRrS0X8l1I0CotKHIXEMw0kZ8qzi7bnkgQ/dbgMdLnJgw8WjThkqWWG4JZnX8IAytYHrOAT4NHk9twx9WxOdCvOO5qp/pbbIiNKBIGtxVzRmx1fbz/qbxSCMdvSt5PlvBuKVrST4TOd4PZn1pL2XPFoQXOOx82AAq7PHttHkHn377SWORMGW9l4iNt6AIl/Xcic9w9gU8cJgx/f7Wun4xclQ0idn0CY/q8aUPuiOyN8h039TWlifpP9nb
- kG8+W7QY
- rUV1KU6/ro3/JqdxbyAhKRCeG0vLAAPJBG0XOlGrV8Vw3pHqnXh3Wh6tHQBNthCP0PiZu8rPSbOnFhYxTVyXjEfS6fzMx3EXYDmtrpvvZac1PD8VbDdNs6gE5FoDc7jzY+yqFpwPinTBSqUsy8++1+Yw9bT9hUBDOFeop7npG0NEf1S3cu56SNgNAlI4VaXcFCroWODfn4ZldgSqOM1R0X7ZLrA1nFBCfwgn7gpfeb+cTknEx5BTttpCCqXiua9Lb5cIiZlU8wP5XeHE=
+X-HE-Tag: 1776942771-551300
+X-HE-Meta: U2FsdGVkX1+WXgBcEQQ71KampFowFu5kXom+/18Eaffsr6zq8MoyXUL2vYJIH2jsHG5GuR16hEwg78zA5IAk9/PfERhXiz/wTPMEy77EFqRnz3965RAFdYjz7QfkDk/X/y4bLCia6i7OR60XxBitj+fQ04WiNLuJc1Z0UNff+oxwWtveGgCPYn1zdV4MtuTU9hFsXPi/A+q8zdgGdZ+v1hdG/aLNH6Gn5RKt43NTyB/uOrUg+oN1omT2DCkcM2cd2pC1CWVMoeBbRwC3IlgNLvUEiSfDQjbLa88JkunkH1LgR6aYP4zO0LeYiSH4Pw0mySbDg/9sxy39JV2bKESrlvKlTgLBtsmG/DVOBNAsJoA+VWrNibV15ZUbmxzysHV/Z4BQo3vGIy3BO+fSS752qeB3ovZyOxieAUeYTra8IiHzmo2TWHN3CJKZTdFm9KW8Ei1ex/Z4Fu18e4YmM2qm0U40kzDm6jKtDvoRn6Qla8Ibq+GebnU2rYrQV6TJoa/31waV3wk+dvQxtYJovEiwdj+JUd641MiYVZ37X20CTQ8Yh7mwAqa+XVnzmls8+NB661ViYuDeY8tHOONvCr2AjeYEsKU2pXsMSrT8u6YMMx2Plp8nip981xmNXcKWDsUETfWRcGtNXcWNvbTSrM36wWHSe0IMyFb7uofV/ZxAyXTRMmduYMkUoVcJVd4V/J3C4bNrdt/sDmW9USfReVa05UGIJMVgWF1XIEzn1pDsFyvw9yab8urqvsG4nktnrE3XHm2gpyMR4jrLPD8WCbkmYqDGaFblhjEtSql/LXrV5TGoeKS6S6eUjNAEgugDTPTGUhTSc1JJDF0tjsBYsW8lthTr1oa8TmwNz1Ttfdd6HEyTW7JXjhVoOn9JykIc1D4SHAs9sVwFQ2LY78/e3/GGSkxMljX2NOmTGpU81/ZBN+FZolh7/x2IGF9LDIJCesNNvBCINtYkpCX4CPFCqEs
+ fbBP6a4w
+ +kaIekZMm9AMjWPC06f1JnfSHaEcVWVw7YV5HBXpi393wDhQWj4TSYmaFpAnXk3KVpOT4maFSjyX3ZGejn46J5wo3VNOKN6dfQTuVe+CJHuiH7A7ktriVZJVkx3gcpeKEY2Glnw+FAUDFPNAxdcrfhHquABb5b21c9jjFzxis0UE1CvYjy722qxHapc67pl3i1XSkZ0y3oxeG//FjFtwtrZw4sh2X1cqRQZYn93lfEadvRh2pbfkNa2U5nPHEbDV1uvEwd7ScBJZyqWO4ygvTa8GpKd6d7SFwj3HSp6nNxa7MgsGTaJRzXsT/BF7WBbxj5okB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,21 +94,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 05:01:22PM +0200, Alexander Gordeev wrote:
-> In various code paths, page_table_check_pte_clear() is called
-> before converting a secure page, while in others it is called
-> after. Make this consistent and always perform the conversion
-> after the PTC hook has been called. Also make all conversion‑
-> eligibility condition checks look the same, and rework the one
-> in ptep_get_and_clear_full() slightly.
-> 
-> Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-> ---
->  arch/s390/include/asm/pgtable.h | 39 +++++++++++++++------------------
->  1 file changed, 18 insertions(+), 21 deletions(-)
+On Wed, 22 Apr 2026 10:26:58 +0000 Hrushikesh Salunke <hsalunke@amd.com> wrote:
 
-Why is this required for this series? It is anything but obvious to
-me. If it is required please add some reasoning e.g. in the cover
-letter or to the above changelog.
+> When init_on_alloc is enabled, kernel_init_pages() clears every page
+> one at a time via clear_highpage_kasan_tagged(), which incurs per-page
+> kmap_local_page()/kunmap_local() overhead and prevents the architecture
+> clearing primitive from operating on contiguous ranges.
+> 
+> Introduce clear_highpages_kasan_tagged() in highmem.h, a batch
+> clearing helper that calls clear_pages() for the full contiguous range
+> on !HIGHMEM systems, bypassing the per-page kmap overhead and allowing
+> a single invocation of the arch clearing primitive across the entire
+> allocation. The HIGHMEM path falls back to per-page clearing since
+> those pages require kmap.
+> 
+> Replace kernel_init_pages() with direct calls to the new helper, as it
+> becomes a trivial wrapper.
+> 
+> Allocating 8192 x 2MB HugeTLB pages (16GB) with init_on_alloc=1:
+> 
+>   Before: 0.445s
+>   After:  0.166s  (-62.7%, 2.68x faster)
+
+Nice.
+
+> Kernel time (sys) reduction per workload with init_on_alloc=1:
+> 
+>   Workload            Before       After       Change
+>   Graph500 64C128T    30m 41.8s    15m 14.8s   -50.3%
+>   Graph500 16C32T     15m 56.7s     9m 43.7s   -39.0%
+>   Pagerank 32T         1m 58.5s     1m 12.8s   -38.5%
+>   Pagerank 128T        2m 36.3s     1m 40.4s   -35.7%
+> 
+> ...
+>
+> --- a/include/linux/highmem.h
+> +++ b/include/linux/highmem.h
+> @@ -345,6 +345,21 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
+>  	kunmap_local(kaddr);
+>  }
+>  
+> +static inline void clear_highpages_kasan_tagged(struct page *page, int numpages)
+> +{
+> +	/* s390's use of memset() could override KASAN redzones. */
+> +	kasan_disable_current();
+> +	if (!IS_ENABLED(CONFIG_HIGHMEM)) {
+> +		clear_pages(kasan_reset_tag(page_address(page)), numpages);
+> +	} else {
+> +		int i;
+> +
+> +		for (i = 0; i < numpages; i++)
+> +			clear_highpage_kasan_tagged(page + i);
+> +	}
+> +	kasan_enable_current();
+> +}
+
+Why was it globally published and inlined?  Is there any expectation
+that this will be used outside of page_alloc.c?
+
+Both of the callsites are themselves inlined.  The patch adds 330 bytes
+to my arm allmodcnfig page_alloc.o - did we gain anything from that?
+
+
 
