@@ -4,201 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5282FAD41B
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 06:16:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 367F6FAD3E3
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 06:17:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49DAC6B008A; Thu, 23 Apr 2026 02:16:52 -0400 (EDT)
+	id 9F6186B008C; Thu, 23 Apr 2026 02:17:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44E626B008C; Thu, 23 Apr 2026 02:16:52 -0400 (EDT)
+	id 9CD406B0092; Thu, 23 Apr 2026 02:17:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33E196B0092; Thu, 23 Apr 2026 02:16:52 -0400 (EDT)
+	id 8BD2D6B0093; Thu, 23 Apr 2026 02:17:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 23F9E6B008A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:16:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 931DA16047C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:16:51 +0000 (UTC)
-X-FDA: 84688812222.05.2116BA7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8433A80010
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:16:46 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bg3mmi+h;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 79E406B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:17:06 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F41BF16047C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:17:05 +0000 (UTC)
+X-FDA: 84688812852.25.C730F9E
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A8A9714000C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:17:03 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SeCnUT6B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776925023; a=rsa-sha256;
+	cv=pass;
+	b=Qvyy4ujgv2e7fuqs+4kOD7XnpcZpt8JmaRtAio/4JFIakx+Z5t8K4LsPZar8oMKn3CcSKW
+	Er36se60TIgBE+eyfEGJLJkoNRVJaQAO4oGh99PGL5qEDzxq2OBzm9yRhFHJvWD6sZ8RkD
+	jWkJhSebi8lSduSUwR3MGdCxoMGEngA=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=SeCnUT6B;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776925007;
+	s=arc-20220608; t=1776925023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yYj4utOR/2ORCuzsxgKV1M1p/J7aYD7p8B0A6oOviek=;
-	b=EHr0FSytvcAisZVpCB197mGdLjtKd4mSCjYRNUMosdlXrjLF27XH3eJ/LJDJ+iFhErDEy4
-	0B2cSau5PO7z+2Xfa3UaDVkDp6P6ZfGY8O6sJbuX0gyrMJcbbiUbULNzXJODOkrI3V3fAX
-	jDN3Es/+Ftg5e9vIH3iIv/hLN2dsq5E=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=bg3mmi+h;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf02.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776925007; a=rsa-sha256;
-	cv=fail;
-	b=xFGtl2GjitjjKQxbqzzfz4NCw23V/cXDOJQEMD5cW11hZPY8T+eXEoRPqmu2znEy3zg/u2
-	eTeOtxpJI+D7skIWA0MuAffUrDZNIZXaomtN0lJ6PfE93rUvSAk4hGsY8aLWWvVSjHOW42
-	7BOO782R59P0nv5eTjZTOkxi+L8NXeE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776925006; x=1808461006;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=3JI1/w5OnKaCmAB6eEAkSchtNe2/ENk9qynX0lzETDA=;
-  b=bg3mmi+hY4UgVap7DBiOhCnp+Mvj9FsWglhc4Ev5htGk/kNLIN9Uho6J
-   /HmsOyFFXxzBEJeiYZzeACzE6eBDTXk2BkbEv7cQfWAQN/2tdlgJJEvrX
-   LKwa2vfUPjampX5a4mmgg3IZu0vYLnVahCY+LN1UT/SA6HR5ZAsvqGSTa
-   aRRxx1YRiMnw640s4Fj5XGSckz5HvtEm34PQOogxCK0uPUhx/ecmPvRJR
-   tMk1bPO3ExrunpNNWzjdv89l/8g61xCQcl8cjJwilRj8739frtLPGzFf6
-   /MqDJVG6SIsUKroR/HkmF1UndxdNG8Ub13qilmaHQBJpu/YPgtA7ogstL
-   Q==;
-X-CSE-ConnectionGUID: owGTp+xhSS63Teiojms2lg==
-X-CSE-MsgGUID: 5e462NZyS8idMwftEo7c+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="89275696"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
-   d="scan'208";a="89275696"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 23:16:45 -0700
-X-CSE-ConnectionGUID: q93PDmAkTO+U66uWycQbyQ==
-X-CSE-MsgGUID: Lv8emtX2TxGGwEjC74jcTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
-   d="scan'208";a="232415756"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 23:16:45 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 22 Apr 2026 23:16:44 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 22 Apr 2026 23:16:44 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.51) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 22 Apr 2026 23:16:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g4Zk4gh5H97SJjrUHRPw2DzqbIIqOEi4ZD+INYMklCKtiKv2tY5+koZ+rT63Ekh3kTkXOuVSgB+v9NVhh7BRE91oOfXPSKdBz3tUk8s/G0J8QUtlbjURhZHgzPZtOMSz3acEZCXPXhsSCfqe0glDcPAzZFciy/wQ7B9riH7NSXPb3+cEr0gK9oIbdfi7JRUE9Q+HxPRfo0gY8vQh5TTa1SXI4zkk9amYKUAp/Ay9g6dXZqonVinUm+hpr/F+1Jt4NuiNfLnMJPP9QvIw3ixf27guAppW7sEqGM1EYIo/Hf2LDkEqxRQRVjtp0lBZeugbEjCEhue8wj0GrKK10j7epA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yYj4utOR/2ORCuzsxgKV1M1p/J7aYD7p8B0A6oOviek=;
- b=eNEIksG17xsSpYbm3SjYAfa+7CwuiRjcKQayzPyV76ZTFocv0nC4bovhWBcDAOSDYTi0iAt8Oaai4tsxBeCRoux4KJ8XTY3TUB062LtMJGUt89+vmBk9EZJLupaWcswleClcLGJxUl8/12JBIjOgxxB4iotglkQBWLILkd2tY2fl4PgznI0hlCMKMaUhsHiLymG3Bw4ZIG5yur2ua6Ge7/59GKFwa7E42LJJ/12spg7Pw2w9SYuxaSjr8tlw3Gw7lqKHHW4m01Q9V5v5c4ZCIUzoGoa+RbWJpG4w1xFTiPpbGKQqxAFfNfodkKuxteHEgTrgQEFTFvxRsMuOWZZriw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SJ5PPF1FF629472.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::818) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Thu, 23 Apr
- 2026 06:16:40 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%7]) with mapi id 15.20.9846.021; Thu, 23 Apr 2026
- 06:16:40 +0000
-Date: Wed, 22 Apr 2026 23:16:37 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: Balbir Singh <balbirs@nvidia.com>
-CC: <intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/5] mm: Introduce zone_appears_fragmented()
-Message-ID: <aem5RcHbj5zcKbsw@gsse-cloud1.jf.intel.com>
-References: <20260423055656.1696379-1-matthew.brost@intel.com>
- <20260423055656.1696379-2-matthew.brost@intel.com>
- <b0bd6cdc-511e-4fad-959d-3fa75c865aa8@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b0bd6cdc-511e-4fad-959d-3fa75c865aa8@nvidia.com>
-X-ClientProxiedBy: BYAPR01CA0063.prod.exchangelabs.com (2603:10b6:a03:94::40)
- To PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+	bh=6qrM7qsAzBHvv/VI+HqLPPP6FQ3qhsBu/FQQBvDaXwA=;
+	b=OpPQLkhk3wAfKiLY95ovCGkF+F3dDjrblinJRrbeMisEWd94MnE0Jk9h5fGfQaojKlF+Ap
+	SDA7NSgmHenDxR1G7HENqmbCjZdAa9NF2GLCIneGKa8pd5PrXp0XLg8hNv7I2Ut8Y+hzYj
+	dg5xwrB/nFMmTSvpYDWLN5a4L4mT2Lg=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-670ab084a39so9532393a12.3
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 23:17:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776925022; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lFlae3n17+ZKOnfDIel6me+MhvsYV8hXxq5W6BkAUlGirraQhPfWEavfrbKUWvtKbS
+         Uk0Lw9D4PUc2//Kwbiw9uX4PL1ZgtgiU3ZjfOPrVawsEOSsKjFeOE7J76TCqnC5wGKr0
+         oreG7ox0ZiLqpsA2e7zLmXwuBE3xAvHyGibpz1CligqOs7ttC3aLLesaVbxbE4K5E/r0
+         N2PIsDUtrK+YZoWXLRa9P8ZV5qf0ZtKIK8FYTEd8I0lyefTXBk61suvKm8q1i+R7vvBw
+         Lk1jzEZHDjjJQg/2uHje8R8KQ0dlLg955YnX4s9G/GoCeb/G1b6KS6h3bvkKvMS4n0K9
+         ORpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6qrM7qsAzBHvv/VI+HqLPPP6FQ3qhsBu/FQQBvDaXwA=;
+        fh=VGdKSbhrfRts69hWugLkWqIREow9pxYSL+mwCctJnUk=;
+        b=EsraGbNbDBYNBQCBYnr7JbySBlAW/2DkEjIIJMDTonhAM37YRp/unPh7JYhkiKvX0A
+         8w8YcVvY7wfJfqi1E+PsEd2Dzrl1X/k4lMxJ+CG44w9IQIxDS09gi0xWIJYsSwk5mogZ
+         skk/AO2bwidHlFpXpBrpDHH4i8gtAotnd8iQhYjJP1g1t8cy6LN6uaSoQECLhODJKkKW
+         tZFTgagaRf3rE5cxbgf4iBwRVaMQi93roXB79UOUOjc1WzB3cpLFqjHQT6EUpbGDgaxK
+         McjnQXw4AH9VmwKuQ13HYKAKLUXQkP2QuJgvyQxNoBQBVYBh/XSHgDWbWwTJc4AOuwE4
+         B7OA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776925022; x=1777529822; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6qrM7qsAzBHvv/VI+HqLPPP6FQ3qhsBu/FQQBvDaXwA=;
+        b=SeCnUT6BejVjU2ir7vZaziccxdydYErfSpoGvKnD6OoaPD0ODY4QWCWlVS8zNHBMF5
+         MTFYU8knUwLP7rdK6Zb6VJZ/fcfGuOvHuR/IMRWBjpzj67sWqOg4qECN7s+P8UljGgPs
+         VvVABHeDPcFWvhTIQmAuGQNrNgKbTH/PGVgHIv2ngroOLy8fzrq5zUquvpB8jZj1Wf8K
+         +VRT/DPe9AV5CVNU3b3MxaecW1WbwKcyJ7edSjIlsVP9EzDP0iZzVo056IXTyf0I7p38
+         a4Lo4y2hD01G8mc2jQpxtugfTrdu5gZCA3S6r9DPjPjflWbfIUtTUJiXRMN24eo268Bj
+         Ugpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776925022; x=1777529822;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6qrM7qsAzBHvv/VI+HqLPPP6FQ3qhsBu/FQQBvDaXwA=;
+        b=b0c9ideXtxwyEp1v0qww/icDntWjT+GLwUTAuJNMHOYsqLpbK71SwAG0O5e0eaOyU3
+         4KTV8iBUvlehHqEF8FRy8FmuFp1UfUbFB3mnPOcOIuoBPnmsEdhsWoHQlFe8tP+ePbUK
+         9f/vy1sQVhgS3+D+1nmFG0y0oOdij5+QiC6371KDvdZ1CzjuyN7hOK+RiBO9EbhKeL7G
+         4tWEiIbN5LXoOBih4OOlarEYaoze1xADfCe+eEJA2WuCMqjPO+uSt+koQ6kiqeFVoWKV
+         28nxqkcX/dafbHPR7imYen9+V6udKjsELFhJjsjGwgScB4puRscOwzjWGoF7WHKgREwq
+         FODA==
+X-Forwarded-Encrypted: i=1; AFNElJ8BHaPXeR1WiwMkjYkoaMN8J8rSwMM8UC/vcHkGRs8hZAnSPLD0bBTuTzfY2lS0aCPBMUFCkZKkjw==@kvack.org
+X-Gm-Message-State: AOJu0YyzTUFhb/ockSUq70R5clniaB7BxbwJ7Sfhcx8nFFd+lIUHCWqu
+	Cpi5GGEGwMcn+Y41jRXyUpZWy/PS/tNb2V4b2YVxzwJ09PAUaZqjIe0hFXPXAf41eJ3js7a3T6n
+	VkHsKNWdbogvQeA5OGYTw6vSZyYajfE8=
+X-Gm-Gg: AeBDietQsnOWS6w2M8C2P1f+MV3sqdqoT/qITm5Qv5GWuGAevSgFu1wUMfBrRr7PXUl
+	XzVcS1EZaXsXsEdZLuigm65La/au6ZSlJiyBUnToE6Jh/dlxNX82Cz39D+W3QJvFz8GaCJndVoE
+	imGMrXL1Cx4D0vm9F/wJHTk7/wQFVqGGUHTQ2eFEqmI32ZlPgD/GMvYskIgS1r9orMCm6mlZLy8
+	/eEcfYK1puZIhz4L0b3t9xLvCcjFH5U1CrzhP5Mu7C/k08e8R/cYLGkrMKB/LHD9fzPmtG4fk3q
+	3ZxvvvfjLmv7vJimWZaXpVBA6yJ72qnEUIhI/QYLbE4TwUVXcUE=
+X-Received: by 2002:a05:6402:24cd:b0:66b:aa56:ee5c with SMTP id
+ 4fb4d7f45d1cf-672bffd3a22mr10256938a12.28.1776925021636; Wed, 22 Apr 2026
+ 23:17:01 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ5PPF1FF629472:EE_
-X-MS-Office365-Filtering-Correlation-Id: aac67cf7-6e13-4ed8-774d-08dea0ffe200
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: mLy3aJe+kU2fO4heCpvjyGHksV2NywbFkBwbqF6vpJS715LMjR58saVfbRsIcBjQmA5URN/m/p2cZg7Pur5gsW9FQBMkS/ZOHZ0MVKfxICxTGT+VW/PAyKXeXlovFFx8j2xKL5VHYMYPtnE7KEmvgMZUiLvDNb5i91BuobMtMjsfe48d2aPVZ9UtOL/5/w7ZsMbc+c/ialJ2hdcpQxGt+XD8hWlKESmHzJP8TQO2LUEGCHb+xxrHD1D02UAd1tUFUNe17Misb63wDDbdmGz2rg6dO6CSYLW+On0MXzY83abVLBfyCYe0YxhHQjDNQ3H6uZts0yVzvZOmoSammAPbmU/3f+qYo41JcjjSix7XWgLjbCeD3u4z1lpdw1B4I/oAo2uatxdpNp9KgZBTxuNTWxFHCWoZ6XMy1Rr6pTtdNZEi0NZB4mcmEweWAwlC084t3RbmjtkxlAFoHYkuw4TjnJXIF6KVpLcY7scU1vbKBp3MicR02mC78LyjVMGC+ncf92zUPCSRKlC3tgAeffL7ryyb8wzolxYPfL3/eqQ4gtKgu9j98dEFo0lJJFLbMNZuN4zwddaUBOO18pgTzBwUE6k1ZMWiNJ4heTujGG9/IoG43UCRptQjbXt7yibHJYVs6fa6R6QY2EBUFGdQr4GV25jSD19rYUZqRPqf18XHRujwlfJ2Ssm9qjOK4LhWAsMu
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bnUvSE1ZRkxnRVpWS2xnWHBROUFCTTk5bEJIU1oxWVNZMzVBQ0pBdStvMVls?=
- =?utf-8?B?ZHpSd3BOTlVQbnRJeVRtUWNUMllSYTY2V2dhQnE2a0FzanlBT3hhc05iZng0?=
- =?utf-8?B?R2YxQ09SaURjWjc5RWdvM2ppRmhXRjB4c2pDWldMTDhRVGtFNlpiclREbmxN?=
- =?utf-8?B?N2FDVmhaenNWVG1aMW9SNk56MXVnSVFvZVBSR1ZpckIwWEw3czAzN2RIU0I0?=
- =?utf-8?B?S05pcGlCSWF4WE5hMG1hRERTaGxKZW5qUUs3d1lVVmRjdG0rTmMvbUh5Rklu?=
- =?utf-8?B?bXNSc2N0cHFSblBQQXNQdkI1T2lYazdBcktlN21CVFNTNlBrREZuSWMvYUtz?=
- =?utf-8?B?VVpLZlFwb0VlcGhLL1hkVmFDSmlwdzJLbWc0ZlNCYnZyTzBZSjY0dlhXNUxz?=
- =?utf-8?B?VEJwZk0zdnQ4MTVWS0toNU9Pd3RIb1l5dHVzN3Irbkh1dVBaOXJWMW9LRmth?=
- =?utf-8?B?cnNVZ0RUVkdLZkFmWmllcTJTZTNTVVhHS3hMZFl2WVp2YjZpTFYwQjQ3TWEy?=
- =?utf-8?B?RzNsemRPeUpNVElMWTFFWGI5SGJqY0FMMTUyUktOVGtsQzRGOWlBcDVKb2tN?=
- =?utf-8?B?NkpBTHpGdnNQaEVPa0I3S0ZrWFJoVXpjd3hIL3R5MHNIWEZ3akYzSG9SSENQ?=
- =?utf-8?B?Qm9GaG1EbEh0U1VQQ3RlUzMwTVFsdGJFSVQxQk1aYXFNc3FPRzJIckM2VlRk?=
- =?utf-8?B?eUxzcWkzQjVtOTZIQUR0dU9IUnNUUSsrVzVISUpBMWdFY2NIOHBKWEtSRG5W?=
- =?utf-8?B?TlhnaWd3TUdwUTh5WU5Gb3VCMnRjcndGc205VFJ5L2djLzlvcjk2OFhkMW01?=
- =?utf-8?B?d3FLSzhxSEhnTkhlRFRQbFBVeW5BdTQwWXp5UDFzanFWM09IZ0w4R2tWbGpw?=
- =?utf-8?B?STEzZi85OENYL20zMGJFWjFsKy9Id01hNG5Jb0hCNCtoN0R0amxJbzRXN1RU?=
- =?utf-8?B?UjIzZis2NFh4d1dJRmUvekdmVXdGSFNybU40NHVxMXJ2Y0NEYkVWOEdhODlG?=
- =?utf-8?B?RlA5cjYvTWtCZG1iNVpnRHNkcHZwRURUTTFZaWpGdVlndmJxd0k0SkJLaGhl?=
- =?utf-8?B?WnBYMXJPNEEvaU1NaWphY0c5N2FZT3JuSGFoeDZGb1QycU92QnpQbVVIK2RF?=
- =?utf-8?B?elh5aVlsNm9FOEhQMmcwZ1ZLKzRNZzhzY0RqWXVhWC8yR0xvSEVIL015Nmw2?=
- =?utf-8?B?aDNPZ0xTQW14TlJnYjFrenpRREdRY0s0bTVCcitOQ3RjeHBWL2R3MlUxL3BV?=
- =?utf-8?B?ZGQ3N0h6eHpvRUNFdzVXcitQZ3BoYUs5aU44TGt1TzBIeWRCRG0zNFBOWnVZ?=
- =?utf-8?B?NUw5RDU1STRmc3BvMnlYa3ZvemsyR2lGRWFZV2lJT0ZFYnJTdXVqYjkxTWZZ?=
- =?utf-8?B?L2M4NEkzOGt1d2JNeEo3RkF5YzBlVWZ4K2JXajY5MkhKbTkrWEZtK0hJSzgv?=
- =?utf-8?B?Y1NLUEsrS05PaXFxTGhSMGhQZHRxSm1uQjF4K3h2SFZ6VjRvSWt4NndFQ3Y0?=
- =?utf-8?B?OVdMWTJOK1oydWlmZkdJOHMxTXNCZURWcXZ2RERKdWRicU5JVWUvTk51b08y?=
- =?utf-8?B?eWowZngrYXl2MFJvV2xqYkVtYjU0bGxoc2hLZ3lqRWdOVW5uUkVjTE1KT0Vq?=
- =?utf-8?B?dWx3RHpvaUVUakxTelVMSTZGVjgyem5TRG5aZll3LzUza2kwcElpVytGZklK?=
- =?utf-8?B?azRlWG5GNGtCK0RiOFdVQmRoRTlGWlRFQ2RabzF4cEVLNXl2M3hLVHdqTjVR?=
- =?utf-8?B?OE9VRDllNzNSYkJrcDMwZDliUmg3c0w1ejhLckNzTS9TSEd5d1pnQko4Vmsv?=
- =?utf-8?B?UWxKNXJRcHJlZ0gveS8vc1FadzNVNEp5UTRyQndyM2ZoNElZR2hOR2poSHZ2?=
- =?utf-8?B?aXlpVU95Q1RsTzFOSFJOQXhKUFRXV0tpR1pGZVkvMWNPY3ZuTDE4bXNFVzlO?=
- =?utf-8?B?MlphZDFVbUR3dDJNQlNOU3lGRHlpUWQyTEI2bnU5TEhQekdtVmJyTzIxQWJV?=
- =?utf-8?B?R1JIbkFoYWlNNlNHbU1ueWpLVG1MbENpZzNlamliV21IRW1HMDRtNWMxbjJ3?=
- =?utf-8?B?RjVwWm9aaUNEUE1KbXpvNFE3eHlvMHVqVDJTOHBNQ2RReFdDS1M4aDVnbXdQ?=
- =?utf-8?B?Z2VteVp5YnZrZVVCTm95azRXbjlDWGxNQ25lQmJDeHNnR1pSWE5UejZ2cGxv?=
- =?utf-8?B?czUvOTFQUmFnd3V4eGJzSnptaHk3NWNjaUpJbkI4SGNLOW9TcmNSdUloYnQ1?=
- =?utf-8?B?MUZkVk41OU5PaCtUR3ltODdJdVZpbG1aLyt5YjNxZjBFYXBsVTZlV2pwTUlX?=
- =?utf-8?B?MGJhb1dVQjllUHVNTmpUOEZiMTk0MWZtWExoa2VjN0t3cXNoVE10UT09?=
-X-Exchange-RoutingPolicyChecked: rA1DQaf4A4Vj7/NTnoeyC39NlXHh4KYv7GF9iAv0ez/yRKz/AgTtu9S+Gdst42+B51JbjDwOGEug7RpU85b/7zjodUgTLJTy21Qd27LVF2LstLcjWx+psm1+0cxmnjqGGKDgG1TTcImxdG3+hcZmUZJrrOuRMda58T3vSxdLwrTSIhZiGKhCJoU6w2ZteYOZGxYYHqw5eLTYYK81TNk0irPeWQHHtFvY28L5d1uxz52QhpCsEAQSs4wkEEVfH+rRe/i4nBVjscxVCWslKiSu4AJKvaTH+KDe0JFboTk0foK3QHHgHJWo3Q8f3aHDDVqD90Q3RqpTgL00LrhZImSPaA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: aac67cf7-6e13-4ed8-774d-08dea0ffe200
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 06:16:40.3849
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CBpyHPLzuehK5/TT56TJoE54PQzDphF+53lYRmq16ZujZ3UAQ6vPd+UFB74LVfeOhWK4jPdTYrr8v/bE+n8PgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF1FF629472
-X-OriginatorOrg: intel.com
+References: <20260320192735.748051-1-nphamcs@gmail.com> <aegUoOiUbjUAH5aT@google.com>
+ <CAMgjq7C53WRS5oYxO157mX7JxhfoPoi34k+taiKLrMah-b-iRg@mail.gmail.com> <aektdlD4npMVThu3@google.com>
+In-Reply-To: <aektdlD4npMVThu3@google.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 23 Apr 2026 14:16:24 +0800
+X-Gm-Features: AQROBzBVGp3guci_2n97e7eFyFpR7BCikY1iYf4lyc9Y4ueJzJNdB9B8Zs-KyXM
+Message-ID: <CAMgjq7DRrz4Hdy-s4y-C=3BmPt50LKOfdWjjf2mWmCybdRaJ4w@mail.gmail.com>
+Subject: Re: [PATCH v5 00/21] Virtual Swap Space
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Nhat Pham <nphamcs@gmail.com>, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	apopple@nvidia.com, axelrasmussen@google.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, bhe@redhat.com, byungchul@sk.com, 
+	cgroups@vger.kernel.org, chengming.zhou@linux.dev, chrisl@kernel.org, 
+	corbet@lwn.net, david@kernel.org, dev.jain@arm.com, gourry@gourry.net, 
+	hannes@cmpxchg.org, hughd@google.com, jannh@google.com, 
+	joshua.hahnjy@gmail.com, lance.yang@linux.dev, lenb@kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, matthew.brost@intel.com, 
+	mhocko@suse.com, muchun.song@linux.dev, npache@redhat.com, pavel@kernel.org, 
+	peterx@redhat.com, peterz@infradead.org, pfalcato@suse.de, rafael@kernel.org, 
+	rakie.kim@sk.com, roman.gushchin@linux.dev, rppt@kernel.org, 
+	ryan.roberts@arm.com, shakeel.butt@linux.dev, shikemeng@huaweicloud.com, 
+	surenb@google.com, tglx@kernel.org, vbabka@suse.cz, weixugc@google.com, 
+	ying.huang@linux.alibaba.com, yosry.ahmed@linux.dev, yuanchu@google.com, 
+	zhengqi.arch@bytedance.com, ziy@nvidia.com, kernel-team@meta.com, 
+	riel@surriel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: A8A9714000C
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8dtqwagw46hu6knkzqmx7h1am4gdedfj
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8433A80010
-X-Stat-Signature: 6o13sghwtw46t8ayie75ohnb6dzt7tet
-X-HE-Tag: 1776925006-648475
-X-HE-Meta: U2FsdGVkX19raMBr9HoyYzXSCAaG+YCfIfjC8OLaAhgfvBixC/SCqeRA1xbUDo5UlGKCb57PE9ivVxwtT3DtJWDswrdbYKWEpHeCi+MkvBha53xJI/R7ijUiGubOq0TqhSrhgm7VKkukdxxV1TPamoZqFm9gaH63c60TvH/5gbGfTHH2cByxsY1vojvPdQskc4Ox3PHvygYvodKvbHu+mmbv2NUfnnkE8iw1dz6TdooWMHXRd+t0BEXlmYml90JEj8RFLamCre4/twRwtSMXsHLMsKz2Qsvl4RllK6KsbM8yaBUIuXav39etNCoG5tGR93sQOilebh4AMmqDrM9gIua05ShlOnN2dHBGq2YvOb9H3x71kR19p6qr1rltfgpjW3Kiejsts1DlFe+aK7j/HOPKeRR/bHOqxNj1chaHqdV7Fqf80WUVSXXAP580b+R1BCAbmZQ+EAbs4+UB9/xe7MEHQQeYElIFg3uWxN9qFowQH2asMSsK8dUhH8JqB+ZNaVD+zZQnwd0cvlQI81xvQHq2YXeLIC4iCUnprHcTL/1L/fD7Jutg88LyCDn2u0nQa5clhPsTecXpU20Nw+yFRnl6e/Ns3U5ran5YUI2YbLzLxsnFOuo716yOpl7ksz2qN/3Y2PFc4EMrGW4dPBbdwinC0+8rXBz8yoSHtxt6PL8eq+tjcCAKTtor/7R+aw1yVWB3kxvLh6OQgpMd2CvfTb26ZdByBe8ZkT45SG5eG4xP1//Q8/LzH/Pb0azF1C7DIMC+ybFToEAiG+dN6svWn7a6+pud9dape7Iwn/IzWAS21X6UL/Z9gmYZZ2vZEVKTGIKhzEtbLEd335ljBV6y2/B5H+GYyepWt2kXbPC7YXNq4u9nAfejDKgCOTjWlDj3hkrRIi7I/Vx1MD+biurpHBgDjJU+W/Bw69a1MpY30JlNvRzQ3fHjbwbesyT/nLseV5SDlV6Jt/tTjea2LLh
- /M8bTSyE
- HWjdsjjSrKH/8vzQYYaKpYnXG1ven/PBw4gPl3tWhd32bqdSWe0/flq94LFOKSq/4V9lBowVYEpcz6LSGSkwmIqjf+qhDKL5wl08xrOFEUMxT5wan7LKixpkwGeKK5siBhmmczdfNV131C3VsL1JGxRDmSEbczuoE5fyxx6nZKPvuIGpF8K5wggJTjhAbJyNcA6SJUcIq6Cim4vgzllervTrTrJysq4/YggQrnY/3INBSRaMdfiR+s5UToOByF/9YVGC3rjFfpMUSg6PF2kx3uRO2AdioKRgtbdm6ffc0cLHoqN9JPGEXyUhUaR+HfRfZPA5Tqrk1ILGFKxAiMM7UuaRMHsnEX0Lqp/xFRMSFhBzvRLvGoBvMLOAzAIh9eIE7Diz4kE2d7XYAOElY7LTfTAZwdvKVp/uXUb7SaudYWW/deSMF53e25sflThh+UrPkNwAS8aXiqsnDmqp9e3s9rN/7LuOPDdQgfJ7B/850C4GFT2QaJSr3zBERt5wHqv8knuMZOrdScr/uO0fzkdi39SRX0rkXFouUHyiAwtG5gDMIfS+9jSiW7yLqGu5UKniF62bYdfqbyAvZmbrCjYYPJbzMhOF9tWCPKR+BhfqIQVJB+1YwL+e+UJlHoURmZP4kDW0lWXPH4BQzmNst1PHLZHozE0/fWetOBRZsE6NTUa++UU4LxsFSst8zya7Hrx4GbHdTgsIiuj3/pDVgy86U3Gn89zTeW//2akYXxXaFIvfAB2Wah1bYSGnHs6h0PpJFEH+3z0rEPWOeYoYIfdx8ByL0xbnN2BGV/kQ+sZE1gzXPGYkP917VsDszURSHUi+/bDDIvmwlcbFTGA1ZJ5PJD7QF3ttCbL5vpU0kINSUSH5KibTgsTxvS85hRu71fUSdq8fR
+X-HE-Tag: 1776925023-871756
+X-HE-Meta: U2FsdGVkX19+7e2gp1+F8lEA+Ng3Hj0DA9/JopzBdC0ttosHdDHOxgTHFdNnSnqs4DjcadgY5W5TaKo21UfYzx7PSG/xqiv67jcPdbZA7S8EPbrGPLZr4RqmYojFVjwIH67hZgdmQH3jLnB6jobRG6ATc0FQGDlgrGEibim35f6KCDwy9SSQb2VT+XMnAxIf+GAHoLs3NUlYfKBdh72hrFiTN+VyFylVkzL3OTWiCYFhWjEPGvxCaMaHbcrnDqHcNCgKRnXNwtgSxW59OARbJENPG0zLjVF+x/5EJSjG1BvGTRjMrz4uXLzWQ83zR/bIRV2NfRRS+x0VGbezXjSF7iSa70AOFg1ZvTlf0cd1QEHMI4aIrGSzpmjB5tjZlP724pUYU/pPlok2BFLMmDph5su+rXyrYo5tZpscYZKYqzVTv14wpC9PomW4MqYozWWFCBqfuhf8k/H6yp9ax/sXZ6LQA8fdP2uu7Z1drL7WDVRwpcEYT+5e+wfDsw/erxf9tf4uSMkPT5jKQN+eDKAA1MPL/JLb9Ke0VXEtrAnj7TnJ+MxtE05mjYOlAkMFEivB6NJJUnT3Vq4QPFeEv25lsb6Cw5xRPeUZxumqHaoRkwBbxy3eSyC3zhUEjP+A0DbVTa7Wp6ezrJJOr/pgzCzW7TLOM2tY//JiOf76ot3i9R/vlFqY0wkb5Y3fjzwPsFXTM4e4DAkWnqvTDfqqmMISV/Z6hBhak4KoUSiiV9OTkhjViOcDeketEBI+5a1tSfz8L2+UI1OhBYRUYk0Sex85Qlv8DBquE4hPpYSKKnQe7lP8G99A4f4jT1oBYc9+3okMXYOCmxrdiTCcuyTAUu/dnL7WlwNLTIyCOM8t+XeVf0o24q86eh92yrTrhSMzRyPcW6kGtRRhfwLt1Ct+NR2EUt+0lH6VjDfgWu2IG0cXfn8bwJfzP3ecFUgNl5b6f0yP+Als5Mcmzplo2nqkriy
+ SJNM3JB6
+ 9dAxVqfy7HFQkoGRJRfS00M2NxTI4jxadJ5Ce4tY1NnM10BL8w5XN9C+JLJaLSoN5yUI/VDK2xL1t0BWrCat1eQZwTuXpZkV9/i5Xb/xa/iO/ktFr1lzBQQvNL3W8z2lNnF3CJlphfdEpa5oSdzDbXYksRUTsz4vR510ZgYydjMQcHz5qi+EAtIV1hG+sqyVZsWxu7KsOFjPC5dkOdMK09+vocPRjEF6RTylSpzIU3MIYefyGsc9m5eyaArd5YBA+opBMNedhyhYxn1ZwOMURLA5iH15xV8qaT6zuKRNpXUoUs8FAmnNf7MBWmMuJxzvAYHt6xo2VN2njV9/usVkXbL3mlHYEyOgPh+16A1sURkqdaMYmU2tEiVCxpc60mCN1l6sQjvXWzaf5Yxa1OZHo8zZv9sUrSEJQNVlSrhC0ZM1dnwdfnJF99640GEJjZh0V0IS35gUCMQoA+FaeMsH3U8aZFc69jUVcqcFIQAo7sbb/9yr+tfz9ZVhnGUnln6KYts4vE9OwTLy/n6QRFBtgJXTz/0ebU6jrnJ2F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -206,80 +154,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 04:04:32PM +1000, Balbir Singh wrote:
-> On 4/23/26 15:56, Matthew Brost wrote:
-> > Introduce zone_appears_fragmented() as a lightweight helper to allow
-> > subsystems to make coarse decisions about reclaim behavior in the
-> > presence of likely fragmentation.
-> > 
-> > The helper implements a simple heuristic: if the number of free pages
-> > in a zone exceeds twice the high watermark, the zone is considered to
-> > have ample free memory and allocation failures are more likely due to
-> > fragmentation than overall memory pressure.
-> > 
-> > This is intentionally imprecise and is not meant to replace the core
-> > MM compaction or fragmentation accounting logic. Instead, it provides
-> > a cheap signal for callers (e.g., shrinkers) that wish to avoid
-> > overly aggressive reclaim when sufficient free memory exists but
-> > high-order allocations may still fail.
-> > 
-> > No functional changes; this is a preparatory helper for future users.
-> > 
-> > Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> > Cc: Vlastimil Babka <vbabka@kernel.org>
-> > Cc: Mike Rapoport <rppt@kernel.org>
-> > Cc: Suren Baghdasaryan <surenb@google.com>
-> > Cc: Michal Hocko <mhocko@suse.com>
-> > Cc: linux-mm@kvack.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> > ---
-> >  include/linux/vmstat.h | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> > 
-> > diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-> > index 3c9c266cf782..568d9f4f1a1f 100644
-> > --- a/include/linux/vmstat.h
-> > +++ b/include/linux/vmstat.h
-> > @@ -483,6 +483,19 @@ static inline const char *zone_stat_name(enum zone_stat_item item)
-> >  	return vmstat_text[item];
-> >  }
-> >  
-> > +static inline bool zone_appears_fragmented(struct zone *zone)
-> > +{
-> > +	/*
-> > +	 * Simple heuristic: if the number of free pages is more than twice the
-> > +	 * high watermark, this strongly suggests that the zone is heavily
-> > +	 * fragmented when called from a shrinker.
-> > +	 */
-> > +	if (zone_page_state(zone, NR_FREE_PAGES) > high_wmark_pages(zone) * 2)
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
-> > +
-> >  #ifdef CONFIG_NUMA
-> >  static inline const char *numa_stat_name(enum numa_stat_item item)
-> >  {
-> 
-> 
-> Without any usage/users, this is hard to review. I don't understand the heuristic
-> or it's logic as applied to fragmentation either.
-> 
+On Thu, Apr 23, 2026 at 4:27=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Wed, Apr 22, 2026 at 10:18:35AM +0800, Kairui Song wrote:
+> > On Wed, Apr 22, 2026 at 8:26=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> =
+wrote:
+> > >
+> > > On Fri, Mar 20, 2026 at 12:27:14PM -0700, Nhat Pham wrote:
+> > > >
+> > > > This patch series implements the virtual swap space idea, based on =
+Yosry's
+> > > > proposals at LSFMMBPF 2023 (see [1], [2], [3]), as well as valuable
+> > > > inputs from Johannes Weiner. The same idea (with different
+> > > > implementation details) has been floated by Rik van Riel since at l=
+east
+> > > > 2011 (see [8]).
+> > >
+> > > Unfortuantely, I haven't been able to keep up with virtual swap and s=
+wap
+> > > table development, as my time is mostly being spent elsewhere these
+> > > days. I do have a question tho, which might have already been answere=
+d
+> > > or is too naive/stupid -- so apologies in advance.
+> >
+> > Hi Yosry,
+> >
+> > Not a stupid question at all=E2=80=94it's actually spot on. :)
+> >
+> > >
+> > > Given the recent advancements in the swap table and that most metadat=
+a
+> > > and the swap cache are already being pulled into it, is it possible t=
+o
+> > > use the swap table in the virtual swap layer instead of the xarray?
+> > >
+> > > Basically pull the swap table one layer higher, and have it point to
+> > > either a zswap entry or a physical swap slot (or others in the future=
+)?
+> > > If my understanding is correct, we kinda get the best of both worlds =
+and
+> > > reuse the integration already done by the swap table with the swap
+> > > cache, as well as the lock paritioning.
+> > >
+> > > In this world, the clusters would be in the virtual swap space, and w=
+e'd
+> > > create the clusters on-demand as needed.
+> > >
+> > > Does this even work or make the least amount of sense (I guess the
+> > > question is for both Nhat and Kairui)?
+> > >
+> >
+> > Yes, this absolutely works. In fact, I previously posted a working RFC
+> > based on this idea. In that series, clusters are dynamically
+> > allocated, allowing the swap space to be dynamically sized
+> > (essentially infinite) while reusing all the existing infrastructure:
+> > https://lore.kernel.org/all/20260220-swap-table-p4-v1-0-104795d19815@te=
+ncent.com/
+>
+> There are a few aspects that I don't agree with in this RFC, and I think
+> Nhat and Johannes raised most of them. Mostly that I don't want to
+> expose ghost swapfiles or similar to userspace.
+>
+> I think userspace's view of swapfiles should remain the same and reflect
+> the physical swap slots. The virtual swap layer should be completely
+> transparent in this case. Userspace shouldn't need to configure it in
+> any way.
 
-Sorry—it’s always confusing who to CC on cross-subsystem series. Last
-time this occurred, we agreed to CC everyone listed in the cover letter,
-which I did. Anyway, let me provide the Patchwork links...
+That approach is definitely doable. For example, with that RFC we
+could simply drop the interface I introduced and enable it via a
+different knob, and that would be very close to it. :)
 
-Cover letter: https://patchwork.freedesktop.org/series/165329/
-TTM patch which uses this: https://patchwork.freedesktop.org/patch/720036/?series=165329&rev=1
-Xe side which uses the TTM helper: https://patchwork.freedesktop.org/patch/720031/?series=165329&rev=1
+Using a swapfile to represent the virtual layer externally just made
+it more flexible. I agree that the RFC design was a bit confusing and
+could be improved. There is no technical difficulty in hiding it from
+userspace; it's mostly a design choice. And even if we don't use a
+swapfile to represent it internally, all the other infrastructure can
+still be reused without much modification.
 
-Matt
+Using a swapfile does have its benefits, though. For example, the
+virtual layer could act as an ordinary tier following YoungJun's
+design:
+https://lore.kernel.org/linux-mm/20260421055323.940344-1-youngjun.park@lge.=
+com/
+It also means we wouldn't need to introduce things like a new,
+virtual-specific swapoff mechanism.
 
-> Balbir
+> In an ideal world, the only noticeable change from userspace is that
+> with zswap, compressed pages would stop using slots in the swapfile and
+> charging the memcg for them -- and that zswap would work even without a
+> swapfile, by just enabling it. This is admittedly a user-visible
+> behavioral change, but I am hoping that's a good one that we can live
+> with.
+
+Totally agree with the ideal end goal for zswap. just not sure if
+that's the right place to start for this usage, zswap doesn't always
+apply. For instance, we have SSDs with built-in compression,
+software-based storage stacks with built-in compression and
+deduplication, swap over RDMA, and, most notably, ZRAM users. They
+don't necessarily need zswap or a virtual layer, and the upper layer
+better be as much simplified as possible.
+
+> If there are real concerns about this, we can discuss things like a knob
+> or config option to keep charging zswap pages as swap slots (ew..) or
+> only allow zswap with a real swapfile (double ew..). But I am really
+> hoping we can get away with changing the semantics without doing this.
+>
+> We can add extra interfaces for virtual swap as needed, e.g. virtual
+> swapoff that you mentioned to clear the swap cache, or stats about the
+> virtual swap space (which translates to memory overhead).
+
+Good suggestions.
+
+> > It cleans up a lot of allocation and ordering, as well as memcg
+> > swap lookups. Since some of these problems were also observed in the
+> > vss discussion, I think this will make things easier for all of us:
+> > https://lore.kernel.org/all/20260421-swap-table-p4-v3-0-2f23759a76bc@te=
+ncent.com/
+>
+> Yeah I saw that (but didn't really have time to do anything else about
+> it). Splitting this out is definitely the right thing to do, and the
+> series looks great from a very high level. Awesome work, as usual :)
+
+Thanks!
 
