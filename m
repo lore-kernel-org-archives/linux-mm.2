@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8A7BFC0344
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 15:03:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5FDCFC0342
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 15:03:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36CDA6B0098; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
+	id 62B2A6B008A; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 231C86B0096; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
+	id 5DC216B0095; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 084856B0095; Thu, 23 Apr 2026 11:03:05 -0400 (EDT)
+	id 36AE16B0093; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E81666B008A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:03:05 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A74551B71B3
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E87C6B008A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7A741B716A
 	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:03:05 +0000 (UTC)
-X-FDA: 84690138330.26.64430A5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C852680006
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:03:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JrEjuLmY;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+X-FDA: 84690138330.28.5F67065
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3563C4001B
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:03:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bPORGTu8;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776956583;
+	s=arc-20220608; t=1776956584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPJOp/8GXmcpgErHx2K37zCT+O9sa9Or7wes3GsbnH4=;
-	b=qWVX1IhoCPllEqR9U2Z+qYxXcrhsGLybTPJNNjqyurKhcpVM9HSLQVDZdwo3OEyugFUVeQ
-	10B5f5R2PRLPh0tWT6vh+RymS5ydWPXntRo3gw05i4d0j+clUux22R7GE7ewUCB1u5WSqv
-	B+ug0qD/mukKDvShb85Z0qq+eVtsqqE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JrEjuLmY;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776956583; a=rsa-sha256;
+	bh=0Z1nFc1xWCFJrudUlh6UpulgaxT7O9I8PMUdERu/vE4=;
+	b=shGZ32TY4OZ1UTqvoXGB8ZmENem2hF/qrRO2+HOyPfPkxN2PFvPNRGswVK3QP3DDEd8O8G
+	1atntkkY0rvkp0qKZBsjf1DK3Ia3OqmPHK3W7fN7wsUJeaBXhmOSHDC8ueS15Y+NBLjc5H
+	pcm5xWAskJPpkqpaPvPpuZMTKM8dbrU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776956584; a=rsa-sha256;
 	cv=none;
-	b=2tUOkAXls2cdZbnJoUkfKQQczQ7t2qgItUSMQPswD3cq7Dd6UHIWOj5+MyeQST6vnKbIWM
-	Z7d4Lrti5bp28LONvAaEJhUb1dzdHyMzJdpuZpVgRKKOuRpgJcGwV/aycEt1AmfskA+yUV
-	oP6Tngk3Lk4/4xqifhyoOKXR4w2QEGo=
+	b=ioW1+RqvlsWixK/HccDQQ6cWGfwfH4pVymViZ2RnGu0gq1xpYFq7oU5v/FJnEC4keOgZEb
+	hwI7j+9NDgRtrWtt496xh+RFI//U5UKDo0I2GB9ggdQaiQEru/wKkttFMbwI/6VnGTB/NA
+	exTxm/fvuxSx4MRQCzcq/zdKQEMJp7s=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bPORGTu8;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C05E044375;
-	Thu, 23 Apr 2026 15:03:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6218EC2BCB5;
+	by tor.source.kernel.org (Postfix) with ESMTP id 57C6660582;
+	Thu, 23 Apr 2026 15:03:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76B9C2BCB3;
 	Thu, 23 Apr 2026 15:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776956582;
-	bh=FNV8xQP2YWLDSaMWy27hoOup6UGsYJXN2Gv3gecRBI0=;
+	s=k20201202; t=1776956583;
+	bh=pgIYrrAK6X9JUhNoZ3jKTnGdrjt9Atw8Bt+OO+9uPx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrEjuLmYIS4mWBTUTBGJoJulPraOsKubWUrjeWM0ZikmkxlnLi2QvPIPWUTDmKaVG
-	 QTbw2+fu2ftq/9h9E/7L7eTRjXoAVTBtdg6/gf8bdItCHn9ogg+Zk5uiRJNur3ECSk
-	 MvCQscxdSQ5Ys/L01MVNp/HN5W56pmwkUStjCtw5j0/GKN8lhpBjba5j5av5F7MPjt
-	 EN8zDME6LGyRrdzKuNwRUobqU26TBNJ8g3HTDSw8HWts8D+MDMcw61OYij42u47WZV
-	 zLj8TdQxbzOhpWnQjwr+jCInYnA6iZBiDgkzPZPIPjanOQOFvYjdLeiW0y0rTgAkIW
-	 RD4hIftBJsYow==
+	b=bPORGTu8YrJGGYX+HnAjs4fhHzD34EJaP8VvY8cmPf2H1h2K+ynmjdiqsDJRpNLx3
+	 oAm8LmDxiObij537YgRsVv9oM6ALhzLZkIQDw1MEvXIvNKegud7BicI9LVHanw4j7R
+	 3t2gL/IrQucxdYlwOPIdTfmG1QMwtO6BtcCK1qYkgnmzXqXjInGFKvYrEhKnmXyCyH
+	 1ZaFAbhm8Ku55oGUt7sPh1Bc9RRftEt7WR0RJUwyCPEkJCbaEisbwjOAlB55phTjfx
+	 ZP00VagCX+shexDpBGPApTmnSfdHaW0XBr33sR3yM7T8Ucy3gX/c1EwD3zf2KJV69W
+	 mA0XhtYkvvv5g==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 16 . x" <stable@vger.kernel.org>,
+	"# 6 . 19 . x" <stable@vger.kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Junxi Qian <qjx1298677004@gmail.com>
-Subject: [PATCH 1/2] mm/damon/sysfs-schemes: protect memcg_path kfree() with damon_sysfs_lock
-Date: Thu, 23 Apr 2026 08:02:51 -0700
-Message-ID: <20260423150253.111520-2-sj@kernel.org>
+Subject: [PATCH 2/2] mm/damon/sysfs-schemes: protect path kfree() with damon_sysfs_lock
+Date: Thu, 23 Apr 2026 08:02:52 -0700
+Message-ID: <20260423150253.111520-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260423150253.111520-1-sj@kernel.org>
 References: <20260423150253.111520-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5p9f1aszf7an441mra4bedz6e8791ezx
-X-Rspamd-Queue-Id: C852680006
+X-Stat-Signature: hrcgof6exwgt4xameu764orzqf7qkzum
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776956583-673511
-X-HE-Meta: U2FsdGVkX1+bw9yvYZKLtTmYaSseZPXEP2DSf/jhv8Rh5ECoA4EMyIPEczKlr3E4ly6kY27aU7vhnJ2SbeB0cjqCNfs9yTDXUnTAkanGPoWUq32EbFBd6xi75diihCt9SdHuFZ6JVRGp0rE3XieVfFjZSb7U76S193PrPzsNxI9yhYkpMiJzXQEva//tt2LFXVz6HSv4xjOzN+2tmcsEj2YSkX+AlsEl3p94WQJAKcjjTdKejcK8fTFQBkOYQlNn8CQMGdRS2jDZ3e/Au9yTbkxjPQizJmUOMZiGl82nNVleOCwYQa1f2tDOwtZF+pFsGDyp4jcQZqwxXHdtgUYykl8eDMi7wBeFt5As9CTZBJs4AOsyCUIWdOqZv1cKpakyTpHM3MPEqZi9mOoWUO8Ral41+TFERqgbEZ/iv4mD81uBKH4w9ha80pHFNgRYmWiyqvql4zQnC63p7m/GsTLKlcGgFJWwoRJoWKi41DcALbAnthBSQObnvejqheXTjVfYrEABFju2dVjpncum4NnvnxtHAe5fyojGsipWjL8DTMhWOB7t/JyeSLvmUvOMyruRkTnSij7+UKH5nlBgBIHGbJYc4B6hbkbGfonTZb6ueEUJ00lPYxux1ZYYu8ALZ2PxXzpperF5cYh01grGIu7yM4BykAFcV3iyG/Hwmm5ZmuuJh8cxvRHhk1f8LamS1UHhHJVSEJowqR2eI0lK+g5xmDWdbjQ+u6+3CnR1JpGx7zIboynwAZZhI3BY/tLfeW9RmiVJ/Y8wtOc35sJw3eFfPFJZNW+zP2N7Wzdvay3IfGxoFLf57KqaWjYcaWCnDCCLIcgZNxILhRCvAUn/gHjg5N3iuxnrsfjvSRvu8/xh3WfnayaLuXZR08scTpNN1Z183O3zbPQGv865xD1BATd7cJddu/QmNLebfy2kYcCzi3NQ3Km0L2cH0bC97J9a/njBE2xHjyv9ba0KMoD7gXP
- ds3zGMx9
- Fi0vSbXknDNNRsc+zZ3iL92fPyEFoFqvauH4ZAvlIQ1lKz7bRhxbbxOcrNJVLjY2oERVZghT18r5VXyZN2ny1TiYuHk37ouK5YT7Re8hCbTg0vBDt9qSV933SdewVYYsb3y9GiWslKdoIe++KcDHsA+Cwkb8lPp633v4rRlfreA8+YDkGKPZdAB1+ZzEyE2zPufCgSGLIy/5HvC1DYJUSUA0DtCep+WD34/fj7ghdeg35Atdri4nnjong/Ji+x9wTRJjDeMFpqTFrr59UCUnEZPxhASlK0SdTcYTtqfmQwkBjroI=
+X-Rspamd-Queue-Id: 3563C4001B
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776956584-527757
+X-HE-Meta: U2FsdGVkX1/8ZAzVjn069k44YtTOqaQpwjgQbln9O7NtR902+otR9Ux2eX20u4aewn0NeHOTNpFaUWOlHBJhmusXNd3kmQEGf5E/ZiFta3Xt9iazRdKbV1qyE3I10AKQpQCHf5JvjB+rQe+fy9RUGQu85cnUJ6pG+1kbE5dSzqzytXZkS24XIWfSG9+0QTlY6avwKpIJmGmFkERJVeya8jpQIRvWvJ6d3uePjqmASbIRLXQbqt/xU6ORzhQQi2hr1KrwN7NIUCBVmI4XLMgM6qzsP4nt9s7zNKBT7wBvLvN9bcd2QFq3pgoAbL4XW2kvq3xsdc2r9wAFyewdElAFSFdGlsT3aG9eTmeMxGISaQzy462pi00V6X5JAo0kYgbaosWmCQEbiRPOiw7mT5kKXO37lQfH423dtRH2A/KILE5S7vxvowCofYH04Brc3X89p6Q8ffohEwFe0/tN1sCUHl6tzBwePU2BZ9V9dVI40PEr4AOC3dfTs1mBxJGTek5J+8CGhJS7U6w3lgFEQ24VY1TBylWIq4iQCPn1b3nai9hcxlakuQ5+7ObF1ZaHLWqB5bJBTI8qKdS9J6bogoOkeN7GxKcu/IgKPY2kzec0M0ORQuL/SSJZKhQeuOinA0usYn1t00NEEg9pQsDlHePDOm+mrSKzsES4gJ83xJwuwgfQOG/PRWyP5EDBRW1QBFamIwW7bes/lPB6wGzuoiVU2x47Rsyqd90Sv7Ttf0hYgrl34xcNOEYZgeun8uotO/sVqHLahgNcg2AHO7Cfill4jn6LCFpNhmTW/tmlQkgizSrwYigYNyyE+NBF0jus2xUGoXvunPodaB4NMbh4L1thWjXPgW2PFHJe/yiWwyyo59wCetV/nCz5r55yTFWnklg3qP4G6CuBiZ/JMFfb/9071aZZpJdNtFNwjwtSraKAGOq0OeKNzMFtmdeGVWnpST/QYfesf8qBymvCZjNuVNy
+ yPhoyant
+ RpxKmf3ulXusMKbKOjTE/L43Z+NCAcZIgtXwqmXMnzWIa4lUMAdiJnXXWnljNdQWliC2QP1vIQcctBNlPwc/+X074lkzsXF5SeinLXzDGh2C4dgOuJHbpzzr4YTGIq/msqdqm/z0hD0HL0E2w27mtFdQOBr8s/aWW3DFBGvQJ3NQf+hKSkZSRIJO8u/hccXgDf7f871tVOJDDvVJ7ZA2knK2fGElCNdg6kuy98Zkd/5/oEOJ0u7zN4PSoKfDBheUi9hoWsO0XVknnru9ubT0ihfsuzC+RHlvvQvDMefNieY2SJt8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,22 +94,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_scheme_filter->mmecg_path can be read and written by users,
-via DAMON sysfs memcg_path file.  It can also be indirectly read, for
-the parameters {on,off}line committing to DAMON.  The reads for
-parameters committing are protected by damon_sysfs_lock to avoid the
-sysfs files being destroyed while any of the parameters are being read.
-But the user-driven direct reads and writes are not protected by any
-lock, while the write is deallocating the memcg_path-pointing buffer. As
-a result, the readers could read the already freed buffer
-(user-after-free).  Note that the user-reads don't race when the same
-open file is used by the writer, due to kernfs's open file locking.
-Nonetheless, doing the reads and writes with separate open files would
-be common.  Fix it by protecting both the user-direct reads and writes
-with damon_sysfs_lock.
+damon_sysfs_quot_goal->path can be read and written by users, via DAMON
+sysfs 'path' file.  It can also be indirectly read, for the parameters
+{on,off}line committing to DAMON.  The reads for parameters committing
+are protected by damon_sysfs_lock to avoid the sysfs files being
+destroyed while any of the parameters are being read.  But the
+user-driven direct reads and writes are not protected by any lock, while
+the write is deallocating the path-pointing buffer. As a result, the
+readers could read the already freed buffer (user-after-free).  Note
+that the user-reads don't race when the same open file is used by the
+writer, due to kernfs's open file locking.  Nonetheless, doing the reads
+and writes with separate open files would be common.  Fix it by
+protecting both the user-direct reads and writes with damon_sysfs_lock.
 
-Fixes: 4f489fe6afb3 ("mm/damon/sysfs-schemes: free old damon_sysfs_scheme_filter->memcg_path on write")
-Cc: <stable@vger.kernel.org> # 6.16.x
+Fixes: c41e253a411e ("mm/damon/sysfs-schemes: implement path file under quota goal directory")
+Cc: <stable@vger.kernel.org> # 6.19.x
 Co-developed-by: Junxi Qian <qjx1298677004@gmail.com>
 Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
 Signed-off-by: SeongJae Park <sj@kernel.org>
@@ -118,26 +117,25 @@ Signed-off-by: SeongJae Park <sj@kernel.org>
  1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 5186966dafb35..8d32a20531d49 100644
+index 8d32a20531d49..245d63808411a 100644
 --- a/mm/damon/sysfs-schemes.c
 +++ b/mm/damon/sysfs-schemes.c
-@@ -533,9 +533,14 @@ static ssize_t memcg_path_show(struct kobject *kobj,
+@@ -1197,8 +1197,13 @@ static ssize_t path_show(struct kobject *kobj,
  {
- 	struct damon_sysfs_scheme_filter *filter = container_of(kobj,
- 			struct damon_sysfs_scheme_filter, kobj);
+ 	struct damos_sysfs_quota_goal *goal = container_of(kobj,
+ 			struct damos_sysfs_quota_goal, kobj);
 +	int len;
  
--	return sysfs_emit(buf, "%s\n",
+-	return sysfs_emit(buf, "%s\n", goal->path ? goal->path : "");
 +	if (!mutex_trylock(&damon_sysfs_lock))
 +		return -EBUSY;
-+	len = sysfs_emit(buf, "%s\n",
- 			filter->memcg_path ? filter->memcg_path : "");
++	len = sysfs_emit(buf, "%s\n", goal->path ? goal->path : "");
 +	mutex_unlock(&damon_sysfs_lock);
 +	return len;
  }
  
- static ssize_t memcg_path_store(struct kobject *kobj,
-@@ -550,8 +555,13 @@ static ssize_t memcg_path_store(struct kobject *kobj,
+ static ssize_t path_store(struct kobject *kobj,
+@@ -1213,8 +1218,13 @@ static ssize_t path_store(struct kobject *kobj,
  		return -ENOMEM;
  
  	strscpy(path, buf, count + 1);
@@ -145,8 +143,8 @@ index 5186966dafb35..8d32a20531d49 100644
 +		kfree(path);
 +		return -EBUSY;
 +	}
- 	kfree(filter->memcg_path);
- 	filter->memcg_path = path;
+ 	kfree(goal->path);
+ 	goal->path = path;
 +	mutex_unlock(&damon_sysfs_lock);
  	return count;
  }
