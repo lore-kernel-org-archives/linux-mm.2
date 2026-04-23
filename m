@@ -4,93 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0BAAFC0342
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:56:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECA66FC0342
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:57:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13E616B0005; Thu, 23 Apr 2026 10:56:07 -0400 (EDT)
+	id 623056B008A; Thu, 23 Apr 2026 10:57:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C84C6B008A; Thu, 23 Apr 2026 10:56:07 -0400 (EDT)
+	id 5D2976B008C; Thu, 23 Apr 2026 10:57:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF9046B008C; Thu, 23 Apr 2026 10:56:06 -0400 (EDT)
+	id 49AE16B0092; Thu, 23 Apr 2026 10:57:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DA9016B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:56:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85AFE88F9C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:56:06 +0000 (UTC)
-X-FDA: 84690120732.12.C3A8CF9
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 22C9FC000F
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:56:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dlt8wuZH;
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 390366B008A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:57:16 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9134C1222
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:57:15 +0000 (UTC)
+X-FDA: 84690123630.26.9D62614
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 138FB40018
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:57:13 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=f8af09Df;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776956165;
+	s=arc-20220608; t=1776956234;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=md3vwdpmlssvZFcgZRzQuot8Bl5GX3XA4NSgv9I5fQM=;
-	b=iauw7LqJ1OR3key55WVvfZEQXyglc0yCQiy5icqj12DHLsfymu7dE6RXiNN0Hm+/phHFqo
-	cF7ldaBLK/+wFFyGM3CzeA0g2DI6k+xMPcl9/aSqKJ7/eXqT6afI7VI2o6TpOa9qFhY9tM
-	BoRoSHhmL8NHHJV/DNS+7MPLnk4KEU4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776956165; a=rsa-sha256;
+	bh=nAoC6Cd2m8uJEAdJCqdAkQcG7d/SgM3iZ532Fzycwn4=;
+	b=pUdGyNScc3oDN3uovN0TXC9fTlxVNrE218YbuS7fmxEr1RNH3U6bGW/mMokkCO7M9YMjNO
+	Z/AWzRcxAcDdvrP7fcBgSSMspgs8IFD+gszmx8rVYAiR1ZgzdlJurRNI/+NwVvXba4I30Y
+	nkbf7xiCB2pW0zRjrlG3TWhgh1LGdFU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776956234; a=rsa-sha256;
 	cv=none;
-	b=G4hZrM8jhgY82DAfeAuC3UwmW2Maa9QP/afMaHEwoJqNiZXkywfLb1ejzkcOSK4aQu4dA6
-	0ADhJXoqjEhKh5QXshtFlFRmvVXPrVezuKrWRSNTw2prtyVCVB2wdVZ7J1u6YYxnI8kDPB
-	4puNgORhtDLBHW1h1qNG2dlIkxI0IuA=
+	b=TgVtblcytGrkymrULbxr5TxBzxPUT29tyXrw08XqYggDXFVGEC1ClbdS9UK1PZxjsCGE0Z
+	b/4AgJ/6yfWryAXRsAvc54WgJD9/SAt+dkomAbosyiAeGjBG3DSFAX77umFatzn5DOrvmn
+	c2gf6ZUvXLRcHt1DTPqYQLOfJwCMvBc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dlt8wuZH;
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=md3vwdpmlssvZFcgZRzQuot8Bl5GX3XA4NSgv9I5fQM=; b=dlt8wuZH9TZw+MoGGFG/U/kEZy
-	ykrl89jcpQsUxGtWM3vJvmGimgdWpf9K37J81FP11c41XcmUpSQZvkh+aql6VzJ/qxRImxWWDao3D
-	+DOAwuiMjpNcd08wLm/Pwkl3D51BdvClgjynFDizo299cMJ6BKTexPwF0oi2TSj5RqPovD3M3Oeey
-	/q/G6tr7PtRwwtu3vG6qSK0P7Yz59Z5I5aexPWHOt6zSJ7A6Vxs+fsYY/i/zrLh9WJ60QE46PrqBa
-	/sMJ6ryxq0DAuVwV+lF9qivR9QF1tsuHN/o+iMo4m6QegJHxByH58U++oCg+wljhTJGi9aq6MrHwq
-	2aXW/0Zg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFvT1-0000000Dcwn-175y;
-	Thu, 23 Apr 2026 14:55:47 +0000
-Date: Thu, 23 Apr 2026 15:55:47 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: jane.chu@oracle.com
-Cc: akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
-	osalvador@suse.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, hughd@google.com,
-	baolin.wang@linux.alibaba.com, peterx@redhat.com,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/6] hugetlb: open-code hugetlb folio lookup index
- conversion
-Message-ID: <aeoy86Klh-07s7lu@casper.infradead.org>
-References: <20260409234158.837786-1-jane.chu@oracle.com>
- <20260409234158.837786-2-jane.chu@oracle.com>
- <aeZwAz6PcdlqSnJ2@casper.infradead.org>
- <a36c592b-0456-4551-9a53-f513233cc129@oracle.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=f8af09Df;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.48 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8aca6bd57cfso64342486d6.0
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:57:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1776956233; x=1777561033; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nAoC6Cd2m8uJEAdJCqdAkQcG7d/SgM3iZ532Fzycwn4=;
+        b=f8af09DfPGsjwd5aeDnzw0CgwsxjGngJBZtRoW0NDjZzpGRD5o2P2ymJYRQaIiCs3R
+         6uRx9mE2A3m6EdCPKm0U/wt9oNMokqJciBEmZlkQB1sVg1H67GAYEcFXe0wK7ewc3OVQ
+         8jU8KyaANNOa3G8PPEYe2Y+zU6I7dGaXem3wO1DDRL/FKt6iejVzt1bRLPLyD5lvelGM
+         IwCWBuTpPhjJVqQnIMZywRdH19NPooWPZBfnQ+bTkP+TcEHEuYxXPOXldf2q6uyOsiXs
+         /vzLSs0kx9t3ab8rkzPybL+aLxWVoXroEyIc2AVYesZtu2plmMGZFCrVEAxHTgrRUEy2
+         HOBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776956233; x=1777561033;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nAoC6Cd2m8uJEAdJCqdAkQcG7d/SgM3iZ532Fzycwn4=;
+        b=mXXY7FVf7+4JKGCSl4fLapuhBQoJ12B4UtOBiJ/SPJfHtuO0Phi4nj2WlRf+vWgzJn
+         wTPuilqur9KLJnSyEC3XLokoxvEZKZ3vKcSzk5g9AWLn+8JNlETO0LNlianpnfx4tjxy
+         XZ/g5XfVczWUaBSxIv2rTVdfaAVZQj81jD/jOvIAI2g86NPEXK4wEuO/Ypgwi59qjanW
+         +PDgH3mE7LHZofjkKWTB+W3q3LGaRP4Nv2O9R8LiWKBhkn+7WVfQQ3P6njdaZn7JW6PU
+         OD2cS6QWQBPz4hWBBoyXPO8UAsJTuby/982aQ8UvvkOvcCnS98HnGD5RTH3EiIvhm/LD
+         zWRw==
+X-Forwarded-Encrypted: i=1; AFNElJ+1Acx0liJvReeWF61McZMycaswAMGmlZo19/FqTAaiNiiYm0ZMzmkREIpwRaKT7oebbbJT7Sly1Q==@kvack.org
+X-Gm-Message-State: AOJu0Yz7adka9uzJhh8TwUha+OywyNzKWJ6mykRSn0VMoQowqSDoWpFK
+	3mAuAb3ch8RiT8H47zL0BxNd/oq3fLgy9RkRJO6NKMkiw6vDb0q9P/r2qq2yC2IyQag=
+X-Gm-Gg: AeBDievVK2aGrHGid8Rl3yduE1VOktfd6eJNzSqnDqxu+eACdw1N3XXJiotMZQxiqXh
+	ZBvrB1tGjyFwrivyTjEzfw0BcZ1Cl5ry/PCo27L3W7Z9ULTu9wUfyMPe0QJtqRM021NIY/TOcRD
+	DXVfKSEbfrXUjO4aDvCueIpLNROhU0l9qqVyGgSF58Elaa1m4qhO42wmx31u+XGBZALFahJFs6m
+	SfgKDa4tAWEKUx79nD0cEtwKuF3yiXjuuZ7Hs5Xq8zd4ElukbWuEhNpQNM2kQP36sikD+4aG2Hz
+	jsSwPgLcaTn3jk3T3L977TO/3BkBbP0c9Pu3fEmm3xq6jJRXa6mPYqa9WFg0MbCtHKCPvfLJxhQ
+	AmR54jegJlSLf1OxFu07KIN47e3cwZOpDic0IXnj3p4n/9i7urrvJz4Jgz54IcJ5bGAz1OuLpXO
+	O1Mc/c7LkRoku6GFX7hzVmZbyn92sFSokFqFtq7XqI7FQLDBaTTta1dphlO6tL5wH/NFXV/erdF
+	3O7/u7ehIDkQULcXHdP
+X-Received: by 2002:a05:6214:4e03:b0:89c:5289:4be6 with SMTP id 6a1803df08f44-8b02805a894mr389230206d6.13.1776956233021;
+        Thu, 23 Apr 2026 07:57:13 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-246-228-50.washdc.fios.verizon.net. [71.246.228.50])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ae5c26csm164285926d6.31.2026.04.23.07.57.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 07:57:12 -0700 (PDT)
+Date: Thu, 23 Apr 2026 10:57:09 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
+	virtualization@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+Message-ID: <aeozRZ9AvW2jTQkX@gourry-fedora-PF4VCD3F>
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+ <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
+ <20260422171315-mutt-send-email-mst@kernel.org>
+ <aemglPlcwFFHNj1A@gourry-fedora-PF4VCD3F>
+ <c165d6af-4a35-4a41-9086-ee307640c044@kernel.org>
+ <20260423074433-mutt-send-email-mst@kernel.org>
+ <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
+ <88b0765f-7cfc-4e44-83d2-c01a1755c842@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a36c592b-0456-4551-9a53-f513233cc129@oracle.com>
-X-Stat-Signature: n9yxfj5au8qrd87jy58bz1yhgnufne7k
+In-Reply-To: <88b0765f-7cfc-4e44-83d2-c01a1755c842@kernel.org>
+X-Rspamd-Queue-Id: 138FB40018
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9d6khs7aw98im8nro9guwmr6q7m6rffp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22C9FC000F
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776956163-715655
-X-HE-Meta: U2FsdGVkX18PgSqKI79uZC6/NvLp+trOhdCRc67ji9vzq/vyH5r2hese5/34qxJLKiTRWjKBiByeU/Qm8Ljvir5JhDMiLAsQh+R8sBzfe6WW8s00uA1cizoC+VSpmLgLhvYUO6w0ILt5PaPO/AKI0nlFXVQFSuGBQdyI8ItRQOPJWpXkwqf+FhGrfHhSPmnR79RCheeLnz0KMh7NUqqE3zF/FDeuSy4kUT90BJKSKHk/i5Ce77MjPUYCw2yAz05FsfySGpipGS0545HcpBte91h+QXtp70ObMhysdaPmFgp3+aP6T1qraZieo07x1LYBws6qIxaj0WCjGMjp6T7r6N8P/9r+Gahz2Bq4hmsmz7fIRRAqkkxn7TuJxWznuyW8nl/bZOeOMeNC6jeXRZoDv3aOR8gTlXRbtj5SFep3GzcQNNQtV3nsZpe99KwCBGgCj816MUR929zdRzv8yyGl7DH4xRdiRx5EGJUjwLrLvlUhZHoKpyUkliWVNoPhOeF4zFv5AU+DRD2QUE82/DMqVtW++W1wo/XHA2uES7LUgvRhrExVQrjNstNOvHPGLqMJKbWM+5Y23OEPsEdq9znnjOGSJ+bnJqEKGXxU7LgKc9JFolSSW9pu7UwAflr658sBYCA9pm13OJBCQvK7r5AumH2KhzFZ44ScCGmzESsAfsfie35UaJy/frpla4ctKDR53AWg1TU1Z3UGCcUQbCwSBQlyejPPBdIJ6t+nmuT9Skrx9llFqE60qUaPFZk75qgqp4WhDhOq6lXuIVrkCEZ0i6v6MOqXdH3LLg3+haHPWWzMEQQwqYZZ6tvwE/5hDp21g1abMKaZ48OhmT4kRLHaLoOFvfHZoOkH+aPlV4y9GY1QP8h5cqu5Wsvtyn09oKuz+mr/h1bCShreMYiu9SnF8Rbm4UlX3lpY0/SQVon2W4nns8sE1z4CJgFfdU3BMv8jSnNevpI5Ep27vVtuHfb
- QDxEYb79
- 9Gde9IteeG5sKb4eB8Ebd3L/HHn3z3ixvaRQsqwEp9xm9+ch92shlZ/86QxYuxbeiEPp+NdmDaX1aaKjWxWusWPtGIlikX6dzxEX2Q5y1Kf0GArZaIkKLhu9DjxOGTczUFuVAp+69DFwrekt7OM8q0VSgm7opaG1f3K2Umkt3vSc6t0yzR9SZqNCbjeoRsYA/stsFaZ30MzPg3Cr498cNxlvesUKpsPVw/sfn0eZe1sM12S7ttLuCTp/1oTbnRB67qKWiqiduSKsk7QT4kuVvbBr/kQ==
+X-HE-Tag: 1776956233-545351
+X-HE-Meta: U2FsdGVkX1/GiAks2W1HT+CWJ1xQQyJ0WlBbgxc1vXdlx7FqUGm07tVTNJMfce4nb68qK/b8bADFLH3VBovlj1jZJxOyi7G7caLJhyQ4yDsA1ApyAEiBS1mUXlZnbDy/Bg+4G7SlnCVbV7LVhyAWxz2yE/g58QrXcCU8QW5kL9tKKIotUWFvhtZMen7BLqo1KGqeOxrjcJt80C5qia1I5CD7sjRn0VYhCv2UDOTokcZCzaRwpL2i6NenKdOuhy3ji7Vr17vPZ1Ttt5sxkqy8tdpniW7axrZERbsljfCkrxvRM1re6ZvluFkQpiGxQwaFlevc/Pf+qvoyf5JycC+A3dcAXZjnkkLa1i3tJhy1EEgGMTQl66JbPd39N7hmDmle/45ju/EDU2nvDCR0bwqKI7OU1SGiJ+dKrV7jG1LdzWtQ+LEhJTNy8N4ZdcKwiPUJQI52dT3r9sVHbdOlHXL4a1JOiT0XPB++ncn/38+mr2xMKKN81CwRPEeSpSwSovW4szY1jCfORIEGeUNkSYr/sCK1iCxJV6OSxFEG4eX22rQU/uWVZFY+19kTPehlmIbZXQ4aqf+tgZXICD27pAwz8/CfZAO5Ee3pB4W+tm0uDgrtsNh14Ma320shz1015HTX1g2VfCZtujERqOCXSwPOM0241zYwSiQL5xZicqOWaVje6t8lF/a1cPqJwevv658cK5ejroyQ7E8QFUs511PhTkeg0HQoXND0KU34fcyPpEgGi5qVcBZ9Kw1Ve/8RmFMCNXZbstG47mMsZnjWTL6wfp/a7Asol3yify053EN9kkwl2ltqnkcp3UmWnqCoXvG46U6IszA62jM9piLwjX95LmHVJd02zQ0fc0O/sNjYZWU4A4kUbybTLntZB08PzDr6FLVGM8a9HVhnLQp4O90MpYhUMgZruSl1tkO7JY0NTmO3RLOOi/Z8ddCOd1Yvw1TsiCaP/0odduaiSs2WXgt
+ MST6fF4B
+ FY3JkfO9u7+ItniNJSL0DAKZ78guWU9PZ00fUjJ34xFpPAfTbI2KehzwZmomhqekRQivzN5EMrmiMbBhB1OsxCHFf4Vz8iaUgJrLfhrBrEplq/5VBAlCcjTzuDSRJTwq1s8ArRk8YmddKtnNF2s2hZimaF9wj1ncbA7j0JpYBRklN85gisfr97W6lM3+XXGBaxPQKqc4UP24L7oKw77smpnnzCOMeetfYJ4QxWayn0lsxhI4H2zH/DgES9Fcs/WvztBXAIx+6qqgQAfWk/Z54jKFVYF0HaCvI/nbNYNmZOmXrJXU5kqwuQmiZwOs104/qr7xaQhY9TBcunWmqo8N3yGW1FlalGjQ0ds2V5z1m7BSUrYp5ATtINVYSy4e92sO6ainq3EHnPy6KH3RmMfrKyUeiRxKesoNqw8LI25zClJ0iqEXo2OXRpY8jYr9rvzORJYEx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,15 +157,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 09:44:40AM -0700, jane.chu@oracle.com wrote:
-> Thanks Matthew, these are great suggestions and I am looking into them.
-> Main concern is potential performance impact, will find out.
+On Thu, Apr 23, 2026 at 04:13:50PM +0200, David Hildenbrand (Arm) wrote:
+> On 4/23/26 15:42, Gregory Price wrote:
+> 
+> Maybe we could forward the vma+addr here and call a vma_alloc_froze_folio() if
+> we have a VMA+addr to have a clean interface.
+> 
+> But really, that hugetlb code is rather messy. I'd vote for leaving hugetlb
+> alone on a v1, and focusing on non-hugetlb first.
+> 
 
-I doubt we'll see any performance impact to be honest.  We're doing a
-small amount of extra work, but these are not commonly used code paths
-and I can't imagine we'll notice it on any benchmark.  This is about
-cleanup; a pgoff_t is supposed to be a file position divided by PAGE_SIZE.
-Hugetlb mostly doesn't do that, it indexes in hpage_size() which it
-doesn't need to do any more.  It's confusing for people coming to hugetlb
-from other parts of the kernel, so it really needs to be cleaned up.
+If we're ok increasing the buddy surface this way, then I'd vote for
+only updating the exact interfaces that MST needs to update for his use
+case in a base set of patches, and then have each additional updated
+location (or logical set of locations) updated in follow-ups.
+
+My initial go around with this - the patch was hard to read at best.
+
+But I also think we should also seriously consider not increasing the
+surface of the buddy.  We already have two patterns (either you need to
+call folio_zero_user() or you don't) and adding the wrappers to handle
+this internally means we have 3.
+
+It's a nice to have, but i'm not sure it decreases maintenance issues.
+
+Just my 2-cents for what it's worth.
+
+~Gregory
 
