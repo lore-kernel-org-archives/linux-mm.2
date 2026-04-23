@@ -4,136 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F961F589D5
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40204F589D8
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:42:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69D7C6B008A; Thu, 23 Apr 2026 09:41:00 -0400 (EDT)
+	id 825876B008C; Thu, 23 Apr 2026 09:42:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64D7D6B008C; Thu, 23 Apr 2026 09:41:00 -0400 (EDT)
+	id 7FCC76B0092; Thu, 23 Apr 2026 09:42:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53C3A6B0092; Thu, 23 Apr 2026 09:41:00 -0400 (EDT)
+	id 739DE6B0093; Thu, 23 Apr 2026 09:42:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46C696B008A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:41:00 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3319120169
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:40:59 +0000 (UTC)
-X-FDA: 84689931438.02.86E624A
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 670476B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:42:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0FF2C120188
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:42:05 +0000 (UTC)
+X-FDA: 84689934210.30.07A0976
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2FEBEA0004
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:40:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSik5BHf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6E46B40011
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:42:03 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PsfsVAy8;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776951723; a=rsa-sha256;
+	cv=none;
+	b=lRS1ppbsilV8DgPAgNUC7uG5KTgv5gafp4u6zg+RuxDMLpib+G1MxyOcyaO2QpB81IxV0A
+	7ipvYPjMV0+hgW6eIlWtu9n+XAUF8RfIJcZ/CSnUWtiBg7fjcBfnzgt+z3Mvk5uKTdidzF
+	ckQyG0Zzdq2LssuogdIVgYvHeS96mqU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PsfsVAy8;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776951658;
+	s=arc-20220608; t=1776951723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZpflqOaOGrL8JV00OWy1jqmTkdoY4KmOrH9Ao1Oz3zQ=;
-	b=nMDpL0IxLQ2fnWjYmWGO2EThnbpgKNnigyx1GDhx7+JBdXEJePd9ttWwNZ++5I7kIyub2X
-	SzaIWS5B3TAKrVj7fHEmFaclraMPAy44JoDuc3BDGUTpHKpVAL7Q5NtVTHiWd09JuxZWyn
-	W/XpYBQatIRPkHERgEtmcghg6VBGt+g=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSik5BHf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776951658; a=rsa-sha256;
-	cv=none;
-	b=S0NcmBlPn02jfqn1weXlV6rfa6mafshDkfo/yU0wMAplq0vGxt88ekIBbCt8dMb/Ft1Cyo
-	kx9NPB1lYw6xDrg4FGMbYH1aRN6NIA5Gqc7FcSE772q0FBAQcae8Srhq3ax/8kZk1H5wVq
-	pKkfb7gv8EzUrCOOa19nhM10EzgmSVo=
+	bh=qGKlwQiZakubnAISaYpyLURAxTYG84eBWIwmavCZso8=;
+	b=1fEXaOF/4bOvo9pgFHs8F5cscI8jZE0f7ZoJkK/P/au7G9AqESUqChIxMgRYB5al6cyTrn
+	kIq2kxsoyA9DKdjkrs8KvnULLdpy/VWpjY3KIjpIfnpd6PTC3TSYVpynKlN1lYHGyQdRHb
+	OZ8Qc3p0WA7egZePiVwfRKEFHmXTj1o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C1056013B;
-	Thu, 23 Apr 2026 13:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B232FC2BCAF;
-	Thu, 23 Apr 2026 13:40:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776951657;
-	bh=kbWYQRsR8eQbjfcpNar2gN24mlB/zcQ4Jq7F4eLQ/Uc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qSik5BHfRphh2+WjtZepWBi4tvNmWs2K9X0HsY158a72I4wEXP/zDzX7OGztTjMID
-	 YTBrg6eAyLBVPV0O56eE64aIInKUMiIIvDNoulwi1sNg4SWYfMQeupj5Ru47d1wVhq
-	 7B8r6BfCsnNt8k51tLr27tGM6yZfyWSTmsTDzdBGoUP2vx96dwjAWyyzK02mdsMdE+
-	 ElTqWsYVt6G+6JLMeL8Bf7pZc0O1Qk0LiEw82/HYfIg84XI3uDJCO9TxFYL9cHOU15
-	 Zlkg4uwAUQ8KvPKE7TJlVop0cABYlqfZkWzYotm03+C3gZHyeroevKOf9fqsQPIlRb
-	 N4F836PPel5pg==
-Message-ID: <f6ca5592-9a5b-46bf-94ab-3d8a0e2ad996@kernel.org>
-Date: Thu, 23 Apr 2026 15:40:51 +0200
+	by tor.source.kernel.org (Postfix) with ESMTP id C324F6015B;
+	Thu, 23 Apr 2026 13:42:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5C6C2BCAF;
+	Thu, 23 Apr 2026 13:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776951722;
+	bh=qOaA7NIPr2tw79ziq7W+A48uOM2/yb3Pe/Bnkwop12Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PsfsVAy8uQgOpI3Y4M5eaBM3Sft+GDNd+f16EfK60t9R55sNhFrzmy53+Ltz38S3L
+	 L8JzHVNDr1UrdeJ3HgbUIioD0UZnjTk0UOTbupzHzmm2SAKYkvlG3aFqsOOHErFN9N
+	 B8mgTPo81ti72GOKRH7bDgMvTmKvGxI3/mRfrAOM=
+Date: Thu, 23 Apr 2026 15:42:00 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>
+Subject: Re: [PATCH] mm/gup: honour FOLL_PIN in NOMMU
+ __get_user_pages_locked()
+Message-ID: <2026042336-hermit-stout-a63f@gregkh>
+References: <2026042334-acutely-unadorned-e05c@gregkh>
+ <dee5b7e8-864d-48b5-99cf-282eedaba927@kernel.org>
+ <2026042314-traffic-riverbank-d9a1@gregkh>
+ <b4e0877c-230b-463f-99b6-c363595e7ac0@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] selftests/mm: suppress compiler error in liburing
- check
-To: Li Wang <wangli.ahau@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260422080446.26020-1-wangli.ahau@gmail.com>
- <20260422080446.26020-3-wangli.ahau@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260422080446.26020-3-wangli.ahau@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2FEBEA0004
-X-Stat-Signature: s38i4xefmsrg7ptcbre7fgbk5y48hn5j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b4e0877c-230b-463f-99b6-c363595e7ac0@kernel.org>
+X-Rspamd-Server: rspam10
+X-Stat-Signature: eq9pxftuu6eb4eyzsifnbmdnu4d9xooc
 X-Rspam-User: 
-X-HE-Tag: 1776951658-523515
-X-HE-Meta: U2FsdGVkX19Kzuj2PN2JHofS1TylGybwzyUiLZCEojYfIIyb2Oo2dFHBFh8UPGEFoe4yusi48K0PIp76Dhg8pwtqGhDdJLTeoUzJ7xHBLUif9sr+GDD5e3F2LML26sk8v5nRQ5KFXFaUiQ+TM3dFVBwqK+JLWbPayDLnQ4XoH1o6tz/DWZnixDGR5B0aU5LqKo8/+enwXDknSKF3dyOsmx5Xx+iy0MWnqiLpOi9i5bBZ2df4GUndrfkx43A2BQ0zkBvSJ5bWtcD9UA6F0WChwRTITRcI9bdHReNI1tgMEQ8AkT7CqihMoECjxB1mEkfb3gZF6f2U15twTomAC0wiSoYxwNw2llDgtorhev3Bp4czu2ofterLPvoKgwH4Gnoaz2A3yh3tdjdRnOOCaxaE2RF2BfBtI2E/Yy4c/D/Tl5D2J7kqtiW09gameYPuCfnswdafRnaf+xLbtmVNg/qzkJ3xbfjrnE7+OTiVzXZjH65rk65iFjUCG2s8lzCma+fgvSskY8amu4uOAu4ws/Np9dh1eo3p4vAlG4z2Jkdm6oi6N/UB+EoY+nZZ3KNFmKL+UJGCWnFJMedKs6BOGOyYy2OAr+hsuSc/sRi6yrUHt5TlTXpYegIROBaN+fyBIsUYy43y7642f1pGdvLbfhoq2Jj6KrAzbEOMSpdbP1q7vbS4mz0ddOBWwatqMMgW7A2fSlXypcCrhI0jDepirQoy8IlPqpf601RAcGwD4QSBIsd+WOYQUOlFGQcoYNesCmbMm+4jL6nmAkPFI/IDwuqmMt/8JdGlu5xQoUxQrrOlyjOC+gxe+VClSh5cbxvikk2eiU/eDxc0thPAWBlDdJRM0SCYBS260t0tSBnFqOBMFN0CW9dfDGcjgNjGRdRcxLYM8ptuJ7a4z6u7yRAtDPm4lr9n95p0GWVUraI5jYNNHSQB1mjr3dz0olrfJe6qt43PEx05EbIJfZg3lDcLosL
- S+AUTkP1
- vzo3HHUJWknawM7qMUn8bOBXkrhkOUTNPRyaf/RWSREQjFhjq2zOspervKjGZkDqCyn6odq8RkF+9FxHWxQLBL9ci2PKdYgKyacoTjc3J6M4O69F9AkspNlqSBg7fLlhEvN1fD7lS5QKzTR/mNcf/4XJUDoa1EPqQDOQ1zuZncZTScsPiBBOpWru/SSQLwSNPYfKHIKQ8+N64kQ0fKNQT0u48DPg1grBJO5bOiIdzeJtUKfBf1FkGCiMRPZeEDIJ2u+MCMT+U5TQErZtEBJRDzIpCthqXuYu5xYtLGKu8Nbi3ug1As7W5sfNdRM9THNOE75ytOo4kax9i7U5Cb7lZ+jvke40KW3kNPSmHs0IknATWvPZGygFVsL4vIw==
+X-Rspamd-Queue-Id: 6E46B40011
+X-HE-Tag: 1776951723-216890
+X-HE-Meta: U2FsdGVkX1/nsA94BL5aj0agUGzO17N4hxtNZtbeG5jzsMv6Ek2e4so8JIOLCzjT4leepD7ENnJG+g8dhUvlUmU58wJAXNHi3IskFvz1ADEFY8Wjr6RFIaZkDgUnrAwdciFgTin1bZsvU1VRM8HJRgiZNsHp4t5s14cRx43nJfShoZTh+U5WqLyaWTHC+RrXEB7dhrJIvShDP7T7zbNBw4nhpVqZFHODGljUzhep3tVXuyQxmKjpn/9/ETE/2PdRISCJV0NOSV82aQCg1EZYaKi3loAZBv/sQjJlHWYbNCcV40H5Fp8RD0TknqFETaNptGgeq+We+Gma2aIrvvzR/LUbCOQq7qmOt1ovkDX0nvDXXaQMAMovDxUEp/u0bRc6JTOlPDs5Rqs1LpLdaSSQ8Nt05Vlkvsn1qElO80YYSHJH2vIDk1qvcJD46/CSqKMuvWKBkhYhYqUmykgOLcnj+hZfH4mjzAgZX6OhLAumou9kBTkiXYFF/HiftWoJDfLzikJj50ZPckbliA8TTbE/OhFn0CKAt4AI9JdIqxWiNMraXRfS/v9y1qMZ1gv29fsvajqMhAcgUHGivTUzyUMrqa8i2afzgAJP/bLfCxNz+M6185iYAaH3MMNf7v4dn8sS28WiJSvUNo3VOeCvULegia3xF/p4lmJylF78scSIbn7yT9dWzqlseCZvOElzrqN9QnqrcKZFTJMLSkTYn75+r6QWBIZSGH9aMvTG9F5vXe62tf1ydNJRw/MdX3pCmkKY+7cgZwav+kAkeJzpUGxVxxKC+YcZK4yTpuO6O5agh4abbNrENxyFuNhz5zEqmwFGlrr+MvW7APFwxjGDwmJFQWqy048sFX/zsZkm2COf/xeeVgDhhldcy0xly3AB2K0pHrPy3d5y9lin+lfVP2TkoptluJV18sXRkA4k2JywONN2n7ZCAwCrQ4NL33AC2kks57u4Sf7MVWRmzAho1Qw
+ dmOj5XzC
+ 2ozxBoxlSvFdAJIE/Lu7Fv0UUwa1QWQ+mYhzQ9Znxd6ejzWUdO2cv8So4ARJipbDzy3niPv2HxjonxcogY2t2kdVdDrd0cHVO+JBpl0x35Mgj+2oYoWuBY/F746Z/fTrmU+kgt8j202RAL/k0SjDMl3yXA0Cy4VDhBs9hgPjfgV2rWrWScoaU0Uh6G4e0SeFOvMrATuGHabSLjv3mauznRnZvakV9SXLQDDCVYO4tII0yWPnHSSheG5W60QMBtB5uM0hT9n2tkdGpZCad00EW1VUbOnSIUs25FHMZ6o6W0DQQ8vfA51HbtYzK3YHcLk++4NutTMo/AW4qZ9g3jfLwX2RMk3pYzXGWJx2YprP7tupKr/hLOKUqCxKSsC7iGc7ZUddQKuwn/4qln0fm6KeLWsXtWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,39 +93,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/22/26 10:04, Li Wang wrote:
-> When building the mm selftests on a system without liburing development
-> headers, check_config.sh leaks a raw compiler error:
+On Thu, Apr 23, 2026 at 03:04:56PM +0200, David Hildenbrand (Arm) wrote:
 > 
->   /tmp/tmp.kIIOIqwe3n.c:2:10: fatal error: liburing.h: No such file or directory
->       2 | #include <liburing.h>
->         |          ^~~~~~~~~~~~
+> >> It just follows what we do everywhere else (e.g., follow_page_pte()).
+> >>
+> >>
+> >>> +				if (try_grab_folio(page_folio(pages[i]), 1,
+> >>> +						   foll_flags)) {
+> >>> +					pages[i] = NULL;
+> >>> +					break;
+> >>> +				}
+> >>> +			}
+> >>
+> >> If it fails on the first iteration, we return -EFAULT instead of -ENOMEM.
+> >>
+> >> I know, I know, nobody cares. But if we touch it, we might just want to return
+> >> the error we get from try_grab_folio().
+> > 
+> > So just abort here and return it?  No, that will not work, there's a
+> > lock we would jump around.  How about something like this horrid thing,
+> > adding back in the relevant unlikely() to match the other calls like
+> > this:
+> > 
+> > 
+> > diff --git a/mm/gup.c b/mm/gup.c
+> > index ad9ded39609c..8fa5b37be8b7 100644
+> > --- a/mm/gup.c
+> > +++ b/mm/gup.c
+> > @@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+> >  	struct vm_area_struct *vma;
+> >  	bool must_unlock = false;
+> >  	vm_flags_t vm_flags;
+> > +	int ret;
+> >  	long i;
+> >  
+> >  	if (!nr_pages)
+> > @@ -2019,8 +2020,15 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+> >  
+> >  		if (pages) {
+> >  			pages[i] = virt_to_page((void *)start);
+> > -			if (pages[i])
+> > -				get_page(pages[i]);
+> > +			if (pages[i]) {
+> > +				ret = try_grab_folio(page_folio(pages[i]), 1,
+> > +						     foll_flags);
+> > +				if (unlikely(ret)) {
+> > +					pages[i] = NULL;
+> > +					i = ret;
+> > +					break;
 > 
-> Since this is an expected failure during the configuration probe,
-> redirect the compiler output to /dev/null to hide it.
+> So, we have to report the old i in case of an error.
 > 
-> And the build system prints a clear warning when this occurs:
+> Assuming we want to also return -EFAULT on !pages[i] -- which i think we want,
+> maybe the following (uncompiled and untested)?
 > 
->   Warning: missing liburing support. Some tests will be skipped.
-> 
-> Because the user is properly notified about the missing dependency, the
-> raw compiler error is redundant and only confuse users.
-> 
-> Additionally, update the Makefile to use $(Q) and $(call msg,...) for
-> the check_config.sh execution. This aligns the probe with standard
-> kbuild output formatting, providing a clean "CHK" message instead of
-> printing the raw command during the build.
-> 
-> Signed-off-by: Li Wang <wangli.ahau@gmail.com>
-> ---
+> diff --git a/mm/gup.c b/mm/gup.c
+> index ad9ded39609c..d00ff8d988fa 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+>         struct vm_area_struct *vma;
+>         bool must_unlock = false;
+>         vm_flags_t vm_flags;
+> +       int ret, err = -EFAULT;
+>         long i;
+>  
+>         if (!nr_pages)
+> @@ -2019,8 +2020,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+>  
+>                 if (pages) {
+>                         pages[i] = virt_to_page((void *)start);
+> -                       if (pages[i])
+> -                               get_page(pages[i]);
+> +                       if (!pages[i])
+> +                               break;
+> +                       ret = try_grab_folio(page_folio(pages[i]), 1, foll_flags);
+> +                       if (ret) {
+> +                               pages[i] = NULL;
+> +                               err = ret;
+> +                               break
+> +                       }
+>                 }
+>  
+>                 start = (start + PAGE_SIZE) & PAGE_MASK;
+> @@ -2031,7 +2038,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+>                 *locked = 0;
+>         }
+>  
+> -       return i ? : -EFAULT;
+> +       return i ? : err;
+>  }
+>  #endif /* !CONFIG_MMU */
 
-Thanks!
+Yup, this passes my tests, let me go send a v2 with this version,
+thanks!
 
-Tested-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
+greg k-h
 
