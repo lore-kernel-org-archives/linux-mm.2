@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0BD0FDEE46
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 19:32:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69B9CFDEE3F
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 19:37:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB5F36B0088; Thu, 23 Apr 2026 15:32:40 -0400 (EDT)
+	id AB0686B0088; Thu, 23 Apr 2026 15:37:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D65E96B008A; Thu, 23 Apr 2026 15:32:40 -0400 (EDT)
+	id A610A6B008A; Thu, 23 Apr 2026 15:37:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C55636B008C; Thu, 23 Apr 2026 15:32:40 -0400 (EDT)
+	id 928706B008C; Thu, 23 Apr 2026 15:37:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B1D216B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:32:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5726C8B41C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:32:40 +0000 (UTC)
-X-FDA: 84690817680.13.E5654D3
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010047.outbound.protection.outlook.com [52.101.85.47])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 72145100002
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:32:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Zop6Mngl;
+	by kanga.kvack.org (Postfix) with ESMTP id 810B36B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:37:57 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 22A70404E9
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:37:57 +0000 (UTC)
+X-FDA: 84690830994.24.CDCD27B
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012059.outbound.protection.outlook.com [52.101.43.59])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4E3B218000E
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:37:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cMUgpk4p;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776972757; a=rsa-sha256;
-	cv=pass;
-	b=gtr++ZTcsL5XFInSc4UnfJuFagAFxd5hBc1seAym1Bvt19KrMAZZiWzLZ+a6B7Oreu5HOx
-	NGDtxvW1pP6ZlHv7VPXvVqsx4qJ8Dnn/6HlqOGJBKk9uidc/q2K719hhPVhrsJd29kR40C
-	cg1WFyXJlpgnV7vEz0TQ+jJcxBb+Vj0=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Zop6Mngl;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776972757;
+	s=arc-20220608; t=1776973074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aHOqHBlD9vBnEzLwMzIA9CTuO024D1xoVLeEMO9breE=;
-	b=8Hbu5L8tGZLqLhqJWcSR9bhoySvRQbFKqg93BtqeGt4ZsEK4xI/YWq/bogGdRQAImx0Yrv
-	ZCmrxazQ61Yp9JBVQ6nf/9txN5XT8OoDptBkYFQh2mnWrepEgVnntyuIj9oeJL3NrZ7Rn/
-	CbhIMGNfVCf1Qqxmml5EVvkBnM7sx18=
+	bh=JredVyBM5nlEpUZvgV3+9G1X60D2FFGS5jipuxu2Y8U=;
+	b=YmSNUz5GF/5W2W/qlP0gb5l8IkmmM6PlNUrYmK8CIbWqOveFu7I+gfOGsY/5elQknUdS6+
+	0/Q0Le0gPLnLrjSMNN3LJ7sbissIEYrx+l4z0DPS4Bsdz7TJfnkoye9iaVZIFxmcsHXnl1
+	fKc+LgMWoajQpw8LH3urNR7S3QHyufo=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=cMUgpk4p;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.59 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776973074; a=rsa-sha256;
+	cv=pass;
+	b=bBfYPJqHuWAjjETAeNfeaSz1Omvybps/DTHDtFvhWQ+WUkggZikwPx2U11Nb2USUT0ZsJX
+	TfAjgOEyWqbzx9H/bZ9q0xdg2MG+V5IGS67u48nojOGo96bNjgdxknWLmC3WJCdyzmy5Yg
+	dCBRlIz/JPQ/ykfTAvL5od9/C2vEhZA=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nftWFB+Fu3Cck+9DfQCOIVZ84aI93g83vrw5vccgF8Skga4hWVqNdBN08uZBysn0PVJx9wwzc5PNi4V0w0TE3deX2koHVeWEIl3ku6Grcxbf/LmT0yZZxey4sJiLKydykIuSm4Zt3CwQ9YCASoV1SiZKDOzxoaJjIaWDb8K9Rv9OQu/hmaKwCV1iGeucsVjR9vhVW48bxP6cFH2mm49sjD3pOyPANBoBotwkITKS/f7q4yhh4Faf3fY3NsrtYrehg8PYfVoDeKGJ7jSbUaZvR23d93R/1nSRXQKuxJwfJdqcoikqDeWUjPyy5DuzOnpYYyXW8YLwANeTJZt5b+k2nQ==
+ b=rcLIW9FQC/2ZPqh6vlCEDX7eMJk7niOhnCL7ifO4BAtrKNJ9tvvhMwRYNzS0czA3mNvc6aBD2TEp9Z4D66klRclMJlC6x3lIz1O5wThv+ddfhKP3Ac0b237PS6r/nLU4StAz9Roqv3qBCiJksqV/q0x9bTQN+tGerhMLMKcKbKdgmtqfjeO/mxGq5dUMtVacbRvoexxctux1LoMig38wiJCLZiGu+i17d2/EQSPUNeVtWBLkVbJeRTWPdQIlHAVlBgwPXqLIAheRvDckUALk6cjqVlkg7Jbi5wAetJ2lfoP4yN14HnesNuBWWs8YyALOM2MzbMKKtfL5+xwuC+MOfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aHOqHBlD9vBnEzLwMzIA9CTuO024D1xoVLeEMO9breE=;
- b=f67dTdD0MLH28mnXvs21mbQz3VzN+wdDb3EF6zaaUeHWNK5Of1td4Pweov2SXZCzL1pZKbaM7/YxlB+Q1ocI5r2BGQF8RshNi9e7AGJvZgwtVF/8LkVTkzEBRRpQwv4tEdQ5HZJ/3Pxmd44dXNj+Y+w3eM5IasXAA9c/JnSoSVchJ0r3jgtqz0LTVOrvS3UKlGDagwy7rCgwxxe7VgyU8h9Sc48xusk6/tb5yUC7hOAQYuDlUaspXoMyVdT0K9ZtksAriaz4g+Tp7hdK2v15/7HmjUtj/Z/WIYMY+LL7B9SxPwuJqzjpXHCOtDMZUevuqCeX1dlYyDn03xHhC9cOsA==
+ bh=JredVyBM5nlEpUZvgV3+9G1X60D2FFGS5jipuxu2Y8U=;
+ b=djlH/rNXPFFdm21CLFkAXDXYU+mto5X32CyJDpPnQlq4gk+Guu7p2dkQXd6dE3cHLgDNRsqdnFpFiuAk09ccbrKrR7VgdkrvhiLQSs2+dM5C7ppYAW55Gg9oD+Y+s9ezDpt02JmNI07FTawkFFNDIijOLHcgb5jxo18ta2Y8+Au1WlK8dPahGF+FPyvsAgnccvZuOtFCJjQkv2BlVdmBqGSd908edh+6jF7Vzdif6sNqLdiQwgm1aGliKDY/IW4lXXsOnFpJdLqal3DOVoa0o8RgbljcO6lGRBSWOCvy1rLbVpicZwnQU95bRRFieXHihks8TlMxkHU4O2QNlEEQOA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aHOqHBlD9vBnEzLwMzIA9CTuO024D1xoVLeEMO9breE=;
- b=Zop6Mngl8h2CfxyokWUD0M8lppuEYHoRj0g1yZ8MtVpuL8cd50LWX0uLQAZvl3c2u/4aQ3UK1hBdLEwc/0qemkBYQjD5rBZh0m0ddDV7PHWlAoRIhhJExhy5bBRSY3XOB7q+ktmAv2yLYBK0RcSDwU2WuhG38L7V/m8P69IdwYBx8bKltzrJVQDq8LGmtnhiCb2iOAfIb8/aj0uv4NQjUkXoLPM1ASVCN2LkO4cJXsuQfWXN72tDnQoAAKO3+zCCgoVmlEMVIpDbjZKkGhxzxasC1JQpgtDXKve0LFvyRN52/fScUdvsYtBNIeh97RGiz8Pe6a+BT6ESz3+ZEyuOVQ==
+ bh=JredVyBM5nlEpUZvgV3+9G1X60D2FFGS5jipuxu2Y8U=;
+ b=cMUgpk4pFOnRSMJfgf0QfNEHuQC4tpO/Qukf8+s8c03xap21k9IC2+nJe0YfaZeJvkKCpT/TLyJ5xQV4OKggzPnWaufRGKAuZ9S42oWNrNdkNmZPTNNjXF+Kjc1Qvv7gJBNitnYdYg1VeDpiH4YNzJA5gCStClXxRGNxXWY+Mo/N8T//bvSUV7Sxn1V3eYufBQAZgax11JFW9ogKIV4MlQe/57udZwr9TUvn5UFZhCPI6GC2FdFMva7ueADZaIpjZbxBRRI9d2EwsigwlxXmLETIgXsxbxwI2ufKt0VQ8FZ9RhR3yhZPKUUDPwJmdkMcNSrCnn8PHlh1qM+0pkxHVg==
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DS0PR12MB7849.namprd12.prod.outlook.com (2603:10b6:8:141::14) with Microsoft
+ PH7PR12MB9104.namprd12.prod.outlook.com (2603:10b6:510:2f3::7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.20; Thu, 23 Apr 2026 19:32:29 +0000
+ 15.20.9846.20; Thu, 23 Apr 2026 19:37:47 +0000
 Received: from DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
  ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9846.021; Thu, 23 Apr 2026
- 19:32:29 +0000
+ 19:37:47 +0000
 From: Zi Yan <ziy@nvidia.com>
 To: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
 Cc: david@kernel.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
@@ -83,90 +83,81 @@ Cc: david@kernel.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
  mhocko@suse.com, muchun.song@linux.dev, rppt@kernel.org, surenb@google.com,
  torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org,
  yuzhao@google.com, artem.kuzin@huawei.com
-Subject: Re: [PATCH v2 1/2] mm: drop page refcount zero state semantics
-Date: Thu, 23 Apr 2026 15:32:23 -0400
+Subject: Re: [PATCH v2 2/2] mm: implement page refcount locking via dedicated
+ bit
+Date: Thu, 23 Apr 2026 15:37:44 -0400
 X-Mailer: MailMate (2.0r6290)
-Message-ID: <53FA8505-E7C0-404B-B7F5-3EBE89B64E0C@nvidia.com>
-In-Reply-To: <9fd8ebbc0f4f45be611bae0d03dd25dd994233c0.1776350895.git.gorbunov.ivan@h-partners.com>
+Message-ID: <33C9C8BE-E75C-42A2-BE0C-E5331E3D785E@nvidia.com>
+In-Reply-To: <9936cc799ac8b637ee58ae3bf6ec0e5eeb5306e9.1776350895.git.gorbunov.ivan@h-partners.com>
 References: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
- <9fd8ebbc0f4f45be611bae0d03dd25dd994233c0.1776350895.git.gorbunov.ivan@h-partners.com>
-Content-Type: text/plain; charset=UTF-8
+ <9936cc799ac8b637ee58ae3bf6ec0e5eeb5306e9.1776350895.git.gorbunov.ivan@h-partners.com>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BN9PR03CA0781.namprd03.prod.outlook.com
- (2603:10b6:408:13f::6) To DS7PR12MB9473.namprd12.prod.outlook.com
+X-ClientProxiedBy: BN0PR04CA0009.namprd04.prod.outlook.com
+ (2603:10b6:408:ee::14) To DS7PR12MB9473.namprd12.prod.outlook.com
  (2603:10b6:8:252::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB7849:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0943c882-7d55-4323-44ec-08dea16f0e65
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH7PR12MB9104:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a9091ce-72a7-4e7a-7d36-08dea16fcc28
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|22082099003|18002099003|56012099003;
+	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	FlTWEHc/wqam5tyTDjkuk7+NhkiHclnRO5dSIIciD9wq8n9MVA7w64xELkMB8/q4HXk5zDu6nXz1jP6A/SCNzOiV7PzYGDY7kcxY/PFfU23TGAXm2O49OeIjqDvjdYxa4PBXy3zW9qTCbwWrFQm/U9Jkk2nXGIBPSA65jhpHuatKC7EL9wLTjSxO37QjN0f4wKvnjPZnNN3d8FXCKCQihtwpwvZnKFubNaRti0BwolXVXzAWFmzdBPA6VgTiCIZnRo+pRficpN24VnXwgFr8XY/6m0UakN9S0oXhFckMSqMBa2B25r6zLHFaMYhPxI1bblELCPV7+p1K8zMgAIOA4owwMTnby5XPvDfw+8ImbsigH9tNX32JiERN9xX1A7VE9OARFh0rSkPcVpmqT6SMGyW8WQbFc8EMMKUv8M0ym8YJPfbpLYhDKYjW8G29+gM3WMuZzMpcsEdjhf3aHTMrgJDgHy6cRrxup8IVu+aa+r5EEDoD5lW57cc33NdArKP+mvKA2LGBJzRF2dS0ZAtBrIXmc1aZCkkIOFB0QOqkByWmTSWbV46/1yMFuxhOgnhceq2LhHIkMGXZ6/HGjPWCqdi3S+ewKx5sviXIAM9JSEjta3LzewqCsWgPfkKHWP7btkirPuwZRqOjUpzyg/FTwvEdSKvvgP8gKESRyL608OuqmiaUXSmGMkGTKBCY8PbNXzjmIgbach3EH8lcwyc8T36O0/FwbXMB/J+jNLrDukI=
+	GZgjtOd6IWetC7iPVeJA3bB6kFd86O1kDi+JfEKcRl8ExDbt4mL+JaV/YgQk0vFG+5hIcabkv0vg5A0mt+itoot2/UwhnoAEcrsbfG96EzngoOTsjnZ3mkVmp18q1nvr16CUji7jTTL/jgZMFv1zh2i0Yx+h1XMJSs6mOXv6da3k0/onIRkVbgoa+aUfClOm3NFbufaTNJVMnfN33fAivrsUE9xw6mGudXQxgn+fQVJLx+ZGMcgzVgWQHX+rbHbdoOcQI0G6o8R8BSq2uFlN9W7Jy7Eilj+/ACgf15Bo595QajHeLPPWRcFTbYEMUN0sq5nCR7M8wpG+IkzrXVo+7kHl5Yq2qtS5MGdWlGw7N+TR5T6RdpGlZG5Fke8HxFPZbn4NHu781YWeJwsEmvi8p3PEXvB1NQ8QxfCQVcQhbxfkKrZ0sdg/OoHUt0IH+jpy22a/2tSTwr5L9WbDNR9ABPXrErISS16zO5MqQ+lmw9N28BOtclILpc7clGIS7kGM02AzYqB/MfMVZ9/PJNKy+TFsndOmrU5rlmfoiUI+5kDaMVor/ZUU/6EualJIzCgjwdMG4dq+zvJkixsixaImBckYKXtIUaOcwlWKWhjDcIMxn2dns6tTOkW1iMqULAIlCvgLxxti+keLHyGcSOkJ3GwIwNooHexCGKud069bkwTFFvH/iKSEPmTnGjBC086AL0naHWMr2iODLMdqyiOVwPGWkKz+6ocU0Aa1fDrImuM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ek9KcEFnSmVtbFpUVzhLTnFoT0FYRTlzNXMzNlR1UHdVcGFIZktRc2NJVlRq?=
- =?utf-8?B?OHE5UFVleU1TVTdwZ2gya0FiTUxzT2M4TldMWDBvemk5MnN5Q1lHbzZXR0VS?=
- =?utf-8?B?czFTWVVNYVJaR1BzZERpWWRPS0ZFM3k1dnhlNDJsYXJkZmd4WUx5aWhqeW8v?=
- =?utf-8?B?RWl3MzAzSXV1VmtjeFNQQ3MwUHpJU0VRYTM2akMyNXFJb0FvOUZRZit3MUhK?=
- =?utf-8?B?QXhTdWdRNnpCbGxVTVFOd3JudEZVVnlZci91UlJoUzFEaUxrZ3p6UWpTWDdW?=
- =?utf-8?B?L2JSMzhvdENIcjNjNTdCY0hjN1NSR1VYOHplS1JrNG5YdDhzcEpZU1JaeWtQ?=
- =?utf-8?B?b2dtM0FQdkdILzBMYnpPWTI1cFFQNlU3aFJXaHJDUjcyQlNCemNvaXlXaEEv?=
- =?utf-8?B?cVU2WlB6ZVFpZXBHdldLd1dtc2swU1VseWJJRTJoWElORVlEVFpESW92QzJm?=
- =?utf-8?B?MFpvV3BwZ0tkRmhIVUFBS040VE5EbnlZNVk2T1lKTG40VExWeDNIM0lBQVdB?=
- =?utf-8?B?YkRzMWxUS0RqZzdGWXdlcUJDUzRjL2FTd0g2SlBNWW5KYkFRWTYvZ1B1ZEZC?=
- =?utf-8?B?aEMxSVdPR2pVbEJGbWdnVXhwcWZmWDJNK1VoMGNrdFBJL1pGMGxQbmJPOGV0?=
- =?utf-8?B?eFJjcU9za1N2K2s5UzRkUDhPTnFNeks4aC8zR0Vtekc1MW54S3lDR254Y0tw?=
- =?utf-8?B?UWYyMlVMR0REMXJGWlNpdWtXZTIxUzNsdWtzRTFqaFJQY1Z3dmYvSVJha3Y1?=
- =?utf-8?B?T0lqeVBteW5GTWMzM1VPMk50V1VCdzVIT2ZIS0xHYUN5cXlWU01Xald2V1Zw?=
- =?utf-8?B?Z0h0dkUrTGRaMXpFWldRbUtkZzJnanU2WDVURTVRd28zeDRjQ29hQTk4K0Uy?=
- =?utf-8?B?VHBlZ0UxVVV0SVNnSTNXZlE1QlUxSDkrTjZjNlJrN0p5ODhWUUZlMWNTSWZv?=
- =?utf-8?B?Mk9Pb0t0WndnY0NtbVVGTVV3YXN6OEJrY3RlaVYvaVhaNGIzaFZsVStpR2NY?=
- =?utf-8?B?cnJwN0tPUFpZY3V6ejhmTkljUElQcFNxUjQ1SVBCOGIwbWZicWRVa0FPNHds?=
- =?utf-8?B?S2t0WVRkK0Vqb01pZkF1SXZZdG8xS3QrMDFsRjROd3pHM1hEc2xJUy9KZUp5?=
- =?utf-8?B?MEVqNVZpZWt2R0wxRlUrTEh3UWsxTWdKbEQxTzlkMmovdEJ3UDRPTTZWcVlp?=
- =?utf-8?B?VSthWWZYblN2V1VORjVJNGVYOG1LWXMwZDNwenB2QU9XWE8vd0d6TDZBOXUw?=
- =?utf-8?B?K1VkKzZmSW5IaVdUdEZxN2QrTXpZQXo1d2piamZ2ZlY1UzlIaFppYmZQemRo?=
- =?utf-8?B?NThuK1ppanVHcDIwUnlXVFh4L0phWHdTOFZ2TmVneVBPbkZwaGVkSjU2WWxR?=
- =?utf-8?B?RVpEZTljVzN2OXRxZEhIN2d3MTZyK3IwU2U2eUU3RWlPc2ZTcm11OWZ6Rkdt?=
- =?utf-8?B?Qk9qMU1ENDRic3R1eDBVeEVxZWxpdWl2YjlYYk1WNDFrS2dBL05iSi9PYTZi?=
- =?utf-8?B?V0ljN0Rza0h6Q055N3hXSUF5eWEyNmlsWjZ3TXJpNVVzNUR0NUdjclE5Q0xm?=
- =?utf-8?B?M1ZqZE5FRmpreDQvSTJPM0I2N0FtQlplYlZGY0Znc3lBUzNST2ZmZWhFMFFt?=
- =?utf-8?B?d21zdENMYnIyMVM4YVN4S2xaVGlGUXFiOEJNbW5MYVZ2MEFKUE5LYS9LZ0FX?=
- =?utf-8?B?VWllVDZ0UzBXU09qeUw1c0pGSjZDbFlVTUV6LzhnRExkY01zaXRrUzM4c09t?=
- =?utf-8?B?ay9PSjhEOFB5dnI4U1k2UXliMXFSQ1BMdFlySnZUdTVQb3hVWmNVYm42aFE2?=
- =?utf-8?B?QWFEVkNJa2VhenFHbGYxSkRFaXRTMTdpdmZMdmVDLzFuZlNVNlhhUXc4VmtC?=
- =?utf-8?B?UWpSS1hoZXI0MFZWOG1zNUpLUjNCK1h4YnBsUUV4cHRoRVpHUmRBQ0lVNTNn?=
- =?utf-8?B?aGNST2huZ0NvdTVZOTJqdWVrZGNQUDM3ZVd5K2F6TllGYlB2di9ET2l1ZlZp?=
- =?utf-8?B?eHVnQmQ1MUczaEQ2U2lVVWFRc0hYWnoxcEMxK3ZqcmpWcXB5alR5R283b3ZO?=
- =?utf-8?B?SzZGNmZUVjBxbGNzRHRKcHNUYjJmVlVjK1ozOWsxUExRTWdySTVvcEZ4TEJE?=
- =?utf-8?B?b3VqWGtWQUx1Kyt2K0NEbEcvaklpMDdhSjVDRmJ5dzJNSnBjNUxiU05ENmRv?=
- =?utf-8?B?UU5rdmJ5VlhZcTFwNHkyR3FoTytFVXcreW1lcnRIUjVmTlB1elVWUGsvdFBF?=
- =?utf-8?B?ZWJQTzRTNFJTWmNkV3BKMTEyK3dKU1VsemY2YmtrQ1hMK3hvUTJEZDI3UW1t?=
- =?utf-8?Q?Cf7oSb66trYg17JswC?=
+	=?us-ascii?Q?qPW25D38FnGwcEmElcGTH2VInHICvu+fZvN8cjE4fG+5dTxdGJP04w45KuDd?=
+ =?us-ascii?Q?OLF309gxUBIU0Ke1ZEUiu22L566AqObZVa87biF1McATmsEotwN3WhU40qo2?=
+ =?us-ascii?Q?0Dal6kzzrUzDp3YV/030sLQdh7j2lLbdHAMMzGr6xtbRgKQTkhtYJPn+eW/Q?=
+ =?us-ascii?Q?cypupubPsy4IL6IqvLm51AvcNQ8EnLJRSxkcaeB4nsX2xeI4DWhKd8IVHeOI?=
+ =?us-ascii?Q?6k0dzDl/tRpasJEwuWTnzIPowFNkjwCek/4aobyabHu3bWX6VQIHHxuSaXQr?=
+ =?us-ascii?Q?xv2PypPY6kIosUyXPgbA5gue+gnE3swteK6MtZTsyH75kqOcoVTCDHVtwrK2?=
+ =?us-ascii?Q?dXdXWSt0heKqmYLW+lAbWVX2g0aJGUvyf/jLsWQT4/KDFVbuhPWECCenthI7?=
+ =?us-ascii?Q?M6E6RcnHozoCbHNi21okhhKe1NbTOkH5eaTh/iANDHPzbr0t4ZMG/OZG+l2V?=
+ =?us-ascii?Q?J/XvuM7VOCLAhOKGKNv9emPBNJdEQs7TUicrZIa8NChaZk85ILQtF8asVqTy?=
+ =?us-ascii?Q?P9gPMc2sN+ldSo3FdjcxMQpS6Le0OonZUTKua6uWuDtBVGxoMTo1169U8B2u?=
+ =?us-ascii?Q?lxfNKnsEzaYgAtMfv7KEMS5xPGuYTpQdOmZmlmHPR3pJFGlcKyKbBruOQtLJ?=
+ =?us-ascii?Q?O8MdmCAYbSZajBkZ2cla4sjnp1G+AxM3Y/AzBvAtPhDaC+5DLQFBeBLwB/GD?=
+ =?us-ascii?Q?JZUvVRcLTDKLiVXWI50p6MtVGtkCAruYTaFHD0BXx2E5/gPca9kva4RJVS5j?=
+ =?us-ascii?Q?mqvHB3LWZ65Mg8W0kBhsTQJwEpsa8GGIGlpoCrzR7oHY0BrAAdcx3SFhphwV?=
+ =?us-ascii?Q?u6/WS/l0l+5HbEoBuTfb/+DmNSE0vhuGNh9U7O3kPDv7rzo/VuSYqWq9jqo8?=
+ =?us-ascii?Q?ZNtVjqrmEf3xJB/rcTkqil8Q3SUzcMcVhA5IBEZighbZVOx7HsvUkejtee5T?=
+ =?us-ascii?Q?yHuQky5sYrfAc6xwEAZyDLIVS1Y4zZuxvJWm7KKRDtMv/DaBzXxk7SLY4sAN?=
+ =?us-ascii?Q?aA6dswbWjzb6KVFCpwCzoHiXfdCLuyZrfsxWE1cgkO0EzkS0wE9kxguEdOMV?=
+ =?us-ascii?Q?4q5cFzyWfRc4+GWgVaWrrPUBsb0bVAnGPjUxc39eR7cXzaNmUFPOctwWlg+R?=
+ =?us-ascii?Q?BgMb6KDfnUO6YvFB1JrjU+VfC0AQ0dyqhtYPO9v7zPMcvvVGLNvi6IwGPfZ0?=
+ =?us-ascii?Q?5NnlnaDbcOnSc15NcYaMi8qed8rGnTaDuHmHwyrsHom8GgNlO1RMhTu3cw3S?=
+ =?us-ascii?Q?7UvCfEzuCyVcM9vXYSuxLjw++CtIHWM9bBy6RKlLo+IJLZ9RySVnAzyxAAhE?=
+ =?us-ascii?Q?w7FuvHB3lYx2kg950bdjPPeu5V7aRI7TO7qBAHVfoPKrYePPDVjk6TLJfdmz?=
+ =?us-ascii?Q?/nshKrwtDEyhWpGBJlbDprjbgnWn/c8ddiafLDp0N8nlUw9PcI9eqDR9q0lk?=
+ =?us-ascii?Q?siFXQMqCkgpOi5gfG86MS0iR1BvFQoB4lUcYCSZLHquxf50eD2flgEfat7+e?=
+ =?us-ascii?Q?3Sx73vBaCGv/oYBwpwPzY7z44F7ojOZU0TtqxCrPOzZ6IqzMuM2R0DUgJYzf?=
+ =?us-ascii?Q?FjbKWJfXLy1CpHwyNLZO6Gl3bEKh1zYFU9iRMWyVstcXSkJwoa5Kwq9woFm/?=
+ =?us-ascii?Q?0ekYFBHoIwqn75AvQ48epu1B+dnERq9qdCF8UoYhBaWNabSyElD4rsICV9zY?=
+ =?us-ascii?Q?kfP4sMIlgpPpzKZaVjIAKrQ9QWFRxKG8kpNWgnAJ9v++94xM?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0943c882-7d55-4323-44ec-08dea16f0e65
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a9091ce-72a7-4e7a-7d36-08dea16fcc28
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 19:32:28.9867
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 19:37:47.3104
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3/obaxAnM9yMGFyAIIoafsFC+DUjM80KnesCYeZEUwR/WW0/S0nnzCw+89T+7Asb
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7849
-X-Rspamd-Queue-Id: 72145100002
-X-Rspamd-Server: rspam12
-X-Stat-Signature: dzq53r8brmrrs5bmsbu5nctpb7icxqi7
+X-MS-Exchange-CrossTenant-UserPrincipalName: RZFOqa8t9xol/ijNh4b1xqLxscFMNSsZyHCjNlSmUGS/pnQSadiNsXNuZe/lvuyE
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9104
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4E3B218000E
+X-Stat-Signature: 97ppyz4xndoqza1jidh6cye6nrwhuqkj
 X-Rspam-User: 
-X-HE-Tag: 1776972757-155835
-X-HE-Meta: U2FsdGVkX1+O1zI1liRLQQlSST2+wH2+dCdRyk7uR6dRy+vB5bYxHNQTSksnYfA+VRr3IBTTBSMm3UWFyNt2Df5ePKA7gAoh/toybgmWgClUl1tcT7wBzxx7ox7bQORISYqyWZ3l6E9nL3yrQfWFglfYwA3FvXGEGbC5XyK87g/Uc6aksOUbCkXkq8ByAHaBn2WKL4IDSM/GBFnXMDQ2D4k4Xh/46dLNoz5YjLI5Qt9qVehj+KCL0jQp4h5YlQJCOPh6iCLyyjbRwrCLiRy026sBzHuCecigiz6tknIy6R0MvI5VLpg/pihdMxJF50aOAOgANHLFH351U2PgVGqckseVtxs/phL/+/vwfP5bqHnlQlvMCnOr6/1PUvN++m5Ihf+SG6YlRqr4PZwIur11AVdvOaBmMSyA0Z89rnyylc/xAEViFzXbtgPMpGeoIH9kbkxtcnii9Bl/kt7ls5yrdyp4K66LNtR24nystF+pMTXNNcPhNSGOrLExGNCxuUqIjNw6n38xlr1ku9c8ZVR/nqFpxMS8GbcN8NXwmDm8Df3MerqtMxAmBSA/oiK5l/MZUVC5RurcBJf7dzSTIycwXzjl4+UJo82S9L4vyYFO+wocb3loxs8wTLPE613eRB+emkQ9j+qaGXPotdvdGFhqgqkanTK2FgZpmwvPnSSbuT73AuVTYeIaVg/TZHgadLBNVW6QCdMas6Ix6e5/X9m/pSnGw3sJqgVLOLIEfp5wDq8BTFU9ZTI88NSqs5wEd4JrHMNoIfOJF84IhDme9FujD3y4f/gx97OpB0QSAiCHhs2yaI+BnKGI/REu9h+m6A7SQgzGE3/oNvSvHRYWBYnkh4YB/U+LDRHRTAxYSpn8q48FnzgN6rs5Kx1ZwYN380du85g8efRAId2NfE6rs20YZzdDQR50VUHWN3vd8cA6qeDcMdOBfJbtPxy5a1giz4Hxkry2GnO9rP+95V90B7z
- 4GH/QgxV
- t8kp5KPEZxXF6Y+XYq1IWBKWCO+LrY/oxv2I4hhcHTj+UgC6WZg3degVL1HJ96WAWnlV5P2NuCpsJSe/svNC1zb2y5LzMMv5Bru16R0qTwBmcbhqXHw+J864/d+b9t5+uB4KjFrX1uGe0IU8IyCoKQmCxGtk8e2QquRTzxg3KNyNZFvBX7HFIT7/sorluIoTR5twQg6M+VIgmCpZxBx+9jpy3S0g1sKDdtNlOB/hLtDYUJDD6e7fnj9bLAl7dAEkf0nHI3vMNvtQFTMFcDGZwxSsV2MxbTp0JvVjeaUeP466HJVk0tf96d33e7UqX+D9YXvYWg8nl1kLgh8AqIfVLrbU4J/wBRv0y58mdAr/HZ1SQjz+GtFbIkduJRm/k7ORqtdvFYmtsJdn13Nc=
+X-HE-Tag: 1776973074-482367
+X-HE-Meta: U2FsdGVkX1+SpQ/CiiOGiYAmbf3LcapP0VHAo9H3Y4ivzbJkJNn0mFcgk2NtdZcYvaVExrgkzTcyT+oGYb62qV0J6Zd+co4AHAzMtdy9KX80Xt4451I+2z2UjbyqqZ8uF12eTfFBt5wACBi4NzGRyPXdduP6XutPQYqnmLfwGsShVrwNmv/WifIEPIXd6pJQb6f6Dj+zjR7DQ+U1pekq58XTO2kNOMVzrZ4kzowNd9DhdzO3v2IYljeBzi6s3rC8pcK2R9Vf47yqO9LMbgtYcjJcfDZnNH3OJr5pnzSNKeXARdAbQzWRB0sll1qArqIZ0c1Z4YPkjPPSL7wFc1Cj+lK9p/zB9fvqH+1S8D4eZfQn3ceRh+k47VlmR28N1NY6FsKXRcHVjDN79O/1mFMjrKawIdnT/a7hPLNw+mH+6M1MiRQO1hQLckK60ZjOBaTJgdlMG+3mWt1YXkiBoZt08+WsltC25t0cZBggClWFZ+4f0cl0gpwa8nqcKjQl+sgZVHsWT7QYnYvXw3ifmd4wT3E9mrz6UMFMFlQCbd6lriiALz05VKG69w++0L/vB/Ru0ZNwIbhzl7TI9l/XgD/JwvgllNmS+A0gamom1mptI1PIHNHP4B14CSk8aTd6HJY5aYKuuPWCJz1O8AB0WzlmbIaSeo4R1SEuSEG8EG08h2CjggzSGVSSoGHHER8CVH2cbOOPd4m30oTuT40um+z4Ik/McEGsbcYMb1IXPn5mCh35Q8WcofmPU+h29AWABvJrUrucX4lblQErAy30CN/TBcJofJjOEY28y/xJ6XNjqzrAlmyGcNS1BR5R+PbJwP0nbWPJPEvpqcT4noiNMUTjYorZpiR1Aa6ddIdK9m2X2FOzlFzaleduzG2K94+l6zbqfkBVdmm3n96RLckkKAdBStSLaTCFYeuGa64boqxlQSdg+sk7a1k52bj9BophAQ5wuArNYMuRSuteCT6FaYh
+ E2cfMI7U
+ LcmmxxntpJXAeSOoxPtB/N0QKTUefEMmMxFlowQkI09fv5skh/VqozaSRw1XmTsAJPLKqMzcwIfSY0eP7XV+WZI07NkyapFhFl/rJVDyhdqNM7VgZadszMnnbW3NipPZcmss4cZObgwVrpX0TKX6vsFRC9a1N6OFpqdo22HipG/GtkRwhwvnPpFnnrixm78SVuwgm7pevgOjxMPtEFFuQKheX0ygY8vmUyvICq+2gWZWPXu0+kzyod7t9aOu+oM0PGw/1srduAOjmR7Sw6XiWMSomfOA7jQQGXi8p2/LPxX6IQdhnfbZdZTMYMTQx8kpOheDJ65nAJ0QkLhpNP/lPO3DBXwrYC+BdifDTFtiBX4OieRdZUqRnSlGgmCKKcmzZ1PkioEYAqpa58MPRhGg3GMXbEJearvwULA9Jxr8xTl1mpsyP5agLXwdId/+VvVgVFArKzp6Yz9LS39eSUU2l3vRlCKvIxYeSDjWP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,216 +167,160 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 20 Apr 2026, at 4:01, Gorbunov Ivan wrote:
 
-> Right now 'zero' state could be interpreted in 2 ways
-> 1) Unfrozen page which right now has no explicit owner
-> 2) Frozen page
+> From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
 >
-> This states can be 'logically' distinguished by operations such as
-> page_ref_add, page_ref_inc, etc. In the first we would want the counter t=
-o
-> increase.
->
-> For example one can write
->
-> page =3D alloc_frozen_page(...);
-> page_ref_inc(page, 1);
->
-> But in the second state increasing a counter of a frozen page, shouldn't =
-be valid at all.
->
-> Another reason for change is our other patch (mm: implement page refcount=
- locking via dedicated bit)
-> in which frozen pages do not have 0 value in refcount when frozen.
->
-> This patch proposes 2 changes
-> 1) Deprecate invariant that the value stored in reference count of frozen=
- page is 0
-> (Getter functions folio_ref_count/page_ref_count must still return 0 for =
-frozen pages)
-> 2) Allow modification operations like page_ref_add to be used only with
->    pages with owners
+> The current atomic-based page refcount implementation treats zero
+> counter as dead and requires a compare-and-swap loop in folio_try_get()=
 
-Should we also ban calling set_page_count() except init_page_count() and
-set_page_count_as_frozen()? So that no one can manipulate page refcount
-randomly. The same applies to folio_set_count().
-
-All set_page_count(..., 0) are converted to set_page_count_as_frozen().
-All set_page_count(..., 1) are converted to init_page_count().
-
-We might need an init_folio_count() for folio_set_count(..., 1) users
-and folio_set_count() has no other use.
-
-I see set_page_count(page, PAGE_FRAG_CACHE_MAX_SIZE + 1); from
-mm/page_frag_cache.c and it could be converted to page_ref_unfreeze(),
-since above it there is free_frozen_page(), which makes me think the
-page is frozen.
-
+> to prevent incrementing a dead refcount. This CAS loop acts as a
+> serialization point and can become a significant bottleneck during
+> high-frequency file read operations.
 >
-> We've looked at places where pages are allocated, and they are
-> always initialized via functions like set_page_count(page, 1). However, f=
-or
-> clarity, we've added a debug BUG_ON inside modification functions to ensu=
-re
-> that they are called only on pages with owners. In future those
-> checks can be improved by replacing operations with their results
-> returning analogs, if needed.
+> This patch introduces PAGEREF_FROZEN_BIT to distinguish between a
+> (temporary) zero refcount and a locked (dead/frozen) state. Because now=
+
+> incrementing counter doesn't affect it's locked/unlocked state, it is
+> possible to use an optimistic atomic_add_return() in
+> page_ref_add_unless_zero() that operates independently of the locked bi=
+t.
+> The locked state is handled after the increment attempt, eliminating th=
+e
+> need for the CAS loop.
 >
-> Co-developed-by: Gladyshev Ilya <gorbunov.ivan@h-partners.com>
-> Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+> If locked state is detected after atomic_add(), pageref counter will be=
+
+> reset with CAS loop, eliminating theoretical possibility of overflow.
+>
+> Co-developed-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
 > Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-> ---
->  drivers/pci/p2pdma.c               |  2 +-
->  include/linux/page_ref.h           | 17 +++++++++++++++++
->  kernel/liveupdate/kexec_handover.c |  2 +-
->  mm/hugetlb.c                       |  2 +-
->  mm/mm_init.c                       |  6 +++---
->  mm/page_alloc.c                    |  4 ++--
->  6 files changed, 25 insertions(+), 8 deletions(-)
+> Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+> Acked-by: Linus Torvalds <torvalds@linuxfoundation.org>
 >
-> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-> index e0f546166eb8..e060ae7e1644 100644
-> --- a/drivers/pci/p2pdma.c
-> +++ b/drivers/pci/p2pdma.c
-> @@ -158,7 +158,7 @@ static int p2pmem_alloc_mmap(struct file *filp, struc=
-t kobject *kobj,
->  			 * because we don't want to trigger the
->  			 * p2pdma_folio_free() path.
->  			 */
-> -			set_page_count(page, 0);
-> +			set_page_count_as_frozen(page);
-
-This should be page_ref_dec(page), since the comment says =E2=80=9CWe don=
-=E2=80=99t use put_page()=E2=80=9D,
-meaning the code is intended to drop a ref and set_page_count(page, 0) is
-just a shortcut.
-
->  			percpu_ref_put(ref);
->  			return ret;
->  		}
+> ---
+>  include/linux/page-flags.h | 13 +++++++++++++
+>  include/linux/page_ref.h   | 28 ++++++++++++++++++++++++----
+>  2 files changed, 37 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 0e03d816e8b9..b3e3da91a90a 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -196,6 +196,19 @@ enum pageflags {
+>
+>  #define PAGEFLAGS_MASK		((1UL << NR_PAGEFLAGS) - 1)
+>
+> +/* Most significant bit in page refcount */
+> +#define PAGEREF_FROZEN_BIT BIT(31)
+> +
+> +/* Page reference counter can be in 4 logical states,
+> + * which are described below with their value representation
+> + *        state              |         value
+> + * (1)  safe with  owners    |   1...INT_MAX
+> + * (2)  safe with no owners  |         0
+> + * (3)  frozen               |  INT_MIN....-1
+> + *
+> + * State (2) can be only temporally inside dec_and_test.
+> + */
+> +
+>  #ifndef __GENERATING_BOUNDS_H
+>
+>  /*
 > diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-> index 94d3f0e71c06..a7a07b61d2ae 100644
+> index a7a07b61d2ae..32194e953674 100644
 > --- a/include/linux/page_ref.h
 > +++ b/include/linux/page_ref.h
-> @@ -62,6 +62,11 @@ static inline void __page_ref_unfreeze(struct page *pa=
-ge, int v)
+> @@ -64,12 +64,17 @@ static inline void __page_ref_unfreeze(struct page =
+*page, int v)
 >
->  #endif
->
-> +static inline bool __page_count_is_frozen(int count)
-> +{
-> +	return count =3D=3D 0;
-> +}
-> +
->  static inline int page_ref_count(const struct page *page)
+>  static inline bool __page_count_is_frozen(int count)
 >  {
->  	return atomic_read(&page->_refcount);
-> @@ -115,8 +120,14 @@ static inline void init_page_count(struct page *page=
-)
->  	set_page_count(page, 1);
+> -	return count =3D=3D 0;
+> +	return count > 0 && !((count & PAGEREF_FROZEN_BIT) !=3D 0);
 >  }
 >
-> +static inline void set_page_count_as_frozen(struct page *page)
-> +{
-> +	set_page_count(page, 0);
-> +}
+>  static inline int page_ref_count(const struct page *page)
+>  {
+> -	return atomic_read(&page->_refcount);
+> +	int val =3D atomic_read(&page->_refcount);
 > +
->  static inline void page_ref_add(struct page *page, int nr)
->  {
-> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
->  	atomic_add(nr, &page->_refcount);
->  	if (page_ref_tracepoint_active(page_ref_mod))
->  		__page_ref_mod(page, nr);
-> @@ -129,6 +140,7 @@ static inline void folio_ref_add(struct folio *folio,=
- int nr)
->
->  static inline void page_ref_sub(struct page *page, int nr)
->  {
-> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
->  	atomic_sub(nr, &page->_refcount);
->  	if (page_ref_tracepoint_active(page_ref_mod))
->  		__page_ref_mod(page, -nr);
-> @@ -142,6 +154,7 @@ static inline void folio_ref_sub(struct folio *folio,=
- int nr)
->  static inline int folio_ref_sub_return(struct folio *folio, int nr)
->  {
->  	int ret =3D atomic_sub_return(nr, &folio->_refcount);
-> +	VM_BUG_ON(__page_count_is_frozen(ret + nr));
->
->  	if (page_ref_tracepoint_active(page_ref_mod_and_return))
->  		__page_ref_mod_and_return(&folio->page, -nr, ret);
-> @@ -150,6 +163,7 @@ static inline int folio_ref_sub_return(struct folio *=
-folio, int nr)
->
->  static inline void page_ref_inc(struct page *page)
->  {
-> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
->  	atomic_inc(&page->_refcount);
->  	if (page_ref_tracepoint_active(page_ref_mod))
->  		__page_ref_mod(page, 1);
-> @@ -162,6 +176,7 @@ static inline void folio_ref_inc(struct folio *folio)
->
->  static inline void page_ref_dec(struct page *page)
->  {
-> +	VM_BUG_ON(__page_count_is_frozen(page_count(page)));
->  	atomic_dec(&page->_refcount);
->  	if (page_ref_tracepoint_active(page_ref_mod))
->  		__page_ref_mod(page, -1);
-> @@ -189,6 +204,7 @@ static inline int folio_ref_sub_and_test(struct folio=
- *folio, int nr)
->  static inline int page_ref_inc_return(struct page *page)
->  {
->  	int ret =3D atomic_inc_return(&page->_refcount);
-> +	VM_BUG_ON(__page_count_is_frozen(ret - 1));
->
->  	if (page_ref_tracepoint_active(page_ref_mod_and_return))
->  		__page_ref_mod_and_return(page, 1, ret);
-> @@ -217,6 +233,7 @@ static inline int folio_ref_dec_and_test(struct folio=
- *folio)
->  static inline int page_ref_dec_return(struct page *page)
->  {
->  	int ret =3D atomic_dec_return(&page->_refcount);
-> +	VM_BUG_ON(__page_count_is_frozen(ret + 1));
->
->  	if (page_ref_tracepoint_active(page_ref_mod_and_return))
->  		__page_ref_mod_and_return(page, -1, ret);
+> +	if (unlikely(val & PAGEREF_FROZEN_BIT))
+> +		return 0;
 
-VM_WARN_ON_ONCE() might be better?
+page_expected_state() (called by free_page_is_bad()) checks page_ref_coun=
+t() =3D=3D 0.
+This change alone means frozen page can be leaked into buddy. But I think=
 
+buddy pages should have ->_refcount to be 0, since the comment above says=
 
-<snip>
+(2)  safe with no owners  |         0
 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 65e702fade61..27734cf795da 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1639,14 +1639,14 @@ void __meminit __free_pages_core(struct page *pag=
-e, unsigned int order,
->  		for (loop =3D 0; loop < nr_pages; loop++, p++) {
->  			VM_WARN_ON_ONCE(PageReserved(p));
->  			__ClearPageOffline(p);
-> -			set_page_count(p, 0);
-> +			set_page_count_as_frozen(p);
->  		}
+> +
+> +	return val;
+>  }
 >
->  		adjust_managed_page_count(page, nr_pages);
->  	} else {
->  		for (loop =3D 0; loop < nr_pages; loop++, p++) {
->  			__ClearPageReserved(p);
-> -			set_page_count(p, 0);
-> +			set_page_count_as_frozen(p);
->  		}
+>  /**
+> @@ -191,6 +196,9 @@ static inline int page_ref_sub_and_test(struct page=
+ *page, int nr)
+>  {
+>  	int ret =3D atomic_sub_and_test(nr, &page->_refcount);
 >
->  		/* memblock adjusts totalram_pages() manually. */
-> --=20
+> +	if (ret)
+> +		ret =3D !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_=
+BIT);
+> +
+>  	if (page_ref_tracepoint_active(page_ref_mod_and_test))
+>  		__page_ref_mod_and_test(page, -nr, ret);
+>  	return ret;
+> @@ -220,6 +228,9 @@ static inline int page_ref_dec_and_test(struct page=
+ *page)
+>  {
+>  	int ret =3D atomic_dec_and_test(&page->_refcount);
+>
+> +	if (ret)
+> +		ret =3D !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_=
+BIT);
+> +
+>  	if (page_ref_tracepoint_active(page_ref_mod_and_test))
+>  		__page_ref_mod_and_test(page, -1, ret);
+>  	return ret;
+> @@ -245,9 +256,18 @@ static inline int folio_ref_dec_return(struct foli=
+o *folio)
+>  	return page_ref_dec_return(&folio->page);
+>  }
+>
+> +#define _PAGEREF_FROZEN_LIMIT	((1 << 30) | PAGEREF_FROZEN_BIT)
+> +
+>  static inline bool page_ref_add_unless_zero(struct page *page, int nr)=
 
-Not sure about these two, they freeze p and p goes into buddy without
-unfreeze to refcount=3D=3D0. But at the beginning, you said there are two
-states:
-1) Unfrozen page which right now has no explicit owner
-2) Frozen page
+>  {
+> -	bool ret =3D atomic_add_unless(&page->_refcount, nr, 0);
+> +	bool ret =3D false;
+> +	int val =3D atomic_add_return(nr, &page->_refcount);
+> +	// See PAGEREF_FROZEN_BIT declaration in page-flags.h for details
+> +	ret =3D !(val & PAGEREF_FROZEN_BIT);
+> +
+> +	/* Undo atomic_add() if counter is locked and scary big */
+> +	while (unlikely((unsigned int)val >=3D _PAGEREF_FROZEN_LIMIT))
+> +		val =3D atomic_cmpxchg_relaxed(&page->_refcount, val, PAGEREF_FROZEN=
+_BIT);
+>
+>  	if (page_ref_tracepoint_active(page_ref_mod_unless))
+>  		__page_ref_mod_unless(page, nr, ret);
+> @@ -282,7 +302,7 @@ static inline bool folio_ref_try_add(struct folio *=
+folio, int count)
+>
+>  static inline int page_ref_freeze(struct page *page, int count)
+>  {
+> -	int ret =3D likely(atomic_cmpxchg(&page->_refcount, count, 0) =3D=3D =
+count);
+> +	int ret =3D likely(atomic_cmpxchg(&page->_refcount, count, PAGEREF_FR=
+OZEN_BIT) =3D=3D count);
+>
+>  	if (page_ref_tracepoint_active(page_ref_freeze))
+>  		__page_ref_freeze(page, count, ret);
+> -- =
 
-1) means free pages in buddy. But the above change brings frozen pages
-into buddy, mixing the two states into one. Is that intended?
+> 2.43.0
 
 
 Best Regards,
