@@ -4,118 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D63FDEE32
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:42:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6BFEFDEE38
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595006B0088; Thu, 23 Apr 2026 13:42:12 -0400 (EDT)
+	id 54A4B6B008C; Thu, 23 Apr 2026 13:43:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 546006B008A; Thu, 23 Apr 2026 13:42:12 -0400 (EDT)
+	id 4D2666B0096; Thu, 23 Apr 2026 13:43:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45BD26B008C; Thu, 23 Apr 2026 13:42:12 -0400 (EDT)
+	id 3C0F56B0098; Thu, 23 Apr 2026 13:43:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 347CF6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:42:12 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D90501603B7
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:42:11 +0000 (UTC)
-X-FDA: 84690539262.17.AE8FD71
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 16FB018000A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:42:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=i7kLlABe;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 204726B0092
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:43:35 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BBDA11B6D30
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:43:34 +0000 (UTC)
+X-FDA: 84690542748.12.B15ED0E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A304CA000B
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:43:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BNpbz00n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776966130;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776966212;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q8pH7aIhkAAd4FmOdPYp3EielDOR+Hmc79iCFACzh0o=;
-	b=mbLjuwJnWpKzOhc0LhonRYUhFU5xgRoyZ30CnTuk2O5XomPZ2fNnxRdV+bCQcrrVb/AZHv
-	ysw6pvam2J6B5RiqS1guMHb4YJJ61Sf/w6ihnr9rvgNAe4AZ+KVjQRmnKNPcnonXFgrVlY
-	7cqYZfwfsH/sINBKEm5+XV4OpSYhxb0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776966130; a=rsa-sha256;
-	cv=none;
-	b=rtHP/v0zPP9njjXVV3iX+cm4LATs+JkxIHrDIELDdAYdylOMW2s+ZFmwB36bz15Yko5mST
-	xNv4NJ0MVnpWbYtJhAtrobpT1CidjNB8JkB/fT+W0LFuQHqMg6p7KjNC7CtECsJLtU5YEP
-	ExPaYNDgM5YXY1f7vpLicdjj6nweT/E=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=4OziCdpIFhnQe5jkWcFZAONDyyEl9IAA5cN0nOd/fpo=;
+	b=0xw+c7NVcGRmO65Io5OM0UajYcdca9qkqODFs+2GOGA+o+cyDAJtaM9hJmgLNstJ0d63xx
+	nkpKwaFnzxLO7XxJjKUxqFhXSITxqe4X+yt1oAKje9oLFhx/o/cJFgD1q4gx33KKlSt8n3
+	1kX4k29L0U27ibVlq6Pj0wOA4KGIc+I=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=i7kLlABe;
-	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a5800772f3so51112686d6.2
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:42:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1776966129; x=1777570929; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q8pH7aIhkAAd4FmOdPYp3EielDOR+Hmc79iCFACzh0o=;
-        b=i7kLlABeePbZu+L/YJyjbMDDloUr+WRKR0srW2lIxNNkUueCiM0rNmRCko6UF/DIyb
-         d51RX5y2C/KbiFSGueqE7s0GLjWuZug/PnRfM3+6MRuNds22sp4FgFIXxYmRRI4UnNRS
-         wHDNwlgpmTQMDLFRb67ZOw9j/GH/pRunGQUa5Th0hmReuxRL5XeWUa0PeMMw2ouuXjBY
-         1crgt35cDzVVzCp+qFKTB6jMNx33hgcD/nZnQ4FhQLJHrnejJ7FGZyRiP/G5r1WYwFBK
-         z+Zpz977H7om9GeYqMShoF6Kw583hNHgDpJFmqrQXby6HLyoS3FB0zcE5mLX92vAD28/
-         v2XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776966129; x=1777570929;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q8pH7aIhkAAd4FmOdPYp3EielDOR+Hmc79iCFACzh0o=;
-        b=YXbDZuGLV2IWw7ZvgAk+ubMfXlUikJ7/t1ff54CBioQdlRVwvgHp/wDwBN0+CPReN5
-         0RbCCHJSGpazybMUda9n/Mk7h9cfhsXZYn3Vtvjnwx3ou8AnIX2olDsYnNvT9gGEEDZ5
-         iWAzSpTpFZQlrJKB3pMlW8IqAaBxAC6URnyStRow5iW6d2ciwfhNXycrQTfyWCnCosau
-         kiOTtOKSEmjF77B1ai6Rh/VXspvDgJKrEqR99o3LSf4+I2hzCOrJCXAoBE9li47NGzaS
-         deDiRi2zL/8rWCEJMuj2tGPIvHu5vqfJ4gJflx8rN+v+RzEddsI3VOBObX2G2WA4vqWT
-         V2oA==
-X-Forwarded-Encrypted: i=1; AFNElJ/3MoxJdJeUWaMwvfQhKpHLFnX7vIGS5gBU4YRKnC3rRF2hR/K7ytEJOT8OXedBm1bLWSPA7CzufQ==@kvack.org
-X-Gm-Message-State: AOJu0YwqUML/OnIx+DTEUgRV5Gc2GdH9vE822XxXXLtlGjw4UMFfnNwy
-	IM+KySK73M370mE4BE4x705VGUwKMi/OhQnnpdpXNI4L2XZi7JxTB2qvp5Dc2mqC9Jg=
-X-Gm-Gg: AeBDieutPQ7kBJTMKd6dnmQxSHS4CMCcuAK9XNtFD0XUa6dIPTogYSECELrsQbn522G
-	pqcMjJ+2YBeriTH24po+9jzxYZbTUUqFpuQk9Zm1bBERKWZUrJDNPMRDxlF+FjWFLcldrUw9opm
-	2crnvGUwHp9/I1+U2KIBsEYBRT2J7V86TqVrEWwx3q4Eg7h44NDBCy8gHvCgRTn/3UUsK3mcEwT
-	QZLDDATcG528jYd+Z95k2QI1X95r+C1md9nKLCbwd6XDajcYAh0dpGj74pcMHbhMqZCAkBM07qO
-	2AzAxIBFqPHZZg3VaD069Mo7iqvNCjIq2PFSb5yZYoehxgru+3Y9yGM9e3krNBORBY3OtbOEsTl
-	kOU7WdS4s3k8JrozAPdS5JiK2YH5LME7u303etBnFSShe/KMmvPTpi2cXkjg/1YIBbe5Y/YIjVr
-	MeDzBu5FAw85AqN4vmvXcMtvVQj66ne7nhqh89OhRAkJSW1uygIZvT0YkfVbjkcA==
-X-Received: by 2002:a05:6214:8016:b0:8ac:b328:1314 with SMTP id 6a1803df08f44-8b028012885mr364606876d6.10.1776966128995;
-        Thu, 23 Apr 2026 10:42:08 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac78513sm164398756d6.19.2026.04.23.10.42.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 10:42:08 -0700 (PDT)
-Date: Thu, 23 Apr 2026 17:42:07 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Michal Clapinski <mclapinski@google.com>
-Cc: Evangelos Petrongonas <epetron@amazon.de>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v9 1/3] kho: fix deferred initialization of scratch areas
-Message-ID: <aepZ4BAmfJ6_CtlG@plex>
-References: <20260423122538.140993-1-mclapinski@google.com>
- <20260423122538.140993-2-mclapinski@google.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BNpbz00n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776966212; a=rsa-sha256;
+	cv=none;
+	b=c7EPS0XlJzEqwLjtawshyIoH2RVh9MXIDOkXn/+Ynwv+qjfgldLEuXroM2H5y8WKLBNyTg
+	cIyi64HVNeBRTo/rT0mnQ1WjCG/6IvPcq8K46ZejFjSB/B2ZRuFeBe2+hDj1G4RNXwRwKP
+	VxeQqCEdEB0vJjKLEB8/rB955UBSx+w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7A8EE43FAB;
+	Thu, 23 Apr 2026 17:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4FA39C2BCAF;
+	Thu, 23 Apr 2026 17:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776966211;
+	bh=a5HDBM0rUc6NH05S1c4/zCy8Ys8o6IfqV9DBQEdFJjU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=BNpbz00n8scYYknHP06dBVJj0IPOWCa5v4JSPHR0EdUU7W6eQ94gXkJa/xPGaGN03
+	 zJeusa8FCpHVWUoW4IKH/MaULH18QLxFKd8xquFv2i/dKsH+IW8yvIc++blFK+eSpZ
+	 u+drf9vEf8JU5RaUKXB0i/AlJEWkMXCP7++FbO3G/m7HWCqjfaarWz5+b0RHFswVjt
+	 ngldRrDpQiCFbLSS3OY19lySNOJNKfDHMN8f64/n53rGj9Oi7qSOzdePW3TvJDVHnY
+	 57kGJM1f1c5o8/hAPtJ4ellGvjn0kRJ0FSlZPMcGV3Xj0mImLb9/cago3UobUHviDV
+	 X3u0tN1pGLveg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B979FDEE33;
+	Thu, 23 Apr 2026 17:43:31 +0000 (UTC)
+From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
+Subject: [PATCH v6 00/14] mm/mglru: improve reclaim loop and dirty folio
+ handling
+Date: Fri, 24 Apr 2026 01:43:11 +0800
+Message-Id: <20260424-mglru-reclaim-v6-0-a57622d770c3@tencent.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260423122538.140993-2-mclapinski@google.com>
-X-Stat-Signature: hn4yffjgisywmy6nwu8os9mk88h6gy9h
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 16FB018000A
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XNTWrDMBCG4asEraugv5GlrHqP0oU8GiWC2A6ya
+ 1qC714lUOLay2/geefORiqZRnY63FmhOY956OuwbweGl9CfiedYN1NCWaGl4d35Wr54IbyG3HG
+ JPhoICE2yrJpboZS/n72Pz7oveZyG8vPMz/Jx/Su5TWmWXHCFxiZPrQDh3ifqkfrpiEPHHq1Zr
+ bzyW6+qb0EHbRsHUuPe65c3Qm+9rj4oB5SiTcnLvTdr32y9qd47TDqi9SD93sPKy91/qN5RoIB
+ tjGjMf78syy8X0HTsrAEAAA==
+X-Change-ID: 20260314-mglru-reclaim-1c9d45ac57f6
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+ Qi Zheng <zhengqi.arch@bytedance.com>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
+ Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
+ Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
+ Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, 
+ Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
+ Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776966208; l=12424;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=sJBfl2bIqQHRPErdZI1uyNYfY/G6vdU2xAEedsUrNko=;
+ b=k/vkACw+uLEU9HEsv+2HHdmUCOxV+TiNjGzZanvT/F8Gxoqz11oMsikb8AdGDzWan5kCxA1kO
+ myKWa1DcXesDOat0BijHt1jbFtvXwmkvDYvvC+R0CjvtgaJQys2ndv2
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
+ with auth_id=562
+X-Original-From: Kairui Song <kasong@tencent.com>
+Reply-To: kasong@tencent.com
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A304CA000B
+X-Stat-Signature: 13e6ks9q5aphnt7akizf8sc4hk9q9yfc
 X-Rspam-User: 
-X-HE-Tag: 1776966129-480377
-X-HE-Meta: U2FsdGVkX1+ELOU/TVI7L/7JOsiYyfty+rOiFi7jEHmozKFv1nI7kFflCvECSYOHy4Tg5h6GHv1vcDclrcaOeYEVSITgGipDAEXRCYnC7bhyShNOR42nPACYzjI+GlRNzwSAKCauyNp6f+l6wSo8O1zCEgMZ3+VwuerbB9dBzz8jsEAQV8eD/8GT8Mdc13r55Bl4sPdvLOssGwtdTw0Qu0Cmg/6FZ6FQtpOEu3RJAyqx9MYLl7lyACUbL0qPp6+qZ4sczJi92B+Cv2p35zPhWvYuDL4H8ECw/EqVdsXM7iajhM4H5mqmeIw1VUWrpdoNp/OW9YNRnGAfbLi6o2ED43nC5emzi4nrR9ogvHsazWR7qpP86KwWJ2O6K3tQiZUDtgKFCOaQYOKf/P13I7UzA52D6nFXXKtklrQGkWtwP+7CM30AEsAl68ZvI1iSMC00i3hfaqBgpegBkUFmiJEh7KR0HDGKO9liw+YMVtWK/8i3G7h4hqDYFqWoZF1iznq9C1mJ3wvEA6LLVr9DmBH8ZnSIYH903FhtMItjIlPN78RvfVE1nAVkBTQkCdbP1AaSQ6cUp6FPWbmgxkG+HmNC2d4PfvZysDAkkajg1x+4apd3fdo/jJ8VnNekX9durQ9lNyeSgzFZCSscuCMtf11HKKLIwNIBDAKzisSZ8rnFwzz74kRTESMnQsJ8rxWaklVbYCZp+a+k7UGCCWfx7CzM+ro5QQk6ctdpEL4YzIIR3vZSmjHzZhenn2/U04M5jRroAngDx1+8RweNvK9bQcbra9CUN7WnoQm7hvI+c7d28kQV6SkUe6t6CWudlQHxDZRavHk/QpbAVsUu7C4xsdlYnvHCj7o6ylqKsKYQwDrmWM8ITAqacRtv0LV/Mbg1BdfZklkwKrlJw0MB8aFkJxmPLyG7KsDIiV/PfATuomAO49SSzo85UWB2+D/N3hgX2aqvowKh/BcHMPkBoGRsrj7
- x+O5wbJI
- sHRV+lMAm0/bX5ltavDuT6qnoj4jVb47/yGAoitBHZLLj+70/PT5B7SUYrDLeHN3f6Bn697t90tc9yHcErW8VOo4dfQqSpCdD83t6PrgIe9lAZubPsfpTlte7ZGFDfgNvlr33co//Axi3VzyMHHZMkg3SlkpFC99BYRFQuwyGMapCaJeIkbstK5YbqOOLTIsoS1qLoJo534h5XM8UviFE6vGuiuL8gDDq+O3H5AG99/p2xiagKuEk8eMh2mjtahI+rdQNM3bD65nBAiAJQt0vk1UioPA2onhsdNFywicZItcAj/T+yGwH7vOYSyoq2q/IYb3tafjVBF+ayvaYFBfujHk5aDOQ2Swhqu68JnozQlR/d64PIPvJjfduT/w4WbIzAU1Saq/nlFVARjAmHRGRsgVMldvT32XJiWXs
+X-HE-Tag: 1776966212-400788
+X-HE-Meta: U2FsdGVkX1+w1snb1C2H6APzbgd+a7OWtZBaQmY8jGO7cDESw8HWWP3d7OAxR95Q+JohMRvDhHpTZXab8DQPsyQ2Ah8hOMYbSmghhmSjclgiek2u+XfH0IiHe8XmGvgdRXdH83gArQ3GXa9GD3NC1tpz9GwPP2QU76VLx/aBZMMr7+ydleYqfgr4NXGzD2IjYj/S1+7KMd3OrQ/6/Wuee1eh7SHJL6R1zZdct0pEphS83eULGL7jV5GGA11Fs74Y1HNsCW1hrBlE3D0YtKF6ux8BXIbGOZvw8m/ioBJPlqAtD9iFu3FToWC5wOfrMVMMtOltBzkOc2S/6rOt5H2LcUAqMSZ/CKrs/2te7aF4qlpbRkdmQwK/JySXgctIzMsYjuFq24MjGWfTZd0mKxIESH9kdfHi45/bBcL8WrteKuCOjN2e0K6lmXXhopCUQ4XMj6bjthO3in1u9eF4uXT3fp2VfeWDKeYLuGspNVnKbFMxru3y0OuPdA+uP2hS0p4fqwP9/Vb2V0Z17TQFlLzauwV0YmalpSGOMQEAl0RavS/B/UeGya3G8pxWHUkOoLwRvXMsJryDQAyCmshJnywekKNt0X/9WWck2cJklPnM4wEjvtPqd2woZ5iTQRgEVzTfHvK149E0h/WUtMrgNQUKUpYCb/h0ipRqIJD5ixPIT8DZOlmQgLxTAebO/Nf2evsePslFW5fv4CAy9xzIZMNkfs5pjAZq+VY3Me1RMZerzKA/jAUzspCMEgeHJ26BsyIYt6vGm9rJK6yR9ilDJg+4/oE0888GoHV38giulgPAE5p0nuvEsGfq9Eg8phfhfTdnODNFoaOQwt9zFZ9aXK1I2Tr/uf9QmDJfkw9l+U7nLCFBssiF1ycWlsQ89bCkvwY9r/Bdw3QLCoi4UvkyMP/XLbTzJATUw0nr2ptzTdVa6joKqIP3J8/P2emKGxHPo0zkN5ZAreIOvISFFicwUu2
+ ZCBKdAxk
+ XfLg9G9JfE2BcYqy5Fp11bORqJN73TuuZ0tIA8ebVcqGRYaRJ8jvQU9DPNM6wAuCT/kwC5ojBpN2H+IgqYsRWO2CBV9NIC1HFgMnaHqHHGLBwnB0f46i6Q7FqEm9Lof9VFKagDeXIzVhRGxuzi2a4D/jYCrKE6AsrWiIuum3sqXiS51lbquC6t0P82bpLTOe7SSMhUSC0PS3XkhtiTxZf+muBpE2Wfoo+Mp2DsOuazxFNUxTCKjiwwybeO8LED9pPPbtN2/aOci1PgF3t484hJlxrEX+XYAH6avHOZx+dR55bZKkel8d1Lln/Xfy4LWvdLuOJb5DfGIXnsx31mfKkoI1fyOvQDVGQ1BKXxEV5L5ijslweS6dcv8r0X/3Mtg3rM05j+KytQN62KU42rsKXDtKGZG92/TKJnODCI/b5bXPngfIIvhjVznZ45E4FPdStR09Q+54f9LCCyskWUyXp6dYpjFuSao+9int8lF+0MoKIAWQ33FWMD9O/IRlI7817RP83rne7N7OBlCRNTX0kjcAo+C3IjmaqUMcr+mMstFQFd9NzkHo5wdKgcBnmC2V8vTbPRcEJGyemAY/5V8AA3IpzxB8PM7WwPa2vjwRCd415KwBq9V9CZt8ssQsrYOpdzjSMus/eCdcDdyLaFcRUAQ3bU4KfpjT8jcqX52cQUbePAwatZdtTUwna3pKjoi+X6GaXfuH5a0engxQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,20 +122,298 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-23 14:25, Michal Clapinski wrote:
-> Currently, if CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled,
-> kho_release_scratch() will initialize the struct pages and set migratetype
-> of KHO scratch. Unless the whole scratch fits below first_deferred_pfn,
-> some of that will be overwritten either by deferred_init_pages() or
-> memmap_init_reserved_range().
-> 
-> To fix it, make memmap_init_range(), deferred_init_memmap_chunk() and
-> __init_page_from_nid() recognize KHO scratch regions and set
-> migratetype of pageblocks in those regions to MIGRATE_CMA.
-> 
-> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Michal Clapinski <mclapinski@google.com>
+From: Kairui Song <kasong@tencent.com>
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
+This series cleans up and slightly improves MGLRU's reclaim loop and
+dirty writeback handling. As a result, we can see an up to ~30% increase
+in some workloads like MongoDB with YCSB and a huge decrease in file
+refault, no swap involved. Other common benchmarks have no regression,
+and LOC is reduced, with less unexpected OOM, too.
+
+Some of the problems were found in our production environment, and
+others were mostly exposed while stress testing during the development
+of the LSM/MM/BPF topic on improving MGLRU [1]. This series cleans up
+the code base and fixes several performance issues, preparing for
+further work.
+
+MGLRU's reclaim loop is a bit complex, and hence these problems are
+somehow related to each other. The aging, scan number calculation, and
+reclaim loop are coupled together, and the dirty folio handling logic is
+quite different, making the reclaim loop hard to follow and the dirty
+flush ineffective.
+
+This series slightly cleans up and improves these issues using a scan
+budget by calculating the number of folios to scan at the beginning of
+the loop, and decouples aging from the reclaim calculation helpers.
+Then, move the dirty flush logic inside the reclaim loop so it can kick
+in more effectively. These issues are somehow related, and this series
+handles them and improves MGLRU reclaim in many ways.
+
+Test results: All tests are done on a 48c96t NUMA machine with 2 nodes
+and a 128G memory machine using NVME as storage.
+
+MongoDB
+=======
+Running YCSB workloadb [2] (recordcount:20000000 operationcount:6000000,
+threads:32), which does 95% read and 5% update to generate mixed read
+and dirty writeback. MongoDB is set up in a 10G cgroup using Docker, and
+the WiredTiger cache size is set to 4.5G, using NVME as storage.
+
+Not using SWAP.
+
+Before:
+Throughput(ops/sec): 62485.02962831822
+AverageLatency(us): 500.9746963330107
+pgpgin 159347462
+pgpgout 5413332
+workingset_refault_anon 0
+workingset_refault_file 34522071
+
+After:
+Throughput(ops/sec): 79760.71784646061 (+27.6%, higher is better)
+AverageLatency(us): 391.25169970043726 (-21.9%, lower is better)
+pgpgin 111093923                       (-30.3%, lower is better)
+pgpgout 5437456
+workingset_refault_anon 0
+workingset_refault_file 19566366       (-43.3%, lower is better)
+
+We can see a significant performance improvement after this series.
+The test is done on NVME and the performance gap would be even larger
+for slow devices, such as HDD or network storage. We observed over
+100% gain for some workloads with slow IO.
+
+Chrome & Node.js [3]
+====================
+Using Yu Zhao's test script [3], testing on a x86_64 NUMA machine with 2
+nodes and 128G memory, using 256G ZRAM as swap and spawn 32 memcg 64
+workers:
+
+Before:
+Total requests:            79915
+Per-worker 95% CI (mean):  [1233.9, 1263.5]
+Per-worker stdev:          59.2
+Jain's fairness:           0.997795 (1.0 = perfectly fair)
+Latency:
+Bucket     Count      Pct    Cumul
+[0,1)s     26859   33.61%   33.61%
+[1,2)s      7818    9.78%   43.39%
+[2,4)s      5532    6.92%   50.31%
+[4,8)s     39706   49.69%  100.00%
+
+After:
+Total requests:            81382
+Per-worker 95% CI (mean):  [1241.9, 1301.3]
+Per-worker stdev:          118.8
+Jain's fairness:           0.991480 (1.0 = perfectly fair)
+Latency:
+Bucket     Count      Pct    Cumul
+[0,1)s     26696   32.80%   32.80%
+[1,2)s      8745   10.75%   43.55%
+[2,4)s      6865    8.44%   51.98%
+[4,8)s     39076   48.02%  100.00%
+
+Reclaim is still fair and effective, total requests number seems
+slightly better.
+
+OOM issue with aging and throttling
+===================================
+For the throttling OOM issue, it can be easily reproduced using dd and
+cgroup limit as demonstrated in patch 14, and fixed by this series.
+
+The aging OOM is a bit tricky, a specific reproducer can be used to
+simulate what we encountered in production environment [4]:
+Spawns multiple workers that keep reading the given file using mmap,
+and pauses for 120ms after one file read batch. It also spawns another
+set of workers that keep allocating and freeing a given size of
+anonymous memory. The total memory size exceeds the memory limit
+(eg. 14G anon + 8G file, which is 22G vs a 16G memcg limit).
+
+- MGLRU disabled:
+  Finished 128 iterations.
+
+- MGLRU enabled:
+  OOM with following info after about ~10-20 iterations:
+    [   62.624130] file_anon_mix_p invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+    [   62.624999] memory: usage 16777216kB, limit 16777216kB, failcnt 24460
+    [   62.640200] swap: usage 0kB, limit 9007199254740988kB, failcnt 0
+    [   62.640823] Memory cgroup stats for /demo:
+    [   62.641017] anon 10604879872
+    [   62.641941] file 6574858240
+
+  OOM occurs despite there being still evictable file folios.
+
+- MGLRU enabled after this series:
+  Finished 128 iterations.
+
+Worth noting there is another OOM related issue reported in V1 of
+this series, which is tested and looking OK now [5].
+
+MySQL:
+======
+
+Testing with innodb_buffer_pool_size=26106127360, in a 2G memcg, using
+ZRAM as swap and test command:
+
+sysbench /usr/share/sysbench/oltp_read_only.lua --mysql-db=sb \
+  --tables=48 --table-size=2000000 --threads=48 --time=600 run
+
+Before:            17260.781429 tps
+After this series: 17266.842857 tps
+
+MySQL is anon folios heavy, involves writeback and file and still
+looking good. Seems only noise level changes, no regression.
+
+FIO:
+====
+Testing with the following command, where /mnt/ramdisk is a
+64G EXT4 ramdisk, each test file is 3G, in a 10G memcg,
+6 test run each:
+
+fio --directory=/mnt/ramdisk --filename_format='test.$jobnum.img' \
+  --name=cached --numjobs=16 --size=3072M --buffered=1 --ioengine=mmap \
+  --rw=randread --norandommap --time_based \
+  --ramp_time=1m --runtime=5m --group_reporting
+
+Before:            9196.481429 MB/s
+After this series: 9256.105000 MB/s
+
+Also seem only noise level changes and no regression or slightly better.
+
+Build kernel:
+=============
+Build kernel test using ZRAM as swap, on top of tmpfs, in a 3G memcg
+using make -j96 and defconfig, measuring system time, 12 test run each.
+
+Before:            2589.63s
+After this series: 2543.58s
+
+Also seem only noise level changes, no regression or very slightly better.
+
+Android:
+========
+Xinyu reported a performance gain on Android, too, with this series. The
+test consisted of cold-starting multiple applications sequentially under
+moderate system load. [6]
+
+Before:
+Launch Time Summary (all apps, all runs)
+  Mean 868.0ms
+  P50 888.0ms
+  P90 1274.2ms
+  P95 1399.0ms
+
+After:
+Launch Time Summary (all apps, all runs)
+  Mean 850.5ms (-2.07%)
+  P50 861.5ms  (-3.04%)
+  P90 1179.0ms (-8.05%)
+  P95 1228.0ms (-12.2%)
+
+Link: https://lore.kernel.org/linux-mm/CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com/ [1]
+Link: https://github.com/brianfrankcooper/YCSB/blob/master/workloads/workloadb [2]
+Link: https://lore.kernel.org/all/20221220214923.1229538-1-yuzhao@google.com/ [3]
+Link: https://github.com/ryncsn/emm-test-project/tree/master/file-anon-mix-pressure [4]
+Link: https://lore.kernel.org/linux-mm/acgNCzRDVmSbXrOE@KASONG-MC4/ [5]
+Link: https://lore.kernel.org/linux-mm/20260417025123.2971253-1-wxy2009nrrr@163.com/ [6]
+
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Changes in v6:
+- Avoid potential over rotation of tiny cgroup (<16M):
+  https://lore.kernel.org/linux-mm/CAMgjq7ArnmmoHOGRt6Wc8hu7tjx_t583-UVzJK+HOHgjjetQ9g@mail.gmail.com/
+- Avoid potentially skewed stat counter:
+  https://lore.kernel.org/linux-mm/CAMgjq7DCn8p_yMMhiejFjX6sdybZKYOw8qJbq=+OCsZ=AfJnFA@mail.gmail.com/
+- Update a few comment and varible name as suggested by Barry Song.
+- Tested over days, also tested on my Android phone, everything still
+  matches the cover letter description. And add test result from Xinyu.
+- Link to v5: https://patch.msgid.link/20260413-mglru-reclaim-v5-0-8eaeacbddc44@tencent.com
+
+Changes in v5:
+- Add back a more moderate minimal batch limit for each reclaim loop:
+  https://lore.kernel.org/linux-mm/adYP81AhpNf0znp3@KASONG-MC4/
+- Collect review-by.
+- Link to v4: https://patch.msgid.link/20260407-mglru-reclaim-v4-0-98cf3dc69519@tencent.com
+
+Changes in v4:
+- Remove the minimal scan batch limit, and add rotate for
+  unevictable memcg as reported by sashiko:
+  https://lore.kernel.org/linux-mm/ac8xVN82LBLDZpIO@KASONG-MC4/
+- Slightly imporove a few commit messages.
+- Reran the test and seems identical with before so data are unchanged.
+- Collect review-by.
+- Link to v3: https://patch.msgid.link/20260403-mglru-reclaim-v3-0-a285efd6ff91@tencent.com
+
+Changes in v3:
+- Don't force scan at least SWAP_CLUSTER_MAX pages for each reclaim
+  loop. If the LRU is too small, adjust it accordingly. Now the
+  multi-cgroup scan balance looked even better for tiny cgroups:
+  https://lore.kernel.org/linux-mm/aciejkdIHyXPNS9Y@KASONG-MC4/
+- Add one patch to remove the swap constraint check in isolate_folio. In
+  theory, it's fine, and both stress test and performance test didn't
+  show any issue:
+  https://lore.kernel.org/linux-mm/CAMgjq7C8TCsK99p85i3QzGCwgkXscTfFB6XCUTWQOcuqwHQa2Q@mail.gmail.com/
+- I reran most tests, all seem identical, so most data is kept.
+  Intermediate test results are dropped. I ran tests on most patches
+  individually, and there is no problem, but the series is getting too
+  long, and posting them makes it harder to read and unnecessary.
+- Split previously patch 8 into two patches as suggested [ Shakeel Butt ],
+  also some test result is collected to support the design:
+  https://lore.kernel.org/linux-mm/ac44BVOvOm8lhVvj@KASONG-MC4/#t
+  I kept Axel's review-by since the code is identical.
+- Call try_to_inc_min_seq twice to avoid stale empty gen and drop
+  its return argument [ Baolin Wang ]
+- Move a few lines of code between patches to where they fits better,
+  the final result is identical [ Baolin Wang ].
+- Collect tested by and update test setup [ Leno Hou ]
+- Collect review by.
+- Update a few commit message [ Shakeel Butt ].
+- Link to v2: https://patch.msgid.link/20260329-mglru-reclaim-v2-0-b53a3678513c@tencent.com
+
+Changes in v2:
+- Rebase on top of mm-new which includes Cgroup V1 fix from
+  [ Baolin Wang ].
+- Added dirty throttling OOM fix as patch 12, as [ Chen Ridong ]'s
+  review suggested that we shouldn't leave the counter and reclaim
+  feedback in shrink_folio_list untracked in this series.
+- Add a minimal scan number of SWAP_CLUSTER_MAX limit in patch
+  "restructure the reclaim loop", the change is trivial but might
+  help avoid livelock for tiny cgroups.
+- Redo the tests, most test are basically identical to before, but just
+  in case, since the patch also solves the throttling issue now, and
+  discussed with reports from CachyOS.
+- Add a separate patch for variable renaming as suggested by [ Barry
+  Song ]. No feature change.
+- Improve several comment and code issue [ Axel Rasmussen ].
+- Remove no longer needed variable [ Axel Rasmussen ].
+- Collect review by.
+- Link to v1: https://lore.kernel.org/r/20260318-mglru-reclaim-v1-0-2c46f9eb0508@tencent.com
+
+---
+Kairui Song (14):
+      mm/mglru: consolidate common code for retrieving evictable size
+      mm/mglru: rename variables related to aging and rotation
+      mm/mglru: relocate the LRU scan batch limit to callers
+      mm/mglru: restructure the reclaim loop
+      mm/mglru: scan and count the exact number of folios
+      mm/mglru: use a smaller batch for reclaim
+      mm/mglru: don't abort scan immediately right after aging
+      mm/mglru: remove redundant swap constrained check upon isolation
+      mm/mglru: use the common routine for dirty/writeback reactivation
+      mm/mglru: simplify and improve dirty writeback handling
+      mm/mglru: remove no longer used reclaim argument for folio protection
+      mm/vmscan: remove sc->file_taken
+      mm/vmscan: remove sc->unqueued_dirty
+      mm/vmscan: unify writeback reclaim statistic and throttling
+
+ mm/vmscan.c | 330 ++++++++++++++++++++++++++----------------------------------
+ 1 file changed, 143 insertions(+), 187 deletions(-)
+---
+base-commit: 2bcc13c29c711381d815c1ba5d5b25737400c71a
+change-id: 20260314-mglru-reclaim-1c9d45ac57f6
+
+Best regards,
+--  
+Kairui Song <kasong@tencent.com>
+
+
 
