@@ -4,108 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCB3CF99352
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 08:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4066AF99351
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 08:39:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DE1F6B0005; Thu, 23 Apr 2026 04:31:21 -0400 (EDT)
+	id 807146B0005; Thu, 23 Apr 2026 04:39:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 368346B008A; Thu, 23 Apr 2026 04:31:21 -0400 (EDT)
+	id 7B7906B008A; Thu, 23 Apr 2026 04:39:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 255BD6B008C; Thu, 23 Apr 2026 04:31:21 -0400 (EDT)
+	id 6CD596B008C; Thu, 23 Apr 2026 04:39:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10CF66B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 04:31:21 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A992AA03C3
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 08:31:20 +0000 (UTC)
-X-FDA: 84689151120.19.EE1BD8B
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 90CC4180014
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 08:31:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bE5bcvvO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C3466B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 04:39:05 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8305A03F5
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 08:39:04 +0000 (UTC)
+X-FDA: 84689170608.29.A914A87
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3934716000B
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 08:39:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=R7voICcS;
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776933079;
+	s=arc-20220608; t=1776933543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8YwT2J6y8VB+nAR+GUBhFBsu9Q8obY1raNP6TplLRG0=;
-	b=pGkn3FmihcBpo8qpyW6RaM7lclbAI3a8CDQfe0vSabnajucsLRsXlM+4OgQdURvF/d7I/U
-	bQZ3TkmPzcF1mTD3OFfG8bkrmjSfESTajKuCyQgT6NaKcQcc2whLeZWAwd6UXyUUi3t15C
-	FXtECE03CBWwdV6pLlmOrddGE+7GrZ8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bE5bcvvO;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776933079; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=VD0W+tCYZmHWC9HJnyoCOcXw/2dXEeLu7QPWcZVXPyw=;
+	b=NTr/5A6GBIUOg+o9vXAE4ESA9VFVj8mBMJyELKRfphBjgL5UezrP6RQUaqSYfPb3ihvGd0
+	mTrpGFzEBzq7QPld5noUzboOFcbRxm5gBzCLuYdR+k5PwhulNIyv1vHZBn7cWBXMCQtuJX
+	er+LOUUyJ63A0xLhDjFaeW2syKAY85I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776933543; a=rsa-sha256;
 	cv=none;
-	b=OYLqTboVT7IDvbvNIMZUlmsjjTwRgmjYl8+dWPVnClTqMTQWNCCvTUpyJy3z9r6GimJrl5
-	UkN9O4W3/wZ+yDrUrnpuetikSDdN++KrPjY0OTxc8MOKdB4mOYOwR6tsO/lr4jj9H9m8Wl
-	4nBRmVGEPFDIzfOOC5dET6GzTMhJ+y0=
+	b=lT9t7OCY8ggLBTeTQh9fopV8Yom/QuE7htU+3dit/qAv6m9hSjvaoi7oBm+EMMFHsOFvxe
+	oJCM4WBMpx8hbLEvNILbIOhgTtDz1vNXZD3Cufn/NvqCuxFfb098xrwMYmWprblUdQJJ3l
+	2NPrBK0btj05xJv7J67AlslWmcfkTo0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=R7voICcS;
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776933076;
+	t=1776933541;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8YwT2J6y8VB+nAR+GUBhFBsu9Q8obY1raNP6TplLRG0=;
-	b=bE5bcvvOtZaF4jMACv4gJWXGy9pHyr8ZxjVjWFRr+w6XlHcOtheOUgxbQgLv+svPUFqb4T
-	GokyuelKSqLfKOt2rGQAUf3T4tMyRE7867WB0u62bDlpEYJXjKkepMxOSQNZFnhG3YNhsv
-	dANjm0XSetWNnKHvHhvfdfBZT807gF4=
-From: Lance Yang <lance.yang@linux.dev>
-To: ziy@nvidia.com
-Cc: willy@infradead.org,
-	songliubraving@fb.com,
-	clm@fb.com,
-	dsterba@suse.com,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-btrfs@vger.kernel.org,
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VD0W+tCYZmHWC9HJnyoCOcXw/2dXEeLu7QPWcZVXPyw=;
+	b=R7voICcSziXE7s3YFImlsU0PG7tT+d795NPpl7UoybcuacO3fhnZjlx3F1CpuhStcRVAik
+	yYh9Wx1mo5BqTGt+uYgqfsQjU3MVXBMH2Lk4fkAhlb8nb0kiH/QDA/fuby0EK+P5c+DD1P
+	8zt3TUj/dAZMraNNkY9ycPbbS/CWm/4=
+From: Hao Ge <hao.ge@linux.dev>
+To: Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 7.2 v3 02/12] mm/khugepaged: add folio dirty check after try_to_unmap()
-Date: Thu, 23 Apr 2026 16:30:50 +0800
-Message-Id: <20260423083050.68509-1-lance.yang@linux.dev>
-In-Reply-To: <20260418024429.4055056-3-ziy@nvidia.com>
-References: <20260418024429.4055056-3-ziy@nvidia.com>
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH v3] mm/alloc_tag: replace fixed-size early PFN array with dynamic linked list
+Date: Thu, 23 Apr 2026 16:37:56 +0800
+Message-Id: <20260423083756.157902-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 3934716000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: g5z9fjhpih8ezm61zn1t4ry45o56diby
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 90CC4180014
-X-Stat-Signature: cfnbnnyewu466y6kpc4yxkxksjq5sohc
-X-HE-Tag: 1776933078-196848
-X-HE-Meta: U2FsdGVkX1+aZl7DMeNd6OlaSYIIZlbJPgAjgQVrL6ef5+6Hrs4lrdPy/VV2ZIXC+RUchMxDDC4Q7lkKqC4b7EW0CwWns0JKbNRMScZfOdw4Zo1xv3XtRjB50spqadZzDJLHwf5vq1cR3esyiGPJcGI9ZmqtnkU5P4aNDyL6XBDpNB1CFRl0dqjd9tLdxUt3O4i9lOdl/Lz8QBc3jiLIJq5AcJtD4tB7AU0YQCaUdmwFzoZup+cCpQOHRxUuyHlOGpr6VoUSR+OBnmH9IHxg+nAbfBDRpJFNSxEW+Y6tb3X61eXHSFMZ2BYQjy+S/dLqDdPvElkpLCDtLHBuRjBdc/lHwxAVVzqXs6lrfNrRHm45gUrA1GkiOXkSzNkgLCDfbtz6+qKFg5ONBg5gZkkIU9z7u29tH/kyOTGXdQouM67dA7lR7BXHZg0u3p4oNaWf02G05R7YNBQLr4ITidkIP3oCPqktdMfK3/bgbyk3dE1x9e2wGTA4v3u3Zw1vMBan8ExRr5du2DekUOFZwhRQXz8aXyVSPUvzv7IdQPpBZo/wg/OGE31ygCgUBkyYb5b7by5xwSbRwIl4VGrYl/eaauqgQM0Dn3VhHXr/mryWOuuR6nkaGoTUeycwc1pmKZbrT8KrcJDz+/chfcUnX7Y0dZjqUj0IvJw/9iwDsMDAeUGf3c9dp0x/RvUfihUKIpWw6kMp4k4Sl9+5i3Qt5ElTdTdQ4bzdf61+qs7hCfZrxL+P/Rp4thO9eLeFvh20KCKFjzIsKA9p8IGTgBt0V6mFloIg9RqmLJZvRLsXq2tK2MhjRKSEJUvqc0y9lvDVqigi2HPpHALtZsf3F6VAWPgclyTmomgs1fhWYyr3yYH/dhuJPot/u4NYzN2iV4EMGLhZaRRAhvnH33c30+pceCgdAx200HejdpJmLuG103Y2F05axYa4qwYARtu4DP+V1jKCw3LYjLFgBhwJu/JS6Y6
- 5WMxECMj
- uMkZh4AWOaIr6dOQH9348ZAPIerqRyVTNatu+4+VLPPskMPHCSoQUXuNoXH6GsQVITDcEUiqUh/05xvuPU621oy6v9IrnFolW7N7NfR1HMFCFbeZWnZi+IMXovWf/++y7Zn269Vs6qFFFirLRzrA+0qwCj0TwDIcd7MywGm0FaVHdtUzPb+Qb3vB1OcfCOiHYT9noqivy6NYwShbKh2ctilpsrDQm+RqAtMbUvquiJ4O6lsU=
+X-HE-Tag: 1776933542-949812
+X-HE-Meta: U2FsdGVkX19yV37DrRAnLZE+uCS/HlwPYjg3ml2BBgqdbkhcgu+76i9KjAjivHohSzKdhXl74YBxyvYzgXkEKKV/oAvzlRHNcuPRpyqPXBpogXNY7TSG8SpbgIfzNxfPKTrnf2K8JXBKaDtd0FdKyG5AB2hwfDhVNp0NqKX7bWwfy0HcISITbrDc+l04tqR70aalHQuSIVDfhG1vRU7MIAbuVS70jqX7Fsd66yhmlLn5puq2se8smqIlMpBgteejXwjmsKWBH6llZZi51M+6rrlpl7kBOa2a/DLCu/oIHihTp1hOrzaTzDVs8Lh9B//NkIxMvmMZoX2vcfgluaF8rPUxiMvEhcRb9yB+QnRvlQewMo/YdMjBwyVOikknRjijzncmsIwBdG+x1lMwCR1H/kawfGa/vtSbMeE9A60S0ygFl84NuMLGGaxKriGCJwiJz8AWJxn0w5KJDOpzjesPOnRxyAbDng90jKMGbhfiGOPYzaXFevMxuZpkSFK09SdS+7gVEu1xQYCpoSIevg/VEfLWpbLQMEbaSD+0RbxWz+lE8OuFzlP9kLIHefU7Tizk3QgfzVjUtpGSFO7A1vrM6mBCfs4SSyrhpRFSjqNmjVknJHaTzVqPyjiRz39p7qjgVhy7G8Fi2Agg2riBZM1eqRh3rrS9omK608qTAuEaHGm3ShHXZJUJqbOLO4/bm54o2UtCAWXXGf767/u1mR97UeVfAwCGDANvn3HqZdDJXeyYFzN9AxKHkaahxr1Ugd07jjd5qXeFnqfYFaELNwjbv0KlWQyWOMo9fN0IOUY1AKHWnzbT2ECy1y38Za/gmscYWXi70vD/T+sbESp1Jklw/G7OHYnfT0fqRb5hKVIaXFyIGoTwSzr3iJi/lgwz78S+Eb+erM+IBZDSV6MsnCi8BwMpmNn6LM2sd7ozxwEwk8P4biIp7O2rSgpcNxzbFdgcyw8ourTxU8P33vdZb99
+ K0JBevnr
+ MWC1XWL6iSMfzBQP0ssF1Yj1V5BJPdEB81I1P5qsJ85/el8ZJFzni5zmmgERdWgiebRXKmoLZTKrJwHLJAGSuK0H5hK654N9Hd9oXrAbYv80RurgKhUXMc/AM9/T6zSeBYLAMGusLxXBcNiQtaS2V5oxAwTKQt5e7M8UDR07dGaUmsN4XV3F626O1Hade2xUWB90IeUm5BPKsfIw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,91 +86,319 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Pages allocated before page_ext is available have their codetag left
+uninitialized. Track these early PFNs and clear their codetag in
+clear_early_alloc_pfn_tag_refs() to avoid "alloc_tag was not set"
+warnings when they are freed later.
 
-On Fri, Apr 17, 2026 at 10:44:19PM -0400, Zi Yan wrote:
->This check ensures the correctness of collapse read-only THPs for FSes
->after READ_ONLY_THP_FOR_FS is enabled by default for all FSes supporting
->PMD THP pagecache.
->
->READ_ONLY_THP_FOR_FS only supports read-only fd and uses mapping->nr_thps
->and inode->i_writecount to prevent any write to read-only to-be-collapsed
->folios. In upcoming commits, READ_ONLY_THP_FOR_FS will be removed and the
->aforementioned mechanism will go away too. To ensure khugepaged functions
->as expected after the changes, skip if any folio is dirty after
->try_to_unmap(), since a dirty folio means this read-only folio
->got some writes via mmap can happen between try_to_unmap() and
->try_to_unmap_flush() via cached TLB entries and khugepaged does not support
->writable pagecache folio collapse yet.
->
->Signed-off-by: Zi Yan <ziy@nvidia.com>
->---
-> mm/khugepaged.c | 25 +++++++++++++++++++++----
-> 1 file changed, 21 insertions(+), 4 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 3eb5d982d3d3..1c0fdc81d276 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -1979,8 +1979,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> 				}
-> 			} else if (folio_test_dirty(folio)) {
-> 				/*
->-				 * khugepaged only works on read-only fd,
->-				 * so this page is dirty because it hasn't
->+				 * This page is dirty because it hasn't
-> 				 * been flushed since first write. There
-> 				 * won't be new dirty pages.
-> 				 *
->@@ -2038,8 +2037,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> 		if (!is_shmem && (folio_test_dirty(folio) ||
-> 				  folio_test_writeback(folio))) {
-> 			/*
->-			 * khugepaged only works on read-only fd, so this
->-			 * folio is dirty because it hasn't been flushed
->+			 * khugepaged only works on clean file-backed folios,
->+			 * so this folio is dirty because it hasn't been flushed
-> 			 * since first write.
-> 			 */
-> 			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
->@@ -2083,6 +2082,24 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
-> 			goto out_unlock;
-> 		}
-> 
->+		/*
->+		 * At this point, the folio is locked, unmapped. Make sure the
->+		 * folio is clean, so that no one else is able to write to it,
->+		 * since that would require taking the folio lock first.
->+		 * Otherwise that means the folio was pointed by a dirty PTE and
->+		 * some CPU might have a valid TLB entry with dirty bit set
->+		 * still pointing to this folio and writes can happen without
->+		 * causing a page table walk and folio lock acquisition before
->+		 * the try_to_unmap_flush() below is done. After the collapse,
->+		 * file-backed folio is not set as dirty and can be discarded
->+		 * before any new write marks the folio dirty, causing data
->+		 * corruption.
->+		 */
->+		if (!is_shmem && folio_test_dirty(folio)) {
->+			result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
->+			goto out_unlock;
+Currently a fixed-size array of 8192 entries is used, with a warning if
+the limit is exceeded. However, the number of early allocations depends
+on the number of CPUs and can be larger than 8192.
 
-Looks buggy :)
+Replace the fixed-size array with a dynamically allocated linked list
+of pages. Each page stores PFNs in its page body and uses page->lru
+to link to the next page, with page->private tracking the number of
+used slots.
 
-This runs after folio_isolate_lru() and after xas_lock_irq(&xas) ...
+The list pages themselves are allocated via alloc_page(), which would
+trigger __pgalloc_tag_add() -> alloc_tag_add_early_pfn() and recurse
+indefinitely. Introduce __GFP_NO_CODETAG (reuses the %__GFP_NO_OBJ_EXT
+bit) and pass gfp_flags through pgalloc_tag_add() so that the early path
+can skip recording allocations that carry this flag.
 
-If not missing something, "goto out_unlock" would leave the xarray lock
-held and the folio off the LRU :)
-
-Note that the block right above does call xas_unlock_irq(&xas), and it
-also does call folio_putback_lru(folio):
-
----8<---
-		if (folio_ref_count(folio) != 2 + folio_nr_pages(folio)) {
-			result = SCAN_PAGE_COUNT;
-			xas_unlock_irq(&xas);     <-
-			folio_putback_lru(folio); <-
-			goto out_unlock;
-		}
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
 ---
+v3:
+- Simplify linked list: use page->lru for chaining and page->private as
+  slot counter, removing the early_pfn_node struct and freelist (suggested
+  by Suren Baghdasaryan)
+- Pass gfp_flags through alloc_tag_add_early_pfn() but strip
+  __GFP_DIRECT_RECLAIM instead of selecting GFP_KERNEL/GFP_ATOMIC,
+  because __alloc_tag_add_early_pfn() is invoked under rcu_read_lock().
 
-So we should follow the same cleanup as that block here, right?
+v2:
+- Use cmpxchg to atomically update early_pfn_pages, preventing page leak under concurrent allocation
+- Pass gfp_flags through the full call chain and use gfpflags_allow_blocking()
+  to select GFP_KERNEL vs GFP_ATOMIC, avoiding unnecessary GFP_ATOMIC in process context
+---
+ include/linux/alloc_tag.h |  22 ++++++-
+ lib/alloc_tag.c           | 118 +++++++++++++++++++++-----------------
+ mm/page_alloc.c           |  23 ++++----
+ 3 files changed, 97 insertions(+), 66 deletions(-)
+
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index 02de2ede560f..ce9b478033bf 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -150,6 +150,23 @@ static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
+ }
+ 
+ #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
++/*
++ * Skip early PFN recording for a page allocation.  Reuses the
++ * %__GFP_NO_OBJ_EXT bit.  Used by __alloc_tag_add_early_pfn() to avoid
++ * recursion when allocating pages for the early PFN tracking list
++ * itself.
++ *
++ * Callers must set the codetag to CODETAG_EMPTY (via
++ * clear_page_tag_ref()) before freeing pages allocated with this
++ * flag once page_ext becomes available, otherwise
++ * alloc_tag_sub_check() will trigger a warning.
++ */
++#define __GFP_NO_CODETAG	__GFP_NO_OBJ_EXT
++
++static inline bool should_record_early_pfn(gfp_t gfp_flags)
++{
++	return !(gfp_flags & __GFP_NO_CODETAG);
++}
+ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag)
+ {
+ 	WARN_ONCE(ref && ref->ct && !is_codetag_empty(ref),
+@@ -163,11 +180,12 @@ static inline void alloc_tag_sub_check(union codetag_ref *ref)
+ {
+ 	WARN_ONCE(ref && !ref->ct, "alloc_tag was not set\n");
+ }
+-void alloc_tag_add_early_pfn(unsigned long pfn);
++void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags);
+ #else
+ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag) {}
+ static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
+-static inline void alloc_tag_add_early_pfn(unsigned long pfn) {}
++static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags) {}
++static inline bool should_record_early_pfn(gfp_t gfp_flags) { return false; }
+ #endif
+ 
+ /* Caller should verify both ref and tag to be valid */
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index ed1bdcf1f8ab..a00dc5a867e4 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -766,45 +766,49 @@ static __init bool need_page_alloc_tagging(void)
+  * Some pages are allocated before page_ext becomes available, leaving
+  * their codetag uninitialized. Track these early PFNs so we can clear
+  * their codetag refs later to avoid warnings when they are freed.
+- *
+- * Early allocations include:
+- *   - Base allocations independent of CPU count
+- *   - Per-CPU allocations (e.g., CPU hotplug callbacks during smp_init,
+- *     such as trace ring buffers, scheduler per-cpu data)
+- *
+- * For simplicity, we fix the size to 8192.
+- * If insufficient, a warning will be triggered to alert the user.
+- *
+- * TODO: Replace fixed-size array with dynamic allocation using
+- * a GFP flag similar to ___GFP_NO_OBJ_EXT to avoid recursion.
+  */
+-#define EARLY_ALLOC_PFN_MAX		8192
++#define EARLY_PFNS_PER_PAGE		(PAGE_SIZE / sizeof(unsigned long))
+ 
+-static unsigned long early_pfns[EARLY_ALLOC_PFN_MAX] __initdata;
+-static atomic_t early_pfn_count __initdata = ATOMIC_INIT(0);
++static struct page *early_pfn_current __initdata;
+ 
+-static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
++static void __init __alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
+ {
+-	int old_idx, new_idx;
++	struct page *page;
++	unsigned long idx;
+ 
+ 	do {
+-		old_idx = atomic_read(&early_pfn_count);
+-		if (old_idx >= EARLY_ALLOC_PFN_MAX) {
+-			pr_warn_once("Early page allocations before page_ext init exceeded EARLY_ALLOC_PFN_MAX (%d)\n",
+-				      EARLY_ALLOC_PFN_MAX);
+-			return;
++		page = READ_ONCE(early_pfn_current);
++		if (!page || READ_ONCE(page->private) >= EARLY_PFNS_PER_PAGE) {
++			gfp_t gfp = gfp_flags & ~__GFP_DIRECT_RECLAIM;
++			struct page *new = alloc_page(gfp | __GFP_NO_CODETAG);
++
++			if (!new) {
++				pr_warn_once("early PFN tracking page allocation failed\n");
++				return;
++			}
++			new->lru.next = (struct list_head *)page;
++			if (cmpxchg(&early_pfn_current, page, new) != page) {
++				__free_page(new);
++				continue;
++			}
++			page = new;
+ 		}
+-		new_idx = old_idx + 1;
+-	} while (!atomic_try_cmpxchg(&early_pfn_count, &old_idx, new_idx));
++		idx = READ_ONCE(page->private);
++		if (idx >= EARLY_PFNS_PER_PAGE)
++			continue;
++		if (cmpxchg(&page->private, idx, idx + 1) != idx)
++			continue;
++		break;
++	} while (1);
+ 
+-	early_pfns[old_idx] = pfn;
++	((unsigned long *)page_address(page))[idx] = pfn;
+ }
+ 
+-typedef void alloc_tag_add_func(unsigned long pfn);
++typedef void alloc_tag_add_func(unsigned long pfn, gfp_t gfp_flags);
+ static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
+ 	RCU_INITIALIZER(__alloc_tag_add_early_pfn);
+ 
+-void alloc_tag_add_early_pfn(unsigned long pfn)
++void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
+ {
+ 	alloc_tag_add_func *alloc_tag_add;
+ 
+@@ -814,13 +818,14 @@ void alloc_tag_add_early_pfn(unsigned long pfn)
+ 	rcu_read_lock();
+ 	alloc_tag_add = rcu_dereference(alloc_tag_add_early_pfn_ptr);
+ 	if (alloc_tag_add)
+-		alloc_tag_add(pfn);
++		alloc_tag_add(pfn, gfp_flags);
+ 	rcu_read_unlock();
+ }
+ 
+ static void __init clear_early_alloc_pfn_tag_refs(void)
+ {
+-	unsigned int i;
++	struct page *page, *next;
++	unsigned long i;
+ 
+ 	if (static_key_enabled(&mem_profiling_compressed))
+ 		return;
+@@ -829,37 +834,42 @@ static void __init clear_early_alloc_pfn_tag_refs(void)
+ 	/* Make sure we are not racing with __alloc_tag_add_early_pfn() */
+ 	synchronize_rcu();
+ 
+-	for (i = 0; i < atomic_read(&early_pfn_count); i++) {
+-		unsigned long pfn = early_pfns[i];
+-
+-		if (pfn_valid(pfn)) {
+-			struct page *page = pfn_to_page(pfn);
+-			union pgtag_ref_handle handle;
+-			union codetag_ref ref;
+-
+-			if (get_page_tag_ref(page, &ref, &handle)) {
+-				/*
+-				 * An early-allocated page could be freed and reallocated
+-				 * after its page_ext is initialized but before we clear it.
+-				 * In that case, it already has a valid tag set.
+-				 * We should not overwrite that valid tag with CODETAG_EMPTY.
+-				 *
+-				 * Note: there is still a small race window between checking
+-				 * ref.ct and calling set_codetag_empty(). We accept this
+-				 * race as it's unlikely and the extra complexity of atomic
+-				 * cmpxchg is not worth it for this debug-only code path.
+-				 */
+-				if (ref.ct) {
++	for (page = early_pfn_current; page; page = next) {
++		for (i = 0; i < page->private; i++) {
++			unsigned long pfn = ((unsigned long *)page_address(page))[i];
++
++			if (pfn_valid(pfn)) {
++				union pgtag_ref_handle handle;
++				union codetag_ref ref;
++
++				if (get_page_tag_ref(pfn_to_page(pfn), &ref, &handle)) {
++					/*
++					 * An early-allocated page could be freed and reallocated
++					 * after its page_ext is initialized but before we clear it.
++					 * In that case, it already has a valid tag set.
++					 * We should not overwrite that valid tag
++					 * with CODETAG_EMPTY.
++					 *
++					 * Note: there is still a small race window between checking
++					 * ref.ct and calling set_codetag_empty(). We accept this
++					 * race as it's unlikely and the extra complexity of atomic
++					 * cmpxchg is not worth it for this debug-only code path.
++					 */
++					if (ref.ct) {
++						put_page_tag_ref(handle);
++						continue;
++					}
++
++					set_codetag_empty(&ref);
++					update_page_tag_ref(handle, &ref);
+ 					put_page_tag_ref(handle);
+-					continue;
+ 				}
+-
+-				set_codetag_empty(&ref);
+-				update_page_tag_ref(handle, &ref);
+-				put_page_tag_ref(handle);
+ 			}
+ 		}
+ 
++		next = (struct page *)page->lru.next;
++		clear_page_tag_ref(page);
++		__free_page(page);
+ 	}
+ }
+ #else /* !CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 04494bc2e46f..5b7b234967a5 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1284,7 +1284,7 @@ void __clear_page_tag_ref(struct page *page)
+ /* Should be called only if mem_alloc_profiling_enabled() */
+ static noinline
+ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+-		       unsigned int nr)
++		       unsigned int nr, gfp_t gfp_flags)
+ {
+ 	union pgtag_ref_handle handle;
+ 	union codetag_ref ref;
+@@ -1294,21 +1294,24 @@ void __pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 		update_page_tag_ref(handle, &ref);
+ 		put_page_tag_ref(handle);
+ 	} else {
+-		/*
+-		 * page_ext is not available yet, record the pfn so we can
+-		 * clear the tag ref later when page_ext is initialized.
+-		 */
+-		alloc_tag_add_early_pfn(page_to_pfn(page));
++
+ 		if (task->alloc_tag)
+ 			alloc_tag_set_inaccurate(task->alloc_tag);
++
++		/*
++		 * page_ext is not available yet, record the pfn so the
++		 * tag ref can be cleared later when page_ext is initialized.
++		 */
++		if (should_record_early_pfn(gfp_flags))
++			alloc_tag_add_early_pfn(page_to_pfn(page), gfp_flags);
+ 	}
+ }
+ 
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+-				   unsigned int nr)
++				   unsigned int nr, gfp_t gfp_flags)
+ {
+ 	if (mem_alloc_profiling_enabled())
+-		__pgalloc_tag_add(page, task, nr);
++		__pgalloc_tag_add(page, task, nr, gfp_flags);
+ }
+ 
+ /* Should be called only if mem_alloc_profiling_enabled() */
+@@ -1341,7 +1344,7 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
+ #else /* CONFIG_MEM_ALLOC_PROFILING */
+ 
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+-				   unsigned int nr) {}
++				   unsigned int nr, gfp_t gfp_flags) {}
+ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
+ 
+@@ -1896,7 +1899,7 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+ 
+ 	set_page_owner(page, order, gfp_flags);
+ 	page_table_check_alloc(page, order);
+-	pgalloc_tag_add(page, current, 1 << order);
++	pgalloc_tag_add(page, current, 1 << order, gfp_flags);
+ }
+ 
+ static void prep_new_page(struct page *page, unsigned int order, gfp_t gfp_flags,
+-- 
+2.25.1
+
 
