@@ -4,143 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66D1FF9936C
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:41:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7778CF9936B
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:49:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2D916B0005; Thu, 23 Apr 2026 06:41:13 -0400 (EDT)
+	id 796656B0005; Thu, 23 Apr 2026 06:49:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDDD86B0092; Thu, 23 Apr 2026 06:41:13 -0400 (EDT)
+	id 71FA26B008A; Thu, 23 Apr 2026 06:49:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF42F6B0093; Thu, 23 Apr 2026 06:41:13 -0400 (EDT)
+	id 5E6E46B008C; Thu, 23 Apr 2026 06:49:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AF8916B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:41:13 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49A08C205D
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:41:13 +0000 (UTC)
-X-FDA: 84689478426.21.385346F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7214BC000A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:41:11 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R1nFHnWF;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 49AA16B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:49:22 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8B35F1405AE
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:49:21 +0000 (UTC)
+X-FDA: 84689498922.04.D9848FE
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2A7DC18000D
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:49:19 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=XsPxQB6w;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf24.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776940871;
+	s=arc-20220608; t=1776941359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wrWFeAqappEvsHyHiM1opcwy4+CKVvlf8ke7UyR6S5A=;
-	b=mBf7KpgilvbKx9NMGfQ2WinHZhkl03vVDuUM51B4dgNnd5H63n5kCT+QAVNrDnp0YRrlNM
-	K9RIIA42N+yFJ5ds8P/j5WTTzjmECQQLZVufqnvNNL/yuy1Ho+qidC8m5R1m+ATjaDzz3D
-	mm9BUYwPTU/eZoBYXGou1Uqq2/f2biI=
+	bh=7EvN3w//PIUjYRwZwYylfrXx/vn+cOQpw155rQd+i9U=;
+	b=J+veG5QWq992tabZWEfZy1NpByN7+Nu/lH1quU10l1nauVl4ckCmfMJmX1WLnU8smW3k/7
+	CI8qxs76oftijgOsXSpS6fR+AL9dxYy82V94tBHkKl/xJbm7hHj6++m9U814+XrnlvUnMd
+	MUvdK+K667xK7bpIirQwybs1jxB9SzA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R1nFHnWF;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776940871; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=XsPxQB6w;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf24.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776941359; a=rsa-sha256;
 	cv=none;
-	b=vrGDsFE33YhQ5q17+8nZTLN4FuLyF2du9yuxkHhQz498ngEZXEIkLwXUPyVnCfdJqSMBne
-	OdX57FT6Av/H1cuwGFw8BYSMvygKVYk2fJcWJ7YWm2P5IuineBLOaZJt5pUbbzjYXE7QQL
-	1FXqDCcnYxs120RJc7um0q22/Gb2C4s=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8FEF243526;
-	Thu, 23 Apr 2026 10:41:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7380BC2BCAF;
-	Thu, 23 Apr 2026 10:41:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776940870;
-	bh=Bi0JKllmc8EsuTFVoWIS7hebjAew4hxnm0zhHQlaF5Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R1nFHnWFi6JiIUWL60faGZIP3/hDO1R12xZ/Ub/HIJvhp/ZLJJUndzXe2l7oIfkW8
-	 DvcvPzHs0epRiENLhVmIskMbigjGQb0fHjj9lOstZ7yjPNALz/upNHJr9ZHkAULqNZ
-	 oT3gpMlowjJJXYzmJ41Ij7ozC3fH+U7nMhgdQxOVfULIrMN7DwP1Mjltu+lcwNHyBv
-	 OSXsNgJp21t5QSzfuHps/eKej/w7rizHW6mVIRf8q2LD6ByrBNPov/KoAZrFRSlUgY
-	 6IKlIulIuumqCaaQbH8WO525fzDWT08ktKSzpd0Xpngv/3HVXZgUVHp4ljy450u/eD
-	 /nht8rOBJcuTg==
-Message-ID: <2483c24d-8674-422a-82a0-5c839f72e82d@kernel.org>
-Date: Thu, 23 Apr 2026 12:41:03 +0200
+	b=6G+pjndOLTqqBIjoalv5MVep71TlTK7r14JG2KH+cJcg9jb7hxLpWhUpRrO+Cq2M+ciVY9
+	vmBvI173vFzhRQYc2/mk7Gz4mv1LnOOQl6wKWl9Nh2blcJJ1TSwjDUXyjo74BjSrd+1/78
+	ydfForUzYuB2ZOR/1Q+eYzrtssMzs3g=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N77ZiH3107946;
+	Thu, 23 Apr 2026 10:49:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=7EvN3w//PIUjYRwZwYylfrXx/vn+cO
+	Qpw155rQd+i9U=; b=XsPxQB6wI7p+RrQVN409ZIWVLN0kwVLgRh6VzOG9Gu+y3+
+	eEKtrckHI0Sisn2lNwXgeLJp+rI6bhkMnsv2/SjwA2kTYkI8XBmVtLqM8FtSxkNa
+	RKrcWCjw5Sg31aoOf9g5PlI8p5wp0A5jFHKlXU0fFGDYDjuzvdeEzChxJhuTKm6z
+	havxtfm3ax9e5ExSKlumvsdCzy8TiNy5EB4soJPPa+Ikx4t9p4DYp84XPZBk5tSy
+	7hJ3BpdTcTZpInTFRLe35oGrDygtbNPZUI5vDWDPiWJu+dNfutAQbQW3cLfLBMX6
+	ENq139ORUeksNNKOPROsjHyLi3u7RoHtyuK/Ay5A==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu6fpmv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Apr 2026 10:49:16 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NAZQr3011205;
+	Thu, 23 Apr 2026 10:49:15 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjky68ha-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Apr 2026 10:49:15 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NAnBMd15073776
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Apr 2026 10:49:11 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 64B202004B;
+	Thu, 23 Apr 2026 10:49:11 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 326D120043;
+	Thu, 23 Apr 2026 10:49:11 +0000 (GMT)
+Received: from osiris (unknown [9.52.214.206])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 23 Apr 2026 10:49:11 +0000 (GMT)
+Date: Thu, 23 Apr 2026 12:49:08 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] mm: Make lazy MMU mode context-aware
+Message-ID: <20260423104908.10371Bf0-hca@linux.ibm.com>
+References: <cover.1776264097.git.agordeev@linux.ibm.com>
+ <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 v5 5/6] mm/mm_init: Fix pageblock migratetype for
- ZONE_DEVICE compound pages
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20260423071911.1962859-1-songmuchun@bytedance.com>
- <20260423071911.1962859-6-songmuchun@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260423071911.1962859-6-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: i7n97b58qyr1mj7eoehccu1mr484j71m
-X-Rspamd-Queue-Id: 7214BC000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8809412aaed8a515fe2e149c822543d640060936.1776264097.git.agordeev@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDEwMSBTYWx0ZWRfX/5kJbJXQUVCI
+ F9frPD4dSk79AVauSEX6ZJMkVo3UQj6wJ7fk/cvIVi67AQm44+76kFx4JGE6lWoIx9Z2ccJ6yy1
+ QQ2RTFNbqbwDcCRgSLTZKwfZAVbYv9iDEiQZmGCDtYJKsQUhD4p10p7R9OlZdAmRrDrkiX6XhsY
+ 0L3yL/uqfCET3RQbav9ag2Wltrs13ysiXCOhl9xkOdVn6H5Qq8iV0ITie8iL0ZTEl6CslZnG/2J
+ j28VaxEbV1kmQSNaFx9gEsMmXsWmN57JthJ+6W3KPKU4TkfhqqsTCvSXO9RpuApD7hLXwgJnZ5Q
+ jIo1rk1hvF9sW3Ly7Dsue3gEoI56VR0xa6nYMNS8B3pHPO/z3a6hWk8PmTmF2LwgtX2P4qjf+5Z
+ ynjT3DpF0G1Z8FiyXSMK/UJguc10655VH8ZoDVlsZGilmVTJziJMHPrzVIMysXyo6E/aP368g8m
+ kclzF+quPQkGQjrAucg==
+X-Proofpoint-ORIG-GUID: 6d7ClHemyYgIXr5RcIsLheRHXS9pHYL2
+X-Proofpoint-GUID: 6d7ClHemyYgIXr5RcIsLheRHXS9pHYL2
+X-Authority-Analysis: v=2.4 cv=BYfoFLt2 c=1 sm=1 tr=0 ts=69e9f92c cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=7ODufjUfLQ-iW2TkFlAA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-23_02,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 clxscore=1015 bulkscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604230101
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2A7DC18000D
+X-Stat-Signature: detne1zoczy6pq1mntkuie7ndqqygwtw
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776940871-784514
-X-HE-Meta: U2FsdGVkX1/G9i+vlG/tEx9nK8fo5d302H9wNwA70K8CIsWcres7aA97TdaDQ065hxut+iy8tfKskzFL1poT47oar+ea2M5iHFNijhwfpsbZu7mChOFSEGEIGP6w9s0XUBA9/Y7J/MONzm16Et3XPP3Ss1OTijsm93hy8RzCm9LBujtOhVXidLRMmHCclFRpLm31tsTESezELOj0SrFx43R3U0Vv2JP441RGu7iDGbrimpppxKkDjcMz1VAiSaKvbmOVs16lPncydFgNkNXm4kX4h6XkO9y6MeTWsvA6fL4F4gum/A6M8MqjUyrhwn8m4idLnL+tXGMQKLIw0UzsVRpPSXHZ6eNcg+9vpIPwR1ISeopGTrFXhtf76n16ZoYntfr1Irzncy5QF+rVQAWm3QU6ZEAdb8hjcq5A9Iyb8KbicLcz3v09vZ237B7+3+umDYi4udHJPc8s02t/ji4qJVoRospbqRNNWG5AwvpVBMx0oOiuEn0OuP4UpUTWhCqUxZGBH4whciR5AIFb0BnYeKsRhLru8TposDEVqjxJRIg3aSZ6wQ1NLHxz+Jn8kpVKnLNWTAMcWOy+u/JxCeYhVeqlC2qZAM0pGgRLE70/cp3nRDFd05E/AORf4yDCztI70yoKrZmx83XeE0t3t5xTD7ofsC5dgiR1uaBOdNZTHSzVbt6MsLVkrThwix9gJi9DVLEfvtdkmUEAl/h5bf+Pvz53oFECZw06MxUORlThYJmR4glfCUr197Wl7qF70WX55WlS4jp3gtlhswiLCSkF+2oTTeHBOG263AWYJ8OfC0tuT4gf8+OnXBaqcu5UgA1NlzaokwpeGUTA1WieM2BC5RFgezoTJyJtZPhczS9UT1IhvHUebJPIsOf8eiP163cr5jSutibqBTS+bWsiyn97prQ/aqpjia/xEqMqJ7L3C6vF2heA6/N/eX1MalPZckNY/5IW9JYeT/zbfG8jmsS
- oJHczOVL
- CauE00FLNSix+f2u2qEOKJluPrLi1/QUuDFQMGhfKeiXGjcWlz8zydYfmV1tZ5Kbal66FrTxwziWrn5ctYOdVBooXjqIHl0ohrNvkE8TFXSdtv4ZZan+NLN5E1wnBDZzxGqdwz4ZQ0UP/8Cn+/HrspFj3ujTWnOjKZRzH4C52P46/+WMSaKuv26IS5Pg2mOOT9JOa8SzlWntymOVuhYz/eC7pHWg5E1kDLJBsy4nrP8WYN1Zk9ByJZRQ74qP94PbXCE8+ZT+U3csmQzAsbVL2g7eete2v5n8s1puHRGYokocFY6NVdpzi7FpgTjDH2uTO0SlAbMJOj4qnJ4VOo+PJt1L/VBgfPAjwL0/8
+X-HE-Tag: 1776941359-39498
+X-HE-Meta: U2FsdGVkX1/G3hr5mNJBY8xHi3NnHSELnZo4Q/FhfiSsZVhAWvJBLEsJ561/ufBsdAU9hMhg9MZaIEjPC5lEBGL/mQtQ7JSwueNn2gvz6eYkwMJIg4kep1ZjyRmqyW5yF//6+KzAHdlBPgCubyCzwzZB7AvAK7UbwS3Fj/YOrGTeZTHBTyd1VRsgtPYBte4gS4MohUU284MZmCPBQoVE8JelKMO+GWVTM1TPagFeqYISQ1Xgd17PR1J2o/HjIzJfdrQWVcD0PdpN6KzoM0swCUEylB5HB2eSpYjFRAJQBXS+VV8lUkSsVPYmZM4SaBk5Qewn2WNcLa2IY9qeHzgzXbvRt1cv7mo69W640gcRIwv5ho5ttQ0JCfmSj+qoJaYLymgRl9O94JAwRFMdkggqKjyacfx5IQlQQDyqDQuKdFY0J/q7MUK3snP9zt3pfop2jowI0zqISgYwIEbMU618/KgyRnf37UotCHlsmFw321RejlejQbaX+r/LfzPbNmJnGtEwAT2cnR2EmioPRSVbeYcSqfMm3JmUuRT0JVZzbByiRCRii66IwUSYRRpa/boVCelH6MhR4WzIGJulr+EWMtf5xXQdRcEVoHE2UPNiUCybEDQqHPJoa1V5uaib2LZenk+lOFR5ckXKh553e+nwUWMh3A+8RztDnIJEKULJ9SOYCX89232FORpKnbIFSerKuJyIjH+xQg6smYLIsPK2r4a5yW/NqyELOa1PbtDSDenWK6x0AeJlqQkHeIv+dGa7SyctO+NYmxfhrr4BGWtNMnUTSD5MSF+bZR+5t2XxPup6AqbRJxzYQZJ2lwofvFvp7GIqGNEM6cAkP3wAp/dwSDWGSxQ1leJq8WsVqtlwo1YE1gv4CB7n1EnjgajBb/ZAL/MGBromVSMlghKCWq70cZqbgKj707K2GkBQqtMiHcbmEoPgwS4/aHy843XE1gAYSKfCeqOLKKiLAtakNF1
+ Mry7qofH
+ DLyr9NGIJxocjTsgAvxjRmilFwMNwelfvgvlmk5hTD8KxY+Oeia0Bd/gxg1b625W9oA/JhePhyR+S7WbzYRr4MqDLX7wAzIBBJQaj1j/Og+caePSmiidPJU0HTQ5JShZo+nU0P/uM9xnQSrypiYH9fyp8u3YhLoCi5wk/aoXxqfPJv8Atqs2VdCCe91FRlnNpl2c4oqjGSF8YBuJ4rlzRxP/JHEKfho2ZLTCBTE6f7T1IavmU+5kw1blkJjLwKk8raEaA21rWMXfXuh9PiD+qD8BZ3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,32 +143,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 09:19, Muchun Song wrote:
-> The memmap_init_zone_device() function only initializes the migratetype
-> of the first pageblock of a compound page. If the compound page size
-> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
-> subsequent pageblocks in the compound page remain uninitialized.
+On Wed, Apr 15, 2026 at 05:01:19PM +0200, Alexander Gordeev wrote:
+> Lazy MMU mode is assumed to be context-independent, in the sense
+> that it does not need any additional information while operating.
+> However, the s390 architecture benefits from knowing the exact
+> page table entries being modified.
 > 
-> Move the migratetype initialization out of __init_zone_device_page()
-> and into a separate pageblock_migratetype_init_range() function. This
-> iterates over the entire PFN range of the memory, ensuring that all
-> pageblocks are correctly initialized.
+> Introduce lazy_mmu_mode_enable_for_pte_range(), which is provided
+> with the process address space and the page table being operated on.
+> This information is required to enable s390-specific optimizations.
 > 
-> Also remove the stale confusing comment about MEMINIT_HOTPLUG above
-> the migratetype setting since it is an obsolete relic from commit
-> 966cf44f637e ("mm: defer ZONE_DEVICE page initialization to the point
-> where we init pgmap") and no longer makes sense here.
+> The function takes parameters that are typically passed to page-
+> table level walkers, which implies that the span of PTE entries
+> never crosses a page table boundary.
 > 
-> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound pages")
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> Architectures that do not require such information simply do not
+> need to define the lazy_mmu_mode_enable_for_pte_range() callback.
+> 
+> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 > ---
+>  fs/proc/task_mmu.c      |  2 +-
+>  include/linux/pgtable.h | 47 +++++++++++++++++++++++++++++++++++++++++
+>  mm/madvise.c            |  8 +++----
+>  mm/memory.c             |  8 +++----
+>  mm/mprotect.c           |  2 +-
+>  mm/mremap.c             |  2 +-
+>  mm/vmalloc.c            |  6 +++---
+>  7 files changed, 61 insertions(+), 14 deletions(-)
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+...
 
--- 
-Cheers,
+> +/**
+> + * lazy_mmu_mode_enable_for_pte_range() - Enable the lazy MMU mode with a speedup hint.
+> + * @mm: Address space the pages are mapped into.
+> + * @addr: Start address of the range.
+> + * @end: End address of the range.
+> + * @ptep: Page table pointer for the first entry.
+> + *
+> + * Enters a new lazy MMU mode section; if the mode was not already enabled,
+> + * enables it and calls arch_enter_lazy_mmu_mode_for_pte_range().
+> + *
+> + * PTEs that fall within the specified range might observe update speedups.
+> + * The PTE range must belong to the specified memory space and not cross
 
-David
+I guess it would be better use consistent terminology: "memory space"
+should be changed to "address space" in order to avoid confusion.
 
