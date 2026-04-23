@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFD0AFDEE38
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:44:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C468FDEE39
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:44:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A8BB6B0096; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
+	id 8CF206B00A0; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659E86B00A1; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
+	id 8A3A76B00A6; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34B876B0096; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
+	id 4364F6B00A2; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DA9EB6B009F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EE25D6B00A2
 	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:43:37 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8EC9C1B7B34
+Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B11AF1202E2
 	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:43:37 +0000 (UTC)
-X-FDA: 84690542874.11.DA6F7EE
+X-FDA: 84690542874.27.864AA68
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 838EE100007
+	by imf26.hostedemail.com (Postfix) with ESMTP id BBE3C140002
 	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:43:35 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZcGSnu1K;
-	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=blwlRd5B;
+	spf=pass (imf26.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1776966215;
@@ -35,46 +35,45 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NiAJPeA5Bm1c2E5LPOPlyeRw/dIy3KRccOgHURmtV08=;
-	b=ASbvV9NO02KW2FhCDiXrTNYDzsbo9zVg9OJRmVDW4AnnB2E4oiq//EAPiNBdEJ5hUGvGS1
-	/Tq6IR7dWDXGMW3S976NmsQ5briVLDarSCvrGH12q11opkRF/VxHkDvqY8+g5cL4GAxX2U
-	JpZO7/IwXGVCsk7yY6G1eIbE9qry49A=
+	bh=7PYSStYWFGDj2FhrgMy9OWvG2ek167R43sWIGufT4ic=;
+	b=IAVznaFOOjDOtZf84pdRrt79MriDunKa0wUPil6/DJTcfjzhGGEGvwvhKNWSIPoQCMEA9J
+	LiqLrRbmOOie0xXW9GGp4aIk+ZnyMB7u3/0dJfQm0lnSFgQaMTsGYYmgGEkLnOaHy4ebbp
+	UbjgwoOL32+6BDxp8RzmhisYiTSSlXc=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776966215; a=rsa-sha256;
 	cv=none;
-	b=LdN9TB+M4aK09Ofmh9g2q2WbNSPUOtmo4cFaa7p6eRIRgnOUSztWLrmVE2ON0KhIlmbskM
-	ofDfGy3wZ/G4VnzXpqN2EdWVv6rvzhPLNvJdaP+3pxgzT5z9BdSaP7xc/maRYWCPlXJqUH
-	GDocSJ4uOSFKHTEbWz+LKOIkrRzFknM=
+	b=V+vBZMBn3sxGFZr7CHriKWXKX9XzWYkdLgo3rZso/gmqmV8j89oG++zv7HkvrqOgJaX0EH
+	lawnc/lJmchWefKGAESvniTUrmA1Ryvp1gK+eYVdNyMd+weNGH3pqeE6o9ZjsI49Y/0CQn
+	OhsivXYhbgeQkTfxf2N5RIymGxk2liU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZcGSnu1K;
-	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=blwlRd5B;
+	spf=pass (imf26.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 152294474D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4869D4476C;
 	Thu, 23 Apr 2026 17:43:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D86A9C2BCF7;
-	Thu, 23 Apr 2026 17:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2644BC2BCB7;
+	Thu, 23 Apr 2026 17:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776966211;
-	bh=UfFnZDwx0HT6FyicEDwiV3SBywyLcuEJDUUBu5liQ2I=;
+	s=k20201202; t=1776966212;
+	bh=Pi8alNHf2oX9gUTgyBWhZOdVukmwFFf1pCLzb3ZBy+Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ZcGSnu1KEwo9flVZ9fCXs052WEMjFRsvT/5B7icAkPUoNVgwFb+fepUH6IHG883yZ
-	 dTtY1gpZA20o4cIdbN3KpFWbhwSvFpaAULOfTJvTH4HtBdbk7nxuFC9B5J4kl+oN08
-	 D/jzQ5HfHjo5DWE0/IJMcweAINEyLClRvBEEo1+RtLmFO/X+8/rNYi8ytgDNSV9E0z
-	 y+JdvTer1jVeUEGFN4MMG+KxazpMN/DsAbqh/y6fPeePKwu8RFqE/I+GmOYCdF7DMv
-	 wMCrp2iEJr+ntkorY+Ar4s/PA2Fvs/+N3fwPn68Ac/ERDi6j08d7P30iQtgGTanTWw
-	 /Y2Wo3+2cn/ww==
+	b=blwlRd5ByOUWM7dWrD26xsO59924KoDfg+NdyyzCwW6CLBiqL20pkeIibLeA9w4mw
+	 BbrJEhs/3bsOsJwcMOI9wfo5Qm1QrMFsOucJhyFmwA06/489rr+n40IvwssF3lksQi
+	 fYG8SWNtZ5sRb3NZ9a3HrdnZUtK/o8kPBIHz28fZJ4RFK8Td8zWugPBUzPRV9oPgk4
+	 3m5rgN7Ygez0H52XBeT+3g7zhvV8PLrJRPOOyRpYevNavemtSET+3e7slJGFN8/dwm
+	 yGfjtrn87DSf09pv7V0hxlrisFxCXhhWBlK9C67NAeWW9P0z096sQWR7d/ZuDt1wYG
+	 g+bk3C6Pd6Rfw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCACDFDEE35;
-	Thu, 23 Apr 2026 17:43:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AE54FDEE39;
+	Thu, 23 Apr 2026 17:43:32 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 24 Apr 2026 01:43:19 +0800
-Subject: [PATCH v6 08/14] mm/mglru: remove redundant swap constrained check
- upon isolation
+Date: Fri, 24 Apr 2026 01:43:23 +0800
+Subject: [PATCH v6 12/14] mm/vmscan: remove sc->file_taken
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-mglru-reclaim-v6-8-a57622d770c3@tencent.com>
+Message-Id: <20260424-mglru-reclaim-v6-12-a57622d770c3@tencent.com>
 References: <20260424-mglru-reclaim-v6-0-a57622d770c3@tencent.com>
 In-Reply-To: <20260424-mglru-reclaim-v6-0-a57622d770c3@tencent.com>
 To: linux-mm@kvack.org
@@ -93,25 +92,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776966208; l=1860;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776966208; l=1018;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=H32ZZapu03Wi2OjXgn3aDMeoOd5F0TNj/288sMNJO1w=;
- b=MzmrT40vt0TkDPM/Ul2yLwYIcHAQ2t681GbOMYx98ZYwLoXXD9v+qCfrk0+ZSLglzQH3UlMcI
- QB7/oot0OF8AigWrOTEEPNWs0NPKEsbBj4z5R2NO/gW/oFCCuZqoZp5
+ bh=hbjcSghvUpKJ+Cq31Huf7ozCEGn1Zf5iRINfj/MTnU4=;
+ b=9Hs8tFOS36fafoVOzNH2AmgLcP26/rJlYpL3c+JrWMbVYfCT9/cI2Qno4ktn6aBAU5LO1x+jb
+ UGIl2T7iv9UD0BDWwjOYZfuWOcY58EynFCKnUzbsEL02TQ99LaK7DZE
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Stat-Signature: 8enjdz59f55ug5rzsrc7ysgm5h6eyu7q
+X-Stat-Signature: nxp5mgu38z6mihaikyjtcug4q1bgzgag
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BBE3C140002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 838EE100007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776966215-785336
-X-HE-Meta: U2FsdGVkX1/5Vflu4A1ptgrRBaDZRZwFfp4cFTfCAIylXfmHVBwUijFiZIY6I3DMwDE4Tr/3d3qsHcUh+eYrFAOxBsy9d9O/I7/TOsv0HAT1NI4is9whgSi642jNsjt4WTJvIFIvj7HCHC0aQvJsNP2rCW3UfhWtSWW1no0ioVRp80fWrZ4BrWPp0B9ClNAvVHclKeeE8vLjB6XweV0JjZ5AiUuDUC3hy8DQ9V3fWXJKfyMtKD/5xoyRPczm0TV1AR4+4oopB82K773JmUUngGBp04zMFL1SnuSxBdqxQjThYuhfTH8xYincF5wgI0NuCVFb6NFFtTz+UxfEQ4L5mF5ZaeDzS8z5ACSCg2TxygQSY65HFG1D55hQAx0CmaQqYKKa0HlZa19IpJCpPq0HqWHwi2a2bIoXMpE0SF7xsi9yUwdrHKZ3qtHWA1a4rgsD4Wa3F+tF8YXb5fxrBCQAouaSgn0aphQKSkXCHzHPwsfPdB2QLjOIO/uExe7410CofR1htdPrPKW4TWWO/3czOxft3feZaN3jmUuwDGwj8Mn8UrzmOK6H4D91qQZsDr4YSyiA9wgJVzoipbvyXUOmGwY73HN7goZfltRkCV1fMZeIAoHN1IE99fDW6eqTQVgVB+NQXzJrTBL/bniNMTNx4rhfQRAbim5EbNci/eWAtNT/5fGXOd6VKaKdQoIdi7XG+VqLoD4JRziamBlUqzqKIUcCLPiJbf2ZefDC19O+V5zI05JyMPs47OC8/zXjNzMFb5nuJCQmMTvSoRRlyaJsG7pLLx3+iDdAospilcPYTQftpY4CIV/Sb5lco3PzvKilEcLeRPDPpQ3c2595mIUSxcLXkOElYYEPp1DA3s6Pm41AZjIRh7XlYR27vAo+PfbXwrK/A+zZx43io0kdUETLAatZHhwBx0cSTbWSfpyMUDUQM3KBbsSXRgEqDlGwYig4Puc+AuB78UGb+l2kKuE
- z0pz8M/8
- a3KiVTFIgly4PnskzOGzpLegqVQDnuRoVlusQS4M9rE4uUxBHhS2IEwqKszD/hYWFG6gJPt4VS9+d0SPYpNLBUo/STnZCvm71he90pZfRyq8LiOF7BmV4zXhXrv8o0C+mNzmJx7O4ixJj1CDy/eeym9G87xZxwGQmzbG4wrPFYk6L438xRJBTzLM0uQANFn0dKbSyzYM78RSVJ2zTbJ19AAOMkatKbdaV6CUEGNFASi8yHHRyUxQIdwdm8qqdNHlySsk4EfRYKf+0FKYel/DDE5X0l9CyxNuIRWpDqQFgav/n30UKNDAuflEi1NzGIaaSyhJ+GfC1vA2/aeI99Xh/GU48PM5RHx1WHP0YuqAQMUubmIiKb4fIGxABQ5VgMH6gHb2k6KN66fexS8yYVTxq5LAA2gyRs1el8ZyKTPyiX9lssdjYiliiNTUEKOt4Qvywek8Kb9SVb374IiTcFZLeMEyMgVobNNb0FFbIumXl5RVIGoqGUNWpplJ7VJoSYFdN6kvj27VByEtvyebsuxaiAWvMd7+kj310gQFeU1MSv1kVs7u3Eug7MlizQvkMz6rysj9Y
+X-HE-Tag: 1776966215-385821
+X-HE-Meta: U2FsdGVkX1/fNiwccF0VLMyRGqyv2MtAjxfzn5OFGzXEBEsiumG+md7LxSK/emKKSijo10KJelbUgwRGnPTTiKAU+tzyLlYYiLtMJR6CiZ9xepneTAaDMNXp062lwfqVdNWbVdwlm3LYVeyyKys+9hx2WJvzv3hxQ23m8d3BUKMrUVbCUHppvaxhV9JFc/UolRCAI3lJqs5x2AOByWUz2TEzTaW4+V/SY4uck4rF4Y1JxZiAT8cz/qpijWfvJjuZvkok+m1zFbRP+Uqu5ZDpo4dy4p4jKTaDA04QRE0wsbH9xhOr6PtcJfqw3yVnFCM3ptusvy57eIXam73BnqKl761N4vzTLeXLvkCwutQ5arURuKLeED9LfEX/n4zXQkrEzWtRduw3wffxdr885W/ROhrG1uM9nUbQhGNeH3c40pPhgbBjiIH5bS5dfUV6527FgS8ll8OLlw8iWvRQSbhL7IO30dGpiQAPGTJ6MgxTsHg/bG8JvE9hDKAyShc9ULH6ns33dbllfmxeU3t/s2pzJyaNqKNcMXKb8XB2pObIQnjxZlZM/53nYEkc9TgZHaTJIuWKMvOaG/UuBI7TvpQ0CCVZgxuAdA1JQvD9nImfl99RCIuargAEic/LmX/dIppkgPD65qgyvBvBMO4l8sTKshcGa3ROaDYEd8U4exyIikaGYG3hwNFAairj0KxhFoLCPMWTNHLhLF3chBKZQKs363Ftd04ClSIDb5B7AYC3HGZkhOugC5pRcOESrmt/l+21mF3OoqL6LS5QSBTjpPRpQ9fKFsMaUF931IgwJ6rJaFkLcFc8RfQZYz/qdaCxBqtS8Zs6cvzy3EC4PZI5EucV2a8wGxwbqjma9QkHZo+ZBmrkqMr77QiS97vjCt5xfwh+nyTin7sNL+3lXownNtU2ORLXvuJhaXgp1ANOWNu0lE4GKn9tlPbcjtxzK21zQ0xVGhofPHOItDNQNAiCfOI
+ gg3bD+xl
+ gbuFNQk7mQA2OMwPHGbfrIkfW9Pi13uf+XfLmhUStE9ziJbKj4AtcF8KGuKrhBIegMUJRVZ2OUq7ydXmMlwiBSZIUqgxuvL1JnOq4ztzJxJh0seceRzPd14uAcNmA3huSeW2njSGXCcGTBtfCFN5tCaGKflN2nnCyIec/3/E8hWTWs2Za91yUjFghi7vfoKfFXGt4KyaQIZvyiMJ65uR/anVfQe2AoeIhkK5ULmTm1AcVKsoBGd75EtjpIw7maGFrqh0rQ+nbTmAwUENt2sc42HqM+cQrDWRR3096LAErjAzfuKfDPu4YDQPfQfbqTM/xLybqXOAKevsONVNsgU9ULMbUH9reVoyuuNhu2U20zpFLf75Dh3gDL35lN0EY4XLkg3Uk/cJuQ55WCEJgAvvvIVkIF6KORqxvamh7cQ325rPhb7BSReXyJXuPU+ckwiJuWeOh4E0U+8uQY1fyYFS4LVO9OJ8qQYC0o3GTdBozq/PNPHrYM61p3A/YdvAX/XFdHD5IWPKImgSsftkTlZVBHLOhE+O/sXADXEYfpbos6Grdoobk+CxaDCr8NXcO5e543qpsog3ZGQtRdtHKCA3difhl3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,53 +120,37 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-Remove the swap-constrained early reject check upon isolation. This
-check is a micro optimization when swap IO is not allowed, so folios are
-rejected early. But it is redundant and overly broad since
-shrink_folio_list() already handles all these cases with proper
-granularity.
-
-Notably, this check wrongly rejected lazyfree folios, and it doesn't
-cover all rejection cases. shrink_folio_list() uses may_enter_fs(),
-which distinguishes non-SWP_FS_OPS devices from filesystem-backed swap
-and does all the checks after folio is locked, so flags like swap cache
-are stable.
-
-This check also covers dirty file folios, which are not a problem now
-since sort_folio() already bumps dirty file folios to the next
-generation, but causes trouble for unifying dirty folio writeback
-handling.
-
-And there should be no performance impact from removing it. We may have
-lost a micro optimization, but unblocked lazyfree reclaim for NOIO
-contexts, which is not a common case in the first place.
+No one is using it now, just remove it.
 
 Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/vmscan.c | 6 ------
- 1 file changed, 6 deletions(-)
+ mm/vmscan.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 084c6ea8910c..35e3352a53e3 100644
+index f6cb1a4b6a31..7bec0ae51465 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4650,12 +4650,6 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
- {
- 	bool success;
+@@ -173,7 +173,6 @@ struct scan_control {
+ 		unsigned int congested;
+ 		unsigned int writeback;
+ 		unsigned int immediate;
+-		unsigned int file_taken;
+ 		unsigned int taken;
+ 	} nr;
  
--	/* swap constrained */
--	if (!(sc->gfp_mask & __GFP_IO) &&
--	    (folio_test_dirty(folio) ||
--	     (folio_test_anon(folio) && !folio_test_swapcache(folio))))
--		return false;
--
- 	/* raced with release_pages() */
- 	if (!folio_try_get(folio))
- 		return false;
+@@ -2040,8 +2039,6 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+ 	sc->nr.writeback += stat.nr_writeback;
+ 	sc->nr.immediate += stat.nr_immediate;
+ 	sc->nr.taken += nr_taken;
+-	if (file)
+-		sc->nr.file_taken += nr_taken;
+ 
+ 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+ 			nr_scanned, nr_reclaimed, &stat, sc->priority, file);
 
 -- 
 2.54.0
