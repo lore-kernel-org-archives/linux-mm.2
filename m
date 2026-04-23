@@ -4,101 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14AD1FAD3FC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 04:23:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96703FAD3FE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 04:31:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F16A16B0005; Thu, 23 Apr 2026 00:23:31 -0400 (EDT)
+	id C3C216B0005; Thu, 23 Apr 2026 00:31:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA0476B008A; Thu, 23 Apr 2026 00:23:31 -0400 (EDT)
+	id BECF36B008A; Thu, 23 Apr 2026 00:31:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D67C76B008C; Thu, 23 Apr 2026 00:23:31 -0400 (EDT)
+	id ADC396B008C; Thu, 23 Apr 2026 00:31:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C1C906B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:23:31 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2C917160435
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 04:23:31 +0000 (UTC)
-X-FDA: 84688526622.04.5F68DA7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6178912000B
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 04:23:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J3l3ahf1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776918209; a=rsa-sha256;
-	cv=none;
-	b=zhDZpRVKuojsyRWp9mh+1YxWV9agmhx8o5YirRky0GOqmOALdAoq6d7yQcfeqlIBdvQbaw
-	/HM5MIkt3/n85I2Ry6agJH3j2LpcXQHpFi/B7zWnnNGcaTTf706jIKvfRRtakJhrD9Xsq3
-	JR2bo79yZ6u3vQdSUhcXGzmh0VAJ9O0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J3l3ahf1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A9326B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:31:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F6368B960
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 04:31:22 +0000 (UTC)
+X-FDA: 84688546404.17.E31F194
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6A78B20004
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 04:31:20 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=N4iUFMOI;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776918209;
+	s=arc-20220608; t=1776918680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xe0sGfmpBTTvdR0h54g6nHRHOSfBvKT1SrNsmpSXOUc=;
-	b=4K/JHmssE2xWoNH5ZWEotrCeka+g8vGRG7OTHU8DJIq6wr85ucgGHYumsZeRIxLkEJFD/1
-	3/w3DJFDk3/q4Zw8APeYyYcmppsNIcfI0okNRanR6hV6lCoAZwidCupWcWhE3ieckpKt9g
-	UKrkabNBYIt4iBXU6AMB3i82f/R9kxc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14058440C0;
-	Thu, 23 Apr 2026 04:23:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64A4C2BCB2;
-	Thu, 23 Apr 2026 04:23:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776918207;
-	bh=3dx4IJ1963MF+w6Alh++CaLyrT79SqePimzXb2u1qcw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J3l3ahf1womxl9bIGgo6XfxMmK2aNsdFtOQqeV4idQg0x2HPg+ZZNnyOpmPAo5j02
-	 yW9yuKuKjj79YdizT4NEIYPrZS+i10UO9dxn6XEy3ra57e+muo5HX+E2C95x979urP
-	 PIi7YVKo1NoOMNR2zxDxHdUk6o+zGxsuw2tfOVWp/6AxrW3hv6VNVaaRkAwQirycJl
-	 ifA70tf9cdzJfLiW/h/BGrvonyvLJUa1KVGrmfRiXx53Bqur/rwRS5MAVWy870WdeX
-	 7TrwBomvib3VWWyqVplNGo8filVr01xx9WYujusZlXKOG9csErPzO7sOFuwXBWQui9
-	 3lEzCzJPrp76w==
-Date: Thu, 23 Apr 2026 13:23:25 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+	bh=KzBI8Vs9g1xHTdi85g03Pkd08y9g2RbvUpIAv03SBC0=;
+	b=mYiIsUP08nzbNV7BhDjaIqUwdiOK6ZYOp77mgzLo07ArukLHYBgBHuEyo1OO1g8nbh5eu2
+	6KUxr8vV3Us1HpUQZprcmDTBxJEIgGzlIQz2+Jsiq+3d0KyChsdJbC02R2skP1+7lh37AS
+	LrVnMh2LwQ/RD6bW94c049H4NLuw4rU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776918680; a=rsa-sha256;
+	cv=none;
+	b=yS0btDBUlFROYNkViNrb1obq0khf+hACVaqTjMtUwOK6Zcq/YC/C7mIhgzPBUywhCnaGe3
+	oBxZEMJVTocSAlDUlQ66v7natZMdmJTD2046jKJAsQZOZeeoDKbG1dhW8aejkNlYpEG/Ko
+	wsBzG0JFowMXCvuvQgzn7BKhVTbvQSU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=N4iUFMOI;
+	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50e63771eb0so41863111cf.3
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:31:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1776918679; x=1777523479; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KzBI8Vs9g1xHTdi85g03Pkd08y9g2RbvUpIAv03SBC0=;
+        b=N4iUFMOIFPH4R3+1pJBTgCeepnT7dRNjD4qSXH+sa3ar+OO1vtHa5t9K1NWpldUCqZ
+         074q0lHs1lfn3+It2AIgjyrIZUgur7XDd1B1vsy15fo1GNVXkwAyyQYgfQMtO0XUOurT
+         o4399QMDzSCL0x9fDqgNja7O5Cj9eVH0pNnyVa1HOZX/pE7l9Jf5W+ZLA5qRoATkHweM
+         2UwjBGO8lAuZuLevIlww+h9H3G2lTnQHYigykyOErQ+V6DeDjzJzWBjfPlq3q54KqWs7
+         5DIHPR+r4+ZcDUmj3sG7oh76dEjjKWMMg3J6VlKvJAE8txtYI1Zm9t39+zOc7W7q2cIF
+         L1fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776918679; x=1777523479;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KzBI8Vs9g1xHTdi85g03Pkd08y9g2RbvUpIAv03SBC0=;
+        b=MOtMiZgcj1GGLjS5N4bPv0zqcdv7oER+bd/v+FRXfopw5wHUcGJvVpSubi+AhzIRrE
+         RGqEa/TPA96E2/nHNVbytM+TmHEL+AxBPRYbNlY02EI/zRDPbs68cMDMSq3Vb49qdHZ+
+         M9W3U8u6i3vb4VKPlO1mmTTzrirOCyotK9O2BGZdlTnlaysFx8p7pMhxA78QZLmdo3sv
+         6w2V4Qy08RaBTobrEqRiTq5vrxj+B5VVNbzrs1jxSrHs86e9kMoPKYyPkaX7cm1reica
+         TH43vr8ywRVWNsAWMVtgOrHccsow+a6k2YP8KgQol+killOurpvQ81y/YFgF2bUwtHvM
+         bchQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8mIkBb0RmsCVVHVC/WurBEpnidJKmfcyr9j7Vgtoh+eL+3zC/nUTgEQBsq89Qdfi0gq/CTl+y57A==@kvack.org
+X-Gm-Message-State: AOJu0YzEVjNLWRQsra9VuXGL1YWcyXqCDNYyQiWg+UH4B9hERy1a9FJA
+	Lb5/EAL/fiCRjzffSff1aURLCQ/i8Uq+Uu/m1gPItgYEih5BesTmp9MZo7dZyL+xz+4=
+X-Gm-Gg: AeBDiesP5jv5R3JPgzSYQa5qwXOuyE+Rnl8rwVEhD9Cmc7jd57rQsMsByUCidvEareo
+	HfesFNrb4sT6F7BrS8ghr07y5IPmxg5yRz4PADWIGpRuh9FbHexhwKNO3LQ8Vx6GQyxJTX85bZI
+	HS8sybD4OujkxStlt4wPD6JK3rI9/eatxz4GVjUG3Q8YJ9mZjJgQqxMV2a1U1cPkGu9yF2jHFZq
+	gM1EUqVu2P852APwYDi/QCor3Z+Q9wAm1Ie3QVUVSXx0XlCDFqVi7jssygINYsuw7rTYuFCQL9k
+	uIpliGOYkac5/1a/X7SLSf/Vy9aBjlKsiIsrhwFbndt+tAQK5JeGfI+GdJLZJ5rfoZiM7W5ODn6
+	hfXQ4yQ7FA4iLTU0Y6RPLWlNfyDfvOCuJMHn2EkQ1u4GLXfyjBgvIwIXMtOjdaGhDRvsCZBvImM
+	t4aNphLsqFg8NFTPCaxIuk6RTCH1c7QQJGpRJT2B8d23BBizyt6Lfmqs119iRq/aLQrlChDwNCq
+	5JbfviTgQG/XAxJb4wT
+X-Received: by 2002:a05:622a:409:b0:50e:89e6:669c with SMTP id d75a77b69052e-50e89e6697dmr204320091cf.37.1776918679403;
+        Wed, 22 Apr 2026 21:31:19 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-246-228-50.washdc.fios.verizon.net. [71.246.228.50])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02aec3a3bsm147982736d6.49.2026.04.22.21.31.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Apr 2026 21:31:18 -0700 (PDT)
+Date: Thu, 23 Apr 2026 00:31:16 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
 	Vlastimil Babka <vbabka@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
+	virtualization@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
 	David Rientjes <rientjes@google.com>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
-Message-ID: <aemevSofweaUSx0n@hyeyoo>
-References: <20260416091022.36823-1-harry@kernel.org>
- <20260416091022.36823-5-harry@kernel.org>
- <aejeVK0J_jHSfVhD@milan>
+	Harry Yoo <harry.yoo@oracle.com>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+Message-ID: <aemglPlcwFFHNj1A@gourry-fedora-PF4VCD3F>
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+ <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
+ <20260422171315-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aejeVK0J_jHSfVhD@milan>
-X-Rspamd-Queue-Id: 6178912000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: diu8h3iff4we6kap4eciq69rxcmsbskk
+In-Reply-To: <20260422171315-mutt-send-email-mst@kernel.org>
+X-Stat-Signature: ntuf7cp4bucsjewq91d3odt1dd9raicg
 X-Rspam-User: 
-X-HE-Tag: 1776918209-521257
-X-HE-Meta: U2FsdGVkX1/dbJc2EpDLFsY0pDkyiFmFcu4e7M7MtK0ozEBqPebL9LFe8faOZTDYwQzTV6+4bH4e7tGg4+1IAPe4xwAsEWov/2/qwdY8YacwumV3LAvU5LWSmBJUVlQCbWhVcXRLfhCyMVz0bUrJSY7ZAUqyOqyYh7bZhRn7T1IJ69/MjuyMrKejHXDto3QREK9dSVcQzr7g4W0v94KiL6Jwz8Q5dGzeu/E4efCTyFS6GQcrkwBaZ49TfAImCN6fFBmrqt+f5iEI2AUr6C59JT23Ep+gLpJjBAsy065gT077XT/Pt48VAMosQYedJjiz3qyhRUYnDUmQp3dD6vuMlvHLHY/3dF8L0H1xTDLIrFxn5SLqnwSI4hQLiFlkPgd9GFDu7Iools/XYFAXWf/l1xNK+XG9cWr64WWP5EA0p7YMM1NoUjAtSAOj1c+dinn37tUPdlkGCnP1rt681YnXHhRjDvDNUaApkL5QMuyU2T6Yg48xvaySIPEGv42gOf5+Gzttavv9/k3+dKoj3Z9Q60Jjkqebl6wQsAtxintHZ4sE+K87qBNRWPOawhDXUZ3c5H01HMhWdqD7x5BRNMy73Z7BMDN8pA2ONDZ2/JZP+6l+6ZY0XuLlOSkTf7rgwdN/l7u5jOhkOz5SzF4L4Z3AEh0V1/tGkwpAF6039FA807OOy0tL3valLISEz7hYF8va82vhG56CZLn6NdH5ln31jn4I0tTy5VOKGETw7KKN/JakloeZVJxmYBJsxOSeCXuAcapwR1Hza4vF01iz7PBMnRmMr3PZ4ks4IDmjmGfP9ELk75+IAyvEPhwIXCmVhkYosjdvpGuYxBW4IXF+/HiOdmgMIb0JD9f8CW2atn3eTU5tdDoPPffbd9CdSmGf1TbenWhlB93J43VPWwsWEKC3RCDK8uc/2GJ2T8l3H0Ez4j5Ucu2w39xvVSS6mjICguHK8GuywPSNE05Sz6YMw2S
- WiUbqlm5
- SypZegUb5NmjLRKu+ZdTIpciFB7qp7euIXa8g2CG2CUSqLlBbrg+2sBapXOnn8hS6bYVix8+XQVriM2ZvL0xMO7pf9OMM8e21KwoNMDYplP0Oaln/Se+r+UYF9fRD6k73zpnUEww61ze4KG8+Z9LE9xqtcfexQQS7A3sUHL0Ifur1lHE5DW2smH/vO7HTIcyDGOsW2idGQMIgWAXgFX2W8dBgbW/AKtV6GpAdfv3Us4uim/l6kXCwdamtPS2Ghx1iwQXsgIBTjwTF1P0LBqVYcv0kGzKxhIipbmXH2rBxPQYuA+g=
+X-Rspamd-Queue-Id: 6A78B20004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776918680-941107
+X-HE-Meta: U2FsdGVkX1/mmyIlewYd/lpWsqenUGWQf6RK5FcegAkEbbmOC2YUDQ25p2V9DnjoZTwFxGbMUl+ySoCxeX9HYHSWZzeKSF91yJFYLGjyXS9qb9uOQE6UXqk4o2Cu7A/qLcOdft+/H4DbcJEqUGMKyEAUij3hrUQosCeEObbC5Dc7HqqqeaRQtIt8TxLWhm90+pOeXhVzM7kclhzlWBsUEvTaU5NlStT6Iwg8OgQcxzpoNQAOh4C28CRMGt4l57CuBSfK3YErV1u4j6MTROr5U4rE8tSRl+vxFWx1CkB/cDHzDbzBAEeCl/Qa63L4nWLr7QPyiK9Q8F9wqBfk876Y/0C8NGEzNTAoKHuxus/GnH33UoxYa0rauIvpc6mmg0UVspZORF+8A3G3J24mzTjeY2cR/0anWKiHXhSbBFRwlSvlj9Q16uGT3xFLW4zKcJPxNI4LlxyLcpmniShZT/If71MeFBalVgwUWkYuKTWVmcqf0YlImCwc4rDdReKdFvaAngEH+6LUx0ZGEPdgL0GLtSeyuE6RXxtBJoBzdqIuVnx+cQz+MoovUQkIM1Lusjq8GULeS6bEx2iIG1G6gGBs6Yy8qvxjiAhcAt3wMKoLv8DNQgfPNcarops6A/Z2dBZxQnmW/U0IABM/eP97ZH1MOu+JR683EjL4ml7qwXQhfDzIl9mPbRs/pH9QvY26O3bVpTUkMOMuePDXqsmfkBaxwTOud9SlLz2h/a19X5bB4H22RLl7SiOv4XCG3VAtIEDhfHH3jF4J7wStPa+gFzdqVm2NsuNev3zVUTRpIx595fq9OHCTwSxtr6NqnWM2tvss18KpcgqNI85xzrpDnJOfn6P559yprrHPWbXb8dpGZbp9mNR/Zf7qN18Azi3ny+F7U3EqRMXpd4xw9hE5w/9K5031fdXj9IugmO8RW1FYAKu4eTIdDdZVPfaVdUXYIDbu/tDMncKQiFGqCKkDbGA
+ 4eIuwjAJ
+ HUXcwbX6Sz4cLpnPQUsQeJ6A+qPnbw+MzdZVy28RfvNWKPAHl3RUq42VnU4//fpxphFjsx79k31rmGp6FJMUMPCTbZRFrJYums92M1CWxwBJdy9GYm1cS+SNIq3WxcBy3/KjnAbBEjz6v6rZ6lUIzWujKgb4qIepePc0i2JvHdJ+tgrhu1DoujeWDwqnJKgaxgGJoJsr5PL/rLdmhkgt8yPu+YRz7PDt7VEPto147SF4ze3J3TV3ne5NzY7AqPR1fSzfGexkRWIkTXaEcSEHTGVHMAlqBh1XclsodhqIaj3p5AiWoEpnJ/ipSlK2g8S1JMFvwq0h57Pe7QDZL6CPgdKBhNHPz4ILIMKe4ztgyYOy4kpgyp5j6zCS1Lz3+5726y4yEiRgvEzAfsdjL/08Zst8PsbamFWTLybHZwc/ZYdVtt1uwFJdJdXhzmXTihGH2mux+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,136 +152,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
-> I think a better option is to add a separate kvfree_rcu_nmi() helper,
-> or similar, and avoid complicating the generic implementation. Otherwise,
-> the common path risks becoming harder to maintain.
+On Wed, Apr 22, 2026 at 05:20:27PM -0400, Michael S. Tsirkin wrote:
+> On Wed, Apr 22, 2026 at 03:47:07PM -0400, Gregory Price wrote:
+> > 
+> > __alloc_user_pages(..., gfp_t gfp, user_addr)
 > 
-> Below is a simple implementation.
+> With a wrapper approach, looks like we'd need something like
+> __GFP_SKIP_ZERO so post_alloc_hook doesn't zero sequentially, then the
+> wrapper re-zeros with folio_zero_user().  But then the wrapper needs to
+> know whether the page was pre-zeroed (PG_zeroed), which is cleared by
+> post_alloc_hook before return.  So the information doesn't survive to
+> the wrapper.
+> 
 
-I'm happy to keep things simple as long as that doesn't mean
-compromising performance.
+I was thinking more that internally you already have that information
+you need to know to skip the zeroing - and so the wrapper can just pass
+__GFP_ZERO and post_alloc_hook() would do the right thing regardless
 
-We can discuss that.
+Then on the way out, the new wrapper would take care of cacheline piece.
 
-> <patch>
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index d5a70a831a2a..f6ae3795ec6c 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1402,6 +1402,14 @@ struct kfree_rcu_cpu {
->  
->  	struct llist_head bkvcache;
->  	int nr_bkv_objs;
-> +
-> +	/* For NMI context. */
+However, i explored this a bit - and while it saves some churn on the
+interface, it adds two paths into the buddy - and that increase in
+surface might not be worth it.
 
-I think "unknown context" is a better term since it includes
-NMI context as well as other contexts.
-(I'm also slightly moving towards the term, :D)
+So I see the tradeoff here.  The churn is probably worth it.
 
-> +	struct llist_head drain_list;
-> +	struct llist_node *pending_list;
-> +
-> +	struct rcu_work drain_rcu_work;
-> +	struct irq_work drain_irqwork;
-> +	atomic_t drain_in_progress;
->  };
-
-[... changing the order of functions a little bit to help review ...]
-
->  static DEFINE_PER_CPU(struct kfree_rcu_cpu, krc) = {
-> @@ -1926,6 +1934,69 @@ void __init kfree_rcu_scheduler_running(void)
->  	}
->  }
-> +
-> +/*
-> + * Queue a request for lazy invocation.
-> + * Context: For NMI contexts or unknown contexts only.
-> + */
-> +void
-> +kvfree_call_rcu_nolock(struct rcu_head *head, void *ptr)
-> +{
-> +	struct kfree_rcu_cpu *krcp = this_cpu_ptr(&krc);
-> +
-> +	head->func = ptr;
-> +	llist_add((struct llist_node *) head, &krcp->drain_list);
-> +
-
-So it inserts objects to the list,
-
-> +	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING) {
-> +		/* Only first(and only one) user rings the bell. */
-> +		if (!atomic_cmpxchg(&krcp->drain_in_progress, 0, 1))
-> +			irq_work_queue(&krcp->drain_irqwork);
-
-and only the task that succeeds cmpxchg queues the IRQ work.
-The IRQ work queues an RCU work which iterates over the
-list of objects and frees them.
-
-Draining will be performed a little bit more frequently
-(every call_rcu_hurry() + work queue delay) compared to the ordinary
-kvfree_rcu path (every 1-5 seconds)
-
-The question is how frequent is too frequent, when it comes to
-additional IRQ/RCU work invocations affecting performance.
-
-> +static void
-> +kvfree_rcu_nolock_irqwork(struct irq_work *irqwork)
-> +{
-> +	struct kfree_rcu_cpu *krcp =
-> +		container_of(irqwork, struct kfree_rcu_cpu, drain_irqwork); > +	bool queued;
-> +
-> +	krcp->pending_list = llist_del_all(&krcp->drain_list);
-> +	ASSERT_EXCLUSIVE_WRITER(krcp->pending_list);
-> +	queued = queue_rcu_work(rcu_reclaim_wq, &krcp->drain_rcu_work);
-> +	WARN_ON_ONCE(!queued);
-> +}
->
-> +static void
-> +kvfree_rcu_nolock_work(struct work_struct *work)
-> +{
-> +	struct kfree_rcu_cpu *krcp = container_of(to_rcu_work(work),
-> +		struct kfree_rcu_cpu, drain_rcu_work);
-> +	struct llist_node *pos, *n, *pending;
-> +	bool queued;
-> +
-> +	pending = krcp->pending_list;
-> +	krcp->pending_list = NULL;
-> +	ASSERT_EXCLUSIVE_WRITER(krcp->pending_list);
-> +
-> +	llist_for_each_safe(pos, n, pending) {
-> +		struct rcu_head *rcu = (struct rcu_head *) pos;
-> +		void *ptr = (void *) rcu->func;
-> +		kvfree(ptr);
-> +	}
-
-This is pretty similar to what a kvfree_rcu(two_arg) call does
-in the slowpath (kvfree_rcu_list), except that we don't maintain
-RCU state explicitly.
-
-How much performance do we sacrifice compared to
-letting them go through the kvfree_rcu() fastpath?
-
-> +	atomic_set(&krcp->drain_in_progress, 0);
-> +	if (!llist_empty(&krcp->drain_list)) {
-> +		if (!atomic_cmpxchg(&krcp->drain_in_progress, 0, 1)) {
-> +			krcp->pending_list = llist_del_all(&krcp->drain_list);
-> +			ASSERT_EXCLUSIVE_WRITER(krcp->pending_list);
-> +			queued = queue_rcu_work(rcu_reclaim_wq, &krcp->drain_rcu_work);
-> +			WARN_ON_ONCE(!queued);
-> +		}
-> +	}
-> +}
-> +	}
-> +}
-> +EXPORT_SYMBOL_GPL(kvfree_call_rcu_nolock);
-> +
->  /*
->   * Queue a request for lazy invocation of the appropriate free routine
->   * after a grace period.  Please note that three paths are maintained,
-
--- 
-Cheers,
-Harry / Hyeonggon
+~Gregory
 
