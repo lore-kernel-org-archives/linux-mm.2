@@ -4,90 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82167F99378
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 11:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4820F99378
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 11:50:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AF8B6B0005; Thu, 23 Apr 2026 07:47:03 -0400 (EDT)
+	id 2751B6B0005; Thu, 23 Apr 2026 07:50:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 860CA6B008A; Thu, 23 Apr 2026 07:47:03 -0400 (EDT)
+	id 224DA6B008A; Thu, 23 Apr 2026 07:50:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 776736B008C; Thu, 23 Apr 2026 07:47:03 -0400 (EDT)
+	id 161D76B008C; Thu, 23 Apr 2026 07:50:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 654D46B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:47:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0055CA0101
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:47:02 +0000 (UTC)
-X-FDA: 84689644284.11.223F0E6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3FEFC100015
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:47:01 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VR1KrBY9;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 057886B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:50:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C117A4010A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:50:51 +0000 (UTC)
+X-FDA: 84689653902.04.818C29B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 06009140011
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:50:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l05wjaRL;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf23.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776945050; a=rsa-sha256;
+	cv=none;
+	b=yKcfS/9LTC4l2JzDGfpR0FUJegGrmzKSmrTT53WUznwSHGVr6IzuDM43umcyh+xn0tgyLE
+	7IDSl3JDJK0+NP4OFvjF/NfnGXKmSzFDBiQhljZ0/NCfCKDO6WKms5vI5yErbklzXaRn8b
+	Ze1FTbjaOTH5UBLHsNPix0qc1Fcxwws=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l05wjaRL;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf23.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776944821;
+	s=arc-20220608; t=1776945050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XDKSlXg6ujrv4T/QoeVpg+ld9Uvc5Axc3KexdwpK5wI=;
-	b=HnbvxJ5MO03QEH4FGhcwRh5xSFJsjPVnUUFvk/NMmdurp5VoB7Sw9SiXwVU2An9moZuCeG
-	mZ3WYr/ToYG+xtiWtQVMB1JAsfpNp9tqJxtq7RzUDfR3w9s7GGNtie4s9ExFEyyvOeP49I
-	aHtSlopzjsIi/OYG3I0OIUM4cft+H4I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776944821; a=rsa-sha256;
-	cv=none;
-	b=Kiki6qy0ijSHpVcoR5pu0hd3RSIekIJb7h8QG4aUef0LsyfNBAO0FuN75ANwfABcUXwqn3
-	eUZnpecF7gMU1B7dmwssPRRmxYMRcIIdfCC3QEJsCgVS0AfVNKImhBBWu4LuKf7BJdfzmb
-	34ZHf57bp5csSYS+KUy8p7BnAtJLeO8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VR1KrBY9;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=5PwMfCR2EmAMGQidOld2kcMCz/1kK0ZUpgSpEfUfgdk=;
+	b=bBC9sSXrCw/5rXCZbvQTjtWQTlaham0cuoBtgQ/7+2Ygo7LTuYFxO6898a6VB4hS8IYOy1
+	GdKWPxxgHVjA2yqkV84/JeDp4+ILT43qxJK/mVR2hql8kGZiI5H5tb8+xfx9NXjaOidRhR
+	RGm1gab/q+vXMtdJmjV/kEsbrazrZpo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A1C840A34;
-	Thu, 23 Apr 2026 11:47:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA02C2BCAF;
-	Thu, 23 Apr 2026 11:46:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776944820;
-	bh=lAH+tMgsReb5YVC0CmXAwj1oMmvhUfKDEdN5ypoXL7A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VR1KrBY9S+BKA8k7jOQ4sG8OyVJgAf6WtmbQeHmDYORbAMCr5fh7SpjfbTE9eZZxN
-	 rzHKzoxMGlqJJ6utbOn/T4Sg/BVYFXnKlhovHu8Hnk7nwTRdzPnxczM8ncMLTxEa6I
-	 /wlmNFzw1+ZOcQ1W26d+BcC9P5CfcCJA+EMtq0sjeFT9AB9b0m6Iv/3V0CegpKOGx5
-	 1208mxBZFaUodfH8KMVxqvI0AsIzojqJrDysFUAKn835F3B5vL8ltK63r7S484cONZ
-	 uECR5DDXheZKCldg6TyodnS/qboWOInXZISKyaXrr7Qv9jezXVe3Vx6epCT3FOHNwp
-	 CU3ro1rSzVU1A==
-Date: Thu, 23 Apr 2026 13:46:54 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-block@vger.kernel.org, linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, bpf@vger.kernel.org, lsf-pc@lists.linux-foundation.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: LSF/MM/BPF: 2026: Call for Proposals
-Message-ID: <20260423-auseinander-steigen-b80ee53079a8@brauner>
-References: <20260110-lsfmm-2026-cfp-ae970765d60e@brauner>
- <81033e57-99e5-43f1-a6c3-c363e96f9c9f@acm.org>
+	by tor.source.kernel.org (Postfix) with ESMTP id 1661160120;
+	Thu, 23 Apr 2026 11:50:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B0DC2BCAF;
+	Thu, 23 Apr 2026 11:50:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776945048;
+	bh=aX+FNPNAsCcsZT31QgGHo2BeA8cvxRkN4QgnxDkeERI=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=l05wjaRLwQtWccPBj9tJZ2WZMcNrEhSomMesr/MQpYPL+rW5RHXxUxag+oNhZxcQO
+	 28EE5YUiaF5wd6yl9LRnb0QNNt8u2KwBmtt42f5QgRqQOo8KW3XcTbaId8DOK0jbBQ
+	 n51AkATSX3VNLXbrRWkOiJqGP3VrYj/2Tau5fvuE=
+Subject: Patch "binfmt_misc: restore write access before closing files opened by open_exec()" has been added to the 5.15-stable tree
+To: akpm@linux-foundation.org,brauner@kernel.org,deller@gmx.de,ebiederm@xmission.com,gregkh@linuxfoundation.org,jack@suse.cz,kees@kernel.org,linux-mm@kvack.org,liorribak@gmail.com,rob_garcia@163.com,viro@zeniv.linux.org.uk,zilin@seu.edu.cn
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 23 Apr 2026 13:50:41 +0200
+In-Reply-To: <20260311081046.1668003-1-rob_garcia@163.com>
+Message-ID: <2026042341-numbing-washtub-7420@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <81033e57-99e5-43f1-a6c3-c363e96f9c9f@acm.org>
-X-Rspamd-Queue-Id: 3FEFC100015
-X-Rspamd-Server: rspam07
-X-Stat-Signature: azaixbd1z7fuuwkii6nhfjnkqqzeky3g
+X-stable: commit
+X-Patchwork-Hint: ignore 
+X-Rspamd-Server: rspam10
+X-Stat-Signature: o8b3be715ixy1xukm7fyrncrsszs17nw
 X-Rspam-User: 
-X-HE-Tag: 1776944821-499905
-X-HE-Meta: U2FsdGVkX1/Xd1Vymmdv1AcXknWnDPZhu3Ge4u5qaeohsEEvWbAgHVAB4Y8F3jWJ7Gd2rxLJkrwiT6rzKLUqQEBdoEQyqKu+a7vcw+YyTjlI3NycwxV5zNFlFSyDghHKrFWzdalLMUiq0FJnTkdpYvwJvG1MwxfdWmjTzVKURPQKraYxkHY9uap3PH6QISG8UnTHTU5u+O2xZd6MXfQ/ciqZ075LhRFMQXbRPURYdliOd3c/GaE02W+6o2UMjTzBRuYhSCcQFbvjMXlyOUIFABwXa7B3Wqbnwi1w8PItq8RXBELjfWb+RbLb9w211IJMlMIO+azkYS1RLtKtn3QsSnm1Vzkk41hnyhP5q/q/EcZHn7GuX5Vu2u+0KumEykNCjt2jfFYqPq/vvHzf95farXH8g2IgsmgVVjkPIktg4BU4AAattwum8qv197f+tbxxUNJ13HCNNWLetoFbict4UnMCncp2WMRg622UHoNGJZ5BaSqi7cLGuvXkbspcbSLJzAPSWYtaYnR1+HL+1L6Twkiu5HeJjrBKrBL3E5QZ1vM+qh2YehJ7zkaWYUY85JOhyi1zy93WnBQTU0jSePFVwYOTztG3ULW4vE8rH8phVWHquOt409LXNkkJ52tJX22ZWOSoCbZnxR5/OQnZDKdh3VcCOQQa/CK8k9m5UR+GWBDyDu6qb1ZDZigiRHQ0EL7jwH/7tWeADuwTk2liaZalQJe16Q6QrLQcWXdtAUDj3XAtc4665X5DZ0Rt/Be2Cf6ohwDHiX55VkSJocVfCXQGNdSSFNELbMn3FZ0lNBtGZPKKwvhmLNakLeZP3lPni1oVmEVW3vh3oMwojPTq4BJncztZ6RuwK/Rl6AHJHILmn+nEiRGntxG99QCod3L3v48ec+y0rTAw6neeXWXBEqsPqBy6X+n3fbW5KNJE/7BQc4H8wJPRmM/fZqP9pvi74q2iP79EC+GjPreS2yYfzBH
- 0ShE+tBH
- 42uN15GEcxNmXdjpkdD/QqCk9cKAPwq5sQk6xU+6EYi/TAmxup/nuIiKJAIWL33w043crA8vkthL0M5EJxtcynrW8AIpYTPOOdY1g8nJ5eEFW9qc51VeEROIKEgnpTMGtnFYm+3bqKnKs+gUwwGPxUz+0UXrNjB0KFoveq5NQj58WPe+2V4CW1lS5nkXxJqIIZNOr+W/RubGEKVs9sFxDeyxWzYC6l1iIAw8sN/qp2ry/zrDQ94P+NTvTe1CgutRWZNtNztwu8OaE4J1dQY0T8hmTxcGBoLdv1I/7qJq+swRSSQiD63kN3V/M6olbZWi6cTx7hnBIm5q5/hZSTza50HFxsNI6/WUDVEQPaLCP+ZpHlrbAfXA1XfWegSMS+PPu+3hZ+78AKvUc1GOf523jnATqQ60un9KTDTAIOSAMdCXjSDw9/EVr9rn6HA==
+X-Rspamd-Queue-Id: 06009140011
+X-HE-Tag: 1776945049-356095
+X-HE-Meta: U2FsdGVkX1/aolIkjwSjYTxyReeJav1Fuc/TyRPNOxKIQciJMrSGeadURpu8vTISycnRH5U181aLMnTDDG9h0zMyNZWwKNMJ6H+aube+6IAWSpKZSgEC03g7cwU77RB4LyQG9tzcdsX+VJq62GfBFnO6Kv/5ZBEuJZ/3dISa95/c7TK0i7sOqFbEMcv5+pY5trgoCQTyG/bXOlvqg/gHcWYjD96jAWrwgLXex9zw4qBDgUBsNFrSkIenarq4wUd/jX0e+GwEoPb8FxhlelsJ1TPm6qSzFaGfL/TFkXQd3CAoI8bnU5/hiKTy7ds6Unz3xZAq/pVmLpfz6F0LsOUyP0sDqmhuqz7kDylk4ySpmRdWP2b+zNyspFK9VxCwJBvRSevsr7tGIBfowSk3swD8fo4A/fhIVrDJZiouCJDpfDz6vF3c3oEbYM/4b6pGcmddEqdE/mDW1TdI0JnAzStInWkqVxCDjDvIY+hvGF3I1Jd9Fsy0jATeWsH63gBZy2C0L7/zvSO7c/c8NOkNyowaUO0w9XspOdp4SGHoT18XoUz8XAUglVlV4pQ2UiWTGMWgMuCSh3Y4a2delQ7S5qHB0+/kCJL5EMd6hkf51glHtIASJGTMaxEiHW9Tzzjuzm5+PVuEcmdEVPSkOZMwRlpR9StX90uX4kfpUX23IL0VI/bRLSRdp1IQL0mZWWcrQ4LRzXuja+0uKrsE2325x8NEA6dkX9GZlY7+SkP785BQzcG8xUsGMMlQ1MzepUpEWwzGpqnDldluF9ZpKZ0R+RM4m39jnbzobdtxOQZjvJTTSARIvdCq8KQuuIU2WXpaU2k4bCRoWWYHY4uPsOIILS7nV+gSofW8r6wh7WeiefypkYEoIaXd39iw46iLk4HvDI09d1ba5aT/eUHm/VMv73RXo66DVm7b2GMjfV0xuP6IpykkuJ/JF019SPjSlaJL6X7tsW9wBSHmZlKBa1o1V97
+ a8Li3H31
+ vc/Jit4nfB/QlEJioRNJ2ZsJdTqddDYYakQUn3gmohxVI0Aobu2vD5wbiVdhGFdanqUA6cKYLNZ3JQ641S5uA03jMP0EsAdNg3zDUqjTrUsuyaa1sRm31O8Fmf7PtXaoXMTrCrsfo228vPj0Dh/JyjxetWNbh3E1BK7XX8iPxPMwfFiEHGek+bwdSDje4JKLhgo82L7sQnWOnkdFie/pN+Mqx3SPGdaXJ6uGuLzLOl7jqPrQtjpqx9+6OOIcFtM9d8HmbJKiUodGRT1vtzLZasBuEXuMA72BhCNKIY5luWGAbwjEyQEiZ5yHmU33GSdr2dnamGTX+/TWlDmOT8Bl6bYu406aNEZk9jXpJV0bRcKYXoMiNZFjNQaM50h1utU1vjL93JZxiF5FS6pdxp8sw6Hssqv4kRKQfUovjwTOMKeBgnJ15YLnLf0wwP2Z2hndN2efALqDc8JI0g9HW0JRcETU7kbVDtfWgcDTPfVPeRUvPRQtjwXJS6aBaqHc//GTSeghBhhh5pDVSo5pvCncEHX8dKB5Cd3l9OCckllFU80URzHKnbt13qzr9vBYwTBcc0VxRyc+8mvc3yXazn+IiP46Pv2pgWKI4yUNUMLUElw6N0PcDOyEl0qOMAJ599epYbvcdgbSIPs7EhzNLoXkv3rzrfVGYDQrucXb7mmXQbmTvJ137s1iINbPJBs5L8d+V6gnEQPhbF3URc35F3fe1k1K2f6iCAf0MSAV3Xtv281POvYnLdZiFbKpQWwATrRfNro9b2JGbfrCBpqgu7Yq/RRo8kRxiQPuEH3RBowxlMM89fKmRiglnnaBVaQQWIWDKgec6rMdX3HYedm2tn2nA0X5y9Zxxkzs0wjPu2jJ2GicWuhgj0IuWWu/TEQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,33 +88,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 01:29:56PM -0700, Bart Van Assche wrote:
-> On 1/10/26 5:24 AM, Christian Brauner wrote:
-> > The annual Linux Storage, Filesystem, Memory Management, and BPF
-> > (LSF/MM/BPF) Summit for 2026 will be held May 4–6, 2026 in Zagreb,
-> > Croatia.
-> > 
-> > LSF/MM/BPF is an invitation-only technical workshop to map out
-> > improvements to the Linux storage, filesystem, BPF, and memory
-> > management subsystems that will make their way into the mainline
-> > kernel within the coming years.
-> > 
-> > LSF/MM/BPF 2026 will be a three-day, stand-alone conference with four
-> > subsystem-specific tracks, cross-track discussions, as well as BoF and
-> > hacking sessions. Please check out:
-> > 
-> >            https://events.linuxfoundation.org/lsfmmbpf/
-> > 
-> > for further details on the venue and hotels.
-> 
-> Thank you Christian for being one of the organizers of the
-> LSF/MM/BPF summit. Will a schedule be made available before the summit
-> starts? A link to the 2024 schedule is available at
-> https://lore.kernel.org/all/20240510212132.83346-1-sj@kernel.org/.
 
-The preliminary schedule is accessible here:
+This is a note to let you know that I've just added the patch titled
 
-https://docs.google.com/spreadsheets/d/1mGEdDrWskp7Ua91jGXzquQGinorcD58DAVXhOiRp2Gg/edit?gid=1852749899#gid=1852749899
+    binfmt_misc: restore write access before closing files opened by open_exec()
 
-It just hasn't been liked on the website yet.
+to the 5.15-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     binfmt_misc-restore-write-access-before-closing-files-opened-by-open_exec.patch
+and it can be found in the queue-5.15 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From stable+bounces-224649-greg=kroah.com@vger.kernel.org Wed Mar 11 09:12:27 2026
+From: Robert Garcia <rob_garcia@163.com>
+Date: Wed, 11 Mar 2026 16:10:46 +0800
+Subject: binfmt_misc: restore write access before closing files opened by open_exec()
+To: stable@vger.kernel.org, Zilin Guan <zilin@seu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Robert Garcia <rob_garcia@163.com>, Jan Kara <jack@suse.cz>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>, Lior Ribak <liorribak@gmail.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <20260311081046.1668003-1-rob_garcia@163.com>
+
+From: Zilin Guan <zilin@seu.edu.cn>
+
+[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
+
+bm_register_write() opens an executable file using open_exec(), which
+internally calls do_open_execat() and denies write access on the file to
+avoid modification while it is being executed.
+
+However, when an error occurs, bm_register_write() closes the file using
+filp_close() directly. This does not restore the write permission, which
+may cause subsequent write operations on the same file to fail.
+
+Fix this by calling exe_file_allow_write_access() before filp_close() to
+restore the write permission properly.
+
+Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Use allow_write_access() instead of exe_file_allow_write_access()
+according to commit 0357ef03c94ef
+("fs: don't block write during exec on pre-content watched files"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/binfmt_misc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -816,8 +816,10 @@ out:
+ 	inode_unlock(d_inode(root));
+ 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
+ 	}
+
+
+Patches currently in stable-queue which might be from rob_garcia@163.com are
+
+queue-5.15/sunrpc-lock-against-sock-changing-during-sysfs-read.patch
+queue-5.15/smb-client-fix-potential-uaf-in-smb2_is_valid_oplock.patch
+queue-5.15/pstore-inode-only-d_invalidate-is-needed.patch
+queue-5.15/wifi-iwlwifi-read-txq-read_ptr-under-lock.patch
+queue-5.15/alsa-control-avoid-warn-for-symlink-errors.patch
+queue-5.15/binfmt_misc-restore-write-access-before-closing-files-opened-by-open_exec.patch
+queue-5.15/spi-cadence-quadspi-implement-refcount-to-handle-unbind-during-busy.patch
+queue-5.15/f2fs-fix-to-wait-on-block-writeback-for-post_read-case.patch
 
