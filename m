@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6398FAD3EE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 02:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A106FAD3EE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 02:15:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15D266B008C; Wed, 22 Apr 2026 22:14:50 -0400 (EDT)
+	id 926676B0005; Wed, 22 Apr 2026 22:15:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E8F6B0092; Wed, 22 Apr 2026 22:14:50 -0400 (EDT)
+	id 8FDFA6B008A; Wed, 22 Apr 2026 22:15:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0236A6B0093; Wed, 22 Apr 2026 22:14:49 -0400 (EDT)
+	id 83ABB6B0092; Wed, 22 Apr 2026 22:15:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E76576B008C
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 22:14:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 795F11201BF
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:14:49 +0000 (UTC)
-X-FDA: 84688202298.15.25D2C94
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D658E180005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:14:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtohxZ96;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776910488; a=rsa-sha256;
-	cv=none;
-	b=x+fhlx21OPXGiZ7FYo8Foo3QVbTlgzr420svWN/9JO9JotY90T3O5gOeRAreZmemPgxXYs
-	KykI4mUhDdd99Sz4fzHJd+8DPwy2sz26DG1/pD60DpCnaRwiQcB2Xwml72ZCSGr28cTiaa
-	bDDpIWzySfZttlgqjUmSzOpj4/H9Zu8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtohxZ96;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 753826B0005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 22:15:06 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0764DC1B1C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:15:06 +0000 (UTC)
+X-FDA: 84688203012.18.38F13DB
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3333940006
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:15:03 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ba9Y5yxV;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776910488;
+	s=arc-20220608; t=1776910504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1nvmWBE7p3mNyGjM84Mtg6hKNaeJqvODoUnH9Qe9p70=;
-	b=71oeTRKVd3B/qRjh3BndqSj0WluoR+juEZJieopbYs2chx8iiLqKltfueJmc41mzL+gVVG
-	b9OFm3SOhIdbwE160SfIC8pp9y3RoVsBiHtXL42e40NfHTb4v+sTC6edy9AyEiGgMme72T
-	Q4cw0la9PsLe/Jbe3ytyaP4LIuuKaVg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 73D3040A66;
-	Thu, 23 Apr 2026 02:14:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E883EC2BCB4;
-	Thu, 23 Apr 2026 02:14:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776910486;
-	bh=w+jgw7+Kepc9dYFzbTYrY6IcLLSgaQuTLOr35M233RA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TtohxZ96b5cBJNzVWuN1KlMFfV8bzUz4S2Z3cc4VHRO92xjBes5Xd9TvclMKCyXqs
-	 dACx334Bw1ZWDNoum4nQ6hCYEZtweXJOY6D/PPo6OO7s1eWDqYT+Gs8Pgc6bCijmX4
-	 FHe7gBmrsiEcSoIkSkznshwyNLJ5F7WTwwBaW/5enxNvLFg+AHMNfagUcbbxdmIxlO
-	 pAx5fAe3kRB1TJY6fLr9ZJwhkV+4DgZt6lJZkDNYNF1al6OtPMkB9sOxoW+t9jQ66g
-	 xWhe90YqtmqZegKSnVh5ynbUEkgz6fiQvq/OZx3eiZDbOyrJdXbHbT7bE3zhhcN1In
-	 6O397lYNVvYZA==
-Date: Thu, 23 Apr 2026 11:14:44 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
-Message-ID: <aemAlO9rhFaDPmKH@hyeyoo>
-References: <20260416091022.36823-1-harry@kernel.org>
- <20260416091022.36823-5-harry@kernel.org>
- <aejeVK0J_jHSfVhD@milan>
- <aelxH--hZkCahPv6@hyeyoo>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aelxH--hZkCahPv6@hyeyoo>
-X-Rspamd-Server: rspam10
-X-Stat-Signature: ckt36u3nqaktnyk3joh9r799m8cz8aoa
+	bh=n0/01H4xiCJnfs36bIwGAXpJVzm4AGBrMPoyje3Rvz4=;
+	b=n7abVWhW1SnRJeeJc1zipiDSionzTBno8gCm6SydMCvx/piZyXXN+VlDTVjRjBoekTxuAK
+	ORu6szO6fhTF6bqL8tg6J5aXyd0XQZkqfNi32B3wu9zuhrnvCBWTQgKZjMwy9HjH6WrG+F
+	EdEb+cVvEb1VifwqwxtMtdDoTPIoZOM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ba9Y5yxV;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776910504; a=rsa-sha256;
+	cv=none;
+	b=0YTzwlQLe1Yi0OUGW0tdrqTt+fxpS2lY50fh4xrqnfeRSz4Q+Zf9g+KnLJ91GeXzDbnQO1
+	enrUCExGK7vtaGa3ZXOccBgzcgr6T241+WZdlprHMNLTKlDXfi1yXEfLI0A6fWP7X1FIoR
+	9tE6kl04fnLTUuoAyLtEJncI/QPwj/4=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776910501;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n0/01H4xiCJnfs36bIwGAXpJVzm4AGBrMPoyje3Rvz4=;
+	b=ba9Y5yxVcom61fXlDbNnPGxckX72Wg1DbZmfHjnu0lMfj/YISK/8hzvjV9zBBmkDvDlXmc
+	SbmfdF/oUXqzKRiVmBSDlEqxaH+CHmnwrQ4CWf04UEYAcEGyU3JbHjLzN4e806O8Lolewg
+	chajDmzvd9vVnRWQ7EpP9ylApOsyss0=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v4 2/5] mm/sparse-vmemmap: Pass @pgmap argument to memory
+ deactivation paths
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <fc80afb9-6e97-481f-8136-d684ff3690a7@kernel.org>
+Date: Thu, 23 Apr 2026 10:14:16 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3745D308-DF29-477C-A25F-CDA63400D5ED@linux.dev>
+References: <20260422081420.4009847-1-songmuchun@bytedance.com>
+ <20260422081420.4009847-3-songmuchun@bytedance.com>
+ <fc80afb9-6e97-481f-8136-d684ff3690a7@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: n4157ghhwxydj6o75zo41wkpoozxsqzc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D658E180005
-X-HE-Tag: 1776910487-363385
-X-HE-Meta: U2FsdGVkX1+WkGfIBpmCqI675XzTi32tusgqS80IqgrVcKEijmHiY+x9J75d2P3ubCdta6Eqyt2L4g4Xe9H6D9WCj/MktSAbqLmx/+hXZ35HEa7waMVxtNmdHvldJNlaEvs26TGFCMlf9NnWlKhAVfrXAYvxAYgbj/BLBRiSdQW0tXwsLwPOXYOQvVCZVctZS9YXF3a9m4kn4EP9bmmEZf/reU9IUZTWnQzqu34cua68omeH0cpXeImeNm8kcia/xvEzlN6KtZbxFLOMy3Fs+/X/mGKpSmqSIbFgege3LAWKpFbkOxLYmEGaRgLKCxwLk8baP9mKvE0fapVaQ7uge2cvSAhIKCW8Qhg/2UXgsnIGzQSppG3RDpSaPsWqYxQxGc3Hp8+kutkzHJJaBUATYoT+gWgXiKVzLlodkO+GSpee9/Wlhdq8ImLvZfPR8n+/fbyPYPaPE0tsRXVvpd6rNnISc6789ENUZFUhasvC8pIQmYM63pDvgktfj8SyWYx0i2wA65UqGOnAOfDE4t3cczzevEXqYI3CHirhJe2YE3z2fc5He1jglfAzcTgY0T365VBaA0vBzyV58wayGEMfjjbE4IYrQj41HXzRyF2MaJY3qey8cciPUB40WiuZIyo8e6OvX6vc/sx7qTOIAtgNWwCTfO0H0M5C4sjgsFB31cD1vWQ8kSYMbXE6NHyhbZnGawIMdfeSJ16JRpCxu9yRkovSgFvF4lqkzduEqibNTNTvl1128YzlCwj2FGLvD5aodQ7WwQMc1tHy86b0Gax9mOhoKCrRZ2g75h2WJNrdXZeqGl9lUJmMoLdDUvmlFI32sbDx1qmk9ljkFR4DvTcar/XLh59ECF2BzBU4c1C/oNMsel1AAbM6Sh6wpwzEy37Lgu2l+MOD/dOT13pF3TMWzvpOTnUDtRQQs+CFpX5HVvrbpm6SZshB0HIoEFt6FFOiP1GOF9U67I0cbuIX7IP
- CaT402yl
- 7qb1iOTmp8Fg1VIRzB1kzQAVhdirJajywR5orL4H+0Kd1jvWgE+ce6mSZXkXxo2bfI4F9HZFJOciG+ECqfqJMJESfqer4U75dFaxoAMk9QxPVA4pW6HpvzoED4TWJq4KFZmBamvJjbJlVc+coMubk//nDqOCtVAun4J/VkLaZpPfrJekNrCxvAry0pz/hRsQC75B192CFuH2MRoyMDIk9WnpOMGhP/HwXefrREN2fGv3Wb8QeESnI5cCxUBQPfa23JlnpjM+5Lb644p4RKkZe3GoHIV7uk6O3co+jxmnuw0pHn7vsVHFqkri8VORqxCLNYgr5
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3333940006
+X-HE-Tag: 1776910503-790948
+X-HE-Meta: U2FsdGVkX1/ozu/nL1bU/y8sXQVlouXBiNwWMEyeWZvk+c53mRgz/WCOenTFNg4EtZqs3gh6W9o0IQ4+BISKf6hI+nwxXvb1LJOI/6wAo9svviOspmOJEgYCsVlVG/0nxLEyLIH+B72AGbG6PRuUhqd5B9v0xEL7BOp7TtRRZtiW2bKOn3VkRRJPibBw1Il6xEV0k0CI0AiSMlJlrYoniWaows9uq6VeGFkpXhlnZWRxjhh7vQORNfA46FUqtDnsXBJbd7tjYbGF309TXwBSZugP+RTQLf+U/Tc9gK/HcPnGukJIOE3f6029ehE0lm8OcOS4ZHCDd/tWAbNuzHLryZ1rL1gmqa2ova382V2q+62fe6tvUyYHZT3b71fAdJkJXuXopH2uaYayzD+9s1VOqzHbQ8VByJOyYHE70vxaSTDaaGH5MXHa+o2KQ/sQV1YrIHMz52BrTE2AIZ3Zum6eCcw7fi3P7aib2XfiPOzteMkSWLbYuz6shkTwLrh60JBa7CcGUOwZLMWgnBpggSAYPE2lFKgHzw7H9kShvpkiUC9ic2xMyPJCFWUP0wrsVWxHypaWuxd2412NfY07oca5V9CP0fhcxGYbDFm1/yh2vBOwsPhHGqess16WNrsWy8J7n/h8cIEO0keLNmsOjQVaacsMXS5ZRxhpFiJEG+OQAAAuaHnXy5oWus260C51DiUrUTw56oruIXfwjtCdzMIvnV99cRZTfJXzEfUt1kvBrAN6XHpzE0Pg2gNYhpjQgO/+mMwG8zIikWYhHNGNOKHAc1xHgpk5j1Xpo78vziMQCf3EJRleTxZiK9xhO+MPtAtLGw0OZ29cH7och+ceN/T201yGuKg85hdCuil/CPuuF+7FSgV7FnJGa7rft6yWeLPxMV1owLVm57sjRZO4u9QUvIlnP0qQd5fcaiSwu1XGgwDuBpqaP+QJ+NPf5zHA0r2joMqDe7SQTrxHODvpO0O
+ 4pQCujm7
+ ycKAa3OPFy0PiCdUvKl2z/oiTlIzX1SbxEp3XsBNYpveCViCet9F2AmDWm0j4ezUfqYYP2+LwHUdYJzvuYT1ZPMORfyWlOPVAnax5IcC310haPbgw5uAA6ka9v8cry0ywfCb+fc40P2IVXhx6PBC9XJqfIxInaDr8yjmIXnKfmYG3vBz1l85Jmmh6Mptj6MFfHPP9DThhHUKpC08PZu/VZDa2aZspCIphpZJ1En2bVi6Gcc0u+IfLeiJW3Kbd6nRCTUCWIMUom294p6hOBifi5it+NA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,28 +108,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 10:08:49AM +0900, Harry Yoo (Oracle) wrote:
-> On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
-> > On Thu, Apr 16, 2026 at 06:10:18PM +0900, Harry Yoo (Oracle) wrote:
-> > I think a better option is to add a separate kvfree_rcu_nmi() helper,
-> > or similar, and avoid complicating the generic implementation. Otherwise,
-> > the common path risks becoming harder to maintain.
-> 
-> It's unfortunate that I didn't provide performance data to justify
-> adding complexity. I can try, but apparently you're not talking
-> about that.
-> 
-> Rather, you seem to be arguing that you're against this pattern
-> no matter what the benefits are?
-> 
-> I'm confused.
 
-I was indeed confused, but before writing this, I should have thought
-that you might be considering a simple but still efficient solution.
 
-Apologies, my reply may have sounded a bit offensive.
+> On Apr 23, 2026, at 02:50, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 4/22/26 10:14, Muchun Song wrote:
+>> Currently, the memory hot-remove call chain -- arch_remove_memory(),
+>> __remove_pages(), sparse_remove_section() and section_deactivate() --
+>> does not carry the struct dev_pagemap pointer. This prevents the =
+lower
+>> levels from knowing whether the section was originally populated with
+>> vmemmap optimizations (e.g., DAX with vmemmap optimization enabled).
+>>=20
+>> Without this information, we cannot call vmemmap_can_optimize() to
+>> determine if the vmemmap pages were optimized. As a result, the =
+vmemmap
+>> page accounting during teardown will mistakenly assume a =
+non-optimized
+>> allocation, leading to incorrect memmap statistics.
+>>=20
+>> To lay the groundwork for fixing the vmemmap page accounting, we need
+>> to pass the @pgmap pointer down to the deactivation location. Plumb =
+the
+>> @pgmap argument through the APIs of arch_remove_memory(), =
+__remove_pages()
+>> and sparse_remove_section(), mirroring the corresponding *_activate()
+>> paths.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+>=20
+>=20
+> [...]
+>=20
+>> static void depopulate_section_memmap(unsigned long pfn, unsigned =
+long nr_pages,
+>> - 		struct vmem_altmap *altmap)
+>> + 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>> {
+>> 	unsigned long start =3D (unsigned long) pfn_to_page(pfn);
+>> 	unsigned long end =3D start + nr_pages * sizeof(struct page);
+>> @@ -746,7 +746,7 @@ static int fill_subsection_map(unsigned long pfn, =
+unsigned long nr_pages)
+>>  * usage map, but still need to free the vmemmap range.
+>>  */
+>> static void section_deactivate(unsigned long pfn, unsigned long =
+nr_pages,
+>> - 		struct vmem_altmap *altmap)
+>> + 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>> {
+>> 	struct mem_section *ms =3D __pfn_to_section(pfn);
+>> 	bool section_is_early =3D early_section(ms);
+>> @@ -784,7 +784,7 @@ static void section_deactivate(unsigned long pfn, =
+unsigned long nr_pages,
+>>  * section_activate() and pfn_valid() .
+>>  */
+>> 	if (!section_is_early)
+>> - 		depopulate_section_memmap(pfn, nr_pages, altmap);
+>> + 		depopulate_section_memmap(pfn, nr_pages, altmap, pgmap);
+>> 	else if (memmap)
+>> 		free_map_bootmem(memmap);
+>>=20
+>> @@ -828,7 +828,7 @@ static struct page * __meminit =
+section_activate(int nid, unsigned long pfn,
+>>=20
+>> 	memmap =3D populate_section_memmap(pfn, nr_pages, nid, altmap, =
+pgmap);
+>> 	if (!memmap) {
+>> - 		section_deactivate(pfn, nr_pages, altmap);
+>> + 		section_deactivate(pfn, nr_pages, altmap, pgmap);
+>> 		return ERR_PTR(-ENOMEM);
+>> 	}
+>>=20
+>> @@ -889,13 +889,13 @@ int __meminit sparse_add_section(int nid, =
+unsigned long start_pfn,
+>> }
+>>=20
+>> void sparse_remove_section(unsigned long pfn, unsigned long nr_pages,
+>> -    			   struct vmem_altmap *altmap)
+>> +    			   struct vmem_altmap *altmap, struct =
+dev_pagemap *pgmap)
+>=20
+> While at it, could switch to two-tab indent here as well.
 
--- 
-Cheers,
-Harry / Hyeonggon
+OK.
+
+>=20
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Thanks.
+
+Muchun.
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
+
 
