@@ -4,78 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3202AF589D0
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:20:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F7C6F589D0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:22:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71A166B0005; Thu, 23 Apr 2026 09:20:45 -0400 (EDT)
+	id DD35F6B008C; Thu, 23 Apr 2026 09:22:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CAB76B008A; Thu, 23 Apr 2026 09:20:45 -0400 (EDT)
+	id D84536B0092; Thu, 23 Apr 2026 09:22:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B9CC6B008C; Thu, 23 Apr 2026 09:20:45 -0400 (EDT)
+	id C746D6B0093; Thu, 23 Apr 2026 09:22:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BF156B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:20:45 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F1FA0A0120
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:20:44 +0000 (UTC)
-X-FDA: 84689880408.28.D8EC82A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B58956B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:22:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4ED03120157
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:22:24 +0000 (UTC)
+X-FDA: 84689884608.12.E6E973C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2D12B1A0014
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:20:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rf3IguUv;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8FCC51C0002
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:22:22 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fmmlHdvT;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776950443;
+	s=arc-20220608; t=1776950542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bll4R4MQxkRa2QkfKPQVJtKI/5Qxk6+BeXET0dfc7BI=;
-	b=6ylVhSL3cfzdtfs5UBdk9Fecnv3O31iWfdSY/SeRp0rG3f06KS5LigoiUsFHfcNtQS6Lou
-	hWtW78S9kRGDZtcnV1NCV/5m6quXeXaNCh8eLvf8DkBc3U6nOunQn3oYfPkscg8r5GqlCF
-	29+J5Vv5sWhV85QULvHIMD77uTAqk/c=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rf3IguUv;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776950443; a=rsa-sha256;
+	bh=3EXZz79asyTCA2YQbVtqAxh7oAXiZXvREE1gw4u43b4=;
+	b=IEGSa9lV0IYL1xJTF0G8zf+qECORl+xVEKhr/Jh0YVew7dA7q1SEjEpSO6UkAbn6Q4X41R
+	VU/ip6ZcvaSkkNswFe0Wl5xB5nF9pm0U56obyvNFQIYhD6VsgUFSEPVDWPA07WLoa2p4Fo
+	8tXPHKwBfi+ryqEhqzujMqGZwJmg2yY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776950542; a=rsa-sha256;
 	cv=none;
-	b=289O6Np+Nnjb/UbQou/FKmI1kkmLK4W/ehyX3wfnoMnDGoqRQ2uQu32qVTtA4Paup+v4bm
-	6AsXpDFDyRuSb0JejCta6ynVkazmYoziJKJlLsp0rIqpczWYii74hIgc+PZNhTH+6Srp/s
-	MC9/xwbrqbnY1LdHomFZLAvLP4PttWs=
+	b=Awt7ixp5L1gv14JHexegKCobFxpfyBy7cYl1lyVwRmsMCd3HWVoOCMBAwPzwte9UJ6lQML
+	NP3SXBERsrz5+RnpaL3uiptHY8KKjR4wdnp6b1NzGymJi7hzTcNzBy51yB9amttuRdWgLA
+	0Ndz5IJQK8fMFmT+MIDcO4rPMPQEdnk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fmmlHdvT;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F4A86014B;
-	Thu, 23 Apr 2026 13:20:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E56C2BCAF;
-	Thu, 23 Apr 2026 13:20:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C967F6014B;
+	Thu, 23 Apr 2026 13:22:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEAEC2BCAF;
+	Thu, 23 Apr 2026 13:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776950441;
-	bh=16ECb2n3N8O1lzUBHc3hwH0AF/GdPcdXENNsaw/xXEY=;
+	s=k20201202; t=1776950541;
+	bh=7HjhCeGqAeGhH5pZg8mgHAuQzAKytrrTmEN4suuSJzI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Rf3IguUvF83mh9EAP0qqqFrTMbGEZaPXN3nBP7l2StStokf6JxVVAjLnhe2G1vrgj
-	 VnTPQYS/66X0dHyu+gAF1ncVkBsOt5nO+Dwuochcah8cNceJukFShKN6tH5/6xAFRq
-	 Qw9qbaI+dOGWipyl4dUCm5qay4Tmsh0dAT6b1Rwz2DbWvs/7NTelhSQ4BSRjweZ7j9
-	 y9dAd9vMZ+UlZ+cTHDHWHKLFdfeSEtQVR5GvMPfpkyB4znpi3ecqoitiQbmIcSPd2J
-	 SxPdOh4z8uVhH403ZoQh5Q6Q8ipLsbQ0b3+Jge/2cXh4HK0Ebjg3iSncOmQPcq64Ig
-	 0KQbp9FYJk4hw==
-Message-ID: <d3cc7e29-c84e-438f-8168-58544161d67f@kernel.org>
-Date: Thu, 23 Apr 2026 15:20:36 +0200
+	b=fmmlHdvTpyIBa8fjnS56K1y4xm2iUS5mUPlWtqkveTk1qCuCkL3feZXk+m9dgQqWp
+	 kc6nqGSov/0+orXUO9Jncnq/twT/fuElONdMYycx11BkTDDvdR1ZcDJuUv58vi4CMB
+	 MzJcBvUq4lv/diU8sxkqj29sTSZ8+yrmV9r1ZoL6bli8uK8eiR1hRluNhNAweGUxFM
+	 VhFFUWvdBs0M0zUNs+uac0dxk8PmSRiKOn8VzJ7/l4kk9/m4sXjhTt21rh7pZosba+
+	 RnVO1FFzVrX5hQPubXN0rtGly0qET0ITynAS+x6iMNoPxEkrxAk39q4dom9i2f/Tuj
+	 JdgddCqPBtCIw==
+Message-ID: <b9f5622a-5806-4b22-8b9c-5d968a14a792@kernel.org>
+Date: Thu, 23 Apr 2026 15:22:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "tmpfs: don't enable large folios if not
- supported"
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- hughd@google.com
-Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
- lance.yang@linux.dev, wangkefeng.wang@huawei.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <b2c7deee259a94b0d00a7c320d8d24d2c421f761.1776908112.git.baolin.wang@linux.alibaba.com>
+Subject: Re: [RFC PATCH 2/2] mm/migrate: wait for folio refcount during
+ longterm pin migration
+To: Alistair Popple <apopple@nvidia.com>, John Hubbard <jhubbard@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org
+References: <20260410032333.400406-1-jhubbard@nvidia.com>
+ <20260410032333.400406-3-jhubbard@nvidia.com>
+ <aecQkNxjoMReR6Ss@nvdebian.thelocal>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <b2c7deee259a94b0d00a7c320d8d24d2c421f761.1776908112.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <aecQkNxjoMReR6Ss@nvdebian.thelocal>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jigyq414167omur49nrjqtca1r8cdrpn
-X-Rspamd-Queue-Id: 2D12B1A0014
+X-Stat-Signature: deu5aar87kmemaub6hq16m7rzmn9nsfh
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8FCC51C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776950443-138594
-X-HE-Meta: U2FsdGVkX1+PsMDC3aSHX73R4lQ943/Jy/JjLlcH7qBdt1nnsX45Ft5doDtThxHOp/X7lCdMzNJakjroS/fsoyJTt+5iXGQvUgRkGq4gMNOvK1mjGTESWPWRfvsBFuOoPKkR++UyAxKP3MYLIvMmy6w8iCYU0/4Ihv4qZmuYvJESuNDjny1lBRnEQByz8ptpU63nahhQbnJHp01PIOPzO4r50819lK7EtaNpFqsodgHw4yE+duUTZF3jMY0Ky376hrrZUgnR6Kj23Ndu56T1xPfFa75GSF0LujM6CILV4zWxDUrH2SVoNDdIpBHpeffC6EXqF7/fhtxcHZsX+6wn1TbqEGI7KfnITstrQY85WSPf34JVgEjlv24J8P5QVSE41vRgyGHhj8LP855s/v9b7t9R3onRHzyrAiL4PFnvaLeyLQpLBTgz5eWLVsADMA2ePN9slD9X5lQetxmIthmpmX6ITzKT/2cXUzph7bBRHslz5/LtMse37mGcSTu37TQ04olUWKBIUlsJbOlk+OGWyiLZoXPmzRR6mOzy5um1evuoueg81aDyeKsCvt9AcytPXMpSFXK8lfXTzAgi0nVemS7kDKijgEhjcXdGpCfidvWoCXw66hfQ0DfLcDsKZbcu/HWphcX9HTPlEix2KQkGk1sO9F9oMWTES9qXeiF5KFqIhwxyoDz+Jld9i28obNK4ZMDb6jcTxZC/eTPC3dMPLt0LntnTrRKnCAyeXX5mggFefDda4bStkBmuzh20mTD2K1iPigGZn1QiOY3tEK9qIiFs57uBu4sBquyS5luoKPQ9S1Y7MiAckuq5vwlfewbt9/yQbJEM+JfZJ7Acq3WRzuWNbt2wMCQDPeQQE9WUtKmNzVaNNeIM5wXzpuhnwQBogzLCmuc3BG15XLvLTma6gcx1Ib3qwlYCSPx8mclKLPpL/Xa3vuIvnfyY+I5dRWny1uz5z/M6SQ3w/Hapnf7
- LEkqPbgv
- 5Z9w3+BdjfhFvjqBJ+W7/HeswhZytb12AXyf3VWKkiyedTl6DQsUcb3Xcun4I7BZTE5I7YHWq67TTAxdmr5K6ns5k2EpYM+1V0+ApN9i6wWBEt7DH7fHJ1ugfGw1AXpspdh2WnI3qXphLbDj4EmyI32l9nfWIQCohsl0Jn7awm7ov3InmRcRoqeEEfsfMbg6yZLRd3rMeSkJbkgIZMLJZgufrv6H3NzPqU1YkXHuSvoDzQmjg9HNHGDAXQG13ENzjxSZ+jNMR0GBG0cr1JtbT6soMKt5zvI2IayVs1e8NAjA3UbU=
+X-HE-Tag: 1776950542-93938
+X-HE-Meta: U2FsdGVkX1/2IDUHp+R+Uk1OSpHVwfoUb80rAFdXMNTyqVjGGn2FLdhXfcq49/FUKK+Piid2OA5KugoFlPSUBje6iD/yRmovinyE6k3dbxqvz23vTzeyh7JXfBLWoDWjjs75PmVjC7B2LlkwU+MsM7QDlau+jH+4IqCZDyLvxc49n1OLmveo1zFKfsjR3TxqREBJyRym0z4yAlLwvlXJpMkeQPGhtVskIaj5ChjI1fWBALBn28vJa2cvYH2555rqgndq0AOhXQZ4G8/PYFyYbEez5BCF5si30ygvuqymdEMECae+kVY98qEgJiMR1xitmHO+gNHfZ2SotVAiiHivXm8AynMEoXQlKsIzp76rNrgoAIekkpdhVUYXxgSLLoQ/UGSts6pwOwWdEBGCFfVtYQxJs6O1PG8/rCeEw5IZDRHV/gleQ+dZLIEkh0oioz7RjHsCXxFe3bu9ZNZw4G58q1vBdBWhLbs9hqGKOdBcM6OYshf86mzqbVC6Tia4bqhhoMw12Zn2qSyO+e1swvJkHwl4lAfvPVxux1dK6NpljtuhMj9rECCZxx0aXYzoF5ef8KkDbM0E1w7AqsN7rd1zq2msiLfmnEMluHBtV3MIYbJT5fOacdBp4A/E2XeHfliwTnKUbmOI5lpSLGtw6ndajNX3edxXv0g1m8EUOYl4o4RQvttfW980DwCPuLkstb0VAgNfPQnsOMfsxeCLTM7q+ePKq4EUPAaEx7Aog0gIuZ3SgNTibx5Ila76pPyB+ugNiIOQk0K+vvzft2ozsOiVJ38SkY9L7u2CDAdscNqpIor6yZTchVGiAM1ciZLBe6kXwSogy9nIrFdYBW5LJFHQo21mCJ8b9t8jjfoQyQGhJq2rKhAaBVmaEoeivNdyT8+tI7l7v76ABMVwlWNSFiRRlkhaXpNQXN4KNk5qvDs7mw7r3EKNlxvz7CZCEzK5geyNcrENcYhp9po75ZtqEqs
+ K2C76MRJ
+ R6YhQqsmxEboBvwWazc4QiP04jp8vJOznJseYFPI9QCxDYq3pKiWhkHrN3Sq/OoDsWqqLc6WRv84+8L8gH0Q9mkILlgJ2f5Ies/5Ji3/wVvZQk9xTMZE9laWsDVnfS1OE6mI/N3vuewctpTOJIijiiztEKm7LPZTmxqb0fHFiN8YKt4GkEPUgSTLLnwSVjG1YywoGGzlzOxJ1Ei/S/YMCcALBBTb21IwO9/ooFHPBV199sv197iyMmy+djbMrkDigXDKfoOCeR016im5xtWGCOCMfJLknqykW+VuvX1sS4dJ/TO587boRXYL8J0Ld0LRi4VKQePoNnbA01/eZIxfl48SHqz0Nwg5VWvzL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,60 +153,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 03:41, Baolin Wang wrote:
-> This reverts commit 5a90c155defa684f3a21f68c3f8e40c056e6114c.
+On 4/21/26 07:57, Alistair Popple wrote:
+> On 2026-04-10 at 13:23 +1000, John Hubbard <jhubbard@nvidia.com> wrote...
+>> When migrating pages for FOLL_LONGTERM pinning (MR_LONGTERM_PIN), the
+>> migration can fail with -EAGAIN if the folio has unexpected references.
+>> These references are often transient (e.g., from GPU operations like
+>> cuMemset that will complete shortly).
 > 
-> Currently, when shmem mounts are initialized, they only use 'sbinfo->huge' to
-> determine whether the shmem mount supports large folios. However, for anonymous
-> shmem, whether it supports large folios can be dynamically configured via sysfs
-> interfaces, so setting or not setting mapping_set_large_folios() during initialization
-> cannot accurately reflect whether anonymous shmem actually supports large folios,
-> which has already caused some confusion[1].
+> Is there a reason this logic should only apply to FOLL_LONGTERM pinning?
+> Or could it also apply more generally to any ZONE_MOVABLE page, for which
+> migration should eventually succeed? Currently that has similar retry logic of
+> NR_MAX_MIGRATE_PAGES_RETRY times and give up.
 > 
-> Moreover, for tmpfs mounts, relying on 'sbinfo->huge' cannot keep the mapping_set_large_folios()
-> setting consistent across all mappings in the entire tmpfs mount. In other words,
-> under the same tmpfs mount, after remount, we might end up with some mappings
-> supporting large folios (calling mapping_set_large_folios()) while others don't.
-> 
-> After some investigation, I found that the write performance regression addressed
-> by commit 5a90c155defa has already been fixed by the following commit 665575cff098b
-> ("filemap: move prefaulting out of hot write path"). See the following test data:
-> 
-> Base:
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.2 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.2 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.1 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.0 GB/s )
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (3.0 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
-> 
-> Base + revert 5a90c155defa:
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.3 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.3 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.2 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.1 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/testbs=3000K count=1398 (3.0 GB/s)
-> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
-> 
-> The data is basically consistent with minor fluctuation noise. So we can now
-> safely revert commit 5a90c155defa to set mapping_set_large_folios() for all
-> shmem mounts unconditionally.
-> 
-> [1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
-> Note: for more investigation and test data, see:
-> https://lore.kernel.org/all/116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com/
+> We have a similar retry problems in mm/migrate_device.c:migrate_vma_*() so I
+> could see something similar being potentially useful there.
 
-
-Maybe add that as
-
-Link: https://lore.kernel.org/all/116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com/
-
-above?
-
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Agreed on both!
 
 -- 
 Cheers,
