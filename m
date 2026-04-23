@@ -4,103 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEB73FC0342
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 15:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56704FC0342
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 15:03:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 369366B008C; Thu, 23 Apr 2026 11:01:14 -0400 (EDT)
+	id BA9676B0005; Thu, 23 Apr 2026 11:03:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 319BE6B0092; Thu, 23 Apr 2026 11:01:14 -0400 (EDT)
+	id B59B86B008A; Thu, 23 Apr 2026 11:03:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 207EE6B0093; Thu, 23 Apr 2026 11:01:14 -0400 (EDT)
+	id A6F646B0093; Thu, 23 Apr 2026 11:03:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D3736B008C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:01:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 827BCA025A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:01:13 +0000 (UTC)
-X-FDA: 84690133626.14.DFA5FD7
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 18D11C0020
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:01:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=h5ORs0zr;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	spf=pass (imf28.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776956471;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 95E6B6B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:03:05 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3323140273
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:03:05 +0000 (UTC)
+X-FDA: 84690138330.05.6915D31
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5C722180004
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:03:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s9++1bKZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776956583; a=rsa-sha256;
+	cv=none;
+	b=psEm/icbvQmVHCL/Xp2Qknt688/cKHUeIEsn3/1CQAYJGt7YlCo7wAhazIzlTREmeSgrBC
+	owk1+UC0cYB8gY6lyuJdksDwENAuQUS8l99NCAz/BJYTtIWs2u8FgEg7slJNo7dq7xB1/v
+	gQv3Da2kJaqqTyv6k+BvCEM/bkpNVKg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s9++1bKZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776956583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOqM+aFQLBWzHVmpig7PQVTE08voNvYM1pNEJGXMJn8=;
-	b=ugpZc420t1THRn6z1pfjuxPhRBDs/J4IO+5BNyGwov0EwCMyXEjVpxyr4ZuPW4CGNTWLDV
-	pnYtVuPt/H1N20Ivq0DtuRGR3pfjblbTHdgsWlF+Zm+HZz4Tdm4BRYf5I3ZAA6qh+ktZHr
-	xKnC/NEbr57JnIo+AH7MzKiOWXy+xDs=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776956471; a=rsa-sha256;
-	cv=pass;
-	b=0hpdDsoLMOey3vpInbxwukUwSQVBpPyCqpodcLE3UcHVR82D/GRfaoXdJi2SFrBGmj3Jv5
-	ueqoFk/Jxt+ei+bTHgps2Mi559Saw2mcTIy7PGy2FGS4MdJGROarkYd+E6TuQdZMutKhqs
-	fv8iwXPQ4wYs4r22gdxmpyXLmoagb1k=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=h5ORs0zr;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	spf=pass (imf28.hostedemail.com: domain of adi.sharma@zohomail.in designates 103.117.158.91 as permitted sender) smtp.mailfrom=adi.sharma@zohomail.in;
-	dmarc=pass (policy=reject) header.from=zohomail.in
-ARC-Seal: i=1; a=rsa-sha256; t=1776956449; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=f9Fa0hJG9XbpXjbrl/huquYVPvJEoIVk8aM07InHvF2za7EFfPHHeLuik+te1Jv+CqmCb1hdPSIDya7sE9JoSn3AoVFrU67127+thLOKaz5W1qz/Sly4BRTykUY4eyUrdQeqAbReH7Xadr32bsNGRRjX614D7BI293ZERqA8OdA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1776956449; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=FOqM+aFQLBWzHVmpig7PQVTE08voNvYM1pNEJGXMJn8=; 
-	b=B78SBc0y937mYeZuCI9CsUq7ahYWuqt6aF8Q3vryRc5+99r4NsqyJ+uoUaA5TfHyfotIX3mT32Cwoi9n1sRnPOn/goi2y66HSa4YnPnBL4CuXBRg/PhGUJYDWmA6ok+BF9Cw54w9l411xKCtUQnw3cffhd2Qum3uEKdDJPtn2Rs=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=adi.sharma@zohomail.in;
-	dmarc=pass header.from=<adi.sharma@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776956449;
-	s=zoho; d=zohomail.in; i=adi.sharma@zohomail.in;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=FOqM+aFQLBWzHVmpig7PQVTE08voNvYM1pNEJGXMJn8=;
-	b=h5ORs0zr/STu0s4fmk0vhcj/mf0hRRJ55QYSfske2QQw37wG2nhCp65t+ARahlOT
-	Ds6ZjunE1Qj3J4djnFpROQDqiioc41gwivrvxzpXeZs5z9auiKAlYSMP8PVXHFaBQBl
-	Y/FrWiUMi3BwnijysP6sdr5B/YZSz3+oMq9Wz29Y=
-Received: from mail.zoho.in by mx.zoho.in
-	with SMTP id 1776956449233107.34930946984957; Thu, 23 Apr 2026 20:30:49 +0530 (IST)
-Received: from  [14.139.128.34] by mail.zoho.in
-	with HTTP;Thu, 23 Apr 2026 20:30:49 +0530 (IST)
-Date: Thu, 23 Apr 2026 20:30:49 +0530
-From: Aditya Sharma <adi.sharma@zohomail.in>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "linux-mm" <linux-mm@kvack.org>, "akpm" <akpm@linux-foundation.org>,
-	"ljs" <ljs@kernel.org>, "Liam.Howlett" <Liam.Howlett@oracle.com>,
-	"vbabka" <vbabka@kernel.org>, "rppt" <rppt@kernel.org>,
-	"surenb" <surenb@google.com>, "mhocko" <mhocko@suse.com>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>
-Message-ID: <19dbadba1c8.6c77377a35913.4863321564078678922@zohomail.in>
-In-Reply-To: <19f5f950-d0f9-49c2-acf6-7b0ab277ab23@kernel.org>
-References: <20260331142936.229667-1-adi.sharma@zohomail.in>
- <20260405171834.15971-1-adi.sharma@zohomail.in> <19f5f950-d0f9-49c2-acf6-7b0ab277ab23@kernel.org>
-Subject: Re: [PATCH v2] mm/memory: update stale locking comments for fault
- handlers
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=RKHCHCe0pmoPcECwaTmWcIE27CrGNeqC4X3BUhLLxG0=;
+	b=CVhWt/uURPgvi6Dt3T50RkuC5ZbbOGEYe+faXskrW9kt8wVe3TPx9TGFVp5Hqeolv88iKO
+	tQDLcLIXYaPloQwWHeHLoF8ismcMN8DI8iu6HS66agbNOS2cgCGmYcIxIpFwRrsZpoMXxd
+	O4Rd6I+P8z/jAldzD59X57294Zk95Z4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5A7B343597;
+	Thu, 23 Apr 2026 15:03:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D6FC2BCAF;
+	Thu, 23 Apr 2026 15:03:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776956582;
+	bh=rQtJyg98FPKQTGRAUXuSfYXDH7AOf6p1ENCuefnOVK8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=s9++1bKZIRQFMWLOYuaJsuL4IQQDmbqEmbx20BBr+2XLP36ZgEIDUA+1dQrUUALOm
+	 Xup12QRFQ/4GBYsi2Pye3ObpCvg8lsOi66YlxwFJHaalagYQ7AC0t5lkhLBmHtauhP
+	 PzPZREJdJbzgYgHp9/M88z55JDauXRC1h10GYZpjFGVuBwcs3iz1fGBMtH6VpT/Ji6
+	 JffDgyRxI/KvdvvVyLnKn0vJ2ABb79MS3NmWevwQNgZUzVzFx7XOkWnbuRngbZ7x6L
+	 EOBiY/+kSlzqC4WsErkL/NdNZWFB7fDbNyNSZXd3zXXm4tAzx630bUan5ruymYMVJ5
+	 g9/ZVHGxQ3C7Q==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 16 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 0/2] mm/damon/sysfs-schemes: fix use-after-free for [memcg_]path
+Date: Thu, 23 Apr 2026 08:02:50 -0700
+Message-ID: <20260423150253.111520-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Rspamd-Queue-Id: 18D11C0020
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4nd95zssbw4pjqd5qgecawigz4uz7mux
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5C722180004
+X-Rspamd-Server: rspam12
+X-Stat-Signature: nf34itk9tfz4e6dcgzj33dt7wr54j7i6
 X-Rspam-User: 
-X-HE-Tag: 1776956470-967545
-X-HE-Meta: U2FsdGVkX1/GoIy8Mq2ljIDsMi5Be+cVUDiSBuqO8zC4a4SvhRTXudIS56AuN+U4WWVrbITw1yaGVS5q2nUYujxcXRmu0k+XIt21HzyS8iyjkBG5VcnU4B60RYRSkisWkmvoldAWqGr85iUXBkHw7YWjX78K4eZd2CbtWacQPMoLtiH22aaV4O7Jop4m9j07tQK1yf7VJQFCyy1v3VJjsxJNfrrk7HF6X/oOR4kbg0Mt2RUhTLUnu2GuOqJD3+/epm5H3iwaFYyrpE0vFGFGnbCdRyE8xlIR+5JuhOwiVUaiFInHAsx2GQu79jPRQ79xfuYIZ2HXUHUgq2eBhVMlXOWMwtB0i4Qb8WHTX0SQZR5zKLOFF5y9DIJcSKrAWrCm/Cf3BJgA0RC/8q44zedyRcXlhWXtpPrjrGl/Ac3JD1SRVY4F3NGK3bVI/6tb19BnR9tEVr1lNOAs+uiPU0lV9oWHeCOuHsii9SyB/QY4GWFT2XGGNaXzFNYdKSJPRe3aoR0FvJXuWXlJazw46MksG2pilcIX1uXoAWi4JKhkmdiMnHNGSB8BPj+u80yGpx1EJCvLS3vSAKCBlbasgguwhUT6lWwncMBUF6ZDHC8/KFgFEjWufG4KTmb+nxkJxeceyFNnyq9vLV7fShFlx/4ZBzCBpPeS5rRUy230UETzHalvuC3G4BfdVx4FzxOKOT5t27RWlPctoP/ZgOBCJtLi5QxJs7CUyYjk+CEy9Ud7PABh25JrejIrEfSSGZU6iQyNjTp4+UuILXzC7vdFhzCqpZMRvLgjHWbh52ldo9g3euOsqNTKSdpA32iaYIgW6EKIv84CVlgmge0trHYwEKCkDBeFv0Z0UKw/CghiVKzKfMbb2oYDfj7v9xYRhZ5ruo9Op6ALLXF6p+P8o3noJNN+TESUm7GLOqqnUMlnSU838bPH7bsV4kLWPSOcR2bWiL2+1z8wY+rCr3LZvDUaHjf
- wb/SYrWx
- dYBL/PHfUmlPz/gjc7VdM4DjfHeSnH1pqT+lFsCTX8Rd8uiRDQ1R2B3rJ/m/9IUhB+17MExWDxBocomCFPAzVxZAIUKXAWtVozpv6Dg3yEx++px3upidXyVwy/2AbrDeHzIp/HplRbXHWgEnkl1EgYZmDZFWUeKEq71ce7d6O1NY3lC9vqxgyTVW2m3ZdB/jbz+GnPMVxq6DCO1lgHNPgxSUeRxOB06ybjKpLpXuM2ziuS1ygF/QWvFAgkYzk4ZpUm8tm7S/sd5JZ4jSR3F+oA5IboFByU2u6IwYHnJk0UdnqniMMek6EhOBxRvZYnHWAMHG7lq7YkcHzvxRJxCA+1vC28kdCgPpM+aUzCZBnBMrN0a996hZaAdfIGhxLVyB7+btWzq1whQSQ1J+DImQHObb7Yb/iXqOl/faG1Xs4xyfb/y0TYArDZx6YLqlhL5+LvVb/CQfEnl1girxdtjKZnoPEXCJ3EVMv9s1zxmLBoZjRdIZAljexmqtrk/2gONxqE4VXBZD9eOOfy6+T8VlfwmmkcUUP5gdE2GUQiVCPqCUqIDEgjNyMgzOUtG5m7PEHMJF+
+X-HE-Tag: 1776956583-857381
+X-HE-Meta: U2FsdGVkX1/S8u6ZZeWs4ya4RTYVdeMBpchaz3TstjbNRErgbELFEnMnRu/Nsp8ImhzboC5RmREoNn2hvs/jGbJl+wcuECIop8MkUVpd0kjVDtY1njiETgCtBFcaJNQq8kaDPOI0Pytz7V+wP8nzo9KgGJ7WrcxeYYMvbV+aAuu3vWhHjwr4zCnGAcEJ0064QAq3CSVwOSz2w8OxkDfe/x6dPn08kF/HcknfLZKQjv6amAizWpQspNNUKTJQPRk8JOtiaZ8O3KDic/84rIuN5yPYcTkvc5eK2Jiamzf4FjNBeUZwaexr0CGJgFDBamjipi87WmX7Z7KLlmvD4qhuSYojiYhagDlWfXOZyoax8JqdkXex4OLlKh5qE9Yi8UfEz/Najp6Ofl7tNi/hkgCA0Q1vBA/wB6WqcYg44MxR+C6cCLGYdyQ95CskcGqFuLsKWf9RbWIMmrvO0nVJRhXxCoQKsCLUlBxHTTDYjeiVDXXn32x7jBhMSWcQdZ8EthZQ4PjYTiCKLNHzWE7ATt5IqGGQNFs/eDB+475/XVPahkOtUkQIVs2iaIBrnDX3WnYDa/dGCcaghPCLt4DapZIrQR4Xa5Y0XNLWaejfJ+UnIsm4xSFrrXr8tVyJJV+cZQsPd4pvW5tef+e1GYgOWXlyYaMhO6/Z4hGI7hiahNjDTUmwLLklTKrYoH83vUv3IjpfRpF1dn83uNhJKwqUC+duigwqbsoyDmAohmg8WnX871MFygLz0TveEsy2vkNyBwRlAx/KsgP7JY+hpJNjGT/2woROP2bOTREpq6Kq0hBT+L23ZOeoqJr0O7fcGrluQrZWA/DvfSThkFdD4l2XPWT/DzekmmD+DSCGAWQldMeabCIGUkZiCFWhH6i8PuNVISoMFnWhdmjHILZLR2dvLACAqbk+Cgpy2JJdlPodoqwQfgG9XZcE6m97KClMlGfNEAql6WWVm95Dn0Ev0nwRJJn
+ HR8+qv14
+ 4+Q2jbT+k5Mo7sD06eiew7Ea9myRcspC7dOGO9L+nJ+2QuiIa+wPSK9/07X9ls7pmpMf0KZkW6se+yFWftRtR9mHIZh7ju7rRWD/BjNMQws9nGMiYO1bBNul4L3eGQ0giY96e5iKqGZJFjifRpY/rmjIIceIRt8N0dkhBh8Cf5Na8163GWH6dNGNLcb6CaUnMyr2mzh1lqn+F8xNcqbR75fjCeA71NzJkpG4FLbkkks1cIs/dSdL9J+pVALbuh+Euvu2HQ3iOc6HWlfNpYZzqvuk+WVyb8hfPjBKKZLtpI38qZTg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,83 +91,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+Reads of 'memcg_path' and 'path' files in DAMON sysfs interface could
+race with their writes, results in use-after-free.  Fix those.
 
-Understood. Will send v3 as a new thread, not a reply.
+Changes from RFC
+- rfc: https://lore.kernel.org/20260422144059.72000-1-sj@kernel.org
+- Fix a typo in commit description.
+- Drop RFC tag.
+- Rebase to latest mm-hotfixes-unstable.
+Changes from v2
+- v2: https://lore.kernel.org/20260420125405.362137-1-qjx1298677004@gmail.com
+- Split patch for individual fixes commits.
+- Hand-off authorship to SJ, give Co-developed-by: to Junxi.
+- Use mutex_trylock() instead of mutex_lock().
+- Add RFC tag for Sashiko review round.
+- Wordsmith commit messages.
+Changes from v1
+- v1: https://lore.kernel.org/20260420085332.178473-1-qjx1298677004@gmail.com
+- Protect not only user-writes but also user-reads.
 
-I'll apply the wording changes ("held" and "see FAULT_FLAG_VMA_LOCK") and send out the v3 shortly
+SeongJae Park (2):
+  mm/damon/sysfs-schemes: protect memcg_path kfree() with
+    damon_sysfs_lock
+  mm/damon/sysfs-schemes: protect path kfree() with damon_sysfs_lock
 
-Thanks,
-Aditya
+ mm/damon/sysfs-schemes.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
 
-
-From: David Hildenbrand (Arm) <david@kernel.org>
-To: "Aditya Sharma"<adi.sharma@zohomail.in>, <linux-mm@kvack.org>
-Cc: <akpm@linux-foundation.org>, <ljs@kernel.org>, <Liam.Howlett@oracle.com>, <vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>, <linux-kernel@vger.kernel.org>
-Date: Thu, 23 Apr 2026 19:57:21 +0530
-Subject: Re: [PATCH v2] mm/memory: update stale locking comments for fault handlers
-
- > On 4/5/26 19:18, Aditya Sharma wrote: 
- > > Update the comments for wp_page_copy(), do_wp_page(), do_swap_page(), 
- > > do_anonymous_page(), __do_fault(), do_fault(), handle_pte_fault(), 
- > > __handle_mm_fault(), and handle_mm_fault() to concisely clarify that 
- > > they can be entered holding either the mmap_lock or the VMA lock, 
- > > and that the lock may be released upon returning VM_FAULT_RETRY. 
- > > 
- > > Additionally, make the following corrections: 
- > > - In do_anonymous_page(), correct the outdated claim that the function 
- > >   is entered with the PTE "mapped but not yet locked". Since 
- > >   handle_pte_fault() unmaps the empty PTE before routing to 
- > >   do_pte_missing(), the comment now correctly states it is entered 
- > >   with the PTE unmapped and unlocked. 
- > > - In __do_fault(), update the stale reference from __lock_page_retry() 
- > >   to __folio_lock_or_retry(). 
- > > 
- > > Signed-off-by: Aditya Sharma <adi.sharma@zohomail.in> 
- >  
- > Next time, please don't send as reply to your previous version 
- >  
- > > --- 
- > > v2: 
- > > - Simplified the comment to concisely state "either the VMA lock or 
- > >   the mmap_lock" instead of a verbose explanation (per David Hildenbrand). 
- > > - Expanded the scope to cover 8 other fault handlers in mm/memory.c 
- > >   that suffered from the same stale mmap_lock comments. 
- > > - Fixed an additional historical inaccuracy in do_anonymous_page() 
- > >   regarding the PTE mapping state on entry. 
- > > - Updated a stale reference in __do_fault() from __lock_page_retry() 
- > >   to __folio_lock_or_retry(). 
- > > 
- > > 
- > >  mm/memory.c | 49 ++++++++++++++++++++++++++----------------------- 
- > >  1 file changed, 26 insertions(+), 23 deletions(-) 
- > > 
- > > diff --git a/mm/memory.c b/mm/memory.c 
- > > index c65e82c86..2b407e3f9 100644 
- > > --- a/mm/memory.c 
- > > +++ b/mm/memory.c 
- > > @@ -3742,8 +3742,8 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf) 
- > >   * Handle the case of a page which we actually need to copy to a new page, 
- > >   * either due to COW or unsharing. 
- > >   * 
- > > - * Called with mmap_lock locked and the old page referenced, but 
- > > - * without the ptl held. 
- > > + * Called with either the VMA lock or the mmap_lock (FAULT_FLAG_VMA_LOCK 
- > > + * tells you which) 
- >  
- > "Called with either the VMA lock or the mmap_lock *held*" 
- >  
- > Same for other cases. 
- >  
- > Can we shorten "FAULT_FLAG_VMA_LOCK tells you which" to "see FAULT_FLAG_VMA_LOCK" 
- >  
- > ? 
- >  
- > -- 
- > Cheers, 
- >  
- > David 
- > 
-
+base-commit: 26232ccdfcc7029d92b633b01f5f22913ab72168
+-- 
+2.47.3
 
