@@ -4,138 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC988FDEE52
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 22:37:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F070CFDEE4D
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 22:46:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E80236B0088; Thu, 23 Apr 2026 18:37:12 -0400 (EDT)
+	id 1E3BB6B0088; Thu, 23 Apr 2026 18:46:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E31456B008A; Thu, 23 Apr 2026 18:37:12 -0400 (EDT)
+	id 193CB6B008A; Thu, 23 Apr 2026 18:46:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1FCF6B008C; Thu, 23 Apr 2026 18:37:12 -0400 (EDT)
+	id 0AA5E6B008C; Thu, 23 Apr 2026 18:46:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C0DC36B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 18:37:12 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 31521405C0
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:37:12 +0000 (UTC)
-X-FDA: 84691282704.26.8231BE1
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3D057A000A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:37:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NgnEUswl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776983830;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F21916B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 18:46:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8251D1205E7
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:46:06 +0000 (UTC)
+X-FDA: 84691305132.29.C55E9B8
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9B0D1A000C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 22:46:04 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=larkBWn8;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776984364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KcOkDAwRnF9DZsG8k4nq6YrUO8JUinCYXdZGaNjU0Rk=;
-	b=ZmCwancCAX0N9/6CV9xFCVH4Jgq+tZ8D6gdPp3no6VgGowa65YiEgbn3uYLsTgdYDiyE8O
-	ven1yhcJqhMhxNmrd9pHiiOGaQlzIP1Iq5UTKzFfmZGEzC6RNn45oELublHYp6JYLI2nsu
-	xS3EC5iiRiI3dVQCB+icjbFebnCq8Xo=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NgnEUswl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776983830; a=rsa-sha256;
-	cv=pass;
-	b=xnPb5DCvAe4PfzDzLmp4NZwhd9Ko5VtMyCLi4gokcc8ejyl4O+T89jMUHZyLjyAPx66iee
-	eXHc3tqA1eDkdFptOdCVDOnmeedig3Nk8XMrXHBuq2nf/VU8/biIlJbo0mNbvEr5+7Gi9I
-	wyN604UtElU5XnMo5DCmxIol0cz4CgM=
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50d836552daso4088721cf.0
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:37:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776983829; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Z5F2oOS/uLAe7MzRaYeawjkY2Smc+AzB4iYMSoWJBTzz2S3E+fD0zt2mgfbQ6XW0es
-         yXi4t5IVVlCzGLk7z/HxyuaUa321PK4mcI+2PM/lBMyuvFOtEHpmtFdwJB3KlP74sj5w
-         oJjvVNV9Xj/0MjmhLUd7RWIJYDB+i1cMz0HT85mMes++W+WCAyHTGQOZfdcztJv+tcEK
-         7oisnJmSmPysZFTYwYOQ9p4YhEDCLvqk6p7ahB744EEnhvVgqDtrwu6np6OrowLpI7fI
-         n86ysB8HpPxGPP4PzHu544DgxojrZ3AYzOKJInTVxAt+XPMW3LmXZ3aLPfgzTRc1+L89
-         Lz6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KcOkDAwRnF9DZsG8k4nq6YrUO8JUinCYXdZGaNjU0Rk=;
-        fh=/ortrJ6/w5EVwxAz+gMjMA0nnT+erXI3G98O4S4r6ac=;
-        b=ShYk91bp9234lUNjSOwh182C0BQ8ngFBzJIaY3D7fEJcv0Y9W+ICOKNQcvgVMNpw2l
-         rF627ESCXIfJXGLuu/nhu7Rc8oOdagq6MSZYc1SOo+PGkPicZ1Qevm97LBENrCLqyDp+
-         0aX+CDkmCYle2h0X83kcDsSCBnMUbvxKL5tKljuMonDaQoImmi3qM2Y3UH0+VL5JSwVP
-         Bsjyql0PxKZDgncRhEbdq+aoBXm8xizGocsthPAAtQoqflP7Si5VLUq8h8d58wvAtSQe
-         9KfOrrQImSKwcq4volewAN0mUOcDQoxdkxHn40FBFuw4qCKP6YT7IYTqB7JHGYMNfKd5
-         /7gQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776983829; x=1777588629; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KcOkDAwRnF9DZsG8k4nq6YrUO8JUinCYXdZGaNjU0Rk=;
-        b=NgnEUswlJ2f7L2X4ojcZVt4xIjSh8jzLnPM2i+CYSmpMdgtO6AmEWqM2iN3cPZLK45
-         LrWFofnCQnUFynWPMQwkcj7vmaVCq3WU9vWIAXAprIhypDr3/vOE/iPrlr5l5SUbTmht
-         OrFUsOy5ATO3vXa4fwm5rPHcfHOrCxnLU7i2pIucKdqmJej0b5MQy15rDzyoZeM2QUt2
-         zgB0qVt1B+v34vkck2BjmmbRSQg2Y6AkOmgGeDu1zCST9TnGlX8od/H2Vgqld/adGvda
-         iMo5Z46s1zlgbLM8JchTEUHUcY7cOj8EgxDPmEyjjFedBLHI/nHTcHXz82z/6ZeBYpbG
-         GK3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776983829; x=1777588629;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KcOkDAwRnF9DZsG8k4nq6YrUO8JUinCYXdZGaNjU0Rk=;
-        b=MqmWrCD7sQRrw8VV/0KlKa26wQ0LkC7eMWrExxDQCEzh8x8/N0z+TiCs8y6G2NSZYk
-         swsdm779yFoyUYCXIU5HLFKJP5uu7fTixsYhLh4ghyyfw/NMHkQl+/cYGQ3ldsfZJQ7D
-         OFJ4PvLp1MggG1B5GHrtpXK18Wd8ukrYWseUsWLEr7qVzZ1LIEPmE06vsw9nmVHW8tR9
-         K0qEPYrMUv5VvkLA/2fMLN6qof7yuhopjeYCPJFtaszuMPvk8ey98UZLd9g7YSJnmdTL
-         NusFSrTKJGQ/hi96reO011mGv+62praLnlBLULhuHJUxvOw0OyFkZX9HH8xWUut2ZaJF
-         HLcA==
-X-Forwarded-Encrypted: i=1; AFNElJ+v9tYb66F8xbeG0yu2HGRaZPcwwb1VamlJgJ5fNIsou6u0/FkIVBxl4w7sCKWUPifK/21W+gPgMg==@kvack.org
-X-Gm-Message-State: AOJu0Ywp48gUKqTaUSgsvS38j6J8bPn18vgEe4Gt3aXpSeYxLSc8GWDa
-	YeBSfNbYvNbh/xLVWlwjq+Mu8nDyKguQRni5UgL/9PCr3AvnIE8LUHHFKxA4JIXnnHSkK8ysd9y
-	z4uDQsWZtmN2fworeDpZ48vz4Aoo7bcX21Ad5XS0A
-X-Gm-Gg: AeBDietuXW+USlj3hXiwiCXaKheg2cmVle2QDvRY9Lv/9xJXanLzyke9GAel9hrKWvF
-	9hJ4XeBGzKWBWfdm9ND76e/Pm19FBF9kIJ8Lh5xHzw2C8atKHXpmTMK4WEpRPA5miuR7dGuaVK0
-	C4QrB8thiec9TroxofKeo3l/4bLNIU3efB2V+qs2Rv24FWq/reXOxRjTPdk4soP9EuKcsVu5puV
-	MQk5PZWGgVYcnoa4fIrYEQrrGowwGsBKny3Sy8Q4BIETtKA1FFXXcDemSI4PpeA/hePspkp2Lad
-	NAnVeehgu+Oe3BZ5QTKg+Ua9eD8=
-X-Received: by 2002:a05:622a:5a87:b0:508:fd42:fd05 with SMTP id
- d75a77b69052e-50e4420283bmr101009631cf.15.1776983828775; Thu, 23 Apr 2026
- 15:37:08 -0700 (PDT)
+	bh=+0mHKBq61/yarwq4Sa7hTm08Lz676EcU0K67E1wCp6I=;
+	b=Zl2GVePgueZUnrJ8KbFVR70eZrTydUXiYv+SvZjxTaXEaH9ESs46641fu/qd8GJ+KD3s1P
+	ljB3huNcT/xDKdkC0VyyZ1U5sI9rqNYuuwJqJSLzjoxkgU8nmYkw2+FGmWG1pB+xFyUKpS
+	cXhGD126ApjCqbPDS97wI8Ji1ApZZLk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=larkBWn8;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776984364; a=rsa-sha256;
+	cv=none;
+	b=Qp4PLcOK40jsa/ICADjqiZ551b1cwkP2DrAZA/FzkZhP1sAaWaUYv1PbHPwlmL3CZSMwT3
+	yj16B8DBfwS92uGd/hNwCEKQk/kMGH/PuWzVOl635v3L32PShFrMNWJYliZ++FECj4E/lu
+	209Rw78Xt9B2bSZaQVw7iXqsSOP1bko=
+Date: Thu, 23 Apr 2026 15:45:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776984362;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+0mHKBq61/yarwq4Sa7hTm08Lz676EcU0K67E1wCp6I=;
+	b=larkBWn85qeCAy6AWKBJ82KrrH2khVDU88IR6pNIFm1qvU1ygq1VR9BSotmLKRty/o2hz4
+	1ejZlx8hT5hs+K+eQ2NAIS1Wv+QbN+KRVewdkMwkxIZXYHOmZEUuduUFKIUBKo0Fx9p6Mf
+	mBZx3n+WWlx/Nt43b3qwNgogXSYWbSQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@kernel.org, 
+	mhocko@suse.com, willy@infradead.org, hannes@cmpxchg.org, riel@surriel.com, 
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	bhe@redhat.com, baohua@kernel.org, youngjun.park@lge.com, qi.zheng@linux.dev, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm/lruvec: preemptively free dead folios during lru_add
+ drain
+Message-ID: <aeqggiMu87lu8GXG@linux.dev>
+References: <20260423164307.29805-1-jp.kobryn@linux.dev>
+ <aepdmTw2tPJ9oMc3@linux.dev>
+ <31f1f2a2-3fcd-4a65-94b4-f1f2921b2e8d@linux.dev>
 MIME-Version: 1.0
-References: <20260413223948.556351-1-minchan@kernel.org> <ad3ldU4DZxga_J2L@tiehlicka>
- <ad6c0DN7AGoOQ_Iq@google.com> <ad9AXVYxWCkHmh6J@tiehlicka>
- <aeAeqoJ_acUAza8D@google.com> <aeCHvYOKP1exBBns@tiehlicka>
- <aeHRLv834FCAQlQ8@google.com> <aeHdGf7XDjvOES1V@tiehlicka>
- <aeagUxlju40rvkYQ@google.com> <aenPV9ewKAzRF2Vg@tiehlicka> <28c3ae9f-c974-454c-b8ed-ba0ba0a5706d@kernel.org>
-In-Reply-To: <28c3ae9f-c974-454c-b8ed-ba0ba0a5706d@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 23 Apr 2026 15:36:57 -0700
-X-Gm-Features: AQROBzCRT5mgPj-Ya1FtxxMdAbOe_Au-7ZTsnyq1eqHPkIRlfjYZhnEFFLKhA8E
-Message-ID: <CAJuCfpEGCvuaQ43W4_bPjpoiYgmEspxV78-U4dkA2bcjfxCyFA@mail.gmail.com>
-Subject: Re: [RFC 0/3] mm: process_mrelease: expedited reclaim and auto-kill support
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>, akpm@linux-foundation.org, 
-	brauner@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	timmurray@google.com, Johannes Weiner <hannes@cmpxchg.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <31f1f2a2-3fcd-4a65-94b4-f1f2921b2e8d@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3D057A000A
-X-Stat-Signature: x5c7jannd7athz7q9cgnmzyoncq6dchm
+X-Rspamd-Queue-Id: 9B0D1A000C
+X-Stat-Signature: 8wtzpfpk4etwsff7deuhsh95ngrhqdog
 X-Rspam-User: 
-X-HE-Tag: 1776983830-224205
-X-HE-Meta: U2FsdGVkX1+pbWBOl5/TG9LcRMcohVDzmChaJgi/V72mFY3VQaSYNIVTtWDXZcRHUEzjK8wHXYRwlKm15iXX96W3RkugzAXPV5yT0uAQT8cVj9MU91xtGtuK6Io8k3whW9ChgMlA4p1jnnNeUzSdYmZP7Sg8SYDkK4Rt1yMVykFL8pJ1zATAQh5SB3VVGz4A5v1TLBxm+FWfUM9LTv00znq56bE+Igv+B/a5QImUs1V+DBSjQTsFZ75jnHYdkIP6nGiL/hc1f5CheFwhPtjdTBE7L0NEQy1I6R0nacbh33ouVZzNdUF3gBjmgpnYXeQEosqdbxwdYIz04JV7pJhCJLSqDa2ezmOw+2rvubvIviM4fu2QRsCPCfBr6LNoDOV2GqFiYO9LlJiLLVbUip1Xs0UNISNlHGOaVvR+z0BKb/K6s+JQ/c2L8VqWqQDd6i5il2b5f5frPl0TP3jUotg7shcqWQKrd1sU2jLO25vO0THu8D76NR/0Lj0lCsSce5PdSOqAi7CxqcA5sshtNbbuVDzo4CKos+ippxXphvUuFoq30Xbu0lqMbjo8GHZheraHN3cX1hWRVO7Vyrmo7P14pSr+uKNY/u4+om9+1M0ja4Y5beeicJX6d/vRnR78AAYAyQYRmXWZ7JxXxKFA0kqOBwGjr5odV63XhDwg0dNfY6+P3dJh/UjpfzY/6+YtYp1iqwGtoM6WEiUhqkfJrqMkmrJE0YG5sE0Ms8iSB37VCgdfEb367fWiOC9+jsDQF1G/1da4RCdoJCOWdTYjDnisF4+33Jo/VR25O4Un62/6cSLjrDpI8CnnU8/ikMgT6ax2F4AvDrHpg1t+Nyk8JlbKT+K9ANKONsZ+Gmc4U/g4LogujuKOnB93PiPI3Y7lqvfiWc+tbug28mwpvIgtuyEfe7eWZrKlsrTvqZKxtbmxGHE/s0B/a0ZyvU9bOrPSk7VRM+QJi+As0bBEh2+6oh/
- D1izdqwj
- AgEV6pwLG6I4trK3N3F82p/C/9BmPi3+1W6LxT/KHKGWLmz2HsY68jCC8HmSAFMOXUwzP2tAY2XydTJkT0Q1rfSA5H50uhTK6oe/V8/+BIOc/MOBalIwrxlIh7TCqzUMsddzmT9kAksRjL/nDR9zO3snu6olvNXKkal+AcBkbMU17gmMWCpB36/g3XvLqR/8eMUZguopsyzueUcrgZO8FuB2J7gPZRJMwTnbSqxdJklpS4ihkVf/bXGXKXAQo1695ATFEMM7H3sIDZIi2cfN3jmzFHyp4bZFnsCkDZE8EupXHWyJHgmYDCc9lGQ==
+X-HE-Tag: 1776984364-414626
+X-HE-Meta: U2FsdGVkX18SMrq1Y2UDvganD8ZCGaLz08BSltV8BH2PlyqWR/4hVc55Xkc+bbgzmVDSfHf+XDyMCOFHLrIoOFbfm9Ag8nhFaD21znvtP+IdWHt5JhaX7tFt6PNPbT/PbV0aAJ7p1BjGe8LN1/8X2ftGgQ4UyJAuMbYgn3W9MYFL9EW79LInocr0tb+CfuFMap6RfovhXIV0LcucmEd1W2TQQ+O+rv6g0/ltBSVpGXz728oYAveHiGVTKEPAfGXkRhSuHX7RZD9PNwJu0TMV3Le4uaCB5wbTFh716TKgUMWx+Upem3/r6zt4LV8xQ+xUwUUGsW4lDzTFomZgZS4XYr/2y3WjrSkW1AuOypxUSSN5F8d9ubs+GRdgw3aNR6cAYaKZabS8mjDWEZIQy99ek6R8tZQH0j99SxhKmFIhSGZkriJs+++nBB9PDbCk+sICI9ps8zFh/HZ2T0zQfUuxTHENna/PovaOfKHlHCGCfzcKvVLm194YSIpJQdTZe+zAxiWg1iPsO/zZIYL3XR5SJTySWYR/bxkFpsLBjqC9+EE/fidH1UxIo3g7grFwawqusiWI7ZYLj3WgY9gOW3ECV07brRgxk3gJK/S8khps0SV7ZgHrA1RwIRfFyhkZKmqCY+DZXgc4KZBV1V2YuFWnBVCS+qr0zEX2SltDadHn2MY+r1jQYhp+/SjRbqJicG7kq9CPhMZ0OkR4nl0SMOcciMBuJqwMcRPb4/LOM2ieSrRoqNe334DHcLHsG5VeCszhP9OmcWXgetX1qyaGuMeb5v+pQZ32REBWXPh6LZnJTKQPz3Os6oMVFmDwL+F2U7JWR82iuIIzB8l7lWeAd9GjOHFU14vWy5wF5wMFKsLYviiEebIkVhIzF09wlfgWJ6CiBCpEmjXZqT/IfKRz/Osgo0SrhojcC6oPe2ZOrAzxFYp55D3J4exqADRjuLMu7g+GTgDxplriBlBxzg0QZqY
+ xEW2PLg6
+ LICxwepBUM0dcNxP2FtxKYAvgTdiQb+sfcEnSy/ewbETksczkQRSI6vgMz3Nm9JglwW64hIOUVBo4AgjJxF3EihLf5BPGBnH/zaZak+CKZ7Yn6p8+I0/LKDWgfq8qaxOCNsSb4XvejaAysf2gKBxfruU8zEMF/GsGq2CBRaeEQQfOu5Xq5o2sv4W7MzVIUD5GefyA6JgDQBEqWAFY3bB+wnkMzn+JqKQOkCaxxZE508HnYeVJRlCD1VTLC381ffpGhTw0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,94 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 2:50=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 4/23/26 09:50, Michal Hocko wrote:
-> > On Mon 20-04-26 14:53:23, Minchan Kim wrote:
-> >> On Fri, Apr 17, 2026 at 09:11:21AM +0200, Michal Hocko wrote:
-> > [...]
-> >>> Yes. All which make sense, really. I am still not convinced about the
-> >>> clean page cache because that just seems like a hack to workaround wr=
-ong
-> >>> userspace oom heuristics.
-> >>
-> >> I see it a bit differently. When paltform decides to kill a process
-> >> to free up memory, they want that memory back right away.
-> >>
-> >> So it doesn't make much sense for the kernel to ignore that and leave =
-the clean
-> >> file pages to be picked up slowly by kswapd later.
-> >>
-> >> In some aspects, you can think of LMKD as a more specialized, userspac=
-e version
-> >> of kswapd. It has high-level knowledge of process priorities and knows=
- exactly
-> >> which process is safe to kill to get memory instantly. The kernel's ks=
-wapd,
-> >> however, operates globally without this specific process-level awarene=
-ss, which
-> >> makes it less suited for this kind of targeted reclamation.
-> >>
-> >> If we force LMKD to rely on the slower global kswapd to actually free =
-the clean
-> >> pages, it defeats the whole purpose of targeting a specific process.
-> >>
-> >> So letting process_mrelease speed this up isn't a hack at all. It's ju=
-st helping
-> >> the kernel do what the admin wanted in the first place: fast, targeted=
- memory.
-> >
-> > This is a very creative/disruptive way to do a memory reclaim. From a
-> > user POV I would much rather see clean page cache reclaimed before my
-> > apps start to disappear. But this is obviously your call and your users
-> > that will care.
-> >
-> > Anyway, I still maintain my position. I do not think it is a good
-> > idea to drop clean page cache as you do not know whether there are othe=
-r
-> > users.
+On Thu, Apr 23, 2026 at 02:18:16PM -0700, JP Kobryn (Meta) wrote:
+> On 4/23/26 11:46 AM, Shakeel Butt wrote:
+> > On Thu, Apr 23, 2026 at 09:43:07AM -0700, JP Kobryn (Meta) wrote:
+> > > Of all observable lruvec lock contention in our fleet, we find that ~24%
+> > > occurs when dead folios are present in lru_add batches at drain time.
+> > 
+> > So, when they were added to the percpu lru cache, they were alive but during
+> > their stay in lru cache, they were freed (last non-lrucache ref dropped) or
+> > somehow we are adding folio where the caller drops the reference just after
+> > adding to percpu lru cache e.g. folio_putback_lru() ?
+> 
+> Both scenarios can occur. Whether all callers put the folio while it is
+> on the per-cpu batch or putback drops ref from 2 to 1, the batch ref
+> is what remains.
 
-I'm very much familiar with these issues in Android and really want to
-find a good solution for them. IIUC, this RFC tries to address 2
-things at once:
-1. handling clean private page cache when reaping memory of a kill victim;
-2. addressing a race between kill() and process_release() when
-process_release() can't happen before the kill() but if it happens too
-late after the victim passed its exit_mm() then process_release()
-fails to find the mm to reap. This defeats the purpose of
-process_release() call because the actual memory (released by
-exit_mmap()) might not yet be free and a successful process_release()
-would be very beneficial.
+I was wondering which one is dominant.
 
-I see these two as separate issues and I'm not sure combining them
-into a single discussion is a good idea.
+> 
+> [...]
+> > 
+> > Overall the code looks good but I do wonder if we can add something similar to
+> > folio_add_lru() and if that would be enough.
+> 
+> folio_add_lru() is how it gets onto the batch. But it's still alive at
+> that point - at least one caller ref.
 
->
-> IIRC, Johannes raised in the past the we cannot predict the future.
->
-> For example, if an app gets OOM-killed, wouldn't we usually try restartin=
-g it,
-> re-consuming the clean pagecache pages we would be evicting here?
+Yeah, I was thinking if we do special checking at folio_putback_lru() to avoid
+folio_add_lru() at all (only if folio_putback_lru() is the one causing such
+scenario most of the time).
 
-Sure, we can't predict which app the user will use next, so when
-killing we usually kill the least recently used one. That's a
-reasonable strategy in most cases.
-In general, if speeding up the victim's reclaim negatively affects the
-overall user workflow then this would mean we are selecting wrong kill
-targets. In that case, we would need to adjust the target selection
-strategy.
+Anyways, that analysis can be done later. So, for the path:
 
-Thanks for tackling this Minchan! I'll try to review the patches this
-weekend and provide my feedback.
-Thanks,
-Suren.
-
->
-> Just a thought.
->
-> --
-> Cheers,
->
-> David
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
