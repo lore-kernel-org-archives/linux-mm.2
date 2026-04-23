@@ -4,113 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4545EFDEE39
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:44:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9AAFDEE38
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 17:44:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD9F66B00A1; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
+	id 3279E6B00B1; Thu, 23 Apr 2026 13:44:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3B8D6B00A5; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
+	id 304656B00B2; Thu, 23 Apr 2026 13:44:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DB276B00A7; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
+	id 1ED7B6B00B3; Thu, 23 Apr 2026 13:44:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E52C6B00A5
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:43:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F1A71403D8
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:43:38 +0000 (UTC)
-X-FDA: 84690542916.03.E4A2B05
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0B6F114000D
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:43:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IbnrwSSz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 100A16B00B1
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:44:15 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C78961C0495
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:44:14 +0000 (UTC)
+X-FDA: 84690544428.17.680D607
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf24.hostedemail.com (Postfix) with ESMTP id DF419180002
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:44:12 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=MHUuzRdB;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776966216;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1776966252;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4QtvLSQmE4aDRAb8DiSU0AlHBJ78BfZh8qIC573VC+s=;
-	b=fOazy7P+uo5+k8CsEMOGFOFMLlZ2X4eO0lHlyPATNT/dmCAAQGZAAVHNxT2UuzkwUpbTIc
-	wcBtBns+FaRuxgQy39z0tvsV7b1I82YFnpsgZDWLbhKFrjbRrPJKRdravutHtXSemnZBuA
-	GZ6drAayh8yMoycd/PxqPXkXKpgUAmQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IbnrwSSz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776966216; a=rsa-sha256;
+	bh=zC/Rvuafxmv1NRQo19/P/Pi+8hYq1qGRsY1yAUjYcA8=;
+	b=4h+w9JJMssUA3LG3p0Jxb/kVH87AVcXps0lUR1aM1ahmHD2grriTJ/fSupLCuR9mQX7Ha+
+	VtR6+A2AcrlCEDrI54Cx/6BEKsfuH3M6H2+oMN6NbKV9dUFs/C2Axg9/5lXSTchhA/qcBS
+	jHOAA2HH0sdl4tOKD+1CC5INaZr4IeU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776966252; a=rsa-sha256;
 	cv=none;
-	b=loRQRmsI1XgL5NzZT2bJveghIVm+1YMqx8yJKWRIihDCZDc3AJ7kHtcisKXtT/GKgFK6Cr
-	H9/uYKIFaMgmHDbR4aQuverXITO0LfCRAHW4mWi12JNvqBptbLpETU4kG5l16vgCuX5k09
-	on4fWogn+vIV206ojpACTryZ1pA3QNA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59FB844775;
-	Thu, 23 Apr 2026 17:43:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 358EFC2BCB8;
-	Thu, 23 Apr 2026 17:43:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776966212;
-	bh=84Sdzb0xN+DMxvZserLaTWqJv8AqidSImQfw43Dn4S8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=IbnrwSSzqdzeVjwidFVG0VAA/UBgxVMO98gOI3feeAMSIo9r9LH8lfqhMmE1F4rH4
-	 aKCqS1C/y5POe364fSq6vFicAuu94j9AV2DDXO+A0l/YuJghXiAEZQynW9NI6H5DNr
-	 SeyFq1RLmFJLwFoS3URF6vytSzkWrnx6uQz3f9ZVoHt7RQafIxmTZY7OzJvoIfn8Rn
-	 1th9ka8tMArrP16PxR7XZOKjYr5gYsEVenGdtzyCYvGJePzenz5pB7BIspEK7G9Lzo
-	 zUYRD0+OI+Fj0CYFdKCBeIvxR47tjlZJLm2yJo5dpVj6W+KDIOMP8Kg06/DoWPw56E
-	 hPxh50wTCvyYg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DC79FDEE35;
-	Thu, 23 Apr 2026 17:43:32 +0000 (UTC)
-From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Fri, 24 Apr 2026 01:43:24 +0800
-Subject: [PATCH v6 13/14] mm/vmscan: remove sc->unqueued_dirty
+	b=vckXvHlzykwhAEzX2mK7VZFJWdqRxvd+e7ongR9sKNURlAA4VD57ui86RoM3aoARDjR8aA
+	YGvMHbB+nDDsm+GhU2NsgtjYqoB3RWnKYq+SsOLvKAq+fmwYfLBs/fChgmlgKuMgk8pvqA
+	ToWwWYh4kKVSkd30yLUF1yTZMBBmUNo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=MHUuzRdB;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50d75bfb259so51719741cf.1
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1776966252; x=1777571052; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zC/Rvuafxmv1NRQo19/P/Pi+8hYq1qGRsY1yAUjYcA8=;
+        b=MHUuzRdBmtqc6DNMUJv46YOiI+k0345KMOpW57DqwiARSmMqTOZ7SP5aqZ44UzduOi
+         E+b4LXcYzSRY86SUElckaVwx8NQjX9fazbJsxzKXLWUQsqQ7jWIq7XK58dUvw16hw/uh
+         JUXw6zzwvvF9BHUBHKwVYGVegGdNRoBI3fQNdEzxRVfPuXhkMiBUAVwIkdr1YUEFtWvA
+         umL0JL++nz9GABb7MOE/kF0t0HGXfX7HZjjKFwKS2AJ8frFZV959M6GzvR32SEzAQGK2
+         QTg3zeVVrrYaB5CyOjw1sQnPMZiJoBsg8TBkwKCx8uFYv/S4TUKPvrI7ki0tUIOv9CdQ
+         INgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776966252; x=1777571052;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zC/Rvuafxmv1NRQo19/P/Pi+8hYq1qGRsY1yAUjYcA8=;
+        b=BJnfQEwAjWS9vzwy15YcqrgAenb8mN1U/MD7Q+K/MfOn3NCpdT1tLTOP+06cT1+3Uq
+         ovxWjwqXbeMVC+jCraW+ZFwrFGFtw4yZkd0DbENhQt4g0DthzJXR2/DqnbhyxY46oiCE
+         Xe2DktFQagGw+Z51LaSBEhwH2fM6p3yqS9RJIOCgEI+rEpavZ2dZ5YdBwtbJ0FBbAwG3
+         z1nqhKIxpP38XgBLV8tQPXDQ5E1xXKtlZbQ+kJcrhdDLbPN5BP44G33C5U3jFRzG8Mdr
+         Cj8O+3DQKDARG/syBB9SLTolMu6rgnmNKg6CJ/rnGP3gTWBNX6q50HjiBoTXLY8VREhw
+         9aog==
+X-Forwarded-Encrypted: i=1; AFNElJ/OEhBGbYZNg9cEKHkYRZJIy/CrIM/QgIw7rmPlOWEu28Cj7l8FOV/Tr5jHbAhi3ArZ2a3mL7CWlQ==@kvack.org
+X-Gm-Message-State: AOJu0YzPda74f90Zvf7Zx1+Bs0ukzUGUF0/zyoGuYS0/zNEjDyUxerjU
+	SThw1NhPe5+RPOHaoWDcOcHSg4Oq9QXMhSOT/T/0NjC71HEiP32TE2soccLH81tJtNU=
+X-Gm-Gg: AeBDiet86IlAQHwMXeM/Lq1PKQczOMclle1WkOfa2jZfKSWrNapTK8zbjpzIyTR3C8R
+	aGh2QcQU+F68YZlZwwxa1OePxQx3EK2ULHEjliy8MjTg7bGcGqGRjx7xMo1vHE+OaoYFtK6ob9Q
+	ldTADBLL7uE4fENk9J1RplOSMlVRf42B9JL8lSdboeAGHzjd4KGj2ZqOUwOU2k90+2gNwvLecyI
+	ZEBGciT6FnTWT5ZhhQoKDAeRiX9XbUZGuz3NC4/ZU86NRjf8zkqz6h4/5PdGvxuoOJU4Jo67RjH
+	9jX9/aYhMsjg9Fqp8M8WFgAdw3hjJCTfuYoqdAFVVY2kJCdTM4ZW2BryQsb/mGr2ZAUtxTuCPY5
+	USbMtHLaqkMS2Gle2wKTtqOy+9BetJnCFWm+jSxq+1k/ZfV8ToIg0XefQ6v03e1XZppR4DJnSxj
+	iybPwYYNGX9mZvHFXaZncalnYoKNNCNrwubtm+K9pjsusyUBjy7evefb36RC0UKg==
+X-Received: by 2002:a05:622a:5818:b0:50d:65ec:a071 with SMTP id d75a77b69052e-50e367fe18amr407627591cf.5.1776966251944;
+        Thu, 23 Apr 2026 10:44:11 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ae61332sm156030426d6.24.2026.04.23.10.44.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 10:44:11 -0700 (PDT)
+Date: Thu, 23 Apr 2026 17:44:10 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Michal Clapinski <mclapinski@google.com>
+Cc: Evangelos Petrongonas <epetron@amazon.de>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v9 3/3] selftests: kho: test with deferred struct page
+ init
+Message-ID: <aepaWxfdHWT4Q-mi@plex>
+References: <20260423122538.140993-1-mclapinski@google.com>
+ <20260423122538.140993-4-mclapinski@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-mglru-reclaim-v6-13-a57622d770c3@tencent.com>
-References: <20260424-mglru-reclaim-v6-0-a57622d770c3@tencent.com>
-In-Reply-To: <20260424-mglru-reclaim-v6-0-a57622d770c3@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Qi Zheng <zhengqi.arch@bytedance.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
- Barry Song <baohua@kernel.org>, David Stevens <stevensd@google.com>, 
- Chen Ridong <chenridong@huaweicloud.com>, Leno Hou <lenohou@gmail.com>, 
- Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>, 
- Zicheng Wang <wangzicheng@honor.com>, Kalesh Singh <kaleshsingh@google.com>, 
- Suren Baghdasaryan <surenb@google.com>, Chris Li <chrisl@kernel.org>, 
- Vernon Yang <vernon2gm@gmail.com>, linux-kernel@vger.kernel.org, 
- Qi Zheng <qi.zheng@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Kairui Song <kasong@tencent.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776966208; l=1092;
- i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=BcORidMLEmQouegYnHcnzJgwCLFGF5hvusRRBleG7A4=;
- b=jK5uHZZUVzeN0NAKTODLaABCBqMJKZvZMubU/ltTUylOFyl+ZQ+lSpeo1aKQ9OOUQcBVjTDM8
- sqJIiKuJZBgCgIMWLK/Ppy6q83QKXlxGiq9gk73Lt0d8XKZ0W8Q61tk
-X-Developer-Key: i=kasong@tencent.com; a=ed25519;
- pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
- with auth_id=562
-X-Original-From: Kairui Song <kasong@tencent.com>
-Reply-To: kasong@tencent.com
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0B6F114000D
-X-Stat-Signature: zfass6nz7oary6x4mks4pwbg8ktc1x1g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260423122538.140993-4-mclapinski@google.com>
+X-Stat-Signature: 3i671n8ufwi9rkh8zypid1apicht6t3t
 X-Rspam-User: 
-X-HE-Tag: 1776966215-86859
-X-HE-Meta: U2FsdGVkX19YJkYtQRXXYB5GEWy+eQVvdV13+Cu4Pfns/J7igpUFAytJhE6T+xcdIF5kSCnP219Y7EXZa53hfSGNnfUI6imMkedsg4rTU0kwstJbI0rYmiN7iSubqHBSbsXCehn5tpqKKRFO6wsdKR5ij4fHLIn4sLEAk4otPLVr1PgyeQlNRipFGfkTl7PL9LfWE3rDJgu1oyU87lN4ir74WkuqRTt3NM2MWjXaRM+f0MjAke0Y6rheSNA0q3xSPRFrzTG6TjFFbb1k4WdIXUAjzWKb0KZt/nRHKuQUly6sC70qKFkyNdn2tszfEtPBP3r+qJwFKlQSWLrY+1WE+g6D+F73yIeyhHWOTiKayNXNIAieEC0Ud6gEg7J837IXUfVIAgEOapedDFEKebFAZsVEzMt+tslchOCJyuGiPM0yXcnbP5FctSQJkkNUdR+JpNGgCoBtyPLxs5ToCf5k6wU3XNcEDKNNWBb+TcnBvaEdVA7F4ChEw6NY6H8Xjc1WMAUjsO0Ptnpati8ZPte0HqawfX+TRbNTTMCAU9aZZwexwulCq4i3NLNlLwRQILjdlw6gf5TbTGnCkMN4QqkPFaC9HiXWDeyz9Uz5458uaP0enqZ+IAo/e/SJbWikUdGZHMWUIWWAGwo4y/0q3PNuqHkBjzwl4B8wmRrrbI+pxreoa8Pd4t8EfqNkaTa5OHxhiSCoqg6otfRv7m/H4iQ02vceMZVwuxCGaSeiYksAzyU4qSoba+6i7MNgpA45oKECW7wNAqrvpWqQQoatA2ABNa5kcYPw8WNFXLmz/fF4RfyqZIwg5B+8BRWmuQPv8lPSd2WuyCAPYfNU2xnxLIlO4xivs3z9wgq9Dxl/ukMxVDZ+YZxuIVML234alnaL4b1QB3bZ38g6wDJNnsZ4lWrh6lnPfaPXldNauTkwz6aYEwWrZL0IfvsP71rHhFbi3xVeWVZkRy4mH7ExDoKW2Pi
- muDGDF86
- EW6CJ3A83bIKC6an1CdwcYoG2nuN4Q5KmT1BtY3fBpVy+dcui+iuWLVnKyzbRt8UpHF8VkbleFHepF7wfQbIoPdI7apDKb/LlLtlh9mbOK+3CdgSUAYJHeptzQcKJz7S4u9c0R0uIQfgxsVkcimxsVe4cOE6GeIPK1VMTwJwhH8hRxpMcdTJqUaA8lKOXBZj3tPOQqx/HYTPNPs2B4e5UQeEIavap/EoMr4IeQrGynm0ry+4BdE38sQEcGRZEo6kRFlbaQF6RIc24c3JSLcOWMieF8/ylaBPOuT1WGFlDqQEMrC0gyJyditbzNhOamdept6w0SaWh0tLtAyLDo4jYJK4IWXmtTlQqn20PT8ivsfjno5pacR6lBEvTJ1S6okZLfcfeRQQWz9N7Rfud3YtvuSYJDpaS5O5JIVsr13yPDicL4+rVu/uXbLnhKdax/lKKI8MwRlYKa/NbrAv+fBLI9nNmjRrhajylpwQGrS06jY8bHlBplFkeGGDHT3mxNLbniZPFPx0QrQU7itYyWGcaJE7swC0TWC/JtdfX2X5GICQtOC7Ws2iOVehZbold9L1lOPK3XqOwRjEMI092POLAVm89Oq00GTKF1ZY5sgKJf7bzBV0=
+X-Rspamd-Queue-Id: DF419180002
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776966252-196215
+X-HE-Meta: U2FsdGVkX19rbZRR1+rvXUX2ivGktDz9LQqfu8YBsKQXqvtM4SRxpTst03EUs+b8aTPv6Zb6DMdns7gi6h3DABuiAT2ZY9Tx9qXRSdOGxz3LYMMf9aCf2Waj7KM9PgjMfTwq/2g9Nbrxa7kaT4ruAVmdwOeaDk/EVZVhyrw3ku85p1wIJHLdxjkkoN3fRAuEWwxfzpv9lkLnHF8jg+G424Aq7iT4FOASuPhR1QO5LZzZOfQP8/1S779Z/abU6+OGGlMmXmZyxCh6nOumeKNktLq1wInQGLn0zxd3K6CgOFDfYqZfz+76Fj60rgoUrOCC2NxCUWC6Q+DBH6W5b4vccGreVvSnWTCUtpRWfXjNyd7yvwQ3iq0waiFmlW2N5p0mIW6MVvIv6+6Bx4n3jDHt6K334k/Aoh95EQ0Si3+DRE9bQMc4hnN9nqjcQIDB9lbFMxSd6j0S59hW80mL6HGt7zvN5Kx+RLUL09Sb/roHOPurrw9JBSBMt7njWxebiAX6X98ozpO3OSwjUnPQ/9xAPdcuqu40wEdhzzX1BAicqikLfsJLSbTo6kfStW20nrf8qMLtUESVoO2mWbJ9mpgxitH5cp/6Cb8V8aW8yP1OrFol67fRow3h0WKJgWWG52x2qA6y7snQNBPpwjQ5cEPX5k5Rbu7kRsaCPqcpTMGjEDvRGDCAvPn39XV1PS6IwuI5NPHT7mG4fjwEujVbR6CL2PkQTMtggv1ot6EePaJHT4eTQ2eNG474qB48Iuh9p0NXCJiMGGhsgDNVtaSYT7LzvP4e4gSWKlLEPfO5zPyqOaIs/3t150CSBaykQBoPaaMyDoYarFoLKV87UFAFTZDoR4NX1qaa8iJdM2dV4PTQ4jO1pEwKqfx1Pq1fSkglJNj8ugjhFdmmiPssM+Iw8b+eBmc+X27j3jTWGs088DG5n3WPqYR+DlPpDRL9dicYgUtmGdHmDG41TkP9fBo7rR+
+ 3nFX9Gsh
+ rAb156J5FQeckjlfLtmVMzZgCsCqP8I1J5e7dK2KJ92ivvPcVPDUymO6vnSQoYKpYFAcgOSzGSsfme8vN6FL8R33eBgwdIrx86dqlBMJbutyFv7eXQbBnh5YG9U5vKiubzKax2yd4ioW/CLtZiiY14DIRd2WXEIVjRHWb3uhvYPBvCOsDRU5TXAzn/sZlOwx4x0hOs5o9S00cD+OlJSjMJg79zwdS8sCBAHRwFE7qGOFG/RvW16gjxfAyMH6BDUxK0b52vSS3bf/khhxeWcRthqN7EWtLZYZynQafu3RyQgCLUeNNHdO+ctj2VFoh3a68K7EJFGwAfWLBwvRqD54bGIc6l0NEGaJE//GamnUA7o5W/Q0e/v8IPs9hqUz/J73a0PK/kGdomQoLmVI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,43 +124,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+On 04-23 14:25, Michal Clapinski wrote:
+> Enable DEFERRED_STRUCT_PAGE_INIT which depends on SMP.
+> Also enable additional debugging options.
+> 
+> Signed-off-by: Michal Clapinski <mclapinski@google.com>
 
-No one is using it now, just remove it.
+Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
 
-Suggested-by: Axel Rasmussen <axelrasmussen@google.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-Signed-off-by: Kairui Song <kasong@tencent.com>
----
- mm/vmscan.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 7bec0ae51465..6df5ab625e6a 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -169,7 +169,6 @@ struct scan_control {
- 
- 	struct {
- 		unsigned int dirty;
--		unsigned int unqueued_dirty;
- 		unsigned int congested;
- 		unsigned int writeback;
- 		unsigned int immediate;
-@@ -2035,7 +2034,6 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
- 
- 	sc->nr.dirty += stat.nr_dirty;
- 	sc->nr.congested += stat.nr_congested;
--	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
- 	sc->nr.writeback += stat.nr_writeback;
- 	sc->nr.immediate += stat.nr_immediate;
- 	sc->nr.taken += nr_taken;
-
--- 
-2.54.0
-
-
+> ---
+>  tools/testing/selftests/kho/vmtest.sh | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selftests/kho/vmtest.sh
+> index 49fdac8e8b15..0014bd76e88d 100755
+> --- a/tools/testing/selftests/kho/vmtest.sh
+> +++ b/tools/testing/selftests/kho/vmtest.sh
+> @@ -59,10 +59,14 @@ function build_kernel() {
+>  	tee "$kconfig" > "$kho_config" <<EOF
+>  CONFIG_BLK_DEV_INITRD=y
+>  CONFIG_KEXEC_HANDOVER=y
+> +CONFIG_KEXEC_HANDOVER_DEBUG=y
+>  CONFIG_KEXEC_HANDOVER_DEBUGFS=y
+>  CONFIG_TEST_KEXEC_HANDOVER=y
+>  CONFIG_DEBUG_KERNEL=y
+>  CONFIG_DEBUG_VM=y
+> +CONFIG_DEBUG_VM_PGFLAGS=y
+> +CONFIG_SMP=y
+> +CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+>  $arch_kconfig
+>  EOF
+>  
+> -- 
+> 2.54.0.rc2.533.g4f5dca5207-goog
+> 
 
