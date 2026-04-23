@@ -4,135 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B4E2F589DB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:27:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCAE5F589DB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:27:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66C066B0005; Thu, 23 Apr 2026 10:27:19 -0400 (EDT)
+	id 29BA76B008A; Thu, 23 Apr 2026 10:27:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61C7D6B008A; Thu, 23 Apr 2026 10:27:19 -0400 (EDT)
+	id 24C436B008C; Thu, 23 Apr 2026 10:27:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50B796B008C; Thu, 23 Apr 2026 10:27:19 -0400 (EDT)
+	id 1628F6B0092; Thu, 23 Apr 2026 10:27:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FE446B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:27:19 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E4F9A1C00DC
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:27:18 +0000 (UTC)
-X-FDA: 84690048156.19.78C91B4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C1A991C0012
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:27:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e6TbTKra;
-	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 045BE6B008A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:27:30 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8987F885B8
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:27:29 +0000 (UTC)
+X-FDA: 84690048618.01.C1041A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D35DA4000A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:27:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eCuQFsqX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776954437;
+	s=arc-20220608; t=1776954447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a4QvpI4YCwccxBCFaw4KEflqvK5dlQNnQU/9NMl3BHA=;
-	b=pm7gp0aTDFbV0EFOAgvt86/J8xzConKNHuF3ceXAmhhLt9JLa37Q4i3ZqVUOpknj16a6cB
-	0AM4DqIgwpVdn9EP/QRLvPXThKfcO8ksCN5ExHA7++2AJ8OpGiFU6BlDAplln808XS4hHH
-	sig/p/3DcMWOP3D+OS6kkNBK/NHzA4w=
+	bh=Ul6hfEDGlhDLgBPG6P5Ep9CMBWO11jZvFumyRmBdYqQ=;
+	b=IUJM9fi7v9NKZo3RaO8NLeluvY+hn3D6wp79I82fUoTOE0Q4X6rsYVHlDG+x+wmk4dD55h
+	EOEfWq0X9j9weKUTKHjOvnV2BlliOHEgKeYEAq4hejryZUC/+Xa8yoEPObXHTAUnl/NjZF
+	HhdQYBK1rVK3MmTGowCcGZMilbRrwjo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e6TbTKra;
-	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776954437; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eCuQFsqX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776954447; a=rsa-sha256;
 	cv=none;
-	b=cSsQ2JxXBd+yX8uhSbjPX3gLFKFbkXSH1zf/MuwUONlZmEtpXhkfnzagmIsL0IgTAQhysS
-	NDPbGbCNf3Keb7v4ahwJDwAtr2SpHAqRTD14/iXMFIdQZqh2Un4D0vCrFPXIL130q2mHVH
-	ps62vY/shTqRWcIJsIeUXBJWPHuYwO8=
+	b=mzQk0zJyAuocZEQ2amQKCM9ZPzZ+juAhyBi2medm+TyfsWd8+x+bOt+e2wrhr5Vmyfwhgn
+	ugedgf+f5s1oxw87cquZ0f3rHSampwOTRtjE87v6kXfpCIez5j6KMTdPJD79DrTzRnQItm
+	r81DfKfxoYeO3EibRCw93VUN81rYE30=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A67F9405B2;
-	Thu, 23 Apr 2026 14:27:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6772C2BCB5;
-	Thu, 23 Apr 2026 14:27:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D41EB60172;
+	Thu, 23 Apr 2026 14:27:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB172C2BCB3;
+	Thu, 23 Apr 2026 14:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776954435;
-	bh=ZAmfY2GvQu1V+jZW4Q7JR569GmwjElVH8qZhAxn7gDY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e6TbTKraQPr2vhcn+/z0+5leztca56h0cv39qFusb+C5AJl8cN+xFr53pEzXrl7pO
-	 FNmKh3LOG2clnXKHBI8F222Yio7XScD3a43RVx/n3tJ9XGzR4mjQ4TTD6iuaThzWtE
-	 wpa5wS6kQJDL/h98SLKgFizRFTYVs7rKqLiAcNNRU2PO+NpiIZIVHYr6WkoFN2zom5
-	 fsxXGaVcEQ74oL+gHP75vzCvYzR/5EBk9fTjttJBbr6aDmbe87Jl/CMXPDs9mGX8++
-	 jswsFmZXl098tfmybnEoYEkIHe4RreFfzVUjH/4B+mLb9V37UOxx/5J2vC1g9Bt+/W
-	 Tf/yzrurTzr1g==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E0313F40069;
-	Thu, 23 Apr 2026 10:27:13 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 23 Apr 2026 10:27:13 -0400
-X-ME-Sender: <xms:QSzqaTPm8wdWHwg2j0DX5hhDMnOfiwy16200E9LcT2a7ngV41L6iKA>
-    <xme:QSzqadN2q1OZDI4SZQ8lZ99xkTM8WvVWTyFq5CdRvHHab2n1uHXdI_G-dMBjghpeB
-    hhmnZK464FHunZQ5pEnCb6KM_sOgA1LYnIzeeasj87DkJCffe4pEeQ>
-X-ME-Received: <xmr:QSzqaee-p29QqJ5pFCrwyGPW8nAnHKMf6TwYv5WQJhLA-T_2pteoRNRTJaRtTA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeijeeflecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeffffekgeffjefgkedvjeeggedttdeljeekhffhudeiudfhiefgudeugffhheffuden
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
-    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepfeei
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
-    pdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopehljh
-    hssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepshhurhgvnhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopehvsg
-    grsghkrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhirghmrdhhohiflhgvthht
-    sehorhgrtghlvgdrtghomhdprhgtphhtthhopeiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:QSzqaScL1Sq18Ji3k7GR_C3kYOIwTh1a0PFju3Qj78BeO_ZPzl8elg>
-    <xmx:QSzqaed187upZan3EjNy-LSBhaiFnb-MTjyNu9LUKy0oKQbHpoCdFg>
-    <xmx:QSzqaTncyeMNfJ5ALD2DgO1g9Z-J-RxHSdEobw-ymjklGofzD8KSKg>
-    <xmx:QSzqaY4AC_jLQKdRVHNzF20QADvHSu1BYwjzDWXX1FfophAEYFJl9g>
-    <xmx:QSzqaTsYgpmlo_KX0645hdFuasUQnZhIXzPDXmrnjsJXqvD9u2A14MHU>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 23 Apr 2026 10:27:13 -0400 (EDT)
-Date: Thu, 23 Apr 2026 15:27:11 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] userfaultfd: working set tracking for VM
- guest memory
-Message-ID: <aeorZMvKwu8zKX5i@thinkstation>
-References: <ad50rPOseVa-SP_s@thinkstation>
- <aeDoqFWPFxkkNB26@thinkstation>
- <1a499781-1115-44bc-adbf-2ac3769354ca@kernel.org>
- <aeFCuLJXT8VOkzH7@thinkstation>
- <4c635703-3d8d-4cfa-bb98-7f6f5fcbe547@kernel.org>
- <aeImfRrrvr3UoKtL@thinkstation>
- <aeTnlQUOOh-dHG8z@thinkstation>
- <34f75083-29a3-4860-8a6e-94551d37ac6a@kernel.org>
- <aed6fHLrIdahbdY3@thinkstation>
- <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
+	s=k20201202; t=1776954446;
+	bh=2ZnCInGMmaglcEP4fiF1RXp7oGVSZVQ14PcgFK137SI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eCuQFsqX0RlSNvadGGdwqeOAq7SEK1GckH7LMbV7URFlMoYrKPKpCEyLLemHVFqQ7
+	 vHvoaXG9YJe8+d5/wi5v25ybaLs6vJfcHKYBOyx3sF6d85do50FPIlwMxrCbczoYCb
+	 ZQCyOAYXAcw06cZVTttOgm5lN7JCuvuQLovkwLdWyw3pnT0L5ymykHGeUixiyQ7r8k
+	 exrr43zrvRu+LM0Fr9YVP8RuXic2UKGegO8eoQmNI1i8d8wlsKV1YvbEo4JDrgeQeD
+	 FQcFRE7sVB2vVjSUCGmlPPH+1GCZWObs/yNaiAWpAu8J7YfRZZjvf3eu2/5MlayITU
+	 p6l5OyYxPHnxw==
+Message-ID: <19f5f950-d0f9-49c2-acf6-7b0ab277ab23@kernel.org>
+Date: Thu, 23 Apr 2026 16:27:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b77d559b-215e-460a-a268-e63b8273ef42@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C1A991C0012
-X-Stat-Signature: u8tac65ct4o4911op7fd9xp67hzoqx47
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/memory: update stale locking comments for fault
+ handlers
+To: Aditya Sharma <adi.sharma@zohomail.in>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-kernel@vger.kernel.org
+References: <20260331142936.229667-1-adi.sharma@zohomail.in>
+ <20260405171834.15971-1-adi.sharma@zohomail.in>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260405171834.15971-1-adi.sharma@zohomail.in>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1776954436-144497
-X-HE-Meta: U2FsdGVkX18KgX8JAwRc7d1wr4WQe1LYIgRbS1bujBOEZKxN+iqY2FwxgpnzVr8ajVAjvCI8z1tWMyJ724h5TohWDUBplRBffVnkpTXTvuhVRM/uxuOWz5md1H4nJScxvcFMQN9iB68pwK6PYg6JGWClBjPPMiLBqMrNKMve1FB7QjZYJl1CwUNBEhtYQGG2ryV2mpXDZTut0VfPC8KIg5d2QTkGbdYHfAhUogzuODCDPNvvpQynP4Uk5+ydt1tdxetoOJ98OCVDIx5PzR1qSnJvANvOzcFlwJwr7tIHIPZCLWtgbMU/PqBjHpySd8duRMiXitEEjk0pRNzDvuoD3WD8xsCns1r/NOJRaetMpkB4Ao3gM5m7ajH0cvHxPq92f+DXR827960xT7UjyzB3Atv6YhE7ENIRQhkUHzrM7J6WujJFSW0FuXA6anv+z/M+JBWouEmeG5gVWF2drEk6cqCkelOzNR9UUEhPF8HzwguzvzQp+HBnKjTbOTIw03QjrJxCre6MyJwsOi4PknXEeuV/lDLkAffA4lkykWQUbNE/u0xquTPkw/itSPygkGfhvjhuy85Sra7A9pQ0r9jBDftAyYRIA7r8JHKWS0foslAApruIx5TxOfAIVr4ILQ6ubdFQklUgTkaXPFvrMqMrVXjDh647L30o8+JB5tqaBRsbWJs2lWvI7LNXdsAAZoI/9eIzRhj86ZBc8BgJ4hkWkhpMr3ZKIZIL5Ankgbd663j4P2O0QAeXw6XGBA85dlbnUUi7K/585iBFXbhjcR8UrD08NBwtKhXndJqIwTgTl2qOZBSmbFCH047SjbWF8MFonI5buHVuSQQBxoEPP8AZuFPN9mLXtvcDD3R8ASinErDP7lvwtaKNQH2fMKkL9dYZx/VfUsFzA9ZSq7ZRev2bBFZlOegd6UnJFVc3ZQ6MAruBBvz5iQm4H3LvIo4AFu6winNIMTDt06S6rQjr9va
- hCaLIHey
- INHuXWB+X4mU64Cgh4gBeGiVqRNLNFX/ubYEKQ9DhEcAqB7GyzkDLCI0L+6SPuIU2U0fdaHeGvcyHTly17anE6rLyqNpGO5lPZvf1FPxqKpucxV2wI4BpBGDpfrHLFPeGmlXECcshvKLk7wPMIgdmu5ujYoXzvkIqlTJDrvasCCAw4JQZsbLcHy2IfteImOpD43cPiyyVLok5CqQ8fkD21E8hoR6/PK6eSAj+JgPXX6CKvzP/Luf2I6vi5mXHdnWnmSVJ01pSYF9N4HV7P9rhpQOEJ1vddrSaSh8LAapehq78RmM=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D35DA4000A
+X-Stat-Signature: ijc6cnxpjmyeqiwxqctof6qjn4ka8oum
+X-HE-Tag: 1776954447-780258
+X-HE-Meta: U2FsdGVkX18KyP4IthizB2reJ2bL3Bv9ST9lxkDvKS264JAfLEyHX0l8H5MuwepKoR7/bTRWhEzSnD6Byyt1qTuq7PrKTFVcB11aF1uv9go2IUAfX0WbEVtXvb54cqfkO814Crhsvt7156BVIhgUAQ6P8YUFbY6qjGZlP4LcryFqGcQQG1C/j7eMqG1BT7qAzo2+mXsQLxRgPm0PxgpFnF996l6n5tmPFtMALhYZHr9JoHaBBA0lFZD0BV+2Q9BY2qbl8ovaqkMmgIgYkFWtPRcEtjVr1d5dgNojm8GZMPVNESfNfXLRXtwLOx9s1BhQR0Qary0FWNjoKPklEUtSX2XdLTA2Vlr1WN8OtRs47tpFduvmnt05O+hflJ3H9Xa/s3bdGwhDtf34BhWZWpha1TBzYOp6xEY9nwMgtB5/KI6IZZGQjLGkMQr+gs8LMdppH8ZvHDvk/SK6HMNpoyOzhT3tHWQIjCp9itbO0H+i9G6SFydf/Srx1UG3J6+4zNgSp+DfY61HbOfYnLW69hTCyUm6he2zkdiQvdYdft3b9c4a6dzL6Z8fiiDsVy3uMpCuOQeluYfuo3+6Ibyo0FKNj2SFIGoS4tfu66EeYkYr3LHhxsWuTIdXj/HFwUoEUF2zp27PXgvk/J/GL1iOtpaSXOo22V4mXpvbzozLm5sKWFrnTQoB6THnHrG5/BhyXDYAsCmUMproWNyiJ8uz7kIlNpayFtMCZDLj1/gs94uAAMbZLOCdDJrOX63cl6B44PLrgdglyVxmXGwVfTzzTVIVMDVd6M+LY2ae4xqtJrzARA/qwyb9vSAEZiOTBZvsLYs9p92VpPn6G9V5fafYmkBWI0ew2JZREc+H+LTV1mJKCsKCcA4hNqXWoOuSV94Mns+ncCnI0zWYc5Xk531xyaXJ9sAJ8V/FvYNXFnSKbAxPmsnRJmdRXnFhhIeNpbvqzkWKQp9BX/XJllxTmqov7xB
+ F4DAyhks
+ sSTv83N2soV5ueBo8og/A/IBfercbyVSft6BO8cqO5aP/XtpiTY7sa3psjlJCcBfbtxuKRS2ykqeT0ZXda+TxyhG2Yy7mqtiU4l9pon3Ruh6Yg77qJNSKIBg5/EZJ4meP96X9kQZy5hon//XxMXRzsEs8QMwUw6zuX3xoKbvYL774pfyFcl00dtY5lG12t4qs9u/+c1p+mNXrAR8UwZceMcdQHQZSp6cHbZspoR0yhYQMODj8LV4w7aj8R2fW5exoRlfN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,23 +140,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 08:39:50PM +0200, David Hildenbrand (Arm) wrote:
-> On 4/21/26 16:33, Kiryl Shutsemau wrote:
-> > On Tue, Apr 21, 2026 at 03:03:56PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 4/19/26 16:33, Kiryl Shutsemau wrote:
-> >>>
-> >>> See https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git uffd/rfc-v3
-> >>>
+On 4/5/26 19:18, Aditya Sharma wrote:
+> Update the comments for wp_page_copy(), do_wp_page(), do_swap_page(),
+> do_anonymous_page(), __do_fault(), do_fault(), handle_pte_fault(),
+> __handle_mm_fault(), and handle_mm_fault() to concisely clarify that
+> they can be entered holding either the mmap_lock or the VMA lock,
+> and that the lock may be released upon returning VM_FAULT_RETRY.
+> 
+> Additionally, make the following corrections:
+> - In do_anonymous_page(), correct the outdated claim that the function
+>   is entered with the PTE "mapped but not yet locked". Since
+>   handle_pte_fault() unmaps the empty PTE before routing to
+>   do_pte_missing(), the comment now correctly states it is entered
+>   with the PTE unmapped and unlocked.
+> - In __do_fault(), update the stale reference from __lock_page_retry()
+>   to __folio_lock_or_retry().
+> 
+> Signed-off-by: Aditya Sharma <adi.sharma@zohomail.in>
 
-RFCv4 addresses all your feedback plus more :)
+Next time, please don't send as reply to your previous version
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git uffd/rfc-v4
+> ---
+> v2:
+> - Simplified the comment to concisely state "either the VMA lock or 
+>   the mmap_lock" instead of a verbose explanation (per David Hildenbrand).
+> - Expanded the scope to cover 8 other fault handlers in mm/memory.c 
+>   that suffered from the same stale mmap_lock comments.
+> - Fixed an additional historical inaccuracy in do_anonymous_page() 
+>   regarding the PTE mapping state on entry.
+> - Updated a stale reference in __do_fault() from __lock_page_retry() 
+>   to __folio_lock_or_retry().
+> 
+> 
+>  mm/memory.c | 49 ++++++++++++++++++++++++++-----------------------
+>  1 file changed, 26 insertions(+), 23 deletions(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index c65e82c86..2b407e3f9 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -3742,8 +3742,8 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
+>   * Handle the case of a page which we actually need to copy to a new page,
+>   * either due to COW or unsharing.
+>   *
+> - * Called with mmap_lock locked and the old page referenced, but
+> - * without the ptl held.
+> + * Called with either the VMA lock or the mmap_lock (FAULT_FLAG_VMA_LOCK
+> + * tells you which) 
 
-Still plan to post it after v7.1-rc1 (unless you want it earlier).
+"Called with either the VMA lock or the mmap_lock *held*"
 
-The patchet is pretty good shape in my eyes and will probably drop RFC
-tag.
+Same for other cases.
+
+Can we shorten "FAULT_FLAG_VMA_LOCK tells you which" to "see FAULT_FLAG_VMA_LOCK"
+
+?
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
