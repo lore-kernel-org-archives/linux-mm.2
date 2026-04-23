@@ -4,107 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 633E1FC0379
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 15:54:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4658BFC0379
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 15:56:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B33216B008A; Thu, 23 Apr 2026 11:54:44 -0400 (EDT)
+	id AE6A86B008C; Thu, 23 Apr 2026 11:56:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0BED6B008C; Thu, 23 Apr 2026 11:54:44 -0400 (EDT)
+	id ABE366B0092; Thu, 23 Apr 2026 11:56:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FA176B0092; Thu, 23 Apr 2026 11:54:44 -0400 (EDT)
+	id 9D4306B0093; Thu, 23 Apr 2026 11:56:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EFE16B008A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:54:44 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 30CE28AF9D
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:54:44 +0000 (UTC)
-X-FDA: 84690268488.17.8487420
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E7A46B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:56:04 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D4561202C9
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:56:04 +0000 (UTC)
+X-FDA: 84690271848.10.BA7BB30
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1DE914000C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:54:41 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FoUM4B7V;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3F6BE80006
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:56:02 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pEhBq3vd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776959682; a=rsa-sha256;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776959762; a=rsa-sha256;
 	cv=none;
-	b=QyoUzuHbUXVquCO2Xqt1Q3ewMYCbvuOoQGh6DhKxu92Op/itlvyAjZei6LQYzgsfSjsL4N
-	OJyPSB26bTdNTYDkYny37Hp9sqFIc/hRQrTJGTIIj0RKg3sD6D0SkOpI/cjq5w6jxUmSNY
-	XB76JdviRtQWlA/Vc5WYExbTBDH4D2s=
+	b=MOVvz/CyRhNxJk9R8dWWsb3rVsEEFngbgAUWoinSoO7KSae275NvrXWzVZSvDcdhEC4UMP
+	JwYXdv3YkQgafc16hQZwCX5KbAn6rOnWWkZbEUsp6ZgjKkecVxexp5QiiT46AVRDF/Fgv7
+	N9nSXwP/JE4kjfoGAtoHHt0LvldogVU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FoUM4B7V;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pEhBq3vd;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776959682;
+	s=arc-20220608; t=1776959762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vy+aLADFCcpxvsQFrusf7j8ad8pmGYveKtZdjczccZ8=;
-	b=FSvYAXqtKjiXjTmUKltfCiPBzgGpE9dR9L2B9+pBLEpGChtyYl1UR/kyX0LDMU5Y1IMAgL
-	RV90htXhlaTEErxEvfgsAjfm1BrPbwvsgljl40+V+hH20CoXgmO9E7GU2tGF2ajZDkiX/Q
-	A3I/eF7HTtif1Mx3OxC2o1p+QGv/ZW4=
+	bh=vr5iVORROWKQui84kSfDk9Ss2fOsqdTFGgFbcuo0tdk=;
+	b=m/C1khzUtnIUgbDIiHxrXhuth+lv02ivpd1RFdR9Kz+UCrhBbc/TZjLM3SjNlNPmWecET0
+	C2IP09/YoW7bBlKs+nicoXzzTKQ56hkL2IxA+ELt6BfIzky/zBL+LxrvCDzd2mMws8Ojyr
+	CQAj2Swd4yqcUiWdmWUyKzlL8KJ3Fqk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D098941B32;
-	Thu, 23 Apr 2026 15:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A57C2BCAF;
-	Thu, 23 Apr 2026 15:54:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E81F43F93;
+	Thu, 23 Apr 2026 15:56:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F236BC2BCAF;
+	Thu, 23 Apr 2026 15:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776959680;
-	bh=6RU6hAbvXt8P+A6ag+w86/z1TMHEbmLhSFSKP7Hywwc=;
+	s=k20201202; t=1776959761;
+	bh=0L5e/EPnegp4JHS0wXmUj5FxsmR4LIX+3gaFnChJO6s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FoUM4B7VWJOm0vLQHqq/C3GfwDptB5lG5eISeQqilEeNEfZP1zeQxBnvv2PI34Q7y
-	 zg9w5dGy5qWtRq3M09WFKnC7hgPm2yK0hMC4rpevdnrI5y8NykdrH4hfzkDUNxHDqg
-	 viJC+MF7aFJffoJpwCBZ5+iePX/U5JU8jPY8BwuBCm0c9UlhGAm7hWMHNmSTkO6Ywf
-	 9+Jd39Y1XPDBEZBQVLHuQzArjFkk0D1Crob2jqAx0g6pBBXnFGF3+XyXhF/+F6Xm01
-	 eWhzTE3QaPNpJcFsTTZ7WCNjQXiNrkHY7PqM20s69p0uk2ZyCEVO62SAdg9L4xh5pt
-	 QqmIt4RfTL1Hw==
-Message-ID: <1ab6e58f-d984-4bae-a343-1b0d3c973ad0@kernel.org>
-Date: Thu, 23 Apr 2026 17:54:26 +0200
+	b=pEhBq3vdwrjld+IR22eeekTh4+a7rsdskikeEVkX/tZ9JK7SIwOSiFuyezbIQGF/G
+	 4+It6V9BojzewleJ5ErtRo+QcDhD5h6h6tNoxhbHJcLOQlyGIiv7GM5ade5pHMGVdp
+	 zt8SoXvHT3ZjeQYk0TYI2Wg11xUfCw2GGzreWVwMTw1oRzXKKQx/sYTxDPWQDIrf7D
+	 q2L92KkHygasjzOvRtHqekUD7PJZnTw7/0HHo9v8nJxU6eZ+B5A/8wQ6aRNpL5J82v
+	 BodwqsZT80AwLa79kq5nr9f/boblucydGsIpyUbpvx88yO92wNK3swcNny/QtOX59R
+	 a1LvbZZBpupJg==
+Message-ID: <a20913f0-476c-4f56-a044-9802bb1c7f1a@kernel.org>
+Date: Thu, 23 Apr 2026 17:55:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
- for cache-friendly zeroing
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Gregory Price <gourry@gourry.net>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-mm@kvack.org, virtualization@lists.linux.dev,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, linux-fsdevel@vger.kernel.org
-References: <cover.1776808209.git.mst@redhat.com>
- <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
- <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
- <20260422171315-mutt-send-email-mst@kernel.org>
- <aemglPlcwFFHNj1A@gourry-fedora-PF4VCD3F>
- <c165d6af-4a35-4a41-9086-ee307640c044@kernel.org>
- <20260423074433-mutt-send-email-mst@kernel.org>
- <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
- <88b0765f-7cfc-4e44-83d2-c01a1755c842@kernel.org>
- <20260423104120-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH v2] mm/gup: honour FOLL_PIN in NOMMU
+ __get_user_pages_locked()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>
+References: <2026042303-vendor-outright-b9d2@gregkh>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -151,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260423104120-mutt-send-email-mst@kernel.org>
+In-Reply-To: <2026042303-vendor-outright-b9d2@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Stat-Signature: kwsyof1b9d85k8fknk38udaysfjheotk
+X-Stat-Signature: hn85h89ecxq9dsps3kcigzewdofgky3y
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1DE914000C
-X-HE-Tag: 1776959681-816180
-X-HE-Meta: U2FsdGVkX1+U7znZk694q5j7aNv/eIer+knBK1idjgsqICdghqhxRnwnjyedT/YPgfLdtO+jcmYEfpe2W1fn79M4LvkGAXg38CT8kHHYI0dHr3J+LNJeHpPAphe25dQ6+XfavQ+jr4ALaasdg6WJuzVl8T69RoEDhaAYpu0UUZB/piLH9HAvdI5Lhw7cb0niB15oHnRT8dVcCTDoU1I/1tFy5/ALhNfrhhQ4YPC3V7IQDSQi2YZ7aLI8ylzITbK2nK9VCTmuQBPWi99kidkgksTAhUxO+JfsLpinVq4/0IA7PB0j5ay6Ku9B6L7evkLzULjtgW5IY06SSTmAD2vpKHgVmnyCgUJuBBwgjbwK4jhEthqeUBEHK8rj9mepYtA8nABguu86WkY4NNeJ7liGSWumhogI7MoZAGsbMZVKBd9ZVKH/0PevcCYu0dr2m0znwiZHOY0pzg0QmfnhNeu6cdUE4jVq3aKua37TUViGfDZ33Vt7nAcvDZdI8JRUr8J2BC6tZ+sJUnmOopnfy17eWYgJ3MfY7k6eCkp0pCdJdbvGe5SwxsZl2+2H9zVc4CMiV0pNqTi2MpeGV2b66mx7yx3VVamrHJBT9v5EgC17pfQfs8Y+K1bzfwk1E7CM9daCDcSDv8p0lpvu1nixslpHCfyWKoGpWpUbZj4nw01Kq2dEeNOLb6S/PlFjQ3L2e8D2AxKKirWx7EGJwJDyrxFGVNlqHXpeEUAfJCAEdjRLp5FdUumi9WYFd+NASPqi++eyo00EcFuXm5oOgTOOn0q5jQ3grqOqVBl6sqxbDeQ43iK41qzj+kSoH86vTGqGaNu5IMcJ79sWoM4wGVCb9HFWxC1f9f8UMRULIP2D/zj51fxvX4Umobl+Vg14V8tQnA6hH3XXU7I8kqQ8dsIDrkV7rPvulsWwpcQ3u31AaVI5z59b2c8LSTZYwbsuUep2aqD17XOpql5b1dMkC3U1sUv
- I4bvVlWa
- GaVvkpfAyWaFTVMR5Dnm0++SclDnxzz1OYqPd5hAzdal4mXjxG1s0avDsHmbVdhE+QZXgU4Bg+YYx752n04vx55Tq9fESFLxwwXdAAAGbrjbSlj01c1BnQzlU0vq3Oh8aYHEIsRT3DpfTmlRU6KLqK/LEFfOXN2KZWmFg92fhz7ZH5zU1B/vP3S2COhus6eZuJPXNq0LRKzN5p6LpCio5j0O5Tne4i9E+PI6rIvAtRvAHUFf7iow+4JIfnDU1uhAr6G2+flQ/qQIttL1jMR/U+7+Hvrh70wJYO6KS/db+NbQNR9wnZhGJMoRgi8bITUaZEjWDBkn4t+PJY7znQTmZ62JKWpQlJRh9ygSLTVosd2hfDXB6IBcye5u+xsM5ccFWu7bp
+X-Rspamd-Queue-Id: 3F6BE80006
+X-HE-Tag: 1776959762-932606
+X-HE-Meta: U2FsdGVkX19uQsKT4Ph7N5fmWTLtjuieekds9oeeRJtqbBQn2/nVyx0bcMgrDHArplCeS+hlpQa5blyQ0rEC9b8JooZ/KtSGWyQyOIjIQym9a84FxB7ju8Bhn+dus5mnvkzweGv7fAijhsNo4cXPM4qQHZsODkE02Xn2EKk/TYoqUtXTkADjk2zlX97BAU+DlILOUmv/wJ43SKCPSlF4oZdv/F9B8aTxO0ierI2ps6/qGsKNFCSIKdP/5Y+h+bkYKRPxekrCMVsuMYIcnjRlCin0oEGPYlEmwx/597vitWh2CPr715P6LsU9LcqA/SSeH/aNggvFR0FJA3LbWAafPaV/LK6z4ltf4pQ0/5dVIGdDI5H/0qx475RdHIRSRt4gL6OjvyjghlU1WqMVtE0fNhUCrXpCrLkyPPO5Ru2J+DgwE6GFW3J8xL9a2fjYA746dq4fpu/c2ST4bRs5sWL4mIGuV5RdlwQWtyTkYQmYnxEm5taa9y1TUC/vJyzsOInD9YeuTEQFIgXpv4X1xHcRkD7qn+L1NeXI2miq5ezKDVcMw8C94k3qRedHdUb85H/Q6Ao0J0LF1bMyKD6PlMju1iRTD5KWGOaa8CW0eC+aQRY3o7GdyaDLuawZGZH8thtizhadojJQr7BBiVzcsPC3rhcNrz1pZCS+9UFm4D4rO+B9QKdZqR9Opq55h7HipHaKfWOTMzXBCEWC8eUxTIB0Km0a8mc+CHlsbK3RAf4kf854V8RISzT+QK6uzuXL6B3GZDi1TXBYM0usDHZPiyzQOxKahmB13ftS6xH6+2NFGEd+PjNTREddZmb2cDFVOqmu1p/zZRctPOm9FJN3y1QykX21jbwpyABWkHoqqEqyZfPjQDwvJjw/1KqESvkTgaGjBFefWf9xtZDAN9PF8s3TEQQZcE6FA85e1JFvsP06q7hS68ETpVaK7QRrc7Ujlx1LdDOBMVnukQx2RVZgrKj
+ gdTKhBaB
+ MNKGHxGLM3jG15xYYzUVG4f8k/aNdSme+MtZ+hglcRWytNan83l/glphXubwU35oapntV1UzLJOzCqODVzhU3fKEDNz+0r3k/kTGtNNNzKXYuKaXRA702QW4q0RJ8rSnByv8+CUnL2vD7iU19ZAh2dgBikwZy+crh2tmN9snmVURyT2qzjgV1UlNye1twChqCTvUXi3Y/DpJVUCt7iyQElx3vPlgji9KS+dFllke/TESasV0VJvCy19INoF1borW9P/b3C9k1JwR/YpLA1bZMWquuI6JTRQLsfLz/dfuSXJLK5gSxCKSvhmNBUK1OXa4kwmETMm61fh3+lF7uLbNOP+20EYrK010h65P/6c7N/uSM2hAW9TRKCo9qy5uTCDCXOXWEDZvZpn0E4KW0BSx0b/APX3ewmM1bWJCMEP3yXcvn5UE2BXGRAyc9ScUsHy30QonO/0+fwgmQovRDShk6//R6Dl8siEz8tVaX7n05nN4KU9ss8PFR163Mcyr+4kigE/KWX3wxXCQwiaR/sMfSbQcbLeJUNx8SSWtkSgGN10qCiI4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,22 +139,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 16:46, Michael S. Tsirkin wrote:
-> On Thu, Apr 23, 2026 at 04:13:50PM +0200, David Hildenbrand (Arm) wrote:
->> But really, that hugetlb code is rather messy. I'd vote for leaving hugetlb
->> alone on a v1, and focusing on non-hugetlb first.
+On 4/23/26 16:28, Greg Kroah-Hartman wrote:
+> The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
+> get_page() reference for each page regardless of foll_flags:
+> 	if (pages[i])
+> 		get_page(pages[i]);
 > 
-> I just dislike it when things are non orthogonal.
-> People are used to: hugetlb = same perf as THP but more predictable at the cost
-> of being harder to use and using more resources.
-> Here, suddenly, we have an optimization but only for THP.
+> This is reached from pin_user_pages*() with FOLL_PIN set.
+> unpin_user_page() is shared between MMU and NOMMU configurations and
+> unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
+> GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
+> 
+> This means that pin adds 1, and then unpin will subtract 1024.
+> 
+> If a user maps a page (refcount 1), registers it 1023 times as an
+> io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
+> unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
+> the page is freed and returned to the buddy allocator.  The remaining
+> 1022 unpins write into whatever was reallocated, and the user's VMA
+> still maps the freed page (NOMMU has no MMU to invalidate it).
+> Reallocating the page for an io_uring pbuf_ring then lets userspace
+> corrupt the new owner's data through the stale mapping.
+> 
+> Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
+> for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
+> symmetric.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Reported-by: Anthropic
+> Assisted-by: gkh_clanker_t1000
 
-Note that we also didn't care about user_alloc_needs_zeroing() with hugetlb so far.
+Assisted-by: David :(
 
-It's not that it cannot be done with hugetlb, it's just a question about how it
-can be done more cleanly; and that requires more work to clean the hugetlb part up.
+(no, I'm not a tool! :) )
 
-Best done separately.
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+> v2: - drop huge comment
+>     - rework error return value based on David's suggestion (heck,
+>       pretty much the full patch was written by him now)
+>     Link to v1: https://lore.kernel.org/r/2026042334-acutely-unadorned-e05c@gregkh
+> 
+>  mm/gup.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index ad9ded39609c..2f6f95a167af 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+>  	struct vm_area_struct *vma;
+>  	bool must_unlock = false;
+>  	vm_flags_t vm_flags;
+> +	int ret, err = -EFAULT;
+>  	long i;
+>  
+>  	if (!nr_pages)
+> @@ -2019,8 +2020,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+>  
+>  		if (pages) {
+>  			pages[i] = virt_to_page((void *)start);
+> -			if (pages[i])
+> -				get_page(pages[i]);
+> +			if (!pages[i])
+> +				break;
+
+Best to mention that change in the patch description. I really think this is the
+right thing to do (returning NULL in the page array is just very dubious).
+
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
