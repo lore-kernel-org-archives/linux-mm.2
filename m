@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B200FDEE48
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 20:34:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E86CFDEE48
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 20:34:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFB9D6B008A; Thu, 23 Apr 2026 16:34:51 -0400 (EDT)
+	id 38D396B0093; Thu, 23 Apr 2026 16:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E60366B008C; Thu, 23 Apr 2026 16:34:51 -0400 (EDT)
+	id 3614D6B0092; Thu, 23 Apr 2026 16:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4EC96B0092; Thu, 23 Apr 2026 16:34:51 -0400 (EDT)
+	id 1B5F86B0093; Thu, 23 Apr 2026 16:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C25C66B008A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 16:34:51 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6AACBC1AC3
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:34:51 +0000 (UTC)
-X-FDA: 84690974382.06.2F52614
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9BC84140002
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:34:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IVEX7DaF;
-	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 05CFA6B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 16:34:53 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BAF9E1404A1
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:34:52 +0000 (UTC)
+X-FDA: 84690974424.07.042818A
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E168FC000D
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:34:50 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CYju+vRK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776976489;
+	s=arc-20220608; t=1776976490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dt6QPYXRPlOeK952eds6qWokMWJg/x4011D3wXxWslY=;
-	b=IHL31kPJ8BF68vnYjTh6kzwZEEyysylXHVhsBHhHhkZ5Yi0la7ymxDYb0HzHptsrlbYHxa
-	H6x944wVzbpL7CCdhj9fT1fKGBXn1rmAxPndWlgnGN3qXii2XcC8D6f3QdFQm3j3zILcUn
-	o55r8wbfp1wwLbQv5Hs9sZayzEINyRU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776976489; a=rsa-sha256;
-	cv=none;
-	b=XJsE0cwGgQ+KHwNleAboq3DcyELI5+3wn9EVVie2v7Kc451rrdm/QjEBHY9COW8sFgoBHY
-	9ySd3Abm3EWjPPqa541bnS+TAUaVeoADXKUw8xmZruM15Be9KT5BkEpT6cqTXLvhp0+54m
-	0pSm0ufaHS5PkNPpz8IKiwTsPSv7xn4=
+	bh=/Sc+ZsDjiZEjytSKxuIVGQ3PUb0Eu41iRMSui9hW2VQ=;
+	b=mAd/C8Vx7gmH5tVU1qUS8DHoyFsLXu1cnPWEQApRS7FZCeCH5pbbt+85JXyxX6GRFKwD6d
+	U++NtDGfl4bqgWKM7t11Hccf5vMtW5JnMFBgK7GPFaVGJxsC+TuRix1oyuaMIROd0ETZu0
+	gFtaC0BonwcaOARmHEdxoRKgFUIvZ1w=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IVEX7DaF;
-	spf=pass (imf26.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.54 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-42321c8b8f5so5891173fac.1
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:34:49 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CYju+vRK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776976490; a=rsa-sha256;
+	cv=none;
+	b=OAgeOY0e5oP5vRFxOHF/lfR8SWsACKBXJJ08nvQsLA3kTutA+UzJmjoMvrP/fK1ijTtLGk
+	nOmDAg/a7b+LsVwkQiWsp3sV7l66oyc7RvlS/s0LuoBXavGJr3RyFuLI7GYLtT7reXJqzM
+	aWHU4rs35RvrxI00cyKLEK2HaSupxg4=
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7dbcb467f2bso6567030a34.3
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776976488; x=1777581288; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776976489; x=1777581289; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Dt6QPYXRPlOeK952eds6qWokMWJg/x4011D3wXxWslY=;
-        b=IVEX7DaF69q8jd236hf6kb6+IdFIPyiuI7eCqYA43tDpU4a/yWpdwmY1TRx3stzgzI
-         Ce0qkjAanRAO3BD7fKXupK45UA/CZZ3tNGMpAMOL74ygjj2g/1Ehrtl7/nuwH9V6/VKb
-         pduGCcSPCUdI/lnYltpYCLcIIKvXOviximDqdJrN/rTUNns/xklwpxkwqZ2wXEHVLRje
-         GB2ukFGqJa5c3r9A7kYt5lJ9y7IG7gkB1sT0wCfJhQMOYn7HHMzPfJzcMQPVaO9Ckdvk
-         lGINnMdPzmoqvI+wibSfE74cnivt/uTc85/Txk8L1qHsuOF7m6oZfUQvco003UWuV+Cc
-         YOFw==
+        bh=/Sc+ZsDjiZEjytSKxuIVGQ3PUb0Eu41iRMSui9hW2VQ=;
+        b=CYju+vRKfcNTJf4R86MqMydXU5PhZTo/U+wJDN6WdNVqO9XyQrR2G+oGclXgtQ5wTG
+         7xBrLyO8jFNGSdIi7L6/TC5Z3IzEZzf901mmFHsG2oV+gQ88c2eQjKEWiiFKoI0Gcsg1
+         6wZAsAIdlS54ce7cPMeVuISNVZEPyUeFDRpVdmMR2sg1Twuoe3wuzg0sNAR84KrRkIIz
+         3zNhVvbJbsNiFFEbvRiW8E3MFh+YbWyE3CE9fvnoNTYUzzvvMCjfrImMCocHjwl7YVW6
+         8ITTEMrYUh9S1uruoQV5p/scekaQhS8k8MnOGNdrel8rm6dBFDIZoLm0kBBrtyC6/1lZ
+         qfhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776976488; x=1777581288;
+        d=1e100.net; s=20251104; t=1776976489; x=1777581289;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Dt6QPYXRPlOeK952eds6qWokMWJg/x4011D3wXxWslY=;
-        b=OVPUzx9i9lqSG5LN+oz8bwB1Qh3Ot3p0T20z9gXZF+oc9z5v8JPppGBzu03wVkhh1g
-         sFLx53N0OWNWbnZeV4qK6gAlAZuomQWdSGBqKhXX0fF6fznXG4Z323sS4Hfzf3ZEW32j
-         i9Os2gc6RStzcWmra2yGLXPSxwl6wkheZoQWzZVtzBzWJEOfZCrdGt6EmW+J55kX+drg
-         AZvO1CYM4JgupsrfelQYHf5QFUO9v+R25LwQZvGr3Bd/wBvYP9X+Qbkel2OXubbr4PoL
-         beBVu1N1vdiTu+AU/5tRvNOV6oNFKY7Stdr4C7JmABzHbtKBALJ87tRiUBwdDrNqgDsB
-         dg0g==
-X-Gm-Message-State: AOJu0YxTuDy9c5CYYJGs+koGmNEeyEdYP2ZiYN7hL7nbZtJPTnFjYKot
-	xgFo7e8u9BqVMJTDyiCQ5j+7ro4xqd33W739s98Q48zDr9BO6ldGvFx4AgGo4w==
-X-Gm-Gg: AeBDies+33PXnGyZdCDc2FIXuND/AonvKA/eN6O5NEUXICM82lcC9XakcgSguiRZL0T
-	CHpPCwTEc+2sF32ibgBfRoy9QPhYxJs9CmwUWAjCFK44M1OOI8RKHoBS8WXlUBdF8K/hrMkkTSI
-	noNDh17Ickk9FcsyIyTkilP4z6RkD1c/G+hFL6bGI0dIk5iYlMBFgrf1MzNKk0fEfTj6TVmH5NQ
-	NGy/S4b78NoUH74aFEYmrroJdt5ouS/tTTL9uSZc6MCh0CW0KYIYvxtMsfHNRN+YkbXngazpTsP
-	UQaMsIggsRtn2Bk5TVk8SvWmMP1kOQKQFbqKoYFSWA9Po1cAUKFvi9JjHhvnC8u89EgQ7JkTJ16
-	8tZnao2Q592cugZwt1VMpJyZITT6uM01PE85SEovw1i/nYOdulJAPdHKSS6ljSsoDWUfRcdsYcg
-	06cZ9nl/OVR8T5MZgECaa6yhHpUE6y
-X-Received: by 2002:a05:6870:88a3:b0:3e8:926e:bf9f with SMTP id 586e51a60fabf-42a99ab5f12mr15325305fac.13.1776976488180;
-        Thu, 23 Apr 2026 13:34:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42fe61449bcsm2793964fac.11.2026.04.23.13.34.47
+        bh=/Sc+ZsDjiZEjytSKxuIVGQ3PUb0Eu41iRMSui9hW2VQ=;
+        b=QsOSrp0pvkZP5ErvnrVeA9V8vd5xuuDoCM0FZr8JqlKsk1izfe2dTLX2eVO1mIzL07
+         0irjWDk0TSc1R+WTs26bv5wq7mNcvQj/FqKqlgyLvr+eXGfFb/C2ykggPmj85mB99zwq
+         g+hOduPsY7/KFp6VaaEw7IKLqepdyT7x+b263s7D5Neu6WVz2Jk7cA2uT/UstDOT5OFE
+         PQj1tV7tUphX59+aT81waAEtK2roIL6oVRSigyW4Rlxw1GMVrAySZDCCj3/7qiO7PPHq
+         zNZUe4zlWaKfXhBW1/kJqb6t1xAd4Qj8JrVDwrYhNbp51JCYHxY2CJkkTotgOOzK/pkL
+         WTNw==
+X-Gm-Message-State: AOJu0Yz6VOLPeFmxi2yppgL7JWitFqxZOTcoJjJitQNASMP/RUNoYVF/
+	4nuEPRZDuxQDRSVsGGZpo1UcOPQdvl+vfaxbJY7V9FpQ4g5xVQMyqqjENaSB1w==
+X-Gm-Gg: AeBDietH1KFZPt3pB5oXSV+5pko8pY7Mm1dSRZV10NjxRrY6T8Xf6kIoJENzl/n8o7g
+	6JoAwQz60ryCBA5x59lAVHihJlIuIYqOZigtajhnqeo4LdAAsGGBzgMaNzsRWlYVTJUgnNtjV6d
+	HUiPEe0fKHdnfxYOUBrrvh1tYu1KF2D8sjol95rLMUltNbwyPzJkon4HPfwbEmW7H+QYZOwSBRu
+	LBjPdVpe+yA+BjWyiQ2VfLi3wT7UCpinOcYQn7Su/3WeI87chKhbU5F+7649VEX44aBMyruEF3l
+	sLoAa/EFRx4eZ/WDf23QvEx8nFSzppcD6Rx4Wc6FyvFmkmXCWKiKNeYIcDGi+1hMBHyxqo9JD8Z
+	KDMDWessI+/7dJQ8Nq/Lvq1XYyzc7t6eOIKKjRl75B2aRhlhqR2YTImuHkT7pv89En3ESn3X1i4
+	r/BE7+ho3vMqtyrrweXd6gL4kw7PEpGEI=
+X-Received: by 2002:a05:6830:6a91:b0:7d9:d2b6:1568 with SMTP id 46e09a7af769-7dc9518bb34mr18578777a34.17.1776976489633;
+        Thu, 23 Apr 2026 13:34:49 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:5::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc975034e7sm17408211a34.6.2026.04.23.13.34.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 13:34:47 -0700 (PDT)
+        Thu, 23 Apr 2026 13:34:49 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: linux-mm@kvack.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH 1/9 v2] cgroup: Introduce memory_tiered_limits cgroup mount option
-Date: Thu, 23 Apr 2026 13:34:35 -0700
-Message-ID: <20260423203445.2914963-2-joshua.hahnjy@gmail.com>
+Subject: [RFC PATCH 2/9 v2] mm/memory-tiers: Introduce toptier utility functions
+Date: Thu, 23 Apr 2026 13:34:36 -0700
+Message-ID: <20260423203445.2914963-3-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260423203445.2914963-1-joshua.hahnjy@gmail.com>
 References: <20260423203445.2914963-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9BC84140002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: gmfu11jy5e5grj9on33pzjcmtz85khuc
 X-Rspam-User: 
-X-HE-Tag: 1776976489-400194
-X-HE-Meta: U2FsdGVkX18dwUok9iY3MxkfZcZ2krjefH2X+Cdpiyk663Rvyef/UeULSNJ2yzef3YqvOmYsvTP20cBpzxpjGWYP4s23WOjT0/KEqVSTOGeokCKrcSU2ZPnpHoxrk9QuVsJfH+94WXXukIMFeq/RuRsIMV863jotWQ97aLSjA13dRdhZeGuT0y3O6GBYa/6aa+fadmHqRiniMw48IIRVSeqBrv890hdBGq0gPDBqPDTJEv8zOIgNCM1hWjZfHfCdT18EAQ1AslJXV3gXOQ5oCWFLQsYbFK2NoW9BlPECsCWMW5H2R7gpXU0ri0UTnxUUTAyvkh2ChwRwx3PUDOuCegGODZCZOPTBAfPD4CmmWRRLTIk0bmchaGvc4jAh5GIBEJWpOgoelQwSikGhw5h/HufLAWi1RAfTUUy1Ug06eit1tYWUyINe9LYjdxgU2SQgcSLXBo5WrqCfbXMUGbWdyiCOlCCRKwPwdCevfw5h7ckxiQIy32LarUUhRBVzzNw8XdmX2j2iy3WZBsJdnHkT5m7sUqm4pyo4V/N399D06UxOqTgqpLQlf6Zo86Yz4oKOxD57TvQ+mpGVu/ZtUN1bznycJXViBrRyCf+Ec6Dbfz32PTaG31C3dR65qLIuRyuXK9Dn8F2KgntEybd+nQb5Tz9MdEBZ0sNrtfMI/1daZla6sYyTzQkoL+2E7gG1DGQdXEAnO/1u6xSJytWZ37R5pB/OK/3HHMp78b/HS3zNyet9fxpEu0vDWtR7W266hkw+pWw9WU5XZqYlUHLVrwmtBSBezpG0WEOOG74273ebDb4MfcJpW1p9XZ1g3yfqH+0Yu/RByLfXjpcbVMgNPUg3i0aeK5kS7qbB4vkcWC/pCDVfFoc682UKNiU5Y1Ow02hei8TVtEaIDoXYT8QMAWPKowCET/gAlO6y0OEvbCtBqRAz29aG2ZCyL4OdWOwMq8Hx/gTHantdXzigmpHgkXS
- y4ew+uIE
- 6fl+VzZ94HfINUQYOfBbbfDipdinoNWqHGdhZFUr6EV9y1PEEG+mdqhSIYSZsbOUsxjKfcFhd2ik3No3baoVIOrW/PYcJfQI1WR8ZxlUgtO/fubmbelmKma80u7bzf1hUT8jpXs1j8Q4TzTv7yUxydqAZIFpDWwv0NA8ZzYskqNIVYxzwm5Eclk76H3c7wK98p/iWTXfLiVCJKioO9g3NbpJyXkYVlZvtWdmYpSyi/nCbhLt9dBimqQrVLUAcp+6sI/sVjMkRBGv6rGDjPMLYyCcQH2E6Qnjzhz2lc0Foe1rTVd2zReZB8GdWgGrhMDULm0Fbb19Arv767iYHhRF6itqdGV08wzVWXMfllMW5I6oKCT7TKTcbKR3b9riuwQa5i8KxLlG9/XJFH8pMYN99276I4iEuxIbor3ke/jy3cuTbq/h1kI7VrjUP7xoFJCvZxwUPdtB+2uFUejJT4olohGZPFDlYRIr5lVDA+ZmIRA5nOgwkpcn8IfwSOEJ+h0EZY04Oi3P3o7vhMk9h72N6I5MJ8gN4K1hnc2TnyUuFht/JatyRekWPN7eFnZcokcyH+s2PIm68zBCRPUE=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: E168FC000D
+X-Stat-Signature: zwuwt4je76449j1ojd57uwnzfrccqeir
+X-HE-Tag: 1776976490-487481
+X-HE-Meta: U2FsdGVkX18egGySRENK5oEgmcbLuIV9DyrYpjafaqdO1Vbom5OHKLK9ukHY+PrBv/SwjdybTJLkkoKl0nyFjiMxM9rGfKU7W+C/+UnTS8vUZ9DMeomLOybUdo84/sRhP9SpwtxIaO27OQUhGjwESt06ihc6h1O0MFlnEwlmi7f5lXTmgiU6I/jcq8iXhyaj57Csi08Md1kcYVwYvdjeaLXXb5qfsl3eJCDxoS2gGsxPx47wHsrbFAtpUVBQFYIQPwRbvmcuET3ggK8zMGGq/EpLLKuTXAAskcl19vzvZV2LbhlcGPmfCcGQIJ3BDv4F09TbzC5WOdV7tEGpVFhJBbMQhoY/70cwBhincaQR/JDgmmV/kf6FNVFMy4Q1OsNw3+DM9YDYwaO8oY+igRmhSSrjrAeZ9IYbWa9AHMLyIJxr1SyvAzhSulNcbo/NRP15s1zOZlABgv7EDZsx5+l3mPMkQIoV246PwyrDPX/nvfKIaeByLu909oyToQZRwmYNNsEB4SYMFFDOiASRNCuuOD7sNiDzcsoAK5Vq4LFqOq01LDZpVZMCRjjOb/HCIscJRek7i1gDspwuYQd5vADm16bU3asxY+4gFBuXUfBeQfmR56OyLIcWAH8RgpyzC6MtvJKetUsSq6Qch3CgVGJfsU6gVN3JAdMJkx1pgR3MRYHKAJvPEBC4LFHflWs+uYYAhF0uf+2p2UzBAXpEvVL/DlZcV/9Ew9/2713VbDffbNlcgz7G7OAAbeT/RNZ093ykc21dhDw+B7vjyvUHDQTo3sMuCtPqWU0zqG/5UcdNfSj3FGCCJmELXziYAxRwIn3q2G7qTUM2uKK75I+z3s3pLp74NdQ7mYOKiL7b7eKZ8Nt/aCQinV/9odkFYEgiUzR+fw+FsS2B4ei3bw2mMNrpCvSYFOlYMJahe6mgzQJ2zSOdbeWTAJ9j9jl0LywiKm5IeyxaST1cYtXn2Gp8BpW
+ lVObmbTN
+ YKtSsqIzwm8KvlR6qvF4+mBwp+xf8ZckNof2mD/gjMzcbmEo/WSBOKg3xInpMGpgriAVcYnTaFV30a+gW7JjYkKjp1Fi8iIFjb+r3LpKphbOXsqnQ15b73vHWDDKefI+IYuij9WU3G7+ZLhPa2aH6g2fj8j1fEdUYEvz6fkIrE1odQix4uA1vJKvTi79vzqFs6ClHsa7hlvlwHclgsFsOEabQeh2hBl9I95pkmqeL91radQzXKCYgj7t+JIh6zbR4++N8fw23QYSbxyBhgBgH7sZUxQT/7uvuYIpHCtHV6Zu2+hEX5Lt49yQVN8JVnaQUQ365v4dJeYjQFXiaguEWSjUTT/F1DweNPTanmpOos9raQ9TYB9qRTrrmfhT0opG8U7wDOZYySKVd/b8Cx3mhyU/QTnkRPQ0hdAEz6+QL+18s86EF1W9rYtkqZsdqqmNLqiBjgF/K13xrUV0nvt531QyCkq4E9CuSsruJDZNWrX7FmEWs5VoW5tcx2E+heWP4m0T/RWc71LTL1+iaHSyu60dpBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,120 +124,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a cgroup mount option memory_tiered_limits to enable
-tier-proportional scaling of the memory cgroup controller limits
-memory.{min, low, high, max}.
+This patch introduces two toptier-related utility functions,
+get_toptier_nodemask() and mt_scale_by_toptier().
 
-The mount option currently does not have any effect.
-Later commits will scale memcg limits proportional to the system's
-toptier:total capacity ratio.
+Tier aware limits will introduce new memcg thresholds on toptier nodes
+for systems with multiple memory tiers. To simplify the calculation
+for these new thresholds, introduce a function mt_scale_by_toptier
+to scale memory limits by the ratio of toptier capacity and total
+capacity available on the system.
+
+For single-node / single-tier systems, the scaling operation will be a
+no-op since capacity updates are hooked into establish_demotion_targets.
+
+Note that the ratio is static for the entire system. Explicitly, it does
+not take cgroups' cpuset.mems into consideration, meaning even cgroups
+limited to toptier nodes only will still get a scaled down toptier
+limit.
+
+This is to ensure that all cgroups are limited to their fair share of
+toptier memory, regardless of what nodes they are restricted to. This
+also has the added benefit of preventing accidental /unintentional
+overcommitting of toptier memory, since every cgroup shares the same
+toptier ratio.
+
+get_toptier_nodemask() extends the existing node_is_toptier check to
+return a nodemask of all N_MEMORY nodes living on toptier.
+For !CONFIG_NUMA_MIGRATION or !CONFIG_NUMA systems, it will just return
+all N_MEMORY nodes.
 
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/cgroup-defs.h |  5 +++++
- include/linux/memcontrol.h  | 14 ++++++++++++++
- kernel/cgroup/cgroup.c      | 12 ++++++++++++
- 3 files changed, 31 insertions(+)
+ include/linux/memory-tiers.h | 17 ++++++++++++++++
+ mm/memory-tiers.c            | 38 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index bb92f5c169ca2..0b6861f4faece 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -128,6 +128,11 @@ enum {
- 	 * Enable legacy local pids.events.
- 	 */
- 	CGRP_ROOT_PIDS_LOCAL_EVENTS = (1 << 20),
-+
-+	/*
-+	 * Enable tier-proportional scaling of limits for the memory controller.
-+	 */
-+	CGRP_ROOT_MEMORY_TIERED_LIMITS = (1 << 21),
- };
- 
- /* cftype->flags */
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index dc3fa687759b4..be45641e890e4 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -533,6 +533,15 @@ static inline bool mem_cgroup_disabled(void)
- 	return !cgroup_subsys_enabled(memory_cgrp_subsys);
+diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+index 7999c58629eeb..f21525c50a5ff 100644
+--- a/include/linux/memory-tiers.h
++++ b/include/linux/memory-tiers.h
+@@ -52,10 +52,12 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
+ struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+ 						  struct list_head *memory_types);
+ void mt_put_memory_types(struct list_head *memory_types);
++unsigned long mt_scale_by_toptier(unsigned long val);
+ #ifdef CONFIG_NUMA_MIGRATION
+ int next_demotion_node(int node, const nodemask_t *allowed_mask);
+ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
+ bool node_is_toptier(int node);
++void get_toptier_nodemask(nodemask_t *mask);
+ #else
+ static inline int next_demotion_node(int node, const nodemask_t *allowed_mask)
+ {
+@@ -71,6 +73,11 @@ static inline bool node_is_toptier(int node)
+ {
+ 	return true;
  }
- 
-+static inline bool mem_cgroup_tiered_limits(void)
-+{
-+#ifdef CONFIG_NUMA
-+	return cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_TIERED_LIMITS;
-+#else
-+	return false;
-+#endif
-+}
 +
- static inline void mem_cgroup_protection(struct mem_cgroup *root,
- 					 struct mem_cgroup *memcg,
- 					 unsigned long *min,
-@@ -1084,6 +1093,11 @@ static inline bool mem_cgroup_disabled(void)
++static inline void get_toptier_nodemask(nodemask_t *mask)
++{
++	*mask = node_states[N_MEMORY];
++}
+ #endif
+ 
+ #else
+@@ -116,6 +123,11 @@ static inline bool node_is_toptier(int node)
  	return true;
  }
  
-+static inline bool mem_cgroup_tiered_limits(void)
++static inline void get_toptier_nodemask(nodemask_t *mask)
 +{
-+	return false;
++	*mask = node_states[N_MEMORY];
 +}
 +
- static inline void memcg_memory_event(struct mem_cgroup *memcg,
- 				      enum memcg_memory_event event)
+ static inline int register_mt_adistance_algorithm(struct notifier_block *nb)
  {
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index babf7b4560488..6a34d0e179dc5 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1989,6 +1989,7 @@ enum cgroup2_param {
- 	Opt_memory_recursiveprot,
- 	Opt_memory_hugetlb_accounting,
- 	Opt_pids_localevents,
-+	Opt_memory_tiered_limits,
- 	nr__cgroup2_params
- };
- 
-@@ -1999,6 +2000,7 @@ static const struct fs_parameter_spec cgroup2_fs_parameters[] = {
- 	fsparam_flag("memory_recursiveprot",	Opt_memory_recursiveprot),
- 	fsparam_flag("memory_hugetlb_accounting", Opt_memory_hugetlb_accounting),
- 	fsparam_flag("pids_localevents",	Opt_pids_localevents),
-+	fsparam_flag("memory_tiered_limits",	Opt_memory_tiered_limits),
- 	{}
- };
- 
-@@ -2031,6 +2033,9 @@ static int cgroup2_parse_param(struct fs_context *fc, struct fs_parameter *param
- 	case Opt_pids_localevents:
- 		ctx->flags |= CGRP_ROOT_PIDS_LOCAL_EVENTS;
- 		return 0;
-+	case Opt_memory_tiered_limits:
-+		ctx->flags |= CGRP_ROOT_MEMORY_TIERED_LIMITS;
-+		return 0;
- 	}
- 	return -EINVAL;
+ 	return 0;
+@@ -151,5 +163,10 @@ static inline struct memory_dev_type *mt_find_alloc_memory_type(int adist,
+ static inline void mt_put_memory_types(struct list_head *memory_types)
+ {
  }
-@@ -2072,6 +2077,11 @@ static void apply_cgroup_root_flags(unsigned int root_flags)
- 			cgrp_dfl_root.flags |= CGRP_ROOT_PIDS_LOCAL_EVENTS;
- 		else
- 			cgrp_dfl_root.flags &= ~CGRP_ROOT_PIDS_LOCAL_EVENTS;
 +
-+		if (root_flags & CGRP_ROOT_MEMORY_TIERED_LIMITS)
-+			cgrp_dfl_root.flags |= CGRP_ROOT_MEMORY_TIERED_LIMITS;
-+		else
-+			cgrp_dfl_root.flags &= ~CGRP_ROOT_MEMORY_TIERED_LIMITS;
- 	}
++static inline unsigned long mt_scale_by_toptier(unsigned long val)
++{
++	return val;
++}
+ #endif	/* CONFIG_NUMA */
+ #endif  /* _LINUX_MEMORY_TIERS_H */
+diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+index 54851d8a195b0..acc02679e312d 100644
+--- a/mm/memory-tiers.c
++++ b/mm/memory-tiers.c
+@@ -46,6 +46,8 @@ static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
+ struct memory_dev_type *default_dram_type;
+ nodemask_t default_dram_nodes __initdata = NODE_MASK_NONE;
+ 
++static unsigned long toptier_capacity;
++
+ static const struct bus_type memory_tier_subsys = {
+ 	.name = "memory_tiering",
+ 	.dev_name = "memory_tier",
+@@ -299,6 +301,17 @@ bool node_is_toptier(int node)
+ 	return toptier;
  }
  
-@@ -2089,6 +2099,8 @@ static int cgroup_show_options(struct seq_file *seq, struct kernfs_root *kf_root
- 		seq_puts(seq, ",memory_hugetlb_accounting");
- 	if (cgrp_dfl_root.flags & CGRP_ROOT_PIDS_LOCAL_EVENTS)
- 		seq_puts(seq, ",pids_localevents");
-+	if (cgrp_dfl_root.flags & CGRP_ROOT_MEMORY_TIERED_LIMITS)
-+		seq_puts(seq, ",memory_tiered_limits");
++void get_toptier_nodemask(nodemask_t *mask)
++{
++	int node;
++
++	nodes_clear(*mask);
++	for_each_node_state(node, N_MEMORY) {
++		if (node_is_toptier(node))
++			node_set(node, *mask);
++	}
++}
++
+ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
+ {
+ 	struct memory_tier *memtier;
+@@ -428,6 +441,7 @@ static void establish_demotion_targets(void)
+ 	struct demotion_nodes *nd;
+ 	int target = NUMA_NO_NODE, node;
+ 	int distance, best_distance;
++	int i;
+ 	nodemask_t tier_nodes, lower_tier;
+ 
+ 	lockdep_assert_held_once(&memory_tier_lock);
+@@ -496,6 +510,19 @@ static void establish_demotion_targets(void)
+ 			break;
+ 		}
+ 	}
++
++	toptier_capacity = 0;
++	for_each_node_state(node, N_MEMORY) {
++		if (!node_is_toptier(node))
++			continue;
++
++		for (i = 0; i < MAX_NR_ZONES; i++) {
++			struct zone *z = &NODE_DATA(node)->node_zones[i];
++
++			toptier_capacity += zone_managed_pages(z);
++		}
++	}
++
+ 	/*
+ 	 * Now build the lower_tier mask for each node collecting node mask from
+ 	 * all memory tier below it. This allows us to fallback demotion page
+@@ -878,6 +905,16 @@ int mt_calc_adistance(int node, int *adist)
+ }
+ EXPORT_SYMBOL_GPL(mt_calc_adistance);
+ 
++unsigned long mt_scale_by_toptier(unsigned long val)
++{
++	unsigned long total_capacity = totalram_pages();
++
++	if (!total_capacity)
++		return 0;
++
++	return mult_frac(val, toptier_capacity, total_capacity);
++}
++
+ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
+ 					      unsigned long action, void *_arg)
+ {
+@@ -932,6 +969,7 @@ static int __init memory_tier_init(void)
+ 		  node_states[N_CPU]);
+ 
+ 	hotplug_node_notifier(memtier_hotplug_callback, MEMTIER_HOTPLUG_PRI);
++	toptier_capacity = totalram_pages();
  	return 0;
  }
- 
+ subsys_initcall(memory_tier_init);
 -- 
 2.52.0
 
