@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF2EFDEE41
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 18:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75338FDEE43
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 18:25:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 819126B0093; Thu, 23 Apr 2026 14:21:23 -0400 (EDT)
+	id CD9196B0092; Thu, 23 Apr 2026 14:25:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C9256B0095; Thu, 23 Apr 2026 14:21:23 -0400 (EDT)
+	id C635C6B0093; Thu, 23 Apr 2026 14:25:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DF146B0098; Thu, 23 Apr 2026 14:21:23 -0400 (EDT)
+	id B2A626B0095; Thu, 23 Apr 2026 14:25:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F2C26B0093
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:21:23 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F88440452
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 18:21:22 +0000 (UTC)
-X-FDA: 84690638004.11.BB54B37
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5FF2040010
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 18:21:20 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PRHmDfdT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776968480; a=rsa-sha256;
-	cv=none;
-	b=ZDnH+J6pemnWbCPMu48dJUElFzU1zcO2LOrgVDlJhyRpPaT8NXVg3Rnn1hAMXKnL81EMiS
-	Z12isLJhPlAwUCDqj5uEi/pPDDnMSfVId87Eo0D69hCstijUk/vQrUZrFPdMh783NFCknA
-	qPD1c2riRlZrJrNPr7fRKciHSTqAvK0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PRHmDfdT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D3D96B0092
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:25:12 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BBD314041B
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 18:25:12 +0000 (UTC)
+X-FDA: 84690647664.14.0FF8B8A
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 23D43140002
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 18:25:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=VupDhkN7;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776968480;
+	s=arc-20220608; t=1776968710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NT5G3ybYNd+sfFQXG2SgNNLq2F21AGBVro6FdqalTiM=;
-	b=jf8tuI5DEaXaKv+9LkEBYVtF6YS24i2G9O8B+TvD6SWUD62rV8AuFi4FpOWFdmkYIDFjaF
-	ML+31MpXtlF15WAVw/6+HKI5JnVeLr8h1+XOzjvkPcjavrKjmvC8ddb5QWVH69rrmXTbYR
-	qbUF7bBFQex/y65c9fz8iejHXHHO+bI=
-Message-ID: <c09c9138-b2ab-41d6-be9e-05be87a2bfce@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776968477;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NT5G3ybYNd+sfFQXG2SgNNLq2F21AGBVro6FdqalTiM=;
-	b=PRHmDfdTojOH+JWxKAM1fa6YLZJJb4nYdQ0QcXTOEua3xbjplBUhtw6uBWax01E61unV9G
-	/BvFtDEGFICdnrQ5B1Cy9dj8Jl8h0ynS7Ji5nGtCE8n/XyYQgwMlpPBaFV6Et2QLTH5lcj
-	JFp+RTpn12USHA2yG44cO7auSbDpU6o=
-Date: Thu, 23 Apr 2026 11:21:10 -0700
+	bh=K1v7YXfUKlUQLu//wZ3hNgODosNPo4KQOWQbzpNH9LY=;
+	b=LU2dEbyWhUA2FHLDY4PyNU12Vfo2geNQyCiJb1TbRMos7gkofiBSWkRert9okuuxSZb7TV
+	zl2OFBf5CZ3Mw/1in8hESUjz/5tz39pU1i11p9HXVZIP7XBfWK/dHeLDHQgxnVt9A0al/Y
+	AYfq1HK7cAxzSbWxyVy2OXmXiAko/vI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=VupDhkN7;
+	spf=none (imf23.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776968710; a=rsa-sha256;
+	cv=none;
+	b=oqqq8JofmRAGg/wL5bDNI3k4l+hbHSNBke+3EgFdf3Y5DKgipxSmdomOZGTWVbaIlv9pYF
+	AdJzTx055ol/LXCHtHcBRPKR+h2Moyzf1mPuHzOfsIWYWWkhCHpCC7pXzYhu6bdBxJMISU
+	ehMgzw8hKxFMHQ6YOJUPuNbioiYFiD8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=K1v7YXfUKlUQLu//wZ3hNgODosNPo4KQOWQbzpNH9LY=; b=VupDhkN7jh55tw/v8z1nCQCRtS
+	a5rwRuyMoi1qLtCB7d4TSwscdnJ5nvfS9mMSjZ/FyucE5+1iUyz8Ueo71f/HvhUlhrHs3ln86lrtn
+	nAAu0Vl/sXw3Kx6k839tg5cjhSw4541i9GY9sSZMqsEraACEjvO4Xy7e1Z+8Eh0Lvw9mc0lESdqp2
+	FxMzFPxOACahRKO19r4gRtqvUQkikjVEazmEaQDYSGuFrhfQXZwUi4UE/8NAlDgVbms64vtH34yXY
+	oTPsioBtZVjBVZcUS09vF9dwJCBKcZZPT0aA5EmiIuupEearHCjcO/VBELR+1DFHrxVqscPsEFO9I
+	OtLPloZA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wFyjP-0000000DrUt-3u9E;
+	Thu, 23 Apr 2026 18:24:56 +0000
+Date: Thu, 23 Apr 2026 19:24:55 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+Cc: david@kernel.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+	apopple@nvidia.com, baolin.wang@linux.alibaba.com,
+	gladyshev.ilya1@h-partners.com, harry.yoo@oracle.com,
+	kirill@shutemov.name, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
+	muchun.song@linux.dev, rppt@kernel.org, surenb@google.com,
+	torvalds@linuxfoundation.org, vbabka@suse.cz, yuzhao@google.com,
+	ziy@nvidia.com, artem.kuzin@huawei.com
+Subject: Re: [PATCH v2 2/2] mm: implement page refcount locking via dedicated
+ bit
+Message-ID: <aepj9_v_1dYJ_tRu@casper.infradead.org>
+References: <cover.1776350895.git.gorbunov.ivan@h-partners.com>
+ <9936cc799ac8b637ee58ae3bf6ec0e5eeb5306e9.1776350895.git.gorbunov.ivan@h-partners.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/lruvec: preemptively free dead folios during lru_add
- drain
-To: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@kernel.org,
- mhocko@suse.com, hannes@cmpxchg.org, shakeel.butt@linux.dev,
- riel@surriel.com, chrisl@kernel.org, kasong@tencent.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
- baohua@kernel.org, youngjun.park@lge.com, qi.zheng@linux.dev,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260423164307.29805-1-jp.kobryn@linux.dev>
- <aepTnIu1WiyyHNJp@casper.infradead.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-In-Reply-To: <aepTnIu1WiyyHNJp@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Stat-Signature: z4f1znyndszanu8roec7u7p5qdk3uuat
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9936cc799ac8b637ee58ae3bf6ec0e5eeb5306e9.1776350895.git.gorbunov.ivan@h-partners.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 23D43140002
+X-Stat-Signature: dstfhyac81ju5g6s5gr55rswy4bbqgrh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5FF2040010
-X-HE-Tag: 1776968480-683089
-X-HE-Meta: U2FsdGVkX18ZaaQI5YEx6ctx6/pNR5xbUnvmb3cVql20IpOftSjPw8NJsWPXWEc1GgWYqwvSfwJDkEvfqDLT3MxlmsWhUW9b26Z+lBl74HUDeEs8Ad9yrIjWYUPTaQYOOKndtHbCUJw9HcjG28NJxMDBMMOolCb9ZNJsoETyqH3ZdAQF/F4qvtosEypw5gdDFjFC4sB5IWCZApGr46q/0qNY4VmzdrjRalOBSSp3qynuP7ceSZuFIinogAkHddOMc6RmUPwNouhzz3aVb6BbOIsb+brsBh17tcHwca3OsAx5vvlosv6U5mjyduvFFEasSLOHkNV/B45XtDOqGfe5y1l7Xl0Xw4bbhae0yvxr8v8KJMxj1Gprxzfx0qHbwP43h1+fPLSuziN5Q7UNqqjqSthitTSR1GRtPL0jxRg9pm4qWJtSkinZ2qlpKHrFdiDJJrfpo96Tv9HE0VUC1HREgOD42Q9yS7MGcKwDHeD8gT5VXx2FF7e1OVf78+GFXbaD78ZUaSe6jLU/Jlr6HOJ5Dg87/VvuCib2t6Eun0y7pHaScmVQVjAB59LywPK6glSS6Zcof4+atprcFGeapv2OvWLrydFXSgfwCcriz4yNUgq1mM5uZdr6NH/aXUpWdiGl5tu6F/z7JU7eU7WorxvM+ZEwl8l6uhYF+hFwnmSYxVntv5dppx0tvQU6zPMRmFHq5uNwZS2h+XZeDPal/EnJcXMtpfmXAtxzG+ThOJcLxAJoq0ve/h6GI1DPIvhE6KlZllf96d6fST5JfmBlgrOLG+jP2XSchTNuQAmQmx054zb2lwodav6O8BCLut90ivfM2cESYbWumRX9ssJ4G7kR+VINOwpiS5S88owzKaf0Jde0FDwnPf/6fBZQE89Ccs7tf6VvoX+0svbrFkcfGlNgB2tZZXoCqEakjy/E1TqYf9TnQFAMKoQ5dfFrI3eikHG08P4VpAeo3vUqQLWLdNv
- DpsKS3XZ
- 1EmO35kM/zxfzOq1DgbEdh5GnDb1TSl8UmetirzNj1RO/II/Jegz1xE8O8taq3N9wjVC4b7JL/jhSWKPATn5vq4nkGr4qF9OmsvnFk+911uf20hvwbGlqzg5A0mjqk5iMG5htQwusdFfG4dUNw2QQ0Vu43+xhA1r1eta7UdXZ2pzFS8dA0tiSS+aa6qGdW3MY9BWtLfp0MhM8CL8tDdyk/829bJ/SmA/u6nJ5Bo4IVbQXPZ6n1mXygNCU1JRui+eMSu5ePW3Ztfr9gnAcmBmY+W6Pr/xKqwAlh6Ul4aaxJMf12XdtEPqbv8Fw4A79cWfUzvGI
+X-HE-Tag: 1776968709-588358
+X-HE-Meta: U2FsdGVkX1/jpM/giZxbtf47/Z/jOX0cug8AgUboe87f3c2K9uZj8zCKLB+zfwT7iI2ZPkrh8hTCGAlMBw1oySowPV4IoC0kkJmdbq9l3U67DVg7eOePKINvR8fvwnrLTlK8H3S9W4K2Y0YK8ZKGzC4diZLedUebtsxtrQ0c1YdAgUoo6TDmzTUg+OVaM45YPGihsFyjEP7wLyE8W9jCjz+h/cAm6Rdo0C4hiooj81m/t+aWSCljb8qWR4mQSJCS2Xxz4mMtnwO+StWSc3YQsnY/szu8t3aIfcxlnbIwso73jB6p9va+to/VdRaUnoBfKfu8IKna5DuUKUCgGU+qApA44ooEmmslRIBcfb3fZKZVpMiRglT9J5A79S21+c9uWK1HlIfsJuuifMNHK/E8Ry/8gJfBz/kjStHfHC7oFg8Itl23PcHNZXiFXCAwSYqvTSNe6Prlse1UEZNy22ndwx2RaqkZMPPrFyCQpjc7d2Uhanf782W13uZyjCnfLj4eKKXPryopKBfPkRAnAUYmQWxWjN1x3zjAHEKTqs7iWa10ygZtOFZqFoqp/f1wxNFFskx2Kr0fLcxwK8ORlIdBw1AyfH3PwAy3whz6VR5q0OwhuMaLU8AIou2d8d7gzokaF2ZH2EXaALJmGwbFJ/O57le2ZUwgmtOM0BrIUBWWo7Dtj9WcJvNOy0vidcLresrz2WAtE9D1Q7zJR2pzm7OQwtMYSV1+Hw2sF4f7GEJ6zWjBBUtVyDjA8ac/O6MIFxAS2DPMCbwOpil8wn/e7OeASUh5jO0VFoJ5d9Yxgx6btG9SzYLeC1S71X/SqDhsTOjOxiQ4FwBydOposvcmleW4UHkIe/ffNgjQ1cRxGvAx9p5ppgp0rQcS7exUNlp09OJFzD/L/aF/fndvl3yvLpiSug8aat+SRwr28t1bFBwFSlJhRhSwchaJwERSIRnwpTUmaTqMm6XMy2NxIKMFuxq
+ 5r9YRV/r
+ mOudem1VAt+smyLR/sF/DVuL1f8t3GXuRlSj9170vV3T4TQebyf4cSmhro+NolZEoqK5RjHTfbdkRXcLW8Kv/N2BinCURICNxeV1rI+lR944OAyURAcybrR0/DeAAvcL/vrjUrm8EzYxM6Iy2ciNxVoqjLgD/gU7E+FvsVUhPb+pgdC2koYSCAOnwohFAktMtJ0ClcwObmH8xEwrtb6Zvh22TouN32BeHDDm3Vu1qs0+e1jbyJmz/2PVYjgo5hm+uA2vvoQjVSZ8nzGDiGjZ8bcZp4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,67 +96,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 10:15 AM, Matthew Wilcox wrote:
-> On Thu, Apr 23, 2026 at 09:43:07AM -0700, JP Kobryn (Meta) wrote:
->> Of all observable lruvec lock contention in our fleet, we find that ~24%
->> occurs when dead folios are present in lru_add batches at drain time. This
->> is wasteful in the sense that the folio is added to the LRU just to be
->> immediately removed via folios_put_refs(), incurring two unnecessary lock
->> acquisitions.
-> 
-> Well, this is a lovely patch with no obvious downsides.  Nicely done.
+On Mon, Apr 20, 2026 at 08:01:19AM +0000, Gorbunov Ivan wrote:
+> The current atomic-based page refcount implementation treats zero
+> counter as dead and requires a compare-and-swap loop in folio_try_get()
+> to prevent incrementing a dead refcount. This CAS loop acts as a
+> serialization point and can become a significant bottleneck during
+> high-frequency file read operations.
 
-Thanks for the kind words and review :)
+If the file read is high-frequency, then for the page refcount to be
+the bottleneck, they must be small reads?  Have you looked at this
+patch?
 
-[...]
->> diff --git a/mm/swap.c b/mm/swap.c
->> index 5cc44f0de9877..71607b0ce3d18 100644
->> --- a/mm/swap.c
->> +++ b/mm/swap.c
->> @@ -160,13 +160,36 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
->>   	int i;
->>   	struct lruvec *lruvec = NULL;
->>   	unsigned long flags = 0;
->> +	struct folio_batch free_fbatch;
->> +	bool is_lru_add = (move_fn == lru_add);
->> +
->> +	/*
->> +	 * If we're adding to the LRU, preemptively filter dead folios. Use
->> +	 * this dedicated folio batch for temp storage and deferred cleanup.
->> +	 */
->> +	if (is_lru_add)
->> +		folio_batch_init(&free_fbatch);
->>   
->>   	for (i = 0; i < folio_batch_count(fbatch); i++) {
->>   		struct folio *folio = fbatch->folios[i];
->>   
->>   		/* block memcg migration while the folio moves between lru */
->> -		if (move_fn != lru_add && !folio_test_clear_lru(folio))
->> +		if (!is_lru_add && !folio_test_clear_lru(folio))
->> +			continue;
->> +
->> +		/*
->> +		 * Filter dead folios by moving them from the add batch to the temp
->> +		 * batch for freeing after this loop.
->> +		 *
->> +		 * Since the folio may be part of a huge page, unqueue from
->> +		 * deferred split list to avoid a dangling list entry.
->> +		 */
->> +		if (is_lru_add && folio_ref_freeze(folio, 1)) {
->> +			folio_unqueue_deferred_split(folio);
-> 
-> Would it be better to do this outside the lru lock; it's just that we
-> don't have a convenient batched version to do it?  It seems like
-> there are a few places that could use a batched version in vmscan.c and
-> swap.c.  Not that I think we should hold up this patch to investigate
-> that micro-optimisation!  Just something you couldlook at as a
-> follow-up.
-
-Good call. I'll leave this patch as-is (unless other feedback), then
-pursue the batched version of unqueuing the split in a separate
-follow-up patch.
-
-> 
-> Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-
+https://lore.kernel.org/all/20251017141536.577466-1-kirill@shutemov.name/
 
