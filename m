@@ -4,86 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BCCAFAD41F
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 06:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E64B0FAD41B
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 07:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE37F6B0005; Thu, 23 Apr 2026 02:48:36 -0400 (EDT)
+	id EC6286B0005; Thu, 23 Apr 2026 03:00:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A947D6B008A; Thu, 23 Apr 2026 02:48:36 -0400 (EDT)
+	id E50416B008A; Thu, 23 Apr 2026 03:00:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AA5D6B008C; Thu, 23 Apr 2026 02:48:36 -0400 (EDT)
+	id CF09B6B008C; Thu, 23 Apr 2026 03:00:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 865576B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:48:36 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 28BA714023A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:48:36 +0000 (UTC)
-X-FDA: 84688892232.02.0D16F96
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9F4761A0012
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:48:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=R7xECMZv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BA3076B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 03:00:33 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 34A008BD80
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:00:33 +0000 (UTC)
+X-FDA: 84688922346.17.1927028
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0A4921C0016
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:00:30 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Vkh/tI7p";
+	spf=pass (imf21.hostedemail.com: domain of ibhagatgnu@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ibhagatgnu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776926914;
+	s=arc-20220608; t=1776927631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OfQ0BP8bxZNhW0WWowaJNPXXEznxugFE1UvBF9a3FSc=;
-	b=bGMaQgeUF0a+RkCEftMVfDPDsj07ElyaNICvYMWX3FySP4hVoYcmLvnFnSZTOgtCKdue6W
-	gtDX055ULlxGtUORTpa+0vCFAT2hMXT2gejPcFoZ+cc84/e6VCcCTw9I/W7PEkbWBi0agw
-	tZeCJMCtZdBRJucwLZc+RiLfOtAHsRo=
+	bh=/FDcYdMEVgX0UUwJJspOEqoP3UMTSsUAQZWMt+ZF0X8=;
+	b=FmQipU2vuFDIsxLjulitNj8OkQesoOq0hAdjeep2pR5rU+dJiS3ZQZNYj062Op/WjcLSzT
+	F1GX+MdcEbWTWWdQGpJISbHmS2d6FcWgHrc1dNuVqM3rQhSFzpGjwQ6vHsYTRFv0tFm6xi
+	h2BDzqBhu7rJXjdISDp1THeD0gO6I6I=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=R7xECMZv;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776926914; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Vkh/tI7p";
+	spf=pass (imf21.hostedemail.com: domain of ibhagatgnu@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ibhagatgnu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776927631; a=rsa-sha256;
 	cv=none;
-	b=VcVl8TLNaHQBSIc8gQ2IrA2dBUWQO6FXYsgPspRLELeq707Qgnjm0LDY/V8LiTfcTH8GFM
-	oIOoZpl/r181+Sgf/WXFCB0rG7mEO74IL1C8XHsMQAlVKE1QSMwYsDqtmbZSXQIZwEpmcm
-	3p9HZDvur1vCA7RyUI/bN0eVQ5tn1HE=
-Date: Thu, 23 Apr 2026 14:47:40 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776926908;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OfQ0BP8bxZNhW0WWowaJNPXXEznxugFE1UvBF9a3FSc=;
-	b=R7xECMZvCC3ODtyYh1A/Qi30nx4BJEa5+bmX6WspJraOKq4XwS37NN9qd1qNgvDFqOzqf7
-	s82mbS1F1EfzvxlYFmMlWcbimhH03fidLLmWbDb3nqhbMWrk05ihIj/cchzL8sa//osT97
-	DAIDZuHlYDDKXE5PkrrR7Jk++KFB0jk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	hu.shengming@zte.com.cn, Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Subject: Re: [PATCH RFC] mm, slab: add an optimistic
- __slab_try_return_freelist()
-Message-ID: <aldjcfy4b5dnifqfnzrleyoeizz33fxscnrdxnitnf5zfdeuqs@v4n2vf6ywy2c>
-References: <20260421-b4-refill-optimistic-return-v1-1-24f0bfc1acff@kernel.org>
- <qfxtirtpoxcuzhnohm7cbo62z3ob3tiknlss6xenjlrjossmpu@pp4wwry3jad4>
- <d0510c1f-4930-4424-97b1-b9c9028eddb5@kernel.org>
+	b=UJlk+SFevJHeWjkhDryxzYle9rm6rnILJgNpEhOHmpwZyrn3Mo7bF6mpD10QRi3KlM5zIZ
+	wAgZchKob8F/BTwkukBatvB3eOmOGcBsvLNoIYLckakILRFNkLpMkaT6Jte87urfU1QZAk
+	9I+EEYSIWF2cqMq4JMbtHvbVz2FkkuI=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2b4583f0a1aso39808195ad.3
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:00:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776927630; x=1777532430; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/FDcYdMEVgX0UUwJJspOEqoP3UMTSsUAQZWMt+ZF0X8=;
+        b=Vkh/tI7p7N6vZBR58LC7qfD5SBbmg7L+UalnkMkb1BXossSSseoeAomCa/vctJzrUa
+         UrIqJYWUu8hUpL0/gLB2Hj/OcFmZwrafSOCXoeeLXIdzZAy3zjd6cgR06MyxDSYbFysS
+         2xITD5H6ni3coBLLLGNNL42Zook4kKgdn7RhsBLwSGijkIGlB05SvSRCU65XRQFTAYeT
+         YW5//ILsw1i/pAKaefSHAYivpkJMBcl6N+O2tudIYVdxPkomcbzhwlbDYCNpyvjBW2Wb
+         H8lAVgN4W4A46A4nt63iQKC4PxL8an8vAlRIw9A+RMeRbWrr3FH4LF7H2ZHko00EHD6Z
+         b4fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776927630; x=1777532430;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/FDcYdMEVgX0UUwJJspOEqoP3UMTSsUAQZWMt+ZF0X8=;
+        b=WYE73YGktnk0huzbyNV168mooqUxqztdJ9gcw+6bEs0BtCYMF8kujjqC337lrPH87/
+         x2pwe6ItvoZWWG6Lyftm6E1oqDOBxVSiqdpJpfRagHLf86kKcobMJbQrtQ2PgarGWVbz
+         RbPHjqg9JL1N1U8ZcuGHnR0lHhojTLd0sMDCnJE+JepiwDb9x0YTJYfjVCi7YsrdsFGH
+         VqQUzlJ7adPnPNvbaFQIul1MVrawTnfJZjRPpvL97j2laUXnEZRHr2hWQMOcnAtZZ2vf
+         /dk+3mexxlBbBUb5xpXTWgCMTh8vvd6SokxEVk8XqfrAisKkG7vT+lyylKkhiWG6m7pU
+         ZMaQ==
+X-Forwarded-Encrypted: i=1; AFNElJ98oVa7xOzQ0yIWxHS3eX6A7QSrHrXVOedhoSIy0ahUyQmRAH1BHbob7+m0fO96PFUoQKe2fn1ArA==@kvack.org
+X-Gm-Message-State: AOJu0YyMwtpVZMMMh71B4Jx5FW1Y9j9kEW2kvl0W3bPsTP+GzkmMI14i
+	kfkAtH9WETTG3p0upx1mlLyA3Zo7ovwUGgWkKluI71QSxIeBNHYuMAoL
+X-Gm-Gg: AeBDiesgsc9Sbt7Th0YYYWZ0IJ320l20QaDwEGFDG/aZTHi8M79/7a5i0DHHlBr3bfn
+	UZVxvl0WCirSwO33cGirM6sOpGqvUzu8O2Tbsoy/qOOD4HRQQUHDzGHzKsJpwiDftw97NNjH9VA
+	UPmX+JhAFuTdcUpxZGbRWQG9Za1Vl1DHA2Yh0vrWfBzOGoN5JKs7GCIHvOqJuRb0lsRrxFAg4fR
+	eqtfU9JvMhscKrnTiv3p4ceraD+dEANNzbTb1mWsMMI7sYhw/rmuSiZyRlh+a2R6L9AtsrsTsWc
+	5x2FYv7WfM52SKoQg7fNA3N5R5Wb2W7JysJOSajO/lAzi3WoVfpNPpCenW1RE67q4t8xXciMy0X
+	6oycgcb2JRg9CHC0Qbd3woW9wj+1EQYG/UkJ+hHsb2BXTtGVCW/mt90bD40SSgCQnZ3TsBo5dBw
+	hdUrPf7pupd/F7LzFOqyt2oguOJMWUS9jqE7fIb15GFe3qzqU=
+X-Received: by 2002:a17:902:da89:b0:2b0:ba14:fc55 with SMTP id d9443c01a7336-2b5f9fa70camr289653425ad.29.1776927629301;
+        Thu, 23 Apr 2026 00:00:29 -0700 (PDT)
+Received: from ?IPV6:2604:3d08:9582:1100::3781? ([2604:3d08:9582:1100::3781])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa2e5cesm220351645ad.25.2026.04.23.00.00.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Apr 2026 00:00:28 -0700 (PDT)
+Message-ID: <71da148c-d02c-41f4-80da-b90815ffc313@gmail.com>
+Date: Thu, 23 Apr 2026 00:00:25 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0510c1f-4930-4424-97b1-b9c9028eddb5@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9F4761A0012
-X-Stat-Signature: txz8hci8z1owf4sjdfiinh83zfbi44g3
+User-Agent: Mozilla Thunderbird
+From: Indu Bhagat <ibhagatgnu@gmail.com>
+Subject: Re: [PATCH v13 00/18] unwind_deferred: Implement sframe handling
+To: Jens Remus <jremus@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+ Steven Rostedt <rostedt@kernel.org>, Jens Remus <jremus@linux.ibm.com>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+ Jiri Olsa <jolsa@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andrii Nakryiko <andrii@kernel.org>, "Jose E. Marchesi" <jemarch@gnu.org>,
+ Beau Belgrave <beaub@linux.microsoft.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+ Carlos O'Donell <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+ Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ ibhagatgnu@gmail.com
+References: <20260127150554.2760964-1-jremus@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260127150554.2760964-1-jremus@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0A4921C0016
+X-Stat-Signature: 4cpu8tc1ec8chs6yhqr1qzb3o71sm394
 X-Rspam-User: 
-X-HE-Tag: 1776926912-175810
-X-HE-Meta: U2FsdGVkX1/+Ga10MmzpCOrpgVoHW84C1Hc4x01G0eOSL0Thw/ShFVaKZVUtcsZNzrLLdSwNQLBtNTSkzUMk03QNI2uCD7Iy/6oW3xUeqtlU+Ok75xpEF4ukSH84wL0yddcMRRGtUzMA5ityCHqU4a0SUhnww71UZo4byj17cJl50tJGav4iatx5bWVOEZdUNvOPA43LfzwzQ9bGFVvJT1AwKMMVisimLrAPFRMeZ0QsR6TixsYR38IA1dWftr8TvRrXqTXRDDVZZQm2vuEZuk+ggIvRW9Xj2ee/2lGC++WvtKwx3jTgNvupKTC7Rh0aDkaV1eabdyanBwZsZ6C4bN2X8DOjqw3RhXFkRzdNI0jrry+hIKNMK/yri+Uf5FpCzDg1Id7c/WU2KTGCzLBronqD0ejNWBLOFzNMu5Grph1bVCUI2tCJTWtECTIkLwiMlv56bdypOgWehSkKUiNXdbAJX9vs3dCq5/k6zF1mV8l9Z6r8FReEkSx/CN82bwDcmTHv7+EKuIDt+pc/P2XOuAGGCsxLdpydYgIWDmtLiFVyMuDpCfDVqFK4SalQ6A+GtniFxte9DqsS29zQp5zxPODvWjaZT5uzvjVcuqFEyZpLpOVwO36oCpVXplKQ4yWbbYetE3m7no5QY9U/DjzhvwxuPL+45HZGtESxTcz4yz7mSpZj97JYivHFay5shp3Spd1iX8bHFKiUIoTEwgknrMfcEl7ndt/GL4RVp7IRgMaaOlmTjyUxBXm3mw3mPfEkddiQZkLvgS69E4nsLqvnij0PvqjdsBy5k3xKLNtH8Rt+VJKNim9+UpZZYY1WqDA3gc3uhCdycnBFhSPOoROwDlv4I07sg0qnR1mfsrLPPL0zr5n6IfnEjNnA8cZYKWypHA+ZvKVU3dAPTDGhsCdDj5qpyRXS7K6L88O9NxHmaYt83rwN20AO3yImOOkBduLjxwvwR6WOaLEmzI3/SlE
- um0YVcms
- QvplyGrbDrMxHeNcKJuvqhIHyPJurjSWvaK1uJZBHESNx8YHEiTjji+SvzN61ZiOQrjYKyP+2N8t7CK60gEJxXnQI8nMuBbEUO6EaNQI8qIjY+5FyKyNVhlhkpP98lYkkO7hXPWTp24yB8XUsC3HkCTYQV2eha8cLbo4+u2jyzIKvPgx3QvwGNpdhOTXXtyCwPZjinEegTTTW6S8ENc4L3cdV0G6RoKr0qmQgm8pKMoq1RjU=
+X-HE-Tag: 1776927630-779080
+X-HE-Meta: U2FsdGVkX191hSyRSfXO8lDQOtgdCn3yqf/TIPmjP3Rh5hhwY01vO/hSrLv1YKgRu1GRLR1vtHns7xLZHAXRRksOZxLJFf1FUL+XfINUdk4Yf4lij6Lwk/1AEpUxbXg1btdBXGRT5ycu2w2wYKNGLfg1+Hy6x+zVB9gXu6qPunEz/7qdeX5MT3uj6z26nGcPJMF0ydAJJow3sf3gmWGMfWhNG4d6T0rT2TKyWnFYmawxHi8QoFSZo8jIAxBNEEOpUHrgYWYCP8evuV8oKUTi0MaviLAknnemvNdIP0jg9DihKOrFIYD66TbKlpTzL8/3yf/YErnLNlZ/o6kNWBAY/rLsEml0bURWd15QDb1VWglSKigJp6lHudKWRiauxcYdEL5Gd44gDIzN8+/P4No2jv3BeIXf0L9fg3khHFfl6+vVRYa+yQPO96G8HRRj3uXJzG2BHfTsfb0Q48oJ1y/onoDmr8XEZeAyfP2IWeycJrlp3CuMECYyAFwVcmJsg1cStgmljHjgMO9uY7Fro+hRSLaCyFgezMlwI8YZzLQ3Mjsi3kCR0BCSO8QFJ9thDLp7TKhrRAtRRQt9155BYMJCkGaRULuSJjzwpLYuUI0shwq0b5mZjBaXYQdeCBD2hAH05JSPoYvMOPMP4Cc89f1pIESxxbVqw27/pNzUpbCC5po4M3rY1tTunIPPEn9BuGhkoGzWId7ZQBrVooKOiK5bJvXkWJ6qnjIej3CaNYrOy9zVwE7scuaG9KPloOdCrszG6ezbfqRRZYLCwFn4PLScHcoL5zB2MolaY7L04UW+l8POIAS0feqc3qhYUzEMDU95ZmajUfbAeoiN98q9jjrZsX01EjrPVuHZc6up2evJdAafcmHhyO6dk7w4uqyE25d8umqUOu6aOP3eh6Wheuw0JqiQWZ02xto7UmZpRDCtOYjWrATdOzL/O8msXlDrAAb4wQspHBYAZTeMOsNdccd
+ yxcuR2Lb
+ FKA7bf3/Be5k3jqtU3L3Xcv3FDiUVSZvJYitK5HqCFo+w8wV49emiytHjtugreXZEhWJBJA6J+FSHUp/oUK5W9qa7tQGxMiVFXpzG+pT1XxX/rusnd+65QG4a17Fs1OAeXs6QGaeSrRbLt8CO63hSck+plYlqqa/o6k0qomsnEQKK37wIK93AEHb+XSlDS+i+J42WRwMi8owdAYaje3CJ0QGLaO1W8wf2JC+Ss40trraNFWVuzrlJBXkp0EA8TbHZuSUhIndGLJ2n9OsFa9rLoNdycdsiHC1PGGysCOFQXsxxM6lpEw9mF85ANPAp5koq4Os046W2oum9Vnzagn+C6QpfMqF7DAKdNH2/KoIIQr49rpM3dOU5aA6MAvjUKs/vgjxeYZOBvepQXimeB3waYmkNKjSuqju0uSVmGqU9oGetWbTbIj9o8X8l+SjZ+3UpqisrVStE8lLHd7REytbykXz52T9ANmvtUQyKiioL/LuwYW2z8Hl4p+mRLi2WISQaWn7YaPUsjzyeUJwuP2pq1Egc1VgoV4pDInmSuqgx1hGngndSRVk4/WYsE6a1LVoMTuf5ctb5SOTEaFhyi+z9kiUYOMopvLvKCM8QNz06kdatG7E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,202 +141,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 01:55:09PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 4/22/26 09:09, Hao Li wrote:
-> > On Tue, Apr 21, 2026 at 04:49:52PM +0200, Vlastimil Babka (SUSE) wrote:
-> >> When we end up returning extraneous objects during refill to a slab
-> >> where we just did a get_freelist_nofreeze(), it is likely no other CPU
-> >> has freed objects to it meanwhile. We can then reattach the remainder of
-> >> the freelist without having to walk the (potentially cache cold)
-> >> freelist to to find its tail to connect slab->freelist to it.
-> > 
-> > this approach is clever!
-> 
-> Thanks!
-> 
-> > 
-> > I was just brainstorming a bit here: what if we only try calling
-> > slab_update_freelist without grabbing the lock or touching the partial list at
-> > all?
-> > Instead, we could just toss the slab right back into pc.slabs. That way,
-> > we can let the downstream logic for handling "leftover slabs" take care of this
-> > slab together. It could save us a whole lock/unlock pair.
-> 
-> Great suggestion, thanks! Indeed it should not be necessary to reattach the
-> freelist and return the slab to the partial list at the same moment, AFAICS.
-> Makes the code simpler. Here's a pre-v2:
 
-Thanks for ack and working on this!
+On Tue, Jan 27, 2026 at 7:32 AM Jens Remus <jremus@linux.ibm.com> wrote:
+>
+> This is the implementation of parsing the SFrame V3 stack trace information
+> from an .sframe section in an ELF file.  It's a continuation of Josh's and
+> Steve's work that can be found here:
+>
+>    https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
+>    https://lore.kernel.org/all/20250827201548.448472904@kernel.org/
+>
+> Currently the only way to get a user space stack trace from a stack
+> walk (and not just copying large amount of user stack into the kernel
+> ring buffer) is to use frame pointers. This has a few issues. The biggest
+> one is that compiling frame pointers into every application and library
+> has been shown to cause performance overhead.
+>
+> Another issue is that the format of the frames may not always be consistent
+> between different compilers and some architectures (s390) has no defined
+> format to do a reliable stack walk. The only way to perform user space
+> profiling on these architectures is to copy the user stack into the kernel
+> buffer.
+>
+> SFrame [1] is now supported in binutils (x86-64, ARM64, and s390). There is
+> discussions going on about supporting SFrame in LLVM. SFrame acts more like
+> ORC, and lives in the ELF executable file as its own section. Like ORC it
+> has two tables where the first table is sorted by instruction pointers (IP)
+> and using the current IP and finding it's entry in the first table, it will
+> take you to the second table which will tell you where the return address
+> of the current function is located and then you can use that address to
+> look it up in the first table to find the return address of that function,
+> and so on. This performs a user space stack walk.
+>
+> Now because the .sframe section lives in the ELF file it needs to be faulted
+> into memory when it is used. This means that walking the user space stack
+> requires being in a faultable context. As profilers like perf request a stack
+> trace in interrupt or NMI context, it cannot do the walking when it is
+> requested. Instead it must be deferred until it is safe to fault in user
+> space. One place this is known to be safe is when the task is about to return
+> back to user space.
+>
+> This series makes the deferred unwind user code implement SFrame format V3
+> and enables it on x86-64.
+>
+> [1]: https://sourceware.org/binutils/wiki/sframe
+>
+>
+> This series applies on top of the tip perf/core branch:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  perf/core
+>
+> The to be stack-traced user space programs (and libraries) need to be
+> built with the recent SFrame stack trace information format V3, as
+> generated by the upcoming binutils 2.46 with assembler option --gsframe.
+> It can be built from source from the binutils-2_46-branch branch:
+>
+>   git://sourceware.org/git/binutils-gdb.git  binutils-2_46-branch
+>
+> Namhyung Kim's related perf tools deferred callchain support can be used
+> for testing ("perf record --call-graph fp,defer" and "perf report/script").
+>
+>
+> Changes since v12 (see patch notes for details):
+> - Rebase on tip perf/core branch (d55c571e4333).
+> - Add support for SFrame V3, including its new flexible FDEs.  SFrame V2
+>   is not supported.
+>
+> Changes since v11 (see patch notes for details):
+> - Rebase on tip master branch (f8fdee44bf2f) with Namhyung Kim's
+>   perf/defer-callchain-v4 branch merged on top.
+> - Adjust to Peter's latest undwind user enhancements.
+> - Simplify logic by using an internal SFrame FDE representation, whose
+>   FDE function start address field is an address instead of a PC-relative
+>   offset (from FDE).
+> - Rename struct sframe_fre to sframe_fre_internal to align with
+>   struct sframe_fde_internal.
+> - Remove unused pt_regs from unwind_user_next_common() and its
+>   callers. (Peter)
+> - Simplify unwind_user_next_sframe(). (Peter)
+> - Fix a few checkpatch errors and warnings.
+> - Minor cleanups (e.g. move includes, fix indentation).
+>
+> Changes since v10:
+> - Support for SFrame V2 PC-relative FDE function start address.
+> - Support for SFrame V2 representing RA undefined as indication for
+>   outermost frames.
+>
+>
+> Patches 1, 4, 11, and 17 have been updated to exclusively support the
+> latest SFrame V3 stack trace information format, that is generated by
+> the upcoming binutils 2.46 release.  Old SFrame V2 sections get rejected
+> with dynamic debug message "bad/unsupported sframe header".
+>
+> Patches 7 and 8 add support to unwind user (sframe) for outermost frames.
+>
+> Patches 12-15 add support to unwind user (sframe) for the new SFrame V3
+> flexible FDEs.
+>
+> Patch 16 improves the performance of searching the SFrame FRE for an IP.
+>
 
-> 
-> From 6f56844b79fcca5d1dd4203b879af7daa11d09e5 Mon Sep 17 00:00:00 2001
-> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-> Date: Tue, 21 Apr 2026 16:28:01 +0200
-> Subject: [PATCH RFC] mm, slab: add an optimistic __slab_try_return_freelist()
-> 
-> When we end up returning extraneous objects during refill to a slab
-> where we just did a get_freelist_nofreeze(), it is likely no other CPU
-> has freed objects to it meanwhile. We can then reattach the remainder of
-> the freelist without having to walk the (potentially cache cold)
-> freelist to to find its tail to connect slab->freelist to it.
-> 
-> Add a __slab_try_return_freelist() function that does that. As suggested
-> by Hao Li, it doesn't need to also return the slab to the partial list,
-> because there's code in __refill_objects_node() that already does that
-> for any slabs where we don't detach the freelist.
-> 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  mm/slub.c | 63 +++++++++++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 54 insertions(+), 9 deletions(-)
+Thanks Jens for your work on this. Apart from some of those minor 
+renames you are already planning on doing (as you mentioned in the 
+meeting today), the SFrame related bits look OK to me.
 
-Looks good to me.
+Reviewed-by: Indu Bhagat <ibhagatgnu@gmail.com>
 
-Reviewed-by: Hao Li <hao.li@linux.dev>
-
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 35b6cd0efc3b..95e4289671b3 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -373,6 +373,8 @@ enum stat_item {
->  	SHEAF_PREFILL_OVERSIZE,	/* Allocation of oversize sheaf for prefill */
->  	SHEAF_RETURN_FAST,	/* Sheaf return reattached spare sheaf */
->  	SHEAF_RETURN_SLOW,	/* Sheaf return could not reattach spare */
-> +	REFILL_RETURN_FAST,
-> +	REFILL_RETURN_SLOW,
->  	NR_SLUB_STAT_ITEMS
->  };
->  
-> @@ -4323,7 +4325,8 @@ static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags)
->   * Assumes this is performed only for caches without debugging so we
->   * don't need to worry about adding the slab to the full list.
->   */
-> -static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab)
-> +static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *slab,
-> +					  unsigned int *count)
->  {
->  	struct freelist_counters old, new;
->  
-> @@ -4339,6 +4342,7 @@ static inline void *get_freelist_nofreeze(struct kmem_cache *s, struct slab *sla
->  
->  	} while (!slab_update_freelist(s, slab, &old, &new, "get_freelist_nofreeze"));
->  
-> +	*count = old.objects - old.inuse;
->  	return old.freelist;
->  }
->  
-> @@ -5502,6 +5506,35 @@ static noinline void free_to_partial_list(
->  	}
->  }
->  
-> +/*
-> + * Try returning (remainder of) the freelist that we just detached from the
-> + * slab.  Optimistically assume the slab is still full, so we don't need to find
-> + * the tail of the detached freelist.
-> + *
-> + * Fail if the slab isn't full anymore due to a cocurrent free.
-> + */
-> +static bool __slab_try_return_freelist(struct kmem_cache *s, struct slab *slab,
-> +				       void *head, int cnt)
-> +{
-> +	struct freelist_counters old, new;
-> +
-> +	old.freelist = slab->freelist;
-> +	old.counters = slab->counters;
-> +
-> +	if (old.freelist)
-> +		return false;
-> +
-> +	new.freelist = head;
-> +	new.counters = old.counters;
-> +	new.inuse -= cnt;
-> +
-> +	if (!slab_update_freelist(s, slab, &old, &new, "__slab_try_return_freelist"))
-> +		return false;
-> +
-> +	stat(s, REFILL_RETURN_FAST);
-> +	return true;
-> +}
-> +
->  /*
->   * Slow path handling. This may still be called frequently since objects
->   * have a longer lifetime than the cpu slabs in most processing loads.
-> @@ -7113,34 +7146,42 @@ __refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int mi
->  
->  	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
->  
-> +		unsigned int count;
-> +
->  		list_del(&slab->slab_list);
->  
-> -		object = get_freelist_nofreeze(s, slab);
-> +		object = get_freelist_nofreeze(s, slab, &count);
->  
-> -		while (object && refilled < max) {
-> +		while (count && refilled < max) {
->  			p[refilled] = object;
->  			object = get_freepointer(s, object);
->  			maybe_wipe_obj_freeptr(s, p[refilled]);
->  
->  			refilled++;
-> +			count--;
->  		}
->  
->  		/*
->  		 * Freelist had more objects than we can accommodate, we need to
-> -		 * free them back. We can treat it like a detached freelist, just
-> -		 * need to find the tail object.
-> +		 * free them back. First we try to be optimistic and assume the
-> +		 * slab is stil full since we just detached its freelist.
-> +		 * Otherwise we must need to find the tail object.
->  		 */
-> -		if (unlikely(object)) {
-> +		if (unlikely(count)) {
->  			void *head = object;
->  			void *tail;
-> -			int cnt = 0;
-> +
-> +			if (__slab_try_return_freelist(s, slab, head, count)) {
-> +				list_add(&slab->slab_list, &pc.slabs);
-> +				break;
-> +			}
->  
->  			do {
->  				tail = object;
-> -				cnt++;
->  				object = get_freepointer(s, object);
->  			} while (object);
-> -			__slab_free(s, slab, head, tail, cnt, _RET_IP_);
-> +			__slab_free(s, slab, head, tail, count, _RET_IP_);
-> +			stat(s, REFILL_RETURN_SLOW);
->  		}
->  
->  		if (refilled >= max)
-> @@ -9366,6 +9407,8 @@ STAT_ATTR(SHEAF_PREFILL_SLOW, sheaf_prefill_slow);
->  STAT_ATTR(SHEAF_PREFILL_OVERSIZE, sheaf_prefill_oversize);
->  STAT_ATTR(SHEAF_RETURN_FAST, sheaf_return_fast);
->  STAT_ATTR(SHEAF_RETURN_SLOW, sheaf_return_slow);
-> +STAT_ATTR(REFILL_RETURN_FAST, refill_return_fast);
-> +STAT_ATTR(REFILL_RETURN_SLOW, refill_return_slow);
->  #endif	/* CONFIG_SLUB_STATS */
->  
->  #ifdef CONFIG_KFENCE
-> @@ -9454,6 +9497,8 @@ static const struct attribute *const slab_attrs[] = {
->  	&sheaf_prefill_oversize_attr.attr,
->  	&sheaf_return_fast_attr.attr,
->  	&sheaf_return_slow_attr.attr,
-> +	&refill_return_fast_attr.attr,
-> +	&refill_return_slow_attr.attr,
->  #endif
->  #ifdef CONFIG_FAILSLAB
->  	&failslab_attr.attr,
-> -- 
-> 2.53.0
-> 
-> 
-
--- 
-Thanks,
-Hao
+> Regards,
+> Jens
+>
+>
+> Jens Remus (7):
+>   unwind_user: Stop when reaching an outermost frame
+>   unwind_user/sframe: Add support for outermost frame indication
+>   unwind_user: Enable archs that pass RA in a register
+>   unwind_user: Flexible FP/RA recovery rules
+>   unwind_user: Flexible CFA recovery rules
+>   unwind_user/sframe: Add support for SFrame V3 flexible FDEs
+>   unwind_user/sframe: Separate reading of FRE from reading of FRE data
+>     words
+>
+> Josh Poimboeuf (11):
+>   unwind_user/sframe: Add support for reading .sframe headers
+>   unwind_user/sframe: Store .sframe section data in per-mm maple tree
+>   x86/uaccess: Add unsafe_copy_from_user() implementation
+>   unwind_user/sframe: Add support for reading .sframe contents
+>   unwind_user/sframe: Detect .sframe sections in executables
+>   unwind_user/sframe: Wire up unwind_user to sframe
+>   unwind_user/sframe: Remove .sframe section on detected corruption
+>   unwind_user/sframe: Show file name in debug output
+>   unwind_user/sframe: Add .sframe validation option
+>   unwind_user/sframe/x86: Enable sframe unwinding on x86
+>   unwind_user/sframe: Add prctl() interface for registering .sframe
+>     sections
+>
+>  MAINTAINERS                               |   1 +
+>  arch/Kconfig                              |  23 +
+>  arch/x86/Kconfig                          |   1 +
+>  arch/x86/include/asm/mmu.h                |   2 +-
+>  arch/x86/include/asm/uaccess.h            |  39 +-
+>  arch/x86/include/asm/unwind_user.h        |  69 +-
+>  arch/x86/include/asm/unwind_user_sframe.h |  12 +
+>  fs/binfmt_elf.c                           |  48 +-
+>  include/linux/mm_types.h                  |   3 +
+>  include/linux/sframe.h                    |  60 ++
+>  include/linux/unwind_user.h               |  18 +
+>  include/linux/unwind_user_types.h         |  46 +-
+>  include/uapi/linux/elf.h                  |   1 +
+>  include/uapi/linux/prctl.h                |   6 +-
+>  kernel/fork.c                             |  10 +
+>  kernel/sys.c                              |   9 +
+>  kernel/unwind/Makefile                    |   3 +-
+>  kernel/unwind/sframe.c                    | 840 ++++++++++++++++++++++
+>  kernel/unwind/sframe.h                    |  87 +++
+>  kernel/unwind/sframe_debug.h              |  68 ++
+>  kernel/unwind/user.c                      | 105 ++-
+>  mm/init-mm.c                              |   2 +
+>  22 files changed, 1414 insertions(+), 39 deletions(-)
+>  create mode 100644 arch/x86/include/asm/unwind_user_sframe.h
+>  create mode 100644 include/linux/sframe.h
+>  create mode 100644 kernel/unwind/sframe.c
+>  create mode 100644 kernel/unwind/sframe.h
+>  create mode 100644 kernel/unwind/sframe_debug.h
+>
+> --
+> 2.51.0
+>
+>
 
