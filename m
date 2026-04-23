@@ -4,174 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2714FAD41B
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 06:04:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA0DFAD41E
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 06:13:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC4246B0005; Thu, 23 Apr 2026 02:04:49 -0400 (EDT)
+	id 6E34D6B0005; Thu, 23 Apr 2026 02:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E74696B008A; Thu, 23 Apr 2026 02:04:49 -0400 (EDT)
+	id 693DB6B008A; Thu, 23 Apr 2026 02:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8A566B008C; Thu, 23 Apr 2026 02:04:49 -0400 (EDT)
+	id 582C96B008C; Thu, 23 Apr 2026 02:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C7D5F6B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:04:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC0AB1C038D
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:04:48 +0000 (UTC)
-X-FDA: 84688781856.05.8D2D3FC
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011038.outbound.protection.outlook.com [40.93.194.38])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EDBF1140002
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:04:45 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iDLMXlSG;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.194.38 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776924286;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 462F96B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:13:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E5C99120350
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:13:44 +0000 (UTC)
+X-FDA: 84688804368.17.2D286D9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BF7BC180003
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:13:42 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sfPr5r51;
+	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776924823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oX6VXG7yqjSJ584VzQgw9qIHvmuZYSUSJPRi+p9aQRk=;
-	b=f24Jl5ml53UDKTHVxOp2HeCN4oNyWZXBvC3962kG8mBbXyvf9tvrra7+4VflV39qeFW9Jy
-	pZ4DeRvPSoCiu/Un/hhGfX7dbfcU8NjKLMgPrqs6vE7Gn+C1ksd3pz9jNfZObDKU/NCEuX
-	L0NhRf2glk39N2Lu3Ud8WcP6gL4Qd1U=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776924286; a=rsa-sha256;
-	cv=pass;
-	b=u/CbOZnVRorBowsnI3Ogh/X9iWEhg3UnPiHj2ccDuW4xWYHu9O6ZvfLGBge981W+vidwbN
-	FR3rdE2Nb9da1dNJV7G3zClrdzds1LO3QVao4UePMMC48h3NaOLMEcyixVYLoYyFUxtmxr
-	jxWTEzgjT7x6lJgamFNq2VssPF20qNk=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iDLMXlSG;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf09.hostedemail.com: domain of balbirs@nvidia.com designates 40.93.194.38 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M94iFYPcViMURDrXyOzJYj929pVx2/tSvjGzHA0+y3Lpb2llUVPCgJ6Fs5bd9Q4NUXp7/HXuRxlx9inVZ3xOF6qmaDZor39yrN4yyKH0GJByh75INj5gXwBREsdt/T3C2GvQ3AChlxX2yt1b81WSvbQRW9jGvj+lhsG1yu6poDaGpOTtRWVt7GllMM6bfDZGex42H5jCs/kbB8b6FZCADCc7754kaVrpZLX91mBbbowqzctv4IFYCsGmjRigy+wfAhc38gwOkx0i5dLibzvW8M7wIXy5N86uUEhVbFYpg4iL8vORNPFB9c2HuSndMKezKYuy10T2EiQmRbreewI/9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oX6VXG7yqjSJ584VzQgw9qIHvmuZYSUSJPRi+p9aQRk=;
- b=GacU3fhSGdcyucDOLXk0D6rJuMDUad8IzeT9k4NjuAbz9W0L+nYCk4kPCO/D+Nc5ZLBRWRBrequmKHzxBd77T0rQUnsIUKQ8p3NxikMpSAEQJTg4vZk3IE+/shVVsjfMd25l1RrJmQX8JbUZRWqw0ovSdF/2CVL7pD9QabXqU9pcPtpAkjo4YRS/lFKAGKSzxaq+c/+4rJANwJzBelCkLkP13veO1rqQ6sLwv+DhvXhHCQgYQaSf0Pu86mZP4nf8s83M/wrZLm+zbqnB5ielSMbNl6RzNSCaTBmgh+958rUriPiQ4/eAahqBn53mr+1b4ckIch+W+BkMJqdcN6a4rg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oX6VXG7yqjSJ584VzQgw9qIHvmuZYSUSJPRi+p9aQRk=;
- b=iDLMXlSGDQCyf6vEkOz6vA1BUjmkYJHoH0zHgy2xIaTc5QD2sBJ+bI5mGLh7xlc41utUbjR+4J4FvOg6B5u6AMBeIC3Gqjg3I63Dv1VXgQg5D/I5Sxi69Gbc49OR3nObduEll3JYQzrEkhoPYlwA9ezRCdpN0c7P6NSHVI99VhkKkfOutExSbP6SkE6L/EOoDDi4W6jHNFSOX3GZFX/5lT++6fga19tiuZSupwx77hTR2gclCmYGRMD4RrlXr8IMIosCCLwiC1DpQVxQmgAAfjFnC0MoYhMDkb6JILaSS0Otw+ylNdQJ3nXh7mbtOVQFof/IVWiGijtBuJqv3dc8vA==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by SJ0PR12MB8140.namprd12.prod.outlook.com (2603:10b6:a03:4e3::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.18; Thu, 23 Apr
- 2026 06:04:39 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9846.019; Thu, 23 Apr 2026
- 06:04:38 +0000
-Message-ID: <b0bd6cdc-511e-4fad-959d-3fa75c865aa8@nvidia.com>
-Date: Thu, 23 Apr 2026 16:04:32 +1000
+	bh=jhIXZ41ctlzy+OLzj8RF3QkMk4V0d1DFpRr7KKLceGM=;
+	b=5XSB5d61YHoMiPVe+ujWldGct4fFVtUiibdGsPDuuUHXv9ex+Z0wEwBzmL6VGZsN7D38ue
+	ikCylMYrUb/+JibWF2wSXAA8n/kA14WH4QDLUDVBjr6Z8LDZ7tuccSIY4zC3fGGKTAW/hy
+	T6hM3aBRtpiHIoFNdY3m/NqIIK9OYC8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776924823; a=rsa-sha256;
+	cv=none;
+	b=Y8kyWGN/ijU96iJIItoKgiHModf1+73PBRl7d+PaEyfRmFn2LtqYaS6ql6AXro+K3oadUa
+	e/KnfCMZw1kvG3ILuVA5e/yCHMPB25iA+vJXnix38wd77yfpx5lJucTrbkRqZaqAaxQcAL
+	ZwmSU03JUTBRljo1+qfAstRqIKWQyxM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sfPr5r51;
+	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 13BC71BB0;
+	Wed, 22 Apr 2026 23:13:36 -0700 (PDT)
+Received: from [10.164.148.53] (MacBook-Pro.blr.arm.com [10.164.148.53])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 04CB43F7B4;
+	Wed, 22 Apr 2026 23:13:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776924821; bh=LGAfpRqIhnl3CPS+AsBkIGmmpk95jpHJyYtlwZMXpoU=;
+	h=Date:From:Subject:To:References:In-Reply-To:From;
+	b=sfPr5r51vS9cCdCkVUHoMDTyVehM4d3m6gn9Rcbv3STf9NTp/F2nT01kCHqiaaXcE
+	 BAS2Pjl53wqDjFEp/4vLNu6hZCp2U73OwTjUKUlWKakyEPpXApZFF2JzGfj1rBJX+F
+	 oKVn/ypf7E2VktBkNbJeNwV2k0lur47tZgZj4kRg=
+Message-ID: <c2ab6944-9311-4370-81b8-46757725ba35@arm.com>
+Date: Thu, 23 Apr 2026 11:43:30 +0530
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm: Introduce zone_appears_fragmented()
-To: Matthew Brost <matthew.brost@intel.com>, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
+From: Dev Jain <dev.jain@arm.com>
+Subject: Re: [PATCH v2 1/3] vmalloc: add __GFP_SKIP_KASAN support
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+ Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260423055656.1696379-1-matthew.brost@intel.com>
- <20260423055656.1696379-2-matthew.brost@intel.com>
+ Uladzislau Rezki <urezki@gmail.com>, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Peter Collingbourne <pcc@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ david.hildenbrand@arm.com
+References: <20260324132631.482520-1-usama.anjum@arm.com>
+ <20260324132631.482520-2-usama.anjum@arm.com>
+ <727df89e-2069-4a7d-b3c0-88f89cd3dcf8@arm.com>
+ <e772bbfc-1f77-478e-b378-7947ca7a8b3f@arm.com>
+ <25c78859-f514-47ac-a3b9-7dcde101f72d@arm.com>
 Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260423055656.1696379-2-matthew.brost@intel.com>
+In-Reply-To: <25c78859-f514-47ac-a3b9-7dcde101f72d@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0205.namprd05.prod.outlook.com
- (2603:10b6:a03:330::30) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|SJ0PR12MB8140:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f6ab843-8319-4cc3-e12f-08dea0fe33ea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|10070799003|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	aFIntQNCMJlFgv4lmQz8seFAFRPs/wM5RhGq9G05BK82KtsHHb+hXFf81Qu4Hgvag+TGfv11pTmT/qqG4pygN6RgG0GkItwgA3Nn1OSssx5y6R5eAeya0T3Qa24CaHJRsS6l15l1B0Zp5h9OKL6Kc4wQaPkb5j5Jz1c3RqzC08zEZn/8eFBMk6aAefCGuhwCbfIjVbjGKnOsycRTytKNLAZgs3+YDZ60b9v8fIWC+wpFnn68Qd02LYv9HPCQ1yl2+zP0m4ZWfldmweUwVuVLSs4KBokDt4UEEP0dkNoJgES5+PWz9TQ25xocoJALNhrxkI/92oV1MwlNRKMZAMNAxLMZCZHZIObZ6UJYHIV2T8HCzn3TIN2ZGPZA+/B/SEJymosYQkl4C3PcEx46NtsFSm6jiOcKV2yQ0jz9sxXWF474sbaacVj0IF1k/x+P+aTWGd1UcSg+Cch/eMlWCr79C/h1niyqsCaPWbEvUgOoLkT7g8ifknZ2i49/tUFBrQ2M1uIjV8ieOCJtBKW0Ve7IgqmIdQuKCyBwgikcV80O97l0z227RUXLSR23ObVl6Gwd+mMdE4HAzbW5mlZc3rxJR30/4Umn7tRlIksWgCqV+rIRx6bBJDWdrZdcuc2n3SwV+BscrlJLraaRXm4K+EsmxnRNFxbq3gObosQaODHQSmlSttDnwqTIt8yxVaG9yFUEIwLhuUoWU+fbGOwxMGe3/NMFu2DJ7uOHgUSPrmkee1w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(10070799003)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dERLQjBMakpORXJuSU1YN2k1Ry8rb05pU2JqSGE3Sk41TkgxbHRuU0o0KzFw?=
- =?utf-8?B?V3ROcXhXNXZadTRFbWlWMjZFWlpCbmJjSHh5amFwckIwcUJ1a1BseXFJSkh1?=
- =?utf-8?B?SG11R1IyUHZCazVaYVZRUlJDM2UrZytOYzNOeDRGd1BvMVZLZUNqeUpmaTVE?=
- =?utf-8?B?R1o0YkxmSUFMNkJmc3l6ZkNxcEY3eDB4cjc3V0xxUjltc3lpRW5YOENscjVu?=
- =?utf-8?B?dVo2WXp1emlqTmdMNWFpRmpzUTNWd25mUlhNR1RZcENMUTlBeVN4K3IvOCto?=
- =?utf-8?B?cFB6WnVUbmxjU0JkS2dHdlc0TTBLVWhvOFpnemN0TmsvOGNDd0JvamFNc3Jk?=
- =?utf-8?B?cEQzMjljUm5sZ0FxcFZkcEo3c0FiTjBoVjd2S3pTTnlUU3A1S0xNbTN3Y0pW?=
- =?utf-8?B?SnN1MVRheVV4b2NmNkM3VGZpLzhkZEdKNExjaDk3MXV4dDhOenJreC9WMzQ0?=
- =?utf-8?B?cXlWdkhjejRkS3o3djl5NC9MZE9SaHZScEkwLzhhbDlVN1JXQTZaVFE4Y3pa?=
- =?utf-8?B?MXkvVDdmcXUrRnpwMXl3Q3czS08rajlTL2JSWnhielQ1NURCUXdQWUgxdTVI?=
- =?utf-8?B?dnBHQ0cvb2JXQjAvd2JSYktxZlliTlFzRCtzeSs3VG95Wm1UbG5kcW44dnJQ?=
- =?utf-8?B?NFc4SXlsNWtOa1I2U09TdXlkak8zaDQ3aG9ERGVJVlpoV2ozMStKMnk4MGdn?=
- =?utf-8?B?UWZjRWxUTVc0NnQ1ZHd0NTlkSmxtN280eWhZdU0wZ01ra0FPVm54MlB0c1Ft?=
- =?utf-8?B?bVR1cVM0Ym4vSnRtVFFEa29XZHptNlp0Mk90SWRMT2s3NTBIK1BqaUhXdlVp?=
- =?utf-8?B?NVNseFdvSWJ4SlNDdVF0NzdJVG51VFZwQTMyTnhrZXJKdk9EWFo5WUNNZ1ZH?=
- =?utf-8?B?NkpFYmRwU0xvYnNvUzdqVFRPcC9rcElJekROL2FaM1E0RWJBYTZ6Uy9oOFBW?=
- =?utf-8?B?YnFGOXRGSEVGaWEySDJjOC9PUFhzalFOZ3I4ZFdkN3JiQlAyRjVzeC9lNWEy?=
- =?utf-8?B?c0V3ZnQyaDZaT0RxWTRzMFI5QUZMY3pGKzJIM0ozTC91K3NGbk5OanhYWVla?=
- =?utf-8?B?dG1tR0VzYVd3MncvdWJVbGdObGFSWll0VHNmdXBhcTR5bnRFSGVKWXhhSXZp?=
- =?utf-8?B?eXlVb1ZnK2trUktWa2x1M25NS2JjSkFtWW0zWHJ3R0ZRTUtxNlNyZXdUTFl6?=
- =?utf-8?B?SWNvU0svWDVRSmdxV1RGYlJtRlJ0bHcyMmtOU0F1NjFOSThVRldHbm1PcnRI?=
- =?utf-8?B?bjZJZEJFZ1o3Y2dTWnVmUkhxcnlicCt0Y1BaK3AyeXdXbC9OY0FJcVphS2NV?=
- =?utf-8?B?WnBtcGtOc3VsWVd4S1RFM1YvU20zZzNna29xNVBPSnh4MjJzRUxPdkowdTYx?=
- =?utf-8?B?Y3RZMkVLaWx5QjJUajE0U0pnZWQxMzh0YjRoNjFGL05zeWZCNWl3NmliSTRv?=
- =?utf-8?B?bjhwM0ZsYmxRTXpQV1NSWTAyZEJObnpUK1paeU1FUk9OMHoxUmdOQk03SXVj?=
- =?utf-8?B?TlhEK0pveG1SM0tLZVdQV29rZzByUmFzYytWZVlISVJldFh4akRmODR4bmNE?=
- =?utf-8?B?K1VYZmtIWjlVWXJMTU5SaHRnTXV4SUNFTElUcUM5NCtYai9nbWxVMTJTa2Vx?=
- =?utf-8?B?UkV6VU9YcUNKeXdYOGI2VnVOWjZsdlpHR1B6RGdqa3ZFcWFSSHVDZHRRWGwx?=
- =?utf-8?B?dHAzUC9qbjBpYm9NQjZQSTNicjFYWnpiRTIySzIxQlEwRVA3ZGNEOFRsQWVu?=
- =?utf-8?B?b3dVYmJFTlJVOWNFaXNtSkE4T0ExRXUvWDFZTllFbHdvTmxHTXFXOGlUSFhu?=
- =?utf-8?B?UlRrQmpBT2c5aGNRd2VseXJtQjE3VUxKWTBDN2JLc0dmMEVXbDhQQ3FIRzMy?=
- =?utf-8?B?UTMyYjlFakpObk1sRU95YlRiVkJpbEVUQmppWVM0M2Q3YTlNN3B2Q29lRk92?=
- =?utf-8?B?UUFFYnFTOW1WWGRQRXNpaHdGVmpjYXhEelQ3YlhNaDRJRVNsdDRUamR3V3Nv?=
- =?utf-8?B?YUpDSGxqc1BiRDRJOTFyUzZvZE9udER3YnRxT0krYXNxQVB2QlRxTXJOTEZO?=
- =?utf-8?B?WWJYN003MHBrTko0NExsNEVFV3p0R3pKYUJyQmFMQW5OSU1iQ0gxWUpZS05F?=
- =?utf-8?B?ek1aQWxYdXNxRzBDdGN3c0JBOXk0ZUMrM0dsbC9PN0FIaEE0Vk5vMjRWOFMz?=
- =?utf-8?B?cGl6a0Y1eWdKc01Vb0VNU0ZWQk9NNTlvYTdpWkJqUkFQVW1oak83Sy9SREV4?=
- =?utf-8?B?bC9mejNpT2FCTUx4Zm55ZHY4UEFENnBxQys2Q0cvQ2tEWU1qUWl0V1lvN2tv?=
- =?utf-8?B?c2ZDN01ocnNHak1uTlVmTTVEdnZKcTJEQ0VqVHIrKy9JTVgxYklQZXkzWDNs?=
- =?utf-8?Q?V7tVcMp766vIim4Pxtra2VgvYo+WQdPuZg0QJ4G52ktF8?=
-X-MS-Exchange-AntiSpam-MessageData-1: jqTGu5TRbl0tgw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f6ab843-8319-4cc3-e12f-08dea0fe33ea
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 06:04:38.7620
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gakdiFdC+ZQ3tfauMC02F9ZnIdp+pTxyJGqmNJRPNco2pQvTWW2kwlx9+PeinKF4izZx0kKTBQU7D6gTtQXuoA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8140
-X-Rspamd-Queue-Id: EDBF1140002
+X-Rspamd-Queue-Id: BF7BC180003
 X-Rspamd-Server: rspam07
-X-Stat-Signature: xe8pd9je1hfu8ke3csqdpucw4qgsbrg9
+X-Stat-Signature: m31osfz463ajffkp6z5qt41ssj7gmus3
 X-Rspam-User: 
-X-HE-Tag: 1776924285-214043
-X-HE-Meta: U2FsdGVkX1+95ta5GpAPckLwOD98aClnWPpVXppth0tik7XQ4wCqrsFTBkUmt3MRLYgnKHSgXkeJzhywWzUvJCOowO2Oig52Y5yeSwuKon1m9TK9sP+jXwipxt9pm5C2nhnGwFq+qnwR5U/J0d3j/t5ca9BgAG7ZyhXABX4t4JUJVblEvPtoAvJZUYt3zoQQAO6A18YjF99G5/7il34WkBV+CNFCUZjV1HtDGvK8mkXhOAJgYUIBYBUgB6m8GFBOkGj8Q1yzLHN5rOMT8egKWPgQbIrjoTT2eEvrULSzya/FfXDZX2RmOWm/HrQbGevQUnQp7Wq16fZdSoYWj3HyYQMtM2TNgQVB0aiZa3Y6BCQ64S5+63eFI6p6NyO7lBfT36WfTaBcK7sRAEhS00vK5FPZvE48acvKCEWDLHXuVXyD33WS/9NRuo1qTzMkatQKIVwl81YmLvZSXlbzcpxuhH2N8D/RuZKUqqLV65tlYpmh633J9s0/cmloV+7q7QMs1KG8o1D7JGr7Go6BzjqVe0p8nejRgtqxATTuKimJw3ktZI1AApjaY7OQmh0IiGUXhBYFacxiiDHNEgFFplnP+hmygJPcexufxsYN3+/R3qidk+e3kzzGQc9ezOrG+0+zKuGAyB4ogAv7wVHtsQrcgwfBAMe39DtGhpm2Kudy5bP8BgoeQLCUN0eBmFoAmlM2Ecb17LglvqNkRNsLOssd0xBdZIy6NiY9/FHKGK62hyRFq1RVBPXkvv83A44aPmPaSiJcItDkNgBSSfJnnLVSnkhgU5HWzLIYE3PFhdKGpeWH8TrtZdbkIDvSbtR0ij+/wmzr9SlIzffd4lYch+dCMpFPyq/rjskQpEA1uo23uP5l7sLuOG8UOK1ubYLvbVhXkSCn79MTxfGT5D5CBUFbQQgAVI97FHmgxPzddOAXn3X7Yeyn9cTLrZdMjaoS/RwEpCFFBTXn5mVu6EcQ4HA
- HEQQk6FT
- j4BsEB9B/HtSa/P8j/1ykMR9L5ufX0hhmhn0ruJ5LG3bHWBonYmIdt0ZZKn1FeBIIl5JmZXXMhwLhiuQCU68CzXfV8oSp1oRKaznlx9/tWYmLRtBys4yu7bVQQwIdqPGbCS6BPS11OXgN2pUPItNQV5nysT/HX1mn2lxcATLzhg4s4TUbjxt2selVbG51v6WE4OHTUFbB0qLtuQp8897uh/dM+OSMIZ1Dzoc0qTTumGOMEjiaL3HFOeS1hJ05qdMd95RFBXdExDsF4uOwBSYpK3M0atk2JiD81+jgE/4NLkN5CrQTcQKsDcBCgS8FYibZrT+nBLa3a3zJ9/zFwkHMttB0GBzFDNMvgVVjcowvN6d3TjvQkCHfb2U+ik5UeivHYglzhhoagbBu8ASNeu9oYlOoI4ivCPdiEWyQtMiez8rZ4gCVoHLyam4WwzfEf5tGDS+Btlms3iTzp2wWMyIpHogrqEM5Z7tAl/4hSXGT8U8EWS3RkgHDhl0xl35gNN+Qw8LhLsyOjqMGHMC5gc99i0LR2s1TTjcYfMM2Nq/zGp0GaW7d7MKQSz+JA8wv0aiupQoZ2kxXBJvDfNbh1HOp8kez2+r6X8bLFByuLxWxzmkLLLwhXPUy8xck0BphEEP0Jc1dcg1wK6/LBycUDebUvMR15gbSAtuu42uu7eDZ3t/7H1v9IqJgCcpS1oZFF3GxzlpGquSGi65y2NdmEkJtAMunzDh+Yx2T4dADcy4KREx74GNViKFbsO2zA0FJkRoNn3iW
+X-HE-Tag: 1776924822-323319
+X-HE-Meta: U2FsdGVkX19djLq5trIgkVvtQyvdb0jszF+QTDIM/GK4FzRzng/o6nHgk6+99UeiIIs9DtCez3Iu/0TRF0JSJ3txVI2vulOElZgoHAVL5+bWBHc2sWcsGh11c0KFpj4+7+VpOVV5LoysgxPHxQa8JT93uY0g4D/3h5E0vJotPRrxzNL5pcf45agJgkfmEfXcg56MMq4fv008hmHyQQxHBZm3nvYnme3kdTK88RBOEhqMZUh5IwxjVWV5BO0OsFk4s+febMaJmYuWShrpOR2wXdohRvc/gZgNxT29Kx6G+9DEOUhm2MPI6CJr3t6qX0AsoMXVu4mSvYXjdpF52gtPuzU8+RXuznetPN0UPh8FC6AORRI7r9/brAZI1VyCcRnNatRkBYH6l7CI+cLJqiP+3RrX8+9VLIt7rnKpVXpHdHq8emOU2Kxa7MBXTcsKW1D9brE0j//31PgUR+oulRJcpQaALzVI9hUcX48EHde58MLXHDnOUCeykrobX72wxBZxKz13coeNl9YNQ1K8OFGym344pnAdDtpyAEd+TluF8yeGooDHH4Iey/acgrszT1lkiIL6GD28MNntRSvgbVABeFxTC0W7UXHrybooer4OFNqJ+n7zfenwbOqBxGwF8/56YjX/srjSuYm/FSi8jQCVkcNj8nPmQDbsUaHRgVUJmB57SfhGAPwz5Xo0Tqdz5gR5UfbJLnreAABccu/+Uuw9Bl3AFVhGwQyFKX2ZmBhhtu2G1gltnbx6H+I0cgNVOW8igihlaNuX0bmyEeh/CFXhPjImpWSZMORu+vmFYI0WShO85JSjqMtWR98COKdLPvO0WnfzyBS95bbXTi8NuB5iAZhbrfqBNjsGV3rt3mX5rgqRbeTSYaTw+X8YZTdAjYKA5iiTApga0h3lesM9ra9cECTuEkRGpeJrsAlw2mQjjTVB5IITc0F77XjT1zn2z/BbWYdcxAhuOAVEkfyIye5
+ ae4SJ9fk
+ Jk9E5fpcwZE4pxZtHmN8CkRnAVvuOJDj0oZdsCXdsvkJxOv0hmCzckYejFnV3UX+9RTAe4TDPDoqfroXDaJ/bIWuy604zjjieb198ozXZajAr5qXTI7pKIOaAdpLISktOjpR7hxiyH9/4fSPFTPOc7p+0bhZCmNTc8j5+FH/ZrqJwMc/QjSbc0yMZnwGcKsK0KTruGLloCJN3k8n4twqm4gYDDoT3ISMhw5pZxrGYeK60h9vIhNfCQfioD1xFfqg1ePTh5AQkPB52re+4xE8vjuCP1cDXU8Dk5ls4WvPxc9hNj7KGYeFleZzcsxGpBf0BQJwGwAXXam+nVgldhezW7b4cchKOEfCdSCn0ITO3Tbo82WCbP+9qCcapQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,68 +111,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 15:56, Matthew Brost wrote:
-> Introduce zone_appears_fragmented() as a lightweight helper to allow
-> subsystems to make coarse decisions about reclaim behavior in the
-> presence of likely fragmentation.
-> 
-> The helper implements a simple heuristic: if the number of free pages
-> in a zone exceeds twice the high watermark, the zone is considered to
-> have ample free memory and allocation failures are more likely due to
-> fragmentation than overall memory pressure.
-> 
-> This is intentionally imprecise and is not meant to replace the core
-> MM compaction or fragmentation accounting logic. Instead, it provides
-> a cheap signal for callers (e.g., shrinkers) that wish to avoid
-> overly aggressive reclaim when sufficient free memory exists but
-> high-order allocations may still fail.
-> 
-> No functional changes; this is a preparatory helper for future users.
-> 
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> ---
->  include/linux/vmstat.h | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-> index 3c9c266cf782..568d9f4f1a1f 100644
-> --- a/include/linux/vmstat.h
-> +++ b/include/linux/vmstat.h
-> @@ -483,6 +483,19 @@ static inline const char *zone_stat_name(enum zone_stat_item item)
->  	return vmstat_text[item];
->  }
->  
-> +static inline bool zone_appears_fragmented(struct zone *zone)
-> +{
-> +	/*
-> +	 * Simple heuristic: if the number of free pages is more than twice the
-> +	 * high watermark, this strongly suggests that the zone is heavily
-> +	 * fragmented when called from a shrinker.
-> +	 */
-> +	if (zone_page_state(zone, NR_FREE_PAGES) > high_wmark_pages(zone) * 2)
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->  #ifdef CONFIG_NUMA
->  static inline const char *numa_stat_name(enum numa_stat_item item)
->  {
 
 
-Without any usage/users, this is hard to review. I don't understand the heuristic
-or it's logic as applied to fragmentation either.
+On 22/04/26 8:08 pm, Ryan Roberts wrote:
+> On 22/04/2026 15:23, Dev Jain wrote:
+>>
+>>
+>> On 22/04/26 6:51 pm, Ryan Roberts wrote:
+>>> On 24/03/2026 13:26, Muhammad Usama Anjum wrote:
+>>>> For allocations that will be accessed only with match-all pointers
+>>>> (e.g., kernel stacks), setting tags is wasted work. If the caller
+>>>> already set __GFP_SKIP_KASAN, don’t skip zeroing the pages and
+>>>> don’t set KASAN_VMALLOC_PROT_NORMAL so kasan_unpoison_vmalloc()
+>>>> returns early without tagging.
+>>>>
+>>>> Before this patch, __GFP_SKIP_KASAN wasn't being used with vmalloc
+>>>> APIs. So it wasn't being checked. Now its being checked and acted
+>>>> upon. Other KASAN modes are unchanged because __GFP_SKIP_KASAN isn't
+>>>> defined there.
+>>>>
+>>>> This is a preparatory patch for optimizing kernel stack allocations.
+>>>>
+>>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
+>>>> ---
+>>>> Changes since v1:
+>>>> - Simplify skip conditions based on the fact that __GFP_SKIP_KASAN
+>>>>   is zero in non-hw-tags mode.
+>>>> - Add __GFP_SKIP_KASAN to GFP_VMALLOC_SUPPORTED list of flags
+>>>> ---
+>>>>  mm/vmalloc.c | 11 ++++++++---
+>>>>  1 file changed, 8 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>>> index c607307c657a6..69ae205effb46 100644
+>>>> --- a/mm/vmalloc.c
+>>>> +++ b/mm/vmalloc.c
+>>>> @@ -3939,7 +3939,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+>>>>  				__GFP_NOFAIL | __GFP_ZERO |\
+>>>>  				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
+>>>>  				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
+>>>> -				GFP_USER | __GFP_NOLOCKDEP)
+>>>> +				GFP_USER | __GFP_NOLOCKDEP | __GFP_SKIP_KASAN)
+>>>>  
+>>>>  static gfp_t vmalloc_fix_flags(gfp_t flags)
+>>>>  {
+>>>> @@ -3980,6 +3980,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+>>>>   *
+>>>>   * %__GFP_NOWARN can be used to suppress failure messages.
+>>>>   *
+>>>> + * %__GFP_SKIP_KASAN can be used to skip poisoning
+>>>
+>>> You mean skip *un*poisoning, I think? But you would only want this to apply to
+>>> the actaul pages mapped by vmalloc. You wouldn't want to skip unpoisoning for
+>>> any allocated meta data; I think that is currently possible since the gfp_flags
+>>> that are passed into __vmalloc_node_range_noprof() are passed down to
+>>> __get_vm_area_node() unmdified. You probably want to explicitly ensure
+>>> __GFP_SKIP_KASAN is clear for that internal call?
+>>>
+>>>> + *
+>>>>   * Can not be called from interrupt nor NMI contexts.
+>>>>   * Return: the address of the area or %NULL on failure
+>>>>   */
+>>>> @@ -4041,7 +4043,9 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>>>>  	 * kasan_unpoison_vmalloc().
+>>>>  	 */
+>>>>  	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
+>>>> -		if (kasan_hw_tags_enabled()) {
+>>>> +		bool skip_kasan = gfp_mask & __GFP_SKIP_KASAN;
+>>>> +
+>>>> +		if (kasan_hw_tags_enabled() && !skip_kasan) {
+>>>>  			/*
+>>>>  			 * Modify protection bits to allow tagging.
+>>>>  			 * This must be done before mapping.
+>>>> @@ -4057,7 +4061,8 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>>>>  		}
+>>>>  
+>>>>  		/* Take note that the mapping is PAGE_KERNEL. */
+>>>> -		kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
+>>>> +		if (!skip_kasan)
+>>>> +			kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
+>>>
+>>> It's pretty ugly to use the absence of this flag to rely on
+>>> kasan_unpoison_vmalloc() not unpoisoning. Perhaps it is preferable to just not
+>>> call kasan_unpoison_vmalloc() for the skip_kasan case?
+>>>
+>>>>  	}
+>>>>  
+>>>>  	/* Allocate physical pages and map them into vmalloc space. */
+>>>
+>>> Perhaps something like this would work:
+>>>
+>>> ---8<---
+>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>> index c31a8615a8328..c340db141df57 100644
+>>> --- a/mm/vmalloc.c
+>>> +++ b/mm/vmalloc.c
+>>> @@ -3979,6 +3979,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
+>>>   * under moderate memory pressure.
+>>>   *
+>>>   * %__GFP_NOWARN can be used to suppress failure messages.
+>>> +
+>>> + * %__GFP_SKIP_KASAN skip unpoisoning of mapped pages (when prot=PAGE_KERNEL).
+>>>   *
+>>>   * Can not be called from interrupt nor NMI contexts.
+>>>   * Return: the address of the area or %NULL on failure
+>>> @@ -3993,6 +3995,9 @@ void *__vmalloc_node_range_noprof(unsigned long size,
+>>> unsigned long align,
+>>>  	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_NONE;
+>>>  	unsigned long original_align = align;
+>>>  	unsigned int shift = PAGE_SHIFT;
+>>> +	bool skip_kasan = gfp_mask & __GFP_SKIP_KASAN;
+>>> +
+>>> +	gfp_mask &= ~__GFP_SKIP_KASAN;
+>>
+>> Okay so this is so that metadata allocation can keep using normal
+>> page allocator side unpoisoning.
+> 
+> Yes.
+> 
+>>
+>>>   	if (WARN_ON_ONCE(!size))
+>>>  		return NULL;
+>>> @@ -4041,7 +4046,7 @@ void *__vmalloc_node_range_noprof(unsigned long size,
+>>> unsigned long align,
+>>>  	 * kasan_unpoison_vmalloc().
+>>>  	 */
+>>>  	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
+>>> -		if (kasan_hw_tags_enabled()) {
+>>> +		if (kasan_hw_tags_enabled() && !skip_kasan) {
+>>
+>> Why do we want to elide GFP_SKIP_ZERO (set below) in this case?
+> 
+> You mean why do we want to skip initializing the allocated memory to zero for
+> the case where kasan HW_TAGS is enabled and we are not skipping kasan unpoisoning?
+> 
+> Because setting tags at the same time as zeroing the memory is less expensive
+> than doing them both as separate operations. So we tell page_alloc not to bother
+> zeroing the memory and kasan_unpoison_vmalloc() does it at the same time as
+> setting the tags instead. See kasan_unpoison() which ultimately calls
+> mte_set_mem_tag_range().
 
-Balbir
+I was asking the opposite question. So in the case of skip_kasan, we also want
+to skip setting GFP_SKIP_ZERO, because we are not reliant on kasan hw tags path
+to zero the memory, we are relying on page allocator now. Got it.
+
+> 
+>>
+>>>  			/*
+>>>  			 * Modify protection bits to allow tagging.
+>>>  			 * This must be done before mapping.
+>>> @@ -4054,6 +4059,12 @@ void *__vmalloc_node_range_noprof(unsigned long size,
+>>> unsigned long align,
+>>>  			 * poisoned and zeroed by kasan_unpoison_vmalloc().
+>>>  			 */
+>>>  			gfp_mask |= __GFP_SKIP_KASAN | __GFP_SKIP_ZERO;
+>>> +		} else if (skip_kasan) {
+>>> +			/*
+>>> +			 * Skip page_alloc unpoisoning physical pages backing
+>>> +			 * VM_ALLOC mapping, as requested by caller.
+>>> +			 */
+>>> +			gfp_mask |= __GFP_SKIP_KASAN;
+>>>  		}
+>>>   		/* Take note that the mapping is PAGE_KERNEL. */
+>>> @@ -4078,7 +4089,8 @@ void *__vmalloc_node_range_noprof(unsigned long size,
+>>> unsigned long align,
+>>>  	    (gfp_mask & __GFP_SKIP_ZERO))
+>>>  		kasan_flags |= KASAN_VMALLOC_INIT;
+>>>  	/* KASAN_VMALLOC_PROT_NORMAL already set if required. */
+>>> -	area->addr = kasan_unpoison_vmalloc(area->addr, size, kasan_flags);
+>>> +	if (!skip_kasan)
+>>> +		area->addr = kasan_unpoison_vmalloc(area->addr, size, kasan_flags);
+>>
+>> I really think we should do some decoupling here - GFP_SKIP_KASAN means,
+>> "skip KASAN when going through page allocator". > Now we reuse this flag
+>> to skip vmalloc unpoisoning.
+>>
+>> Some code path using GFP_SKIP_KASAN (which is highly likely given that
+>> GFP_HIGHUSER_MOVABLE has this) and also using vmalloc() will unintentionally
+>> also skip vmalloc unpoisoning.
+> 
+> If a caller wants to vmalloc() memory with GFP_HIGHUSER_MOVABLE (which seems
+> HIGHLY suspect to me) then surely leaving the memory poisoned is *exactly* what
+> they expect?
+
+Okay I get your point.
+> 
+>>
+>> I think we are doing patch 1 because of patch 2 - so in patch 2, perhaps
+>> instead of calling __vmalloc_node we can call __vmalloc_node_range_noprof and
+>> shift this "skip vmalloc unpoisoning" functionality into vmalloc flags instead?
+> 
+> This is exactly how Usama was doing it in v1. I suggested we should just reuse
+> the existing flag since it already provides the semantic we want and is less
+> confusing than introducing a new flag.
+> 
+> I know David is keen to do a wider rework and remove/rename/change the semantics
+> of __GFP_SKIP_KASAN, but I'm hoping that if we just continue to use the existing
+> flag and its semantics for vmalloc then there is no reason why this series can't
+> be merged independently of that wider rework.
+
+Okay makes sense.
+
+> 
+> Thanks,
+> Ryan
+> 
+> 
+>> Perhaps this won't work for the nommu case (__vmalloc_node has two definitions),
+>> just a line of thought.
+>>
+>>
+>>>   	/*
+>>>  	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
+>>>
+>>> ---8<---
+>>>
+>>> Thanks,
+>>> Ryan
+>>>
+>>>
+>>
+> 
+
 
