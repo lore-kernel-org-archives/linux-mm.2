@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0D2F99368
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66D1FF9936C
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:41:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B32126B0005; Thu, 23 Apr 2026 06:40:36 -0400 (EDT)
+	id D2D916B0005; Thu, 23 Apr 2026 06:41:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B08A26B0092; Thu, 23 Apr 2026 06:40:36 -0400 (EDT)
+	id CDDD86B0092; Thu, 23 Apr 2026 06:41:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1F476B0093; Thu, 23 Apr 2026 06:40:36 -0400 (EDT)
+	id BF42F6B0093; Thu, 23 Apr 2026 06:41:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FD3F6B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:40:36 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D56A1B81BC
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:40:36 +0000 (UTC)
-X-FDA: 84689476872.18.9B67963
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AF8916B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:41:13 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 49A08C205D
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:41:13 +0000 (UTC)
+X-FDA: 84689478426.21.385346F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7C17A40008
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:40:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SyDXjw67;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7214BC000A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:41:11 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R1nFHnWF;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776940834;
+	s=arc-20220608; t=1776940871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Y8S77J+oll0C3v8c6IwEV3VuOTGfRCVAy7vQUUTqXQ=;
-	b=bbXqNYKddQx8FWte/L7+cBGLxYZZTugw8qW65pIhpNrTPjtclHRYEI/fgF4TmR1x/TxduA
-	fBwDt558Tv0j7+RPI5n+OnGvNyoAWLhNr+oAveIThUQp/1vLZ3b+gAmdfv/eRqvZG4zanw
-	0zTMP/T7ED79cuWf1+s94ZpF1hoTu1I=
+	bh=wrWFeAqappEvsHyHiM1opcwy4+CKVvlf8ke7UyR6S5A=;
+	b=mBf7KpgilvbKx9NMGfQ2WinHZhkl03vVDuUM51B4dgNnd5H63n5kCT+QAVNrDnp0YRrlNM
+	K9RIIA42N+yFJ5ds8P/j5WTTzjmECQQLZVufqnvNNL/yuy1Ho+qidC8m5R1m+ATjaDzz3D
+	mm9BUYwPTU/eZoBYXGou1Uqq2/f2biI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SyDXjw67;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R1nFHnWF;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776940834; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776940871; a=rsa-sha256;
 	cv=none;
-	b=EdYUGfOKYXQ5LKwGxzcGBNMiKZq0pZRRepIdXs2re6gsEYhAHakxLRTv/4M3qJIzSiNDtg
-	Fx6l3+3evrsPi/ualSzyHn9k52Q2hbXEh6AYYkAoLJ5GIwDyEv0stKLIuOu2tFBx/oaY8a
-	jYlA51SxJw3Z0xRw2u4c3oKa55D5zUI=
+	b=vrGDsFE33YhQ5q17+8nZTLN4FuLyF2du9yuxkHhQz498ngEZXEIkLwXUPyVnCfdJqSMBne
+	OdX57FT6Av/H1cuwGFw8BYSMvygKVYk2fJcWJ7YWm2P5IuineBLOaZJt5pUbbzjYXE7QQL
+	1FXqDCcnYxs120RJc7um0q22/Gb2C4s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 64764409DC;
-	Thu, 23 Apr 2026 10:40:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367B3C2BCAF;
-	Thu, 23 Apr 2026 10:40:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FEF243526;
+	Thu, 23 Apr 2026 10:41:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7380BC2BCAF;
+	Thu, 23 Apr 2026 10:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776940833;
-	bh=ldBC+Ysj0hCLJEg88xc/mTOy0nXdrmU3TEgqL4XJ3Lw=;
+	s=k20201202; t=1776940870;
+	bh=Bi0JKllmc8EsuTFVoWIS7hebjAew4hxnm0zhHQlaF5Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SyDXjw67eKz4ElrNUAP3vrz40SZ2nZyRbGXglliuF6pdnreTSXlzdzAOThBUatOPb
-	 pT2wKGzPScqcH4H2w4YyFCSnwUgJ/OR/4Wu4n7J3pbp1AsUj+vm5iHr9QHeHqsvqwR
-	 233gi2TE6bMnZ14GO9a14IrHPga1EVJ7K/2z5mlc6w0/QbLp6YnJzyE9c6sUCzjQau
-	 PjL6mihpztsJFUeDKJLw3clRAq2Sm2Sqkx5z4NtVFEzNbXsj3jQemSJne51QZKPkrR
-	 EAdxX/bqB839XJZyJ3IkLG5UllO7X1eQlFOUAlPypulDb26ovc0kAkC7Hjz7+k1LqP
-	 koClPQSbDNUkA==
-Message-ID: <1cbae635-a115-4270-bae2-64145d16f936@kernel.org>
-Date: Thu, 23 Apr 2026 12:40:25 +0200
+	b=R1nFHnWFi6JiIUWL60faGZIP3/hDO1R12xZ/Ub/HIJvhp/ZLJJUndzXe2l7oIfkW8
+	 DvcvPzHs0epRiENLhVmIskMbigjGQb0fHjj9lOstZ7yjPNALz/upNHJr9ZHkAULqNZ
+	 oT3gpMlowjJJXYzmJ41Ij7ozC3fH+U7nMhgdQxOVfULIrMN7DwP1Mjltu+lcwNHyBv
+	 OSXsNgJp21t5QSzfuHps/eKej/w7rizHW6mVIRf8q2LD6ByrBNPov/KoAZrFRSlUgY
+	 6IKlIulIuumqCaaQbH8WO525fzDWT08ktKSzpd0Xpngv/3HVXZgUVHp4ljy450u/eD
+	 /nht8rOBJcuTg==
+Message-ID: <2483c24d-8674-422a-82a0-5c839f72e82d@kernel.org>
+Date: Thu, 23 Apr 2026 12:41:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 v5 4/6] mm/sparse-vmemmap: Fix DAX vmemmap accounting
- with optimization
+Subject: Re: [PATCH v5 v5 5/6] mm/mm_init: Fix pageblock migratetype for
+ ZONE_DEVICE compound pages
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
@@ -83,7 +83,7 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
  aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 References: <20260423071911.1962859-1-songmuchun@bytedance.com>
- <20260423071911.1962859-5-songmuchun@bytedance.com>
+ <20260423071911.1962859-6-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260423071911.1962859-5-songmuchun@bytedance.com>
+In-Reply-To: <20260423071911.1962859-6-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: s7wj8tzijsirdgozh1orgyutu1kaeg3o
-X-Rspamd-Queue-Id: 7C17A40008
+X-Stat-Signature: i7n97b58qyr1mj7eoehccu1mr484j71m
+X-Rspamd-Queue-Id: 7214BC000A
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1776940834-130872
-X-HE-Meta: U2FsdGVkX1+FRsqm+LIdNiF46XpqAHivRYxb+UDq5DMx7BgO59szVYbrRpIom1pB8vX5RYUWWXRgJHndT/FGxlwI6M6eXGhyWMq8qd9Nk8MdMZUzB9dHd88KQwGH0+3qXQg1zc+DxvWUVJbL4wB1DFn7Y5Y5o9nvNErvXtmNQqRyFaMHSOoW5byatiRqOCV7oLKsTqYq81Q4lYGOelF7BubShAlJ6ukrEZ1aFS1C2yqTc5BU0uDzqRb73ZQfkcB8wu9UTkwPq8Q+/kkizMIOlLOD0RAwWq8FL7GK05vwem+evvTrBc6WtlhcdN1yYf/OaJbG772aQVNAnnQ9VKEpyrLWDWKRIy+23MczG4h6XXFglUVXoO5nWVnHJI9OiiGAntbQZEEh2IpgtgtzN8iwT5C15h/lU3LqdzTgFa9mVzq4tkzXf5dkhB/zVfQ4xv5BzqPm5lZfv1SlK6O6cGlhYRRRle0GSp2TgsHctNC8/j0wCB1iEQ4i1Jew/zS9s9oCNwUw20t/4IP5R9BOdM9K8fFAdP4C3wqdDlxy0ZaQadK52m+NT88AyvyyiAKQjvq5B5IcUk3fbaNOH8Gqs8pe8UF2hQutKrDCJc+2wQEB1f+8sQp/l8hKGDFfcQApw8EQatp5yFce/08poeJ+r1pT0imdygoR9gQ5Lgss7tQjqGDAbSAPbfDw2i7RHVXW/CFcdrt05ITbbTmf6nSnznj1pBHDN84YFrJYVXyGrbxwFNQB6X+xsMIjJCMHmQuz8YUfnm4XQNLPcyOpOluD71GW3VVuZEsp9734UWUxqtNjbrh/RCq+SsYfIxugfcLpUNhSPJ2886Ad2qtGa2JTq3y2HRlmfxZq7DAw6tP0UMceWNPnjzNmYspdeNebHRSvYWiTGyzZ6b9mSSX/TTNByx3zAtNrA6luhYjvjF8pjLl2936QkLUHVGWzQWQm5ApCYFC2D+8e+XDTnHO4+OjIUiU
- yc6jxZDn
- KkyQvos3TuJU2v6tH1BVgTVsGjDzqMHEduAJHrAL5ha/zLhEPDYZ5iS1hfWWRjSa58bHH2r2WUSNuCq6PA7Di++FBg0SVr1eXJLNfXBUaZ4qDtlncJt6+CpTzCOzJSGRH8K7PT9s+ccaT3d4JQgiAHLvUhiMGiMg0Sgs3qm/igifC6g9OFDNbPeOSblj7KTsrFBxf+LLk07gZB01Mii4fZZcUvo458qG7xf6PHni9ocPZOvz2/W2VPi2HqAaE4QGjwraL5YVKySplYHSB/AtwzSD34hWCYhaD8AldHPNVvhwEWlUg/i5JEekSKg==
+X-HE-Tag: 1776940871-784514
+X-HE-Meta: U2FsdGVkX1/G9i+vlG/tEx9nK8fo5d302H9wNwA70K8CIsWcres7aA97TdaDQ065hxut+iy8tfKskzFL1poT47oar+ea2M5iHFNijhwfpsbZu7mChOFSEGEIGP6w9s0XUBA9/Y7J/MONzm16Et3XPP3Ss1OTijsm93hy8RzCm9LBujtOhVXidLRMmHCclFRpLm31tsTESezELOj0SrFx43R3U0Vv2JP441RGu7iDGbrimpppxKkDjcMz1VAiSaKvbmOVs16lPncydFgNkNXm4kX4h6XkO9y6MeTWsvA6fL4F4gum/A6M8MqjUyrhwn8m4idLnL+tXGMQKLIw0UzsVRpPSXHZ6eNcg+9vpIPwR1ISeopGTrFXhtf76n16ZoYntfr1Irzncy5QF+rVQAWm3QU6ZEAdb8hjcq5A9Iyb8KbicLcz3v09vZ237B7+3+umDYi4udHJPc8s02t/ji4qJVoRospbqRNNWG5AwvpVBMx0oOiuEn0OuP4UpUTWhCqUxZGBH4whciR5AIFb0BnYeKsRhLru8TposDEVqjxJRIg3aSZ6wQ1NLHxz+Jn8kpVKnLNWTAMcWOy+u/JxCeYhVeqlC2qZAM0pGgRLE70/cp3nRDFd05E/AORf4yDCztI70yoKrZmx83XeE0t3t5xTD7ofsC5dgiR1uaBOdNZTHSzVbt6MsLVkrThwix9gJi9DVLEfvtdkmUEAl/h5bf+Pvz53oFECZw06MxUORlThYJmR4glfCUr197Wl7qF70WX55WlS4jp3gtlhswiLCSkF+2oTTeHBOG263AWYJ8OfC0tuT4gf8+OnXBaqcu5UgA1NlzaokwpeGUTA1WieM2BC5RFgezoTJyJtZPhczS9UT1IhvHUebJPIsOf8eiP163cr5jSutibqBTS+bWsiyn97prQ/aqpjia/xEqMqJ7L3C6vF2heA6/N/eX1MalPZckNY/5IW9JYeT/zbfG8jmsS
+ oJHczOVL
+ CauE00FLNSix+f2u2qEOKJluPrLi1/QUuDFQMGhfKeiXGjcWlz8zydYfmV1tZ5Kbal66FrTxwziWrn5ctYOdVBooXjqIHl0ohrNvkE8TFXSdtv4ZZan+NLN5E1wnBDZzxGqdwz4ZQ0UP/8Cn+/HrspFj3ujTWnOjKZRzH4C52P46/+WMSaKuv26IS5Pg2mOOT9JOa8SzlWntymOVuhYz/eC7pHWg5E1kDLJBsy4nrP8WYN1Zk9ByJZRQ74qP94PbXCE8+ZT+U3csmQzAsbVL2g7eete2v5n8s1puHRGYokocFY6NVdpzi7FpgTjDH2uTO0SlAbMJOj4qnJ4VOo+PJt1L/VBgfPAjwL0/8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,43 +149,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/23/26 09:19, Muchun Song wrote:
-> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
-> counter in /proc/vmstat is incorrect. The current code always accounts
-> for the full, non-optimized vmemmap size, but vmemmap optimization
-> reduces the actual number of vmemmap pages by reusing tail pages. This
-> causes the system to overcount vmemmap usage, leading to inaccurate
-> page statistics in /proc/vmstat.
+> The memmap_init_zone_device() function only initializes the migratetype
+> of the first pageblock of a compound page. If the compound page size
+> exceeds pageblock_nr_pages (e.g., 1GB hugepages with 2MB pageblocks),
+> subsequent pageblocks in the compound page remain uninitialized.
 > 
-> Fix this by introducing section_vmemmap_pages(), which returns the exact
-> vmemmap page count for a given pfn range based on whether optimization
-> is in effect.
+> Move the migratetype initialization out of __init_zone_device_page()
+> and into a separate pageblock_migratetype_init_range() function. This
+> iterates over the entire PFN range of the memory, ensuring that all
+> pageblocks are correctly initialized.
 > 
-> Fixes: 15995a352474 ("mm: report per-page metadata information")
+> Also remove the stale confusing comment about MEMINIT_HOTPLUG above
+> the migratetype setting since it is an obsolete relic from commit
+> 966cf44f637e ("mm: defer ZONE_DEVICE page initialization to the point
+> where we init pgmap") and no longer makes sense here.
+> 
+> Fixes: c4386bd8ee3a ("mm/memremap: add ZONE_DEVICE support for compound pages")
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
 > ---
->  mm/sparse-vmemmap.c | 31 +++++++++++++++++++++++++++----
->  1 file changed, 27 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 3340f6d30b01..979d71158c9b 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -652,6 +652,28 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
->  	}
->  }
->  
-> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
-> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
-> +{
-> +	const unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
-> +	const unsigned long pages_per_compound = 1UL << order;
-> +
-> +	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound));
-> +	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
 
-Thinking about the PAGES_PER_SECTION, can't we get called for sub-sections?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
