@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1E19FDEE45
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 20:23:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 971AFFDEE49
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 20:30:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A57B96B0088; Thu, 23 Apr 2026 16:23:02 -0400 (EDT)
+	id BE9C56B0088; Thu, 23 Apr 2026 16:30:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A090B6B008A; Thu, 23 Apr 2026 16:23:02 -0400 (EDT)
+	id B99EB6B008A; Thu, 23 Apr 2026 16:30:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91E476B008C; Thu, 23 Apr 2026 16:23:02 -0400 (EDT)
+	id A8A046B008C; Thu, 23 Apr 2026 16:30:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 813AE6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 16:23:02 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C05391404FE
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:22:59 +0000 (UTC)
-X-FDA: 84690944478.29.37A053A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 977FF6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 16:30:33 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1DA468BC19
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:30:33 +0000 (UTC)
+X-FDA: 84690963546.01.140F407
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9F76C100007
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:22:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NSHVaFxV;
-	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id B87F440010
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:30:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OGpNXtGB;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776975777;
+	s=arc-20220608; t=1776976230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0yoTTIK9jvtoaN6oDnsx9bypKCAdqDn3T/Bi9awqNlY=;
-	b=HBYYfKI8l46yCxD/V+FL7ulDzLUaBCjpKYpp5h4bnVIPzCgpKH69vVv6FnDggRGbaSAvoP
-	XA0THsPw6gPzL80mQ0A/j4IYjC67mSImI0mzgrrmtRsIitm5/eGSDFrW2NSdyQWz6Xc5vR
-	3kM7MopcsYFU+8KK0OLasTlN4VcS42Y=
+	bh=ekRumWJi2kU/9ig10cDmB11M9zG9idLtexgSQv2XT5Y=;
+	b=wDY3BYaByJQPYj+y7rzBBU25qbAYRCv218SbHQWqIOmXfsSfbwHsQRV7/KjG5MdrXfFlfV
+	B70A1GIw4x0OaGjhHU5AuZ4LhKX1ScHf1e/MnO1uoOwbNoMia+uIPZBgSaLTMrqEftM9sn
+	LJnuz8tGE39rbpSb1A4RdoULL0EigE4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NSHVaFxV;
-	spf=pass (imf05.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776975777; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OGpNXtGB;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776976230; a=rsa-sha256;
 	cv=none;
-	b=HwjOfj2FCvyCVU9XGYXEu8aDJr0IM6qRyyWTJX/D2y07QWBri4F32RWBqu4PdOVH61IuaK
-	8cdrISnMXShlYJvSVXKG7IJeod3EC+Lezgs1gXTKElx/Q66MAY2GXzB8UmMMMDf9rZzF4h
-	lvau9zhCdieM4B6N0Zk2hVYj92FIGWo=
+	b=nmiLNyScibUiTUSTeIn0k2QqBQUdZXNl05njpIgtAa4Z1Y7K4R+pA+0TbDsCUczzPaBD6z
+	KIDBB3DcycmVaRkxAk/m8JCFUWBjq+QQ1n8DlaQqX+pEXhaZX7ffsY3gF9uHi0nF6NxFRR
+	F5REwJbW4KHL6SqaypTN3odbQ600T4Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D7B344569
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:22:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E63C2BCC4
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:22:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776975776;
-	bh=0yoTTIK9jvtoaN6oDnsx9bypKCAdqDn3T/Bi9awqNlY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NSHVaFxVgnvgDFPLBJRn/HSJnZnyGD/ETRl2aeH/5+8ftgO6I014jzvwbboCkL/DV
-	 vSWn2GWQ5rtQ7079GaIuISrBjyLDaPTqQi+kf9+KM1vwpr165BU01xWZy4Y49+57TZ
-	 UAxDW/LMf95RShQtkbIfGhHE4qT0faGUC97lsJtH7QRpv2bGHVpOhjrs/I8Y5XG/Q1
-	 nF91M1WNGQyg5AsFfd+gta7suKTnNv09DE/0DPSCHxU62RKYFe7Cx+cUywkvw5vJ1D
-	 3XjZTzwYiowb836iNPatcsPWNutQlMcwT4zF0r9zH/oLbvkvc2ftXVJ4tPBCp7MYbU
-	 E8NxenGg4tqOQ==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b8f97c626aaso203381866b.2
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:22:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9Z0k8Zjw9aZQvAyTFs1K1dgpq5X2/l668zQ0zDOlmMz7ZjscDwRHOOdtqpebYOmznzCBOiaRDjmw==@kvack.org
-X-Gm-Message-State: AOJu0YzxdkBB0kvGwrJv6KkIa8dbdBBefGVN1ZJ09Kj+TY3ERHsMs76M
-	GQAjZSodW+E1CyeDbB4wiMRKDNxnOljXVK0lKWPrN4pdMYR3C3gjJp6DxUDtqwXIQSYoxCZwOn6
-	gBEnyXC08eHOOoIQVbFFcGycEqNCIlj0=
-X-Received: by 2002:a17:907:6e90:b0:baa:65b:fe43 with SMTP id
- a640c23a62f3a-baa066b40d1mr643391366b.38.1776975775156; Thu, 23 Apr 2026
- 13:22:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <03a23a7a-58fe-42f4-a294-9d688ce33e2d@kernel.org>
- <20260422190847.216343-1-pratmal@google.com> <da96efa9-401d-4d11-90cc-00ebff340921@kernel.org>
-In-Reply-To: <da96efa9-401d-4d11-90cc-00ebff340921@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 23 Apr 2026 13:22:43 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOurrz71zxi7kbe_fYxqyQiizrHpkv_1rqGg3x9YzgAdw@mail.gmail.com>
-X-Gm-Features: AQROBzAYv-6W8FmrEkCiowKjw-qG_okPOzeXzxeHNGb6zyZqY0KL08DwDTBCY10
-Message-ID: <CAO9r8zOurrz71zxi7kbe_fYxqyQiizrHpkv_1rqGg3x9YzgAdw@mail.gmail.com>
-Subject: Re: [RFC PATCH] selftests/mm: use pattern matching in .gitignore
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: pratmal@google.com, akpm@linux-foundation.org, shuah@kernel.org, 
-	yosryahmed@google.com, ljs@kernel.org, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: toccdec9goacdk1dt8kwsttqmmftjbwo
-X-Rspamd-Queue-Id: 9F76C100007
+	by sea.source.kernel.org (Postfix) with ESMTP id 26B4142B23;
+	Thu, 23 Apr 2026 20:30:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647A1C2BCAF;
+	Thu, 23 Apr 2026 20:30:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776976229;
+	bh=oCV9JFYj7k90WIS0590/2O8/cTgDcMiI0hAXUbdj4F4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OGpNXtGBm0ruwTxfn2i7ZXK2qzTVTfRRlgjZtDGJ1BJ+WMeCNqr5DeRM8NaZT4mHt
+	 NPaiy4BrlDOIJzcF1E3mvczFs5rzBD3ZIk8+myZi0Tsxj0D7wrlksSBTSe+PYD26Ra
+	 zeAKoN7VcqwQMJTj+YJNTFXrUsiZgTlBomWxL+bU=
+Date: Thu, 23 Apr 2026 13:30:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
+ gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz,
+ jackmanb@google.com, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
+ Liam.Howlett@oracle.com, ljs@kernel.org, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH 7.2 v16 00/13] khugepaged: mTHP support
+Message-Id: <20260423133026.cbd3bc5429d4ca4eccdccda0@linux-foundation.org>
+In-Reply-To: <20260419185750.260784-1-npache@redhat.com>
+References: <20260419185750.260784-1-npache@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: pm649pj9pnz3ru5yxthbtbtwz5omk6uu
+X-Rspamd-Queue-Id: B87F440010
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1776975777-347194
-X-HE-Meta: U2FsdGVkX1/OZNdfIgjQ5ZL81DpmpdSVkEomMU92FPqXh2bXJswUJHqRwG45pXrgU8nXNLzbQ0y2OTX9fEzjfeRkBdljurxWX5KE1d/84thrwIuepewEsuyf+XEZ+XOgIiRbwjUgzWoukusHJpfiKDQ9JYSURWFi8J8WbQOOnAgDXkXXGMwy2GABZ0tp7+gRAuOV9SEvUINM8DtZ4MFHp44q+oIR00fZ1qWjQlc+lceP6PuKyZUoep29B4JvWxDU+3TT0udOQQxFE4e1KluyR0J+rYFFsEzMjEI3Cr67teWcZX5iK9moAj96dBYVwsOYaW5ophMT49rWx65bce1NN2Zfe+4Scp0o0p29Tfq1kBGDoAQzDLVz6J0kNccFUiQtHIs+o+lLmiLwyYhEm7azq2K/flgyMVHfgvJ4WQtD7EmNaqv+7KALl33ii7IH/MjpEONma03T+cGf83ydpmOCjNNPe7NTXE84Pkwr/JoFxMoFINjNzOnQKFgh+j8cMuChXi/4tVkH+H54TUwD5Cz5Dy7KOk9G1Oagxl0EPkn1EpxIMEVsUCfVSS62hm6UUa2yctUCQdNfg61wT/CtpsAClEejFUkQ74iv7KIhaCcPcqx+EhrjHcprEBI1DQe98A5TYhdk3BSnBg9Lg0Vzywv1Bl8c4wR/yIFqKgS35ilUCTKUhXYnSfp3kgX10wpxBb+BVrmyaE2V+F6XDIWqs8Q+vzxaX2ne/POPfvJy0OgFHqcgdc231V7oW1qoAG7yOkXbvnbzjrWwOIAXH2j93fPxktcYN1UjOBCXSZMQptB1ryYqMGgXfWe2NWySyfM+y47O7+/ffJjAPOXIlvJLEGsBaiTvDVLBfpvgMOWPzePjujErpL6pbVQs7Gf8c/Yu3Cb6Ivk85EEqHtlo4gbVm+pAefcwQtJKV8cIKePicE0iVeYAxEOpUhVOdYcMxTdMJ1T52UoePoApg7cS1qk2IKt
- cmqR+Rds
- BEJ1KK5pI7UanhLtmDI/bh8MSaSdoUyNnIMV2oIWSTdcnTQ53b9bfMWTa4R9wONMxY51UZ9mUF5kS0zFj0lqKSx4vwmddbq5I3WS8iF7pFvikrcSIgcbxDcZz3b6xlttjtfQl2s/hp43q1b15S2yHH3nAlPNBkVJjN2WakBNOewlTAGthArD3kfmcGKVHhMXg4EqKtY05ANvBZ5zRO7KhF+VlHMz+2FjRxM1djVGzS2Mbp4joo3Es4LutrgN4N7Qs61QZqs489EqP8eii0Omdw7WIAvsjT5HYxGb/OvBW6TnurrWz2pwpVYQ1WX5R3sZ0AHY7bgTm8WTVDNg=
+X-HE-Tag: 1776976230-580972
+X-HE-Meta: U2FsdGVkX1+J3TynTk/J6DCmiyDtHcuD+URLX87Tu7YUsDUbt0SGSqn0BjNIyx628cDM/C/g/dOpX7DkoKSxlj7xACUbLyn6dVogyi4UFrlu+nvRxkkFqe6r1Dvovwglz1NKykSsesSNL4Dzb/ThLyT0dsJEQ/MYy7MzOhySJ88pmVPDvbjVZaxvfBXI3rxCRAitfY4OYC4qci2F38C5fvg35hcku5zVFztcmmEkeUlHP8k2dgpk5idijL/EjzqXcALqA68zTvau3GU7dTiggHyvkF38bLpMZY6tkpph+NFSMvogY+4l3dHyDebY8jxaCDnMQe95hrsAYY1MJMez/Fi6IpXsN+o80RSrQMH5CM+tzXphyXgXHeVDmGutH0yD/pv413I8pVukaXTnQ66QlnUN+U8GqjZ+5PBjouQ6uKxqUc2u3jNor4fA2dFQkZIJKWna5szwaq4OLFAGTPSbL1DvoEhn5G0Y97GW1l/CsTLtXa7aNE3MiwkA2UpB8YB4JakZGO7/eKTkIHl4PI8l8+++HjGyfZPN5JM2NNYkNN3lsKIHTZjw2tXaEvt/7rBkvmRQQ8T0h/VZEreyZ66fzkA9hFqL8qTlPthL3tA74gfn6ZTeYPgwmnjpUfk6yuCNbDq8X/Jn8lVt2mG1t688fv7AKSXnHTzVDDHvcZufeN3QyxY+NhLWcu3C4RcNljgeoze5XdwzqJOWbx4lHUPRy6aYQvQStkrrCw/Ne+ElpHRBWI9j2tezRYNcQEXWdNkUFolxT9GazY6Aqrb7LQxqtC5ziKp7TfnbufxFDLzVZtqDUv/awRKwmmRGA0dVa8gU/jif4nqis499OvFOmb5fQBX28mB+FlxMOrdjOEs19e/KiFf24bTYoqH6mMTuN+NGySTfCD8VxDa9FjzeL5EV3rYVrhODR6zjwADY/aS65M9FxyyuOpgZp7dUFvTjNCFwVOE2cLKIhyxXapGpfe5
+ +VI6Ubrs
+ Qp7IS5g7DmFWTtG4bQ2qvjTsW4YMuNkiauBFJ4oQU574PwHxkDQi5mR3dpHwiDJv2lzuRwgEkrcNYabL0A6N7Zy1sSnKUVGaei0LK/fRRa3mnZqFpRW2hJuc0m1A+gFfc3btS6qesWF05+L1A6bqKRM8SS3fhaDMtNl2Wr/oQMizzZp+hMMXRtZJT5Rem2UW8ZBjP6h3orljxi16fP/2Qm0u89Kq1W8IMHUOH8aNmKm0lyDMytHlDYn46k7BCcOn5I329iWYW8s5z7I2l/UZFqzGOYtG+bcnSunEQsrF+lOc1SqQiEK3SjuV8HZBunsNhvfQbXlX4v3u8WDTSEfPBYS43Xw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,47 +106,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 6:28=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 4/22/26 21:08, pratmal@google.com wrote:
-> > (Resending to correct David's email address. Apologies for the noise!)
-> >
->
-> Heh, no worries, I didn't even notice.
->
-> As long as you CC one of the mailing lists I'm subscribed to, even mails =
-to my
-> old RH address will still hit my inbox.
->
-> > On 4/22/26 18:04, David Hildenbrand (Arm) wrote:
-> >> On 4/21/26 20:30, pratmal@google.com wrote:
-> >>> From: Pratyush Mallick <pratmal@google.com>
-> >>>
-> >>> The current .gitignore hardcodes each generated test binary by name,
-> >>> requiring updates every time a new test is added.
-> >>>
-> >>> Switch to the patten-matching approach similar to KVM:selftests.
-> >>> Ignore everything by default and then allow source extensions (.c, .h=
-, .sh)
-> >>> and tracked non-source files.
-> >> That looks pretty nice. Any reason for the RFC? (iow, are you unsure a=
-bout some
-> >> side-effects?)
-> >
-> > Exactly that. I verified that the build works fine, however I sent it
-> > as an RFC just to be cautious. I wanted to get some feedback in case th=
-is
-> > might introduce some unwanted behavior that I'm not aware of. :)
->
-> After taking a peek at the KVM one, I think what you propose makes perfec=
-t sense.
->
-> I do wonder, whether we want to make our lives easier and rename
-> "local_config.h" to something like "local_config.h_gen", so we don't need=
- the
-> "re-ignore" part.
+On Sun, 19 Apr 2026 12:57:37 -0600 Nico Pache <npache@redhat.com> wrote:
 
-There's also the *.mod.c part, but I am not sure why that is needed as
-the current .gitignore doesn't have anything with .mod.c in it.
+> The following series provides khugepaged with the capability to collapse
+> anonymous memory regions to mTHPs.
+
+Thanks, I added this to mm.git's mm-new branch for testing while review
+is being completed.  I added notes regarding Usana's comments, so they
+don't get lost.
 
