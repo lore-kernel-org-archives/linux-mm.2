@@ -4,101 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2D31FDEE28
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 23:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AD79FDEE28
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 23:27:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE05B6B0088; Thu, 23 Apr 2026 19:22:47 -0400 (EDT)
+	id AD46C6B0088; Thu, 23 Apr 2026 19:27:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B68426B008A; Thu, 23 Apr 2026 19:22:47 -0400 (EDT)
+	id A85CB6B008A; Thu, 23 Apr 2026 19:27:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A320A6B008C; Thu, 23 Apr 2026 19:22:47 -0400 (EDT)
+	id 973F76B008C; Thu, 23 Apr 2026 19:27:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E5346B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:22:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 076FA405E4
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:22:47 +0000 (UTC)
-X-FDA: 84691397574.13.D8D762D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2D971C0007
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:22:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KVEZRzes;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 835B96B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:27:53 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0DC7212060D
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:27:53 +0000 (UTC)
+X-FDA: 84691410426.21.793CF39
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1E282100012
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:27:50 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uVs3RCZx;
+	spf=pass (imf14.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776986565;
+	s=arc-20220608; t=1776986871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qrl5DuY964r431GzzKhM3dUIK9ZIwCgWiRsK2oapjHI=;
-	b=mae9yErsDnyJa5wGORw2ok9zeLBN4+LZZqx1lqhulOegOIkGpZo2AskNEdxbizfnJR4bt7
-	LMWf+E47HUTBF6l7hgpsjCunLK8D3szicyA2dtvjpkeiEB6ouNAqq9fdZTFs/7uoMMMIsA
-	DqFX5iFNBDGgYQwcWgECgPzamgwrT8Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776986565; a=rsa-sha256;
+	bh=lt0LRXP7f5oacTu2NcOl/7iPlzf9+apNICsUQAZ1DMY=;
+	b=Wr9fUta7qiik+ox7n+sdBG6G9DTXiR3IQ18ZvGUu9ypFAu8toGp8jz0p10jQYPrxuWnUuY
+	SbeJVYqztKyRRpGSyk0JSmT1hOiGkt4g85mO52MASkGKJZx5ebl7DgupnHLcK/+5L3IxcU
+	u8aTo3A70HNqTTuX+owCjK7DNEEOAN4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776986871; a=rsa-sha256;
 	cv=none;
-	b=sWyqohVvAIXDoHvIsan9ynH4HAogkramqgL+UO6ce6TUF/0qkIHX2lbunifJpzPxu8e7yk
-	BpuI9x0juTOwTg1OT1EamdgSJuwkA1n5E81DlxPsHLYLpnNkUCVNIRe3uUk+qLHogH5XzD
-	agdkAFATX/TE11PPzVxBgCmJqAU+cgo=
+	b=S4RijFwnsuoiTj2ddhmwz7tDRti6e96QG/fiyNHvxLqLSeJlMPWMqNQuFtDlTpx1J97dxH
+	J4tSPK31m/nCCFRdLcTAfVHH7f5Djy6DO8UTd0BtbRn3gf11uTH3UmV6UODqKabolOyDoH
+	wdKg6r8jhxNSAcUkjPFXdm8Csww5voM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KVEZRzes;
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4716261119
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:22:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BFBC2BCC6
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:22:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776986563;
-	bh=xC1cM4/xWo02JuXQUTbedXabMRfxquPFymsW2iEQgfk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KVEZRzesKn+Nd2QkcpKDycKSdOmE/9FtHb0enMYwVDznPocvf3Kg8ZNW36i9hV00+
-	 PI6+v1DOBp080LxU/ceTfpG1mbqhWsgKDxOXRR2vIfLNtNA00vn3vVzVaQhNjWZYxf
-	 ZH+NOqkd5tbK/ZRHig2SIfP4x++JkJ7/4cTpp1HSzkU5vSFsIXHXy94jfQoMgkmqQf
-	 W30glHLI5svmJWTbJADZJ+hWoTevo7RKd7DK6p8ef4AN8m9MlILq4C2YnmwFL51uk9
-	 qjiqZqI4Tfon22VQWCS7ZSC27+SX5aRrDkM1OaFsJIKNwxeC1qERNdTGLB22J959zs
-	 pPdCh+JSXr1wg==
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8aca4e14411so87866576d6.3
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 16:22:43 -0700 (PDT)
-X-Gm-Message-State: AOJu0YymmHe1QWdqHZPLGzsZLtDdkyyodgmtg3iMYX0wz9Wd7hfW6zAk
-	H2WoO6okb04acQ5g8pOJRokHBaTXfEmKKuRfVf0pceiAMXIOH3YavhcnByUNORqsIyqcxLGYzZJ
-	eRPL4Y4nRAomLMPmFr/D6SiRyHr/QsBw=
-X-Received: by 2002:a05:6214:c23:b0:89c:4e50:1921 with SMTP id
- 6a1803df08f44-8b0280cc080mr466214036d6.26.1776986562964; Thu, 23 Apr 2026
- 16:22:42 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uVs3RCZx;
+	spf=pass (imf14.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b243198058so187555ad.1
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 16:27:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776986870; x=1777591670; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lt0LRXP7f5oacTu2NcOl/7iPlzf9+apNICsUQAZ1DMY=;
+        b=uVs3RCZxbndtzjxmjeR55ET0QTJn9T6axmJl/qIF54kGNWzZOoQZq9gDOsPpNNnSu+
+         aDGY6DN7D4hXkSUTIesYXuys7T/mo+/HUY6Zl/HBwDFiRKBkzF9c+YafzbUUa0eYEpfo
+         0JIoLpfczXg4R9f/au+ospWETyBcyBB+H4v0orffr9IOn8fRAKsdMzlEIubp3bRLul6M
+         4PY8i1XbO8QEX1Awz4IsKQksEgLAkbKXUpytn4iW/DwZNBX6xTeGVtOZOfVu+yHBeo8b
+         B5w+E769FqSpC4sN7MMF70Ivh2z1PGvebrm+6TyOQFDr3zSbZ0Vi7Tztsh97ZoVhSgp5
+         2O/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776986870; x=1777591670;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lt0LRXP7f5oacTu2NcOl/7iPlzf9+apNICsUQAZ1DMY=;
+        b=GQjzyy+ACKfgyZuz8zvtxg4q9Ih0rPhD7YHBdW03xrZPdDqZI2JCOoMvvwjd3Idx/M
+         t7S3FZh+SPdO4sjCLZIvUHBxwA93miEvEFNu3unhrnzmD5hNnnc99Y6qa2XvpmV8V1tM
+         Xkg8uZTc5r2se40V6pfIRfPy/XdPKTAX1Hu3Jt1y5MYMszST0NyMNtNKvuMEujw1Jm6d
+         eMbKQnh8w7q989k/l3rpdS3L+iGc0RnYTUzlL1lW2KfXEAqpqql+bk1oL5vPNpWqCAA8
+         lJUX9LYQQ0rahB8SCjS50fME/07+vfEI2McJFvbia2XHNhqH2XqwIHQ6Y9I0MKlc1FeK
+         1Qpg==
+X-Forwarded-Encrypted: i=1; AFNElJ9wc8i5JabsA+W+c2/mehrcF81BG/LXLGMv/jv1O3nYIxOV03PdpTKDIQ6y6qr0PKoRy5fX58UezA==@kvack.org
+X-Gm-Message-State: AOJu0Yyuh4B/u+O0tBPwuho8E/lhthUezOxRs30AfFeZvCvM4Ecf8sX8
+	x2ISmqG2WobF8Bg0iS4tdwnvvAxHK2m+a/LpoRQS9fmmsdomuQ5prCGskRFTYVeULw==
+X-Gm-Gg: AeBDievvr3H87fz+tDN3WdhDuWC7UhJU+DagAL3Z5LkDulbqAEGFPHGjmyesZo9UqBr
+	7Vvt+1DmwRS/IL4usUATwtXPZFcGyZ07nUFhN5GQRqnYU+XTnGgTWgqWXN1Y2nmWwkzzcEUBIVC
+	pQwcgWNpT88zsXfSA7RpEW6vCvzJpk0AhVNl0ao+e3rJkcIfiOGsEygOju9PfVfTOi3Ti6W4wWB
+	IgMDZWnjvgKYFda5UPFN0I2RP70eHhbv0toigap9jrwx7TpFEhxf8PHEVKjSed/5EU1Achh65Uc
+	OG4yjfNtEzHy189cuZGzR4hwkY/M0sO1McTR01Wldyp8xpicfc99VlC9DOKzc4DG2lhSUtEiJzT
+	n6pSU3IkpKB5t6EIansy4n6fx8G6gbRBqcTKEmK3c2/rbIYQgi3jC0HtgtHU2CqhNvXQLV+Boi2
+	yTvzQJC4AVVm1XUaZ3CUBTufNyv2mNvXjR+SOMZqPlm/upCDgGmLCPxGx9DlW2xbtyhk0Uy2mJF
+	tZu/D2OIjA=
+X-Received: by 2002:a17:902:cf01:b0:2b0:5e19:1862 with SMTP id d9443c01a7336-2b603f4969amr20900125ad.5.1776986869309;
+        Thu, 23 Apr 2026 16:27:49 -0700 (PDT)
+Received: from google.com (195.236.83.34.bc.googleusercontent.com. [34.83.236.195])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976f9cabfsm18153636a12.9.2026.04.23.16.27.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 16:27:48 -0700 (PDT)
+Date: Thu, 23 Apr 2026 23:27:46 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, iommu@lists.linux.dev, 
+	kexec@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Will Deacon <will@kernel.org>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v4 08/11] PCI: liveupdate: Require preserved devices are
+ in immutable singleton IOMMU groups
+Message-ID: <aeqpJ7BeBtzoPIx4@google.com>
+References: <20260423212316.3431746-1-dmatlack@google.com>
+ <20260423212316.3431746-9-dmatlack@google.com>
+ <CALzav=dGpHEnEjyp8qc50iZrGeKJ47vjLvwtvkLCyNzOMJhozw@mail.gmail.com>
+ <20260423225253.GA3444440@nvidia.com>
+ <CALzav=fraXLgGs-XMc-=whMPhMbS99twFskGtV5Eo=UQ9mU5Fg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260423164307.29805-1-jp.kobryn@linux.dev>
-In-Reply-To: <20260423164307.29805-1-jp.kobryn@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 24 Apr 2026 07:22:30 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4ygEvptQy662tTiPm-k+E4cbfvUKGGg3w7NaaALO-F4ig@mail.gmail.com>
-X-Gm-Features: AQROBzC7H4sAIHXGtYrwHb2kohpLs_eyTnnCFoFAVjwVmr6SKP4U6FmT6Vy9fJA
-Message-ID: <CAGsJ_4ygEvptQy662tTiPm-k+E4cbfvUKGGg3w7NaaALO-F4ig@mail.gmail.com>
-Subject: Re: [PATCH] mm/lruvec: preemptively free dead folios during lru_add drain
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@kernel.org, 
-	mhocko@suse.com, willy@infradead.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, riel@surriel.com, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, youngjun.park@lge.com, qi.zheng@linux.dev, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 3depxjqcpc498p3wkcagmias1r74t73o
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2D971C0007
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=fraXLgGs-XMc-=whMPhMbS99twFskGtV5Eo=UQ9mU5Fg@mail.gmail.com>
+X-Stat-Signature: 6occ1qauotxtfzjmjcyskicwmpybqim1
 X-Rspam-User: 
-X-HE-Tag: 1776986565-861378
-X-HE-Meta: U2FsdGVkX19XDikGNp78ZzihtLUpr1sbeL16XG31kkzq6belycYec09WGRvP6crRywliJ7HvEWlEcLYcOl0Mrc050So01KQEo9YUJ+zSg5d4sgJC1yFHmYWEnXyeZYJx3AI7GRRezb/y8Kzb2U4g0YbYZxt9RAJcA/HJibN8I1+MWZ0zaRObMtBq5Jr6MENWj6h6w/FtimGCwV1RdbvNlLX+D9M5FnETyHpr7sURvzSkyYxEEiwSnm57v70u570+PReer2Diz+VHq+BAxs1eWvtTGJvJ3lESf6jkfiLoyDTXuKii6GYJg0s4OzN6YoytfI5BR5TQjDHDABnJdApd26X0SVXjKgcTwQThV1bktafdm2lSk5hzk3glNIf8W5KP8wEYM+o3Nq0qBCMxb+Gt8ZVQJtyJDTsW26nR5ACY0HnzDJo+CnTZoGAH7juY+0odc2hm5TJ9adc0pea3FRpiLQ7U/snaEP6O6mp4rTMfSdpMHHMBSJyPfylAOvzfg0XEkxw2Xjawddgf7LpK9jeDoQyoFVdtDK82S4Kz+iBg4gBqKxx608kLkYWgnqaybe0fxULL0XNTttD0uFNbB2Xo59q42ry5kpEGrCErftTZrw8YfRdAnJ+sEKiUxvxSwZoAFXgpA/6iabi+c2kYkc3ozPuXkth9D4fRTrdmPG08BbRjriwHflVxnyY5pf/NwPBAOF456Av+/Hcj3IQAYJh8iJefzdzd5hyaGAO4OPD2oJMktWMNLXhbk8YzFKbtsQEVKhRE1JEKrSnerm2KGKHDvX2cJPjBHdhLNGHqFq6ZfLUWfRF/LSoUQGwE2Z1h8+q0wVD8gSPYz7RulZQ3AJwN6mrbnxfQp21SIUU7tUoldhzmo54j4SjEYPfACbldgwUGZPwVHgw42yHvs4zTIHWEAAQiyRohm2INHRytShov9cW9Xxz+REHcYW+IxbT04rSNifyskIaRQFdrysBhfrb
- ra05H2gh
- v+WgkEo6KqWxSZaw6sCP1OJxhK1UcI0GhYCSxBr1IEY+qnBG+ywq/Xk76I6QcB7+F+oI/zMS06Cbb+rob8rWTHqt5BGFzLgAc1z5nDNMYPSU5wiWmib6j5vj2n5EURZRm4ZtIPVuUCsPaIW6miEHBrw1l6Dpj/1MWhl5+gP41LyJ1QoiWLRmMCMEY+Wsu9/gifVlFMEDKLfy0e9oJiOg5tfTKXqOPzsMSxHnhCYs+qYLeZY1NrrB14OLvJP10cx+TCsDdYj1EUgwmmzqkMDF7TkwqDZnLK5h68TRUzZH9AnN983x4Z95QUTsrCID0WBdR0MV82Wlwa697PpA=
+X-Rspamd-Queue-Id: 1E282100012
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776986870-821163
+X-HE-Meta: U2FsdGVkX1+sz/O4fivpA5V+TnI1qekq2P7vkBsMJTjG6ZC2JawzrnBtsXAIgeuCL4hwtXJUXCZudY+fYlIjKVd/oyGGVrsrHnWQeHxxvPEUgqVyjbgdcWQ/8IC+xkCmYQgkzUl1rZURa5UjUHAqnM8wyv98UA1PDiHbO6J8xH9qImQ/0+47eFe1cX06dq3D+t1BzloVtskcmsmBiXkI9vrY6khv9+1Rux+PBMPkCnJ8qXBmWCOlR5ImF1lg64GbRyE0idUCFecGteoehNJt/832QHrHhc1ZSPinG1ECaWywfxt+bf8r4YP0zhQgS8gJglnF5XYIVcTPB9hRWRla4JzMkwiLJi2sE4OLnuBw06EoPCl98rdYgd/j4hucnHQL11uoYegBK5xHIrfnEVh0Davujy+zLjweFaiNAoSReVUE9cvwAlc6QmxyRKXu7v3cD3zoU6G4FHsmBrIpXmoegklh/SwBlaYRFATGaC7p5btddUfLVKkR/FszKq3QRXpugVIkWSxyIMPrXD8TUhJQtMMzg24yaw1PXQf5Z8bzZbKqiaEzsdKZQ9ZUQOSigmjVertfEZi8pWINbEoJY8GV+YHl24eQGOLJqK4U0nNSjmSUi848K002rovMHFWV/BJVqdBPeqpuk8gxchJM31AZE8I/Wv01RthXNIregXsAz+fEVPt2B/KW8vY7vOR+BFyAxLGHZ7UKTppUFQD9S38SWALIDwtEF2uSA5CrUII6R91cLXEe9FsbvY/RP02qgnT46lXGGAWnefTpGRWg5YbM3JyJcm5h7Ui/VxFRY5RiW0YGkNAoLXhJAEPFofI5crafH4T6x4+Jzih8WmnikE74ci04h/4xRe0TTG/Dos0pmFQMKlvBioiImetBbyHgmVJx1rVF4OuPXa1h8wV/cDin3CHdsBUCaDRkSc1P6TP21760lJeXAuAEIJmrPgm1MEk4TtqQTVZmsLOYRso9rtB
+ PPE+7lcX
+ ANxJ1QOJXr+YokD8P/DJH8+Mtxr20s5e6dqFWEHU92g8/CB4dl8kx60LZ7IZlRM+v6JukmCtV+OfT9W8OUSy0UMAw9NVcqkmnrNWehg9nPOC0c+b/Duw7MxFOOT6cBHz60Fvvk6gx0D9NXCUP5N0BjKqtAxMgCtJmkuo8iCSHutLIU7PVYcb5t5mope3qcuYTlJe7itCV0sKrp4Cb30I9qybTuM/Q6yVbMLnHnGsmutRxfeZUVCreRp2pZPEoEnGvlPZ2PJ18SARFVZuSaizDVuMmOU+a2iauVB+nYs3mPv1OYdJZv7fNUxnf9A4oALfSJ3dFPJSLeRMlC+nPL+Ukrubvo9xGWEsVseWHPN6nxmxYju/DD2NhSg7XfHR1DglzmfUyHoxnyQkgDs4aBZl1myV8p7A0sN1LHBRTwmPci/GBNaU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,133 +136,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 12:43=E2=80=AFAM JP Kobryn (Meta) <jp.kobryn@linux.=
-dev> wrote:
+On Thu, Apr 23, 2026 at 04:09:01PM -0700, David Matlack wrote:
+>On Thu, Apr 23, 2026 at 3:53 PM Jason Gunthorpe <jgg@nvidia.com> wrote:
+>>
+>> On Thu, Apr 23, 2026 at 03:10:55PM -0700, David Matlack wrote:
+>> > On Thu, Apr 23, 2026 at 2:23 PM David Matlack <dmatlack@google.com> wrote:
+>> > >
+>> > > Restrict support for preserving PCI devices across Live Update to
+>> > > devices in immutable singleton IOMMU groups. A device's group is
+>> > > considered immutable if all bridges upstream from the device up to the
+>> > > root port have the required ACS features enabled.
+>> > >
+>> > > Since ACS flags are inherited across a Live Update for preserved devices
+>> > > and all the way up to the root port, the preserved device should be in a
+>> > > singleton IOMMU group after kexec in the new kernel.
+>> > >
+>> > > This change should still permit all the current use-cases for PCI device
+>> > > preservation across Live Update, since it is intended to be used in
+>> > > Cloud enviroments which should have the required ACS features enabled
+>> > > for virtualization purposes.
+>> > >
+>> > > If a device is part of a multi-device IOMMU group, preserving it will
+>> > > now fail with an error. This restriction may be lifted in the future if
+>> > > support for preserving multi-device groups is desired.
+>> > >
+>> > > Signed-off-by: David Matlack <dmatlack@google.com>
+>> >
+>> > Jason, do you think requiring singleton iommu groups is still
+>> > necessary/useful now that this series preserves ACS flags on preserved
+>> > devices and upstream bridges?
+>>
+>> I have forgotten why we introduced that? There are alot of funky
+>> things about iommu groups that might be important upon restoration..
 >
-> Of all observable lruvec lock contention in our fleet, we find that ~24%
-> occurs when dead folios are present in lru_add batches at drain time. Thi=
-s
-> is wasteful in the sense that the folio is added to the LRU just to be
-> immediately removed via folios_put_refs(), incurring two unnecessary lock
-> acquisitions.
+>You had originally suggested it in this thread:
 >
-> Eliminate this overhead by preemptively cleaning up dead folios before th=
-ey
-> make it into the LRU. Use folio_ref_freeze() to filter folios whose only
-> remaining refcount is the batch ref. When dead folios are found, move the=
-m
-> off the add batch and onto a temporary batch to be freed.
+>  https://lore.kernel.org/kvm/20260301192236.GQ5933@nvidia.com/
 >
-> During A/B testing on one of our prod instagram workloads (high-frequency
-> short-lived requests), the patch intercepted almost all dead folios befor=
-e
-> they entered the LRU. Data collected using the mm_lru_insertion tracepoin=
-t
-> shows the effectiveness of the patch:
+>> Like if you preserve one group member but not the other what do you ?
 >
-> Per-host LRU add averages at 95% CPU load
-> (60 hosts each side, 3 x 60s intervals)
+>Yeah I imagine there could be some tricky cases there...
 >
->             dead folios/min  total folios/min   dead %
-> unpatched:        1,297,785        19,341,986  6.7097%
-> patched:                 14        19,039,996  0.0001%
->
-> Within this workload, we save ~2.6M lock acquisitions per minute per host
-> as a result.
->
-> System-wide memory stats improved on the patched side also at 95% CPU loa=
-d:
->  - direct reclaim scanning reduced 7%
->  - allocation stalls reduced 5.2%
->  - compaction stalls reduced 12.3%
->  - page frees reduced 4.9%
->
-> No regressions were observed in requests served per second or request tai=
-l
-> latency (p99). Both metrics showed directional improvement at higher CPU
-> utilization (comparing 85% to 95%).
->
-> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+>I wonder if PCI core is the right layer to enforce this. Maybe this
+>fits better into Sami's IOMMU core series since that is where all
+>those tricky cases will be (I imagine?).
 
-Hi JP,
-I=E2=80=99m seeing a large number of "BAD page" bugs.
-Not sure if it=E2=80=99s related, but reverting this patch
-seems to fix the issue.
++1
 
-[ 2869.365978] BUG: Bad page state in process uname  pfn:3a5417
-[ 2869.365981] page: refcount:0 mapcount:0 mapping:0000000000000000
-index:0x724884c20 pfn:0x3a5417
-[ 2869.365983] flags:
-0x17ffffc0020908(uptodate|active|owner_2|swapbacked|node=3D0|zone=3D2|lastc=
-pupid=3D0x1fffff)
-[ 2869.365985] raw: 0017ffffc0020908 0000000000000000 dead000000000122
-0000000000000000
-[ 2869.365986] raw: 0000000724884c20 0000000000000000 00000000ffffffff
-0000000000000000
-[ 2869.365986] page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-[ 2869.366037] CPU: 11 UID: 0 PID: 179413 Comm: uname Tainted: G S  B
-             7.0.0mglruswappiness+ #401 PREEMPT(full)
-[ 2869.366039] Tainted: [S]=3DCPU_OUT_OF_SPEC, [B]=3DBAD_PAGE
-[ 2869.366039] Hardware name: To Be Filled By O.E.M. To Be Filled By
-O.E.M./H470D4-P1, BIOS P2.00 04/01/2021
-[ 2869.366040] Call Trace:
-[ 2869.366041]  <TASK>
-[ 2869.366041]  dump_stack_lvl+0x76/0xa0
-[ 2869.366043]  dump_stack+0x10/0x20
-[ 2869.366044]  bad_page+0x79/0x120
-[ 2869.366046]  free_unref_folios+0x85b/0x960
-[ 2869.366048]  ? __pfx_lru_add+0x10/0x10
-[ 2869.366049]  folio_batch_move_lru+0x260/0x2d0
-[ 2869.366051]  __folio_batch_add_and_move+0x7f/0x110
-[ 2869.366052]  folio_add_lru+0x49/0x60
-[ 2869.366053]  folio_add_lru_vma+0x7b/0xb0
-[ 2869.366054]  map_anon_folio_pte_nopf+0xb8/0x170
-[ 2869.366055]  do_anonymous_page+0x5fa/0x960
-[ 2869.366056]  ? __pte_offset_map+0x1c/0x140
-[ 2869.366058]  __handle_mm_fault+0xbb6/0x1010
-[ 2869.366059]  ? mt_find+0xe8/0x560
-[ 2869.366061]  handle_mm_fault+0x1b0/0x370
-[ 2869.366063]  do_user_addr_fault+0x2c8/0x870
-[ 2869.366064]  exc_page_fault+0x7d/0x1d0
-[ 2869.366065]  asm_exc_page_fault+0x27/0x30
-[ 2869.366066] RIP: 0010:rep_movs_alternative+0x11/0x90
-[ 2869.366068] Code: c3 cc cc cc cc 0f 1f 40 00 90 90 90 90 90 90 90
-90 90 90 90 90 90 90 90 90 48 83 f9 40 73 44 83 f9 08 73 25 85 c9 74
-0f 8a 06 <88> 07 48 ff c7 48 ff c6 48 ff c9 75 f1 c3 cc cc cc cc 66 66
-2e 0f
-[ 2869.366069] RSP: 0018:ffffccb46a837a78 EFLAGS: 00050202
-[ 2869.366070] RAX: 0000000000000078 RBX: 00007ffee44638d0 RCX: 00000000000=
-00007
-[ 2869.366071] RDX: 0000000000000000 RSI: ffffffff8d0d1d90 RDI: 00007ffee44=
-638c9
-[ 2869.366072] RBP: ffffccb46a837a80 R08: 00007ffffffff000 R09: 00000000000=
-00000
-[ 2869.366072] R10: ffff8c7769873600 R11: 0000000000000000 R12: ffff8c77865=
-63800
-[ 2869.366073] R13: ffff8c76c6668480 R14: ffff8c76cfe3ba40 R15: ffff8c770f4=
-19c00
-[ 2869.366074]  ? arch_align_stack+0x3f/0x60
-[ 2869.366076]  ? _copy_to_user+0x31/0x60
-[ 2869.366078]  load_elf_binary+0xda1/0x1800
-[ 2869.366080]  bprm_execve+0x2d7/0x590
-[ 2869.366083]  do_execveat_common.isra.0+0x15c/0x1c0
-[ 2869.366084]  __x64_sys_execve+0x3e/0x70
-[ 2869.366085]  x64_sys_call+0xd91/0x26e0
-[ 2869.366087]  do_syscall_64+0xe7/0x560
-[ 2869.366088]  ? folio_add_lru+0x49/0x60
-[ 2869.366089]  ? folio_add_lru_vma+0x7b/0xb0
-[ 2869.366090]  ? set_ptes.isra.0+0x3b/0x90
-[ 2869.366091]  ? do_wp_page+0x85d/0xed0
-[ 2869.366092]  ? __handle_mm_fault+0xafe/0x1010
-[ 2869.366094]  ? do_sigaction+0x165/0x4c0
-[ 2869.366096]  ? _copy_to_user+0x31/0x60
-[ 2869.366098]  ? __x64_sys_rt_sigaction+0xb7/0x110
-[ 2869.366100]  ? x64_sys_call+0x880/0x26e0
-[ 2869.366101]  ? do_syscall_64+0x11b/0x560
-[ 2869.366102]  ? do_syscall_64+0x9c/0x560
-[ 2869.366103]  ? clear_bhb_loop+0x30/0x80
-[ 2869.366104]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Thanks
-Barry
+Also I think this should probably be checked by iommufd and invoked
+through vfio cdev. Basically when vfio cdev calls into iommufd to
+preserve IOMMU specific aspects of device (PASID table etc), iommufd can
+check this and return error.
+>
+>> Even if you have ACS flags there are cases where groups are still
+>> aliasing DMA..
+>
+>Hm, if a DMA alias can be created after boot time enumeration even
+>with the REQ_ACS_FLAGS check, then
+>pci_device_group_immutable_singleton() is not really immutable.
+>
+>
+>
+>> Frankly, multi-device iommu groups don't even work fully last time we
+>> tried to use them in a VMM. So I think I would not expect them to ever
+>> intersect with live update. Blocking something tricky you can't test
+>> does seem like a reasonable thing.
 
