@@ -4,89 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5FDCFC0342
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 15:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE2F3FC0379
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 15:52:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62B2A6B008A; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
+	id 785746B0088; Thu, 23 Apr 2026 11:52:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DC216B0095; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
+	id 736356B008A; Thu, 23 Apr 2026 11:52:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36AE16B0093; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
+	id 64C556B008C; Thu, 23 Apr 2026 11:52:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E87C6B008A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:03:06 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7A741B716A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:03:05 +0000 (UTC)
-X-FDA: 84690138330.28.5F67065
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3563C4001B
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:03:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bPORGTu8;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5301E6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 11:52:26 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0316BA02C4
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:52:25 +0000 (UTC)
+X-FDA: 84690262692.23.5AC39DD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CEA51A0019
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 15:52:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Hs98Pqfi;
+	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776956584;
+	s=arc-20220608; t=1776959544;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Z1nFc1xWCFJrudUlh6UpulgaxT7O9I8PMUdERu/vE4=;
-	b=shGZ32TY4OZ1UTqvoXGB8ZmENem2hF/qrRO2+HOyPfPkxN2PFvPNRGswVK3QP3DDEd8O8G
-	1atntkkY0rvkp0qKZBsjf1DK3Ia3OqmPHK3W7fN7wsUJeaBXhmOSHDC8ueS15Y+NBLjc5H
-	pcm5xWAskJPpkqpaPvPpuZMTKM8dbrU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776956584; a=rsa-sha256;
-	cv=none;
-	b=ioW1+RqvlsWixK/HccDQQ6cWGfwfH4pVymViZ2RnGu0gq1xpYFq7oU5v/FJnEC4keOgZEb
-	hwI7j+9NDgRtrWtt496xh+RFI//U5UKDo0I2GB9ggdQaiQEru/wKkttFMbwI/6VnGTB/NA
-	exTxm/fvuxSx4MRQCzcq/zdKQEMJp7s=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=s7dVmyotR+x5luJkgPqMQsXitkiIGB3igWK6sal+AK8=;
+	b=O0eFvEYMBXbQkOy/uLYSpnxI06I3+4jB79dxpJzsgiXxDrGQAj084IZ36msHPZNqevVy2v
+	diKtTQRrOVjjkQeC9z7HwjdOs5FbGyFHJ1ocXmO02wPw57ODEirYM84omRjpzK6QRbDYAg
+	jfGZGEclvvZ4QP9p7NyuXHRbU7IhRhY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bPORGTu8;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 57C6660582;
-	Thu, 23 Apr 2026 15:03:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76B9C2BCB3;
-	Thu, 23 Apr 2026 15:03:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776956583;
-	bh=pgIYrrAK6X9JUhNoZ3jKTnGdrjt9Atw8Bt+OO+9uPx4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPORGTu8YrJGGYX+HnAjs4fhHzD34EJaP8VvY8cmPf2H1h2K+ynmjdiqsDJRpNLx3
-	 oAm8LmDxiObij537YgRsVv9oM6ALhzLZkIQDw1MEvXIvNKegud7BicI9LVHanw4j7R
-	 3t2gL/IrQucxdYlwOPIdTfmG1QMwtO6BtcCK1qYkgnmzXqXjInGFKvYrEhKnmXyCyH
-	 1ZaFAbhm8Ku55oGUt7sPh1Bc9RRftEt7WR0RJUwyCPEkJCbaEisbwjOAlB55phTjfx
-	 ZP00VagCX+shexDpBGPApTmnSfdHaW0XBr33sR3yM7T8Ucy3gX/c1EwD3zf2KJV69W
-	 mA0XhtYkvvv5g==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 19 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Junxi Qian <qjx1298677004@gmail.com>
-Subject: [PATCH 2/2] mm/damon/sysfs-schemes: protect path kfree() with damon_sysfs_lock
-Date: Thu, 23 Apr 2026 08:02:52 -0700
-Message-ID: <20260423150253.111520-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260423150253.111520-1-sj@kernel.org>
-References: <20260423150253.111520-1-sj@kernel.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Hs98Pqfi;
+	spf=none (imf15.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776959544; a=rsa-sha256;
+	cv=none;
+	b=aW6xeoLCpblu6hZTR6TokfAhT0XVxrk/6mQ1Wa03Y12ys64RfZIMgMnmOnC1UbrKXIhKOk
+	jzVucDxZX91+bLjPvw/OpIURSUTEwmd/CE2C0auJw73jrbKzpwpex2EaJBPevieHy6Zhc6
+	fyGcyFTTDVSfW6pQBQbBNsaUjwUbzeE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=s7dVmyotR+x5luJkgPqMQsXitkiIGB3igWK6sal+AK8=; b=Hs98Pqfi3nbsmN+61Ftj5DgfFv
+	5KJZefpJKoR/aKuQALg3271wthU3G3mMaT8vHJSBseqGbu5aK8L5ru17Syl7ErVlgSiNAXJDOiziD
+	QLt1lE/Jb1Vh2pzaT3U2h9a3e/FRPshO2HXN8wpZPO2arWiPKJdkTP136PIZPphOSCVq3WZnnw8rW
+	rd51LR1yndCL6HWRIDXwEkfNuWSrNjb/0ye64SUWOTr8XJpFgiLM2Q5p10oSGrfn8q2ZbYtLh/LIz
+	ppWtb33W4QvN5PMdTQQpqVhIBcu6B28P2lzHvWsCjaSRWSsbTPjtnC7NGPFcx/jw+158jBf5t7rxm
+	9Jxg6H8w==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wFwLk-0000000DgqX-1yo6;
+	Thu, 23 Apr 2026 15:52:20 +0000
+Date: Thu, 23 Apr 2026 16:52:20 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usama.arif@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Cc: linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org
+Subject: Large memory allocations at LSF/MM
+Message-ID: <aepANOFKoA4jn8NN@casper.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hrcgof6exwgt4xameu764orzqf7qkzum
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CEA51A0019
+X-Stat-Signature: dunx66jon4nzpy3knng1tawycg8eukyd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3563C4001B
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1776956584-527757
-X-HE-Meta: U2FsdGVkX1/8ZAzVjn069k44YtTOqaQpwjgQbln9O7NtR902+otR9Ux2eX20u4aewn0NeHOTNpFaUWOlHBJhmusXNd3kmQEGf5E/ZiFta3Xt9iazRdKbV1qyE3I10AKQpQCHf5JvjB+rQe+fy9RUGQu85cnUJ6pG+1kbE5dSzqzytXZkS24XIWfSG9+0QTlY6avwKpIJmGmFkERJVeya8jpQIRvWvJ6d3uePjqmASbIRLXQbqt/xU6ORzhQQi2hr1KrwN7NIUCBVmI4XLMgM6qzsP4nt9s7zNKBT7wBvLvN9bcd2QFq3pgoAbL4XW2kvq3xsdc2r9wAFyewdElAFSFdGlsT3aG9eTmeMxGISaQzy462pi00V6X5JAo0kYgbaosWmCQEbiRPOiw7mT5kKXO37lQfH423dtRH2A/KILE5S7vxvowCofYH04Brc3X89p6Q8ffohEwFe0/tN1sCUHl6tzBwePU2BZ9V9dVI40PEr4AOC3dfTs1mBxJGTek5J+8CGhJS7U6w3lgFEQ24VY1TBylWIq4iQCPn1b3nai9hcxlakuQ5+7ObF1ZaHLWqB5bJBTI8qKdS9J6bogoOkeN7GxKcu/IgKPY2kzec0M0ORQuL/SSJZKhQeuOinA0usYn1t00NEEg9pQsDlHePDOm+mrSKzsES4gJ83xJwuwgfQOG/PRWyP5EDBRW1QBFamIwW7bes/lPB6wGzuoiVU2x47Rsyqd90Sv7Ttf0hYgrl34xcNOEYZgeun8uotO/sVqHLahgNcg2AHO7Cfill4jn6LCFpNhmTW/tmlQkgizSrwYigYNyyE+NBF0jus2xUGoXvunPodaB4NMbh4L1thWjXPgW2PFHJe/yiWwyyo59wCetV/nCz5r55yTFWnklg3qP4G6CuBiZ/JMFfb/9071aZZpJdNtFNwjwtSraKAGOq0OeKNzMFtmdeGVWnpST/QYfesf8qBymvCZjNuVNy
- yPhoyant
- RpxKmf3ulXusMKbKOjTE/L43Z+NCAcZIgtXwqmXMnzWIa4lUMAdiJnXXWnljNdQWliC2QP1vIQcctBNlPwc/+X074lkzsXF5SeinLXzDGh2C4dgOuJHbpzzr4YTGIq/msqdqm/z0hD0HL0E2w27mtFdQOBr8s/aWW3DFBGvQJ3NQf+hKSkZSRIJO8u/hccXgDf7f871tVOJDDvVJ7ZA2knK2fGElCNdg6kuy98Zkd/5/oEOJ0u7zN4PSoKfDBheUi9hoWsO0XVknnru9ubT0ihfsuzC+RHlvvQvDMefNieY2SJt8=
+X-HE-Tag: 1776959543-25214
+X-HE-Meta: U2FsdGVkX1+ZGvZbLDkzqgRtz+QSx3ziBn/Dg7IUE87tAB6JRtX9fKnifYTeKWrMeRSfYWzcYN5KZB+5C9Vpp3mgi1PWhnu4GCK5Z1PFl1FRMbS7vjQ3ZLzJmgI+T5RDvo4tUKv6VVf5WC6QmFd8r//ozxqVDK8D+bqOW46ulvinQsMUWIjYFakrqhSihMYoF19L4Lua0v5eLB1zXtknji2GctLYp+/MUWWYTucWmZX1Y+cwDidpehvXBKE/0JlIOJeC2nPY7kn7wwbmKDYsFHcQ7Ui9EJ22XqowHiEXZ4Hb0EG4hoQcsD/WTi6CoHMeCSQJXmK0dWi4zV6380qcvLGCfj9AuMmZghEyrplOPhuhHEsHWuyo+A/nTBh+kqDL3wL+opmYWHJxxJ/G50TIoWP4qg464hg9StJzSx/gjvMqO0wHda9tEadRacQQ4aVEahBEn7LUKlHV3eGbzKiSKI8zd8AzFS944aMoWA51VU0SrG9WojHw36nqY3RK5jyPtFr12x3+LJP731Eq1cCdQKVZf3+hjGUtup0L3JhvelmK48faLklbyZHtOU2N2YUotOCvi2M0ns/flDNr8D/J1cFn/za4oyWW6w8ffwL4B8aVw51OAZUVQI3RzPzMyrhUP5Q1DJn6fGk8j/r/Wex9ZLFuz/wdGkXby/jKM/d86yTGsAA2co7auNAo5pZG5tJAIjHx+Kn4464STmKC9LKFPPT20YwkI+vahuQl/aOIzM3l+VP7aGuCy8kZpb9zPIjca2PAMQdooRgjH5SrWljpIU3tHXNpdle2rR/SmDfQCQWq2R5hFFCC0gsX0DvY94zirvQcb1t31A9OV4OVtZ82TWPT/Jy47Xx/aA8rAKs+NiuDFapd/FLEYPzfRF6q0WdWeHIPyBZMzppgvVrbdYBK5WTzKhQOYJGgWhD1LP3K/UIrQxUbQbkeGgdDR8nb/CHKWhv9zZ9EqDtEA8Fs8X4
+ 4561/wzv
+ HNA8RJnQ/7Gz9EiISiDk7Cj0nTafThPEo/wOZqtZjBWF14/Te/SbTCrLVIY4y+T538umIVHP7EyN0zBBcP9cb9Cx65QLmVzCh2qwt6wvfKanVX4HbZwZokA6k0dVskXyai/O8Ry0/DFY+MUpm6F6SBzuXmlyG5EdHb6pHMgECDHrFwpATXRtsHgcy8IPE4irRTb8CxUxEazR5H+qwGE7czMTv6A++1TrCCAjdGetRHz3qVt0eujzTj7VIfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,61 +85,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_quot_goal->path can be read and written by users, via DAMON
-sysfs 'path' file.  It can also be indirectly read, for the parameters
-{on,off}line committing to DAMON.  The reads for parameters committing
-are protected by damon_sysfs_lock to avoid the sysfs files being
-destroyed while any of the parameters are being read.  But the
-user-driven direct reads and writes are not protected by any lock, while
-the write is deallocating the path-pointing buffer. As a result, the
-readers could read the already freed buffer (user-after-free).  Note
-that the user-reads don't race when the same open file is used by the
-writer, due to kernfs's open file locking.  Nonetheless, doing the reads
-and writes with separate open files would be common.  Fix it by
-protecting both the user-direct reads and writes with damon_sysfs_lock.
+We've had far too many proposals for the MM track this year.  In an
+effort to squeeze in as many topics as possible, I've currently
+scheduled your three talks into a 1 hour timeslot.  I think there's a
+fair amount of overlap between the topics and we probably can get a
+decent amount of conversation going here.
 
-Fixes: c41e253a411e ("mm/damon/sysfs-schemes: implement path file under quota goal directory")
-Cc: <stable@vger.kernel.org> # 6.19.x
-Co-developed-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs-schemes.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+If you feel you need the full half hour each, let me know and I'll
+try to come up with some other way to squeeze something in.
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 8d32a20531d49..245d63808411a 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -1197,8 +1197,13 @@ static ssize_t path_show(struct kobject *kobj,
- {
- 	struct damos_sysfs_quota_goal *goal = container_of(kobj,
- 			struct damos_sysfs_quota_goal, kobj);
-+	int len;
- 
--	return sysfs_emit(buf, "%s\n", goal->path ? goal->path : "");
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+	len = sysfs_emit(buf, "%s\n", goal->path ? goal->path : "");
-+	mutex_unlock(&damon_sysfs_lock);
-+	return len;
- }
- 
- static ssize_t path_store(struct kobject *kobj,
-@@ -1213,8 +1218,13 @@ static ssize_t path_store(struct kobject *kobj,
- 		return -ENOMEM;
- 
- 	strscpy(path, buf, count + 1);
-+	if (!mutex_trylock(&damon_sysfs_lock)) {
-+		kfree(path);
-+		return -EBUSY;
-+	}
- 	kfree(goal->path);
- 	goal->path = path;
-+	mutex_unlock(&damon_sysfs_lock);
- 	return count;
- }
- 
--- 
-2.47.3
 
