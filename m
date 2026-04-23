@@ -4,132 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA5FDF9935C
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 09:15:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E026F99360
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 09:40:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 001226B0005; Thu, 23 Apr 2026 05:15:38 -0400 (EDT)
+	id 359736B0005; Thu, 23 Apr 2026 05:40:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF4016B008A; Thu, 23 Apr 2026 05:15:37 -0400 (EDT)
+	id 2E2F66B008A; Thu, 23 Apr 2026 05:40:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE2996B008C; Thu, 23 Apr 2026 05:15:37 -0400 (EDT)
+	id 1AAC56B008C; Thu, 23 Apr 2026 05:40:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CC6396B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 05:15:37 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 319BB14053B
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:15:37 +0000 (UTC)
-X-FDA: 84689262714.27.0F81888
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4D788A0006
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:15:35 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bANo50Ia;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of shawdoxwu@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=shawdoxwu@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776935735; a=rsa-sha256;
-	cv=none;
-	b=bmgejrdk0Q11/9RUjFwVd1FZn6SEN+aG0cqeVYZWt3tlJ+UxL9T9xkT5t3sFLsJs313LBw
-	q8EbYKh5AfhyIE9niBvbM2N7vsIyPNODvhn0i8Rvy9mlZRtyc56sIbNY1Z5K78QRn6Zq+0
-	/MTvPswYYTnho0qKlhBkqKfyU0ZBLfk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bANo50Ia;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of shawdoxwu@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=shawdoxwu@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 060866B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 05:40:07 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5CD1F120433
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:40:06 +0000 (UTC)
+X-FDA: 84689324412.07.8AF9709
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1FD361C0010
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:40:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RjBrRrqp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t7NLUso2;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RjBrRrqp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t7NLUso2;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776935735;
+	s=arc-20220608; t=1776937204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=/sHEpv/1qXsMJgP6KklqXPkz0wDWe4Z9dTmnatzra1I=;
-	b=A6gk+ODEujlnOdNQLdCEV8PwpJLTfMSxtaygonFSXWW9DciUlOp/5dumRtvOLINCnCXdWP
-	A1o7N7Dk//d0az2Y/itrgFIskMsrYbwSwdky1CQPifjkO1VxE6n5sX89ux1p51+uUYYATE
-	fOx8w8Opt1fy7KsaNfGjbywekmENoy0=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ad21f437eeso42030355ad.0
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:15:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776935734; x=1777540534; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:in-reply-to:organization
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/sHEpv/1qXsMJgP6KklqXPkz0wDWe4Z9dTmnatzra1I=;
-        b=bANo50IalV5maObDlWyfFuvkJwEFLIOHO5FAdDyvt2z3kGGgN/5bXiROSNb/pCMaH7
-         CtE/ljCk3TzhFzfqH9pkJv6NH4YPCa7TtUvcZQj//d/r/skevBfyteR53gFHxrpWUs+G
-         X/ogbVx+XM16E7n3zrhrqyN4b7oS0ziS1akivmCCR3Ecu3Uj7oyGZcdcKrdLsupgTi7B
-         0ebbQktVd+d8e19tS+Cgfl9G2EYxoKF9SoMe7BtlfCfZf45T+ZuaF+JoVksAvvNwdOq/
-         UCFnwYoO/5PXrdz59L+mfpsYty/vgotgJukywnNjKWXBXObzNTpLh4bd+1dJb82YfTl/
-         Lr5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776935734; x=1777540534;
-        h=content-transfer-encoding:mime-version:in-reply-to:organization
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/sHEpv/1qXsMJgP6KklqXPkz0wDWe4Z9dTmnatzra1I=;
-        b=XYtnJ+/DxEgYi71EGPwd8qspN6NS0EeOFyQHKhHemzDOrE9dQsJElln84D/ok2wTd6
-         fIKMfZmQEHSF+PUKrc3v/eoK+Qz/vVUWREKmbIEROr1daPm2G/W0B6yR4WrdCooYRkWG
-         DnNiSXP2PW1I1py472wGfYr4q5OqHOdXQCMZ1Prcge4McU0sCTbd2Dw2DHh2N6GZvK3c
-         ZFKa1sXMzgHTZLtTcvAxS7QUvmJzJKDtx9quSC1X2OJzHbZDn7EfZmyXtsIsAee3+Lrt
-         P+09oDTakSrWH9G8Zrt0/ksVuGHI6D83pWZgGISuMyFTJF5jVo/LEX6g5x8JZekhz3wR
-         miXw==
-X-Forwarded-Encrypted: i=1; AFNElJ/P9AZbjn5DOVowVB/XdRaQiI7TXJOk20dOvPoMtxtuhF5BOvdGdKy+NX+cKCjPrA3a1gnVX0VT2g==@kvack.org
-X-Gm-Message-State: AOJu0YzmCCgK5hcA1McfdCOQduEygxJhDOu4ExK/sBllVkWunEnY9sxs
-	7qfqI+/a7siIR2FdlCm9ylb3x0LnqLRG4DOOOexoFzwm876ZbSIXPvj1
-X-Gm-Gg: AeBDieuNB10QwnkBGQ55jVOXWHA8R+72y6ZYaITQy/sd0z+3lDzbXlxYPjinJJtWUmh
-	prdVhTgpGecONgNOhRizClYxljHCwxuiRlK5+khgF2Ff1+aM0pN2e3HD4mnh5ULuq8ZZyoVixx7
-	Q61HxL9D7pWVm1gJtrUF2JzrktTUj2pwdRVIhfMvnQkeaYO+QBOxrklQVluyqcA2VSDfZwBDfBR
-	4ioLKUBt3jX89Qyz+oPsn5uabwSrwkkYlenau59PD3YaK3f4HtSYsZ1txJET7osIOKCpMfpy5rL
-	1GMGenGa1h1vp9LPphP+0F5Iww8Obnclw6OEGQKdVNngGvfGzoQugLCjDZa/odJ/bPa/siO21JD
-	nH0JCV+CaoqfsC+Oa83aA5rKPlCPELTN+K+vszx1CrE1zjsowSFME1BizzXGb/KzAeR3AdTjDLn
-	8l4PQDflM++q58Fjc97FegQjCb8Ua/QgtLtMMeaugv25nGTY0Fvz0BYaPf4n2ncN40Uw==
-X-Received: by 2002:a17:902:aa96:b0:2b7:86be:7670 with SMTP id d9443c01a7336-2b786be7763mr67586695ad.19.1776935733936;
-        Thu, 23 Apr 2026 02:15:33 -0700 (PDT)
-Received: from localhost (vpngw1.cse.cuhk.edu.hk. [137.189.90.211])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab55062sm190241795ad.84.2026.04.23.02.15.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 02:15:33 -0700 (PDT)
-Date: Thu, 23 Apr 2026 17:15:16 +0800
-From: XIAO WU <shawdoxwu@gmail.com>
-To: bot+bpf-ci@kernel.org
-Cc: a.s.protopopov@gmail.com, akpm@linux-foundation.org,
- ameryhung@gmail.com, andrii@kernel.org, ast@kernel.org,
- bpf@vger.kernel.org, brauner@kernel.org, brgerst@gmail.com,
- cgroups@vger.kernel.org, chenridong@huaweicloud.com, clm@meta.com,
- daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com,
- geliang@kernel.org, hannes@cmpxchg.org, haoluo@google.com, hawk@kernel.org,
- hui.zhu@linux.dev, ihor.solodrai@linux.dev, inwardvessel@gmail.com,
- jeffxu@chromium.org, jiayuan.chen@linux.dev, john.fastabend@gmail.com,
- jolsa@kernel.org, kees@kernel.org, kernel@jfarr.cc,
- kerneljasonxing@gmail.com, kpsingh@kernel.org, kuba@kernel.org,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, martin.lau@kernel.org,
- martin.lau@linux.dev, masahiroy@kernel.org, mhocko@kernel.org,
- mkoutny@suse.com, muchun.song@linux.dev, nathan@kernel.org,
- netdev@vger.kernel.org, ojeda@kernel.org, paul.chaignon@gmail.com,
- peterz@infradead.org, rdunlap@infradead.org, roman.gushchin@linux.dev,
- sdf@fomichev.me, shakeel.butt@linux.dev, shuah@kernel.org, song@kernel.org,
- tj@kernel.org, willemb@google.com, yonghong.song@linux.dev,
- zhuhui@kylinos.cn
-Subject: Re: [RFC PATCH bpf-next v6 11/12] selftests/bpf: Add test for
- memcg_bpf_ops hierarchies
-Message-ID: <20260423171516.00004adc@gmail.com>
-Organization: CUHK
-X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
-In-Reply-To: <958ccd923342ddd02e9122381d51319cb125ec51d601bb6fcad57531a2f5ef57@mail.kernel.org>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=aAIgJvfGcNyjVOyKNrtEJWERix5T9St7W0kXMBLED64=;
+	b=d7wgCT8YUhs8J/z1BFbOjceyvfbXmhMHchxjooOxD7OFRHDZCtanfxI43i+Bre/QbZTNou
+	8/jJhGzLzFAKCPKv1WBT+ZZ6c93ERVUuns1605CMpDovumcrsJUsteFQe5wescPsNZjKz5
+	/sfwdemMODcj3zLJ65456/viDy7/1EM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RjBrRrqp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t7NLUso2;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RjBrRrqp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=t7NLUso2;
+	spf=pass (imf20.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776937204; a=rsa-sha256;
+	cv=none;
+	b=lgegzpi2f/lIHqvCqd/msTaNUc0G4yIcI29tjkyz8I9L/aL806LX3RBEfVP5kYk8SxnVUz
+	RGd/0tNovnn6mAEmGtcc+3XZOmrGrRqfbtY2SuUy7BNsUl4MtWCD4F65FEt4g46nLDvsYT
+	sFcdnW8QTuEWJD28Bwv+YipIFeQgVoA=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 135EE6A833;
+	Thu, 23 Apr 2026 09:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776937202; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAIgJvfGcNyjVOyKNrtEJWERix5T9St7W0kXMBLED64=;
+	b=RjBrRrqpRz190AP3AMN2FKhggjXRYTLAux9jxSQ0D/CwownL+6OCGZxjXwSRwF47Oqlrgz
+	sT/vrIHfWvlPLbAxA+XLx1aqgkssOdj6CTwo7S48qpy9HOiKWOaGWBPtZ7aJ+QCnmeofVB
+	T32pWcNsaZgWNBkG5/fkTe9QwRb4o28=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776937202;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAIgJvfGcNyjVOyKNrtEJWERix5T9St7W0kXMBLED64=;
+	b=t7NLUso2VTu/HsCctXD5rcdS0RImI3w7hjtAGikCRwuob3ieFexlWjv72/ML0GUJCD7Dok
+	VA1qM6DxB6gGGNBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776937202; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAIgJvfGcNyjVOyKNrtEJWERix5T9St7W0kXMBLED64=;
+	b=RjBrRrqpRz190AP3AMN2FKhggjXRYTLAux9jxSQ0D/CwownL+6OCGZxjXwSRwF47Oqlrgz
+	sT/vrIHfWvlPLbAxA+XLx1aqgkssOdj6CTwo7S48qpy9HOiKWOaGWBPtZ7aJ+QCnmeofVB
+	T32pWcNsaZgWNBkG5/fkTe9QwRb4o28=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776937202;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAIgJvfGcNyjVOyKNrtEJWERix5T9St7W0kXMBLED64=;
+	b=t7NLUso2VTu/HsCctXD5rcdS0RImI3w7hjtAGikCRwuob3ieFexlWjv72/ML0GUJCD7Dok
+	VA1qM6DxB6gGGNBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 53DC3593A3;
+	Thu, 23 Apr 2026 09:40:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id d4YjEfHo6WmiPgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 23 Apr 2026 09:40:01 +0000
+Date: Thu, 23 Apr 2026 10:39:59 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH] MAINTAINERS: fix regex pattern in CORE MM category
+Message-ID: <v6cqjcp3fdkmh7z7twu2onxvmybl4na4enbnpsjf6z3lklaphw@n7iqq4rbkytn>
+References: <20260422123726.517220-1-pfalcato@suse.de>
+ <20260423003227.74498-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: iy8m3cyuiqm9juey43y7bbq674614dkc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260423003227.74498-1-sj@kernel.org>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1FD361C0010
+X-Stat-Signature: qyzc4jpnwznnhh67o3u5rpz3pzao993q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4D788A0006
-X-HE-Tag: 1776935735-903832
-X-HE-Meta: U2FsdGVkX18s33CrYjwHfz2ExVPwK2wQl9BjhUghdVPql/Fl699iIAuGiyY9XfdAcc3d44/MTPu6Qcnmf50pXBfLXo6GxIIx5MfpEEfOdWuI6NhSb5zvaDx0Upi14KzGYPEFNHQY/aC86laGmwofLrNUTF4xVL1mXSmH1vVSHgfBVFcKmAr98gMn5QnbyhPv7Xl/ONJxTsvnc7olQG79zyVOXimDC2s7QZrEepF/GwffDiFWgHzydk4oTG4lCLJFl3/SCE9tvED0CCfOx6eTfb1t8VWChKBd81g2pdHeGn6SrrAnhaxp+54Paxh/KZTJelAWZtMVjWjnMusD6AHunw8hsbMtjqYLa348PJukraHXgK0akL12uavVix0uEVtYO7+EDgmNGph3ag9wfUfOzgFmXmB/twVvOs3AsW9c9LTr7YRh+A85YjXFumsQ1Pcw1/fqTm4w2QBBcPoWssPUhwvfMYYad2bqaApUcCrX0iuJ0A7S2mTcszLPE9uPoktUpByB63hx+jCK4Z3/qhb7ebL2AtZQL14p86ThBvLpyKEhrjlBr4iP0iGTuOmQGLnSKPO/bSUcUEdu54QcASgVVhifrf4scn4My1speoQTztwZ8iT+2WfKDFljxE08nbJyd/nROrUlRFbQmk6Exu9fqDmYTS1kOT7POuaGl8A7OD1L9uKtS3k7EnXFWS3/tewaEhvE6q846TbTurdZer8jFI/mPbXVPTRmvzFtcnwyUup/OYUeIfHyJrAWWWUQhYXIvvxlUZgZFhjstapbbXabassIfbsN6JSpGa2AVvfaU5HSg3UcdZyh8ezjgD8slQNbLmJnOFU9eY4Ig+QBReXRiEGiLs+apEkdF5+MxxxMJ5yUYnGiemtTTOxinv8hIUt28B2ER2/9pne3z7BGoNcoACKJf/HvymN93cGih8FrGim7s43N3d6LRWzlC7JsYvEX/lqI6TkZrgNu2CX3N2B
- zLz3k0LR
- ldPPooXBSaVF/LnbGm+ge0JAwyferfcw+h0v2jRd6VlXJyfS7QWqtcqvl0aVLCWNlsjGkXRRqkS655VeXj5f+PPLe8rwmCTQ0sUS1yfTEtTU1JKUCe2phjh/52JC2gMBqCI62A3Os4cQCkWsBBLPcaZleqa4xaJSsx0Y2RZy13q9RjzbkFsvv+vBsWjMpyOjIx1fV44VJ/PxPMAeLhkUHvBOqKxp76Tj1WKBOgzcFp0gu6rTvk/brMRViLRh3kIES3Au1y6pcJldNTgIsqXV7s6TVvu2PKWEIScRCPGBKvOiItDuEEV4Cu6qjsvAwJ9Ly8ey+x+9uoJ8gWrtSaSohLzhGe240tV9ix1rW7fY63xltBnh+Eh00LpgqhQ4BZ3jdRJCYQdb8a6ZR04T+Td5qpQ5zb1lVLXlngqbCe56MnX1FfRNk6OjnDYnx73uJh1SxHoKloXC+kYoEk38Pw8fy6somBTMKM6upUY5W7suWJYbxMf0GUpHy27lWLm8iGkSmnZwXNk1UwO6HsKxiQPMDniTKtrw6aMgpLMdyul4/y13qFYTzsgN3wozTWsk06BGovjWf5ZBYvluYD7qwkYDtIEefajpU7lL43bmsZlLPgKXwCMtUAjPjap3kvegoKVTUUlGg
+X-HE-Tag: 1776937203-34679
+X-HE-Meta: U2FsdGVkX19PrIFKH+vA3oHMGI6JQlWCXMFi0XJQW0fS4k611atHktgKC2Awxei79Oqyv0vgOVGqCiMKZxlD9bmvKzB4op/a19BJH5c1TyUQMfPDX/VIWy3NVcrVoT4Rtp/zG+1rwse77qCDzdsmAXi7DH9ogt4Wn9tFFu1GKD2Wfw0PXUZJ8zw0Xjjvtf3oUE+ByahSePhwnmT0dbKhj9IcI0QPoaK5UMb0/ir2f2km+aa405RcaBcI7os5rOHdIiy/M5p4+8EJIDPA5AtALqTMmtzqc/liytCywZpumztE195tLnWNQkwjejQqgq8FzPWL7Or29fWtaUTI+13TfsPgYUWd1ntqa6wmnKyvAMMH/WHY1bkSZ1Rp1NDKbugPs4A6KIAOqvzlkeT13w+LqH+CQWeY3uKnY8Uf98/WRg0Sp4V+KPQpTgTyOyKTcPkcDtbfhFwaRcvjOzA4yOBm0Z+wA25fwCs+vWvytZ5LGgOf3weRb9ul0USbRKstCUXN5tgytoRcAG0R5OtkYHcQRLAKJYFmWUbY3xQDaLtzkWZkQrvri5fhMl6rysK7ECfnZZ1VVrtyw8i9gDvViM6+QimpqNiBuA/FjMiEtEportY0xqRBS7zi5vhlNUQvIkqovW3t9zjN0bKGNo3no+FTpnxLuB1eo9pETpgedvvHViEsWNZVHbtXqVm+gXzUiUKoKJLv4CxxrdxzN0QQPJV3YV/2Nv5deq/uzyF4rlVkr7G0D+PIrq0m1bob3Dht1nddbA76J8LaGsZUFdTtRQyhXBd8t3K2waYHOoH1yWfQYrVMsBolVZ2JYZGhRW7lgCDqQuDmX7tVCmYX21d+DHc09sj0fDfl5ulN8qdVUnVTm8jKABeHG5sPYl7AjqzjSZ3A/ysqugoOarwwTA4lxW9dRhFdCM37XEvCC35Lxot2xe2Z2JG86d973NIGjLSdNgovCb8yaSYgJ1ebwGKPCwd
+ K/4CfNR7
+ 3oBqXFrMRy6z42hNK9NNAKGkkTal6Xv+1188aykiUUEBX6WoihTLRyJ0O1JYu3zdP0zvVaw0qJGVfYh9vjgnzhRWUtCsIOqmbGsb3n9dTQWl8/r2lY5lEjgEl3/DqKBtwNCd0x579446Tg/Zhsv2/GTWwJGvYdNLe4XmMXQsAr9y13MZXFJqvABkiCTyjlCdtDF9W4xrqz7iEMQBDqkzidyeLiLAtXhntTR5RIuSg+24XQcYvdzUe1fD6lkJCyfJVroGdX8btCsEYVXpCPDs+ZoJVKxLUV/sybCo9i8f3BII8sIev6DYAT0b2NwE7P1krJGu5yqIrcSW044n6hlzJH4K1Wya8ju5YHOyM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,88 +134,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Wed, Apr 22, 2026 at 05:32:26PM -0700, SeongJae Park wrote:
+> On Wed, 22 Apr 2026 13:37:26 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
+> 
+> > The pattern "include/linux/page[-_]*" matches every file that starts with
+> > "page", because it's a regex and not a glob (so it has the meaning of
+> > include/linux/page + match [-_] 0+ times).
+> > 
+> > Fix it up into a more regex-correct expression. Doing so reduces CC's
+> > drastically in patches that touch pagemap.h (which is maintained as part of
+> > PAGE CACHE).
+> > 
+> > As a side-effect, move linux/pageblock-flags.h explicitly under PAGE
+> > ALLOCATOR.
+> > 
+> > Link: https://lore.kernel.org/linux-mm/20260422005608.342028-1-fmayle@google.com/
+> 
+> Just thinking loud.  I was initially wondering the purpose of this link.  Seems
+> this was added to show the example of pagemap.h touching patch that can
+> dmonstrate how many CC can be reduced.  I once thought about suggesting to add
+> the number or the context on the description, but realize it is too trivial.
+> So just thinking loud.
 
-> +cleanup:
-> +	bpf_link__destroy(link1);
-> +	bpf_link__destroy(link2);
-> +	bpf_link__destroy(link3);
-> +	memcg_ops__detach(skel);
-> +	memcg_ops__destroy(skel);
->
-> Can this crash if skel is NULL?
+Right, I probably chucked that link in there without explaining it well
+enough. I was having my leasurely read through linux-mm when I noticed that
+particular patch had _way_ too many CC's. I had a quick look and, yeah, found
+the issue.
 
-Yes, this is a valid bug in the selftest cleanup path.
+For what it's worth there are many such CC's out there. A group of 6-8 MM people
+get CC'd on pretty much everything that happens in the kernel. Not super wieldy.
 
-If execution jumps to cleanup before memcg_ops__open_and_load()
-succeeds, skel remains NULL. In that case, memcg_ops__detach(skel)
-dereferences NULL through obj->skeleton in the generated detach helper,
-as you pointed out.
+One thing at a time, I guess.
 
-This is also inconsistent with nearby tests in the same file that
-already do if (skel) {
-    memcg_ops__detach(skel);
-    memcg_ops__destroy(skel);
-}
+> 
+> $ # Without this patch
+> $ ./scripts/get_maintainer.pl ./0001-mm-limit-filemap-fault-readahead-to-vma-boundaries.patch | wc -l
+> 13
+> $ # With this patch
+> $ ./scripts/get_maintainer.pl ./0001-mm-limit-filemap-fault-readahead-to-vma-boundaries.patch | wc -l
+> 6
+> 
+> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
 
-The C repro, modeling the same control flow:
+Thanks!
 
---8<--
-// SPDX-License-Identifier: GPL-2.0
-// PoC for cleanup-path NULL dereference in
-test_memcg_ops_hierarchies().
-
-#include <stdio.h>
-
-struct bpf_object_skeleton {
-    int dummy;
-};
-
-struct memcg_ops {
-    struct bpf_object_skeleton *skeleton;
-};
-
-__attribute__((noinline))
-static void bpf_object__detach_skeleton(struct bpf_object_skeleton *s)
-{
-    (void)s;
-}
-
-/* Matches generated skeleton helper shape from review mail. */
-static inline void memcg_ops__detach(struct memcg_ops *obj)
-{
-    bpf_object__detach_skeleton(obj->skeleton);
-}
-
-static int setup_cgroup_environment_fail(void)
-{
-    return -1;
-}
-
-int main(void)
-{
-    int ret;
-    struct memcg_ops *skel = NULL;
-
-    fprintf(stderr, "[*] trigger cleanup with skel == NULL\n");
-
-    /* Simulate early failure before open_and_load() assigns skel. */
-    ret = setup_cgroup_environment_fail();
-    if (ret)
-        goto cleanup;
-
-cleanup:
-    /* Same problematic call pattern as in the test cleanup block. */
-    memcg_ops__detach(skel);
-
-    return 0;
-}
---8<--
-
-
-Signed-off-by: XIAO WU <shawdoxwu@gmail.com>
-
-Thanks,
-
-xiao
+-- 
+Pedro
 
