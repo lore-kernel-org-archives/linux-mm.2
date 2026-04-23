@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A76F8F99362
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C33EEF99362
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:54:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17ED56B0005; Thu, 23 Apr 2026 06:51:33 -0400 (EDT)
+	id 10DC96B0005; Thu, 23 Apr 2026 06:54:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 155FA6B008A; Thu, 23 Apr 2026 06:51:33 -0400 (EDT)
+	id 0BE986B008A; Thu, 23 Apr 2026 06:54:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06C8D6B008C; Thu, 23 Apr 2026 06:51:33 -0400 (EDT)
+	id EEF526B008C; Thu, 23 Apr 2026 06:54:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E89B46B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:51:32 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 93883403E0
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:51:32 +0000 (UTC)
-X-FDA: 84689504424.06.B515260
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DE4526B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:54:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9304E1B838A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:54:23 +0000 (UTC)
+X-FDA: 84689511606.01.66CDA8E
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 38923100006
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:51:30 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ac7JLZub;
-	spf=pass (imf05.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by imf20.hostedemail.com (Postfix) with ESMTP id 2EBE91C0006
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:54:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=KIZHBZAX;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776941661; a=rsa-sha256;
+	cv=none;
+	b=EQ3BnSh0za0szziXmqiK9/+7gQA2OHe8/tPVj0ms85drvlsUheU5GYNfADM81FO7p72Jiv
+	CDakCIYTJ6MkTS2Bh/Sx+YwNTkLgE06/29G1JsnKNLUQbhW9Wx6EVJWae/qu+d2oeIwZnQ
+	BIqYGIcXM+A2qXVzu++/mtolDAo9zzY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=KIZHBZAX;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776941490;
+	s=arc-20220608; t=1776941661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XsmtxtZFdx4nlYYBj8GUQHCxAi452XGQFD1uTC6aPXM=;
-	b=OpVCgZKlLHFDtVc+BDLS0Lar1IiIP8epTysvW/L/XZfDdENZXFLWgZSleS8Esh3pWo7AhT
-	UllgCCqC6sqdDL06a2vH5SZFoBhcz355idHsbPd/A/Udv9kFFkiylqbn69d6xp4TvtIEbU
-	dN6MJwgCYsnnQEfYLp7umW+qwk2hXl4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776941490; a=rsa-sha256;
-	cv=none;
-	b=eptq6spA0HnXhqWfHp1x35NjwzNjR6257CFlxD2UaSQxzpVloWf+zYNpAHf/nySKdlXQXL
-	xLP/JT0UDsQHoi+Ro54miNtfelzV4oS28kZiaUTJTevCw4qCn/TVIyZsHPn6wIaKMP7YaJ
-	dO3VGsfKuo3cKkmzZqdS3V2lqTDLm5c=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=ac7JLZub;
-	spf=pass (imf05.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N6kvgM3514986;
-	Thu, 23 Apr 2026 10:51:26 GMT
+	bh=hPfzzLEnCkfwTfx2ZbFAbPEPqrheLL97qiHOGhGTitI=;
+	b=z+fg0Gws9hN04IedoyYA6393rM8N8TwoeBfCfSBIx4PcP9RMB3lOkliG/PtwlVUpVy99+2
+	/mAYJ3RdJeaZG6D20XwZn4bXuPij/g7VZBVKp7RTxfmEjKa+JxiNI3+P08m9eC1S5XXCvT
+	fbEn6ljaEKMcI8nHp2SqrNNI3xgLXoc=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N6wv603229030;
+	Thu, 23 Apr 2026 10:54:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=XsmtxtZFdx4nlYYBj8GUQHCxAi452X
-	GQFD1uTC6aPXM=; b=ac7JLZubFc7HudFhppE3umKLDUeEVRq+u5j8N3/SfUhs/X
-	arfSYwTX4K15MDoQqdo+6rZnaeiBUxUAOW1Zqe6WMEMJLvMT3VIywZ2Fc8Omkdi4
-	pTj+wiIYAnkKLFDFCtUngPmn+LxwsVBSfeD5bqc/N/5MoNd/lVhCLQCs/V/0/Q0v
-	eGQRT1WyEgUmnSNItuniK9XnOS1EKQjXgGnYLMAlnIlA8d3HARBInC+NbFaTPtij
-	Nk39olGaVTI1F1J6gHPCAD96YvKe6YdwIPxxzejinmvl/+pqHTvDnZrishygMkuZ
-	FUGT/PVitQYvsoBzUb5SI+Y7JHT6dL9tyzJ6r7LQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu28810-1
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=hPfzzL
+	EnCkfwTfx2ZbFAbPEPqrheLL97qiHOGhGTitI=; b=KIZHBZAX5F6DP77sMLvNux
+	FZl39+tfKMVUGd4MOPNxcFlmh3lMzCcEiXY7GQJA24uKavOpJtR86lXSr2V2ajF+
+	uW3OyBeFmFw9Ukm3sO4JG2Bfk02ksmABl23Xpc4dPyPnTpYh0ka3Lbh3JHb4d/Ny
+	X9R3a3V7EY0V3OFaHmuoBTE6RobIuvuaGXgvDN4WZCOcPr9isTH6wOGF9rh/xh8X
+	oyb3oB8VSXP7J4leHBJOv+AMa1o2pJgvt/kvLhaQ1aclk8/rnY+paiL+KRKLrwKS
+	PsSLswecLgeQpd5KCcLE96doqla6hbqm2GvZGxZZm0fPIT3IccLCuHPQsmg3hChg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu287sx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Apr 2026 10:51:25 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NAZVTp023346;
-	Thu, 23 Apr 2026 10:51:25 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dpjkxx8sw-1
+	Thu, 23 Apr 2026 10:54:17 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NAZOVw011202;
+	Thu, 23 Apr 2026 10:54:16 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjky699k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Apr 2026 10:51:24 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NApLkp51184026
+	Thu, 23 Apr 2026 10:54:15 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NAsCMp31588740
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Apr 2026 10:51:21 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 872DE20040;
-	Thu, 23 Apr 2026 10:51:21 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 567892004B;
-	Thu, 23 Apr 2026 10:51:21 +0000 (GMT)
+	Thu, 23 Apr 2026 10:54:12 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1B82F20040;
+	Thu, 23 Apr 2026 10:54:12 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E5FA22004E;
+	Thu, 23 Apr 2026 10:54:11 +0000 (GMT)
 Received: from osiris (unknown [9.52.214.206])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 23 Apr 2026 10:51:21 +0000 (GMT)
-Date: Thu, 23 Apr 2026 12:51:18 +0200
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 23 Apr 2026 10:54:11 +0000 (GMT)
+Date: Thu, 23 Apr 2026 12:54:09 +0200
 From: Heiko Carstens <hca@linux.ibm.com>
 To: Alexander Gordeev <agordeev@linux.ibm.com>
 Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
@@ -95,46 +97,48 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] s390/mm: Complete ptep_get() conversion
-Message-ID: <20260423105118.10371C15-hca@linux.ibm.com>
+Subject: Re: [PATCH v2 4/6] s390/mm: Make PTC and UV call order consistent
+Message-ID: <20260423105409.10371Da2-hca@linux.ibm.com>
 References: <cover.1776264097.git.agordeev@linux.ibm.com>
- <7ad766612a3095c8c8d9a253ef0f484ef98196a5.1776264097.git.agordeev@linux.ibm.com>
+ <7b0e73e3c6f4000f9bf7cb161d8ca9a9f2312d70.1776264097.git.agordeev@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <7ad766612a3095c8c8d9a253ef0f484ef98196a5.1776264097.git.agordeev@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7b0e73e3c6f4000f9bf7cb161d8ca9a9f2312d70.1776264097.git.agordeev@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDEwNyBTYWx0ZWRfX5S+wMN54K7jB
- VFAHWoUzCfcvHKec+E6tZ3plfnkS7C7o8+GjkD8wGtefXHTuT67ooXkYnLjnybkBhRRbLXH1Hns
- rgV9GmTRfEBCPrkRrV7PgmRdQ+ncYDJpCRh+d9RZZLiGeftZmTa40cU3PxnBr8EX39rORZnbUUN
- 8kM9Tec+5IdkwBynjhgA+YLcbrNmTA73o3oL2Z1OH12WzCrJAZU3VFEL/mLdmSwUqI95D+IX9a+
- VkRgZThFQzz0HdBkL+eSvdUZ74qjq+iDc6dKSbFNKYtJpqmuUCRTg1vAJIHwoW3GkWo8kjVVAyQ
- RlPKp1D9mNc0q11ddqXSccSjFvT4LcL8dEZOfzOiu5Y/LCgkgUWFjICwcJO8hoCssVfD/AXA8AO
- 1WEortow8GF6DtXbT5H7BkRV+QvBqyVl2iKRDuUoB4UfyX9WYgTA265r8qguNCo4zqk8LjoeDm0
- gUkc/kx7U7Ag8a66R5g==
-X-Proofpoint-ORIG-GUID: Tm9jtMLTXeV_oUVbtFqu986bLquLPsUy
-X-Proofpoint-GUID: Tm9jtMLTXeV_oUVbtFqu986bLquLPsUy
-X-Authority-Analysis: v=2.4 cv=XMUAjwhE c=1 sm=1 tr=0 ts=69e9f9ae cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=6BLRMVARryNAVYdsrhYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: GLLWoXTr8z_IeoG4--Vv7oyWzsfXxGBf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDEwNyBTYWx0ZWRfXwT8Lczbqy7xY
+ OGvraXKfJPG7z9DAO+DoJqu8R0ugjPMYivAs1rA3UYYx55v7PmVxQ4f/WNsz57v2P/YNXhjN58L
+ fRx2y/+gsCFjyC3pRWtjiCn6z6gnvMH4Ko0/YUZut+N61esL8qRYtZTer1zyVqjO05jcupUwijF
+ YNNJYYqs2WuI4RMWJrCxrycaQCoYPKFqNhnlHD3x5rCVCNWKw/PnrYcc4QtnLsPZBaBGX1Xj7QQ
+ Kbgn6iH0ky8G/nobsYG2jgib55Bu7uSazMiUZQb6niXRRltdhBsDPifZCNc2IGjbQVLvLBU4Sv2
+ D94XV6tzXEmdgz3Wf2O2+wFpf3LOCmWTS6mJpSPj/ywxPxbw6cnsalqMckvLhzoigVSRZ3TTikM
+ hy8/VAdlowWqZbU023IkR+NiwJtpY4h5/SyTmkB6teCY8RmHH6gSKjOzdNpF8cGm8gECSzGEhuC
+ p1QS+tnHnKw2fTOCuiQ==
+X-Authority-Analysis: v=2.4 cv=C8LZDwP+ c=1 sm=1 tr=0 ts=69e9fa59 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=E1xz_aSQ8MwAHGTOyykA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: GLLWoXTr8z_IeoG4--Vv7oyWzsfXxGBf
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-23_03,2026-04-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0 bulkscore=0
- spamscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604230107
-X-Stat-Signature: bkw8746a67ygb3fm94ijje8ejyou88xy
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 38923100006
+ adultscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 bulkscore=0 impostorscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604230107
+X-Rspamd-Queue-Id: 2EBE91C0006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ujyidi1awyfbs67muz6iubo7naummwcb
 X-Rspam-User: 
-X-HE-Tag: 1776941490-518718
-X-HE-Meta: U2FsdGVkX18DVv1pqdX59USlKM56MY8C446UtRQIuz+acxQ3dXaYCERDjlsbOPQ7CWIlda/gzTK7tcl85Q+wQFpkrv0/P7ocOrUX/j3ZP0RofuPye3pgPUh5oErZh1xJYVmQDi0NU1kVRrFEmUNiWcuw5asWXsZb3jyjr7bMQoIQwinnDSNOD0l+c1ZrRTxUGmqd7tBzqHGAlE34K0OZnCGP8ZOp8qAzbaVqzuhd0hKr245rfMl4ov+jOKVkk1iORBN1ub1wqpBHFVNL01XPSZpKGcLLUAqFKCQ0iUScERknuTuaSbPtJarGDOzT3lGx5eEMfz52bsPtBY4/KJijX3Jhbn/NuL96jCO41enpI1VHbu+0SBkklNqrEOYywWPswoIKq8dxE1Po5NV0V+QrmslKKquzu/SeEPqY1Ule4CpCUIfYfUJqqpjhv8GeN6ybEKYQzNPzVDJMBgUJoY5DJbJAyeHAz1gvU7tsqZ6lFyNOXLQKTVNcup85WKLx1R3aX4NGU5z+LCvHo9tvz5CmCDT1St+mQstWoRNBsgbknWj3SFuTRXwpMc2BUAuXmTCKb18jKgzj5G3RB9mI5RiAMb5rNnOIM4TEEmVoPc1f+4sDTKvW5DRqtZ08rYpzAQiN5gi09BnxNgSS4aOTWI5U8b2skKLdiCbvPDO4AfybIAn2QiGo5tN3qP7or+tkKrt4+AjIPNafibsWqiFwzXDqjZnZxcs05dXvZNBz8UuetrBFqde7B4G/y1VfSeBVPWRAPHka6yf4aVdF8hES7rgcwkRnTz9+8oYQlMgVB2zC+Uz5f+6hflZwH3kYdg7ADcJ9CIa4TCcFqC51C0V2L+mWUSKPPdp26DpOvbxPkLFu/3p5LlFjJ5KLZFStozyC2rcEBtkDwNaEqrJtaYBTeYbk/92cXE0EET+0OBnvG94fmlIJp10AsS9o1H5tv2AodmxE2s32ldSVmn+GzNrNN4u
- njQq4xlF
- w5OMBl4ziST3R4N3YcmS4GX+3VqfJx+X3XJZSSEC70Nk93ev5bTThCdcQvOxoT9fQnviD1dv+g1De6MOx5EHzGoypBA7ukYWZJRv6GEVozpca/Y2KOPvKhtqi4JEiE45kSDpuUXjejJIgEuI1bi2OaQzVfEQu9bb7jh7xccfr4BqwydqHbqDxh9D7DvYCkh8YX8gxmvSKv0A66JCg9BLpJ9iS/TyXVYnivtInmzgePjg2ZWEa3aJ89fUVthLejrzeMG8MDF7l48QsAAMQTxdWUSFLyM+kJIiegAlPZKG/T1WT1xRPO6VCfDtV5FnDS8jaPpO6erVhEPphao/MfwtIXvXtmqf8n/Qo8PFSmB/vMx/kOkrbUozWy5Cgt4rVqv3UDBjV
+X-HE-Tag: 1776941660-391302
+X-HE-Meta: U2FsdGVkX185X+qodDPSoBLtWh11vdGvudjfV4F93W2gcmTV7JB4uRsMEmtCVhRJXfLu5Q04T6Kaw+t+rs+48iE3vBxpFIUV3UFzDCj9zV3rzw3/mXRaP4iNLoN2NaHr0yyMqLeHH2zrfIXPQf9rATdMqqPIeE7mgVcDpaTDdK42D8xUre7lu2jSWkn02xfefqzZA4KKDCKFArt3g7Aaqp0ezsDIJr8w0mvLqC3QiBnz5h/mFp/NqVmja2CYhuU6Q7BjtaYSaOe4y/jRdFgVNUMiFgkjWQV+i4fP7omHniQxgn8zEXQj80sNWZq8pV+MCdcndrAm9JFUL7jdmCXTTo7AiqoXDMAEGAfU8Tukw1zTiZRiPkwKLvcz1D7JmoZ+kCguomsQBMQlOvXMEE6TmpuQXg/GmQQLN9LXfPwF0Y19R2mHgv3if9WgQD3ZqfAIYt3IEtcsEI8LQWFINxDKdXKn8kRrPRUbxoeztkLWC+u8C0ok4DewMySwXs5E5FExNn20pPs6z/YqyhsPvwf47gdccIfdrvyvpItYct1HLAO1fwLe10G3ONbwlN+PbD1kp2DonNuPjBrBeu3OT60JCR3/4ahpz5ryH27l2cUAX7PQeTDfgDOXsOfrO3hcAG/h9mlNYtJC5Lh9Be2jApBAYsWt/zBxrS5e0zAaenBHDCHQsDZZoR2+6Te4WgoMFSTX5F2h82Dysp5e7s+UZH6in36FNilRrS0X8l1I0CotKHIXEMw0kZ8qzi7bnkgQ/dbgMdLnJgw8WjThkqWWG4JZnX8IAytYHrOAT4NHk9twx9WxOdCvOO5qp/pbbIiNKBIGtxVzRmx1fbz/qbxSCMdvSt5PlvBuKVrST4TOd4PZn1pL2XPFoQXOOx82AAq7PHttHkHn377SWORMGW9l4iNt6AIl/Xcic9w9gU8cJgx/f7Wun4xclQ0idn0CY/q8aUPuiOyN8h039TWlifpP9nb
+ kG8+W7QY
+ rUV1KU6/ro3/JqdxbyAhKRCeG0vLAAPJBG0XOlGrV8Vw3pHqnXh3Wh6tHQBNthCP0PiZu8rPSbOnFhYxTVyXjEfS6fzMx3EXYDmtrpvvZac1PD8VbDdNs6gE5FoDc7jzY+yqFpwPinTBSqUsy8++1+Yw9bT9hUBDOFeop7npG0NEf1S3cu56SNgNAlI4VaXcFCroWODfn4ZldgSqOM1R0X7ZLrA1nFBCfwgn7gpfeb+cTknEx5BTttpCCqXiua9Lb5cIiZlU8wP5XeHE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,31 +146,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 15, 2026 at 05:01:21PM +0200, Alexander Gordeev wrote:
-> Finalize commit c33c794828f2 ("mm: ptep_get() conversion") and
-> replace direct page table entry dereferencing with the proper
-> accessors (ptep_get(), pmdp_get(), etc.).
+On Wed, Apr 15, 2026 at 05:01:22PM +0200, Alexander Gordeev wrote:
+> In various code paths, page_table_check_pte_clear() is called
+> before converting a secure page, while in others it is called
+> after. Make this consistent and always perform the conversion
+> after the PTC hook has been called. Also make all conversion‑
+> eligibility condition checks look the same, and rework the one
+> in ptep_get_and_clear_full() slightly.
 > 
-> Override the default getter implementations even though they are
-> currently identical: pud_clear(), p4d_clear(), and pgd_clear()
-> require corresponding architecture-specific getters, but these
-> are not yet defined. This avoids a dependency loop.
-> 
+> Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 > Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 > ---
->  arch/s390/boot/vmem.c           | 32 +++++++------
->  arch/s390/include/asm/hugetlb.h |  2 +-
->  arch/s390/include/asm/pgtable.h | 60 ++++++++++++++++++------
->  arch/s390/mm/hugetlbpage.c      | 12 ++---
->  arch/s390/mm/pageattr.c         | 42 +++++++++--------
->  arch/s390/mm/vmem.c             | 82 ++++++++++++++++++---------------
->  6 files changed, 138 insertions(+), 92 deletions(-)
+>  arch/s390/include/asm/pgtable.h | 39 +++++++++++++++------------------
+>  1 file changed, 18 insertions(+), 21 deletions(-)
 
-Was this a manual conversion, or did you use some tooling?
-
-I'm wondering since I can spot not converted locations, e.g. one in
-__kernel_map_pages().
-
-Besides that:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Why is this required for this series? It is anything but obvious to
+me. If it is required please add some reasoning e.g. in the cover
+letter or to the above changelog.
 
