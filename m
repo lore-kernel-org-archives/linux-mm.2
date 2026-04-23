@@ -4,91 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F7C6F589D0
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B67F589D2
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:28:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD35F6B008C; Thu, 23 Apr 2026 09:22:25 -0400 (EDT)
+	id 9E4806B0005; Thu, 23 Apr 2026 09:28:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84536B0092; Thu, 23 Apr 2026 09:22:25 -0400 (EDT)
+	id 96E726B008A; Thu, 23 Apr 2026 09:28:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C746D6B0093; Thu, 23 Apr 2026 09:22:25 -0400 (EDT)
+	id 836496B008C; Thu, 23 Apr 2026 09:28:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B58956B008C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:22:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4ED03120157
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:22:24 +0000 (UTC)
-X-FDA: 84689884608.12.E6E973C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8FCC51C0002
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:22:22 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fmmlHdvT;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DD036B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:28:15 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 452D11B6E31
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:28:12 +0000 (UTC)
+X-FDA: 84689899224.29.CD8FB03
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 608D340002
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:28:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DGgrrB0I;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776950542;
+	s=arc-20220608; t=1776950890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3EXZz79asyTCA2YQbVtqAxh7oAXiZXvREE1gw4u43b4=;
-	b=IEGSa9lV0IYL1xJTF0G8zf+qECORl+xVEKhr/Jh0YVew7dA7q1SEjEpSO6UkAbn6Q4X41R
-	VU/ip6ZcvaSkkNswFe0Wl5xB5nF9pm0U56obyvNFQIYhD6VsgUFSEPVDWPA07WLoa2p4Fo
-	8tXPHKwBfi+ryqEhqzujMqGZwJmg2yY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776950542; a=rsa-sha256;
+	bh=h/IZAKE/51Z5Z0tjt7HEHobBy9Qxebs9hgP6VWc7v/M=;
+	b=rWolwyayrU9Zd6XLiF8/hheFvNjHD9oLjEqJiaaTQRgrpTHTD3MjBdw7cZVWaIJq31DGr2
+	C44DoKZLrL7uQt2vLw0QHZo/b0Nkizj+7LRzyfpaqc5IH8B9kYMOlnig56Wy9MhJFvbfDC
+	qoPQIiQ97K86GKSCpGkmQuLed4Irn0Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776950890; a=rsa-sha256;
 	cv=none;
-	b=Awt7ixp5L1gv14JHexegKCobFxpfyBy7cYl1lyVwRmsMCd3HWVoOCMBAwPzwte9UJ6lQML
-	NP3SXBERsrz5+RnpaL3uiptHY8KKjR4wdnp6b1NzGymJi7hzTcNzBy51yB9amttuRdWgLA
-	0Ndz5IJQK8fMFmT+MIDcO4rPMPQEdnk=
+	b=QFScAOKw0ugkfjot5mE0ZzB7xRYto0/CnXjlyV9Ankxq60/wVtbBNL6KL+SuxYKyxVtUxc
+	5eS4julaLnFLJHNo4lR427/iJdZWiRIAresz2KhN4bnzm6zLK6mEE3mK6wg1bs9hzP5erj
+	YYY/ZQUsz7vNts6+2UKT0dDsky6SqdQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fmmlHdvT;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DGgrrB0I;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C967F6014B;
-	Thu, 23 Apr 2026 13:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEAEC2BCAF;
-	Thu, 23 Apr 2026 13:22:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 62ECC4450E;
+	Thu, 23 Apr 2026 13:28:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D0EC2BCAF;
+	Thu, 23 Apr 2026 13:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776950541;
-	bh=7HjhCeGqAeGhH5pZg8mgHAuQzAKytrrTmEN4suuSJzI=;
+	s=k20201202; t=1776950889;
+	bh=UdQJdVZKPGon/fRA+Ymep9Kcr+GFrjgmKm4qj3xWeYY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fmmlHdvTpyIBa8fjnS56K1y4xm2iUS5mUPlWtqkveTk1qCuCkL3feZXk+m9dgQqWp
-	 kc6nqGSov/0+orXUO9Jncnq/twT/fuElONdMYycx11BkTDDvdR1ZcDJuUv58vi4CMB
-	 MzJcBvUq4lv/diU8sxkqj29sTSZ8+yrmV9r1ZoL6bli8uK8eiR1hRluNhNAweGUxFM
-	 VhFFUWvdBs0M0zUNs+uac0dxk8PmSRiKOn8VzJ7/l4kk9/m4sXjhTt21rh7pZosba+
-	 RnVO1FFzVrX5hQPubXN0rtGly0qET0ITynAS+x6iMNoPxEkrxAk39q4dom9i2f/Tuj
-	 JdgddCqPBtCIw==
-Message-ID: <b9f5622a-5806-4b22-8b9c-5d968a14a792@kernel.org>
-Date: Thu, 23 Apr 2026 15:22:11 +0200
+	b=DGgrrB0I2oqVS+p8oatAec00Eyrzsv3qWmTOMyFJ9AjOOrxeDn/YwNdYZ0mUlEW0o
+	 SkOBQ0RHlMd5wTxJY1b8AzovMzbflW6nOMSTPVjA/4wk1+4rOw0z6Kih8RPlkau8BM
+	 mb0wjE3pf5R8Nnn/0quxlIrcohgrucbnWISAXhyE9cDUA1rpoTiV2kJJ8iE81K2NDd
+	 Ol+he5di/FMJSMlBV9/JMlKs+g397OwEYSm2egp2vgSHemIv6zA7cPU0VS4Q50c1Bi
+	 WfLODRTeuC6Xjf/GVQkqh6y9pfc1WJrjBGmBhH1G3916dDnFjS6ybUZQ3rYp3lq/s0
+	 QolPJ6q9bXNfg==
+Message-ID: <da96efa9-401d-4d11-90cc-00ebff340921@kernel.org>
+Date: Thu, 23 Apr 2026 15:28:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/2] mm/migrate: wait for folio refcount during
- longterm pin migration
-To: Alistair Popple <apopple@nvidia.com>, John Hubbard <jhubbard@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org
-References: <20260410032333.400406-1-jhubbard@nvidia.com>
- <20260410032333.400406-3-jhubbard@nvidia.com>
- <aecQkNxjoMReR6Ss@nvdebian.thelocal>
+Subject: Re: [RFC PATCH] selftests/mm: use pattern matching in .gitignore
+To: pratmal@google.com
+Cc: akpm@linux-foundation.org, shuah@kernel.org, yosryahmed@google.com,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <03a23a7a-58fe-42f4-a294-9d688ce33e2d@kernel.org>
+ <20260422190847.216343-1-pratmal@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aecQkNxjoMReR6Ss@nvdebian.thelocal>
+In-Reply-To: <20260422190847.216343-1-pratmal@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: deu5aar87kmemaub6hq16m7rzmn9nsfh
+X-Stat-Signature: k9jq35wqqf5que8j98bx9ywwm6gbfpzj
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8FCC51C0002
+X-Rspamd-Queue-Id: 608D340002
 X-Rspam-User: 
-X-HE-Tag: 1776950542-93938
-X-HE-Meta: U2FsdGVkX1/2IDUHp+R+Uk1OSpHVwfoUb80rAFdXMNTyqVjGGn2FLdhXfcq49/FUKK+Piid2OA5KugoFlPSUBje6iD/yRmovinyE6k3dbxqvz23vTzeyh7JXfBLWoDWjjs75PmVjC7B2LlkwU+MsM7QDlau+jH+4IqCZDyLvxc49n1OLmveo1zFKfsjR3TxqREBJyRym0z4yAlLwvlXJpMkeQPGhtVskIaj5ChjI1fWBALBn28vJa2cvYH2555rqgndq0AOhXQZ4G8/PYFyYbEez5BCF5si30ygvuqymdEMECae+kVY98qEgJiMR1xitmHO+gNHfZ2SotVAiiHivXm8AynMEoXQlKsIzp76rNrgoAIekkpdhVUYXxgSLLoQ/UGSts6pwOwWdEBGCFfVtYQxJs6O1PG8/rCeEw5IZDRHV/gleQ+dZLIEkh0oioz7RjHsCXxFe3bu9ZNZw4G58q1vBdBWhLbs9hqGKOdBcM6OYshf86mzqbVC6Tia4bqhhoMw12Zn2qSyO+e1swvJkHwl4lAfvPVxux1dK6NpljtuhMj9rECCZxx0aXYzoF5ef8KkDbM0E1w7AqsN7rd1zq2msiLfmnEMluHBtV3MIYbJT5fOacdBp4A/E2XeHfliwTnKUbmOI5lpSLGtw6ndajNX3edxXv0g1m8EUOYl4o4RQvttfW980DwCPuLkstb0VAgNfPQnsOMfsxeCLTM7q+ePKq4EUPAaEx7Aog0gIuZ3SgNTibx5Ila76pPyB+ugNiIOQk0K+vvzft2ozsOiVJ38SkY9L7u2CDAdscNqpIor6yZTchVGiAM1ciZLBe6kXwSogy9nIrFdYBW5LJFHQo21mCJ8b9t8jjfoQyQGhJq2rKhAaBVmaEoeivNdyT8+tI7l7v76ABMVwlWNSFiRRlkhaXpNQXN4KNk5qvDs7mw7r3EKNlxvz7CZCEzK5geyNcrENcYhp9po75ZtqEqs
- K2C76MRJ
- R6YhQqsmxEboBvwWazc4QiP04jp8vJOznJseYFPI9QCxDYq3pKiWhkHrN3Sq/OoDsWqqLc6WRv84+8L8gH0Q9mkILlgJ2f5Ies/5Ji3/wVvZQk9xTMZE9laWsDVnfS1OE6mI/N3vuewctpTOJIijiiztEKm7LPZTmxqb0fHFiN8YKt4GkEPUgSTLLnwSVjG1YywoGGzlzOxJ1Ei/S/YMCcALBBTb21IwO9/ooFHPBV199sv197iyMmy+djbMrkDigXDKfoOCeR016im5xtWGCOCMfJLknqykW+VuvX1sS4dJ/TO587boRXYL8J0Ld0LRi4VKQePoNnbA01/eZIxfl48SHqz0Nwg5VWvzL
+X-HE-Tag: 1776950890-848636
+X-HE-Meta: U2FsdGVkX1/LTYQK13FphNphuSPR///tvHWvhU8o98IHWMqyx0RxtCU+PYU7Z4d6m8hXUkgyWdpmhL7RaN5U9XoBZNnBtKyOm+OqIUUxtUZ//s3Cv6eKJCdPnLMn/ZNVLAFsPbtC49o7xa7PjS318GGfT6zMQSb73EY7+GXzpTDqbO0iwU5RtjGRCaHUWvqRjCR7hnt2D2a75IIpCa21HPv8ZLSvvuKyOSE6HihLC5QvsQnPBiZG1e7881rEnmzM/J3iwjvqO9FkYYtvJ1wQPjDDaXapWKO/rMv7qOYYzXHRGomoDgelFhhNsvxzUay7dRHZ6JuFWQir6hjOBam5OCECdFcs/PlNgrz74iORuiFwjFwzqm2h5ekK9XC/5Klg1l4v/RDHLTz4FylFjtAhait7QQZrxdNGxFavHghPzfwFAoHKMuSui8pYvSfTgnyhKmSBaIyE05pW1hRmqOH+vSPIYW0ydElZnk8AoYjjdCQCXRvVX/z1QrFwMjuJm52tAd7nijEHm50bCsovAqBJK4f0GsbOImzhcc67G+Xbe+2xuxD+fqAh969z+PNUQKU3FlAzOHDEheJrpFIAqpdbbOHLx4S8nPjmokBJloFECqjOPZ7hiTBnaXEni8/aFiJ6K7JoX6ntpB2K45yrQVabw72zwg6uZqNDdrsS+qu+y7OceCRCPo/JclUgMrWLqKZ50Fu1ZU4iYmUs5aNlVqOHqDvzaIg2Ln4cAhDp4+shxITYy7iR/RqWtdrEkdaO2T0gprhPMzWoKqv8nyTC0/wbJvcbsFQ5K+/4L+tYFOti1/tSAdkGarExO2tgMpld4d7cAZnrflYSIu6cXnPlehxqiEiAX9xV1vINiYMve6YdPGV65mR2P0zgX5P2DGKp/FPIaOOlL/dWLKkVf6vM+npFjSlDxWUIE6ERMsOGYAXgFyIG0aab1imQHs0D6Vj7PHh4SHwOEE8suKvQP7+1xDw
+ 0mWnh/ze
+ abTLMzh8u9hJF8IywXhAHnYOrhSjD5Uk7RWThy9cnfGoVJh1iwa0np5OTctViEUpPU3G4jFlyq+f48DqOVDeKXkQ0cyKIYuL6dLWKkeplk6cpZVFVl8uPf4vwTaVF/HraJMDVShoiq5OplYlqH55tqf5i6CuAQfXDzdD4BjrvoTMY759+YJql1V0inpjS31La+vUfoWr+NHqWovR2Oy0neuxOWxfw0bd17hrv+78uZ8IvHc8fFMwVOdl1r5XqlLTDABntM/6T+pl743Hpz9BI2avADZR6XCC0H+R2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,22 +140,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 07:57, Alistair Popple wrote:
-> On 2026-04-10 at 13:23 +1000, John Hubbard <jhubbard@nvidia.com> wrote...
->> When migrating pages for FOLL_LONGTERM pinning (MR_LONGTERM_PIN), the
->> migration can fail with -EAGAIN if the folio has unexpected references.
->> These references are often transient (e.g., from GPU operations like
->> cuMemset that will complete shortly).
+On 4/22/26 21:08, pratmal@google.com wrote:
+> (Resending to correct David's email address. Apologies for the noise!)
 > 
-> Is there a reason this logic should only apply to FOLL_LONGTERM pinning?
-> Or could it also apply more generally to any ZONE_MOVABLE page, for which
-> migration should eventually succeed? Currently that has similar retry logic of
-> NR_MAX_MIGRATE_PAGES_RETRY times and give up.
-> 
-> We have a similar retry problems in mm/migrate_device.c:migrate_vma_*() so I
-> could see something similar being potentially useful there.
 
-Agreed on both!
+Heh, no worries, I didn't even notice.
+
+As long as you CC one of the mailing lists I'm subscribed to, even mails to my
+old RH address will still hit my inbox.
+
+> On 4/22/26 18:04, David Hildenbrand (Arm) wrote:
+>> On 4/21/26 20:30, pratmal@google.com wrote:
+>>> From: Pratyush Mallick <pratmal@google.com>
+>>>
+>>> The current .gitignore hardcodes each generated test binary by name,
+>>> requiring updates every time a new test is added.
+>>>
+>>> Switch to the patten-matching approach similar to KVM:selftests.
+>>> Ignore everything by default and then allow source extensions (.c, .h, .sh)
+>>> and tracked non-source files.
+>> That looks pretty nice. Any reason for the RFC? (iow, are you unsure about some
+>> side-effects?)
+> 
+> Exactly that. I verified that the build works fine, however I sent it 
+> as an RFC just to be cautious. I wanted to get some feedback in case this 
+> might introduce some unwanted behavior that I'm not aware of. :)
+
+After taking a peek at the KVM one, I think what you propose makes perfect sense.
+
+I do wonder, whether we want to make our lives easier and rename
+"local_config.h" to something like "local_config.h_gen", so we don't need the
+"re-ignore" part.
 
 -- 
 Cheers,
