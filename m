@@ -4,90 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55AC4F99368
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:12:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2DEBF99369
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 10:13:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA3276B0005; Thu, 23 Apr 2026 06:12:43 -0400 (EDT)
+	id 53BFA6B008A; Thu, 23 Apr 2026 06:13:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B54056B008A; Thu, 23 Apr 2026 06:12:43 -0400 (EDT)
+	id 513056B008C; Thu, 23 Apr 2026 06:13:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A91B06B008C; Thu, 23 Apr 2026 06:12:43 -0400 (EDT)
+	id 428D26B0092; Thu, 23 Apr 2026 06:13:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C31B6B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:12:43 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2CAACA041A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:12:43 +0000 (UTC)
-X-FDA: 84689406606.28.B897118
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9B9B78000B
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:12:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rkGUoWBV;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F4C86B008A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:13:14 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D46A8403AE
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:13:13 +0000 (UTC)
+X-FDA: 84689407866.13.4DFB5B9
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 690744000F
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:13:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=WCZmRDi0;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf17.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776939161;
+	s=arc-20220608; t=1776939191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/QGaBkuH8/ZAILPAHHRSOYrjxsaY8b0v1dzahYdn6F4=;
-	b=jeyurrBo+erTUeY42MGCID0KomEK9vPa0bYUShQa7mjFS1Lbpy7Vy4YyTQUD4eERYUvHYx
-	+VYORp98LskvV75XDf4/SIzlkYkTx1Eqts29haMpPW2K2m6ZCzJA5fie78qH9FvsuQEGck
-	UO1NLPTeXkKA3dh6UazeScw+Tx2t67w=
+	bh=dlMyu09z/j1n9Md0vd7d/g/7lLJhkeD2jEsYTzV9u3E=;
+	b=109gIbd1MLC9b/aGmCxcOH+M9jGouFWC6X0ia/RGuyRcAD0L/XceHo7lYu6Wjy92bOUfR6
+	aqDL7pg28sfJTeopWZ+24NqRCgu25MX3bf1/OjLq7Y4F9VgdOi7p3lESJEyZtRAFH/jLkC
+	QbKO/hy55IlcpeRxgDt76JaeHXeR7+4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rkGUoWBV;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776939161; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=WCZmRDi0;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf17.hostedemail.com: domain of ojaswin@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=ojaswin@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776939191; a=rsa-sha256;
 	cv=none;
-	b=U0fm+HehIMgXiWCnEjkozjqShcgNN1Dz26F143SKNewaFHMXlNbwmqGmKO/ZzVRawc2Cjx
-	JJwAp2opHHFoIGJFI56PPckge1gdUkqAiOLFeVKwy3DP00DWsNP6UsldBwTnOW22wEeTfn
-	Jg7/wzMxg1a/B9aynuRCEKxgdkvD3d4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BD6D5600AE;
-	Thu, 23 Apr 2026 10:12:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16658C2BCAF;
-	Thu, 23 Apr 2026 10:12:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776939160;
-	bh=+14qKYwGR7mK4frHPpqn4+FCvyjDbN88/zo77nmiP3Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rkGUoWBV2u1VTD+8d9LICVnCwPAgvFjhDDylawqcFBJvfk+19Pgr+HvzAbL+ZoCST
-	 7dsFmhGyEZ7JFZvc4LILLuLdp1dex43jlHy+eEK3bKoc+Rr0L4VtwTHErlX9qURc25
-	 8R+iAt+Ozrcvo960EE0WNnWFkcBDr7wgha6cClTGi0qZ03vW2NUdtZj6Zt0STUkFX8
-	 6jg4vLPyuqhH4HGy7ssmjAD7jE5viuCqHFtXaCXkv/ZaocQYayOZMe/xvwFHIK9gLJ
-	 eTEpkMMrvLrO0yePINl5UYHME+hLj/naE7VPY42ZPvAQQiWPJ0ITuG9ee+GY1csFQl
-	 +5L2eKdLYdrXQ==
-Date: Thu, 23 Apr 2026 11:12:35 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: SeongJae Park <sj@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, Vlastimil Babka <vbabka@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>
-Subject: Re: [PATCH] MAINTAINERS: fix regex pattern in CORE MM category
-Message-ID: <aenwfb-6JPtnH9qS@lucifer>
-References: <20260422123726.517220-1-pfalcato@suse.de>
- <20260423003227.74498-1-sj@kernel.org>
- <v6cqjcp3fdkmh7z7twu2onxvmybl4na4enbnpsjf6z3lklaphw@n7iqq4rbkytn>
+	b=oq7A0thk98yYlsI2Z8F+ijJZRFl1/vkrynOUW8HGv06AStuwX0ythz85GZgfrOy+wR43iV
+	OCBUB5e5/9N7DuqszmeUsyjGtbqrakM/tCiXp1UJ0LNB95PPWw74HqP2HIvKw0P/pWD4A7
+	/fkoQjGIPOy0gEOUAly+DmPh3P9WS5g=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N72hrQ3514991;
+	Thu, 23 Apr 2026 10:13:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=dlMyu09z/j1n9Md0vd7d/g/7lLJhke
+	D2jEsYTzV9u3E=; b=WCZmRDi0ZWi0hocRIo/9zaCYREzzpmcm3qyAnfZoCp+s7G
+	2FlPC+bCu3bXVVnx30SxnciE8FpnVmlfGfMZqVLC8e3YCfOSrBDUB619DaL/jWt5
+	LPHFuXRm6rchtndKwNV3r9rqus+BvXBy8CL/L/V8OS6HtEwYHyekbP2w/Wle9I8b
+	gm72L0aoiK30TRsH9s/MVd6AX9E1rBd4Ezr1ZfDlL8baR69cbBzHZsZLeLEj4VmF
+	UCAghll2sx7o3lSk1T13V9/HWfHts+djTsLmVs+H2XLEW4wCLSz0WHMbPxD4CTSW
+	3mLgtQeUuuM9TZcPebJ8ghpczdI2FPxtRXgrs3rA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dpeu283dw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Apr 2026 10:12:59 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63NA5Gdc025791;
+	Thu, 23 Apr 2026 10:12:58 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dpjkxx4pk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Apr 2026 10:12:58 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63NACvI151970556
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Apr 2026 10:12:57 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1260E2006A;
+	Thu, 23 Apr 2026 10:12:57 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C6872005A;
+	Thu, 23 Apr 2026 10:12:53 +0000 (GMT)
+Received: from li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com (unknown [9.123.13.2])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 23 Apr 2026 10:12:53 +0000 (GMT)
+Date: Thu, 23 Apr 2026 15:42:50 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+Cc: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org,
+        ritesh.list@gmail.com, jack@suse.cz,
+        Luis Chamberlain <mcgrof@kernel.org>, dgc@kernel.org, tytso@mit.edu,
+        p.raghav@samsung.com, andres@anarazel.de, brauner@kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 1/5] mm: Refactor folio_clear_dirty_for_io()
+Message-ID: <aenwolyKbNkEUoNA@li-dc0c254c-257c-11b2-a85c-98b6c1322444.ibm.com>
+References: <cover.1775658795.git.ojaswin@linux.ibm.com>
+ <a35d5d65953cd9bdead0843d09c4cfc9d1fd65aa.1775658795.git.ojaswin@linux.ibm.com>
+ <20260415061423.GA27588@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <v6cqjcp3fdkmh7z7twu2onxvmybl4na4enbnpsjf6z3lklaphw@n7iqq4rbkytn>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9B9B78000B
-X-Stat-Signature: fip7eawobk3muuaxik3ahi6z3eo5mema
+In-Reply-To: <20260415061423.GA27588@lst.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDA5NSBTYWx0ZWRfX/CHxngqa649t
+ j9M2qpy573q8FzPAryA9nKtjALTKA1XqZxu+ypVGk6buxzA02ZNfKV9gU8LIuIe6mJClgHpnkVw
+ MJQkSifxA23ZzOAAasAuvhvDzfRRnQXWmmscmeI0pgwG2P53w1DWFDR1r33LDW3bAhbulxqlPbu
+ 2neJ/qORAgkLz0b0QujvpQL+CGcuQEo2DLTpqabmCeFotFtYG8oRWQbnVWv0p6x0RomZp2b890H
+ XYIQCITKaw2I84n6a4WdqNmrw7zKFRjARTfDY73aJIIkGxJgWCf9KUhhNbEVoTBg99hsW+cX/bd
+ Tjj6p/ncYdzeJ5yiPUb9c0rJGHyyEWG84BaCP1qt47aEEQb3KiUSI23fIELXmLFjVeF4flyjLwG
+ 9TiQfevMFEe2FfijYZ3A+bkH7xg85LVfUi0vWwzXA23p/vch4Eurb2AlZDOZRCpVAnlTlrGxdGV
+ rCQgPJIuZ3ZOT6bRFLA==
+X-Proofpoint-ORIG-GUID: XTTshxLL2roUixq6z9yt4ZsXIEIoXVk7
+X-Proofpoint-GUID: U-rVCM7FmNZ9J077xKzi80K_3zE9V6TE
+X-Authority-Analysis: v=2.4 cv=XMUAjwhE c=1 sm=1 tr=0 ts=69e9f0ac cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=PBd0Sfe-wFWcs0skatUA:9
+ a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-23_02,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0 bulkscore=0
+ spamscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604230095
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 690744000F
+X-Stat-Signature: pqk5f4hgdw18z9n4o3hm98rayurp4nge
 X-Rspam-User: 
-X-HE-Tag: 1776939161-716178
-X-HE-Meta: U2FsdGVkX19ygNu5O1duBpPiI1Qgi55fj/vjnAtTvhsCHOpuLXTd5NEnqp/yRIuohhexjyuw/rVzOQ8BPlxH8cqDhy3K0qTQkSdZHOiLkbKPJ8Xb80IQmUiCtqDcrXlRwrQAhxavosUpU4F7S42Vy6iRvHSaEsYcy2W69aPNhB+4sQcxh89yrq/vbhrZDIt0hRQWEs6bQIARTh9/E/MFsh3yK8MProcqSO2X3pMg8VN+mhbfnsEyJf6HNbogxJ07E6b4yMqxbINHy7HxbQFpLxhnBXBrw0sUMqy3FAslAqvNnUEp2RMyqAlFcSRzx26NVO9TX28Q/WalvF9UsPzds/Dhx5ArMWKcWWU3ZqS/bb2jowWKr56H12GjRmHEzP/mzJUYgpQLzWyR1R91l0zBOolG4t9kiLtphAzoO2u4Q+ccK9X5rE6HcQb/g8odyPQ0nhUaeDWzle0QtHWHBz9mm7IWoYb16qX+48SD5mTUy64wf0ceL3N85x8ulUxVZqlJbjRVADdvwJTvbTNhDI8LfZtOGi14Tel+qt6gL0YOBiG4sbYnk3fHTTpuI26PvjhS8UKfqbUCRw6eiVpKLA5uxUcB7VflmSQquEcR9CZN/6K96TIP2/XzPxmj/Y6lEhb2OKsIRzfCPjXVWJI42WTFthqNm3t8uf2dNKBYAD0Ze+qCAhszrzoUYzt6up3VBk/BWsuEK6rQyKSYGB3uDcdqyhMPZBn44jf8Da7ZLIt/p+agOqwt9z3BNKrS/eggZ1xXQDkHObzkB2bia95wKp2jcldAHu90X1bErQyVuX686XZXNuKAdKBoeVRKehOITbwEvMHFfHMUWuKaLRMckZmKVYZvYmpudvuQGnrNajpN3zC8o/ZvDtmFQz4QRGlFDW6jvYZfAJbqSR9RwPFu9TfvENlOX+jj0CtcDQZw8Zz2Yrnv+EKu2HlgnSgnztDWgTFS5q3z8knaLmavbEjKwpb
- fqY8cGdh
- OX/TEGE1dn0eX7eEtozYQcbGPk32mwsQo89RerbTbKm7EslJGg8K0Z2C+1/lAxg6bdjoDmrEN8bSTvAqgseqcSZs+1bc64BkQ9XSohluoJTuNlnWpkto6hsMppjPbPO6CF7k/OKWnOV81HVPv0BpSJgWHp6mOq7VNdbpOpiugJJnvD5wP4e9nQDRC9Kr82CxUUjqzZiMmSQKu5XnalH/pHRJgV/A1okq5JP6SDrSz+nxNEK4X458cn1RUvb9pdyPzRWHOAYIZN+Pv15dzv8AY9jHWGGWXesXeuJURu7UWIJEIr7s=
+X-HE-Tag: 1776939191-703605
+X-HE-Meta: U2FsdGVkX1+ZXJ0epd5btYLcnC+fBeU9ZKTkoKzS8Mmn0Fp6JTd1NwHtyMI8qR5aqK721Epjcc0+XGHyfid1oYI4CM17zzwK+zQdSa/OLCwMg9gI3ZJ9JimGSt/jb0QwrKRorobF7xnvPlcX9xD4lfSFt5CN5qxSjABsgRDp55sYutLvEz9CKPKkN3jCpKtUzMaxA2tscV7Xpkg/Flk3Ol7gTbhmjuNl3mthy1XmtrdAVFVKNYUWhFkQPdvPV0vLm/8YJa4lwCErFHemfSzK5mCvATpv0D+Q4zTKznBfw9KD5vFhnJkwsWCg9GRSEacKBOtHtT8pLtG/RKjQlUlguhdZSNDyIGqwHUFQaGbzt4OZTnskmOHNGTo2aP31UoQ7/6uNQlFklxuW1cgeAlnBv4Ql+DGJhv0r02aPnUfZL1EIv6i3pntSactWHNh7t66vDKATXCLXNxb9u5tKCB1+iQvYQQ54A69Lqu5gVboyUwpsDe8ElQV1JSKEs34ND5NdpSMPUzYjgrnw75ZjFU9M9Aj/d6mu3cq6aTbVcR9RYHoYUXhwsC/0PgtsGsFNGXNNu1WQI16PfkV+ax4v+JLRyWVVdHJjrLtzReEHvGlw3LRqxDDrgn5tUdCHn4+HQIMzNsQiEvPcHcGdVjElwtwQPwt8dW60ZzuBjHewFkmam/D6F/h9glf/aSNuzcaV7jIkcEYMnQJFZi7zORiGBWlCw1bafsQJTUf2Rc94LobN5UyDUSth92nWHNI5TE9Jl5TNxsx41PlGsAnOCKVaL9eOjllrXPfge9UxxiCZ7OE1moO014qELgRmNdIzuxc8ot+gvCA/MAUODNrCYnX1PEc+C0TMjWHEhkABCj43s9YSktnF1mhDji0ffDSJCPJSQnCd+wNxidLpwVM9N9+qhdYdFwkkozDmiqGNAR8nsHrGMhOAPoBAa/vD0EJShen/JBaHUWLYu6rf/S3ICBiKdl1
+ UeWLYoSW
+ WZQLqkeisQH2cvZ1zo+EVNHhKeGNaAWWlx7Z7lKX1pZJPJt8Jkp+XQKPPqlLH0TDL/kYEDWEc6jH758PGaE+78kx8ex+SLIGIWrrj+DCD8Rwil/e+w4KKFEOeZkOmm0L8fPxbXD1midSFhvVmfxEr2Aq2iuGyVwpFzVCjK8mvoQTvj9kFXA9htPPPlIvyFca6FXCOZRKDY0BHP6yqNV8TKW4TUttAHci5KXhJvo2VB04iuBhn1FvUhYiv6bjOYUuugklQZMVA1kAJEIG0l0uBwrzBXoxpcRF8Xy9GUS+nCv8MOeegesvYnOhzv1nKzTArWMYb4NWQiEDQP/gCoJB9kww4nKUXH/Yl3rP3ahUD6vHR5STsvH23QOX8X6qeuFfsNUIFsJGGse8qzWjLUzXERJlu8AYxJpaljkch5Sv3v/ov1pWdUbqPBK044uCR2JvDSqw6XGrr0XyCG4xiK33cMpDt7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,58 +142,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 10:39:59AM +0100, Pedro Falcato wrote:
-> On Wed, Apr 22, 2026 at 05:32:26PM -0700, SeongJae Park wrote:
-> > On Wed, 22 Apr 2026 13:37:26 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
-> >
-> > > The pattern "include/linux/page[-_]*" matches every file that starts with
-> > > "page", because it's a regex and not a glob (so it has the meaning of
-> > > include/linux/page + match [-_] 0+ times).
-> > >
-> > > Fix it up into a more regex-correct expression. Doing so reduces CC's
-> > > drastically in patches that touch pagemap.h (which is maintained as part of
-> > > PAGE CACHE).
-> > >
-> > > As a side-effect, move linux/pageblock-flags.h explicitly under PAGE
-> > > ALLOCATOR.
-> > >
-> > > Link: https://lore.kernel.org/linux-mm/20260422005608.342028-1-fmayle@google.com/
-> >
-> > Just thinking loud.  I was initially wondering the purpose of this link.  Seems
-> > this was added to show the example of pagemap.h touching patch that can
-> > dmonstrate how many CC can be reduced.  I once thought about suggesting to add
-> > the number or the context on the description, but realize it is too trivial.
-> > So just thinking loud.
->
-> Right, I probably chucked that link in there without explaining it well
-> enough. I was having my leasurely read through linux-mm when I noticed that
-> particular patch had _way_ too many CC's. I had a quick look and, yeah, found
-> the issue.
->
-> For what it's worth there are many such CC's out there. A group of 6-8 MM people
-> get CC'd on pretty much everything that happens in the kernel. Not super wieldy.
->
-> One thing at a time, I guess.
+On Wed, Apr 15, 2026 at 08:14:23AM +0200, Christoph Hellwig wrote:
+> On Thu, Apr 09, 2026 at 12:15:42AM +0530, Ojaswin Mujoo wrote:
+> > @@ -2847,8 +2847,11 @@ EXPORT_SYMBOL(__folio_cancel_dirty);
+> >   *
+> >   * This incoherency between the folio's dirty flag and xarray tag is
+> >   * unfortunate, but it only exists while the folio is locked.
+> > + *
+> > + * For some cases we might not want to do mkclean, eg, if we've already taken
+> > + * care of it, hence pass the should_mkclean flag to indicate if its needed.
+> >   */
+> 
+> The kerneldoc should move down to the exported version. 
 
-Yup this is a useful addition, the link is fine one thing at a time indeed :)
+Hey Christoph, sure thanks I'll take care of it in next version.
 
->
-> >
-> > $ # Without this patch
-> > $ ./scripts/get_maintainer.pl ./0001-mm-limit-filemap-fault-readahead-to-vma-boundaries.patch | wc -l
-> > 13
-> > $ # With this patch
-> > $ ./scripts/get_maintainer.pl ./0001-mm-limit-filemap-fault-readahead-to-vma-boundaries.patch | wc -l
-> > 6
-> >
-> > > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> >
-> > Reviewed-by: SeongJae Park <sj@kernel.org>
->
-> Thanks!
->
-> --
-> Pedro
-
-Cheers, Lorenzo
+Regards,
+ojaswin
+> 
+> 
 
