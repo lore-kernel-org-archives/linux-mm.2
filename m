@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 259C7F589CB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:00:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3A32F589CD
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:05:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D0A66B0092; Thu, 23 Apr 2026 09:00:50 -0400 (EDT)
+	id E56616B0005; Thu, 23 Apr 2026 09:05:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 882036B0093; Thu, 23 Apr 2026 09:00:50 -0400 (EDT)
+	id E2E816B008A; Thu, 23 Apr 2026 09:05:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 797DB6B0095; Thu, 23 Apr 2026 09:00:50 -0400 (EDT)
+	id D44036B008C; Thu, 23 Apr 2026 09:05:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 696B36B0092
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:00:50 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 140ED120183
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:00:50 +0000 (UTC)
-X-FDA: 84689830260.05.4EA7E70
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0459C8001F
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:00:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HkwlU+VT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C5DDB6B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:05:03 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8CAD587B06
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:05:03 +0000 (UTC)
+X-FDA: 84689840886.16.CDF11E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id ABC44C0018
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:05:01 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HERcRnQJ;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776949248;
+	s=arc-20220608; t=1776949501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUqzWoc8DlOcAtFs+f3SokTm8THv/V6h3BwKOlOu3d0=;
-	b=V2SM5ewA9W9jO0hfT/0PkgBK8Jlr9bJipcOT/JcILBUjvqFOU0vRKnrcsJVdvEzdw4zt87
-	bNE+TASqWoTQ6Clb7+oarR0PjmtAXjeGzgK8hpPUXei++psAqoRq2frGTPjfgcb4YfQ/iD
-	4ev4HlGbBP18RzHx8Mz08a0BfFHb5Hs=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HkwlU+VT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776949248; a=rsa-sha256;
+	bh=1HfxxOr0aaqSCHTa+SRaJ/ikgjWg3V8ZOReuUxCiJSM=;
+	b=cmcMSq8h3sDU7PbjhJJ3RSK/x9gq+4VzTc3UiXUgGqKFYfU/A77kRmH1oqqoN/cNfWk5lN
+	LOh/BNzNIy5FXKY0i2kY07ryj2ee9Jz5P1B+zLfO4I+juI4+D3qsBfEzQl4Z+lKpHTJy7o
+	wGwDapmKFNx1Bf0IDUaAIriz79t4ukQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776949501; a=rsa-sha256;
 	cv=none;
-	b=nHmwON4QKMUAW0SsJsYhf3vTjh9agZi9Hbq5oKqTKbhgX1MSrRg5QwZO+LQ9qppUPb2Rxp
-	M1OtdNb17PGq7Iwr6TsgmZoa4p72vi4kAAjuP6tDLKgG5n683hkfl5pmglBfBORdZSsCjE
-	csoEUMrzppu9WWjLGy0q7q7eDoMwG+8=
+	b=orUhgDqqemf9vPhEPc/LGF3ZhmmvpD5s353l2avznVGR0q4uH6S4+hAaiqK9m0/tt3o0kD
+	rQnm47VeTc+wJhOY8Y09pH9Qe20DA2qsLeYRAoEgFPDP//6C4xPBjwB0NZJozW/Yiyg4iy
+	Q0HjBACIk3m85FMronSxPSjbxkUAYyk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HERcRnQJ;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C81560132;
-	Thu, 23 Apr 2026 13:00:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D20C2BCAF;
-	Thu, 23 Apr 2026 13:00:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B507140785;
+	Thu, 23 Apr 2026 13:05:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7832DC2BCAF;
+	Thu, 23 Apr 2026 13:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776949247;
-	bh=jMWsIhaVRBlToE55+8Oeeq5aDuLS3n8Yq9bOM/6UQeU=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=HkwlU+VTF2GZq0Mo3BmGUtRyD+ABo6lL5nb6wpNZBoDZBz9pyOjQtrVKVYc15+UTY
-	 uc/EMl/z3olOl/7n+KiI2RseEXpEuTzl9aF04Gz5Zfp83spptVD3udHETvzYr/1uBN
-	 SivqnzQX6MS4luWWHjYEGa+E7j7oTplqX1pO/akiEunEjuI5+SwF6oUotuRJzYHlZf
-	 2xR65jFxPKCyoVr2H6/ZY1bZir0b3wBC8/f3fDarzrIJxoU4sl6JwN3my7LV/1WJNl
-	 4pvTJV9JDEAdAlNswrfWD/bSgXQLVcaY6kyOidERdS+ijzzhMhNRFF+kXbh4g/VUMw
-	 mR4kRS4ReR+Pw==
-Message-ID: <fff4048d-8fad-4a63-b1d4-688ec3608fe8@kernel.org>
-Date: Thu, 23 Apr 2026 15:00:42 +0200
+	s=k20201202; t=1776949500;
+	bh=dFYjmc1IpIkwPQyVq3iWTo4bxWHZ/cGa43crlT3FpFg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HERcRnQJIVyzlX4GI8tM0lL03oWq6Sz2rY4lAo4NLLA6lhiufVUqyR/K6xYb4lWh+
+	 KPX2LQsSl1L21PnwjtEVOdkxH5SAJuQkBC9VQNEjqGTffPWOcXNjdxxy1ammKXKoDO
+	 HedN1LPRIWc14gfv7Z6FeiLPBSpOdJBaY7T49JRGyvctiEJT9N+GK0JTU7MoK4QHTe
+	 qZG/GYKlq0bF4vwmnhkhTIQ/KYfc/F0IRSjLaJlkJNxBerb1GdFWNp00VYaRAkG4iE
+	 e1fptp4O3nI+9X1DfuD4bzLTeCHeslxUkd2jID6OK71TkeTB0XAQqjxJi48DnCZ6B7
+	 DQqStQvtjhtqg==
+Message-ID: <b4e0877c-230b-463f-99b6-c363595e7ac0@kernel.org>
+Date: Thu, 23 Apr 2026 15:04:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/gup: honour FOLL_PIN in NOMMU
  __get_user_pages_locked()
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>
 References: <2026042334-acutely-unadorned-e05c@gregkh>
  <dee5b7e8-864d-48b5-99cf-282eedaba927@kernel.org>
+ <2026042314-traffic-riverbank-d9a1@gregkh>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -122,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <dee5b7e8-864d-48b5-99cf-282eedaba927@kernel.org>
+In-Reply-To: <2026042314-traffic-riverbank-d9a1@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0459C8001F
-X-Stat-Signature: 7aos3kdzqo3t39aq8zjm3opr4juzh58k
+X-Rspamd-Queue-Id: ABC44C0018
+X-Rspamd-Server: rspam07
+X-Stat-Signature: znrobe99n6qyy4wka4iqsj7xcujzqbbr
 X-Rspam-User: 
-X-HE-Tag: 1776949247-159795
-X-HE-Meta: U2FsdGVkX1+bmsrhWjR2W7BPGp2uZof1A3BWp7rAnbH01vWwIfRh0Ts1YtK89FJBDr6/zZ4RaUTJ7hW+cQ6QUFdcUF5400ywexSHVpeV3QnCjB//LPEOLmRyIQITXMDKr/s6vIaeU3c82cCfj6ZbcWo7Yal3ec8Os/mDG9FGWZCPCmYjoonSMKrJnDTTiXbKGdWRv5srdOCrfyoOCjmQVD0hYnor7Xubed2XacUcr+RL+W6EpKq5crhqqw2/GFP+k1ReQc5ENlWACB8LXar+tjRXAR8nMnrwT3rI/5li7jbKCa1uhaa4opO7ruDildfkPklZxQGqx+vrX0VZKWX7BVhqAOYk2akDn3svSO+iLMtRQPfxmQWSnA0++CN4kZsuZ/1iyicx/AL3d2mvUbskjyKZDSbMk++Eh87/eCtswqrui1ySIVRppHJICXR+h/16DAAOAUfVDszHrDgUA2xdJrLUKIjkG1H6bqCu01IVR0DvCde2Qbqv2zdvg44a4i+VaZSH2hHCeUPVIim/9Wwi9Dcj3Er2iq9+WK6EWvEGqytR6iap9BmlwsSeY+GbgQ11K2gj/xAyl6bM9JFmH2X0ga7lOWEZ8dRo6ha4U8IWIngqSqsYqc8cRYE/y+4NRecW1+T2Qg7/Tig0sFF+fk0sqVJvAKCSxLw1RVFsaGVoDFR7yxl1FsfdmAPErUV2Z9zb+ElnRex7hXYtwscjMTeeNP/CgdGPrCEItQlGzCLKtJckecNR0of8vl50vP4B5Q2emoBA8eZUmnqxb230R+OU0wJDtfUnoI3/JlSFou6bBQuMvnWo3BeXhn07EV4QdPIZNVQgKXp2gh54g315Zq/me8W0yichP/uC4gd12MTO7ADpY0UgCmyuPamuhjtkEDSfpJIWDJv5BNb7taS/EAnSf6PDZ5xcGJUQNihGGoT0SwQi48pp3PkhP2w3uLqYMM2sfSeeYxRqNxNqYIHJY6s
- smFu4yjM
- hkg07vGLRuO58IkAplXLMJ/XbwlUphf03Ia7jwyUSi7lFrQaadnOBXjSh2z/nIL7jB0ENljigE7gPBxoCLvKt31k9UTMNL/aNzcnXYzW2Tt38XGcFMo4x8+gVslm3Rb56Eb3NACWgGdxIhZcDvbra1mbWPcEEDAbg9I/HsaidHaftJTAGgfrgyWGxKcDR3w+IvC22DFnueTosZAX21oV9Wq7FxdY6Jv8kl1c+tj+lvYpScIcTKQGvxw+wTeGKggk4s2z2Zgf3GO0F//8z0B7IGALVYy5F7p4JbUPQDJA8V9sVjrKQ9k2IsRpANew01KRekLJbT8ieiY+Xa7hKNqsAyGZXkz/W4MfNiRD2rsCv7WvhxorHkIMqYO3+cDyposaIWurPgelf0uoFfD+2R+6r8VDoKW207YSBIsj3MQ9+EYY14RJYz+slLoVN+CBtvWmt7nP0efCn7xHpOi2B46w5sAgX92YfxvPlWGbchiD8X7aLqgPYvOQ5YpNUUpcZZVVHwRUQHFrvtVp+/PChtJOySBLB+e8pkjp6jnkRio3bgO7JI9M=
+X-HE-Tag: 1776949501-602870
+X-HE-Meta: U2FsdGVkX19cI8ops4NYCxZTxjwzMa2RSoik9qGuXj5ckLxiNfDUXSxbz2x60dv1Ej5zei38Pq7olIKlsIQT3GEu8CZOh/h73FNgMGP1ya9mqga+DzL2inIs8Ic/erVQRC8bpWIujHOUB7LAiJOb2O2gBbGS8LufaThFE2OzI2KMVtUiG0BEdRLTU3rLVC/NQoyNeYlrTXp3/R2D1GDk5vkJiPIQZ7/+bKD6uQI/fJqxlDVglnTFPbwzH55792Svaf8dd/xAx6w+1Jvnid6rsD67bp0jMLGBSlVEr5igtkLv14XbAoiaLOjuUUXLw7r+bVYWMHZh0T3Jmhv+8zEZCqVsOvqAxfE39gRaf6f3fGOeySgMkuXsjzG+4npMXWSj51Prt4MTlRerha+cJ0laLsKlguUvsOmDw5MLV4UrBDAWTcMkXvjr+ctSsy3DqY6TvRCIm2xs4nSemHgZUhv1LSeiyDa43tqAZ1QbmO965PCEgBBuOuHDNRAMmluucolUwGkDXimkDYivLxchXe7rUpPm68v+kGygKYzurHbLcAEMqKBdeO+aaWHEJec5a2ijVVCKgpTdyhfbWancraWebJpy8o9A6/l/2t4OHOR6DyVNFK53qt+bbt+knfe0/bd/0rraksjpvWOccoO9vyBP3248GC+mYIaXZvJLYM+HFwd6DcqAG6RjZSrjp+xG8Coa1Mx+/z5iMi37mf2PkP1oFeErSRy8Tx71Q5aq2Y5YEln1eyLpZAE9iVG3ZIy1SRumg3VaZ2BGUoqzoOrY2iV3jQZ/BVn9niTJF3oeuKnh5HWnocaLGKjJnfB0kEhpZxKHvgJIAPBXzgLN4ue1GQfVD//a/POD1+b43G6qlNyk48G5Yq8JA7oesPqpc/fkFWIg55swcQAkTAI6N4jDDQg4KKaUt0Z5M6g1mdXuSO9BYhYfy11so05Up+cg01XX8tfoVUZkXMHSivpzh7H+w5W
+ ZEUYQPvy
+ cQzukmoy0rNmNW/cF2Qekan30/F688F3FhafuGvpulVcMBk2fLIlCmsMzasj2fISF608IpaM2BMG9aFrxXNyrWqch13pskl+kK3iqBaPRT8veTJCL1Daodl1QGpZRRPLPCtay4Y8H6JJ5ovFGdh65CcyXXkp9rsVgifyeHhKIH++UACJIdTGXZUS9AnB+JgfWjuvaNb6PA0Mvjla6bO+BNqvgHYC7rQLWjYOqBYVZXnPCEo25O8YcyTzMv4sE3RNpEntKtyYnoHzJwszCPa5ibIsHgKGUwrE/4bT7Mi071EHN8P96WiltWx7biEA5QwUhlq47qx221TqWyrUQjhPKEI38pQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,102 +141,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 14:47, David Hildenbrand (Arm) wrote:
-> On 4/23/26 14:31, Greg Kroah-Hartman wrote:
->> The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
->> get_page() reference for each page regardless of foll_flags:
->> 	if (pages[i])
->> 		get_page(pages[i]);
->>
->> This is reached from pin_user_pages*() with FOLL_PIN set.
->> unpin_user_page() is shared between MMU and NOMMU configurations and
->> unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
->> GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
->>
->> This means that pin adds 1, and then unpin will subtract 1024.
->>
->> If a user maps a page (refcount 1), registers it 1023 times as an
->> io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
->> unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
->> the page is freed and returned to the buddy allocator.  The remaining
->> 1022 unpins write into whatever was reallocated, and the user's VMA
->> still maps the freed page (NOMMU has no MMU to invalidate it).
->> Reallocating the page for an io_uring pbuf_ring then lets userspace
->> corrupt the new owner's data through the stale mapping.
->>
->> Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
->> for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
->> symmetric.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: David Hildenbrand <david@kernel.org>
->> Cc: Jason Gunthorpe <jgg@ziepe.ca>
->> Cc: John Hubbard <jhubbard@nvidia.com>
->> Cc: Peter Xu <peterx@redhat.com>
->> Reported-by: Anthropic
->> Assisted-by: gkh_clanker_t1000
->> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> ---
->> My first foray into -mm, eeek!
-> 
-> Oh, nommu ... what a great use of our time.
-> 
-> I was briefly wondering if we want to add a Fixes: ... but then, this was likely
-> broken for years and nobody cared so far in practice.
-> 
->>
->> Anyway, this was a crazy report sent to me, and I knocked up this
->> change, and I have a reproducer if people need/want to see that as well
->> (it's for nommu systems, so be wary of it.)
-> 
-> [...]
-> 
->> -				get_page(pages[i]);
->> +			if (pages[i]) {
->> +				/*
->> +				 * pin_user_pages*() arrives here with FOLL_PIN
->> +				 * set; unpin_user_page() (which is not
->> +				 * !CONFIG_MMU-specific) calls
->> +				 * gup_put_folio(..., FOLL_PIN) which subtracts
->> +				 * GUP_PIN_COUNTING_BIAS (1024).  A bare
->> +				 * get_page() here adds only 1, so 1023 pins on
->> +				 * a fresh page bring refcount to 1024 and a
->> +				 * single unpin then frees it out from under the
->> +				 * remaining 1022 pins and any live VMA
->> +				 * mappings. Use the same grab path as the MMU
->> +				 * implementation so pin and unpin are
->> +				 * symmetric.
->> +				 */
-> 
-> Yeah, drop all that. Especially the hardcoded 1024/1022 is just screaming for
-> trouble longterm.
-> 
-> It just follows what we do everywhere else (e.g., follow_page_pte()).
-> 
-> 
->> +				if (try_grab_folio(page_folio(pages[i]), 1,
->> +						   foll_flags)) {
->> +					pages[i] = NULL;
->> +					break;
->> +				}
->> +			}
-> 
-> If it fails on the first iteration, we return -EFAULT instead of -ENOMEM.
-> 
-> I know, I know, nobody cares. But if we touch it, we might just want to return
-> the error we get from try_grab_folio().
-> 
 
+>> It just follows what we do everywhere else (e.g., follow_page_pte()).
+>>
+>>
+>>> +				if (try_grab_folio(page_folio(pages[i]), 1,
+>>> +						   foll_flags)) {
+>>> +					pages[i] = NULL;
+>>> +					break;
+>>> +				}
+>>> +			}
+>>
+>> If it fails on the first iteration, we return -EFAULT instead of -ENOMEM.
+>>
+>> I know, I know, nobody cares. But if we touch it, we might just want to return
+>> the error we get from try_grab_folio().
+> 
+> So just abort here and return it?  No, that will not work, there's a
+> lock we would jump around.  How about something like this horrid thing,
+> adding back in the relevant unlikely() to match the other calls like
+> this:
+> 
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index ad9ded39609c..8fa5b37be8b7 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+>  	struct vm_area_struct *vma;
+>  	bool must_unlock = false;
+>  	vm_flags_t vm_flags;
+> +	int ret;
+>  	long i;
+>  
+>  	if (!nr_pages)
+> @@ -2019,8 +2020,15 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+>  
+>  		if (pages) {
+>  			pages[i] = virt_to_page((void *)start);
+> -			if (pages[i])
+> -				get_page(pages[i]);
+> +			if (pages[i]) {
+> +				ret = try_grab_folio(page_folio(pages[i]), 1,
+> +						     foll_flags);
+> +				if (unlikely(ret)) {
+> +					pages[i] = NULL;
+> +					i = ret;
+> +					break;
 
-BTW, looking into this, I am not sure if continuing on !pages[i] is a sane thing
-to do.
+So, we have to report the old i in case of an error.
 
-IIRC, we are not supposed to return NULL-page pointer from this function.
+Assuming we want to also return -EFAULT on !pages[i] -- which i think we want,
+maybe the following (uncompiled and untested)?
 
-We support it in unpin_user_pages() only for internal purposes.
-unpin_user_pages_dirty_lock() does not support/expect that.
+diff --git a/mm/gup.c b/mm/gup.c
+index ad9ded39609c..d00ff8d988fa 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+        struct vm_area_struct *vma;
+        bool must_unlock = false;
+        vm_flags_t vm_flags;
++       int ret, err = -EFAULT;
+        long i;
+ 
+        if (!nr_pages)
+@@ -2019,8 +2020,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 
+                if (pages) {
+                        pages[i] = virt_to_page((void *)start);
+-                       if (pages[i])
+-                               get_page(pages[i]);
++                       if (!pages[i])
++                               break;
++                       ret = try_grab_folio(page_folio(pages[i]), 1, foll_flags);
++                       if (ret) {
++                               pages[i] = NULL;
++                               err = ret;
++                               break
++                       }
+                }
+ 
+                start = (start + PAGE_SIZE) & PAGE_MASK;
+@@ -2031,7 +2038,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+                *locked = 0;
+        }
+ 
+-       return i ? : -EFAULT;
++       return i ? : err;
+ }
+ #endif /* !CONFIG_MMU */
 
-That should likely be an -EFAULT (if the first page).
 
 -- 
 Cheers,
