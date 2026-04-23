@@ -4,106 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FA0DFAD41E
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 06:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFFFBFAD3E3
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 06:16:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E34D6B0005; Thu, 23 Apr 2026 02:13:45 -0400 (EDT)
+	id 22C2B6B0005; Thu, 23 Apr 2026 02:16:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 693DB6B008A; Thu, 23 Apr 2026 02:13:45 -0400 (EDT)
+	id 1DCFE6B008A; Thu, 23 Apr 2026 02:16:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 582C96B008C; Thu, 23 Apr 2026 02:13:45 -0400 (EDT)
+	id 0CB346B008C; Thu, 23 Apr 2026 02:16:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 462F96B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:13:45 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E5C99120350
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:13:44 +0000 (UTC)
-X-FDA: 84688804368.17.2D286D9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BF7BC180003
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:13:42 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sfPr5r51;
-	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EFB7A6B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:16:04 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 684931B80FA
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:16:04 +0000 (UTC)
+X-FDA: 84688810248.09.30CD4F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 689C8C000A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:16:02 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fI7yyOMQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776924962; a=rsa-sha256;
+	cv=none;
+	b=G4f8bVlU4HZUWDZ1W73AjRpHarqB7Gqn9GK0yuBFLm6I7jcXNNLlSxHj52c8SUL8vERpgH
+	WcJHTMutXVTNKDphkk3OPESJ8SETYw8mmqj5J3RA+UaAHLHrBgoYhEUNQDv5Y6Rra2JY2w
+	SGiCP4v944EToOEsd4YJoxXYEoec9Ac=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fI7yyOMQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776924823;
+	s=arc-20220608; t=1776924962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jhIXZ41ctlzy+OLzj8RF3QkMk4V0d1DFpRr7KKLceGM=;
-	b=5XSB5d61YHoMiPVe+ujWldGct4fFVtUiibdGsPDuuUHXv9ex+Z0wEwBzmL6VGZsN7D38ue
-	ikCylMYrUb/+JibWF2wSXAA8n/kA14WH4QDLUDVBjr6Z8LDZ7tuccSIY4zC3fGGKTAW/hy
-	T6hM3aBRtpiHIoFNdY3m/NqIIK9OYC8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776924823; a=rsa-sha256;
-	cv=none;
-	b=Y8kyWGN/ijU96iJIItoKgiHModf1+73PBRl7d+PaEyfRmFn2LtqYaS6ql6AXro+K3oadUa
-	e/KnfCMZw1kvG3ILuVA5e/yCHMPB25iA+vJXnix38wd77yfpx5lJucTrbkRqZaqAaxQcAL
-	ZwmSU03JUTBRljo1+qfAstRqIKWQyxM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sfPr5r51;
-	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 13BC71BB0;
-	Wed, 22 Apr 2026 23:13:36 -0700 (PDT)
-Received: from [10.164.148.53] (MacBook-Pro.blr.arm.com [10.164.148.53])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 04CB43F7B4;
-	Wed, 22 Apr 2026 23:13:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776924821; bh=LGAfpRqIhnl3CPS+AsBkIGmmpk95jpHJyYtlwZMXpoU=;
-	h=Date:From:Subject:To:References:In-Reply-To:From;
-	b=sfPr5r51vS9cCdCkVUHoMDTyVehM4d3m6gn9Rcbv3STf9NTp/F2nT01kCHqiaaXcE
-	 BAS2Pjl53wqDjFEp/4vLNu6hZCp2U73OwTjUKUlWKakyEPpXApZFF2JzGfj1rBJX+F
-	 oKVn/ypf7E2VktBkNbJeNwV2k0lur47tZgZj4kRg=
-Message-ID: <c2ab6944-9311-4370-81b8-46757725ba35@arm.com>
-Date: Thu, 23 Apr 2026 11:43:30 +0530
+	bh=69djUPJJx8coswmZcJMp9SXgE0OzFiu0JhLeiEKj7JM=;
+	b=SHA/EVEeKk9z/HCP8TQXa3ZqaDKPwpMoAVf3NpyUstSUNgG1cjrA00IPjCT+mYYjHo40Bs
+	LEY2/Z39pzXO0suChxL2mlitwR7Hm12JQN6UKmVkEhrCwlN+faRmJsnSapUgHMAJuzFTHf
+	nb9c+ZE8AoZl3iiBWhc10aYEY1h6CmY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D774441859;
+	Thu, 23 Apr 2026 06:16:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8258AC2BCAF;
+	Thu, 23 Apr 2026 06:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776924960;
+	bh=nwBBq664DxNVCPLrdjYgRhX0pOKg5QQniyywFa0cLM8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fI7yyOMQle6EEJtPUOZvb62FPT9bq8IAnCvH+bfxjnLxwfmrkBm635eBptkeZcYjf
+	 LoyCNlwo8IgG4xWTWw41Q5BJiNqeo5MsterhDhwMdmfJ3dNcpeHxn5dJhvnGcFO7cb
+	 o+7afynJ6WGXSxaLK5VO1gLp/1jIXb0zIT63ODK47wxM+R3kg14vJaKmUPeES5krgD
+	 N+RVfdlOXYSYIq6eHT/lZN8s/hy+SBokvHsnesIPwIHvKRBPwCXfD29f/t9kSeExMM
+	 aI30cAcFYxPaUkIkZ9luSfUQveIT2KHtxsnvQqMHorz+ehGz3gaKoEMLxg0wilnsx6
+	 dM4hpsz8OBbOQ==
+Message-ID: <499d2411-72b5-4bc3-8db7-5a29f9fb3f20@kernel.org>
+Date: Thu, 23 Apr 2026 08:15:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Dev Jain <dev.jain@arm.com>
-Subject: Re: [PATCH v2 1/3] vmalloc: add __GFP_SKIP_KASAN support
-To: Ryan Roberts <ryan.roberts@arm.com>,
- Muhammad Usama Anjum <usama.anjum@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Uladzislau Rezki <urezki@gmail.com>, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Andrey Konovalov <andreyknvl@gmail.com>, Marco Elver <elver@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Peter Collingbourne <pcc@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- david.hildenbrand@arm.com
-References: <20260324132631.482520-1-usama.anjum@arm.com>
- <20260324132631.482520-2-usama.anjum@arm.com>
- <727df89e-2069-4a7d-b3c0-88f89cd3dcf8@arm.com>
- <e772bbfc-1f77-478e-b378-7947ca7a8b3f@arm.com>
- <25c78859-f514-47ac-a3b9-7dcde101f72d@arm.com>
+Subject: Re: [LSF/MM/BPF TOPIC] MM transition
+To: Josh Law <joshlaw48@gmail.com>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org
+References: <16B7B5A8-EEA7-4580-A565-3A0B4DBB08AB@gmail.com>
+ <92c3d650-be80-4a64-a962-3586ba753316@kernel.org>
+ <B2261993-3CF8-47EF-9F76-FABA6BB4A50C@gmail.com>
+ <dd27fb14-38f4-439a-b5f8-59149e6fc6e4@kernel.org>
+ <4B3D556A-AEA8-4143-85EA-CEB76801B879@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-In-Reply-To: <25c78859-f514-47ac-a3b9-7dcde101f72d@arm.com>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <4B3D556A-AEA8-4143-85EA-CEB76801B879@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BF7BC180003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: m31osfz463ajffkp6z5qt41ssj7gmus3
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: nzp8ks4ty7h6g5edy9hy3cxd6w4kmpb3
 X-Rspam-User: 
-X-HE-Tag: 1776924822-323319
-X-HE-Meta: U2FsdGVkX19djLq5trIgkVvtQyvdb0jszF+QTDIM/GK4FzRzng/o6nHgk6+99UeiIIs9DtCez3Iu/0TRF0JSJ3txVI2vulOElZgoHAVL5+bWBHc2sWcsGh11c0KFpj4+7+VpOVV5LoysgxPHxQa8JT93uY0g4D/3h5E0vJotPRrxzNL5pcf45agJgkfmEfXcg56MMq4fv008hmHyQQxHBZm3nvYnme3kdTK88RBOEhqMZUh5IwxjVWV5BO0OsFk4s+febMaJmYuWShrpOR2wXdohRvc/gZgNxT29Kx6G+9DEOUhm2MPI6CJr3t6qX0AsoMXVu4mSvYXjdpF52gtPuzU8+RXuznetPN0UPh8FC6AORRI7r9/brAZI1VyCcRnNatRkBYH6l7CI+cLJqiP+3RrX8+9VLIt7rnKpVXpHdHq8emOU2Kxa7MBXTcsKW1D9brE0j//31PgUR+oulRJcpQaALzVI9hUcX48EHde58MLXHDnOUCeykrobX72wxBZxKz13coeNl9YNQ1K8OFGym344pnAdDtpyAEd+TluF8yeGooDHH4Iey/acgrszT1lkiIL6GD28MNntRSvgbVABeFxTC0W7UXHrybooer4OFNqJ+n7zfenwbOqBxGwF8/56YjX/srjSuYm/FSi8jQCVkcNj8nPmQDbsUaHRgVUJmB57SfhGAPwz5Xo0Tqdz5gR5UfbJLnreAABccu/+Uuw9Bl3AFVhGwQyFKX2ZmBhhtu2G1gltnbx6H+I0cgNVOW8igihlaNuX0bmyEeh/CFXhPjImpWSZMORu+vmFYI0WShO85JSjqMtWR98COKdLPvO0WnfzyBS95bbXTi8NuB5iAZhbrfqBNjsGV3rt3mX5rgqRbeTSYaTw+X8YZTdAjYKA5iiTApga0h3lesM9ra9cECTuEkRGpeJrsAlw2mQjjTVB5IITc0F77XjT1zn2z/BbWYdcxAhuOAVEkfyIye5
- ae4SJ9fk
- Jk9E5fpcwZE4pxZtHmN8CkRnAVvuOJDj0oZdsCXdsvkJxOv0hmCzckYejFnV3UX+9RTAe4TDPDoqfroXDaJ/bIWuy604zjjieb198ozXZajAr5qXTI7pKIOaAdpLISktOjpR7hxiyH9/4fSPFTPOc7p+0bhZCmNTc8j5+FH/ZrqJwMc/QjSbc0yMZnwGcKsK0KTruGLloCJN3k8n4twqm4gYDDoT3ISMhw5pZxrGYeK60h9vIhNfCQfioD1xFfqg1ePTh5AQkPB52re+4xE8vjuCP1cDXU8Dk5ls4WvPxc9hNj7KGYeFleZzcsxGpBf0BQJwGwAXXam+nVgldhezW7b4cchKOEfCdSCn0ITO3Tbo82WCbP+9qCcapQg==
+X-Rspamd-Queue-Id: 689C8C000A
+X-HE-Tag: 1776924962-88741
+X-HE-Meta: U2FsdGVkX18uGK2cNzPRbLcWPYk64nGD4CHMZZK0SXr+iNa29Sy8dqiGHuC8W2ksp3fHrcB+NKmFUT6mNChZcUpGZuMN+3N13ME5LhpxHXUpO/GcjuKu0HnYJhdeio/cM6DXu0F8mw5V5HjWZ5K5iEK17dyYiJU6y7kHpyNYcOAByXtzghLJm+wG0JEeA8T2J6fFrOPUGFZNDQubDmyZj/aCigIWnVSgg/DA9Q7NhYxvg8H6uBnn5fiWlsIBgXJHzsmvZse0kugYTaJeCQcSv1QhDnRVtwtdlZQg2FNfPVEKDD0ehCSwxGJHuCu2cMMdhqoBuYQLRU2wlxHD9d0QdBEBn8F3AIx5omb0sDiyvtJGpKt0Zcy0Cfvkk6El5s9FRQAXpMByqyvK6xSjsmlOwMtLA4lMzHaPLO7YKZrHFbS5BlLXDBpvumrDnmf1YKLg5y8YmJLdxsp0G8+S4fmBcz5JO3NOHW1q7rPrz8oQ8soNBsIY7MNK9vsEQEoNvAfEUqZo4ItJoKuLNWRjEO+3tbublFgW1MIh0+TopxZmNOZjDlWfvJjZiJXqwt617EcToNqBWTNpt4/Ita0nIivzmWLM0z1PGxQosKasW02ymxh/DLkXAtsy+Eum2zb+f8ZavQJ7c6TurU+gHnC6uy7yUUz9nnpP1D1VGfjLVrwqntbacdQ2HsaQxjteuLftav+6gKOxUAFVL4hZbzNxBSwufAXb+TctfU6Gh1u7A4BoU6LrN4A6SgnLgZ5FOxecfwEHf+QkdEWWOcv44+5cHsjL9oLFQjpw3fHts297w+xoLiOKs1TM+FxzooRdh4GGLLPQSm0LpB5mr2IvzV44eTQgqnlMgmjvjB4pZxxcnDsDl4y8LE/5JChUkT/4h3qXafRrFXWIOdnLHqQmc8aWw62zdLLeyJMujJhT+s4OEB8fy/zasDy9K52sRo0ifCA3vXI+D26+mlH3tJ5JWDaVTJ6
+ GbRV17za
+ n/EGFEujke7pUAliZt/LrZLloelafPSSdlyQ8CgGUs5S78UQhy3cYqMBQmov1weg2OCWAtb+YtcWXd/ZUB5C64BoPpzn/3El1y9apK9E0EmOCnlMEV3lf0nH25Me2lemQcrZiUe/l0miq3JavUFmcWMjswVszVLrSnyKD9DCdHPshzICDvkdZrs48LyS3zPrwbFIhEYq4f1JeYJNhOco3xwvd4ssfIujo4l37fmJZiAtcLJJsOFZWL8j1ewpo9izbcMmr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,226 +140,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 22/04/2026 20:48, Josh Law wrote:
+> [Snip! :)]
+> 
+>>
+>> Yes, but he also writes (nonmm) "it's pretty quiet" ;)
+>>
+>> So, MM is the real struggle.
+>>
+>>> so the (basically) orphaned files like glob, or smth like that,
+>>> could go to someone who understands the code better and more likely than
+>>> not, has time to review.
+>>>
+>>> We may have to have a think about this.
+>>
+>> I'm sure
+>>
+>> (a) Andrew will enjoy being around and we will enjoy having Andrew around.
+>> (b) If Andrews workload is still too high, even after MM is handled
+>> differently,
+>>    or when he wants to completely retire, I'm sure he will speak up.
+>>
+>> One step at a time.
+>>
+>>
+> 
+> Agreed. If he needs help reviewing patches in lib, he can feel free to
+> CC: me, best I can do showing he helped me when I first started :)
 
+NAK, you violated our trust and you should not be close to anything
+related to MM or lib.
 
-On 22/04/26 8:08 pm, Ryan Roberts wrote:
-> On 22/04/2026 15:23, Dev Jain wrote:
->>
->>
->> On 22/04/26 6:51 pm, Ryan Roberts wrote:
->>> On 24/03/2026 13:26, Muhammad Usama Anjum wrote:
->>>> For allocations that will be accessed only with match-all pointers
->>>> (e.g., kernel stacks), setting tags is wasted work. If the caller
->>>> already set __GFP_SKIP_KASAN, don’t skip zeroing the pages and
->>>> don’t set KASAN_VMALLOC_PROT_NORMAL so kasan_unpoison_vmalloc()
->>>> returns early without tagging.
->>>>
->>>> Before this patch, __GFP_SKIP_KASAN wasn't being used with vmalloc
->>>> APIs. So it wasn't being checked. Now its being checked and acted
->>>> upon. Other KASAN modes are unchanged because __GFP_SKIP_KASAN isn't
->>>> defined there.
->>>>
->>>> This is a preparatory patch for optimizing kernel stack allocations.
->>>>
->>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->>>> ---
->>>> Changes since v1:
->>>> - Simplify skip conditions based on the fact that __GFP_SKIP_KASAN
->>>>   is zero in non-hw-tags mode.
->>>> - Add __GFP_SKIP_KASAN to GFP_VMALLOC_SUPPORTED list of flags
->>>> ---
->>>>  mm/vmalloc.c | 11 ++++++++---
->>>>  1 file changed, 8 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>>> index c607307c657a6..69ae205effb46 100644
->>>> --- a/mm/vmalloc.c
->>>> +++ b/mm/vmalloc.c
->>>> @@ -3939,7 +3939,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->>>>  				__GFP_NOFAIL | __GFP_ZERO |\
->>>>  				__GFP_NORETRY | __GFP_RETRY_MAYFAIL |\
->>>>  				GFP_NOFS | GFP_NOIO | GFP_KERNEL_ACCOUNT |\
->>>> -				GFP_USER | __GFP_NOLOCKDEP)
->>>> +				GFP_USER | __GFP_NOLOCKDEP | __GFP_SKIP_KASAN)
->>>>  
->>>>  static gfp_t vmalloc_fix_flags(gfp_t flags)
->>>>  {
->>>> @@ -3980,6 +3980,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
->>>>   *
->>>>   * %__GFP_NOWARN can be used to suppress failure messages.
->>>>   *
->>>> + * %__GFP_SKIP_KASAN can be used to skip poisoning
->>>
->>> You mean skip *un*poisoning, I think? But you would only want this to apply to
->>> the actaul pages mapped by vmalloc. You wouldn't want to skip unpoisoning for
->>> any allocated meta data; I think that is currently possible since the gfp_flags
->>> that are passed into __vmalloc_node_range_noprof() are passed down to
->>> __get_vm_area_node() unmdified. You probably want to explicitly ensure
->>> __GFP_SKIP_KASAN is clear for that internal call?
->>>
->>>> + *
->>>>   * Can not be called from interrupt nor NMI contexts.
->>>>   * Return: the address of the area or %NULL on failure
->>>>   */
->>>> @@ -4041,7 +4043,9 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
->>>>  	 * kasan_unpoison_vmalloc().
->>>>  	 */
->>>>  	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
->>>> -		if (kasan_hw_tags_enabled()) {
->>>> +		bool skip_kasan = gfp_mask & __GFP_SKIP_KASAN;
->>>> +
->>>> +		if (kasan_hw_tags_enabled() && !skip_kasan) {
->>>>  			/*
->>>>  			 * Modify protection bits to allow tagging.
->>>>  			 * This must be done before mapping.
->>>> @@ -4057,7 +4061,8 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
->>>>  		}
->>>>  
->>>>  		/* Take note that the mapping is PAGE_KERNEL. */
->>>> -		kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
->>>> +		if (!skip_kasan)
->>>> +			kasan_flags |= KASAN_VMALLOC_PROT_NORMAL;
->>>
->>> It's pretty ugly to use the absence of this flag to rely on
->>> kasan_unpoison_vmalloc() not unpoisoning. Perhaps it is preferable to just not
->>> call kasan_unpoison_vmalloc() for the skip_kasan case?
->>>
->>>>  	}
->>>>  
->>>>  	/* Allocate physical pages and map them into vmalloc space. */
->>>
->>> Perhaps something like this would work:
->>>
->>> ---8<---
->>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>> index c31a8615a8328..c340db141df57 100644
->>> --- a/mm/vmalloc.c
->>> +++ b/mm/vmalloc.c
->>> @@ -3979,6 +3979,8 @@ static gfp_t vmalloc_fix_flags(gfp_t flags)
->>>   * under moderate memory pressure.
->>>   *
->>>   * %__GFP_NOWARN can be used to suppress failure messages.
->>> +
->>> + * %__GFP_SKIP_KASAN skip unpoisoning of mapped pages (when prot=PAGE_KERNEL).
->>>   *
->>>   * Can not be called from interrupt nor NMI contexts.
->>>   * Return: the address of the area or %NULL on failure
->>> @@ -3993,6 +3995,9 @@ void *__vmalloc_node_range_noprof(unsigned long size,
->>> unsigned long align,
->>>  	kasan_vmalloc_flags_t kasan_flags = KASAN_VMALLOC_NONE;
->>>  	unsigned long original_align = align;
->>>  	unsigned int shift = PAGE_SHIFT;
->>> +	bool skip_kasan = gfp_mask & __GFP_SKIP_KASAN;
->>> +
->>> +	gfp_mask &= ~__GFP_SKIP_KASAN;
->>
->> Okay so this is so that metadata allocation can keep using normal
->> page allocator side unpoisoning.
-> 
-> Yes.
-> 
->>
->>>   	if (WARN_ON_ONCE(!size))
->>>  		return NULL;
->>> @@ -4041,7 +4046,7 @@ void *__vmalloc_node_range_noprof(unsigned long size,
->>> unsigned long align,
->>>  	 * kasan_unpoison_vmalloc().
->>>  	 */
->>>  	if (pgprot_val(prot) == pgprot_val(PAGE_KERNEL)) {
->>> -		if (kasan_hw_tags_enabled()) {
->>> +		if (kasan_hw_tags_enabled() && !skip_kasan) {
->>
->> Why do we want to elide GFP_SKIP_ZERO (set below) in this case?
-> 
-> You mean why do we want to skip initializing the allocated memory to zero for
-> the case where kasan HW_TAGS is enabled and we are not skipping kasan unpoisoning?
-> 
-> Because setting tags at the same time as zeroing the memory is less expensive
-> than doing them both as separate operations. So we tell page_alloc not to bother
-> zeroing the memory and kasan_unpoison_vmalloc() does it at the same time as
-> setting the tags instead. See kasan_unpoison() which ultimately calls
-> mte_set_mem_tag_range().
-
-I was asking the opposite question. So in the case of skip_kasan, we also want
-to skip setting GFP_SKIP_ZERO, because we are not reliant on kasan hw tags path
-to zero the memory, we are relying on page allocator now. Got it.
-
-> 
->>
->>>  			/*
->>>  			 * Modify protection bits to allow tagging.
->>>  			 * This must be done before mapping.
->>> @@ -4054,6 +4059,12 @@ void *__vmalloc_node_range_noprof(unsigned long size,
->>> unsigned long align,
->>>  			 * poisoned and zeroed by kasan_unpoison_vmalloc().
->>>  			 */
->>>  			gfp_mask |= __GFP_SKIP_KASAN | __GFP_SKIP_ZERO;
->>> +		} else if (skip_kasan) {
->>> +			/*
->>> +			 * Skip page_alloc unpoisoning physical pages backing
->>> +			 * VM_ALLOC mapping, as requested by caller.
->>> +			 */
->>> +			gfp_mask |= __GFP_SKIP_KASAN;
->>>  		}
->>>   		/* Take note that the mapping is PAGE_KERNEL. */
->>> @@ -4078,7 +4089,8 @@ void *__vmalloc_node_range_noprof(unsigned long size,
->>> unsigned long align,
->>>  	    (gfp_mask & __GFP_SKIP_ZERO))
->>>  		kasan_flags |= KASAN_VMALLOC_INIT;
->>>  	/* KASAN_VMALLOC_PROT_NORMAL already set if required. */
->>> -	area->addr = kasan_unpoison_vmalloc(area->addr, size, kasan_flags);
->>> +	if (!skip_kasan)
->>> +		area->addr = kasan_unpoison_vmalloc(area->addr, size, kasan_flags);
->>
->> I really think we should do some decoupling here - GFP_SKIP_KASAN means,
->> "skip KASAN when going through page allocator". > Now we reuse this flag
->> to skip vmalloc unpoisoning.
->>
->> Some code path using GFP_SKIP_KASAN (which is highly likely given that
->> GFP_HIGHUSER_MOVABLE has this) and also using vmalloc() will unintentionally
->> also skip vmalloc unpoisoning.
-> 
-> If a caller wants to vmalloc() memory with GFP_HIGHUSER_MOVABLE (which seems
-> HIGHLY suspect to me) then surely leaving the memory poisoned is *exactly* what
-> they expect?
-
-Okay I get your point.
-> 
->>
->> I think we are doing patch 1 because of patch 2 - so in patch 2, perhaps
->> instead of calling __vmalloc_node we can call __vmalloc_node_range_noprof and
->> shift this "skip vmalloc unpoisoning" functionality into vmalloc flags instead?
-> 
-> This is exactly how Usama was doing it in v1. I suggested we should just reuse
-> the existing flag since it already provides the semantic we want and is less
-> confusing than introducing a new flag.
-> 
-> I know David is keen to do a wider rework and remove/rename/change the semantics
-> of __GFP_SKIP_KASAN, but I'm hoping that if we just continue to use the existing
-> flag and its semantics for vmalloc then there is no reason why this series can't
-> be merged independently of that wider rework.
-
-Okay makes sense.
-
-> 
-> Thanks,
-> Ryan
-> 
-> 
->> Perhaps this won't work for the nommu case (__vmalloc_node has two definitions),
->> just a line of thought.
->>
->>
->>>   	/*
->>>  	 * In this function, newly allocated vm_struct has VM_UNINITIALIZED
->>>
->>> ---8<---
->>>
->>> Thanks,
->>> Ryan
->>>
->>>
->>
-> 
-
+Best regards,
+Krzysztof
 
