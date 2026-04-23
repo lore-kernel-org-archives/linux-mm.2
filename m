@@ -4,124 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4880EF589DA
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:04:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 245A5F589D9
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:14:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C6E26B0005; Thu, 23 Apr 2026 10:04:31 -0400 (EDT)
+	id 434EF6B0005; Thu, 23 Apr 2026 10:14:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 278276B008A; Thu, 23 Apr 2026 10:04:31 -0400 (EDT)
+	id 40CC06B008A; Thu, 23 Apr 2026 10:14:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 166D36B008C; Thu, 23 Apr 2026 10:04:31 -0400 (EDT)
+	id 349D76B008C; Thu, 23 Apr 2026 10:14:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EF7B76B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:04:30 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 76E811B6F40
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:04:30 +0000 (UTC)
-X-FDA: 84689990700.04.9179A8C
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 88AEB80008
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:04:28 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cI0b91gs;
-	spf=pass (imf02.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 20EE56B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:14:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB7371401B9
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:14:01 +0000 (UTC)
+X-FDA: 84690014682.15.643C1AA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DA53CA0004
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:13:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRUaMpbm;
+	spf=pass (imf25.hostedemail.com: domain of vkoul@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vkoul@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776953068;
+	s=arc-20220608; t=1776953640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3KWq8azbCSD7brpyXZ6QpBU16YtUoefjhmh1Zjdknw8=;
-	b=eZWR4n++4hH2AnAUTsQgP+Um2Pt1I8CFYz5SxHJpzGBkPaZF3fOM6RceplrKN+/Lq9HIXq
-	MrcDtwaR/8zTI5KNnoZZMH2yyWCimpkrfPEvwWkFzCUDgsB+l80ZS3DZEwoHKTcABtX0ma
-	h1+8tv2VE9K8VSVTJbvQZWXr9ZwmgK0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776953068; a=rsa-sha256;
+	bh=PwlLVn0oLG9e+ZwLtZ+4j4cnE0wIiJdN8bQ3gDMHawY=;
+	b=R2ZP4fF9tOs3SrHQzKWyMn9Ve5akwrcVZLyiaztb+BiLHs+cVzMIT1AS1Y0QQ+qh9jsukj
+	AvpJdWHfKMoCr951m94eCPVD9ADXCbz0ytflFAg1Z6WTJA8bA5va9WypvzwldY+5oUCvb+
+	MJ6EGfGJs46XdEGE3gN385+DN2/cc5s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776953640; a=rsa-sha256;
 	cv=none;
-	b=ufx+cgrA2RXCnW4OPqvvnTP+zGdaS1u+qLM/WnIsFF5Hot5Os2EJOzMFbm5HFtIBAERKYS
-	ulXWa+raYK8xIFaoYbJIiSMtyLuzhTd2WhmFPROcwQUPQpP63hnRSFOsOJW4UZZzfkRpFM
-	TxuDYV9QhpTLApY9KOm/6+M492sO2hY=
+	b=KuKxnkpDWpxdANXQBDYHGyMmaUvUXd20DQybTcp4BdTc4b2LqdJ8EdnhYeRLJYNSI30xlg
+	a/jKeW++O0xQbZ3uIPxDcw1VCvyCbCsxl7eZtwXPAwSbb0UrujpwhXbSsjp1sIi0rdMnVo
+	6F9DLsKhkwuR6fUacr53TE2Hbhgl+Uc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cI0b91gs;
-	spf=pass (imf02.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso61951645e9.1
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 07:04:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776953067; x=1777557867; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3KWq8azbCSD7brpyXZ6QpBU16YtUoefjhmh1Zjdknw8=;
-        b=cI0b91gsSS1xJS/OIY4naiC4upPEkzQVvToPb6CYWF2rnLLBE4BDMlu5Zyn3NlCrUl
-         +ZpKnNwamG4lmF4J/zEQHnw9LT5m1pqqD/RX2v2NZ+MEO/N2aEow9xljEDghCJc5p1Ol
-         Xuv333LVXgp648ih83XljruTprfbLmW9c1TlqTcVw/b8OHBKRdPtItbxJzPV/iRM5v1c
-         mFKOsQnUMgVdZnVUF6ERzVVUQp/e8flcBf3rW0xxTkekD3cjyZfk/fjIbv3ULVfrz8yv
-         MQA7v9kliXggNdz+1+o+yd8DKPwm36SHW3bHLKuoQ60d4JGe6dHrU/uPghzursUZblh3
-         zALg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776953067; x=1777557867;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3KWq8azbCSD7brpyXZ6QpBU16YtUoefjhmh1Zjdknw8=;
-        b=KHUeA2QDF5T4xtEMrvGSTqFotYp5j5VzYJm24HBCS8cDbGHblLR/zcD7L5dnu9xdEU
-         96fk0UedIBCiia2tCBr6hqCLlpFUcAKp//77BRd1aDS+1Cg7vEmhN+LzUB8k1ppuNh3K
-         klDdCbdXEObYjy9jVemJVjS2tXipjUPOa/0S2+0oVT7e0c/lGMIKr22+32szk0VTe3oK
-         MN7yatSKrL9bOQBGxl8rHfif7u7c8+CDrNT+pGLbEX4PMysc3uDyEwiwjMz2j2VK6LCg
-         wB0QZVIdewpWHHTJJPiB/yiQI9GeyFxJskHoa+a7ZeZ5dZaCw7GHDotqJN/hRPJNjKiV
-         TvJw==
-X-Forwarded-Encrypted: i=1; AFNElJ8IARoRW6pCLaDbhDxXKeKxzMBE006POUZNPID9TbV4oOP+iqYz/Dz7uIY0CGtVskp/iKPolE1OSg==@kvack.org
-X-Gm-Message-State: AOJu0Yzsknezr6pkXOy/YtjfRE7IP4Mp+N6SXR82xfgLVIR3zulqOWHW
-	3OkFjBIogtOEpaSUpmn+vL2nIj+lVYqI6PB8dAbChRLqXyx1h8BO+TmY
-X-Gm-Gg: AeBDieu1/3Q/5UTSuBwCZTpsGVNf7nO/vfzelNeEWQyfGVp/ymmTCmf7xTdYpnUCD2O
-	4UIg1jkf9iGH8jwpmwlHmiAhNZIWnkjwBf+Y1L4f74q7D3OcNRpWOwDvSdfgGZIL0AEejn+ADng
-	VrCZeFdTFWjNiR+4+vFJVC3L4ijl2+UqUrNcyD1KKIHu4ENJMWH8+3nPMHRpdKxlAbcFUr4CEAH
-	CziuQ7VPDKjVCBPSo4cRkzHl2y/I8mZc9Pd3mMhrd0GPNTgGHkCdVYVQjZ+LSw7cTxusLJ29T4z
-	Gao/sRXqzhnuMs7VEHB6b0gRSfAaYXd/LsUVWzn7ESnqCefsURjbSHjnPQIRSVYy9Dmc34/LA3Y
-	aDccjSMjcey5Im+WqqKNHrtdsxpA1Z2Y/n/0O3o/Nr5j4fw54pgt8aIazpqZR00QoJh5RAC07Bg
-	5ndVJvCM1CCKwib1wlJK0IpHDvbH7IdugPyFq6p8+0lH9nh+O9miidMIrJyUrUl7FRHnub6oRTt
-	z0=
-X-Received: by 2002:a05:6000:4283:b0:43d:7ea1:fb53 with SMTP id ffacd0b85a97d-43fe3e15f7emr42641829f8f.33.1776953066423;
-        Thu, 23 Apr 2026 07:04:26 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4dc24cfsm52984876f8f.16.2026.04.23.07.04.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 07:04:25 -0700 (PDT)
-Date: Thu, 23 Apr 2026 15:04:23 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Usama Arif <usama.arif@linux.dev>, Alban Crequy
- <alban.crequy@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- Christian Brauner <brauner@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, Alban Crequy
- <albancrequy@microsoft.com>, Peter Xu <peterx@redhat.com>, Willy Tarreau
- <w@1wt.eu>, linux-kselftest@vger.kernel.org, shuah@kernel.org
-Subject: Re: [PATCH v2 1/2] mm/process_vm_access: pidfd and nowait support
- for process_vm_readv/writev
-Message-ID: <20260423150423.1a428820@pumpkin>
-In-Reply-To: <62d88cde-efc0-48cb-be8d-813eda810343@kernel.org>
-References: <20260409142256.131676-1-usama.arif@linux.dev>
-	<62d88cde-efc0-48cb-be8d-813eda810343@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRUaMpbm;
+	spf=pass (imf25.hostedemail.com: domain of vkoul@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vkoul@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AE8ED40050;
+	Thu, 23 Apr 2026 14:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D291BC2BCB3;
+	Thu, 23 Apr 2026 14:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776953638;
+	bh=MsOG1WoL4DthbK8BMCb1/S31UzH6r3oqgqhBEYtuyAI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tRUaMpbm3qHHCq29jygXUyj85ACEWDLUpWtgi9ly4VKD3rldB3i7FO5jOjD8S2czx
+	 9ehFMySv41gDporVbxVuzH7GVwp6jA0EfpxPpQkhIpbaMilKGrgvkmFiKgLNI3heg3
+	 VLCy9mj9g3c1MMYyV8YX3QFRnEFxFX7DILpZRtCuzjt3jAgfy62LwDsbEm0Zrlhjne
+	 IuKMoAgo/bdfn48UPUaiJIBkLzasVl1JDBwWLxOudbPh4urFr3gs8vUPUmf5e5Pqiw
+	 U5BIt8sNnXwVpsTpykztnOSMbtEMhfbqLa30Jsvb96l/E6Cd/FhuMdjfap5WluTN7S
+	 1Or0tv2zPqMYQ==
+Date: Thu, 23 Apr 2026 19:43:54 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: "Garg, Shivank" <shivankg@amd.com>
+Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+	willy@infradead.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	dave@stgolabs.net, Jonathan.Cameron@huawei.com, rkodsara@amd.com,
+	bharata@amd.com, sj@kernel.org, weixugc@google.com,
+	dan.j.williams@intel.com, rientjes@google.com,
+	xuezhengchu@huawei.com, yiannis@zptcorp.com, dave.hansen@intel.com,
+	hannes@cmpxchg.org, jhubbard@nvidia.com, peterx@redhat.com,
+	riel@surriel.com, shakeel.butt@linux.dev, stalexan@redhat.com,
+	tj@kernel.org, nifan.cxl@gmail.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org
+Subject: Re: [RFC PATCH v4 5/6] drivers/migrate_offload: add DMA batch copy
+ driver (dcbm)
+Message-ID: <aeopIn_sCBR2CFrI@vaman>
+References: <20260309120725.308854-3-shivankg@amd.com>
+ <20260309120725.308854-14-shivankg@amd.com>
+ <396b4be1-376b-4aac-bd1e-2854c88b3757@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 14jnyzok3fpamn5dg1aky7wkthx3w18n
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <396b4be1-376b-4aac-bd1e-2854c88b3757@amd.com>
+X-Stat-Signature: oup6q1kfgw3zqdiu9py9898ssf14jjsu
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 88AEB80008
+X-Rspamd-Queue-Id: DA53CA0004
 X-Rspam-User: 
-X-HE-Tag: 1776953068-106190
-X-HE-Meta: U2FsdGVkX1+jpOWdaezLa+FpZDJAocr38Hp6XDsQ4QI00yXGh0KuzWr3VpjAcFf0HGP4MJxl2Y19fb8ax2xmz7idxuxWfIGCuvuAsvXovybQT3c/ZzdX0zb6jeprTlr/e+Vh+aGJdgQvt1ZVE5dcCHwDbhyBMd3xKrx1z6u1sls37iX8+9JO/ofqEVw6w0OyK3RrYRdMrY5brnzYzyAPv6sdUYO2mlJJY+4sLuPSxv7kbv9SGXnNTq4Smg8C02diuAAAQhV9pqh4LEqp4k0NqfTB7qReto5DZHFn2UVduScl1Sn7tmsr1KpF71ZAcoPO0Xpnl4o7obtMU7diMsVEFvnY2f+uZleVa08Bc2e0yXu/X0xr0B8BdXFpjh1tjvjQi8rMtl/eTf7uhN6cF9uaZoAa46r80txcW3bAI3X2U6tpvv4zZRD/G2uq4D7SOPGZWWeXHuGPcdls+NtMZbKb21wburnm0rWM4INSqd63gbkcLtJj6z2oR7iqjhCvBH6zgQwOJFGtODfDOdvEDhlPo8fOE2ggCgo6CpyVDBKkybq+vVSv/nurlnW+FtJj0yBwAqbTJ5lRK/VVHegn8UhqR3zX0RJO8hsomUnf5edqukl3davlBdeAJKhYDe8/EGFz7jvHFDaJyfTxhZ7SvwwHDn2luiZup293a8iqB5LUbYmtxlM4VBLPTeQbVwLG+BKOK0fyeFLImBSVD0uiZ3671rAAr6ZkUZSgCS9WZBVLs4aKoPJjj2rXscgWsWhkynNd6FT5Vg/o7Z9jRUl+88YEinXUbG97EBii3/jop4xO712+1PQAwlmIJUQaDS1P3MU25qVEWWJrkBmog1/HtXXeUTb9u+EggEq6UbPX132pWZgIKTRQJXXFfpmqNMhg2yH0QvUsCqlzlt9l6N5MYC+5zNkRQd11TO8TMr3FNrSOcv7c0hpctRskpucq5wT5OdzDyfNs5Z7aa8Dd2ne9xNr
- CyTAbIG+
- yQWsGaxzhzwc7HcAvUNsX5jvG4XVo4Ud9ufCioOpatoRmxBIpMTm/je5dS2G5kcN7kkHAE/W94sqcaE8Lp/+nqW9wr/x+kIbaYp3NkQK8O3fDmdzC0p89bwgqnTQLa93Pg592I7FE7vWX8gTGxeSuXYlzoOxBdQUn2JlB8dV8wxL9cAdRfbMvrisELYKI9ITMVlY3apR3b6tMaqrZhM9wTOs2QjEthAvLHXJRwo0t5pnDHWWD/RLeFqZzcZYtC2t4wz8hd8013F/3YCZRXwjIBOekR4c9wBmFaoSelq1Ab6+xbW+4lVnldWdqOMJJbH67H7zMAglrC9EGUaMjuRinll/g2/X/TeChS8FQ5oNdQJgspek9LABkxuS8TJ9QFTC7gCr/yfslmcCu0w7kZgDvUHuaoLZqkqriYZdtwA71e5eEXxbhZO9Up9SgUTj6d8RLhj/aF1VFjwtf/VonWLkbYppigmK0Qm1R76DzedD1XYaFSWD0gGLSa12oiVhRQ646di9lzWe8cA6VJHKpk0VzSLr7l363oWA5+Y3hjiU2eY+C3aLh+nW/JFFMNHNApG4uT5zD
+X-HE-Tag: 1776953639-822678
+X-HE-Meta: U2FsdGVkX18JbrsF85nkTzgPul9kQzYzb/qSZhSEFvMi4KmIdVtdvcB96HaTnpnwQKglRl4flBXKYLEdtuLmD/Du/fPjL65LyeZHAOYBdPY+0E5xo2v+pS9Kc3hZoCkJZmbHEz6sV3KOBDOMCCls35w0Hy9onrvN2BzG2JxX6sK872z/zGmRGykWwx6YxtQA0wa6ULcjlPLO1pyeFfBATl5IePQ1Q+zrkd6yBMJyVCcmoVV2pj45aj/jXoAm3umQd63GC1Cbe3+7DxiMrlAuI4V3aJjoKm2XBb+ZkZ4R59ti9py79ZBG521fU4vhmZjzJllyd2+6vVnBj4264jXrAlqKTg8z4zk6yEjRp1ll7P/4LvhcYB0LiiMA+XPdaq87idrIMACdVwS9sn/BnHUnLZHI6vz/6UJffeImHlEVVvP7o/PsjvF2QFuZxLuHly9MGSh20QXfyUewbbvthmpe/RdzmN76Pp+9ETHt8r26d1/6au482KcyRZRnHMmzBedtMk+/YxkF1+T6gx/U6DeVrrSZORf+tO5b6wFll5iqnH2okyHuA4WE/cpCH8uGYLk1+YQIoMXncPMa7fc5dhlpMKYpyzIwaTi4hTPUDH6PXQe9hS8wuYJK3pVLqMYs1vwyk4ErVo/DUfYNLsWuyoAfHM5B+08P5GYHh0s/2VHFrIgm/+5VPvcKTrDzM1h+IOkZk8Xy7A9/3Fs9TdBIqPHIM6oXC7N8ISN3irLhOicoIQLzf+ThiU/2AF/9STBi3K8RjbUft2bOw/Jh7g/C8yisa2Eo9dAK4I3DywsgS9nAUytNlzufYUPU1Q20Ar8P2QO+bmbl6x7vi/u5bOjSp1B2PFvxtLPBp91Hc5wguCeIjxOcClitYQT/feKcJk0md5QLAMae4Zg/K7klnyPDdckFcFxLeV9JzyCf40CaFKt0024JqZ1jDvvTTdurN2+fxzLVLlouWTJIMnFrwHmX1MG
+ zzYzMeFj
+ Q+gHPWXy+RqEHetZCVVZHVyP9B5b52bSPmMo78uvGQJHoCToWlMqmE+lT7F2fnma+gDw6BpG9VQh209ag0WvTqPMMKaZufvsb+DLkd8LMw16hKWsj6G9c4he4q/eOsHuus8TcW5xt1KAAbHeNxFNHssQ9OQY+glZY9R1qOUFson9Rmi2/L36IvQSFKIQVOgRHQDKbhDxww3KKqYQ7UsLflfyRVLyTdLcz+dQ55oJjpxERdgVkBrotB++MkwwnvZJEff9p1Ht8gr9TTovfZDIAl7NP2DlkBze+c5M21jg+T2e8wmL+o2koSexlMVxg6fEEfuG31YIPL7z0MhrH+QhUD0nACNQdLyhkt2mPEZCKCShkAPbNqVlLjepmldgIupNd8mHhPPY6xDzhcYY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,35 +106,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Apr 2026 14:52:26 +0200
-"David Hildenbrand (Arm)" <david@kernel.org> wrote:
-
-> >>  
-> >>  	/* Get process information */
-> >> -	task = find_get_task_by_vpid(pid);
-> >> +	if (flags & PROCESS_VM_PIDFD)
-> >> +		task = pidfd_get_task(pid, &f_flags);
-> >> +	else
-> >> +		task = find_get_task_by_vpid(pid);
-> >> +
-> >>  	if (!task) {
-> >>  		rc = -ESRCH;
-> >>  		goto free_proc_pages;  
-> > 
-> > pidfd_get_task() returns ERR_PTR() on failure (e.g. ERR_PTR(-EBADF)),
-> > but the code checks "if (!task)" which only catches NULL. An invalid
-> > pidfd will cause mm_access() and put_task_struct() to dereference an
-> > error pointer, crashing the kernel.  
+On 23-04-26, 17:40, Garg, Shivank wrote:
+> Hi Vinod,
 > 
-> Yes. Should we add proper selftests that exercise these code paths?
+> Following your suggestion at the Kernel meetup in Bangalore (11 Apr 2026)
+> to check 0cae04373b ("dmaengine: remove DMA_MEMCPY_SG once again") and use
+> DMA_MEMCPY_SG / dmaengine_prep_dma_memcpy_sg() (I added a
+> device_prep_dma_memcpy_sg hook in drivers/dma/amd/ptdma/ptdma-dmaengine.c
+> for this experiment; not posted).
+> I ran an A/B comparison against the existing DCBM path that uses
+> dmaengine_prep_dma_memcpy() in a loop over mapped SGL segments.
 > 
+> I'm using the move_pages() workload to move 1 GB data per run. I do not see
+> significant performance difference, and results are broadly within each
+> other's noise band).
+> 
+> Throughput (GB/s, mean ± SD), ITERATIONS=10:
+> 
+> Page     nr_dma_chan=1              nr_dma_chan=4              nr_dma_chan=8              nr_dma_chan=16
+> order    dcbm          dcbm_sg      dcbm          dcbm_sg      dcbm          dcbm_sg      dcbm           dcbm_sg
+> ------   -----------   ----------   -----------   ----------   -----------   ----------   ------------   ----------
+> 0        2.33 ± 0.17   2.26 ± 0.19  3.24 ± 0.21   3.18 ± 0.23  3.29 ± 0.10   3.45 ± 0.10  3.29 ± 0.13    3.49 ± 0.22
+> 4        2.77 ± 0.21   2.99 ± 0.18  6.26 ± 0.99   6.75 ± 0.12  8.01 ± 0.58   7.70 ± 0.64  8.22 ± 0.89    8.72 ± 0.87
+> 8        4.57 ± 0.70   4.75 ± 0.83  10.64 ± 1.97  10.94 ± 3.52 10.30 ± 1.22  10.36 ± 1.24 11.27 ± 1.21   12.47 ± 1.66
+> 9        12.71 ± 0.09  12.68 ± 0.08 27.13 ± 0.15  26.89 ± 0.27 46.50 ± 0.73  45.17 ± 2.46 67.25 ± 1.42   62.78 ± 8.24
+> 
+> Notes: order 0/4/8/9 = 4K / 64K / 1M / 2M folios
+> 	dcbm     = per-segment dmaengine_prep_dma_memcpy
+> 	dcbm_sg  = DMA_MEMCPY_SG / dmaengine_prep_dma_memcpy_sg
+> 
+> <snip>
+> 
+> > +
+> > +static int submit_dma_transfers(struct dma_work *work)
+> > +{
+> > +	struct scatterlist *sg_src, *sg_dst;
+> > +	struct dma_async_tx_descriptor *tx;
+> > +	unsigned long flags = DMA_CTRL_ACK;
+> > +	dma_cookie_t cookie;
+> > +	int i;
+> > +
+> > +	atomic_set(&work->pending, 1);
+> > +
+> > +	sg_src = work->src_sgt->sgl;
+> > +	sg_dst = work->dst_sgt->sgl;
+> > +	for_each_sgtable_dma_sg(work->src_sgt, sg_src, i) {
+> > +		if (i == work->src_sgt->nents - 1)
+> > +			flags |= DMA_PREP_INTERRUPT;
+> > +
+> > +		tx = dmaengine_prep_dma_memcpy(work->chan,
+> > +				sg_dma_address(sg_dst),
+> > +				sg_dma_address(sg_src),
+> > +				sg_dma_len(sg_src), flags);
+> > +		if (!tx) {
+> > +			atomic_set(&work->pending, 0);
+> > +			return -EIO;
+> > +		}
+> > +
+> > +		if (i == work->src_sgt->nents - 1) {
+> > +			tx->callback = dma_completion_callback;
+> > +			tx->callback_param = work;
+> > +		}
+> > +
+> > +		cookie = dmaengine_submit(tx);
+> > +		if (dma_submit_error(cookie)) {
+> > +			atomic_set(&work->pending, 0);
+> > +			return -EIO;
+> > +		}
+> > +		sg_dst = sg_next(sg_dst);
+> > +	}
+> > +	return 0;
+> > +}
+> 
+> static int submit_dma_transfers(struct dma_work *work)
+> {
+>         struct dma_async_tx_descriptor *tx;
+>         unsigned long flags = DMA_CTRL_ACK | DMA_PREP_INTERRUPT;
+>         dma_cookie_t cookie;
+> 
+>         tx = dmaengine_prep_dma_memcpy_sg(work->chan,
+>                         work->dst_sgt->sgl, work->dst_sgt->nents,
+>                         work->src_sgt->sgl, work->src_sgt->nents,
+>                         flags);
+>         if (!tx)
+>                 return -EIO;
+> 
+>         atomic_set(&work->pending, 1);
+>         tx->callback = dma_completion_callback;
+>         tx->callback_param = work;
+> 
+>         cookie = dmaengine_submit(tx);
+>         if (dma_submit_error(cookie)) {
+>                 atomic_set(&work->pending, 0);
+>                 return -EIO;
+>         }
+>         return 0;
+> }
+> 
+> The memcpy_sg version does simplify submit_dma_transfers()
+> (one dmaengine_prep_dma_memcpy_sg + one dmaengine_submit vs a loop).
 
-Probably worth checking what happens when a 64bit process tries to
-read high addresses of a 32bit process.
+Right
 
-I remember trying to grok the way this code accessed the iov[] and
-failing to find the appropriate access_ok() for the accesses to the
-target process.
+> 
+> My current DCBM path issues dmaengine_prep_dma_memcpy()+dmaengine_submit()
+> per mapped SG segment and sets DMA_PREP_INTERRUPT + callback only
+> on the last one, so the IRQ/callback cost is already one per batch.
+> 
+> My understanding is switching to dmaengine_prep_dma_memcpy_sg() mainly
+> saves the per-segment prep/submit calls and hands the provider a single
+> multi-segment TX to program.
 
-	David
+Right, but the analysis you showed indicated the dma setup cost was
+quite a bit, this moving away from N transfers to single one should have
+saved a bit more...
+
+> 
+> Please correct me if the benefit you had in mind is something stronger.
+> Thanks for the suggestion and for guidance.
+
+I still feel this looks better version... 
+Can you compare your setup time between the two please
+
+Thanks
+-- 
+~Vinod
 
