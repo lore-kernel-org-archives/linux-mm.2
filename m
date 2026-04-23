@@ -4,93 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D09A0FAD3E1
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 00:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73971FAD3E1
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 00:33:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 077436B0005; Wed, 22 Apr 2026 20:32:33 -0400 (EDT)
+	id C5FF86B0005; Wed, 22 Apr 2026 20:33:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 027A16B008A; Wed, 22 Apr 2026 20:32:32 -0400 (EDT)
+	id C10566B008A; Wed, 22 Apr 2026 20:33:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7FCF6B008C; Wed, 22 Apr 2026 20:32:32 -0400 (EDT)
+	id B4DEF6B008C; Wed, 22 Apr 2026 20:33:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D9D396B0005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 20:32:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CB0E4020B
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:32:32 +0000 (UTC)
-X-FDA: 84687944544.24.4E1830A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B375814000F
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:32:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s5ak8vLb;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776904350; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A92F86B0005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 20:33:47 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 415F0C1962
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:33:47 +0000 (UTC)
+X-FDA: 84687947694.26.D16F7C1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 677641C0012
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:33:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EoLLOiFA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776904425; a=rsa-sha256;
 	cv=none;
-	b=IZ1Ee8V1+LfUUYNrzJEy5ZKjU9xIRBmJDC2AXgxU3KiBFlmVf972zcTTAFEnwm5dBNCfnc
-	sDCHu6wiZIAoqN0Zn8mz1sNQkf6Np9mN0s1u1dZy2DHnjnXz5L02UrK43cUmwt2MS41+PM
-	G76a7ciLETe6X72GxjueC0FoZ8S/Nso=
+	b=SL+f+38LqRWTcWNHP7zMV3ksqAsFNo9cOP0aznquapFdXLk3Gufr3qRxTyFUTISitoOBmt
+	6qTNIFUqW8h1AxHoEkqHzYJKit9eCo0nndv+JFIV1nx2ako0m6NxVNbIlnEJAIqCNOiyaA
+	RRhv4aXWIEC1/uYeVFpQTmpB+hYSmQY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s5ak8vLb;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EoLLOiFA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776904350;
+	s=arc-20220608; t=1776904425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pReuSQ2TOsTNuyVp0dQwPvCCrn7Thf2LBpWYUhNw4kU=;
-	b=a5TRILwkarknG43xAG81IC5XNE/j9SR/FeWfbPvopaoOU4JpMPG8P4WoX+OYneV9744QiQ
-	lSMjCOLgYLQZ8GkmindWllLKG4Ce3GJV9SOvYEE7dBUuEK8Ncb775rXqSNv7ah6PzaDpbs
-	fRTHK7/Qd/OB7wkwIszOE57fHKwU1cM=
+	bh=r9ByRW/TEk5BA31HnKFkkSQprxzrSKMeADXzDfxa3f0=;
+	b=1KuRsYJkw3vstKuqbsoL01C+8jtmqw0xpEDiR/Pgv/5sGGvRoyIcVPp/v31s/QM1jkZsDv
+	sC3kqGGPaRnyDBLYHV62dyzoQVfafwJn0YgXc7XKX7Ma8yCik+5s8uz+Rh7CG1gHlhuAOg
+	UqBgBvnppmCRvVWbSFp5Z6YfDm1JwmM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD355416C0;
-	Thu, 23 Apr 2026 00:32:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEDFC19425;
-	Thu, 23 Apr 2026 00:32:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A59676183D
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:33:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E05C2BCB9
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776904349;
-	bh=BN4M8EG5SSvTFj6ABhC5jhLKeYrnpaiSbsJJkMVx7XI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s5ak8vLbH8qo7OaYvpdHtHCR/hrCdUbOEAEKeVJmftKIn9wM6pnK4//4FJTqY9bXo
-	 Y1oed1v6Ic4ED4PfF0oe245i6NVPVWDnntX5sCp1PzAXEFDE+arcrsJnbSwU1mT9By
-	 J78wjmSdKt9kdE3MYGX+DPaWG6+lq1MTuChHZPbXSSPwf2JvCSjBtPcWLdL6rw1Y7A
-	 G3gu81wdWws9XDgbP+OBCCynwESostLYjOa+gvy3YSYSi4QkXnjnVstZhiexaKFpFv
-	 b45w7wCuR7ML4nKMAjkemz3uWqLL7BEWLt+YJ/tneCScWxWNY9xnHMSRdSUDIyYY7L
-	 4OhwxdKQxdnSQ==
-From: SeongJae Park <sj@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>
-Subject: Re: [PATCH] MAINTAINERS: fix regex pattern in CORE MM category
-Date: Wed, 22 Apr 2026 17:32:26 -0700
-Message-ID: <20260423003227.74498-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260422123726.517220-1-pfalcato@suse.de>
-References: 
+	s=k20201202; t=1776904424;
+	bh=YFcpm1Q2IEqSIizxpG40qUfklzA44nCTjWRmWInHJ50=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EoLLOiFASH/63sE64eVfVLIOEbfRV96kbmC4VrUvH4yMEVwrEiw8yUQIKLqOLgAaN
+	 Nu24G1HjVtlW+Cg/8hC6iR8C9K/nJnI4Ryajt7KHdG+FS3DUcsp9LloBqXPub6SfB9
+	 3kFFEvWSepb2VAMhcBYIhvCMC8K9j8suP/O+K8PeYNoG94fJUn1Ep0OtuHX3Rx+Ewz
+	 Q7KQ6m8nTdqHe/82OlojK/owwTEdUan56EGhFZIieFqfosN9Ah/J9m3kN91ZVJiJxz
+	 N48yREmPDAsOrE2ifOrW9dFWQWdwuLoxmAUZGkkvS1t5J8A1zQmvJ3yB3p16PqZ/5B
+	 /pi2xHiYpzWqw==
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6501d242e3fso5903556d50.0
+        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 17:33:44 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxASYWwhDUNK9xzTW+rMRuM+jvjShhMS2MEm0Yp7gLVl0tF+osm
+	R86lny0y4p/bnkL2f1eLgxB6F/tbrGQfGXd2MPKHJnWBDDYVlTa4LM1FL1WLqGcjev8KFFtL00/
+	cHm65wvEWClQQCn92pRf6fKBcD7qzq68qVqv05TPZ2A==
+X-Received: by 2002:a05:690e:408a:b0:654:2882:42ae with SMTP id
+ 956f58d0204a3-654288245cbmr14523945d50.25.1776904423511; Wed, 22 Apr 2026
+ 17:33:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B375814000F
-X-Stat-Signature: dhswgkxwydqbaxjex55w1f7gmxprhuxi
+References: <20260417033951.1111038-1-baoquan.he@linux.dev>
+ <20260417033951.1111038-3-baoquan.he@linux.dev> <CACePvbWZO-=Nwho9Hfk-2HpuggZyb+Yt306MdA4X_icAt6+Z9w@mail.gmail.com>
+ <aego1T9d6PVudYqj@MiWiFi-R3L-srv>
+In-Reply-To: <aego1T9d6PVudYqj@MiWiFi-R3L-srv>
+From: Chris Li <chrisl@kernel.org>
+Date: Wed, 22 Apr 2026 17:33:32 -0700
+X-Gmail-Original-Message-ID: <CACePvbVHgry4oeXeouML1YNscpuMNSXSnBY9wd-McDUar4tG1Q@mail.gmail.com>
+X-Gm-Features: AQROBzCXNkRuswSYg5pgaKJzL8SCIfc5cKXNShZru9-WLK9_BID2HRgzyPIHEpw
+Message-ID: <CACePvbVHgry4oeXeouML1YNscpuMNSXSnBY9wd-McDUar4tG1Q@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] mm/swap: use swap_ops to register swap device's methods
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, usama.arif@linux.dev, 
+	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
+	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 677641C0012
+X-Rspamd-Server: rspam12
+X-Stat-Signature: e5bp3ca37gehp4amag5i6zjee38ma5b5
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776904350-530716
-X-HE-Meta: U2FsdGVkX18W9TXwWOR3DG51ucdmoR2qRgXypzLKw+bDVAbUPsEx8XQ298qYes2fHXYegmVZy0srHQmzUAAh1q2ivj/UZInWv9kAqrDHgLkLD+6O3HXv6arEvb7VfzStsLjwedfkP4Mu5ynznnLHVMEYvzabAHkaTmFFHxp9JXPb+d/WFnHEPUgJ2RcqCFWSK1TMg0WB/yc8vVdq5EpdJzYrzF7zL7zlswM9FXy9Po2ndTsaLnR4SfcOMaLm93lD0RNCRQaVW06uB++mqmLblvdk/ahKwDtQn+/9mLnKAwHKvsUpgG4zedoVwlHO4SDgERSdaCkwzGAYF3hz20PMy7hhB23bO8vlkeQZS17rx1BZUW29fF3S/SYsg0AeI5+8EjoLR/vtdrVkickS7wMCajOcTlvFHnG77ORMd/NtahDq2RCk72TgkzWt3RXYrBDlGD2CsLRfql7nWJfQMU197mAssfJT9cslAxuhuXGsRI+dwyDubyGAgVv25EjbyCNwJz9z7hBqrODx4f1U3988xoBSRB2nQDDdBdqDEa/Il4S4aV/8k5Z0QifypjJUIEkXZZS6oycSxsaoRearCgk451Y3BsbapniEltPmmOzfjbvGb7FA89h9vjIj3F45J8b/wEEYniXWKI6IM1Wjq31Evl021JLbXSs9OgsXXJ1BhkqZkDufCYaqCgZ6GVIqtwQHjhelgMyHfz+LJ4VcErH+069mja0Zfq9kDsY6r31gdjteFFuuZ1FVDbnbPLYbmQhqffeBIzT9/vrJCjEVRH+/UwgwsECnfPYt+jq9F2fTnVOyQyJovwDmiOll0+pgeVkK9Pl+GkruFFAMhCatjQu8YmnjaP5T4GSvm5gPOCmnUUZiI2Wo/eQpLSGbxF4TKbvpdLz8bta4skKvpTzfw5Wckfkv1XC5fzxBi1sg0r3xJeoqSfBRtF4cLwBlosEDmmydkeUw1q7unywpRjsXGRm
- VYWisrVS
- QNOuOxL8E5PesH776XumeAHyPA8QAT6DOpIM5aVjD2H9XkX3di4G2kXC4B7ByWxnZtQoOmdhthAOhXaWWLtGVToR7flnGmRfJ4A1QadrLU6Jo1kVMyPBZrq/ArrwiVb+cdqUzY6QaZnb7pYzzSx39ELeYk0JCk2CapDWpcFSoj/E7yhZNNEAgv+jsXS6hwqSGIhc3vwTNXhhXFnowNKkWpfiYrSZO7MKp68fOscb1T6/6NbsTJiRrSG/amktJlBxbQHuB
+X-HE-Tag: 1776904425-28454
+X-HE-Meta: U2FsdGVkX1++2i9fRmwPQMs/VxE4q6a88HAlhanMU5ArVx0q0lMr83r/B2g3yY19mKeLxWaUhZbabr0+2e3Rc02N8P7NTciD5PMsLzlGNmAlWlYCqlbIgjxXxcmWRLdw7o4/h2D4uh2Lzov/fmh9NWtXUPvG+tgMTR0VE185hU0oWRQgPNcfnmJsU4U2LBKY1cS2dGjbRYFj45IolzAMSNwdXSDs3Lee2GU792f5mCawFvhEP5qGvZbkGvauHji1ETkQ63zkgSAFemjRWPHiDnh7c+17oGqO4JWMTV6di+bx1uotta87MHij3y25bm0WwbQiifV8G+HqBpySuplrf08PPJpW8hsYR4LYbyibMT30r51lIoB6R73kYPVxNU4bitUVVSjOEnxeN/Su55QPj5kk7/vBCubt+vTDZrYWg6Z0iA9yEebgfnmV4f85i4FDcHu7DT7/4Bmgs9m3t32nYJLmRYV4r2mGK6PdgDfiivW6azvpPNFUp76neRpCOqsWofsh3UFGKAVnxyzSX4uj0vscNzDJ297h6zzJ6cbAKqzATGd2ecYqMUPWf4iwTnqX+OdW2ZRpyEFdo6uDD4JCPnXKIoaeHe9vRRiVwpzBUZGrLjNmtr0ql+hqd8Quanche9/uosZSgGhdikLmLwO83h7dMqxjixVWfZ/sxk2Q2tQp6uFAxsJaAb1wgCM0a+SHVY6cI5mEaOyVyQ4tw7STD1owy8dHy4no8KPSI6HRahnRpmg+hmg6V2xPaUQGZIiTQOfrSpXiIu47k4BHv3VS36ZtIZ3EbbePjNW5M1mJy0ULIh8pYaenK5t9gbub6hIZ5nB8FISImk982roVnZyO3jXaixeMl+QcY+obvbTPSFZRaDHhtZoYfmwd/GPUdiyRqW77FIjZKgFzy9nd4FanspP2E7JInyt/7PluK7j3NmZHyDVwUUjt5FllEZRFGnjLK8nK1/48yIFK0uWuQAs
+ 5qDG5c58
+ fY8oMgm+x2c5+r8zGHk771o9edFh6fS06gJESNJSq/7m1RsTs44Jk+NpCMaN+jQY9fgqUcPkQ67t7ofMllyJBZ5w/DZtbmF4XzlrOhg1VSkHYCrm2F/YBdiguEp4q1TjHOx76NxDlcm3xlfCTQiMJfDMLV9rtnzQqXsDV2zSoW9xpa0l4a0wBpZ9FarXLfOkNWDbGpW6IdgAeqoHfDDNwOSIUpqxI1li6h0+/YM0og1ohM7HhI+9c9mm8mzt6OWFA1GSReCMl0ytSPWrKqllf52sFkZTCheExHwkoydAbQTC+SbEA6P85E8n2x8kOvOmgiO1oNMSkHYzmjWI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,41 +105,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 22 Apr 2026 13:37:26 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
+On Tue, Apr 21, 2026 at 6:48=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
+rote:
+>
+> On 04/17/26 at 07:30pm, Chris Li wrote:
+> > On Thu, Apr 16, 2026 at 8:40=E2=80=AFPM Baoquan He <baoquan.he@linux.de=
+v> wrote:
+> ...snip...
+> > > +int init_swap_ops(struct swap_info_struct *sis)
+> > > +{
+> > > +       /*
+> > > +        * ->flags can be updated non-atomically, but that will
+> > > +        * never affect SWP_FS_OPS, so the data_race is safe.
+> > > +        */
+> > > +       if (data_race(sis->flags & SWP_FS_OPS))
+> > > +               sis->ops =3D &bdev_fs_swap_ops;
+> > > +       /*
+> > > +        * ->flags can be updated non-atomically, but that will
+> > > +        * never affect SWP_SYNCHRONOUS_IO, so the data_race is safe.
+> > > +        */
+> > > +       else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
+> > > +               sis->ops =3D &bdev_sync_swap_ops;
+> > > +       else
+> > > +               sis->ops =3D &bdev_async_swap_ops;
+> > > +
+> > > +       if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_fo=
+lio)
+> > > +               return -1;
+> > Nitpick:
+> >
+> > For int type error return, you should use  -EINVAL or some thing with
+> > error code. If you don't care about error code, change the return type
+> > to bool instead.
+>
+> Thanks for careful reviewing, returning -EINVAL looks better, I will
+> change like that and repost.
 
-> The pattern "include/linux/page[-_]*" matches every file that starts with
-> "page", because it's a regex and not a glob (so it has the meaning of
-> include/linux/page + match [-_] 0+ times).
-> 
-> Fix it up into a more regex-correct expression. Doing so reduces CC's
-> drastically in patches that touch pagemap.h (which is maintained as part of
-> PAGE CACHE).
-> 
-> As a side-effect, move linux/pageblock-flags.h explicitly under PAGE
-> ALLOCATOR.
-> 
-> Link: https://lore.kernel.org/linux-mm/20260422005608.342028-1-fmayle@google.com/
+You don't have to repost it as a new series. You can post one small
+incremental update for the -EINVAL change and ask Andrew to fold it
+in.
 
-Just thinking loud.  I was initially wondering the purpose of this link.  Seems
-this was added to show the example of pagemap.h touching patch that can
-dmonstrate how many CC can be reduced.  I once thought about suggesting to add
-the number or the context on the description, but realize it is too trivial.
-So just thinking loud.
+Hi Andrew,
 
-$ # Without this patch
-$ ./scripts/get_maintainer.pl ./0001-mm-limit-filemap-fault-readahead-to-vma-boundaries.patch | wc -l
-13
-$ # With this patch
-$ ./scripts/get_maintainer.pl ./0001-mm-limit-filemap-fault-readahead-to-vma-boundaries.patch | wc -l
-6
+I think this swap ops series can be merge to mm-unstable with the
+review. Keep in mind that Baoquan might have a very minor follow up
+patch relate to -EINAL error code.
 
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+Chris
 
