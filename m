@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 328B7F589D5
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:38:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F961F589D5
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:41:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 736F36B0005; Thu, 23 Apr 2026 09:38:52 -0400 (EDT)
+	id 69D7C6B008A; Thu, 23 Apr 2026 09:41:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E6B56B008A; Thu, 23 Apr 2026 09:38:52 -0400 (EDT)
+	id 64D7D6B008C; Thu, 23 Apr 2026 09:41:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D5486B008C; Thu, 23 Apr 2026 09:38:52 -0400 (EDT)
+	id 53C3A6B0092; Thu, 23 Apr 2026 09:41:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BAF66B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:38:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D86F51A014C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:38:51 +0000 (UTC)
-X-FDA: 84689926062.17.F366EE8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F3943C0007
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:38:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="U9a5z/Cr";
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776951530; a=rsa-sha256;
-	cv=none;
-	b=0pJziHU4dHIUUIGsne1s5EgsYwJprNestmjm2X8mLfAkvD6DY3cHhSi4z/wW9Ed+ygmBqB
-	RarBlJUXVku+AhvkTQ5TnapRaNtC5bv2rWzlXq6AXrSrh6Yuh+sg4GEZ8y82b8/8NdkHyB
-	D3xGzL2S2UzOBn/iDm44g3hoCeO6Qms=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="U9a5z/Cr";
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 46C696B008A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:41:00 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E3319120169
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:40:59 +0000 (UTC)
+X-FDA: 84689931438.02.86E624A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2FEBEA0004
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:40:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSik5BHf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776951530;
+	s=arc-20220608; t=1776951658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4diHwapXUeRv9iFgtGbJEMGAXujqHqVpZe76ZOwy0N0=;
-	b=kZFUwIYwTFlzBC+29JFZiSUabG5QTfEK1LlTQQCuvqslQ49lUQIRCiS2EzCtWNPtV33iFr
-	VVuXAyqLoVFvpCkn023/oVevN75NCUNEKL7BJ+C9NgkdRanm/JqZnnpC8CVI8diFxu6A/P
-	CVKW1UGMluweaCMBHZWP74tRKh7f+bo=
+	bh=ZpflqOaOGrL8JV00OWy1jqmTkdoY4KmOrH9Ao1Oz3zQ=;
+	b=nMDpL0IxLQ2fnWjYmWGO2EThnbpgKNnigyx1GDhx7+JBdXEJePd9ttWwNZ++5I7kIyub2X
+	SzaIWS5B3TAKrVj7fHEmFaclraMPAy44JoDuc3BDGUTpHKpVAL7Q5NtVTHiWd09JuxZWyn
+	W/XpYBQatIRPkHERgEtmcghg6VBGt+g=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qSik5BHf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776951658; a=rsa-sha256;
+	cv=none;
+	b=S0NcmBlPn02jfqn1weXlV6rfa6mafshDkfo/yU0wMAplq0vGxt88ekIBbCt8dMb/Ft1Cyo
+	kx9NPB1lYw6xDrg4FGMbYH1aRN6NIA5Gqc7FcSE772q0FBAQcae8Srhq3ax/8kZk1H5wVq
+	pKkfb7gv8EzUrCOOa19nhM10EzgmSVo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA190443A0;
-	Thu, 23 Apr 2026 13:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03606C2BCAF;
-	Thu, 23 Apr 2026 13:38:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C1056013B;
+	Thu, 23 Apr 2026 13:40:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B232FC2BCAF;
+	Thu, 23 Apr 2026 13:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776951528;
-	bh=ICwDzIGe32smAh50GrVCkO16wFKiYn6OJO/XJNoFuLU=;
+	s=k20201202; t=1776951657;
+	bh=kbWYQRsR8eQbjfcpNar2gN24mlB/zcQ4Jq7F4eLQ/Uc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=U9a5z/CraOHCdM4FWmGM8ORuy+wLAleTeIvQhY7DUJT4OKeogxfHQhJO/l0ObJhhh
-	 sqfOqvM1ovEJ5hwPyGtzd9/1vlfiu0XZYYlV8VDZjC8ZxJ+dcoHEO66GS6o4qhGXjJ
-	 gUfiYn38bQyRHBSQ4RdDuiCwl56U3UzzmsBK/LEmExExgq5qt4P2iXI0h9aCU33ys8
-	 nSmoiK9I03l9Cl8G51/yHgWxltwfjGGC4X2Hx1AJsisg2eHKPV+OSUfzO9hCiOSFl+
-	 3K9BnJ9Im1HXNbEh9jvsLZ8CEq8AAEk4gp8o7K0rgKWWYqcz1e00unSdU4t3T2PaSJ
-	 iE1/Bzi236D6w==
-Message-ID: <963b4f8e-b1cb-4e80-b14f-04a43fa15e9b@kernel.org>
-Date: Thu, 23 Apr 2026 15:38:42 +0200
+	b=qSik5BHfRphh2+WjtZepWBi4tvNmWs2K9X0HsY158a72I4wEXP/zDzX7OGztTjMID
+	 YTBrg6eAyLBVPV0O56eE64aIInKUMiIIvDNoulwi1sNg4SWYfMQeupj5Ru47d1wVhq
+	 7B8r6BfCsnNt8k51tLr27tGM6yZfyWSTmsTDzdBGoUP2vx96dwjAWyyzK02mdsMdE+
+	 ElTqWsYVt6G+6JLMeL8Bf7pZc0O1Qk0LiEw82/HYfIg84XI3uDJCO9TxFYL9cHOU15
+	 Zlkg4uwAUQ8KvPKE7TJlVop0cABYlqfZkWzYotm03+C3gZHyeroevKOf9fqsQPIlRb
+	 N4F836PPel5pg==
+Message-ID: <f6ca5592-9a5b-46bf-94ab-3d8a0e2ad996@kernel.org>
+Date: Thu, 23 Apr 2026 15:40:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] selftests/mm: respect build verbosity settings for
- 32/64-bit targets
+Subject: Re: [PATCH v3 2/2] selftests/mm: suppress compiler error in liburing
+ check
 To: Li Wang <wangli.ahau@gmail.com>, akpm@linux-foundation.org,
  ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
  surenb@google.com, mhocko@suse.com, shuah@kernel.org
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260422080446.26020-1-wangli.ahau@gmail.com>
- <20260422080446.26020-2-wangli.ahau@gmail.com>
+ <20260422080446.26020-3-wangli.ahau@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260422080446.26020-2-wangli.ahau@gmail.com>
+In-Reply-To: <20260422080446.26020-3-wangli.ahau@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F3943C0007
-X-Stat-Signature: kyzsfdgznrhm9znx66wmerrhbsw5uzam
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2FEBEA0004
+X-Stat-Signature: s38i4xefmsrg7ptcbre7fgbk5y48hn5j
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776951529-524160
-X-HE-Meta: U2FsdGVkX19FT86zamp/E9FE0v/Gg+Hrvd+dsGt+bBrcRdWVt+4cfA67HQPcArLG3Ekj8CkCQ7a6iVNMAz2eb2UWOeCF3krxDmGvse7ux9rOyGi46GOVhZf+xf0hHZHfbbNu0Fu/arfkYvvn6J6/j2hjJxSaY8xq4+I6PzHFmDDoH49d/2Jf2kFKsDF557unZyl6aCLCeAXnGWH/AwoIJBaYuuaVt7Pri9DjsMfNp4MGw0erMASMxNqQHNEvxKvpXRmmX71TyLOheEz1G6YeeDhJKBqcnL5Uolh+RCyPH2sT7bjsXnE6ab7M1CMEmU0F018pyy1xn5DGdWT9WVCJ0EpxWbp/LEX7qUnfPdHcqMA3vGiVXTMki4tkouQShKaL767pkb6Oui2z/BxgdUujsTB/+bZg1Zf6uS0LMaJE8MSf3UWGMMA5JeYfv0xkQgTPWOO3MJzlWYoX6m1eqJNjDfQy4sFDDJV6jxAvxmFJSkTJlStAkXt/EVSrDL/glplFKdEpxU5k6pUhAbpSF1RAy7SN62qFu0qMJjWQrH4pIr7TZzLcNr58B7WkimdS0oCO0pjaVzFp/gviRSGwRimr0czvP2SBJAZMhpQ4DRteoPDeV+qNrqzqPeyPdUghwQdvm93Ob27I8dWOPEr+Fb+yvwWRmvmu08QzbRl7WG9f4zVpdZIw8nyP0FGqzrXRhEWdsMqp4nPi6zt+93xtt+94YyRAmLrTEs/6a2A7N3K9KMFn/cY536EGkio/6+yQQSM/3P9oh8Wg9ikHjK16xF51Kp4XYU/8+ktBpaZCI1u5jJE/R3YpZOFuiu+duP7mL1xtm9C2bz6evwDd7gb9w7y+CtoDjO98EQsEq853WTmlvSeuKnhTN48cbr6GhTQvVnLhFRqpbk1zLGpdvOLQT3ctndpfM8ujzOo40Dfw8OA+o1H2LNJnQx1eqyKcJLO2tHo+E8+BKCgevCamHW82HI3
- ZEjUF2AX
- L6UK2aXwXGpTEfyrkg3XAcWMozP2o/85aHh1DOneGuw0xgycHePpLD04Fo2sXSzXZiGPdS/lHgfnqHnG0ZYiLU55ioi3tN5ziNZvYYQa1mw/ll23VHm2vi6nDbExq0Sihf5My0dy06uhFbVvtER6o1wOL57b66OSwRo5d7UL3DotFUTpt0upZnLyKGzPTCYW1bU7AiZa5i6hOOOQuqS2xZC+zR3r3+vAom2EqWRi/l60GuYyK+5oucFrP0kODIjfHHIOfSSpv/pbfvle6ZH8RbQi4MSFL/niIxg7LoGu18zeeqt/C7/XYMD+P9yEM/anxDPA9Vtd5RQdX78SiwtaZolnJeC6d8TuqkxsSBiNcERx2GgEn9s2XvvQMtRVC6LqMGLFQzhu2UQ1a7FiFz36rs4mhwxgs521I6Jgs5uLZ9DfV+szKj696Z/1axQ==
+X-HE-Tag: 1776951658-523515
+X-HE-Meta: U2FsdGVkX19Kzuj2PN2JHofS1TylGybwzyUiLZCEojYfIIyb2Oo2dFHBFh8UPGEFoe4yusi48K0PIp76Dhg8pwtqGhDdJLTeoUzJ7xHBLUif9sr+GDD5e3F2LML26sk8v5nRQ5KFXFaUiQ+TM3dFVBwqK+JLWbPayDLnQ4XoH1o6tz/DWZnixDGR5B0aU5LqKo8/+enwXDknSKF3dyOsmx5Xx+iy0MWnqiLpOi9i5bBZ2df4GUndrfkx43A2BQ0zkBvSJ5bWtcD9UA6F0WChwRTITRcI9bdHReNI1tgMEQ8AkT7CqihMoECjxB1mEkfb3gZF6f2U15twTomAC0wiSoYxwNw2llDgtorhev3Bp4czu2ofterLPvoKgwH4Gnoaz2A3yh3tdjdRnOOCaxaE2RF2BfBtI2E/Yy4c/D/Tl5D2J7kqtiW09gameYPuCfnswdafRnaf+xLbtmVNg/qzkJ3xbfjrnE7+OTiVzXZjH65rk65iFjUCG2s8lzCma+fgvSskY8amu4uOAu4ws/Np9dh1eo3p4vAlG4z2Jkdm6oi6N/UB+EoY+nZZ3KNFmKL+UJGCWnFJMedKs6BOGOyYy2OAr+hsuSc/sRi6yrUHt5TlTXpYegIROBaN+fyBIsUYy43y7642f1pGdvLbfhoq2Jj6KrAzbEOMSpdbP1q7vbS4mz0ddOBWwatqMMgW7A2fSlXypcCrhI0jDepirQoy8IlPqpf601RAcGwD4QSBIsd+WOYQUOlFGQcoYNesCmbMm+4jL6nmAkPFI/IDwuqmMt/8JdGlu5xQoUxQrrOlyjOC+gxe+VClSh5cbxvikk2eiU/eDxc0thPAWBlDdJRM0SCYBS260t0tSBnFqOBMFN0CW9dfDGcjgNjGRdRcxLYM8ptuJ7a4z6u7yRAtDPm4lr9n95p0GWVUraI5jYNNHSQB1mjr3dz0olrfJe6qt43PEx05EbIJfZg3lDcLosL
+ S+AUTkP1
+ vzo3HHUJWknawM7qMUn8bOBXkrhkOUTNPRyaf/RWSREQjFhjq2zOspervKjGZkDqCyn6odq8RkF+9FxHWxQLBL9ci2PKdYgKyacoTjc3J6M4O69F9AkspNlqSBg7fLlhEvN1fD7lS5QKzTR/mNcf/4XJUDoa1EPqQDOQ1zuZncZTScsPiBBOpWru/SSQLwSNPYfKHIKQ8+N64kQ0fKNQT0u48DPg1grBJO5bOiIdzeJtUKfBf1FkGCiMRPZeEDIJ2u+MCMT+U5TQErZtEBJRDzIpCthqXuYu5xYtLGKu8Nbi3ug1As7W5sfNdRM9THNOE75ytOo4kax9i7U5Cb7lZ+jvke40KW3kNPSmHs0IknATWvPZGygFVsL4vIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,44 +142,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 4/22/26 10:04, Li Wang wrote:
-> The 32-bit and 64-bit compilation rules invoke $(CC) directly, bypassing
-> the $(Q) quiet prefix and $(call msg,...) helper used by the rest of the
-> selftests build system. This causes these rules to always print the full
-> compiler command line, even when V=0 (the default).
+> When building the mm selftests on a system without liburing development
+> headers, check_config.sh leaks a raw compiler error:
 > 
-> Wrap the commands with $(Q) and $(call msg,CC,,$@) to match the
-> convention used by lib.mk, so that quiet and verbose builds behave
-> consistently across all targets.
+>   /tmp/tmp.kIIOIqwe3n.c:2:10: fatal error: liburing.h: No such file or directory
+>       2 | #include <liburing.h>
+>         |          ^~~~~~~~~~~~
 > 
-> ==== Build logs ====
->   ...
->   CC       merge
->   CC       rmap
->   CC       soft-dirty
->   gcc -Wall -O2 -I /usr/src/25/tools/testing/selftests/../../..
->                 -isystem /usr/src/25/tools/testing/selftests/../../../usr/include
->                 -isystem /usr/src/25/tools/testing/selftests/../../../tools/include/uapi
->                 -Wunreachable-code -U_FORTIFY_SOURCE -no-pie -D_GNU_SOURCE=
->                 -I/usr/src/25/tools/testing/selftests/../../../tools/testing/selftests
->                 -m32 -mxsave  protection_keys.c vm_util.c thp_settings.c pkey_util.c
->                 -lrt -lpthread -lm -lrt -ldl -lm
->                 -o /usr/src/25/tools/testing/selftests/mm/protection_keys_32
->   gcc -Wall -O2 -I /usr/src/25/tools/testing/selftests/../../..
->                 -isystem /usr/src/25/tools/testing/selftests/../../../usr/include
->                 -isystem /usr/src/25/tools/testing/selftests/../../../tools/include/uapi
->                 -Wunreachable-code -U_FORTIFY_SOURCE -no-pie -D_GNU_SOURCE=
->                 -I/usr/src/25/tools/testing/selftests/../../../tools/testing/selftests
->                 -m32 -mxsave  pkey_sighandler_tests.c vm_util.c thp_settings.c pkey_util.c
->                 -lrt -lpthread -lm -lrt -ldl -lm
->                 -o /usr/src/25/tools/testing/selftests/mm/pkey_sighandler_tests_32
->   ...
+> Since this is an expected failure during the configuration probe,
+> redirect the compiler output to /dev/null to hide it.
 > 
-> Reported-by: Andrew Morton <akpm@linux-foundation.org>
+> And the build system prints a clear warning when this occurs:
+> 
+>   Warning: missing liburing support. Some tests will be skipped.
+> 
+> Because the user is properly notified about the missing dependency, the
+> raw compiler error is redundant and only confuse users.
+> 
+> Additionally, update the Makefile to use $(Q) and $(call msg,...) for
+> the check_config.sh execution. This aligns the probe with standard
+> kbuild output formatting, providing a clean "CHK" message instead of
+> printing the raw command during the build.
+> 
 > Signed-off-by: Li Wang <wangli.ahau@gmail.com>
-> Tested-by: Andrew Morton <akpm@linux-foundation.org>
 > ---
 
-Great
+Thanks!
 
 Tested-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
