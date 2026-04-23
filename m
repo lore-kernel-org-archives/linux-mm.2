@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7180F589DB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:29:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B5FF589DE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:45:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B4776B0092; Thu, 23 Apr 2026 10:29:22 -0400 (EDT)
+	id 12DE86B0005; Thu, 23 Apr 2026 10:45:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18BFB6B0093; Thu, 23 Apr 2026 10:29:22 -0400 (EDT)
+	id 106CA6B008A; Thu, 23 Apr 2026 10:45:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C9D86B0095; Thu, 23 Apr 2026 10:29:22 -0400 (EDT)
+	id 042E56B008C; Thu, 23 Apr 2026 10:45:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F2CD26B0092
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:29:21 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67A8CA01EC
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:29:21 +0000 (UTC)
-X-FDA: 84690053322.21.FA79FCE
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1FE764000D
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:29:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GjKOBwJ4;
-	spf=pass (imf01.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E8C956B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:45:04 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 849741A01EC
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:45:04 +0000 (UTC)
+X-FDA: 84690092928.12.03B504F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9FA4940002
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:45:02 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BhQJuqW3;
+	spf=pass (imf12.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776954559;
+	s=arc-20220608; t=1776955502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y+bSU3KhyXgRRqKpvQPA6IG7AvMBHFqkC4KMlP/4yrE=;
-	b=sA12XAdV1Kr6hMun/kHzaRNgjGWNu2Tt2Z7HmOQ00+VLFh72r57z66xCtb/S5R74UT+6z4
-	YHTVcfSKK2V5ITQBHfpjHZ5xsV3deVz5YUJTfcxIpXxMUrEQ2Cn1X4I1yApO6zBTeIucfl
-	18UmqnaWI9XOfiFB+s6YCAwtCteM9mE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776954559; a=rsa-sha256;
+	bh=FYW/XRUxwH5ynA2LHhkFBYpt1zcHgmCzO25J5E5OZHs=;
+	b=gT+WwgzRSPlFYQrK0cIKW6jfkXhP95YUrXKVOrOoqUdu0T7ISxclCyciqbRyXqxM+Wevls
+	WPhsVGWfErjDbJeJ5or6VnufdJ4LLxmjUDXypva9emb4eGWdod5uqiTiu3cnabZX/4zpWX
+	OJvD0daZ+kXKkoJZZvVVuAeck7IcLOA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776955502; a=rsa-sha256;
 	cv=none;
-	b=52ogUuuFb/Niu72tzvtC/Aq9uf+ENCjIM7jUOpiFPCwNb/5NeJC4U4S1PatBZ4ubn7kYde
-	8lkvM2pJ4dOR5Fv2BuBj2/8qRDq+Kr4HqyjwCV5y8cFz1JxeaQliWdQArN+peyR5sJuj9M
-	ewZBOySZOj0Pe2fQNyvvCaYCCnPY+Gc=
+	b=gFgAGjfTR2fa6V1XM2321ysFfKm99jtksAlZX5IRiMMuA1n4UNHJckcpKfYV0/O4gkS9+8
+	vn0+bMOd5lt4w8rzm9O5ynNg/kM1UMKczcs5tdYjEPlg6byX+HUrMGETFW86SfIO7T7hBO
+	xzFOEoWkn7EjBfjZqaBqj5vt0uR2LXU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GjKOBwJ4;
-	spf=pass (imf01.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39DEA1C0A;
-	Thu, 23 Apr 2026 07:29:12 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 881CA3F641;
-	Thu, 23 Apr 2026 07:29:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1776954557; bh=1gkahLjaXHUIa8DvHyVWpXrUQMCiYSLHL3RwfePawRk=;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BhQJuqW3;
+	spf=pass (imf12.hostedemail.com: domain of konstantin@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=konstantin@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5AEA341833;
+	Thu, 23 Apr 2026 14:45:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F25C2BCF4;
+	Thu, 23 Apr 2026 14:45:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776955501;
+	bh=OIFmw0Zt+E1TIBRjqQYJijDgQbMQMtOjHaQh+iQXWA8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GjKOBwJ4fvKcjJAZzuDdKnOsN0TMHub2fIJNKcOUzct1fX07mAYhd/vowncnSNL0m
-	 KMoy2Xbotudp6egM6uTzDwdrAZA73XOG00/S5GrmGgOrCu6go8sfieie1kyGYT6mbM
-	 b/IPKK6JNmYoMBa1uNq9s8rykokk0HORY0kvctb8=
-Date: Thu, 23 Apr 2026 15:29:08 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/2] mm/kmemleak: dedupe verbose scan output by
- allocation backtrace
-Message-ID: <aeostKcaHzmVBFjb@arm.com>
-References: <20260421-kmemleak_dedup-v1-0-65e31c6cdf0c@debian.org>
- <20260421-kmemleak_dedup-v1-1-65e31c6cdf0c@debian.org>
+	b=BhQJuqW3RPBMKmIK40BAs8p18yPepeiwVpghW6NZfj6j3z5iD9wIPgJl9lHgXRqHL
+	 NVNbRpZZa6gA/4+j57REAHinGjFGuU+zw9Eq8How8p0kl3W0jk7/NoGqzAHFB3j8Zi
+	 3mY/f3CAJ5MwAWJnL03Dkh02kv1hJqY+E46kf9Ek=
+Date: Thu, 23 Apr 2026 10:44:59 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, 
+	mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [GIT PULL] MM updates for 7.1-rc1
+Message-ID: <20260423-tasteful-stingray-from-sirius-7b94bb@lemur>
+References: <20260413214952.62836ac9df0eb348ee4aeb2b@linux-foundation.org>
+ <CAHk-=wjMroU7PofBOC52f5u5bTjTO2tm5ehycf9evmjeq-hq3Q@mail.gmail.com>
+ <20260416011820.18f5a11bbed7fff54be761e2@linux-foundation.org>
+ <20260422-aquatic-chital-of-wealth-8b7fa3@meerkat>
+ <20260423051246.5de8968ca017eeb8f053fbff@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260421-kmemleak_dedup-v1-1-65e31c6cdf0c@debian.org>
-X-Stat-Signature: 95c78wwxoshhrki79kux5o1qkxjdfzaw
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1FE764000D
+In-Reply-To: <20260423051246.5de8968ca017eeb8f053fbff@linux-foundation.org>
+X-Stat-Signature: gbxnwt76ybdbctgf6ew8mptq7w64uzjz
 X-Rspam-User: 
-X-HE-Tag: 1776954558-295540
-X-HE-Meta: U2FsdGVkX18V3G2hHKfn3wdt1I4VoqkZujYSg4n1b13aBrd8Hm/4BtKHAKomtRIUhApDbbZdHZoK1WE7FQk8BaZ5Zif1jnSC3M1P3U6AWgnHohn0Li4ENZa3oY7hl6vXf5IaCG0kDptBbOYAeFJCj3tZzghYonJDHpqxX8IYZRM70bcY+Feit+X9k/lnvqZZ+EH/WprQ+DWKqO/Bi3BF3bAHRYse4qh4ekK/dbM4sm8qc0k36d53s+7RnTn3AqfS1Y/16VK2OAp7os+MUmNg0yJexpkumzDNICJB17pJRfnCwtnQSkq/v1mhiJEPP5dW8uFlE0KGgqmYZYUaLMfHWlLKq3ohON/EMCukHpJ79tA8hdvi5iFMkB2YfcaIRYPmsOFzlPKyYPX0lIi8Z9JVewoNAauutjd+POEnVKsOVH/c2LQIh8usJxvM1uAhiA3NdXS6yG32bu67jSxwfB6KjafCjLWZCFPKB8WTA1MxV2CVBi4nWouG16qiKYxuqhGUilgxtkqSkRtEUpiYuuO+bjK5wnDT7F1vBCQYviij9VwVMsIcYmM7oWi+Wctwnutu6jYRqnxv87NoD9lFjp0IpV2s3ubswSqCLx0XUdvE1QDl4QKK7l3zT3ZdIdr/qLWjwz5+7oQQWFpopPWAFkWUhDvDCk5leu6YQQYUS0T/4yoXzDfSbQQfqvGaSQdunaXgfQvntXybemJzJuSHIRXTVfAwqnNbea93fAlIPccCfPvci533g7yo3OF7Dn6dOfItSOvMWBEk+ObmYzy3VENnHQ9qISZamNxKPme1fp/Vzsw7KJgB1WE+o55i09BiTTmz6zol2uXugOwnB7n+VUIM7TRSFWKeJOiN9NZWrw3po1EcqY8wCZbPm31M79+iBw8L0IEzKm/LiGWzfqhMS6NeLbRHHraditErFQNfuOcoTaUysSZqec5cgZgNnVYR0lGd5/Y4N5F7hhBs9I8Sd8U
- ldZq9tjC
- T7MGffe6bqhp3u8s2SXBuQw8hcf/1BV0GB6NxqLSdOiOZqf8TClT1uOW+DHeExeEJBHlOjkdnih8DO65PavA/A5yFpf15XZwki7fdQK1ltys/4fgiV6s46DSHklc9KfpHiII42XA0PJXW1h+EIqAUUZayrEusfpIu4+miRbwZOErLke+BfedvHzjJG3Gt2dHtFIeKzSE3lniRQ5ADmDxna7GtohKCya7HQzY+DAkUJ65lwWX9OZaP7uKA0WD3en+OOnVKYEkJLvxuLyekfi5LosigHCNo5cFUYfooUycxxnW9MWsQauMWuSS6FsKSSrwEKwLV
+X-Rspamd-Queue-Id: 9FA4940002
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776955502-412950
+X-HE-Meta: U2FsdGVkX18a+yGU5xmUiuOkkv1ZXO3zqcJtOWItMdj30mz+siJajLWYmPszOf3+sxN3Pw3buwC6KHSWucCC0HJjs7SHQhYodR/EdtExHEDXI7wD4X3e0KveLrA4qCwa5IpJaaka992AWOxifHMtpZRmtC1CeWzOC0JsuZDo1HZ1deYN5lD0Ija8jMukKrOgF5gMHS89wcOUyuLP190tAtcsMrc9CrkaEUQbu6SCd3ysiajXoqGCpYqd8FUrHoc4fxzZPT4FbdnAomqGAQFkytLUrRkRuhYZE2ACZI7NW3asT+aXO7z29wvQTLGNe47S0/U8cbrzrZE9ICCpaFPATMrQKnrngcP9J2jB4X6rsJLlQHDJxZeQMy6aVXhS4moL3MyRcuDaXbqRkOsn6di2O/17uxxulNPxLrNmB9dYzeTPu/EdEWR2iib0oGyJtxRNDqvfgfTS/Tc0X6M+tgHpatoX8KcQqfMJLnTcZGe1EQTE5tkZ4ITp1/dYZz8DVwwWm3MSpKBUWDLjDW9KkIDDqZM+ZR5OKdLCNcJefIFzjHl5BmFxmVMl+ENo7SofPHHIcToPZ09yoHGKrSfIhkgI3W+QO0tesDJ5nxpwTdjC58Mr43V/YQc+MlmZHyCfrQ+94HBfVAb9zSJT0AVkOK88oA0UBjQhslvpi1Kgf/+HGUcyMJR/dCwXBUSCWQ9/yXi1ol/OXP749lCRvRH5kZ2pDRXOY1t+e/habyTnObtjYEWS9Jx/GRPIpXh8ZClAMudNPgyY+haXt+Di4ovHCLhcQIWV1iVOWKXLXIShHlLjWXgowVqTqOFwoyd7907/Ya/9zFu/RcqN3JtZv6m/343rE47guaxwxBS1MOM6RqQfglrvwsNaO9t6Wb4NGAifO0y3M3TxuQextkMh/KNKsJClHwffg8TUYV6n93NVWgCVwnMLupPlUdiChkzvp+hNKJHoCHRJoc3MDfci1Um4k5d
+ kg68choU
+ OriTJ5sS072HDopIOXoytczRRBP6Bk6xP7ZDgbiNCZs/A3mSB2cEc26FXiYP3RiOrtoOdplzrvoLgTh1rHXTZyQ9vsUTqeewMx1C0YBmRB6+6+VayZsPLNLO4Qb9j9/LQT3P6Mb0I61oKQWfUjIyz7RF9MjYinqklo46MRq5YWx7KNc+95C0HwtcKwLno2uxeMfq2l0ij6yofLoelIfVOJ0sIjKf+Y8sbHGU9TNYtJSIN7oU+ZyPHEp5nqkxI3T3icRTEcFqZVD8su5BwtQqq4YsEYZOcqek+gO6eg0PNA9M4PnEZ1pQaDEAVf/n7rp0+Vm2T0/j3Q9INd8h1JA73kk2d6a3c/VkbAQ3rNXiLC46q4rXetYr5dckCcrWT22pX0gmo/6KsRC9erFLwUQctl21thg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,87 +91,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 06:45:04AM -0700, Breno Leitao wrote:
-> +/*
-> + * Record a leaked object in the dedup table. The representative object's
-> + * use_count is incremented so it can be safely dereferenced by dedup_flush()
-> + * outside the RCU read section; dedup_flush() drops the reference. On
-> + * allocation failure (or a concurrent insert) the object is printed
-> + * immediately, preserving today's "always log every leak" guarantee.
-> + * Caller must not hold object->lock and must hold rcu_read_lock().
-> + */
-> +static void dedup_record(struct xarray *dedup, struct kmemleak_object *object,
-> +			 depot_stack_handle_t trace_handle)
-> +{
-> +	struct kmemleak_dedup_entry *entry;
-> +
-> +	entry = xa_load(dedup, trace_handle);
-> +	if (entry) {
-> +		/* This is a known beast, just increase the counter */
-> +		entry->count++;
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * A brand new report. Object will have object->use_count increased
-> +	 * in here, and released put_object() at dedup_flush
-> +	 */
-> +	entry = kmalloc(sizeof(*entry), GFP_ATOMIC);
+On Thu, Apr 23, 2026 at 05:12:46AM -0700, Andrew Morton wrote:
+> But what is the preferred, official URL?   Any preferences?
 
-Do we need to allocate a structure here? We could instead add a
-dup_count member in the kmemleak_object and just link the object itself
-into the xarray. Well, maybe the leak being a rare event is not that
-bad.
+Its in
+https://docs.kernel.org/process/submitting-patches.html#describe-your-changes:
 
-> +	if (entry && get_object(object)) {
-> +		if (xa_insert(dedup, trace_handle, entry, GFP_ATOMIC) == 0) {
+    When linking to mailing list archives, preferably use the lore.kernel.org
+    message archiver service. To create the link URL, use the contents of the
+    Message-ID header of the message without the surrounding angle brackets. For
+    example:
 
-I wonder if we need xa_insert() at all. Since it's indexed by
-trace_handle, we could follow similar mechanism like stack_depot with a
-large hash array, maybe gated by CONFIG_DEBUG_KMEMLEAK_VERBOSE.
+    Link: https://lore.kernel.org/30th.anniversary.repost@klaava.Helsinki.FI
+    Please check the link to make sure that it is actually working and points to the relevant message.
 
-> +			entry->object = object;
-> +			entry->count = 1;
-> +			return;
-> +		}
-> +		put_object(object);
-> +	}
-> +	kfree(entry);
-> +
-> +	/*
-> +	 * Fallback for kmalloc/get_object(): Just print it straight away
-> +	 */
-> +	raw_spin_lock_irq(&object->lock);
-> +	print_unreferenced(NULL, object);
-> +	raw_spin_unlock_irq(&object->lock);
-> +}
-> +
-> +/*
-> + * Drain the dedup table: print one full record per unique backtrace,
-> + * followed by a summary line whenever more than one object shared it.
-> + * Releases the reference dedup_record() took on each representative object.
-> + */
-> +static void dedup_flush(struct xarray *dedup)
-> +{
-> +	struct kmemleak_dedup_entry *entry;
-> +	unsigned long idx;
-> +
-> +	xa_for_each(dedup, idx, entry) {
-> +		raw_spin_lock_irq(&entry->object->lock);
-> +		print_unreferenced(NULL, entry->object);
-> +		raw_spin_unlock_irq(&entry->object->lock);
+However if the link is purely to indicate commit provenance ("this commit came
+from the patch posted here"), use the dedicated patch.msgid.link domain, e.g.:
 
-Sashiko has a good point here - while the kmemleak metadata is still
-around due to an earlier get_object(), the object itself may have been
-freed and the hex dump in print_unreferenced() could fault (e.g.
-vunmap'ed object). Same with the print_unreferenced() above. It's
-probably not worth printing the first bytes of the content anyway when
-we do coalescing, the content would differ anyway. Also it's possible
-that the size differs even if the stack trace is the same but I guess we
-can ignore this.
+    Link: https://patch.msgid.link/{MSGID}
 
-https://sashiko.dev/#/patchset/20260421-kmemleak_dedup-v1-0-65e31c6cdf0c@debian.org
-
--- 
-Catalin
+-K
 
