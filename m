@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73971FAD3E1
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 00:33:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32EEFAD3E5
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 00:43:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5FF86B0005; Wed, 22 Apr 2026 20:33:47 -0400 (EDT)
+	id B0F276B0005; Wed, 22 Apr 2026 20:43:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C10566B008A; Wed, 22 Apr 2026 20:33:47 -0400 (EDT)
+	id ABFB86B008A; Wed, 22 Apr 2026 20:43:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4DEF6B008C; Wed, 22 Apr 2026 20:33:47 -0400 (EDT)
+	id 9D5AA6B008C; Wed, 22 Apr 2026 20:43:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A92F86B0005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 20:33:47 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 415F0C1962
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:33:47 +0000 (UTC)
-X-FDA: 84687947694.26.D16F7C1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 677641C0012
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:33:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EoLLOiFA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776904425; a=rsa-sha256;
-	cv=none;
-	b=SL+f+38LqRWTcWNHP7zMV3ksqAsFNo9cOP0aznquapFdXLk3Gufr3qRxTyFUTISitoOBmt
-	6qTNIFUqW8h1AxHoEkqHzYJKit9eCo0nndv+JFIV1nx2ako0m6NxVNbIlnEJAIqCNOiyaA
-	RRhv4aXWIEC1/uYeVFpQTmpB+hYSmQY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EoLLOiFA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ACCF6B0005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 20:43:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 320328B5DE
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:43:57 +0000 (UTC)
+X-FDA: 84687973314.16.4873090
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D2D24C000B
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:43:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NaoqSQdH;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776904425;
+	s=arc-20220608; t=1776905035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r9ByRW/TEk5BA31HnKFkkSQprxzrSKMeADXzDfxa3f0=;
-	b=1KuRsYJkw3vstKuqbsoL01C+8jtmqw0xpEDiR/Pgv/5sGGvRoyIcVPp/v31s/QM1jkZsDv
-	sC3kqGGPaRnyDBLYHV62dyzoQVfafwJn0YgXc7XKX7Ma8yCik+5s8uz+Rh7CG1gHlhuAOg
-	UqBgBvnppmCRvVWbSFp5Z6YfDm1JwmM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A59676183D
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:33:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E05C2BCB9
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 00:33:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776904424;
-	bh=YFcpm1Q2IEqSIizxpG40qUfklzA44nCTjWRmWInHJ50=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EoLLOiFASH/63sE64eVfVLIOEbfRV96kbmC4VrUvH4yMEVwrEiw8yUQIKLqOLgAaN
-	 Nu24G1HjVtlW+Cg/8hC6iR8C9K/nJnI4Ryajt7KHdG+FS3DUcsp9LloBqXPub6SfB9
-	 3kFFEvWSepb2VAMhcBYIhvCMC8K9j8suP/O+K8PeYNoG94fJUn1Ep0OtuHX3Rx+Ewz
-	 Q7KQ6m8nTdqHe/82OlojK/owwTEdUan56EGhFZIieFqfosN9Ah/J9m3kN91ZVJiJxz
-	 N48yREmPDAsOrE2ifOrW9dFWQWdwuLoxmAUZGkkvS1t5J8A1zQmvJ3yB3p16PqZ/5B
-	 /pi2xHiYpzWqw==
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6501d242e3fso5903556d50.0
-        for <linux-mm@kvack.org>; Wed, 22 Apr 2026 17:33:44 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxASYWwhDUNK9xzTW+rMRuM+jvjShhMS2MEm0Yp7gLVl0tF+osm
-	R86lny0y4p/bnkL2f1eLgxB6F/tbrGQfGXd2MPKHJnWBDDYVlTa4LM1FL1WLqGcjev8KFFtL00/
-	cHm65wvEWClQQCn92pRf6fKBcD7qzq68qVqv05TPZ2A==
-X-Received: by 2002:a05:690e:408a:b0:654:2882:42ae with SMTP id
- 956f58d0204a3-654288245cbmr14523945d50.25.1776904423511; Wed, 22 Apr 2026
- 17:33:43 -0700 (PDT)
+	bh=6T3PCwJfjQMPBIXiRKansmxy8djAFUMHOTBn4vItwGw=;
+	b=eXydOZewiGjFmal+RpYrrk16+ENuuJEgJOar7jQYf+qLnj2FddRtV2Udk53YOV775uJxeq
+	jhgVMDvdW1fWpLAYWqxnbdFE72dYkw7FxrFvYao9MQaU9/eqvkxW10vkjwwVLwibZxYBVS
+	jO7khdBSl7BjsbPrgxLQ8Op0viSnIes=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NaoqSQdH;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776905035; a=rsa-sha256;
+	cv=none;
+	b=2T8iNqUuhZsKAEIzWOWfa69nYqzJjnudbIO9CujsgMgr8FPOWOTN4vOzW2B0vJHWxd8/gh
+	3+llq5fVvNAIvKqcyi5UPYl4srgWR+GIVT9vq9z1gCZQ+V+IAQ54I7sFuDU34wHvSTnSw5
+	Gh8JJjOnS8u2SMoWshrQLyGKKmIQwOc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776905030; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=6T3PCwJfjQMPBIXiRKansmxy8djAFUMHOTBn4vItwGw=;
+	b=NaoqSQdHTr36pqfnYNCbJ65Uyt7w1dGWMSy1V7UIs6SiFjEim4S0nhiOxGG+dZRnes7ijyw2zVIRqRdBUHjoehWxOB2CT67i6XHc0u6uwNGABgE7J3MhaVGVg92YfuP9tM2Z/25gd44Dpo+Xr9jFaXir6iEDDiULPGHxV+llW0E=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0X1XkNlW_1776905029;
+Received: from 30.74.144.114(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X1XkNlW_1776905029 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Apr 2026 08:43:49 +0800
+Message-ID: <73d1150f-8eea-4523-8d29-335f91d38e1b@linux.alibaba.com>
+Date: Thu, 23 Apr 2026 08:43:48 +0800
 MIME-Version: 1.0
-References: <20260417033951.1111038-1-baoquan.he@linux.dev>
- <20260417033951.1111038-3-baoquan.he@linux.dev> <CACePvbWZO-=Nwho9Hfk-2HpuggZyb+Yt306MdA4X_icAt6+Z9w@mail.gmail.com>
- <aego1T9d6PVudYqj@MiWiFi-R3L-srv>
-In-Reply-To: <aego1T9d6PVudYqj@MiWiFi-R3L-srv>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 22 Apr 2026 17:33:32 -0700
-X-Gmail-Original-Message-ID: <CACePvbVHgry4oeXeouML1YNscpuMNSXSnBY9wd-McDUar4tG1Q@mail.gmail.com>
-X-Gm-Features: AQROBzCXNkRuswSYg5pgaKJzL8SCIfc5cKXNShZru9-WLK9_BID2HRgzyPIHEpw
-Message-ID: <CACePvbVHgry4oeXeouML1YNscpuMNSXSnBY9wd-McDUar4tG1Q@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, usama.arif@linux.dev, 
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 677641C0012
-X-Rspamd-Server: rspam12
-X-Stat-Signature: e5bp3ca37gehp4amag5i6zjee38ma5b5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: shmem: always support large folios for internal
+ shmem mount
+To: Kefeng Wang <wangkefeng.wang@huawei.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: willy@infradead.org, ziy@nvidia.com, ljs@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>
+References: <26f954be62348591e720c4e8b7a9099b74dc1d6d.1776331555.git.baolin.wang@linux.alibaba.com>
+ <1b3c0401-6d10-4a28-97c8-8e3858d8dc3d@kernel.org>
+ <015de194-99b9-4f9e-8c89-d35807c6fd08@linux.alibaba.com>
+ <ec6aaf0e-90c4-44e6-97db-041bff8644e3@kernel.org>
+ <dee02e5b-653e-451b-8f59-7196bdae8f88@linux.alibaba.com>
+ <07e26d39-6155-4661-b3df-c2419535ed43@kernel.org>
+ <f9508e75-789e-4eb8-b09e-b66a8676a6b0@linux.alibaba.com>
+ <bea6080a-850c-4b3f-bcc0-719efc372e72@kernel.org>
+ <116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com>
+ <12bdade5-b239-4456-bb5a-f2648c867db8@huawei.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <12bdade5-b239-4456-bb5a-f2648c867db8@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1776904425-28454
-X-HE-Meta: U2FsdGVkX1++2i9fRmwPQMs/VxE4q6a88HAlhanMU5ArVx0q0lMr83r/B2g3yY19mKeLxWaUhZbabr0+2e3Rc02N8P7NTciD5PMsLzlGNmAlWlYCqlbIgjxXxcmWRLdw7o4/h2D4uh2Lzov/fmh9NWtXUPvG+tgMTR0VE185hU0oWRQgPNcfnmJsU4U2LBKY1cS2dGjbRYFj45IolzAMSNwdXSDs3Lee2GU792f5mCawFvhEP5qGvZbkGvauHji1ETkQ63zkgSAFemjRWPHiDnh7c+17oGqO4JWMTV6di+bx1uotta87MHij3y25bm0WwbQiifV8G+HqBpySuplrf08PPJpW8hsYR4LYbyibMT30r51lIoB6R73kYPVxNU4bitUVVSjOEnxeN/Su55QPj5kk7/vBCubt+vTDZrYWg6Z0iA9yEebgfnmV4f85i4FDcHu7DT7/4Bmgs9m3t32nYJLmRYV4r2mGK6PdgDfiivW6azvpPNFUp76neRpCOqsWofsh3UFGKAVnxyzSX4uj0vscNzDJ297h6zzJ6cbAKqzATGd2ecYqMUPWf4iwTnqX+OdW2ZRpyEFdo6uDD4JCPnXKIoaeHe9vRRiVwpzBUZGrLjNmtr0ql+hqd8Quanche9/uosZSgGhdikLmLwO83h7dMqxjixVWfZ/sxk2Q2tQp6uFAxsJaAb1wgCM0a+SHVY6cI5mEaOyVyQ4tw7STD1owy8dHy4no8KPSI6HRahnRpmg+hmg6V2xPaUQGZIiTQOfrSpXiIu47k4BHv3VS36ZtIZ3EbbePjNW5M1mJy0ULIh8pYaenK5t9gbub6hIZ5nB8FISImk982roVnZyO3jXaixeMl+QcY+obvbTPSFZRaDHhtZoYfmwd/GPUdiyRqW77FIjZKgFzy9nd4FanspP2E7JInyt/7PluK7j3NmZHyDVwUUjt5FllEZRFGnjLK8nK1/48yIFK0uWuQAs
- 5qDG5c58
- fY8oMgm+x2c5+r8zGHk771o9edFh6fS06gJESNJSq/7m1RsTs44Jk+NpCMaN+jQY9fgqUcPkQ67t7ofMllyJBZ5w/DZtbmF4XzlrOhg1VSkHYCrm2F/YBdiguEp4q1TjHOx76NxDlcm3xlfCTQiMJfDMLV9rtnzQqXsDV2zSoW9xpa0l4a0wBpZ9FarXLfOkNWDbGpW6IdgAeqoHfDDNwOSIUpqxI1li6h0+/YM0og1ohM7HhI+9c9mm8mzt6OWFA1GSReCMl0ytSPWrKqllf52sFkZTCheExHwkoydAbQTC+SbEA6P85E8n2x8kOvOmgiO1oNMSkHYzmjWI=
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D2D24C000B
+X-Stat-Signature: d8ybr1zoye3fh7ff3q466edkxmjmfycj
+X-HE-Tag: 1776905033-875196
+X-HE-Meta: U2FsdGVkX18B/lOOlcz7TyvECdmZ/N0rPp5oQBq6aRZBxxk4A2DHUq4ml+w8gbucT+D/UMKrAymyqMluqJTJhvRmok9afMIL6DPr5uXfozOh90lUFlNCisnn9Skw+Rr76Wg6AdZWu7pX9pMwVH/LF5yqJoYe/oULIHbbEUubdUl8uDhSysaGRxhDyeM4JaCFq6mxNp0xmAwXMDAVihSAncpiyxAxt/vfNck84n8HNS3o9dJyDqhm2snBRT18yFzFA6DUDOvTbx7I0Xm9N+K3lv3eHEFOeV+6VejPaVi7gAF41EeX18RZ6RsRcK/2FsKRSs1S5Fh0jSCuJKx5w4dZfVNzTnK9ERdNM9SggCTBKEFlhdvya+Quj4ICZRWvL/yJgtXa5eYYV+OMkOhHcG9mC2UUyanQx8ajY9ofnifB47iSDCoumw3CMMduXlPDzkNO8DICnZSm8pdq1bxaEWX5pBL95OMyXIJOpol9eXSMW3E5u47u+Bws7eHhFINSHKw8sBgY0Gi7/87JRjcE3OeCSqAaJarSe/UeG+uBzBDj2qOnhhT+SvCaR6H0AaiMlx5oMCTTbLYZ7ebNxjDypjTPopsHDHBhZhOLh5V7DJaeDZXaKGYjzzL+ZS//nWo+bpv4wLIQnCmt1f9r57M1Rk1wqdifjViXQY+gwiC/ZKgt5DXE5X+9ZptVYdXgPwqq5kWpc6f22rd0ecPHHf9Tm1g1x9JEkXLBAfFbUyYZyKkHLnfFl8w4dE0y43NxJ9ZmCpgT+AUaMC+HULVwsHxThDRpf6GjMNKwy9hOkDW8vjAANW+X1wH8LC7vm1u1IX9GCf6KJ61hRa2ac4rMmmSyp/rfr0ectIfrZD1BJttNQIW64mdx2qFpf9OqQFANObZgIV3oA92UPd98P+5m/N6ZxdVg3i2hCVbWOguxSNIUxkJUTqa1Set2UY1NpVQkvg8kxzzRtzkm/sBdP9eSDlhO7g9
+ jZ3vJiTv
+ MeEJIt66a+QBoBjPkN8In8BlN0ETDzJSZLiRaLC78HFKYGHn2ElJGtB0APjXM31yP9AXRXze4+b7/pDVubp1fEumG3cAXH6k51YqcMAK17RWEzNq17gSGnZdozVcmmbHmvmZhNLjhlXEkrkdogxka/A7jfpBKejVV2L+/go9izAH1HaEnSHsL6VY25MRT+kXYJWKZ2h6C4DlezuvjrKmnihQ+oEFltKXTq78TfXZYdSXhaa6vPquX6bqgPeupL6n3qjwaA3k9TbHk83IpAapBagnPhjwaKGqiOypz4Zr+B7Qu+YEOQ4Og3NTSgvxdOzK6WZjfxCbf/Olurwu9eJ3Vkw9qebrcRbjU3cDT2RPi4v78Nx6GlHnteXs/JA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,51 +99,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 6:48=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
-rote:
->
-> On 04/17/26 at 07:30pm, Chris Li wrote:
-> > On Thu, Apr 16, 2026 at 8:40=E2=80=AFPM Baoquan He <baoquan.he@linux.de=
-v> wrote:
-> ...snip...
-> > > +int init_swap_ops(struct swap_info_struct *sis)
-> > > +{
-> > > +       /*
-> > > +        * ->flags can be updated non-atomically, but that will
-> > > +        * never affect SWP_FS_OPS, so the data_race is safe.
-> > > +        */
-> > > +       if (data_race(sis->flags & SWP_FS_OPS))
-> > > +               sis->ops =3D &bdev_fs_swap_ops;
-> > > +       /*
-> > > +        * ->flags can be updated non-atomically, but that will
-> > > +        * never affect SWP_SYNCHRONOUS_IO, so the data_race is safe.
-> > > +        */
-> > > +       else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
-> > > +               sis->ops =3D &bdev_sync_swap_ops;
-> > > +       else
-> > > +               sis->ops =3D &bdev_async_swap_ops;
-> > > +
-> > > +       if (!sis->ops || !sis->ops->read_folio || !sis->ops->write_fo=
-lio)
-> > > +               return -1;
-> > Nitpick:
-> >
-> > For int type error return, you should use  -EINVAL or some thing with
-> > error code. If you don't care about error code, change the return type
-> > to bool instead.
->
-> Thanks for careful reviewing, returning -EINVAL looks better, I will
-> change like that and repost.
 
-You don't have to repost it as a new series. You can post one small
-incremental update for the -EINVAL change and ask Andrew to fold it
-in.
 
-Hi Andrew,
+On 4/22/26 11:03 PM, Kefeng Wang wrote:
+> 
+> 
+> On 4/22/2026 2:28 PM, Baolin Wang wrote:
+>> CC Kefeng,
+>>
+>> On 4/21/26 9:39 PM, David Hildenbrand (Arm) wrote:
+>>> On 4/21/26 08:27, Baolin Wang wrote:
+>>>>
+>>>>
+>>>> On 4/21/26 3:00 AM, David Hildenbrand (Arm) wrote:
+>>>>> On 4/17/26 14:45, Baolin Wang wrote:
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> Indeed. Good point.
+>>>>>>
+>>>>>>
+>>>>>> Not really. There could be files created before remount whose 
+>>>>>> mappings
+>>>>>> don't support large folios (with 'huge=never' option), while files
+>>>>>> created after remount will have mappings that support large folios 
+>>>>>> (if
+>>>>>> remounted with 'huge=always' option).
+>>>>>>
+>>>>>> It looks like the previous commit 5a90c155defa was also 
+>>>>>> problematic. The
+>>>>>> huge mount option has introduced a lot of tricky issues:(
+>>>>>>
+>>>>>> Now I think Zi's previous suggestion should be able to clean up this
+>>>>>> mess? That is, calling mapping_set_large_folios() unconditionally for
+>>>>>> all shmem mounts, and revisiting Kefeng's first version to fix the
+>>>>>> performance issue.
+>>>>>
+>>>>> Okay, so you'll send a patch to just set mapping_set_large_folios()
+>>>>> unconditionally?
+>>>>
+>>>> I'm still hesitating on this. If we set mapping_set_large_folios()
+>>>> unconditionally, we need to re-fix the performance regression that was
+>>>> addressed by commit 5a90c155defa.
+>>>
+>>> Just so I can follow: where is the test for large folios that we would
+>>> unlock large folios and cause a regression?
+>>
+>> I spent some time investigating the performance regression that was 
+>> addressed by commit 5a90c155defa ("tmpfs: don't enable large folios if 
+>> not supported"). From my testing, I found that the performance issue 
+>> no longer exists on upstream:
+>>
+>> mount tmpfs -t tmpfs -o size=50G /mnt/tmpfs
+>>
+>> Base:
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.2 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.2 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.1 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.0 GB/s )
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (3.0 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+>>
+>> Base + revert 5a90c155defa:
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.3 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.3 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.2 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.1 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/testbs=3000K count=1398 (3.0 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+>>
+>> The data is basically consistent with minor fluctuation noise.
+>>
+>> Later, I continued investigating and found that commit 665575cff098b 
+>> ("filemap: move prefaulting out of hot write path") fixed the write 
+>> operation performance.
+>>
+>> Base + revert 665575cff098b + revert 5a90c155defa:
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.0 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (2.9 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (2.6 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (2.6 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (2.5 GB/s)
+>> dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (2.5 GB/s)
+>>
+>> We can see that after reverting commit 665575cff098b, there is a 
+>> noticeable drop in write performance for tmpfs files.
+>>
+>> So my conclusion is that we can now safely revert commit 5a90c155defa 
+>> to set mapping_set_large_folios() for all shmem mounts unconditionally.
+>>
+>> Kefeng, please correct me if I missed anything.
+> 
+> Hi Baolin，I found my testcases "bonnie Block/Re Write"
+> 
+> ./bonnie -d /tmp -s Size (size is from 100,256,512,1024,2048,4096).
+> 
+> But the dd test is similar as well, and as commit 4e527d5841e2
+> ("iomap: fault in smaller chunks for non-large folio mappings") said,
+> the issue is,
+> 
+> "If chunk is 2MB, total 512 pages need to be handled finally. During this
+> period, fault_in_iov_iter_readable() is called to check iov_iter readable
+> validity. Since only 4KB will be handled each time, below address space
+> will be checked over and over again"
+> 
+> But after 665575cff098b, fault_in_iov_iter_readable() is moved, so the
+> issue should be fixed.
 
-I think this swap ops series can be merge to mm-unstable with the
-review. Keep in mind that Baoquan might have a very minor follow up
-patch relate to -EINAL error code.
-
-Chris
+Kefeng, thanks for confirming.
 
