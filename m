@@ -4,78 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71B67F589D2
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CDDEF589D0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:31:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E4806B0005; Thu, 23 Apr 2026 09:28:15 -0400 (EDT)
+	id 111066B008C; Thu, 23 Apr 2026 09:31:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96E726B008A; Thu, 23 Apr 2026 09:28:15 -0400 (EDT)
+	id 0E92A6B0092; Thu, 23 Apr 2026 09:31:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 836496B008C; Thu, 23 Apr 2026 09:28:15 -0400 (EDT)
+	id F40446B0093; Thu, 23 Apr 2026 09:31:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DD036B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:28:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 452D11B6E31
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:28:12 +0000 (UTC)
-X-FDA: 84689899224.29.CD8FB03
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E1B3D6B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:31:23 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 702311B6E64
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:31:23 +0000 (UTC)
+X-FDA: 84689907246.22.F0AC7C3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 608D340002
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:28:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DGgrrB0I;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 647A31C0016
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:31:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SuC0qMwj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776950890;
+	s=arc-20220608; t=1776951081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h/IZAKE/51Z5Z0tjt7HEHobBy9Qxebs9hgP6VWc7v/M=;
-	b=rWolwyayrU9Zd6XLiF8/hheFvNjHD9oLjEqJiaaTQRgrpTHTD3MjBdw7cZVWaIJq31DGr2
-	C44DoKZLrL7uQt2vLw0QHZo/b0Nkizj+7LRzyfpaqc5IH8B9kYMOlnig56Wy9MhJFvbfDC
-	qoPQIiQ97K86GKSCpGkmQuLed4Irn0Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776950890; a=rsa-sha256;
-	cv=none;
-	b=QFScAOKw0ugkfjot5mE0ZzB7xRYto0/CnXjlyV9Ankxq60/wVtbBNL6KL+SuxYKyxVtUxc
-	5eS4julaLnFLJHNo4lR427/iJdZWiRIAresz2KhN4bnzm6zLK6mEE3mK6wg1bs9hzP5erj
-	YYY/ZQUsz7vNts6+2UKT0dDsky6SqdQ=
+	bh=FP/uXsbtCYHgyfuTbT/XD8E1z41ddmSKf13JWi8kd88=;
+	b=iagKQEF4T+NovFTWQheFyJFl9mmZteaTf+L2vMx5kv2nWQhL864cXPBlSk6wYL0ub/zAzf
+	MBRp/fH7m6+s80IrjH/4k5HyXspM9jTKLJKGfsUtU0lkFb2aR4A4WQjAOk6imBq73stER3
+	TQcWsFFWBZrnJqQcvl6iEMWPnWFbb+c=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DGgrrB0I;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SuC0qMwj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776951081; a=rsa-sha256;
+	cv=none;
+	b=5DcqB2cNjmomdx7IAcw0b44q5p9k3E6mGBxdFOUAN8Bkyc4xN9wqBDvfnqE6KwtSK9s2xx
+	dU1XyYIGo5FTJp9eIeQxuI1IweNVCckCodf+nlUvtivR8UymJS/MgJwZiZiW8FQLOwiff6
+	+9ViDMwWxei1CaodH8KImSED6erK9BY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 62ECC4450E;
-	Thu, 23 Apr 2026 13:28:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D0EC2BCAF;
-	Thu, 23 Apr 2026 13:28:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 69C39406B2;
+	Thu, 23 Apr 2026 13:31:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DACC2BCF5;
+	Thu, 23 Apr 2026 13:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776950889;
-	bh=UdQJdVZKPGon/fRA+Ymep9Kcr+GFrjgmKm4qj3xWeYY=;
+	s=k20201202; t=1776951080;
+	bh=KMe0YNCVeH3Ab45BSIZHBghW101L8KHnVWa2ygzk6FM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DGgrrB0I2oqVS+p8oatAec00Eyrzsv3qWmTOMyFJ9AjOOrxeDn/YwNdYZ0mUlEW0o
-	 SkOBQ0RHlMd5wTxJY1b8AzovMzbflW6nOMSTPVjA/4wk1+4rOw0z6Kih8RPlkau8BM
-	 mb0wjE3pf5R8Nnn/0quxlIrcohgrucbnWISAXhyE9cDUA1rpoTiV2kJJ8iE81K2NDd
-	 Ol+he5di/FMJSMlBV9/JMlKs+g397OwEYSm2egp2vgSHemIv6zA7cPU0VS4Q50c1Bi
-	 WfLODRTeuC6Xjf/GVQkqh6y9pfc1WJrjBGmBhH1G3916dDnFjS6ybUZQ3rYp3lq/s0
-	 QolPJ6q9bXNfg==
-Message-ID: <da96efa9-401d-4d11-90cc-00ebff340921@kernel.org>
-Date: Thu, 23 Apr 2026 15:28:03 +0200
+	b=SuC0qMwjuhuShAxltSJy+p42wFrO/oEDq9LCHWMiAJ0YOY5HjFHxsHPseW6itbOj1
+	 MskzRFu6+BB8HC53EyqYDLf3HVZzIpNk7Xn046iHDtEPcKz1EjhWkaxI046fGNWjJd
+	 rc1G/Kd+urQI3eWNnpsZPDixF9wFkzuJ8twln3xpelDWQFer2bNMDYRLH4Z6FD4R0z
+	 gDJxERrcLbNdBcD3y9XIzp5X2jwYHZYMN7rEsgg1e0vqqzr6HR9F0hoezShgr2yaiL
+	 wFUXsCc0B4zX+Lpe4IIP4MaJX6HgeiAG/FbJMpWFp0io0nugd9Vjttj4qp6KUpbHbF
+	 i3XvMVhtP8+nw==
+Message-ID: <7a762959-014c-4727-999f-a5073f9eaf7a@kernel.org>
+Date: Thu, 23 Apr 2026 15:31:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] selftests/mm: use pattern matching in .gitignore
-To: pratmal@google.com
-Cc: akpm@linux-foundation.org, shuah@kernel.org, yosryahmed@google.com,
- ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <03a23a7a-58fe-42f4-a294-9d688ce33e2d@kernel.org>
- <20260422190847.216343-1-pratmal@google.com>
+Subject: Re: [PATCH v3 0/2] selftests/mm: clean up build output and verbosity
+To: Li Wang <wangli.ahau@gmail.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260422080446.26020-1-wangli.ahau@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260422190847.216343-1-pratmal@google.com>
+In-Reply-To: <20260422080446.26020-1-wangli.ahau@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: k9jq35wqqf5que8j98bx9ywwm6gbfpzj
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 608D340002
 X-Rspam-User: 
-X-HE-Tag: 1776950890-848636
-X-HE-Meta: U2FsdGVkX1/LTYQK13FphNphuSPR///tvHWvhU8o98IHWMqyx0RxtCU+PYU7Z4d6m8hXUkgyWdpmhL7RaN5U9XoBZNnBtKyOm+OqIUUxtUZ//s3Cv6eKJCdPnLMn/ZNVLAFsPbtC49o7xa7PjS318GGfT6zMQSb73EY7+GXzpTDqbO0iwU5RtjGRCaHUWvqRjCR7hnt2D2a75IIpCa21HPv8ZLSvvuKyOSE6HihLC5QvsQnPBiZG1e7881rEnmzM/J3iwjvqO9FkYYtvJ1wQPjDDaXapWKO/rMv7qOYYzXHRGomoDgelFhhNsvxzUay7dRHZ6JuFWQir6hjOBam5OCECdFcs/PlNgrz74iORuiFwjFwzqm2h5ekK9XC/5Klg1l4v/RDHLTz4FylFjtAhait7QQZrxdNGxFavHghPzfwFAoHKMuSui8pYvSfTgnyhKmSBaIyE05pW1hRmqOH+vSPIYW0ydElZnk8AoYjjdCQCXRvVX/z1QrFwMjuJm52tAd7nijEHm50bCsovAqBJK4f0GsbOImzhcc67G+Xbe+2xuxD+fqAh969z+PNUQKU3FlAzOHDEheJrpFIAqpdbbOHLx4S8nPjmokBJloFECqjOPZ7hiTBnaXEni8/aFiJ6K7JoX6ntpB2K45yrQVabw72zwg6uZqNDdrsS+qu+y7OceCRCPo/JclUgMrWLqKZ50Fu1ZU4iYmUs5aNlVqOHqDvzaIg2Ln4cAhDp4+shxITYy7iR/RqWtdrEkdaO2T0gprhPMzWoKqv8nyTC0/wbJvcbsFQ5K+/4L+tYFOti1/tSAdkGarExO2tgMpld4d7cAZnrflYSIu6cXnPlehxqiEiAX9xV1vINiYMve6YdPGV65mR2P0zgX5P2DGKp/FPIaOOlL/dWLKkVf6vM+npFjSlDxWUIE6ERMsOGYAXgFyIG0aab1imQHs0D6Vj7PHh4SHwOEE8suKvQP7+1xDw
- 0mWnh/ze
- abTLMzh8u9hJF8IywXhAHnYOrhSjD5Uk7RWThy9cnfGoVJh1iwa0np5OTctViEUpPU3G4jFlyq+f48DqOVDeKXkQ0cyKIYuL6dLWKkeplk6cpZVFVl8uPf4vwTaVF/HraJMDVShoiq5OplYlqH55tqf5i6CuAQfXDzdD4BjrvoTMY759+YJql1V0inpjS31La+vUfoWr+NHqWovR2Oy0neuxOWxfw0bd17hrv+78uZ8IvHc8fFMwVOdl1r5XqlLTDABntM/6T+pl743Hpz9BI2avADZR6XCC0H+R2
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 647A31C0016
+X-Stat-Signature: dhkfqxfhq5jtyfn9sfmr96nituqnxwct
+X-HE-Tag: 1776951081-154088
+X-HE-Meta: U2FsdGVkX18N0KD3Jn5dnr+phZTB4gyTjLpGGN8wufrrhk5iSww28E5uzjLSM/8PejSiQymx1rr1tsUYnjC92IvPkI4LT5OX9abruBjpFHGGDrW3WNJXziZGuQeSa6NA4lXWBmlhU2lqrGa3N752Z3HeclNZe+YaQ9zDNpQQlynNwhp1qAGFCuUvKnzaEFOT+92l3Y0pIMs60UjQ5BFkvlpgG/Cds5/gxx29cjvA5gJnwIxGtVekcb7QyZ3yh2l18RMj3qpfZ/eRgaCzeZS+BXpxt3d/r758yD2DIGZME/QV+Xr+QJ222BhLmlpySGtDz4lzK7ufBHA96EMgfhLC5Z5TMwuKTKtTtZD2KART0rCyi+nCRTU7Hbe20Fwv3Bx8E4tqxIz7lWDIleCbXlAUl1Fy9DYkMzYRVfjFC5S7MzXmoojC89b1fuzkKBp7ay/gLibogEtfpXe+2S07ZbdbL7540pmC7Y5prIe4HJ5d0NkRznG1NzhYAjTroMhbd7hILk9tN3JAxsRF/ZIaltApy9wTDrOqybWColYKcACVsPPcIh1zS5awRseMez5jxl01Ep2HMIn3fWxssCPdl+3Ezr/x+myG0XlpI9SvhcUL9lerrY7eVESq5pm/UQ0VJKXNu48ZYoPd772J3xfkpnaUMQcAMFuFXwdI28SMu6mAx1ggPPGaWgjYjQv0DpmI29Ua2UuPV1KogRYEnjFGxN9fQ4y/BQteZ2FgAY1ZKNxU2XoQWTVzRAsG/c5LalrWU/b9ZHS+mPY2CZlH/MkHmq/MLL3mvcdSLGAZvWY8MfSVGFAaujzj+/2r29k21IUoOWqBLFtDhZF0RKyAVYlRTPD7jlRDg+i9LKp6UVOvneXF0jmmTfjroncicVWWc0Ub4cZTrm0DySnIsENFMPZzaF43FhKx9NwX/Ah3V5z31NNHNh2obfIWX+nlbaEJ7cwbDYuuqwL6Ug91/aUgp3EoCKO
+ 7TPoumVl
+ YVjy9BBRaevcC59SrykNrawYLfP4PTEGFMzQr/7/eAZNo0Vnz5gaLQ98ufwd8HEGnfDCDX9/UJSOIzeK5TsIYWsWnGHZRCW7ijCpi9PLH1griJeah0LV9m022MXDBRGfVf+M2B14sE0qT1i0IUXml8/+r4g24gZB1koVUDe6me8TMDk7/KmGSkOjKX0VnBhh5ACnmN6TyT0hDeaqZkY5mZ5VCUcuuFHFSmNtUEhnrav7R+JXMGjpr6vEAVeHcaiCfMOVrKPqC8sbUnwf/cOgLM96pVYKtCk8pxqkdciotuUB1b399FMLDzQRT2VJT4PE1G59bLL8dQDtpQJ3T6FSLSTr5F/bgzel5BR1K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,37 +139,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/22/26 21:08, pratmal@google.com wrote:
-> (Resending to correct David's email address. Apologies for the noise!)
+On 4/22/26 10:04, Li Wang wrote:
+> Currently, the build process for the mm selftests is unnecessarily noisy.
 > 
-
-Heh, no worries, I didn't even notice.
-
-As long as you CC one of the mailing lists I'm subscribed to, even mails to my
-old RH address will still hit my inbox.
-
-> On 4/22/26 18:04, David Hildenbrand (Arm) wrote:
->> On 4/21/26 20:30, pratmal@google.com wrote:
->>> From: Pratyush Mallick <pratmal@google.com>
->>>
->>> The current .gitignore hardcodes each generated test binary by name,
->>> requiring updates every time a new test is added.
->>>
->>> Switch to the patten-matching approach similar to KVM:selftests.
->>> Ignore everything by default and then allow source extensions (.c, .h, .sh)
->>> and tracked non-source files.
->> That looks pretty nice. Any reason for the RFC? (iow, are you unsure about some
->> side-effects?)
+> First, it leaks raw compiler errors during the liburing feature probe if
+> the headers are missing, which is confusing since the build system already
+> handles this gracefully with a clear warning.
 > 
-> Exactly that. I verified that the build works fine, however I sent it 
-> as an RFC just to be cautious. I wanted to get some feedback in case this 
-> might introduce some unwanted behavior that I'm not aware of. :)
+> Second, the specific 32-bit and 64-bit compilation targets ignore the
+> standard kbuild verbosity settings, always printing their full compiler
+> commands even during a default quiet build.
+> 
+> Notes:
+>   My email address has changed due to employment change.
+>   Previous Signed-off-by was with <liwang@redhat.com>.
 
-After taking a peek at the KVM one, I think what you propose makes perfect sense.
+:(
 
-I do wonder, whether we want to make our lives easier and rename
-"local_config.h" to something like "local_config.h_gen", so we don't need the
-"re-ignore" part.
+As a former RH'er, I'm deeply sorry for what has happened there, really.
+
+Thank you for continuing to contribute upstream, highly appreciated!
 
 -- 
 Cheers,
