@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF52BFDEE28
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 23:38:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F5C0FDEE28
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 23:43:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AB096B0088; Thu, 23 Apr 2026 19:38:25 -0400 (EDT)
+	id 4AB676B0088; Thu, 23 Apr 2026 19:43:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05C5E6B008A; Thu, 23 Apr 2026 19:38:25 -0400 (EDT)
+	id 45CAD6B008A; Thu, 23 Apr 2026 19:43:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB4956B008C; Thu, 23 Apr 2026 19:38:24 -0400 (EDT)
+	id 398D56B008C; Thu, 23 Apr 2026 19:43:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC68E6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:38:24 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75FA8A0611
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:38:24 +0000 (UTC)
-X-FDA: 84691436928.21.4352ABF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 23D6C6B0088
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 19:43:54 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7AE4E12062A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:43:53 +0000 (UTC)
+X-FDA: 84691450746.23.7CA28FA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C0A6C1C0002
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:38:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ur5+oKf5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776987502; a=rsa-sha256;
-	cv=none;
-	b=SXNmOMHaCQigOhC5eCuaKymMCkpsEB9QT+Vo0KbqcbYWIEl1v6cCAO47peFYGqmSqdP/TH
-	ff1f/VkgF0F7Ad0wJgFTxF069892t+WymtFmBdPyma9s7cJdDKU18HkF081SgFPSXbr0E/
-	bsY7hOfqq6YCBfFyl64B6bViD0pUDes=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ur5+oKf5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id D108A80008
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:43:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VdgSbMUb;
+	spf=pass (imf30.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776987502;
+	s=arc-20220608; t=1776987831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eiJvIwJhZcsDA7qVIi02suylcG9PDqq5tTpCpeZq8kc=;
-	b=g9l2D/pilLIfthBEqkzrR9rnB9+uIrLZR7bhwkh/tOZanAv7lKbX8kl1tafCXEZZjpDLEG
-	6CCZANSn2YUdsvVlL4IdTMUX2i9OisKpnhpMqQ68DbO5dsdT7xgCiMlwK4w0fr1ka2ZnGC
-	QP8hRpudMBsfqSl6B5KkQu4/RGD3KUA=
+	bh=MbRzdeDcPqrC9w51AYxbOS+lzicIUTy6xwufhVWXV6k=;
+	b=t7/ryVW1k9W3SqZKdx9YzZO10Gyxx7dp7vELzWQFx2BGICtJS8C7xUpVnHGzBTV6hGMByv
+	3eRKKZ2a8ckU1tZ3AKhj23BQT1FytrAN+FuTyoXZua1MnN0XK/8IN+0Jj1LyDCoMX0elMe
+	eg38xze4FHj2Q0itI0x8Btn42COcdwk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VdgSbMUb;
+	spf=pass (imf30.hostedemail.com: domain of minchan@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=minchan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776987832; a=rsa-sha256;
+	cv=none;
+	b=tEegoHZIck5eASmQ6OV3ySKZ71yekVfCB2YXBNalo+hsgadOAT3Sp8y/UPaz2GvU5+WBAi
+	3QoPYJ5oFmyEfUTxXknvAxX85RrtjGrgGt7Ce+57h7e+2NiJkJBHR10tBnTDVPj69AYsXn
+	Cu/Euo9kO73DBMLjEYdyPM+2IC9HhKc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7E0384332C;
-	Thu, 23 Apr 2026 23:38:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A10C2BCAF;
-	Thu, 23 Apr 2026 23:38:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C561042D8C;
+	Thu, 23 Apr 2026 23:43:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4776AC2BCAF;
+	Thu, 23 Apr 2026 23:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776987501;
-	bh=m87qmd7Z7VaIUVFoNxdf2avdmQw/zQ+LpBXrHU3kp3k=;
+	s=k20201202; t=1776987830;
+	bh=L8UjojQ4C9OHvxfnYPiaBUQe+uUACvjG8z63K3NPYcE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ur5+oKf5omajvu4YTf4FQLfJpFR7xWxwrKvdnuS6jTpwApmMfG/zUCz7pTF1gdkHq
-	 EDd3QWmhLxHPGclw5caWcxpq8S9oZC003AqYOb4pj8tDoNiVotVcyaMxyd01Y/+BWH
-	 vpykZTPIqeo5syvHkBnrgJtvqVImkYnH/H4ZXw33xkch4F9Af+N1wVRk5EidtAwXPl
-	 cvEojTI8NOTZzK4UFmVPpkNUpjcJd7uLcZkSR9KcP0ECZdrfyGontr+eA0W+0LCs+G
-	 ouvortnDt7jiSXxzb8F8NcPgzaYJ4hc1RkSXuRsqmKE2uR0hqm9+fBy2q61lqiZqXE
-	 rjjeh4jG8sOcA==
-Date: Thu, 23 Apr 2026 16:38:19 -0700
+	b=VdgSbMUbmTZtntLFWfuHRn0Ckp56gsL/T/g1o4+oezFMJCeAnfvYUPSGxMsgFjXLU
+	 q1aBdJTqBOaVLEAFDl+VWbtlsGepfoz3K38b/I1/txOYjhW92x3UDsMlZ/wvA9vD1B
+	 JMdkgcGqpz0mUCOwffTZLnum87aPWLWy2jAJf74VQGssWigSRDrQzW91Rgof1c2JTR
+	 uFdh90VZt6WBKlI7zAVcgpmBjnhGyA1q9CXIMgOEUsyeDD1W2Wqz6ul1+7LK8XwUfR
+	 hUdgQy0LfeYjj7goWK0NjgbvjB4EZbg2VNMV22yz9JUwYx07eUaWL9CTtR+FUpNEo0
+	 PhewFnAmCnU9A==
+Date: Thu, 23 Apr 2026 16:43:48 -0700
 From: Minchan Kim <minchan@kernel.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, hca@linux.ibm.com,
-	linux-s390@vger.kernel.org, david@kernel.org, mhocko@suse.com,
-	brauner@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, surenb@google.com,
-	timmurray@google.com
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-Message-ID: <aeqta5Uqta0uw_eE@google.com>
-References: <20260421230239.172582-1-minchan@kernel.org>
- <20260421230239.172582-3-minchan@kernel.org>
- <b6a6eead-cfd2-4459-9c6d-384dc6cd72d8@linux.alibaba.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Christian Brauner <brauner@kernel.org>, akpm@linux-foundation.org,
+	david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	surenb@google.com, timmurray@google.com
+Subject: Re: [RFC 3/3] mm: process_mrelease: introduce
+ PROCESS_MRELEASE_REAP_KILL flag
+Message-ID: <aequtFtklmfbN7n0@google.com>
+References: <20260413223948.556351-1-minchan@kernel.org>
+ <20260413223948.556351-4-minchan@kernel.org>
+ <20260416-planktont-abwinken-b9499483b939@brauner>
+ <aeHTcXfCyCED4WSl@google.com>
+ <aeHbf7joGitRz7rB@tiehlicka>
+ <aeae2Cl4ybcx0fHA@google.com>
+ <aenHk3E-1ZIRI2YU@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b6a6eead-cfd2-4459-9c6d-384dc6cd72d8@linux.alibaba.com>
-X-Rspamd-Queue-Id: C0A6C1C0002
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 1ce57gn8rgoaxr3hjqcjjft3188ke9fu
+In-Reply-To: <aenHk3E-1ZIRI2YU@tiehlicka>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D108A80008
+X-Stat-Signature: n5w1ow66y9u7ecoionagzbwxtzcrjtxw
 X-Rspam-User: 
-X-HE-Tag: 1776987502-23964
-X-HE-Meta: U2FsdGVkX1+C7DSIyiL2AR4TD1R+2Q5KPs17pR6c5KEDFXD222j6FtUc0r5NhNdyyQ1faCV4+X/mGrqOWaq1F9LiHH0lh6DocVfaQhiqTQICIcqNlKcW45l5gCYcdtS1L77IE9rceTnhsJdINadRbA8J7mzHTC5i4AiNseChZfrlNIRrsHOpZOHnx/z2BaHpnAu7Tmj5GKFdhnUs7Cjk+T4HnPDpsB44blB9liqbxzpusgXDwbAp945/CuT9wuEAWv71AWYjLFjI4axItuXRFfcYBiHyCB3j7Gap1TObGeNISRWgXyw6Uxa/9NaKx7wBi69XJi9WAh1gPDxm+VXLBAb2nB2xCdphQyAcswH+qTe90SsDWIsCt911cBR558DC1H86xl9KmKYdwj1OHOuQ66blifvd7PUgovzZ8k6pMDORZyCLXxBKXNdvBRMKKtXznGQ88SQhl0hwxXaQ6axBl7IUO98ckpzGzuw/Jqfe4YZAR/AK3w++8o1HNV4deOskNX0khTc9hoUhrkJ2KZTlu00npgG/49RWShpK7xbXxItKbOy5Y5u565A71NYs388+aLamxBnoy4QqmS1fcFAkb9dF/OyJIiIZ8E2W/OH8Id+jXCSG5ExOerg9I9HftEf9yh4ixOffeZMMlLQZanqIkersisXvTJfOFukio2SWr+IZV8J26R73ucmZXFo5EGoxZT5IUHRBgQPDmcw49bO9sWxslJn7PpsENdgUrTQ7RZTFDY4mcOaNOfjPxpjLYAovPeaQ4AfsXLtBr4/6hk0g1g3INoLJ8IwD7LQ4hZiFaV3Mn/a7LAC0WW/ACGGEgnj5/wvrTu4NUXqZRw6XX2LsbpavCoYlJQSqWN4gG9hWDfIR8vCq3PWfq8qgGN/JMXeApUS16E1D6g6+G7Oyh913flRKaAOvegEcDEWi+N7RPkwgp/TDuK/T7KHsfh6s8Vdp6RYC8ZGu2KEw2i0E36J
- iAL3A81y
- 0f0Eyinerbg0qkWhyZ+xzC1BfolPgT/BIYPbzUYjBFvqFzzE0D7hWFIMls3n99u6hu/+C+WWQGAg9sKjNmYsSqaeqlNRpGXk6m/bzHFAjS/K4YZm5mvQvCShGwqAjS0BhwAvZg7xAIbqwvrG3xvrn4eWP6Rcd7yUD+eDNHiWYkAt+TIqRuit7OFRjx29WzatIzNOmeWfLkj31buVUUbjaS8tUkiny2QD4vDnhN2oeuAWxA7QDwvDoBsXfYkbkrnUGhW0ZB/svq7nbA1fCLU8wEinQgnuJWPhxh+FYQ+4Im9wnBSOeLFelhSFVIPPf9tUA1CYm
+X-HE-Tag: 1776987831-644175
+X-HE-Meta: U2FsdGVkX1+VM0Y/bbll3K7l7QQ4l1tOnkL9uB2zGDYXBfuSEJ1oWH+7mmTfRN00wmTsLAWr19rMSLthIdTziB9m394ExwzweZolLZICck84REJmeQvljIG1jhSgieewW3TyS1k5G3DKA45RejzB9EyRuc/IfOYICL/j5TGUIsfuYq8F3anx3ZlvpnbuHubbpOgltxddDRvlto7u676V0Yz/htlUmHC144sNSDvLher7sEeLzHT3BA5L2eeyp3wGQSnc8Ti6ctfsqdVH0/27/QIePFrgKRFCH8LKBDVG6P1GH0TU03iqaKmBSY+1cWjBNqNxqHI3u9SCtldQCKEg5YyQlFGw4vtLIRjn7fYpeFwKXBZ8LPvbDZ9RQRnfnkCdRdoK3I61JAX74gdPOXcfIW2HQDStcKHRGs/p6PPDiDINLAKTwHuWrqyZtETxH+uJ/wNXjL5h6CDaEb8GSUvcPfdRflYFdGaYwxN3/n7uywOxmvbJPMg5MetH94BaTVZpDUITyQRdHT3tKMhQo+tU4/S6y/6rLOkgSx1MTgAvwX8eMgUde4IvHr8XwIhk9tl8PNar8+ZwA0SFbHvcwx7RbvqdIeKaTIW13JaIj2WzWDgD+6kfvnuMDCtzPP81U3/09MQlAA4Ic9OQXI6hOJtn35ksrV9/reKgUUpviMrQr+cEY5qA/3UVU+lO5TxAwWzkQxin/r+7pp9PwSl4z+nFdgZxAVo1CjBEbfpmDhcimapzMD/PU8t1CLJsvPLIaru0IjlwMJf3Uqsc7+wTjhUqG2O8lJj9UIbmycqlBT65w9NHbEs663aE0tpmdHXOZQtYrPevKmnE3b1nBGtjRIg/ChtOFY9MXJBYJcJhD+RaM7jDefSkYeiX11q8NwgFsuIWnm+qFzhlvu5D/YYpBIKFrTOEtvPVx3nAXGWLGo4z8t7ayYTexCG56oVD7NYV3syBmx+xuxYq//jmJgkH9Cy
+ kvOZv3qN
+ wSwA/a7M6pTsFTYUHSwgS592yENHkgAQNJN7ZR4f54hh2B+AQP/13D+jQ0CwSR6dvEbkd4UcREbwDDWMSQ8GB8yI2vxEous6xy7LGwittt0yjVcLIsK4LLme9c7etsKEJ8FhbwbtZjSibsEk402Ji6URCpOBDJw3HIwQbdIQv5H0aeejMClKIhoX5FH5OJMYIyaFOPS32L8pKlhEmsM258Yv18h7jkMQ6p3awsLeFrqweVmh+Sul2PXcMuglrQ3ypz652S9f/rLgcujnG+RqWeDV7V9aT8jrQHAXK2LBcPtQgGprmqYa+O06q9FAY8oBSgPBd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,73 +98,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 03:22:46PM +0800, Baolin Wang wrote:
+On Thu, Apr 23, 2026 at 09:17:39AM +0200, Michal Hocko wrote:
+> On Mon 20-04-26 14:47:04, Minchan Kim wrote:
+> > On Fri, Apr 17, 2026 at 09:04:31AM +0200, Michal Hocko wrote:
+> > > On Thu 16-04-26 23:30:09, Minchan Kim wrote:
+> > > > If I send the SIGKILL first to satisfy the process_mrelease() requirement,
+> > > > we immediately run into the scheduling race condition where the victim can
+> > > > enter the exit path before the reaper can set the flag.
+> > > 
+> > > Why don't you just grab the mm before you send the signal and then continue
+> > > with reaping? You just want to avoid a race where the victim manages to
+> > > process fatal signal, start its exit path and mrelease path losing that
+> > > race so you rely on the exit path, right?
+> > 
+> > The problem is that process_mrelease() operates on a task obtained from a pidfd.
+> > 
+> > Once the victim process receives the SIGKILL and enters the exit path (exit_mm),
+> > the kernel sets task->mm to NULL.
+> > 
+> > Even if we could somehow hold a reference to the mm_struct beforehand,
+> > process_mrelease() would still fail because mm_struct via task returns NULL
+> > after exit_mm() has been called.
+> > 
+> > Therefore, we cannot simply "grab the mm" before sending the signal and expect
+> > process_mrelease() to work after the victim starts exiting.
 > 
+> I do not follow. Why cannot you simply do this
+
+I misunderstood your point. Do you mean this?
+
+https://lore.kernel.org/linux-mm/20260421230239.172582-4-minchan@kernel.org/
+
+There are more details to figure out.
+
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 5c6c95c169ee..b80a96f5460a 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -1241,9 +1241,14 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
+>  	if (task_will_free_mem(p))
+>  		reap = true;
+>  	else {
+> +		if (flags & PROCESS_MRELEASE_REAP_KILL) {
+> +		} else {
+> +			/* send SIGKILL */
+> +			reap = true;
+>  		/* Error only if the work has not been done already */
+> -		if (!mm_flags_test(MMF_OOM_SKIP, mm))
+> -			ret = -EINVAL;
+> +			if (!mm_flags_test(MMF_OOM_SKIP, mm))
+> +				ret = -EINVAL;
+> +		}
+>  	}
+>  	task_unlock(p);
+>  
 > 
-> On 4/22/26 7:02 AM, Minchan Kim wrote:
-> > For the process_mrelease reclaim, skip LRU handling for exclusive
-> > file-backed folios since they will be freed soon so pointless
-> > to move around in the LRU.
-> > 
-> > This avoids costly LRU movement which accounts for a significant portion
-> > of the time during unmap_page_range.
-> > 
-> > -   91.31%     0.00%  mmap_exit_test   [kernel.kallsyms]  [.] exit_mm
-> >       exit_mm
-> >       __mmput
-> >       exit_mmap
-> >       unmap_vmas
-> >     - unmap_page_range
-> >        - 55.75% folio_mark_accessed
-> >           + 48.79% __folio_batch_add_and_move
-> >             4.23% workingset_activation
-> >        + 12.94% folio_remove_rmap_ptes
-> >        + 9.86% page_table_check_clear
-> >        + 3.34% tlb_flush_mmu
-> >          1.06% __page_table_check_pte_clear
-> > 
-> > Signed-off-by: Minchan Kim <minchan@kernel.org>
-> > ---
-> >   mm/memory.c | 13 ++++++++++++-
-> >   1 file changed, 12 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 2f815a34d924..fcb57630bb8d 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -1640,6 +1640,8 @@ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
-> >   	bool delay_rmap = false;
-> >   	if (!folio_test_anon(folio)) {
-> > +		bool skip_mark_accessed;
-> > +
-> >   		ptent = get_and_clear_full_ptes(mm, addr, pte, nr, tlb->fullmm);
-> >   		if (pte_dirty(ptent)) {
-> >   			folio_mark_dirty(folio);
-> > @@ -1648,7 +1650,16 @@ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
-> >   				*force_flush = true;
-> >   			}
-> >   		}
-> > -		if (pte_young(ptent) && likely(vma_has_recency(vma)))
-> > +
-> > +		/*
-> > +		 * For the process_mrelease reclaim, skip LRU handling for exclusive
-> > +		 * file-backed folios since they will be freed soon so pointless
-> > +		 * to move around in the LRU.
-> > +		 */
-> > +		skip_mark_accessed = mm_flags_test(MMF_UNSTABLE, mm) &&
-> > +				     !folio_maybe_mapped_shared(folio);
-> > +		if (likely(!skip_mark_accessed) && pte_young(ptent) &&
-> > +		    likely(vma_has_recency(vma)))
-> >   			folio_mark_accessed(folio);
-> >   		rss[mm_counter(folio)] -= nr;
-> >   	} else {
-> 
-> Seems we should also skip marking exclusive pmd-sized folios as accessed in
-> zap_huge_pmd_folio().
-
-Good catch.
-
-Will update in next revision.
-
-Thank you.
+> -- 
+> Michal Hocko
+> SUSE Labs
 
