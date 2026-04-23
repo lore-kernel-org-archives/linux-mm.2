@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01C89F589C8
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 12:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4FBF589C9
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 12:56:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FBC06B008A; Thu, 23 Apr 2026 08:56:56 -0400 (EDT)
+	id 23C396B008C; Thu, 23 Apr 2026 08:56:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3316B008C; Thu, 23 Apr 2026 08:56:56 -0400 (EDT)
+	id 213D16B0092; Thu, 23 Apr 2026 08:56:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9656B0092; Thu, 23 Apr 2026 08:56:56 -0400 (EDT)
+	id 0DB416B0093; Thu, 23 Apr 2026 08:56:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AC6B6B008A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 08:56:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4606140129
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EEAE16B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 08:56:57 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB4A412013A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 12:56:57 +0000 (UTC)
+X-FDA: 84689820474.29.3D47D41
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C361520003
 	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 12:56:55 +0000 (UTC)
-X-FDA: 84689820390.12.312C259
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F12DD120012
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 12:56:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=M60egiMG;
-	spf=pass (imf29.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XERgPkIw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=devnexen@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776949015; a=rsa-sha256;
+	cv=none;
+	b=GUQez9uHcMjzaRCU5oCd0xKhq9bT0VZZmZAs/aK4jMaOMMRe65tAP2xZtWOxY1wjKwU+jB
+	9ej2iELAZHrvtwXw/MvlzpDnIdYBcRwX2tajjnD1SdzPvT2vGI2OWD0GCGlXqJ2CIgE3QN
+	Q98V3leL/eJPj5ZjdCOgyMZOF/6HKO0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=XERgPkIw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=devnexen@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776949014;
+	s=arc-20220608; t=1776949015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=NjJs6otazK0pUFP+jX92LOI1+7WZI43Ax0BYsKol0z4=;
-	b=ovvsMZGg0GpSkYlOTOafUspo2TVJKg68FUlND9xtXPrLW6flNdyjdLkIu47CwsxasuMGTT
-	P8A/S7pA0LK4cnbXBdPnv8NztBW+di4Nc/rQlG+h83k0TLiR8uk0CSNX72PXNwvNsap4m+
-	hRPrkzs82qd+AjSRzyxNsLwSxZygA70=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=M60egiMG;
-	spf=pass (imf29.hostedemail.com: domain of devnexen@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776949014; a=rsa-sha256;
-	cv=none;
-	b=lwTd2eWk97/WGnjFC/rhJM7JnuehnG7s9NDRzzbt3MHrgXnw2Ez9aExlfvt7WvIEV1Mof4
-	Rf+6wA5cWDN9qyVBSbOtHtfCuXSOFem2ZeVPF/PYRv9x/kMjA8fM1fClRnA5eV5q65ux+5
-	7VJW38bAquk2fUNtKH2Wc6ujzQ6MxO0=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43eb012ac4fso4033059f8f.0
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 05:56:53 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yJW0byvMLamYAxiKwRCqLs+XElTdPsa1lYRy91tdi1g=;
+	b=altP4o+wMrsce8uVwWz8nhSsb5GIvhFMQck3SP4uBg7ZmhWiJPh0Z+UulHyFMv9XmecCd3
+	z7UTtuJd1YGEmZTEULaX0ZJBakKvOLeUhuW85l6hor1w7YW8gxl9UPLbr+Bw6PfBTeeGCp
+	R/Iq/SrtoyTvHKjkngSvqZ8nThP4gBI=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-43d70c30767so4452769f8f.0
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 05:56:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776949012; x=1777553812; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NjJs6otazK0pUFP+jX92LOI1+7WZI43Ax0BYsKol0z4=;
-        b=M60egiMG5mx2Helh/E0cnJxNW5ksnAoLnxwrQEnz5YSc4C/92OZolWjVncf0vhKzB5
-         /s0MmhldjgjHIgALnobU9mz2Ie4m74tE8lo4c6WBP97uZPMsM8KUWr3Uo649lpfb01G7
-         wIjvL2F0Ym79y3j+wmnsEwlV20rr/dORQOIFfOWsEdMyG4dV5X6HuOJA5kHdoVzfKGrk
-         0UEoCYLGP0QBJ8AWhg+KPv+htP/3du5TosBCFLfCPhIpUMaX+HboJ+NSSI7/hvm+dGR2
-         v/XdJbKPlTCu+IoB1l6w5dg1RSVp9w3VC69613Iahyj34E+yJTngstquA379yh6t0LYn
-         IO7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776949012; x=1777553812;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776949014; x=1777553814; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NjJs6otazK0pUFP+jX92LOI1+7WZI43Ax0BYsKol0z4=;
-        b=bZe1Jj2MAvAlZKC7lZuZqDHPNCDqk4jPTnp1cEiMZkod4RE7U7yCzPboC0RyhELTpP
-         +FfYXKHp+//HJBV1cNq7635HSFIllw6/lbYTByOYkmTjuabiCYc4L7WaC1Ho9/qTii3i
-         DqOkDti1yUnfiFaCE/2iL0SkykHRxlinPQ+GXRqTg3d+8WwFpBJ4xBEHJRONIAL87p9y
-         E9nk11PBd2yzOkk3QJnLG98oeGrtsNDFlm0+d3vMP+h4BZIJZ57zzHA44Uc/VA2sjrEc
-         6tEYjfVMZJXXxbf4KvM7PZNJtK1z2gwpeJrJ90mbKmYdjt0uzYVFcgWs4OnNTxwe0VHU
-         tnXg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Aj8bkg3GkXKsAhiU85E7s0lIK5cN7oruibaqgCaU8MCUSQsWe9JWyA5hEhYLSvyerD96eIsuwmg==@kvack.org
-X-Gm-Message-State: AOJu0YwS0+rqUAbNko2CkaexcCtMxkLmwQR0l+vNqdEw+I4mWW/7kYWt
-	22T7TEhh3TTQeCSs8hNn1fOYe3KaPum3z+DuVVDASin6ZYVBuNWLfFpV
-X-Gm-Gg: AeBDiev9GfA47+5Zd9gZn0fltTO+HjdVD5WSgextj2dsNtgU2o4sxE0sVtrBA/eDCa2
-	45NpzqYoHX+SdDH1PaK8Up41MFLgH4RaxCzlIvn5Qk6suDFIu8AVX/P9r/OZLSi00ZfaCdssGJZ
-	RZPpU9/B04O7Pz3SprWMvXlMfnWXRjRYVUhsTZt/SV3G7TQ3VvgalHosnKu+azfs/PWp2FiF3PE
-	voPNubd0nVtJ+hLLVMKuC4z86hEwktCTJqa1hqoILuLzFGN+Imubp6ceiuSpkepzOkK9pEW+/Tg
-	Mqg4Qw9EqCcFs8grC/RMkUvwoL8BPva5Asy3zoF6krLIk5AeLKs1zwU2JSsgrSUGf/wND4IV9ob
-	JdaQTJNnPzuB0QEyPxYjaj/v9zYTKf1VKAk44Ol/x3HbUa2E7uY+IvojPjUl1h7tB2AEwP5SFxx
-	RN9Duiqb1prJTBPXYTGsrdDX6TUh9YHeb77hprpRf1zlLsJNGMVd6VMhDbnZHoRq5SDKZY/7us0
-	HxYLUeRTJYDvHtOPITL9Q==
-X-Received: by 2002:a05:6000:2dc8:b0:43c:fbfa:20a0 with SMTP id ffacd0b85a97d-43fe3e077d4mr42391674f8f.25.1776949011962;
-        Thu, 23 Apr 2026 05:56:51 -0700 (PDT)
+        bh=yJW0byvMLamYAxiKwRCqLs+XElTdPsa1lYRy91tdi1g=;
+        b=XERgPkIwqc5BUGyBEllk0fr+i4pTuctxC9M2fazs9/2rDrEFcf0hB+BrxD+z6Etckz
+         Gpa/DYtpGoQ94+lRLqMyatASia+aoblEw+ZkESEaoznL+W4ls/QC35iqv2E8nviP6YWM
+         BqGmYwlCB22NHaEh4iRLMdq4/ZLAxhujf/nq6B22cmNwtnmY86zM6TBlV0Fy/OK3dj1V
+         G5XOS1W6odrlG3M8eSAm/ANvR+rhJUrzm6qsnPMesGV7YEuhp6IdQwsNziU+YewVk3ss
+         Hhg7Uh4FtsBH5NSAUqvzOrZhIhsUBFxPZPtAKtDsj3ylCnN1M9NhuJmT0IQo6gTiNaQW
+         OwhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776949014; x=1777553814;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yJW0byvMLamYAxiKwRCqLs+XElTdPsa1lYRy91tdi1g=;
+        b=ZDaBexxqqS8TxYtbmvQT5iP2L8kzIPH107XKVbXWqbvlUbprO/xtJjNym0G3dPHjdy
+         5Yl06PKBJMP1fa3ilGiR2E+k/t9ginZZ0oRtGKLfUp9kpliCCT9KhJS7HhZSdQJiwFHt
+         F/ogM/bPgoLgwPcd0iGPU0Ua9bxshuTQWR4J6bukHM3jklIZtkh5rf7ZziGTTCjxQkO/
+         bVdcen8AdksCrwmIdx5t1lIA7N0X2+kG1IWCl4o/u+z6rg04yRfg7q7LYwj3aaYAKYlm
+         LcIMv1LXtHpgtSmcWsHnHFggy0oCu2JngK5BSdFZgIAWa59Bfg7e2pPaOR+fF8zXac0s
+         3v4Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/us2rzlXnmTkFTGQFuByRrakaAntxTvYEs61IDWNnzRJc3p8plvhvPH2s2g1dYhCMUn5PXKmWRRQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw4z3lBNY77ksUROGDwM+IXk511ilr6zOyin9jr5EHkLAGNhYq0
+	ctzHbAaXOheYhJ9blCwwDo+e+aKdOJgyjBJRHoa3BW8Xr/bI+804MvPb
+X-Gm-Gg: AeBDieu9D3uSaWBk5HFSiXjXZC/9I+19VuWIUTsv45z3H/SO4+OD3Hw5+MqP1V7BBko
+	Rdv3Ymvxo/FtjfTn0yruulQcnGvc0zfJcyhj9aqZJhePzR3pk6wglwQbESGivfJ5if0UPr7+51p
+	N6Pq7Vg6wC4NLU1wTDYDNM6PPAJz1JiPfWyve5WSMO9T1r9FeN+UU2vvSfx6RWbqTgi12X82QE3
+	VK7G2cS+n3cY1hhUWdbw6l2EOHqH+B3nwhp0xc1TISYnLGOu11Tkz0i0x9dcgq+XbbucjxmYz2Y
+	eWH1E1hL+uNqDACTex5uPT7aATHa6x7fQBtllbFAIH+mWQTsop17Giq3/oELGE5M3k20uSiSJnz
+	99Hdp+SBwgmUVjdVdhGeVi2eopc4VHO6OL+i6LiL/AalOPPyE8EUho4U46psb7CXlIOiDNk8wVE
+	GZKR/Zti0FXH2o/a4f9zvKdbqykGOEnQXWsZZqwBku3nWwrcGEDy5EVnirZreBjpaBvQtr0iGXR
+	wxgwWHkmX+fPN5muTF72IJ+C8HmCBob
+X-Received: by 2002:a05:6000:1ac5:b0:43d:73d4:b1a with SMTP id ffacd0b85a97d-43fe407c0d8mr42929332f8f.19.1776949013988;
+        Thu, 23 Apr 2026 05:56:53 -0700 (PDT)
 Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb1405sm52887714f8f.4.2026.04.23.05.56.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb1405sm52887714f8f.4.2026.04.23.05.56.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 05:56:51 -0700 (PDT)
+        Thu, 23 Apr 2026 05:56:53 -0700 (PDT)
 From: David Carlier <devnexen@gmail.com>
 To: akpm@linux-foundation.org
 Cc: pratyush@kernel.org,
@@ -97,20 +98,22 @@ Cc: pratyush@kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	David Carlier <devnexen@gmail.com>
-Subject: [PATCH 1/2] mm/memfd_luo: reject memfds whose page count exceeds UINT_MAX
-Date: Thu, 23 Apr 2026 13:56:47 +0100
-Message-ID: <20260423125648.152113-1-devnexen@gmail.com>
+Subject: [PATCH 2/2] mm/memfd_luo: document preservation of file seals
+Date: Thu, 23 Apr 2026 13:56:48 +0100
+Message-ID: <20260423125648.152113-2-devnexen@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260423125648.152113-1-devnexen@gmail.com>
+References: <20260423125648.152113-1-devnexen@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6i1chpaw8rf89hbgqwxdu1c7nm7utacd
+X-Rspamd-Server: rspam10
+X-Stat-Signature: natjs59zemn3xcwo5csbcykbp4r9xdm5
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F12DD120012
-X-HE-Tag: 1776949013-453703
-X-HE-Meta: U2FsdGVkX1888UflEe+cFIxJdyeHY+4AzwcHheE4ECwj9uAppR5KT8gps2NhxH8evAsUNozpVn9u21wsVqLEC7eOexYL9d85IYeJCnEkH6Lp3FOVsL4tHFAtjrjC48G7vzYwFh7PpURolYLpO3jiIB9QnGPVegDFfOYDA4C3EKWocmfqIn+5CRwV9rSOJB5Y8c6I1QG6QlZ0qUeH98DsqAsjccnvPBpNdRVHLHnxgeEBjhZ1jmVOAHDag5dr+LjdKXO7pWOZxDseV82X9HWYzqJWbgVLQ1sYei1hok8/XRiAtidCx+2Xa0WgyHkYH5VyA/CWPkVQ1QzPy1asrHz/8afymi+iP06AFdWx1ZeFxy1NnPU87EhDG3OyV1yNCkt3+iOUWrBfNiHkTzMxMdGMnSHVSTD24NgmcayfGhomuhZ7vLmBPGMf3epaQax4yjGZzCfudf4Eo7Fk5kQm8k6Bdsck+45LFB8FZDKyoMh8dlqQSUb9tiXoNPOW6+tDA1nVjisFV2y+mJqOJRBvWwlV1p6dcaVVF+n+GtJov43zlDmobP+kmzI4MWBXxFcvqCSPzkhlRBrrtooOU9lRZD9qyt8LWFDv4IIHTGFRC18dulmbfgz5p+EIMCL16V227p8x0ewLVP6RHUmmrcekL30YG0Y2WJf7aMIuY5UrPrOHURocPKDcXifJYFKBXYHBfaiT7b3r3Y3V3wcpVQuAtr5c1JliUt4J74uiQ2bZDEo6pU1un7+f6zdqeKai9PX2eJmXIwpt4hg6yjIhC25rb5msPXDmYfx3Yh6zzBRrp20rTVY9KC73GbZ/vQPlUmOfrXbz7I8GNNMYv5CpfRP552BTizDxqT48IP8VljII2fWhw/D46kusTTJDaJ2DkyQvg12pBpdt26Jm14ZuqLdlDksARNz4ARiSBhH/S9ChTuIp3mN8snE+QSjDgKuOXWYFtKZ+M4aKhGPpTwzEp50trGU
- y0eDgP+F
- CfUkIR8h+9NIA+XKH88w6ov6WoBsAm6NjCMH7n8aPBGEawGTuxtxPQBu4EMLGnqP8BXlzCPiUOa1yPNSnmDiuDxqxwd0u6FmgYR7KTJCCwlmY4hx6qc+OCzW34GOVEvlaV+I/MNnDOcNp4zDjraFnNueGJUF7l6H1UlzoS4O+P6s+APaqH2cQEE6vj869q/3PgtHQBBzGyde5b7iXetFPGufiBtSyTy8lpFaGk1CSPxsbBBxjbhnYj9nMRoZHhDNF4tnGpiNJgD0mk0rPrDfUnsOjrB9ekwzuTHEJpiRqGtlZPZh90QLF+l9rwjrR3wDWOsDJJgwcZDH7h9FCnJPGlYzI+bPnY5IQt1qQXt/KQlOb154K2I4Cd7XwMdRaJv1GuZVpJrQVZpc7xlMtXzjWl+Co0Du1gAuD4xchTqOWbsGf3jzQrkXjWTy06aWa5uK03foh2QtrW/1iqqc=
+X-Rspamd-Queue-Id: C361520003
+X-HE-Tag: 1776949015-247203
+X-HE-Meta: U2FsdGVkX182V5m6G8AhCl9L3K0YjGyrTSk5ffHB20nVhLWIwcFrf7b0Xkggz2JF+odj1wE1PE0E21Q887W/PIjiLzC1ErOhnTdPhN3tFnxYbcCZL0DZrNozf2REO5ljUkTBJ8pflI9KH+pytSq3CnTJHLZNyT5gXsuXzaZKYLt/XC+O8vF2MxsFD7UIo0tt42N+6flJXI6lsH+GAN/Wusu9IZ9FhZGeZH/9DWe5UA6E7nAzh73TUrvffdCz7XW8w5OqWK567nJTL1onY2w+anglGz1WX6BC9rRKF/W76Us4H7+Nzvd4VOo5At0EdeMUhegYkHGVZ3Rwa4IpqZJckWrLUIRNaoDVBzEGBpklFrqjroySbxRP6DOjxcOgJ6PBOe64sloxnLuFs4DbeldVun/zhF+92axS+NB+THuRY25ZU5SsDyimRgQXQKBsNuVNc24I2wLHwFJo2Hszyy7bL7tDMXLjhAYfiFMbC0RCxQ7g+1m2T/4YFEIxDZwO4uWokPXajOj6kEg0gZ3MyRUdtZ+vrKJ2P/eFs8/vi3a0mxPpUWlnJr8Wq28mWtu28rATPjhytE3eSfBIAdbymW4MbpMSoFFiXQKu4Oc59CgqE1DBLSliWTPezjjI6Bwr8YuW3N6IjHCnKttLJqdG0sk7IIzjjt06UZvirufK5rQBsImnwWJ/mDdMH/TpxpA6XyXF7d5NOr1CQEq/0Id9lh28hao3kkD294FRExVKBAZxDic6YA/Wc+Vj6O78Abu0s+uPgMpqrljLZ3jUTSBKHHi32RBN8e+i9jmp8vPufchw6pLk6fSChYX6GDk9AAN6+MBWK3CQ0TACgELjv+LMHDuEFbd4RvdkVQVjuyhPvvN1blPJbXuezrccuLUvLBGGYyby3Xq+h5M5sseUuB19crEBUo9v48jYo6fnzrCM6YeCkYQKC6lRMWNluYXbnW211J5jatKcsliaHmu4GZJDqKg
+ oq/MThcr
+ jYcU29UKvrntWI8fQQQnrW2XIPmriv3/ccINhNYaWuttZNYtmmSZZxwmNbWcqzKwk/nmsLY/bGz/s4r7dZCMoKzJbu6aAHHN0n82F9Picr3FeVGcMvbDqKNjNIZoZPiQwFmKOTyUJOdbMorxLHFzCl/IO13MjIsDiVzy1ZHMwKq6Kh6QQrdZ+trl8xWCalqzL53nGFykEmifsXjm+wjzAXPmxRety86+Xg03DyT9YP7BjIVRNRrTqFT2iunvdeKwIphpoj1auuie+SurdINs1txOHqT38cDD3M/TTBc/8UdENBwN2Fx7QJn3rBeBxHzrx1WjNXPN1AHlRPHDFJQfGExsn7OqmT18CekwokS06R5aCgLKRPB4SibnpO6F2NJO7gG+7JPBMwRaTX8uu3vS0D4WS4Kxnm5C61avoilV+Xxmr02/yR6dI4+9E7r96wVqYBOk6wYJVFnookEg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,59 +121,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-memfd_luo_preserve_folios() declares max_folios as unsigned int and
-computes it from the inode size, then passes it to memfd_pin_folios()
-which itself caps max_folios at unsigned int.  For files whose base-page
-count exceeds UINT_MAX (larger than 16 TiB with 4 KiB pages), the
-assignment truncates silently: only a prefix of the file gets pinned and
-preserved, while memfd_luo_preserve() still records the full inode size
-in ser->size.  On retrieve the inode is restored to the full size but
-only the preserved prefix repopulates the page cache, so the tail comes
-back as holes and user data is silently lost across the live update.
+Commit 8a552d68a86e ("mm: memfd_luo: preserve file seals") started
+preserving file seals across live update and restoring them via
+memfd_add_seals() on retrieve, but the DOC header was not updated and
+still listed seals under "Non-Preserved Properties" as being unsealed
+on restore.
 
-Reject such files at preserve time with -EFBIG rather than chunk the
-pin loop, which would also require enlarging the preserved folios array
-well beyond what is practical.
+Move the Seals entry to the "Preserved Properties" section and describe
+the actual behavior, including the MEMFD_LUO_ALL_SEALS restriction that
+both preserve and retrieve enforce.
 
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
+Fixes: 8a552d68a86e ("mm: memfd_luo: preserve file seals")
 Signed-off-by: David Carlier <devnexen@gmail.com>
 ---
- mm/memfd_luo.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ mm/memfd_luo.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index b02b503c750d..f41d11053b7d 100644
+index f41d11053b7d..c5250f68c096 100644
 --- a/mm/memfd_luo.c
 +++ b/mm/memfd_luo.c
-@@ -259,7 +259,7 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	struct inode *inode = file_inode(args->file);
- 	struct memfd_luo_folio_ser *folios_ser;
- 	struct memfd_luo_ser *ser;
--	u64 nr_folios;
-+	u64 nr_folios, inode_size;
- 	int err = 0, seals;
+@@ -50,6 +50,11 @@
+  *   memfds are always opened with ``O_RDWR`` and ``O_LARGEFILE``. This property
+  *   is maintained.
+  *
++ * Seals
++ *   File seals set on the memfd are preserved and re-applied on restore.
++ *   Only seals known to this LUO version (see ``MEMFD_LUO_ALL_SEALS``) may
++ *   be present; preservation fails with ``-EOPNOTSUPP`` otherwise.
++ *
+  * Non-Preserved Properties
+  * ========================
+  *
+@@ -61,10 +66,6 @@
+  *   A memfd can be created with the ``MFD_CLOEXEC`` flag that sets the
+  *   ``FD_CLOEXEC`` on the file. This flag is not preserved and must be set
+  *   again after restore via ``fcntl()``.
+- *
+- * Seals
+- *   File seals are not preserved. The file is unsealed on restore and if
+- *   needed, must be sealed again via ``fcntl()``.
+  */
  
- 	inode_lock(inode);
-@@ -285,7 +285,18 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	}
- 
- 	ser->pos = args->file->f_pos;
--	ser->size = i_size_read(inode);
-+	inode_size = i_size_read(inode);
-+
-+	/*
-+	 * memfd_pin_folios() caps at UINT_MAX folios; refuse larger
-+	 * files to avoid silently preserving only a prefix.
-+	 */
-+	if (DIV_ROUND_UP_ULL(inode_size, PAGE_SIZE) > UINT_MAX) {
-+		err = -EFBIG;
-+		goto err_free_ser;
-+	}
-+
-+	ser->size = inode_size;
- 	ser->seals = seals;
- 
- 	err = memfd_luo_preserve_folios(args->file, &ser->folios,
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 -- 
 2.53.0
 
