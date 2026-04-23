@@ -4,101 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 245A5F589D9
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:14:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B183F589DA
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:14:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 434EF6B0005; Thu, 23 Apr 2026 10:14:02 -0400 (EDT)
+	id B12666B008A; Thu, 23 Apr 2026 10:14:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40CC06B008A; Thu, 23 Apr 2026 10:14:02 -0400 (EDT)
+	id AC35B6B008C; Thu, 23 Apr 2026 10:14:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 349D76B008C; Thu, 23 Apr 2026 10:14:02 -0400 (EDT)
+	id 9D95A6B0092; Thu, 23 Apr 2026 10:14:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 20EE56B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:14:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BB7371401B9
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:14:01 +0000 (UTC)
-X-FDA: 84690014682.15.643C1AA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DA53CA0004
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:13:59 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRUaMpbm;
-	spf=pass (imf25.hostedemail.com: domain of vkoul@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vkoul@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ED316B008A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:14:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4478DA0187
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:14:04 +0000 (UTC)
+X-FDA: 84690014808.19.742FDBC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7DF41C0013
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:14:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hdA87yds;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776953642; a=rsa-sha256;
+	cv=none;
+	b=P7/gg0UXmvQ+D6cLu+eL77CUxrQbWp1+b7hp25N0x81rszPdptoNjETO3p2wdp8Iw601RD
+	1BOR6bWoDXv1MZmzqH/UDbXi1pQyjzKvxnG2SuwGKgFq4ulcpo8nfLjdhKmGIsFnKq+QXC
+	AgUXLt8K7WvusbYVit2vFezTYH0WO6U=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hdA87yds;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776953640;
+	s=arc-20220608; t=1776953642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PwlLVn0oLG9e+ZwLtZ+4j4cnE0wIiJdN8bQ3gDMHawY=;
-	b=R2ZP4fF9tOs3SrHQzKWyMn9Ve5akwrcVZLyiaztb+BiLHs+cVzMIT1AS1Y0QQ+qh9jsukj
-	AvpJdWHfKMoCr951m94eCPVD9ADXCbz0ytflFAg1Z6WTJA8bA5va9WypvzwldY+5oUCvb+
-	MJ6EGfGJs46XdEGE3gN385+DN2/cc5s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776953640; a=rsa-sha256;
-	cv=none;
-	b=KuKxnkpDWpxdANXQBDYHGyMmaUvUXd20DQybTcp4BdTc4b2LqdJ8EdnhYeRLJYNSI30xlg
-	a/jKeW++O0xQbZ3uIPxDcw1VCvyCbCsxl7eZtwXPAwSbb0UrujpwhXbSsjp1sIi0rdMnVo
-	6F9DLsKhkwuR6fUacr53TE2Hbhgl+Uc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tRUaMpbm;
-	spf=pass (imf25.hostedemail.com: domain of vkoul@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vkoul@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=1E/CuvYj6LlhN9kiDNJPcKqI/bueNkItOVsJUQHbbAU=;
+	b=N23FrGtjPBBJgtAxvyY4X2yP1J4GraseZ5aqcLD013ukzCp4zLZBzgcBI85oNe2J4zb0LZ
+	Ql6vo3/z0xegmsU/cu9z61gc137Ke7pfbsJrfPiBuLTCMyfL2x5TKUayC5YrzgOFdQGd8e
+	glqRSoZg9OKCmWUHNAqc9XK1WJbi160=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE8ED40050;
-	Thu, 23 Apr 2026 14:13:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D291BC2BCB3;
-	Thu, 23 Apr 2026 14:13:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 826126024D;
+	Thu, 23 Apr 2026 14:14:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952A2C2BCAF;
+	Thu, 23 Apr 2026 14:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776953638;
-	bh=MsOG1WoL4DthbK8BMCb1/S31UzH6r3oqgqhBEYtuyAI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tRUaMpbm3qHHCq29jygXUyj85ACEWDLUpWtgi9ly4VKD3rldB3i7FO5jOjD8S2czx
-	 9ehFMySv41gDporVbxVuzH7GVwp6jA0EfpxPpQkhIpbaMilKGrgvkmFiKgLNI3heg3
-	 VLCy9mj9g3c1MMYyV8YX3QFRnEFxFX7DILpZRtCuzjt3jAgfy62LwDsbEm0Zrlhjne
-	 IuKMoAgo/bdfn48UPUaiJIBkLzasVl1JDBwWLxOudbPh4urFr3gs8vUPUmf5e5Pqiw
-	 U5BIt8sNnXwVpsTpykztnOSMbtEMhfbqLa30Jsvb96l/E6Cd/FhuMdjfap5WluTN7S
-	 1Or0tv2zPqMYQ==
-Date: Thu, 23 Apr 2026 19:43:54 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: "Garg, Shivank" <shivankg@amd.com>
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
-	willy@infradead.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	dave@stgolabs.net, Jonathan.Cameron@huawei.com, rkodsara@amd.com,
-	bharata@amd.com, sj@kernel.org, weixugc@google.com,
-	dan.j.williams@intel.com, rientjes@google.com,
-	xuezhengchu@huawei.com, yiannis@zptcorp.com, dave.hansen@intel.com,
-	hannes@cmpxchg.org, jhubbard@nvidia.com, peterx@redhat.com,
-	riel@surriel.com, shakeel.butt@linux.dev, stalexan@redhat.com,
-	tj@kernel.org, nifan.cxl@gmail.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, akpm@linux-foundation.org, david@kernel.org
-Subject: Re: [RFC PATCH v4 5/6] drivers/migrate_offload: add DMA batch copy
- driver (dcbm)
-Message-ID: <aeopIn_sCBR2CFrI@vaman>
-References: <20260309120725.308854-3-shivankg@amd.com>
- <20260309120725.308854-14-shivankg@amd.com>
- <396b4be1-376b-4aac-bd1e-2854c88b3757@amd.com>
+	s=k20201202; t=1776953641;
+	bh=EpBTTRg1rLtTK6bSRcJ/pm4319w6ghGNpdcZ0k4OSCg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hdA87ydsV5pc4MAndtcsCuNsC05FxkEo71aDamvg0Sn3MK6iJn6aTihkZinrUFWvK
+	 jRXGDUYUDqeUHkVfeHN/wZYfAomPbPiCBWnmiBA49CG5Xv7M3kXXJ4NlSbOzpmVIPY
+	 zuA74h3mUbHaz0eEefZgl4F2mYsLsp4d5Krn+/V9776lf0MRQ1/XhFCqNQthKhgJRN
+	 v8SXfPzMb9VIvJ2CVpVyUJdt55IEFvNtXdhCtcRZZ503MTinIPvo3ZIHPkwbxWCjv6
+	 fQmIxQ409UeodQVwxzGq2xy8vijJBwS1MYJ7Z3xLGvGuE47iAsndANwd7rzVEqIkSh
+	 LStO62t5OdNbA==
+Message-ID: <88b0765f-7cfc-4e44-83d2-c01a1755c842@kernel.org>
+Date: Thu, 23 Apr 2026 16:13:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <396b4be1-376b-4aac-bd1e-2854c88b3757@amd.com>
-X-Stat-Signature: oup6q1kfgw3zqdiu9py9898ssf14jjsu
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DA53CA0004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+To: Gregory Price <gourry@gourry.net>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-mm@kvack.org, virtualization@lists.linux.dev,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Baoquan He <bhe@redhat.com>, linux-fsdevel@vger.kernel.org
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+ <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
+ <20260422171315-mutt-send-email-mst@kernel.org>
+ <aemglPlcwFFHNj1A@gourry-fedora-PF4VCD3F>
+ <c165d6af-4a35-4a41-9086-ee307640c044@kernel.org>
+ <20260423074433-mutt-send-email-mst@kernel.org>
+ <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7DF41C0013
+X-Stat-Signature: jzpk7xkpphppsjs3qphcnpkciguax377
 X-Rspam-User: 
-X-HE-Tag: 1776953639-822678
-X-HE-Meta: U2FsdGVkX18JbrsF85nkTzgPul9kQzYzb/qSZhSEFvMi4KmIdVtdvcB96HaTnpnwQKglRl4flBXKYLEdtuLmD/Du/fPjL65LyeZHAOYBdPY+0E5xo2v+pS9Kc3hZoCkJZmbHEz6sV3KOBDOMCCls35w0Hy9onrvN2BzG2JxX6sK872z/zGmRGykWwx6YxtQA0wa6ULcjlPLO1pyeFfBATl5IePQ1Q+zrkd6yBMJyVCcmoVV2pj45aj/jXoAm3umQd63GC1Cbe3+7DxiMrlAuI4V3aJjoKm2XBb+ZkZ4R59ti9py79ZBG521fU4vhmZjzJllyd2+6vVnBj4264jXrAlqKTg8z4zk6yEjRp1ll7P/4LvhcYB0LiiMA+XPdaq87idrIMACdVwS9sn/BnHUnLZHI6vz/6UJffeImHlEVVvP7o/PsjvF2QFuZxLuHly9MGSh20QXfyUewbbvthmpe/RdzmN76Pp+9ETHt8r26d1/6au482KcyRZRnHMmzBedtMk+/YxkF1+T6gx/U6DeVrrSZORf+tO5b6wFll5iqnH2okyHuA4WE/cpCH8uGYLk1+YQIoMXncPMa7fc5dhlpMKYpyzIwaTi4hTPUDH6PXQe9hS8wuYJK3pVLqMYs1vwyk4ErVo/DUfYNLsWuyoAfHM5B+08P5GYHh0s/2VHFrIgm/+5VPvcKTrDzM1h+IOkZk8Xy7A9/3Fs9TdBIqPHIM6oXC7N8ISN3irLhOicoIQLzf+ThiU/2AF/9STBi3K8RjbUft2bOw/Jh7g/C8yisa2Eo9dAK4I3DywsgS9nAUytNlzufYUPU1Q20Ar8P2QO+bmbl6x7vi/u5bOjSp1B2PFvxtLPBp91Hc5wguCeIjxOcClitYQT/feKcJk0md5QLAMae4Zg/K7klnyPDdckFcFxLeV9JzyCf40CaFKt0024JqZ1jDvvTTdurN2+fxzLVLlouWTJIMnFrwHmX1MG
- zzYzMeFj
- Q+gHPWXy+RqEHetZCVVZHVyP9B5b52bSPmMo78uvGQJHoCToWlMqmE+lT7F2fnma+gDw6BpG9VQh209ag0WvTqPMMKaZufvsb+DLkd8LMw16hKWsj6G9c4he4q/eOsHuus8TcW5xt1KAAbHeNxFNHssQ9OQY+glZY9R1qOUFson9Rmi2/L36IvQSFKIQVOgRHQDKbhDxww3KKqYQ7UsLflfyRVLyTdLcz+dQ55oJjpxERdgVkBrotB++MkwwnvZJEff9p1Ht8gr9TTovfZDIAl7NP2DlkBze+c5M21jg+T2e8wmL+o2koSexlMVxg6fEEfuG31YIPL7z0MhrH+QhUD0nACNQdLyhkt2mPEZCKCShkAPbNqVlLjepmldgIupNd8mHhPPY6xDzhcYY=
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776953642-621571
+X-HE-Meta: U2FsdGVkX18ibEzL/TjF/tjv3UpXyQOYwqMbVf+7NjHG2LAWQZUZdzlWnuEdV5ZooOzQuFlS87jRh8LtS2kHjWmyV5jyWDo9YSO7l5+4ClfOTnk0oiycx0WryZ+PB8+0ioTxML3nwDY/jgAUR8/sKnKHIlHlMSHya0p+MaSzCJ1+ZPiKghHf0qJAOCDa7ujWXOt+XDXImMe3w0EKt/Xq9HmbtUoViJwAf57AVYHhkcobw/3iC0xw5+4BMNXx5m294JTrAVCsEvUVKBgK5vg7vPL9DY+BQgwmS3MFebFI6YHegYzSOrzS9T6/dQ9u7PV3Y0ZwN4Mb1JGu9uGNZgrpYAmqX85d7GOXO4jNDqpMntop++C3uNH9SjkNPk9cd4l1XuVovowyIwwn+jHgqoo0jidDhRFPALV430TJ9IfUDaamgKsbWlgWPCgzU88WaKqhAu04ljKgesz4D2+ziVPe7t6mOxRFx+0jbgZHXvqSwJYaFfprlsPWFvybCO/dUqTnd5AsemXSrqrr+MUT/icmliBqvlkJ5aEf0gd0Rliho/bSazSwbgc9Qp2Sa73LvMM8/U7M5sNvZj8QeVQCTKhsC5hq7NWQYc/FgDPnAr+Fw0YClZeope/iLr3PETFTLygECnCpGglSTGTKLOavuSdiz4Rpinz4pQNb/bPsiM03h7EYgrDXmaOBmVNnOLJA7dn/dOWkvGxhlaDIG73E0GuTa5WCls8NSjgtOlUtEPWeJf6XWUgTYvjPJvhSzzSRZTPw90zuy+d/XUEBat2fQ7tmmlCLc6EzCC57fTejaTTWBFzqzqVHvY+b1YOz54u3+lmKSuZt/4J2KRYXwZH16PQBJTPikD1SiSHZzFRHyL+niM9kkrWA2ITny4uKehev6bK/oJ+vmEMkOplvdx20FBrvZfAP6y53zJUnIYej3mLvu469v+cU1EPygdDTFW9GCWlHU+JHmFSYWquGNF3tcu6
+ IvPYh2xC
+ F7JX8zx5LQ0sb5vHdLdlEG4aPxp1VMaRuWZMMf5utycKkWlAuXLjYXlpWvshjFvsKvDAzBnkEAooahCie2zUkaMEopGQQPt73XWeiDcn+W+oQU3HhEaf73qVGsgD/WjyBRdZ7NcbYfcLC6RGqGA7hEqJiVYdQLXGuq08vzEtW18fSWPsLWdOrG3C99BXrH3Mm5V6+ZXG6b8o1ugeUJzAcHsb/K3QJ6VL5sE3ChwL+8bRsQJ1+/9rc7m18qPgGLBIPv0MLXjWGlk9qdx1wHhNUxDpogjdjkSBE1Zd0k3whBn8lvq5Ncn7zOMKN4z+7UUrSbukM2s2UVJoCjKwMEvLWZ48RYit4GrwpdOH3cjiXQx5BULGl9p2Mw5QG53JI7hOFtbaS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,129 +166,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23-04-26, 17:40, Garg, Shivank wrote:
-> Hi Vinod,
+On 4/23/26 15:42, Gregory Price wrote:
+> On Thu, Apr 23, 2026 at 07:57:01AM -0400, Michael S. Tsirkin wrote:
+>> On Thu, Apr 23, 2026 at 11:46:56AM +0200, David Hildenbrand (Arm) wrote:
+>>
+>> Changes we have to add: 8 changes
+>> Rename 4 existing APIs adding _user: __alloc_pages,
+>> __folio_alloc, folio_alloc_mpol, __alloc_frozen_pages + add
+>> 4 wrapper macros/inlines in gfp.h that forward to the _user variants with
+>> USER_ADDR_NONE. Roughly 6-8 lines of boilerplate per API.
+>>
 > 
-> Following your suggestion at the Kernel meetup in Bangalore (11 Apr 2026)
-> to check 0cae04373b ("dmaengine: remove DMA_MEMCPY_SG once again") and use
-> DMA_MEMCPY_SG / dmaengine_prep_dma_memcpy_sg() (I added a
-> device_prep_dma_memcpy_sg hook in drivers/dma/amd/ptdma/ptdma-dmaengine.c
-> for this experiment; not posted).
-> I ran an A/B comparison against the existing DCBM path that uses
-> dmaengine_prep_dma_memcpy() in a loop over mapped SGL segments.
+> This is essentially what i was proposing.
 > 
-> I'm using the move_pages() workload to move 1 GB data per run. I do not see
-> significant performance difference, and results are broadly within each
-> other's noise band).
-> 
-> Throughput (GB/s, mean ± SD), ITERATIONS=10:
-> 
-> Page     nr_dma_chan=1              nr_dma_chan=4              nr_dma_chan=8              nr_dma_chan=16
-> order    dcbm          dcbm_sg      dcbm          dcbm_sg      dcbm          dcbm_sg      dcbm           dcbm_sg
-> ------   -----------   ----------   -----------   ----------   -----------   ----------   ------------   ----------
-> 0        2.33 ± 0.17   2.26 ± 0.19  3.24 ± 0.21   3.18 ± 0.23  3.29 ± 0.10   3.45 ± 0.10  3.29 ± 0.13    3.49 ± 0.22
-> 4        2.77 ± 0.21   2.99 ± 0.18  6.26 ± 0.99   6.75 ± 0.12  8.01 ± 0.58   7.70 ± 0.64  8.22 ± 0.89    8.72 ± 0.87
-> 8        4.57 ± 0.70   4.75 ± 0.83  10.64 ± 1.97  10.94 ± 3.52 10.30 ± 1.22  10.36 ± 1.24 11.27 ± 1.21   12.47 ± 1.66
-> 9        12.71 ± 0.09  12.68 ± 0.08 27.13 ± 0.15  26.89 ± 0.27 46.50 ± 0.73  45.17 ± 2.46 67.25 ± 1.42   62.78 ± 8.24
-> 
-> Notes: order 0/4/8/9 = 4K / 64K / 1M / 2M folios
-> 	dcbm     = per-segment dmaengine_prep_dma_memcpy
-> 	dcbm_sg  = DMA_MEMCPY_SG / dmaengine_prep_dma_memcpy_sg
-> 
-> <snip>
-> 
-> > +
-> > +static int submit_dma_transfers(struct dma_work *work)
-> > +{
-> > +	struct scatterlist *sg_src, *sg_dst;
-> > +	struct dma_async_tx_descriptor *tx;
-> > +	unsigned long flags = DMA_CTRL_ACK;
-> > +	dma_cookie_t cookie;
-> > +	int i;
-> > +
-> > +	atomic_set(&work->pending, 1);
-> > +
-> > +	sg_src = work->src_sgt->sgl;
-> > +	sg_dst = work->dst_sgt->sgl;
-> > +	for_each_sgtable_dma_sg(work->src_sgt, sg_src, i) {
-> > +		if (i == work->src_sgt->nents - 1)
-> > +			flags |= DMA_PREP_INTERRUPT;
-> > +
-> > +		tx = dmaengine_prep_dma_memcpy(work->chan,
-> > +				sg_dma_address(sg_dst),
-> > +				sg_dma_address(sg_src),
-> > +				sg_dma_len(sg_src), flags);
-> > +		if (!tx) {
-> > +			atomic_set(&work->pending, 0);
-> > +			return -EIO;
-> > +		}
-> > +
-> > +		if (i == work->src_sgt->nents - 1) {
-> > +			tx->callback = dma_completion_callback;
-> > +			tx->callback_param = work;
-> > +		}
-> > +
-> > +		cookie = dmaengine_submit(tx);
-> > +		if (dma_submit_error(cookie)) {
-> > +			atomic_set(&work->pending, 0);
-> > +			return -EIO;
-> > +		}
-> > +		sg_dst = sg_next(sg_dst);
-> > +	}
-> > +	return 0;
-> > +}
-> 
-> static int submit_dma_transfers(struct dma_work *work)
-> {
->         struct dma_async_tx_descriptor *tx;
->         unsigned long flags = DMA_CTRL_ACK | DMA_PREP_INTERRUPT;
->         dma_cookie_t cookie;
-> 
->         tx = dmaengine_prep_dma_memcpy_sg(work->chan,
->                         work->dst_sgt->sgl, work->dst_sgt->nents,
->                         work->src_sgt->sgl, work->src_sgt->nents,
->                         flags);
->         if (!tx)
->                 return -EIO;
-> 
->         atomic_set(&work->pending, 1);
->         tx->callback = dma_completion_callback;
->         tx->callback_param = work;
-> 
->         cookie = dmaengine_submit(tx);
->         if (dma_submit_error(cookie)) {
->                 atomic_set(&work->pending, 0);
->                 return -EIO;
->         }
->         return 0;
-> }
-> 
-> The memcpy_sg version does simplify submit_dma_transfers()
-> (one dmaengine_prep_dma_memcpy_sg + one dmaengine_submit vs a loop).
+> The result would be more external surface to the buddy (at least 2 maybe
+> more functions, plus all the _noprof stuff and a bunch of other things).
 
-Right
+We probably wouldn't need prof stuff if all we care about is vma_alloc_folio()
+that will only be calling _noprof internally.
 
 > 
-> My current DCBM path issues dmaengine_prep_dma_memcpy()+dmaengine_submit()
-> per mapped SG segment and sets DMA_PREP_INTERRUPT + callback only
-> on the last one, so the IRQ/callback cost is already one per batch.
+> And then all the callers have to be updated anywhere, and not make it
+> any harder to mess up.  You either have
 > 
-> My understanding is switching to dmaengine_prep_dma_memcpy_sg() mainly
-> saves the per-segment prep/submit calls and hands the provider a single
-> multi-segment TX to program.
-
-Right, but the analysis you showed indicated the dma setup cost was
-quite a bit, this moving away from N transfers to single one should have
-saved a bit more...
-
+>     old_interface(..., user_addr);
+>     /* Churn everything using the old interface */
 > 
-> Please correct me if the benefit you had in mind is something stronger.
-> Thanks for the suggestion and for guidance.
+> or
+> 
+>     __internal(..., user_addr) { }
+> 
+>     old_interface(...) {
+>        __internal(..., NO_USER_ADDR);
+>     }
+> 
+>     new_interface(..., user_addr) {
+>        __internal(..., user_addr);
+>     }
+> 
+>     /* 
+>      * Update some callsites to use new_interface()
+>      * mostly a bunch of _mpol() functions but some others
+>      */
+> 
+> but someone could still just as easily do
+> 
+>     old_interface();
+>     /* don't fall folio_zero_user() - Bug! */
+> 
+> So it's not like this makes things any harder to mess up.
 
-I still feel this looks better version... 
-Can you compare your setup time between the two please
+Right.
 
-Thanks
+Looking at the patch, there would already be less churn if
+
+folio_alloc_mpol()
+__alloc_frozen_pages_noprof()
+__alloc_pages()
+post_alloc_hook()
+
+Would have simple wrappers.
+
+hugetlb calls  __alloc_frozen_pages(). That's rather nasty, given that
+it wants to allocate a frozen folio.
+
+alloc_hugetlb_folio() already consumes vma+addr.
+alloc_buddy_hugetlb_folio_with_mpol() already consumes vma+addr.
+
+Maybe we could forward the vma+addr here and call a vma_alloc_froze_folio() if
+we have a VMA+addr to have a clean interface.
+
+But really, that hugetlb code is rather messy. I'd vote for leaving hugetlb
+alone on a v1, and focusing on non-hugetlb first.
+
 -- 
-~Vinod
+Cheers,
+
+David
 
