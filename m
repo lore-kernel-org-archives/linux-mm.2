@@ -4,147 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71E08FAD40B
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 05:09:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C67EFAD41A
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 05:57:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5EE96B0005; Thu, 23 Apr 2026 01:09:19 -0400 (EDT)
+	id E914E6B0005; Thu, 23 Apr 2026 01:57:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0FD96B008A; Thu, 23 Apr 2026 01:09:19 -0400 (EDT)
+	id E419C6B008A; Thu, 23 Apr 2026 01:57:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFE216B008C; Thu, 23 Apr 2026 01:09:19 -0400 (EDT)
+	id D0A3C6B008C; Thu, 23 Apr 2026 01:57:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ADCA16B0005
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:09:19 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3430FA0222
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 05:09:19 +0000 (UTC)
-X-FDA: 84688642038.27.9681FAE
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012007.outbound.protection.outlook.com [40.93.195.7])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 06ED4C000E
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 05:09:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=F+75qAft;
-	spf=pass (imf22.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 40.93.195.7 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776920956;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE8C96B0005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:57:08 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24CA71B805F
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 05:57:08 +0000 (UTC)
+X-FDA: 84688762536.30.B7FE063
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DE07E180005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 05:57:04 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NiIZtDCn;
+	spf=pass (imf06.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776923826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZW71aZUB75cXXss4TYHkq/jv9kF0X1M2pMtVLer0VLg=;
-	b=3oX0RsVyVR0hoDKfI4Li9tkGy/jaDpimouNExLa3NHXLsSua9maIbUz4TvfXlHB9ug+uAJ
-	uem9YGbrSsf7FGmni/53R1WeMLfHWymNzZKzymJxJieIfoCFiivyqNcu7hegsbU7Jvrrgv
-	cQDkrasYfA9UXHr4QXo6TuaCgplwhV0=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=F+75qAft;
-	spf=pass (imf22.hostedemail.com: domain of Hrushikesh.Salunke@amd.com designates 40.93.195.7 as permitted sender) smtp.mailfrom=Hrushikesh.Salunke@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776920956; a=rsa-sha256;
-	cv=pass;
-	b=SJHkp6FNv+QJ/D0tBsagbXTC5TQpqeUEYqep4vaBhfWgCrFUYi2y+fNolmC8NZoQcEzU7q
-	bYiBFmVeDc28/VQxbMiXw/TYDotUHuiPDUIN4NSL8jrZYouYjekzHsVdsHhOw9H31ZqIQW
-	0Ms4bF9UYLe5XarAarljei8CtCLJuzE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C2LcJlWTKXDUj46CyiNxuJ/05HVCAw5jnpV95g67Sxmmi3d9U03yXDJ40TtKu3VoGq2fLdCsXFsuY0WnhEIQXt3G9StMtv0eDh2EBsx6hHUCbu+vOQakkQJ/JIzadTlAR57yNWdHWweDJdPRMx608Zp79og/vbpU9UfqalfEAYat1rtH+pi2mzosz4VwgWoXeN7QeXm8jlb2pbQjh9uKJptG/9xpyYKcRuKmtfaNVUzdPGxwTIaom1Ue4x5Jjdp//dt/PQa5QEx6fZ6ZeXkPvN3rBOkRq5+3AVpTe0NabD9xzeCTJYqYVtgwuWhRnpUVF36Tt0Mm81UNyHcyjhpVYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZW71aZUB75cXXss4TYHkq/jv9kF0X1M2pMtVLer0VLg=;
- b=ys2juKmWBm0T9h0mRy6isZ0OlXefER7W/sv1XKCZ0JLmeUCIqPl4YV2XVQsR0WPOC7d0dHXD6I7hiaNkSYXCZ0MHk9KJLLGZ4L4k4ldEInwRivTYdCZLY6VF8ZPhHlg89Zq6qcMIP6eVCHi2FP6g0HE6aRX7md1PTmQRoBXtNekhM93jK/oTbfRTaXrfRE062rUUCy7vRixJYjamzZ49lVk5ifEyCORKCoE94wRkpkre+fqD5rujpuYJKL00Cuto7y70oNJFncEqnQYFBEjeTLZoA6iP4afoREPqcqMLtluPoG1TsVQB+tcBELao6c62lV9UJRyIqMgLjhncTH6dGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 165.204.55.251) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com;
- dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZW71aZUB75cXXss4TYHkq/jv9kF0X1M2pMtVLer0VLg=;
- b=F+75qAftDe9AqpAtI4/niAuYB/lDFAKXqyfxTo6WoF/6OiCdOYWvXCwRzUXFE2kf9Aq65NJRN8EjeDnOkFNgWBpZ/7U0z3TazRfNYUSpY2oTHLnMsaJaNEM642khZRnmair1gzx5PKOrPBRce0qhSYtKLREyrLeRnMyLF85Soo4=
-Received: from BY5PR03CA0014.namprd03.prod.outlook.com (2603:10b6:a03:1e0::24)
- by BY5PR12MB4145.namprd12.prod.outlook.com (2603:10b6:a03:212::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Thu, 23 Apr
- 2026 05:09:11 +0000
-Received: from SJ5PEPF000001EA.namprd05.prod.outlook.com
- (2603:10b6:a03:1e0:cafe::9c) by BY5PR03CA0014.outlook.office365.com
- (2603:10b6:a03:1e0::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9791.48 via Frontend Transport; Thu,
- 23 Apr 2026 05:09:11 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
- 165.204.55.251) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=amd.com;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- amd.com discourages use of 165.204.55.251 as permitted sender)
-Received: from satlexmb08.amd.com (165.204.55.251) by
- SJ5PEPF000001EA.mail.protection.outlook.com (10.167.242.198) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Thu, 23 Apr 2026 05:09:11 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 23 Apr
- 2026 00:09:11 -0500
-Received: from [10.136.43.140] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Thu, 23 Apr 2026 00:09:07 -0500
-Message-ID: <5eb58895-b9c2-4124-aec7-e55074c372d5@amd.com>
-Date: Thu, 23 Apr 2026 10:39:06 +0530
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3Wa1AsAHxu5Sw8uRW2SbaXqR99QmBMv0AzduGBkqr8Q=;
+	b=JwiDs/Cqf/O12pUgUU8/dc7RGnR3IzKjgN/WI/yw3k8UDD1xhayYHyrWJwdLdDPHJkU7WJ
+	FVximJNYbasnghzlvwIoC9rnawwVfl06RsNgWM0fHACYOHAtfPB+MGy40LSZ0JSBnpuwKg
+	fxroHQj6VI2u6Fe4oqqI1r3QuxYTm68=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NiIZtDCn;
+	spf=pass (imf06.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776923826; a=rsa-sha256;
+	cv=none;
+	b=uhUHHNGNXjE800eMMTD6rjdLxZajpuOp0BZr1wBU+YvMsSThFoXUhbX9mdwiFoBRmTWrHX
+	UAtoWNqNnqIo+B4g/cxhXX3uZ+PnH8W/sLHqPlfMOou9FfuSgC/me4j4h8YaygihlPUqve
+	d7WqxaQuYVcVggI8RNlaJ/o3meNQaaQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776923825; x=1808459825;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=btSIhHvrWGgObDTIWzYNVZ+z5jS6qcYXkXNJRF89AZY=;
+  b=NiIZtDCnZNML+uqqtnjp3DnIsm06rxh93OIjSCG9uPLgIi+iNtl/emXA
+   Gcmc2vlZRi1N5GZZg7iyan9cV+pwOgpDyHKHLJCf40rNHmaLZpYOYwS1F
+   7jPEoGK/qWykS/ytvVksWv56+hPv6ZKtMB1+foqC+ytcn/7WJ75MfI7TP
+   TUTj5FuXZ7W38n7c0T8lI1HztXxpXfFj2ahb9gm0WbRqJyM80Q7u7M/sK
+   uBro/BIGRGYsM0dKf6AXQvh7QnfqA1QoTt3gF+V1ZBNfIdfR57KNNyVh+
+   zkmhqKRSUmzrKVW/H15fOhMTYiaq58kb51EfxZ+Hjk1LEJr+KTx6DUxpE
+   g==;
+X-CSE-ConnectionGUID: LgEVORUdQQOU0gxME9Lytg==
+X-CSE-MsgGUID: jSDD2hR9RlG3ULVe4+LDqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="89273747"
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
+   d="scan'208";a="89273747"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 22:57:02 -0700
+X-CSE-ConnectionGUID: +hy0CQC5SiyNHR1QZ8u+FA==
+X-CSE-MsgGUID: /E9ZSBlsTNWKC4NsB1t8gw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
+   d="scan'208";a="255853889"
+Received: from gsse-cloud1.jf.intel.com ([10.54.39.91])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 22:57:02 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Carlos Santa <carlos.santa@intel.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Colascione <dancol@dancol.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/5] mm, drm/ttm, drm/xe: Avoid reclaim/eviction loops under fragmentation
+Date: Wed, 22 Apr 2026 22:56:51 -0700
+Message-Id: <20260423055656.1696379-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/page_alloc: replace kernel_init_pages() with batch
- page clearing
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<ljs@kernel.org>, <Liam.Howlett@oracle.com>, <vbabka@kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<jackmanb@google.com>, <hannes@cmpxchg.org>, <ziy@nvidia.com>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <rkodsara@amd.com>,
-	<bharata@amd.com>, <ankur.a.arora@oracle.com>, <shivankg@amd.com>
-References: <20260422102729.166599-1-hsalunke@amd.com>
- <be256a32-dd9f-4dcb-b9b4-3f2a7fcde70c@kernel.org>
-Content-Language: en-US
-From: "Salunke, Hrushikesh" <hsalunke@amd.com>
-In-Reply-To: <be256a32-dd9f-4dcb-b9b4-3f2a7fcde70c@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EA:EE_|BY5PR12MB4145:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d36551c-6eff-4346-0a1c-08dea0f674e2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|376014|7416014|82310400026|18002099003|22082099003|56012099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	zPYxSSup616s9dwwHr5N00EaY/NaLmJFpROgXM0PpN32mUhFH7C7PgDgLMuR9ztW4j/iB5Tiy8yX/ycLDANVgaHi7OFVfB0j9gHoJ8d5KC7tT8ZpBd4OKwy82+eVDayH+nLxl4sZjl/CYKgEWzxyV9p49DShdzvjFynqP/OKT4BTW0GN5cothMhjgX4E0fa7HugVAV6Vdrc8FdMcSjhuFIOqoeU0DAvhMiAfyhi8rpCwdpykGqw7itleX2PAQJEEOHk2Vbb//XsPQIhqlCDfsgwOU8xPGZvqArcefJjy5huePhmTOm7D6W20TXOqoXcMxIa8WQ+TWhDWtGf8jvv2yAJoyC/Lw5kEB6bBBgoD12U46dU/f1xarJFqLUHwDQpvVbv4kTkKNjK8Ed8Tdek2itPR6R+OLaWBbIau3AJ4cXmu9fDKFPfZ3+faY9YILhSymRz2v3dc3cJGGccDUqBzIibuLGp53FGUaWd5TuvJlVOJ+HmAbty5agP5ut5AfrFcoNcteuJi3l5/7kHs+3OOTulbkJcQgiT2nu8wEer6n5jL33+boUGfouF3btowS2eaTGBQJ0xVQn8SdiS933ziZDjo1sx5ovQDQFaIoqjsA4HaEQ5B5AjI1+cfG7gFXLjSbAXM/h/MU3/iEjdV1hBlrytM+z61WaQRAhvQBZQ2xbBNR7j6t4q5CqGLgJOgyReKhM2uxBWfRw1tfM8P0v+iS/qjnKEZGTFIVECOEHq2t5nzGkLhcUPKF689h8Hjg8TbYKR6RtZkmLdE2Di+gqZbT7b+7hecNCotTh/Mp1qilsHK2SWqbrgA9EoNO1IZ0TrH
-X-Forefront-Antispam-Report:
-	CIP:165.204.55.251;CTRY:CA;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(7416014)(82310400026)(18002099003)(22082099003)(56012099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	bw/35Xfhi32T9QBBll/XIzN/otwMQ4hhq0QdTW5GhRvOoroomTgROI6dKzYYuNHkcF4cxaTiVhr6gSpnJvuwWWDZiVu/Ma/QSdgRLvQnFvluMLnM2phx+BvokClrdC43ZD6ejEK8qkieZVVqa4n4raepvTcDgfJln7o3ErDiyPfz5XS8bruF17YO5kJ/+8EUpX9alq4LosbBpxP+TMURKsSJHbLDzmhRfznyt5g0SexaxqEPMAHVoXS/YNLbpQBQLaAb5THno4XWhVNgm6Be5zUkKcWXxMBi6MZQdyXQX+wVxDLFbtRVOc7kKMRdS6et+1uSyBNr8qjtyTvqvffv7Q7R+qCrHeIffrjVfytEdxU4aiMAZylnk8Wyh5ZhpkmPl4vIHW1jddF5FtQgUqGJt8M/ZWugRT9A7GhgMkfm90/YBPLwkOcccQ8Ox5EBLi3M
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 05:09:11.3723
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d36551c-6eff-4346-0a1c-08dea0f674e2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.55.251];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001EA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4145
-X-Stat-Signature: tmbhiq9xxabqgj8k8osxdrea3ptym7ea
-X-Rspamd-Queue-Id: 06ED4C000E
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 397air41k1o4bbeobxxnodyrfpy74c4r
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1776920955-969723
-X-HE-Meta: U2FsdGVkX1+XKiax0r4GKvxMg//Ncui4NFK/xbSiwiHQjwLIT0o/xu/SQUNfuYW/h18Sk+09JXW7qV1lMcG7raAyV59O9t2kGUB3NaOPvEoy8GEbBv3SDce/LvmndgWSEBe08Wy4c9M9WzgryNMA7NbxLMa1O7y5XRagIfSYm+lMBaf7YLqLN8/XnelmOnPP0S5S4eqmDlrKLdifLQ9n1xoLveGxwH4GPH4zSKWtR+ohetPwkqQefr//ZbNqbdKD4B3x5SMVxgVTvaoOVE1+56430MFAI4cMcx+/bZdc+sCDhwZUTPIYqRGAJzJIfr/33D65NZCbZESCuhltyRtGzkjBz6iKr79jsIo+zCh6RuJBtDJdn5b33XoJTP6vAc+MKhz4x8s96E6XrPhdhkHX/lxeytZ55i8h25Bdy8j4ShOKENSIwqAHOBXxa15p3NBhWToRukEUr1u/l28sYWmu1Tq8PEvn+3ZmxsSf9v4GDhWjFLhuXL0bc3tBmFp4EIZVQEI1Y7nJ7bctFVc6ZxRDkGy1b1hVtbUySxMpSQXBl4LwTqG55j7RVJPYenweQfIoJwWM0J8qMHQTFfjbaXDtqmibqy/lLqR61ql7ahCFSPuNpNx+tWlcBJbNJv4DmbA+o+iu5kVknmBAgtmgi0B9z8hf1KKyegJSDjtBAjv+bvePoDxExoTB1dE/RXSbJ8u0heqMVo8XgXskxu4LE8uh6CJBzmL8kkRykM0FG+Rxud9kD1FpIiMr1aysfSZSS0ReOFZkRvMU6eFj8qrxK9UmJ5wVuOmYik/5BfGqKb7Lqukq0OKr3pUaSWCd0d80WvjsVzYfNP8OHGSg9cphj5Q4juAqvBfHJV1W3cT0j+GBzDCmJzbmRGb6QIuaFOtwhN+G/WyhfeJFRvo7iLmquEv7LXQ6xfXsIqUPk87ls6JwRRihHdnib16yVF9pZ97axE9C4/363dnMbBLseEoAzDR
- mNmiSQe7
- FptWiD5lwR7KMM6XWigbgjHmPd/rAqBy4FcX4OBmCZvXdxd88EfOkRm5iEcGQDaTtSQeeypavQY4rUG2J0kRRpK1UNtmmSiYqIsoUhAo3uK24YRp5J/nU9/EJZ2WnxpWqO/s6euFtrn1UIVCm/0eTvbleGBvQkX1RNREUmeQ4eZ0rNZSVJLqBGMbnPqRDL07bWNKUnj4FYPfrgXNoaAoPjhloTIUtKjOi8VnDY/f1EbvYtSZnP5sGYC1nqzsvlq3lHdluWf7bpHN4xHrN+Ztko5ccl20S/MZUA1DNGZLpl2vZo6CeYLeIhlToDD9BoR9/eO6jesfhK7ZxAyqBV4bP1xc3ZLkJQR0SFBM7IjwFXM+zMqX4JcwnQW1+femwJQlhsNGbcDWjfazh2+Lu+42R1lTGRgi4SdbRK4rycPrSUWTSKW4O45H3xe7uiFpF54bLL3tDc+d1waRr/4UPZpp9a0EMNjIdL//DEQBcCZ/p09lXF609fQRRUMuCDasd+IR+iCJ7paxlJu9ZYtv7yO/FNIWNS1xe2qw1Ei7pWtG7dHJY71ErM7YiqIC4OXZAWqg3qrCImC/SRbm5fE3aaJ6UvYKHaTRvG88eIMXu2HmRVQayPSpjE9O7q/OPLd7z80JqbMlY
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DE07E180005
+X-HE-Tag: 1776923824-630345
+X-HE-Meta: U2FsdGVkX1/ugWP3Xr7NgrzDkk7olGEKT0tS9Er/AGVtVmvJtTKCG0JikPR5NvqBWZzKu83otT4HXBpOblo5Nu3LBB/Qk0YJ9wUvGaSDvNtaTpjylIVdjo0s76XHsf823ij1Hau1YBb7+mzZKbfrAlmVvKnnf+KTUVLM2ujf2Bb5jB0Z8lGahwcAEHjnZ2QACagzYOb7oOl1KWhuEmsIGmokeBjnjpkeXKz3xUoWgqtGGehIt/Z3ZtW+4rmsULgtrb258BOGkOrAi22ykD0F0CYLsOBC9ldnNl3+jF71Ttv0zNoMEgi+N4jbvmUpb/BE6MBPbvMoIYDlotZOTKZNKQIWQTlOJw2uzlEP4l8UqVv6hLhG2oeweckKDLApiFutD13AKXoTbtf2Wpw2cX0wOvdeNcl4hZHZqzHNIw+RoGGzyGI142H/hGnwsgQmlUDiDUt5pcISE1Z5nB3hr8iA6ArOnSETR0XXFrJ3YVwKPQ7WHbHn9bvta01yiZwIcVBLE/7seVLLq+4uMc55bffpA+L12q0eJxdMKqHEjYB9b8s1/MdXp+FpiMllEde9Z929B6jRM3DSoSkB4iYxDxT7uN4I/0TUnyvq1cK/mCLBAzT9qp6YdD5W/fOOfT1kugj+iEbxhS+5p1o7AHjei9tNCP7SBLAfjnNIVSAUhHXkCcYmY/a03xynayYThvy47Ejb5/YE3F+69UI3BueE/k1w+0ntNHhjplX6zVNngyNESl+4hq+GwvtXKswyfdtS+Z132c9OYJLkVPXZgP7XoPb9Rpo9BrajTFBgFVz//0qyY3UMlQ2MlReRsyds7cIsIjK0za4WJaEU4xAiFrB8r/SzveB1GtWq4cRT4+6xh7yqTKD6Lk5TIhUjwOHXPo7xEBzTqV+AJIf21EPLjMzJXSQSXSkKGEWDJd+bu3zjg2NPNcc+FMAFg6g34senG4Uo1clbdaXRjxaYxI6uMcFNVJU
+ PtqlPn8y
+ oM16V0PJ1FIehExqQOXOLh8wfvKyJYTn6iKDe0TK18T430N4dljyzTpl6vBYlNUO2ElN6YMiAe8LZRwnFa3pcoqLyK8ntw9sC2jc9f531g2SjmXtbcIDeivEjkrB1qTdbE41HQAuwFLX/OuGfkYJsKRwz0PZDmU1/ih8loBNxc4s0mMs/rl+EFf6mf8HrP0+oR3PAGiGKidh7OK/+HkRrmROT7D2zMbQdSe4mpJ2/7S6j6XgShQC2ibPXTMQuPFCY4Dkk546E8U4HOoI9BynR23vqff3Skt7s+zZBAiqUSfsZuDIqiaCC92XEHjsTbzCw6bQedl9XoxKuHtMDw7JeXSFo+xUoKg/v7vrjknCvphxS6IzgxVpCwjXgTRAAgftsu7hLkSoUpw/PUWAxKUfyBwR/rUEqXxoYrMtg1peVX+Y1rZs9NY11MWeGABpaKqc9yOEWvqhwzJHX+fDzduNqMLxJYykFG2FIAQZ4M8BxuzDzyRY4I5j3GdOvrlRDzSRn97xYfqbS2EavalNgRSFU7ENKwyupX0hokyELUD/3H/bJVXWTQaJqstZy5VNbySoi3PlQaAW1hndvL9hxlmL+cus7/H0WXjULa1d8hSni/gM0Wy4OhdpbGd1Gzg/+Iw0Mv4CA0EPzYtmWjgbnjNll4uHPWY53KokeBNTRErKlXz0r6Wez9mugYqKL1A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,69 +122,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+TTM allocations at higher orders can drive Xe into a pathological
+reclaim loop when memory is fragmented:
 
-On 22-04-2026 23:55, David Hildenbrand (Arm) wrote:
-> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
->
->
-> On 4/22/26 12:26, Hrushikesh Salunke wrote:
->> When init_on_alloc is enabled, kernel_init_pages() clears every page
->> one at a time via clear_highpage_kasan_tagged(), which incurs per-page
->> kmap_local_page()/kunmap_local() overhead and prevents the architecture
->> clearing primitive from operating on contiguous ranges.
->>
->> Introduce clear_highpages_kasan_tagged() in highmem.h, a batch
->> clearing helper that calls clear_pages() for the full contiguous range
->> on !HIGHMEM systems, bypassing the per-page kmap overhead and allowing
->> a single invocation of the arch clearing primitive across the entire
->> allocation. The HIGHMEM path falls back to per-page clearing since
->> those pages require kmap.
->>
->> Replace kernel_init_pages() with direct calls to the new helper, as it
->> becomes a trivial wrapper.
->>
->> Allocating 8192 x 2MB HugeTLB pages (16GB) with init_on_alloc=1:
->>
->>   Before: 0.445s
->>   After:  0.166s  (-62.7%, 2.68x faster)
->>
->> Kernel time (sys) reduction per workload with init_on_alloc=1:
->>
->>   Workload            Before       After       Change
->>   Graph500 64C128T    30m 41.8s    15m 14.8s   -50.3%
->>   Graph500 16C32T     15m 56.7s     9m 43.7s   -39.0%
->>   Pagerank 32T         1m 58.5s     1m 12.8s   -38.5%
->>   Pagerank 128T        2m 36.3s     1m 40.4s   -35.7%
-> We do have some elaborate handling in clear_contig_highpages() to chunk it up
-> (and to call cond_resched()). But that function can get called with much bigger
-> ranges.
->
-> I'm not concerned about the cond_resched() -- we wouldn't do one here before --
-> but I'm wondering whether we could end up triggering a HW instruction that is
-> uninterruptible and takes a rather long time.
->
-> But clear_contig_highpages() breaks it into 32MiB chunks, and only x86 supports
-> it so far. So we won't exceed that with the maximum buddy order of 4MiB on x86.
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->
-> --
-> Cheers,
->
-> David
+kswapd → shrinker → eviction → rebind (exec ioctl) → repeat
 
-Right, on x86 the max buddy order keeps it well within safe limits.
+In this state, reclaim is triggered despite substantial free memory,
+but fails to produce contiguous higher-order pages. The Xe shrinker then
+evicts active buffer objects, increasing faulting and rebind activity
+and further feeding the loop. The result is high CPU overhead and poor
+GPU forward progress.
 
-Also, rep stosb/stosq on x86, currently used for clearing, is
-interruptible, the CPU can take interrupts between iterations and
-resume where it left off. So even for larger ranges it wouldn't be a
-single uninterruptible operation. Other architectures use a per-page
-loop for clearing, so the same applies there.
+This issue was first reported in [1] and independently observed
+internally and by Google.
 
-Thanks for the Ack!
+A simple reproducer is:
 
-Regards,
-Hrushikesh
+- Boot an iGPU system with mem=8G
+- Launch 10 Chrome tabs running the WebGL aquarium demo
+- Configure each tab with ~5k fish
 
+Under this workload, ftrace shows a continuous loop of:
+
+xe_shrinker_scan (kswapd)
+xe_vma_rebind_exec
+
+Performance degrades significantly, with each tab dropping to ~2 FPS on
+PTL (Ubuntu 24.04).
+
+At the same time, /proc/buddyinfo shows substantial free memory but no
+higher-order availability. For example, the Normal zone:
+
+Count: 4063 4595 3455 3400 3139 2762 2293 1655 643 0 0
+
+This corresponds to ~2.8GB free memory, but no order-9 (2MB) blocks,
+indicating severe fragmentation.
+
+This series addresses the issue in two ways:
+
+TTM: Restrict direct reclaim to beneficial_order. Larger allocations
+use __GFP_NORETRY to fail quickly rather than triggering reclaim.
+
+Xe: Introduce a heuristic in the shrinker to avoid eviction when
+running under kswapd and the system appears memory-rich but
+fragmented.
+
+With these changes, the reclaim/eviction loop is eliminated. The same
+workload improves to ~10 FPS per tab (Ubuntu 24.04) or ~15 FPS per tab
+(Ubuntu 24.10), and kswapd activity subsides.
+
+Buddyinfo after applying this series shows restored higher-order
+availability:
+
+Count: 8526 7067 3092 1959 1292 660 194 28 20 13 1
+
+Matt
+
+v2:
+ - Layer with core MM / TTM helpers (Thomas)
+
+[1] https://patchwork.freedesktop.org/patch/716404/?series=164353&rev=1
+
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Carlos Santa <carlos.santa@intel.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+CC: dri-devel@lists.freedesktop.org
+Cc: Daniel Colascione <dancol@dancol.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+Matthew Brost (5):
+  mm: Introduce zone_appears_fragmented()
+  drm/ttm: Issue direct reclaim at beneficial_order
+  drm/ttm: Introduce ttm_bo_shrink_kswap_fragmented()
+  drm/xe: Set TTM device beneficial_order to 9 (2M)
+  drm/xe: Avoid shrinker reclaim from kswapd under fragmentation
+
+ drivers/gpu/drm/ttm/ttm_bo_util.c | 34 +++++++++++++++++++++++++++++++
+ drivers/gpu/drm/ttm/ttm_pool.c    |  4 ++--
+ drivers/gpu/drm/xe/xe_device.c    |  3 ++-
+ drivers/gpu/drm/xe/xe_shrinker.c  |  3 +++
+ include/drm/ttm/ttm_bo.h          |  2 ++
+ include/linux/vmstat.h            | 13 ++++++++++++
+ 6 files changed, 56 insertions(+), 3 deletions(-)
+
+-- 
+2.34.1
 
 
