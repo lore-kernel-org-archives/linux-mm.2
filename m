@@ -4,101 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E9DDFAD3E6
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 01:08:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2951FAD3E6
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 01:13:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 408696B0005; Wed, 22 Apr 2026 21:08:53 -0400 (EDT)
+	id 658B96B0005; Wed, 22 Apr 2026 21:13:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B8F76B008A; Wed, 22 Apr 2026 21:08:53 -0400 (EDT)
+	id 609A36B008A; Wed, 22 Apr 2026 21:13:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CF3C6B008C; Wed, 22 Apr 2026 21:08:53 -0400 (EDT)
+	id 520D96B008C; Wed, 22 Apr 2026 21:13:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EBFD6B0005
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:08:53 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BBF51403EF
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:08:52 +0000 (UTC)
-X-FDA: 84688036104.22.F447608
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E24D6B0005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 21:13:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6D441B7E8C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:13:29 +0000 (UTC)
+X-FDA: 84688047738.12.722F163
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 990BA180004
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:08:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D9UVNgCJ;
-	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 22C2D80005
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:13:27 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxvJ3rFp;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776906530;
+	s=arc-20220608; t=1776906808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pI+g120kEemqAU+sR9GigLZxDiiz924ot+1RnRU07EM=;
-	b=yTWj4LMvZ3iyvVzJrlbU42blauEdEz3CvWeTghWeYZHQUrnQs4exj6v0S0Fggn1LC4UWgb
-	i3T0VLf9CUw9pRKKslw0BXBZyZPYrGgpmJdCBDIFNWQBomHccf+0H8mZfMOXs8uCfk71S0
-	NNMKHGzqF6tMs1nQ3h+JD2xGSa4EZgM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D9UVNgCJ;
-	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776906530; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=a3WOFOESMx+QV4oqhIOQnW22LGGFKLoylynJC8e8rOg=;
+	b=1Z+bGdMekfjXiYEcFAgN0K2oTi7vKcJrDOTWLi+jR7ZmHoa2fYBdspLorxO+d0YRtOHTWv
+	ccHj1ffd/zwt8Xo6xoUUFDOt5/Oxd3mGa9GtNRzwk0BV1+J1quIZWLgkzXbM7a1SJZmxyQ
+	My17JIzseJROEXL+Dvi1lcGLjv0GV2U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776906808; a=rsa-sha256;
 	cv=none;
-	b=z22Xe8ifZMqtzk3WsnE3yaEqaRdGucZIxIh3tyJB+I8rPbKLVVh1FXgAxY0kWNJmR5XUWN
-	VnTkiDyyZMlStVtQfKhuFzQtFHOACB8+81uJWKyrKW4UPFVS4vP3jHD2OHxxnDvnQ0L4O+
-	OKvLzH5YqQf1cIkqhmQ1iMIFk60o31Q=
+	b=cm+SUu9NMOKxA231aVDg8jIlG9MzTCugSWNOX5yyRUsc2R7Jlt/tVu0IPhcV6IKl6v6uZG
+	ogpnLNjCZ+iDWWnstpKMUVJaDssIGYQNQORHSax5hXlsZEExo6qXtF08n43IXEuX497r7D
+	/7mPkKVkkQmge//kN8cxaKqdb+pibwM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxvJ3rFp;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5DEC641AEF;
-	Thu, 23 Apr 2026 01:08:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08A5C2BCB2;
-	Thu, 23 Apr 2026 01:08:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 218704391E
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 01:13:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DF5C19425;
+	Thu, 23 Apr 2026 01:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776906529;
-	bh=eM7I+z11rvz3UT8atgEe1MBPkEiQna5s0ErFx4g2s9M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D9UVNgCJ0cLMPrZuVc38yYovvZZJAYFz6SSYgXByaedaAsv/HkddogoZqdKeWVAZK
-	 7TSOt9gbCNoY/DoNtxW2MfJxhwB65t14eX094IaBtK5IMJ8RGo2YDl7GTk537eDuKZ
-	 jPU+NZTpTZ72mLsDkiUOMkmzOOb7yLdA2t0sPWbw7KrF8bX8/RgP636UJOFnKwDNM1
-	 hSoMYksqqIJNAWbCzM6JzX4IHui8Q7ip1SiZwGfjW92x1tuNOxwwyXoNTaIw2AZmyF
-	 LOTq/usjn9dBX+nzYlJv3u3ARJvpA1eBWXsw6NeFFQl2ETBnBA/YlzjKTqpObC0HEe
-	 +f9aH9iRyCfxg==
-Date: Thu, 23 Apr 2026 10:08:47 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Hao Li <hao.li@linux.dev>, Alexei Starovoitov <ast@kernel.org>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun@kernel.org>, Zqiang <qiang.zhang@linux.dev>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>, rcu@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 4/8] mm/slab: introduce kfree_rcu_nolock()
-Message-ID: <aelxH--hZkCahPv6@hyeyoo>
-References: <20260416091022.36823-1-harry@kernel.org>
- <20260416091022.36823-5-harry@kernel.org>
- <aejeVK0J_jHSfVhD@milan>
+	s=k20201202; t=1776906807;
+	bh=9PlMEv0oWcsxNV7gLe9VCQFtma4kLf2XofnBhTskP5Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fxvJ3rFpRZEP/uYy2ouXLhPPyRpvamrDwiryvCxHFlVTyR9GhOo6MnAhVqkMLH39X
+	 JjIvph9JqkPz1CgqOj4NjJtTO/MDJLHZPGIRwx8Pyc4QB6T61t6T1SQPJk3yMtaj5u
+	 GqzxoJ0GL+Dfni1BJSrzHOl/Z6z62ma0xS91taABFe9kImfNUBGZEy9o+E7WPyhkMV
+	 jYt6LLMkntzrHM5RvDKn6EdoFF3Jq0s/fcwRgfIXMUsbBjY4i8fkD5EQcF3HWje/V3
+	 EQ8b/4yTpuH8whviWcUH00VcgDYyS2TYXIemc085u8Nn1IGm1X1P29JMs+flwAj0eD
+	 jWZa63uIUe0GQ==
+From: SeongJae Park <sj@kernel.org>
+To: damon@lists.linux.dev
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-04-27
+Date: Wed, 22 Apr 2026 18:13:18 -0700
+Message-ID: <20260423011319.32122-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aejeVK0J_jHSfVhD@milan>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 990BA180004
-X-Stat-Signature: 5k51pubip4xsqua6tkrnm4muut9jn1wr
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: j3ug9nnokm8ste1fua7ibpk85pxht3ae
 X-Rspam-User: 
-X-HE-Tag: 1776906530-978045
-X-HE-Meta: U2FsdGVkX191tzUVpazNzp2A8dYitmsj6JSGVpX+CZGAWhUuF3eppQQnsgY5uI/ThiJ7LRfMH9o6TwxHEgf1NESDRCQsIQFLP3u+EXRkatcwefW5K1/x4GtqGxf8VpmhKBLun0JLSXSEtqX2xDY9s3MDiYXO9Muqtf2XstFM50Pn3yetgYecd8V8rG0R3PxHkDn9GXfQq6ctBvEBiL8+d+zirP8IUyRHGXK57h+1LfWJ1g0TrrUPdD5vQPdlXwv22i6jzcZqxA8GwNRZOOeil5LCdmKrlt7KHxZvlCms5xwngw9Apf5mpII36oXdS27oQSnxsRG+VArczozj6elYiVavPtXToSkKYD0j8DDC5d/Qh/bzuDGtOkWFfGqQAJj6kZGCmBZlK38jxVkGJEFfduNmD2dZlvmP42bVb+EwTRLV8Kh3pL9THvN+mI0CdCwaLXa4Myx+x+TMxBr0z42+IWQbM/R5tbxXWDNhTpf8abIKsb7g2ZVC/NxTZwbpjDpf83678AJvkwWu5nYB70FnM6lJEn8Z2Ruwa+UX8xGiiTBHyFPNvs/sZ+9SMZr5vLum6hpjugue+PCqulpLhWLrTZ2lI4Suu2iWxASCfIV2YLZhOONVckzOK5KZowYiq3ZG6WzWRTL4XYwz0ivxcRf2Nf4yX2mJEkXljnLL88jFmB3lZWcQhqzpQFQupc4wVm5xR3X57YyaLb05v0R/xucos4n1fHiqCEwl9Cvy2g4SR6GKX/0LWxiBiPNtZvfvtq1IEXP7chkx0QdvgAALryT9tCtq/xGKIHFgxI8cUlcFisimlbY8Lhxj8i/ybq8nJyUw81uY2p8IwEf5r4C8yaPdbcCs2BqEtWuIpoF3ZfTIY6DbcbfSxhR3S6UuZ7kdu44hfoZ+JGJC2jXB0oe3h7kb5WQuHSdTsHf1jj4rjs0BNcsh9o+MBO8AAwRht2jrClmz8mOTjrPkLjB+lnlamHU
- 6/IAKc1K
- j//vakVWIPNDgNvAHYIjCJ6Z+Hekk7A1fFKuV9WHBD4ksE5CPHW+2Je9/GwUoc2b9+QI9srbvwIGn7WxTFmwydhFCFdAqlulPQGWMEEGFbkL32Vy5vpu+LYzLfz/Sgga3xo9K37B/dDi4EmOTcf2+1mVh2suV6dgh1nB+I7znvNAg6U5LApRmsxD01S3juav4dGwt9ke7C/sWzkgSIq7Qoa8eAqMX06/3adRjAalXbw0NSshLxg602IgT2hHS8yVBAjVaamkdDBF0JVCqklpBmSPyhYFn82nHQ9hLyrosGxEJTiqmoK9c+IomWFNU+RV1Ocop6EjvjzwSa/qNkt2t4jfZvA==
+X-Rspamd-Queue-Id: 22C2D80005
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1776906807-721964
+X-HE-Meta: U2FsdGVkX184xLYIRwnbn1SLQDZxklUiYI3QwFX/SuVvcGG3xdL4sT8onuERJlTWj6rnnNHx/k8f3XlDGX/wAPz5K0KxVE23SoiZdefFkrJtcOH+86xW0cyTwLhTPCVCqB9khxX4l4ed2swMDJb81A7Ev8p67AxWcw61UVhrxuj5sS6KgwgX4JOT3MLzITo3lPPer4Jfokvg0d5JgN5EPE3K2I3a9FM4zu4omd5LBr0tNT7nZ3YhSSsddrenNz4NfZfCm2pH5n1jsXnsoA/mBIbgwx4vNoP1INcjIZlFKnHmbvENtTpB+pJiAfKqtURKtb2zridho4GARSZHOsR7mWxfoUf9k0fwlEVZJL36WIEnL3Rjbnv0n05Ejr0ACf3iuDzMSDCu64V13RinwVa7xb6dGnBhx4IMvzHOIs27KLkP7tlbpf/JkcMnicCUPk1ZuDds+0q21DDPmaBmw8xZ1qxWUwrNaCsAfDAp2CAvD3pYb/SInDEYiEOdBLMTiG7SoQBbNp5HNKG6c2PkcD9rcICF5uUfuCCZNrB/WkKzer/AtSihmQJUjn+S8NCf9RPp0Fwg10g8BqOann4wnfREeKj3H9Y/pEV3ivuWXqRAsJ1pTTqBip0dTIiJa7cmt4ZV5d+rETJG5Hj2zpGNOzgUMkmlkr36EossEV1JkkF9gz1FsTeOoWcyb3brxWNcc+1CYaGahVquwSf9iAjxwUFkkJFSMZqVEDckW25pnxC07KN7feep7a1ERb6LFh1nTEL/wPZ0flkN5ohTEVEv1SbVgUoxWobr05qtc13sWxMZu4DM+yVf/L7p5B1sVR3z9T8zq8jYvpgM15Kiv64PRM+9GL/xCw4SUdPms3s8ky41vd8aDA7BoBABGLM+W1ZHVb6MALaa8nPhj2byoTAJY7sRbQEVxWygRfX+RFLYPRC2jlW3s+1ovMMuhlVgOSjkptD4Mh6UX876f5xVdJqWfDT
+ UdkEVMys
+ QHdTdT1pyDz3MJyx+TVxJrz8DRrvZMo0uTSrNwtR01ad3ylSe0KM08r/JLBq4kJ/7xTm6++g7nhwRqcm8eTCq2AuKqHIIaObuvSglggUkAv9BvIuxDDUaYQQSbIHpNa3RNq2od0CZPlVjn5vKa+KS8+hKVj7m9ce3PCRiq1cBidw6pTMZb/hUGNh/guRpw+A7JX7rkBvaqPQUJTQjFhDM4fBfL5FmGxf8LQt65cvlGKRoLtDVxY/XY6o2L5LPCM+2xI3hUIxtE5QgeEBL3tb7f6Dv4A1prFXyLFsX6l7ZDUQr7w6U5Wqgfk5COw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,36 +89,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Apr 22, 2026 at 04:42:28PM +0200, Uladzislau Rezki wrote:
-> On Thu, Apr 16, 2026 at 06:10:18PM +0900, Harry Yoo (Oracle) wrote:
-> As discussed or noted earlier, having third argument and check the
-> entire path with "if (allow_spin)" is not optimal and is not good
-> approach. I do not think it this would be a good fit for mainline.
+Hello,
 
-I understand that this pattern is pretty uncommon and adds complexity.
-But there is a reason why we're doing this. As Alexei pointed out
-earlier, even rare spikes of irq_work hurt performance [1]; that can be
-avoided in most cases where the lock is not in use. That's why buddy [2]
-and slab [3] accepted this pattern despite the added complexity?
 
-[1] https://lore.kernel.org/linux-mm/CAADnVQKk_Bgi0bc-td_3pVpHYXR3CpC3R8rg-NHwdLEDiQSeNg@mail.gmail.com
-[2] https://lore.kernel.org/linux-mm/20250222024427.30294-1-alexei.starovoitov@gmail.com 
-[3] https://lore.kernel.org/linux-mm/20250909010007.1660-1-alexei.starovoitov@gmail.com
+This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
+(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
+for the week of 2026-04-27.
 
-> I think a better option is to add a separate kvfree_rcu_nmi() helper,
-> or similar, and avoid complicating the generic implementation. Otherwise,
-> the common path risks becoming harder to maintain.
+As usual, we have two time slots for meetings in the week.
 
-It's unfortunate that I didn't provide performance data to justify
-adding complexity. I can try, but apparently you're not talking
-about that.
+Next time slots including six virtual-only ones are as below.
 
-Rather, you seem to be arguing that you're against this pattern
-no matter what the benefits are?
+2026-04-27 (Mon) 18:00 PT (not yet reserved)
+2026-04-29 (Wed) 09:30 PT (not yet reserved)
+2026-05-11 (Mon) 18:00 PT (not yet reserved)
+2026-05-13 (Wed) 09:30 PT (not yet reserved)
+2026-05-25 (Mon) 18:00 PT (not yet reserved)
+2026-05-27 (Wed) 09:30 PT (not yet reserved)
 
-I'm confused.
+Please reach out to me (sj@kernel.org or whatever) to reserve the
+not-yet-reserved time slots for your topics.  The reservation is made in a
+First-Come First-Served way, and I will send a Google Meet link to
+reservation-confirmed attendees.
 
--- 
-Cheers,
-Harry / Hyeonggon
+Please note that other time slots are also available on demands.
+
+Shared Calendar
+---------------
+
+You can get the schedule via this shared Google Calendar:
+https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
+
+You can also get the past and upcoming schedules via
+https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing
+
+
+Thanks,
+SJ
 
