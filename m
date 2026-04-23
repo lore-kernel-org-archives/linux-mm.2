@@ -4,102 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFFC7FDEE51
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 21:49:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCA30FDEE4D
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 21:58:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB4AC6B0088; Thu, 23 Apr 2026 17:49:07 -0400 (EDT)
+	id 1C4D36B0093; Thu, 23 Apr 2026 17:58:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C65056B008A; Thu, 23 Apr 2026 17:49:07 -0400 (EDT)
+	id 175666B0096; Thu, 23 Apr 2026 17:58:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7AB36B0093; Thu, 23 Apr 2026 17:49:07 -0400 (EDT)
+	id 063FA6B0098; Thu, 23 Apr 2026 17:58:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A6DFF6B0088
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:49:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 512691C06F9
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 21:49:07 +0000 (UTC)
-X-FDA: 84691161534.02.BE5E457
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4F66A140004
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 21:49:05 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E68A36B0093
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 17:58:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78024C20D0
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 21:58:56 +0000 (UTC)
+X-FDA: 84691186272.29.43EF2CC
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6E298140002
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 21:58:54 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HOmq8lRA;
-	spf=pass (imf23.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776980945;
+	dkim=pass header.d=google.com header.s=20251104 header.b=szRRclZP;
+	spf=pass (imf23.hostedemail.com: domain of fmayle@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=fmayle@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776981534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nujJS2BoozftAoryi1Z5f2y0D61PYjd4fv1c5M83f8Y=;
-	b=TyOkXAw+4nLyTzJ24L7n+TngR+rV15pAtIWfqw0aODgAbVKCyP6Bo1F5uCCw3mpS4QrmEm
-	nFK9bflEK/PJgDUblH18Lb3TzGo4v+Bxuo4MEwBu5wg8SdQwTgb6wr2p0S+LQaFzWt2d+Z
-	FqPHOwynjG2pOFnf72Iz6nPejwk6BJU=
-ARC-Authentication-Results: i=1;
+	bh=YbYF9ZG445gn8aa2Rfe2DrFqGQr7JCLV6XOA6mQVPOY=;
+	b=zAetnfVYH27xHqU5fJoQJDXvANrDVc6lby10dvTlFj8Veizso8Ic1Uy23flKrSSOrkC5lA
+	3ao3Zqek4ZNgDQxJW9hjqnBSyMahu/mNuoMTx+vFmMgBC62l2isi1N+r/wUy1FK6CD9RVZ
+	2ftIswmAPzvoJOoJkIL8faLtna+qOwM=
+ARC-Authentication-Results: i=2;
 	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HOmq8lRA;
-	spf=pass (imf23.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776980945; a=rsa-sha256;
-	cv=none;
-	b=EGn2U6+cSTQDm3oG4RySP+X/T6gB46KKbGGo9b+JwdZog/KV8psB8eins1a3zGXh8Az7eZ
-	lIfQfOE7ifK7rEz0ShDYTyAGamuad0SH7k0avidpuyDmjcjrTlqFLV6eoBCZklzBSH5WoZ
-	kZUjc0zAQLHUsbDwylB5FyCZI+btzCM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1975F44317
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 21:49:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8156C2BCB8
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 21:49:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776980943;
-	bh=P/MWsaczqkhvhvCm3TetzydIWSeehSFXSjf6AmPzRbk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HOmq8lRAd348jGfBf2LCuO3Zv4Y5MC+MOUJmucc7R7opCOCYhsQaHo5fm2BIBfBRx
-	 7+o/f3uTNiOkiKmbbQ9DxVCVD1/2NWe8nocTGohr6TzYAh5vo+5ac9TTGa2A+vMR8p
-	 tamLLRZnULnXGHBJt0DZi7t5e1P0Dt+NhbsT9qxFlapShySJkFT1lNLT49/XC8WxfQ
-	 VJct+3/dYFdQ7WWemI5GSIICP6s4xNWDDHeGIn4k+jzuF0Pr/QnihIrkdzgLDzhUKr
-	 omd1ykrU0crh83x7/piUG0H3Om7pysW1H+OnAemimATR4vUwHODD2o/rRCi2EqMAKn
-	 hGHcu1Bi8Fx7Q==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64e87a81639so6604248d50.0
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:49:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9oI4TNba8U+RktIenBfTDeqpEGi4bMwdJ/d7hb7G0xgu1l2I43sGoY2l160P/WDniPqXxccTEVLg==@kvack.org
-X-Gm-Message-State: AOJu0Yy2pE9lEh1Yube69QX8rVvgKZ8lUXmb0UcuIWu2TE9SlqGl7da/
-	iPACvDY+pA3+BZJEDLe9NsfYAwf0D8FsYlKxByhpTdbEPHomhd5bh6fMl9GjFK1QLnO0MsymPRE
-	UhVfsyRdXj2pD/V7Zg2uQrsqpyL8nEPu7ikWcwjFwAQ==
-X-Received: by 2002:a53:d015:0:b0:653:35c:c60b with SMTP id
- 956f58d0204a3-65310abd401mr23075208d50.54.1776980943250; Thu, 23 Apr 2026
- 14:49:03 -0700 (PDT)
+	dkim=pass header.d=google.com header.s=20251104 header.b=szRRclZP;
+	spf=pass (imf23.hostedemail.com: domain of fmayle@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=fmayle@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776981534; a=rsa-sha256;
+	cv=pass;
+	b=jTw3lnarpWexq7It82lSDjcTIImFT3TpQkSgA2Uw/b0od/Ab0JArdkUAE1IFJBL1N8XVkp
+	oJCybSZixOs3xuCOekMvs/6r6RFINCgp/2pKhEzex0U4k1MNilnfCcA3355RieQxJPSRBJ
+	+swMxD7vylxfq2bS8Pue97i1B7mqKpI=
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1270f10a774so53983c88.1
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:58:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776981533; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IZcSqZQMWzPvC8yrPeK4AygdM7nimU+6mY1IiL/CWK2psRVeGxTOYWeqeKgmCVuB+Z
+         2bP9yU3DiWNQ0S40vy4S87NvEw8ZlP3QhX0KUF1C8Rj1ggfS7hKTxgISr0AHx8zI4SG4
+         kOY7jZ2mb5KfqkUeN/56vYVEFCP8iCrjwMqOSXijX2iWi2JuWLiqsaUMicVMuOiXRIHo
+         78/KXdMU1pC407ErzTbUILGrb9f9XEOLrSdQByamRsUGvfttlH2ukuoHieH3cKTh6gDv
+         27wjgvy7ypVg4B7QnYgh6IVm6II4S2Bl5Bec714GyT3knX5kzOgbYg9QCMAO4gRWKMEC
+         OTFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YbYF9ZG445gn8aa2Rfe2DrFqGQr7JCLV6XOA6mQVPOY=;
+        fh=ZWAiEEmooQVExU55DNUQtbOU2VGV68k9KOuzbgIuS8I=;
+        b=B8OgYmvOvyo/zluqPT0/jKhJd8uLLg/h8O0ivtbmltuFKxZsE1rSFjiLRW5WjAjovt
+         eWvDb5hTGPblxDKPpS4ygRV1jyEu3HdxxmMpGg5R+uL0mOByjx/SrJ4KD8YdldFU7JYy
+         QPmIbf6XjpE35/G84p/b5+qda6bH0I0oFK6tbiBROwawINssCOBRnQGXQNEbQhCGMDsi
+         Ptchgvsx+WUmMq5nB8KYmLEy66R4Zib8c0iqHiVihGNLrwnmTKYDoAhsPpjzLEUEYB1Q
+         AQlyVFq/jQWh9VA5okllkSm4LnIbm5gIGWtLT4EGY4g0+yD7QzF8pDWhrfoSdeRIq6As
+         5BiQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776981533; x=1777586333; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YbYF9ZG445gn8aa2Rfe2DrFqGQr7JCLV6XOA6mQVPOY=;
+        b=szRRclZPnal5vFIY/ECvcJpJvpvp9iCP6GmOzXU/ZeO+ur+HgWwcO5YZLA5wF/LQZN
+         0mwwvlp04VvtgqGs27KatrlzuL4kIKBdaZsKc8jwykJvoWJODjE5gDVBNKroMpQQrOXQ
+         K/t40eg/khiy351y0TQcXAZFiRna87ashc94h9Mf+8qPTeQc+bA4xRiHtZvBPd8YAwB1
+         O7QjIVndY/iGKm16/AbGgN5qpcMjlah+AduIxDI2xZgQHHukf4a/8q2nCppzACN5kpb4
+         BhlLzV+6fP2qj2/UXlhZorbD2sl/5W6FRDoetu1riYz8wjjHvk1W3hwxcZSxdR8UQ5iX
+         1lWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776981533; x=1777586333;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YbYF9ZG445gn8aa2Rfe2DrFqGQr7JCLV6XOA6mQVPOY=;
+        b=l3Hklgr7iFZ1QnFIOOBtltE2UJoQetG2YLR5JX9s1ZE0EtVZR0IRxNUnE5TRIJ8LgE
+         GSxPMOKwW7s8f9jZWiNwA3DgdtyB0+J0EOItVuaiDeS8bSkjtqw35gHK92d1gVxEabpk
+         RB28H2h0x0y9TQA8dISiDqoL8j3iu25iFLWV1jP1musyVmbTPX8ncbKVks7KLBPMTQgI
+         QP8gXmE4i/7oHgA5WDfqiQ8s7TeAYvBTmtlv70dBWC6mwRnMsATUU5lin0w8ie4ZvB0F
+         zjmpEqvyu+Kq56GrpfivhBeN7ena2qojbRDFJdNIZSUJpDSi4jT4cC6J9i/5sjnqtgRP
+         9C3w==
+X-Forwarded-Encrypted: i=1; AFNElJ9kA00s4IrcZaLbVv4JgUjsiHSVwK4F7XNlSUVFCmv52MTs74hqWYGwp8Ci2nFTusQXTqtO/hcqmg==@kvack.org
+X-Gm-Message-State: AOJu0YxabxHuxcORVt6EOE2uKT+Q77ZrH7phVd6UqfR1UNpT2aUY9j6l
+	C3aXMev6mK0VdlmD5FeACsBwiecua1NAo9ZTkCGuZm9MeLvp4Lrg8usekk63knM/AkTiMREiv0o
+	/8Y9K2S1Sqk0qsZDkLUi2OSmRwKQmQVZ+sxmFXEmK
+X-Gm-Gg: AeBDiesCzTDRs24dIO9kRRWlIv6sROOJbLEQIYhaJMOKNOF/daQzG+T+0JkPxk850YA
+	0OiO7Ks47oyPPYeiD8ylf+uvzUAgj8lQN0iguUll87KZoYSnelU8iiFH+DVbzx713Tnmg55T/Uh
+	cKXYbJkIafnfeCEmxOMmWoEwaAj4JECYXHwS6OKKgoZ2wW3POcIEEGzqS+QW7P0wqli6qI5UQn9
+	WSOmU1Q6NKxp64HDPfzZ95JNp9hnOz/F+YFmwQIFZjqF6Dvb9rSoCXya7sKQqkND6HAYJBQAfsa
+	PJOdBqjm0q5e4wOfq33IAgA41xTR4voHZEsZZoW17wsLPDf0PiJczdWnb9d3N/xFpCnqPw==
+X-Received: by 2002:a05:7022:4396:b0:12a:b39a:31da with SMTP id
+ a92af1059eb24-12c7ab5879bmr1020973c88.16.1776981531942; Thu, 23 Apr 2026
+ 14:58:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260417033951.1111038-1-baoquan.he@linux.dev>
- <20260417033951.1111038-3-baoquan.he@linux.dev> <CACePvbWZO-=Nwho9Hfk-2HpuggZyb+Yt306MdA4X_icAt6+Z9w@mail.gmail.com>
- <aego1T9d6PVudYqj@MiWiFi-R3L-srv> <CACePvbVHgry4oeXeouML1YNscpuMNSXSnBY9wd-McDUar4tG1Q@mail.gmail.com>
- <aemF6D3Do9FQYUOF@MiWiFi-R3L-srv>
-In-Reply-To: <aemF6D3Do9FQYUOF@MiWiFi-R3L-srv>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 23 Apr 2026 14:48:52 -0700
-X-Gmail-Original-Message-ID: <CACePvbUih1E7cypNwPE13Xf8tMzYG5sjLoPO0+Yt7V0uL4qt+A@mail.gmail.com>
-X-Gm-Features: AQROBzBvVVp7kQ2PrX3CYiP2T0Prn_UbVqXPUhqkdRa2YfhfyABwjIltE60enuA
-Message-ID: <CACePvbUih1E7cypNwPE13Xf8tMzYG5sjLoPO0+Yt7V0uL4qt+A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] mm/swap: use swap_ops to register swap device's methods
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, usama.arif@linux.dev, 
-	baohua@kernel.org, kasong@tencent.com, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, youngjun.park@lge.com, 
+References: <20260422005608.342028-1-fmayle@google.com> <cxthb6g7tqgluwicuh7xc75i2bp27hjlrx3oreionu4duknk32@x4tmnklhvkfz>
+In-Reply-To: <cxthb6g7tqgluwicuh7xc75i2bp27hjlrx3oreionu4duknk32@x4tmnklhvkfz>
+From: Frederick Mayle <fmayle@google.com>
+Date: Thu, 23 Apr 2026 14:58:40 -0700
+X-Gm-Features: AQROBzAgJMo_Hhy1amk3Qek_Bw09oB2dffxAYeLAqOYckcRkm-f1GTxyRcN8b7c
+Message-ID: <CAHCxdc47qCEpEWtmq6dbeWiz3X5CP996zFmKNUXKX07YWjefkA@mail.gmail.com>
+Subject: Re: [PATCH] mm: limit filemap_fault readahead to VMA boundaries
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: David Hildenbrand <david@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kalesh Singh <kaleshsingh@google.com>, Suren Baghdasaryan <surenb@google.com>, android-mm@google.com, 
+	kernel-team@android.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4F66A140004
-X-Stat-Signature: woas5wzet4hof5ukfni548yuaq4byfm8
+X-Rspamd-Queue-Id: 6E298140002
+X-Stat-Signature: yd9g4fbow5gyfthe9ck1hgzrb6zq5nr3
 X-Rspam-User: 
-X-HE-Tag: 1776980945-854697
-X-HE-Meta: U2FsdGVkX19hwYcH28tJvD1kW+PQBRPfkpRabiWaifrpIlbS/TWd3bLhiR8I1cfG7A0nFoXrKNpSvMcSRs5zbgkPcq2pYiK0fp49+mOJmE5/9sTVWV4/6X+1f4X+6F+fVLVaYl74x/SXIR+WUwch/wBGVjS6ENbga8C4vVUHdF1i0+FvhMtLo2aQH0QitXltb6nFN9ddTzj6ZmEsakbk0WY2FOLYCxLN2RIeXOgrKMtsTlsxF5CdsWMj/td3a9POMzpZQe9lyvTJf4j929nmrjnmKmjqv9s7/v3fDLub2fyahv14mibRcXByHJG6IKEQOJHomD44zg0UfShHDMVahKYf1lEUMAO8lbPqdYoVNHeqTZTnTBB1p0lQiujuII/K0guLrLYa9aV3DgrzXWRLP8VLPkK+QilbMklgj/MCFsXGBzxodR2Tny5KuyThsLmEAdhAS3Ds3l9FpKK/Ybj93/vwAQIFA3tKD3glefpC3sfgnNEHgrcBPN+Ww0VaFz5ohDmSThM5nQqfrXwNeOfLx3elaatKmaS5ek2yAh/YIFYNC6E978XADZ0luSiXiGd9lOor4zH0b8yMN/907UZbPOa305wGCql6E6LGrqOt90OM4c3aToAvBCgcbidh2HfWLSxCAx4xGRfV9mJ1Hmsx/b1hjr5ZY2mlppy2jEMoeZtMZ/I0doQqk9fnVZEgshlhelq3zGxg5tsz8uW4QLBYeSiuRXKLiJHGBttz19HRpU7UqU+EFXU8X8gxWTzMrRNNZvMjWrPkLyJ42toMijV3A3pBY41J7XU1xNvRflwAJjGzVO7gZTjiAfSQRfjxoiEzjL0fHIIt2MFd8wBOvxGLkIlgvqA9hwQdE8ZvI0mrYzU/uXxkrp2+CntkGBQYU0A+rXeS/YLuH8Vk660p8lzZlXEvVzPFRKEoNQ2ssuvc29C8n7VnzXJtNqYK6oH/oQTx7TmfQKnT+mMCLPpAQ9J
- OkmSsCdR
- JNKIoNx82OZomb5Hj7D+RIe8P7H+gGIPEsi9mVqa+Y7mbnLmx12v6aoxFU8qyYX8xIxhj9EzxrD5S9uuKiaQJWmziQIHduc9yMII4rt1Mtx3WRcAlT8uYx7Pl5SicmYBMsuXdvrSPzTU1vMtNQwiWzFJee0HzY6rhVosare6socOIpBP6+AK08S6g4hIL0uLUiStQ/J9ClN8aAdI6jOa37gkpYnk5URUea4iJJtQqniXReyxB8oGzLibFjFnqgW43OEcW82I223BbQcsPAmVixAtJKD2Yl07AbaYusJyP4waksI3iIp9IMbrti97KlfhApg67T6g5fuuPIf4=
+X-HE-Tag: 1776981534-760180
+X-HE-Meta: U2FsdGVkX19jGaNUWJg9gf+WcKzH28Do0Fo0P2HC7U9X+PP90stjzZUQqNICAXl5dXATnivaKxZhiET9nsmx815njLzx0nRca3Rxds+xpGCOves29YJiCUim+Q0GgcF+IqBMTI0+cg4GgYC1YAA/74dQw/1Xint93//bt1nEUoz2IWwIkJ4LUwl79r4KhTpz0gLyaxXLv7URPUlCRa8DVDF3eSjWSB7QUq3WFXwVR1rCNo+O/cxVBI7/hpBwlTdzRtq8HKX2jddpprUX5qpUYT3xTmMxOmAjlW1u27t/d5mByjpg+J8ID67UyO6CLJhxMRy13XcM/lM5LH614D8ic6ond+XxcH7zerQEiT5579ANpHnLt0wD9m9J8Vfj419XdGw5r0nKKUV5ZeGisOpxPp29ba3QmE2hOaI+uqFOmTyQcUoob8fsle+yA+T0GLPCBxzta79TzirlC6gHfLe6fR05S3BFPdoKBdrjEDpYM0DHpY/cKTYtHKWpIvdV9MjG6H+GOt7rYrjvNyRlwcUmxtZ3/AQm4gBQixE9XfG6zXnhw6HY9XZKdbIpIOYdJQqncbBo8qs1HQthYw+EyUTkpNsw5oDE7b6xRcIdEPt5yEDhnNrvbt6JZf6oT7WR+RwnO6ql3iq3ihr+K9NO3IuOYNnk86F6ogNC0qNP2l47QPDMTpd+c2ox6l/px6NLSmMOYxDCLq2IGzE0lOb0UbsJkVQ4m0qnJyC4ZKAT8mtgZ9kWuujBIL73XSXc0HyLS4TkGfRhLZGjLxkIr1i3TaA7crjVzUodHNE+T8qZ9c4RebacgPZnQTP8kw/hV+TsDOAHAMT+pafCUVfbMpmXp4pAxq0FZ3ED3mP7ldFKUxh09N6fx+qfZsIdZWpqDpgjDTtt5VZa/SCy1IT94E6fAOFKAlvyD83e5/JCzirzCvd2N7I9lR0tCqm6ydgNvjhC4TNkKIB/zuwizsMboQUekDm
+ vQWYzQWF
+ hYXw8cUxc4VSmRD+XO1DWOtB29L627n3mWNI1f0OW31Wup5Tk2xStgdubmVXF36/W3dHize26Rt6RJiiW2frSLBc6iMLZXopYjyFUyXa5EdRC/XogXGU8lia+0WJDqrunQmpDzYoRZ+l8drF7j/k4vTmVuCROK3sCdINnIGiBZGBJCtQRWgrMIIpKVEzHzWfe+eI/MPgmzRSmBc56qFyMzzKrpNLPOoQVUC3cfwdURDUDLKlwvkmpJ+RL8JPtDIw1Fo4YImGN+xYB/fVlpihoqwozFDZs/8e1uEcGExMTTfLL45W5S3O5NOIk4iDMvcEAMp93jb7s+JmbUKdFtR+y5Gv0lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,39 +143,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The incremental change code logic looks fine.
-
-On Wed, Apr 22, 2026 at 7:37=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> w=
-rote:
+On Wed, Apr 22, 2026 at 6:32=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> wr=
+ote:
 >
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index af81fa212f1e..7644049a0919 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -3518,10 +3518,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, speci=
-alfile, int, swap_flags)
->                 goto bad_swap_unlock_inode;
->         }
+> On Tue, Apr 21, 2026 at 05:56:07PM -0700, Frederick Mayle wrote:
+> > When a file mapping covers a strict subset of a file, an access to the
+> > mapping can trigger readahead of file pages outside the mapped region.
+> > Readahead is meant to prefetch pages likely to be accessed soon, but
+> > these pages aren't accessible via the same means, so it fair to say we
+> > don't have a good indicator they'll be accessed soon. Take an ELF file
+> > for example: An access to the end of a program's read-only segment isn'=
+t
+> > a sign that nearby file contents will be accessed next (they are likely
+> > to be mapped discontiguously, or not at all). The pressure from loading
+> > these pages into the cache can evict more useful pages.
+> >
+> > To improve the behavior, make three changes:
+> >
+> > * Introduce a new readahead_control option, max_index, as a hard limit
+> >   on the readahead. The existing file_ra_state->size can't be used as a
+> >   limit, it is more of a hint and can be increased by various
+> >   heuristics.
+> > * Set readahead_control->max_index to the end of the VMA in all of the
+> >   readahead paths that can be triggered from a fault on a file mapping
+> >   (both "sync" and "async" readahead).
+> > * Limit the read-around range start to the VMA's start.
+> >
+> > Note that these changes only affect readahead triggered in the context
+> > of a fault, they do not affect readahead triggered by read syscalls. If
+> > a user mixes the two types of accesses, the behavior is expected to be
+> > the following: if a fault causes readahead and places a PG_readahead
+> > marker and then a read(2) syscall hits the PG_readahead marker, the
+> > resulting async readahead *will not* be limited to the VMA end.
+> > Conversely, if a read(2) syscall places a PG_readahead marker and then =
+a
+> > fault hits the marker, the async readahead *will* be limited to the VMA
+> > end.
+> >
+> > There is an edge case that the above motivation glosses over: A single
+> > file mapping might be backed by multiple VMAs. For example, a whole fil=
+e
+> > could be mapped RW, then part of the mapping made RO using mprotect.
+> > This patch would hurt performance of a sequential read of such a
+> > mapping, the degree depending on how fragmented the VMAs are. A usage
+> > pattern like that is likely rare and already suffering from sub-optimal
+> > performance because, e.g., the fragmented VMAs limit the fault-around,
+> > so each VMA boundary in a sequential read would cause a minor fault.
+> > Still, this would make it worse. See a previous discussion of this topi=
+c
+> > at [1].
+> >
+> > Tested by mapping and reading a small subset of a large file, then usin=
+g
+> > the cachestat syscall to verify the number of cached pages didn't excee=
+d
+> > the mapping size.
+> >
+> > In practical scenarios, the effect depends on the specific file and
+> > usage. Sometimes there is no effect at all, but, for some ELF files in
+> > Android, we see ~20% fewer pages pull into the cache.
 >
-> -       if (init_swap_ops(si)) {
-> -               error =3D -EINVAL;
-> +       if (error =3D init_swap_ops(si))
+> Didn't Android have a gigantically modified RA window? Could this be why
+> you're seeing such large effects? Or is this no longer the case?
 
-Some more nitpicks:
+On the device I used to test this, the relevant storage device had a readah=
+ead
+size of 128kb. In general, it can be configured by device OEMs, so perhaps =
+some
+devices in the ecosystem have giant RA windows.
 
-I think some compiler option might warn about assigning a variable
-inside an if condition. I suggest moving the assignment outside of the
-if condition expression. As it is, it looks very close to "error =3D=3D
-init_swap_ops(si))", Some compiler might warn, "Is that what you mean
-instead?"
+Android binaries can have a lot of padding and sometimes unrelated APK sect=
+ions
+adjacent in the same file (see https://lwn.net/Articles/1016860/). Those ma=
+y be
+the source of the effect, but I haven't verified.
 
-Chris
+AppImage files have some similarities. They are an ELF files that include a
+mountable filesystem. Here is a quick test I ran on Debian with the latest
+neovim appimage (./cachestat is a binary that simply invokes the cachestat
+syscall on a file):
 
->                 goto bad_swap_unlock_inode;
-> -       }
+    echo 3 >/proc/sys/vm/drop_caches && \
+        ./cachestat ~/nvim-linux-x86_64.appimage && \
+        ~/nvim-linux-x86_64.appimage -es >/dev/null && \
+        ./cachestat ~/nvim-linux-x86_64.appimage
+
+This patch reduces nr_cache from 4134 to 2131.
+
 
 >
->         si->max =3D maxpages;
->         si->pages =3D maxpages - 1;
->
+> --
+> Pedro
 
