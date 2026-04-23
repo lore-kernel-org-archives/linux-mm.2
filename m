@@ -4,182 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F40E4FAD3F1
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 02:52:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A024FAD3F0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 02:58:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69F3E6B008A; Wed, 22 Apr 2026 22:52:59 -0400 (EDT)
+	id 82CF56B0005; Wed, 22 Apr 2026 22:58:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64FC06B008C; Wed, 22 Apr 2026 22:52:59 -0400 (EDT)
+	id 7DDEF6B008A; Wed, 22 Apr 2026 22:58:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 565A36B0092; Wed, 22 Apr 2026 22:52:59 -0400 (EDT)
+	id 6F3AC6B008C; Wed, 22 Apr 2026 22:58:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 481846B008A
-	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 22:52:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D88BF4027B
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:52:58 +0000 (UTC)
-X-FDA: 84688298436.30.CF6D6FB
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011067.outbound.protection.outlook.com [52.101.57.67])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0919B180003
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:52:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=G8MPNdvA;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.57.67 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776912776;
+	by kanga.kvack.org (Postfix) with ESMTP id 5A69D6B0005
+	for <linux-mm@kvack.org>; Wed, 22 Apr 2026 22:58:26 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 00D1C1A0465
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:58:25 +0000 (UTC)
+X-FDA: 84688312212.08.4D4D862
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1FD77140002
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 02:58:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UO5duJjZ;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776913104; a=rsa-sha256;
+	cv=none;
+	b=0ow5Cav1Yk3WGS4B0+7aSI9/CYWmVi3SsCLOrpqapzfIklyG2ng1A4l+r2CpR1wRcTrtyn
+	Brjm0VvDjX/ROz4miBvrs2I8PCSk/Od1PxlAk0BgAAWk7LTfiQgkB9bB2IN15fGDHq+PEM
+	XD/9ex5a9Pw/5bZMZFuf4BL2mRvX6Jw=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UO5duJjZ;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1776913104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lxFhZjgjEMaIXFbcNqgfL2uD+bRQHVOfiqS8yhbV/kA=;
-	b=sJEdKJ1wWegsQMUP6Go/2uYc87h8UzgBy0eqSwmS/P0qrvxJokqpfsSjqV6LR25L/Guv2q
-	Mj/pkGwfR3p4pv+tFKPi7egEICHIpnRJ1WpUG0SLnUPpU5GTufKn1XQgqpXDyFsORP4/I1
-	ViQArdbxnpUONl98VJvL/3K47WKc2Ac=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1776912776; a=rsa-sha256;
-	cv=pass;
-	b=5KUT0fPHcSIIyeaH9zVndMLgwMpOYNSCPtwrl2Xs1tsWv/dgIMFIuZiJCw8hPbqlhUw1nB
-	ueWtYxy7AgQt2vZm6MgDglo4fk+P0Y8IVOrEOAYB1e49cqEHoiul/voIxuEWIBWEMpiDQk
-	aM58j42eEe/6Y53+25K+ufXqdMGqErs=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=G8MPNdvA;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf24.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.57.67 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MFzxBsqXUgC+48XSdkYcXYQ/kFE37bhA5+UWeayFjbzTPkdTOfqxHRH94/PynSBqWs5l502APk54xgwVzvIshG5do4MBPrkn0u9ChLgPDBco7L04OUPxxwbgxGRniIp/otaQzJXBeYM3bvKR6ngHS487kHKBm+KdbSfQy15P7FknDWeW+H+zZDD0GKJJB0MOGLATSVODwVZPZt9+YHkEF7WzpGWISlMqZhhY88PoKIJ1WXYbQVxXVYmCUpvQvYS/yy5p6mi+Cds1HJjbW3kK/0sWjnCem5GLCiVxRQdWhB3jphvsRPBv8HCsCxAlBVH/JZGMhHPO33l+thdK2etS3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lxFhZjgjEMaIXFbcNqgfL2uD+bRQHVOfiqS8yhbV/kA=;
- b=eOzYktAyPsr4Bxwvwx0y04zcLV91MhgHmgae7sItLpz5TMVTzVqtTzjIUdIadWaPwrdTNFEzYCPar0rSLxyWBIDtlEvaA8mt1jiC4yZUzQl/VbY5g9IxO/MlzB+VoqNYazcSTPI6eOI1s2OI46k4nDHNJ8q34MZqDukwaYPZBHX3OxZ0+70MZt46zu7pqCNg9v2QfoZ051F8UsFH6IiI6WXld4klIbGodXsjURCmEaz4mVqF778N3nJdYIW1oHU68b+ggDPJj9Wq/aq+h71wu3y3ueXN3WXibW7EJ7X73wbERSyyaZy+eiB43Q8VBdh9pqvnvYh26CGqg2xLwpkvkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lxFhZjgjEMaIXFbcNqgfL2uD+bRQHVOfiqS8yhbV/kA=;
- b=G8MPNdvAnfxFQm0oHRFnj1ni0wSWtpTUWez7dCspgOgFUZOHTqrI8+SukzINl27i5zoOnJpApME25f3xkwPL1EcuwtLSwqN9zxItH91kWcIuZ7d8ay5UmLuZoTQiNR67KiXyag6qjPG8wLzauL5H9ijGXv4iK9DEzFwYm8SysIfw8oA3tAbQukTob8NSb2+mq1W3cROIMTiwtaNDrARSbE4skgsLGEt1mLy9Xp3RpDl50p4zKCiCzqvpHMHMlGyYepZAQsXwynb9P7H5GyQrFiHMUeg+jUoe1zLH9duOyv5FEdmJ9k4cIIeTGZsq8+IarFKwHiApX78trGVDERsKeA==
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- DM4PR12MB6590.namprd12.prod.outlook.com (2603:10b6:8:8f::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.20; Thu, 23 Apr 2026 02:52:47 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9846.016; Thu, 23 Apr 2026
- 02:52:47 +0000
-Message-ID: <4903167e-0c6b-43f6-ab88-cb709a7179a4@nvidia.com>
-Date: Wed, 22 Apr 2026 19:52:44 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] mm/migrate: wait for folio refcount during
- longterm pin migration
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Alistair Popple <apopple@nvidia.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-mm@kvack.org
-References: <20260410032333.400406-1-jhubbard@nvidia.com>
- <87h5p4isbb.fsf@DESKTOP-5N7EMDA>
- <51168a90-d6ad-4429-8043-3dfdd81cb9a3@kernel.org>
- <878qafix71.fsf@DESKTOP-5N7EMDA>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <878qafix71.fsf@DESKTOP-5N7EMDA>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR03CA0013.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::26) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	bh=4t1KTkHst3DgzF7ovXnj4u2GEhX05NNYyESzxY3DxV8=;
+	b=fvPtRYPP+DZMdZ3aAmtprKdvo8n3ryP/LKHaVPVFmnbEznYtilX7Ypw5M8k/fUCOHiifIA
+	9X/wH+HOAZ5XIap9nNYPy/RaQSzKnqnmNYa1FLXS2pserLqq0Jlv7hQLDb8LN6K4EBIVJU
+	2kWcZjc0aOC1A3UY2KdMsBP9wabc6l4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776913101;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4t1KTkHst3DgzF7ovXnj4u2GEhX05NNYyESzxY3DxV8=;
+	b=UO5duJjZ6yiGRNA3D/aSiBQ+FMx26q7Jd+G3mgJww/pIYxzpHjow/2cXV5oVtY8XjuEyHq
+	S6zPEeFG8Bi59JWil0eQxniu4OcF+/gXAwY6TUUI/GkxLwP1Ajteu7pI9YxvsYKQZ9febS
+	rvWCexq8PM7izD9DLdCDmDxFyi24vek=
+From: Lance Yang <lance.yang@linux.dev>
+To: baolin.wang@linux.alibaba.com
+Cc: akpm@linux-foundation.org,
+	hughd@google.com,
+	willy@infradead.org,
+	ziy@nvidia.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	lance.yang@linux.dev,
+	wangkefeng.wang@huawei.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "tmpfs: don't enable large folios if not supported"
+Date: Thu, 23 Apr 2026 10:57:37 +0800
+Message-Id: <20260423025737.60982-1-lance.yang@linux.dev>
+In-Reply-To: <b2c7deee259a94b0d00a7c320d8d24d2c421f761.1776908112.git.baolin.wang@linux.alibaba.com>
+References: <b2c7deee259a94b0d00a7c320d8d24d2c421f761.1776908112.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DM4PR12MB6590:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b968cf3-b633-446b-6337-08dea0e3665b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	QwVZFigOlNHe0nvIrm7I47i/hdJ2qgb7eXqUf/gAr2oArLo0kvASAmw2wU2zYMyW0KbLS1yPIktHH2dIHc4RTyDaDa1NGbIkZ2bTLqDgx9y9J70RVgq6WpUxe3R+yv9ay1Wx/TDihNwKILdf2MQ3sE36bVQCsfWhydMhQvrNhvF4wKJo/ckaT0YXiRKnTJNQCl7ZsmJgN4mkBtNSSOMLkciy+oBni2G7NDVlBAcnK4ulh8dKGqF6kfZV6FASzXs7FzhYBln8HYfGElMo13f6+geyife+jm/dr032BC+ZJhzuWcQUHReLqMIq5F/lwCKacGIpPMDCEh4aIp+CMhm+o4HLyAXvDpOmd4iIvkXKECF3peugkpE5G9SItlMWbZvFi89gmPse/GpupgOCjEcTOF7DnqcW3r74sipnkrh4UD+Dgtho4c9IJPPrPTrhm3+R0Hlbn6Cphp7OCQTtANYJAxIJaYhnm2+S4cJh1nJBEQ6jh4Mfyuyj/jqwjO7OHHAuNGkpu5uU1420XwP/aDA2Kbsi/lxY6Wgb3m6VWiCdg5yZPXEscwVMsEIwp4x7RHoM1kAdAizaLq+Crm8VHzE+6HUZIGXAHBDJ4F6hXnOw+LX4boJERPca9TPeQShj9sENlbYcSEmgRQEhe5+sPoZXjMx9eO1XiIO8i4+XVEnUtEnUhbFhTByN9O9d9+87AxboFl6go2qLwB5/zjS2ivgsXDNTvg2PvB4IXAauR5YhmcY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VERIeE5SMkxHakVQbzFYZVZWeWlqUm1jUjZCUU1WcjhNSjNqb1d4YjFoZDFR?=
- =?utf-8?B?Qit6R0o3Y2VzOHVRTzZFRVZiaG14TVZvUER1WmFBcVlObzM2OFNLR01GK2N5?=
- =?utf-8?B?ZXBOTHBKenp2ME5aRTVOaVppUjdDc01aZFRvUWxQQndSb3NhSUxDL0x3Vm92?=
- =?utf-8?B?YUhSdm5aSW5Wc0pibU83dW4xWWtOa0ZnNnU2cWFHMmxxbEdqUktHRUd6NmYv?=
- =?utf-8?B?c1hSS0l3eGFVQ1pEcUd0eFFReG1kS05wUU10UWpUSmhyeEpxd1FOT3NPejhh?=
- =?utf-8?B?WWtHRFFqbDJTNW5pUGNKOFVZMFRST0U3SUw4SEFCUW5UMWVMbHZvTVBKZUhK?=
- =?utf-8?B?UDk4OEVEbUc0Mk1LZjI3MHpCYW44NWt6aFNVWVNJVzRHTldIR1ZEcmV2Rkw0?=
- =?utf-8?B?S0VRajhRQWgrcUplMkxocTdwN0tzOCtHam9ISGdRQXE2Z1kyL2pwWGtZNll4?=
- =?utf-8?B?UURaZ25QNHV6RW0zQ3NFWnBCSHB1UFE5NUJ3RXRuaFk3L3ovZFZFTWo1dSty?=
- =?utf-8?B?YkxEdERiZkQ5MWNPK3IwaS9kZWJjRFpIZXhUOVRGcEZLZ1ZYSEg5RHVVRmVB?=
- =?utf-8?B?OER3dzF5REJYTmZDYmlxN3h3Q1RYcnJXNzFHWXh4NmtMK0NXOWRtODRkMHI1?=
- =?utf-8?B?WEVKOWpQY0hybnJEZXcxMWNmVkRjZEN0SzRmMm9HUkRzS1d3aWVXNExFRFUw?=
- =?utf-8?B?SXh6ZXZQcGFDcHEwaGtGVXF4YWM2MDArZTZLaWRhQm1CaWNuZ2pjVkUrb0xJ?=
- =?utf-8?B?VjFpeGlvdU5FOUVmdHlFVDJuLzFBM0RBUC9odVhhU1p6WWVmZnVYaHVvcEtW?=
- =?utf-8?B?OHZxNWZJc2Z1UFlHYnQyanpMUG1ZSjJ2Z2dFOUlxUG16MmxuaUtHTHBEMnhY?=
- =?utf-8?B?Y3ZFTXpHUzFmS2gzU3JtSUhkZzRkYUh3R29STy9KRXNvM2dCSjIzdSsxd0lp?=
- =?utf-8?B?QXpsQngxZjdUSnQzNUtDY1RpczcxWmxndVc1aGV2UnFvdm9DL05yazlaRlZJ?=
- =?utf-8?B?WGNjcWpUODlTQWFUdU93Qjl0M0pTdnVrUklIMHN4TmxFaHhJdGc3ZXE3cjJQ?=
- =?utf-8?B?T01mbldSYytEK2dWVFoxTGV6WW94ays2enJLL25wSlhVb2FadjcrS0RGQXI3?=
- =?utf-8?B?Sm5UWDJIYTZOZFYyNWZrN05pSkgxbnlkalRQdVREcXJBKzhOKy9kL0NOUUtV?=
- =?utf-8?B?WDJ0T0lkaUtjZHpZTzhoNExMYzFXajNHeHVTUHNncFFsRHhFcnhqUGRzSTVm?=
- =?utf-8?B?NWEyaVArWlk4eldTVmtqc3UrSEtqS2dtWGZmWTI1NWJoSWx5OEg4bzFnaXBE?=
- =?utf-8?B?V2VXUXFTWHpSZE4xQjhGWXRpbnBTRDUwU01wdEVHeTQ4Z1ZCaTdwOGpXT2pv?=
- =?utf-8?B?d0FNZUdNRnhvNEdETlIvVGxzeGJLMVpZRUxwK2l6NDZMYStsRlpsWWNsZlhB?=
- =?utf-8?B?bVArbnB4cE1oODFYK1dGUlFlRlZMNXdnSEhWRnNIWEoyUHYrMFJtcHB6N0gy?=
- =?utf-8?B?Wm9NUTdNODE2SmZ6SzZnMW1NSnYrbUxKakVzMFBzYUhLL0RybWR4aU5OUFpG?=
- =?utf-8?B?MFF3bFY0TjVLQ3lEUjlMVEI4clNZdzNxRGRXZHNZa3FtRWN2WGdkYk1UbG1j?=
- =?utf-8?B?aUl3Y0xCMVZ3M24zVUNGb0k1UVNqbVNCRmFTR0RSKzljeU9FYUluZzVXcDda?=
- =?utf-8?B?UEZrL21aR0l5RVFDYVJybE4vY1I4bXlOMGVOQ2dTZEVZUUdzQitQaEpWbk41?=
- =?utf-8?B?WG1zZnZMSVQ5bnJYcTROVkd4T2tLc0FRTHcrNVVMRlRWN2VicUxBYkYzUDFU?=
- =?utf-8?B?eDV4b0xHWlQ0Y05xdXlLZzcyTG5KbkJ3ZTVmSVg1LzJnckdhS2Ryczh2U1VG?=
- =?utf-8?B?c05pQ1IrNTFmVURpSGY4a1Qzdm51UEZiOXgyOVJKVGp3OEYwd2h5SSs0dWhI?=
- =?utf-8?B?SE9zQ2p2NjRLSmdxMlBLNzVIZHZ2WUFZWHhYcllCSEc4NnAzNGNEblQ4Qjkw?=
- =?utf-8?B?ZVozVmJZQlA1ZkQyczVKTjUrWWlpcHpleWZiaE9jQy90RVhaWnM1MFJFMUhj?=
- =?utf-8?B?eHoxN0UyaEdWLzU0TkJKeEdpejdveTUvRDVQcVlLdUpNSHJ6K2Y5WjY4UEI3?=
- =?utf-8?B?aU83akwxZlFmcEp6ZjBtdVJwUnpBY0lHSDY3dU9LeWhnTWxZNnRKM3dhNjg1?=
- =?utf-8?B?aHVudFkwY0NuWWxOcXljTkhNNnhVbU9sUmw2Z0dVMlQ3azFGcU5LZG5SUWow?=
- =?utf-8?B?OHpIdFdkWXBEalZMTVZGNnRBQVIzZ2NjN1puSkE0MVZ0YmwyYXNFSHNzZ1Zw?=
- =?utf-8?B?OVhJVUMwSDFUbmplT2pibHJXeDA5cXhnSnQxRkZtRllKZCtNK1VVQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b968cf3-b633-446b-6337-08dea0e3665b
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2026 02:52:47.1418
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dXrcZQHfAfIzh0Oea0H/vfd2cCL0erBvyMvRu/S4coSQx+3Fzg2MPPbvZV5BUQbYtV6l3veGrShUCFx8UiHW1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6590
-X-Stat-Signature: ct7a7q3mkya8a7wusjzc7haz5ma7zcqz
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0919B180003
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 1FD77140002
+X-Stat-Signature: j83na7icemcaj591a6u64nbd3hsqhh9p
 X-Rspam-User: 
-X-HE-Tag: 1776912775-936900
-X-HE-Meta: U2FsdGVkX1/qVzaNxztO1kYVKgprV3BPvZ3aBZ/lEkgDxcfjhp6N/yUQNtgzJwC/SpCO8CMMiJbyTyOVFC4x8U1RU24s6HdKyTpOx6CV0MJ6K9Djz35rIMGgW4kJDveq9vVfn84bdvwXVlKzPjFLAEhcuN6jm2W9jfmNjPQ9BYagA0cFuK9tKlWVoZYUjSv0ila1l6nms0dBAeOzGstxE2AhDMt6NeWm3VCLyA59tdI3CVJKVoqjEAs1co3icdd2FUDimUXfAKmXp3S0T4r+KjmloEQDrIUgBR0rG1i4mICMywiC2JG5sEnz7SO8mkpIT6l2hKg9K7WkxCH4qGPX2IN/43CRRfpz09UVFqvivQfofDPURi4LYRXlWOR4AzHK1JCe0u4OXfzOoDRcV+R3eEPp4HlJ4PKA261f3IqLMrORKrRGwB8cLXVUkWNSmyggVJR9s9iss6GmdKNDZ02niqbHmaPPed/js+O9uW6WJ4/tjKA/dBPfvNhEapv6dJpkiXsfCEuhzWHa7jydH2fdgE+JomDwdWp7n7MRo0gDa+W+c0F2auIcLzsr5j/zXlJDZNrv74EMex7A3gk91SQOC2pODkKhW2G2KfulwHuv8LVl8Ree1KPjNaXqxOkJe80/IXYu/Hdr+rdQjq84bo6dwJ3Fm51hvtoJQpZzLntS/E49eV54nheH4ydK2Zklf/9Vg3TOu1YnjVe4Dm8l+6eA3bv6MeMAwv6aIp5Etq88fqts0CeucjGFAa5uYUSWx2FTiOe7nkU0lPrWktF1okIr5IfwsXh4ESNylXchuEjh/8Co4642RV7Nv/HK8aGNSxmLaZj8dEEDg4hPaHs53/BMf0SM/elm+xj5mnp7NiWGl8nxsmCmaorCEtaAgbfpgZbguQdBFKBLbZpJIh+78KvesiJ92Duq7tvg+9gRYX4yeHTkKZsSy+5KYXdLtl+RAUkPjd9TAUIKZ3BykQxwALh
- ndQeiYk6
- Lep0mTnrBDOc02kMIxRHxA9gPSn5q30MPk4EsqcgVZUp1iuit9hMGvpTMRr35P+6fiOQev1Zj0ZZfAevuL5j48itIqEUyDKO3/x7olODVZamhlLgMtdadqPuAKi2j1Ttd6osNGKj7uLYiSA6XCAdNWI3D5hNg0k5KqMNciYSE/iXSSwTe54E5Z+bB0BbKXXWOoj2nY1utHF7JJiuOVpYl94mYFhvFQxIPPJQCQsD0q6VjtwgeMbgURsM/vmHet0CMn2VBJxgjTJq3R2X/xOXXWeVHCizQDF5vPVZ2oDWZp6ZySaaDDh7/kS6U00q5kIhivOEvz5ctruV4376AfvDl4vWZtWLdr2QBp6RmP0e3oQthrHKs1uun4JvUaT72Pg9FqiYvly1MqF7q4qHqUDMXbBG0shbMAPjWvCkxv03a+zudnrO4T/MIzlsWLPpkV+q4bBFWTZXBNJoFa0777lUGwBvTs3USXeLXtjMXHTfHog090/Xvs/EQuwnsj1x+5mW+No3gj037/WYSPBrGFU7Qfk5QJw==
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1776913103-105274
+X-HE-Meta: U2FsdGVkX19em/UtIyHq7+iB5K6c8298+JZZpYzcl2Uf/ORM5DvXFZEtkmk9z/nPNdcy1qvjvNdx2RKVVyYVJjZcBLbOLXrkzdp1esyabo5NklR7dr/b6eug3Y0uSx/cUQUvlY73J2d9genD6YCe1M0OduFQOm2h8H3gTz8bMwzi6749/XfD6eti7WbrSD4Ho9Z9AXGW4bXyJMHMSsEriZytg9gBM9a9rNhTuhfVdMZpc6YnJJaFtLUFaB/HKjIN/aKsMfeezoXRd94t6rMT/dh7VLHaz+mA+fp5kkZgV0A1GPa4IYYxOxbD+Ou5Lr3wD4mxuzwX7iGcVJNcdNTP5bxw2ECz3k4pCX+xMgl5Y8quAEn/V1pU7C/f2iNh+OuAXrIXE3iK4jGqsxB6xFc23vRMTe41p2tOlFBUeH2Gtq4Wo8jkpdp0Suu3E8OmCon2EgBiubZUsCEofgSKlIpRVOAg2XESXAgTfL1QP3oQNEInA1o7TxzuK/iPnzocJGX4EPPyUOOlB6AAeTdf0z2yOsfQga+09kadjEiEePffpzEKq6Hu+ozVe4Bc476zzJJSwo+UI8jZsD78CCW+SIBxygU74RtGKe1Uud0nhuLikq7XI1BxcwdtuMJZbVZI/BFFabc79wN6bZz2Rh2xQf7JcH+wpt+sc+T+CqQV/V8JUnHmY9cfuO9azU1z1PZxC6bQL3QNnv/oAevsFpKZQ7k1sDVvbkSgc+/kXnyYSPxoIdncURZlNRV+Il6MH2B2poNFe6q4FyN8pWyNRkBWIBydI5n+WYAhaaXrhK//SW4fhP97UsTZ9MNYx3ZY5POtPRSjHxCPoXLTBpraHKd6Vls6nXndnD9vhH+BmOGUtjRz8MOAATXrvAZymvYUaCR7sW/wwBIHLfAdF9V0XuNGZ66Ki4gOweP4Dmly75+0zssJSW9ZNj1QvAvdH44OXJaMt1ekqvi/oJlZL211NBmpaBk
+ 33+dLpJJ
+ wplv4wkiG0T4qqYigshkVjfiHDu2x79aWMunKKUJG/5JuHgsEe1KcCbqg+x11wjGfdJs5p/wtfljvKjU5i/8PpdA4NddtajiyW7EFmjmx17I+41zq2phToxOR5eiL57hXWDieVSBrrTBTWj9xBBEjwcSbjLtzXB89RA2CyCWCPnIukfKfAyq4MHEW83etzXMThK1L15WrX6BsFBaI2vO0JYFjGo9R1f/kbbMlEonxau3ochlgRLt+VJb5W7sNg/yrhQaZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -187,42 +96,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/21/26 6:46 PM, Huang, Ying wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
->> On 4/21/26 11:19, Huang, Ying wrote:
->>> Hi, John,
->>>
->>> John Hubbard <jhubbard@nvidia.com> writes:
->>>
->>>> Hi,
->>>>
->>>> This adds a bounded sleep to migration so that FOLL_LONGTERM pinning can
->>>> wait for transient folio references to drain, instead of failing after a
->>>> fixed number of retries. The wait uses a one-second timeout. An
->>>
->>> Is the one-second timeout appropriate for all users?  Do some users
->>> prefer fail-fast behavior instead?  If so, should we add another FOLL
->>> flag to support a timed wait?
->>
->> We should avoid a FOLL flag to affect that behavior. FOLL_LONGTERM
->> already implies that things could take a while.
-> 
-> Yes.  I am just not sure whether one-second is OK for all users.
-> 
->> So we have real examples were failing is even desirable? :)
-> 
-> Hi, John,
-> 
-> Could you do some research on this?
-> 
 
-Yes, absolutely! Great set of questions from everyone, much appreciated.
+On Thu, Apr 23, 2026 at 09:41:42AM +0800, Baolin Wang wrote:
+>This reverts commit 5a90c155defa684f3a21f68c3f8e40c056e6114c.
+>
+>Currently, when shmem mounts are initialized, they only use 'sbinfo->huge' to
+>determine whether the shmem mount supports large folios. However, for anonymous
+>shmem, whether it supports large folios can be dynamically configured via sysfs
+>interfaces, so setting or not setting mapping_set_large_folios() during initialization
+>cannot accurately reflect whether anonymous shmem actually supports large folios,
+>which has already caused some confusion[1].
+>
+>Moreover, for tmpfs mounts, relying on 'sbinfo->huge' cannot keep the mapping_set_large_folios()
+>setting consistent across all mappings in the entire tmpfs mount. In other words,
+>under the same tmpfs mount, after remount, we might end up with some mappings
+>supporting large folios (calling mapping_set_large_folios()) while others don't.
+>
+>After some investigation, I found that the write performance regression addressed
+>by commit 5a90c155defa has already been fixed by the following commit 665575cff098b
+>("filemap: move prefaulting out of hot write path"). See the following test data:
+>
+>Base:
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.2 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.2 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.1 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.0 GB/s )
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=3000K count=1398 (3.0 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+>
+>Base + revert 5a90c155defa:
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=400K count=10485 (3.3 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=800K count=5242 (3.3 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=1600K count=2621 (3.2 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=2200K count=1906 (3.1 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/testbs=3000K count=1398 (3.0 GB/s)
+>dd if=/dev/zero of=/mnt/tmpfs/test bs=4500K count=932 (3.1 GB/s)
+>
+>The data is basically consistent with minor fluctuation noise. So we can now
+>safely revert commit 5a90c155defa to set mapping_set_large_folios() for all
+>shmem mounts unconditionally.
+>
+>[1] https://lore.kernel.org/all/ec927492-4577-4192-8fad-85eb1bb43121@linux.alibaba.com/
+>Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>---
+>Note: for more investigation and test data, see:
+>https://lore.kernel.org/all/116df9f9-4db7-40d4-a4a4-30a87c0feffa@linux.alibaba.com/
+>Thanks Kefeng for confirming the performance issue.
+>---
 
-I'm hoping to have some answers to post before LSF/MM, these are not
-too hard to answer.
+Thanks for tackling this!
 
-thanks,
--- 
-John Hubbard
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
