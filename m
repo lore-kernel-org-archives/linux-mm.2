@@ -4,119 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E86CFDEE48
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 20:34:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1686BFDEE4A
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 20:34:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38D396B0093; Thu, 23 Apr 2026 16:34:53 -0400 (EDT)
+	id 600066B008C; Thu, 23 Apr 2026 16:34:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3614D6B0092; Thu, 23 Apr 2026 16:34:53 -0400 (EDT)
+	id 512FF6B0092; Thu, 23 Apr 2026 16:34:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B5F86B0093; Thu, 23 Apr 2026 16:34:53 -0400 (EDT)
+	id 428056B0095; Thu, 23 Apr 2026 16:34:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 05CFA6B008C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 16:34:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BAF9E1404A1
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2ED0E6B008C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 16:34:55 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 85767404F3
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:34:54 +0000 (UTC)
+X-FDA: 84690974508.11.6DEE54A
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A798880013
 	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:34:52 +0000 (UTC)
-X-FDA: 84690974424.07.042818A
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E168FC000D
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 20:34:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CYju+vRK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nI7jYAVh;
+	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776976490;
+	s=arc-20220608; t=1776976492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Sc+ZsDjiZEjytSKxuIVGQ3PUb0Eu41iRMSui9hW2VQ=;
-	b=mAd/C8Vx7gmH5tVU1qUS8DHoyFsLXu1cnPWEQApRS7FZCeCH5pbbt+85JXyxX6GRFKwD6d
-	U++NtDGfl4bqgWKM7t11Hccf5vMtW5JnMFBgK7GPFaVGJxsC+TuRix1oyuaMIROd0ETZu0
-	gFtaC0BonwcaOARmHEdxoRKgFUIvZ1w=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CYju+vRK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776976490; a=rsa-sha256;
+	bh=FE7KATctX9/flJ2U64Pj9KvPGOu/JEwhawIz5SLby7w=;
+	b=lHd+r+0h2o0q3B17jMKwmt+TM3UHS4U/JNVE4M5jorbxNBl61ge7/RMAr4fskqg7K8BuZa
+	sdn/ESFVm9+Qz2/FksqvZSbGGiWfvR1r2Edx6+bfJKzZIS6fNbouPOJ2XTDE815IYOdyRV
+	BpMMIFoeCBG3UZC8qRIMXy3cr+wMNi8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776976492; a=rsa-sha256;
 	cv=none;
-	b=OAgeOY0e5oP5vRFxOHF/lfR8SWsACKBXJJ08nvQsLA3kTutA+UzJmjoMvrP/fK1ijTtLGk
-	nOmDAg/a7b+LsVwkQiWsp3sV7l66oyc7RvlS/s0LuoBXavGJr3RyFuLI7GYLtT7reXJqzM
-	aWHU4rs35RvrxI00cyKLEK2HaSupxg4=
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7dbcb467f2bso6567030a34.3
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:34:50 -0700 (PDT)
+	b=hhJkWkC+89JXvNxVj5ntR3JCnyslUKhNlJxeiVCD1Vgd9OtbT+PdZIX2w3CP7P6yeSxQBD
+	X8RGqF5+G+c0JmYi8Ay4DZtSsYGXmLKZpl4Arvkq8zaDCqX8sagsgzFFlGdbOL87gnRnYF
+	7bWMZvcwHLQqWa0oASFuhPUgzsPqEEA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nI7jYAVh;
+	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7dcd8ef572aso1912505a34.1
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776976489; x=1777581289; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1776976491; x=1777581291; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/Sc+ZsDjiZEjytSKxuIVGQ3PUb0Eu41iRMSui9hW2VQ=;
-        b=CYju+vRKfcNTJf4R86MqMydXU5PhZTo/U+wJDN6WdNVqO9XyQrR2G+oGclXgtQ5wTG
-         7xBrLyO8jFNGSdIi7L6/TC5Z3IzEZzf901mmFHsG2oV+gQ88c2eQjKEWiiFKoI0Gcsg1
-         6wZAsAIdlS54ce7cPMeVuISNVZEPyUeFDRpVdmMR2sg1Twuoe3wuzg0sNAR84KrRkIIz
-         3zNhVvbJbsNiFFEbvRiW8E3MFh+YbWyE3CE9fvnoNTYUzzvvMCjfrImMCocHjwl7YVW6
-         8ITTEMrYUh9S1uruoQV5p/scekaQhS8k8MnOGNdrel8rm6dBFDIZoLm0kBBrtyC6/1lZ
-         qfhg==
+        bh=FE7KATctX9/flJ2U64Pj9KvPGOu/JEwhawIz5SLby7w=;
+        b=nI7jYAVhBhhDLqwmhoiy5n2Kfokv+PSJSE9oqvjdQL9L1Cd/xFjH9TlfmV/y9ZJ61d
+         qh9AgEOV9x0sEo+2OBhEnzFfD+pW+zk+pMoYucxnLBG6U88CvLOarh2J69TR80FpVDRr
+         yJfQp94vNy+9gkCY2XjqBWg8n9JXL59WtzjUIIcLl8cN3WPu2kB8N2wvF60ESsKpmqsb
+         kRx5pu0O20r8JEHm9D2sr/cLVXdHN5cYXCSvq+QEXqFcsI7KckQ6aocUrnY7yyKaHDWn
+         2OX0Ydp5ovJXEU9Chv3ySIZcQEh/EnIDZJ8RI+njlEFhnzxfe3MneslIui8n3jxuCzr9
+         OFNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776976489; x=1777581289;
+        d=1e100.net; s=20251104; t=1776976491; x=1777581291;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/Sc+ZsDjiZEjytSKxuIVGQ3PUb0Eu41iRMSui9hW2VQ=;
-        b=QsOSrp0pvkZP5ErvnrVeA9V8vd5xuuDoCM0FZr8JqlKsk1izfe2dTLX2eVO1mIzL07
-         0irjWDk0TSc1R+WTs26bv5wq7mNcvQj/FqKqlgyLvr+eXGfFb/C2ykggPmj85mB99zwq
-         g+hOduPsY7/KFp6VaaEw7IKLqepdyT7x+b263s7D5Neu6WVz2Jk7cA2uT/UstDOT5OFE
-         PQj1tV7tUphX59+aT81waAEtK2roIL6oVRSigyW4Rlxw1GMVrAySZDCCj3/7qiO7PPHq
-         zNZUe4zlWaKfXhBW1/kJqb6t1xAd4Qj8JrVDwrYhNbp51JCYHxY2CJkkTotgOOzK/pkL
-         WTNw==
-X-Gm-Message-State: AOJu0Yz6VOLPeFmxi2yppgL7JWitFqxZOTcoJjJitQNASMP/RUNoYVF/
-	4nuEPRZDuxQDRSVsGGZpo1UcOPQdvl+vfaxbJY7V9FpQ4g5xVQMyqqjENaSB1w==
-X-Gm-Gg: AeBDietH1KFZPt3pB5oXSV+5pko8pY7Mm1dSRZV10NjxRrY6T8Xf6kIoJENzl/n8o7g
-	6JoAwQz60ryCBA5x59lAVHihJlIuIYqOZigtajhnqeo4LdAAsGGBzgMaNzsRWlYVTJUgnNtjV6d
-	HUiPEe0fKHdnfxYOUBrrvh1tYu1KF2D8sjol95rLMUltNbwyPzJkon4HPfwbEmW7H+QYZOwSBRu
-	LBjPdVpe+yA+BjWyiQ2VfLi3wT7UCpinOcYQn7Su/3WeI87chKhbU5F+7649VEX44aBMyruEF3l
-	sLoAa/EFRx4eZ/WDf23QvEx8nFSzppcD6Rx4Wc6FyvFmkmXCWKiKNeYIcDGi+1hMBHyxqo9JD8Z
-	KDMDWessI+/7dJQ8Nq/Lvq1XYyzc7t6eOIKKjRl75B2aRhlhqR2YTImuHkT7pv89En3ESn3X1i4
-	r/BE7+ho3vMqtyrrweXd6gL4kw7PEpGEI=
-X-Received: by 2002:a05:6830:6a91:b0:7d9:d2b6:1568 with SMTP id 46e09a7af769-7dc9518bb34mr18578777a34.17.1776976489633;
-        Thu, 23 Apr 2026 13:34:49 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:5::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dc975034e7sm17408211a34.6.2026.04.23.13.34.48
+        bh=FE7KATctX9/flJ2U64Pj9KvPGOu/JEwhawIz5SLby7w=;
+        b=FH7AJ5+lxCHGq5Z+DJUZbKGV1DSLH4yZR2qGRhk6lBFIQh3hrWwl45WpbakcTDaGOO
+         pywbLPUOdx0Yu5TXv7Anr9ZbEjDBu42xMhKMLNI08dw0LoS2gWCcUQ1SB55HA5sDkEYV
+         aIfvX9Xd/Yl6hwiquPn/0nrfsDyMzC8Szil588bYrej6v94oCoHJp57T5GKPSMcFJf/q
+         lCZrjeGI3902KxrmswiykNx7QYabvGU//XZGSDIZfLFfNi3Pd86xWIKtcxSs1k9+pdR7
+         iZIK2Vr8oLrO2yEIjV5VRM2SBTerazbVgwbtCtm1JV4G/o16oCXxtryB9P3FTi9OLiJT
+         UR8g==
+X-Gm-Message-State: AOJu0Yz83odw+3m2oeTez7ocDQIVLizgpwnYEbHJO4yW9/tNX+yi8UE/
+	PRkNfJoGmuWwDmSFRBK1IMFYHZUMBqIMK4tP1UQPMz09txavGe8AW450shGIKA==
+X-Gm-Gg: AeBDiesorn54dOlPeS5FQLTJHR+9iLpY3AiZlXB1sAN5emHdu8VxO5EmmBMvpc0bfIv
+	rv4LFwtKnaC1xL1JOAm4xi7nHXsFf7xK9TG6eWNbCgK//GVTr491dxTzUxYvEdsvfMjrRpsyteh
+	ehs3zgaXCXPof6ajLGHl1hW+jKtpsnCoWCg+P6uLzncOu9/VdhDVf1yRnHt1JlTMWqdncrC8CIM
+	95d4tsIwnpiqAMX+GkU6ZAwmqPLmBM6faGkS+S+25M1fMzarEUoMDNYy6uDt1Fig0pNh+AnyCtD
+	+uXOyU8yoVplwj4cwa6bMKShMU2/ihilt8KOPXK3MSB7ZapnB/oeeS2EHE1is3h0hrh4o3KbKAq
+	7Fms8qVQRQs3OI4EZkBoHiI0IK7a7FeITO2ST8YerXQPpMa4kSRsJNIBfaBc3x/K7oGl5d/dxOS
+	k3DxihKIarBsKsko//ERgJiZQtz5v1A/xe
+X-Received: by 2002:a05:6820:827:b0:694:97ca:9ec5 with SMTP id 006d021491bc7-69497caa1c1mr8146048eaf.51.1776976491332;
+        Thu, 23 Apr 2026 13:34:51 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:48::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-69464c77c7fsm13161024eaf.0.2026.04.23.13.34.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 13:34:49 -0700 (PDT)
+        Thu, 23 Apr 2026 13:34:50 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [RFC PATCH 2/9 v2] mm/memory-tiers: Introduce toptier utility functions
-Date: Thu, 23 Apr 2026 13:34:36 -0700
-Message-ID: <20260423203445.2914963-3-joshua.hahnjy@gmail.com>
+Subject: [RFC PATCH 3/9 v2] mm/memcontrol: Refactor page_counter charging in try_charge_memcg
+Date: Thu, 23 Apr 2026 13:34:37 -0700
+Message-ID: <20260423203445.2914963-4-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260423203445.2914963-1-joshua.hahnjy@gmail.com>
 References: <20260423203445.2914963-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A798880013
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7p1qb3e4u3cdsihaup15be3soi65x4zs
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E168FC000D
-X-Stat-Signature: zwuwt4je76449j1ojd57uwnzfrccqeir
-X-HE-Tag: 1776976490-487481
-X-HE-Meta: U2FsdGVkX18egGySRENK5oEgmcbLuIV9DyrYpjafaqdO1Vbom5OHKLK9ukHY+PrBv/SwjdybTJLkkoKl0nyFjiMxM9rGfKU7W+C/+UnTS8vUZ9DMeomLOybUdo84/sRhP9SpwtxIaO27OQUhGjwESt06ihc6h1O0MFlnEwlmi7f5lXTmgiU6I/jcq8iXhyaj57Csi08Md1kcYVwYvdjeaLXXb5qfsl3eJCDxoS2gGsxPx47wHsrbFAtpUVBQFYIQPwRbvmcuET3ggK8zMGGq/EpLLKuTXAAskcl19vzvZV2LbhlcGPmfCcGQIJ3BDv4F09TbzC5WOdV7tEGpVFhJBbMQhoY/70cwBhincaQR/JDgmmV/kf6FNVFMy4Q1OsNw3+DM9YDYwaO8oY+igRmhSSrjrAeZ9IYbWa9AHMLyIJxr1SyvAzhSulNcbo/NRP15s1zOZlABgv7EDZsx5+l3mPMkQIoV246PwyrDPX/nvfKIaeByLu909oyToQZRwmYNNsEB4SYMFFDOiASRNCuuOD7sNiDzcsoAK5Vq4LFqOq01LDZpVZMCRjjOb/HCIscJRek7i1gDspwuYQd5vADm16bU3asxY+4gFBuXUfBeQfmR56OyLIcWAH8RgpyzC6MtvJKetUsSq6Qch3CgVGJfsU6gVN3JAdMJkx1pgR3MRYHKAJvPEBC4LFHflWs+uYYAhF0uf+2p2UzBAXpEvVL/DlZcV/9Ew9/2713VbDffbNlcgz7G7OAAbeT/RNZ093ykc21dhDw+B7vjyvUHDQTo3sMuCtPqWU0zqG/5UcdNfSj3FGCCJmELXziYAxRwIn3q2G7qTUM2uKK75I+z3s3pLp74NdQ7mYOKiL7b7eKZ8Nt/aCQinV/9odkFYEgiUzR+fw+FsS2B4ei3bw2mMNrpCvSYFOlYMJahe6mgzQJ2zSOdbeWTAJ9j9jl0LywiKm5IeyxaST1cYtXn2Gp8BpW
- lVObmbTN
- YKtSsqIzwm8KvlR6qvF4+mBwp+xf8ZckNof2mD/gjMzcbmEo/WSBOKg3xInpMGpgriAVcYnTaFV30a+gW7JjYkKjp1Fi8iIFjb+r3LpKphbOXsqnQ15b73vHWDDKefI+IYuij9WU3G7+ZLhPa2aH6g2fj8j1fEdUYEvz6fkIrE1odQix4uA1vJKvTi79vzqFs6ClHsa7hlvlwHclgsFsOEabQeh2hBl9I95pkmqeL91radQzXKCYgj7t+JIh6zbR4++N8fw23QYSbxyBhgBgH7sZUxQT/7uvuYIpHCtHV6Zu2+hEX5Lt49yQVN8JVnaQUQ365v4dJeYjQFXiaguEWSjUTT/F1DweNPTanmpOos9raQ9TYB9qRTrrmfhT0opG8U7wDOZYySKVd/b8Cx3mhyU/QTnkRPQ0hdAEz6+QL+18s86EF1W9rYtkqZsdqqmNLqiBjgF/K13xrUV0nvt531QyCkq4E9CuSsruJDZNWrX7FmEWs5VoW5tcx2E+heWP4m0T/RWc71LTL1+iaHSyu60dpBQ==
+X-HE-Tag: 1776976492-866963
+X-HE-Meta: U2FsdGVkX1//FjVgb8gT2QH45NthxipTDmP7RhNYnTBpJYEizR9wfOKqwpjBBjnp6VcsssWpo3DQyR0TjCZUOFTddIX5qQBaY+AKtjhVed9jz0WtoI2jVvX7fMMQGZoRF1QkgnLTih84RkS6FUFuohAHRR6x98DizMFaVqIpOJsD3KZfj8KA5B98WtasFxcs6cXoDz4FrwAOwsVsJPaTywZZLu21peGzgv3GTx5lRVVfbyb6LFXet+q4MTAxO60MQK/+EgUCM2wX7dHiTFgFgXIpTK5IbZ6ywCcWBS9Z5XdY8u/0f0NWleUX4OC6MYNpgP78qMFkdPVKqN1hPNdSf/oprGjhFAIsy0AYHakdVz6VMwdJVZMbPRVF8kFGN3i/+F0YsmgV09i26euxhoGnlixaQ1+TpVIHqcyJz+hpXALHh0f3Nb3x1vJNqdeRwxHTuryL6kaDzH/8SacwzwFGRt9P3AN0ze0I5ibWDE1CXV1tImhJO7Mhf0TwTSB/4kloB+QLFpLJjGIiztNY7/0XH4apRc85jii+nJVBK5QG0CV3sqvy+x8UJg/mLys3loGr1HIIClLsDTA7gwySSJnLybqpeqzyF2qRT+r6cRmh1e1lB4Vbi0wS4E8OqAwEOtlib5QYxQ3lobDsdvHCpwl6Pr0GMp0Q7dG0FwMeSKBNlX/c6mNsU95iQl/m5nZtBu/WR88wowRYIcl1v2v29IoEpdo0W06+I6VUlv2AQDcRDH2hDp6Dh3Htzsa3nB8ht26CqFM2RGfdUHylFJoBQX3az4qEZNpKwKtTy/It+nsiXfuoA1sLOLsGNW4sCRwAfgWQ0epyOWx3sGWTZFyeCSekpSEUHffjGh9FUYzN95SXdrylfefaZRn6FvAIhdD9vL2qQMi9QBeM1LYClkrr9dl1gtrYEPMQvf4XByCf/ZJxLDtt2fQT0XVhrNIGrXw7Oc8mApJrvDVo//U1P0ojCZT
+ oZTkz9HM
+ ruk6AgTPAyO4BBeTK2ReqkcUpq18x9jTWAtSEO9n4CEXebmN4Iso+QeTIp6GRizTDOzLXg9Ruo3uHg1GLZMm5Tym5YvP9SPkNhY4PSUtDyXIWdXDLLs9ML/+gQFU8K9IFtvvW40HB3kiY4RGe/J3rPq1qtmo1OYuGhDxUuVvyMy3EZwbG/tXjmc2EUbDTeT4yBDifcQ3J6RoqUfFRtJpNhh3M2cpQ/JMgWB4c3R7fhFWteoMgP38/1AR/IAU/b8xw9aNjNpJ6FlU0VUGDdZMNKwlzyI3xuh3BRqAcF/v0uIo9+p2QCdXwPDjan1ymckDJY5W50Rh9JQ/HdGuSQolrA2jhHhHFtZt+iJAyl/mhltDPj69t3jfgKDeKkXP8yER/0ZNzI9bMoDhHQTNfF9N7oCpW/kv3A60JxdvOWzj7KHmMiY4K3QF30QX61HRbhBKslnCkhoynS0aSje+K0//9WTBsVYLvR3xJi1AUdGbxVPnH+ULo0m8NMHGb+FNXylnz2e7N372Xd7Gir47eUC6NnuhSHZvqDm5i5O8H4vzkPJL/HUQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,176 +123,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch introduces two toptier-related utility functions,
-get_toptier_nodemask() and mt_scale_by_toptier().
+In preparation for adding charging and uncharging of a new page_counter
+toptier to try_charge_memcg, refactor the code so that it is easier to
+roll back partial charges when any one of the three page_counters
+fail to charge.
 
-Tier aware limits will introduce new memcg thresholds on toptier nodes
-for systems with multiple memory tiers. To simplify the calculation
-for these new thresholds, introduce a function mt_scale_by_toptier
-to scale memory limits by the ratio of toptier capacity and total
-capacity available on the system.
-
-For single-node / single-tier systems, the scaling operation will be a
-no-op since capacity updates are hooked into establish_demotion_targets.
-
-Note that the ratio is static for the entire system. Explicitly, it does
-not take cgroups' cpuset.mems into consideration, meaning even cgroups
-limited to toptier nodes only will still get a scaled down toptier
-limit.
-
-This is to ensure that all cgroups are limited to their fair share of
-toptier memory, regardless of what nodes they are restricted to. This
-also has the added benefit of preventing accidental /unintentional
-overcommitting of toptier memory, since every cgroup shares the same
-toptier ratio.
-
-get_toptier_nodemask() extends the existing node_is_toptier check to
-return a nodemask of all N_MEMORY nodes living on toptier.
-For !CONFIG_NUMA_MIGRATION or !CONFIG_NUMA systems, it will just return
-all N_MEMORY nodes.
+No functional changes intended.
 
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/memory-tiers.h | 17 ++++++++++++++++
- mm/memory-tiers.c            | 38 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 55 insertions(+)
+ mm/memcontrol.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-index 7999c58629eeb..f21525c50a5ff 100644
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -52,10 +52,12 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
- struct memory_dev_type *mt_find_alloc_memory_type(int adist,
- 						  struct list_head *memory_types);
- void mt_put_memory_types(struct list_head *memory_types);
-+unsigned long mt_scale_by_toptier(unsigned long val);
- #ifdef CONFIG_NUMA_MIGRATION
- int next_demotion_node(int node, const nodemask_t *allowed_mask);
- void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
- bool node_is_toptier(int node);
-+void get_toptier_nodemask(nodemask_t *mask);
- #else
- static inline int next_demotion_node(int node, const nodemask_t *allowed_mask)
- {
-@@ -71,6 +73,11 @@ static inline bool node_is_toptier(int node)
- {
- 	return true;
- }
-+
-+static inline void get_toptier_nodemask(nodemask_t *mask)
-+{
-+	*mask = node_states[N_MEMORY];
-+}
- #endif
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 7de23ecd7cef6..8f7bedb55dbb1 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2385,18 +2385,22 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
  
- #else
-@@ -116,6 +123,11 @@ static inline bool node_is_toptier(int node)
- 	return true;
- }
- 
-+static inline void get_toptier_nodemask(nodemask_t *mask)
-+{
-+	*mask = node_states[N_MEMORY];
-+}
+ retry:
+ 	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+-	if (!do_memsw_account() ||
+-	    page_counter_try_charge(&memcg->memsw, nr_pages, &counter)) {
+-		if (page_counter_try_charge(&memcg->memory, nr_pages, &counter))
+-			goto done_restock;
+-		if (do_memsw_account())
+-			page_counter_uncharge(&memcg->memsw, nr_pages);
+-		mem_over_limit = mem_cgroup_from_counter(counter, memory);
+-	} else {
 +
- static inline int register_mt_adistance_algorithm(struct notifier_block *nb)
- {
- 	return 0;
-@@ -151,5 +163,10 @@ static inline struct memory_dev_type *mt_find_alloc_memory_type(int adist,
- static inline void mt_put_memory_types(struct list_head *memory_types)
- {
- }
-+
-+static inline unsigned long mt_scale_by_toptier(unsigned long val)
-+{
-+	return val;
-+}
- #endif	/* CONFIG_NUMA */
- #endif  /* _LINUX_MEMORY_TIERS_H */
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 54851d8a195b0..acc02679e312d 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -46,6 +46,8 @@ static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
- struct memory_dev_type *default_dram_type;
- nodemask_t default_dram_nodes __initdata = NODE_MASK_NONE;
- 
-+static unsigned long toptier_capacity;
-+
- static const struct bus_type memory_tier_subsys = {
- 	.name = "memory_tiering",
- 	.dev_name = "memory_tier",
-@@ -299,6 +301,17 @@ bool node_is_toptier(int node)
- 	return toptier;
- }
- 
-+void get_toptier_nodemask(nodemask_t *mask)
-+{
-+	int node;
-+
-+	nodes_clear(*mask);
-+	for_each_node_state(node, N_MEMORY) {
-+		if (node_is_toptier(node))
-+			node_set(node, *mask);
-+	}
-+}
-+
- void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
- {
- 	struct memory_tier *memtier;
-@@ -428,6 +441,7 @@ static void establish_demotion_targets(void)
- 	struct demotion_nodes *nd;
- 	int target = NUMA_NO_NODE, node;
- 	int distance, best_distance;
-+	int i;
- 	nodemask_t tier_nodes, lower_tier;
- 
- 	lockdep_assert_held_once(&memory_tier_lock);
-@@ -496,6 +510,19 @@ static void establish_demotion_targets(void)
- 			break;
- 		}
++	if (do_memsw_account() &&
++	    !page_counter_try_charge(&memcg->memsw, nr_pages, &counter)) {
+ 		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
+ 		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
++		goto reclaim;
  	}
+ 
++	if (page_counter_try_charge(&memcg->memory, nr_pages, &counter))
++		goto done_restock;
 +
-+	toptier_capacity = 0;
-+	for_each_node_state(node, N_MEMORY) {
-+		if (!node_is_toptier(node))
-+			continue;
++	if (do_memsw_account())
++		page_counter_uncharge(&memcg->memsw, nr_pages);
++	mem_over_limit = mem_cgroup_from_counter(counter, memory);
 +
-+		for (i = 0; i < MAX_NR_ZONES; i++) {
-+			struct zone *z = &NODE_DATA(node)->node_zones[i];
-+
-+			toptier_capacity += zone_managed_pages(z);
-+		}
-+	}
-+
++reclaim:
  	/*
- 	 * Now build the lower_tier mask for each node collecting node mask from
- 	 * all memory tier below it. This allows us to fallback demotion page
-@@ -878,6 +905,16 @@ int mt_calc_adistance(int node, int *adist)
- }
- EXPORT_SYMBOL_GPL(mt_calc_adistance);
- 
-+unsigned long mt_scale_by_toptier(unsigned long val)
-+{
-+	unsigned long total_capacity = totalram_pages();
-+
-+	if (!total_capacity)
-+		return 0;
-+
-+	return mult_frac(val, toptier_capacity, total_capacity);
-+}
-+
- static int __meminit memtier_hotplug_callback(struct notifier_block *self,
- 					      unsigned long action, void *_arg)
- {
-@@ -932,6 +969,7 @@ static int __init memory_tier_init(void)
- 		  node_states[N_CPU]);
- 
- 	hotplug_node_notifier(memtier_hotplug_callback, MEMTIER_HOTPLUG_PRI);
-+	toptier_capacity = totalram_pages();
- 	return 0;
- }
- subsys_initcall(memory_tier_init);
+ 	 * Prevent unbounded recursion when reclaim operations need to
+ 	 * allocate memory. This might exceed the limits temporarily,
 -- 
 2.52.0
 
