@@ -4,104 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B183F589DA
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15BD7F589DC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 14:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B12666B008A; Thu, 23 Apr 2026 10:14:04 -0400 (EDT)
+	id 6AC8B6B0092; Thu, 23 Apr 2026 10:17:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC35B6B008C; Thu, 23 Apr 2026 10:14:04 -0400 (EDT)
+	id 682CF6B0093; Thu, 23 Apr 2026 10:17:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D95A6B0092; Thu, 23 Apr 2026 10:14:04 -0400 (EDT)
+	id 598CB6B0095; Thu, 23 Apr 2026 10:17:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ED316B008A
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:14:04 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4478DA0187
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:14:04 +0000 (UTC)
-X-FDA: 84690014808.19.742FDBC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7DF41C0013
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:14:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hdA87yds;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776953642; a=rsa-sha256;
-	cv=none;
-	b=P7/gg0UXmvQ+D6cLu+eL77CUxrQbWp1+b7hp25N0x81rszPdptoNjETO3p2wdp8Iw601RD
-	1BOR6bWoDXv1MZmzqH/UDbXi1pQyjzKvxnG2SuwGKgFq4ulcpo8nfLjdhKmGIsFnKq+QXC
-	AgUXLt8K7WvusbYVit2vFezTYH0WO6U=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hdA87yds;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 49D926B0092
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 10:17:25 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EC5EC1A01B0
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:17:24 +0000 (UTC)
+X-FDA: 84690023208.23.367BA49
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EDF5B40017
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 14:17:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XeKL7y/G";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776953642;
+	s=arc-20220608; t=1776953843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1E/CuvYj6LlhN9kiDNJPcKqI/bueNkItOVsJUQHbbAU=;
-	b=N23FrGtjPBBJgtAxvyY4X2yP1J4GraseZ5aqcLD013ukzCp4zLZBzgcBI85oNe2J4zb0LZ
-	Ql6vo3/z0xegmsU/cu9z61gc137Ke7pfbsJrfPiBuLTCMyfL2x5TKUayC5YrzgOFdQGd8e
-	glqRSoZg9OKCmWUHNAqc9XK1WJbi160=
+	bh=y2UA4f7wSXZ4/Bo80ObO/SE71m2E320Jl4CNWIv04cU=;
+	b=7YyRFjeuv7g6Du9yPikVs6iEceMl4NO2ELwQ2PohpAVBM4+vslmtCv1bxHP8B+8kvxSpQt
+	l7Yh/dKVAr7WasMk8oB4mwINQGG8Ds2LW4zmTaHOq/MN7RgpddVfJ6g97b/QrAU7Lk6L2J
+	H90nLgrJm8EAqIFAFjR9IOSEqxq3Rr8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XeKL7y/G";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776953843; a=rsa-sha256;
+	cv=none;
+	b=5pcmkL16lMLRwgXWfUIAo2CC4yyTyR0h6tLpswgmCLcgHx0N/vgbRDHfPoqkdzkB9QhwYQ
+	Ohe04MauOswMx14wu+ingCaZTSnRNdSPFIfmXfdb1/XORF1pPTbq7bOMrUR2k6iCKPdd4p
+	hA/NUNovbFgRxIBWnI3HKwwxkU1bLaQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 826126024D;
-	Thu, 23 Apr 2026 14:14:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952A2C2BCAF;
-	Thu, 23 Apr 2026 14:13:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DBD6E442E7;
+	Thu, 23 Apr 2026 14:17:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A80C2BCAF;
+	Thu, 23 Apr 2026 14:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776953641;
-	bh=EpBTTRg1rLtTK6bSRcJ/pm4319w6ghGNpdcZ0k4OSCg=;
+	s=k20201202; t=1776953841;
+	bh=HYlxK/A4zhqyWVJs4vRBWAO2MAfjEq9L8+wa2Bhw8rY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hdA87ydsV5pc4MAndtcsCuNsC05FxkEo71aDamvg0Sn3MK6iJn6aTihkZinrUFWvK
-	 jRXGDUYUDqeUHkVfeHN/wZYfAomPbPiCBWnmiBA49CG5Xv7M3kXXJ4NlSbOzpmVIPY
-	 zuA74h3mUbHaz0eEefZgl4F2mYsLsp4d5Krn+/V9776lf0MRQ1/XhFCqNQthKhgJRN
-	 v8SXfPzMb9VIvJ2CVpVyUJdt55IEFvNtXdhCtcRZZ503MTinIPvo3ZIHPkwbxWCjv6
-	 fQmIxQ409UeodQVwxzGq2xy8vijJBwS1MYJ7Z3xLGvGuE47iAsndANwd7rzVEqIkSh
-	 LStO62t5OdNbA==
-Message-ID: <88b0765f-7cfc-4e44-83d2-c01a1755c842@kernel.org>
-Date: Thu, 23 Apr 2026 16:13:50 +0200
+	b=XeKL7y/GC7ftp33dfqEyR3pNNDrerNvqacH7Vee2ePfHEFzvCo9UeD3+oX+yIfPAO
+	 ILHF0doDwuqwdFiDcGq5ONDas/j7G5rCNU3mJBh+Wj1Gin+JpNVzp1RiwfTxN8DMHc
+	 /HF339qJxVPKpn9oeZzMTax2CpJp/me8QPrN4JRPSEPX10dUyi8NEy/oT0oo3L2Kgj
+	 FCoPKkE02uZNnSACiTs7gs6oIeS1wdC+Ta/Atdl9oZFu6XQxUcHuoqYQMhtcvKhZ+i
+	 ty92ArzBL6XrjbhEy4axVu7tCV/mDyNNZioj3i8Vy91PP7cxU05xZtV830I7H13FBF
+	 QHDKiozo6ZBbA==
+Message-ID: <07f546eb-e523-4742-a8b1-ab830ec4d0d0@kernel.org>
+Date: Thu, 23 Apr 2026 16:17:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
- for cache-friendly zeroing
-To: Gregory Price <gourry@gourry.net>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
- Jason Wang <jasowang@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-mm@kvack.org, virtualization@lists.linux.dev,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <bhe@redhat.com>, linux-fsdevel@vger.kernel.org
-References: <cover.1776808209.git.mst@redhat.com>
- <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
- <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
- <20260422171315-mutt-send-email-mst@kernel.org>
- <aemglPlcwFFHNj1A@gourry-fedora-PF4VCD3F>
- <c165d6af-4a35-4a41-9086-ee307640c044@kernel.org>
- <20260423074433-mutt-send-email-mst@kernel.org>
- <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v2 1/2] mm/process_vm_access: pidfd and nowait support for
+ process_vm_readv/writev
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Usama Arif <usama.arif@linux.dev>, Alban Crequy <alban.crequy@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Christian Brauner <brauner@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Alban Crequy <albancrequy@microsoft.com>, Peter Xu <peterx@redhat.com>,
+ Willy Tarreau <w@1wt.eu>, linux-kselftest@vger.kernel.org, shuah@kernel.org
+References: <20260409142256.131676-1-usama.arif@linux.dev>
+ <62d88cde-efc0-48cb-be8d-813eda810343@kernel.org>
+ <20260423150423.1a428820@pumpkin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -148,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
+In-Reply-To: <20260423150423.1a428820@pumpkin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7DF41C0013
-X-Stat-Signature: jzpk7xkpphppsjs3qphcnpkciguax377
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EDF5B40017
+X-Stat-Signature: s3it3bz7r7h8zz9u4szanw4ia9ehm9jd
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1776953642-621571
-X-HE-Meta: U2FsdGVkX18ibEzL/TjF/tjv3UpXyQOYwqMbVf+7NjHG2LAWQZUZdzlWnuEdV5ZooOzQuFlS87jRh8LtS2kHjWmyV5jyWDo9YSO7l5+4ClfOTnk0oiycx0WryZ+PB8+0ioTxML3nwDY/jgAUR8/sKnKHIlHlMSHya0p+MaSzCJ1+ZPiKghHf0qJAOCDa7ujWXOt+XDXImMe3w0EKt/Xq9HmbtUoViJwAf57AVYHhkcobw/3iC0xw5+4BMNXx5m294JTrAVCsEvUVKBgK5vg7vPL9DY+BQgwmS3MFebFI6YHegYzSOrzS9T6/dQ9u7PV3Y0ZwN4Mb1JGu9uGNZgrpYAmqX85d7GOXO4jNDqpMntop++C3uNH9SjkNPk9cd4l1XuVovowyIwwn+jHgqoo0jidDhRFPALV430TJ9IfUDaamgKsbWlgWPCgzU88WaKqhAu04ljKgesz4D2+ziVPe7t6mOxRFx+0jbgZHXvqSwJYaFfprlsPWFvybCO/dUqTnd5AsemXSrqrr+MUT/icmliBqvlkJ5aEf0gd0Rliho/bSazSwbgc9Qp2Sa73LvMM8/U7M5sNvZj8QeVQCTKhsC5hq7NWQYc/FgDPnAr+Fw0YClZeope/iLr3PETFTLygECnCpGglSTGTKLOavuSdiz4Rpinz4pQNb/bPsiM03h7EYgrDXmaOBmVNnOLJA7dn/dOWkvGxhlaDIG73E0GuTa5WCls8NSjgtOlUtEPWeJf6XWUgTYvjPJvhSzzSRZTPw90zuy+d/XUEBat2fQ7tmmlCLc6EzCC57fTejaTTWBFzqzqVHvY+b1YOz54u3+lmKSuZt/4J2KRYXwZH16PQBJTPikD1SiSHZzFRHyL+niM9kkrWA2ITny4uKehev6bK/oJ+vmEMkOplvdx20FBrvZfAP6y53zJUnIYej3mLvu469v+cU1EPygdDTFW9GCWlHU+JHmFSYWquGNF3tcu6
- IvPYh2xC
- F7JX8zx5LQ0sb5vHdLdlEG4aPxp1VMaRuWZMMf5utycKkWlAuXLjYXlpWvshjFvsKvDAzBnkEAooahCie2zUkaMEopGQQPt73XWeiDcn+W+oQU3HhEaf73qVGsgD/WjyBRdZ7NcbYfcLC6RGqGA7hEqJiVYdQLXGuq08vzEtW18fSWPsLWdOrG3C99BXrH3Mm5V6+ZXG6b8o1ugeUJzAcHsb/K3QJ6VL5sE3ChwL+8bRsQJ1+/9rc7m18qPgGLBIPv0MLXjWGlk9qdx1wHhNUxDpogjdjkSBE1Zd0k3whBn8lvq5Ncn7zOMKN4z+7UUrSbukM2s2UVJoCjKwMEvLWZ48RYit4GrwpdOH3cjiXQx5BULGl9p2Mw5QG53JI7hOFtbaS
+X-HE-Tag: 1776953842-228688
+X-HE-Meta: U2FsdGVkX183QGHncoQHdiQmWrCWyf9akl4ub0tCXSO/7c0EA+Tu56GenX1U4REWKL+bkH37E5bUT1YFff/Bsrl8r5uCg4hrbaP025AEEKCS0jri8l8NbdrxbNNtdEUqj4PFGef5NPbe9dAy4KtiqvvhtJGZWFztAU8SCjYzQHk1EOkmLRWH3x8UPS6bIHI8vtcNv67pNFhUAgwTFbsnf1WehwoxQBGeHgO/l0akg5KkQF0x4WI4QNgiKMeVyo1dqXDpFXNgGitjLI02HA0+xZf7V+vTGcYOHglqz6sjAvTJCYDbTHUg6wANrQXCKkFk0CiCNbTnSczA7COuvjBjdZxIyQXTQYWdrZYnP7zYXDEMtkJreHyZttXMzs6NLVoV33VTH+NOSs5bX2CXWFN8wNX8VyRkVnY2+PS0cH+R6ejdLx+TfYc3e7Rub1pn1mnDcRM4HgL7Cp1JUXXaXECs1rmkxeyPtJe8+0zS5CkKWrJ1fzPiZ2hd8E7+vpwhBMXU0RgAOxQCmjd1linit0cfoYdt1FxcMLyYcR21gRAelXzYGiZAtlMZ/73fhoFMMXajJ9wriNiw7NBxtV9fEWPJWb8poWXB53UpLofrHdFbM6s2xZTHicWj8PtjqzYiU3M6JYsbGLVtTO5l2vYub5NJeLXnWkquo2/Pf63TuIbBniJjTW6onQOlf0Jo3jD6A90XXF2BrvbQjYJEfOZvXLeuyXWm4VU16xmlsXqtmnKReg3R3eQgUG+YCC3nM1yh+rEXm+/9jDZzFkiLWxxka+INpQzeHKiisOo6exOsq9uDxtlyGFhlxpxV/RBaqQfMOQoEvMubTY3E5xY8ZS/SjygaKG1/HoBTCbU90Wwu6G/amUHqzT0LdJzoLLWPlkvIPE0iENWfvXIlv9CLZqf2RmxxMYkSSsa0I4ljyk6/zS96YmuNsW9K4LvCVO3dwit4KZluH6a+jJkzS/fVEee+rTO
+ wy1j251e
+ eF9ZtVnY29K1Q6rlOF/Ossjg8w39pEotyordj85zzE81jf1MNAGTp/F+/7bFYqbvMHnM8jti+fA9iRk/BDayJnAf/yHHATfeYnhvzOv7dQ/7LMYfJrJ3RlPkjnlUzDOf0wmFjl4phAp3ELhDNGZw8gMyvnKB++c6Jlck0m8E6238ktoFp+B/ZJH+DqV8C9WlZyha1maklkF0lM2Hx3yikVmBengLI8fpj5oUm38N0O3K+r0EnJBSz9Cfd4dj9SW256eyozBV2gQljwSquhAjNhctJEzC31YActkPO6rDpSrE2W57MF6QF1dDAs6MEGvvcvohOdVKZVCH4C15CUY9q3ReqiRuWLGY5BgfVdMreY8vuQQkDrwiLomMfKG9/DsLI113tYVv1tfYqRfqZKm++5VwC2eHwts7Y72O8EFdkWKqFWx0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,78 +147,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 4/23/26 15:42, Gregory Price wrote:
-> On Thu, Apr 23, 2026 at 07:57:01AM -0400, Michael S. Tsirkin wrote:
->> On Thu, Apr 23, 2026 at 11:46:56AM +0200, David Hildenbrand (Arm) wrote:
+On 4/23/26 16:04, David Laight wrote:
+> On Thu, 23 Apr 2026 14:52:26 +0200
+> "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>>>
+>>> pidfd_get_task() returns ERR_PTR() on failure (e.g. ERR_PTR(-EBADF)),
+>>> but the code checks "if (!task)" which only catches NULL. An invalid
+>>> pidfd will cause mm_access() and put_task_struct() to dereference an
+>>> error pointer, crashing the kernel.  
 >>
->> Changes we have to add: 8 changes
->> Rename 4 existing APIs adding _user: __alloc_pages,
->> __folio_alloc, folio_alloc_mpol, __alloc_frozen_pages + add
->> 4 wrapper macros/inlines in gfp.h that forward to the _user variants with
->> USER_ADDR_NONE. Roughly 6-8 lines of boilerplate per API.
+>> Yes. Should we add proper selftests that exercise these code paths?
 >>
-> 
-> This is essentially what i was proposing.
-> 
-> The result would be more external surface to the buddy (at least 2 maybe
-> more functions, plus all the _noprof stuff and a bunch of other things).
 
-We probably wouldn't need prof stuff if all we care about is vma_alloc_folio()
-that will only be calling _noprof internally.
+Just to clarify: I meant adding more tests to patch #2 that trigger the issue here.
 
 > 
-> And then all the callers have to be updated anywhere, and not make it
-> any harder to mess up.  You either have
+> Probably worth checking what happens when a 64bit process tries to
+> read high addresses of a 32bit process.
 > 
->     old_interface(..., user_addr);
->     /* Churn everything using the old interface */
-> 
-> or
-> 
->     __internal(..., user_addr) { }
-> 
->     old_interface(...) {
->        __internal(..., NO_USER_ADDR);
->     }
-> 
->     new_interface(..., user_addr) {
->        __internal(..., user_addr);
->     }
-> 
->     /* 
->      * Update some callsites to use new_interface()
->      * mostly a bunch of _mpol() functions but some others
->      */
-> 
-> but someone could still just as easily do
-> 
->     old_interface();
->     /* don't fall folio_zero_user() - Bug! */
-> 
-> So it's not like this makes things any harder to mess up.
 
-Right.
-
-Looking at the patch, there would already be less churn if
-
-folio_alloc_mpol()
-__alloc_frozen_pages_noprof()
-__alloc_pages()
-post_alloc_hook()
-
-Would have simple wrappers.
-
-hugetlb calls  __alloc_frozen_pages(). That's rather nasty, given that
-it wants to allocate a frozen folio.
-
-alloc_hugetlb_folio() already consumes vma+addr.
-alloc_buddy_hugetlb_folio_with_mpol() already consumes vma+addr.
-
-Maybe we could forward the vma+addr here and call a vma_alloc_froze_folio() if
-we have a VMA+addr to have a clean interface.
-
-But really, that hugetlb code is rather messy. I'd vote for leaving hugetlb
-alone on a v1, and focusing on non-hugetlb first.
+I guess these are a bit harder to write, but would certainly be useful.
 
 -- 
 Cheers,
