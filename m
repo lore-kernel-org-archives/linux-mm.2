@@ -4,88 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40204F589D8
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:42:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF613F589D4
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Apr 2026 13:42:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 825876B008C; Thu, 23 Apr 2026 09:42:05 -0400 (EDT)
+	id 233356B0092; Thu, 23 Apr 2026 09:42:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FCC76B0092; Thu, 23 Apr 2026 09:42:05 -0400 (EDT)
+	id 20A966B0093; Thu, 23 Apr 2026 09:42:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 739DE6B0093; Thu, 23 Apr 2026 09:42:05 -0400 (EDT)
+	id 0F9466B0095; Thu, 23 Apr 2026 09:42:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 670476B008C
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:42:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0FF2C120188
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:42:05 +0000 (UTC)
-X-FDA: 84689934210.30.07A0976
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6E46B40011
-	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:42:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PsfsVAy8;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776951723; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 032C36B0092
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 09:42:44 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C0B5B88C4C
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:42:43 +0000 (UTC)
+X-FDA: 84689935806.20.4B6D38E
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B37A41C000A
+	for <linux-mm@kvack.org>; Thu, 23 Apr 2026 13:42:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=SN3+FxSt;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1776951761; a=rsa-sha256;
 	cv=none;
-	b=lRS1ppbsilV8DgPAgNUC7uG5KTgv5gafp4u6zg+RuxDMLpib+G1MxyOcyaO2QpB81IxV0A
-	7ipvYPjMV0+hgW6eIlWtu9n+XAUF8RfIJcZ/CSnUWtiBg7fjcBfnzgt+z3Mvk5uKTdidzF
-	ckQyG0Zzdq2LssuogdIVgYvHeS96mqU=
+	b=CSSv7l+9VfZPJjfdpYvDCilrCFO9ngwapoIEeHUyBIUaId+XLw7u1b4efd3l0S6QuTEXbw
+	FxuFQDTKGhcpFvnIAhUUcQdQ30yZoDrJSZS+rECgCdlcVijmbQSdfW6maoaOQhF2SjMUF4
+	S6JKTi+DwVA5/8Vbf3qmGFR0fynPBFI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PsfsVAy8;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf07.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=SN3+FxSt;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1776951723;
+	s=arc-20220608; t=1776951761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qGKlwQiZakubnAISaYpyLURAxTYG84eBWIwmavCZso8=;
-	b=1fEXaOF/4bOvo9pgFHs8F5cscI8jZE0f7ZoJkK/P/au7G9AqESUqChIxMgRYB5al6cyTrn
-	kIq2kxsoyA9DKdjkrs8KvnULLdpy/VWpjY3KIjpIfnpd6PTC3TSYVpynKlN1lYHGyQdRHb
-	OZ8Qc3p0WA7egZePiVwfRKEFHmXTj1o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C324F6015B;
-	Thu, 23 Apr 2026 13:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5C6C2BCAF;
-	Thu, 23 Apr 2026 13:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776951722;
-	bh=qOaA7NIPr2tw79ziq7W+A48uOM2/yb3Pe/Bnkwop12Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PsfsVAy8uQgOpI3Y4M5eaBM3Sft+GDNd+f16EfK60t9R55sNhFrzmy53+Ltz38S3L
-	 L8JzHVNDr1UrdeJ3HgbUIioD0UZnjTk0UOTbupzHzmm2SAKYkvlG3aFqsOOHErFN9N
-	 B8mgTPo81ti72GOKRH7bDgMvTmKvGxI3/mRfrAOM=
-Date: Thu, 23 Apr 2026 15:42:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	bh=0SbK7jHzK0BibVPY47BIZzJ6hwGVNdmSnj/6qVo16wg=;
+	b=TD4V21CYpz1EOLFZ56QLaVbXiQLksvdL67iGSK2G5pTnQODRRGY/HwlpAVnnhIqW5CPmej
+	jQCgRERWfOFcDMuSlYEQpCCDbMQeRe8GsPUauxdQg3xta0zYVjcyH5Ssv6UFEcu4VANiJP
+	adLHDM7Gtlcy1fyOvtVnUiW/E05FHzI=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8e0a768331cso763209285a.0
+        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 06:42:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1776951761; x=1777556561; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0SbK7jHzK0BibVPY47BIZzJ6hwGVNdmSnj/6qVo16wg=;
+        b=SN3+FxStM+7cOmekfiDIHkmfwNhtdGU1nKKHdgomWjXYp4Yohz3QYZUCEWu+sHuFts
+         QG/sg6AusaQ0fRUGDu1lqe5erRCJT+HklRYqFSXLM1XHW1HGxPKXl3OBan6lnzaoo3Tm
+         M1EpGjwA/ZhR98OiG/FF9F4/0BWLOTsp7JUxQB1Zr9GWOG7rr9hz2bV5OtMHnPhIElL0
+         UoJ0T2oRQ+Ti12ziIudprgf1rkNOyjqSTyqvmKxpU+6O3ILWO+30h1hyHkl1t/bIxjo1
+         anx+p+XfD1gBwAzNmYs3L4Dp+YBWS1pMXbt7Bnnje/ojYr9TWdKrhy5vBxa1ir630rMY
+         HQfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776951761; x=1777556561;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0SbK7jHzK0BibVPY47BIZzJ6hwGVNdmSnj/6qVo16wg=;
+        b=VNNjwFoaNzhnyekfUNgA6JN9TNYnX4m5qQyIvUdQAs7Bur+v/r3MpCTiOr2hTKNzp5
+         ALZYJtOGt8KqxVA8NE8w7fLTJVOXQi8KVg4Z71dTtEI6zNyRIADu3mB1OOZR76XBu1e5
+         JfRAs8LJVGvmUBm9xHg0pvQC1OXpO7P5zqC7J74QZ7oPME2/fc3UTH6qif3QYD4WY0NG
+         wztJiCHBD7ntPPIPsSrHj3yavHydLJFCZdso4pLk1bW+wdNH2qyrv0lLLM0iqfJFNQK5
+         DxCVXLpoNtm9HdlHsuZUolukT2WdYs5cV9Jxh8QaMX/DiHKtT+bYKCJA3NoY54Cl2ImP
+         1yRQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8q3W51K27vIWw5A6osTvYixGXBPilbvSFiywG+FqZwqrwN/sICM2HBzIN82oIevkzZ1BV7PNIVgQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxmgg9zlo+dRFucciYmwru6FIwsMORP5pJDiSvEYGkErPz+du8M
+	w5a2qB3j5Y81hjAmYh8rBkzkpmBokLyezN5vx+u1IvNUk6KGUGle7ZUR56xRdDfvnJ8=
+X-Gm-Gg: AeBDieuSBdZpVPxEDYmKLClgT8XprEhnUy3b2SEIpJHEAyoqI63sE4OG1CTjL5toUwq
+	lbKpW6lvv40e209Y8OW3DXnmBVW+SuH5ti3w7Da/a4KAMKieqK1J6nxxVNc9jFdvUEVb12VDLzb
+	XidEXGeRkcOxJ4SGlw3zsejC5cxchclDgQMbqWOZ+FdAMZPQicoufQvYKcrttSb8/mchfd3Yj7G
+	RyFmyEalTVdJDYphMI25FSE2avAS6UjMDmAaPDxF40gnTAFD3bq/rDnxFMWM/vVbuxH1w1eywaQ
+	CQdJdCPtFooeFD5LFi3X5WpXJ1dPKZOuanETHH/3M9ESD6RtTPno9IyHRUYWlkj40kxWDIpMKWD
+	dnqxDAb6I1uQLgkm8PtO2WFE51e7VL12tqsga1E/xZ/NWzwP5yLE499BZyfUCNOxRcotWKeKLvb
+	1JvwU5RNmy1Q0O639Zo3t8clznzypfLtY6mrig6FolosJM5XGi7raPAX7Mlz2Vs46zw57+NptDr
+	1xSzJWp4Xl16rB+4URK
+X-Received: by 2002:a05:620a:414b:b0:8d9:26ca:7e3 with SMTP id af79cd13be357-8e78d0a865emr3247854085a.41.1776951760527;
+        Thu, 23 Apr 2026 06:42:40 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-71-246-228-50.washdc.fios.verizon.net. [71.246.228.50])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac81a9dsm157783036d6.21.2026.04.23.06.42.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 06:42:40 -0700 (PDT)
+Date: Thu, 23 Apr 2026 09:42:37 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH] mm/gup: honour FOLL_PIN in NOMMU
- __get_user_pages_locked()
-Message-ID: <2026042336-hermit-stout-a63f@gregkh>
-References: <2026042334-acutely-unadorned-e05c@gregkh>
- <dee5b7e8-864d-48b5-99cf-282eedaba927@kernel.org>
- <2026042314-traffic-riverbank-d9a1@gregkh>
- <b4e0877c-230b-463f-99b6-c363595e7ac0@kernel.org>
+	Vlastimil Babka <vbabka@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>, linux-mm@kvack.org,
+	virtualization@lists.linux.dev,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Hugh Dickins <hughd@google.com>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH RFC v3 01/19] mm: thread user_addr through page allocator
+ for cache-friendly zeroing
+Message-ID: <aeohzbmhQAoOODPm@gourry-fedora-PF4VCD3F>
+References: <cover.1776808209.git.mst@redhat.com>
+ <9dd9deabd42801f3c344326991d1431c3d8db39d.1776808210.git.mst@redhat.com>
+ <aekluxNPxF8CN8fL@gourry-fedora-PF4VCD3F>
+ <20260422171315-mutt-send-email-mst@kernel.org>
+ <aemglPlcwFFHNj1A@gourry-fedora-PF4VCD3F>
+ <c165d6af-4a35-4a41-9086-ee307640c044@kernel.org>
+ <20260423074433-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b4e0877c-230b-463f-99b6-c363595e7ac0@kernel.org>
+In-Reply-To: <20260423074433-mutt-send-email-mst@kernel.org>
 X-Rspamd-Server: rspam10
-X-Stat-Signature: eq9pxftuu6eb4eyzsifnbmdnu4d9xooc
+X-Stat-Signature: f6hotfs7ifxsmndc1td7xmi83wutwcsg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E46B40011
-X-HE-Tag: 1776951723-216890
-X-HE-Meta: U2FsdGVkX1/nsA94BL5aj0agUGzO17N4hxtNZtbeG5jzsMv6Ek2e4so8JIOLCzjT4leepD7ENnJG+g8dhUvlUmU58wJAXNHi3IskFvz1ADEFY8Wjr6RFIaZkDgUnrAwdciFgTin1bZsvU1VRM8HJRgiZNsHp4t5s14cRx43nJfShoZTh+U5WqLyaWTHC+RrXEB7dhrJIvShDP7T7zbNBw4nhpVqZFHODGljUzhep3tVXuyQxmKjpn/9/ETE/2PdRISCJV0NOSV82aQCg1EZYaKi3loAZBv/sQjJlHWYbNCcV40H5Fp8RD0TknqFETaNptGgeq+We+Gma2aIrvvzR/LUbCOQq7qmOt1ovkDX0nvDXXaQMAMovDxUEp/u0bRc6JTOlPDs5Rqs1LpLdaSSQ8Nt05Vlkvsn1qElO80YYSHJH2vIDk1qvcJD46/CSqKMuvWKBkhYhYqUmykgOLcnj+hZfH4mjzAgZX6OhLAumou9kBTkiXYFF/HiftWoJDfLzikJj50ZPckbliA8TTbE/OhFn0CKAt4AI9JdIqxWiNMraXRfS/v9y1qMZ1gv29fsvajqMhAcgUHGivTUzyUMrqa8i2afzgAJP/bLfCxNz+M6185iYAaH3MMNf7v4dn8sS28WiJSvUNo3VOeCvULegia3xF/p4lmJylF78scSIbn7yT9dWzqlseCZvOElzrqN9QnqrcKZFTJMLSkTYn75+r6QWBIZSGH9aMvTG9F5vXe62tf1ydNJRw/MdX3pCmkKY+7cgZwav+kAkeJzpUGxVxxKC+YcZK4yTpuO6O5agh4abbNrENxyFuNhz5zEqmwFGlrr+MvW7APFwxjGDwmJFQWqy048sFX/zsZkm2COf/xeeVgDhhldcy0xly3AB2K0pHrPy3d5y9lin+lfVP2TkoptluJV18sXRkA4k2JywONN2n7ZCAwCrQ4NL33AC2kks57u4Sf7MVWRmzAho1Qw
- dmOj5XzC
- 2ozxBoxlSvFdAJIE/Lu7Fv0UUwa1QWQ+mYhzQ9Znxd6ejzWUdO2cv8So4ARJipbDzy3niPv2HxjonxcogY2t2kdVdDrd0cHVO+JBpl0x35Mgj+2oYoWuBY/F746Z/fTrmU+kgt8j202RAL/k0SjDMl3yXA0Cy4VDhBs9hgPjfgV2rWrWScoaU0Uh6G4e0SeFOvMrATuGHabSLjv3mauznRnZvakV9SXLQDDCVYO4tII0yWPnHSSheG5W60QMBtB5uM0hT9n2tkdGpZCad00EW1VUbOnSIUs25FHMZ6o6W0DQQ8vfA51HbtYzK3YHcLk++4NutTMo/AW4qZ9g3jfLwX2RMk3pYzXGWJx2YprP7tupKr/hLOKUqCxKSsC7iGc7ZUddQKuwn/4qln0fm6KeLWsXtWA==
+X-Rspamd-Queue-Id: B37A41C000A
+X-HE-Tag: 1776951761-400402
+X-HE-Meta: U2FsdGVkX190yJTalMkJnmLYUnU6qLRvsm2Eggn7InVS4m/wR6MUyQvIo5IncZELQiudFqr28S+JqpRaTVmQaYup3FLfwRzZj3eXjEl3LmKaSq8ZfFIqoPjmH8ZG2BqcL8yl6ctjyZG1ALjUW1ZgBBPg9NnObwnXQNDZCVxgdYrWfqMgndNxQibaB1gLlOdlePTf/W61NbXZh25/RJf5dXKRimySrzzSXrdy6m43HnUOt1wfz30dZJNaSTBBs77YbhOJMS0221f4eHHsHaC9EofDkN4+L+Dg9bPhxbtwaibyfjEvej/JUYZ7JRLLk2SBtFuqd1dTNk9NMDj3ZK0uJhmPnV6DEdT2GNUpx5vGTYVty3vjBz5G6djpTjbvfuRSCZRyICRCo3qAL/qSybo16AQRe6DE8WWkdImD/3Ct/aHJ/tnTX88VB8Q7M/0iZaA56anWoT1XZdw+EtC4NGTd7kVLwfWMme1p0N+bHFicymwKOcqLzVzMmtdekcpjOsWq+h5WHRwVMaWTLxgd6xaPrRiaVIw0EMYoFFdTOuLhlti16vsASW+fIaclhkGf2YLgJn1oLOeM7vzki/Q3enWMV0EsTvLZCTR8KlcKTG67YgQHvJl8kDgPKO7gYIWjGL/0b9aJqT7q3mmmhJLJ89emCn2rQCs2/l83J7EiRiI5GtKLuao4DGYOzwiVRpzugRe5iltfAEVN4xoxYSk0FQjdYkVWXuRX/xSnWgVdPc/9aFYTl7c71Epdv9XExBIXkBK+j0RC7wx2iV5i96ayPPA66MqBN7rgNtpk+Bw//XPqcToIQPurTzBDeIRg/TV08HVHy+IZbUoiQ3RueFXFgemeJ8HSx86Tj3VC+tPJaKpF7BuVCmdaEQmJ6mZGYMXW+CjXzF4hD+fqXCjEgf/4h21p9Vjk85Z9tJG/D/eptlfyDDCdtdBea99MXdk6umLBtY+b6U+xFN3jyYuXcj/rsqp
+ BX+Hq0Nt
+ 8QJf6rNBO8rn2O13yx708qQEM1svcgj+dY7IvoGGg0PMIxz8bfSsD1IMiFaSfHTFxIPcPcKA+lR9EaSAN+NhbMCfbfVaTroXsZnGJzqKkGH43wmZr0xmkS7GlVq9Do9OAbII0eiYBVXG17r2jFdbJZ2LAbV82OBEgVw47bJktWVZjjar0MBxLiLCVfNDrYlwoXmoTWUsf3J5Kd/3LPhsYw6KsN9hk+BEF0U9STocAeePmqw6Rx82j+kl9TY4018o4hVNRXkrKWMyPwTpBOo2lYAWlFjYsWuikHkv+vNaycZC2WeHpgTGD2xI7iyNalaWZVO08HWp407Kx4I5zdZSfMjmpfuhWzQWgIOrnrCeFXHAeHxZwCsBW3Kq+umVwJYkGP2bTx3vN7RfeHxA5793dE7kIjV4DFhPu/bPLCt66R1ARH3J7zzdYFbdyY7VifZT/X3K9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,100 +156,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Apr 23, 2026 at 03:04:56PM +0200, David Hildenbrand (Arm) wrote:
+On Thu, Apr 23, 2026 at 07:57:01AM -0400, Michael S. Tsirkin wrote:
+> On Thu, Apr 23, 2026 at 11:46:56AM +0200, David Hildenbrand (Arm) wrote:
+> > On 4/23/26 06:31, Gregory Price wrote:
 > 
-> >> It just follows what we do everywhere else (e.g., follow_page_pte()).
-> >>
-> >>
-> >>> +				if (try_grab_folio(page_folio(pages[i]), 1,
-> >>> +						   foll_flags)) {
-> >>> +					pages[i] = NULL;
-> >>> +					break;
-> >>> +				}
-> >>> +			}
-> >>
-> >> If it fails on the first iteration, we return -EFAULT instead of -ENOMEM.
-> >>
-> >> I know, I know, nobody cares. But if we touch it, we might just want to return
-> >> the error we get from try_grab_folio().
-> > 
-> > So just abort here and return it?  No, that will not work, there's a
-> > lock we would jump around.  How about something like this horrid thing,
-> > adding back in the relevant unlikely() to match the other calls like
-> > this:
-> > 
-> > 
-> > diff --git a/mm/gup.c b/mm/gup.c
-> > index ad9ded39609c..8fa5b37be8b7 100644
-> > --- a/mm/gup.c
-> > +++ b/mm/gup.c
-> > @@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
-> >  	struct vm_area_struct *vma;
-> >  	bool must_unlock = false;
-> >  	vm_flags_t vm_flags;
-> > +	int ret;
-> >  	long i;
-> >  
-> >  	if (!nr_pages)
-> > @@ -2019,8 +2020,15 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
-> >  
-> >  		if (pages) {
-> >  			pages[i] = virt_to_page((void *)start);
-> > -			if (pages[i])
-> > -				get_page(pages[i]);
-> > +			if (pages[i]) {
-> > +				ret = try_grab_folio(page_folio(pages[i]), 1,
-> > +						     foll_flags);
-> > +				if (unlikely(ret)) {
-> > +					pages[i] = NULL;
-> > +					i = ret;
-> > +					break;
-> 
-> So, we have to report the old i in case of an error.
-> 
-> Assuming we want to also return -EFAULT on !pages[i] -- which i think we want,
-> maybe the following (uncompiled and untested)?
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index ad9ded39609c..d00ff8d988fa 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
->         struct vm_area_struct *vma;
->         bool must_unlock = false;
->         vm_flags_t vm_flags;
-> +       int ret, err = -EFAULT;
->         long i;
->  
->         if (!nr_pages)
-> @@ -2019,8 +2020,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
->  
->                 if (pages) {
->                         pages[i] = virt_to_page((void *)start);
-> -                       if (pages[i])
-> -                               get_page(pages[i]);
-> +                       if (!pages[i])
-> +                               break;
-> +                       ret = try_grab_folio(page_folio(pages[i]), 1, foll_flags);
-> +                       if (ret) {
-> +                               pages[i] = NULL;
-> +                               err = ret;
-> +                               break
-> +                       }
->                 }
->  
->                 start = (start + PAGE_SIZE) & PAGE_MASK;
-> @@ -2031,7 +2038,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
->                 *locked = 0;
->         }
->  
-> -       return i ? : -EFAULT;
-> +       return i ? : err;
->  }
->  #endif /* !CONFIG_MMU */
+> Changes we have to add: 8 changes
+> Rename 4 existing APIs adding _user: __alloc_pages,
+> __folio_alloc, folio_alloc_mpol, __alloc_frozen_pages + add
+> 4 wrapper macros/inlines in gfp.h that forward to the _user variants with
+> USER_ADDR_NONE. Roughly 6-8 lines of boilerplate per API.
+>
 
-Yup, this passes my tests, let me go send a v2 with this version,
-thanks!
+This is essentially what i was proposing.
 
-greg k-h
+The result would be more external surface to the buddy (at least 2 maybe
+more functions, plus all the _noprof stuff and a bunch of other things).
+
+And then all the callers have to be updated anywhere, and not make it
+any harder to mess up.  You either have
+
+    old_interface(..., user_addr);
+    /* Churn everything using the old interface */
+
+or
+
+    __internal(..., user_addr) { }
+
+    old_interface(...) {
+       __internal(..., NO_USER_ADDR);
+    }
+
+    new_interface(..., user_addr) {
+       __internal(..., user_addr);
+    }
+
+    /* 
+     * Update some callsites to use new_interface()
+     * mostly a bunch of _mpol() functions but some others
+     */
+
+but someone could still just as easily do
+
+    old_interface();
+    /* don't fall folio_zero_user() - Bug! */
+
+So it's not like this makes things any harder to mess up.
+
+There is no elegant fix here if we want to do this all inside the buddy.
+
+If the performance increase weren't so blatantly dramatic we could also
+consider just not doing this at all.
+
+There's maybe an alternative here in considering a change to the way the
+buddy manages zeroed pages - but there's no guarantees we find a pattern
+there either.
+
+~Gregory
 
