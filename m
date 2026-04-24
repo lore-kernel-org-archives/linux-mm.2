@@ -4,115 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 873A6FB44C4
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:51:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF7DCFB44C4
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 07:51:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED6A96B0005; Fri, 24 Apr 2026 03:51:27 -0400 (EDT)
+	id 27AEF6B008A; Fri, 24 Apr 2026 03:51:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAFE46B008A; Fri, 24 Apr 2026 03:51:27 -0400 (EDT)
+	id 252AD6B008C; Fri, 24 Apr 2026 03:51:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9D716B008C; Fri, 24 Apr 2026 03:51:27 -0400 (EDT)
+	id 142036B0092; Fri, 24 Apr 2026 03:51:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CC4B16B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:51:27 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6E6291607BB
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:51:27 +0000 (UTC)
-X-FDA: 84692679414.11.C2505CB
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 80C9620004
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:51:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=F+ibmJo+;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 020326B008A
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 03:51:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B60991B8BE9
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:51:30 +0000 (UTC)
+X-FDA: 84692679540.12.386512E
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 97A3B1C000D
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 07:51:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f5sWadWI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777017085;
+	s=arc-20220608; t=1777017089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2/JtEzMAf3HHrd01fVfPU0c1qsQLQRrKfL4Fb7KVaB4=;
-	b=0qPNn2//Or08akRudRcyfoVkwgLaeM56mBtZlC18LV06e8ogr2PMBYZSks0xBnGcUl86Ku
-	63U88dwHx4Gsno+aodu566RFhKT9D0E2J0k1JV4oEcNTLmjmCjzeO/Nqz4P/9k+JTiHLtF
-	5pEwtbuxte9mjTRqemgA4NTKkSkDCOs=
+	bh=/ORSaWnko0V3NhVqidFGTv7S6AWqSkqSLorMuOfpODA=;
+	b=qQqSYHG4pPWs8Rbk+dxTkC200JLrYO6dM/i7CDjWpKfXm4mDSA9n5+cr4e1RNutqNiJpBP
+	0VgICHoqui5it4YGQVE0boeDMc5xvghinwbYE8pSCqrFAw4/HTAGPcs6C3s0kHnJ1JD4xZ
+	S+psa7l2m0XOjFhMKmmzkcKoTngc0qc=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=F+ibmJo+;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777017085; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f5sWadWI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777017089; a=rsa-sha256;
 	cv=none;
-	b=t6AO6nvA4RgRyp3fEfqJi929oEx531RdDrRPlx5nY0+7uf4aLVlLBAjCR1KSo8h63ELpFV
-	1A2dxELn+ezqLgvm7XjBRRF9EFyzzCQ1N2qFSrm4Hp+ZXkmXql3UbciW80k7vmgwtHWETr
-	S0B0rCIk2u6TObQnCNVAnkeazVQxie0=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so40221245e9.0
-        for <linux-mm@kvack.org>; Fri, 24 Apr 2026 00:51:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1777017084; x=1777621884; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2/JtEzMAf3HHrd01fVfPU0c1qsQLQRrKfL4Fb7KVaB4=;
-        b=F+ibmJo+Z2dzNRfx3eFls9M9CAZbNfqaDLfulCdWYk3Gue8hu0RSubTRi4t1z9K7be
-         q9mCAl54qzPQh2HmsdjnLhsTWZEr9FyCOnUfb8ZKha+plpnDX7YdxHBePUwn6qkwqNtC
-         NIaXqEenEfHjH66rSqA4+Kou3R/W95DrIEgXpQ+Mr13Z2y+sUdzYoUJzVUUVzUpcL0x4
-         wlEY1BznCEbfCHW4V19wZhMHdbKtEU+r27KLE21rrCHoniJY+oT87a860CTsz3GR1dXy
-         GntWyGe+51SFuaa1gyt50TjqWfl6tLRiqC+EYSuy/qb00Ve7L9gBI6FODeXvKimebCEr
-         G6Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777017084; x=1777621884;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2/JtEzMAf3HHrd01fVfPU0c1qsQLQRrKfL4Fb7KVaB4=;
-        b=QSjUcO9Udz4lcq6e68vlO06AMTgBp6HOrBGOzMT9VMdBeSUPZHdVzNrj/Bh1dpm2sE
-         9dy9J/dARZkNw7ObPOsCgvU+E9qM2dc1SUzxIUpsBtr1IpNcEsqy9yko7wWmCpkf2Uhq
-         0rlnkHGkprXE16RxuhTMNUSossVe3IOULWT7+M8dpHOFEGRaIb9JNqiwlEc9olMgSGLq
-         UshGb2gL73nsLo/kmfTS2MSoUx6jci1F0ED+ISL0BiyfZN52sEHqRlRZGqdAQ/7vFH89
-         VHtjC7hoTbjMYpg7hmB1QuiYI2Dk3fVU1jKJTpKnKTBzW1deR4tr7VABg3sCyyvO7pPv
-         drdA==
-X-Forwarded-Encrypted: i=1; AFNElJ+4nx4fD+hHE5s4dtz/tS9wnmftMju9mbRzJe+s/SSwRAtYJZE313MfCzrRLy2cOp5zAPOCGQSTuw==@kvack.org
-X-Gm-Message-State: AOJu0Yzykri/OTe5M+pTJBFXdbCGppTGZ+0N9ZU/ojhP6veC/xIBjfSa
-	ZSqYbptNWsg6qLPqrP5KBDU+71lJerWYOiAlg3p6OJ8X5DoRF7AB2R/3UtjZnH3KUTQ=
-X-Gm-Gg: AeBDiesUfCNNxiKVvUXOhFBWNFUDbn7RpIgBz0juWtL+AKgmGIDHk++2FgJY1xc9rqy
-	X/CHyMJxWUoT06QsKFkrVtETsIPxUSRaVejgePQ2YA6xx+5ZDo3rp86TnUS3fQ/e4itOQLwbeYb
-	QtCsn7WcCU8JeIEItQP6S8C0fPCGeRhi4X69vOmhZrU6wUi4X2XCgcceCxgmfwA75ovq74KCCGb
-	ega0+dGBylXchgqsQE7bXy66SrAVHxL0c36KS3+eMPkcv2fpfArdskpqhV6PR3dr+9YgvL1/7kI
-	5kWAfN3x5qh3vF1CR8MKJP+rrYuZ4H5Rp1S1d96+aL3Oqwx0tqWy8Qxoiqn4cI13PeRQE9hOX0O
-	FyQt0pn2WN7llqRIE5BZRTcC+L4HiZhy3IILAwElda8j1C9kvaC4tlMxsOx0LXv5bVVHm8hNbt5
-	3tcMVIf8HEWPN5kefxsh9c8XYYBCaF1SWPanJCW91/VPxSQa0=
-X-Received: by 2002:a05:600d:8496:10b0:489:a4:e555 with SMTP id 5b1f17b1804b1-48900a4e79fmr243967435e9.21.1777017083931;
-        Fri, 24 Apr 2026 00:51:23 -0700 (PDT)
-Received: from localhost (109-81-17-171.rct.o2.cz. [109.81.17.171])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a5aa3ae83sm334399355e9.12.2026.04.24.00.51.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 00:51:23 -0700 (PDT)
-Date: Fri, 24 Apr 2026 09:51:22 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Minchan Kim <minchan@kernel.org>
-Cc: akpm@linux-foundation.org, hca@linux.ibm.com,
-	linux-s390@vger.kernel.org, david@kernel.org, brauner@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com,
-	timmurray@google.com, Minchan Kim <minchan@google.com>
-Subject: Re: [PATCH v1 2/3] mm: process_mrelease: skip LRU movement for
- exclusive file folios
-Message-ID: <aesg-sj6_VmXyqxb@tiehlicka>
-References: <20260421230239.172582-1-minchan@kernel.org>
- <20260421230239.172582-3-minchan@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421230239.172582-3-minchan@kernel.org>
+	b=yiW3qcznwjydIurT3xb054cOniT2BJOpCmFnuAdl1P5GQbuHfcK6ZJuijEMGCRdFIZWkge
+	6ojM+FQAxxXMwhQ7tkYbMxsLw77/+kT1j4eiT2A2R2Ze9udeQIrCDBNg1YDUHQ782YeaCy
+	EEskixnwKtI+eVbBCh3IOeMg9uBXg6w=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777017086;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ORSaWnko0V3NhVqidFGTv7S6AWqSkqSLorMuOfpODA=;
+	b=f5sWadWIcXFWMoPuLXqfAVQq8XtQDNfCfsvXrl+tyhRViG3SQIamnGMCotuewbABJ9cFH4
+	PYhz/HibwXyamvirz+mWtj2C3RPJ/RNlVHmjxhhppl13+g7APOW6R5fSkAUQgJxqYQ7tdZ
+	DvCm6GbEn5PGd64kYmFnP3vBYTawe0o=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
+ optimization
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
+Date: Fri, 24 Apr 2026 15:48:44 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5A4644D9-B64E-4AD9-9D9A-B3DAB84CB827@linux.dev>
+References: <20260424025547.3806072-1-songmuchun@bytedance.com>
+ <20260424025547.3806072-5-songmuchun@bytedance.com>
+ <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 97A3B1C000D
+X-Stat-Signature: hdntryyt3gu8d7kqag3ojrr5pyt8koz4
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 80C9620004
-X-Stat-Signature: k8xtwmccushn711btmmchmfez7ainhc4
-X-HE-Tag: 1777017085-449207
-X-HE-Meta: U2FsdGVkX18S0pz4QzxShHrrSGYG8Grju0HijnPSrVMFrMVZo5h1fKGYYgOMZtbYL5If/hHR2lVupoaprxhrnR6a+m2P1uT3S0LE3ZR/DsJnTX0XzofxNW44nrwxG50KYjMHvQeBC5iXUWJE5YyBeQEeJBo7D0/9xOXAHLERnZmhwd8dZTdNPq5cyDbF5DpM8IXP2FWr8fa7VeSi6/8gjz5/VcF8J0V6yAtoSIeXFvEunHVUwMBYkOvlRDvMIrdMYZ6X5pubNSFoRGGP7NEwCGmTOlHaNDb2YvIV7qfPK0wbPtrpRYRyg7pkZOLal3xmB5atDKvev13DfMuRR4QCwkmMOr3c09o6uZOsbz1eH0q3NQjPpsGwho7A360iEpN+v2Vd0SuEBd3O5nYYQYWoZdhLzsViJZcv01/dIbmLKIdJlpnL3t9fA+ZZQ42rBOlNewVEumxhF+DpdLOGxxqbMr8lFHvmcIII2PMc0NtVNbWTHfEVyYQgavxOWqrSs9j2lccg19dWgacpPyv1Vy5mEiuDtcUlfWrPZRTaHYI7YJ0eVJ8PQdCXv16intql/phlZx6GbIc5jPO/WO0Qn1sxf3b0P85OVQTf1lK8IRvuqQhyihJRP8OFRZP5S4irQGdaJcJI2brVFOqscYKo9F5Jbn8Iuy1/L8NkARHvq5JFFFn/DwFRVujMvvDKA1OF3FNlhy3vFRYwuSsnFdyEQ+6XgSkLaLEB3MFyP3aiCn3XSJI4Wd9YG7DzpGXa7iGlACXtmmOIflGiYaUpPHu0iL1Gw2457Z3BVvOC4mHOhm91L7Kd0HgkYZFa6AFjSon6zmPuTBAkX4MHeA7KYp+bbSTN0WH/Yi+oNcMjE5aqQzY7uExiBH7iQeYSS8YxzZVrUP5zMF67bC7otjsPP8rZw0d1zhKm4x4no0A/zoiEGCGlrsGzsBEQnSXmh4XYMHCAl2FA534nsZ/iB0LmYo+9OAb
- XT9RbIEU
- TYVdhyhgLpBDkMtJ1HdTinmwwvMDJ0NwCRn1cadKSDJMhOZaZy+uHf+gZjeF1V1Zbu+mWyBiRjmJ9bnPW7sCIiwR/uHYwZsIcN+Um2TeCjHI7heKF/twfuIqxO6/3ApKGUX8R/c/hIvBCBpL8j4Wa4Dpop0ZO78ngZytPYj35uHtA7ssf4hrLK6/LtLK5asyEufUzh3xBAbHS+srUcNolmLTEnHDdS+r2efl+yV/zrc6fpesAcYsEaVnQ2WWiDu7TOo+ApDAhYaLB4l8N3IkKiApPdaiwpG4PKSPZX7WhcKoxamGgpczXfcNmO9bu0zb6258yy/AN2EM+ArNH2tX+cTfshaQWuQWeZDiNmZ8iFmJThfpLnI4Uq/jeJUlx+knZlKlpR1mnO3dmsPWRaA5EDzpClkQOhmPABLqcZoMVEV0B7Ko=
+X-HE-Tag: 1777017088-179106
+X-HE-Meta: U2FsdGVkX19fNPXFV1SYKSoPVl5HKP43A+0ESqwFbozwRtxP29N5daysOmhdGZ+T54RS/4V864m2ArNTY8p0bs0Zajt45+9hvSPw0KLttgzVRMNVyVm0NwYZFw7tunpc3H9CEn/pp516GjpTHE1yT4ER3f8siG0eAPEMQXkMVeTbPyJBta7By7HUzj+K5ZDqv+2SUZ4j0WX7LHIjxZ1B4FYQos+XuZCJ9caLaF4NfPLfXj5kiVI5EZi6n74+FBNU6lYb+D7p8qf7TWuaBc2v99+Xr8axqcRwKqf9EHmZScV3uKFcfWmUXagTB43iORvT+9a/x7NPQ8xHKh91yQ3WoKJVCKt4OzWu9XBUr6ryIk9X2PLu4ZBJ/Z/xrVTGKttsEYbW7IVv54cZqSyxJzCk1U9cn2qsfG/OCKhS2sgacSkEYNSdBIif1Uz+idPeL1D9XDwZw/hAOH4tDW9UiFbINrPmiB3gvy+Ydk2Ooit1tuqn5JtRZHFZIiYWROfGEi0sqKB5m5xKKsI04tV2g8h/0mhKhmbpGK+QDVkywKhIGYF2gAYxPGWCzxafJlV+Ny+xDYktU2U3jSIUUskixeKFvf/ttk+0CEq1xUQntVjyi4SOQL5IApql7UOlNsBLV7Kr/ufL9CeyzyziLlwddNxloQqbpFn+xvaN4AfgSN02fdbLHGQv6KrjDyl1fVUp+xzRO6i2KC8CIXUvyks+Rt7m/zDg+yzSlJrEBxRiA/hQZsOQxtMDX7qI4RLomACBJqjNzhu+uNdiW4ogzYGAAwkUarCZZMUcMyaz9F13YNXADpehZj6GRHgxCNW32RA51S2g3uBM96NGJNXYHdChdat8rL+lP/ETs9sXdv4V/IhrUvru1WBQLyvQ5cHootjeBFAywsnI5WqnvL3RUpoH+bv7bqf79G7IV1zKPOHrt258Kl0KNUn1/WLSF5QwD2X+tOyifjXVY+3uuLFyt0uEY7G
+ v3N+mBhI
+ xQeL4fnvcafrH6lXX82w16F0H0WqW8PPQkmLW+r1s4YPubj4QXlBL8f/sSer1UFW/yC3H0XGh0TKUU6ofkA5IPU2rlFqfJFO+ZQGWZ+f7YBlnXh88exclOXT6bzAe4jM+gutzPqXfH33iFNGHA8ARmBtAP9JXNUPHxJtgEHo0xSFpV5YxQznOfZO2DAu+foRu/V4qTlnGORUU3gXv3v1e13SGUsaCt6Z3X5KCP9X/0+yExqqZ9DtPn9BVnsmS/tNm8kSfCp7t8L2o8uzQlLQQwL9rIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,77 +109,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 21-04-26 16:02:38, Minchan Kim wrote:
-> For the process_mrelease reclaim, skip LRU handling for exclusive
-> file-backed folios since they will be freed soon so pointless
-> to move around in the LRU.
-> 
-> This avoids costly LRU movement which accounts for a significant portion
-> of the time during unmap_page_range.
-> 
-> -   91.31%     0.00%  mmap_exit_test   [kernel.kallsyms]  [.] exit_mm
->      exit_mm
->      __mmput
->      exit_mmap
->      unmap_vmas
->    - unmap_page_range
->       - 55.75% folio_mark_accessed
->          + 48.79% __folio_batch_add_and_move
->            4.23% workingset_activation
->       + 12.94% folio_remove_rmap_ptes
->       + 9.86% page_table_check_clear
->       + 3.34% tlb_flush_mmu
->         1.06% __page_table_check_pte_clear
-> 
-> Signed-off-by: Minchan Kim <minchan@kernel.org>
 
-As pointed out in the previous version of the patch. I really dislike
-this to be mrelease or OOM specific. Behavior. You do not explain why
-this needs to be this way, except for the performance reasons. My main
-question is still unanswered (and NAK before this is sorted out). Why
-this cannot be applied in general for _any_ exiting task. As you argue
-the memory will just likely go away so why to bother?
 
-> ---
->  mm/memory.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 2f815a34d924..fcb57630bb8d 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1640,6 +1640,8 @@ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
->  	bool delay_rmap = false;
->  
->  	if (!folio_test_anon(folio)) {
-> +		bool skip_mark_accessed;
-> +
->  		ptent = get_and_clear_full_ptes(mm, addr, pte, nr, tlb->fullmm);
->  		if (pte_dirty(ptent)) {
->  			folio_mark_dirty(folio);
-> @@ -1648,7 +1650,16 @@ static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
->  				*force_flush = true;
->  			}
->  		}
-> -		if (pte_young(ptent) && likely(vma_has_recency(vma)))
-> +
-> +		/*
-> +		 * For the process_mrelease reclaim, skip LRU handling for exclusive
-> +		 * file-backed folios since they will be freed soon so pointless
-> +		 * to move around in the LRU.
-> +		 */
-> +		skip_mark_accessed = mm_flags_test(MMF_UNSTABLE, mm) &&
-> +				     !folio_maybe_mapped_shared(folio);
-> +		if (likely(!skip_mark_accessed) && pte_young(ptent) &&
-> +		    likely(vma_has_recency(vma)))
->  			folio_mark_accessed(folio);
->  		rss[mm_counter(folio)] -= nr;
->  	} else {
-> -- 
-> 2.54.0.rc1.555.g9c883467ad-goog
-> 
+> On Apr 24, 2026, at 15:33, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 4/24/26 04:55, Muchun Song wrote:
+>> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
+>> counter in /proc/vmstat is incorrect. The current code always =
+accounts
+>> for the full, non-optimized vmemmap size, but vmemmap optimization
+>> reduces the actual number of vmemmap pages by reusing tail pages. =
+This
+>> causes the system to overcount vmemmap usage, leading to inaccurate
+>> page statistics in /proc/vmstat.
+>>=20
+>> Fix this by introducing section_vmemmap_pages(), which returns the =
+exact
+>> vmemmap page count for a given pfn range based on whether =
+optimization
+>> is in effect.
+>>=20
+>> Fixes: 15995a352474 ("mm: report per-page metadata information")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> Acked-by: Oscar Salvador <osalvador@suse.de>
+>> ---
+>> mm/sparse-vmemmap.c | 31 +++++++++++++++++++++++++++----
+>> 1 file changed, 27 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 3340f6d30b01..2e642c5ff3f2 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -652,6 +652,28 @@ void offline_mem_sections(unsigned long =
+start_pfn, unsigned long end_pfn)
+>> }
+>> }
+>>=20
+>> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, =
+unsigned long nr_pages,
+>> + 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>> +{
+>> + 	const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
+>> + 	const unsigned long pages_per_compound =3D 1UL << order;
+>> +
+>> + 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
+>> +     				    min(pages_per_compound, =
+PAGES_PER_SECTION)));
+>=20
+> FWIW, I though the right thing to do here would be:
+>=20
+> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound);
+> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION);
+>=20
+> I don't really see how PAGES_PER_SECTION make sense given that
+> PAGES_PER_SUBSECTION are the smallest granularity we allow =
+adding/removing.
+>=20
+> Also, the "min()" implies that there is a connection between both =
+properties,
+> but there isn't to that degree.
+>=20
+> If order =3D=3D 0, then you'd only ever check alignment for ... 1, not
+> PAGES_PER_SUBSECTION, which already looks weird.
+>=20
+> So you really want to check "max(pages_per_compound, =
+PAGES_PER_SUBSECTION)", but
+> just having two statements is clearer.
+>=20
+> Or am I getting something very wrong here? :)
+>=20
 
--- 
-Michal Hocko
-SUSE Labs
+You are absolutely right. I misread it earlier. I mistakenly read
+PAGES_PER_SUBSECTION as PAGES_PER_SECTION, which is why I still used
+PAGES_PER_SECTION in v5. That was my mistake and obviously not what
+you originally meant.
+
+I completely agree with your suggestion to use two statements here,
+as it makes the alignment requirements much clearer. I'll fix this in
+the next version. Thanks for pointing this out!
+
+Muchun,
+Thanks.
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
+
 
