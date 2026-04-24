@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 664BAFED3CC
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:01:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A3EFED3CD
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 14:01:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 826D66B0096; Fri, 24 Apr 2026 10:01:40 -0400 (EDT)
+	id 9D3D26B009F; Fri, 24 Apr 2026 10:01:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AF756B009F; Fri, 24 Apr 2026 10:01:40 -0400 (EDT)
+	id 8EFDB6B00A8; Fri, 24 Apr 2026 10:01:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B3C16B00A7; Fri, 24 Apr 2026 10:01:40 -0400 (EDT)
+	id 69DA16B00A3; Fri, 24 Apr 2026 10:01:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 451656B0096
+	by kanga.kvack.org (Postfix) with ESMTP id 45E896B009F
 	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 10:01:40 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF9BBA01BF
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:37 +0000 (UTC)
-X-FDA: 84693612234.25.D95A076
+Received: from smtpin01.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC0611A01AB
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:39 +0000 (UTC)
+X-FDA: 84693612318.01.D9340F9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A18A9100031
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lWd+BY+X;
-	spf=pass (imf05.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 804F5A000B
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 14:01:37 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i1SHrCEX;
+	spf=pass (imf15.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777039295;
+	s=arc-20220608; t=1777039297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=91B6HSz86KqP/W3RACkrZuZqSNpMSCisFH8uK0y/cxQ=;
-	b=BaRbdkbpLKa0aeFnhPpSS2MefCmlcbs7vV5nfMrMTROfTZ9zfAcPNUopm6eCiaRrJ1Y1p9
-	9ezbcY/upTewbRhj851JdGh9auTF/6N800ZUXsLSNnFLDjOrxr+10tyTnsJYi4InGM3xmk
-	rvi8stQJ/Gs34hFVsNwIPt93sm8l7ps=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777039295; a=rsa-sha256;
-	cv=none;
-	b=avVPvL6r8S5dgxKyLzAbUSStFO0l4RqLRLdzPP/ONDM3iHoXdem6lStLqEZjKoEKTQ7hjC
-	JGNuc0l5yAq55NjOYvYh/dDpNAC/7ovSSj1IyoFlivO0dbLT7nHjO9wTEJUhnZPHzziXQ6
-	Nd0P8sh2hLp1hFqLYFeC1MX70pb5nTA=
+	bh=pLjAwZir7SDMyHch5bjWJvoC+zMKV2PqwA1AeudMlLc=;
+	b=Bheik8fiqRRMkpsV8WweqfvtDftmO6G6Nwp6ieyDeo6VNlAqG5Gunxn5auNMaOqBZwak6a
+	jKk37cb59/R3yNJ4VpGxrfPjWDQGWeByHDr0huIM/iYEbYtuqk+twZusCZ1Jz1s3P4d+eP
+	wDCNkMrQ0RL/+tI1utUb0svG7Xbb+uw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lWd+BY+X;
-	spf=pass (imf05.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i1SHrCEX;
+	spf=pass (imf15.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777039297; a=rsa-sha256;
+	cv=none;
+	b=oMussea34+TemB7uauizh026e/mHah+ubnSbig6BVvg7CSiK6cxSWbCim9MSyG+azvTsnY
+	Amgr/pVDHrIJCVtaRQYqTSp/7HlWIhNXy990/lgI6fn/x4EmNQuXSatMU+H6HT2HdeeHgN
+	/L7t4UDdPq7Yw0qYSE/m/qOm0ih3R2o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BEA44465F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CA91446C7;
+	Fri, 24 Apr 2026 14:01:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5A0C19425;
 	Fri, 24 Apr 2026 14:01:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2C1C2BCB2;
-	Fri, 24 Apr 2026 14:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777039294;
-	bh=TBKrtjv7+bLe3/01VBt+c7tfJ2DPrZzmNjtiYrqNDtg=;
+	s=k20201202; t=1777039296;
+	bh=gwxMHRj8xZWjbOPpjwiAWwZJt+gKEClkO6VJvO7mI2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWd+BY+X4r0dkO9VbE+etNI+pKWnytTiTzOSKdmSp+7vmV8Ojf342Ge77uF1k9BlB
-	 KvsGTjRejWodx3rv4U/vgPAv06riz63gFti0yJDRlZaV0f5eFxbxSn4x+8NaHsruIP
-	 PAliqU2OUAkrWZY9MGTnmX4oXUQ06hc+3sn1vxskkPZyRc/w3dmlAQjI2UA9elNsZr
-	 /NYOB58iwuXMHJqYGpnWPYQHhQnPJle+sp8cmcNE7p2n597BYz77oP5zmcE8KvkzEh
-	 WXtqjH7wrTrbiaSIK1yG8EFZglKjmXS75h/uCNTg8ww/n+6QdnLiwOxIo4ZqeWJwJD
-	 D0ujBonCYLlGA==
+	b=i1SHrCEXRbPW4i0FC6+hGykEQzaarjMtbE/zFBFVEziiPwgJTwjYdtV/iQBP7pubm
+	 9qbG8iE8eXHWezGjh4Jg8AAKoYThApjtNHa/ex5k3hY3flw0VibgOxpOEW+MuO+gSb
+	 ncjbv0WpYcaOFCsvThPJ/64n3RNw/kOKlOtsFIy0I7U8PpJ2Dyan7zZyfPtjarevMW
+	 pnHup9+o0D/oSQS4CofK5Zsp0Z6LjoRfswjABP3aqqXWDZfhTrWlNDpuAnaX87wOdS
+	 PSAhy5olALkX2a/B6tBaf+HWeuQte5UHAWc/NAwqx1x4eDriYDLxGFC4KqRQ1Rb9Fl
+	 feb1a3zyL9CPg==
 From: Sasha Levin <sashal@kernel.org>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -83,22 +83,22 @@ Cc: ljs@kernel.org,
 	Sasha Levin <sashal@nvidia.com>,
 	Sanif Veeras <sveeras@nvidia.com>,
 	"Claude:claude-opus-4-7" <noreply@anthropic.com>
-Subject: [RFC 6/7] Documentation/mm: add page consistency checker documentation
-Date: Fri, 24 Apr 2026 10:00:55 -0400
-Message-ID: <20260424140056.2094777-7-sashal@kernel.org>
+Subject: [RFC 7/7] mm/page_consistency: add KUnit tests for dual-bitmap primitives
+Date: Fri, 24 Apr 2026 10:00:56 -0400
+Message-ID: <20260424140056.2094777-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424140056.2094777-1-sashal@kernel.org>
 References: <20260424140056.2094777-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zn35smt8iyixamxubt54hkpo8s8f9rnq
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A18A9100031
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 804F5A000B
+X-Stat-Signature: wjyn4wg6hszqqxfidtk1w9phbj9n1ux8
 X-Rspam-User: 
-X-HE-Tag: 1777039295-192190
-X-HE-Meta: U2FsdGVkX18kK04fnvHQDtq2+8vmsssWYbytTdH62+jkze6QfNxgGcc5d1N/mW2dkMIsQ0fg6e4tVD8PYNgS4wpjlRVTxZ8mGUeJpRMaY4IyZxQk7/yzFv5OqCpZ6/O598E/0OPJiw8UfO9VNoI+AbSMzkMKWuolpyhOGTQqAXdPFgFRM42vD9GJi0qq3KR+KOhgtVh/DP050BtI/SSlGYEExXoHyrSCRkxO2u2WoyFWfzBJRv7aJdRq49y5AzP8uEYJImU29Y576rE2dhw8y0mH6m3gBFSeFh9Ls6V3NzFsW+hplNJQtpGZ+My6M6o07dgzlxOxt9BKr8uQ7vxSEDApZaGaKx95GCwTNAlYfosnY5bCuEOy9Oq7FT3IBipxb0IzsMrohTYBcYbKq34CekILhzUZWoYWlaDxGj3Ea8wJhfxPQunP0zvSTUEtSK8FErTEWmRiiH9N3UYmfAJAt+oGENaszn9NBPI27sVz13RJBog9Uk8DjFiFEbBPSoTwH73eryziK6ckXJswBE+B+xRqzCB5YNB0m+fvQ42705jExN9b3qknmwhKX4l489882ZYSqsXfp3hmqY6FGM031OAqEPeYN6505+VKRNZWYF5GIFZ0ER794dD0Z/rcqckdFwc/hms1lh7u4NJK8DH6pauV86jX/MX8o0+enCOhYDcYZUMxuqI4f2pLOuHCnLkHBtpoDyf3T4RMobpDEBSNUNJBHHcxMPguVX5k83gAQ9+ND0eR4efrTqtqC6dUBiOo4T2qIHV60tNQIZnU5q3xLHuAIGf7Ixzjt3gu64i9VsPX558TH2qD0XWjEfp53rf3Z1T7fx8J43UDp6QpO74Ek/YpT19tbGgmusweEhDHR36nqleXbMDPuRzLLXG1CLykKb696mzpSudnNqDfcdrE3SRETrlkINaYKzvB67jjloE9mKfDnyWMbR1lh5R0rAmQdFlIxs3HU3FTWanLCIM
- C65U00NJ
- BpD80KMSO1da/U2QR8SJLoE27I0MKDV9yzmOgHopdvlJWlQSX7g38aGWHXBIekdiwSDmvic3xLG5MMWXqtwSFDZZPIYlBm7R/MbR7iEzjH9JUJB76QnzB1OOu4yYKozkrSJ1o/5jUdY9jdvV7DDUFB8gAEfIVvVK1HluxF9r8xARnoK9K+liAJ8D5Johrylht4Iw0E/ljEeSPRYoYAKyaZQ2J7wmEj6C8bG5PFuf/YQT/EwtAX5ziNPOOcWT4lvvREKegpUf5NbjGDRj2wIJobbpX5jEcAEZWBE6BgMl4V/5b0BI=
+X-HE-Tag: 1777039297-602602
+X-HE-Meta: U2FsdGVkX19Z4d4X6hQ71DRxYGRUDFnIN+QgvfVDg/eQ+HrCXppHITHZazcS46vKxaWcSm//OkHQSC51vznK0o7woHWKuKx+0C8DChUqzDWC5xwQW9/FdBCUE9KYGd58kD2u39yei9W/vFGngLxSqXJvimN38PWfbHRaRI22A+iW9n7hexw72ZyomwovPqP465UB4O3IUwQPPCw4U/zszBz6MWHOW+mB5Ecgt9I+M43xLMkqbGbqu3GDXGUHlpmJ3AwegBbUFCT4fcavk4f0BpBei7DywF++/GRiyJznCgFPTZeNY0ZtrLTqDvBG/k/8bcR8W0pTya6QnC2qgmFmD0P15410urCx/qu3FOkHFZ0KRPHP323T+W3n6nOegInbT8+n7dT9iLgp2C1zxd7rTu72I05MMy0EkBl4I2a4QS0UaUfKYA5RjhorsT8QEjtwiqKKJdFSQaVPENPLq5+XtXKmlF3WMSZTVfBx6ARnKwSE8e4/CEnXDG0el26B7ge8d2tAFVFU6gTXSHP2fg0Wyuog0jn9SzV9jSvYV+9fUA8PjCpa97GFru8HeXMjkRb0qJN67P9KQRO9tkaVI1W6se07rl2lKU9t6XV6lHn4Q/xgR6FlWQWrYKhSmr975cjQDBCjC3v0NpaLiKMGOMaW7WN3nrW0pUPZXU3nhB+B9zWZoDpaF+suSV/UQ0hHJkKF69Tjq5Pp+JBmjjFPFcZkgexz9VO+W+XjktEyhxEJrKKJ+71RnfOLZv/lSM8Lxd1yrIBSXlzurASdAa9vtaP+leFAPvmkoikgGQZo2mL0lPVCqNQqqF+iclvE4sgi5iAnOvDUBSTjxa98grg0ngoaI0oMX32XIFybI+EvXfLGI6O+NM+7S6K/dSxha8DPraVLEBOs0Xz8AJbdgqhgO4eQaCHouFeiIrbLE71Zt+/fdf1I2MHU+KWYaxi3+mkgOGH2vPGFcbuq8OkEP3CgkQF
+ fWeQG/LU
+ 4dpw6cKFNzk2g+iDWHwJ+pySeWSEUaU3CqIN54quSBnkrJ3lgTRQDeJiwQs/GIlZMutRT9RNT7lmmgxp4qPaV7oN1iE0bpOe62nIa15P9g7gZz4iOyKVlgCYMSkEyAtNi+Pm0+Zfrvo3jJFH/J//D95tXI8jMYxc56+bDBb3/cv7cadqrcK7i7jkC/ls7yUPU3VLcCHyKDeZhSN76maEWVMt6ZjA2L7/PWZrfhOUGy4L7hgj+R2+3D7PprsTE0e9DdEjStWhvItB0rl8E3FBc6d1mrgUqqKfWOQiMq1WldStW1HmbU4mNKMQXzhbq1qbRZg8JJhmo7UaZ1QK29BS4cUZ33g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,260 +108,330 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Sasha Levin <sashal@nvidia.com>
 
-Add documentation for the page consistency checker feature. The document
-explains the dual-bitmap algorithm, describes the configuration options,
-and covers the debugfs interface for monitoring and validation.
+Add a KUnit test suite that exercises the dual-bitmap algorithm used by
+the page consistency checker. The tests verify that the core invariant
+is maintained through various operations and that corruption can be
+reliably detected.
 
-The algorithm section explains how the complementary bitmaps work: the
-primary bitmap uses 1 for allocated and 0 for free, while the secondary
-bitmap uses the opposite convention. This redundancy means any single-bit
-corruption in either bitmap will cause a detectable violation of the
-invariant that primary[bit] must equal ~secondary[bit].
+The test suite covers several scenarios. The initial-state test confirms
+that a freshly initialized dual bitmap with zeroed primary and filled
+secondary passes validation. The set and clear tests verify that normal
+operations maintain the complementary relationship between bitmaps. The
+double-set and double-clear tests confirm that attempts to set an
+already-set bit or clear an already-clear bit are properly detected and
+reported through the return value.
 
-The document also explains the intentional limitation around double-free
-detection. During boot, free_reserved_area() releases pages that were
-never allocated through the buddy allocator. Flagging these as errors
-would generate many false positives, so double-free detection is
-deferred until after boot completes.
+The corruption detection tests are particularly important for validating
+the safety guarantees. These tests directly manipulate one bitmap without
+updating its complement, simulating what would happen if a memory error
+flipped a bit. Both primary and secondary corruption scenarios are
+tested, confirming that either type is caught by validation.
+
+The suite also includes boundary condition tests covering the first bit,
+last bit, and word boundaries to ensure the bit manipulation logic
+handles edge cases correctly.
 
 Based-on-patch-by: Sanif Veeras <sveeras@nvidia.com>
 Assisted-by: Claude:claude-opus-4-7 <noreply@anthropic.com>
 Signed-off-by: Sasha Levin <sashal@nvidia.com>
 ---
- Documentation/mm/index.rst            |   1 +
- Documentation/mm/page_consistency.rst | 211 ++++++++++++++++++++++++++
- 2 files changed, 212 insertions(+)
- create mode 100644 Documentation/mm/page_consistency.rst
+ mm/Makefile                |   1 +
+ mm/page_consistency_test.c | 274 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 275 insertions(+)
+ create mode 100644 mm/page_consistency_test.c
 
-diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-index 7aa2a8886908..bef6c9bbc976 100644
---- a/Documentation/mm/index.rst
-+++ b/Documentation/mm/index.rst
-@@ -57,6 +57,7 @@ documentation, or deleted if it has served its purpose.
-    page_frags
-    page_owner
-    page_table_check
-+   page_consistency
-    remap_file_pages
-    split_page_table_lock
-    transhuge
-diff --git a/Documentation/mm/page_consistency.rst b/Documentation/mm/page_consistency.rst
+diff --git a/mm/Makefile b/mm/Makefile
+index 2ee360001456..7106aeb79cf5 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -129,6 +129,7 @@ obj-$(CONFIG_BALLOON) += balloon.o
+ obj-$(CONFIG_PAGE_EXTENSION) += page_ext.o
+ obj-$(CONFIG_PAGE_TABLE_CHECK) += page_table_check.o
+ obj-$(CONFIG_DEBUG_PAGE_CONSISTENCY) += page_consistency.o
++obj-$(CONFIG_DEBUG_PAGE_CONSISTENCY_KUNIT_TEST) += page_consistency_test.o
+ obj-$(CONFIG_CMA_DEBUGFS) += cma_debug.o
+ obj-$(CONFIG_SECRETMEM) += secretmem.o
+ obj-$(CONFIG_CMA_SYSFS) += cma_sysfs.o
+diff --git a/mm/page_consistency_test.c b/mm/page_consistency_test.c
 new file mode 100644
-index 000000000000..dd1bde68f1a5
+index 000000000000..6cd587f8146f
 --- /dev/null
-+++ b/Documentation/mm/page_consistency.rst
-@@ -0,0 +1,211 @@
-+.. SPDX-License-Identifier: GPL-2.0
++++ b/mm/page_consistency_test.c
+@@ -0,0 +1,274 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * KUnit tests for dual-bitmap primitives
++ *
++ * Tests the dual-bitmap consistency checking algorithm used by the page
++ * consistency checker. These tests verify the core invariant maintenance
++ * and corruption detection logic.
++ */
 +
-+=======================
-+Page Consistency Checker
-+=======================
++#include <kunit/test.h>
++#include <linux/dual_bitmap.h>
 +
-+The page consistency checker is a debugging feature that uses dual
-+complementary bitmaps to detect corruption in page allocation tracking.
-+It maintains the invariant that for every bit position, the primary
-+bitmap value equals the bitwise complement of the secondary bitmap value.
++#define TEST_BITMAP_BITS 256
 +
-+Overview
-+========
++struct dual_bitmap_test_context {
++	struct dual_bitmap db;
++	unsigned long primary[BITS_TO_LONGS(TEST_BITMAP_BITS)];
++	unsigned long secondary[BITS_TO_LONGS(TEST_BITMAP_BITS)];
++};
 +
-+Memory corruption can silently flip bits in kernel data structures,
-+leading to difficult-to-diagnose failures. The page consistency checker
-+addresses this by maintaining redundant tracking of page allocation
-+state. Any single-bit corruption in either bitmap will cause a detectable
-+inconsistency, allowing the corruption to be caught rather than causing
-+silent data corruption or mysterious crashes later.
++static int dual_bitmap_test_init(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx;
 +
-+The bitmaps are flat, covering the entire PFN range from
-+``memblock_start_of_DRAM()`` to ``memblock_end_of_DRAM()`` including any
-+holes in physical memory. This is a deliberate design choice: simple
-+``pfn - min_pfn`` indexing is trivially auditable, which matters for a
-+safety mechanism. Sparse or section-aware indexing would add auxiliary
-+data structures that could themselves be subject to corruption. See
-+`Limitations`_ for a detailed analysis of memory overhead including
-+holes.
++	ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
 +
-+The approach is based on NVIDIA safety research and is
-+particularly useful for safety-critical systems requiring Freedom From
-+Interference (FFI) guarantees per ISO 26262 (ASIL-D) and IEC 61508
-+(SIL-3).
++	ctx->db.bitmap[DUAL_BITMAP_PRIMARY] = ctx->primary;
++	ctx->db.bitmap[DUAL_BITMAP_SECONDARY] = ctx->secondary;
++	ctx->db.nbits = TEST_BITMAP_BITS;
 +
-+Algorithm
-+=========
++	/* Initialize: primary all zeros, secondary all ones */
++	dual_bitmap_init(&ctx->db);
 +
-+The checker maintains two bitmaps tracking page allocation state:
++	test->priv = ctx;
++	return 0;
++}
 +
-+Primary bitmap
-+  Bit set to 1 when page is allocated, 0 when free.
++static void test_initial_state_consistent(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	unsigned long violations;
 +
-+Secondary bitmap
-+  Bit set to 0 when page is allocated, 1 when free.
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_EQ(test, violations, 0UL);
++}
 +
-+The invariant that must always hold is::
++static void test_set_maintains_consistency(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	unsigned long violations;
++	bool was_set;
 +
-+    primary[bit] == ~secondary[bit]
++	/* Set bit 42 */
++	was_set = dual_bitmap_set(&ctx->db, 42);
++	KUNIT_EXPECT_FALSE(test, was_set);
 +
-+When a page is allocated, the checker sets the bit in the primary bitmap
-+and clears it in the secondary bitmap. When freed, it clears in primary
-+and sets in secondary. If the operation finds the bit already in the
-+expected final state, a double-allocation or double-free has occurred.
++	/* Verify consistency */
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_EQ(test, violations, 0UL);
 +
-+Full validation can be performed by checking that every word in the
-+primary bitmap equals the bitwise complement of the corresponding word
-+in the secondary bitmap.
++	/* Verify individual bit consistency */
++	KUNIT_EXPECT_TRUE(test, dual_bitmap_consistent(&ctx->db, 42));
++}
 +
-+Concurrency Handling
-+====================
++static void test_clear_maintains_consistency(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	unsigned long violations;
++	bool was_set;
 +
-+The dual-bitmap update operations (set/clear) modify both bitmaps with
-+separate atomic operations. This creates a brief window where a concurrent
-+validation could observe a transient inconsistency.
++	/* First set the bit */
++	dual_bitmap_set(&ctx->db, 100);
 +
-+The implementation handles this by retrying validation when an inconsistency
-+is detected. Real memory corruption is persistent and will fail all retries.
-+Transient inconsistencies from concurrent updates resolve quickly and pass
-+on retry.
++	/* Now clear it */
++	was_set = dual_bitmap_clear(&ctx->db, 100);
++	KUNIT_EXPECT_TRUE(test, was_set);
 +
-+Double-Free Detection
-+=====================
++	/* Verify consistency */
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_EQ(test, violations, 0UL);
++}
 +
-+Double-free detection is deferred until the system is fully running. During
-+boot, free_reserved_area() and free_initmem() release memory pages that were
-+never allocated through the buddy allocator. These would appear as double-frees
-+but are expected behavior.
++static void test_double_set_detected(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	bool was_set;
 +
-+The checker uses ``system_state >= SYSTEM_RUNNING`` to determine when boot
-+is complete. This state is reached only after all init memory has been freed,
-+ensuring no false positives from legitimate boot-time freeing. Any attempt to
-+free a page that is not marked as allocated after this point will be flagged
-+as a violation.
++	/* Set bit 50 */
++	was_set = dual_bitmap_set(&ctx->db, 50);
++	KUNIT_EXPECT_FALSE(test, was_set);
 +
-+Configuration
-+=============
++	/* Try to set it again - should report it was already set */
++	was_set = dual_bitmap_set(&ctx->db, 50);
++	KUNIT_EXPECT_TRUE(test, was_set);
++}
 +
-+The feature is controlled by two Kconfig options:
++static void test_double_clear_detected(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	bool was_set;
 +
-+``CONFIG_DEBUG_PAGE_CONSISTENCY``
-+  Enable the page consistency checker. Memory overhead is two bits per
-+  PFN in the spanned range (start to end of DRAM, including holes),
-+  roughly 4 MB total for a 64 GB system. When this option is disabled,
-+  the allocator hooks compile away. When enabled, a static key gates
-+  tracking until initialization succeeds.
++	/* Clear bit 60 which is already clear (never set) */
++	was_set = dual_bitmap_clear(&ctx->db, 60);
++	KUNIT_EXPECT_FALSE(test, was_set);
++}
 +
-+``CONFIG_DEBUG_PAGE_CONSISTENCY_PANIC``
-+  When enabled, the kernel will panic immediately upon detecting a
-+  consistency violation. When disabled, a warning with a stack trace
-+  is emitted and execution continues. Safety-critical systems should
-+  enable this option.
++static void test_corruption_in_primary_detected(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	unsigned long violations;
 +
-+Debugfs Interface
-+=================
++	/* Corrupt the primary bitmap directly */
++	set_bit(75, ctx->primary);
 +
-+When CONFIG_DEBUG_FS is enabled, the checker exposes files under
-+``/sys/kernel/debug/page_consistency/``:
++	/* Validation should detect the corruption */
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_GT(test, violations, 0UL);
 +
-+``stats``
-+  Read-only file showing tracking statistics::
++	/* Individual bit check should also fail */
++	KUNIT_EXPECT_FALSE(test, dual_bitmap_consistent(&ctx->db, 75));
++}
 +
-+    pages_tracked:       12345
-+    alloc_count:         67890
-+    free_count:          55545
-+    violations_detected: 0
-+    bitmap_size_bits:    1048576
-+    pfn_range:           [256-1048831]
++static void test_corruption_in_secondary_detected(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	unsigned long violations;
 +
-+``validate``
-+  Write-only file. Writing any value triggers a full validation of
-+  all bitmap words. Returns success if all words are consistent,
-+  or -EIO if any violations are found.
++	/* Corrupt the secondary bitmap directly */
++	clear_bit(80, ctx->secondary);
 +
-+Usage
-+=====
++	/* Validation should detect the corruption */
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_GT(test, violations, 0UL);
 +
-+To use the page consistency checker:
++	/* Individual bit check should also fail */
++	KUNIT_EXPECT_FALSE(test, dual_bitmap_consistent(&ctx->db, 80));
++}
 +
-+1. Enable ``CONFIG_DEBUG_PAGE_CONSISTENCY`` in your kernel configuration.
++static void test_multiple_operations(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	unsigned long violations;
++	unsigned long i;
 +
-+2. Optionally enable ``CONFIG_DEBUG_PAGE_CONSISTENCY_PANIC`` if you want
-+   the kernel to halt immediately upon detecting corruption.
++	/* Set bits 0-63 */
++	for (i = 0; i < 64; i++)
++		dual_bitmap_set(&ctx->db, i);
 +
-+3. Boot the kernel. The checker will automatically initialize and begin
-+   tracking page allocations.
++	/* Clear bits 32-63 */
++	for (i = 32; i < 64; i++)
++		dual_bitmap_clear(&ctx->db, i);
 +
-+4. Monitor statistics via debugfs::
++	/* Validate entire bitmap */
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_EQ(test, violations, 0UL);
 +
-+     cat /sys/kernel/debug/page_consistency/stats
++	/* Verify expected state: bits 0-31 set, rest clear */
++	for (i = 0; i < 32; i++)
++		KUNIT_EXPECT_TRUE(test, test_bit(i, ctx->primary));
++	for (i = 32; i < TEST_BITMAP_BITS; i++)
++		KUNIT_EXPECT_FALSE(test, test_bit(i, ctx->primary));
++}
 +
-+5. Trigger manual validation::
++static void test_boundary_bits(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
++	unsigned long violations;
 +
-+     echo 1 > /sys/kernel/debug/page_consistency/validate
++	/* Test first bit */
++	dual_bitmap_set(&ctx->db, 0);
++	KUNIT_EXPECT_TRUE(test, dual_bitmap_consistent(&ctx->db, 0));
 +
-+Limitations
-+===========
++	/* Test last bit */
++	dual_bitmap_set(&ctx->db, TEST_BITMAP_BITS - 1);
++	KUNIT_EXPECT_TRUE(test, dual_bitmap_consistent(&ctx->db, TEST_BITMAP_BITS - 1));
 +
-+As described in `Overview`_, the bitmaps use a flat layout covering the
-+entire spanned PFN range, including any holes. Bits corresponding to
-+holes are initialized to the free state and remain inert; they maintain
-+the complement invariant and never trigger false positives. The kernel's
-+own ``pageblock_flags`` bitmaps use the same flat approach, sizing to
-+``zone->spanned_pages`` which includes holes.
++	/* Test word boundary (last bit of first word / first bit of second word) */
++	dual_bitmap_set(&ctx->db, BITS_PER_LONG - 1);
++	dual_bitmap_set(&ctx->db, BITS_PER_LONG);
++	KUNIT_EXPECT_TRUE(test, dual_bitmap_consistent(&ctx->db, BITS_PER_LONG - 1));
++	KUNIT_EXPECT_TRUE(test, dual_bitmap_consistent(&ctx->db, BITS_PER_LONG));
 +
-+Memory overhead
-+---------------
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_EQ(test, violations, 0UL);
++}
 +
-+The cost is 2 bits per PFN in the range (1 bit per bitmap x 2 bitmaps),
-+allocated via ``memblock_alloc()`` before the buddy allocator is
-+available. A hole wastes ``hole_size / PAGE_SIZE / 8`` bytes per bitmap.
-+In practice the waste from holes is negligible::
++static void test_dual_bitmap_test_func(struct kunit *test)
++{
++	struct dual_bitmap_test_context *ctx = test->priv;
 +
-+  System         Holes    Per-bitmap size   Hole waste   Waste/bitmap
-+  -----------    ------   ---------------   ----------   ------------
-+  64 GB, flat    none     2 MB              0            0%
-+  256 GB, flat   none     8 MB              0            0%
-+  256 GB         4 GB     8.1 MB            128 KB       1.5%
-+  1 TB           16 GB    32.5 MB           512 KB       1.5%
++	/* Initially all bits should be clear (not allocated) */
++	KUNIT_EXPECT_FALSE(test, dual_bitmap_test(&ctx->db, 10));
 +
-+On x86_64 the typical hole between low memory (below 4 GB) and high
-+memory is the largest source of waste. On arm64 with
-+``memblock_start_of_DRAM()`` typically at 0x80000000 (2 GB), holes
-+within the DRAM range are generally small or absent.
++	/* After setting, bit should be set */
++	dual_bitmap_set(&ctx->db, 10);
++	KUNIT_EXPECT_TRUE(test, dual_bitmap_test(&ctx->db, 10));
 +
-+Other limitations
-+-----------------
++	/* After clearing, bit should be clear again */
++	dual_bitmap_clear(&ctx->db, 10);
++	KUNIT_EXPECT_FALSE(test, dual_bitmap_test(&ctx->db, 10));
++}
 +
-+The feature is incompatible with ``CONFIG_MEMORY_HOTPLUG`` because the
-+bitmaps are sized at boot based on the initial physical memory range.
-+Hot-added memory would fall outside the tracked PFN range and be silently
-+ignored.
++/* Test with non-word-aligned nbits to exercise partial-word handling */
++#define TEST_UNALIGNED_BITS 100  /* not a multiple of BITS_PER_LONG */
 +
-+Boot-time reserved pages are not tracked as allocations. Freeing such a
-+page before ``SYSTEM_RUNNING`` is expected and is ignored by the
-+double-free detector. Freeing an untracked reserved page after boot is
-+reported as a double-free.
++struct dual_bitmap_unaligned_context {
++	struct dual_bitmap db;
++	unsigned long primary[BITS_TO_LONGS(TEST_UNALIGNED_BITS)];
++	unsigned long secondary[BITS_TO_LONGS(TEST_UNALIGNED_BITS)];
++};
 +
-+The feature detects corruption in the tracking bitmaps themselves, not
-+corruption in the actual page contents. For page content verification,
-+see CONFIG_PAGE_POISONING.
++static void test_non_aligned_nbits(struct kunit *test)
++{
++	struct dual_bitmap_unaligned_context *ctx;
++	unsigned long violations;
++	unsigned long i;
 +
-+Implementation Details
-+======================
++	ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
 +
-+The checker hooks into the page allocator at two points:
++	ctx->db.bitmap[DUAL_BITMAP_PRIMARY] = ctx->primary;
++	ctx->db.bitmap[DUAL_BITMAP_SECONDARY] = ctx->secondary;
++	ctx->db.nbits = TEST_UNALIGNED_BITS;
 +
-+- ``post_alloc_hook()`` calls ``page_consistency_alloc()`` after a
-+  successful allocation.
++	dual_bitmap_init(&ctx->db);
 +
-+- ``free_pages_prepare()`` calls ``page_consistency_free()`` when pages
-+  are being returned to the allocator.
++	/* Initial state should be consistent */
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_EQ(test, violations, 0UL);
 +
-+Both hooks use static keys (``static_branch_unlikely``) so the overhead
-+is a single no-op when the feature is disabled.
++	/* Set and clear bits near the non-aligned boundary */
++	for (i = TEST_UNALIGNED_BITS - 5; i < TEST_UNALIGNED_BITS; i++) {
++		dual_bitmap_set(&ctx->db, i);
++		KUNIT_EXPECT_TRUE(test, dual_bitmap_consistent(&ctx->db, i));
++	}
 +
-+The bitmaps are allocated during ``mm_core_init()`` using
-+``memblock_alloc()`` before ``memblock_free_all()`` releases memblock
-+memory to the buddy allocator. The secondary bitmap is initialized with
-+all bits set to 1, establishing the initial complementary relationship
-+with the zeroed primary bitmap.
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_EQ(test, violations, 0UL);
++
++	/* Clear them back */
++	for (i = TEST_UNALIGNED_BITS - 5; i < TEST_UNALIGNED_BITS; i++)
++		dual_bitmap_clear(&ctx->db, i);
++
++	violations = dual_bitmap_validate(&ctx->db);
++	KUNIT_EXPECT_EQ(test, violations, 0UL);
++}
++
++static struct kunit_case dual_bitmap_test_cases[] = {
++	KUNIT_CASE(test_initial_state_consistent),
++	KUNIT_CASE(test_set_maintains_consistency),
++	KUNIT_CASE(test_clear_maintains_consistency),
++	KUNIT_CASE(test_double_set_detected),
++	KUNIT_CASE(test_double_clear_detected),
++	KUNIT_CASE(test_corruption_in_primary_detected),
++	KUNIT_CASE(test_corruption_in_secondary_detected),
++	KUNIT_CASE(test_multiple_operations),
++	KUNIT_CASE(test_boundary_bits),
++	KUNIT_CASE(test_dual_bitmap_test_func),
++	KUNIT_CASE(test_non_aligned_nbits),
++	{},
++};
++
++static struct kunit_suite dual_bitmap_test_suite = {
++	.name = "dual_bitmap",
++	.init = dual_bitmap_test_init,
++	.test_cases = dual_bitmap_test_cases,
++};
++
++kunit_test_suites(&dual_bitmap_test_suite);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("KUnit tests for dual-bitmap consistency primitives");
 -- 
 2.53.0
 
