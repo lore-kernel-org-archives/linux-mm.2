@@ -4,86 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2CA5FED3C9
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 13:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87C29FED3C9
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 13:58:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 314006B00A0; Fri, 24 Apr 2026 09:56:22 -0400 (EDT)
+	id EB07F6B0098; Fri, 24 Apr 2026 09:58:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C5746B00A2; Fri, 24 Apr 2026 09:56:22 -0400 (EDT)
+	id E617B6B009D; Fri, 24 Apr 2026 09:58:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DC116B00A4; Fri, 24 Apr 2026 09:56:22 -0400 (EDT)
+	id D76F66B00A4; Fri, 24 Apr 2026 09:58:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B74D6B00A0
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:56:22 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 94B9E1C0054
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:56:21 +0000 (UTC)
-X-FDA: 84693598962.18.CEA3C8C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C6E396B0098
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:58:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 633871C0061
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:58:33 +0000 (UTC)
+X-FDA: 84693604506.11.C8BACB4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DE6C01A000C
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:56:19 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tWKIRAk3;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9CB84100003
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 13:58:31 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xvi5Gf8h;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777039111; a=rsa-sha256;
+	cv=none;
+	b=ZZBwmH8L38+3TV9hXLAf02AyuFivlJ1sdtzBacbrql4ZROyn8QOZM5PWbqeZvYRej1RF1n
+	wZP9jRLivq1oQv8ph1e/LbfnFB/u5IYgk60jsmWvjLJ2CSHxLpkKBjxLceeWLdgXy0+TTI
+	91UsLE/yJ0XiQM3c4QFkUkZ2NzW/9fI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Xvi5Gf8h;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777038980;
+	s=arc-20220608; t=1777039111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3vroCxHDFErsYYm4AmTQKjBCHv6XEi/bI3pYwGTqPUc=;
-	b=NM9jkiucf2Bxtyg4dNSBvDCr4mFoPNax39z7FavwUQgcQ6t+i8XxXwG3/o02qLmD4borAU
-	6RS6Od7yRaG8UheL1+SNO6rQujDcCFu1DXL+/1g9DDahsVxcvkMcwEUzR4gsgEt6VqDhKm
-	Ywz6h8c7++FPQSMsM61sktZAGEu+uJI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tWKIRAk3;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777038980; a=rsa-sha256;
-	cv=none;
-	b=3p+fY/s2SB3ckU+NSCCGt0YAnHi/ttZBnNDKmGXIeq72IiX8e5ijm7nJDiqwIO3PY9IIpN
-	U5xCJKIV7sRUqnj9YDQoCwFKoJBgXV1p6FZJQ6V+msPk7juBFob3jC/x0kaCFdwPgF4ZlA
-	N2Yc1/7GwJ3eSJD60twPm4r2FETmJyM=
+	bh=IbE810U9umlb22xp0VvXTCRRR6Jr4Q+hl2Gco/ki9X4=;
+	b=vv6pAfaBLzrVMvzq7Byv8gOFEWX/MHFnW7yscJAGZu3k4h/5NSYCbDfo6LN1VkCH+C5JZ8
+	ikbLRVNEC0vlFRzsYJ2ZX5hj7xYStH24XPEONfRN8mhpBr7iPDNLvYYf+Tm3QLKYx5deTp
+	+Ew7NHf3ddsA1uGajjExnDOnwWe0GVU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C635840664;
-	Fri, 24 Apr 2026 13:56:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BB7C19425;
-	Fri, 24 Apr 2026 13:56:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A3E5743949;
+	Fri, 24 Apr 2026 13:58:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C889FC19425;
+	Fri, 24 Apr 2026 13:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777038978;
-	bh=ChyUBkH34s7FeI8qgas9yFITZwgMiabL3SZHFnWYILE=;
+	s=korg; t=1777039110;
+	bh=7bYInwWM/h/4FMogzkF1bwJ652LCJHGiLjOkNtEaby0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tWKIRAk3owCEWZorPHdqK5zTy/FQwaqxjq365RJkDdcfwpcqabpAt1Yr4kLsXU8FT
-	 uYkiYJmlFLcMNFfsFmd4atsqFvS9zXPNphZ7uPYp8G6wcqaXe1DuKnkv9QI87dU0BC
-	 kzoFM3cOse3Rrw5vfor2ChWhUhzkUWqyVa3CGVuU=
-Date: Fri, 24 Apr 2026 06:56:17 -0700
+	b=Xvi5Gf8hVFpC//5R97FD88BNYz+MVhLRmFvxc2exXUXhHSYrE47STNlM4pTLte5C2
+	 4Y2JwJd0HTqYkBYWh7rT3liPSPKqyF9JVXR1PIXqxRe65zpj4AU+LVVVYIJolPxKQY
+	 HpFryOs/E9bEWySudkVDCIHCe+HL4B9dEhazWpiI=
+Date: Fri, 24 Apr 2026 06:58:28 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Uladzislau Rezki
- <urezki@gmail.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, Vitaly Wool <vitaly.wool@konsulko.se>,
- stable@vger.kernel.org, "Harry Yoo (Oracle)" <harry@kernel.org>
-Subject: Re: [PATCH] vmalloc: fix buffer overflow in vrealloc_node_align()
-Message-Id: <20260424065617.5de5751ec5a5c91910d45a28@linux-foundation.org>
-In-Reply-To: <20260420114805.3572606-2-elver@google.com>
-References: <20260420114805.3572606-2-elver@google.com>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ aarcange@redhat.com, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com,
+ gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jack@suse.cz,
+ jackmanb@google.com, jannh@google.com, jglisse@google.com,
+ joshua.hahnjy@gmail.com, kas@kernel.org, lance.yang@linux.dev,
+ Liam.Howlett@oracle.com, ljs@kernel.org, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH 7.2 v16 00/13] khugepaged: mTHP support
+Message-Id: <20260424065828.031775921990de37f83a2468@linux-foundation.org>
+In-Reply-To: <20260419185750.260784-1-npache@redhat.com>
+References: <20260419185750.260784-1-npache@redhat.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DE6C01A000C
-X-Stat-Signature: kjnw5h5pkqhbc4zk99jn5j7xerz3y6cs
+X-Rspamd-Server: rspam10
+X-Stat-Signature: azt51qjeacbtgf8xoagnitbu9sb5q3bg
 X-Rspam-User: 
-X-HE-Tag: 1777038979-288180
-X-HE-Meta: U2FsdGVkX188+w5alGQFZJJYjBmcokzxAnahYsCn2ZKiSoxNhd5uO8URLr4OMQHU3s+DMyPbSt3vpBysvf7cCTYYRofq5O21a/qgnndAbEycArjEGi6w1zz19sybjlnZrc00DcII+pDsWv/gnDiGuEQ4H85zbIhSXx1memh9oQy8bEG+d787e2jf614kjh3VMSYwrK8XU912QKxMppZqKGaMa9e+D2ZKXVa3C11/20qqUgAnQoAZu/iLSdQi5AK2kgbDSVeXbza4nQOTb2+o5BdhghvJ+Gc4RC26ms5FT2a852mr0duZT59XdXb0hanfxQMgVfKIaffVP3yic5q+4cGaUx4REiYkelf9s2wxAKTiFVTUVawXGlbfdVaAY8DRdjQTYL8f6ZkfxO7e489YwdiDM8/D4bRJ8s8TbFbXyeVc6J52KK4R0Z3jyuM8ogszXnrpsHmaCmaSsaBEs1aqENxV48ne/Lpgy2rmyanb25OUB+BRjPeQ4ybCIGu0GvAz4KcAenD+Q7HOefHQwErMWsDO2KXxE2mTmR4Kj4/hEGYmxYeSs47ThwqSfWBI+OXCr21GBTwYZUA9HomnLyX+EsleHzQRi7ykncrDKpNznXEpI9/RpyOGMkL0iE4oi2/r9S9BvTT11hurcFUAqXV+tRIjhbqH4X38ml9eVBnlVDqMVScwsqeO8G4VE4Yhsv9S1xlUsZmtBqXuoBncT9ilpEDXt4djGWpxgA87o2B01jIx74WGHmRI5PR6lvrw1iNnRAMRdhSXsZdLjbcc7rEZ15ZVHku6nJY2Q2fReBaG+3FYCKffUDFfJBRsswCWppZKR6cC0VAcWMasouA8EzwB5cEnUo1g2OJy2urW4FLg69iJMWtQyUKz1T2eA8UyBqP2kKG3HSB9lSmIaWI9ys0mF5uyWmBP3pmQUYbF3XvxXhdWj/dsqmA3Tj/nzK02zLraQL3m2pXO/Uxl9dc9eg5
- 5O3OT1Bf
- iF/oxRin+LmQzDB3tB1N19SZxoJ9DtUlcopElteWSOxrniT4RG2DgG8jLcQOFL6OYaAwUnElFlIkoTgrcXpG+kifhSOCp0TQCuqlaNQS3B6AyrKyRQ37LfXpe0KTbStzhskWblpyVPXpU3+LdiESMFv+bAqQZzEMgI4e5mVlC1gXbj20XrM0dQHuVdX91BkRcLTatQBJ4RjP5PePEZ3wNyDY2I/ZRuNVUQ9hRcHK3jMh+1f4FVROEi5U/JEeqCwYijgFRACH2fPWiUh9EDBvKKNzkfyQR4//eTWiWUbswtmvnlXZewdsvYpEo3OC2FvYoTSenjjaZ+u9RUSjOlte0PiPhb/p5nQHYISUfDe0P+892goWFurno21XaOUmA7eVoBobl
+X-Rspamd-Queue-Id: 9CB84100003
+X-HE-Tag: 1777039111-691580
+X-HE-Meta: U2FsdGVkX19vQwkB2CJJBZCMu0ZoEdDCxSjYFAOOpbIdRw3OXQA8sTvR9EN8ZsAOB+E0sxCwGhyrrnn8/efelQQz5jJE0xiLNa0pzzXsgurE7jbpLsIC24Ud4W8xdGK8sEjNm4QkAyJ7ixcwnTfRnw2j5p+vlJd+2f93AMkdSiX1S4/ZKilJlSTiIVjXCeFJhyGKMYCDVEdb9dpzxJ7aFvBgXw13ECHtQqPrsIwLQLET2Xl0c5P0f67LLMi6khm6qED6Rjy2pZzQEVVX/oQBE9YHuL9Y2GZ+N6916yLDTwYW3fdJtAnfLbdx+PiB+xkM+iVVxdO0xR8W+ENmZk8psPsPS0Nm7mHNDbbDFPGwbnCbTDc675HRmvzm9HecafcrZHnc/D9U5hNuA3g4ZeegDp9hEOw0VsSzFL5Kbywhrl4k7uP+Od3MPvFWXdDvs8cLHEL3pNY9jtH8TCIlBceBlUJc6cnycAcY8F3qormpaly2mXzuY32GLmiDt9JfymuvjqhSMxZySRiBvTqYuqheWI2NJIOIXYNlgKyj10cGu9Nw6wfgiokPiGUvbteD9g2NxXJ5KXTYv3hYwQEUdifKPWOTE8QVuWCYVRCFBGYbDLplmhRwmgiHyZi71ng6gS+AfSthEm3MEq28md13V+Q0c07HTnqcRKr0TCG/G2n7l6dID3W8WNNzscl/WcwCnfd/c7GqfRwNUuX3FnKPH+vUbZWlANoMGvxIymAnbCrF8JVp7tHbevDoFeqXmLOQyaeeyOZaxeSDqUe95swLKN+xVN0c4ki9o5WtCT5p0xqaUq/dR/6L3pA2dWhna/sN8V/hqv1HIm5aGi7x+nITx3nonuljBDaxccvx6jpBwv6Oeeuckh+PQN6CPNan4/Mpk/OWWcpqrdgUAyGkT+SPXxDcXnVwq+ot0ywpWJgtSRhZRmq9j+WXzOT3UWA+C4OC2FHeJOuuyxv+ymipM29/+jI
+ nQ5cOmol
+ mtOBnU90CrSJ+7o3P+Ud6eaDdhz//po0E9P5WQ6pdmIPBDeJEJ1P/eNXGHjw86gyUZFIxQOIwBvebUl+JUWKDK+YPq6LPU77/Riq+Pidk0+W9w/Yl4+bBJmb41IBefqL3reboq1lp4NfO5tgneOdfd9ATlzHOqexKxF1BRjxIU7DOQT+p6iEsN9y77mpYxfDwFo8khr8EdyzPK2IX3zEOZ5n5YiHgwKB2OM31Iq2PmsnMTaSyX3+GnQ5Ar1zmBOZIDtVKC1OayiDCEcjm0SYso9D/mHokdy2uWsT+0NldD0BzPjdVqHm+oLi+aROplAlXbJ/KjZhaXUAdIVC0JOMQiJ3h4Ph6Ks+7qT0EdHgbbBUBaQNLlobPgKxZWpQsbE5V6+pbqAChTiWpBq7IQdUixXjQqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,20 +106,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 20 Apr 2026 13:47:26 +0200 Marco Elver <elver@google.com> wrote:
+On Sun, 19 Apr 2026 12:57:37 -0600 Nico Pache <npache@redhat.com> wrote:
 
-> Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
-> vrealloc") added the ability to force a new allocation if the current
-> pointer is on the wrong NUMA node, or if an alignment constraint is not
-> met, even if the user is shrinking the allocation.
-> 
-> On this path (need_realloc), the code allocates a new object of 'size'
-> bytes and then memcpy()s 'old_size' bytes into it. If the request is to
-> shrink the object (size < old_size), this results in an out-of-bounds
-> write on the new buffer.
-> 
-> Fix this by bounding the copy length by the new allocation size.
+> The following series provides khugepaged with the capability to collapse
+> anonymous memory regions to mTHPs.
 
-AI review is asking questions about the nearby code:
-	https://sashiko.dev/#/patchset/20260420114805.3572606-2-elver@google.com
+Lots of stuff here:
+	https://sashiko.dev/#/patchset/20260419185750.260784-1-npache@redhat.com
+
+It's going to take some time.  Hopefully worthwhile.
+
+As always, it's useful to hear about the usefulness of the AI review.
 
