@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6A9BFE51EE
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 09:11:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40CEEFE51F0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 09:14:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F50F6B008A; Fri, 24 Apr 2026 05:11:57 -0400 (EDT)
+	id 93AF06B0092; Fri, 24 Apr 2026 05:14:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A6866B008C; Fri, 24 Apr 2026 05:11:57 -0400 (EDT)
+	id 8EB676B0093; Fri, 24 Apr 2026 05:14:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1947F6B0092; Fri, 24 Apr 2026 05:11:57 -0400 (EDT)
+	id 8007E6B0095; Fri, 24 Apr 2026 05:14:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 054E76B008A
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:11:57 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9AC61607CB
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:11:56 +0000 (UTC)
-X-FDA: 84692882232.07.FF66AF2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 218A01C0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:11:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Su1jyHjF;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FFFF6B0092
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 05:14:06 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01b-stub [10.200.18.250])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C8DA1C0C87
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:14:06 +0000 (UTC)
+X-FDA: 84692887692.11.975303D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5913E2000E
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 09:14:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BHgSpMBO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777021915;
+	s=arc-20220608; t=1777022044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0S9EV25mhlv+RfkyJC3SADA/Hq4CXD18D0UhyZP3nWs=;
-	b=eZOVe+DGyhs9FSov5mYvENwgepe6dR2VanQJxAAnxgYMiccZBHhD0l6IfqCXPFx12zg/zN
-	0fClDoJ1bG8G6dNgKWTXLgDBnAo+sxsgAA80fFwPs4BUJNx/75qeDidelfcDcCfyflQMFq
-	kDB+fhRbkLmXPzFb1d/Tp8AkY8Gs42Q=
+	bh=IUHRZLvJYisxL/hSXiXf7w7iIpYypSqKXBk11KQJlk4=;
+	b=v7sK4U2YzqdRl1AqT7josasHsf/uBAY7F0AZoIpb3669zJK+WH+K1U1O5+M8DVExHkPE8d
+	1G2E+OMCN/zOnxnG2GIB7XynwZU8f4ArKdGrY4IArm6NHteUIJSjVwOBw68Ig4PoVeELfd
+	9Ipjh4eYur1DXTxMd6bln6x5Tqg8ZkM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Su1jyHjF;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777021915; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BHgSpMBO;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777022044; a=rsa-sha256;
 	cv=none;
-	b=Q6FgPeX8EQrlzPWyj4rG1REnhTijZhjLquN2NiAYM4Dz0D4SQQsPxG6vGiwGlsQq4yhPh6
-	MipDLN1yjytdKQTzXx2PGdZjvqvjibKab3QC2Wo1MheWnJPUL3ZeVq6zU8LI5oYLBSuQe9
-	+6I9juWhVOiaL/w/ZUS+FEnCUZr+h6w=
+	b=qJsfEqiLjrmGzPcmkfeM2bmsAh2GszaaMLajUiOgXkJtJqur3WATh1MtjT2gWCCAxlf/0+
+	83eR6TOzR0MOA/oItV39rak0hL27igRJ6X3N5s3D6Fm2wBFoFPl/XtJm5ctzUOVERgJ9UM
+	YZX537vKGO8JAnDu08CkgDN1O67uDZE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 32684600AE;
-	Fri, 24 Apr 2026 09:11:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C07C19425;
-	Fri, 24 Apr 2026 09:11:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A2ED43FDA;
+	Fri, 24 Apr 2026 09:14:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27AFC19425;
+	Fri, 24 Apr 2026 09:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777021913;
-	bh=SsqSo4+zjog+NkLRTA0Kn233Cxw/eENvVArd9TQ7CcA=;
+	s=k20201202; t=1777022043;
+	bh=niop0reY6PituW/Dk1Z2ZYI5VhcmIRP9z/VzEFO68oo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Su1jyHjFu/8YsS48wDh711n00szcy8RRRx8P4BZ+dQyykIbYmeeE9RTMf8ATgJBsJ
-	 jCQHZ4bj09apvjrQpVki8eBjYYIiLVXFTEfekDI/YJsEsigdOWyqc5nEHmK/O7azzw
-	 QU6u8C25RMKPE+YqRBm12lfEW6MHkhInS6brKvL1XEEzhxgYEGdXwVtkwaESEH7eoT
-	 JKGgUB+mnHGanzv0cifDp5Bjq87FKWg63zEiKjoD8iOqA/Q53kdAIY+BAauVSSkHfo
-	 MBu7Bgg9iyCY0xvNfHK8lISptO8ffBRbj2VO3lQNmVpb6iJ4hopu2byxyx3pDpX5El
-	 H+Z5ortWjUULg==
-Date: Fri, 24 Apr 2026 12:11:39 +0300
+	b=BHgSpMBOVOcwn8p0Xm8TP+46ztAmOgjg7Q2X5khW4rxTMNN0LXQZlmq5PLvGXVkWd
+	 cymeLh0U5LJBo2TNtCOtZ5yUzR471uRchQgaAY6znwAZwQ2h9mqTlTZfkENhkHFnl/
+	 ppUDOP++UwrQyblYcvuKhSIu6bv7UU98TEJeGy0382i1PT63Y5ZvRwT2yRBq7CD2xk
+	 Z3KFITUiFIPFqTg9tNlIYtIEXhBvhCYhOFI9zg4uJoW4bIeY85T3PJWYAREZiejl/y
+	 2PB0a7qbtYjuIBLl3QChA/QksVLIygq/gfT5k0m/gjYYLNUlRuLUhoqsnjihiP5hNy
+	 zo4VXKAXcBCsA==
+Date: Fri, 24 Apr 2026 12:13:51 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Mark Brown <broonie@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -75,34 +75,31 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Lance Yang <lance.yang@linux.dev>,
 	Leon Romanovsky <leon@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Nico Pache <npache@redhat.com>,
-	Peter Xu <peterx@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Sarthak Sharma <sarthak.sharma@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Nico Pache <npache@redhat.com>, Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v2 16/53] selftests/mm: protection_keys: use kselftest
+Subject: Re: [PATCH v2 07/53] selftests/mm: hugetlb-shm: use kselftest
  framework
-Message-ID: <aeszy67Qrb8Q-Xw_@kernel.org>
+Message-ID: <aes0TwOonlHVgn67@kernel.org>
 References: <20260418105539.1261536-1-rppt@kernel.org>
- <20260418105539.1261536-17-rppt@kernel.org>
- <f8495e44-a34a-4289-90f8-0faa71bf1a71@sirena.org.uk>
- <aeczFjEs6sqRPy0w@kernel.org>
- <bf3133c3-ae12-45ac-a3d1-5e58b849f817@sirena.org.uk>
+ <20260418105539.1261536-8-rppt@kernel.org>
+ <3d154106-1de3-4cd8-9bee-53ef20245d62@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bf3133c3-ae12-45ac-a3d1-5e58b849f817@sirena.org.uk>
-X-Stat-Signature: g996scomwtzchu93c3d5x5ituwwf9uq9
+In-Reply-To: <3d154106-1de3-4cd8-9bee-53ef20245d62@arm.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5913E2000E
+X-Stat-Signature: 7w4tcfuy3z7jtmr11fyzhupg1rqb8gae
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 218A01C0005
-X-HE-Tag: 1777021915-416414
-X-HE-Meta: U2FsdGVkX189nh7w/7jaioKykxEu2TBl/p6Hapu1RQjF1YB1Qt5iVVxJ0nfuyD6gBnB1ZPtwNmRA3aUMQBhNxK8Vj1NOMnPz7BC57uwbprB/p2auIULXdnglJzypMpqLPiR34dEl4VcSHmR2EDdHD3lhgA5XLoBawwY9tSHfBpcxXbOrMZuqNd64SdDS3IYuEtxo0UrHO98umSl9asvAwXpbR9Xf+yUZlCcNsGIQG12Stm108brjarw3Uu+7rlLd3YRdgmZwFTCNzkx6m30aoxf50+/yc0QqztK+Q3t2YoSR7cPnpIvg1GPhOX1lMNuz1VXEsq5BQQ8O8Hocu0fQkzCrxCBr1uzM9TOxNyOxIYLCYSQI7Rr+MVcOYSNjHdQPdDKoZWQPN9f/MsciPl9l0GfI//h1K4TIonrLuHV0/03PWf7XruZi5EZyH6vR3w4MGUt+/2COZqyPvYbZARloCnCIE9jygiAdBoktt8cLy579PiQ3iwQmrMuvFV00V7UVOZS/tsn2dNk2W9HBIDrB+C69f8XJghxRVXoW2W+D0hIe6L6BuNX2dmGwGFcCV3/Im0pqbAqdhj0E14hl6IaDoFBGmmEJe2sFxyAZq2JhZItHV0jobZ2TWO4dq7I80+HR+omewS5XRxuUTxCgeaTmHfYn80Miu8evImBNEy/oxe0k+UspIXdxAnaDRMzHNdwBZJ2BNWkZjk2QrB/fOxIKc3SDc76uL8GqUbRsAuTyZ+XPPCuCHytTN0+jsg3xhKY4ZVvfZrjyc0kOj8ujJ0x/iHnRMgAjo82DJkeEW5ZZYMNIhg+4SftCPysJEA9gSomJEEt9wzk8HKwj9YeLytg4eCslyuw03AM+tqO13BByBN9e7sZrtxRXBxe6wcfE4Vse3fvC5URCW7DAXXDX8Xgg45L6i8JjprSkkIMGCek5w/RmhDfuY2zW4K728knTk6DJCnwpBK6/t6LvUWO6bXO
- pfJ2ojGo
- n6wjiqOaZFX5Zd0DcSxKGN/E075E4xnfPjeiGBYRPi7e8JzDgAzYZZNQUqzR+JTyB7wa28GAmKTLjg8mpyNjnuIlQZLcY+X4GLAA91wod4jIaQIet8cP93rm0Gni9imU86pyR09PwqpgWLYkogC2w0Hf8gi2jJQf1ZTqpf0w1nBMhidEX2zUbs+f6ZLfKbt42AYW5gYdWhI8s51CgZgHyZ9fC0+m1cxFZm9Kko4UK7jSKoeieQKjD6Kgw4eovdPaDtbgi4/8lwUPGhGv+Ih1NvPLP0YxNcHuLKX2oeN9G0KzSwdI=
+X-HE-Tag: 1777022044-962676
+X-HE-Meta: U2FsdGVkX18R07+PjtzKi1Du/ipnFphjp5g0rkbk6Pj2HmRM7vl5AptSMoCHE3VqvuhRTiMePYtMZTWO5DOUCwSXItDQKuxxPnJidQDwfRnZ3h7572Wk5DPHhqJ7Bd540zoz3hqiDm9QsReV2yyz6tDqqGK8TH4dNwLhIsGzuD04TtHUxPbqYXIcdQo7ZDGlMavjdhebQ5/LKteMYMwLw97y4PkMBNWWCbvxt6EAV39jbGWIRPfIEfTaFTSH3kqZJ8S2W5A2ufXU24Z3q0t24cdc8JjP2XrQ+NoTD8rDCJ6xpHs/w0+66JRr1lcNMPAkz3rre59HQ4U4ecgIZhD0SuGv/nlHJqxQIcG+1NM8HBPUFty9SPIHGCHF67bdB5TKXdCa7AqjonPvWZ1XsU5u92unWosEHsrJNKDD496xXO3snnwePv4xeEwIYQgtfkF+tNGNuni6UOZPARrHW0ZQ49wY3J7x60nSWfMuZr0UUZCdTG3pDF3HDvyTYiB2JQSP1yJ/eysI6jTjJXUieNaKSDtDlfLuUFpvpcJLqrsnNQpCgpI2iaUET94LKbmPHxDeGtdFG4BkL47d8Wx36hnsEu080zu8PmDDBevUPE6vYQjWrhAB7X6YYqLoex2T9AFDPePTMWI3w4u3YnLIXvTy/PZBmvlxN4OdhNH+w0EGRwYf8fCkzOGY7N33TnJk9DMr3SUlDBgLo60zsR8lIn0U0IiSXuNdhFdNPPwqLx+ifsXz61VkkdATQsYtkpQ5YTLYPnBs5X0wNdrWt+EnCpihdU9FhJovVlh88BQYP2vzplFBeKl8314iS8fWL2Iv8BOIAYkkU21tOTRIPOAlrJGWnMOJ1hOHmlXB3hfv6QjwvdrML+g6qD5tgszZvoHW4ZaspNFa/b5JolLfcN01jeDKaGLtHb9lVjKkJxI6U1Z+1u+mFVtSC5Aw2u0b/LTxTrOh/PCoLB6z0IdbVS0U8W/
+ 6jYnYlor
+ ASY014YY1Ej54yjNA9VPLQJzuLW5zz6N4VmxL8Y9RKBnSKAm8kpqFCntnabIR7/Z5Cr0pWwmHaX5C6cN8a62cCt9n5FLyTAQ35Dz0h+cH0rbTyT5R3m/ZsfI9t0EIuON/uPoTdKIboH5Cu7mlhoBmC3x26mw3SRlfGJSKtSnyvQXbmT+BFTFAFVZ2aIXm/aTnqq4wwMO/836vtqAukFCWPaXBFalDW1L4DKO07jh/BwHuLEVWRS+QlGbZOQlHZL3/3QldtGmqnlKBSw8SGmVU3VbjRcC6cI9FZO7kukRA68m+MwEaeCX7pAGyT2jHWnMvAkPZ5D94w5rr7k7aNk3HOrhPZmd1zZwQ7kbzCdOpiuQTgjg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,29 +107,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 21, 2026 at 01:59:21PM +0100, Mark Brown wrote:
-> On Tue, Apr 21, 2026 at 11:19:34AM +0300, Mike Rapoport wrote:
-> > On Mon, Apr 20, 2026 at 06:54:31PM +0100, Mark Brown wrote:
+Hi Sarthak,
+
+On Wed, Apr 22, 2026 at 04:50:20PM +0530, Sarthak Sharma wrote:
+> Hi Mike!
 > 
-> > > If that fflush() is needed it should go into the helper, particularly
-> > > since ksft_finshed() calls exit() so the fflush() will never be reachd.
+> On 4/18/26 4:24 PM, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > Convert hugetlb-shm test to use kselftest framework for reporting and
+> > tracking successful and failing runs.
+> > 
+> > Reviewed-by: Mark Brown <broonie@kernel.org>
+> > Reviewed by: Donet Tom <donettom@linux.ibm.com>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  tools/testing/selftests/mm/hugetlb-shm.c | 46 ++++++++++++------------
+> >  1 file changed, 23 insertions(+), 23 deletions(-)
+> > 
+> >  
+> > -	dprintf("Starting the Check...");
+> > +	ksft_print_msg("Starting the Check...");
+> >  	for (i = 0; i < LENGTH; i++)
+> >  		if (shmaddr[i] != (char)i) {
+> > -			printf("\nIndex %lu mismatched\n", i);
+> > -			exit(3);
+> > +			ksft_print_msg("Index %lu mismatched\n", i);
+> > +			shmctl(shmid, IPC_RMID, NULL);
+> > +			ksft_exit_fail_msg("Data mismatch at index %lu\n", i);
 > 
-> > Looks like I'm missing prints because of something in my environment, I'll
-> > just drop the fflush().
+> ksft_print_msg() and ksft_exit_fail_msg() are printing the same thing
+> here. Should we remove the ksft_print_msg() to avoid redundancy?
+
+Yes, I'll drop the first print.
+ 
+> I've run the test before and after applying the patch. The output has
+> been correctly formatted into KTAP format with no change in results.
 > 
-> Interesting.  Usually the culprit would be calls to _exit() that bypass
-> the libc cleanup but I'm not seeing any right now...
+> Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
-Interesting indeed :)
-
-My observations up till now that if I run the test on the host, it prints
-everything (without fflush()) changes at all). If I run the same test in a
-VM either using virtio-ng or ssh'ing into a debian VM, only the first part
-of prints is displayed. However if I run protection_keys_64 | tee in the
-same VM everything is printed.
-
-I'll just drop the fflush() from this patch and will investigate later.
-
+Thanks!
+ 
 -- 
 Sincerely yours,
 Mike.
