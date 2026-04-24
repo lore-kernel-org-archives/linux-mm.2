@@ -4,146 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C608FB44B5
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 06:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A537FB44B8
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Apr 2026 06:25:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 792406B0005; Fri, 24 Apr 2026 02:20:19 -0400 (EDT)
+	id 83F056B0005; Fri, 24 Apr 2026 02:25:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76A526B008A; Fri, 24 Apr 2026 02:20:19 -0400 (EDT)
+	id 7C1B46B008A; Fri, 24 Apr 2026 02:25:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6595C6B008C; Fri, 24 Apr 2026 02:20:19 -0400 (EDT)
+	id 689526B008C; Fri, 24 Apr 2026 02:25:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 544506B0005
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:20:19 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 515D46B0005
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 02:25:55 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01b-stub [10.200.18.250])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B5F2B1C0899
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:20:18 +0000 (UTC)
-X-FDA: 84692449716.23.97736DB
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf24.hostedemail.com (Postfix) with ESMTP id ACF97180004
-	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:20:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IsuTpdvN;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1777011616;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D73F31A082E
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:25:54 +0000 (UTC)
+X-FDA: 84692463828.23.20F3D5C
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E45DA20009
+	for <linux-mm@kvack.org>; Fri, 24 Apr 2026 06:25:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XRmmqUrO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1777011953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NHT+ZbrFQ1d6JCVRomWC8t8Safh9vXTXuXoPxJbXGH0=;
-	b=D7jK5DMI6hqWIpFlSNx3DJ7ubueectD6QQONji5Lr1LaJZzqX3r2YX2E/zz6D6nOOm7kpu
-	sDYrUCSiqTGkn4SHkubjlE3JQ5UIMp8cfr2d7ZYycqQeIYJGGRov8kOGovd1QqHeRXt/Dm
-	WIdopSeCWggYdIgC//MHQMUDgpPBrU8=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=IsuTpdvN;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=mjguzik@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1777011616; a=rsa-sha256;
-	cv=pass;
-	b=Aa4LLrSzlvDoaeg+YkBXpC7tZLgT4+UZR72OSL9VDffIe/nk/3OSDzaUEswsjekS62RKVU
-	he6XmXGojtQtehgSemLXlOxJvaimGMIj7BGov4ILV6RdLHwGDVn7OMiDwMw3R9NvOGsqWA
-	0oSWFP4JpfmQBr7b7W67oAMgRZ3uyRw=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-66e8cf72a93so9018540a12.0
-        for <linux-mm@kvack.org>; Thu, 23 Apr 2026 23:20:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777011615; cv=none;
-        d=google.com; s=arc-20240605;
-        b=P8lR0WL2ebPjnlcbURSd26sLyOP7VxwtlvxurSepeCGTzFbqtghbbZrsKED9plHUwM
-         5gon1aQW+mikiCVP/XBGXyG3T/OYBtz0ve2wBTyLh7PxoHikMWQ7pBqv+m4FCNZIXPJm
-         FLUWh+TK1w4GzZg3vz24i9rRRZ4OD02SfaMadWVHdi0a8ioVs6715fhCXomsd0NUZOYN
-         SbvsQqRpw62IQCboiWkEDbwNC/DTjmd9ywa+Y+UTI0HZ0ZZeg5ttr8PDg3YP/Fa3SV/p
-         O/RWDVNwepfJqy2yPsxGxyX/AyYawSlSWhSMeEUrXrh4BUMKA+PYZAqEoB8Rae8HV1Gq
-         Vnpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NHT+ZbrFQ1d6JCVRomWC8t8Safh9vXTXuXoPxJbXGH0=;
-        fh=4xvMlXCZDVDyluAammtuIyknvFFb8GJ9T6k2dLNufqk=;
-        b=SNAdSzwYFiCEo94W5ic29Rr5RxHwG9DMZjY3ckH2LYoduISl3Ca6yfnaf91UDCzo5R
-         NTnjkUBtZwdHmoiv41aZe9Ko0c0vUSnq0nEEiM/wRd2CGGWuNH09P4vALm31Y1d2eT6Z
-         ZCpceEGm7atONfQ6pNowWd5Wtl2fmM6pjnTM8Iv/Qs3Jti7+QGiVbw0LTSTuWQMs3Jta
-         YzL75NXS9ud9juX389CDi5fF6APXfVZv4LqxR0xjjp/ot14ZBLaUzMUUXVX6GROYM5i/
-         rURsIUqEVbPIPnRjCftcNKrYOXFoifTI620O/F7YBP+6QnhJRDquzGOJMAnTxE0EnXjB
-         Sljg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777011615; x=1777616415; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NHT+ZbrFQ1d6JCVRomWC8t8Safh9vXTXuXoPxJbXGH0=;
-        b=IsuTpdvN+aa7Ycp3xaBHCUm/3LRfjo5wEHgbRIBXZTaskVRDYKa6gQVJhnu0eOjcP7
-         bTTyjGXxFwNsRKyUO8Od7xryl1ThZrzdKN6sI3g53b3hzhroatP9TYJH8ESWHj+1fz2R
-         GVVrbfc9Mf2qR0pxrB/T+oFSFuXTDfmzxnQARrYpLvPXkwfFQzfz9iGhuxuiJNZqsQr8
-         eqFRzy6ftKCJTkxypK2KAJJtvaSx4HOfMup71ZaXN351rRkG2SsjTIigdNrqFZIAcnhs
-         obvBiHZTTpe00qzTNcFo9MCW6BevOVb/o1GvE7pw2k7Rw0VHnBd4cQzkHyUnF6t9NhLJ
-         6W7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777011615; x=1777616415;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NHT+ZbrFQ1d6JCVRomWC8t8Safh9vXTXuXoPxJbXGH0=;
-        b=k5b8+WB08GCVzt4olbkIGdrOCihaImhTJc7dmfiEg6xkZhdO+ah0K351NuDK3WQkHg
-         fRsN4xCr6MLvlaPm/WoeKTZbRN5pwiS9WFNngPWycl72eGolf54xgbVS6Sz63GrctN3A
-         FTH15NVZMjoHpYMZw2VrdyBwAcJXIuFVrKb3EYYDLDqHObgzw8EUK1VUyK/Iwc7jCo+e
-         qhbB9M/OOJL/LT6Vgx3u6wBZOzeXK+xnHBe4mbzOxtNSE8Y8RMuqRPa3cFTOzwz9nC3O
-         NnTrZr2ouy96NDooESRBO6ijpFgDW/xBpNolWygRQo0jmnD4QcLATelx5Xz2ZQA0mztm
-         2FPg==
-X-Forwarded-Encrypted: i=1; AFNElJ80VXBPGh++PZyK6R9gl0C8NY1KEwjOTmJowElKrO76iVaVmRxjJFMPLwZfVPsQB3+nKY1fiXixRw==@kvack.org
-X-Gm-Message-State: AOJu0YxrsM0DZxH4iCnSlPyuM+23a5S7Q/ygiMzbupyhFz4z2aXPgbs8
-	MqH5HWLY3lbMd9E3YTNfsAJi7r4Fx8f0RL77pselkUiT7mEHhYJDpSJwtlIvMaeVPWdPOIub6X/
-	qIUVlgAG9RoOpGLUhq3zSzSCaNi65/ClKrLpc
-X-Gm-Gg: AeBDievWngClRX9i0hgpVUkXuhbZ5mNGGlMvfEINz/K/0nqrAMkRPaROdGAC0/rf7JK
-	Ff6QvKgdC0r47TiExxv7OZcjj2Xv9xnMuOV0DWwIqDHCV8SSgzT/Iv6yX8ZWWlBn5UEiQJP7pJX
-	K6fJdP52FVnRGIU51SzvhkqFfK/j4kdGzawcWVVomSQDJUYPBfpHlx0H2K35/+LVanrXD3+yD18
-	2qjbE9yWkuqNnnwlHYm/diIhRnXfKDfIfqnCTfALzQrGpCBMkitPomI7bC2LHJrWsd54nz1sQsj
-	6jCA6l6Fd9r5oeJES4qYW7SknrcB6RusT1CD/UXPfrzLlsEQqQ==
-X-Received: by 2002:a05:6402:28c8:b0:677:270f:6f4b with SMTP id
- 4fb4d7f45d1cf-677270f7f6cmr3673799a12.1.1777011614631; Thu, 23 Apr 2026
- 23:20:14 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=mFgoyKCdQiiWZt7LRrYUU2foyvCx7Vjp2N1i0zg6fIU=;
+	b=kMMB77hvFdj9Zr79Xjea9591OEzzloSqzFweYnSn1KcpLPSrL/ATuH0T7XJ2YwYMXxXeUj
+	+kP10CdFzyX5mVT8TgGfcPp9pdeY4nhrNAzP46CK2qZisRmUdbZbEnBDjXnTa5m1LuPMJB
+	lfUHc7SbirwJcZ5PV1alm8BGJbmHg8E=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XRmmqUrO;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1777011953; a=rsa-sha256;
+	cv=none;
+	b=raC0nSrqiqt3un6IHFbn6aoiRvmRknZeW5j2FvISYOmTcmFYnK2Fb2oBrHfWItmsQSimpv
+	oJ0DylvutTvxjzyH8H6c3PZyRqpPvuh4LFIitzbJMsR9IImIxYyCYqU0Ph48GYxG70yyK4
+	F4nGrq7TWNcbC/10IX4GeBD+kWByAB4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777011950;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mFgoyKCdQiiWZt7LRrYUU2foyvCx7Vjp2N1i0zg6fIU=;
+	b=XRmmqUrOYc9Gli+1BC9Spfy7SotfZohrpb28KWuYIvzVNN4enYEFRaa240/cV1Q5Qbaj5A
+	koauctdWoE5TVodVLaAGCmKdLdYvkaVNO8Ix6UxhysIHCBtE3aI50U8qp3DfZ3rtcrfnBp
+	K1iBIgJrUzhg6ABNqmFhDERVlj0oJUo=
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: peterz@infradead.org,
+	david@kernel.org,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com
+Subject: [PATCH 7.2 v10 0/2] skip redundant sync IPIs when TLB flush sent them
+Date: Fri, 24 Apr 2026 14:25:26 +0800
+Message-ID: <20260424062528.71951-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-References: <20260421020932.3212532-1-liuyibin@hygon.cn> <aeikm2e5Gh5reJ30@lucifer>
- <bc514883d6154420b3cfde4ab25a20c7@hygon.cn> <aejzSsiXZBK1emv7@lucifer>
- <a96c20b74b874248bc0cdc2b926a43fe@hygon.cn> <aerhh_tzSs5XapUz@casper.infradead.org>
-In-Reply-To: <aerhh_tzSs5XapUz@casper.infradead.org>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Fri, 24 Apr 2026 08:20:01 +0200
-X-Gm-Features: AQROBzCMZgHVIUyd2eInZGYwOMcnSg29XnDK8mRT8aosN_mcUyOqAAyW9pt2pWQ
-Message-ID: <CAGudoHGnOMj7O0P0pttdgdhGnJq8+Nv3_91x8kEAT5wR_xDmgQ@mail.gmail.com>
-Subject: =?UTF-8?B?UmU6IOetlOWkjTog562U5aSNOiBbUEFUQ0hdIG1tOiBBZGQgUldIX1JNQVBfRVhDTFVERQ==?=
-	=?UTF-8?B?IGZsYWcgdG8gZXhjbHVkZSBmaWxlcyBmcm9tIHJtYXAgc2hhcmluZw==?=
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Yibin Liu <liuyibin@hygon.cn>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
-	"viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "brauner@kernel.org" <brauner@kernel.org>, 
-	Jianyong Wu <wujianyong@hygon.cn>, Huangsj <huangsj@hygon.cn>, Yuan Zhong <zhongyuan@hygon.cn>, 
-	"jack@suse.cz" <jack@suse.cz>, "jlayton@kernel.org" <jlayton@kernel.org>, 
-	"chuck.lever@oracle.com" <chuck.lever@oracle.com>, "alex.aring@gmail.com" <alex.aring@gmail.com>, 
-	"vbabka@kernel.org" <vbabka@kernel.org>, "jannh@google.com" <jannh@google.com>, 
-	"pfalcato@suse.de" <pfalcato@suse.de>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E45DA20009
+X-Stat-Signature: jhfz774dthqe1t81sm8rmtwxfpoy1hd5
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ACF97180004
-X-Stat-Signature: sr8d59e6jia871txgqoc4b44kobwpuhp
-X-HE-Tag: 1777011616-419709
-X-HE-Meta: U2FsdGVkX1+RqWC3ST3nF+JTwz/TjdMaMrNzLicTwVWBSgo3ydNsGB2dQbI0HH9qKRGTHoPm9xq0y6itW4zVJ2Py8Qor8gH2SnB2PC22YQvUajfZVkuFyLt2iSkebAE6pZ1EiqJGmM+AjLJmVKSt6CZIbzdE+Uz6ZuijLUXp9V44hT1ouPhwNbAfp3x9qN9Gcq2nqE2xl4KJGvVoFoTn2RLo20FbKFZh/KTEMBu81oMLVEa+iPz7PMfz1tLNTuJZ+RmNYfqH2DAeZKZ8f9H3qr/FQqBsybGbplcYaMrInDLFcNHolaxJggSSsb8p3FuEYsLi7VX+1EG/TrgpbPb4IIfccWjg0flI7Pc3kgmwi6WeMBxuxzdO9IeL6vnDb7KqaDmcrobf/n5B94fAthwzRSLL/OCDHfVz3gqPvbTa5EW3nKiJV2JGOZmjrlNO/aIzecQ02o+3OGUvX07AQMO4iVcBE6HKshWRJmWdiRMGJ72tXsIQ6UP43hs3tzvG2F299+8T3IWMhn4SUehzij6Q58WJ3Kq3/A7+7WoUfY9r0iroqa/e9na3Pjb5e93OyKPuPdyb47zOAHo3S8W2Lpjeyym17DoZfb9YE2MKayltSo5jT6+vjccnfHtszwlKfUZ5uztyW70qURHj/zzd9CrdP6oJTKsaFANdFaSlw16cjprzoLnfSD+OaqsxnWH/ft3TXrXPIMkXPavj67yh391teWhbX+HDhGKIlB7dULQ3t4SvD48yR8CbAsaimwAUlyB2gPLMo4Ru7RBGGPscRn2g/ppRNVw1ZXsZa2VdUbocsM0njUdJIi/oAS6/4A3wuzYpS/qcJYSSPnOrSJU3knTQkQv8bvpHcmPuhRC0L6AbVLOcOvB36OUmWUylQCgSOKfjDOY3fIIalLNDChFBvgzmpm8Byq+D0vrvxkYw5U9LcTSvbyBiTs0agCMT/OQyFGhjPATOO8E7pBiKbhAiD7D
- qNa2dIOo
- ipunv/Ui49Meshn9Gnzu9XQHlKO4jMi9EbYswq1+U3O6d5Gsqy4wtz85ZN/4qPw4EvKDYTWVFaT26cdOVaynjs4IYnYoeaxU0ntpJpIZv+Cbw+9C8Da1XedI5Gewi/s7nNzrnOXjge6sQpDjO4YRKVp797GSnqHUHXlGteYblFNollMMIi6H7MsbQ0PMAn2UOn+nseXeXrVnw8B61fDhPIk2vEahGzxbJtMQE3EzWKIBIAO2aLhidUPHBu9seiVlEqw0oim4a8Jndm+FYYuaZcpw5mEnWGWc118Ere6fuJDO+QHK3LCNX2O9yDc8GIqfAz0nbINk3NWfIRI0LPOPcptmXLZHVToZr8sWZmbMuZUiVDIQbUKOlXGS4JlBKSJtSkzPUD37TzMUF20xjWyGTOIF5fKoeG+kt+BnHhGbmGb811+UIJDt5SbNOHiQyH/pBO0JmRTg78+BHniwv/K9XSMSt7M63rObivzPwNSne9XRqxQhVko5heG6ORnnTH//3TQsIRKBiVEWXvYoK1PV9Diz0KM3AY6FdJwIU9mg9cKyeTNsCzvZX/Gn1qw71tBGU95y4TLjlCCQegM/+wi5B9ehBIv08qEeMD88GRSsplAuTS+Swtelj1c0tqNAnB5kq1zD1RQgBTlHlHVg=
+X-HE-Tag: 1777011952-82879
+X-HE-Meta: U2FsdGVkX1+MaE78GQqwdhCFTb/27RhIGSyKoThFnBLsBG25dh/l4cE5LkWyt2UPcUYOdzBQUGZG4/ucVKtkoSeSvirKUuwHAeLczFurDmMnmCgPCv7wFyc/wpV89rKjiVuusTyB9PiPqFhu/S/GusLParPwnt/I48toikkJFwHwU5TCtleNqZibbvudE1yFHZFzuNH6AZ/8zo3wytfo5dnkJyFyWElHNkOvAnFFFB188PIMNSGn1hUCaNSmgzbjNefxjoUEVdmmuYPXzBPPKnkUufDRnaygGShBUd8UqgZipBO9Sz7mwwBJYIXnstwMopKbcERpxYJmEEZO3W+5/SOzjYiTaRmM0v/OLQb+mq56Byk76AACfW+y0N9jrQBSjtnMnNVITPap+P1mq8Bhar02MrZIvprpZ2cd1qi8DZ+3LBrz5eIZspp+ohC58twPI56qYRZEg+fOeeaYodQZdo66IpcwqyX4SV5rHko50m757uV3tokQLV3gf6UPhjfL5QM6GYMngPCeaoiQOqbYOucR/MRCMVvP25byGiSumfKDVTW6ZxrVdsjXRm/oDkbf6SP7ZC56Gv1wFxwvKjpgh345h/CY2ZJI6e8AiEgju00zkRpIlMSYwJMYINLUImZYOOSlXHBicrW0VHmhVpwirxcy/qwn/Hjw9Red1x7tho2OyPsO69vGgr7OdPdYJcBfPjjnDVhI81addnMQL7Cb84eiXmGLpzldni2cgvBvZtYEedf0OrGTHqB8fi4jKtRsbokG4vamWQV39+TXlGPTFb+98auim2OiX4DFHQw6k80KtJWqPaSGInHTQKKUhzCTjeswEVM+41GF0VPp57DgvC+y1FtyHMrqynDVAsZrt7dkh9L+jO8UBsFD7/40Ultxwrtg/CnIfPN0KOeuSyiq4nXR1Q3Z4lzC1GHEvJQI0jHyJxxZJIMFY21eFuSMjhLlQ92iMczf3GC5ymFcPOm
+ JzaSrLSj
+ UwbTgmMT/j2wKnj1fH08IRrA4HbiGsqKP0sFLVJobJgfZHUp2eVMy7+sYPhKx9mhlUanXn/mkTDwxWrXPHJ7rUsyRASY8ur823yYtjj1y2ZJv/nVFDEEolNym316pdl4HqwfF202zKgLiQpG6lrf1/IgxQPXNWDVR/+bkyfwrPdAuNIo7GvidJBeLW8MDZ+9KvXDb+Z1hP3gNBQjN4LoJaYwqGz+rchLEobIy86fMyWQGBMgBw7n1OMkA3PlbjxFlbFmN0eGXYLkBcW0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,57 +117,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Apr 24, 2026 at 5:20=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
->
-> On Fri, Apr 24, 2026 at 01:08:35AM +0000, Yibin Liu wrote:
-> > On an Intel Emerald Rapids server (112 cores), run the execl benchmark =
-from
-> > UnixBench with the command: ./Run -c 220 execl
-> > Then perf top shows:
-> >
-> >   91.53%  [kernel]                    [k] osq_lock
-> >    0.50%  [kernel]                    [k] rwsem_spin_on_owner
->
-> OK, but does this represent a realistic workload?  It's pretty easy to
-> construct workloads that hammer on particular locks; the question is
-> whether it's a relevant performance bottleneck that customers care about.
+Hi all,
 
-This is a genuine problem when doing large-scale package building.
-I'll say upfront I have extensive experience with this crap on
-FreeBSD, I did not run it on Linux myself, but bear with me here --
-while FreeBSD is in doubt a less scalable kernel, Linux demonstrated
-to be suffering from the same problems.
+When page table operations require synchronization with software/lockless
+walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
+TLB (tlb->freed_tables or tlb->unshared_tables).
 
-Say you have a box with a core count of 100 and get it to work
-building up to 100 packages at a time. Further, even if you use some
-form of separation from file-system standpoint on userspace level, you
-still want to share the common binaries to reduce memory + cache
-footprint so you at least --bind them. Then you are susceptible to
-contention issues at least on paper.
+On architectures where the TLB flush already sends IPIs to all target CPUs,
+the subsequent sync IPI broadcast is redundant. This is not only costly on
+large systems where it disrupts all CPUs even for single-process page table
+operations, but has also been reported to hurt RT workloads[1].
 
-Granted, building a pig like chromium scales great because it is
-written in c++ and almost all of the time is spent in userspace, with
-forks and execs of the compiler highly spread out in time, in turn
-putting very little pressure on the locks.
+This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
+the prior TLB flush already provided the necessary synchronization. When
+true, the sync calls can early-return.
 
-However, vast majority of packages is very tiny in comparison
-(literally a few .c files) and this is where things go south as they
-engage in exec frenzy, looking like a borderline microbenchmark. The
-primary culprit is configure scripts, issuing an idiotic number of
-back-to-back execs of short-lived processes (notably sed, but also
-grep, rm and others). There is a lot of evil in makefiles as well.
+A few cases rely on this synchronization:
 
-I don't have numbers handy, but in case of the FreeBSD ports tree we
-are talking about over 10 000 ports which on their own take few
-seconds to build. Since these are largely single-threaded, if you have
-package-building machinery which can saturate the box, you easily end
-up with parallel builds matching your core count. And when they engage
-in exec-frenzy for the duration, you may as well be microbenchmarking
-it.
+1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
+   of the PMD table for other purposes in the last remaining user after
+   unsharing.
 
-A sufficiently pessimized workload is indistinguishable from a
-microbenchmark and this here is an example of one.
+2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
+   and (possibly) freeing the page table / re-depositing it.
 
-iow this is a real problem, but I don't have specific numbers for Linux.
+Two-step plan as David suggested[4]:
+
+Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
+flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+guarantee IPIs were sent, keeping it clean and simple.
+
+Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+software/lockless page table walks, benefiting all architectures.
+
+Regarding Step 2, it obviously only applies to setups where Step 1 does not
+apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
+attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
+work and tuning; it will be submitted separately once ready.
+
+On a 64-core Intel x86 server, the CAL interrupt count in
+/proc/interrupts dropped from 646,316 to 785 when collapsing a 20 GiB
+range with this series applied.
+
+David Hildenbrand did the initial implementation. I built on his work and
+relied on off-list discussions to push it further - thanks a lot David!
+
+[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+[2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
+[3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
+[4] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+
+v9 -> v10:
+- Rename the x86 flush_tlb_info bit from freed_tables to wake_lazy_cpus,
+  to make the lazy-TLB behavior explicit (per Dave, thanks!)
+- https://lore.kernel.org/linux-mm/20260420030851.6735-1-lance.yang@linux.dev/
+
+v8 -> v9:
+- Rebase on mm-new; re-tested, no code changes.
+- https://lore.kernel.org/linux-mm/20260324085238.44477-1-lance.yang@linux.dev/
+
+v7 -> v8:
+- Pick up Acked-by tags from David, thanks!
+- Add CAL interrupt numbers to the cover letter (per Andrew, thanks!)
+- Rewrite the [2/2] changelog and reword the comment (per David, thanks!)
+- https://lore.kernel.org/linux-mm/20260309020711.20831-1-lance.yang@linux.dev/
+
+v6 -> v7:
+- Simplify init logic and eliminate duplicated X86_FEATURE_INVLPGB checks
+  (per Dave, thanks!)
+- Remove flush_tlb_multi_implies_ipi_broadcast property because no PV
+  backend sets it today.
+- https://lore.kernel.org/linux-mm/20260304021046.18550-1-lance.yang@linux.dev/
+
+v5 -> v6:
+- Use static_branch to eliminate the branch overhead (per Peter, thanks!)
+- https://lore.kernel.org/linux-mm/20260302063048.9479-1-lance.yang@linux.dev/
+
+v4 -> v5:
+- Drop per-CPU tracking (active_lockless_pt_walk_mm) from this series;
+  defer to Step 2 as it adds ~3% GUP-fast overhead
+- Keep pv_ops property false for PV backends like KVM: preempted vCPUs
+  cannot be assumed safe (per Sean, thanks!)
+  https://lore.kernel.org/linux-mm/aaCP95l-m8ISXF78@google.com/
+- https://lore.kernel.org/linux-mm/20260202074557.16544-1-lance.yang@linux.dev/ 
+
+v3 -> v4:
+- Rework based on David's two-step direction and per-CPU idea:
+  1) Targeted IPIs: per-CPU variable when entering/leaving lockless page
+     table walk; tlb_remove_table_sync_mm() IPIs only those CPUs.
+  2) On x86, pv_mmu_ops property set at init to skip the extra sync when
+     flush_tlb_multi() already sends IPIs.
+  https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+- https://lore.kernel.org/linux-mm/20260106120303.38124-1-lance.yang@linux.dev/
+
+v2 -> v3:
+- Complete rewrite: use dynamic IPI tracking instead of static checks
+  (per Dave Hansen, thanks!)
+- Track IPIs via mmu_gather: native_flush_tlb_multi() sets flag when
+  actually sending IPIs
+- Motivation for skipping redundant IPIs explained by David:
+  https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+- https://lore.kernel.org/linux-mm/20251229145245.85452-1-lance.yang@linux.dev/
+
+v1 -> v2:
+- Fix cover letter encoding to resolve send-email issues. Apologies for
+  any email flood caused by the failed send attempts :(
+
+RFC -> v1:
+- Use a callback function in pv_mmu_ops instead of comparing function
+  pointers (per David)
+- Embed the check directly in tlb_remove_table_sync_one() instead of
+  requiring every caller to check explicitly (per David)
+- Move tlb_table_flush_implies_ipi_broadcast() outside of
+  CONFIG_MMU_GATHER_RCU_TABLE_FREE to fix build error on architectures
+  that don't enable this config.
+  https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
+- https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
+
+Lance Yang (2):
+  mm/mmu_gather: prepare to skip redundant sync IPIs
+  x86/tlb: skip redundant sync IPIs for native TLB flush
+
+ arch/x86/hyperv/mmu.c           |  4 ++--
+ arch/x86/include/asm/tlb.h      | 19 +++++++++++++++-
+ arch/x86/include/asm/tlbflush.h |  6 +++--
+ arch/x86/kernel/smpboot.c       |  1 +
+ arch/x86/mm/tlb.c               | 39 +++++++++++++++++++++++----------
+ include/asm-generic/tlb.h       | 17 ++++++++++++++
+ mm/mmu_gather.c                 | 15 +++++++++++++
+ 7 files changed, 84 insertions(+), 17 deletions(-)
+
+-- 
+2.49.0
+
 
